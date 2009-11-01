@@ -39,7 +39,7 @@
 #include "add-buddy-window.h"
 
 AddBuddyWindow::AddBuddyWindow(QWidget *parent) :
-		QDialog(parent, Qt::Window), MyContact(ContactData::TypeNull)
+		QDialog(parent, Qt::Window), MyContact(BuddyShared::TypeNull)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 
@@ -139,8 +139,8 @@ void AddBuddyWindow::createGui()
 	connect(MergeContact, SIGNAL(toggled(bool)), SelectContact, SLOT(setEnabled(bool)));
 	connect(MergeContact, SIGNAL(toggled(bool)), DisplayNameEdit, SLOT(setDisabled(bool)));
 	connect(MergeContact, SIGNAL(toggled(bool)), this, SLOT(setAddContactEnabled()));
-	connect(SelectContact, SIGNAL(contactChanged(Contact)), this, SLOT(setAddContactEnabled()));
-	connect(SelectContact, SIGNAL(contactChanged(Contact)), this, SLOT(setAccountFilter()));
+	connect(SelectContact, SIGNAL(contactChanged(Buddy)), this, SLOT(setAddContactEnabled()));
+	connect(SelectContact, SIGNAL(contactChanged(Buddy)), this, SLOT(setAccountFilter()));
 
 	AllowToSeeMeCheck = new QCheckBox(tr("Allow contact to see me when I'm available"), this);
 	AllowToSeeMeCheck->setChecked(true);
@@ -175,7 +175,7 @@ Account AddBuddyWindow::selectedAccount()
 	return index.data(AccountRole).value<Account>();
 }
 
-void AddBuddyWindow::setContact(Contact contact)
+void AddBuddyWindow::setContact(Buddy contact)
 {
 	MyContact = contact;
 
@@ -221,11 +221,11 @@ void AddBuddyWindow::setAddContactEnabled()
 
 	if (!MergeContact->isChecked())
 	{
-		AddContactButton->setEnabled(ContactManager::instance()->byDisplay(DisplayNameEdit->text()).isNull());
+		AddContactButton->setEnabled(BuddyManager::instance()->byDisplay(DisplayNameEdit->text()).isNull());
 		return;
 	}
 
-	Contact mergeWith = SelectContact->contact();
+	Buddy mergeWith = SelectContact->contact();
 	if (mergeWith.isNull())
 		AddContactButton->setEnabled(false);
 	else
@@ -261,7 +261,7 @@ void AddBuddyWindow::setAccountFilter()
 	if (MergeContact->isChecked())
 		AccountComboNotInContactFilter->setContact(SelectContact->contact());
 	else
-		AccountComboNotInContactFilter->setContact(Contact::null);
+		AccountComboNotInContactFilter->setContact(Buddy::null);
 }
 
 void AddBuddyWindow::setMergeContactFilter()
@@ -301,14 +301,14 @@ void AddBuddyWindow::accept()
 	if (!MergeContact->isChecked())
 	{
 		if (MyContact.isNull())
-			MyContact = ContactManager::instance()->byId(account, UserNameEdit->text());
+			MyContact = BuddyManager::instance()->byId(account, UserNameEdit->text());
 		
-		MyContact.setType(ContactData::TypeNormal);
+		MyContact.setType(BuddyShared::TypeNormal);
 		MyContact.setDisplay(DisplayNameEdit->text());
 	}
 	else
 	{
-		Contact contact = SelectContact->contact();
+		Buddy contact = SelectContact->contact();
 		if (contact.isNull())
 			return;
 

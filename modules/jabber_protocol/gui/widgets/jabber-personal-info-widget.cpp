@@ -30,7 +30,7 @@ JabberPersonalInfoWidget::JabberPersonalInfoWidget(Account account, QWidget* par
 	if (!Service)
 		return;
 
-	connect(Service, SIGNAL(personalInfoAvailable(Contact)), this, SLOT(personalInfoAvailable(Contact)));
+	connect(Service, SIGNAL(personalInfoAvailable(Buddy)), this, SLOT(personalInfoAvailable(Buddy)));
 	Service->fetchPersonalInfo();
 }
 
@@ -80,7 +80,7 @@ void JabberPersonalInfoWidget::createGui()
 	layout->setRowStretch(8, 100);
 }
 
-void JabberPersonalInfoWidget::personalInfoAvailable(Contact contact)
+void JabberPersonalInfoWidget::personalInfoAvailable(Buddy contact)
 {
 	NickName->setText(contact.nickName());
 	FirstName->setText(contact.firstName());

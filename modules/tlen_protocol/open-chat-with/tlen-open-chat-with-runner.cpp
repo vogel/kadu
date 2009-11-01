@@ -20,15 +20,15 @@ TlenOpenChatWithRunner::TlenOpenChatWithRunner(Account *account) : ParentAccount
 {
 }
 
-ContactList TlenOpenChatWithRunner::matchingContacts(const QString &query)
+BuddyList TlenOpenChatWithRunner::matchingContacts(const QString &query)
 {
 	kdebugf();
 
-	ContactList matchedContacts;
+	BuddyList matchedContacts;
 	if (!validateUserID(query))
 		return matchedContacts;
 
-	Contact c;
+	Buddy c;
 
 	TlenContactAccountData *gcad = new TlenContactAccountData(c, ParentAccount, query);
 	c.addAccountData(gcad);

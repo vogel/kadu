@@ -157,7 +157,7 @@ void HintManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainCo
     	configureOverUserHint = new QPushButton(tr("Configure"));
 	connect(configureOverUserHint, SIGNAL(clicked()), this, SLOT(showOverUserConfigurationWindow()));
 
-	Contact example = Contact::dummy();
+	Buddy example = Buddy::dummy();
 
 	if (!example.isNull())
 		prepareOverUserHint(overUserConfigurationPreview, overUserConfigurationIconLabel,
@@ -188,7 +188,7 @@ void HintManager::showOverUserConfigurationWindow()
 		_activateWindow(overUserConfigurationWindow);
 	else
 	{
-		overUserConfigurationWindow = new HintOverUserConfigurationWindow(Contact::dummy());
+		overUserConfigurationWindow = new HintOverUserConfigurationWindow(Buddy::dummy());
 		connect(overUserConfigurationWindow, SIGNAL(configurationSaved()), this, SLOT(updateOverUserPreview()));
 		connect(overUserConfigurationWindow, SIGNAL(destroyed()), this, SLOT(hintOverUserConfigurationWindowDestroyed()));
 		overUserConfigurationWindow->show();
@@ -200,7 +200,7 @@ void HintManager::updateOverUserPreview()
 	if (!overUserConfigurationPreview)
 		return;
 
-	Contact example = Contact::dummy();
+	Buddy example = Buddy::dummy();
 
 	if (!example.isNull())
 		prepareOverUserHint(overUserConfigurationPreview, overUserConfigurationIconLabel, overUserConfigurationTipLabel, example);
@@ -539,7 +539,7 @@ void HintManager::setLayoutDirection()
 	kdebugf2();
 }
 
-void HintManager::prepareOverUserHint(QFrame *tipFrame, QLabel *iconLabel, QLabel *tipLabel, Contact contact)
+void HintManager::prepareOverUserHint(QFrame *tipFrame, QLabel *iconLabel, QLabel *tipLabel, Buddy contact)
 {\
 	QString text = Parser::parse(config_file.readEntry("Hints", "MouseOverUserSyntax"), contact.prefferedAccount(), contact);
 
@@ -572,7 +572,7 @@ void HintManager::prepareOverUserHint(QFrame *tipFrame, QLabel *iconLabel, QLabe
 	tipFrame->setFixedSize(tipLabel->sizeHint() + QSize(2 * FRAME_WIDTH, 2 * FRAME_WIDTH));
 }
 
-void HintManager::showToolTip(const QPoint &point, Contact contact)
+void HintManager::showToolTip(const QPoint &point, Buddy contact)
 {
 	kdebugf();
 

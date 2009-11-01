@@ -12,7 +12,7 @@
 
 #include "ignored-helper.h"
 
-bool IgnoredHelper::isIgnored(ContactSet contacts)
+bool IgnoredHelper::isIgnored(BuddySet contacts)
 {
 	if (1 == contacts.count())
 	{
@@ -25,11 +25,11 @@ bool IgnoredHelper::isIgnored(ContactSet contacts)
 	}
 }
 
-void IgnoredHelper::setIgnored(ContactSet contacts, bool ignored)
+void IgnoredHelper::setIgnored(BuddySet contacts, bool ignored)
 {
 	if (1 == contacts.count())
 	{
-		Contact c = (*contacts.begin());
+		Buddy c = (*contacts.begin());
 		c.setIgnored(ignored);
 	}
 	else

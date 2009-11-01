@@ -17,7 +17,7 @@
 
 #include "contact-account-data.h"
 
-ContactAccountData::ContactAccountData(Account account, Contact contact, const QString &id, bool loaded) :
+ContactAccountData::ContactAccountData(Account account, Buddy contact, const QString &id, bool loaded) :
 		UuidStorableObject("ContactAccountData", ContactAccountDataManager::instance(), loaded),
 		ContactAccount(account), OwnerContact(contact), Id(id),
 		ContactAvatar(this, false) /* TODO: 0.6.6 */, Blocked(false), OfflineTo(false), Port(0)
@@ -27,7 +27,7 @@ ContactAccountData::ContactAccountData(Account account, Contact contact, const Q
 
 ContactAccountData::ContactAccountData(StoragePoint *storage) :
 		UuidStorableObject(storage), Uuid(QUuid::createUuid()),
-		ContactAccount(0), OwnerContact(Contact::null), ContactAvatar(this, false) /* TODO: 0.6.6 */, Blocked(false), OfflineTo(false), Port(0)
+		ContactAccount(0), OwnerContact(Buddy::null), ContactAvatar(this, false) /* TODO: 0.6.6 */, Blocked(false), OfflineTo(false), Port(0)
 {
 }
 
@@ -41,7 +41,7 @@ void ContactAccountData::load()
 	Uuid = loadAttribute<QString>("uuid");
 	Id = loadValue<QString>("Id");
 	ContactAccount = AccountManager::instance()->byUuid(loadValue<QString>("Account"));
-	setContact(ContactManager::instance()->byUuid(loadValue<QString>("Contact")));
+	setContact(BuddyManager::instance()->byUuid(loadValue<QString>("Contact")));
 
 	ContactAvatar.load();
 
@@ -63,7 +63,7 @@ void ContactAccountData::store()
 	ContactAvatar.store();
 }
 
-void ContactAccountData::setContact(Contact contact)
+void ContactAccountData::setContact(Buddy contact)
 {
 	if (contact == OwnerContact)
 		return;

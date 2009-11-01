@@ -29,7 +29,7 @@ GaduPersonalInfoWidget::GaduPersonalInfoWidget(Account account, QWidget* parent)
 	if (!Service)
 		return;
 
-	connect(Service, SIGNAL(personalInfoAvailable(Contact)), this, SLOT(personalInfoAvailable(Contact)));
+	connect(Service, SIGNAL(personalInfoAvailable(Buddy)), this, SLOT(personalInfoAvailable(Buddy)));
 	Service->fetchPersonalInfo();
 }
 
@@ -85,7 +85,7 @@ void GaduPersonalInfoWidget::createGui()
 	
 }
 
-void GaduPersonalInfoWidget::personalInfoAvailable(Contact contact)
+void GaduPersonalInfoWidget::personalInfoAvailable(Buddy contact)
 {
 	kdebugmf (KDEBUG_INFO,"personal info available");
 	NickName->setText(contact.nickName());
@@ -100,7 +100,7 @@ void GaduPersonalInfoWidget::personalInfoAvailable(Contact contact)
 
 void GaduPersonalInfoWidget::applyData()
 {
-	Contact contact;
+	Buddy contact;
 
 	contact.setNickName((*NickName).text());
 	contact.setFirstName((*FirstName).text());
@@ -109,7 +109,7 @@ void GaduPersonalInfoWidget::applyData()
 	contact.setBirthYear((*BirthYear).text().toUShort());
 	contact.setCity((*City).text());
 	contact.setFamilyCity((*FamilyCity).text());
-	contact.setGender((ContactData::ContactGender)Sex->currentIndex());
+	contact.setGender((BuddyShared::BuddyGender)Sex->currentIndex());
 
 	Service->updatePersonalInfo(contact);
 }

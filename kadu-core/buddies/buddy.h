@@ -45,36 +45,36 @@
 class ContactAccountData;
 class XmlConfigFile;
 
-class KADUAPI Contact : public QObject
+class KADUAPI Buddy : public QObject
 {
 	Q_OBJECT
 
-	QExplicitlySharedDataPointer<ContactData> Data;
+	QExplicitlySharedDataPointer<BuddyShared> Data;
 
-	Contact(ContactData *contactData);
+	Buddy(BuddyShared *contactData);
 
 	void checkNull();
 
 public:
-	static Contact loadFromStorage(StoragePoint *contactStoragePoint);
+	static Buddy loadFromStorage(StoragePoint *contactStoragePoint);
 
-	explicit Contact(ContactData::ContactType type = ContactData::TypeNormal);
-	Contact(const Contact &copy);
-	virtual ~Contact();
+	explicit Buddy(BuddyShared::BuddyType type = BuddyShared::TypeNormal);
+	Buddy(const Buddy &copy);
+	virtual ~Buddy();
 
-	static Contact null;
+	static Buddy null;
 
-	static Contact dummy();
+	static Buddy dummy();
 
 	bool isNull() const { return 0 == Data || Data->isNull(); }
 	bool isAnonymous() const { return 0 != Data && Data->isAnonymous(); }
 
-	void mergeWith(Contact contact); // TODO: 0.8 refactor
+	void mergeWith(Buddy contact); // TODO: 0.8 refactor
 
-	Contact & operator = (const Contact &copy);
-	bool operator == (const Contact &compare) const;
-	bool operator != (const Contact &compare) const;
-	int operator < (const Contact &compare) const;
+	Buddy & operator = (const Buddy &copy);
+	bool operator == (const Buddy &compare) const;
+	bool operator != (const Buddy &compare) const;
+	int operator < (const Buddy &compare) const;
 
 	void importConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
 	void loadConfiguration();
@@ -89,8 +89,8 @@ public:
 	Account prefferedAccount() const;
 	QList<Account> accounts() const;
 
-	ContactData * data() const { return Data.data(); }
-	void setData(ContactData *data) { Data = data; }  // TODO: 0.8 tricky merge, this should work well ;)
+	BuddyShared * data() const { return Data.data(); }
+	void setData(BuddyShared *data) { Data = data; }  // TODO: 0.8 tricky merge, this should work well ;)
 
 	void addAccountData(ContactAccountData *accountData);
 	void removeAccountData(ContactAccountData *accountData) const;
@@ -120,7 +120,7 @@ template<class T>
 	void removeFromGroup(Group *group);
 
 	QString display() const;
-	void setType(ContactData::ContactType type) { Data->setType(type); }
+	void setType(BuddyShared::BuddyType type) { Data->setType(type); }
 
 	PropertyWrite(QString, display, Display, QString::null)
 	Property(QString, firstName, FirstName, QString::null)
@@ -134,14 +134,14 @@ template<class T>
 	Property(QString, email, Email, QString::null)
 	Property(QString, website, Website, QString::null)
 	Property(unsigned short, birthYear, BirthYear, 0)
-	Property(ContactData::ContactGender, gender, Gender, ContactData::GenderUnknown)
+	Property(BuddyShared::BuddyGender, gender, Gender, BuddyShared::GenderUnknown)
 	Property(QList<Group *>, groups, Groups, QList<Group *>())
 
 };
 
-Q_DECLARE_METATYPE(Contact)
+Q_DECLARE_METATYPE(Buddy)
 
-uint qHash(const Contact &contact);
+uint qHash(const Buddy &contact);
 
 #undef PropertyRead
 #undef PropertyWrite

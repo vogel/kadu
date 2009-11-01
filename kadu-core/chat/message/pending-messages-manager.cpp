@@ -40,14 +40,14 @@ PendingMessagesManager::PendingMessagesManager() : msgs()
 void PendingMessagesManager::deleteMsg(int index)
 {
 	kdebugm(KDEBUG_INFO, "PendingMessagesManager::(pre)deleteMsg(%d), count=%d\n", index, count());
-	Contact e = msgs[index].sender();
+	Buddy e = msgs[index].sender();
 	msgs.removeAt(index);
 	storeConfiguration(xml_config_file);
 	kdebugm(KDEBUG_INFO, "PendingMessagesManager::deleteMsg(%d), count=%d\n", index, count());
 	emit messageFromUserDeleted(e);
 }
 
-bool PendingMessagesManager::pendingMsgs(Contact contact) const
+bool PendingMessagesManager::pendingMsgs(Buddy contact) const
 {
 	foreach (const Message &msg, msgs)
 		if (msg.sender() == contact)
@@ -120,7 +120,7 @@ void PendingMessagesManager::loadConfiguration(XmlConfigFile *configurationStora
 		msg.setContent(codec_latin2->toUnicode(messageNode.text().toLocal8Bit().data()));
 
 		QDomElement senderNode = configurationStorage->getNode(pendingMsgsNodes.item(i).toElement(), "Sender", XmlConfigFile::ModeFind);
-		Contact sender = ContactManager::instance()->byUuid(senderNode.text());
+		Buddy sender = BuddyManager::instance()->byUuid(senderNode.text());
 		msg.setSender(sender);
 
 		msgs.append(msg);
@@ -152,7 +152,7 @@ void PendingMessagesManager::openMessages()
 	ChatWidgetManager::instance()->openPendingMsgs();
 }
 
-bool PendingMessagesManager::removeContactFromStorage(Contact contact)
+bool PendingMessagesManager::removeContactFromStorage(Buddy contact)
 {
 	return !pendingMsgs(contact);
 }

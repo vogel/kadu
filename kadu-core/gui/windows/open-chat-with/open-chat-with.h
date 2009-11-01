@@ -22,7 +22,7 @@ class QPushButton;
 class QVBoxLayout;
 
 /**
-	Klasa reprezentuje okno umozliwiajace rozpoczecie rozmowy z dowolnym uzytkownikiem wybranym z listy kontakt¨®w lub podanym przez jego identyfikator.
+	Klasa reprezentuje okno umozliwiajace rozpoczecie rozmowy z dowolnym uzytkownikiem wybranym z listy kontaktï¿½ï¿½w lub podanym przez jego identyfikator.
 	\class ContactDataWindow
 	\brief Okno dialogowe otwarcia rozmowy z dowolnym kontaktem
 **/
@@ -38,7 +38,7 @@ class KADUAPI OpenChatWith : public QWidget
 private slots:
 	void inputAccepted();
 	void inputChanged(const QString &text);
-	void openChat(Contact contact);
+	void openChat(Buddy contact);
 
 protected:
 	virtual void keyPressEvent(QKeyEvent *e);

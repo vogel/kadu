@@ -16,7 +16,7 @@ GroupContactFilter::GroupContactFilter(QObject *parent) :
 		AbstractContactFilter(parent), CurrentGroup(0), AllGroupShown(true)
 {
 	// TODO: 0.6.6 hack, it should go thought the model itself
-	connect(ContactManager::instance(), SIGNAL(contactUpdated(Contact &)),
+	connect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy &)),
 			this, SIGNAL(filterChanged()));
 }
 
@@ -29,7 +29,7 @@ void GroupContactFilter::setGroup(Group *group)
 	emit filterChanged();
 }
 
-bool GroupContactFilter::acceptContact(Contact contact)
+bool GroupContactFilter::acceptContact(Buddy contact)
 {
 	return (0 == CurrentGroup) // use AllGroup or UngroupedGroup
 		? (AllGroupShown && contact.showInAllGroup() || !AllGroupShown && contact.groups().isEmpty())

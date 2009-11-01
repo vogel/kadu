@@ -130,8 +130,8 @@ SendSplitted::SendSplitted(ChatWidget *chat, QStringList messagesToSend, QObject
 	kdebugf();
 	messages = messagesToSend;
 	chatWindow = chat;
-	connect(chat, SIGNAL( messageSentAndConfirmed(ContactList , const QString &) ),
-		this, SLOT( onMessageSent(ContactList , const QString &) ));
+	connect(chat, SIGNAL( messageSentAndConfirmed(BuddyList , const QString &) ),
+		this, SLOT( onMessageSent(BuddyList , const QString &) ));
 	connect(&destroingTimer, SIGNAL( timeout() ), this, SLOT( onDestroyThis() ));
 	connect(chat, SIGNAL( destroyed() ), this, SLOT( onDestroyThis() ));
 	
@@ -150,7 +150,7 @@ SendSplitted::~SendSplitted()
 	kdebugf2();
 }
 
-void SendSplitted::onMessageSent(ContactList receivers, const QString &message)
+void SendSplitted::onMessageSent(BuddyList receivers, const QString &message)
 {
 	kdebugf();
 	if(messages.count() == 0)

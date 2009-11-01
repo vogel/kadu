@@ -16,16 +16,16 @@
 
 #include "exports.h"
 
-class KADUAPI ContactList : public QList<Contact>
+class KADUAPI BuddyList : public QList<Buddy>
 {
 
 public:
 
-	ContactList();
-	ContactList(QList<Contact> list);
-	ContactList(Contact contact);
+	BuddyList();
+	BuddyList(QList<Buddy> list);
+	BuddyList(Buddy contact);
 
-	bool operator == (const ContactList &compare) const;
+	bool operator == (const BuddyList &compare) const;
 
 };
 

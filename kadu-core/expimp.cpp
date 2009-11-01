@@ -172,8 +172,8 @@ UserlistImportExport::UserlistImportExport(QWidget *parent)
 	Protocol *gadu = AccountManager::instance()->defaultAccount().protocolHandler();
 	ContactListService *manager = gadu->contactListService();
 	connect(manager, SIGNAL(contactListExported(bool)), this, SLOT(contactListExported(bool)));
-	connect(manager, SIGNAL(contactListImported(bool, ContactList)),
-		this, SLOT(contactListImported(bool, ContactList)));
+	connect(manager, SIGNAL(contactListImported(bool, BuddyList)),
+		this, SLOT(contactListImported(bool, BuddyList)));
 	// end connect
 
 	center_layout->addWidget(l_info);
@@ -304,7 +304,7 @@ void UserlistImportExport::updateUserlist()
 	kdebugf2();
 }
 
-void UserlistImportExport::contactListImported(bool ok, ContactList contacts)
+void UserlistImportExport::contactListImported(bool ok, BuddyList contacts)
 {
 	kdebugf();
 
@@ -317,7 +317,7 @@ void UserlistImportExport::contactListImported(bool ok, ContactList contacts)
 		return;
 
 	Account account = AccountManager::instance()->defaultAccount();
-	foreach (Contact contact, contacts)
+	foreach (Buddy contact, contacts)
 	{
 		QString id;
 		if (contact.hasAccountData(account))
@@ -386,7 +386,7 @@ void UserlistImportExport::ExportToFile(void)
 			{
 				QTextStream stream(&file);
 				stream.setCodec(codec_latin2);
-				stream << GaduListHelper::contactListToString(account, ContactManager::instance()->contacts(account));
+				stream << GaduListHelper::contactListToString(account, BuddyManager::instance()->buddies(account));
 				file.close();
 				MessageBox::msg(tr("Your userlist has been successfully exported to file"), false, "Information", this);
 			}
@@ -422,7 +422,7 @@ void UserlistImportExport::clean()
 
 	ContactListService *manager = gadu->contactListService();
 	Clear = true;
-	manager->exportContactList(ContactList());
+	manager->exportContactList(BuddyList());
 
 	kdebugf2();
 }

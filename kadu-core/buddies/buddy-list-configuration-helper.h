@@ -12,11 +12,11 @@
 
 #include "buddies/buddy-list.h"
 
-class ContactListConfigurationHelper
+class BuddyListConfigurationHelper
 {
 public:
-	static ContactList loadFromConfiguration(XmlConfigFile *configurationStorage, QDomElement contactListNode);
-	static void saveToConfiguration(XmlConfigFile *configurationStorage, QDomElement contactListNode, ContactList contactList);
+	static BuddyList loadFromConfiguration(XmlConfigFile *configurationStorage, QDomElement contactListNode);
+	static void saveToConfiguration(XmlConfigFile *configurationStorage, QDomElement contactListNode, BuddyList contactList);
 
 };
 

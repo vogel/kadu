@@ -35,7 +35,7 @@ void GaduContactListService::handleEventUserlistGetReply(struct gg_event *e)
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "error!\n");
 
-		emit contactListImported(false, ContactList());
+		emit contactListImported(false, BuddyList());
 		return;
 	}
 
@@ -78,15 +78,15 @@ void GaduContactListService::importContactList()
 	ImportReply.truncate(0);
 
 	if (-1 == gg_userlist_request(Protocol->gaduSession(), GG_USERLIST_GET, 0))
-		emit contactListImported(false, ContactList());
+		emit contactListImported(false, BuddyList());
 }
 
 void GaduContactListService::exportContactList()
 {
-	exportContactList(ContactManager::instance()->contacts(Protocol->account()));
+	exportContactList(BuddyManager::instance()->buddies(Protocol->account()));
 }
 
-void GaduContactListService::exportContactList(ContactList contacts)
+void GaduContactListService::exportContactList(BuddyList contacts)
 {
 	QString contactsString = GaduListHelper::contactListToString(Protocol->account(), contacts);
 

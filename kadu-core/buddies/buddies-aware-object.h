@@ -14,21 +14,21 @@
 
 #include "aware-object.h"
 
-class Contact;
+class Buddy;
 
-class KADUAPI ContactsAwareObject : public AwareObject<ContactsAwareObject>
+class KADUAPI BuddiesAwareObject : public AwareObject<BuddiesAwareObject>
 {
 
 protected:
-	virtual void contactAdded(Contact contact) = 0;
-	virtual void contactRemoved(Contact contact) = 0;
+	virtual void contactAdded(Buddy contact) = 0;
+	virtual void contactRemoved(Buddy contact) = 0;
 
 public:
-	static void notifyContactAdded(Contact contact);
-	static void notifyContactRemoved(Contact contact);
+	static void notifyBuddyAdded(Buddy contact);
+	static void notifyBuddyRemoved(Buddy contact);
 
-	void triggerAllContactsAdded();
-	void triggerAllContactsRemoved();
+	void triggerAllBuddiesAdded();
+	void triggerAllBuddiesRemoved();
 
 };
 

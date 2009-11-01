@@ -79,7 +79,7 @@ private:
 	void storeConfiguration();
 
 	void updateInformationPanel();
-	void updateInformationPanel(Contact contact);
+	void updateInformationPanel(Buddy contact);
 
 private slots:
 	void openChatWindow(Chat *chat);
@@ -94,7 +94,7 @@ protected:
 
 	virtual bool supportsActionType(ActionDescription::ActionType type);
 	virtual ContactsListView * contactsListView();
-	virtual ContactSet contacts();
+	virtual BuddySet contacts();
 	virtual Chat * chat();
 
 	virtual void configurationUpdated();

@@ -11,28 +11,28 @@
 
 #include "buddies-aware-object.h"
 
-KADU_AWARE_CLASS(ContactsAwareObject)
+KADU_AWARE_CLASS(BuddiesAwareObject)
 
-void ContactsAwareObject::notifyContactAdded(Contact contact)
+void BuddiesAwareObject::notifyBuddyAdded(Buddy contact)
 {
-	foreach (ContactsAwareObject *object, Objects)
+	foreach (BuddiesAwareObject *object, Objects)
 		object->contactAdded(contact);
 }
 
-void ContactsAwareObject::notifyContactRemoved(Contact contact)
+void BuddiesAwareObject::notifyBuddyRemoved(Buddy contact)
 {
-	foreach (ContactsAwareObject *object, Objects)
+	foreach (BuddiesAwareObject *object, Objects)
 		object->contactRemoved(contact);
 }
 
-void ContactsAwareObject::triggerAllContactsAdded()
+void BuddiesAwareObject::triggerAllBuddiesAdded()
 {
-	foreach (Contact contact, ContactManager::instance()->contacts())
+	foreach (Buddy contact, BuddyManager::instance()->buddies())
 		contactAdded(contact);
 }
 
-void ContactsAwareObject::triggerAllContactsRemoved()
+void BuddiesAwareObject::triggerAllBuddiesRemoved()
 {
-	foreach (Contact contact, ContactManager::instance()->contacts())
+	foreach (Buddy contact, BuddyManager::instance()->buddies())
 		contactRemoved(contact);
 }

@@ -91,11 +91,11 @@ void StatusChangedNotification::unregisterEvents()
 	StatusChangedToOfflineNotifyEvent = 0;
 }
 
-StatusChangedNotification::StatusChangedNotification(const QString &toStatus, ContactSet &contacts, Account account) :
+StatusChangedNotification::StatusChangedNotification(const QString &toStatus, BuddySet &contacts, Account account) :
 		ChatNotification(account.protocolHandler()->findChat(contacts), QString("StatusChanged") + toStatus,
 			account.protocolHandler()->statusPixmap(contacts.begin()->accountData(account)->status()))
 {
-	const Contact &contact = *contacts.begin();
+	const Buddy &contact = *contacts.begin();
 	Status status = contact.accountData(account)->status();
 	QString syntax;
 

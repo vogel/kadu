@@ -14,16 +14,16 @@
 
 class QMimeData;
 
-class ContactList;
+class BuddyList;
 
-class ContactListMimeDataHelper
+class BuddyListMimeDataHelper
 {
 	static QLatin1String MimeType;
 
 public:
 	static QStringList mimeTypes();
-	static QMimeData * toMimeData(ContactList contactList);
-	static ContactList fromMimeData(const QMimeData *mimeData);
+	static QMimeData * toMimeData(BuddyList contactList);
+	static BuddyList fromMimeData(const QMimeData *mimeData);
 
 };
 

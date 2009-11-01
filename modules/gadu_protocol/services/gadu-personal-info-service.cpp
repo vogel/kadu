@@ -27,12 +27,12 @@ void GaduPersonalInfoService::handleEventPubdir50Read(struct gg_event *e)
 	if (FetchSeq != res->seq)
 		return;
 
-	Contact result;
+	Buddy result;
 
 	int count = gg_pubdir50_count(res);
 	if (1 != count)
 	{
-		emit personalInfoAvailable(Contact::null);
+		emit personalInfoAvailable(Buddy::null);
 		return;
 	}
 
@@ -47,7 +47,7 @@ void GaduPersonalInfoService::handleEventPubdir50Read(struct gg_event *e)
 	result.setCity(cp2unicode(gg_pubdir50_get(res, 0, GG_PUBDIR50_CITY)));
 	result.setFamilyName(cp2unicode(gg_pubdir50_get(res, 0, GG_PUBDIR50_FAMILYNAME)));
 	result.setFamilyCity(cp2unicode(gg_pubdir50_get(res, 0, GG_PUBDIR50_FAMILYCITY)));
-	result.setGender((ContactData::ContactGender)QString::fromAscii(gg_pubdir50_get(res, 0, GG_PUBDIR50_GENDER)).toUShort());
+	result.setGender((BuddyShared::BuddyGender)QString::fromAscii(gg_pubdir50_get(res, 0, GG_PUBDIR50_GENDER)).toUShort());
 	// TODO: 0.6.6
 	// result.setStatus(gg_pubdir50_get(res, 0, GG_PUBDIR50_STATUS));
 
@@ -71,7 +71,7 @@ void GaduPersonalInfoService::fetchPersonalInfo()
 	gg_pubdir50_free(req);
 }
 
-void GaduPersonalInfoService::updatePersonalInfo(Contact contact)
+void GaduPersonalInfoService::updatePersonalInfo(Buddy contact)
 {
 	gg_pubdir50_t req = gg_pubdir50_new(GG_PUBDIR50_WRITE);
 
@@ -86,7 +86,7 @@ void GaduPersonalInfoService::updatePersonalInfo(Contact contact)
 	if (0 != contact.birthYear())
 		gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, (const char *)(unicode2cp(QString::number(contact.birthYear())).data()));
 	// TODO: 0.6.6
-	if (ContactData::GenderUnknown != contact.gender())
+	if (BuddyShared::GenderUnknown != contact.gender())
 		gg_pubdir50_add(req, GG_PUBDIR50_GENDER, (const char *)(unicode2cp(QString::number(contact.gender())).data()));
 	if (!contact.familyName().isEmpty())
 		gg_pubdir50_add(req, GG_PUBDIR50_FAMILYNAME, (const char *)(unicode2cp(contact.familyName()).data()));

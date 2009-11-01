@@ -29,7 +29,7 @@
 
 #include "contact-general-configuration-widget.h"
 
-ContactGeneralConfigurationWidget::ContactGeneralConfigurationWidget(Contact &contact, QWidget *parent)
+ContactGeneralConfigurationWidget::ContactGeneralConfigurationWidget(Buddy &contact, QWidget *parent)
 	: QWidget(parent), CurrentContact(contact)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
@@ -283,13 +283,13 @@ void ContactGeneralConfigurationWidget::showOrderDialog()
 
 void ContactGeneralConfigurationWidget::updateOrder()
 {
-	ContactManager::instance()->blockUpdatedSignal(CurrentContact);
+	BuddyManager::instance()->blockUpdatedSignal(CurrentContact);
 
 // 	ContactTab->saveConfiguration();
 // 	GroupsTab->saveConfiguration(); 
 // 	OptionsTab->saveConfiguration(); 
 
-	ContactManager::instance()->unblockUpdatedSignal(CurrentContact);
+	BuddyManager::instance()->unblockUpdatedSignal(CurrentContact);
 }
 
 void ContactGeneralConfigurationWidget::updateOrderAndClose()

@@ -41,12 +41,12 @@ class KADUAPI ContactGeneralConfigurationWidget : public QWidget
 	QGridLayout *AccountsLayout;
 	QGridLayout *ContactsLayout;
 
-	Contact CurrentContact;
+	Buddy CurrentContact;
 	void createGui();
 	void updateOrder();
 
 public:
-	ContactGeneralConfigurationWidget(Contact &contact, QWidget *parent = 0);
+	ContactGeneralConfigurationWidget(Buddy &contact, QWidget *parent = 0);
 	~ContactGeneralConfigurationWidget();
 
 	void saveConfiguration();

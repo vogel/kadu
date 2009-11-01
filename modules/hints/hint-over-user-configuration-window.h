@@ -21,7 +21,7 @@ class HintOverUserConfigurationWindow : public ConfigurationWindow
 {
 	Q_OBJECT
 
-	Contact ExampleContact;
+	Buddy ExampleContact;
 
 	QFrame *previewFrame;
 	QLabel *previewIconLabel;
@@ -46,7 +46,7 @@ private slots:
 	void syntaxChanged();
 
 public:
-	HintOverUserConfigurationWindow(Contact exampleContact);
+	HintOverUserConfigurationWindow(Buddy exampleContact);
 };
 
 #endif // HINT_OVER_USER_CONFIGURATION_WINDOW_H

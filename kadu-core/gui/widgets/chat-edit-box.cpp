@@ -125,13 +125,13 @@ ContactsListView * ChatEditBox::contactsListView()
 	return 0;
 }
 
-ContactSet ChatEditBox::contacts()
+BuddySet ChatEditBox::contacts()
 {
 	ChatWidget *cw = chatWidget();
 	if (cw)
 		return cw->chat()->contacts();
 
-	return ContactSet();
+	return BuddySet();
 }
 
 ChatWidget * ChatEditBox::chatWidget()
@@ -230,7 +230,7 @@ void ChatEditBox::openInsertImageDialog()
 
 		int counter = 0;
 
-		foreach (Contact contact, CurrentChat->contacts())
+		foreach (Buddy contact, CurrentChat->contacts())
 		{
 			// TODO: 0.6.6
 			ContactAccountData *contactAccountData = contact.accountData(CurrentChat->account());

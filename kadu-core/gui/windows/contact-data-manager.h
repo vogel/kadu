@@ -17,10 +17,10 @@ class ContactDataManager : public ConfigurationWindowDataManager
 {
 	Q_OBJECT
 
-	Contact CurrentContact;
+	Buddy CurrentContact;
 
 public:
-	ContactDataManager(Contact contact, QObject *parent = 0);
+	ContactDataManager(Buddy contact, QObject *parent = 0);
 
 	virtual void writeEntry(const QString &section, const QString &name, const QVariant &value);
 	virtual QVariant readEntry(const QString &section, const QString &name);

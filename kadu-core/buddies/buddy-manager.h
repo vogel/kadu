@@ -25,23 +25,23 @@ class Account;
 class Group;
 class XmlConfigFile;
 
-class KADUAPI ContactManager : public QObject, public StorableObject
+class KADUAPI BuddyManager : public QObject, public StorableObject
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(ContactManager)
+	Q_DISABLE_COPY(BuddyManager)
 
-	static ContactManager * Instance;
+	static BuddyManager * Instance;
 
-	ContactList Contacts;
+	BuddyList Contacts;
 
-	ContactManager();
-	virtual ~ContactManager();
+	BuddyManager();
+	virtual ~BuddyManager();
 
-	const Contact & byContactData(ContactData *data);
+	const Buddy & byBuddyShared(BuddyShared *data);
 	void importConfiguration(XmlConfigFile *configurationStorage);
 
 private slots:
-	void contactDataUpdated();
+	void buddyDataUpdated();
 	void contactAccountDataAboutToBeAdded(Account account);
 	void contactAccountDataAdded(Account account);
 	void contactAccountDataAboutToBeRemoved(Account account);
@@ -54,41 +54,41 @@ protected:
 	virtual StoragePoint * createStoragePoint();
 
 public:
-	static ContactManager * instance();
+	static BuddyManager * instance();
 
 	virtual void load();
 	virtual void store();
 
-	ContactList contacts();
-	ContactList contacts(Account account, bool includeAnonymous = false);
-	void addContact(Contact contact);
-	void removeContact(Contact contact);
-	void mergeContact(Contact destination, Contact source);
+	BuddyList buddies();
+	BuddyList buddies(Account account, bool includeAnonymous = false);
+	void addBuddy(Buddy contact);
+	void removeBuddy(Buddy contact);
+	void mergeBuddies(Buddy destination, Buddy source);
 
 	unsigned int count() { return Contacts.count(); }
 
-	Contact byIndex(unsigned int index);
-	int contactIndex(Contact contact) { return Contacts.indexOf(contact); }
+	Buddy byIndex(unsigned int index);
+	int contactIndex(Buddy contact) { return Contacts.indexOf(contact); }
 
-	Contact byId(Account account, const QString &id);
-	Contact byUuid(const QString &uuid);
-	Contact byDisplay(const QString &display);
+	Buddy byId(Account account, const QString &id);
+	Buddy byUuid(const QString &uuid);
+	Buddy byDisplay(const QString &display);
 
-	void blockUpdatedSignal(Contact &contact);
-	void unblockUpdatedSignal(Contact &contact);
+	void blockUpdatedSignal(Buddy &contact);
+	void unblockUpdatedSignal(Buddy &contact);
 
 signals:
-	void contactAboutToBeAdded(Contact &contact);
-	void contactAdded(Contact &contact);
-	void contactAboutToBeRemoved(Contact &contact);
-	void contactRemoved(Contact &contact);
+	void buddyAboutToBeAdded(Buddy &contact);
+	void buddyAdded(Buddy &contact);
+	void buddyAboutToBeRemoved(Buddy &contact);
+	void buddyRemoved(Buddy &contact);
 
-	void contactUpdated(Contact &contact);
-	void contactAccountDataAboutToBeAdded(Contact &contact, Account account);
-	void contactAccountDataAdded(Contact &contact, Account account);
-	void contactAccountDataAboutToBeRemoved(Contact &contact, Account account);
-	void contactAccountDataRemoved(Contact &contact, Account account);
-	void contactAccountIdChanged(Contact &contact, Account account, const QString &oldId);
+	void buddyUpdated(Buddy &contact);
+	void contactAccountDataAboutToBeAdded(Buddy &contact, Account account);
+	void contactAccountDataAdded(Buddy &contact, Account account);
+	void contactAccountDataAboutToBeRemoved(Buddy &contact, Account account);
+	void contactAccountDataRemoved(Buddy &contact, Account account);
+	void contactAccountIdChanged(Buddy &contact, Account account, const QString &oldId);
 
 };
 

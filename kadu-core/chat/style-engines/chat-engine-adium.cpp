@@ -337,7 +337,7 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat *chat, QString &styleHref, QS
 		int uinsSize = chat->contacts().count();
 		int i = 0;
 
-		foreach (const Contact &contact, chat->contacts())
+		foreach (const Buddy &contact, chat->contacts())
 		{
 			name.append(contact.display());
 

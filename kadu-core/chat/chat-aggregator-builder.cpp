@@ -21,7 +21,7 @@ ChatAggregatorBuilder::~ChatAggregatorBuilder()
 {
 }
 
-Chat * ChatAggregatorBuilder::buildAggregateChat(ContactSet contacts)
+Chat * ChatAggregatorBuilder::buildAggregateChat(BuddySet contacts)
 {
 	QList<Chat *> chats;
 	foreach (Account account, AccountManager::instance()->accounts())

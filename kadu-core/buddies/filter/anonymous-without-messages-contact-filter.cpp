@@ -26,7 +26,7 @@ void AnonymousWithoutMessagesContactFilter::setEnabled(bool enabled)
 	emit filterChanged();
 }
 
-bool AnonymousWithoutMessagesContactFilter::acceptContact(Contact contact)
+bool AnonymousWithoutMessagesContactFilter::acceptContact(Buddy contact)
 {
 	if (!Enabled)
 		return true;

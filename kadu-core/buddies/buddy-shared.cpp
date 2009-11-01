@@ -21,24 +21,24 @@
 
 #include "buddy-shared.h"
 
-ContactData * ContactData::loadFromStorage(StoragePoint *contactStoragePoint)
+BuddyShared * BuddyShared::loadFromStorage(StoragePoint *contactStoragePoint)
 {
-	ContactData *result = new ContactData(TypeNormal, QUuid());
+	BuddyShared *result = new BuddyShared(TypeNormal, QUuid());
 	result->setStorage(contactStoragePoint);
 	result->load();
 	
 	return result;
 }
 
-ContactData::ContactData(ContactType type, QUuid uuid) :
-		UuidStorableObject("Contact", ContactManager::instance()),
+BuddyShared::BuddyShared(BuddyType type, QUuid uuid) :
+		UuidStorableObject("Contact", BuddyManager::instance()),
 		Uuid(uuid.isNull() ? QUuid::createUuid() : uuid), Type(type),
 		Ignored(false), Blocked(false), OfflineTo(false),
 		BlockUpdatedSignalCount(0), Updated(false)
 {
 }
 
-ContactData::~ContactData()
+BuddyShared::~BuddyShared()
 {
 }
 
@@ -47,7 +47,7 @@ ContactData::~ContactData()
 	set##name(CustomData[#old_name]); \
 	CustomData.remove(#old_name);
 
-void ContactData::importConfiguration(XmlConfigFile *configurationStorage, QDomElement parent)
+void BuddyShared::importConfiguration(XmlConfigFile *configurationStorage, QDomElement parent)
 {
 	QDomNamedNodeMap attributes = parent.attributes();
 	int count = attributes.count();
@@ -78,7 +78,7 @@ void ContactData::importConfiguration(XmlConfigFile *configurationStorage, QDomE
 #define Property(name)\
 	set##name(configurationStorage->getTextNode(parent, #name));
 
-void ContactData::load()
+void BuddyShared::load()
 {
 	StoragePoint *sp = storage();
 	if (!sp)
@@ -91,7 +91,7 @@ void ContactData::load()
 
 	Uuid = QUuid(parent.attribute("uuid"));
 	if (parent.hasAttribute("type"))
-		Type = (ContactType)parent.attribute("type").toInt();
+		Type = (BuddyType)parent.attribute("type").toInt();
 	else
 		Type = TypeNormal;
 
@@ -145,7 +145,7 @@ void ContactData::load()
 #define Property(name) \
 	configurationStorage->createTextNode(parent, #name, name);
 
-void ContactData::store()
+void BuddyShared::store()
 {
 	StoragePoint *sp = storage();
 	if (!sp)
@@ -183,7 +183,7 @@ void ContactData::store()
 	storeModuleData();
 }
 
-void ContactData::addAccountData(ContactAccountData *accountData)
+void BuddyShared::addAccountData(ContactAccountData *accountData)
 {
 	if (!accountData)
 		return;
@@ -194,13 +194,13 @@ void ContactData::addAccountData(ContactAccountData *accountData)
 	emit accountDataAdded(accountData->account());
 }
 
-void ContactData::removeAccountData(ContactAccountData *accountData)
+void BuddyShared::removeAccountData(ContactAccountData *accountData)
 {
 	if (AccountsData[accountData->account()] == accountData)
 		removeAccountData(accountData->account());
 }
 
-void ContactData::removeAccountData(Account account)
+void BuddyShared::removeAccountData(Account account)
 {
 	emit accountDataAboutToBeRemoved(account);
 	ContactAccountDataManager::instance()->removeContactAccountData(AccountsData[account]);
@@ -208,7 +208,7 @@ void ContactData::removeAccountData(Account account)
 	emit accountDataRemoved(account);
 }
 
-ContactAccountData * ContactData::accountData(Account account)
+ContactAccountData * BuddyShared::accountData(Account account)
 {
 	if (!AccountsData.contains(account))
 		return 0;
@@ -216,12 +216,12 @@ ContactAccountData * ContactData::accountData(Account account)
 	return AccountsData[account];
 }
 
-QList<ContactAccountData *> ContactData::accountDatas()
+QList<ContactAccountData *> BuddyShared::accountDatas()
 {
 	return AccountsData.values();
 }
 
-StoragePoint * ContactData::storagePointForAccountData(Account account)
+StoragePoint * BuddyShared::storagePointForAccountData(Account account)
 {
 	StoragePoint *sp = storage();
 	if (!sp || !sp->storage())
@@ -247,7 +247,7 @@ StoragePoint * ContactData::storagePointForAccountData(Account account)
 	return 0;
 }
 
-QString ContactData::id(Account account)
+QString BuddyShared::id(Account account)
 {
 	if (AccountsData.contains(account))
 		return AccountsData[account]->id();
@@ -255,41 +255,41 @@ QString ContactData::id(Account account)
 	return QString::null;
 }
 
-Account ContactData::prefferedAccount()
+Account BuddyShared::prefferedAccount()
 {
 	return AccountsData.count() > 0
 		? AccountsData.keys()[0]
 		: Account::null;
 }
 
-QList<Account> ContactData::accounts()
+QList<Account> BuddyShared::accounts()
 {
 	return AccountsData.count() > 0
 			? AccountsData.keys()
 			: QList<Account>();
 }
 
-void ContactData::blockUpdatedSignal()
+void BuddyShared::blockUpdatedSignal()
 {
 	if (0 == BlockUpdatedSignalCount)
 		Updated = false;
 	BlockUpdatedSignalCount++;
 }
 
-void ContactData::unblockUpdatedSignal()
+void BuddyShared::unblockUpdatedSignal()
 {
 	BlockUpdatedSignalCount--;
 	if (0 == BlockUpdatedSignalCount)
 		emitUpdated();
 }
 
-void ContactData::dataUpdated()
+void BuddyShared::dataUpdated()
 {
 	Updated = true;
 	emitUpdated();
 }
 
-void ContactData::emitUpdated()
+void BuddyShared::emitUpdated()
 {
 	if (0 == BlockUpdatedSignalCount && Updated)
 	{
@@ -300,19 +300,19 @@ void ContactData::emitUpdated()
 
 // properties
 
-bool ContactData::isIgnored()
+bool BuddyShared::isIgnored()
 {
 	return Ignored;
 }
 
-bool ContactData::setIgnored(bool ignored)
+bool BuddyShared::setIgnored(bool ignored)
 {
 	Ignored = ignored;
 	dataUpdated();
 	return Ignored; // XXX: nie wiem co to
 }
 
-bool ContactData::isBlocked(Account account)
+bool BuddyShared::isBlocked(Account account)
 {
 	ContactAccountData *cad = accountData(account);
 	return cad
@@ -320,7 +320,7 @@ bool ContactData::isBlocked(Account account)
 		: Blocked;
 }
 
-bool ContactData::isOfflineTo(Account account)
+bool BuddyShared::isOfflineTo(Account account)
 {
 	ContactAccountData *cad = accountData(account);
 	return cad
@@ -328,7 +328,7 @@ bool ContactData::isOfflineTo(Account account)
 		: OfflineTo;
 }
 
-bool ContactData::setOfflineTo(Account account, bool offlineTo)
+bool BuddyShared::setOfflineTo(Account account, bool offlineTo)
 {
 	ContactAccountData *cad = accountData(account);
 	if (cad)
@@ -341,12 +341,12 @@ bool ContactData::setOfflineTo(Account account, bool offlineTo)
 	return true; // XXX
 }
 
-bool ContactData::isInGroup(Group *group)
+bool BuddyShared::isInGroup(Group *group)
 {
 	return Groups.contains(group);
 }
 
-bool ContactData::showInAllGroup()
+bool BuddyShared::showInAllGroup()
 {
 	foreach (const Group *group, Groups)
 		if (0 != group && !group->showInAllGroup())
@@ -354,19 +354,19 @@ bool ContactData::showInAllGroup()
 	return true;
 }
 
-void ContactData::addToGroup(Group *group)
+void BuddyShared::addToGroup(Group *group)
 {
 	Groups.append(group);
 	dataUpdated();
 }
 
-void ContactData::removeFromGroup(Group *group)
+void BuddyShared::removeFromGroup(Group *group)
 {
 	Groups.removeAll(group);
 	dataUpdated();
 }
 
-void ContactData::accountContactDataIdChanged(const QString &id)
+void BuddyShared::accountContactDataIdChanged(const QString &id)
 {
 	ContactAccountData *cad = dynamic_cast<ContactAccountData *>(sender());
 	if (cad && !cad->account().isNull())

@@ -37,7 +37,7 @@ bool GaduChatService::sendMessage(Chat *chat, FormattedMessage &message)
 	kdebugf();
 
 	QString plain = message.toPlain();
-	ContactSet contacts = chat->contacts();
+	BuddySet contacts = chat->contacts();
 
 	unsigned int uinsCount = 0;
 	unsigned int formatsSize = 0;
@@ -73,7 +73,7 @@ bool GaduChatService::sendMessage(Chat *chat, FormattedMessage &message)
 		return false;
 	}
 
-	foreach (const Contact &contact, contacts)
+	foreach (const Buddy &contact, contacts)
 		if (contact.accountData(Protocol->account()))
 			++uinsCount;
 
@@ -83,7 +83,7 @@ bool GaduChatService::sendMessage(Chat *chat, FormattedMessage &message)
 		UinType* uins = new UinType[uinsCount];
 		unsigned int i = 0;
 
-		foreach (const Contact &contact, contacts)
+		foreach (const Buddy &contact, contacts)
 			if (contact.accountData(Protocol->account()))
 				uins[i++] = Protocol->uin(contact);
 		if (formatsSize)
@@ -96,7 +96,7 @@ bool GaduChatService::sendMessage(Chat *chat, FormattedMessage &message)
 		delete[] uins;
 	}
 	else
-		foreach (const Contact &contact, contacts)
+		foreach (const Buddy &contact, contacts)
 			if (contact.accountData(Protocol->account()))
 			{
 				if (formatsSize)
@@ -139,12 +139,12 @@ bool GaduChatService::isSystemMessage(gg_event *e)
 	return 0 == e->event.msg.sender;
 }
 
-Contact GaduChatService::getSender(gg_event *e)
+Buddy GaduChatService::getSender(gg_event *e)
 {
 	return Protocol->account().getContactById(QString::number(e->event.msg.sender));
 }
 
-bool GaduChatService::ignoreSender(gg_event *e, Contact sender)
+bool GaduChatService::ignoreSender(gg_event *e, Buddy sender)
 {
 	bool ignore =
 			sender.isAnonymous() &&
@@ -160,12 +160,12 @@ bool GaduChatService::ignoreSender(gg_event *e, Contact sender)
 	return ignore;
 }
 
-ContactSet GaduChatService::getRecipients(gg_event *e)
+BuddySet GaduChatService::getRecipients(gg_event *e)
 {
-	ContactSet recipients;
+	BuddySet recipients;
 	for (int i = 0; i < e->event.msg.recipients_count; ++i)
 	{
-		Contact recipient = Protocol->account().getContactById(QString::number(e->event.msg.recipients[i]));
+		Buddy recipient = Protocol->account().getContactById(QString::number(e->event.msg.recipients[i]));
 		recipients.insert(recipient);
 	}
 
@@ -183,7 +183,7 @@ QString GaduChatService::getContent(gg_event *e)
 	return content;
 }
 
-bool GaduChatService::ignoreRichText(gg_event *e, Contact sender)
+bool GaduChatService::ignoreRichText(gg_event *e, Buddy sender)
 {
 	bool ignore = sender.isAnonymous() &&
 		config_file.readBoolEntry("Chat","IgnoreAnonymousRichtext");
@@ -194,7 +194,7 @@ bool GaduChatService::ignoreRichText(gg_event *e, Contact sender)
 	return ignore;
 }
 
-bool GaduChatService::ignoreImages(gg_event *e, Contact sender)
+bool GaduChatService::ignoreImages(gg_event *e, Buddy sender)
 {
 	return sender.isAnonymous() ||
 		(
@@ -206,7 +206,7 @@ bool GaduChatService::ignoreImages(gg_event *e, Contact sender)
 		);
 }
 
-FormattedMessage GaduChatService::createFormattedMessage(gg_event *e, Contact sender)
+FormattedMessage GaduChatService::createFormattedMessage(gg_event *e, Buddy sender)
 {
 	QString content = getContent(e);
 
@@ -229,13 +229,13 @@ void GaduChatService::handleEventMsg(struct gg_event *e)
 	if (isSystemMessage(e))
 		return;
 
-	Contact sender = getSender(e);
+	Buddy sender = getSender(e);
 	if (ignoreSender(e, sender))
 		return;
 
-	ContactSet recipients = getRecipients(e);
+	BuddySet recipients = getRecipients(e);
 
-	ContactSet conference = recipients;
+	BuddySet conference = recipients;
 	conference += sender;
 	if (IgnoredHelper::isIgnored(conference))
 		return;
@@ -252,7 +252,7 @@ void GaduChatService::handleEventMsg(struct gg_event *e)
 	kdebugmf(KDEBUG_INFO, "Got message from %d saying \"%s\"\n",
 			Protocol->uin(sender), qPrintable(message.toPlain()));
 
-	ContactSet chatContacts = conference;
+	BuddySet chatContacts = conference;
 	chatContacts.remove(Core::instance()->myself());
 	Chat *chat = Protocol->findChat(chatContacts);
 

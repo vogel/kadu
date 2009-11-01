@@ -13,16 +13,16 @@
 #include "buddies/account-data/contact-account-data.h"
 #include "buddies/buddy.h"
 
-struct KADUAPI ContactSearchCriteria
+struct KADUAPI BuddySearchCriteria
 {
-	Contact SearchContact;
+	Buddy SearchContact;
 	QString BirthYearFrom;
 	QString BirthYearTo;
 	bool Active;
 	bool IgnoreResults;
 
-	ContactSearchCriteria();
-	virtual ~ContactSearchCriteria();
+	BuddySearchCriteria();
+	virtual ~BuddySearchCriteria();
 
 	void reqUin(Account account, const QString& uin);
 	void reqFirstName(const QString& firstName);
@@ -34,6 +34,7 @@ struct KADUAPI ContactSearchCriteria
 	void reqActive();
 
 	void clearData();
+
 };
 
 #endif

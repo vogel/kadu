@@ -82,7 +82,7 @@ void KaduWindow::createGui()
 	GroupBar = new GroupTabBar(this);
 
 	ContactsWidget = new ContactsListWidget(this);
-	ContactsWidget->view()->setModel(new ContactsModel(ContactManager::instance(), this));
+	ContactsWidget->view()->setModel(new ContactsModel(BuddyManager::instance(), this));
 	ContactsWidget->view()->addFilter(GroupBar->filter());
 	AnonymousWithoutMessagesContactFilter *anonymousFilter = new AnonymousWithoutMessagesContactFilter(this);
 	anonymousFilter->setEnabled(true);
@@ -97,7 +97,7 @@ void KaduWindow::createGui()
 	hboxLayout->setAlignment(GroupBar, Qt::AlignTop);
 
 	InfoPanel = new ContactInfoPanel(split);
-	connect(ContactsWidget, SIGNAL(currentContactChanged(Contact)), InfoPanel, SLOT(displayContact(Contact)));
+	connect(ContactsWidget, SIGNAL(currentContactChanged(Buddy)), InfoPanel, SLOT(displayContact(Buddy)));
 
 	if (!config_file.readBoolEntry("Look", "ShowInfoPanel"))
 		InfoPanel->QWidget::hide();
@@ -224,7 +224,7 @@ void KaduWindow::createRecentChatsMenu()
 		QStringList displays;
 
 		int i = 0;
-		foreach (Contact contact, chat->contacts())
+		foreach (Buddy contact, chat->contacts())
 		{
 			i++;
 			displays.append(contact.display());
@@ -339,7 +339,7 @@ ContactsListView * KaduWindow::contactsListView()
 	return ContactsWidget->view();
 }
 
-ContactSet KaduWindow::contacts()
+BuddySet KaduWindow::contacts()
 {
 	return ContactsWidget->view()->selectedContacts();
 }

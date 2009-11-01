@@ -99,10 +99,10 @@ void HistoryImportThread::importEntry(Chat *chat, const HistoryEntry &entry)
 
 Chat * HistoryImportThread::chatFromUinsList(QStringList uinsList)
 {
-	ContactSet contacts;
+	BuddySet contacts;
 	foreach (const QString &uin, uinsList)
 	{
-		Contact contact = GaduAccount.getContactById(uin);
+		Buddy contact = GaduAccount.getContactById(uin);
 		contacts.insert(contact);
 	}
 

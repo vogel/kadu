@@ -12,13 +12,13 @@
 
 #include "buddies/buddy-set.h"
 
-class ContactSetConfigurationHelper
+class BuddySetConfigurationHelper
 {
 public:
-	static ContactSet loadFromConfiguration(StorableObject *parent, const QString &nodeName);
-	static ContactSet loadFromConfiguration(XmlConfigFile *configurationStorage, QDomElement contactSetNode);
-	static void saveToConfiguration(StorableObject *parent, const QString &nodeName, ContactSet contactSet);
-	static void saveToConfiguration(XmlConfigFile *configurationStorage, QDomElement contactSetNode, ContactSet contactSet);
+	static BuddySet loadFromConfiguration(StorableObject *parent, const QString &nodeName);
+	static BuddySet loadFromConfiguration(XmlConfigFile *configurationStorage, QDomElement contactSetNode);
+	static void saveToConfiguration(StorableObject *parent, const QString &nodeName, BuddySet contactSet);
+	static void saveToConfiguration(XmlConfigFile *configurationStorage, QDomElement contactSetNode, BuddySet contactSet);
 
 };
 

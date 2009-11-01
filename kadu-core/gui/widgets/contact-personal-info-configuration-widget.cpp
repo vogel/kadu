@@ -15,7 +15,7 @@
 
 #include "contact-personal-info-configuration-widget.h"
 
-ContactPersonalInfoConfigurationWidget::ContactPersonalInfoConfigurationWidget(Contact &contact, QWidget *parent)
+ContactPersonalInfoConfigurationWidget::ContactPersonalInfoConfigurationWidget(Buddy &contact, QWidget *parent)
 	: QWidget(parent), CurrentContact(contact)
 {
 	setAttribute(Qt::WA_DeleteOnClose);

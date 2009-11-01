@@ -29,11 +29,11 @@ class KADUAPI ContactOptionsConfigurationWidget : public QWidget
 	QCheckBox *OfflineToCheckBox;
 	QCheckBox *NotifyCheckBox;
 
-	Contact CurrentContact;
+	Buddy CurrentContact;
 	void createGui();
 
 public:
-	ContactOptionsConfigurationWidget(Contact &contact, QWidget *parent = 0);
+	ContactOptionsConfigurationWidget(Buddy &contact, QWidget *parent = 0);
 	~ContactOptionsConfigurationWidget();
 	void saveConfiguration();
 

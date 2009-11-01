@@ -20,7 +20,7 @@
 
 #include "contact-groups-configuration-widget.h"
 
-ContactGroupsConfigurationWidget::ContactGroupsConfigurationWidget(Contact &contact, QWidget *parent)
+ContactGroupsConfigurationWidget::ContactGroupsConfigurationWidget(Buddy &contact, QWidget *parent)
 	: QScrollArea(parent), CurrentContact(contact)
 {
 	setAttribute(Qt::WA_DeleteOnClose);

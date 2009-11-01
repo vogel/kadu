@@ -56,22 +56,22 @@ Action::~Action()
 {
 }
 
-Contact Action::contact()
+Buddy Action::contact()
 {
-	ContactSet contactSet = contacts();
+	BuddySet contactSet = contacts();
 	if (1 != contactSet.count())
-		return Contact::null;
+		return Buddy::null;
 	else
 		return *contactSet.begin();
 }
 
-ContactSet Action::contacts()
+BuddySet Action::contacts()
 {
 	MainWindow *kaduMainWindow = dynamic_cast<MainWindow *>(parent());
 	if (kaduMainWindow)
 		return kaduMainWindow->contacts();
 	else
-		return ContactSet();
+		return BuddySet();
 }
 
 void Action::changedSlot()

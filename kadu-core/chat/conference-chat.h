@@ -22,18 +22,18 @@ class XmlConfigFile;
 
 class ConferenceChat : public Chat
 {
-	ContactSet CurrentContacts;
+	BuddySet CurrentContacts;
 
 public:
 	ConferenceChat(StoragePoint *storage);
-	ConferenceChat(Account parentAccount, ContactSet contacts, QUuid uuid = QUuid());
+	ConferenceChat(Account parentAccount, BuddySet contacts, QUuid uuid = QUuid());
 	virtual ~ConferenceChat();
 
 	virtual void load();
 	virtual void store();
 
 	virtual ChatType type() const;
-	virtual ContactSet contacts() const { return CurrentContacts; }
+	virtual BuddySet contacts() const { return CurrentContacts; }
 	virtual QString name() const;
 
 };

@@ -15,7 +15,7 @@
 
 #include "contact-options-configuration-widget.h"
 
-ContactOptionsConfigurationWidget::ContactOptionsConfigurationWidget(Contact &contact, QWidget *parent)
+ContactOptionsConfigurationWidget::ContactOptionsConfigurationWidget(Buddy &contact, QWidget *parent)
 	: QWidget(parent), CurrentContact(contact)
 {
 	setAttribute(Qt::WA_DeleteOnClose);

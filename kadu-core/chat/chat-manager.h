@@ -24,7 +24,7 @@
 #include "exports.h"
 
 class Account;
-class ContactList;
+class BuddyList;
 class XmlConfigFile;
 
 class KADUAPI ChatManager : public QObject, public StorableObject, public AccountsAwareObject

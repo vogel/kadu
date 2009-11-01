@@ -24,17 +24,17 @@
 
 #include "buddy-manager.h"
 
-ContactManager * ContactManager::Instance = 0;
+BuddyManager * BuddyManager::Instance = 0;
 
-ContactManager * ContactManager::instance()
+BuddyManager * BuddyManager::instance()
 {
 	if (0 == Instance)
-		Instance = new ContactManager();
+		Instance = new BuddyManager();
 
 	return Instance;
 }
 
-ContactManager::ContactManager()
+BuddyManager::BuddyManager()
 {
 	Core::instance()->configuration()->registerStorableObject(this);
 
@@ -42,17 +42,17 @@ ContactManager::ContactManager()
 			this, SLOT(groupRemoved(Group *)));
 }
 
-ContactManager::~ContactManager()
+BuddyManager::~BuddyManager()
 {
 	Core::instance()->configuration()->unregisterStorableObject(this);
 }
 
-StoragePoint * ContactManager::createStoragePoint()
+StoragePoint * BuddyManager::createStoragePoint()
 {
 	return new StoragePoint(xml_config_file, xml_config_file->getNode("ContactsNew"));
 }
 
-void ContactManager::importConfiguration(XmlConfigFile *configurationStorage)
+void BuddyManager::importConfiguration(XmlConfigFile *configurationStorage)
 {
 	QDomElement contactsNode = configurationStorage->getNode("Contacts", XmlConfigFile::ModeFind);
 	if (contactsNode.isNull())
@@ -66,14 +66,14 @@ void ContactManager::importConfiguration(XmlConfigFile *configurationStorage)
 		if (contactElement.isNull())
 			continue;
 
-		Contact contact;
+		Buddy contact;
 		contact.importConfiguration(configurationStorage, contactElement);
 
-		addContact(contact);
+		addBuddy(contact);
 	}
 }
 
-void ContactManager::load()
+void BuddyManager::load()
 {
 	StorableObject::load();
 
@@ -98,22 +98,22 @@ void ContactManager::load()
 			continue;
 
 		StoragePoint *contactStoragePoint = new StoragePoint(storage()->storage(), contactElement);
-		addContact(Contact::loadFromStorage(contactStoragePoint));
+		addBuddy(Buddy::loadFromStorage(contactStoragePoint));
 	}
 }
 
-void ContactManager::store()
+void BuddyManager::store()
 {
 	if (!isValidStorage())
 		return;
 
 	ensureLoaded();
 
-	foreach (Contact contact, Contacts)
+	foreach (Buddy contact, Contacts)
 		contact.store();
 }
 
-void ContactManager::addContact(Contact contact)
+void BuddyManager::addBuddy(Buddy contact)
 {
 	if (contact.isNull())
 		return;
@@ -122,15 +122,15 @@ void ContactManager::addContact(Contact contact)
 
 	if (Contacts.contains(contact))
 	{
-		contact.setType(ContactData::TypeNormal);
+		contact.setType(BuddyShared::TypeNormal);
 		return;
 	}
 
-	emit contactAboutToBeAdded(contact);
+	emit buddyAboutToBeAdded(contact);
 	Contacts.append(contact);
-	emit contactAdded(contact);
+	emit buddyAdded(contact);
 
-	connect(contact.data(), SIGNAL(updated()), this, SLOT(contactDataUpdated()));
+	connect(contact.data(), SIGNAL(updated()), this, SLOT(buddyDataUpdated()));
 	connect(contact.data(), SIGNAL(accountDataAboutToBeAdded(Account)),
 			this, SLOT(contactAccountDataAboutToBeAdded(Account)));
 	connect(contact.data(), SIGNAL(accountDataAdded(Account)),
@@ -143,7 +143,7 @@ void ContactManager::addContact(Contact contact)
 			this, SLOT(contactAccountDataIdChanged(Account, const QString &)));
 }
 
-void ContactManager::removeContact(Contact contact)
+void BuddyManager::removeBuddy(Buddy contact)
 {
 	kdebugf();
 	if (contact.isNull())
@@ -154,7 +154,7 @@ void ContactManager::removeContact(Contact contact)
 	if (!Contacts.contains(contact))
 		return;
 
-	disconnect(contact.data(), SIGNAL(updated()), this, SLOT(contactDataUpdated()));
+	disconnect(contact.data(), SIGNAL(updated()), this, SLOT(buddyDataUpdated()));
 	disconnect(contact.data(), SIGNAL(accountDataAboutToBeAdded(Account)),
 			this, SLOT(contactAccountDataAboutToBeAdded(Account)));
 	disconnect(contact.data(), SIGNAL(accountDataAdded(Account)),
@@ -166,19 +166,19 @@ void ContactManager::removeContact(Contact contact)
 	disconnect(contact.data(), SIGNAL(accountDataIdChanged(Account, const QString &)),
 			this, SLOT(contactAccountDataIdChanged(Account, const QString &)));
 
-	emit contactAboutToBeRemoved(contact);
-	if (ContactRemovePredicateObject::inquireAll(contact))
+	emit buddyAboutToBeRemoved(contact);
+	if (BuddyRemovePredicateObject::inquireAll(contact))
 	{
 		Contacts.removeAll(contact);
 		contact.removeFromStorage();
 	}
-	emit contactRemoved(contact);
-	contact.setType(ContactData::TypeAnonymous);
+	emit buddyRemoved(contact);
+	contact.setType(BuddyShared::TypeAnonymous);
 
 	kdebugf();
 }
 
-void ContactManager::mergeContact(Contact destination, Contact source)
+void BuddyManager::mergeBuddies(Buddy destination, Buddy source)
 {
 	while (source.accounts().size())
 	{
@@ -186,8 +186,8 @@ void ContactManager::mergeContact(Contact destination, Contact source)
 		cad->setContact(destination);
 	}
 
-	source.setType(ContactData::TypeAnonymous);
-	removeContact(source);
+	source.setType(BuddyShared::TypeAnonymous);
+	removeBuddy(source);
 
 	source.data()->setUuid(destination.uuid()); // just for case
 	source.setData(destination.data()); // TODO: 0.8 tricky merge, this should work well ;)
@@ -195,86 +195,86 @@ void ContactManager::mergeContact(Contact destination, Contact source)
 	Core::instance()->configuration()->flush();
 }
 
-Contact ContactManager::byIndex(unsigned int index)
+Buddy BuddyManager::byIndex(unsigned int index)
 {
 	if (index < 0 || index >= count())
-		return Contact::null;
+		return Buddy::null;
 
 	ensureLoaded();
 
 	return Contacts.at(index);
 }
 
-Contact ContactManager::byId(Account account, const QString &id)
+Buddy BuddyManager::byId(Account account, const QString &id)
 {
 	if (id.isEmpty() || account.isNull())
-		return Contact::null;
+		return Buddy::null;
 
 	ensureLoaded();
 
-	foreach (Contact contact, Contacts)
+	foreach (Buddy contact, Contacts)
 	{
 		if (id == contact.id(account))
 			return contact;
 	}
 
-	Contact anonymous = account.createAnonymous(id);
-	addContact(anonymous);
+	Buddy anonymous = account.createAnonymous(id);
+	addBuddy(anonymous);
 
 	return anonymous;
 }
 
-Contact ContactManager::byUuid(const QString &uuid)
+Buddy BuddyManager::byUuid(const QString &uuid)
 {
 	if (uuid.isEmpty())
-		return Contact::null;
+		return Buddy::null;
 
 	ensureLoaded();
 
-	foreach (Contact contact, Contacts)
+	foreach (Buddy contact, Contacts)
 		if (uuid == contact.uuid().toString())
 			return contact;
 
-	return Contact::null;
+	return Buddy::null;
 }
 
-Contact ContactManager::byDisplay(const QString &display)
+Buddy BuddyManager::byDisplay(const QString &display)
 {
 	if (display.isEmpty())
-		return Contact::null;
+		return Buddy::null;
 
 	ensureLoaded();
 
-	foreach (Contact contact, Contacts)
+	foreach (Buddy contact, Contacts)
 	{
 		if (display == contact.display())
 			return contact;
 	}
 
-	return Contact::null;
+	return Buddy::null;
 }
 
-void ContactManager::blockUpdatedSignal(Contact &contact)
+void BuddyManager::blockUpdatedSignal(Buddy &contact)
 {
 	contact.data()->blockUpdatedSignal();
 }
 
-void ContactManager::unblockUpdatedSignal(Contact &contact)
+void BuddyManager::unblockUpdatedSignal(Buddy &contact)
 {
 	contact.data()->unblockUpdatedSignal();
 }
 
-ContactList ContactManager::contacts()
+BuddyList BuddyManager::buddies()
 {
 	ensureLoaded();
 	return Contacts;
 }
 
-ContactList ContactManager::contacts(Account account, bool includeAnonymous)
+BuddyList BuddyManager::buddies(Account account, bool includeAnonymous)
 {
-	ContactList result;
+	BuddyList result;
 
-	foreach (Contact contact, Contacts)
+	foreach (Buddy contact, Contacts)
 		if (contact.accountData(account) && (includeAnonymous || !contact.isAnonymous()))
 			result << contact;
 
@@ -283,83 +283,83 @@ ContactList ContactManager::contacts(Account account, bool includeAnonymous)
 	return result;
 }
 
-const Contact & ContactManager::byContactData(ContactData *data)
+const Buddy & BuddyManager::byBuddyShared(BuddyShared *data)
 {
-	foreach (const Contact &contact, Contacts)
+	foreach (const Buddy &contact, Contacts)
 		if (data == contact.data())
 			return contact;
 
-	return Contact::null;
+	return Buddy::null;
 }
 
-void ContactManager::contactDataUpdated()
+void BuddyManager::buddyDataUpdated()
 {
-	ContactData *cd = dynamic_cast<ContactData *>(sender());
+	BuddyShared *cd = dynamic_cast<BuddyShared *>(sender());
 	if (!cd)
 		return;
 
-	Contact contact = byContactData(cd);
+	Buddy contact = byBuddyShared(cd);
 	if (!contact.isNull())
-		emit contactUpdated(contact);
+		emit buddyUpdated(contact);
 }
 
-void ContactManager::contactAccountDataAboutToBeAdded(Account account)
+void BuddyManager::contactAccountDataAboutToBeAdded(Account account)
 {
-	ContactData *cd = dynamic_cast<ContactData *>(sender());
+	BuddyShared *cd = dynamic_cast<BuddyShared *>(sender());
 	if (!cd)
 		return;
 
-	Contact contact = byContactData(cd);
+	Buddy contact = byBuddyShared(cd);
 	if (!contact.isNull())
 		emit contactAccountDataAboutToBeAdded(contact, account);
 }
 
-void ContactManager::contactAccountDataAdded(Account account)
+void BuddyManager::contactAccountDataAdded(Account account)
 {
-	ContactData *cd = dynamic_cast<ContactData *>(sender());
+	BuddyShared *cd = dynamic_cast<BuddyShared *>(sender());
 	if (!cd)
 		return;
 
-	Contact contact = byContactData(cd);
+	Buddy contact = byBuddyShared(cd);
 	if (!contact.isNull())
 		emit contactAccountDataAdded(contact, account);
 }
 
-void ContactManager::contactAccountDataAboutToBeRemoved(Account account)
+void BuddyManager::contactAccountDataAboutToBeRemoved(Account account)
 {
-	ContactData *cd = dynamic_cast<ContactData *>(sender());
+	BuddyShared *cd = dynamic_cast<BuddyShared *>(sender());
 	if (!cd)
 		return;
 
-	Contact contact = byContactData(cd);
+	Buddy contact = byBuddyShared(cd);
 	if (!contact.isNull())
 		emit contactAccountDataAboutToBeRemoved(contact, account);
 }
 
-void ContactManager::contactAccountDataRemoved(Account account)
+void BuddyManager::contactAccountDataRemoved(Account account)
 {
-	ContactData *cd = dynamic_cast<ContactData *>(sender());
+	BuddyShared *cd = dynamic_cast<BuddyShared *>(sender());
 	if (!cd)
 		return;
 
-	Contact contact = byContactData(cd);
+	Buddy contact = byBuddyShared(cd);
 	if (!contact.isNull())
 		emit contactAccountDataRemoved(contact, account);
 }
 
-void ContactManager::contactAccountDataIdChanged(Account account, const QString &oldId)
+void BuddyManager::contactAccountDataIdChanged(Account account, const QString &oldId)
 {
-	ContactData *cd = dynamic_cast<ContactData *>(sender());
+	BuddyShared *cd = dynamic_cast<BuddyShared *>(sender());
 	if (!cd)
 		return;
 
-	Contact contact = byContactData(cd);
+	Buddy contact = byBuddyShared(cd);
 	if (!contact.isNull())
 		emit contactAccountIdChanged(contact, account, oldId);
 }
 
-void ContactManager::groupRemoved(Group *group)
+void BuddyManager::groupRemoved(Group *group)
 {
-	foreach (Contact contact, Contacts)
+	foreach (Buddy contact, Contacts)
 		contact.removeFromGroup(group);
 }

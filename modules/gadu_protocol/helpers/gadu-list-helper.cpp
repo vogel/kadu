@@ -25,13 +25,13 @@
 
 #include "gadu-list-helper.h"
 
-QString GaduListHelper::contactListToString(Account account, ContactList contacts)
+QString GaduListHelper::contactListToString(Account account, BuddyList contacts)
 {
 	kdebugf();
 
 	QStringList contactsStringList;
 
-	foreach (Contact contact, contacts)
+	foreach (Buddy contact, contacts)
 	{
 		QStringList contactGroups;
 		foreach (Group *group, contact.groups())
@@ -71,14 +71,14 @@ QString GaduListHelper::contactListToString(Account account, ContactList contact
 	return contactsString;
 }
 
-ContactList GaduListHelper::stringToContactList(Account account, QString &content) {
+BuddyList GaduListHelper::stringToContactList(Account account, QString &content) {
 	QTextStream stream(&content, QIODevice::ReadOnly);
 	return streamToContactList(account, stream);
 }
 
-ContactList GaduListHelper::streamToContactList(Account account, QTextStream &content)
+BuddyList GaduListHelper::streamToContactList(Account account, QTextStream &content)
 {
-	ContactList result;
+	BuddyList result;
 
 	QStringList sections;
 	QList<Group *> groups;
@@ -90,7 +90,7 @@ ContactList GaduListHelper::streamToContactList(Account account, QTextStream &co
 
 	while (!content.atEnd())
 	{
-		Contact contact;
+		Buddy contact;
 		line = content.readLine();
 //		kdebugm(KDEBUG_DUMP, ">>%s\n", qPrintable(line));
 		sections = line.split(";", QString::KeepEmptyParts);

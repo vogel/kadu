@@ -43,7 +43,7 @@
 
 #include "contact-data-window.h"
 
-ContactDataWindow::ContactDataWindow(Contact contact, QWidget *parent) :
+ContactDataWindow::ContactDataWindow(Buddy contact, QWidget *parent) :
 		QWidget(parent, Qt::Dialog), CurrentContact(contact)
 {
 	kdebugf();
@@ -131,13 +131,13 @@ void ContactDataWindow::createButtons(QLayout *layout)
 
 void ContactDataWindow::updateContact()
 {
-	ContactManager::instance()->blockUpdatedSignal(CurrentContact);
+	BuddyManager::instance()->blockUpdatedSignal(CurrentContact);
 
 	ContactTab->saveConfiguration();
 	GroupsTab->saveConfiguration(); 
 	OptionsTab->saveConfiguration(); 
 
-	ContactManager::instance()->unblockUpdatedSignal(CurrentContact);
+	BuddyManager::instance()->unblockUpdatedSignal(CurrentContact);
 }
 
 void ContactDataWindow::updateContactAndClose()

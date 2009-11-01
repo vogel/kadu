@@ -26,16 +26,16 @@ class ContactListModel : public ContactsModelBase
 {
 	Q_OBJECT
 
-	ContactList List;
+	BuddyList List;
 
 public:
-	explicit ContactListModel(ContactList list, QObject *parent = 0);
+	explicit ContactListModel(BuddyList list, QObject *parent = 0);
 
 	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
 
 	// AbstractContactsModel implementation
-	virtual Contact contact(const QModelIndex& index) const;
-	virtual const QModelIndex contactIndex(Contact contact) const;
+	virtual Buddy contact(const QModelIndex& index) const;
+	virtual const QModelIndex contactIndex(Buddy contact) const;
 
 };
 

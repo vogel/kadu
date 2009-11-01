@@ -20,29 +20,29 @@
 
 #include "contacts-model-base.h"
 
-class ContactManager;
+class BuddyManager;
 
 class ContactsModel : public ContactsModelBase
 {
 	Q_OBJECT
 
-	ContactManager *Manager;
+	BuddyManager *Manager;
 
 private slots:
-	void contactAboutToBeAdded(Contact &contact);
-	void contactAdded(Contact &contact);
-	void contactAboutToBeRemoved(Contact &contact);
-	void contactRemoved(Contact &contact);
+	void contactAboutToBeAdded(Buddy &contact);
+	void contactAdded(Buddy &contact);
+	void contactAboutToBeRemoved(Buddy &contact);
+	void contactRemoved(Buddy &contact);
 
 public:
-	explicit ContactsModel(ContactManager *manager, QObject *parent = 0);
+	explicit ContactsModel(BuddyManager *manager, QObject *parent = 0);
 	~ContactsModel();
 
 	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
 	
 	// AbstractContactsModel implementation
-	virtual Contact contact(const QModelIndex &index) const;
-	virtual const QModelIndex contactIndex(Contact contact) const;
+	virtual Buddy contact(const QModelIndex &index) const;
+	virtual const QModelIndex contactIndex(Buddy contact) const;
 
 };
 

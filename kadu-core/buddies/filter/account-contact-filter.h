@@ -27,7 +27,7 @@ public:
 	AccountContactFilter(Account account, QObject *parent = 0);
 
 	void setEnabled(bool enabled);
-	virtual bool acceptContact(Contact contact);
+	virtual bool acceptContact(Buddy contact);
 
 };
 

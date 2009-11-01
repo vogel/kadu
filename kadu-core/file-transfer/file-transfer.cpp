@@ -22,13 +22,13 @@
 #include <buddies/buddy-manager.h>
 
 FileTransfer::FileTransfer(Account account) :
-		Uuid(QUuid::createUuid()), CurrentAccount(account), Peer(Contact::null),
+		Uuid(QUuid::createUuid()), CurrentAccount(account), Peer(Buddy::null),
 		FileSize(0), TransferredSize(0),
 		TransferType(TypeReceive), TransferStatus(StatusNotConnected), TransferError(ErrorOk)
 {
 }
 
-FileTransfer::FileTransfer(Account account, Contact peer, FileTransferType transferType) :
+FileTransfer::FileTransfer(Account account, Buddy peer, FileTransferType transferType) :
 		Uuid(QUuid::createUuid()), CurrentAccount(account), Peer(peer),
 		FileSize(0), TransferredSize(0),
 		TransferType(transferType), TransferStatus(StatusNotConnected), TransferError(ErrorOk)
@@ -80,7 +80,7 @@ void FileTransfer::load()
 		return;
 
 	CurrentAccount = AccountManager::instance()->byUuid(loadValue<QString>("Account"));
-	Peer = ContactManager::instance()->byUuid(loadValue<QString>("Peer"));
+	Peer = BuddyManager::instance()->byUuid(loadValue<QString>("Peer"));
 	LocalFileName = loadValue<QString>("LocalFileName");
 	RemoteFileName = loadValue<QString>("RemoteFileName");
 	TransferType = ("Send" == loadValue<QString>("TransferType")) ? TypeSend : TypeReceive;

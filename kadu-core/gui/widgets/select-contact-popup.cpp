@@ -19,7 +19,7 @@ SelectContactPopup::SelectContactPopup(QWidget *parent) :
 {
 	setWindowFlags(Qt::Popup);
 
-	ContactsModel *model = new ContactsModel(ContactManager::instance(), this);
+	ContactsModel *model = new ContactsModel(BuddyManager::instance(), this);
 
 	view()->setItemsExpandable(false);
 	view()->setModel(model);

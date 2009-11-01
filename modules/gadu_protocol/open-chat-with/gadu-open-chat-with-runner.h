@@ -22,7 +22,7 @@ class GaduOpenChatWithRunner : public OpenChatWithRunner
 
 public:
 	GaduOpenChatWithRunner(Account account);
-	virtual ContactList matchingContacts(const QString &query);
+	virtual BuddyList matchingContacts(const QString &query);
 	void setAccount(Account account) { ParentAccount = account; }
 
 };

@@ -46,7 +46,7 @@ void Protocol::setAllOffline()
 	Status oldStatus;
 	ContactAccountData *data;
 
-	foreach (Contact contact, ContactManager::instance()->contacts(CurrentAccount, true))
+	foreach (Buddy contact, BuddyManager::instance()->buddies(CurrentAccount, true))
 	{
 		data = contact.accountData(CurrentAccount);
 		oldStatus = data->status();
@@ -104,7 +104,7 @@ void Protocol::networkStateChanged(NetworkState state)
 }
 
 
-Chat * Protocol::findChat(ContactSet contacts, bool create)
+Chat * Protocol::findChat(BuddySet contacts, bool create)
 {
 	QList<Chat *> chats = ChatManager::instance()->chatsForAccount(account());
 	foreach (Chat *c, chats)
@@ -116,7 +116,7 @@ Chat * Protocol::findChat(ContactSet contacts, bool create)
 
 	if (contacts.count() == 1)
 	{
-		Contact contact = *contacts.begin();
+		Buddy contact = *contacts.begin();
 		ContactAccountData *cad = contact.accountData(account());
 		if (!cad)
 			return 0;

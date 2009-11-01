@@ -19,7 +19,7 @@ class ContactInfoPanel : public KaduTextBrowser, private ConfigurationAwareObjec
 {
 	Q_OBJECT
 
-	Contact CurrentContact;
+	Buddy CurrentContact;
 	QString Template;
 	QString Syntax;
 
@@ -31,7 +31,7 @@ public:
 	virtual ~ContactInfoPanel();
 
 public slots:
-	void displayContact(Contact contact);
+	void displayContact(Buddy contact);
 	void styleFixup(QString &syntax);
 };
 

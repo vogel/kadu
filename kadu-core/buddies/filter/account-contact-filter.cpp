@@ -25,7 +25,7 @@ void AccountContactFilter::setEnabled(bool enabled)
 	emit filterChanged();
 }
 
-bool AccountContactFilter::acceptContact(Contact contact)
+bool AccountContactFilter::acceptContact(Buddy contact)
 {
 	if (!Enabled)
 		return true;

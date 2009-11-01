@@ -36,7 +36,7 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 
 	ConfigurationManager *Configuration;
 
-	Contact Myself;
+	Buddy Myself;
 	KaduWindow *Window;
 	bool ShowMainWindowOnStart; // TODO: 0.7.1, it is a hack
 
@@ -71,7 +71,7 @@ public:
 
 	virtual QString readToken(const QPixmap &tokenPixmap);
 
-	Contact myself() { return Myself; }
+	Buddy myself() { return Myself; }
 	Status status();
 
 	void createGui();

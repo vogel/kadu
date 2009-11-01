@@ -21,9 +21,9 @@ class JabberContactAccountData : public ContactAccountData
 	unsigned long MaxImageSize;
 
 public:
-	JabberContactAccountData(Account account, Contact contact, const QString &id, bool loaded = false) :
+	JabberContactAccountData(Account account, Buddy contact, const QString &id, bool loaded = false) :
 			ContactAccountData(account, contact, id, loaded) {}
-	JabberContactAccountData(Account account, Contact contact, const QString &id, StoragePoint *storage) :
+	JabberContactAccountData(Account account, Buddy contact, const QString &id, StoragePoint *storage) :
 			ContactAccountData(account, contact, id, storage) {}
 	JabberContactAccountData(StoragePoint *storage) :
 			ContactAccountData(storage) {}

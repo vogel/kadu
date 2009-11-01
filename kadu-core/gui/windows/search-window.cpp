@@ -47,11 +47,11 @@ ActionDescription *SearchWindow::clearResultsAction;
 ActionDescription *SearchWindow::addFoundAction;
 ActionDescription *SearchWindow::chatFoundAction;
 
-SearchWindow::SearchWindow(QWidget *parent, Contact contact)
+SearchWindow::SearchWindow(QWidget *parent, Buddy contact)
 	: MainWindow(parent),
 	only_active(0), e_uin(0), e_name(0), e_nick(0), e_byrFrom(0), e_byrTo(0), e_surname(0),
-	c_gender(0), e_city(0), results(0), progress(0), r_uin(0), r_pers(0), CurrentSearchCriteria(ContactSearchCriteria()),
-	seq(0), selectedUsers(ContactSet()), searchhidden(false), searching(false), workaround(false)
+	c_gender(0), e_city(0), results(0), progress(0), r_uin(0), r_pers(0), CurrentSearchCriteria(BuddySearchCriteria()),
+	seq(0), selectedUsers(BuddySet()), searchhidden(false), searching(false), workaround(false)
 {
 	kdebugf();
 
@@ -201,7 +201,7 @@ SearchWindow::SearchWindow(QWidget *parent, Contact contact)
 
 	loadWindowGeometry(this, "General", "SearchWindowGeometry", 0, 50, 800, 350);
 
-	if (Contact::null != contact)
+	if (Buddy::null != contact)
 	{
 		CurrentAccount = contact.prefferedAccount();
 	}
@@ -221,7 +221,7 @@ SearchWindow::SearchWindow(QWidget *parent, Contact contact)
 
 	CurrentSearchService = CurrentAccount.protocolHandler()->searchService();
 	if (CurrentSearchService)
-		connect(CurrentSearchService, SIGNAL(newResults(ContactList)), this, SLOT(newSearchResults(ContactList)));
+		connect(CurrentSearchService, SIGNAL(newResults(BuddyList)), this, SLOT(newSearchResults(BuddyList)));
 
 	if (!contact.isNull())
 	{
@@ -309,9 +309,9 @@ QTreeWidgetItem * SearchWindow::selectedItem()
 
 void SearchWindow::addFound()
 {
-	ContactList found = selected().toContactList();
+	BuddyList found = selected().toBuddyList();
 
-	foreach (Contact contact, found)
+	foreach (Buddy contact, found)
 	{
 		AddBuddyWindow *a = new AddBuddyWindow(this);
 		a->setContact(CurrentSearchCriteria.SearchContact);
@@ -321,7 +321,7 @@ void SearchWindow::addFound()
 
 void SearchWindow::chatFound()
 {
-	ContactSet contacts = selected();
+	BuddySet contacts = selected();
 	if (contacts.count() > 0)
 	{
 		Chat *chat = (*contacts.begin()).prefferedAccount().protocolHandler()->findChat(contacts);
@@ -332,9 +332,9 @@ void SearchWindow::chatFound()
 }
 
 // TODO: return real list
-ContactSet SearchWindow::selected()
+BuddySet SearchWindow::selected()
 {
-	ContactSet result;
+	BuddySet result;
 
 	QTreeWidgetItem *selected = selectedItem();
 
@@ -353,7 +353,7 @@ ContactSet SearchWindow::selected()
 	else
 		altnick = uin; // If above are empty, use uin.
 
-	Contact e = ContactManager::instance()->byId(CurrentAccount, uin);
+	Buddy e = BuddyManager::instance()->byId(CurrentAccount, uin);
 
 	if (e.isAnonymous())
 	{
@@ -492,7 +492,7 @@ void SearchWindow::nextSearch()
 	kdebugf2();
 }
 
-void SearchWindow::newSearchResults(ContactList contacts)
+void SearchWindow::newSearchResults(BuddyList contacts)
 {
 	kdebugf();
 
@@ -501,7 +501,7 @@ void SearchWindow::newSearchResults(ContactList contacts)
 
 	int items = results->topLevelItemCount(); // number of items already in results
 
-	foreach(Contact contact, contacts)
+	foreach(Buddy contact, contacts)
 	{
 		ContactAccountData *cad = contact.accountData(CurrentAccount);
 		QList <QTreeWidgetItem *> items = results->findItems(cad->id(), Qt::MatchExactly, 1);

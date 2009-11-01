@@ -47,7 +47,7 @@ class AddBuddyWindow : public QDialog
 	QCheckBox *AllowToSeeMeCheck;
 	QPushButton *AddContactButton;
 
-	Contact MyContact;
+	Buddy MyContact;
 
 	void createGui();
 
@@ -70,7 +70,7 @@ public:
 	AddBuddyWindow(QWidget *parent = 0);
 	virtual ~AddBuddyWindow();
 
-	void setContact(Contact contact);
+	void setContact(Buddy contact);
 
 };
 

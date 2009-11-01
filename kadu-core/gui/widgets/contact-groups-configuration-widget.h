@@ -21,12 +21,12 @@ class KADUAPI ContactGroupsConfigurationWidget : public QScrollArea
 {
 	Q_OBJECT
   
-	Contact CurrentContact;
+	Buddy CurrentContact;
 	QList<QCheckBox *> GroupCheckBoxList;
 	void createGui();
 
 public:
-	ContactGroupsConfigurationWidget(Contact &contact, QWidget *parent = 0);
+	ContactGroupsConfigurationWidget(Buddy &contact, QWidget *parent = 0);
 	~ContactGroupsConfigurationWidget();
 	void saveConfiguration();
 

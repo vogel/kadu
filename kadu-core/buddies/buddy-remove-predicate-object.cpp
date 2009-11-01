@@ -11,11 +11,11 @@
 
 #include "buddy-remove-predicate-object.h"
 
-KADU_PREDICATE_CLASS(ContactRemovePredicateObject)
+KADU_PREDICATE_CLASS(BuddyRemovePredicateObject)
 
-bool ContactRemovePredicateObject::inquireAll(Contact contact)
+bool BuddyRemovePredicateObject::inquireAll(Buddy contact)
 {
-	foreach (ContactRemovePredicateObject *object, Objects)
+	foreach (BuddyRemovePredicateObject *object, Objects)
 		if (!object->removeContactFromStorage(contact))
 			return false;
 

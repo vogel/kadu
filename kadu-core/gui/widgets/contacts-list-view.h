@@ -23,8 +23,8 @@ class QTemporaryFile;
 
 class AbstractContactFilter;
 class AbstractContactsModel;
-class Contact;
-class ContactSet;
+class Buddy;
+class BuddySet;
 class ContactsListViewDelegate;
 class ContactsModelProxy;
 class MainWindow;
@@ -37,11 +37,11 @@ class ContactsListView : public QTreeView
 	ContactsListViewDelegate *Delegate;
 	ContactsModelProxy *ProxyModel;
 
-	Contact contact(const QModelIndex &index) const;
+	Buddy contact(const QModelIndex &index) const;
 	void triggerActivate(const QModelIndex &index);
 
 	// Tool tips
-	Contact ToolTipContact;
+	Buddy ToolTipContact;
 	QTimer ToolTipTimeoutTimer;
 
 public:
@@ -93,8 +93,8 @@ public:
 	void addFilter(AbstractContactFilter *filter);
 	void removeFilter(AbstractContactFilter *filter);
 
-	Contact currentContact() const;
-	ContactSet selectedContacts() const;
+	Buddy currentContact() const;
+	BuddySet selectedContacts() const;
 
 	void setBackground(const QString &backgroundColor, const QString &file = QString::null, BackgroundMode mode = BackgroundNone);
 	void updateBackground();
@@ -103,7 +103,7 @@ signals:
 	void chatActivated(Chat *chat);
 	void contactsSelectionChanged();
 
-	void currentContactChanged(Contact contact);
+	void currentContactChanged(Buddy contact);
 
 };
 

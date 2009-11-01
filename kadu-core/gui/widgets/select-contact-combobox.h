@@ -22,7 +22,7 @@ class SelectContactCombobox : public QComboBox
 {
 	Q_OBJECT
 
-	Contact CurrentContact;
+	Buddy CurrentContact;
 	ContactsModelProxy *ProxyModel;
 	SelectContactPopup *Popup;
 
@@ -40,10 +40,10 @@ public:
 	void addFilter(AbstractContactFilter *filter);
 	void removeFilter(AbstractContactFilter *filter);
 
-	Contact contact() { return CurrentContact; }
+	Buddy contact() { return CurrentContact; }
 
 signals:
-	void contactChanged(Contact contact);
+	void contactChanged(Buddy contact);
 
 };
 

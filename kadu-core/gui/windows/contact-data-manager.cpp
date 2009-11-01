@@ -9,7 +9,7 @@
 
 #include "contact-data-manager.h"
 
-ContactDataManager::ContactDataManager(Contact contact, QObject *parent) :
+ContactDataManager::ContactDataManager(Buddy contact, QObject *parent) :
 		ConfigurationWindowDataManager(parent), CurrentContact(contact)
 {
 
@@ -42,7 +42,7 @@ void ContactDataManager::writeEntry(const QString &section, const QString &name,
 	else if (name == "birthYear")
 		CurrentContact.setBirthYear(value.toInt());
 	else if (name == "gender")
-		CurrentContact.setGender((ContactData::ContactGender)value.toInt());
+		CurrentContact.setGender((BuddyShared::BuddyGender)value.toInt());
 }
 
 QVariant ContactDataManager::readEntry(const QString &section, const QString &name) {

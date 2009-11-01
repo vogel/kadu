@@ -12,16 +12,16 @@
 
 #include "predicate-object.h"
 
-class Contact;
+class Buddy;
 
-class KADUAPI ContactRemovePredicateObject : public PredicateObject<ContactRemovePredicateObject>
+class KADUAPI BuddyRemovePredicateObject : public PredicateObject<BuddyRemovePredicateObject>
 {
 
 protected:
-    	virtual bool removeContactFromStorage(Contact contact) = 0;
+	virtual bool removeContactFromStorage(Buddy contact) = 0;
 
 public:
-	static bool inquireAll(Contact contact);
+	static bool inquireAll(Buddy contact);
 
 };
 

@@ -146,7 +146,7 @@ void NotifyConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurat
 
 	statusGroupBox->addWidgets(0, notifyUsers);
 
-	foreach(Contact contact, ContactManager::instance()->contacts())
+	foreach(Buddy contact, BuddyManager::instance()->buddies())
 		if (!contact.isAnonymous())
 		{
 			ContactNotifyData *cnd = contact.moduleData<ContactNotifyData>();
@@ -240,7 +240,7 @@ void NotifyConfigurationUiHandler::configurationWindowApplied()
 	int count = notifiedUsers->count();
 	for (int i = 0; i < count; i++)
 	{
-		Contact contact = ContactManager::instance()->byDisplay(notifiedUsers->item(i)->text());
+		Buddy contact = BuddyManager::instance()->byDisplay(notifiedUsers->item(i)->text());
 		if (contact.isNull() || contact.isAnonymous())
 			continue;
 
@@ -256,7 +256,7 @@ void NotifyConfigurationUiHandler::configurationWindowApplied()
 	count = allUsers->count();
 	for (int i = 0; i < count; i++)
 	{
-		Contact contact = ContactManager::instance()->byDisplay(allUsers->item(i)->text());
+		Buddy contact = BuddyManager::instance()->byDisplay(allUsers->item(i)->text());
 		if (contact.isNull() || contact.isAnonymous())
 			continue;
 

@@ -18,7 +18,7 @@ class NonInContactFilter : public AbstractAccountFilter
 {
 	Q_OBJECT
 
-	Contact MyContact;
+	Buddy MyContact;
 
 protected:
 	virtual bool acceptAccount(Account account);
@@ -27,7 +27,7 @@ public:
 	explicit NonInContactFilter(QObject *parent = 0);
 	virtual ~NonInContactFilter();
 
-	void setContact(Contact contact);
+	void setContact(Buddy contact);
 
 };
 

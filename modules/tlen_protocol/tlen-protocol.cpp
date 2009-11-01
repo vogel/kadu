@@ -92,11 +92,11 @@ void TlenProtocol::fetchAvatars(QString jid, QString type, QString md5)
 {
 	kdebugf();
 
-	Contact contact = account()->getContactById(jid);
+	Buddy contact = account()->getContactById(jid);
 
  	if (contact.isAnonymous())
 	{
-		ContactManager::instance()->addContact(contact);
+		BuddyManager::instance()->addBuddy(contact);
 	}
 
 	CurrentAvatarService->fetchAvatar(contact.accountData(account()));
@@ -218,9 +218,9 @@ bool TlenProtocol::sendMessage(Chat *chat, FormattedMessage &formattedMessage)
 {
 	kdebugf();
 
-	ContactSet users = chat->contacts();
+	BuddySet users = chat->contacts();
 	// TODO send to more users
-	Contact contact = (*users.begin());
+	Buddy contact = (*users.begin());
 	QString plain = formattedMessage.toPlain();
 	QString tlenid = contact.id(account());
 
@@ -281,8 +281,8 @@ void TlenProtocol::chatMsgReceived(QDomNode n)
 	//		w->displayMsg(Tlen->decode(body.toUtf8()),timeStamp);
 
 	// TODO - zaimplementowac to samo w ContactList
-	Contact contact = account()->getContactById(from);
-	ContactSet contacts = ContactSet(contact);
+	Buddy contact = account()->getContactById(from);
+	BuddySet contacts = BuddySet(contact);
 	// FIXME: dunno why, but commenting it fixed for now (08.04.2009) problem with finding chat for contact (conference window was always being opened for 1 contact)
 	//contacts << contact;
 
@@ -325,14 +325,14 @@ void TlenProtocol::itemReceived(QString jid, QString name, QString subscription,
 	kdebugf();
 	kdebugm(KDEBUG_WARNING, "Tlen contact rcv %s\n", qPrintable(jid));
 
-	Contact contact = account()->getContactById(jid);
+	Buddy contact = account()->getContactById(jid);
 
 	if(!name.isNull())
 		contact.setDisplay(name);
 
  	if (contact.isAnonymous())
 	{
-		ContactManager::instance()->addContact(contact);
+		BuddyManager::instance()->addBuddy(contact);
 	}
 
 	// remember to set every contact offline after add to cntact list
@@ -366,7 +366,7 @@ void TlenProtocol::presenceChanged(QString from, QString newstatus, QString desc
 	if (!description.isEmpty())
 		status.setDescription(description);
 
-	Contact contact = account()->getContactById(from);
+	Buddy contact = account()->getContactById(from);
 
 	kdebugm(KDEBUG_WARNING, "Tlen status change: %s %s\n%s", qPrintable(from), qPrintable(newstatus), qPrintable(description));
 
@@ -454,7 +454,7 @@ void TlenProtocol::chatNotify(QString from, QString type)
 {
 	kdebugf();
 
-	Contact contact = account()->getContactById(from);
+	Buddy contact = account()->getContactById(from);
 
 	TlenContactAccountData *data = dynamic_cast<TlenContactAccountData *>(contact.accountData(account()));
 

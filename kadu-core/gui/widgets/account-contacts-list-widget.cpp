@@ -31,7 +31,7 @@ AccountContactsListWidget::AccountContactsListWidget(Account account, QWidget *p
 
 	ContactsWidget = new ContactsListView(0, this);
 	ContactsModelProxy *model = new ContactsModelProxy(this);
-	model->setSourceModel(new ContactsModel(ContactManager::instance(), this));
+	model->setSourceModel(new ContactsModel(BuddyManager::instance(), this));
 	ContactsWidget->setModel(model);
 	ContactsWidget->setMinimumSize(QSize(30, 30));
 
@@ -61,8 +61,8 @@ AccountContactsListWidget::AccountContactsListWidget(Account account, QWidget *p
 	if (!manager)
 		return;
 	connect(manager, SIGNAL(contactListExported(bool)), this, SLOT(contactListExported(bool)));
-	connect(manager, SIGNAL(contactListImported(bool, ContactList)),
-		this, SLOT(contactListImported(bool, ContactList)));
+	connect(manager, SIGNAL(contactListImported(bool, BuddyList)),
+		this, SLOT(contactListImported(bool, BuddyList)));
 }
 
 void AccountContactsListWidget::startImportTransfer()
@@ -106,19 +106,19 @@ void AccountContactsListWidget::startExportTransfer()
 	kdebugf2();
 }
 
-void AccountContactsListWidget::contactListImported(bool ok, ContactList contacts)
+void AccountContactsListWidget::contactListImported(bool ok, BuddyList contacts)
 {
 	kdebugf();
 
 	ImportButton->setEnabled(true);
-	ContactList beforeImportList = ContactManager::instance()->contacts(CurrentAccount, true);
+	BuddyList beforeImportList = BuddyManager::instance()->buddies(CurrentAccount, true);
 	if (!ok)
 		return;
 
-	foreach (Contact contact, contacts)
+	foreach (Buddy contact, contacts)
 	{
-		Contact c = ContactManager::instance()->byId(CurrentAccount, contact.accountData(CurrentAccount)->id());
-		foreach (Contact b, beforeImportList)
+		Buddy c = BuddyManager::instance()->byId(CurrentAccount, contact.accountData(CurrentAccount)->id());
+		foreach (Buddy b, beforeImportList)
 			if (b.accountData(CurrentAccount) && b.accountData(CurrentAccount)->id() == c.accountData(CurrentAccount)->id())
 				beforeImportList.removeOne(b);
 		c.setFirstName(contact.firstName());
@@ -130,17 +130,17 @@ void AccountContactsListWidget::contactListImported(bool ok, ContactList contact
 		c.setDisplay(contact.display());
 		c.setHomePhone(contact.homePhone());
 		if (c.isAnonymous())
-			ContactManager::instance()->addContact(c);
+			BuddyManager::instance()->addBuddy(c);
 	}
 
 	if (!beforeImportList.isEmpty())
 	{
 		QStringList contactsList;
-		foreach (Contact c, beforeImportList)
+		foreach (Buddy c, beforeImportList)
 			contactsList.append(c.display());
 		if (MessageBox::ask(tr("Following contacts from your list were not found on server: %0.\nDo you want to remove them from contacts list?").arg(contactsList.join(", "))))
-			foreach (Contact c, beforeImportList)
-				ContactManager::instance()->removeContact(c);
+			foreach (Buddy c, beforeImportList)
+				BuddyManager::instance()->removeBuddy(c);
 	}
 
 	MessageBox::msg(tr("Your contact list has been successfully imported from server"), false, "Infromation", this);

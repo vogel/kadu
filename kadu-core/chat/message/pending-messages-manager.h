@@ -28,7 +28,7 @@ class QString;
 	\class PendingMessagesManager
 	\brief Pending messages queue.
 **/
-class KADUAPI PendingMessagesManager : public QObject, ContactRemovePredicateObject
+class KADUAPI PendingMessagesManager : public QObject, BuddyRemovePredicateObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(PendingMessagesManager)
@@ -46,7 +46,7 @@ class KADUAPI PendingMessagesManager : public QObject, ContactRemovePredicateObj
 	typedef QList<Message> PendingMsgsList;
 	PendingMsgsList msgs;
 
-    	bool removeContactFromStorage(Contact contact);
+    	bool removeContactFromStorage(Buddy contact);
 
 public:
 
@@ -58,7 +58,7 @@ public:
 		\param contact given contact.
 		\return true, if there is any message, otherwise - false.
 	**/
-	bool pendingMsgs(Contact contact) const;
+	bool pendingMsgs(Buddy contact) const;
 
 	/**
 		\fn bool pendingMsgs() const
@@ -129,13 +129,13 @@ signals:
 		\fn void messageFromUserAdded(Contact contact)
 		Signal emitted, when new message from given contact was added to queue.
 	**/
-	void messageFromUserAdded(Contact contact);
+	void messageFromUserAdded(Buddy contact);
 
 	/**
 		\fn void messageFromUserDeleted(Contact contact)
 		Signal emitted, when message from given contact was removed from queue.
 	**/
-	void messageFromUserDeleted(Contact contact);
+	void messageFromUserDeleted(Buddy contact);
 
 };
 

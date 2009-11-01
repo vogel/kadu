@@ -287,7 +287,7 @@ void ChatStylesManager::configurationApplied()
 
 void ChatStylesManager::preparePreview(Preview *preview)
 {
-	Contact example = Contact::dummy();
+	Buddy example = Buddy::dummy();
 	if (example.isNull())
 		return;
 

@@ -60,7 +60,7 @@ AccountDetails * JabberProtocolFactory::createAccountDetails(Account account)
 	return new JabberAccountDetails(account.storage(), account);
 }
 
-ContactAccountData * JabberProtocolFactory::newContactAccountData(Account account, Contact contact, const QString &id)
+ContactAccountData * JabberProtocolFactory::newContactAccountData(Account account, Buddy contact, const QString &id)
 {
 	return new JabberContactAccountData(account, contact, id, true);
 }

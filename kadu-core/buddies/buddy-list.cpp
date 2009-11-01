@@ -9,26 +9,26 @@
 
 #include "buddy-list.h"
 
-ContactList::ContactList()
+BuddyList::BuddyList()
 {
 }
 
-ContactList::ContactList(QList<Contact> list)
+BuddyList::BuddyList(QList<Buddy> list)
 {
 	*this += list;
 }
 
-ContactList::ContactList(Contact contact)
+BuddyList::BuddyList(Buddy contact)
 {
 	append(contact);
 }
 
-bool ContactList::operator == (const ContactList &compare) const
+bool BuddyList::operator == (const BuddyList &compare) const
 {
 	if (size() != compare.size())
 		return false;
 
-	foreach (Contact contact, compare)
+	foreach (Buddy contact, compare)
 		if (!contains(contact))
 			return false;
 	return true;

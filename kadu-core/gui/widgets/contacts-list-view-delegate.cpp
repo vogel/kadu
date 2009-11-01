@@ -56,17 +56,17 @@ void ContactsListViewDelegate::setModel(AbstractContactsModel *model)
 
 void ContactsListViewDelegate::accountRegistered(Account account)
 {
-	connect(account.data(), SIGNAL(contactStatusChanged(Account, Contact, Status)),
-			this, SLOT(contactStatusChanged(Account, Contact, Status)));
+	connect(account.data(), SIGNAL(contactStatusChanged(Account, Buddy, Status)),
+			this, SLOT(contactStatusChanged(Account, Buddy, Status)));
 }
 
 void ContactsListViewDelegate::accountUnregistered(Account account)
 {
-	disconnect(account.data(), SIGNAL(contactStatusChanged(Account, Contact, Status)),
-			this, SLOT(contactStatusChanged(Account, Contact, Status)));
+	disconnect(account.data(), SIGNAL(contactStatusChanged(Account, Buddy, Status)),
+			this, SLOT(contactStatusChanged(Account, Buddy, Status)));
 }
 
-void ContactsListViewDelegate::contactStatusChanged(Account account, Contact c, Status oldStatus)
+void ContactsListViewDelegate::contactStatusChanged(Account account, Buddy c, Status oldStatus)
 {
 	if (Model)
 		emit sizeHintChanged(Model->contactIndex(c));

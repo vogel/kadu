@@ -29,7 +29,7 @@ void NonAccountContactFilter::setAccount(Account account)
 	}
 }
 
-bool NonAccountContactFilter::acceptContact(Contact contact)
+bool NonAccountContactFilter::acceptContact(Buddy contact)
 {
 	return CurrentAccount.isNull() || !contact.hasAccountData(CurrentAccount);
 }

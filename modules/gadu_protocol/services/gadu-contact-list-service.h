@@ -31,7 +31,7 @@ public:
 
 	virtual void importContactList();
 	virtual void exportContactList();
-	virtual void exportContactList(ContactList contacts);
+	virtual void exportContactList(BuddyList contacts);
 
 };
 

@@ -9,16 +9,16 @@
 
 #include "buddy-search-criteria.h"
 
-ContactSearchCriteria::ContactSearchCriteria() :
-	SearchContact(Contact()), BirthYearTo(), Active(false), IgnoreResults(false)
+BuddySearchCriteria::BuddySearchCriteria() :
+	SearchContact(Buddy()), BirthYearTo(), Active(false), IgnoreResults(false)
 {
 }
 
-ContactSearchCriteria::~ContactSearchCriteria()
+BuddySearchCriteria::~BuddySearchCriteria()
 {
 }
 
-void ContactSearchCriteria::reqUin(Account account, const QString &uin)
+void BuddySearchCriteria::reqUin(Account account, const QString &uin)
 {
 	ContactAccountData *cad = SearchContact.accountData(account);
 	if (!cad)
@@ -29,45 +29,45 @@ void ContactSearchCriteria::reqUin(Account account, const QString &uin)
 	cad->setId(uin);
 }
 
-void ContactSearchCriteria::reqFirstName(const QString &firstName)
+void BuddySearchCriteria::reqFirstName(const QString &firstName)
 {
 	SearchContact.setFirstName(firstName);
 }
 
-void ContactSearchCriteria::reqLastName(const QString &lastName)
+void BuddySearchCriteria::reqLastName(const QString &lastName)
 {
 	SearchContact.setLastName(lastName);
 }
 
-void ContactSearchCriteria::reqNickName(const QString &nickName)
+void BuddySearchCriteria::reqNickName(const QString &nickName)
 {
 	SearchContact.setNickName(nickName);
 }
 
-void ContactSearchCriteria::reqCity(const QString &city)
+void BuddySearchCriteria::reqCity(const QString &city)
 {
 	SearchContact.setCity(city);
 }
 
-void ContactSearchCriteria::reqBirthYear(const QString &birthYearFrom, const QString &birthYearTo)
+void BuddySearchCriteria::reqBirthYear(const QString &birthYearFrom, const QString &birthYearTo)
 {
 	BirthYearFrom = birthYearFrom;
 	BirthYearTo = birthYearTo;
 }
 
-void ContactSearchCriteria::reqGender(bool female)
+void BuddySearchCriteria::reqGender(bool female)
 {
-	SearchContact.setGender(female ? ContactData::GenderFemale : ContactData::GenderMale);
+	SearchContact.setGender(female ? BuddyShared::GenderFemale : BuddyShared::GenderMale);
 }
 
-void ContactSearchCriteria::reqActive()
+void BuddySearchCriteria::reqActive()
 {
 	Active = true;
 }
 
-void ContactSearchCriteria::clearData()
+void BuddySearchCriteria::clearData()
 {
-	SearchContact = Contact();
+	SearchContact = Buddy();
 	BirthYearFrom.truncate(0);
 	BirthYearTo.truncate(0);
 	Active = false;

@@ -27,7 +27,7 @@ void HasDescriptionContactFilter::setEnabled(bool enabled)
 	emit filterChanged();
 }
 
-bool HasDescriptionContactFilter::acceptContact(Contact contact)
+bool HasDescriptionContactFilter::acceptContact(Buddy contact)
 {
 	if (!Enabled)
 		return true;

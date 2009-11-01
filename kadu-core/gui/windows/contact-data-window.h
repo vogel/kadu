@@ -32,14 +32,14 @@ class QScrollArea;
 class QTabWidget;
 class QVBoxLayout;
 
-class Contact;
+class Buddy;
 
 
 class KADUAPI ContactDataWindow : public QWidget
 {
 	Q_OBJECT
 
-	Contact CurrentContact;
+	Buddy CurrentContact;
 	ContactGeneralConfigurationWidget *ContactTab;
 	ContactGroupsConfigurationWidget *GroupsTab;
 	ContactPersonalInfoConfigurationWidget *PersonalInfoTab;
@@ -60,7 +60,7 @@ private slots:
 	void updateContactAndClose();
 
 public:
-	ContactDataWindow(Contact contact, QWidget *parent = 0);
+	ContactDataWindow(Buddy contact, QWidget *parent = 0);
 	virtual ~ContactDataWindow();
 
 };

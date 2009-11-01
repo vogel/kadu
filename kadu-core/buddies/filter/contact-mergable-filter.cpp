@@ -9,7 +9,7 @@
 
 #include "contact-mergable-filter.h"
 
-ContactMergableFilter::ContactMergableFilter(Contact contact, QObject *parent) :
+ContactMergableFilter::ContactMergableFilter(Buddy contact, QObject *parent) :
 		AbstractContactFilter(parent), MyContact(contact)
 {
 	Accounts = MyContact.accounts().toSet();
@@ -19,7 +19,7 @@ ContactMergableFilter::~ContactMergableFilter()
 {
 }
 
-void ContactMergableFilter::setContact(Contact contact)
+void ContactMergableFilter::setContact(Buddy contact)
 {
 	if (MyContact == contact)
 		return;
@@ -30,7 +30,7 @@ void ContactMergableFilter::setContact(Contact contact)
 	emit filterChanged();
 }
 
-bool ContactMergableFilter::acceptContact(Contact contact)
+bool ContactMergableFilter::acceptContact(Buddy contact)
 {
 	return contact.accounts().toSet().intersect(Accounts).empty();
 }

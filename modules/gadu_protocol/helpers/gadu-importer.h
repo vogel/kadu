@@ -12,7 +12,7 @@
 
 #include <QtCore/QObject>
 
-class Contact;
+class Buddy;
 
 class GaduImporter : public QObject
 {
@@ -22,12 +22,12 @@ class GaduImporter : public QObject
 
 	GaduImporter() {}
 
-	void importContact(Contact &contact);
-	void importGaduContact(Contact &contact);
+	void importContact(Buddy &contact);
+	void importGaduContact(Buddy &contact);
 	void importIgnored();
 
 private slots:
-	void contactAdded(Contact &contact);
+	void contactAdded(Buddy &contact);
 
 public:
 	static GaduImporter * instance();

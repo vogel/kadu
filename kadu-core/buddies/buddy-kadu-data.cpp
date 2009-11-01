@@ -15,12 +15,12 @@
 
 #include "buddy-kadu-data.h"
 
-ContactKaduData::ContactKaduData(StoragePoint *storage)
+BuddyKaduData::BuddyKaduData(StoragePoint *storage)
 	: ModuleData(storage)
 {
 }
 
-void ContactKaduData::loadFromStorage()
+void BuddyKaduData::loadFromStorage()
 {
 	StoragePoint *sp = storage();
 	if (!sp)
@@ -34,7 +34,7 @@ void ContactKaduData::loadFromStorage()
 
 }
 
-void ContactKaduData::storeConfiguration() const
+void BuddyKaduData::storeConfiguration() const
 {
 	StoragePoint *sp = storage();
 	if (!sp)

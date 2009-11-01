@@ -19,7 +19,7 @@ class ContactNameFilter : public AbstractContactFilter
 public:
 	ContactNameFilter(QObject *parent = 0) : AbstractContactFilter(parent) {}
 
-	virtual bool acceptContact(Contact contact);
+	virtual bool acceptContact(Buddy contact);
 
 	void setName(const QString &name);
 

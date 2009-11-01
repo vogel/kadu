@@ -214,7 +214,7 @@ void DccManager::socketNotifiersDestroyed(QObject *socketNotifiers)
 	SocketNotifiers.removeAll(dynamic_cast<DccSocketNotifiers *>(socketNotifiers));
 }
 
-void DccManager::connectionRequestReceived(Contact contact)
+void DccManager::connectionRequestReceived(Buddy contact)
 {
 	kdebugf();
 
@@ -244,7 +244,7 @@ bool DccManager::acceptConnection(unsigned int uin, unsigned int peerUin, unsign
 	if (!gaduAccountDetails)
 		return false;
 
-	Contact contact = ContactManager::instance()->byId(Protocol->account(), QString::number(peerUin));
+	Buddy contact = BuddyManager::instance()->byId(Protocol->account(), QString::number(peerUin));
 	if (uin != gaduAccountDetails->uin() || contact.isAnonymous() || contact.isNull())
 	{
 		kdebugm(KDEBUG_WARNING, "insane values: uin:%d peer_uin:%d\n", uin, peerUin);
@@ -255,7 +255,7 @@ bool DccManager::acceptConnection(unsigned int uin, unsigned int peerUin, unsign
 	if (!gcad)
 		return false;
 
-	ContactList contacts(contact);
+	BuddyList contacts(contact);
 
 	if (contact.isIgnored())
 	{
@@ -283,7 +283,7 @@ bool DccManager::acceptConnection(unsigned int uin, unsigned int peerUin, unsign
 void DccManager::needIncomingFileTransferAccept(DccSocketNotifiers *socket)
 {
 	GaduFileTransfer *gft = new GaduFileTransfer(Protocol->account(),
-			ContactManager::instance()->byId(Protocol->account(), QString::number(socket->peerUin())),
+			BuddyManager::instance()->byId(Protocol->account(), QString::number(socket->peerUin())),
 			FileTransfer::TypeReceive);
 
 	gft->setFileTransferNotifiers(socket);
@@ -454,7 +454,7 @@ void DccManager::attachSendFileTransferSocket7(unsigned int uin, GaduContactAcco
 
 void DccManager::attachSendFileTransferSocket(GaduFileTransfer *gft)
 {
-	Contact peer = gft->contact();
+	Buddy peer = gft->contact();
 	GaduContactAccountData *gcad = Protocol->gaduContactAccountData(peer);
 	if (!gcad)
 		return;

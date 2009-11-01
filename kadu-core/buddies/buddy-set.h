@@ -16,17 +16,17 @@
 
 #include "exports.h"
 
-class ContactList;
+class BuddyList;
 class Account;
 
-class KADUAPI ContactSet : public QSet<Contact>
+class KADUAPI BuddySet : public QSet<Buddy>
 {
 
 public:
-	ContactSet();
-	explicit ContactSet(Contact contact);
+	BuddySet();
+	explicit BuddySet(Buddy contact);
 
-	ContactList toContactList() const;
+	BuddyList toBuddyList() const;
 	Account prefferedAccount();
 
 };

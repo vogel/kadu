@@ -15,16 +15,16 @@
 #include "buddies/buddy-list-mime-data-helper.h"
 #include "buddies/buddy-manager.h"
 
-QLatin1String ContactListMimeDataHelper::MimeType("application/x-kadu-ules");
+QLatin1String BuddyListMimeDataHelper::MimeType("application/x-kadu-ules");
 
-QStringList ContactListMimeDataHelper::mimeTypes()
+QStringList BuddyListMimeDataHelper::mimeTypes()
 {
 	QStringList result;
 	result << MimeType;
 	return result;
 }
 
-QMimeData * ContactListMimeDataHelper::toMimeData(ContactList contactList)
+QMimeData * BuddyListMimeDataHelper::toMimeData(BuddyList contactList)
 {
 	if (!contactList.count())
 		return 0;
@@ -32,16 +32,16 @@ QMimeData * ContactListMimeDataHelper::toMimeData(ContactList contactList)
 	QMimeData *mimeData = new QMimeData();
 
 	QStringList contactListStrings;
-	foreach (Contact contact, contactList)
+	foreach (Buddy contact, contactList)
 		contactListStrings << contact.uuid().toString();
 
 	mimeData->setData(MimeType, contactListStrings.join(":").toAscii());
 	return mimeData;
 }
 
-ContactList ContactListMimeDataHelper::fromMimeData(const QMimeData * mimeData)
+BuddyList BuddyListMimeDataHelper::fromMimeData(const QMimeData * mimeData)
 {
-	ContactList result;
+	BuddyList result;
 
 	QString contactListString(mimeData->data(MimeType));
 	if (contactListString.isEmpty())
@@ -50,7 +50,7 @@ ContactList ContactListMimeDataHelper::fromMimeData(const QMimeData * mimeData)
 	QStringList contactListStrings = contactListString.split(":");
 	foreach (const QString &contactListString, contactListStrings)
 	{
-		Contact contact = ContactManager::instance()->byUuid(contactListString);
+		Buddy contact = BuddyManager::instance()->byUuid(contactListString);
 		if (contact.isNull())
 			continue;
 

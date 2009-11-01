@@ -17,12 +17,12 @@
 #include "gadu-search-service.h"
 
 GaduSearchService::GaduSearchService(GaduProtocol *protocol) :
-		SearchService(protocol), Protocol(protocol), Query(ContactSearchCriteria()),
+		SearchService(protocol), Protocol(protocol), Query(BuddySearchCriteria()),
 		SearchSeq(0), From(0), Stopped(false)
 {
 }
 
-void GaduSearchService::searchFirst(ContactSearchCriteria criteria)
+void GaduSearchService::searchFirst(BuddySearchCriteria criteria)
 {
 	Query = criteria;
 	From = Query.SearchContact.hasAccountData(Protocol->account()) ? Query.SearchContact.accountData(Protocol->account())->id().toUInt() : 0;
@@ -51,10 +51,10 @@ void GaduSearchService::searchNext()
 	}
 	switch (Query.SearchContact.gender())
 	{
-		case ContactData::GenderMale:
+		case BuddyShared::GenderMale:
 			gg_pubdir50_add(req, GG_PUBDIR50_GENDER, GG_PUBDIR50_GENDER_MALE);
 			break;
-		case ContactData::GenderFemale:
+		case BuddyShared::GenderFemale:
 			gg_pubdir50_add(req, GG_PUBDIR50_GENDER, GG_PUBDIR50_GENDER_FEMALE);
 			break;
 	}
@@ -77,14 +77,14 @@ void GaduSearchService::handleEventPubdir50SearchReply(struct gg_event *e)
 {
 	gg_pubdir50_t res = e->event.pubdir50;
 
-	ContactList results;
+	BuddyList results;
 
 	int count = gg_pubdir50_count(res);
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "found %d results\n", count);
 
 	for (int i = 0; i < count; i++)
 	{
-		Contact result;
+		Buddy result;
 
 		GaduContactAccountData *gcad = new GaduContactAccountData(Protocol->account(), result,
 				gg_pubdir50_get(res, i, GG_PUBDIR50_UIN));
@@ -100,7 +100,7 @@ void GaduSearchService::handleEventPubdir50SearchReply(struct gg_event *e)
 		result.setCity(cp2unicode(gg_pubdir50_get(res, i, GG_PUBDIR50_CITY)));
 		result.setFamilyName(cp2unicode(gg_pubdir50_get(res, i, GG_PUBDIR50_FAMILYNAME)));
 		result.setFamilyCity(cp2unicode(gg_pubdir50_get(res, i, GG_PUBDIR50_FAMILYCITY)));
-		result.setGender((ContactData::ContactGender)QString::fromAscii(gg_pubdir50_get(res, i, GG_PUBDIR50_GENDER)).toUShort());
+		result.setGender((BuddyShared::BuddyGender)QString::fromAscii(gg_pubdir50_get(res, i, GG_PUBDIR50_GENDER)).toUShort());
 
 		results.append(result);
 	}

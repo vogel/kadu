@@ -12,7 +12,7 @@
 
 #include <QtCore/QObject>
 
-class Contact;
+class Buddy;
 
 class AbstractContactFilter : public QObject
 {
@@ -22,7 +22,7 @@ public:
 	AbstractContactFilter(QObject *parent = 0)
 			: QObject(parent) {}
 
-	virtual bool acceptContact(Contact contact) = 0;
+	virtual bool acceptContact(Buddy contact) = 0;
 
 signals:
 	void filterChanged();

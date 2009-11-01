@@ -100,7 +100,7 @@ QString KaduChatStyleEngine::formatMessage(MessageRenderInfo *message, MessageRe
 	Message msg = message->message();
 	Message aft = after->message();
 
-	Contact contact = msg.sender();
+	Buddy contact = msg.sender();
 	Account account = msg.chat()->account();
 
 	if (msg.type() == Message::TypeSystem)
@@ -165,7 +165,7 @@ void KaduChatStyleEngine::repaintMessages(HtmlMessagesRenderer *renderer)
 		Message msg = (*message)->message();
 		(*message)->setSeparatorSize(0);
 
-		Contact contact = msg.sender();
+		Buddy contact = msg.sender();
 		Account account = msg.chat()->account();
 
 		if (msg.type() == Message::TypeSystem)

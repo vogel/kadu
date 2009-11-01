@@ -71,7 +71,7 @@ void ToolTipClassManager::useToolTipClass(const QString &toolTipClassName)
 		CurrentToolTipClass = 0;
 }
 
-bool ToolTipClassManager::showToolTip(const QPoint &where, Contact contact)
+bool ToolTipClassManager::showToolTip(const QPoint &where, Buddy contact)
 {
 	if (CurrentToolTipClass)
 	{

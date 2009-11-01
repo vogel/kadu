@@ -31,7 +31,7 @@ FileTransfer * GaduFileTransferService::loadFileTransferFromStorage(StoragePoint
 	return gft;
 }
 
-FileTransfer * GaduFileTransferService::createOutgoingFileTransfer(Contact contact)
+FileTransfer * GaduFileTransferService::createOutgoingFileTransfer(Buddy contact)
 {
 	return new GaduFileTransfer(Protocol->account(), contact, FileTransfer::TypeSend);
 }

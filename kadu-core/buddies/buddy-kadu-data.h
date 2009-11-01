@@ -18,7 +18,7 @@
 	type name() const { return capitalized_name; } \
 	void set##capitalized_name(const type &name) { capitalized_name = name; }
 
-class ContactKaduData : public ModuleData
+class BuddyKaduData : public ModuleData
 {
 	QRect ChatGeometry;
 	bool HideDescription;
@@ -26,7 +26,7 @@ class ContactKaduData : public ModuleData
 public:
 	static QString key() { return "kadu"; }
 
-	ContactKaduData(StoragePoint *storage);
+	BuddyKaduData(StoragePoint *storage);
 
 	virtual void loadFromStorage();
 

@@ -20,7 +20,7 @@
 class QFile;
 
 class Account;
-class Contact;
+class Buddy;
 
 class KADUAPI FileTransfer : public QObject, public StorableObject
 {
@@ -56,7 +56,7 @@ private:
 	QUuid Uuid;
 
 	Account CurrentAccount;
-	Contact Peer;
+	Buddy Peer;
 	QString LocalFileName;
 	QString RemoteFileName;
 
@@ -83,14 +83,14 @@ public:
 	static FileTransfer * loadFromStorage(StoragePoint *fileTransferStoragePoint);
 
 	FileTransfer(Account account);
-	FileTransfer(Account account, Contact peer, FileTransferType transferType);
+	FileTransfer(Account account, Buddy peer, FileTransferType transferType);
 	virtual ~FileTransfer();
 
 	virtual void load();
 	virtual void store();
 
 	Account account() { return CurrentAccount; }
-	Contact contact() { return Peer; }
+	Buddy contact() { return Peer; }
 
 	FileTransferType transferType() { return TransferType; }
 	FileTransferStatus transferStatus() { return TransferStatus; }

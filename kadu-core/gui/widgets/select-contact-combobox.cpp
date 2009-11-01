@@ -20,14 +20,14 @@
 #include "select-contact-combobox.h"
 
 SelectContactCombobox::SelectContactCombobox(QWidget *parent) :
-		QComboBox(parent), CurrentContact(ContactData::TypeNull)
+		QComboBox(parent), CurrentContact(BuddyShared::TypeNull)
 {
 	setEditable(true);
 
 	connect(this, SIGNAL(editTextChanged(const QString &)),
 			this, SLOT(contactTextChanged(const QString &)));
 
-	ContactsModel *model = new ContactsModel(ContactManager::instance(), this);
+	ContactsModel *model = new ContactsModel(BuddyManager::instance(), this);
 	ProxyModel = new ContactsModelProxy(this);
 	ProxyModel->setSourceModel(model);
 
@@ -64,7 +64,7 @@ void SelectContactCombobox::removeFilter(AbstractContactFilter *filter)
 
 void SelectContactCombobox::contactTextChanged(const QString &contactText)
 {
-	Contact named = ContactManager::instance()->byDisplay(contactText);
+	Buddy named = BuddyManager::instance()->byDisplay(contactText);
 	if (named != CurrentContact)
 	{
 		CurrentContact = named;

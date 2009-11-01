@@ -13,7 +13,7 @@
 #include <QtCore/QObject>
 
 class Chat;
-class ContactSet;
+class BuddySet;
 
 class ChatAggregatorBuilder : public QObject
 {
@@ -23,7 +23,7 @@ public:
 	//ChatAggregatorBuilder(QList<Chat *> chats);
 	virtual ~ChatAggregatorBuilder();
 
-	static Chat * buildAggregateChat(ContactSet contacts);
+	static Chat * buildAggregateChat(BuddySet contacts);
 /*
 	virtual void load();
 	virtual void store();

@@ -12,7 +12,7 @@
 
 #include "contact-name-filter.h"
 
-bool ContactNameFilter::acceptContact(Contact contact)
+bool ContactNameFilter::acceptContact(Buddy contact)
 {
 	if (Name.isEmpty())
 		return true;

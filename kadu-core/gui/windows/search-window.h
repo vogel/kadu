@@ -78,9 +78,9 @@ class KADUAPI SearchWindow : public MainWindow
 	QRadioButton *r_pers;
 	Account CurrentAccount;
 	quint32 seq;
-	ContactSet selectedUsers;
+	BuddySet selectedUsers;
 
-	ContactSearchCriteria CurrentSearchCriteria;
+	BuddySearchCriteria CurrentSearchCriteria;
 
 	bool searchhidden;
 	bool searching;
@@ -88,7 +88,7 @@ class KADUAPI SearchWindow : public MainWindow
 
 	bool isPersonalDataEmpty() const;
 
-	ContactSet selected();
+	BuddySet selected();
 
 	QTreeWidgetItem * selectedItem();
 
@@ -110,7 +110,7 @@ protected:
 
 public:
 
-	SearchWindow(QWidget *parent=0, Contact contact = Contact::null);
+	SearchWindow(QWidget *parent=0, Buddy contact = Buddy::null);
 	~SearchWindow(void);
 
 	static void createDefaultToolbars(QDomElement parentConfig);
@@ -120,7 +120,7 @@ public:
 
 	virtual bool supportsActionType(ActionDescription::ActionType type) { return type & ActionDescription::TypeSearch; }
 	virtual ContactsListView* contactsListView() { return 0; }
-	virtual ContactSet contacts() { return ContactSet(); }
+	virtual BuddySet contacts() { return BuddySet(); }
 	virtual Chat* chat() { return 0; }
 
 
@@ -133,7 +133,7 @@ public:
 
 public slots:
 
-	void newSearchResults(ContactList contacts);
+	void newSearchResults(BuddyList contacts);
 	void firstSearch();
 };
 

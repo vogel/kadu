@@ -24,10 +24,10 @@ public:
 
 	virtual void importContactList() = 0;
 	virtual void exportContactList() = 0;
-	virtual void exportContactList(ContactList contacts) = 0;
+	virtual void exportContactList(BuddyList contacts) = 0;
 
 signals:
-	void contactListImported(bool ok, ContactList contacts);
+	void contactListImported(bool ok, BuddyList contacts);
 	void contactListExported(bool ok);
 
 };

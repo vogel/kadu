@@ -22,7 +22,7 @@ class JabberOpenChatWithRunner : public OpenChatWithRunner
 
 public:
 	JabberOpenChatWithRunner(Account account);
-	virtual ContactList matchingContacts(const QString &query);
+	virtual BuddyList matchingContacts(const QString &query);
 	void setAccount(Account account) { ParentAccount = account; }
 
 };

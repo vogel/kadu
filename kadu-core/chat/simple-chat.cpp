@@ -41,7 +41,7 @@ void SimpleChat::load()
 	QString cadUuid = loadValue<QString>("ContactAccountData");
 	if (cadUuid.isNull())
 	{
-		Contact contact = ContactManager::instance()->byUuid(loadValue<QString>("Contact"));
+		Buddy contact = BuddyManager::instance()->byUuid(loadValue<QString>("Contact"));
 		CurrentContactAccountData = contact.accountData(account());
 		removeValue("Contact");
 	}
@@ -71,11 +71,11 @@ ChatType SimpleChat::type() const
 	return ChatTypeManager::instance()->chatType("SimpleChat");
 }
 
-ContactSet SimpleChat::contacts() const
+BuddySet SimpleChat::contacts() const
 {
 	if (!CurrentContactAccountData)
-		return ContactSet();
-	return ContactSet(CurrentContactAccountData->contact());
+		return BuddySet();
+	return BuddySet(CurrentContactAccountData->contact());
 }
 
 QString SimpleChat::name() const

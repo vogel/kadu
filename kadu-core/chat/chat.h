@@ -41,7 +41,7 @@ public:
 
 	virtual QUuid uuid() const { return Uuid; }
 	virtual ChatType type() const = 0;
-	virtual ContactSet contacts() const = 0;
+	virtual BuddySet contacts() const = 0;
 	virtual QString name() const = 0;
 
 	Account account() { return CurrentAccount; }

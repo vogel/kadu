@@ -91,11 +91,11 @@ void ContactInfoPanel::configurationUpdated()
 		page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
 }
 
-void ContactInfoPanel::displayContact(Contact contact)
+void ContactInfoPanel::displayContact(Buddy contact)
 {
 	CurrentContact = contact;
 
-	if (Contact::null == contact || !isVisible())
+	if (Buddy::null == contact || !isVisible())
 		return;
 
 	kdebugmf(KDEBUG_INFO, "%s\n", qPrintable(contact.display()));

@@ -193,7 +193,7 @@ void openGGChat(const QString &gg)
 	}
 
 	Account account = AccountManager::instance()->defaultAccount();
-	ContactSet contacts(ContactManager::instance()->byId(account, gadu));
+	BuddySet contacts(BuddyManager::instance()->byId(account, gadu));
 // TODO: 0.6.6
 // 	chat_manager->openPendingMsgs(contacts);
 

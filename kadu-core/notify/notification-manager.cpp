@@ -120,10 +120,10 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 		config_file.writeEntry("Notify", "NotifyAboutAll", false);
 	}
 
-	ContactSet contacts = window->contacts();
+	BuddySet contacts = window->contacts();
 
 	bool on = true;
-	foreach (const Contact contact, contacts)
+	foreach (const Buddy contact, contacts)
 	{
 		ContactNotifyData *cnd = contact.moduleData<ContactNotifyData>();
 
@@ -136,7 +136,7 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 		delete cnd;
 	}
 
-	foreach (const Contact contact, contacts)
+	foreach (const Buddy contact, contacts)
 	{
 		if (contact.isNull() || contact.isAnonymous())
 			continue;
@@ -170,8 +170,8 @@ void NotificationManager::accountRegistered(Account account)
 // 	TODO: 0.6.6
 // 	connect(protocol, SIGNAL(connectionError(Account, const QString &, const QString &)),
 // 			this, SLOT(connectionError(Account, const QString &, const QString &)));
-	connect(account.data(), SIGNAL(contactStatusChanged(Account, Contact, Status)),
-			this, SLOT(statusChanged(Account, Contact, Status)));
+	connect(account.data(), SIGNAL(contactStatusChanged(Account, Buddy, Status)),
+			this, SLOT(statusChanged(Account, Buddy, Status)));
 
 	ChatService *chatService = protocol->chatService();
 	if (chatService)
@@ -186,8 +186,8 @@ void NotificationManager::accountUnregistered(Account account)
 	Protocol *protocol = account.protocolHandler();
 	disconnect(protocol, SIGNAL(connectionError(Account, const QString &, const QString &)),
 			this, SLOT(connectionError(Account, const QString &, const QString &)));
-	disconnect(account.data(), SIGNAL(contactStatusChanged(Account, Contact, Status)),
-			this, SLOT(statusChanged(Account, Contact, Status)));
+	disconnect(account.data(), SIGNAL(contactStatusChanged(Account, Buddy, Status)),
+			this, SLOT(statusChanged(Account, Buddy, Status)));
 
 	ChatService *chatService = protocol->chatService();
 	if (chatService)
@@ -197,7 +197,7 @@ void NotificationManager::accountUnregistered(Account account)
 	}
 }
 
-void NotificationManager::statusChanged(Account account, Contact contact, Status oldStatus)
+void NotificationManager::statusChanged(Account account, Buddy contact, Status oldStatus)
 {
 	kdebugf();
 
@@ -241,7 +241,7 @@ void NotificationManager::statusChanged(Account account, Contact contact, Status
 
 	QString changedTo = "/To" + Status::name(data->status(), false);
 
-	ContactSet contacts(contact);
+	BuddySet contacts(contact);
 
 	StatusChangedNotification *statusChangedNotification;
 	if (config_file.readBoolEntry("Notify", "StatusChanged" + changedTo + "_UseCustomSettings", true))
@@ -390,7 +390,7 @@ void NotificationManager::groupNotifyChanged(Group *group)
 		config_file.writeEntry("Notify", "NotifyAboutAll", false);
 	}
 
-	foreach (const Contact contact, ContactManager::instance()->contacts())
+	foreach (const Buddy contact, BuddyManager::instance()->buddies())
 	{
 		if (contact.isNull() || contact.isAnonymous() || contact.groups().contains(group))
 			continue;
@@ -427,7 +427,7 @@ void checkNotify(Action *action)
 {
 	kdebugf();
 
-	foreach(Contact contact, action->contacts())
+	foreach(Buddy contact, action->contacts())
 		if (!contact.hasAccountData(contact.prefferedAccount()))
 		{
 			action->setEnabled(false);
@@ -437,7 +437,7 @@ void checkNotify(Action *action)
 	action->setEnabled(true);
 
 	bool on = true;
-	foreach (const Contact contact, action->contacts())
+	foreach (const Buddy contact, action->contacts())
 	{
 		ContactNotifyData *cnd = contact.moduleData<ContactNotifyData>();
 

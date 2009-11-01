@@ -20,8 +20,8 @@
 class QContextMenuEvent;
 
 class Chat;
-class Contact;
-class ContactSet;
+class Buddy;
+class BuddySet;
 class ContactsListView;
 
 class KADUAPI MainWindow : public QMainWindow
@@ -55,9 +55,9 @@ public:
 
 	virtual bool supportsActionType(ActionDescription::ActionType type) = 0;
 	virtual ContactsListView * contactsListView() = 0;
-	virtual ContactSet contacts() = 0;
+	virtual BuddySet contacts() = 0;
 	virtual Chat * chat() = 0;
-	Contact contact();
+	Buddy contact();
 
 	void actionAdded(Action *action);
 

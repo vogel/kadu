@@ -100,10 +100,10 @@ class TlenProtocol : public Protocol
 	signals:
 		void authorize(QString,bool);
 
-		void userStatusChangeIgnored(Contact);
+		void userStatusChangeIgnored(Buddy);
                 void sendMessageFiltering(Chat *chat, QByteArray &msg, bool &stop);
         	void messageStatusChanged(int messsageId, ChatService::MessageStatus status);
-		void receivedMessageFilter(Chat *chat, Contact sender, const QString &message, time_t time, bool &ignore);
+		void receivedMessageFilter(Chat *chat, Buddy sender, const QString &message, time_t time, bool &ignore);
 		void messageReceived(const Message &message);
 		void messageSent(const Message &message);
 };

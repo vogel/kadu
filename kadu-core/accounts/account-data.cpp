@@ -125,8 +125,8 @@ void AccountData::loadProtocol(ProtocolFactory* protocolFactory)
 	Details = protocolFactory->createAccountDetails(Account(this));
 
 	connect(ProtocolHandler, SIGNAL(statusChanged(Account, Status)), this, SIGNAL(statusChanged()));
-	connect(ProtocolHandler, SIGNAL(contactStatusChanged(Account, Contact, Status)),
-			this, SIGNAL(contactStatusChanged(Account, Contact, Status)));
+	connect(ProtocolHandler, SIGNAL(contactStatusChanged(Account, Buddy, Status)),
+			this, SIGNAL(contactStatusChanged(Account, Buddy, Status)));
 }
 
 void AccountData::unloadProtocol()

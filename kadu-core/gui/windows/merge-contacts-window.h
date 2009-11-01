@@ -20,7 +20,7 @@ class MergeContactsWindow : public QDialog
 {
 	Q_OBJECT
 
-	Contact MyContact;
+	Buddy MyContact;
 
 	SelectContactCombobox *SelectCombo;
 	QPushButton *MergeButton;
@@ -28,13 +28,13 @@ class MergeContactsWindow : public QDialog
 	void createGui();
 
 private slots:
-	void selectedContactChanged(Contact);
+	void selectedContactChanged(Buddy);
 
 protected slots:
 	virtual void accept();
 
 public:
-	explicit MergeContactsWindow(Contact contact, QWidget *parent = 0);
+	explicit MergeContactsWindow(Buddy contact, QWidget *parent = 0);
 	virtual ~MergeContactsWindow();
 
 };

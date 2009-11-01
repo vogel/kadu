@@ -125,7 +125,7 @@ void GaduChatImageService::handleEventImageReply(struct gg_event *e)
 			e->event.image_reply.size, e->event.image_reply.crc32), fullPath);
 }
 
-bool GaduChatImageService::sendImageRequest(Contact contact, int size, uint32_t crc32)
+bool GaduChatImageService::sendImageRequest(Buddy contact, int size, uint32_t crc32)
 {
 	kdebugf();
 

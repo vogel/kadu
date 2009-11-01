@@ -15,11 +15,11 @@
 
 #include "open-chat-with-contact-list-runner.h"
 
-ContactList OpenChatWithContactListRunner::matchingContacts(const QString &query)
+BuddyList OpenChatWithContactListRunner::matchingContacts(const QString &query)
 {
-	ContactList matchedContacts;
+	BuddyList matchedContacts;
 
-	foreach (Contact contact, ContactManager::instance()->contacts())
+	foreach (Buddy contact, BuddyManager::instance()->buddies())
 	{
 		bool found = false;
 		foreach (ContactAccountData *data, contact.accountDatas())

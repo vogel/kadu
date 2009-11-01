@@ -60,12 +60,12 @@ void disableNonHistoryContacts(Action *action)
 {
 	kdebugf();
 	action->setEnabled(false);
-	ContactSet contacts = action->contacts();
+	BuddySet contacts = action->contacts();
 
 	if (!contacts.count())
 		return;
 
-	foreach (const Contact &contact, contacts)
+	foreach (const Buddy &contact, contacts)
 	{
 		if (Core::instance()->myself() == contact)
 			return;
@@ -455,7 +455,7 @@ void History::configurationUpdated()
 	kdebugf2();
 }
 
-bool History::removeContactFromStorage(Contact contact)
+bool History::removeContactFromStorage(Buddy contact)
 {
 	if (!CurrentStorage)
 		return true;

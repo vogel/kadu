@@ -21,15 +21,15 @@ JabberOpenChatWithRunner::JabberOpenChatWithRunner(Account account) :
 {
 }
 
-ContactList JabberOpenChatWithRunner::matchingContacts(const QString &query)
+BuddyList JabberOpenChatWithRunner::matchingContacts(const QString &query)
 {
 	kdebugf();
 
-	ContactList matchedContacts;
+	BuddyList matchedContacts;
 	if (!validateUserID(query))
 		return matchedContacts;
 
-	Contact c;
+	Buddy c;
 
 	JabberContactAccountData *gcad = new JabberContactAccountData(ParentAccount, c, query);
 	c.addAccountData(gcad);

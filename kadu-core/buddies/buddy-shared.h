@@ -30,20 +30,20 @@ class ContactAccountData;
 class Group;
 class XmlConfigFile;
 
-class KADUAPI ContactData : public QObject, public QSharedData, public UuidStorableObject
+class KADUAPI BuddyShared : public QObject, public QSharedData, public UuidStorableObject
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(ContactData)
+	Q_DISABLE_COPY(BuddyShared)
 
 public:
-	enum ContactGender
+	enum BuddyGender
 	{
 		GenderUnknown,
 		GenderMale,
 		GenderFemale
 	};
 
-	enum ContactType
+	enum BuddyType
 	{
 		TypeNull = 0,
 		TypeAnonymous = 1,
@@ -55,7 +55,7 @@ private:
 	QMap<QString, QString> CustomData;
 	QMap<Account, ContactAccountData *> AccountsData;
 
-	ContactType Type;
+	BuddyType Type;
 
 	int BlockUpdatedSignalCount;
 	bool Updated;
@@ -72,7 +72,7 @@ private:
 	QString Email;
 	QString Website;
 	unsigned short BirthYear;
-	ContactGender Gender;
+	BuddyGender Gender;
 	QList<Group *> Groups;
 
 	bool Ignored;
@@ -86,10 +86,10 @@ private slots:
 	void accountContactDataIdChanged(const QString &id);
 
 public:
-	static ContactData * loadFromStorage(StoragePoint *contactStoragePoint);
+	static BuddyShared * loadFromStorage(StoragePoint *contactStoragePoint);
 
-	explicit ContactData(ContactType type, QUuid uuid = QUuid());
-	virtual ~ContactData();
+	explicit BuddyShared(BuddyType type, QUuid uuid = QUuid());
+	virtual ~BuddyShared();
 
 	void importConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
 
@@ -120,7 +120,7 @@ public:
 	bool isNull() const { return TypeNull == Type; }
 	bool isAnonymous() const { return TypeAnonymous == Type; }
 
-	void setType(ContactType type) { Type = type; }
+	void setType(BuddyType type) { Type = type; }
 
 	// properties
 	bool isIgnored();
@@ -145,7 +145,7 @@ public:
 	Property(QString, email, Email)
 	Property(QString, website, Website)
 	Property(unsigned short, birthYear, BirthYear)
-	Property(ContactGender, gender, Gender)
+	Property(BuddyGender, gender, Gender)
 	Property(QList<Group *>, groups, Groups)
 
 signals:

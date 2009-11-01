@@ -17,7 +17,7 @@ ConferenceChat::ConferenceChat(StoragePoint *storage) :
 {
 }
 
-ConferenceChat::ConferenceChat(Account currentAccount, ContactSet contacts, QUuid uuid) :
+ConferenceChat::ConferenceChat(Account currentAccount, BuddySet contacts, QUuid uuid) :
 		Chat(currentAccount, uuid), CurrentContacts(contacts)
 {
 }
@@ -32,7 +32,7 @@ void ConferenceChat::load()
 		return;
 
 	Chat::load();
-	CurrentContacts = ContactSetConfigurationHelper::loadFromConfiguration(this, "Contacts");
+	CurrentContacts = BuddySetConfigurationHelper::loadFromConfiguration(this, "Contacts");
 	refreshTitle();
 }
 
@@ -43,7 +43,7 @@ void ConferenceChat::store()
 
 	Chat::store();
 	storeValue("Type", "Conference");
-	ContactSetConfigurationHelper::saveToConfiguration(this, "Contacts", CurrentContacts);
+	BuddySetConfigurationHelper::saveToConfiguration(this, "Contacts", CurrentContacts);
 }
 
 ChatType ConferenceChat::type() const
@@ -54,7 +54,7 @@ ChatType ConferenceChat::type() const
 QString ConferenceChat::name() const
 {
 	QStringList displays;
-	foreach (Contact contact, CurrentContacts)
+	foreach (Buddy contact, CurrentContacts)
 		displays.append(contact.display());
 
 	displays.sort();

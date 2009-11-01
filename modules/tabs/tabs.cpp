@@ -69,7 +69,7 @@ extern "C" KADU_EXPORT void tabs_close()
 void disableNewTab(Action *action)
 {
 	action->setEnabled(false);
-	ContactSet contacts = action->contacts();
+	BuddySet contacts = action->contacts();
 
 	if (!contacts.count())
 		return;
@@ -86,7 +86,7 @@ void disableNewTab(Action *action)
 		action->setText(qApp->translate("TabsManager", "Open in new tab"));
 
 	// TODO 0.6.6 dla siebie samego deaktywujemy opcje w menu, a konfernecje?
-	foreach (const Contact &contact, contacts)
+	foreach (const Buddy &contact, contacts)
 	{
 		if (Core::instance()->myself() == contact)
 			return;
@@ -352,7 +352,7 @@ void TabsManager::onNewTab(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-	ContactSet contacts = window->contacts();
+	BuddySet contacts = window->contacts();
 	int contactsCount = contacts.count();
 
 	if (0 == contactsCount)
@@ -406,7 +406,7 @@ void TabsManager::insertTab(ChatWidget* chat)
 	else
 		chat->kaduRestoreGeometry();
 
-	ContactSet contacts = chat->chat()->contacts();
+	BuddySet contacts = chat->chat()->contacts();
 
 	detachedchats.removeOne(chat);
 
@@ -586,7 +586,7 @@ void TabsManager::attachToTabsActionCreated(Action *action)
 	if (!chatWidget)
 		return;
 
-	ContactSet contacts = action->contacts();
+	BuddySet contacts = action->contacts();
 
 	if (contacts.count() != 1 && !config_conferencesInTabs && tabdialog->indexOf(chatWidget) == -1)
 		action->setEnabled(false);
@@ -868,7 +868,7 @@ QString TabsManager::formatTabName(ChatWidget * chatWidget)
 		TabName = tr("Conference [%1]").arg(contactsCount);
 	else
 		//TabName = chat->contacts()[0].display();
-		TabName = chatWidget->chat()->contacts().toContactList()[0].display();
+		TabName = chatWidget->chat()->contacts().toBuddyList()[0].display();
 
 	return TabName;
 }

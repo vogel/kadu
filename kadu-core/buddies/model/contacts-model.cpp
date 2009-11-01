@@ -19,33 +19,33 @@
 
 #include "contacts-model.h"
 
-ContactsModel::ContactsModel(ContactManager *manager, QObject *parent)
+ContactsModel::ContactsModel(BuddyManager *manager, QObject *parent)
 	: ContactsModelBase(parent), Manager(manager)
 {
 	triggerAllAccountsRegistered();
 
-	connect(Manager, SIGNAL(contactAboutToBeAdded(Contact &)),
-			this, SLOT(contactAboutToBeAdded(Contact &)));
-	connect(Manager, SIGNAL(contactAdded(Contact &)),
-			this, SLOT(contactAdded(Contact &)));
-	connect(Manager, SIGNAL(contactAboutToBeRemoved(Contact &)),
-			this, SLOT(contactAboutToBeRemoved(Contact &)));
-	connect(Manager, SIGNAL(contactRemoved(Contact &)),
-			this, SLOT(contactRemoved(Contact &)));
+	connect(Manager, SIGNAL(buddyAboutToBeAdded(Buddy &)),
+			this, SLOT(contactAboutToBeAdded(Buddy &)));
+	connect(Manager, SIGNAL(buddyAdded(Buddy &)),
+			this, SLOT(contactAdded(Buddy &)));
+	connect(Manager, SIGNAL(buddyAboutToBeRemoved(Buddy &)),
+			this, SLOT(contactAboutToBeRemoved(Buddy &)));
+	connect(Manager, SIGNAL(contactRemoved(Buddy &)),
+			this, SLOT(contactRemoved(Buddy &)));
 }
 
 ContactsModel::~ContactsModel()
 {
 	triggerAllAccountsUnregistered();
 
-	disconnect(Manager, SIGNAL(contactAboutToBeAdded(Contact &)),
-			this, SLOT(contactAboutToBeAdded(Contact &)));
-	disconnect(Manager, SIGNAL(contactAdded(Contact &)),
-			this, SLOT(contactAdded(Contact &)));
-	disconnect(Manager, SIGNAL(contactAboutToBeRemoved(Contact &)),
-			this, SLOT(contactAboutToBeRemoved(Contact &)));
-	disconnect(Manager, SIGNAL(contactRemoved(Contact &)),
-			this, SLOT(contactRemoved(Contact &)));
+	disconnect(Manager, SIGNAL(buddyAboutToBeAdded(Buddy &)),
+			this, SLOT(contactAboutToBeAdded(Buddy &)));
+	disconnect(Manager, SIGNAL(buddyAdded(Buddy &)),
+			this, SLOT(contactAdded(Buddy &)));
+	disconnect(Manager, SIGNAL(buddyAboutToBeRemoved(Buddy &)),
+			this, SLOT(contactAboutToBeRemoved(Buddy &)));
+	disconnect(Manager, SIGNAL(contactRemoved(Buddy &)),
+			this, SLOT(contactRemoved(Buddy &)));
 }
 
 int ContactsModel::rowCount(const QModelIndex &parent) const
@@ -56,35 +56,35 @@ int ContactsModel::rowCount(const QModelIndex &parent) const
 	return Manager->count();
 }
 
-Contact ContactsModel::contact(const QModelIndex &index) const
+Buddy ContactsModel::contact(const QModelIndex &index) const
 {
 	QModelIndex parent = index.parent();
 	return Manager->byIndex(parent.isValid() ? parent.row() : index.row());
 }
 
-const QModelIndex ContactsModel::contactIndex(Contact contact) const
+const QModelIndex ContactsModel::contactIndex(Buddy contact) const
 {
 	return index(Manager->contactIndex(contact), 0);
 }
 
-void ContactsModel::contactAboutToBeAdded(Contact &contact)
+void ContactsModel::contactAboutToBeAdded(Buddy &contact)
 {
 	int count = rowCount();
 	beginInsertRows(QModelIndex(), count, count);
 }
 
-void ContactsModel::contactAdded(Contact &contact)
+void ContactsModel::contactAdded(Buddy &contact)
 {
 	endInsertRows();
 }
 
-void ContactsModel::contactAboutToBeRemoved(Contact &contact)
+void ContactsModel::contactAboutToBeRemoved(Buddy &contact)
 {
     	int index = contactIndex(contact).row();
 	beginRemoveRows(QModelIndex(), index, index);
 }
 
-void ContactsModel::contactRemoved(Contact &contact)
+void ContactsModel::contactRemoved(Buddy &contact)
 {
     	endRemoveRows();
 }

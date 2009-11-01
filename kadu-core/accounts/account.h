@@ -87,8 +87,8 @@ public:
 
 	void importProxySettings();
 
-	Contact getContactById(const QString &id);
-	Contact createAnonymous(const QString &id);
+	Buddy getContactById(const QString &id);
+	Buddy createAnonymous(const QString &id);
 
 	StatusContainer * statusContainer() { return Data.data(); }
 
@@ -109,7 +109,7 @@ public:
 	Property(QString, proxyPassword, ProxyPassword, QString::null)
 
 signals:
-	void contactStatusChanged(Account account, Contact contact, Status oldStatus);
+	void contactStatusChanged(Account account, Buddy contact, Status oldStatus);
 
 };
 

@@ -10,7 +10,7 @@
 #include "main_configuration_window.h"
 
 class ChatWidget;
-class ContactList;
+class BuddyList;
 
 void fillEditor(ChatWidget *chat, QStringList &messages);
 
@@ -87,7 +87,7 @@ class SendSplitted : public QObject
 		 * \param receivers list of message's receivers (unused here)
 		 * \param message the message (not used here)
 		 */
-		void onMessageSent(ContactList receivers, const QString &message);
+		void onMessageSent(BuddyList receivers, const QString &message);
 		
 		//! Called when next part of the message is to be sent
 		void sendNextPart();

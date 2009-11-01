@@ -102,14 +102,14 @@ void ContactsListView::removeFilter(AbstractContactFilter *filter)
 	ProxyModel->removeFilter(filter);
 }
 
-Contact ContactsListView::currentContact() const
+Buddy ContactsListView::currentContact() const
 {
 	return contact(currentIndex());
 }
 
-ContactSet ContactsListView::selectedContacts() const
+BuddySet ContactsListView::selectedContacts() const
 {
-	ContactSet result;
+	BuddySet result;
 
 	QModelIndexList selectionList = selectedIndexes();
 	foreach (QModelIndex selection, selectionList)
@@ -118,11 +118,11 @@ ContactSet ContactsListView::selectedContacts() const
 	return result;
 }
 
-Contact ContactsListView::contact(const QModelIndex &index) const
+Buddy ContactsListView::contact(const QModelIndex &index) const
 {
 	const AbstractContactsModel *model = dynamic_cast<const AbstractContactsModel *>(index.model());
 	if (!model)
-		return Contact::null;
+		return Buddy::null;
 
 	return model->contact(index);
 }
@@ -136,11 +136,11 @@ void ContactsListView::triggerActivate(const QModelIndex& index)
 	if (account.isNull())
 		return;
 
-	Contact con = contact(index);
+	Buddy con = contact(index);
 	if (con.isNull())
 		return;
 
-	Chat *chat = account.protocolHandler()->findChat(ContactSet(con));
+	Chat *chat = account.protocolHandler()->findChat(BuddySet(con));
 	if (chat)
 		emit chatActivated(chat);
 }
@@ -150,7 +150,7 @@ void ContactsListView::contextMenuEvent(QContextMenuEvent *event)
 	if (!MyMainWindow)
 		return;
 
-	Contact con = contact(indexAt(event->pos()));
+	Buddy con = contact(indexAt(event->pos()));
 	if (con.isNull())
 		return;
 
@@ -295,7 +295,7 @@ void ContactsListView::currentChanged(const QModelIndex& current, const QModelIn
 
 	if (!current.isValid())
 		return;
-	Contact con = contact(current);
+	Buddy con = contact(current);
 	if (!con.isNull())
 		emit currentContactChanged(con);
 }
@@ -387,7 +387,7 @@ void ContactsListView::toolTipTimeout()
 
 void ContactsListView::toolTipRestart()
 {
-	Contact con = contact(indexAt(mapFromGlobal(QCursor::pos())));
+	Buddy con = contact(indexAt(mapFromGlobal(QCursor::pos())));
 
 	if (!con.isNull())
 	{
@@ -398,7 +398,7 @@ void ContactsListView::toolTipRestart()
 	else
 	{
 		toolTipHide();
-		ToolTipContact = Contact::null;
+		ToolTipContact = Buddy::null;
 	}
 
 	ToolTipTimeoutTimer.start(TOOL_TIP_TIMEOUT);

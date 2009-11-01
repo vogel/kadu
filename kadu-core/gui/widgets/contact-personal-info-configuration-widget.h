@@ -28,11 +28,11 @@ class KADUAPI ContactPersonalInfoConfigurationWidget : public QWidget
 	*BirthdateText, *CityText, *StateProvinceText, *IpText, *PortText,
 	*DnsNameText, *ProtocolVerText;
 
-	Contact CurrentContact;
+	Buddy CurrentContact;
 	void createGui();
 
 public:
-	ContactPersonalInfoConfigurationWidget(Contact &contact, QWidget *parent = 0);
+	ContactPersonalInfoConfigurationWidget(Buddy &contact, QWidget *parent = 0);
 	~ContactPersonalInfoConfigurationWidget();
 
 private slots:

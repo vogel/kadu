@@ -27,10 +27,10 @@
 #include "parser.h"
 
 QMap<QString, QString> Parser::globalVariables;
-QMap<QString, QString (*)(const Contact &)> Parser::registeredTags;
+QMap<QString, QString (*)(const Buddy &)> Parser::registeredTags;
 QMap<QString, QString (*)(const QObject * const)> Parser::registeredObjectTags;
 
-bool Parser::registerTag(const QString &name, QString (*func)(const Contact &))
+bool Parser::registerTag(const QString &name, QString (*func)(const Buddy &))
 {
 	kdebugf();
 	if (registeredTags.contains(name))
@@ -46,7 +46,7 @@ bool Parser::registerTag(const QString &name, QString (*func)(const Contact &))
 	}
 }
 
-bool Parser::unregisterTag(const QString &name, QString (* /*func*/)(const Contact &))
+bool Parser::unregisterTag(const QString &name, QString (* /*func*/)(const Buddy &))
 {
 	kdebugf();
 	if (!registeredTags.contains(name))
@@ -124,15 +124,15 @@ QString Parser::executeCmd(const QString &cmd)
 
 QString Parser::parse(const QString &s, const QObject * const object, bool escape)
 {
-    	return parse(s, Account::null, Contact::null, object, escape);
+    	return parse(s, Account::null, Buddy::null, object, escape);
 }
 
-QString Parser::parse(const QString &s, Account account, const Contact &contact, bool escape)
+QString Parser::parse(const QString &s, Account account, const Buddy &contact, bool escape)
 {
 	return parse(s, account, contact, 0, escape);
 }
 
-QString Parser::parse(const QString &s, Account account, const Contact &contact, const QObject * const object, bool escape)
+QString Parser::parse(const QString &s, Account account, const Buddy &contact, const QObject * const object, bool escape)
 {
 	kdebugmf(KDEBUG_DUMP, "%s escape=%i\n", qPrintable(s), escape);
 	int index = 0, i, len = s.length();

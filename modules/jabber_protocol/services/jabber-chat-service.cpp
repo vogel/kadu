@@ -42,9 +42,9 @@ JabberChatService::JabberChatService(JabberProtocol *protocol)
 bool JabberChatService::sendMessage(Chat *chat, FormattedMessage &formattedMessage)
 {
 	kdebugf();
-	ContactSet contacts = chat->contacts();
+	BuddySet contacts = chat->contacts();
         // TODO send to more users
-	Contact contact = (*contacts.begin());
+	Buddy contact = (*contacts.begin());
 	//QString cleanmsg = toPlainText(mesg);
 	QString plain = formattedMessage.toPlain();
 	const XMPP::Jid jus = contact.id(Protocol->account());
@@ -99,8 +99,8 @@ void JabberChatService::clientMessageReceived(const XMPP::Message &msg)
 		return;
 
 	// TODO - zaimplementowac to samo w ContactList
-	Contact contact = Protocol->account().getContactById(msg.from().bare());
-	ContactSet contacts = ContactSet(contact);
+	Buddy contact = Protocol->account().getContactById(msg.from().bare());
+	BuddySet contacts = BuddySet(contact);
 	time_t msgtime = msg.timeStamp().toTime_t();
 	FormattedMessage formattedMessage(msg.body());
 

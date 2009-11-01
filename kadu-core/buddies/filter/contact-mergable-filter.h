@@ -18,15 +18,15 @@ class ContactMergableFilter : public AbstractContactFilter
 	Q_OBJECT
 
 	QSet<Account> Accounts;
-	Contact MyContact;
+	Buddy MyContact;
 
 public:
-	explicit ContactMergableFilter(Contact contact, QObject *parent = 0);
+	explicit ContactMergableFilter(Buddy contact, QObject *parent = 0);
 	virtual ~ContactMergableFilter();
 
-	virtual bool acceptContact(Contact contact);
+	virtual bool acceptContact(Buddy contact);
 
-	void setContact(Contact contact);
+	void setContact(Buddy contact);
 
 };
 

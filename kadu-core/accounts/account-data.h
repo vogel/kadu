@@ -22,7 +22,7 @@
 	void set##capitalized_name(type name) { ensureLoaded(); capitalized_name = name; dataUpdated(); }
 
 class AccountDetails;
-class Contact;
+class Buddy;
 class Protocol;
 class ProtocolFactory;
 
@@ -121,7 +121,7 @@ public:
 	virtual void setPrivateStatus(bool isPrivate);
 
 signals:
-	void contactStatusChanged(Account account, Contact contact, Status oldStatus);
+	void contactStatusChanged(Account account, Buddy contact, Status oldStatus);
 
 	void updated();
 

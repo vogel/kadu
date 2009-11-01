@@ -32,17 +32,17 @@ ContactsModelBase::~ContactsModelBase()
 
 void ContactsModelBase::accountRegistered(Account account)
 {
-	connect(account.data(), SIGNAL(contactStatusChanged(Account, Contact, Status)),
-			this, SLOT(contactStatusChanged(Account, Contact, Status)));
+	connect(account.data(), SIGNAL(contactStatusChanged(Account, Buddy, Status)),
+			this, SLOT(contactStatusChanged(Account, Buddy, Status)));
 }
 
 void ContactsModelBase::accountUnregistered(Account account)
 {
-	disconnect(account.data(), SIGNAL(contactStatusChanged(Account, Contact, Status)),
-			this, SLOT(contactStatusChanged(Account, Contact, Status)));
+	disconnect(account.data(), SIGNAL(contactStatusChanged(Account, Buddy, Status)),
+			this, SLOT(contactStatusChanged(Account, Buddy, Status)));
 }
 
-void ContactsModelBase::contactStatusChanged(Account account, Contact contact, Status oldStatus)
+void ContactsModelBase::contactStatusChanged(Account account, Buddy contact, Status oldStatus)
 {
 	QModelIndex index = contactIndex(contact);
 
@@ -65,7 +65,7 @@ int ContactsModelBase::rowCount(const QModelIndex &parentIndex) const
 	if (!parentIndex.isValid() || parent(parentIndex).isValid())
 		return 0;
 
-	Contact con = contact(parentIndex);
+	Buddy con = contact(parentIndex);
 	return con.accountDatas().size();
 }
 
@@ -98,7 +98,7 @@ QVariant ContactsModelBase::headerData(int section, Qt::Orientation orientation,
 
 ContactAccountData * ContactsModelBase::contactDefaultAccountData(const QModelIndex &index) const
 {
-	Contact con = contact(index);
+	Buddy con = contact(index);
 	if (con.isNull())
 		return 0;
 
@@ -111,7 +111,7 @@ ContactAccountData * ContactsModelBase::contactDefaultAccountData(const QModelIn
 
 ContactAccountData * ContactsModelBase::contactAccountData(const QModelIndex &index, int accountIndex) const
 {
-	Contact con = contact(index);
+	Buddy con = contact(index);
 	if (con.isNull())
 		return 0;
 
@@ -122,7 +122,7 @@ ContactAccountData * ContactsModelBase::contactAccountData(const QModelIndex &in
 	return accountDatas[accountIndex];
 }
 
-QVariant ContactsModelBase::data(Contact contact, int role) const
+QVariant ContactsModelBase::data(Buddy contact, int role) const
 {
 	switch (role)
 	{
@@ -203,22 +203,22 @@ QVariant ContactsModelBase::data(const QModelIndex &index, int role) const
 
 QStringList ContactsModelBase::mimeTypes() const
 {
-	return ContactListMimeDataHelper::mimeTypes();
+	return BuddyListMimeDataHelper::mimeTypes();
 }
 
 QMimeData * ContactsModelBase::mimeData(const QModelIndexList &indexes) const
 {
-	ContactList list;
+	BuddyList list;
 	foreach (QModelIndex index, indexes)
 	{
 		QVariant conVariant = index.data(ContactRole);;
-		if (!conVariant.canConvert<Contact>())
+		if (!conVariant.canConvert<Buddy>())
 			continue;
-		Contact con = conVariant.value<Contact>();
+		Buddy con = conVariant.value<Buddy>();
 		if (con.isNull())
 			continue;
 		list << con;
 	}
 
-	return ContactListMimeDataHelper::toMimeData(list);
+	return BuddyListMimeDataHelper::toMimeData(list);
 }

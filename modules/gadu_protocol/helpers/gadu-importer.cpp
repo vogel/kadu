@@ -79,16 +79,16 @@ void GaduImporter::importAccounts()
 
 void GaduImporter::importContacts()
 {
-	connect(ContactManager::instance(), SIGNAL(contactAdded(Contact &)),
-			this, SLOT(contactAdded(Contact &)));
+	connect(BuddyManager::instance(), SIGNAL(buddyAdded(Buddy &)),
+			this, SLOT(contactAdded(Buddy &)));
 
-	foreach (Contact contact, ContactManager::instance()->contacts())
+	foreach (Buddy contact, BuddyManager::instance()->buddies())
 		contactAdded(contact);
 
 	importIgnored();
 }
 
-void GaduImporter::importGaduContact(Contact& contact)
+void GaduImporter::importGaduContact(Buddy& contact)
 {
 	Account account = AccountManager::instance()->defaultAccount();
 	QString id = contact.customData()["uin"];
@@ -124,7 +124,7 @@ void GaduImporter::importIgnored()
 		if (ignoredGroup.isNull())
 			continue;
 
-		ContactSet ignoredList;
+		BuddySet ignoredList;
 		QDomNodeList ignoredContacts = xml_config_file->getNodes(ignoredGroup, "IgnoredContact");
 		for (int j = 0; j < ignoredContacts.count(); j++)
 		{
@@ -132,7 +132,7 @@ void GaduImporter::importIgnored()
 			if (ignoredContact.isNull())
 				continue;
 
-			ignoredList.insert(ContactManager::instance()->byId(account, ignoredContact.attribute("uin")));
+			ignoredList.insert(BuddyManager::instance()->byId(account, ignoredContact.attribute("uin")));
 		}
 
 		if (0 == ignoredList.count())
@@ -142,7 +142,7 @@ void GaduImporter::importIgnored()
 	}
 }
 
-void GaduImporter::contactAdded(Contact &contact)
+void GaduImporter::contactAdded(Buddy &contact)
 {
 	if (contact.customData().contains("uin"))
 		importGaduContact(contact);

@@ -19,8 +19,8 @@
 #include "exports.h"
 
 class ActionDescription;
-class Contact;
-class ContactSet;
+class Buddy;
+class BuddySet;
 class MainWindow;
 
 class KADUAPI Action : public QAction
@@ -45,8 +45,8 @@ public:
 	Action(ActionDescription *description, MainWindow *parent);
 	virtual ~Action();
 
-	Contact contact();
-	ContactSet contacts();
+	Buddy contact();
+	BuddySet contacts();
 
 public slots:
 	void checkState();

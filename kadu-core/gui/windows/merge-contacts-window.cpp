@@ -21,7 +21,7 @@
 
 #include "merge-contacts-window.h"
 
-MergeContactsWindow::MergeContactsWindow(Contact contact, QWidget * parent) :
+MergeContactsWindow::MergeContactsWindow(Buddy contact, QWidget * parent) :
 		QDialog(parent), MyContact(contact)
 {
 	createGui();
@@ -46,7 +46,7 @@ void MergeContactsWindow::createGui()
 	chooseLayout->addWidget(new QLabel(tr("Contact:"), this));
 	SelectCombo = new SelectContactCombobox(this);
 	SelectCombo->addFilter(new ContactMergableFilter(MyContact, SelectCombo));
-	connect(SelectCombo, SIGNAL(contactChanged(Contact)), this, SLOT(selectedContactChanged(Contact)));
+	connect(SelectCombo, SIGNAL(contactChanged(Buddy)), this, SLOT(selectedContactChanged(Buddy)));
 	chooseLayout->addWidget(SelectCombo);
 
 	layout->addStretch(100);
@@ -65,21 +65,21 @@ void MergeContactsWindow::createGui()
 	buttons->addButton(cancel, QDialogButtonBox::DestructiveRole);
 }
 
-void MergeContactsWindow::selectedContactChanged(Contact contact)
+void MergeContactsWindow::selectedContactChanged(Buddy contact)
 {
 	MergeButton->setEnabled(!contact.isNull());
 }
 
 void MergeContactsWindow::accept()
 {
-	Contact mergeWith = SelectCombo->contact();
+	Buddy mergeWith = SelectCombo->contact();
 	if (mergeWith.isNull())
 		return;
 
 	if (MyContact.isNull())
 		return;
 
-	ContactManager::instance()->mergeContact(mergeWith, MyContact);
+	BuddyManager::instance()->mergeBuddies(mergeWith, MyContact);
 
 	QDialog::accept();
 }

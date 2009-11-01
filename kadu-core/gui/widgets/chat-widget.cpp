@@ -121,11 +121,11 @@ void ChatWidget::createContactsList()
 	layout->setSpacing(0);
 
 	ContactsWidget = new ContactsListView(getChatEditBox(), this);
-	ContactsWidget->setModel(new ContactListModel(CurrentChat->contacts().toContactList(), this));
+	ContactsWidget->setModel(new ContactListModel(CurrentChat->contacts().toBuddyList(), this));
 	ContactsWidget->setMinimumSize(QSize(30, 30));
 
-	connect(ContactsWidget, SIGNAL(contactActivated(Contact)),
-			Core::instance()->kaduWindow(), SLOT(sendMessage(Contact)));
+	connect(ContactsWidget, SIGNAL(contactActivated(Buddy)),
+			Core::instance()->kaduWindow(), SLOT(sendMessage(Buddy)));
 
 	QPushButton *leaveConference = new QPushButton(tr("Leave conference"), contactsListContainer);
 	leaveConference->setMinimumWidth(ContactsWidget->minimumWidth());

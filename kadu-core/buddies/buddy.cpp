@@ -21,113 +21,113 @@
 
 #include "buddy.h"
 
-Contact Contact::null(ContactData::TypeNull);
+Buddy Buddy::null(BuddyShared::TypeNull);
 
-Contact Contact::loadFromStorage(StoragePoint* contactStoragePoint)
+Buddy Buddy::loadFromStorage(StoragePoint* contactStoragePoint)
 {
-	return Contact(ContactData::loadFromStorage(contactStoragePoint));
+	return Buddy(BuddyShared::loadFromStorage(contactStoragePoint));
 }
 
-Contact::Contact(ContactData *contactData) :
+Buddy::Buddy(BuddyShared *contactData) :
 		Data(contactData)
 {
 }
 
-Contact::Contact(ContactData::ContactType type) :
-		Data(ContactData::TypeNull != type ? new ContactData(type) : 0)
+Buddy::Buddy(BuddyShared::BuddyType type) :
+		Data(BuddyShared::TypeNull != type ? new BuddyShared(type) : 0)
 {
 }
 
-Contact::Contact(const Contact &copy) :
+Buddy::Buddy(const Buddy &copy) :
 		Data(copy.Data)
 {
 }
 
-Contact::~Contact()
+Buddy::~Buddy()
 {
 }
 
-void Contact::checkNull()
+void Buddy::checkNull()
 {
 	if (isNull())
-		Data = new ContactData(ContactData::TypeNull);
+		Data = new BuddyShared(BuddyShared::TypeNull);
 }
 
-Contact & Contact::operator = (const Contact& copy)
+Buddy & Buddy::operator = (const Buddy& copy)
 {
 	Data = copy.Data;
 	return *this;
 }
 
-bool Contact::operator == (const Contact& compare) const
+bool Buddy::operator == (const Buddy& compare) const
 {
 	return Data == compare.Data;
 }
 
-bool Contact::operator != (const Contact& compare) const
+bool Buddy::operator != (const Buddy& compare) const
 {
 	return Data != compare.Data;
 }
 
-int Contact::operator < (const Contact& compare) const
+int Buddy::operator < (const Buddy& compare) const
 {
 	return Data.data() - compare.Data.data();
 }
 
-void Contact::importConfiguration(XmlConfigFile *configurationStorage, QDomElement parent)
+void Buddy::importConfiguration(XmlConfigFile *configurationStorage, QDomElement parent)
 {
 	Data->importConfiguration(configurationStorage, parent);
 }
 
-void Contact::loadConfiguration()
+void Buddy::loadConfiguration()
 {
 	Data->load();
 }
 
-void Contact::store()
+void Buddy::store()
 {
-	if ((!isNull() && !isAnonymous()) || (isAnonymous() && !ContactRemovePredicateObject::inquireAll(*this)))
+	if ((!isNull() && !isAnonymous()) || (isAnonymous() && !BuddyRemovePredicateObject::inquireAll(*this)))
 		Data->store();
 	else
 		Data->removeFromStorage();
 }
 
-void Contact::removeFromStorage()
+void Buddy::removeFromStorage()
 {
 	Data->removeFromStorage();
 }
 
-StoragePoint * Contact::storagePointForModuleData(const QString& module, bool create) const
+StoragePoint * Buddy::storagePointForModuleData(const QString& module, bool create) const
 {
 	return Data->storagePointForModuleData(module, create);
 }
 
-QUuid Contact::uuid() const
+QUuid Buddy::uuid() const
 {
 	return isNull() ? QUuid() : Data->uuid();
 }
 
-QMap<QString, QString> & Contact::customData()
+QMap<QString, QString> & Buddy::customData()
 {
 	checkNull();
 	return Data->customData();
 }
 
-Account Contact::prefferedAccount() const
+Account Buddy::prefferedAccount() const
 {
 	return isNull()
 			? Account::null
 			: Data->prefferedAccount();
 }
 
-QList<Account> Contact::accounts() const
+QList<Account> Buddy::accounts() const
 {
 	return isNull()
 		? QList<Account>()
 		: Data->accounts();
 }
 
-void Contact::addAccountData(ContactAccountData *accountData)
+void Buddy::addAccountData(ContactAccountData *accountData)
 {
 	if (!accountData)
 		return;
@@ -136,114 +136,114 @@ void Contact::addAccountData(ContactAccountData *accountData)
 	Data->addAccountData(accountData);
 }
 
-void Contact::removeAccountData(ContactAccountData *accountData) const
+void Buddy::removeAccountData(ContactAccountData *accountData) const
 {
 	if (!isNull())
 		Data->removeAccountData(accountData);
 }
 
-void Contact::removeAccountData(Account account) const
+void Buddy::removeAccountData(Account account) const
 {
 	if (!isNull())
 		Data->removeAccountData(account);
 }
 
-ContactAccountData * Contact::accountData(Account account) const
+ContactAccountData * Buddy::accountData(Account account) const
 {
 	return isNull()
 			? 0
 			: Data->accountData(account);
 }
 
-QList<ContactAccountData *> Contact::accountDatas() const
+QList<ContactAccountData *> Buddy::accountDatas() const
 {
 	return isNull()
 			? QList<ContactAccountData *>()
 			: Data->accountDatas();
 }
 
-StoragePoint * Contact::storagePointForAccountData(Account account) const
+StoragePoint * Buddy::storagePointForAccountData(Account account) const
 {
 	return isNull()
 			? 0
 			: Data->storagePointForAccountData(account);
 }
 
-bool Contact::hasAccountData(Account account) const
+bool Buddy::hasAccountData(Account account) const
 {
 	return isNull()
 			? false
 			: 0 != Data->accountData(account);
 }
 
-QString Contact::id(Account account) const
+QString Buddy::id(Account account) const
 {
 	return isNull()
 			? QString::null
 			: Data->id(account);
 }
 
-bool Contact::isIgnored() const
+bool Buddy::isIgnored() const
 {
 	return isNull()
 			? false
 			: Data->isIgnored();
 }
 
-bool Contact::setIgnored(bool ignored)
+bool Buddy::setIgnored(bool ignored)
 {
 	return isNull()
 		? false
 		: Data->setIgnored(ignored);
 }
 
-bool Contact::isBlocked(Account account) const
+bool Buddy::isBlocked(Account account) const
 {
 	return isNull()
 			? false
 			: Data->isBlocked(account);
 }
 
-bool Contact::isOfflineTo(Account account) const
+bool Buddy::isOfflineTo(Account account) const
 {
 	return isNull()
 			? false
 			: Data->isOfflineTo(account);
 }
 
-void Contact::setOfflineTo(Account account, bool offlineTo) const
+void Buddy::setOfflineTo(Account account, bool offlineTo) const
 {
 	if (!isNull())
 		Data->setOfflineTo(account, offlineTo);
 }
 
-bool Contact::isInGroup(Group *group) const
+bool Buddy::isInGroup(Group *group) const
 {
 	return isNull()
 			? false
 			: Data->isInGroup(group);
 }
 
-bool Contact::showInAllGroup() const
+bool Buddy::showInAllGroup() const
 {
 	return isNull()
 			? false
 			: Data->showInAllGroup();
 }
 
-void Contact::addToGroup(Group *group)
+void Buddy::addToGroup(Group *group)
 {
 	if (!isNull() && !Data->isInGroup(group))
 			Data->addToGroup(group);
 
 }
-void Contact::removeFromGroup(Group *group)
+void Buddy::removeFromGroup(Group *group)
 {
 	if (!isNull() && Data->isInGroup(group))
 		Data->removeFromGroup(group);
 }
 
-QString Contact::display() const
+QString Buddy::display() const
 {
 	return isNull()
 			? QString::null
@@ -256,9 +256,9 @@ QString Contact::display() const
 							: Data->display();
 }
 
-Contact Contact::dummy()
+Buddy Buddy::dummy()
 {
-	Contact example;
+	Buddy example;
 
 	example.setFirstName("Mark");
 	example.setLastName("Smith");
@@ -284,7 +284,7 @@ Contact Contact::dummy()
 	return example;
 }
 
-uint qHash(const Contact &contact)
+uint qHash(const Buddy &contact)
 {
 	return qHash(contact.uuid().toString());
 }

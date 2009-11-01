@@ -27,7 +27,7 @@ Preview::Preview(QWidget *parent)
 	setFixedHeight(170);
 	setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 
-	contact = Contact::dummy();
+	contact = Buddy::dummy();
 }
 
 Preview::~Preview()

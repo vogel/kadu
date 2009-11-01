@@ -10,7 +10,7 @@
 #include "non-in-contact-filter.h"
 
 NonInContactFilter::NonInContactFilter(QObject *parent) :
-		AbstractAccountFilter(parent), MyContact(Contact::null)
+		AbstractAccountFilter(parent), MyContact(Buddy::null)
 {
 }
 
@@ -23,7 +23,7 @@ bool NonInContactFilter::acceptAccount(Account account)
 	return MyContact.isNull() || (0 == MyContact.accountData(account));
 }
 
-void NonInContactFilter::setContact(Contact contact)
+void NonInContactFilter::setContact(Buddy contact)
 {
 	if (MyContact != contact)
 	{

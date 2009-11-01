@@ -26,15 +26,15 @@ GaduOpenChatWithRunner::GaduOpenChatWithRunner(Account account) :
 {
 }
 
-ContactList GaduOpenChatWithRunner::matchingContacts(const QString &query)
+BuddyList GaduOpenChatWithRunner::matchingContacts(const QString &query)
 {
 	kdebugf();
 
-	ContactList matchedContacts;
+	BuddyList matchedContacts;
 	if (!validateUserID(query))
 		return matchedContacts;
 
-	Contact c;
+	Buddy c;
 
 	GaduContactAccountData *gcad = new GaduContactAccountData(ParentAccount, c, query);
 	c.addAccountData(gcad);

@@ -18,7 +18,7 @@ class QTreeWidget;
 class UserlistImportExport : public QWidget {
 	Q_OBJECT
 
-	ContactList ImprotedContacts;
+	BuddyList ImprotedContacts;
 	bool Clear;
 
 	QPushButton *pb_fetch; /*!< przycisk pobierania listy */
@@ -29,7 +29,7 @@ class UserlistImportExport : public QWidget {
 	QTreeWidget *lv_userlist;
 
 private slots:
-	void contactListImported(bool ok, ContactList contacts);
+	void contactListImported(bool ok, BuddyList contacts);
 	void contactListExported(bool ok);
 
 	void startImportTransfer(void);

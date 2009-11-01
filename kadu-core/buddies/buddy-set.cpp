@@ -12,28 +12,28 @@
 
 #include "buddy-set.h"
 
-ContactSet::ContactSet()
+BuddySet::BuddySet()
 {
 }
 
-ContactSet::ContactSet(Contact contact)
+BuddySet::BuddySet(Buddy contact)
 {
 	insert(contact);
 }
 
-ContactList ContactSet::toContactList() const
+BuddyList BuddySet::toBuddyList() const
 {
 	return toList();
 }
 
-Account ContactSet::prefferedAccount()
+Account BuddySet::prefferedAccount()
 {
 	QList<Account> accounts;
 	QList<Account> contactAccounts;
 	int contactsCount = count();
 	// TODO 0.6.6 - Rework it if more than 1 account on the same proto.
 
-	foreach (Contact contact, toList())
+	foreach (Buddy contact, toList())
 	{
 		contactAccounts = contact.accounts();
 		// one contact have no account = no common account

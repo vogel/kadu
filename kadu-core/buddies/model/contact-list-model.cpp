@@ -18,7 +18,7 @@
 
 #include "contact-list-model.h"
 
-ContactListModel::ContactListModel(ContactList list, QObject *parent)
+ContactListModel::ContactListModel(BuddyList list, QObject *parent)
 	: ContactsModelBase(parent), List(list)
 {
 	triggerAllAccountsRegistered();
@@ -31,17 +31,17 @@ int ContactListModel::rowCount(const QModelIndex &parent) const
 		: List.count();
 }
 
-Contact ContactListModel::contact(const QModelIndex &index) const
+Buddy ContactListModel::contact(const QModelIndex &index) const
 {
 	QModelIndex parent = index.parent();
 	return parent.isValid()
 		? List.at(parent.row())
 		: index.isValid()
 			? List.at(index.row())
-			: Contact::null;
+			: Buddy::null;
 }
 
-const QModelIndex ContactListModel::contactIndex(Contact contact) const
+const QModelIndex ContactListModel::contactIndex(Buddy contact) const
 {
 	return index(List.indexOf(contact), 0);
 }

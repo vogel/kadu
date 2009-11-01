@@ -84,8 +84,8 @@ void Account::connectDataSignals()
 	if (isNull())
 		return;
 
-	connect(Data.data(), SIGNAL(contactStatusChanged(Account, Contact, Status)),
-			this, SIGNAL(contactStatusChanged(Account, Contact, Status)));
+	connect(Data.data(), SIGNAL(contactStatusChanged(Account, Buddy, Status)),
+			this, SIGNAL(contactStatusChanged(Account, Buddy, Status)));
 }
 
 void Account::disconnectDataSignals()
@@ -93,8 +93,8 @@ void Account::disconnectDataSignals()
 	if (isNull())
 		return;
 
-	disconnect(Data.data(), SIGNAL(contactStatusChanged(Account, Contact, Status)),
-			this, SIGNAL(contactStatusChanged(Account, Contact, Status)));
+	disconnect(Data.data(), SIGNAL(contactStatusChanged(Account, Buddy, Status)),
+			this, SIGNAL(contactStatusChanged(Account, Buddy, Status)));
 }
 
 QUuid Account::uuid() const
@@ -133,23 +133,23 @@ void Account::removeFromStorage()
 		Data->removeFromStorage();
 }
 
-Contact Account::getContactById(const QString& id)
+Buddy Account::getContactById(const QString& id)
 {
-	return ContactManager::instance()->byId(*this, id);
+	return BuddyManager::instance()->byId(*this, id);
 }
 
-Contact Account::createAnonymous(const QString& id)
+Buddy Account::createAnonymous(const QString& id)
 {
 	if (!Data)
-		return Contact::null;
+		return Buddy::null;
 
-	Contact result(ContactData::TypeAnonymous);
+	Buddy result(BuddyShared::TypeAnonymous);
 	ProtocolFactory *protocolFactory = Data->protocolHandler()->protocolFactory();
 	ContactAccountData *contactAccountData = protocolFactory->newContactAccountData(*this, result, id);
 	if (!contactAccountData->isValid())
 	{
 		delete contactAccountData;
-		return Contact::null;
+		return Buddy::null;
 	}
 
 	result.addAccountData(contactAccountData);

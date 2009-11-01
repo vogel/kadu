@@ -112,13 +112,13 @@ JabberFileTransfer::JabberFileTransfer(Account account) :
 {
 }
 
-JabberFileTransfer::JabberFileTransfer(Account account, Contact peer, FileTransferType transferType) :
+JabberFileTransfer::JabberFileTransfer(Account account, Buddy peer, FileTransferType transferType) :
 		FileTransfer(account, peer, transferType), InProgress(false)
 {
 }
 
 JabberFileTransfer::JabberFileTransfer(Account account, FileTransferType transferType, XMPP::FileTransfer *jTransfer) :
-		FileTransfer(account, ContactManager::instance()->byId(account, jTransfer->peer().bare()), transferType), 
+		FileTransfer(account, BuddyManager::instance()->byId(account, jTransfer->peer().bare()), transferType), 
 		InProgress(false), JabberTransfer(jTransfer)
 {
 }

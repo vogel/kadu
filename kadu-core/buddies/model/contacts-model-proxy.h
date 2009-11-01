@@ -40,8 +40,8 @@ public:
 	void removeFilter(AbstractContactFilter *filter);
 
 	// AbstractContactsModel implementation
-	virtual Contact contact(const QModelIndex &index) const;
-	virtual const QModelIndex contactIndex(Contact contact) const;
+	virtual Buddy contact(const QModelIndex &index) const;
+	virtual const QModelIndex contactIndex(Buddy contact) const;
 
 };
 

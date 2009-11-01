@@ -401,7 +401,7 @@ QList<Message> HistorySqlStorage::messagesFromQuery(Chat *chat, QSqlQuery query)
 	{
 		bool outgoing = QVariant(query.value(4).toString().split('=').last()).toBool();
 		Message::Type type = outgoing ? Message::TypeSent : Message::TypeReceived;
-		Contact sender = outgoing ? Core::instance()->myself() : ContactManager::instance()->byUuid(query.value(0).toString());
+		Buddy sender = outgoing ? Core::instance()->myself() : BuddyManager::instance()->byUuid(query.value(0).toString());
 		
 		Message message(chat, type, sender);
 		message

@@ -41,13 +41,13 @@ Chat::Chat(StoragePoint *storage) :
 Chat::Chat(Account currentAccount, QUuid uuid) :
 		UuidStorableObject("Chat", ChatManager::instance()), CurrentAccount(currentAccount), Uuid(uuid.isNull() ? QUuid::createUuid() : uuid)
 {
-	connect(&CurrentAccount, SIGNAL(contactStatusChanged(Account, Contact, Status)),
+	connect(&CurrentAccount, SIGNAL(contactStatusChanged(Account, Buddy, Status)),
 			this, SLOT(refreshTitle()));
 }
 
 Chat::~Chat()
 {
-	disconnect(&CurrentAccount, SIGNAL(contactStatusChanged(Account, Contact, Status)),
+	disconnect(&CurrentAccount, SIGNAL(contactStatusChanged(Account, Buddy, Status)),
 			this, SLOT(refreshTitle()));
 }
 
@@ -61,7 +61,7 @@ void Chat::load()
 	Uuid = loadAttribute<QString>("uuid");
 	CurrentAccount = AccountManager::instance()->byUuid(QUuid(loadValue<QString>("Account")));
 
-	connect(&CurrentAccount, SIGNAL(contactStatusChanged(Account, Contact, Status)),
+	connect(&CurrentAccount, SIGNAL(contactStatusChanged(Account, Buddy, Status)),
 			this, SLOT(refreshTitle()));
 	refreshTitle();
 }
@@ -98,7 +98,7 @@ void Chat::refreshTitle()
 		int i = 0;
 
 		if (config_file.readEntry("Look", "ConferenceContents").isEmpty())
-			foreach(const Contact contact, contacts())
+			foreach(const Buddy contact, contacts())
 			{
 				title.append(Parser::parse("%a", account(), contact, false));
 
@@ -106,7 +106,7 @@ void Chat::refreshTitle()
 					title.append(", ");
 			}
 		else
-			foreach(const Contact contact, contacts())
+			foreach(const Buddy contact, contacts())
 			{
 				title.append(Parser::parse(config_file.readEntry("Look", "ConferenceContents"), account(), contact, false));
 
@@ -118,7 +118,7 @@ void Chat::refreshTitle()
 	}
 	else if (contactsSize > 0)
 	{
-		Contact contact = *contacts().begin();
+		Buddy contact = *contacts().begin();
 
 		if (config_file.readEntry("Look", "ChatContents").isEmpty())
 		{

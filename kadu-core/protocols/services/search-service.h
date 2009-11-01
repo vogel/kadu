@@ -24,12 +24,12 @@ class KADUAPI SearchService : public QObject
 public:
 	SearchService(QObject *parent = 0) : QObject(parent) {}
 
-	virtual void searchFirst(ContactSearchCriteria criteria) = 0;
+	virtual void searchFirst(BuddySearchCriteria criteria) = 0;
 	virtual void searchNext() = 0;
 	virtual void stop() = 0;
 
 signals:
-	void newResults(ContactList contacts);
+	void newResults(BuddyList contacts);
 
 };
 

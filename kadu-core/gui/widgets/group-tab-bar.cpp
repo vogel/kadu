@@ -196,7 +196,7 @@ void GroupTabBar::dropEvent(QDropEvent *event)
 
 	event->acceptProposedAction();
 
-	ContactList contacts = ContactListMimeDataHelper::fromMimeData(event->mimeData());
+	BuddyList contacts = BuddyListMimeDataHelper::fromMimeData(event->mimeData());
 
 	QApplication::setOverrideCursor(QCursor(Qt::ArrowCursor));
 	QString groupUuid, groupName;
@@ -221,7 +221,7 @@ void GroupTabBar::dropEvent(QDropEvent *event)
 
 		Group *group = GroupManager::instance()->byName(newGroupName);
 
-		foreach (Contact contact, contacts)
+		foreach (Buddy contact, contacts)
 			contact.addToGroup(group);
 
 		QApplication::restoreOverrideCursor();
@@ -301,7 +301,7 @@ void GroupTabBar::addToGroup()
 	if (!currentGroup)
 		return;
 
-	foreach (Contact contact, currentContacts)
+	foreach (Buddy contact, currentContacts)
 		contact.addToGroup(currentGroup);
 }
 
@@ -312,7 +312,7 @@ void GroupTabBar::moveToGroup()
 
 	QStringList groups;
 
-	foreach (Contact contact, currentContacts)
+	foreach (Buddy contact, currentContacts)
 	{
 		contact.removeFromGroup(GroupManager::instance()->byUuid(tabData(currentIndex()).toString()));
 		contact.addToGroup(currentGroup);

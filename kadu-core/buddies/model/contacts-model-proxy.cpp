@@ -56,8 +56,8 @@ bool ContactsModelProxy::lessThan(const QModelIndex &left, const QModelIndex &ri
 	if (!SourceContactModel)
 		return QSortFilterProxyModel::lessThan(left, right);
 
-	Contact leftContact = SourceContactModel->contact(left);
-	Contact rightContact = SourceContactModel->contact(right);
+	Buddy leftContact = SourceContactModel->contact(left);
+	Buddy rightContact = SourceContactModel->contact(right);
 
 	Account leftAccount = leftContact.prefferedAccount();
 	Account rightAccount = rightContact.prefferedAccount();
@@ -87,7 +87,7 @@ bool ContactsModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex &sour
 	if (sourceParent.isValid())
 	    return true;
 
-	Contact contact = SourceContactModel->contact(sourceModel()->index(sourceRow, 0));
+	Buddy contact = SourceContactModel->contact(sourceModel()->index(sourceRow, 0));
 	foreach (AbstractContactFilter *filter, Filters)
 		if (!filter->acceptContact(contact))
 			return false;
@@ -109,15 +109,15 @@ void ContactsModelProxy::removeFilter(AbstractContactFilter *filter)
 	connect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
 }
 
-Contact ContactsModelProxy::contact(const QModelIndex &index) const
+Buddy ContactsModelProxy::contact(const QModelIndex &index) const
 {
 	if (!SourceContactModel)
-		return Contact::null;
+		return Buddy::null;
 
 	return SourceContactModel->contact(mapToSource(index));
 }
 
-const QModelIndex ContactsModelProxy::contactIndex(Contact contact) const
+const QModelIndex ContactsModelProxy::contactIndex(Buddy contact) const
 {
 	if (!SourceContactModel)
 		return QModelIndex();

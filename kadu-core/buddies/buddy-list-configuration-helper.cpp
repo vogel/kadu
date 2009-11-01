@@ -15,9 +15,9 @@
 
 #include "buddies/buddy-list-configuration-helper.h"
 
-ContactList ContactListConfigurationHelper::loadFromConfiguration(XmlConfigFile *configurationStorage, QDomElement contactListNode)
+BuddyList BuddyListConfigurationHelper::loadFromConfiguration(XmlConfigFile *configurationStorage, QDomElement contactListNode)
 {
-	ContactList result;
+	BuddyList result;
 	
 	QDomNodeList contactNodes = configurationStorage->getNodes(contactListNode, "Contact");
 	int count = contactNodes.count();
@@ -27,17 +27,17 @@ ContactList ContactListConfigurationHelper::loadFromConfiguration(XmlConfigFile 
 		QDomElement contactElement = contactNodes.item(i).toElement();
 		if (contactElement.isNull())
 			continue;
-		result.append(ContactManager::instance()->byUuid(contactElement.text()));
+		result.append(BuddyManager::instance()->byUuid(contactElement.text()));
 	}
 	
 	return result;
 }
 
-void ContactListConfigurationHelper::saveToConfiguration(XmlConfigFile *configurationStorage, QDomElement contactListNode, ContactList contactList)
+void BuddyListConfigurationHelper::saveToConfiguration(XmlConfigFile *configurationStorage, QDomElement contactListNode, BuddyList contactList)
 {
 	while (contactListNode.childNodes().count())
 		contactListNode.removeChild(contactListNode.childNodes().at(0));
 
-	foreach (Contact c, contactList)
+	foreach (Buddy c, contactList)
 		configurationStorage->appendTextNode(contactListNode, "Contact", c.uuid());
 }

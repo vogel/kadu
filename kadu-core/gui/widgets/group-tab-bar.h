@@ -25,7 +25,7 @@ class GroupTabBar : public QTabBar, ConfigurationAwareObject
 	GroupContactFilter *Filter;
 	//for dnd support
 	Group *currentGroup;
-	ContactList currentContacts;
+	BuddyList currentContacts;
 
 	bool showAllGroup;
 

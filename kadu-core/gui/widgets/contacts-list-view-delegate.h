@@ -44,7 +44,7 @@ class ContactsListViewDelegate : public QItemDelegate, public ConfigurationAware
 	QPixmap avatar(const QModelIndex &index) const;
 
 private slots:
-	void contactStatusChanged(Account account, Contact contact, Status oldStatus);
+	void contactStatusChanged(Account account, Buddy contact, Status oldStatus);
 	void modelDestroyed();
 
 protected:

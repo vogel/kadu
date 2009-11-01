@@ -27,7 +27,7 @@ void OnlineContactFilter::setEnabled(bool enabled)
 	emit filterChanged();
 }
 
-bool OnlineContactFilter::acceptContact(Contact contact)
+bool OnlineContactFilter::acceptContact(Buddy contact)
 {
 	if (!Enabled)
 		return true;

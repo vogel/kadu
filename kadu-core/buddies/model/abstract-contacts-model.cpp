@@ -15,11 +15,11 @@
 
 #include "abstract-contacts-model.h"
 
-Contact AbstractContactsModel::contact(const QModelIndex &index) const
+Buddy AbstractContactsModel::contact(const QModelIndex &index) const
 {
 	QVariant conVariant = index.data(ContactRole);
-	if (!conVariant.canConvert<Contact>())
-		return Contact::null;
+	if (!conVariant.canConvert<Buddy>())
+		return Buddy::null;
 
-	return conVariant.value<Contact>();
+	return conVariant.value<Buddy>();
 }

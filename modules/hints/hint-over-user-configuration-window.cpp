@@ -31,7 +31,7 @@
 
 #include "hint-over-user-configuration-window.h"
 
-HintOverUserConfigurationWindow::HintOverUserConfigurationWindow(Contact exampleContact) :
+HintOverUserConfigurationWindow::HintOverUserConfigurationWindow(Buddy exampleContact) :
 	ConfigurationWindow("hint-over-user", tr("Hint over user configuration"), MainConfigurationWindow::instanceDataManager()),
 	ExampleContact(exampleContact)
 {

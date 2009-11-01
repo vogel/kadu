@@ -29,7 +29,7 @@ FileTransfer * JabberFileTransferService::loadFileTransferFromStorage(StoragePoi
 	return jft;
 }
 
-FileTransfer * JabberFileTransferService::createOutgoingFileTransfer(Contact contact)
+FileTransfer * JabberFileTransferService::createOutgoingFileTransfer(Buddy contact)
 {
 	return new JabberFileTransfer(Protocol->account(), contact, FileTransfer::TypeSend);
 }
