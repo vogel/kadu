@@ -20,9 +20,9 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
 #include "buddies/account-data/contact-account-data.h"
-#include "buddies/filter/has-description-contact-filter.h"
-#include "buddies/filter/offline-contact-filter.h"
-#include "buddies/filter/online-and-description-contact-filter.h"
+#include "buddies/filter/has-description-buddy-filter.h"
+#include "buddies/filter/offline-buddy-filter.h"
+#include "buddies/filter/online-and-description-buddy-filter.h"
 #include "core/core.h"
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
@@ -489,7 +489,7 @@ void KaduWindowActions::inactiveUsersActionCreated(Action *action)
 		return;
 
 	bool enabled = !config_file.readBoolEntry("General", "ShowOffline");
-	OfflineContactFilter *ofcf = new OfflineContactFilter(action);
+	OfflineBuddyFilter *ofcf = new OfflineBuddyFilter(action);
 	ofcf->setEnabled(enabled);
 
 	action->setData(QVariant::fromValue(ofcf));
@@ -507,7 +507,7 @@ void KaduWindowActions::descriptionUsersActionCreated(Action *action)
 		return;
 
 	bool enabled = !config_file.readBoolEntry("General", "ShowWithoutDescription");
-	HasDescriptionContactFilter *hdcf = new HasDescriptionContactFilter(action);
+	HasDescriptionBuddyFilter *hdcf = new HasDescriptionBuddyFilter(action);
 	hdcf->setEnabled(enabled);
 
 	action->setData(QVariant::fromValue(hdcf));
@@ -525,7 +525,7 @@ void KaduWindowActions::onlineAndDescUsersActionCreated(Action *action)
 		return;
 
 	bool enabled = config_file.readBoolEntry("General", "ShowOnlineAndDescription");
-	OnlineAndDescriptionContactFilter *oadcf = new OnlineAndDescriptionContactFilter(action);
+	OnlineAndDescriptionBuddyFilter *oadcf = new OnlineAndDescriptionBuddyFilter(action);
 	oadcf->setEnabled(enabled);
 
 	action->setData(QVariant::fromValue(oadcf));
@@ -918,9 +918,9 @@ void KaduWindowActions::inactiveUsersActionActivated(QAction *sender, bool toggl
 		return;
 
 	QVariant v = sender->data();
-	if (v.canConvert<OfflineContactFilter *>())
+	if (v.canConvert<OfflineBuddyFilter *>())
 	{
-		OfflineContactFilter *ofcf = v.value<OfflineContactFilter *>();
+		OfflineBuddyFilter *ofcf = v.value<OfflineBuddyFilter *>();
 		ofcf->setEnabled(toggled);
 	}
 }
@@ -932,9 +932,9 @@ void KaduWindowActions::descriptionUsersActionActivated(QAction *sender, bool to
 		return;
 
 	QVariant v = sender->data();
-	if (v.canConvert<HasDescriptionContactFilter *>())
+	if (v.canConvert<HasDescriptionBuddyFilter *>())
 	{
-		HasDescriptionContactFilter *hdcf = v.value<HasDescriptionContactFilter *>();
+		HasDescriptionBuddyFilter *hdcf = v.value<HasDescriptionBuddyFilter *>();
 		hdcf->setEnabled(toggled);
 	}
 }
@@ -946,9 +946,9 @@ void KaduWindowActions::onlineAndDescUsersActionActivated(QAction *sender, bool 
 		return;
 
 	QVariant v = sender->data();
-	if (v.canConvert<OnlineAndDescriptionContactFilter *>())
+	if (v.canConvert<OnlineAndDescriptionBuddyFilter *>())
 	{
-		OnlineAndDescriptionContactFilter *oadcf = v.value<OnlineAndDescriptionContactFilter *>();
+		OnlineAndDescriptionBuddyFilter *oadcf = v.value<OnlineAndDescriptionBuddyFilter *>();
 		oadcf->setEnabled(toggled);
 	}
 }

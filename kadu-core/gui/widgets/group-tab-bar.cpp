@@ -16,7 +16,7 @@
 #include "buddies/buddy-list-mime-data-helper.h"
 #include "buddies/group.h"
 #include "buddies/group-manager.h"
-#include "buddies/filter/group-contact-filter.h"
+#include "buddies/filter/group-buddy-filter.h"
 #include "core/core.h"
 #include "gui/windows/add-buddy-window.h"
 #include "gui/windows/group-properties-window.h"
@@ -36,7 +36,7 @@
 GroupTabBar::GroupTabBar(QWidget *parent)
 	: QTabBar(parent), showAllGroup(true)
 {
-	Filter = new GroupContactFilter(this);
+	Filter = new GroupBuddyFilter(this);
 
 	setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
  	setAcceptDrops(true);

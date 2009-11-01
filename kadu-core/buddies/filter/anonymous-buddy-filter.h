@@ -7,27 +7,27 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ANONYMOUS_CONTACT_FILTER_H
-#define ANONYMOUS_CONTACT_FILTER_H
+#ifndef ANONYMOUS_BUDDY_FILTER_H
+#define ANONYMOUS_BUDDY_FILTER_H
 
 #include <QtCore/QMetaType>
 
-#include "abstract-contact-filter.h"
+#include "abstract-buddy-filter.h"
 
-class AnonymousContactFilter : public AbstractContactFilter
+class AnonymousBuddyFilter : public AbstractBuddyFilter
 {
 	Q_OBJECT
 
 	bool Enabled;
 
 public:
-	AnonymousContactFilter(QObject *parent = 0);
+	AnonymousBuddyFilter(QObject *parent = 0);
 
 	void setEnabled(bool enabled);
-	virtual bool acceptContact(Buddy contact);
+	virtual bool acceptBuddy(Buddy contact);
 
 };
 
-Q_DECLARE_METATYPE(AnonymousContactFilter *)
+Q_DECLARE_METATYPE(AnonymousBuddyFilter *)
 
-#endif // ANONYMOUS_CONTACT_FILTER_H
+#endif // ANONYMOUS_BUDDY_FILTER_H

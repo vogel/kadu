@@ -21,7 +21,7 @@ class QContextMenuEvent;
 class QModelIndex;
 class QTemporaryFile;
 
-class AbstractContactFilter;
+class AbstractBuddyFilter;
 class AbstractContactsModel;
 class Buddy;
 class BuddySet;
@@ -90,8 +90,8 @@ public:
 	virtual ~ContactsListView();
 
 	virtual void setModel(AbstractContactsModel *model);
-	void addFilter(AbstractContactFilter *filter);
-	void removeFilter(AbstractContactFilter *filter);
+	void addFilter(AbstractBuddyFilter *filter);
+	void removeFilter(AbstractBuddyFilter *filter);
 
 	Buddy currentContact() const;
 	BuddySet selectedContacts() const;

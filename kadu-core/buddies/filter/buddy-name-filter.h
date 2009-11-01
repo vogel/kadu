@@ -1,4 +1,4 @@
-/***************************************************************************
+ /***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -7,27 +7,22 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef HAS_DESCRIPTION_CONTACT_FILTER_H
-#define HAS_DESCRIPTION_CONTACT_FILTER_H
+#ifndef BUDDY_NAME_FILTER_H
+#define BUDDY_NAME_FILTER_H
 
-#include <QtCore/QMetaType>
+#include "buddies/filter/abstract-buddy-filter.h"
 
-#include "abstract-contact-filter.h"
-
-class HasDescriptionContactFilter : public AbstractContactFilter
+class BuddyNameFilter : public AbstractBuddyFilter
 {
-	Q_OBJECT
-
-	bool Enabled;
+	QString Name;
 
 public:
-	HasDescriptionContactFilter(QObject *parent = 0);
+	BuddyNameFilter(QObject *parent = 0) : AbstractBuddyFilter(parent) {}
 
-	void setEnabled(bool enabled);
-	virtual bool acceptContact(Buddy contact);
+	virtual bool acceptBuddy(Buddy contact);
+
+	void setName(const QString &name);
 
 };
 
-Q_DECLARE_METATYPE(HasDescriptionContactFilter *)
-
-#endif // HAS_DESCRIPTION_CONTACT_FILTER_H
+#endif // BUDDY_NAME_FILTER_H

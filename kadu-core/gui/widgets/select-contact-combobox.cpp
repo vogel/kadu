@@ -10,7 +10,7 @@
 #include <QtGui/QCompleter>
 
 #include "buddies/buddy-manager.h"
-#include "buddies/filter/contact-name-filter.h"
+#include "buddies/filter/buddy-name-filter.h"
 #include "buddies/model/contacts-model.h"
 #include "buddies/model/contacts-model-proxy.h"
 #include "gui/widgets/contacts-line-edit.h"
@@ -50,13 +50,13 @@ SelectContactCombobox::~SelectContactCombobox()
 }
 
 
-void SelectContactCombobox::addFilter(AbstractContactFilter *filter)
+void SelectContactCombobox::addFilter(AbstractBuddyFilter *filter)
 {
 	ProxyModel->addFilter(filter);
 	Popup->view()->addFilter(filter);
 }
 
-void SelectContactCombobox::removeFilter(AbstractContactFilter *filter)
+void SelectContactCombobox::removeFilter(AbstractBuddyFilter *filter)
 {
 	ProxyModel->removeFilter(filter);
 	Popup->view()->removeFilter(filter);

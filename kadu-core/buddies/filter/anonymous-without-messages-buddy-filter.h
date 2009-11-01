@@ -7,30 +7,27 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "contact-mergable-filter.h"
+#ifndef ANONYMOUS_WITHOUT_MESSAGES_BUDDY_FILTER_H
+#define ANONYMOUS_WITHOUT_MESSAGES_BUDDY_FILTER_H
 
-ContactMergableFilter::ContactMergableFilter(Buddy contact, QObject *parent) :
-		AbstractContactFilter(parent), MyContact(contact)
+#include <QtCore/QMetaType>
+
+#include "abstract-buddy-filter.h"
+
+class AnonymousWithoutMessagesBuddyFilter : public AbstractBuddyFilter
 {
-	Accounts = MyContact.accounts().toSet();
-}
+	Q_OBJECT
 
-ContactMergableFilter::~ContactMergableFilter()
-{
-}
+	bool Enabled;
 
-void ContactMergableFilter::setContact(Buddy contact)
-{
-	if (MyContact == contact)
-		return;
+public:
+	AnonymousWithoutMessagesBuddyFilter(QObject *parent = 0);
 
-	MyContact = contact;
-	Accounts = contact.accounts().toSet();
+	void setEnabled(bool enabled);
+	virtual bool acceptBuddy(Buddy contact);
 
-	emit filterChanged();
-}
+};
 
-bool ContactMergableFilter::acceptContact(Buddy contact)
-{
-	return contact.accounts().toSet().intersect(Accounts).empty();
-}
+Q_DECLARE_METATYPE(AnonymousWithoutMessagesBuddyFilter *)
+
+#endif // ANONYMOUS_WITHOUT_MESSAGES_BUDDY_FILTER_H

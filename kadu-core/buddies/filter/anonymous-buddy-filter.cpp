@@ -7,27 +7,34 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef OFFLINE_CONTACT_FILTER_H
-#define OFFLINE_CONTACT_FILTER_H
+#include "accounts/account.h"
 
-#include <QtCore/QMetaType>
+#include "buddies/account-data/contact-account-data.h"
 
-#include "abstract-contact-filter.h"
+#include "anonymous-buddy-filter.h"
 
-class OfflineContactFilter : public AbstractContactFilter
+AnonymousBuddyFilter::AnonymousBuddyFilter(QObject *parent)
+	: AbstractBuddyFilter(parent), Enabled(false)
 {
-	Q_OBJECT
+}
 
-	bool Enabled;
+void AnonymousBuddyFilter::setEnabled(bool enabled)
+{
+	if (enabled == Enabled)
+		return;
 
-public:
-	OfflineContactFilter(QObject *parent = 0);
+	Enabled = enabled;
+	emit filterChanged();
+}
 
-	void setEnabled(bool enabled);
-	virtual bool acceptContact(Buddy contact);
+bool AnonymousBuddyFilter::acceptBuddy(Buddy contact)
+{
+	if (!Enabled)
+		return true;
 
-};
+	Account prefferedAccount = contact.prefferedAccount();
+	if (prefferedAccount.isNull())
+		return false;
 
-Q_DECLARE_METATYPE(OfflineContactFilter *)
-
-#endif // OFFLINE_CONTACT_FILTER_H
+	return !contact.isAnonymous();
+}

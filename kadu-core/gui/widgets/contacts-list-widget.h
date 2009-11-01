@@ -12,7 +12,7 @@
 
 #include <QtGui/QWidget>
 
-class ContactNameFilter;
+class BuddyNameFilter;
 class ContactsLineEdit;
 class ContactsListView;
 class MainWindow;
@@ -23,7 +23,7 @@ class ContactsListWidget : public QWidget
 
 	ContactsLineEdit *NameFilterEdit;
 	ContactsListView *View;
-	ContactNameFilter *NameFilter;
+	BuddyNameFilter *NameFilter;
 
 private slots:
 	void selectNext();
@@ -36,7 +36,7 @@ public:
 
 	ContactsListView * view() { return View; }
 	ContactsLineEdit * nameFilterEdit() { return NameFilterEdit; }
-	ContactNameFilter * nameFilter() { return NameFilter; }
+	BuddyNameFilter * nameFilter() { return NameFilter; }
 
 };
 

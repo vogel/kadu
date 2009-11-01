@@ -10,14 +10,15 @@
 #include "accounts/account.h"
 #include "chat/message/pending-messages-manager.h"
 #include "buddies/account-data/contact-account-data.h"
-#include "anonymous-without-messages-contact-filter.h"
 
-AnonymousWithoutMessagesContactFilter::AnonymousWithoutMessagesContactFilter(QObject *parent)
-	: AbstractContactFilter(parent), Enabled(false)
+#include "anonymous-without-messages-buddy-filter.h"
+
+AnonymousWithoutMessagesBuddyFilter::AnonymousWithoutMessagesBuddyFilter(QObject *parent)
+	: AbstractBuddyFilter(parent), Enabled(false)
 {
 }
 
-void AnonymousWithoutMessagesContactFilter::setEnabled(bool enabled)
+void AnonymousWithoutMessagesBuddyFilter::setEnabled(bool enabled)
 {
 	if (enabled == Enabled)
 		return;
@@ -26,7 +27,7 @@ void AnonymousWithoutMessagesContactFilter::setEnabled(bool enabled)
 	emit filterChanged();
 }
 
-bool AnonymousWithoutMessagesContactFilter::acceptContact(Buddy contact)
+bool AnonymousWithoutMessagesBuddyFilter::acceptBuddy(Buddy contact)
 {
 	if (!Enabled)
 		return true;

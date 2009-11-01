@@ -7,27 +7,31 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ONLINE_AND_DESCRIPTION_CONTACT_FILTER_H
-#define ONLINE_AND_DESCRIPTION_CONTACT_FILTER_H
+#ifndef NON_ACCOUNT_BUDDY_FILTER_H
+#define NON_ACCOUNT_BUDDY_FILTER_H
 
 #include <QtCore/QMetaType>
 
-#include "abstract-contact-filter.h"
+#include "accounts/account.h"
 
-class OnlineAndDescriptionContactFilter : public AbstractContactFilter
+#include "abstract-buddy-filter.h"
+
+class NonAccountBuddyFilter : public AbstractBuddyFilter
 {
 	Q_OBJECT
 
+	Account CurrentAccount;
 	bool Enabled;
 
 public:
-	OnlineAndDescriptionContactFilter(QObject *parent = 0);
+	explicit NonAccountBuddyFilter(QObject *parent = 0);
+	virtual ~NonAccountBuddyFilter();
 
-	void setEnabled(bool enabled);
-	virtual bool acceptContact(Buddy contact);
+	void setAccount(Account account);
+	virtual bool acceptBuddy(Buddy contact);
 
 };
 
-Q_DECLARE_METATYPE(OnlineAndDescriptionContactFilter *)
+Q_DECLARE_METATYPE(NonAccountBuddyFilter *)
 
-#endif // ONLINE_AND_DESCRIPTION_CONTACT_FILTER_H
+#endif // NON_ACCOUNT_BUDDY_FILTER_H

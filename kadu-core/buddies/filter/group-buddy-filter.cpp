@@ -10,17 +10,17 @@
 #include "buddies/buddy.h"
 #include "buddies/buddy-manager.h"
 
-#include "group-contact-filter.h"
+#include "group-buddy-filter.h"
 
-GroupContactFilter::GroupContactFilter(QObject *parent) :
-		AbstractContactFilter(parent), CurrentGroup(0), AllGroupShown(true)
+GroupBuddyFilter::GroupBuddyFilter(QObject *parent) :
+		AbstractBuddyFilter(parent), CurrentGroup(0), AllGroupShown(true)
 {
 	// TODO: 0.6.6 hack, it should go thought the model itself
 	connect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy &)),
 			this, SIGNAL(filterChanged()));
 }
 
-void GroupContactFilter::setGroup(Group *group)
+void GroupBuddyFilter::setGroup(Group *group)
 {
 	if (CurrentGroup == group)
 		return;
@@ -29,19 +29,19 @@ void GroupContactFilter::setGroup(Group *group)
 	emit filterChanged();
 }
 
-bool GroupContactFilter::acceptContact(Buddy contact)
+bool GroupBuddyFilter::acceptBuddy(Buddy contact)
 {
 	return (0 == CurrentGroup) // use AllGroup or UngroupedGroup
 		? (AllGroupShown && contact.showInAllGroup() || !AllGroupShown && contact.groups().isEmpty())
 		: contact.isInGroup(CurrentGroup);
 }
 
-void GroupContactFilter::refresh()
+void GroupBuddyFilter::refresh()
 {
 	emit filterChanged();
 }
 
-void GroupContactFilter::setAllGroupShown(bool shown)
+void GroupBuddyFilter::setAllGroupShown(bool shown)
 {
 	AllGroupShown = shown;
 }

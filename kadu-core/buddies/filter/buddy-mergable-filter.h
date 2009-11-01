@@ -7,26 +7,28 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ABSTRACT_CONTACT_FILTER
-#define ABSTRACT_CONTACT_FILTER
+#ifndef BUDDY_MERGABLE_FILTER_H
+#define BUDDY_MERGABLE_FILTER_H
 
-#include <QtCore/QObject>
+#include "buddies/buddy.h"
 
-class Buddy;
+#include "buddies/filter/abstract-buddy-filter.h"
 
-class AbstractContactFilter : public QObject
+class BuddyMergableFilter : public AbstractBuddyFilter
 {
 	Q_OBJECT
 
+	QSet<Account> Accounts;
+	Buddy MyContact;
+
 public:
-	AbstractContactFilter(QObject *parent = 0)
-			: QObject(parent) {}
+	explicit BuddyMergableFilter(Buddy contact, QObject *parent = 0);
+	virtual ~BuddyMergableFilter();
 
-	virtual bool acceptContact(Buddy contact) = 0;
+	virtual bool acceptBuddy(Buddy contact);
 
-signals:
-	void filterChanged();
+	void setContact(Buddy contact);
 
 };
 
-#endif // ABSTRACT_CONTACT_FILTER
+#endif // BUDDY_MERGABLE_FILTER_H

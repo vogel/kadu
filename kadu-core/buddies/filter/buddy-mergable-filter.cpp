@@ -7,35 +7,30 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "accounts/account.h"
+#include "buddy-mergable-filter.h"
 
-#include "buddies/account-data/contact-account-data.h"
+BuddyMergableFilter::BuddyMergableFilter(Buddy contact, QObject *parent) :
+		AbstractBuddyFilter(parent), MyContact(contact)
+{
+	Accounts = MyContact.accounts().toSet();
+}
 
-#include "offline-contact-filter.h"
-
-OfflineContactFilter::OfflineContactFilter(QObject *parent)
-	: AbstractContactFilter(parent), Enabled(false)
+BuddyMergableFilter::~BuddyMergableFilter()
 {
 }
 
-void OfflineContactFilter::setEnabled(bool enabled)
+void BuddyMergableFilter::setContact(Buddy contact)
 {
-	if (enabled == Enabled)
+	if (MyContact == contact)
 		return;
 
-	Enabled = enabled;
+	MyContact = contact;
+	Accounts = contact.accounts().toSet();
+
 	emit filterChanged();
 }
 
-bool OfflineContactFilter::acceptContact(Buddy contact)
+bool BuddyMergableFilter::acceptBuddy(Buddy contact)
 {
-	if (!Enabled)
-		return true;
-
-	Account prefferedAccount = contact.prefferedAccount();
-	if (prefferedAccount.isNull())
-		return false;
-
-	Status status = contact.accountData(prefferedAccount)->status();
-	return !status.isDisconnected();
+	return contact.accounts().toSet().intersect(Accounts).empty();
 }

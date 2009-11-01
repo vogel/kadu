@@ -7,27 +7,29 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ANONYMOUS_WITHOUT_MESSAGES_CONTACT_FILTER_H
-#define ANONYMOUS_WITHOUT_MESSAGES_CONTACT_FILTER_H
+#include "buddies/buddy.h"
 
-#include <QtCore/QMetaType>
+#include "non-account-buddy-filter.h"
 
-#include "abstract-contact-filter.h"
-
-class AnonymousWithoutMessagesContactFilter : public AbstractContactFilter
+NonAccountBuddyFilter::NonAccountBuddyFilter(QObject *parent) :
+		AbstractBuddyFilter(parent), CurrentAccount(0)
 {
-	Q_OBJECT
+}
 
-	bool Enabled;
+NonAccountBuddyFilter::~NonAccountBuddyFilter()
+{
+}
 
-public:
-	AnonymousWithoutMessagesContactFilter(QObject *parent = 0);
+void NonAccountBuddyFilter::setAccount(Account account)
+{
+	if (CurrentAccount != account)
+	{
+		CurrentAccount = account;
+		emit filterChanged();
+	}
+}
 
-	void setEnabled(bool enabled);
-	virtual bool acceptContact(Buddy contact);
-
-};
-
-Q_DECLARE_METATYPE(AnonymousWithoutMessagesContactFilter *)
-
-#endif // ANONYMOUS_WITHOUT_MESSAGES_CONTACT_FILTER_H
+bool NonAccountBuddyFilter::acceptBuddy(Buddy contact)
+{
+	return CurrentAccount.isNull() || !contact.hasAccountData(CurrentAccount);
+}

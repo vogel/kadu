@@ -7,27 +7,27 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ONLINE_CONTACT_FILTER_H
-#define ONLINE_CONTACT_FILTER_H
+#ifndef HAS_DESCRIPTION_BUDDY_FILTER_H
+#define HAS_DESCRIPTION_BUDDY_FILTER_H
 
 #include <QtCore/QMetaType>
 
-#include "abstract-contact-filter.h"
+#include "abstract-buddy-filter.h"
 
-class OnlineContactFilter : public AbstractContactFilter
+class HasDescriptionBuddyFilter : public AbstractBuddyFilter
 {
 	Q_OBJECT
 
 	bool Enabled;
 
 public:
-	OnlineContactFilter(QObject *parent = 0);
+	HasDescriptionBuddyFilter(QObject *parent = 0);
 
 	void setEnabled(bool enabled);
-	virtual bool acceptContact(Buddy contact);
+	virtual bool acceptBuddy(Buddy contact);
 
 };
 
-Q_DECLARE_METATYPE(OnlineContactFilter *)
+Q_DECLARE_METATYPE(HasDescriptionBuddyFilter *)
 
-#endif // ONLINE_CONTACT_FILTER_H
+#endif // HAS_DESCRIPTION_BUDDY_FILTER_H

@@ -10,9 +10,9 @@
 #include "buddies/buddy.h"
 #include "buddies/account-data/contact-account-data.h"
 
-#include "contact-name-filter.h"
+#include "buddy-name-filter.h"
 
-bool ContactNameFilter::acceptContact(Buddy contact)
+bool BuddyNameFilter::acceptBuddy(Buddy contact)
 {
 	if (Name.isEmpty())
 		return true;
@@ -35,7 +35,7 @@ bool ContactNameFilter::acceptContact(Buddy contact)
 	return false;
 }
 
-void ContactNameFilter::setName(const QString &name)
+void BuddyNameFilter::setName(const QString &name)
 {
 	if (Name != name)
 	{

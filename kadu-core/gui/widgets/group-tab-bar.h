@@ -15,14 +15,14 @@
 #include "configuration/configuration-aware-object.h"
 #include "buddies/buddy-list.h"
 
-class GroupContactFilter;
+class GroupBuddyFilter;
 class Group;
 
 class GroupTabBar : public QTabBar, ConfigurationAwareObject
 {
 	Q_OBJECT
 
-	GroupContactFilter *Filter;
+	GroupBuddyFilter *Filter;
 	//for dnd support
 	Group *currentGroup;
 	BuddyList currentContacts;
@@ -64,7 +64,7 @@ public:
 
 	void addGroup(const Group *group);
 
-	GroupContactFilter * filter() { return Filter; }
+	GroupBuddyFilter * filter() { return Filter; }
 
 signals:
 	void currentGroupChanged(const Group *group);

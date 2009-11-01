@@ -7,28 +7,30 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "buddies/account-data/contact-account-data.h"
+#ifndef ACCOUNT_BUDDY_FILTER_H
+#define ACCOUNT_BUDDY_FILTER_H
 
-#include "account-contact-filter.h"
+#include <QtCore/QMetaType>
 
-AccountContactFilter::AccountContactFilter(Account account, QObject *parent)
-	: AbstractContactFilter(parent), Enabled(false), CurrentAccount(account)
+#include "accounts/account.h"
+
+#include "abstract-buddy-filter.h"
+
+class AccountBuddyFilter : public AbstractBuddyFilter
 {
-}
+	Q_OBJECT
 
-void AccountContactFilter::setEnabled(bool enabled)
-{
-	if (enabled == Enabled)
-		return;
+	Account CurrentAccount;
+	bool Enabled;
 
-	Enabled = enabled;
-	emit filterChanged();
-}
+public:
+	AccountBuddyFilter(Account account, QObject *parent = 0);
 
-bool AccountContactFilter::acceptContact(Buddy contact)
-{
-	if (!Enabled)
-		return true;
-	return contact.hasAccountData(CurrentAccount);
-}
+	void setEnabled(bool enabled);
+	virtual bool acceptBuddy(Buddy contact);
 
+};
+
+Q_DECLARE_METATYPE(AccountBuddyFilter *)
+
+#endif // ACCOUNT_BUDDY_FILTER_H

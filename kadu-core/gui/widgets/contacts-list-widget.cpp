@@ -10,7 +10,7 @@
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QVBoxLayout>
 
-#include "buddies/filter/contact-name-filter.h"
+#include "buddies/filter/buddy-name-filter.h"
 #include "gui/widgets/contacts-line-edit.h"
 #include "gui/widgets/contacts-list-view.h"
 
@@ -38,7 +38,7 @@ ContactsListWidget::ContactsListWidget(MainWindow *mainWindow, QWidget *parent) 
 	View = new ContactsListView(mainWindow, this);
 	layout->addWidget(View);
 
-	NameFilter = new ContactNameFilter(this);
+	NameFilter = new BuddyNameFilter(this);
 	View->addFilter(NameFilter);
 /*
 	setFocusProxy(NameFilterEdit);

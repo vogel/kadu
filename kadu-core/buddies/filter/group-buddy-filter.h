@@ -1,4 +1,4 @@
-/***************************************************************************
+ /***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -7,30 +7,29 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ACCOUNT_CONTACT_FILTER_H
-#define ACCOUNT_CONTACT_FILTER_H
+#ifndef GROUP_BUDDY_FILTER
+#define GROUP_BUDDY_FILTER
 
-#include <QtCore/QMetaType>
+#include "abstract-buddy-filter.h"
 
-#include "accounts/account.h"
+class Group;
 
-#include "abstract-contact-filter.h"
-
-class AccountContactFilter : public AbstractContactFilter
+class GroupBuddyFilter : public AbstractBuddyFilter
 {
 	Q_OBJECT
 
-	Account CurrentAccount;
-	bool Enabled;
+	Group *CurrentGroup;
+	bool AllGroupShown;
 
 public:
-	AccountContactFilter(Account account, QObject *parent = 0);
+	GroupBuddyFilter(QObject *parent = 0);
 
-	void setEnabled(bool enabled);
-	virtual bool acceptContact(Buddy contact);
+	void setGroup(Group *group);
+	virtual bool acceptBuddy(Buddy contact);
 
+	void refresh();
+
+	void setAllGroupShown(bool shown);
 };
 
-Q_DECLARE_METATYPE(AccountContactFilter *)
-
-#endif // ACCOUNT_CONTACT_FILTER_H
+#endif // GROUP_BUDDY_FILTER

@@ -14,7 +14,7 @@
 #include "buddies/account-data/contact-account-data.h"
 #include "buddies/model/contacts-model.h"
 #include "buddies/model/contacts-model-proxy.h"
-#include "buddies/filter/account-contact-filter.h"
+#include "buddies/filter/account-buddy-filter.h"
 #include "gui/windows/message-box.h"
 
 #include "debug.h"
@@ -53,7 +53,7 @@ AccountContactsListWidget::AccountContactsListWidget(Account account, QWidget *p
 	layout->addWidget(ContactsWidget);
 	layout->addWidget(buttons);
 
-	AccountContactFilter *filter = new AccountContactFilter(CurrentAccount, this);
+	AccountBuddyFilter *filter = new AccountBuddyFilter(CurrentAccount, this);
 	filter->setEnabled(true);
 	ContactsWidget->addFilter(filter);
 

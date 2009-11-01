@@ -1,4 +1,4 @@
- /***************************************************************************
+/***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -7,29 +7,27 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GROUP_CONTACT_FILTER
-#define GROUP_CONTACT_FILTER
+#ifndef ONLINE_AND_DESCRIPTION_BUDDY_FILTER_H
+#define ONLINE_AND_DESCRIPTION_BUDDY_FILTER_H
 
-#include "abstract-contact-filter.h"
+#include <QtCore/QMetaType>
 
-class Group;
+#include "abstract-buddy-filter.h"
 
-class GroupContactFilter : public AbstractContactFilter
+class OnlineAndDescriptionBuddyFilter : public AbstractBuddyFilter
 {
 	Q_OBJECT
 
-	Group *CurrentGroup;
-	bool AllGroupShown;
+	bool Enabled;
 
 public:
-	GroupContactFilter(QObject *parent = 0);
+	OnlineAndDescriptionBuddyFilter(QObject *parent = 0);
 
-	void setGroup(Group *group);
-	virtual bool acceptContact(Buddy contact);
+	void setEnabled(bool enabled);
+	virtual bool acceptBuddy(Buddy contact);
 
-	void refresh();
-
-	void setAllGroupShown(bool shown);
 };
 
-#endif // GROUP_CONTACT_FILTER
+Q_DECLARE_METATYPE(OnlineAndDescriptionBuddyFilter *)
+
+#endif // ONLINE_AND_DESCRIPTION_BUDDY_FILTER_H

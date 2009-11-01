@@ -11,14 +11,14 @@
 
 #include "buddies/account-data/contact-account-data.h"
 
-#include "online-contact-filter.h"
+#include "online-buddy-filter.h"
 
-OnlineContactFilter::OnlineContactFilter(QObject *parent)
-	: AbstractContactFilter(parent), Enabled(false)
+OnlineBuddyFilter::OnlineBuddyFilter(QObject *parent)
+	: AbstractBuddyFilter(parent), Enabled(false)
 {
 }
 
-void OnlineContactFilter::setEnabled(bool enabled)
+void OnlineBuddyFilter::setEnabled(bool enabled)
 {
 	if (enabled == Enabled)
 		return;
@@ -27,7 +27,7 @@ void OnlineContactFilter::setEnabled(bool enabled)
 	emit filterChanged();
 }
 
-bool OnlineContactFilter::acceptContact(Buddy contact)
+bool OnlineBuddyFilter::acceptBuddy(Buddy contact)
 {
 	if (!Enabled)
 		return true;

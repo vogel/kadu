@@ -7,29 +7,28 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "buddies/buddy.h"
+#include "buddies/account-data/contact-account-data.h"
 
-#include "non-account-contact-filter.h"
+#include "account-buddy-filter.h"
 
-NonAccountContactFilter::NonAccountContactFilter(QObject *parent) :
-		AbstractContactFilter(parent), CurrentAccount(0)
+AccountBuddyFilter::AccountBuddyFilter(Account account, QObject *parent)
+	: AbstractBuddyFilter(parent), Enabled(false), CurrentAccount(account)
 {
 }
 
-NonAccountContactFilter::~NonAccountContactFilter()
+void AccountBuddyFilter::setEnabled(bool enabled)
 {
+	if (enabled == Enabled)
+		return;
+
+	Enabled = enabled;
+	emit filterChanged();
 }
 
-void NonAccountContactFilter::setAccount(Account account)
+bool AccountBuddyFilter::acceptBuddy(Buddy contact)
 {
-	if (CurrentAccount != account)
-	{
-		CurrentAccount = account;
-		emit filterChanged();
-	}
+	if (!Enabled)
+		return true;
+	return contact.hasAccountData(CurrentAccount);
 }
 
-bool NonAccountContactFilter::acceptContact(Buddy contact)
-{
-	return CurrentAccount.isNull() || !contact.hasAccountData(CurrentAccount);
-}

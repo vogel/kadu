@@ -88,21 +88,21 @@ bool ContactsModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex &sour
 	    return true;
 
 	Buddy contact = SourceContactModel->contact(sourceModel()->index(sourceRow, 0));
-	foreach (AbstractContactFilter *filter, Filters)
-		if (!filter->acceptContact(contact))
+	foreach (AbstractBuddyFilter *filter, Filters)
+		if (!filter->acceptBuddy(contact))
 			return false;
 
 	return true;
 }
 
-void ContactsModelProxy::addFilter(AbstractContactFilter *filter)
+void ContactsModelProxy::addFilter(AbstractBuddyFilter *filter)
 {
 	Filters.append(filter);
 	invalidateFilter();
 	connect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
 }
 
-void ContactsModelProxy::removeFilter(AbstractContactFilter *filter)
+void ContactsModelProxy::removeFilter(AbstractBuddyFilter *filter)
 {
 	Filters.removeAll(filter);
 	invalidateFilter();

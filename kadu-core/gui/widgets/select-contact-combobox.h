@@ -14,7 +14,7 @@
 
 #include "buddies/buddy.h"
 
-class AbstractContactFilter;
+class AbstractBuddyFilter;
 class ContactsModelProxy;
 class SelectContactPopup;
 
@@ -37,8 +37,8 @@ public:
 	explicit SelectContactCombobox(QWidget *parent = 0);
 	virtual ~SelectContactCombobox();
 
-	void addFilter(AbstractContactFilter *filter);
-	void removeFilter(AbstractContactFilter *filter);
+	void addFilter(AbstractBuddyFilter *filter);
+	void removeFilter(AbstractBuddyFilter *filter);
 
 	Buddy contact() { return CurrentContact; }
 

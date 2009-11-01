@@ -20,8 +20,8 @@
 #include "configuration/configuration-file.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/model/contacts-model.h"
-#include "buddies/filter/anonymous-without-messages-contact-filter.h"
-#include "buddies/filter/group-contact-filter.h"
+#include "buddies/filter/anonymous-without-messages-buddy-filter.h"
+#include "buddies/filter/group-buddy-filter.h"
 #include "core/core.h"
 #include "gui/hot-key.h"
 #include "gui/actions/action.h"
@@ -84,7 +84,7 @@ void KaduWindow::createGui()
 	ContactsWidget = new ContactsListWidget(this);
 	ContactsWidget->view()->setModel(new ContactsModel(BuddyManager::instance(), this));
 	ContactsWidget->view()->addFilter(GroupBar->filter());
-	AnonymousWithoutMessagesContactFilter *anonymousFilter = new AnonymousWithoutMessagesContactFilter(this);
+	AnonymousWithoutMessagesBuddyFilter *anonymousFilter = new AnonymousWithoutMessagesBuddyFilter(this);
 	anonymousFilter->setEnabled(true);
 	ContactsWidget->view()->addFilter(anonymousFilter);
 

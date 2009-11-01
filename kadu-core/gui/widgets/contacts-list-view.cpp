@@ -92,12 +92,12 @@ void ContactsListView::setModel(AbstractContactsModel *model)
 	ProxyModel->sort(0); // something is wrong with sorting in my Qt version
 }
 
-void ContactsListView::addFilter(AbstractContactFilter *filter)
+void ContactsListView::addFilter(AbstractBuddyFilter *filter)
 {
 	ProxyModel->addFilter(filter);
 }
 
-void ContactsListView::removeFilter(AbstractContactFilter *filter)
+void ContactsListView::removeFilter(AbstractBuddyFilter *filter)
 {
 	ProxyModel->removeFilter(filter);
 }

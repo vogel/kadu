@@ -33,17 +33,17 @@ set (kadu_SRCS
 	buddies/account-data/contact-account-data.cpp
 	buddies/account-data/contact-account-data-manager.cpp
 
-	buddies/filter/account-contact-filter.cpp
-	buddies/filter/anonymous-contact-filter.cpp
-	buddies/filter/anonymous-without-messages-contact-filter.cpp
-	buddies/filter/contact-mergable-filter.cpp
-	buddies/filter/contact-name-filter.cpp
-	buddies/filter/group-contact-filter.cpp
-	buddies/filter/has-description-contact-filter.cpp
-	buddies/filter/non-account-contact-filter.cpp
-	buddies/filter/offline-contact-filter.cpp
-	buddies/filter/online-and-description-contact-filter.cpp
-	buddies/filter/online-contact-filter.cpp
+	buddies/filter/account-buddy-filter.cpp
+	buddies/filter/anonymous-buddy-filter.cpp
+	buddies/filter/anonymous-without-messages-buddy-filter.cpp
+	buddies/filter/buddy-mergable-filter.cpp
+	buddies/filter/buddy-name-filter.cpp
+	buddies/filter/group-buddy-filter.cpp
+	buddies/filter/has-description-buddy-filter.cpp
+	buddies/filter/non-account-buddy-filter.cpp
+	buddies/filter/offline-buddy-filter.cpp
+	buddies/filter/online-and-description-buddy-filter.cpp
+	buddies/filter/online-buddy-filter.cpp
 
 	buddies/model/abstract-contacts-model.cpp
 	buddies/model/contact-list-model.cpp
@@ -286,18 +286,18 @@ set (kadu_MOC_SRCS
 	buddies/account-data/contact-account-data.h
 	buddies/account-data/contact-account-data-manager.h
 
-	buddies/filter/abstract-contact-filter.h
-	buddies/filter/account-contact-filter.h
-	buddies/filter/anonymous-contact-filter.h
-	buddies/filter/anonymous-without-messages-contact-filter.h
-	buddies/filter/contact-mergable-filter.h
-	#buddies/filter/contact-name-filter.h
-	buddies/filter/group-contact-filter.h
-	buddies/filter/has-description-contact-filter.h
-	buddies/filter/non-account-contact-filter.h
-	buddies/filter/offline-contact-filter.h
-	buddies/filter/online-and-description-contact-filter.h
-	buddies/filter/online-contact-filter.h
+	buddies/filter/abstract-buddy-filter.h
+	buddies/filter/account-buddy-filter.h
+	buddies/filter/anonymous-buddy-filter.h
+	buddies/filter/anonymous-without-messages-buddy-filter.h
+	buddies/filter/buddy-mergable-filter.h
+	#buddies/filter/buddy-name-filter.h
+	buddies/filter/group-buddy-filter.h
+	buddies/filter/has-description-buddy-filter.h
+	buddies/filter/non-account-buddy-filter.h
+	buddies/filter/offline-buddy-filter.h
+	buddies/filter/online-and-description-buddy-filter.h
+	buddies/filter/online-buddy-filter.h
 
 	#buddies/model/abstract-contacts-model.h
 	buddies/model/contact-list-model.h

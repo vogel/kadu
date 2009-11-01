@@ -11,14 +11,14 @@
 
 #include "buddies/account-data/contact-account-data.h"
 
-#include "has-description-contact-filter.h"
+#include "online-and-description-buddy-filter.h"
 
-HasDescriptionContactFilter::HasDescriptionContactFilter(QObject *parent)
-	: AbstractContactFilter(parent), Enabled(false)
+OnlineAndDescriptionBuddyFilter::OnlineAndDescriptionBuddyFilter(QObject *parent)
+	: AbstractBuddyFilter(parent), Enabled(false)
 {
 }
 
-void HasDescriptionContactFilter::setEnabled(bool enabled)
+void OnlineAndDescriptionBuddyFilter::setEnabled(bool enabled)
 {
 	if (enabled == Enabled)
 		return;
@@ -27,7 +27,7 @@ void HasDescriptionContactFilter::setEnabled(bool enabled)
 	emit filterChanged();
 }
 
-bool HasDescriptionContactFilter::acceptContact(Buddy contact)
+bool OnlineAndDescriptionBuddyFilter::acceptBuddy(Buddy contact)
 {
 	if (!Enabled)
 		return true;
@@ -36,5 +36,6 @@ bool HasDescriptionContactFilter::acceptContact(Buddy contact)
 	if (prefferedAccount.isNull())
 		return false;
 
-	return !contact.accountData(prefferedAccount)->status().description().isEmpty();
+	Status status = contact.accountData(prefferedAccount)->status();
+	return !status.isDisconnected() || !status.description().isEmpty();
 }

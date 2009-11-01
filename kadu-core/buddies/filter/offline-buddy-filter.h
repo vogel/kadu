@@ -7,27 +7,27 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CONACT_MERGABLE_FILTER_H
-#define CONACT_MERGABLE_FILTER_H
+#ifndef OFFLINE_BUDDY_FILTER_H
+#define OFFLINE_BUDDY_FILTER_H
 
-#include "buddies/buddy.h"
-#include "buddies/filter/abstract-contact-filter.h"
+#include <QtCore/QMetaType>
 
-class ContactMergableFilter : public AbstractContactFilter
+#include "abstract-buddy-filter.h"
+
+class OfflineBuddyFilter : public AbstractBuddyFilter
 {
 	Q_OBJECT
 
-	QSet<Account> Accounts;
-	Buddy MyContact;
+	bool Enabled;
 
 public:
-	explicit ContactMergableFilter(Buddy contact, QObject *parent = 0);
-	virtual ~ContactMergableFilter();
+	OfflineBuddyFilter(QObject *parent = 0);
 
-	virtual bool acceptContact(Buddy contact);
-
-	void setContact(Buddy contact);
+	void setEnabled(bool enabled);
+	virtual bool acceptBuddy(Buddy contact);
 
 };
 
-#endif // CONACT_MERGABLE_FILTER_H
+Q_DECLARE_METATYPE(OfflineBuddyFilter *)
+
+#endif // OFFLINE_BUDDY_FILTER_H

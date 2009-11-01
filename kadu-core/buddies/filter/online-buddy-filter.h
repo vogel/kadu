@@ -1,4 +1,4 @@
- /***************************************************************************
+/***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -7,22 +7,27 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CONTACT_NAME_FILTER_H
-#define CONTACT_NAME_FILTER_H
+#ifndef ONLINE_BUDDY_FILTER_H
+#define ONLINE_BUDDY_FILTER_H
 
-#include "buddies/filter/abstract-contact-filter.h"
+#include <QtCore/QMetaType>
 
-class ContactNameFilter : public AbstractContactFilter
+#include "abstract-buddy-filter.h"
+
+class OnlineBuddyFilter : public AbstractBuddyFilter
 {
-	QString Name;
+	Q_OBJECT
+
+	bool Enabled;
 
 public:
-	ContactNameFilter(QObject *parent = 0) : AbstractContactFilter(parent) {}
+	OnlineBuddyFilter(QObject *parent = 0);
 
-	virtual bool acceptContact(Buddy contact);
-
-	void setName(const QString &name);
+	void setEnabled(bool enabled);
+	virtual bool acceptBuddy(Buddy contact);
 
 };
 
-#endif // CONTACT_NAME_FILTER_H
+Q_DECLARE_METATYPE(OnlineBuddyFilter *)
+
+#endif // ONLINE_BUDDY_FILTER_H

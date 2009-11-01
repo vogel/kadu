@@ -11,14 +11,14 @@
 
 #include "buddies/account-data/contact-account-data.h"
 
-#include "anonymous-contact-filter.h"
+#include "offline-buddy-filter.h"
 
-AnonymousContactFilter::AnonymousContactFilter(QObject *parent)
-	: AbstractContactFilter(parent), Enabled(false)
+OfflineBuddyFilter::OfflineBuddyFilter(QObject *parent)
+	: AbstractBuddyFilter(parent), Enabled(false)
 {
 }
 
-void AnonymousContactFilter::setEnabled(bool enabled)
+void OfflineBuddyFilter::setEnabled(bool enabled)
 {
 	if (enabled == Enabled)
 		return;
@@ -27,7 +27,7 @@ void AnonymousContactFilter::setEnabled(bool enabled)
 	emit filterChanged();
 }
 
-bool AnonymousContactFilter::acceptContact(Buddy contact)
+bool OfflineBuddyFilter::acceptBuddy(Buddy contact)
 {
 	if (!Enabled)
 		return true;
@@ -36,5 +36,6 @@ bool AnonymousContactFilter::acceptContact(Buddy contact)
 	if (prefferedAccount.isNull())
 		return false;
 
-	return !contact.isAnonymous();
+	Status status = contact.accountData(prefferedAccount)->status();
+	return !status.isDisconnected();
 }
