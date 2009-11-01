@@ -16,11 +16,11 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "buddies/model/buddy-list-model.h"
+#include "buddies/account-data/contact-account-data.h"
 #include "chat/chat-manager.h"
 #include "chat/message/message-render-info.h"
 #include "configuration/configuration-file.h"
-#include "buddies/model/contact-list-model.h"
-#include "buddies/account-data/contact-account-data.h"
 #include "core/core.h"
 #include "gui/hot-key.h"
 #include "gui/actions/action.h"
@@ -121,7 +121,7 @@ void ChatWidget::createContactsList()
 	layout->setSpacing(0);
 
 	ContactsWidget = new ContactsListView(getChatEditBox(), this);
-	ContactsWidget->setModel(new ContactListModel(CurrentChat->contacts().toBuddyList(), this));
+	ContactsWidget->setModel(new BuddyListModel(CurrentChat->contacts().toBuddyList(), this));
 	ContactsWidget->setMinimumSize(QSize(30, 30));
 
 	connect(ContactsWidget, SIGNAL(contactActivated(Buddy)),

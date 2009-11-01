@@ -11,8 +11,8 @@
 
 #include "buddies/buddy-manager.h"
 #include "buddies/filter/buddy-name-filter.h"
-#include "buddies/model/contacts-model.h"
-#include "buddies/model/contacts-model-proxy.h"
+#include "buddies/model/buddies-model.h"
+#include "buddies/model/buddies-model-proxy.h"
 #include "gui/widgets/contacts-line-edit.h"
 #include "gui/widgets/contacts-list-view.h"
 #include "gui/widgets/select-contact-popup.h"
@@ -27,8 +27,8 @@ SelectContactCombobox::SelectContactCombobox(QWidget *parent) :
 	connect(this, SIGNAL(editTextChanged(const QString &)),
 			this, SLOT(contactTextChanged(const QString &)));
 
-	ContactsModel *model = new ContactsModel(BuddyManager::instance(), this);
-	ProxyModel = new ContactsModelProxy(this);
+	BuddiesModel *model = new BuddiesModel(BuddyManager::instance(), this);
+	ProxyModel = new BuddiesModelProxy(this);
 	ProxyModel->setSourceModel(model);
 
 	QCompleter *completer = new QCompleter(this);

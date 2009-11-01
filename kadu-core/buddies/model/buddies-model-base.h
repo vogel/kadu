@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CONTACTS_MODEL_BASE_H
-#define CONTACTS_MODEL_BASE_H
+#ifndef BUDDIES_MODEL_BASE_H
+#define BUDDIES_MODEL_BASE_H
 
 #include <QtCore/QAbstractItemModel>
 
@@ -17,30 +17,30 @@
 #include "buddies/buddy.h"
 #include "status/status.h"
 
-#include "abstract-contacts-model.h"
+#include "abstract-buddies-model.h"
 
 class QModelIndex;
 
-class ContactsModelBase : public QAbstractItemModel, public AbstractContactsModel, public AccountsAwareObject
+class BuddiesModelBase : public QAbstractItemModel, public AbstractBudiesModel, public AccountsAwareObject
 {
 	Q_OBJECT
 
-	ContactAccountData * contactDefaultAccountData(const QModelIndex &index) const;
-	ContactAccountData * contactAccountData(const QModelIndex &index, int accountIndex) const;
+	ContactAccountData * buddyDefaultAccountData(const QModelIndex &index) const;
+	ContactAccountData * buddyAccountData(const QModelIndex &index, int accountIndex) const;
 
 	QVariant data(Buddy contact, int role) const;
 	QVariant data(ContactAccountData *cad, int role, bool useDisplay = true) const;
 
 private slots:
-	void contactStatusChanged(Account account, Buddy contact, Status oldStatus);
+	void buddyStatusChanged(Account account, Buddy contact, Status oldStatus);
 
 protected:
 	virtual void accountRegistered(Account account);
 	virtual void accountUnregistered(Account account);
 
 public:
-	explicit ContactsModelBase(QObject *parent = 0);
-	virtual ~ContactsModelBase();
+	explicit BuddiesModelBase(QObject *parent = 0);
+	virtual ~BuddiesModelBase();
 
 	virtual QModelIndex index(int row, int column, const QModelIndex& parent = QModelIndex()) const;
 
@@ -59,4 +59,4 @@ public:
 
 };
 
-#endif // CONTACTS_MODEL_BASE_H
+#endif // BUDDIES_MODEL_BASE_H

@@ -21,7 +21,7 @@
 #include "buddies/buddy-list.h"
 #include "buddies/buddy-list-mime-data-helper.h"
 #include "buddies/buddy-manager.h"
-#include "buddies/model/contacts-model-proxy.h"
+#include "buddies/model/buddies-model-proxy.h"
 #include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
 #include "model/roles.h"
@@ -39,7 +39,7 @@
 #include "tool-tip-class-manager.h"
 
 ContactsListView::ContactsListView(MainWindow *mainWindow, QWidget *parent) :
-		QTreeView(parent), MyMainWindow(mainWindow), ProxyModel(new ContactsModelProxy(this)),
+		QTreeView(parent), MyMainWindow(mainWindow), ProxyModel(new BuddiesModelProxy(this)),
 		Delegate(0), BackgroundTemporaryFile(0)
 {
 	setAlternatingRowColors(true);
@@ -79,7 +79,7 @@ ContactsListView::~ContactsListView()
 	}
 }
 
-void ContactsListView::setModel(AbstractContactsModel *model)
+void ContactsListView::setModel(AbstractBudiesModel *model)
 {
 	if (ProxyModel->sourceModel())
 	{
@@ -120,11 +120,11 @@ BuddySet ContactsListView::selectedContacts() const
 
 Buddy ContactsListView::contact(const QModelIndex &index) const
 {
-	const AbstractContactsModel *model = dynamic_cast<const AbstractContactsModel *>(index.model());
+	const AbstractBudiesModel *model = dynamic_cast<const AbstractBudiesModel *>(index.model());
 	if (!model)
 		return Buddy::null;
 
-	return model->contact(index);
+	return model->buddyAt(index);
 }
 
 void ContactsListView::triggerActivate(const QModelIndex& index)

@@ -13,9 +13,9 @@
 #include "buddies/buddy.h"
 #include "model/roles.h"
 
-#include "abstract-contacts-model.h"
+#include "abstract-buddies-model.h"
 
-Buddy AbstractContactsModel::contact(const QModelIndex &index) const
+Buddy AbstractBudiesModel::buddyAt(const QModelIndex &index) const
 {
 	QVariant conVariant = index.data(ContactRole);
 	if (!conVariant.canConvert<Buddy>())

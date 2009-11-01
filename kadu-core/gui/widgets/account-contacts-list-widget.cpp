@@ -12,8 +12,8 @@
 
 #include "buddies/buddy-manager.h"
 #include "buddies/account-data/contact-account-data.h"
-#include "buddies/model/contacts-model.h"
-#include "buddies/model/contacts-model-proxy.h"
+#include "buddies/model/buddies-model.h"
+#include "buddies/model/buddies-model-proxy.h"
 #include "buddies/filter/account-buddy-filter.h"
 #include "gui/windows/message-box.h"
 
@@ -30,8 +30,8 @@ AccountContactsListWidget::AccountContactsListWidget(Account account, QWidget *p
 	layout->setSpacing(5);
 
 	ContactsWidget = new ContactsListView(0, this);
-	ContactsModelProxy *model = new ContactsModelProxy(this);
-	model->setSourceModel(new ContactsModel(BuddyManager::instance(), this));
+	BuddiesModelProxy *model = new BuddiesModelProxy(this);
+	model->setSourceModel(new BuddiesModel(BuddyManager::instance(), this));
 	ContactsWidget->setModel(model);
 	ContactsWidget->setMinimumSize(QSize(30, 30));
 

@@ -15,7 +15,7 @@
 #include "buddies/buddy.h"
 
 class AbstractBuddyFilter;
-class ContactsModelProxy;
+class BuddiesModelProxy;
 class SelectContactPopup;
 
 class SelectContactCombobox : public QComboBox
@@ -23,7 +23,7 @@ class SelectContactCombobox : public QComboBox
 	Q_OBJECT
 
 	Buddy CurrentContact;
-	ContactsModelProxy *ProxyModel;
+	BuddiesModelProxy *ProxyModel;
 	SelectContactPopup *Popup;
 
 private slots:

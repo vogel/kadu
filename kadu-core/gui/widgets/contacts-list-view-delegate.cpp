@@ -24,9 +24,9 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "configuration/configuration-file.h"
 #include "buddies/account-data/contact-account-data.h"
-#include "buddies/model/contacts-model.h"
+#include "buddies/model/buddies-model.h"
+#include "configuration/configuration-file.h"
 #include "model/roles.h"
 #include "icons-manager.h"
 
@@ -46,7 +46,7 @@ ContactsListViewDelegate::~ContactsListViewDelegate()
 	triggerAllAccountsUnregistered();
 }
 
-void ContactsListViewDelegate::setModel(AbstractContactsModel *model)
+void ContactsListViewDelegate::setModel(AbstractBudiesModel *model)
 {
 	Model = model;
 	QAbstractItemModel *itemModel = dynamic_cast<QAbstractItemModel *>(Model);
@@ -69,7 +69,7 @@ void ContactsListViewDelegate::accountUnregistered(Account account)
 void ContactsListViewDelegate::contactStatusChanged(Account account, Buddy c, Status oldStatus)
 {
 	if (Model)
-		emit sizeHintChanged(Model->contactIndex(c));
+		emit sizeHintChanged(Model->buddyIndex(c));
 }
 
 void ContactsListViewDelegate::modelDestroyed()

@@ -18,58 +18,58 @@
 #include "model/roles.h"
 #include "protocols/protocol.h"
 
-#include "contacts-model-base.h"
+#include "buddies-model-base.h"
 
-ContactsModelBase::ContactsModelBase(QObject *parent) :
+BuddiesModelBase::BuddiesModelBase(QObject *parent) :
 		QAbstractItemModel(parent)
 {
 }
 
-ContactsModelBase::~ContactsModelBase()
+BuddiesModelBase::~BuddiesModelBase()
 {
 	triggerAllAccountsUnregistered();
 }
 
-void ContactsModelBase::accountRegistered(Account account)
+void BuddiesModelBase::accountRegistered(Account account)
 {
 	connect(account.data(), SIGNAL(contactStatusChanged(Account, Buddy, Status)),
-			this, SLOT(contactStatusChanged(Account, Buddy, Status)));
+			this, SLOT(buddyStatusChanged(Account, Buddy, Status)));
 }
 
-void ContactsModelBase::accountUnregistered(Account account)
+void BuddiesModelBase::accountUnregistered(Account account)
 {
 	disconnect(account.data(), SIGNAL(contactStatusChanged(Account, Buddy, Status)),
-			this, SLOT(contactStatusChanged(Account, Buddy, Status)));
+			this, SLOT(buddyStatusChanged(Account, Buddy, Status)));
 }
 
-void ContactsModelBase::contactStatusChanged(Account account, Buddy contact, Status oldStatus)
+void BuddiesModelBase::buddyStatusChanged(Account account, Buddy contact, Status oldStatus)
 {
-	QModelIndex index = contactIndex(contact);
+	QModelIndex index = buddyIndex(contact);
 
 	if (index.isValid())
 		emit dataChanged(index, index);
 }
 
-QModelIndex ContactsModelBase::index(int row, int column, const QModelIndex &parent) const
+QModelIndex BuddiesModelBase::index(int row, int column, const QModelIndex &parent) const
 {
 	return createIndex(row, column, parent.isValid() ? parent.row() : -1);
 }
 
-int ContactsModelBase::columnCount(const QModelIndex &parent) const
+int BuddiesModelBase::columnCount(const QModelIndex &parent) const
 {
 	return 1;
 }
 
-int ContactsModelBase::rowCount(const QModelIndex &parentIndex) const
+int BuddiesModelBase::rowCount(const QModelIndex &parentIndex) const
 {
 	if (!parentIndex.isValid() || parent(parentIndex).isValid())
 		return 0;
 
-	Buddy con = contact(parentIndex);
+	Buddy con = buddyAt(parentIndex);
 	return con.accountDatas().size();
 }
 
-QFlags<Qt::ItemFlag> ContactsModelBase::flags(const QModelIndex& index) const
+QFlags<Qt::ItemFlag> BuddiesModelBase::flags(const QModelIndex& index) const
 {
 	if (index.isValid())
 		return QAbstractItemModel::flags(index) | Qt::ItemIsDragEnabled;
@@ -77,7 +77,7 @@ QFlags<Qt::ItemFlag> ContactsModelBase::flags(const QModelIndex& index) const
 		return QAbstractItemModel::flags(index);
 }
 
-QModelIndex ContactsModelBase::parent(const QModelIndex &child) const
+QModelIndex BuddiesModelBase::parent(const QModelIndex &child) const
 {
 	if (-1 == child.internalId())
 		return QModelIndex();
@@ -85,7 +85,7 @@ QModelIndex ContactsModelBase::parent(const QModelIndex &child) const
 		return index(child.internalId(), 0, QModelIndex());
 }
 
-QVariant ContactsModelBase::headerData(int section, Qt::Orientation orientation, int role) const
+QVariant BuddiesModelBase::headerData(int section, Qt::Orientation orientation, int role) const
 {
 	if (role != Qt::DisplayRole)
 		return QVariant();
@@ -96,9 +96,9 @@ QVariant ContactsModelBase::headerData(int section, Qt::Orientation orientation,
 		return QString("Row %1").arg(section);
 }
 
-ContactAccountData * ContactsModelBase::contactDefaultAccountData(const QModelIndex &index) const
+ContactAccountData * BuddiesModelBase::buddyDefaultAccountData(const QModelIndex &index) const
 {
-	Buddy con = contact(index);
+	Buddy con = buddyAt(index);
 	if (con.isNull())
 		return 0;
 
@@ -109,9 +109,9 @@ ContactAccountData * ContactsModelBase::contactDefaultAccountData(const QModelIn
 	return con.accountData(account);
 }
 
-ContactAccountData * ContactsModelBase::contactAccountData(const QModelIndex &index, int accountIndex) const
+ContactAccountData * BuddiesModelBase::buddyAccountData(const QModelIndex &index, int accountIndex) const
 {
-	Buddy con = contact(index);
+	Buddy con = buddyAt(index);
 	if (con.isNull())
 		return 0;
 
@@ -122,7 +122,7 @@ ContactAccountData * ContactsModelBase::contactAccountData(const QModelIndex &in
 	return accountDatas[accountIndex];
 }
 
-QVariant ContactsModelBase::data(Buddy contact, int role) const
+QVariant BuddiesModelBase::data(Buddy contact, int role) const
 {
 	switch (role)
 	{
@@ -137,7 +137,7 @@ QVariant ContactsModelBase::data(Buddy contact, int role) const
 	}
 }
 
-QVariant ContactsModelBase::data(ContactAccountData *cad, int role, bool useDisplay) const
+QVariant BuddiesModelBase::data(ContactAccountData *cad, int role, bool useDisplay) const
 {
 	if (!cad)
 		return QVariant();
@@ -184,7 +184,7 @@ QVariant ContactsModelBase::data(ContactAccountData *cad, int role, bool useDisp
 	}
 }
 
-QVariant ContactsModelBase::data(const QModelIndex &index, int role) const
+QVariant BuddiesModelBase::data(const QModelIndex &index, int role) const
 {
 	if (!index.isValid())
 		return QVariant();
@@ -192,21 +192,21 @@ QVariant ContactsModelBase::data(const QModelIndex &index, int role) const
 	QModelIndex parentIndex = parent(index);
 	if (!parentIndex.isValid())
 	{
-		ContactAccountData *cad = contactDefaultAccountData(index);
-		return cad ? data(cad, role, true) : data(contact(index), role);
+		ContactAccountData *cad = buddyDefaultAccountData(index);
+		return cad ? data(cad, role, true) : data(buddyAt(index), role);
 	}
 	else
-		return data(contactAccountData(parentIndex, index.row()), role, false);
+		return data(buddyAccountData(parentIndex, index.row()), role, false);
 }
 
 // D&D
 
-QStringList ContactsModelBase::mimeTypes() const
+QStringList BuddiesModelBase::mimeTypes() const
 {
 	return BuddyListMimeDataHelper::mimeTypes();
 }
 
-QMimeData * ContactsModelBase::mimeData(const QModelIndexList &indexes) const
+QMimeData * BuddiesModelBase::mimeData(const QModelIndexList &indexes) const
 {
 	BuddyList list;
 	foreach (QModelIndex index, indexes)

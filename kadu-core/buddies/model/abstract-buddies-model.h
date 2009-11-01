@@ -7,20 +7,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ABSTRACT_CONTACTS_MODEL
-#define ABSTRACT_CONTACTS_MODEL
+#ifndef ABSTRACT_BUDDIES_MODEL_H
+#define ABSTRACT_BUDDIES_MODEL_H
 
 class QModelIndex;
 
 class Buddy;
 
-class AbstractContactsModel
+class AbstractBudiesModel
 {
 
 public:
-	virtual Buddy contact(const QModelIndex &index) const;
-	virtual const QModelIndex contactIndex(Buddy contact) const = 0;
+	virtual Buddy buddyAt(const QModelIndex &index) const;
+	virtual const QModelIndex buddyIndex(Buddy buddy) const = 0;
 
 };
 
-#endif // ABSTRACT_CONTACTS_MODEL
+#endif // ABSTRACT_BUDDIES_MODEL_H

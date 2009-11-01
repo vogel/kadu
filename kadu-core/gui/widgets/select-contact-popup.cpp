@@ -8,7 +8,7 @@
  ***************************************************************************/
 
 #include "buddies/buddy-manager.h"
-#include "buddies/model/contacts-model.h"
+#include "buddies/model/buddies-model.h"
 #include "gui/widgets/contacts-line-edit.h"
 #include "gui/widgets/contacts-list-view.h"
 
@@ -19,7 +19,7 @@ SelectContactPopup::SelectContactPopup(QWidget *parent) :
 {
 	setWindowFlags(Qt::Popup);
 
-	ContactsModel *model = new ContactsModel(BuddyManager::instance(), this);
+	BuddiesModel *model = new BuddiesModel(BuddyManager::instance(), this);
 
 	view()->setItemsExpandable(false);
 	view()->setModel(model);

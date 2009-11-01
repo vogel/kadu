@@ -45,11 +45,11 @@ set (kadu_SRCS
 	buddies/filter/online-and-description-buddy-filter.cpp
 	buddies/filter/online-buddy-filter.cpp
 
-	buddies/model/abstract-contacts-model.cpp
-	buddies/model/contact-list-model.cpp
-	buddies/model/contacts-model.cpp
-	buddies/model/contacts-model-base.cpp
-	buddies/model/contacts-model-proxy.cpp
+	buddies/model/abstract-buddies-model.cpp
+	buddies/model/buddy-list-model.cpp
+	buddies/model/buddies-model.cpp
+	buddies/model/buddies-model-base.cpp
+	buddies/model/buddies-model-proxy.cpp
 	buddies/model/groups-model.cpp
 
 	chat/aggregate-chat.cpp
@@ -299,11 +299,11 @@ set (kadu_MOC_SRCS
 	buddies/filter/online-and-description-buddy-filter.h
 	buddies/filter/online-buddy-filter.h
 
-	#buddies/model/abstract-contacts-model.h
-	buddies/model/contact-list-model.h
-	buddies/model/contacts-model.h
-	buddies/model/contacts-model-base.h
-	buddies/model/contacts-model-proxy.h
+	#buddies/model/abstract-buddies-model.h
+	buddies/model/buddy-list-model.h
+	buddies/model/buddies-model.h
+	buddies/model/buddies-model-base.h
+	buddies/model/buddies-model-proxy.h
 	buddies/model/groups-model.h
 
 	#chat/aggregate-chat.h

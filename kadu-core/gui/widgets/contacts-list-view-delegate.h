@@ -19,14 +19,14 @@
 
 class QTextDocument;
 
-class AbstractContactsModel;
+class AbstractBudiesModel;
 class Account;
 
 class ContactsListViewDelegate : public QItemDelegate, public ConfigurationAwareObject, public AccountsAwareObject
 {
 	Q_OBJECT
 
-	AbstractContactsModel *Model;
+	AbstractBudiesModel *Model;
 
 	QFont Font;
 	QFont DescriptionFont;
@@ -55,7 +55,7 @@ public:
 	explicit ContactsListViewDelegate(QObject *parent = 0);
 	virtual ~ContactsListViewDelegate();
 
-	virtual void setModel(AbstractContactsModel *model);
+	virtual void setModel(AbstractBudiesModel *model);
 
 	virtual QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index ) const;
 	virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;

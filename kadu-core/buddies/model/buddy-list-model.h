@@ -7,43 +7,36 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CONTACTS_MODEL
-#define CONTACTS_MODEL
+#ifndef BUDDY_LIST_MODEL_H
+#define BUDDY_LIST_MODEL_H
 
 #include <QtCore/QAbstractListModel>
 #include <QtCore/QModelIndex>
 
-#include "accounts/account.h"
 #include "accounts/accounts-aware-object.h"
+
 #include "buddies/buddy.h"
+#include "buddies/buddy-list.h"
+
 #include "status/status.h"
 
-#include "contacts-model-base.h"
+#include "buddies-model-base.h"
 
-class BuddyManager;
-
-class ContactsModel : public ContactsModelBase
+class BuddyListModel : public BuddiesModelBase
 {
 	Q_OBJECT
 
-	BuddyManager *Manager;
-
-private slots:
-	void contactAboutToBeAdded(Buddy &contact);
-	void contactAdded(Buddy &contact);
-	void contactAboutToBeRemoved(Buddy &contact);
-	void contactRemoved(Buddy &contact);
+	BuddyList List;
 
 public:
-	explicit ContactsModel(BuddyManager *manager, QObject *parent = 0);
-	~ContactsModel();
+	explicit BuddyListModel(BuddyList list, QObject *parent = 0);
 
 	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
-	
+
 	// AbstractContactsModel implementation
-	virtual Buddy contact(const QModelIndex &index) const;
-	virtual const QModelIndex contactIndex(Buddy contact) const;
+	virtual Buddy buddyAt(const QModelIndex& index) const;
+	virtual const QModelIndex buddyIndex(Buddy contact) const;
 
 };
 
-#endif // CONTACTS_MODEL
+#endif // BUDDY_LIST_MODEL_H

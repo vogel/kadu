@@ -16,12 +16,12 @@
 #include <QtGui/QSplitter>
 
 #include "accounts/account-manager.h"
-#include "chat/chat-manager.h"
-#include "configuration/configuration-file.h"
 #include "buddies/buddy-manager.h"
-#include "buddies/model/contacts-model.h"
+#include "buddies/model/buddies-model.h"
 #include "buddies/filter/anonymous-without-messages-buddy-filter.h"
 #include "buddies/filter/group-buddy-filter.h"
+#include "chat/chat-manager.h"
+#include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "gui/hot-key.h"
 #include "gui/actions/action.h"
@@ -82,7 +82,7 @@ void KaduWindow::createGui()
 	GroupBar = new GroupTabBar(this);
 
 	ContactsWidget = new ContactsListWidget(this);
-	ContactsWidget->view()->setModel(new ContactsModel(BuddyManager::instance(), this));
+	ContactsWidget->view()->setModel(new BuddiesModel(BuddyManager::instance(), this));
 	ContactsWidget->view()->addFilter(GroupBar->filter());
 	AnonymousWithoutMessagesBuddyFilter *anonymousFilter = new AnonymousWithoutMessagesBuddyFilter(this);
 	anonymousFilter->setEnabled(true);

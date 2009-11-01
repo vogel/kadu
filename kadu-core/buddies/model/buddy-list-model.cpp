@@ -16,22 +16,22 @@
 
 #include "protocols/protocol.h"
 
-#include "contact-list-model.h"
+#include "buddy-list-model.h"
 
-ContactListModel::ContactListModel(BuddyList list, QObject *parent)
-	: ContactsModelBase(parent), List(list)
+BuddyListModel::BuddyListModel(BuddyList list, QObject *parent)
+	: BuddiesModelBase(parent), List(list)
 {
 	triggerAllAccountsRegistered();
 }
 
-int ContactListModel::rowCount(const QModelIndex &parent) const
+int BuddyListModel::rowCount(const QModelIndex &parent) const
 {
 	return parent.isValid()
-		? ContactsModelBase::rowCount(parent)
+		? BuddiesModelBase::rowCount(parent)
 		: List.count();
 }
 
-Buddy ContactListModel::contact(const QModelIndex &index) const
+Buddy BuddyListModel::buddyAt(const QModelIndex &index) const
 {
 	QModelIndex parent = index.parent();
 	return parent.isValid()
@@ -41,7 +41,7 @@ Buddy ContactListModel::contact(const QModelIndex &index) const
 			: Buddy::null;
 }
 
-const QModelIndex ContactListModel::contactIndex(Buddy contact) const
+const QModelIndex BuddyListModel::buddyIndex(Buddy contact) const
 {
 	return index(List.indexOf(contact), 0);
 }

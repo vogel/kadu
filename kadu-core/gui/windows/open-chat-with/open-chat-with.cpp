@@ -14,9 +14,9 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "configuration/xml-configuration-file.h"
-#include "buddies/model/contact-list-model.h"
+#include "buddies/model/buddy-list-model.h"
 #include "buddies/buddy-manager.h"
+#include "configuration/xml-configuration-file.h"
 #include "core/core.h"
 #include "gui/widgets/chat-widget-manager.h"
 
@@ -92,7 +92,7 @@ void OpenChatWith::inputChanged(const QString &text)
 	BuddyList matchingContacts;
 	if (!text.isEmpty())
 		matchingContacts = OpenChatWithRunnerManager::instance()->matchingContacts(text);
-	ContactsWidget->setModel(new ContactListModel(matchingContacts, this));
+	ContactsWidget->setModel(new BuddyListModel(matchingContacts, this));
 	kdebugf2();
 }
 

@@ -22,11 +22,11 @@ class QModelIndex;
 class QTemporaryFile;
 
 class AbstractBuddyFilter;
-class AbstractContactsModel;
+class AbstractBudiesModel;
 class Buddy;
 class BuddySet;
 class ContactsListViewDelegate;
-class ContactsModelProxy;
+class BuddiesModelProxy;
 class MainWindow;
 
 class ContactsListView : public QTreeView
@@ -35,7 +35,7 @@ class ContactsListView : public QTreeView
 
 	MainWindow *MyMainWindow;
 	ContactsListViewDelegate *Delegate;
-	ContactsModelProxy *ProxyModel;
+	BuddiesModelProxy *ProxyModel;
 
 	Buddy contact(const QModelIndex &index) const;
 	void triggerActivate(const QModelIndex &index);
@@ -89,7 +89,7 @@ public:
 	ContactsListView(MainWindow *mainWindow, QWidget *parent = 0);
 	virtual ~ContactsListView();
 
-	virtual void setModel(AbstractContactsModel *model);
+	virtual void setModel(AbstractBudiesModel *model);
 	void addFilter(AbstractBuddyFilter *filter);
 	void removeFilter(AbstractBuddyFilter *filter);
 
