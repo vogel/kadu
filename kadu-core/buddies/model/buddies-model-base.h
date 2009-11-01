@@ -21,7 +21,7 @@
 
 class QModelIndex;
 
-class BuddiesModelBase : public QAbstractItemModel, public AbstractBudiesModel, public AccountsAwareObject
+class BuddiesModelBase : public QAbstractItemModel, public AbstractBuddiesModel, public AccountsAwareObject
 {
 	Q_OBJECT
 

@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CONTACTS_LIST_VIEW_DELEGATE_H
-#define CONTACTS_LIST_VIEW_DELEGATE_H
+#ifndef BUDDIES_LIST_VIEW_DELEGATE_H
+#define BUDDIES_LIST_VIEW_DELEGATE_H
 
 #include <QtGui/QItemDelegate>
 
@@ -19,14 +19,14 @@
 
 class QTextDocument;
 
-class AbstractBudiesModel;
+class AbstractBuddiesModel;
 class Account;
 
-class ContactsListViewDelegate : public QItemDelegate, public ConfigurationAwareObject, public AccountsAwareObject
+class BuddiesListViewDelegate : public QItemDelegate, public ConfigurationAwareObject, public AccountsAwareObject
 {
 	Q_OBJECT
 
-	AbstractBudiesModel *Model;
+	AbstractBuddiesModel *Model;
 
 	QFont Font;
 	QFont DescriptionFont;
@@ -44,7 +44,7 @@ class ContactsListViewDelegate : public QItemDelegate, public ConfigurationAware
 	QPixmap avatar(const QModelIndex &index) const;
 
 private slots:
-	void contactStatusChanged(Account account, Buddy contact, Status oldStatus);
+	void buddyStatusChanged(Account account, Buddy contact, Status oldStatus);
 	void modelDestroyed();
 
 protected:
@@ -52,10 +52,10 @@ protected:
 	virtual void accountUnregistered(Account account);
 
 public:
-	explicit ContactsListViewDelegate(QObject *parent = 0);
-	virtual ~ContactsListViewDelegate();
+	explicit BuddiesListViewDelegate(QObject *parent = 0);
+	virtual ~BuddiesListViewDelegate();
 
-	virtual void setModel(AbstractBudiesModel *model);
+	virtual void setModel(AbstractBuddiesModel *model);
 
 	virtual QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index ) const;
 	virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
@@ -63,4 +63,4 @@ public:
 	virtual void configurationUpdated();
 };
 
-#endif // CONTACTS_LIST_VIEW_DELEGATE_H
+#endif // BUDDIES_LIST_VIEW_DELEGATE_H

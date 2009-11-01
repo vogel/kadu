@@ -13,21 +13,21 @@
 #include "buddies/account-data/contact-account-data.h"
 #include "notify/contact-notify-data.h"
 
-#include "contact-options-configuration-widget.h"
+#include "buddy-options-configuration-widget.h"
 
-ContactOptionsConfigurationWidget::ContactOptionsConfigurationWidget(Buddy &contact, QWidget *parent)
-	: QWidget(parent), CurrentContact(contact)
+BuddyOptionsConfigurationWidget::BuddyOptionsConfigurationWidget(Buddy &contact, QWidget *parent)
+	: QWidget(parent), MyBuddy(contact)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 
 	createGui();
 }
 
-ContactOptionsConfigurationWidget::~ContactOptionsConfigurationWidget()
+BuddyOptionsConfigurationWidget::~BuddyOptionsConfigurationWidget()
 {
 }
 
-void ContactOptionsConfigurationWidget::createGui()
+void BuddyOptionsConfigurationWidget::createGui()
 {
 	QGridLayout *layout = new QGridLayout(this);
 	layout->setColumnMinimumWidth(0, 10);
@@ -47,15 +47,15 @@ void ContactOptionsConfigurationWidget::createGui()
 	layout->setRowStretch(row++, 1);       
 
 	BlockCheckBox = new QCheckBox(tr("Block contact"), this);
-	BlockCheckBox->setChecked(CurrentContact.isBlocked(CurrentContact.prefferedAccount()));
+	BlockCheckBox->setChecked(MyBuddy.isBlocked(MyBuddy.prefferedAccount()));
 	layout->addWidget(BlockCheckBox, row++, 2, 1, 2);      
 
 	OfflineToCheckBox = new QCheckBox(tr("Always appear as offline to contact"), this);
-	OfflineToCheckBox->setChecked(CurrentContact.isOfflineTo(CurrentContact.prefferedAccount()));
+	OfflineToCheckBox->setChecked(MyBuddy.isOfflineTo(MyBuddy.prefferedAccount()));
 	layout->addWidget(OfflineToCheckBox, row++, 2, 1, 2);        
 
 	NotifyCheckBox = new QCheckBox(tr("Notify when contact's status changes"), this);
-	ContactNotifyData *cnd = CurrentContact.moduleData<ContactNotifyData>();
+	ContactNotifyData *cnd = MyBuddy.moduleData<ContactNotifyData>();
 	if (cnd)
 	{
 		NotifyCheckBox->setChecked(cnd->notify());
@@ -66,12 +66,12 @@ void ContactOptionsConfigurationWidget::createGui()
 	layout->setRowStretch(row, 100);                            
 }
 
-void ContactOptionsConfigurationWidget::saveConfiguration()
+void BuddyOptionsConfigurationWidget::saveConfiguration()
 {
 
-	CurrentContact.accountData(CurrentContact.prefferedAccount())->setBlocked(BlockCheckBox->isChecked());
-	CurrentContact.setOfflineTo(CurrentContact.prefferedAccount(), OfflineToCheckBox->isChecked());
-	ContactNotifyData *cnd = CurrentContact.moduleData<ContactNotifyData>();
+	MyBuddy.accountData(MyBuddy.prefferedAccount())->setBlocked(BlockCheckBox->isChecked());
+	MyBuddy.setOfflineTo(MyBuddy.prefferedAccount(), OfflineToCheckBox->isChecked());
+	ContactNotifyData *cnd = MyBuddy.moduleData<ContactNotifyData>();
 	if (cnd)
 	{
 		cnd->setNotify(NotifyCheckBox->isChecked());

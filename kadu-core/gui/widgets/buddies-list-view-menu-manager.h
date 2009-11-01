@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CONTACTS_LIST_VIEW_MENU_MANAGER_H
-#define CONTACTS_LIST_VIEW_MENU_MANAGER_H
+#ifndef BUDDIES_LIST_VIEW_MENU_MANAGER_H
+#define BUDDIES_LIST_VIEW_MENU_MANAGER_H
 
 #include <QtCore/QList>
 
@@ -16,24 +16,24 @@
 
 class ActionDescription;
 
-class KADUAPI ContactsListViewMenuManager
+class KADUAPI BuddiesListViewMenuManager
 {
-	Q_DISABLE_COPY(ContactsListViewMenuManager)
+	Q_DISABLE_COPY(BuddiesListViewMenuManager)
 
-static ContactsListViewMenuManager *Instance;
+	static BuddiesListViewMenuManager *Instance;
 
-	QList<ActionDescription *> ContactsContexMenu;
-	QList<ActionDescription *> ContactsListActions;
+	QList<ActionDescription *> BuddiesContexMenu;
+	QList<ActionDescription *> BuddyListActions;
 	QList<ActionDescription *> ManagementActions;
 
-	ContactsListViewMenuManager();
+	BuddiesListViewMenuManager();
 
 public:
 
-	static ContactsListViewMenuManager * instance();
+	static BuddiesListViewMenuManager * instance();
 
-	QList<ActionDescription *> contactsContexMenu() { return ContactsContexMenu; }
-	QList<ActionDescription *> contactsListActions() { return ContactsListActions; }
+	QList<ActionDescription *> buddiesContexMenu() { return BuddiesContexMenu; }
+	QList<ActionDescription *> buddyListActions() { return BuddyListActions; }
 	QList<ActionDescription *> managementActions() { return ManagementActions; }
 
 	void addActionDescription(ActionDescription *actionDescription);
@@ -52,4 +52,4 @@ public:
 
 };
 
-#endif // CONTACTS_LIST_VIEW_MENU_MANAGER_H
+#endif // BUDDIES_LIST_VIEW_MENU_MANAGER_H

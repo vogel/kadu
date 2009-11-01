@@ -31,6 +31,10 @@
 #include "buddies/group-manager.h"
 
 #include "buddies/account-data/contact-account-data.h"
+#include "gui/widgets/buddy-general-configuration-widget.h"
+#include "gui/widgets/buddy-groups-configuration-widget.h"
+#include "gui/widgets/buddy-options-configuration-widget.h"
+#include "gui/widgets/buddy-personal-info-configuration-widget.h"
 #include "gui/widgets/contact-account-data-widget.h"
 #include "gui/windows/buddy-data-manager.h"
 #include "gui/windows/message-box.h"
@@ -85,28 +89,28 @@ void BuddyDataWindow::createTabs(QLayout *layout)
 
 void BuddyDataWindow::createGeneralTab(QTabWidget *tabWidget)
 {
-	ContactTab = new ContactGeneralConfigurationWidget(MyBuddy, this);
+	ContactTab = new BuddyGeneralConfigurationWidget(MyBuddy, this);
 	ContactTab->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
 	tabWidget->addTab(ContactTab, tr("General"));
 }
 
 void BuddyDataWindow::createGroupsTab(QTabWidget *tabWidget)
 {
-	GroupsTab = new ContactGroupsConfigurationWidget(MyBuddy, this);
+	GroupsTab = new BuddyGroupsConfigurationWidget(MyBuddy, this);
 	GroupsTab->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
 	tabWidget->addTab(GroupsTab, tr("Groups"));
 }
 
 void BuddyDataWindow::createPersonalInfoTab(QTabWidget *tabWidget)
 {
-	PersonalInfoTab = new ContactPersonalInfoConfigurationWidget(MyBuddy, this);
+	PersonalInfoTab = new BuddyPersonalInfoConfigurationWidget(MyBuddy, this);
 	PersonalInfoTab->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
 	tabWidget->addTab(PersonalInfoTab, tr("Personal Information"));
 }
 
 void BuddyDataWindow::createOptionsTab(QTabWidget *tabWidget)
 {
-	OptionsTab = new ContactOptionsConfigurationWidget(MyBuddy, this);
+	OptionsTab = new BuddyOptionsConfigurationWidget(MyBuddy, this);
 	OptionsTab->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
 	tabWidget->addTab(OptionsTab, tr("Options"));
 }

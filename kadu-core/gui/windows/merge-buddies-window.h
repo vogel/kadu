@@ -14,7 +14,7 @@
 
 #include "buddies/buddy.h"
 
-class SelectContactCombobox;
+class SelectBuddyCombobox;
 
 class MergeBuddiesWindow : public QDialog
 {
@@ -22,7 +22,7 @@ class MergeBuddiesWindow : public QDialog
 
 	Buddy MyBuddy;
 
-	SelectContactCombobox *SelectCombo;
+	SelectBuddyCombobox *SelectCombo;
 	QPushButton *MergeButton;
 
 	void createGui();

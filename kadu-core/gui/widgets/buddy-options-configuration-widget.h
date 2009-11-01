@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CONTACT_OPTIONS_CONFIGURATION_WIDGET
-#define CONTACT_OPTIONS_CONFIGURATION_WIDGET
+#ifndef BUDDY_OPTIONS_CONFIGURATION_WIDGET_H
+#define BUDDY_OPTIONS_CONFIGURATION_WIDGET_H
 
 #include <QtGui/QDialog>
 #include <QtGui/QCheckBox>
@@ -21,7 +21,7 @@
 class ContactAccountData;
 class ContactAccountDataManager;
 
-class KADUAPI ContactOptionsConfigurationWidget : public QWidget
+class KADUAPI BuddyOptionsConfigurationWidget : public QWidget
 {
 	Q_OBJECT
 
@@ -29,14 +29,14 @@ class KADUAPI ContactOptionsConfigurationWidget : public QWidget
 	QCheckBox *OfflineToCheckBox;
 	QCheckBox *NotifyCheckBox;
 
-	Buddy CurrentContact;
+	Buddy MyBuddy;
 	void createGui();
 
 public:
-	ContactOptionsConfigurationWidget(Buddy &contact, QWidget *parent = 0);
-	~ContactOptionsConfigurationWidget();
+	explicit BuddyOptionsConfigurationWidget(Buddy &contact, QWidget *parent = 0);
+	virtual ~BuddyOptionsConfigurationWidget();
 	void saveConfiguration();
 
 };
 
-#endif // CONTACT_OPTIONS_CONFIGURATION_WIDGET
+#endif // BUDDY_OPTIONS_CONFIGURATION_WIDGET_H

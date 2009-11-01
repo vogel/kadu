@@ -101,7 +101,17 @@ set (kadu_SRCS
 	gui/actions/actions.cpp
 	gui/actions/action-description.cpp
 
-	gui/widgets/account-contacts-list-widget.cpp
+	gui/widgets/account-buddy-list-widget.cpp
+	gui/widgets/buddies-line-edit.cpp
+	gui/widgets/buddies-list-view.cpp
+	gui/widgets/buddies-list-view-delegate.cpp
+	gui/widgets/buddies-list-view-menu-manager.cpp
+	gui/widgets/buddies-list-widget.cpp
+	gui/widgets/buddy-general-configuration-widget.cpp
+	gui/widgets/buddy-groups-configuration-widget.cpp
+	gui/widgets/buddy-personal-info-configuration-widget.cpp
+	gui/widgets/buddy-options-configuration-widget.cpp
+	gui/widgets/buddy-info-panel.cpp
 	gui/widgets/chat-edit-box.cpp
 	gui/widgets/chat-messages-view.cpp
 	gui/widgets/chat-widget.cpp
@@ -111,16 +121,6 @@ set (kadu_SRCS
 	gui/widgets/color-button.cpp
 	gui/widgets/color-selector.cpp
 	gui/widgets/contact-account-data-widget.cpp
-	gui/widgets/contact-general-configuration-widget.cpp
-	gui/widgets/contact-groups-configuration-widget.cpp
-	gui/widgets/contact-personal-info-configuration-widget.cpp
-	gui/widgets/contact-options-configuration-widget.cpp
-	gui/widgets/contact-info-panel.cpp
-	gui/widgets/contacts-line-edit.cpp
-	gui/widgets/contacts-list-view.cpp
-	gui/widgets/contacts-list-view-delegate.cpp
-	gui/widgets/contacts-list-view-menu-manager.cpp
-	gui/widgets/contacts-list-widget.cpp
 	gui/widgets/custom-input.cpp
 	gui/widgets/delayed-line-edit.cpp
 	gui/widgets/group-tab-bar.cpp
@@ -129,8 +129,8 @@ set (kadu_SRCS
 	gui/widgets/path-list-edit.cpp
 	gui/widgets/proxy-group-box.cpp
 	gui/widgets/preview.cpp
-	gui/widgets/select-contact-combobox.cpp
-	gui/widgets/select-contact-popup.cpp
+	gui/widgets/select-buddy-combobox.cpp
+	gui/widgets/select-buddy-popup.cpp
 	gui/widgets/select-file.cpp
 	gui/widgets/select-font.cpp
 	gui/widgets/status-button.cpp
@@ -341,9 +341,18 @@ set (kadu_MOC_SRCS
 	gui/actions/actions.h
 	gui/actions/action-description.h
 
-	gui/widgets/account-contacts-list-widget.h
+	gui/widgets/account-buddy-list-widget.h
 	gui/widgets/account-create-widget.h
 	gui/widgets/account-edit-widget.h
+	gui/widgets/buddies-line-edit.h
+	gui/widgets/buddies-list-view.h
+	gui/widgets/buddies-list-view-delegate.h
+	gui/widgets/buddies-list-widget.h
+	gui/widgets/buddy-general-configuration-widget.h
+	gui/widgets/buddy-groups-configuration-widget.h
+	gui/widgets/buddy-personal-info-configuration-widget.h
+	gui/widgets/buddy-options-configuration-widget.h
+	gui/widgets/buddy-info-panel.h
 	gui/widgets/chat-edit-box.h
 	gui/widgets/chat-messages-view.h
 	gui/widgets/chat-widget.h
@@ -353,23 +362,14 @@ set (kadu_MOC_SRCS
 	gui/widgets/color-button.h
 	gui/widgets/color-selector.h
 	gui/widgets/contact-account-data-widget.h
-	gui/widgets/contact-general-configuration-widget.h
-	gui/widgets/contact-groups-configuration-widget.h
-	gui/widgets/contact-personal-info-configuration-widget.h
-	gui/widgets/contact-options-configuration-widget.h
-	gui/widgets/contact-info-panel.h
-	gui/widgets/contacts-line-edit.h
-	gui/widgets/contacts-list-view.h
-	gui/widgets/contacts-list-view-delegate.h
-	gui/widgets/contacts-list-widget.h
 	gui/widgets/custom-input.h
 	gui/widgets/delayed-line-edit.h
 	gui/widgets/group-tab-bar.h
 	gui/widgets/kadu-text-browser.h
 	gui/widgets/path-list-edit.h
 	gui/widgets/preview.h
-	gui/widgets/select-contact-combobox.h
-	gui/widgets/select-contact-popup.h
+	gui/widgets/select-buddy-combobox.h
+	gui/widgets/select-buddy-popup.h
 	gui/widgets/select-file.h
 	gui/widgets/select-font.h
 	gui/widgets/status-button.h

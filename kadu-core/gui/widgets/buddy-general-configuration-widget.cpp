@@ -27,21 +27,21 @@
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 
-#include "contact-general-configuration-widget.h"
+#include "buddy-general-configuration-widget.h"
 
-ContactGeneralConfigurationWidget::ContactGeneralConfigurationWidget(Buddy &contact, QWidget *parent)
-	: QWidget(parent), CurrentContact(contact)
+BuddyGeneralConfigurationWidget::BuddyGeneralConfigurationWidget(Buddy &contact, QWidget *parent)
+	: QWidget(parent), MyBuddy(contact)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 
 	createGui();
 }
 
-ContactGeneralConfigurationWidget::~ContactGeneralConfigurationWidget()
+BuddyGeneralConfigurationWidget::~BuddyGeneralConfigurationWidget()
 {
 }
 
-void ContactGeneralConfigurationWidget::createGui()
+void BuddyGeneralConfigurationWidget::createGui()
 {
 	QGridLayout *layout = new QGridLayout(this);
 	layout->setColumnMinimumWidth(0, 10);
@@ -64,7 +64,7 @@ void ContactGeneralConfigurationWidget::createGui()
 	QLabel *numberLabel = new QLabel(tr("Visible Name") + ":", this);
 	layout->addWidget(numberLabel, 2, 2, 1, 1);
 	DisplayEdit = new QLineEdit(this);
-	DisplayEdit->setText(CurrentContact.display());
+	DisplayEdit->setText(MyBuddy.display());
 	layout->addWidget(DisplayEdit, 2, 3, 1, 1);
 
 	QWidget *photoWidget = new QWidget;
@@ -72,7 +72,7 @@ void ContactGeneralConfigurationWidget::createGui()
 	photoLayout->setSpacing(2);
 
 	QLabel *photoLabel = new QLabel(this);
-	QPixmap photoPixmap = QPixmap(CurrentContact.accountDatas().at(0)->avatar().pixmap());
+	QPixmap photoPixmap = QPixmap(MyBuddy.accountDatas().at(0)->avatar().pixmap());
 	photoLabel->setPixmap(photoPixmap);
 	photoLayout->addWidget(photoLabel);
 
@@ -93,7 +93,7 @@ void ContactGeneralConfigurationWidget::createGui()
 	QLabel *defaultContactLabel = new QLabel(tr("Default Contact") + ":");
 
 	QComboBox *defaultContact = new QComboBox(this);
-	defaultContact->setDisabled(CurrentContact.accountDatas().count() <= 1);
+	defaultContact->setDisabled(MyBuddy.accountDatas().count() <= 1);
 	QLabel *defaultContactNoticeLabel = new QLabel(tr("Chat messages will be sent to this username when you select the name from the buddy list"));
 	AccountsLayout->addWidget(defaultContactLabel, row, 0, 1, 1);
 	AccountsLayout->addWidget(defaultContact, row++, 1, 1, 4);
@@ -104,7 +104,7 @@ void ContactGeneralConfigurationWidget::createGui()
 	AccountsLayout->setColumnStretch(0, 2);
 	AccountsLayout->setColumnStretch(2, 2);
 	
-	foreach (ContactAccountData *data, CurrentContact.accountDatas())
+	foreach (ContactAccountData *data, MyBuddy.accountDatas())
 	{
 		defaultContact->addItem(data->id());
 		addAccountDataRow(data);
@@ -115,7 +115,7 @@ void ContactGeneralConfigurationWidget::createGui()
 	QPushButton *addContactButton = new QPushButton(tr("Add Contact..."), this);
 	connect(addContactButton, SIGNAL(clicked()), this, SLOT(addAccountDataRow()));
 	QPushButton *setOrderButton = new QPushButton(tr("Set Order..."), this);
-	setOrderButton->setDisabled(CurrentContact.accountDatas().count() <= 1);
+	setOrderButton->setDisabled(MyBuddy.accountDatas().count() <= 1);
 	connect(setOrderButton, SIGNAL(clicked()), this, SLOT(showOrderDialog()));
 
 	AccountsLayout->addWidget(addContactButton, row, 0, 1, 1);
@@ -134,28 +134,28 @@ void ContactGeneralConfigurationWidget::createGui()
 	QHBoxLayout *phoneLayout = new QHBoxLayout;
 	QLabel *phoneLabel = new QLabel(tr("Phone") + ":");
 	PhoneEdit = new QLineEdit(this);
-	PhoneEdit->setText(CurrentContact.homePhone());
+	PhoneEdit->setText(MyBuddy.homePhone());
 	communicationLayout->addWidget(phoneLabel, row, 0, 1, 1);
 	communicationLayout->addWidget(PhoneEdit, row++, 1, 1, 1);
 
 	QHBoxLayout *mobileLayout = new QHBoxLayout;
 	QLabel *mobileLabel = new QLabel(tr("Mobile") + ":");
 	MobileEdit = new QLineEdit(this);
-	MobileEdit->setText(CurrentContact.mobile());
+	MobileEdit->setText(MyBuddy.mobile());
 	communicationLayout->addWidget(mobileLabel, row, 0, 1, 1);
 	communicationLayout->addWidget(MobileEdit, row++, 1, 1, 1);
 
 	QHBoxLayout *emailLayout = new QHBoxLayout;
 	QLabel *emailLabel = new QLabel(tr("E-Mail") + ":");
 	EmailEdit = new QLineEdit(this);
-	EmailEdit->setText(CurrentContact.email());
+	EmailEdit->setText(MyBuddy.email());
 	communicationLayout->addWidget(emailLabel, row, 0, 1, 1);
 	communicationLayout->addWidget(EmailEdit, row++, 1, 1, 1);
 
 	QHBoxLayout *websiteLayout = new QHBoxLayout;
 	QLabel *websiteLabel = new QLabel(tr("Website") + ":");
 	WebsiteEdit = new QLineEdit(this);
-	WebsiteEdit->setText(CurrentContact.website());
+	WebsiteEdit->setText(MyBuddy.website());
 	communicationLayout->addWidget(websiteLabel, row, 0, 1, 1);
 	communicationLayout->addWidget(WebsiteEdit, row++, 1, 1, 1);
 
@@ -163,7 +163,7 @@ void ContactGeneralConfigurationWidget::createGui()
 	layout->setRowStretch(8, 100);
 }
 
-void ContactGeneralConfigurationWidget::addAccountDataRow(ContactAccountData *data)
+void BuddyGeneralConfigurationWidget::addAccountDataRow(ContactAccountData *data)
 {
 	int row = ContactsLayout->rowCount();
 
@@ -179,7 +179,7 @@ void ContactGeneralConfigurationWidget::addAccountDataRow(ContactAccountData *da
 	QLabel *inLabel = new QLabel(tr("in"), accountRow);
 	QComboBox *accountsCombo = new QComboBox(accountRow);
 	QPushButton *unmergeButton = new QPushButton(IconsManager::instance()->loadIcon("CloseWindowButton"), tr("Unmerge contact..."), accountRow);
-	unmergeButton->setDisabled(ContactsAccounts.count() == 0 && CurrentContact.accountDatas().count() <= 1);
+	unmergeButton->setDisabled(ContactsAccounts.count() == 0 && MyBuddy.accountDatas().count() <= 1);
 	connect(unmergeButton, SIGNAL(clicked(bool)), accountRow, SLOT(hide()));
 	connect(unmergeButton, SIGNAL(clicked(bool)), contactLineEdit, SLOT(clear()));
 
@@ -210,13 +210,13 @@ void ContactGeneralConfigurationWidget::addAccountDataRow(ContactAccountData *da
 		contactLineEdit->setText(data->id());
 }
 
-void ContactGeneralConfigurationWidget::saveConfiguration()
+void BuddyGeneralConfigurationWidget::saveConfiguration()
 {
-	CurrentContact.setDisplay(DisplayEdit->text());
-	CurrentContact.setHomePhone(PhoneEdit->text());
-	CurrentContact.setMobile(MobileEdit->text());
-	CurrentContact.setEmail(EmailEdit->text());
-	CurrentContact.setWebsite(WebsiteEdit->text());
+	MyBuddy.setDisplay(DisplayEdit->text());
+	MyBuddy.setHomePhone(PhoneEdit->text());
+	MyBuddy.setMobile(MobileEdit->text());
+	MyBuddy.setEmail(EmailEdit->text());
+	MyBuddy.setWebsite(WebsiteEdit->text());
 
 	for (int i = 0; i < ContactsAccounts.count(); i++)
 	{
@@ -225,27 +225,27 @@ void ContactGeneralConfigurationWidget::saveConfiguration()
 		Account account = AccountManager::instance()->byUuid(QUuid(ContactsAccounts.at(i)->itemData(ContactsAccounts.at(i)->currentIndex()).toString()));
 		QString contactId = ContactsIds.at(i)->text();
 
-		if (CurrentContact.hasAccountData(account))
+		if (MyBuddy.hasAccountData(account))
 		{
 			if (!contactId.isEmpty()/* && account.protocolHandler()->validateId(ContactsIds.at(i)->text())*/)
 			{
-				CurrentContact.accountData(account)->setId(contactId);
+				MyBuddy.accountData(account)->setId(contactId);
 			}
 			else
-				CurrentContact.removeAccountData(account);
+				MyBuddy.removeAccountData(account);
 		}
 		else
 		{
-			foreach (ContactAccountData *accountData, CurrentContact.accountDatas())
+			foreach (ContactAccountData *accountData, MyBuddy.accountDatas())
 					if (accountData->id() == contactId) // check if user has only changed account for previous existing ID
-						CurrentContact.removeAccountData(accountData->account()); // if so, remove old CAD, otherwise there will appear 2 identical contacts with different accounts
-			ContactAccountData *data = new ContactAccountData(account, CurrentContact, contactId, false);
-			CurrentContact.addAccountData(data);
+						MyBuddy.removeAccountData(accountData->account()); // if so, remove old CAD, otherwise there will appear 2 identical contacts with different accounts
+			ContactAccountData *data = new ContactAccountData(account, MyBuddy, contactId, false);
+			MyBuddy.addAccountData(data);
 		}
 	}
 }
 
-void ContactGeneralConfigurationWidget::showOrderDialog()
+void BuddyGeneralConfigurationWidget::showOrderDialog()
 {
 	OrderDialog = new QDialog(this);
 	OrderDialog->setAttribute(Qt::WA_DeleteOnClose);
@@ -281,18 +281,18 @@ void ContactGeneralConfigurationWidget::showOrderDialog()
 	OrderDialog->show();
 }
 
-void ContactGeneralConfigurationWidget::updateOrder()
+void BuddyGeneralConfigurationWidget::updateOrder()
 {
-	BuddyManager::instance()->blockUpdatedSignal(CurrentContact);
+	BuddyManager::instance()->blockUpdatedSignal(MyBuddy);
 
 // 	ContactTab->saveConfiguration();
 // 	GroupsTab->saveConfiguration(); 
 // 	OptionsTab->saveConfiguration(); 
 
-	BuddyManager::instance()->unblockUpdatedSignal(CurrentContact);
+	BuddyManager::instance()->unblockUpdatedSignal(MyBuddy);
 }
 
-void ContactGeneralConfigurationWidget::updateOrderAndClose()
+void BuddyGeneralConfigurationWidget::updateOrderAndClose()
 {
 	updateOrder();
 	OrderDialog->close();

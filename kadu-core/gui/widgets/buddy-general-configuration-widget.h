@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CONTACT_GENERAL_CONFIGURATION_WIDGET
-#define CONTACT_GENERAL_CONFIGURATION_WIDGET
+#ifndef BUDDY_GENERAL_CONFIGURATION_WIDGET_H
+#define BUDDY_GENERAL_CONFIGURATION_WIDGET_H
 
 #include <QtGui/QComboBox>
 #include <QtGui/QDialog>
@@ -23,7 +23,7 @@
 class ContactAccountData;
 class ContactAccountDataManager;
 
-class KADUAPI ContactGeneralConfigurationWidget : public QWidget
+class KADUAPI BuddyGeneralConfigurationWidget : public QWidget
 {
 	Q_OBJECT
 
@@ -33,7 +33,7 @@ class KADUAPI ContactGeneralConfigurationWidget : public QWidget
 	QLineEdit *EmailEdit;
 	QLineEdit *WebsiteEdit;
 
-	QDialog *OrderDialog; 
+	QDialog *OrderDialog;
 
 	QList<QLineEdit *> ContactsIds;
 	QList<QComboBox *> ContactsAccounts;
@@ -41,20 +41,21 @@ class KADUAPI ContactGeneralConfigurationWidget : public QWidget
 	QGridLayout *AccountsLayout;
 	QGridLayout *ContactsLayout;
 
-	Buddy CurrentContact;
+	Buddy MyBuddy;
 	void createGui();
 	void updateOrder();
 
-public:
-	ContactGeneralConfigurationWidget(Buddy &contact, QWidget *parent = 0);
-	~ContactGeneralConfigurationWidget();
-
-	void saveConfiguration();
 private slots:
 	void addAccountDataRow(ContactAccountData *data = 0);
 	void showOrderDialog();
 	void updateOrderAndClose();
 
+public:
+	BuddyGeneralConfigurationWidget(Buddy &contact, QWidget *parent = 0);
+	~BuddyGeneralConfigurationWidget();
+
+	void saveConfiguration();
+
 };
 
-#endif // CONTACT_GENERAL_CONFIGURATION_WIDGET
+#endif // BUDDY_GENERAL_CONFIGURATION_WIDGET_H

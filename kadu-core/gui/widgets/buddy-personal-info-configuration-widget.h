@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CONTACT_PERSONAL_INFO_CONFIGURATION_WIDGET
-#define CONTACT_PERSONAL_INFO_CONFIGURATION_WIDGET
+#ifndef BUDDY_PERSONAL_INFO_CONFIGURATION_WIDGET_H
+#define BUDDY_PERSONAL_INFO_CONFIGURATION_WIDGET_H
 
 #include <QtGui/QComboBox>
 #include <QtGui/QGridLayout>
@@ -19,7 +19,7 @@
 
 #include "exports.h"
 
-class KADUAPI ContactPersonalInfoConfigurationWidget : public QWidget
+class KADUAPI BuddyPersonalInfoConfigurationWidget : public QWidget
 {
 	Q_OBJECT
 
@@ -28,16 +28,16 @@ class KADUAPI ContactPersonalInfoConfigurationWidget : public QWidget
 	*BirthdateText, *CityText, *StateProvinceText, *IpText, *PortText,
 	*DnsNameText, *ProtocolVerText;
 
-	Buddy CurrentContact;
+	Buddy MyBuddy;
 	void createGui();
-
-public:
-	ContactPersonalInfoConfigurationWidget(Buddy &contact, QWidget *parent = 0);
-	~ContactPersonalInfoConfigurationWidget();
 
 private slots:
 	void accountSelectionChanged(int index);
 
+public:
+	BuddyPersonalInfoConfigurationWidget(Buddy &contact, QWidget *parent = 0);
+	~BuddyPersonalInfoConfigurationWidget();
+
 };
 
-#endif // CONTACT_PERSONAL_INFO_CONFIGURATION_WIDGET
+#endif // BUDDY_PERSONAL_INFO_CONFIGURATION_WIDGET_H

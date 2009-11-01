@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CONTACTS_LIST_VIEW_H
-#define CONTACTS_LIST_VIEW_H
+#ifndef BUDDIES_LIST_VIEW_H
+#define BUDDIES_LIST_VIEW_H
 
 #include <QtGui/QTreeView>
 #include <QtCore/QDateTime>
@@ -22,22 +22,22 @@ class QModelIndex;
 class QTemporaryFile;
 
 class AbstractBuddyFilter;
-class AbstractBudiesModel;
+class AbstractBuddiesModel;
 class Buddy;
 class BuddySet;
-class ContactsListViewDelegate;
+class BuddiesListViewDelegate;
 class BuddiesModelProxy;
 class MainWindow;
 
-class ContactsListView : public QTreeView
+class BuddiesListView : public QTreeView
 {
 	Q_OBJECT
 
 	MainWindow *MyMainWindow;
-	ContactsListViewDelegate *Delegate;
+	BuddiesListViewDelegate *Delegate;
 	BuddiesModelProxy *ProxyModel;
 
-	Buddy contact(const QModelIndex &index) const;
+	Buddy buddyAt(const QModelIndex &index) const;
 	void triggerActivate(const QModelIndex &index);
 
 	// Tool tips
@@ -86,25 +86,25 @@ protected slots:
 	virtual void selectionChanged( const QItemSelection &selected, const QItemSelection &deselected);
 
 public:
-	ContactsListView(MainWindow *mainWindow, QWidget *parent = 0);
-	virtual ~ContactsListView();
+	BuddiesListView(MainWindow *mainWindow, QWidget *parent = 0);
+	virtual ~BuddiesListView();
 
-	virtual void setModel(AbstractBudiesModel *model);
+	virtual void setModel(AbstractBuddiesModel *model);
 	void addFilter(AbstractBuddyFilter *filter);
 	void removeFilter(AbstractBuddyFilter *filter);
 
-	Buddy currentContact() const;
-	BuddySet selectedContacts() const;
+	Buddy currentBuddy() const;
+	BuddySet selectedBuddies() const;
 
 	void setBackground(const QString &backgroundColor, const QString &file = QString::null, BackgroundMode mode = BackgroundNone);
 	void updateBackground();
 
 signals:
 	void chatActivated(Chat *chat);
-	void contactsSelectionChanged();
+	void buddySelectionChanged();
 
-	void currentContactChanged(Buddy contact);
+	void currentBuddyChanged(Buddy contact);
 
 };
 
-#endif // CONTACTS_LIST_VIEW_H
+#endif // BUDDIES_LIST_VIEW_H

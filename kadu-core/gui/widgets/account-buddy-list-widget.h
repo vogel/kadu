@@ -7,38 +7,38 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ACCOUNT_CONTACTS_LIST_WIDGET_H
-#define ACCOUNT_CONTACTS_LIST_WIDGET_H
+#ifndef ACCOUNT_BUDDY_LIST_WIDGET_H
+#define ACCOUNT_BUDDY_LIST_WIDGET_H
 
 #include <QtGui/QPushButton>
 #include <QtGui/QWidget>
 
 #include "accounts/account.h"
 #include "buddies/buddy-list.h"
-#include "gui/widgets/contacts-list-view.h"
+#include "gui/widgets/buddies-list-view.h"
 
 #include "exports.h"
 
-class KADUAPI AccountContactsListWidget : public QWidget
+class KADUAPI AccountBuddyListWidget : public QWidget
 {
 	Q_OBJECT
 	
 	Account CurrentAccount;
-	ContactsListView *ContactsWidget;
+	BuddiesListView *BuddiesWidget;
 	QPushButton *ExportButton;
 	QPushButton *ImportButton;
 	bool Clear;
 
 public:
-	AccountContactsListWidget(Account account, QWidget *parent = 0);
-	virtual ~AccountContactsListWidget() {}
+	AccountBuddyListWidget(Account account, QWidget *parent = 0);
+	virtual ~AccountBuddyListWidget() {}
 
 private slots:
 	void startImportTransfer();
 	void startExportTransfer();
-	void contactListImported(bool ok, BuddyList contacts);
-	void contactListExported(bool ok);
+	void buddiesListImported(bool ok, BuddyList contacts);
+	void buddiesListExported(bool ok);
 
 };
 
-#endif // ACCOUNT_CONTACTS_LIST_WIDGET_H
+#endif // ACCOUNT_BUDDY_LIST_WIDGET_H

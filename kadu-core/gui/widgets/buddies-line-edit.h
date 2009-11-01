@@ -7,12 +7,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CONTACTS_LINE_EDIT_H
-#define CONTACTS_LINE_EDIT_H
+#ifndef BUDDIES_LINE_EDIT_H
+#define BUDDIES_LINE_EDIT_H
 
 #include <QtGui/QLineEdit>
 
-class ContactsLineEdit : public QLineEdit
+class BuddiesLineEdit : public QLineEdit
 {
 	Q_OBJECT
 
@@ -20,8 +20,8 @@ protected:
 	virtual void keyReleaseEvent(QKeyEvent *e);
 
 public:
-	explicit ContactsLineEdit(QWidget *parent = 0);
-	virtual ~ContactsLineEdit();
+	explicit BuddiesLineEdit(QWidget *parent = 0);
+	virtual ~BuddiesLineEdit();
 
 signals:
 	void next();
@@ -29,4 +29,4 @@ signals:
 
 };
 
-#endif // CONTACTS_LINE_EDIT_H
+#endif // BUDDIES_LINE_EDIT_H

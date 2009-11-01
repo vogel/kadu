@@ -18,21 +18,21 @@
 #include "buddies/group-manager.h"
 #include "misc/misc.h"
 
-#include "contact-groups-configuration-widget.h"
+#include "buddy-groups-configuration-widget.h"
 
-ContactGroupsConfigurationWidget::ContactGroupsConfigurationWidget(Buddy &contact, QWidget *parent)
-	: QScrollArea(parent), CurrentContact(contact)
+BuddyGroupsConfigurationWidget::BuddyGroupsConfigurationWidget(Buddy &contact, QWidget *parent)
+	: QScrollArea(parent), MyBuddy(contact)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 
 	createGui();
 }
 
-ContactGroupsConfigurationWidget::~ContactGroupsConfigurationWidget()
+BuddyGroupsConfigurationWidget::~BuddyGroupsConfigurationWidget()
 {
 }
 
-void ContactGroupsConfigurationWidget::createGui()
+void BuddyGroupsConfigurationWidget::createGui()
 {
 	setFrameStyle(QFrame::NoFrame);
 	setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
@@ -59,7 +59,7 @@ void ContactGroupsConfigurationWidget::createGui()
 	tabLabel->setFont(tabLabelFont);
 	layout->addWidget(tabLabel, row++, 1, 1, 4);
 
-	QLabel *tabSubLabel = new QLabel(tr("Add %1 to the groups below by checking the box next to the appropriate groups.").arg(CurrentContact.display()), this);
+	QLabel *tabSubLabel = new QLabel(tr("Add %1 to the groups below by checking the box next to the appropriate groups.").arg(MyBuddy.display()), this);
 	layout->setRowStretch(row, 1);
 	layout->addWidget(tabSubLabel, row++, 2, 1, 4);
 
@@ -68,7 +68,7 @@ void ContactGroupsConfigurationWidget::createGui()
 	foreach (Group *group, GroupManager::instance()->groups())
 	{
 		QCheckBox *groupCheckBox = new QCheckBox(group->name(), this);
-		groupCheckBox->setChecked(CurrentContact.isInGroup(group));
+		groupCheckBox->setChecked(MyBuddy.isInGroup(group));
 		layout->addWidget(groupCheckBox, row++, 2, 1, 2);
 		GroupCheckBoxList.append(groupCheckBox);
 	}
@@ -76,15 +76,15 @@ void ContactGroupsConfigurationWidget::createGui()
 	layout->setRowStretch(row, 100);
 }
 
-void ContactGroupsConfigurationWidget::saveConfiguration()
+void BuddyGroupsConfigurationWidget::saveConfiguration()
 {
-	foreach (Group *group, CurrentContact.groups())
+	foreach (Group *group, MyBuddy.groups())
 	{
-		CurrentContact.removeFromGroup(group);
+		MyBuddy.removeFromGroup(group);
 	}
 	foreach (QCheckBox *groupBox, GroupCheckBoxList)
 	{
 		if (groupBox->isChecked())
-			CurrentContact.addToGroup(GroupManager::instance()->byName(groupBox->text()));
+			MyBuddy.addToGroup(GroupManager::instance()->byName(groupBox->text()));
 	}
 }

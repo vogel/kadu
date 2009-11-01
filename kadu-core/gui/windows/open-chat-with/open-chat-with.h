@@ -12,7 +12,7 @@
 
 #include <QtGui/QWidget>
 
-#include "gui/widgets/contacts-list-view.h"
+#include "gui/widgets/buddies-list-view.h"
 
 #include "open-chat-with-runner.h"
 
@@ -30,7 +30,7 @@ class KADUAPI OpenChatWith : public QWidget
 {
 	Q_OBJECT
 
-	ContactsListView *ContactsWidget;
+	BuddiesListView *BuddiesWidget;
 	QLineEdit *ContactID;
 	QVBoxLayout *MainLayout;
 	OpenChatWithRunner *OpenChatRunner;

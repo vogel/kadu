@@ -28,7 +28,7 @@
 #include "buddies/group-manager.h"
 #include "buddies/filter/non-account-buddy-filter.h"
 #include "buddies/model/groups-model.h"
-#include "gui/widgets/select-contact-combobox.h"
+#include "gui/widgets/select-buddy-combobox.h"
 #include "misc/misc.h"
 #include "model/actions-proxy-model.h"
 #include "model/roles.h"
@@ -131,7 +131,7 @@ void AddBuddyWindow::createGui()
 
 	MergeContact = new QCheckBox(tr("Merge with an existing contact"), this);
 	layout->addWidget(MergeContact, 4, 1, 1, 3);
-	SelectContact = new SelectContactCombobox(this);
+	SelectContact = new SelectBuddyCombobox(this);
 	SelectContactFilter = new NonAccountBuddyFilter(SelectContact);
 	SelectContact->addFilter(SelectContactFilter);
 	SelectContact->setEnabled(false);

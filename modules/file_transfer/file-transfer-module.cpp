@@ -22,7 +22,7 @@
 #include "protocols/protocol.h"
 #include "protocols/services/file-transfer-service.h"
 #include "gui/actions/action.h"
-#include "gui/widgets/contacts-list-view-menu-manager.h"
+#include "gui/widgets/buddies-list-view-menu-manager.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-box.h"
 
@@ -106,7 +106,7 @@ void FileTransferModule::createActionDecriptions()
 		disableNonFileTransferContacts
 	);
 	SendFileActionDescription->setShortcut("kadu_sendfile");
-	ContactsListViewMenuManager::instance()->insertActionDescription(1, SendFileActionDescription);
+	BuddiesListViewMenuManager::instance()->insertActionDescription(1, SendFileActionDescription);
 
 	FileTransferWindowActionDescription = new ActionDescription(0,
 		ActionDescription::TypeMainMenu, "sendFileWindowAction",
@@ -119,7 +119,7 @@ void FileTransferModule::createActionDecriptions()
 
 void FileTransferModule::deleteActionDecriptions()
 {
-	ContactsListViewMenuManager::instance()->removeActionDescription(SendFileActionDescription);
+	BuddiesListViewMenuManager::instance()->removeActionDescription(SendFileActionDescription);
 	// TODO: 0.6.6
 // 	Core::instance()->kaduWindow()->removeMenuActionDescription(FileTransferWindowActionDescription);
 

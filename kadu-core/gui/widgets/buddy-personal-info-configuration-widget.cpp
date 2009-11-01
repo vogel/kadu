@@ -13,21 +13,21 @@
 #include "misc/misc.h"
 #include "protocols/protocol.h"
 
-#include "contact-personal-info-configuration-widget.h"
+#include "buddy-personal-info-configuration-widget.h"
 
-ContactPersonalInfoConfigurationWidget::ContactPersonalInfoConfigurationWidget(Buddy &contact, QWidget *parent)
-	: QWidget(parent), CurrentContact(contact)
+BuddyPersonalInfoConfigurationWidget::BuddyPersonalInfoConfigurationWidget(Buddy &contact, QWidget *parent)
+	: QWidget(parent), MyBuddy(contact)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 
 	createGui();
 }
 
-ContactPersonalInfoConfigurationWidget::~ContactPersonalInfoConfigurationWidget()
+BuddyPersonalInfoConfigurationWidget::~BuddyPersonalInfoConfigurationWidget()
 {
 }
 
-void ContactPersonalInfoConfigurationWidget::createGui()
+void BuddyPersonalInfoConfigurationWidget::createGui()
 {
 	QGridLayout *layout = new QGridLayout(this);
 	layout->setColumnMinimumWidth(0, 10);
@@ -48,7 +48,7 @@ void ContactPersonalInfoConfigurationWidget::createGui()
 	layout->addWidget(usernameLabel, row, 3, 1, 1); 
 
 	ContactIdCombo = new QComboBox(this);
-	foreach (ContactAccountData *data, CurrentContact.accountDatas())
+	foreach (ContactAccountData *data, MyBuddy.accountDatas())
 		ContactIdCombo->addItem(data->account().protocolHandler()->icon(),
 				data->id(),
 				data->account().uuid().toString()
@@ -141,7 +141,7 @@ void ContactPersonalInfoConfigurationWidget::createGui()
 	layout->setRowStretch(row, 100);
 }
 
-void ContactPersonalInfoConfigurationWidget::accountSelectionChanged(int index)
+void BuddyPersonalInfoConfigurationWidget::accountSelectionChanged(int index)
 {
 	QString accountUuid = ContactIdCombo->itemData(index).toString();
 	if (accountUuid.isEmpty())
@@ -150,16 +150,16 @@ void ContactPersonalInfoConfigurationWidget::accountSelectionChanged(int index)
 	if (account.isNull())
 		return;
 	//TODO proper values
-	FirstNameText->setText(CurrentContact.firstName());
-	LastNameText->setText(CurrentContact.lastName());
-	NicknameText->setText(CurrentContact.nickName());
-	GenderText->setText(CurrentContact.firstName());
-	BirthdateText->setText(CurrentContact.firstName());
-	CityText->setText(CurrentContact.firstName());
-	StateProvinceText->setText(CurrentContact.firstName());
+	FirstNameText->setText(MyBuddy.firstName());
+	LastNameText->setText(MyBuddy.lastName());
+	NicknameText->setText(MyBuddy.nickName());
+	GenderText->setText(MyBuddy.firstName());
+	BirthdateText->setText(MyBuddy.firstName());
+	CityText->setText(MyBuddy.firstName());
+	StateProvinceText->setText(MyBuddy.firstName());
 	//
-	IpText->setText(CurrentContact.accountData(account)->ip().toString());
-	PortText->setText(QString::number(CurrentContact.accountData(account)->port()));
-	DnsNameText->setText(CurrentContact.accountData(account)->dnsName());
-	ProtocolVerText->setText(CurrentContact.accountData(account)->protocolVersion());
+	IpText->setText(MyBuddy.accountData(account)->ip().toString());
+	PortText->setText(QString::number(MyBuddy.accountData(account)->port()));
+	DnsNameText->setText(MyBuddy.accountData(account)->dnsName());
+	ProtocolVerText->setText(MyBuddy.accountData(account)->protocolVersion());
 }

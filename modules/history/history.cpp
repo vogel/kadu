@@ -117,7 +117,7 @@ void History::createActionDescriptions()
 		disableNonHistoryContacts
 	);
 	ShowHistoryActionDescription->setShortcut("kadu_showhistory");
-	ContactsListViewMenuManager::instance()->insertActionDescription(3, ShowHistoryActionDescription);
+	BuddiesListViewMenuManager::instance()->insertActionDescription(3, ShowHistoryActionDescription);
 
 	ChatsHistoryActionDescription = new ActionDescription(0,
 		ActionDescription::TypeMainMenu, "chatsHistoryAction",
@@ -138,13 +138,13 @@ void History::createActionDescriptions()
 		"ClearHistory", tr("Clear history"), false, "",
 		disableNonHistoryContacts
 	);
-	ContactsListViewMenuManager::instance()->addManagementActionDescription(ClearHistoryActionDescription);
+	BuddiesListViewMenuManager::instance()->addManagementActionDescription(ClearHistoryActionDescription);
 
 }
 
 void History::deleteActionDescriptions()
 {
-	ContactsListViewMenuManager::instance()->removeActionDescription(ShowHistoryActionDescription);
+	BuddiesListViewMenuManager::instance()->removeActionDescription(ShowHistoryActionDescription);
 
 	delete ShowHistoryActionDescription;
 	ShowHistoryActionDescription = 0;

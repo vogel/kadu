@@ -43,10 +43,10 @@ OpenChatWith::OpenChatWith(QWidget *parent)
 	connect(ContactID, SIGNAL(textChanged(const QString &)), this, SLOT(inputChanged(const QString &)));
 	MainLayout->addWidget(ContactID);
 	
-	ContactsWidget = new ContactsListView(0); // TODO: 0.6.6 fix that one
+	BuddiesWidget = new BuddiesListView(0); // TODO: 0.6.6 fix that one
 	//ContactsWidget->setModel(new ContactsModel(ContactManager::instance(), this));
-	connect(ContactsWidget, SIGNAL(contactActivated(Buddy)), this, SLOT(openChat(Buddy)));
-	MainLayout->addWidget(ContactsWidget);
+	connect(BuddiesWidget, SIGNAL(contactActivated(Buddy)), this, SLOT(openChat(Buddy)));
+	MainLayout->addWidget(BuddiesWidget);
 	
 	QWidget *buttons = new QWidget;
 	QHBoxLayout *buttons_layout = new QHBoxLayout(buttons);
@@ -92,18 +92,18 @@ void OpenChatWith::inputChanged(const QString &text)
 	BuddyList matchingContacts;
 	if (!text.isEmpty())
 		matchingContacts = OpenChatWithRunnerManager::instance()->matchingContacts(text);
-	ContactsWidget->setModel(new BuddyListModel(matchingContacts, this));
+	BuddiesWidget->setModel(new BuddyListModel(matchingContacts, this));
 	kdebugf2();
 }
 
 void OpenChatWith::openChat(Buddy contact)
 {
-	ContactsListView *widget = dynamic_cast<ContactsListView *>(sender());
+	BuddiesListView *widget = dynamic_cast<BuddiesListView *>(sender());
 	if (!widget)
 		return;
 
 	Account account = AccountManager::instance()->defaultAccount();
-	BuddySet contacts = widget->selectedContacts();
+	BuddySet contacts = widget->selectedBuddies();
 
 	if (!account.isNull() && !contacts.isEmpty() && !contacts.contains(Core::instance()->myself()))
 	{

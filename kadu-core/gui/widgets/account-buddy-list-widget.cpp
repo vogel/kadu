@@ -21,19 +21,19 @@
 #include "protocols/protocol.h"
 #include "protocols/services/contact-list-service.h"
 
-#include "account-contacts-list-widget.h"
+#include "account-buddy-list-widget.h"
 
-AccountContactsListWidget::AccountContactsListWidget(Account account, QWidget *parent) : QWidget(parent), CurrentAccount(account)
+AccountBuddyListWidget::AccountBuddyListWidget(Account account, QWidget *parent) : QWidget(parent), CurrentAccount(account)
 {
 	QVBoxLayout *layout = new QVBoxLayout(this);
 	layout->setContentsMargins(0, 0, 0, 0);
 	layout->setSpacing(5);
 
-	ContactsWidget = new ContactsListView(0, this);
+	BuddiesWidget = new BuddiesListView(0, this);
 	BuddiesModelProxy *model = new BuddiesModelProxy(this);
 	model->setSourceModel(new BuddiesModel(BuddyManager::instance(), this));
-	ContactsWidget->setModel(model);
-	ContactsWidget->setMinimumSize(QSize(30, 30));
+	BuddiesWidget->setModel(model);
+	BuddiesWidget->setMinimumSize(QSize(30, 30));
 
 	QWidget *buttons = new QWidget(this);
 	QHBoxLayout *buttonsLayout = new QHBoxLayout(buttons);
@@ -50,22 +50,22 @@ AccountContactsListWidget::AccountContactsListWidget(Account account, QWidget *p
 	connect(ExportButton, SIGNAL(clicked()), this, SLOT(startExportTransfer()));
 	buttonsLayout->addWidget(ExportButton);
 
-	layout->addWidget(ContactsWidget);
+	layout->addWidget(BuddiesWidget);
 	layout->addWidget(buttons);
 
 	AccountBuddyFilter *filter = new AccountBuddyFilter(CurrentAccount, this);
 	filter->setEnabled(true);
-	ContactsWidget->addFilter(filter);
+	BuddiesWidget->addFilter(filter);
 
 	ContactListService *manager = CurrentAccount.protocolHandler()->contactListService();
 	if (!manager)
 		return;
 	connect(manager, SIGNAL(contactListExported(bool)), this, SLOT(contactListExported(bool)));
 	connect(manager, SIGNAL(contactListImported(bool, BuddyList)),
-		this, SLOT(contactListImported(bool, BuddyList)));
+		this, SLOT(buddiesListImported(bool, BuddyList)));
 }
 
-void AccountContactsListWidget::startImportTransfer()
+void AccountBuddyListWidget::startImportTransfer()
 {
 	kdebugf();
 
@@ -84,7 +84,7 @@ void AccountContactsListWidget::startImportTransfer()
 	kdebugf2();
 }
 
-void AccountContactsListWidget::startExportTransfer()
+void AccountBuddyListWidget::startExportTransfer()
 {
 	kdebugf();
 
@@ -106,7 +106,7 @@ void AccountContactsListWidget::startExportTransfer()
 	kdebugf2();
 }
 
-void AccountContactsListWidget::contactListImported(bool ok, BuddyList contacts)
+void AccountBuddyListWidget::buddiesListImported(bool ok, BuddyList contacts)
 {
 	kdebugf();
 
@@ -148,7 +148,7 @@ void AccountContactsListWidget::contactListImported(bool ok, BuddyList contacts)
 	kdebugf2();
 }
 
-void AccountContactsListWidget::contactListExported(bool ok)
+void AccountBuddyListWidget::buddiesListExported(bool ok)
 {
 	kdebugf();
 

@@ -32,13 +32,13 @@
 
 #include "icons-manager.h"
 
-#include "contacts-list-view-delegate.h"
-#include "contacts-list-view-menu-manager.h"
+#include "buddies-list-view-delegate.h"
+#include "buddies-list-view-menu-manager.h"
 
-#include "contacts-list-view.h"
+#include "buddies-list-view.h"
 #include "tool-tip-class-manager.h"
 
-ContactsListView::ContactsListView(MainWindow *mainWindow, QWidget *parent) :
+BuddiesListView::BuddiesListView(MainWindow *mainWindow, QWidget *parent) :
 		QTreeView(parent), MyMainWindow(mainWindow), ProxyModel(new BuddiesModelProxy(this)),
 		Delegate(0), BackgroundTemporaryFile(0)
 {
@@ -54,7 +54,7 @@ ContactsListView::ContactsListView(MainWindow *mainWindow, QWidget *parent) :
 	setWordWrap(true);
 	setMouseTracking(true);
 
-	Delegate = new ContactsListViewDelegate(this);
+	Delegate = new BuddiesListViewDelegate(this);
 	setItemDelegate(Delegate);
 
 	Delegate->setModel(ProxyModel);
@@ -64,7 +64,7 @@ ContactsListView::ContactsListView(MainWindow *mainWindow, QWidget *parent) :
 	connect(this, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(doubleClickedSlot(const QModelIndex &)));
 }
 
-ContactsListView::~ContactsListView()
+BuddiesListView::~BuddiesListView()
 {
 	if (ProxyModel->sourceModel())
 	{
@@ -79,7 +79,7 @@ ContactsListView::~ContactsListView()
 	}
 }
 
-void ContactsListView::setModel(AbstractBudiesModel *model)
+void BuddiesListView::setModel(AbstractBuddiesModel *model)
 {
 	if (ProxyModel->sourceModel())
 	{
@@ -92,42 +92,42 @@ void ContactsListView::setModel(AbstractBudiesModel *model)
 	ProxyModel->sort(0); // something is wrong with sorting in my Qt version
 }
 
-void ContactsListView::addFilter(AbstractBuddyFilter *filter)
+void BuddiesListView::addFilter(AbstractBuddyFilter *filter)
 {
 	ProxyModel->addFilter(filter);
 }
 
-void ContactsListView::removeFilter(AbstractBuddyFilter *filter)
+void BuddiesListView::removeFilter(AbstractBuddyFilter *filter)
 {
 	ProxyModel->removeFilter(filter);
 }
 
-Buddy ContactsListView::currentContact() const
+Buddy BuddiesListView::currentBuddy() const
 {
-	return contact(currentIndex());
+	return buddyAt(currentIndex());
 }
 
-BuddySet ContactsListView::selectedContacts() const
+BuddySet BuddiesListView::selectedBuddies() const
 {
 	BuddySet result;
 
 	QModelIndexList selectionList = selectedIndexes();
 	foreach (QModelIndex selection, selectionList)
-		result.insert(contact(selection));
+		result.insert(buddyAt(selection));
 
 	return result;
 }
 
-Buddy ContactsListView::contact(const QModelIndex &index) const
+Buddy BuddiesListView::buddyAt(const QModelIndex &index) const
 {
-	const AbstractBudiesModel *model = dynamic_cast<const AbstractBudiesModel *>(index.model());
+	const AbstractBuddiesModel *model = dynamic_cast<const AbstractBuddiesModel *>(index.model());
 	if (!model)
 		return Buddy::null;
 
 	return model->buddyAt(index);
 }
 
-void ContactsListView::triggerActivate(const QModelIndex& index)
+void BuddiesListView::triggerActivate(const QModelIndex& index)
 {
 	if (!index.isValid())
 		return;
@@ -136,7 +136,7 @@ void ContactsListView::triggerActivate(const QModelIndex& index)
 	if (account.isNull())
 		return;
 
-	Buddy con = contact(index);
+	Buddy con = buddyAt(index);
 	if (con.isNull())
 		return;
 
@@ -145,12 +145,12 @@ void ContactsListView::triggerActivate(const QModelIndex& index)
 		emit chatActivated(chat);
 }
 
-void ContactsListView::contextMenuEvent(QContextMenuEvent *event)
+void BuddiesListView::contextMenuEvent(QContextMenuEvent *event)
 {
 	if (!MyMainWindow)
 		return;
 
-	Buddy con = contact(indexAt(event->pos()));
+	Buddy con = buddyAt(indexAt(event->pos()));
 	if (con.isNull())
 		return;
 
@@ -158,7 +158,7 @@ void ContactsListView::contextMenuEvent(QContextMenuEvent *event)
 	QMenu *menu = new QMenu(this);
 
 	QMenu *actions = new QMenu(tr("Actions"));
-	foreach (ActionDescription *actionDescription, ContactsListViewMenuManager::instance()->contactsListActions())
+	foreach (ActionDescription *actionDescription, BuddiesListViewMenuManager::instance()->buddyListActions())
 		if (actionDescription)
 		{
 			Action *action = actionDescription->createAction(MyMainWindow);
@@ -168,7 +168,7 @@ void ContactsListView::contextMenuEvent(QContextMenuEvent *event)
 		else
 			actions->addSeparator();
 
-	foreach (ActionDescription *actionDescription, ContactsListViewMenuManager::instance()->contactsContexMenu())
+	foreach (ActionDescription *actionDescription, BuddiesListViewMenuManager::instance()->buddiesContexMenu())
 	{
 		if (actionDescription)
 		{
@@ -190,7 +190,7 @@ void ContactsListView::contextMenuEvent(QContextMenuEvent *event)
 
 	QMenu *management = menu->addMenu(tr("Buddy Options"));
 
-	foreach (ActionDescription *actionDescription, ContactsListViewMenuManager::instance()->managementActions())
+	foreach (ActionDescription *actionDescription, BuddiesListViewMenuManager::instance()->managementActions())
 		if (actionDescription)
 		{
 			Action *action = actionDescription->createAction(MyMainWindow);
@@ -231,7 +231,7 @@ void ContactsListView::contextMenuEvent(QContextMenuEvent *event)
 	menu->exec(event->globalPos());
 }
 
-void ContactsListView::keyPressEvent(QKeyEvent *event)
+void BuddiesListView::keyPressEvent(QKeyEvent *event)
 {
 	switch (event->key())
 	{
@@ -246,7 +246,7 @@ void ContactsListView::keyPressEvent(QKeyEvent *event)
 	toolTipHide(false);
 }
 
-void ContactsListView::wheelEvent(QWheelEvent *event)
+void BuddiesListView::wheelEvent(QWheelEvent *event)
 {
 	QTreeView::wheelEvent(event);
 
@@ -257,31 +257,31 @@ void ContactsListView::wheelEvent(QWheelEvent *event)
 		toolTipHide(false);
 }
 
-void ContactsListView::leaveEvent(QEvent *event)
+void BuddiesListView::leaveEvent(QEvent *event)
 {
 	QTreeView::leaveEvent(event);
 	toolTipHide(false);
 }
 
-void ContactsListView::mousePressEvent(QMouseEvent *event)
+void BuddiesListView::mousePressEvent(QMouseEvent *event)
 {
 	QTreeView::mousePressEvent(event);
 	toolTipHide();
 }
 
-void ContactsListView::mouseReleaseEvent(QMouseEvent *event)
+void BuddiesListView::mouseReleaseEvent(QMouseEvent *event)
 {
 	QTreeView::mouseReleaseEvent(event);
 	toolTipRestart();
 }
 
-void ContactsListView::mouseMoveEvent(QMouseEvent *event)
+void BuddiesListView::mouseMoveEvent(QMouseEvent *event)
 {
 	QTreeView::mouseMoveEvent(event);
 	toolTipRestart();
 }
 
-void ContactsListView::resizeEvent(QResizeEvent *event)
+void BuddiesListView::resizeEvent(QResizeEvent *event)
 {
 	QTreeView::resizeEvent(event);
 	doItemsLayout();
@@ -289,28 +289,28 @@ void ContactsListView::resizeEvent(QResizeEvent *event)
 		updateBackground();
 }
 
-void ContactsListView::currentChanged(const QModelIndex& current, const QModelIndex& previous)
+void BuddiesListView::currentChanged(const QModelIndex& current, const QModelIndex& previous)
 {
 	QTreeView::currentChanged(current, previous);
 
 	if (!current.isValid())
 		return;
-	Buddy con = contact(current);
+	Buddy con = buddyAt(current);
 	if (!con.isNull())
-		emit currentContactChanged(con);
+		emit currentBuddyChanged(con);
 }
 
-void ContactsListView::selectionChanged( const QItemSelection &selected, const QItemSelection &deselected)
+void BuddiesListView::selectionChanged( const QItemSelection &selected, const QItemSelection &deselected)
 {
-	emit contactsSelectionChanged();
+	emit buddySelectionChanged();
 }
 
-void ContactsListView::doubleClickedSlot(const QModelIndex &index)
+void BuddiesListView::doubleClickedSlot(const QModelIndex &index)
 {
 	triggerActivate(index);
 }
 
-void ContactsListView::setBackground(const QString &backgroundColor, const QString &file, BackgroundMode mode)
+void BuddiesListView::setBackground(const QString &backgroundColor, const QString &file, BackgroundMode mode)
 {
 	BackgroundColor = backgroundColor;
 	setAnimated(mode == BackgroundNone);
@@ -319,7 +319,7 @@ void ContactsListView::setBackground(const QString &backgroundColor, const QStri
 	updateBackground();
 }
 
-void ContactsListView::updateBackground()
+void BuddiesListView::updateBackground()
 {
 	// TODO 0.6.6 fix image "Stretched" + update on resize event - write image into resource tree
 	QString style;
@@ -374,7 +374,7 @@ void ContactsListView::updateBackground()
 
 // Tool Tips
 
-void ContactsListView::toolTipTimeout()
+void BuddiesListView::toolTipTimeout()
 {
 	if (!ToolTipContact.isNull())
 	{
@@ -385,9 +385,9 @@ void ContactsListView::toolTipTimeout()
 
 #define TOOL_TIP_TIMEOUT 1000
 
-void ContactsListView::toolTipRestart()
+void BuddiesListView::toolTipRestart()
 {
-	Buddy con = contact(indexAt(mapFromGlobal(QCursor::pos())));
+	Buddy con = buddyAt(indexAt(mapFromGlobal(QCursor::pos())));
 
 	if (!con.isNull())
 	{
@@ -404,7 +404,7 @@ void ContactsListView::toolTipRestart()
 	ToolTipTimeoutTimer.start(TOOL_TIP_TIMEOUT);
 }
 
-void ContactsListView::toolTipHide(bool waitForAnother)
+void BuddiesListView::toolTipHide(bool waitForAnother)
 {
 	ToolTipClassManager::instance()->hideToolTip();
 

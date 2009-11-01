@@ -25,8 +25,8 @@ class QVBoxLayout;
 
 class Action;
 class ActionDescription;
-class ContactInfoPanel;
-class ContactsListWidget;
+class BuddyInfoPanel;
+class BuddiesListWidget;
 class GroupTabBar;
 class KaduTextBrowser;
 class KaduWindowActions;
@@ -52,7 +52,7 @@ private:
 
 	KaduWindowActions *Actions;
 
-	ContactInfoPanel *InfoPanel;
+	BuddyInfoPanel *InfoPanel;
 	QMenuBar *MenuBar;
 	QMenu *KaduMenu;
 	QMenu *ContactsMenu;
@@ -61,7 +61,7 @@ private:
 	QAction *RecentChatsMenuAction;
 	GroupTabBar *GroupBar;
 
-	ContactsListWidget *ContactsWidget;
+	BuddiesListWidget *ContactsWidget;
 
 	QWidget *MainWidget;
 	QVBoxLayout *MainLayout;
@@ -93,7 +93,7 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *);
 
 	virtual bool supportsActionType(ActionDescription::ActionType type);
-	virtual ContactsListView * contactsListView();
+	virtual BuddiesListView * contactsListView();
 	virtual BuddySet contacts();
 	virtual Chat * chat();
 
@@ -112,7 +112,7 @@ public:
 	void setDocked(bool);
 	bool docked() { return Docked; }
 
-	ContactInfoPanel *infoPanel() { return InfoPanel; }
+	BuddyInfoPanel * infoPanel() { return InfoPanel; }
 
 signals:
 	void keyPressed(QKeyEvent *e);

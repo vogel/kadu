@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SELECT_CONTACT_COMBOBOX_H
-#define SELECT_CONTACT_COMBOBOX_H
+#ifndef SELECT_BUDDY_COMBOBOX_H
+#define SELECT_BUDDY_COMBOBOX_H
 
 #include <QtGui/QComboBox>
 
@@ -16,35 +16,35 @@
 
 class AbstractBuddyFilter;
 class BuddiesModelProxy;
-class SelectContactPopup;
+class SelectBuddyPopup;
 
-class SelectContactCombobox : public QComboBox
+class SelectBuddyCombobox : public QComboBox
 {
 	Q_OBJECT
 
-	Buddy CurrentContact;
+	Buddy MyBuddy;
 	BuddiesModelProxy *ProxyModel;
-	SelectContactPopup *Popup;
+	SelectBuddyPopup *Popup;
 
 private slots:
-	void contactTextChanged(const QString &);
+	void buddyTextChanged(const QString &);
 
 protected:
 	virtual void showPopup();
 	virtual void hidePopup();
 
 public:
-	explicit SelectContactCombobox(QWidget *parent = 0);
-	virtual ~SelectContactCombobox();
+	explicit SelectBuddyCombobox(QWidget *parent = 0);
+	virtual ~SelectBuddyCombobox();
 
 	void addFilter(AbstractBuddyFilter *filter);
 	void removeFilter(AbstractBuddyFilter *filter);
 
-	Buddy contact() { return CurrentContact; }
+	Buddy contact() { return MyBuddy; }
 
 signals:
-	void contactChanged(Buddy contact);
+	void buddyChanged(Buddy contact);
 
 };
 
-#endif // SELECT_CONTACT_COMBOBOX_H
+#endif // SELECT_BUDDY_COMBOBOX_H

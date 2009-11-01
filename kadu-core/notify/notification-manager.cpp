@@ -18,8 +18,8 @@
 #include "buddies/group-manager.h"
 #include "buddies/account-data/contact-account-data.h"
 #include "gui/actions/action.h"
+#include "gui/widgets/buddies-list-view-menu-manager.h"
 #include "gui/widgets/chat-widget-manager.h"
-#include "gui/widgets/contacts-list-view-menu-manager.h"
 #include "gui/widgets/custom-input.h"
 #include "gui/windows/main-configuration-window.h"
 #include "gui/windows/main-window.h"
@@ -73,7 +73,7 @@ void NotificationManager::init()
 		checkNotify
 	);
 
-	ContactsListViewMenuManager::instance()->addManagementActionDescription(notifyAboutUserActionDescription);
+	BuddiesListViewMenuManager::instance()->addManagementActionDescription(notifyAboutUserActionDescription);
 
 	foreach (Group *group, GroupManager::instance()->groups())
 		groupAdded(group);
@@ -88,7 +88,7 @@ NotificationManager::~NotificationManager()
 
 	MainConfigurationWindow::unregisterUiHandler(UiHandler);
 
-	ContactsListViewMenuManager::instance()->removeManagementActionDescription(notifyAboutUserActionDescription);
+	BuddiesListViewMenuManager::instance()->removeManagementActionDescription(notifyAboutUserActionDescription);
 	delete notifyAboutUserActionDescription;
 	notifyAboutUserActionDescription = 0;
 

@@ -7,19 +7,19 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CONTACT_INFO_PANEL_H
-#define CONTACT_INFO_PANEL_H
+#ifndef BUDDY_INFO_PANEL_H
+#define BUDDY_INFO_PANEL_H
 
 #include "configuration/configuration-aware-object.h"
 #include "buddies/buddy.h"
 
 #include "kadu-text-browser.h"
 
-class ContactInfoPanel : public KaduTextBrowser, private ConfigurationAwareObject
+class BuddyInfoPanel : public KaduTextBrowser, private ConfigurationAwareObject
 {
 	Q_OBJECT
 
-	Buddy CurrentContact;
+	Buddy MyBuddy;
 	QString Template;
 	QString Syntax;
 
@@ -27,12 +27,13 @@ protected:
 	virtual void configurationUpdated();
 
 public:
-	explicit ContactInfoPanel(QWidget *parent = 0);
-	virtual ~ContactInfoPanel();
+	explicit BuddyInfoPanel(QWidget *parent = 0);
+	virtual ~BuddyInfoPanel();
 
 public slots:
-	void displayContact(Buddy contact);
+	void displayBuddy(Buddy contact);
 	void styleFixup(QString &syntax);
+
 };
 
-#endif // CONTACT_INFO_PANEL_H
+#endif // BUDDY_INFO_PANEL_H

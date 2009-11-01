@@ -26,10 +26,10 @@
 #include "core/core.h"
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
+#include "gui/widgets/buddies-list-view.h"
+#include "gui/widgets/buddies-list-view-menu-manager.h"
 #include "gui/widgets/chat-widget-actions.h"
 #include "gui/widgets/chat-widget-manager.h"
-#include "gui/widgets/contacts-list-view.h"
-#include "gui/widgets/contacts-list-view-menu-manager.h"
 #include "gui/widgets/status-menu.h"
 #include "gui/windows/add-buddy-window.h"
 #include "gui/windows/buddy-data-window.h"
@@ -277,16 +277,16 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		"AddUser", tr("Add Buddy...")
 	);
 	AddUser->setShortcut("kadu_adduser", Qt::ApplicationShortcut);
-	ContactsListViewMenuManager::instance()->insertManagementActionDescription(0, AddUser);
+	BuddiesListViewMenuManager::instance()->insertManagementActionDescription(0, AddUser);
 
 	MergeContact = new ActionDescription(this,
 		ActionDescription::TypeUser, "mergeContactAction",
 		this, SLOT(mergeContactActionActivated(QAction *, bool)),
 		"MergeContact", tr("Merge Buddy...")
 	);
-	ContactsListViewMenuManager::instance()->insertManagementActionDescription(1, MergeContact);
+	BuddiesListViewMenuManager::instance()->insertManagementActionDescription(1, MergeContact);
 	
-	ContactsListViewMenuManager::instance()->insertManagementActionDescription(2, 0);
+	BuddiesListViewMenuManager::instance()->insertManagementActionDescription(2, 0);
 
 	AddGroup = new ActionDescription(this,
 		ActionDescription::TypeGlobal, "addGroupAction",
@@ -349,14 +349,14 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		"CopyDescription", tr("Copy description"), false, "",
 		disableNoGaduDescription
 	);
-	ContactsListViewMenuManager::instance()->addListActionDescription(CopyDescription);
+	BuddiesListViewMenuManager::instance()->addListActionDescription(CopyDescription);
 
 	CopyPersonalInfo = new ActionDescription(this,
 		ActionDescription::TypeUser, "copyPersonalInfoAction",
 		this, SLOT(copyPersonalInfoActionActivated(QAction *, bool)),
 		"CopyPersonalInfo", tr("Copy personal info")
 	);
-	ContactsListViewMenuManager::instance()->addListActionDescription(CopyPersonalInfo);
+	BuddiesListViewMenuManager::instance()->addListActionDescription(CopyPersonalInfo);
 
 	OpenDescriptionLink = new ActionDescription(this,
 		ActionDescription::TypeUser, "openDescriptionLinkAction",
@@ -364,7 +364,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		"OpenDescriptionLink", tr("Open description link in browser"), false, "",
 		disableNoGaduDescriptionUrl
 	);
-	ContactsListViewMenuManager::instance()->addListActionDescription(OpenDescriptionLink);
+	BuddiesListViewMenuManager::instance()->addListActionDescription(OpenDescriptionLink);
 
 	WriteEmail = new ActionDescription(this,
 		ActionDescription::TypeUser, "writeEmailAction",
@@ -372,7 +372,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		"WriteEmail", tr("Write email message"), false, "",
 		disableNoEMail
 	);
-	ContactsListViewMenuManager::instance()->addListActionDescription(WriteEmail);
+	BuddiesListViewMenuManager::instance()->addListActionDescription(WriteEmail);
 
 	LookupUserInfo = new ActionDescription(this,
 		ActionDescription::TypeUser, "lookupUserInfoAction",
@@ -381,8 +381,8 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		disableNoGaduUle
 	);
 
-	ContactsListViewMenuManager::instance()->insertManagementActionDescription(3, ChatWidgetManager::instance()->actions()->ignoreUser());
-	ContactsListViewMenuManager::instance()->insertManagementActionDescription(4, ChatWidgetManager::instance()->actions()->blockUser());
+	BuddiesListViewMenuManager::instance()->insertManagementActionDescription(3, ChatWidgetManager::instance()->actions()->ignoreUser());
+	BuddiesListViewMenuManager::instance()->insertManagementActionDescription(4, ChatWidgetManager::instance()->actions()->blockUser());
 
 	OfflineToUser = new ActionDescription(this,
 		ActionDescription::TypeUser, "offlineToUserAction",
@@ -390,7 +390,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		"Offline", tr("Offline to user"), true, "",
 		checkOfflineTo
 	);
-	ContactsListViewMenuManager::instance()->addManagementActionDescription(OfflineToUser);
+	BuddiesListViewMenuManager::instance()->addManagementActionDescription(OfflineToUser);
 
 	HideDescription = new ActionDescription(this,
 		ActionDescription::TypeUser, "hideDescriptionAction",
@@ -398,8 +398,8 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		"ShowDescription_off", tr("Hide description"), true, "",
 		checkHideDescription
 	);
-	ContactsListViewMenuManager::instance()->addManagementActionDescription(HideDescription);
-	ContactsListViewMenuManager::instance()->addManagementSeparator();
+	BuddiesListViewMenuManager::instance()->addManagementActionDescription(HideDescription);
+	BuddiesListViewMenuManager::instance()->addManagementSeparator();
 
 	DeleteUsers = new ActionDescription(this,
 		ActionDescription::TypeUser, "deleteUsersAction",
@@ -407,7 +407,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		"RemoveFromUserlist", tr("Delete")
 	);
 	DeleteUsers->setShortcut("kadu_deleteuser");
-	ContactsListViewMenuManager::instance()->addManagementActionDescription(DeleteUsers);
+	BuddiesListViewMenuManager::instance()->addManagementActionDescription(DeleteUsers);
 
 	InactiveUsers = new ActionDescription(this,
 		ActionDescription::TypeUserList, "inactiveUsersAction",
@@ -435,8 +435,8 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	);
 	connect(OnlineAndDescriptionUsers, SIGNAL(actionCreated(Action *)), this, SLOT(onlineAndDescUsersActionCreated(Action *)));
 
-	ContactsListViewMenuManager::instance()->addSeparator();
-	ContactsListViewMenuManager::instance()->addSeparator();
+	BuddiesListViewMenuManager::instance()->addSeparator();
+	BuddiesListViewMenuManager::instance()->addSeparator();
 
 	EditUser = new ActionDescription(this,
 		ActionDescription::TypeUser, "editUserAction",
@@ -446,7 +446,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	);
 	connect(EditUser, SIGNAL(actionCreated(Action *)), this, SLOT(editUserActionCreated(Action *)));
 	EditUser->setShortcut("kadu_persinfo");
-	ContactsListViewMenuManager::instance()->addActionDescription(EditUser);
+	BuddiesListViewMenuManager::instance()->addActionDescription(EditUser);
 
 	ShowStatus = new ActionDescription(this,
 		ActionDescription::TypeGlobal, "openStatusAction",

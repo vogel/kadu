@@ -11,12 +11,12 @@
 #include <QtGui/QVBoxLayout>
 
 #include "buddies/filter/buddy-name-filter.h"
-#include "gui/widgets/contacts-line-edit.h"
-#include "gui/widgets/contacts-list-view.h"
+#include "gui/widgets/buddies-line-edit.h"
+#include "gui/widgets/buddies-list-view.h"
 
-#include "contacts-list-widget.h"
+#include "buddies-list-widget.h"
 
-ContactsListWidget::ContactsListWidget(MainWindow *mainWindow, QWidget *parent) :
+BuddiesListWidget::BuddiesListWidget(MainWindow *mainWindow, QWidget *parent) :
 		QWidget(parent)
 {
 	QVBoxLayout *layout = new QVBoxLayout(this);
@@ -28,14 +28,14 @@ ContactsListWidget::ContactsListWidget(MainWindow *mainWindow, QWidget *parent) 
 	QHBoxLayout *topLayout = new QHBoxLayout(topWidget);
 	topLayout->setMargin(0);
 
-	NameFilterEdit = new ContactsLineEdit(this);
+	NameFilterEdit = new BuddiesLineEdit(this);
 	topLayout->addWidget(NameFilterEdit);
 	connect(NameFilterEdit, SIGNAL(textChanged(const QString &)),
 			this, SLOT(nameFilterChanged(const QString &)));
 	connect(NameFilterEdit, SIGNAL(next()), this, SLOT(selectNext()));
 	connect(NameFilterEdit, SIGNAL(previous()), this, SLOT(selectPrevious()));
 
-	View = new ContactsListView(mainWindow, this);
+	View = new BuddiesListView(mainWindow, this);
 	layout->addWidget(View);
 
 	NameFilter = new BuddyNameFilter(this);
@@ -45,11 +45,11 @@ ContactsListWidget::ContactsListWidget(MainWindow *mainWindow, QWidget *parent) 
 	View->setFocusPolicy(Qt::NoFocus);*/
 }
 
-ContactsListWidget::~ContactsListWidget()
+BuddiesListWidget::~BuddiesListWidget()
 {
 }
 
-void ContactsListWidget::selectNext()
+void BuddiesListWidget::selectNext()
 {
 	QModelIndexList selection = View->selectionModel()->selectedIndexes();
 	QModelIndex index;
@@ -70,7 +70,7 @@ void ContactsListWidget::selectNext()
 	View->selectionModel()->setCurrentIndex(index, QItemSelectionModel::SelectCurrent);
 }
 
-void ContactsListWidget::selectPrevious()
+void BuddiesListWidget::selectPrevious()
 {
 	QModelIndexList selection = View->selectionModel()->selectedIndexes();
 	QModelIndex index;
@@ -91,7 +91,7 @@ void ContactsListWidget::selectPrevious()
 	View->selectionModel()->setCurrentIndex(index, QItemSelectionModel::SelectCurrent);
 }
 
-void ContactsListWidget::nameFilterChanged(const QString &filter)
+void BuddiesListWidget::nameFilterChanged(const QString &filter)
 {
 	NameFilter->setName(filter);
 }

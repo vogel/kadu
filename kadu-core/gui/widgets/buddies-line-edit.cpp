@@ -7,21 +7,25 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SELECT_CONTACT_POPUP_H
-#define SELECT_CONTACT_POPUP_H
+#include <QtGui/QKeyEvent>
 
-#include "gui/widgets/contacts-list-widget.h"
+#include "buddies-line-edit.h"
 
-class SelectContactPopup : public ContactsListWidget
+BuddiesLineEdit::BuddiesLineEdit(QWidget *parent) :
+		QLineEdit(parent)
 {
-	Q_OBJECT
+}
 
-public:
-	explicit SelectContactPopup(QWidget *parent = 0);
-	virtual ~SelectContactPopup();
+BuddiesLineEdit::~BuddiesLineEdit()
+{
+}
 
-	void show(const QString &text);
-
-};
-
-#endif // SELECT_CONTACT_POPUP_H
+void BuddiesLineEdit::keyReleaseEvent(QKeyEvent *e)
+{
+	if (e->key() == Qt::Key_Up)
+		emit previous();
+	else if (e->key() == Qt::Key_Down)
+		emit next();
+	else
+		QWidget::keyReleaseEvent(e);
+}

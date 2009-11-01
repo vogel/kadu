@@ -15,10 +15,6 @@
 #include <QtGui/QWidget>
 
 #include "buddies/buddy.h"
-#include "gui/widgets/contact-general-configuration-widget.h"
-#include "gui/widgets/contact-groups-configuration-widget.h"
-#include "gui/widgets/contact-options-configuration-widget.h"
-#include "gui/widgets/contact-personal-info-configuration-widget.h"
 
 #include "exports.h"
 
@@ -33,17 +29,20 @@ class QTabWidget;
 class QVBoxLayout;
 
 class Buddy;
-
+class BuddyGeneralConfigurationWidget;
+class BuddyGroupsConfigurationWidget;
+class BuddyPersonalInfoConfigurationWidget;
+class BuddyOptionsConfigurationWidget;
 
 class KADUAPI BuddyDataWindow : public QWidget
 {
 	Q_OBJECT
 
 	Buddy MyBuddy;
-	ContactGeneralConfigurationWidget *ContactTab;
-	ContactGroupsConfigurationWidget *GroupsTab;
-	ContactPersonalInfoConfigurationWidget *PersonalInfoTab;
-	ContactOptionsConfigurationWidget *OptionsTab; 
+	BuddyGeneralConfigurationWidget *ContactTab;
+	BuddyGroupsConfigurationWidget *GroupsTab;
+	BuddyPersonalInfoConfigurationWidget *PersonalInfoTab;
+	BuddyOptionsConfigurationWidget *OptionsTab;
 
 	void createGui();
 	void createTabs(QLayout *layout);

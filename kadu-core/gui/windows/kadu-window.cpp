@@ -25,11 +25,11 @@
 #include "core/core.h"
 #include "gui/hot-key.h"
 #include "gui/actions/action.h"
+#include "gui/widgets/buddy-info-panel.h"
+#include "gui/widgets/buddies-list-view.h"
+#include "gui/widgets/buddies-list-widget.h"
 #include "gui/widgets/chat-widget-actions.h"
 #include "gui/widgets/chat-widget-manager.h"
-#include "gui/widgets/contact-info-panel.h"
-#include "gui/widgets/contacts-list-view.h"
-#include "gui/widgets/contacts-list-widget.h"
 #include "gui/widgets/group-tab-bar.h"
 #include "gui/widgets/kadu-text-browser.h"
 #include "gui/windows/kadu-window-actions.h"
@@ -81,7 +81,7 @@ void KaduWindow::createGui()
 	// groupbar
 	GroupBar = new GroupTabBar(this);
 
-	ContactsWidget = new ContactsListWidget(this);
+	ContactsWidget = new BuddiesListWidget(this);
 	ContactsWidget->view()->setModel(new BuddiesModel(BuddyManager::instance(), this));
 	ContactsWidget->view()->addFilter(GroupBar->filter());
 	AnonymousWithoutMessagesBuddyFilter *anonymousFilter = new AnonymousWithoutMessagesBuddyFilter(this);
@@ -96,7 +96,7 @@ void KaduWindow::createGui()
 	hboxLayout->setStretchFactor(ContactsWidget, 100);
 	hboxLayout->setAlignment(GroupBar, Qt::AlignTop);
 
-	InfoPanel = new ContactInfoPanel(split);
+	InfoPanel = new BuddyInfoPanel(split);
 	connect(ContactsWidget, SIGNAL(currentContactChanged(Buddy)), InfoPanel, SLOT(displayContact(Buddy)));
 
 	if (!config_file.readBoolEntry("Look", "ShowInfoPanel"))
@@ -272,7 +272,7 @@ void KaduWindow::storeConfiguration()
 
 void KaduWindow::updateInformationPanel()
 {
-	InfoPanel->displayContact(ContactsWidget->view()->currentContact());
+	InfoPanel->displayBuddy(ContactsWidget->view()->currentBuddy());
 }
 
 void KaduWindow::closeEvent(QCloseEvent *e)
@@ -334,14 +334,14 @@ bool KaduWindow::supportsActionType(ActionDescription::ActionType type)
 	return type & (ActionDescription::TypeGlobal | ActionDescription::TypeUserList | ActionDescription::TypeUser);
 }
 
-ContactsListView * KaduWindow::contactsListView()
+BuddiesListView * KaduWindow::contactsListView()
 {
 	return ContactsWidget->view();
 }
 
 BuddySet KaduWindow::contacts()
 {
-	return ContactsWidget->view()->selectedContacts();
+	return ContactsWidget->view()->selectedBuddies();
 }
 
 Chat * KaduWindow::chat()
@@ -366,11 +366,11 @@ void KaduWindow::configurationUpdated()
 		QString type = config_file.readEntry("Look", "UserboxBackgroundDisplayStyle");
 		ContactsWidget->view()->setBackground(config_file.readColorEntry("Look","UserboxBgColor").name(),
 			config_file.readEntry("Look", "UserboxBackground"),
-			type == "Centered" ? ContactsListView::BackgroundCentered
-			: type == "Tiled" ? ContactsListView::BackgroundTiled
-			: type == "Stretched" ? ContactsListView::BackgroundStretched
-			: type == "TiledAndCentered" ? ContactsListView::BackgroundTiledAndCentered
-			: ContactsListView::BackgroundNone);
+			type == "Centered" ? BuddiesListView::BackgroundCentered
+			: type == "Tiled" ? BuddiesListView::BackgroundTiled
+			: type == "Stretched" ? BuddiesListView::BackgroundStretched
+			: type == "TiledAndCentered" ? BuddiesListView::BackgroundTiledAndCentered
+			: BuddiesListView::BackgroundNone);
 	}
 	else
 		ContactsWidget->view()->setBackground(config_file.readColorEntry("Look","UserboxBgColor").name());

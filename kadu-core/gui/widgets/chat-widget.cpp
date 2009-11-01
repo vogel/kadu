@@ -25,10 +25,10 @@
 #include "gui/hot-key.h"
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
+#include "gui/widgets/buddies-list-view.h"
 #include "gui/widgets/chat-widget-actions.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/color-selector.h"
-#include "gui/widgets/contacts-list-view.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-box.h"
 #include "parser/parser.h"
@@ -46,7 +46,7 @@
 
 ChatWidget::ChatWidget(Chat *chat, QWidget *parent) :
 		QWidget(parent), CurrentChat(chat),
-		ContactsWidget(0), horizSplit(0),
+		BuddiesView(0), horizSplit(0),
 		NewMessagesCount(0), SelectionFromMessagesView(true), InputBox(0)
 {
 	kdebugf();
@@ -120,18 +120,18 @@ void ChatWidget::createContactsList()
 	layout->setContentsMargins(0, 0, 0, 0);
 	layout->setSpacing(0);
 
-	ContactsWidget = new ContactsListView(getChatEditBox(), this);
-	ContactsWidget->setModel(new BuddyListModel(CurrentChat->contacts().toBuddyList(), this));
-	ContactsWidget->setMinimumSize(QSize(30, 30));
+	BuddiesView = new BuddiesListView(getChatEditBox(), this);
+	BuddiesView->setModel(new BuddyListModel(CurrentChat->contacts().toBuddyList(), this));
+	BuddiesView->setMinimumSize(QSize(30, 30));
 
-	connect(ContactsWidget, SIGNAL(contactActivated(Buddy)),
+	connect(BuddiesView, SIGNAL(contactActivated(Buddy)),
 			Core::instance()->kaduWindow(), SLOT(sendMessage(Buddy)));
 
 	QPushButton *leaveConference = new QPushButton(tr("Leave conference"), contactsListContainer);
-	leaveConference->setMinimumWidth(ContactsWidget->minimumWidth());
+	leaveConference->setMinimumWidth(BuddiesView->minimumWidth());
 	connect(leaveConference, SIGNAL(clicked()), this, SLOT(leaveConference()));
 
-	layout->addWidget(ContactsWidget);
+	layout->addWidget(BuddiesView);
 	layout->addWidget(leaveConference);
 
 	QList<int> sizes;
@@ -399,7 +399,7 @@ CustomInput * ChatWidget::edit()
 
 bool ChatWidget::decodeLocalFiles(QDropEvent *event, QStringList &files)
 {
-	if (!event->mimeData()->hasUrls() || event->source() == ContactsWidget)
+	if (!event->mimeData()->hasUrls() || event->source() == BuddiesView)
 		return false;
 
 	QList<QUrl> urls = event->mimeData()->urls();

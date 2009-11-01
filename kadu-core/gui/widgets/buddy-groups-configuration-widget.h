@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CONTACT_GROUPS_CONFIGURATION_WIDGET
-#define CONTACT_GROUPS_CONFIGURATION_WIDGET
+#ifndef BUDDY_GROUPS_CONFIGURATION_WIDGET_H
+#define BUDDY_GROUPS_CONFIGURATION_WIDGET_H
 
 #include <QtGui/QCheckBox>
 #include <QtGui/QScrollArea>
@@ -17,19 +17,19 @@
 
 #include "exports.h"
 
-class KADUAPI ContactGroupsConfigurationWidget : public QScrollArea
+class KADUAPI BuddyGroupsConfigurationWidget : public QScrollArea
 {
 	Q_OBJECT
-  
-	Buddy CurrentContact;
+
+	Buddy MyBuddy;
 	QList<QCheckBox *> GroupCheckBoxList;
 	void createGui();
 
 public:
-	ContactGroupsConfigurationWidget(Buddy &contact, QWidget *parent = 0);
-	~ContactGroupsConfigurationWidget();
+	BuddyGroupsConfigurationWidget(Buddy &contact, QWidget *parent = 0);
+	~BuddyGroupsConfigurationWidget();
 	void saveConfiguration();
 
 };
 
-#endif // CONTACT_GROUPS_CONFIGURATION_WIDGET
+#endif // BUDDY_GROUPS_CONFIGURATION_WIDGET_H

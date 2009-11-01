@@ -13,26 +13,26 @@
 #include "buddies/filter/buddy-name-filter.h"
 #include "buddies/model/buddies-model.h"
 #include "buddies/model/buddies-model-proxy.h"
-#include "gui/widgets/contacts-line-edit.h"
-#include "gui/widgets/contacts-list-view.h"
-#include "gui/widgets/select-contact-popup.h"
+#include "gui/widgets/buddies-line-edit.h"
+#include "gui/widgets/buddies-list-view.h"
+#include "gui/widgets/select-buddy-popup.h"
 
-#include "select-contact-combobox.h"
+#include "select-buddy-combobox.h"
 
-SelectContactCombobox::SelectContactCombobox(QWidget *parent) :
-		QComboBox(parent), CurrentContact(BuddyShared::TypeNull)
+SelectBuddyCombobox::SelectBuddyCombobox(QWidget *parent) :
+		QComboBox(parent), MyBuddy(BuddyShared::TypeNull)
 {
 	setEditable(true);
 
 	connect(this, SIGNAL(editTextChanged(const QString &)),
-			this, SLOT(contactTextChanged(const QString &)));
+			this, SLOT(buddyTextChanged(const QString &)));
 
 	BuddiesModel *model = new BuddiesModel(BuddyManager::instance(), this);
 	ProxyModel = new BuddiesModelProxy(this);
 	ProxyModel->setSourceModel(model);
 
 	QCompleter *completer = new QCompleter(this);
-	completer->setPopup(new ContactsListView(0, this));
+	completer->setPopup(new BuddiesListView(0, this));
 	completer->setModel(ProxyModel);
 	completer->setCaseSensitivity(Qt::CaseInsensitive);
 	completer->setCompletionRole(Qt::DisplayRole);
@@ -40,39 +40,39 @@ SelectContactCombobox::SelectContactCombobox(QWidget *parent) :
 
 	setCompleter(completer);
 
-	Popup = new SelectContactPopup();
+	Popup = new SelectBuddyPopup();
 }
 
-SelectContactCombobox::~SelectContactCombobox()
+SelectBuddyCombobox::~SelectBuddyCombobox()
 {
 	delete Popup;
 	Popup = 0;
 }
 
 
-void SelectContactCombobox::addFilter(AbstractBuddyFilter *filter)
+void SelectBuddyCombobox::addFilter(AbstractBuddyFilter *filter)
 {
 	ProxyModel->addFilter(filter);
 	Popup->view()->addFilter(filter);
 }
 
-void SelectContactCombobox::removeFilter(AbstractBuddyFilter *filter)
+void SelectBuddyCombobox::removeFilter(AbstractBuddyFilter *filter)
 {
 	ProxyModel->removeFilter(filter);
 	Popup->view()->removeFilter(filter);
 }
 
-void SelectContactCombobox::contactTextChanged(const QString &contactText)
+void SelectBuddyCombobox::buddyTextChanged(const QString &contactText)
 {
 	Buddy named = BuddyManager::instance()->byDisplay(contactText);
-	if (named != CurrentContact)
+	if (named != MyBuddy)
 	{
-		CurrentContact = named;
-		emit contactChanged(CurrentContact);
+		MyBuddy = named;
+		emit buddyChanged(MyBuddy);
 	}
 }
 
-void SelectContactCombobox::showPopup()
+void SelectBuddyCombobox::showPopup()
 {
 	Popup->setGeometry(QRect(
 			mapToGlobal(QPoint(0, 0)),
@@ -80,7 +80,7 @@ void SelectContactCombobox::showPopup()
 	Popup->show(lineEdit()->text());
 }
 
-void SelectContactCombobox::hidePopup()
+void SelectBuddyCombobox::hidePopup()
 {
 	Popup->hide();
 	setEditText(Popup->nameFilterEdit()->text());

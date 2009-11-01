@@ -17,9 +17,9 @@
 #include "emoticons.h"
 #include "html_document.h"
 
-#include "contact-info-panel.h"
+#include "buddy-info-panel.h"
 
-ContactInfoPanel::ContactInfoPanel(QWidget *parent) : KaduTextBrowser(parent)
+BuddyInfoPanel::BuddyInfoPanel(QWidget *parent) : KaduTextBrowser(parent)
 {
 // TODO: 0.6.5
 // 	InfoPanel->setFrameStyle(QFrame::NoFrame);
@@ -31,11 +31,11 @@ ContactInfoPanel::ContactInfoPanel(QWidget *parent) : KaduTextBrowser(parent)
 	configurationUpdated();
 }
 
-ContactInfoPanel::~ContactInfoPanel()
+BuddyInfoPanel::~BuddyInfoPanel()
 {
 }
 
-void ContactInfoPanel::configurationUpdated()
+void BuddyInfoPanel::configurationUpdated()
 {
 	QFont font = config_file.readFontEntry("Look", "PanelFont");
 	QString fontFamily = font.family();
@@ -83,7 +83,7 @@ void ContactInfoPanel::configurationUpdated()
 		"<table><tr><td><img width=\"32\" height=\"32\" align=\"left\" valign=\"top\" src=\"file:///@{ManageUsersWindowIcon}\"></td><td> "
 		"<div align=\"left\"> [<b>%a</b>][ (%u)] [<br>tel.: %m][<br>IP: %i]</div></td></tr></table> <hr> <b>%s</b> [<br>%d]");
 	setHtml("<body bgcolor=\"" + config_file.readEntry("Look", "InfoPanelBgColor") + "\"></body>");
-	displayContact(CurrentContact);
+	displayBuddy(MyBuddy);
 
 	if (config_file.readBoolEntry("Look", "PanelVerticalScrollbar"))
 		page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAsNeeded);
@@ -91,17 +91,17 @@ void ContactInfoPanel::configurationUpdated()
 		page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
 }
 
-void ContactInfoPanel::displayContact(Buddy contact)
+void BuddyInfoPanel::displayBuddy(Buddy buddy)
 {
-	CurrentContact = contact;
+	MyBuddy = buddy;
 
-	if (Buddy::null == contact || !isVisible())
+	if (Buddy::null == MyBuddy || !isVisible())
 		return;
 
-	kdebugmf(KDEBUG_INFO, "%s\n", qPrintable(contact.display()));
+	kdebugmf(KDEBUG_INFO, "%s\n", qPrintable(MyBuddy.display()));
 
 	HtmlDocument doc;
-	doc.parseHtml(Parser::parse(Syntax, contact.prefferedAccount(), contact));
+	doc.parseHtml(Parser::parse(Syntax, MyBuddy.prefferedAccount(), MyBuddy));
 	doc.convertUrlsToHtml();
 	doc.convertMailToHtml();
 	if (EMOTS_NONE != (EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") &&
@@ -115,7 +115,7 @@ void ContactInfoPanel::displayContact(Buddy contact)
 	kdebugf2();
 }
 
-void ContactInfoPanel::styleFixup(QString &syntax)
+void BuddyInfoPanel::styleFixup(QString &syntax)
 {
 	syntax = Template.arg(syntax);
 }

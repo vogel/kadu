@@ -25,7 +25,7 @@ class AccountsProxyModel;
 class IdRegularExpressionFilter;
 class NonAccountBuddyFilter;
 class NonInContactFilter;
-class SelectContactCombobox;
+class SelectBuddyCombobox;
 
 class AddBuddyWindow : public QDialog
 {
@@ -42,7 +42,7 @@ class AddBuddyWindow : public QDialog
 	QComboBox *GroupCombo;
 	QLineEdit *DisplayNameEdit;
 	QCheckBox *MergeContact;
-	SelectContactCombobox *SelectContact;
+	SelectBuddyCombobox *SelectContact;
 	NonAccountBuddyFilter *SelectContactFilter;
 	QCheckBox *AllowToSeeMeCheck;
 	QPushButton *AddContactButton;

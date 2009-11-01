@@ -9,13 +9,13 @@
 
 #include "buddies/buddy-manager.h"
 #include "buddies/model/buddies-model.h"
-#include "gui/widgets/contacts-line-edit.h"
-#include "gui/widgets/contacts-list-view.h"
+#include "gui/widgets/buddies-line-edit.h"
+#include "gui/widgets/buddies-list-view.h"
 
-#include "select-contact-popup.h"
+#include "select-buddy-popup.h"
 
-SelectContactPopup::SelectContactPopup(QWidget *parent) :
-		ContactsListWidget(0, parent)
+SelectBuddyPopup::SelectBuddyPopup(QWidget *parent) :
+		BuddiesListWidget(0, parent)
 {
 	setWindowFlags(Qt::Popup);
 
@@ -25,13 +25,13 @@ SelectContactPopup::SelectContactPopup(QWidget *parent) :
 	view()->setModel(model);
 }
 
-SelectContactPopup::~SelectContactPopup()
+SelectBuddyPopup::~SelectBuddyPopup()
 {
 }
 
-void SelectContactPopup::show(const QString &text)
+void SelectBuddyPopup::show(const QString &text)
 {
 	nameFilterEdit()->setText(text);
 	nameFilterEdit()->setFocus();
-	ContactsListWidget::show();
+	BuddiesListWidget::show();
 }

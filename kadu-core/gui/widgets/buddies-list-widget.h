@@ -7,22 +7,22 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CONTACTS_LIST_WIDGET_H
-#define CONTACTS_LIST_WIDGET_H
+#ifndef BUDDIES_LIST_WIDGET_H
+#define BUDDIES_LIST_WIDGET_H
 
 #include <QtGui/QWidget>
 
 class BuddyNameFilter;
-class ContactsLineEdit;
-class ContactsListView;
+class BuddiesLineEdit;
+class BuddiesListView;
 class MainWindow;
 
-class ContactsListWidget : public QWidget
+class BuddiesListWidget : public QWidget
 {
 	Q_OBJECT
 
-	ContactsLineEdit *NameFilterEdit;
-	ContactsListView *View;
+	BuddiesLineEdit *NameFilterEdit;
+	BuddiesListView *View;
 	BuddyNameFilter *NameFilter;
 
 private slots:
@@ -31,13 +31,13 @@ private slots:
 	void nameFilterChanged(const QString &filter);
 
 public:
-	explicit ContactsListWidget(MainWindow *mainWindow, QWidget *parent = 0);
-	virtual ~ContactsListWidget();
+	explicit BuddiesListWidget(MainWindow *mainWindow, QWidget *parent = 0);
+	virtual ~BuddiesListWidget();
 
-	ContactsListView * view() { return View; }
-	ContactsLineEdit * nameFilterEdit() { return NameFilterEdit; }
+	BuddiesListView * view() { return View; }
+	BuddiesLineEdit * nameFilterEdit() { return NameFilterEdit; }
 	BuddyNameFilter * nameFilter() { return NameFilter; }
 
 };
 
-#endif //CONTACTS_LIST_WIDGET_H
+#endif //BUDDIES_LIST_WIDGET_H

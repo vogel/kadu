@@ -14,7 +14,7 @@ class QModelIndex;
 
 class Buddy;
 
-class AbstractBudiesModel
+class AbstractBuddiesModel
 {
 
 public:

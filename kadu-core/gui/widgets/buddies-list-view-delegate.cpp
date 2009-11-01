@@ -30,9 +30,9 @@
 #include "model/roles.h"
 #include "icons-manager.h"
 
-#include "contacts-list-view-delegate.h"
+#include "buddies-list-view-delegate.h"
 
-ContactsListViewDelegate::ContactsListViewDelegate(QObject *parent)
+BuddiesListViewDelegate::BuddiesListViewDelegate(QObject *parent)
 	: QItemDelegate(parent), Model(0)
 {
 	triggerAllAccountsRegistered();
@@ -41,12 +41,12 @@ ContactsListViewDelegate::ContactsListViewDelegate(QObject *parent)
 	DefaultAvatarSize = IconsManager::instance()->loadPixmap("ContactsTab").size();
 }
 
-ContactsListViewDelegate::~ContactsListViewDelegate()
+BuddiesListViewDelegate::~BuddiesListViewDelegate()
 {
 	triggerAllAccountsUnregistered();
 }
 
-void ContactsListViewDelegate::setModel(AbstractBudiesModel *model)
+void BuddiesListViewDelegate::setModel(AbstractBuddiesModel *model)
 {
 	Model = model;
 	QAbstractItemModel *itemModel = dynamic_cast<QAbstractItemModel *>(Model);
@@ -54,30 +54,30 @@ void ContactsListViewDelegate::setModel(AbstractBudiesModel *model)
 		connect(itemModel, SIGNAL(destroyed(QObject *)), this, SLOT(modelDestroyed()));
 }
 
-void ContactsListViewDelegate::accountRegistered(Account account)
+void BuddiesListViewDelegate::accountRegistered(Account account)
 {
 	connect(account.data(), SIGNAL(contactStatusChanged(Account, Buddy, Status)),
-			this, SLOT(contactStatusChanged(Account, Buddy, Status)));
+			this, SLOT(buddyStatusChanged(Account, Buddy, Status)));
 }
 
-void ContactsListViewDelegate::accountUnregistered(Account account)
+void BuddiesListViewDelegate::accountUnregistered(Account account)
 {
 	disconnect(account.data(), SIGNAL(contactStatusChanged(Account, Buddy, Status)),
-			this, SLOT(contactStatusChanged(Account, Buddy, Status)));
+			this, SLOT(buddyStatusChanged(Account, Buddy, Status)));
 }
 
-void ContactsListViewDelegate::contactStatusChanged(Account account, Buddy c, Status oldStatus)
+void BuddiesListViewDelegate::buddyStatusChanged(Account account, Buddy c, Status oldStatus)
 {
 	if (Model)
 		emit sizeHintChanged(Model->buddyIndex(c));
 }
 
-void ContactsListViewDelegate::modelDestroyed()
+void BuddiesListViewDelegate::modelDestroyed()
 {
 	Model = 0;
 }
 
-QTextDocument * ContactsListViewDelegate::descriptionDocument(const QString &text, int width, QColor color) const
+QTextDocument * BuddiesListViewDelegate::descriptionDocument(const QString &text, int width, QColor color) const
 {
 	QString description = text;
 	description.replace("\n", ShowMultiLineDescription ? "<br/>" : " " );
@@ -102,7 +102,7 @@ QTextDocument * ContactsListViewDelegate::descriptionDocument(const QString &tex
 	return doc;
 }
 
-QSize ContactsListViewDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
+QSize BuddiesListViewDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
 	QSize size(0, 0);
 
@@ -154,7 +154,7 @@ QSize ContactsListViewDelegate::sizeHint(const QStyleOptionViewItem &option, con
 	return QSize(width, height);
 }
 
-void ContactsListViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+void BuddiesListViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
 	QStyleOptionViewItemV4 opt = setOptions(index, option);
 
@@ -295,7 +295,7 @@ void ContactsListViewDelegate::paint(QPainter *painter, const QStyleOptionViewIt
 	painter->restore();
 }
 
-bool ContactsListViewDelegate::isBold(const QModelIndex &index) const
+bool BuddiesListViewDelegate::isBold(const QModelIndex &index) const
 {
 	if (!ShowBold)
 		return false;
@@ -308,7 +308,7 @@ bool ContactsListViewDelegate::isBold(const QModelIndex &index) const
 	return !status.isDisconnected();
 }
 
-QPixmap ContactsListViewDelegate::avatar(const QModelIndex &index) const
+QPixmap BuddiesListViewDelegate::avatar(const QModelIndex &index) const
 {
 	QVariant avatar = index.data(AvatarRole);
 	if (!avatar.canConvert<QPixmap>())
@@ -317,7 +317,7 @@ QPixmap ContactsListViewDelegate::avatar(const QModelIndex &index) const
 	return avatar.value<QPixmap>();
 }
 
-void ContactsListViewDelegate::configurationUpdated()
+void BuddiesListViewDelegate::configurationUpdated()
 {
 	Font = config_file.readFontEntry("Look", "UserboxFont");
 	DescriptionFont = Font;

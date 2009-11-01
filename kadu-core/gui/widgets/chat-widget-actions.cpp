@@ -9,16 +9,16 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "configuration/configuration-file.h"
 #include "buddies/ignored-helper.h"
 #include "buddies/account-data/contact-account-data.h"
+#include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
+#include "gui/widgets/buddies-list-view-menu-manager.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
-#include "gui/widgets/contacts-list-view-menu-manager.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/kadu-window-actions.h"
 #include "gui/windows/message-box.h"
@@ -171,7 +171,7 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 		"Black", tr("Change color")
 	);
 
-	ContactsListViewMenuManager::instance()->addActionDescription(OpenChat);
+	BuddiesListViewMenuManager::instance()->addActionDescription(OpenChat);
 }
 
 ChatWidgetActions::~ChatWidgetActions()
