@@ -62,10 +62,10 @@ QVariant ContactAccountDataModel::data(const QModelIndex &index, int role) const
 			if (index.column() == 0) // long or shor name?
 				return data->id();
 			else
-				return QString("%1 (%2)").arg(data->id(), data->account()->name());
+				return QString("%1 (%2)").arg(data->id(), data->account().name());
 
 		case Qt::DecorationRole:
-			return data->account()->protocol()->icon();
+			return data->account().protocolHandler()->icon();
 
 		case AccountDataRole:
 			return QVariant::fromValue<ContactAccountData *>(data);

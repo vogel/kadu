@@ -139,10 +139,10 @@ void TlenEditAccountWidget::createConnectionTab(QTabWidget *tabWidget)
 
 void TlenEditAccountWidget::loadAccountData()
 {
-	ConnectAtStart->setChecked(account()->connectAtStart());
-	AccountId->setText(account()->id());
-	RememberPassword->setChecked(account()->rememberPassword());
-	AccountPassword->setText(account()->password());
+	ConnectAtStart->setChecked(account().connectAtStart());
+	AccountId->setText(account().id());
+	RememberPassword->setChecked(account().rememberPassword());
+	AccountPassword->setText(account().password());
 }
 
 void TlenEditAccountWidget::loadConnectionData()
