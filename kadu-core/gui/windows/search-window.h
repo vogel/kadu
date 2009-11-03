@@ -133,7 +133,7 @@ public:
 
 public slots:
 
-	void newSearchResults(BuddyList contacts);
+	void newSearchResults(BuddyList buddies);
 	void firstSearch();
 };
 

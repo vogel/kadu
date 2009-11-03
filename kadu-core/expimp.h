@@ -29,7 +29,7 @@ class UserlistImportExport : public QWidget {
 	QTreeWidget *lv_userlist;
 
 private slots:
-	void contactListImported(bool ok, BuddyList contacts);
+	void contactListImported(bool ok, BuddyList buddies);
 	void contactListExported(bool ok);
 
 	void startImportTransfer(void);

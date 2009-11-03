@@ -492,7 +492,7 @@ void SearchWindow::nextSearch()
 	kdebugf2();
 }
 
-void SearchWindow::newSearchResults(BuddyList contacts)
+void SearchWindow::newSearchResults(BuddyList buddies)
 {
 	kdebugf();
 
@@ -501,7 +501,7 @@ void SearchWindow::newSearchResults(BuddyList contacts)
 
 	int items = results->topLevelItemCount(); // number of items already in results
 
-	foreach(Buddy buddy, contacts)
+	foreach(Buddy buddy, buddies)
 	{
 		ContactAccountData *cad = buddy.accountData(CurrentAccount);
 		QList <QTreeWidgetItem *> items = results->findItems(cad->id(), Qt::MatchExactly, 1);
@@ -533,7 +533,7 @@ void SearchWindow::newSearchResults(BuddyList contacts)
 		setActionState(firstSearchAction, true);
 	setActionState(stopSearchAction, false);
 
-	if (contacts.isEmpty()  || (contacts.count() == items))
+	if (buddies.isEmpty()  || (buddies.count() == items))
 	{
 		kdebugmf(KDEBUG_INFO, "No results. Exit.\n");
 		MessageBox::msg(tr("There were no results of your search"), false, "Information", this);

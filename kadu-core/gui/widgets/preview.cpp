@@ -49,7 +49,7 @@ void Preview::syntaxChanged(const QString &content)
 
 	if (count)
 		for (int i = 0; i < count; i++)
-			text += Parser::parse(syntax, contacts[i].prefferedAccount(), contacts[i], objectsToParse.at(i));
+			text += Parser::parse(syntax, buddies[i].prefferedAccount(), buddies[i], objectsToParse.at(i));
 	else
 		text = Parser::parse(syntax, buddy.prefferedAccount(), buddy);
 

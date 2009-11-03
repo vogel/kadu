@@ -25,17 +25,17 @@
 
 #include "gadu-list-helper.h"
 
-QString GaduListHelper::contactListToString(Account account, BuddyList contacts)
+QString GaduListHelper::contactListToString(Account account, BuddyList buddies)
 {
 	kdebugf();
 
 	QStringList contactsStringList;
 
-	foreach (Buddy buddy, contacts)
+	foreach (Buddy buddy, buddies)
 	{
-		QStringList contactGroups;
+		QStringList buddyGroups;
 		foreach (Group *group, buddy.groups())
-			contactGroups << group->name();
+			buddyGroups << group->name();
 
 		ContactAccountData *cad = buddy.accountData(account);
 
@@ -45,7 +45,7 @@ QString GaduListHelper::contactListToString(Account account, BuddyList contacts)
 			.arg(buddy.nickName())
 			.arg(buddy.display())
 			.arg(buddy.mobile())
-			.arg(contactGroups.join(";"))
+			.arg(buddyGroups.join(";"))
 			.arg(cad
 				? cad->id()
 				: "")

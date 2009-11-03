@@ -29,7 +29,7 @@ public:
 	virtual void stop() = 0;
 
 signals:
-	void newResults(BuddyList contacts);
+	void newResults(BuddyList buddies);
 
 };
 

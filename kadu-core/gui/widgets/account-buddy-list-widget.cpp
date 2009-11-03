@@ -106,7 +106,7 @@ void AccountBuddyListWidget::startExportTransfer()
 	kdebugf2();
 }
 
-void AccountBuddyListWidget::buddiesListImported(bool ok, BuddyList contacts)
+void AccountBuddyListWidget::buddiesListImported(bool ok, BuddyList buddies)
 {
 	kdebugf();
 
@@ -115,7 +115,7 @@ void AccountBuddyListWidget::buddiesListImported(bool ok, BuddyList contacts)
 	if (!ok)
 		return;
 
-	foreach (Buddy buddy, contacts)
+	foreach (Buddy buddy, buddies)
 	{
 		Buddy c = BuddyManager::instance()->byId(CurrentAccount, buddy.accountData(CurrentAccount)->id());
 		foreach (Buddy b, beforeImportList)

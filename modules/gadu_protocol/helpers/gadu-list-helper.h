@@ -20,7 +20,7 @@ class GaduListHelper
 {
 
 public:
-	static QString contactListToString(Account account, BuddyList contacts);
+	static QString contactListToString(Account account, BuddyList buddies);
 	static BuddyList stringToContactList(Account account, QString &content);
 	static BuddyList streamToContactList(Account account, QTextStream &content);
 

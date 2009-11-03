@@ -48,7 +48,7 @@ private:
 
 	void processButtonPress(const QString &buttonName, Hint *hint);
 
-	void showNewMessage(const QString &configurationDirective, const QString &title, const QString &contentTitle, BuddyList contacts, const QString &msg);
+	void showNewMessage(const QString &configurationDirective, const QString &title, const QString &contentTitle, BuddyList buddies, const QString &msg);
 
 	// TODO: usun�� w 0.6
 	void realCopyConfiguration(const QString &fromCategory, const QString &fromHint, const QString &toHint);

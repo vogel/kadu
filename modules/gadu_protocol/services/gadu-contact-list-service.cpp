@@ -86,9 +86,9 @@ void GaduContactListService::exportContactList()
 	exportContactList(BuddyManager::instance()->buddies(Protocol->account()));
 }
 
-void GaduContactListService::exportContactList(BuddyList contacts)
+void GaduContactListService::exportContactList(BuddyList buddies)
 {
-	QString contactsString = GaduListHelper::contactListToString(Protocol->account(), contacts);
+	QString contactsString = GaduListHelper::contactListToString(Protocol->account(), buddies);
 
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "\n%s\n", unicode2cp(contactsString).data());
 

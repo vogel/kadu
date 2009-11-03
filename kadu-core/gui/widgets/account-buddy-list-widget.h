@@ -36,7 +36,7 @@ public:
 private slots:
 	void startImportTransfer();
 	void startExportTransfer();
-	void buddiesListImported(bool ok, BuddyList contacts);
+	void buddiesListImported(bool ok, BuddyList buddies);
 	void buddiesListExported(bool ok);
 
 };

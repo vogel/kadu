@@ -21,7 +21,7 @@ class Preview : public KaduTextBrowser
 
 	Buddy buddy;
 	QObjectList objectsToParse;
-	BuddyList contacts;
+	BuddyList buddies;
 	QString resetBackgroundColor;
 
 public:
@@ -29,10 +29,10 @@ public:
 	~Preview();
 
 	void setResetBackgroundColor(const QString &resetBackgroundColor) { this->resetBackgroundColor = resetBackgroundColor; }
-	void addObjectToParse(Buddy buddy, QObject *object) { contacts.append(buddy); objectsToParse.append(object); }
+	void addObjectToParse(Buddy buddy, QObject *object) { buddies.append(buddy); objectsToParse.append(object); }
 
 	const QObjectList getObjectsToParse() const { return objectsToParse; }
-	const BuddyList getContactList() const { return contacts; }
+	const BuddyList getContactList() const { return buddies; }
 
 
 public slots:
