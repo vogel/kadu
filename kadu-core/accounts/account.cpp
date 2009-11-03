@@ -84,8 +84,8 @@ void Account::connectDataSignals()
 	if (isNull())
 		return;
 
-	connect(Data.data(), SIGNAL(contactStatusChanged(Account, Buddy, Status)),
-			this, SIGNAL(contactStatusChanged(Account, Buddy, Status)));
+	connect(Data.data(), SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
+			this, SIGNAL(buddyStatusChanged(Account, Buddy, Status)));
 }
 
 void Account::disconnectDataSignals()
@@ -93,8 +93,8 @@ void Account::disconnectDataSignals()
 	if (isNull())
 		return;
 
-	disconnect(Data.data(), SIGNAL(contactStatusChanged(Account, Buddy, Status)),
-			this, SIGNAL(contactStatusChanged(Account, Buddy, Status)));
+	disconnect(Data.data(), SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
+			this, SIGNAL(buddyStatusChanged(Account, Buddy, Status)));
 }
 
 QUuid Account::uuid() const

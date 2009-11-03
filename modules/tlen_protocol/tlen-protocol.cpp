@@ -391,7 +391,7 @@ void TlenProtocol::presenceChanged(QString from, QString newstatus, QString desc
 	if (!TypingUsers[from].isEmpty())
 		TypingUsers[from] = description;
 
-	emit contactStatusChanged(account(), contact, oldStatus);
+	emit buddyStatusChanged(account(), contact, oldStatus);
 	kdebugf2();
 }
 
@@ -471,7 +471,7 @@ void TlenProtocol::chatNotify(QString from, QString type)
 		TypingUsers.insert(from, oldDesc);
 		newStatus.setDescription(QString("[pisze] %1").arg(oldDesc));
 		data->setStatus(newStatus);
-		emit contactStatusChanged(account(), contact, oldStatus);
+		emit buddyStatusChanged(account(), contact, oldStatus);
 	}
 	else if(type=="u")
 	{
@@ -480,7 +480,7 @@ void TlenProtocol::chatNotify(QString from, QString type)
 		TypingUsers.remove(from);
 		newStatus.setDescription(oldDesc);
 		data->setStatus(newStatus);
-		emit contactStatusChanged(account(), contact, oldStatus);
+		emit buddyStatusChanged(account(), contact, oldStatus);
 	}
 	else if(type=="a")
 	{

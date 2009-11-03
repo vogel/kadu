@@ -32,13 +32,13 @@ BuddiesModelBase::~BuddiesModelBase()
 
 void BuddiesModelBase::accountRegistered(Account account)
 {
-	connect(account.data(), SIGNAL(contactStatusChanged(Account, Buddy, Status)),
+	connect(account.data(), SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
 			this, SLOT(buddyStatusChanged(Account, Buddy, Status)));
 }
 
 void BuddiesModelBase::accountUnregistered(Account account)
 {
-	disconnect(account.data(), SIGNAL(contactStatusChanged(Account, Buddy, Status)),
+	disconnect(account.data(), SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
 			this, SLOT(buddyStatusChanged(Account, Buddy, Status)));
 }
 

@@ -109,7 +109,7 @@ public:
 	Property(QString, proxyPassword, ProxyPassword, QString::null)
 
 signals:
-	void contactStatusChanged(Account account, Buddy buddy, Status oldStatus);
+	void buddyStatusChanged(Account account, Buddy buddy, Status oldStatus);
 
 };
 
