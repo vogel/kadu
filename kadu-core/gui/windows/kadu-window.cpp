@@ -346,11 +346,7 @@ ContactSet KaduWindow::contacts()
 
 Chat * KaduWindow::chat()
 {
-	Account account = AccountManager::instance()->defaultAccount();
-	if (account.isNull())
-		return 0;
-
-	return account.protocolHandler()->findChat(contacts());
+	return ContactsWidget->view()->currentChat();
 }
 
 void KaduWindow::configurationUpdated()

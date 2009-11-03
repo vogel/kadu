@@ -40,6 +40,8 @@ class ContactsListView : public QTreeView
 	Contact contact(const QModelIndex &index) const;
 	void triggerActivate(const QModelIndex &index);
 
+	Chat * chatForIndex(const QModelIndex &index) const;
+
 	// Tool tips
 	Contact ToolTipContact;
 	QTimer ToolTipTimeoutTimer;
@@ -95,6 +97,8 @@ public:
 
 	Contact currentContact() const;
 	ContactSet selectedContacts() const;
+
+	Chat * currentChat() const;
 
 	void setBackground(const QString &backgroundColor, const QString &file = QString::null, BackgroundMode mode = BackgroundNone);
 	void updateBackground();

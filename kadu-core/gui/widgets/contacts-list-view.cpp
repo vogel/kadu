@@ -127,20 +127,30 @@ Contact ContactsListView::contact(const QModelIndex &index) const
 	return model->contact(index);
 }
 
-void ContactsListView::triggerActivate(const QModelIndex& index)
+Chat * ContactsListView::chatForIndex(const QModelIndex &index) const
 {
 	if (!index.isValid())
-		return;
+		return 0;
 
 	Account account = index.data(AccountRole).value<Account>();
 	if (account.isNull())
-		return;
+		return 0;
 
 	Contact con = contact(index);
 	if (con.isNull())
-		return;
+		return 0;
 
-	Chat *chat = account.protocolHandler()->findChat(ContactSet(con));
+	return account.protocolHandler()->findChat(ContactSet(con));
+}
+
+Chat * ContactsListView::currentChat() const
+{
+	return chatForIndex(currentIndex());
+}
+
+void ContactsListView::triggerActivate(const QModelIndex& index)
+{
+	Chat *chat = chatForIndex(index);
 	if (chat)
 		emit chatActivated(chat);
 }
