@@ -12,7 +12,6 @@ set (SOURCES
 set (MOC_SOURCES
 	gui/windows/sms-image-dialog.h
 	gui/windows/sms-dialog.h
-	mobile-number-manager.h
 	sms.h
 	sms-gateway.h
 	sms-gateway-manager.h

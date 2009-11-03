@@ -31,29 +31,87 @@ SMSAPI MobileNumberManager * MobileNumberManager::instance()
 	return Instance;
 }
 
-void MobileNumberManager::registerNumber(QString &number, QString &gatewayId)
+void MobileNumberManager::registerNumber(QString number, QString gatewayId)
 {
-// 	QStringList priority = config_file.readEntry("SMS", "Priority").split(";");
-// 	if (!priority.contains(number->name()))
-// 	{
-// 		priority += number->name();
-// 		config_file.writeEntry("SMS", "Priority", priority.join(";"));
-// 	}
-// 	Gateways.insert(number->name(), number);
+	Numbers.insert(new MobileNumber(number, gatewayId), gatewayId);
 }
 
-void MobileNumberManager::unregisterNumber(QString &number)
+void MobileNumberManager::unregisterNumber(QString number)
 {
-//	Gateways.remove(name);
+	foreach (MobileNumber *n, Numbers.keys())
+		if (n->number() == number)
+			Numbers.remove(n);
 }
 
+StoragePoint * MobileNumberManager::createStoragePoint()
+{
+	return new StoragePoint(xml_config_file, xml_config_file->getNode("MobileNumbers"));
+}
 
 void MobileNumberManager::load()
 {
-  
+  	if (!isValidStorage())
+		return;
+
+	XmlConfigFile *configurationStorage = storage()->storage();
+	QDomElement mobileNumbersNode = storage()->point();
+	if (mobileNumbersNode.isNull())
+		return;
+
+	QDomNodeList mobileNumberNodes = storage()->storage()->getNodes(mobileNumbersNode, "MobileNumber");
+	int count = mobileNumberNodes.count();
+	for (int i = 0; i < count; i++)
+	{
+		QDomElement mobileNumberElement = mobileNumberNodes.item(i).toElement();
+		if (mobileNumberElement.isNull())
+			continue;
+
+		StoragePoint *numberStoragePoint = new StoragePoint(configurationStorage, mobileNumberElement);
+		MobileNumber *number = new MobileNumber();
+		number->setStorage(numberStoragePoint);
+		number->load();
+		Numbers.insert(number, number->gatewayId());
+	}
 }
 
 void MobileNumberManager::store()
 {
-  
+	if (!isValidStorage())
+		return;
+
+	QDomElement mobileNumbersNode = storage()->point();
+
+	foreach (MobileNumber *number, Numbers.keys())
+		number->store();
+}
+
+MobileNumber::MobileNumber(QString number, QString gatewayId) : Number(number), GatewayId(gatewayId)
+{
+}
+
+StoragePoint * MobileNumber::createStoragePoint()
+{
+	return new StoragePoint(xml_config_file, xml_config_file->getNode("MobileNumber"));
+}
+
+void MobileNumber::load()
+{
+	StorableObject::load();
+
+	if (!isValidStorage())
+		return;
+
+	Number = loadValue<QString>("Number");
+	GatewayId = loadValue<QString>("Gateway");
+}
+
+void MobileNumber::store()
+{
+	if (!isValidStorage())
+		return;
+
+	ensureLoaded();
+
+	storeValue("Number", Number, true);
+	storeValue("Gateway", GatewayId,true);
 }

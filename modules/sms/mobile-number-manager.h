@@ -5,15 +5,27 @@
 
 #include "sms.h"
 
-class MobileNumber : public QObject
+class MobileNumber : public StorableObject
 {
-	Q_OBJECT
 	QString Number;
 	QString GatewayId;
 	
-  public:
+public:
 	MobileNumber() {};
+	MobileNumber(QString number, QString gatewayId);
 	virtual ~MobileNumber() {};
+	
+	virtual void load();
+	virtual void store();
+	
+	QString number() { return Number; };
+	void setNumber(QString number) { Number = number; };
+	
+	QString gatewayId() { return GatewayId; };
+	void setGatewayId(QString gatewayId) { GatewayId = gatewayId; };
+	
+protected:
+	virtual StoragePoint * createStoragePoint();
 };
 
 class SMSAPI MobileNumberManager : public StorableObject
@@ -32,10 +44,13 @@ public:
 	virtual void load();
 	virtual void store();
 	
-	void registerNumber(QString &number, QString &gatewayId);
-	void unregisterNumber(QString &number);
+	void registerNumber(QString number, QString gatewayId);
+	void unregisterNumber(QString number);
 
 	QMap<MobileNumber *, QString> numbers() { return Numbers; };
+	
+protected:
+	virtual StoragePoint * createStoragePoint();
 	
 };
 
