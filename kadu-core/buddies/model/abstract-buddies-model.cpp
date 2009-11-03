@@ -17,7 +17,7 @@
 
 Buddy AbstractBuddiesModel::buddyAt(const QModelIndex &index) const
 {
-	QVariant conVariant = index.data(ContactRole);
+	QVariant conVariant = index.data(BuddyRole);
 	if (!conVariant.canConvert<Buddy>())
 		return Buddy::null;
 

@@ -128,7 +128,7 @@ QVariant BuddiesModelBase::data(Buddy buddy, int role) const
 	{
 		case Qt::DisplayRole:
 			return buddy.display();
-		case ContactRole:
+		case BuddyRole:
 			return QVariant::fromValue(buddy);
 		case StatusRole:
 			return QVariant::fromValue(Status::null);
@@ -155,7 +155,7 @@ QVariant BuddiesModelBase::data(ContactAccountData *cad, int role, bool useDispl
 			return !cad->account().isNull()
 				? cad->account().statusContainer()->statusPixmap(cad->status())
 				: QVariant();
-		case ContactRole:
+		case BuddyRole:
 			return QVariant::fromValue(cad->buddy());
 		case DescriptionRole:
 			//TODO 0.6.6:
@@ -211,7 +211,7 @@ QMimeData * BuddiesModelBase::mimeData(const QModelIndexList &indexes) const
 	BuddyList list;
 	foreach (QModelIndex index, indexes)
 	{
-		QVariant conVariant = index.data(ContactRole);;
+		QVariant conVariant = index.data(BuddyRole);;
 		if (!conVariant.canConvert<Buddy>())
 			continue;
 		Buddy con = conVariant.value<Buddy>();
