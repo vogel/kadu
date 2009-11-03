@@ -103,11 +103,11 @@ void OpenChatWith::openChat(Buddy buddy)
 		return;
 
 	Account account = AccountManager::instance()->defaultAccount();
-	BuddySet contacts = widget->selectedBuddies();
+	BuddySet buddies = widget->selectedBuddies();
 
-	if (!account.isNull() && !contacts.isEmpty() && !contacts.contains(Core::instance()->myself()))
+	if (!account.isNull() && !buddies.isEmpty() && !buddies.contains(Core::instance()->myself()))
 	{
-		Chat *chat = account.protocolHandler()->findChat(contacts);
+		Chat *chat = account.protocolHandler()->findChat(buddies);
 		if (chat)
 		{
 			ChatWidgetManager::instance()->sendMessage(chat);
@@ -116,9 +116,9 @@ void OpenChatWith::openChat(Buddy buddy)
 		}
 	}
 
-	contact = *contacts.begin();
-	if (contact.mobile().isEmpty() && !contact.email().isEmpty())
-		openMailClient(contact.email());
+	buddy = *buddies.begin();
+	if (buddy.mobile().isEmpty() && !buddy.email().isEmpty())
+		openMailClient(buddy.email());
 
 	close();
 }

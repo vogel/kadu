@@ -594,11 +594,11 @@ void KaduWindowActions::addUserActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-	Buddy buddy = window->contact();
+	Buddy buddy = window->buddy();
 	AddBuddyWindow *addBuddyWindow = new AddBuddyWindow(window);
 
-	if (contact.isAnonymous())
-		addBuddyWindow->setContact(contact);
+	if (buddy.isAnonymous())
+		addBuddyWindow->setContact(buddy);
 
 	addBuddyWindow->show();
 
@@ -613,10 +613,10 @@ void KaduWindowActions::mergeContactActionActivated(QAction *sender, bool toggle
 	if (!window)
 		return;
 
-	Buddy buddy = window->contact();
-	if (!contact.isNull())
+	Buddy buddy = window->buddy();
+	if (!buddy.isNull())
 	{
-		MergeBuddiesWindow *mergeBuddiesWindow = new MergeBuddiesWindow(contact, window);
+		MergeBuddiesWindow *mergeBuddiesWindow = new MergeBuddiesWindow(buddy, window);
 		mergeBuddiesWindow->show();
 	}
 
@@ -694,12 +694,12 @@ void KaduWindowActions::writeEmailActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-	Buddy buddy = window->contact();
-	if (contact.isNull())
+	Buddy buddy = window->buddy();
+	if (buddy.isNull())
 		return;
 
-	if (!contact.email().isEmpty())
-		openMailClient(contact.email());
+	if (!buddy.email().isEmpty())
+		openMailClient(buddy.email());
 
 	kdebugf2();
 }
@@ -712,12 +712,12 @@ void KaduWindowActions::copyDescriptionActionActivated(QAction *sender, bool tog
 	if (!window)
 		return;
 
-	Buddy buddy = window->contact();
-	if (contact.isNull())
+	Buddy buddy = window->buddy();
+	if (buddy.isNull())
 		return;
 
-	Account account = contact.prefferedAccount();
-	ContactAccountData *data = contact.accountData(account);
+	Account account = buddy.prefferedAccount();
+	ContactAccountData *data = buddy.accountData(account);
 
 	if (!data)
 		return;
@@ -740,12 +740,12 @@ void KaduWindowActions::openDescriptionLinkActionActivated(QAction *sender, bool
 	if (!window)
 		return;
 
-	Buddy buddy = window->contact();
-	if (contact.isNull())
+	Buddy buddy = window->buddy();
+	if (buddy.isNull())
 		return;
 
-	Account account = contact.prefferedAccount();
-	ContactAccountData *data = contact.accountData(account);
+	Account account = buddy.prefferedAccount();
+	ContactAccountData *data = buddy.accountData(account);
 
 	if (!data)
 		return;
@@ -770,12 +770,12 @@ void KaduWindowActions::copyPersonalInfoActionActivated(QAction *sender, bool to
 	if (!window)
 		return;
 
-	BuddySet contacts = window->buddies();
+	BuddySet buddies = window->buddies();
 
 	QStringList infoList;
 	QString copyPersonalDataSyntax = config_file.readEntry("General", "CopyPersonalDataSyntax", tr("Contact: %a[ (%u)]\n[First name: %f\n][Last name: %r\n][Mobile: %m\n]"));
-	foreach (Buddy buddy, contacts)
-		infoList.append(Parser::parse(copyPersonalDataSyntax, contact.prefferedAccount(), contact, false));
+	foreach (Buddy buddy, buddies)
+		infoList.append(Parser::parse(copyPersonalDataSyntax, buddy.prefferedAccount(), buddy, false));
 
 	QString info = infoList.join("\n");
 	if (info.isEmpty())
@@ -795,11 +795,11 @@ void KaduWindowActions::lookupInDirectoryActionActivated(QAction *sender, bool t
 	if (!window)
 		return;
 
-	Buddy buddy = window->contact();
-	if (contact.isNull())
+	Buddy buddy = window->buddy();
+	if (buddy.isNull())
 		return;
 
-	SearchWindow *sd = new SearchWindow(Core::instance()->kaduWindow(), contact);
+	SearchWindow *sd = new SearchWindow(Core::instance()->kaduWindow(), buddy);
 	sd->show();
 	sd->firstSearch();
 
@@ -826,9 +826,9 @@ void KaduWindowActions::offlineToUserActionActivated(QAction *sender, bool toggl
 	if (!window)
 		return;
 
-	BuddySet contacts = window->buddies();
+	BuddySet buddies = window->buddies();
 	bool on = true;
-	foreach (const Buddy buddy, contacts)
+	foreach (const Buddy buddy, buddies)
 		if (buddy.accountData(account) == 0 || !buddy.isOfflineTo(account))
 		{
 			on = false;
@@ -844,7 +844,7 @@ void KaduWindowActions::offlineToUserActionActivated(QAction *sender, bool toggl
 // 	userlist->writeToConfig();
 
 	foreach (Action *action, OfflineToUser->actions())
-		if (action->buddies() == contacts)
+		if (action->buddies() == buddies)
 			action->setChecked(!on);
 
 	kdebugf2();
@@ -858,9 +858,9 @@ void KaduWindowActions::hideDescriptionActionActivated(QAction *sender, bool tog
 	if (!window)
 		return;
 
-	BuddySet contacts = window->buddies();
+	BuddySet buddies = window->buddies();
 
-	foreach (const Buddy &buddy, contacts)
+	foreach (const Buddy &buddy, buddies)
 	{
 		if (buddy.isNull() || buddy.isAnonymous())
 			continue;
@@ -879,7 +879,7 @@ void KaduWindowActions::hideDescriptionActionActivated(QAction *sender, bool tog
 
 	foreach (Action *action, HideDescription->actions())
 	{
-		if (action->buddies() == contacts)
+		if (action->buddies() == buddies)
 			action->setChecked(toggled);
 	}
 
@@ -894,17 +894,17 @@ void KaduWindowActions::deleteUsersActionActivated(QAction *sender, bool toggled
 	if (!window)
 		return;
 
-	BuddySet contacts = window->buddies();
-	if (contacts.isEmpty())
+	BuddySet buddies = window->buddies();
+	if (buddies.isEmpty())
 		return;
 
 	QStringList displays;
-	foreach (Buddy buddy, contacts)
-		displays.append(contact.display());
+	foreach (Buddy buddy, buddies)
+		displays.append(buddy.display());
 	if (MessageBox::ask(tr("Selected users:\n%0 will be deleted. Are you sure?").arg(displays.join(", ")), "Warning", Core::instance()->kaduWindow()))
 	{
-		foreach (Buddy buddy, contacts)
-			BuddyManager::instance()->removeBuddy(contact);
+		foreach (Buddy buddy, buddies)
+			BuddyManager::instance()->removeBuddy(buddy);
 		BuddyManager::instance()->store();
 	}
 
@@ -961,18 +961,18 @@ void KaduWindowActions::editUserActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-	Buddy buddy = window->contact();
-	if (contact.isNull())
+	Buddy buddy = window->buddy();
+	if (buddy.isNull())
 		return;
 
-	if (contact.isAnonymous())
+	if (buddy.isAnonymous())
 	{
 		AddBuddyWindow *addBuddyWindow = new AddBuddyWindow(window);
-		addBuddyWindow->setContact(contact);
+		addBuddyWindow->setContact(buddy);
 		addBuddyWindow->show();
 	}
 	else
-		(new BuddyDataWindow(contact, window))->show();
+		(new BuddyDataWindow(buddy, window))->show();
 
 	kdebugf2();
 }

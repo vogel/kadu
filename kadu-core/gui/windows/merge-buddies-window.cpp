@@ -21,8 +21,8 @@
 
 #include "merge-buddies-window.h"
 
-MergeBuddiesWindow::MergeBuddiesWindow(Buddy buddy, QWidget * parent) :
-		QDialog(parent), MyBuddy(contact)
+MergeBuddiesWindow::MergeBuddiesWindow(Buddy buddy, QWidget *parent) :
+		QDialog(parent), MyBuddy(buddy)
 {
 	createGui();
 }
@@ -67,12 +67,12 @@ void MergeBuddiesWindow::createGui()
 
 void MergeBuddiesWindow::selectedBuddyChanged(Buddy buddy)
 {
-	MergeButton->setEnabled(!contact.isNull());
+	MergeButton->setEnabled(!buddy.isNull());
 }
 
 void MergeBuddiesWindow::accept()
 {
-	Buddy mergeWith = SelectCombo->contact();
+	Buddy mergeWith = SelectCombo->buddy();
 	if (mergeWith.isNull())
 		return;
 

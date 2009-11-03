@@ -15,7 +15,7 @@
 
 struct KADUAPI BuddySearchCriteria
 {
-	Buddy SearchContact;
+	Buddy SearchBuddy;
 	QString BirthYearFrom;
 	QString BirthYearTo;
 	bool Active;

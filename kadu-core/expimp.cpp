@@ -304,11 +304,11 @@ void UserlistImportExport::updateUserlist()
 	kdebugf2();
 }
 
-void UserlistImportExport::contactListImported(bool ok, BuddyList contacts)
+void UserlistImportExport::contactListImported(bool ok, BuddyList buddies)
 {
 	kdebugf();
 
-	ImprotedContacts = contacts;
+	ImprotedContacts = buddies;
 	lv_userlist->clear();
 
 	pb_fetch->setEnabled(true);
@@ -317,26 +317,26 @@ void UserlistImportExport::contactListImported(bool ok, BuddyList contacts)
 		return;
 
 	Account account = AccountManager::instance()->defaultAccount();
-	foreach (Buddy buddy, contacts)
+	foreach (Buddy buddy, buddies)
 	{
 		QString id;
-		if (contact.hasAccountData(account))
-			id = contact.accountData(account)->id();
+		if (buddy.hasAccountData(account))
+			id = buddy.accountData(account)->id();
 
 		QStringList groups;
-		foreach (Group *group, contact.groups())
+		foreach (Group *group, buddy.groups())
 			groups << group->name();
 
 		QStringList values;
 		values
 			<< id
-			<< contact.nickName()
-			<< contact.display()
-			<< contact.firstName()
-			<< contact.lastName()
-			<< contact.mobile()
+			<< buddy.nickName()
+			<< buddy.display()
+			<< buddy.firstName()
+			<< buddy.lastName()
+			<< buddy.mobile()
 			<< groups.join(",") 
-			<< contact.email();
+			<< buddy.email();
 		new QTreeWidgetItem(lv_userlist, values);
 	}
 

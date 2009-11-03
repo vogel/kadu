@@ -25,7 +25,7 @@ GaduSearchService::GaduSearchService(GaduProtocol *protocol) :
 void GaduSearchService::searchFirst(BuddySearchCriteria criteria)
 {
 	Query = criteria;
-	From = Query.SearchContact.hasAccountData(Protocol->account()) ? Query.SearchContact.accountData(Protocol->account())->id().toUInt() : 0;
+	From = Query.SearchBuddy.hasAccountData(Protocol->account()) ? Query.SearchBuddy.accountData(Protocol->account())->id().toUInt() : 0;
 	searchNext();
 }
 
@@ -34,22 +34,22 @@ void GaduSearchService::searchNext()
 	Stopped = false;
 	gg_pubdir50_t req = gg_pubdir50_new(GG_PUBDIR50_SEARCH);
 
-	if (Query.SearchContact.hasAccountData(Protocol->account()))
-		gg_pubdir50_add(req, GG_PUBDIR50_UIN, (const char *)unicode2cp(Query.SearchContact.accountData(Protocol->account())->id()).data());
-	if (!Query.SearchContact.firstName().isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, (const char *)unicode2cp(Query.SearchContact.firstName()).data());
-	if (!Query.SearchContact.lastName().isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_LASTNAME, (const char *)unicode2cp(Query.SearchContact.lastName()).data());
-	if (!Query.SearchContact.nickName().isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_NICKNAME, (const char *)unicode2cp(Query.SearchContact.nickName()).data());
-	if (!Query.SearchContact.city().isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_CITY, (const char *)unicode2cp(Query.SearchContact.city()).data());
+	if (Query.SearchBuddy.hasAccountData(Protocol->account()))
+		gg_pubdir50_add(req, GG_PUBDIR50_UIN, (const char *)unicode2cp(Query.SearchBuddy.accountData(Protocol->account())->id()).data());
+	if (!Query.SearchBuddy.firstName().isEmpty())
+		gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, (const char *)unicode2cp(Query.SearchBuddy.firstName()).data());
+	if (!Query.SearchBuddy.lastName().isEmpty())
+		gg_pubdir50_add(req, GG_PUBDIR50_LASTNAME, (const char *)unicode2cp(Query.SearchBuddy.lastName()).data());
+	if (!Query.SearchBuddy.nickName().isEmpty())
+		gg_pubdir50_add(req, GG_PUBDIR50_NICKNAME, (const char *)unicode2cp(Query.SearchBuddy.nickName()).data());
+	if (!Query.SearchBuddy.city().isEmpty())
+		gg_pubdir50_add(req, GG_PUBDIR50_CITY, (const char *)unicode2cp(Query.SearchBuddy.city()).data());
 	if (!Query.BirthYearFrom.isEmpty())
 	{
 		QString bufYear = Query.BirthYearFrom + ' ' + Query.BirthYearTo;
 		gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, (const char *)unicode2cp(bufYear).data());
 	}
-	switch (Query.SearchContact.gender())
+	switch (Query.SearchBuddy.gender())
 	{
 		case BuddyShared::GenderMale:
 			gg_pubdir50_add(req, GG_PUBDIR50_GENDER, GG_PUBDIR50_GENDER_MALE);

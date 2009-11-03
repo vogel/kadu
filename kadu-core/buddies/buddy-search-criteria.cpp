@@ -10,7 +10,7 @@
 #include "buddy-search-criteria.h"
 
 BuddySearchCriteria::BuddySearchCriteria() :
-	SearchContact(Buddy()), BirthYearTo(), Active(false), IgnoreResults(false)
+	SearchBuddy(Buddy()), BirthYearTo(), Active(false), IgnoreResults(false)
 {
 }
 
@@ -20,33 +20,33 @@ BuddySearchCriteria::~BuddySearchCriteria()
 
 void BuddySearchCriteria::reqUin(Account account, const QString &uin)
 {
-	ContactAccountData *cad = SearchContact.accountData(account);
+	ContactAccountData *cad = SearchBuddy.accountData(account);
 	if (!cad)
 	{
-		cad = new ContactAccountData(account, SearchContact, uin);
-		SearchContact.addAccountData(cad);
+		cad = new ContactAccountData(account, SearchBuddy, uin);
+		SearchBuddy.addAccountData(cad);
 	}
 	cad->setId(uin);
 }
 
 void BuddySearchCriteria::reqFirstName(const QString &firstName)
 {
-	SearchContact.setFirstName(firstName);
+	SearchBuddy.setFirstName(firstName);
 }
 
 void BuddySearchCriteria::reqLastName(const QString &lastName)
 {
-	SearchContact.setLastName(lastName);
+	SearchBuddy.setLastName(lastName);
 }
 
 void BuddySearchCriteria::reqNickName(const QString &nickName)
 {
-	SearchContact.setNickName(nickName);
+	SearchBuddy.setNickName(nickName);
 }
 
 void BuddySearchCriteria::reqCity(const QString &city)
 {
-	SearchContact.setCity(city);
+	SearchBuddy.setCity(city);
 }
 
 void BuddySearchCriteria::reqBirthYear(const QString &birthYearFrom, const QString &birthYearTo)
@@ -57,7 +57,7 @@ void BuddySearchCriteria::reqBirthYear(const QString &birthYearFrom, const QStri
 
 void BuddySearchCriteria::reqGender(bool female)
 {
-	SearchContact.setGender(female ? BuddyShared::GenderFemale : BuddyShared::GenderMale);
+	SearchBuddy.setGender(female ? BuddyShared::GenderFemale : BuddyShared::GenderMale);
 }
 
 void BuddySearchCriteria::reqActive()
@@ -67,7 +67,7 @@ void BuddySearchCriteria::reqActive()
 
 void BuddySearchCriteria::clearData()
 {
-	SearchContact = Buddy();
+	SearchBuddy = Buddy();
 	BirthYearFrom.truncate(0);
 	BirthYearTo.truncate(0);
 	Active = false;

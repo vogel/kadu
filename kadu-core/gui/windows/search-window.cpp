@@ -201,9 +201,9 @@ SearchWindow::SearchWindow(QWidget *parent, Buddy buddy)
 
 	loadWindowGeometry(this, "General", "SearchWindowGeometry", 0, 50, 800, 350);
 
-	if (Buddy::null != contact)
+	if (Buddy::null != buddy)
 	{
-		CurrentAccount = contact.prefferedAccount();
+		CurrentAccount = buddy.prefferedAccount();
 	}
 	else
 	{
@@ -223,10 +223,10 @@ SearchWindow::SearchWindow(QWidget *parent, Buddy buddy)
 	if (CurrentSearchService)
 		connect(CurrentSearchService, SIGNAL(newResults(BuddyList)), this, SLOT(newSearchResults(BuddyList)));
 
-	if (!contact.isNull())
+	if (!buddy.isNull())
 	{
-		CurrentSearchCriteria.SearchContact = contact;
-		e_uin->insert(contact.accountData(CurrentAccount)->id());
+		CurrentSearchCriteria.SearchBuddy = buddy;
+		e_uin->insert(buddy.accountData(CurrentAccount)->id());
 	}
 
 	kdebugf2();
@@ -314,7 +314,7 @@ void SearchWindow::addFound()
 	foreach (Buddy buddy, found)
 	{
 		AddBuddyWindow *a = new AddBuddyWindow(this);
-		a->setContact(CurrentSearchCriteria.SearchContact);
+		a->setContact(CurrentSearchCriteria.SearchBuddy);
 		a->show();
 	}
 }
@@ -503,7 +503,7 @@ void SearchWindow::newSearchResults(BuddyList contacts)
 
 	foreach(Buddy buddy, contacts)
 	{
-		ContactAccountData *cad = contact.accountData(CurrentAccount);
+		ContactAccountData *cad = buddy.accountData(CurrentAccount);
 		QList <QTreeWidgetItem *> items = results->findItems(cad->id(), Qt::MatchExactly, 1);
 		if (items.count())
 			qlv = items[0];		
@@ -512,15 +512,15 @@ void SearchWindow::newSearchResults(BuddyList contacts)
 		if (qlv)
 		{
 			qlv->setText(1, cad->id());
-			qlv->setText(2, contact.firstName());
-			qlv->setText(3, contact.city());
-			qlv->setText(4, contact.nickName());
-			qlv->setText(5, contact.familyCity());
+			qlv->setText(2, buddy.firstName());
+			qlv->setText(3, buddy.city());
+			qlv->setText(4, buddy.nickName());
+			qlv->setText(5, buddy.familyCity());
 		}
 		else
 		{
 			QStringList strings;
-			strings << QString::null << cad->id() << contact.firstName() << contact.city() << contact.nickName() << QString::number(contact.birthYear());
+			strings << QString::null << cad->id() << buddy.firstName() << buddy.city() << buddy.nickName() << QString::number(buddy.birthYear());
 			qlv = new QTreeWidgetItem(results, strings);
 			qlv->setIcon(0, QIcon(pix));
 			qlv = 0;

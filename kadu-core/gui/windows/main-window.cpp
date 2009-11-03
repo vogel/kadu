@@ -282,10 +282,10 @@ void MainWindow::actionAdded(Action *action)
 		connect(contactsListView(), SIGNAL(contactsSelectionChanged()), action, SLOT(checkState()));
 }
 
-Buddy MainWindow::contact()
+Buddy MainWindow::buddy()
 {
-	BuddySet contactList = buddies();
-	return 1 == contactList.count()
-		? *contactList.begin()
-		: Buddy::null;
+	BuddySet buddySet = buddies();
+	return 1 == buddySet.count()
+			? *buddySet.begin()
+			: Buddy::null;
 }

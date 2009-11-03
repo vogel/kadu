@@ -120,12 +120,12 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 		config_file.writeEntry("Notify", "NotifyAboutAll", false);
 	}
 
-	BuddySet contacts = window->buddies();
+	BuddySet buddies = window->buddies();
 
 	bool on = true;
-	foreach (const Buddy buddy, contacts)
+	foreach (const Buddy buddy, buddies)
 	{
-		ContactNotifyData *cnd = contact.moduleData<ContactNotifyData>();
+		ContactNotifyData *cnd = buddy.moduleData<ContactNotifyData>();
 
 		if (!cnd || !cnd->notify())
 		{
@@ -136,12 +136,12 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 		delete cnd;
 	}
 
-	foreach (const Buddy buddy, contacts)
+	foreach (const Buddy buddy, buddies)
 	{
-		if (contact.isNull() || contact.isAnonymous())
+		if (buddy.isNull() || buddy.isAnonymous())
 			continue;
 
-		ContactNotifyData *cnd = contact.moduleData<ContactNotifyData>();
+		ContactNotifyData *cnd = buddy.moduleData<ContactNotifyData>();
 		if (!cnd)
 			continue;
 
@@ -154,10 +154,8 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 	}
 
 	foreach (Action *action, notifyAboutUserActionDescription->actions())
-	{
-		if (action->buddies() == contacts)
+		if (action->buddies() == buddies)
 			action->setChecked(!on);
-	}
 
 	kdebugf2();
 }
@@ -210,7 +208,7 @@ void NotificationManager::statusChanged(Account account, Buddy buddy, Status old
 
 	// TODO 0.6.6 display -> uuid?
 	bool notify_contact = true;
-	ContactNotifyData *cnd = contact.moduleData<ContactNotifyData>();
+	ContactNotifyData *cnd = buddy.moduleData<ContactNotifyData>();
 
 	if (!cnd || !cnd->notify())
 		notify_contact = false;
@@ -224,10 +222,10 @@ void NotificationManager::statusChanged(Account account, Buddy buddy, Status old
 		return;
 	}
 
-	if (contact.id(account) == account.id()) // myself
+	if (buddy.id(account) == account.id()) // myself
 		return;
 
-	ContactAccountData *data = contact.accountData(account);
+	ContactAccountData *data = buddy.accountData(account);
 	if (!data)
 		return;
 
@@ -241,13 +239,13 @@ void NotificationManager::statusChanged(Account account, Buddy buddy, Status old
 
 	QString changedTo = "/To" + Status::name(data->status(), false);
 
-	BuddySet contacts(contact);
+	BuddySet buddies(buddy);
 
 	StatusChangedNotification *statusChangedNotification;
 	if (config_file.readBoolEntry("Notify", "StatusChanged" + changedTo + "_UseCustomSettings", true))
-		statusChangedNotification = new StatusChangedNotification(changedTo, contacts, account);
+		statusChangedNotification = new StatusChangedNotification(changedTo, buddies, account);
 	else
-		statusChangedNotification = new StatusChangedNotification("", contacts, account);
+		statusChangedNotification = new StatusChangedNotification("", buddies, account);
 
 	notify(statusChangedNotification);
 
@@ -392,10 +390,10 @@ void NotificationManager::groupNotifyChanged(Group *group)
 
 	foreach (const Buddy buddy, BuddyManager::instance()->buddies())
 	{
-		if (contact.isNull() || contact.isAnonymous() || contact.groups().contains(group))
+		if (buddy.isNull() || buddy.isAnonymous() || buddy.groups().contains(group))
 			continue;
 
-		ContactNotifyData *cnd = contact.moduleData<ContactNotifyData>();
+		ContactNotifyData *cnd = buddy.moduleData<ContactNotifyData>();
 		if (!cnd)
 			continue;
 
@@ -428,7 +426,7 @@ void checkNotify(Action *action)
 	kdebugf();
 
 	foreach(Buddy buddy, action->buddies())
-		if (!contact.hasAccountData(contact.prefferedAccount()))
+		if (!buddy.hasAccountData(buddy.prefferedAccount()))
 		{
 			action->setEnabled(false);
 			return;
@@ -439,7 +437,7 @@ void checkNotify(Action *action)
 	bool on = true;
 	foreach (const Buddy buddy, action->buddies())
 	{
-		ContactNotifyData *cnd = contact.moduleData<ContactNotifyData>();
+		ContactNotifyData *cnd = buddy.moduleData<ContactNotifyData>();
 
 		if (!cnd || !cnd->notify())
 		{

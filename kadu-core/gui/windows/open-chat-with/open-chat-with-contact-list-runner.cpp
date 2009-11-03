@@ -22,10 +22,10 @@ BuddyList OpenChatWithContactListRunner::matchingContacts(const QString &query)
 	foreach (Buddy buddy, BuddyManager::instance()->buddies())
 	{
 		bool found = false;
-		foreach (ContactAccountData *data, contact.accountDatas())
+		foreach (ContactAccountData *data, buddy.accountDatas())
 			if (data->id().contains(query, Qt::CaseInsensitive))
 			{
-				matchedContacts.append(contact);
+				matchedContacts.append(buddy);
 				found = true;
 				break;
 			}
@@ -33,11 +33,11 @@ BuddyList OpenChatWithContactListRunner::matchingContacts(const QString &query)
 		if (found)
 			continue;
 		
-		if (contact.firstName().contains(query, Qt::CaseInsensitive) ||
-				contact.lastName().contains(query, Qt::CaseInsensitive) ||
-				contact.display().contains(query, Qt::CaseInsensitive) ||
-				contact.nickName().contains(query, Qt::CaseInsensitive))
-			matchedContacts.append(contact);
+		if (buddy.firstName().contains(query, Qt::CaseInsensitive) ||
+				buddy.lastName().contains(query, Qt::CaseInsensitive) ||
+				buddy.display().contains(query, Qt::CaseInsensitive) ||
+				buddy.nickName().contains(query, Qt::CaseInsensitive))
+			matchedContacts.append(buddy);
 	}
 
 	return matchedContacts;

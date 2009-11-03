@@ -48,13 +48,13 @@ void Protocol::setAllOffline()
 
 	foreach (Buddy buddy, BuddyManager::instance()->buddies(CurrentAccount, true))
 	{
-		data = contact.accountData(CurrentAccount);
+		data = buddy.accountData(CurrentAccount);
 		oldStatus = data->status();
 
 		if (oldStatus != status)
 		{
 			data->setStatus(status);
-			emit contactStatusChanged(CurrentAccount, contact, oldStatus);
+			emit buddyStatusChanged(CurrentAccount, buddy, oldStatus);
 		}
 	}
 }
@@ -117,7 +117,7 @@ Chat * Protocol::findChat(BuddySet contacts, bool create)
 	if (contacts.count() == 1)
 	{
 		Buddy buddy = *contacts.begin();
-		ContactAccountData *cad = contact.accountData(account());
+		ContactAccountData *cad = buddy.accountData(account());
 		if (!cad)
 			return 0;
 
