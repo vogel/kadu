@@ -1,6 +1,7 @@
 set (SOURCES
 	gui/windows/sms-image-dialog.cpp
 	gui/windows/sms-dialog.cpp
+	mobile-number-manager.cpp
 	sms.cpp
 	sms-gateway.cpp
 	sms-gateway-manager.cpp
@@ -11,6 +12,7 @@ set (SOURCES
 set (MOC_SOURCES
 	gui/windows/sms-image-dialog.h
 	gui/windows/sms-dialog.h
+	mobile-number-manager.h
 	sms.h
 	sms-gateway.h
 	sms-gateway-manager.h

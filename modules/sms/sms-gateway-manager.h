@@ -23,7 +23,6 @@ public:
 	void registerGateway(SmsGateway *gateway);
 	void unregisterGateway(QString);
 
-	
 	QMap<QString, SmsGateway *> gateways() { return Gateways; };
 	
 };
