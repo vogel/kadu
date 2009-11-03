@@ -1,3 +1,12 @@
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
 #ifndef TABS_TABWIDGET_H
 #define TABS_TABWIDGET_H
 
@@ -45,7 +54,6 @@ class TabBar: public QTabBar
 
 	signals:
 		void contextMenu(int id, const QPoint &pos);
-		void deleteTab(int index);
 		void mouseDoubleClickEventSignal(QMouseEvent *e);
 
 };
@@ -178,19 +186,19 @@ class TabWidget: public QTabWidget, public ChatContainer
 		* @param e wskaźnik obiektu opisującego to zdarzenie.
 		* @param k wskaźnik do pola edycji z którego zostało wywołane zdarzenie.
 		*/
-		virtual void chatKeyPressed(QKeyEvent* e, CustomInput* k, bool &handled);
+		virtual void chatKeyPressed(QKeyEvent *e, CustomInput *k, bool &handled);
 
 		/**
 		* Slot zostaje wywołany w momencie dwukliku myszy
 		* Tu powoduje otwarcie okna openChatWith;
 		* @param e wskaźnik obiektu opisującego to zdarzenie.
 		*/
-		virtual void mouseDoubleClickEvent(QMouseEvent* e);
+		virtual void mouseDoubleClickEvent(QMouseEvent *e);
 
 	signals:
-		void contextMenu(QWidget* w, const QPoint& pos);
+		void contextMenu(QWidget *w, const QPoint &pos);
 		void openTab(QStringList altnicks, int index);
-		void chatWidgetActivated(ChatWidget *);
+		void chatWidgetActivated(ChatWidget *chatWidget);
 };
 
 #endif

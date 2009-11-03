@@ -1,3 +1,12 @@
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
 #ifndef TABS_TABS_H
 #define TABS_TABS_H
 
@@ -110,7 +119,7 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Sto
 		* @param chat wskaźnik do rozmowy
 		* @return prawda jeśli rozmowa była w kartach
 		*/
-		bool detachChat(ChatWidget* chat);
+		bool detachChat(ChatWidget *chat);
 
 		/**
 		* Metoda odczytujaca konfiguracje.
@@ -127,19 +136,19 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Sto
 		* Slot zostaje wywołany w momencie otwarcia okna rozmowy.
 		* @param chat okno
 		*/
-		void onNewChat(ChatWidget* chat, bool &handled);
+		void onNewChat(ChatWidget *chat, bool &handled);
 
 		/**
 		* Slot zostaje wywołany w momencie zamknięcia rozmowy.
 		* @param chat okno
 		*/
-		void onDestroyingChat(ChatWidget* chat);
+		void onDestroyingChat(ChatWidget *chat);
 
 		/**
 		* Slot zostaje wywołany za każdym razem gdy nastąpi próba otwarcia okna rozmowy.
 		* @param chat okno
 		*/
-		void onOpenChat(ChatWidget* chat);
+		void onOpenChat(ChatWidget *chat);
 
 		/**
 		* Slot zostaje wywołany w momencie zmiany statusu.
@@ -147,18 +156,8 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Sto
 		* @param contact kontakt, dla którego zmienił się status
 		* @param oldStatus poprzedni status
 		*/
-		void onTitleChanged(Chat * chatChanged, const QString &newTitle);
-		/**
-		* Slot zostaje wywołany w momencie zmiany danych kontaktu.
-		* @param elem kontakt, którego dane się zmieniły
-		* @param name nazwa własności
-		* @param oldValue stara wartość
-		* @param currentValue nowa (bieżąca) wartość
-		* @param massively true, gdy jest to cześć większych zmian
-		* @param last true, gdy massively == true i jest to ostatnia zmiana
-		*/
-		// TODO 0.6.6 - to new api
-		//void userDataChanged(UserListElement ule, QString name, QVariant, QVariant, bool, bool);
+		void onTitleChanged(Chat *chatChanged, const QString &newTitle);
+
 		/**
 		* Slot zostaje wywołany w momencie zmiany aktywnej karty
 		* @param index numer aktywowanej karty
@@ -197,5 +196,5 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Sto
 		void chatWidgetActivated(ChatWidget *);
 };
 
-extern TabsManager* tabs_manager;
+extern TabsManager *tabs_manager;
 #endif
