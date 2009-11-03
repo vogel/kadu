@@ -14,7 +14,7 @@
 
 #include "accounts/account-manager.h"
 #include "configuration/configuration-file.h"
-#include "contacts/account-data/contact-account-data.h"
+#include "buddies/account-data/contact-account-data.h"
 #include "parser/parser-token.h"
 #include "misc/misc.h"
 #include "status/status-type.h"
@@ -27,10 +27,10 @@
 #include "parser.h"
 
 QMap<QString, QString> Parser::globalVariables;
-QMap<QString, QString (*)(const Contact &)> Parser::registeredTags;
+QMap<QString, QString (*)(const Buddy &)> Parser::registeredTags;
 QMap<QString, QString (*)(const QObject * const)> Parser::registeredObjectTags;
 
-bool Parser::registerTag(const QString &name, QString (*func)(const Contact &))
+bool Parser::registerTag(const QString &name, QString (*func)(const Buddy &))
 {
 	kdebugf();
 	if (registeredTags.contains(name))
@@ -46,7 +46,7 @@ bool Parser::registerTag(const QString &name, QString (*func)(const Contact &))
 	}
 }
 
-bool Parser::unregisterTag(const QString &name, QString (* /*func*/)(const Contact &))
+bool Parser::unregisterTag(const QString &name, QString (* /*func*/)(const Buddy &))
 {
 	kdebugf();
 	if (!registeredTags.contains(name))
@@ -124,15 +124,15 @@ QString Parser::executeCmd(const QString &cmd)
 
 QString Parser::parse(const QString &s, const QObject * const object, bool escape)
 {
-    	return parse(s, Account::null, Contact::null, object, escape);
+    	return parse(s, Account::null, Buddy::null, object, escape);
 }
 
-QString Parser::parse(const QString &s, Account account, const Contact &contact, bool escape)
+QString Parser::parse(const QString &s, Account account, const Buddy &buddy, bool escape)
 {
-	return parse(s, account, contact, 0, escape);
+	return parse(s, account, buddy, 0, escape);
 }
 
-QString Parser::parse(const QString &s, Account account, const Contact &contact, const QObject * const object, bool escape)
+QString Parser::parse(const QString &s, Account account, const Buddy &buddy, const QObject * const object, bool escape)
 {
 	kdebugmf(KDEBUG_DUMP, "%s escape=%i\n", qPrintable(s), escape);
 	int index = 0, i, len = s.length();
@@ -186,7 +186,7 @@ QString Parser::parse(const QString &s, Account account, const Contact &contact,
 				break;
 			pe.type = ParserToken::PT_STRING;
 
-			ContactAccountData *data = contact.accountData(account);
+			ContactAccountData *data = buddy.accountData(account);
 
 			switch (s[i].toAscii())
 			{
@@ -250,31 +250,31 @@ QString Parser::parse(const QString &s, Account account, const Contact &contact,
 					break;
 				case 'n':
 					++i;
-					pe.content = contact.nickName();
+					pe.content = buddy.nickName();
 					if (escape)
 						HtmlDocument::escapeText(pe.content);
 					break;
 				case 'a':
 					++i;
-					pe.content = contact.display();
+					pe.content = buddy.display();
 					if (escape)
 						HtmlDocument::escapeText(pe.content);
 					break;
 				case 'f':
 					++i;
-					pe.content = contact.firstName();
+					pe.content = buddy.firstName();
 					if (escape)
 						HtmlDocument::escapeText(pe.content);
 					break;
 				case 'r':
 					++i;
-					pe.content = contact.lastName();
+					pe.content = buddy.lastName();
 					if (escape)
 						HtmlDocument::escapeText(pe.content);
 					break;
 				case 'm':
 					++i;
-					pe.content = contact.mobile();
+					pe.content = buddy.mobile();
 					break;
 				case 'g':
 					++i;
@@ -282,7 +282,7 @@ QString Parser::parse(const QString &s, Account account, const Contact &contact,
 					break;
 				case 'e':
 					++i;
-					pe.content = contact.email();
+					pe.content = buddy.email();
 					break;
 				case 'x':
 					++i;
@@ -478,7 +478,7 @@ QString Parser::parse(const QString &s, Account account, const Contact &contact,
 						parseStack.pop_back();
 						pe.type = ParserToken::PT_STRING;
 						if (registeredTags.contains(pe.content))
-							pe.content = registeredTags[pe.content](contact);
+							pe.content = registeredTags[pe.content](buddy);
 						else if (object && registeredObjectTags.contains(pe.content))
 							pe.content = registeredObjectTags[pe.content](object);
 						else

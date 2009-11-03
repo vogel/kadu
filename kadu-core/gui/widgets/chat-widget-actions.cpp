@@ -9,16 +9,16 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "buddies/ignored-helper.h"
+#include "buddies/account-data/contact-account-data.h"
 #include "configuration/configuration-file.h"
-#include "contacts/ignored-helper.h"
-#include "contacts/account-data/contact-account-data.h"
 #include "core/core.h"
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
+#include "gui/widgets/buddies-list-view-menu-manager.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
-#include "gui/widgets/contacts-list-view-menu-manager.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/kadu-window-actions.h"
 #include "gui/windows/message-box.h"
@@ -45,7 +45,7 @@ void disableEmptyTextBox(Action *action)
 void checkBlocking(Action *action)
 {
 	Account account = AccountManager::instance()->defaultAccount();
-	ContactSet contacts = action->contacts();
+	BuddySet contacts = action->buddies();
 
 	if (contacts.contains(Core::instance()->myself()))
 	{
@@ -54,8 +54,8 @@ void checkBlocking(Action *action)
 	}
 
 	bool on = false;
-	foreach (const Contact contact, action->contacts())
-		if (contact.isBlocked(account))
+	foreach (const Buddy buddy, action->buddies())
+		if (buddy.isBlocked(account))
 		{
 			on = true;
 			break;
@@ -65,7 +65,7 @@ void checkBlocking(Action *action)
 
 void checkIgnoreUser(Action *action)
 {
-	ContactSet contacts = action->contacts();
+	BuddySet contacts = action->buddies();
 
 	if (contacts.contains(Core::instance()->myself()))
 	{
@@ -73,7 +73,7 @@ void checkIgnoreUser(Action *action)
 		return;
 	}
 
-	action->setChecked(IgnoredHelper::isIgnored(action->contacts()));
+	action->setChecked(IgnoredHelper::isIgnored(action->buddies()));
 }
 
 ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
@@ -171,7 +171,7 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 		"Black", tr("Change color")
 	);
 
-	ContactsListViewMenuManager::instance()->addActionDescription(OpenChat);
+	BuddiesListViewMenuManager::instance()->addActionDescription(OpenChat);
 }
 
 ChatWidgetActions::~ChatWidgetActions()
@@ -321,11 +321,11 @@ void ChatWidgetActions::whoisActionActivated(QAction *sender, bool toggled)
 		return;
 	}
 
-	Contact contact = window->contact();
-	if (contact.isNull())
+	Buddy buddy = window->buddy();
+	if (buddy.isNull())
 		return;
 
-	SearchWindow *sd = new SearchWindow(Core::instance()->kaduWindow(), contact);
+	SearchWindow *sd = new SearchWindow(Core::instance()->kaduWindow(), buddy);
 	sd->show();
 	sd->firstSearch();
 
@@ -340,13 +340,13 @@ void ChatWidgetActions::ignoreUserActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-	ContactSet contacts = window->contacts();
+	BuddySet contacts = window->buddies();
 	if (contacts.count() > 0)
 	{
 		bool ContainsBad = false;
-		foreach (Contact contact, contacts)
+		foreach (Buddy buddy, contacts)
 		{
-			QString uid = contact.accountData(account)->id();
+			QString uid = buddy.accountData(account)->id();
 			if (!account.protocolHandler()->validateUserID(uid))
 			{
 				ContainsBad = true;
@@ -375,7 +375,7 @@ void ChatWidgetActions::ignoreUserActionActivated(QAction *sender, bool toggled)
 
 			foreach (Action *action, IgnoreUser->actions())
 			{
-				if (action->contacts() == contacts)
+				if (action->buddies() == contacts)
 					action->setChecked(IgnoredHelper::isIgnored(contacts));
 			}
 
@@ -392,22 +392,22 @@ void ChatWidgetActions::blockUserActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-	ContactSet contacts = window->contacts();
+	BuddySet contacts = window->buddies();
 	if (contacts.count() > 0)
 	{
 		bool on = true;
 		bool blocked_anonymous = false; // true, if we blocked at least one anonymous user
 
-		ContactSet copy = contacts;
+		BuddySet copy = contacts;
 
-		foreach(Contact user, copy)
+		foreach(Buddy user, copy)
 			if (user.accountData(account) == 0 || !user.isBlocked(account))
 			{
 				on = false;
 				break;
 			}
 
-		foreach(Contact user, copy)
+		foreach(Buddy user, copy)
 		{
 			QString uid = user.accountData(account)->id();
 			if (account.protocolHandler()->validateUserID(uid) && user.isBlocked(account) != !on)
@@ -439,7 +439,7 @@ void ChatWidgetActions::blockUserActionActivated(QAction *sender, bool toggled)
 
 		foreach (Action *action, BlockUser->actions())
 		{
-			if (action->contacts() == contacts)
+			if (action->buddies() == contacts)
 				action->setChecked(!on);
 		}
 	}
@@ -453,7 +453,7 @@ void ChatWidgetActions::openChatActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-	ContactSet contacts = window->contacts();
+	BuddySet contacts = window->buddies();
 	if (contacts.count() > 0)
 	{
 		Chat *chat = (*contacts.begin()).prefferedAccount().protocolHandler()->findChat(contacts);

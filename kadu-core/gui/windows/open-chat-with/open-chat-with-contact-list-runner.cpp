@@ -9,23 +9,23 @@
 
 #include "accounts/account-manager.h"
 
-#include "contacts/contact.h"
-#include "contacts/contact-manager.h"
-#include "contacts/account-data/contact-account-data.h"
+#include "buddies/buddy.h"
+#include "buddies/buddy-manager.h"
+#include "buddies/account-data/contact-account-data.h"
 
 #include "open-chat-with-contact-list-runner.h"
 
-ContactList OpenChatWithContactListRunner::matchingContacts(const QString &query)
+BuddyList OpenChatWithContactListRunner::matchingContacts(const QString &query)
 {
-	ContactList matchedContacts;
+	BuddyList matchedContacts;
 
-	foreach (Contact contact, ContactManager::instance()->contacts())
+	foreach (Buddy buddy, BuddyManager::instance()->buddies())
 	{
 		bool found = false;
-		foreach (ContactAccountData *data, contact.accountDatas())
+		foreach (ContactAccountData *data, buddy.accountDatas())
 			if (data->id().contains(query, Qt::CaseInsensitive))
 			{
-				matchedContacts.append(contact);
+				matchedContacts.append(buddy);
 				found = true;
 				break;
 			}
@@ -33,11 +33,11 @@ ContactList OpenChatWithContactListRunner::matchingContacts(const QString &query
 		if (found)
 			continue;
 		
-		if (contact.firstName().contains(query, Qt::CaseInsensitive) ||
-				contact.lastName().contains(query, Qt::CaseInsensitive) ||
-				contact.display().contains(query, Qt::CaseInsensitive) ||
-				contact.nickName().contains(query, Qt::CaseInsensitive))
-			matchedContacts.append(contact);
+		if (buddy.firstName().contains(query, Qt::CaseInsensitive) ||
+				buddy.lastName().contains(query, Qt::CaseInsensitive) ||
+				buddy.display().contains(query, Qt::CaseInsensitive) ||
+				buddy.nickName().contains(query, Qt::CaseInsensitive))
+			matchedContacts.append(buddy);
 	}
 
 	return matchedContacts;

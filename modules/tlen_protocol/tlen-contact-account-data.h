@@ -10,7 +10,7 @@
 #ifndef TLEN_CONTACT_ACCOUNT_DATA
 #define TLEN_CONTACT_ACCOUNT_DATA
 
-#include "contacts/account-data/contact-account-data.h"
+#include "buddies/account-data/contact-account-data.h"
 
 #include "tlen-protocol.h"
 

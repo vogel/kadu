@@ -21,7 +21,7 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "gui/widgets/account-contacts-list-widget.h"
+#include "gui/widgets/account-buddy-list-widget.h"
 #include "gui/widgets/choose-identity-widget.h"
 #include "gui/widgets/proxy-group-box.h"
 #include "gui/windows/message-box.h"
@@ -123,7 +123,7 @@ void JabberEditAccountWidget::createPersonalDataTab(QTabWidget *tabWidget)
 
 void JabberEditAccountWidget::createBuddiesTab(QTabWidget *tabWidget)
 {
-	AccountContactsListWidget *widget = new AccountContactsListWidget(account(), this);
+	AccountBuddyListWidget *widget = new AccountBuddyListWidget(account(), this);
 	tabWidget->addTab(widget, tr("Buddies"));
 }
 

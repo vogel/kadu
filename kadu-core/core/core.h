@@ -15,8 +15,8 @@
 #include "accounts/accounts-aware-object.h"
 #include "chat/chat.h"
 #include "configuration/configuration-aware-object.h"
-#include "contacts/contact.h"
-#include "contacts/contact-list.h"
+#include "buddies/buddy.h"
+#include "buddies/buddy-list.h"
 #include "misc/token-reader.h"
 #include "status/status.h"
 
@@ -36,7 +36,7 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 
 	ConfigurationManager *Configuration;
 
-	Contact Myself;
+	Buddy Myself;
 	KaduWindow *Window;
 	bool ShowMainWindowOnStart; // TODO: 0.7.1, it is a hack
 
@@ -71,7 +71,7 @@ public:
 
 	virtual QString readToken(const QPixmap &tokenPixmap);
 
-	Contact myself() { return Myself; }
+	Buddy myself() { return Myself; }
 	Status status();
 
 	void createGui();

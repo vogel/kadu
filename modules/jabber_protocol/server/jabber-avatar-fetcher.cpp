@@ -14,7 +14,7 @@
 #include <QtXml/QDomDocument>
 
 #include "accounts/account.h"
-#include "contacts/avatar-manager.h"
+#include "buddies/avatar-manager.h"
 #include "misc/path-conversion.h"
 
 #include "client/jabber-client.h"

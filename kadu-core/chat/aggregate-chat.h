@@ -29,7 +29,7 @@ public:
 	virtual void load();
 	virtual void store();
 
-	virtual ContactSet contacts() const { return Chats.at(0)->contacts(); }
+	virtual BuddySet buddies() const { return Chats.at(0)->buddies(); }
 	virtual ChatType type() const { return Chats.at(0)->type(); }
 	virtual QUuid uuid() const { return Chats.at(0)->uuid(); }
 	virtual QString name() const { return Chats.at(0)->name(); }

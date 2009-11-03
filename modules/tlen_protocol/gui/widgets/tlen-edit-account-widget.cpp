@@ -120,7 +120,7 @@ void TlenEditAccountWidget::createPersonalDataTab(QTabWidget *tabWidget)
 
 void TlenEditAccountWidget::createBuddiesTab(QTabWidget *tabWidget)
 {
-	AccountContactsListWidget *widget = new AccountContactsListWidget(account(), this);
+	AccountBuddyListWidget *widget = new AccountBuddyListWidget(account(), this);
 	tabWidget->addTab(widget, tr("Buddies"));
 }
 

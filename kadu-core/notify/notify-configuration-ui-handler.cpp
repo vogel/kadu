@@ -16,9 +16,9 @@
 #include <QtGui/QLabel>
 
 #include "configuration/configuration-file.h"
-#include "contacts/contact-list.h"
-#include "contacts/contact-manager.h"
-#include "contacts/account-data/contact-account-data.h"
+#include "buddies/buddy-list.h"
+#include "buddies/buddy-manager.h"
+#include "buddies/account-data/contact-account-data.h"
 #include "contact-notify-data.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/configuration/configuration-widget.h"
@@ -146,15 +146,15 @@ void NotifyConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurat
 
 	statusGroupBox->addWidgets(0, notifyUsers);
 
-	foreach(Contact contact, ContactManager::instance()->contacts())
-		if (!contact.isAnonymous())
+	foreach(Buddy buddy, BuddyManager::instance()->buddies())
+		if (!buddy.isAnonymous())
 		{
-			ContactNotifyData *cnd = contact.moduleData<ContactNotifyData>();
+			ContactNotifyData *cnd = buddy.moduleData<ContactNotifyData>();
 
 			if (!cnd || !cnd->notify())
-				allUsers->addItem(contact.display());
+				allUsers->addItem(buddy.display());
 			else
-				notifiedUsers->addItem(contact.display());
+				notifiedUsers->addItem(buddy.display());
 
 			delete cnd;
 		}
@@ -240,11 +240,11 @@ void NotifyConfigurationUiHandler::configurationWindowApplied()
 	int count = notifiedUsers->count();
 	for (int i = 0; i < count; i++)
 	{
-		Contact contact = ContactManager::instance()->byDisplay(notifiedUsers->item(i)->text());
-		if (contact.isNull() || contact.isAnonymous())
+		Buddy buddy = BuddyManager::instance()->byDisplay(notifiedUsers->item(i)->text());
+		if (buddy.isNull() || buddy.isAnonymous())
 			continue;
 
-		ContactNotifyData *cnd = contact.moduleData<ContactNotifyData>();
+		ContactNotifyData *cnd = buddy.moduleData<ContactNotifyData>();
 		if (!cnd)
 			continue;
 
@@ -256,11 +256,11 @@ void NotifyConfigurationUiHandler::configurationWindowApplied()
 	count = allUsers->count();
 	for (int i = 0; i < count; i++)
 	{
-		Contact contact = ContactManager::instance()->byDisplay(allUsers->item(i)->text());
-		if (contact.isNull() || contact.isAnonymous())
+		Buddy buddy = BuddyManager::instance()->byDisplay(allUsers->item(i)->text());
+		if (buddy.isNull() || buddy.isAnonymous())
 			continue;
 
-		ContactNotifyData *cnd = contact.moduleData<ContactNotifyData>();
+		ContactNotifyData *cnd = buddy.moduleData<ContactNotifyData>();
 		if (!cnd)
 			continue;
 

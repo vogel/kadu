@@ -8,8 +8,8 @@
  ***************************************************************************/
 
 #include "accounts/account-manager.h"
-#include "contacts/contact.h"
-#include "contacts/contact-set.h"
+#include "buddies/buddy.h"
+#include "buddies/buddy-set.h"
 #include "gui/hot-key.h"
 #include "gui/windows/main-window.h"
 #include "icons-manager.h"
@@ -56,22 +56,22 @@ Action::~Action()
 {
 }
 
-Contact Action::contact()
+Buddy Action::buddy()
 {
-	ContactSet contactSet = contacts();
+	BuddySet contactSet = buddies();
 	if (1 != contactSet.count())
-		return Contact::null;
+		return Buddy::null;
 	else
 		return *contactSet.begin();
 }
 
-ContactSet Action::contacts()
+BuddySet Action::buddies()
 {
 	MainWindow *kaduMainWindow = dynamic_cast<MainWindow *>(parent());
 	if (kaduMainWindow)
-		return kaduMainWindow->contacts();
+		return kaduMainWindow->buddies();
 	else
-		return ContactSet();
+		return BuddySet();
 }
 
 void Action::changedSlot()
@@ -128,6 +128,5 @@ void Action::updateIcon()
 
 void disableEmptyUles(Action *action)
 {
-	action->setEnabled(!action->contacts().isEmpty());
+	action->setEnabled(!action->buddies().isEmpty());
 }
-

@@ -60,9 +60,9 @@ AccountDetails * JabberProtocolFactory::createAccountDetails(Account account)
 	return new JabberAccountDetails(account.storage(), account);
 }
 
-ContactAccountData * JabberProtocolFactory::newContactAccountData(Account account, Contact contact, const QString &id)
+ContactAccountData * JabberProtocolFactory::newContactAccountData(Account account, Buddy buddy, const QString &id)
 {
-	return new JabberContactAccountData(account, contact, id, true);
+	return new JabberContactAccountData(account, buddy, id, true);
 }
 
 ContactAccountData * JabberProtocolFactory::loadContactAccountData(StoragePoint *storagePoint)

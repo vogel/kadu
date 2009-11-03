@@ -13,10 +13,10 @@
 #include "accounts/account-manager.h"
 #include "configuration/configuration-file.h"
 #include "configuration/xml-configuration-file.h"
-#include "contacts/contact.h"
-#include "contacts/contact-set.h"
+#include "buddies/buddy.h"
+#include "buddies/buddy-set.h"
 #include "gui/actions/action.h"
-#include "gui/widgets/contacts-list-view.h"
+#include "gui/widgets/buddies-list-view.h"
 #include "gui/widgets/toolbar.h"
 
 #include "debug.h"
@@ -282,10 +282,10 @@ void MainWindow::actionAdded(Action *action)
 		connect(contactsListView(), SIGNAL(contactsSelectionChanged()), action, SLOT(checkState()));
 }
 
-Contact MainWindow::contact()
+Buddy MainWindow::buddy()
 {
-	ContactSet contactList = contacts();
-	return 1 == contactList.count()
-		? *contactList.begin()
-		: Contact::null;
+	BuddySet buddySet = buddies();
+	return 1 == buddySet.count()
+			? *buddySet.begin()
+			: Buddy::null;
 }

@@ -12,7 +12,7 @@
 
 #include <QtGui/QWidget>
 
-#include "contacts/contact.h"
+#include "buddies/buddy.h"
 
 class QComboBox;
 class QLineEdit;
@@ -38,7 +38,7 @@ class GaduPersonalInfoWidget : public QWidget
 	void createGui();
 
 private slots:
-	void personalInfoAvailable(Contact contact);
+	void personalInfoAvailable(Buddy buddy);
 
 public:
 	explicit GaduPersonalInfoWidget(Account account, QWidget *parent = 0);

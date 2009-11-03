@@ -12,7 +12,7 @@
 
 #include <QtCore/QObject>
 
-#include "contacts/contact-list.h"
+#include "buddies/buddy-list.h"
 
 class ContactListService : public QObject
 {
@@ -24,10 +24,10 @@ public:
 
 	virtual void importContactList() = 0;
 	virtual void exportContactList() = 0;
-	virtual void exportContactList(ContactList contacts) = 0;
+	virtual void exportContactList(BuddyList buddies) = 0;
 
 signals:
-	void contactListImported(bool ok, ContactList contacts);
+	void contactListImported(bool ok, BuddyList buddies);
 	void contactListExported(bool ok);
 
 };

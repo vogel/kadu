@@ -18,7 +18,7 @@
 #include "chat/chat.h"
 #include "chat/message/formatted-message.h"
 #include "configuration/configuration-aware-object.h"
-#include "contacts/contact-list.h"
+#include "buddies/buddy-list.h"
 #include "protocols/services/chat-service.h"
 #include "chat-messages-view.h"
 #include "exports.h"
@@ -27,7 +27,7 @@ class QSplitter;
 
 class ChatEditBox;
 class ChatWidget;
-class ContactsListView;
+class BuddiesListView;
 class CustomInput;
 class MessageRenderInfo;
 class Protocol;
@@ -41,7 +41,7 @@ class KADUAPI ChatWidget : public QWidget, ConfigurationAwareObject
 	Chat *CurrentChat;
 
 	ChatMessagesView *MessagesView;
-	ContactsListView *ContactsWidget;
+	BuddiesListView *BuddiesView;
 	ChatEditBox *InputBox;
 
 	QSplitter *vertSplit, *horizSplit; /*!< obiekty oddzielaj�ce kontrolki od siebie */
@@ -109,7 +109,7 @@ public:
 	void repaintMessages();
 
 	CustomInput * edit();
-	ContactsListView * contactsListWidget() { return ContactsWidget; }
+	BuddiesListView * contactsListWidget() { return BuddiesView; }
 	ChatEditBox * getChatEditBox() { return InputBox; }
 	ChatMessagesView * chatMessagesView() { return MessagesView; }
 

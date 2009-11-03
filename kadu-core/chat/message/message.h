@@ -13,7 +13,7 @@
 #include <QtCore/QDateTime>
 #include <QtCore/QObject>
 
-#include "contacts/contact.h"
+#include "buddies/buddy.h"
 
 #include "exports.h"
 
@@ -47,7 +47,7 @@ private slots:
 	void statusChanged(Message::Status);
 
 public:
-	Message(Chat *chat = 0, Type type = TypeUnknown, Contact sender = Contact::null);
+	Message(Chat *chat = 0, Type type = TypeUnknown, Buddy sender = Buddy::null);
 	Message(const Message &copy);
 	virtual ~Message();
 
@@ -56,8 +56,8 @@ public:
 	Chat * chat() const;
 	Message & setChat(Chat *chat);
 
-	Contact sender() const;
-	Message & setSender(Contact sender);
+	Buddy sender() const;
+	Message & setSender(Buddy sender);
 
 	QString content() const;
 	Message & setContent(const QString &content);

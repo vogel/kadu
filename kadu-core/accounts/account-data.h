@@ -22,7 +22,7 @@
 	void set##capitalized_name(type name) { ensureLoaded(); capitalized_name = name; dataUpdated(); }
 
 class AccountDetails;
-class Contact;
+class Buddy;
 class Protocol;
 class ProtocolFactory;
 
@@ -121,12 +121,12 @@ public:
 	virtual void setPrivateStatus(bool isPrivate);
 
 signals:
-	void contactStatusChanged(Account account, Contact contact, Status oldStatus);
+	void buddyStatusChanged(Account account, Buddy buddy, Status oldStatus);
 
 	void updated();
 
 };
 
-#include "contacts/contact.h" // for MOC
+#include "buddies/buddy.h" // for MOC
 
 #endif // ACCOUNT_DATA_H

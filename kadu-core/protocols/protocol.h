@@ -21,8 +21,8 @@
 #include "exports.h"
 
 #include "chat/chat.h"
-#include "contacts/contact.h"
-#include "contacts/contact-list.h"
+#include "buddies/buddy.h"
+#include "buddies/buddy-list.h"
 #include "status/status.h"
 
 typedef quint32 UinType;
@@ -92,7 +92,7 @@ public:
 	virtual bool validateUserID(QString &uid) = 0;
 
 	static Chat *loadChatFromStorage(StoragePoint *storage);
-	Chat * findChat(ContactSet contacts, bool create = true);
+	Chat * findChat(BuddySet contacts, bool create = true);
 
 	NetworkState state() { return State; }
 	bool isConnected() { return (State == NetworkConnected); }
@@ -118,7 +118,7 @@ signals:
 	void disconnected(Account account);
 
 	void statusChanged(Account account, Status newStatus);
-	void contactStatusChanged(Account account, Contact contact, Status oldStatus);
+	void buddyStatusChanged(Account account, Buddy buddy, Status oldStatus);
 
 // TODO: REVIEW
 	void connectionError(Account account, const QString &server, const QString &reason);

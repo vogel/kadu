@@ -8,7 +8,7 @@
  ***************************************************************************/
 
 #include "accounts/account.h"
-#include "contacts/contact.h"
+#include "buddies/buddy.h"
 
 #include "protocol-menu-manager.h"
 
@@ -16,9 +16,9 @@ ProtocolMenuManager::ProtocolMenuManager()
 {
 }
 
-QList<ActionDescription *> ProtocolMenuManager::protocolActions(Account account, Contact contact)
+QList<ActionDescription *> ProtocolMenuManager::protocolActions(Account account, Buddy buddy)
 {
-	if (!contact.hasAccountData(account))
+	if (!buddy.hasAccountData(account))
 		return QList<ActionDescription *>();
 
 	return ProtocolActions;

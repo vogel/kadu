@@ -12,7 +12,7 @@
 
 #include <QtCore/QObject>
 
-#include "contacts/contact.h"
+#include "buddies/buddy.h"
 
 #include "exports.h"
 
@@ -29,7 +29,7 @@ public:
 	FileTransferService(QObject *parent = 0) : QObject(parent) {}
 
 	virtual FileTransfer * loadFileTransferFromStorage(StoragePoint *storage) = 0;
-	virtual FileTransfer * createOutgoingFileTransfer(Contact contact) = 0;
+	virtual FileTransfer * createOutgoingFileTransfer(Buddy buddy) = 0;
 
 signals:
 	void incomingFileTransfer(FileTransfer *fileTransfer);

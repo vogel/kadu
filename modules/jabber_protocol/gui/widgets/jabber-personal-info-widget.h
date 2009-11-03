@@ -12,7 +12,7 @@
 
 #include <QtGui/QWidget>
 
-#include "contacts/contact.h"
+#include "buddies/buddy.h"
 
 class QComboBox;
 class QLineEdit;
@@ -38,7 +38,7 @@ class JabberPersonalInfoWidget : public QWidget
 	void createGui();
 
 private slots:
-	void personalInfoAvailable(Contact contact);
+	void personalInfoAvailable(Buddy buddy);
 
 public:
 	explicit JabberPersonalInfoWidget(Account account, QWidget *parent = 0);

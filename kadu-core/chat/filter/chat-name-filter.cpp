@@ -9,15 +9,15 @@
 
 #include "chat/aggregate-chat.h"
 #include "chat/chat.h"
-#include "contacts/filter/contact-name-filter.h"
-#include "contacts/contact-list.h"
+#include "buddies/filter/buddy-name-filter.h"
+#include "buddies/buddy-list.h"
 
 #include "chat-name-filter.h"
 
 ChatNameFilter::ChatNameFilter(QObject *parent) :
 		ChatFilter(parent)
 {
-	Filter = new ContactNameFilter(this);
+	Filter = new BuddyNameFilter(this);
 }
 
 bool ChatNameFilter::acceptChat(Chat *chat)
@@ -37,9 +37,9 @@ bool ChatNameFilter::acceptChat(Chat *chat)
 		return false;
 	}
 
-	ContactList contacts = chat->contacts().toContactList();
-	foreach (Contact contact, contacts)
-		if (Filter->acceptContact(contact))
+	BuddyList buddies = chat->buddies().toBuddyList();
+	foreach (Buddy buddy, buddies)
+		if (Filter->acceptBuddy(buddy))
 			return true;
 
 	return false;

@@ -16,9 +16,9 @@
 #include "chat/message/pending-messages-manager.h"
 #include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
-#include "contacts/contact-manager.h"
-#include "contacts/group-manager.h"
-#include "contacts/account-data/contact-account-data-manager.h"
+#include "buddies/buddy-manager.h"
+#include "buddies/group-manager.h"
+#include "buddies/account-data/contact-account-data-manager.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/kadu-window.h"
@@ -57,7 +57,7 @@ Core * Core::instance()
 	return Instance;
 }
 
-Core::Core() : Myself(ContactData::TypeNull), Window(0), ShowMainWindowOnStart(true)
+Core::Core() : Myself(BuddyShared::TypeNull), Window(0), ShowMainWindowOnStart(true)
 {
 	connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(quit()));
 	createDefaultConfiguration();
@@ -269,7 +269,7 @@ void Core::init()
 	// it fixes crash on loading pending messages from config, contacts import from 0.6.5, and maybe other issues
 	ModulesManager::instance()->loadProtocolModules();
 
-	Myself = Contact();
+	Myself = Buddy();
 	Myself.setDisplay(config_file.readEntry("General", "Nick"));
 
 	connect(StatusContainerManager::instance(), SIGNAL(statusChanged()), this, SLOT(statusChanged()));

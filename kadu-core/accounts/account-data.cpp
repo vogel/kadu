@@ -9,7 +9,7 @@
 
 #include "accounts/account-details.h"
 #include "accounts/account-manager.h"
-#include "contacts/account-data/contact-account-data.h"
+#include "buddies/account-data/contact-account-data.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
 
@@ -125,8 +125,8 @@ void AccountData::loadProtocol(ProtocolFactory* protocolFactory)
 	Details = protocolFactory->createAccountDetails(Account(this));
 
 	connect(ProtocolHandler, SIGNAL(statusChanged(Account, Status)), this, SIGNAL(statusChanged()));
-	connect(ProtocolHandler, SIGNAL(contactStatusChanged(Account, Contact, Status)),
-			this, SIGNAL(contactStatusChanged(Account, Contact, Status)));
+	connect(ProtocolHandler, SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
+			this, SIGNAL(buddyStatusChanged(Account, Buddy, Status)));
 }
 
 void AccountData::unloadProtocol()

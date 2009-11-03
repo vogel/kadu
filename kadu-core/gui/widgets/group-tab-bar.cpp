@@ -13,10 +13,10 @@
 #include <QtGui/QMenu>
 
 #include "configuration/configuration-file.h"
-#include "contacts/contact-list-mime-data-helper.h"
-#include "contacts/group.h"
-#include "contacts/group-manager.h"
-#include "contacts/filter/group-contact-filter.h"
+#include "buddies/buddy-list-mime-data-helper.h"
+#include "buddies/group.h"
+#include "buddies/group-manager.h"
+#include "buddies/filter/group-buddy-filter.h"
 #include "core/core.h"
 #include "gui/windows/add-buddy-window.h"
 #include "gui/windows/group-properties-window.h"
@@ -36,7 +36,7 @@
 GroupTabBar::GroupTabBar(QWidget *parent)
 	: QTabBar(parent), showAllGroup(true)
 {
-	Filter = new GroupContactFilter(this);
+	Filter = new GroupBuddyFilter(this);
 
 	setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
  	setAcceptDrops(true);
@@ -196,7 +196,7 @@ void GroupTabBar::dropEvent(QDropEvent *event)
 
 	event->acceptProposedAction();
 
-	ContactList contacts = ContactListMimeDataHelper::fromMimeData(event->mimeData());
+	BuddyList buddies = BuddyListMimeDataHelper::fromMimeData(event->mimeData());
 
 	QApplication::setOverrideCursor(QCursor(Qt::ArrowCursor));
 	QString groupUuid, groupName;
@@ -221,8 +221,8 @@ void GroupTabBar::dropEvent(QDropEvent *event)
 
 		Group *group = GroupManager::instance()->byName(newGroupName);
 
-		foreach (Contact contact, contacts)
-			contact.addToGroup(group);
+		foreach (Buddy buddy, buddies)
+			buddy.addToGroup(group);
 
 		QApplication::restoreOverrideCursor();
 
@@ -231,7 +231,7 @@ void GroupTabBar::dropEvent(QDropEvent *event)
 	else
 		currentGroup = GroupManager::instance()->byUuid(tabData(tabIndex).toString());
 
-	currentContacts = contacts;
+	currentBuddies = buddies;
 
 	QMenu menu(this);
 	if (currentGroup)
@@ -301,8 +301,8 @@ void GroupTabBar::addToGroup()
 	if (!currentGroup)
 		return;
 
-	foreach (Contact contact, currentContacts)
-		contact.addToGroup(currentGroup);
+	foreach (Buddy buddy, currentBuddies)
+		buddy.addToGroup(currentGroup);
 }
 
 void GroupTabBar::moveToGroup()
@@ -312,10 +312,10 @@ void GroupTabBar::moveToGroup()
 
 	QStringList groups;
 
-	foreach (Contact contact, currentContacts)
+	foreach (Buddy buddy, currentBuddies)
 	{
-		contact.removeFromGroup(GroupManager::instance()->byUuid(tabData(currentIndex()).toString()));
-		contact.addToGroup(currentGroup);
+		buddy.removeFromGroup(GroupManager::instance()->byUuid(tabData(currentIndex()).toString()));
+		buddy.addToGroup(currentGroup);
 
 		Filter->refresh();
 	}

@@ -17,8 +17,8 @@
 
 #include "accounts/account-manager.h"
 #include "core/core.h"
-#include "contacts/contact-manager.h"
-#include "contacts/group.h"
+#include "buddies/buddy-manager.h"
+#include "buddies/group.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-box.h"
@@ -95,32 +95,32 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	CurrentFileTransferService = new JabberFileTransferService(this);
 	CurrentAvatarService = new JabberAvatarService(this);
 
-	connect(ContactManager::instance(), SIGNAL(contactAdded(Contact &)),
-			this, SLOT(contactAdded(Contact &)));
-	connect(ContactManager::instance(), SIGNAL(contactRemoved(Contact &)),
-			this, SLOT(contactRemoved(Contact &)));
-	connect(ContactManager::instance(), SIGNAL(contactAccountDataAdded(Contact &, Account)),
-			this, SLOT(contactAccountDataAboutToBeRemoved(Contact & , Account)));
-	connect(ContactManager::instance(), SIGNAL(contactAccountDataAboutToBeRemoved(Contact &, Account)),
-			this, SLOT(contactAccountDataAboutToBeRemoved(Contact &, Account)));
-	connect(ContactManager::instance(), SIGNAL(contactUpdated(Contact &)),
-			this, SLOT(contactUpdated(Contact &)));
-	connect(ContactManager::instance(), SIGNAL(contactAccountIdChanged(Contact &, Account, const QString &)),
-			this, SLOT(contactAccountIdChanged(Contact &, Account, const QString &)));
+	connect(BuddyManager::instance(), SIGNAL(buddyAdded(Buddy &)),
+			this, SLOT(contactAdded(Buddy &)));
+	connect(BuddyManager::instance(), SIGNAL(buddyRemoved(Buddy &)),
+			this, SLOT(contactRemoved(Buddy &)));
+	connect(BuddyManager::instance(), SIGNAL(contactAccountDataAdded(Buddy &, Account)),
+			this, SLOT(contactAccountDataAboutToBeRemoved(Buddy & , Account)));
+	connect(BuddyManager::instance(), SIGNAL(contactAccountDataAboutToBeRemoved(Buddy &, Account)),
+			this, SLOT(contactAccountDataAboutToBeRemoved(Buddy &, Account)));
+	connect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy &)),
+			this, SLOT(contactUpdated(Buddy &)));
+	connect(BuddyManager::instance(), SIGNAL(contactAccountIdChanged(Buddy &, Account, const QString &)),
+			this, SLOT(contactAccountIdChanged(Buddy &, Account, const QString &)));
 
 	kdebugf2();
 }
 
 JabberProtocol::~JabberProtocol()
 {
-	QObject::disconnect(ContactManager::instance(), SIGNAL(contactAdded(Contact &)),
-			this, SLOT(contactAdded(Contact &)));
-	QObject::disconnect(ContactManager::instance(), SIGNAL(contactRemoved(Contact &)),
-			this, SLOT(contactRemoved(Contact &)));
-	QObject::disconnect(ContactManager::instance(), SIGNAL(contactAccountDataAdded(Contact &, Account)),
-			this, SLOT(contactAccountDataAboutToBeRemoved(Contact & , Account)));
-	QObject::disconnect(ContactManager::instance(), SIGNAL(contactAccountDataAboutToBeRemoved(Contact &, Account)),
-			this, SLOT(contactAccountDataAboutToBeRemoved(Contact &, Account)));
+	QObject::disconnect(BuddyManager::instance(), SIGNAL(buddyAdded(Buddy &)),
+			this, SLOT(contactAdded(Buddy &)));
+	QObject::disconnect(BuddyManager::instance(), SIGNAL(buddyRemoved(Buddy &)),
+			this, SLOT(contactRemoved(Buddy &)));
+	QObject::disconnect(BuddyManager::instance(), SIGNAL(contactAccountDataAdded(Buddy &, Account)),
+			this, SLOT(contactAccountDataAboutToBeRemoved(Buddy & , Account)));
+	QObject::disconnect(BuddyManager::instance(), SIGNAL(contactAccountDataAboutToBeRemoved(Buddy &, Account)),
+			this, SLOT(contactAccountDataAboutToBeRemoved(Buddy &, Account)));
 }
 
 void JabberProtocol::initializeJabberClient()
@@ -466,7 +466,7 @@ void JabberProtocol::clientResourceAvailable(const XMPP::Jid &jid, const XMPP::R
 	description.replace("\r", "\n");
 	status.setDescription(description);
 
-	Contact contact = account().getContactById(jid.bare());
+	Buddy buddy = account().getBuddyById(jid.bare());
 	/* is this contact realy anonymous? - need deep check
  	if (contact.isAnonymous())
 	{
@@ -477,10 +477,10 @@ void JabberProtocol::clientResourceAvailable(const XMPP::Jid &jid, const XMPP::R
 	}
 	*/
 	
-	if (contact.display().isEmpty())
-		contact.setDisplay(jid.bare());
+	if (buddy.display().isEmpty())
+		buddy.setDisplay(jid.bare());
 
-	JabberContactAccountData *data = jabberContactAccountData(contact);
+	JabberContactAccountData *data = jabberContactAccountData(buddy);
 
 	if (!data)
 		return;
@@ -488,7 +488,7 @@ void JabberProtocol::clientResourceAvailable(const XMPP::Jid &jid, const XMPP::R
 	Status oldStatus = data->status();
 	data->setStatus(status);
 
-	emit contactStatusChanged(account(), contact, oldStatus);
+	emit buddyStatusChanged(account(), buddy, oldStatus);
 	kdebugf2();
 }
 
@@ -520,18 +520,18 @@ void JabberProtocol::clientResourceUnavailable(const XMPP::Jid &jid, const XMPP:
 	description.replace("\r", "\n");
 	status.setDescription(description);
 
-	Contact contact = account().getContactById(jid.bare());
- 	if (contact.isAnonymous())
+	Buddy buddy = account().getBuddyById(jid.bare());
+	if (buddy.isAnonymous())
 	{
 		// TODO - ignore! - przynajmniej na razie
 		// emit userStatusChangeIgnored(contact);
 		// userlist->addUser(contact);
 		return;
 	}
-	if (contact.display().isEmpty())
-		contact.setDisplay(jid.bare());
+	if (buddy.display().isEmpty())
+		buddy.setDisplay(jid.bare());
 
-	JabberContactAccountData *data = jabberContactAccountData(contact);
+	JabberContactAccountData *data = jabberContactAccountData(buddy);
 
 	if (!data)
 		return;
@@ -539,64 +539,62 @@ void JabberProtocol::clientResourceUnavailable(const XMPP::Jid &jid, const XMPP:
 	Status oldStatus = data->status();
 	data->setStatus(status);
 
-	emit contactStatusChanged(account(), contact, oldStatus);
+	emit buddyStatusChanged(account(), buddy, oldStatus);
 	kdebugf2();
 }
 
-void JabberProtocol::contactAdded(Contact &contact)
+void JabberProtocol::contactAdded(Buddy &buddy)
 {
-	JabberContactAccountData *jcad = jabberContactAccountData(contact);
+	JabberContactAccountData *jcad = jabberContactAccountData(buddy);
 	if (!jcad)
 		return;
 	QStringList groupsList;
-	foreach (Group *group, contact.groups())
+	foreach (Group *group, buddy.groups())
 		groupsList.append(group->name());
 	//TODO opcja żądania autoryzacji, na razie na sztywno true
-	JabberClient->addContact(jcad->id(), contact.display(), groupsList, true);
+	JabberClient->addContact(jcad->id(), buddy.display(), groupsList, true);
 }
 
-void JabberProtocol::contactRemoved(Contact &contact)
+void JabberProtocol::contactRemoved(Buddy &buddy)
 {
-	JabberContactAccountData *jcad = jabberContactAccountData(contact);
+	JabberContactAccountData *jcad = jabberContactAccountData(buddy);
 	if (!jcad || !isConnected())
 		return;
 	JabberClient->removeContact(jcad->id());
-	if (contact.accountDatas().count() == 1)
-	{
-		contact.setType(ContactData::TypeAnonymous);
-	}
+	if (buddy.accountDatas().count() == 1)
+		buddy.setType(BuddyShared::TypeAnonymous); // TODO: why?
 }
 
-void JabberProtocol::contactUpdated(Contact &contact)
+void JabberProtocol::contactUpdated(Buddy &buddy)
 {
-	JabberContactAccountData *jcad = jabberContactAccountData(contact);
+	JabberContactAccountData *jcad = jabberContactAccountData(buddy);
 	if (!jcad)
 		return;
 	QStringList groupsList;
-	foreach (Group *group, contact.groups())
+	foreach (Group *group, buddy.groups())
 		groupsList.append(group->name());
-	JabberClient->updateContact(jcad->id(), contact.display(), groupsList);
+	JabberClient->updateContact(jcad->id(), buddy.display(), groupsList);
 
 }
 
-void JabberProtocol::contactAccountDataAdded(Contact &contact, Account contactAccount)
+void JabberProtocol::contactAccountDataAdded(Buddy &buddy, Account contactAccount)
 {
 	if (contactAccount != account())
 		return;
-	contactAdded(contact);
+	contactAdded(buddy);
 }
 
-void JabberProtocol::contactAccountDataAboutToBeRemoved(Contact &contact, Account contactAccount)
+void JabberProtocol::contactAccountDataAboutToBeRemoved(Buddy &buddy, Account contactAccount)
 {
 	if (contactAccount != account())
 		return;
-	contactRemoved(contact);
+	contactRemoved(buddy);
 }
 
 
-void JabberProtocol::contactAccountIdChanged(Contact &contact, Account account, const QString &oldId)
+void JabberProtocol::contactAccountIdChanged(Buddy &buddy, Account account, const QString &oldId)
 {
-	contactUpdated(contact);
+	contactUpdated(buddy);
 }
 
 void JabberProtocol::slotContactUpdated(const XMPP::RosterItem &item)
@@ -644,10 +642,10 @@ void JabberProtocol::slotContactUpdated(const XMPP::RosterItem &item)
 		 * See if the contact is already on our contact list
 		 * if not add contact to our list
 		 */
-		 Contact c = ContactManager::instance()->byId(account(), item.jid().bare());
+		 Buddy c = BuddyManager::instance()->byId(account(), item.jid().bare());
 		 if (c.isAnonymous())
 		 {
-			c.setType(ContactData::TypeNormal);
+			c.setType(BuddyShared::TypeNormal);
 
 			if (!item.name().isNull())
 				c.setDisplay(item.name());
@@ -745,7 +743,7 @@ void JabberProtocol::slotSubscription(const XMPP::Jid & jid, const QString &type
 		*/
 		if (MessageBox::ask(tr("The user %1 wants to add you to his contact list.\n Do you agree?").arg(jid.full())))
 		{
-			ContactManager::instance()->byId(account(), jid.bare());
+			BuddyManager::instance()->byId(account(), jid.bare());
 			XMPP::JT_Presence *task = new XMPP::JT_Presence(JabberClient->rootTask());
 			task->sub(jid, "subscribed");
 			task->go(true);
@@ -868,7 +866,7 @@ QPixmap JabberProtocol::statusPixmap(const QString &statusType)
 	return IconsManager::instance()->loadPixmap(pixmapName);
 }
 
-JabberContactAccountData * JabberProtocol::jabberContactAccountData(Contact contact) const
+JabberContactAccountData * JabberProtocol::jabberContactAccountData(Buddy buddy) const
 {
-	return dynamic_cast<JabberContactAccountData *>(contact.accountData(account()));
+	return dynamic_cast<JabberContactAccountData *>(buddy.accountData(account()));
 }

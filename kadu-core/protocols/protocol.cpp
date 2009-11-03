@@ -14,9 +14,9 @@
 #include "chat/chat-manager.h"
 #include "chat/conference-chat.h"
 #include "chat/simple-chat.h"
-#include "contacts/contact-manager.h"
-#include "contacts/contact-set-configuration-helper.h"
-#include "contacts/account-data/contact-account-data.h"
+#include "buddies/buddy-manager.h"
+#include "buddies/buddy-set-configuration-helper.h"
+#include "buddies/account-data/contact-account-data.h"
 #include "icons-manager.h"
 #include "protocols/protocol-factory.h"
 #include "status/status.h"
@@ -46,15 +46,15 @@ void Protocol::setAllOffline()
 	Status oldStatus;
 	ContactAccountData *data;
 
-	foreach (Contact contact, ContactManager::instance()->contacts(CurrentAccount, true))
+	foreach (Buddy buddy, BuddyManager::instance()->buddies(CurrentAccount, true))
 	{
-		data = contact.accountData(CurrentAccount);
+		data = buddy.accountData(CurrentAccount);
 		oldStatus = data->status();
 
 		if (oldStatus != status)
 		{
 			data->setStatus(status);
-			emit contactStatusChanged(CurrentAccount, contact, oldStatus);
+			emit buddyStatusChanged(CurrentAccount, buddy, oldStatus);
 		}
 	}
 }
@@ -104,11 +104,11 @@ void Protocol::networkStateChanged(NetworkState state)
 }
 
 
-Chat * Protocol::findChat(ContactSet contacts, bool create)
+Chat * Protocol::findChat(BuddySet contacts, bool create)
 {
 	QList<Chat *> chats = ChatManager::instance()->chatsForAccount(account());
 	foreach (Chat *c, chats)
-		if (c->contacts() == contacts)
+		if (c->buddies() == contacts)
 			return c;
 
 	if (!create)
@@ -116,8 +116,8 @@ Chat * Protocol::findChat(ContactSet contacts, bool create)
 
 	if (contacts.count() == 1)
 	{
-		Contact contact = *contacts.begin();
-		ContactAccountData *cad = contact.accountData(account());
+		Buddy buddy = *contacts.begin();
+		ContactAccountData *cad = buddy.accountData(account());
 		if (!cad)
 			return 0;
 

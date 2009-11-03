@@ -14,7 +14,7 @@
 #include <QtCore/QPair>
 
 #include "chat/chat.h"
-#include "contacts/contact-list.h"
+#include "buddies/buddy-list.h"
 
 #include "gui/windows/main-window.h"
 
@@ -25,8 +25,8 @@ class QVBoxLayout;
 
 class Action;
 class ActionDescription;
-class ContactInfoPanel;
-class ContactsListWidget;
+class BuddyInfoPanel;
+class BuddiesListWidget;
 class GroupTabBar;
 class KaduTextBrowser;
 class KaduWindowActions;
@@ -52,7 +52,7 @@ private:
 
 	KaduWindowActions *Actions;
 
-	ContactInfoPanel *InfoPanel;
+	BuddyInfoPanel *InfoPanel;
 	QMenuBar *MenuBar;
 	QMenu *KaduMenu;
 	QMenu *ContactsMenu;
@@ -61,7 +61,7 @@ private:
 	QAction *RecentChatsMenuAction;
 	GroupTabBar *GroupBar;
 
-	ContactsListWidget *ContactsWidget;
+	BuddiesListWidget *ContactsWidget;
 
 	QWidget *MainWidget;
 	QVBoxLayout *MainLayout;
@@ -79,7 +79,7 @@ private:
 	void storeConfiguration();
 
 	void updateInformationPanel();
-	void updateInformationPanel(Contact contact);
+	void updateInformationPanel(Buddy buddy);
 
 private slots:
 	void openChatWindow(Chat *chat);
@@ -93,8 +93,8 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *);
 
 	virtual bool supportsActionType(ActionDescription::ActionType type);
-	virtual ContactsListView * contactsListView();
-	virtual ContactSet contacts();
+	virtual BuddiesListView * contactsListView();
+	virtual BuddySet buddies();
 	virtual Chat * chat();
 
 	virtual void configurationUpdated();
@@ -112,7 +112,7 @@ public:
 	void setDocked(bool);
 	bool docked() { return Docked; }
 
-	ContactInfoPanel *infoPanel() { return InfoPanel; }
+	BuddyInfoPanel * infoPanel() { return InfoPanel; }
 
 signals:
 	void keyPressed(QKeyEvent *e);

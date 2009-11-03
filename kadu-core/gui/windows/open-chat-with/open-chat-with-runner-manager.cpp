@@ -8,7 +8,7 @@
  ***************************************************************************/
 
 #include "configuration/configuration-file.h"
-#include "contacts/contact.h"
+#include "buddies/buddy.h"
 
 #include "debug.h"
 
@@ -42,11 +42,11 @@ void OpenChatWithRunnerManager::unregisterRunner(OpenChatWithRunner *runner)
 	Runners.removeAll(runner);
 }
 
-ContactList OpenChatWithRunnerManager::matchingContacts(const QString &query)
+BuddyList OpenChatWithRunnerManager::matchingContacts(const QString &query)
 {
 	kdebugf();
 
-	ContactList matchingContacts;
+	BuddyList matchingContacts;
 	foreach (OpenChatWithRunner *runner, Runners)
 		matchingContacts += runner->matchingContacts(query);
 

@@ -12,7 +12,7 @@
 
 #include <QtGui/QDialog>
 
-#include "contacts/contact.h"
+#include "buddies/buddy.h"
 
 class QCheckBox;
 class QComboBox;
@@ -23,9 +23,9 @@ class QRegExpValidator;
 class AccountsModel;
 class AccountsProxyModel;
 class IdRegularExpressionFilter;
-class NonAccountContactFilter;
+class NonAccountBuddyFilter;
 class NonInContactFilter;
-class SelectContactCombobox;
+class SelectBuddyCombobox;
 
 class AddBuddyWindow : public QDialog
 {
@@ -42,12 +42,12 @@ class AddBuddyWindow : public QDialog
 	QComboBox *GroupCombo;
 	QLineEdit *DisplayNameEdit;
 	QCheckBox *MergeContact;
-	SelectContactCombobox *SelectContact;
-	NonAccountContactFilter *SelectContactFilter;
+	SelectBuddyCombobox *SelectContact;
+	NonAccountBuddyFilter *SelectContactFilter;
 	QCheckBox *AllowToSeeMeCheck;
 	QPushButton *AddContactButton;
 
-	Contact MyContact;
+	Buddy MyBuddy;
 
 	void createGui();
 
@@ -70,7 +70,7 @@ public:
 	AddBuddyWindow(QWidget *parent = 0);
 	virtual ~AddBuddyWindow();
 
-	void setContact(Contact contact);
+	void setContact(Buddy buddy);
 
 };
 

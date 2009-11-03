@@ -13,7 +13,7 @@
 #include <QtCore/QPair>
 #include <QtGui/QIcon>
 
-#include "contacts/contact-set.h"
+#include "buddies/buddy-set.h"
 #include "exports.h"
 
 class QTimer;

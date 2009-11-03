@@ -14,15 +14,15 @@ class QString;
 class QTextStream;
 
 class Account;
-class ContactList;
+class BuddyList;
 
 class GaduListHelper
 {
 
 public:
-	static QString contactListToString(Account account, ContactList contacts);
-	static ContactList stringToContactList(Account account, QString &content);
-	static ContactList streamToContactList(Account account, QTextStream &content);
+	static QString contactListToString(Account account, BuddyList buddies);
+	static BuddyList stringToContactList(Account account, QString &content);
+	static BuddyList streamToContactList(Account account, QTextStream &content);
 
 };
 

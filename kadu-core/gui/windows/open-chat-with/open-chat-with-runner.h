@@ -10,13 +10,13 @@
 #ifndef OPEN_CHAT_WITH_RUNNER_H
 #define OPEN_CHAT_WITH_RUNNER_H
 
-#include "contacts/contact-list.h"
+#include "buddies/buddy-list.h"
 
 class KADUAPI OpenChatWithRunner
 {
 
 public:
-	virtual ContactList matchingContacts(const QString &query) = 0;
+	virtual BuddyList matchingContacts(const QString &query) = 0;
 
 };
 

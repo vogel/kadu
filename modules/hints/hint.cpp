@@ -138,7 +138,7 @@ void Hint::updateText()
 		kdebug("syntax is: %s, text is: %s\n", syntax.toAscii().data(), notification->text().toAscii().data());
 
 		if (CurrentChat)
-			text = Parser::parse(syntax, CurrentChat->account(), *CurrentChat->contacts().begin(), notification);
+			text = Parser::parse(syntax, CurrentChat->account(), *CurrentChat->buddies().begin(), notification);
 		else
 			text = Parser::parse(syntax, notification);
 		/* Dorr: the file:// in img tag doesn't generate the image on hint.

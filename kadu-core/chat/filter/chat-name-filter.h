@@ -12,12 +12,12 @@
 
 #include "chat/filter/chat-filter.h"
 
-class ContactNameFilter;
+class BuddyNameFilter;
 
 class ChatNameFilter : public ChatFilter
 {
 	QString Name;
-	ContactNameFilter *Filter;
+	BuddyNameFilter *Filter;
 
 public:
 	ChatNameFilter(QObject *parent = 0);

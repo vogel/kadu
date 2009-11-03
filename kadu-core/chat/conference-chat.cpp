@@ -8,7 +8,7 @@
  ***************************************************************************/
 
 #include "chat/type/chat-type-manager.h"
-#include "contacts/contact-set-configuration-helper.h"
+#include "buddies/buddy-set-configuration-helper.h"
 
 #include "conference-chat.h"
 
@@ -17,7 +17,7 @@ ConferenceChat::ConferenceChat(StoragePoint *storage) :
 {
 }
 
-ConferenceChat::ConferenceChat(Account currentAccount, ContactSet contacts, QUuid uuid) :
+ConferenceChat::ConferenceChat(Account currentAccount, BuddySet contacts, QUuid uuid) :
 		Chat(currentAccount, uuid), CurrentContacts(contacts)
 {
 }
@@ -32,7 +32,7 @@ void ConferenceChat::load()
 		return;
 
 	Chat::load();
-	CurrentContacts = ContactSetConfigurationHelper::loadFromConfiguration(this, "Contacts");
+	CurrentContacts = BuddySetConfigurationHelper::loadFromConfiguration(this, "Contacts");
 	refreshTitle();
 }
 
@@ -43,7 +43,7 @@ void ConferenceChat::store()
 
 	Chat::store();
 	storeValue("Type", "Conference");
-	ContactSetConfigurationHelper::saveToConfiguration(this, "Contacts", CurrentContacts);
+	BuddySetConfigurationHelper::saveToConfiguration(this, "Contacts", CurrentContacts);
 }
 
 ChatType ConferenceChat::type() const
@@ -54,8 +54,8 @@ ChatType ConferenceChat::type() const
 QString ConferenceChat::name() const
 {
 	QStringList displays;
-	foreach (Contact contact, CurrentContacts)
-		displays.append(contact.display());
+	foreach (Buddy buddy, CurrentContacts)
+		displays.append(buddy.display());
 
 	displays.sort();
 	return displays.join(", ");

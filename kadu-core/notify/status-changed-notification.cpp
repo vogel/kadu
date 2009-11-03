@@ -12,7 +12,7 @@
 
 #include "accounts/account.h"
 #include "chat/chat-manager.h"
-#include "contacts/account-data/contact-account-data.h"
+#include "buddies/account-data/contact-account-data.h"
 #include "misc/misc.h"
 #include "notify/notify-event.h"
 #include "protocols/protocol.h"
@@ -91,12 +91,12 @@ void StatusChangedNotification::unregisterEvents()
 	StatusChangedToOfflineNotifyEvent = 0;
 }
 
-StatusChangedNotification::StatusChangedNotification(const QString &toStatus, ContactSet &contacts, Account account) :
+StatusChangedNotification::StatusChangedNotification(const QString &toStatus, BuddySet &contacts, Account account) :
 		ChatNotification(account.protocolHandler()->findChat(contacts), QString("StatusChanged") + toStatus,
 			account.protocolHandler()->statusPixmap(contacts.begin()->accountData(account)->status()))
 {
-	const Contact &contact = *contacts.begin();
-	Status status = contact.accountData(account)->status();
+	const Buddy &buddy = *contacts.begin();
+	Status status = buddy.accountData(account)->status();
 	QString syntax;
 
 	if (!status.description().isNull())
@@ -106,7 +106,7 @@ StatusChangedNotification::StatusChangedNotification(const QString &toStatus, Co
 
 	setTitle(tr("Status changed"));
 	setText(narg(syntax,
-		Qt::escape(contact.display()),
+		Qt::escape(buddy.display()),
 		qApp->translate("@default", Status::name(status, false).toAscii().data()),
 		Qt::escape(status.description())
 	));

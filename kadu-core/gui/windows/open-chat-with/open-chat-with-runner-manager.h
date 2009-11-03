@@ -31,7 +31,7 @@ public:
 	void registerRunner(OpenChatWithRunner *runner);
 	void unregisterRunner(OpenChatWithRunner *runner);
 
-	ContactList matchingContacts(const QString &query);
+	BuddyList matchingContacts(const QString &query);
 
 };
 

@@ -25,7 +25,7 @@ public:
 	JabberFileTransferService(JabberProtocol *protocol);
 
 	virtual FileTransfer * loadFileTransferFromStorage(StoragePoint *storage);
-	virtual FileTransfer * createOutgoingFileTransfer(Contact contact);
+	virtual FileTransfer * createOutgoingFileTransfer(Buddy buddy);
 	
   public slots:
 	void incomingFile(JabberFileTransfer *transfer);

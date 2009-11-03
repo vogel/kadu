@@ -9,7 +9,7 @@
 
 #include "accounts/account-manager.h"
 #include "configuration/configuration-file.h"
-#include "contacts/account-data/contact-account-data.h"
+#include "buddies/account-data/contact-account-data.h"
 #include "parser/parser.h"
 #include "debug.h"
 #include "icons-manager.h"
@@ -41,13 +41,13 @@ Chat::Chat(StoragePoint *storage) :
 Chat::Chat(Account currentAccount, QUuid uuid) :
 		UuidStorableObject("Chat", ChatManager::instance()), CurrentAccount(currentAccount), Uuid(uuid.isNull() ? QUuid::createUuid() : uuid)
 {
-	connect(&CurrentAccount, SIGNAL(contactStatusChanged(Account, Contact, Status)),
+	connect(&CurrentAccount, SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
 			this, SLOT(refreshTitle()));
 }
 
 Chat::~Chat()
 {
-	disconnect(&CurrentAccount, SIGNAL(contactStatusChanged(Account, Contact, Status)),
+	disconnect(&CurrentAccount, SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
 			this, SLOT(refreshTitle()));
 }
 
@@ -61,7 +61,7 @@ void Chat::load()
 	Uuid = loadAttribute<QString>("uuid");
 	CurrentAccount = AccountManager::instance()->byUuid(QUuid(loadValue<QString>("Account")));
 
-	connect(&CurrentAccount, SIGNAL(contactStatusChanged(Account, Contact, Status)),
+	connect(&CurrentAccount, SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
 			this, SLOT(refreshTitle()));
 	refreshTitle();
 }
@@ -87,7 +87,7 @@ void Chat::refreshTitle()
 	kdebugf();
 	QString title;
 
-	int contactsSize = contacts().count();
+	int contactsSize = buddies().count();
 	kdebugmf(KDEBUG_FUNCTION_START, "contacts().size() = %d\n", contactsSize);
 	if (contactsSize > 1)
 	{
@@ -98,17 +98,17 @@ void Chat::refreshTitle()
 		int i = 0;
 
 		if (config_file.readEntry("Look", "ConferenceContents").isEmpty())
-			foreach(const Contact contact, contacts())
+			foreach(const Buddy buddy, buddies())
 			{
-				title.append(Parser::parse("%a", account(), contact, false));
+				title.append(Parser::parse("%a", account(), buddy, false));
 
 				if (++i < contactsSize)
 					title.append(", ");
 			}
 		else
-			foreach(const Contact contact, contacts())
+			foreach(const Buddy buddy, buddies())
 			{
-				title.append(Parser::parse(config_file.readEntry("Look", "ConferenceContents"), account(), contact, false));
+				title.append(Parser::parse(config_file.readEntry("Look", "ConferenceContents"), account(), buddy, false));
 
 				if (++i < contactsSize)
 					title.append(", ");
@@ -118,19 +118,19 @@ void Chat::refreshTitle()
 	}
 	else if (contactsSize > 0)
 	{
-		Contact contact = *contacts().begin();
+		Buddy buddy = *buddies().begin();
 
 		if (config_file.readEntry("Look", "ChatContents").isEmpty())
 		{
-			if (contact.isAnonymous())
-				title = Parser::parse(tr("Chat with ")+"%a", account(), contact, false);
+			if (buddy.isAnonymous())
+				title = Parser::parse(tr("Chat with ")+"%a", account(), buddy, false);
 			else
-				title = Parser::parse(tr("Chat with ")+"%a (%s[: %d])", account(), contact, false);
+				title = Parser::parse(tr("Chat with ")+"%a (%s[: %d])", account(), buddy, false);
 		}
 		else
-			title = Parser::parse(config_file.readEntry("Look","ChatContents"), account(), contact, false);
+			title = Parser::parse(config_file.readEntry("Look","ChatContents"), account(), buddy, false);
 
-		ContactAccountData *cad = contact.accountData(account());
+		ContactAccountData *cad = buddy.accountData(account());
 
 		if (cad)
 			Icon = account().statusContainer()->statusPixmap(cad->status());

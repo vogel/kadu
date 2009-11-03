@@ -12,7 +12,7 @@ class QFrame;
 class QSpinBox;
 
 class ChatWidget;
-class ContactList;
+class BuddyList;
 class HintsConfigurationWidget;
 class HintOverUserConfigurationWindow;
 
@@ -48,7 +48,7 @@ private:
 
 	void processButtonPress(const QString &buttonName, Hint *hint);
 
-	void showNewMessage(const QString &configurationDirective, const QString &title, const QString &contentTitle, ContactList contacts, const QString &msg);
+	void showNewMessage(const QString &configurationDirective, const QString &title, const QString &contentTitle, BuddyList buddies, const QString &msg);
 
 	// TODO: usun�� w 0.6
 	void realCopyConfiguration(const QString &fromCategory, const QString &fromHint, const QString &toHint);
@@ -138,7 +138,7 @@ public:
 	virtual CallbackCapacity callbackCapacity() { return CallbackSupported; }
 	virtual void notify(Notification *notification);
 
-	virtual void showToolTip(const QPoint &, Contact);
+	virtual void showToolTip(const QPoint &, Buddy);
 	virtual void hideToolTip();
 
 	virtual void copyConfiguration(const QString &fromEvent, const QString &toEvent);
@@ -146,7 +146,7 @@ public:
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0);
 
-	void prepareOverUserHint(QFrame *tipFrame, QLabel *iconLabel, QLabel *tipLabel, Contact contact);
+	void prepareOverUserHint(QFrame *tipFrame, QLabel *iconLabel, QLabel *tipLabel, Buddy buddy);
 
 };
 

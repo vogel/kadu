@@ -15,7 +15,7 @@
 #include <QtGui/QVBoxLayout>
 
 #include "configuration/configuration-file.h"
-#include "contacts/contact-kadu-data.h"
+#include "buddies/buddy-kadu-data.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/message-box.h"
 

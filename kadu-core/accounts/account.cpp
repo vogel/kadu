@@ -11,8 +11,8 @@
 #include "accounts/account-manager.h"
 #include "configuration/configuration-file.h"
 #include "configuration/xml-configuration-file.h"
-#include "contacts/contact-manager.h"
-#include "contacts/account-data/contact-account-data.h"
+#include "buddies/buddy-manager.h"
+#include "buddies/account-data/contact-account-data.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocols-manager.h"
@@ -84,8 +84,8 @@ void Account::connectDataSignals()
 	if (isNull())
 		return;
 
-	connect(Data.data(), SIGNAL(contactStatusChanged(Account, Contact, Status)),
-			this, SIGNAL(contactStatusChanged(Account, Contact, Status)));
+	connect(Data.data(), SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
+			this, SIGNAL(buddyStatusChanged(Account, Buddy, Status)));
 }
 
 void Account::disconnectDataSignals()
@@ -93,8 +93,8 @@ void Account::disconnectDataSignals()
 	if (isNull())
 		return;
 
-	disconnect(Data.data(), SIGNAL(contactStatusChanged(Account, Contact, Status)),
-			this, SIGNAL(contactStatusChanged(Account, Contact, Status)));
+	disconnect(Data.data(), SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
+			this, SIGNAL(buddyStatusChanged(Account, Buddy, Status)));
 }
 
 QUuid Account::uuid() const
@@ -133,23 +133,23 @@ void Account::removeFromStorage()
 		Data->removeFromStorage();
 }
 
-Contact Account::getContactById(const QString& id)
+Buddy Account::getBuddyById(const QString& id)
 {
-	return ContactManager::instance()->byId(*this, id);
+	return BuddyManager::instance()->byId(*this, id);
 }
 
-Contact Account::createAnonymous(const QString& id)
+Buddy Account::createAnonymous(const QString& id)
 {
 	if (!Data)
-		return Contact::null;
+		return Buddy::null;
 
-	Contact result(ContactData::TypeAnonymous);
+	Buddy result(BuddyShared::TypeAnonymous);
 	ProtocolFactory *protocolFactory = Data->protocolHandler()->protocolFactory();
 	ContactAccountData *contactAccountData = protocolFactory->newContactAccountData(*this, result, id);
 	if (!contactAccountData->isValid())
 	{
 		delete contactAccountData;
-		return Contact::null;
+		return Buddy::null;
 	}
 
 	result.addAccountData(contactAccountData);

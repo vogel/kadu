@@ -14,8 +14,8 @@
 #include <QtXml/QDomElement>
 
 #include "accounts/account-data.h"
-#include "contacts/contact.h"
-#include "contacts/contacts-aware-object.h"
+#include "buddies/buddy.h"
+#include "buddies/buddies-aware-object.h"
 #include "status/base-status-container.h"
 #include "status/status.h"
 
@@ -87,8 +87,8 @@ public:
 
 	void importProxySettings();
 
-	Contact getContactById(const QString &id);
-	Contact createAnonymous(const QString &id);
+	Buddy getBuddyById(const QString &id);
+	Buddy createAnonymous(const QString &id);
 
 	StatusContainer * statusContainer() { return Data.data(); }
 
@@ -109,7 +109,7 @@ public:
 	Property(QString, proxyPassword, ProxyPassword, QString::null)
 
 signals:
-	void contactStatusChanged(Account account, Contact contact, Status oldStatus);
+	void buddyStatusChanged(Account account, Buddy buddy, Status oldStatus);
 
 };
 

@@ -11,7 +11,7 @@
 
 #include "chat/chat.h"
 #include "chat/message/message.h"
-#include "contacts/contact-set.h"
+#include "buddies/buddy-set.h"
 #include "core/core.h"
 #include "misc/misc.h"
 #include "modules/history/history.h"
@@ -87,7 +87,7 @@ void HistoryImportThread::importEntry(Chat *chat, const HistoryEntry &entry)
 	Message msg;
 	msg
 		.setChat(chat)
-		.setSender(outgoing ? Core::instance()->myself() : GaduAccount.getContactById(id))
+		.setSender(outgoing ? Core::instance()->myself() : GaduAccount.getBuddyById(id))
 		.setContent(entry.message)
 		.setSendDate(entry.sdate)
 		.setReceiveDate(entry.date);
@@ -99,14 +99,14 @@ void HistoryImportThread::importEntry(Chat *chat, const HistoryEntry &entry)
 
 Chat * HistoryImportThread::chatFromUinsList(QStringList uinsList)
 {
-	ContactSet contacts;
+	BuddySet buddies;
 	foreach (const QString &uin, uinsList)
 	{
-		Contact contact = GaduAccount.getContactById(uin);
-		contacts.insert(contact);
+		Buddy buddy = GaduAccount.getBuddyById(uin);
+		buddies.insert(buddy);
 	}
 
-	return GaduAccount.protocolHandler()->findChat(contacts);
+	return GaduAccount.protocolHandler()->findChat(buddies);
 }
 
 QList<HistoryEntry> HistoryImportThread::historyEntries(QStringList uins, int mask)

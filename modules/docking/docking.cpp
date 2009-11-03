@@ -69,8 +69,8 @@ DockingManager::DockingManager()
 
 	connect(Core::instance(), SIGNAL(mainIconChanged(const QIcon &)),
 		this, SLOT(statusPixmapChanged(const QIcon &)));
-	connect(PendingMessagesManager::instance(), SIGNAL(messageFromUserAdded(Contact)), this, SLOT(pendingMessageAdded()));
-	connect(PendingMessagesManager::instance(), SIGNAL(messageFromUserDeleted(Contact)), this, SLOT(pendingMessageDeleted()));
+	connect(PendingMessagesManager::instance(), SIGNAL(messageFromUserAdded(Buddy)), this, SLOT(pendingMessageAdded()));
+	connect(PendingMessagesManager::instance(), SIGNAL(messageFromUserDeleted(Buddy)), this, SLOT(pendingMessageDeleted()));
 
 	connect(Core::instance(), SIGNAL(searchingForTrayPosition(QPoint&)), this, SIGNAL(searchingForTrayPosition(QPoint&)));
 
@@ -98,8 +98,8 @@ DockingManager::~DockingManager()
 
 	disconnect(Core::instance(), SIGNAL(mainIconChanged(const QIcon &)),
 		this, SLOT(statusPixmapChanged(const QIcon &)));
-	disconnect(PendingMessagesManager::instance(), SIGNAL(messageFromUserAdded(Contact)), this, SLOT(pendingMessageAdded()));
-	disconnect(PendingMessagesManager::instance(), SIGNAL(messageFromUserDeleted(Contact)), this, SLOT(pendingMessageDeleted()));
+	disconnect(PendingMessagesManager::instance(), SIGNAL(messageFromUserAdded(Buddy)), this, SLOT(pendingMessageAdded()));
+	disconnect(PendingMessagesManager::instance(), SIGNAL(messageFromUserDeleted(Buddy)), this, SLOT(pendingMessageDeleted()));
 
 //	disconnect(kadu, SIGNAL(searchingForTrayPosition(QPoint&)), this, SIGNAL(searchingForTrayPosition(QPoint&)));
 

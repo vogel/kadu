@@ -52,7 +52,7 @@ public:
 
 	void resetSendImageRequests() { CurrentMinuteSendImageRequests = 0; }
 
-	bool sendImageRequest(Contact contact, int size, quint32 crc32);
+	bool sendImageRequest(Buddy buddy, int size, quint32 crc32);
 
 	QString getSavedImageFileName(quint32 size, quint32 crc32);
 	void prepareImageToSend(const QString &imageFileName, quint32 &size, quint32 &crc32);

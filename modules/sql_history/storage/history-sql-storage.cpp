@@ -15,7 +15,7 @@
 #include "accounts/account-manager.h"
 #include "chat/chat-manager.h"
 #include "chat/message/message.h"
-#include "contacts/contact-manager.h"
+#include "buddies/buddy-manager.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "debug.h"
@@ -401,7 +401,7 @@ QList<Message> HistorySqlStorage::messagesFromQuery(Chat *chat, QSqlQuery query)
 	{
 		bool outgoing = QVariant(query.value(4).toString().split('=').last()).toBool();
 		Message::Type type = outgoing ? Message::TypeSent : Message::TypeReceived;
-		Contact sender = outgoing ? Core::instance()->myself() : ContactManager::instance()->byUuid(query.value(0).toString());
+		Buddy sender = outgoing ? Core::instance()->myself() : BuddyManager::instance()->byUuid(query.value(0).toString());
 		
 		Message message(chat, type, sender);
 		message

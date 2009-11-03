@@ -10,7 +10,7 @@
 #ifndef GADU_CONTACT_ACCOUNT_DATA
 #define GADU_CONTACT_ACCOUNT_DATA
 
-#include "contacts/account-data/contact-account-data.h"
+#include "buddies/account-data/contact-account-data.h"
 
 #include "gadu-protocol.h"
 
@@ -22,10 +22,10 @@ class GaduContactAccountData : public ContactAccountData
 	unsigned int GaduProtocolVersion;
 
 public:
-	GaduContactAccountData(Account account, Contact contact, const QString &id, bool loaded = false) :
-			ContactAccountData(account, contact, id, loaded) {}
-	GaduContactAccountData(Account account, Contact contact, const QString &id, StoragePoint *storage) :
-			ContactAccountData(account, contact, id, storage) {}
+	GaduContactAccountData(Account account, Buddy buddy, const QString &id, bool loaded = false) :
+			ContactAccountData(account, buddy, id, loaded) {}
+	GaduContactAccountData(Account account, Buddy buddy, const QString &id, StoragePoint *storage) :
+			ContactAccountData(account, buddy, id, storage) {}
 	GaduContactAccountData(StoragePoint *storage) :
 			ContactAccountData(storage) {}
 

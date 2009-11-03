@@ -12,7 +12,7 @@
 
 #include <xmpp.h>
 
-#include "contacts/account-data/contact-account-data.h"
+#include "buddies/account-data/contact-account-data.h"
 
 class Account;
 
@@ -21,10 +21,10 @@ class JabberContactAccountData : public ContactAccountData
 	unsigned long MaxImageSize;
 
 public:
-	JabberContactAccountData(Account account, Contact contact, const QString &id, bool loaded = false) :
-			ContactAccountData(account, contact, id, loaded) {}
-	JabberContactAccountData(Account account, Contact contact, const QString &id, StoragePoint *storage) :
-			ContactAccountData(account, contact, id, storage) {}
+	JabberContactAccountData(Account account, Buddy buddy, const QString &id, bool loaded = false) :
+			ContactAccountData(account, buddy, id, loaded) {}
+	JabberContactAccountData(Account account, Buddy buddy, const QString &id, StoragePoint *storage) :
+			ContactAccountData(account, buddy, id, storage) {}
 	JabberContactAccountData(StoragePoint *storage) :
 			ContactAccountData(storage) {}
 

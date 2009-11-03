@@ -12,7 +12,7 @@
 
 #include <libgadu.h>
 
-#include "contacts/contact.h"
+#include "buddies/buddy.h"
 
 #include "dcc/dcc-manager.h"
 #include "socket-notifiers/gadu-socket-notifiers.h"

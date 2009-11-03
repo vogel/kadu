@@ -19,7 +19,7 @@
 
 #include "accounts/account.h"
 #include "configuration/configuration-file.h"
-#include "contacts/ignored-helper.h"
+#include "buddies/ignored-helper.h"
 
 #include "debug.h"
 #include "misc/misc.h"
@@ -93,7 +93,7 @@ void GaduProtocolSocketNotifiers::handleEventMsg(struct gg_event *e)
 	if (0 == e->event.msg.sender)
 		return;
 
-	Contact sender = CurrentAccount.getContactById(QString::number(e->event.msg.sender));
+	Buddy sender = CurrentAccount.getBuddyById(QString::number(e->event.msg.sender));
 
 	if (GG_CLASS_CTCP == e->event.msg.msgclass)
 	{
@@ -101,7 +101,7 @@ void GaduProtocolSocketNotifiers::handleEventMsg(struct gg_event *e)
 			return; // we don't support dcc connections now
 
 		if (config_file.readBoolEntry("Network", "AllowDCC") &&
-				!IgnoredHelper::isIgnored(ContactSet(sender)) &&
+				!IgnoredHelper::isIgnored(BuddySet(sender)) &&
 				!sender.isAnonymous())
 			CurrentProtocol->dccManager()->connectionRequestReceived(sender);
 

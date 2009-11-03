@@ -20,6 +20,7 @@ class ConfigurationManager
 
 	void importConfiguration();
 	void importOldContactAccountData(); // TODO: remove after 0.6.6 release
+	void importContactsIntoBuddies(); // TODO: remove after 0.6.6 release
 
 public:
 	ConfigurationManager();

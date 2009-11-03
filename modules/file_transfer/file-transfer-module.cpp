@@ -15,14 +15,14 @@
 #include "accounts/account.h"
 #include "configuration/configuration-file.h"
 #include "configuration/xml-configuration-file.h"
-#include "contacts/contact.h"
+#include "buddies/buddy.h"
 #include "core/core.h"
 #include "file-transfer/file-transfer.h"
 #include "file-transfer/file-transfer-manager.h"
 #include "protocols/protocol.h"
 #include "protocols/services/file-transfer-service.h"
 #include "gui/actions/action.h"
-#include "gui/widgets/contacts-list-view-menu-manager.h"
+#include "gui/widgets/buddies-list-view-menu-manager.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-box.h"
 
@@ -56,17 +56,17 @@ void disableNonFileTransferContacts(Action *action)
 
 	action->setEnabled(false);
 
-	const ContactSet &contacts = action->contacts();
+	const BuddySet &contacts = action->buddies();
 
 	if (!contacts.count())
 		return;
 
-	foreach (const Contact &contact, contacts)
+	foreach (const Buddy &buddy, contacts)
 	{
-		if (Core::instance()->myself() == contact)
+		if (Core::instance()->myself() == buddy)
 			return;
 
-		Account account = contact.prefferedAccount();
+		Account account = buddy.prefferedAccount();
 		if (account.isNull() || !account.protocolHandler()->fileTransferService())
 			return;
 	}
@@ -106,7 +106,7 @@ void FileTransferModule::createActionDecriptions()
 		disableNonFileTransferContacts
 	);
 	SendFileActionDescription->setShortcut("kadu_sendfile");
-	ContactsListViewMenuManager::instance()->insertActionDescription(1, SendFileActionDescription);
+	BuddiesListViewMenuManager::instance()->insertActionDescription(1, SendFileActionDescription);
 
 	FileTransferWindowActionDescription = new ActionDescription(0,
 		ActionDescription::TypeMainMenu, "sendFileWindowAction",
@@ -119,7 +119,7 @@ void FileTransferModule::createActionDecriptions()
 
 void FileTransferModule::deleteActionDecriptions()
 {
-	ContactsListViewMenuManager::instance()->removeActionDescription(SendFileActionDescription);
+	BuddiesListViewMenuManager::instance()->removeActionDescription(SendFileActionDescription);
 	// TODO: 0.6.6
 // 	Core::instance()->kaduWindow()->removeMenuActionDescription(FileTransferWindowActionDescription);
 
@@ -137,7 +137,7 @@ void FileTransferModule::sendFileActionActivated(QAction *sender, bool toggled)
 	if (!kaduMainWindow)
 		return;
 
-	ContactSet contacts = kaduMainWindow->contacts();
+	BuddySet contacts = kaduMainWindow->buddies();
 	if (contacts.count())
 		selectFilesAndSend(contacts);
 
@@ -178,7 +178,7 @@ QStringList FileTransferModule::selectFilesToSend()
 			config_file.readEntry("Network", "LastUploadDirectory"));
 }
 
-void FileTransferModule::selectFilesAndSend(ContactSet contacts)
+void FileTransferModule::selectFilesAndSend(BuddySet contacts)
 {
 	QStringList files = selectFilesToSend();
 	if (!files.count())
@@ -187,16 +187,16 @@ void FileTransferModule::selectFilesAndSend(ContactSet contacts)
 		return;
 	}
 
-	foreach (const Contact &contact, contacts)
+	foreach (const Buddy &buddy, contacts)
 	{
-		Account account = contact.prefferedAccount();
+		Account account = buddy.prefferedAccount();
 		FileTransferService *service = account.protocolHandler()->fileTransferService();
 		if (!service)
 			continue;
 
 		foreach (const QString &file, files)
 		{
-			FileTransfer *fileTransfer = service->createOutgoingFileTransfer(contact);
+			FileTransfer *fileTransfer = service->createOutgoingFileTransfer(buddy);
 			fileTransfer->setLocalFileName(file);
 			fileTransfer->send();
 

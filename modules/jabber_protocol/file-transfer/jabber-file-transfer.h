@@ -56,7 +56,7 @@ public:
 	enum { ErrReject, ErrTransfer, ErrFile };
 	enum { Sending, Receiving };
 	JabberFileTransfer(Account account);
-	JabberFileTransfer(Account account, Contact peer, FileTransferType transferType);
+	JabberFileTransfer(Account account, Buddy peer, FileTransferType transferType);
 	JabberFileTransfer(Account account, FileTransferType transferType, XMPP::FileTransfer *jTransfer);
 	virtual ~JabberFileTransfer();
 

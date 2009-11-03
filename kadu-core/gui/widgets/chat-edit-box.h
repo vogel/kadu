@@ -50,8 +50,8 @@ public:
 	CustomInput * inputBox();
 
 	virtual bool supportsActionType(ActionDescription::ActionType type);
-	virtual ContactsListView * contactsListView();
-	virtual ContactSet contacts();
+	virtual BuddiesListView * contactsListView();
+	virtual BuddySet buddies();
 	virtual Chat * chat() { return CurrentChat; }
 	ChatWidget * chatWidget();
 

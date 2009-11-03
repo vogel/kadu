@@ -12,9 +12,9 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 
-#include "contacts/contact.h"
-#include "contacts/contact-manager.h"
-#include "contacts/account-data/contact-account-data.h"
+#include "buddies/buddy.h"
+#include "buddies/buddy-manager.h"
+#include "buddies/account-data/contact-account-data.h"
 
 #include "debug.h"
 
@@ -26,15 +26,15 @@ GaduOpenChatWithRunner::GaduOpenChatWithRunner(Account account) :
 {
 }
 
-ContactList GaduOpenChatWithRunner::matchingContacts(const QString &query)
+BuddyList GaduOpenChatWithRunner::matchingContacts(const QString &query)
 {
 	kdebugf();
 
-	ContactList matchedContacts;
+	BuddyList matchedContacts;
 	if (!validateUserID(query))
 		return matchedContacts;
 
-	Contact c;
+	Buddy c;
 
 	GaduContactAccountData *gcad = new GaduContactAccountData(ParentAccount, c, query);
 	c.addAccountData(gcad);

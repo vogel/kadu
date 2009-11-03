@@ -32,10 +32,10 @@ enum HistoryEntryType
 };
 
 #include "configuration/configuration-aware-object.h"
-#include "contacts/contact-remove-predicate-object.h"
+#include "buddies/buddy-remove-predicate-object.h"
 #include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
-#include "gui/widgets/contacts-list-view-menu-manager.h"
+#include "gui/widgets/buddies-list-view-menu-manager.h"
 #include "gui/windows/history-window.h"
 #include "gui/windows/main-configuration-window.h"
 #include "protocols/protocol.h"
@@ -47,7 +47,7 @@ class Account;
 class ChatWidget;
 class HistoryWindow;
 
-class HISTORYAPI History : public ConfigurationUiHandler, ConfigurationAwareObject, ContactRemovePredicateObject
+class HISTORYAPI History : public ConfigurationUiHandler, ConfigurationAwareObject, BuddyRemovePredicateObject
 {
 	Q_OBJECT
 
@@ -72,7 +72,7 @@ class HISTORYAPI History : public ConfigurationUiHandler, ConfigurationAwareObje
 	void createActionDescriptions();
 	void deleteActionDescriptions();
 	virtual void configurationUpdated();
-	virtual bool removeContactFromStorage(Contact contact);
+	virtual bool removeContactFromStorage(Buddy buddy);
 	void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
 private slots:

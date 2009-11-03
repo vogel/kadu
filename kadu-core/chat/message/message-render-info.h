@@ -15,8 +15,8 @@
 
 #include "chat/message/message.h"
 
-#include "contacts/contact.h"
-#include "contacts/contact-list.h"
+#include "buddies/buddy.h"
+#include "buddies/buddy-list.h"
 
 #include "protocols/protocol.h"
 

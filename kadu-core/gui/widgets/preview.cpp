@@ -12,7 +12,7 @@
 
 #include "accounts/account-manager.h"
 #include "configuration/configuration-file.h"
-#include "contacts/account-data/contact-account-data.h"
+#include "buddies/account-data/contact-account-data.h"
 #include "parser/parser.h"
 #include "status/status.h"
 #include "status/status-type-manager.h"
@@ -27,7 +27,7 @@ Preview::Preview(QWidget *parent)
 	setFixedHeight(170);
 	setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 
-	contact = Contact::dummy();
+	buddy = Buddy::dummy();
 }
 
 Preview::~Preview()
@@ -49,9 +49,9 @@ void Preview::syntaxChanged(const QString &content)
 
 	if (count)
 		for (int i = 0; i < count; i++)
-			text += Parser::parse(syntax, contacts[i].prefferedAccount(), contacts[i], objectsToParse.at(i));
+			text += Parser::parse(syntax, buddies[i].prefferedAccount(), buddies[i], objectsToParse.at(i));
 	else
-		text = Parser::parse(syntax, contact.prefferedAccount(), contact);
+		text = Parser::parse(syntax, buddy.prefferedAccount(), buddy);
 
 	emit needFixup(text);
 

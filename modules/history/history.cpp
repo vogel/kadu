@@ -16,13 +16,13 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "contacts/contact-manager.h"
+#include "buddies/buddy-manager.h"
 #include "chat/chat.h"
 #include "chat/chat-manager.h"
 #include "chat/message/message.h"
 #include "chat/message/pending-messages-manager.h"
 #include "configuration/configuration-file.h"
-#include "contacts/contact.h"
+#include "buddies/buddy.h"
 #include "core/core.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
@@ -60,17 +60,17 @@ void disableNonHistoryContacts(Action *action)
 {
 	kdebugf();
 	action->setEnabled(false);
-	ContactSet contacts = action->contacts();
+	BuddySet contacts = action->buddies();
 
 	if (!contacts.count())
 		return;
 
-	foreach (const Contact &contact, contacts)
+	foreach (const Buddy &buddy, contacts)
 	{
-		if (Core::instance()->myself() == contact)
+		if (Core::instance()->myself() == buddy)
 			return;
 
-		Account account = contact.prefferedAccount();
+		Account account = buddy.prefferedAccount();
 		if (!account.protocolHandler() || !account.protocolHandler()->chatService())
 			return;
 	}
@@ -117,7 +117,7 @@ void History::createActionDescriptions()
 		disableNonHistoryContacts
 	);
 	ShowHistoryActionDescription->setShortcut("kadu_showhistory");
-	ContactsListViewMenuManager::instance()->insertActionDescription(3, ShowHistoryActionDescription);
+	BuddiesListViewMenuManager::instance()->insertActionDescription(3, ShowHistoryActionDescription);
 
 	ChatsHistoryActionDescription = new ActionDescription(0,
 		ActionDescription::TypeMainMenu, "chatsHistoryAction",
@@ -138,13 +138,13 @@ void History::createActionDescriptions()
 		"ClearHistory", tr("Clear history"), false, "",
 		disableNonHistoryContacts
 	);
-	ContactsListViewMenuManager::instance()->addManagementActionDescription(ClearHistoryActionDescription);
+	BuddiesListViewMenuManager::instance()->addManagementActionDescription(ClearHistoryActionDescription);
 
 }
 
 void History::deleteActionDescriptions()
 {
-	ContactsListViewMenuManager::instance()->removeActionDescription(ShowHistoryActionDescription);
+	BuddiesListViewMenuManager::instance()->removeActionDescription(ShowHistoryActionDescription);
 
 	delete ShowHistoryActionDescription;
 	ShowHistoryActionDescription = 0;
@@ -455,14 +455,14 @@ void History::configurationUpdated()
 	kdebugf2();
 }
 
-bool History::removeContactFromStorage(Contact contact)
+bool History::removeContactFromStorage(Buddy buddy)
 {
 	if (!CurrentStorage)
 		return true;
 //TODO: optimize
-	QList<Chat *> chats = ChatManager::instance()->chatsForAccount(contact.prefferedAccount());
+	QList<Chat *> chats = ChatManager::instance()->chatsForAccount(buddy.prefferedAccount());
 	foreach (Chat *chat, chats)
-		if (chat->contacts().contains(contact) && !CurrentStorage->chatDates(chat, HistorySearchParameters()).isEmpty())
+		if (chat->buddies().contains(buddy) && !CurrentStorage->chatDates(chat, HistorySearchParameters()).isEmpty())
 			return false;
 	return true;
 }

@@ -14,7 +14,7 @@
 #include "parser/parser.h"
 #include "notification.h"
 
-class ContactSet;
+class BuddySet;
 
 class AccountNotification : public Notification
 {

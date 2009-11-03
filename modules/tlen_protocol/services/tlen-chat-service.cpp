@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "contacts/ignored-helper.h"
+#include "buddies/ignored-helper.h"
 
 #include "configuration/configuration-file.h"
 #include "debug.h"
@@ -29,8 +29,8 @@ TlenChatService::TlenChatService(TlenProtocol *protocol)
                this, SIGNAL(sendMessageFiltering(Chat *, QByteArray &, bool &)));
        connect(protocol, SIGNAL(messageStatusChanged(int , ChatService::MessageStatus)),
                this, SIGNAL(messageStatusChanged(int , ChatService::MessageStatus)));
-       connect(protocol, SIGNAL(receivedMessageFilter(Chat *, Contact, const QString &, time_t , bool &)),
-               this, SIGNAL(receivedMessageFilter(Chat *, Contact, const QString &, time_t, bool &)));
+       connect(protocol, SIGNAL(receivedMessageFilter(Chat *, Buddy, const QString &, time_t , bool &)),
+               this, SIGNAL(receivedMessageFilter(Chat *, Buddy, const QString &, time_t, bool &)));
        connect(protocol, SIGNAL(messageReceived(const Message &)),
 	       this, SIGNAL(messageReceived(const Message &)));
        connect(protocol, SIGNAL(messageSent(const Message &)),

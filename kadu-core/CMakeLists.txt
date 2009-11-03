@@ -12,6 +12,48 @@ set (kadu_SRCS
 	accounts/model/accounts-model.cpp
 	accounts/model/accounts-proxy-model.cpp
 
+	buddies/avatar.cpp
+	buddies/avatar-manager.cpp
+	buddies/buddies-aware-object.cpp
+	buddies/buddy.cpp
+	buddies/buddy-kadu-data.cpp
+	buddies/buddy-list.cpp
+	buddies/buddy-list-configuration-helper.cpp
+	buddies/buddy-list-mime-data-helper.cpp
+	buddies/buddy-manager.cpp
+	buddies/buddy-remove-predicate-object.cpp
+	buddies/buddy-search-criteria.cpp
+	buddies/buddy-set.cpp
+	buddies/buddy-set-configuration-helper.cpp
+	buddies/buddy-shared.cpp
+	buddies/group.cpp
+	buddies/group-manager.cpp
+	buddies/ignored-helper.cpp
+
+	buddies/account-data/contact-account-data.cpp
+	buddies/account-data/contact-account-data-manager.cpp
+
+	buddies/account-data/model/buddy-account-data-model.cpp
+
+	buddies/filter/account-buddy-filter.cpp
+	buddies/filter/anonymous-buddy-filter.cpp
+	buddies/filter/anonymous-without-messages-buddy-filter.cpp
+	buddies/filter/buddy-mergable-filter.cpp
+	buddies/filter/buddy-name-filter.cpp
+	buddies/filter/group-buddy-filter.cpp
+	buddies/filter/has-description-buddy-filter.cpp
+	buddies/filter/non-account-buddy-filter.cpp
+	buddies/filter/offline-buddy-filter.cpp
+	buddies/filter/online-and-description-buddy-filter.cpp
+	buddies/filter/online-buddy-filter.cpp
+
+	buddies/model/abstract-buddies-model.cpp
+	buddies/model/buddy-list-model.cpp
+	buddies/model/buddies-model.cpp
+	buddies/model/buddies-model-base.cpp
+	buddies/model/buddies-model-proxy.cpp
+	buddies/model/groups-model.cpp
+
 	chat/aggregate-chat.cpp
 	chat/chat.cpp
 	chat/chat-aggregator-builder.cpp
@@ -37,47 +79,6 @@ set (kadu_SRCS
 	chat/type/chat-type.cpp
 	chat/type/chat-type-manager.cpp
 
-	contacts/avatar.cpp
-	contacts/avatar-manager.cpp
-	contacts/contact.cpp
-	contacts/contact-data.cpp
-	contacts/contact-kadu-data.cpp
-	contacts/contact-list.cpp
-	contacts/contact-list-configuration-helper.cpp
-	contacts/contact-list-mime-data-helper.cpp
-	contacts/contact-manager.cpp
-	contacts/contact-remove-predicate-object.cpp
-	contacts/contact-search-criteria.cpp
-	contacts/contact-set.cpp
-	contacts/contact-set-configuration-helper.cpp
-	contacts/contacts-aware-object.cpp
-	contacts/group.cpp
-	contacts/group-manager.cpp
-	contacts/ignored-helper.cpp
-
-	contacts/account-data/contact-account-data.cpp
-	contacts/account-data/contact-account-data-manager.cpp
-	contacts/account-data/model/contact-account-data-model.cpp
-
-	contacts/filter/account-contact-filter.cpp
-	contacts/filter/anonymous-contact-filter.cpp
-	contacts/filter/anonymous-without-messages-contact-filter.cpp
-	contacts/filter/contact-mergable-filter.cpp
-	contacts/filter/contact-name-filter.cpp
-	contacts/filter/group-contact-filter.cpp
-	contacts/filter/has-description-contact-filter.cpp
-	contacts/filter/non-account-contact-filter.cpp
-	contacts/filter/offline-contact-filter.cpp
-	contacts/filter/online-and-description-contact-filter.cpp
-	contacts/filter/online-contact-filter.cpp
-
-	contacts/model/abstract-contacts-model.cpp
-	contacts/model/contact-list-model.cpp
-	contacts/model/contacts-model.cpp
-	contacts/model/contacts-model-base.cpp
-	contacts/model/contacts-model-proxy.cpp
-	contacts/model/groups-model.cpp
-
 	configuration/account-data-manager.cpp
 	configuration/config-file-data-manager.cpp
 	configuration/configuration-aware-object.cpp
@@ -102,7 +103,17 @@ set (kadu_SRCS
 	gui/actions/actions.cpp
 	gui/actions/action-description.cpp
 
-	gui/widgets/account-contacts-list-widget.cpp
+	gui/widgets/account-buddy-list-widget.cpp
+	gui/widgets/buddies-line-edit.cpp
+	gui/widgets/buddies-list-view.cpp
+	gui/widgets/buddies-list-view-delegate.cpp
+	gui/widgets/buddies-list-view-menu-manager.cpp
+	gui/widgets/buddies-list-widget.cpp
+	gui/widgets/buddy-general-configuration-widget.cpp
+	gui/widgets/buddy-groups-configuration-widget.cpp
+	gui/widgets/buddy-personal-info-configuration-widget.cpp
+	gui/widgets/buddy-options-configuration-widget.cpp
+	gui/widgets/buddy-info-panel.cpp
 	gui/widgets/chat-edit-box.cpp
 	gui/widgets/chat-messages-view.cpp
 	gui/widgets/chat-widget.cpp
@@ -112,16 +123,6 @@ set (kadu_SRCS
 	gui/widgets/color-button.cpp
 	gui/widgets/color-selector.cpp
 	gui/widgets/contact-account-data-widget.cpp
-	gui/widgets/contact-general-configuration-widget.cpp
-	gui/widgets/contact-groups-configuration-widget.cpp
-	gui/widgets/contact-personal-info-configuration-widget.cpp
-	gui/widgets/contact-options-configuration-widget.cpp
-	gui/widgets/contact-info-panel.cpp
-	gui/widgets/contacts-line-edit.cpp
-	gui/widgets/contacts-list-view.cpp
-	gui/widgets/contacts-list-view-delegate.cpp
-	gui/widgets/contacts-list-view-menu-manager.cpp
-	gui/widgets/contacts-list-widget.cpp
 	gui/widgets/custom-input.cpp
 	gui/widgets/delayed-line-edit.cpp
 	gui/widgets/group-tab-bar.cpp
@@ -130,8 +131,8 @@ set (kadu_SRCS
 	gui/widgets/path-list-edit.cpp
 	gui/widgets/proxy-group-box.cpp
 	gui/widgets/preview.cpp
-	gui/widgets/select-contact-combobox.cpp
-	gui/widgets/select-contact-popup.cpp
+	gui/widgets/select-buddy-combobox.cpp
+	gui/widgets/select-buddy-popup.cpp
 	gui/widgets/select-file.cpp
 	gui/widgets/select-font.cpp
 	gui/widgets/status-button.cpp
@@ -169,27 +170,28 @@ set (kadu_SRCS
 
 	gui/windows/about.cpp
 	gui/windows/add-buddy-window.cpp
+	gui/windows/buddy-data-manager.cpp
+	gui/windows/buddy-data-window.cpp
 	gui/windows/chat-window.cpp
 	gui/windows/choose-description.cpp
 	gui/windows/configuration-window.cpp
-	gui/windows/contact-data-manager.cpp
-	gui/windows/contact-data-window.cpp
 	gui/windows/group-properties-window.cpp
 	gui/windows/image-dialog.cpp
 	gui/windows/kadu-window.cpp
 	gui/windows/kadu-window-actions.cpp
 	gui/windows/main-configuration-window.cpp
 	gui/windows/main-window.cpp
-	gui/windows/merge-contacts-window.cpp
+	gui/windows/merge-buddies-window.cpp
 	gui/windows/message-box.cpp
-	gui/windows/open-chat-with/open-chat-with.cpp
-	gui/windows/open-chat-with/open-chat-with-contact-list-runner.cpp
-	gui/windows/open-chat-with/open-chat-with-runner-manager.cpp
 	gui/windows/password-window.cpp
 	gui/windows/search-window.cpp
 	gui/windows/syntax-editor-window.cpp
 	gui/windows/window-notifier-window.cpp
 	gui/windows/your-accounts.cpp
+
+	gui/windows/open-chat-with/open-chat-with.cpp
+	gui/windows/open-chat-with/open-chat-with-contact-list-runner.cpp
+	gui/windows/open-chat-with/open-chat-with-runner-manager.cpp
 
 	identities/identity.cpp
 	identities/identity-manager.cpp
@@ -273,6 +275,41 @@ set (kadu_MOC_SRCS
 	accounts/model/accounts-model.h
 	accounts/model/accounts-proxy-model.h
 
+	buddies/avatar-manager.h
+	buddies/buddy.h
+	buddies/buddy-shared.h
+	#buddies/buddy-list.h
+	#buddies/buddy-list-configuration-helper.h
+	buddies/buddy-manager.h
+	#buddies/buddy-search-criteria.h
+	#buddies/buddy-set.h
+	buddies/group.h
+	buddies/group-manager.h
+
+	buddies/account-data/contact-account-data.h
+	buddies/account-data/contact-account-data-manager.h
+	buddies/account-data/model/buddy-account-data-model.h
+
+	buddies/filter/abstract-buddy-filter.h
+	buddies/filter/account-buddy-filter.h
+	buddies/filter/anonymous-buddy-filter.h
+	buddies/filter/anonymous-without-messages-buddy-filter.h
+	buddies/filter/buddy-mergable-filter.h
+	#buddies/filter/buddy-name-filter.h
+	buddies/filter/group-buddy-filter.h
+	buddies/filter/has-description-buddy-filter.h
+	buddies/filter/non-account-buddy-filter.h
+	buddies/filter/offline-buddy-filter.h
+	buddies/filter/online-and-description-buddy-filter.h
+	buddies/filter/online-buddy-filter.h
+
+	#buddies/model/abstract-buddies-model.h
+	buddies/model/buddy-list-model.h
+	buddies/model/buddies-model.h
+	buddies/model/buddies-model-base.h
+	buddies/model/buddies-model-proxy.h
+	buddies/model/groups-model.h
+
 	chat/aggregate-chat.h
 	chat/chat.h
 	chat/chat-aggregator-builder.h
@@ -295,41 +332,6 @@ set (kadu_MOC_SRCS
 
 	chat/type/chat-type-manager.h
 
-	contacts/avatar-manager.h
-	contacts/contact.h
-	contacts/contact-data.h
-	#contacts/contact-list.h
-	#contacts/contact-list-configuration-helper.h
-	contacts/contact-manager.h
-	#contacts/contact-search-criteria.h
-	#contacts/contact-set.h
-	contacts/group.h
-	contacts/group-manager.h
-
-	contacts/account-data/contact-account-data.h
-	contacts/account-data/contact-account-data-manager.h
-	contacts/account-data/model/contact-account-data-model.h
-
-	contacts/filter/abstract-contact-filter.h
-	contacts/filter/account-contact-filter.h
-	contacts/filter/anonymous-contact-filter.h
-	contacts/filter/anonymous-without-messages-contact-filter.h
-	contacts/filter/contact-mergable-filter.h
-	#contacts/filter/contact-name-filter.h
-	contacts/filter/group-contact-filter.h
-	contacts/filter/has-description-contact-filter.h
-	contacts/filter/non-account-contact-filter.h
-	contacts/filter/offline-contact-filter.h
-	contacts/filter/online-and-description-contact-filter.h
-	contacts/filter/online-contact-filter.h
-
-	#contacts/model/abstract-contacts-model.h
-	contacts/model/contact-list-model.h
-	contacts/model/contacts-model.h
-	contacts/model/contacts-model-base.h
-	contacts/model/contacts-model-proxy.h
-	contacts/model/groups-model.h
-
 	configuration/configuration-window-data-manager.h
 	configuration/notifier-configuration-data-manager.h
 
@@ -342,9 +344,18 @@ set (kadu_MOC_SRCS
 	gui/actions/actions.h
 	gui/actions/action-description.h
 
-	gui/widgets/account-contacts-list-widget.h
+	gui/widgets/account-buddy-list-widget.h
 	gui/widgets/account-create-widget.h
 	gui/widgets/account-edit-widget.h
+	gui/widgets/buddies-line-edit.h
+	gui/widgets/buddies-list-view.h
+	gui/widgets/buddies-list-view-delegate.h
+	gui/widgets/buddies-list-widget.h
+	gui/widgets/buddy-general-configuration-widget.h
+	gui/widgets/buddy-groups-configuration-widget.h
+	gui/widgets/buddy-personal-info-configuration-widget.h
+	gui/widgets/buddy-options-configuration-widget.h
+	gui/widgets/buddy-info-panel.h
 	gui/widgets/chat-edit-box.h
 	gui/widgets/chat-messages-view.h
 	gui/widgets/chat-widget.h
@@ -354,23 +365,14 @@ set (kadu_MOC_SRCS
 	gui/widgets/color-button.h
 	gui/widgets/color-selector.h
 	gui/widgets/contact-account-data-widget.h
-	gui/widgets/contact-general-configuration-widget.h
-	gui/widgets/contact-groups-configuration-widget.h
-	gui/widgets/contact-personal-info-configuration-widget.h
-	gui/widgets/contact-options-configuration-widget.h
-	gui/widgets/contact-info-panel.h
-	gui/widgets/contacts-line-edit.h
-	gui/widgets/contacts-list-view.h
-	gui/widgets/contacts-list-view-delegate.h
-	gui/widgets/contacts-list-widget.h
 	gui/widgets/custom-input.h
 	gui/widgets/delayed-line-edit.h
 	gui/widgets/group-tab-bar.h
 	gui/widgets/kadu-text-browser.h
 	gui/widgets/path-list-edit.h
 	gui/widgets/preview.h
-	gui/widgets/select-contact-combobox.h
-	gui/widgets/select-contact-popup.h
+	gui/widgets/select-buddy-combobox.h
+	gui/widgets/select-buddy-popup.h
 	gui/widgets/select-file.h
 	gui/widgets/select-font.h
 	gui/widgets/status-button.h
@@ -391,23 +393,24 @@ set (kadu_MOC_SRCS
 
 	gui/windows/about.h
 	gui/windows/add-buddy-window.h
+	gui/windows/buddy-data-manager.h
+	gui/windows/buddy-data-window.h
 	gui/windows/chat-window.h
 	gui/windows/choose-description.h
 	gui/windows/configuration-window.h
-	gui/windows/contact-data-manager.h
-	gui/windows/contact-data-window.h
 	gui/windows/group-properties-window.h
 	gui/windows/kadu-window.h
 	gui/windows/kadu-window-actions.h
 	gui/windows/main-configuration-window.h
 	gui/windows/main-window.h
-	gui/windows/merge-contacts-window.h
+	gui/windows/merge-buddies-window.h
 	gui/windows/message-box.h
-	gui/windows/open-chat-with/open-chat-with.h
 	gui/windows/password-window.h
 	gui/windows/search-window.h
 	gui/windows/syntax-editor-window.h
 	gui/windows/your-accounts.h
+
+	gui/windows/open-chat-with/open-chat-with.h
 
 	identities/identity.h
 	identities/identity-manager.h

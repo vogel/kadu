@@ -14,7 +14,7 @@
 
 #include <libgadu.h>
 
-#include "contacts/contact.h"
+#include "buddies/buddy.h"
 
 #include "protocols/services/search-service.h"
 
@@ -25,7 +25,7 @@ class GaduSearchService : public SearchService
 	Q_OBJECT
 
 	GaduProtocol *Protocol;
-	ContactSearchCriteria Query;
+	BuddySearchCriteria Query;
 	unsigned int SearchSeq;
 	unsigned int From;
 	bool Stopped;
@@ -35,7 +35,7 @@ class GaduSearchService : public SearchService
 
 public:
 	GaduSearchService(GaduProtocol *protocol);
-	virtual void searchFirst(ContactSearchCriteria criteria);
+	virtual void searchFirst(BuddySearchCriteria criteria);
 	virtual void searchNext();
 	virtual void stop();
 

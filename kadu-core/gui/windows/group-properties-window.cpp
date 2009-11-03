@@ -17,7 +17,7 @@
 #include <QtGui/QVBoxLayout>
 
 #include "configuration/configuration-file.h"
-#include "contacts/group.h"
+#include "buddies/group.h"
 #include "gui/windows/image-dialog.h"
 
 #include "icons-manager.h"

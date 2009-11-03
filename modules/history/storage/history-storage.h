@@ -14,7 +14,7 @@
 #include <QtCore/QObject>
 
 #include "chat/chat.h"
-#include "contacts/contact.h"
+#include "buddies/buddy.h"
 
 #include "../history_exports.h"
 

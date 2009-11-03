@@ -9,7 +9,7 @@
 
 #include "message-data.h"
 
-MessageData::MessageData(Chat *chat, Message::Type type, Contact sender) :
+MessageData::MessageData(Chat *chat, Message::Type type, Buddy sender) :
 		QObject(), MyChat(chat), Sender(sender), MyStatus(Message::StatusUnknown), MyType(type), Id(0)
 {
 }
@@ -24,7 +24,7 @@ MessageData & MessageData::setChat(Chat *chat)
 	return *this;
 }
 
-MessageData & MessageData::setSender(Contact sender)
+MessageData & MessageData::setSender(Buddy sender)
 {
 	Sender = sender;
 	return *this;

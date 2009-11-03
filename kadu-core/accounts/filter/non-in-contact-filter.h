@@ -10,7 +10,7 @@
 #ifndef NON_IN_CONTACT_FILTER
 #define NON_IN_CONTACT_FILTER
 
-#include "contacts/contact.h"
+#include "buddies/buddy.h"
 
 #include "accounts/filter/abstract-account-filter.h"
 
@@ -18,7 +18,7 @@ class NonInContactFilter : public AbstractAccountFilter
 {
 	Q_OBJECT
 
-	Contact MyContact;
+	Buddy MyContact;
 
 protected:
 	virtual bool acceptAccount(Account account);
@@ -27,7 +27,7 @@ public:
 	explicit NonInContactFilter(QObject *parent = 0);
 	virtual ~NonInContactFilter();
 
-	void setContact(Contact contact);
+	void setContact(Buddy buddy);
 
 };
 

@@ -13,12 +13,12 @@
 #include <QtGui/QLabel>
 #include <QtGui/QHBoxLayout>
 
+#include "buddies/buddy.h"
+#include "buddies/buddy-list.h"
+
 #include "chat/chat.h"
 
 #include "configuration/configuration-file.h"
-
-#include "contacts/contact.h"
-#include "contacts/contact-list.h"
 
 #include "gui/widgets/configuration/notify-group-box.h"
 #include "gui/windows/main-configuration-window.h"
@@ -229,11 +229,11 @@ void ExecNotify::notify(Notification *notification)
 	ChatNotification *chatNotification = dynamic_cast<ChatNotification *>(notification);
 	if (chatNotification)
 	{
-		ContactList contacts = chatNotification->chat()->contacts().toContactList();
-		Contact contact = contact = contacts[0];
+		BuddyList buddies = chatNotification->chat()->buddies().toContactList();
+		Buddy buddy = contact = contacts[0];
 
 		QStringList sendersList;
-		foreach (Contact contact, contacts)
+		foreach (Buddy buddy, contacts)
 			sendersList.append(contact.id(chatNotification->account()));
 		QString sendersString = sendersList.join(",");
 

@@ -30,7 +30,7 @@ JabberPersonalInfoWidget::JabberPersonalInfoWidget(Account account, QWidget* par
 	if (!Service)
 		return;
 
-	connect(Service, SIGNAL(personalInfoAvailable(Contact)), this, SLOT(personalInfoAvailable(Contact)));
+	connect(Service, SIGNAL(personalInfoAvailable(Buddy)), this, SLOT(personalInfoAvailable(Buddy)));
 	Service->fetchPersonalInfo();
 }
 
@@ -80,14 +80,14 @@ void JabberPersonalInfoWidget::createGui()
 	layout->setRowStretch(8, 100);
 }
 
-void JabberPersonalInfoWidget::personalInfoAvailable(Contact contact)
+void JabberPersonalInfoWidget::personalInfoAvailable(Buddy buddy)
 {
-	NickName->setText(contact.nickName());
-	FirstName->setText(contact.firstName());
-	LastName->setText(contact.lastName());
-	Sex->setCurrentIndex((int)contact.gender());
-	FamilyName->setText(contact.familyName());
-	BirthYear->setText(QString::number(contact.birthYear()));
-	City->setText(contact.city());
-	FamilyCity->setText(contact.familyCity());
+	NickName->setText(buddy.nickName());
+	FirstName->setText(buddy.firstName());
+	LastName->setText(buddy.lastName());
+	Sex->setCurrentIndex((int)buddy.gender());
+	FamilyName->setText(buddy.familyName());
+	BirthYear->setText(QString::number(buddy.birthYear()));
+	City->setText(buddy.city());
+	FamilyCity->setText(buddy.familyCity());
 }

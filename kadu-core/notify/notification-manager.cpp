@@ -13,13 +13,13 @@
 #include "accounts/account-manager.h"
 #include "chat/message/message.h"
 #include "configuration/configuration-file.h"
-#include "contacts/contact-manager.h"
-#include "contacts/group.h"
-#include "contacts/group-manager.h"
-#include "contacts/account-data/contact-account-data.h"
+#include "buddies/buddy-manager.h"
+#include "buddies/group.h"
+#include "buddies/group-manager.h"
+#include "buddies/account-data/contact-account-data.h"
 #include "gui/actions/action.h"
+#include "gui/widgets/buddies-list-view-menu-manager.h"
 #include "gui/widgets/chat-widget-manager.h"
-#include "gui/widgets/contacts-list-view-menu-manager.h"
 #include "gui/widgets/custom-input.h"
 #include "gui/windows/main-configuration-window.h"
 #include "gui/windows/main-window.h"
@@ -73,7 +73,7 @@ void NotificationManager::init()
 		checkNotify
 	);
 
-	ContactsListViewMenuManager::instance()->addManagementActionDescription(notifyAboutUserActionDescription);
+	BuddiesListViewMenuManager::instance()->addManagementActionDescription(notifyAboutUserActionDescription);
 
 	foreach (Group *group, GroupManager::instance()->groups())
 		groupAdded(group);
@@ -88,7 +88,7 @@ NotificationManager::~NotificationManager()
 
 	MainConfigurationWindow::unregisterUiHandler(UiHandler);
 
-	ContactsListViewMenuManager::instance()->removeManagementActionDescription(notifyAboutUserActionDescription);
+	BuddiesListViewMenuManager::instance()->removeManagementActionDescription(notifyAboutUserActionDescription);
 	delete notifyAboutUserActionDescription;
 	notifyAboutUserActionDescription = 0;
 
@@ -120,12 +120,12 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 		config_file.writeEntry("Notify", "NotifyAboutAll", false);
 	}
 
-	ContactSet contacts = window->contacts();
+	BuddySet buddies = window->buddies();
 
 	bool on = true;
-	foreach (const Contact contact, contacts)
+	foreach (const Buddy buddy, buddies)
 	{
-		ContactNotifyData *cnd = contact.moduleData<ContactNotifyData>();
+		ContactNotifyData *cnd = buddy.moduleData<ContactNotifyData>();
 
 		if (!cnd || !cnd->notify())
 		{
@@ -136,12 +136,12 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 		delete cnd;
 	}
 
-	foreach (const Contact contact, contacts)
+	foreach (const Buddy buddy, buddies)
 	{
-		if (contact.isNull() || contact.isAnonymous())
+		if (buddy.isNull() || buddy.isAnonymous())
 			continue;
 
-		ContactNotifyData *cnd = contact.moduleData<ContactNotifyData>();
+		ContactNotifyData *cnd = buddy.moduleData<ContactNotifyData>();
 		if (!cnd)
 			continue;
 
@@ -154,10 +154,8 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 	}
 
 	foreach (Action *action, notifyAboutUserActionDescription->actions())
-	{
-		if (action->contacts() == contacts)
+		if (action->buddies() == buddies)
 			action->setChecked(!on);
-	}
 
 	kdebugf2();
 }
@@ -170,8 +168,8 @@ void NotificationManager::accountRegistered(Account account)
 // 	TODO: 0.6.6
 // 	connect(protocol, SIGNAL(connectionError(Account, const QString &, const QString &)),
 // 			this, SLOT(connectionError(Account, const QString &, const QString &)));
-	connect(account.data(), SIGNAL(contactStatusChanged(Account, Contact, Status)),
-			this, SLOT(statusChanged(Account, Contact, Status)));
+	connect(account.data(), SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
+			this, SLOT(statusChanged(Account, Buddy, Status)));
 
 	ChatService *chatService = protocol->chatService();
 	if (chatService)
@@ -186,8 +184,8 @@ void NotificationManager::accountUnregistered(Account account)
 	Protocol *protocol = account.protocolHandler();
 	disconnect(protocol, SIGNAL(connectionError(Account, const QString &, const QString &)),
 			this, SLOT(connectionError(Account, const QString &, const QString &)));
-	disconnect(account.data(), SIGNAL(contactStatusChanged(Account, Contact, Status)),
-			this, SLOT(statusChanged(Account, Contact, Status)));
+	disconnect(account.data(), SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
+			this, SLOT(statusChanged(Account, Buddy, Status)));
 
 	ChatService *chatService = protocol->chatService();
 	if (chatService)
@@ -197,7 +195,7 @@ void NotificationManager::accountUnregistered(Account account)
 	}
 }
 
-void NotificationManager::statusChanged(Account account, Contact contact, Status oldStatus)
+void NotificationManager::statusChanged(Account account, Buddy buddy, Status oldStatus)
 {
 	kdebugf();
 
@@ -210,7 +208,7 @@ void NotificationManager::statusChanged(Account account, Contact contact, Status
 
 	// TODO 0.6.6 display -> uuid?
 	bool notify_contact = true;
-	ContactNotifyData *cnd = contact.moduleData<ContactNotifyData>();
+	ContactNotifyData *cnd = buddy.moduleData<ContactNotifyData>();
 
 	if (!cnd || !cnd->notify())
 		notify_contact = false;
@@ -224,10 +222,10 @@ void NotificationManager::statusChanged(Account account, Contact contact, Status
 		return;
 	}
 
-	if (contact.id(account) == account.id()) // myself
+	if (buddy.id(account) == account.id()) // myself
 		return;
 
-	ContactAccountData *data = contact.accountData(account);
+	ContactAccountData *data = buddy.accountData(account);
 	if (!data)
 		return;
 
@@ -241,13 +239,13 @@ void NotificationManager::statusChanged(Account account, Contact contact, Status
 
 	QString changedTo = "/To" + Status::name(data->status(), false);
 
-	ContactSet contacts(contact);
+	BuddySet buddies(buddy);
 
 	StatusChangedNotification *statusChangedNotification;
 	if (config_file.readBoolEntry("Notify", "StatusChanged" + changedTo + "_UseCustomSettings", true))
-		statusChangedNotification = new StatusChangedNotification(changedTo, contacts, account);
+		statusChangedNotification = new StatusChangedNotification(changedTo, buddies, account);
 	else
-		statusChangedNotification = new StatusChangedNotification("", contacts, account);
+		statusChangedNotification = new StatusChangedNotification("", buddies, account);
 
 	notify(statusChangedNotification);
 
@@ -390,12 +388,12 @@ void NotificationManager::groupNotifyChanged(Group *group)
 		config_file.writeEntry("Notify", "NotifyAboutAll", false);
 	}
 
-	foreach (const Contact contact, ContactManager::instance()->contacts())
+	foreach (const Buddy buddy, BuddyManager::instance()->buddies())
 	{
-		if (contact.isNull() || contact.isAnonymous() || contact.groups().contains(group))
+		if (buddy.isNull() || buddy.isAnonymous() || buddy.groups().contains(group))
 			continue;
 
-		ContactNotifyData *cnd = contact.moduleData<ContactNotifyData>();
+		ContactNotifyData *cnd = buddy.moduleData<ContactNotifyData>();
 		if (!cnd)
 			continue;
 
@@ -427,8 +425,8 @@ void checkNotify(Action *action)
 {
 	kdebugf();
 
-	foreach(Contact contact, action->contacts())
-		if (!contact.hasAccountData(contact.prefferedAccount()))
+	foreach(Buddy buddy, action->buddies())
+		if (!buddy.hasAccountData(buddy.prefferedAccount()))
 		{
 			action->setEnabled(false);
 			return;
@@ -437,9 +435,9 @@ void checkNotify(Action *action)
 	action->setEnabled(true);
 
 	bool on = true;
-	foreach (const Contact contact, action->contacts())
+	foreach (const Buddy buddy, action->buddies())
 	{
-		ContactNotifyData *cnd = contact.moduleData<ContactNotifyData>();
+		ContactNotifyData *cnd = buddy.moduleData<ContactNotifyData>();
 
 		if (!cnd || !cnd->notify())
 		{

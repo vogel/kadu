@@ -16,7 +16,7 @@
 #include "accounts/account.h"
 #include "configuration/configuration-file.h"
 #include "configuration/config-file-data-manager.h"
-#include "contacts/account-data/contact-account-data.h"
+#include "buddies/account-data/contact-account-data.h"
 #include "gui/widgets/configuration/config-color-button.h"
 #include "gui/widgets/configuration/config-combo-box.h"
 #include "gui/widgets/configuration/config-group-box.h"
@@ -31,7 +31,7 @@
 
 #include "hint-over-user-configuration-window.h"
 
-HintOverUserConfigurationWindow::HintOverUserConfigurationWindow(Contact exampleContact) :
+HintOverUserConfigurationWindow::HintOverUserConfigurationWindow(Buddy exampleContact) :
 	ConfigurationWindow("hint-over-user", tr("Hint over user configuration"), MainConfigurationWindow::instanceDataManager()),
 	ExampleContact(exampleContact)
 {

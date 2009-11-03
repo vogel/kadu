@@ -21,7 +21,7 @@ GaduFileTransfer::GaduFileTransfer(Account account) :
 {
 }
 
-GaduFileTransfer::GaduFileTransfer(Account account, Contact peer, FileTransfer::FileTransferType transferType) :
+GaduFileTransfer::GaduFileTransfer(Account account, Buddy peer, FileTransfer::FileTransferType transferType) :
 		FileTransfer(account, peer, transferType),
 		SocketNotifiers(0), WaitingForSocketNotifiers(false)
 {
@@ -116,7 +116,7 @@ void GaduFileTransfer::send()
 		return;
 	}
 
-	GaduContactAccountData *gcad = gaduProtocol->gaduContactAccountData(contact());
+	GaduContactAccountData *gcad = gaduProtocol->gaduContactAccountData(buddy());
 	if (!gcad)
 	{
 		changeFileTransferStatus(FileTransfer::StatusNotConnected);

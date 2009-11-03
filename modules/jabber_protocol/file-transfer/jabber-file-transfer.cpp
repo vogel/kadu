@@ -9,7 +9,7 @@
 #include <QtGui/QMessageBox>
 
 #include "accounts/account.h"
-#include "contacts/contact-manager.h"
+#include "buddies/buddy-manager.h"
 #include "debug.h"
 #include "jabber-contact-account-data.h"
 #include "../jabber-protocol.h"
@@ -112,13 +112,13 @@ JabberFileTransfer::JabberFileTransfer(Account account) :
 {
 }
 
-JabberFileTransfer::JabberFileTransfer(Account account, Contact peer, FileTransferType transferType) :
+JabberFileTransfer::JabberFileTransfer(Account account, Buddy peer, FileTransferType transferType) :
 		FileTransfer(account, peer, transferType), InProgress(false)
 {
 }
 
 JabberFileTransfer::JabberFileTransfer(Account account, FileTransferType transferType, XMPP::FileTransfer *jTransfer) :
-		FileTransfer(account, ContactManager::instance()->byId(account, jTransfer->peer().bare()), transferType), 
+		FileTransfer(account, BuddyManager::instance()->byId(account, jTransfer->peer().bare()), transferType), 
 		InProgress(false), JabberTransfer(jTransfer)
 {
 }
@@ -166,7 +166,7 @@ void JabberFileTransfer::send()
 		return;
 	}
 
-	JabberContactAccountData *jcad = jabberProtocol->jabberContactAccountData(contact());
+	JabberContactAccountData *jcad = jabberProtocol->jabberContactAccountData(buddy());
 	if (!jcad)
 	{
 		changeFileTransferStatus(FileTransfer::StatusNotConnected);
@@ -175,7 +175,7 @@ void JabberFileTransfer::send()
 
 	Shift = calcShift(fileSize());
 	Complement = calcComplement(fileSize(), Shift);
-	PeerJid = XMPP::Jid(contact().id(account()));
+	PeerJid = XMPP::Jid(buddy().id(account()));
 
 	JabberTransfer = jabberProtocol->client()->fileTransferManager()->createTransfer();
 /*	Jid proxy = d->pa->userAccount().dtProxy;

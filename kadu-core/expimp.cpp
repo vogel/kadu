@@ -25,9 +25,9 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "contacts/contact-manager.h"
-#include "contacts/group.h"
-#include "contacts/account-data/contact-account-data.h"
+#include "buddies/buddy-manager.h"
+#include "buddies/group.h"
+#include "buddies/account-data/contact-account-data.h"
 #include "gui/windows/message-box.h"
 #include "protocols/protocol.h"
 #include "protocols/services/contact-list-service.h"
@@ -172,8 +172,8 @@ UserlistImportExport::UserlistImportExport(QWidget *parent)
 	Protocol *gadu = AccountManager::instance()->defaultAccount().protocolHandler();
 	ContactListService *manager = gadu->contactListService();
 	connect(manager, SIGNAL(contactListExported(bool)), this, SLOT(contactListExported(bool)));
-	connect(manager, SIGNAL(contactListImported(bool, ContactList)),
-		this, SLOT(contactListImported(bool, ContactList)));
+	connect(manager, SIGNAL(contactListImported(bool, BuddyList)),
+		this, SLOT(contactListImported(bool, BuddyList)));
 	// end connect
 
 	center_layout->addWidget(l_info);
@@ -304,11 +304,11 @@ void UserlistImportExport::updateUserlist()
 	kdebugf2();
 }
 
-void UserlistImportExport::contactListImported(bool ok, ContactList contacts)
+void UserlistImportExport::contactListImported(bool ok, BuddyList buddies)
 {
 	kdebugf();
 
-	ImprotedContacts = contacts;
+	ImprotedContacts = buddies;
 	lv_userlist->clear();
 
 	pb_fetch->setEnabled(true);
@@ -317,26 +317,26 @@ void UserlistImportExport::contactListImported(bool ok, ContactList contacts)
 		return;
 
 	Account account = AccountManager::instance()->defaultAccount();
-	foreach (Contact contact, contacts)
+	foreach (Buddy buddy, buddies)
 	{
 		QString id;
-		if (contact.hasAccountData(account))
-			id = contact.accountData(account)->id();
+		if (buddy.hasAccountData(account))
+			id = buddy.accountData(account)->id();
 
 		QStringList groups;
-		foreach (Group *group, contact.groups())
+		foreach (Group *group, buddy.groups())
 			groups << group->name();
 
 		QStringList values;
 		values
 			<< id
-			<< contact.nickName()
-			<< contact.display()
-			<< contact.firstName()
-			<< contact.lastName()
-			<< contact.mobile()
+			<< buddy.nickName()
+			<< buddy.display()
+			<< buddy.firstName()
+			<< buddy.lastName()
+			<< buddy.mobile()
 			<< groups.join(",") 
-			<< contact.email();
+			<< buddy.email();
 		new QTreeWidgetItem(lv_userlist, values);
 	}
 
@@ -386,7 +386,7 @@ void UserlistImportExport::ExportToFile(void)
 			{
 				QTextStream stream(&file);
 				stream.setCodec(codec_latin2);
-				stream << GaduListHelper::contactListToString(account, ContactManager::instance()->contacts(account));
+				stream << GaduListHelper::contactListToString(account, BuddyManager::instance()->buddies(account));
 				file.close();
 				MessageBox::msg(tr("Your userlist has been successfully exported to file"), false, "Information", this);
 			}
@@ -422,7 +422,7 @@ void UserlistImportExport::clean()
 
 	ContactListService *manager = gadu->contactListService();
 	Clear = true;
-	manager->exportContactList(ContactList());
+	manager->exportContactList(BuddyList());
 
 	kdebugf2();
 }

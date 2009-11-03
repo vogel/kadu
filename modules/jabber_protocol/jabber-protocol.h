@@ -73,7 +73,7 @@ class JabberProtocol : public Protocol
 		virtual SearchService * searchService() { return 0; }
 		JabberResourcePool *resourcePool();
 
-		JabberContactAccountData * jabberContactAccountData(Contact contact) const;
+		JabberContactAccountData * jabberContactAccountData(Buddy buddy) const;
 
 	protected:
 		virtual void changeStatus();
@@ -92,12 +92,12 @@ class JabberProtocol : public Protocol
 		void slotSubscription(const XMPP::Jid &jid, const QString &type);
 		void slotClientDebugMessage (const QString &msg);
 
-		void contactAdded(Contact &contact);
-		void contactRemoved(Contact &contact);
-		void contactUpdated(Contact &contact);
-		void contactAccountDataAdded(Contact &contact, Account contactAccount);
-		void contactAccountDataAboutToBeRemoved(Contact &contact, Account contactAccount);
-		void contactAccountIdChanged(Contact &contact, Account account, const QString &oldId);
+		void contactAdded(Buddy &buddy);
+		void contactRemoved(Buddy &buddy);
+		void contactUpdated(Buddy &buddy);
+		void contactAccountDataAdded(Buddy &buddy, Account contactAccount);
+		void contactAccountDataAboutToBeRemoved(Buddy &buddy, Account contactAccount);
+		void contactAccountIdChanged(Buddy &buddy, Account account, const QString &oldId);
 
 	public slots:
 		void connectToServer();
@@ -106,10 +106,10 @@ class JabberProtocol : public Protocol
 		void logout(const XMPP::Status &s = XMPP::Status("", tr("Logged out"), 0, false));
 
 	signals:
-		void userStatusChangeIgnored(Contact);
+		void userStatusChangeIgnored(Buddy);
 		void sendMessageFiltering(Chat *chat, QByteArray &msg, bool &stop);
 		void messageStatusChanged(int messsageId, ChatService::MessageStatus status);
-		void receivedMessageFilter(Chat *chat, Contact sender, const QString &message, time_t time, bool &ignore);
+		void receivedMessageFilter(Chat *chat, Buddy sender, const QString &message, time_t time, bool &ignore);
 };
 
 #endif //JABBER_PROTOCOL_H

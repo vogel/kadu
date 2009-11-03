@@ -17,8 +17,8 @@
 #include "accounts/accounts-aware-object.h"
 #include "chat/chat.h"
 #include "configuration/configuration-aware-object.h"
-#include "contacts/contact.h"
-#include "contacts/contact-set.h"
+#include "buddies/buddy.h"
+#include "buddies/buddy-set.h"
 #include "status/status.h"
 
 class Action;
@@ -62,7 +62,7 @@ class KADUAPI NotificationManager : public QObject, AccountsAwareObject, Configu
 private slots:
 	void messageReceived(const Message &message);
 
-	void statusChanged(Account account, Contact contact, Status oldStatus);
+	void statusChanged(Account account, Buddy buddy, Status oldStatus);
 
 	void notifyAboutUserActionActivated(QAction *sender, bool toggled);
 

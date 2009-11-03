@@ -9,7 +9,7 @@
 
 #include "accounts/account.h"
 
-#include "contacts/contact.h"
+#include "buddies/buddy.h"
 
 #include "debug.h"
 
@@ -20,15 +20,15 @@ TlenOpenChatWithRunner::TlenOpenChatWithRunner(Account *account) : ParentAccount
 {
 }
 
-ContactList TlenOpenChatWithRunner::matchingContacts(const QString &query)
+BuddyList TlenOpenChatWithRunner::matchingContacts(const QString &query)
 {
 	kdebugf();
 
-	ContactList matchedContacts;
+	BuddyList matchedContacts;
 	if (!validateUserID(query))
 		return matchedContacts;
 
-	Contact c;
+	Buddy c;
 
 	TlenContactAccountData *gcad = new TlenContactAccountData(ParentAccount, c, query);
 	c.addAccountData(gcad);
