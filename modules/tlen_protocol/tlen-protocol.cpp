@@ -92,7 +92,7 @@ void TlenProtocol::fetchAvatars(QString jid, QString type, QString md5)
 {
 	kdebugf();
 
-	Buddy contact = account()->getContactById(jid);
+	Buddy buddy = account()->getContactById(jid);
 
  	if (contact.isAnonymous())
 	{
@@ -218,9 +218,9 @@ bool TlenProtocol::sendMessage(Chat *chat, FormattedMessage &formattedMessage)
 {
 	kdebugf();
 
-	BuddySet users = chat->contacts();
+	BuddySet users = chat->buddies();
 	// TODO send to more users
-	Buddy contact = (*users.begin());
+	Buddy buddy = (*users.begin());
 	QString plain = formattedMessage.toPlain();
 	QString tlenid = contact.id(account());
 
@@ -281,7 +281,7 @@ void TlenProtocol::chatMsgReceived(QDomNode n)
 	//		w->displayMsg(Tlen->decode(body.toUtf8()),timeStamp);
 
 	// TODO - zaimplementowac to samo w ContactList
-	Buddy contact = account()->getContactById(from);
+	Buddy buddy = account()->getContactById(from);
 	BuddySet contacts = BuddySet(contact);
 	// FIXME: dunno why, but commenting it fixed for now (08.04.2009) problem with finding chat for contact (conference window was always being opened for 1 contact)
 	//contacts << contact;
@@ -325,7 +325,7 @@ void TlenProtocol::itemReceived(QString jid, QString name, QString subscription,
 	kdebugf();
 	kdebugm(KDEBUG_WARNING, "Tlen contact rcv %s\n", qPrintable(jid));
 
-	Buddy contact = account()->getContactById(jid);
+	Buddy buddy = account()->getContactById(jid);
 
 	if(!name.isNull())
 		contact.setDisplay(name);
@@ -366,7 +366,7 @@ void TlenProtocol::presenceChanged(QString from, QString newstatus, QString desc
 	if (!description.isEmpty())
 		status.setDescription(description);
 
-	Buddy contact = account()->getContactById(from);
+	Buddy buddy = account()->getContactById(from);
 
 	kdebugm(KDEBUG_WARNING, "Tlen status change: %s %s\n%s", qPrintable(from), qPrintable(newstatus), qPrintable(description));
 
@@ -454,7 +454,7 @@ void TlenProtocol::chatNotify(QString from, QString type)
 {
 	kdebugf();
 
-	Buddy contact = account()->getContactById(from);
+	Buddy buddy = account()->getContactById(from);
 
 	TlenContactAccountData *data = dynamic_cast<TlenContactAccountData *>(contact.accountData(account()));
 

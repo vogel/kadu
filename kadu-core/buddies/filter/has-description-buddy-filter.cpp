@@ -27,14 +27,14 @@ void HasDescriptionBuddyFilter::setEnabled(bool enabled)
 	emit filterChanged();
 }
 
-bool HasDescriptionBuddyFilter::acceptBuddy(Buddy contact)
+bool HasDescriptionBuddyFilter::acceptBuddy(Buddy buddy)
 {
 	if (!Enabled)
 		return true;
 
-	Account prefferedAccount = contact.prefferedAccount();
+	Account prefferedAccount = buddy.prefferedAccount();
 	if (prefferedAccount.isNull())
 		return false;
 
-	return !contact.accountData(prefferedAccount)->status().description().isEmpty();
+	return !buddy.accountData(prefferedAccount)->status().description().isEmpty();
 }

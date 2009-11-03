@@ -22,12 +22,12 @@ class GaduImporter : public QObject
 
 	GaduImporter() {}
 
-	void importContact(Buddy &contact);
-	void importGaduContact(Buddy &contact);
+	void importContact(Buddy &buddy);
+	void importGaduContact(Buddy &buddy);
 	void importIgnored();
 
 private slots:
-	void contactAdded(Buddy &contact);
+	void buddyAdded(Buddy &buddy);
 
 public:
 	static GaduImporter * instance();

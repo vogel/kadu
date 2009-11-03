@@ -100,7 +100,7 @@ QString KaduChatStyleEngine::formatMessage(MessageRenderInfo *message, MessageRe
 	Message msg = message->message();
 	Message aft = after->message();
 
-	Buddy contact = msg.sender();
+	Buddy buddy = msg.sender();
 	Account account = msg.chat()->account();
 
 	if (msg.type() == Message::TypeSystem)
@@ -109,7 +109,7 @@ QString KaduChatStyleEngine::formatMessage(MessageRenderInfo *message, MessageRe
 		format = ChatSyntaxWithoutHeader;
 
 		message->setSeparatorSize(separatorSize);
-		return Parser::parse(format, account, contact, message, true);
+		return Parser::parse(format, account, buddy, message, true);
 	}
 	else
 	{
@@ -138,7 +138,7 @@ QString KaduChatStyleEngine::formatMessage(MessageRenderInfo *message, MessageRe
 		message->setShowServerTime(ChatStylesManager::instance()->noServerTime(), ChatStylesManager::instance()->noServerTimeDiff());
 		message->setSeparatorSize(separatorSize);
 		
-		return Parser::parse(format, account, contact, message, true);
+		return Parser::parse(format, account, buddy, message, true);
 	}
 }
 
@@ -165,15 +165,15 @@ void KaduChatStyleEngine::repaintMessages(HtmlMessagesRenderer *renderer)
 		Message msg = (*message)->message();
 		(*message)->setSeparatorSize(0);
 
-		Buddy contact = msg.sender();
+		Buddy buddy = msg.sender();
 		Account account = msg.chat()->account();
 
 		if (msg.type() == Message::TypeSystem)
-			text += Parser::parse(ChatSyntaxWithoutHeader, account, contact, *message);
+			text += Parser::parse(ChatSyntaxWithoutHeader, account, buddy, *message);
 		else
 		{
 			(*message)->setShowServerTime(ChatStylesManager::instance()->noServerTime(), ChatStylesManager::instance()->noServerTimeDiff());
-			text += Parser::parse(ChatSyntaxWithHeader, account, contact, *message);
+			text += Parser::parse(ChatSyntaxWithHeader, account, buddy, *message);
 		}
 
 		prevMessage = message;

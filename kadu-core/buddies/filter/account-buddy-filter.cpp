@@ -25,10 +25,10 @@ void AccountBuddyFilter::setEnabled(bool enabled)
 	emit filterChanged();
 }
 
-bool AccountBuddyFilter::acceptBuddy(Buddy contact)
+bool AccountBuddyFilter::acceptBuddy(Buddy buddy)
 {
 	if (!Enabled)
 		return true;
-	return contact.hasAccountData(CurrentAccount);
+	return buddy.hasAccountData(CurrentAccount);
 }
 

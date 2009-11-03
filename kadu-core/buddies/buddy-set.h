@@ -24,7 +24,7 @@ class KADUAPI BuddySet : public QSet<Buddy>
 
 public:
 	BuddySet();
-	explicit BuddySet(Buddy contact);
+	explicit BuddySet(Buddy buddy);
 
 	BuddyList toBuddyList() const;
 	Account prefferedAccount();

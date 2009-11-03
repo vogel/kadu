@@ -29,11 +29,11 @@ void GroupBuddyFilter::setGroup(Group *group)
 	emit filterChanged();
 }
 
-bool GroupBuddyFilter::acceptBuddy(Buddy contact)
+bool GroupBuddyFilter::acceptBuddy(Buddy buddy)
 {
 	return (0 == CurrentGroup) // use AllGroup or UngroupedGroup
-		? (AllGroupShown && contact.showInAllGroup() || !AllGroupShown && contact.groups().isEmpty())
-		: contact.isInGroup(CurrentGroup);
+			? (AllGroupShown && buddy.showInAllGroup() || !AllGroupShown && buddy.groups().isEmpty())
+			: buddy.isInGroup(CurrentGroup);
 }
 
 void GroupBuddyFilter::refresh()

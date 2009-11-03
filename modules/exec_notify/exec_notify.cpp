@@ -229,11 +229,11 @@ void ExecNotify::notify(Notification *notification)
 	ChatNotification *chatNotification = dynamic_cast<ChatNotification *>(notification);
 	if (chatNotification)
 	{
-		BuddyList contacts = chatNotification->chat()->contacts().toContactList();
-		Buddy contact = contact = contacts[0];
+		BuddyList contacts = chatNotification->chat()->buddies().toContactList();
+		Buddy buddy = contact = contacts[0];
 
 		QStringList sendersList;
-		foreach (Buddy contact, contacts)
+		foreach (Buddy buddy, contacts)
 			sendersList.append(contact.id(chatNotification->account()));
 		QString sendersString = sendersList.join(",");
 

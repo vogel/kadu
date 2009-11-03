@@ -16,7 +16,7 @@ ProtocolMenuManager::ProtocolMenuManager()
 {
 }
 
-QList<ActionDescription *> ProtocolMenuManager::protocolActions(Account account, Buddy contact)
+QList<ActionDescription *> ProtocolMenuManager::protocolActions(Account account, Buddy buddy)
 {
 	if (!contact.hasAccountData(account))
 		return QList<ActionDescription *>();

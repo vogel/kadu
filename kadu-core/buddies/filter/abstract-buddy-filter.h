@@ -22,7 +22,7 @@ public:
 	AbstractBuddyFilter(QObject *parent = 0)
 			: QObject(parent) {}
 
-	virtual bool acceptBuddy(Buddy contact) = 0;
+	virtual bool acceptBuddy(Buddy buddy) = 0;
 
 signals:
 	void filterChanged();

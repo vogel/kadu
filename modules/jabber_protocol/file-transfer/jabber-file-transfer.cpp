@@ -166,7 +166,7 @@ void JabberFileTransfer::send()
 		return;
 	}
 
-	JabberContactAccountData *jcad = jabberProtocol->jabberContactAccountData(contact());
+	JabberContactAccountData *jcad = jabberProtocol->jabberContactAccountData(buddy());
 	if (!jcad)
 	{
 		changeFileTransferStatus(FileTransfer::StatusNotConnected);
@@ -175,7 +175,7 @@ void JabberFileTransfer::send()
 
 	Shift = calcShift(fileSize());
 	Complement = calcComplement(fileSize(), Shift);
-	PeerJid = XMPP::Jid(contact().id(account()));
+	PeerJid = XMPP::Jid(buddy().id(account()));
 
 	JabberTransfer = jabberProtocol->client()->fileTransferManager()->createTransfer();
 /*	Jid proxy = d->pa->userAccount().dtProxy;

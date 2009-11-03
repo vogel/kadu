@@ -28,8 +28,8 @@ class KADUAPI Parser
 public:
 	static QMap<QString, QString> globalVariables;
 	static QString parse(const QString &s, const QObject * const object, bool escape = true);
-	static QString parse(const QString &s, Account account, const Buddy &contact, bool escape = true);
-	static QString parse(const QString &s, Account account, const Buddy &contact, const QObject * const object, bool escape = true);
+	static QString parse(const QString &s, Account account, const Buddy &buddy, bool escape = true);
+	static QString parse(const QString &s, Account account, const Buddy &buddy, const QObject * const object, bool escape = true);
 	static bool registerTag(const QString &name, QString (*func)(const Buddy &));
 	static bool unregisterTag(const QString &name, QString (*func)(const Buddy &));
 

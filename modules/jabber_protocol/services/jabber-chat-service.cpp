@@ -42,12 +42,12 @@ JabberChatService::JabberChatService(JabberProtocol *protocol)
 bool JabberChatService::sendMessage(Chat *chat, FormattedMessage &formattedMessage)
 {
 	kdebugf();
-	BuddySet contacts = chat->contacts();
+	BuddySet contacts = chat->buddies();
         // TODO send to more users
-	Buddy contact = (*contacts.begin());
+	Buddy buddy = (*contacts.begin());
 	//QString cleanmsg = toPlainText(mesg);
 	QString plain = formattedMessage.toPlain();
-	const XMPP::Jid jus = contact.id(Protocol->account());
+	const XMPP::Jid jus = buddy.id(Protocol->account());
 	XMPP::Message msg = XMPP::Message(jus);
 
 	bool stop = false;
@@ -99,8 +99,8 @@ void JabberChatService::clientMessageReceived(const XMPP::Message &msg)
 		return;
 
 	// TODO - zaimplementowac to samo w ContactList
-	Buddy contact = Protocol->account().getContactById(msg.from().bare());
-	BuddySet contacts = BuddySet(contact);
+	Buddy buddy = Protocol->account().getBuddyById(msg.from().bare());
+	BuddySet contacts = BuddySet(buddy);
 	time_t msgtime = msg.timeStamp().toTime_t();
 	FormattedMessage formattedMessage(msg.body());
 
@@ -108,13 +108,13 @@ void JabberChatService::clientMessageReceived(const XMPP::Message &msg)
 
 	bool ignore = false;
 	Chat *chat = Protocol->findChat(contacts);
-	emit receivedMessageFilter(chat, contact, plain, msgtime, ignore);
+	emit receivedMessageFilter(chat, buddy, plain, msgtime, ignore);
 	if (ignore)
 		return;
 
 	HtmlDocument::escapeText(plain);
 
-	Message message(chat, Message::TypeReceived, contact);
+	Message message(chat, Message::TypeReceived, buddy);
 	message
 		.setContent(plain)
 		.setSendDate(msg.timeStamp())

@@ -42,9 +42,9 @@ void BuddiesModelBase::accountUnregistered(Account account)
 			this, SLOT(buddyStatusChanged(Account, Buddy, Status)));
 }
 
-void BuddiesModelBase::buddyStatusChanged(Account account, Buddy contact, Status oldStatus)
+void BuddiesModelBase::buddyStatusChanged(Account account, Buddy buddy, Status oldStatus)
 {
-	QModelIndex index = buddyIndex(contact);
+	QModelIndex index = buddyIndex(buddy);
 
 	if (index.isValid())
 		emit dataChanged(index, index);
@@ -122,14 +122,14 @@ ContactAccountData * BuddiesModelBase::buddyAccountData(const QModelIndex &index
 	return accountDatas[accountIndex];
 }
 
-QVariant BuddiesModelBase::data(Buddy contact, int role) const
+QVariant BuddiesModelBase::data(Buddy buddy, int role) const
 {
 	switch (role)
 	{
 		case Qt::DisplayRole:
-			return contact.display();
+			return buddy.display();
 		case ContactRole:
-			return QVariant::fromValue(contact);
+			return QVariant::fromValue(buddy);
 		case StatusRole:
 			return QVariant::fromValue(Status::null);
 		default:
@@ -146,7 +146,7 @@ QVariant BuddiesModelBase::data(ContactAccountData *cad, int role, bool useDispl
 	{
 		case Qt::DisplayRole:
 			return useDisplay
-				? cad->contact().display()
+				? cad->buddy().display()
 				: QString("%1: %2").arg(cad->account().name()).arg(cad->id());
 		case Qt::DecorationRole:
 			if (0 == cad)
@@ -156,7 +156,7 @@ QVariant BuddiesModelBase::data(ContactAccountData *cad, int role, bool useDispl
 				? cad->account().statusContainer()->statusPixmap(cad->status())
 				: QVariant();
 		case ContactRole:
-			return QVariant::fromValue(cad->contact());
+			return QVariant::fromValue(cad->buddy());
 		case DescriptionRole:
 			//TODO 0.6.6:
 			//	ContactKaduData *ckd = contact.moduleData<ContactKaduData>(true);

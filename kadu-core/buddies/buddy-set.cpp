@@ -16,9 +16,9 @@ BuddySet::BuddySet()
 {
 }
 
-BuddySet::BuddySet(Buddy contact)
+BuddySet::BuddySet(Buddy buddy)
 {
-	insert(contact);
+	insert(buddy);
 }
 
 BuddyList BuddySet::toBuddyList() const
@@ -33,9 +33,9 @@ Account BuddySet::prefferedAccount()
 	int contactsCount = count();
 	// TODO 0.6.6 - Rework it if more than 1 account on the same proto.
 
-	foreach (Buddy contact, toList())
+	foreach (Buddy buddy, toList())
 	{
-		contactAccounts = contact.accounts();
+		contactAccounts = buddy.accounts();
 		// one contact have no account = no common account
 		if (0 == contactAccounts.count())
 			return Account::null;

@@ -28,7 +28,7 @@ public:
 	virtual ~NonAccountBuddyFilter();
 
 	void setAccount(Account account);
-	virtual bool acceptBuddy(Buddy contact);
+	virtual bool acceptBuddy(Buddy buddy);
 
 };
 

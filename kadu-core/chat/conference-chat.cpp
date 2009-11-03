@@ -54,8 +54,8 @@ ChatType ConferenceChat::type() const
 QString ConferenceChat::name() const
 {
 	QStringList displays;
-	foreach (Buddy contact, CurrentContacts)
-		displays.append(contact.display());
+	foreach (Buddy buddy, CurrentContacts)
+		displays.append(buddy.display());
 
 	displays.sort();
 	return displays.join(", ");

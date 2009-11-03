@@ -87,7 +87,7 @@ void Chat::refreshTitle()
 	kdebugf();
 	QString title;
 
-	int contactsSize = contacts().count();
+	int contactsSize = buddies().count();
 	kdebugmf(KDEBUG_FUNCTION_START, "contacts().size() = %d\n", contactsSize);
 	if (contactsSize > 1)
 	{
@@ -98,17 +98,17 @@ void Chat::refreshTitle()
 		int i = 0;
 
 		if (config_file.readEntry("Look", "ConferenceContents").isEmpty())
-			foreach(const Buddy contact, contacts())
+			foreach(const Buddy buddy, buddies())
 			{
-				title.append(Parser::parse("%a", account(), contact, false));
+				title.append(Parser::parse("%a", account(), buddy, false));
 
 				if (++i < contactsSize)
 					title.append(", ");
 			}
 		else
-			foreach(const Buddy contact, contacts())
+			foreach(const Buddy buddy, buddies())
 			{
-				title.append(Parser::parse(config_file.readEntry("Look", "ConferenceContents"), account(), contact, false));
+				title.append(Parser::parse(config_file.readEntry("Look", "ConferenceContents"), account(), buddy, false));
 
 				if (++i < contactsSize)
 					title.append(", ");
@@ -118,19 +118,19 @@ void Chat::refreshTitle()
 	}
 	else if (contactsSize > 0)
 	{
-		Buddy contact = *contacts().begin();
+		Buddy buddy = *buddies().begin();
 
 		if (config_file.readEntry("Look", "ChatContents").isEmpty())
 		{
-			if (contact.isAnonymous())
-				title = Parser::parse(tr("Chat with ")+"%a", account(), contact, false);
+			if (buddy.isAnonymous())
+				title = Parser::parse(tr("Chat with ")+"%a", account(), buddy, false);
 			else
-				title = Parser::parse(tr("Chat with ")+"%a (%s[: %d])", account(), contact, false);
+				title = Parser::parse(tr("Chat with ")+"%a (%s[: %d])", account(), buddy, false);
 		}
 		else
-			title = Parser::parse(config_file.readEntry("Look","ChatContents"), account(), contact, false);
+			title = Parser::parse(config_file.readEntry("Look","ChatContents"), account(), buddy, false);
 
-		ContactAccountData *cad = contact.accountData(account());
+		ContactAccountData *cad = buddy.accountData(account());
 
 		if (cad)
 			Icon = account().statusContainer()->statusPixmap(cad->status());

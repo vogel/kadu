@@ -93,7 +93,7 @@ void GaduProtocolSocketNotifiers::handleEventMsg(struct gg_event *e)
 	if (0 == e->event.msg.sender)
 		return;
 
-	Buddy sender = CurrentAccount.getContactById(QString::number(e->event.msg.sender));
+	Buddy sender = CurrentAccount.getBuddyById(QString::number(e->event.msg.sender));
 
 	if (GG_CLASS_CTCP == e->event.msg.msgclass)
 	{

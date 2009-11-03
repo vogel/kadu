@@ -47,7 +47,7 @@ ActionDescription *SearchWindow::clearResultsAction;
 ActionDescription *SearchWindow::addFoundAction;
 ActionDescription *SearchWindow::chatFoundAction;
 
-SearchWindow::SearchWindow(QWidget *parent, Buddy contact)
+SearchWindow::SearchWindow(QWidget *parent, Buddy buddy)
 	: MainWindow(parent),
 	only_active(0), e_uin(0), e_name(0), e_nick(0), e_byrFrom(0), e_byrTo(0), e_surname(0),
 	c_gender(0), e_city(0), results(0), progress(0), r_uin(0), r_pers(0), CurrentSearchCriteria(BuddySearchCriteria()),
@@ -311,7 +311,7 @@ void SearchWindow::addFound()
 {
 	BuddyList found = selected().toBuddyList();
 
-	foreach (Buddy contact, found)
+	foreach (Buddy buddy, found)
 	{
 		AddBuddyWindow *a = new AddBuddyWindow(this);
 		a->setContact(CurrentSearchCriteria.SearchContact);
@@ -501,7 +501,7 @@ void SearchWindow::newSearchResults(BuddyList contacts)
 
 	int items = results->topLevelItemCount(); // number of items already in results
 
-	foreach(Buddy contact, contacts)
+	foreach(Buddy buddy, contacts)
 	{
 		ContactAccountData *cad = contact.accountData(CurrentAccount);
 		QList <QTreeWidgetItem *> items = results->findItems(cad->id(), Qt::MatchExactly, 1);

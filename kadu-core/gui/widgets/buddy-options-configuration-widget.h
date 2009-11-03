@@ -33,7 +33,7 @@ class KADUAPI BuddyOptionsConfigurationWidget : public QWidget
 	void createGui();
 
 public:
-	explicit BuddyOptionsConfigurationWidget(Buddy &contact, QWidget *parent = 0);
+	explicit BuddyOptionsConfigurationWidget(Buddy &buddy, QWidget *parent = 0);
 	virtual ~BuddyOptionsConfigurationWidget();
 	void saveConfiguration();
 

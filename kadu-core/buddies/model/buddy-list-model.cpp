@@ -41,7 +41,7 @@ Buddy BuddyListModel::buddyAt(const QModelIndex &index) const
 			: Buddy::null;
 }
 
-const QModelIndex BuddyListModel::buddyIndex(Buddy contact) const
+const QModelIndex BuddyListModel::buddyIndex(Buddy buddy) const
 {
-	return index(List.indexOf(contact), 0);
+	return index(List.indexOf(buddy), 0);
 }

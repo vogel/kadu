@@ -34,7 +34,7 @@ protected slots:
 	virtual void accept();
 
 public:
-	explicit MergeBuddiesWindow(Buddy contact, QWidget *parent = 0);
+	explicit MergeBuddiesWindow(Buddy buddy, QWidget *parent = 0);
 	virtual ~MergeBuddiesWindow();
 
 };

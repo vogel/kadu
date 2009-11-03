@@ -120,10 +120,10 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 		config_file.writeEntry("Notify", "NotifyAboutAll", false);
 	}
 
-	BuddySet contacts = window->contacts();
+	BuddySet contacts = window->buddies();
 
 	bool on = true;
-	foreach (const Buddy contact, contacts)
+	foreach (const Buddy buddy, contacts)
 	{
 		ContactNotifyData *cnd = contact.moduleData<ContactNotifyData>();
 
@@ -136,7 +136,7 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 		delete cnd;
 	}
 
-	foreach (const Buddy contact, contacts)
+	foreach (const Buddy buddy, contacts)
 	{
 		if (contact.isNull() || contact.isAnonymous())
 			continue;
@@ -155,7 +155,7 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 
 	foreach (Action *action, notifyAboutUserActionDescription->actions())
 	{
-		if (action->contacts() == contacts)
+		if (action->buddies() == contacts)
 			action->setChecked(!on);
 	}
 
@@ -197,7 +197,7 @@ void NotificationManager::accountUnregistered(Account account)
 	}
 }
 
-void NotificationManager::statusChanged(Account account, Buddy contact, Status oldStatus)
+void NotificationManager::statusChanged(Account account, Buddy buddy, Status oldStatus)
 {
 	kdebugf();
 
@@ -390,7 +390,7 @@ void NotificationManager::groupNotifyChanged(Group *group)
 		config_file.writeEntry("Notify", "NotifyAboutAll", false);
 	}
 
-	foreach (const Buddy contact, BuddyManager::instance()->buddies())
+	foreach (const Buddy buddy, BuddyManager::instance()->buddies())
 	{
 		if (contact.isNull() || contact.isAnonymous() || contact.groups().contains(group))
 			continue;
@@ -427,7 +427,7 @@ void checkNotify(Action *action)
 {
 	kdebugf();
 
-	foreach(Buddy contact, action->contacts())
+	foreach(Buddy buddy, action->buddies())
 		if (!contact.hasAccountData(contact.prefferedAccount()))
 		{
 			action->setEnabled(false);
@@ -437,7 +437,7 @@ void checkNotify(Action *action)
 	action->setEnabled(true);
 
 	bool on = true;
-	foreach (const Buddy contact, action->contacts())
+	foreach (const Buddy buddy, action->buddies())
 	{
 		ContactNotifyData *cnd = contact.moduleData<ContactNotifyData>();
 

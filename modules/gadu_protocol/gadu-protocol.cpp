@@ -153,9 +153,9 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 
 void GaduProtocol::fetchAvatars(Account account)
 {
-	foreach (Buddy contact, BuddyManager::instance()->buddies(account))
-		if (contact.hasAccountData(account))
-			CurrentAvatarService->fetchAvatar(contact.accountData(account));
+	foreach (Buddy buddy, BuddyManager::instance()->buddies(account))
+		if (buddy.hasAccountData(account))
+			CurrentAvatarService->fetchAvatar(buddy.accountData(account));
 }
 
 GaduProtocol::~GaduProtocol()
@@ -618,11 +618,11 @@ void GaduProtocol::networkDisconnected(bool tryAgain)
 		setStatus(Status());
 }
 
-int GaduProtocol::notifyTypeFromContact(Buddy &contact)
+int GaduProtocol::notifyTypeFromContact(Buddy &buddy)
 {
-	return contact.isOfflineTo(account())
+	return buddy.isOfflineTo(account())
 		? GG_USER_OFFLINE
-		: contact.isBlocked(account())
+		: buddy.isBlocked(account())
 			? GG_USER_BLOCKED
 			: GG_USER_NORMAL;
 }
@@ -634,28 +634,28 @@ void GaduProtocol::sendUserList()
 	UinType *uins;
 	char *types;
 
-	BuddyList contacts = BuddyManager::instance()->buddies(account());
+	BuddyList buddies = BuddyManager::instance()->buddies(account());
 
-	if (contacts.isEmpty())
+	if (buddies.isEmpty())
 	{
 		gg_notify_ex(GaduSession, 0, 0, 0);
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Userlist is empty\n");
 		return;
 	}
 
-	uins = new UinType[contacts.count()];
-	types = new char[contacts.count()];
+	uins = new UinType[buddies.count()];
+	types = new char[buddies.count()];
 
 	int i = 0;
 
-	foreach (Buddy contact, contacts)
+	foreach (Buddy buddy, buddies)
 	{
-		uins[i] = uin(contact);
-		types[i] = notifyTypeFromContact(contact);
+		uins[i] = uin(buddy);
+		types[i] = notifyTypeFromContact(buddy);
 		++i;
 	}
 
-	gg_notify_ex(GaduSession, uins, types, contacts.count());
+	gg_notify_ex(GaduSession, uins, types, buddies.count());
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Userlist sent\n");
 
 	delete [] uins;
@@ -667,17 +667,17 @@ void GaduProtocol::sendUserList()
 void GaduProtocol::socketContactStatusChanged(unsigned int uin, unsigned int status, const QString &description,
 		const QHostAddress &ip, unsigned short port, unsigned int maxImageSize, unsigned int version)
 {
-	Buddy contact = BuddyManager::instance()->byId(account(), QString::number(uin));
+	Buddy buddy = BuddyManager::instance()->byId(account(), QString::number(uin));
 
-	if (contact.isAnonymous())
+	if (buddy.isAnonymous())
 	{
 		kdebugmf(KDEBUG_INFO, "buddy %d not in list. Damned server!\n", uin);
-		emit userStatusChangeIgnored(contact);
+		emit userStatusChangeIgnored(buddy);
 		gg_remove_notify(GaduSession, uin);
 		return;
 	}
 
-	GaduContactAccountData *accountData = gaduContactAccountData(contact);
+	GaduContactAccountData *accountData = gaduContactAccountData(buddy);
 	accountData->setIp(ip);
 	accountData->setPort(port);
 	accountData->setMaxImageSize(maxImageSize);
@@ -690,7 +690,7 @@ void GaduProtocol::socketContactStatusChanged(unsigned int uin, unsigned int sta
 	newStatus.setDescription(description);
 	accountData->setStatus(newStatus);
 
-	emit contactStatusChanged(account(), contact, oldStatus);
+	emit buddyStatusChanged(account(), buddy, oldStatus);
 }
 
 void GaduProtocol::socketConnFailed(GaduError error)
@@ -817,17 +817,17 @@ void GaduProtocol::socketDisconnected()
 	kdebugf2();
 }
 
-unsigned int GaduProtocol::uin(Buddy contact) const
+unsigned int GaduProtocol::uin(Buddy buddy) const
 {
-	GaduContactAccountData *data = gaduContactAccountData(contact);
+	GaduContactAccountData *data = gaduContactAccountData(buddy);
 	return data
 		? data->uin()
 		: 0;
 }
 
-GaduContactAccountData * GaduProtocol::gaduContactAccountData(Buddy contact) const
+GaduContactAccountData * GaduProtocol::gaduContactAccountData(Buddy buddy) const
 {
-	return dynamic_cast<GaduContactAccountData *>(contact.accountData(account()));
+	return dynamic_cast<GaduContactAccountData *>(buddy.accountData(account()));
 }
 
 QPixmap GaduProtocol::statusPixmap(Status status)
@@ -853,18 +853,18 @@ QPixmap GaduProtocol::statusPixmap(const QString &statusType)
 			"Away" == statusType ? "Busy" : statusType);
 }
 
-void GaduProtocol::contactAdded(Buddy &contact)
+void GaduProtocol::contactAdded(Buddy &buddy)
 {
-	GaduContactAccountData *gcad = gaduContactAccountData(contact);
+	GaduContactAccountData *gcad = gaduContactAccountData(buddy);
 	if (!gcad)
 		return;
 
-	gg_add_notify_ex(GaduSession, gcad->uin(), notifyTypeFromContact(contact));
+	gg_add_notify_ex(GaduSession, gcad->uin(), notifyTypeFromContact(buddy));
 }
 
-void GaduProtocol::contactRemoved(Buddy &contact)
+void GaduProtocol::contactRemoved(Buddy &buddy)
 {
-	GaduContactAccountData *gcad = gaduContactAccountData(contact);
+	GaduContactAccountData *gcad = gaduContactAccountData(buddy);
 	if (!gcad)
 		return;
 
@@ -875,23 +875,23 @@ void GaduProtocol::contactRemoved(Buddy &contact)
 	gg_remove_notify(GaduSession, gcad->uin());
 }
 
-void GaduProtocol::contactAccountDataAdded(Buddy &contact, Account contactAccount)
+void GaduProtocol::contactAccountDataAdded(Buddy &buddy, Account contactAccount)
 {
 	if (contactAccount != account())
 		return;
 
-	contactAdded(contact);
+	contactAdded(buddy);
 }
 
-void GaduProtocol::contactAccountDataAboutToBeRemoved(Buddy &contact, Account contactAccount)
+void GaduProtocol::contactAccountDataAboutToBeRemoved(Buddy &buddy, Account contactAccount)
 {
 	if (contactAccount != account())
 		return;
 
-	contactRemoved(contact);
+	contactRemoved(buddy);
 }
 
-void GaduProtocol::contactAccountDataIdChanged(Buddy &contact, Account contactAccount, const QString &oldId)
+void GaduProtocol::contactAccountDataIdChanged(Buddy &buddy, Account contactAccount, const QString &oldId)
 {
 	if (contactAccount != account())
 		return;
@@ -901,7 +901,7 @@ void GaduProtocol::contactAccountDataIdChanged(Buddy &contact, Account contactAc
 	if (ok)
 		gg_remove_notify(GaduSession, oldUin);
 
-	UinType newUin = uin(contact);
+	UinType newUin = uin(buddy);
 	if (newUin)
-		gg_add_notify_ex(GaduSession, newUin, notifyTypeFromContact(contact));
+		gg_add_notify_ex(GaduSession, newUin, notifyTypeFromContact(buddy));
 }

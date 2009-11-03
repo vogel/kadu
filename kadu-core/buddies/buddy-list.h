@@ -23,7 +23,7 @@ public:
 
 	BuddyList();
 	BuddyList(QList<Buddy> list);
-	BuddyList(Buddy contact);
+	BuddyList(Buddy buddy);
 
 	bool operator == (const BuddyList &compare) const;
 

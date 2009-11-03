@@ -13,10 +13,10 @@
 
 KADU_PREDICATE_CLASS(BuddyRemovePredicateObject)
 
-bool BuddyRemovePredicateObject::inquireAll(Buddy contact)
+bool BuddyRemovePredicateObject::inquireAll(Buddy buddy)
 {
 	foreach (BuddyRemovePredicateObject *object, Objects)
-		if (!object->removeContactFromStorage(contact))
+		if (!object->removeContactFromStorage(buddy))
 			return false;
 
 	return true;

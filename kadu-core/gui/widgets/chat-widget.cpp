@@ -96,7 +96,7 @@ void ChatWidget::createGui()
 	connect(shortcut, SIGNAL(activated()), MessagesView, SLOT(pageDown()));
 	horizSplit->addWidget(MessagesView);
 
-	if (CurrentChat->contacts().count() > 1)
+	if (CurrentChat->buddies().count() > 1)
 		createContactsList();
 
 	vertSplit->addWidget(horizSplit);
@@ -121,7 +121,7 @@ void ChatWidget::createContactsList()
 	layout->setSpacing(0);
 
 	BuddiesView = new BuddiesListView(getChatEditBox(), this);
-	BuddiesView->setModel(new BuddyListModel(CurrentChat->contacts().toBuddyList(), this));
+	BuddiesView->setModel(new BuddyListModel(CurrentChat->buddies().toBuddyList(), this));
 	BuddiesView->setMinimumSize(QSize(30, 30));
 
 	connect(BuddiesView, SIGNAL(contactActivated(Buddy)),

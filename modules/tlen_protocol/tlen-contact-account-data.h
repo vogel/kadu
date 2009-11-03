@@ -21,7 +21,7 @@ class TlenContactAccountData : public ContactAccountData
 	unsigned long MaxImageSize;
 
 public:
-	TlenContactAccountData(Buddy contact, Account *account, const QString &id = QString::null, bool loadFromConfiguration = true)
+	TlenContactAccountData(Buddy buddy, Account *account, const QString &id = QString::null, bool loadFromConfiguration = true)
 		: ContactAccountData(contact, account, id, loadFromConfiguration)
 	{}
 

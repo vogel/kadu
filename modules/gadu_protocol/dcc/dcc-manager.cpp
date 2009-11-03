@@ -214,11 +214,11 @@ void DccManager::socketNotifiersDestroyed(QObject *socketNotifiers)
 	SocketNotifiers.removeAll(dynamic_cast<DccSocketNotifiers *>(socketNotifiers));
 }
 
-void DccManager::connectionRequestReceived(Buddy contact)
+void DccManager::connectionRequestReceived(Buddy buddy)
 {
 	kdebugf();
 
-	GaduContactAccountData *gcad = Protocol->gaduContactAccountData(contact);
+	GaduContactAccountData *gcad = Protocol->gaduContactAccountData(buddy);
 	if (!gcad)
 		return;
 
@@ -244,20 +244,20 @@ bool DccManager::acceptConnection(unsigned int uin, unsigned int peerUin, unsign
 	if (!gaduAccountDetails)
 		return false;
 
-	Buddy contact = BuddyManager::instance()->byId(Protocol->account(), QString::number(peerUin));
-	if (uin != gaduAccountDetails->uin() || contact.isAnonymous() || contact.isNull())
+	Buddy buddy = BuddyManager::instance()->byId(Protocol->account(), QString::number(peerUin));
+	if (uin != gaduAccountDetails->uin() || buddy.isAnonymous() || buddy.isNull())
 	{
 		kdebugm(KDEBUG_WARNING, "insane values: uin:%d peer_uin:%d\n", uin, peerUin);
 		return false;
 	}
 
-	GaduContactAccountData *gcad = Protocol->gaduContactAccountData(contact);
+	GaduContactAccountData *gcad = Protocol->gaduContactAccountData(buddy);
 	if (!gcad)
 		return false;
 
-	BuddyList contacts(contact);
+	BuddyList buddies(buddy);
 
-	if (contact.isIgnored())
+	if (buddy.isIgnored())
 	{
 		kdebugm(KDEBUG_WARNING, "unbidden user: %d\n", peerUin);
 		return false;
@@ -275,7 +275,7 @@ bool DccManager::acceptConnection(unsigned int uin, unsigned int peerUin, unsign
 				"IP address (%2) differs from what GG server returned\n"
 				"as his/her IP address (%3). It may be spoofing\n"
 				"or he/she has port forwarding. Continue connection?"),
-			contact.display(),
+			buddy.display(),
 			remoteAddress.toString(),
 			gcad->ip().toString()));
 }
@@ -296,7 +296,7 @@ GaduFileTransfer * DccManager::findFileTransfer(DccSocketNotifiers *notifiers)
 {
 	foreach (GaduFileTransfer *gft, WaitingFileTransfers)
 	{
-		UinType uin = Protocol->uin(gft->contact());
+		UinType uin = Protocol->uin(gft->buddy());
 		if (uin == notifiers->peerUin())
 		{
 			disconnectSocketNotifiers(notifiers);
@@ -454,7 +454,7 @@ void DccManager::attachSendFileTransferSocket7(unsigned int uin, GaduContactAcco
 
 void DccManager::attachSendFileTransferSocket(GaduFileTransfer *gft)
 {
-	Buddy peer = gft->contact();
+	Buddy peer = gft->buddy();
 	GaduContactAccountData *gcad = Protocol->gaduContactAccountData(peer);
 	if (!gcad)
 		return;

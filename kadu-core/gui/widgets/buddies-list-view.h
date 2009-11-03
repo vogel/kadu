@@ -103,7 +103,7 @@ signals:
 	void chatActivated(Chat *chat);
 	void buddySelectionChanged();
 
-	void currentBuddyChanged(Buddy contact);
+	void currentBuddyChanged(Buddy buddy);
 
 };
 

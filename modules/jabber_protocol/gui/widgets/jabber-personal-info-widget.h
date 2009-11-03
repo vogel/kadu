@@ -38,7 +38,7 @@ class JabberPersonalInfoWidget : public QWidget
 	void createGui();
 
 private slots:
-	void personalInfoAvailable(Buddy contact);
+	void personalInfoAvailable(Buddy buddy);
 
 public:
 	explicit JabberPersonalInfoWidget(Account account, QWidget *parent = 0);

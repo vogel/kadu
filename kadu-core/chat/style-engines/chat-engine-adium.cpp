@@ -334,12 +334,12 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat *chat, QString &styleHref, QS
 	if (chat)
 	{
 		// Replace %chatName% //TODO. Find way to dynamic update this tag (add id ?)
-		int uinsSize = chat->contacts().count();
+		int uinsSize = chat->buddies().count();
 		int i = 0;
 
-		foreach (const Buddy &contact, chat->contacts())
+		foreach (const Buddy &buddy, chat->buddies())
 		{
-			name.append(contact.display());
+			name.append(buddy.display());
 
 			if (++i < uinsSize)
 				name.append(", ");
@@ -362,11 +362,11 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat *chat, QString &styleHref, QS
 	QString photoIncoming;
 	QString photoOutgoing;
 
-	if (chat->contacts().count() > 1)
+	if (chat->buddies().count() > 1)
 		photoIncoming = QString("file://") + styleHref + QString("Incoming/buddy_icon.png");
 	else
 	{
-		ContactAccountData *cad = (*chat->contacts().begin()).accountData(chat->account());
+		ContactAccountData *cad = (*chat->buddies().begin()).accountData(chat->account());
 		if (cad && !cad->avatar().pixmap().isNull())
 			photoIncoming = QString("file://") + cad->avatar().filePath();
 		else

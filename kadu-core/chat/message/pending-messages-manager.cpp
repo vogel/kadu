@@ -47,10 +47,10 @@ void PendingMessagesManager::deleteMsg(int index)
 	emit messageFromUserDeleted(e);
 }
 
-bool PendingMessagesManager::pendingMsgs(Buddy contact) const
+bool PendingMessagesManager::pendingMsgs(Buddy buddy) const
 {
 	foreach (const Message &msg, msgs)
-		if (msg.sender() == contact)
+		if (msg.sender() == buddy)
 			return true;
 
 	return false;
@@ -152,9 +152,9 @@ void PendingMessagesManager::openMessages()
 	ChatWidgetManager::instance()->openPendingMsgs();
 }
 
-bool PendingMessagesManager::removeContactFromStorage(Buddy contact)
+bool PendingMessagesManager::removeContactFromStorage(Buddy buddy)
 {
-	return !pendingMsgs(contact);
+	return !pendingMsgs(buddy);
 }
 
 

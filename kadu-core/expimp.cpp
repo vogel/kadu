@@ -317,7 +317,7 @@ void UserlistImportExport::contactListImported(bool ok, BuddyList contacts)
 		return;
 
 	Account account = AccountManager::instance()->defaultAccount();
-	foreach (Buddy contact, contacts)
+	foreach (Buddy buddy, contacts)
 	{
 		QString id;
 		if (contact.hasAccountData(account))

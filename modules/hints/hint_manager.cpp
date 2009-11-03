@@ -539,9 +539,9 @@ void HintManager::setLayoutDirection()
 	kdebugf2();
 }
 
-void HintManager::prepareOverUserHint(QFrame *tipFrame, QLabel *iconLabel, QLabel *tipLabel, Buddy contact)
-{\
-	QString text = Parser::parse(config_file.readEntry("Hints", "MouseOverUserSyntax"), contact.prefferedAccount(), contact);
+void HintManager::prepareOverUserHint(QFrame *tipFrame, QLabel *iconLabel, QLabel *tipLabel, Buddy buddy)
+{
+	QString text = Parser::parse(config_file.readEntry("Hints", "MouseOverUserSyntax"), buddy.prefferedAccount(), buddy);
 
 	/* Dorr: the file:// in img tag doesn't generate the image on hint.
 	 * for compatibility with other syntaxes we're allowing to put the file://
@@ -554,7 +554,7 @@ void HintManager::prepareOverUserHint(QFrame *tipFrame, QLabel *iconLabel, QLabe
 		text = text.right(text.length() - 5 /* 5 == QString("<br/>").length()*/);
 
 //TODO 0.6.6: icon:
-	iconLabel->setPixmap(contact.prefferedAccount().statusContainer()->statusPixmap(contact.accountData(contact.prefferedAccount())->status()));
+	iconLabel->setPixmap(buddy.prefferedAccount().statusContainer()->statusPixmap(buddy.accountData(buddy.prefferedAccount())->status()));
 	tipLabel->setFont(config_file.readFontEntry("Hints", "HintOverUser_font"));
 	tipLabel->setText(text);
 
@@ -572,7 +572,7 @@ void HintManager::prepareOverUserHint(QFrame *tipFrame, QLabel *iconLabel, QLabe
 	tipFrame->setFixedSize(tipLabel->sizeHint() + QSize(2 * FRAME_WIDTH, 2 * FRAME_WIDTH));
 }
 
-void HintManager::showToolTip(const QPoint &point, Buddy contact)
+void HintManager::showToolTip(const QPoint &point, Buddy buddy)
 {
 	kdebugf();
 
@@ -600,9 +600,9 @@ void HintManager::showToolTip(const QPoint &point, Buddy contact)
 	lay->addWidget(icon, Qt::AlignTop);
 	lay->addWidget(tipLabel);
 
-	prepareOverUserHint(tipFrame, icon, tipLabel, contact);
+	prepareOverUserHint(tipFrame, icon, tipLabel, buddy);
 
-    	double opacity = config_file.readNumEntry("Hints", "HintOverUser_transparency", 0);
+	double opacity = config_file.readNumEntry("Hints", "HintOverUser_transparency", 0);
 	opacity = 1 - opacity/100;
 	tipFrame->setWindowOpacity(opacity);
 

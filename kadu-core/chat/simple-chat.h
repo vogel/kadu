@@ -27,7 +27,7 @@ public:
 	virtual void store();
 
 	virtual ChatType type() const;
-	virtual BuddySet contacts() const;
+	virtual BuddySet buddies() const;
 	virtual QString name() const;
 
 };

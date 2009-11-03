@@ -28,8 +28,8 @@ public:
 
 	virtual Account * newAccount();
 	virtual Account * loadAccount(StoragePoint *accountStoragePoint);
-	virtual ContactAccountData * newContactAccountData(Buddy contact, Account *account, const QString &id, bool isAnonymous = false);
-	virtual ContactAccountData * loadContactAccountData(Buddy contact, Account *account);
+	virtual ContactAccountData * newContactAccountData(Buddy buddy, Account *account, const QString &id, bool isAnonymous = false);
+	virtual ContactAccountData * loadContactAccountData(Buddy buddy, Account *account);
 	virtual AccountCreateWidget * newCreateAccountWidget(QWidget *parent);
 	virtual AccountEditWidget* newEditAccountWidget(Account*, QWidget*);
 	virtual ContactAccountDataWidget * newContactAccountDataWidget(ContactAccountData *contactAccountData, QWidget *parent = 0);

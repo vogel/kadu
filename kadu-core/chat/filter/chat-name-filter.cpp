@@ -37,9 +37,9 @@ bool ChatNameFilter::acceptChat(Chat *chat)
 		return false;
 	}
 
-	BuddyList contacts = chat->contacts().toBuddyList();
-	foreach (Buddy contact, contacts)
-		if (Filter->acceptBuddy(contact))
+	BuddyList buddies = chat->buddies().toBuddyList();
+	foreach (Buddy buddy, buddies)
+		if (Filter->acceptBuddy(buddy))
 			return true;
 
 	return false;

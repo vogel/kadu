@@ -39,7 +39,7 @@
 #include "add-buddy-window.h"
 
 AddBuddyWindow::AddBuddyWindow(QWidget *parent) :
-		QDialog(parent, Qt::Window), MyContact(BuddyShared::TypeNull)
+		QDialog(parent, Qt::Window), MyBuddy(BuddyShared::TypeNull)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 
@@ -175,18 +175,18 @@ Account AddBuddyWindow::selectedAccount()
 	return index.data(AccountRole).value<Account>();
 }
 
-void AddBuddyWindow::setContact(Buddy contact)
+void AddBuddyWindow::setContact(Buddy buddy)
 {
-	MyContact = contact;
+	MyBuddy = buddy;
 
-	Account account = contact.prefferedAccount();
+	Account account = buddy.prefferedAccount();
 	if (!account.isNull())
 	{
 		AccountCombo->setCurrentIndex(AccountComboModel->accountIndex(account));
-		UserNameEdit->setText(contact.id(account));
+		UserNameEdit->setText(buddy.id(account));
 	}
 
-	DisplayNameEdit->setText(contact.display());
+	DisplayNameEdit->setText(buddy.display());
 }
 
 void AddBuddyWindow::setUsernameLabel()
@@ -225,7 +225,7 @@ void AddBuddyWindow::setAddContactEnabled()
 		return;
 	}
 
-	Buddy mergeWith = SelectContact->contact();
+	Buddy mergeWith = SelectContact->buddy();
 	if (mergeWith.isNull())
 		AddContactButton->setEnabled(false);
 	else
@@ -259,7 +259,7 @@ void AddBuddyWindow::setAccountFilter()
 	AccountComboIdFilter->setId(UserNameEdit->text());
 
 	if (MergeContact->isChecked())
-		AccountComboNotInContactFilter->setContact(SelectContact->contact());
+		AccountComboNotInContactFilter->setContact(SelectContact->buddy());
 	else
 		AccountComboNotInContactFilter->setContact(Buddy::null);
 }
@@ -300,21 +300,21 @@ void AddBuddyWindow::accept()
 
 	if (!MergeContact->isChecked())
 	{
-		if (MyContact.isNull())
-			MyContact = BuddyManager::instance()->byId(account, UserNameEdit->text());
+		if (MyBuddy.isNull())
+			MyBuddy = BuddyManager::instance()->byId(account, UserNameEdit->text());
 		
-		MyContact.setType(BuddyShared::TypeNormal);
-		MyContact.setDisplay(DisplayNameEdit->text());
+		MyBuddy.setType(BuddyShared::TypeNormal);
+		MyBuddy.setDisplay(DisplayNameEdit->text());
 	}
 	else
 	{
-		Buddy contact = SelectContact->contact();
-		if (contact.isNull())
+		Buddy buddy = SelectContact->buddy();
+		if (buddy.isNull())
 			return;
 
 		ContactAccountData *cad = account.protocolHandler()->protocolFactory()
-				->newContactAccountData(account, contact, UserNameEdit->text());
-		contact.addAccountData(cad);
+		->newContactAccountData(account, buddy, UserNameEdit->text());
+		buddy.addAccountData(cad);
 	}
 
 	QDialog::accept();

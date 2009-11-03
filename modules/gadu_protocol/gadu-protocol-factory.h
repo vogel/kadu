@@ -30,7 +30,7 @@ public:
 
 	virtual Protocol * createProtocolHandler(Account account);
 	virtual AccountDetails * createAccountDetails(Account account);
-	virtual ContactAccountData * newContactAccountData(Account account, Buddy contact, const QString &id);
+	virtual ContactAccountData * newContactAccountData(Account account, Buddy buddy, const QString &id);
 	virtual ContactAccountData * loadContactAccountData(StoragePoint *storagePoint);
 	virtual AccountCreateWidget * newCreateAccountWidget(QWidget *parent);
 	virtual AccountEditWidget * newEditAccountWidget(Account, QWidget *parent);

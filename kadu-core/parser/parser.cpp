@@ -127,12 +127,12 @@ QString Parser::parse(const QString &s, const QObject * const object, bool escap
     	return parse(s, Account::null, Buddy::null, object, escape);
 }
 
-QString Parser::parse(const QString &s, Account account, const Buddy &contact, bool escape)
+QString Parser::parse(const QString &s, Account account, const Buddy &buddy, bool escape)
 {
-	return parse(s, account, contact, 0, escape);
+	return parse(s, account, buddy, 0, escape);
 }
 
-QString Parser::parse(const QString &s, Account account, const Buddy &contact, const QObject * const object, bool escape)
+QString Parser::parse(const QString &s, Account account, const Buddy &buddy, const QObject * const object, bool escape)
 {
 	kdebugmf(KDEBUG_DUMP, "%s escape=%i\n", qPrintable(s), escape);
 	int index = 0, i, len = s.length();
@@ -186,7 +186,7 @@ QString Parser::parse(const QString &s, Account account, const Buddy &contact, c
 				break;
 			pe.type = ParserToken::PT_STRING;
 
-			ContactAccountData *data = contact.accountData(account);
+			ContactAccountData *data = buddy.accountData(account);
 
 			switch (s[i].toAscii())
 			{
@@ -250,31 +250,31 @@ QString Parser::parse(const QString &s, Account account, const Buddy &contact, c
 					break;
 				case 'n':
 					++i;
-					pe.content = contact.nickName();
+					pe.content = buddy.nickName();
 					if (escape)
 						HtmlDocument::escapeText(pe.content);
 					break;
 				case 'a':
 					++i;
-					pe.content = contact.display();
+					pe.content = buddy.display();
 					if (escape)
 						HtmlDocument::escapeText(pe.content);
 					break;
 				case 'f':
 					++i;
-					pe.content = contact.firstName();
+					pe.content = buddy.firstName();
 					if (escape)
 						HtmlDocument::escapeText(pe.content);
 					break;
 				case 'r':
 					++i;
-					pe.content = contact.lastName();
+					pe.content = buddy.lastName();
 					if (escape)
 						HtmlDocument::escapeText(pe.content);
 					break;
 				case 'm':
 					++i;
-					pe.content = contact.mobile();
+					pe.content = buddy.mobile();
 					break;
 				case 'g':
 					++i;
@@ -282,7 +282,7 @@ QString Parser::parse(const QString &s, Account account, const Buddy &contact, c
 					break;
 				case 'e':
 					++i;
-					pe.content = contact.email();
+					pe.content = buddy.email();
 					break;
 				case 'x':
 					++i;
@@ -478,7 +478,7 @@ QString Parser::parse(const QString &s, Account account, const Buddy &contact, c
 						parseStack.pop_back();
 						pe.type = ParserToken::PT_STRING;
 						if (registeredTags.contains(pe.content))
-							pe.content = registeredTags[pe.content](contact);
+							pe.content = registeredTags[pe.content](buddy);
 						else if (object && registeredObjectTags.contains(pe.content))
 							pe.content = registeredObjectTags[pe.content](object);
 						else

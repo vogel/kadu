@@ -69,7 +69,7 @@ public:
 	bool isNull() const { return 0 == Data || Data->isNull(); }
 	bool isAnonymous() const { return 0 != Data && Data->isAnonymous(); }
 
-	void mergeWith(Buddy contact); // TODO: 0.8 refactor
+	void mergeWith(Buddy buddy); // TODO: 0.8 refactor
 
 	Buddy & operator = (const Buddy &copy);
 	bool operator == (const Buddy &compare) const;
@@ -141,7 +141,7 @@ template<class T>
 
 Q_DECLARE_METATYPE(Buddy)
 
-uint qHash(const Buddy &contact);
+uint qHash(const Buddy &buddy);
 
 #undef PropertyRead
 #undef PropertyWrite

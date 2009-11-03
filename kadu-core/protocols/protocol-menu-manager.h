@@ -28,7 +28,7 @@ class ProtocolMenuManager
 public:
 	QList<ActionDescription *> contactsListActions() { return ContactsListActions; }
 	QList<ActionDescription *> managementActions() { return ManagementActions; }
-	QList<ActionDescription *> protocolActions(Account account, Buddy contact);
+	QList<ActionDescription *> protocolActions(Account account, Buddy buddy);
 };
 
 #endif // PROTOCOL_MENU_MANAGER_H

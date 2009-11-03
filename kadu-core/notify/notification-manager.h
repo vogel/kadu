@@ -62,7 +62,7 @@ class KADUAPI NotificationManager : public QObject, AccountsAwareObject, Configu
 private slots:
 	void messageReceived(const Message &message);
 
-	void statusChanged(Account account, Buddy contact, Status oldStatus);
+	void statusChanged(Account account, Buddy buddy, Status oldStatus);
 
 	void notifyAboutUserActionActivated(QAction *sender, bool toggled);
 

@@ -117,19 +117,19 @@ void FileTransferWidget::createGui()
 	buttons->setLayout(buttons_layout);
  	layout->addWidget(buttons, 2, 2, Qt::AlignRight);
 
-	Buddy contact = CurrentTransfer->contact();
+	Buddy buddy = CurrentTransfer->buddy();
 
 	QString fileName = QFileInfo(CurrentTransfer->localFileName()).fileName();
 
 	if (FileTransfer::TypeSend == CurrentTransfer->transferType())
 	{
 		icon->setPixmap(IconsManager::instance()->loadPixmap("FileTransferSend"));
-		DescriptionLabel->setText(tr("<b>File</b> %1 <b>to</b> %2").arg(fileName).arg(contact.display()));
+		DescriptionLabel->setText(tr("<b>File</b> %1 <b>to</b> %2").arg(fileName).arg(buddy.display()));
 	}
 	else
 	{
 		icon->setPixmap(IconsManager::instance()->loadPixmap("FileTransferReceive"));
-		DescriptionLabel->setText(tr("<b>File</b> %1 <b>from</b> %2").arg(fileName).arg(contact.display()));
+		DescriptionLabel->setText(tr("<b>File</b> %1 <b>from</b> %2").arg(fileName).arg(buddy.display()));
 	}
 }
 

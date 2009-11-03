@@ -13,26 +13,26 @@
 
 KADU_AWARE_CLASS(BuddiesAwareObject)
 
-void BuddiesAwareObject::notifyBuddyAdded(Buddy contact)
+void BuddiesAwareObject::notifyBuddyAdded(Buddy buddy)
 {
 	foreach (BuddiesAwareObject *object, Objects)
-		object->contactAdded(contact);
+		object->contactAdded(buddy);
 }
 
-void BuddiesAwareObject::notifyBuddyRemoved(Buddy contact)
+void BuddiesAwareObject::notifyBuddyRemoved(Buddy buddy)
 {
 	foreach (BuddiesAwareObject *object, Objects)
-		object->contactRemoved(contact);
+		object->contactRemoved(buddy);
 }
 
 void BuddiesAwareObject::triggerAllBuddiesAdded()
 {
-	foreach (Buddy contact, BuddyManager::instance()->buddies())
-		contactAdded(contact);
+	foreach (Buddy buddy, BuddyManager::instance()->buddies())
+		contactAdded(buddy);
 }
 
 void BuddiesAwareObject::triggerAllBuddiesRemoved()
 {
-	foreach (Buddy contact, BuddyManager::instance()->buddies())
-		contactRemoved(contact);
+	foreach (Buddy buddy, BuddyManager::instance()->buddies())
+		contactRemoved(buddy);
 }

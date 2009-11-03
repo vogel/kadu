@@ -89,7 +89,7 @@ private:
 	void networkConnected();
 	void networkDisconnected(bool tryAgain);
 
-	int notifyTypeFromContact(Buddy &contact);
+	int notifyTypeFromContact(Buddy &buddy);
 	void sendUserList();
 
 	void socketContactStatusChanged(unsigned int uin, unsigned int status, const QString &description,
@@ -105,11 +105,11 @@ private slots:
 	void connectionTimeoutTimerSlot();
 	void everyMinuteActions();
 
-	void contactAdded(Buddy &contact);
-	void contactRemoved(Buddy &contact);
-	void contactAccountDataAdded(Buddy &contact, Account contactAccount);
-	void contactAccountDataAboutToBeRemoved(Buddy &contact, Account contactAccount);
-	void contactAccountDataIdChanged(Buddy &contact, Account contactAccount, const QString &oldId);
+	void contactAdded(Buddy &buddy);
+	void contactRemoved(Buddy &buddy);
+	void contactAccountDataAdded(Buddy &buddy, Account contactAccount);
+	void contactAccountDataAboutToBeRemoved(Buddy &buddy, Account contactAccount);
+	void contactAccountDataIdChanged(Buddy &buddy, Account contactAccount, const QString &oldId);
 
 protected:
 	virtual void changeStatus();
@@ -134,8 +134,8 @@ public:
 	virtual QPixmap statusPixmap(Status status);
 	virtual QPixmap statusPixmap(const QString &statusType);
 
-	UinType uin(Buddy contact) const;
-	GaduContactAccountData * gaduContactAccountData(Buddy contact) const;
+	UinType uin(Buddy buddy) const;
+	GaduContactAccountData * gaduContactAccountData(Buddy buddy) const;
 
 	virtual int maxDescriptionLength();
 

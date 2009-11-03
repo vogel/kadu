@@ -85,31 +85,31 @@ void GaduPersonalInfoWidget::createGui()
 	
 }
 
-void GaduPersonalInfoWidget::personalInfoAvailable(Buddy contact)
+void GaduPersonalInfoWidget::personalInfoAvailable(Buddy buddy)
 {
 	kdebugmf (KDEBUG_INFO,"personal info available");
-	NickName->setText(contact.nickName());
-	FirstName->setText(contact.firstName());
-	LastName->setText(contact.lastName());
-	Sex->setCurrentIndex((int)contact.gender());
-	FamilyName->setText(contact.familyName());
-	BirthYear->setText(QString::number(contact.birthYear()));
-	City->setText(contact.city());
-	FamilyCity->setText(contact.familyCity());
+	NickName->setText(buddy.nickName());
+	FirstName->setText(buddy.firstName());
+	LastName->setText(buddy.lastName());
+	Sex->setCurrentIndex((int)buddy.gender());
+	FamilyName->setText(buddy.familyName());
+	BirthYear->setText(QString::number(buddy.birthYear()));
+	City->setText(buddy.city());
+	FamilyCity->setText(buddy.familyCity());
 }
 
 void GaduPersonalInfoWidget::applyData()
 {
-	Buddy contact;
+	Buddy buddy;
 
-	contact.setNickName((*NickName).text());
-	contact.setFirstName((*FirstName).text());
-	contact.setLastName((*LastName).text());
-	contact.setFamilyName((*FamilyName).text());
-	contact.setBirthYear((*BirthYear).text().toUShort());
-	contact.setCity((*City).text());
-	contact.setFamilyCity((*FamilyCity).text());
-	contact.setGender((BuddyShared::BuddyGender)Sex->currentIndex());
+	buddy.setNickName((*NickName).text());
+	buddy.setFirstName((*FirstName).text());
+	buddy.setLastName((*LastName).text());
+	buddy.setFamilyName((*FamilyName).text());
+	buddy.setBirthYear((*BirthYear).text().toUShort());
+	buddy.setCity((*City).text());
+	buddy.setFamilyCity((*FamilyCity).text());
+	buddy.setGender((BuddyShared::BuddyGender)Sex->currentIndex());
 
-	Service->updatePersonalInfo(contact);
+	Service->updatePersonalInfo(buddy);
 }

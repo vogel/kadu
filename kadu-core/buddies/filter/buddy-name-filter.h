@@ -19,7 +19,7 @@ class BuddyNameFilter : public AbstractBuddyFilter
 public:
 	BuddyNameFilter(QObject *parent = 0) : AbstractBuddyFilter(parent) {}
 
-	virtual bool acceptBuddy(Buddy contact);
+	virtual bool acceptBuddy(Buddy buddy);
 
 	void setName(const QString &name);
 

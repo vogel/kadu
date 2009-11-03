@@ -66,7 +66,7 @@ QString AvatarManager::avatarFileName(Avatar avatar)
 	if (account.isNull())
 		return QString::null;
 
-	return QString("%1-%2").arg(cad->contact().uuid().toString(), account.uuid().toString());
+	return QString("%1-%2").arg(cad->buddy().uuid().toString(), account.uuid().toString());
 }
 
 void AvatarManager::accountRegistered(Account account)

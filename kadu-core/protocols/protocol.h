@@ -118,7 +118,7 @@ signals:
 	void disconnected(Account account);
 
 	void statusChanged(Account account, Status newStatus);
-	void contactStatusChanged(Account account, Buddy contact, Status oldStatus);
+	void buddyStatusChanged(Account account, Buddy buddy, Status oldStatus);
 
 // TODO: REVIEW
 	void connectionError(Account account, const QString &server, const QString &reason);

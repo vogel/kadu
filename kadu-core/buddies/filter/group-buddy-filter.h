@@ -25,7 +25,7 @@ public:
 	GroupBuddyFilter(QObject *parent = 0);
 
 	void setGroup(Group *group);
-	virtual bool acceptBuddy(Buddy contact);
+	virtual bool acceptBuddy(Buddy buddy);
 
 	void refresh();
 

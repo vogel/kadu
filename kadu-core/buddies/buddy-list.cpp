@@ -18,9 +18,9 @@ BuddyList::BuddyList(QList<Buddy> list)
 	*this += list;
 }
 
-BuddyList::BuddyList(Buddy contact)
+BuddyList::BuddyList(Buddy buddy)
 {
-	append(contact);
+	append(buddy);
 }
 
 bool BuddyList::operator == (const BuddyList &compare) const
@@ -28,8 +28,8 @@ bool BuddyList::operator == (const BuddyList &compare) const
 	if (size() != compare.size())
 		return false;
 
-	foreach (Buddy contact, compare)
-		if (!contains(contact))
+	foreach (Buddy buddy, compare)
+		if (!contains(buddy))
 			return false;
 	return true;
 }

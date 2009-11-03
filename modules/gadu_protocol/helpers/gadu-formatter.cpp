@@ -174,7 +174,7 @@ void GaduFormater::appendToMessage(Account account, FormattedMessage &result, Ui
 		if (gadu)
 		{
 			dynamic_cast<GaduChatImageService *>(gadu->chatImageService())->
-					sendImageRequest(account.getContactById(QString::number(sender)), size, crc32);
+					sendImageRequest(account.getBuddyById(QString::number(sender)), size, crc32);
 			result << FormattedMessagePart(createImageId(sender, size, crc32), true);
 		}
 	}

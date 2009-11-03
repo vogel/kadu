@@ -51,7 +51,7 @@ private slots:
 	void updateOrderAndClose();
 
 public:
-	BuddyGeneralConfigurationWidget(Buddy &contact, QWidget *parent = 0);
+	BuddyGeneralConfigurationWidget(Buddy &buddy, QWidget *parent = 0);
 	~BuddyGeneralConfigurationWidget();
 
 	void saveConfiguration();

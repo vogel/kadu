@@ -37,7 +37,7 @@ bool GaduChatService::sendMessage(Chat *chat, FormattedMessage &message)
 	kdebugf();
 
 	QString plain = message.toPlain();
-	BuddySet contacts = chat->contacts();
+	BuddySet contacts = chat->buddies();
 
 	unsigned int uinsCount = 0;
 	unsigned int formatsSize = 0;
@@ -73,8 +73,8 @@ bool GaduChatService::sendMessage(Chat *chat, FormattedMessage &message)
 		return false;
 	}
 
-	foreach (const Buddy &contact, contacts)
-		if (contact.accountData(Protocol->account()))
+	foreach (const Buddy &buddy, contacts)
+		if (buddy.accountData(Protocol->account()))
 			++uinsCount;
 
 	int messageId = -1;
@@ -83,9 +83,9 @@ bool GaduChatService::sendMessage(Chat *chat, FormattedMessage &message)
 		UinType* uins = new UinType[uinsCount];
 		unsigned int i = 0;
 
-		foreach (const Buddy &contact, contacts)
-			if (contact.accountData(Protocol->account()))
-				uins[i++] = Protocol->uin(contact);
+		foreach (const Buddy &buddy, contacts)
+			if (buddy.accountData(Protocol->account()))
+				uins[i++] = Protocol->uin(buddy);
 		if (formatsSize)
 			messageId = gg_send_message_confer_richtext(
 					Protocol->gaduSession(), GG_CLASS_CHAT, uinsCount, uins, (unsigned char *)data.data(),
@@ -96,16 +96,16 @@ bool GaduChatService::sendMessage(Chat *chat, FormattedMessage &message)
 		delete[] uins;
 	}
 	else
-		foreach (const Buddy &contact, contacts)
-			if (contact.accountData(Protocol->account()))
+		foreach (const Buddy &buddy, contacts)
+			if (buddy.accountData(Protocol->account()))
 			{
 				if (formatsSize)
 					messageId = gg_send_message_richtext(
-							Protocol->gaduSession(), GG_CLASS_CHAT, Protocol->uin(contact), (unsigned char *)data.data(),
+							Protocol->gaduSession(), GG_CLASS_CHAT, Protocol->uin(buddy), (unsigned char *)data.data(),
 							formats, formatsSize);
 				else
 					messageId = gg_send_message(
-							Protocol->gaduSession(), GG_CLASS_CHAT, Protocol->uin(contact), (unsigned char *)data.data());
+							Protocol->gaduSession(), GG_CLASS_CHAT, Protocol->uin(buddy), (unsigned char *)data.data());
 
 				break;
 			}
@@ -141,7 +141,7 @@ bool GaduChatService::isSystemMessage(gg_event *e)
 
 Buddy GaduChatService::getSender(gg_event *e)
 {
-	return Protocol->account().getContactById(QString::number(e->event.msg.sender));
+	return Protocol->account().getBuddyById(QString::number(e->event.msg.sender));
 }
 
 bool GaduChatService::ignoreSender(gg_event *e, Buddy sender)
@@ -165,7 +165,7 @@ BuddySet GaduChatService::getRecipients(gg_event *e)
 	BuddySet recipients;
 	for (int i = 0; i < e->event.msg.recipients_count; ++i)
 	{
-		Buddy recipient = Protocol->account().getContactById(QString::number(e->event.msg.recipients[i]));
+		Buddy recipient = Protocol->account().getBuddyById(QString::number(e->event.msg.recipients[i]));
 		recipients.insert(recipient);
 	}
 

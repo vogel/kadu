@@ -284,7 +284,7 @@ void MainWindow::actionAdded(Action *action)
 
 Buddy MainWindow::contact()
 {
-	BuddySet contactList = contacts();
+	BuddySet contactList = buddies();
 	return 1 == contactList.count()
 		? *contactList.begin()
 		: Buddy::null;

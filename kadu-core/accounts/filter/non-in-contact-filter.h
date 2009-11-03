@@ -27,7 +27,7 @@ public:
 	explicit NonInContactFilter(QObject *parent = 0);
 	virtual ~NonInContactFilter();
 
-	void setContact(Buddy contact);
+	void setContact(Buddy buddy);
 
 };
 

@@ -72,7 +72,7 @@ class HISTORYAPI History : public ConfigurationUiHandler, ConfigurationAwareObje
 	void createActionDescriptions();
 	void deleteActionDescriptions();
 	virtual void configurationUpdated();
-	virtual bool removeContactFromStorage(Buddy contact);
+	virtual bool removeContactFromStorage(Buddy buddy);
 	void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
 private slots:

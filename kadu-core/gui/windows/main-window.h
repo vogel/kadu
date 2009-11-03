@@ -55,9 +55,9 @@ public:
 
 	virtual bool supportsActionType(ActionDescription::ActionType type) = 0;
 	virtual BuddiesListView * contactsListView() = 0;
-	virtual BuddySet contacts() = 0;
+	virtual BuddySet buddies() = 0;
 	virtual Chat * chat() = 0;
-	Buddy contact();
+	Buddy buddy();
 
 	void actionAdded(Action *action);
 

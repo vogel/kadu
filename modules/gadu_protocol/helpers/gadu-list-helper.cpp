@@ -31,20 +31,20 @@ QString GaduListHelper::contactListToString(Account account, BuddyList contacts)
 
 	QStringList contactsStringList;
 
-	foreach (Buddy contact, contacts)
+	foreach (Buddy buddy, contacts)
 	{
 		QStringList contactGroups;
-		foreach (Group *group, contact.groups())
+		foreach (Group *group, buddy.groups())
 			contactGroups << group->name();
 
-		ContactAccountData *cad = contact.accountData(account);
+		ContactAccountData *cad = buddy.accountData(account);
 
 		contactsStringList << QString("%1;%2;%3;%4;%5;%6;%7;%8;%9;%10;%11;%12;%13")
-			.arg(contact.firstName())
-			.arg(contact.lastName())
-			.arg(contact.nickName())
-			.arg(contact.display())
-			.arg(contact.mobile())
+			.arg(buddy.firstName())
+			.arg(buddy.lastName())
+			.arg(buddy.nickName())
+			.arg(buddy.display())
+			.arg(buddy.mobile())
 			.arg(contactGroups.join(";"))
 			.arg(cad
 				? cad->id()
@@ -54,8 +54,8 @@ QString GaduListHelper::contactListToString(Account account, BuddyList contacts)
 			.arg("")
 			.arg("0")
 			.arg("")
-			.arg(contact.isOfflineTo(account))
-			.arg(contact.homePhone());
+			.arg(buddy.isOfflineTo(account))
+			.arg(buddy.homePhone());
 	}
 
 // 			file = user.aliveSound(type);
@@ -90,7 +90,7 @@ BuddyList GaduListHelper::streamToContactList(Account account, QTextStream &cont
 
 	while (!content.atEnd())
 	{
-		Buddy contact;
+		Buddy buddy;
 		line = content.readLine();
 //		kdebugm(KDEBUG_DUMP, ">>%s\n", qPrintable(line));
 		sections = line.split(";", QString::KeepEmptyParts);
@@ -99,11 +99,11 @@ BuddyList GaduListHelper::streamToContactList(Account account, QTextStream &cont
 		if (secCount < 7)
 			continue;
 
-		contact.setFirstName(sections[0]);
-		contact.setLastName(sections[1]);
-		contact.setNickName(sections[2]);
-		contact.setDisplay(sections[3]);
-		contact.setMobile(sections[4]);
+		buddy.setFirstName(sections[0]);
+		buddy.setLastName(sections[1]);
+		buddy.setNickName(sections[2]);
+		buddy.setDisplay(sections[3]);
+		buddy.setMobile(sections[4]);
 
 		groups.clear();
 		if (!sections[5].isEmpty())
@@ -119,7 +119,7 @@ BuddyList GaduListHelper::streamToContactList(Account account, QTextStream &cont
 				groups.append(GroupManager::instance()->byName(sections[i]));
 			++i;
 		}
-		contact.setGroups(groups);
+		buddy.setGroups(groups);
 		--i;
 
 		if (i < secCount)
@@ -129,13 +129,13 @@ BuddyList GaduListHelper::streamToContactList(Account account, QTextStream &cont
 				uin = 0;
 			if (uin)
 			{
-				GaduContactAccountData *gcad = new GaduContactAccountData(account, contact, QString::number(uin), false);
-				contact.addAccountData(gcad);
+				GaduContactAccountData *gcad = new GaduContactAccountData(account, buddy, QString::number(uin), false);
+				buddy.addAccountData(gcad);
 			}
 		}
 
 		if (i < secCount)
-			contact.setEmail(sections[i++]);
+			buddy.setEmail(sections[i++]);
 
 // TODO: 0.6.6
 		if (i+1 < secCount)
@@ -151,14 +151,14 @@ BuddyList GaduListHelper::streamToContactList(Account account, QTextStream &cont
 
 		if (i < secCount)
 		{
-			contact.setOfflineTo(account, bool(sections[i].toInt()));
+			buddy.setOfflineTo(account, bool(sections[i].toInt()));
 			i++;
 		}
 
 		if (i < secCount)
-			contact.setHomePhone(sections[i++]);
+			buddy.setHomePhone(sections[i++]);
 
-		result.append(contact);
+		result.append(buddy);
 	}
 
 	return result;

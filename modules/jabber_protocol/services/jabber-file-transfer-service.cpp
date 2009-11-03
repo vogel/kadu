@@ -29,9 +29,9 @@ FileTransfer * JabberFileTransferService::loadFileTransferFromStorage(StoragePoi
 	return jft;
 }
 
-FileTransfer * JabberFileTransferService::createOutgoingFileTransfer(Buddy contact)
+FileTransfer * JabberFileTransferService::createOutgoingFileTransfer(Buddy buddy)
 {
-	return new JabberFileTransfer(Protocol->account(), contact, FileTransfer::TypeSend);
+	return new JabberFileTransfer(Protocol->account(), buddy, FileTransfer::TypeSend);
 }
 
 void JabberFileTransferService::incomingFile(JabberFileTransfer *transfer)

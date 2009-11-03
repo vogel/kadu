@@ -9,28 +9,28 @@
 
 #include "buddy-mergable-filter.h"
 
-BuddyMergableFilter::BuddyMergableFilter(Buddy contact, QObject *parent) :
-		AbstractBuddyFilter(parent), MyContact(contact)
+BuddyMergableFilter::BuddyMergableFilter(Buddy buddy, QObject *parent) :
+		AbstractBuddyFilter(parent), MyBuddy(buddy)
 {
-	Accounts = MyContact.accounts().toSet();
+	Accounts = MyBuddy.accounts().toSet();
 }
 
 BuddyMergableFilter::~BuddyMergableFilter()
 {
 }
 
-void BuddyMergableFilter::setContact(Buddy contact)
+void BuddyMergableFilter::setContact(Buddy buddy)
 {
-	if (MyContact == contact)
+	if (MyBuddy == buddy)
 		return;
 
-	MyContact = contact;
-	Accounts = contact.accounts().toSet();
+	MyBuddy = buddy;
+	Accounts = buddy.accounts().toSet();
 
 	emit filterChanged();
 }
 
-bool BuddyMergableFilter::acceptBuddy(Buddy contact)
+bool BuddyMergableFilter::acceptBuddy(Buddy buddy)
 {
-	return contact.accounts().toSet().intersect(Accounts).empty();
+	return buddy.accounts().toSet().intersect(Accounts).empty();
 }

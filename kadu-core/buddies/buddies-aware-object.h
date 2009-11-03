@@ -20,12 +20,12 @@ class KADUAPI BuddiesAwareObject : public AwareObject<BuddiesAwareObject>
 {
 
 protected:
-	virtual void contactAdded(Buddy contact) = 0;
-	virtual void contactRemoved(Buddy contact) = 0;
+	virtual void contactAdded(Buddy buddy) = 0;
+	virtual void contactRemoved(Buddy buddy) = 0;
 
 public:
-	static void notifyBuddyAdded(Buddy contact);
-	static void notifyBuddyRemoved(Buddy contact);
+	static void notifyBuddyAdded(Buddy buddy);
+	static void notifyBuddyRemoved(Buddy buddy);
 
 	void triggerAllBuddiesAdded();
 	void triggerAllBuddiesRemoved();

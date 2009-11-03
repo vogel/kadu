@@ -191,7 +191,7 @@ void KaduWindow::createHelpMenu()
 
 void KaduWindow::openChatWindow(Chat *chat)
 {
-	if (!chat->contacts().contains(Core::instance()->myself()))
+	if (!chat->buddies().contains(Core::instance()->myself()))
 	{
 		ChatWidgetManager::instance()->sendMessage(chat);
 		return;
@@ -224,10 +224,10 @@ void KaduWindow::createRecentChatsMenu()
 		QStringList displays;
 
 		int i = 0;
-		foreach (Buddy contact, chat->contacts())
+		foreach (Buddy buddy, chat->buddies())
 		{
 			i++;
-			displays.append(contact.display());
+			displays.append(buddy.display());
 
 			if (5 == i)
 			{
@@ -339,7 +339,7 @@ BuddiesListView * KaduWindow::contactsListView()
 	return ContactsWidget->view();
 }
 
-BuddySet KaduWindow::contacts()
+BuddySet KaduWindow::buddies()
 {
 	return ContactsWidget->view()->selectedBuddies();
 }
@@ -350,7 +350,7 @@ Chat * KaduWindow::chat()
 	if (account.isNull())
 		return 0;
 
-	return account.protocolHandler()->findChat(contacts());
+	return account.protocolHandler()->findChat(buddies());
 }
 
 void KaduWindow::configurationUpdated()

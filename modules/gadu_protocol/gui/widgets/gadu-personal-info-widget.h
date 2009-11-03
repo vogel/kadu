@@ -38,7 +38,7 @@ class GaduPersonalInfoWidget : public QWidget
 	void createGui();
 
 private slots:
-	void personalInfoAvailable(Buddy contact);
+	void personalInfoAvailable(Buddy buddy);
 
 public:
 	explicit GaduPersonalInfoWidget(Account account, QWidget *parent = 0);

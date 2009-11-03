@@ -221,8 +221,8 @@ void GroupTabBar::dropEvent(QDropEvent *event)
 
 		Group *group = GroupManager::instance()->byName(newGroupName);
 
-		foreach (Buddy contact, contacts)
-			contact.addToGroup(group);
+		foreach (Buddy buddy, contacts)
+			buddy.addToGroup(group);
 
 		QApplication::restoreOverrideCursor();
 
@@ -301,8 +301,8 @@ void GroupTabBar::addToGroup()
 	if (!currentGroup)
 		return;
 
-	foreach (Buddy contact, currentContacts)
-		contact.addToGroup(currentGroup);
+	foreach (Buddy buddy, currentContacts)
+		buddy.addToGroup(currentGroup);
 }
 
 void GroupTabBar::moveToGroup()
@@ -312,10 +312,10 @@ void GroupTabBar::moveToGroup()
 
 	QStringList groups;
 
-	foreach (Buddy contact, currentContacts)
+	foreach (Buddy buddy, currentContacts)
 	{
-		contact.removeFromGroup(GroupManager::instance()->byUuid(tabData(currentIndex()).toString()));
-		contact.addToGroup(currentGroup);
+		buddy.removeFromGroup(GroupManager::instance()->byUuid(tabData(currentIndex()).toString()));
+		buddy.addToGroup(currentGroup);
 
 		Filter->refresh();
 	}

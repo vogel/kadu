@@ -33,7 +33,7 @@ public:
 	virtual void store();
 
 	virtual ChatType type() const;
-	virtual BuddySet contacts() const { return CurrentContacts; }
+	virtual BuddySet buddies() const { return CurrentContacts; }
 	virtual QString name() const;
 
 };

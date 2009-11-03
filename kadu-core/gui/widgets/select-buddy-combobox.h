@@ -40,10 +40,10 @@ public:
 	void addFilter(AbstractBuddyFilter *filter);
 	void removeFilter(AbstractBuddyFilter *filter);
 
-	Buddy contact() { return MyBuddy; }
+	Buddy buddy() { return MyBuddy; }
 
 signals:
-	void buddyChanged(Buddy contact);
+	void buddyChanged(Buddy buddy);
 
 };
 

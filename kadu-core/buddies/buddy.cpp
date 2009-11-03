@@ -284,7 +284,7 @@ Buddy Buddy::dummy()
 	return example;
 }
 
-uint qHash(const Buddy &contact)
+uint qHash(const Buddy &buddy)
 {
-	return qHash(contact.uuid().toString());
+	return qHash(buddy.uuid().toString());
 }

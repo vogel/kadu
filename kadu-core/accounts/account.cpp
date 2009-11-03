@@ -133,7 +133,7 @@ void Account::removeFromStorage()
 		Data->removeFromStorage();
 }
 
-Buddy Account::getContactById(const QString& id)
+Buddy Account::getBuddyById(const QString& id)
 {
 	return BuddyManager::instance()->byId(*this, id);
 }

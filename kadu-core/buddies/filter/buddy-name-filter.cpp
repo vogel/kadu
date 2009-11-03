@@ -12,23 +12,23 @@
 
 #include "buddy-name-filter.h"
 
-bool BuddyNameFilter::acceptBuddy(Buddy contact)
+bool BuddyNameFilter::acceptBuddy(Buddy buddy)
 {
 	if (Name.isEmpty())
 		return true;
 
-	if (contact.display().contains(Name, Qt::CaseInsensitive))
+	if (buddy.display().contains(Name, Qt::CaseInsensitive))
 		return true;
-	if (contact.firstName().contains(Name, Qt::CaseInsensitive))
+	if (buddy.firstName().contains(Name, Qt::CaseInsensitive))
 		return true;
-	if (contact.lastName().contains(Name, Qt::CaseInsensitive))
+	if (buddy.lastName().contains(Name, Qt::CaseInsensitive))
 		return true;
-	if (contact.nickName().contains(Name, Qt::CaseInsensitive))
+	if (buddy.nickName().contains(Name, Qt::CaseInsensitive))
 		return true;
-	if (contact.email().contains(Name, Qt::CaseInsensitive))
+	if (buddy.email().contains(Name, Qt::CaseInsensitive))
 		return true;
 
-	foreach (ContactAccountData *cad, contact.accountDatas())
+	foreach (ContactAccountData *cad, buddy.accountDatas())
 		if (cad->id().contains(Name, Qt::CaseInsensitive))
 			return true;
 

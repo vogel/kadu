@@ -73,7 +73,7 @@ class JabberProtocol : public Protocol
 		virtual SearchService * searchService() { return 0; }
 		JabberResourcePool *resourcePool();
 
-		JabberContactAccountData * jabberContactAccountData(Buddy contact) const;
+		JabberContactAccountData * jabberContactAccountData(Buddy buddy) const;
 
 	protected:
 		virtual void changeStatus();
@@ -92,12 +92,12 @@ class JabberProtocol : public Protocol
 		void slotSubscription(const XMPP::Jid &jid, const QString &type);
 		void slotClientDebugMessage (const QString &msg);
 
-		void contactAdded(Buddy &contact);
-		void contactRemoved(Buddy &contact);
-		void contactUpdated(Buddy &contact);
-		void contactAccountDataAdded(Buddy &contact, Account contactAccount);
-		void contactAccountDataAboutToBeRemoved(Buddy &contact, Account contactAccount);
-		void contactAccountIdChanged(Buddy &contact, Account account, const QString &oldId);
+		void contactAdded(Buddy &buddy);
+		void contactRemoved(Buddy &buddy);
+		void contactUpdated(Buddy &buddy);
+		void contactAccountDataAdded(Buddy &buddy, Account contactAccount);
+		void contactAccountDataAboutToBeRemoved(Buddy &buddy, Account contactAccount);
+		void contactAccountIdChanged(Buddy &buddy, Account account, const QString &oldId);
 
 	public slots:
 		void connectToServer();

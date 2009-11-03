@@ -45,8 +45,8 @@ public:
 	Action(ActionDescription *description, MainWindow *parent);
 	virtual ~Action();
 
-	Buddy contact();
-	BuddySet contacts();
+	Buddy buddy();
+	BuddySet buddies();
 
 public slots:
 	void checkState();

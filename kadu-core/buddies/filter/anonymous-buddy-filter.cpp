@@ -27,14 +27,14 @@ void AnonymousBuddyFilter::setEnabled(bool enabled)
 	emit filterChanged();
 }
 
-bool AnonymousBuddyFilter::acceptBuddy(Buddy contact)
+bool AnonymousBuddyFilter::acceptBuddy(Buddy buddy)
 {
 	if (!Enabled)
 		return true;
 
-	Account prefferedAccount = contact.prefferedAccount();
+	Account prefferedAccount = buddy.prefferedAccount();
 	if (prefferedAccount.isNull())
 		return false;
 
-	return !contact.isAnonymous();
+	return !buddy.isAnonymous();
 }

@@ -18,10 +18,10 @@ class KADUAPI BuddyRemovePredicateObject : public PredicateObject<BuddyRemovePre
 {
 
 protected:
-	virtual bool removeContactFromStorage(Buddy contact) = 0;
+	virtual bool removeContactFromStorage(Buddy buddy) = 0;
 
 public:
-	static bool inquireAll(Buddy contact);
+	static bool inquireAll(Buddy buddy);
 
 };
 

@@ -35,7 +35,7 @@ private slots:
 	void accountSelectionChanged(int index);
 
 public:
-	BuddyPersonalInfoConfigurationWidget(Buddy &contact, QWidget *parent = 0);
+	BuddyPersonalInfoConfigurationWidget(Buddy &buddy, QWidget *parent = 0);
 	~BuddyPersonalInfoConfigurationWidget();
 
 };

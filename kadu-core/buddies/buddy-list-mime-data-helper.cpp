@@ -32,8 +32,8 @@ QMimeData * BuddyListMimeDataHelper::toMimeData(BuddyList contactList)
 	QMimeData *mimeData = new QMimeData();
 
 	QStringList contactListStrings;
-	foreach (Buddy contact, contactList)
-		contactListStrings << contact.uuid().toString();
+	foreach (Buddy buddy, contactList)
+		contactListStrings << buddy.uuid().toString();
 
 	mimeData->setData(MimeType, contactListStrings.join(":").toAscii());
 	return mimeData;
@@ -50,11 +50,11 @@ BuddyList BuddyListMimeDataHelper::fromMimeData(const QMimeData * mimeData)
 	QStringList contactListStrings = contactListString.split(":");
 	foreach (const QString &contactListString, contactListStrings)
 	{
-		Buddy contact = BuddyManager::instance()->byUuid(contactListString);
-		if (contact.isNull())
+		Buddy buddy = BuddyManager::instance()->byUuid(contactListString);
+		if (buddy.isNull())
 			continue;
 
-		result << contact;
+		result << buddy;
 	}
 
 	return result;

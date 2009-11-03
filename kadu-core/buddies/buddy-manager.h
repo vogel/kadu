@@ -32,7 +32,7 @@ class KADUAPI BuddyManager : public QObject, public StorableObject
 
 	static BuddyManager * Instance;
 
-	BuddyList Contacts;
+	BuddyList Buddies;
 
 	BuddyManager();
 	virtual ~BuddyManager();
@@ -61,34 +61,34 @@ public:
 
 	BuddyList buddies();
 	BuddyList buddies(Account account, bool includeAnonymous = false);
-	void addBuddy(Buddy contact);
-	void removeBuddy(Buddy contact);
+	void addBuddy(Buddy buddy);
+	void removeBuddy(Buddy buddy);
 	void mergeBuddies(Buddy destination, Buddy source);
 
-	unsigned int count() { return Contacts.count(); }
+	unsigned int count() { return Buddies.count(); }
 
 	Buddy byIndex(unsigned int index);
-	int contactIndex(Buddy contact) { return Contacts.indexOf(contact); }
+	int contactIndex(Buddy buddy) { return Buddies.indexOf(buddy); }
 
 	Buddy byId(Account account, const QString &id);
 	Buddy byUuid(const QString &uuid);
 	Buddy byDisplay(const QString &display);
 
-	void blockUpdatedSignal(Buddy &contact);
-	void unblockUpdatedSignal(Buddy &contact);
+	void blockUpdatedSignal(Buddy &buddy);
+	void unblockUpdatedSignal(Buddy &buddy);
 
 signals:
-	void buddyAboutToBeAdded(Buddy &contact);
-	void buddyAdded(Buddy &contact);
-	void buddyAboutToBeRemoved(Buddy &contact);
-	void buddyRemoved(Buddy &contact);
+	void buddyAboutToBeAdded(Buddy &buddy);
+	void buddyAdded(Buddy &buddy);
+	void buddyAboutToBeRemoved(Buddy &buddy);
+	void buddyRemoved(Buddy &buddy);
 
-	void buddyUpdated(Buddy &contact);
-	void contactAccountDataAboutToBeAdded(Buddy &contact, Account account);
-	void contactAccountDataAdded(Buddy &contact, Account account);
-	void contactAccountDataAboutToBeRemoved(Buddy &contact, Account account);
-	void contactAccountDataRemoved(Buddy &contact, Account account);
-	void contactAccountIdChanged(Buddy &contact, Account account, const QString &oldId);
+	void buddyUpdated(Buddy &buddy);
+	void contactAccountDataAboutToBeAdded(Buddy &buddy, Account account);
+	void contactAccountDataAdded(Buddy &buddy, Account account);
+	void contactAccountDataAboutToBeRemoved(Buddy &buddy, Account account);
+	void contactAccountDataRemoved(Buddy &buddy, Account account);
+	void contactAccountIdChanged(Buddy &buddy, Account account, const QString &oldId);
 
 };
 

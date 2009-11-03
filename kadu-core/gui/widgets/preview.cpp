@@ -27,7 +27,7 @@ Preview::Preview(QWidget *parent)
 	setFixedHeight(170);
 	setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 
-	contact = Buddy::dummy();
+	buddy = Buddy::dummy();
 }
 
 Preview::~Preview()
@@ -51,7 +51,7 @@ void Preview::syntaxChanged(const QString &content)
 		for (int i = 0; i < count; i++)
 			text += Parser::parse(syntax, contacts[i].prefferedAccount(), contacts[i], objectsToParse.at(i));
 	else
-		text = Parser::parse(syntax, contact.prefferedAccount(), contact);
+		text = Parser::parse(syntax, buddy.prefferedAccount(), buddy);
 
 	emit needFixup(text);
 

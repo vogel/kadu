@@ -46,7 +46,7 @@ class KADUAPI PendingMessagesManager : public QObject, BuddyRemovePredicateObjec
 	typedef QList<Message> PendingMsgsList;
 	PendingMsgsList msgs;
 
-    	bool removeContactFromStorage(Buddy contact);
+    	bool removeContactFromStorage(Buddy buddy);
 
 public:
 
@@ -58,7 +58,7 @@ public:
 		\param contact given contact.
 		\return true, if there is any message, otherwise - false.
 	**/
-	bool pendingMsgs(Buddy contact) const;
+	bool pendingMsgs(Buddy buddy) const;
 
 	/**
 		\fn bool pendingMsgs() const
@@ -129,13 +129,13 @@ signals:
 		\fn void messageFromUserAdded(Contact contact)
 		Signal emitted, when new message from given contact was added to queue.
 	**/
-	void messageFromUserAdded(Buddy contact);
+	void messageFromUserAdded(Buddy buddy);
 
 	/**
 		\fn void messageFromUserDeleted(Contact contact)
 		Signal emitted, when message from given contact was removed from queue.
 	**/
-	void messageFromUserDeleted(Buddy contact);
+	void messageFromUserDeleted(Buddy buddy);
 
 };
 

@@ -56,20 +56,20 @@ Action::~Action()
 {
 }
 
-Buddy Action::contact()
+Buddy Action::buddy()
 {
-	BuddySet contactSet = contacts();
+	BuddySet contactSet = buddies();
 	if (1 != contactSet.count())
 		return Buddy::null;
 	else
 		return *contactSet.begin();
 }
 
-BuddySet Action::contacts()
+BuddySet Action::buddies()
 {
 	MainWindow *kaduMainWindow = dynamic_cast<MainWindow *>(parent());
 	if (kaduMainWindow)
-		return kaduMainWindow->contacts();
+		return kaduMainWindow->buddies();
 	else
 		return BuddySet();
 }
@@ -128,6 +128,5 @@ void Action::updateIcon()
 
 void disableEmptyUles(Action *action)
 {
-	action->setEnabled(!action->contacts().isEmpty());
+	action->setEnabled(!action->buddies().isEmpty());
 }
-

@@ -54,9 +54,9 @@ AccountDetails * GaduProtocolFactory::createAccountDetails(Account account)
 	return new GaduAccountDetails(account.storage(), account);
 }
 
-ContactAccountData * GaduProtocolFactory::newContactAccountData(Account account, Buddy contact, const QString &id)
+ContactAccountData * GaduProtocolFactory::newContactAccountData(Account account, Buddy buddy, const QString &id)
 {
-	return new GaduContactAccountData(account, contact, id, true);
+	return new GaduContactAccountData(account, buddy, id, true);
 }
 
 ContactAccountData * GaduProtocolFactory::loadContactAccountData(StoragePoint *storagePoint)

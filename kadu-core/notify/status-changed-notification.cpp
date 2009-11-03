@@ -95,8 +95,8 @@ StatusChangedNotification::StatusChangedNotification(const QString &toStatus, Bu
 		ChatNotification(account.protocolHandler()->findChat(contacts), QString("StatusChanged") + toStatus,
 			account.protocolHandler()->statusPixmap(contacts.begin()->accountData(account)->status()))
 {
-	const Buddy &contact = *contacts.begin();
-	Status status = contact.accountData(account)->status();
+	const Buddy &buddy = *contacts.begin();
+	Status status = buddy.accountData(account)->status();
 	QString syntax;
 
 	if (!status.description().isNull())
@@ -106,7 +106,7 @@ StatusChangedNotification::StatusChangedNotification(const QString &toStatus, Bu
 
 	setTitle(tr("Status changed"));
 	setText(narg(syntax,
-		Qt::escape(contact.display()),
+		Qt::escape(buddy.display()),
 		qApp->translate("@default", Status::name(status, false).toAscii().data()),
 		Qt::escape(status.description())
 	));

@@ -29,10 +29,10 @@ class BuddiesModel : public BuddiesModelBase
 	BuddyManager *Manager;
 
 private slots:
-	void buddyAboutToBeAdded(Buddy &contact);
-	void buddyAdded(Buddy &contact);
-	void buddyAboutToBeRemoved(Buddy &contact);
-	void buddyRemoved(Buddy &contact);
+	void buddyAboutToBeAdded(Buddy &buddy);
+	void buddyAdded(Buddy &buddy);
+	void buddyAboutToBeRemoved(Buddy &buddy);
+	void buddyRemoved(Buddy &buddy);
 
 public:
 	explicit BuddiesModel(BuddyManager *manager, QObject *parent = 0);
@@ -42,7 +42,7 @@ public:
 	
 	// AbstractContactsModel implementation
 	virtual Buddy buddyAt(const QModelIndex &index) const;
-	virtual const QModelIndex buddyIndex(Buddy contact) const;
+	virtual const QModelIndex buddyIndex(Buddy buddy) const;
 
 };
 

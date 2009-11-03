@@ -115,20 +115,20 @@ void AccountBuddyListWidget::buddiesListImported(bool ok, BuddyList contacts)
 	if (!ok)
 		return;
 
-	foreach (Buddy contact, contacts)
+	foreach (Buddy buddy, contacts)
 	{
-		Buddy c = BuddyManager::instance()->byId(CurrentAccount, contact.accountData(CurrentAccount)->id());
+		Buddy c = BuddyManager::instance()->byId(CurrentAccount, buddy.accountData(CurrentAccount)->id());
 		foreach (Buddy b, beforeImportList)
 			if (b.accountData(CurrentAccount) && b.accountData(CurrentAccount)->id() == c.accountData(CurrentAccount)->id())
 				beforeImportList.removeOne(b);
-		c.setFirstName(contact.firstName());
-		c.setLastName(contact.lastName());
-		c.setNickName(contact.nickName());
-		c.setMobile(contact.mobile());
-		c.setGroups(contact.groups());
-		c.setEmail(contact.email());
-		c.setDisplay(contact.display());
-		c.setHomePhone(contact.homePhone());
+		c.setFirstName(buddy.firstName());
+		c.setLastName(buddy.lastName());
+		c.setNickName(buddy.nickName());
+		c.setMobile(buddy.mobile());
+		c.setGroups(buddy.groups());
+		c.setEmail(buddy.email());
+		c.setDisplay(buddy.display());
+		c.setHomePhone(buddy.homePhone());
 		if (c.isAnonymous())
 			BuddyManager::instance()->addBuddy(c);
 	}

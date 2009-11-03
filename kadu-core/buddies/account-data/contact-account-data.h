@@ -31,7 +31,7 @@ class KADUAPI ContactAccountData : public QObject, public UuidStorableObject
 
 	Account ContactAccount;
 	Avatar ContactAvatar;
-	Buddy OwnerContact;
+	Buddy OwnerBuddy;
 	QString Id;
 
 	Status CurrentStatus;
@@ -46,7 +46,7 @@ class KADUAPI ContactAccountData : public QObject, public UuidStorableObject
 	bool OfflineTo;
 
 public:
-	ContactAccountData(Account account, Buddy contact, const QString &id, bool loaded = false);
+	ContactAccountData(Account account, Buddy buddy, const QString &id, bool loaded = false);
 	explicit ContactAccountData(StoragePoint *storage);
 
 	virtual bool validateId() {return false;}
@@ -56,8 +56,8 @@ public:
 	virtual QUuid uuid() const { return Uuid; }
 
 	Account account() { ensureLoaded(); return ContactAccount; }
-	Buddy contact() { ensureLoaded(); return OwnerContact; }
-	void setContact(Buddy contact);
+	Buddy buddy() { ensureLoaded(); return OwnerBuddy; }
+	void setContact(Buddy buddy);
 
 	Avatar & avatar() { ensureLoaded(); return ContactAvatar; }
 

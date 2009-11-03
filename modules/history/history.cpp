@@ -60,17 +60,17 @@ void disableNonHistoryContacts(Action *action)
 {
 	kdebugf();
 	action->setEnabled(false);
-	BuddySet contacts = action->contacts();
+	BuddySet contacts = action->buddies();
 
 	if (!contacts.count())
 		return;
 
-	foreach (const Buddy &contact, contacts)
+	foreach (const Buddy &buddy, contacts)
 	{
-		if (Core::instance()->myself() == contact)
+		if (Core::instance()->myself() == buddy)
 			return;
 
-		Account account = contact.prefferedAccount();
+		Account account = buddy.prefferedAccount();
 		if (!account.protocolHandler() || !account.protocolHandler()->chatService())
 			return;
 	}
@@ -455,14 +455,14 @@ void History::configurationUpdated()
 	kdebugf2();
 }
 
-bool History::removeContactFromStorage(Buddy contact)
+bool History::removeContactFromStorage(Buddy buddy)
 {
 	if (!CurrentStorage)
 		return true;
 //TODO: optimize
-	QList<Chat *> chats = ChatManager::instance()->chatsForAccount(contact.prefferedAccount());
+	QList<Chat *> chats = ChatManager::instance()->chatsForAccount(buddy.prefferedAccount());
 	foreach (Chat *chat, chats)
-		if (chat->contacts().contains(contact) && !CurrentStorage->chatDates(chat, HistorySearchParameters()).isEmpty())
+		if (chat->buddies().contains(buddy) && !CurrentStorage->chatDates(chat, HistorySearchParameters()).isEmpty())
 			return false;
 	return true;
 }

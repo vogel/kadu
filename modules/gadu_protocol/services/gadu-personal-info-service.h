@@ -35,7 +35,7 @@ public:
 	GaduPersonalInfoService(GaduProtocol *protocol);
 
 	virtual void fetchPersonalInfo();
-	virtual void updatePersonalInfo(Buddy contact);
+	virtual void updatePersonalInfo(Buddy buddy);
 
 };
 

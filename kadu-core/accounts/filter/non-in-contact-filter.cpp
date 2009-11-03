@@ -23,11 +23,11 @@ bool NonInContactFilter::acceptAccount(Account account)
 	return MyContact.isNull() || (0 == MyContact.accountData(account));
 }
 
-void NonInContactFilter::setContact(Buddy contact)
+void NonInContactFilter::setContact(Buddy buddy)
 {
-	if (MyContact != contact)
+	if (MyContact != buddy)
 	{
-		MyContact = contact;
+		MyContact = buddy;
 		emit filterChanged();
 	}
 }

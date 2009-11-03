@@ -27,15 +27,15 @@ void OnlineAndDescriptionBuddyFilter::setEnabled(bool enabled)
 	emit filterChanged();
 }
 
-bool OnlineAndDescriptionBuddyFilter::acceptBuddy(Buddy contact)
+bool OnlineAndDescriptionBuddyFilter::acceptBuddy(Buddy buddy)
 {
 	if (!Enabled)
 		return true;
 
-	Account prefferedAccount = contact.prefferedAccount();
+	Account prefferedAccount = buddy.prefferedAccount();
 	if (prefferedAccount.isNull())
 		return false;
 
-	Status status = contact.accountData(prefferedAccount)->status();
+	Status status = buddy.accountData(prefferedAccount)->status();
 	return !status.isDisconnected() || !status.description().isEmpty();
 }

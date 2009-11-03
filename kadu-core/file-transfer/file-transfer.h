@@ -90,7 +90,7 @@ public:
 	virtual void store();
 
 	Account account() { return CurrentAccount; }
-	Buddy contact() { return Peer; }
+	Buddy buddy() { return Peer; }
 
 	FileTransferType transferType() { return TransferType; }
 	FileTransferStatus transferStatus() { return TransferStatus; }

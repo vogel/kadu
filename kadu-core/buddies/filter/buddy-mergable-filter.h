@@ -19,15 +19,15 @@ class BuddyMergableFilter : public AbstractBuddyFilter
 	Q_OBJECT
 
 	QSet<Account> Accounts;
-	Buddy MyContact;
+	Buddy MyBuddy;
 
 public:
-	explicit BuddyMergableFilter(Buddy contact, QObject *parent = 0);
+	explicit BuddyMergableFilter(Buddy buddy, QObject *parent = 0);
 	virtual ~BuddyMergableFilter();
 
-	virtual bool acceptBuddy(Buddy contact);
+	virtual bool acceptBuddy(Buddy buddy);
 
-	void setContact(Buddy contact);
+	void setContact(Buddy buddy);
 
 };
 

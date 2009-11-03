@@ -21,11 +21,11 @@ class PersonalInfoService : public QObject
 public:
 	PersonalInfoService(QObject *parent = 0) : QObject(parent) {}
 
-	virtual void updatePersonalInfo(Buddy contact) = 0;
+	virtual void updatePersonalInfo(Buddy buddy) = 0;
 	virtual void fetchPersonalInfo() = 0;
 
 signals:
-	void personalInfoAvailable(Buddy contact);
+	void personalInfoAvailable(Buddy buddy);
 	void personalInfoUpdated(bool);
 
 };

@@ -20,8 +20,8 @@
 
 #include "buddy-groups-configuration-widget.h"
 
-BuddyGroupsConfigurationWidget::BuddyGroupsConfigurationWidget(Buddy &contact, QWidget *parent)
-	: QScrollArea(parent), MyBuddy(contact)
+BuddyGroupsConfigurationWidget::BuddyGroupsConfigurationWidget(Buddy &buddy, QWidget *parent)
+		: QScrollArea(parent), MyBuddy(buddy)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 

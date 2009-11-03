@@ -69,7 +69,7 @@ extern "C" KADU_EXPORT void tabs_close()
 void disableNewTab(Action *action)
 {
 	action->setEnabled(false);
-	BuddySet contacts = action->contacts();
+	BuddySet contacts = action->buddies();
 
 	if (!contacts.count())
 		return;
@@ -86,7 +86,7 @@ void disableNewTab(Action *action)
 		action->setText(qApp->translate("TabsManager", "Open in new tab"));
 
 	// TODO 0.6.6 dla siebie samego deaktywujemy opcje w menu, a konfernecje?
-	foreach (const Buddy &contact, contacts)
+	foreach (const Buddy &buddy, contacts)
 	{
 		if (Core::instance()->myself() == contact)
 			return;
@@ -222,7 +222,7 @@ void TabsManager::onNewChat(ChatWidget* chat, bool &handled)
 		return;
 	}
 
-	if (config_defaultTabs && (config_conferencesInTabs || chat->chat()->contacts().count() == 1))
+	if (config_defaultTabs && (config_conferencesInTabs || chat->chat()->buddies().count() == 1))
 	{
 		// jesli jest juz otwarte okno z kartami to dodajemy bezwzglednie nowe rozmowy do kart
 		if (tabdialog->count() > 0)
@@ -352,7 +352,7 @@ void TabsManager::onNewTab(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-	BuddySet contacts = window->contacts();
+	BuddySet contacts = window->buddies();
 	int contactsCount = contacts.count();
 
 	if (0 == contactsCount)
@@ -406,13 +406,13 @@ void TabsManager::insertTab(ChatWidget* chat)
 	else
 		chat->kaduRestoreGeometry();
 
-	BuddySet contacts = chat->chat()->contacts();
+	BuddySet contacts = chat->chat()->buddies();
 
 	detachedchats.removeOne(chat);
 
 	foreach (Action *action, attachToTabsActionDescription->actions())
 	{
-		if (action->contacts() == contacts)
+		if (action->buddies() == contacts)
 			action->setChecked(true);
 	}
 
@@ -524,7 +524,7 @@ void TabsManager::onTabAttach(QAction *sender, bool toggled)
 		detachChat(chatWidget);
 	else
 	{
-		if (chatEditBox->contacts().count()!=1 && !config_conferencesInTabs)
+		if (chatEditBox->buddies().count()!=1 && !config_conferencesInTabs)
 			return;
 		newchats.clear();
 		insertTab(chatWidget);
@@ -586,7 +586,7 @@ void TabsManager::attachToTabsActionCreated(Action *action)
 	if (!chatWidget)
 		return;
 
-	BuddySet contacts = action->contacts();
+	BuddySet contacts = action->buddies();
 
 	if (contacts.count() != 1 && !config_conferencesInTabs && tabdialog->indexOf(chatWidget) == -1)
 		action->setEnabled(false);
@@ -860,7 +860,7 @@ void TabsManager::repaintTabs()
 QString TabsManager::formatTabName(ChatWidget * chatWidget)
 {
 	//int contactsCount = chat->contacts().count();
-	int contactsCount = chatWidget->chat()->contacts().count();
+	int contactsCount = chatWidget->chat()->buddies().count();
 
 	QString TabName;
 
@@ -868,7 +868,7 @@ QString TabsManager::formatTabName(ChatWidget * chatWidget)
 		TabName = tr("Conference [%1]").arg(contactsCount);
 	else
 		//TabName = chat->contacts()[0].display();
-		TabName = chatWidget->chat()->contacts().toBuddyList()[0].display();
+		TabName = chatWidget->chat()->buddies().toBuddyList()[0].display();
 
 	return TabName;
 }

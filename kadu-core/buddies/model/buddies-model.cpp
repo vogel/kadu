@@ -62,29 +62,29 @@ Buddy BuddiesModel::buddyAt(const QModelIndex &index) const
 	return Manager->byIndex(parent.isValid() ? parent.row() : index.row());
 }
 
-const QModelIndex BuddiesModel::buddyIndex(Buddy contact) const
+const QModelIndex BuddiesModel::buddyIndex(Buddy buddy) const
 {
-	return index(Manager->contactIndex(contact), 0);
+	return index(Manager->contactIndex(buddy), 0);
 }
 
-void BuddiesModel::buddyAboutToBeAdded(Buddy &contact)
+void BuddiesModel::buddyAboutToBeAdded(Buddy &buddy)
 {
 	int count = rowCount();
 	beginInsertRows(QModelIndex(), count, count);
 }
 
-void BuddiesModel::buddyAdded(Buddy &contact)
+void BuddiesModel::buddyAdded(Buddy &buddy)
 {
 	endInsertRows();
 }
 
-void BuddiesModel::buddyAboutToBeRemoved(Buddy &contact)
+void BuddiesModel::buddyAboutToBeRemoved(Buddy &buddy)
 {
-    	int index = buddyIndex(contact).row();
+	int index = buddyIndex(buddy).row();
 	beginRemoveRows(QModelIndex(), index, index);
 }
 
-void BuddiesModel::buddyRemoved(Buddy &contact)
+void BuddiesModel::buddyRemoved(Buddy &buddy)
 {
     	endRemoveRows();
 }

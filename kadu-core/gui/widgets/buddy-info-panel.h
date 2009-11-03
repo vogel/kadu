@@ -31,7 +31,7 @@ public:
 	virtual ~BuddyInfoPanel();
 
 public slots:
-	void displayBuddy(Buddy contact);
+	void displayBuddy(Buddy buddy);
 	void styleFixup(QString &syntax);
 
 };

@@ -17,9 +17,9 @@
 
 #include "contact-account-data.h"
 
-ContactAccountData::ContactAccountData(Account account, Buddy contact, const QString &id, bool loaded) :
+ContactAccountData::ContactAccountData(Account account, Buddy buddy, const QString &id, bool loaded) :
 		UuidStorableObject("ContactAccountData", ContactAccountDataManager::instance(), loaded),
-		ContactAccount(account), OwnerContact(contact), Id(id),
+		ContactAccount(account), OwnerBuddy(buddy), Id(id),
 		ContactAvatar(this, false) /* TODO: 0.6.6 */, Blocked(false), OfflineTo(false), Port(0)
 {
 	Uuid = QUuid::createUuid();
@@ -27,7 +27,7 @@ ContactAccountData::ContactAccountData(Account account, Buddy contact, const QSt
 
 ContactAccountData::ContactAccountData(StoragePoint *storage) :
 		UuidStorableObject(storage), Uuid(QUuid::createUuid()),
-		ContactAccount(0), OwnerContact(Buddy::null), ContactAvatar(this, false) /* TODO: 0.6.6 */, Blocked(false), OfflineTo(false), Port(0)
+		ContactAccount(0), OwnerBuddy(Buddy::null), ContactAvatar(this, false) /* TODO: 0.6.6 */, Blocked(false), OfflineTo(false), Port(0)
 {
 }
 
@@ -62,22 +62,22 @@ void ContactAccountData::store()
 	storeValue("uuid", Uuid.toString(), true);
 	storeValue("Id", Id);
 	storeValue("Account", ContactAccount.uuid().toString());
-	storeValue("Buddy", OwnerContact.uuid().toString());
+	storeValue("Buddy", OwnerBuddy.uuid().toString());
 	removeValue("Contact");
 
 	ContactAvatar.store();
 }
 
-void ContactAccountData::setContact(Buddy contact)
+void ContactAccountData::setContact(Buddy buddy)
 {
-	if (contact == OwnerContact)
+	if (buddy == OwnerBuddy)
 		return;
 
-	if (!OwnerContact.isNull())
-		OwnerContact.removeAccountData(this);
-	OwnerContact = contact;
-	if (!OwnerContact.isNull())
-		OwnerContact.addAccountData(this);
+	if (!OwnerBuddy.isNull())
+		OwnerBuddy.removeAccountData(this);
+	OwnerBuddy = buddy;
+	if (!OwnerBuddy.isNull())
+		OwnerBuddy.addAccountData(this);
 }
 
 void ContactAccountData::setId(const QString &newId)

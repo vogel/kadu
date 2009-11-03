@@ -80,10 +80,10 @@ void GaduImporter::importAccounts()
 void GaduImporter::importContacts()
 {
 	connect(BuddyManager::instance(), SIGNAL(buddyAdded(Buddy &)),
-			this, SLOT(contactAdded(Buddy &)));
+			this, SLOT(buddyAdded(Buddy &)));
 
-	foreach (Buddy contact, BuddyManager::instance()->buddies())
-		contactAdded(contact);
+	foreach (Buddy buddy, BuddyManager::instance()->buddies())
+		buddyAdded(buddy);
 
 	importIgnored();
 }
@@ -142,8 +142,8 @@ void GaduImporter::importIgnored()
 	}
 }
 
-void GaduImporter::contactAdded(Buddy &contact)
+void GaduImporter::buddyAdded(Buddy &buddy)
 {
-	if (contact.customData().contains("uin"))
-		importGaduContact(contact);
+	if (buddy.customData().contains("uin"))
+		importGaduContact(buddy);
 }

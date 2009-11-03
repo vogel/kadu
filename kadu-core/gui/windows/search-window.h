@@ -110,7 +110,7 @@ protected:
 
 public:
 
-	SearchWindow(QWidget *parent=0, Buddy contact = Buddy::null);
+	SearchWindow(QWidget *parent=0, Buddy buddy = Buddy::null);
 	~SearchWindow(void);
 
 	static void createDefaultToolbars(QDomElement parentConfig);
@@ -120,7 +120,7 @@ public:
 
 	virtual bool supportsActionType(ActionDescription::ActionType type) { return type & ActionDescription::TypeSearch; }
 	virtual BuddiesListView* contactsListView() { return 0; }
-	virtual BuddySet contacts() { return BuddySet(); }
+	virtual BuddySet buddies() { return BuddySet(); }
 	virtual Chat* chat() { return 0; }
 
 

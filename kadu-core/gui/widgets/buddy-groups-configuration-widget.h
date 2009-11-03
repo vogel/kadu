@@ -26,7 +26,7 @@ class KADUAPI BuddyGroupsConfigurationWidget : public QScrollArea
 	void createGui();
 
 public:
-	BuddyGroupsConfigurationWidget(Buddy &contact, QWidget *parent = 0);
+	BuddyGroupsConfigurationWidget(Buddy &buddy, QWidget *parent = 0);
 	~BuddyGroupsConfigurationWidget();
 	void saveConfiguration();
 

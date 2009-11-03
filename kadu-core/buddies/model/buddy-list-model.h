@@ -35,7 +35,7 @@ public:
 
 	// AbstractContactsModel implementation
 	virtual Buddy buddyAt(const QModelIndex& index) const;
-	virtual const QModelIndex buddyIndex(Buddy contact) const;
+	virtual const QModelIndex buddyIndex(Buddy buddy) const;
 
 };
 

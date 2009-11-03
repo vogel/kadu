@@ -96,7 +96,7 @@ void OpenChatWith::inputChanged(const QString &text)
 	kdebugf2();
 }
 
-void OpenChatWith::openChat(Buddy contact)
+void OpenChatWith::openChat(Buddy buddy)
 {
 	BuddiesListView *widget = dynamic_cast<BuddiesListView *>(sender());
 	if (!widget)
