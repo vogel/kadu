@@ -152,7 +152,7 @@ void AccountData::setStatus(Status status)
 const Status & AccountData::status()
 {
 	if (ProtocolHandler)
-		ProtocolHandler->status();
+		return ProtocolHandler->status();
 	else
 		return Status::null;
 }

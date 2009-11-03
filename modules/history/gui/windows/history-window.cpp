@@ -211,8 +211,10 @@ void HistoryWindow::updateData()
 			usedChats.append(chat);
 		}
 	}
-
-	ChatsModel->addChats(result);
+	foreach (Chat *chat, result)
+	{
+		ChatsModel->addChat(chat);
+	}
 }
 
 void HistoryWindow::selectChat(Chat *chat)
