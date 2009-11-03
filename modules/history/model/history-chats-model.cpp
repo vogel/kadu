@@ -67,7 +67,7 @@ QVariant HistoryChatsModel::chatTypeData(const QModelIndex &index, int role) con
 {
 	if (index.row() < 0 || index.row() >= ChatTypeManager::instance()->chatTypes().count())
 		return QVariant();
-	
+
 	ChatType chatType = ChatTypeManager::instance()->chatTypes().at(index.row());
 	switch (role)
 	{
@@ -80,7 +80,7 @@ QVariant HistoryChatsModel::chatTypeData(const QModelIndex &index, int role) con
 		case ChatTypeRole:
 			return QVariant::fromValue<ChatType>(chatType);
 	}
-	
+
 	return QVariant();
 }
 
@@ -141,6 +141,12 @@ void HistoryChatsModel::addChat(Chat *chat)
 	beginInsertRows(idx, count, count);
 	Chats[chat->type()].append(chat);
 	endInsertRows();
+}
+
+void HistoryChatsModel::addChats(QList<Chat *> chats)
+{
+	foreach (Chat *chat, chats)
+		addChat(chat);
 }
 
 QModelIndex HistoryChatsModel::chatTypeIndex(ChatType type) const

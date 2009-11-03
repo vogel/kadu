@@ -59,7 +59,7 @@ HistoryWindow::HistoryWindow(QWidget *parent) :
 	MainPopupMenu->addAction(IconsManager::instance()->loadIcon("OpenChat"), tr("&Open chat"), this, SLOT(openChat()));
 //	MainPopupMenu->addAction(IconsManager::instance()->loadIcon("LookupUserInfo"), tr("&Search in directory"), this, SLOT(lookupUserInfo()));
 //	MainPopupMenu->addAction(IconsManager::instance()->loadIcon("ClearHistory"), tr("&Clear history"), this, SLOT(removeHistoryEntriesPerUser()));
-	
+
 	DetailsPopupMenu = new QMenu(this);
 //	DetailsPopupMenu->addAction(IconsManager::instance()->loadIcon("ClearHistory"), tr("&Remove entries"), this, SLOT(removeHistoryEntriesPerDate()));
 
@@ -68,10 +68,10 @@ HistoryWindow::HistoryWindow(QWidget *parent) :
 
 HistoryWindow::~HistoryWindow()
 {
-    	kdebugf();
+	kdebugf();
 
 	saveWindowGeometry(this, "History", "HistoryDialogGeometry");
-	
+
 	//writeToolBarsToConfig("history");
 	kdebugf2();
 }
@@ -211,10 +211,8 @@ void HistoryWindow::updateData()
 			usedChats.append(chat);
 		}
 	}
-	foreach (Chat *chat, result)
-	{
-		ChatsModel->addChat(chat);
-	}
+
+	ChatsModel->addChats(result);
 }
 
 void HistoryWindow::selectChat(Chat *chat)
@@ -244,7 +242,7 @@ void HistoryWindow::chatActivated(const QModelIndex &index)
 	Chat *chat = index.data(ChatRole).value<Chat *>();
 	if (!chat)
 		return;
-	
+
 	ChatDatesModel *model = dynamic_cast<ChatDatesModel *>(DetailsListView->model());
 	if (!model)
 		return;

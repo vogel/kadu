@@ -39,6 +39,7 @@ public:
 
 	void clear();
 	void addChat(Chat *chat);
+	void addChats(QList<Chat *> chats);
 
 	QModelIndex chatTypeIndex(ChatType type) const;
 	QModelIndex chatIndex(Chat *chat) const;
