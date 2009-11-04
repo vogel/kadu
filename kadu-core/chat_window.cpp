@@ -113,6 +113,9 @@ void ChatWindow::kaduRestoreGeometry()
 		resize(size);
 	}
 	else {
+#ifdef Q_OS_MAC
+		if (geom.y() < 50) geom.setY(50);
+#endif
 		setGeometry(geom);
 		currentChatWidget->setGeometry(geom);
 

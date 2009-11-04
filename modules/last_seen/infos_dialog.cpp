@@ -65,7 +65,7 @@ InfosDialog::InfosDialog(const LastSeen &lastSeen, QWidget *parent, const char *
 	
 	connect(closeButton, SIGNAL(clicked()), this, SLOT(close()));
 	
-	loadWindowGeometry(this, "LastSeen", "LastSeenWidgetGeometry", 0, 0, 800, 300);
+	loadWindowGeometry(this, "LastSeen", "LastSeenWidgetGeometry", 0, 50, 800, 300);
 
 	kdebugf2();
 }

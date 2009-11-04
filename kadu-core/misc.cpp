@@ -85,8 +85,8 @@ void loadWindowGeometry(QWidget *w, const QString &section, const QString &name,
 		rect.setRect(defaultX, defaultY, defaultWidth, defaultHeight);
 	}
 #ifdef Q_OS_MAC
-	if (rect.y() < 20)
-		rect.setY(20);
+	if (rect.y() < 50)
+		rect.setY(50);
 #endif
 	w->setGeometry(rect);
 }

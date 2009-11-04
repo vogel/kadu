@@ -341,7 +341,7 @@ AgentWdg::AgentWdg(QWidget * parent, const char * name, Qt::WindowFlags f) : QWi
 	this->adjustSize();
 	this->setCaption(tr("Who has me on list?"));
 
-	loadWindowGeometry(this, "Agent", "UsersFoundWidgetGeometry", 0, 0, 800, 150);
+	loadWindowGeometry(this, "Agent", "UsersFoundWidgetGeometry", 0, 50, 800, 150);
 
 	kdebugf2();
 };
