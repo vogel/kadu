@@ -18,7 +18,7 @@
 #include "protocols/protocol-factory.h"
 #include "exports.h"
 
-class AccountData;
+class AccountShared;
 class Status;
 class XmlConfigFile;
 

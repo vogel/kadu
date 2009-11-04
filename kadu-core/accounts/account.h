@@ -13,7 +13,7 @@
 #include <QtCore/QUuid>
 #include <QtXml/QDomElement>
 
-#include "accounts/account-data.h"
+#include "accounts/account-shared.h"
 #include "buddies/buddy.h"
 #include "buddies/buddies-aware-object.h"
 #include "status/base-status-container.h"
@@ -53,7 +53,7 @@ class KADUAPI Account : public QObject
 {
 	Q_OBJECT
 
-	QExplicitlySharedDataPointer<AccountData> Data;
+	QExplicitlySharedDataPointer<AccountShared> Data;
 
 	void connectDataSignals();
 	void disconnectDataSignals();
@@ -62,12 +62,12 @@ public:
 	static Account loadFromStorage(StoragePoint *storage);
 	static Account null;
 
-	explicit Account(AccountData::AccountType type = AccountData::TypeNormal);
-	explicit Account(AccountData *data);
+	explicit Account(AccountShared::AccountType type = AccountShared::TypeNormal);
+	explicit Account(AccountShared *data);
 	Account(const Account &copy);
 	virtual ~Account();
 
-	AccountData * data() const { return Data.data(); }
+	AccountShared * data() const { return Data.data(); }
 
 	bool isNull() const;
 

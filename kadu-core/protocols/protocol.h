@@ -29,7 +29,7 @@ typedef quint32 UinType;
 
 class QPixmap;
 
-class AccountData;
+class AccountShared;
 class AvatarService;
 class ChatImageService;
 class ChatService;

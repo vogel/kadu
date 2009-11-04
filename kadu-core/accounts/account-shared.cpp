@@ -13,18 +13,18 @@
 #include "misc/misc.h"
 #include "protocols/protocol.h"
 
-#include "account-data.h"
+#include "account-shared.h"
 
-AccountData * AccountData::loadFromStorage(StoragePoint *storagePoint)
+AccountShared * AccountShared::loadFromStorage(StoragePoint *storagePoint)
 {
-	AccountData *result = new AccountData(TypeNormal);
+	AccountShared *result = new AccountShared(TypeNormal);
 	result->setStorage(storagePoint);
 	result->load();
 
 	return result;
 }
 
-AccountData::AccountData(AccountType type, QUuid uuid) :
+AccountShared::AccountShared(AccountType type, QUuid uuid) :
 		BaseStatusContainer("Account", AccountManager::instance()),
 		Uuid(uuid.isNull() ? QUuid::createUuid() : uuid), Type(type),
 		BlockUpdatedSignalCount(0), Updated(false),
@@ -35,7 +35,7 @@ AccountData::AccountData(AccountType type, QUuid uuid) :
 {
 }
 
-AccountData::~AccountData()
+AccountShared::~AccountShared()
 {
 	if (ProtocolHandler)
 	{
@@ -44,7 +44,7 @@ AccountData::~AccountData()
 	}
 }
 
-void AccountData::load()
+void AccountShared::load()
 {
 	if (!isValidStorage())
 		return;
@@ -75,7 +75,7 @@ void AccountData::load()
 	ProxyHost = host;
 }
 
-void AccountData::store()
+void AccountShared::store()
 {
 	if (!isValidStorage())
 		return;
@@ -102,13 +102,13 @@ void AccountData::store()
 	storeValue("ProxyHost", ProxyHost.toString());
 }
 
-void AccountData::dataUpdated()
+void AccountShared::dataUpdated()
 {
 	Updated = true;
 	emitUpdated();
 }
 
-void AccountData::emitUpdated()
+void AccountShared::emitUpdated()
 {
 	if (0 == BlockUpdatedSignalCount && Updated)
 	{
@@ -117,7 +117,7 @@ void AccountData::emitUpdated()
 	}
 }
 
-void AccountData::loadProtocol(ProtocolFactory* protocolFactory)
+void AccountShared::loadProtocol(ProtocolFactory* protocolFactory)
 {
 	ensureLoaded();
 
@@ -129,7 +129,7 @@ void AccountData::loadProtocol(ProtocolFactory* protocolFactory)
 			this, SIGNAL(buddyStatusChanged(Account, Buddy, Status)));
 }
 
-void AccountData::unloadProtocol()
+void AccountShared::unloadProtocol()
 {
 	delete ProtocolHandler;
 	ProtocolHandler = 0;
@@ -138,18 +138,18 @@ void AccountData::unloadProtocol()
 	Details = 0;
 }
 
-QString AccountData::statusContainerName()
+QString AccountShared::statusContainerName()
 {
 	return name();
 }
 
-void AccountData::setStatus(Status status)
+void AccountShared::setStatus(Status status)
 {
 	if (ProtocolHandler)
 		ProtocolHandler->setStatus(status);
 }
 
-const Status & AccountData::status()
+const Status & AccountShared::status()
 {
 	if (ProtocolHandler)
 		return ProtocolHandler->status();
@@ -157,7 +157,7 @@ const Status & AccountData::status()
 		return Status::null;
 }
 
-int AccountData::maxDescriptionLength()
+int AccountShared::maxDescriptionLength()
 {
 	if (ProtocolHandler)
 		return ProtocolHandler->maxDescriptionLength();
@@ -165,17 +165,17 @@ int AccountData::maxDescriptionLength()
 		return 0;
 }
 
-QString AccountData::statusName()
+QString AccountShared::statusName()
 {
 	return Status::name(status(), false);
 }
 
-QPixmap AccountData::statusPixmap()
+QPixmap AccountShared::statusPixmap()
 {
 	return statusPixmap(status());
 }
 
-QPixmap AccountData::statusPixmap(const QString &statusType)
+QPixmap AccountShared::statusPixmap(const QString &statusType)
 {
 	if (ProtocolHandler)
 		return ProtocolHandler->statusPixmap(statusType);
@@ -183,7 +183,7 @@ QPixmap AccountData::statusPixmap(const QString &statusType)
 		return QPixmap();
 }
 
-QPixmap AccountData::statusPixmap(Status status)
+QPixmap AccountShared::statusPixmap(Status status)
 {
 	if (ProtocolHandler)
 		return ProtocolHandler->statusPixmap(status);
@@ -191,13 +191,13 @@ QPixmap AccountData::statusPixmap(Status status)
 		return QPixmap();
 }
 
-void AccountData::setPrivateStatus(bool isPrivate)
+void AccountShared::setPrivateStatus(bool isPrivate)
 {
 	if (ProtocolHandler)
 		ProtocolHandler->setPrivateMode(isPrivate);
 }
 
-QList<StatusType *> AccountData::supportedStatusTypes()
+QList<StatusType *> AccountShared::supportedStatusTypes()
 {
 	if (ProtocolHandler)
 		return ProtocolHandler->protocolFactory()->supportedStatusTypes();

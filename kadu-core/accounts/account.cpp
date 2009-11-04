@@ -20,20 +20,20 @@
 
 #include "account.h"
 
-Account Account::null(AccountData::TypeNull);
+Account Account::null(AccountShared::TypeNull);
 
 Account Account::loadFromStorage(StoragePoint *accountStoragePoint)
 {
-	return Account(AccountData::loadFromStorage(accountStoragePoint));
+	return Account(AccountShared::loadFromStorage(accountStoragePoint));
 }
 
-Account::Account(AccountData::AccountType type) :
-		Data(AccountData::TypeNull != type ? new AccountData(type) : 0)
+Account::Account(AccountShared::AccountType type) :
+		Data(AccountShared::TypeNull != type ? new AccountShared(type) : 0)
 {
 	connectDataSignals();
 }
 
-Account::Account(AccountData *data) :
+Account::Account(AccountShared *data) :
 		Data(data)
 {
 	connectDataSignals();

@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ACCOUNT_DATA_H
-#define ACCOUNT_DATA_H
+#ifndef ACCOUNT_SHARED_H
+#define ACCOUNT_SHARED_H
 
 #include <QtCore/QObject>
 #include <QtCore/QSharedData>
@@ -26,10 +26,10 @@ class Buddy;
 class Protocol;
 class ProtocolFactory;
 
-class KADUAPI AccountData : public BaseStatusContainer, public QSharedData
+class KADUAPI AccountShared : public BaseStatusContainer, public QSharedData
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(AccountData)
+	Q_DISABLE_COPY(AccountShared)
 
 public:
 	enum AccountType
@@ -69,10 +69,10 @@ private:
 	void emitUpdated();
 
 public:
-	static AccountData * loadFromStorage(StoragePoint *accountStoragePoint);
+	static AccountShared * loadFromStorage(StoragePoint *accountStoragePoint);
 
-	explicit AccountData(AccountType type, QUuid uuid = QUuid());
-	virtual ~AccountData();
+	explicit AccountShared(AccountType type, QUuid uuid = QUuid());
+	virtual ~AccountShared();
 
 	virtual void load();
 	virtual void store();
@@ -129,4 +129,4 @@ signals:
 
 #include "buddies/buddy.h" // for MOC
 
-#endif // ACCOUNT_DATA_H
+#endif // ACCOUNT_SHARED_H

@@ -15,13 +15,13 @@
 #include "accounts/account.h"
 #include "configuration/storable-object.h"
 
-class AccountData;
+class AccountShared;
 
 class AccountDetails : public QObject, public StorableObject
 {
 	Q_OBJECT
 
-	AccountData *MyAccountData;
+	AccountShared *MyAccountData;
 
 public:
 	explicit AccountDetails(StoragePoint *storagePoint, Account parent);
