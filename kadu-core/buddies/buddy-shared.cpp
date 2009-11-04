@@ -16,8 +16,8 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/group.h"
 #include "buddies/group-manager.h"
-#include "buddies/account-data/contact-account-data.h"
-#include "buddies/account-data/contact-account-data-manager.h"
+#include "contacts/contact.h"
+#include "contacts/contact-manager.h"
 
 #include "buddy-shared.h"
 

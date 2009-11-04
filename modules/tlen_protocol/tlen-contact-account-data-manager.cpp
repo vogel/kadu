@@ -7,9 +7,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "tlen-contact-account-data.h"
+#include "tlen-contact.h"
 
-#include "tlen-contact-account-data-manager.h"
+#include "tlen-contact-manager.h"
 
 TlenContactAccountDataManager::TlenContactAccountDataManager(TlenContactAccountData* data, QObject *parent)
 	: ConfigurationContactAccountDataManager(data, parent), Data(data)

@@ -12,7 +12,7 @@
 
 #include "accounts/account.h"
 #include "chat/chat-manager.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "misc/misc.h"
 #include "notify/notify-event.h"
 #include "protocols/protocol.h"

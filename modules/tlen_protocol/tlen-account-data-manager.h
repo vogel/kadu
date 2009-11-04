@@ -10,7 +10,7 @@
 #ifndef TLEN_ACCOUNT_DATA_MANAGER_H
 #define TLEN_ACCOUNT_DATA_MANAGER_H
 
-#include "configuration/account-data-manager.h"
+#include "configuration/contact-manager.h"
 
 class TlenAccount;
 

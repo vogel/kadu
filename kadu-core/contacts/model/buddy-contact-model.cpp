@@ -8,12 +8,12 @@
  ***************************************************************************/
 
 #include "accounts/account.h"
-#include "buddies/account-data/contact-account-data.h"
-#include "buddies/account-data/contact-account-data-manager.h"
+#include "contacts/contact.h"
+#include "contacts/contact-manager.h"
 #include "model/roles.h"
 #include "protocols/protocol.h"
 
-#include "buddy-account-data-model.h"
+#include "buddy-contact-model.h"
 
 BuddyAccountDataModel::BuddyAccountDataModel(Buddy buddy, QObject *parent)
 : QAbstractListModel(parent), SourceBuddy(buddy)

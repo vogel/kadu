@@ -11,7 +11,7 @@
 #include <QtCore/QFile>
 
 #include "accounts/account.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
 #include "protocols/services/avatar-service.h"

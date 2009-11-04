@@ -19,7 +19,7 @@
 #include "buddies/buddy-kadu-data.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "buddies/filter/has-description-buddy-filter.h"
 #include "buddies/filter/offline-buddy-filter.h"
 #include "buddies/filter/online-and-description-buddy-filter.h"

@@ -10,7 +10,7 @@
 #include <QtGui/QGridLayout>
 #include <QtGui/QLabel>
 
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "notify/contact-notify-data.h"
 
 #include "buddy-options-configuration-widget.h"

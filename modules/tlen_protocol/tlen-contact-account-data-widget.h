@@ -10,7 +10,7 @@
 #ifndef TLEN_CONTACT_ACCOUNT_DATA_WIDGET
 #define TLEN_CONTACT_ACCOUNT_DATA_WIDGET
 
-#include "gui/widgets/contact-account-data-widget.h"
+#include "gui/widgets/contact-widget.h"
 
 class TlenContactAccountData;
 

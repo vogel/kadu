@@ -13,7 +13,7 @@
 
 #include "debug.h"
 
-#include "tlen-contact-account-data.h"
+#include "tlen-contact.h"
 #include "tlen-open-chat-with-runner.h"
 
 TlenOpenChatWithRunner::TlenOpenChatWithRunner(Account *account) : ParentAccount(account)

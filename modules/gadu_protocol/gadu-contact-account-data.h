@@ -10,7 +10,7 @@
 #ifndef GADU_CONTACT_ACCOUNT_DATA
 #define GADU_CONTACT_ACCOUNT_DATA
 
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 
 #include "gadu-protocol.h"
 

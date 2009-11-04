@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "status/status.h"
 
 #include "configuration-contact-account-data-manager.h"

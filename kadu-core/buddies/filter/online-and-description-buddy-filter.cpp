@@ -9,7 +9,7 @@
 
 #include "accounts/account.h"
 
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 
 #include "online-and-description-buddy-filter.h"
 

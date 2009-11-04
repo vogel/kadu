@@ -17,7 +17,7 @@
 #include <QtGui/QTreeView>
 
 #include "buddies/buddy.h"
-#include "buddies/account-data/model/buddy-account-data-model.h"
+#include "contacts/model/buddy-contact-model.h"
 
 #include "exports.h"
 

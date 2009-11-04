@@ -10,7 +10,7 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "buddies/ignored-helper.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "gui/actions/action.h"

@@ -14,11 +14,11 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QVBoxLayout>
 
-#include "tlen-contact-account-data.h"
-#include "tlen-contact-account-data-manager.h"
+#include "tlen-contact.h"
+#include "tlen-contact-manager.h"
 #include "misc/misc.h"
 
-#include "tlen-contact-account-data-widget.h"
+#include "tlen-contact-widget.h"
 
 TlenContactAccountDataWidget::TlenContactAccountDataWidget(TlenContactAccountData *contactAccountData, QWidget *parent) :
 	ContactAccountDataWidget(new TlenContactAccountDataManager(contactAccountData, parent), 

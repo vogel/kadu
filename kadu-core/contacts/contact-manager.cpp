@@ -8,11 +8,11 @@
  ***************************************************************************/
 
 #include "configuration/configuration-manager.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "core/core.h"
 #include "debug.h"
 
-#include "contact-account-data-manager.h"
+#include "contact-manager.h"
 #include <protocols/protocol.h>
 #include <protocols/protocol-factory.h>
 

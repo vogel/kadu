@@ -20,7 +20,7 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "buddies/buddy-manager.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "configuration/configuration-contact-account-data-manager.h"
 #include "icons-manager.h"
 #include "misc/misc.h"

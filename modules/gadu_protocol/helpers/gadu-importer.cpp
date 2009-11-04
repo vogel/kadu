@@ -14,7 +14,7 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy.h"
 #include "buddies/ignored-helper.h"
-#include "buddies/account-data/contact-account-data-manager.h"
+#include "contacts/contact-manager.h"
 #include "protocols/protocols-manager.h"
 #include "misc/misc.h"
 #include "gadu-account-details.h"

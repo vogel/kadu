@@ -8,7 +8,7 @@
  ***************************************************************************/
 
 #include "tlen-account.h"
-#include "tlen-account-data-manager.h"
+#include "tlen-contact-manager.h"
 
 TlenAccountDataManager::TlenAccountDataManager(TlenAccount* data)
 	: AccountDataManager(data)

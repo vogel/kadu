@@ -17,10 +17,10 @@
 #endif
 
 #include "accounts/account.h"
-#include "configuration/configuration-file.h"
 #include "buddies/buddy.h"
 #include "buddies/buddy-manager.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "configuration/configuration-file.h"
+#include "contacts/contact.h"
 #include "gui/windows/message-box.h"
 
 #include "debug.h"

@@ -13,7 +13,7 @@
 #include <QtCore/QBuffer>
 #include <QtGui/QPixmap>
 
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 
 class QHttp;
 

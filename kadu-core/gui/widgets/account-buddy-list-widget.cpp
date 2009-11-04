@@ -11,7 +11,7 @@
 #include <QtGui/QVBoxLayout>
 
 #include "buddies/buddy-manager.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "buddies/model/buddies-model.h"
 #include "buddies/model/buddies-model-proxy.h"
 #include "buddies/filter/account-buddy-filter.h"

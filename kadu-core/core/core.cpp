@@ -18,7 +18,7 @@
 #include "configuration/configuration-manager.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
-#include "buddies/account-data/contact-account-data-manager.h"
+#include "contacts/contact-manager.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/kadu-window.h"

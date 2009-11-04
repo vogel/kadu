@@ -11,7 +11,7 @@
 
 #include "buddies/buddy.h"
 #include "buddies/buddy-manager.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 
 #include "open-chat-with-contact-list-runner.h"
 

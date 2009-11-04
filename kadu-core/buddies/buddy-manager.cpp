@@ -13,7 +13,7 @@
 #include "buddies/buddy-list.h"
 #include "buddies/buddy-remove-predicate-object.h"
 #include "buddies/group-manager.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "configuration/configuration-manager.h"
 #include "configuration/storage-point.h"
 #include "configuration/xml-configuration-file.h"

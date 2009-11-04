@@ -11,11 +11,11 @@
 #include "accounts/account-manager.h"
 #include "configuration/xml-configuration-file.h"
 #include "configuration/storage-point.h"
-#include "buddies/account-data/contact-account-data-manager.h"
+#include "contacts/contact-manager.h"
 #include "buddies/buddy-manager.h"
 #include "dnshandler.h"
 
-#include "contact-account-data.h"
+#include "contact.h"
 
 ContactAccountData::ContactAccountData(Account account, Buddy buddy, const QString &id, bool loaded) :
 		UuidStorableObject("ContactAccountData", ContactAccountDataManager::instance(), loaded),

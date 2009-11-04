@@ -18,7 +18,7 @@
 #include "chat/html-messages-renderer.h"
 #include "chat/message/message-render-info.h"
 #include "buddies/avatar.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "gui/widgets/chat-messages-view.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/preview.h"

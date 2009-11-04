@@ -9,7 +9,7 @@
 
 #include "accounts/account-manager.h"
 #include "buddies/buddy.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "status/status.h"
 #include "status/status-type.h"
 

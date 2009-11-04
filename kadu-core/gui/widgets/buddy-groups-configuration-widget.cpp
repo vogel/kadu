@@ -13,7 +13,7 @@
 #include <QtGui/QLabel>
 
 #include "configuration/configuration-contact-account-data-manager.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "buddies/group.h"
 #include "buddies/group-manager.h"
 #include "misc/misc.h"

@@ -16,7 +16,7 @@
 #include "chat/simple-chat.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-set-configuration-helper.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "icons-manager.h"
 #include "protocols/protocol-factory.h"
 #include "status/status.h"

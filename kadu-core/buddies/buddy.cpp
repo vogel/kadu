@@ -14,7 +14,7 @@
 #include "buddies/avatar.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-remove-predicate-object.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "core/core.h"
 #include "protocols/protocols-manager.h"
 #include "icons-manager.h"

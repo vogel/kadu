@@ -12,8 +12,8 @@
 
 #include "tlen-account.h"
 #include "tlen-protocol.h"
-#include "tlen-contact-account-data.h"
-#include "tlen-contact-account-data-widget.h"
+#include "tlen-contact.h"
+#include "tlen-contact-widget.h"
 #include "status/status-type.h"
 #include "status/status-type-manager.h"
 

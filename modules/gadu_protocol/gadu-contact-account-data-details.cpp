@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "gadu-contact-account-data.h"
+#include "gadu-contact.h"
 
 unsigned int GaduContactAccountData::uin()
 {

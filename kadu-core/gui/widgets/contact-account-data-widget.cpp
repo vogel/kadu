@@ -10,7 +10,7 @@
 #include <QtGui/QLineEdit>
 
 #include "configuration/configuration-contact-account-data-manager.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "misc/misc.h"
 
 #include "contact-account-data-widget.h"
@@ -29,7 +29,7 @@ ContactAccountDataWidget::~ContactAccountDataWidget()
 
 void ContactAccountDataWidget::createGui()
 {
-	appendUiFile(dataPath("kadu/configuration/contact-account-data.ui"));
+	appendUiFile(dataPath("kadu/configuration/contact.ui"));
 
 	QLineEdit *addrLineEdit = dynamic_cast<QLineEdit *>(widgetById("Addr"));
 	addrLineEdit->setReadOnly(true);

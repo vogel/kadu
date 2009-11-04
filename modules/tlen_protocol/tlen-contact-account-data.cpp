@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "tlen-contact-account-data.h"
+#include "tlen-contact.h"
 
 bool TlenContactAccountData::validateId()
 {

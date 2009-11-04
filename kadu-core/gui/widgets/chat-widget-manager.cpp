@@ -18,7 +18,7 @@
 #include "configuration/xml-configuration-file.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/ignored-helper.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "core/core.h"
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"

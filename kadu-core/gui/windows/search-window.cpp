@@ -23,7 +23,7 @@
 #include "accounts/account-manager.h"
 #include "chat/chat-manager.h"
 #include "configuration/configuration-file.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "buddies/buddy-manager.h"
 #include "debug.h"
 #include "core/core.h"

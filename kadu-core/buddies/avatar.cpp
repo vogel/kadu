@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "misc/path-conversion.h"
 
 #include "avatar.h"

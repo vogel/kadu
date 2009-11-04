@@ -12,7 +12,7 @@
 
 #include <QList>
 
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "protocols/services/avatar-service.h"
 
 class TlenAvatarService : public AvatarService
