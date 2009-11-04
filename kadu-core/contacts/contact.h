@@ -57,7 +57,7 @@ public:
 
 	Account account() { ensureLoaded(); return ContactAccount; }
 	Buddy buddy() { ensureLoaded(); return OwnerBuddy; }
-	void setContact(Buddy buddy);
+	void setBuddy(Buddy buddy);
 
 	Avatar & avatar() { ensureLoaded(); return ContactAvatar; }
 

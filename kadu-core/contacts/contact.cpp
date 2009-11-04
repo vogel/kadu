@@ -18,7 +18,7 @@
 #include "contact.h"
 
 Contact::Contact(Account account, Buddy buddy, const QString &id, bool loaded) :
-		UuidStorableObject("Contact", ContactManager::instance(), loaded),
+		UuidStorableObject("ContactAccountData", ContactManager::instance(), loaded),
 		ContactAccount(account), OwnerBuddy(buddy), Id(id),
 		ContactAvatar(this, false) /* TODO: 0.6.6 */, Blocked(false), OfflineTo(false), Port(0)
 {
@@ -45,7 +45,7 @@ void Contact::load()
 	QString buddyUuid = loadValue<QString>("Buddy");
 	if (buddyUuid.isNull())
 		buddyUuid = loadValue<QString>("Contact");
-	setContact(BuddyManager::instance()->byUuid(buddyUuid));
+	setBuddy(BuddyManager::instance()->byUuid(buddyUuid));
 
 	ContactAvatar.load();
 
@@ -68,7 +68,7 @@ void Contact::store()
 	ContactAvatar.store();
 }
 
-void Contact::setContact(Buddy buddy)
+void Contact::setBuddy(Buddy buddy)
 {
 	if (buddy == OwnerBuddy)
 		return;

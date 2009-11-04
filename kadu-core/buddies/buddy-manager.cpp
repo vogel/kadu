@@ -183,7 +183,7 @@ void BuddyManager::mergeBuddies(Buddy destination, Buddy source)
 	while (source.accounts().size())
 	{
 		Contact *cad = source.contact(source.accounts()[0]);
-		cad->setContact(destination);
+		cad->setBuddy(destination);
 	}
 
 	source.setType(BuddyShared::TypeAnonymous);

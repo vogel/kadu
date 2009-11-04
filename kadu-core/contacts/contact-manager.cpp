@@ -48,7 +48,7 @@ void ContactManager::init()
 
 StoragePoint * ContactManager::createStoragePoint()
 {
-	return new StoragePoint(xml_config_file, xml_config_file->getNode("ContactManagers"));
+	return new StoragePoint(xml_config_file, xml_config_file->getNode("ContactAccountDatas"));
 }
 
 void ContactManager::load(Account account)
