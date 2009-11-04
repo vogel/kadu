@@ -236,14 +236,14 @@ void SearchResult::setData(const char *uin, const char *first, const char *last,
 	const char *city, const char *familyName, const char *familyCity, const char *gender, const char *status)
 {
 	kdebugf();
-	Uin = cp2unicode(uin);
-	First = cp2unicode(first);
-	Last = cp2unicode(last);
-	Nick = cp2unicode(nick);
-	Born = cp2unicode(born);
-	City = cp2unicode(city);
-	FamilyName = cp2unicode(familyName);
-	FamilyCity = cp2unicode(familyCity);
+	Uin = QString::fromUtf8(uin);
+	First = QString::fromUtf8(first);
+	Last = QString::fromUtf8(last);
+	Nick = QString::fromUtf8(nick);
+	Born = QString::fromUtf8(born);
+	City = QString::fromUtf8(city);
+	FamilyName = QString::fromUtf8(familyName);
+	FamilyCity = QString::fromUtf8(familyCity);
 	if (status)
 		Stat.fromStatusNumber(atoi(status) & 127, QString::null);
 	if (gender)
@@ -1361,18 +1361,14 @@ bool GaduProtocol::sendMessage(UserListElements users, Message &message)
 
 	kdebugmf(KDEBUG_INFO, "\n%s\n", (const char *)unicode2latin(plain));
 
-#if 0 //libgadu 1.9.0-rc1 does not handle sending utf-8 messages yet
 	QByteArray data = plain.toUtf8();
-#else
-	QByteArray data = unicode2cp(plain);
-#endif
 
 	emit sendMessageFiltering(users, data, stop);
 
 	if (stop)
 	{
-                if (formats)
-                        delete[] formats;
+		if (formats)
+			delete[] formats;
 
 		kdebugmf(KDEBUG_FUNCTION_END, "end: filter stopped processing\n");
 		return false;
@@ -1380,8 +1376,8 @@ bool GaduProtocol::sendMessage(UserListElements users, Message &message)
 
 	if (data.length() >= 2000)
 	{
-                if (formats)
-                        delete[] formats;
+		if (formats)
+			delete[] formats;
 
 		MessageBox::msg(tr("Filtered message too long (%1>=%2)").arg(data.length()).arg(2000), false, "Warning");
 		kdebugmf(KDEBUG_FUNCTION_END, "end: filtered message too long\n");
@@ -1561,19 +1557,19 @@ void GaduProtocol::searchNextInPubdir(SearchRecord& searchRecord)
 	req = gg_pubdir50_new(GG_PUBDIR50_SEARCH);
 
 	if (!searchRecord.Uin.isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_UIN, (const char *)unicode2cp(searchRecord.Uin).constData());
+		gg_pubdir50_add(req, GG_PUBDIR50_UIN, (const char *)(searchRecord.Uin.toUtf8()));
 	if (!searchRecord.FirstName.isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, (const char *)unicode2cp(searchRecord.FirstName).constData());
+		gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, (const char *)(searchRecord.FirstName.toUtf8()));
 	if (!searchRecord.LastName.isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_LASTNAME, (const char *)unicode2cp(searchRecord.LastName).constData());
+		gg_pubdir50_add(req, GG_PUBDIR50_LASTNAME, (const char *)(searchRecord.LastName.toUtf8()));
 	if (!searchRecord.NickName.isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_NICKNAME, (const char *)unicode2cp(searchRecord.NickName).constData());
+		gg_pubdir50_add(req, GG_PUBDIR50_NICKNAME, (const char *)(searchRecord.NickName.toUtf8()));
 	if (!searchRecord.City.isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_CITY, (const char *)unicode2cp(searchRecord.City).constData());
+		gg_pubdir50_add(req, GG_PUBDIR50_CITY, (const char *)(searchRecord.City.toUtf8()));
 	if (!searchRecord.BirthYearFrom.isEmpty())
 	{
 		QString bufYear = searchRecord.BirthYearFrom + ' ' + searchRecord.BirthYearTo;
-		gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, (const char *)unicode2cp(bufYear).constData());
+		gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, (const char *)(bufYear.toUtf8()));
 	}
 
 	switch (searchRecord.Gender)
@@ -1658,21 +1654,21 @@ void GaduProtocol::setPersonalInfo(SearchRecord &searchRecord, SearchResult &new
 	req = gg_pubdir50_new(GG_PUBDIR50_WRITE);
 
 	if (!newData.First.isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, (const char *)(unicode2cp(newData.First).constData()));
+		gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, (const char *)(newData.First.toUtf8()));
 	if (!newData.Last.isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_LASTNAME, (const char *)(unicode2cp(newData.Last).constData()));
+		gg_pubdir50_add(req, GG_PUBDIR50_LASTNAME, (const char *)(newData.Last.toUtf8()));
 	if (!newData.Nick.isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_NICKNAME, (const char *)(unicode2cp(newData.Nick).constData()));
+		gg_pubdir50_add(req, GG_PUBDIR50_NICKNAME, (const char *)(newData.Nick.toUtf8()));
 	if (!newData.City.isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_CITY, (const char *)(unicode2cp(newData.City).constData()));
+		gg_pubdir50_add(req, GG_PUBDIR50_CITY, (const char *)(newData.City.toUtf8()));
 	if (!newData.Born.isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, (const char *)(unicode2cp(newData.Born).constData()));
+		gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, (const char *)(newData.Born.toUtf8()));
 	if (newData.Gender)
-		gg_pubdir50_add(req, GG_PUBDIR50_GENDER, QString::number(newData.Gender).latin1());
+		gg_pubdir50_add(req, GG_PUBDIR50_GENDER, QString::number(newData.Gender).toUtf8());
 	if (!newData.FamilyName.isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_FAMILYNAME, (const char *)(unicode2cp(newData.FamilyName).constData()));
+		gg_pubdir50_add(req, GG_PUBDIR50_FAMILYNAME, (const char *)(newData.FamilyName.toUtf8()));
 	if (!newData.FamilyCity.isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_FAMILYCITY, (const char *)(unicode2cp(newData.FamilyCity).constData()));
+		gg_pubdir50_add(req, GG_PUBDIR50_FAMILYCITY, (const char *)(newData.FamilyCity.toUtf8()));
 
 	searchRecord.Seq = gg_pubdir50(Sess, req);
 	gg_pubdir50_free(req);
