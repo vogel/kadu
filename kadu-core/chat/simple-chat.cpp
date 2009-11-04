@@ -42,7 +42,7 @@ void SimpleChat::load()
 	if (cadUuid.isNull())
 	{
 		Buddy buddy = BuddyManager::instance()->byUuid(loadValue<QString>("Contact"));
-		CurrentContactAccountData = buddy.accountData(account());
+		CurrentContactAccountData = buddy.contact(account());
 		removeValue("Contact");
 	}
 	else

@@ -74,10 +74,10 @@ void Contact::setContact(Buddy buddy)
 		return;
 
 	if (!OwnerBuddy.isNull())
-		OwnerBuddy.removeAccountData(this);
+		OwnerBuddy.removeContact(this);
 	OwnerBuddy = buddy;
 	if (!OwnerBuddy.isNull())
-		OwnerBuddy.addAccountData(this);
+		OwnerBuddy.addContact(this);
 }
 
 void Contact::setId(const QString &newId)

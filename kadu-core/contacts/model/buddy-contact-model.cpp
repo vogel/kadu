@@ -47,7 +47,7 @@ int BuddyContactModel::columnCount(const QModelIndex &parent) const
 
 int BuddyContactModel::rowCount(const QModelIndex &parent) const
 {
-	return SourceBuddy.accountDatas().count();
+	return SourceBuddy.contacts().count();
 }
 
 QVariant BuddyContactModel::data(const QModelIndex &index, int role) const
@@ -94,12 +94,12 @@ Contact * BuddyContactModel::contact(const QModelIndex &index) const
 	if (index.row() < 0 || index.row() >= rowCount())
 		return 0;
 
-	return SourceBuddy.accountDatas().at(index.row());
+	return SourceBuddy.contacts().at(index.row());
 }
 
 int BuddyContactModel::contactIndex(Contact *data)
 {
-	return SourceBuddy.accountDatas().indexOf(data);
+	return SourceBuddy.contacts().indexOf(data);
 }
 
 QModelIndex BuddyContactModel::contactModelIndex(Contact *data)

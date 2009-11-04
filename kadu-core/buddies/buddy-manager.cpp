@@ -131,15 +131,15 @@ void BuddyManager::addBuddy(Buddy buddy)
 	emit buddyAdded(buddy);
 
 	connect(buddy.data(), SIGNAL(updated()), this, SLOT(buddyDataUpdated()));
-	connect(buddy.data(), SIGNAL(accountDataAboutToBeAdded(Account)),
+	connect(buddy.data(), SIGNAL(contactAboutToBeAdded(Account)),
 			this, SLOT(contactAccountDataAboutToBeAdded(Account)));
-	connect(buddy.data(), SIGNAL(accountDataAdded(Account)),
+	connect(buddy.data(), SIGNAL(contactAdded(Account)),
 			this, SLOT(contactAccountDataAdded(Account)));
-	connect(buddy.data(), SIGNAL(accountDataAboutToBeRemoved(Account)),
+	connect(buddy.data(), SIGNAL(contactAboutToBeRemoved(Account)),
 			this, SLOT(contactAccountDataAboutToBeRemoved(Account)));
-	connect(buddy.data(), SIGNAL(accountDataRemoved(Account)),
+	connect(buddy.data(), SIGNAL(contactRemoved(Account)),
 			this, SLOT(contactAccountDataRemoved(Account)));
-	connect(buddy.data(), SIGNAL(accountDataIdChanged(Account, const QString &)),
+	connect(buddy.data(), SIGNAL(contactIdChanged(Account, const QString &)),
 			this, SLOT(contactAccountDataIdChanged(Account, const QString &)));
 }
 
@@ -155,15 +155,15 @@ void BuddyManager::removeBuddy(Buddy buddy)
 		return;
 
 	disconnect(buddy.data(), SIGNAL(updated()), this, SLOT(buddyDataUpdated()));
-	disconnect(buddy.data(), SIGNAL(accountDataAboutToBeAdded(Account)),
+	disconnect(buddy.data(), SIGNAL(contactAboutToBeAdded(Account)),
 			this, SLOT(contactAccountDataAboutToBeAdded(Account)));
-	disconnect(buddy.data(), SIGNAL(accountDataAdded(Account)),
+	disconnect(buddy.data(), SIGNAL(contactAdded(Account)),
 			this, SLOT(contactAccountDataAdded(Account)));
-	disconnect(buddy.data(), SIGNAL(accountDataAboutToBeRemoved(Account)),
+	disconnect(buddy.data(), SIGNAL(contactAboutToBeRemoved(Account)),
 			this, SLOT(contactAccountDataAboutToBeRemoved(Account)));
-	disconnect(buddy.data(), SIGNAL(accountDataRemoved(Account)),
+	disconnect(buddy.data(), SIGNAL(contactRemoved(Account)),
 			this, SLOT(contactAccountDataRemoved(Account)));
-	disconnect(buddy.data(), SIGNAL(accountDataIdChanged(Account, const QString &)),
+	disconnect(buddy.data(), SIGNAL(contactIdChanged(Account, const QString &)),
 			this, SLOT(contactAccountDataIdChanged(Account, const QString &)));
 
 	emit buddyAboutToBeRemoved(buddy);
@@ -182,7 +182,7 @@ void BuddyManager::mergeBuddies(Buddy destination, Buddy source)
 {
 	while (source.accounts().size())
 	{
-		Contact *cad = source.accountData(source.accounts()[0]);
+		Contact *cad = source.contact(source.accounts()[0]);
 		cad->setContact(destination);
 	}
 
@@ -275,7 +275,7 @@ BuddyList BuddyManager::buddies(Account account, bool includeAnonymous)
 	BuddyList result;
 
 	foreach (Buddy buddy, Buddies)
-		if (buddy.accountData(account) && (includeAnonymous || !buddy.isAnonymous()))
+		if (buddy.contact(account) && (includeAnonymous || !buddy.isAnonymous()))
 			result << buddy;
 
 	ensureLoaded();

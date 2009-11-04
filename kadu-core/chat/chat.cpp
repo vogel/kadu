@@ -130,7 +130,7 @@ void Chat::refreshTitle()
 		else
 			title = Parser::parse(config_file.readEntry("Look","ChatContents"), account(), buddy, false);
 
-		Contact *cad = buddy.accountData(account());
+		Contact *cad = buddy.contact(account());
 
 		if (cad)
 			Icon = account().statusContainer()->statusPixmap(cad->status());

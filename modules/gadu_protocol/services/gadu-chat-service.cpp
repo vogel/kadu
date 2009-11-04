@@ -74,7 +74,7 @@ bool GaduChatService::sendMessage(Chat *chat, FormattedMessage &message)
 	}
 
 	foreach (const Buddy &buddy, contacts)
-		if (buddy.accountData(Protocol->account()))
+		if (buddy.contact(Protocol->account()))
 			++uinsCount;
 
 	int messageId = -1;
@@ -84,7 +84,7 @@ bool GaduChatService::sendMessage(Chat *chat, FormattedMessage &message)
 		unsigned int i = 0;
 
 		foreach (const Buddy &buddy, contacts)
-			if (buddy.accountData(Protocol->account()))
+			if (buddy.contact(Protocol->account()))
 				uins[i++] = Protocol->uin(buddy);
 		if (formatsSize)
 			messageId = gg_send_message_confer_richtext(
@@ -97,7 +97,7 @@ bool GaduChatService::sendMessage(Chat *chat, FormattedMessage &message)
 	}
 	else
 		foreach (const Buddy &buddy, contacts)
-			if (buddy.accountData(Protocol->account()))
+			if (buddy.contact(Protocol->account()))
 			{
 				if (formatsSize)
 					messageId = gg_send_message_richtext(

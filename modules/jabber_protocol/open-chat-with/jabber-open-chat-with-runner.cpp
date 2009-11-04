@@ -32,7 +32,7 @@ BuddyList JabberOpenChatWithRunner::matchingContacts(const QString &query)
 	Buddy c;
 
 	JabberContactAccountData *gcad = new JabberContactAccountData(ParentAccount, c, query);
-	c.addAccountData(gcad);
+	c.addContact(gcad);
 	c.setDisplay(ParentAccount.name() + ": " + query);
 	matchedContacts.append(c);
 

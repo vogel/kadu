@@ -68,7 +68,7 @@ void BuddyGeneralConfigurationWidget::createGui()
 	photoLayout->setSpacing(2);
 
 	QLabel *photoLabel = new QLabel(this);
-	QPixmap photoPixmap = QPixmap(MyBuddy.accountDatas().at(0)->avatar().pixmap());
+	QPixmap photoPixmap = QPixmap(MyBuddy.contacts().at(0)->avatar().pixmap());
 	photoLabel->setPixmap(photoPixmap);
 	photoLayout->addWidget(photoLabel);
 
@@ -102,7 +102,7 @@ void BuddyGeneralConfigurationWidget::createGui()
 	DefaultAccountCombo->setModel(AccountDataModel);
 	DefaultAccountCombo->setModelColumn(1); // use long account name
 	
-	DefaultAccountCombo->setDisabled(MyBuddy.accountDatas().count() <= 1);
+	DefaultAccountCombo->setDisabled(MyBuddy.contacts().count() <= 1);
 
 	QLabel *defaultContactNoticeLabel = new QLabel(tr("Chat messages will be sent to this username when you select the name from the buddy list"));
 	AccountsLayout->addWidget(defaultContactLabel, row, 0, 1, 1);
@@ -114,7 +114,7 @@ void BuddyGeneralConfigurationWidget::createGui()
 	AccountsLayout->setColumnStretch(0, 2);
 	AccountsLayout->setColumnStretch(2, 2);
 	
-	foreach (Contact *data, MyBuddy.accountDatas())
+	foreach (Contact *data, MyBuddy.contacts())
 	{
 		DefaultAccountCombo->addItem(data->id());
 		addAccountDataRow(data);
@@ -125,7 +125,7 @@ void BuddyGeneralConfigurationWidget::createGui()
 	QPushButton *addContactButton = new QPushButton(tr("Add Contact..."), this);
 	connect(addContactButton, SIGNAL(clicked()), this, SLOT(addAccountDataRow()));
 	QPushButton *setOrderButton = new QPushButton(tr("Set Order..."), this);
-	setOrderButton->setDisabled(MyBuddy.accountDatas().count() <= 1);
+	setOrderButton->setDisabled(MyBuddy.contacts().count() <= 1);
 	connect(setOrderButton, SIGNAL(clicked()), this, SLOT(showOrderDialog()));
 
 	AccountsLayout->addWidget(addContactButton, row, 0, 1, 1);
@@ -189,7 +189,7 @@ void BuddyGeneralConfigurationWidget::addAccountDataRow(Contact *data)
 	QLabel *inLabel = new QLabel(tr("in"), accountRow);
 	QComboBox *accountsCombo = new QComboBox(accountRow);
 	QPushButton *unmergeButton = new QPushButton(IconsManager::instance()->loadIcon("CloseWindowButton"), tr("Unmerge contact..."), accountRow);
-	unmergeButton->setDisabled(ContactsAccounts.count() == 0 && MyBuddy.accountDatas().count() <= 1);
+	unmergeButton->setDisabled(ContactsAccounts.count() == 0 && MyBuddy.contacts().count() <= 1);
 	connect(unmergeButton, SIGNAL(clicked(bool)), accountRow, SLOT(hide()));
 	connect(unmergeButton, SIGNAL(clicked(bool)), contactLineEdit, SLOT(clear()));
 
@@ -235,24 +235,24 @@ void BuddyGeneralConfigurationWidget::saveConfiguration()
 		Account account = AccountManager::instance()->byUuid(QUuid(ContactsAccounts.at(i)->itemData(ContactsAccounts.at(i)->currentIndex()).toString()));
 		QString contactId = ContactsIds.at(i)->text();
 
-		if (MyBuddy.hasAccountData(account))
+		if (MyBuddy.hasContact(account))
 		{
 			if (!contactId.isEmpty()/* && account.protocolHandler()->validateId(ContactsIds.at(i)->text())*/)
 			{
-				MyBuddy.accountData(account)->setId(contactId);
+				MyBuddy.contact(account)->setId(contactId);
 			}
 			else
-				MyBuddy.removeAccountData(account);
+				MyBuddy.removeContact(account);
 		}
 		else
 		{
-			foreach (Contact *accountData, MyBuddy.accountDatas())
-					if (accountData->id() == contactId) // check if user has only changed account for previous existing ID
-						MyBuddy.removeAccountData(accountData->account()); // if so, remove old CAD, otherwise there will appear 2 identical contacts with different accounts
+			foreach (Contact *contact, MyBuddy.contacts())
+				if (contact->id() == contactId) // check if user has only changed account for previous existing ID
+					MyBuddy.removeContact(contact->account()); // if so, remove old CAD, otherwise there will appear 2 identical contacts with different accounts
 
 			Contact *cad = account.protocolHandler()->protocolFactory()
-				->newContactAccountData(account, MyBuddy, contactId);
-			MyBuddy.addAccountData(cad);
+				->newContact(account, MyBuddy, contactId);
+			MyBuddy.addContact(cad);
 		}
 	}
 }

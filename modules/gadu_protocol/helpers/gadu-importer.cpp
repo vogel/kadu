@@ -102,7 +102,7 @@ void GaduImporter::importGaduContact(Buddy& contact)
 	contact.customData().remove("blocking");
 	contact.customData().remove("offline_to");
 
-	contact.addAccountData(gcad);
+	contact.addContact(gcad);
 
 	ContactManager::instance()->addContact(gcad);
 }

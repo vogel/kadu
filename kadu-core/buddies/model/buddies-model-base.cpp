@@ -66,7 +66,7 @@ int BuddiesModelBase::rowCount(const QModelIndex &parentIndex) const
 		return 0;
 
 	Buddy con = buddyAt(parentIndex);
-	return con.accountDatas().size();
+	return con.contacts().size();
 }
 
 QFlags<Qt::ItemFlag> BuddiesModelBase::flags(const QModelIndex& index) const
@@ -106,7 +106,7 @@ Contact * BuddiesModelBase::buddyDefaultAccountData(const QModelIndex &index) co
 	if (account.isNull())
 		account = AccountManager::instance()->defaultAccount();
 	
-	return con.accountData(account);
+	return con.contact(account);
 }
 
 Contact * BuddiesModelBase::buddyAccountData(const QModelIndex &index, int accountIndex) const
@@ -115,11 +115,11 @@ Contact * BuddiesModelBase::buddyAccountData(const QModelIndex &index, int accou
 	if (con.isNull())
 		return 0;
 
-	QList<Contact *> accountDatas = con.accountDatas();
-	if (accountDatas.size() <= accountIndex)
+	QList<Contact *> contacts = con.contacts();
+	if (contacts.size() <= accountIndex)
 		return 0;
 
-	return accountDatas[accountIndex];
+	return contacts[accountIndex];
 }
 
 QVariant BuddiesModelBase::data(Buddy buddy, int role) const

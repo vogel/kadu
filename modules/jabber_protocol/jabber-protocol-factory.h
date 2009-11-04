@@ -27,7 +27,7 @@ public:
 
 	virtual Protocol * createProtocolHandler(Account account);
 	virtual AccountDetails * createAccountDetails(Account account);
-	virtual Contact * newContactAccountData(Account account, Buddy buddy, const QString &id);
+	virtual Contact * newContact(Account account, Buddy buddy, const QString &id);
 	virtual Contact * loadContactAccountData(StoragePoint *storagePoint);
 	virtual AccountCreateWidget * newCreateAccountWidget(QWidget *parent);
 	virtual AccountEditWidget* newEditAccountWidget(Account, QWidget*);

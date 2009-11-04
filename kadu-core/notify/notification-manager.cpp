@@ -225,7 +225,7 @@ void NotificationManager::statusChanged(Account account, Buddy buddy, Status old
 	if (buddy.id(account) == account.id()) // myself
 		return;
 
-	Contact *data = buddy.accountData(account);
+	Contact *data = buddy.contact(account);
 	if (!data)
 		return;
 
@@ -426,7 +426,7 @@ void checkNotify(Action *action)
 	kdebugf();
 
 	foreach(Buddy buddy, action->buddies())
-		if (!buddy.hasAccountData(buddy.prefferedAccount()))
+		if (!buddy.hasContact(buddy.prefferedAccount()))
 		{
 			action->setEnabled(false);
 			return;

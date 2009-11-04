@@ -320,8 +320,8 @@ void UserlistImportExport::contactListImported(bool ok, BuddyList buddies)
 	foreach (Buddy buddy, buddies)
 	{
 		QString id;
-		if (buddy.hasAccountData(account))
-			id = buddy.accountData(account)->id();
+		if (buddy.hasContact(account))
+			id = buddy.contact(account)->id();
 
 		QStringList groups;
 		foreach (Group *group, buddy.groups())

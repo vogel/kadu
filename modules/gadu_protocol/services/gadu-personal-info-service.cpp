@@ -39,7 +39,7 @@ void GaduPersonalInfoService::handleEventPubdir50Read(struct gg_event *e)
 	GaduContactAccountData *gcad = new GaduContactAccountData(Protocol->account(), result,
 			gg_pubdir50_get(res, 0, GG_PUBDIR50_UIN));
 
-	result.addAccountData(gcad);
+	result.addContact(gcad);
 	result.setFirstName(cp2unicode(gg_pubdir50_get(res, 0, GG_PUBDIR50_FIRSTNAME)));
 	result.setLastName(cp2unicode(gg_pubdir50_get(res, 0, GG_PUBDIR50_LASTNAME)));
 	result.setNickName(cp2unicode(gg_pubdir50_get(res, 0, GG_PUBDIR50_NICKNAME)));

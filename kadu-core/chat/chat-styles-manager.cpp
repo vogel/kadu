@@ -291,7 +291,7 @@ void ChatStylesManager::preparePreview(Preview *preview)
 	if (example.isNull())
 		return;
 
-	SimpleChat *chat = new SimpleChat(example.prefferedAccount(), example.accountData(example.prefferedAccount()));
+	SimpleChat *chat = new SimpleChat(example.prefferedAccount(), example.contact(example.prefferedAccount()));
 	connect(preview, SIGNAL(destroyed(QObject *)), chat, SLOT(deleteLater()));
 
 	Message messageSent(chat, Message::TypeSent, Core::instance()->myself());

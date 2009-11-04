@@ -186,7 +186,7 @@ QString Parser::parse(const QString &s, Account account, const Buddy &buddy, con
 				break;
 			pe.type = ParserToken::PT_STRING;
 
-			Contact *data = buddy.accountData(account);
+			Contact *data = buddy.contact(account);
 
 			switch (s[i].toAscii())
 			{

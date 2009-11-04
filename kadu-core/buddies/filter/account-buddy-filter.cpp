@@ -29,6 +29,6 @@ bool AccountBuddyFilter::acceptBuddy(Buddy buddy)
 {
 	if (!Enabled)
 		return true;
-	return buddy.hasAccountData(CurrentAccount);
+	return buddy.hasContact(CurrentAccount);
 }
 

@@ -183,89 +183,63 @@ void BuddyShared::store()
 	storeModuleData();
 }
 
-void BuddyShared::addAccountData(Contact *accountData)
+void BuddyShared::addContact(Contact *contact)
 {
-	if (!accountData)
+	if (!contact)
 		return;
 
-	emit accountDataAboutToBeAdded(accountData->account());
-	AccountsData.insert(accountData->account(), accountData);
-	ContactManager::instance()->addContact(accountData);
-	emit accountDataAdded(accountData->account());
+	emit contactAboutToBeAdded(contact->account());
+	Contacts.insert(contact->account(), contact);
+	ContactManager::instance()->addContact(contact);
+	emit contactAdded(contact->account());
 }
 
-void BuddyShared::removeAccountData(Contact *accountData)
+void BuddyShared::removeContact(Contact *contact)
 {
-	if (AccountsData[accountData->account()] == accountData)
-		removeAccountData(accountData->account());
+	if (Contacts[contact->account()] == contact)
+		removeContact(contact->account());
 }
 
-void BuddyShared::removeAccountData(Account account)
+void BuddyShared::removeContact(Account account)
 {
-	emit accountDataAboutToBeRemoved(account);
-	ContactManager::instance()->removeContact(AccountsData[account]);
-	AccountsData.remove(account);
-	emit accountDataRemoved(account);
+	emit contactAboutToBeRemoved(account);
+	ContactManager::instance()->removeContact(Contacts[account]);
+	Contacts.remove(account);
+	emit contactRemoved(account);
 }
 
-Contact * BuddyShared::accountData(Account account)
+Contact * BuddyShared::contact(Account account)
 {
-	if (!AccountsData.contains(account))
+	if (!Contacts.contains(account))
 		return 0;
 
-	return AccountsData[account];
+	return Contacts[account];
 }
 
-QList<Contact *> BuddyShared::accountDatas()
+QList<Contact *> BuddyShared::contacts()
 {
-	return AccountsData.values();
-}
-
-StoragePoint * BuddyShared::storagePointForAccountData(Account account)
-{
-	StoragePoint *sp = storage();
-	if (!sp || !sp->storage())
-		return 0;
-
-	QString stringUuid = account.uuid().toString();
-
-	QDomNodeList nodes = sp->storage()->getNodes(sp->point(), "ContactAccountData");
-	int count = nodes.count();
-	for (int i = 0; i < count; i++)
-	{
-		QDomElement element = nodes.at(i).toElement();
-		if (element.isNull())
-			continue;
-
-		QString accountUuid = sp->storage()->getTextNode(element, "Account");
-		if (accountUuid.isEmpty())
-			accountUuid = element.attribute("uuid");
-		if (accountUuid == stringUuid)
-			return new StoragePoint(sp->storage(), element);
-	}
-
-	return 0;
+	return Contacts.values();
 }
 
 QString BuddyShared::id(Account account)
 {
-	if (AccountsData.contains(account))
-		return AccountsData[account]->id();
+	if (Contacts.contains(account))
+		return Contacts[account]->id();
 
 	return QString::null;
 }
 
 Account BuddyShared::prefferedAccount()
 {
-	return AccountsData.count() > 0
-		? AccountsData.keys()[0]
+	return Contacts.count() > 0
+		? Contacts.keys()[0]
 		: Account::null;
 }
 
 QList<Account> BuddyShared::accounts()
 {
-	return AccountsData.count() > 0
-			? AccountsData.keys()
+	return Contacts.count() > 0
+			? Contacts.keys()
 			: QList<Account>();
 }
 
@@ -314,7 +288,7 @@ bool BuddyShared::setIgnored(bool ignored)
 
 bool BuddyShared::isBlocked(Account account)
 {
-	Contact *cad = accountData(account);
+	Contact *cad = contact(account);
 	return cad
 		? cad->isBlocked()
 		: Blocked;
@@ -322,7 +296,7 @@ bool BuddyShared::isBlocked(Account account)
 
 bool BuddyShared::isOfflineTo(Account account)
 {
-	Contact *cad = accountData(account);
+	Contact *cad = contact(account);
 	return cad
 		? cad->isOfflineTo()
 		: OfflineTo;
@@ -330,7 +304,7 @@ bool BuddyShared::isOfflineTo(Account account)
 
 bool BuddyShared::setOfflineTo(Account account, bool offlineTo)
 {
-	Contact *cad = accountData(account);
+	Contact *cad = contact(account);
 	if (cad)
 		cad->setOfflineTo(offlineTo);
 	else
@@ -370,5 +344,5 @@ void BuddyShared::accountContactDataIdChanged(const QString &id)
 {
 	Contact *cad = dynamic_cast<Contact *>(sender());
 	if (cad && !cad->account().isNull())
-		emit accountDataIdChanged(cad->account(), id);
+		emit contactIdChanged(cad->account(), id);
 }

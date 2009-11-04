@@ -561,7 +561,7 @@ void JabberProtocol::contactRemoved(Buddy &buddy)
 	if (!jcad || !isConnected())
 		return;
 	JabberClient->removeContact(jcad->id());
-	if (buddy.accountDatas().count() == 1)
+	if (buddy.contacts().count() == 1)
 		buddy.setType(BuddyShared::TypeAnonymous); // TODO: why?
 }
 
@@ -868,5 +868,5 @@ QPixmap JabberProtocol::statusPixmap(const QString &statusType)
 
 JabberContactAccountData * JabberProtocol::jabberContactAccountData(Buddy buddy) const
 {
-	return dynamic_cast<JabberContactAccountData *>(buddy.accountData(account()));
+	return dynamic_cast<JabberContactAccountData *>(buddy.contact(account()));
 }

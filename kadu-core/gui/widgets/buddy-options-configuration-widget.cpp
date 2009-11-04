@@ -62,7 +62,7 @@ void BuddyOptionsConfigurationWidget::createGui()
 void BuddyOptionsConfigurationWidget::saveConfiguration()
 {
 
-	MyBuddy.accountData(MyBuddy.prefferedAccount())->setBlocked(BlockCheckBox->isChecked());
+	MyBuddy.contact(MyBuddy.prefferedAccount())->setBlocked(BlockCheckBox->isChecked());
 	MyBuddy.setOfflineTo(MyBuddy.prefferedAccount(), OfflineToCheckBox->isChecked());
 	ContactNotifyData *cnd = MyBuddy.moduleData<ContactNotifyData>();
 	if (cnd)

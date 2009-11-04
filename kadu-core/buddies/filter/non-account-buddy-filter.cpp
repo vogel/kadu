@@ -31,5 +31,5 @@ void NonAccountBuddyFilter::setAccount(Account account)
 
 bool NonAccountBuddyFilter::acceptBuddy(Buddy buddy)
 {
-	return CurrentAccount.isNull() || !buddy.hasAccountData(CurrentAccount);
+	return CurrentAccount.isNull() || !buddy.hasContact(CurrentAccount);
 }

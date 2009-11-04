@@ -37,7 +37,7 @@ QString GaduListHelper::contactListToString(Account account, BuddyList buddies)
 		foreach (Group *group, buddy.groups())
 			buddyGroups << group->name();
 
-		Contact *cad = buddy.accountData(account);
+		Contact *cad = buddy.contact(account);
 
 		contactsStringList << QString("%1;%2;%3;%4;%5;%6;%7;%8;%9;%10;%11;%12;%13")
 			.arg(buddy.firstName())
@@ -130,7 +130,7 @@ BuddyList GaduListHelper::streamToContactList(Account account, QTextStream &cont
 			if (uin)
 			{
 				GaduContactAccountData *gcad = new GaduContactAccountData(account, buddy, QString::number(uin), false);
-				buddy.addAccountData(gcad);
+				buddy.addContact(gcad);
 			}
 		}
 

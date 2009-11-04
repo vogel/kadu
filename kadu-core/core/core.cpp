@@ -387,7 +387,7 @@ void Core::accountUnregistered(Account account)
 	disconnect(protocol, SIGNAL(connected(Account)), this, SIGNAL(connected()));
 	disconnect(protocol, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
 
-	Myself.removeAccountData(account);
+	Myself.removeContact(account);
 }
 
 void Core::configurationUpdated()

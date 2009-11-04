@@ -36,7 +36,7 @@ bool OnlineBuddyFilter::acceptBuddy(Buddy buddy)
 	if (prefferedAccount.isNull())
 		return false;
 
-	Status status = buddy.accountData(prefferedAccount)->status();
+	Status status = buddy.contact(prefferedAccount)->status();
 	return !status.isDisconnected();
 }
 

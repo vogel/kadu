@@ -154,8 +154,8 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 void GaduProtocol::fetchAvatars(Account account)
 {
 	foreach (Buddy buddy, BuddyManager::instance()->buddies(account))
-		if (buddy.hasAccountData(account))
-			CurrentAvatarService->fetchAvatar(buddy.accountData(account));
+		if (buddy.hasContact(account))
+			CurrentAvatarService->fetchAvatar(buddy.contact(account));
 }
 
 GaduProtocol::~GaduProtocol()
@@ -827,7 +827,7 @@ unsigned int GaduProtocol::uin(Buddy buddy) const
 
 GaduContactAccountData * GaduProtocol::gaduContactAccountData(Buddy buddy) const
 {
-	return dynamic_cast<GaduContactAccountData *>(buddy.accountData(account()));
+	return dynamic_cast<GaduContactAccountData *>(buddy.contact(account()));
 }
 
 QPixmap GaduProtocol::statusPixmap(Status status)

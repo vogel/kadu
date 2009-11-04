@@ -127,53 +127,46 @@ QList<Account> Buddy::accounts() const
 		: Data->accounts();
 }
 
-void Buddy::addAccountData(Contact *accountData)
+void Buddy::addContact(Contact *contact)
 {
-	if (!accountData)
+	if (!contact)
 		return;
 
 	checkNull();
-	Data->addAccountData(accountData);
+	Data->addContact(contact);
 }
 
-void Buddy::removeAccountData(Contact *accountData) const
+void Buddy::removeContact(Contact *contact) const
 {
 	if (!isNull())
-		Data->removeAccountData(accountData);
+		Data->removeContact(contact);
 }
 
-void Buddy::removeAccountData(Account account) const
+void Buddy::removeContact(Account account) const
 {
 	if (!isNull())
-		Data->removeAccountData(account);
+		Data->removeContact(account);
 }
 
-Contact * Buddy::accountData(Account account) const
+Contact * Buddy::contact(Account account) const
 {
 	return isNull()
 			? 0
-			: Data->accountData(account);
+			: Data->contact(account);
 }
 
-QList<Contact *> Buddy::accountDatas() const
+QList<Contact *> Buddy::contacts() const
 {
 	return isNull()
 			? QList<Contact *>()
-			: Data->accountDatas();
+			: Data->contacts();
 }
 
-StoragePoint * Buddy::storagePointForAccountData(Account account) const
-{
-	return isNull()
-			? 0
-			: Data->storagePointForAccountData(account);
-}
-
-bool Buddy::hasAccountData(Account account) const
+bool Buddy::hasContact(Account account) const
 {
 	return isNull()
 			? false
-			: 0 != Data->accountData(account);
+			: 0 != Data->contact(account);
 }
 
 QString Buddy::id(Account account) const
@@ -279,7 +272,7 @@ Buddy Buddy::dummy()
 	avatar.setPixmap(IconsManager::instance()->loadPixmap("ContactsTab"));
 	avatar.setFileName(IconsManager::instance()->iconPath("ContactsTab"));
 
-	example.addAccountData(contactData);
+	example.addContact(contactData);
 
 	return example;
 }
