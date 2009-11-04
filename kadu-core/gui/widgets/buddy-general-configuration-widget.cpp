@@ -89,7 +89,7 @@ void BuddyGeneralConfigurationWidget::createGui()
 	QLabel *defaultContactLabel = new QLabel(tr("Default Contact") + ":");
 
 	DefaultAccountCombo = new QComboBox(this);
-	AccountDataModel = new ContactAccountDataModel(MyBuddy, DefaultAccountCombo);
+	AccountDataModel = new BuddyAccountDataModel(MyBuddy, DefaultAccountCombo);
 //	ContactsModelProxy *AccountComboProxyModel = new ContactsModelProxy(DefaultContactCombo);
 //	AccountComboProxyModel->setSourceModel(AccountComboModel);
 	

@@ -22,7 +22,7 @@
 #include "chat/filter/chat-name-filter.h"
 #include "chat/aggregate-chat.h"
 #include "chat/chat-aggregator-builder.h"
-#include "contacts/model/contacts-model-base.h"
+#include "buddies/model/buddies-model-base.h"
 
 #include "gui/actions/actions.h"
 #include "gui/widgets/chat-widget-manager.h"
@@ -196,7 +196,7 @@ void HistoryWindow::updateData()
 		if (usedChats.contains(chat))
 			continue;
 
-		AggregateChat *aggregate = dynamic_cast<AggregateChat *>(ChatAggregatorBuilder::buildAggregateChat(chat->contacts()));
+		AggregateChat *aggregate = dynamic_cast<AggregateChat *>(ChatAggregatorBuilder::buildAggregateChat(chat->buddies()));
 		if (!aggregate)
 			continue;
 		if (aggregate->chats().size() > 1)

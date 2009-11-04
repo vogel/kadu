@@ -38,7 +38,7 @@
 
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget-manager.h"
-#include "gui/widgets/contacts-list-view-menu-manager.h"
+#include "gui/widgets/buddies-list-view-menu-manager.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/toolbar.h"
 
@@ -69,15 +69,15 @@ extern "C" KADU_EXPORT void tabs_close()
 void disableNewTab(Action *action)
 {
 	action->setEnabled(false);
-	BuddySet contacts = action->buddies();
+	BuddySet buddies = action->buddies();
 
-	if (!contacts.count())
+	if (!buddies.count())
 		return;
 
 	bool config_defaultTabs = config_file.readBoolEntry("Chat", "DefaultTabs");
 	action->setEnabled(true);
 
-	if (contacts.count() != 1 && !config_defaultTabs)
+	if (buddies.count() != 1 && !config_defaultTabs)
 		action->setEnabled(false);
 
 	if (config_defaultTabs)
@@ -86,12 +86,12 @@ void disableNewTab(Action *action)
 		action->setText(qApp->translate("TabsManager", "Open in new tab"));
 
 	// TODO 0.6.6 dla siebie samego deaktywujemy opcje w menu, a konfernecje?
-	foreach (const Buddy &buddy, contacts)
+	foreach (const Buddy &buddy, buddies)
 	{
-		if (Core::instance()->myself() == contact)
+		if (Core::instance()->myself() == buddy)
 			return;
 
-		Account account = contact.prefferedAccount();
+		Account account = buddy.prefferedAccount();
 		if (account.isNull() || !account.protocolHandler()->chatService())
 			return;
 	}
@@ -126,7 +126,7 @@ TabsManager::TabsManager(bool firstload) :
 		this, SLOT(onNewTab(QAction *, bool)),
 		"OpenChat", tr("Open in new tab"), false, QString::null, disableNewTab
 	);
-	ContactsListViewMenuManager::instance()->insertActionDescription(1, openInNewTabActionDescription);
+	BuddiesListViewMenuManager::instance()->insertActionDescription(1, openInNewTabActionDescription);
 
 	attachToTabsActionDescription = new ActionDescription(
 		0, ActionDescription::TypeChat, "attachToTabsAction",
@@ -176,7 +176,7 @@ TabsManager::~TabsManager()
 {
 	kdebugf();
 
-	ContactsListViewMenuManager::instance()->removeActionDescription(openInNewTabActionDescription);
+	BuddiesListViewMenuManager::instance()->removeActionDescription(openInNewTabActionDescription);
 	delete openInNewTabActionDescription;
 	openInNewTabActionDescription = 0;
 

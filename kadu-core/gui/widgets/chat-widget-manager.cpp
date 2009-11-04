@@ -24,7 +24,7 @@
 #include "gui/actions/actions.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget-actions.h"
-#include "gui/widgets/contacts-list-view-menu-manager.h"
+#include "gui/widgets/buddies-list-view-menu-manager.h"
 #include "gui/widgets/custom-input.h"
 #include "gui/windows/chat-window.h"
 #include "gui/windows/kadu-window.h"

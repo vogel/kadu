@@ -9,7 +9,7 @@
 
 #include <QtGui/QDrag>
 
-#include "gui/widgets/contacts-list-widget.h"
+#include "gui/widgets/buddies-list-widget.h"
 #include "gui/windows/open-chat-with/open-chat-with.h"
 
 #include "activate.h"
@@ -35,7 +35,7 @@ TabWidget::TabWidget()
 			SLOT(onDeleteTab(int)));
 	connect(tabbar,SIGNAL(mouseDoubleClickEventSignal(QMouseEvent*)),
 			SLOT(mouseDoubleClickEvent(QMouseEvent*)));
-	//przycisk otwarcia nowej karty pokazywany w lewym g贸rnym rogu
+	//przycisk otwarcia nowej karty pokazywany w lewym górnym rogu
 
 	openChatButton = new QToolButton(this);
    	openChatButton->setIcon(IconsManager::instance()->loadIcon("OpenChat"));
@@ -43,7 +43,7 @@ TabWidget::TabWidget()
 	connect(openChatButton, SIGNAL(clicked()), SLOT(newChat()));
 	openChatButton->setAutoRaise(true);
 
-	//przycisk zamkni臋cia aktywnej karty znajduj膮cy si臋 w prawym g贸rnym rogu
+	//przycisk zamknięcia aktywnej karty znajdujący się w prawym górnym rogu
 	closeChatButton = new QToolButton(this);
    	closeChatButton->setIcon(IconsManager::instance()->loadIcon("TabsRemove"));
 	setCornerWidget(closeChatButton, Qt::TopRightCorner);
@@ -60,7 +60,7 @@ void TabWidget::closeChatWidget(ChatWidget *chat)
 
 void TabWidget::closeEvent(QCloseEvent *e)
 {
-	//w zale偶no艣ci od opcji w konfiguracji zamykamy wszystkie karty, lub tylko aktywn膮
+	//w zależności od opcji w konfiguracji zamykamy wszystkie karty, lub tylko aktywną
 	if (config_oldStyleClosing)
 	{
 		QWidget *current = currentWidget();
@@ -69,7 +69,7 @@ void TabWidget::closeEvent(QCloseEvent *e)
 	}
 	else
 	{
-		//dop贸ki s膮 jeszcze karty zamykamy aktywn膮
+		//dopóki są jeszcze karty zamykamy aktywną
 		while(count())
 		{
 			QWidget* current = currentWidget();
@@ -86,7 +86,7 @@ void TabWidget::closeEvent(QCloseEvent *e)
 void TabWidget::chatKeyPressed(QKeyEvent *e, CustomInput *k, bool &handled)
 {
 	handled = true;
-	// obs艂uga skr贸t贸w klawiszowych
+	// obsługa skrótów klawiszowych
 	if (HotKey::shortCut(e, "ShortCuts", "MoveTabLeft"))
 		moveTabLeft();
 	else if(HotKey::shortCut(e, "ShortCuts", "MoveTabRight"))
@@ -96,7 +96,7 @@ void TabWidget::chatKeyPressed(QKeyEvent *e, CustomInput *k, bool &handled)
 	else if(HotKey::shortCut(e, "ShortCuts", "SwitchTabRight"))
 		switchTabRight();
 	else
-		// skr贸t nie zosta艂 znaleziony i wykonany. Przekazujemy zdarzenie dalej
+		// skrót nie został znaleziony i wykonany. Przekazujemy zdarzenie dalej
 		handled = false;
 }
 
@@ -166,7 +166,7 @@ void TabWidget::moveTabRight()
 void TabWidget::dragEnterEvent(QDragEnterEvent* e)
 {
 	kdebugf();
-	// Akceptujemu dnd je艣li pochodzi on z UserBox'a lub paska kart
+	// Akceptujemu dnd jeśli pochodzi on z UserBox'a lub paska kart
 // 	if ((UlesDrag::canDecode(e) && (dynamic_cast<ContactsListWidget *>(e->source()))))
 // 		e->acceptProposedAction();
 // 	else
@@ -180,14 +180,14 @@ void TabWidget::dropEvent(QDropEvent* e)
 	kdebugf();
 	QStringList ules;
 
-	// Je艣li dnd pochodzi艂 z userboxa pr贸bujemy doda膰 now膮 kart臋
-	if (dynamic_cast<ContactsListWidget *>(e->source()) && false)/*UlesDrag::decode(e, ules))*/
+	// Jeśli dnd pochodził z userboxa próbujemy dodać nową kartę
+	if (dynamic_cast<BuddiesListWidget *>(e->source()) && false)/*UlesDrag::decode(e, ules))*/
 	{
 		if (tabbar->tabAt(e->pos()) != -1)
-		// Je艣li w miejscu upuszczenia jest karta, dodajemy na jej pozycji
+		// Jeśli w miejscu upuszczenia jest karta, dodajemy na jej pozycji
 			emit openTab(ules, tabbar->tabAt(e->pos()));
 		else
-		// Je艣li nie na ko艅cu tabbara
+		// Jeśli nie na końcu tabbara
 			emit openTab(ules, -1);
 	}
 
@@ -209,7 +209,7 @@ void TabWidget::windowActivationChange(bool oldActive)
 void TabWidget::mouseDoubleClickEvent(QMouseEvent* e)
 {
 	kdebugf();
-	// je艣li dwuklik nast膮pil lewym przyciskiem myszy pokazujemy okno openchatwith
+	// jeśli dwuklik nastąpil lewym przyciskiem myszy pokazujemy okno openchatwith
 	if (e->button() == Qt::LeftButton)
 		newChat();
 	kdebugf2();
@@ -217,21 +217,21 @@ void TabWidget::mouseDoubleClickEvent(QMouseEvent* e)
 
 void TabWidget::newChat()
 {
-	// je艣li okno openchatwith nie istnieje tworzymy nowe
+	// jeśli okno openchatwith nie istnieje tworzymy nowe
 	if (!openChatWithWindow)
 	{
 		openChatWithWindow = new OpenChatWith;
    		connect(openChatWithWindow, SIGNAL(destroyed()), this, SLOT(openChatWithWindowClose()));
-		// zapisujemy geometri臋 okna, aby j膮 p贸藕niej przywr贸ci膰 (tabsy nie b臋d膮 psu艂y pozycji okna z akcji kadu)
+		// zapisujemy geometrię okna, aby ją później przywrócić (tabsy nie będą psuły pozycji okna z akcji kadu)
 		openTabWithGeometry = openChatWithWindow->frameGeometry();
-		// pokazujemy je w miejscu w kt贸rym nast膮pi艂o wywo艂anie metody (obecnie znajduje si臋 kursor)
-		openChatWithWindow->setGeometry(QCursor::pos().x(), QCursor::pos().y(), openChatWithWindow->width(), openChatWithWindow->height());// jak wykonuje si臋 to po pokazaniu okienkoa wyst臋puje denerwuj膮ce miganie
+		// pokazujemy je w miejscu w którym nastąpiło wywołanie metody (obecnie znajduje się kursor)
+		openChatWithWindow->setGeometry(QCursor::pos().x(), QCursor::pos().y(), openChatWithWindow->width(), openChatWithWindow->height());// jak wykonuje się to po pokazaniu okienkoa występuje denerwujące miganie
 		openChatWithWindow->show();
 	}
-	// je艣li istnieje przywracamy je na pierwszy plan w miejscu cursora
+	// jeśli istnieje przywracamy je na pierwszy plan w miejscu cursora
 	else
 	{
-		openChatWithWindow->setGeometry(QCursor::pos().x(), QCursor::pos().y(), openChatWithWindow->width(), openChatWithWindow->height());// jak wykonuje si臋 to po pokazaniu okienka wyst臋puje denerwuj膮ce miganie
+		openChatWithWindow->setGeometry(QCursor::pos().x(), QCursor::pos().y(), openChatWithWindow->width(), openChatWithWindow->height());// jak wykonuje się to po pokazaniu okienka występuje denerwujące miganie
 		openChatWithWindow->setWindowState(openChatWithWindow->windowState() & Qt::WindowMinimized);
 		openChatWithWindow->raise();
 	}
@@ -239,7 +239,7 @@ void TabWidget::newChat()
 
 void TabWidget::deleteTab()
 {
-	// zamykamy bie偶膮c膮 kart臋
+	// zamykamy bieżącą kartę
 	QWidget *current = currentWidget();
 	delete current;
 }
@@ -257,15 +257,15 @@ void TabWidget::tabRemoved(int index)
 
 void TabWidget::openChatWithWindowClose()
 {
-	// ponownie zapisujemy poprawn膮 pozycj臋 okna openTabWith
+	// ponownie zapisujemy poprawną pozycję okna openTabWith
 	config_file.writeEntry("General", "OpenChatWith", openTabWithGeometry);
-	// po zamkni臋ciu okna openchatwith przypisujemy NULL do wska藕nika do niego,
+	// po zamknięciu okna openchatwith przypisujemy NULL do wskaźnika do niego,
 	openChatWithWindow = 0;
 }
 
 void TabWidget::configurationUpdated()
 {
-	// od艣wie偶enie ikon
+	// odświeżenie ikon
    	openChatButton->setIcon(IconsManager::instance()->loadIcon("OpenChat"));
    	closeChatButton->setIcon(IconsManager::instance()->loadIcon("TabsRemove"));
 
@@ -300,7 +300,7 @@ void TabBar::mouseReleaseEvent(QMouseEvent* e)
 void TabBar::mouseDoubleClickEvent(QMouseEvent* e)
 {
 	kdebugf();
-	// w celu u艂atwienia sobie zadania przekazujemy zdarzenie dalej- tu klasie tabdialog
+	// w celu ułatwienia sobie zadania przekazujemy zdarzenie dalej- tu klasie tabdialog
 	emit mouseDoubleClickEventSignal(e);
 	kdebugf2();
 }
