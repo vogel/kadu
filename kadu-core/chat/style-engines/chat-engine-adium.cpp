@@ -29,32 +29,6 @@
 
 #include "chat-engine-adium.h"
 
-const char *AdiumChatStyleEngine::xhtmlBase =
-	"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
-		"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\"\n"
-		"\"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">\n"
-		"<html xmlns=\"http://www.w3.org/1999/xhtml\">\n"
-    	"<head>\n"
-        "<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\n\" />\n"
-        "<base href=\"file://%1\">\n"
-		"<style id=\"KaduStyle\" type=\"text/css\" >\n"
-		"	%5\n"
-		"</style>\n"
-		"<style id=\"baseStyle\" type=\"text/css\" >\n"
-		"	@import url(\"main.css\");\n"
-		"	*{ word-wrap:break-word; }\n"
-		"</style>\n"
-		"<style id=\"mainStyle\" type=\"text/css\" >\n"
-		"	@import url(\"%4\");\n"
-        "</style>\n"
-		"</head>\n"
-		"<body>\n"
-		"%2\n"
-		"<div id=\"Chat\"></div>\n"
-		"%3\n"
-		"</body>"
-		"</html>\n";
-
 AdiumChatStyleEngine::AdiumChatStyleEngine()
 {
 	timeFormatter = new AdiumTimeFormatter;
@@ -62,7 +36,6 @@ AdiumChatStyleEngine::AdiumChatStyleEngine()
 	QFile file(dataPath("kadu") + "/scripts/adium-style-scripts.js");
 	if (file.open(QIODevice::ReadOnly | QIODevice::Text))
 		jsCode = file.readAll();
-
 }
 
 AdiumChatStyleEngine::~AdiumChatStyleEngine()
@@ -173,20 +146,32 @@ void AdiumChatStyleEngine::appendMessage(HtmlMessagesRenderer *renderer, Message
 	formattedMessageHtml.append("</span>");
 
 	if (includeHeader)
-		renderer->webPage()->mainFrame()->evaluateJavaScript("kadu_appendNextMessage(\'"+ formattedMessageHtml +"\')");
+		renderer->webPage()->mainFrame()->evaluateJavaScript("appendMessage(\'"+ formattedMessageHtml +"\')");
 	else
-		renderer->webPage()->mainFrame()->evaluateJavaScript("kadu_appendConsecutiveMessage(\'"+ formattedMessageHtml +"\')");
+		renderer->webPage()->mainFrame()->evaluateJavaScript("appendNextMessage(\'"+ formattedMessageHtml +"\')");
 
 	renderer->setLastMessage(message);
 }
 
 void AdiumChatStyleEngine::refreshView(HtmlMessagesRenderer *renderer)
 {
-	QString styleBaseHtml = QString(xhtmlBase).arg(BaseHref)
-			.arg(replaceKeywords(renderer->chat(), BaseHref, HeaderHtml))
-			.arg(replaceKeywords(renderer->chat(), BaseHref, FooterHtml))
-			.arg("Variants/" + StyleVariantName)
-			.arg(ChatStylesManager::instance()->mainStyle());
+	QFile file(TemplateHref);
+	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+		return;
+
+	QString styleBaseHtml  = file.readAll();
+	styleBaseHtml.replace(styleBaseHtml.indexOf("%@"), 2,"file://" + BaseHref);
+	styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, replaceKeywords(renderer->chat(), BaseHref, FooterHtml));
+	styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, replaceKeywords(renderer->chat(), BaseHref, HeaderHtml));
+	//TODO: implement style versions:
+	if (StyleVariantName != "Default")
+		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2,"Variants/" + StyleVariantName);
+	else
+		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2,"main.css");
+
+	if (styleBaseHtml.contains("%@"))
+		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, "@import url( \"main.css\" );");
+
 	renderer->webPage()->mainFrame()->setHtml(styleBaseHtml);
 	renderer->webPage()->mainFrame()->evaluateJavaScript(jsCode);
 
@@ -222,6 +207,13 @@ void AdiumChatStyleEngine::loadTheme(const QString &styleName, const QString &va
 		BaseHref = dataPath("kadu") + "/syntax/chat/" + styleName + "/Contents/Resources/";
 
 	IncomingHtml = readThemePart(BaseHref + "Incoming/Content.html");
+
+	if (QFile::exists(BaseHref + "Template.html"))
+		TemplateHref = BaseHref + "Template.html";
+	else if (QFile::exists(BaseHref + "template.html"))
+		TemplateHref = BaseHref + "template.html";
+	else // TODO 0.6.6: move it to proper place
+		TemplateHref = dataPath("kadu") + "/syntax/chat/Default/Template.html";
 
 	if (QFile::exists(BaseHref + "Incoming/NextContent.html"))
 		NextIncomingHtml = readThemePart(BaseHref + "Incoming/NextContent.html");
@@ -280,6 +272,14 @@ void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNa
 	if (!dir.exists(styleHref))
 		styleHref = dataPath("kadu") + "/syntax/chat/" + styleName + "/Contents/Resources/";
 
+	QString templateHref;
+	if (QFile::exists(styleHref + "Template.html"))
+		templateHref = styleHref + "Template.html";
+	else if (QFile::exists(styleHref + "template.html"))
+		templateHref = styleHref + "template.html";
+	else // TODO 0.6.6: move it to proper place
+		templateHref = dataPath("kadu") + "/syntax/chat/Default/Template.html";
+
 	QString incomingHtml = readThemePart(styleHref + "Incoming/Content.html");
 	QString outgoingHtml;
 	if (QFile::exists(styleHref + "Outgoing/Content.html"))
@@ -297,28 +297,38 @@ void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNa
 		return;
 	Message msg = message->message();
 
-	QString styleBaseHtml = QString(xhtmlBase).arg(styleHref)
-		.arg(replaceKeywords(msg.chat(), styleHref, headerHtml))
-		.arg(replaceKeywords(msg.chat(), styleHref, footerHtml))
-		.arg("Variants/" + variantName)
-		.arg(ChatStylesManager::instance()->mainStyle());
-	preview->setHtml(styleBaseHtml);
+	QFile file(templateHref);
+	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+		return;
 
+	QString styleBaseHtml  = file.readAll();
+	styleBaseHtml.replace(styleBaseHtml.indexOf("%@"), 2,"file://" + styleHref);
+	styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, replaceKeywords(msg.chat(), styleHref, footerHtml));
+	styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, replaceKeywords(msg.chat(), styleHref, headerHtml));
+	//TODO: implement style versions:
+	if (StyleVariantName != "Default")
+		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2,"Variants/" + StyleVariantName);
+	else
+		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2,"main.css");
+
+	if (styleBaseHtml.contains("%@"))
+		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, "@import url( \"main.css\" );");
+
+	preview->page()->mainFrame()->setHtml(styleBaseHtml);
 	preview->page()->mainFrame()->evaluateJavaScript(jsCode);
 
 	incomingHtml = replaceKeywords(msg.chat(), styleHref, incomingHtml, message);
 	incomingHtml.replace("\n", " ");
 	incomingHtml.prepend("<span>");
 	incomingHtml.append("</span>");
-	preview->page()->mainFrame()->evaluateJavaScript("kadu_appendNextMessage(\'"+ incomingHtml +"\')");
+	preview->page()->mainFrame()->evaluateJavaScript("appendMessage(\'"+ incomingHtml +"\')");
 
 	message = dynamic_cast<MessageRenderInfo *>(preview->getObjectsToParse().at(1));
 	outgoingHtml = replaceKeywords(msg.chat(), styleHref, outgoingHtml, message);
 	outgoingHtml.replace("\n", " ");
 	outgoingHtml.prepend("<span>");
 	outgoingHtml.append("</span>");
-	preview->page()->mainFrame()->evaluateJavaScript("kadu_appendNextMessage(\'"+ outgoingHtml +"\')");
-
+	preview->page()->mainFrame()->evaluateJavaScript("appendMessage(\'"+ outgoingHtml +"\')");
 }
 
 // Some parts of the code below are borrowed from Kopete project (http://kopete.kde.org/)

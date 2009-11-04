@@ -13,10 +13,9 @@ class AdiumChatStyleEngine : public ChatStyleEngine
 
 	QString jsCode;
 
-	static const char *xhtmlBase;
-
 	QString StyleVariantName;
 	QString BaseHref;
+	QString TemplateHref;
 	QString HeaderHtml;
 	QString FooterHtml;
 	QString IncomingHtml;
