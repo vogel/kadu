@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CONTACT_ACCOUNT_DATA_H
-#define CONTACT_ACCOUNT_DATA_H
+#ifndef CONTACT_H
+#define CONTACT_H
 
 #include <QtNetwork/QHostAddress>
 #include <QtXml/QDomElement>
@@ -23,7 +23,7 @@
 class Account;
 class XmlConfigFile;
 
-class KADUAPI ContactAccountData : public QObject, public UuidStorableObject
+class KADUAPI Contact : public QObject, public UuidStorableObject
 {
 	Q_OBJECT
 
@@ -46,8 +46,8 @@ class KADUAPI ContactAccountData : public QObject, public UuidStorableObject
 	bool OfflineTo;
 
 public:
-	ContactAccountData(Account account, Buddy buddy, const QString &id, bool loaded = false);
-	explicit ContactAccountData(StoragePoint *storage);
+	Contact(Account account, Buddy buddy, const QString &id, bool loaded = false);
+	explicit Contact(StoragePoint *storage);
 
 	virtual bool validateId() {return false;}
 	virtual void load();
@@ -99,6 +99,6 @@ signals:
 
 };
 
-Q_DECLARE_METATYPE(ContactAccountData *)
+Q_DECLARE_METATYPE(Contact *)
 
-#endif // CONTACT_ACCOUNT_DATA_H
+#endif // CONTACT_H

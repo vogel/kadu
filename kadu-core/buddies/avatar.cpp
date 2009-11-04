@@ -12,7 +12,7 @@
 
 #include "avatar.h"
 
-Avatar::Avatar(ContactAccountData *contactAccountData, bool loadFromConfiguration) :
+Avatar::Avatar(Contact *contactAccountData, bool loadFromConfiguration) :
 		StorableObject("Avatar", contactAccountData),
 		MyContactAccountData(contactAccountData)
 {
@@ -56,7 +56,7 @@ void Avatar::store()
 	storeValue("FileName", FileName);
 }
 
-ContactAccountData * Avatar::contactAccountData()
+Contact * Avatar::contactAccountData()
 {
 	return MyContactAccountData;
 }

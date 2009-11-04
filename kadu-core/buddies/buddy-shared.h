@@ -26,7 +26,7 @@
 	type name() { ensureLoaded(); return capitalized_name; } \
 	void set##capitalized_name(const type &name) { ensureLoaded(); capitalized_name = name; dataUpdated(); }
 
-class ContactAccountData;
+class Contact;
 class Group;
 class XmlConfigFile;
 
@@ -53,7 +53,7 @@ public:
 private:
 	QUuid Uuid;
 	QMap<QString, QString> CustomData;
-	QMap<Account, ContactAccountData *> AccountsData;
+	QMap<Account, Contact *> AccountsData;
 
 	BuddyType Type;
 
@@ -109,11 +109,11 @@ public:
 
 	QMap<QString, QString> & customData() { return CustomData; }
 
-	void addAccountData(ContactAccountData *accountData);
-	void removeAccountData(ContactAccountData *accountData);
+	void addAccountData(Contact *accountData);
+	void removeAccountData(Contact *accountData);
 	void removeAccountData(Account account);
-	ContactAccountData * accountData(Account account);
-	QList<ContactAccountData *> accountDatas();
+	Contact * accountData(Account account);
+	QList<Contact *> accountDatas();
 	StoragePoint * storagePointForAccountData(Account account);
 
 	//contact type

@@ -183,18 +183,18 @@ void BuddyShared::store()
 	storeModuleData();
 }
 
-void BuddyShared::addAccountData(ContactAccountData *accountData)
+void BuddyShared::addAccountData(Contact *accountData)
 {
 	if (!accountData)
 		return;
 
 	emit accountDataAboutToBeAdded(accountData->account());
 	AccountsData.insert(accountData->account(), accountData);
-	ContactAccountDataManager::instance()->addContactAccountData(accountData);
+	ContactManager::instance()->addContact(accountData);
 	emit accountDataAdded(accountData->account());
 }
 
-void BuddyShared::removeAccountData(ContactAccountData *accountData)
+void BuddyShared::removeAccountData(Contact *accountData)
 {
 	if (AccountsData[accountData->account()] == accountData)
 		removeAccountData(accountData->account());
@@ -203,12 +203,12 @@ void BuddyShared::removeAccountData(ContactAccountData *accountData)
 void BuddyShared::removeAccountData(Account account)
 {
 	emit accountDataAboutToBeRemoved(account);
-	ContactAccountDataManager::instance()->removeContactAccountData(AccountsData[account]);
+	ContactManager::instance()->removeContact(AccountsData[account]);
 	AccountsData.remove(account);
 	emit accountDataRemoved(account);
 }
 
-ContactAccountData * BuddyShared::accountData(Account account)
+Contact * BuddyShared::accountData(Account account)
 {
 	if (!AccountsData.contains(account))
 		return 0;
@@ -216,7 +216,7 @@ ContactAccountData * BuddyShared::accountData(Account account)
 	return AccountsData[account];
 }
 
-QList<ContactAccountData *> BuddyShared::accountDatas()
+QList<Contact *> BuddyShared::accountDatas()
 {
 	return AccountsData.values();
 }
@@ -314,7 +314,7 @@ bool BuddyShared::setIgnored(bool ignored)
 
 bool BuddyShared::isBlocked(Account account)
 {
-	ContactAccountData *cad = accountData(account);
+	Contact *cad = accountData(account);
 	return cad
 		? cad->isBlocked()
 		: Blocked;
@@ -322,7 +322,7 @@ bool BuddyShared::isBlocked(Account account)
 
 bool BuddyShared::isOfflineTo(Account account)
 {
-	ContactAccountData *cad = accountData(account);
+	Contact *cad = accountData(account);
 	return cad
 		? cad->isOfflineTo()
 		: OfflineTo;
@@ -330,7 +330,7 @@ bool BuddyShared::isOfflineTo(Account account)
 
 bool BuddyShared::setOfflineTo(Account account, bool offlineTo)
 {
-	ContactAccountData *cad = accountData(account);
+	Contact *cad = accountData(account);
 	if (cad)
 		cad->setOfflineTo(offlineTo);
 	else
@@ -368,7 +368,7 @@ void BuddyShared::removeFromGroup(Group *group)
 
 void BuddyShared::accountContactDataIdChanged(const QString &id)
 {
-	ContactAccountData *cad = dynamic_cast<ContactAccountData *>(sender());
+	Contact *cad = dynamic_cast<Contact *>(sender());
 	if (cad && !cad->account().isNull())
 		emit accountDataIdChanged(cad->account(), id);
 }

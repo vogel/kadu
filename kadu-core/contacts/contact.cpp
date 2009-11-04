@@ -17,21 +17,21 @@
 
 #include "contact.h"
 
-ContactAccountData::ContactAccountData(Account account, Buddy buddy, const QString &id, bool loaded) :
-		UuidStorableObject("ContactAccountData", ContactAccountDataManager::instance(), loaded),
+Contact::Contact(Account account, Buddy buddy, const QString &id, bool loaded) :
+		UuidStorableObject("Contact", ContactManager::instance(), loaded),
 		ContactAccount(account), OwnerBuddy(buddy), Id(id),
 		ContactAvatar(this, false) /* TODO: 0.6.6 */, Blocked(false), OfflineTo(false), Port(0)
 {
 	Uuid = QUuid::createUuid();
 }
 
-ContactAccountData::ContactAccountData(StoragePoint *storage) :
+Contact::Contact(StoragePoint *storage) :
 		UuidStorableObject(storage), Uuid(QUuid::createUuid()),
 		ContactAccount(0), OwnerBuddy(Buddy::null), ContactAvatar(this, false) /* TODO: 0.6.6 */, Blocked(false), OfflineTo(false), Port(0)
 {
 }
 
-void ContactAccountData::load()
+void Contact::load()
 {
 	if (!isValidStorage())
 		return;
@@ -49,10 +49,10 @@ void ContactAccountData::load()
 
 	ContactAvatar.load();
 
-	ContactAccountDataManager::instance()->addContactAccountData(this);
+	ContactManager::instance()->addContact(this);
 }
 
-void ContactAccountData::store()
+void Contact::store()
 {
 	if (!isValidStorage())
 		return;
@@ -68,7 +68,7 @@ void ContactAccountData::store()
 	ContactAvatar.store();
 }
 
-void ContactAccountData::setContact(Buddy buddy)
+void Contact::setContact(Buddy buddy)
 {
 	if (buddy == OwnerBuddy)
 		return;
@@ -80,7 +80,7 @@ void ContactAccountData::setContact(Buddy buddy)
 		OwnerBuddy.addAccountData(this);
 }
 
-void ContactAccountData::setId(const QString &newId)
+void Contact::setId(const QString &newId)
 {
 	if (Id == newId)
 		return;
@@ -91,14 +91,14 @@ void ContactAccountData::setId(const QString &newId)
 	emit idChanged(oldId);
 }
 
-bool ContactAccountData::isValid()
+bool Contact::isValid()
 {
 	ensureLoaded();
 
 	return validateId();
 }
 
-void ContactAccountData::refreshDNSName()
+void Contact::refreshDNSName()
 {
 	if (!(Address.isNull()))
 		connect(new DNSHandler(Id, Address), SIGNAL(result(const QString &, const QString &)),

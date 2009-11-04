@@ -17,11 +17,11 @@
 
 #include "exports.h"
 
-class ContactAccountData;
+class Contact;
 
 class KADUAPI Avatar : public StorableObject
 {
-	ContactAccountData *MyContactAccountData;
+	Contact *MyContactAccountData;
 	QDateTime LastUpdated;
 	QDateTime NextUpdate;
 	QString FileName;
@@ -29,13 +29,13 @@ class KADUAPI Avatar : public StorableObject
 	QString FilePath;
 
 public:
-	Avatar(ContactAccountData *contactAccountData, bool loadFromConfiguration = true);
+	Avatar(Contact *contactAccountData, bool loadFromConfiguration = true);
 	virtual ~Avatar();
 
 	virtual void load();
 	virtual void store();
 
-	ContactAccountData * contactAccountData();
+	Contact * contactAccountData();
 
 	QDateTime lastUpdated();
 	void setLastUpdated(const QDateTime &lastUpdated);

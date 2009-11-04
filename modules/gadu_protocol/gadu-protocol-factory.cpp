@@ -54,12 +54,12 @@ AccountDetails * GaduProtocolFactory::createAccountDetails(Account account)
 	return new GaduAccountDetails(account.storage(), account);
 }
 
-ContactAccountData * GaduProtocolFactory::newContactAccountData(Account account, Buddy buddy, const QString &id)
+Contact * GaduProtocolFactory::newContactAccountData(Account account, Buddy buddy, const QString &id)
 {
 	return new GaduContactAccountData(account, buddy, id, true);
 }
 
-ContactAccountData * GaduProtocolFactory::loadContactAccountData(StoragePoint *storagePoint)
+Contact * GaduProtocolFactory::loadContactAccountData(StoragePoint *storagePoint)
 {
 	if (!storagePoint)
 		return 0;
@@ -92,7 +92,7 @@ QRegExp GaduProtocolFactory::idRegularExpression()
 	return IdRegularExpression;
 }
 
-ContactAccountDataWidget * GaduProtocolFactory::newContactAccountDataWidget(ContactAccountData *contactAccountData, QWidget *parent)
+ContactAccountDataWidget * GaduProtocolFactory::newContactAccountDataWidget(Contact *contactAccountData, QWidget *parent)
 {
 	GaduContactAccountData *gaduContactAccountData = dynamic_cast<GaduContactAccountData *>(contactAccountData);
 

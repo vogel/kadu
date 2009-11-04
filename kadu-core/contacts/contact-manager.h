@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CONTACT_ACCOUNT_DATA_MANAGER_H
-#define CONTACT_ACCOUNT_DATA_MANAGER_H
+#ifndef CONTACT_MANAGER_H
+#define CONTACT_MANAGER_H
 
 #include <QtCore/QMap>
 #include <QtCore/QObject>
@@ -18,20 +18,20 @@
 #include "configuration/storable-object.h"
 #include "exports.h"
 
-class ContactAccountData;
+class Contact;
 
-class KADUAPI ContactAccountDataManager : public QObject, public StorableObject, AccountsAwareObject
+class KADUAPI ContactManager : public QObject, public StorableObject, AccountsAwareObject
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(ContactAccountDataManager)
+	Q_DISABLE_COPY(ContactManager)
 
-	static ContactAccountDataManager * Instance;
-	
+	static ContactManager * Instance;
+
 	QList<Account> LoadedAccounts;
-	QList<ContactAccountData *> ContactAccountDataList;
+	QList<Contact *> ContactList;
 
-	ContactAccountDataManager();
-	virtual ~ContactAccountDataManager();
+	ContactManager();
+	virtual ~ContactManager();
 
 	void init();
 
@@ -45,26 +45,26 @@ protected:
 	virtual void accountUnregistered(Account account);
 
 public:
-	static ContactAccountDataManager * instance();
+	static ContactManager * instance();
 	
 	void ensureLoaded(Account account);
 	virtual void load();
 	virtual void store();
 
-	void addContactAccountData(ContactAccountData *cad);
-	void removeContactAccountData(ContactAccountData *cad);
+	void addContact(Contact *cad);
+	void removeContact(Contact *cad);
 	
-	unsigned int count() { return ContactAccountDataList.count(); }
+	unsigned int count() { return ContactList.count(); }
 
-	ContactAccountData * byIndex(unsigned int index);
-	ContactAccountData * byUuid(const QString &uuid);
+	Contact * byIndex(unsigned int index);
+	Contact * byUuid(const QString &uuid);
 
 signals:
-	void contactAccountDataAboutToBeAdded(ContactAccountData *cad);
-	void contactAccountDataAdded(ContactAccountData *cad);
-	void contactAccountDataAboutToBeRemoved(ContactAccountData *cad);
-	void contactAccountDataRemoved(ContactAccountData *cad);
+	void contactAboutToBeAdded(Contact *cad);
+	void contactAdded(Contact *cad);
+	void contactAboutToBeRemoved(Contact *cad);
+	void contactRemoved(Contact *cad);
 
 };
 
-#endif // CONTACT_ACCOUNT_DATA_MANAGER_H
+#endif // CONTACT_MANAGER_H

@@ -21,7 +21,7 @@ class GaduAvatarFetcher : public QObject
 {
 	Q_OBJECT
 
-	ContactAccountData *MyContactAccountData;
+	Contact *MyContactAccountData;
 	QBuffer MyBuffer, AvatarBuffer;
 	QHttp *MyHttp;
 	
@@ -30,11 +30,11 @@ private slots:
 	void avatarDownloaded(int id, bool error);
 
 public:
-	GaduAvatarFetcher(ContactAccountData *contactAccountData, QObject *parent = 0);
+	GaduAvatarFetcher(Contact *contactAccountData, QObject *parent = 0);
 	void fetchAvatar();
 
 signals:
-	void avatarFetched(ContactAccountData *contactAccountData, const QByteArray &avatar);
+	void avatarFetched(Contact *contactAccountData, const QByteArray &avatar);
 
 };
 

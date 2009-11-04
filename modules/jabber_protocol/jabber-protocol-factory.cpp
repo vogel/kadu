@@ -60,12 +60,12 @@ AccountDetails * JabberProtocolFactory::createAccountDetails(Account account)
 	return new JabberAccountDetails(account.storage(), account);
 }
 
-ContactAccountData * JabberProtocolFactory::newContactAccountData(Account account, Buddy buddy, const QString &id)
+Contact * JabberProtocolFactory::newContactAccountData(Account account, Buddy buddy, const QString &id)
 {
 	return new JabberContactAccountData(account, buddy, id, true);
 }
 
-ContactAccountData * JabberProtocolFactory::loadContactAccountData(StoragePoint *storagePoint)
+Contact * JabberProtocolFactory::loadContactAccountData(StoragePoint *storagePoint)
 {
 	if (!storagePoint)
 		return 0;
@@ -98,7 +98,7 @@ QRegExp JabberProtocolFactory::idRegularExpression()
 	return IdRegularExpression;
 }
 
-ContactAccountDataWidget * JabberProtocolFactory::newContactAccountDataWidget(ContactAccountData *contactAccountData, QWidget *parent)
+ContactAccountDataWidget * JabberProtocolFactory::newContactAccountDataWidget(Contact *contactAccountData, QWidget *parent)
 {
 	JabberContactAccountData *jabberContactAccountData = dynamic_cast<JabberContactAccountData *>(contactAccountData);
 

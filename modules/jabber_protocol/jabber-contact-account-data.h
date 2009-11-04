@@ -16,17 +16,17 @@
 
 class Account;
 
-class JabberContactAccountData : public ContactAccountData
+class JabberContactAccountData : public Contact
 {
 	unsigned long MaxImageSize;
 
 public:
 	JabberContactAccountData(Account account, Buddy buddy, const QString &id, bool loaded = false) :
-			ContactAccountData(account, buddy, id, loaded) {}
+			Contact(account, buddy, id, loaded) {}
 	JabberContactAccountData(Account account, Buddy buddy, const QString &id, StoragePoint *storage) :
-			ContactAccountData(account, buddy, id, storage) {}
+			Contact(account, buddy, id, storage) {}
 	JabberContactAccountData(StoragePoint *storage) :
-			ContactAccountData(storage) {}
+			Contact(storage) {}
 
 	virtual bool validateId();
 

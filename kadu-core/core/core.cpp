@@ -290,7 +290,7 @@ void Core::init()
 #endif
 	QTimer::singleShot(15000, this, SLOT(deleteOldConfigurationFiles()));
 
-	ContactAccountDataManager::instance();
+	ContactManager::instance();
 	AccountManager::instance()->load();
 }
 

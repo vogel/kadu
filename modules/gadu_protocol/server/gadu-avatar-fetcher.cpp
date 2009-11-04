@@ -19,7 +19,7 @@
 
 #include "gadu-avatar-fetcher.h"
 
-GaduAvatarFetcher::GaduAvatarFetcher(ContactAccountData *contactAccountData, QObject *parent) :
+GaduAvatarFetcher::GaduAvatarFetcher(Contact *contactAccountData, QObject *parent) :
 		QObject(parent), MyContactAccountData(contactAccountData)
 {
 }

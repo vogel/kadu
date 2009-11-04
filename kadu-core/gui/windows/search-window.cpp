@@ -503,7 +503,7 @@ void SearchWindow::newSearchResults(BuddyList buddies)
 
 	foreach(Buddy buddy, buddies)
 	{
-		ContactAccountData *cad = buddy.accountData(CurrentAccount);
+		Contact *cad = buddy.accountData(CurrentAccount);
 		QList <QTreeWidgetItem *> items = results->findItems(cad->id(), Qt::MatchExactly, 1);
 		if (items.count())
 			qlv = items[0];		

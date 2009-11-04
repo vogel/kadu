@@ -312,7 +312,7 @@ void AddBuddyWindow::accept()
 		if (buddy.isNull())
 			return;
 
-		ContactAccountData *cad = account.protocolHandler()->protocolFactory()
+		Contact *cad = account.protocolHandler()->protocolFactory()
 		->newContactAccountData(account, buddy, UserNameEdit->text());
 		buddy.addAccountData(cad);
 	}

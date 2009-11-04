@@ -15,44 +15,44 @@
 
 #include "buddy-contact-model.h"
 
-BuddyAccountDataModel::BuddyAccountDataModel(Buddy buddy, QObject *parent)
-: QAbstractListModel(parent), SourceBuddy(buddy)
+BuddyContactModel::BuddyContactModel(Buddy buddy, QObject *parent) :
+		QAbstractListModel(parent), SourceBuddy(buddy)
 {
-	connect(ContactAccountDataManager::instance(), SIGNAL(contactAccountDataAboutToBeAdded(ContactAccountData *)),
-			this, SLOT(contactAccountDataAboutToBeAdded(ContactAccountData *)));
-	connect(ContactAccountDataManager::instance(), SIGNAL(contactAccountDataAdded(ContactAccountData *)),
-			this, SLOT(contactAccountDataAdded(ContactAccountData *)));
-	connect(ContactAccountDataManager::instance(), SIGNAL(contactAccountDataAboutToBeRemoved(ContactAccountData *)),
-			this, SLOT(contactAccountDataAboutToBeRemoved(ContactAccountData *)));
-	connect(ContactAccountDataManager::instance(), SIGNAL(contactAccountDataRemoved(ContactAccountData *)),
-			this, SLOT(contactAccountDataRemoved(ContactAccountData *)));
+	connect(ContactManager::instance(), SIGNAL(contactAboutToBeAdded(Contact *)),
+			this, SLOT(contactAboutToBeAdded(Contact *)));
+	connect(ContactManager::instance(), SIGNAL(contactAdded(Contact *)),
+			this, SLOT(contactAdded(Contact *)));
+	connect(ContactManager::instance(), SIGNAL(contactAboutToBeRemoved(Contact *)),
+			this, SLOT(contactAboutToBeRemoved(Contact *)));
+	connect(ContactManager::instance(), SIGNAL(contactRemoved(Contact *)),
+			this, SLOT(contactRemoved(Contact *)));
 }
 
-BuddyAccountDataModel::~BuddyAccountDataModel()
+BuddyContactModel::~BuddyContactModel()
 {
-	disconnect(ContactAccountDataManager::instance(), SIGNAL(contactAccountDataAboutToBeAdded(ContactAccountData *)),
-			this, SLOT(contactAccountDataAboutToBeAdded(ContactAccountData *)));
-	disconnect(ContactAccountDataManager::instance(), SIGNAL(contactAccountDataAdded(ContactAccountData *)),
-			this, SLOT(contactAccountDataAdded(ContactAccountData *)));
-	disconnect(ContactAccountDataManager::instance(), SIGNAL(contactAccountDataAboutToBeRemoved(ContactAccountData *)),
-			this, SLOT(contactAccountDataAboutToBeRemoved(ContactAccountData *)));
-	disconnect(ContactAccountDataManager::instance(), SIGNAL(contactAccountDataRemoved(ContactAccountData *)),
-			this, SLOT(contactAccountDataRemoved(ContactAccountData *)));
+	disconnect(ContactManager::instance(), SIGNAL(contactAboutToBeAdded(Contact *)),
+			this, SLOT(contactAboutToBeAdded(Contact *)));
+	disconnect(ContactManager::instance(), SIGNAL(contactAdded(Contact *)),
+			this, SLOT(contactAdded(Contact *)));
+	disconnect(ContactManager::instance(), SIGNAL(contactAboutToBeRemoved(Contact *)),
+			this, SLOT(contactAboutToBeRemoved(Contact *)));
+	disconnect(ContactManager::instance(), SIGNAL(contactRemoved(Contact *)),
+			this, SLOT(contactRemoved(Contact *)));
 }
 
-int BuddyAccountDataModel::columnCount(const QModelIndex &parent) const
+int BuddyContactModel::columnCount(const QModelIndex &parent) const
 {
 	return 2;
 }
 
-int BuddyAccountDataModel::rowCount(const QModelIndex &parent) const
+int BuddyContactModel::rowCount(const QModelIndex &parent) const
 {
 	return SourceBuddy.accountDatas().count();
 }
 
-QVariant BuddyAccountDataModel::data(const QModelIndex &index, int role) const
+QVariant BuddyContactModel::data(const QModelIndex &index, int role) const
 {
-	ContactAccountData *data = accountData(index);
+	Contact *data = contact(index);
 	if (0 == data)
 		return QVariant();
 
@@ -68,14 +68,14 @@ QVariant BuddyAccountDataModel::data(const QModelIndex &index, int role) const
 			return data->account().protocolHandler()->icon();
 
 		case AccountDataRole:
-			return QVariant::fromValue<ContactAccountData *>(data);
+			return QVariant::fromValue<Contact *>(data);
 
 		default:
 			return QVariant();
 	}
 }
 
-QVariant BuddyAccountDataModel::headerData(int section, Qt::Orientation orientation, int role) const
+QVariant BuddyContactModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
 	if (role != Qt::DisplayRole)
 		return QVariant();
@@ -86,7 +86,7 @@ QVariant BuddyAccountDataModel::headerData(int section, Qt::Orientation orientat
 		return QString("Row %1").arg(section);
 }
 
-ContactAccountData * BuddyAccountDataModel::accountData(const QModelIndex &index) const
+Contact * BuddyContactModel::contact(const QModelIndex &index) const
 {
 	if (!index.isValid())
 		return 0;
@@ -97,34 +97,34 @@ ContactAccountData * BuddyAccountDataModel::accountData(const QModelIndex &index
 	return SourceBuddy.accountDatas().at(index.row());
 }
 
-int BuddyAccountDataModel::accountDataIndex(ContactAccountData *data)
+int BuddyContactModel::contactIndex(Contact *data)
 {
 	return SourceBuddy.accountDatas().indexOf(data);
 }
 
-QModelIndex BuddyAccountDataModel::accountDataModelIndex(ContactAccountData *data)
+QModelIndex BuddyContactModel::contactModelIndex(Contact *data)
 {
-	return createIndex(accountDataIndex(data), 0, 0);
+	return createIndex(contactIndex(data), 0, 0);
 }
 
-void BuddyAccountDataModel::contactAccountDataAboutToBeAdded(ContactAccountData *data)
+void BuddyContactModel::contactAboutToBeAdded(Contact *data)
 {
 	int count = rowCount();
 	beginInsertRows(QModelIndex(), count, count);
 }
 
-void BuddyAccountDataModel::contactAccountDataAdded(ContactAccountData *data)
+void BuddyContactModel::contactAdded(Contact *data)
 {
 	endInsertRows();
 }
 
-void BuddyAccountDataModel::contactAccountDataAboutToBeRemoved(ContactAccountData *data)
+void BuddyContactModel::contactAboutToBeRemoved(Contact *data)
 {
-	int index = accountDataIndex(data);
+	int index = contactIndex(data);
 	beginRemoveRows(QModelIndex(), index, index);
 }
 
-void BuddyAccountDataModel::contactAccountDataRemoved(ContactAccountData *data)
+void BuddyContactModel::contactRemoved(Contact *data)
 {
 	endRemoveRows();
 }

@@ -16,18 +16,18 @@
 
 class Account;
 
-class GaduContactAccountData : public ContactAccountData
+class GaduContactAccountData : public Contact
 {
 	unsigned long MaxImageSize;
 	unsigned int GaduProtocolVersion;
 
 public:
 	GaduContactAccountData(Account account, Buddy buddy, const QString &id, bool loaded = false) :
-			ContactAccountData(account, buddy, id, loaded) {}
+			Contact(account, buddy, id, loaded) {}
 	GaduContactAccountData(Account account, Buddy buddy, const QString &id, StoragePoint *storage) :
-			ContactAccountData(account, buddy, id, storage) {}
+			Contact(account, buddy, id, storage) {}
 	GaduContactAccountData(StoragePoint *storage) :
-			ContactAccountData(storage) {}
+			Contact(storage) {}
 
 	virtual bool validateId();
 

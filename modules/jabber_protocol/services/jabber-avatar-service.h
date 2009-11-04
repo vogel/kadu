@@ -16,11 +16,11 @@
 class JabberAvatarService : public AvatarService
 {
 	Q_OBJECT
-	ContactAccountData *MyContactAccountData;
+	Contact *MyContactAccountData;
 
 public:
 	JabberAvatarService(QObject *parent = 0) : AvatarService(parent) {}
-	void fetchAvatar(ContactAccountData *contactAccountData);
+	void fetchAvatar(Contact *contactAccountData);
 
 };
 

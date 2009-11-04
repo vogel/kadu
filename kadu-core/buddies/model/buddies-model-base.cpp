@@ -96,7 +96,7 @@ QVariant BuddiesModelBase::headerData(int section, Qt::Orientation orientation, 
 		return QString("Row %1").arg(section);
 }
 
-ContactAccountData * BuddiesModelBase::buddyDefaultAccountData(const QModelIndex &index) const
+Contact * BuddiesModelBase::buddyDefaultAccountData(const QModelIndex &index) const
 {
 	Buddy con = buddyAt(index);
 	if (con.isNull())
@@ -109,13 +109,13 @@ ContactAccountData * BuddiesModelBase::buddyDefaultAccountData(const QModelIndex
 	return con.accountData(account);
 }
 
-ContactAccountData * BuddiesModelBase::buddyAccountData(const QModelIndex &index, int accountIndex) const
+Contact * BuddiesModelBase::buddyAccountData(const QModelIndex &index, int accountIndex) const
 {
 	Buddy con = buddyAt(index);
 	if (con.isNull())
 		return 0;
 
-	QList<ContactAccountData *> accountDatas = con.accountDatas();
+	QList<Contact *> accountDatas = con.accountDatas();
 	if (accountDatas.size() <= accountIndex)
 		return 0;
 
@@ -137,7 +137,7 @@ QVariant BuddiesModelBase::data(Buddy buddy, int role) const
 	}
 }
 
-QVariant BuddiesModelBase::data(ContactAccountData *cad, int role, bool useDisplay) const
+QVariant BuddiesModelBase::data(Contact *cad, int role, bool useDisplay) const
 {
 	if (!cad)
 		return QVariant();
@@ -192,7 +192,7 @@ QVariant BuddiesModelBase::data(const QModelIndex &index, int role) const
 	QModelIndex parentIndex = parent(index);
 	if (!parentIndex.isValid())
 	{
-		ContactAccountData *cad = buddyDefaultAccountData(index);
+		Contact *cad = buddyDefaultAccountData(index);
 		return cad ? data(cad, role, true) : data(buddyAt(index), role);
 	}
 	else

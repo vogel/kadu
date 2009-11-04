@@ -23,7 +23,7 @@
 
 #include "jabber-avatar-fetcher.h"
 
-JabberAvatarFetcher::JabberAvatarFetcher(ContactAccountData *contactAccountData, QObject *parent) :
+JabberAvatarFetcher::JabberAvatarFetcher(Contact *contactAccountData, QObject *parent) :
 		QObject(parent), MyContactAccountData(contactAccountData)
 {
 }

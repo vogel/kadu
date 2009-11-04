@@ -21,7 +21,7 @@ class TlenAvatarFetcher : public QObject
 {
 	Q_OBJECT
 
-	ContactAccountData *MyContactAccountData;
+	Contact *MyContactAccountData;
 	QBuffer MyAvatarBuffer;
 	QHttp *MyHttp;
 
@@ -29,11 +29,11 @@ private slots:
 	void avatarDownloaded(int id, bool error);
 
 public:
-	TlenAvatarFetcher(ContactAccountData *contactAccountData, QObject *parent = 0);
+	TlenAvatarFetcher(Contact *contactAccountData, QObject *parent = 0);
 	void fetchAvatar();
 
 signals:
-	void avatarFetched(ContactAccountData *contactAccountData, const QByteArray &avatar);
+	void avatarFetched(Contact *contactAccountData, const QByteArray &avatar);
 
 };
 

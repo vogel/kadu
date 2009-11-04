@@ -366,7 +366,7 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat *chat, QString &styleHref, QS
 		photoIncoming = QString("file://") + styleHref + QString("Incoming/buddy_icon.png");
 	else
 	{
-		ContactAccountData *cad = (*chat->buddies().begin()).accountData(chat->account());
+		Contact *cad = (*chat->buddies().begin()).accountData(chat->account());
 		if (cad && !cad->avatar().pixmap().isNull())
 			photoIncoming = QString("file://") + cad->avatar().filePath();
 		else
@@ -421,7 +421,7 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat *chat, QString &styleHref, QS
 	{
 		result.replace(QString("%messageClasses%"), "message incoming");
 
-		ContactAccountData *cad = msg.sender().accountData(chat->account());
+		Contact *cad = msg.sender().accountData(chat->account());
 		if (cad && !cad->avatar().pixmap().isNull())
 			photoPath = QString("file://") + cad->avatar().filePath();
 		else

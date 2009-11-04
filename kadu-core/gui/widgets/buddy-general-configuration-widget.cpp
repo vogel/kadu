@@ -89,7 +89,7 @@ void BuddyGeneralConfigurationWidget::createGui()
 	QLabel *defaultContactLabel = new QLabel(tr("Default Contact") + ":");
 
 	DefaultAccountCombo = new QComboBox(this);
-	AccountDataModel = new BuddyAccountDataModel(MyBuddy, DefaultAccountCombo);
+	AccountDataModel = new BuddyContactModel(MyBuddy, DefaultAccountCombo);
 //	ContactsModelProxy *AccountComboProxyModel = new ContactsModelProxy(DefaultContactCombo);
 //	AccountComboProxyModel->setSourceModel(AccountComboModel);
 	
@@ -114,7 +114,7 @@ void BuddyGeneralConfigurationWidget::createGui()
 	AccountsLayout->setColumnStretch(0, 2);
 	AccountsLayout->setColumnStretch(2, 2);
 	
-	foreach (ContactAccountData *data, MyBuddy.accountDatas())
+	foreach (Contact *data, MyBuddy.accountDatas())
 	{
 		DefaultAccountCombo->addItem(data->id());
 		addAccountDataRow(data);
@@ -173,7 +173,7 @@ void BuddyGeneralConfigurationWidget::createGui()
 	layout->setRowStretch(8, 100);
 }
 
-void BuddyGeneralConfigurationWidget::addAccountDataRow(ContactAccountData *data)
+void BuddyGeneralConfigurationWidget::addAccountDataRow(Contact *data)
 {
 	int row = ContactsLayout->rowCount();
 
@@ -246,11 +246,11 @@ void BuddyGeneralConfigurationWidget::saveConfiguration()
 		}
 		else
 		{
-			foreach (ContactAccountData *accountData, MyBuddy.accountDatas())
+			foreach (Contact *accountData, MyBuddy.accountDatas())
 					if (accountData->id() == contactId) // check if user has only changed account for previous existing ID
 						MyBuddy.removeAccountData(accountData->account()); // if so, remove old CAD, otherwise there will appear 2 identical contacts with different accounts
 
-			ContactAccountData *cad = account.protocolHandler()->protocolFactory()
+			Contact *cad = account.protocolHandler()->protocolFactory()
 				->newContactAccountData(account, MyBuddy, contactId);
 			MyBuddy.addAccountData(cad);
 		}

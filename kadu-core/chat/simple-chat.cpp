@@ -22,7 +22,7 @@ SimpleChat::SimpleChat(StoragePoint *storage) :
 {
 }
 
-SimpleChat::SimpleChat(Account currentAccount, ContactAccountData *cad, QUuid uuid) :
+SimpleChat::SimpleChat(Account currentAccount, Contact *cad, QUuid uuid) :
 		Chat(currentAccount, uuid), CurrentContactAccountData(cad)
 {
 }
@@ -47,8 +47,8 @@ void SimpleChat::load()
 	}
 	else
 	{
-		ContactAccountDataManager::instance()->ensureLoaded(account());
-		CurrentContactAccountData = ContactAccountDataManager::instance()->byUuid(cadUuid);
+		ContactManager::instance()->ensureLoaded(account());
+		CurrentContactAccountData = ContactManager::instance()->byUuid(cadUuid);
 	}
 
 	refreshTitle();

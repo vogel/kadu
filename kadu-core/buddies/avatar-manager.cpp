@@ -47,7 +47,7 @@ AvatarService * AvatarManager::avatarService(Account account)
 	return protocol->avatarService();
 }
 
-AvatarService * AvatarManager::avatarService(ContactAccountData *contactAccountData)
+AvatarService * AvatarManager::avatarService(Contact *contactAccountData)
 {
 	Account account = contactAccountData->account();
 	if (account.isNull())
@@ -58,7 +58,7 @@ AvatarService * AvatarManager::avatarService(ContactAccountData *contactAccountD
 
 QString AvatarManager::avatarFileName(Avatar avatar)
 {
-	ContactAccountData *cad = avatar.contactAccountData();
+	Contact *cad = avatar.contactAccountData();
 	if (!cad)
 		return QString::null;
 
@@ -75,8 +75,8 @@ void AvatarManager::accountRegistered(Account account)
 	if (!service)
 		return;
 
-	connect(service, SIGNAL(avatarFetched(ContactAccountData *, const QByteArray &)),
-			this, SLOT(avatarFetched(ContactAccountData *, const QByteArray &)));
+	connect(service, SIGNAL(avatarFetched(Contact *, const QByteArray &)),
+			this, SLOT(avatarFetched(Contact *, const QByteArray &)));
 }
 
 void AvatarManager::accountUnregistered(Account account)
@@ -85,11 +85,11 @@ void AvatarManager::accountUnregistered(Account account)
 	if (!service)
 		return;
 
-	disconnect(service, SIGNAL(avatarFetched(ContactAccountData *, const QByteArray &)),
-			   this, SLOT(avatarFetched(ContactAccountData *, const QByteArray &)));
+	disconnect(service, SIGNAL(avatarFetched(Contact *, const QByteArray &)),
+			   this, SLOT(avatarFetched(Contact *, const QByteArray &)));
 }
 
-void AvatarManager::updateAvatar(ContactAccountData *contactAccountData)
+void AvatarManager::updateAvatar(Contact *contactAccountData)
 {
 	QDateTime lastUpdated = contactAccountData->avatar().lastUpdated();
 	QDateTime nextUpdate = contactAccountData->avatar().nextUpdate();
@@ -103,7 +103,7 @@ void AvatarManager::updateAvatar(ContactAccountData *contactAccountData)
 	service->fetchAvatar(contactAccountData);
 }
 
-void AvatarManager::avatarFetched(ContactAccountData *contactAccountData, const QByteArray &data)
+void AvatarManager::avatarFetched(Contact *contactAccountData, const QByteArray &data)
 {
 	Avatar &avatar = contactAccountData->avatar();
 	avatar.setLastUpdated(QDateTime::currentDateTime());

@@ -18,17 +18,17 @@
 #include "exports.h"
 
 class ConfigurationContactAccountDataManager;
-class ContactAccountData;
+class Contact;
 
 class KADUAPI ContactAccountDataWidget : public ConfigurationWidget
 {
 	Q_OBJECT
 
-	ContactAccountData *Data;
+	Contact *Data;
 	void createGui();
 
 public:
-	ContactAccountDataWidget(ConfigurationContactAccountDataManager *dataManager, ContactAccountData *contactAccountData, QWidget *parent = 0);
+	ContactAccountDataWidget(ConfigurationContactAccountDataManager *dataManager, Contact *contactAccountData, QWidget *parent = 0);
 	~ContactAccountDataWidget();
 
 };

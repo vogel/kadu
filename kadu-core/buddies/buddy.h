@@ -42,7 +42,7 @@
 	PropertyRead(type, name, capitalized_name, default) \
 	PropertyWrite(type, name, capitalized_name, default)
 
-class ContactAccountData;
+class Contact;
 class XmlConfigFile;
 
 class KADUAPI Buddy : public QObject
@@ -92,11 +92,11 @@ public:
 	BuddyShared * data() const { return Data.data(); }
 	void setData(BuddyShared *data) { Data = data; }  // TODO: 0.8 tricky merge, this should work well ;)
 
-	void addAccountData(ContactAccountData *accountData);
-	void removeAccountData(ContactAccountData *accountData) const;
+	void addAccountData(Contact *accountData);
+	void removeAccountData(Contact *accountData) const;
 	void removeAccountData(Account account) const;
-	ContactAccountData * accountData(Account account) const;
-	QList<ContactAccountData *> accountDatas() const;
+	Contact * accountData(Account account) const;
+	QList<Contact *> accountDatas() const;
 	StoragePoint * storagePointForAccountData(Account account) const;
 	bool hasAccountData(Account account) const;
 

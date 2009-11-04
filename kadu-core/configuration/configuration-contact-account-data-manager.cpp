@@ -12,7 +12,7 @@
 
 #include "configuration-contact-account-data-manager.h"
 
-ConfigurationContactAccountDataManager::ConfigurationContactAccountDataManager(ContactAccountData *data, QObject *parent)
+ConfigurationContactAccountDataManager::ConfigurationContactAccountDataManager(Contact *data, QObject *parent)
 	: ConfigurationWindowDataManager(parent), Data(data)
 {
 }

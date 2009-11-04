@@ -16,42 +16,42 @@
 #include <protocols/protocol.h>
 #include <protocols/protocol-factory.h>
 
-ContactAccountDataManager * ContactAccountDataManager::Instance = 0;
+ContactManager * ContactManager::Instance = 0;
 
-ContactAccountDataManager * ContactAccountDataManager::instance()
+ContactManager * ContactManager::instance()
 {
 	if (0 == Instance)
 	{
-		Instance = new ContactAccountDataManager();
+		Instance = new ContactManager();
 		Instance->init();
 	}
 
 	return Instance;
 }
 
-ContactAccountDataManager::ContactAccountDataManager()
+ContactManager::ContactManager()
 {
 	Core::instance()->configuration()->registerStorableObject(this);
 }
 
-ContactAccountDataManager::~ContactAccountDataManager()
+ContactManager::~ContactManager()
 {
 	Core::instance()->configuration()->unregisterStorableObject(this);
 
 	triggerAllAccountsUnregistered();
 }
 
-void ContactAccountDataManager::init()
+void ContactManager::init()
 {
 	triggerAllAccountsRegistered();
 }
 
-StoragePoint * ContactAccountDataManager::createStoragePoint()
+StoragePoint * ContactManager::createStoragePoint()
 {
-	return new StoragePoint(xml_config_file, xml_config_file->getNode("ContactAccountDatas"));
+	return new StoragePoint(xml_config_file, xml_config_file->getNode("ContactManagers"));
 }
 
-void ContactAccountDataManager::load(Account account)
+void ContactManager::load(Account account)
 {
 	if (!isValidStorage())
 		return;
@@ -81,17 +81,17 @@ void ContactAccountDataManager::load(Account account)
 		if (!account.protocolHandler())
 			return;
 
-		ContactAccountData *cad = account.protocolHandler()->protocolFactory()->loadContactAccountData(contactStoragePoint);
+		Contact *cad = account.protocolHandler()->protocolFactory()->loadContactAccountData(contactStoragePoint);
 
 		if (cad)
 		{
-			addContactAccountData(cad);
+			addContact(cad);
 			cad->ensureLoaded();
 		}
 	}
 }
 
-void ContactAccountDataManager::accountRegistered(Account account)
+void ContactManager::accountRegistered(Account account)
 {
 	if (LoadedAccounts.contains(account))
 		return;
@@ -100,18 +100,18 @@ void ContactAccountDataManager::accountRegistered(Account account)
 	LoadedAccounts.append(account);
 }
 
-void ContactAccountDataManager::accountUnregistered(Account account)
+void ContactManager::accountUnregistered(Account account)
 {
 // 	store(account);
 	LoadedAccounts.removeAll(account);
 }
 
-void ContactAccountDataManager::ensureLoaded(Account account)
+void ContactManager::ensureLoaded(Account account)
 {
 	accountRegistered(account);
 }
 
-void ContactAccountDataManager::load()
+void ContactManager::load()
 {
 	StorableObject::load();
 
@@ -121,33 +121,33 @@ void ContactAccountDataManager::load()
 	// TODO: implement
 }
 
-void ContactAccountDataManager::store()
+void ContactManager::store()
 {
 	if (!isValidStorage())
 		return;
 
 	StorableObject::ensureLoaded();
 
-	foreach (ContactAccountData *cad, ContactAccountDataList)
+	foreach (Contact *cad, ContactList)
 		cad->store();
 }
 
-void ContactAccountDataManager::addContactAccountData(ContactAccountData *cad)
+void ContactManager::addContact(Contact *cad)
 {
 	if (!cad)
 		return;
 
 	StorableObject::ensureLoaded();
 
-	if (ContactAccountDataList.contains(cad))
+	if (ContactList.contains(cad))
 		return;
 
-	emit contactAccountDataAboutToBeAdded(cad);
-	ContactAccountDataList.append(cad);
-	emit contactAccountDataAdded(cad);
+	emit contactAboutToBeAdded(cad);
+	ContactList.append(cad);
+	emit contactAdded(cad);
 }
 
-void ContactAccountDataManager::removeContactAccountData(ContactAccountData *cad)
+void ContactManager::removeContact(Contact *cad)
 {
 	kdebugf();
 
@@ -156,32 +156,32 @@ void ContactAccountDataManager::removeContactAccountData(ContactAccountData *cad
 
 	StorableObject::ensureLoaded();
 
-	if (!ContactAccountDataList.contains(cad))
+	if (!ContactList.contains(cad))
 		return;
 
-	emit contactAccountDataAboutToBeRemoved(cad);
-	ContactAccountDataList.removeAll(cad);
-	emit contactAccountDataRemoved(cad);
+	emit contactAboutToBeRemoved(cad);
+	ContactList.removeAll(cad);
+	emit contactRemoved(cad);
 }
 
-ContactAccountData * ContactAccountDataManager::byIndex(unsigned int index)
+Contact * ContactManager::byIndex(unsigned int index)
 {
 	if (index < 0 || index >= count())
 		return 0;
 
 	StorableObject::ensureLoaded();
 
-	return ContactAccountDataList.at(index);
+	return ContactList.at(index);
 }
 
-ContactAccountData * ContactAccountDataManager::byUuid(const QString &uuid)
+Contact * ContactManager::byUuid(const QString &uuid)
 {
 	if (uuid.isEmpty())
 		return 0;
 
 	StorableObject::ensureLoaded();
 
-	foreach (ContactAccountData *cad, ContactAccountDataList)
+	foreach (Contact *cad, ContactList)
 		if (uuid == cad->uuid().toString())
 			return cad;
 

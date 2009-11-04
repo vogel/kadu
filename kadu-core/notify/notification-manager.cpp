@@ -225,7 +225,7 @@ void NotificationManager::statusChanged(Account account, Buddy buddy, Status old
 	if (buddy.id(account) == account.id()) // myself
 		return;
 
-	ContactAccountData *data = buddy.accountData(account);
+	Contact *data = buddy.accountData(account);
 	if (!data)
 		return;
 

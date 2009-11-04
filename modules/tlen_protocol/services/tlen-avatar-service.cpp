@@ -13,7 +13,7 @@
 #include "misc/path-conversion.h"
 #include "server/tlen-avatar-fetcher.h"
 
-void TlenAvatarService::fetchAvatar(ContactAccountData *contactAccountData)
+void TlenAvatarService::fetchAvatar(Contact *contactAccountData)
 {
 	if (contactAccountData->id().isEmpty())
 		return;
@@ -24,14 +24,14 @@ void TlenAvatarService::fetchAvatar(ContactAccountData *contactAccountData)
 	InProgress.append(contactAccountData);
 
 	TlenAvatarFetcher *avatarFetcher = new TlenAvatarFetcher(contactAccountData, this);
-	connect(avatarFetcher, SIGNAL(avatarFetched(ContactAccountData *, const QByteArray &)),
-			this, SIGNAL(avatarReady(ContactAccountData *, const QByteArray &)));
+	connect(avatarFetcher, SIGNAL(avatarFetched(Contact *, const QByteArray &)),
+			this, SIGNAL(avatarReady(Contact *, const QByteArray &)));
 
 	avatarFetcher->fetchAvatar();
 	qDebug() << "Tlen Get Avatar" << contactAccountData->id();
 }
 
-void TlenAvatarService::avatarReady(ContactAccountData *contactAccountData, const QByteArray &avatar)
+void TlenAvatarService::avatarReady(Contact *contactAccountData, const QByteArray &avatar)
 {
 	InProgress.removeAll(contactAccountData);
 

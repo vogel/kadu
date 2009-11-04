@@ -14,13 +14,13 @@
 #include "misc/path-conversion.h"
 #include "server/gadu-avatar-fetcher.h"
 
-void GaduAvatarService::fetchAvatar(ContactAccountData *contactAccountData)
+void GaduAvatarService::fetchAvatar(Contact *contactAccountData)
 {
 	if (contactAccountData->id().isEmpty())
 		return;
 
 	GaduAvatarFetcher *avatarFetcher = new GaduAvatarFetcher(contactAccountData, this);
-	connect(avatarFetcher, SIGNAL(avatarFetched(ContactAccountData *, const QByteArray &)),
-			this, SIGNAL(avatarFetched(ContactAccountData *, const QByteArray &)));
+	connect(avatarFetcher, SIGNAL(avatarFetched(Contact *, const QByteArray &)),
+			this, SIGNAL(avatarFetched(Contact *, const QByteArray &)));
 	avatarFetcher->fetchAvatar();
 }

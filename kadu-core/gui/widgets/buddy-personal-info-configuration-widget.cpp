@@ -43,7 +43,7 @@ void BuddyPersonalInfoConfigurationWidget::createGui()
 	layout->addWidget(usernameLabel, row, 3, 1, 1); 
 
 	ContactIdCombo = new QComboBox(this);
-	foreach (ContactAccountData *data, MyBuddy.accountDatas())
+	foreach (Contact *data, MyBuddy.accountDatas())
 		ContactIdCombo->addItem(data->account().protocolHandler()->icon(),
 				data->id(),
 				data->account().uuid().toString()

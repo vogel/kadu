@@ -145,7 +145,7 @@ Buddy Account::createAnonymous(const QString& id)
 
 	Buddy result(BuddyShared::TypeAnonymous);
 	ProtocolFactory *protocolFactory = Data->protocolHandler()->protocolFactory();
-	ContactAccountData *contactAccountData = protocolFactory->newContactAccountData(*this, result, id);
+	Contact *contactAccountData = protocolFactory->newContactAccountData(*this, result, id);
 	if (!contactAccountData->isValid())
 	{
 		delete contactAccountData;

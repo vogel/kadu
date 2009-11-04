@@ -17,7 +17,7 @@
 
 class Avatar;
 class AvatarService;
-class ContactAccountData;
+class Contact;
 
 class AvatarManager : public QObject, public AccountsAwareObject
 {
@@ -30,12 +30,12 @@ class AvatarManager : public QObject, public AccountsAwareObject
 	virtual ~AvatarManager();
 
 	AvatarService * avatarService(Account account);
-	AvatarService * avatarService(ContactAccountData *contactAccountData);
+	AvatarService * avatarService(Contact *contactAccountData);
 
 	QString avatarFileName(Avatar avatar);
 
 private slots:
-	void avatarFetched(ContactAccountData *contactAccountData, const QByteArray &data);
+	void avatarFetched(Contact *contactAccountData, const QByteArray &data);
 
 protected:
 	virtual void accountRegistered(Account account);
@@ -44,10 +44,10 @@ protected:
 public:
 	static AvatarManager * instance();
 
-	void updateAvatar(ContactAccountData *contactAccountData);
+	void updateAvatar(Contact *contactAccountData);
 
 signals:
-	void avatarUpdated(ContactAccountData *contactAccountData);
+	void avatarUpdated(Contact *contactAccountData);
 
 };
 

@@ -104,7 +104,7 @@ void GaduImporter::importGaduContact(Buddy& contact)
 
 	contact.addAccountData(gcad);
 
-	ContactAccountDataManager::instance()->addContactAccountData(gcad);
+	ContactManager::instance()->addContact(gcad);
 }
 
 void GaduImporter::importIgnored()

@@ -127,7 +127,7 @@ QList<Account> Buddy::accounts() const
 		: Data->accounts();
 }
 
-void Buddy::addAccountData(ContactAccountData *accountData)
+void Buddy::addAccountData(Contact *accountData)
 {
 	if (!accountData)
 		return;
@@ -136,7 +136,7 @@ void Buddy::addAccountData(ContactAccountData *accountData)
 	Data->addAccountData(accountData);
 }
 
-void Buddy::removeAccountData(ContactAccountData *accountData) const
+void Buddy::removeAccountData(Contact *accountData) const
 {
 	if (!isNull())
 		Data->removeAccountData(accountData);
@@ -148,17 +148,17 @@ void Buddy::removeAccountData(Account account) const
 		Data->removeAccountData(account);
 }
 
-ContactAccountData * Buddy::accountData(Account account) const
+Contact * Buddy::accountData(Account account) const
 {
 	return isNull()
 			? 0
 			: Data->accountData(account);
 }
 
-QList<ContactAccountData *> Buddy::accountDatas() const
+QList<Contact *> Buddy::accountDatas() const
 {
 	return isNull()
-			? QList<ContactAccountData *>()
+			? QList<Contact *>()
 			: Data->accountDatas();
 }
 
@@ -270,7 +270,7 @@ Buddy Buddy::dummy()
 
 	Account account;
 
-	ContactAccountData *contactData = new ContactAccountData(account, example, "999999", true);
+	Contact *contactData = new Contact(account, example, "999999", true);
 	contactData->setStatus(Status("Away", tr("Example description")));
 	contactData->setIp(QHostAddress(2130706433));
 	contactData->setPort(80);

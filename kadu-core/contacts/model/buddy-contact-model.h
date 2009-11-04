@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BUDDY_ACCOUNT_DATA_MODEL_H
-#define BUDDY_ACCOUNT_DATA_MODEL_H
+#ifndef BUDDY_CONTACT_MODEL_H
+#define BUDDY_CONTACT_MODEL_H
 
 #include <QtCore/QAbstractListModel>
 #include <QtCore/QModelIndex>
@@ -16,23 +16,23 @@
 #include "buddies/buddy.h"
 
 class Account;
-class ContactAccountData;
+class Contact;
 
-class BuddyAccountDataModel : public QAbstractListModel
+class BuddyContactModel : public QAbstractListModel
 {
 	Q_OBJECT
 
 	Buddy SourceBuddy;
 
 private slots:
-	void contactAccountDataAboutToBeAdded(ContactAccountData *data);
-	void contactAccountDataAdded(ContactAccountData *data);
-	void contactAccountDataAboutToBeRemoved(ContactAccountData *data);
-	void contactAccountDataRemoved(ContactAccountData *data);
+	void contactAboutToBeAdded(Contact *data);
+	void contactAdded(Contact *data);
+	void contactAboutToBeRemoved(Contact *data);
+	void contactRemoved(Contact *data);
 
 public:
-	BuddyAccountDataModel(Buddy contact, QObject *parent = 0);
-	virtual ~BuddyAccountDataModel();
+	BuddyContactModel(Buddy contact, QObject *parent = 0);
+	virtual ~BuddyContactModel();
 
 	virtual int columnCount(const QModelIndex &parent) const;
 	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
@@ -40,10 +40,10 @@ public:
 	virtual QVariant data(const QModelIndex &index, int role) const;
 	virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 
-	ContactAccountData * accountData(const QModelIndex &index) const;
-	int accountDataIndex(ContactAccountData *data);
-	QModelIndex accountDataModelIndex(ContactAccountData *data);
+	Contact * contact(const QModelIndex &index) const;
+	int contactIndex(Contact *data);
+	QModelIndex contactModelIndex(Contact *data);
 
 };
 
-#endif // BUDDY_ACCOUNT_DATA_MODEL_H
+#endif // BUDDY_CONTACT_MODEL_H

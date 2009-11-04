@@ -37,7 +37,7 @@ QString GaduListHelper::contactListToString(Account account, BuddyList buddies)
 		foreach (Group *group, buddy.groups())
 			buddyGroups << group->name();
 
-		ContactAccountData *cad = buddy.accountData(account);
+		Contact *cad = buddy.accountData(account);
 
 		contactsStringList << QString("%1;%2;%3;%4;%5;%6;%7;%8;%9;%10;%11;%12;%13")
 			.arg(buddy.firstName())

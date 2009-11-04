@@ -717,7 +717,7 @@ void KaduWindowActions::copyDescriptionActionActivated(QAction *sender, bool tog
 		return;
 
 	Account account = buddy.prefferedAccount();
-	ContactAccountData *data = buddy.accountData(account);
+	Contact *data = buddy.accountData(account);
 
 	if (!data)
 		return;
@@ -745,7 +745,7 @@ void KaduWindowActions::openDescriptionLinkActionActivated(QAction *sender, bool
 		return;
 
 	Account account = buddy.prefferedAccount();
-	ContactAccountData *data = buddy.accountData(account);
+	Contact *data = buddy.accountData(account);
 
 	if (!data)
 		return;
