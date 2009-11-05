@@ -13,7 +13,7 @@
 #include "protocols/protocol-factory.h"
 
 class ContactAccountDataWidget;
-class GaduContactAccountData;
+class GaduContact;
 
 class GaduProtocolFactory : public ProtocolFactory
 {

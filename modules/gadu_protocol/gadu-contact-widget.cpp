@@ -14,14 +14,14 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QVBoxLayout>
 
-#include "gadu-contact-account-data.h"
-#include "gadu-contact-account-data-manager.h"
+#include "gadu-contact.h"
+#include "gadu-contact-data-manager.h"
 #include "misc/misc.h"
 
-#include "gadu-contact-account-data-widget.h"
+#include "gadu-contact-widget.h"
 
-GaduContactAccountDataWidget::GaduContactAccountDataWidget(GaduContactAccountData *contactAccountData, QWidget *parent) :
-		ContactAccountDataWidget(new GaduContactAccountDataManager(contactAccountData, parent),
+GaduContactWidget::GaduContactWidget(GaduContact *contactAccountData, QWidget *parent) :
+		ContactAccountDataWidget(new GaduContactDataManager(contactAccountData, parent),
 			contactAccountData, parent),
 		Data(contactAccountData)
 {
@@ -30,11 +30,11 @@ GaduContactAccountDataWidget::GaduContactAccountDataWidget(GaduContactAccountDat
 	createGui();
 }
 
-GaduContactAccountDataWidget::~GaduContactAccountDataWidget()
+GaduContactWidget::~GaduContactWidget()
 {
 }
 
-void GaduContactAccountDataWidget::createGui()
+void GaduContactWidget::createGui()
 {
 	appendUiFile(dataPath("kadu/modules/configuration/gadu_contact.ui"));
 }

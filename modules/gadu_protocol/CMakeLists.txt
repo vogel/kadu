@@ -82,7 +82,7 @@ set (MOC_SOURCES
 	socket-notifiers/gadu-token-socket-notifiers.h
 
 	gadu-account-details.h
-	gadu-contact-data-widget.h
+	gadu-contact-widget.h
 	gadu-protocol.h
 )
 

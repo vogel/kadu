@@ -18,7 +18,7 @@
 #include "protocols/protocols-manager.h"
 #include "misc/misc.h"
 #include "gadu-account-details.h"
-#include "gadu-contact-account-data.h"
+#include "gadu-contact.h"
 #include "gadu-protocol-factory.h"
 
 #include "gadu-importer.h"
@@ -93,7 +93,7 @@ void GaduImporter::importGaduContact(Buddy& contact)
 	Account account = AccountManager::instance()->defaultAccount();
 	QString id = contact.customData()["uin"];
 
-	GaduContactAccountData *gcad = new GaduContactAccountData(account, contact, id, true);
+	GaduContact *gcad = new GaduContact(account, contact, id, true);
 
 	gcad->setBlocked(QVariant(contact.customData()["blocking"]).toBool());
 	gcad->setOfflineTo(QVariant(contact.customData()["offline_to"]).toBool());

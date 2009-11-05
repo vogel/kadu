@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GADU_CONTACT_ACCOUNT_DATA
-#define GADU_CONTACT_ACCOUNT_DATA
+#ifndef GADU_CONTACT_H
+#define GADU_CONTACT_H
 
 #include "contacts/contact.h"
 
@@ -16,17 +16,17 @@
 
 class Account;
 
-class GaduContactAccountData : public Contact
+class GaduContact : public Contact
 {
 	unsigned long MaxImageSize;
 	unsigned int GaduProtocolVersion;
 
 public:
-	GaduContactAccountData(Account account, Buddy buddy, const QString &id, bool loaded = false) :
+	GaduContact(Account account, Buddy buddy, const QString &id, bool loaded = false) :
 			Contact(account, buddy, id, loaded) {}
-	GaduContactAccountData(Account account, Buddy buddy, const QString &id, StoragePoint *storage) :
+	GaduContact(Account account, Buddy buddy, const QString &id, StoragePoint *storage) :
 			Contact(account, buddy, id, storage) {}
-	GaduContactAccountData(StoragePoint *storage) :
+	GaduContact(StoragePoint *storage) :
 			Contact(storage) {}
 
 	virtual bool validateId();
@@ -40,4 +40,4 @@ public:
 
 };
 
-#endif // GADU_CONTACT_ACCOUNT_DATA
+#endif // GADU_CONTACT_H

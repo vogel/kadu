@@ -21,7 +21,7 @@
 #include "debug.h"
 #include "misc/misc.h"
 
-#include "../gadu-contact-account-data.h"
+#include "../gadu-contact.h"
 
 #include "gadu-list-helper.h"
 
@@ -129,7 +129,7 @@ BuddyList GaduListHelper::streamToContactList(Account account, QTextStream &cont
 				uin = 0;
 			if (uin)
 			{
-				GaduContactAccountData *gcad = new GaduContactAccountData(account, buddy, QString::number(uin), false);
+				GaduContact *gcad = new GaduContact(account, buddy, QString::number(uin), false);
 				buddy.addContact(gcad);
 			}
 		}

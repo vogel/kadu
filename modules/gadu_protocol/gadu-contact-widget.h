@@ -7,27 +7,27 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GADU_CONTACT_ACCOUNT_DATA_WIDGET
-#define GADU_CONTACT_ACCOUNT_DATA_WIDGET
+#ifndef GADU_CONTACT_WIDGET_H
+#define GADU_CONTACT_WIDGET_H
 
 #include <QtGui/QDialog>
 #include <QtGui/QLineEdit>
 
 #include "gui/widgets/contact-account-data-widget.h"
 
-class GaduContactAccountData;
+class GaduContact;
 
-class GaduContactAccountDataWidget : public ContactAccountDataWidget
+class GaduContactWidget : public ContactAccountDataWidget
 {
 	Q_OBJECT
 
-	GaduContactAccountData *Data;
+	GaduContact *Data;
 	void createGui();
 
 public:
-	explicit GaduContactAccountDataWidget(GaduContactAccountData *contactAccountData, QWidget *parent = 0);
-	~GaduContactAccountDataWidget();
+	explicit GaduContactWidget(GaduContact *contactAccountData, QWidget *parent = 0);
+	virtual ~GaduContactWidget();
 
 };
 
-#endif // GADU_CONTACT_ACCOUNT_DATA_WIDGET
+#endif // GADU_CONTACT_WIDGET_H

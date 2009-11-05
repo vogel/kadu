@@ -11,7 +11,7 @@
 #include "misc/misc.h"
 
 #include "socket-notifiers/gadu-protocol-socket-notifiers.h"
-#include "gadu-contact-account-data.h"
+#include "gadu-contact.h"
 #include "gadu-protocol.h"
 
 #include "gadu-search-service.h"
@@ -86,7 +86,7 @@ void GaduSearchService::handleEventPubdir50SearchReply(struct gg_event *e)
 	{
 		Buddy result;
 
-		GaduContactAccountData *gcad = new GaduContactAccountData(Protocol->account(), result,
+		GaduContact *gcad = new GaduContact(Protocol->account(), result,
 				gg_pubdir50_get(res, i, GG_PUBDIR50_UIN));
 		Status status;
 		status.setType(Protocol->statusTypeFromGaduStatus(atoi(gg_pubdir50_get(res, i, GG_PUBDIR50_STATUS)) & 127));

@@ -42,7 +42,7 @@
 
 #include "helpers/gadu-importer.h"
 #include "gadu-account-details.h"
-#include "gadu-contact-account-data.h"
+#include "gadu-contact.h"
 #include "gadu-protocol-factory.h"
 
 #include "gadu-protocol.h"
@@ -677,7 +677,7 @@ void GaduProtocol::socketContactStatusChanged(unsigned int uin, unsigned int sta
 		return;
 	}
 
-	GaduContactAccountData *accountData = gaduContactAccountData(buddy);
+	GaduContact *accountData = gaduContactAccountData(buddy);
 	accountData->setIp(ip);
 	accountData->setPort(port);
 	accountData->setMaxImageSize(maxImageSize);
@@ -819,15 +819,15 @@ void GaduProtocol::socketDisconnected()
 
 unsigned int GaduProtocol::uin(Buddy buddy) const
 {
-	GaduContactAccountData *data = gaduContactAccountData(buddy);
+	GaduContact *data = gaduContactAccountData(buddy);
 	return data
 		? data->uin()
 		: 0;
 }
 
-GaduContactAccountData * GaduProtocol::gaduContactAccountData(Buddy buddy) const
+GaduContact * GaduProtocol::gaduContactAccountData(Buddy buddy) const
 {
-	return dynamic_cast<GaduContactAccountData *>(buddy.contact(account()));
+	return dynamic_cast<GaduContact *>(buddy.contact(account()));
 }
 
 QPixmap GaduProtocol::statusPixmap(Status status)
@@ -855,7 +855,7 @@ QPixmap GaduProtocol::statusPixmap(const QString &statusType)
 
 void GaduProtocol::contactAdded(Buddy &buddy)
 {
-	GaduContactAccountData *gcad = gaduContactAccountData(buddy);
+	GaduContact *gcad = gaduContactAccountData(buddy);
 	if (!gcad)
 		return;
 
@@ -864,7 +864,7 @@ void GaduProtocol::contactAdded(Buddy &buddy)
 
 void GaduProtocol::contactRemoved(Buddy &buddy)
 {
-	GaduContactAccountData *gcad = gaduContactAccountData(buddy);
+	GaduContact *gcad = gaduContactAccountData(buddy);
 	if (!gcad)
 		return;
 

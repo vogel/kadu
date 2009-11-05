@@ -15,8 +15,8 @@
 #include "status/status-type-manager.h"
 
 #include "gadu-account-details.h"
-#include "gadu-contact-account-data-widget.h"
-#include "gadu-contact-account-data.h"
+#include "gadu-contact-widget.h"
+#include "gadu-contact.h"
 #include "gadu-protocol.h"
 
 #include "gadu-protocol-factory.h"
@@ -56,7 +56,7 @@ AccountDetails * GaduProtocolFactory::createAccountDetails(Account account)
 
 Contact * GaduProtocolFactory::newContact(Account account, Buddy buddy, const QString &id)
 {
-	return new GaduContactAccountData(account, buddy, id, true);
+	return new GaduContact(account, buddy, id, true);
 }
 
 Contact * GaduProtocolFactory::loadContactAccountData(StoragePoint *storagePoint)
@@ -64,7 +64,7 @@ Contact * GaduProtocolFactory::loadContactAccountData(StoragePoint *storagePoint
 	if (!storagePoint)
 		return 0;
 
-	return new GaduContactAccountData(storagePoint);
+	return new GaduContact(storagePoint);
 }
 
 AccountCreateWidget * GaduProtocolFactory::newCreateAccountWidget(QWidget *parent)
@@ -94,9 +94,9 @@ QRegExp GaduProtocolFactory::idRegularExpression()
 
 ContactAccountDataWidget * GaduProtocolFactory::newContactAccountDataWidget(Contact *contactAccountData, QWidget *parent)
 {
-	GaduContactAccountData *gaduContactAccountData = dynamic_cast<GaduContactAccountData *>(contactAccountData);
+	GaduContact *gaduContactAccountData = dynamic_cast<GaduContact *>(contactAccountData);
 
 	return 0 != gaduContactAccountData
-		? new GaduContactAccountDataWidget(gaduContactAccountData, parent)
+		? new GaduContactWidget(gaduContactAccountData, parent)
 		: 0;
 }
