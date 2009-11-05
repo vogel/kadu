@@ -1,9 +1,11 @@
-#ifndef SMS_GATEWAY_MANAGER_H
-#define SMS_GATEWAY_MANAGER_H
+#ifndef MOBILE_NUMBER_MANAGER_H
+#define MOBILE_NUMBER_MANAGER_H
 
 #include <QtCore/QMap>
 
-#include "sms.h"
+#include "configuration/storable-object.h"
+
+class SmsGateway;
 
 class MobileNumber : public StorableObject
 {
@@ -28,7 +30,7 @@ protected:
 	virtual StoragePoint * createStoragePoint();
 };
 
-class SMSAPI MobileNumberManager : public StorableObject
+class MobileNumberManager : public StorableObject
 {
 	Q_DISABLE_COPY(MobileNumberManager)
 
@@ -46,6 +48,8 @@ public:
 	
 	void registerNumber(QString number, QString gatewayId);
 	void unregisterNumber(QString number);
+	SmsGateway * gateway(QString number);
+	
 
 	QMap<MobileNumber *, QString> numbers() { return Numbers; };
 	
@@ -54,4 +58,4 @@ protected:
 	
 };
 
-#endif // SMS_GATEWAY_MANAGER_H
+#endif // MOBILE_NUMBER_MANAGER_H

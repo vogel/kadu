@@ -34,10 +34,12 @@
 #include "modules.h"
 #include "misc/path-conversion.h"
 
-
 #include "../history/history.h"
 
 #include "sms-sender.h"
+#include "mobile-number-manager.h"
+#include "sms-gateway-manager.h"
+#include "sms-gateway-query.h"
 
 SmsSender::SmsSender(QObject* parent)
 	: QObject(parent), CurrentGateway(0)
@@ -85,8 +87,14 @@ void SmsSender::send(const QString& number,const QString& message, const QString
 		kdebugf2();
 		return;
 	}
-	
-	if (autoSelectProvider)
+
+	SmsGateway * gateway = MobileNumberManager::instance()->gateway(number);
+	if (gateway)
+	{
+		CurrentGateway = gateway;
+		gatewaySelected();
+	}
+	else if (autoSelectProvider)
 	{
 		findGatewayForNumber(Number);
 	}

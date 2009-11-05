@@ -22,7 +22,7 @@
 
 SmsGatewayManager * SmsGatewayManager::Instance = 0;
 
-SMSAPI SmsGatewayManager * SmsGatewayManager::instance()
+SmsGatewayManager * SmsGatewayManager::instance()
 {
 	if (0 == Instance)
 	{
@@ -45,4 +45,9 @@ void SmsGatewayManager::registerGateway(SmsGateway *gateway)
 void SmsGatewayManager::unregisterGateway(QString name)
 {
 	Gateways.remove(name);
+}
+
+SmsGateway * SmsGatewayManager::byId(QString gatewayId)
+{
+	return Gateways.contains(gatewayId) ? Gateways.value(gatewayId) : 0;
 }

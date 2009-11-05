@@ -6,7 +6,7 @@
 #include "sms.h"
 #include "sms-gateway.h"
 
-class SMSAPI SmsGatewayManager : public QObject
+class SmsGatewayManager : public QObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(SmsGatewayManager)
@@ -22,6 +22,7 @@ public:
 	
 	void registerGateway(SmsGateway *gateway);
 	void unregisterGateway(QString);
+	SmsGateway * byId(QString gatewayId);
 
 	QMap<QString, SmsGateway *> gateways() { return Gateways; };
 	

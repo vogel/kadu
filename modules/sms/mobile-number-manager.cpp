@@ -19,10 +19,11 @@
 #include "configuration/configuration-file.h"
 
 #include "mobile-number-manager.h"
+#include "sms-gateway-manager.h"
 
 MobileNumberManager * MobileNumberManager::Instance = 0;
 
-SMSAPI MobileNumberManager * MobileNumberManager::instance()
+MobileNumberManager * MobileNumberManager::instance()
 {
 	if (0 == Instance)
 	{
@@ -41,6 +42,14 @@ void MobileNumberManager::unregisterNumber(QString number)
 	foreach (MobileNumber *n, Numbers.keys())
 		if (n->number() == number)
 			Numbers.remove(n);
+}
+
+SmsGateway * MobileNumberManager::gateway(QString number)
+{
+	foreach (MobileNumber *n, Numbers.keys())
+		if (n->number() == number)
+			return SmsGatewayManager::instance()->byId(Numbers.value(n));
+	return 0;
 }
 
 StoragePoint * MobileNumberManager::createStoragePoint()

@@ -16,8 +16,7 @@
 #include "gui/windows/main-configuration-window.h"
 
 #include "sms_exports.h"
-#include "sms-gateway-manager.h"
-#include "sms-gateway-query.h"
+#include "sms-gateway.h"
 
 class SmsSender : public QObject
 {
@@ -39,6 +38,8 @@ class SmsSender : public QObject
 		~SmsSender();
 		
 		void findGatewayForNumber(const QString& number);
+		
+		SmsGateway * currentGateway() { return CurrentGateway; };
 
 	public slots:
 		void send(const QString& number, const QString& message, const QString& contact, const QString& signature, bool autoSelectProvider = true, QString provider = QString::null);

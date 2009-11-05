@@ -16,8 +16,9 @@
 #include "gui/windows/main-configuration-window.h"
 
 #include "sms_exports.h"
-#include "sms-gateway.h"
 #include "sms-sender.h"
+#include "sms-gateway-manager.h"
+#include "mobile-number-manager.h"
 
 class QCheckBox;
 class QComboBox;
@@ -25,7 +26,7 @@ class QListWidget;
 class QProcess;
 class QTextEdit;
 
-class SMSAPI SmsDialog : public QWidget, ConfigurationAwareObject
+class SmsDialog : public QWidget, ConfigurationAwareObject
 {
 	Q_OBJECT
 

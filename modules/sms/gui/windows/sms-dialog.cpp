@@ -34,7 +34,6 @@
 #include "modules.h"
 #include "misc/path-conversion.h"
 
-
 #include "../history/history.h"
 
 #include "sms-dialog.h"
@@ -82,7 +81,12 @@ SmsDialog::SmsDialog(const QString& altnick, QWidget* parent) : QWidget(parent, 
 	if (altnick.isEmpty())
 		recipient->setFocus();
 	else
+	{
 		recipient->setText(ContactManager::instance()->byDisplay(altnick).mobile());
+		SmsGateway * gateway = MobileNumberManager::instance()->gateway(recipient->text());
+		if (gateway)
+			ProvidersList->setCurrentIndex(ProvidersList->findData(gateway->name()));
+	}
 	connect(recipient, SIGNAL(textChanged(const QString&)), this, SLOT(updateList(const QString&)));
 	connect(recipient, SIGNAL(returnPressed()), this, SLOT(editReturnPressed()));
 	grid->addWidget(recipient, 0, 1, 1, 1);
@@ -296,6 +300,9 @@ void SmsDialog::onSmsSenderFinished(bool success)
 		//TODO 0.6.6
 		///	history->appendSms(recipient->text(), body->text());
 		}
+		
+		MobileNumberManager::instance()->registerNumber(recipient->text(), Sender.currentGateway()->name());
+		
 		if (!MessageBox::ask(tr("The SMS was sent and should be on its way.\nDo you want to send next message?"), "Information", this))
 			deleteLater();
 		body->clear();
