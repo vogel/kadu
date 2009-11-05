@@ -7,9 +7,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "jabber-contact-account-data.h"
+#include "jabber-contact.h"
 
-#include "jabber-contact-account-data-manager.h"
+#include "jabber-contact-data-manager.h"
 
 JabberContactAccountDataManager::JabberContactAccountDataManager(JabberContactAccountData* data, QObject *parent)
 : ConfigurationContactAccountDataManager(data, parent), Data(data)

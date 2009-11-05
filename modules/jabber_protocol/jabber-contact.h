@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef JABBER_CONTACT_ACCOUNT_DATA
-#define JABBER_CONTACT_ACCOUNT_DATA
+#ifndef JABBER_CONTACT_H
+#define JABBER_CONTACT_H
 
 #include <xmpp.h>
 
@@ -34,4 +34,4 @@ public:
 
 };
 
-#endif // JABBER_CONTACT_ACCOUNT_DATA
+#endif // JABBER_CONTACT_H

@@ -7,27 +7,26 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef JABBER_CONTACT_ACCOUNT_DATA_WIDGET
-#define JABBER_CONTACT_ACCOUNT_DATA_WIDGET
+#ifndef JABBER_CONTACT_DATA_MANAGER_H
+#define JABBER_CONTACT_DATA_MANAGER_H
 
-#include <QtGui/QDialog>
-#include <QtGui/QLineEdit>
-
-#include "gui/widgets/contact-account-data-widget.h"
+#include "configuration/configuration-contact-account-data-manager.h"
 
 class JabberContactAccountData;
 
-class JabberContactAccountDataWidget : public ContactAccountDataWidget
+class JabberContactAccountDataManager : public ConfigurationContactAccountDataManager
 {
-	Q_OBJECT
-
 	JabberContactAccountData *Data;
-	void createGui();
+
+protected:
+	JabberContactAccountData * data() { return Data; }
 
 public:
-	explicit JabberContactAccountDataWidget(JabberContactAccountData *contactAccountData, QWidget *parent = 0);
-	~JabberContactAccountDataWidget();
+	explicit JabberContactAccountDataManager(JabberContactAccountData *data, QObject *parent = 0);
+
+	virtual void writeEntry(const QString &section, const QString &name, const QVariant &value);
+	virtual QVariant readEntry(const QString &section, const QString &name);
 
 };
 
-#endif // JABBER_CONTACT_ACCOUNT_DATA_WIDGET
+#endif // JABBER_CONTACT_DATA_MANAGER_H

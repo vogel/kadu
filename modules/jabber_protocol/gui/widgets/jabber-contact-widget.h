@@ -7,12 +7,27 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "utils/jid-util.h"
+#ifndef JABBER_CONTACT_WIDGET_H
+#define JABBER_CONTACT_WIDGET_H
 
-#include "jabber-contact-account-data.h"
+#include <QtGui/QDialog>
+#include <QtGui/QLineEdit>
 
-bool JabberContactAccountData::validateId()
+#include "gui/widgets/contact-account-data-widget.h"
+
+class JabberContactAccountData;
+
+class JabberContactAccountDataWidget : public ContactAccountDataWidget
 {
-	XMPP::Jid newJid(JIDUtil::accountFromString(id()));
-	return !newJid.node().isEmpty() && !newJid.domain().isEmpty();
-}
+	Q_OBJECT
+
+	JabberContactAccountData *Data;
+	void createGui();
+
+public:
+	explicit JabberContactAccountDataWidget(JabberContactAccountData *contactAccountData, QWidget *parent = 0);
+	virtual ~JabberContactAccountDataWidget();
+
+};
+
+#endif // JABBER_CONTACT_WIDGET_H

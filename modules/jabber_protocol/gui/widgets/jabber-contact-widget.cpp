@@ -16,10 +16,10 @@
 
 #include "misc/misc.h"
 
-#include "jabber-contact-account-data.h"
-#include "jabber-contact-account-data-manager.h"
+#include "jabber-contact.h"
+#include "jabber-contact-data-manager.h"
 
-#include "jabber-contact-account-data-widget.h"
+#include "jabber-contact-widget.h"
 
 JabberContactAccountDataWidget::JabberContactAccountDataWidget(JabberContactAccountData *contactAccountData, QWidget *parent) :
 	ContactAccountDataWidget(new JabberContactAccountDataManager(contactAccountData, parent), 

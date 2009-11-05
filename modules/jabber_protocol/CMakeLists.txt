@@ -242,15 +242,15 @@ set (SOURCES
 	client/jabber-client.cpp
 	client/mini-client.cpp
 	file-transfer/jabber-file-transfer.cpp
-	gui/widgets/jabber-contact-account-data-widget.cpp
+	gui/widgets/jabber-contact-widget.cpp
 	gui/widgets/jabber-create-account-widget.cpp
 	gui/widgets/jabber-edit-account-widget.cpp
 	gui/widgets/jabber-personal-info-widget.cpp
 	open-chat-with/jabber-open-chat-with-runner.cpp
 	jabber-account-data-manager.cpp
 	jabber-account-details.cpp
-	jabber-contact-account-data.cpp
-	jabber-contact-account-data-manager.cpp
+	jabber-contact.cpp
+	jabber-contact-data-manager.cpp
 	jabber-protocol.cpp
 	jabber-protocol-factory.cpp
 	resource/jabber-resource.cpp
@@ -270,7 +270,7 @@ set (MOC_SOURCES
 	client/jabber-client.h
 	client/mini-client.h
 	file-transfer/jabber-file-transfer.h
-	gui/widgets/jabber-contact-account-data-widget.h
+	gui/widgets/jabber-contact-widget.h
 	gui/widgets/jabber-create-account-widget.h
 	gui/widgets/jabber-edit-account-widget.h
 	gui/widgets/jabber-personal-info-widget.h
