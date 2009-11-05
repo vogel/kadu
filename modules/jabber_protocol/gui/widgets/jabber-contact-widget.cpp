@@ -22,7 +22,7 @@
 #include "jabber-contact-widget.h"
 
 JabberContactWidget::JabberContactWidget(JabberContact *contactAccountData, QWidget *parent) :
-	ContactAccountDataWidget(new JabberContactDataManager(contactAccountData, parent),
+	ContactWidget(new JabberContactDataManager(contactAccountData, parent),
 		contactAccountData, parent),
 	Data(contactAccountData)
 {

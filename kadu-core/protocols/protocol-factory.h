@@ -20,7 +20,7 @@ class AccountEditWidget;
 class ConfigurationWindow;
 class Buddy;
 class Contact;
-class ContactAccountDataWidget;
+class ContactWidget;
 class Protocol;
 class ProtocolMenuManager;
 class StatusType;
@@ -35,7 +35,7 @@ public:
 	virtual Contact * loadContactAccountData(StoragePoint *storagePoint) = 0;
 	virtual AccountCreateWidget * newCreateAccountWidget(QWidget *parent = 0) = 0;
 	virtual AccountEditWidget * newEditAccountWidget(Account, QWidget *parent = 0) = 0;
-	virtual ContactAccountDataWidget * newContactAccountDataWidget(Contact *contactAccountData, QWidget *parent = 0) = 0;
+	virtual ContactWidget * newContactAccountDataWidget(Contact *contactAccountData, QWidget *parent = 0) = 0;
 	virtual ProtocolMenuManager * protocolMenuManager() { return 0; }
 	virtual QList<StatusType *> supportedStatusTypes() = 0;
 	virtual QString idLabel() = 0;

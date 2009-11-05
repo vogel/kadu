@@ -21,7 +21,7 @@
 #include "gadu-contact-widget.h"
 
 GaduContactWidget::GaduContactWidget(GaduContact *contactAccountData, QWidget *parent) :
-		ContactAccountDataWidget(new GaduContactDataManager(contactAccountData, parent),
+		ContactWidget(new GaduContactDataManager(contactAccountData, parent),
 			contactAccountData, parent),
 		Data(contactAccountData)
 {

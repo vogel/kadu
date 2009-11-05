@@ -29,7 +29,7 @@ class KADUAPI Avatar : public StorableObject
 	QString FilePath;
 
 public:
-	Avatar(Contact *contactAccountData, bool loadFromConfiguration = true);
+	Avatar(Contact *contact, bool loadFromConfiguration = true);
 	virtual ~Avatar();
 
 	virtual void load();

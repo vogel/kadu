@@ -92,7 +92,7 @@ QRegExp GaduProtocolFactory::idRegularExpression()
 	return IdRegularExpression;
 }
 
-ContactAccountDataWidget * GaduProtocolFactory::newContactAccountDataWidget(Contact *contactAccountData, QWidget *parent)
+ContactWidget * GaduProtocolFactory::newContactAccountDataWidget(Contact *contactAccountData, QWidget *parent)
 {
 	GaduContact *gaduContactAccountData = dynamic_cast<GaduContact *>(contactAccountData);
 

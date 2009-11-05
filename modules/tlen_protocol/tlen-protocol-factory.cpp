@@ -100,7 +100,7 @@ QRegExp TlenProtocolFactory::idRegularExpression()
 	return IdRegularExpression;
 }
 
-ContactAccountDataWidget * TlenProtocolFactory::newContactAccountDataWidget(Contact *contactAccountData, QWidget *parent)
+ContactWidget * TlenProtocolFactory::newContactAccountDataWidget(Contact *contactAccountData, QWidget *parent)
 {
 	TlenContactAccountData *tlenContactAccountData = dynamic_cast<TlenContactAccountData *>(contactAccountData);
 

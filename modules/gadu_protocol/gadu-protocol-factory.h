@@ -12,7 +12,7 @@
 
 #include "protocols/protocol-factory.h"
 
-class ContactAccountDataWidget;
+class ContactWidget;
 class GaduContact;
 
 class GaduProtocolFactory : public ProtocolFactory
@@ -34,7 +34,7 @@ public:
 	virtual Contact * loadContactAccountData(StoragePoint *storagePoint);
 	virtual AccountCreateWidget * newCreateAccountWidget(QWidget *parent);
 	virtual AccountEditWidget * newEditAccountWidget(Account, QWidget *parent);
-	virtual ContactAccountDataWidget * newContactAccountDataWidget(Contact *contactAccountData, QWidget *parent = 0);
+	virtual ContactWidget * newContactAccountDataWidget(Contact *contactAccountData, QWidget *parent = 0);
 	virtual QList<StatusType *> supportedStatusTypes();
 	virtual QString idLabel();
 	virtual QRegExp idRegularExpression();

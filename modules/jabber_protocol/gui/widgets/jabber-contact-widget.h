@@ -13,11 +13,11 @@
 #include <QtGui/QDialog>
 #include <QtGui/QLineEdit>
 
-#include "gui/widgets/contact-account-data-widget.h"
+#include "gui/widgets/contact-widget.h"
 
 class JabberContact;
 
-class JabberContactWidget : public ContactAccountDataWidget
+class JabberContactWidget : public ContactWidget
 {
 	Q_OBJECT
 

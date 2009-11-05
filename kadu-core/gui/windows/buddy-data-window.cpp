@@ -35,7 +35,7 @@
 #include "gui/widgets/buddy-groups-configuration-widget.h"
 #include "gui/widgets/buddy-options-configuration-widget.h"
 #include "gui/widgets/buddy-personal-info-configuration-widget.h"
-#include "gui/widgets/contact-account-data-widget.h"
+#include "gui/widgets/contact-widget.h"
 #include "gui/windows/buddy-data-manager.h"
 #include "gui/windows/message-box.h"
 #include "protocols/protocol.h"

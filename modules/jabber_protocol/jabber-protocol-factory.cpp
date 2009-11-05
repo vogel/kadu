@@ -98,7 +98,7 @@ QRegExp JabberProtocolFactory::idRegularExpression()
 	return IdRegularExpression;
 }
 
-ContactAccountDataWidget * JabberProtocolFactory::newContactAccountDataWidget(Contact *contactAccountData, QWidget *parent)
+ContactWidget * JabberProtocolFactory::newContactAccountDataWidget(Contact *contactAccountData, QWidget *parent)
 {
 	JabberContact *jabberContactAccountData = dynamic_cast<JabberContact *>(contactAccountData);
 

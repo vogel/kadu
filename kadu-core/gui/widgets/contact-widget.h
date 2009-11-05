@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CONTACT_ACCOUNT_DATA_WIDGET
-#define CONTACT_ACCOUNT_DATA_WIDGET
+#ifndef CONTACT_WIDGET_H
+#define CONTACT_WIDGET_H
 
 #include <QtGui/QDialog>
 #include <QtGui/QLineEdit>
@@ -20,7 +20,7 @@
 class ConfigurationContactDataManager;
 class Contact;
 
-class KADUAPI ContactAccountDataWidget : public ConfigurationWidget
+class KADUAPI ContactWidget : public ConfigurationWidget
 {
 	Q_OBJECT
 
@@ -28,9 +28,9 @@ class KADUAPI ContactAccountDataWidget : public ConfigurationWidget
 	void createGui();
 
 public:
-	ContactAccountDataWidget(ConfigurationContactDataManager *dataManager, Contact *contactAccountData, QWidget *parent = 0);
-	~ContactAccountDataWidget();
+	explicit ContactWidget(ConfigurationContactDataManager *dataManager, Contact *contactAccountData, QWidget *parent = 0);
+	virtual ~ContactWidget();
 
 };
 
-#endif // CONTACT_ACCOUNT_DATA_WIDGET
+#endif // CONTACT_WIDGET_H

@@ -13,9 +13,9 @@
 #include "contacts/contact.h"
 #include "misc/misc.h"
 
-#include "contact-account-data-widget.h"
+#include "contact-widget.h"
 
-ContactAccountDataWidget::ContactAccountDataWidget(ConfigurationContactDataManager *dataManager, Contact *contactAccountData, QWidget *parent)
+ContactWidget::ContactWidget(ConfigurationContactDataManager *dataManager, Contact *contactAccountData, QWidget *parent)
 	: ConfigurationWidget(dataManager, parent), Data(contactAccountData)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
@@ -23,11 +23,11 @@ ContactAccountDataWidget::ContactAccountDataWidget(ConfigurationContactDataManag
 	createGui();
 }
 
-ContactAccountDataWidget::~ContactAccountDataWidget()
+ContactWidget::~ContactWidget()
 {
 }
 
-void ContactAccountDataWidget::createGui()
+void ContactWidget::createGui()
 {
 	appendUiFile(dataPath("kadu/configuration/contact.ui"));
 
