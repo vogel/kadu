@@ -30,7 +30,7 @@ BuddyList TlenOpenChatWithRunner::matchingContacts(const QString &query)
 
 	Buddy c;
 
-	TlenContactAccountData *gcad = new TlenContactAccountData(ParentAccount, c, query);
+	TlenContact *gcad = new TlenContact(ParentAccount, c, query);
 	c.addAccountData(gcad);
 	c.setDisplay(ParentAccount->name() + ": " + query);
 	matchedContacts.append(c);

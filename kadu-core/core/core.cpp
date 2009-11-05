@@ -364,10 +364,10 @@ void Core::accountRegistered(Account account)
 	connect(protocol, SIGNAL(connected(Account)), this, SIGNAL(connected()));
 	connect(protocol, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
 /* TODO: 0.6.6
-	ContactAccountData *contactAccountData = protocol->protocolFactory()->loadContactAccountData(account, Myself);
-	if (!contactAccountData)
-		contactAccountData = protocol->protocolFactory()->newContactAccountData(account, Myself, account->id());
-	Myself.addAccountData(contactAccountData);*/
+	Contact *contact = protocol->protocolFactory()->loadContact(account, Myself);
+	if (!contact)
+		contact = protocol->protocolFactory()->newContact(account, Myself, account->id());
+	Myself.addAccountData(contact);*/
 }
 
 void Core::accountUnregistered(Account account)

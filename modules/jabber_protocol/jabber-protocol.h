@@ -73,7 +73,7 @@ class JabberProtocol : public Protocol
 		virtual SearchService * searchService() { return 0; }
 		JabberResourcePool *resourcePool();
 
-		JabberContact * jabberContactAccountData(Buddy buddy) const;
+		JabberContact * jabberContact(Buddy buddy) const;
 
 	protected:
 		virtual void changeStatus();
@@ -95,8 +95,8 @@ class JabberProtocol : public Protocol
 		void contactAdded(Buddy &buddy);
 		void contactRemoved(Buddy &buddy);
 		void contactUpdated(Buddy &buddy);
-		void contactAccountDataAdded(Buddy &buddy, Account contactAccount);
-		void contactAccountDataAboutToBeRemoved(Buddy &buddy, Account contactAccount);
+		void contactAdded(Buddy &buddy, Account contactAccount);
+		void contactAboutToBeRemoved(Buddy &buddy, Account contactAccount);
 		void contactAccountIdChanged(Buddy &buddy, Account account, const QString &oldId);
 
 	public slots:

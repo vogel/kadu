@@ -19,8 +19,8 @@
 
 #include "gadu-avatar-fetcher.h"
 
-GaduAvatarFetcher::GaduAvatarFetcher(Contact *contactAccountData, QObject *parent) :
-		QObject(parent), MyContactAccountData(contactAccountData)
+GaduAvatarFetcher::GaduAvatarFetcher(Contact *contact, QObject *parent) :
+		QObject(parent), MyContact(contact)
 {
 }
 
@@ -30,7 +30,7 @@ void GaduAvatarFetcher::fetchAvatar()
 	MyHttp = new QHttp("api.gadu-gadu.pl", 80, this);
 	connect(MyHttp, SIGNAL(requestFinished(int, bool)),
 			this, SLOT(requestFinished(int, bool)));
-	MyHttp->get("/avatars/" + MyContactAccountData->id() + "/0.xml", &MyBuffer);
+	MyHttp->get("/avatars/" + MyContact->id() + "/0.xml", &MyBuffer);
 }
 
 void GaduAvatarFetcher::requestFinished(int id, bool error)
@@ -93,7 +93,7 @@ void GaduAvatarFetcher::requestFinished(int id, bool error)
 	if (!timestampElement.isNull())
 	{
 		timestamp = QDateTime::fromString(timestampElement.text());
-		if (MyContactAccountData->avatar().lastUpdated() == timestamp)
+		if (MyContact->avatar().lastUpdated() == timestamp)
 		{
 // 			deleteLater(); TODO: check if file is present
 // 			return;
@@ -104,7 +104,7 @@ void GaduAvatarFetcher::requestFinished(int id, bool error)
 	if (!packageDelayElement.isNull())
 	{
 		int delay = packageDelayElement.text().toInt();
-		MyContactAccountData->avatar().setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + delay));
+		MyContact->avatar().setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + delay));
 	}
 
 	QDomElement avatarFileElement = avatarElement.firstChildElement("bigAvatar");
@@ -125,7 +125,7 @@ void GaduAvatarFetcher::requestFinished(int id, bool error)
 		return;
 	}
 
-	MyContactAccountData->avatar().setLastUpdated(timestamp);
+	MyContact->avatar().setLastUpdated(timestamp);
 
 	QUrl url = avatarUrl;
 
@@ -138,7 +138,7 @@ void GaduAvatarFetcher::requestFinished(int id, bool error)
 
 void GaduAvatarFetcher::avatarDownloaded(int id, bool error)
 {
-	emit avatarFetched(MyContactAccountData, AvatarBuffer.buffer());
+	emit avatarFetched(MyContact, AvatarBuffer.buffer());
 
 	deleteLater();
 }

@@ -21,17 +21,17 @@ class JabberAvatarFetcher : public QObject
 {
 	Q_OBJECT
 
-	Contact *MyContactAccountData;
+	Contact *MyContact;
 	
 private slots:
 	void receivedVCard();
 
 public:
-	JabberAvatarFetcher(Contact *contactAccountData, QObject *parent = 0);
+	JabberAvatarFetcher(Contact *contact, QObject *parent = 0);
 	void fetchAvatar();
 
 signals:
-	void avatarFetched(Contact *contactAccountData, const QByteArray &avatar);
+	void avatarFetched(Contact *contact, const QByteArray &avatar);
 
 };
 

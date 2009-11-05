@@ -28,7 +28,7 @@ class KADUAPI ContactWidget : public ConfigurationWidget
 	void createGui();
 
 public:
-	explicit ContactWidget(ConfigurationContactDataManager *dataManager, Contact *contactAccountData, QWidget *parent = 0);
+	explicit ContactWidget(ConfigurationContactDataManager *dataManager, Contact *contact, QWidget *parent = 0);
 	virtual ~ContactWidget();
 
 };

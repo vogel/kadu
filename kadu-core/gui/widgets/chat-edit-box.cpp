@@ -236,7 +236,7 @@ void ChatEditBox::openInsertImageDialog()
 			Contact *contact = buddy.contact(CurrentChat->account());
 			if (contact && contact->hasFeature(/*EmbedImageInChatMessage*/))
 			{
-// 				unsigned long maxImageSize = contactAccountData->maxEmbededImageSize();
+// 				unsigned long maxImageSize = contact->maxEmbededImageSize();
 // 				if (f.size() > maxImageSize)
 					counter++;
 			}

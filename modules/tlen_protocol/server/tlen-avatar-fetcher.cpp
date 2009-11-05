@@ -18,19 +18,19 @@
 
 #include "tlen-avatar-fetcher.h"
 
-TlenAvatarFetcher::TlenAvatarFetcher(Contact *contactAccountData, QObject *parent) :
-		QObject(parent), MyContactAccountData(contactAccountData)
+TlenAvatarFetcher::TlenAvatarFetcher(Contact *contact, QObject *parent) :
+		QObject(parent), MyContact(contact)
 {
 }
 
 void TlenAvatarFetcher::fetchAvatar()
 {
-	tlen * tlenClient = (dynamic_cast <TlenProtocol *> (MyContactAccountData->account()->protocolHandler()))->client();
+	tlen * tlenClient = (dynamic_cast <TlenProtocol *> (MyContact->account()->protocolHandler()))->client();
 
 	// TODO: clean up, clean access to tlenClient
 	// create QString tlen/protocol::avatarGetRequest(QString login), avatarGetRequestMethod()
 	// prevent fetch more than one avatar at the same time - contactlistwidget sends requests
-	QString login(MyContactAccountData->id());
+	QString login(MyContact->id());
 	login.remove(QString("@tlen.pl"));
 
 	QString type("0");
@@ -63,8 +63,8 @@ void TlenAvatarFetcher::avatarDownloaded(int id, bool error)
 	// 200 OK and buffer not empty
 	if (!MyAvatarBuffer.data().isEmpty() && (MyHttp->lastResponse()).statusCode() == 200)
 	{
-		//MyContactAccountData->avatar().setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + 7200));
-		emit avatarFetched(MyContactAccountData, MyAvatarBuffer.buffer());
+		//MyContact->avatar().setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + 7200));
+		emit avatarFetched(MyContact, MyAvatarBuffer.buffer());
 	}
 
 

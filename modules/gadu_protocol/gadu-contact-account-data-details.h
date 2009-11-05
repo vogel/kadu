@@ -16,13 +16,13 @@
 
 class Account;
 
-class GaduContactAccountDataDetails : public ContactAccountDataDetails
+class GaduContactDetails : public ContactDetails
 {
 	unsigned long MaxImageSize;
 	unsigned int GaduProtocolVersion;
 
 public:
-	GaduContactAccountDataDetails();
+	GaduContactDetails();
 
 	virtual bool validateId();
 

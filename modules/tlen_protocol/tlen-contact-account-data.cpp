@@ -9,7 +9,7 @@
 
 #include "tlen-contact.h"
 
-bool TlenContactAccountData::validateId()
+bool TlenContact::validateId()
 {
 	return true;
 }

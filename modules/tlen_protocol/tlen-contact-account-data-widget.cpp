@@ -20,21 +20,21 @@
 
 #include "tlen-contact-widget.h"
 
-TlenContactAccountDataWidget::TlenContactAccountDataWidget(TlenContactAccountData *contactAccountData, QWidget *parent) :
-	ContactAccountDataWidget(new TlenContactAccountDataManager(contactAccountData, parent), 
-		contactAccountData, parent),
-	Data(contactAccountData)
+TlenContactWidget::TlenContactWidget(TlenContact *contact, QWidget *parent) :
+	ContactWidget(new TlenContactManager(contact, parent), 
+		contact, parent),
+	Data(contact)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 
 	createGui();
 }
 
-TlenContactAccountDataWidget::~TlenContactAccountDataWidget()
+TlenContactWidget::~TlenContactWidget()
 {
 }
 
-void TlenContactAccountDataWidget::createGui()
+void TlenContactWidget::createGui()
 {
 	appendUiFile(dataPath("kadu/modules/configuration/tlen_contact.ui"));
 	//QLineEdit *passwordLineEdit = dynamic_cast<QLineEdit *>(widgetById("password"));

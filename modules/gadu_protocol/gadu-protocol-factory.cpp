@@ -59,7 +59,7 @@ Contact * GaduProtocolFactory::newContact(Account account, Buddy buddy, const QS
 	return new GaduContact(account, buddy, id, true);
 }
 
-Contact * GaduProtocolFactory::loadContactAccountData(StoragePoint *storagePoint)
+Contact * GaduProtocolFactory::loadContact(StoragePoint *storagePoint)
 {
 	if (!storagePoint)
 		return 0;
@@ -92,11 +92,11 @@ QRegExp GaduProtocolFactory::idRegularExpression()
 	return IdRegularExpression;
 }
 
-ContactWidget * GaduProtocolFactory::newContactAccountDataWidget(Contact *contactAccountData, QWidget *parent)
+ContactWidget * GaduProtocolFactory::newContactWidget(Contact *contact, QWidget *parent)
 {
-	GaduContact *gaduContactAccountData = dynamic_cast<GaduContact *>(contactAccountData);
+	GaduContact *gaduContact = dynamic_cast<GaduContact *>(contact);
 
-	return 0 != gaduContactAccountData
-		? new GaduContactWidget(gaduContactAccountData, parent)
+	return 0 != gaduContact
+		? new GaduContactWidget(gaduContact, parent)
 		: 0;
 }

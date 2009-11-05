@@ -24,10 +24,10 @@ class KADUAPI AvatarService : public QObject
 public:
 	AvatarService(QObject *parent = 0) : QObject(parent) {}
 
-	virtual void fetchAvatar(Contact *contactAccountData) = 0;
+	virtual void fetchAvatar(Contact *contact) = 0;
 
 signals:
-	void avatarFetched(Contact *contactAccountData, const QByteArray &avatar);
+	void avatarFetched(Contact *contact, const QByteArray &avatar);
 
 };
 

@@ -140,7 +140,7 @@ void BuddyManager::addBuddy(Buddy buddy)
 	connect(buddy.data(), SIGNAL(contactRemoved(Account)),
 			this, SLOT(contactRemoved(Account)));
 	connect(buddy.data(), SIGNAL(contactIdChanged(Account, const QString &)),
-			this, SLOT(contactAccountDataIdChanged(Account, const QString &)));
+			this, SLOT(contactIdChanged(Account, const QString &)));
 }
 
 void BuddyManager::removeBuddy(Buddy buddy)
@@ -164,7 +164,7 @@ void BuddyManager::removeBuddy(Buddy buddy)
 	disconnect(buddy.data(), SIGNAL(contactRemoved(Account)),
 			this, SLOT(contactRemoved(Account)));
 	disconnect(buddy.data(), SIGNAL(contactIdChanged(Account, const QString &)),
-			this, SLOT(contactAccountDataIdChanged(Account, const QString &)));
+			this, SLOT(contactIdChanged(Account, const QString &)));
 
 	emit buddyAboutToBeRemoved(buddy);
 	if (BuddyRemovePredicateObject::inquireAll(buddy))

@@ -11,16 +11,16 @@
 
 #include "tlen-contact-manager.h"
 
-TlenContactAccountDataManager::TlenContactAccountDataManager(TlenContactAccountData* data, QObject *parent)
-	: ConfigurationContactAccountDataManager(data, parent), Data(data)
+TlenContactManager::TlenContactManager(TlenContact* data, QObject *parent)
+	: ConfigurationContactManager(data, parent), Data(data)
 {
 }
 
-void TlenContactAccountDataManager::writeEntry(const QString &section, const QString &name, const QVariant &value)
+void TlenContactManager::writeEntry(const QString &section, const QString &name, const QVariant &value)
 {
 	if (section != "Tlen")
 	{
-		ConfigurationContactAccountDataManager::writeEntry(section, name, value);
+		ConfigurationContactManager::writeEntry(section, name, value);
 		return;
 	}
 
@@ -29,10 +29,10 @@ void TlenContactAccountDataManager::writeEntry(const QString &section, const QSt
 	// other data
 }
 
-QVariant TlenContactAccountDataManager::readEntry(const QString &section, const QString &name)
+QVariant TlenContactManager::readEntry(const QString &section, const QString &name)
 {
 	if (section != "Tlen")
-		return ConfigurationContactAccountDataManager::readEntry(section, name);
+		return ConfigurationContactManager::readEntry(section, name);
 
 	if (name == "Tlenid")
 		return Data->id();

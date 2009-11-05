@@ -57,31 +57,31 @@ void ContactManager::load(Account account)
 		return;
 
 	XmlConfigFile *configurationStorage = storage()->storage();
-	QDomElement contactAccountDatasNode = storage()->point();
+	QDomElement contactsNode = storage()->point();
 
-	if (contactAccountDatasNode.isNull())
+	if (contactsNode.isNull())
 		return;
 
 	// TODO 0.6.6: by tag does not work, this works only if childNodes are "Chat"
-	QDomNodeList contactAccountDatasNodes = contactAccountDatasNode.childNodes();
+	QDomNodeList contactsNodes = contactsNode.childNodes();
 
-	int count = contactAccountDatasNodes.count();
+	int count = contactsNodes.count();
 
 	QString uuid = account.uuid().toString();
 	for (int i = 0; i < count; i++)
 	{
-		QDomElement contactAccountDataElement = contactAccountDatasNodes.at(i).toElement();
-		if (contactAccountDataElement.isNull())
+		QDomElement contactElement = contactsNodes.at(i).toElement();
+		if (contactElement.isNull())
 			continue;
 
-		if (configurationStorage->getTextNode(contactAccountDataElement, "Account") != uuid)
+		if (configurationStorage->getTextNode(contactElement, "Account") != uuid)
 			continue;
 
-		StoragePoint *contactStoragePoint = new StoragePoint(configurationStorage, contactAccountDataElement);
+		StoragePoint *contactStoragePoint = new StoragePoint(configurationStorage, contactElement);
 		if (!account.protocolHandler())
 			return;
 
-		Contact *cad = account.protocolHandler()->protocolFactory()->loadContactAccountData(contactStoragePoint);
+		Contact *cad = account.protocolHandler()->protocolFactory()->loadContact(contactStoragePoint);
 
 		if (cad)
 		{

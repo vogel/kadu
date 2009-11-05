@@ -20,7 +20,7 @@ class GaduAvatarService : public AvatarService
 public:
 	GaduAvatarService(QObject *parent = 0) : AvatarService(parent) {}
 
-	void fetchAvatar(Contact *contactAccountData);
+	void fetchAvatar(Contact *contact);
 
 };
 

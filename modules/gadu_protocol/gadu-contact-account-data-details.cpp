@@ -9,12 +9,12 @@
 
 #include "gadu-contact.h"
 
-unsigned int GaduContactAccountData::uin()
+unsigned int GaduContact::uin()
 {
 	return id().toUInt();
 }
 
-bool GaduContactAccountData::validateId()
+bool GaduContact::validateId()
 {
 	bool ok;
 	id().toUInt(&ok);

@@ -16,17 +16,17 @@
 
 class Account;
 
-class TlenContactAccountData : public ContactAccountData
+class TlenContact : public Contact
 {
 	unsigned long MaxImageSize;
 
 public:
-	TlenContactAccountData(Account *account, Contact contact, const QString &id, bool loaded = false)
-		: ContactAccountData(account, contact, id, loaded) {}
-	TlenContactAccountData(Account *account, Contact contact, const QString &id, StoragePoint *storage)
-		: ContactAccountData(account, contact, id, storage) {}
-	TlenContactAccountData(StoragePoint *storage) :
-		ContactAccountData(storage) {}
+	TlenContact(Account *account, Contact contact, const QString &id, bool loaded = false)
+		: Contact(account, contact, id, loaded) {}
+	TlenContact(Account *account, Contact contact, const QString &id, StoragePoint *storage)
+		: Contact(account, contact, id, storage) {}
+	TlenContact(StoragePoint *storage) :
+		Contact(storage) {}
 
 	virtual bool validateId();
 

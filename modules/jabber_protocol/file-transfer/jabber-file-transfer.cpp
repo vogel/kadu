@@ -166,7 +166,7 @@ void JabberFileTransfer::send()
 		return;
 	}
 
-	JabberContact *jcad = jabberProtocol->jabberContactAccountData(buddy());
+	JabberContact *jcad = jabberProtocol->jabberContact(buddy());
 	if (!jcad)
 	{
 		changeFileTransferStatus(FileTransfer::StatusNotConnected);

@@ -20,10 +20,10 @@
 
 #include "gadu-contact-widget.h"
 
-GaduContactWidget::GaduContactWidget(GaduContact *contactAccountData, QWidget *parent) :
-		ContactWidget(new GaduContactDataManager(contactAccountData, parent),
-			contactAccountData, parent),
-		Data(contactAccountData)
+GaduContactWidget::GaduContactWidget(GaduContact *contact, QWidget *parent) :
+		ContactWidget(new GaduContactDataManager(contact, parent),
+			contact, parent),
+		Data(contact)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 

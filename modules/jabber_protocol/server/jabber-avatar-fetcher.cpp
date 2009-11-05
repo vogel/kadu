@@ -23,27 +23,27 @@
 
 #include "jabber-avatar-fetcher.h"
 
-JabberAvatarFetcher::JabberAvatarFetcher(Contact *contactAccountData, QObject *parent) :
-		QObject(parent), MyContactAccountData(contactAccountData)
+JabberAvatarFetcher::JabberAvatarFetcher(Contact *contact, QObject *parent) :
+		QObject(parent), MyContact(contact)
 {
 }
 
 
 void JabberAvatarFetcher::fetchAvatar()
 {
-	JabberProtocol *jabberProtocol = dynamic_cast<JabberProtocol *>(MyContactAccountData->account().protocolHandler());
+	JabberProtocol *jabberProtocol = dynamic_cast<JabberProtocol *>(MyContact->account().protocolHandler());
 	if (!jabberProtocol || !jabberProtocol->isConnected())
 		return;
-	VCardFactory::instance()->getVCard(MyContactAccountData->id(), jabberProtocol->client()->rootTask(), this, SLOT(receivedVCard()));
+	VCardFactory::instance()->getVCard(MyContact->id(), jabberProtocol->client()->rootTask(), this, SLOT(receivedVCard()));
 }
 
 void JabberAvatarFetcher::receivedVCard()
 {
-	const VCard* vcard = VCardFactory::instance()->vcard(MyContactAccountData->id());
+	const VCard* vcard = VCardFactory::instance()->vcard(MyContact->id());
 	if (vcard && !vcard->photo().isEmpty()) 
 	{
-		MyContactAccountData->avatar().setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + 7200));
-		emit avatarFetched(MyContactAccountData, vcard->photo());
+		MyContact->avatar().setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + 7200));
+		emit avatarFetched(MyContact, vcard->photo());
 	}
 	deleteLater();
 }

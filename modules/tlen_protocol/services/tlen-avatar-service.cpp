@@ -13,31 +13,31 @@
 #include "misc/path-conversion.h"
 #include "server/tlen-avatar-fetcher.h"
 
-void TlenAvatarService::fetchAvatar(Contact *contactAccountData)
+void TlenAvatarService::fetchAvatar(Contact *contact)
 {
-	if (contactAccountData->id().isEmpty())
+	if (contact->id().isEmpty())
 		return;
 
-	if (InProgress.contains(contactAccountData))
+	if (InProgress.contains(contact))
 		return;
 
-	InProgress.append(contactAccountData);
+	InProgress.append(contact);
 
-	TlenAvatarFetcher *avatarFetcher = new TlenAvatarFetcher(contactAccountData, this);
+	TlenAvatarFetcher *avatarFetcher = new TlenAvatarFetcher(contact, this);
 	connect(avatarFetcher, SIGNAL(avatarFetched(Contact *, const QByteArray &)),
 			this, SIGNAL(avatarReady(Contact *, const QByteArray &)));
 
 	avatarFetcher->fetchAvatar();
-	qDebug() << "Tlen Get Avatar" << contactAccountData->id();
+	qDebug() << "Tlen Get Avatar" << contact->id();
 }
 
-void TlenAvatarService::avatarReady(Contact *contactAccountData, const QByteArray &avatar)
+void TlenAvatarService::avatarReady(Contact *contact, const QByteArray &avatar)
 {
-	InProgress.removeAll(contactAccountData);
+	InProgress.removeAll(contact);
 
 	if (avatar.isNull())
 		return;
 
-	emit avatarFetched(contactAccountData, avatar);
-	qDebug() << "Tlen Have Avatar" << contactAccountData->id();
+	emit avatarFetched(contact, avatar);
+	qDebug() << "Tlen Have Avatar" << contact->id();
 }

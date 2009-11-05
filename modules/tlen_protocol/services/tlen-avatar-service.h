@@ -24,10 +24,10 @@ class TlenAvatarService : public AvatarService
 public:
 	TlenAvatarService(QObject *parent = 0) : AvatarService(parent) {}
 
-	void fetchAvatar(Contact *contactAccountData);
+	void fetchAvatar(Contact *contact);
 
 private slots:
-	void avatarReady(Contact *contactAccountData, const QByteArray &avatar);
+	void avatarReady(Contact *contact, const QByteArray &avatar);
 
 };
 

@@ -218,7 +218,7 @@ void DccManager::connectionRequestReceived(Buddy buddy)
 {
 	kdebugf();
 
-	GaduContact *gcad = Protocol->gaduContactAccountData(buddy);
+	GaduContact *gcad = Protocol->gaduContact(buddy);
 	if (!gcad)
 		return;
 
@@ -251,7 +251,7 @@ bool DccManager::acceptConnection(unsigned int uin, unsigned int peerUin, unsign
 		return false;
 	}
 
-	GaduContact *gcad = Protocol->gaduContactAccountData(buddy);
+	GaduContact *gcad = Protocol->gaduContact(buddy);
 	if (!gcad)
 		return false;
 
@@ -455,7 +455,7 @@ void DccManager::attachSendFileTransferSocket7(unsigned int uin, GaduContact *gc
 void DccManager::attachSendFileTransferSocket(GaduFileTransfer *gft)
 {
 	Buddy peer = gft->buddy();
-	GaduContact *gcad = Protocol->gaduContactAccountData(peer);
+	GaduContact *gcad = Protocol->gaduContact(peer);
 	if (!gcad)
 		return;
 

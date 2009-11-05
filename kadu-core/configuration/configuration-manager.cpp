@@ -50,20 +50,20 @@ void ConfigurationManager::importConfiguration()
 {
 	QDomElement root = xml_config_file->rootElement();
 
-	if (root.elementsByTagName("ContactAccountDatas").count() == 0 &&
+	if (root.elementsByTagName("Contacts").count() == 0 &&
 	    root.elementsByTagName("ContactsNew").count() == 1)
-		importOldContactAccountData();
+		importOldContact();
 
 	if (root.elementsByTagName("ContactsNew").count() == 1 &&
 	    root.elementsByTagName("Buddies").count() == 0)
 		importContactsIntoBuddies();
 }
 
-void ConfigurationManager::importOldContactAccountData()
+void ConfigurationManager::importOldContact()
 {
 	QDomElement root = xml_config_file->rootElement();
 	QDomElement contactsNew = root.elementsByTagName("ContactsNew").at(0).toElement();
-	QDomElement contactAccountDatasNode = xml_config_file->createElement(root, "ContactAccountDatas");
+	QDomElement contactsNode = xml_config_file->createElement(root, "Contacts");
 
 	QDomNodeList contacts = contactsNew.elementsByTagName("Contact");
 	int count = contacts.count();
@@ -73,17 +73,17 @@ void ConfigurationManager::importOldContactAccountData()
 		if (contact.isNull())
 			continue;
 
-		QDomNodeList contactAccountDatas = contact.elementsByTagName("ContactAccountData");
-		int datasCount = contactAccountDatas.size();
+		QDomNodeList contacts = contact.elementsByTagName("Contact");
+		int datasCount = contacts.size();
 		for (int j = 0; j < datasCount; j++)
 		{
-			QDomElement contactAccountData = contactAccountDatas.at(j).toElement();
-			if (contactAccountData.isNull())
+			QDomElement contact = contacts.at(j).toElement();
+			if (contact.isNull())
 				continue;
 
-			contact.removeChild(contactAccountData);
-			contactAccountDatasNode.appendChild(contactAccountData);
-			xml_config_file->createTextNode(contactAccountData, "Contact", contact.attribute("uuid"));
+			contact.removeChild(contact);
+			contactsNode.appendChild(contact);
+			xml_config_file->createTextNode(contact, "Contact", contact.attribute("uuid"));
 		}
 	}
 

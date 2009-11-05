@@ -21,10 +21,10 @@
 
 #include "jabber-contact-widget.h"
 
-JabberContactWidget::JabberContactWidget(JabberContact *contactAccountData, QWidget *parent) :
-	ContactWidget(new JabberContactDataManager(contactAccountData, parent),
-		contactAccountData, parent),
-	Data(contactAccountData)
+JabberContactWidget::JabberContactWidget(JabberContact *contact, QWidget *parent) :
+	ContactWidget(new JabberContactDataManager(contact, parent),
+		contact, parent),
+	Data(contact)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 

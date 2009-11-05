@@ -25,7 +25,7 @@ class JabberContactWidget : public ContactWidget
 	void createGui();
 
 public:
-	explicit JabberContactWidget(JabberContact *contactAccountData, QWidget *parent = 0);
+	explicit JabberContactWidget(JabberContact *contact, QWidget *parent = 0);
 	virtual ~JabberContactWidget();
 
 };

@@ -12,17 +12,17 @@
 
 #include "configuration/configuration-contact-manager.h"
 
-class TlenContactAccountData;
+class TlenContact;
 
-class TlenContactAccountDataManager : public ConfigurationContactAccountDataManager
+class TlenContactManager : public ConfigurationContactManager
 {
-	TlenContactAccountData *Data;
+	TlenContact *Data;
 
 protected:
-	TlenContactAccountData * data() { return Data; }
+	TlenContact * data() { return Data; }
 
 public:
-	explicit TlenContactAccountDataManager(TlenContactAccountData *data, QObject *parent = 0);
+	explicit TlenContactManager(TlenContact *data, QObject *parent = 0);
 
 	virtual void writeEntry(const QString &section, const QString &name, const QVariant &value);
 	virtual QVariant readEntry(const QString &section, const QString &name);

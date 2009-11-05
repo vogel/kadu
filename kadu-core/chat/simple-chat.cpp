@@ -38,7 +38,7 @@ void SimpleChat::load()
 
 	Chat::load();
 
-	QString cadUuid = loadValue<QString>("ContactAccountData");
+	QString cadUuid = loadValue<QString>("Contact");
 	if (cadUuid.isNull())
 	{
 		Buddy buddy = BuddyManager::instance()->byUuid(loadValue<QString>("Contact"));
@@ -63,7 +63,7 @@ void SimpleChat::store()
 	storeValue("Type", "Simple");
 
 	if (CurrentContact)
-		storeValue("ContactAccountData", CurrentContact->uuid().toString());
+		storeValue("Contact", CurrentContact->uuid().toString());
 }
 
 ChatType SimpleChat::type() const

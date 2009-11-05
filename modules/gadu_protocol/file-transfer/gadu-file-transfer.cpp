@@ -116,7 +116,7 @@ void GaduFileTransfer::send()
 		return;
 	}
 
-	GaduContact *gcad = gaduProtocol->gaduContactAccountData(buddy());
+	GaduContact *gcad = gaduProtocol->gaduContact(buddy());
 	if (!gcad)
 	{
 		changeFileTransferStatus(FileTransfer::StatusNotConnected);
