@@ -10,7 +10,7 @@
 #include "misc/misc.h"
 
 #include "file-transfer/jabber-file-transfer.h"
-#include "jabber-contact-account-data.h"
+#include "jabber-contact.h"
 #include "jabber-protocol.h"
 
 #include "jabber-file-transfer-service.h"

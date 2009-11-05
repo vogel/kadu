@@ -15,18 +15,18 @@
 
 #include "gui/widgets/contact-account-data-widget.h"
 
-class JabberContactAccountData;
+class JabberContact;
 
-class JabberContactAccountDataWidget : public ContactAccountDataWidget
+class JabberContactWidget : public ContactAccountDataWidget
 {
 	Q_OBJECT
 
-	JabberContactAccountData *Data;
+	JabberContact *Data;
 	void createGui();
 
 public:
-	explicit JabberContactAccountDataWidget(JabberContactAccountData *contactAccountData, QWidget *parent = 0);
-	virtual ~JabberContactAccountDataWidget();
+	explicit JabberContactWidget(JabberContact *contactAccountData, QWidget *parent = 0);
+	virtual ~JabberContactWidget();
 
 };
 

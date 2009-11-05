@@ -11,7 +11,7 @@
 
 #include "jabber-contact.h"
 
-bool JabberContactAccountData::validateId()
+bool JabberContact::validateId()
 {
 	XMPP::Jid newJid(JIDUtil::accountFromString(id()));
 	return !newJid.node().isEmpty() && !newJid.domain().isEmpty();

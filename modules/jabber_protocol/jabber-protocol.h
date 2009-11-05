@@ -15,7 +15,7 @@
 #include "protocols/protocols-manager.h"
 
 #include "client/jabber-client.h"
-#include "jabber-contact-account-data.h"
+#include "jabber-contact.h"
 #include "resource/jabber-resource-pool.h"
 #include "services/jabber-avatar-service.h"
 #include "services/jabber-chat-service.h"
@@ -73,7 +73,7 @@ class JabberProtocol : public Protocol
 		virtual SearchService * searchService() { return 0; }
 		JabberResourcePool *resourcePool();
 
-		JabberContactAccountData * jabberContactAccountData(Buddy buddy) const;
+		JabberContact * jabberContactAccountData(Buddy buddy) const;
 
 	protected:
 		virtual void changeStatus();

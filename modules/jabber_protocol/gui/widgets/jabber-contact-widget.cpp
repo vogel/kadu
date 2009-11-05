@@ -21,8 +21,8 @@
 
 #include "jabber-contact-widget.h"
 
-JabberContactAccountDataWidget::JabberContactAccountDataWidget(JabberContactAccountData *contactAccountData, QWidget *parent) :
-	ContactAccountDataWidget(new JabberContactAccountDataManager(contactAccountData, parent), 
+JabberContactWidget::JabberContactWidget(JabberContact *contactAccountData, QWidget *parent) :
+	ContactAccountDataWidget(new JabberContactDataManager(contactAccountData, parent),
 		contactAccountData, parent),
 	Data(contactAccountData)
 {
@@ -31,11 +31,11 @@ JabberContactAccountDataWidget::JabberContactAccountDataWidget(JabberContactAcco
 	createGui();
 }
 
-JabberContactAccountDataWidget::~JabberContactAccountDataWidget()
+JabberContactWidget::~JabberContactWidget()
 {
 }
 
-void JabberContactAccountDataWidget::createGui()
+void JabberContactWidget::createGui()
 {
 	appendUiFile(dataPath("kadu/modules/configuration/jabber_contact.ui"));
 	//QLineEdit *passwordLineEdit = dynamic_cast<QLineEdit *>(widgetById("password"));

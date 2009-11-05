@@ -480,7 +480,7 @@ void JabberProtocol::clientResourceAvailable(const XMPP::Jid &jid, const XMPP::R
 	if (buddy.display().isEmpty())
 		buddy.setDisplay(jid.bare());
 
-	JabberContactAccountData *data = jabberContactAccountData(buddy);
+	JabberContact *data = jabberContactAccountData(buddy);
 
 	if (!data)
 		return;
@@ -531,7 +531,7 @@ void JabberProtocol::clientResourceUnavailable(const XMPP::Jid &jid, const XMPP:
 	if (buddy.display().isEmpty())
 		buddy.setDisplay(jid.bare());
 
-	JabberContactAccountData *data = jabberContactAccountData(buddy);
+	JabberContact *data = jabberContactAccountData(buddy);
 
 	if (!data)
 		return;
@@ -545,7 +545,7 @@ void JabberProtocol::clientResourceUnavailable(const XMPP::Jid &jid, const XMPP:
 
 void JabberProtocol::contactAdded(Buddy &buddy)
 {
-	JabberContactAccountData *jcad = jabberContactAccountData(buddy);
+	JabberContact *jcad = jabberContactAccountData(buddy);
 	if (!jcad)
 		return;
 	QStringList groupsList;
@@ -557,7 +557,7 @@ void JabberProtocol::contactAdded(Buddy &buddy)
 
 void JabberProtocol::contactRemoved(Buddy &buddy)
 {
-	JabberContactAccountData *jcad = jabberContactAccountData(buddy);
+	JabberContact *jcad = jabberContactAccountData(buddy);
 	if (!jcad || !isConnected())
 		return;
 	JabberClient->removeContact(jcad->id());
@@ -567,7 +567,7 @@ void JabberProtocol::contactRemoved(Buddy &buddy)
 
 void JabberProtocol::contactUpdated(Buddy &buddy)
 {
-	JabberContactAccountData *jcad = jabberContactAccountData(buddy);
+	JabberContact *jcad = jabberContactAccountData(buddy);
 	if (!jcad)
 		return;
 	QStringList groupsList;
@@ -866,7 +866,7 @@ QPixmap JabberProtocol::statusPixmap(const QString &statusType)
 	return IconsManager::instance()->loadPixmap(pixmapName);
 }
 
-JabberContactAccountData * JabberProtocol::jabberContactAccountData(Buddy buddy) const
+JabberContact * JabberProtocol::jabberContactAccountData(Buddy buddy) const
 {
-	return dynamic_cast<JabberContactAccountData *>(buddy.contact(account()));
+	return dynamic_cast<JabberContact *>(buddy.contact(account()));
 }

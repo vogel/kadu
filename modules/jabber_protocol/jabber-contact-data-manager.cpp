@@ -11,12 +11,12 @@
 
 #include "jabber-contact-data-manager.h"
 
-JabberContactAccountDataManager::JabberContactAccountDataManager(JabberContactAccountData* data, QObject *parent)
+JabberContactDataManager::JabberContactDataManager(JabberContact* data, QObject *parent)
 : ConfigurationContactAccountDataManager(data, parent), Data(data)
 {
 }
 
-void JabberContactAccountDataManager::writeEntry(const QString &section, const QString &name, const QVariant &value)
+void JabberContactDataManager::writeEntry(const QString &section, const QString &name, const QVariant &value)
 {
 	if (section != "Jabber")
 	{
@@ -29,7 +29,7 @@ void JabberContactAccountDataManager::writeEntry(const QString &section, const Q
 	// other data
 }
 
-QVariant JabberContactAccountDataManager::readEntry(const QString &section, const QString &name)
+QVariant JabberContactDataManager::readEntry(const QString &section, const QString &name)
 {
 	if (section != "Jabber")
 		return ConfigurationContactAccountDataManager::readEntry(section, name);
