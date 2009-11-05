@@ -84,11 +84,11 @@ signals:
 	void buddyRemoved(Buddy &buddy);
 
 	void buddyUpdated(Buddy &buddy);
-	void contactAccountDataAboutToBeAdded(Buddy &buddy, Account account);
-	void contactAccountDataAdded(Buddy &buddy, Account account);
-	void contactAccountDataAboutToBeRemoved(Buddy &buddy, Account account);
-	void contactAccountDataRemoved(Buddy &buddy, Account account);
-	void contactAccountIdChanged(Buddy &buddy, Account account, const QString &oldId);
+	void contactAboutToBeAdded(Buddy &buddy, Account account);
+	void contactAdded(Buddy &buddy, Account account);
+	void contactAboutToBeRemoved(Buddy &buddy, Account account);
+	void contactRemoved(Buddy &buddy, Account account);
+	void contactIdChanged(Buddy &buddy, Account account, const QString &oldId);
 
 };
 

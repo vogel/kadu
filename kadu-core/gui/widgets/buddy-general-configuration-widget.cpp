@@ -21,7 +21,7 @@
 #include "accounts/account-manager.h"
 #include "buddies/buddy-manager.h"
 #include "contacts/contact.h"
-#include "configuration/configuration-contact-account-data-manager.h"
+#include "configuration/configuration-contact-data-manager.h"
 #include "icons-manager.h"
 #include "misc/misc.h"
 #include "model/actions-proxy-model.h"

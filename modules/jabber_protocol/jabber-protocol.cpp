@@ -99,13 +99,13 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 			this, SLOT(contactAdded(Buddy &)));
 	connect(BuddyManager::instance(), SIGNAL(buddyRemoved(Buddy &)),
 			this, SLOT(contactRemoved(Buddy &)));
-	connect(BuddyManager::instance(), SIGNAL(contactAccountDataAdded(Buddy &, Account)),
+	connect(BuddyManager::instance(), SIGNAL(contactAdded(Buddy &, Account)),
 			this, SLOT(contactAccountDataAboutToBeRemoved(Buddy & , Account)));
-	connect(BuddyManager::instance(), SIGNAL(contactAccountDataAboutToBeRemoved(Buddy &, Account)),
+	connect(BuddyManager::instance(), SIGNAL(contactAboutToBeRemoved(Buddy &, Account)),
 			this, SLOT(contactAccountDataAboutToBeRemoved(Buddy &, Account)));
 	connect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy &)),
 			this, SLOT(contactUpdated(Buddy &)));
-	connect(BuddyManager::instance(), SIGNAL(contactAccountIdChanged(Buddy &, Account, const QString &)),
+	connect(BuddyManager::instance(), SIGNAL(contactIdChanged(Buddy &, Account, const QString &)),
 			this, SLOT(contactAccountIdChanged(Buddy &, Account, const QString &)));
 
 	kdebugf2();
@@ -117,9 +117,9 @@ JabberProtocol::~JabberProtocol()
 			this, SLOT(contactAdded(Buddy &)));
 	QObject::disconnect(BuddyManager::instance(), SIGNAL(buddyRemoved(Buddy &)),
 			this, SLOT(contactRemoved(Buddy &)));
-	QObject::disconnect(BuddyManager::instance(), SIGNAL(contactAccountDataAdded(Buddy &, Account)),
+	QObject::disconnect(BuddyManager::instance(), SIGNAL(contactAdded(Buddy &, Account)),
 			this, SLOT(contactAccountDataAboutToBeRemoved(Buddy & , Account)));
-	QObject::disconnect(BuddyManager::instance(), SIGNAL(contactAccountDataAboutToBeRemoved(Buddy &, Account)),
+	QObject::disconnect(BuddyManager::instance(), SIGNAL(contactAboutToBeRemoved(Buddy &, Account)),
 			this, SLOT(contactAccountDataAboutToBeRemoved(Buddy &, Account)));
 }
 

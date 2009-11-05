@@ -10,14 +10,14 @@
 #include "contacts/contact.h"
 #include "status/status.h"
 
-#include "configuration-contact-account-data-manager.h"
+#include "configuration-contact-data-manager.h"
 
-ConfigurationContactAccountDataManager::ConfigurationContactAccountDataManager(Contact *data, QObject *parent)
+ConfigurationContactDataManager::ConfigurationContactDataManager(Contact *data, QObject *parent)
 	: ConfigurationWindowDataManager(parent), Data(data)
 {
 }
 
-void ConfigurationContactAccountDataManager::writeEntry(const QString &section, const QString &name, const QVariant &value)
+void ConfigurationContactDataManager::writeEntry(const QString &section, const QString &name, const QVariant &value)
 {
 	if (section != "Contact")
 		return;
@@ -29,7 +29,7 @@ void ConfigurationContactAccountDataManager::writeEntry(const QString &section, 
 		Data->setOfflineTo(value.value<bool>());
 }
 
-QVariant ConfigurationContactAccountDataManager::readEntry(const QString &section, const QString &name)
+QVariant ConfigurationContactDataManager::readEntry(const QString &section, const QString &name)
 {
 	if (section != "Contact")
 		return QVariant(QString::null);

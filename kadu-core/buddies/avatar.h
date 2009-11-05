@@ -21,7 +21,7 @@ class Contact;
 
 class KADUAPI Avatar : public StorableObject
 {
-	Contact *MyContactAccountData;
+	Contact *MyContact;
 	QDateTime LastUpdated;
 	QDateTime NextUpdate;
 	QString FileName;
@@ -35,7 +35,7 @@ public:
 	virtual void load();
 	virtual void store();
 
-	Contact * contactAccountData();
+	Contact * contact();
 
 	QDateTime lastUpdated();
 	void setLastUpdated(const QDateTime &lastUpdated);

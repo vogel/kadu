@@ -16,7 +16,7 @@ class XmlConfigFile;
 
 class SimpleChat : public Chat
 {
-	Contact *CurrentContactAccountData;
+	Contact *CurrentContact;
 
 public:
 	explicit SimpleChat(StoragePoint *storage);

@@ -9,13 +9,13 @@
 
 #include <QtGui/QLineEdit>
 
-#include "configuration/configuration-contact-account-data-manager.h"
+#include "configuration/configuration-contact-data-manager.h"
 #include "contacts/contact.h"
 #include "misc/misc.h"
 
 #include "contact-account-data-widget.h"
 
-ContactAccountDataWidget::ContactAccountDataWidget(ConfigurationContactAccountDataManager *dataManager, Contact *contactAccountData, QWidget *parent)
+ContactAccountDataWidget::ContactAccountDataWidget(ConfigurationContactDataManager *dataManager, Contact *contactAccountData, QWidget *parent)
 	: ConfigurationWidget(dataManager, parent), Data(contactAccountData)
 {
 	setAttribute(Qt::WA_DeleteOnClose);

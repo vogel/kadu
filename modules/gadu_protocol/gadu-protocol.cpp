@@ -143,9 +143,9 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 			this, SLOT(contactAdded(Buddy &)));
 	connect(BuddyManager::instance(), SIGNAL(buddyRemoved(Buddy &)),
 			this, SLOT(contactRemoved(Buddy &)));
-	connect(BuddyManager::instance(), SIGNAL(contactAccountDataAdded(Buddy &, Account)),
+	connect(BuddyManager::instance(), SIGNAL(contactAdded(Buddy &, Account)),
 			this, SLOT(contactAccountDataAboutToBeRemoved(Buddy &, Account)));
-	connect(BuddyManager::instance(), SIGNAL(contactAccountDataAboutToBeRemoved(Buddy &, Account)),
+	connect(BuddyManager::instance(), SIGNAL(contactAboutToBeRemoved(Buddy &, Account)),
 			this, SLOT(contactAccountDataAboutToBeRemoved(Buddy &, Account)));
 
 	kdebugf2();
@@ -166,9 +166,9 @@ GaduProtocol::~GaduProtocol()
 			this, SLOT(contactAdded(Buddy &)));
 	disconnect(BuddyManager::instance(), SIGNAL(buddyRemoved(Buddy &)),
 			this, SLOT(contactRemoved(Buddy &)));
-	disconnect(BuddyManager::instance(), SIGNAL(contactAccountDataAdded(Buddy &, Account)),
+	disconnect(BuddyManager::instance(), SIGNAL(contactAdded(Buddy &, Account)),
 			this, SLOT(contactAccountDataAboutToBeRemoved(Buddy &, Account)));
-	disconnect(BuddyManager::instance(), SIGNAL(contactAccountDataAboutToBeRemoved(Buddy &, Account)),
+	disconnect(BuddyManager::instance(), SIGNAL(contactAboutToBeRemoved(Buddy &, Account)),
 			this, SLOT(contactAccountDataAboutToBeRemoved(Buddy &, Account)));
 
 	networkDisconnected(false);

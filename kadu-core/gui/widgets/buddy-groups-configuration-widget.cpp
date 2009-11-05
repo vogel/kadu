@@ -12,7 +12,7 @@
 #include <QtGui/QGroupBox>
 #include <QtGui/QLabel>
 
-#include "configuration/configuration-contact-account-data-manager.h"
+#include "configuration/configuration-contact-data-manager.h"
 #include "contacts/contact.h"
 #include "buddies/group.h"
 #include "buddies/group-manager.h"

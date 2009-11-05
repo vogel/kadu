@@ -10,11 +10,11 @@
 #ifndef GADU_CONTACT_DATA_MANAGER_H
 #define GADU_CONTACT_DATA_MANAGER_H
 
-#include "configuration/configuration-contact-account-data-manager.h"
+#include "configuration/configuration-contact-data-manager.h"
 
 class GaduContact;
 
-class GaduContactDataManager : public ConfigurationContactAccountDataManager
+class GaduContactDataManager : public ConfigurationContactDataManager
 {
 	GaduContact *Data;
 

@@ -10,11 +10,11 @@
 #ifndef JABBER_CONTACT_DATA_MANAGER_H
 #define JABBER_CONTACT_DATA_MANAGER_H
 
-#include "configuration/configuration-contact-account-data-manager.h"
+#include "configuration/configuration-contact-data-manager.h"
 
 class JabberContact;
 
-class JabberContactDataManager : public ConfigurationContactAccountDataManager
+class JabberContactDataManager : public ConfigurationContactDataManager
 {
 	JabberContact *Data;
 

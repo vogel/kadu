@@ -77,7 +77,7 @@ set (kadu_SRCS
 	configuration/account-data-manager.cpp
 	configuration/config-file-data-manager.cpp
 	configuration/configuration-aware-object.cpp
-	configuration/configuration-contact-account-data-manager.cpp
+	configuration/configuration-contact-data-manager.cpp
 	configuration/configuration-file.cpp
 	configuration/configuration-manager.cpp
 	configuration/notifier-configuration-data-manager.cpp

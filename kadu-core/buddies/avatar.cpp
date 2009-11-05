@@ -14,7 +14,7 @@
 
 Avatar::Avatar(Contact *contactAccountData, bool loadFromConfiguration) :
 		StorableObject("Avatar", contactAccountData),
-		MyContactAccountData(contactAccountData)
+		MyContact(contactAccountData)
 {
     	if (!loadFromConfiguration)
 		StorableObject::setLoaded(true);
@@ -56,9 +56,9 @@ void Avatar::store()
 	storeValue("FileName", FileName);
 }
 
-Contact * Avatar::contactAccountData()
+Contact * Avatar::contact()
 {
-	return MyContactAccountData;
+	return MyContact;
 }
 
 QDateTime Avatar::lastUpdated()

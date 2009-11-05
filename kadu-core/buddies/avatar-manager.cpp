@@ -47,9 +47,9 @@ AvatarService * AvatarManager::avatarService(Account account)
 	return protocol->avatarService();
 }
 
-AvatarService * AvatarManager::avatarService(Contact *contactAccountData)
+AvatarService * AvatarManager::avatarService(Contact *contact)
 {
-	Account account = contactAccountData->account();
+	Account account = contact->account();
 	if (account.isNull())
 		return 0;
 
@@ -58,7 +58,7 @@ AvatarService * AvatarManager::avatarService(Contact *contactAccountData)
 
 QString AvatarManager::avatarFileName(Avatar avatar)
 {
-	Contact *cad = avatar.contactAccountData();
+	Contact *cad = avatar.contact();
 	if (!cad)
 		return QString::null;
 
@@ -89,23 +89,23 @@ void AvatarManager::accountUnregistered(Account account)
 			   this, SLOT(avatarFetched(Contact *, const QByteArray &)));
 }
 
-void AvatarManager::updateAvatar(Contact *contactAccountData)
+void AvatarManager::updateAvatar(Contact *contact)
 {
-	QDateTime lastUpdated = contactAccountData->avatar().lastUpdated();
-	QDateTime nextUpdate = contactAccountData->avatar().nextUpdate();
-	if (lastUpdated.isValid() && lastUpdated.secsTo(QDateTime::currentDateTime()) < 60*60 || QFile::exists(contactAccountData->avatar().filePath()) && nextUpdate > QDateTime::currentDateTime())
+	QDateTime lastUpdated = contact->avatar().lastUpdated();
+	QDateTime nextUpdate = contact->avatar().nextUpdate();
+	if (lastUpdated.isValid() && lastUpdated.secsTo(QDateTime::currentDateTime()) < 60*60 || QFile::exists(contact->avatar().filePath()) && nextUpdate > QDateTime::currentDateTime())
 		return;
 
-	AvatarService *service = avatarService(contactAccountData);
+	AvatarService *service = avatarService(contact);
 	if (!service)
 		return;
 
-	service->fetchAvatar(contactAccountData);
+	service->fetchAvatar(contact);
 }
 
-void AvatarManager::avatarFetched(Contact *contactAccountData, const QByteArray &data)
+void AvatarManager::avatarFetched(Contact *contact, const QByteArray &data)
 {
-	Avatar &avatar = contactAccountData->avatar();
+	Avatar &avatar = contact->avatar();
 	avatar.setLastUpdated(QDateTime::currentDateTime());
 
 	QPixmap pixmap;
@@ -126,5 +126,5 @@ void AvatarManager::avatarFetched(Contact *contactAccountData, const QByteArray 
 	file.write(data);
 	file.close();
 
-	emit avatarUpdated(contactAccountData);
+	emit avatarUpdated(contact);
 }

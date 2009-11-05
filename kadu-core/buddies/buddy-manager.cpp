@@ -311,7 +311,7 @@ void BuddyManager::contactAccountDataAboutToBeAdded(Account account)
 
 	Buddy buddy = byBuddyShared(cd);
 	if (!buddy.isNull())
-		emit contactAccountDataAboutToBeAdded(buddy, account);
+		emit contactAboutToBeAdded(buddy, account);
 }
 
 void BuddyManager::contactAccountDataAdded(Account account)
@@ -322,7 +322,7 @@ void BuddyManager::contactAccountDataAdded(Account account)
 
 	Buddy buddy = byBuddyShared(cd);
 	if (!buddy.isNull())
-		emit contactAccountDataAdded(buddy, account);
+		emit contactAdded(buddy, account);
 }
 
 void BuddyManager::contactAccountDataAboutToBeRemoved(Account account)
@@ -333,7 +333,7 @@ void BuddyManager::contactAccountDataAboutToBeRemoved(Account account)
 
 	Buddy buddy = byBuddyShared(cd);
 	if (!buddy.isNull())
-		emit contactAccountDataAboutToBeRemoved(buddy, account);
+		emit contactAboutToBeRemoved(buddy, account);
 }
 
 void BuddyManager::contactAccountDataRemoved(Account account)
@@ -344,7 +344,7 @@ void BuddyManager::contactAccountDataRemoved(Account account)
 
 	Buddy buddy = byBuddyShared(cd);
 	if (!buddy.isNull())
-		emit contactAccountDataRemoved(buddy, account);
+		emit contactRemoved(buddy, account);
 }
 
 void BuddyManager::contactAccountDataIdChanged(Account account, const QString &oldId)
@@ -355,7 +355,7 @@ void BuddyManager::contactAccountDataIdChanged(Account account, const QString &o
 
 	Buddy buddy = byBuddyShared(cd);
 	if (!buddy.isNull())
-		emit contactAccountIdChanged(buddy, account, oldId);
+		emit contactIdChanged(buddy, account, oldId);
 }
 
 void BuddyManager::groupRemoved(Group *group)
