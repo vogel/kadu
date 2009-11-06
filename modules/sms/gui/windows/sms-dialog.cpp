@@ -300,12 +300,12 @@ void SmsDialog::onSmsSenderFinished(bool success)
 		//TODO 0.6.6
 		///	history->appendSms(recipient->text(), body->text());
 		}
-		
 		MobileNumberManager::instance()->registerNumber(recipient->text(), Sender.currentGateway()->name());
-		
-		if (!MessageBox::ask(tr("The SMS was sent and should be on its way.\nDo you want to send next message?"), "Information", this))
-			deleteLater();
+
 		body->clear();
+		e_contact->clear();
+		e_signature->clear();
+		recipient->clear();
 	}
 	b_send->setEnabled(true);
 	body->setEnabled(true);
