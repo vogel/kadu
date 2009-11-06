@@ -10,6 +10,7 @@
 #ifndef XML_CONFIG_FILE_H
 #define XML_CONFIG_FILE_H
 
+#include <QtCore/QList>
 #include <QtXml/QDomDocument>
 
 #include "exports.h"
@@ -35,9 +36,9 @@ private:
 	bool isElementNamed(const QDomElement &element, const QString &name);
 	bool isElementUuid(const QDomElement &element, const QString &uuid);
 
-	void removeNodes(QDomElement parentNode, QDomNodeList nodes);
-	void removeUuidNodes(QDomElement parentNode, QDomNodeList nodes, const QString &uuid);
-	void removeNamedNodes(QDomElement parentNode, QDomNodeList nodes, const QString &name);
+	void removeNodes(QDomElement parentNode, QList<QDomElement> elements);
+	void removeUuidNodes(QDomElement parentNode, QList<QDomElement> elements, const QString &uuid);
+	void removeNamedNodes(QDomElement parentNode, QList<QDomElement> elements, const QString &name);
 
 public:
 	/**
@@ -113,7 +114,7 @@ public:
 	QDomElement getNamedNode(QDomElement parentNode, const QString &nodeTagName, const QString &nodeName, GetNodeMode getMode = ModeGet);
 	QDomElement getUuidNode(QDomElement parentNode, const QString &uuidTagName, const QString &nodeUuid, GetNodeMode getMode = ModeGet);
 
-	QDomNodeList getNodes(QDomElement parent, const QString &nodeTagName);
+	QList<QDomElement> getNodes(QDomElement parent, const QString &nodeTagName);
 
 	void appendTextNode(QDomElement parentNode, const QString &nodeTagName, const QString &nodeContent);
 	void createTextNode(QDomElement parentNode, const QString &nodeTagName, const QString &nodeContent);

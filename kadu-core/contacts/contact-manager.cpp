@@ -48,7 +48,7 @@ void ContactManager::init()
 
 StoragePoint * ContactManager::createStoragePoint()
 {
-	return new StoragePoint(xml_config_file, xml_config_file->getNode("ContactAccountDatas"));
+	return new StoragePoint(xml_config_file, xml_config_file->getNode("Contacts"));
 }
 
 void ContactManager::load(Account account)
@@ -66,7 +66,6 @@ void ContactManager::load(Account account)
 	QDomNodeList contactsNodes = contactsNode.childNodes();
 
 	int count = contactsNodes.count();
-
 	QString uuid = account.uuid().toString();
 	for (int i = 0; i < count; i++)
 	{

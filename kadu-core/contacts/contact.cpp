@@ -18,7 +18,7 @@
 #include "contact.h"
 
 Contact::Contact(Account account, Buddy buddy, const QString &id, bool loaded) :
-		UuidStorableObject("ContactAccountData", ContactManager::instance(), loaded),
+		UuidStorableObject("Contact", ContactManager::instance(), loaded),
 		ContactAccount(account), OwnerBuddy(buddy), Id(id),
 		ContactAvatar(this, false) /* TODO: 0.6.6 */, Blocked(false), OfflineTo(false), Port(0)
 {

@@ -618,17 +618,9 @@ void TabsManager::load()
 	XmlConfigFile *storageFile = storage()->storage();
 	QDomElement point = storage()->point();
 
-	QDomNodeList nodes = storageFile->getNodes(point, "Tab");
-	int count = nodes.count();
-
-	for (int i = 0; i < count; i++)
+	QList<QDomElement> nodes = storageFile->getNodes(point, "Tab");
+	foreach (QDomElement element, nodes)
 	{
-		QDomNode node = nodes.at(i);
-		if (!node.isElement())
-			return;
-
-		QDomElement element = node.toElement();
-
 		QUuid chatId(element.attribute("chat"));
 
 		if (chatId.isNull())

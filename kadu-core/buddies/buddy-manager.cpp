@@ -54,18 +54,13 @@ StoragePoint * BuddyManager::createStoragePoint()
 
 void BuddyManager::importConfiguration(XmlConfigFile *configurationStorage)
 {
-	QDomElement contactsNode = configurationStorage->getNode("Buddies", XmlConfigFile::ModeFind);
+	QDomElement contactsNode = configurationStorage->getNode("OldContacts", XmlConfigFile::ModeFind);
 	if (contactsNode.isNull())
 		return;
 
-	QDomNodeList contactsNodes = configurationStorage->getNodes(contactsNode, "Contact");
-	int count = contactsNodes.count();
-	for (int i = 0; i < count; i++)
+	QList<QDomElement> contactElements = configurationStorage->getNodes(contactsNode, "Contact");
+	foreach (QDomElement contactElement, contactElements)
 	{
-		QDomElement contactElement = contactsNodes.item(i).toElement();
-		if (contactElement.isNull())
-			continue;
-
 		Buddy buddy;
 		buddy.importConfiguration(configurationStorage, contactElement);
 

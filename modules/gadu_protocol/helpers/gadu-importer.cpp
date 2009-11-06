@@ -117,23 +117,13 @@ void GaduImporter::importIgnored()
 	if (ignored.isNull())
 		return;
 
-	QDomNodeList ignoredGroups = xml_config_file->getNodes(ignored, "IgnoredGroup");
-	for (int i = 0; i < ignoredGroups.count(); i++)
+	QList<QDomElement> ignoredGroups = xml_config_file->getNodes(ignored, "IgnoredGroup");
+	foreach (QDomElement ignoredGroup, ignoredGroups)
 	{
-		QDomElement ignoredGroup = ignoredGroups.item(i).toElement();
-		if (ignoredGroup.isNull())
-			continue;
-
 		BuddySet ignoredList;
-		QDomNodeList ignoredContacts = xml_config_file->getNodes(ignoredGroup, "IgnoredContact");
-		for (int j = 0; j < ignoredContacts.count(); j++)
-		{
-			QDomElement ignoredContact = ignoredContacts.item(j).toElement();
-			if (ignoredContact.isNull())
-				continue;
-
+		QList<QDomElement> ignoredContacts = xml_config_file->getNodes(ignoredGroup, "IgnoredContact");
+		foreach (QDomElement ignoredContact, ignoredContacts)
 			ignoredList.insert(BuddyManager::instance()->byId(account, ignoredContact.attribute("uin")));
-		}
 
 		if (0 == ignoredList.count())
 			continue;

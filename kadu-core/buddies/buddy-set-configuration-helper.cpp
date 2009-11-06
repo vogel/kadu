@@ -30,16 +30,9 @@ BuddySet BuddySetConfigurationHelper::loadFromConfiguration(XmlConfigFile *confi
 {
 	BuddySet result;
 
-	QDomNodeList contactNodes = configurationStorage->getNodes(contactSetNode, "Contact");
-	int count = contactNodes.count();
-
-	for (int i = 0; i < count; i++)
-	{
-		QDomElement contactElement = contactNodes.item(i).toElement();
-		if (contactElement.isNull())
-			continue;
+	QList<QDomElement> contactElements = configurationStorage->getNodes(contactSetNode, "Contact");
+	foreach (QDomElement contactElement, contactElements)
 		result.insert(BuddyManager::instance()->byUuid(contactElement.text()));
-	}
 
 	return result;
 }

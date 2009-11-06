@@ -97,14 +97,9 @@ void AccountManager::load()
 	if (accountsNode.isNull())
 		return;
 
-	QDomNodeList accountNodes = storage()->storage()->getNodes(accountsNode, "Account");
-	int count = accountNodes.count();
-	for (int i = 0; i < count; i++)
+	QList<QDomElement> accountElements = storage()->storage()->getNodes(accountsNode, "Account");
+	foreach (QDomElement accountElement, accountElements)
 	{
-		QDomElement accountElement = accountNodes.item(i).toElement();
-		if (accountElement.isNull())
-			continue;
-
 		StoragePoint *storagePoint = new StoragePoint(storage()->storage(), accountElement);
 		Account account = Account::loadFromStorage(storagePoint);
 		AllAccounts.append(account);

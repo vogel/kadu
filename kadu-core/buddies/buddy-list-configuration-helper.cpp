@@ -19,16 +19,9 @@ BuddyList BuddyListConfigurationHelper::loadFromConfiguration(XmlConfigFile *con
 {
 	BuddyList result;
 	
-	QDomNodeList contactNodes = configurationStorage->getNodes(contactListNode, "Contact");
-	int count = contactNodes.count();
-
-	for (int i = 0; i < count; i++)
-	{
-		QDomElement contactElement = contactNodes.item(i).toElement();
-		if (contactElement.isNull())
-			continue;
+	QList<QDomElement> contactElements = configurationStorage->getNodes(contactListNode, "Contact");
+	foreach (QDomElement contactElement, contactElements)
 		result.append(BuddyManager::instance()->byUuid(contactElement.text()));
-	}
 	
 	return result;
 }

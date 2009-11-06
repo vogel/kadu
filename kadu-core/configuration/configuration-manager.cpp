@@ -50,6 +50,12 @@ void ConfigurationManager::importConfiguration()
 {
 	QDomElement root = xml_config_file->rootElement();
 
+	if (root.elementsByTagName("Contacts").count() == 1 &&
+		root.elementsByTagName("ContactsNew").count() == 0 &&
+		root.elementsByTagName("Buddies").count() == 0 &&
+		root.elementsByTagName("ContactAccountDatas").count() == 0)
+		copyOldContactsToImport();
+
 	if (root.elementsByTagName("Contacts").count() == 0 &&
 	    root.elementsByTagName("ContactsNew").count() == 1)
 		importOldContact();
@@ -57,6 +63,18 @@ void ConfigurationManager::importConfiguration()
 	if (root.elementsByTagName("ContactsNew").count() == 1 &&
 	    root.elementsByTagName("Buddies").count() == 0)
 		importContactsIntoBuddies();
+	
+	if (root.elementsByTagName("ContactAccountDatas").count() == 1)
+		importContactAccountDatasIntoContacts();
+}
+
+void ConfigurationManager::copyOldContactsToImport()
+{
+	QDomElement root = xml_config_file->rootElement();
+	QDomElement oldContactsNode = root.elementsByTagName("Contacts").at(0).toElement();
+	oldContactsNode.setTagName("OldContacts");
+
+	flush();
 }
 
 void ConfigurationManager::importOldContact()
@@ -105,6 +123,33 @@ void ConfigurationManager::importContactsIntoBuddies()
 			continue;
 
 		buddy.setTagName("Buddy");
+	}
+
+	flush();
+}
+
+void ConfigurationManager::importContactAccountDatasIntoContacts()
+{
+	QDomElement root = xml_config_file->rootElement();
+
+	if (root.elementsByTagName("Contacts").size() > 0)
+	{
+		QDomElement oldContactsNode = root.elementsByTagName("Contacts").at(0).toElement();
+		oldContactsNode.setTagName("OldContacts");
+	}
+
+	QDomElement contactsNode = root.elementsByTagName("ContactAccountDatas").at(0).toElement();
+	contactsNode.setTagName("Contacts");
+	
+	QDomNodeList contacts = contactsNode.elementsByTagName("ContactAccountData");
+	int count = contacts.count();
+	for (int i = 0; i < count; i++)
+	{
+		QDomElement contact = contacts.at(i).toElement();
+		if (contact.isNull())
+			continue;
+		
+		contact.setTagName("Contact");
 	}
 
 	flush();
