@@ -14,6 +14,10 @@
 #include <QtCore/QSharedData>
 #include <QtCore/QUuid>
 
+#include "buddies/avatar.h"
+#include "buddies/buddy.h"
+#include "status/status.h"
+
 #include "configuration/uuid-storable-object.h"
 
 #undef Property
@@ -40,6 +44,22 @@ private:
 	int BlockUpdatedSignalCount;
 	bool Updated;
 
+	Account ContactAccount;
+	Avatar ContactAvatar;
+	Buddy OwnerBuddy;
+	QString Id;
+
+	Status CurrentStatus;
+
+	QString ProtocolVersion;
+
+	QHostAddress Address;
+	unsigned int Port;
+	QString DnsName;
+
+	bool Blocked;
+	bool OfflineTo;
+
 	void dataUpdated();
 	void emitUpdated();
 
@@ -58,10 +78,19 @@ public:
 	// contact type
 	bool isNull() const { return TypeNull == Type; }
 
+	Property(Account, contactAccount, ContactAccount)
+	Property(Avatar, contactAvatar, ContactAvatar)
+	Property(Buddy, ownerBuddy, OwnerBuddy)
+	Property(QString, id, Id)
+	Property(Status, currentStatus, CurrentStatus)
+	Property(QString, protocolVersion, ProtocolVersion)
+	Property(QHostAddress, address, Address)
+	Property(unsigned int, port, Port)
+	Property(QString, dnsName, DnsName)
+
 signals:
 	void updated();
 
 };
-
 
 #endif // CONTACT_SHARED_H

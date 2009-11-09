@@ -23,7 +23,8 @@ ContactShared * ContactShared::loadFromStorage(StoragePoint *storagePoint)
 ContactShared::ContactShared(ContactType type, QUuid uuid) :
 		UuidStorableObject("Account", ContactManager::instance()),
 		Uuid(uuid.isNull() ? QUuid::createUuid() : uuid), Type(type),
-		BlockUpdatedSignalCount(0), Updated(false)
+		BlockUpdatedSignalCount(0), Updated(false),
+		ContactAvatar(0, false) /* TODO: 0.6.6 */
 {
 }
 
