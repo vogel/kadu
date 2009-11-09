@@ -88,6 +88,7 @@ set (kadu_SRCS
 
 	contacts/contact.cpp
 	contacts/contact-manager.cpp
+	contacts/contact-shared.cpp
 
 	contacts/model/buddy-contact-model.cpp
 
@@ -330,6 +331,7 @@ set (kadu_MOC_SRCS
 
 	contacts/contact.h
 	contacts/contact-manager.h
+	contacts/contact-shared.h
 
 	contacts/model/buddy-contact-model.h
 
