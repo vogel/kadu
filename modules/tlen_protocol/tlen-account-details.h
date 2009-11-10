@@ -7,28 +7,26 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TLEN_ACCOUNT
-#define TLEN_ACCOUNT
+#ifndef TLEN_ACCOUNT_DETAILS
+#define TLEN_ACCOUNT_DETAILS
 
 #include <QtCore/QString>
 
+#include "accounts/account-details.h"
 #include "open-chat-with/tlen-open-chat-with-runner.h"
+#include "protocols/protocol.h"
 
-#include "accounts/account.h"
-
-class TlenAccount : public Account
+class TlenAccountDetails : public AccountDetails
 {
 	TlenOpenChatWithRunner *OpenChatRunner;
 
 public:
-	explicit TlenAccount(const QUuid &uuid = QUuid());
-	virtual ~TlenAccount();
-
-	virtual bool setId(const QString &id);
+	explicit TlenAccountDetails(StoragePoint *storagePoint, Account parent);
+	virtual ~TlenAccountDetails();
 
 	virtual void load();
 	virtual void store();
 
 };
 
-#endif // TLEN_ACCOUNT
+#endif // TLEN_ACCOUNT_DETAILS

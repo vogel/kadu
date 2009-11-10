@@ -7,14 +7,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TLEN_CONTACT_ACCOUNT_DATA_MANAGER_H
-#define TLEN_CONTACT_ACCOUNT_DATA_MANAGER_H
+#ifndef TLEN_CONTACT_MANAGER_H
+#define TLEN_CONTACT_MANAGER_H
 
-#include "configuration/configuration-contact-manager.h"
+#include "configuration/configuration-contact-data-manager.h"
 
 class TlenContact;
 
-class TlenContactManager : public ConfigurationContactManager
+class TlenContactManager : public ConfigurationContactDataManager
 {
 	TlenContact *Data;
 
@@ -29,4 +29,4 @@ public:
 
 };
 
-#endif // TLEN_CONTACT_ACCOUNT_DATA_MANAGER_H
+#endif // TLEN_CONTACT_MANAGER_H

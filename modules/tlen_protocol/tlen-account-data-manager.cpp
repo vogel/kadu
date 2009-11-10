@@ -7,12 +7,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "tlen-account.h"
-#include "tlen-contact-manager.h"
+#include "tlen-account-details.h"
 
-TlenAccountDataManager::TlenAccountDataManager(TlenAccount* data)
-	: AccountDataManager(data)
+#include "tlen-account-data-manager.h"
+
+TlenAccountDataManager::TlenAccountDataManager(Account data) :
+		AccountDataManager(data)
 {
+	Data = dynamic_cast<TlenAccountDetails *>(data.details());
 }
 
 void TlenAccountDataManager::writeEntry(const QString &section, const QString &name, const QVariant &value)
@@ -23,11 +25,17 @@ void TlenAccountDataManager::writeEntry(const QString &section, const QString &n
 		return;
 	}
 
+	if (!Data)
+		return;
+
 	// other data
 }
 
 QVariant TlenAccountDataManager::readEntry(const QString &section, const QString &name)
 {
+	if (!Data)
+		return QVariant(QString::null);
+
 	if (section != "Tlen")
 		return AccountDataManager::readEntry(section, name);
 

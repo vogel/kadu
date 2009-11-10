@@ -35,7 +35,7 @@
 #include "tlen.h"
 
 #include "tlen-contact.h"
-#include "tlen-account.h"
+#include "tlen-account-details.h"
 #include "tlen-protocol-factory.h"
 #include "tlen-protocol.h"
 
@@ -73,7 +73,7 @@ void TlenProtocol::closeModule()
 	kdebugf2();
 }
 
-TlenProtocol::TlenProtocol(Account *account, ProtocolFactory *factory): Protocol(account,factory), TlenClient(0)
+TlenProtocol::TlenProtocol(Account account, ProtocolFactory *factory): Protocol(account,factory), TlenClient(0)
 {
 	kdebugf();
 
@@ -92,14 +92,14 @@ void TlenProtocol::fetchAvatars(QString jid, QString type, QString md5)
 {
 	kdebugf();
 
-	Buddy buddy = account()->getContactById(jid);
+	Buddy buddy = account().getBuddyById(jid);
 
- 	if (contact.isAnonymous())
+ 	if (buddy.isAnonymous())
 	{
-		BuddyManager::instance()->addBuddy(contact);
+		BuddyManager::instance()->addBuddy(buddy);
 	}
 
-	CurrentAvatarService->fetchAvatar(contact.accountData(account()));
+	CurrentAvatarService->fetchAvatar(buddy.contact(account()));
 
 	kdebugf2();
 }
@@ -159,8 +159,11 @@ void TlenProtocol::connectToServer()
 
 	}
 
-	TlenAccount *tlenAccount = dynamic_cast<TlenAccount *>(account());
-	if (tlenAccount->id().isNull() || tlenAccount->password().isNull())
+	TlenAccountDetails *tlenAccountDetails = dynamic_cast<TlenAccountDetails *>(account().details());
+	if (!tlenAccountDetails)
+		return;
+
+	if (account().id().isNull() || account().password().isNull())
 	{
 		MessageBox::msg(tr("tlen ID or password not set!"), false, "Warning");
 		//NextStatus->setOffline();
@@ -173,8 +176,8 @@ void TlenProtocol::connectToServer()
 
 	TlenClient->setReconnect(true);
 
-	TlenClient->setUname(tlenAccount->id());
-	TlenClient->setPass (tlenAccount->password());
+	TlenClient->setUname(account().id());
+	TlenClient->setPass (account().password());
 
 	changeStatus(nextStatus());
 
@@ -222,7 +225,7 @@ bool TlenProtocol::sendMessage(Chat *chat, FormattedMessage &formattedMessage)
 	// TODO send to more users
 	Buddy buddy = (*users.begin());
 	QString plain = formattedMessage.toPlain();
-	QString tlenid = contact.id(account());
+	QString tlenid = buddy.id(account());
 
 	bool stop = false;
 	//plain na QByteArray
@@ -281,8 +284,8 @@ void TlenProtocol::chatMsgReceived(QDomNode n)
 	//		w->displayMsg(Tlen->decode(body.toUtf8()),timeStamp);
 
 	// TODO - zaimplementowac to samo w ContactList
-	Buddy buddy = account()->getContactById(from);
-	BuddySet contacts = BuddySet(contact);
+	Buddy buddy = account().getBuddyById(from);
+	BuddySet contacts = BuddySet(buddy);
 	// FIXME: dunno why, but commenting it fixed for now (08.04.2009) problem with finding chat for contact (conference window was always being opened for 1 contact)
 	//contacts << contact;
 
@@ -295,13 +298,13 @@ void TlenProtocol::chatMsgReceived(QDomNode n)
 
 	// TODO  : contacts?
 	Chat *chat = this->findChat(contacts);
-	emit receivedMessageFilter(chat, contact, formattedMessage.toPlain(), msgtime, ignore);
+	emit receivedMessageFilter(chat, buddy, formattedMessage.toPlain(), msgtime, ignore);
 	if (ignore)
 		return;
 
 	HtmlDocument::escapeText(plain);
 
-	Message message(chat, Message::TypeReceived, contact);
+	Message message(chat, Message::TypeReceived, buddy);
 	message
 		.setContent(plain)
 		.setSendDate(timeStamp)
@@ -325,17 +328,17 @@ void TlenProtocol::itemReceived(QString jid, QString name, QString subscription,
 	kdebugf();
 	kdebugm(KDEBUG_WARNING, "Tlen contact rcv %s\n", qPrintable(jid));
 
-	Buddy buddy = account()->getContactById(jid);
+	Buddy buddy = account().getBuddyById(jid);
 
 	if(!name.isNull())
-		contact.setDisplay(name);
+		buddy.setDisplay(name);
 
- 	if (contact.isAnonymous())
+ 	if (buddy.isAnonymous())
 	{
-		BuddyManager::instance()->addBuddy(contact);
+		BuddyManager::instance()->addBuddy(buddy);
 	}
 
-	// remember to set every contact offline after add to cntact list
+	// remember to set every contact offline after add to contact list
 	presenceChanged(jid, "unavailable", QString::null);
 
 	kdebugf2();
@@ -366,7 +369,7 @@ void TlenProtocol::presenceChanged(QString from, QString newstatus, QString desc
 	if (!description.isEmpty())
 		status.setDescription(description);
 
-	Buddy buddy = account()->getContactById(from);
+	Buddy buddy = account().getBuddyById(from);
 
 	kdebugm(KDEBUG_WARNING, "Tlen status change: %s %s\n%s", qPrintable(from), qPrintable(newstatus), qPrintable(description));
 
@@ -380,7 +383,7 @@ void TlenProtocol::presenceChanged(QString from, QString newstatus, QString desc
 	}
 	*/
 
-	TlenContact *data = dynamic_cast<TlenContact *>(contact.accountData(account()));
+	TlenContact *data = dynamic_cast<TlenContact *>(buddy.contact(account()));
 
 	if (!data)
 		return;
@@ -391,7 +394,7 @@ void TlenProtocol::presenceChanged(QString from, QString newstatus, QString desc
 	if (!TypingUsers[from].isEmpty())
 		TypingUsers[from] = description;
 
-	emit buddyStatusChanged(account(), contact, oldStatus);
+	emit buddyStatusChanged(account(), buddy, oldStatus);
 	kdebugf2();
 }
 
@@ -454,9 +457,9 @@ void TlenProtocol::chatNotify(QString from, QString type)
 {
 	kdebugf();
 
-	Buddy buddy = account()->getContactById(from);
+	Buddy buddy = account().getBuddyById(from);
 
-	TlenContact *data = dynamic_cast<TlenContact *>(contact.accountData(account()));
+	TlenContact *data = dynamic_cast<TlenContact *>(buddy.contact(account()));
 
 	if (!data)
 		return;
@@ -471,7 +474,7 @@ void TlenProtocol::chatNotify(QString from, QString type)
 		TypingUsers.insert(from, oldDesc);
 		newStatus.setDescription(QString("[pisze] %1").arg(oldDesc));
 		data->setStatus(newStatus);
-		emit buddyStatusChanged(account(), contact, oldStatus);
+		emit buddyStatusChanged(account(), buddy, oldStatus);
 	}
 	else if(type=="u")
 	{
@@ -480,7 +483,7 @@ void TlenProtocol::chatNotify(QString from, QString type)
 		TypingUsers.remove(from);
 		newStatus.setDescription(oldDesc);
 		data->setStatus(newStatus);
-		emit buddyStatusChanged(account(), contact, oldStatus);
+		emit buddyStatusChanged(account(),buddy, oldStatus);
 	}
 	else if(type=="a")
 	{

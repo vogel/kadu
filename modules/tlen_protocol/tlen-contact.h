@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TLEN_CONTACT_ACCOUNT_DATA
-#define TLEN_CONTACT_ACCOUNT_DATA
+#ifndef TLEN_CONTACT
+#define TLEN_CONTACT
 
 #include "contacts/contact.h"
 
@@ -21,10 +21,10 @@ class TlenContact : public Contact
 	unsigned long MaxImageSize;
 
 public:
-	TlenContact(Account *account, Contact contact, const QString &id, bool loaded = false)
-		: Contact(account, contact, id, loaded) {}
-	TlenContact(Account *account, Contact contact, const QString &id, StoragePoint *storage)
-		: Contact(account, contact, id, storage) {}
+	TlenContact(Account account, Buddy buddy, const QString &id, bool loaded = false)
+		: Contact(account, buddy, id, loaded) {}
+	TlenContact(Account account, Buddy buddy, const QString &id, StoragePoint *storage)
+		: Contact(account, buddy, id, storage) {}
 	TlenContact(StoragePoint *storage) :
 		Contact(storage) {}
 
@@ -34,4 +34,4 @@ public:
 
 };
 
-#endif // JABBER_CONTACT_ACCOUNT_DATA
+#endif // TLEN_CONTACT

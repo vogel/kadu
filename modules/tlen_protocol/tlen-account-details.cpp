@@ -12,33 +12,28 @@
 #include "gui/windows/open-chat-with/open-chat-with-runner-manager.h"
 
 #include "tlen-protocol.h"
-#include "tlen-account.h"
+#include "tlen-account-details.h"
 
-TlenAccount::TlenAccount(const QUuid &uuid)
-	: Account(uuid)
+TlenAccountDetails::TlenAccountDetails(StoragePoint *storagePoint, Account parent) :
+		AccountDetails(storagePoint, parent)
 {
-	OpenChatRunner = new TlenOpenChatWithRunner(this);
+	OpenChatRunner = new TlenOpenChatWithRunner(parent);
 	OpenChatWithRunnerManager::instance()->registerRunner(OpenChatRunner);
 }
 
-TlenAccount::~TlenAccount()
+TlenAccountDetails::~TlenAccountDetails()
 {
 	OpenChatWithRunnerManager::instance()->unregisterRunner(OpenChatRunner);
 	delete OpenChatRunner;
 	OpenChatRunner = 0;
 }
 
-bool TlenAccount::setId(const QString &id)
-{
-    	return Account::setId(id);
-}
-
-void TlenAccount::load()
+void TlenAccountDetails::load()
 {
 	if (!isValidStorage())
 		return;
 
-	Account::load();
+	AccountDetails::load();
 
 	/*
 	AllowDcc = loadValue<bool>("AllowDcC");
@@ -59,12 +54,12 @@ void TlenAccount::load()
 	*/
 }
 
-void TlenAccount::store()
+void TlenAccountDetails::store()
 {
 	if (!isValidStorage())
 		return;
 
-	Account::store();
+	AccountDetails::store();
 
 	/*
 	storeValue("AllowDcc", AllowDcc);
@@ -78,11 +73,3 @@ void TlenAccount::store()
 	storeValue("DccForwarding", DccForwarding);
 	*/
 }
-
-/*
-bool TlenAccountData::validateId(const QString &id)
-{
-	// TODO ascii?
-	return true;
-}
-*/

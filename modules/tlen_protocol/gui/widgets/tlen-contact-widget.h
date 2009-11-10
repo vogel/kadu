@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TLEN_CONTACT_ACCOUNT_DATA_WIDGET
-#define TLEN_CONTACT_ACCOUNT_DATA_WIDGET
+#ifndef TLEN_CONTACT_WIDGET
+#define TLEN_CONTACT_WIDGET
 
 #include "gui/widgets/contact-widget.h"
 
@@ -27,4 +27,4 @@ public:
 
 };
 
-#endif // TLEN_CONTACT_ACCOUNT_DATA_WIDGET
+#endif // TLEN_CONTACT_WIDGET

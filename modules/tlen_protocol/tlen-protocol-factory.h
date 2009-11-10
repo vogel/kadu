@@ -26,12 +26,12 @@ class TlenProtocolFactory : public ProtocolFactory
 public:
 	static TlenProtocolFactory * instance();
 
-	virtual Account * newAccount();
-	virtual Account * loadAccount(StoragePoint *accountStoragePoint);
-	virtual Contact * newContact(Account *account, Contact contact, const QString &id);
+	virtual Protocol * createProtocolHandler(Account account);
+	virtual AccountDetails * createAccountDetails(Account account);
+	virtual Contact * newContact(Account account, Buddy buddy, const QString &id);
 	virtual Contact * loadContact(StoragePoint *storagePoint);
 	virtual AccountCreateWidget * newCreateAccountWidget(QWidget *parent);
-	virtual AccountEditWidget* newEditAccountWidget(Account*, QWidget*);
+	virtual AccountEditWidget* newEditAccountWidget(Account, QWidget*);
 	virtual ContactWidget * newContactWidget(Contact *contact, QWidget *parent = 0);
 	virtual QList<StatusType *> supportedStatusTypes();
 	virtual QString idLabel();
@@ -41,5 +41,4 @@ public:
 	virtual QString displayName() { return "Tlen"; }
 	virtual QString iconName() {return dataPath("kadu/modules/data/tlen_protocol/").append("online.png");}
 };
-
 #endif // TLEN_PROTOCOL_FACTORY_H

@@ -16,14 +16,14 @@
 
 class TlenOpenChatWithRunner : public OpenChatWithRunner
 {
-	Account *ParentAccount;
+	Account ParentAccount;
 
 	bool validateUserID(const QString &uid);
 
 public:
-	TlenOpenChatWithRunner(Account *account);
+	TlenOpenChatWithRunner(Account account);
 	virtual BuddyList matchingContacts(const QString &query);
-	void setAccount(Account *account) { ParentAccount = account; }
+	void setAccount(Account account) { ParentAccount = account; }
 
 };
 

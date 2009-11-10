@@ -7,13 +7,13 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "gui/widgets/tlen-contact-widget.h"
 #include "gui/widgets/tlen-create-account-widget.h"
 #include "gui/widgets/tlen-edit-account-widget.h"
 
-#include "tlen-account.h"
+#include "tlen-account-details.h"
 #include "tlen-protocol.h"
 #include "tlen-contact.h"
-#include "tlen-contact-widget.h"
 #include "status/status-type.h"
 #include "status/status-type-manager.h"
 
@@ -45,26 +45,19 @@ TlenProtocolFactory::TlenProtocolFactory()
 	IdRegularExpression.setPattern("[a-zA-Z0-9\\._-]+@[a-zA-Z0-9\\._-]+");
 }
 
-Account * TlenProtocolFactory::newAccount()
+Protocol * TlenProtocolFactory::createProtocolHandler(Account account)
 {
-	TlenAccount *account = new TlenAccount();
-	Protocol *protocol = new TlenProtocol(account, this);
-	return account;
+	return new TlenProtocol(account, this);
 }
 
-Account * TlenProtocolFactory::loadAccount(StoragePoint *accountStoragePoint)
+AccountDetails * TlenProtocolFactory::createAccountDetails(Account account)
 {
-       TlenAccount *account = new TlenAccount();
-       account->setStorage(accountStoragePoint);
-       Protocol *protocol = new TlenProtocol(account, this);
-       account->load();
-
-       return account;
+	return new TlenAccountDetails(account.storage(), account);
 }
 
-Contact * TlenProtocolFactory::newContact(Account *account, Contact contact, const QString &id)
+Contact * TlenProtocolFactory::newContact(Account account, Buddy buddy, const QString &id)
 {
-	return new TlenContact(account, contact, id, true);
+	return new TlenContact(account, buddy, id, true);
 }
 
 Contact * TlenProtocolFactory::loadContact(StoragePoint *storagePoint)
@@ -80,7 +73,7 @@ AccountCreateWidget * TlenProtocolFactory::newCreateAccountWidget(QWidget *paren
     	return new TlenCreateAccountWidget(parent);
 }
 
-AccountEditWidget * TlenProtocolFactory::newEditAccountWidget(Account *account, QWidget *parent)
+AccountEditWidget * TlenProtocolFactory::newEditAccountWidget(Account account, QWidget *parent)
 {
 	return new TlenEditAccountWidget(account, parent);
 }
