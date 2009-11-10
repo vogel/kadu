@@ -133,7 +133,7 @@ void Chat::refreshTitle()
 		Contact *cad = buddy.contact(account());
 
 		if (cad)
-			Icon = account().statusContainer()->statusPixmap(cad->status());
+			Icon = account().statusContainer()->statusPixmap(cad->currentStatus());
 	}
 
 	title.replace("<br/>", " ");

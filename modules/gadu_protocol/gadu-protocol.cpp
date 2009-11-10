@@ -678,17 +678,17 @@ void GaduProtocol::socketContactStatusChanged(unsigned int uin, unsigned int sta
 	}
 
 	GaduContact *accountData = gaduContact(buddy);
-	accountData->setIp(ip);
+	accountData->setAddress(ip);
 	accountData->setPort(port);
 	accountData->setMaxImageSize(maxImageSize);
 	accountData->setProtocolVersion(QString::number(version));
 	accountData->setGaduProtocolVersion(version);
 
-	Status oldStatus = accountData->status();
+	Status oldStatus = accountData->currentStatus();
 	Status newStatus;
 	newStatus.setType(statusTypeFromGaduStatus(status));
 	newStatus.setDescription(description);
-	accountData->setStatus(newStatus);
+	accountData->setCurrentStatus(newStatus);
 
 	emit buddyStatusChanged(account(), buddy, oldStatus);
 }

@@ -44,9 +44,9 @@ void BuddyPersonalInfoConfigurationWidget::createGui()
 
 	ContactIdCombo = new QComboBox(this);
 	foreach (Contact *data, MyBuddy.contacts())
-		ContactIdCombo->addItem(data->account().protocolHandler()->icon(),
+		ContactIdCombo->addItem(data->contactAccount().protocolHandler()->icon(),
 				data->id(),
-				data->account().uuid().toString()
+				data->contactAccount().uuid().toString()
 		);
 	connect(ContactIdCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(accountSelectionChanged(int)));
 	layout->addWidget(ContactIdCombo, row++, 4, 1, 1);
@@ -155,7 +155,7 @@ void BuddyPersonalInfoConfigurationWidget::accountSelectionChanged(int index)
 	StateProvinceText->setText(MyBuddy.firstName());
 
 	//
-	IpText->setText(MyBuddy.contact(account)->ip().toString());
+	IpText->setText(MyBuddy.contact(account)->address().toString());
 	PortText->setText(QString::number(MyBuddy.contact(account)->port()));
 	DnsNameText->setText(MyBuddy.contact(account)->dnsName());
 	ProtocolVerText->setText(MyBuddy.contact(account)->protocolVersion());

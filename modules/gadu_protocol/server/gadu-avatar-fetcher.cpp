@@ -93,7 +93,7 @@ void GaduAvatarFetcher::requestFinished(int id, bool error)
 	if (!timestampElement.isNull())
 	{
 		timestamp = QDateTime::fromString(timestampElement.text());
-		if (MyContact->avatar().lastUpdated() == timestamp)
+		if (MyContact->contactAvatar().lastUpdated() == timestamp)
 		{
 // 			deleteLater(); TODO: check if file is present
 // 			return;
@@ -104,7 +104,7 @@ void GaduAvatarFetcher::requestFinished(int id, bool error)
 	if (!packageDelayElement.isNull())
 	{
 		int delay = packageDelayElement.text().toInt();
-		MyContact->avatar().setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + delay));
+		MyContact->contactAvatar().setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + delay));
 	}
 
 	QDomElement avatarFileElement = avatarElement.firstChildElement("bigAvatar");
@@ -125,7 +125,7 @@ void GaduAvatarFetcher::requestFinished(int id, bool error)
 		return;
 	}
 
-	MyContact->avatar().setLastUpdated(timestamp);
+	MyContact->contactAvatar().setLastUpdated(timestamp);
 
 	QUrl url = avatarUrl;
 

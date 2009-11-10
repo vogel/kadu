@@ -25,6 +25,15 @@
 	type name() { ensureLoaded(); return capitalized_name; } \
 	void set##capitalized_name(type name) { ensureLoaded(); capitalized_name = name; dataUpdated(); }
 
+#undef PropertyRead
+#define PropertyRead(type, name, capitalized_name) \
+	type name() { ensureLoaded(); return capitalized_name; } \
+
+#undef PropertyBool
+#define PropertyBool(capitalized_name) \
+	bool is##capitalized_name() { ensureLoaded(); return capitalized_name; } \
+	void set##capitalized_name(bool name) { ensureLoaded(); capitalized_name = name; dataUpdated(); }
+
 class KADUAPI ContactShared : public QObject, public UuidStorableObject, public QSharedData
 {
 	Q_OBJECT
@@ -79,17 +88,24 @@ public:
 	bool isNull() const { return TypeNull == Type; }
 
 	Property(Account, contactAccount, ContactAccount)
-	Property(Avatar, contactAvatar, ContactAvatar)
+	Property(Avatar &, contactAvatar, ContactAvatar)
 	Property(Buddy, ownerBuddy, OwnerBuddy)
-	Property(QString, id, Id)
+
+	PropertyRead(QString, id, Id)
+	void setId(const QString &id);
+
 	Property(Status, currentStatus, CurrentStatus)
 	Property(QString, protocolVersion, ProtocolVersion)
 	Property(QHostAddress, address, Address)
 	Property(unsigned int, port, Port)
 	Property(QString, dnsName, DnsName)
+	PropertyBool(Blocked)
+	PropertyBool(OfflineTo)
 
 signals:
 	void updated();
+
+	void idChanged(const QString &id);
 
 };
 

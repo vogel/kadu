@@ -507,7 +507,7 @@ void SearchWindow::newSearchResults(BuddyList buddies)
 		QList <QTreeWidgetItem *> items = results->findItems(cad->id(), Qt::MatchExactly, 1);
 		if (items.count())
 			qlv = items[0];		
-		pix = cad->account().statusContainer()->statusPixmap(cad->status());
+		pix = cad->contactAccount().statusContainer()->statusPixmap(cad->currentStatus());
 
 		if (qlv)
 		{

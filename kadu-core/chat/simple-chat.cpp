@@ -75,12 +75,12 @@ BuddySet SimpleChat::buddies() const
 {
 	if (!CurrentContact)
 		return BuddySet();
-	return BuddySet(CurrentContact->buddy());
+	return BuddySet(CurrentContact->ownerBuddy());
 }
 
 QString SimpleChat::name() const
 {
 	if (!CurrentContact)
 		return QString::null;
-	return CurrentContact->buddy().display();
+	return CurrentContact->ownerBuddy().display();
 }

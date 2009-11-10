@@ -176,7 +176,7 @@ void disableNoGaduDescription(Action *action)
 		return;
 	}
 
-	if (buddy.contact(account)->status().description().isEmpty())
+	if (buddy.contact(account)->currentStatus().description().isEmpty())
 	{
 		action->setEnabled(false);
 		return;
@@ -205,13 +205,13 @@ void disableNoGaduDescriptionUrl(Action *action)
 		return;
 	}
 
-	if (buddy.contact(account)->status().description().isEmpty())
+	if (buddy.contact(account)->currentStatus().description().isEmpty())
 	{
 		action->setEnabled(false);
 		return;
 	}
 
-	if (buddy.contact(account)->status().description().indexOf(HtmlDocument::urlRegExp()) < 0)
+	if (buddy.contact(account)->currentStatus().description().indexOf(HtmlDocument::urlRegExp()) < 0)
 	{
 		action->setEnabled(false);
 		return;
@@ -722,7 +722,7 @@ void KaduWindowActions::copyDescriptionActionActivated(QAction *sender, bool tog
 	if (!data)
 		return;
 
-	QString description = data->status().description();
+	QString description = data->currentStatus().description();
 	if (description.isEmpty())
 		return;
 
@@ -750,7 +750,7 @@ void KaduWindowActions::openDescriptionLinkActionActivated(QAction *sender, bool
 	if (!data)
 		return;
 
-	QString description = data->status().description();
+	QString description = data->currentStatus().description();
 	if (description.isEmpty())
 		return;
 

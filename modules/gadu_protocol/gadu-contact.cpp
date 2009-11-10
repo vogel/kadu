@@ -9,6 +9,32 @@
 
 #include "gadu-contact.h"
 
+GaduContact::GaduContact(Account account, Buddy buddy, const QString &id, bool loaded)
+{
+	setContactAccount(account);
+	setOwnerBuddy(buddy);
+	setId(id);
+
+// 	if (data())
+// 		data()->setLoaded(loaded);
+}
+
+GaduContact::GaduContact(Account account, Buddy buddy, const QString &id, StoragePoint* storage)
+{
+	setContactAccount(account);
+	setOwnerBuddy(buddy);
+	setId(id);
+
+// 	if (data())
+// 		data()->setStorage(storage);
+}
+
+GaduContact::GaduContact(StoragePoint *storage)
+{
+// 	if (data())
+// 		data()->setStorage(storage);
+}
+
 unsigned int GaduContact::uin()
 {
 	return id().toUInt();

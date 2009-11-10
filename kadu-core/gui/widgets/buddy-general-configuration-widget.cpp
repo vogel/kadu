@@ -68,7 +68,7 @@ void BuddyGeneralConfigurationWidget::createGui()
 	photoLayout->setSpacing(2);
 
 	QLabel *photoLabel = new QLabel(this);
-	QPixmap photoPixmap = QPixmap(MyBuddy.contacts().at(0)->avatar().pixmap());
+	QPixmap photoPixmap = QPixmap(MyBuddy.contacts().at(0)->contactAvatar().pixmap());
 	photoLabel->setPixmap(photoPixmap);
 	photoLayout->addWidget(photoLabel);
 
@@ -212,7 +212,7 @@ void BuddyGeneralConfigurationWidget::addAccountDataRow(Contact *data)
 		);
 	}
 	if (data)
-		accountsCombo->setCurrentIndex(accountsCombo->findData(data->account().uuid().toString()));
+		accountsCombo->setCurrentIndex(accountsCombo->findData(data->contactAccount().uuid().toString()));
 
 	ContactsLayout->addWidget(accountRow, row, 0, 1, 6);
 
@@ -248,7 +248,7 @@ void BuddyGeneralConfigurationWidget::saveConfiguration()
 		{
 			foreach (Contact *contact, MyBuddy.contacts())
 				if (contact->id() == contactId) // check if user has only changed account for previous existing ID
-					MyBuddy.removeContact(contact->account()); // if so, remove old CAD, otherwise there will appear 2 identical contacts with different accounts
+					MyBuddy.removeContact(contact->contactAccount()); // if so, remove old CAD, otherwise there will appear 2 identical contacts with different accounts
 
 			Contact *cad = account.protocolHandler()->protocolFactory()
 				->newContact(account, MyBuddy, contactId);

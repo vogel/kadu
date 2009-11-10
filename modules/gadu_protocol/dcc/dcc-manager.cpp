@@ -226,7 +226,7 @@ void DccManager::connectionRequestReceived(Buddy buddy)
 	if (!gaduAccountDetails)
 		return;
 
-	struct gg_dcc *dcc = gg_dcc_get_file(htonl(gcad->ip().toIPv4Address()), gcad->port(), gaduAccountDetails->uin(), gcad->uin());
+	struct gg_dcc *dcc = gg_dcc_get_file(htonl(gcad->address().toIPv4Address()), gcad->port(), gaduAccountDetails->uin(), gcad->uin());
 	if (!dcc)
 		return;
 
@@ -265,7 +265,7 @@ bool DccManager::acceptConnection(unsigned int uin, unsigned int peerUin, unsign
 
 	QHostAddress remoteAddress(ntohl(peerAddr));
 
-	if (remoteAddress == gcad->ip())
+	if (remoteAddress == gcad->address())
 		return true;
 
 	kdebugm(KDEBUG_WARNING, "possible spoofing attempt from %s (uin:%d)\n", qPrintable(remoteAddress.toString()), peerUin);
@@ -277,7 +277,7 @@ bool DccManager::acceptConnection(unsigned int uin, unsigned int peerUin, unsign
 				"or he/she has port forwarding. Continue connection?"),
 			buddy.display(),
 			remoteAddress.toString(),
-			gcad->ip().toString()));
+			gcad->address().toString()));
 }
 
 void DccManager::needIncomingFileTransferAccept(DccSocketNotifiers *socket)
@@ -415,7 +415,7 @@ void DccManager::attachSendFileTransferSocket6(unsigned int uin, GaduContact *gc
 	int port = gcad->port();
 	if (port >= 10)
 	{
-		struct gg_dcc *socket = gg_dcc_send_file(htonl(gcad->ip().toIPv4Address()), port, uin, gcad->uin());
+		struct gg_dcc *socket = gg_dcc_send_file(htonl(gcad->address().toIPv4Address()), port, uin, gcad->uin());
 		if (socket)
 		{
 			DccSocketNotifiers *fileTransferNotifiers = new DccSocketNotifiers(Protocol, this);

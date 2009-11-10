@@ -188,16 +188,16 @@ void BuddyShared::addContact(Contact *contact)
 	if (!contact)
 		return;
 
-	emit contactAboutToBeAdded(contact->account());
-	Contacts.insert(contact->account(), contact);
+	emit contactAboutToBeAdded(contact->contactAccount());
+	Contacts.insert(contact->contactAccount(), contact);
 	ContactManager::instance()->addContact(contact);
-	emit contactAdded(contact->account());
+	emit contactAdded(contact->contactAccount());
 }
 
 void BuddyShared::removeContact(Contact *contact)
 {
-	if (Contacts[contact->account()] == contact)
-		removeContact(contact->account());
+	if (Contacts[contact->contactAccount()] == contact)
+		removeContact(contact->contactAccount());
 }
 
 void BuddyShared::removeContact(Account account)
@@ -343,6 +343,6 @@ void BuddyShared::removeFromGroup(Group *group)
 void BuddyShared::accountContactDataIdChanged(const QString &id)
 {
 	Contact *cad = dynamic_cast<Contact *>(sender());
-	if (cad && !cad->account().isNull())
-		emit contactIdChanged(cad->account(), id);
+	if (cad && !cad->contactAccount().isNull())
+		emit contactIdChanged(cad->contactAccount(), id);
 }

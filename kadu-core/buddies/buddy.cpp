@@ -263,11 +263,15 @@ Buddy Buddy::dummy()
 
 	Account account;
 
-	Contact *contactData = new Contact(account, example, "999999", true);
-	contactData->setStatus(Status("Away", tr("Example description")));
-	contactData->setIp(QHostAddress(2130706433));
+	Contact *contactData = new Contact();
+	contactData->setContactAccount(account);
+	contactData->setOwnerBuddy(example);
+	contactData->setId("999999");
+// 	contactData->data()->setLoaded(true);
+	contactData->setCurrentStatus(Status("Away", tr("Example description")));
+	contactData->setAddress(QHostAddress(2130706433));
 	contactData->setPort(80);
-	Avatar &avatar = contactData->avatar();
+	Avatar &avatar = contactData->contactAvatar();
 	avatar.setLastUpdated(QDateTime::currentDateTime());
 	avatar.setPixmap(IconsManager::instance()->loadPixmap("ContactsTab"));
 	avatar.setFileName(IconsManager::instance()->iconPath("ContactsTab"));

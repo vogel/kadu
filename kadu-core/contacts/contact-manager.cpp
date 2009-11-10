@@ -85,7 +85,7 @@ void ContactManager::load(Account account)
 		if (cad)
 		{
 			addContact(cad);
-			cad->ensureLoaded();
+			cad->data()->ensureLoaded();
 		}
 	}
 }

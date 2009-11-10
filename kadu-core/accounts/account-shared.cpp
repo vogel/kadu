@@ -50,25 +50,25 @@ void AccountShared::load()
 		return;
 
 	BaseStatusContainer::load();
-	
+
 	ConnectAtStart = loadValue<bool>("ConnectAtStart", true);
 	
 	Uuid = QUuid(loadAttribute<QString>("uuid"));
 	Name = loadValue<QString>("Name");
 	ProtocolName = loadValue<QString>("Protocol");
 	setId(loadValue<QString>("Id"));
-	
+
 	RememberPassword = loadValue<bool>("RememberPassword", true);
 	HasPassword = RememberPassword;
 	if (RememberPassword)
 		Password = pwHash(loadValue<QString>("Password"));
-	
+
 	UseProxy = loadValue<bool>("UseProxy");
 	ProxyPort = loadValue<int>("ProxyPort");
 	ProxyRequiresAuthentication = loadValue<bool>("ProxyRequiresAuthentication");
 	ProxyUser = loadValue<QString>("ProxyUser");
 	ProxyPassword = loadValue<QString>("ProxyPassword");
-	
+
 	QHostAddress host;
 	if (!host.setAddress(loadValue<QString>("ProxyHost")))
 		host.setAddress("0.0.0.0");

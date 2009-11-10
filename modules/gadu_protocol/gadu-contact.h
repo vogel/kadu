@@ -22,12 +22,9 @@ class GaduContact : public Contact
 	unsigned int GaduProtocolVersion;
 
 public:
-	GaduContact(Account account, Buddy buddy, const QString &id, bool loaded = false) :
-			Contact(account, buddy, id, loaded) {}
-	GaduContact(Account account, Buddy buddy, const QString &id, StoragePoint *storage) :
-			Contact(account, buddy, id, storage) {}
-	GaduContact(StoragePoint *storage) :
-			Contact(storage) {}
+	GaduContact(Account account, Buddy buddy, const QString &id, bool loaded = false);
+	GaduContact(Account account, Buddy buddy, const QString &id, StoragePoint *storage);
+	GaduContact(StoragePoint *storage);
 
 	virtual bool validateId();
 

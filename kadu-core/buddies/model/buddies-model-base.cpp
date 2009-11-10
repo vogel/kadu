@@ -146,17 +146,17 @@ QVariant BuddiesModelBase::data(Contact *cad, int role, bool useDisplay) const
 	{
 		case Qt::DisplayRole:
 			return useDisplay
-				? cad->buddy().display()
-				: QString("%1: %2").arg(cad->account().name()).arg(cad->id());
+				? cad->ownerBuddy().display()
+				: QString("%1: %2").arg(cad->contactAccount().name()).arg(cad->id());
 		case Qt::DecorationRole:
 			if (0 == cad)
 				return QVariant();
 			// TODO generic icon
-			return !cad->account().isNull()
-				? cad->account().statusContainer()->statusPixmap(cad->status())
+			return !cad->contactAccount().isNull()
+				? cad->contactAccount().statusContainer()->statusPixmap(cad->currentStatus())
 				: QVariant();
 		case BuddyRole:
-			return QVariant::fromValue(cad->buddy());
+			return QVariant::fromValue(cad->ownerBuddy());
 		case DescriptionRole:
 			//TODO 0.6.6:
 			//	ContactKaduData *ckd = contact.moduleData<ContactKaduData>(true);
@@ -169,16 +169,16 @@ QVariant BuddiesModelBase::data(Contact *cad, int role, bool useDisplay) const
 				//	}
 				//	delete ckd;
 				//
-				return cad->status().description();
+				return cad->currentStatus().description();
 		case StatusRole:
-			return QVariant::fromValue(cad->status());
+			return QVariant::fromValue(cad->currentStatus());
 		case AccountRole:
-			return QVariant::fromValue(cad->account());
+			return QVariant::fromValue(cad->contactAccount());
 		case AvatarRole:
 			// TODO: 0.6.6 move it
-			if (cad->avatar().pixmap().isNull())
+			if (cad->contactAvatar().pixmap().isNull())
 				AvatarManager::instance()->updateAvatar(cad);
-			return QVariant::fromValue(cad->avatar().pixmap());
+			return QVariant::fromValue(cad->contactAvatar().pixmap());
 		default:
 			return QVariant();
 	}

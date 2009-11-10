@@ -194,7 +194,7 @@ QString Parser::parse(const QString &s, Account account, const Buddy &buddy, con
 					++i;
 					if (data)
 					{
-						StatusType *type = StatusTypeManager::instance()->statusType(data->status().type());
+						StatusType *type = StatusTypeManager::instance()->statusType(data->currentStatus().type());
 						if (type)
 							pe.content = type->displayName();
 					}
@@ -207,7 +207,7 @@ QString Parser::parse(const QString &s, Account account, const Buddy &buddy, con
 				case 'd':
 					++i;
 					if (data)
-						pe.content = data->status().description();
+						pe.content = data->currentStatus().description();
 
 				 	if (escape)
 			 			HtmlDocument::escapeText(pe.content);
@@ -220,7 +220,7 @@ QString Parser::parse(const QString &s, Account account, const Buddy &buddy, con
 				case 'i':
 					++i;
 					if (data)
-						pe.content = data->ip().toString();
+						pe.content = data->address().toString();
 					break;
 				case 'v':
 					++i;
@@ -245,7 +245,7 @@ QString Parser::parse(const QString &s, Account account, const Buddy &buddy, con
 				case 'h':
 					++i;
 					if (data)
-						if (data && !data->status().isDisconnected())
+						if (data && !data->currentStatus().isDisconnected())
 							pe.content = data->protocolVersion();
 					break;
 				case 'n':

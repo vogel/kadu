@@ -485,8 +485,8 @@ void JabberProtocol::clientResourceAvailable(const XMPP::Jid &jid, const XMPP::R
 	if (!data)
 		return;
 
-	Status oldStatus = data->status();
-	data->setStatus(status);
+	Status oldStatus = data->currentStatus();
+	data->setCurrentStatus(status);
 
 	emit buddyStatusChanged(account(), buddy, oldStatus);
 	kdebugf2();
@@ -536,8 +536,8 @@ void JabberProtocol::clientResourceUnavailable(const XMPP::Jid &jid, const XMPP:
 	if (!data)
 		return;
 
-	Status oldStatus = data->status();
-	data->setStatus(status);
+	Status oldStatus = data->currentStatus();
+	data->setCurrentStatus(status);
 
 	emit buddyStatusChanged(account(), buddy, oldStatus);
 	kdebugf2();

@@ -12,6 +12,8 @@
 
 #include "avatar.h"
 
+Avatar Avatar::null(0, true);
+
 Avatar::Avatar(Contact *contact, bool loadFromConfiguration) :
 		StorableObject("Avatar", contact),
 		MyContact(contact)

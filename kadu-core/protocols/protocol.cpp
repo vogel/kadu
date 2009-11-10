@@ -49,11 +49,11 @@ void Protocol::setAllOffline()
 	foreach (Buddy buddy, BuddyManager::instance()->buddies(CurrentAccount, true))
 	{
 		data = buddy.contact(CurrentAccount);
-		oldStatus = data->status();
+		oldStatus = data->currentStatus();
 
 		if (oldStatus != status)
 		{
-			data->setStatus(status);
+			data->setCurrentStatus(status);
 			emit buddyStatusChanged(CurrentAccount, buddy, oldStatus);
 		}
 	}

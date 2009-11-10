@@ -21,12 +21,9 @@ class JabberContact : public Contact
 	unsigned long MaxImageSize;
 
 public:
-	JabberContact(Account account, Buddy buddy, const QString &id, bool loaded = false) :
-			Contact(account, buddy, id, loaded) {}
-	JabberContact(Account account, Buddy buddy, const QString &id, StoragePoint *storage) :
-			Contact(account, buddy, id, storage) {}
-	JabberContact(StoragePoint *storage) :
-			Contact(storage) {}
+	JabberContact(Account account, Buddy buddy, const QString &id, bool loaded = false);
+	JabberContact(Account account, Buddy buddy, const QString &id, StoragePoint *storage);
+	JabberContact(StoragePoint *storage);
 
 	virtual bool validateId();
 

@@ -49,7 +49,7 @@ AvatarService * AvatarManager::avatarService(Account account)
 
 AvatarService * AvatarManager::avatarService(Contact *contact)
 {
-	Account account = contact->account();
+	Account account = contact->contactAccount();
 	if (account.isNull())
 		return 0;
 
@@ -62,11 +62,11 @@ QString AvatarManager::avatarFileName(Avatar avatar)
 	if (!cad)
 		return QString::null;
 
-	Account account = cad->account();
+	Account account = cad->contactAccount();
 	if (account.isNull())
 		return QString::null;
 
-	return QString("%1-%2").arg(cad->buddy().uuid().toString(), account.uuid().toString());
+	return QString("%1-%2").arg(cad->ownerBuddy().uuid().toString(), account.uuid().toString());
 }
 
 void AvatarManager::accountRegistered(Account account)
@@ -91,9 +91,9 @@ void AvatarManager::accountUnregistered(Account account)
 
 void AvatarManager::updateAvatar(Contact *contact)
 {
-	QDateTime lastUpdated = contact->avatar().lastUpdated();
-	QDateTime nextUpdate = contact->avatar().nextUpdate();
-	if (lastUpdated.isValid() && lastUpdated.secsTo(QDateTime::currentDateTime()) < 60*60 || QFile::exists(contact->avatar().filePath()) && nextUpdate > QDateTime::currentDateTime())
+	QDateTime lastUpdated = contact->contactAvatar().lastUpdated();
+	QDateTime nextUpdate = contact->contactAvatar().nextUpdate();
+	if (lastUpdated.isValid() && lastUpdated.secsTo(QDateTime::currentDateTime()) < 60*60 || QFile::exists(contact->contactAvatar().filePath()) && nextUpdate > QDateTime::currentDateTime())
 		return;
 
 	AvatarService *service = avatarService(contact);
@@ -105,7 +105,7 @@ void AvatarManager::updateAvatar(Contact *contact)
 
 void AvatarManager::avatarFetched(Contact *contact, const QByteArray &data)
 {
-	Avatar &avatar = contact->avatar();
+	Avatar &avatar = contact->contactAvatar();
 	avatar.setLastUpdated(QDateTime::currentDateTime());
 
 	QPixmap pixmap;

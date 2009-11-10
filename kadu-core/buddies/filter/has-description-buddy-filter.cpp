@@ -36,5 +36,5 @@ bool HasDescriptionBuddyFilter::acceptBuddy(Buddy buddy)
 	if (prefferedAccount.isNull())
 		return false;
 
-	return !buddy.contact(prefferedAccount)->status().description().isEmpty();
+	return !buddy.contact(prefferedAccount)->currentStatus().description().isEmpty();
 }

@@ -39,7 +39,7 @@ QVariant ConfigurationContactDataManager::readEntry(const QString &section, cons
 
 	if (name == "Addr")
 	// TODO : if not valid : (unknown):(unknown)
-		return QString("%1:%2").arg(Data->ip().toString(), QString::number(Data->port()));
+		return QString("%1:%2").arg(Data->address().toString(), QString::number(Data->port()));
 
 	if (name == "DnsName")
 		return Data->dnsName();
@@ -48,7 +48,7 @@ QVariant ConfigurationContactDataManager::readEntry(const QString &section, cons
 		return Data->protocolVersion();
 
 	if (name == "Status")
-		return Status::name(Data->status());
+		return Status::name(Data->currentStatus());
 
 	if (name == "Blocked")
 		return Data->isBlocked();

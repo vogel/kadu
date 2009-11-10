@@ -11,6 +11,32 @@
 
 #include "jabber-contact.h"
 
+JabberContact::JabberContact(Account account, Buddy buddy, const QString &id, bool loaded)
+{
+	setContactAccount(account);
+	setOwnerBuddy(buddy);
+	setId(id);
+
+// 	if (data())
+// 		data()->setLoaded(loaded);
+}
+
+JabberContact::JabberContact(Account account, Buddy buddy, const QString &id, StoragePoint* storage)
+{
+	setContactAccount(account);
+	setOwnerBuddy(buddy);
+	setId(id);
+
+// 	if (data())
+// 		data()->setStorage(storage);
+}
+
+JabberContact::JabberContact(StoragePoint *storage)
+{
+// 	if (data())
+// 		data()->setStorage(storage);
+}
+
 bool JabberContact::validateId()
 {
 	XMPP::Jid newJid(JIDUtil::accountFromString(id()));

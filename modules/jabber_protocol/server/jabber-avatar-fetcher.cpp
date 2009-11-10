@@ -31,7 +31,7 @@ JabberAvatarFetcher::JabberAvatarFetcher(Contact *contact, QObject *parent) :
 
 void JabberAvatarFetcher::fetchAvatar()
 {
-	JabberProtocol *jabberProtocol = dynamic_cast<JabberProtocol *>(MyContact->account().protocolHandler());
+	JabberProtocol *jabberProtocol = dynamic_cast<JabberProtocol *>(MyContact->contactAccount().protocolHandler());
 	if (!jabberProtocol || !jabberProtocol->isConnected())
 		return;
 	VCardFactory::instance()->getVCard(MyContact->id(), jabberProtocol->client()->rootTask(), this, SLOT(receivedVCard()));
@@ -42,7 +42,7 @@ void JabberAvatarFetcher::receivedVCard()
 	const VCard* vcard = VCardFactory::instance()->vcard(MyContact->id());
 	if (vcard && !vcard->photo().isEmpty()) 
 	{
-		MyContact->avatar().setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + 7200));
+		MyContact->contactAvatar().setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + 7200));
 		emit avatarFetched(MyContact, vcard->photo());
 	}
 	deleteLater();

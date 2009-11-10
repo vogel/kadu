@@ -97,16 +97,6 @@ void Account::disconnectDataSignals()
 			this, SIGNAL(buddyStatusChanged(Account, Buddy, Status)));
 }
 
-QUuid Account::uuid() const
-{
-	return isNull() ? QUuid() : Data->uuid();
-}
-
-StoragePoint * Account::storage() const
-{
-	return isNull() ? 0 : Data->storage();
-}
-
 void Account::loadProtocol(ProtocolFactory *protocolFactory)
 {
 	if (isNull())
@@ -152,7 +142,7 @@ Buddy Account::createAnonymous(const QString& id)
 		return Buddy::null;
 	}
 
-result.addContact(contact);
+	result.addContact(contact);
 	return result;
 }
 

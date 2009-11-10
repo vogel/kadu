@@ -90,7 +90,7 @@ void GaduSearchService::handleEventPubdir50SearchReply(struct gg_event *e)
 				gg_pubdir50_get(res, i, GG_PUBDIR50_UIN));
 		Status status;
 		status.setType(Protocol->statusTypeFromGaduStatus(atoi(gg_pubdir50_get(res, i, GG_PUBDIR50_STATUS)) & 127));
-		gcad->setStatus(status);
+		gcad->setCurrentStatus(status);
 		result.addContact(gcad);
 
 		result.setFirstName(cp2unicode(gg_pubdir50_get(res, i, GG_PUBDIR50_FIRSTNAME)));

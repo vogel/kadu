@@ -17,90 +17,102 @@
 
 #include "contact.h"
 
-Contact::Contact(Account account, Buddy buddy, const QString &id, bool loaded) :
-		UuidStorableObject("Contact", ContactManager::instance(), loaded),
-		ContactAccount(account), OwnerBuddy(buddy), Id(id),
-		ContactAvatar(this, false) /* TODO: 0.6.6 */, Blocked(false), OfflineTo(false), Port(0)
+Contact Contact::null(ContactShared::TypeNull);
+
+Contact Contact::loadFromStorage(StoragePoint *accountStoragePoint)
 {
-	Uuid = QUuid::createUuid();
+	return Contact(ContactShared::loadFromStorage(accountStoragePoint));
 }
 
-Contact::Contact(StoragePoint *storage) :
-		UuidStorableObject(storage), Uuid(QUuid::createUuid()),
-		ContactAccount(0), OwnerBuddy(Buddy::null), ContactAvatar(this, false) /* TODO: 0.6.6 */, Blocked(false), OfflineTo(false), Port(0)
+Contact::Contact(ContactShared::ContactType type) :
+		Data(ContactShared::TypeNull != type ? new ContactShared(type) : 0)
 {
+	connectDataSignals();
 }
 
-void Contact::load()
+Contact::Contact(ContactShared *data) :
+		Data(data)
 {
-	if (!isValidStorage())
-		return;
+	connectDataSignals();
+}
 
-	StorableObject::load();
+Contact::Contact(const Contact &copy) :
+		Data(copy.Data)
+{
+	connectDataSignals();
+}
 
-	Uuid = loadAttribute<QString>("uuid");
-	Id = loadValue<QString>("Id");
+Contact::~Contact()
+{
+	disconnectDataSignals();
+}
 
-	ContactAccount = AccountManager::instance()->byUuid(loadValue<QString>("Account"));
-	QString buddyUuid = loadValue<QString>("Buddy");
-	if (buddyUuid.isNull())
-		buddyUuid = loadValue<QString>("Contact");
-	setBuddy(BuddyManager::instance()->byUuid(buddyUuid));
+bool Contact::isNull() const
+{
+	return !Data.data() || Data->isNull();
+}
 
-	ContactAvatar.load();
+Contact & Contact::operator = (const Contact &copy)
+{
+	disconnectDataSignals();
+	Data = copy.Data;
+	connectDataSignals();
 
-	ContactManager::instance()->addContact(this);
+	return *this;
+}
+
+bool Contact::operator == (const Contact &compare) const
+{
+	return Data == compare.Data;
+}
+
+bool Contact::operator != (const Contact &compare) const
+{
+	return Data != compare.Data;
+}
+
+int Contact::operator < (const Contact& compare) const
+{
+	return Data.data() - compare.Data.data();
 }
 
 void Contact::store()
 {
-	if (!isValidStorage())
+	if (Data)
+		Data->store();
+}
+
+void Contact::connectDataSignals()
+{
+	if (isNull())
 		return;
 
-	ensureLoaded();
-
-	storeValue("uuid", Uuid.toString(), true);
-	storeValue("Id", Id);
-	storeValue("Account", ContactAccount.uuid().toString());
-	storeValue("Buddy", OwnerBuddy.uuid().toString());
-	removeValue("Contact");
-
-	ContactAvatar.store();
+	connect(Data.data(), SIGNAL(idChanged(const QString &)),
+			this, SIGNAL(idChanged(const QString &)));
 }
 
-void Contact::setBuddy(Buddy buddy)
+void Contact::disconnectDataSignals()
 {
-	if (buddy == OwnerBuddy)
+	if (isNull())
 		return;
 
-	if (!OwnerBuddy.isNull())
-		OwnerBuddy.removeContact(this);
-	OwnerBuddy = buddy;
-	if (!OwnerBuddy.isNull())
-		OwnerBuddy.addContact(this);
+	disconnect(Data.data(), SIGNAL(idChanged(const QString &)),
+			this, SIGNAL(idChanged(const QString &)));
 }
-
-void Contact::setId(const QString &newId)
-{
-	if (Id == newId)
-		return;
-
-	QString oldId = Id;
-	Id = newId;
-
-	emit idChanged(oldId);
-}
-
-bool Contact::isValid()
-{
-	ensureLoaded();
-
-	return validateId();
-}
-
+/*
 void Contact::refreshDNSName()
 {
 	if (!(Address.isNull()))
 		connect(new DNSHandler(Id, Address), SIGNAL(result(const QString &, const QString &)),
 				this, SLOT(setDNSName(const QString &, const QString &)));
+}*/
+
+bool Contact::validateId()
+{
+	return true;
+}
+
+bool Contact::isValid()
+{
+	return validateId();
 }
