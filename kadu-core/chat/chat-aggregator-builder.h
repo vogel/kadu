@@ -12,10 +12,12 @@
 
 #include <QtCore/QObject>
 
+#include "exports.h"
+
 class Chat;
 class BuddySet;
 
-class ChatAggregatorBuilder : public QObject
+class KADUAPI ChatAggregatorBuilder : public QObject
 {
 	Q_OBJECT
 public:

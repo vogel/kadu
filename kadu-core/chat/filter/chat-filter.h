@@ -12,9 +12,11 @@
 
 #include <QtCore/QObject>
 
+#include "exports.h"
+
 class Chat;
 
-class ChatFilter : public QObject
+class KADUAPI ChatFilter : public QObject
 {
 	Q_OBJECT
 
