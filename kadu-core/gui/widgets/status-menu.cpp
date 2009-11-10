@@ -158,6 +158,8 @@ void StatusMenu::statusChanged()
 	if (!AccountManager::instance()->defaultAccount().isNull())
 	{
 		Protocol *protocol = AccountManager::instance()->defaultAccount().protocolHandler();
+		if (!protocol)
+			return;
 		ChangePrivateStatus->setChecked(protocol->privateMode());
 	}
 
