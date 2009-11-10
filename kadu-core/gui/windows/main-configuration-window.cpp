@@ -22,7 +22,7 @@
 #include "configuration/configuration-file.h"
 #include "buddies/buddy.h"
 #include "buddies/buddy-shared.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "core/core.h"
 #include "gui/widgets/buddy-info-panel.h"
 #include "gui/widgets/configuration/config-combo-box.h"

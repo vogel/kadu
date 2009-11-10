@@ -13,7 +13,7 @@
 #include <QtCore/QBuffer>
 #include <QtGui/QPixmap>
 
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 
 class QHttp;
 
@@ -21,7 +21,7 @@ class TlenAvatarFetcher : public QObject
 {
 	Q_OBJECT
 
-	ContactAccountData *MyContactAccountData;
+	Contact *MyContact;
 	QBuffer MyAvatarBuffer;
 	QHttp *MyHttp;
 
@@ -29,11 +29,11 @@ private slots:
 	void avatarDownloaded(int id, bool error);
 
 public:
-	TlenAvatarFetcher(ContactAccountData *contactAccountData, QObject *parent = 0);
+	TlenAvatarFetcher(Contact *contact, QObject *parent = 0);
 	void fetchAvatar();
 
 signals:
-	void avatarFetched(ContactAccountData *contactAccountData, const QByteArray &avatar);
+	void avatarFetched(Contact *contact, const QByteArray &avatar);
 
 };
 

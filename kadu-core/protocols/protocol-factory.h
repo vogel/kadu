@@ -19,8 +19,8 @@ class AccountDetails;
 class AccountEditWidget;
 class ConfigurationWindow;
 class Buddy;
-class ContactAccountData;
-class ContactAccountDataWidget;
+class Contact;
+class ContactWidget;
 class Protocol;
 class ProtocolMenuManager;
 class StatusType;
@@ -31,11 +31,11 @@ class ProtocolFactory : public QObject
 public:
 	virtual Protocol * createProtocolHandler(Account account) = 0;
 	virtual AccountDetails * createAccountDetails(Account account) = 0;
-	virtual ContactAccountData * newContactAccountData(Account account, Buddy buddy, const QString &id) = 0;
-	virtual ContactAccountData * loadContactAccountData(StoragePoint *storagePoint) = 0;
+	virtual Contact * newContact(Account account, Buddy buddy, const QString &id) = 0;
+	virtual Contact * loadContact(StoragePoint *storagePoint) = 0;
 	virtual AccountCreateWidget * newCreateAccountWidget(QWidget *parent = 0) = 0;
 	virtual AccountEditWidget * newEditAccountWidget(Account, QWidget *parent = 0) = 0;
-	virtual ContactAccountDataWidget * newContactAccountDataWidget(ContactAccountData *contactAccountData, QWidget *parent = 0) = 0;
+	virtual ContactWidget * newContactWidget(Contact *contact, QWidget *parent = 0) = 0;
 	virtual ProtocolMenuManager * protocolMenuManager() { return 0; }
 	virtual QList<StatusType *> supportedStatusTypes() = 0;
 	virtual QString idLabel() = 0;

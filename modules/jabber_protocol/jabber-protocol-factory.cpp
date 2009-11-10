@@ -11,11 +11,11 @@
 #include "status/status-type.h"
 #include "status/status-type-manager.h"
 
-#include "gui/widgets/jabber-contact-account-data-widget.h"
+#include "gui/widgets/jabber-contact-widget.h"
 #include "gui/widgets/jabber-create-account-widget.h"
 #include "gui/widgets/jabber-edit-account-widget.h"
 #include "jabber-account-details.h"
-#include "jabber-contact-account-data.h"
+#include "jabber-contact.h"
 #include "jabber-protocol.h"
 #include "jabber-protocol-factory.h"
 
@@ -60,17 +60,17 @@ AccountDetails * JabberProtocolFactory::createAccountDetails(Account account)
 	return new JabberAccountDetails(account.storage(), account);
 }
 
-ContactAccountData * JabberProtocolFactory::newContactAccountData(Account account, Buddy buddy, const QString &id)
+Contact * JabberProtocolFactory::newContact(Account account, Buddy buddy, const QString &id)
 {
-	return new JabberContactAccountData(account, buddy, id, true);
+	return new JabberContact(account, buddy, id, true);
 }
 
-ContactAccountData * JabberProtocolFactory::loadContactAccountData(StoragePoint *storagePoint)
+Contact * JabberProtocolFactory::loadContact(StoragePoint *storagePoint)
 {
 	if (!storagePoint)
 		return 0;
 
-	return new JabberContactAccountData(storagePoint);
+	return new JabberContact(storagePoint);
 }
 
 AccountCreateWidget * JabberProtocolFactory::newCreateAccountWidget(QWidget *parent)
@@ -98,11 +98,11 @@ QRegExp JabberProtocolFactory::idRegularExpression()
 	return IdRegularExpression;
 }
 
-ContactAccountDataWidget * JabberProtocolFactory::newContactAccountDataWidget(ContactAccountData *contactAccountData, QWidget *parent)
+ContactWidget * JabberProtocolFactory::newContactWidget(Contact *contact, QWidget *parent)
 {
-	JabberContactAccountData *jabberContactAccountData = dynamic_cast<JabberContactAccountData *>(contactAccountData);
+	JabberContact *jabberContact = dynamic_cast<JabberContact *>(contact);
 
-	return 0 != jabberContactAccountData
-		? new JabberContactAccountDataWidget(jabberContactAccountData, parent)
+	return 0 != jabberContact
+		? new JabberContactWidget(jabberContact, parent)
 		: 0;
 }

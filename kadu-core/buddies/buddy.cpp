@@ -14,7 +14,7 @@
 #include "buddies/avatar.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-remove-predicate-object.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "core/core.h"
 #include "protocols/protocols-manager.h"
 #include "icons-manager.h"
@@ -127,53 +127,46 @@ QList<Account> Buddy::accounts() const
 		: Data->accounts();
 }
 
-void Buddy::addAccountData(ContactAccountData *accountData)
+void Buddy::addContact(Contact *contact)
 {
-	if (!accountData)
+	if (!contact)
 		return;
 
 	checkNull();
-	Data->addAccountData(accountData);
+	Data->addContact(contact);
 }
 
-void Buddy::removeAccountData(ContactAccountData *accountData) const
+void Buddy::removeContact(Contact *contact) const
 {
 	if (!isNull())
-		Data->removeAccountData(accountData);
+		Data->removeContact(contact);
 }
 
-void Buddy::removeAccountData(Account account) const
+void Buddy::removeContact(Account account) const
 {
 	if (!isNull())
-		Data->removeAccountData(account);
+		Data->removeContact(account);
 }
 
-ContactAccountData * Buddy::accountData(Account account) const
+Contact * Buddy::contact(Account account) const
 {
 	return isNull()
 			? 0
-			: Data->accountData(account);
+			: Data->contact(account);
 }
 
-QList<ContactAccountData *> Buddy::accountDatas() const
+QList<Contact *> Buddy::contacts() const
 {
 	return isNull()
-			? QList<ContactAccountData *>()
-			: Data->accountDatas();
+			? QList<Contact *>()
+			: Data->contacts();
 }
 
-StoragePoint * Buddy::storagePointForAccountData(Account account) const
-{
-	return isNull()
-			? 0
-			: Data->storagePointForAccountData(account);
-}
-
-bool Buddy::hasAccountData(Account account) const
+bool Buddy::hasContact(Account account) const
 {
 	return isNull()
 			? false
-			: 0 != Data->accountData(account);
+			: 0 != Data->contact(account);
 }
 
 QString Buddy::id(Account account) const
@@ -270,7 +263,7 @@ Buddy Buddy::dummy()
 
 	Account account;
 
-	ContactAccountData *contactData = new ContactAccountData(account, example, "999999", true);
+	Contact *contactData = new Contact(account, example, "999999", true);
 	contactData->setStatus(Status("Away", tr("Example description")));
 	contactData->setIp(QHostAddress(2130706433));
 	contactData->setPort(80);
@@ -279,7 +272,7 @@ Buddy Buddy::dummy()
 	avatar.setPixmap(IconsManager::instance()->loadPixmap("ContactsTab"));
 	avatar.setFileName(IconsManager::instance()->iconPath("ContactsTab"));
 
-	example.addAccountData(contactData);
+	example.addContact(contactData);
 
 	return example;
 }

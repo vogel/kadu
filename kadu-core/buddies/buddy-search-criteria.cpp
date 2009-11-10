@@ -20,11 +20,11 @@ BuddySearchCriteria::~BuddySearchCriteria()
 
 void BuddySearchCriteria::reqUin(Account account, const QString &uin)
 {
-	ContactAccountData *cad = SearchBuddy.accountData(account);
+	Contact *cad = SearchBuddy.contact(account);
 	if (!cad)
 	{
-		cad = new ContactAccountData(account, SearchBuddy, uin);
-		SearchBuddy.addAccountData(cad);
+		cad = new Contact(account, SearchBuddy, uin);
+		SearchBuddy.addContact(cad);
 	}
 	cad->setId(uin);
 }

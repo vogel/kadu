@@ -19,7 +19,7 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "gui/widgets/account-contacts-list-widget.h"
+#include "gui/widgets/account-buddy-list-widget.h"
 #include "gui/widgets/choose-identity-widget.h"
 
 #include "gui/widgets/proxy-group-box.h"
@@ -28,7 +28,7 @@
 
 #include "tlen-edit-account-widget.h"
 
-TlenEditAccountWidget::TlenEditAccountWidget(Account *account, QWidget *parent) :
+TlenEditAccountWidget::TlenEditAccountWidget(Account account, QWidget *parent) :
 		AccountEditWidget(account, parent)
 {
 	createGui();
@@ -152,10 +152,10 @@ void TlenEditAccountWidget::loadConnectionData()
 
 void TlenEditAccountWidget::apply()
 {
-	account()->setConnectAtStart(ConnectAtStart->isChecked());
-	account()->setId(AccountId->text());
-	account()->setRememberPassword(RememberPassword->isChecked());
-	account()->setPassword(AccountPassword->text());
+	account().setConnectAtStart(ConnectAtStart->isChecked());
+	account().setId(AccountId->text());
+	account().setRememberPassword(RememberPassword->isChecked());
+	account().setPassword(AccountPassword->text());
 }
 
 void TlenEditAccountWidget::removeAccount()
@@ -163,8 +163,8 @@ void TlenEditAccountWidget::removeAccount()
 	QMessageBox *messageBox = new QMessageBox(this);
 	messageBox->setWindowTitle(tr("Confirm account removal"));
 	messageBox->setText(tr("Are you sure do you want to remove account %1 (%2)")
-			.arg(account()->name())
-			.arg(account()->id()));
+			.arg(account().name())
+			.arg(account().id()));
 
 	messageBox->addButton(tr("Remove account"), QMessageBox::AcceptRole);
 	messageBox->addButton(tr("Remove account and unregister from server"), QMessageBox::DestructiveRole);

@@ -31,7 +31,7 @@
 #include "protocols/protocol.h"
 
 class DccManager;
-class GaduContactAccountData;
+class GaduContact;
 class GaduProtocolSocketNotifiers;
 
 class GADUAPI GaduProtocol : public Protocol
@@ -107,9 +107,9 @@ private slots:
 
 	void contactAdded(Buddy &buddy);
 	void contactRemoved(Buddy &buddy);
-	void contactAccountDataAdded(Buddy &buddy, Account contactAccount);
-	void contactAccountDataAboutToBeRemoved(Buddy &buddy, Account contactAccount);
-	void contactAccountDataIdChanged(Buddy &buddy, Account contactAccount, const QString &oldId);
+	void contactAdded(Buddy &buddy, Account contactAccount);
+	void contactAboutToBeRemoved(Buddy &buddy, Account contactAccount);
+	void contactIdChanged(Buddy &buddy, Account contactAccount, const QString &oldId);
 
 protected:
 	virtual void changeStatus();
@@ -135,7 +135,7 @@ public:
 	virtual QPixmap statusPixmap(const QString &statusType);
 
 	UinType uin(Buddy buddy) const;
-	GaduContactAccountData * gaduContactAccountData(Buddy buddy) const;
+	GaduContact * gaduContact(Buddy buddy) const;
 
 	virtual int maxDescriptionLength();
 

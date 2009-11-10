@@ -2,6 +2,7 @@
 #pkg_search_module (IDN REQUIRED libidn )
 
 set (SOURCES
+	gui/widgets/tlen-contact-widget.cpp
 	gui/widgets/tlen-create-account-widget.cpp
 	gui/widgets/tlen-edit-account-widget.cpp
 	open-chat-with/tlen-open-chat-with-runner.cpp
@@ -9,10 +10,9 @@ set (SOURCES
 	services/tlen-avatar-service.cpp
 	services/tlen-chat-service.cpp
 	tlen-account-data-manager.cpp
-	tlen-contact-account-data.cpp
-	tlen-contact-account-data-manager.cpp
-	tlen-contact-account-data-widget.cpp
-	tlen-account.cpp
+	tlen-contact.cpp
+	tlen-contact-manager.cpp
+	tlen-account-details.cpp
 	tlen-protocol.cpp
 	tlen-protocol-factory.cpp
 	QtTlen/auth.cpp
@@ -23,6 +23,7 @@ set (SOURCES
 )
 
 set (MOC_SOURCES
+	gui/widgets/tlen-contact-widget.h
 	gui/widgets/tlen-create-account-widget.h
 	gui/widgets/tlen-edit-account-widget.h
 #	open-chat-with/tlen-open-chat-with-runner.h
@@ -30,10 +31,9 @@ set (MOC_SOURCES
 	services/tlen-avatar-service.h
 	services/tlen-chat-service.h
 #	tlen-account-data-manager.h
-#	tlen-contact-account-data.h
-#	tlen-contact-account-data-manager.h
-	tlen-contact-account-data-widget.h
-#	tlen-account.h
+#	tlen-contact.h
+#	tlen-contact-manager.h
+#	tlen-account-details.h
 	tlen-protocol.h
 #	tlen-protocol-factory.h
 #	QtTlen/auth.h

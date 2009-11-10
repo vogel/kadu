@@ -229,7 +229,7 @@ void AddBuddyWindow::setAddContactEnabled()
 	if (mergeWith.isNull())
 		AddContactButton->setEnabled(false);
 	else
-		AddContactButton->setEnabled(0 == mergeWith.accountData(account));
+		AddContactButton->setEnabled(0 == mergeWith.contact(account));
 }
 
 void AddBuddyWindow::setValidateRegularExpression()
@@ -312,9 +312,9 @@ void AddBuddyWindow::accept()
 		if (buddy.isNull())
 			return;
 
-		ContactAccountData *cad = account.protocolHandler()->protocolFactory()
-		->newContactAccountData(account, buddy, UserNameEdit->text());
-		buddy.addAccountData(cad);
+		Contact *cad = account.protocolHandler()->protocolFactory()
+		->newContact(account, buddy, UserNameEdit->text());
+		buddy.addContact(cad);
 	}
 
 	QDialog::accept();

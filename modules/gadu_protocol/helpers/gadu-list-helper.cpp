@@ -14,14 +14,14 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/group.h"
 #include "buddies/group-manager.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 
 #include "protocols/protocol.h"
 
 #include "debug.h"
 #include "misc/misc.h"
 
-#include "../gadu-contact-account-data.h"
+#include "../gadu-contact.h"
 
 #include "gadu-list-helper.h"
 
@@ -37,7 +37,7 @@ QString GaduListHelper::contactListToString(Account account, BuddyList buddies)
 		foreach (Group *group, buddy.groups())
 			buddyGroups << group->name();
 
-		ContactAccountData *cad = buddy.accountData(account);
+		Contact *cad = buddy.contact(account);
 
 		contactsStringList << QString("%1;%2;%3;%4;%5;%6;%7;%8;%9;%10;%11;%12;%13")
 			.arg(buddy.firstName())
@@ -129,8 +129,8 @@ BuddyList GaduListHelper::streamToContactList(Account account, QTextStream &cont
 				uin = 0;
 			if (uin)
 			{
-				GaduContactAccountData *gcad = new GaduContactAccountData(account, buddy, QString::number(uin), false);
-				buddy.addAccountData(gcad);
+				GaduContact *gcad = new GaduContact(account, buddy, QString::number(uin), false);
+				buddy.addContact(gcad);
 			}
 		}
 

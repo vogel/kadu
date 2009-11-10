@@ -14,7 +14,7 @@
 
 #include "accounts/account-manager.h"
 #include "configuration/configuration-file.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "parser/parser-token.h"
 #include "misc/misc.h"
 #include "status/status-type.h"
@@ -186,7 +186,7 @@ QString Parser::parse(const QString &s, Account account, const Buddy &buddy, con
 				break;
 			pe.type = ParserToken::PT_STRING;
 
-			ContactAccountData *data = buddy.accountData(account);
+			Contact *data = buddy.contact(account);
 
 			switch (s[i].toAscii())
 			{

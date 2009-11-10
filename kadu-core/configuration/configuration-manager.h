@@ -19,8 +19,10 @@ class ConfigurationManager
 	QList<StorableObject *> RegisteredStorableObjects;
 
 	void importConfiguration();
-	void importOldContactAccountData(); // TODO: remove after 0.6.6 release
+	void copyOldContactsToImport();
+	void importOldContact(); // TODO: remove after 0.6.6 release
 	void importContactsIntoBuddies(); // TODO: remove after 0.6.6 release
+	void importContactAccountDatasIntoContacts(); // TODO: remove after 0.6.6 release
 
 public:
 	ConfigurationManager();

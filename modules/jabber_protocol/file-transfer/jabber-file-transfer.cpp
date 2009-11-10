@@ -11,7 +11,7 @@
 #include "accounts/account.h"
 #include "buddies/buddy-manager.h"
 #include "debug.h"
-#include "jabber-contact-account-data.h"
+#include "jabber-contact.h"
 #include "../jabber-protocol.h"
 
 #include "libiris/include/filetransfer.h"
@@ -166,7 +166,7 @@ void JabberFileTransfer::send()
 		return;
 	}
 
-	JabberContactAccountData *jcad = jabberProtocol->jabberContactAccountData(buddy());
+	JabberContact *jcad = jabberProtocol->jabberContact(buddy());
 	if (!jcad)
 	{
 		changeFileTransferStatus(FileTransfer::StatusNotConnected);

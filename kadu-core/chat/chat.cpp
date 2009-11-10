@@ -9,7 +9,7 @@
 
 #include "accounts/account-manager.h"
 #include "configuration/configuration-file.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "parser/parser.h"
 #include "debug.h"
 #include "icons-manager.h"
@@ -130,7 +130,7 @@ void Chat::refreshTitle()
 		else
 			title = Parser::parse(config_file.readEntry("Look","ChatContents"), account(), buddy, false);
 
-		ContactAccountData *cad = buddy.accountData(account());
+		Contact *cad = buddy.contact(account());
 
 		if (cad)
 			Icon = account().statusContainer()->statusPixmap(cad->status());

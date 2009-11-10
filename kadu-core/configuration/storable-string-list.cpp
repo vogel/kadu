@@ -26,18 +26,9 @@ void StorableStringList::load()
 	XmlConfigFile *storageFile = storage()->storage();
 	QDomElement point = storage()->point();
 
-	QDomNodeList nodes = storageFile->getNodes(point, ContentNodeName);
-	int count = nodes.count();
-
-	for (int i = 0; i < count; i++)
-	{
-		QDomNode node = nodes.at(i);
-		if (!node.isElement())
-			return;
-
-		QDomElement element = node.toElement();
+	QList<QDomElement> elements = storageFile->getNodes(point, ContentNodeName);
+	foreach (QDomElement element, elements)
 		append(element.text());
-	}
 }
 
 void StorableStringList::store()

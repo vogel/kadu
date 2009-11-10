@@ -23,7 +23,7 @@
 #include "accounts/account-manager.h"
 #include "chat/chat-manager.h"
 #include "configuration/configuration-file.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "buddies/buddy-manager.h"
 #include "debug.h"
 #include "core/core.h"
@@ -226,7 +226,7 @@ SearchWindow::SearchWindow(QWidget *parent, Buddy buddy)
 	if (!buddy.isNull())
 	{
 		CurrentSearchCriteria.SearchBuddy = buddy;
-		e_uin->insert(buddy.accountData(CurrentAccount)->id());
+		e_uin->insert(buddy.contact(CurrentAccount)->id());
 	}
 
 	kdebugf2();
@@ -503,7 +503,7 @@ void SearchWindow::newSearchResults(BuddyList buddies)
 
 	foreach(Buddy buddy, buddies)
 	{
-		ContactAccountData *cad = buddy.accountData(CurrentAccount);
+		Contact *cad = buddy.contact(CurrentAccount);
 		QList <QTreeWidgetItem *> items = results->findItems(cad->id(), Qt::MatchExactly, 1);
 		if (items.count())
 			qlv = items[0];		

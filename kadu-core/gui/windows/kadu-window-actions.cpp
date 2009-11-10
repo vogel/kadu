@@ -19,7 +19,7 @@
 #include "buddies/buddy-kadu-data.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "buddies/filter/has-description-buddy-filter.h"
 #include "buddies/filter/offline-buddy-filter.h"
 #include "buddies/filter/online-and-description-buddy-filter.h"
@@ -56,7 +56,7 @@ void disableNonIdUles(Action *action)
 {
 	kdebugf();
 	foreach (const Buddy buddy, action->buddies())
-		if (buddy.accountData(AccountManager::instance()->defaultAccount()) == 0)
+		if (buddy.contact(AccountManager::instance()->defaultAccount()) == 0)
 		{
 			action->setEnabled(false);
 			return;
@@ -83,7 +83,7 @@ void checkOfflineTo(Action *action)
 	Account account = AccountManager::instance()->defaultAccount();
 	bool on = true;
 	foreach (const Buddy buddy, action->buddies())
-		if (buddy.accountData(account) == 0 || !buddy.isOfflineTo(account))
+		if (buddy.contact(account) == 0 || !buddy.isOfflineTo(account))
 		{
 			on = false;
 			break;
@@ -97,7 +97,7 @@ void checkHideDescription(Action *action)
 	Account account = AccountManager::instance()->defaultAccount();
 
 	foreach (const Buddy buddy, action->buddies())
-		if (buddy.accountData(account) == 0)
+		if (buddy.contact(account) == 0)
 		{
 			action->setEnabled(false);
 			return;
@@ -147,7 +147,7 @@ void disableNoGaduUle(Action *action)
 		return;
 	}
 
-	if (!buddy.accountData(AccountManager::instance()->defaultAccount()))
+	if (!buddy.contact(AccountManager::instance()->defaultAccount()))
 	{
 		action->setEnabled(false);
 		return;
@@ -170,13 +170,13 @@ void disableNoGaduDescription(Action *action)
 		return;
 	}
 
-	if (!buddy.accountData(account))
+	if (!buddy.contact(account))
 	{
 		action->setEnabled(false);
 		return;
 	}
 
-	if (buddy.accountData(account)->status().description().isEmpty())
+	if (buddy.contact(account)->status().description().isEmpty())
 	{
 		action->setEnabled(false);
 		return;
@@ -199,19 +199,19 @@ void disableNoGaduDescriptionUrl(Action *action)
 		return;
 	}
 
-	if (!buddy.accountData(account))
+	if (!buddy.contact(account))
 	{
 		action->setEnabled(false);
 		return;
 	}
 
-	if (buddy.accountData(account)->status().description().isEmpty())
+	if (buddy.contact(account)->status().description().isEmpty())
 	{
 		action->setEnabled(false);
 		return;
 	}
 
-	if (buddy.accountData(account)->status().description().indexOf(HtmlDocument::urlRegExp()) < 0)
+	if (buddy.contact(account)->status().description().indexOf(HtmlDocument::urlRegExp()) < 0)
 	{
 		action->setEnabled(false);
 		return;
@@ -717,7 +717,7 @@ void KaduWindowActions::copyDescriptionActionActivated(QAction *sender, bool tog
 		return;
 
 	Account account = buddy.prefferedAccount();
-	ContactAccountData *data = buddy.accountData(account);
+	Contact *data = buddy.contact(account);
 
 	if (!data)
 		return;
@@ -745,7 +745,7 @@ void KaduWindowActions::openDescriptionLinkActionActivated(QAction *sender, bool
 		return;
 
 	Account account = buddy.prefferedAccount();
-	ContactAccountData *data = buddy.accountData(account);
+	Contact *data = buddy.contact(account);
 
 	if (!data)
 		return;
@@ -829,7 +829,7 @@ void KaduWindowActions::offlineToUserActionActivated(QAction *sender, bool toggl
 	BuddySet buddies = window->buddies();
 	bool on = true;
 	foreach (const Buddy buddy, buddies)
-		if (buddy.accountData(account) == 0 || !buddy.isOfflineTo(account))
+		if (buddy.contact(account) == 0 || !buddy.isOfflineTo(account))
 		{
 			on = false;
 			break;

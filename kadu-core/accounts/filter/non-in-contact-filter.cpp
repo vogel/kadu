@@ -20,7 +20,7 @@ NonInContactFilter::~NonInContactFilter()
 
 bool NonInContactFilter::acceptAccount(Account account)
 {
-	return MyContact.isNull() || (0 == MyContact.accountData(account));
+	return MyContact.isNull() || (0 == MyContact.contact(account));
 }
 
 void NonInContactFilter::setContact(Buddy buddy)

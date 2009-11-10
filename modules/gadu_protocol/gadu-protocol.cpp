@@ -42,7 +42,7 @@
 
 #include "helpers/gadu-importer.h"
 #include "gadu-account-details.h"
-#include "gadu-contact-account-data.h"
+#include "gadu-contact.h"
 #include "gadu-protocol-factory.h"
 
 #include "gadu-protocol.h"
@@ -143,10 +143,10 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 			this, SLOT(contactAdded(Buddy &)));
 	connect(BuddyManager::instance(), SIGNAL(buddyRemoved(Buddy &)),
 			this, SLOT(contactRemoved(Buddy &)));
-	connect(BuddyManager::instance(), SIGNAL(contactAccountDataAdded(Buddy &, Account)),
-			this, SLOT(contactAccountDataAboutToBeRemoved(Buddy &, Account)));
-	connect(BuddyManager::instance(), SIGNAL(contactAccountDataAboutToBeRemoved(Buddy &, Account)),
-			this, SLOT(contactAccountDataAboutToBeRemoved(Buddy &, Account)));
+	connect(BuddyManager::instance(), SIGNAL(contactAdded(Buddy &, Account)),
+			this, SLOT(contactAboutToBeRemoved(Buddy &, Account)));
+	connect(BuddyManager::instance(), SIGNAL(contactAboutToBeRemoved(Buddy &, Account)),
+			this, SLOT(contactAboutToBeRemoved(Buddy &, Account)));
 
 	kdebugf2();
 }
@@ -154,8 +154,8 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 void GaduProtocol::fetchAvatars(Account account)
 {
 	foreach (Buddy buddy, BuddyManager::instance()->buddies(account))
-		if (buddy.hasAccountData(account))
-			CurrentAvatarService->fetchAvatar(buddy.accountData(account));
+		if (buddy.hasContact(account))
+			CurrentAvatarService->fetchAvatar(buddy.contact(account));
 }
 
 GaduProtocol::~GaduProtocol()
@@ -166,10 +166,10 @@ GaduProtocol::~GaduProtocol()
 			this, SLOT(contactAdded(Buddy &)));
 	disconnect(BuddyManager::instance(), SIGNAL(buddyRemoved(Buddy &)),
 			this, SLOT(contactRemoved(Buddy &)));
-	disconnect(BuddyManager::instance(), SIGNAL(contactAccountDataAdded(Buddy &, Account)),
-			this, SLOT(contactAccountDataAboutToBeRemoved(Buddy &, Account)));
-	disconnect(BuddyManager::instance(), SIGNAL(contactAccountDataAboutToBeRemoved(Buddy &, Account)),
-			this, SLOT(contactAccountDataAboutToBeRemoved(Buddy &, Account)));
+	disconnect(BuddyManager::instance(), SIGNAL(contactAdded(Buddy &, Account)),
+			this, SLOT(contactAboutToBeRemoved(Buddy &, Account)));
+	disconnect(BuddyManager::instance(), SIGNAL(contactAboutToBeRemoved(Buddy &, Account)),
+			this, SLOT(contactAboutToBeRemoved(Buddy &, Account)));
 
 	networkDisconnected(false);
 	delete SocketNotifiers;
@@ -677,7 +677,7 @@ void GaduProtocol::socketContactStatusChanged(unsigned int uin, unsigned int sta
 		return;
 	}
 
-	GaduContactAccountData *accountData = gaduContactAccountData(buddy);
+	GaduContact *accountData = gaduContact(buddy);
 	accountData->setIp(ip);
 	accountData->setPort(port);
 	accountData->setMaxImageSize(maxImageSize);
@@ -819,15 +819,15 @@ void GaduProtocol::socketDisconnected()
 
 unsigned int GaduProtocol::uin(Buddy buddy) const
 {
-	GaduContactAccountData *data = gaduContactAccountData(buddy);
+	GaduContact *data = gaduContact(buddy);
 	return data
 		? data->uin()
 		: 0;
 }
 
-GaduContactAccountData * GaduProtocol::gaduContactAccountData(Buddy buddy) const
+GaduContact * GaduProtocol::gaduContact(Buddy buddy) const
 {
-	return dynamic_cast<GaduContactAccountData *>(buddy.accountData(account()));
+	return dynamic_cast<GaduContact *>(buddy.contact(account()));
 }
 
 QPixmap GaduProtocol::statusPixmap(Status status)
@@ -855,7 +855,7 @@ QPixmap GaduProtocol::statusPixmap(const QString &statusType)
 
 void GaduProtocol::contactAdded(Buddy &buddy)
 {
-	GaduContactAccountData *gcad = gaduContactAccountData(buddy);
+	GaduContact *gcad = gaduContact(buddy);
 	if (!gcad)
 		return;
 
@@ -864,7 +864,7 @@ void GaduProtocol::contactAdded(Buddy &buddy)
 
 void GaduProtocol::contactRemoved(Buddy &buddy)
 {
-	GaduContactAccountData *gcad = gaduContactAccountData(buddy);
+	GaduContact *gcad = gaduContact(buddy);
 	if (!gcad)
 		return;
 
@@ -875,7 +875,7 @@ void GaduProtocol::contactRemoved(Buddy &buddy)
 	gg_remove_notify(GaduSession, gcad->uin());
 }
 
-void GaduProtocol::contactAccountDataAdded(Buddy &buddy, Account contactAccount)
+void GaduProtocol::contactAdded(Buddy &buddy, Account contactAccount)
 {
 	if (contactAccount != account())
 		return;
@@ -883,7 +883,7 @@ void GaduProtocol::contactAccountDataAdded(Buddy &buddy, Account contactAccount)
 	contactAdded(buddy);
 }
 
-void GaduProtocol::contactAccountDataAboutToBeRemoved(Buddy &buddy, Account contactAccount)
+void GaduProtocol::contactAboutToBeRemoved(Buddy &buddy, Account contactAccount)
 {
 	if (contactAccount != account())
 		return;
@@ -891,7 +891,7 @@ void GaduProtocol::contactAccountDataAboutToBeRemoved(Buddy &buddy, Account cont
 	contactRemoved(buddy);
 }
 
-void GaduProtocol::contactAccountDataIdChanged(Buddy &buddy, Account contactAccount, const QString &oldId)
+void GaduProtocol::contactIdChanged(Buddy &buddy, Account contactAccount, const QString &oldId)
 {
 	if (contactAccount != account())
 		return;

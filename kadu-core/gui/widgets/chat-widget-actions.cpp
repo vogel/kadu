@@ -10,7 +10,7 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "buddies/ignored-helper.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "gui/actions/action.h"
@@ -346,7 +346,7 @@ void ChatWidgetActions::ignoreUserActionActivated(QAction *sender, bool toggled)
 		bool ContainsBad = false;
 		foreach (Buddy buddy, contacts)
 		{
-			QString uid = buddy.accountData(account)->id();
+			QString uid = buddy.contact(account)->id();
 			if (!account.protocolHandler()->validateUserID(uid))
 			{
 				ContainsBad = true;
@@ -401,7 +401,7 @@ void ChatWidgetActions::blockUserActionActivated(QAction *sender, bool toggled)
 		BuddySet copy = contacts;
 
 		foreach(Buddy user, copy)
-			if (user.accountData(account) == 0 || !user.isBlocked(account))
+			if (user.contact(account) == 0 || !user.isBlocked(account))
 			{
 				on = false;
 				break;
@@ -409,7 +409,7 @@ void ChatWidgetActions::blockUserActionActivated(QAction *sender, bool toggled)
 
 		foreach(Buddy user, copy)
 		{
-			QString uid = user.accountData(account)->id();
+			QString uid = user.contact(account)->id();
 			if (account.protocolHandler()->validateUserID(uid) && user.isBlocked(account) != !on)
 			{
 //TODO: 0.6.6

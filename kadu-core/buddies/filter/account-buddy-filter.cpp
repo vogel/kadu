@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 
 #include "account-buddy-filter.h"
 
@@ -29,6 +29,6 @@ bool AccountBuddyFilter::acceptBuddy(Buddy buddy)
 {
 	if (!Enabled)
 		return true;
-	return buddy.hasAccountData(CurrentAccount);
+	return buddy.hasContact(CurrentAccount);
 }
 

@@ -13,16 +13,16 @@
 #include "server/jabber-avatar-fetcher.h"
 #include "utils/vcard-factory.h"
 
-void JabberAvatarService::fetchAvatar(ContactAccountData *contactAccountData)
+void JabberAvatarService::fetchAvatar(Contact *contact)
 {
 
-	if (contactAccountData->id().isEmpty())
+	if (contact->id().isEmpty())
 		return;
 
 
-	JabberAvatarFetcher *avatarFetcher = new JabberAvatarFetcher(contactAccountData, this);
-	connect(avatarFetcher, SIGNAL(avatarFetched(ContactAccountData *, const QByteArray &)),
-			this, SIGNAL(avatarFetched(ContactAccountData *, const QByteArray &)));
+	JabberAvatarFetcher *avatarFetcher = new JabberAvatarFetcher(contact, this);
+	connect(avatarFetcher, SIGNAL(avatarFetched(Contact *, const QByteArray &)),
+			this, SIGNAL(avatarFetched(Contact *, const QByteArray &)));
 	avatarFetcher->fetchAvatar();
 }
 

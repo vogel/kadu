@@ -27,11 +27,11 @@ public:
 
 	virtual Protocol * createProtocolHandler(Account account);
 	virtual AccountDetails * createAccountDetails(Account account);
-	virtual ContactAccountData * newContactAccountData(Account account, Buddy buddy, const QString &id);
-	virtual ContactAccountData * loadContactAccountData(StoragePoint *storagePoint);
+	virtual Contact * newContact(Account account, Buddy buddy, const QString &id);
+	virtual Contact * loadContact(StoragePoint *storagePoint);
 	virtual AccountCreateWidget * newCreateAccountWidget(QWidget *parent);
 	virtual AccountEditWidget* newEditAccountWidget(Account, QWidget*);
-	virtual ContactAccountDataWidget * newContactAccountDataWidget(ContactAccountData *contactAccountData, QWidget *parent = 0);
+	virtual ContactWidget * newContactWidget(Contact *contact, QWidget *parent = 0);
 	virtual QList<StatusType *> supportedStatusTypes();
 	virtual QString idLabel();
 	virtual QRegExp idRegularExpression();

@@ -12,7 +12,7 @@
 #include "chat/chat.h"
 #include "configuration/configuration-file.h"
 #include "configuration/xml-configuration-file.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "gui/actions/action.h"
 #include "gui/widgets/chat-widget-actions.h"
 #include "gui/widgets/chat-widget-manager.h"
@@ -233,10 +233,10 @@ void ChatEditBox::openInsertImageDialog()
 		foreach (Buddy buddy, CurrentChat->buddies())
 		{
 			// TODO: 0.6.6
-			ContactAccountData *contactAccountData = buddy.accountData(CurrentChat->account());
-			if (contactAccountData && contactAccountData->hasFeature(/*EmbedImageInChatMessage*/))
+			Contact *contact = buddy.contact(CurrentChat->account());
+			if (contact && contact->hasFeature(/*EmbedImageInChatMessage*/))
 			{
-// 				unsigned long maxImageSize = contactAccountData->maxEmbededImageSize();
+// 				unsigned long maxImageSize = contact->maxEmbededImageSize();
 // 				if (f.size() > maxImageSize)
 					counter++;
 			}

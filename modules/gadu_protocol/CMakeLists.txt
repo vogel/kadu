@@ -40,9 +40,9 @@ set (SOURCES
 
 	gadu-account-data-manager.cpp
 	gadu-account-details.cpp
-	gadu-contact-account-data.cpp
-	gadu-contact-account-data-manager.cpp
-	gadu-contact-account-data-widget.cpp
+	gadu-contact.cpp
+	gadu-contact-data-manager.cpp
+	gadu-contact-widget.cpp
 	gadu-protocol.cpp
 	gadu-protocol-factory.cpp
 )
@@ -82,7 +82,7 @@ set (MOC_SOURCES
 	socket-notifiers/gadu-token-socket-notifiers.h
 
 	gadu-account-details.h
-	gadu-contact-account-data-widget.h
+	gadu-contact-widget.h
 	gadu-protocol.h
 )
 

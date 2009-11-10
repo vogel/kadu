@@ -30,11 +30,6 @@ set (kadu_SRCS
 	buddies/group-manager.cpp
 	buddies/ignored-helper.cpp
 
-	buddies/account-data/contact-account-data.cpp
-	buddies/account-data/contact-account-data-manager.cpp
-
-	buddies/account-data/model/buddy-account-data-model.cpp
-
 	buddies/filter/account-buddy-filter.cpp
 	buddies/filter/anonymous-buddy-filter.cpp
 	buddies/filter/anonymous-without-messages-buddy-filter.cpp
@@ -82,7 +77,7 @@ set (kadu_SRCS
 	configuration/account-data-manager.cpp
 	configuration/config-file-data-manager.cpp
 	configuration/configuration-aware-object.cpp
-	configuration/configuration-contact-account-data-manager.cpp
+	configuration/configuration-contact-data-manager.cpp
 	configuration/configuration-file.cpp
 	configuration/configuration-manager.cpp
 	configuration/notifier-configuration-data-manager.cpp
@@ -90,6 +85,11 @@ set (kadu_SRCS
 	configuration/storable-string-list.cpp
 	configuration/uuid-storable-object.cpp
 	configuration/xml-configuration-file.cpp
+
+	contacts/contact.cpp
+	contacts/contact-manager.cpp
+
+	contacts/model/buddy-contact-model.cpp
 
 	core/core.cpp
 	core/core-actions.cpp
@@ -122,7 +122,7 @@ set (kadu_SRCS
 	gui/widgets/choose-identity-widget.cpp
 	gui/widgets/color-button.cpp
 	gui/widgets/color-selector.cpp
-	gui/widgets/contact-account-data-widget.cpp
+	gui/widgets/contact-widget.cpp
 	gui/widgets/custom-input.cpp
 	gui/widgets/delayed-line-edit.cpp
 	gui/widgets/group-tab-bar.cpp
@@ -286,10 +286,6 @@ set (kadu_MOC_SRCS
 	buddies/group.h
 	buddies/group-manager.h
 
-	buddies/account-data/contact-account-data.h
-	buddies/account-data/contact-account-data-manager.h
-	buddies/account-data/model/buddy-account-data-model.h
-
 	buddies/filter/abstract-buddy-filter.h
 	buddies/filter/account-buddy-filter.h
 	buddies/filter/anonymous-buddy-filter.h
@@ -332,6 +328,11 @@ set (kadu_MOC_SRCS
 
 	chat/type/chat-type-manager.h
 
+	contacts/contact.h
+	contacts/contact-manager.h
+
+	contacts/model/buddy-contact-model.h
+
 	configuration/configuration-window-data-manager.h
 	configuration/notifier-configuration-data-manager.h
 
@@ -364,7 +365,7 @@ set (kadu_MOC_SRCS
 	gui/widgets/choose-identity-widget.h
 	gui/widgets/color-button.h
 	gui/widgets/color-selector.h
-	gui/widgets/contact-account-data-widget.h
+	gui/widgets/contact-widget.h
 	gui/widgets/custom-input.h
 	gui/widgets/delayed-line-edit.h
 	gui/widgets/group-tab-bar.h

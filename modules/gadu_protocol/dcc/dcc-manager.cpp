@@ -17,10 +17,10 @@
 #endif
 
 #include "accounts/account.h"
-#include "configuration/configuration-file.h"
 #include "buddies/buddy.h"
 #include "buddies/buddy-manager.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "configuration/configuration-file.h"
+#include "contacts/contact.h"
 #include "gui/windows/message-box.h"
 
 #include "debug.h"
@@ -32,7 +32,7 @@
 #include "services/gadu-file-transfer-service.h"
 #include "socket-notifiers/gadu-protocol-socket-notifiers.h"
 #include "gadu-account-details.h"
-#include "gadu-contact-account-data.h"
+#include "gadu-contact.h"
 
 #include "gadu-protocol.h"
 
@@ -218,7 +218,7 @@ void DccManager::connectionRequestReceived(Buddy buddy)
 {
 	kdebugf();
 
-	GaduContactAccountData *gcad = Protocol->gaduContactAccountData(buddy);
+	GaduContact *gcad = Protocol->gaduContact(buddy);
 	if (!gcad)
 		return;
 
@@ -251,7 +251,7 @@ bool DccManager::acceptConnection(unsigned int uin, unsigned int peerUin, unsign
 		return false;
 	}
 
-	GaduContactAccountData *gcad = Protocol->gaduContactAccountData(buddy);
+	GaduContact *gcad = Protocol->gaduContact(buddy);
 	if (!gcad)
 		return false;
 
@@ -408,7 +408,7 @@ void DccManager::handleEventDcc7Error(struct gg_event *e)
 	}
 }
 
-void DccManager::attachSendFileTransferSocket6(unsigned int uin, GaduContactAccountData *gcad, GaduFileTransfer *gft)
+void DccManager::attachSendFileTransferSocket6(unsigned int uin, GaduContact *gcad, GaduFileTransfer *gft)
 {
 	kdebugf();
 
@@ -432,7 +432,7 @@ void DccManager::attachSendFileTransferSocket6(unsigned int uin, GaduContactAcco
 	gg_dcc_request(Protocol->gaduSession(), gcad->uin());
 }
 
-void DccManager::attachSendFileTransferSocket7(unsigned int uin, GaduContactAccountData *gcad, GaduFileTransfer *gft)
+void DccManager::attachSendFileTransferSocket7(unsigned int uin, GaduContact *gcad, GaduFileTransfer *gft)
 {
 	kdebugf();
 
@@ -455,7 +455,7 @@ void DccManager::attachSendFileTransferSocket7(unsigned int uin, GaduContactAcco
 void DccManager::attachSendFileTransferSocket(GaduFileTransfer *gft)
 {
 	Buddy peer = gft->buddy();
-	GaduContactAccountData *gcad = Protocol->gaduContactAccountData(peer);
+	GaduContact *gcad = Protocol->gaduContact(peer);
 	if (!gcad)
 		return;
 

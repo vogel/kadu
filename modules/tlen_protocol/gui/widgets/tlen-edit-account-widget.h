@@ -45,7 +45,7 @@ private slots:
 	void removeAccount();
 
 public:
-	explicit TlenEditAccountWidget(Account *account, QWidget *parent = 0);
+	explicit TlenEditAccountWidget(Account account, QWidget *parent = 0);
 	virtual ~TlenEditAccountWidget();
 
 	virtual void apply();

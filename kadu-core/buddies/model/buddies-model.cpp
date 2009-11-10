@@ -13,7 +13,7 @@
 #include "buddies/buddy.h"
 #include "buddies/buddy-list-mime-data-helper.h"
 #include "buddies/buddy-manager.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 
 #include "protocols/protocol.h"
 
@@ -30,7 +30,7 @@ BuddiesModel::BuddiesModel(BuddyManager *manager, QObject *parent)
 			this, SLOT(buddyAdded(Buddy &)));
 	connect(Manager, SIGNAL(buddyAboutToBeRemoved(Buddy &)),
 			this, SLOT(buddyAboutToBeRemoved(Buddy &)));
-	connect(Manager, SIGNAL(contactRemoved(Buddy &)),
+			connect(Manager, SIGNAL(buddyRemoved(Buddy &)),
 			this, SLOT(buddyRemoved(Buddy &)));
 }
 
@@ -44,7 +44,7 @@ BuddiesModel::~BuddiesModel()
 			this, SLOT(buddyAdded(Buddy &)));
 	disconnect(Manager, SIGNAL(buddyAboutToBeRemoved(Buddy &)),
 			this, SLOT(buddyAboutToBeRemoved(Buddy &)));
-	disconnect(Manager, SIGNAL(contactRemoved(Buddy &)),
+	disconnect(Manager, SIGNAL(buddyRemoved(Buddy &)),
 			this, SLOT(buddyRemoved(Buddy &)));
 }
 

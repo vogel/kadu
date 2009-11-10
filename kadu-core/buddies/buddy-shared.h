@@ -26,7 +26,7 @@
 	type name() { ensureLoaded(); return capitalized_name; } \
 	void set##capitalized_name(const type &name) { ensureLoaded(); capitalized_name = name; dataUpdated(); }
 
-class ContactAccountData;
+class Contact;
 class Group;
 class XmlConfigFile;
 
@@ -53,7 +53,7 @@ public:
 private:
 	QUuid Uuid;
 	QMap<QString, QString> CustomData;
-	QMap<Account, ContactAccountData *> AccountsData;
+	QMap<Account, Contact *> Contacts;
 
 	BuddyType Type;
 
@@ -109,12 +109,11 @@ public:
 
 	QMap<QString, QString> & customData() { return CustomData; }
 
-	void addAccountData(ContactAccountData *accountData);
-	void removeAccountData(ContactAccountData *accountData);
-	void removeAccountData(Account account);
-	ContactAccountData * accountData(Account account);
-	QList<ContactAccountData *> accountDatas();
-	StoragePoint * storagePointForAccountData(Account account);
+	void addContact(Contact *contact);
+	void removeContact(Contact *contact);
+	void removeContact(Account account);
+	Contact * contact(Account account);
+	QList<Contact *> contacts();
 
 	//contact type
 	bool isNull() const { return TypeNull == Type; }
@@ -149,11 +148,11 @@ public:
 	Property(QList<Group *>, groups, Groups)
 
 signals:
-	void accountDataAboutToBeAdded(Account account);
-	void accountDataAdded(Account account);
-	void accountDataAboutToBeRemoved(Account account);
-	void accountDataRemoved(Account account);
-	void accountDataIdChanged(Account account, const QString &oldId);
+	void contactAboutToBeAdded(Account account);
+	void contactAdded(Account account);
+	void contactAboutToBeRemoved(Account account);
+	void contactRemoved(Account account);
+	void contactIdChanged(Account account, const QString &oldId);
 
 	void updated();
 

@@ -7,14 +7,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "misc/path-conversion.h"
 
 #include "avatar.h"
 
-Avatar::Avatar(ContactAccountData *contactAccountData, bool loadFromConfiguration) :
-		StorableObject("Avatar", contactAccountData),
-		MyContactAccountData(contactAccountData)
+Avatar::Avatar(Contact *contact, bool loadFromConfiguration) :
+		StorableObject("Avatar", contact),
+		MyContact(contact)
 {
     	if (!loadFromConfiguration)
 		StorableObject::setLoaded(true);
@@ -56,9 +56,9 @@ void Avatar::store()
 	storeValue("FileName", FileName);
 }
 
-ContactAccountData * Avatar::contactAccountData()
+Contact * Avatar::contact()
 {
-	return MyContactAccountData;
+	return MyContact;
 }
 
 QDateTime Avatar::lastUpdated()

@@ -10,7 +10,7 @@
 #ifndef BUDDY_SEARCH_CRITERIA_H
 #define BUDDY_SEARCH_CRITERIA_H
 
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "buddies/buddy.h"
 
 struct KADUAPI BuddySearchCriteria

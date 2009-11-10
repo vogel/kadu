@@ -98,28 +98,24 @@ void PendingMessagesManager::loadConfiguration(XmlConfigFile *configurationStora
 	if (pendingMsgsNode.isNull())
 		return;
 
-	QDomNodeList pendingMsgsNodes = configurationStorage->getNodes(pendingMsgsNode, "PendingMessage");
-	int count = pendingMsgsNodes.count();
-	for (int i = 0; i < count; i++)
+	QList<QDomElement> pendingMsgsElements = configurationStorage->getNodes(pendingMsgsNode, "PendingMessage");
+	foreach (QDomElement messageElement, pendingMsgsElements)
 	{
-		QDomElement messageElement = pendingMsgsNodes.item(i).toElement();
-		if (messageElement.isNull())
-			continue;
 		Message msg;
-		QDomElement chatNode = configurationStorage->getNode(pendingMsgsNodes.item(i).toElement(), "Chat", XmlConfigFile::ModeFind);
+		QDomElement chatNode = configurationStorage->getNode(messageElement, "Chat", XmlConfigFile::ModeFind);
 		Chat *chat = ChatManager::instance()->byUuid(chatNode.text());
 		msg.setChat(chat);
 
-		QDomElement timeNode = configurationStorage->getNode(pendingMsgsNodes.item(i).toElement(), "ReceiveTime", XmlConfigFile::ModeFind);
+		QDomElement timeNode = configurationStorage->getNode(messageElement, "ReceiveTime", XmlConfigFile::ModeFind);
 		msg.setReceiveDate(QDateTime::fromString(timeNode.text()));
 
-		timeNode = configurationStorage->getNode(pendingMsgsNodes.item(i).toElement(), "SentTime", XmlConfigFile::ModeFind);
+		timeNode = configurationStorage->getNode(messageElement, "SentTime", XmlConfigFile::ModeFind);
 		msg.setSendDate(QDateTime::fromString(timeNode.text()));
 
-		QDomElement messageNode = configurationStorage->getNode(pendingMsgsNodes.item(i).toElement(), "Message", XmlConfigFile::ModeFind);
+		QDomElement messageNode = configurationStorage->getNode(messageElement, "Message", XmlConfigFile::ModeFind);
 		msg.setContent(codec_latin2->toUnicode(messageNode.text().toLocal8Bit().data()));
 
-		QDomElement senderNode = configurationStorage->getNode(pendingMsgsNodes.item(i).toElement(), "Sender", XmlConfigFile::ModeFind);
+		QDomElement senderNode = configurationStorage->getNode(messageElement, "Sender", XmlConfigFile::ModeFind);
 		Buddy sender = BuddyManager::instance()->byUuid(senderNode.text());
 		msg.setSender(sender);
 

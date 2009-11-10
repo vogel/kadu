@@ -16,7 +16,7 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/group.h"
 #include "buddies/group-manager.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "gui/actions/action.h"
 #include "gui/widgets/buddies-list-view-menu-manager.h"
 #include "gui/widgets/chat-widget-manager.h"
@@ -183,7 +183,7 @@ void NotificationManager::accountUnregistered(Account account)
 {
 	Protocol *protocol = account.protocolHandler();
 	disconnect(protocol, SIGNAL(connectionError(Account, const QString &, const QString &)),
-			this, SLOT(connectionError(Account, const QString &, const QString &)));
+			this, SLOT(connectionError(Account, const QString &, const QString &))); // TODO: fix
 	disconnect(account.data(), SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
 			this, SLOT(statusChanged(Account, Buddy, Status)));
 
@@ -225,7 +225,7 @@ void NotificationManager::statusChanged(Account account, Buddy buddy, Status old
 	if (buddy.id(account) == account.id()) // myself
 		return;
 
-	ContactAccountData *data = buddy.accountData(account);
+	Contact *data = buddy.contact(account);
 	if (!data)
 		return;
 
@@ -426,7 +426,7 @@ void checkNotify(Action *action)
 	kdebugf();
 
 	foreach(Buddy buddy, action->buddies())
-		if (!buddy.hasAccountData(buddy.prefferedAccount()))
+		if (!buddy.hasContact(buddy.prefferedAccount()))
 		{
 			action->setEnabled(false);
 			return;

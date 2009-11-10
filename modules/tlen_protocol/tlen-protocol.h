@@ -17,8 +17,6 @@
 #include "services/tlen-avatar-service.h"
 #include "services/tlen-chat-service.h"
 
-#include "tlen-account.h"
-
 class ActionDescription;
 class Conference;
 
@@ -31,7 +29,7 @@ class TlenProtocol : public Protocol
 	public:
 		static int initModule();
 		static void closeModule();
-		TlenProtocol(Account *account, ProtocolFactory *factory);
+		TlenProtocol(Account account, ProtocolFactory *factory);
 		~TlenProtocol();
 
 		bool validateUserID(QString& uid);

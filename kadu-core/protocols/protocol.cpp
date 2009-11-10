@@ -16,7 +16,7 @@
 #include "chat/simple-chat.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-set-configuration-helper.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "icons-manager.h"
 #include "protocols/protocol-factory.h"
 #include "status/status.h"
@@ -44,11 +44,11 @@ void Protocol::setAllOffline()
 {
 	Status status;
 	Status oldStatus;
-	ContactAccountData *data;
+	Contact *data;
 
 	foreach (Buddy buddy, BuddyManager::instance()->buddies(CurrentAccount, true))
 	{
-		data = buddy.accountData(CurrentAccount);
+		data = buddy.contact(CurrentAccount);
 		oldStatus = data->status();
 
 		if (oldStatus != status)
@@ -117,7 +117,7 @@ Chat * Protocol::findChat(BuddySet contacts, bool create)
 	if (contacts.count() == 1)
 	{
 		Buddy buddy = *contacts.begin();
-		ContactAccountData *cad = buddy.accountData(account());
+		Contact *cad = buddy.contact(account());
 		if (!cad)
 			return 0;
 

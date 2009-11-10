@@ -14,11 +14,11 @@
 
 #include "buddies/buddy.h"
 #include "buddies/buddy-manager.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 
 #include "debug.h"
 
-#include "gadu-contact-account-data.h"
+#include "gadu-contact.h"
 #include "gadu-open-chat-with-runner.h"
 
 GaduOpenChatWithRunner::GaduOpenChatWithRunner(Account account) :
@@ -36,8 +36,8 @@ BuddyList GaduOpenChatWithRunner::matchingContacts(const QString &query)
 
 	Buddy c;
 
-	GaduContactAccountData *gcad = new GaduContactAccountData(ParentAccount, c, query);
-	c.addAccountData(gcad);
+	GaduContact *gcad = new GaduContact(ParentAccount, c, query);
+	c.addContact(gcad);
 	c.setDisplay(ParentAccount.name() + ": " + query);
 	matchedContacts.append(c);
 

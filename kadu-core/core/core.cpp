@@ -18,7 +18,7 @@
 #include "configuration/configuration-manager.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
-#include "buddies/account-data/contact-account-data-manager.h"
+#include "contacts/contact-manager.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/kadu-window.h"
@@ -290,7 +290,7 @@ void Core::init()
 #endif
 	QTimer::singleShot(15000, this, SLOT(deleteOldConfigurationFiles()));
 
-	ContactAccountDataManager::instance();
+	ContactManager::instance();
 	AccountManager::instance()->load();
 }
 
@@ -364,10 +364,10 @@ void Core::accountRegistered(Account account)
 	connect(protocol, SIGNAL(connected(Account)), this, SIGNAL(connected()));
 	connect(protocol, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
 /* TODO: 0.6.6
-	ContactAccountData *contactAccountData = protocol->protocolFactory()->loadContactAccountData(account, Myself);
-	if (!contactAccountData)
-		contactAccountData = protocol->protocolFactory()->newContactAccountData(account, Myself, account->id());
-	Myself.addAccountData(contactAccountData);*/
+	Contact *contact = protocol->protocolFactory()->loadContact(account, Myself);
+	if (!contact)
+		contact = protocol->protocolFactory()->newContact(account, Myself, account->id());
+	Myself.addAccountData(contact);*/
 }
 
 void Core::accountUnregistered(Account account)
@@ -387,7 +387,7 @@ void Core::accountUnregistered(Account account)
 	disconnect(protocol, SIGNAL(connected(Account)), this, SIGNAL(connected()));
 	disconnect(protocol, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
 
-	Myself.removeAccountData(account);
+	Myself.removeContact(account);
 }
 
 void Core::configurationUpdated()

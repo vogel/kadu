@@ -14,11 +14,11 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy.h"
 #include "buddies/ignored-helper.h"
-#include "buddies/account-data/contact-account-data-manager.h"
+#include "contacts/contact-manager.h"
 #include "protocols/protocols-manager.h"
 #include "misc/misc.h"
 #include "gadu-account-details.h"
-#include "gadu-contact-account-data.h"
+#include "gadu-contact.h"
 #include "gadu-protocol-factory.h"
 
 #include "gadu-importer.h"
@@ -93,7 +93,7 @@ void GaduImporter::importGaduContact(Buddy& contact)
 	Account account = AccountManager::instance()->defaultAccount();
 	QString id = contact.customData()["uin"];
 
-	GaduContactAccountData *gcad = new GaduContactAccountData(account, contact, id, true);
+	GaduContact *gcad = new GaduContact(account, contact, id, true);
 
 	gcad->setBlocked(QVariant(contact.customData()["blocking"]).toBool());
 	gcad->setOfflineTo(QVariant(contact.customData()["offline_to"]).toBool());
@@ -102,9 +102,9 @@ void GaduImporter::importGaduContact(Buddy& contact)
 	contact.customData().remove("blocking");
 	contact.customData().remove("offline_to");
 
-	contact.addAccountData(gcad);
+	contact.addContact(gcad);
 
-	ContactAccountDataManager::instance()->addContactAccountData(gcad);
+	ContactManager::instance()->addContact(gcad);
 }
 
 void GaduImporter::importIgnored()
@@ -117,23 +117,13 @@ void GaduImporter::importIgnored()
 	if (ignored.isNull())
 		return;
 
-	QDomNodeList ignoredGroups = xml_config_file->getNodes(ignored, "IgnoredGroup");
-	for (int i = 0; i < ignoredGroups.count(); i++)
+	QList<QDomElement> ignoredGroups = xml_config_file->getNodes(ignored, "IgnoredGroup");
+	foreach (QDomElement ignoredGroup, ignoredGroups)
 	{
-		QDomElement ignoredGroup = ignoredGroups.item(i).toElement();
-		if (ignoredGroup.isNull())
-			continue;
-
 		BuddySet ignoredList;
-		QDomNodeList ignoredContacts = xml_config_file->getNodes(ignoredGroup, "IgnoredContact");
-		for (int j = 0; j < ignoredContacts.count(); j++)
-		{
-			QDomElement ignoredContact = ignoredContacts.item(j).toElement();
-			if (ignoredContact.isNull())
-				continue;
-
+		QList<QDomElement> ignoredContacts = xml_config_file->getNodes(ignoredGroup, "IgnoredContact");
+		foreach (QDomElement ignoredContact, ignoredContacts)
 			ignoredList.insert(BuddyManager::instance()->byId(account, ignoredContact.attribute("uin")));
-		}
 
 		if (0 == ignoredList.count())
 			continue;

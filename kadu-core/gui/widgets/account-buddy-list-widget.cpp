@@ -11,7 +11,7 @@
 #include <QtGui/QVBoxLayout>
 
 #include "buddies/buddy-manager.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "buddies/model/buddies-model.h"
 #include "buddies/model/buddies-model-proxy.h"
 #include "buddies/filter/account-buddy-filter.h"
@@ -117,9 +117,9 @@ void AccountBuddyListWidget::buddiesListImported(bool ok, BuddyList buddies)
 
 	foreach (Buddy buddy, buddies)
 	{
-		Buddy c = BuddyManager::instance()->byId(CurrentAccount, buddy.accountData(CurrentAccount)->id());
+		Buddy c = BuddyManager::instance()->byId(CurrentAccount, buddy.contact(CurrentAccount)->id());
 		foreach (Buddy b, beforeImportList)
-			if (b.accountData(CurrentAccount) && b.accountData(CurrentAccount)->id() == c.accountData(CurrentAccount)->id())
+			if (b.contact(CurrentAccount) && b.contact(CurrentAccount)->id() == c.contact(CurrentAccount)->id())
 				beforeImportList.removeOne(b);
 		c.setFirstName(buddy.firstName());
 		c.setLastName(buddy.lastName());

@@ -9,7 +9,7 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
 
@@ -43,7 +43,7 @@ void BuddyPersonalInfoConfigurationWidget::createGui()
 	layout->addWidget(usernameLabel, row, 3, 1, 1); 
 
 	ContactIdCombo = new QComboBox(this);
-	foreach (ContactAccountData *data, MyBuddy.accountDatas())
+	foreach (Contact *data, MyBuddy.contacts())
 		ContactIdCombo->addItem(data->account().protocolHandler()->icon(),
 				data->id(),
 				data->account().uuid().toString()
@@ -155,8 +155,8 @@ void BuddyPersonalInfoConfigurationWidget::accountSelectionChanged(int index)
 	StateProvinceText->setText(MyBuddy.firstName());
 
 	//
-	IpText->setText(MyBuddy.accountData(account)->ip().toString());
-	PortText->setText(QString::number(MyBuddy.accountData(account)->port()));
-	DnsNameText->setText(MyBuddy.accountData(account)->dnsName());
-	ProtocolVerText->setText(MyBuddy.accountData(account)->protocolVersion());
+	IpText->setText(MyBuddy.contact(account)->ip().toString());
+	PortText->setText(QString::number(MyBuddy.contact(account)->port()));
+	DnsNameText->setText(MyBuddy.contact(account)->dnsName());
+	ProtocolVerText->setText(MyBuddy.contact(account)->protocolVersion());
 }

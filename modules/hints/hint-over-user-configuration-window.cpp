@@ -16,7 +16,7 @@
 #include "accounts/account.h"
 #include "configuration/configuration-file.h"
 #include "configuration/config-file-data-manager.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "gui/widgets/configuration/config-color-button.h"
 #include "gui/widgets/configuration/config-combo-box.h"
 #include "gui/widgets/configuration/config-group-box.h"
@@ -138,7 +138,7 @@ void HintOverUserConfigurationWindow::borderWidthChanged(int width)
 //TODO 0.6.6:
 void HintOverUserConfigurationWindow::iconSizeChanged(int index)
 {
-    	previewIconLabel->setPixmap(ExampleContact.prefferedAccount().statusContainer()->statusPixmap(ExampleContact.accountData(ExampleContact.prefferedAccount())->status()));
+	previewIconLabel->setPixmap(ExampleContact.prefferedAccount().statusContainer()->statusPixmap(ExampleContact.contact(ExampleContact.prefferedAccount())->status()));
 }
 
 void HintOverUserConfigurationWindow::syntaxChanged()

@@ -13,10 +13,10 @@
 
 #include "debug.h"
 
-#include "tlen-contact-account-data.h"
+#include "tlen-contact.h"
 #include "tlen-open-chat-with-runner.h"
 
-TlenOpenChatWithRunner::TlenOpenChatWithRunner(Account *account) : ParentAccount(account)
+TlenOpenChatWithRunner::TlenOpenChatWithRunner(Account account) : ParentAccount(account)
 {
 }
 
@@ -30,9 +30,9 @@ BuddyList TlenOpenChatWithRunner::matchingContacts(const QString &query)
 
 	Buddy c;
 
-	TlenContactAccountData *gcad = new TlenContactAccountData(ParentAccount, c, query);
-	c.addAccountData(gcad);
-	c.setDisplay(ParentAccount->name() + ": " + query);
+	TlenContact *gcad = new TlenContact(ParentAccount, c, query);
+	c.addContact(gcad);
+	c.setDisplay(ParentAccount.name() + ": " + query);
 	matchedContacts.append(c);
 
 	return matchedContacts;

@@ -27,7 +27,7 @@
 #include "accounts/account-manager.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/group.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "gui/windows/message-box.h"
 #include "protocols/protocol.h"
 #include "protocols/services/contact-list-service.h"
@@ -320,8 +320,8 @@ void UserlistImportExport::contactListImported(bool ok, BuddyList buddies)
 	foreach (Buddy buddy, buddies)
 	{
 		QString id;
-		if (buddy.hasAccountData(account))
-			id = buddy.accountData(account)->id();
+		if (buddy.hasContact(account))
+			id = buddy.contact(account)->id();
 
 		QStringList groups;
 		foreach (Group *group, buddy.groups())
