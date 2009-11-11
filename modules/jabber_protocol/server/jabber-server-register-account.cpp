@@ -9,7 +9,7 @@
 
 #include "debug.h"
 
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
 #include "jabber-server-register-account.h"
 
 JabberServerRegisterAccount::JabberServerRegisterAccount(const QString &server, const QString &username, const QString &password, bool legacySSLProbe, bool legacySSL, bool forceSSL, const QString &host, int port)
@@ -72,7 +72,7 @@ void JabberServerRegisterAccount::sendRegistrationData()
 	else {
 		Result = false;
 		emit finished(this);
-		MessageBox::msg(tr("This server does not support registration"), false, "Warning");
+		MessageDialog::msg(tr("This server does not support registration"), false, "Warning");
 	}
 	kdebugf2();
 }
@@ -131,7 +131,7 @@ void JabberServerRegisterAccount::actionFinished()
 	}
 	else {
 		Result = false;
-		MessageBox::msg(tr("There was an error registering the account.\nReason: %1").arg(reg->statusString()), false, "Warning");
+		MessageDialog::msg(tr("There was an error registering the account.\nReason: %1").arg(reg->statusString()), false, "Warning");
 		emit finished(this);
 	}
 	kdebugf2();

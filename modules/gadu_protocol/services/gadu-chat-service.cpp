@@ -10,7 +10,7 @@
 #include "configuration/configuration-file.h"
 #include "buddies/ignored-helper.h"
 #include "core/core.h"
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
 #include "misc/misc.h"
 #include "status/status-group.h"
 #include "status/status-type.h"
@@ -68,7 +68,7 @@ bool GaduChatService::sendMessage(Chat *chat, FormattedMessage &message)
 		if (formats)
 			delete[] formats;
 
-		MessageBox::msg(tr("Filtered message too long (%1>=%2)").arg(data.length()).arg(2000), false, "Warning");
+		MessageDialog::msg(tr("Filtered message too long (%1>=%2)").arg(data.length()).arg(2000), false, "Warning");
 		kdebugmf(KDEBUG_FUNCTION_END, "end: filtered message too long\n");
 		return false;
 	}

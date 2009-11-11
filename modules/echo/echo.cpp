@@ -27,7 +27,7 @@ extern "C" KADU_EXPORT void echo_close()
 
 Echo::Echo() : QObject(NULL, "echo")
 {
-//	MessageBox::msg(tr("Echo started"));
+//	MessageDialog::msg(tr("Echo started"));
 	connect(gadu, SIGNAL(messageReceived(Account *, UserListElements, const QString &, time_t)),
 			this, SLOT(messageReceived(Account *, UserListElements, const QString &, time_t)));
 }
@@ -36,7 +36,7 @@ Echo::~Echo()
 {
 	disconnect(gadu, SIGNAL(messageReceived(Account *, UserListElements, const QString &, time_t)),
 			this, SLOT(messageReceived(Account *, UserListElements, const QString &, time_t)));
-//	MessageBox::msg(tr("Echo stopped"));
+//	MessageDialog::msg(tr("Echo stopped"));
 }
 
 void Echo::messageReceived(Account *protocol, UserListElements senders, const QString& msg, time_t time)

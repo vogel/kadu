@@ -17,7 +17,7 @@
 #include "gui/widgets/chat-widget-actions.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/color-selector.h"
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
 #include "gui/windows/image-dialog.h"
 
 #include "chat-widget.h"
@@ -218,13 +218,13 @@ void ChatEditBox::openInsertImageDialog()
 
 		if (!f.isReadable())
 		{
-			MessageBox::msg(tr("This file is not readable"), true, "Warning", this);
+			MessageDialog::msg(tr("This file is not readable"), true, "Warning", this);
 			continue;
 		}
 
 		if (f.size() >= (1 << 18)) // 256kB
 		{
-			MessageBox::msg(tr("This file is too big (%1 >= %2)").arg(f.size()).arg(1<<18), true, "Warning", this);
+			MessageDialog::msg(tr("This file is too big (%1 >= %2)").arg(f.size()).arg(1<<18), true, "Warning", this);
 			continue;
 		}
 
@@ -246,11 +246,11 @@ void ChatEditBox::openInsertImageDialog()
 		}
 		if (counter == 1 && CurrentChat->buddies().count() == 1)
 		{
-			if (!MessageBox::ask(tr("This file is too big for %1.\nDo you really want to send this image?\n").arg((*CurrentChat->buddies().begin()).display())))
+			if (!MessageDialog::ask(tr("This file is too big for %1.\nDo you really want to send this image?\n").arg((*CurrentChat->buddies().begin()).display())))
 				continue;
 		}
 		else if (counter > 0 &&
-			!MessageBox::ask(tr("This file is too big for %1 of %2 contacts.\nDo you really want to send this image?\nSome of them probably will not get it.").arg(counter).arg(CurrentChat->buddies().count())))
+			!MessageDialog::ask(tr("This file is too big for %1 of %2 contacts.\nDo you really want to send this image?\nSome of them probably will not get it.").arg(counter).arg(CurrentChat->buddies().count())))
 			continue;
 
 		InputBox->insertPlainText(QString("[IMAGE %1]").arg(selectedFile));

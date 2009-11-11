@@ -388,7 +388,7 @@ void FileTransferManager::acceptFile(FileTransfer *ft, DccSocket *socket, QStrin
 		file.open(flags);
 
 		if (!socket->setFile(file.handle()))
-			MessageBox::msg(tr("Could not open file. Select another one."), true, "Warning");
+			MessageDialog::msg(tr("Could not open file. Select another one."), true, "Warning");
 		else
 		{
 			socket->setOffset(fi.size());

@@ -36,7 +36,7 @@
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/main-configuration-window.h"
 #include "gui/windows/merge-buddies-window.h"
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
 #include "gui/windows/search-window.h"
 #include "gui/windows/your-accounts.h"
 #include "misc/misc.h"
@@ -813,7 +813,7 @@ void KaduWindowActions::offlineToUserActionActivated(QAction *sender, bool toggl
 	if (toggled && !config_file.readBoolEntry("General", "PrivateStatus"))
 	{
 // TODO: 0.6.6
-// 		if (MessageBox::ask("You need to have private status to do it, would you like to set private status now?"))
+// 		if (MessageDialog::ask("You need to have private status to do it, would you like to set private status now?"))
 // 			changePrivateStatus->setChecked(true);
 // 		else
 // 		{
@@ -901,7 +901,7 @@ void KaduWindowActions::deleteUsersActionActivated(QAction *sender, bool toggled
 	QStringList displays;
 	foreach (Buddy buddy, buddies)
 		displays.append(buddy.display());
-	if (MessageBox::ask(tr("Selected users:\n%0 will be deleted. Are you sure?").arg(displays.join(", ")), "Warning", Core::instance()->kaduWindow()))
+	if (MessageDialog::ask(tr("Selected users:\n%0 will be deleted. Are you sure?").arg(displays.join(", ")), "Warning", Core::instance()->kaduWindow()))
 	{
 		foreach (Buddy buddy, buddies)
 			BuddyManager::instance()->removeBuddy(buddy);

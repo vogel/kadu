@@ -18,14 +18,14 @@
 #include "debug.h"
 #include "icons-manager.h"
 
-#include "message-box.h"
+#include "message-dialog.h"
 
-const int MessageBox::OK       = 1;  // 00001
-const int MessageBox::CANCEL   = 2;  // 00010
-const int MessageBox::YES      = 4;  // 00100
-const int MessageBox::NO       = 8;  // 01000
+const int MessageDialog::OK       = 1;  // 00001
+const int MessageDialog::CANCEL   = 2;  // 00010
+const int MessageDialog::YES      = 4;  // 00100
+const int MessageDialog::NO       = 8;  // 01000
 
-MessageBox::MessageBox(const QString &message, int components, bool modal, const QString &iconName, QWidget *parent)
+MessageDialog::MessageDialog(const QString &message, int components, bool modal, const QString &iconName, QWidget *parent)
 	: QDialog(parent, Qt::Window | Qt::MSWindowsFixedSizeDialogHint | Qt::WindowTitleHint | Qt::WindowSystemMenuHint),
 	message(message)
 {
@@ -82,13 +82,13 @@ MessageBox::MessageBox(const QString &message, int components, bool modal, const
 	kdebugf2();
 }
 
-MessageBox::~MessageBox()
+MessageDialog::~MessageDialog()
 {
 	if (Boxes.contains(message))
 		Boxes.remove(message);
 }
 
-void MessageBox::addButton(QBoxLayout *parent, const QString &caption, const char *slot)
+void MessageDialog::addButton(QBoxLayout *parent, const QString &caption, const char *slot)
 {
 	QPushButton *b = new QPushButton;
 	b->setText(caption);
@@ -96,46 +96,46 @@ void MessageBox::addButton(QBoxLayout *parent, const QString &caption, const cha
 	connect(b, SIGNAL(clicked()), this, slot);
 }
 
-void MessageBox::closeEvent(QCloseEvent *e)
+void MessageDialog::closeEvent(QCloseEvent *e)
 {
 	e->ignore();
 }
 
-void MessageBox::okClicked()
+void MessageDialog::okClicked()
 {
 	emit okPressed();
 	accept();
 }
 
-void MessageBox::cancelClicked()
+void MessageDialog::cancelClicked()
 {
 	emit cancelPressed();
 	reject();
 }
 
-void MessageBox::yesClicked()
+void MessageDialog::yesClicked()
 {
 	emit yesPressed();
 	accept();
 }
 
-void MessageBox::noClicked()
+void MessageDialog::noClicked()
 {
 	emit noPressed();
 	reject();
 }
 
-void MessageBox::status(const QString &message)
+void MessageDialog::status(const QString &message)
 {
-	MessageBox *m = new MessageBox(message);
+	MessageDialog *m = new MessageDialog(message);
 	m->show();
 	Boxes.insert(message,m);
 	qApp->processEvents();
 }
 
-void MessageBox::msg(const QString &message, bool modal, const QString &iconName, QWidget *parent)
+void MessageDialog::msg(const QString &message, bool modal, const QString &iconName, QWidget *parent)
 {
-	MessageBox *m = new MessageBox(message, OK, modal, iconName, parent);
+	MessageDialog *m = new MessageDialog(message, OK, modal, iconName, parent);
 
 	if (modal)
 		m->exec();
@@ -143,13 +143,13 @@ void MessageBox::msg(const QString &message, bool modal, const QString &iconName
 		m->show();
 }
 
-bool MessageBox::ask(const QString &message, const QString &iconName, QWidget *parent)
+bool MessageDialog::ask(const QString &message, const QString &iconName, QWidget *parent)
 {
-	MessageBox *m = new MessageBox(message, YES|NO, true, iconName, parent);
+	MessageDialog *m = new MessageDialog(message, YES|NO, true, iconName, parent);
 	return (m->exec() == Accepted);
 }
 
-void MessageBox::close(const QString &message)
+void MessageDialog::close(const QString &message)
 {
 	if (Boxes.contains(message))
 	{
@@ -158,4 +158,4 @@ void MessageBox::close(const QString &message)
 	}
 }
 
-QMap<QString,MessageBox*> MessageBox::Boxes;
+QMap<QString,MessageDialog*> MessageDialog::Boxes;

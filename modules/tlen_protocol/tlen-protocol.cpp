@@ -24,7 +24,7 @@
 #include "core/core.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/main-configuration-window.h"
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
 #include "debug.h"
 #include "icons-manager.h"
 #include "status/status.h"
@@ -165,7 +165,7 @@ void TlenProtocol::connectToServer()
 
 	if (account().id().isNull() || account().password().isNull())
 	{
-		MessageBox::msg(tr("tlen ID or password not set!"), false, "Warning");
+		MessageDialog::msg(tr("tlen ID or password not set!"), false, "Warning");
 		//NextStatus->setOffline();
 		kdebugmf(KDEBUG_FUNCTION_END, "end: Tlen ID or password not set\n");
 		return;

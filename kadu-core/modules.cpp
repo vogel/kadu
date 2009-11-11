@@ -31,7 +31,7 @@
 #include "core/core.h"
 #include "gui/hot-key.h"
 #include "gui/windows/kadu-window.h"
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
 
 #include "debug.h"
 #include "kadu-config.h"
@@ -531,7 +531,7 @@ bool ModulesManager::satisfyModuleDependencies(const ModuleInfo &module_info)
 			}
 			else
 			{
-				MessageBox::msg(tr("Required module %1 was not found").arg(it));
+				MessageDialog::msg(tr("Required module %1 was not found").arg(it));
 				kdebugf2();
 				return false;
 			}
@@ -697,7 +697,7 @@ bool ModulesManager::conflictsWithLoaded(const QString &module_name, const Modul
 	{
 		if (moduleIsActive(it))
 		{
-			MessageBox::msg(narg(tr("Module %1 conflicts with: %2"), module_name, it));
+			MessageDialog::msg(narg(tr("Module %1 conflicts with: %2"), module_name, it));
 			kdebugf2();
 			return true;
 		}
@@ -705,7 +705,7 @@ bool ModulesManager::conflictsWithLoaded(const QString &module_name, const Modul
 			foreach (const QString &sit, Modules[key].info.provides)
 				if (it == sit)
 				{
-					MessageBox::msg(narg(tr("Module %1 conflicts with: %2"), module_name, key));
+					MessageDialog::msg(narg(tr("Module %1 conflicts with: %2"), module_name, key));
 					kdebugf2();
 					return true;
 				}
@@ -714,7 +714,7 @@ bool ModulesManager::conflictsWithLoaded(const QString &module_name, const Modul
 		foreach (const QString &sit, Modules[key].info.conflicts)
 			if (sit == module_name)
 			{
-				MessageBox::msg(narg(tr("Module %1 conflicts with: %2"), module_name, key));
+				MessageDialog::msg(narg(tr("Module %1 conflicts with: %2"), module_name, key));
 				kdebugf2();
 				return true;
 			}
@@ -729,7 +729,7 @@ bool ModulesManager::activateModule(const QString& module_name)
 
 	if (moduleIsActive(module_name))
 	{
-		MessageBox::msg(tr("Module %1 is already active").arg(module_name));
+		MessageDialog::msg(tr("Module %1 is already active").arg(module_name));
 		kdebugf2();
 		return false;
 	}
@@ -768,7 +768,7 @@ bool ModulesManager::activateModule(const QString& module_name)
 		if (!m.lib->load())
 		{
 			QString err = m.lib->errorString();
-			MessageBox::msg(narg(tr("Cannot load %1 module library.:\n%2"), module_name, err));
+			MessageDialog::msg(narg(tr("Cannot load %1 module library.:\n%2"), module_name, err));
 			kdebugm(KDEBUG_ERROR, "cannot load %s because of: %s\n", qPrintable(module_name), qPrintable(err));
 			delete m.lib;
 			kdebugf2();
@@ -778,7 +778,7 @@ bool ModulesManager::activateModule(const QString& module_name)
 		m.close = (CloseModuleFunc *)m.lib->resolve(qPrintable(module_name+"_close"));
 		if (init == NULL || m.close == NULL)
 		{
-			MessageBox::msg(tr("Cannot find required functions in module %1.\nMaybe it's not Kadu-compatible Module.").arg(module_name));
+			MessageDialog::msg(tr("Cannot find required functions in module %1.\nMaybe it's not Kadu-compatible Module.").arg(module_name));
 			delete m.lib;
 			kdebugf2();
 			return false;
@@ -796,7 +796,7 @@ bool ModulesManager::activateModule(const QString& module_name)
 
 	if (res != 0)
 	{
-		MessageBox::msg(tr("Module initialization routine for %1 failed.").arg(module_name));
+		MessageDialog::msg(tr("Module initialization routine for %1 failed.").arg(module_name));
 		if (m.lib != NULL)
 			delete m.lib;
 		if (m.translator != NULL)
@@ -855,7 +855,7 @@ bool ModulesManager::deactivateModule(const QString& module_name, bool force)
 
 	if (m.usage_counter > 0 && !force)
 	{
-		MessageBox::msg(tr("Module %1 cannot be deactivated because it is used now").arg(module_name));
+		MessageDialog::msg(tr("Module %1 cannot be deactivated because it is used now").arg(module_name));
 		kdebugf2();
 		return false;
 	}

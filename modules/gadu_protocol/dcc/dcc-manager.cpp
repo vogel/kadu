@@ -11,7 +11,6 @@
 
 #ifdef Q_OS_WIN
 #include <winsock2.h>
-#undef MessageBox
 #else
 #include <arpa/inet.h>
 #endif
@@ -21,7 +20,7 @@
 #include "buddies/buddy-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
 
 #include "debug.h"
 #include "misc/misc.h"
@@ -105,7 +104,7 @@ void DccManager::setUpDcc()
 		kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "Couldn't bind DCC socket.\n");
 
 		// TODO: 0.6.6
-		// MessageBox::msg(tr("Couldn't create DCC socket.\nDirect connections disabled."), true, "Warning");
+		// MessageDialog::msg(tr("Couldn't create DCC socket.\nDirect connections disabled."), true, "Warning");
 		kdebugf2();
 		return;
 	}
@@ -179,7 +178,7 @@ bool DccManager::dccEnabled() const
 // void DccManager::timeout()
 // {
 	// TODO: change into notification
-// 	MessageBox::msg(tr("Direct connection timeout!\nThe receiver doesn't support direct connections or\nboth machines are behind routers with NAT."), true, "Warning");
+// 	MessageDialog::msg(tr("Direct connection timeout!\nThe receiver doesn't support direct connections or\nboth machines are behind routers with NAT."), true, "Warning");
 // }
 
 void DccManager::closeDcc()
@@ -270,7 +269,7 @@ bool DccManager::acceptConnection(unsigned int uin, unsigned int peerUin, unsign
 
 	kdebugm(KDEBUG_WARNING, "possible spoofing attempt from %s (uin:%d)\n", qPrintable(remoteAddress.toString()), peerUin);
 
-	return MessageBox::ask(narg(
+	return MessageDialog::ask(narg(
 			tr("%1 is asking for direct connection but his/her\n"
 				"IP address (%2) differs from what GG server returned\n"
 				"as his/her IP address (%3). It may be spoofing\n"

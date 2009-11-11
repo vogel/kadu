@@ -336,7 +336,7 @@
 // 			return;
 // 
 // 		UserListElement ule = userlist->byID("Gadu", QString::number(Contact));
-// 		MessageBox::msg(
+// 		MessageDialog::msg(
 // 			tr("This option only sends a remind message to %1. The transfer will not start immediately.")
 // 			.arg(ule.altNick()));
 // 
@@ -350,7 +350,7 @@
 // 			dynamic_cast<Protocol *>(gadu)->sendMessage(recv, messageToSend);
 // 		}
 // 		if (gadu->seqNum() == -1)
-// 			MessageBox::msg(tr("Error: message was not sent"), false, "Warning");
+// 			MessageDialog::msg(tr("Error: message was not sent"), false, "Warning");
 // 	}
 // }
 // 

@@ -30,7 +30,7 @@
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/kadu-window.h"
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
 #include "misc/path-conversion.h"
 #include "protocols/services/chat-service.h"
 

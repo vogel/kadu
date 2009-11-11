@@ -13,7 +13,7 @@
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QPushButton>
 
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
 #include "gui/windows/syntax-editor-window.h"
 #include "misc/misc.h"
 #include "misc/syntax-list.h"
@@ -87,7 +87,7 @@ void SyntaxEditor::deleteClicked()
 	if (syntaxList->deleteSyntax(currentSyntax()))
 		setCurrentSyntax(*(syntaxList->keys().begin()));
 	else
-		MessageBox::msg(tr("Unable to remove syntax: %1").arg(currentSyntax()), true, "Warning");
+		MessageDialog::msg(tr("Unable to remove syntax: %1").arg(currentSyntax()), true, "Warning");
 }
 
 void SyntaxEditor::syntaxChangedSlot(const QString &newSyntax)

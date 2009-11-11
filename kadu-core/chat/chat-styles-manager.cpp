@@ -25,7 +25,7 @@
 #include "gui/widgets/preview.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/configuration/config-group-box.h"
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
 #include "misc/misc.h"
 #include "protocols/protocols-manager.h"
 
@@ -346,7 +346,7 @@ void ChatStylesManager::deleteStyleClicked()
 		styleChangedSlot(*(availableStyles.keys().begin()));
 	}
 	else
-		MessageBox::msg(tr("Unable to remove style: %1").arg(styleName), true, "Warning");
+		MessageDialog::msg(tr("Unable to remove style: %1").arg(styleName), true, "Warning");
 }
 
 void ChatStylesManager::syntaxUpdated(const QString &syntaxName)

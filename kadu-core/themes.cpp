@@ -13,7 +13,7 @@
 #include "configuration/configuration-file.h"
 
 #include "debug.h"
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
 #include "misc/misc.h"
 
 #include "themes.h"
@@ -134,7 +134,7 @@ void Themes::setPaths(const QStringList &paths)
 		}
 // TODO: 0.6.5
 // 		else
-// 			MessageBox::msg(tr("<i>%1</i><br/>does not contain any theme configuration file").arg(it), false, "Warning");
+// 			MessageDialog::msg(tr("<i>%1</i><br/>does not contain any theme configuration file").arg(it), false, "Warning");
 	}
 	emit pathsChanged(ThemesPaths);
 	kdebugf2();
