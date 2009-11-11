@@ -1805,62 +1805,62 @@ void Kadu::createStatusPopupMenu()
 
 	changeStatusToOnline = new QAction(icons_manager->loadIcon(s.pixmapName(Online, false, false)), tr("Online"), this);
 	changeStatusToOnline->setCheckable(true);
-	changeStatusToOnline->setData(0);
+	changeStatusToOnline->setData(UserStatus::index(Online, false));
 	connect(changeStatusToOnline, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
 
 	changeStatusToOnlineDesc = new QAction(icons_manager->loadIcon(s.pixmapName(Online, true, false)), tr("Online (d.)"), this);
 	changeStatusToOnlineDesc->setCheckable(true);
-	changeStatusToOnlineDesc->setData(1);
+	changeStatusToOnlineDesc->setData(UserStatus::index(Online, true));
 	connect(changeStatusToOnlineDesc, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
 
 	changeStatusToBusy = new QAction(icons_manager->loadIcon(s.pixmapName(Busy, false, false)), tr("Busy"), this);
 	changeStatusToBusy->setCheckable(true);
-	changeStatusToBusy->setData(2);
+	changeStatusToBusy->setData(UserStatus::index(Busy, false));
 	connect(changeStatusToBusy, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
 
 	changeStatusToBusyDesc = new QAction(icons_manager->loadIcon(s.pixmapName(Busy, true, false)), tr("Busy (d.)"), this);
 	changeStatusToBusyDesc->setCheckable(true);
-	changeStatusToBusyDesc->setData(3);
+	changeStatusToBusyDesc->setData(UserStatus::index(Busy, true));
 	connect(changeStatusToBusyDesc, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
 
 	changeStatusToInvisible = new QAction(icons_manager->loadIcon(s.pixmapName(Invisible, false, false)), tr("Invisible"), this);
 	changeStatusToInvisible->setCheckable(true);
-	changeStatusToInvisible->setData(4);
+	changeStatusToInvisible->setData(UserStatus::index(Invisible, false));
 	connect(changeStatusToInvisible, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
 
 	changeStatusToInvisibleDesc = new QAction(icons_manager->loadIcon(s.pixmapName(Invisible, true, false)), tr("Invisible (d.)"), this);
 	changeStatusToInvisibleDesc->setCheckable(true);
-	changeStatusToInvisibleDesc->setData(5);
+	changeStatusToInvisibleDesc->setData(UserStatus::index(Invisible, true));
 	connect(changeStatusToInvisibleDesc, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
 
 	changeStatusToOffline = new QAction(icons_manager->loadIcon(s.pixmapName(Offline, false, false)), tr("Offline"), this);
 	changeStatusToOffline->setCheckable(true);
-	changeStatusToOffline->setData(6);
+	changeStatusToOffline->setData(UserStatus::index(Offline, false));
 	connect(changeStatusToOffline, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
 
 	changeStatusToOfflineDesc = new QAction(icons_manager->loadIcon(s.pixmapName(Offline, true, false)), tr("Offline (d.)"), this);
 	changeStatusToOfflineDesc->setCheckable(true);
-	changeStatusToOfflineDesc->setData(7);
+	changeStatusToOfflineDesc->setData(UserStatus::index(Offline, true));
 	connect(changeStatusToOfflineDesc, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
 
 	changeStatusToTalkWithMe = new QAction(icons_manager->loadIcon(s.pixmapName(FFC, false, false)), tr("Talk With Me"), this);
 	changeStatusToTalkWithMe->setCheckable(true);
-	changeStatusToTalkWithMe->setData(8);
+	changeStatusToTalkWithMe->setData(UserStatus::index(FFC, false));
 	connect(changeStatusToTalkWithMe, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
 
 	changeStatusToTalkWithMeDesc = new QAction(icons_manager->loadIcon(s.pixmapName(FFC, true, false)), tr("Talk With Me (d.)"), this);
 	changeStatusToTalkWithMeDesc->setCheckable(true);
-	changeStatusToTalkWithMeDesc->setData(9);
+	changeStatusToTalkWithMeDesc->setData(UserStatus::index(FFC, true));
 	connect(changeStatusToTalkWithMeDesc, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
 
 	changeStatusToDoNotDisturb = new QAction(icons_manager->loadIcon(s.pixmapName(DND, false, false)), tr("Do Not Disturb"), this);
 	changeStatusToDoNotDisturb->setCheckable(true);
-	changeStatusToDoNotDisturb->setData(10);
+	changeStatusToDoNotDisturb->setData(UserStatus::index(DND, false));
 	connect(changeStatusToDoNotDisturb, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
 
 	changeStatusToDoNotDisturbDesc = new QAction(icons_manager->loadIcon(s.pixmapName(DND, true, false)), tr("Do Not Disturb (d.)"), this);
 	changeStatusToDoNotDisturbDesc->setCheckable(true);
-	changeStatusToDoNotDisturbDesc->setData(11);
+	changeStatusToDoNotDisturbDesc->setData(UserStatus::index(DND, true));
 	connect(changeStatusToDoNotDisturbDesc, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
 
 	changePrivateStatus = new QAction(tr("Private"), this);
@@ -1883,33 +1883,33 @@ void Kadu::createStatusPopupMenu()
 	changeStatusActionGroup->addAction(changeStatusToDoNotDisturb);
 	changeStatusActionGroup->addAction(changeStatusToDoNotDisturbDesc);
 
+	statusMenu->addAction(changeStatusToTalkWithMe);
+	statusMenu->addAction(changeStatusToTalkWithMeDesc);
 	statusMenu->addAction(changeStatusToOnline);
 	statusMenu->addAction(changeStatusToOnlineDesc);
 	statusMenu->addAction(changeStatusToBusy);
 	statusMenu->addAction(changeStatusToBusyDesc);
+	statusMenu->addAction(changeStatusToDoNotDisturb);
+	statusMenu->addAction(changeStatusToDoNotDisturbDesc);
 	statusMenu->addAction(changeStatusToInvisible);
 	statusMenu->addAction(changeStatusToInvisibleDesc);
 	statusMenu->addAction(changeStatusToOffline);
 	statusMenu->addAction(changeStatusToOfflineDesc);
-	statusMenu->addAction(changeStatusToTalkWithMe);
-	statusMenu->addAction(changeStatusToTalkWithMeDesc);
-	statusMenu->addAction(changeStatusToDoNotDisturb);
-	statusMenu->addAction(changeStatusToDoNotDisturbDesc);
 	statusMenu->addSeparator();
 	statusMenu->addAction(changePrivateStatus);
 
+	dockMenu->addAction(changeStatusToTalkWithMe);
+	dockMenu->addAction(changeStatusToTalkWithMeDesc);
 	dockMenu->addAction(changeStatusToOnline);
 	dockMenu->addAction(changeStatusToOnlineDesc);
 	dockMenu->addAction(changeStatusToBusy);
 	dockMenu->addAction(changeStatusToBusyDesc);
+	dockMenu->addAction(changeStatusToDoNotDisturb);
+	dockMenu->addAction(changeStatusToDoNotDisturbDesc);
 	dockMenu->addAction(changeStatusToInvisible);
 	dockMenu->addAction(changeStatusToInvisibleDesc);
 	dockMenu->addAction(changeStatusToOffline);
 	dockMenu->addAction(changeStatusToOfflineDesc);
-	dockMenu->addAction(changeStatusToTalkWithMe);
-	dockMenu->addAction(changeStatusToTalkWithMeDesc);
-	dockMenu->addAction(changeStatusToDoNotDisturb);
-	dockMenu->addAction(changeStatusToDoNotDisturbDesc);
 	dockMenu->addSeparator();
 	dockMenu->addAction(changePrivateStatus);
 
