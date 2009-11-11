@@ -222,6 +222,9 @@ void ChatWindow::alertNewMessage()
 		}
 		else if (showNewMessagesNum) // ... so we check this condition as 'else'
 			showNewMessagesNumInTitle();
+#ifndef Q_OS_MAC
+		qApp->alert(this);
+#endif
 	}
 	else
 		currentChatWidget->markAllMessagesRead();
