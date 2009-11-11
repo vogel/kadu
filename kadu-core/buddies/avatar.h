@@ -29,8 +29,6 @@ class KADUAPI Avatar : public StorableObject
 	QString FilePath;
 
 public:
-	static Avatar null;
-
 	explicit Avatar(Contact *contact, bool loadFromConfiguration = true);
 	virtual ~Avatar();
 

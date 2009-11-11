@@ -102,7 +102,7 @@ public:
 	PropertyRead(QUuid, uuid, Uuid, QUuid())
 	PropertyRead(StoragePoint *, storage, Storage, 0)
 	Property(Account, contactAccount, ContactAccount, Account::null)
-	PropertyRead(Avatar &, contactAvatar, ContactAvatar, Avatar::null)
+	Avatar & contactAvatar() { return Data->contactAvatar(); }
 	Property(Buddy, ownerBuddy, OwnerBuddy, Buddy::null)
 	Property(QString, id, Id, QString::null)
 	Property(Status, currentStatus, CurrentStatus, Status::null)
