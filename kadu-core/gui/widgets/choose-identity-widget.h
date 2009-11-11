@@ -12,10 +12,12 @@
 
 #include <QtGui/QWidget>
 
+#include "exports.h"
+
 class QComboBox;
 class QLineEdit;
 
-class ChooseIdentityWidget : public QWidget
+class KADUAPI ChooseIdentityWidget : public QWidget
 {
 	Q_OBJECT
 

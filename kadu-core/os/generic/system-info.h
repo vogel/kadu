@@ -20,7 +20,9 @@
 
 #include <QtCore/QString>
 
-class SystemInfo
+#include "exports.h"
+
+class KADUAPI SystemInfo
 {
 	static SystemInfo *Instance;
     	SystemInfo();
