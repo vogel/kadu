@@ -70,7 +70,7 @@ class VoiceManager : public ConfigurationUiHandler, public DccHandler
 {
 	Q_OBJECT
 		ActionDescription *voiceChatActionDescription;
-		MessageBox *GsmEncodingTestMsgBox;
+		MessageDialog *GsmEncodingTestMsgBox;
 		SoundDevice GsmEncodingTestDevice;
 		gsm GsmEncodingTestHandle;
 		int16_t *GsmEncodingTestSample;

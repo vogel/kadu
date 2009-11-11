@@ -16,7 +16,7 @@
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "gui/windows/kadu-window.h"
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
 #include "misc/misc.h"
 #include "modules/history/history.h"
 #include "debug.h"
@@ -105,7 +105,7 @@ void HistoryImporter::run()
 	if (0 == totalEntries)
 		return;
 
-	if (!MessageBox::ask(qApp->translate("HistoryMigration", "%1 history entries found. Do you want to import them?").arg(totalEntries)))
+	if (!MessageDialog::ask(qApp->translate("HistoryMigration", "%1 history entries found. Do you want to import them?").arg(totalEntries)))
 		return;
 	
 	if (ConfigurationWindow)

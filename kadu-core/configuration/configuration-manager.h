@@ -12,9 +12,11 @@
 
 #include <QtCore/QList>
 
+#include "exports.h"
+
 class StorableObject;
 
-class ConfigurationManager
+class KADUAPI ConfigurationManager
 {
 	QList<StorableObject *> RegisteredStorableObjects;
 

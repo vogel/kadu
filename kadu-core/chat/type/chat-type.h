@@ -14,7 +14,9 @@
 #include <QtCore/QVariant>
 #include <QtGui/QIcon>
 
-class ChatType
+#include "exports.h"
+
+class KADUAPI ChatType
 {
 	int SortIndex;
 	QString Name;

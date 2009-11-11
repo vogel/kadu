@@ -21,7 +21,7 @@
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/kadu-window-actions.h"
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
 #include "gui/windows/search-window.h"
 
 #include "custom-input.h"
@@ -423,7 +423,7 @@ void ChatWidgetActions::blockUserActionActivated(QAction *sender, bool toggled)
 		if (chat && !on) // if we were blocking, we also close the chat (and show info if blocked anonymous)
 		{
 			if (blocked_anonymous)
-				MessageBox::msg(tr("Anonymous users will be unblocked after restarting Kadu"), false, "Information", Core::instance()->kaduWindow());
+				MessageDialog::msg(tr("Anonymous users will be unblocked after restarting Kadu"), false, "Information", Core::instance()->kaduWindow());
 
 			ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat);
 			if (chatWidget)

@@ -17,7 +17,7 @@
 #include "configuration/storage-point.h"
 #include "configuration/xml-configuration-file.h"
 #include "core/core.h"
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
 
 #include "debug.h"
 
@@ -195,13 +195,13 @@ bool GroupManager::acceptableGroupName(const QString &groupName)
 	}
 	if (groupName.contains(","))
 	{
-		MessageBox::msg(tr("'%1' is prohibited").arg(','), true, "Warning");
+		MessageDialog::msg(tr("'%1' is prohibited").arg(','), true, "Warning");
 		kdebugf2();
 		return false;
 	}
 	if (groupName.contains(";"))
 	{
-		MessageBox::msg(tr("'%1' is prohibited").arg(';'), true, "Warning");
+		MessageDialog::msg(tr("'%1' is prohibited").arg(';'), true, "Warning");
 		kdebugf2();
 		return false;
 	}
@@ -209,7 +209,7 @@ bool GroupManager::acceptableGroupName(const QString &groupName)
 	groupName.toLong(&number);
 	if (number)
 	{
-		MessageBox::msg(tr("Numbers are prohibited"), true, "Warning");//because of gadu-gadu contact list format...
+		MessageDialog::msg(tr("Numbers are prohibited"), true, "Warning");//because of gadu-gadu contact list format...
 		kdebugf2();
 		return false;
 	}
@@ -219,7 +219,7 @@ bool GroupManager::acceptableGroupName(const QString &groupName)
 	// TODO All translation
  	if (groupName == tr("All") || byName(groupName, false))
  	{
- 		MessageBox::msg(tr("This group already exists!"), true, "Warning");
+ 		MessageDialog::msg(tr("This group already exists!"), true, "Warning");
  		kdebugf2();
  		return false;
  	}

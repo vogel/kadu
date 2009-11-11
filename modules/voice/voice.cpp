@@ -370,7 +370,7 @@ int VoiceManager::setup()
 		device = sound_manager->openDevice(PLAY_AND_RECORD, 8000);
 		if (device == NULL)
 		{
-			MessageBox::msg(tr("Opening sound device failed."), false, "Warning");
+			MessageDialog::msg(tr("Opening sound device failed."), false, "Warning");
 			return -1;
 		}
 		sound_manager->setFlushingEnabled(device, false);
@@ -483,7 +483,7 @@ void VoiceManager::testGsmEncoding()
 	GsmEncodingTestHandle = gsm_create();
 	if (GsmEncodingTestHandle == 0)
 	{
-		MessageBox::msg(tr("Opening DSP Encoder failed."), false, "Warning");
+		MessageDialog::msg(tr("Opening DSP Encoder failed."), false, "Warning");
 		return;
 	}
 	int value = 1;
@@ -497,7 +497,7 @@ void VoiceManager::testGsmEncoding()
 	GsmEncodingTestDevice = sound_manager->openDevice(PLAY_AND_RECORD, 8000);
 	if (GsmEncodingTestDevice == NULL)
 	{
-		MessageBox::msg(tr("Opening sound device failed."), false, "Warning");
+		MessageDialog::msg(tr("Opening sound device failed."), false, "Warning");
 		return;
 	}
 	sound_manager->enableThreading(GsmEncodingTestDevice);
@@ -510,7 +510,7 @@ void VoiceManager::testGsmEncoding()
 	connect(sound_manager, SIGNAL(sampleRecorded(SoundDevice)), this, SLOT(gsmEncodingTestSampleRecorded(SoundDevice)));
 	connect(sound_manager, SIGNAL(samplePlayed(SoundDevice)), this, SLOT(gsmEncodingTestSamplePlayed(SoundDevice)));
 
-	GsmEncodingTestMsgBox = new MessageBox(tr("Testing GSM Encoding. Please talk now (3 seconds)."));
+	GsmEncodingTestMsgBox = new MessageDialog(tr("Testing GSM Encoding. Please talk now (3 seconds)."));
 	GsmEncodingTestMsgBox->show();
 
 	sound_manager->recordSample(GsmEncodingTestDevice, GsmEncodingTestSample, sizeof(int16_t) * 160 * 10);
@@ -532,7 +532,7 @@ void VoiceManager::gsmEncodingTestSampleRecorded(SoundDevice device)
 		else
 		{
 			delete GsmEncodingTestMsgBox;
-			GsmEncodingTestMsgBox = new MessageBox(tr("You should hear your recorded sample now."));
+			GsmEncodingTestMsgBox = new MessageDialog(tr("You should hear your recorded sample now."));
 			GsmEncodingTestMsgBox->show();
 			GsmEncodingTestCurrFrame = 0;
 			kdebugmf(KDEBUG_INFO, "Decoding gsm frame no %i\n", GsmEncodingTestCurrFrame);
@@ -737,7 +737,7 @@ bool VoiceManager::askAcceptVoiceChat(DccSocket *socket)
 	else
 		text = text.arg(socket->peerUin());
 
-	return MessageBox::ask(text, QString::null, kadu);
+	return MessageDialog::ask(text, QString::null, kadu);
 }
 
 void VoiceManager::mainDialogKeyPressed(QKeyEvent *e)

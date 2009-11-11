@@ -121,7 +121,7 @@ void ProfileManager::showConfig()
 	//i ew. ostrzezenia
 	if (config_file.readBoolEntry("Profiles", "firstRun", true)) 
 	{
-		MessageBox::msg(tr("Please remember that all profile history and settings are stored in your home directory. \nCreating profile for other system users is not recommended because of security reasons. \nThe recommended solution is to create user in system for every person which will use Kadu. \nPlease notice that this module is contradictory with Linux system ideology and was provided for compatibility with Gadu-Gadu."), true, "Warning", NULL);
+		MessageDialog::msg(tr("Please remember that all profile history and settings are stored in your home directory. \nCreating profile for other system users is not recommended because of security reasons. \nThe recommended solution is to create user in system for every person which will use Kadu. \nPlease notice that this module is contradictory with Linux system ideology and was provided for compatibility with Gadu-Gadu."), true, "Warning", NULL);
 		config_file.writeEntry("Profiles", "firstRun", false);
 	}
 	
@@ -323,7 +323,7 @@ int ProfileManager::runKadu(QString profilePath, QString protectPassword)
 			}
 			else
 			{
-				MessageBox::msg(tr("The password is invalid. Sorry"), true, "Error", NULL);
+				MessageDialog::msg(tr("The password is invalid. Sorry"), true, "Error", NULL);
 			}
 		}
 		delete p;
@@ -520,12 +520,12 @@ void ProfileConfigurationWindow::saveBtnPressed()
 
 	if (profileName->text().compare("") == 0) 
 	{
-		MessageBox::msg(tr("Please write at least the name of the Profile"), true, "Warning", NULL);
+		MessageDialog::msg(tr("Please write at least the name of the Profile"), true, "Warning", NULL);
 		return;
 	}
 	if (profileName->text().find("..") != -1) 
 	{
-		MessageBox::msg(tr("Profile Name contains wrong characters (\"..\")."), true, "Warning", NULL);
+		MessageDialog::msg(tr("Profile Name contains wrong characters (\"..\")."), true, "Warning", NULL);
 		return;
 	}
 
@@ -540,7 +540,7 @@ void ProfileConfigurationWindow::saveBtnPressed()
 		}
 
 		if (p->getPassword().compare(profileProtectPassword)) {
-			MessageBox::msg(tr("The password is invalid. Sorry"), true, "Error", NULL);
+			MessageDialog::msg(tr("The password is invalid. Sorry"), true, "Error", NULL);
 			delete p;
 			return;
 		}
@@ -614,7 +614,7 @@ void ProfileConfigurationWindow::deleteBtnPressed()
 	if (profileName->text().compare("") == 0) return;
 		
 	//wpierw ostrzez
-	if ((QString::compare(profileDir->text(), "") != 0) && (MessageBox::ask(tr("Are you sure to continue? Directory (with all contents) will be deleted."))))
+	if ((QString::compare(profileDir->text(), "") != 0) && (MessageDialog::ask(tr("Are you sure to continue? Directory (with all contents) will be deleted."))))
 	{
 		//usun katalog i jego pliki
 		QDir directory(profileDir->text(), QString::null, QDir::Name, QDir::Files);

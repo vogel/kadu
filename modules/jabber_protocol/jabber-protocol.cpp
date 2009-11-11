@@ -21,7 +21,7 @@
 #include "buddies/group.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/kadu-window.h"
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
 #include "gui/windows/main-configuration-window.h"
 
 #include "configuration/configuration-file.h"
@@ -173,7 +173,7 @@ void JabberProtocol::connectToServer()
 	{
 		setStatus(Status());
 
-		MessageBox::msg(account().name() + ": " + tr("Jabber ID or password not set!"), false, "Warning");
+		MessageDialog::msg(account().name() + ": " + tr("Jabber ID or password not set!"), false, "Warning");
 		kdebugmf(KDEBUG_FUNCTION_END, "end: Jabber ID or password not set\n");
 		return;
 	}
@@ -714,7 +714,7 @@ void JabberProtocol::slotSubscription(const XMPP::Jid & jid, const QString &type
 		kdebug("%s revoked our presence authorization", jid.full().toLocal8Bit().data());
 
 		XMPP::JT_Roster *task;
-		if (MessageBox::ask(tr("The user %1 removed subscription to you. "
+		if (MessageDialog::ask(tr("The user %1 removed subscription to you. "
 								   "You will no longer be able to view his/her online/offline status. "
 								   "Do you want to delete the contact?").arg(jid.full())))
 		{
@@ -741,7 +741,7 @@ void JabberProtocol::slotSubscription(const XMPP::Jid & jid, const QString &type
 		/*
 		* Authorize user.
 		*/
-		if (MessageBox::ask(tr("The user %1 wants to add you to his contact list.\n Do you agree?").arg(jid.full())))
+		if (MessageDialog::ask(tr("The user %1 wants to add you to his contact list.\n Do you agree?").arg(jid.full())))
 		{
 			BuddyManager::instance()->byId(account(), jid.bare());
 			XMPP::JT_Presence *task = new XMPP::JT_Presence(JabberClient->rootTask());
@@ -750,9 +750,9 @@ void JabberProtocol::slotSubscription(const XMPP::Jid & jid, const QString &type
 		}
 	}
 	else if (type == "subscribed")
-		MessageBox::msg(QString("You are authorized by %1").arg(jid.bare()), false, "Warning");
+		MessageDialog::msg(QString("You are authorized by %1").arg(jid.bare()), false, "Warning");
 	else if (type == "unsubscribe")
-		MessageBox::msg(QString("Contact %1 has removed authorization for you.").arg(jid.bare()), false, "Warning");
+		MessageDialog::msg(QString("Contact %1 has removed authorization for you.").arg(jid.bare()), false, "Warning");
 		//TODO: usuwa� kontakt z listy... ta, chyba tak
 
 }

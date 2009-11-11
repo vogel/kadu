@@ -134,7 +134,7 @@ void Unregister::doUnregister()
 
 	if (!uin->text().toUInt() || pwd->text().isEmpty())
 	{
-		MessageBox::msg(tr("Please fill out all fields"), false, "Warning", this);
+		MessageDialog::msg(tr("Please fill out all fields"), false, "Warning", this);
 		return;
 	}
 
@@ -150,12 +150,12 @@ void Unregister::unregistered(bool ok)
 
 	if (ok)
 	{
-		MessageBox::msg(tr("Unregistation was successful. Now you don't have any GG number :("), false, "Information", this);
+		MessageDialog::msg(tr("Unregistation was successful. Now you don't have any GG number :("), false, "Information", this);
 		close();
 	}
 	else
 	{
-		MessageBox::msg(tr("An error has occured while unregistration. Please try again later."), false, "Critical", this);
+		MessageDialog::msg(tr("An error has occured while unregistration. Please try again later."), false, "Critical", this);
 		setEnabled(true);
 	}
 

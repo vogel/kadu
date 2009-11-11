@@ -29,7 +29,7 @@
 #include "core/core.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/add-buddy-window.h"
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
 #include "misc/misc.h"
 #include "gui/widgets/toolbar.h"
 #include "protocols/protocol.h"
@@ -408,14 +408,14 @@ void SearchWindow::firstSearch()
 
 	if (!CurrentSearchService)
 	{
-		MessageBox::msg(tr("For this network we dont offer contacts search feature yet"), false, "Critical", this);
+		MessageDialog::msg(tr("For this network we dont offer contacts search feature yet"), false, "Critical", this);
 		kdebugf2();
 		return;
 	}
 
 	if (!CurrentAccount.protocolHandler()->isConnected())
 	{
-		MessageBox::msg(tr("Cannot search contacts in offline mode"), false, "Critical", this);
+		MessageDialog::msg(tr("Cannot search contacts in offline mode"), false, "Critical", this);
 		kdebugf2();
 		return;
 	}
@@ -536,7 +536,7 @@ void SearchWindow::newSearchResults(BuddyList buddies)
 	if (buddies.isEmpty()  || (buddies.count() == items))
 	{
 		kdebugmf(KDEBUG_INFO, "No results. Exit.\n");
-		MessageBox::msg(tr("There were no results of your search"), false, "Information", this);
+		MessageDialog::msg(tr("There were no results of your search"), false, "Information", this);
 	}
 	else
 	{

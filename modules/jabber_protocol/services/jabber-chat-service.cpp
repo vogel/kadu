@@ -12,7 +12,7 @@
 #include "core/core.h"
 #include "configuration/configuration-file.h"
 #include "buddies/ignored-helper.h"
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
 #include "misc/misc.h"
 
 #include "html_document.h"

@@ -203,20 +203,20 @@ void Register::doRegister()
 
 	if (pwd->text() != pwd2->text())
 	{
-		MessageBox::msg(tr("Error data typed in required fields.\n\nPasswords typed in "
+		MessageDialog::msg(tr("Error data typed in required fields.\n\nPasswords typed in "
 			"both fields (\"New password\" and \"Retype new password\") should be the same!"), false, "Warning", this);
 		return;
 	}
 
 	if (pwd->text().isEmpty() || mailedit->text().isEmpty())
 	{
-		MessageBox::msg(tr("Please fill out all fields"), false, "Warning", this);
+		MessageDialog::msg(tr("Please fill out all fields"), false, "Warning", this);
 		return;
 	}
 
 	if (mailedit->text().find(HtmlDocument::mailRegExp()) == -1)
 	{
-		MessageBox::msg(tr("Email address you have entered is not valid"), false, "Warning", this);
+		MessageDialog::msg(tr("Email address you have entered is not valid"), false, "Warning", this);
 		return;
 	}
 
@@ -234,13 +234,13 @@ void Register::registered(bool ok, UinType uin)
 	if (ok)
 	{
 		this->uin = uin;
-		MessageBox::msg(tr("Registration was successful. Your new number is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(uin), false, "Information", this);
+		MessageDialog::msg(tr("Registration was successful. Your new number is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(uin), false, "Information", this);
 		ask();
 		close();
 	}
 	else
 	{
-		MessageBox::msg(tr("An error has occured while registration. Please try again later."), false, "Warning", this);
+		MessageDialog::msg(tr("An error has occured while registration. Please try again later."), false, "Warning", this);
 		setEnabled(true);
 	}
 

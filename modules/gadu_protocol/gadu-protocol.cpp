@@ -12,8 +12,6 @@
 
 #ifdef Q_OS_WIN
 #include <winsock2.h>
-// name conflict..
-#undef MessageBox
 #else
 #include <arpa/inet.h>
 #endif
@@ -25,7 +23,7 @@
 #include "configuration/configuration-file.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/ignored-helper.h"
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
 #include "gui/windows/password-window.h"
 #include "protocols/protocols-manager.h"
 #include "status/status.h"
@@ -443,7 +441,7 @@ void GaduProtocol::login()
 
 	if (0 == gaduAccountDetails->uin())
 	{
-		MessageBox::msg(tr("UIN not set!"), false, "Warning");
+		MessageDialog::msg(tr("UIN not set!"), false, "Warning");
 		setStatus(Status());
 		kdebugmf(KDEBUG_FUNCTION_END, "end: uin or password not set\n");
 		return;
@@ -713,7 +711,7 @@ void GaduProtocol::socketConnFailed(GaduError error)
 			msg = tr("Please change your email in \"Change password / email\" window. "
 				"Leave new password field blank.");
 			tryAgain = false;
-			MessageBox::msg(msg, false, "Warning");
+			MessageDialog::msg(msg, false, "Warning");
 			break;
 
 		case ConnectionInvalidData:
@@ -731,7 +729,7 @@ void GaduProtocol::socketConnFailed(GaduError error)
 		case ConnectionIncorrectPassword:
 			msg = tr("Unable to connect, incorrect password");
 			tryAgain = false;
-			MessageBox::msg(tr("Connection will be stopped\nYour password is incorrect!"), false, "Critical");
+			MessageDialog::msg(tr("Connection will be stopped\nYour password is incorrect!"), false, "Critical");
 			break;
 
 		case ConnectionTlsError:
@@ -741,7 +739,7 @@ void GaduProtocol::socketConnFailed(GaduError error)
 		case ConnectionIntruderError:
 			msg = tr("Too many connection attempts with bad password!");
 			tryAgain = false;
-			MessageBox::msg(tr("Connection will be stopped\nToo many attempts with bad password"), false, "Critical");
+			MessageDialog::msg(tr("Connection will be stopped\nToo many attempts with bad password"), false, "Critical");
 			break;
 
 		case ConnectionUnavailableError:

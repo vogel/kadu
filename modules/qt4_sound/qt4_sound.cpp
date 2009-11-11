@@ -13,7 +13,7 @@
 #include "../sound/sound.h"
 
 #include "debug.h"
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
 
 #include "qt4_sound.h"
 
@@ -27,7 +27,7 @@ extern "C" KADU_EXPORT int qt4_sound_init(bool firstLoad)
 
 	if (!QSound::isAvailable ())
 	{
-		MessageBox::msg("QSound API is not available on this platform");
+		MessageDialog::msg("QSound API is not available on this platform");
 		return 1;
 	}
 

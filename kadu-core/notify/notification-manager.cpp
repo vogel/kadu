@@ -23,7 +23,7 @@
 #include "gui/widgets/custom-input.h"
 #include "gui/windows/main-configuration-window.h"
 #include "gui/windows/main-window.h"
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
 #include "notify/contact-notify-data.h"
 #include "notify/notifier.h"
 #include "notify/notify-configuration-ui-handler.h"
@@ -368,7 +368,7 @@ void NotificationManager::notify(Notification *notification)
 	notification->release();
 
 	if (!foundNotifierWithCallbackSupported)
-		MessageBox::msg(tr("Unable to find notifier for %1 event").arg(notification->type()), true, "Warning");
+		MessageDialog::msg(tr("Unable to find notifier for %1 event").arg(notification->type()), true, "Warning");
 
 	kdebugf2();
 }

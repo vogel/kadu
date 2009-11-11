@@ -18,9 +18,11 @@
 #include "configuration/uuid-storable-object.h"
 #include "buddies/buddy-set.h"
 
+#include "exports.h"
+
 class ChatType;
 
-class Chat : public QObject, public UuidStorableObject
+class KADUAPI Chat : public QObject, public UuidStorableObject
 {
 	Q_OBJECT
 

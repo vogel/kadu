@@ -15,7 +15,7 @@
 #include "buddies/model/buddies-model.h"
 #include "buddies/model/buddies-model-proxy.h"
 #include "buddies/filter/account-buddy-filter.h"
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
 
 #include "debug.h"
 #include "protocols/protocol.h"
@@ -71,7 +71,7 @@ void AccountBuddyListWidget::startImportTransfer()
 
 	if (!CurrentAccount.protocolHandler()->isConnected())
 	{
-		MessageBox::msg(tr("Cannot import user list from server in offline mode"), false, "Critical", this);
+		MessageDialog::msg(tr("Cannot import user list from server in offline mode"), false, "Critical", this);
 		return;
 	}
 
@@ -90,7 +90,7 @@ void AccountBuddyListWidget::startExportTransfer()
 
 	if (!CurrentAccount.protocolHandler()->isConnected())
 	{
-		MessageBox::msg(tr("Cannot export user list to server in offline mode"), false, "Critical", this);
+		MessageDialog::msg(tr("Cannot export user list to server in offline mode"), false, "Critical", this);
 		kdebugf2();
 		return;
 	}
@@ -138,12 +138,12 @@ void AccountBuddyListWidget::buddiesListImported(bool ok, BuddyList buddies)
 		QStringList contactsList;
 		foreach (Buddy c, beforeImportList)
 			contactsList.append(c.display());
-		if (MessageBox::ask(tr("Following contacts from your list were not found on server: %0.\nDo you want to remove them from contacts list?").arg(contactsList.join(", "))))
+		if (MessageDialog::ask(tr("Following contacts from your list were not found on server: %0.\nDo you want to remove them from contacts list?").arg(contactsList.join(", "))))
 			foreach (Buddy c, beforeImportList)
 				BuddyManager::instance()->removeBuddy(c);
 	}
 
-	MessageBox::msg(tr("Your contact list has been successfully imported from server"), false, "Infromation", this);
+	MessageDialog::msg(tr("Your contact list has been successfully imported from server"), false, "Infromation", this);
 
 	kdebugf2();
 }
@@ -154,14 +154,14 @@ void AccountBuddyListWidget::buddiesListExported(bool ok)
 
 	if (Clear)
 		if (ok)
-			MessageBox::msg(tr("Your contact list has been successfully deleted on server"), false, "Infromation", this);
+			MessageDialog::msg(tr("Your contact list has been successfully deleted on server"), false, "Infromation", this);
 		else
-			MessageBox::msg(tr("The application encountered an internal error\nThe delete userlist on server was unsuccessful"), false, "Critical", this);
+			MessageDialog::msg(tr("The application encountered an internal error\nThe delete userlist on server was unsuccessful"), false, "Critical", this);
 	else
 		if (ok)
-			MessageBox::msg(tr("Your contact list has been successfully exported to server"), false, "Information", this);
+			MessageDialog::msg(tr("Your contact list has been successfully exported to server"), false, "Information", this);
 		else
-			MessageBox::msg(tr("The application encountered an internal error\nThe export was unsuccessful"), false, "Critical", this);
+			MessageDialog::msg(tr("The application encountered an internal error\nThe export was unsuccessful"), false, "Critical", this);
 
 	ExportButton->setEnabled(true);
 

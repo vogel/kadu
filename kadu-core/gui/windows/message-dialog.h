@@ -22,11 +22,11 @@ class QLabel;
 	mie� wi�ksze mo�liwo�ci i wygodniejszy interface ni�
 	orygina�.
 **/
-class KADUAPI MessageBox : public QDialog
+class KADUAPI MessageDialog : public QDialog
 {
 	Q_OBJECT
 
-	static QMap<QString, MessageBox *> Boxes;
+	static QMap<QString, MessageDialog *> Boxes;
 	QLabel *icon;
 	QString message;
 
@@ -47,8 +47,8 @@ public:
 	static const int YES;
 	static const int NO;
 
-	MessageBox(const QString &message, int components = 0, bool modal = false, const QString &iconName = QString::null, QWidget *parent = 0);
-	~MessageBox();
+	MessageDialog(const QString &message, int components = 0, bool modal = false, const QString &iconName = QString::null, QWidget *parent = 0);
+	~MessageDialog();
 
 
 	/**

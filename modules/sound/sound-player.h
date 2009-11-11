@@ -13,8 +13,9 @@
 #include <QtCore/QObject>
 
 #include "sound.h"
+#include "sound-exports.h"
 
-class SoundPlayer : public QObject
+class SOUNDAPI SoundPlayer : public QObject
 {
 	Q_OBJECT
 

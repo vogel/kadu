@@ -18,7 +18,7 @@
 #include "buddies/buddy-list.h"
 #include "buddies/buddy-manager.h"
 #include "gui/widgets/chat-widget-manager.h"
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
 #include "debug.h"
 #include "html_document.h"
 
@@ -118,7 +118,7 @@ void openWebBrowser(const QString &link)
 	if (webBrowser.isEmpty())
 	{
 		if(!QDesktopServices::openUrl(QUrl(link))){
-			MessageBox::msg(qApp->translate("@default", QT_TR_NOOP("Web browser was not specified. Visit the configuration section")), false, "Warning");
+			MessageDialog::msg(qApp->translate("@default", QT_TR_NOOP("Web browser was not specified. Visit the configuration section")), false, "Warning");
 			kdebugmf(KDEBUG_INFO, "Web browser NOT specified.\n");
 			return;
 		}
@@ -136,7 +136,7 @@ void openWebBrowser(const QString &link)
 	browser->start(webBrowser);
 
 	if (!browser->waitForStarted())
-		MessageBox::msg(qApp->translate("@default", QT_TR_NOOP("Could not spawn Web browser process. Check if the Web browser is functional")), false, "Critical");
+		MessageDialog::msg(qApp->translate("@default", QT_TR_NOOP("Could not spawn Web browser process. Check if the Web browser is functional")), false, "Critical");
 
 	kdebugf2();
 }
@@ -153,7 +153,7 @@ void openMailClient(const QString &mail)
 			email="mailto:"+mail;
 
 		if(!QDesktopServices::openUrl(email)){
-			MessageBox::msg(qApp->translate("@default", QT_TR_NOOP("Mail client was not specified. Visit the configuration section")), false, "Warning");
+			MessageDialog::msg(qApp->translate("@default", QT_TR_NOOP("Mail client was not specified. Visit the configuration section")), false, "Warning");
 			kdebugmf(KDEBUG_INFO, "Mail client NOT specified.\n");
 			return;
 		}
@@ -176,7 +176,7 @@ void openMailClient(const QString &mail)
 	mailer->start(mailClient);
 
 	if (!mailer->waitForStarted())
-		MessageBox::msg(qApp->translate("@default", QT_TR_NOOP("Could not spawn Mail client process. Check if the Mail client is functional")), false, "Critical");
+		MessageDialog::msg(qApp->translate("@default", QT_TR_NOOP("Could not spawn Mail client process. Check if the Mail client is functional")), false, "Critical");
 
 	kdebugf2();
 }

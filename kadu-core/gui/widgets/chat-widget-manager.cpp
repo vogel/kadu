@@ -29,7 +29,7 @@
 #include "gui/windows/chat-window.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/kadu-window-actions.h"
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
 #include "gui/windows/open-chat-with/open-chat-with.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocols-manager.h"

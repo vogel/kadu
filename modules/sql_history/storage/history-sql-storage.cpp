@@ -19,7 +19,7 @@
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "debug.h"
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
 #include "misc/misc.h"
 #include "misc/path-conversion.h"
 #include "gui/widgets/chat-widget.h"
@@ -54,7 +54,7 @@ void HistorySqlStorage::initDatabase()
 
 	if (!QSqlDatabase::isDriverAvailable("QSQLITE"))
 	{
-		MessageBox::msg(tr("It seems your Qt library does not provide support for selected database.\n Please select another driver in configuration window or install Qt with %1 plugin.").arg("QSQLITE"), false, "Warning");
+		MessageDialog::msg(tr("It seems your Qt library does not provide support for selected database.\n Please select another driver in configuration window or install Qt with %1 plugin.").arg("QSQLITE"), false, "Warning");
 		return;
 	}
 
@@ -74,7 +74,7 @@ void HistorySqlStorage::initDatabase()
 
 	if (!Database.open())
 	{
-		MessageBox::msg(Database.lastError().text(), false, "Warning");
+		MessageDialog::msg(Database.lastError().text(), false, "Warning");
 		return;
 	}
 

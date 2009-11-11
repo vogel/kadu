@@ -21,7 +21,7 @@
 #include "gui/windows/add-buddy-window.h"
 #include "gui/windows/group-properties-window.h"
 #include "gui/windows/kadu-window.h"
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
 
 #include "debug.h"
 #include "icons-manager.h"
@@ -273,7 +273,7 @@ void GroupTabBar::renameGroup()
 
 void GroupTabBar::deleteGroup()
 {
-	if (currentGroup && MessageBox::ask(tr("Selected group:\n%0 will be deleted. Are you sure?").arg(currentGroup->name()), "Warning", Core::instance()->kaduWindow()))
+	if (currentGroup && MessageDialog::ask(tr("Selected group:\n%0 will be deleted. Are you sure?").arg(currentGroup->name()), "Warning", Core::instance()->kaduWindow()))
 		GroupManager::instance()->removeGroup(currentGroup->uuid().toString());
 }
 

@@ -7,7 +7,7 @@
 
 
 
-bool _isActiveWindow( QWidget *window );
+bool KADUAPI _isActiveWindow( QWidget *window );
 
 #ifdef Q_WS_X11
 

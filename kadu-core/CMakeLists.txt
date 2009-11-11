@@ -182,7 +182,7 @@ set (kadu_SRCS
 	gui/windows/main-configuration-window.cpp
 	gui/windows/main-window.cpp
 	gui/windows/merge-buddies-window.cpp
-	gui/windows/message-box.cpp
+	gui/windows/message-dialog.cpp
 	gui/windows/password-window.cpp
 	gui/windows/search-window.cpp
 	gui/windows/syntax-editor-window.cpp
@@ -405,7 +405,7 @@ set (kadu_MOC_SRCS
 	gui/windows/main-configuration-window.h
 	gui/windows/main-window.h
 	gui/windows/merge-buddies-window.h
-	gui/windows/message-box.h
+	gui/windows/message-dialog.h
 	gui/windows/password-window.h
 	gui/windows/search-window.h
 	gui/windows/syntax-editor-window.h

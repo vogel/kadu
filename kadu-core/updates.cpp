@@ -15,7 +15,7 @@
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "gui/windows/kadu-window.h"
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
 #include "debug.h"
 #include "kadu-config.h"
 #include "../modules/gadu_protocol/gadu-protocol.h"
@@ -211,7 +211,7 @@ void Updates::gotUpdatesInfo(const QHttpResponseHeader &responseHeader)
 		
 		QString newestversion(data);
 		if (ifNewerVersion(newestversion))
-			MessageBox::msg(tr("The newest Kadu version is %1").arg(newestversion), false, "Information", Core::instance()->kaduWindow());
+			MessageDialog::msg(tr("The newest Kadu version is %1").arg(newestversion), false, "Information", Core::instance()->kaduWindow());
 	}
 	disconnect(gadu, SIGNAL(connected()), this, SLOT(run()));
 	UpdateChecked = true;

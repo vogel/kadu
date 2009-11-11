@@ -15,9 +15,11 @@
 #include "accounts/account.h"
 #include "configuration/storable-object.h"
 
+#include "exports.h"
+
 class AccountShared;
 
-class AccountDetails : public QObject, public StorableObject
+class KADUAPI AccountDetails : public QObject, public StorableObject
 {
 	Q_OBJECT
 

@@ -298,7 +298,7 @@ void MediaPlayer::putSongTitle(int ident)
 	if (!isActive())
 	{
 		// TODO: make it a notification
-		MessageBox::msg(tr("%1 isn't running!").arg(getPlayerName()));
+		MessageDialog::msg(tr("%1 isn't running!").arg(getPlayerName()));
 		return;
 	}
 
@@ -374,7 +374,7 @@ void MediaPlayer::putPlayList(int ident)
 
 	if (!isActive())
 	{
-		MessageBox::msg(tr("%1 isn't running!").arg(getPlayerName()));
+		MessageDialog::msg(tr("%1 isn't running!").arg(getPlayerName()));
 		return;
 	}
 
@@ -432,13 +432,13 @@ void MediaPlayer::putPlayList(int ident)
 
 	if (emptyEntries > (lgt / 10))
 	{
-		if (!MessageBox::ask(tr("More than 1/10 of titles you're trying to send are empty.<br>Perhaps %1 havn't read all titles yet, give its some more time.<br>Do you want to send playlist anyway?").arg(getPlayerName())))
+		if (!MessageDialog::ask(tr("More than 1/10 of titles you're trying to send are empty.<br>Perhaps %1 havn't read all titles yet, give its some more time.<br>Do you want to send playlist anyway?").arg(getPlayerName())))
 			return;
 	}
 
 	if (chars >= 2000)
 	{
-		if (!MessageBox::ask(tr("You're trying to send %1 entries of %2 playlist.<br>It will be splitted and sent in few messages<br>Are you sure to do that?")
+		if (!MessageDialog::ask(tr("You're trying to send %1 entries of %2 playlist.<br>It will be splitted and sent in few messages<br>Are you sure to do that?")
 			.arg(QString::number(lgt)).arg(getPlayerName())) )
 			return;
 	}
@@ -601,7 +601,7 @@ void MediaPlayer::mediaPlayerStatusChangerActivated(QAction *sender, bool toggle
 		foreach (KaduAction *action, enableMediaPlayerStatuses->actions())
 			action->setChecked(false);
 
-		MessageBox::msg(tr("%1 isn't running!").arg(getPlayerName()));
+		MessageDialog::msg(tr("%1 isn't running!").arg(getPlayerName()));
 		return;
 	}
 
@@ -616,7 +616,7 @@ void MediaPlayer::toggleStatuses(bool toggled)
 {
 	if (!isActive() && toggled)
 	{
-		MessageBox::msg(tr("%1 isn't running!").arg(getPlayerName()));
+		MessageDialog::msg(tr("%1 isn't running!").arg(getPlayerName()));
 		return;
 	}
 	

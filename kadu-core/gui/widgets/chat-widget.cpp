@@ -30,7 +30,7 @@
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/color-selector.h"
 #include "gui/windows/kadu-window.h"
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
 #include "parser/parser.h"
 #include "protocols/protocol.h"
 
@@ -290,7 +290,7 @@ void ChatWidget::resetEditBox()
 void ChatWidget::clearChatWindow()
 {
 	kdebugf();
-	if (!config_file.readBoolEntry("Chat", "ConfirmChatClear") || MessageBox::ask(tr("Chat window will be cleared. Continue?")))
+	if (!config_file.readBoolEntry("Chat", "ConfirmChatClear") || MessageDialog::ask(tr("Chat window will be cleared. Continue?")))
 	{
 		MessagesView->clearMessages();
 		activateWindow();
@@ -315,11 +315,11 @@ void ChatWidget::messageStatusChanged(int messageId, ChatService::MessageStatus 
 			return;
 
 		case ChatService::StatusRejectedBlocked:
-			MessageBox::msg("Message blocked", true, "Warning", this);
+			MessageDialog::msg("Message blocked", true, "Warning", this);
 		case ChatService::StatusRejectedBoxFull:
-			MessageBox::msg("Message box if full", true, "Warning", this);
+			MessageDialog::msg("Message box if full", true, "Warning", this);
 		case ChatService::StatusRejectedUnknown:
-			MessageBox::msg("Message not delivered", true, "Warning", this);
+			MessageDialog::msg("Message not delivered", true, "Warning", this);
 	}
 
 	cancelMessage();
@@ -355,7 +355,7 @@ void ChatWidget::sendMessage()
 
 	if (!currentProtocol()->isConnected())
 	{
-		MessageBox::msg(tr("Cannot send message while being offline."), false, "Critical", this);
+		MessageDialog::msg(tr("Cannot send message while being offline."), false, "Critical", this);
 		kdebugmf(KDEBUG_FUNCTION_END, "not connected!\n");
 		return;
 	}
@@ -529,7 +529,7 @@ void ChatWidget::kaduStoreGeometry()
 
 void ChatWidget::leaveConference()
 {
-	if (!MessageBox::ask(tr("All messages received in this conference will be ignored\nfrom now on. Are you sure you want to leave this conference?"), "Warning", this))
+	if (!MessageDialog::ask(tr("All messages received in this conference will be ignored\nfrom now on. Are you sure you want to leave this conference?"), "Warning", this))
 		return;
 
 // TODO: 0.6.6

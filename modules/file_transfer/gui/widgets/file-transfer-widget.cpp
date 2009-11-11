@@ -17,7 +17,7 @@
 #include "buddies/buddy.h"
 #include "file-transfer/file-transfer.h"
 #include "file-transfer/file-transfer-manager.h"
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
 
 #include "debug.h"
 #include "icons-manager.h"
@@ -141,7 +141,7 @@ void FileTransferWidget::removeTransfer()
 		return;
 
 	if (FileTransfer::StatusFinished != CurrentTransfer->transferStatus())
-		if (!MessageBox::ask(tr("Are you sure you want to remove this transfer?"), QString::null, this))
+		if (!MessageDialog::ask(tr("Are you sure you want to remove this transfer?"), QString::null, this))
 			return;
 		else
 			CurrentTransfer->stop();
