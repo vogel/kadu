@@ -59,8 +59,6 @@ void TlenAccountDetails::store()
 	if (!isValidStorage())
 		return;
 
-	AccountDetails::store();
-
 	/*
 	storeValue("AllowDcc", AllowDcc);
 	storeValue("DccIP", DccIP.toString());
