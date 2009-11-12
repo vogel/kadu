@@ -11,18 +11,17 @@
 #define CONFIGURATION_ONTACT_DATA_MANAGER_H
 
 #include "configuration-window-data-manager.h"
-
-class Contact;
+#include "contacts/contact.h"
 
 class KADUAPI ConfigurationContactDataManager : public ConfigurationWindowDataManager
 {
-	Contact *Data;
+	Contact Data;
 
 protected:
-	Contact * data() { return Data; }
+	Contact data() { return Data; }
 
 public:
-	explicit ConfigurationContactDataManager(Contact *data, QObject *parent = 0);
+	explicit ConfigurationContactDataManager(Contact data, QObject *parent = 0);
 
 	virtual void writeEntry(const QString &section, const QString &name, const QVariant &value);
 	virtual QVariant readEntry(const QString &section, const QString &name);

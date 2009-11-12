@@ -22,8 +22,8 @@ BuddyList OpenChatWithContactListRunner::matchingContacts(const QString &query)
 	foreach (Buddy buddy, BuddyManager::instance()->buddies())
 	{
 		bool found = false;
-		foreach (Contact *data, buddy.contacts())
-			if (data->id().contains(query, Qt::CaseInsensitive))
+		foreach (Contact data, buddy.contacts())
+			if (data.id().contains(query, Qt::CaseInsensitive))
 			{
 				matchedContacts.append(buddy);
 				found = true;

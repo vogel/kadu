@@ -177,8 +177,8 @@ void BuddyManager::mergeBuddies(Buddy destination, Buddy source)
 {
 	while (source.accounts().size())
 	{
-		Contact *cad = source.contact(source.accounts()[0]);
-		cad->setOwnerBuddy(destination);
+		Contact contact = source.contact(source.accounts()[0]);
+		contact.setOwnerBuddy(destination);
 	}
 
 	source.setType(BuddyShared::TypeAnonymous);
@@ -270,7 +270,7 @@ BuddyList BuddyManager::buddies(Account account, bool includeAnonymous)
 	BuddyList result;
 
 	foreach (Buddy buddy, Buddies)
-		if (buddy.contact(account) && (includeAnonymous || !buddy.isAnonymous()))
+		if (!buddy.contact(account).isNull() && (includeAnonymous || !buddy.isAnonymous()))
 			result << buddy;
 
 	ensureLoaded();

@@ -7,28 +7,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef JABBER_CONTACT_H
-#define JABBER_CONTACT_H
+#include "libiris/include/xmpp.h"
 
-#include <xmpp.h>
+#include "utils/jid-util.h"
 
-#include "contacts/contact.h"
+#include "jabber-contact-details.h"
 
-class Account;
-
-class JabberContact : public Contact
+JabberContactDetails::JabberContactDetails(StoragePoint *storagePoint, Contact parent) :
+		ContactDetails(storagePoint, parent),
+		MaxImageSize(0)
 {
-	unsigned long MaxImageSize;
+}
 
-public:
-	JabberContact(Account account, Buddy buddy, const QString &id, bool loaded = false);
-	JabberContact(Account account, Buddy buddy, const QString &id, StoragePoint *storage);
-	JabberContact(StoragePoint *storage);
-
-	virtual bool validateId();
-
-	void setMaxImageSize(unsigned long maxImageSize) { MaxImageSize = maxImageSize; }
-
-};
-
-#endif // JABBER_CONTACT_H
+bool JabberContactDetails::validateId()
+{
+	XMPP::Jid newJid(JIDUtil::accountFromString(contact().id()));
+	return !newJid.node().isEmpty() && !newJid.domain().isEmpty();
+}

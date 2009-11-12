@@ -226,7 +226,7 @@ SearchWindow::SearchWindow(QWidget *parent, Buddy buddy)
 	if (!buddy.isNull())
 	{
 		CurrentSearchCriteria.SearchBuddy = buddy;
-		e_uin->insert(buddy.contact(CurrentAccount)->id());
+		e_uin->insert(buddy.contact(CurrentAccount).id());
 	}
 
 	kdebugf2();
@@ -503,15 +503,15 @@ void SearchWindow::newSearchResults(BuddyList buddies)
 
 	foreach(Buddy buddy, buddies)
 	{
-		Contact *cad = buddy.contact(CurrentAccount);
-		QList <QTreeWidgetItem *> items = results->findItems(cad->id(), Qt::MatchExactly, 1);
+		Contact contact = buddy.contact(CurrentAccount);
+		QList <QTreeWidgetItem *> items = results->findItems(contact.id(), Qt::MatchExactly, 1);
 		if (items.count())
 			qlv = items[0];		
-		pix = cad->contactAccount().statusContainer()->statusPixmap(cad->currentStatus());
+		pix = contact.contactAccount().statusContainer()->statusPixmap(contact.currentStatus());
 
 		if (qlv)
 		{
-			qlv->setText(1, cad->id());
+			qlv->setText(1, contact.id());
 			qlv->setText(2, buddy.firstName());
 			qlv->setText(3, buddy.city());
 			qlv->setText(4, buddy.nickName());
@@ -520,7 +520,7 @@ void SearchWindow::newSearchResults(BuddyList buddies)
 		else
 		{
 			QStringList strings;
-			strings << QString::null << cad->id() << buddy.firstName() << buddy.city() << buddy.nickName() << QString::number(buddy.birthYear());
+			strings << QString::null << contact.id() << buddy.firstName() << buddy.city() << buddy.nickName() << QString::number(buddy.birthYear());
 			qlv = new QTreeWidgetItem(results, strings);
 			qlv->setIcon(0, QIcon(pix));
 			qlv = 0;

@@ -21,11 +21,11 @@ class GaduContactWidget : public ContactWidget
 {
 	Q_OBJECT
 
-	GaduContact *Data;
+	Contact Data;
 	void createGui();
 
 public:
-	explicit GaduContactWidget(GaduContact *contact, QWidget *parent = 0);
+	explicit GaduContactWidget(Contact contact, QWidget *parent = 0);
 	virtual ~GaduContactWidget();
 
 };

@@ -186,28 +186,28 @@ QString Parser::parse(const QString &s, Account account, const Buddy &buddy, con
 				break;
 			pe.type = ParserToken::PT_STRING;
 
-			Contact *data = buddy.contact(account);
+			Contact data = buddy.contact(account);
 
 			switch (s[i].toAscii())
 			{
 				case 's':
 					++i;
-					if (data)
+					if (!data.isNull())
 					{
-						StatusType *type = StatusTypeManager::instance()->statusType(data->currentStatus().type());
+						StatusType *type = StatusTypeManager::instance()->statusType(data.currentStatus().type());
 						if (type)
 							pe.content = type->displayName();
 					}
 					break; // TODO: 't' removed
 				case 'q':
 					++i;
-					if (data)
+					if (!data.isNull())
 						pe.content = "" ; // ule.status("Gadu").pixmapName(); TODO: 0.6.6
 					break;
 				case 'd':
 					++i;
-					if (data)
-						pe.content = data->currentStatus().description();
+					if (!data.isNull())
+						pe.content = data.currentStatus().description();
 
 				 	if (escape)
 			 			HtmlDocument::escapeText(pe.content);
@@ -219,34 +219,33 @@ QString Parser::parse(const QString &s, Account account, const Buddy &buddy, con
 					break;
 				case 'i':
 					++i;
-					if (data)
-						pe.content = data->address().toString();
+					if (!data.isNull())
+						pe.content = data.address().toString();
 					break;
 				case 'v':
 					++i;
-					if (data)
-						pe.content = data->dnsName();
+					if (!data.isNull())
+						pe.content = data.dnsName();
 					break;
 				case 'o':
 					++i;
-					if (data && data->port() == 2)
+					if (!data.isNull() && data.port() == 2)
 						pe.content = " ";
 					break;
 				case 'p':
 					++i;
-					if (data && data->port())
-						pe.content = QString::number(data->port());
+					if (!data.isNull() && data.port())
+						pe.content = QString::number(data.port());
 					break;
 				case 'u':
 					++i;
-					if (data)
-						pe.content = data->id();
+					if (!data.isNull())
+						pe.content = data.id();
 					break;
 				case 'h':
 					++i;
-					if (data)
-						if (data && !data->currentStatus().isDisconnected())
-							pe.content = data->protocolVersion();
+					if (!data.isNull() && !data.currentStatus().isDisconnected())
+						pe.content = data.protocolVersion();
 					break;
 				case 'n':
 					++i;

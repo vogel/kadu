@@ -50,7 +50,7 @@ class KADUAPI BuddyGeneralConfigurationWidget : public QWidget
 	void updateOrder();
 
 private slots:
-	void addAccountDataRow(Contact *data = 0);
+	void addAccountDataRow(Contact data = Contact::null);
 	void showOrderDialog();
 	void updateOrderAndClose();
 

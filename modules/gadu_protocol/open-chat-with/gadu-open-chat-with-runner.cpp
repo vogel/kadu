@@ -18,7 +18,7 @@
 
 #include "debug.h"
 
-#include "gadu-contact.h"
+#include "gadu-contact-details.h"
 #include "gadu-open-chat-with-runner.h"
 
 GaduOpenChatWithRunner::GaduOpenChatWithRunner(Account account) :
@@ -34,13 +34,18 @@ BuddyList GaduOpenChatWithRunner::matchingContacts(const QString &query)
 	if (!validateUserID(query))
 		return matchedContacts;
 
-	Buddy c;
+	Buddy buddy;
 
-	GaduContact *gcad = new GaduContact(ParentAccount, c, query);
-	c.addContact(gcad);
-	c.setDisplay(ParentAccount.name() + ": " + query);
-	matchedContacts.append(c);
+	Contact contact;
+	contact.setContactAccount(ParentAccount);
+	contact.setOwnerBuddy(buddy);
+	contact.setId(query);
+	contact.setDetails(new GaduContactDetails(contact.storage(), contact));
 
+	buddy.addContact(contact);
+	buddy.setDisplay(ParentAccount.name() + ": " + query);
+	
+	matchedContacts.append(buddy);
 	return matchedContacts;
 }
 

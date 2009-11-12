@@ -15,7 +15,7 @@
 #include "gui/widgets/jabber-create-account-widget.h"
 #include "gui/widgets/jabber-edit-account-widget.h"
 #include "jabber-account-details.h"
-#include "jabber-contact.h"
+#include "jabber-contact-details.h"
 #include "jabber-protocol.h"
 #include "jabber-protocol-factory.h"
 
@@ -60,17 +60,9 @@ AccountDetails * JabberProtocolFactory::createAccountDetails(Account account)
 	return new JabberAccountDetails(account.storage(), account);
 }
 
-Contact * JabberProtocolFactory::newContact(Account account, Buddy buddy, const QString &id)
+ContactDetails * JabberProtocolFactory::createContactDetails(Contact contact)
 {
-	return new JabberContact(account, buddy, id, true);
-}
-
-Contact * JabberProtocolFactory::loadContact(StoragePoint *storagePoint)
-{
-	if (!storagePoint)
-		return 0;
-
-	return new JabberContact(storagePoint);
+	return new JabberContactDetails(contact.storage(), contact);
 }
 
 AccountCreateWidget * JabberProtocolFactory::newCreateAccountWidget(QWidget *parent)
@@ -98,11 +90,11 @@ QRegExp JabberProtocolFactory::idRegularExpression()
 	return IdRegularExpression;
 }
 
-ContactWidget * JabberProtocolFactory::newContactWidget(Contact *contact, QWidget *parent)
+ContactWidget * JabberProtocolFactory::newContactWidget(Contact contact, QWidget *parent)
 {
-	JabberContact *jabberContact = dynamic_cast<JabberContact *>(contact);
+	JabberContactDetails *jabberContactDetails = dynamic_cast<JabberContactDetails *>(contact.details());
 
-	return 0 != jabberContact
-		? new JabberContactWidget(jabberContact, parent)
-		: 0;
+	return 0 != jabberContactDetails
+			? new JabberContactWidget(contact, parent)
+			: 0;
 }

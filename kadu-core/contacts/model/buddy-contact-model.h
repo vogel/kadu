@@ -25,10 +25,10 @@ class BuddyContactModel : public QAbstractListModel
 	Buddy SourceBuddy;
 
 private slots:
-	void contactAboutToBeAdded(Contact *data);
-	void contactAdded(Contact *data);
-	void contactAboutToBeRemoved(Contact *data);
-	void contactRemoved(Contact *data);
+	void contactAboutToBeAdded(Contact data);
+	void contactAdded(Contact data);
+	void contactAboutToBeRemoved(Contact data);
+	void contactRemoved(Contact data);
 
 public:
 	BuddyContactModel(Buddy contact, QObject *parent = 0);
@@ -40,9 +40,9 @@ public:
 	virtual QVariant data(const QModelIndex &index, int role) const;
 	virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 
-	Contact * contact(const QModelIndex &index) const;
-	int contactIndex(Contact *data);
-	QModelIndex contactModelIndex(Contact *data);
+	Contact contact(const QModelIndex &index) const;
+	int contactIndex(Contact data);
+	QModelIndex contactModelIndex(Contact data);
 
 };
 

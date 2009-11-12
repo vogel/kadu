@@ -19,6 +19,7 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "buddies/avatar.h"
 #include "buddies/buddy-manager.h"
 #include "contacts/contact.h"
 #include "configuration/configuration-contact-data-manager.h"
@@ -68,7 +69,7 @@ void BuddyGeneralConfigurationWidget::createGui()
 	photoLayout->setSpacing(2);
 
 	QLabel *photoLabel = new QLabel(this);
-	QPixmap photoPixmap = QPixmap(MyBuddy.contacts().at(0)->contactAvatar().pixmap());
+	QPixmap photoPixmap = QPixmap(MyBuddy.contacts().at(0).contactAvatar().pixmap());
 	photoLabel->setPixmap(photoPixmap);
 	photoLayout->addWidget(photoLabel);
 
@@ -114,9 +115,9 @@ void BuddyGeneralConfigurationWidget::createGui()
 	AccountsLayout->setColumnStretch(0, 2);
 	AccountsLayout->setColumnStretch(2, 2);
 	
-	foreach (Contact *data, MyBuddy.contacts())
+	foreach (Contact data, MyBuddy.contacts())
 	{
-		DefaultAccountCombo->addItem(data->id());
+		DefaultAccountCombo->addItem(data.id());
 		addAccountDataRow(data);
 	}
 
@@ -173,7 +174,7 @@ void BuddyGeneralConfigurationWidget::createGui()
 	layout->setRowStretch(8, 100);
 }
 
-void BuddyGeneralConfigurationWidget::addAccountDataRow(Contact *data)
+void BuddyGeneralConfigurationWidget::addAccountDataRow(Contact data)
 {
 	int row = ContactsLayout->rowCount();
 
@@ -201,7 +202,7 @@ void BuddyGeneralConfigurationWidget::addAccountDataRow(Contact *data)
 	ContactsIds.append(contactLineEdit);
 	ContactsAccounts.append(accountsCombo);
 
-	if (!data)
+	if (data.isNull())
 		accountsCombo->addItem("-" + tr("Select a Network") + "-");
 	foreach (Account account, AccountManager::instance()->accounts())
 	{
@@ -211,13 +212,13 @@ void BuddyGeneralConfigurationWidget::addAccountDataRow(Contact *data)
 				account.uuid().toString()
 		);
 	}
-	if (data)
-		accountsCombo->setCurrentIndex(accountsCombo->findData(data->contactAccount().uuid().toString()));
+	if (!data.isNull())
+		accountsCombo->setCurrentIndex(accountsCombo->findData(data.contactAccount().uuid().toString()));
 
 	ContactsLayout->addWidget(accountRow, row, 0, 1, 6);
 
-	if (data)
-		contactLineEdit->setText(data->id());
+	if (!data.isNull())
+		contactLineEdit->setText(data.id());
 }
 
 void BuddyGeneralConfigurationWidget::saveConfiguration()
@@ -239,20 +240,23 @@ void BuddyGeneralConfigurationWidget::saveConfiguration()
 		{
 			if (!contactId.isEmpty()/* && account.protocolHandler()->validateId(ContactsIds.at(i)->text())*/)
 			{
-				MyBuddy.contact(account)->setId(contactId);
+				MyBuddy.contact(account).setId(contactId);
 			}
 			else
 				MyBuddy.removeContact(account);
 		}
 		else
 		{
-			foreach (Contact *contact, MyBuddy.contacts())
-				if (contact->id() == contactId) // check if user has only changed account for previous existing ID
-					MyBuddy.removeContact(contact->contactAccount()); // if so, remove old CAD, otherwise there will appear 2 identical contacts with different accounts
+			foreach (Contact contact, MyBuddy.contacts())
+				if (contact.id() == contactId) // check if user has only changed account for previous existing ID
+					MyBuddy.removeContact(contact.contactAccount()); // if so, remove old CAD, otherwise there will appear 2 identical contacts with different accounts
 
-			Contact *cad = account.protocolHandler()->protocolFactory()
-				->newContact(account, MyBuddy, contactId);
-			MyBuddy.addContact(cad);
+			Contact contact;
+			contact.setContactAccount(account);
+			contact.setOwnerBuddy(MyBuddy);
+			contact.setId(contactId);
+			contact.setDetails(account.protocolHandler()->protocolFactory()->createContactDetails(contact));
+			MyBuddy.addContact(contact);
 		}
 	}
 }

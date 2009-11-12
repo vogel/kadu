@@ -25,11 +25,11 @@ class BuddiesModelBase : public QAbstractItemModel, public AbstractBuddiesModel,
 {
 	Q_OBJECT
 
-	Contact * buddyDefaultAccountData(const QModelIndex &index) const;
-	Contact * buddyAccountData(const QModelIndex &index, int accountIndex) const;
+	Contact buddyDefaultAccountData(const QModelIndex &index) const;
+	Contact buddyAccountData(const QModelIndex &index, int accountIndex) const;
 
 	QVariant data(Buddy buddy, int role) const;
-	QVariant data(Contact *cad, int role, bool useDisplay = true) const;
+	QVariant data(Contact contact, int role, bool useDisplay = true) const;
 
 private slots:
 	void buddyStatusChanged(Account account, Buddy buddy, Status oldStatus);

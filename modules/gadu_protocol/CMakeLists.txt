@@ -40,8 +40,8 @@ set (SOURCES
 
 	gadu-account-data-manager.cpp
 	gadu-account-details.cpp
-	gadu-contact.cpp
 	gadu-contact-data-manager.cpp
+	gadu-contact-details.cpp
 	gadu-contact-widget.cpp
 	gadu-protocol.cpp
 	gadu-protocol-factory.cpp

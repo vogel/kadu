@@ -28,15 +28,16 @@ class KADUAPI ContactManager : public QObject, public StorableObject, AccountsAw
 	static ContactManager * Instance;
 
 	QList<Account> LoadedAccounts;
-	QList<Contact *> ContactList;
+	QList<Contact> AllContacts;
+	QList<Contact> LoadedContacts;
 
 	ContactManager();
 	virtual ~ContactManager();
 
 	void init();
-
-	void load(Account account);
-	void store(Account account);
+	void loadContact(Contact contact);
+	void unloadContact(Contact contact);
+	void tryLoadContact(Contact contact);
 
 protected:
 	virtual StoragePoint * createStoragePoint();
@@ -51,20 +52,23 @@ public:
 	virtual void load();
 	virtual void store();
 
-	void addContact(Contact *cad);
-	void removeContact(Contact *cad);
+	void addContact(Contact contact);
+	void removeContact(Contact contact);
 	
-	unsigned int count() { return ContactList.count(); }
+	unsigned int count() { return LoadedContacts.count(); }
 
-	Contact * byIndex(unsigned int index);
-	Contact * byUuid(const QString &uuid);
+	Contact byIndex(unsigned int index);
+	Contact byUuid(const QString &uuid);
 
 signals:
-	void contactAboutToBeAdded(Contact *cad);
-	void contactAdded(Contact *cad);
-	void contactAboutToBeRemoved(Contact *cad);
-	void contactRemoved(Contact *cad);
+	void contactAboutToBeAdded(Contact contact);
+	void contactAdded(Contact contact);
+	void contactAboutToBeRemoved(Contact contact);
+	void contactRemoved(Contact contact);
 
 };
+
+// for MOC
+#include "contacts/contact.h"
 
 #endif // CONTACT_MANAGER_H

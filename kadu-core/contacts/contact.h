@@ -14,29 +14,19 @@
 #include <QtXml/QDomElement>
 
 #include "accounts/account.h"
-#include "buddies/avatar.h"
 #include "buddies/buddy.h"
-#include "contacts/contact-shared.h"
+#include "contacts/contact-type.h"
 #include "status/status.h"
 
 #include "exports.h"
 
 #undef PropertyRead
 #define PropertyRead(type, name, capitalized_name, default) \
-	type name() const\
-	{\
-		return !Data\
-			? default\
-			: Data->name();\
-	}
+	type name() const;
 
 #undef PropertyWrite
 #define PropertyWrite(type, name, capitalized_name, default) \
-	void set##capitalized_name(type name) const\
-	{\
-		if (Data)\
-			Data->set##capitalized_name(name);\
-	}
+	void set##capitalized_name(type name) const;
 
 #undef Property
 #define Property(type, name, capitalized_name, default) \
@@ -45,26 +35,20 @@
 
 #undef PropertyBoolRead
 #define PropertyBoolRead(capitalized_name, default) \
-	bool is##capitalized_name() const\
-	{\
-		return !Data\
-			? default\
-			: Data->is##capitalized_name();\
-	}
+	bool is##capitalized_name() const;
 
 #undef PropertyBoolWrite
 #define PropertyBoolWrite(capitalized_name, default) \
-	void set##capitalized_name(bool name) const\
-	{\
-		if (Data)\
-			Data->set##capitalized_name(name);\
-	}
+	void set##capitalized_name(bool name) const;
 
 #undef PropertyBool
 #define PropertyBool(capitalized_name, default) \
 	PropertyBoolRead(capitalized_name, default) \
 	PropertyBoolWrite(capitalized_name, default)
 
+class Avatar;
+class ContactDetails;
+class ContactShared;
 class XmlConfigFile;
 
 class KADUAPI Contact : public QObject
@@ -77,10 +61,11 @@ class KADUAPI Contact : public QObject
 	void disconnectDataSignals();
 
 public:
+
 	static Contact loadFromStorage(StoragePoint *storage);
 	static Contact null;
 
-	explicit Contact(ContactShared::ContactType type = ContactShared::TypeNormal);
+	explicit Contact(ContactType type = ContactTypeNormal);
 	explicit Contact(ContactShared *data);
 	Contact(const Contact &copy);
 	virtual ~Contact();
@@ -96,13 +81,17 @@ public:
 
 	void store();
 
+	void loadDetails();
+	void unloadDetails();
+
 	virtual bool validateId();
 	bool isValid();
 
+	Property(ContactDetails *, details, Details, 0)
 	PropertyRead(QUuid, uuid, Uuid, QUuid())
 	PropertyRead(StoragePoint *, storage, Storage, 0)
 	Property(Account, contactAccount, ContactAccount, Account::null)
-	Avatar & contactAvatar() { return Data->contactAvatar(); }
+	Avatar & contactAvatar() const;
 	Property(Buddy, ownerBuddy, OwnerBuddy, Buddy::null)
 	Property(QString, id, Id, QString::null)
 	Property(Status, currentStatus, CurrentStatus, Status::null)
@@ -118,6 +107,6 @@ signals:
 
 };
 
-Q_DECLARE_METATYPE(Contact *)
+Q_DECLARE_METATYPE(Contact)
 
 #endif // CONTACT_H

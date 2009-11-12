@@ -19,15 +19,15 @@ class TlenAvatarService : public AvatarService
 {
 	Q_OBJECT
 
-	QList<Contact *> InProgress;
+	QList<Contact> InProgress;
 
 public:
 	TlenAvatarService(QObject *parent = 0) : AvatarService(parent) {}
 
-	void fetchAvatar(Contact *contact);
+	void fetchAvatar(Contact contact);
 
 private slots:
-	void avatarReady(Contact *contact, const QByteArray &avatar);
+	void avatarReady(Contact contact, const QByteArray &avatar);
 
 };
 

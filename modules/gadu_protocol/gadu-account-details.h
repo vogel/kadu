@@ -17,8 +17,6 @@
 
 class GaduAccountDetails : public AccountDetails
 {
-	UinType Uin;
-
 	PROPERTY_DEC(bool, AllowDcc)
 	PROPERTY_DEC(QHostAddress, DccIP)
 	PROPERTY_DEC(bool, DccIpDetect)

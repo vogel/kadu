@@ -10,7 +10,7 @@
 #include "accounts/account.h"
 #include "dcc/dcc-manager.h"
 #include "dcc/dcc-socket-notifiers.h"
-#include "gadu-contact.h"
+#include "gadu-contact-details.h"
 #include "gadu-protocol.h"
 
 #include "gadu-file-transfer.h"
@@ -116,8 +116,7 @@ void GaduFileTransfer::send()
 		return;
 	}
 
-	GaduContact *gcad = gaduProtocol->gaduContact(buddy());
-	if (!gcad)
+	if (!gaduProtocol->gaduContactDetails(buddy()))
 	{
 		changeFileTransferStatus(FileTransfer::StatusNotConnected);
 		return;

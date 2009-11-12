@@ -364,7 +364,7 @@ void Core::accountRegistered(Account account)
 	connect(protocol, SIGNAL(connected(Account)), this, SIGNAL(connected()));
 	connect(protocol, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
 /* TODO: 0.6.6
-	Contact *contact = protocol->protocolFactory()->loadContact(account, Myself);
+	Contact contact = protocol->protocolFactory()->loadContact(account, Myself);
 	if (!contact)
 		contact = protocol->protocolFactory()->newContact(account, Myself, account->id());
 	Myself.addAccountData(contact);*/

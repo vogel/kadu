@@ -53,7 +53,7 @@ public:
 private:
 	QUuid Uuid;
 	QMap<QString, QString> CustomData;
-	QMap<Account, Contact *> Contacts;
+	QMap<Account, Contact> Contacts;
 
 	BuddyType Type;
 
@@ -109,11 +109,11 @@ public:
 
 	QMap<QString, QString> & customData() { return CustomData; }
 
-	void addContact(Contact *contact);
-	void removeContact(Contact *contact);
+	void addContact(Contact contact);
+	void removeContact(Contact contact);
 	void removeContact(Account account);
-	Contact * contact(Account account);
-	QList<Contact *> contacts();
+	Contact contact(Account account);
+	QList<Contact> contacts();
 
 	//contact type
 	bool isNull() const { return TypeNull == Type; }
@@ -160,6 +160,8 @@ signals:
 
 #undef Property
 
-#include "accounts/account.h" // for MOC
+// for MOC
+#include "accounts/account.h"
+#include "contacts/contact.h"
 
 #endif // BUDDY_SHARED_DATA

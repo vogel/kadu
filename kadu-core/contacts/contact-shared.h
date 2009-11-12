@@ -16,6 +16,7 @@
 
 #include "buddies/avatar.h"
 #include "buddies/buddy.h"
+#include "contacts/contact-type.h"
 #include "status/status.h"
 
 #include "configuration/uuid-storable-object.h"
@@ -34,24 +35,20 @@
 	bool is##capitalized_name() { ensureLoaded(); return capitalized_name; } \
 	void set##capitalized_name(bool name) { ensureLoaded(); capitalized_name = name; dataUpdated(); }
 
+class ContactDetails;
+
 class KADUAPI ContactShared : public QObject, public UuidStorableObject, public QSharedData
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(ContactShared)
 
-public:
-	enum ContactType
-	{
-		TypeNull = 0,
-		TypeNormal = 1
-	};
-
-private:
 	QUuid Uuid;
 	ContactType Type;
 
 	int BlockUpdatedSignalCount;
 	bool Updated;
+
+	ContactDetails *Details;
 
 	Account ContactAccount;
 	Avatar ContactAvatar;
@@ -81,12 +78,16 @@ public:
 	virtual void load();
 	virtual void store();
 
+	void loadDetails();
+	void unloadDetails();
+
 	virtual QUuid uuid() const { return Uuid; }
 	void setUuid(const QUuid uuid) { Uuid = uuid; }
 
 	// contact type
-	bool isNull() const { return TypeNull == Type; }
-
+	bool isNull() const { return ContactTypeNull == Type; }
+	
+	Property(ContactDetails *, details, Details)
 	Property(Account, contactAccount, ContactAccount)
 	Property(Avatar &, contactAvatar, ContactAvatar)
 	Property(Buddy, ownerBuddy, OwnerBuddy)

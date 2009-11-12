@@ -7,34 +7,31 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GADU_CONTACT_H
-#define GADU_CONTACT_H
+#ifndef GADU_CONTACT_DETAILS_H
+#define GADU_CONTACT_DETAILS_H
 
 #include "contacts/contact.h"
+#include "contacts/contact-details.h"
 
 #include "gadu-protocol.h"
 
-class Account;
-
-class GaduContact : public Contact
+class GaduContactDetails : public ContactDetails
 {
-	unsigned long MaxImageSize;
-	unsigned int GaduProtocolVersion;
+	PROPERTY_DEC(unsigned long, MaxImageSize)
+	PROPERTY_DEC(unsigned int, GaduProtocolVersion)
 
 public:
-	GaduContact(Account account, Buddy buddy, const QString &id, bool loaded = false);
-	GaduContact(Account account, Buddy buddy, const QString &id, StoragePoint *storage);
-	GaduContact(StoragePoint *storage);
+	explicit GaduContactDetails(StoragePoint *storagePoint, Contact parent = Contact::null);
+	virtual ~GaduContactDetails();
 
 	virtual bool validateId();
+	virtual void store();
 
 	GaduProtocol::UinType uin();
 
-	void setMaxImageSize(unsigned long maxImageSize) { MaxImageSize = maxImageSize; }
-
-	unsigned int gaduProtocolVersion() { return GaduProtocolVersion; }
-	void setGaduProtocolVersion(unsigned int gaduProtocolVersion) { GaduProtocolVersion = gaduProtocolVersion; }
+	PROPERTY_DEF(unsigned long, maxImageSize, setMaxImageSize, MaxImageSize)
+	PROPERTY_DEF(unsigned int, gaduProtocolVersion, setGaduProtocolVersion, GaduProtocolVersion)
 
 };
 
-#endif // GADU_CONTACT_H
+#endif // GADU_CONTACT_DETAILS_H

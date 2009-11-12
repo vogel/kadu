@@ -16,15 +16,14 @@
 
 #include "misc/misc.h"
 
-#include "jabber-contact.h"
 #include "jabber-contact-data-manager.h"
+#include "jabber-contact-details.h"
 
 #include "jabber-contact-widget.h"
 
-JabberContactWidget::JabberContactWidget(JabberContact *contact, QWidget *parent) :
-	ContactWidget(new JabberContactDataManager(contact, parent),
-		contact, parent),
-	Data(contact)
+JabberContactWidget::JabberContactWidget(Contact contact, QWidget *parent) :
+		ContactWidget(new JabberContactDataManager(contact, parent), contact, parent),
+		Data(dynamic_cast<JabberContactDetails *>(contact.details()))
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 

@@ -380,7 +380,7 @@ void TlenProtocol::presenceChanged(QString from, QString newstatus, QString desc
 	}
 	*/
 
-	TlenContact *data = dynamic_cast<TlenContact *>(contact.accountData(account()));
+	TlenContactdata = dynamic_cast<TlenContact>(contact.accountData(account()));
 
 	if (!data)
 		return;
@@ -456,7 +456,7 @@ void TlenProtocol::chatNotify(QString from, QString type)
 
 	Buddy buddy = account()->getContactById(from);
 
-	TlenContact *data = dynamic_cast<TlenContact *>(contact.accountData(account()));
+	TlenContactdata = dynamic_cast<TlenContact>(contact.accountData(account()));
 
 	if (!data)
 		return;

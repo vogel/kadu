@@ -9,13 +9,15 @@
 
 #include "accounts/account-manager.h"
 #include "buddies/buddy-manager.h"
+#include "contacts/contact-details.h"
 #include "contacts/contact-manager.h"
+#include "protocols/protocol.h"
 
 #include "contact-shared.h"
 
 ContactShared * ContactShared::loadFromStorage(StoragePoint *storagePoint)
 {
-	ContactShared *result = new ContactShared(TypeNormal);
+	ContactShared *result = new ContactShared(ContactTypeNormal);
 	result->setStorage(storagePoint);
 	result->load();
 
@@ -26,7 +28,7 @@ ContactShared::ContactShared(ContactType type, QUuid uuid) :
 		UuidStorableObject("Account", ContactManager::instance()),
 		Uuid(uuid.isNull() ? QUuid::createUuid() : uuid), Type(type),
 		BlockUpdatedSignalCount(0), Updated(false),
-		ContactAvatar(0, false) /* TODO: 0.6.6 */
+		Details(0), ContactAvatar(Contact(this), false) /* TODO: 0.6.6 */
 {
 }
 
@@ -69,6 +71,34 @@ void ContactShared::store()
 	removeValue("Contact");
 	
 	ContactAvatar.store();
+}
+
+void ContactShared::loadDetails()
+{
+	if (Details)
+		return;
+
+	if (ContactAccount.isNull())
+		return;
+
+	Protocol *protocol = ContactAccount.protocolHandler();
+	if (!protocol)
+		return;
+
+	ProtocolFactory *factory = protocol->protocolFactory();
+	if (!factory)
+		return;
+
+	factory->createContactDetails(Contact(this));
+}
+
+void ContactShared::unloadDetails()
+{
+	if (Details)
+	{
+		delete Details;
+		Details = 0;
+	}
 }
 
 void ContactShared::dataUpdated()

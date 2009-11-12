@@ -31,7 +31,7 @@
 #include "protocols/protocol.h"
 
 class DccManager;
-class GaduContact;
+class GaduContactDetails;
 class GaduProtocolSocketNotifiers;
 
 class GADUAPI GaduProtocol : public Protocol
@@ -135,7 +135,7 @@ public:
 	virtual QPixmap statusPixmap(const QString &statusType);
 
 	UinType uin(Buddy buddy) const;
-	GaduContact * gaduContact(Buddy buddy) const;
+	GaduContactDetails * gaduContactDetails(Buddy buddy) const;
 
 	virtual int maxDescriptionLength();
 

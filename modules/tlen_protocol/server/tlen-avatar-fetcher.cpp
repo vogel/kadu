@@ -18,7 +18,7 @@
 
 #include "tlen-avatar-fetcher.h"
 
-TlenAvatarFetcher::TlenAvatarFetcher(Contact *contact, QObject *parent) :
+TlenAvatarFetcher::TlenAvatarFetcher(Contact contact, QObject *parent) :
 		QObject(parent), MyContact(contact)
 {
 }

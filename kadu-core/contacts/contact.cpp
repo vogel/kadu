@@ -12,20 +12,21 @@
 #include "configuration/xml-configuration-file.h"
 #include "configuration/storage-point.h"
 #include "contacts/contact-manager.h"
+#include "contacts/contact-shared.h"
 #include "buddies/buddy-manager.h"
 #include "dnshandler.h"
 
 #include "contact.h"
 
-Contact Contact::null(ContactShared::TypeNull);
+Contact Contact::null(ContactTypeNull);
 
 Contact Contact::loadFromStorage(StoragePoint *accountStoragePoint)
 {
 	return Contact(ContactShared::loadFromStorage(accountStoragePoint));
 }
 
-Contact::Contact(ContactShared::ContactType type) :
-		Data(ContactShared::TypeNull != type ? new ContactShared(type) : 0)
+Contact::Contact(ContactType type) :
+		Data(ContactTypeNull != type ? new ContactShared(type) : 0)
 {
 	connectDataSignals();
 }
@@ -82,6 +83,18 @@ void Contact::store()
 		Data->store();
 }
 
+void Contact::loadDetails()
+{
+	if (Data)
+		Data->loadDetails();
+}
+
+void Contact::unloadDetails()
+{
+	if (Data)
+		Data->unloadDetails();
+}
+
 void Contact::connectDataSignals()
 {
 	if (isNull())
@@ -116,3 +129,67 @@ bool Contact::isValid()
 {
 	return validateId();
 }
+
+#undef PropertyRead
+#define PropertyRead(type, name, capitalized_name, default) \
+	type Contact::name() const\
+	{\
+		return !Data\
+			? default\
+			: Data->name();\
+	}
+
+#undef PropertyWrite
+#define PropertyWrite(type, name, capitalized_name, default) \
+	void Contact::set##capitalized_name(type name) const\
+	{\
+		if (Data)\
+			Data->set##capitalized_name(name);\
+	}
+
+#undef Property
+#define Property(type, name, capitalized_name, default) \
+	PropertyRead(type, name, capitalized_name, default) \
+	PropertyWrite(type, name, capitalized_name, default)
+
+#undef PropertyBoolRead
+#define PropertyBoolRead(capitalized_name, default) \
+	bool Contact::is##capitalized_name() const\
+	{\
+		return !Data\
+			? default\
+			: Data->is##capitalized_name();\
+	}
+
+#undef PropertyBoolWrite
+#define PropertyBoolWrite(capitalized_name, default) \
+	void Contact::set##capitalized_name(bool name) const\
+	{\
+		if (Data)\
+			Data->set##capitalized_name(name);\
+	}
+
+#undef PropertyBool
+#define PropertyBool(capitalized_name, default) \
+	PropertyBoolRead(capitalized_name, default) \
+	PropertyBoolWrite(capitalized_name, default)
+
+Property(ContactDetails *, details, Details, 0)
+PropertyRead(QUuid, uuid, Uuid, QUuid())
+PropertyRead(StoragePoint *, storage, Storage, 0)
+Property(Account, contactAccount, ContactAccount, Account::null)
+
+Avatar & Contact::contactAvatar() const
+{
+	return Data->contactAvatar();
+}
+
+Property(Buddy, ownerBuddy, OwnerBuddy, Buddy::null)
+Property(QString, id, Id, QString::null)
+Property(Status, currentStatus, CurrentStatus, Status::null)
+Property(QString, protocolVersion, ProtocolVersion, QString::null)
+Property(QHostAddress, address, Address, QHostAddress())
+Property(unsigned int, port, Port, 0)
+Property(QString, dnsName, DnsName, QString::null)
+PropertyBool(Blocked, false)
+PropertyBool(OfflineTo, false)

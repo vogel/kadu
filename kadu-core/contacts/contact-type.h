@@ -7,31 +7,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SIMPLE_CHAT_H
-#define SIMPLE_CHAT_H
+#ifndef CONTACT_TYPE_H
+#define CONTACT_TYPE_H
 
-#include "contacts/contact.h"
-
-#include "chat/chat.h"
-
-class XmlConfigFile;
-
-class SimpleChat : public Chat
+enum ContactType
 {
-	Contact CurrentContact;
-
-public:
-	explicit SimpleChat(StoragePoint *storage);
-	explicit SimpleChat(Account parentAccount, Contact contact, QUuid uuid = QUuid());
-	virtual ~SimpleChat();
-
-	virtual void load();
-	virtual void store();
-
-	virtual ChatType type() const;
-	virtual BuddySet buddies() const;
-	virtual QString name() const;
-
+	ContactTypeNull = 0,
+	ContactTypeNormal = 1
 };
 
-#endif // SIMPLE_CHAT_H
+#endif // CONTACT_TYPE_H

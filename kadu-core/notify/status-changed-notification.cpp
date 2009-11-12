@@ -93,10 +93,10 @@ void StatusChangedNotification::unregisterEvents()
 
 StatusChangedNotification::StatusChangedNotification(const QString &toStatus, BuddySet &contacts, Account account) :
 		ChatNotification(account.protocolHandler()->findChat(contacts), QString("StatusChanged") + toStatus,
-			account.protocolHandler()->statusPixmap(contacts.begin()->contact(account)->currentStatus()))
+			account.protocolHandler()->statusPixmap(contacts.begin()->contact(account).currentStatus()))
 {
 	const Buddy &buddy = *contacts.begin();
-	Status status = buddy.contact(account)->currentStatus();
+	Status status = buddy.contact(account).currentStatus();
 	QString syntax;
 
 	if (!status.description().isNull())

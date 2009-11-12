@@ -22,8 +22,8 @@ SimpleChat::SimpleChat(StoragePoint *storage) :
 {
 }
 
-SimpleChat::SimpleChat(Account currentAccount, Contact *cad, QUuid uuid) :
-		Chat(currentAccount, uuid), CurrentContact(cad)
+SimpleChat::SimpleChat(Account currentAccount, Contact contact, QUuid uuid) :
+		Chat(currentAccount, uuid), CurrentContact(contact)
 {
 }
 
@@ -62,8 +62,8 @@ void SimpleChat::store()
 	Chat::store();
 	storeValue("Type", "Simple");
 
-	if (CurrentContact)
-		storeValue("Contact", CurrentContact->uuid().toString());
+	if (!CurrentContact.isNull())
+		storeValue("Contact", CurrentContact.uuid().toString());
 }
 
 ChatType SimpleChat::type() const
@@ -73,14 +73,14 @@ ChatType SimpleChat::type() const
 
 BuddySet SimpleChat::buddies() const
 {
-	if (!CurrentContact)
+	if (CurrentContact.isNull())
 		return BuddySet();
-	return BuddySet(CurrentContact->ownerBuddy());
+	return BuddySet(CurrentContact.ownerBuddy());
 }
 
 QString SimpleChat::name() const
 {
-	if (!CurrentContact)
+	if (CurrentContact.isNull())
 		return QString::null;
-	return CurrentContact->ownerBuddy().display();
+	return CurrentContact.ownerBuddy().display();
 }

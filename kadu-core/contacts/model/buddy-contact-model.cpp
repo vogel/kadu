@@ -18,26 +18,26 @@
 BuddyContactModel::BuddyContactModel(Buddy buddy, QObject *parent) :
 		QAbstractListModel(parent), SourceBuddy(buddy)
 {
-	connect(ContactManager::instance(), SIGNAL(contactAboutToBeAdded(Contact *)),
-			this, SLOT(contactAboutToBeAdded(Contact *)));
-	connect(ContactManager::instance(), SIGNAL(contactAdded(Contact *)),
-			this, SLOT(contactAdded(Contact *)));
-	connect(ContactManager::instance(), SIGNAL(contactAboutToBeRemoved(Contact *)),
-			this, SLOT(contactAboutToBeRemoved(Contact *)));
-	connect(ContactManager::instance(), SIGNAL(contactRemoved(Contact *)),
-			this, SLOT(contactRemoved(Contact *)));
+	connect(ContactManager::instance(), SIGNAL(contactAboutToBeAdded(Contact)),
+			this, SLOT(contactAboutToBeAdded(Contact)));
+	connect(ContactManager::instance(), SIGNAL(contactAdded(Contact)),
+			this, SLOT(contactAdded(Contact)));
+	connect(ContactManager::instance(), SIGNAL(contactAboutToBeRemoved(Contact)),
+			this, SLOT(contactAboutToBeRemoved(Contact)));
+	connect(ContactManager::instance(), SIGNAL(contactRemoved(Contact)),
+			this, SLOT(contactRemoved(Contact)));
 }
 
 BuddyContactModel::~BuddyContactModel()
 {
-	disconnect(ContactManager::instance(), SIGNAL(contactAboutToBeAdded(Contact *)),
-			this, SLOT(contactAboutToBeAdded(Contact *)));
-	disconnect(ContactManager::instance(), SIGNAL(contactAdded(Contact *)),
-			this, SLOT(contactAdded(Contact *)));
-	disconnect(ContactManager::instance(), SIGNAL(contactAboutToBeRemoved(Contact *)),
-			this, SLOT(contactAboutToBeRemoved(Contact *)));
-	disconnect(ContactManager::instance(), SIGNAL(contactRemoved(Contact *)),
-			this, SLOT(contactRemoved(Contact *)));
+	disconnect(ContactManager::instance(), SIGNAL(contactAboutToBeAdded(Contact)),
+			this, SLOT(contactAboutToBeAdded(Contact)));
+	disconnect(ContactManager::instance(), SIGNAL(contactAdded(Contact)),
+			this, SLOT(contactAdded(Contact)));
+	disconnect(ContactManager::instance(), SIGNAL(contactAboutToBeRemoved(Contact)),
+			this, SLOT(contactAboutToBeRemoved(Contact)));
+	disconnect(ContactManager::instance(), SIGNAL(contactRemoved(Contact)),
+			this, SLOT(contactRemoved(Contact)));
 }
 
 int BuddyContactModel::columnCount(const QModelIndex &parent) const
@@ -52,23 +52,23 @@ int BuddyContactModel::rowCount(const QModelIndex &parent) const
 
 QVariant BuddyContactModel::data(const QModelIndex &index, int role) const
 {
-	Contact *data = contact(index);
-	if (0 == data)
+	Contact data = contact(index);
+	if (data.isNull())
 		return QVariant();
 
 	switch (role)
 	{
 		case Qt::DisplayRole:
 			if (index.column() == 0) // long or shor name?
-				return data->id();
+				return data.id();
 			else
-				return QString("%1 (%2)").arg(data->id(), data->contactAccount().name());
+				return QString("%1 (%2)").arg(data.id(), data.contactAccount().name());
 
 		case Qt::DecorationRole:
-			return data->contactAccount().protocolHandler()->icon();
+			return data.contactAccount().protocolHandler()->icon();
 
 		case AccountDataRole:
-			return QVariant::fromValue<Contact *>(data);
+			return QVariant::fromValue<Contact>(data);
 
 		default:
 			return QVariant();
@@ -86,45 +86,45 @@ QVariant BuddyContactModel::headerData(int section, Qt::Orientation orientation,
 		return QString("Row %1").arg(section);
 }
 
-Contact * BuddyContactModel::contact(const QModelIndex &index) const
+Contact BuddyContactModel::contact(const QModelIndex &index) const
 {
 	if (!index.isValid())
-		return 0;
+		return Contact::null;
 
 	if (index.row() < 0 || index.row() >= rowCount())
-		return 0;
+		return Contact::null;
 
 	return SourceBuddy.contacts().at(index.row());
 }
 
-int BuddyContactModel::contactIndex(Contact *data)
+int BuddyContactModel::contactIndex(Contact data)
 {
 	return SourceBuddy.contacts().indexOf(data);
 }
 
-QModelIndex BuddyContactModel::contactModelIndex(Contact *data)
+QModelIndex BuddyContactModel::contactModelIndex(Contact data)
 {
 	return createIndex(contactIndex(data), 0, 0);
 }
 
-void BuddyContactModel::contactAboutToBeAdded(Contact *data)
+void BuddyContactModel::contactAboutToBeAdded(Contact data)
 {
 	int count = rowCount();
 	beginInsertRows(QModelIndex(), count, count);
 }
 
-void BuddyContactModel::contactAdded(Contact *data)
+void BuddyContactModel::contactAdded(Contact data)
 {
 	endInsertRows();
 }
 
-void BuddyContactModel::contactAboutToBeRemoved(Contact *data)
+void BuddyContactModel::contactAboutToBeRemoved(Contact data)
 {
 	int index = contactIndex(data);
 	beginRemoveRows(QModelIndex(), index, index);
 }
 
-void BuddyContactModel::contactRemoved(Contact *data)
+void BuddyContactModel::contactRemoved(Contact data)
 {
 	endRemoveRows();
 }

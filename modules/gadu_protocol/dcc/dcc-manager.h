@@ -76,8 +76,8 @@ class DccManager : public QObject
 
 	void socketNotifiersDestroyed(QObject *socketNotifiers);
 
-	void attachSendFileTransferSocket6(unsigned int uin, GaduContact *gcad, GaduFileTransfer *gft);
-	void attachSendFileTransferSocket7(unsigned int uin, GaduContact *gcad, GaduFileTransfer *gft);
+	void attachSendFileTransferSocket6(unsigned int uin, Contact contact, GaduFileTransfer *gft);
+	void attachSendFileTransferSocket7(unsigned int uin, Contact contact, GaduFileTransfer *gft);
 
 protected:
 	virtual void configurationUpdated();

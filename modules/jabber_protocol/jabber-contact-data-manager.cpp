@@ -7,12 +7,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "jabber-contact.h"
+#include "contacts/contact.h"
+#include "jabber-contact-details.h"
 
 #include "jabber-contact-data-manager.h"
 
-JabberContactDataManager::JabberContactDataManager(JabberContact* data, QObject *parent)
-: ConfigurationContactDataManager(data, parent), Data(data)
+JabberContactDataManager::JabberContactDataManager(Contact data, QObject *parent) :
+		ConfigurationContactDataManager(data, parent), Data(dynamic_cast<JabberContactDetails *>(data.details()))
 {
 }
 
@@ -35,7 +36,7 @@ QVariant JabberContactDataManager::readEntry(const QString &section, const QStri
 		return ConfigurationContactDataManager::readEntry(section, name);
 
 	if (name == "Jid")
-		return Data->id();
+		return Data->contact().id();
 
 	// other data
 

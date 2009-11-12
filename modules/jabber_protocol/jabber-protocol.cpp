@@ -480,13 +480,12 @@ void JabberProtocol::clientResourceAvailable(const XMPP::Jid &jid, const XMPP::R
 	if (buddy.display().isEmpty())
 		buddy.setDisplay(jid.bare());
 
-	JabberContact *data = jabberContact(buddy);
-
-	if (!data)
+	Contact contact = buddy.contact(account());
+	if (contact.isNull())
 		return;
 
-	Status oldStatus = data->currentStatus();
-	data->setCurrentStatus(status);
+	Status oldStatus = contact.currentStatus();
+	contact.setCurrentStatus(status);
 
 	emit buddyStatusChanged(account(), buddy, oldStatus);
 	kdebugf2();
@@ -531,13 +530,12 @@ void JabberProtocol::clientResourceUnavailable(const XMPP::Jid &jid, const XMPP:
 	if (buddy.display().isEmpty())
 		buddy.setDisplay(jid.bare());
 
-	JabberContact *data = jabberContact(buddy);
-
-	if (!data)
+	Contact contact = buddy.contact(account());
+	if (contact.isNull())
 		return;
 
-	Status oldStatus = data->currentStatus();
-	data->setCurrentStatus(status);
+	Status oldStatus = contact.currentStatus();
+	contact.setCurrentStatus(status);
 
 	emit buddyStatusChanged(account(), buddy, oldStatus);
 	kdebugf2();
@@ -545,35 +543,35 @@ void JabberProtocol::clientResourceUnavailable(const XMPP::Jid &jid, const XMPP:
 
 void JabberProtocol::contactAdded(Buddy &buddy)
 {
-	JabberContact *jcad = jabberContact(buddy);
-	if (!jcad)
+	Contact contact = buddy.contact(account());
+	if (contact.isNull())
 		return;
 	QStringList groupsList;
 	foreach (Group *group, buddy.groups())
 		groupsList.append(group->name());
 	//TODO opcja żądania autoryzacji, na razie na sztywno true
-	JabberClient->addContact(jcad->id(), buddy.display(), groupsList, true);
+	JabberClient->addContact(contact.id(), buddy.display(), groupsList, true);
 }
 
 void JabberProtocol::contactRemoved(Buddy &buddy)
 {
-	JabberContact *jcad = jabberContact(buddy);
-	if (!jcad || !isConnected())
+	Contact contact = buddy.contact(account());
+	if (contact.isNull() || !isConnected())
 		return;
-	JabberClient->removeContact(jcad->id());
+	JabberClient->removeContact(contact.id());
 	if (buddy.contacts().count() == 1)
 		buddy.setType(BuddyShared::TypeAnonymous); // TODO: why?
 }
 
 void JabberProtocol::contactUpdated(Buddy &buddy)
 {
-	JabberContact *jcad = jabberContact(buddy);
-	if (!jcad)
+	Contact contact = buddy.contact(account());
+	if (contact.isNull())
 		return;
 	QStringList groupsList;
 	foreach (Group *group, buddy.groups())
 		groupsList.append(group->name());
-	JabberClient->updateContact(jcad->id(), buddy.display(), groupsList);
+	JabberClient->updateContact(contact.id(), buddy.display(), groupsList);
 
 }
 
@@ -669,7 +667,7 @@ void JabberProtocol::slotContactUpdated(const XMPP::RosterItem &item)
 		* it will be updated. In case the contact is not there yet, it
 		* will be added to it.
 		*/
-		///JabberContact *contact = contactPool()->addContact ( item, metaContact, false );
+		///JabberContact contact = contactPool()->addContact ( item, metaContact, false );
 
 		/*
 		* Set authorization property
@@ -685,7 +683,7 @@ void JabberProtocol::slotContactUpdated(const XMPP::RosterItem &item)
 	}
 //	else if (!c.isAnonymous())  //we don't need to add it, and it is in the contact list
 //	{
-// 		Kopete::MetaContact *metaContact=c->metaContact();
+// 		Kopete::MetaContactmetaContact=c->metaContact();
 // 		if(metaContact->isTemporary())
 // 			return;
 // 		kDebug (JABBER_DEBUG_GLOBAL) << c->contactId() <<
@@ -866,7 +864,10 @@ QPixmap JabberProtocol::statusPixmap(const QString &statusType)
 	return IconsManager::instance()->loadPixmap(pixmapName);
 }
 
-JabberContact * JabberProtocol::jabberContact(Buddy buddy) const
+JabberContactDetails * JabberProtocol::jabberContactDetails(Buddy buddy) const
 {
-	return dynamic_cast<JabberContact *>(buddy.contact(account()));
+	Contact contact = buddy.contact(account());
+	if (contact.isNull())
+		return 0;
+	return dynamic_cast<JabberContactDetails *>(contact.details());
 }

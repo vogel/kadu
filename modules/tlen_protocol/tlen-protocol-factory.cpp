@@ -62,12 +62,12 @@ Account * TlenProtocolFactory::loadAccount(StoragePoint *accountStoragePoint)
        return account;
 }
 
-Contact * TlenProtocolFactory::newContact(Account *account, Contact contact, const QString &id)
+Contact TlenProtocolFactory::newContact(Account *account, Contact contact, const QString &id)
 {
 	return new TlenContact(account, contact, id, true);
 }
 
-Contact * TlenProtocolFactory::loadContact(StoragePoint *storagePoint)
+Contact TlenProtocolFactory::loadContact(StoragePoint *storagePoint)
 {
 	if (!storagePoint)
 		return 0;
@@ -100,9 +100,9 @@ QRegExp TlenProtocolFactory::idRegularExpression()
 	return IdRegularExpression;
 }
 
-ContactWidget * TlenProtocolFactory::newContactWidget(Contact *contact, QWidget *parent)
+ContactWidget * TlenProtocolFactory::newContactWidget(Contact contact, QWidget *parent)
 {
-	TlenContact *tlenContact = dynamic_cast<TlenContact *>(contact);
+	TlenContacttlenContact = dynamic_cast<TlenContact>(contact);
 
 	return 0 != tlenContact
 		? new TlenContactWidget(tlenContact, parent)

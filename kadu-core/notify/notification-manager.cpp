@@ -225,19 +225,19 @@ void NotificationManager::statusChanged(Account account, Buddy buddy, Status old
 	if (buddy.id(account) == account.id()) // myself
 		return;
 
-	Contact *data = buddy.contact(account);
-	if (!data)
+	Contact data = buddy.contact(account);
+	if (data.isNull())
 		return;
 
-	if (oldStatus == data->currentStatus())
+	if (oldStatus == data.currentStatus())
 		return;
 
 	if (config_file.readBoolEntry("Notify", "IgnoreOnlineToOnline") &&
-			!data->currentStatus().isDisconnected() &&
+			!data.currentStatus().isDisconnected() &&
 			!oldStatus.isDisconnected())
 		return;
 
-	QString changedTo = "/To" + Status::name(data->currentStatus(), false);
+	QString changedTo = "/To" + Status::name(data.currentStatus(), false);
 
 	BuddySet buddies(buddy);
 

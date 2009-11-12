@@ -151,6 +151,8 @@ const QList<Account> AccountManager::byProtocolName(const QString &name) const
 
 void AccountManager::registerAccount(Account account)
 {
+	ensureLoaded();
+
 	emit accountAboutToBeRegistered(account);
 	RegisteredAccounts << account;
 	emit accountRegistered(account);
@@ -162,6 +164,8 @@ void AccountManager::registerAccount(Account account)
 
 void AccountManager::unregisterAccount(Account account)
 {
+	ensureLoaded();
+
 	disconnect(account.protocolHandler(), SIGNAL(connectionError(Account, const QString &, const QString &)),
 			this, SLOT(connectionError(Account, const QString &, const QString &)));
 

@@ -15,13 +15,14 @@
 #include "buddies/group.h"
 #include "buddies/group-manager.h"
 #include "contacts/contact.h"
+#include "contacts/contact-shared.h"
 
 #include "protocols/protocol.h"
 
 #include "debug.h"
 #include "misc/misc.h"
 
-#include "../gadu-contact.h"
+#include "../gadu-contact-details.h"
 
 #include "gadu-list-helper.h"
 
@@ -37,7 +38,7 @@ QString GaduListHelper::contactListToString(Account account, BuddyList buddies)
 		foreach (Group *group, buddy.groups())
 			buddyGroups << group->name();
 
-		Contact *cad = buddy.contact(account);
+		Contact contact = buddy.contact(account);
 
 		contactsStringList << QString("%1;%2;%3;%4;%5;%6;%7;%8;%9;%10;%11;%12;%13")
 			.arg(buddy.firstName())
@@ -46,9 +47,7 @@ QString GaduListHelper::contactListToString(Account account, BuddyList buddies)
 			.arg(buddy.display())
 			.arg(buddy.mobile())
 			.arg(buddyGroups.join(";"))
-			.arg(cad
-				? cad->id()
-				: "")
+			.arg(contact.id())
 			// TODO: 0.6.6
 			.arg("0")
 			.arg("")
@@ -129,8 +128,13 @@ BuddyList GaduListHelper::streamToContactList(Account account, QTextStream &cont
 				uin = 0;
 			if (uin)
 			{
-				GaduContact *gcad = new GaduContact(account, buddy, QString::number(uin), false);
-				buddy.addContact(gcad);
+				Contact contact;
+				contact.setContactAccount(account);
+				contact.setOwnerBuddy(buddy);
+				contact.setId(QString::number(uin));
+				contact.data()->setLoaded(true);
+				contact.setDetails(new GaduContactDetails(contact.storage(), contact));
+				buddy.addContact(contact);
 			}
 		}
 

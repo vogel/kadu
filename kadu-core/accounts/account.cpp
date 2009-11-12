@@ -9,10 +9,11 @@
 
 #include "accounts/account-details.h"
 #include "accounts/account-manager.h"
+#include "buddies/buddy-manager.h"
 #include "configuration/configuration-file.h"
 #include "configuration/xml-configuration-file.h"
-#include "buddies/buddy-manager.h"
 #include "contacts/contact.h"
+#include "contacts/contact-details.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocols-manager.h"
@@ -135,12 +136,15 @@ Buddy Account::createAnonymous(const QString& id)
 
 	Buddy result(BuddyShared::TypeAnonymous);
 	ProtocolFactory *protocolFactory = Data->protocolHandler()->protocolFactory();
-	Contact *contact = protocolFactory->newContact(*this, result, id);
-	if (!contact->isValid())
-	{
-		delete contact;
+
+	Contact contact;
+	ContactDetails *details = protocolFactory->createContactDetails(contact);
+	contact.setContactAccount(*this);
+	contact.setOwnerBuddy(result);
+	contact.setId(id);
+
+	if (!contact.isValid())
 		return Buddy::null;
-	}
 
 	result.addContact(contact);
 	return result;

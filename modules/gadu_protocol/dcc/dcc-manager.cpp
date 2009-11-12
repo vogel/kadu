@@ -32,7 +32,7 @@
 #include "services/gadu-file-transfer-service.h"
 #include "socket-notifiers/gadu-protocol-socket-notifiers.h"
 #include "gadu-account-details.h"
-#include "gadu-contact.h"
+#include "gadu-contact-details.h"
 
 #include "gadu-protocol.h"
 
@@ -218,15 +218,15 @@ void DccManager::connectionRequestReceived(Buddy buddy)
 {
 	kdebugf();
 
-	GaduContact *gcad = Protocol->gaduContact(buddy);
-	if (!gcad)
+	Contact contact = buddy.contact(Protocol->account());
+	if (contact.isNull())
 		return;
 
-	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(Protocol->account().details());
-	if (!gaduAccountDetails)
+	GaduContactDetails *details = Protocol->gaduContactDetails(buddy);
+	if (!details)
 		return;
 
-	struct gg_dcc *dcc = gg_dcc_get_file(htonl(gcad->address().toIPv4Address()), gcad->port(), gaduAccountDetails->uin(), gcad->uin());
+	struct gg_dcc *dcc = gg_dcc_get_file(htonl(contact.address().toIPv4Address()), contact.port(), details->uin(), details->uin());
 	if (!dcc)
 		return;
 
@@ -251,8 +251,8 @@ bool DccManager::acceptConnection(unsigned int uin, unsigned int peerUin, unsign
 		return false;
 	}
 
-	GaduContact *gcad = Protocol->gaduContact(buddy);
-	if (!gcad)
+	Contact contact = buddy.contact(Protocol->account());
+	if (contact.isNull())
 		return false;
 
 	BuddyList buddies(buddy);
@@ -265,7 +265,7 @@ bool DccManager::acceptConnection(unsigned int uin, unsigned int peerUin, unsign
 
 	QHostAddress remoteAddress(ntohl(peerAddr));
 
-	if (remoteAddress == gcad->address())
+	if (remoteAddress == contact.address())
 		return true;
 
 	kdebugm(KDEBUG_WARNING, "possible spoofing attempt from %s (uin:%d)\n", qPrintable(remoteAddress.toString()), peerUin);
@@ -277,7 +277,7 @@ bool DccManager::acceptConnection(unsigned int uin, unsigned int peerUin, unsign
 				"or he/she has port forwarding. Continue connection?"),
 			buddy.display(),
 			remoteAddress.toString(),
-			gcad->address().toString()));
+			contact.address().toString()));
 }
 
 void DccManager::needIncomingFileTransferAccept(DccSocketNotifiers *socket)
@@ -408,14 +408,21 @@ void DccManager::handleEventDcc7Error(struct gg_event *e)
 	}
 }
 
-void DccManager::attachSendFileTransferSocket6(unsigned int uin, GaduContact *gcad, GaduFileTransfer *gft)
+void DccManager::attachSendFileTransferSocket6(unsigned int uin, Contact contact, GaduFileTransfer *gft)
 {
 	kdebugf();
 
-	int port = gcad->port();
+	if (contact.isNull())
+		return;
+
+	GaduContactDetails *details = dynamic_cast<GaduContactDetails *>(contact.details());
+	if (!details)
+		return;
+
+	int port = contact.port();
 	if (port >= 10)
 	{
-		struct gg_dcc *socket = gg_dcc_send_file(htonl(gcad->address().toIPv4Address()), port, uin, gcad->uin());
+		struct gg_dcc *socket = gg_dcc_send_file(htonl(contact.address().toIPv4Address()), port, uin, details->uin());
 		if (socket)
 		{
 			DccSocketNotifiers *fileTransferNotifiers = new DccSocketNotifiers(Protocol, this);
@@ -429,14 +436,21 @@ void DccManager::attachSendFileTransferSocket6(unsigned int uin, GaduContact *gc
 
 // startTimeOut
 	WaitingFileTransfers << gft;
-	gg_dcc_request(Protocol->gaduSession(), gcad->uin());
+	gg_dcc_request(Protocol->gaduSession(), details->uin());
 }
 
-void DccManager::attachSendFileTransferSocket7(unsigned int uin, GaduContact *gcad, GaduFileTransfer *gft)
+void DccManager::attachSendFileTransferSocket7(unsigned int uin, Contact contact, GaduFileTransfer *gft)
 {
 	kdebugf();
 
-	gg_dcc7 *dcc = gg_dcc7_send_file(Protocol->gaduSession(), gcad->uin(),
+	if (contact.isNull())
+		return;
+
+	GaduContactDetails *details = dynamic_cast<GaduContactDetails *>(contact.details());
+	if (!details)
+		return;
+
+	gg_dcc7 *dcc = gg_dcc7_send_file(Protocol->gaduSession(), details->uin(),
 			qPrintable(gft->localFileName()), unicode2cp(gft->localFileName()).data(), 0);
 
 	if (dcc)
@@ -455,26 +469,30 @@ void DccManager::attachSendFileTransferSocket7(unsigned int uin, GaduContact *gc
 void DccManager::attachSendFileTransferSocket(GaduFileTransfer *gft)
 {
 	Buddy peer = gft->buddy();
-	GaduContact *gcad = Protocol->gaduContact(peer);
-	if (!gcad)
+	Contact contact = peer.contact(Protocol->account());
+	if (contact.isNull())
+		return;
+
+	GaduContactDetails *details = Protocol->gaduContactDetails(peer);
+	if (!details)
 		return;
 
 	GaduAccountDetails *account = dynamic_cast<GaduAccountDetails *>(Protocol->account().details());
 	if (!account)
 		return;
 
-	DccVersion version = (gcad->gaduProtocolVersion() & 0x0000ffff) >= 0x29
+	DccVersion version = (details->gaduProtocolVersion() & 0x0000ffff) >= 0x29
 		? Dcc7
 		: Dcc6;
 
 	switch (version)
 	{
 		case Dcc6:
-			attachSendFileTransferSocket6(account->uin(), gcad, gft);
+			attachSendFileTransferSocket6(account->uin(), contact, gft);
 			break;
 
 		case Dcc7:
-			attachSendFileTransferSocket7(account->uin(), gcad, gft);
+			attachSendFileTransferSocket7(account->uin(), contact, gft);
 			break;
 	}
 }
