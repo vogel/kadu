@@ -89,7 +89,7 @@ void ContactShared::loadDetails()
 	if (!factory)
 		return;
 
-	factory->createContactDetails(Contact(this));
+	Details = factory->createContactDetails(Contact(this));
 }
 
 void ContactShared::unloadDetails()

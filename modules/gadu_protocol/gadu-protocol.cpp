@@ -228,8 +228,6 @@ void GaduProtocol::changeStatus()
 	else
 		gg_change_status(GaduSession, type | friends);
 
-	printf("done\n");
-
 	if (newStatus.isDisconnected())
 		networkDisconnected(false);
 
@@ -826,8 +824,8 @@ unsigned int GaduProtocol::uin(Buddy buddy) const
 {
 	GaduContactDetails *data = gaduContactDetails(buddy);
 	return data
-		? data->uin()
-		: 0;
+			? data->uin()
+			: 0;
 }
 
 GaduContactDetails * GaduProtocol::gaduContactDetails(Buddy buddy) const

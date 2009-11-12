@@ -48,6 +48,8 @@ void ContactManager::init()
 
 void ContactManager::loadContact(Contact contact)
 {
+	printf("load contact\n");
+
 	contact.loadDetails();
 	addContact(contact);
 }
@@ -60,6 +62,7 @@ void ContactManager::unloadContact(Contact contact)
 
 void ContactManager::tryLoadContact(Contact contact)
 {
+	printf("try load contact...\n");
 	if (LoadedAccounts.contains(contact.contactAccount()))
 		loadContact(contact);
 }
