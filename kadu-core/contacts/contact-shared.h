@@ -90,7 +90,8 @@ public:
 	Property(ContactDetails *, details, Details)
 	Property(Account, contactAccount, ContactAccount)
 	Property(Avatar &, contactAvatar, ContactAvatar)
-	Property(Buddy, ownerBuddy, OwnerBuddy)
+	PropertyRead(Buddy, ownerBuddy, OwnerBuddy)
+	void setOwnerBuddy(Buddy buddy);
 
 	PropertyRead(QString, id, Id)
 	void setId(const QString &id);

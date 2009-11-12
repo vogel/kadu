@@ -130,6 +130,7 @@ QList<Account> Buddy::accounts() const
 
 void Buddy::addContact(Contact contact)
 {
+	printf("adding %s to %s\n", qPrintable(contact.uuid().toString()), qPrintable(uuid().toString()));
 	if (contact.isNull())
 		return;
 

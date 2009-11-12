@@ -60,7 +60,8 @@ void ContactManager::unloadContact(Contact contact)
 
 void ContactManager::tryLoadContact(Contact contact)
 {
-
+	if (LoadedAccounts.contains(contact.contactAccount()))
+		loadContact(contact);
 }
 
 StoragePoint * ContactManager::createStoragePoint()

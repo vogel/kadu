@@ -116,6 +116,17 @@ void ContactShared::emitUpdated()
 	}
 }
 
+void ContactShared::setOwnerBuddy(Buddy buddy)
+{
+	if (!OwnerBuddy.isNull())
+		OwnerBuddy.removeContact(Contact(this));
+	OwnerBuddy = buddy;
+	if (!OwnerBuddy.isNull())
+		OwnerBuddy.addContact(Contact(this));
+
+	dataUpdated();
+}
+
 void ContactShared::setId(const QString &id)
 {
 	if (Id == id)

@@ -13,11 +13,11 @@
 #include <QtCore/QSettings>
 
 #include "accounts/account-manager.h"
+#include "buddies/buddy-manager.h"
+#include "buddies/group-manager.h"
 #include "chat/message/pending-messages-manager.h"
 #include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
-#include "buddies/buddy-manager.h"
-#include "buddies/group-manager.h"
 #include "contacts/contact-manager.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget-manager.h"
