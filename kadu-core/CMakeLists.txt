@@ -195,6 +195,7 @@ set (kadu_SRCS
 
 	identities/identity.cpp
 	identities/identity-manager.cpp
+	identities/identity-shared.cpp
 
 	misc/coding-conversion.cpp
 	misc/date-time.cpp
@@ -415,6 +416,7 @@ set (kadu_MOC_SRCS
 
 	identities/identity.h
 	identities/identity-manager.h
+	identities/identity-shared.h
 
 	model/actions-proxy-model.h
 

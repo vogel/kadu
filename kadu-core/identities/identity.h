@@ -13,67 +13,55 @@
 #include <QtCore/QUuid>
 #include <QtCore/QStringList>
 
-#include "accounts/account.h"
-#include "accounts/accounts-aware-object.h"
+#include "identities/identity-shared.h"
 #include "status/base-status-container.h"
 
 #include "exports.h"
 
-class QPixmap;
+#undef PropertyRead
+#define PropertyRead(type, name, capitalized_name, default) \
+	type name() const\
+	{\
+		return !Data\
+			? default\
+			: Data->name();\
+	}
 
-class Account;
+#undef PropertyWrite
+#define PropertyWrite(type, name, capitalized_name, default) \
+	void set##capitalized_name(type name) const\
+	{\
+		if (Data)\
+			Data->set##capitalized_name(name);\
+	}
+
+#undef Property
+#define Property(type, name, capitalized_name, default) \
+	PropertyRead(type, name, capitalized_name, default) \
+	PropertyWrite(type, name, capitalized_name, default)
+
+class QPixmap;
 class Status;
 
-class KADUAPI Identity : public BaseStatusContainer, public AccountsAwareObject
+class KADUAPI Identity : public QObject
 {
 	Q_OBJECT
 
-	QString Name;
-	QUuid Uuid;
-
-	QList<Account> Accounts;
-	QStringList AccountsUuids;
+	QExplicitlySharedDataPointer<IdentityShared> Data;
 
 public:
-	static Identity * loadFromStorage(StoragePoint *groupStoragePoint);
+	explicit Identity(IdentityShared *data);
+	virtual ~Identity() {};
+	
+	IdentityShared * data() const { return Data.data(); }
 
-	explicit Identity(StoragePoint *storagePoint);
-	explicit Identity(const QUuid &uuid = QUuid());
-	virtual ~Identity();
-
-	virtual void load();
-	virtual void store();
-
-	virtual QUuid uuid() const { return Uuid; }
-
-	void setName(const QString &name) { Name = name; }
-
-	QString name() const { return Name; }
-
-	QList<Account> accounts() const { return Accounts; }
-	bool hasAccount(Account account) const { return Accounts.contains(account); }
-
-	void accountRegistered(Account account);
-	void accountUnregistered(Account account);
-
+	bool hasAccount(Account account) const;
 	void addAccount(Account account);
-
-	// StatusContainer implementation
-	virtual QString statusContainerName() { return Name; }
-
-	virtual void setStatus(Status newStatus);
-	virtual const Status & status();
-
-	virtual QString statusName();
-	virtual QPixmap statusPixmap();
-	virtual QPixmap statusPixmap(Status status);
-	virtual QPixmap statusPixmap(const QString &statusType);
-
-	virtual QList<StatusType *> supportedStatusTypes();
-
-	virtual int maxDescriptionLength();
-
-	virtual void setPrivateStatus(bool isPrivate);
+	
+	Property(QString, name, Name, QString::null)
+	Property(QUuid, uuid, Uuid, QUuid())
+	Property(QList<Account>, accounts, Accounts, QList<Account>())
+	Property(QStringList, accountsUuids, AccountsUuids, QStringList())
 
 
 public slots:
