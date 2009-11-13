@@ -90,6 +90,7 @@ void ContactShared::loadDetails()
 		return;
 
 	Details = factory->createContactDetails(Contact(this));
+	printf("Details loaded\n");
 }
 
 void ContactShared::unloadDetails()
