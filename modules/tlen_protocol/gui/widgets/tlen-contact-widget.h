@@ -12,17 +12,18 @@
 
 #include "gui/widgets/contact-widget.h"
 
-class TlenContact;
+class Contact;
+class TlenContactDetails;
 
 class TlenContactWidget : public ContactWidget
 {
 	Q_OBJECT
 
-	TlenContactData;
+	TlenContactDetails *Data;
 	void createGui();
 
 public:
-	explicit TlenContactWidget(TlenContact contact, QWidget *parent = 0);
+	explicit TlenContactWidget(Contact contact, QWidget *parent = 0);
 	~TlenContactWidget();
 
 };

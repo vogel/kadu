@@ -7,12 +7,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "tlen-contact.h"
+#include "tlen-contact-details.h"
 
 #include "tlen-contact-manager.h"
 
-TlenContactManager::TlenContactManager(TlenContact* data, QObject *parent)
-	: ConfigurationContactDataManager(data, parent), Data(data)
+TlenContactManager::TlenContactManager(Contact data, QObject *parent) :
+		ConfigurationContactDataManager(data, parent), Data(dynamic_cast<TlenContactDetails *>(data.details()))
 {
 }
 
@@ -35,7 +35,7 @@ QVariant TlenContactManager::readEntry(const QString &section, const QString &na
 		return ConfigurationContactDataManager::readEntry(section, name);
 
 	if (name == "Tlenid")
-		return Data->id();
+		return Data->contact().id();
 
 	// other data
 

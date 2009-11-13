@@ -11,8 +11,10 @@
 #include <QtCore/QUrl>
 
 #include "accounts/account.h"
+#include "buddies/avatar.h"
 #include "buddies/avatar-manager.h"
 #include "misc/path-conversion.h"
+
 #include "tlen.h"
 #include "tlen-protocol.h"
 
@@ -25,12 +27,12 @@ TlenAvatarFetcher::TlenAvatarFetcher(Contact contact, QObject *parent) :
 
 void TlenAvatarFetcher::fetchAvatar()
 {
-	tlen * tlenClient = (dynamic_cast <TlenProtocol *> (MyContact->account().protocolHandler()))->client();
+	tlen * tlenClient = (dynamic_cast <TlenProtocol *> (MyContact.contactAccount().protocolHandler()))->client();
 
 	// TODO: clean up, clean access to tlenClient
 	// create QString tlen/protocol::avatarGetRequest(QString login), avatarGetRequestMethod()
 	// prevent fetch more than one avatar at the same time - contactlistwidget sends requests
-	QString login(MyContact->id());
+	QString login(MyContact.id());
 	login.remove(QString("@tlen.pl"));
 
 	QString type("0");
@@ -66,7 +68,6 @@ void TlenAvatarFetcher::avatarDownloaded(int id, bool error)
 		//MyContact->avatar().setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + 7200));
 		emit avatarFetched(MyContact, MyAvatarBuffer.buffer());
 	}
-
 
 	deleteLater();
 }

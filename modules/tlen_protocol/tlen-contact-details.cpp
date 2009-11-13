@@ -7,9 +7,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "tlen-contact.h"
+#include "tlen-contact-details.h"
 
-bool TlenContact::validateId()
+TlenContactDetails::TlenContactDetails(StoragePoint *storagePoint, Contact parent) :
+		ContactDetails(storagePoint, parent), MaxImageSize(0)
+{
+}
+
+bool TlenContactDetails::validateId()
 {
 	return true;
 }

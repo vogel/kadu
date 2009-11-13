@@ -11,11 +11,12 @@
 #include "gui/widgets/tlen-create-account-widget.h"
 #include "gui/widgets/tlen-edit-account-widget.h"
 
-#include "tlen-account-details.h"
-#include "tlen-protocol.h"
-#include "tlen-contact.h"
 #include "status/status-type.h"
 #include "status/status-type-manager.h"
+
+#include "tlen-account-details.h"
+#include "tlen-contact-details.h"
+#include "tlen-protocol.h"
 
 #include "tlen-protocol-factory.h"
 
@@ -55,17 +56,9 @@ AccountDetails * TlenProtocolFactory::createAccountDetails(Account account)
 	return new TlenAccountDetails(account.storage(), account);
 }
 
-Contact * TlenProtocolFactory::newContact(Account account, Buddy buddy, const QString &id)
+ContactDetails * TlenProtocolFactory::createContactDetails(Contact contact)
 {
-	return new TlenContact(account, buddy, id, true);
-}
-
-Contact TlenProtocolFactory::loadContact(StoragePoint *storagePoint)
-{
-	if (!storagePoint)
-		return 0;
-
-	return new TlenContact(storagePoint);
+	return new TlenContactDetails(contact.storage(), contact);
 }
 
 AccountCreateWidget * TlenProtocolFactory::newCreateAccountWidget(QWidget *parent)
@@ -95,9 +88,9 @@ QRegExp TlenProtocolFactory::idRegularExpression()
 
 ContactWidget * TlenProtocolFactory::newContactWidget(Contact contact, QWidget *parent)
 {
-	TlenContacttlenContact = dynamic_cast<TlenContact>(contact);
+	TlenContactDetails *tlenContactDetails = dynamic_cast<TlenContactDetails *>(contact.details());
 
-	return 0 != tlenContact
-		? new TlenContactWidget(tlenContact, parent)
+	return 0 != tlenContactDetails
+		? new TlenContactWidget(contact, parent)
 		: 0;
 }

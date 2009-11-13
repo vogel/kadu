@@ -34,8 +34,8 @@
 
 #include "tlen.h"
 
-#include "tlen-contact.h"
 #include "tlen-account-details.h"
+#include "tlen-contact-details.h"
 #include "tlen-protocol-factory.h"
 #include "tlen-protocol.h"
 
@@ -383,13 +383,12 @@ void TlenProtocol::presenceChanged(QString from, QString newstatus, QString desc
 	}
 	*/
 
-	TlenContact *data = dynamic_cast<TlenContact *>(buddy.contact(account()));
-
-	if (!data)
+	Contact contact = buddy.contact(account());
+	if (contact.isNull())
 		return;
 
-	Status oldStatus = data->status();
-	data->setStatus(status);
+	Status oldStatus = contact.currentStatus();
+	contact.setCurrentStatus(status);
 
 	if (!TypingUsers[from].isEmpty())
 		TypingUsers[from] = description;
@@ -459,13 +458,12 @@ void TlenProtocol::chatNotify(QString from, QString type)
 
 	Buddy buddy = account().getBuddyById(from);
 
-	TlenContact *data = dynamic_cast<TlenContact *>(buddy.contact(account()));
-
-	if (!data)
+	Contact contact = buddy.contact(account());
+	if (contact.isNull())
 		return;
 
-	Status oldStatus = data->status();
-	Status newStatus = data->status();
+	Status oldStatus = contact.currentStatus();
+	Status newStatus = contact.currentStatus();
 
 	if(type=="t")
 	{
@@ -473,7 +471,7 @@ void TlenProtocol::chatNotify(QString from, QString type)
 		QString oldDesc = oldStatus.description();
 		TypingUsers.insert(from, oldDesc);
 		newStatus.setDescription(QString("[pisze] %1").arg(oldDesc));
-		data->setStatus(newStatus);
+		contact.setCurrentStatus(newStatus);
 		emit buddyStatusChanged(account(), buddy, oldStatus);
 	}
 	else if(type=="u")
@@ -482,7 +480,7 @@ void TlenProtocol::chatNotify(QString from, QString type)
 		QString oldDesc = TypingUsers[from];
 		TypingUsers.remove(from);
 		newStatus.setDescription(oldDesc);
-		data->setStatus(newStatus);
+		contact.setCurrentStatus(newStatus);
 		emit buddyStatusChanged(account(),buddy, oldStatus);
 	}
 	else if(type=="a")

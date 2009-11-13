@@ -15,7 +15,7 @@
 
 void TlenAvatarService::fetchAvatar(Contact contact)
 {
-	if (contact->id().isEmpty())
+	if (contact.id().isEmpty())
 		return;
 
 	if (InProgress.contains(contact))
@@ -28,7 +28,7 @@ void TlenAvatarService::fetchAvatar(Contact contact)
 			this, SIGNAL(avatarReady(Contact, const QByteArray &)));
 
 	avatarFetcher->fetchAvatar();
-	qDebug() << "Tlen Get Avatar" << contact->id();
+	qDebug() << "Tlen Get Avatar" << contact.id();
 }
 
 void TlenAvatarService::avatarReady(Contact contact, const QByteArray &avatar)
@@ -39,5 +39,5 @@ void TlenAvatarService::avatarReady(Contact contact, const QByteArray &avatar)
 		return;
 
 	emit avatarFetched(contact, avatar);
-	qDebug() << "Tlen Have Avatar" << contact->id();
+	qDebug() << "Tlen Have Avatar" << contact.id();
 }

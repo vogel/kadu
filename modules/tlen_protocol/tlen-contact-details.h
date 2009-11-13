@@ -7,31 +7,27 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TLEN_CONTACT
-#define TLEN_CONTACT
+#ifndef TLEN_CONTACT_DETAILS
+#define TLEN_CONTACT_DETAILS
 
 #include "contacts/contact.h"
-
-#include "tlen-protocol.h"
+#include "contacts/contact-details.h"
 
 class Account;
 
-class TlenContact : public Contact
+class TlenContactDetails : public ContactDetails
 {
-	unsigned long MaxImageSize;
+	PROPERTY_DEC(unsigned long, MaxImageSize)
 
 public:
-	TlenContact(Account account, Buddy buddy, const QString &id, bool loaded = false)
-		: Contact(account, buddy, id, loaded) {}
-	TlenContact(Account account, Buddy buddy, const QString &id, StoragePoint *storage)
-		: Contact(account, buddy, id, storage) {}
-	TlenContact(StoragePoint *storage) :
-		Contact(storage) {}
+	explicit TlenContactDetails(StoragePoint *storagePoint, Contact parent = Contact::null);
+	virtual ~TlenContactDetails();
 
 	virtual bool validateId();
+	virtual void store();
 
-	void setMaxImageSize(unsigned long maxImageSize) { MaxImageSize = maxImageSize; }
+	PROPERTY_DEF(unsigned long, maxImageSize, setMaxImageSize, MaxImageSize)
 
 };
 
-#endif // TLEN_CONTACT
+#endif // TLEN_CONTACT_DETAILS

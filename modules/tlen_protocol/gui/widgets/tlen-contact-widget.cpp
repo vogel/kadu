@@ -14,16 +14,15 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QVBoxLayout>
 
-#include "tlen-contact.h"
 #include "tlen-contact-manager.h"
+#include "tlen-contact-details.h"
 #include "misc/misc.h"
 
 #include "tlen-contact-widget.h"
 
-TlenContactWidget::TlenContactWidget(TlenContact contact, QWidget *parent) :
-	ContactWidget(new TlenContactManager(contact, parent), 
-		contact, parent),
-	Data(contact)
+TlenContactWidget::TlenContactWidget(Contact contact, QWidget *parent) :
+		ContactWidget(new TlenContactManager(contact, parent), contact, parent),
+		Data(dynamic_cast<TlenContactDetails *>(contact.details()))
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 

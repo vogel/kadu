@@ -10,9 +10,9 @@ set (SOURCES
 	services/tlen-avatar-service.cpp
 	services/tlen-chat-service.cpp
 	tlen-account-data-manager.cpp
-	tlen-contact.cpp
-	tlen-contact-manager.cpp
 	tlen-account-details.cpp
+	tlen-contact-details.cpp
+	tlen-contact-manager.cpp
 	tlen-protocol.cpp
 	tlen-protocol-factory.cpp
 	QtTlen/auth.cpp
@@ -31,9 +31,9 @@ set (MOC_SOURCES
 	services/tlen-avatar-service.h
 	services/tlen-chat-service.h
 #	tlen-account-data-manager.h
-#	tlen-contact.h
-#	tlen-contact-manager.h
 #	tlen-account-details.h
+#	tlen-contact-details.h
+#	tlen-contact-manager.h
 	tlen-protocol.h
 #	tlen-protocol-factory.h
 #	QtTlen/auth.h

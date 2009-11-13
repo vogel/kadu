@@ -21,7 +21,7 @@ class TlenAvatarFetcher : public QObject
 {
 	Q_OBJECT
 
-	ContactMyContact;
+	Contact MyContact;
 	QBuffer MyAvatarBuffer;
 	QHttp *MyHttp;
 
