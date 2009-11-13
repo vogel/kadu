@@ -7,16 +7,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "gadu-contact.h"
+#include "libiris/include/xmpp.h"
 
-unsigned int GaduContact::uin()
+#include "utils/jid-util.h"
+
+#include "jabber-contact-details.h"
+
+JabberContactDetails::JabberContactDetails(StoragePoint *storagePoint, Contact parent) :
+		ContactDetails(storagePoint, parent),
+		MaxImageSize(0)
 {
-	return id().toUInt();
 }
 
-bool GaduContact::validateId()
+bool JabberContactDetails::validateId()
 {
-	bool ok;
-	id().toUInt(&ok);
-	return ok;
+	XMPP::Jid newJid(JIDUtil::accountFromString(contact().id()));
+	return !newJid.node().isEmpty() && !newJid.domain().isEmpty();
 }

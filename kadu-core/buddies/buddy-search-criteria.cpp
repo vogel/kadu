@@ -7,6 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "contacts/contact-shared.h"
+
 #include "buddy-search-criteria.h"
 
 BuddySearchCriteria::BuddySearchCriteria() :
@@ -20,13 +22,16 @@ BuddySearchCriteria::~BuddySearchCriteria()
 
 void BuddySearchCriteria::reqUin(Account account, const QString &uin)
 {
-	Contact *cad = SearchBuddy.contact(account);
-	if (!cad)
+	Contact contact = SearchBuddy.contact(account);
+	if (contact.isNull())
 	{
-		cad = new Contact(account, SearchBuddy, uin);
-		SearchBuddy.addContact(cad);
+		contact = Contact();
+		contact.setContactAccount(account);
+		contact.setOwnerBuddy(SearchBuddy);
+		contact.data()->setLoaded(true);
+		SearchBuddy.addContact(contact);
 	}
-	cad->setId(uin);
+	contact.setId(uin);
 }
 
 void BuddySearchCriteria::reqFirstName(const QString &firstName)

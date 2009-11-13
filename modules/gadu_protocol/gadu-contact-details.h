@@ -7,31 +7,31 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef JABBER_CONTACT_H
-#define JABBER_CONTACT_H
-
-#include <xmpp.h>
+#ifndef GADU_CONTACT_DETAILS_H
+#define GADU_CONTACT_DETAILS_H
 
 #include "contacts/contact.h"
+#include "contacts/contact-details.h"
 
-class Account;
+#include "gadu-protocol.h"
 
-class JabberContact : public Contact
+class GaduContactDetails : public ContactDetails
 {
-	unsigned long MaxImageSize;
+	PROPERTY_DEC(unsigned long, MaxImageSize)
+	PROPERTY_DEC(unsigned int, GaduProtocolVersion)
 
 public:
-	JabberContact(Account account, Buddy buddy, const QString &id, bool loaded = false) :
-			Contact(account, buddy, id, loaded) {}
-	JabberContact(Account account, Buddy buddy, const QString &id, StoragePoint *storage) :
-			Contact(account, buddy, id, storage) {}
-	JabberContact(StoragePoint *storage) :
-			Contact(storage) {}
+	explicit GaduContactDetails(StoragePoint *storagePoint, Contact parent = Contact::null);
+	virtual ~GaduContactDetails();
 
 	virtual bool validateId();
+	virtual void store();
 
-	void setMaxImageSize(unsigned long maxImageSize) { MaxImageSize = maxImageSize; }
+	GaduProtocol::UinType uin();
+
+	PROPERTY_DEF(unsigned long, maxImageSize, setMaxImageSize, MaxImageSize)
+	PROPERTY_DEF(unsigned int, gaduProtocolVersion, setGaduProtocolVersion, GaduProtocolVersion)
 
 };
 
-#endif // JABBER_CONTACT_H
+#endif // GADU_CONTACT_DETAILS_H

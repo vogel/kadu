@@ -7,31 +7,25 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SIMPLE_CHAT_H
-#define SIMPLE_CHAT_H
+#ifndef JABBER_CONTACT_DETAILS_H
+#define JABBER_CONTACT_DETAILS_H
 
 #include "contacts/contact.h"
+#include "contacts/contact-details.h"
 
-#include "chat/chat.h"
-
-class XmlConfigFile;
-
-class SimpleChat : public Chat
+class JabberContactDetails : public ContactDetails
 {
-	Contact CurrentContact;
+	PROPERTY_DEC(unsigned long, MaxImageSize)
 
 public:
-	explicit SimpleChat(StoragePoint *storage);
-	explicit SimpleChat(Account parentAccount, Contact contact, QUuid uuid = QUuid());
-	virtual ~SimpleChat();
+	explicit JabberContactDetails(StoragePoint *storagePoint, Contact parent = Contact::null);
+	virtual ~JabberContactDetails();
 
-	virtual void load();
+	virtual bool validateId();
 	virtual void store();
 
-	virtual ChatType type() const;
-	virtual BuddySet buddies() const;
-	virtual QString name() const;
+	PROPERTY_DEF(unsigned long, maxImageSize, setMaxImageSize, MaxImageSize)
 
 };
 
-#endif // SIMPLE_CHAT_H
+#endif // JABBER_CONTACT_DETAILS_H

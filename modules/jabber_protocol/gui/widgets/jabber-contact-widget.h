@@ -15,17 +15,18 @@
 
 #include "gui/widgets/contact-widget.h"
 
-class JabberContact;
+class Contact;
+class JabberContactDetails;
 
 class JabberContactWidget : public ContactWidget
 {
 	Q_OBJECT
 
-	JabberContact *Data;
+	JabberContactDetails *Data;
 	void createGui();
 
 public:
-	explicit JabberContactWidget(JabberContact *contact, QWidget *parent = 0);
+	explicit JabberContactWidget(Contact contact, QWidget *parent = 0);
 	virtual ~JabberContactWidget();
 
 };

@@ -12,17 +12,17 @@
 
 #include "configuration/configuration-contact-data-manager.h"
 
-class JabberContact;
+class JabberContactDetails;
 
 class JabberContactDataManager : public ConfigurationContactDataManager
 {
-	JabberContact *Data;
+	JabberContactDetails *Data;
 
 protected:
-	JabberContact * data() { return Data; }
+	JabberContactDetails * data() { return Data; }
 
 public:
-	explicit JabberContactDataManager(JabberContact *data, QObject *parent = 0);
+	explicit JabberContactDataManager(Contact data, QObject *parent = 0);
 
 	virtual void writeEntry(const QString &section, const QString &name, const QVariant &value);
 	virtual QVariant readEntry(const QString &section, const QString &name);

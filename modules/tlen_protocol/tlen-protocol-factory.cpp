@@ -60,7 +60,7 @@ Contact * TlenProtocolFactory::newContact(Account account, Buddy buddy, const QS
 	return new TlenContact(account, buddy, id, true);
 }
 
-Contact * TlenProtocolFactory::loadContact(StoragePoint *storagePoint)
+Contact TlenProtocolFactory::loadContact(StoragePoint *storagePoint)
 {
 	if (!storagePoint)
 		return 0;
@@ -93,9 +93,9 @@ QRegExp TlenProtocolFactory::idRegularExpression()
 	return IdRegularExpression;
 }
 
-ContactWidget * TlenProtocolFactory::newContactWidget(Contact *contact, QWidget *parent)
+ContactWidget * TlenProtocolFactory::newContactWidget(Contact contact, QWidget *parent)
 {
-	TlenContact *tlenContact = dynamic_cast<TlenContact *>(contact);
+	TlenContacttlenContact = dynamic_cast<TlenContact>(contact);
 
 	return 0 != tlenContact
 		? new TlenContactWidget(tlenContact, parent)

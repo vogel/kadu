@@ -28,6 +28,7 @@
 #include "buddies/group-manager.h"
 #include "buddies/filter/non-account-buddy-filter.h"
 #include "buddies/model/groups-model.h"
+#include "contacts/contact.h"
 #include "gui/widgets/select-buddy-combobox.h"
 #include "misc/misc.h"
 #include "model/actions-proxy-model.h"
@@ -229,7 +230,7 @@ void AddBuddyWindow::setAddContactEnabled()
 	if (mergeWith.isNull())
 		AddContactButton->setEnabled(false);
 	else
-		AddContactButton->setEnabled(0 == mergeWith.contact(account));
+		AddContactButton->setEnabled(mergeWith.contact(account).isNull());
 }
 
 void AddBuddyWindow::setValidateRegularExpression()
@@ -302,7 +303,7 @@ void AddBuddyWindow::accept()
 	{
 		if (MyBuddy.isNull())
 			MyBuddy = BuddyManager::instance()->byId(account, UserNameEdit->text());
-		
+
 		MyBuddy.setType(BuddyShared::TypeNormal);
 		MyBuddy.setDisplay(DisplayNameEdit->text());
 	}
@@ -312,9 +313,12 @@ void AddBuddyWindow::accept()
 		if (buddy.isNull())
 			return;
 
-		Contact *cad = account.protocolHandler()->protocolFactory()
-		->newContact(account, buddy, UserNameEdit->text());
-		buddy.addContact(cad);
+		Contact contact;
+		contact.setContactAccount(account);
+		contact.setOwnerBuddy(buddy);
+		contact.setId(UserNameEdit->text());
+		contact.setDetails(account.protocolHandler()->protocolFactory()->createContactDetails(contact));
+		buddy.addContact(contact);
 	}
 
 	QDialog::accept();

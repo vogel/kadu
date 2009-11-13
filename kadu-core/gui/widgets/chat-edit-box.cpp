@@ -233,14 +233,14 @@ void ChatEditBox::openInsertImageDialog()
 		foreach (Buddy buddy, CurrentChat->buddies())
 		{
 			// TODO: 0.6.6
-			Contact *contact = buddy.contact(CurrentChat->account());
-			if (contact && contact->hasFeature(/*EmbedImageInChatMessage*/))
-			{
+			Contact contact = buddy.contact(CurrentChat->account());
+// 			if (contact && contact->hasFeature(/*EmbedImageInChatMessage*/))
+// 			{
 // 				unsigned long maxImageSize = contact->maxEmbededImageSize();
 // 				if (f.size() > maxImageSize)
-					counter++;
-			}
-			else
+// 					counter++;
+// 			}
+// 			else
 				counter++;
 			// unsigned int maximagesize = user.protocolData("Gadu", "MaxImageSize").toUInt();
 		}

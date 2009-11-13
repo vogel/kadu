@@ -12,8 +12,8 @@
 
 #include "avatar.h"
 
-Avatar::Avatar(Contact *contact, bool loadFromConfiguration) :
-		StorableObject("Avatar", contact),
+Avatar::Avatar(Contact contact, bool loadFromConfiguration) :
+		StorableObject("Avatar", contact.data()),
 		MyContact(contact)
 {
     	if (!loadFromConfiguration)
@@ -56,7 +56,7 @@ void Avatar::store()
 	storeValue("FileName", FileName);
 }
 
-Contact * Avatar::contact()
+Contact Avatar::contact()
 {
 	return MyContact;
 }

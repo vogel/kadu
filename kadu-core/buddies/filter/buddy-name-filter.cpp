@@ -28,8 +28,8 @@ bool BuddyNameFilter::acceptBuddy(Buddy buddy)
 	if (buddy.email().contains(Name, Qt::CaseInsensitive))
 		return true;
 
-	foreach (Contact *cad, buddy.contacts())
-		if (cad->id().contains(Name, Qt::CaseInsensitive))
+	foreach (Contact contact, buddy.contacts())
+		if (contact.id().contains(Name, Qt::CaseInsensitive))
 			return true;
 
 	return false;

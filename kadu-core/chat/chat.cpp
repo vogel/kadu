@@ -130,10 +130,9 @@ void Chat::refreshTitle()
 		else
 			title = Parser::parse(config_file.readEntry("Look","ChatContents"), account(), buddy, false);
 
-		Contact *cad = buddy.contact(account());
-
-		if (cad)
-			Icon = account().statusContainer()->statusPixmap(cad->status());
+		Contact contact = buddy.contact(account());
+		if (!contact.isNull())
+			Icon = account().statusContainer()->statusPixmap(contact.currentStatus());
 	}
 
 	title.replace("<br/>", " ");

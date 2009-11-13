@@ -40,7 +40,7 @@
 
 #include "helpers/gadu-importer.h"
 #include "gadu-account-details.h"
-#include "gadu-contact.h"
+#include "gadu-contact-details.h"
 #include "gadu-protocol-factory.h"
 
 #include "gadu-protocol.h"
@@ -225,8 +225,6 @@ void GaduProtocol::changeStatus()
 		gg_change_status_descr(GaduSession, type | friends, unicode2cp(newStatus.description()));
 	else
 		gg_change_status(GaduSession, type | friends);
-
-	printf("done\n");
 
 	if (newStatus.isDisconnected())
 		networkDisconnected(false);
@@ -675,18 +673,23 @@ void GaduProtocol::socketContactStatusChanged(unsigned int uin, unsigned int sta
 		return;
 	}
 
-	GaduContact *accountData = gaduContact(buddy);
-	accountData->setIp(ip);
-	accountData->setPort(port);
-	accountData->setMaxImageSize(maxImageSize);
-	accountData->setProtocolVersion(QString::number(version));
-	accountData->setGaduProtocolVersion(version);
+	Contact contact = buddy.contact(account());
+	contact.setAddress(ip);
+	contact.setPort(port);
+	contact.setProtocolVersion(QString::number(version));
 
-	Status oldStatus = accountData->status();
+	GaduContactDetails *details = gaduContactDetails(buddy);
+	if (details)
+	{
+		details->setMaxImageSize(maxImageSize);
+		details->setGaduProtocolVersion(version);
+	}
+
+	Status oldStatus = contact.currentStatus();
 	Status newStatus;
 	newStatus.setType(statusTypeFromGaduStatus(status));
 	newStatus.setDescription(description);
-	accountData->setStatus(newStatus);
+	contact.setCurrentStatus(newStatus);
 
 	emit buddyStatusChanged(account(), buddy, oldStatus);
 }
@@ -817,15 +820,18 @@ void GaduProtocol::socketDisconnected()
 
 unsigned int GaduProtocol::uin(Buddy buddy) const
 {
-	GaduContact *data = gaduContact(buddy);
+	GaduContactDetails *data = gaduContactDetails(buddy);
 	return data
-		? data->uin()
-		: 0;
+			? data->uin()
+			: 0;
 }
 
-GaduContact * GaduProtocol::gaduContact(Buddy buddy) const
+GaduContactDetails * GaduProtocol::gaduContactDetails(Buddy buddy) const
 {
-	return dynamic_cast<GaduContact *>(buddy.contact(account()));
+	Contact contact = buddy.contact(account());
+	if (contact.isNull())
+		return 0;
+	return dynamic_cast<GaduContactDetails *>(contact.details());
 }
 
 QPixmap GaduProtocol::statusPixmap(Status status)
@@ -853,24 +859,24 @@ QPixmap GaduProtocol::statusPixmap(const QString &statusType)
 
 void GaduProtocol::contactAdded(Buddy &buddy)
 {
-	GaduContact *gcad = gaduContact(buddy);
-	if (!gcad)
+	GaduContactDetails *details = gaduContactDetails(buddy);
+	if (!details)
 		return;
 
-	gg_add_notify_ex(GaduSession, gcad->uin(), notifyTypeFromContact(buddy));
+	gg_add_notify_ex(GaduSession, details->uin(), notifyTypeFromContact(buddy));
 }
 
 void GaduProtocol::contactRemoved(Buddy &buddy)
 {
-	GaduContact *gcad = gaduContact(buddy);
-	if (!gcad)
+	GaduContactDetails *details = gaduContactDetails(buddy);
+	if (!details)
 		return;
 
 //	TODO: 0.6.6 which one is the *right* way?
 // 	gg_remove_notify_ex(GaduSession, gcad->uin(), GG_USER_NORMAL);
 // 	gg_remove_notify_ex(GaduSession, gcad->uin(), GG_USER_BLOCKED);
 // 	gg_remove_notify_ex(GaduSession, gcad->uin(), GG_USER_OFFLINE);
-	gg_remove_notify(GaduSession, gcad->uin());
+	gg_remove_notify(GaduSession, details->uin());
 }
 
 void GaduProtocol::contactAdded(Buddy &buddy, Account contactAccount)

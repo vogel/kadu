@@ -12,17 +12,17 @@
 
 #include "configuration/configuration-contact-data-manager.h"
 
-class GaduContact;
+class GaduContactDetails;
 
 class GaduContactDataManager : public ConfigurationContactDataManager
 {
-	GaduContact *Data;
+	GaduContactDetails *Data;
 
 protected:
-	GaduContact * data() { return Data; }
+	GaduContactDetails * data() { return Data; }
 
 public:
-	explicit GaduContactDataManager(GaduContact *data, QObject *parent = 0);
+	explicit GaduContactDataManager(Contact data, QObject *parent = 0);
 
 	virtual void writeEntry(const QString &section, const QString &name, const QVariant &value);
 	virtual QVariant readEntry(const QString &section, const QString &name);

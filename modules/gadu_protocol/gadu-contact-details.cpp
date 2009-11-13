@@ -7,34 +7,30 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QtGui/QDialogButtonBox>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QLabel>
-#include <QtGui/QLineEdit>
-#include <QtGui/QPushButton>
-#include <QtGui/QVBoxLayout>
-
 #include "gadu-contact-details.h"
-#include "gadu-contact-data-manager.h"
-#include "misc/misc.h"
 
-#include "gadu-contact-widget.h"
-
-GaduContactWidget::GaduContactWidget(Contact contact, QWidget *parent) :
-		ContactWidget(new GaduContactDataManager(contact, parent),
-			contact, parent),
-		Data(contact)
-{
-	setAttribute(Qt::WA_DeleteOnClose);
-
-	createGui();
-}
-
-GaduContactWidget::~GaduContactWidget()
+GaduContactDetails::GaduContactDetails(StoragePoint *storagePoint, Contact parent) :
+		ContactDetails(storagePoint, parent),
+		MaxImageSize(0), GaduProtocolVersion(0)
 {
 }
 
-void GaduContactWidget::createGui()
+GaduContactDetails::~GaduContactDetails()
 {
-	appendUiFile(dataPath("kadu/modules/configuration/gadu_contact.ui"));
+}
+
+unsigned int GaduContactDetails::uin()
+{
+	return contact().id().toUInt();
+}
+
+bool GaduContactDetails::validateId()
+{
+	bool ok;
+	contact().id().toUInt(&ok);
+	return ok;
+}
+
+void GaduContactDetails::store()
+{
 }

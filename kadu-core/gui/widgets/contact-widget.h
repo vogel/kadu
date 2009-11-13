@@ -13,22 +13,22 @@
 #include <QtGui/QDialog>
 #include <QtGui/QLineEdit>
 
+#include "contacts/contact.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 
 #include "exports.h"
 
 class ConfigurationContactDataManager;
-class Contact;
 
 class KADUAPI ContactWidget : public ConfigurationWidget
 {
 	Q_OBJECT
 
-	Contact *Data;
+	Contact Data;
 	void createGui();
 
 public:
-	explicit ContactWidget(ConfigurationContactDataManager *dataManager, Contact *contact, QWidget *parent = 0);
+	explicit ContactWidget(ConfigurationContactDataManager *dataManager, Contact contact, QWidget *parent = 0);
 	virtual ~ContactWidget();
 
 };

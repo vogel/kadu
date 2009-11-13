@@ -46,11 +46,32 @@ void ContactManager::init()
 	triggerAllAccountsRegistered();
 }
 
+void ContactManager::loadContact(Contact contact)
+{
+	printf("load contact\n");
+
+	contact.loadDetails();
+	addContact(contact);
+}
+
+void ContactManager::unloadContact(Contact contact)
+{
+	removeContact(contact);
+	contact.unloadDetails();
+}
+
+void ContactManager::tryLoadContact(Contact contact)
+{
+	printf("try load contact...\n");
+	if (LoadedAccounts.contains(contact.contactAccount()))
+		loadContact(contact);
+}
+
 StoragePoint * ContactManager::createStoragePoint()
 {
 	return new StoragePoint(xml_config_file, xml_config_file->getNode("Contacts"));
 }
-
+/*
 void ContactManager::load(Account account)
 {
 	if (!isValidStorage())
@@ -60,11 +81,11 @@ void ContactManager::load(Account account)
 	QDomElement contactsNode = storage()->point();
 
 	if (contactsNode.isNull())
-		return;
+		return;*/
 
 	// TODO 0.6.6: by tag does not work, this works only if childNodes are "Chat"
-	QDomNodeList contactsNodes = contactsNode.childNodes();
-
+// 	QDomNodeList contactsNodes = contactsNode.childNodes();
+/*
 	int count = contactsNodes.count();
 	QString uuid = account.uuid().toString();
 	for (int i = 0; i < count; i++)
@@ -80,29 +101,35 @@ void ContactManager::load(Account account)
 		if (!account.protocolHandler())
 			return;
 
-		Contact *cad = account.protocolHandler()->protocolFactory()->loadContact(contactStoragePoint);
+		Contact contact = account.protocolHandler()->protocolFactory()->loadContact(contactStoragePoint);
 
 		if (cad)
 		{
 			addContact(cad);
-			cad->ensureLoaded();
+			cad->data()->ensureLoaded();
 		}
 	}
-}
+}*/
 
 void ContactManager::accountRegistered(Account account)
 {
 	if (LoadedAccounts.contains(account))
 		return;
 
-	load(account);
 	LoadedAccounts.append(account);
+	foreach (Contact contact, AllContacts)
+		if (contact.contactAccount() == account)
+			loadContact(contact);
 }
 
 void ContactManager::accountUnregistered(Account account)
 {
-// 	store(account);
+	if (!LoadedAccounts.contains(account))
+		return;
+
 	LoadedAccounts.removeAll(account);
+	foreach (Contact contact, LoadedContacts)
+		unloadContact(contact);
 }
 
 void ContactManager::ensureLoaded(Account account)
@@ -117,7 +144,19 @@ void ContactManager::load()
 	if (!isValidStorage())
 		return;
 
-	// TODO: implement
+	QDomElement contactsNode = storage()->point();
+	if (contactsNode.isNull())
+		return;
+
+	QList<QDomElement> contactElements = storage()->storage()->getNodes(contactsNode, "Contact");
+	foreach (QDomElement contactElement, contactElements)
+	{
+		StoragePoint *storagePoint = new StoragePoint(storage()->storage(), contactElement);
+		Contact contact = Contact::loadFromStorage(storagePoint);
+		AllContacts.append(contact);
+
+		tryLoadContact(contact);
+	}
 }
 
 void ContactManager::store()
@@ -127,62 +166,62 @@ void ContactManager::store()
 
 	StorableObject::ensureLoaded();
 
-	foreach (Contact *cad, ContactList)
-		cad->store();
+	foreach (Contact contact, AllContacts)
+		contact.store();
 }
 
-void ContactManager::addContact(Contact *cad)
+void ContactManager::addContact(Contact contact)
 {
-	if (!cad)
+	if (contact.isNull())
 		return;
 
 	StorableObject::ensureLoaded();
 
-	if (ContactList.contains(cad))
+	if (AllContacts.contains(contact))
 		return;
 
-	emit contactAboutToBeAdded(cad);
-	ContactList.append(cad);
-	emit contactAdded(cad);
+	emit contactAboutToBeAdded(contact);
+	AllContacts.append(contact);
+	emit contactAdded(contact);
 }
 
-void ContactManager::removeContact(Contact *cad)
+void ContactManager::removeContact(Contact contact)
 {
 	kdebugf();
 
-	if (!cad)
+	if (contact.isNull())
 		return;
 
 	StorableObject::ensureLoaded();
 
-	if (!ContactList.contains(cad))
+	if (!AllContacts.contains(contact))
 		return;
 
-	emit contactAboutToBeRemoved(cad);
-	ContactList.removeAll(cad);
-	emit contactRemoved(cad);
+	emit contactAboutToBeRemoved(contact);
+	AllContacts.removeAll(contact);
+	emit contactRemoved(contact);
 }
 
-Contact * ContactManager::byIndex(unsigned int index)
+Contact ContactManager::byIndex(unsigned int index)
 {
 	if (index < 0 || index >= count())
-		return 0;
+		return Contact::null;
 
 	StorableObject::ensureLoaded();
 
-	return ContactList.at(index);
+	return LoadedContacts.at(index);
 }
 
-Contact * ContactManager::byUuid(const QString &uuid)
+Contact ContactManager::byUuid(const QString &uuid)
 {
 	if (uuid.isEmpty())
-		return 0;
+		return Contact::null;
 
 	StorableObject::ensureLoaded();
 
-	foreach (Contact *cad, ContactList)
-		if (uuid == cad->uuid().toString())
-			return cad;
+	foreach (Contact contact, AllContacts)
+		if (uuid == contact.uuid().toString())
+			return contact;
 
-	return 0;
+	return Contact::null;
 }

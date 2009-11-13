@@ -79,9 +79,6 @@ public:
 	void store();
 	void removeFromStorage();
 
-	QUuid uuid() const;
-	StoragePoint * storage() const;
-
 	void loadProtocol(ProtocolFactory *protocolFactory);
 	void unloadProtocol();
 
@@ -92,6 +89,8 @@ public:
 
 	StatusContainer * statusContainer() { return Data.data(); }
 
+	PropertyRead(QUuid, uuid, Uuid, QUuid())
+	PropertyRead(StoragePoint *, storage, Storage, 0)
 	Property(QString, protocolName, ProtocolName, QString::null)
 	Property(Protocol *, protocolHandler, ProtocolHandler, 0)
 	Property(AccountDetails *, details, Details, 0)

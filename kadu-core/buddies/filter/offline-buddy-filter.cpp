@@ -36,6 +36,6 @@ bool OfflineBuddyFilter::acceptBuddy(Buddy buddy)
 	if (prefferedAccount.isNull())
 		return false;
 
-	Status status = buddy.contact(prefferedAccount)->status();
+	Status status = buddy.contact(prefferedAccount).currentStatus();
 	return !status.isDisconnected();
 }

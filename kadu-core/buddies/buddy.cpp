@@ -15,6 +15,7 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-remove-predicate-object.h"
 #include "contacts/contact.h"
+#include "contacts/contact-shared.h"
 #include "core/core.h"
 #include "protocols/protocols-manager.h"
 #include "icons-manager.h"
@@ -127,16 +128,16 @@ QList<Account> Buddy::accounts() const
 		: Data->accounts();
 }
 
-void Buddy::addContact(Contact *contact)
+void Buddy::addContact(Contact contact)
 {
-	if (!contact)
+	if (contact.isNull())
 		return;
 
 	checkNull();
 	Data->addContact(contact);
 }
 
-void Buddy::removeContact(Contact *contact) const
+void Buddy::removeContact(Contact contact) const
 {
 	if (!isNull())
 		Data->removeContact(contact);
@@ -148,17 +149,17 @@ void Buddy::removeContact(Account account) const
 		Data->removeContact(account);
 }
 
-Contact * Buddy::contact(Account account) const
+Contact Buddy::contact(Account account) const
 {
 	return isNull()
-			? 0
+			? Contact::null
 			: Data->contact(account);
 }
 
-QList<Contact *> Buddy::contacts() const
+QList<Contact> Buddy::contacts() const
 {
 	return isNull()
-			? QList<Contact *>()
+			? QList<Contact>()
 			: Data->contacts();
 }
 
@@ -166,7 +167,7 @@ bool Buddy::hasContact(Account account) const
 {
 	return isNull()
 			? false
-			: 0 != Data->contact(account);
+			: !Data->contact(account).isNull();
 }
 
 QString Buddy::id(Account account) const
@@ -186,8 +187,8 @@ bool Buddy::isIgnored() const
 bool Buddy::setIgnored(bool ignored)
 {
 	return isNull()
-		? false
-		: Data->setIgnored(ignored);
+			? false
+			: Data->setIgnored(ignored);
 }
 
 bool Buddy::isBlocked(Account account) const
@@ -263,11 +264,15 @@ Buddy Buddy::dummy()
 
 	Account account;
 
-	Contact *contactData = new Contact(account, example, "999999", true);
-	contactData->setStatus(Status("Away", tr("Example description")));
-	contactData->setIp(QHostAddress(2130706433));
-	contactData->setPort(80);
-	Avatar &avatar = contactData->avatar();
+	Contact contactData;
+	contactData.setContactAccount(account);
+	contactData.setOwnerBuddy(example);
+	contactData.setId("999999");
+	contactData.data()->setLoaded(true);
+	contactData.setCurrentStatus(Status("Away", tr("Example description")));
+	contactData.setAddress(QHostAddress(2130706433));
+	contactData.setPort(80);
+	Avatar &avatar = contactData.contactAvatar();
 	avatar.setLastUpdated(QDateTime::currentDateTime());
 	avatar.setPixmap(IconsManager::instance()->loadPixmap("ContactsTab"));
 	avatar.setFileName(IconsManager::instance()->iconPath("ContactsTab"));

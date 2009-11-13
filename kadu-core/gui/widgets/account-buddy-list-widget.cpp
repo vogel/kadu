@@ -117,20 +117,20 @@ void AccountBuddyListWidget::buddiesListImported(bool ok, BuddyList buddies)
 
 	foreach (Buddy buddy, buddies)
 	{
-		Buddy c = BuddyManager::instance()->byId(CurrentAccount, buddy.contact(CurrentAccount)->id());
-		foreach (Buddy b, beforeImportList)
-			if (b.contact(CurrentAccount) && b.contact(CurrentAccount)->id() == c.contact(CurrentAccount)->id())
-				beforeImportList.removeOne(b);
-		c.setFirstName(buddy.firstName());
-		c.setLastName(buddy.lastName());
-		c.setNickName(buddy.nickName());
-		c.setMobile(buddy.mobile());
-		c.setGroups(buddy.groups());
-		c.setEmail(buddy.email());
-		c.setDisplay(buddy.display());
-		c.setHomePhone(buddy.homePhone());
-		if (c.isAnonymous())
-			BuddyManager::instance()->addBuddy(c);
+		Buddy buddy = BuddyManager::instance()->byId(CurrentAccount, buddy.contact(CurrentAccount).id());
+		foreach (Buddy beforeImportBuddy, beforeImportList)
+			if (!beforeImportBuddy.contact(CurrentAccount).isNull() && beforeImportBuddy.contact(CurrentAccount).id() == buddy.contact(CurrentAccount).id())
+				beforeImportList.removeOne(beforeImportBuddy);
+		buddy.setFirstName(buddy.firstName());
+		buddy.setLastName(buddy.lastName());
+		buddy.setNickName(buddy.nickName());
+		buddy.setMobile(buddy.mobile());
+		buddy.setGroups(buddy.groups());
+		buddy.setEmail(buddy.email());
+		buddy.setDisplay(buddy.display());
+		buddy.setHomePhone(buddy.homePhone());
+		if (buddy.isAnonymous())
+			BuddyManager::instance()->addBuddy(buddy);
 	}
 
 	if (!beforeImportList.isEmpty())

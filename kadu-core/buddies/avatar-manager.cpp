@@ -11,6 +11,7 @@
 #include <QtCore/QFile>
 
 #include "accounts/account.h"
+#include "buddies/avatar.h"
 #include "contacts/contact.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
@@ -47,9 +48,9 @@ AvatarService * AvatarManager::avatarService(Account account)
 	return protocol->avatarService();
 }
 
-AvatarService * AvatarManager::avatarService(Contact *contact)
+AvatarService * AvatarManager::avatarService(Contact contact)
 {
-	Account account = contact->account();
+	Account account = contact.contactAccount();
 	if (account.isNull())
 		return 0;
 
@@ -58,15 +59,15 @@ AvatarService * AvatarManager::avatarService(Contact *contact)
 
 QString AvatarManager::avatarFileName(Avatar avatar)
 {
-	Contact *cad = avatar.contact();
-	if (!cad)
+	Contact contact = avatar.contact();
+	if (contact.isNull())
 		return QString::null;
 
-	Account account = cad->account();
+	Account account = contact.contactAccount();
 	if (account.isNull())
 		return QString::null;
 
-	return QString("%1-%2").arg(cad->buddy().uuid().toString(), account.uuid().toString());
+	return QString("%1-%2").arg(contact.ownerBuddy().uuid().toString(), account.uuid().toString());
 }
 
 void AvatarManager::accountRegistered(Account account)
@@ -75,8 +76,8 @@ void AvatarManager::accountRegistered(Account account)
 	if (!service)
 		return;
 
-	connect(service, SIGNAL(avatarFetched(Contact *, const QByteArray &)),
-			this, SLOT(avatarFetched(Contact *, const QByteArray &)));
+	connect(service, SIGNAL(avatarFetched(Contact, const QByteArray &)),
+			this, SLOT(avatarFetched(Contact, const QByteArray &)));
 }
 
 void AvatarManager::accountUnregistered(Account account)
@@ -85,15 +86,15 @@ void AvatarManager::accountUnregistered(Account account)
 	if (!service)
 		return;
 
-	disconnect(service, SIGNAL(avatarFetched(Contact *, const QByteArray &)),
-			   this, SLOT(avatarFetched(Contact *, const QByteArray &)));
+	disconnect(service, SIGNAL(avatarFetched(Contact, const QByteArray &)),
+			   this, SLOT(avatarFetched(Contact, const QByteArray &)));
 }
 
-void AvatarManager::updateAvatar(Contact *contact)
+void AvatarManager::updateAvatar(Contact contact)
 {
-	QDateTime lastUpdated = contact->avatar().lastUpdated();
-	QDateTime nextUpdate = contact->avatar().nextUpdate();
-	if (lastUpdated.isValid() && lastUpdated.secsTo(QDateTime::currentDateTime()) < 60*60 || QFile::exists(contact->avatar().filePath()) && nextUpdate > QDateTime::currentDateTime())
+	QDateTime lastUpdated = contact.contactAvatar().lastUpdated();
+	QDateTime nextUpdate = contact.contactAvatar().nextUpdate();
+	if (lastUpdated.isValid() && lastUpdated.secsTo(QDateTime::currentDateTime()) < 60*60 || QFile::exists(contact.contactAvatar().filePath()) && nextUpdate > QDateTime::currentDateTime())
 		return;
 
 	AvatarService *service = avatarService(contact);
@@ -103,9 +104,9 @@ void AvatarManager::updateAvatar(Contact *contact)
 	service->fetchAvatar(contact);
 }
 
-void AvatarManager::avatarFetched(Contact *contact, const QByteArray &data)
+void AvatarManager::avatarFetched(Contact contact, const QByteArray &data)
 {
-	Avatar &avatar = contact->avatar();
+	Avatar &avatar = contact.contactAvatar();
 	avatar.setLastUpdated(QDateTime::currentDateTime());
 
 	QPixmap pixmap;

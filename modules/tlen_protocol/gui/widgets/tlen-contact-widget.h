@@ -18,11 +18,11 @@ class TlenContactWidget : public ContactWidget
 {
 	Q_OBJECT
 
-	TlenContact *Data;
+	TlenContactData;
 	void createGui();
 
 public:
-	explicit TlenContactWidget(TlenContact *contact, QWidget *parent = 0);
+	explicit TlenContactWidget(TlenContact contact, QWidget *parent = 0);
 	~TlenContactWidget();
 
 };

@@ -10,7 +10,7 @@
 #include "misc/misc.h"
 
 #include "socket-notifiers/gadu-protocol-socket-notifiers.h"
-#include "gadu-contact.h"
+#include "gadu-contact-details.h"
 #include "gadu-protocol.h"
 
 #include "gadu-personal-info-service.h"
@@ -36,10 +36,13 @@ void GaduPersonalInfoService::handleEventPubdir50Read(struct gg_event *e)
 		return;
 	}
 
-	GaduContact *gcad = new GaduContact(Protocol->account(), result,
-			gg_pubdir50_get(res, 0, GG_PUBDIR50_UIN));
+	Contact contact;
+	contact.setContactAccount(Protocol->account());
+	contact.setOwnerBuddy(result);
+	contact.setId(gg_pubdir50_get(res, 0, GG_PUBDIR50_UIN));
+	contact.setDetails(new GaduContactDetails(contact.storage(), contact));
 
-	result.addContact(gcad);
+	result.addContact(contact);
 	result.setFirstName(cp2unicode(gg_pubdir50_get(res, 0, GG_PUBDIR50_FIRSTNAME)));
 	result.setLastName(cp2unicode(gg_pubdir50_get(res, 0, GG_PUBDIR50_LASTNAME)));
 	result.setNickName(cp2unicode(gg_pubdir50_get(res, 0, GG_PUBDIR50_NICKNAME)));

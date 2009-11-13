@@ -15,7 +15,7 @@
 
 #include "contact-widget.h"
 
-ContactWidget::ContactWidget(ConfigurationContactDataManager *dataManager, Contact *contact, QWidget *parent)
+ContactWidget::ContactWidget(ConfigurationContactDataManager *dataManager, Contact contact, QWidget *parent)
 	: ConfigurationWidget(dataManager, parent), Data(contact)
 {
 	setAttribute(Qt::WA_DeleteOnClose);

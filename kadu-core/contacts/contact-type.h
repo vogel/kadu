@@ -7,12 +7,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "utils/jid-util.h"
+#ifndef CONTACT_TYPE_H
+#define CONTACT_TYPE_H
 
-#include "jabber-contact.h"
-
-bool JabberContact::validateId()
+enum ContactType
 {
-	XMPP::Jid newJid(JIDUtil::accountFromString(id()));
-	return !newJid.node().isEmpty() && !newJid.domain().isEmpty();
-}
+	ContactTypeNull = 0,
+	ContactTypeNormal = 1
+};
+
+#endif // CONTACT_TYPE_H

@@ -12,7 +12,7 @@
 #include "dcc/dcc-manager.h"
 #include "file-transfer/gadu-file-transfer.h"
 #include "socket-notifiers/gadu-protocol-socket-notifiers.h"
-#include "gadu-contact.h"
+#include "gadu-contact-details.h"
 #include "gadu-protocol.h"
 
 #include "gadu-file-transfer-service.h"

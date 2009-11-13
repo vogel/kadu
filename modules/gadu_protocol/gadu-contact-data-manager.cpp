@@ -7,12 +7,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "gadu-contact.h"
+#include "gadu-contact-details.h"
 
 #include "gadu-contact-data-manager.h"
 
-GaduContactDataManager::GaduContactDataManager(GaduContact *data, QObject *parent)
-	: ConfigurationContactDataManager(data, parent), Data(data)
+GaduContactDataManager::GaduContactDataManager(Contact data, QObject *parent) :
+		ConfigurationContactDataManager(data, parent), Data(dynamic_cast<GaduContactDetails *>(data.details()))
 {
 }
 

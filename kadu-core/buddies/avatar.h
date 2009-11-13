@@ -14,14 +14,13 @@
 #include <QtGui/QPixmap>
 
 #include "configuration/storable-object.h"
+#include "contacts/contact.h"
 
 #include "exports.h"
 
-class Contact;
-
 class KADUAPI Avatar : public StorableObject
 {
-	Contact *MyContact;
+	Contact MyContact;
 	QDateTime LastUpdated;
 	QDateTime NextUpdate;
 	QString FileName;
@@ -29,13 +28,13 @@ class KADUAPI Avatar : public StorableObject
 	QString FilePath;
 
 public:
-	Avatar(Contact *contact, bool loadFromConfiguration = true);
+	explicit Avatar(Contact contact, bool loadFromConfiguration = true);
 	virtual ~Avatar();
 
 	virtual void load();
 	virtual void store();
 
-	Contact * contact();
+	Contact contact();
 
 	QDateTime lastUpdated();
 	void setLastUpdated(const QDateTime &lastUpdated);

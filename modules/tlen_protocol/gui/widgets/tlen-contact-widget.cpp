@@ -20,7 +20,7 @@
 
 #include "tlen-contact-widget.h"
 
-TlenContactWidget::TlenContactWidget(TlenContact *contact, QWidget *parent) :
+TlenContactWidget::TlenContactWidget(TlenContact contact, QWidget *parent) :
 	ContactWidget(new TlenContactManager(contact, parent), 
 		contact, parent),
 	Data(contact)

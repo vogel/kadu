@@ -249,8 +249,8 @@ set (SOURCES
 	open-chat-with/jabber-open-chat-with-runner.cpp
 	jabber-account-data-manager.cpp
 	jabber-account-details.cpp
-	jabber-contact.cpp
 	jabber-contact-data-manager.cpp
+	jabber-contact-details.cpp
 	jabber-protocol.cpp
 	jabber-protocol-factory.cpp
 	resource/jabber-resource.cpp

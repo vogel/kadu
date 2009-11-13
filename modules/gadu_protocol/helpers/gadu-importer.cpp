@@ -15,10 +15,11 @@
 #include "buddies/buddy.h"
 #include "buddies/ignored-helper.h"
 #include "contacts/contact-manager.h"
+#include "contacts/contact-shared.h"
 #include "protocols/protocols-manager.h"
 #include "misc/misc.h"
 #include "gadu-account-details.h"
-#include "gadu-contact.h"
+#include "gadu-contact-details.h"
 #include "gadu-protocol-factory.h"
 
 #include "gadu-importer.h"
@@ -88,23 +89,27 @@ void GaduImporter::importContacts()
 	importIgnored();
 }
 
-void GaduImporter::importGaduContact(Buddy& contact)
+void GaduImporter::importGaduContact(Buddy &buddy)
 {
 	Account account = AccountManager::instance()->defaultAccount();
-	QString id = contact.customData()["uin"];
+	QString id = buddy.customData()["uin"];
 
-	GaduContact *gcad = new GaduContact(account, contact, id, true);
+	Contact contact;
+	contact.setDetails(new GaduContactDetails(contact.storage(), contact));
+	contact.setContactAccount(account);
+	contact.setOwnerBuddy(buddy);
+	contact.setId(id);
+	contact.data()->setLoaded(true);
+	contact.setBlocked(QVariant(buddy.customData()["blocking"]).toBool());
+	contact.setOfflineTo(QVariant(buddy.customData()["offline_to"]).toBool());
 
-	gcad->setBlocked(QVariant(contact.customData()["blocking"]).toBool());
-	gcad->setOfflineTo(QVariant(contact.customData()["offline_to"]).toBool());
+	buddy.customData().remove("uin");
+	buddy.customData().remove("blocking");
+	buddy.customData().remove("offline_to");
 
-	contact.customData().remove("uin");
-	contact.customData().remove("blocking");
-	contact.customData().remove("offline_to");
+	buddy.addContact(contact);
 
-	contact.addContact(gcad);
-
-	ContactManager::instance()->addContact(gcad);
+	ContactManager::instance()->addContact(contact);
 }
 
 void GaduImporter::importIgnored()

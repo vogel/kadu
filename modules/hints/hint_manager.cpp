@@ -554,7 +554,7 @@ void HintManager::prepareOverUserHint(QFrame *tipFrame, QLabel *iconLabel, QLabe
 		text = text.right(text.length() - 5 /* 5 == QString("<br/>").length()*/);
 
 	// TODO 0.6.6: icon:
-	iconLabel->setPixmap(buddy.prefferedAccount().statusContainer()->statusPixmap(buddy.contact(buddy.prefferedAccount())->status()));
+	iconLabel->setPixmap(buddy.prefferedAccount().statusContainer()->statusPixmap(buddy.contact(buddy.prefferedAccount()).currentStatus()));
 	tipLabel->setFont(config_file.readFontEntry("Hints", "HintOverUser_font"));
 	tipLabel->setText(text);
 

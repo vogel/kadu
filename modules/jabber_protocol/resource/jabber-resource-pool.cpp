@@ -57,7 +57,7 @@ void JabberResourcePool::slotResourceUpdated(JabberResource *resource)
 {
 /*	QList<JabberBaseContact*> list = protocol->contactPool()->findRelevantSources(resource->jid());
 
-	foreach(JabberBaseContact *mContact, list)
+	foreach(JabberBaseContactmContact, list)
 	{
 		mContact->updateResourceList();
 	}
@@ -74,7 +74,7 @@ void JabberResourcePool::notifyRelevantContacts(const XMPP::Jid &jid, bool remov
 {
 	/*QList<JabberBaseContact*> list = protocol->contactPool()->findRelevantSources(jid);
 
-	foreach(JabberBaseContact *mContact, list)
+	foreach(JabberBaseContactmContact, list)
 	{
 		if(removed)
 			mContact->setSendsDeliveredEvent(false);

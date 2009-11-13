@@ -70,6 +70,9 @@ void BuddyManager::importConfiguration(XmlConfigFile *configurationStorage)
 
 void BuddyManager::load()
 {
+	if (isLoaded())
+		return;
+
 	StorableObject::load();
 
 	if (xml_config_file->getNode("Buddies", XmlConfigFile::ModeFind).isNull())
@@ -177,8 +180,8 @@ void BuddyManager::mergeBuddies(Buddy destination, Buddy source)
 {
 	while (source.accounts().size())
 	{
-		Contact *cad = source.contact(source.accounts()[0]);
-		cad->setBuddy(destination);
+		Contact contact = source.contact(source.accounts()[0]);
+		contact.setOwnerBuddy(destination);
 	}
 
 	source.setType(BuddyShared::TypeAnonymous);
@@ -270,7 +273,7 @@ BuddyList BuddyManager::buddies(Account account, bool includeAnonymous)
 	BuddyList result;
 
 	foreach (Buddy buddy, Buddies)
-		if (buddy.contact(account) && (includeAnonymous || !buddy.isAnonymous()))
+		if (!buddy.contact(account).isNull() && (includeAnonymous || !buddy.isAnonymous()))
 			result << buddy;
 
 	ensureLoaded();

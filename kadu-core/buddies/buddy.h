@@ -92,11 +92,11 @@ public:
 	BuddyShared * data() const { return Data.data(); }
 	void setData(BuddyShared *data) { Data = data; }  // TODO: 0.8 tricky merge, this should work well ;)
 
-	void addContact(Contact *contact);
-	void removeContact(Contact *contact) const;
+	void addContact(Contact contact);
+	void removeContact(Contact contact) const;
 	void removeContact(Account account) const;
-	Contact * contact(Account account) const;
-	QList<Contact *> contacts() const;
+	Contact contact(Account account) const;
+	QList<Contact> contacts() const;
 	bool hasContact(Account account) const;
 
 template<class T>

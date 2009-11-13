@@ -16,13 +16,13 @@ class TlenContact;
 
 class TlenContactManager : public ConfigurationContactDataManager
 {
-	TlenContact *Data;
+	TlenContactData;
 
 protected:
-	TlenContact * data() { return Data; }
+	TlenContact data() { return Data; }
 
 public:
-	explicit TlenContactManager(TlenContact *data, QObject *parent = 0);
+	explicit TlenContactManager(TlenContactdata, QObject *parent = 0);
 
 	virtual void writeEntry(const QString &section, const QString &name, const QVariant &value);
 	virtual QVariant readEntry(const QString &section, const QString &name);
