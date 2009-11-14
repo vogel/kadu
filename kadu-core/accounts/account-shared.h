@@ -14,7 +14,7 @@
 #include <QtCore/QSharedData>
 #include <QtCore/QUuid>
 
-#include "status/base-status-container.h"
+#include "shared/shared.h"
 
 #undef Property
 #define Property(type, name, capitalized_name) \
@@ -26,7 +26,7 @@ class Buddy;
 class Protocol;
 class ProtocolFactory;
 
-class KADUAPI AccountShared : public BaseStatusContainer, public QSharedData
+class KADUAPI AccountShared : public Shared<Account>
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(AccountShared)
@@ -41,7 +41,7 @@ public:
 private:
 	QUuid Uuid;
 	AccountType Type;
-	
+
 	int BlockUpdatedSignalCount;
 	bool Updated;
 

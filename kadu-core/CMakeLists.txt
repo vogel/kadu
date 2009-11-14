@@ -232,6 +232,9 @@ set (kadu_SRCS
 	protocols/model/protocols-model.cpp
 	protocols/services/chat-service.cpp
 
+	shared/shared.cpp
+	shared/shared-base.cpp
+
 	status/base-status-container.cpp
 	status/description-manager.cpp
 	status/description-model.cpp

@@ -25,7 +25,7 @@ AccountShared * AccountShared::loadFromStorage(StoragePoint *storagePoint)
 }
 
 AccountShared::AccountShared(AccountType type, QUuid uuid) :
-		BaseStatusContainer("Account", AccountManager::instance()),
+		Shared<Account>("Account", AccountManager::instance()),
 		Uuid(uuid.isNull() ? QUuid::createUuid() : uuid), Type(type),
 		BlockUpdatedSignalCount(0), Updated(false),
 		ProtocolHandler(0), Details(0),
