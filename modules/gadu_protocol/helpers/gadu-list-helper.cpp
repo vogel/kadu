@@ -53,7 +53,7 @@ QString GaduListHelper::contactListToString(Account account, BuddyList buddies)
 			.arg("")
 			.arg("0")
 			.arg("")
-			.arg(buddy.isOfflineTo(account))
+			.arg(buddy.isOfflineTo())
 			.arg(buddy.homePhone());
 	}
 
@@ -155,7 +155,7 @@ BuddyList GaduListHelper::streamToContactList(Account account, QTextStream &cont
 
 		if (i < secCount)
 		{
-			buddy.setOfflineTo(account, bool(sections[i].toInt()));
+			buddy.setOfflineTo(bool(sections[i].toInt()));
 			i++;
 		}
 

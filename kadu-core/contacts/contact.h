@@ -99,8 +99,6 @@ public:
 	Property(QHostAddress, address, Address, QHostAddress())
 	Property(unsigned int, port, Port, 0)
 	Property(QString, dnsName, DnsName, QString::null)
-	PropertyBool(Blocked, false)
-	PropertyBool(OfflineTo, false)
 
 signals:
 	void idChanged(const QString &id);

@@ -191,24 +191,30 @@ bool Buddy::setIgnored(bool ignored)
 			: Data->setIgnored(ignored);
 }
 
-bool Buddy::isBlocked(Account account) const
+bool Buddy::isBlocked() const
 {
 	return isNull()
 			? false
-			: Data->isBlocked(account);
+			: Data->isBlocked();
 }
 
-bool Buddy::isOfflineTo(Account account) const
-{
-	return isNull()
-			? false
-			: Data->isOfflineTo(account);
-}
-
-void Buddy::setOfflineTo(Account account, bool offlineTo) const
+void Buddy::setBlocked(bool offlineTo) const
 {
 	if (!isNull())
-		Data->setOfflineTo(account, offlineTo);
+		Data->setBlocked(offlineTo);
+}
+
+bool Buddy::isOfflineTo() const
+{
+	return isNull()
+			? false
+			: Data->isOfflineTo();
+}
+
+void Buddy::setOfflineTo(bool offlineTo) const
+{
+	if (!isNull())
+		Data->setOfflineTo(offlineTo);
 }
 
 bool Buddy::isInGroup(Group *group) const

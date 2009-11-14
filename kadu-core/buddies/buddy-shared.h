@@ -26,6 +26,11 @@
 	type name() { ensureLoaded(); return capitalized_name; } \
 	void set##capitalized_name(const type &name) { ensureLoaded(); capitalized_name = name; dataUpdated(); }
 
+#undef PropertyBool
+#define PropertyBool(capitalized_name) \
+	bool is##capitalized_name() { ensureLoaded(); return capitalized_name; } \
+	void set##capitalized_name(bool name) { ensureLoaded(); capitalized_name = name; dataUpdated(); }
+
 class Contact;
 class Group;
 class XmlConfigFile;
@@ -124,9 +129,6 @@ public:
 	// properties
 	bool isIgnored();
 	bool setIgnored(bool ignored = true);
-	bool isBlocked(Account account);
-	bool isOfflineTo(Account account);
-	bool setOfflineTo(Account account, bool offlineTo);
 	bool showInAllGroup();
 	bool isInGroup(Group *group);
 	void addToGroup(Group *group);
@@ -146,6 +148,8 @@ public:
 	Property(unsigned short, birthYear, BirthYear)
 	Property(BuddyGender, gender, Gender)
 	Property(QList<Group *>, groups, Groups)
+	PropertyBool(Blocked)
+	PropertyBool(OfflineTo)
 
 signals:
 	void contactAboutToBeAdded(Account account);

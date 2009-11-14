@@ -63,9 +63,6 @@ class KADUAPI ContactShared : public QObject, public UuidStorableObject, public 
 	unsigned int Port;
 	QString DnsName;
 
-	bool Blocked;
-	bool OfflineTo;
-
 	void dataUpdated();
 	void emitUpdated();
 
@@ -101,8 +98,6 @@ public:
 	Property(QHostAddress, address, Address)
 	Property(unsigned int, port, Port)
 	Property(QString, dnsName, DnsName)
-	PropertyBool(Blocked)
-	PropertyBool(OfflineTo)
 
 signals:
 	void updated();

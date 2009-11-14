@@ -118,7 +118,9 @@ void kaduQtMessageHandler(QtMsgType type, const char *msg)
 			fprintf(stderr, "\033[31;1mCritical: %s\033[0m\n", msg);
 			fflush(stderr);
 			printBacktrace("critical error from Qt (above)");
+#if QT_VERSION != 0x040600 // TODO: remove after next Qt alpha
 			abort();
+#endif
 	}
 }
 

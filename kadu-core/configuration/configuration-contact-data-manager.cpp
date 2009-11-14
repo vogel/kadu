@@ -23,10 +23,10 @@ void ConfigurationContactDataManager::writeEntry(const QString &section, const Q
 		return;
 
 	if (name == "Blocked")
-		Data.setBlocked(value.value<bool>());
+		Data.ownerBuddy().setBlocked(value.value<bool>());
 
 	if (name == "OfflineTo")
-		Data.setOfflineTo(value.value<bool>());
+		Data.ownerBuddy().setOfflineTo(value.value<bool>());
 }
 
 QVariant ConfigurationContactDataManager::readEntry(const QString &section, const QString &name)
@@ -51,10 +51,10 @@ QVariant ConfigurationContactDataManager::readEntry(const QString &section, cons
 		return Status::name(Data.currentStatus());
 
 	if (name == "Blocked")
-		return Data.isBlocked();
+		return Data.ownerBuddy().isBlocked();
 
 	if (name == "OfflineTo")
-		return Data.isOfflineTo();
+		return Data.ownerBuddy().isOfflineTo();
 
 	return QVariant(QString::null);
 }

@@ -80,10 +80,9 @@ void disableContainsSelfUles(Action *action)
 void checkOfflineTo(Action *action)
 {
 	kdebugf();
-	Account account = AccountManager::instance()->defaultAccount();
 	bool on = true;
 	foreach (const Buddy buddy, action->buddies())
-		if (buddy.contact(account).isNull() || !buddy.isOfflineTo(account))
+		if (!buddy.isOfflineTo())
 		{
 			on = false;
 			break;
@@ -809,7 +808,7 @@ void KaduWindowActions::lookupInDirectoryActionActivated(QAction *sender, bool t
 void KaduWindowActions::offlineToUserActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
-	Account account = AccountManager::instance()->defaultAccount();
+
 	if (toggled && !config_file.readBoolEntry("General", "PrivateStatus"))
 	{
 // TODO: 0.6.6
@@ -829,7 +828,7 @@ void KaduWindowActions::offlineToUserActionActivated(QAction *sender, bool toggl
 	BuddySet buddies = window->buddies();
 	bool on = true;
 	foreach (const Buddy buddy, buddies)
-		if (buddy.contact(account).isNull() || !buddy.isOfflineTo(account))
+		if (!buddy.isOfflineTo())
 		{
 			on = false;
 			break;

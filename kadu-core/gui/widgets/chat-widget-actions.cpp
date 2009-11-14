@@ -44,7 +44,6 @@ void disableEmptyTextBox(Action *action)
 
 void checkBlocking(Action *action)
 {
-	Account account = AccountManager::instance()->defaultAccount();
 	BuddySet contacts = action->buddies();
 
 	if (contacts.contains(Core::instance()->myself()))
@@ -55,7 +54,7 @@ void checkBlocking(Action *action)
 
 	bool on = false;
 	foreach (const Buddy buddy, action->buddies())
-		if (buddy.isBlocked(account))
+		if (buddy.isBlocked())
 		{
 			on = true;
 			break;
@@ -392,16 +391,16 @@ void ChatWidgetActions::blockUserActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-	BuddySet contacts = window->buddies();
-	if (contacts.count() > 0)
+	BuddySet buddies = window->buddies();
+	if (buddies.count() > 0)
 	{
 		bool on = true;
 		bool blocked_anonymous = false; // true, if we blocked at least one anonymous user
 
-		BuddySet copy = contacts;
+		BuddySet copy = buddies;
 
 		foreach(Buddy user, copy)
-			if (user.contact(account).isNull() || !user.isBlocked(account))
+			if (user.contact(account).isNull() || !user.isBlocked())
 			{
 				on = false;
 				break;
@@ -410,7 +409,7 @@ void ChatWidgetActions::blockUserActionActivated(QAction *sender, bool toggled)
 		foreach(Buddy user, copy)
 		{
 			QString uid = user.contact(account).id();
-			if (account.protocolHandler()->validateUserID(uid) && user.isBlocked(account) != !on)
+			if (account.protocolHandler()->validateUserID(uid) && user.isBlocked() != !on)
 			{
 //TODO: 0.6.6
 /// 				user.setProtocolData("Gadu", "Blocking", !on);
@@ -419,7 +418,7 @@ void ChatWidgetActions::blockUserActionActivated(QAction *sender, bool toggled)
 			}
 		}
 
-		Chat *chat = account.protocolHandler()->findChat(contacts);
+		Chat *chat = account.protocolHandler()->findChat(buddies);
 		if (chat && !on) // if we were blocking, we also close the chat (and show info if blocked anonymous)
 		{
 			if (blocked_anonymous)
@@ -439,7 +438,7 @@ void ChatWidgetActions::blockUserActionActivated(QAction *sender, bool toggled)
 
 		foreach (Action *action, BlockUser->actions())
 		{
-			if (action->buddies() == contacts)
+			if (action->buddies() == buddies)
 				action->setChecked(!on);
 		}
 	}

@@ -42,6 +42,19 @@
 	PropertyRead(type, name, capitalized_name, default) \
 	PropertyWrite(type, name, capitalized_name, default)
 
+#undef PropertyBoolRead
+#define PropertyBoolRead(capitalized_name, default) \
+	bool is##capitalized_name() const;
+
+#undef PropertyBoolWrite
+#define PropertyBoolWrite(capitalized_name, default) \
+	void set##capitalized_name(bool name) const;
+
+#undef PropertyBool
+#define PropertyBool(capitalized_name, default) \
+	PropertyBoolRead(capitalized_name, default) \
+	PropertyBoolWrite(capitalized_name, default)
+
 class Contact;
 class XmlConfigFile;
 
@@ -110,9 +123,6 @@ template<class T>
 
 	bool isIgnored() const;
 	bool setIgnored(bool ignored = true);
-	bool isBlocked(Account account) const;
-	bool isOfflineTo(Account account) const;
-	void setOfflineTo(Account account, bool offlineTo) const;
 	bool showInAllGroup() const;
 	bool isInGroup(Group *group) const;
 	void addToGroup(Group *group);
@@ -135,6 +145,8 @@ template<class T>
 	Property(unsigned short, birthYear, BirthYear, 0)
 	Property(BuddyShared::BuddyGender, gender, Gender, BuddyShared::GenderUnknown)
 	Property(QList<Group *>, groups, Groups, QList<Group *>())
+	PropertyBool(Blocked, blocked)
+	PropertyBool(OfflineTo, offlineTo)
 
 };
 

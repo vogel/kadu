@@ -286,35 +286,6 @@ bool BuddyShared::setIgnored(bool ignored)
 	return Ignored; // XXX: nie wiem co to
 }
 
-bool BuddyShared::isBlocked(Account account)
-{
-	Contact cnt = contact(account);
-	return !cnt.isNull()
-			? cnt.isBlocked()
-			: Blocked;
-}
-
-bool BuddyShared::isOfflineTo(Account account)
-{
-	Contact cnt = contact(account);
-	return !cnt.isNull()
-			? cnt.isOfflineTo()
-			: OfflineTo;
-}
-
-bool BuddyShared::setOfflineTo(Account account, bool offlineTo)
-{
-	Contact cnt = contact(account);
-	if (!cnt.isNull())
-		cnt.setOfflineTo(offlineTo);
-	else
-		OfflineTo = offlineTo;
-
-	dataUpdated();
-
-	return true; // XXX
-}
-
 bool BuddyShared::isInGroup(Group *group)
 {
 	return Groups.contains(group);

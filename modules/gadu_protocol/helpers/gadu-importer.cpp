@@ -100,12 +100,12 @@ void GaduImporter::importGaduContact(Buddy &buddy)
 	contact.setOwnerBuddy(buddy);
 	contact.setId(id);
 	contact.data()->setLoaded(true);
-	contact.setBlocked(QVariant(buddy.customData()["blocking"]).toBool());
-	contact.setOfflineTo(QVariant(buddy.customData()["offline_to"]).toBool());
 
 	buddy.customData().remove("uin");
 	buddy.customData().remove("blocking");
 	buddy.customData().remove("offline_to");
+	buddy.setBlocked(QVariant(buddy.customData()["blocking"]).toBool());
+	buddy.setOfflineTo(QVariant(buddy.customData()["offline_to"]).toBool());
 
 	buddy.addContact(contact);
 

@@ -616,9 +616,9 @@ void GaduProtocol::networkDisconnected(bool tryAgain)
 
 int GaduProtocol::notifyTypeFromContact(Buddy &buddy)
 {
-	return buddy.isOfflineTo(account())
+	return buddy.isOfflineTo()
 		? GG_USER_OFFLINE
-		: buddy.isBlocked(account())
+		: buddy.isBlocked()
 			? GG_USER_BLOCKED
 			: GG_USER_NORMAL;
 }
