@@ -13,7 +13,7 @@
 #include "contacts/contact.h"
 #include "contacts/contact-details.h"
 
-class Account;
+class Contact;
 
 class TlenContactDetails : public ContactDetails
 {

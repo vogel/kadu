@@ -14,7 +14,15 @@ TlenContactDetails::TlenContactDetails(StoragePoint *storagePoint, Contact paren
 {
 }
 
+TlenContactDetails::~TlenContactDetails()
+{
+}
+
 bool TlenContactDetails::validateId()
 {
 	return true;
+}
+
+void TlenContactDetails::store()
+{
 }
