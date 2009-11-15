@@ -17,25 +17,15 @@
 #include <QtCore/QUuid>
 #include <QtXml/QDomElement>
 
-#include "configuration/uuid-storable-object.h"
+#include "shared/shared.h"
 
 #include "exports.h"
-
-#undef Property
-#define Property(type, name, capitalized_name) \
-	type name() { ensureLoaded(); return capitalized_name; } \
-	void set##capitalized_name(const type &name) { ensureLoaded(); capitalized_name = name; dataUpdated(); }
-
-#undef PropertyBool
-#define PropertyBool(capitalized_name) \
-	bool is##capitalized_name() { ensureLoaded(); return capitalized_name; } \
-	void set##capitalized_name(bool name) { ensureLoaded(); capitalized_name = name; dataUpdated(); }
 
 class Contact;
 class Group;
 class XmlConfigFile;
 
-class KADUAPI BuddyShared : public QObject, public QSharedData, public UuidStorableObject
+class KADUAPI BuddyShared : public QObject, public Shared
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(BuddyShared)
@@ -56,14 +46,10 @@ public:
 	};
 
 private:
-	QUuid Uuid;
 	QMap<QString, QString> CustomData;
 	QMap<Account, Contact> Contacts;
 
 	BuddyType Type;
-
-	int BlockUpdatedSignalCount;
-	bool Updated;
 
 	QString Display;
 	QString FirstName;
@@ -84,11 +70,11 @@ private:
 	bool Blocked;
 	bool OfflineTo;
 
-	void dataUpdated();
-	void emitUpdated();
-
 private slots:
 	void accountContactDataIdChanged(const QString &id);
+
+protected:
+	virtual void emitUpdated();
 
 public:
 	static BuddyShared * loadFromStorage(StoragePoint *contactStoragePoint);
@@ -101,16 +87,10 @@ public:
 	virtual void load();
 	virtual void store();
 
-	virtual QUuid uuid() const { return Uuid; }
-	void setUuid(const QUuid uuid) { Uuid = uuid; }
-
 	QString id(Account account);
 
 	Account prefferedAccount();
 	QList<Account> accounts();
-
-	void blockUpdatedSignal();
-	void unblockUpdatedSignal();
 
 	QMap<QString, QString> & customData() { return CustomData; }
 
@@ -134,22 +114,22 @@ public:
 	void addToGroup(Group *group);
 	void removeFromGroup(Group *group);
 
-	Property(QString, display, Display)
-	Property(QString, firstName, FirstName)
-	Property(QString, lastName, LastName)
-	Property(QString, familyName, FamilyName)
-	Property(QString, city, City)
-	Property(QString, familyCity, FamilyCity)
-	Property(QString, nickName, NickName)
-	Property(QString, homePhone, HomePhone)
-	Property(QString, mobile, Mobile)
-	Property(QString, email, Email)
-	Property(QString, website, Website)
-	Property(unsigned short, birthYear, BirthYear)
-	Property(BuddyGender, gender, Gender)
-	Property(QList<Group *>, groups, Groups)
-	PropertyBool(Blocked)
-	PropertyBool(OfflineTo)
+	KaduShared_Property(QString, display, Display)
+	KaduShared_Property(QString, firstName, FirstName)
+	KaduShared_Property(QString, lastName, LastName)
+	KaduShared_Property(QString, familyName, FamilyName)
+	KaduShared_Property(QString, city, City)
+	KaduShared_Property(QString, familyCity, FamilyCity)
+	KaduShared_Property(QString, nickName, NickName)
+	KaduShared_Property(QString, homePhone, HomePhone)
+	KaduShared_Property(QString, mobile, Mobile)
+	KaduShared_Property(QString, email, Email)
+	KaduShared_Property(QString, website, Website)
+	KaduShared_Property(unsigned short, birthYear, BirthYear)
+	KaduShared_Property(BuddyGender, gender, Gender)
+	KaduShared_Property(QList<Group *>, groups, Groups)
+	KaduShared_PropertyBool(Blocked)
+	KaduShared_PropertyBool(OfflineTo)
 
 signals:
 	void contactAboutToBeAdded(Account account);
@@ -161,8 +141,6 @@ signals:
 	void updated();
 
 };
-
-#undef Property
 
 // for MOC
 #include "accounts/account.h"

@@ -31,10 +31,8 @@ BuddyShared * BuddyShared::loadFromStorage(StoragePoint *contactStoragePoint)
 }
 
 BuddyShared::BuddyShared(BuddyType type, QUuid uuid) :
-		UuidStorableObject("Buddy", BuddyManager::instance()),
-		Uuid(uuid.isNull() ? QUuid::createUuid() : uuid), Type(type),
-		Ignored(false), Blocked(false), OfflineTo(false),
-		BlockUpdatedSignalCount(0), Updated(false)
+		Shared(uuid, "Buddy", BuddyManager::instance()), Type(type),
+		Ignored(false), Blocked(false), OfflineTo(false)
 {
 }
 
@@ -84,12 +82,11 @@ void BuddyShared::load()
 	if (!sp)
 		return;
 
-	StorableObject::load();
+	Shared::load();
 
 	XmlConfigFile *configurationStorage = sp->storage();
 	QDomElement parent = sp->point();
 
-	Uuid = QUuid(parent.attribute("uuid"));
 	if (parent.hasAttribute("type"))
 		Type = (BuddyType)parent.attribute("type").toInt();
 	else
@@ -150,6 +147,8 @@ void BuddyShared::store()
 	StoragePoint *sp = storage();
 	if (!sp)
 		return;
+
+	Shared::store();
 
 	XmlConfigFile *configurationStorage = sp->storage();
 	QDomElement parent = sp->point();
@@ -243,33 +242,9 @@ QList<Account> BuddyShared::accounts()
 			: QList<Account>();
 }
 
-void BuddyShared::blockUpdatedSignal()
-{
-	if (0 == BlockUpdatedSignalCount)
-		Updated = false;
-	BlockUpdatedSignalCount++;
-}
-
-void BuddyShared::unblockUpdatedSignal()
-{
-	BlockUpdatedSignalCount--;
-	if (0 == BlockUpdatedSignalCount)
-		emitUpdated();
-}
-
-void BuddyShared::dataUpdated()
-{
-	Updated = true;
-	emitUpdated();
-}
-
 void BuddyShared::emitUpdated()
 {
-	if (0 == BlockUpdatedSignalCount && Updated)
-	{
-		emit updated();
-		Updated = false;
-	}
+	emit updated();
 }
 
 // properties

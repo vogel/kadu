@@ -25,9 +25,7 @@ ContactShared * ContactShared::loadFromStorage(StoragePoint *storagePoint)
 }
 
 ContactShared::ContactShared(ContactType type, QUuid uuid) :
-		UuidStorableObject("Account", ContactManager::instance()),
-		Uuid(uuid.isNull() ? QUuid::createUuid() : uuid), Type(type),
-		BlockUpdatedSignalCount(0), Updated(false),
+		Shared(uuid, "Account", ContactManager::instance()), Type(type),
 		Details(0), ContactAvatar(Contact(this), false) /* TODO: 0.6.6 */
 {
 }
@@ -41,9 +39,8 @@ void ContactShared::load()
 	if (!isValidStorage())
 		return;
 
-	UuidStorableObject::load();
+	Shared::load();
 
-	Uuid = QUuid(loadAttribute<QString>("uuid"));
 	Id = loadValue<QString>("Id");
 
 	ContactAccount = AccountManager::instance()->byUuid(loadValue<QString>("Account"));
@@ -64,7 +61,8 @@ void ContactShared::store()
 
 	ensureLoaded();
 
-	storeValue("uuid", Uuid.toString(), true);
+	Shared::store();
+
 	storeValue("Id", Id);
 	storeValue("Account", ContactAccount.uuid().toString());
 	storeValue("Buddy", OwnerBuddy.uuid().toString());
@@ -102,19 +100,9 @@ void ContactShared::unloadDetails()
 	}
 }
 
-void ContactShared::dataUpdated()
-{
-	Updated = true;
-	emitUpdated();
-}
-
 void ContactShared::emitUpdated()
 {
-	if (0 == BlockUpdatedSignalCount && Updated)
-	{
-		emit updated();
-		Updated = false;
-	}
+	emit updated();
 }
 
 void ContactShared::setOwnerBuddy(Buddy buddy)

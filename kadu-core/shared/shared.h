@@ -18,11 +18,22 @@
 
 #include "configuration/uuid-storable-object.h"
 
-enum SharedType
-{
-	TypeNormal = 0,
-	TypeNull = 1
-};
+
+#define KaduShared_PropertyRead(type, name, capitalized_name) \
+	type name() { ensureLoaded(); return capitalized_name; }
+#define KaduShared_PropertyWrite(type, name, capitalized_name) \
+	void set##capitalized_name(type name) { ensureLoaded(); capitalized_name = name; dataUpdated(); }
+#define KaduShared_Property(type, name, capitalized_name) \
+	KaduShared_PropertyRead(type, name, capitalized_name) \
+	KaduShared_PropertyWrite(type, name, capitalized_name)
+
+#define KaduShared_PropertyBoolRead(capitalized_name) \
+	bool is##capitalized_name() { ensureLoaded(); return capitalized_name; }
+#define KaduShared_PropertyBoolWrite(capitalized_name) \
+	void set##capitalized_name(bool name) { ensureLoaded(); capitalized_name = name; dataUpdated(); }
+#define KaduShared_PropertyBool(capitalized_name) \
+	KaduShared_PropertyBoolRead(capitalized_name) \
+	KaduShared_PropertyBoolWrite(capitalized_name)
 
 class Shared : public UuidStorableObject, public QSharedData
 {

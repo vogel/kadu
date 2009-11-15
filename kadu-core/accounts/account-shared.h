@@ -17,11 +17,6 @@
 #include "shared/shared.h"
 #include "status/base-status-container.h"
 
-#undef Property
-#define Property(type, name, capitalized_name) \
-	type name() { ensureLoaded(); return capitalized_name; } \
-	void set##capitalized_name(type name) { ensureLoaded(); capitalized_name = name; dataUpdated(); }
-
 class AccountDetails;
 class Buddy;
 class Protocol;
@@ -81,21 +76,21 @@ public:
 	void loadProtocol(ProtocolFactory *protocolFactory);
 	void unloadProtocol();
 
-	Property(QString, protocolName, ProtocolName)
-	Property(Protocol *, protocolHandler, ProtocolHandler)
-	Property(AccountDetails *, details, Details)
-	Property(QString, name, Name)
-	Property(QString, id, Id)
-	Property(bool, rememberPassword, RememberPassword)
-	Property(bool, hasPassword, HasPassword)
-	Property(QString, password, Password)
-	Property(bool, connectAtStart, ConnectAtStart)
-	Property(bool, useProxy, UseProxy)
-	Property(QHostAddress, proxyHost, ProxyHost)
-	Property(short int, proxyPort, ProxyPort)
-	Property(bool, proxyRequiresAuthentication, ProxyRequiresAuthentication)
-	Property(QString, proxyUser, ProxyUser)
-	Property(QString, proxyPassword, ProxyPassword)
+	KaduShared_Property(QString, protocolName, ProtocolName)
+	KaduShared_Property(Protocol *, protocolHandler, ProtocolHandler)
+	KaduShared_Property(AccountDetails *, details, Details)
+	KaduShared_Property(QString, name, Name)
+	KaduShared_Property(QString, id, Id)
+	KaduShared_Property(bool, rememberPassword, RememberPassword)
+	KaduShared_Property(bool, hasPassword, HasPassword)
+	KaduShared_Property(QString, password, Password)
+	KaduShared_Property(bool, connectAtStart, ConnectAtStart)
+	KaduShared_Property(bool, useProxy, UseProxy)
+	KaduShared_Property(QHostAddress, proxyHost, ProxyHost)
+	KaduShared_Property(short int, proxyPort, ProxyPort)
+	KaduShared_Property(bool, proxyRequiresAuthentication, ProxyRequiresAuthentication)
+	KaduShared_Property(QString, proxyUser, ProxyUser)
+	KaduShared_Property(QString, proxyPassword, ProxyPassword)
 
 	// StatusContainer implementation
 
