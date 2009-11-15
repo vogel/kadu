@@ -85,7 +85,7 @@ void BuddyShared::load()
 
 	if (parent.hasAttribute("type"))
 	{
-		Anonymous = (2 == parent.attribute("type").toInt());
+		Anonymous = (1 == parent.attribute("type").toInt());
 		parent.removeAttribute("type");
 	}
 	else
