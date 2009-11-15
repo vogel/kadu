@@ -11,7 +11,6 @@
 #define TLEN_PROTOCOL_FACTORY_H
 
 #include "protocols/protocol-factory.h"
-#include "misc/misc.h"
 
 class TlenProtocolFactory : public ProtocolFactory
 {
@@ -39,7 +38,7 @@ public:
 
 	virtual QString name() { return "tlen"; }
 	virtual QString displayName() { return "Tlen"; }
-	virtual QString iconName() {return dataPath("kadu/modules/data/tlen_protocol/").append("online.png");}
+	virtual QString iconName();
 };
 
 #endif // TLEN_PROTOCOL_FACTORY_H
