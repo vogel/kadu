@@ -28,16 +28,7 @@ class KADUAPI AccountShared : public BaseStatusContainer, public Shared
 	Q_OBJECT
 	Q_DISABLE_COPY(AccountShared)
 
-public:
-	enum AccountType
-	{
-		TypeNull = 0,
-		TypeNormal = 1
-	};
-
 private:
-	AccountType Type;
-
 	QString ProtocolName;
 	Protocol *ProtocolHandler;
 	AccountDetails *Details;
@@ -64,14 +55,11 @@ protected:
 public:
 	static AccountShared * loadFromStorage(StoragePoint *storagePoint);
 
-	explicit AccountShared(AccountType type, QUuid uuid = QUuid());
+	explicit AccountShared(QUuid uuid = QUuid());
 	virtual ~AccountShared();
 
 	virtual void load();
 	virtual void store();
-
-	//account type
-	bool isNull() const { return TypeNull == Type; }
 
 	void loadProtocol(ProtocolFactory *protocolFactory);
 	void unloadProtocol();

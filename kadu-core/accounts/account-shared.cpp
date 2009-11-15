@@ -17,16 +17,16 @@
 
 AccountShared * AccountShared::loadFromStorage(StoragePoint *storagePoint)
 {
-	AccountShared *result = new AccountShared(TypeNormal);
+	AccountShared *result = new AccountShared();
 	result->setStorage(storagePoint);
 	result->load();
 
 	return result;
 }
 
-AccountShared::AccountShared(AccountType type, QUuid uuid) :
+AccountShared::AccountShared(QUuid uuid) :
 		Shared(uuid, "Account", AccountManager::instance()),
-		BaseStatusContainer(this), Type(type),
+		BaseStatusContainer(this),
 		ProtocolHandler(0), Details(0),
 		RememberPassword(false), HasPassword(false),
 		ConnectAtStart(true),
@@ -45,6 +45,7 @@ AccountShared::~AccountShared()
 
 void AccountShared::load()
 {
+	printf("as::load\n");
 	if (!isValidStorage())
 		return;
 
@@ -54,6 +55,7 @@ void AccountShared::load()
 	
 	Name = loadValue<QString>("Name");
 	ProtocolName = loadValue<QString>("Protocol");
+	printf("loaded protocol: %s\n", qPrintable(ProtocolName));
 	setId(loadValue<QString>("Id"));
 
 	RememberPassword = loadValue<bool>("RememberPassword", true);

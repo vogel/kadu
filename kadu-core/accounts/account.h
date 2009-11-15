@@ -16,30 +16,9 @@
 #include "accounts/account-shared.h"
 #include "buddies/buddy.h"
 #include "buddies/buddies-aware-object.h"
+#include "shared/shared-base.h"
 #include "status/base-status-container.h"
 #include "status/status.h"
-
-#undef PropertyRead
-#define PropertyRead(type, name, capitalized_name, default) \
-	type name() const\
-	{\
-		return !Data\
-			? default\
-			: Data->name();\
-	}
-
-#undef PropertyWrite
-#define PropertyWrite(type, name, capitalized_name, default) \
-	void set##capitalized_name(type name) const\
-	{\
-		if (Data)\
-			Data->set##capitalized_name(name);\
-	}
-
-#undef Property
-#define Property(type, name, capitalized_name, default) \
-	PropertyRead(type, name, capitalized_name, default) \
-	PropertyWrite(type, name, capitalized_name, default)
 
 class QPixmap;
 
@@ -49,35 +28,28 @@ class ProtocolFactory;
 class Status;
 class XmlConfigFile;
 
-class KADUAPI Account : public QObject
+class KADUAPI Account : public QObject, public SharedBase<AccountShared>
 {
 	Q_OBJECT
 
-	QExplicitlySharedDataPointer<AccountShared> Data;
-
-	void connectDataSignals();
-	void disconnectDataSignals();
+protected:
+	virtual void connectDataSignals();
+	virtual void disconnectDataSignals();
 
 public:
 	static Account loadFromStorage(StoragePoint *storage);
 	static Account null;
 
-	explicit Account(AccountShared::AccountType type = AccountShared::TypeNormal);
+	explicit Account(bool null = false);
 	explicit Account(AccountShared *data);
 	Account(const Account &copy);
 	virtual ~Account();
 
-	AccountShared * data() const { return Data.data(); }
-
-	bool isNull() const;
-
-	Account & operator = (const Account &copy);
-	bool operator == (const Account &compare) const;
-	bool operator != (const Account &compare) const;
-	int operator < (const Account &compare) const;
-
-	void store();
-	void removeFromStorage();
+	Account & operator = (const Account &copy)
+	{
+		SharedBase<AccountShared>::operator=(copy);
+		return *this;
+	}
 
 	void loadProtocol(ProtocolFactory *protocolFactory);
 	void unloadProtocol();
@@ -87,25 +59,24 @@ public:
 	Buddy getBuddyById(const QString &id);
 	Buddy createAnonymous(const QString &id);
 
-	StatusContainer * statusContainer() { return Data.data(); }
+	StatusContainer * statusContainer() { return data(); }
 
-	PropertyRead(QUuid, uuid, Uuid, QUuid())
-	PropertyRead(StoragePoint *, storage, Storage, 0)
-	Property(QString, protocolName, ProtocolName, QString::null)
-	Property(Protocol *, protocolHandler, ProtocolHandler, 0)
-	Property(AccountDetails *, details, Details, 0)
-	Property(QString, name, Name, QString::null)
-	Property(QString, id, Id, QString::null)
-	Property(bool, rememberPassword, RememberPassword, true)
-	Property(bool, hasPassword, HasPassword, false)
-	Property(QString, password, Password, QString::null)
-	Property(bool, connectAtStart, ConnectAtStart, true)
-	Property(bool, useProxy, UseProxy, false)
-	Property(QHostAddress, proxyHost, ProxyHost, QHostAddress())
-	Property(short int, proxyPort, ProxyPort, 0)
-	Property(bool, proxyRequiresAuthentication, ProxyRequiresAuthentication, false)
-	Property(QString, proxyUser, ProxyUser, QString::null)
-	Property(QString, proxyPassword, ProxyPassword, QString::null)
+	KaduSharedBase_PropertyRead(StoragePoint *, storage, Storage, 0)
+	KaduSharedBase_Property(QString, protocolName, ProtocolName, QString::null)
+	KaduSharedBase_Property(Protocol *, protocolHandler, ProtocolHandler, 0)
+	KaduSharedBase_Property(AccountDetails *, details, Details, 0)
+	KaduSharedBase_Property(QString, name, Name, QString::null)
+	KaduSharedBase_Property(QString, id, Id, QString::null)
+	KaduSharedBase_Property(bool, rememberPassword, RememberPassword, true)
+	KaduSharedBase_Property(bool, hasPassword, HasPassword, false)
+	KaduSharedBase_Property(QString, password, Password, QString::null)
+	KaduSharedBase_Property(bool, connectAtStart, ConnectAtStart, true)
+	KaduSharedBase_Property(bool, useProxy, UseProxy, false)
+	KaduSharedBase_Property(QHostAddress, proxyHost, ProxyHost, QHostAddress())
+	KaduSharedBase_Property(short int, proxyPort, ProxyPort, 0)
+	KaduSharedBase_Property(bool, proxyRequiresAuthentication, ProxyRequiresAuthentication, false)
+	KaduSharedBase_Property(QString, proxyUser, ProxyUser, QString::null)
+	KaduSharedBase_Property(QString, proxyPassword, ProxyPassword, QString::null)
 
 signals:
 	void buddyStatusChanged(Account account, Buddy buddy, Status oldStatus);
@@ -113,7 +84,5 @@ signals:
 };
 
 Q_DECLARE_METATYPE(Account)
-
-uint qHash(const Account &account);
 
 #endif // ACCOUNT_H
