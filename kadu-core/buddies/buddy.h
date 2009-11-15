@@ -121,8 +121,6 @@ template<class T>
 	QString id(Account account) const;
 	// properties
 
-	bool isIgnored() const;
-	bool setIgnored(bool ignored = true);
 	bool showInAllGroup() const;
 	bool isInGroup(Group *group) const;
 	void addToGroup(Group *group);
@@ -145,6 +143,7 @@ template<class T>
 	Property(unsigned short, birthYear, BirthYear, 0)
 	Property(BuddyShared::BuddyGender, gender, Gender, BuddyShared::GenderUnknown)
 	Property(QList<Group *>, groups, Groups, QList<Group *>())
+	PropertyBool(Ignored, ignored)
 	PropertyBool(Blocked, blocked)
 	PropertyBool(OfflineTo, offlineTo)
 

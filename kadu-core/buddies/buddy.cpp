@@ -184,11 +184,10 @@ bool Buddy::isIgnored() const
 			: Data->isIgnored();
 }
 
-bool Buddy::setIgnored(bool ignored)
+void Buddy::setIgnored(bool ignored) const
 {
-	return isNull()
-			? false
-			: Data->setIgnored(ignored);
+	if (!isNull())
+		Data->setIgnored(ignored);
 }
 
 bool Buddy::isBlocked() const

@@ -72,10 +72,6 @@ void BuddyShared::importConfiguration(XmlConfigFile *configurationStorage, QDomE
 	Property(Email, email)
 }
 
-#undef Property
-#define Property(name)\
-	set##name(configurationStorage->getTextNode(parent, #name));
-
 void BuddyShared::load()
 {
 	StoragePoint *sp = storage();
@@ -125,22 +121,19 @@ void BuddyShared::load()
 				Groups << group;
 		}
 	}
-	
-	Property(Display)
-	Property(FirstName)
-	Property(LastName)
-	Property(NickName)
-	Property(HomePhone)
-	Property(Mobile)
-	Property(Email)
-	Property(Website)
 
-	Ignored = QVariant(configurationStorage->getTextNode(parent, "Ignored")).toBool();
+	Display = loadValue<QString>("Display");
+	FirstName = loadValue<QString>("FirstName");
+	LastName = loadValue<QString>("LastName");
+	NickName = loadValue<QString>("NickName");
+	HomePhone = loadValue<QString>("HomePhone");
+	Mobile = loadValue<QString>("Mobile");
+	Email = loadValue<QString>("Email");
+	Website = loadValue<QString>("Website");
+	Ignored = loadValue<bool>("Ignored", false);
+	Blocked = loadValue<bool>("Blocked", false);
+	OfflineTo = loadValue<bool>("OfflineTo", false);
 }
-
-#undef Property
-#define Property(name) \
-	configurationStorage->createTextNode(parent, #name, name);
 
 void BuddyShared::store()
 {
@@ -159,14 +152,17 @@ void BuddyShared::store()
 	foreach (const QString &key, CustomData.keys())
 		configurationStorage->createNamedTextNode(customDataValues, "CustomDataValue", key, CustomData[key]);
 
-	Property(Display)
-	Property(FirstName)
-	Property(LastName)
-	Property(NickName)
-	Property(HomePhone)
-	Property(Mobile)
-	Property(Email)
-	Property(Website)
+	storeValue("Display", Display);
+	storeValue("FirstName", FirstName);
+	storeValue("LastName", LastName);
+	storeValue("NickName", NickName);
+	storeValue("HomePhone", HomePhone);
+	storeValue("Mobile", Mobile);
+	storeValue("Email", Email);
+	storeValue("Website", Website);
+	storeValue("Ignored", Ignored);
+	storeValue("Blocked", Blocked);
+	storeValue("OfflineTo", OfflineTo);
 
 	if (Groups.count())
 	{
@@ -248,18 +244,6 @@ void BuddyShared::emitUpdated()
 }
 
 // properties
-
-bool BuddyShared::isIgnored()
-{
-	return Ignored;
-}
-
-bool BuddyShared::setIgnored(bool ignored)
-{
-	Ignored = ignored;
-	dataUpdated();
-	return Ignored; // XXX: nie wiem co to
-}
 
 bool BuddyShared::isInGroup(Group *group)
 {

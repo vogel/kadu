@@ -107,8 +107,6 @@ public:
 	void setType(BuddyType type) { Type = type; }
 
 	// properties
-	bool isIgnored();
-	bool setIgnored(bool ignored = true);
 	bool showInAllGroup();
 	bool isInGroup(Group *group);
 	void addToGroup(Group *group);
@@ -128,6 +126,7 @@ public:
 	KaduShared_Property(unsigned short, birthYear, BirthYear)
 	KaduShared_Property(BuddyGender, gender, Gender)
 	KaduShared_Property(QList<Group *>, groups, Groups)
+	KaduShared_PropertyBool(Ignored)
 	KaduShared_PropertyBool(Blocked)
 	KaduShared_PropertyBool(OfflineTo)
 
