@@ -10,16 +10,18 @@
 #ifndef BASE_STATUS_CONTAINER_H
 #define BASE_STATUS_CONTAINER_H
 
-#include "configuration/uuid-storable-object.h"
 #include "status/status-container.h"
 
 #include "exports.h"
 
-class KADUAPI BaseStatusContainer : public StatusContainer, public UuidStorableObject
+class StorableObject;
+
+class KADUAPI BaseStatusContainer : public StatusContainer
 {
+	StorableObject *MyStorableObject;
+
 public:
-	BaseStatusContainer(StoragePoint *storage);
-	BaseStatusContainer(const QString &nodeName, StorableObject *parent);
+	BaseStatusContainer(StorableObject *storableObject);
 
 	virtual void setDefaultStatus(const QString &startupStatus, bool offlineToInvisible,
 			const QString &startupDescription, bool StartupLastDescription);

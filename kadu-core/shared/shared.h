@@ -14,7 +14,9 @@
 #include <QtCore/QSharedData>
 #include <QtCore/QUuid>
 
-#include "status/base-status-container.h"
+#include "status/status.h"
+
+#include "configuration/uuid-storable-object.h"
 
 enum SharedType
 {
@@ -22,24 +24,22 @@ enum SharedType
 	TypeNull = 1
 };
 
-template<typename C>
-class Shared : public BaseStatusContainer, public QSharedData
+class Shared : public UuidStorableObject, public QSharedData
 {
 	QUuid Uuid;
 
 	int BlockUpdatedSignalCount;
 	bool Updated;
 
-	void emitUpdated();
+	void doEmitUpdated();
 
 protected:
 	void dataUpdated();
+	virtual void emitUpdated();
 
 public:
-	static Shared<C> * loadFromStorage(StoragePoint *storagePoint);
-
-	explicit Shared<C>(const QString &tagName, StorableObject *parent = 0);
-	virtual ~Shared<C>();
+	explicit Shared(const QUuid uuid, const QString &tagName, StorableObject *parent = 0);
+	virtual ~Shared();
 
 	virtual void load();
 	virtual void store();
@@ -47,8 +47,8 @@ public:
 	virtual QUuid uuid() const { return Uuid; }
 	void setUuid(const QUuid uuid) { Uuid = uuid; }
 
-signals:
-	void updated();
+	void blockUpdatedSignal();
+	void unblockUpdatedSignal();
 
 };
 

@@ -23,13 +23,14 @@ IdentityShared * IdentityShared::loadFromStorage(StoragePoint *storagePoint)
 }
 
 IdentityShared::IdentityShared(StoragePoint *storagePoint) :
-		BaseStatusContainer(storagePoint)
+		UuidStorableObject(storagePoint), BaseStatusContainer(this)
 {
 	connect(AccountManager::instance(), SIGNAL(accountRemoved(Account*)), this, SLOT(removeAccount(Account*)));
 }
 
 IdentityShared::IdentityShared(const QUuid &uuid) :
-		BaseStatusContainer("Identity", IdentityManager::instance()),
+		UuidStorableObject("Identity", IdentityManager::instance()),
+		BaseStatusContainer(this),
 		Uuid(uuid.isNull() ? QUuid::createUuid() : uuid)
 {
     	connect(AccountManager::instance(), SIGNAL(accountRemoved(Account*)), this, SLOT(removeAccount(Account*)));

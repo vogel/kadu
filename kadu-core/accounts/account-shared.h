@@ -15,6 +15,7 @@
 #include <QtCore/QUuid>
 
 #include "shared/shared.h"
+#include "status/base-status-container.h"
 
 #undef Property
 #define Property(type, name, capitalized_name) \
@@ -25,8 +26,9 @@ class AccountDetails;
 class Buddy;
 class Protocol;
 class ProtocolFactory;
+class StatusType;
 
-class KADUAPI AccountShared : public Shared<Account>
+class KADUAPI AccountShared : public BaseStatusContainer, public Shared
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(AccountShared)
@@ -39,16 +41,12 @@ public:
 	};
 
 private:
-	QUuid Uuid;
 	AccountType Type;
-
-	int BlockUpdatedSignalCount;
-	bool Updated;
 
 	QString ProtocolName;
 	Protocol *ProtocolHandler;
 	AccountDetails *Details;
-	
+
 	QString Name;
 	QString Id;
 
@@ -65,20 +63,17 @@ private:
 	QString ProxyUser;
 	QString ProxyPassword;
 
-	void dataUpdated();
+protected:
 	void emitUpdated();
 
 public:
-	static AccountShared * loadFromStorage(StoragePoint *accountStoragePoint);
+	static AccountShared * loadFromStorage(StoragePoint *storagePoint);
 
 	explicit AccountShared(AccountType type, QUuid uuid = QUuid());
 	virtual ~AccountShared();
 
 	virtual void load();
 	virtual void store();
-
-	virtual QUuid uuid() const { return Uuid; }
-	void setUuid(const QUuid uuid) { Uuid = uuid; }
 
 	//account type
 	bool isNull() const { return TypeNull == Type; }

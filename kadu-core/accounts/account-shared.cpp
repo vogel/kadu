@@ -25,9 +25,8 @@ AccountShared * AccountShared::loadFromStorage(StoragePoint *storagePoint)
 }
 
 AccountShared::AccountShared(AccountType type, QUuid uuid) :
-		Shared<Account>("Account", AccountManager::instance()),
-		Uuid(uuid.isNull() ? QUuid::createUuid() : uuid), Type(type),
-		BlockUpdatedSignalCount(0), Updated(false),
+		Shared(uuid, "Account", AccountManager::instance()),
+		BaseStatusContainer(this), Type(type),
 		ProtocolHandler(0), Details(0),
 		RememberPassword(false), HasPassword(false),
 		ConnectAtStart(true),
@@ -49,11 +48,10 @@ void AccountShared::load()
 	if (!isValidStorage())
 		return;
 
-	BaseStatusContainer::load();
+	Shared::load();
 
 	ConnectAtStart = loadValue<bool>("ConnectAtStart", true);
 	
-	Uuid = QUuid(loadAttribute<QString>("uuid"));
 	Name = loadValue<QString>("Name");
 	ProtocolName = loadValue<QString>("Protocol");
 	setId(loadValue<QString>("Id"));
@@ -80,7 +78,7 @@ void AccountShared::store()
 	if (!isValidStorage())
 		return;
 
-	storeValue("uuid", Uuid.toString(), true);
+	Shared::store();
 
 	storeValue("ConnectAtStart", ConnectAtStart);
 
@@ -102,19 +100,9 @@ void AccountShared::store()
 	storeValue("ProxyHost", ProxyHost.toString());
 }
 
-void AccountShared::dataUpdated()
-{
-	Updated = true;
-	emitUpdated();
-}
-
 void AccountShared::emitUpdated()
 {
-	if (0 == BlockUpdatedSignalCount && Updated)
-	{
-		emit updated();
-		Updated = false;
-	}
+	emit updated();
 }
 
 void AccountShared::loadProtocol(ProtocolFactory* protocolFactory)

@@ -16,6 +16,7 @@
 
 #include "accounts/account.h"
 #include "accounts/accounts-aware-object.h"
+#include "configuration/uuid-storable-object.h"
 #include "identity-manager.h"
 #include "status/base-status-container.h"
 
@@ -29,7 +30,7 @@ class Buddy;
 class Protocol;
 class ProtocolFactory;
 
-class KADUAPI IdentityShared : public BaseStatusContainer, public AccountsAwareObject, public QSharedData
+class KADUAPI IdentityShared : public BaseStatusContainer, public UuidStorableObject, public AccountsAwareObject, public QSharedData
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(IdentityShared)
