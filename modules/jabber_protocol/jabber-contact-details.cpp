@@ -19,8 +19,16 @@ JabberContactDetails::JabberContactDetails(StoragePoint *storagePoint, Contact p
 {
 }
 
+JabberContactDetails::~JabberContactDetails()
+{
+}
+
 bool JabberContactDetails::validateId()
 {
 	XMPP::Jid newJid(JIDUtil::accountFromString(contact().id()));
 	return !newJid.node().isEmpty() && !newJid.domain().isEmpty();
+}
+
+void JabberContactDetails::store()
+{
 }
