@@ -14,6 +14,7 @@ set (kadu_SRCS
 
 	buddies/avatar.cpp
 	buddies/avatar-manager.cpp
+	buddies/avatar-shared.cpp
 	buddies/buddies-aware-object.cpp
 	buddies/buddy.cpp
 	buddies/buddy-kadu-data.cpp

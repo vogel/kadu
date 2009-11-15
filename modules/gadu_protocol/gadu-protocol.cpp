@@ -138,11 +138,11 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 	CurrentSearchService = new GaduSearchService(this);
 
 	connect(BuddyManager::instance(), SIGNAL(buddyAdded(Buddy &)),
-			this, SLOT(contactAdded(Buddy &)));
+			this, SLOT(buddyAdded(Buddy &)));
 	connect(BuddyManager::instance(), SIGNAL(buddyRemoved(Buddy &)),
-			this, SLOT(contactRemoved(Buddy &)));
+			this, SLOT(buddyRemoved(Buddy &)));
 	connect(BuddyManager::instance(), SIGNAL(contactAdded(Buddy &, Account)),
-			this, SLOT(contactAboutToBeRemoved(Buddy &, Account)));
+			this, SLOT(contactAdded(Buddy &, Account)));
 	connect(BuddyManager::instance(), SIGNAL(contactAboutToBeRemoved(Buddy &, Account)),
 			this, SLOT(contactAboutToBeRemoved(Buddy &, Account)));
 
@@ -161,11 +161,11 @@ GaduProtocol::~GaduProtocol()
 	kdebugf();
 
 	disconnect(BuddyManager::instance(), SIGNAL(buddyAdded(Buddy &)),
-			this, SLOT(contactAdded(Buddy &)));
+			this, SLOT(buddyAdded(Buddy &)));
 	disconnect(BuddyManager::instance(), SIGNAL(buddyRemoved(Buddy &)),
-			this, SLOT(contactRemoved(Buddy &)));
+			this, SLOT(buddyRemoved(Buddy &)));
 	disconnect(BuddyManager::instance(), SIGNAL(contactAdded(Buddy &, Account)),
-			this, SLOT(contactAboutToBeRemoved(Buddy &, Account)));
+			this, SLOT(contactAdded(Buddy &, Account)));
 	disconnect(BuddyManager::instance(), SIGNAL(contactAboutToBeRemoved(Buddy &, Account)),
 			this, SLOT(contactAboutToBeRemoved(Buddy &, Account)));
 
@@ -857,7 +857,7 @@ QPixmap GaduProtocol::statusPixmap(const QString &statusType)
 			"Away" == statusType ? "Busy" : statusType);
 }
 
-void GaduProtocol::contactAdded(Buddy &buddy)
+void GaduProtocol::buddyAdded(Buddy &buddy)
 {
 	GaduContactDetails *details = gaduContactDetails(buddy);
 	if (!details)
@@ -866,7 +866,7 @@ void GaduProtocol::contactAdded(Buddy &buddy)
 	gg_add_notify_ex(GaduSession, details->uin(), notifyTypeFromContact(buddy));
 }
 
-void GaduProtocol::contactRemoved(Buddy &buddy)
+void GaduProtocol::buddyRemoved(Buddy &buddy)
 {
 	GaduContactDetails *details = gaduContactDetails(buddy);
 	if (!details)
@@ -884,7 +884,7 @@ void GaduProtocol::contactAdded(Buddy &buddy, Account contactAccount)
 	if (contactAccount != account())
 		return;
 
-	contactAdded(buddy);
+	buddyAdded(buddy);
 }
 
 void GaduProtocol::contactAboutToBeRemoved(Buddy &buddy, Account contactAccount)
@@ -892,7 +892,7 @@ void GaduProtocol::contactAboutToBeRemoved(Buddy &buddy, Account contactAccount)
 	if (contactAccount != account())
 		return;
 
-	contactRemoved(buddy);
+	buddyRemoved(buddy);
 }
 
 void GaduProtocol::contactIdChanged(Buddy &buddy, Account contactAccount, const QString &oldId)

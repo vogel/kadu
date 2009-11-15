@@ -29,6 +29,8 @@ class KADUAPI Contact : public QObject, public SharedBase<ContactShared>
 {
 	Q_OBJECT
 
+	explicit Contact(bool null);
+
 protected:
 	virtual void connectDataSignals();
 	virtual void disconnectDataSignals();
@@ -37,7 +39,7 @@ public:
 	static Contact loadFromStorage(StoragePoint *storage);
 	static Contact null;
 	
-	explicit Contact(bool null = false);
+	Contact();
 	explicit Contact(ContactShared *data);
 	Contact(const Contact &copy);
 	virtual ~Contact();
@@ -50,18 +52,18 @@ public:
 	virtual bool validateId();
 	bool isValid();
 
-	KaduSharedBase_Property(ContactDetails *, details, Details, 0)
-	KaduSharedBase_PropertyRead(QUuid, uuid, Uuid, QUuid())
-	KaduSharedBase_PropertyRead(StoragePoint *, storage, Storage, 0)
-	KaduSharedBase_Property(Account, contactAccount, ContactAccount, Account::null)
-	Avatar & contactAvatar() const;
-	KaduSharedBase_Property(Buddy, ownerBuddy, OwnerBuddy, Buddy::null)
-	KaduSharedBase_Property(QString, id, Id, QString::null)
-	KaduSharedBase_Property(Status, currentStatus, CurrentStatus, Status::null)
-	KaduSharedBase_Property(QString, protocolVersion, ProtocolVersion, QString::null)
-	KaduSharedBase_Property(QHostAddress, address, Address, QHostAddress())
-	KaduSharedBase_Property(unsigned int, port, Port, 0)
-	KaduSharedBase_Property(QString, dnsName, DnsName, QString::null)
+	KaduSharedBase_Property(ContactDetails *, details, Details)
+	KaduSharedBase_PropertyRead(QUuid, uuid, Uuid)
+	KaduSharedBase_PropertyRead(StoragePoint *, storage, Storage)
+	KaduSharedBase_Property(Account, contactAccount, ContactAccount)
+	KaduSharedBase_Property(Avatar, contactAvatar, ContactAvatar)
+	KaduSharedBase_Property(Buddy, ownerBuddy, OwnerBuddy)
+	KaduSharedBase_Property(QString, id, Id)
+	KaduSharedBase_Property(Status, currentStatus, CurrentStatus)
+	KaduSharedBase_Property(QString, protocolVersion, ProtocolVersion)
+	KaduSharedBase_Property(QHostAddress, address, Address)
+	KaduSharedBase_Property(unsigned int, port, Port)
+	KaduSharedBase_Property(QString, dnsName, DnsName)
 
 signals:
 	void idChanged(const QString &id);

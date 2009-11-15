@@ -30,6 +30,10 @@ Contact::Contact(bool null) :
 {
 }
 
+Contact::Contact()
+{
+}
+
 Contact::Contact(ContactShared *data) :
 		SharedBase<ContactShared>(data)
 {
@@ -101,12 +105,7 @@ KaduSharedBase_PropertyDef(Contact, ContactDetails *, details, Details, 0)
 KaduSharedBase_PropertyReadDef(Contact, QUuid, uuid, Uuid, QUuid())
 KaduSharedBase_PropertyReadDef(Contact, StoragePoint *, storage, Storage, 0)
 KaduSharedBase_PropertyDef(Contact, Account, contactAccount, ContactAccount, Account::null)
-
-Avatar & Contact::contactAvatar() const
-{
-	return data()->contactAvatar();
-}
-
+KaduSharedBase_PropertyDef(Contact, Avatar, contactAvatar, ContactAvatar, Avatar::null)
 KaduSharedBase_PropertyDef(Contact, Buddy, ownerBuddy, OwnerBuddy, Buddy::null)
 KaduSharedBase_PropertyDef(Contact, QString, id, Id, QString::null)
 KaduSharedBase_PropertyDef(Contact, Status, currentStatus, CurrentStatus, Status::null)

@@ -32,6 +32,8 @@ class KADUAPI Account : public QObject, public SharedBase<AccountShared>
 {
 	Q_OBJECT
 
+	Account(bool null);
+
 protected:
 	virtual void connectDataSignals();
 	virtual void disconnectDataSignals();
@@ -40,7 +42,7 @@ public:
 	static Account loadFromStorage(StoragePoint *storage);
 	static Account null;
 
-	explicit Account(bool null = false);
+	Account();
 	explicit Account(AccountShared *data);
 	Account(const Account &copy);
 	virtual ~Account();
@@ -61,22 +63,22 @@ public:
 
 	StatusContainer * statusContainer() { return data(); }
 
-	KaduSharedBase_PropertyRead(StoragePoint *, storage, Storage, 0)
-	KaduSharedBase_Property(QString, protocolName, ProtocolName, QString::null)
-	KaduSharedBase_Property(Protocol *, protocolHandler, ProtocolHandler, 0)
-	KaduSharedBase_Property(AccountDetails *, details, Details, 0)
-	KaduSharedBase_Property(QString, name, Name, QString::null)
-	KaduSharedBase_Property(QString, id, Id, QString::null)
-	KaduSharedBase_Property(bool, rememberPassword, RememberPassword, true)
-	KaduSharedBase_Property(bool, hasPassword, HasPassword, false)
-	KaduSharedBase_Property(QString, password, Password, QString::null)
-	KaduSharedBase_Property(bool, connectAtStart, ConnectAtStart, true)
-	KaduSharedBase_Property(bool, useProxy, UseProxy, false)
-	KaduSharedBase_Property(QHostAddress, proxyHost, ProxyHost, QHostAddress())
-	KaduSharedBase_Property(short int, proxyPort, ProxyPort, 0)
-	KaduSharedBase_Property(bool, proxyRequiresAuthentication, ProxyRequiresAuthentication, false)
-	KaduSharedBase_Property(QString, proxyUser, ProxyUser, QString::null)
-	KaduSharedBase_Property(QString, proxyPassword, ProxyPassword, QString::null)
+	KaduSharedBase_PropertyRead(StoragePoint *, storage, Storage)
+	KaduSharedBase_Property(QString, protocolName, ProtocolName)
+	KaduSharedBase_Property(Protocol *, protocolHandler, ProtocolHandler)
+	KaduSharedBase_Property(AccountDetails *, details, Details)
+	KaduSharedBase_Property(QString, name, Name)
+	KaduSharedBase_Property(QString, id, Id)
+	KaduSharedBase_Property(bool, rememberPassword, RememberPassword)
+	KaduSharedBase_Property(bool, hasPassword, HasPassword)
+	KaduSharedBase_Property(QString, password, Password)
+	KaduSharedBase_Property(bool, connectAtStart, ConnectAtStart)
+	KaduSharedBase_Property(bool, useProxy, UseProxy)
+	KaduSharedBase_Property(QHostAddress, proxyHost, ProxyHost)
+	KaduSharedBase_Property(short int, proxyPort, ProxyPort)
+	KaduSharedBase_Property(bool, proxyRequiresAuthentication, ProxyRequiresAuthentication)
+	KaduSharedBase_Property(QString, proxyUser, ProxyUser)
+	KaduSharedBase_Property(QString, proxyPassword, ProxyPassword)
 
 signals:
 	void buddyStatusChanged(Account account, Buddy buddy, Status oldStatus);

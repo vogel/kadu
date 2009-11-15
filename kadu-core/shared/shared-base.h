@@ -13,21 +13,21 @@
 #include <QtCore/QExplicitlySharedDataPointer>
 #include <QtCore/QUuid>
 
-#define KaduSharedBase_PropertyRead(type, name, capitalized_name, default) \
+#define KaduSharedBase_PropertyRead(type, name, capitalized_name) \
 	type name() const;
-#define KaduSharedBase_PropertyWrite(type, name, capitalized_name, default) \
+#define KaduSharedBase_PropertyWrite(type, name, capitalized_name) \
 	void set##capitalized_name(type name) const;
-#define KaduSharedBase_Property(type, name, capitalized_name, default) \
-	KaduSharedBase_PropertyRead(type, name, capitalized_name, default) \
-	KaduSharedBase_PropertyWrite(type, name, capitalized_name, default)
+#define KaduSharedBase_Property(type, name, capitalized_name) \
+	KaduSharedBase_PropertyRead(type, name, capitalized_name) \
+	KaduSharedBase_PropertyWrite(type, name, capitalized_name)
 
-#define KaduSharedBase_PropertyBoolRead(capitalized_name, default) \
+#define KaduSharedBase_PropertyBoolRead(capitalized_name) \
 	bool is##capitalized_name() const;
-#define KaduSharedBase_PropertyBoolWrite(capitalized_name, default) \
+#define KaduSharedBase_PropertyBoolWrite(capitalized_name) \
 	void set##capitalized_name(bool name) const;
-#define KaduSharedBase_PropertyBool(capitalized_name, default) \
-	KaduSharedBase_PropertyBoolRead(capitalized_name, default) \
-	KaduSharedBase_PropertyBoolWrite(capitalized_name, default)
+#define KaduSharedBase_PropertyBool(capitalized_name) \
+	KaduSharedBase_PropertyBoolRead(capitalized_name) \
+	KaduSharedBase_PropertyBoolWrite(capitalized_name)
 
 #define KaduSharedBase_PropertyReadDef(class_name, type, name, capitalized_name, default) \
 	type class_name::name() const\
@@ -73,12 +73,15 @@ class SharedBase
 	QExplicitlySharedDataPointer<T> Data;
 
 protected:
+	SharedBase(bool null) :
+			Data(0) {}
+
 	virtual void connectDataSignals() {}
 	virtual void disconnectDataSignals() {}
 
 public:
-	explicit SharedBase(bool null = false) :
-			Data(null ? 0 : new T())
+	SharedBase() :
+			Data(new T())
 	{
 		connectDataSignals();
 	}
@@ -146,7 +149,7 @@ public:
 			Data->removeFromStorage();
 	}
 
-	KaduSharedBase_Property(QUuid, uuid, Uuid, QUuid());
+	KaduSharedBase_Property(QUuid, uuid, Uuid)
 
 };
 

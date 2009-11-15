@@ -227,3 +227,14 @@ Contact ContactManager::byUuid(const QString &uuid)
 
 	return Contact::null;
 }
+
+Contact ContactManager::byContactShared(ContactShared *data)
+{
+	StorableObject::ensureLoaded();
+
+	foreach (Contact contact, AllContacts)
+		if (data == contact.data())
+			return contact;
+
+	return Contact(data);
+}

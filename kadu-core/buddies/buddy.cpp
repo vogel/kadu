@@ -34,6 +34,10 @@ Buddy::Buddy(bool null) :
 {
 }
 
+Buddy::Buddy()
+{
+}
+
 Buddy::Buddy(BuddyShared *data) :
 		SharedBase<BuddyShared>(data)
 {
@@ -190,7 +194,7 @@ Buddy Buddy::dummy()
 	contactData.setCurrentStatus(Status("Away", tr("Example description")));
 	contactData.setAddress(QHostAddress(2130706433));
 	contactData.setPort(80);
-	Avatar &avatar = contactData.contactAvatar();
+	Avatar avatar = contactData.contactAvatar();
 	avatar.setLastUpdated(QDateTime::currentDateTime());
 	avatar.setPixmap(IconsManager::instance()->loadPixmap("ContactsTab"));
 	avatar.setFileName(IconsManager::instance()->iconPath("ContactsTab"));

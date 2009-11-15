@@ -33,6 +33,10 @@ Account::Account(bool null) :
 {
 }
 
+Account::Account()
+{
+}
+
 Account::Account(AccountShared *data) :
 		SharedBase<AccountShared>(data)
 {

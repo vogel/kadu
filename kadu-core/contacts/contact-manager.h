@@ -19,6 +19,7 @@
 #include "exports.h"
 
 class Contact;
+class ContactShared;
 
 class KADUAPI ContactManager : public QObject, public StorableObject, AccountsAwareObject
 {
@@ -59,6 +60,7 @@ public:
 
 	Contact byIndex(unsigned int index);
 	Contact byUuid(const QString &uuid);
+	Contact byContactShared(ContactShared *data);
 
 signals:
 	void contactAboutToBeAdded(Contact contact);

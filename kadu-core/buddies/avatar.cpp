@@ -7,113 +7,55 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "buddies/avatar-shared.h"
 #include "contacts/contact.h"
 #include "misc/path-conversion.h"
 
 #include "avatar.h"
 
-Avatar::Avatar(Contact contact, bool loadFromConfiguration) :
-		StorableObject("Avatar", contact.data()),
-		MyContact(contact)
+Avatar Avatar::null(true);
+
+Avatar Avatar::loadFromStorage(StoragePoint *contactStoragePoint)
 {
-    	if (!loadFromConfiguration)
-		StorableObject::setLoaded(true);
+	return Avatar(AvatarShared::loadFromStorage(contactStoragePoint));
+}
+
+Avatar::Avatar(bool null) :
+		SharedBase<AvatarShared>(null)
+{
+}
+
+Avatar::Avatar()
+{
+}
+
+Avatar::Avatar(AvatarShared *data) :
+		SharedBase<AvatarShared>(data)
+{
+}
+
+Avatar::Avatar(const Avatar &copy) :
+		SharedBase<AvatarShared>(copy)
+{
 }
 
 Avatar::~Avatar()
 {
 }
 
-void Avatar::load()
+Avatar & Avatar::operator = (const Avatar &copy)
 {
-	if (!isValidStorage())
-		return;
-
-	StorableObject::load();
-
-	LastUpdated = loadValue<QDateTime>("LastUpdated");
-	NextUpdate = loadValue<QDateTime>("NextUpdate");
-	FileName = loadValue<QString>("FileName");
-
-	QString avatarsPath = ggPath("avatars/");
-
-	// TODO 0.6.6 - just remove this line
-	FileName.remove(avatarsPath);
-	FilePath = avatarsPath + FileName;
-
-	Pixmap.load(avatarsPath + FileName);
-}
-
-void Avatar::store()
-{
-	if (!isValidStorage())
-		return;
-
-	ensureLoaded();
-
-	storeValue("LastUpdated", LastUpdated);
-	storeValue("NextUpdate", NextUpdate);
-	storeValue("FileName", FileName);
-}
-
-Contact Avatar::contact()
-{
-	return MyContact;
-}
-
-QDateTime Avatar::lastUpdated()
-{
-	ensureLoaded();
-	return LastUpdated;
-}
-
-void Avatar::setLastUpdated(const QDateTime &lastUpdated)
-{
-	ensureLoaded();
-	LastUpdated = lastUpdated;
-}
-
-QDateTime Avatar::nextUpdate()
-{
-	ensureLoaded();
-	return NextUpdate;
-}
-
-void Avatar::setNextUpdate(const QDateTime &nextUpdate)
-{
-	ensureLoaded();
-	NextUpdate = nextUpdate;
-}
-
-QString Avatar::fileName()
-{
-	ensureLoaded();
-	return FileName;
-}
-
-void Avatar::setFileName(const QString &fileName)
-{
-	ensureLoaded();
-	FileName = fileName;
-
-	QString avatarsPath = ggPath("avatars/");
-	FilePath = avatarsPath + FileName;
+	SharedBase<AvatarShared>::operator=(copy);
+	return *this;
 }
 
 QString Avatar::filePath()
 {
-    	ensureLoaded();
-	return FilePath;
+	return isNull() ? QString::null : data()->filePath();
 }
 
-QPixmap Avatar::pixmap()
-{
-	ensureLoaded();
-	return Pixmap;
-}
-
-void Avatar::setPixmap(const QPixmap &pixmap)
-{
-	ensureLoaded();
-	Pixmap = pixmap;
-}
+KaduSharedBase_PropertyDef(Avatar, Contact, avatarContact, AvatarContact, Contact::null)
+KaduSharedBase_PropertyDef(Avatar, QDateTime, lastUpdated, LastUpdated, QDateTime())
+KaduSharedBase_PropertyDef(Avatar, QDateTime, nextUpdate, NextUpdate, QDateTime())
+KaduSharedBase_PropertyDef(Avatar, QString, fileName, FileName, QString::null)
+KaduSharedBase_PropertyDef(Avatar, QPixmap, pixmap, Pixmap, QPixmap())

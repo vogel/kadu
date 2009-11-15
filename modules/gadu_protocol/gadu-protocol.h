@@ -105,8 +105,8 @@ private slots:
 	void connectionTimeoutTimerSlot();
 	void everyMinuteActions();
 
-	void contactAdded(Buddy &buddy);
-	void contactRemoved(Buddy &buddy);
+	void buddyAdded(Buddy &buddy);
+	void buddyRemoved(Buddy &buddy);
 	void contactAdded(Buddy &buddy, Account contactAccount);
 	void contactAboutToBeRemoved(Buddy &buddy, Account contactAccount);
 	void contactIdChanged(Buddy &buddy, Account contactAccount, const QString &oldId);

@@ -59,7 +59,7 @@ public:
 
 	KaduShared_Property(ContactDetails *, details, Details)
 	KaduShared_Property(Account, contactAccount, ContactAccount)
-	KaduShared_Property(Avatar &, contactAvatar, ContactAvatar)
+	KaduShared_Property(Avatar, contactAvatar, ContactAvatar)
 	KaduShared_PropertyRead(Buddy, ownerBuddy, OwnerBuddy)
 	void setOwnerBuddy(Buddy buddy);
 

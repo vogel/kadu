@@ -31,13 +31,15 @@ class KADUAPI Buddy : public QObject, public SharedBase<BuddyShared>
 {
 	Q_OBJECT
 
+	explicit Buddy(bool null);
+
 public:
 	static Buddy loadFromStorage(StoragePoint *contactStoragePoint);
 	static Buddy null;
 
 	static Buddy dummy();
 	
-	explicit Buddy(bool null = false);
+	Buddy();
 	explicit Buddy(BuddyShared *data);
 	Buddy(const Buddy &copy);
 	virtual ~Buddy();
@@ -87,24 +89,24 @@ template<class T>
 
 	QString display() const;
 
-	KaduSharedBase_PropertyWrite(QString, display, Display, QString::null)
-	KaduSharedBase_Property(QString, firstName, FirstName, QString::null)
-	KaduSharedBase_Property(QString, lastName, LastName, QString::null)
-	KaduSharedBase_Property(QString, familyName, FamilyName, QString::null)
-	KaduSharedBase_Property(QString, city, City, QString::null)
-	KaduSharedBase_Property(QString, familyCity, FamilyCity, QString::null)
-	KaduSharedBase_Property(QString, nickName, NickName, QString::null)
-	KaduSharedBase_Property(QString, homePhone, HomePhone, QString::null)
-	KaduSharedBase_Property(QString, mobile, Mobile, QString::null)
-	KaduSharedBase_Property(QString, email, Email, QString::null)
-	KaduSharedBase_Property(QString, website, Website, QString::null)
-	KaduSharedBase_Property(unsigned short, birthYear, BirthYear, 0)
-	KaduSharedBase_Property(BuddyShared::BuddyGender, gender, Gender, BuddyShared::GenderUnknown)
-	KaduSharedBase_Property(QList<Group *>, groups, Groups, QList<Group *>())
-	KaduSharedBase_PropertyBool(Anonymous, false)
-	KaduSharedBase_PropertyBool(Ignored, false)
-	KaduSharedBase_PropertyBool(Blocked, false)
-	KaduSharedBase_PropertyBool(OfflineTo, false)
+	KaduSharedBase_PropertyWrite(QString, display, Display)
+	KaduSharedBase_Property(QString, firstName, FirstName)
+	KaduSharedBase_Property(QString, lastName, LastName)
+	KaduSharedBase_Property(QString, familyName, FamilyName)
+	KaduSharedBase_Property(QString, city, City)
+	KaduSharedBase_Property(QString, familyCity, FamilyCity)
+	KaduSharedBase_Property(QString, nickName, NickName)
+	KaduSharedBase_Property(QString, homePhone, HomePhone)
+	KaduSharedBase_Property(QString, mobile, Mobile)
+	KaduSharedBase_Property(QString, email, Email)
+	KaduSharedBase_Property(QString, website, Website)
+	KaduSharedBase_Property(unsigned short, birthYear, BirthYear)
+	KaduSharedBase_Property(BuddyShared::BuddyGender, gender, Gender)
+	KaduSharedBase_Property(QList<Group *>, groups, Groups)
+	KaduSharedBase_PropertyBool(Anonymous)
+	KaduSharedBase_PropertyBool(Ignored)
+	KaduSharedBase_PropertyBool(Blocked)
+	KaduSharedBase_PropertyBool(OfflineTo)
 
 };
 

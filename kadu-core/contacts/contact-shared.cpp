@@ -8,6 +8,9 @@
  ***************************************************************************/
 
 #include "accounts/account-manager.h"
+#include "buddies/avatar.h"
+#include "buddies/avatar-manager.h"
+#include "buddies/avatar-shared.h"
 #include "buddies/buddy-manager.h"
 #include "contacts/contact-details.h"
 #include "contacts/contact-manager.h"
@@ -26,7 +29,7 @@ ContactShared * ContactShared::loadFromStorage(StoragePoint *storagePoint)
 
 ContactShared::ContactShared(QUuid uuid) :
 		Shared(uuid, "Account", ContactManager::instance()),
-		Details(0), ContactAvatar(Contact(this), false) /* TODO: 0.6.6 */
+		Details(0)
 {
 }
 
@@ -49,7 +52,12 @@ void ContactShared::load()
 		buddyUuid = loadValue<QString>("Contact");
 	setOwnerBuddy(BuddyManager::instance()->byUuid(buddyUuid));
 
-	ContactAvatar.load();
+	QDomNodeList avatars = storage()->point().elementsByTagName("Avatar");
+	if (avatars.count() == 1)
+		if (!avatars.at(0).firstChildElement("LastUpdated").isNull())
+			storage()->point().removeChild(avatars.at(0));
+
+	ContactAvatar = AvatarManager::instance()->byUuid(loadValue<QString>("Avatar"));
 
 // 	ContactManager::instance()->addContact(new Contact(this));
 }
@@ -66,9 +74,9 @@ void ContactShared::store()
 	storeValue("Id", Id);
 	storeValue("Account", ContactAccount.uuid().toString());
 	storeValue("Buddy", OwnerBuddy.uuid().toString());
+	if (!ContactAvatar.isNull())
+		storeValue("Avatar", ContactAvatar.uuid().toString());
 	removeValue("Contact");
-	
-	ContactAvatar.store();
 }
 
 void ContactShared::loadDetails()
@@ -107,10 +115,10 @@ void ContactShared::emitUpdated()
 void ContactShared::setOwnerBuddy(Buddy buddy)
 {
 	if (!OwnerBuddy.isNull())
-		OwnerBuddy.removeContact(Contact(this));
+		OwnerBuddy.removeContact(ContactManager::instance()->byContactShared(this));
 	OwnerBuddy = buddy;
 	if (!OwnerBuddy.isNull())
-		OwnerBuddy.addContact(Contact(this));
+		OwnerBuddy.addContact(ContactManager::instance()->byContactShared(this));
 
 	dataUpdated();
 }
