@@ -55,7 +55,7 @@ Core * Core::instance()
 	return Instance;
 }
 
-Core::Core() : Myself(), Window(0), ShowMainWindowOnStart(true)
+Core::Core() : Myself(Buddy::null), Window(0), ShowMainWindowOnStart(true)
 {
 	connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(quit()));
 	createDefaultConfiguration();
@@ -289,7 +289,7 @@ void Core::init()
 #endif
 	QTimer::singleShot(15000, this, SLOT(deleteOldConfigurationFiles()));
 
-	ContactManager::instance()->load();
+// 	ContactManager::instance()->load();
 	NotificationManager::instance(); // TODO: 0.6.6
 }
 

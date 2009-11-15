@@ -12,6 +12,7 @@
 #include "contacts/contact.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
+#include "protocols/protocols-manager.h"
 
 #include "account-shared.h"
 
@@ -32,10 +33,25 @@ AccountShared::AccountShared(QUuid uuid) :
 		ConnectAtStart(true),
 		UseProxy(false), ProxyPort(0)
 {
+	connect(ProtocolsManager::instance(), SIGNAL(protocolFactoryRegistered(ProtocolFactory *)),
+			this, SLOT(protocolFactoryRegistered(ProtocolFactory *)));
+	connect(ProtocolsManager::instance(), SIGNAL(protocolFactoryUnregistered(ProtocolFactory *)),
+			this, SLOT(protocolFactoryUnregistered(ProtocolFactory *)));
+
+	foreach (ProtocolFactory *factory, ProtocolsManager::instance()->protocolFactories())
+		protocolFactoryRegistered(factory);
 }
 
 AccountShared::~AccountShared()
 {
+	foreach (ProtocolFactory *factory, ProtocolsManager::instance()->protocolFactories())
+		protocolFactoryUnregistered(factory);
+
+	disconnect(ProtocolsManager::instance(), SIGNAL(protocolFactoryRegistered(ProtocolFactory *)),
+			this, SLOT(protocolFactoryRegistered(ProtocolFactory *)));
+	disconnect(ProtocolsManager::instance(), SIGNAL(protocolFactoryUnregistered(ProtocolFactory *)),
+			this, SLOT(protocolFactoryUnregistered(ProtocolFactory *)));
+
 	if (ProtocolHandler)
 	{
 		delete ProtocolHandler;
@@ -45,7 +61,6 @@ AccountShared::~AccountShared()
 
 void AccountShared::load()
 {
-	printf("as::load\n");
 	if (!isValidStorage())
 		return;
 
@@ -107,25 +122,37 @@ void AccountShared::emitUpdated()
 	emit updated();
 }
 
-void AccountShared::loadProtocol(ProtocolFactory* protocolFactory)
+void AccountShared::protocolFactoryRegistered(ProtocolFactory *factory)
 {
 	ensureLoaded();
 
-	ProtocolHandler = protocolFactory->createProtocolHandler(Account(this));
-	Details = protocolFactory->createAccountDetails(Account(this));
+	if (factory->name() != ProtocolName)
+		return;
+
+	ProtocolHandler = factory->createProtocolHandler(Account(this));
+	Details = factory->createAccountDetails(Account(this));
 
 	connect(ProtocolHandler, SIGNAL(statusChanged(Account, Status)), this, SIGNAL(statusChanged()));
 	connect(ProtocolHandler, SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
 			this, SIGNAL(buddyStatusChanged(Account, Buddy, Status)));
+
+	emit protocolLoaded();
 }
 
-void AccountShared::unloadProtocol()
+void AccountShared::protocolFactoryUnregistered(ProtocolFactory* factory)
 {
+	ensureLoaded();
+
+	if (factory->name() != ProtocolName)
+		return;
+
 	delete ProtocolHandler;
 	ProtocolHandler = 0;
 
 	delete Details;
 	Details = 0;
+
+	emit protocolUnloaded();
 }
 
 QString AccountShared::statusContainerName()

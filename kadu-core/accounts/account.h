@@ -53,9 +53,6 @@ public:
 		return *this;
 	}
 
-	void loadProtocol(ProtocolFactory *protocolFactory);
-	void unloadProtocol();
-
 	void importProxySettings();
 
 	Buddy getBuddyById(const QString &id);
@@ -82,6 +79,8 @@ public:
 
 signals:
 	void buddyStatusChanged(Account account, Buddy buddy, Status oldStatus);
+	void protocolLoaded();
+	void protocolUnloaded();
 
 };
 

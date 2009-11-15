@@ -49,6 +49,10 @@ private:
 	QString ProxyUser;
 	QString ProxyPassword;
 
+private slots:
+	void protocolFactoryRegistered(ProtocolFactory *factory);
+	void protocolFactoryUnregistered(ProtocolFactory *factory);
+
 protected:
 	void emitUpdated();
 
@@ -60,9 +64,6 @@ public:
 
 	virtual void load();
 	virtual void store();
-
-	void loadProtocol(ProtocolFactory *protocolFactory);
-	void unloadProtocol();
 
 	KaduShared_Property(QString, protocolName, ProtocolName)
 	KaduShared_Property(Protocol *, protocolHandler, ProtocolHandler)
@@ -100,6 +101,8 @@ public:
 
 signals:
 	void buddyStatusChanged(Account account, Buddy buddy, Status oldStatus);
+	void protocolLoaded();
+	void protocolUnloaded();
 
 	void updated();
 

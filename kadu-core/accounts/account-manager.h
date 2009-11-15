@@ -35,16 +35,10 @@ class KADUAPI AccountManager : public QObject, public StorableObject
 	AccountManager();
 	virtual ~AccountManager();
 
-	void init();
-	void loadAccount(Account account, ProtocolFactory *protocolFactory);
-	void unloadAccount(Account account);
-	void tryLoadAccount(Account account);
-
 private slots:
-	void protocolFactoryRegistered(ProtocolFactory *factory);
-	void protocolFactoryUnregistered(ProtocolFactory *factory);
-
 	void connectionError(Account account, const QString &server, const QString &message);
+	void accountProtocolLoaded();
+	void accountProtocolUnloaded();
 
 protected:
 	virtual StoragePoint * createStoragePoint();

@@ -58,6 +58,8 @@ void Account::connectDataSignals()
 
 	connect(data(), SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
 			this, SIGNAL(buddyStatusChanged(Account, Buddy, Status)));
+	connect(data(), SIGNAL(protocolLoaded()), this, SIGNAL(protocolLoaded()));
+	connect(data(), SIGNAL(protocolUnloaded()), this, SIGNAL(protocolUnloaded()));
 }
 
 void Account::disconnectDataSignals()
@@ -67,19 +69,8 @@ void Account::disconnectDataSignals()
 
 	disconnect(data(), SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
 			this, SIGNAL(buddyStatusChanged(Account, Buddy, Status)));
-}
-
-void Account::loadProtocol(ProtocolFactory *protocolFactory)
-{
-	printf("loading protocol: %s\n", qPrintable(protocolFactory->name()));
-	if (!isNull())
-		data()->loadProtocol(protocolFactory);
-}
-
-void Account::unloadProtocol()
-{
-	if (!isNull())
-		data()->unloadProtocol();
+	disconnect(data(), SIGNAL(protocolLoaded()), this, SIGNAL(protocolLoaded()));
+	disconnect(data(), SIGNAL(protocolUnloaded()), this, SIGNAL(protocolUnloaded()));
 }
 
 Buddy Account::getBuddyById(const QString& id)

@@ -139,14 +139,16 @@ QPixmap StatusContainerManager::statusPixmap(const QString &statusType)
 {
 	return AccountManager::instance()->defaultAccount().statusContainer()
 			? AccountManager::instance()->defaultAccount().statusContainer()->statusPixmap(statusType)
-			: IconsManager::instance()->loadPixmap(statusType);
+			: QPixmap();
+// 			: IconsManager::instance()->loadPixmap(statusType);
 }
 
 QList<StatusType *> StatusContainerManager::supportedStatusTypes()
 {
 	return AccountManager::instance()->defaultAccount().statusContainer()
 			? AccountManager::instance()->defaultAccount().statusContainer()->supportedStatusTypes()
-			: StatusTypeManager::instance()->statusTypes();
+			: QList<StatusType *>();
+// 			: StatusTypeManager::instance()->statusTypes();
 }
 
 int StatusContainerManager::maxDescriptionLength()

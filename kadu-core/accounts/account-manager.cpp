@@ -27,10 +27,8 @@ AccountManager * AccountManager::Instance = 0;
 KADUAPI AccountManager * AccountManager::instance()
 {
 	if (0 == Instance)
-	{
 		Instance = new AccountManager();
-		Instance->init();
-	}
+
 	return Instance;
 }
 
@@ -42,45 +40,7 @@ AccountManager::AccountManager() :
 
 AccountManager::~AccountManager()
 {
-	foreach (ProtocolFactory *factory, ProtocolsManager::instance()->protocolFactories())
-		protocolFactoryUnregistered(factory);
-
-	disconnect(ProtocolsManager::instance(), SIGNAL(protocolFactoryRegistered(ProtocolFactory *)),
-			this, SLOT(protocolFactoryRegistered(ProtocolFactory *)));
-	disconnect(ProtocolsManager::instance(), SIGNAL(protocolFactoryUnregistered(ProtocolFactory *)),
-			this, SLOT(protocolFactoryUnregistered(ProtocolFactory *)));
-
 	Core::instance()->configuration()->unregisterStorableObject(this);
-}
-
-void AccountManager::init()
-{
-	connect(ProtocolsManager::instance(), SIGNAL(protocolFactoryRegistered(ProtocolFactory *)),
-			this, SLOT(protocolFactoryRegistered(ProtocolFactory *)));
-	connect(ProtocolsManager::instance(), SIGNAL(protocolFactoryUnregistered(ProtocolFactory *)),
-			this, SLOT(protocolFactoryUnregistered(ProtocolFactory *)));
-
-	foreach (ProtocolFactory *factory, ProtocolsManager::instance()->protocolFactories())
-		protocolFactoryRegistered(factory);
-}
-
-void AccountManager::loadAccount(Account account, ProtocolFactory *protocolFactory)
-{
-	account.loadProtocol(protocolFactory);
-	registerAccount(account);
-}
-
-void AccountManager::unloadAccount(Account account)
-{
-	unregisterAccount(account);
-	account.unloadProtocol();
-}
-
-void AccountManager::tryLoadAccount(Account account)
-{
-	ProtocolFactory *factory = ProtocolsManager::instance()->byName(account.protocolName());
-	if (factory)
-		loadAccount(account, factory);
 }
 
 StoragePoint * AccountManager::createStoragePoint()
@@ -109,7 +69,11 @@ void AccountManager::load()
 		Account account = Account::loadFromStorage(storagePoint);
 		AllAccounts.append(account);
 
-		tryLoadAccount(account);
+		connect(account.data(), SIGNAL(protocolLoaded()), this, SLOT(accountProtocolLoaded()));
+		connect(account.data(), SIGNAL(protocolUnloaded()), this, SLOT(accountProtocolUnloaded()));
+
+		if (account.protocolHandler())
+			registerAccount(account);
 	}
 }
 
@@ -206,26 +170,6 @@ Status AccountManager::status()
 			: Status();
 }
 
-void AccountManager::protocolFactoryRegistered(ProtocolFactory *factory)
-{
-	if (!isValidStorage())
-		return;
-
-	ensureLoaded();
-	QString factoryProtocolName = factory->name();
-
-	foreach (Account account, AllAccounts)
-		if (account.protocolName() == factoryProtocolName)
-			loadAccount(account, factory);
-}
-
-void AccountManager::protocolFactoryUnregistered(ProtocolFactory *factory)
-{
-	foreach (Account account, RegisteredAccounts)
-		if (account.protocolHandler()->protocolFactory() == factory)
-			unloadAccount(account);
-}
-
 void AccountManager::connectionError(Account account, const QString &server, const QString &message)
 {
 	kdebugf();
@@ -238,4 +182,22 @@ void AccountManager::connectionError(Account account, const QString &server, con
 	}
 
 	kdebugf2();
+}
+
+void AccountManager::accountProtocolLoaded()
+{
+	AccountShared *accountShared = dynamic_cast<AccountShared *>(sender());
+	if (!accountShared)
+		return;
+
+	registerAccount(Account(accountShared));
+}
+
+void AccountManager::accountProtocolUnloaded()
+{
+	AccountShared *accountShared = dynamic_cast<AccountShared *>(sender());
+	if (!accountShared)
+		return;
+
+	unregisterAccount(Account(accountShared));
 }
