@@ -9,12 +9,13 @@
 
 #include "configuration/configuration-manager.h"
 #include "contacts/contact.h"
+#include "contacts/contact-shared.h"
 #include "core/core.h"
+#include "protocols/protocol.h"
+#include "protocols/protocol-factory.h"
 #include "debug.h"
 
 #include "contact-manager.h"
-#include <protocols/protocol.h>
-#include <protocols/protocol-factory.h>
 
 ContactManager * ContactManager::Instance = 0;
 

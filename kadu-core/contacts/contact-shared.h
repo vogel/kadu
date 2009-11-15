@@ -16,7 +16,6 @@
 
 #include "buddies/avatar.h"
 #include "buddies/buddy.h"
-#include "contacts/contact-type.h"
 #include "status/status.h"
 
 #include "shared/shared.h"
@@ -27,8 +26,6 @@ class KADUAPI ContactShared : public QObject, public Shared
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(ContactShared)
-
-	ContactType Type;
 
 	ContactDetails *Details;
 
@@ -51,7 +48,7 @@ protected:
 public:
 	static ContactShared * loadFromStorage(StoragePoint *contactStoragePoint);
 
-	explicit ContactShared(ContactType type, QUuid uuid = QUuid());
+	explicit ContactShared(QUuid uuid = QUuid());
 	virtual ~ContactShared();
 
 	virtual void load();
@@ -60,9 +57,6 @@ public:
 	void loadDetails();
 	void unloadDetails();
 
-	// contact type
-	bool isNull() const { return ContactTypeNull == Type; }
-	
 	KaduShared_Property(ContactDetails *, details, Details)
 	KaduShared_Property(Account, contactAccount, ContactAccount)
 	KaduShared_Property(Avatar &, contactAvatar, ContactAvatar)

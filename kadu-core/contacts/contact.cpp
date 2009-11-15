@@ -18,81 +18,48 @@
 
 #include "contact.h"
 
-Contact Contact::null(ContactTypeNull);
+Contact Contact::null(true);
 
-Contact Contact::loadFromStorage(StoragePoint *accountStoragePoint)
+Contact Contact::loadFromStorage(StoragePoint *contactStoragePoint)
 {
-	return Contact(ContactShared::loadFromStorage(accountStoragePoint));
+	return Contact(ContactShared::loadFromStorage(contactStoragePoint));
 }
 
-Contact::Contact(ContactType type) :
-		Data(ContactTypeNull != type ? new ContactShared(type) : 0)
+Contact::Contact(bool null) :
+		SharedBase<ContactShared>(null)
 {
-	connectDataSignals();
 }
 
 Contact::Contact(ContactShared *data) :
-		Data(data)
+		SharedBase<ContactShared>(data)
 {
-	connectDataSignals();
 }
 
 Contact::Contact(const Contact &copy) :
-		Data(copy.Data)
+		SharedBase<ContactShared>(copy)
 {
-	connectDataSignals();
 }
 
 Contact::~Contact()
 {
-	disconnectDataSignals();
-}
-
-bool Contact::isNull() const
-{
-	return !Data.data() || Data->isNull();
 }
 
 Contact & Contact::operator = (const Contact &copy)
 {
-	disconnectDataSignals();
-	Data = copy.Data;
-	connectDataSignals();
-
+	SharedBase<ContactShared>::operator=(copy);
 	return *this;
-}
-
-bool Contact::operator == (const Contact &compare) const
-{
-	return Data == compare.Data;
-}
-
-bool Contact::operator != (const Contact &compare) const
-{
-	return Data != compare.Data;
-}
-
-int Contact::operator < (const Contact& compare) const
-{
-	return Data.data() - compare.Data.data();
-}
-
-void Contact::store()
-{
-	if (Data)
-		Data->store();
 }
 
 void Contact::loadDetails()
 {
-	if (Data)
-		Data->loadDetails();
+	if (!isNull())
+		data()->loadDetails();
 }
 
 void Contact::unloadDetails()
 {
-	if (Data)
-		Data->unloadDetails();
+	if (!isNull())
+		data()->unloadDetails();
 }
 
 void Contact::connectDataSignals()
@@ -100,7 +67,7 @@ void Contact::connectDataSignals()
 	if (isNull())
 		return;
 
-	connect(Data.data(), SIGNAL(idChanged(const QString &)),
+	connect(data(), SIGNAL(idChanged(const QString &)),
 			this, SIGNAL(idChanged(const QString &)));
 }
 
@@ -109,7 +76,7 @@ void Contact::disconnectDataSignals()
 	if (isNull())
 		return;
 
-	disconnect(Data.data(), SIGNAL(idChanged(const QString &)),
+	disconnect(data(), SIGNAL(idChanged(const QString &)),
 			this, SIGNAL(idChanged(const QString &)));
 }
 /*
@@ -130,64 +97,20 @@ bool Contact::isValid()
 	return validateId();
 }
 
-#undef PropertyRead
-#define PropertyRead(type, name, capitalized_name, default) \
-	type Contact::name() const\
-	{\
-		return !Data\
-			? default\
-			: Data->name();\
-	}
-
-#undef PropertyWrite
-#define PropertyWrite(type, name, capitalized_name, default) \
-	void Contact::set##capitalized_name(type name) const\
-	{\
-		if (Data)\
-			Data->set##capitalized_name(name);\
-	}
-
-#undef Property
-#define Property(type, name, capitalized_name, default) \
-	PropertyRead(type, name, capitalized_name, default) \
-	PropertyWrite(type, name, capitalized_name, default)
-
-#undef PropertyBoolRead
-#define PropertyBoolRead(capitalized_name, default) \
-	bool Contact::is##capitalized_name() const\
-	{\
-		return !Data\
-			? default\
-			: Data->is##capitalized_name();\
-	}
-
-#undef PropertyBoolWrite
-#define PropertyBoolWrite(capitalized_name, default) \
-	void Contact::set##capitalized_name(bool name) const\
-	{\
-		if (Data)\
-			Data->set##capitalized_name(name);\
-	}
-
-#undef PropertyBool
-#define PropertyBool(capitalized_name, default) \
-	PropertyBoolRead(capitalized_name, default) \
-	PropertyBoolWrite(capitalized_name, default)
-
-Property(ContactDetails *, details, Details, 0)
-PropertyRead(QUuid, uuid, Uuid, QUuid())
-PropertyRead(StoragePoint *, storage, Storage, 0)
-Property(Account, contactAccount, ContactAccount, Account::null)
+KaduSharedBase_PropertyDef(Contact, ContactDetails *, details, Details, 0)
+KaduSharedBase_PropertyReadDef(Contact, QUuid, uuid, Uuid, QUuid())
+KaduSharedBase_PropertyReadDef(Contact, StoragePoint *, storage, Storage, 0)
+KaduSharedBase_PropertyDef(Contact, Account, contactAccount, ContactAccount, Account::null)
 
 Avatar & Contact::contactAvatar() const
 {
-	return Data->contactAvatar();
+	return data()->contactAvatar();
 }
 
-Property(Buddy, ownerBuddy, OwnerBuddy, Buddy::null)
-Property(QString, id, Id, QString::null)
-Property(Status, currentStatus, CurrentStatus, Status::null)
-Property(QString, protocolVersion, ProtocolVersion, QString::null)
-Property(QHostAddress, address, Address, QHostAddress())
-Property(unsigned int, port, Port, 0)
-Property(QString, dnsName, DnsName, QString::null)
+KaduSharedBase_PropertyDef(Contact, Buddy, ownerBuddy, OwnerBuddy, Buddy::null)
+KaduSharedBase_PropertyDef(Contact, QString, id, Id, QString::null)
+KaduSharedBase_PropertyDef(Contact, Status, currentStatus, CurrentStatus, Status::null)
+KaduSharedBase_PropertyDef(Contact, QString, protocolVersion, ProtocolVersion, QString::null)
+KaduSharedBase_PropertyDef(Contact, QHostAddress, address, Address, QHostAddress())
+KaduSharedBase_PropertyDef(Contact, unsigned int, port, Port, 0)
+KaduSharedBase_PropertyDef(Contact, QString, dnsName, DnsName, QString::null)

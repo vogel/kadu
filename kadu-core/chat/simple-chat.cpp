@@ -18,7 +18,7 @@
 #include "chat-manager.h"
 
 SimpleChat::SimpleChat(StoragePoint *storage) :
-		Chat(storage), CurrentContact(0)
+		Chat(storage), CurrentContact(Contact::null)
 {
 }
 

@@ -17,15 +17,15 @@
 
 ContactShared * ContactShared::loadFromStorage(StoragePoint *storagePoint)
 {
-	ContactShared *result = new ContactShared(ContactTypeNormal);
+	ContactShared *result = new ContactShared();
 	result->setStorage(storagePoint);
 	result->load();
 
 	return result;
 }
 
-ContactShared::ContactShared(ContactType type, QUuid uuid) :
-		Shared(uuid, "Account", ContactManager::instance()), Type(type),
+ContactShared::ContactShared(QUuid uuid) :
+		Shared(uuid, "Account", ContactManager::instance()),
 		Details(0), ContactAvatar(Contact(this), false) /* TODO: 0.6.6 */
 {
 }
