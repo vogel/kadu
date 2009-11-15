@@ -55,22 +55,22 @@ public:
 	virtual void load();
 	virtual void store();
 
-	Account defaultAccount() const;
+	Account defaultAccount();
 
-	Account byIndex(unsigned int index) const;
-	Account byUuid(const QUuid &uuid) const;
+	Account byIndex(unsigned int index);
+	Account byUuid(const QUuid &uuid);
 
-	unsigned int indexOf(Account account) const { return RegisteredAccounts.indexOf(account); }
-	unsigned int count() const { return RegisteredAccounts.count(); }
+	unsigned int indexOf(Account account) { ensureLoaded(); return RegisteredAccounts.indexOf(account); }
+	unsigned int count() { ensureLoaded(); return RegisteredAccounts.count(); }
 
-	const QList<Account> accounts() const { return RegisteredAccounts; }
-	const QList<Account> byProtocolName(const QString &name) const;
+	const QList<Account> accounts() { return RegisteredAccounts; }
+	const QList<Account> byProtocolName(const QString &name);
 
 	void registerAccount(Account account);
 	void unregisterAccount(Account account);
 	void deleteAccount(Account account);
 
-	Status status() const;
+	Status status();
 
 signals:
 	void accountAboutToBeRegistered(Account);

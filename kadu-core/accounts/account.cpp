@@ -88,7 +88,9 @@ Buddy Account::createAnonymous(const QString& id)
 	if (isNull())
 		return Buddy::null;
 
-	Buddy result(BuddyShared::TypeAnonymous);
+	Buddy result;
+	result.setAnonymous(true);
+
 	ProtocolFactory *protocolFactory = data()->protocolHandler()->protocolFactory();
 
 	Contact contact;

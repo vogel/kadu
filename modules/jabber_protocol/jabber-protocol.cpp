@@ -560,7 +560,7 @@ void JabberProtocol::contactRemoved(Buddy &buddy)
 		return;
 	JabberClient->removeContact(contact.id());
 	if (buddy.contacts().count() == 1)
-		buddy.setType(BuddyShared::TypeAnonymous); // TODO: why?
+		buddy.setAnonymous(true); // TODO: why?
 }
 
 void JabberProtocol::contactUpdated(Buddy &buddy)
@@ -640,18 +640,18 @@ void JabberProtocol::slotContactUpdated(const XMPP::RosterItem &item)
 		 * See if the contact is already on our contact list
 		 * if not add contact to our list
 		 */
-		 Buddy c = BuddyManager::instance()->byId(account(), item.jid().bare());
-		 if (c.isAnonymous())
+		 Buddy buddy = BuddyManager::instance()->byId(account(), item.jid().bare());
+		 if (buddy.isAnonymous())
 		 {
-			c.setType(BuddyShared::TypeNormal);
+			buddy.setAnonymous(false);
 
 			if (!item.name().isNull())
-				c.setDisplay(item.name());
+				buddy.setDisplay(item.name());
 			else
-				c.setDisplay(item.jid().bare());
+				buddy.setDisplay(item.jid().bare());
 		}
 
-		if (c.isAnonymous())
+		if (buddy.isAnonymous()) // always false!!
 		{
 			// add this contact to all groups the contact is a member of
 			///foreach (QString group, item.groups())

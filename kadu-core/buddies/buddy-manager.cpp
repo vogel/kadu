@@ -29,22 +29,29 @@ BuddyManager * BuddyManager::Instance = 0;
 BuddyManager * BuddyManager::instance()
 {
 	if (0 == Instance)
+	{
 		Instance = new BuddyManager();
+		Instance->init();
+	}
 
 	return Instance;
 }
 
 BuddyManager::BuddyManager()
 {
-	Core::instance()->configuration()->registerStorableObject(this);
-
-	connect(GroupManager::instance(), SIGNAL(groupAboutToBeRemoved(Group *)),
-			this, SLOT(groupRemoved(Group *)));
 }
 
 BuddyManager::~BuddyManager()
 {
 	Core::instance()->configuration()->unregisterStorableObject(this);
+}
+
+void BuddyManager::init()
+{
+	Core::instance()->configuration()->registerStorableObject(this);
+
+	connect(GroupManager::instance(), SIGNAL(groupAboutToBeRemoved(Group *)),
+			this, SLOT(groupRemoved(Group *)));
 }
 
 StoragePoint * BuddyManager::createStoragePoint()
@@ -120,7 +127,7 @@ void BuddyManager::addBuddy(Buddy buddy)
 
 	if (Buddies.contains(buddy))
 	{
-		buddy.setType(BuddyShared::TypeNormal);
+		buddy.setAnonymous(false);
 		return;
 	}
 
@@ -171,44 +178,46 @@ void BuddyManager::removeBuddy(Buddy buddy)
 		buddy.removeFromStorage();
 	}
 	emit buddyRemoved(buddy);
-	buddy.setType(BuddyShared::TypeAnonymous);
+	buddy.setAnonymous(true);
 
 	kdebugf();
 }
 
 void BuddyManager::mergeBuddies(Buddy destination, Buddy source)
 {
+	ensureLoaded();
+
 	while (source.accounts().size())
 	{
 		Contact contact = source.contact(source.accounts()[0]);
 		contact.setOwnerBuddy(destination);
 	}
 
-	source.setType(BuddyShared::TypeAnonymous);
+	source.setAnonymous(true);
 	removeBuddy(source);
 
 	source.data()->setUuid(destination.uuid()); // just for case
-	source.setData(destination.data()); // TODO: 0.8 tricky merge, this should work well ;)
+// 	source.data() setData(destination.data()); // TODO: 0.6.6 tricky merge, this should work well ;)
 	
 	Core::instance()->configuration()->flush();
 }
 
 Buddy BuddyManager::byIndex(unsigned int index)
 {
+	ensureLoaded();
+
 	if (index < 0 || index >= count())
 		return Buddy::null;
-
-	ensureLoaded();
 
 	return Buddies.at(index);
 }
 
 Buddy BuddyManager::byId(Account account, const QString &id)
 {
+	ensureLoaded();
+
 	if (id.isEmpty() || account.isNull())
 		return Buddy::null;
-
-	ensureLoaded();
 
 	foreach (Buddy buddy, Buddies)
 	{
@@ -224,10 +233,10 @@ Buddy BuddyManager::byId(Account account, const QString &id)
 
 Buddy BuddyManager::byUuid(const QString &uuid)
 {
+	ensureLoaded();
+
 	if (uuid.isEmpty())
 		return Buddy::null;
-
-	ensureLoaded();
 
 	foreach (Buddy buddy, Buddies)
 		if (uuid == buddy.uuid().toString())
@@ -238,10 +247,10 @@ Buddy BuddyManager::byUuid(const QString &uuid)
 
 Buddy BuddyManager::byDisplay(const QString &display)
 {
+	ensureLoaded();
+
 	if (display.isEmpty())
 		return Buddy::null;
-
-	ensureLoaded();
 
 	foreach (Buddy buddy, Buddies)
 	{
@@ -270,19 +279,21 @@ BuddyList BuddyManager::buddies()
 
 BuddyList BuddyManager::buddies(Account account, bool includeAnonymous)
 {
+	ensureLoaded();
+
 	BuddyList result;
 
 	foreach (Buddy buddy, Buddies)
 		if (!buddy.contact(account).isNull() && (includeAnonymous || !buddy.isAnonymous()))
 			result << buddy;
 
-	ensureLoaded();
-
 	return result;
 }
 
 const Buddy & BuddyManager::byBuddyShared(BuddyShared *data)
 {
+	ensureLoaded();
+
 	foreach (const Buddy &buddy, Buddies)
 		if (data == buddy.data())
 			return buddy;

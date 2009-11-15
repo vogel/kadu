@@ -38,18 +38,9 @@ public:
 		GenderFemale
 	};
 
-	enum BuddyType
-	{
-		TypeNull = 0,
-		TypeAnonymous = 1,
-		TypeNormal = 2
-	};
-
 private:
 	QMap<QString, QString> CustomData;
-	QMap<Account, Contact> Contacts;
-
-	BuddyType Type;
+	QHash<Account, Contact> Contacts;
 
 	QString Display;
 	QString FirstName;
@@ -66,6 +57,7 @@ private:
 	BuddyGender Gender;
 	QList<Group *> Groups;
 
+	bool Anonymous;
 	bool Ignored;
 	bool Blocked;
 	bool OfflineTo;
@@ -79,7 +71,7 @@ protected:
 public:
 	static BuddyShared * loadFromStorage(StoragePoint *contactStoragePoint);
 
-	explicit BuddyShared(BuddyType type, QUuid uuid = QUuid());
+	explicit BuddyShared(QUuid uuid = QUuid());
 	virtual ~BuddyShared();
 
 	void importConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
@@ -99,12 +91,6 @@ public:
 	void removeContact(Account account);
 	Contact contact(Account account);
 	QList<Contact> contacts();
-
-	//contact type
-	bool isNull() const { return TypeNull == Type; }
-	bool isAnonymous() const { return TypeAnonymous == Type; }
-
-	void setType(BuddyType type) { Type = type; }
 
 	// properties
 	bool showInAllGroup();
@@ -126,6 +112,7 @@ public:
 	KaduShared_Property(unsigned short, birthYear, BirthYear)
 	KaduShared_Property(BuddyGender, gender, Gender)
 	KaduShared_Property(QList<Group *>, groups, Groups)
+	KaduShared_PropertyBool(Anonymous)
 	KaduShared_PropertyBool(Ignored)
 	KaduShared_PropertyBool(Blocked)
 	KaduShared_PropertyBool(OfflineTo)

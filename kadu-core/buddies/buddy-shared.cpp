@@ -23,16 +23,17 @@
 
 BuddyShared * BuddyShared::loadFromStorage(StoragePoint *contactStoragePoint)
 {
-	BuddyShared *result = new BuddyShared(TypeNormal, QUuid());
+	BuddyShared *result = new BuddyShared();
 	result->setStorage(contactStoragePoint);
 	result->load();
 	
 	return result;
 }
 
-BuddyShared::BuddyShared(BuddyType type, QUuid uuid) :
-		Shared(uuid, "Buddy", BuddyManager::instance()), Type(type),
-		Ignored(false), Blocked(false), OfflineTo(false)
+BuddyShared::BuddyShared(QUuid uuid) :
+		QObject(BuddyManager::instance()),
+		Shared(uuid, "Buddy", BuddyManager::instance()),
+		Anonymous(false), Ignored(false), Blocked(false), OfflineTo(false)
 {
 }
 
@@ -40,8 +41,7 @@ BuddyShared::~BuddyShared()
 {
 }
 
-#undef Property
-#define Property(name, old_name) \
+#define ImportProperty(name, old_name) \
 	set##name(CustomData[#old_name]); \
 	CustomData.remove(#old_name);
 
@@ -56,20 +56,20 @@ void BuddyShared::importConfiguration(XmlConfigFile *configurationStorage, QDomE
 		CustomData.insert(attribute.name(), attribute.value());
 	}
 
-	Type = TypeNormal;
-	
+	Anonymous = false;
+
 	QStringList groups = CustomData["groups"].split(',', QString::SkipEmptyParts);
 	foreach (const QString &group, groups)
 		Groups << GroupManager::instance()->byName(group);
 	CustomData.remove("groups");
 
-	Property(Display, altnick)
-	Property(FirstName, first_name)
-	Property(LastName, last_name)
-	Property(NickName, nick_name)
-	Property(HomePhone, home_phone)
-	Property(Mobile, mobile)
-	Property(Email, email)
+	ImportProperty(Display, altnick)
+	ImportProperty(FirstName, first_name)
+	ImportProperty(LastName, last_name)
+	ImportProperty(NickName, nick_name)
+	ImportProperty(HomePhone, home_phone)
+	ImportProperty(Mobile, mobile)
+	ImportProperty(Email, email)
 }
 
 void BuddyShared::load()
@@ -84,9 +84,12 @@ void BuddyShared::load()
 	QDomElement parent = sp->point();
 
 	if (parent.hasAttribute("type"))
-		Type = (BuddyType)parent.attribute("type").toInt();
+	{
+		Anonymous = (2 == parent.attribute("type").toInt());
+		parent.removeAttribute("type");
+	}
 	else
-		Type = TypeNormal;
+		Anonymous = loadValue<bool>("Anonymous");
 
 	QDomElement customDataValues = configurationStorage->getNode(parent, "CustomDataValues", XmlConfigFile::ModeFind);
 	QDomNodeList customDataValuesList = customDataValues.elementsByTagName("CustomDataValue");
@@ -145,7 +148,6 @@ void BuddyShared::store()
 
 	XmlConfigFile *configurationStorage = sp->storage();
 	QDomElement parent = sp->point();
-	parent.setAttribute("type", (int)Type);
 
 	QDomElement customDataValues = configurationStorage->getNode(parent, "CustomDataValues");
 
@@ -160,6 +162,7 @@ void BuddyShared::store()
 	storeValue("Mobile", Mobile);
 	storeValue("Email", Email);
 	storeValue("Website", Website);
+	storeValue("Anonymous", Anonymous);
 	storeValue("Ignored", Ignored);
 	storeValue("Blocked", Blocked);
 	storeValue("OfflineTo", OfflineTo);

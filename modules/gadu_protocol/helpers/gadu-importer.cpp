@@ -92,7 +92,7 @@ void GaduImporter::importContacts()
 void GaduImporter::importGaduContact(Buddy &buddy)
 {
 	Account account = AccountManager::instance()->defaultAccount();
-	QString id = buddy.customData()["uin"];
+	QString id = buddy.customData("uin");
 
 	Contact contact;
 	contact.setDetails(new GaduContactDetails(contact.storage(), contact));
@@ -100,12 +100,12 @@ void GaduImporter::importGaduContact(Buddy &buddy)
 	contact.setOwnerBuddy(buddy);
 	contact.setId(id);
 	contact.data()->setLoaded(true);
-
-	buddy.customData().remove("uin");
-	buddy.customData().remove("blocking");
-	buddy.customData().remove("offline_to");
-	buddy.setBlocked(QVariant(buddy.customData()["blocking"]).toBool());
-	buddy.setOfflineTo(QVariant(buddy.customData()["offline_to"]).toBool());
+	
+	buddy.removeCustomData("uin");
+	buddy.setBlocked(QVariant(buddy.customData("blocking")).toBool());
+	buddy.setOfflineTo(QVariant(buddy.customData("offline_to")).toBool());
+	buddy.removeCustomData("blocking");
+	buddy.removeCustomData("offline_to");
 
 	buddy.addContact(contact);
 
@@ -139,6 +139,6 @@ void GaduImporter::importIgnored()
 
 void GaduImporter::buddyAdded(Buddy &buddy)
 {
-	if (buddy.customData().contains("uin"))
+	if (!buddy.customData("uin").isEmpty())
 		importGaduContact(buddy);
 }

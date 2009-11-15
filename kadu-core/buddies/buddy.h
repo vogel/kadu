@@ -17,93 +17,52 @@
 #include <QtCore/QUuid>
 #include <QtXml/QDomElement>
 
-#include "buddy-shared.h"
+#include "buddies/buddy-shared.h"
+#include "shared/shared-base.h"
 #include "exports.h"
 
-#undef PropertyRead
-#define PropertyRead(type, name, capitalized_name, default) \
-	type name() const\
-	{\
-		return isNull()\
-			? default\
-			: Data->name();\
-	}
-
-#undef PropertyWrite
-#define PropertyWrite(type, name, capitalized_name, default) \
-	void set##capitalized_name(const type &name)\
-	{\
-		if (!isNull())\
-			Data->set##capitalized_name(name);\
-	}
-
-#undef Property
-#define Property(type, name, capitalized_name, default) \
-	PropertyRead(type, name, capitalized_name, default) \
-	PropertyWrite(type, name, capitalized_name, default)
-
-#undef PropertyBoolRead
-#define PropertyBoolRead(capitalized_name, default) \
-	bool is##capitalized_name() const;
-
-#undef PropertyBoolWrite
-#define PropertyBoolWrite(capitalized_name, default) \
-	void set##capitalized_name(bool name) const;
-
-#undef PropertyBool
-#define PropertyBool(capitalized_name, default) \
-	PropertyBoolRead(capitalized_name, default) \
-	PropertyBoolWrite(capitalized_name, default)
-
+class Account;
+class BuddyShared;
 class Contact;
+class StoragePoint;
 class XmlConfigFile;
 
-class KADUAPI Buddy : public QObject
+class KADUAPI Buddy : public QObject, public SharedBase<BuddyShared>
 {
 	Q_OBJECT
 
-	QExplicitlySharedDataPointer<BuddyShared> Data;
-
-	Buddy(BuddyShared *contactData);
-
-	void checkNull();
-
 public:
 	static Buddy loadFromStorage(StoragePoint *contactStoragePoint);
-
-	explicit Buddy(BuddyShared::BuddyType type = BuddyShared::TypeNormal);
-	Buddy(const Buddy &copy);
-	virtual ~Buddy();
-
 	static Buddy null;
 
 	static Buddy dummy();
-
-	bool isNull() const { return 0 == Data || Data->isNull(); }
-	bool isAnonymous() const { return 0 != Data && Data->isAnonymous(); }
-
+	
+	explicit Buddy(bool null = false);
+	explicit Buddy(BuddyShared *data);
+	Buddy(const Buddy &copy);
+	virtual ~Buddy();
+	
+	Buddy & operator = (const Buddy &copy)
+	{
+		SharedBase<BuddyShared>::operator=(copy);
+		return *this;
+	}
+	
 	void mergeWith(Buddy buddy); // TODO: 0.8 refactor
 
-	Buddy & operator = (const Buddy &copy);
-	bool operator == (const Buddy &compare) const;
-	bool operator != (const Buddy &compare) const;
-	int operator < (const Buddy &compare) const;
-
 	void importConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
-	void loadConfiguration();
 	void store();
 
 	StoragePoint * storagePointForModuleData(const QString &module, bool create = false) const;
-	void removeFromStorage();
 
-	QUuid uuid() const;
-	QMap<QString, QString> & customData();
+	QString customData(const QString &key);
+	void setCustomData(const QString &key, const QString &value);
+	void removeCustomData(const QString &key);
 
 	Account prefferedAccount() const;
 	QList<Account> accounts() const;
 
-	BuddyShared * data() const { return Data.data(); }
-	void setData(BuddyShared *data) { Data = data; }  // TODO: 0.8 tricky merge, this should work well ;)
+// 	void setData(BuddyShared *data) { Data = data; }  // TODO: 0.8 tricky merge, this should work well ;)
 
 	void addContact(Contact contact);
 	void removeContact(Contact contact) const;
@@ -115,7 +74,7 @@ public:
 template<class T>
 	T * moduleData(bool create = false, bool cache = false) const
 	{
-		return isNull() ? 0 : Data->moduleData<T>(create, cache);
+		return isNull() ? 0 : data()->moduleData<T>(create, cache);
 	}
 
 	QString id(Account account) const;
@@ -127,34 +86,28 @@ template<class T>
 	void removeFromGroup(Group *group);
 
 	QString display() const;
-	void setType(BuddyShared::BuddyType type) { Data->setType(type); }
 
-	PropertyWrite(QString, display, Display, QString::null)
-	Property(QString, firstName, FirstName, QString::null)
-	Property(QString, lastName, LastName, QString::null)
-	Property(QString, familyName, FamilyName, QString::null)
-	Property(QString, city, City, QString::null)
-	Property(QString, familyCity, FamilyCity, QString::null)
-	Property(QString, nickName, NickName, QString::null)
-	Property(QString, homePhone, HomePhone, QString::null)
-	Property(QString, mobile, Mobile, QString::null)
-	Property(QString, email, Email, QString::null)
-	Property(QString, website, Website, QString::null)
-	Property(unsigned short, birthYear, BirthYear, 0)
-	Property(BuddyShared::BuddyGender, gender, Gender, BuddyShared::GenderUnknown)
-	Property(QList<Group *>, groups, Groups, QList<Group *>())
-	PropertyBool(Ignored, ignored)
-	PropertyBool(Blocked, blocked)
-	PropertyBool(OfflineTo, offlineTo)
+	KaduSharedBase_PropertyWrite(QString, display, Display, QString::null)
+	KaduSharedBase_Property(QString, firstName, FirstName, QString::null)
+	KaduSharedBase_Property(QString, lastName, LastName, QString::null)
+	KaduSharedBase_Property(QString, familyName, FamilyName, QString::null)
+	KaduSharedBase_Property(QString, city, City, QString::null)
+	KaduSharedBase_Property(QString, familyCity, FamilyCity, QString::null)
+	KaduSharedBase_Property(QString, nickName, NickName, QString::null)
+	KaduSharedBase_Property(QString, homePhone, HomePhone, QString::null)
+	KaduSharedBase_Property(QString, mobile, Mobile, QString::null)
+	KaduSharedBase_Property(QString, email, Email, QString::null)
+	KaduSharedBase_Property(QString, website, Website, QString::null)
+	KaduSharedBase_Property(unsigned short, birthYear, BirthYear, 0)
+	KaduSharedBase_Property(BuddyShared::BuddyGender, gender, Gender, BuddyShared::GenderUnknown)
+	KaduSharedBase_Property(QList<Group *>, groups, Groups, QList<Group *>())
+	KaduSharedBase_PropertyBool(Anonymous, false)
+	KaduSharedBase_PropertyBool(Ignored, false)
+	KaduSharedBase_PropertyBool(Blocked, false)
+	KaduSharedBase_PropertyBool(OfflineTo, false)
 
 };
 
 Q_DECLARE_METATYPE(Buddy)
-
-uint qHash(const Buddy &buddy);
-
-#undef PropertyRead
-#undef PropertyWrite
-#undef Property
 
 #endif // BUDDY_H

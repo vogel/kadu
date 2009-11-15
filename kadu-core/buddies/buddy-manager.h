@@ -37,6 +37,8 @@ class KADUAPI BuddyManager : public QObject, public StorableObject
 	BuddyManager();
 	virtual ~BuddyManager();
 
+	void init();
+
 	const Buddy & byBuddyShared(BuddyShared *data);
 	void importConfiguration(XmlConfigFile *configurationStorage);
 

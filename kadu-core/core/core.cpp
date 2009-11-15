@@ -50,14 +50,12 @@ Core * Core::instance()
 	{
 		Instance = new Core();
 		Instance->init();
-
-		NotificationManager::instance(); // TODO: 0.6.6
 	}
 
 	return Instance;
 }
 
-Core::Core() : Myself(BuddyShared::TypeNull), Window(0), ShowMainWindowOnStart(true)
+Core::Core() : Myself(), Window(0), ShowMainWindowOnStart(true)
 {
 	connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(quit()));
 	createDefaultConfiguration();
@@ -265,6 +263,8 @@ void Core::init()
 	Configuration = new ConfigurationManager();
 	Configuration->load();
 
+	AccountManager::instance()->load();
+
 	// protocol modules should be loaded before gui
 	// it fixes crash on loading pending messages from config, contacts import from 0.6.5, and maybe other issues
 	ModulesManager::instance()->loadProtocolModules();
@@ -273,7 +273,6 @@ void Core::init()
 	Myself.setDisplay(config_file.readEntry("General", "Nick"));
 
 	connect(StatusContainerManager::instance(), SIGNAL(statusChanged()), this, SLOT(statusChanged()));
-
 	// TODO 0.6.6:
 	StatusChanger = new UserStatusChanger();
 	StatusChangerManager::instance()->registerStatusChanger(StatusChanger);
@@ -290,8 +289,8 @@ void Core::init()
 #endif
 	QTimer::singleShot(15000, this, SLOT(deleteOldConfigurationFiles()));
 
-	AccountManager::instance()->load();
 	ContactManager::instance()->load();
+	NotificationManager::instance(); // TODO: 0.6.6
 }
 
 void Core::storeConfiguration()

@@ -35,7 +35,7 @@ KADUAPI AccountManager * AccountManager::instance()
 }
 
 AccountManager::AccountManager() :
-		StorableObject(true)
+		StorableObject()
 {
 	Core::instance()->configuration()->registerStorableObject(this);
 }
@@ -93,6 +93,11 @@ void AccountManager::load()
 	if (!isValidStorage())
 		return;
 
+	if (isLoaded())
+		return;
+
+	StorableObject::load();
+
 	QDomElement accountsNode = storage()->point();
 	if (accountsNode.isNull())
 		return;
@@ -112,26 +117,32 @@ void AccountManager::store()
 {
 	if (!isValidStorage())
 		return;
-	
+
+	ensureLoaded();
 	foreach (Account account, AllAccounts)
 		account.store();
 }
 
-Account AccountManager::defaultAccount() const
+Account AccountManager::defaultAccount()
 {
+	ensureLoaded();
 	return byIndex(0);
 }
 
-Account AccountManager::byIndex(unsigned int index) const
+Account AccountManager::byIndex(unsigned int index)
 {
+	ensureLoaded();
+
 	if (index < 0 || index >= count())
 		return Account::null;
 
 	return RegisteredAccounts.at(index);
 }
 
-Account AccountManager::byUuid(const QUuid &uuid) const
+Account AccountManager::byUuid(const QUuid &uuid)
 {
+	ensureLoaded();
+
 	foreach (Account account, AllAccounts)
 		if (uuid == account.uuid())
 			return account;
@@ -139,8 +150,10 @@ Account AccountManager::byUuid(const QUuid &uuid) const
 	return Account::null;
 }
 
-const QList<Account> AccountManager::byProtocolName(const QString &name) const
+const QList<Account> AccountManager::byProtocolName(const QString &name)
 {
+	ensureLoaded();
+
 	QList<Account> list;
 	foreach (Account account, AllAccounts)
 		if (account.protocolName() == name)
@@ -177,13 +190,15 @@ void AccountManager::unregisterAccount(Account account)
 
 void AccountManager::deleteAccount(Account account)
 {
+	ensureLoaded();
+
 	emit accountAboutToBeRemoved(account);
 	unregisterAccount(account);
 	account.removeFromStorage();
 	emit accountRemoved(account);
 }
 
-Status AccountManager::status() const
+Status AccountManager::status()
 {
 	Account account = defaultAccount();
 	return !account.isNull()
@@ -196,6 +211,7 @@ void AccountManager::protocolFactoryRegistered(ProtocolFactory *factory)
 	if (!isValidStorage())
 		return;
 
+	ensureLoaded();
 	QString factoryProtocolName = factory->name();
 
 	foreach (Account account, AllAccounts)

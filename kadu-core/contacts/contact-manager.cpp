@@ -137,10 +137,13 @@ void ContactManager::ensureLoaded(Account account)
 
 void ContactManager::load()
 {
-	StorableObject::load();
-
 	if (!isValidStorage())
 		return;
+
+	if (isLoaded())
+		return;
+
+	StorableObject::load();
 
 	QDomElement contactsNode = storage()->point();
 	if (contactsNode.isNull())
@@ -202,20 +205,20 @@ void ContactManager::removeContact(Contact contact)
 
 Contact ContactManager::byIndex(unsigned int index)
 {
+	StorableObject::ensureLoaded();
+
 	if (index < 0 || index >= count())
 		return Contact::null;
-
-	StorableObject::ensureLoaded();
 
 	return LoadedContacts.at(index);
 }
 
 Contact ContactManager::byUuid(const QString &uuid)
 {
+	StorableObject::ensureLoaded();
+
 	if (uuid.isEmpty())
 		return Contact::null;
-
-	StorableObject::ensureLoaded();
 
 	foreach (Contact contact, AllContacts)
 		if (uuid == contact.uuid().toString())

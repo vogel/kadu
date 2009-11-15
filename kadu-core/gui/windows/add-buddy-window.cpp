@@ -40,7 +40,7 @@
 #include "add-buddy-window.h"
 
 AddBuddyWindow::AddBuddyWindow(QWidget *parent) :
-		QDialog(parent, Qt::Window), MyBuddy(BuddyShared::TypeNull)
+		QDialog(parent, Qt::Window), MyBuddy(Buddy::null)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 
@@ -304,7 +304,7 @@ void AddBuddyWindow::accept()
 		if (MyBuddy.isNull())
 			MyBuddy = BuddyManager::instance()->byId(account, UserNameEdit->text());
 
-		MyBuddy.setType(BuddyShared::TypeNormal);
+		MyBuddy.setAnonymous(false);
 		MyBuddy.setDisplay(DisplayNameEdit->text());
 	}
 	else
