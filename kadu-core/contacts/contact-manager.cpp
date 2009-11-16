@@ -41,45 +41,6 @@ StoragePoint * ContactManager::createStoragePoint()
 {
 	return new StoragePoint(xml_config_file, xml_config_file->getNode("Contacts"));
 }
-/*
-void ContactManager::load(Account account)
-{
-	if (!isValidStorage())
-		return;
-
-	XmlConfigFile *configurationStorage = storage()->storage();
-	QDomElement contactsNode = storage()->point();
-
-	if (contactsNode.isNull())
-		return;*/
-
-	// TODO 0.6.6: by tag does not work, this works only if childNodes are "Chat"
-// 	QDomNodeList contactsNodes = contactsNode.childNodes();
-/*
-	int count = contactsNodes.count();
-	QString uuid = account.uuid().toString();
-	for (int i = 0; i < count; i++)
-	{
-		QDomElement contactElement = contactsNodes.at(i).toElement();
-		if (contactElement.isNull())
-			continue;
-
-		if (configurationStorage->getTextNode(contactElement, "Account") != uuid)
-			continue;
-
-		StoragePoint *contactStoragePoint = new StoragePoint(configurationStorage, contactElement);
-		if (!account.protocolHandler())
-			return;
-
-		Contact contact = account.protocolHandler()->protocolFactory()->loadContact(contactStoragePoint);
-
-		if (cad)
-		{
-			addContact(cad);
-			cad->data()->ensureLoaded();
-		}
-	}
-}*/
 
 void ContactManager::load()
 {
