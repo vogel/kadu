@@ -14,6 +14,7 @@
 #include <QtCore/QSharedData>
 #include <QtCore/QUuid>
 
+#include "protocols/protocols-aware-object.h"
 #include "shared/shared.h"
 #include "status/base-status-container.h"
 
@@ -23,7 +24,7 @@ class Protocol;
 class ProtocolFactory;
 class StatusType;
 
-class KADUAPI AccountShared : public BaseStatusContainer, public Shared
+class KADUAPI AccountShared : public BaseStatusContainer, public Shared, ProtocolsAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(AccountShared)
@@ -49,12 +50,11 @@ private:
 	QString ProxyUser;
 	QString ProxyPassword;
 
-private slots:
-	void protocolFactoryRegistered(ProtocolFactory *factory);
-	void protocolFactoryUnregistered(ProtocolFactory *factory);
-
 protected:
 	void emitUpdated();
+
+	virtual void protocolRegistered(ProtocolFactory *protocolHandler);
+	virtual void protocolUnregistered(ProtocolFactory *protocolHandler);
 
 public:
 	static AccountShared * loadFromStorage(StoragePoint *storagePoint);

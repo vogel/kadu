@@ -12,7 +12,6 @@
 #include "contacts/contact.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
-#include "protocols/protocols-manager.h"
 
 #include "account-shared.h"
 
@@ -33,21 +32,11 @@ AccountShared::AccountShared(QUuid uuid) :
 		ConnectAtStart(true),
 		UseProxy(false), ProxyPort(0)
 {
-	connect(ProtocolsManager::instance(), SIGNAL(protocolFactoryRegistered(ProtocolFactory *)),
-			this, SLOT(protocolFactoryRegistered(ProtocolFactory *)));
-	connect(ProtocolsManager::instance(), SIGNAL(protocolFactoryUnregistered(ProtocolFactory *)),
-			this, SLOT(protocolFactoryUnregistered(ProtocolFactory *)));
 }
 
 AccountShared::~AccountShared()
 {
-	foreach (ProtocolFactory *factory, ProtocolsManager::instance()->protocolFactories())
-		protocolFactoryUnregistered(factory);
-
-	disconnect(ProtocolsManager::instance(), SIGNAL(protocolFactoryRegistered(ProtocolFactory *)),
-			this, SLOT(protocolFactoryRegistered(ProtocolFactory *)));
-	disconnect(ProtocolsManager::instance(), SIGNAL(protocolFactoryUnregistered(ProtocolFactory *)),
-			this, SLOT(protocolFactoryUnregistered(ProtocolFactory *)));
+	triggerAllProtocolsUnregistered();
 
 	if (ProtocolHandler)
 	{
@@ -85,8 +74,7 @@ void AccountShared::load()
 		host.setAddress("0.0.0.0");
 	ProxyHost = host;
 
-	foreach (ProtocolFactory *factory, ProtocolsManager::instance()->protocolFactories())
-		protocolFactoryRegistered(factory);
+	triggerAllProtocolsRegistered();
 }
 
 void AccountShared::store()
@@ -121,7 +109,7 @@ void AccountShared::emitUpdated()
 	emit updated();
 }
 
-void AccountShared::protocolFactoryRegistered(ProtocolFactory *factory)
+void AccountShared::protocolRegistered(ProtocolFactory *factory)
 {
 	ensureLoaded();
 
@@ -138,7 +126,7 @@ void AccountShared::protocolFactoryRegistered(ProtocolFactory *factory)
 	emit protocolLoaded();
 }
 
-void AccountShared::protocolFactoryUnregistered(ProtocolFactory* factory)
+void AccountShared::protocolUnregistered(ProtocolFactory* factory)
 {
 	ensureLoaded();
 
