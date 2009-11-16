@@ -35,12 +35,12 @@ GroupManager * GroupManager::instance()
 
 GroupManager::GroupManager()
 {
-	Core::instance()->configuration()->registerStorableObject(this);
+	ConfigurationManager::instance()->registerStorableObject(this);
 }
 
 GroupManager::~GroupManager()
 {
-	Core::instance()->configuration()->unregisterStorableObject(this);
+	ConfigurationManager::instance()->unregisterStorableObject(this);
 }
 
 StoragePoint * GroupManager::createStoragePoint()

@@ -18,7 +18,11 @@ class StorableObject;
 
 class KADUAPI ConfigurationManager
 {
+	static ConfigurationManager *Instance;
+
 	QList<StorableObject *> RegisteredStorableObjects;
+
+	ConfigurationManager();
 
 	void importConfiguration();
 	void copyOldContactsToImport();
@@ -27,7 +31,7 @@ class KADUAPI ConfigurationManager
 	void importContactAccountDatasIntoContacts(); // TODO: remove after 0.6.6 release
 
 public:
-	ConfigurationManager();
+	static ConfigurationManager * instance();
 
 	void load();
 	void store();

@@ -43,12 +43,12 @@ BuddyManager::BuddyManager()
 
 BuddyManager::~BuddyManager()
 {
-	Core::instance()->configuration()->unregisterStorableObject(this);
+	ConfigurationManager::instance()->unregisterStorableObject(this);
 }
 
 void BuddyManager::init()
 {
-	Core::instance()->configuration()->registerStorableObject(this);
+	ConfigurationManager::instance()->registerStorableObject(this);
 
 	connect(GroupManager::instance(), SIGNAL(groupAboutToBeRemoved(Group *)),
 			this, SLOT(groupRemoved(Group *)));
@@ -199,7 +199,7 @@ void BuddyManager::mergeBuddies(Buddy destination, Buddy source)
 	source.data()->setUuid(destination.uuid()); // just for case
 // 	source.data() setData(destination.data()); // TODO: 0.6.6 tricky merge, this should work well ;)
 	
-	Core::instance()->configuration()->flush();
+	ConfigurationManager::instance()->flush();
 }
 
 Buddy BuddyManager::byIndex(unsigned int index)

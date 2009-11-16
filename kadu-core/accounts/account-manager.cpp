@@ -35,12 +35,12 @@ KADUAPI AccountManager * AccountManager::instance()
 AccountManager::AccountManager() :
 		StorableObject()
 {
-	Core::instance()->configuration()->registerStorableObject(this);
+	ConfigurationManager::instance()->registerStorableObject(this);
 }
 
 AccountManager::~AccountManager()
 {
-	Core::instance()->configuration()->unregisterStorableObject(this);
+	ConfigurationManager::instance()->unregisterStorableObject(this);
 }
 
 StoragePoint * AccountManager::createStoragePoint()

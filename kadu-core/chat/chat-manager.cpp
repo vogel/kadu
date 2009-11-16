@@ -29,12 +29,12 @@ ChatManager *  ChatManager::instance()
 ChatManager::ChatManager() :
 		StorableObject(true)
 {
-	Core::instance()->configuration()->registerStorableObject(this);
+	ConfigurationManager::instance()->registerStorableObject(this);
 }
 
 ChatManager::~ChatManager()
 {
-	Core::instance()->configuration()->unregisterStorableObject(this);
+	ConfigurationManager::instance()->unregisterStorableObject(this);
 
 	triggerAllAccountsUnregistered();
 }

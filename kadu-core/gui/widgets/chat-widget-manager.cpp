@@ -76,7 +76,7 @@ ChatWidgetManager::ChatWidgetManager() :
 	connect(ClosedChatsTimer, SIGNAL(timeout()), this, SLOT(clearClosedChats()));
 	ClosedChatsTimer->start(30*1000);
 
-	Core::instance()->configuration()->registerStorableObject(this);
+	ConfigurationManager::instance()->registerStorableObject(this);
 
 	// TODO 0.6.6 : Implement import old Config
 	//if (xml_config_file->getNode("ChatWindows", XmlConfigFile::ModeFind).isNull())

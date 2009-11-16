@@ -64,9 +64,9 @@ Core::Core() : Myself(Buddy::null), Window(0), ShowMainWindowOnStart(true)
 
 Core::~Core()
 {
-	Configuration->store();
-	delete Configuration;
-	Configuration = 0;
+	ConfigurationManager::instance()->store();
+// 	delete Configuration;
+// 	Configuration = 0;
 
 	storeConfiguration();
 
@@ -260,9 +260,6 @@ void Core::createAllDefaultToolbars()
 
 void Core::init()
 {
-	Configuration = new ConfigurationManager();
-	Configuration->load();
-
 	AccountManager::instance()->load();
 
 	// protocol modules should be loaded before gui

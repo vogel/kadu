@@ -12,6 +12,19 @@
 
 #include "configuration-manager.h"
 
+ConfigurationManager * ConfigurationManager::Instance = 0;
+
+ConfigurationManager * ConfigurationManager::instance()
+{
+	if (!Instance)
+	{
+		Instance = new ConfigurationManager();
+		Instance->load();
+	}
+
+	return Instance;
+}
+
 ConfigurationManager::ConfigurationManager()
 {
 

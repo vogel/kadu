@@ -32,12 +32,12 @@ ContactManager * ContactManager::instance()
 
 ContactManager::ContactManager()
 {
-	Core::instance()->configuration()->registerStorableObject(this);
+	ConfigurationManager::instance()->registerStorableObject(this);
 }
 
 ContactManager::~ContactManager()
 {
-	Core::instance()->configuration()->unregisterStorableObject(this);
+	ConfigurationManager::instance()->unregisterStorableObject(this);
 
 	triggerAllAccountsUnregistered();
 }

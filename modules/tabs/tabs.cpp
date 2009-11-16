@@ -119,7 +119,7 @@ TabsManager::TabsManager(bool firstload) :
 	connect(&timer, SIGNAL(timeout()),
 			this, SLOT(onTimer()));
 
-	Core::instance()->configuration()->registerStorableObject(this);
+	ConfigurationManager::instance()->registerStorableObject(this);
 
 	openInNewTabActionDescription = new ActionDescription(
 		0, ActionDescription::TypeUser, "openInNewTabAction",
