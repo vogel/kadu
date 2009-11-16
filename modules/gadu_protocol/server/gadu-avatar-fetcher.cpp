@@ -17,6 +17,7 @@
 #include "accounts/account.h"
 #include "buddies/avatar.h"
 #include "buddies/avatar-manager.h"
+#include "buddies/avatar-shared.h"
 #include "misc/path-conversion.h"
 
 #include "gadu-avatar-fetcher.h"
@@ -90,6 +91,11 @@ void GaduAvatarFetcher::requestFinished(int id, bool error)
 		return;
 	}
 
+	printf("Before: %s\n", qPrintable(MyContact.contactAvatar().uuid().toString()));
+	if (MyContact.contactAvatar().isNull())
+		MyContact.setContactAvatar(Avatar());
+	printf("After: %s\n", qPrintable(MyContact.contactAvatar().uuid().toString()));
+
 	QDateTime timestamp;
 	QDomElement timestampElement = avatarElement.firstChildElement("timestamp");
 	if (!timestampElement.isNull())
@@ -128,6 +134,7 @@ void GaduAvatarFetcher::requestFinished(int id, bool error)
 	}
 
 	MyContact.contactAvatar().setLastUpdated(timestamp);
+	AvatarManager::instance()->addAvatar(MyContact.contactAvatar());
 
 	QUrl url = avatarUrl;
 
@@ -140,6 +147,7 @@ void GaduAvatarFetcher::requestFinished(int id, bool error)
 
 void GaduAvatarFetcher::avatarDownloaded(int id, bool error)
 {
+	printf("avatar downaloded!!\n");
 	emit avatarFetched(MyContact, AvatarBuffer.buffer());
 
 	deleteLater();

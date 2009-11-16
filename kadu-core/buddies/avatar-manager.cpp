@@ -13,6 +13,7 @@
 #include "accounts/account.h"
 #include "buddies/avatar.h"
 #include "buddies/avatar-shared.h"
+#include "configuration/configuration-manager.h"
 #include "contacts/contact.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
@@ -33,11 +34,13 @@ AvatarManager * AvatarManager::instance()
 
 AvatarManager::AvatarManager()
 {
+	ConfigurationManager::instance()->registerStorableObject(this);
 	triggerAllAccountsRegistered();
 }
 
 AvatarManager::~AvatarManager()
 {
+	ConfigurationManager::instance()->unregisterStorableObject(this);
 	triggerAllAccountsUnregistered();
 }
 
@@ -151,15 +154,7 @@ AvatarService * AvatarManager::avatarService(Contact contact)
 
 QString AvatarManager::avatarFileName(Avatar avatar)
 {
-	Contact contact = avatar.avatarContact();
-	if (contact.isNull())
-		return QString::null;
-
-	Account account = contact.contactAccount();
-	if (account.isNull())
-		return QString::null;
-
-	return QString("%1-%2").arg(contact.ownerBuddy().uuid().toString(), account.uuid().toString());
+	return avatar.uuid().toString();
 }
 
 StoragePoint * AvatarManager::createStoragePoint()
@@ -203,6 +198,7 @@ void AvatarManager::updateAvatar(Contact contact)
 
 void AvatarManager::avatarFetched(Contact contact, const QByteArray &data)
 {
+	printf("Avatar fetched\n");
 	Avatar avatar = contact.contactAvatar();
 	avatar.setLastUpdated(QDateTime::currentDateTime());
 
@@ -218,6 +214,8 @@ void AvatarManager::avatarFetched(Contact contact, const QByteArray &data)
 		avatarsDir.mkpath(ggPath("avatars"));
 
 	QFile file(avatarsDir.canonicalPath() + "/" + avatarFile);
+	printf("dest: %s\n", qPrintable(avatarsDir.canonicalPath() + "/" + avatarFile));
+
 	if (!file.open(QIODevice::WriteOnly))
 		return;
 
