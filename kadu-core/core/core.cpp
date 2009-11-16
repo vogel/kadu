@@ -268,7 +268,8 @@ void Core::init()
 	ModulesManager::instance()->loadProtocolModules();
 
 	Myself = Buddy();
-	Myself.setDisplay(config_file.readEntry("General", "Nick"));
+	QString nickName(config_file.readEntry("General", "Nick"));
+	Myself.setDisplay(nickName.isEmpty() ? tr("Me") : nickName);
 
 	connect(StatusContainerManager::instance(), SIGNAL(statusChanged()), this, SLOT(statusChanged()));
 
