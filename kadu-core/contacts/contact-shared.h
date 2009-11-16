@@ -16,13 +16,14 @@
 
 #include "buddies/avatar.h"
 #include "buddies/buddy.h"
+#include "protocols/protocols-aware-object.h"
 #include "status/status.h"
 
 #include "shared/shared.h"
 
 class ContactDetails;
 
-class KADUAPI ContactShared : public QObject, public Shared
+class KADUAPI ContactShared : public QObject, public Shared, ProtocolsAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(ContactShared)
@@ -44,6 +45,9 @@ class KADUAPI ContactShared : public QObject, public Shared
 
 protected:
 	virtual void emitUpdated();
+
+	virtual void protocolRegistered(ProtocolFactory *protocolFactory);
+	virtual void protocolUnregistered(ProtocolFactory *protocolFactory);
 
 public:
 	static ContactShared * loadFromStorage(StoragePoint *contactStoragePoint);
@@ -76,6 +80,9 @@ signals:
 	void updated();
 
 	void idChanged(const QString &id);
+
+	void protocolLoaded();
+	void protocolUnloaded();
 
 };
 

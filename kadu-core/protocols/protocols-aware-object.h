@@ -20,12 +20,12 @@ class KADUAPI ProtocolsAwareObject : public AwareObject<ProtocolsAwareObject>
 {
 
 protected:
-	virtual void protocolRegistered(ProtocolFactory *protocolHandler) = 0;
-	virtual void protocolUnregistered(ProtocolFactory *protocolHandler) = 0;
+	virtual void protocolRegistered(ProtocolFactory *protocolFactory) = 0;
+	virtual void protocolUnregistered(ProtocolFactory *protocolFactory) = 0;
 
 public:
-	static void notifyProtocolRegistered(ProtocolFactory *protocolHandler);
-	static void notifyProtocolUnregistered(ProtocolFactory *protocolHandler);
+	static void notifyProtocolRegistered(ProtocolFactory *protocolFactory);
+	static void notifyProtocolUnregistered(ProtocolFactory *protocolFactory);
 
 	void triggerAllProtocolsRegistered();
 	void triggerAllProtocolsUnregistered();

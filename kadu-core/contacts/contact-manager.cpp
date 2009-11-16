@@ -22,10 +22,7 @@ ContactManager * ContactManager::Instance = 0;
 ContactManager * ContactManager::instance()
 {
 	if (0 == Instance)
-	{
 		Instance = new ContactManager();
-		Instance->init();
-	}
 
 	return Instance;
 }
@@ -38,31 +35,6 @@ ContactManager::ContactManager()
 ContactManager::~ContactManager()
 {
 	ConfigurationManager::instance()->unregisterStorableObject(this);
-
-	triggerAllAccountsUnregistered();
-}
-
-void ContactManager::init()
-{
-	triggerAllAccountsRegistered();
-}
-
-void ContactManager::loadContact(Contact contact)
-{
-	contact.loadDetails();
-	addContact(contact);
-}
-
-void ContactManager::unloadContact(Contact contact)
-{
-	removeContact(contact);
-	contact.unloadDetails();
-}
-
-void ContactManager::tryLoadContact(Contact contact)
-{
-	if (LoadedAccounts.contains(contact.contactAccount()))
-		loadContact(contact);
 }
 
 StoragePoint * ContactManager::createStoragePoint()
@@ -109,33 +81,6 @@ void ContactManager::load(Account account)
 	}
 }*/
 
-void ContactManager::accountRegistered(Account account)
-{
-	printf("Account registered %d\n", AllContacts.count());
-	if (LoadedAccounts.contains(account))
-		return;
-
-	LoadedAccounts.append(account);
-	foreach (Contact contact, AllContacts)
-		if (contact.contactAccount() == account)
-			loadContact(contact);
-}
-
-void ContactManager::accountUnregistered(Account account)
-{
-	if (!LoadedAccounts.contains(account))
-		return;
-
-	LoadedAccounts.removeAll(account);
-	foreach (Contact contact, LoadedContacts)
-		unloadContact(contact);
-}
-
-void ContactManager::ensureLoaded(Account account)
-{
-	accountRegistered(account);
-}
-
 void ContactManager::load()
 {
 	if (!isValidStorage())
@@ -157,7 +102,12 @@ void ContactManager::load()
 		Contact contact = Contact::loadFromStorage(storagePoint);
 		AllContacts.append(contact);
 
-		tryLoadContact(contact);
+		// TODO: 0.6.6
+// 		connect(contact.data(), SIGNAL(protocolLoaded()), this, SLOT(contactProtocolLoaded()));
+// 		connect(contact.data(), SIGNAL(protocolUnloaded()), this, SLOT(contactProtocolUnloaded()));
+
+		if (contact.contactAccount().protocolHandler())
+			addContact(contact);
 	}
 }
 
@@ -237,4 +187,22 @@ Contact ContactManager::byContactShared(ContactShared *data)
 			return contact;
 
 	return Contact(data);
+}
+
+void ContactManager::contactProtocolLoaded()
+{
+	ContactShared *contactShared = dynamic_cast<ContactShared *>(sender());
+	if (!contactShared)
+		return;
+
+	addContact(Contact(contactShared));
+}
+
+void ContactManager::contactProtocolUnloaded()
+{
+	ContactShared *contactShared = dynamic_cast<ContactShared *>(sender());
+	if (!contactShared)
+		return;
+
+	removeContact(Contact(contactShared));
 }

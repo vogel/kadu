@@ -14,14 +14,13 @@
 #include <QtCore/QObject>
 #include <QtCore/QUuid>
 
-#include "accounts/accounts-aware-object.h"
 #include "configuration/storable-object.h"
 #include "exports.h"
 
 class Contact;
 class ContactShared;
 
-class KADUAPI ContactManager : public QObject, public StorableObject, AccountsAwareObject
+class KADUAPI ContactManager : public QObject, public StorableObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(ContactManager)
@@ -35,21 +34,16 @@ class KADUAPI ContactManager : public QObject, public StorableObject, AccountsAw
 	ContactManager();
 	virtual ~ContactManager();
 
-	void init();
-	void loadContact(Contact contact);
-	void unloadContact(Contact contact);
-	void tryLoadContact(Contact contact);
+private slots:
+	void contactProtocolLoaded();
+	void contactProtocolUnloaded();
 
 protected:
 	virtual StoragePoint * createStoragePoint();
 
-	virtual void accountRegistered(Account account);
-	virtual void accountUnregistered(Account account);
-
 public:
 	static ContactManager * instance();
-	
-	void ensureLoaded(Account account);
+
 	virtual void load();
 	virtual void store();
 

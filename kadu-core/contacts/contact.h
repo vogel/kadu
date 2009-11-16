@@ -46,9 +46,6 @@ public:
 
 	Contact & operator = (const Contact &copy);
 
-	void loadDetails();
-	void unloadDetails();
-
 	virtual bool validateId();
 	bool isValid();
 

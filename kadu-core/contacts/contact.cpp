@@ -55,18 +55,6 @@ Contact & Contact::operator = (const Contact &copy)
 	return *this;
 }
 
-void Contact::loadDetails()
-{
-	if (!isNull())
-		data()->loadDetails();
-}
-
-void Contact::unloadDetails()
-{
-	if (!isNull())
-		data()->unloadDetails();
-}
-
 void Contact::connectDataSignals()
 {
 	if (isNull())

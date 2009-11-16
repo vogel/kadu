@@ -46,10 +46,7 @@ void SimpleChat::load()
 		removeValue("Contact");
 	}
 	else
-	{
-		ContactManager::instance()->ensureLoaded(account());
 		CurrentContact = ContactManager::instance()->byUuid(cadUuid);
-	}
 
 	refreshTitle();
 }

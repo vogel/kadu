@@ -36,6 +36,7 @@ ContactShared::ContactShared(QUuid uuid) :
 
 ContactShared::~ContactShared()
 {
+	triggerAllProtocolsUnregistered();
 }
 
 void ContactShared::load()
@@ -64,6 +65,8 @@ void ContactShared::load()
 	ContactAvatar = AvatarManager::instance()->byUuid(loadValue<QString>("Avatar"));
 
 // 	ContactManager::instance()->addContact(new Contact(this));
+
+	triggerAllProtocolsRegistered();
 }
 
 void ContactShared::store()
@@ -83,34 +86,6 @@ void ContactShared::store()
 	removeValue("Contact");
 }
 
-void ContactShared::loadDetails()
-{
-	if (Details)
-		return;
-
-	if (ContactAccount.isNull())
-		return;
-
-	Protocol *protocol = ContactAccount.protocolHandler();
-	if (!protocol)
-		return;
-
-	ProtocolFactory *factory = protocol->protocolFactory();
-	if (!factory)
-		return;
-
-	Details = factory->createContactDetails(Contact(this));
-}
-
-void ContactShared::unloadDetails()
-{
-	if (Details)
-	{
-		delete Details;
-		Details = 0;
-	}
-}
-
 void ContactShared::emitUpdated()
 {
 	emit updated();
@@ -125,6 +100,33 @@ void ContactShared::setOwnerBuddy(Buddy buddy)
 		OwnerBuddy.addContact(ContactManager::instance()->byContactShared(this));
 
 	dataUpdated();
+}
+
+void ContactShared::protocolRegistered(ProtocolFactory *protocolFactory)
+{
+	if (ContactAccount.protocolName() != protocolFactory->name())
+		return;
+
+	if (Details)
+		return;
+
+	Details = protocolFactory->createContactDetails(Contact(this));
+
+	emit protocolLoaded();
+}
+
+void ContactShared::protocolUnregistered(ProtocolFactory *protocolFactory)
+{
+	if (ContactAccount.protocolName() != protocolFactory->name())
+		return;
+
+	if (Details)
+	{
+		delete Details;
+		Details = 0;
+	}
+
+	emit protocolUnloaded();
 }
 
 void ContactShared::setId(const QString &id)
