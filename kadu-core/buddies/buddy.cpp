@@ -190,7 +190,7 @@ Buddy Buddy::dummy()
 	contactData.setContactAccount(account);
 	contactData.setOwnerBuddy(example);
 	contactData.setId("999999");
-	contactData.data()->setLoaded(true);
+	contactData.data()->setState(StorableObject::StateNew);
 	contactData.setCurrentStatus(Status("Away", tr("Example description")));
 	contactData.setAddress(QHostAddress(2130706433));
 	contactData.setPort(80);

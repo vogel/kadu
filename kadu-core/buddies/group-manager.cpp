@@ -98,9 +98,10 @@ void GroupManager::load()
 
 void GroupManager::store()
 {
-	if (!isLoaded())
+	if (!isValidStorage())
 		return;
 
+	ensureLoaded();
 	emit saveGroupData();
 
 	foreach (Group *group, Groups)

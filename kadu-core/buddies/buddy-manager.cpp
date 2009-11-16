@@ -77,7 +77,7 @@ void BuddyManager::importConfiguration(XmlConfigFile *configurationStorage)
 
 void BuddyManager::load()
 {
-	if (isLoaded())
+	if (!needsLoad())
 		return;
 
 	StorableObject::load();

@@ -46,7 +46,7 @@ void AvatarManager::load()
 	if (!isValidStorage())
 		return;
 	
-	if (isLoaded())
+	if (!needsLoad())
 		return;
 	
 	StorableObject::load();

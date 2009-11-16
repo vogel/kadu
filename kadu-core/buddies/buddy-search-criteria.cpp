@@ -28,7 +28,7 @@ void BuddySearchCriteria::reqUin(Account account, const QString &uin)
 		contact = Contact();
 		contact.setContactAccount(account);
 		contact.setOwnerBuddy(SearchBuddy);
-		contact.data()->setLoaded(true);
+		contact.data()->setState(StorableObject::StateNew);
 		SearchBuddy.addContact(contact);
 	}
 	contact.setId(uin);

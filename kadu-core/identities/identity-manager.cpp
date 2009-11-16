@@ -24,7 +24,7 @@ KADUAPI IdentityManager * IdentityManager::instance()
 }
 
 IdentityManager::IdentityManager() :
-		StorableObject(true)
+		StorableObject(StorableObject::StateLoaded)
 {
     	ConfigurationManager::instance()->registerStorableObject(this);
 }

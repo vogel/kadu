@@ -27,7 +27,7 @@ ChatManager *  ChatManager::instance()
 }
 
 ChatManager::ChatManager() :
-		StorableObject(true)
+		StorableObject(StateLoaded)
 {
 	ConfigurationManager::instance()->registerStorableObject(this);
 }

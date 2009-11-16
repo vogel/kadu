@@ -102,7 +102,7 @@ void disableNewTab(Action *action)
 }
 
 TabsManager::TabsManager(bool firstload) :
-	QObject(), StorableObject("ModuleTabs", 0, false)
+	QObject(), StorableObject("ModuleTabs", 0)
 {
 	kdebugf();
 

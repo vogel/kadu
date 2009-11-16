@@ -286,7 +286,7 @@ void Core::init()
 #endif
 	QTimer::singleShot(15000, this, SLOT(deleteOldConfigurationFiles()));
 
-// 	ContactManager::instance()->load();
+	ContactManager::instance()->load();
 	NotificationManager::instance(); // TODO: 0.6.6
 }
 

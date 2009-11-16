@@ -99,7 +99,7 @@ void GaduImporter::importGaduContact(Buddy &buddy)
 	contact.setContactAccount(account);
 	contact.setOwnerBuddy(buddy);
 	contact.setId(id);
-	contact.data()->setLoaded(true);
+	contact.data()->setState(StorableObject::StateNew);
 	
 	buddy.removeCustomData("uin");
 	buddy.setBlocked(QVariant(buddy.customData("blocking")).toBool());

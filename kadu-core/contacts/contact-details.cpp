@@ -13,7 +13,7 @@
 #include "contact-details.h"
 
 ContactDetails::ContactDetails(StoragePoint *storagePoint, Contact parent) :
-		QObject(parent.data()), StorableObject(storagePoint), MyContactData(parent.data())
+		StorableObject(storagePoint), MyContactData(parent.data())
 {
 }
 

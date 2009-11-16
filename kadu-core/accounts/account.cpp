@@ -84,12 +84,14 @@ Buddy Account::createAnonymous(const QString& id)
 		return Buddy::null;
 
 	Buddy result;
+	result.data()->setState(StorableObject::StateNew);
 	result.setAnonymous(true);
 
 	ProtocolFactory *protocolFactory = data()->protocolHandler()->protocolFactory();
 
 	Contact contact;
 	ContactDetails *details = protocolFactory->createContactDetails(contact);
+	details->setState(StorableObject::StateNew);
 	contact.setContactAccount(*this);
 	contact.setOwnerBuddy(result);
 	contact.setId(id);

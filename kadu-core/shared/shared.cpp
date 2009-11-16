@@ -60,7 +60,7 @@ void Shared::doEmitUpdated()
 {
 	if (0 == BlockUpdatedSignalCount && Updated)
 	{
-		emitUpdated();
+// 		emitUpdated();
 		Updated = false;
 	}
 }
