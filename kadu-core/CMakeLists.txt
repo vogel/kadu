@@ -229,6 +229,7 @@ set (kadu_SRCS
 	protocols/connection-error-notification.cpp
 	protocols/protocol.cpp
 	protocols/protocol-menu-manager.cpp
+	protocols/protocols-aware-object.cpp
 	protocols/protocols-manager.cpp
 	protocols/model/protocols-model.cpp
 	protocols/services/chat-service.cpp
