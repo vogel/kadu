@@ -305,7 +305,7 @@ void Core::deleteOldConfigurationFiles()
 {
 	kdebugf();
 
-	QDir oldConfigs2(ggPath(), "kadu.conf.xml.backup.*", QDir::Name, QDir::Files);
+	QDir oldConfigs2(ggPath(), "kadu-0.6.6.conf.xml.backup.*", QDir::Name, QDir::Files);
 
 	if (oldConfigs2.count() > 20)
 		for (unsigned int i = 0, max = oldConfigs2.count() - 20; i < max; ++i)
