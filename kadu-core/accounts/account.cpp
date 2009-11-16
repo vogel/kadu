@@ -35,6 +35,7 @@ Account::Account(bool null) :
 
 Account::Account()
 {
+	data()->setState(StorableObject::StateNew);
 }
 
 Account::Account(AccountShared *data) :

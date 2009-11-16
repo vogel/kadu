@@ -29,6 +29,7 @@ ContactShared * ContactShared::loadFromStorage(StoragePoint *storagePoint)
 
 ContactShared::ContactShared(QUuid uuid) :
 		Shared(uuid, "Account", ContactManager::instance()),
+		ContactAccount(Account::null), ContactAvatar(Avatar::null), OwnerBuddy(Buddy::null),
 		Details(0)
 {
 }
@@ -51,16 +52,16 @@ void ContactShared::load()
 	if (buddyUuid.isNull())
 		buddyUuid = loadValue<QString>("Contact");
 	setOwnerBuddy(BuddyManager::instance()->byUuid(buddyUuid));
-/*
+
 	if (storage()->point().isElement())
 	{
 		QDomNodeList avatars = storage()->point().elementsByTagName("Avatar");
 		if (avatars.count() == 1)
 			if (!avatars.at(0).firstChildElement("LastUpdated").isNull())
 				storage()->point().removeChild(avatars.at(0));
-	}*/
+	}
 
-// 	ContactAvatar = AvatarManager::instance()->byUuid(loadValue<QString>("Avatar"));
+	ContactAvatar = AvatarManager::instance()->byUuid(loadValue<QString>("Avatar"));
 
 // 	ContactManager::instance()->addContact(new Contact(this));
 }

@@ -72,8 +72,12 @@ void AccountManager::load()
 		connect(account.data(), SIGNAL(protocolLoaded()), this, SLOT(accountProtocolLoaded()));
 		connect(account.data(), SIGNAL(protocolUnloaded()), this, SLOT(accountProtocolUnloaded()));
 
+		printf("loaded account\n");
 		if (account.protocolHandler())
+		{
+			printf("registerd one\n");
 			registerAccount(account);
+		}
 	}
 }
 

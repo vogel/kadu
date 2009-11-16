@@ -27,6 +27,7 @@ Avatar::Avatar(bool null) :
 
 Avatar::Avatar()
 {
+	data()->setState(StorableObject::StateNew);
 }
 
 Avatar::Avatar(AvatarShared *data) :

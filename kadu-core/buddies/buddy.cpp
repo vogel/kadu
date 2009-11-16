@@ -36,6 +36,7 @@ Buddy::Buddy(bool null) :
 
 Buddy::Buddy()
 {
+	data()->setState(StorableObject::StateNew);
 }
 
 Buddy::Buddy(BuddyShared *data) :

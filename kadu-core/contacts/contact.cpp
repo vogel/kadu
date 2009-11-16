@@ -32,6 +32,7 @@ Contact::Contact(bool null) :
 
 Contact::Contact()
 {
+	data()->setState(StorableObject::StateNew);
 }
 
 Contact::Contact(ContactShared *data) :

@@ -260,8 +260,6 @@ void Core::createAllDefaultToolbars()
 
 void Core::init()
 {
-	AccountManager::instance()->load();
-
 	// protocol modules should be loaded before gui
 	// it fixes crash on loading pending messages from config, contacts import from 0.6.5, and maybe other issues
 	ModulesManager::instance()->loadProtocolModules();
@@ -286,8 +284,11 @@ void Core::init()
 #endif
 	QTimer::singleShot(15000, this, SLOT(deleteOldConfigurationFiles()));
 
-	ContactManager::instance()->load();
 	NotificationManager::instance(); // TODO: 0.6.6
+
+	AccountManager::instance()->load();
+	BuddyManager::instance()->load();
+	ContactManager::instance()->load();
 }
 
 void Core::storeConfiguration()

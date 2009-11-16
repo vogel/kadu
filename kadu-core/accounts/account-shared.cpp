@@ -37,9 +37,6 @@ AccountShared::AccountShared(QUuid uuid) :
 			this, SLOT(protocolFactoryRegistered(ProtocolFactory *)));
 	connect(ProtocolsManager::instance(), SIGNAL(protocolFactoryUnregistered(ProtocolFactory *)),
 			this, SLOT(protocolFactoryUnregistered(ProtocolFactory *)));
-
-	foreach (ProtocolFactory *factory, ProtocolsManager::instance()->protocolFactories())
-		protocolFactoryRegistered(factory);
 }
 
 AccountShared::~AccountShared()
@@ -70,7 +67,6 @@ void AccountShared::load()
 	
 	Name = loadValue<QString>("Name");
 	ProtocolName = loadValue<QString>("Protocol");
-	printf("loaded protocol: %s\n", qPrintable(ProtocolName));
 	setId(loadValue<QString>("Id"));
 
 	RememberPassword = loadValue<bool>("RememberPassword", true);
@@ -88,6 +84,9 @@ void AccountShared::load()
 	if (!host.setAddress(loadValue<QString>("ProxyHost")))
 		host.setAddress("0.0.0.0");
 	ProxyHost = host;
+
+	foreach (ProtocolFactory *factory, ProtocolsManager::instance()->protocolFactories())
+		protocolFactoryRegistered(factory);
 }
 
 void AccountShared::store()
