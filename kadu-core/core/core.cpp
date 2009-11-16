@@ -31,8 +31,6 @@
 #include "status/status-type.h"
 #include "status/status-type-manager.h"
 
-#include "../modules/gadu_protocol/gadu-protocol.h"
-
 #include "debug.h"
 #include "emoticons.h"
 #include "icons-manager.h"
@@ -404,10 +402,7 @@ void Core::configurationUpdated()
 		settings.remove("Kadu");
 #endif
 
-#ifdef DEBUG_ENABLED
 	debug_mask = config_file.readNumEntry("General", "DEBUG_MASK");
-	gg_debug_level = debug_mask | ~255;
-#endif
 }
 
 QString Core::readToken(const QPixmap &tokenPixmap)
