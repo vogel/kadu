@@ -106,6 +106,12 @@ QString Avatar::filePath()
 	return FilePath;
 }
 
+void Avatar::setFilePath(const QString &filePath)
+{
+	ensureLoaded();
+	FilePath = filePath;
+}
+
 QPixmap Avatar::pixmap()
 {
 	ensureLoaded();
