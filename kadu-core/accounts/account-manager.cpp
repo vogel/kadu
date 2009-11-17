@@ -69,8 +69,8 @@ void AccountManager::load()
 		Account account = Account::loadFromStorage(storagePoint);
 		AllAccounts.append(account);
 
-		connect(account.data(), SIGNAL(protocolLoaded()), this, SLOT(accountProtocolLoaded()));
-		connect(account.data(), SIGNAL(protocolUnloaded()), this, SLOT(accountProtocolUnloaded()));
+		connect(account, SIGNAL(protocolLoaded()), this, SLOT(accountProtocolLoaded()));
+		connect(account, SIGNAL(protocolUnloaded()), this, SLOT(accountProtocolUnloaded()));
 
 		if (account.protocolHandler())
 			registerAccount(account);

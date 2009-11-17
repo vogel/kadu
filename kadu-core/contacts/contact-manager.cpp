@@ -61,11 +61,16 @@ void ContactManager::load()
 	{
 		StoragePoint *storagePoint = new StoragePoint(storage()->storage(), contactElement);
 		Contact contact = Contact::loadFromStorage(storagePoint);
+
+		// ignore invalid contacts
+		if (contact.isNull() || contact.ownerBuddy().isNull() || contact.contactAccount().isNull())
+			continue;
+
 		AllContacts.append(contact);
 
 		// TODO: 0.6.6
-// 		connect(contact.data(), SIGNAL(protocolLoaded()), this, SLOT(contactProtocolLoaded()));
-// 		connect(contact.data(), SIGNAL(protocolUnloaded()), this, SLOT(contactProtocolUnloaded()));
+// 		connect(contact, SIGNAL(protocolLoaded()), this, SLOT(contactProtocolLoaded()));
+// 		connect(contact, SIGNAL(protocolUnloaded()), this, SLOT(contactProtocolUnloaded()));
 
 		if (contact.contactAccount().protocolHandler())
 			addContact(contact);
@@ -80,7 +85,8 @@ void ContactManager::store()
 	StorableObject::ensureLoaded();
 
 	foreach (Contact contact, AllContacts)
-		contact.store();
+		if (!contact.isNull())
+			contact.store();
 }
 
 void ContactManager::addContact(Contact contact)
@@ -90,11 +96,11 @@ void ContactManager::addContact(Contact contact)
 
 	StorableObject::ensureLoaded();
 
-	if (AllContacts.contains(contact))
+	if (LoadedContacts.contains(contact))
 		return;
 
 	emit contactAboutToBeAdded(contact);
-	AllContacts.append(contact);
+	LoadedContacts.append(contact);
 	emit contactAdded(contact);
 }
 
@@ -105,19 +111,19 @@ void ContactManager::removeContact(Contact contact)
 	if (contact.isNull())
 		return;
 
-	StorableObject::ensureLoaded();
+	ensureLoaded();
 
-	if (!AllContacts.contains(contact))
+	if (!LoadedContacts.contains(contact))
 		return;
 
 	emit contactAboutToBeRemoved(contact);
-	AllContacts.removeAll(contact);
+	LoadedContacts.removeAll(contact);
 	emit contactRemoved(contact);
 }
 
 Contact ContactManager::byIndex(unsigned int index)
 {
-	StorableObject::ensureLoaded();
+	ensureLoaded();
 
 	if (index < 0 || index >= count())
 		return Contact::null;
@@ -127,21 +133,24 @@ Contact ContactManager::byIndex(unsigned int index)
 
 Contact ContactManager::byUuid(const QString &uuid)
 {
-	StorableObject::ensureLoaded();
+	ensureLoaded();
 
 	if (uuid.isEmpty())
 		return Contact::null;
 
 	foreach (Contact contact, AllContacts)
-		if (uuid == contact.uuid().toString())
-			return contact;
+	{
+		if (!contact.isNull())
+			if (uuid == contact.uuid().toString())
+				return contact;
+	}
 
 	return Contact::null;
 }
 
 Contact ContactManager::byContactShared(ContactShared *data)
 {
-	StorableObject::ensureLoaded();
+	ensureLoaded();
 
 	foreach (Contact contact, AllContacts)
 		if (data == contact.data())

@@ -147,12 +147,14 @@ Chat * Protocol::loadChatFromStorage(StoragePoint *chatStorage)
 	if ("Simple" == type)
 	{
 		SimpleChat *result = new SimpleChat(chatStorage);
+		result->setState(StorableObject::StateUnloaded);
 		result->load();
 		return result;
 	}
 	else if ("Conference" == type)
 	{
 		ConferenceChat *result = new ConferenceChat(chatStorage);
+		result->setState(StorableObject::StateUnloaded);
 		result->load();
 		return result;
 	}
