@@ -141,9 +141,9 @@ void JabberProtocol::initializeJabberClient()
 		   this, SLOT(rosterRequestFinished(bool)));
 
 	connect(JabberClient, SIGNAL(resourceAvailable(const XMPP::Jid &, const XMPP::Resource &)),
-		   this, SLOT(clientResourceAvailable(const XMPP::Jid &, const XMPP::Resource &)));
+		   this, SLOT(clientResourceReceived(const XMPP::Jid &, const XMPP::Resource &)));
 	connect(JabberClient, SIGNAL(resourceUnavailable(const XMPP::Jid &, const XMPP::Resource &)),
-		   this, SLOT(clientResourceUnavailable(const XMPP::Jid &, const XMPP::Resource &)));
+		   this, SLOT(clientResourceReceived(const XMPP::Jid &, const XMPP::Resource &)));
 
 	connect(JabberClient, SIGNAL(incomingFileTransfer()), this, SLOT(slotIncomingFileTransfer()));
 
@@ -438,7 +438,7 @@ void JabberProtocol::slotIncomingFileTransfer()
 	CurrentFileTransferService->incomingFile(jft);
 }
 
-void JabberProtocol::clientResourceAvailable(const XMPP::Jid &jid, const XMPP::Resource &resource)
+void JabberProtocol::clientResourceReceived(const XMPP::Jid &jid, const XMPP::Resource &resource)
 {
 	kdebugf();
 	kdebug("New resource available for %s\n", jid.full().toLocal8Bit().data());
@@ -477,60 +477,6 @@ void JabberProtocol::clientResourceAvailable(const XMPP::Jid &jid, const XMPP::R
 	}
 	*/
 	
-	if (buddy.display().isEmpty())
-		buddy.setDisplay(jid.bare());
-
-	Contact contact = buddy.contact(account());
-	if (contact.isNull())
-		return;
-
-	Status oldStatus = contact.currentStatus();
-	contact.setCurrentStatus(status);
-
-	emit buddyStatusChanged(account(), buddy, oldStatus);
-	kdebugf2();
-}
-
-// TODO remove one of these metods clientResourceUnavailable/clientResourceAvailable
-void JabberProtocol::clientResourceUnavailable(const XMPP::Jid &jid, const XMPP::Resource &resource)
-{
-	kdebugf();
-	kdebug("Resource now unavailable for %s\n", jid.full().toLocal8Bit().data());
-	resourcePool()->removeResource(jid, resource);
-	//TODO: na razie brak lepszego miejsca na to
-	Status status;
-	if (resource.status().isAvailable())
-		status.setType("Online");
-	else if (resource.status().isInvisible())
-		status.setType("Invisible");
-	else
-		status.setType("Offline");
-
-	if (resource.status().show() == "away")
-		status.setType("Away");
-	else if (resource.status().show() == "xa")
-		status.setType("NotAvailable");
-	else if (resource.status().show() == "dnd")
-		status.setType("DoNotDisturb");
-	else if (resource.status().show() == "chat")
-		status.setType("FreeForChat");
-
-	QString description = resource.status().status();
-	description.replace("\r\n", "\n");
-	description.replace("\r", "\n");
-	status.setDescription(description);
-
-	Buddy buddy = account().getBuddyById(jid.bare());
-	/* is this contact realy anonymous? - need deep check
-	if (contact.isAnonymous())
-	{
-		// TODO - ignore! - przynajmniej na razie
-		emit userStatusChangeIgnored(contact);
-		userlist->addUser(contact);
-		return;
-	}
-	*/
-
 	if (buddy.display().isEmpty())
 		buddy.setDisplay(jid.bare());
 

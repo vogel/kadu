@@ -84,8 +84,7 @@ class JabberProtocol : public Protocol
 		void disconnectedFromServer();
 		void disconnect(const XMPP::Status &s = XMPP::Status ("", "", 0, false));
 		void rosterRequestFinished(bool success);
-		void clientResourceAvailable(const XMPP::Jid &j, const XMPP::Resource &r);
-		void clientResourceUnavailable(const XMPP::Jid &j, const XMPP::Resource &r);
+		void clientResourceReceived(const XMPP::Jid &j, const XMPP::Resource &r);
 		void slotContactUpdated(const XMPP::RosterItem &ri);
 		void slotContactDeleted(const XMPP::RosterItem &ri);
 		void slotIncomingFileTransfer();
