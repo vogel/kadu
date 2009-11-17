@@ -468,11 +468,11 @@ void JabberProtocol::clientResourceAvailable(const XMPP::Jid &jid, const XMPP::R
 
 	Buddy buddy = account().getBuddyById(jid.bare());
 	/* is this contact realy anonymous? - need deep check
- 	if (contact.isAnonymous())
+	if (contact.isAnonymous())
 	{
 		// TODO - ignore! - przynajmniej na razie
-		// emit userStatusChangeIgnored(contact);
-		// userlist->addUser(contact);
+		emit userStatusChangeIgnored(contact);
+		userlist->addUser(contact);
 		return;
 	}
 	*/
@@ -491,6 +491,7 @@ void JabberProtocol::clientResourceAvailable(const XMPP::Jid &jid, const XMPP::R
 	kdebugf2();
 }
 
+// TODO remove one of these metods clientResourceUnavailable/clientResourceAvailable
 void JabberProtocol::clientResourceUnavailable(const XMPP::Jid &jid, const XMPP::Resource &resource)
 {
 	kdebugf();
@@ -520,13 +521,16 @@ void JabberProtocol::clientResourceUnavailable(const XMPP::Jid &jid, const XMPP:
 	status.setDescription(description);
 
 	Buddy buddy = account().getBuddyById(jid.bare());
-	if (buddy.isAnonymous())
+	/* is this contact realy anonymous? - need deep check
+	if (contact.isAnonymous())
 	{
 		// TODO - ignore! - przynajmniej na razie
-		// emit userStatusChangeIgnored(contact);
-		// userlist->addUser(contact);
+		emit userStatusChangeIgnored(contact);
+		userlist->addUser(contact);
 		return;
 	}
+	*/
+
 	if (buddy.display().isEmpty())
 		buddy.setDisplay(jid.bare());
 
