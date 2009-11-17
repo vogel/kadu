@@ -46,6 +46,7 @@ public:
 	void setFileName(const QString &fileName);
 
 	QString filePath();
+	void setFilePath(const QString &filePath);
 
 	QPixmap pixmap();
 	void setPixmap(const QPixmap &pixmap);
