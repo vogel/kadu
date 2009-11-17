@@ -1,7 +1,6 @@
 #ifndef MPRIS_H
 #define MPRIS_H
 
-#include <QtCore/QObject>
 #include <QtCore/QString>
 
 #include "configuration_aware_object.h"
@@ -12,8 +11,6 @@
 
 class MprisPlayer : public MPRISMediaPlayer, public ConfigurationUiHandler, ConfigurationAwareObject
 {
-	Q_OBJECT;
-
 	public:
 		MprisPlayer(QString name, QString service);
 		~MprisPlayer();
