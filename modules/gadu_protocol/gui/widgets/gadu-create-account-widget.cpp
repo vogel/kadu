@@ -189,8 +189,8 @@ void GaduCreateAccountWidget::iHaveAccountDataChanged()
 void GaduCreateAccountWidget::addThisAccount()
 {
 	Account gaduAccount;
-	gaduAccount.data()->setLoaded(true);
-	gaduAccount.data()->loadProtocol(ProtocolsManager::instance()->byName("gadu"));
+	gaduAccount.data()->setState(StorableObject::StateNew);
+	gaduAccount.data()->protocolRegistered(ProtocolsManager::instance()->byName("gadu"));
 	gaduAccount.setDetails(new GaduAccountDetails(gaduAccount.storage(), gaduAccount));
 	gaduAccount.setName(AccountName->text());
 	gaduAccount.setId(AccountId->text());
@@ -234,8 +234,8 @@ void GaduCreateAccountWidget::registerNewAccountFinished(GaduServerRegisterAccou
 		MessageDialog::msg(tr("Registration was successful. Your new number is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(gsra->uin()), false, "Information", this);
 		
 		Account gaduAccount;
-		gaduAccount.data()->setLoaded(true);
-		gaduAccount.data()->loadProtocol(ProtocolsManager::instance()->byName("gadu"));
+		gaduAccount.data()->setState(StorableObject::StateNew);
+		gaduAccount.data()->protocolRegistered(ProtocolsManager::instance()->byName("gadu"));
 		gaduAccount.setDetails(new GaduAccountDetails(gaduAccount.storage(), gaduAccount));
 		gaduAccount.setName(AccountName->text());
 		gaduAccount.setId(QString::number(gsra->uin()));
