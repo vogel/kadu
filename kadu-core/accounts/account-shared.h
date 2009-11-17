@@ -53,11 +53,13 @@ private:
 protected:
 	void emitUpdated();
 
-	virtual void protocolRegistered(ProtocolFactory *protocolHandler);
 	virtual void protocolUnregistered(ProtocolFactory *protocolHandler);
 
 public:
 	static AccountShared * loadFromStorage(StoragePoint *storagePoint);
+
+	// TODO: 0.6.6 look at buddy.cpp:197, need to be hidden again
+	virtual void protocolRegistered(ProtocolFactory *protocolHandler);
 
 	explicit AccountShared(QUuid uuid = QUuid());
 	virtual ~AccountShared();

@@ -91,10 +91,8 @@ void GaduAvatarFetcher::requestFinished(int id, bool error)
 		return;
 	}
 
-	printf("Before: %s\n", qPrintable(MyContact.contactAvatar().uuid().toString()));
 	if (MyContact.contactAvatar().isNull())
 		MyContact.setContactAvatar(Avatar());
-	printf("After: %s\n", qPrintable(MyContact.contactAvatar().uuid().toString()));
 
 	QDateTime timestamp;
 	QDomElement timestampElement = avatarElement.firstChildElement("timestamp");

@@ -45,6 +45,7 @@ void SimpleChat::load()
 		removeValue("ContactAccountData");
 	}
 	else
+	{
 		CurrentContact = ContactManager::instance()->byUuid(cadUuid);
 		if (CurrentContact.isNull())
 		{

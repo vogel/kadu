@@ -193,8 +193,9 @@ Buddy Buddy::dummy()
 		account = AccountManager::instance()->defaultAccount();
 	else if (ProtocolsManager::instance()->protocolFactories().count())
 	{
-		account.data()->setLoaded(true);
-		account.data()->loadProtocol(ProtocolsManager::instance()->protocolFactories()[0]);
+		account.data()->setState(StorableObject::StateNew);
+		account.setProtocolName(ProtocolsManager::instance()->protocolFactories()[0]->name());
+		account.data()->protocolRegistered(ProtocolsManager::instance()->protocolFactories()[0]);
 		account.setDetails(ProtocolsManager::instance()->protocolFactories()[0]->createAccountDetails(account));
 	}
 
@@ -210,12 +211,12 @@ Buddy Buddy::dummy()
 		contactData.setPort(80);
 		contactData.setDetails(account.protocolHandler()->protocolFactory()->createContactDetails(contactData));
 
-		Avatar &avatar = contactData.contactAvatar();
+		Avatar avatar;
 		avatar.data()->setState(StorableObject::StateNew);
 		avatar.setLastUpdated(QDateTime::currentDateTime());
 		avatar.setPixmap(IconsManager::instance()->loadPixmap("ContactsTab"));
 		avatar.setFileName("ContactsTab");
-		avatar.setFilePath(IconsManager::instance()->iconPath("ContactsTab"));
+		contactData.setContactAvatar(avatar);
 
 		example.addContact(contactData);
 
