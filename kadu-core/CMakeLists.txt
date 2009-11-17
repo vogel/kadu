@@ -271,7 +271,6 @@ if (UNIX AND NOT APPLE)
 endif (UNIX AND NOT APPLE)
 
 set (kadu_MOC_SRCS
-	accounts/account.h
 	accounts/account-details.h
 	accounts/account-manager.h
 	accounts/account-shared.h
@@ -336,7 +335,6 @@ set (kadu_MOC_SRCS
 
 	chat/type/chat-type-manager.h
 
-	contacts/contact.h
 	contacts/contact-details.h
 	contacts/contact-manager.h
 	contacts/contact-shared.h

@@ -41,13 +41,13 @@ Chat::Chat(StoragePoint *storage) :
 Chat::Chat(Account currentAccount, QUuid uuid) :
 		UuidStorableObject("Chat", ChatManager::instance()), CurrentAccount(currentAccount), Uuid(uuid.isNull() ? QUuid::createUuid() : uuid)
 {
-	connect(&CurrentAccount, SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
+	connect(CurrentAccount, SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
 			this, SLOT(refreshTitle()));
 }
 
 Chat::~Chat()
 {
-	disconnect(&CurrentAccount, SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
+	disconnect(CurrentAccount, SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
 			this, SLOT(refreshTitle()));
 }
 
@@ -61,7 +61,7 @@ void Chat::load()
 	Uuid = loadAttribute<QString>("uuid");
 	CurrentAccount = AccountManager::instance()->byUuid(QUuid(loadValue<QString>("Account")));
 
-	connect(&CurrentAccount, SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
+	connect(CurrentAccount, SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
 			this, SLOT(refreshTitle()));
 	refreshTitle();
 }

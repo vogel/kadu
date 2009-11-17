@@ -52,28 +52,6 @@ Account::~Account()
 {
 }
 
-void Account::connectDataSignals()
-{
-	if (isNull())
-		return;
-
-	connect(data(), SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
-			this, SIGNAL(buddyStatusChanged(Account, Buddy, Status)));
-	connect(data(), SIGNAL(protocolLoaded()), this, SIGNAL(protocolLoaded()));
-	connect(data(), SIGNAL(protocolUnloaded()), this, SIGNAL(protocolUnloaded()));
-}
-
-void Account::disconnectDataSignals()
-{
-	if (isNull())
-		return;
-
-	disconnect(data(), SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
-			this, SIGNAL(buddyStatusChanged(Account, Buddy, Status)));
-	disconnect(data(), SIGNAL(protocolLoaded()), this, SIGNAL(protocolLoaded()));
-	disconnect(data(), SIGNAL(protocolUnloaded()), this, SIGNAL(protocolUnloaded()));
-}
-
 Buddy Account::getBuddyById(const QString& id)
 {
 	return BuddyManager::instance()->byId(*this, id);

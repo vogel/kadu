@@ -55,23 +55,6 @@ Contact & Contact::operator = (const Contact &copy)
 	return *this;
 }
 
-void Contact::connectDataSignals()
-{
-	if (isNull())
-		return;
-
-	connect(data(), SIGNAL(idChanged(const QString &)),
-			this, SIGNAL(idChanged(const QString &)));
-}
-
-void Contact::disconnectDataSignals()
-{
-	if (isNull())
-		return;
-
-	disconnect(data(), SIGNAL(idChanged(const QString &)),
-			this, SIGNAL(idChanged(const QString &)));
-}
 /*
 void Contact::refreshDNSName()
 {

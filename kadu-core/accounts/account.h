@@ -28,15 +28,9 @@ class ProtocolFactory;
 class Status;
 class XmlConfigFile;
 
-class KADUAPI Account : public QObject, public SharedBase<AccountShared>
+class KADUAPI Account : public SharedBase<AccountShared>
 {
-	Q_OBJECT
-
 	Account(bool null);
-
-protected:
-	virtual void connectDataSignals();
-	virtual void disconnectDataSignals();
 
 public:
 	static Account loadFromStorage(StoragePoint *storage);
@@ -76,11 +70,6 @@ public:
 	KaduSharedBase_Property(bool, proxyRequiresAuthentication, ProxyRequiresAuthentication)
 	KaduSharedBase_Property(QString, proxyUser, ProxyUser)
 	KaduSharedBase_Property(QString, proxyPassword, ProxyPassword)
-
-signals:
-	void buddyStatusChanged(Account account, Buddy buddy, Status oldStatus);
-	void protocolLoaded();
-	void protocolUnloaded();
 
 };
 

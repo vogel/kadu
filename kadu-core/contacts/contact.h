@@ -25,15 +25,9 @@ class ContactDetails;
 class ContactShared;
 class XmlConfigFile;
 
-class KADUAPI Contact : public QObject, public SharedBase<ContactShared>
+class KADUAPI Contact : public SharedBase<ContactShared>
 {
-	Q_OBJECT
-
 	explicit Contact(bool null);
-
-protected:
-	virtual void connectDataSignals();
-	virtual void disconnectDataSignals();
 
 public:
 	static Contact loadFromStorage(StoragePoint *storage);
@@ -61,9 +55,6 @@ public:
 	KaduSharedBase_Property(QHostAddress, address, Address)
 	KaduSharedBase_Property(unsigned int, port, Port)
 	KaduSharedBase_Property(QString, dnsName, DnsName)
-
-signals:
-	void idChanged(const QString &id);
 
 };
 

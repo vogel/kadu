@@ -11,6 +11,7 @@
 #define SHARED_BASE_H
 
 #include <QtCore/QExplicitlySharedDataPointer>
+#include <QtCore/QObject>
 #include <QtCore/QUuid>
 
 #define KaduSharedBase_PropertyRead(type, name, capitalized_name) \
@@ -76,31 +77,29 @@ protected:
 	SharedBase(bool null) :
 			Data(0) {}
 
-	virtual void connectDataSignals() {}
-	virtual void disconnectDataSignals() {}
-
 public:
 	SharedBase() :
 			Data(new T())
 	{
-		connectDataSignals();
 	}
 
 	explicit SharedBase(T *data) :
 			Data(data)
 	{
-		connectDataSignals();
 	}
 
 	SharedBase(const SharedBase &copy) :
 			Data(copy.Data)
 	{
-		connectDataSignals();
 	}
 
 	virtual ~SharedBase()
 	{
-		disconnectDataSignals();
+	}
+
+	operator QObject * () // allow using SharedBase classes like QObject *
+	{
+		return Data.data();
 	}
 
 	T * data() const
@@ -115,10 +114,7 @@ public:
 
 	SharedBase<T> & operator = (const SharedBase<T> &copy)
 	{
-		disconnectDataSignals();
 		Data = copy.Data;
-		connectDataSignals();
-
 		return *this;
 	}
 

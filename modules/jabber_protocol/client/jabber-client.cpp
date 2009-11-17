@@ -555,7 +555,7 @@ void JabberClient::slotTLSHandshaken()
 	QString domain = jabberAccountDetails->tlsOverrideDomain();
 	QByteArray cert = jabberAccountDetails->tlsOverrideCert();
 	if (CertificateHelpers::checkCertificate(JabberTLS, JabberTLSHandler, domain, cert,
-		QString("%1: ").arg(Protocol->account().name()) + tr("Server Authentication"), XMPP::Jid(Protocol->account().id()).domain(), &Protocol->account()))
+		QString("%1: ").arg(Protocol->account().name()) + tr("Server Authentication"), XMPP::Jid(Protocol->account().id()).domain(), Protocol->account()))
 		JabberTLSHandler->continueAfterHandshake();
 	else
 		disconnect();
