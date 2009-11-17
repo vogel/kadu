@@ -239,7 +239,6 @@ void Speech::say(const QString &s, const QString &path,
 		soundSystem = sound_system;
 	}
 
-	//list.append(t);
 	if (klatt && soundSystem == "Dsp")
 		list.append(" -L");
 	if (!melody)
@@ -261,11 +260,13 @@ void Speech::say(const QString &s, const QString &path,
 	list.append("-f");
 	list.append(QString::number(basefreq));
 
-	kdebugm(KDEBUG_INFO, "%s\n", qPrintable(list.join(" ")));
+	kdebugm(KDEBUG_INFO, "text: %s command: %s %s\n", qPrintable(s), qPrintable(t), qPrintable(list.join(" ")));
 
 	QProcess *p = new QProcess();
 	connect(p, SIGNAL(finished(int, QProcess::ExitStatus)), p, SLOT(deleteLater()));
 	p->start(t, list);
+	p->write(s.local8Bit());
+	p->closeWriteChannel();
 
 	kdebugf2();
 }
