@@ -18,6 +18,7 @@
 
 #include "gui/widgets/choose-identity-widget.h"
 #include "gui/windows/message-dialog.h"
+#include "protocols/protocols-manager.h"
 #include "../../server/gadu-server-register-account.h"
 #include "html_document.h"
 #include "gadu-account-details.h"
@@ -188,6 +189,8 @@ void GaduCreateAccountWidget::iHaveAccountDataChanged()
 void GaduCreateAccountWidget::addThisAccount()
 {
 	Account gaduAccount;
+	gaduAccount.data()->setLoaded(true);
+	gaduAccount.data()->loadProtocol(ProtocolsManager::instance()->byName("gadu"));
 	gaduAccount.setDetails(new GaduAccountDetails(gaduAccount.storage(), gaduAccount));
 	gaduAccount.setName(AccountName->text());
 	gaduAccount.setId(AccountId->text());
@@ -231,6 +234,8 @@ void GaduCreateAccountWidget::registerNewAccountFinished(GaduServerRegisterAccou
 		MessageDialog::msg(tr("Registration was successful. Your new number is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(gsra->uin()), false, "Information", this);
 		
 		Account gaduAccount;
+		gaduAccount.data()->setLoaded(true);
+		gaduAccount.data()->loadProtocol(ProtocolsManager::instance()->byName("gadu"));
 		gaduAccount.setDetails(new GaduAccountDetails(gaduAccount.storage(), gaduAccount));
 		gaduAccount.setName(AccountName->text());
 		gaduAccount.setId(QString::number(gsra->uin()));
