@@ -139,11 +139,9 @@ Contact ContactManager::byUuid(const QString &uuid)
 		return Contact::null;
 
 	foreach (Contact contact, AllContacts)
-	{
 		if (!contact.isNull())
 			if (uuid == contact.uuid().toString())
 				return contact;
-	}
 
 	return Contact::null;
 }

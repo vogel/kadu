@@ -132,14 +132,14 @@ void AccountShared::protocolUnregistered(ProtocolFactory* factory)
 
 	if (factory->name() != ProtocolName)
 		return;
+	
+	emit protocolUnloaded();
 
 	delete ProtocolHandler;
 	ProtocolHandler = 0;
 
 	delete Details;
 	Details = 0;
-
-	emit protocolUnloaded();
 }
 
 QString AccountShared::statusContainerName()
