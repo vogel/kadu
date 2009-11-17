@@ -32,7 +32,7 @@
 #include "hint-over-user-configuration-window.h"
 
 HintOverUserConfigurationWindow::HintOverUserConfigurationWindow(Buddy exampleContact) :
-	ConfigurationWindow("hint-over-user", tr("Hint over user configuration"), MainConfigurationWindow::instanceDataManager()),
+	ConfigurationWindow("HintOverUser", tr("Hint over user configuration"), MainConfigurationWindow::instanceDataManager()),
 	ExampleContact(exampleContact)
 {
 	connect(this, SIGNAL(configurationWindowApplied()), this, SLOT(configurationWindowApplied()));

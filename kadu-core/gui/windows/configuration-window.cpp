@@ -69,10 +69,13 @@ ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &cap
 
 	main_layout->addWidget(configurationWidget);
 	main_layout->addWidget(buttons_layout);
+	
+	loadWindowGeometry(this, "General", name + "_Geometry", 0, 50, 790, 480);
 }
 
 ConfigurationWindow::~ConfigurationWindow()
 {
+	saveWindowGeometry(this, "General", this->name() + "_Geometry");
 }
 
 void ConfigurationWindow::show()

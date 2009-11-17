@@ -50,7 +50,7 @@ void Qt4NotifyConfigurationWidget::switchToEvent(const QString &event)
 void Qt4NotifyConfigurationWidget::showConfigurationWindow()
 {
 	NotifierConfigurationDataManager *dataManager = NotifierConfigurationDataManager::dataManagerForEvent(currentNotifyEvent);
-	ConfigurationWindow *configWindow = new ConfigurationWindow("qt4-docking-notifier-" + currentNotifyEvent, tr("Tray icon baloon's look configuration"), dataManager);
+	ConfigurationWindow *configWindow = new ConfigurationWindow("Qt4DockingNotifyEventConfiguration", tr("Tray icon baloon's look configuration"), dataManager);
 
 	dataManager->configurationWindowCreated(configWindow);
 

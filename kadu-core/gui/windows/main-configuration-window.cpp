@@ -127,7 +127,7 @@ void MainConfigurationWindow::instanceCreated()
 }
 
 MainConfigurationWindow::MainConfigurationWindow()
-	: ConfigurationWindow("main", tr("Kadu configuration"), InstanceDataManager), lookChatAdvanced(0)
+	: ConfigurationWindow("MainConfiguration", tr("Kadu configuration"), InstanceDataManager), lookChatAdvanced(0)
 {
 	widget()->appendUiFile(dataPath("kadu/configuration/dialog.ui"));
 
@@ -196,13 +196,10 @@ MainConfigurationWindow::MainConfigurationWindow()
 
 	widget()->widgetById("parseStatus")->setToolTip(qApp->translate("@default", SyntaxText));
 	(dynamic_cast<ConfigSyntaxEditor *>(widget()->widgetById("infoPanelSyntax")))->setSyntaxHint(qApp->translate("@default", SyntaxText));
-
-	loadWindowGeometry(this, "General", "ConfigGeometry", 0, 50, 790, 480);
 }
 
 MainConfigurationWindow::~MainConfigurationWindow()
 {
- 	saveWindowGeometry(this, "General", "ConfigGeometry");
 	Instance = 0;
 }
 
@@ -650,7 +647,7 @@ void MainConfigurationWindow::showLookChatAdvanced()
 {
 	if (!lookChatAdvanced)
 	{
-		lookChatAdvanced = new ConfigurationWindow("dialog-look-chat-advanced", tr("Advenced chat's look configuration"), InstanceDataManager);
+		lookChatAdvanced = new ConfigurationWindow("LookChatAdvanced", tr("Advenced chat's look configuration"), InstanceDataManager);
 		lookChatAdvanced->widget()->appendUiFile(dataPath("kadu/configuration/dialog-look-chat-advanced.ui"));
 
 		connect(lookChatAdvanced->widget()->widgetById("removeServerTime"), SIGNAL(toggled(bool)), lookChatAdvanced->widget()->widgetById("maxTimeDifference"), SLOT(setEnabled(bool)));
