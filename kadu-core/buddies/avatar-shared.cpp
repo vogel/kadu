@@ -37,3 +37,33 @@ QString AvatarShared::filePath()
 	ensureLoaded();
 	return AvatarsDir + FileName;
 }
+
+void AvatarShared::load()
+{
+	if (!isValidStorage())
+		return;
+
+	if (!needsLoad())
+		return;
+
+	Shared::load();
+
+	LastUpdated = loadValue<QDateTime>("LastUpdated");
+	NextUpdate = loadValue<QDateTime>("NextUpdate");
+	FileName = loadValue<QString>("FileName");
+	Pixmap.load(filePath());
+}
+
+void AvatarShared::store()
+{
+	if (!isValidStorage())
+		return;
+
+	ensureLoaded();
+
+	Shared::store();
+
+	storeValue("LastUpdated", LastUpdated);
+	storeValue("NextUpdate", NextUpdate);
+	storeValue("FileName", FileName);
+}

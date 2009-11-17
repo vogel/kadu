@@ -33,6 +33,9 @@ public:
 	explicit AvatarShared(QUuid uuid = QUuid());
 	virtual ~AvatarShared();
 
+	virtual void load();
+	virtual void store();
+
 	QString filePath();
 
 	KaduShared_Property(Contact, avatarContact, AvatarContact)
