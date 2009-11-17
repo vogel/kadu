@@ -113,7 +113,7 @@ const Status & StatusContainerManager::status()
 {
 	return AccountManager::instance()->defaultAccount().statusContainer()
 			? AccountManager::instance()->defaultAccount().statusContainer()->status()
-			: Status("Offline");
+			: Status::null;
 }
 
 QString StatusContainerManager::statusName()

@@ -12,11 +12,13 @@
 #include "configuration/configuration-manager.h"
 #include "configuration/xml-configuration-file.h"
 #include "buddies/avatar.h"
+#include "buddies/avatar-shared.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-remove-predicate-object.h"
 #include "contacts/contact.h"
 #include "contacts/contact-shared.h"
 #include "core/core.h"
+#include "protocols/protocol.h"
 #include "protocols/protocols-manager.h"
 #include "icons-manager.h"
 
@@ -187,22 +189,39 @@ Buddy Buddy::dummy()
 
 	Account account;
 
-	Contact contactData;
-	contactData.setContactAccount(account);
-	contactData.setOwnerBuddy(example);
-	contactData.setId("999999");
-	contactData.data()->setState(StorableObject::StateNew);
-	contactData.setCurrentStatus(Status("Away", tr("Example description")));
-	contactData.setAddress(QHostAddress(2130706433));
-	contactData.setPort(80);
-	Avatar avatar = contactData.contactAvatar();
-	avatar.setLastUpdated(QDateTime::currentDateTime());
-	avatar.setPixmap(IconsManager::instance()->loadPixmap("ContactsTab"));
-	avatar.setFileName(IconsManager::instance()->iconPath("ContactsTab"));
+	if (!AccountManager::instance()->defaultAccount().isNull())
+		account = AccountManager::instance()->defaultAccount();
+	else if (ProtocolsManager::instance()->protocolFactories().count())
+	{
+		account.data()->setLoaded(true);
+		account.data()->loadProtocol(ProtocolsManager::instance()->protocolFactories()[0]);
+		account.setDetails(ProtocolsManager::instance()->protocolFactories()[0]->createAccountDetails(account));
+	}
 
-	example.addContact(contactData);
+	if (!account.isNull())
+	{
+		Contact contactData;
+		contactData.setContactAccount(account);
+		contactData.setOwnerBuddy(example);
+		contactData.setId("999999");
+		contactData.data()->setState(StorableObject::StateNew);
+		contactData.setCurrentStatus(Status("Away", tr("Example description")));
+		contactData.setAddress(QHostAddress(2130706433));
+		contactData.setPort(80);
+		contactData.setDetails(account.protocolHandler()->protocolFactory()->createContactDetails(contactData));
 
-	return example;
+		Avatar &avatar = contactData.contactAvatar();
+		avatar.data()->setState(StorableObject::StateNew);
+		avatar.setLastUpdated(QDateTime::currentDateTime());
+		avatar.setPixmap(IconsManager::instance()->loadPixmap("ContactsTab"));
+		avatar.setFileName("ContactsTab");
+		avatar.setFilePath(IconsManager::instance()->iconPath("ContactsTab"));
+
+		example.addContact(contactData);
+
+		return example;
+	}
+	return null;
 }
 
 KaduSharedBase_PropertyWriteDef(Buddy, QString, display, Display, QString::null)

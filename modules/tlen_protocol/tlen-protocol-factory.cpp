@@ -7,12 +7,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "gui/widgets/tlen-contact-widget.h"
-#include "gui/widgets/tlen-create-account-widget.h"
-#include "gui/widgets/tlen-edit-account-widget.h"
+#include "misc/misc.h"
 
 #include "status/status-type.h"
 #include "status/status-type-manager.h"
+
+#include "gui/widgets/tlen-contact-widget.h"
+#include "gui/widgets/tlen-create-account-widget.h"
+#include "gui/widgets/tlen-edit-account-widget.h"
 
 #include "tlen-account-details.h"
 #include "tlen-contact-details.h"
@@ -93,4 +95,9 @@ ContactWidget * TlenProtocolFactory::newContactWidget(Contact contact, QWidget *
 	return 0 != tlenContactDetails
 		? new TlenContactWidget(contact, parent)
 		: 0;
+}
+
+QString TlenProtocolFactory::iconName()
+{
+	return dataPath("kadu/modules/data/tlen_protocol/").append("online.png");
 }

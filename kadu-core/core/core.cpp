@@ -31,8 +31,6 @@
 #include "status/status-type.h"
 #include "status/status-type-manager.h"
 
-#include "../modules/gadu_protocol/gadu-protocol.h"
-
 #include "debug.h"
 #include "emoticons.h"
 #include "icons-manager.h"
@@ -265,7 +263,8 @@ void Core::init()
 	ModulesManager::instance()->loadProtocolModules();
 
 	Myself = Buddy();
-	Myself.setDisplay(config_file.readEntry("General", "Nick"));
+	QString nickName(config_file.readEntry("General", "Nick"));
+	Myself.setDisplay(nickName.isEmpty() ? tr("Me") : nickName);
 
 	connect(StatusContainerManager::instance(), SIGNAL(statusChanged()), this, SLOT(statusChanged()));
 	// TODO 0.6.6:
@@ -303,7 +302,7 @@ void Core::deleteOldConfigurationFiles()
 {
 	kdebugf();
 
-	QDir oldConfigs2(ggPath(), "kadu.conf.xml.backup.*", QDir::Name, QDir::Files);
+	QDir oldConfigs2(ggPath(), "kadu-0.6.6.conf.xml.backup.*", QDir::Name, QDir::Files);
 
 	if (oldConfigs2.count() > 20)
 		for (unsigned int i = 0, max = oldConfigs2.count() - 20; i < max; ++i)
@@ -401,10 +400,7 @@ void Core::configurationUpdated()
 		settings.remove("Kadu");
 #endif
 
-#ifdef DEBUG_ENABLED
 	debug_mask = config_file.readNumEntry("General", "DEBUG_MASK");
-	gg_debug_level = debug_mask | ~255;
-#endif
 }
 
 QString Core::readToken(const QPixmap &tokenPixmap)

@@ -851,7 +851,6 @@ void TabsManager::repaintTabs()
 
 QString TabsManager::formatTabName(ChatWidget * chatWidget)
 {
-	//int contactsCount = chat->contacts().count();
 	int contactsCount = chatWidget->chat()->buddies().count();
 
 	QString TabName;
@@ -859,8 +858,7 @@ QString TabsManager::formatTabName(ChatWidget * chatWidget)
 	if (contactsCount > 1)
 		TabName = tr("Conference [%1]").arg(contactsCount);
 	else
-		//TabName = chat->contacts()[0].display();
-		TabName = chatWidget->chat()->buddies().toBuddyList()[0].display();
+		TabName = chatWidget->chat()->name();
 
 	return TabName;
 }

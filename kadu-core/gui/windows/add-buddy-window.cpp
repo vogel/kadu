@@ -202,7 +202,7 @@ void AddBuddyWindow::setUsernameLabel()
 void AddBuddyWindow::setAddContactEnabled()
 {
 	Account account = selectedAccount();
-	if (account.isNull())
+	if (account.isNull() || !account.protocolHandler())
 	{
 		AddContactButton->setEnabled(false);
 		return;
@@ -236,7 +236,7 @@ void AddBuddyWindow::setAddContactEnabled()
 void AddBuddyWindow::setValidateRegularExpression()
 {
 	Account account = selectedAccount();
-	if (!account.isNull())
+	if (!account.isNull() && account.protocolHandler())
 	{
 		UserNameValidator->setRegExp(account.protocolHandler()->protocolFactory()->idRegularExpression());
 		return;

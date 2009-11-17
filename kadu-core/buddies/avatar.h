@@ -37,6 +37,7 @@ public:
 	Avatar & operator = (const Avatar &copy);
 
 	QString filePath();
+	void setFilePath(const QString &filePath);
 
 	KaduSharedBase_Property(Contact, avatarContact, AvatarContact)
 	KaduSharedBase_Property(QDateTime, lastUpdated, LastUpdated)

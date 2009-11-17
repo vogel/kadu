@@ -254,7 +254,7 @@ QIcon DockingManager::defaultPixmap()
 {
 	Account account = AccountManager::instance()->defaultAccount();
 	if (account.isNull() || !account.protocolHandler())
-		return QIcon();
+		return QIcon(StatusContainerManager::instance()->statusPixmap());
 
 	return QIcon(account.protocolHandler()->statusPixmap(account.protocolHandler()->status()));
 }

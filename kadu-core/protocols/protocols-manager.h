@@ -32,7 +32,7 @@ public:
 	ProtocolFactory * byName(const QString &name);
 	ProtocolFactory * byIndex(int index);
 
-	int indexOf(ProtocolFactory *protocolFactory) { return Factories.indexOf(protocolFactory); };
+	int indexOf(ProtocolFactory *protocolFactory) { return Factories.indexOf(protocolFactory); }
 
 signals:
 	void protocolFactoryAboutToBeRegistered(ProtocolFactory *factory);
