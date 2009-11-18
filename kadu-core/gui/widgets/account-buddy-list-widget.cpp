@@ -59,7 +59,12 @@ AccountBuddyListWidget::AccountBuddyListWidget(Account account, QWidget *parent)
 
 	ContactListService *manager = CurrentAccount.protocolHandler()->contactListService();
 	if (!manager)
+	{
+		ImportButton->setEnabled(false);
+		ExportButton->setEnabled(false);
 		return;
+	}
+
 	connect(manager, SIGNAL(contactListExported(bool)), this, SLOT(contactListExported(bool)));
 	connect(manager, SIGNAL(contactListImported(bool, BuddyList)),
 		this, SLOT(buddiesListImported(bool, BuddyList)));
