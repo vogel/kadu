@@ -300,10 +300,10 @@ void Speech::testSpeech()
 
 	kdebugm(KDEBUG_INFO, "%d %d %d %d\n", frequency, tempo, baseFrequency, i);
 
-	if (isFemale(ule.firstName()))
-		say(KaduParser::parse(formatF, ule).arg("Test"), program, klatt, mel, sound_system, device, frequency, tempo, baseFrequency);
-	else
-		say(KaduParser::parse(formatM, ule).arg("Test"), program, klatt, mel, sound_system, device, frequency, tempo, baseFrequency);
+	QString text;
+	text = KaduParser::parse( isFemale(ule.firstName()) ? formatF : formatM, ule);
+
+	say(text.contains("%1") ? text.arg("Test") : QString("Test"), program, klatt, mel, sound_system, device, frequency, tempo, baseFrequency);
 
 	kdebugf2();
 }
@@ -340,7 +340,9 @@ void Speech::notify(Notification *notification)
 		if (details.length() > config_file.readUnsignedNumEntry("Speech", "MaxLength"))
 			syntax = config_file.readEntry("Speech", "MsgTooLong" + sex);
 
-		text = KaduParser::parse(syntax, ule, notification).arg(details);
+		text = syntax.contains("%1")
+			? KaduParser::parse(syntax, ule, notification).arg(details)
+			: KaduParser::parse(syntax, ule, notification);
 	}
 
 	text.replace("&nbsp;", " ");
