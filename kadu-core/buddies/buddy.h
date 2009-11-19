@@ -38,18 +38,19 @@ public:
 	static Buddy null;
 
 	static Buddy dummy();
-	
+
 	Buddy();
-	explicit Buddy(BuddyShared *data);
+	Buddy(BuddyShared *data);
+	Buddy(QObject *data);
 	Buddy(const Buddy &copy);
 	virtual ~Buddy();
-	
+
 	Buddy & operator = (const Buddy &copy)
 	{
 		SharedBase<BuddyShared>::operator=(copy);
 		return *this;
 	}
-	
+
 	void mergeWith(Buddy buddy); // TODO: 0.8 refactor
 
 	void importConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);

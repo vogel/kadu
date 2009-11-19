@@ -154,7 +154,7 @@ Contact ContactManager::byContactShared(ContactShared *data)
 		if (data == contact.data())
 			return contact;
 
-	return Contact(data);
+	return data;
 }
 
 void ContactManager::contactProtocolLoaded()

@@ -46,6 +46,14 @@ Buddy::Buddy(BuddyShared *data) :
 {
 }
 
+Buddy::Buddy(BuddyShared *data) :
+		SharedBase<BuddyShared>(true)
+{
+	BuddyShared *shared = dynamic_cast<BuddyShared *>(data);
+	if (shared)
+		setData(shared);
+}
+
 Buddy::Buddy(const Buddy &copy) :
 		SharedBase<BuddyShared>(copy)
 {
