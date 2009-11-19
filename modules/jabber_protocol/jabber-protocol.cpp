@@ -19,6 +19,8 @@
 #include "core/core.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/group.h"
+#include "buddies/group-manager.h"
+
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
@@ -467,8 +469,12 @@ void JabberProtocol::clientResourceReceived(const XMPP::Jid &jid, const XMPP::Re
 	status.setDescription(description);
 
 	Buddy buddy = account().getBuddyById(jid.bare());
-	/* is this contact realy anonymous? - need deep check
-	if (contact.isAnonymous())
+
+	// TODO remove all ?
+	/*if (buddy.isAnonymous())
+		buddy.setAnonymous(false);
+
+	// is this contact realy anonymous? - need deep check
 	{
 		// TODO - ignore! - przynajmniej na razie
 		emit userStatusChangeIgnored(contact);
@@ -476,9 +482,6 @@ void JabberProtocol::clientResourceReceived(const XMPP::Jid &jid, const XMPP::Re
 		return;
 	}
 	*/
-	
-	if (buddy.display().isEmpty())
-		buddy.setDisplay(jid.bare());
 
 	Contact contact = buddy.contact(account());
 	if (contact.isNull())
@@ -494,12 +497,15 @@ void JabberProtocol::clientResourceReceived(const XMPP::Jid &jid, const XMPP::Re
 void JabberProtocol::contactAdded(Buddy &buddy)
 {
 	Contact contact = buddy.contact(account());
-	if (contact.isNull())
+	if (contact.isNull() || buddy.isAnonymous())
 		return;
+
 	QStringList groupsList;
+
 	foreach (Group group, buddy.groups())
 		groupsList.append(group.name());
 	//TODO opcja żądania autoryzacji, na razie na sztywno true
+
 	JabberClient->addContact(contact.id(), buddy.display(), groupsList, true);
 }
 
@@ -508,6 +514,7 @@ void JabberProtocol::contactRemoved(Buddy &buddy)
 	Contact contact = buddy.contact(account());
 	if (contact.isNull() || !isConnected())
 		return;
+
 	JabberClient->removeContact(contact.id());
 	if (buddy.contacts().count() == 1)
 		buddy.setAnonymous(true); // TODO: why?
@@ -516,13 +523,14 @@ void JabberProtocol::contactRemoved(Buddy &buddy)
 void JabberProtocol::contactUpdated(Buddy &buddy)
 {
 	Contact contact = buddy.contact(account());
-	if (contact.isNull())
+	if (contact.isNull() || buddy.isAnonymous())
 		return;
+
 	QStringList groupsList;
 	foreach (Group group, buddy.groups())
 		groupsList.append(group.name());
-	JabberClient->updateContact(contact.id(), buddy.display(), groupsList);
 
+	JabberClient->updateContact(contact.id(), buddy.display(), groupsList);
 }
 
 void JabberProtocol::contactAdded(Buddy &buddy, Account contactAccount)
@@ -590,22 +598,23 @@ void JabberProtocol::slotContactUpdated(const XMPP::RosterItem &item)
 		 * See if the contact is already on our contact list
 		 * if not add contact to our list
 		 */
-		 Buddy buddy = BuddyManager::instance()->byId(account(), item.jid().bare());
-		 if (buddy.isAnonymous())
-		 {
-			buddy.setAnonymous(false);
+		Buddy buddy = BuddyManager::instance()->byId(account(), item.jid().bare());
 
-			if (!item.name().isNull())
-				buddy.setDisplay(item.name());
-			else
-				buddy.setDisplay(item.jid().bare());
-		}
+		// if contact has name set it to display
+		if (!item.name().isNull())
+			buddy.setDisplay(item.name());
+		else
+			buddy.setDisplay(item.jid().bare());
 
 		if (buddy.isAnonymous()) // always false!!
 		{
+			// TODO: add some logic here?
+			buddy.setAnonymous(false);
+
+			GroupManager *gm = GroupManager::instance();
 			// add this contact to all groups the contact is a member of
-			///foreach (QString group, item.groups())
-				///TODO: doda� go do grupy - na razie nie wiem jak to si� robi
+			foreach (QString group, item.groups())
+				buddy.addToGroup(gm->byName(group,true /* create group */));
 		}
 		else
 		{

@@ -25,7 +25,7 @@ void TlenAvatarService::fetchAvatar(Contact contact)
 
 	TlenAvatarFetcher *avatarFetcher = new TlenAvatarFetcher(contact, this);
 	connect(avatarFetcher, SIGNAL(avatarFetched(Contact, const QByteArray &)),
-			this, SIGNAL(avatarReady(Contact, const QByteArray &)));
+			this, SLOT(avatarReady(Contact, const QByteArray &)));
 
 	avatarFetcher->fetchAvatar();
 	qDebug() << "Tlen Get Avatar" << contact.id();

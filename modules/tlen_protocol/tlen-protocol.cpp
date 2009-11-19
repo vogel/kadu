@@ -95,9 +95,7 @@ void TlenProtocol::fetchAvatars(QString jid, QString type, QString md5)
 	Buddy buddy = account().getBuddyById(jid);
 
  	if (buddy.isAnonymous())
-	{
-		BuddyManager::instance()->addBuddy(buddy);
-	}
+		buddy.setAnonymous(false);
 
 	CurrentAvatarService->fetchAvatar(buddy.contact(account()));
 
@@ -334,9 +332,7 @@ void TlenProtocol::itemReceived(QString jid, QString name, QString subscription,
 		buddy.setDisplay(name);
 
  	if (buddy.isAnonymous())
-	{
-		BuddyManager::instance()->addBuddy(buddy);
-	}
+		buddy.setAnonymous(false);
 
 	// remember to set every contact offline after add to contact list
 	presenceChanged(jid, "unavailable", QString::null);
@@ -372,6 +368,9 @@ void TlenProtocol::presenceChanged(QString from, QString newstatus, QString desc
 	Buddy buddy = account().getBuddyById(from);
 
 	kdebugm(KDEBUG_WARNING, "Tlen status change: %s %s\n%s", qPrintable(from), qPrintable(newstatus), qPrintable(description));
+
+	if (buddy.isAnonymous())
+		buddy.setAnonymous(false);
 
 	/* is this contact realy anonymous? - need deep check
 	if (contact.isAnonymous())

@@ -107,8 +107,9 @@ void TlenCreateAccountWidget::iHaveAccountDataChanged()
 void TlenCreateAccountWidget::addThisAccount()
 {
 	Account tlenAccount;
-	tlenAccount.data()->setLoaded(true);
-	tlenAccount.data()->loadProtocol(ProtocolsManager::instance()->byName("tlen"));
+	tlenAccount.data()->setState(StorableObject::StateNew);
+	tlenAccount.data()->setProtocolName("tlen");
+	tlenAccount.data()->protocolRegistered(ProtocolsManager::instance()->byName("tlen"));
 	tlenAccount.setDetails(new TlenAccountDetails(tlenAccount.storage(), tlenAccount));
 	tlenAccount.setName(AccountName->text());
 	tlenAccount.setId(AccountId->text());

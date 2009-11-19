@@ -370,18 +370,21 @@ void Core::accountUnregistered(Account account)
 {
 	Protocol *protocol = account.protocolHandler();
 
-	ChatService *chatService = protocol->chatService();
-	if (chatService)
+	if (protocol)
 	{
-		disconnect(chatService, SIGNAL(messageReceived(const Message &)),
-			this, SIGNAL(messageReceived(const Message &)));
-		disconnect(chatService, SIGNAL(messageSent(const Message &)),
-			this, SIGNAL(messageSent(const Message &)));
-	}
+		ChatService *chatService = protocol->chatService();
+		if (chatService)
+		{
+			disconnect(chatService, SIGNAL(messageReceived(const Message &)),
+				this, SIGNAL(messageReceived(const Message &)));
+			disconnect(chatService, SIGNAL(messageSent(const Message &)),
+				this, SIGNAL(messageSent(const Message &)));
+		}
 
-	disconnect(protocol, SIGNAL(connecting(Account)), this, SIGNAL(connecting()));
-	disconnect(protocol, SIGNAL(connected(Account)), this, SIGNAL(connected()));
-	disconnect(protocol, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
+		disconnect(protocol, SIGNAL(connecting(Account)), this, SIGNAL(connecting()));
+		disconnect(protocol, SIGNAL(connected(Account)), this, SIGNAL(connected()));
+		disconnect(protocol, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
+	}
 
 	Myself.removeContact(account);
 }

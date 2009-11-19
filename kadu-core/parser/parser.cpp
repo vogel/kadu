@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include <QtCore/QFile>
+#include <QtCore/QProcess>
 #include <QtCore/QVariant>
 #include <QtGui/QApplication>
 #include <QtNetwork/QHostAddress>
@@ -99,27 +100,15 @@ QString Parser::executeCmd(const QString &cmd)
 	kdebugf();
 
 	QString s(cmd);
+	// TODO 0.6.6: check if Qt escapes these
 	s.remove(QRegExp("`|>|<"));
-	s.append(" > " + ggPath("execoutput"));
 
-	int ret = system(qPrintable(s));
-
-	s = QString::null;
-
-	if (ret != -1)
-	{
-		QFile *f = new QFile(ggPath("execoutput"));
-		if (f->open(QIODevice::ReadOnly))
-		{
-			s = QString(f->readAll());
-			f->close();
-			QFile::remove(ggPath("execoutput"));
-		}
-		delete f;
-	}
+	QProcess executor;
+	executor.start(s);
+	executor.closeWriteChannel();
 
 	kdebugf2();
-	return s;
+	return executor.waitForFinished() ? executor.readAll() : QString();
 }
 
 QString Parser::parse(const QString &s, const QObject * const object, bool escape)

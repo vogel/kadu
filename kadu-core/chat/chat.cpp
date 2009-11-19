@@ -84,8 +84,6 @@ void Chat::setTitle(const QString &newTitle)
 
 void Chat::refreshTitle()
 {
-	return; // TODO: 0.6.6
-
 	kdebugf();
 	QString title;
 

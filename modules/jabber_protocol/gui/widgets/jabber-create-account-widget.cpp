@@ -315,6 +315,7 @@ void JabberCreateAccountWidget::addThisAccount()
 {
 	Account jabberAccount;
 	jabberAccount.data()->setState(StorableObject::StateNew);
+	jabberAccount.data()->setProtocolName("jabber");
 	jabberAccount.data()->protocolRegistered(ProtocolsManager::instance()->byName("jabber"));
 	jabberAccount.setDetails(new JabberAccountDetails(jabberAccount));
 	jabberAccount.setName(AccountName->text());
