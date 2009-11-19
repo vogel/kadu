@@ -46,7 +46,7 @@ Buddy::Buddy(BuddyShared *data) :
 {
 }
 
-Buddy::Buddy(BuddyShared *data) :
+Buddy::Buddy(QObject *data) :
 		SharedBase<BuddyShared>(true)
 {
 	BuddyShared *shared = dynamic_cast<BuddyShared *>(data);

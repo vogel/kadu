@@ -51,7 +51,6 @@ Account::Account(QObject *data) :
 		setData(shared);
 }
 
-
 Account::Account(const Account &copy) :
 		SharedBase<AccountShared>(copy)
 {

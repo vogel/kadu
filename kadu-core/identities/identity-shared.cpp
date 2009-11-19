@@ -9,6 +9,7 @@
 
 #include "accounts/account-manager.h"
 #include "contacts/contact.h"
+#include "identities/identity-manager.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
 
@@ -16,39 +17,33 @@
 
 IdentityShared * IdentityShared::loadFromStorage(StoragePoint *storagePoint)
 {
-	IdentityShared *identityShared = new IdentityShared(storagePoint);
+	IdentityShared *identityShared = new IdentityShared();
+	identityShared->setStorage(storagePoint);
 	identityShared->load();
 
 	return identityShared;
 }
 
-IdentityShared::IdentityShared(StoragePoint *storagePoint) :
-		UuidStorableObject(storagePoint), BaseStatusContainer(this)
-{
-	connect(AccountManager::instance(), SIGNAL(accountRemoved(Account*)), this, SLOT(removeAccount(Account*)));
-}
-
 IdentityShared::IdentityShared(const QUuid &uuid) :
-		UuidStorableObject("Identity", IdentityManager::instance()),
-		BaseStatusContainer(this),
-		Uuid(uuid.isNull() ? QUuid::createUuid() : uuid)
+		Shared(uuid, "Identity", IdentityManager::instance()),
+		BaseStatusContainer(this)
 {
-    	connect(AccountManager::instance(), SIGNAL(accountRemoved(Account*)), this, SLOT(removeAccount(Account*)));
 }
 
 IdentityShared::~IdentityShared()
 {
-	disconnect(AccountManager::instance(), SIGNAL(accountRemoved(Account*)), this, SLOT(removeAccount(Account*)));
 }
 
 void IdentityShared::load()
 {
-	StorableObject::load();
-
 	if (!isValidStorage())
 		return;
 
-	Uuid = QUuid(storage()->point().attribute("uuid"));
+	if (!needsLoad())
+		return;
+
+	Shared::load();
+
 	Name = loadValue<QString>("Name");
 
 	XmlConfigFile *configurationStorage = storage()->storage();
@@ -62,14 +57,14 @@ void IdentityShared::load()
 		for (int i = 0; i < count; i++)
 		{
 			QDomElement accountElement = accountsList.at(i).toElement();
-			if (accountElement.isNull())
-				continue;
-
-			AccountsUuids << accountElement.text();
+			if (!accountElement.isNull())
+			{
+				Account account = AccountManager::instance()->byUuid(accountElement.text());
+				if (!account.isNull())
+					Accounts << account;
+			}
 		}
 	}
-
-	triggerAllAccountsRegistered();
 }
 
 void IdentityShared::store()
@@ -77,50 +72,48 @@ void IdentityShared::store()
 	if (!isValidStorage())
 		return;
 
-	storage()->point().setAttribute("uuid", Uuid.toString());
-
 	storeValue("Name", Name);
 
 	XmlConfigFile *configurationStorage = storage()->storage();
 
-	if (AccountsUuids.count())
+	if (Accounts.count())
 	{
 		QDomElement accountsNode = configurationStorage->getNode(storage()->point(), "Accounts", XmlConfigFile::ModeCreate);
-		foreach (const QString &account, AccountsUuids)
-			configurationStorage->appendTextNode(accountsNode, "Account", account);
+		foreach (const Account account, Accounts)
+			configurationStorage->appendTextNode(accountsNode, "Account", account.uuid().toString());
 	}
 	else
 		configurationStorage->removeNode(storage()->point(), "Accounts");
 }
 
-void IdentityShared::accountRegistered(Account account)
+void IdentityShared::addAccount(Account account)
 {
-	if (AccountsUuids.contains(account.uuid()))
-		Accounts << account;
+	Accounts.append(account);
 }
 
-void IdentityShared::accountUnregistered(Account account)
+void IdentityShared::removeAccount(Account account)
 {
 	Accounts.removeAll(account);
 }
 
-void IdentityShared::addAccount(Account account)
+bool IdentityShared::hasAccount(Account account)
 {
-	Accounts << account;
-	AccountsUuids << account.uuid();
+	return Accounts.contains(account);
 }
 
 void IdentityShared::setStatus(Status status)
 {
 	foreach (Account account, Accounts)
-		account.statusContainer()->setStatus(status);
+		if (account.statusContainer())
+			account.statusContainer()->setStatus(status);
 }
 
 const Status & IdentityShared::status()
 {
-	return Accounts.count()
-			? Accounts[0].statusContainer()->status()
-			: Status::null;
+	foreach (Account account, Accounts)
+		if (account.statusContainer())
+			return Accounts[0].statusContainer()->status();
+	return Status::null;
 }
 
 QString IdentityShared::statusName()
@@ -140,27 +133,31 @@ QPixmap IdentityShared::statusPixmap(Status status)
 
 QPixmap IdentityShared::statusPixmap(const QString &statusType)
 {
-	return Accounts.count()
-			? Accounts[0].statusContainer()->statusPixmap(statusType)
-			: QPixmap();
+	foreach (Account account, Accounts)
+		if (account.statusContainer())
+			return account.statusContainer()->statusPixmap(statusType);
+	return QPixmap();
 }
 
 QList<StatusType *> IdentityShared::supportedStatusTypes()
 {
-	return Accounts.count()
-			? Accounts[0].statusContainer()->supportedStatusTypes()
-			: QList<StatusType *>();
+	foreach (Account account, Accounts)
+		if (account.statusContainer())
+			return account.statusContainer()->supportedStatusTypes();
+	return QList<StatusType *>();
 }
 
 int IdentityShared::maxDescriptionLength()
 {
-	return Accounts.count()
-			? Accounts[0].statusContainer()->maxDescriptionLength()
-			: -1;
+	foreach (Account account, Accounts)
+		if (account.statusContainer())
+			return account.statusContainer()->maxDescriptionLength();
+	return -1;
 }
 
 void IdentityShared::setPrivateStatus(bool isPrivate)
 {
 	foreach (Account account, Accounts)
-		account.statusContainer()->setPrivateStatus(isPrivate);
+		if (account.statusContainer())
+			account.statusContainer()->setPrivateStatus(isPrivate);
 }

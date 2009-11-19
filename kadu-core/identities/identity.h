@@ -14,58 +14,38 @@
 #include <QtCore/QStringList>
 
 #include "identities/identity-shared.h"
-#include "status/base-status-container.h"
-
 #include "exports.h"
 
-#undef PropertyRead
-#define PropertyRead(type, name, capitalized_name, default) \
-	type name() const\
-	{\
-		return !Data\
-			? default\
-			: Data->name();\
-	}
+#include "shared/shared-base.h"
 
-#undef PropertyWrite
-#define PropertyWrite(type, name, capitalized_name, default) \
-	void set##capitalized_name(type name) const\
-	{\
-		if (Data)\
-			Data->set##capitalized_name(name);\
-	}
+class Account;
 
-#undef Property
-#define Property(type, name, capitalized_name, default) \
-	PropertyRead(type, name, capitalized_name, default) \
-	PropertyWrite(type, name, capitalized_name, default)
-
-class QPixmap;
-class Status;
-
-class KADUAPI Identity : public QObject
+class KADUAPI Identity : public SharedBase<IdentityShared>
 {
-	Q_OBJECT
-
-	QExplicitlySharedDataPointer<IdentityShared> Data;
+	Identity(bool);
 
 public:
-	explicit Identity(IdentityShared *data);
-	virtual ~Identity() {};
-	
-	IdentityShared * data() const { return Data.data(); }
+	static Identity loadFromStorage(StoragePoint *identityStoragePoint);
+	static Identity null;
 
-	bool hasAccount(Account account) const;
+	Identity();
+	Identity(IdentityShared *data);
+	Identity(QObject *data);
+	Identity(const Identity &copy);
+	virtual ~Identity();
+
+	Identity & operator = (const Identity &copy)
+	{
+		SharedBase<IdentityShared>::operator=(copy);
+		return *this;
+	}
+
 	void addAccount(Account account);
-	
-	Property(QString, name, Name, QString::null)
-	Property(QUuid, uuid, Uuid, QUuid())
-	Property(QList<Account>, accounts, Accounts, QList<Account>())
-	Property(QStringList, accountsUuids, AccountsUuids, QStringList())
-
-
-public slots:
 	void removeAccount(Account account);
+	bool hasAccount(Account account);
+
+	KaduSharedBase_Property(QString, name, Name)
+	KaduSharedBase_Property(QList<Account>, accounts, Accounts)
 
 };
 

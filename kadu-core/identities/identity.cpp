@@ -14,30 +14,63 @@
 
 #include "identity.h"
 
+Identity Identity::null(true);
+
+Identity Identity::loadFromStorage(StoragePoint *accountStoragePoint)
+{
+	return IdentityShared::loadFromStorage(accountStoragePoint);
+}
+
+Identity::Identity(bool null) :
+		SharedBase<IdentityShared>(null)
+{
+}
+
+Identity::Identity()
+{
+	data()->setState(StorableObject::StateNew);
+}
+
 Identity::Identity(IdentityShared *data) :
-		Data(data)
+		SharedBase<IdentityShared>(data)
+{
+}
+
+Identity::Identity(QObject *data) :
+		SharedBase<IdentityShared>(true)
+{
+	IdentityShared *shared = dynamic_cast<IdentityShared *>(data);
+	if (shared)
+		setData(shared);
+}
+
+Identity::Identity(const Identity &copy) :
+		SharedBase<IdentityShared>(copy)
+{
+}
+
+Identity::~Identity()
 {
 }
 
 void Identity::addAccount(Account account)
 {
-	if (accounts().contains(account))
-		return;
-
-	if (Data)
-		Data->addAccount(account);
-}
-
-bool Identity::hasAccount(Account account) const
-{
-	return accounts().contains(account);
+	if (!isNull())
+		data()->addAccount(account);
 }
 
 void Identity::removeAccount(Account account)
 {
-	accounts().removeAll(account);
-	accountsUuids().removeAll(account.uuid());
+	if (!isNull())
+		data()->removeAccount(account);
 }
 
+bool Identity::hasAccount(Account account)
+{
+	return !isNull()
+			? data()->hasAccount(account)
+			: false;
+}
 
-
+KaduSharedBase_PropertyDef(Identity, QString, name, Name, QString::null)
+KaduSharedBase_PropertyDef(Identity, QList<Account>, accounts, Accounts, QList<Account>())

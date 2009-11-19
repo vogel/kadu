@@ -10,57 +10,32 @@
 #ifndef IDENTITY_SHARED_H
 #define IDENTITY_SHARED_H
 
-#include <QtCore/QObject>
-#include <QtCore/QSharedData>
-#include <QtCore/QUuid>
-
 #include "accounts/account.h"
-#include "accounts/accounts-aware-object.h"
-#include "configuration/uuid-storable-object.h"
-#include "identity-manager.h"
+#include "shared/shared.h"
 #include "status/base-status-container.h"
 
-#undef Property
-#define Property(type, name, capitalized_name) \
-	type name() { ensureLoaded(); return capitalized_name; } \
-	void set##capitalized_name(type name) { ensureLoaded(); capitalized_name = name; }
-
-class IdentityDetails;
-class Buddy;
-class Protocol;
-class ProtocolFactory;
-
-class KADUAPI IdentityShared : public BaseStatusContainer, public UuidStorableObject, public AccountsAwareObject, public QSharedData
+class KADUAPI IdentityShared : public BaseStatusContainer, public Shared
 {
-	Q_OBJECT
 	Q_DISABLE_COPY(IdentityShared)
-	
-	QString Name;
-	QUuid Uuid;
 
+	QString Name;
 	QList<Account> Accounts;
-	QStringList AccountsUuids;
 
 public:
 	static IdentityShared * loadFromStorage(StoragePoint *accountStoragePoint);
 
 	explicit IdentityShared(const QUuid &uuid = QUuid());
-	explicit IdentityShared(StoragePoint *storagePoint);
 	virtual ~IdentityShared();
 
 	virtual void load();
 	virtual void store();
 
-	virtual QUuid uuid() const { return Uuid; }
-	void setUuid(const QUuid uuid) { Uuid = uuid; }
-
-	void accountRegistered(Account account);
-	void accountUnregistered(Account account);
 	void addAccount(Account account);
-	
-	Property(QString, name, Name)
-	Property(QList<Account>, accounts, Accounts)
-	Property(QStringList, accountsUuids, AccountsUuids)
+	void removeAccount(Account account);
+	bool hasAccount(Account account);
+
+	KaduShared_Property(QString, name, Name)
+	KaduShared_Property(QList<Account>, accounts, Accounts)
 
 	// StatusContainer implementation
 
@@ -79,8 +54,7 @@ public:
 	QPixmap statusPixmap(Status status);
 
 	virtual void setPrivateStatus(bool isPrivate);
-};
 
-#include "buddies/buddy.h" // for MOC
+};
 
 #endif // IDENTITY_SHARED_H
