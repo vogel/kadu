@@ -215,7 +215,7 @@ void EncryptionManager::setupEncrypt(KaduAction *action)
 	if (!chatWidget)
 		return;
 
-	const UserGroup *group = chatWidget->users();
+	const UserGroup group = chatWidget->users();
 
 	QString keyfile_path;
 	keyfile_path.append(ggPath("keys/"));
@@ -363,7 +363,7 @@ void EncryptionManager::setupEncryptionButtonForUsers(UserListElements users, bo
 	kdebugf2();
 }
 
-void EncryptionManager::turnEncryption(UserGroup *group, bool on)
+void EncryptionManager::turnEncryption(UserGroup group, bool on)
 {
 	ChatWidget *chat = chat_manager->findChatWidget(group->toUserListElements());
 	if (chat)
@@ -444,7 +444,7 @@ void EncryptionManager::showKeysManagerDialog(QAction *sender, bool toggled)
 		KeysManagerDialog = new KeysManager();
 		connect(KeysManagerDialog, SIGNAL(destroyed()), this, SLOT(keysManagerDialogDestroyed()));
 		connect(KeysManagerDialog, SIGNAL(keyRemoved(UserListElement)), this, SLOT(keyRemoved(UserListElement)));
-		connect(KeysManagerDialog, SIGNAL(turnEncryption(UserGroup*, bool)), this, SLOT(turnEncryption(UserGroup*, bool)));
+		connect(KeysManagerDialog, SIGNAL(turnEncryption(UserGroup, bool)), this, SLOT(turnEncryption(UserGroup, bool)));
 		KeysManagerDialog->show();
 	}
 	else

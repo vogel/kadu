@@ -24,20 +24,21 @@ class GroupTabBar : public QTabBar, ConfigurationAwareObject
 
 	GroupBuddyFilter *Filter;
 	//for dnd support
-	Group *currentGroup;
+	Group currentGroup;
 	BuddyList currentBuddies;
 
 	bool showAllGroup;
 
 	int AutoGroupTabPosition;
 
+	void updateGroup(Group group);
+
 private slots:
 	void currentChangedSlot(int index);
-	void groupAdded(Group *group);
-	void groupRemoved(Group *group);
-	void groupAppearanceChanged(const Group *group);
-	void groupNameChanged(const Group *group);
-	void showInAllGroupChanged();
+	void groupAdded(Group group);
+	void groupRemoved(Group group);
+
+	void groupUpdated();
 
 	void addBuddy();
 	void renameGroup();
@@ -62,12 +63,12 @@ public:
 	GroupTabBar(QWidget *parent = 0);
 	~GroupTabBar();
 
-	void addGroup(const Group *group);
+	void addGroup(const Group group);
 
 	GroupBuddyFilter * filter() { return Filter; }
 
 signals:
-	void currentGroupChanged(const Group *group);
+	void currentGroupChanged(const Group group);
 
 };
 

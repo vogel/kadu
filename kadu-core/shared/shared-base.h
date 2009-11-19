@@ -102,12 +102,17 @@ public:
 	{
 	}
 
-	operator QObject * () // allow using SharedBase classes like QObject *
+	operator const QObject * () const // allow using SharedBase classes like QObject *
 	{
 		return Data.data();
 	}
 
-	operator T * () // allow using SharedBase classes like Shared *
+	operator T * () const // allow using SharedBase classes like Shared *
+	{
+		return Data.data();
+	}
+
+	operator bool () const // for ! and ifs
 	{
 		return Data.data();
 	}
@@ -141,6 +146,18 @@ public:
 	int operator < (const SharedBase<T> &compare) const
 	{
 		return Data < compare.Data;
+	}
+
+	void blockUpdatedSignal()
+	{
+		if (!isNull())
+			Data->blockUpdatedSignal();
+	}
+
+	void unblockUpdatedSignal()
+	{
+		if (!isNull())
+			Data->unblockUpdatedSignal();
 	}
 
 	void store()

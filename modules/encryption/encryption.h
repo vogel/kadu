@@ -50,7 +50,7 @@ class EncryptionManager : public ConfigurationUiHandler
 
 		void keysManagerDialogDestroyed();
 
-		void turnEncryption(UserGroup *group, bool on);
+		void turnEncryption(UserGroup group, bool on);
 		void keyRemoved(UserListElement ule);
 		void keyAdded(UserListElement ule);
 

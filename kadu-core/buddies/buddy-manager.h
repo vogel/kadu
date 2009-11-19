@@ -50,7 +50,7 @@ private slots:
 	void contactRemoved(Account account);
 	void contactIdChanged(Account account, const QString &oldId);
 
-	void groupRemoved(Group *group);
+	void groupRemoved(Group group);
 
 protected:
 	virtual StoragePoint * createStoragePoint();

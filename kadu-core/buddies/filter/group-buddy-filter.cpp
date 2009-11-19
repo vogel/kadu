@@ -13,14 +13,14 @@
 #include "group-buddy-filter.h"
 
 GroupBuddyFilter::GroupBuddyFilter(QObject *parent) :
-		AbstractBuddyFilter(parent), CurrentGroup(0), AllGroupShown(true)
+		AbstractBuddyFilter(parent), CurrentGroup(Group::null), AllGroupShown(true)
 {
 	// TODO: 0.6.6 hack, it should go thought the model itself
 	connect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy &)),
 			this, SIGNAL(filterChanged()));
 }
 
-void GroupBuddyFilter::setGroup(Group *group)
+void GroupBuddyFilter::setGroup(Group group)
 {
 	if (CurrentGroup == group)
 		return;
@@ -31,7 +31,7 @@ void GroupBuddyFilter::setGroup(Group *group)
 
 bool GroupBuddyFilter::acceptBuddy(Buddy buddy)
 {
-	return (0 == CurrentGroup) // use AllGroup or UngroupedGroup
+	return !CurrentGroup // use AllGroupor UngroupedGroup
 			? (AllGroupShown && buddy.showInAllGroup() || !AllGroupShown && buddy.groups().isEmpty())
 			: buddy.isInGroup(CurrentGroup);
 }

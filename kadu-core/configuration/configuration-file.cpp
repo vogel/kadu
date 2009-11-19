@@ -39,7 +39,7 @@ PlainConfigFile &PlainConfigFile::operator=(const PlainConfigFile &c)
 	filename = c.filename;
 	groups = c.groups;
 	activeGroupName = QString::null;
-	activeGroup = 0;
+	activeGroup= 0;
 	return *this;
 }
 
@@ -377,7 +377,7 @@ void PlainConfigFile::removeVariable(const QString &group, const QString &name)
 	if (activeGroupName != group)
 	{
 		activeGroupName = group;
-		activeGroup = &(groups[group]);
+		activeGroup= &(groups[group]);
 	}
 
 	if (activeGroup->contains(name))

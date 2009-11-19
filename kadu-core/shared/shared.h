@@ -18,7 +18,6 @@
 
 #include "configuration/uuid-storable-object.h"
 
-
 #define KaduShared_PropertyRead(type, name, capitalized_name) \
 	type name() { ensureLoaded(); return capitalized_name; }
 #define KaduShared_PropertyWrite(type, name, capitalized_name) \

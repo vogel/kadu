@@ -203,21 +203,21 @@ void FileTransferManager::chatKeyPressed(QKeyEvent *e, ChatWidget *chatWidget, b
 
 void FileTransferManager::chatCreated(ChatWidget *chat)
 {
-	connect(chat, SIGNAL(fileDropped(const UserGroup *, const QString &)),
-		this, SLOT(fileDropped(const UserGroup *, const QString &)));
+	connect(chat, SIGNAL(fileDropped(const UserGroup, const QString &)),
+		this, SLOT(fileDropped(const UserGroup, const QString &)));
 	connect(chat, SIGNAL(keyPressed(QKeyEvent *, ChatWidget *, bool &)),
 		this, SLOT(chatKeyPressed(QKeyEvent *, ChatWidget *, bool &)));
 }
 
 void FileTransferManager::chatDestroying(ChatWidget *chat)
 {
-	disconnect(chat, SIGNAL(fileDropped(const UserGroup *, const QString &)),
-		this, SLOT(fileDropped(const UserGroup *, const QString &)));
+	disconnect(chat, SIGNAL(fileDropped(const UserGroup, const QString &)),
+		this, SLOT(fileDropped(const UserGroup, const QString &)));
 	disconnect(chat, SIGNAL(keyPressed(QKeyEvent *, ChatWidget *, bool &)),
 		this, SLOT(chatKeyPressed(QKeyEvent *, ChatWidget *, bool &)));
 }
 
-void FileTransferManager::fileDropped(const UserGroup *group, const QString &fileName)
+void FileTransferManager::fileDropped(const UserGroup group, const QString &fileName)
 {
 	foreach(const UserListElement &user, *group)
 		if (user.usesProtocol("Gadu"))

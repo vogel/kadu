@@ -50,8 +50,8 @@ void BuddyManager::init()
 {
 	ConfigurationManager::instance()->registerStorableObject(this);
 
-	connect(GroupManager::instance(), SIGNAL(groupAboutToBeRemoved(Group *)),
-			this, SLOT(groupRemoved(Group *)));
+	connect(GroupManager::instance(), SIGNAL(groupAboutToBeRemoved(Group)),
+			this, SLOT(groupRemoved(Group)));
 }
 
 StoragePoint * BuddyManager::createStoragePoint()
@@ -367,7 +367,7 @@ void BuddyManager::contactIdChanged(Account account, const QString &oldId)
 		emit contactIdChanged(buddy, account, oldId);
 }
 
-void BuddyManager::groupRemoved(Group *group)
+void BuddyManager::groupRemoved(Group group)
 {
 	foreach (Buddy buddy, Buddies)
 		buddy.removeFromGroup(group);

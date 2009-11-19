@@ -104,85 +104,80 @@ void GroupManager::store()
 	ensureLoaded();
 	emit saveGroupData();
 
-	foreach (Group *group, Groups)
-		group->store();
+	foreach (Group group, Groups)
+		group.store();
 }
 
-QList<Group *> GroupManager::groups()
+QList<Group> GroupManager::groups()
 {
 	ensureLoaded();
 	return Groups;
 }
 
-void GroupManager::addGroup(Group *newGroup)
+void GroupManager::addGroup(Group group)
 {
 	ensureLoaded();
 
-	emit groupAboutToBeAdded(newGroup);
-	Groups << newGroup;
-	emit groupAdded(newGroup);
+	emit groupAboutToBeAdded(group);
+	Groups << group;
+	emit groupAdded(group);
 }
 
-void GroupManager::removeGroup(QString groupUuid)
+void GroupManager::removeGroup(Group group)
 {
-	Group *group = byUuid(groupUuid);
-	if (!group)
-		return;
-
-	group->removeFromStorage();
+	group.removeFromStorage();
 
 	emit groupAboutToBeRemoved(group);
 	Groups.removeAll(group);
 	emit groupRemoved(group);
-
-	delete group;
 }
 
-Group * GroupManager::byUuid(const QString &uuid)
+Group GroupManager::byUuid(const QString &uuid)
 {
 	if (uuid.isEmpty())
-		return 0;
+		return Group::null;
 
 	ensureLoaded();
 
-	foreach (Group *group, Groups)
-	{
-		if (uuid == group->uuid().toString())
+	foreach (Group group, Groups)
+		if (uuid == group.uuid().toString())
 			return group;
-	}
 
-	return 0;
+	return Group::null;
 }
 
-Group * GroupManager::byIndex(unsigned int index) const
+Group GroupManager::byIndex(unsigned int index) const
 {
 	if (index < 0 || index >= count())
-		return 0;
+		return Group::null;
 	
 	return Groups.at(index);
 }
 
-Group * GroupManager::byName(const QString &name, bool create)
+Group GroupManager::byName(const QString &name, bool create)
 {
 	if (name.isEmpty())
-		return 0;
+		return Group::null;
 
 	ensureLoaded();
 
-	foreach (Group *group, Groups)
-	{
-		if (name == group->name())
+	foreach (Group group, Groups)
+		if (name == group.name())
 			return group;
-	}
 
 	if (!create)
-		return 0;
+		return Group::null;
 
-	Group *newGroup = new Group();
-	newGroup->importConfiguration(name);
-	addGroup(newGroup);
+	Group group;
+	group.data()->importConfiguration(name);
+	addGroup(group);
 
-	return newGroup;
+	return group;
+}
+
+unsigned int GroupManager::indexOf(Group group) const
+{
+	return Groups.indexOf(group);
 }
 
 // TODO: move some of this to %like-encoding, so we don't block normal names
@@ -194,18 +189,21 @@ bool GroupManager::acceptableGroupName(const QString &groupName)
 		kdebugf2();
 		return false;
 	}
+
 	if (groupName.contains(","))
 	{
 		MessageDialog::msg(tr("'%1' is prohibited").arg(','), true, "Warning");
 		kdebugf2();
 		return false;
 	}
+
 	if (groupName.contains(";"))
 	{
 		MessageDialog::msg(tr("'%1' is prohibited").arg(';'), true, "Warning");
 		kdebugf2();
 		return false;
 	}
+
 	bool number;
 	groupName.toLong(&number);
 	if (number)

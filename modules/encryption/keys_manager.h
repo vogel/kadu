@@ -43,6 +43,6 @@ class KeysManager : public QWidget
 
 	signals:
 		void keyRemoved(UserListElement ule);
-		void turnEncryption(UserGroup* group, bool on);
+		void turnEncryption(UserGroup group, bool on);
 };
 #endif

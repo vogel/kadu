@@ -287,7 +287,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	
 	BuddiesListViewMenuManager::instance()->insertManagementActionDescription(2, 0);
 
-	AddGroup = new ActionDescription(this,
+	AddGroup= new ActionDescription(this,
 		ActionDescription::TypeGlobal, "addGroupAction",
 		this, SLOT(addGroupActionActivated(QAction *, bool)),
 		//TODO 0.6.6 proper icon

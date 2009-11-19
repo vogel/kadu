@@ -15,22 +15,38 @@
 
 #include "group.h"
 
-Group * Group::loadFromStorage(StoragePoint *groupStoragePoint)
+Group Group::null(true);
+
+Group Group::loadFromStorage(StoragePoint *contactStoragePoint)
 {
-	Group *group = new Group(groupStoragePoint);
-	group->load();
-	
-	return group;
+	return GroupShared::loadFromStorage(contactStoragePoint);
 }
 
-Group::Group(StoragePoint *storagePoint) :
-		UuidStorableObject(storagePoint)
+Group::Group(bool null) :
+		SharedBase<GroupShared>(null)
 {
 }
 
-Group::Group(QUuid uuid) :
-		UuidStorableObject("Group", GroupManager::instance()),
-		Uuid(uuid.isNull() ? QUuid::createUuid() : uuid)
+Group::Group()
+{
+	data()->setState(StorableObject::StateNew);
+}
+
+Group::Group(GroupShared *data) :
+		SharedBase<GroupShared>(data)
+{
+}
+
+Group::Group(QObject *data) :
+		SharedBase<GroupShared>(true)
+{
+	GroupShared *shared = dynamic_cast<GroupShared *>(data);
+	if (shared)
+		setData(shared);
+}
+
+Group::Group(const Group&copy) :
+		SharedBase<GroupShared>(copy)
 {
 }
 
@@ -38,79 +54,11 @@ Group::~Group()
 {
 }
 
-void Group::importConfiguration(const QString &name)
-{
-	Name = name;
-	Icon = config_file.readEntry("GroupIcon", name);
-	NotifyAboutStatusChanges = true;
-	ShowInAllGroup = true;
-	OfflineToGroup = false;
-	ShowIcon = !Icon.isEmpty(); 
-	ShowName = true;
-	TabPosition = -1;
-}
-
-void Group::load()
-{
-	StorableObject::load();
-
-	if (!isValidStorage())
-		return;
-
-	Uuid = loadAttribute<QString>("uuid");
-	Name = loadValue<QString>("Name");
-	Icon = loadValue<QString>("Icon");
-	NotifyAboutStatusChanges = loadValue<bool>("NotifyAboutStatusChanges", true);
-	ShowInAllGroup = loadValue<bool>("ShowInAllGroup", true);
-	OfflineToGroup = loadValue<bool>("OfflineTo", true);
-	ShowIcon = loadValue<bool>("ShowIcon", true);
-	ShowName = loadValue<bool>("ShowName", true);
-	TabPosition = loadValue<int>("TabPosition", -1);
-}
-
-void Group::store()
-{
-	if (!isValidStorage())
-		return;
-
-	storeValue("Name", Name);
-	storeValue("Icon", Icon);
-	storeValue("NotifyAboutStatusChanges", NotifyAboutStatusChanges);
-	storeValue("ShowInAllGroup", ShowInAllGroup);
-	storeValue("OfflineTo", OfflineToGroup);
-	storeValue("ShowIcon", ShowIcon);
-	storeValue("ShowName", ShowName);
-	storeValue("TabPosition", TabPosition);
-}
-
-void Group::setName(const QString &name)
-{
-	Name = name;
-	emit nameChanged(this);
-}
-
-void Group::setAppearance(bool showName, bool showIcon, const QString &icon)
-{
-	Icon = icon;
-	ShowIcon = showIcon;
-	ShowName = showName;
-
-	emit appearanceChanged(this);
-}
-//TODO 0.6.6:
-void Group::setNotifyAboutStatuses(bool notify)
-{
-	NotifyAboutStatusChanges = notify;
-	emit notifyAboutStatusesChanged(this);
-}
-
-void Group::setOfflineTo(bool offline)
-{
-	OfflineToGroup = offline;
-}
-
-void Group::setShowInAllGroup(bool show)
-{
-	ShowInAllGroup = show;
-	emit showInAllChanged();
-}
+KaduSharedBase_PropertyDef(Group, QString, name, Name, QString::null)
+KaduSharedBase_PropertyDef(Group, QString, icon, Icon, QString::null)
+KaduSharedBase_PropertyDef(Group, bool, notifyAboutStatusChanges, NotifyAboutStatusChanges, false)
+KaduSharedBase_PropertyDef(Group, bool, showInAllGroup, ShowInAllGroup, false)
+KaduSharedBase_PropertyDef(Group, bool, offlineToGroup, OfflineToGroup, false)
+KaduSharedBase_PropertyDef(Group, bool, showIcon, ShowIcon, false)
+KaduSharedBase_PropertyDef(Group, bool, showName, ShowName, false)
+KaduSharedBase_PropertyDef(Group, int, tabPosition, TabPosition, -1)

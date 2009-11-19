@@ -84,9 +84,9 @@ template<class T>
 	// properties
 
 	bool showInAllGroup() const;
-	bool isInGroup(Group *group) const;
-	void addToGroup(Group *group);
-	void removeFromGroup(Group *group);
+	bool isInGroup(Group group) const;
+	void addToGroup(Group group);
+	void removeFromGroup(Group group);
 
 	QString display() const;
 
@@ -103,7 +103,7 @@ template<class T>
 	KaduSharedBase_Property(QString, website, Website)
 	KaduSharedBase_Property(unsigned short, birthYear, BirthYear)
 	KaduSharedBase_Property(BuddyShared::BuddyGender, gender, Gender)
-	KaduSharedBase_Property(QList<Group *>, groups, Groups)
+	KaduSharedBase_Property(QList<Group>, groups, Groups)
 	KaduSharedBase_PropertyBool(Anonymous)
 	KaduSharedBase_PropertyBool(Ignored)
 	KaduSharedBase_PropertyBool(Blocked)

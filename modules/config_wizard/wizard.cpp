@@ -375,7 +375,7 @@ void Wizard::createGGAccountPage()
 	connect(ggRegisterAccount, SIGNAL(clicked()), this, SLOT(registerGGAccount()));
 	gridLayout->addMultiCellWidget(ggRegisterAccount, 8, 8, 2, 3);
 
-	QButtonGroup *haveNumberGroup = new QButtonGroup();
+	QButtonGrouphaveNumberGroup= new QButtonGroup();
 	haveNumberGroup->insert(haveNumber);
 	haveNumberGroup->insert(dontHaveNumber);
 

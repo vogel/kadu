@@ -17,12 +17,12 @@
 #include <QtCore/QUuid>
 #include <QtXml/QDomElement>
 
+#include "buddies/group.h"
 #include "shared/shared.h"
 
 #include "exports.h"
 
 class Contact;
-class Group;
 class XmlConfigFile;
 
 class KADUAPI BuddyShared : public QObject, public Shared
@@ -55,7 +55,7 @@ private:
 	QString Website;
 	unsigned short BirthYear;
 	BuddyGender Gender;
-	QList<Group *> Groups;
+	QList<Group> Groups;
 
 	bool Anonymous;
 	bool Ignored;
@@ -94,9 +94,9 @@ public:
 
 	// properties
 	bool showInAllGroup();
-	bool isInGroup(Group *group);
-	void addToGroup(Group *group);
-	void removeFromGroup(Group *group);
+	bool isInGroup(Group group);
+	void addToGroup(Group group);
+	void removeFromGroup(Group group);
 
 	KaduShared_Property(QString, display, Display)
 	KaduShared_Property(QString, firstName, FirstName)
@@ -111,7 +111,7 @@ public:
 	KaduShared_Property(QString, website, Website)
 	KaduShared_Property(unsigned short, birthYear, BirthYear)
 	KaduShared_Property(BuddyGender, gender, Gender)
-	KaduShared_Property(QList<Group *>, groups, Groups)
+	KaduShared_Property(QList<Group>, groups, Groups)
 	KaduShared_PropertyBool(Anonymous)
 	KaduShared_PropertyBool(Ignored)
 	KaduShared_PropertyBool(Blocked)

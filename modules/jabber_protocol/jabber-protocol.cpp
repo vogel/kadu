@@ -497,8 +497,8 @@ void JabberProtocol::contactAdded(Buddy &buddy)
 	if (contact.isNull())
 		return;
 	QStringList groupsList;
-	foreach (Group *group, buddy.groups())
-		groupsList.append(group->name());
+	foreach (Group group, buddy.groups())
+		groupsList.append(group.name());
 	//TODO opcja żądania autoryzacji, na razie na sztywno true
 	JabberClient->addContact(contact.id(), buddy.display(), groupsList, true);
 }
@@ -519,8 +519,8 @@ void JabberProtocol::contactUpdated(Buddy &buddy)
 	if (contact.isNull())
 		return;
 	QStringList groupsList;
-	foreach (Group *group, buddy.groups())
-		groupsList.append(group->name());
+	foreach (Group group, buddy.groups())
+		groupsList.append(group.name());
 	JabberClient->updateContact(contact.id(), buddy.display(), groupsList);
 
 }

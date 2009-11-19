@@ -119,8 +119,8 @@ void BuddyShared::load()
 			QDomElement groupElement = groupsList.at(i).toElement();
 			if (groupElement.isNull())
 				continue;
-			Group *group = GroupManager::instance()->byUuid(groupElement.text());
-			if (group)
+			Group group = GroupManager::instance()->byUuid(groupElement.text());
+			if (!group.isNull())
 				Groups << group;
 		}
 	}
@@ -170,8 +170,8 @@ void BuddyShared::store()
 	if (Groups.count())
 	{
 		QDomElement groupsNode = configurationStorage->getNode(parent, "ContactGroups", XmlConfigFile::ModeCreate);
-		foreach (Group *group, Groups)
-			configurationStorage->appendTextNode(groupsNode, "Group", group->uuid().toString());
+		foreach (Group group, Groups)
+			configurationStorage->appendTextNode(groupsNode, "Group", group.uuid().toString());
 	}
 	else
 		configurationStorage->removeNode(parent, "ContactGroups");
@@ -248,26 +248,26 @@ void BuddyShared::emitUpdated()
 
 // properties
 
-bool BuddyShared::isInGroup(Group *group)
+bool BuddyShared::isInGroup(Group group)
 {
 	return Groups.contains(group);
 }
 
 bool BuddyShared::showInAllGroup()
 {
-	foreach (const Group *group, Groups)
-		if (0 != group && !group->showInAllGroup())
+	foreach (const Group group, Groups)
+		if (!group.isNull() && !group.showInAllGroup())
 			return false;
 	return true;
 }
 
-void BuddyShared::addToGroup(Group *group)
+void BuddyShared::addToGroup(Group group)
 {
 	Groups.append(group);
 	dataUpdated();
 }
 
-void BuddyShared::removeFromGroup(Group *group)
+void BuddyShared::removeFromGroup(Group group)
 {
 	Groups.removeAll(group);
 	dataUpdated();

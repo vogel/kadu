@@ -148,7 +148,7 @@ QString Buddy::id(Account account) const
 	return isNull() ? QString::null : data()->id(account);
 }
 
-bool Buddy::isInGroup(Group *group) const
+bool Buddy::isInGroup(Group group) const
 {
 	return isNull() ? false : data()->isInGroup(group);
 }
@@ -158,13 +158,13 @@ bool Buddy::showInAllGroup() const
 	return isNull() ? false : data()->showInAllGroup();
 }
 
-void Buddy::addToGroup(Group *group)
+void Buddy::addToGroup(Group group)
 {
 	if (!isNull() && !data()->isInGroup(group))
 		data()->addToGroup(group);
 
 }
-void Buddy::removeFromGroup(Group *group)
+void Buddy::removeFromGroup(Group group)
 {
 	if (!isNull() && data()->isInGroup(group))
 		data()->removeFromGroup(group);
@@ -246,7 +246,7 @@ KaduSharedBase_PropertyDef(Buddy, QString, email, Email, QString::null)
 KaduSharedBase_PropertyDef(Buddy, QString, website, Website, QString::null)
 KaduSharedBase_PropertyDef(Buddy, unsigned short, birthYear, BirthYear, 0)
 KaduSharedBase_PropertyDef(Buddy, BuddyShared::BuddyGender, gender, Gender, BuddyShared::GenderUnknown)
-KaduSharedBase_PropertyDef(Buddy, QList<Group *>, groups, Groups, QList<Group *>())
+KaduSharedBase_PropertyDef(Buddy, QList<Group>, groups, Groups, QList<Group>())
 KaduSharedBase_PropertyBoolDef(Buddy, Anonymous, false)
 KaduSharedBase_PropertyBoolDef(Buddy, Ignored, false)
 KaduSharedBase_PropertyBoolDef(Buddy, Blocked, false)

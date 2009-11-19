@@ -25,11 +25,11 @@
 
 #include "group-properties-window.h"
 
-GroupPropertiesWindow::GroupPropertiesWindow(Group *editedGroup, QWidget *parent)
+GroupPropertiesWindow::GroupPropertiesWindow(Group editedGroup, QWidget *parent)
 	: QWidget(parent, Qt::Window), group(editedGroup)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
-	setWindowTitle(tr("Properties of group %1").arg(group->name()));
+	setWindowTitle(tr("Properties of group %1").arg(group.name()));
 
 	QVBoxLayout *main_layout = new QVBoxLayout(this);
 
@@ -39,10 +39,10 @@ GroupPropertiesWindow::GroupPropertiesWindow(Group *editedGroup, QWidget *parent
 	behaviourGroupBox->setTitle(tr("Behaviour"));
 
 	notifyCheckBox = new QCheckBox(tr("Notify about status changes"), behaviourGroupBox);
-	notifyCheckBox->setChecked(group->notifyAboutStatusChanges());
+	notifyCheckBox->setChecked(group.notifyAboutStatusChanges());
 
 	offlineCheckBox = new QCheckBox(tr("Offline for this group"), behaviourGroupBox);
-	offlineCheckBox->setChecked(group->offlineToGroup());
+	offlineCheckBox->setChecked(group.offlineToGroup());
 	offlineCheckBox->setToolTip(tr("Supported for Gadu-Gadu network"));
 
 	info = new QLabel;
@@ -53,7 +53,7 @@ GroupPropertiesWindow::GroupPropertiesWindow(Group *editedGroup, QWidget *parent
 	connect(offlineCheckBox, SIGNAL(toggled(bool)), info, SLOT(setVisible(bool)));
 
 	allGroupCheckBox = new QCheckBox(tr("Show in group \"All\""), behaviourGroupBox);
-	allGroupCheckBox->setChecked(group->showInAllGroup());
+	allGroupCheckBox->setChecked(group.showInAllGroup());
 
 	behaviour_layout->addWidget(notifyCheckBox);
 	behaviour_layout->addWidget(offlineCheckBox);
@@ -69,9 +69,9 @@ GroupPropertiesWindow::GroupPropertiesWindow(Group *editedGroup, QWidget *parent
 	icon_layout->setContentsMargins(0, 0, 0, 0);
 
 	iconCheckBox = new QCheckBox(tr("Use custom icon"), lookGroupBox);
-	iconCheckBox->setChecked(group->showIcon());
+	iconCheckBox->setChecked(group.showIcon());
 
-	iconPath = group->icon();
+	iconPath = group.icon();
 	icon = new QPushButton(iconWidget);
 
 	if (iconPath.isEmpty())
@@ -92,7 +92,7 @@ GroupPropertiesWindow::GroupPropertiesWindow(Group *editedGroup, QWidget *parent
 	icon_layout->addWidget(icon);
 
 	nameCheckBox = new QCheckBox(tr("Show group name"), lookGroupBox);
-	nameCheckBox->setChecked(group->showName());
+	nameCheckBox->setChecked(group.showName());
 
 	look_layout->addWidget(iconWidget);
 	look_layout->addWidget(nameCheckBox);
@@ -135,10 +135,16 @@ void GroupPropertiesWindow::selectIcon()
 
 void GroupPropertiesWindow::applyClicked()
 {
-	group->setAppearance(nameCheckBox->isChecked(), iconCheckBox->isChecked(), iconPath);
-	group->setNotifyAboutStatuses(notifyCheckBox->isChecked());
-	group->setOfflineTo(offlineCheckBox->isChecked());
-	group->setShowInAllGroup(allGroupCheckBox->isChecked());
+	group.blockUpdatedSignal();
+
+	group.setShowName(nameCheckBox->isChecked());
+	group.setShowIcon(iconCheckBox->isChecked());
+	group.setIcon(iconPath);
+	group.setNotifyAboutStatusChanges(notifyCheckBox->isChecked());
+	group.setOfflineToGroup(offlineCheckBox->isChecked());
+	group.setShowInAllGroup(allGroupCheckBox->isChecked());
+
+	group.unblockUpdatedSignal();
 }
 
 void GroupPropertiesWindow::okClicked()

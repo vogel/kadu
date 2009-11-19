@@ -14,17 +14,17 @@ StatusGroup::StatusGroup(const QString &name, int sortIndex) :
 {
 }
 
-bool StatusGroup::operator < (const StatusGroup &compare) const
+bool StatusGroup::operator < (const StatusGroup&compare) const
 {
 	return SortIndex < compare.SortIndex;
 }
 
-bool StatusGroup::operator == (const StatusGroup &compare) const
+bool StatusGroup::operator == (const StatusGroup&compare) const
 {
 	return SortIndex == compare.SortIndex;
 }
 
-bool StatusGroup::operator != (const StatusGroup &compare) const
+bool StatusGroup::operator != (const StatusGroup&compare) const
 {
 	return SortIndex != compare.SortIndex;
 }

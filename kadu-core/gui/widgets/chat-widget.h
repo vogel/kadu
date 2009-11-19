@@ -205,7 +205,7 @@ signals:
 	void messageReceived(Chat *chat);
 
 	/**
-		\fn void fileDropped(const UserGroup *users, const QString& fileName)
+		\fn void fileDropped(const UserGroupusers, const QString& fileName)
 		Sygna� jest emitowany, gdy w oknie Chat
 		upuszczono plik.
 	\param users lista u�ytkownik�w

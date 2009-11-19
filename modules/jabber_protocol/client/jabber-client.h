@@ -573,12 +573,12 @@ signals:
 	void messageReceived(const XMPP::Message &message);
 
 	/**
-	 * Group chat has been joined.
+	 * Groupchat has been joined.
 	 */
 	void groupChatJoined(const XMPP::Jid &jid);
 
 	/**
-	 * Group chat has been left.
+	 * Groupchat has been left.
 	 */
 	void groupChatLeft(const XMPP::Jid &jid);
 

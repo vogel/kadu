@@ -39,7 +39,7 @@ void StatusGroupManager::registerStatusGroup(const QString &name, int sortIndex)
 		return;
 	}
 
-	StatusGroup *newGroup = new StatusGroup(name, sortIndex);
+	StatusGroup *newGroup= new StatusGroup(name, sortIndex);
 	StatusGroups.append(newGroup);
 	StatusGroupsCounter[newGroup] = 1;
 }
@@ -64,7 +64,7 @@ void StatusGroupManager::unregisterStatusGroup(const QString &name)
 	}
 }
 
-StatusGroup * StatusGroupManager::statusGroup(const QString& name)
+StatusGroup * StatusGroupManager::statusGroup(const QString &name)
 {
 	foreach (StatusGroup *sg, StatusGroups)
 		if (name == sg->name())

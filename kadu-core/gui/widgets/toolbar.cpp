@@ -498,8 +498,8 @@ QMenu * ToolBar::createContextMenu(QToolButton *button)
 			Text = textPositionMenu->addAction(tr("Text alongside icon"), this, SLOT(slotContextTextRight()));
 			TextUnder = textPositionMenu->addAction(tr("Text under icon"), this, SLOT(slotContextTextUnder()));
 
-			QActionGroup* textGroup = new QActionGroup(textPositionMenu);
-			foreach (QAction* action, textPositionMenu->actions())
+			QActionGroup *textGroup = new QActionGroup(textPositionMenu);
+			foreach (QAction *action, textPositionMenu->actions())
 			{
 				action->setActionGroup(textGroup);
 				action->setCheckable(true);

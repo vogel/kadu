@@ -43,7 +43,7 @@ private slots:
 	void chatCreated(ChatWidget *chat);
 	void chatDestroying(ChatWidget *chat);
 
-// 	void fileDropped(const UserGroup *group, const QString &);
+// 	void fileDropped(const UserGroup group, const QString &);
 
 	void transferDestroyed(QObject *transfer);
 

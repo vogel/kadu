@@ -35,8 +35,8 @@ QString GaduListHelper::contactListToString(Account account, BuddyList buddies)
 	foreach (Buddy buddy, buddies)
 	{
 		QStringList buddyGroups;
-		foreach (Group *group, buddy.groups())
-			buddyGroups << group->name();
+		foreach (Group group, buddy.groups())
+			buddyGroups << group.name();
 
 		Contact contact = buddy.contact(account);
 
@@ -80,7 +80,7 @@ BuddyList GaduListHelper::streamToContactList(Account account, QTextStream &cont
 	BuddyList result;
 
 	QStringList sections;
-	QList<Group *> groups;
+	QList<Group> groups;
 	QString line;
 	unsigned int i, secCount;
 	bool ok;

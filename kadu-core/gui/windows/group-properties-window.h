@@ -12,17 +12,17 @@
 
 #include <QtGui/QWidget>
 
+#include "buddies/group.h"
+
 class QCheckBox;
 class QLabel;
 class QPushButton;
-
-class Group;
 
 class GroupPropertiesWindow : public QWidget
 {
 	Q_OBJECT
 
-	Group *group;
+	Group group;
 
 	QCheckBox *notifyCheckBox;
 	QCheckBox *offlineCheckBox;
@@ -44,7 +44,7 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *e);
 
 public:
-	GroupPropertiesWindow(Group *editedGroup, QWidget *parent = 0);
+	GroupPropertiesWindow(Group editedGroup, QWidget *parent = 0);
 
 };
 

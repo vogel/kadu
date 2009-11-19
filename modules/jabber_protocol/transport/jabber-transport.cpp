@@ -180,7 +180,7 @@ bool JabberTransport::createContact (const QString & contactId/*,  Kopete::MetaC
 	// collect all group names
 	QStringList groupNames;
 	Kopete::GroupList groupList = metaContact->groups();
-	for(Kopete::Group *group = groupList.first(); group; group = groupList.next())
+	for(Kopete::Group group = groupList.first(); group; group = groupList.next())
 		groupNames += group->displayName();
 
 	XMPP::Jid jid ( contactId );

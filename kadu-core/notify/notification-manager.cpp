@@ -75,7 +75,7 @@ void NotificationManager::init()
 
 	BuddiesListViewMenuManager::instance()->addManagementActionDescription(notifyAboutUserActionDescription);
 
-	foreach (Group *group, GroupManager::instance()->groups())
+	foreach (Group group, GroupManager::instance()->groups())
 		groupAdded(group);
 
 	new WindowNotifier(this);
@@ -373,14 +373,18 @@ void NotificationManager::notify(Notification *notification)
 	kdebugf2();
 }
 
-void NotificationManager::groupAdded(Group *group)
+void NotificationManager::groupAdded(Group group)
 {
-	connect(group, SIGNAL(notifyAboutStatusesChanged(Group *)), this, SLOT(groupNotifyChanged(Group *)));
+	connect(group, SIGNAL(updated()), this, SLOT(groupUpdated()));
 }
 
-void NotificationManager::groupNotifyChanged(Group *group)
+void NotificationManager::groupUpdated()
 {
-	bool notify = group->notifyAboutStatusChanges();
+	Group group = sender();
+	if (group.isNull())
+		return;
+
+	bool notify = group.notifyAboutStatusChanges();
 
 	if (NotifyAboutAll)
 	{

@@ -27,9 +27,9 @@ class KADUAPI StatusMenu : public QObject
 {
 	Q_OBJECT
 
-	QActionGroup * ChangeStatusActionGroup;
-	QAction * ChangeDescription;
-	QAction * ChangePrivateStatus;
+	QActionGroup *ChangeStatusActionGroup;
+	QAction *ChangeDescription;
+	QAction *ChangePrivateStatus;
 
 	QPoint MousePositionBeforeMenuHide;
 

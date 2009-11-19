@@ -29,6 +29,7 @@ set (kadu_SRCS
 	buddies/buddy-shared.cpp
 	buddies/group.cpp
 	buddies/group-manager.cpp
+	buddies/group-shared.cpp
 	buddies/ignored-helper.cpp
 
 	buddies/filter/account-buddy-filter.cpp
@@ -285,13 +286,9 @@ set (kadu_MOC_SRCS
 	buddies/avatar-manager.h
 	buddies/buddy.h
 	buddies/buddy-shared.h
-	#buddies/buddy-list.h
-	#buddies/buddy-list-configuration-helper.h
 	buddies/buddy-manager.h
-	#buddies/buddy-search-criteria.h
-	#buddies/buddy-set.h
-	buddies/group.h
 	buddies/group-manager.h
+	buddies/group-shared.h
 
 	buddies/filter/abstract-buddy-filter.h
 	buddies/filter/account-buddy-filter.h
