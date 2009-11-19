@@ -424,6 +424,7 @@ void GaduProtocol::login(const QString &password, bool permanent)
 {
 	account().setPassword(password);
 	account().setRememberPassword(permanent);
+	account().setHasPassword(!password.isEmpty());
 
 	login();
 }
