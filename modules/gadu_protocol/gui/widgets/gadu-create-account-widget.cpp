@@ -190,6 +190,7 @@ void GaduCreateAccountWidget::addThisAccount()
 {
 	Account gaduAccount;
 	gaduAccount.data()->setState(StorableObject::StateNew);
+	gaduAccount.data()->setProtocolName("gadu");
 	gaduAccount.data()->protocolRegistered(ProtocolsManager::instance()->byName("gadu"));
 	gaduAccount.setDetails(new GaduAccountDetails(gaduAccount.storage(), gaduAccount));
 	gaduAccount.setName(AccountName->text());

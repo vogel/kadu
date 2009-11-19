@@ -108,6 +108,7 @@ void TlenCreateAccountWidget::addThisAccount()
 {
 	Account tlenAccount;
 	tlenAccount.data()->setState(StorableObject::StateNew);
+	tlenAccount.data()->setProtocolName("tlen");
 	tlenAccount.data()->protocolRegistered(ProtocolsManager::instance()->byName("tlen"));
 	tlenAccount.setDetails(new TlenAccountDetails(tlenAccount.storage(), tlenAccount));
 	tlenAccount.setName(AccountName->text());
