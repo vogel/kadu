@@ -26,10 +26,10 @@ class KADUAPI AccountDetails : public QObject, public StorableObject
 	AccountShared *MyAccountData;
 
 public:
-	explicit AccountDetails(StoragePoint *storagePoint, Account parent);
+	explicit AccountDetails(AccountShared *accountData);
 	virtual ~AccountDetails();
 
-	Account account() { return Account(MyAccountData); }
+	AccountShared * accountData() { return MyAccountData; }
 
 };
 

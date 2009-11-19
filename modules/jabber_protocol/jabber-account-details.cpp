@@ -18,10 +18,10 @@
 
 #include "jabber-account-details.h"
 
-JabberAccountDetails::JabberAccountDetails(StoragePoint *storagePoint, Account parent) :
-		AccountDetails(storagePoint, parent), EncryptionMode(JabberAccountDetails::Encryption_Auto)
+JabberAccountDetails::JabberAccountDetails(AccountShared *data) :
+		AccountDetails(data), EncryptionMode(JabberAccountDetails::Encryption_Auto)
 {
-	OpenChatRunner = new JabberOpenChatWithRunner(parent);
+	OpenChatRunner = new JabberOpenChatWithRunner(data);
 	OpenChatWithRunnerManager::instance()->registerRunner(OpenChatRunner);
 }
 

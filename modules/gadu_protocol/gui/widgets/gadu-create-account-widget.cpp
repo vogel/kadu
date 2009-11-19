@@ -191,7 +191,7 @@ void GaduCreateAccountWidget::addThisAccount()
 	Account gaduAccount;
 	gaduAccount.data()->setState(StorableObject::StateNew);
 	gaduAccount.data()->protocolRegistered(ProtocolsManager::instance()->byName("gadu"));
-	gaduAccount.setDetails(new GaduAccountDetails(gaduAccount.storage(), gaduAccount));
+	gaduAccount.setDetails(new GaduAccountDetails(gaduAccount));
 	gaduAccount.setName(AccountName->text());
 	gaduAccount.setId(AccountId->text());
 	gaduAccount.setPassword(AccountPassword->text());
@@ -236,7 +236,7 @@ void GaduCreateAccountWidget::registerNewAccountFinished(GaduServerRegisterAccou
 		Account gaduAccount;
 		gaduAccount.data()->setState(StorableObject::StateNew);
 		gaduAccount.data()->protocolRegistered(ProtocolsManager::instance()->byName("gadu"));
-		gaduAccount.setDetails(new GaduAccountDetails(gaduAccount.storage(), gaduAccount));
+		gaduAccount.setDetails(new GaduAccountDetails(gaduAccount));
 		gaduAccount.setName(AccountName->text());
 		gaduAccount.setId(QString::number(gsra->uin()));
 		gaduAccount.setPassword(NewPassword->text());

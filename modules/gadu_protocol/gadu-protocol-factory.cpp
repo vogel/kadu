@@ -51,7 +51,7 @@ Protocol * GaduProtocolFactory::createProtocolHandler(Account account)
 
 AccountDetails * GaduProtocolFactory::createAccountDetails(Account account)
 {
-	return new GaduAccountDetails(account.storage(), account);
+	return new GaduAccountDetails(account);
 }
 
 ContactDetails * GaduProtocolFactory::createContactDetails(Contact contact)

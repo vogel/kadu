@@ -77,6 +77,11 @@ protected:
 	SharedBase(bool null) :
 			Data(0) {}
 
+	void setData(T *data)
+	{
+		Data = data;
+	}
+
 public:
 	SharedBase() :
 			Data(new T())
@@ -98,6 +103,11 @@ public:
 	}
 
 	operator QObject * () // allow using SharedBase classes like QObject *
+	{
+		return Data.data();
+	}
+
+	operator T * () // allow using SharedBase classes like Shared *
 	{
 		return Data.data();
 	}

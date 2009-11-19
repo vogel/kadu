@@ -22,7 +22,7 @@ Contact Contact::null(true);
 
 Contact Contact::loadFromStorage(StoragePoint *contactStoragePoint)
 {
-	return Contact(ContactShared::loadFromStorage(contactStoragePoint));
+	return ContactShared::loadFromStorage(contactStoragePoint);
 }
 
 Contact::Contact(bool null) :
@@ -38,6 +38,14 @@ Contact::Contact()
 Contact::Contact(ContactShared *data) :
 		SharedBase<ContactShared>(data)
 {
+}
+
+Contact::Contact(QObject *data) :
+		SharedBase<ContactShared>(true)
+{
+	ContactShared *shared = dynamic_cast<ContactShared *>(data);
+	if (shared)
+		setData(shared);
 }
 
 Contact::Contact(const Contact &copy) :

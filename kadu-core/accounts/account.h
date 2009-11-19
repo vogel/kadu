@@ -37,7 +37,8 @@ public:
 	static Account null;
 
 	Account();
-	explicit Account(AccountShared *data);
+	Account(AccountShared *data);
+	Account(QObject *data);
 	Account(const Account &copy);
 	virtual ~Account();
 

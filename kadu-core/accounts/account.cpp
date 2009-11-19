@@ -25,7 +25,7 @@ Account Account::null(true);
 
 Account Account::loadFromStorage(StoragePoint *accountStoragePoint)
 {
-	return Account(AccountShared::loadFromStorage(accountStoragePoint));
+	return AccountShared::loadFromStorage(accountStoragePoint);
 }
 
 Account::Account(bool null) :
@@ -42,6 +42,15 @@ Account::Account(AccountShared *data) :
 		SharedBase<AccountShared>(data)
 {
 }
+
+Account::Account(QObject *data) :
+		SharedBase<AccountShared>(true)
+{
+	AccountShared *shared = dynamic_cast<AccountShared *>(data);
+	if (shared)
+		setData(shared);
+}
+
 
 Account::Account(const Account &copy) :
 		SharedBase<AccountShared>(copy)

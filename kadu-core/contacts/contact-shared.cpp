@@ -110,7 +110,7 @@ void ContactShared::protocolRegistered(ProtocolFactory *protocolFactory)
 	if (Details)
 		return;
 
-	Details = protocolFactory->createContactDetails(Contact(this));
+	Details = protocolFactory->createContactDetails(this);
 
 	emit protocolLoaded();
 }

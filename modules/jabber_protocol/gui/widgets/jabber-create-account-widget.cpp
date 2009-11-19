@@ -316,7 +316,7 @@ void JabberCreateAccountWidget::addThisAccount()
 	Account jabberAccount;
 	jabberAccount.data()->setState(StorableObject::StateNew);
 	jabberAccount.data()->protocolRegistered(ProtocolsManager::instance()->byName("jabber"));
-	jabberAccount.setDetails(new JabberAccountDetails(jabberAccount.storage(), jabberAccount));
+	jabberAccount.setDetails(new JabberAccountDetails(jabberAccount));
 	jabberAccount.setName(AccountName->text());
 	jabberAccount.setId(AccountId->text());
 	jabberAccount.setPassword(AccountPassword->text());
@@ -365,7 +365,7 @@ void JabberCreateAccountWidget::registerNewAccountFinished(JabberServerRegisterA
 		Account jabberAccount;
 		jabberAccount.data()->setState(StorableObject::StateNew);
 		jabberAccount.data()->protocolRegistered(ProtocolsManager::instance()->byName("jabber"));
-		JabberAccountDetails *details = new JabberAccountDetails(jabberAccount.storage(), jabberAccount);
+		JabberAccountDetails *details = new JabberAccountDetails(jabberAccount);
 
 		jabberAccount.setDetails(details);
 		jabberAccount.setName(AccountName->text());

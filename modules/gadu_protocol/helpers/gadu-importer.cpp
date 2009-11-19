@@ -40,7 +40,7 @@ void GaduImporter::importAccounts()
 		return;
 	
 	Account defaultGaduGadu;
-	GaduAccountDetails *accountDetails = new GaduAccountDetails(defaultGaduGadu.storage(), defaultGaduGadu);
+	GaduAccountDetails *accountDetails = new GaduAccountDetails(defaultGaduGadu);
 	defaultGaduGadu.setDetails(accountDetails);
 
 	defaultGaduGadu.setName("Gadu-Gadu");

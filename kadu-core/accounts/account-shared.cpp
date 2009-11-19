@@ -116,8 +116,8 @@ void AccountShared::protocolRegistered(ProtocolFactory *factory)
 	if (factory->name() != ProtocolName)
 		return;
 
-	ProtocolHandler = factory->createProtocolHandler(Account(this));
-	Details = factory->createAccountDetails(Account(this));
+	ProtocolHandler = factory->createProtocolHandler(this);
+	Details = factory->createAccountDetails(this);
 
 	connect(ProtocolHandler, SIGNAL(statusChanged(Account, Status)), this, SIGNAL(statusChanged()));
 	connect(ProtocolHandler, SIGNAL(buddyStatusChanged(Account, Buddy, Status)),

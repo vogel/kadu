@@ -27,7 +27,7 @@ public:
 	explicit ContactDetails(StoragePoint *storagePoint, Contact parent);
 	virtual ~ContactDetails();
 
-	Contact contact() { return Contact(MyContactData); }
+	Contact contact() { return MyContactData; }
 
 };
 

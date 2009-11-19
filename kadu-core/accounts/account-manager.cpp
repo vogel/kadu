@@ -186,18 +186,14 @@ void AccountManager::connectionError(Account account, const QString &server, con
 
 void AccountManager::accountProtocolLoaded()
 {
-	AccountShared *accountShared = dynamic_cast<AccountShared *>(sender());
-	if (!accountShared)
-		return;
-
-	registerAccount(Account(accountShared));
+	Account account(sender());
+	if (!account.isNull())
+		registerAccount(account);
 }
 
 void AccountManager::accountProtocolUnloaded()
 {
-	AccountShared *accountShared = dynamic_cast<AccountShared *>(sender());
-	if (!accountShared)
-		return;
-
-	unregisterAccount(Account(accountShared));
+	Account account(sender());
+	if (!account.isNull())
+		unregisterAccount(account);
 }

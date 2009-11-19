@@ -159,18 +159,14 @@ Contact ContactManager::byContactShared(ContactShared *data)
 
 void ContactManager::contactProtocolLoaded()
 {
-	ContactShared *contactShared = dynamic_cast<ContactShared *>(sender());
-	if (!contactShared)
-		return;
-
-	addContact(Contact(contactShared));
+	Contact contact(sender());
+	if (!contact.isNull())
+		addContact(contact);
 }
 
 void ContactManager::contactProtocolUnloaded()
 {
-	ContactShared *contactShared = dynamic_cast<ContactShared *>(sender());
-	if (!contactShared)
-		return;
-
-	removeContact(Contact(contactShared));
+	Contact contact(sender());
+	if (!contact.isNull())
+		removeContact(contact);
 }

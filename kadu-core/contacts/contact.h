@@ -34,7 +34,8 @@ public:
 	static Contact null;
 	
 	Contact();
-	explicit Contact(ContactShared *data);
+	Contact(ContactShared *data);
+	Contact(QObject *data);
 	Contact(const Contact &copy);
 	virtual ~Contact();
 

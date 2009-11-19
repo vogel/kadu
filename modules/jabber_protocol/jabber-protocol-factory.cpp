@@ -57,7 +57,7 @@ Protocol * JabberProtocolFactory::createProtocolHandler(Account account)
 
 AccountDetails * JabberProtocolFactory::createAccountDetails(Account account)
 {
-	return new JabberAccountDetails(account.storage(), account);
+	return new JabberAccountDetails(account);
 }
 
 ContactDetails * JabberProtocolFactory::createContactDetails(Contact contact)

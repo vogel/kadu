@@ -30,7 +30,7 @@ public:
 	static Avatar null;
 
 	Avatar();
-	explicit Avatar(AvatarShared *data);
+	Avatar(AvatarShared *data);
 	Avatar(const Avatar &copy);
 	virtual ~Avatar();
 
