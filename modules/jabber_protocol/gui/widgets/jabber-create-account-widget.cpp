@@ -321,6 +321,7 @@ void JabberCreateAccountWidget::addThisAccount()
 	jabberAccount.setName(AccountName->text());
 	jabberAccount.setId(AccountId->text());
 	jabberAccount.setPassword(AccountPassword->text());
+	jabberAccount.setHasPassword(!AccountPassword->text().isEmpty());
 	jabberAccount.setRememberPassword(HaveJidRememberPassword->isChecked());
 
 	emit accountCreated(jabberAccount);

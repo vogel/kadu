@@ -114,6 +114,7 @@ void TlenCreateAccountWidget::addThisAccount()
 	tlenAccount.setName(AccountName->text());
 	tlenAccount.setId(AccountId->text());
 	tlenAccount.setPassword(AccountPassword->text());
+	tlenAccount.setHasPassword(!AccountPassword->text().isEmpty());
 	tlenAccount.setRememberPassword(RememberPassword->isChecked());
 
 	emit accountCreated(tlenAccount);
