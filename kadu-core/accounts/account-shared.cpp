@@ -132,7 +132,7 @@ void AccountShared::protocolUnregistered(ProtocolFactory* factory)
 
 	if (factory->name() != ProtocolName)
 		return;
-	
+
 	emit protocolUnloaded();
 
 	delete ProtocolHandler;
