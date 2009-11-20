@@ -132,6 +132,14 @@ void AccountShared::protocolUnregistered(ProtocolFactory* factory)
 
 	if (factory->name() != ProtocolName)
 		return;
+
+	// TODO 0.6.6: if empty config must: store(),Details->store()
+	store();
+
+	if (Details)
+	{
+		Details->store();
+	}
 	
 	emit protocolUnloaded();
 

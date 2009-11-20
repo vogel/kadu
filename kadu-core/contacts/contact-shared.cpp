@@ -120,8 +120,12 @@ void ContactShared::protocolUnregistered(ProtocolFactory *protocolFactory)
 	if (ContactAccount.protocolName() != protocolFactory->name())
 		return;
 
+	// TODO 0.6.6: if empty config must: store(),Details->store()
+	store();
+
 	if (Details)
 	{
+		Details->store();
 		delete Details;
 		Details = 0;
 	}
