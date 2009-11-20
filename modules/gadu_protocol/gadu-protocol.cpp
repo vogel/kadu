@@ -424,6 +424,7 @@ void GaduProtocol::login(const QString &password, bool permanent)
 {
 	account().setPassword(password);
 	account().setRememberPassword(permanent);
+	account().setHasPassword(!password.isEmpty());
 
 	login();
 }
@@ -441,7 +442,7 @@ void GaduProtocol::login()
 	{
 		MessageDialog::msg(tr("UIN not set!"), false, "Warning");
 		setStatus(Status());
-		kdebugmf(KDEBUG_FUNCTION_END, "end: uin or password not set\n");
+		kdebugmf(KDEBUG_FUNCTION_END, "end: gadu UIN not set\n");
 		return;
 	}
 

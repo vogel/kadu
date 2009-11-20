@@ -196,6 +196,7 @@ void GaduCreateAccountWidget::addThisAccount()
 	gaduAccount.setName(AccountName->text());
 	gaduAccount.setId(AccountId->text());
 	gaduAccount.setPassword(AccountPassword->text());
+	gaduAccount.setHasPassword(!AccountPassword->text().isEmpty());
 	gaduAccount.setRememberPassword(HaveNumberRememberPassword->isChecked());
 
 	emit accountCreated(gaduAccount);

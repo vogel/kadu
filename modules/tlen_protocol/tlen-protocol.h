@@ -66,6 +66,7 @@ class TlenProtocol : public Protocol
 		friend class TlenChatService;
 
 	private slots:
+		void login(const QString &password, bool permanent);
 		void connectToServer();
 		void login();
 		void logout();
