@@ -25,12 +25,12 @@
 #include "model/actions-proxy-model.h"
 #include "model/roles.h"
 #include "protocols/model/protocols-model.h"
+#include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocols-manager.h"
 #include "icons-manager.h"
 
 #include "your-accounts.h"
-#include <protocols/protocol.h>
 
 YourAccounts::YourAccounts(QWidget *parent) :
 		QWidget(parent)
