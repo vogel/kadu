@@ -156,6 +156,7 @@ void TlenEditAccountWidget::apply()
 	account().setId(AccountId->text());
 	account().setRememberPassword(RememberPassword->isChecked());
 	account().setPassword(AccountPassword->text());
+	account().setHasPassword(!AccountPassword->text().isEmpty());
 }
 
 void TlenEditAccountWidget::removeAccount()

@@ -344,6 +344,7 @@ void JabberEditAccountWidget::apply()
 	account().setId(AccountId->text());
 	account().setRememberPassword(RememberPassword->isChecked());
 	account().setPassword(AccountPassword->text());
+	account().setHasPassword(!AccountPassword->text().isEmpty());
 	jabberAccountDetails->setUseCustomHostPort(CustomHostPort->isChecked());
 	jabberAccountDetails->setCustomHost(CustomHost->text());
 	jabberAccountDetails->setCustomPort(CustomPort->text().toInt());
