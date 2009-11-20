@@ -24,6 +24,7 @@
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
+#include "gui/windows/password-window.h"
 #include "gui/windows/main-configuration-window.h"
 
 #include "configuration/configuration-file.h"
@@ -163,6 +164,15 @@ void JabberProtocol::initializeJabberClient()
 		   this, SLOT(slotClientDebugMessage(const QString &)));
 }
 
+void JabberProtocol::login(const QString &password, bool permanent)
+{
+	account().setPassword(password);
+	account().setRememberPassword(permanent);
+	account().setHasPassword(!password.isEmpty());
+
+	connectToServer();
+}
+
 void JabberProtocol::connectToServer()
 {
 	kdebugf();
@@ -171,15 +181,21 @@ void JabberProtocol::connectToServer()
 	if (!jabberAccountDetails)
 		return;
 
-	if (account().id().isNull() || account().password().isNull())
+	if (account().id().isEmpty())
 	{
+		MessageDialog::msg(tr("Jabber ID not set!"), false, "Warning");
 		setStatus(Status());
-
-		MessageDialog::msg(account().name() + ": " + tr("Jabber ID or password not set!"), false, "Warning");
-		kdebugmf(KDEBUG_FUNCTION_END, "end: Jabber ID or password not set\n");
+		kdebugmf(KDEBUG_FUNCTION_END, "end: Jabber ID not set\n");
 		return;
 	}
-	
+
+	if (!account().hasPassword())
+	{
+		PasswordWindow::getPassword(tr("Please provide password for %1 account").arg(account().name()),
+				this, SLOT(login(const QString &, bool)));
+		return;
+	}
+
 	JabberClient->disconnect();
 
 	JabberClient->setOSName(SystemInfo::instance()->osFullName());

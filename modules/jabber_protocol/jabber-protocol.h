@@ -80,6 +80,7 @@ class JabberProtocol : public Protocol
 		virtual void changePrivateMode();
 
 	private slots:
+		void login(const QString &password, bool permanent);
 		void connectedToServer();
 		void disconnectedFromServer();
 		void disconnect(const XMPP::Status &s = XMPP::Status ("", "", 0, false));

@@ -18,13 +18,18 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "chat/message/message.h"
-#include "configuration/configuration-file.h"
+
 #include "buddies/buddy-manager.h"
+
+#include "configuration/configuration-file.h"
 #include "core/core.h"
+
 #include "gui/windows/kadu-window.h"
-#include "gui/windows/main-configuration-window.h"
 #include "gui/windows/message-dialog.h"
+#include "gui/windows/password-window.h"
+#include "gui/windows/main-configuration-window.h"
+
+#include "chat/message/message.h"
 #include "debug.h"
 #include "icons-manager.h"
 #include "status/status.h"
@@ -37,6 +42,7 @@
 #include "tlen-account-details.h"
 #include "tlen-contact-details.h"
 #include "tlen-protocol-factory.h"
+
 #include "tlen-protocol.h"
 
 #include "exports.h"
@@ -102,6 +108,15 @@ void TlenProtocol::fetchAvatars(QString jid, QString type, QString md5)
 	kdebugf2();
 }
 
+void TlenProtocol::login(const QString &password, bool permanent)
+{
+	account().setPassword(password);
+	account().setRememberPassword(permanent);
+	account().setHasPassword(!password.isEmpty());
+
+	connectToServer();
+}
+
 void TlenProtocol::connectToServer()
 {
 	kdebugf();
@@ -161,11 +176,18 @@ void TlenProtocol::connectToServer()
 	if (!tlenAccountDetails)
 		return;
 
-	if (account().id().isNull() || account().password().isNull())
+	if (account().id().isEmpty())
 	{
-		MessageDialog::msg(tr("tlen ID or password not set!"), false, "Warning");
-		//NextStatus->setOffline();
-		kdebugmf(KDEBUG_FUNCTION_END, "end: Tlen ID or password not set\n");
+		MessageDialog::msg(tr("Tlen ID not set!"), false, "Warning");
+		setStatus(Status());
+		kdebugmf(KDEBUG_FUNCTION_END, "end: Tlen id not set\n");
+		return;
+	}
+
+	if (!account().hasPassword())
+	{
+		PasswordWindow::getPassword(tr("Please provide password for %1 account").arg(account().name()),
+				this, SLOT(login(const QString &, bool)));
 		return;
 	}
 
