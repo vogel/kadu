@@ -21,7 +21,7 @@ class TlenAccountDetails : public AccountDetails
 	TlenOpenChatWithRunner *OpenChatRunner;
 
 public:
-	explicit TlenAccountDetails(StoragePoint *storagePoint, Account parent);
+	explicit TlenAccountDetails(AccountShared *data);
 	virtual ~TlenAccountDetails();
 
 	virtual void load();

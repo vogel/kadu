@@ -14,10 +14,10 @@
 #include "tlen-protocol.h"
 #include "tlen-account-details.h"
 
-TlenAccountDetails::TlenAccountDetails(StoragePoint *storagePoint, Account parent) :
-		AccountDetails(storagePoint, parent)
+TlenAccountDetails::TlenAccountDetails(AccountShared *data) :
+		AccountDetails(data)
 {
-	OpenChatRunner = new TlenOpenChatWithRunner(parent);
+	OpenChatRunner = new TlenOpenChatWithRunner(QObject::parent());
 	OpenChatWithRunnerManager::instance()->registerRunner(OpenChatRunner);
 }
 

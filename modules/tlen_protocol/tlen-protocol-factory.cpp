@@ -55,12 +55,12 @@ Protocol * TlenProtocolFactory::createProtocolHandler(Account account)
 
 AccountDetails * TlenProtocolFactory::createAccountDetails(Account account)
 {
-	return new TlenAccountDetails(account.storage(), account);
+	return new TlenAccountDetails(account);
 }
 
-ContactDetails * TlenProtocolFactory::createContactDetails(Contact contact)
+ContactDetails * TlenProtocolFactory::createContactDetails(ContactShared *contactShared)
 {
-	return new TlenContactDetails(contact.storage(), contact);
+	return new TlenContactDetails(contactShared);
 }
 
 AccountCreateWidget * TlenProtocolFactory::newCreateAccountWidget(QWidget *parent)

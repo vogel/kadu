@@ -7,10 +7,14 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "contacts/contact-shared.h"
+
 #include "tlen-contact-details.h"
 
-TlenContactDetails::TlenContactDetails(StoragePoint *storagePoint, Contact parent) :
-		ContactDetails(storagePoint, parent), MaxImageSize(0)
+class ContactShared;
+
+TlenContactDetails::TlenContactDetails(ContactShared *contactShared) :
+		ContactDetails(contactShared), MaxImageSize(0)
 {
 }
 
