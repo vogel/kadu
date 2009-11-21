@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include "contacts/contact.h"
+#include "contacts/contact-shared.h"
 #include "jabber-contact-details.h"
 
 #include "jabber-contact-data-manager.h"
@@ -36,7 +37,7 @@ QVariant JabberContactDataManager::readEntry(const QString &section, const QStri
 		return ConfigurationContactDataManager::readEntry(section, name);
 
 	if (name == "Jid")
-		return Data->contact().id();
+		return Data->contactData()->id();
 
 	// other data
 

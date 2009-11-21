@@ -47,7 +47,7 @@ public:
 
 	Buddy & operator = (const Buddy &copy)
 	{
-		SharedBase<BuddyShared>::operator=(copy);
+		clone(copy);
 		return *this;
 	}
 

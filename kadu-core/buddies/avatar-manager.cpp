@@ -198,7 +198,6 @@ void AvatarManager::updateAvatar(Contact contact)
 
 void AvatarManager::avatarFetched(Contact contact, const QByteArray &data)
 {
-	printf("Avatar fetched\n");
 	Avatar avatar = contact.contactAvatar();
 	avatar.setLastUpdated(QDateTime::currentDateTime());
 
@@ -214,7 +213,6 @@ void AvatarManager::avatarFetched(Contact contact, const QByteArray &data)
 		avatarsDir.mkpath(ggPath("avatars"));
 
 	QFile file(avatarsDir.canonicalPath() + "/" + avatarFile);
-	printf("dest: %s\n", qPrintable(avatarsDir.canonicalPath() + "/" + avatarFile));
 
 	if (!file.open(QIODevice::WriteOnly))
 		return;

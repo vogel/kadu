@@ -40,7 +40,7 @@ void GaduPersonalInfoService::handleEventPubdir50Read(struct gg_event *e)
 	contact.setContactAccount(Protocol->account());
 	contact.setOwnerBuddy(result);
 	contact.setId(gg_pubdir50_get(res, 0, GG_PUBDIR50_UIN));
-	contact.setDetails(new GaduContactDetails(contact.storage(), contact));
+	contact.setDetails(new GaduContactDetails(contact));
 
 	result.addContact(contact);
 	result.setFirstName(cp2unicode(gg_pubdir50_get(res, 0, GG_PUBDIR50_FIRSTNAME)));

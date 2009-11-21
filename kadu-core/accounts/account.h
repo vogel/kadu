@@ -42,11 +42,7 @@ public:
 	Account(const Account &copy);
 	virtual ~Account();
 
-	Account & operator = (const Account &copy)
-	{
-		SharedBase<AccountShared>::operator=(copy);
-		return *this;
-	}
+	Account & operator = (const Account &copy);
 
 	void importProxySettings();
 

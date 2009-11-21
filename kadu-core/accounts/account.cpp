@@ -41,6 +41,7 @@ Account::Account()
 Account::Account(AccountShared *data) :
 		SharedBase<AccountShared>(data)
 {
+	data->ref.ref();
 }
 
 Account::Account(QObject *data) :
@@ -58,6 +59,12 @@ Account::Account(const Account &copy) :
 
 Account::~Account()
 {
+}
+
+Account & Account::operator=(const Account &copy)
+{
+	clone(copy);
+	return *this;
 }
 
 Buddy Account::getBuddyById(const QString& id)

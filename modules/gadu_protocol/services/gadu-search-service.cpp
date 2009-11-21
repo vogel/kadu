@@ -92,7 +92,7 @@ void GaduSearchService::handleEventPubdir50SearchReply(struct gg_event *e)
 		contact.setContactAccount(Protocol->account());
 		contact.setOwnerBuddy(result);
 		contact.setId(gg_pubdir50_get(res, i, GG_PUBDIR50_UIN));
-		contact.setDetails(new GaduContactDetails(contact.storage(), contact));
+		contact.setDetails(new GaduContactDetails(contact));
 
 		Status status;
 		status.setType(Protocol->statusTypeFromGaduStatus(atoi(gg_pubdir50_get(res, i, GG_PUBDIR50_STATUS)) & 127));

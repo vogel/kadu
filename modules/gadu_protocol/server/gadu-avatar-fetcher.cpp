@@ -145,7 +145,6 @@ void GaduAvatarFetcher::requestFinished(int id, bool error)
 
 void GaduAvatarFetcher::avatarDownloaded(int id, bool error)
 {
-	printf("avatar downaloded!!\n");
 	emit avatarFetched(MyContact, AvatarBuffer.buffer());
 
 	deleteLater();

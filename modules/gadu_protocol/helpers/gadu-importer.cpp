@@ -95,7 +95,7 @@ void GaduImporter::importGaduContact(Buddy &buddy)
 	QString id = buddy.customData("uin");
 
 	Contact contact;
-	contact.setDetails(new GaduContactDetails(contact.storage(), contact));
+	contact.setDetails(new GaduContactDetails(contact));
 	contact.setContactAccount(account);
 	contact.setOwnerBuddy(buddy);
 	contact.setId(id);

@@ -38,6 +38,7 @@ Contact::Contact()
 Contact::Contact(ContactShared *data) :
 		SharedBase<ContactShared>(data)
 {
+	data->ref.ref();
 }
 
 Contact::Contact(QObject *data) :

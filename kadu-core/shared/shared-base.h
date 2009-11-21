@@ -127,9 +127,14 @@ public:
 		return !Data.data();
 	}
 
-	SharedBase<T> & operator = (const SharedBase<T> &copy)
+	void clone(const SharedBase<T> &copy)
 	{
 		Data = copy.Data;
+	}
+
+	SharedBase<T> & operator = (const SharedBase<T> &copy)
+	{
+		clone(copy);
 		return *this;
 	}
 

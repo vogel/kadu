@@ -231,15 +231,16 @@ Buddy BuddyManager::byId(Account account, const QString &id)
 	return anonymous;
 }
 
-Buddy BuddyManager::byUuid(const QString &uuid)
+Buddy BuddyManager::byUuid(const QString &uuidString)
 {
 	ensureLoaded();
 
-	if (uuid.isEmpty())
+	QUuid uuid(uuidString);
+	if (uuid.isNull())
 		return Buddy::null;
 
 	foreach (Buddy buddy, Buddies)
-		if (uuid == buddy.uuid().toString())
+		if (uuid == buddy.uuid())
 			return buddy;
 
 	return Buddy::null;

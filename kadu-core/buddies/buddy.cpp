@@ -44,6 +44,7 @@ Buddy::Buddy()
 Buddy::Buddy(BuddyShared *data) :
 		SharedBase<BuddyShared>(data)
 {
+	data->ref.ref();
 }
 
 Buddy::Buddy(QObject *data) :

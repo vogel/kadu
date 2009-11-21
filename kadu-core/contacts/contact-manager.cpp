@@ -62,15 +62,10 @@ void ContactManager::load()
 		StoragePoint *storagePoint = new StoragePoint(storage()->storage(), contactElement);
 		Contact contact = Contact::loadFromStorage(storagePoint);
 
-		// ignore invalid contacts
-		if (contact.isNull() || contact.ownerBuddy().isNull() || contact.contactAccount().isNull())
-			continue;
-
 		AllContacts.append(contact);
 
-		// TODO: 0.6.6
-// 		connect(contact, SIGNAL(protocolLoaded()), this, SLOT(contactProtocolLoaded()));
-// 		connect(contact, SIGNAL(protocolUnloaded()), this, SLOT(contactProtocolUnloaded()));
+		connect(contact, SIGNAL(protocolLoaded()), this, SLOT(contactProtocolLoaded()));
+		connect(contact, SIGNAL(protocolUnloaded()), this, SLOT(contactProtocolUnloaded()));
 
 		if (contact.contactAccount().protocolHandler())
 			addContact(contact);

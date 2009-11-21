@@ -40,7 +40,7 @@ BuddyList GaduOpenChatWithRunner::matchingContacts(const QString &query)
 	contact.setContactAccount(ParentAccount);
 	contact.setOwnerBuddy(buddy);
 	contact.setId(query);
-	contact.setDetails(new GaduContactDetails(contact.storage(), contact));
+	contact.setDetails(new GaduContactDetails(contact));
 
 	buddy.addContact(contact);
 	buddy.setDisplay(ParentAccount.name() + ": " + query);

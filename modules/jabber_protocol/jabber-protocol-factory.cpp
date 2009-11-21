@@ -60,9 +60,9 @@ AccountDetails * JabberProtocolFactory::createAccountDetails(Account account)
 	return new JabberAccountDetails(account);
 }
 
-ContactDetails * JabberProtocolFactory::createContactDetails(Contact contact)
+ContactDetails * JabberProtocolFactory::createContactDetails(ContactShared *contactShared)
 {
-	return new JabberContactDetails(contact.storage(), contact);
+	return new JabberContactDetails(contactShared);
 }
 
 AccountCreateWidget * JabberProtocolFactory::newCreateAccountWidget(QWidget *parent)

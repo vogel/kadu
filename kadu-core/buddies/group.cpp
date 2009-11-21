@@ -35,6 +35,7 @@ Group::Group()
 Group::Group(GroupShared *data) :
 		SharedBase<GroupShared>(data)
 {
+	data->ref.ref();
 }
 
 Group::Group(QObject *data) :

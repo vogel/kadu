@@ -21,7 +21,7 @@ class GaduContactDetails : public ContactDetails
 	PROPERTY_DEC(unsigned int, GaduProtocolVersion)
 
 public:
-	explicit GaduContactDetails(StoragePoint *storagePoint, Contact parent = Contact::null);
+	explicit GaduContactDetails(ContactShared *contactShared);
 	virtual ~GaduContactDetails();
 
 	virtual bool validateId();

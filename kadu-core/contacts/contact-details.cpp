@@ -12,8 +12,8 @@
 
 #include "contact-details.h"
 
-ContactDetails::ContactDetails(StoragePoint *storagePoint, Contact parent) :
-		StorableObject(storagePoint), MyContactData(parent.data())
+ContactDetails::ContactDetails(ContactShared *contactShared) :
+		StorableObject(contactShared->storage()), MyContactData(contactShared)
 {
 }
 

@@ -33,6 +33,7 @@ Avatar::Avatar()
 Avatar::Avatar(AvatarShared *data) :
 		SharedBase<AvatarShared>(data)
 {
+	data->ref.ref();
 }
 
 Avatar::Avatar(const Avatar &copy) :

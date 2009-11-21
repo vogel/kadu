@@ -34,6 +34,7 @@ Identity::Identity()
 Identity::Identity(IdentityShared *data) :
 		SharedBase<IdentityShared>(data)
 {
+	data->ref.ref();
 }
 
 Identity::Identity(QObject *data) :

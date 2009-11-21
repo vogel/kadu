@@ -18,7 +18,7 @@ class JabberContactDetails : public ContactDetails
 	PROPERTY_DEC(unsigned long, MaxImageSize)
 
 public:
-	explicit JabberContactDetails(StoragePoint *storagePoint, Contact parent = Contact::null);
+	explicit JabberContactDetails(ContactShared *contactShared);
 	virtual ~JabberContactDetails();
 
 	virtual bool validateId();

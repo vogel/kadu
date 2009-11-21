@@ -54,9 +54,9 @@ AccountDetails * GaduProtocolFactory::createAccountDetails(Account account)
 	return new GaduAccountDetails(account);
 }
 
-ContactDetails * GaduProtocolFactory::createContactDetails(Contact contact)
+ContactDetails * GaduProtocolFactory::createContactDetails(ContactShared *contactShared)
 {
-	return new GaduContactDetails(contact.storage(), contact);
+	return new GaduContactDetails(contactShared);
 }
 
 AccountCreateWidget * GaduProtocolFactory::newCreateAccountWidget(QWidget *parent)

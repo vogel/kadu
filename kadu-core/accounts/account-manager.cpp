@@ -107,6 +107,9 @@ Account AccountManager::byUuid(const QUuid &uuid)
 {
 	ensureLoaded();
 
+	if (uuid.isNull())
+		return Account::null;
+
 	foreach (Account account, AllAccounts)
 		if (uuid == account.uuid())
 			return account;

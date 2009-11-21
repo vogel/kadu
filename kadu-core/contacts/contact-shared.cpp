@@ -1,3 +1,4 @@
+
 /***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -44,6 +45,9 @@ void ContactShared::load()
 	if (!isValidStorage())
 		return;
 
+	if (!needsLoad())
+		return;
+
 	Shared::load();
 
 	Id = loadValue<QString>("Id");
@@ -52,6 +56,7 @@ void ContactShared::load()
 	QString buddyUuid = loadValue<QString>("Buddy");
 	if (buddyUuid.isNull())
 		buddyUuid = loadValue<QString>("Contact");
+
 	setOwnerBuddy(BuddyManager::instance()->byUuid(buddyUuid));
 
 	if (storage()->point().isElement())
@@ -63,8 +68,6 @@ void ContactShared::load()
 	}
 
 	ContactAvatar = AvatarManager::instance()->byUuid(loadValue<QString>("Avatar"));
-
-// 	ContactManager::instance()->addContact(new Contact(this));
 
 	triggerAllProtocolsRegistered();
 }
@@ -94,10 +97,10 @@ void ContactShared::emitUpdated()
 void ContactShared::setOwnerBuddy(Buddy buddy)
 {
 	if (!OwnerBuddy.isNull())
-		OwnerBuddy.removeContact(ContactManager::instance()->byContactShared(this));
+		OwnerBuddy.removeContact(Contact(this));
 	OwnerBuddy = buddy;
 	if (!OwnerBuddy.isNull())
-		OwnerBuddy.addContact(ContactManager::instance()->byContactShared(this));
+		OwnerBuddy.addContact(this);
 
 	dataUpdated();
 }
@@ -129,7 +132,7 @@ void ContactShared::protocolUnregistered(ProtocolFactory *protocolFactory)
 		delete Details;
 		Details = 0;
 	}
-
+	
 	emit protocolUnloaded();
 }
 

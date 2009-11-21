@@ -7,15 +7,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "libiris/include/xmpp.h"
+#include "contacts/contact-shared.h"
 
+#include "libiris/include/xmpp.h"
 #include "utils/jid-util.h"
 
 #include "jabber-contact-details.h"
 
-JabberContactDetails::JabberContactDetails(StoragePoint *storagePoint, Contact parent) :
-		ContactDetails(storagePoint, parent),
-		MaxImageSize(0)
+JabberContactDetails::JabberContactDetails(ContactShared *contactShared) :
+		ContactDetails(contactShared), MaxImageSize(0)
 {
 }
 
@@ -25,7 +25,7 @@ JabberContactDetails::~JabberContactDetails()
 
 bool JabberContactDetails::validateId()
 {
-	XMPP::Jid newJid(JIDUtil::accountFromString(contact().id()));
+	XMPP::Jid newJid(JIDUtil::accountFromString(contactData()->id()));
 	return !newJid.node().isEmpty() && !newJid.domain().isEmpty();
 }
 

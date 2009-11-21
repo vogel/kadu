@@ -133,7 +133,7 @@ BuddyList GaduListHelper::streamToContactList(Account account, QTextStream &cont
 				contact.setOwnerBuddy(buddy);
 				contact.setId(QString::number(uin));
 				contact.data()->setState(StorableObject::StateNew);
-				contact.setDetails(new GaduContactDetails(contact.storage(), contact));
+				contact.setDetails(new GaduContactDetails(contact));
 				buddy.addContact(contact);
 			}
 		}

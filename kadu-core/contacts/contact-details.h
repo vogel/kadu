@@ -24,10 +24,10 @@ class ContactDetails : public QObject, public StorableObject
 	ContactShared *MyContactData;
 
 public:
-	explicit ContactDetails(StoragePoint *storagePoint, Contact parent);
+	explicit ContactDetails(ContactShared *contactData);
 	virtual ~ContactDetails();
 
-	Contact contact() { return MyContactData; }
+	ContactShared *contactData() { return MyContactData; }
 
 };
 

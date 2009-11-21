@@ -7,10 +7,12 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "contacts/contact-shared.h"
+
 #include "gadu-contact-details.h"
 
-GaduContactDetails::GaduContactDetails(StoragePoint *storagePoint, Contact parent) :
-		ContactDetails(storagePoint, parent),
+GaduContactDetails::GaduContactDetails(ContactShared *contactShared) :
+		ContactDetails(contactShared),
 		MaxImageSize(0), GaduProtocolVersion(0)
 {
 }
@@ -21,13 +23,13 @@ GaduContactDetails::~GaduContactDetails()
 
 unsigned int GaduContactDetails::uin()
 {
-	return contact().id().toUInt();
+	return contactData()->id().toUInt();
 }
 
 bool GaduContactDetails::validateId()
 {
 	bool ok;
-	contact().id().toUInt(&ok);
+	contactData()->id().toUInt(&ok);
 	return ok;
 }
 
