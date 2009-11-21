@@ -17,7 +17,7 @@
 TlenAccountDetails::TlenAccountDetails(AccountShared *data) :
 		AccountDetails(data)
 {
-	OpenChatRunner = new TlenOpenChatWithRunner(QObject::parent());
+	OpenChatRunner = new TlenOpenChatWithRunner(data);
 	OpenChatWithRunnerManager::instance()->registerRunner(OpenChatRunner);
 }
 
