@@ -26,7 +26,7 @@ public:
 	static JabberProtocolFactory * instance();
 
 	virtual Protocol * createProtocolHandler(Account account);
-	virtual AccountDetails * createAccountDetails(Account account);
+	virtual AccountDetails * createAccountDetails(AccountShared *accountShared);
 	virtual ContactDetails * createContactDetails(ContactShared *contactShared);
 	virtual AccountCreateWidget * newCreateAccountWidget(QWidget *parent);
 	virtual AccountEditWidget* newEditAccountWidget(Account, QWidget*);

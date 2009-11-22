@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include "accounts/account-manager.h"
+#include "chat/chat-details.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"
 #include "parser/parser.h"
@@ -34,12 +35,13 @@ Chat * Chat::loadFromStorage(StoragePoint *chatStoragePoint)
 }
 
 Chat::Chat(StoragePoint *storage) :
-		UuidStorableObject(storage)
+		UuidStorableObject(storage), CurrentAccount(Account::null), Details(0)
 {
 }
 
 Chat::Chat(Account currentAccount, QUuid uuid) :
-		UuidStorableObject("Chat", ChatManager::instance()), CurrentAccount(currentAccount), Uuid(uuid.isNull() ? QUuid::createUuid() : uuid)
+		UuidStorableObject("Chat", ChatManager::instance()), CurrentAccount(currentAccount),
+		Uuid(uuid.isNull() ? QUuid::createUuid() : uuid), Details(0)
 {
 	connect(CurrentAccount, SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
 			this, SLOT(refreshTitle()));
@@ -143,3 +145,17 @@ void Chat::refreshTitle()
 	kdebugf2();
 }
 
+ChatType * Chat::type() const
+{
+	return Details ? Details->type() : 0;
+}
+
+BuddySet Chat::buddies() const
+{
+	return Details ? Details->buddies() : BuddySet();
+}
+
+QString Chat::name() const
+{
+	return Details ? Details->name() : QString::null;
+}

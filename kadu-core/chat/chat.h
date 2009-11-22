@@ -20,11 +20,14 @@
 
 #include "exports.h"
 
+class ChatDetails;
 class ChatType;
 
 class KADUAPI Chat : public QObject, public UuidStorableObject
 {
 	Q_OBJECT
+
+	ChatDetails *Details;
 
 	Account CurrentAccount;
 	QUuid Uuid;
@@ -42,9 +45,12 @@ public:
 	virtual void store();
 
 	virtual QUuid uuid() const { return Uuid; }
-	virtual ChatType * type() const = 0;
-	virtual BuddySet buddies() const = 0;
-	virtual QString name() const = 0;
+	ChatType * type() const;
+	BuddySet buddies() const;
+	QString name() const;
+
+	void setDetails(ChatDetails *details) { Details = details; }
+	ChatDetails *details() { return Details; }
 
 	Account account() { return CurrentAccount; }
 	void setTitle(const QString &newTitle);

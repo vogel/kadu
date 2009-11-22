@@ -11,7 +11,6 @@
 #include "core/core.h"
 #include "chat.h"
 #include "chat-manager.h"
-#include "simple-chat.h"
 
 ChatManager * ChatManager::Instance = 0;
 

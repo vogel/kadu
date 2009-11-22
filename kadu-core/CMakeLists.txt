@@ -54,10 +54,11 @@ set (kadu_SRCS
 	chat/aggregate-chat.cpp
 	chat/chat.cpp
 	chat/chat-aggregator-builder.cpp
+	chat/chat-details.cpp
+	chat/chat-details-conference.cpp
+	chat/chat-details-simple.cpp
 	chat/chat-manager.cpp
-	chat/conference-chat.cpp
 	chat/html-messages-renderer.cpp
-	chat/simple-chat.cpp
 	chat/chat-styles-manager.cpp
 
 	chat/filter/chat-name-filter.cpp
@@ -313,11 +314,12 @@ set (kadu_MOC_SRCS
 	chat/aggregate-chat.h
 	chat/chat.h
 	chat/chat-aggregator-builder.h
+	chat/chat-details.h
+	chat/chat-details-conference.h
+	chat/chat-details-simple.h
 	chat/chat-manager.h
 	chat/chat-styles-manager.h
 	chat/html-messages-renderer.h
-	#chat/conference-chat.h
-	#chat/simple-chat.h
 
 	chat/filter/chat-filter.h
 	#chat/filter/chat-name-filter.h

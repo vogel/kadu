@@ -7,23 +7,22 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SIMPLE_CHAT_H
-#define SIMPLE_CHAT_H
+#ifndef CHAT_DETAILS_SIMPLE_H
+#define CHAT_DETAILS_SIMPLE_H
 
 #include "contacts/contact.h"
 
-#include "chat/chat.h"
+#include "chat/chat-details.h"
 
-class XmlConfigFile;
-
-class SimpleChat : public Chat
+class ChatDetailsSimple : public ChatDetails
 {
+	Q_OBJECT
+
 	Contact CurrentContact;
 
 public:
-	explicit SimpleChat(StoragePoint *storage);
-	explicit SimpleChat(Account parentAccount, Contact contact, QUuid uuid = QUuid());
-	virtual ~SimpleChat();
+	explicit ChatDetailsSimple(Chat *chat);
+	virtual ~ChatDetailsSimple();
 
 	virtual void load();
 	virtual void store();
@@ -32,6 +31,9 @@ public:
 	virtual BuddySet buddies() const;
 	virtual QString name() const;
 
+	void setContact(Contact contact);
+	Contact contact();
+
 };
 
-#endif // SIMPLE_CHAT_H
+#endif // CHAT_DETAILS_SIMPLE_H

@@ -7,56 +7,66 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "chat/type/chat-type-manager.h"
 #include "buddies/buddy-set-configuration-helper.h"
+#include "chat/type/chat-type-manager.h"
+#include "chat/chat.h"
 
-#include "conference-chat.h"
+#include "chat-details-conference.h"
 
-ConferenceChat::ConferenceChat(StoragePoint *storage) :
-		Chat(storage)
+ChatDetailsConference::ChatDetailsConference(Chat *chat) :
+		ChatDetails(chat)
 {
 }
 
-ConferenceChat::ConferenceChat(Account currentAccount, BuddySet contacts, QUuid uuid) :
-		Chat(currentAccount, uuid), CurrentContacts(contacts)
+ChatDetailsConference::~ChatDetailsConference()
 {
 }
 
-ConferenceChat::~ConferenceChat()
-{
-}
-
-void ConferenceChat::load()
+void ChatDetailsConference::load()
 {
 	if (!isValidStorage())
 		return;
 
-	Chat::load();
-	CurrentContacts = BuddySetConfigurationHelper::loadFromConfiguration(this, "Contacts");
-	refreshTitle();
+	if (!needsLoad())
+		return;
+
+	ChatDetails::load();
+
+	Buddies = BuddySetConfigurationHelper::loadFromConfiguration(this, "Contacts");
+
+	chat()->refreshTitle();
 }
 
-void ConferenceChat::store()
+void ChatDetailsConference::store()
 {
 	if (!isValidStorage())
 		return;
 
-	Chat::store();
+	ensureLoaded();
+
 	storeValue("Type", "Conference");
-	BuddySetConfigurationHelper::saveToConfiguration(this, "Contacts", CurrentContacts);
+
+	BuddySetConfigurationHelper::saveToConfiguration(this, "Contacts", Buddies);
 }
 
-ChatType * ConferenceChat::type() const
+ChatType * ChatDetailsConference::type() const
 {
 	return ChatTypeManager::instance()->chatType("ConferenceChat");
 }
 
-QString ConferenceChat::name() const
+QString ChatDetailsConference::name() const
 {
 	QStringList displays;
-	foreach (Buddy buddy, CurrentContacts)
+	foreach (Buddy buddy, Buddies)
 		displays.append(buddy.display());
 
 	displays.sort();
 	return displays.join(", ");
+}
+
+void ChatDetailsConference::setBuddies(BuddySet buddies)
+{
+	ensureLoaded();
+
+	Buddies = buddies;
 }

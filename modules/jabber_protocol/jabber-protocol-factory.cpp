@@ -55,9 +55,9 @@ Protocol * JabberProtocolFactory::createProtocolHandler(Account account)
 	return new JabberProtocol(account, this);
 }
 
-AccountDetails * JabberProtocolFactory::createAccountDetails(Account account)
+AccountDetails * JabberProtocolFactory::createAccountDetails(AccountShared *accountShared)
 {
-	return new JabberAccountDetails(account);
+	return new JabberAccountDetails(accountShared);
 }
 
 ContactDetails * JabberProtocolFactory::createContactDetails(ContactShared *contactShared)
