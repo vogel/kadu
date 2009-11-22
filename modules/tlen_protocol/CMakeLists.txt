@@ -9,6 +9,7 @@ set (SOURCES
 	server/tlen-avatar-fetcher.cpp
 	services/tlen-avatar-service.cpp
 	services/tlen-chat-service.cpp
+	services/tlen-personal-info-service.cpp
 	tlen-account-data-manager.cpp
 	tlen-account-details.cpp
 	tlen-contact-details.cpp
@@ -30,6 +31,7 @@ set (MOC_SOURCES
 	server/tlen-avatar-fetcher.h
 	services/tlen-avatar-service.h
 	services/tlen-chat-service.h
+	services/tlen-personal-info-service.h
 #	tlen-account-data-manager.h
 #	tlen-account-details.h
 #	tlen-contact-details.h

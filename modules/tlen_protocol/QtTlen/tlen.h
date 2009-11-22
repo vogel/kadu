@@ -129,7 +129,7 @@ signals:
 	void authorizationAsk(QString);
 	void removeItem(QString);
 	void avatarReceived(QString jid, QString type, QString md5);
-	void pubdirReceived(QDomNodesList n);
+	void pubdirReceived(QDomNodeList n);
 
 	void sortRoster();
 
