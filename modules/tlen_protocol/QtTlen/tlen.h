@@ -44,10 +44,8 @@ public:
 
 	bool isConnected();
 
-	int intStatus();
-
-	QString strStatus() { return status; }
-	QString description() { return descr; }
+	QString strStatus() { return Status; }
+	QString description() { return Descr; }
 
 	QString uname() { return u; }
 	void setUname(QString uname) { u = uname; }
@@ -100,10 +98,13 @@ public slots:
 	void sendAlarm(QString to);
 	void chatNotify(QString to, bool t);
 	void rosterRequest();
+	// tlen configuration request
 	void tcfgRequest();
-	void setStatus();
-	void setStatus(QString s);
-	void setStatusDescr(QString,QString);
+
+	// "available","chat","away","xa","dnd","invisible","unavailable"
+	void setStatus(QString status);
+	void setStatusDescr(QString status,QString description);
+
 	void addItem(QString jid, QString name, QString group, bool subscribe);
 	void receiveFile(QString,QString,bool);
 	bool write(const QDomDocument &d);
@@ -156,8 +157,8 @@ private:
 		p,
 		sid,
 		hostname,
-		status,
-		descr;
+		Status,
+		Descr;
 
 	quint16 hostport;
 	QTcpSocket *socket;

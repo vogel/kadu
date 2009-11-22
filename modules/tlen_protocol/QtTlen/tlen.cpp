@@ -47,8 +47,8 @@ tlen::tlen( QObject* parent ): QObject( parent ) {
 	Secure = false;
 	Reconnect = false;
 
-	status="unavailable";
-	descr="";
+	Status="unavailable";
+	Descr="";
 
 	tmpDoc=new QDomDocument;
 
@@ -382,8 +382,8 @@ void tlen::socketDisconnected()
 	}
 	else
 	{
-		status="unavailable";
-		descr="";
+		Status="unavailable";
+		Descr="";
 		emit presenceDisconnected();
 	}
 	emit statusChanged();
@@ -536,13 +536,13 @@ void tlen::writeStatus() {
 	QDomElement s = doc.createElement("show");
 	QDomElement d = doc.createElement("status");
 
-	if(status=="unavailable" || status=="invisible")
-		p.setAttribute("type", status);
+	if(Status=="unavailable" || Status=="invisible")
+		p.setAttribute("type", Status);
 	else
-		s.appendChild(doc.createTextNode(status));
+		s.appendChild(doc.createTextNode(Status));
 
-	if(!descr.isEmpty())
-		d.appendChild(doc.createTextNode(QString(encode(descr))));
+	if(!Descr.isEmpty())
+		d.appendChild(doc.createTextNode(QString(encode(Descr))));
 
 	p.appendChild(s);
 	p.appendChild(d);
@@ -552,52 +552,24 @@ void tlen::writeStatus() {
 		emit statusChanged();
 }
 
-void tlen::setStatus() {
+void tlen::setStatus(QString status) {
 	kdebugf();
-	QAction *a=qobject_cast<QAction*>(sender());
-	if(intStatus()==a->data().toInt() && descr=="")
+	if(Status==status && Descr == "")
 		return;
-	switch(a->data().toInt()) {
-	case 0: status="available"; break;
-	case 1: status="chat"; break;
-	case 2: status="away"; break;
-	case 3: status="xa"; break;
-	case 4: status="dnd"; break;
-	case 5: status="invisible"; break;
-	case 6: status="unavailable"; break;
-	}
-	descr="";
+
+	Status = status;
+	
 	emit statusUpdate();
 }
 
-void tlen::setStatus( QString s ) {
+void tlen::setStatusDescr(QString status,QString description) {
 	kdebugf();
-	if(status==s && descr == "")
+	if(Descr==description && Status==status)
 		return;
 
-	status=s;
+	Descr = description;
+	Status = status;
 	emit statusUpdate();
-}
-
-void tlen::setStatusDescr( QString s, QString d ) {
-	kdebugf();
-	if(descr==d && status==s)
-		return;
-
-	descr=d;
-	status=s;
-	emit statusUpdate();
-}
-
-int tlen::intStatus() {
-	if(status=="available") return 0;
-	else if(status=="chat") return 1;
-	else if(status=="away") return 2;
-	else if(status=="xa") return 3;
-	else if(status=="dnd") return 4;
-	else if(status=="invisible") return 5;
-
-	return 6;
 }
 
 void tlen::authorize( QString to, bool subscribe ) {
