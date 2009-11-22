@@ -153,6 +153,11 @@ public:
 		return Data < compare.Data;
 	}
 
+	void createData()
+	{
+		Data = new T;
+	}
+
 	void blockUpdatedSignal()
 	{
 		if (!isNull())

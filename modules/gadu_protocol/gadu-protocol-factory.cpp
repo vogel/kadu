@@ -49,9 +49,9 @@ Protocol * GaduProtocolFactory::createProtocolHandler(Account account)
 	return new GaduProtocol(account, this);
 }
 
-AccountDetails * GaduProtocolFactory::createAccountDetails(Account account)
+AccountDetails * GaduProtocolFactory::createAccountDetails(AccountShared *accountShared)
 {
-	return new GaduAccountDetails(account);
+	return new GaduAccountDetails(accountShared);
 }
 
 ContactDetails * GaduProtocolFactory::createContactDetails(ContactShared *contactShared)

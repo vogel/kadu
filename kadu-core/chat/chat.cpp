@@ -34,7 +34,7 @@ Chat * Chat::loadFromStorage(StoragePoint *chatStoragePoint)
 }
 
 Chat::Chat(StoragePoint *storage) :
-		UuidStorableObject(storage)
+		UuidStorableObject(storage), CurrentAccount(Account::null)
 {
 }
 

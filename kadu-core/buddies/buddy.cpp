@@ -196,12 +196,13 @@ Buddy Buddy::dummy()
 	example.setEmail("jimbo@mail.server.net");
 	example.setHomePhone("+481234567890");
 
-	Account account;
+	Account account = Account::null;
 
 	if (!AccountManager::instance()->defaultAccount().isNull())
 		account = AccountManager::instance()->defaultAccount();
 	else if (ProtocolsManager::instance()->protocolFactories().count())
 	{
+		account.createData();
 		account.data()->setState(StorableObject::StateNew);
 		account.setProtocolName(ProtocolsManager::instance()->protocolFactories()[0]->name());
 		account.data()->protocolRegistered(ProtocolsManager::instance()->protocolFactories()[0]);

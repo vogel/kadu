@@ -132,7 +132,7 @@ void ContactShared::protocolUnregistered(ProtocolFactory *protocolFactory)
 		delete Details;
 		Details = 0;
 	}
-	
+
 	emit protocolUnloaded();
 }
 

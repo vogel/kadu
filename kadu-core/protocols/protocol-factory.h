@@ -32,7 +32,7 @@ class ProtocolFactory : public QObject
 {
 public:
 	virtual Protocol * createProtocolHandler(Account account) = 0;
-	virtual AccountDetails * createAccountDetails(Account account) = 0;
+	virtual AccountDetails * createAccountDetails(AccountShared *accountShared) = 0;
 	virtual ContactDetails * createContactDetails(ContactShared *contactShared) = 0;
 	virtual AccountCreateWidget * newCreateAccountWidget(QWidget *parent = 0) = 0;
 	virtual AccountEditWidget * newEditAccountWidget(Account, QWidget *parent = 0) = 0;

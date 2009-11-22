@@ -21,8 +21,8 @@ void ProtocolsAwareObject::notifyProtocolRegistered(ProtocolFactory *protocol)
 
 void ProtocolsAwareObject::notifyProtocolUnregistered(ProtocolFactory *protocol)
 {
-	foreach (ProtocolsAwareObject *object, Objects)
-		object->protocolUnregistered(protocol);
+	for (QList<ProtocolsAwareObject *>::iterator i = Objects.begin(); i != Objects.end() ; ++i)
+		(*i)->protocolUnregistered(protocol);
 }
 
 void ProtocolsAwareObject::triggerAllProtocolsRegistered()
