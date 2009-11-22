@@ -32,6 +32,7 @@ TlenEditAccountWidget::TlenEditAccountWidget(Account account, QWidget *parent) :
 		AccountEditWidget(account, parent)
 {
 	createGui();
+
 	loadAccountData();
 	loadConnectionData();
 }
@@ -114,7 +115,7 @@ void TlenEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 
 void TlenEditAccountWidget::createPersonalDataTab(QTabWidget *tabWidget)
 {
-	TlenPersonalInfoWidget *gpiw = new TlenPersonalInfoWidget(account(), tabWidget);
+	gpiw = new TlenPersonalInfoWidget(account(), tabWidget);
 	tabWidget->addTab(gpiw, tr("Personal info"));
 }
 
@@ -157,6 +158,10 @@ void TlenEditAccountWidget::apply()
 	account().setRememberPassword(RememberPassword->isChecked());
 	account().setPassword(AccountPassword->text());
 	account().setHasPassword(!AccountPassword->text().isEmpty());
+
+	proxy->applyProxyData();
+
+	gpiw->applyData();
 }
 
 void TlenEditAccountWidget::removeAccount()
