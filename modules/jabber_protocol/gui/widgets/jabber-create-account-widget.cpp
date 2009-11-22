@@ -314,7 +314,6 @@ void JabberCreateAccountWidget::iHaveAccountDataChanged()
 void JabberCreateAccountWidget::addThisAccount()
 {
 	Account jabberAccount;
-	jabberAccount.data()->setState(StorableObject::StateNew);
 	jabberAccount.data()->setProtocolName("jabber");
 	jabberAccount.data()->protocolRegistered(ProtocolsManager::instance()->byName("jabber"));
 	jabberAccount.setDetails(new JabberAccountDetails(jabberAccount));
@@ -365,7 +364,6 @@ void JabberCreateAccountWidget::registerNewAccountFinished(JabberServerRegisterA
 		MessageDialog::msg(tr("Registration was successful. Your new Jabber ID is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(jsra->jid()), false, "Information", this);
 
 		Account jabberAccount;
-		jabberAccount.data()->setState(StorableObject::StateNew);
 		jabberAccount.data()->protocolRegistered(ProtocolsManager::instance()->byName("jabber"));
 		JabberAccountDetails *details = new JabberAccountDetails(jabberAccount);
 

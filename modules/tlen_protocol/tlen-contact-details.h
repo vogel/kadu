@@ -20,7 +20,7 @@ class TlenContactDetails : public ContactDetails
 	PROPERTY_DEC(unsigned long, MaxImageSize)
 
 public:
-	explicit TlenContactDetails(StoragePoint *storagePoint, Contact parent = Contact::null);
+	explicit TlenContactDetails(ContactShared *contactShared);
 	virtual ~TlenContactDetails();
 
 	virtual bool validateId();

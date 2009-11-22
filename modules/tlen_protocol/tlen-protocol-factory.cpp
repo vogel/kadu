@@ -53,14 +53,14 @@ Protocol * TlenProtocolFactory::createProtocolHandler(Account account)
 	return new TlenProtocol(account, this);
 }
 
-AccountDetails * TlenProtocolFactory::createAccountDetails(Account account)
+AccountDetails * TlenProtocolFactory::createAccountDetails(AccountShared *accountShared)
 {
-	return new TlenAccountDetails(account.storage(), account);
+	return new TlenAccountDetails(accountShared);
 }
 
-ContactDetails * TlenProtocolFactory::createContactDetails(Contact contact)
+ContactDetails * TlenProtocolFactory::createContactDetails(ContactShared *contactShared)
 {
-	return new TlenContactDetails(contact.storage(), contact);
+	return new TlenContactDetails(contactShared);
 }
 
 AccountCreateWidget * TlenProtocolFactory::newCreateAccountWidget(QWidget *parent)

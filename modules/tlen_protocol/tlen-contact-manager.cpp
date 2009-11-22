@@ -7,7 +7,12 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "contacts/contact.h"
+#include "contacts/contact-shared.h"
+
 #include "tlen-contact-details.h"
+
+#include "contacts/contact-shared.h"
 
 #include "tlen-contact-manager.h"
 
@@ -35,7 +40,7 @@ QVariant TlenContactManager::readEntry(const QString &section, const QString &na
 		return ConfigurationContactDataManager::readEntry(section, name);
 
 	if (name == "Tlenid")
-		return Data->contact().id();
+		return Data->contactData()->id();
 
 	// other data
 

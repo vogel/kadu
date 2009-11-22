@@ -85,6 +85,7 @@ TlenProtocol::TlenProtocol(Account account, ProtocolFactory *factory): Protocol(
 
 	CurrentChatService = new TlenChatService(this);
 	CurrentAvatarService = new TlenAvatarService(this);
+	CurrentPersonalInfoService = new TlenPersonalInfoService(this);
 
 	kdebugf2();
 }
@@ -212,6 +213,7 @@ void TlenProtocol::login()
 	connectToServer();
 	// TODO set here something from kadu, last status?
 	setStatus(Status("Online", ""));
+
 	networkStateChanged(NetworkConnected);
 	kdebugf2();
 }
@@ -488,6 +490,9 @@ void TlenProtocol::chatNotify(QString from, QString type)
 
 	if(type=="t")
 	{
+		if (TypingUsers.contains(from))
+			return;
+
 		//typing start
 		QString oldDesc = oldStatus.description();
 		TypingUsers.insert(from, oldDesc);

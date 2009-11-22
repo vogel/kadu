@@ -35,7 +35,7 @@ BuddyList TlenOpenChatWithRunner::matchingContacts(const QString &query)
 	contact.setContactAccount(ParentAccount);
 	contact.setOwnerBuddy(buddy);
 	contact.setId(query);
-	contact.setDetails(new TlenContactDetails(contact.storage(), contact));
+	contact.setDetails(new TlenContactDetails(contact));
 
 	buddy.addContact(contact);
 	buddy.setDisplay(ParentAccount.name() + ": " + query);

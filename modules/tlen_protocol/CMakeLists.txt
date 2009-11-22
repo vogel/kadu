@@ -5,10 +5,12 @@ set (SOURCES
 	gui/widgets/tlen-contact-widget.cpp
 	gui/widgets/tlen-create-account-widget.cpp
 	gui/widgets/tlen-edit-account-widget.cpp
+	gui/widgets/tlen-personal-info-widget.cpp
 	open-chat-with/tlen-open-chat-with-runner.cpp
 	server/tlen-avatar-fetcher.cpp
 	services/tlen-avatar-service.cpp
 	services/tlen-chat-service.cpp
+	services/tlen-personal-info-service.cpp
 	tlen-account-data-manager.cpp
 	tlen-account-details.cpp
 	tlen-contact-details.cpp
@@ -26,10 +28,12 @@ set (MOC_SOURCES
 	gui/widgets/tlen-contact-widget.h
 	gui/widgets/tlen-create-account-widget.h
 	gui/widgets/tlen-edit-account-widget.h
+	gui/widgets/tlen-personal-info-widget.h
 #	open-chat-with/tlen-open-chat-with-runner.h
 	server/tlen-avatar-fetcher.h
 	services/tlen-avatar-service.h
 	services/tlen-chat-service.h
+	services/tlen-personal-info-service.h
 #	tlen-account-data-manager.h
 #	tlen-account-details.h
 #	tlen-contact-details.h

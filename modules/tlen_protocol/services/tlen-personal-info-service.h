@@ -7,26 +7,33 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "contacts/contact-shared.h"
+#ifndef TLEN_PERSONAL_INFO_SERVICE_H
+#define TLEN_PERSONAL_INFO_SERVICE_H
 
-#include "tlen-contact-details.h"
+#include <QDomNodeList>
 
-class ContactShared;
+#include "protocols/services/personal-info-service.h"
 
-TlenContactDetails::TlenContactDetails(ContactShared *contactShared) :
-		ContactDetails(contactShared), MaxImageSize(0)
+class TlenProtocol;
+class tlen;
+
+class TlenPersonalInfoService : public PersonalInfoService
 {
-}
+	Q_OBJECT
 
-TlenContactDetails::~TlenContactDetails()
-{
-}
+	TlenProtocol *Protocol;
+	tlen * client;
 
-bool TlenContactDetails::validateId()
-{
-	return true;
-}
+private slots:
+	void handlePubdirReceived(QDomNodeList node);
 
-void TlenContactDetails::store()
-{
-}
+public:
+	TlenPersonalInfoService(TlenProtocol *protocol);
+
+	virtual void fetchPersonalInfo();
+	virtual void updatePersonalInfo(Buddy buddy);
+
+};
+
+#endif // TLEN_PERSONAL_INFO_SERVICE_H
+
