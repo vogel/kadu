@@ -455,11 +455,30 @@ void tlen::rosterRequest() {
 // "<iq to='tcfg' type='get' id='TcfgGetAfterLoggedIn'></iq>"
 void tlen::tcfgRequest() {
 	kdebugf();
+
 	QDomDocument doc;
 	QDomElement iq = doc.createElement( "iq" );
 	iq.setAttribute( "to", "tcfg" );
 	iq.setAttribute( "type", "get" );
 	iq.setAttribute( "id", "TcfgGetAfterLoggedIn" );
+
+	doc.appendChild( iq );
+	write(doc);
+}
+// "<iq type="get" id="tr" to="tuba"><query xmlns="jabber:iq:register"/></iq>"
+void tlen::getPubDirInfoRequest() {
+	kdebugf();
+
+	QDomDocument doc;
+	QDomElement iq = doc.createElement( "iq" );
+	iq.setAttribute( "to", "tuba" );
+	iq.setAttribute( "type", "get" );
+	iq.setAttribute( "id", "tr" );
+
+	QDomElement query = doc.createElement( "query" );
+	query.setAttribute( "xmlns", "jabber:iq:register" );
+	iq.appendChild( query );
+
 	doc.appendChild( iq );
 	write(doc);
 }

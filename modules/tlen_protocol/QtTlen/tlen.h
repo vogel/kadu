@@ -100,6 +100,8 @@ public slots:
 	void rosterRequest();
 	// tlen configuration request
 	void tcfgRequest();
+	// pobiera dane zapisane w katalogu publicznym
+	void getPubDirInfoRequest();
 
 	// "available","chat","away","xa","dnd","invisible","unavailable"
 	void setStatus(QString status);
