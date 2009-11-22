@@ -24,7 +24,7 @@
 
 #include "gui/widgets/proxy-group-box.h"
 
-//#include "tlen-personal-info-widget.h"
+#include "tlen-personal-info-widget.h"
 
 #include "tlen-edit-account-widget.h"
 
@@ -114,8 +114,8 @@ void TlenEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 
 void TlenEditAccountWidget::createPersonalDataTab(QTabWidget *tabWidget)
 {
-	//TlenPersonalInfoWidget *gpiw = new TlenPersonalInfoWidget(account(), tabWidget);
-	//tabWidget->addTab(gpiw, tr("Personal info"));
+	TlenPersonalInfoWidget *gpiw = new TlenPersonalInfoWidget(account(), tabWidget);
+	tabWidget->addTab(gpiw, tr("Personal info"));
 }
 
 void TlenEditAccountWidget::createBuddiesTab(QTabWidget *tabWidget)
