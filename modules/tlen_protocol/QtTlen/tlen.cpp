@@ -388,12 +388,16 @@ void tlen::socketDisconnected()
 	}
 	emit statusChanged();
 }
-
+// every 60s
 void tlen::sendPing() {
 	kdebugf();
-	socket->write(QString("  \t  ").toUtf8());
+	//socket->write(QString("  \t  ").toUtf8());
+	// 7.00 sends one space
+	socket->write(QString(" ").toUtf8());
 }
-
+// TODO
+// "<iq type='set' sid='GetRoster'><query xmlns="jabber:iq:auth"/>
+// </iq>"
 bool tlen::tlenLogin() {
 	kdebugf();
 	if( !isConnected() )
