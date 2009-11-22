@@ -167,7 +167,7 @@ void tlen::event(QDomNode n) {
 			if(element.hasAttribute("from") && element.attribute("from")=="tuba"
 				&& element.hasAttribute("id") && element.attribute("id")=="tr") {
 					QDomElement query = element.elementsByTagName("query").item(0).toElement();
-					if (query.hasAttribute("xmlns") && element.attribute("xmlns")=="jabber:iq:register")
+					//if (query.hasAttribute("xmlns") && element.attribute("xmlns")=="jabber:iq:register")
 						emit pubdirReceived(query.childNodes());
 					return;
 			}

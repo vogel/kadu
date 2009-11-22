@@ -7,9 +7,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QDomNode>
-
 #include "misc/misc.h"
+#include "debug.h"
+
+#include "tlen.h"
 
 #include "tlen-contact-details.h"
 #include "tlen-protocol.h"
@@ -23,62 +24,124 @@ TlenPersonalInfoService::TlenPersonalInfoService(TlenProtocol *protocol) :
 
 void TlenPersonalInfoService::handlePubdirReceived(QDomNodeList node)
 {
-/*	gg_pubdir50_t res = e->event.pubdir50;
+	kdebugf();
 
-	if (FetchSeq != res->seq)
+	client = Protocol->client();
+	if (!client)
 		return;
+	
+	disconnect(client, SIGNAL(pubdirReceived(QDomNodeList)), this, SLOT(handlePubdirReceived(QDomNodeList)));
 
-	Buddy result;
-
-	int count = gg_pubdir50_count(res);
-	if (1 != count)
+	if (1 != node.count())
 	{
 		emit personalInfoAvailable(Buddy::null);
 		return;
 	}
 
+	Buddy result;
+
 	Contact contact;
 	contact.setContactAccount(Protocol->account());
 	contact.setOwnerBuddy(result);
-	contact.setId(gg_pubdir50_get(res, 0, GG_PUBDIR50_UIN));
+	contact.setId(Protocol->account().id());
 	contact.setDetails(new TlenContactDetails(contact));
 
 	result.addContact(contact);
-	result.setFirstName(cp2unicode(gg_pubdir50_get(res, 0, GG_PUBDIR50_FIRSTNAME)));
-	result.setLastName(cp2unicode(gg_pubdir50_get(res, 0, GG_PUBDIR50_LASTNAME)));
-	result.setNickName(cp2unicode(gg_pubdir50_get(res, 0, GG_PUBDIR50_NICKNAME)));
-	result.setBirthYear(QString::fromAscii(gg_pubdir50_get(res, 0, GG_PUBDIR50_BIRTHYEAR)).toUShort());
-	result.setCity(cp2unicode(gg_pubdir50_get(res, 0, GG_PUBDIR50_CITY)));
-	result.setFamilyName(cp2unicode(gg_pubdir50_get(res, 0, GG_PUBDIR50_FAMILYNAME)));
-	result.setFamilyCity(cp2unicode(gg_pubdir50_get(res, 0, GG_PUBDIR50_FAMILYCITY)));
-	result.setGender((BuddyShared::BuddyGender)QString::fromAscii(gg_pubdir50_get(res, 0, GG_PUBDIR50_GENDER)).toUShort());
-	// TODO: 0.6.6
-	// result.setStatus(gg_pubdir50_get(res, 0, GG_PUBDIR50_STATUS));
+
+	/*
+            <first>imie</first><last>nazwisko</last>
+            <nick>nick</nick><email>email</email>
+            <c>miesjcowosc</c><b>1984</b><s>1</s><e>szkola</e>
+            <r>1</r><j>12</j><p>0</p><v>0</v><g>1</g><k>1</k>
+
+	*/
+	QDomElement itemelement = node.item(0).toElement();
+	QDomNodeList items = itemelement.childNodes();
+	for (int i=0;i<items.count();++i)
+	{
+		QDomElement mm = items.item(i).toElement();
+		QString mmName = items.item(i).nodeName();
+		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "tlen node = %s\n", qPrintable(mm.text()));
+		if (mmName == "first")
+		{
+			result.setFirstName(mm.text());
+		}
+		else if (mmName == "last")
+		{
+			result.setLastName(mm.text());
+		}
+		else if (mmName == "nick")
+		{
+			result.setNickName(mm.text());
+		}
+		else if (mmName == "email")
+		{
+			result.setEmail(mm.text());
+		}
+		else if (mmName == "b")
+		{
+			result.setBirthYear(mm.text().toUShort());
+		}
+		else if (mmName == "s")
+		{
+			result.setGender((BuddyShared::BuddyGender)mm.text().toUShort());
+		}
+		else if (mmName == "c")
+		{
+			result.setCity(mm.text());
+		}
+		else if (mmName == "r")
+		{
+			// searching for
+		}
+		else if (mmName == "j")
+		{
+			// job
+		}
+		else if (mmName == "p")
+		{
+			// my plan for 
+		}
+		else if (mmName == "v")
+		{
+			// status visible in catalog
+		}
+		else if (mmName == "g")
+		{
+			// mic
+		}
+		else if (mmName == "k")
+		{
+			// cam
+		}
+
+	}
+
+	//result.setStatus();
 
 	emit personalInfoAvailable(result);
-*/
 }
 /*
 void TlenPersonalInfoService::handleEventPubdir50Write(struct gg_event *e)
 {
-	gg_pubdir50_t res = e->event.pubdir50;
-
-	if (UpdateSeq != res->seq)
-		return;
-
 	emit personalInfoUpdated(true);
 }*/
 
 void TlenPersonalInfoService::fetchPersonalInfo()
 {
-/*	gg_pubdir50_t req = gg_pubdir50_new(GG_PUBDIR50_READ);
-	FetchSeq = gg_pubdir50(Protocol->gaduSession(), req);
-	gg_pubdir50_free(req);
-*/
+	kdebugf();
+	client = Protocol->client();
+	if (!client || !client->isConnected())
+		return;
+
+	connect(client, SIGNAL(pubdirReceived(QDomNodeList)), this, SLOT(handlePubdirReceived(QDomNodeList)));
+	client->getPubDirInfoRequest();
+
 }
 
 void TlenPersonalInfoService::updatePersonalInfo(Buddy buddy)
 {
+	kdebugf();
 /*	gg_pubdir50_t req = gg_pubdir50_new(GG_PUBDIR50_WRITE);
 
 	if (!buddy.firstName().isEmpty())

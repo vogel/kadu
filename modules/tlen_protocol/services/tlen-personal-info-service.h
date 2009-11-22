@@ -15,12 +15,14 @@
 #include "protocols/services/personal-info-service.h"
 
 class TlenProtocol;
+class tlen;
 
 class TlenPersonalInfoService : public PersonalInfoService
 {
 	Q_OBJECT
 
 	TlenProtocol *Protocol;
+	tlen * client;
 
 private slots:
 	void handlePubdirReceived(QDomNodeList node);
