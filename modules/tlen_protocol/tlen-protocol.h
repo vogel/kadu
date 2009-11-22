@@ -16,6 +16,7 @@
 
 #include "services/tlen-avatar-service.h"
 #include "services/tlen-chat-service.h"
+#include "services/tlen-personal-info-service.h"
 
 class ActionDescription;
 class Conference;
@@ -44,6 +45,7 @@ class TlenProtocol : public Protocol
 
 		virtual AvatarService *avatarService() { return CurrentAvatarService; }
 		virtual ChatService * chatService() { return CurrentChatService; }
+		virtual PersonalInfoService * personalInfoService() { return CurrentPersonalInfoService; }
 
 	protected:
 		virtual void changeStatus();
@@ -63,6 +65,7 @@ class TlenProtocol : public Protocol
 
 		TlenAvatarService *CurrentAvatarService;
 		TlenChatService *CurrentChatService;
+		TlenPersonalInfoService *CurrentPersonalInfoService;
 		friend class TlenChatService;
 
 	private slots:

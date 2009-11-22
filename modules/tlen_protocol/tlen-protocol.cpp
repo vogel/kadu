@@ -85,6 +85,7 @@ TlenProtocol::TlenProtocol(Account account, ProtocolFactory *factory): Protocol(
 
 	CurrentChatService = new TlenChatService(this);
 	CurrentAvatarService = new TlenAvatarService(this);
+	CurrentPersonalInfoService = new TlenPersonalInfoService(this);
 
 	kdebugf2();
 }
