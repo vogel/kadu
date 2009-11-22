@@ -101,8 +101,8 @@ bool tlen::isConnected() {
 void tlen::socketReadyRead() {
 	kdebugf();
 	stream+=socket->readAll();
-	stream.append("</xmlroot>");
 	stream.prepend("<xmlroot>");
+	stream.append("</xmlroot>");
 
 	if( tmpDoc->setContent(stream) || stream.startsWith("<xmlroot><s ") ) {
 		qDebug()<<"Read:"<<tmpDoc->toString();
@@ -443,7 +443,7 @@ bool tlen::write( const QDomDocument &d ) {
 
 	return (socket->write(d.toByteArray()) == (qint64)d.toByteArray().size());
 }
-
+// "<iq type='get' id='GetRoster'><query xmlns="jabber:iq:roster"/></iq>"
 void tlen::rosterRequest() {
 	kdebugf();
 	QDomDocument doc;
