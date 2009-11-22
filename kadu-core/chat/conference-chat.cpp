@@ -46,7 +46,7 @@ void ConferenceChat::store()
 	BuddySetConfigurationHelper::saveToConfiguration(this, "Contacts", CurrentContacts);
 }
 
-ChatType ConferenceChat::type() const
+ChatType * ConferenceChat::type() const
 {
 	return ChatTypeManager::instance()->chatType("ConferenceChat");
 }

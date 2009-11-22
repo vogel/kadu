@@ -59,10 +59,13 @@ bool HistoryChatsModelProxy::lessThan(const QModelIndex &left, const QModelIndex
 	if (leftChat && rightChat)
 		return compareNames(leftChat->name(), rightChat->name()) < 0;
 
-	ChatType leftType = left.data(ChatTypeRole).value<ChatType>();
-	ChatType rightType = right.data(ChatTypeRole).value<ChatType>();
+	ChatType *leftType = left.data(ChatTypeRole).value<ChatType *>();
+	ChatType *rightType = right.data(ChatTypeRole).value<ChatType *>();
 
-	return compareNames(leftType.displayName(), rightType.displayName()) < 0;
+	QString leftName = leftType ? leftType->displayName() : "";
+	QString rightName = rightType ? rightType->displayName() : "";
+
+	return compareNames(leftName, rightName) < 0;
 }
 
 void HistoryChatsModelProxy::setSourceModel(QAbstractItemModel *sourceModel)
@@ -93,7 +96,7 @@ void HistoryChatsModelProxy::removeFilter(ChatFilter *filter)
 	invalidateFilter();
 }
 
-QModelIndex HistoryChatsModelProxy::chatTypeIndex(ChatType type) const
+QModelIndex HistoryChatsModelProxy::chatTypeIndex(ChatType *type) const
 {
 	if (!Model)
 		return QModelIndex();

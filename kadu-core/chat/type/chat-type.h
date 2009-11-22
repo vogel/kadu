@@ -18,6 +18,8 @@
 
 class KADUAPI ChatType
 {
+	Q_DISABLE_COPY(ChatType)
+
 	int SortIndex;
 	QString Name;
 	QString DisplayName;
@@ -26,7 +28,6 @@ class KADUAPI ChatType
 public:
 	ChatType();
 	ChatType(int sortIndex, const QString &name, const QString &displayName, const QIcon &icon);
-	ChatType(const ChatType &copy);
 
 	int sortIndex() const { return SortIndex; }
 	QString name() const { return Name; }
@@ -38,6 +39,6 @@ public:
 
 };
 
-Q_DECLARE_METATYPE(ChatType)
+Q_DECLARE_METATYPE(ChatType *)
 
 #endif // CHAT_TYPE_H

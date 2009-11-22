@@ -32,7 +32,7 @@ public:
 	virtual void load();
 	virtual void store();
 
-	virtual ChatType type() const;
+	virtual ChatType * type() const;
 	virtual BuddySet buddies() const { return CurrentContacts; }
 	virtual QString name() const;
 

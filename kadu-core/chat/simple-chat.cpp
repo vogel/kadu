@@ -69,7 +69,7 @@ void SimpleChat::store()
 		storeValue("Contact", CurrentContact.uuid().toString());
 }
 
-ChatType SimpleChat::type() const
+ChatType * SimpleChat::type() const
 {
 	return ChatTypeManager::instance()->chatType("SimpleChat");
 }

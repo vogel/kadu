@@ -31,7 +31,7 @@ public:
 	virtual void store();
 
 	virtual BuddySet buddies() const { return Chats.at(0)->buddies(); }
-	virtual ChatType type() const { return Chats.at(0)->type(); }
+	virtual ChatType * type() const { return Chats.at(0)->type(); }
 	virtual QUuid uuid() const { return Chats.at(0)->uuid(); }
 	virtual QString name() const { return Chats.at(0)->name(); }
 

@@ -24,37 +24,37 @@ ChatTypeManager * ChatTypeManager::instance()
 ChatTypeManager::ChatTypeManager()
 {
 	// TODO: 0.6.6 fix icons
-	addChatType(ChatType(0, "SimpleChat", tr("Chat"), IconsManager::instance()->loadIcon("OpenChat")));
-	addChatType(ChatType(1, "ConferenceChat", tr("Conference"), IconsManager::instance()->loadIcon("ManageModules")));
+	addChatType(new ChatType(0, "SimpleChat", tr("Chat"), IconsManager::instance()->loadIcon("OpenChat")));
+	addChatType(new ChatType(1, "ConferenceChat", tr("Conference"), IconsManager::instance()->loadIcon("ManageModules")));
 }
 
 ChatTypeManager::~ChatTypeManager()
 {
 }
 
-void ChatTypeManager::addChatType(ChatType chatType)
+void ChatTypeManager::addChatType(ChatType *chatType)
 {
 	if (ChatTypes.contains(chatType))
 		return;
 
 	emit chatTypeAboutToBeAdded(chatType);
 	ChatTypes.append(chatType);
-	ChatTypesMap.insert(chatType.name(), chatType);
+	ChatTypesMap.insert(chatType->name(), chatType);
 	emit chatTypeAdded(chatType);
 }
 
-void ChatTypeManager::removeChatType(ChatType chatType)
+void ChatTypeManager::removeChatType(ChatType *chatType)
 {
 	if (!ChatTypes.contains(chatType))
 		return;
 	
 	emit chatTypeAboutToBeRemoved(chatType);
 	ChatTypes.removeAll(chatType);
-	ChatTypesMap.remove(chatType.name());
+	ChatTypesMap.remove(chatType->name());
 	emit chatTypeRemoved(chatType);
 }
 
-ChatType ChatTypeManager::chatType(const QString &name)
+ChatType * ChatTypeManager::chatType(const QString &name)
 {
 	return ChatTypesMap.value(name);
 }

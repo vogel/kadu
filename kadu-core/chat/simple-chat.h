@@ -28,7 +28,7 @@ public:
 	virtual void load();
 	virtual void store();
 
-	virtual ChatType type() const;
+	virtual ChatType * type() const;
 	virtual BuddySet buddies() const;
 	virtual QString name() const;
 

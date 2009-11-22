@@ -39,7 +39,7 @@ public:
 	void addFilter(ChatFilter *filter);
 	void removeFilter(ChatFilter *filter);
 
-	QModelIndex chatTypeIndex(ChatType type) const;
+	QModelIndex chatTypeIndex(ChatType *type) const;
 	QModelIndex chatIndex(Chat *chat) const;
 
 };
