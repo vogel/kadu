@@ -129,6 +129,7 @@ signals:
 	void authorizationAsk(QString);
 	void removeItem(QString);
 	void avatarReceived(QString jid, QString type, QString md5);
+	void pubdirReceived(QDomNodesList n);
 
 	void sortRoster();
 
@@ -138,7 +139,7 @@ signals:
 	void tlenLoggedIn();
 	void statusChanged(); // FOR GUI TO UPDATE ICONS
 	void statusUpdate();	// FOR TLEN TO WRITE STATUS
-	void eventReceived(QDomNode);
+	void eventReceived(QDomNode n);
 
 	void chatNotify(QString from, QString type);
 private:

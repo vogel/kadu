@@ -156,11 +156,21 @@ void tlen::event(QDomNode n) {
 	}
 	else if(nodeName=="iq") {
 		if(element.hasAttribute( "type" ) && element.attribute("type") == "result") {
+			// tcfg
 			if(element.hasAttribute("id") && element.attribute("id")==sid) {
 				tcfgRequest();
 				rosterRequest();
 			}
-
+			// <iq from="tuba" type="result" to="jid" id="tr">
+			// <query xmlns="jabber:iq:register">
+			// <item></item></query></iq>
+			if(element.hasAttribute("from") && element.attribute("from")=="tuba"
+				&& element.hasAttribute("id") && element.attribute("id")=="tr") {
+					QDomElement query = element.elementsByTagName("query").item(0).toElement();
+					if (query.hasAttribute("xmlns") && element.attribute("xmlns")=="jabber:iq:register")
+						emit pubdirReceived(query.childNodes());
+					return;
+			}
 			if(element.hasAttribute("id") && element.attribute("id")=="GetRoster") {
 				emit clearRosterView();
 				sort=FALSE;
