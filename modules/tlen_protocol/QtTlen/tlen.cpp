@@ -136,10 +136,10 @@ void tlen::socketConnected() {
 	state = tlen::Connecting;
 	socket->write( QByteArray(
 	  isSecureConn()
-	  ?"<s s=\"1\" v=\"9\" t=\"0600010C\">"
-	  :"<s v=\"9\" t=\"0600010C\">") );
-//	  ?"<s s=\"1\" v=\"7\" t=\"05170402\">"
-//	  :"<s v=\"7\" t=\"05170402\">") );
+	  ?"<s s=\"1\" v=\"15\" t=\"07000000\">"
+	  :"<s v=\"15\" t=\"07000000\">") );
+//	  ?"<s s=\"1\" v=\"9\" t=\"0600010C\">"
+//	  :"<s v=\"9\" t=\"0600010C\">") );
 }
 
 void tlen::event(QDomNode n) {
