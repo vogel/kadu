@@ -528,23 +528,26 @@ QByteArray tlen::encode( const QString &in ) {
 
 	return out;
 }
-
+//<presence type=\"invisible\" ><status>description</status></presence>
+//<presence><show>status</show><status>description</status></presence>
 void tlen::writeStatus() {
 	kdebugf();
 	QDomDocument doc;
 	QDomElement p = doc.createElement("presence");
-	QDomElement s = doc.createElement("show");
 	QDomElement d = doc.createElement("status");
 
 	if(Status=="unavailable" || Status=="invisible")
 		p.setAttribute("type", Status);
 	else
+	{
+		QDomElement s = doc.createElement("show");
 		s.appendChild(doc.createTextNode(Status));
+		p.appendChild(s);
+	}
 
 	if(!Descr.isEmpty())
 		d.appendChild(doc.createTextNode(QString(encode(Descr))));
 
-	p.appendChild(s);
 	p.appendChild(d);
 	doc.appendChild(p);
 
