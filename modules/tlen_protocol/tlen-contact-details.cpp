@@ -29,6 +29,34 @@ bool TlenContactDetails::validateId()
 	return true;
 }
 
+void TlenContactDetails::load()
+{
+	if (!isValidStorage())
+		return;
+
+	ContactDetails::load();
+
+	//MaxImageSize = loadValue<unsigned long>("MaxImageSize");
+	TlenProtocolVersion = loadValue<unsigned int>("TlenProtocolVersion");
+	LookingFor = loadValue<unsigned int>("LookingFor");
+	Job = loadValue<unsigned int>("Job");
+	TodayPlans = loadValue<unsigned int>("TodayPlans");
+	ShowStatus = loadValue<bool>("ShowStatus");
+	HaveMic = loadValue<bool>("HaveMic");
+	HaveCam = loadValue<bool>("HaveCam");
+}
+
 void TlenContactDetails::store()
 {
+	if (!isValidStorage())
+		return;
+
+	//storeValue("MaxImageSize", MaxImageSize);
+	storeValue("TlenProtocolVersion", TlenProtocolVersion);
+	storeValue("LookingFor", LookingFor);
+	storeValue("Job", Job);
+	storeValue("TodayPlans", TodayPlans);
+	storeValue("ShowStatus", ShowStatus);
+	storeValue("HaveMic", HaveMic);
+	storeValue("HaveCam", HaveCam);
 }

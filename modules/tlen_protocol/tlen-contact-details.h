@@ -32,6 +32,8 @@ public:
 	virtual ~TlenContactDetails();
 
 	virtual bool validateId();
+
+	virtual void load();
 	virtual void store();
 
 	PROPERTY_DEF(unsigned long, maxImageSize, setMaxImageSize, MaxImageSize)
