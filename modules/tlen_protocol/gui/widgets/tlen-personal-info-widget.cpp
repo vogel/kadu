@@ -131,7 +131,8 @@ void TlenPersonalInfoWidget::personalInfoAvailable(Buddy buddy)
 	Sex->setCurrentIndex((int)buddy.gender());
 	BirthYear->setText(QString::number(buddy.birthYear()));
 	City->setText(buddy.city());
-	
+
+	// TODO 0.6.6: dangerous - no details means not this account?
 	Contact contact = buddy.contact(TAccount);
 	if (contact.isNull())
 		return;
