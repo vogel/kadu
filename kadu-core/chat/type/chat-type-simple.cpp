@@ -19,7 +19,7 @@ int ChatTypeSimple::sortIndex() const
 
 QString ChatTypeSimple::name() const
 {
-	return "SimpleChat";
+	return "Simple";
 }
 
 QString ChatTypeSimple::displayName() const

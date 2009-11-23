@@ -19,7 +19,7 @@ int ChatTypeConference::sortIndex() const
 
 QString ChatTypeConference::name() const
 {
-	return "ConferenceChat";
+	return "Conference";
 }
 
 QString ChatTypeConference::displayName() const

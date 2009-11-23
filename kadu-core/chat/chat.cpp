@@ -20,6 +20,7 @@
 #include "protocols/protocol.h"
 
 #include "chat.h"
+#include "type/chat-type-manager.h"
 
 Chat * Chat::loadFromStorage(StoragePoint *chatStoragePoint)
 {
@@ -32,30 +33,18 @@ Chat * Chat::loadFromStorage(StoragePoint *chatStoragePoint)
 	Account account = AccountManager::instance()->byUuid(QUuid(storage->getTextNode(point, "Account")));
 
 	QString type = storage->getTextNode(point, "Type");
-	if ("Simple" == type)
-	{
-		Chat *chat = new Chat(chatStoragePoint);
-		ChatDetailsSimple *details = new ChatDetailsSimple(chat);
-		chat->setDetails(details);
-		chat->setState(StorableObject::StateUnloaded);
-		details->setState(StorableObject::StateUnloaded);
-		chat->load();
-		details->load();
-		return chat;
-	}
-	else if ("Conference" == type)
-	{
-		Chat *chat = new Chat(chatStoragePoint);
-		ChatDetailsConference *details = new ChatDetailsConference(chat);
-		chat->setDetails(details);
-		chat->setState(StorableObject::StateUnloaded);
-		details->setState(StorableObject::StateUnloaded);
-		chat->load();
-		details->load();
-		return chat;
-	}
-	else
+	ChatType *chatType = ChatTypeManager::instance()->chatType(type);
+	if (!chatType)
 		return 0;
+
+	Chat *chat = new Chat(chatStoragePoint);
+	ChatDetails *details = chatType->createChatDetails(chat);
+	chat->setDetails(details);
+	chat->setState(StorableObject::StateUnloaded);
+	details->setState(StorableObject::StateUnloaded);
+	chat->load();
+	details->load();
+	return chat;
 }
 
 Chat::Chat(StoragePoint *storage) :
