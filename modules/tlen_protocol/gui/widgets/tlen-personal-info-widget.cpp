@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include <QtGui/QComboBox>
+#include <QtGui/QCheckBox>
 #include <QtGui/QGridLayout>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
@@ -47,10 +48,14 @@ void TlenPersonalInfoWidget::createGui()
 	QLabel *firstNameLabel = new QLabel(tr("First name"), this);
 	QLabel *lastNameLabel = new QLabel(tr("Last name"), this);
 	QLabel *sexLabel = new QLabel(tr("Sex"), this);
-	QLabel *familyNameLabel = new QLabel(tr("Family name"), this);
 	QLabel *birthYearLabel = new QLabel(tr("Birth year"), this);
 	QLabel *cityLabel = new QLabel(tr("City"), this);
-	QLabel *familyCityLabel = new QLabel(tr("Family city"), this);
+	QLabel *lookingForLabel = new QLabel(tr("Looking for"), this);
+	QLabel *jobLabel = new QLabel(tr("Job"), this);
+	QLabel *todayPlansLabel = new QLabel(tr("Today plans"), this);
+	QLabel *showStatusLabel = new QLabel(tr("Show status"), this);
+	QLabel *haveMicLabel = new QLabel(tr("Have mic"), this);
+	QLabel *haveCamLabel = new QLabel(tr("Have cam"), this);
 
 	NickName = new QLineEdit(this);
 	FirstName = new QLineEdit(this);
@@ -59,11 +64,30 @@ void TlenPersonalInfoWidget::createGui()
 	Sex->addItem(tr("Unknown Gender"));
 	Sex->addItem(tr("Male"));
 	Sex->addItem(tr("Female"));
-	FamilyName = new QLineEdit(this);
 	BirthYear = new QLineEdit(this);
 	BirthYear->setInputMask("d000");
 	City = new QLineEdit(this);
-	FamilyCity = new QLineEdit(this);
+	LookingFor = new QComboBox(this);
+	LookingFor->addItem(tr("Unknown"));
+	LookingFor->addItem(tr("1"));
+	LookingFor->addItem(tr("2"));
+	LookingFor->addItem(tr("3"));
+	LookingFor->addItem(tr("4"));
+	Job = new QComboBox(this);
+	Job->addItem(tr("Unknown"));
+	Job->addItem(tr("1"));
+	Job->addItem(tr("2"));
+	Job->addItem(tr("3"));
+	Job->addItem(tr("4"));
+	TodayPlans = new QComboBox(this);
+	TodayPlans->addItem(tr("Unknown"));
+	TodayPlans->addItem(tr("1"));
+	TodayPlans->addItem(tr("2"));
+	TodayPlans->addItem(tr("3"));
+	TodayPlans->addItem(tr("4"));
+	ShowStatus = new QCheckBox(this);
+	HaveMic = new QCheckBox(this);
+	HaveCam = new QCheckBox(this);
 
 	layout->addWidget(nickNameLabel, 0, 0);
 	layout->addWidget(NickName, 1, 0);
@@ -73,15 +97,23 @@ void TlenPersonalInfoWidget::createGui()
 	layout->addWidget(LastName, 1, 2);
 	layout->addWidget(sexLabel, 2, 0);
 	layout->addWidget(Sex, 3, 0);
-	layout->addWidget(familyNameLabel, 2, 1);
-	layout->addWidget(FamilyName, 3, 1);
 	layout->addWidget(birthYearLabel, 4, 0);
 	layout->addWidget(BirthYear, 5, 0);
 	layout->addWidget(cityLabel, 6, 0);
 	layout->addWidget(City, 7, 0);
-	layout->addWidget(familyCityLabel, 6, 1);
-	layout->addWidget(FamilyCity, 7, 1);
-	
+	layout->addWidget(lookingForLabel, 8, 0);
+	layout->addWidget(LookingFor, 9, 0);
+	layout->addWidget(jobLabel, 10, 0);
+	layout->addWidget(Job, 11, 0);
+	layout->addWidget(todayPlansLabel, 12, 0);
+	layout->addWidget(TodayPlans, 13, 0);
+	layout->addWidget(showStatusLabel, 14, 0);
+	layout->addWidget(ShowStatus, 15, 0);
+	layout->addWidget(haveMicLabel, 16, 0);
+	layout->addWidget(HaveMic, 17, 0);
+	layout->addWidget(haveCamLabel, 18, 0);
+	layout->addWidget(HaveCam, 19, 0);
+
 	layout->setRowStretch(8, 100);
 	
 }
@@ -96,7 +128,6 @@ void TlenPersonalInfoWidget::personalInfoAvailable(Buddy buddy)
 	FamilyName->setText(buddy.familyName());
 	BirthYear->setText(QString::number(buddy.birthYear()));
 	City->setText(buddy.city());
-	FamilyCity->setText(buddy.familyCity());
 }
 
 void TlenPersonalInfoWidget::applyData()
@@ -109,7 +140,6 @@ void TlenPersonalInfoWidget::applyData()
 	buddy.setFamilyName((*FamilyName).text());
 	buddy.setBirthYear((*BirthYear).text().toUShort());
 	buddy.setCity((*City).text());
-	buddy.setFamilyCity((*FamilyCity).text());
 	buddy.setGender((BuddyShared::BuddyGender)Sex->currentIndex());
 
 	Service->updatePersonalInfo(buddy);
