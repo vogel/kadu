@@ -21,7 +21,7 @@
 #include "tlen-personal-info-widget.h"
 
 TlenPersonalInfoWidget::TlenPersonalInfoWidget(Account account, QWidget* parent) :
-		QWidget(parent), TAccount(account)
+		QWidget(parent), TAccount(account), FetchOk(false)
 {
 	createGui();
 
@@ -133,6 +133,8 @@ void TlenPersonalInfoWidget::personalInfoAvailable(Buddy buddy)
 	City->setText(buddy.city());
 
 	// TODO 0.6.6: dangerous - no details means not this account?
+	FetchOk = false;
+
 	Contact contact = buddy.contact(TAccount);
 	if (contact.isNull())
 		return;
@@ -148,6 +150,7 @@ void TlenPersonalInfoWidget::personalInfoAvailable(Buddy buddy)
 	ShowStatus->setChecked(tlenDetails->showStatus());
 	HaveMic->setChecked(tlenDetails->haveMic());
 	HaveCam->setChecked(tlenDetails->haveCam());
+	FetchOk = true;
 }
 
 void TlenPersonalInfoWidget::applyData()
@@ -161,5 +164,6 @@ void TlenPersonalInfoWidget::applyData()
 	buddy.setCity((*City).text());
 	buddy.setGender((BuddyShared::BuddyGender)Sex->currentIndex());
 
-	Service->updatePersonalInfo(buddy);
+	if (FetchOk)
+		Service->updatePersonalInfo(buddy);
 }

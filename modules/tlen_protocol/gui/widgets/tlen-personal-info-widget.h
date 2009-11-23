@@ -43,6 +43,8 @@ class TlenPersonalInfoWidget : public QWidget
 	QCheckBox *HaveMic;
 	QCheckBox *HaveCam;
 
+	bool FetchOk;
+
 	void createGui();
 
 private slots:
