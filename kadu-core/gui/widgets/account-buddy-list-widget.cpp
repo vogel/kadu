@@ -116,26 +116,34 @@ void AccountBuddyListWidget::buddiesListImported(bool ok, BuddyList buddies)
 	kdebugf();
 
 	ImportButton->setEnabled(true);
-	BuddyList beforeImportList = BuddyManager::instance()->buddies(CurrentAccount, true);
 	if (!ok)
 		return;
 
-	foreach (Buddy buddy, buddies)
+	BuddyList beforeImportList = BuddyManager::instance()->buddies(CurrentAccount, true);
+
+	foreach (Buddy onebuddy, buddies)
 	{
-		Buddy buddy = BuddyManager::instance()->byId(CurrentAccount, buddy.contact(CurrentAccount).id());
+		Contact contact = onebuddy.contact(CurrentAccount);
+		Buddy buddy = BuddyManager::instance()->byId(CurrentAccount, contact.id());
 		foreach (Buddy beforeImportBuddy, beforeImportList)
-			if (!beforeImportBuddy.contact(CurrentAccount).isNull() && beforeImportBuddy.contact(CurrentAccount).id() == buddy.contact(CurrentAccount).id())
-				beforeImportList.removeOne(beforeImportBuddy);
-		buddy.setFirstName(buddy.firstName());
-		buddy.setLastName(buddy.lastName());
-		buddy.setNickName(buddy.nickName());
-		buddy.setMobile(buddy.mobile());
-		buddy.setGroups(buddy.groups());
-		buddy.setEmail(buddy.email());
-		buddy.setDisplay(buddy.display());
-		buddy.setHomePhone(buddy.homePhone());
+			if (!beforeImportBuddy.contact(CurrentAccount).isNull()
+				&& beforeImportBuddy.contact(CurrentAccount).id() == contact.id())
+					beforeImportList.removeOne(beforeImportBuddy);
+
+		buddy.setFirstName(onebuddy.firstName());
+		buddy.setLastName(onebuddy.lastName());
+		buddy.setNickName(onebuddy.nickName());
+		buddy.setMobile(onebuddy.mobile());
+		buddy.setGroups(onebuddy.groups());
+		buddy.setEmail(onebuddy.email());
+		buddy.setDisplay(onebuddy.display());
+		buddy.setHomePhone(onebuddy.homePhone());
+
 		if (buddy.isAnonymous())
+		{
+			buddy.setAnonymous(false);
 			BuddyManager::instance()->addBuddy(buddy);
+		}
 	}
 
 	if (!beforeImportList.isEmpty())
