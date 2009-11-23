@@ -126,7 +126,6 @@ void TlenPersonalInfoWidget::personalInfoAvailable(Buddy buddy)
 	FirstName->setText(buddy.firstName());
 	LastName->setText(buddy.lastName());
 	Sex->setCurrentIndex((int)buddy.gender());
-	FamilyName->setText(buddy.familyName());
 	BirthYear->setText(QString::number(buddy.birthYear()));
 	City->setText(buddy.city());
 	
@@ -154,7 +153,6 @@ void TlenPersonalInfoWidget::applyData()
 	buddy.setNickName((*NickName).text());
 	buddy.setFirstName((*FirstName).text());
 	buddy.setLastName((*LastName).text());
-	buddy.setFamilyName((*FamilyName).text());
 	buddy.setBirthYear((*BirthYear).text().toUShort());
 	buddy.setCity((*City).text());
 	buddy.setGender((BuddyShared::BuddyGender)Sex->currentIndex());
