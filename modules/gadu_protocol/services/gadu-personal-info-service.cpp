@@ -42,7 +42,15 @@ void GaduPersonalInfoService::handleEventPubdir50Read(struct gg_event *e)
 	contact.setId(gg_pubdir50_get(res, 0, GG_PUBDIR50_UIN));
 	contact.setDetails(new GaduContactDetails(contact));
 
+	const char *pubdirStatus = gg_pubdir50_get(res, 0, GG_PUBDIR50_STATUS);
+	if (pubdirStatus)
+	{	Status status;
+		status.setType(Protocol->statusTypeFromGaduStatus(atoi(pubdirStatus) & 127));
+		contact.setCurrentStatus(status);
+	}
+
 	result.addContact(contact);
+
 	result.setFirstName(cp2unicode(gg_pubdir50_get(res, 0, GG_PUBDIR50_FIRSTNAME)));
 	result.setLastName(cp2unicode(gg_pubdir50_get(res, 0, GG_PUBDIR50_LASTNAME)));
 	result.setNickName(cp2unicode(gg_pubdir50_get(res, 0, GG_PUBDIR50_NICKNAME)));
@@ -51,8 +59,6 @@ void GaduPersonalInfoService::handleEventPubdir50Read(struct gg_event *e)
 	result.setFamilyName(cp2unicode(gg_pubdir50_get(res, 0, GG_PUBDIR50_FAMILYNAME)));
 	result.setFamilyCity(cp2unicode(gg_pubdir50_get(res, 0, GG_PUBDIR50_FAMILYCITY)));
 	result.setGender((BuddyShared::BuddyGender)QString::fromAscii(gg_pubdir50_get(res, 0, GG_PUBDIR50_GENDER)).toUShort());
-	// TODO: 0.6.6
-	// result.setStatus(gg_pubdir50_get(res, 0, GG_PUBDIR50_STATUS));
 
 	emit personalInfoAvailable(result);
 }

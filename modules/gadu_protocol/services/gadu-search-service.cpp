@@ -94,10 +94,13 @@ void GaduSearchService::handleEventPubdir50SearchReply(struct gg_event *e)
 		contact.setId(gg_pubdir50_get(res, i, GG_PUBDIR50_UIN));
 		contact.setDetails(new GaduContactDetails(contact));
 
-		Status status;
-		//TODO 0.6.6: atoi crash
-		//status.setType(Protocol->statusTypeFromGaduStatus(atoi(gg_pubdir50_get(res, i, GG_PUBDIR50_STATUS)) & 127));
-		contact.setCurrentStatus(status);
+		const char *pubdirStatus = gg_pubdir50_get(res, i, GG_PUBDIR50_STATUS);
+		if (pubdirStatus)
+		{	Status status;
+			status.setType(Protocol->statusTypeFromGaduStatus(atoi(pubdirStatus) & 127));
+			contact.setCurrentStatus(status);
+		}
+
 		result.addContact(contact);
 
 		result.setFirstName(cp2unicode(gg_pubdir50_get(res, i, GG_PUBDIR50_FIRSTNAME)));
