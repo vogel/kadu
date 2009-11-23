@@ -37,6 +37,8 @@ class TlenProtocol : public Protocol
 
 		tlen * client() { return TlenClient; }
 
+		Buddy nodeToBuddy(QDomNode node);
+
 		virtual Conference * loadConferenceFromStorage(StoragePoint *storage) { return 0; }
 
 		virtual QPixmap statusPixmap(Status status);

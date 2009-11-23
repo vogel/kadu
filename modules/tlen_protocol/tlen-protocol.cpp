@@ -345,6 +345,84 @@ void TlenProtocol::presenceDisconnected()
 	kdebugf2();
 }
 
+Buddy TlenProtocol::nodeToBuddy(QDomNode node)
+{
+	Buddy result;
+
+	Contact contact;
+	contact.setContactAccount(account());
+	contact.setOwnerBuddy(result);
+	contact.setId(account().id());
+
+	TlenContactDetails *tlenDetails = new TlenContactDetails(contact);
+	contact.setDetails(tlenDetails);
+
+	QDomNodeList items = node.toElement().childNodes();
+	for (int i=0;i<items.count();++i)
+	{
+		QDomElement mm = items.item(i).toElement();
+		QString mmName = items.item(i).nodeName();
+		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "tlen node = %s\n", qPrintable(mm.text()));
+		if (mmName == "first")
+		{
+			result.setFirstName(mm.text());
+		}
+		else if (mmName == "last")
+		{
+			result.setLastName(mm.text());
+		}
+		else if (mmName == "nick")
+		{
+			result.setNickName(mm.text());
+		}
+		else if (mmName == "email")
+		{
+			result.setEmail(mm.text());
+		}
+		else if (mmName == "b")
+		{
+			result.setBirthYear(mm.text().toUShort());
+		}
+		else if (mmName == "s")
+		{
+			result.setGender((BuddyShared::BuddyGender)mm.text().toUShort());
+		}
+		else if (mmName == "c")
+		{
+			result.setCity(mm.text());
+		}
+		else if (mmName == "r")
+		{
+			tlenDetails->setLookingFor(mm.text().toUShort());
+		}
+		else if (mmName == "j")
+		{
+			tlenDetails->setJob(mm.text().toUShort());
+		}
+		else if (mmName == "p")
+		{
+			tlenDetails->setTodayPlans(mm.text().toUShort());
+		}
+		else if (mmName == "v")
+		{
+			tlenDetails->setShowStatus(mm.text() == "1");
+		}
+		else if (mmName == "g")
+		{
+			tlenDetails->setHaveMic(mm.text() == "1");
+		}
+		else if (mmName == "k")
+		{
+			tlenDetails->setHaveCam(mm.text() == "1");
+		}
+	}
+
+	//result.setStatus();
+
+	result.addContact(contact);
+	return result;
+}
+
 void TlenProtocol::itemReceived(QString jid, QString name, QString subscription, QString group, bool sort)
 {
 	kdebugf();
