@@ -12,17 +12,17 @@
 
 #include "account-notification.h"
 
-class Chat;
+#include "chat/chat.h"
 
 class ChatNotification : public AccountNotification
 {
-	Chat *CurrentChat;
+	Chat CurrentChat;
 
 public:
-	ChatNotification(Chat *chat, const QString &type, const QIcon &icon);
+	ChatNotification(Chat chat, const QString &type, const QIcon &icon);
 	virtual ~ChatNotification() {}
 
-	Chat *chat() { return CurrentChat; }
+	Chat chat() { return CurrentChat; }
 };
 
 #endif // CHAT_NOTIFICATION_H

@@ -182,7 +182,7 @@ void HistorySqlStorage::appendMessage(const Message &message)
 
 	QSqlRecord record = MessagesModel->record();
 
-	record.setValue("chat", message.chat()->uuid().toString());
+	record.setValue("chat", message.chat().uuid().toString());
 	record.setValue("sender", message.sender().uuid().toString());
 	record.setValue("send_time", message.sendDate());
 	record.setValue("receive_time", message.receiveDate());
@@ -200,17 +200,17 @@ void HistorySqlStorage::appendMessage(const Message &message)
 	kdebugf2();
 }
 
-void HistorySqlStorage::clearChatHistory(Chat *chat)
+void HistorySqlStorage::clearChatHistory(Chat chat)
 {
 	DatabaseMutex.lock();
 
-	ClearChatHistoryQuery.bindValue(":chat", chat->uuid().toString());
+	ClearChatHistoryQuery.bindValue(":chat", chat.uuid().toString());
 	executeQuery(ClearChatHistoryQuery);
 
 	DatabaseMutex.unlock();
 }
 
-QList<Chat *> HistorySqlStorage::chats(HistorySearchParameters search)
+QList<Chat > HistorySqlStorage::chats(HistorySearchParameters search)
 {
 	kdebugf();
 
@@ -235,12 +235,12 @@ QList<Chat *> HistorySqlStorage::chats(HistorySearchParameters search)
 	if (search.toDate().isValid())
 		query.bindValue(":toDate", search.toDate());
 
-	QList<Chat *> chats;
+	QList<Chat > chats;
 
 	executeQuery(query);
 	while (query.next())
 	{
-		Chat *chat = ChatManager::instance()->byUuid(query.value(0).toString());
+		Chat chat = ChatManager::instance()->byUuid(query.value(0).toString());
 		if (chat)
 			chats.append(chat);
 	}
@@ -251,7 +251,7 @@ QList<Chat *> HistorySqlStorage::chats(HistorySearchParameters search)
 }
 
 
-QList<QDate> HistorySqlStorage::chatDates(Chat *chat, HistorySearchParameters search)
+QList<QDate> HistorySqlStorage::chatDates(Chat chat, HistorySearchParameters search)
 {
 	kdebugf();
 
@@ -269,7 +269,7 @@ QList<QDate> HistorySqlStorage::chatDates(Chat *chat, HistorySearchParameters se
 
 	query.prepare(queryString);
 
-	query.bindValue(":chat", chat->uuid().toString());
+	query.bindValue(":chat", chat.uuid().toString());
 	if (!search.query().isEmpty())
 		query.bindValue(":content", QLatin1String("%") + search.query() + "%");
 	if (search.fromDate().isValid())
@@ -292,7 +292,7 @@ QList<QDate> HistorySqlStorage::chatDates(Chat *chat, HistorySearchParameters se
 	return dates;
 }
 
-QList<Message> HistorySqlStorage::messages(Chat *chat, QDate date, int limit)
+QList<Message> HistorySqlStorage::messages(Chat chat, QDate date, int limit)
 {
 	kdebugf();
 
@@ -307,7 +307,7 @@ QList<Message> HistorySqlStorage::messages(Chat *chat, QDate date, int limit)
 					? ListChatMessagesByDateQuery
 					: ListChatMessagesByDateLimitQuery;
 
-	query.bindValue(":chat", chat->uuid().toString());
+	query.bindValue(":chat", chat.uuid().toString());
 	if (!date.isNull())
 		query.bindValue(":date", date.toString(Qt::ISODate));
 	if (limit != 0)
@@ -320,7 +320,7 @@ QList<Message> HistorySqlStorage::messages(Chat *chat, QDate date, int limit)
 	return messages;
 }
 
-QList<Message> HistorySqlStorage::messagesSince(Chat *chat, QDate date)
+QList<Message> HistorySqlStorage::messagesSince(Chat chat, QDate date)
 {
 	kdebugf();
 	
@@ -330,7 +330,7 @@ QList<Message> HistorySqlStorage::messagesSince(Chat *chat, QDate date)
 	if (date.isNull())
 		return messages;
 	
-	ListChatMessagesSinceQuery.bindValue(":chat", chat->uuid().toString());
+	ListChatMessagesSinceQuery.bindValue(":chat", chat.uuid().toString());
 	ListChatMessagesSinceQuery.bindValue(":date", date.toString(Qt::ISODate));
 	executeQuery(ListChatMessagesSinceQuery);
 	messages = messagesFromQuery(chat, ListChatMessagesSinceQuery);
@@ -340,14 +340,14 @@ QList<Message> HistorySqlStorage::messagesSince(Chat *chat, QDate date)
 	return messages;
 }
 
-QList<Message> HistorySqlStorage::messagesBackTo(Chat *chat, QDateTime datetime, int limit)
+QList<Message> HistorySqlStorage::messagesBackTo(Chat chat, QDateTime datetime, int limit)
 {
 	DatabaseMutex.lock();
 
 	QList<Message> result;
 	QSqlQuery query = ListChatMessagesBackToQuery;
 
-	query.bindValue(":chat", chat->uuid().toString());
+	query.bindValue(":chat", chat.uuid().toString());
 	query.bindValue(":date", datetime.toString(Qt::ISODate));
 	query.bindValue(":limit", limit);
 	executeQuery(query);
@@ -362,7 +362,7 @@ QList<Message> HistorySqlStorage::messagesBackTo(Chat *chat, QDateTime datetime,
 	return messages;
 }
 
-int HistorySqlStorage::messagesCount(Chat *chat, QDate date)
+int HistorySqlStorage::messagesCount(Chat chat, QDate date)
 {
 	kdebugf();
 
@@ -372,7 +372,7 @@ int HistorySqlStorage::messagesCount(Chat *chat, QDate date)
 			? CountChatMessagesQuery
 			: CountChatMessagesByDateQuery;
 
-	query.bindValue(":chat", chat->uuid().toString());
+	query.bindValue(":chat", chat.uuid().toString());
 	if (!date.isNull())
 		query.bindValue(":date", date.toString(Qt::ISODate));
 
@@ -393,7 +393,7 @@ void HistorySqlStorage::executeQuery(QSqlQuery query)
 }
 
 
-QList<Message> HistorySqlStorage::messagesFromQuery(Chat *chat, QSqlQuery query)
+QList<Message> HistorySqlStorage::messagesFromQuery(Chat chat, QSqlQuery query)
 {
 	QList<Message> messages;
 

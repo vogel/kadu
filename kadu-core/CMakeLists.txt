@@ -58,6 +58,7 @@ set (kadu_SRCS
 	chat/chat-details-conference.cpp
 	chat/chat-details-simple.cpp
 	chat/chat-manager.cpp
+	chat/chat-shared.cpp
 	chat/chat-styles-manager.cpp
 	chat/html-messages-renderer.cpp
 
@@ -315,12 +316,12 @@ set (kadu_MOC_SRCS
 	buddies/model/groups-model.h
 
 	chat/aggregate-chat.h
-	chat/chat.h
 	chat/chat-aggregator-builder.h
 	chat/chat-details.h
 	chat/chat-details-conference.h
 	chat/chat-details-simple.h
 	chat/chat-manager.h
+	chat/chat-shared.h
 	chat/chat-styles-manager.h
 	chat/html-messages-renderer.h
 

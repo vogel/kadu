@@ -82,7 +82,7 @@ private:
 	void updateInformationPanel(Buddy buddy);
 
 private slots:
-	void openChatWindow(Chat *chat);
+	void openChatWindow(Chat chat);
 
 	void createRecentChatsMenu();
 	void openRecentChats(QAction *action);
@@ -95,7 +95,7 @@ protected:
 	virtual bool supportsActionType(ActionDescription::ActionType type);
 	virtual BuddiesListView * contactsListView();
 	virtual BuddySet buddies();
-	virtual Chat * chat();
+	virtual Chat  chat();
 
 	virtual void configurationUpdated();
 

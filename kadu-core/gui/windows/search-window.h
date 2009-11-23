@@ -13,6 +13,7 @@
 #include "buddies/buddy-list.h"
 #include "buddies/buddy-search-criteria.h"
 #include "buddies/buddy-set.h"
+#include "chat/chat.h"
 #include "gui/actions/action.h"
 #include "gui/windows/main-window.h"
 
@@ -45,7 +46,6 @@ public slots:
 	void chatFoundActionActivated(QAction *sender, bool toggled);
 
 };
-
 
 class KADUAPI SearchWindow : public MainWindow
 {
@@ -121,7 +121,7 @@ public:
 	virtual bool supportsActionType(ActionDescription::ActionType type) { return type & ActionDescription::TypeSearch; }
 	virtual BuddiesListView* contactsListView() { return 0; }
 	virtual BuddySet buddies() { return BuddySet(); }
-	virtual Chat* chat() { return 0; }
+	virtual Chat chat() { return Chat::null; }
 
 
 	void nextSearch();

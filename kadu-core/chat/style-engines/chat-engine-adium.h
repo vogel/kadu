@@ -27,8 +27,8 @@ class AdiumChatStyleEngine : public ChatStyleEngine
 
 	QString readThemePart(QString part);
 
-	QString replaceKeywords(Chat *chat, QString &styleHref, QString &style);
-	QString replaceKeywords(Chat *chat, QString &styleHref, QString &source, MessageRenderInfo *message);
+	QString replaceKeywords(Chat chat, QString &styleHref, QString &style);
+	QString replaceKeywords(Chat chat, QString &styleHref, QString &source, MessageRenderInfo *message);
 
 	bool clearDirectory(const QString &directory);
 

@@ -38,13 +38,13 @@ public:
 		: QObject(parent) {}
 
 public slots:
-	virtual bool sendMessage(Chat *chat, const QString &messageContent);
-	virtual bool sendMessage(Chat *chat, FormattedMessage &message) = 0;
+	virtual bool sendMessage(Chat chat, const QString &messageContent);
+	virtual bool sendMessage(Chat chat, FormattedMessage &message) = 0;
 
 signals:
-	void sendMessageFiltering(Chat *chat, QByteArray &msg, bool &stop);
+	void sendMessageFiltering(Chat chat, QByteArray &msg, bool &stop);
 	void messageStatusChanged(int messsageId, ChatService::MessageStatus status);
-	void receivedMessageFilter(Chat *chat, Buddy sender, const QString &message, time_t time, bool &ignore);
+	void receivedMessageFilter(Chat chat, Buddy sender, const QString &message, time_t time, bool &ignore);
 	void messageSent(const Message &message);
 	void messageReceived(const Message &message);
 

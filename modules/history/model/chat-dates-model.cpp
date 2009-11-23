@@ -18,7 +18,7 @@
 
 #include "chat-dates-model.h"
 
-ChatDatesModel::ChatDatesModel(Chat *chat, QList<QDate> dates, QObject *parent) :
+ChatDatesModel::ChatDatesModel(Chat chat, QList<QDate> dates, QObject *parent) :
 		QAbstractListModel(parent), MyChat(chat), Dates(dates)
 {
 	Cache = new QMap<QDate, ItemCachedData>();
@@ -120,7 +120,7 @@ QVariant ChatDatesModel::data(const QModelIndex &index, int role) const
 		{
 			switch (col)
 			{
-				case 0: return MyChat->name();
+				case 0: return MyChat.name();
 				case 1: return cachedData.title;
 				case 2: return Dates.at(row).toString("dd.MM.yyyy");
 				case 3: return cachedData.size;
@@ -129,14 +129,14 @@ QVariant ChatDatesModel::data(const QModelIndex &index, int role) const
 			return QVariant();
 		}
 
-		case ChatRole: return QVariant::fromValue<Chat *>(MyChat);
+		case ChatRole: return QVariant::fromValue<Chat>(MyChat);
 		case DateRole: return Dates.at(row);
 	}
 
 	return QVariant();
 }
 
-void ChatDatesModel::setChat(Chat *chat)
+void ChatDatesModel::setChat(Chat chat)
 {
 	MyChat = chat;
 }

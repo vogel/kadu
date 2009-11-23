@@ -21,17 +21,17 @@ ChatAggregatorBuilder::~ChatAggregatorBuilder()
 {
 }
 
-Chat * ChatAggregatorBuilder::buildAggregateChat(BuddySet contacts)
+Chat ChatAggregatorBuilder::buildAggregateChat(BuddySet contacts)
 {
-	QList<Chat *> chats;
+	QList<Chat > chats;
 	foreach (Account account, AccountManager::instance()->accounts())
 	{
-		Chat *chat = account.protocolHandler()->findChat(contacts, false);
+		Chat chat = account.protocolHandler()->findChat(contacts, false);
 		if (chat)
 			chats.append(chat);
 	}
 
-	if (!chats.isEmpty())
-		return new AggregateChat(chats);
-	return 0;
+// 	if (!chats.isEmpty()) enable after chat-rework
+// 		return new AggregateChat(chats);
+	return Chat::null;
 }

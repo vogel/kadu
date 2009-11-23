@@ -32,7 +32,7 @@ QIcon ChatTypeSimple::icon() const
 	return IconsManager::instance()->loadIcon("OpenChat");
 }
 
-ChatDetails * ChatTypeSimple::createChatDetails(Chat *chat) const
+ChatDetails * ChatTypeSimple::createChatDetails(ChatShared *chatData) const
 {
-	return new ChatDetailsSimple(chat);
+	return new ChatDetailsSimple(chatData);
 }

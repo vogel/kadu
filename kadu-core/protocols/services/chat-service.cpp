@@ -11,7 +11,7 @@
 
 #include "chat-service.h"
 
-bool ChatService::sendMessage(Chat *chat, const QString &messageContent)
+bool ChatService::sendMessage(Chat chat, const QString &messageContent)
 {
 	QTextDocument document(messageContent);
 	FormattedMessage message = FormattedMessage::parse(&document);

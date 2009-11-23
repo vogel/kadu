@@ -32,7 +32,7 @@ QIcon ChatTypeConference::icon() const
 	return IconsManager::instance()->loadIcon("ManageModules");
 }
 
-ChatDetails * ChatTypeConference::createChatDetails(Chat *chat) const
+ChatDetails * ChatTypeConference::createChatDetails(ChatShared *chatData) const
 {
-	return new ChatDetailsConference(chat);
+	return new ChatDetailsConference(chatData);
 }

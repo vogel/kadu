@@ -13,8 +13,8 @@
 
 #include "chat-details-conference.h"
 
-ChatDetailsConference::ChatDetailsConference(Chat *chat) :
-		ChatDetails(chat)
+ChatDetailsConference::ChatDetailsConference(ChatShared *chatData) :
+		ChatDetails(chatData)
 {
 }
 
@@ -31,7 +31,7 @@ void ChatDetailsConference::load()
 
 	Buddies = BuddySetConfigurationHelper::loadFromConfiguration(this, "Contacts");
 
-	chat()->refreshTitle();
+	chatData()->refreshTitle();
 }
 
 void ChatDetailsConference::store()

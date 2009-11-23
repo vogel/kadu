@@ -7,187 +7,75 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "accounts/account-manager.h"
-#include "chat/chat-details.h"
-#include "chat/chat-details-simple.h"
-#include "chat/chat-details-conference.h"
-#include "chat/chat-manager.h"
-#include "configuration/configuration-file.h"
-#include "contacts/contact.h"
-#include "parser/parser.h"
-#include "debug.h"
-#include "icons-manager.h"
-#include "protocols/protocol.h"
+#include "accounts/account.h"
+#include "buddies/buddy-set.h"
+#include "chat/chat-shared.h"
 
 #include "chat.h"
-#include "type/chat-type-manager.h"
 
-Chat * Chat::loadFromStorage(StoragePoint *chatStoragePoint)
+Chat Chat::null(true);
+
+Chat Chat::create()
 {
-	if (!chatStoragePoint || !chatStoragePoint->storage())
-		return 0;
-
-	Chat *chat = new Chat(chatStoragePoint);
-	chat->ensureLoaded();
-	return chat;
+	Chat result;
+	result.createData();
+	return result;
 }
 
-Chat::Chat(StoragePoint *storage) :
-		UuidStorableObject(storage), CurrentAccount(Account::null), Details(0)
+Chat Chat::loadFromStorage(StoragePoint *accountStoragePoint)
+{
+	return ChatShared::loadFromStorage(accountStoragePoint);
+}
+
+Chat::Chat(bool null) :
+		SharedBase<ChatShared>(null)
 {
 }
 
-Chat::Chat(Account currentAccount, QUuid uuid) :
-		UuidStorableObject("Chat", ChatManager::instance()), CurrentAccount(currentAccount),
-		Uuid(uuid.isNull() ? QUuid::createUuid() : uuid), Details(0)
+Chat::Chat()
 {
-	connect(CurrentAccount, SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
-			this, SLOT(refreshTitle()));
+	data()->setState(StorableObject::StateNew);
+}
+
+Chat::Chat(ChatShared *data) :
+		SharedBase<ChatShared>(data)
+{
+	data->ref.ref();
+}
+
+Chat::Chat(QObject *data) :
+		SharedBase<ChatShared>(true)
+{
+	ChatShared *shared = dynamic_cast<ChatShared *>(data);
+	if (shared)
+		setData(shared);
+}
+
+Chat::Chat(const Chat &copy) :
+		SharedBase<ChatShared>(copy)
+{
 }
 
 Chat::~Chat()
 {
-	disconnect(CurrentAccount, SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
-			this, SLOT(refreshTitle()));
-
-	triggerAllChatTypesUnregistered();
 }
 
-void Chat::chatTypeRegistered(ChatType *chatType)
+Chat & Chat::operator=(const Chat &copy)
 {
-	if (Details)
-		return;
-
-	if (chatType->name() != Type)
-		return;
-
-	Details = chatType->createChatDetails(this);
-	Details->ensureLoaded();
-}
-
-void Chat::chatTypeUnregistered(ChatType *chatType)
-{
-	if (!Details)
-		return;
-
-	if (chatType->name() != Type)
-		return;
-
-	Details->store();
-	delete Details;
-	Details = 0;
-}
-
-void Chat::load()
-{
-	if (!isValidStorage())
-		return;
-
-	if (!needsLoad())
-		return;
-
-	UuidStorableObject::load();
-
-	Uuid = loadAttribute<QString>("uuid");
-	Type = loadValue<QString>("Type");
-	CurrentAccount = AccountManager::instance()->byUuid(QUuid(loadValue<QString>("Account")));
-
-	triggerAllChatTypesRegistered();
-
-	connect(CurrentAccount, SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
-			this, SLOT(refreshTitle()));
-	refreshTitle();
-}
-
-void Chat::store()
-{
-	if (!isValidStorage())
-		return;
-
-	storeValue("Type", Type);
-	storeValue("Account", CurrentAccount.uuid().toString());
-}
-
-void Chat::setTitle(const QString &newTitle)
-{
-	if (Title == newTitle)
-		return;
-	Title = newTitle;
-	emit titleChanged(this, newTitle);
+	clone(copy);
+	return *this;
 }
 
 void Chat::refreshTitle()
 {
-	kdebugf();
-	QString title;
-
-	int contactsSize = buddies().count();
-	kdebugmf(KDEBUG_FUNCTION_START, "contacts().size() = %d\n", contactsSize);
-	if (contactsSize > 1)
-	{
-		if (config_file.readEntry("Look","ConferencePrefix").isEmpty())
-			title = tr("Conference with ");
-		else
-			title = config_file.readEntry("Look","ConferencePrefix");
-		int i = 0;
-
-		if (config_file.readEntry("Look", "ConferenceContents").isEmpty())
-			foreach(const Buddy buddy, buddies())
-			{
-				title.append(Parser::parse("%a", account(), buddy, false));
-
-				if (++i < contactsSize)
-					title.append(", ");
-			}
-		else
-			foreach(const Buddy buddy, buddies())
-			{
-				title.append(Parser::parse(config_file.readEntry("Look", "ConferenceContents"), account(), buddy, false));
-
-				if (++i < contactsSize)
-					title.append(", ");
-			}
-
- 		Icon = IconsManager::instance()->loadPixmap("Online");
-	}
-	else if (contactsSize > 0)
-	{
-		Buddy buddy = *buddies().begin();
-
-		if (config_file.readEntry("Look", "ChatContents").isEmpty())
-		{
-			if (buddy.isAnonymous())
-				title = Parser::parse(tr("Chat with ")+"%a", account(), buddy, false);
-			else
-				title = Parser::parse(tr("Chat with ")+"%a (%s[: %d])", account(), buddy, false);
-		}
-		else
-			title = Parser::parse(config_file.readEntry("Look","ChatContents"), account(), buddy, false);
-
-		Contact contact = buddy.contact(account());
-		if (!contact.isNull())
-			Icon = account().statusContainer()->statusPixmap(contact.currentStatus());
-	}
-
-	title.replace("<br/>", " ");
-	title.replace("&nbsp;", " ");
-
-	setTitle(title);
-
-	kdebugf2();
+	if (!isNull())
+		data()->refreshTitle();
 }
 
-ChatType * Chat::type() const
-{
-	return Details ? Details->type() : 0;
-}
-
-BuddySet Chat::buddies() const
-{
-	return Details ? Details->buddies() : BuddySet();
-}
-
-QString Chat::name() const
-{
-	return Details ? Details->name() : QString::null;
-}
+KaduSharedBase_PropertyReadDef(Chat, BuddySet, buddies, Buddies, BuddySet())
+KaduSharedBase_PropertyReadDef(Chat, QString, name, Name, QString::null)
+KaduSharedBase_PropertyDef(Chat, ChatDetails *, details, Details, 0)
+KaduSharedBase_PropertyDef(Chat, Account, chatAccount, ChatAccount, Account::null)
+KaduSharedBase_PropertyDef(Chat, QString, type, Type, QString::null)
+KaduSharedBase_PropertyDef(Chat, QString, title, Title, QString::null)
+KaduSharedBase_PropertyDef(Chat, QPixmap, icon, Icon, QPixmap())

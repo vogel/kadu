@@ -25,7 +25,7 @@ public:
 	TlenChatService(TlenProtocol *protocol);
 
 public slots:
-	virtual bool sendMessage(Chat *chat, FormattedMessage &message);
+	virtual bool sendMessage(Chat chat, FormattedMessage &message);
 };
 
 #endif // TLEN_CHAT_SERVICE_H

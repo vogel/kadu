@@ -11,7 +11,6 @@
 #define BUDDY_H
 
 #include <QtCore/QExplicitlySharedDataPointer>
-#include <QtCore/QHash>
 #include <QtCore/QMetaType>
 #include <QtCore/QObject>
 #include <QtCore/QUuid>

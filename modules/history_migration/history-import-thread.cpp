@@ -58,7 +58,7 @@ void HistoryImportThread::run()
 
 	foreach (QStringList uinsList, UinsLists)
 	{
-		Chat *chat = chatFromUinsList(uinsList);
+		Chat chat = chatFromUinsList(uinsList);
 		if (!chat)
 			continue;
 
@@ -75,7 +75,7 @@ void HistoryImportThread::cancel()
 	Canceled = true;
 }
 
-void HistoryImportThread::importEntry(Chat *chat, const HistoryEntry &entry)
+void HistoryImportThread::importEntry(Chat chat, const HistoryEntry &entry)
 {
 	QString id = QString::number(entry.uin);
 
@@ -97,7 +97,7 @@ void HistoryImportThread::importEntry(Chat *chat, const HistoryEntry &entry)
 	ImportedEntries++;
 }
 
-Chat * HistoryImportThread::chatFromUinsList(QStringList uinsList)
+Chat  HistoryImportThread::chatFromUinsList(QStringList uinsList)
 {
 	BuddySet buddies;
 	foreach (const QString &uin, uinsList)

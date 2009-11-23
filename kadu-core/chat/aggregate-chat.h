@@ -10,41 +10,42 @@
 #ifndef AGGREGATE_CHAT_H
 #define AGGREGATE_CHAT_H
 
+#include "buddies/buddy-set.h"
 #include "chat/type/chat-type.h"
-
-#include "chat/chat.h"
 #include "exports.h"
 
-class XmlConfigFile;
+#include "chat/chat.h"
 
+// class XmlConfigFile; TODO: disabled for a moment
+/*
 class KADUAPI AggregateChat : public Chat
 {
 	Q_OBJECT
-	QList<Chat *> Chats;
+	QList<Chat > Chats;
 
 public:
-	AggregateChat(Chat *chat);
-	AggregateChat(QList<Chat *> chats);
+	AggregateChat(Chat chat);
+	AggregateChat(QList<Chat > chats);
 	virtual ~AggregateChat();
 
 	virtual void load();
 	virtual void store();
 
 	virtual BuddySet buddies() const { return Chats.at(0)->buddies(); }
-	virtual ChatType * type() const { return Chats.at(0)->type(); }
+	virtual QString type() const { return Chats.at(0)->type(); }
 	virtual QUuid uuid() const { return Chats.at(0)->uuid(); }
 	virtual QString name() const { return Chats.at(0)->name(); }
 
-	Account account() { return Chats.at(0)->account(); }
+	Account chatAccount() { return Chats.at(0)->chatAccount(); }
 	QString title() { return Chats.at(0)->title(); }
 	QPixmap icon() { return Chats.at(0)->icon(); }
 
-	QList<Chat *> chats() const { return Chats; };
-	void setChats(QList<Chat *> chats) { Chats = chats; };
+	QList<Chat > chats() const { return Chats; };
+	void setChats(QList<Chat > chats) { Chats = chats; };
 
-	void addChat(Chat *chat);
-	void removeChat(Chat *chat);
+	void addChat(Chat chat);
+	void removeChat(Chat chat);
 
-};
+};*/
 
 #endif // AGGREGATE_CHAT_H

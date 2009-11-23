@@ -14,27 +14,30 @@
 
 class BuddySet;
 class Chat;
+class ChatShared;
 class ChatType;
 
 class ChatDetails : public QObject, public StorableObject
 {
 	Q_OBJECT
 
-	Chat *CurrentChat;
+	ChatShared *ChatData;
 
 public:
-	explicit ChatDetails(Chat *chat);
+	explicit ChatDetails(ChatShared *chat);
 	virtual ~ChatDetails();
 
-	Chat * chat() { return CurrentChat; }
+	ChatShared * chatData() { return ChatData; }
 
 	virtual ChatType * type() const = 0;
 	virtual BuddySet buddies() const = 0;
 	virtual QString name() const = 0;
 
 signals:
-	void titleChanged(Chat *chat, const QString &newTitle);
+	void titleChanged(Chat chat, const QString &newTitle);
 
 };
+
+#include "chat/chat.h" // for MOC
 
 #endif // CHAT_DETAILS_H

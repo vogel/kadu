@@ -8,14 +8,15 @@
  ***************************************************************************/
 
 #include "buddies/buddy-manager.h"
+#include "buddies/buddy-set.h"
 #include "chat/chat.h"
 #include "chat/type/chat-type-manager.h"
 #include "contacts/contact-manager.h"
 
 #include "chat-details-simple.h"
 
-ChatDetailsSimple::ChatDetailsSimple(Chat *chat) :
-		ChatDetails(chat), CurrentContact(Contact::null)
+ChatDetailsSimple::ChatDetailsSimple(ChatShared *chatData) :
+		ChatDetails(chatData), CurrentContact(Contact::null)
 {
 }
 
@@ -42,11 +43,11 @@ void ChatDetailsSimple::load()
 		if (CurrentContact.isNull())
 		{
 			Buddy buddy = BuddyManager::instance()->byUuid(cadUuid);
-			CurrentContact = buddy.contact(chat()->account());
+			CurrentContact = buddy.contact(chatData()->chatAccount());
 		}
 	}
 
-	chat()->refreshTitle();
+	chatData()->refreshTitle();
 }
 
 void ChatDetailsSimple::store()

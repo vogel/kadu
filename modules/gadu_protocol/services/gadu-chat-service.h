@@ -22,7 +22,7 @@ class GaduChatService : public ChatService
 {
 	Q_OBJECT
 
-	QMap<int, Message> UndeliveredMessages;
+	QHash<int, Message> UndeliveredMessages;
 
 	GaduProtocol *Protocol;
 
@@ -46,7 +46,7 @@ public:
 	GaduChatService(GaduProtocol *protocol);
 
 public slots:
-	virtual bool sendMessage(Chat *chat, FormattedMessage &message);
+	virtual bool sendMessage(Chat chat, FormattedMessage &message);
 
 signals:
 	/**
@@ -60,7 +60,7 @@ signals:
 		Mo�na te� przerwa� dalsz� obr�bk� wiadomo�ci ustawiaj�c
 		stop na true.
 	**/
-	void rawGaduReceivedMessageFilter(Chat *chat, QString &msg, QByteArray &formats, bool &ignore);
+	void rawGaduReceivedMessageFilter(Chat chat, QString &msg, QByteArray &formats, bool &ignore);
 
 };
 

@@ -353,7 +353,7 @@ void ChatWidgetActions::ignoreUserActionActivated(QAction *sender, bool toggled)
 			}
 		}
 
-		Chat *chat = account.protocolHandler()->findChat(contacts);
+		Chat chat = account.protocolHandler()->findChat(contacts);
 		if (chat && !ContainsBad)
 		{
 			if (IgnoredHelper::isIgnored(contacts))
@@ -418,7 +418,7 @@ void ChatWidgetActions::blockUserActionActivated(QAction *sender, bool toggled)
 			}
 		}
 
-		Chat *chat = account.protocolHandler()->findChat(buddies);
+		Chat chat = account.protocolHandler()->findChat(buddies);
 		if (chat && !on) // if we were blocking, we also close the chat (and show info if blocked anonymous)
 		{
 			if (blocked_anonymous)
@@ -455,7 +455,7 @@ void ChatWidgetActions::openChatActionActivated(QAction *sender, bool toggled)
 	BuddySet contacts = window->buddies();
 	if (contacts.count() > 0)
 	{
-		Chat *chat = (*contacts.begin()).prefferedAccount().protocolHandler()->findChat(contacts);
+		Chat chat = (*contacts.begin()).prefferedAccount().protocolHandler()->findChat(contacts);
 		if (chat)
 			ChatWidgetManager::instance()->openChatWidget(chat, true);
 	}

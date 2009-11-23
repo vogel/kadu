@@ -12,6 +12,7 @@
 
 #include <QtGui/QTreeWidget>
 
+#include "buddies/buddy-set.h"
 #include "gui/actions/action-description.h"
 #include "gui/widgets/chat-messages-view.h"
 #include "gui/windows/main-window.h"
@@ -56,7 +57,7 @@ class HistoryWindow : public MainWindow
 	void connectGui();
 
 	void updateData();
-	void selectChat(Chat *chat);
+	void selectChat(Chat chat);
 
 private slots:
 	void chatActivated(const QModelIndex &index);
@@ -87,9 +88,9 @@ public:
 	virtual BuddySet buddies() { return BuddySet(); }
 	virtual ChatWidget * chatWidget() { return 0; }
 	virtual BuddiesListView * contactsListView() { return 0; }
-	virtual Chat * chat() { return 0; }
+	virtual Chat chat() { return Chat::null; }
 
-	void show(Chat *chat);
+	void show(Chat chat);
 
 };
 

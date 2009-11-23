@@ -33,7 +33,7 @@ class KADUAPI ChatManager : public QObject, public StorableObject
 
 	static ChatManager * Instance;
 
-	QMap<Account, QList<Chat *> > Chats;
+	QMap<Account, QList<Chat > > Chats;
 
 	ChatManager();
 	virtual ~ChatManager();
@@ -47,16 +47,16 @@ public:
 	virtual void load();
 	virtual void store();
 
-	void addChat(Chat *chat);
-	void removeChat(Chat *chat);
-	QList<Chat *> chatsForAccount(Account account);
-	Chat * byUuid(QUuid uuid);
+	void addChat(Chat chat);
+	void removeChat(Chat chat);
+	QList<Chat > chatsForAccount(Account account);
+	Chat  byUuid(QUuid uuid);
 
 signals:
-	void chatAboutToBeAdded(Chat *chat);
-	void chatAdded(Chat *chat);
-	void chatAboutToBeRemoved(Chat *chat);
-	void chatRemoved(Chat *chat);
+	void chatAboutToBeAdded(Chat chat);
+	void chatAdded(Chat chat);
+	void chatAboutToBeRemoved(Chat chat);
+	void chatRemoved(Chat chat);
 
 };
 

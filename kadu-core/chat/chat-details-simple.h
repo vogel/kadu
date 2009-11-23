@@ -21,7 +21,7 @@ class ChatDetailsSimple : public ChatDetails
 	Contact CurrentContact;
 
 public:
-	explicit ChatDetailsSimple(Chat *chat);
+	explicit ChatDetailsSimple(ChatShared *chatData);
 	virtual ~ChatDetailsSimple();
 
 	virtual void load();

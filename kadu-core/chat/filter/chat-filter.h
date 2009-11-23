@@ -23,7 +23,7 @@ class KADUAPI ChatFilter : public QObject
 public:
 	ChatFilter(QObject *parent = 0) : QObject(parent) {}
 
-	virtual bool acceptChat(Chat *chat) = 0;
+	virtual bool acceptChat(Chat chat) = 0;
 
 signals:
 	void filterChanged();

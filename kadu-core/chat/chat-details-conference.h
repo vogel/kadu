@@ -22,7 +22,7 @@ class ChatDetailsConference : public ChatDetails
 	BuddySet Buddies;
 
 public:
-	explicit ChatDetailsConference(Chat *chat);
+	explicit ChatDetailsConference(ChatShared *chatData);
 	virtual ~ChatDetailsConference();
 
 	virtual void load();

@@ -7,7 +7,10 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtCore/QHash>
+
 #include "configuration/configuration-file.h"
+#include "buddies/buddy-set.h"
 #include "buddies/ignored-helper.h"
 #include "core/core.h"
 #include "gui/windows/message-dialog.h"
@@ -32,12 +35,12 @@ GaduChatService::GaduChatService(GaduProtocol *protocol)
 // 		this, SLOT(ackReceived(int, uin_t, int)));
 }
 
-bool GaduChatService::sendMessage(Chat *chat, FormattedMessage &message)
+bool GaduChatService::sendMessage(Chat chat, FormattedMessage &message)
 {
 	kdebugf();
 
 	QString plain = message.toPlain();
-	BuddySet contacts = chat->buddies();
+	BuddySet contacts = chat.buddies();
 
 	unsigned int uinsCount = 0;
 	unsigned int formatsSize = 0;
@@ -254,7 +257,7 @@ void GaduChatService::handleEventMsg(struct gg_event *e)
 
 	BuddySet chatContacts = conference;
 	chatContacts.remove(Core::instance()->myself());
-	Chat *chat = Protocol->findChat(chatContacts);
+	Chat chat = Protocol->findChat(chatContacts);
 
 	QDateTime time = QDateTime::fromTime_t(e->event.msg.time);
 
@@ -331,8 +334,8 @@ void GaduChatService::removeTimeoutUndeliveredMessages()
 	QDateTime now = QDateTime();
 	QList<int> toRemove;
 
-	QMap<int, Message>::const_iterator message = UndeliveredMessages.constBegin();
-	QMap<int, Message>::const_iterator end = UndeliveredMessages.constEnd();
+	QHash<int, Message>::const_iterator message = UndeliveredMessages.constBegin();
+	QHash<int, Message>::const_iterator end = UndeliveredMessages.constEnd();
 	for (; message != end; message++)
 	{
 		if (message.value().sendDate().addSecs(MAX_DELIVERY_TIME) < now)

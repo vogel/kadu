@@ -66,9 +66,9 @@ void ChatManager::load()
 			continue;
 
 		StoragePoint *contactStoragePoint = new StoragePoint(configurationStorage, chatElement);
-		Chat *chat = Chat::loadFromStorage(contactStoragePoint);
+		Chat chat = Chat::loadFromStorage(contactStoragePoint);
 
-		if (chat)
+		if (chat.details())
 			addChat(chat);
 	}
 }
@@ -77,53 +77,52 @@ void ChatManager::store()
 {
 	ensureLoaded();
 
-	foreach (QList<Chat *> list, Chats.values())
-		foreach (Chat *chat, list)
-			chat->store();
+	foreach (QList<Chat > list, Chats.values())
+		foreach (Chat chat, list)
+			chat.store();
 }
 
-void ChatManager::addChat(Chat *chat)
+void ChatManager::addChat(Chat chat)
 {
 	ensureLoaded();
 
 	emit chatAboutToBeAdded(chat);
-	if (!Chats.contains(chat->account()))
-		Chats[chat->account()] = QList<Chat *>();
-	Chats[chat->account()].append(chat);
+	if (!Chats.contains(chat.chatAccount()))
+		Chats[chat.chatAccount()] = QList<Chat >();
+	Chats[chat.chatAccount()].append(chat);
 	emit chatAdded(chat);
 }
 
-void ChatManager::removeChat(Chat *chat)
+void ChatManager::removeChat(Chat chat)
 {
 	ensureLoaded();
 
-	if (!Chats.contains(chat->account()))
+	if (!Chats.contains(chat.chatAccount()))
 		return;
 
 	emit chatAboutToBeRemoved(chat);
-	Chats[chat->account()].removeOne(chat);
-	chat->removeFromStorage();
+	Chats[chat.chatAccount()].removeOne(chat);
+	chat.removeFromStorage();
 	emit chatRemoved(chat);
-
-	delete chat;
 }
 
-QList<Chat *> ChatManager::chatsForAccount(Account account)
+QList<Chat > ChatManager::chatsForAccount(Account account)
 {
 	ensureLoaded();
 
 	if (!Chats.contains(account))
-		return QList<Chat *>();
+		return QList<Chat>();
 	return Chats[account];
 }
 
-Chat * ChatManager::byUuid(QUuid uuid)
+Chat  ChatManager::byUuid(QUuid uuid)
 {
 	ensureLoaded();
 
-	foreach (QList<Chat *> list, Chats.values())
-		foreach (Chat *chat, list)
-			if (chat->uuid() == uuid)
+	foreach (QList<Chat> list, Chats.values())
+		foreach (Chat chat, list)
+			if (chat.uuid() == uuid)
 				return chat;
-	return 0;
+
+	return Chat::null;
 }

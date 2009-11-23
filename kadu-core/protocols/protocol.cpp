@@ -103,17 +103,18 @@ void Protocol::networkStateChanged(NetworkState state)
 	}
 }
 
-Chat * Protocol::findChat(BuddySet contacts, bool create)
+Chat Protocol::findChat(BuddySet contacts, bool create)
 {
-	QList<Chat *> chats = ChatManager::instance()->chatsForAccount(account());
-	foreach (Chat *c, chats)
-		if (c->buddies() == contacts)
+	QList<Chat > chats = ChatManager::instance()->chatsForAccount(account());
+	foreach (Chat c, chats)
+		if (c.buddies() == contacts)
 			return c;
 
 	if (!create)
-		return 0;
+		return Chat::null;
 
-	Chat *chat = new Chat(account());
+	Chat chat = Chat::create();
+	chat.setChatAccount(account());
 	ChatDetails *details = 0;
 
 	if (contacts.count() == 1)
@@ -121,10 +122,7 @@ Chat * Protocol::findChat(BuddySet contacts, bool create)
 		Buddy buddy = *contacts.begin();
 		Contact contact = buddy.contact(account());
 		if (contact.isNull())
-		{
-			delete chat;
-			return 0;
-		}
+			return Chat::null;
 
 		ChatDetailsSimple *simple = new ChatDetailsSimple(chat);
 		simple->setContact(contact);
@@ -137,45 +135,8 @@ Chat * Protocol::findChat(BuddySet contacts, bool create)
 		details = conference;
 	}
 
-	chat->setDetails(details);
+	chat.setDetails(details);
 	ChatManager::instance()->addChat(chat);
 
 	return chat;
-}
-
-Chat * Protocol::loadChatFromStorage(StoragePoint *chatStorage)
-{
-	if (!chatStorage || !chatStorage->storage())
-		return 0;
-
-	XmlConfigFile *storage = chatStorage->storage();
-	QDomElement point = chatStorage->point();
-
-	Account account = AccountManager::instance()->byUuid(QUuid(storage->getTextNode(point, "Account")));
-
-	QString type = storage->getTextNode(point, "Type");
-	if ("Simple" == type)
-	{
-		Chat *chat = new Chat(chatStorage);
-		ChatDetailsSimple *details = new ChatDetailsSimple(chat);
-		chat->setDetails(details);
-		chat->setState(StorableObject::StateUnloaded);
-		details->setState(StorableObject::StateUnloaded);
-		chat->load();
-		details->load();
-		return chat;
-	}
-	else if ("Conference" == type)
-	{
-		Chat *chat = new Chat(chatStorage);
-		ChatDetailsConference *details = new ChatDetailsConference(chat);
-		chat->setDetails(details);
-		chat->setState(StorableObject::StateUnloaded);
-		details->setState(StorableObject::StateUnloaded);
-		chat->load();
-		details->load();
-		return chat;
-	}
-	else
-		return 0;
 }

@@ -16,8 +16,8 @@
 
 #include "exports.h"
 
-class Chat;
 class ChatDetails;
+class ChatShared;
 
 class KADUAPI ChatType : public QObject
 {
@@ -33,7 +33,7 @@ public:
 	virtual QString displayName() const = 0;
 	virtual QIcon icon() const = 0;
 
-	virtual ChatDetails * createChatDetails(Chat *chat) const = 0;
+	virtual ChatDetails * createChatDetails(ChatShared *chatData) const = 0;
 
 	bool operator == (const ChatType &compare) const;
 	bool operator < (const ChatType &compare) const;

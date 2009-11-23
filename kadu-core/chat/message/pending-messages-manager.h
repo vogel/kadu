@@ -68,12 +68,12 @@ public:
 	bool pendingMsgs() const;
 
 	/**
-		\fn unsigned int pendingMsgsCount(Chat *chat) const
+		\fn unsigned int pendingMsgsCount(Chat chat) const
 		Checks, if there are any pending messages for given chat.
 		\param contacts given contact list.
 		\return pending messages count.
 	**/
-	unsigned int pendingMsgsCount(Chat *chat) const;
+	unsigned int pendingMsgsCount(Chat chat) const;
 
 	/**
 		\fn int count() const

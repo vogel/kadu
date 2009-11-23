@@ -460,9 +460,9 @@ bool History::removeContactFromStorage(Buddy buddy)
 	if (!CurrentStorage)
 		return true;
 //TODO: optimize
-	QList<Chat *> chats = ChatManager::instance()->chatsForAccount(buddy.prefferedAccount());
-	foreach (Chat *chat, chats)
-		if (chat->buddies().contains(buddy) && !CurrentStorage->chatDates(chat, HistorySearchParameters()).isEmpty())
+	QList<Chat > chats = ChatManager::instance()->chatsForAccount(buddy.prefferedAccount());
+	foreach (Chat chat, chats)
+		if (chat.buddies().contains(buddy) && !CurrentStorage->chatDates(chat, HistorySearchParameters()).isEmpty())
 			return false;
 	return true;
 }
@@ -490,28 +490,28 @@ void History::unregisterStorage(HistoryStorage *storage)
 	CurrentStorage = 0;
 }
 
-QList<Chat *> History::chatsList(HistorySearchParameters search)
+QList<Chat > History::chatsList(HistorySearchParameters search)
 {
 	kdebugf();
 
 	return CurrentStorage->chats(search);
 }
 
-QList<QDate> History::datesForChat(Chat *chat, HistorySearchParameters search)
+QList<QDate> History::datesForChat(Chat chat, HistorySearchParameters search)
 {
 	kdebugf();
 
 	return CurrentStorage->chatDates(chat, search);
 }
 
-QList<Message> History::messages(Chat *chat, QDate date, int limit)
+QList<Message> History::messages(Chat chat, QDate date, int limit)
 {
 	kdebugf();
 
 	return CurrentStorage->messages(chat, date, limit);
 }
 
-int History::messagesCount(Chat *chat, QDate date)
+int History::messagesCount(Chat chat, QDate date)
 {
 	kdebugf();
 

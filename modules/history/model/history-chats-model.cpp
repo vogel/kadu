@@ -41,10 +41,10 @@ int HistoryChatsModel::rowCount(const QModelIndex &parent) const
 		return 0;
 
 	ChatType *chatType = chatTypes.at(parent.row());
-	if (!Chats.contains(chatType))
+	if (!Chats.contains(chatType->name()))
 		return 0;
 
-	return Chats.value(chatType).size();
+	return Chats.value(chatType->name()).size();
 }
 
 QModelIndex HistoryChatsModel::index(int row, int column, const QModelIndex &parent) const
@@ -91,19 +91,19 @@ QVariant HistoryChatsModel::chatData(const QModelIndex &index, int role) const
 		return QVariant();
 
 	ChatType *chatType = chatTypes.at(index.internalId());
-	const QList<Chat *> chats = Chats.value(chatType);
+	const QList<Chat > chats = Chats.value(chatType->name());
 	if (index.row() < 0 || index.row() >= chats.size())
 		return QVariant();
 
-	Chat *chat = chats.at(index.row());
+	Chat chat = chats.at(index.row());
 
 	switch (role)
 	{
 		case Qt::DisplayRole:
-			return chat->name();
+			return chat.name();
 
 		case ChatRole:
-			return QVariant::fromValue<Chat *>(chat);
+			return QVariant::fromValue<Chat>(chat);
 	}
 
 	return QVariant();
@@ -121,31 +121,31 @@ void HistoryChatsModel::clear()
 {
 	beginRemoveRows(QModelIndex(), 0, rowCount(QModelIndex()) - 1);
 
-	Chats = QMap<ChatType *, QList<Chat *> >();
+	Chats = QMap<QString, QList<Chat> >();
 
 	endRemoveRows();
 }
 
-void HistoryChatsModel::addChat(Chat *chat)
+void HistoryChatsModel::addChat(Chat chat)
 {
-	if (!Chats.contains(chat->type()))
+	if (!Chats.contains(chat.type()))
 	{
 		beginInsertRows(QModelIndex(), rowCount(QModelIndex()), rowCount(QModelIndex()));
-		Chats.insert(chat->type(), QList<Chat *>());
+		Chats.insert(chat.type(), QList<Chat>());
 		endInsertRows();
 	}
 
-	int id = Chats.keys().indexOf(chat->type());
+	int id = Chats.keys().indexOf(chat.type());
 	QModelIndex idx = index(id, 0, QModelIndex());
 	int count = rowCount(idx);
 	beginInsertRows(idx, count, count);
-	Chats[chat->type()].append(chat);
+	Chats[chat.type()].append(chat);
 	endInsertRows();
 }
 
-void HistoryChatsModel::addChats(QList<Chat *> chats)
+void HistoryChatsModel::addChats(QList<Chat> chats)
 {
-	foreach (Chat *chat, chats)
+	foreach (Chat chat, chats)
 		addChat(chat);
 }
 
@@ -158,15 +158,20 @@ QModelIndex HistoryChatsModel::chatTypeIndex(ChatType *type) const
 	return index(row, 0, QModelIndex());
 }
 
-QModelIndex HistoryChatsModel::chatIndex(Chat *chat) const
+QModelIndex HistoryChatsModel::chatIndex(Chat chat) const
 {
-	if (!Chats.contains(chat->type()))
+	if (!Chats.contains(chat.type()))
 		return QModelIndex();
 
-	QModelIndex typeIndex = chatTypeIndex(chat->type());
+	QString typeName = chat.type();
+	ChatType *type = ChatTypeManager::instance()->chatType(typeName);
+	if (!type)
+		return QModelIndex();
+
+	QModelIndex typeIndex = chatTypeIndex(type);
 	if (!typeIndex.isValid())
 		return QModelIndex();
 
-	int row = Chats.value(chat->type()).indexOf(chat);
+	int row = Chats.value(chat.type()).indexOf(chat);
 	return index(row, 0, typeIndex);
 }

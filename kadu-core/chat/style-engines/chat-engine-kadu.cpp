@@ -101,7 +101,7 @@ QString KaduChatStyleEngine::formatMessage(MessageRenderInfo *message, MessageRe
 	Message aft = after->message();
 
 	Buddy buddy = msg.sender();
-	Account account = msg.chat()->account();
+	Account account = msg.chat().chatAccount();
 
 	if (msg.type() == Message::TypeSystem)
 	{
@@ -166,7 +166,7 @@ void KaduChatStyleEngine::repaintMessages(HtmlMessagesRenderer *renderer)
 		(*message)->setSeparatorSize(0);
 
 		Buddy buddy = msg.sender();
-		Account account = msg.chat()->account();
+		Account account = msg.chat().chatAccount();
 
 		if (msg.type() == Message::TypeSystem)
 			text += Parser::parse(ChatSyntaxWithoutHeader, account, buddy, *message);
@@ -212,7 +212,7 @@ void KaduChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNam
 		for (int i = 0; i < count; i++)
 		{
 			message = dynamic_cast<MessageRenderInfo *>(preview->getObjectsToParse().at(i));
-			text += Parser::parse(content, message->message().chat()->account(),
+			text += Parser::parse(content, message->message().chat().chatAccount(),
 					message->message().sender(), message);
 		}
 	}

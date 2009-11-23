@@ -30,7 +30,7 @@ public:
 	JabberChatService(JabberProtocol *protocol);
 
 public slots:
-	virtual bool sendMessage(Chat *chat, FormattedMessage &formattedMessage);
+	virtual bool sendMessage(Chat chat, FormattedMessage &formattedMessage);
 };
 
 #endif // JABBER_CHAT_SERVICE_H

@@ -10,14 +10,13 @@
 #ifndef CHAT_EDIT_BOX_H
 #define CHAT_EDIT_BOX_H
 
+#include "chat/chat.h"
 #include "configuration/configuration-aware-object.h"
-
 #include "gui/windows/main-window.h"
 
 #include "exports.h"
 
 class Action;
-class Chat;
 class ChatWidget;
 class CustomInput;
 
@@ -25,7 +24,7 @@ class KADUAPI ChatEditBox : public MainWindow, ConfigurationAwareObject
 {
 	Q_OBJECT
 
-	Chat *CurrentChat;
+	Chat CurrentChat;
 	CustomInput *InputBox;
 	QColor CurrentColor;
 
@@ -43,7 +42,7 @@ public:
 	static void createDefaultToolbars(QDomElement parentConfig);
 	static void addAction(const QString &actionName, Qt::ToolButtonStyle style = Qt::ToolButtonIconOnly);
 
-	ChatEditBox(Chat *chat, QWidget *parent = 0);
+	ChatEditBox(Chat chat, QWidget *parent = 0);
 	virtual ~ChatEditBox();
 
 	// TODO: remove?
@@ -52,7 +51,7 @@ public:
 	virtual bool supportsActionType(ActionDescription::ActionType type);
 	virtual BuddiesListView * contactsListView();
 	virtual BuddySet buddies();
-	virtual Chat * chat() { return CurrentChat; }
+	virtual Chat  chat() { return CurrentChat; }
 	ChatWidget * chatWidget();
 
 	void openEmoticonSelector(const QWidget *activatingWidget);

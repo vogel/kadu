@@ -120,7 +120,7 @@ void ChatWidgetManager::load()
 		if (chatId.isNull())
 			continue;
 
-		Chat *chat = ChatManager::instance()->byUuid(chatId);
+		Chat chat = ChatManager::instance()->byUuid(chatId);
 		if (!chat)
 			continue;
 		// TODO 0.6.6 before it was openChatWidget(chat, true)
@@ -135,13 +135,13 @@ void ChatWidgetManager::store()
 
 	clear();
 
-	foreach (Chat *chat, Chats.keys())
+	foreach (Chat chat, Chats.keys())
 	{
-		if (!chat || chat->account().isNull() || !chat->account().protocolHandler()
-			|| !chat->account().protocolHandler()->protocolFactory())
+		if (chat.isNull() || chat.chatAccount().isNull() || !chat.chatAccount().protocolHandler()
+			|| !chat.chatAccount().protocolHandler()->protocolFactory())
 				continue;
 
-		append(chat->uuid().toString());
+		append(chat.uuid().toString());
 	}
 
 	StorableStringList::store();
@@ -183,12 +183,12 @@ void ChatWidgetManager::insertEmoticonActionEnabled()
 	}
 }
 
-const QHash<Chat *, ChatWidget *> & ChatWidgetManager::chats() const
+const QHash<Chat , ChatWidget *> & ChatWidgetManager::chats() const
 {
 	return Chats;
 }
 
-const QList<Chat *> ChatWidgetManager::closedChats() const
+const QList<Chat > ChatWidgetManager::closedChats() const
 {
 	return ClosedChats;
 }
@@ -219,7 +219,7 @@ void ChatWidgetManager::unregisterChatWidget(ChatWidget *chat)
 	Chats.remove(chat->chat());
 }
 
-ChatWidget * ChatWidgetManager::byChat(Chat *chat, bool create) const
+ChatWidget * ChatWidgetManager::byChat(Chat chat, bool create) const
 {
 	return Chats.contains(chat)
 		? Chats[chat]
@@ -234,7 +234,7 @@ void ChatWidgetManager::activateChatWidget(ChatWidget *chatWidget, bool forceAct
 	emit chatWidgetOpen(chatWidget);
 }
 
-ChatWidget * ChatWidgetManager::openChatWidget(Chat *chat, bool forceActivate)
+ChatWidget * ChatWidgetManager::openChatWidget(Chat chat, bool forceActivate)
 {
 	kdebugf();
 
@@ -258,8 +258,8 @@ ChatWidget * ChatWidgetManager::openChatWidget(Chat *chat, bool forceActivate)
 		window->show();
 	}
 
-	connect(chatWidget, SIGNAL(messageSentAndConfirmed(Chat *, const QString &)),
-		this, SIGNAL(messageSentAndConfirmed(Chat *, const QString &)));
+	connect(chatWidget, SIGNAL(messageSentAndConfirmed(Chat , const QString &)),
+		this, SIGNAL(messageSentAndConfirmed(Chat , const QString &)));
 
 	if (forceActivate) //TODO 0.6.6:
 	{
@@ -276,7 +276,7 @@ ChatWidget * ChatWidgetManager::openChatWidget(Chat *chat, bool forceActivate)
 	return chatWidget;
 }
 
-void ChatWidgetManager::deletePendingMsgs(Chat *chat)
+void ChatWidgetManager::deletePendingMsgs(Chat chat)
 {
 	kdebugf();
 	for (int i = 0; i < PendingMessagesManager::instance()->count(); ++i)
@@ -291,7 +291,7 @@ void ChatWidgetManager::deletePendingMsgs(Chat *chat)
 	kdebugf2();
 }
 
-void ChatWidgetManager::openPendingMsgs(Chat *chat, bool forceActivate)
+void ChatWidgetManager::openPendingMsgs(Chat chat, bool forceActivate)
 {
 	kdebugf();
 
@@ -333,7 +333,7 @@ void ChatWidgetManager::openPendingMsgs(bool forceActivate)
 	kdebugf2();
 }
 
-void ChatWidgetManager::sendMessage(Chat *chat)
+void ChatWidgetManager::sendMessage(Chat chat)
 {
 	kdebugf();
 
@@ -363,7 +363,7 @@ void ChatWidgetManager::messageReceived(const Message &message)
 {
 	kdebugf();
 
-	Chat *chat = message.chat();
+	Chat chat = message.chat();
 	ChatWidget *chatWidget = byChat(chat);
 	if (chatWidget)
 	{
@@ -403,7 +403,7 @@ void ChatWidgetManager::messageReceived(const Message &message)
 
 void ChatWidgetManager::messageSent(const Message &message)
 {
-	Chat *chat = message.chat();
+	Chat chat = message.chat();
 	ChatWidget *chatWidget = byChat(chat);
 	MessageRenderInfo *messageRenderInfo = new MessageRenderInfo(message);
 

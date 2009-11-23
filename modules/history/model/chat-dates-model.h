@@ -14,7 +14,7 @@
 #include <QtCore/QDate>
 #include <QtCore/QList>
 
-class Chat;
+#include "chat/chat.h"
 
 class ChatDatesModel : public QAbstractListModel
 {
@@ -26,7 +26,7 @@ class ChatDatesModel : public QAbstractListModel
 		int size;
 	};
 
-	Chat *MyChat;
+	Chat MyChat;
 	QList<QDate> Dates;
 	QMap<QDate, ItemCachedData> *Cache;
 
@@ -35,7 +35,7 @@ class ChatDatesModel : public QAbstractListModel
 	ItemCachedData fetchCachedData(QDate date) const;
 
 public:
-	ChatDatesModel(Chat *chat, QList<QDate> dates, QObject *parent = 0);
+	ChatDatesModel(Chat chat, QList<QDate> dates, QObject *parent = 0);
 	virtual ~ChatDatesModel();
 
 	virtual int columnCount(const QModelIndex &parent) const;
@@ -44,7 +44,7 @@ public:
 	virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 	virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
-	void setChat(Chat *chat);
+	void setChat(Chat chat);
 	void setDates(QList<QDate> dates);
 
 };

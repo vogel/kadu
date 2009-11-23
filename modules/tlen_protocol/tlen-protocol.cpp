@@ -239,7 +239,7 @@ void TlenProtocol::logout()
 	kdebugf2();
 }
 
-bool TlenProtocol::sendMessage(Chat *chat, FormattedMessage &formattedMessage)
+bool TlenProtocol::sendMessage(Chat chat, FormattedMessage &formattedMessage)
 {
 	kdebugf();
 
@@ -319,7 +319,7 @@ void TlenProtocol::chatMsgReceived(QDomNode n)
 	kdebugm(KDEBUG_WARNING, "Tlen message to %s\n%s", qPrintable(from), qPrintable(body));
 
 	// TODO  : contacts?
-	Chat *chat = this->findChat(contacts);
+	Chat chat = this->findChat(contacts);
 	emit receivedMessageFilter(chat, buddy, formattedMessage.toPlain(), msgtime, ignore);
 	if (ignore)
 		return;

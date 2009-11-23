@@ -14,10 +14,10 @@
 #include <QtCore/QObject>
 
 #include "buddies/buddy.h"
+#include "chat/chat.h"
 
 #include "exports.h"
 
-class Chat;
 class MessageData;
 
 class KADUAPI Message : public QObject
@@ -47,14 +47,14 @@ private slots:
 	void statusChanged(Message::Status);
 
 public:
-	Message(Chat *chat = 0, Type type = TypeUnknown, Buddy sender = Buddy::null);
+	Message(Chat chat = Chat::null, Type type = TypeUnknown, Buddy sender = Buddy::null);
 	Message(const Message &copy);
 	virtual ~Message();
 
 	void operator = (const Message &copy);
 
-	Chat * chat() const;
-	Message & setChat(Chat *chat);
+	Chat  chat() const;
+	Message & setChat(Chat chat);
 
 	Buddy sender() const;
 	Message & setSender(Buddy sender);

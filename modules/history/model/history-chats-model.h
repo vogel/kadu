@@ -20,7 +20,7 @@ class HistoryChatsModel : public QAbstractItemModel
 {
 	Q_OBJECT
 
-	QMap<ChatType *, QList<Chat *> > Chats;
+	QMap<QString, QList<Chat > > Chats;
 
 	QVariant chatTypeData(const QModelIndex &index, int role = Qt::DisplayRole) const;
 	QVariant chatData(const QModelIndex &index, int role = Qt::DisplayRole) const;
@@ -38,11 +38,11 @@ public:
 	virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
 	void clear();
-	void addChat(Chat *chat);
-	void addChats(QList<Chat *> chats);
+	void addChat(Chat chat);
+	void addChats(QList<Chat > chats);
 
 	QModelIndex chatTypeIndex(ChatType *type) const;
-	QModelIndex chatIndex(Chat *chat) const;
+	QModelIndex chatIndex(Chat chat) const;
 
 };
 

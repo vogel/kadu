@@ -16,8 +16,8 @@
 
 #include "chat-details.h"
 
-ChatDetails::ChatDetails(Chat *chat) :
-		StorableObject(chat->storage()), CurrentChat(chat)
+ChatDetails::ChatDetails(ChatShared *chatShared) :
+		StorableObject(chatShared->storage()), ChatData(chatShared)
 {
 }
 

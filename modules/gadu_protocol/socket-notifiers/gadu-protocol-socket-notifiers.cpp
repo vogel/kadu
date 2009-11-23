@@ -18,9 +18,9 @@
 #include <libgadu.h>
 
 #include "accounts/account.h"
-#include "configuration/configuration-file.h"
+#include "buddies/buddy-set.h"
 #include "buddies/ignored-helper.h"
-
+#include "configuration/configuration-file.h"
 #include "debug.h"
 #include "misc/misc.h"
 

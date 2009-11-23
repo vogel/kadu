@@ -97,15 +97,15 @@ class TlenProtocol : public Protocol
 		void fetchAvatars(QString jid, QString type, QString md5);
 
 	public slots:
-		bool sendMessage(Chat *chat, FormattedMessage &message);
+		bool sendMessage(Chat chat, FormattedMessage &message);
 
 	signals:
 		void authorize(QString,bool);
 
 		void userStatusChangeIgnored(Buddy);
-                void sendMessageFiltering(Chat *chat, QByteArray &msg, bool &stop);
+                void sendMessageFiltering(Chat chat, QByteArray &msg, bool &stop);
         	void messageStatusChanged(int messsageId, ChatService::MessageStatus status);
-		void receivedMessageFilter(Chat *chat, Buddy sender, const QString &message, time_t time, bool &ignore);
+		void receivedMessageFilter(Chat chat, Buddy sender, const QString &message, time_t time, bool &ignore);
 		void messageReceived(const Message &message);
 		void messageSent(const Message &message);
 };

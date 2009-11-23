@@ -17,6 +17,7 @@
 
 #include "accounts/account-manager.h"
 #include "buddies/buddy-manager.h"
+#include "buddies/buddy-set.h"
 #include "buddies/model/buddies-model.h"
 #include "buddies/filter/anonymous-without-messages-buddy-filter.h"
 #include "buddies/filter/group-buddy-filter.h"
@@ -88,7 +89,7 @@ void KaduWindow::createGui()
 	anonymousFilter->setEnabled(true);
 	ContactsWidget->view()->addFilter(anonymousFilter);
 
-	connect(ContactsWidget->view(), SIGNAL(chatActivated(Chat *)), this, SLOT(openChatWindow(Chat *)));
+	connect(ContactsWidget->view(), SIGNAL(chatActivated(Chat )), this, SLOT(openChatWindow(Chat )));
 
 	hboxLayout->addWidget(GroupBar);
 	hboxLayout->setStretchFactor(GroupBar, 1);
@@ -189,9 +190,9 @@ void KaduWindow::createHelpMenu()
 	menuBar()->addMenu(HelpMenu);
 }
 
-void KaduWindow::openChatWindow(Chat *chat)
+void KaduWindow::openChatWindow(Chat chat)
 {
-	if (!chat->buddies().contains(Core::instance()->myself()))
+	if (!chat.buddies().contains(Core::instance()->myself()))
 	{
 		ChatWidgetManager::instance()->sendMessage(chat);
 		return;
@@ -219,12 +220,12 @@ void KaduWindow::createRecentChatsMenu()
 
 	unsigned int index = 0; // indeks pozycji w popupie
 
-	foreach (const Chat *chat, ChatWidgetManager::instance()->closedChats())
+	foreach (const Chat chat, ChatWidgetManager::instance()->closedChats())
 	{
 		QStringList displays;
 
 		int i = 0;
-		foreach (Buddy buddy, chat->buddies())
+		foreach (Buddy buddy, chat.buddies())
 		{
 			i++;
 			displays.append(buddy.display());
@@ -344,7 +345,7 @@ BuddySet KaduWindow::buddies()
 	return ContactsWidget->view()->selectedBuddies();
 }
 
-Chat * KaduWindow::chat()
+Chat  KaduWindow::chat()
 {
 	return ContactsWidget->view()->currentChat();
 }

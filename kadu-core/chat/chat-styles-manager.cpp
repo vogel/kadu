@@ -291,10 +291,11 @@ void ChatStylesManager::preparePreview(Preview *preview)
 	if (example.isNull())
 		return;
 
-	Chat *chat = new Chat(example.prefferedAccount());
+	Chat chat = Chat::create();
+	chat.setChatAccount(example.prefferedAccount());
 	ChatDetailsSimple *details = new ChatDetailsSimple(chat);
 	details->setContact(example.contact(example.prefferedAccount()));
-	chat->setDetails(details);
+	chat.setDetails(details);
 
 	connect(preview, SIGNAL(destroyed(QObject *)), chat, SLOT(deleteLater()));
 

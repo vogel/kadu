@@ -20,24 +20,24 @@ ChatNameFilter::ChatNameFilter(QObject *parent) :
 	Filter = new BuddyNameFilter(this);
 }
 
-bool ChatNameFilter::acceptChat(Chat *chat)
+bool ChatNameFilter::acceptChat(Chat chat)
 {
 	if (Name.isEmpty())
 		return true;
 
-	if (chat->name().contains(Name, Qt::CaseInsensitive))
+	if (chat.name().contains(Name, Qt::CaseInsensitive))
 		return true;
-
-	AggregateChat *aggregate = dynamic_cast<AggregateChat *>(chat);
+/*
+	AggregateChat aggregate = dynamic_cast<AggregateChat >(chat);
 	if (aggregate)
 	{
-		foreach (Chat *subchat, aggregate->chats())
+		foreach (Chat subchat, aggregate->chats())
 			if (acceptChat(subchat))
 				return true;
 		return false;
-	}
+	}*/
 
-	BuddyList buddies = chat->buddies().toBuddyList();
+	BuddyList buddies = chat.buddies().toBuddyList();
 	foreach (Buddy buddy, buddies)
 		if (Filter->acceptBuddy(buddy))
 			return true;

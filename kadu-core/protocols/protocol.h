@@ -20,9 +20,9 @@
 
 #include "exports.h"
 
-#include "chat/chat.h"
 #include "buddies/buddy.h"
 #include "buddies/buddy-list.h"
+#include "chat/chat.h"
 #include "status/status.h"
 
 typedef quint32 UinType;
@@ -91,8 +91,7 @@ public:
 
 	virtual bool validateUserID(QString &uid) = 0;
 
-	static Chat *loadChatFromStorage(StoragePoint *storage);
-	Chat * findChat(BuddySet contacts, bool create = true);
+	Chat findChat(BuddySet contacts, bool create = true);
 
 	NetworkState state() { return State; }
 	bool isConnected() { return (State == NetworkConnected); }

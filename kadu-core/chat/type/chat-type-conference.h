@@ -32,7 +32,7 @@ public:
 	virtual QString displayName() const;
 	virtual QIcon icon() const;
 
-	virtual ChatDetails * createChatDetails(Chat *chat) const;
+	virtual ChatDetails * createChatDetails(ChatShared *chatData) const;
 
 };
 

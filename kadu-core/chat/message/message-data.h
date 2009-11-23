@@ -22,7 +22,7 @@ class MessageData : public QObject, public QSharedData
 	Q_OBJECT
 	Q_DISABLE_COPY(MessageData)
 
-	Chat *MyChat;
+	Chat MyChat;
 	Buddy Sender;
 	QString Content;
 	QDateTime ReceiveDate;
@@ -32,11 +32,11 @@ class MessageData : public QObject, public QSharedData
 	int Id;
 
 public:
-	MessageData(Chat *chat = 0, Message::Type type = Message::TypeUnknown, Buddy sender = Buddy::null);
+	MessageData(Chat chat = 0, Message::Type type = Message::TypeUnknown, Buddy sender = Buddy::null);
 	virtual ~MessageData();
 
-	Chat * chat() const { return MyChat; }
-	MessageData & setChat(Chat *chat);
+	Chat  chat() const { return MyChat; }
+	MessageData & setChat(Chat chat);
 
 	Buddy sender() const { return Sender; }
 	MessageData & setSender(Buddy sender);

@@ -107,9 +107,9 @@ class JabberProtocol : public Protocol
 
 	signals:
 		void userStatusChangeIgnored(Buddy);
-		void sendMessageFiltering(Chat *chat, QByteArray &msg, bool &stop);
+		void sendMessageFiltering(Chat chat, QByteArray &msg, bool &stop);
 		void messageStatusChanged(int messsageId, ChatService::MessageStatus status);
-		void receivedMessageFilter(Chat *chat, Buddy sender, const QString &message, time_t time, bool &ignore);
+		void receivedMessageFilter(Chat chat, Buddy sender, const QString &message, time_t time, bool &ignore);
 };
 
 #endif //JABBER_PROTOCOL_H
