@@ -7,34 +7,26 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CHAT_TYPE_H
-#define CHAT_TYPE_H
+#include "icons-manager.h"
 
-#include <QtCore/QString>
-#include <QtCore/QVariant>
-#include <QtGui/QIcon>
+#include "chat-type-conference.h"
 
-#include "exports.h"
-
-class KADUAPI ChatType : public QObject
+int ChatTypeConference::sortIndex() const
 {
-	Q_OBJECT
-	Q_DISABLE_COPY(ChatType)
+	return 1;
+}
 
-public:
-	ChatType() {}
-	virtual ~ChatType() {}
+QString ChatTypeConference::name() const
+{
+	return "ConferenceChat";
+}
 
-	virtual int sortIndex() const = 0;
-	virtual QString name() const = 0;
-	virtual QString displayName() const = 0;
-	virtual QIcon icon() const = 0;
+QString ChatTypeConference::displayName() const
+{
+	return tr("Conference");
+}
 
-	bool operator == (const ChatType &compare) const;
-	bool operator < (const ChatType &compare) const;
-
-};
-
-Q_DECLARE_METATYPE(ChatType *)
-
-#endif // CHAT_TYPE_H
+QIcon ChatTypeConference::icon() const
+{
+	return IconsManager::instance()->loadIcon("ManageModules");
+}

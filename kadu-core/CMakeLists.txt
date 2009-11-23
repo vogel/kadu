@@ -58,8 +58,8 @@ set (kadu_SRCS
 	chat/chat-details-conference.cpp
 	chat/chat-details-simple.cpp
 	chat/chat-manager.cpp
-	chat/html-messages-renderer.cpp
 	chat/chat-styles-manager.cpp
+	chat/html-messages-renderer.cpp
 
 	chat/filter/chat-name-filter.cpp
 
@@ -75,7 +75,9 @@ set (kadu_SRCS
 	chat/style-engines/chat-engine-kadu.cpp
 
 	chat/type/chat-type.cpp
+	chat/type/chat-type-conference.cpp
 	chat/type/chat-type-manager.cpp
+	chat/type/chat-type-simple.cpp
 
 	configuration/account-data-manager.cpp
 	configuration/config-file-data-manager.cpp
@@ -332,7 +334,10 @@ set (kadu_MOC_SRCS
 	chat/style-engines/adium-time-formatter.h
 	chat/style-engines/chat-engine-kadu.h
 
+	chat/type/chat-type.h
+	chat/type/chat-type-conference.h
 	chat/type/chat-type-manager.h
+	chat/type/chat-type-simple.h
 
 	contacts/contact-details.h
 	contacts/contact-manager.h

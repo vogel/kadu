@@ -7,34 +7,26 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CHAT_TYPE_H
-#define CHAT_TYPE_H
+#include "icons-manager.h"
 
-#include <QtCore/QString>
-#include <QtCore/QVariant>
-#include <QtGui/QIcon>
+#include "chat-type-simple.h"
 
-#include "exports.h"
-
-class KADUAPI ChatType : public QObject
+int ChatTypeSimple::sortIndex() const
 {
-	Q_OBJECT
-	Q_DISABLE_COPY(ChatType)
+	return 0;
+}
 
-public:
-	ChatType() {}
-	virtual ~ChatType() {}
+QString ChatTypeSimple::name() const
+{
+	return "SimpleChat";
+}
 
-	virtual int sortIndex() const = 0;
-	virtual QString name() const = 0;
-	virtual QString displayName() const = 0;
-	virtual QIcon icon() const = 0;
+QString ChatTypeSimple::displayName() const
+{
+	return tr("Chat");
+}
 
-	bool operator == (const ChatType &compare) const;
-	bool operator < (const ChatType &compare) const;
-
-};
-
-Q_DECLARE_METATYPE(ChatType *)
-
-#endif // CHAT_TYPE_H
+QIcon ChatTypeSimple::icon() const
+{
+	return IconsManager::instance()->loadIcon("OpenChat");
+}

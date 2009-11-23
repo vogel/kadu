@@ -1,12 +1,14 @@
 /***************************************************************************
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-***************************************************************************/
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
 
+#include "chat/type/chat-type-conference.h"
+#include "chat/type/chat-type-simple.h"
 #include "icons-manager.h"
 
 #include "chat-type-manager.h"
@@ -24,8 +26,8 @@ ChatTypeManager * ChatTypeManager::instance()
 ChatTypeManager::ChatTypeManager()
 {
 	// TODO: 0.6.6 fix icons
-	addChatType(new ChatType(0, "SimpleChat", tr("Chat"), IconsManager::instance()->loadIcon("OpenChat")));
-	addChatType(new ChatType(1, "ConferenceChat", tr("Conference"), IconsManager::instance()->loadIcon("ManageModules")));
+	addChatType(new ChatTypeSimple());
+	addChatType(new ChatTypeConference());
 }
 
 ChatTypeManager::~ChatTypeManager()

@@ -7,34 +7,33 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CHAT_TYPE_H
-#define CHAT_TYPE_H
+#ifndef CHAT_TYPE_SIMPLE_H
+#define CHAT_TYPE_SIMPLE_H
 
 #include <QtCore/QString>
 #include <QtCore/QVariant>
 #include <QtGui/QIcon>
 
+#include "chat/type/chat-type.h"
+
 #include "exports.h"
 
-class KADUAPI ChatType : public QObject
+class KADUAPI ChatTypeSimple : public ChatType
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(ChatType)
+	Q_DISABLE_COPY(ChatTypeSimple)
 
 public:
-	ChatType() {}
-	virtual ~ChatType() {}
+	ChatTypeSimple() {}
+	virtual ~ChatTypeSimple() {}
 
-	virtual int sortIndex() const = 0;
-	virtual QString name() const = 0;
-	virtual QString displayName() const = 0;
-	virtual QIcon icon() const = 0;
-
-	bool operator == (const ChatType &compare) const;
-	bool operator < (const ChatType &compare) const;
+	virtual int sortIndex() const;
+	virtual QString name() const;
+	virtual QString displayName() const;
+	virtual QIcon icon() const;
 
 };
 
-Q_DECLARE_METATYPE(ChatType *)
+Q_DECLARE_METATYPE(ChatTypeSimple *)
 
-#endif // CHAT_TYPE_H
+#endif // CHAT_TYPE_SIMPLE_H
