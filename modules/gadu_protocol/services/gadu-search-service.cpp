@@ -86,33 +86,7 @@ void GaduSearchService::handleEventPubdir50SearchReply(struct gg_event *e)
 
 	for (int i = 0; i < count; i++)
 	{
-		Buddy result;
-
-		Contact contact;
-		contact.setContactAccount(Protocol->account());
-		contact.setOwnerBuddy(result);
-		contact.setId(gg_pubdir50_get(res, i, GG_PUBDIR50_UIN));
-		contact.setDetails(new GaduContactDetails(contact));
-
-		const char *pubdirStatus = gg_pubdir50_get(res, i, GG_PUBDIR50_STATUS);
-		if (pubdirStatus)
-		{	Status status;
-			status.setType(Protocol->statusTypeFromGaduStatus(atoi(pubdirStatus) & 127));
-			contact.setCurrentStatus(status);
-		}
-
-		result.addContact(contact);
-
-		result.setFirstName(cp2unicode(gg_pubdir50_get(res, i, GG_PUBDIR50_FIRSTNAME)));
-		result.setLastName(cp2unicode(gg_pubdir50_get(res, i, GG_PUBDIR50_LASTNAME)));
-		result.setNickName(cp2unicode(gg_pubdir50_get(res, i, GG_PUBDIR50_NICKNAME)));
-		result.setBirthYear(QString::fromAscii(gg_pubdir50_get(res, i, GG_PUBDIR50_BIRTHYEAR)).toUShort());
-		result.setCity(cp2unicode(gg_pubdir50_get(res, i, GG_PUBDIR50_CITY)));
-		result.setFamilyName(cp2unicode(gg_pubdir50_get(res, i, GG_PUBDIR50_FAMILYNAME)));
-		result.setFamilyCity(cp2unicode(gg_pubdir50_get(res, i, GG_PUBDIR50_FAMILYCITY)));
-		result.setGender((BuddyShared::BuddyGender)QString::fromAscii(gg_pubdir50_get(res, i, GG_PUBDIR50_GENDER)).toUShort());
-
-		results.append(result);
+		results.append(Protocol->searchResultToBuddy(res, i));
 	}
 
 	From = gg_pubdir50_next(res);
