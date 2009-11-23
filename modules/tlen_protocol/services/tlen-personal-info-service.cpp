@@ -44,17 +44,12 @@ void TlenPersonalInfoService::handlePubdirReceived(QDomNodeList node)
 	contact.setContactAccount(Protocol->account());
 	contact.setOwnerBuddy(result);
 	contact.setId(Protocol->account().id());
-	contact.setDetails(new TlenContactDetails(contact));
+
+	TlenContactDetails *tlenDetails = new TlenContactDetails(contact);
+	contact.setDetails(tlenDetails);
 
 	result.addContact(contact);
 
-	/*
-            <first>imie</first><last>nazwisko</last>
-            <nick>nick</nick><email>email</email>
-            <c>miesjcowosc</c><b>1984</b><s>1</s><e>szkola</e>
-            <r>1</r><j>12</j><p>0</p><v>0</v><g>1</g><k>1</k>
-
-	*/
 	QDomElement itemelement = node.item(0).toElement();
 	QDomNodeList items = itemelement.childNodes();
 	for (int i=0;i<items.count();++i)
@@ -92,29 +87,28 @@ void TlenPersonalInfoService::handlePubdirReceived(QDomNodeList node)
 		}
 		else if (mmName == "r")
 		{
-			// searching for
+			tlenDetails->setLookingFor(mm.text().toUShort());
 		}
 		else if (mmName == "j")
 		{
-			// job
+			tlenDetails->setJob(mm.text().toUShort());
 		}
 		else if (mmName == "p")
 		{
-			// my plan for 
+			tlenDetails->setTodayPlans(mm.text().toUShort());
 		}
 		else if (mmName == "v")
 		{
-			// status visible in catalog
+			tlenDetails->setShowStatus(mm.text() == "1");
 		}
 		else if (mmName == "g")
 		{
-			// mic
+			tlenDetails->setHaveMic(mm.text() == "1");
 		}
 		else if (mmName == "k")
 		{
-			// cam
+			tlenDetails->setHaveCam(mm.text() == "1");
 		}
-
 	}
 
 	//result.setStatus();
