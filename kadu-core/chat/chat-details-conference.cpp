@@ -41,8 +41,6 @@ void ChatDetailsConference::store()
 
 	ensureLoaded();
 
-	storeValue("Type", "Conference");
-
 	BuddySetConfigurationHelper::saveToConfiguration(this, "Contacts", Buddies);
 }
 

@@ -56,8 +56,6 @@ void ChatDetailsSimple::store()
 
 	ensureLoaded();
 
-	storeValue("Type", "Simple");
-
 	if (!CurrentContact.isNull())
 		storeValue("Contact", CurrentContact.uuid().toString());
 }

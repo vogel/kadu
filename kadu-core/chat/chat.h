@@ -15,6 +15,7 @@
 #include <QtGui/QPixmap>
 
 #include "accounts/account.h"
+#include "chat/type/chat-type-aware-object.h"
 #include "configuration/uuid-storable-object.h"
 #include "buddies/buddy-set.h"
 
@@ -23,7 +24,7 @@
 class ChatDetails;
 class ChatType;
 
-class KADUAPI Chat : public QObject, public UuidStorableObject
+class KADUAPI Chat : public QObject, public UuidStorableObject, ChatTypeAwareObject
 {
 	Q_OBJECT
 
@@ -33,6 +34,11 @@ class KADUAPI Chat : public QObject, public UuidStorableObject
 	QUuid Uuid;
 	QString Title;
 	QPixmap Icon;
+	QString Type;
+
+protected:
+	virtual void chatTypeRegistered(ChatType *chatType);
+	virtual void chatTypeUnregistered(ChatType *chatType);
 
 public:
 	static Chat * loadFromStorage(StoragePoint *conferenceStoragePoint);

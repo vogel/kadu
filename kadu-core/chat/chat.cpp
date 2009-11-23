@@ -27,23 +27,8 @@ Chat * Chat::loadFromStorage(StoragePoint *chatStoragePoint)
 	if (!chatStoragePoint || !chatStoragePoint->storage())
 		return 0;
 
-	XmlConfigFile *storage = chatStoragePoint->storage();
-	QDomElement point = chatStoragePoint->point();
-
-	Account account = AccountManager::instance()->byUuid(QUuid(storage->getTextNode(point, "Account")));
-
-	QString type = storage->getTextNode(point, "Type");
-	ChatType *chatType = ChatTypeManager::instance()->chatType(type);
-	if (!chatType)
-		return 0;
-
 	Chat *chat = new Chat(chatStoragePoint);
-	ChatDetails *details = chatType->createChatDetails(chat);
-	chat->setDetails(details);
-	chat->setState(StorableObject::StateUnloaded);
-	details->setState(StorableObject::StateUnloaded);
-	chat->load();
-	details->load();
+	chat->ensureLoaded();
 	return chat;
 }
 
@@ -64,6 +49,33 @@ Chat::~Chat()
 {
 	disconnect(CurrentAccount, SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
 			this, SLOT(refreshTitle()));
+
+	triggerAllChatTypesUnregistered();
+}
+
+void Chat::chatTypeRegistered(ChatType *chatType)
+{
+	if (Details)
+		return;
+
+	if (chatType->name() != Type)
+		return;
+
+	Details = chatType->createChatDetails(this);
+	Details->ensureLoaded();
+}
+
+void Chat::chatTypeUnregistered(ChatType *chatType)
+{
+	if (!Details)
+		return;
+
+	if (chatType->name() != Type)
+		return;
+
+	Details->store();
+	delete Details;
+	Details = 0;
 }
 
 void Chat::load()
@@ -77,7 +89,10 @@ void Chat::load()
 	UuidStorableObject::load();
 
 	Uuid = loadAttribute<QString>("uuid");
+	Type = loadValue<QString>("Type");
 	CurrentAccount = AccountManager::instance()->byUuid(QUuid(loadValue<QString>("Account")));
+
+	triggerAllChatTypesRegistered();
 
 	connect(CurrentAccount, SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
 			this, SLOT(refreshTitle()));
@@ -89,6 +104,7 @@ void Chat::store()
 	if (!isValidStorage())
 		return;
 
+	storeValue("Type", Type);
 	storeValue("Account", CurrentAccount.uuid().toString());
 }
 
