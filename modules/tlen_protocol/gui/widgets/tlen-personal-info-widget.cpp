@@ -96,27 +96,30 @@ void TlenPersonalInfoWidget::createGui()
 	layout->addWidget(FirstName, 1, 1);
 	layout->addWidget(lastNameLabel, 0, 2);
 	layout->addWidget(LastName, 1, 2);
+
 	layout->addWidget(sexLabel, 2, 0);
 	layout->addWidget(Sex, 3, 0);
-	layout->addWidget(birthYearLabel, 4, 0);
-	layout->addWidget(BirthYear, 5, 0);
-	layout->addWidget(cityLabel, 6, 0);
-	layout->addWidget(City, 7, 0);
-	layout->addWidget(lookingForLabel, 8, 0);
-	layout->addWidget(LookingFor, 9, 0);
-	layout->addWidget(jobLabel, 10, 0);
-	layout->addWidget(Job, 11, 0);
-	layout->addWidget(todayPlansLabel, 12, 0);
-	layout->addWidget(TodayPlans, 13, 0);
-	layout->addWidget(showStatusLabel, 14, 0);
-	layout->addWidget(ShowStatus, 15, 0);
-	layout->addWidget(haveMicLabel, 16, 0);
-	layout->addWidget(HaveMic, 17, 0);
-	layout->addWidget(haveCamLabel, 18, 0);
-	layout->addWidget(HaveCam, 19, 0);
+	layout->addWidget(birthYearLabel, 2, 1);
+	layout->addWidget(BirthYear, 3, 1);
+	layout->addWidget(cityLabel, 2, 2);
+	layout->addWidget(City, 3, 2);
 
-	layout->setRowStretch(8, 100);
-	
+	layout->addWidget(lookingForLabel, 4, 0);
+	layout->addWidget(LookingFor, 5, 0);
+	layout->addWidget(jobLabel, 4, 1);
+	layout->addWidget(Job, 5, 1);
+	layout->addWidget(todayPlansLabel, 4, 2);
+	layout->addWidget(TodayPlans, 5, 2);
+
+	layout->addWidget(showStatusLabel, 6, 0);
+	layout->addWidget(ShowStatus, 7, 0);
+	layout->addWidget(haveMicLabel, 6, 1);
+	layout->addWidget(HaveMic, 7, 1);
+	layout->addWidget(haveCamLabel, 6, 2);
+	layout->addWidget(HaveCam, 7, 2);
+
+	layout->setRowStretch(11, 100);
+
 }
 
 void TlenPersonalInfoWidget::personalInfoAvailable(Buddy buddy)
