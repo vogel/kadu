@@ -26,6 +26,7 @@ class TlenPersonalInfoWidget : public QWidget
 	Q_OBJECT
 
 	PersonalInfoService *Service;
+	Account TAccount;
 
 	QLineEdit *NickName;
 	QLineEdit *FirstName;

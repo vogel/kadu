@@ -15,12 +15,13 @@
 
 #include "debug.h"
 #include "tlen-account-details.h"
+#include "tlen-contact-details.h"
 #include "protocols/services/personal-info-service.h"
 
 #include "tlen-personal-info-widget.h"
 
 TlenPersonalInfoWidget::TlenPersonalInfoWidget(Account account, QWidget* parent) :
-		QWidget(parent)
+		QWidget(parent), TAccount(account)
 {
 	createGui();
 
@@ -128,6 +129,22 @@ void TlenPersonalInfoWidget::personalInfoAvailable(Buddy buddy)
 	FamilyName->setText(buddy.familyName());
 	BirthYear->setText(QString::number(buddy.birthYear()));
 	City->setText(buddy.city());
+	
+	Contact contact = buddy.contact(TAccount);
+	if (contact.isNull())
+		return;
+
+	TlenContactDetails *tlenDetails = dynamic_cast<TlenContactDetails *>(contact.details());
+	if (!tlenDetails)
+		return;
+
+	LookingFor->setCurrentIndex((int) tlenDetails->lookingFor());
+	Job->setCurrentIndex((int) tlenDetails->job());
+	TodayPlans->setCurrentIndex((int) tlenDetails->todayPlans());
+
+	ShowStatus->setChecked(tlenDetails->showStatus());
+	HaveMic->setChecked(tlenDetails->haveMic());
+	HaveCam->setChecked(tlenDetails->haveCam());
 }
 
 void TlenPersonalInfoWidget::applyData()
