@@ -31,9 +31,18 @@ set (DATA_FILES
 	data/criticalsmall22.png
 	data/criticalsmall32.png
 	data/criticalsmall64.png
-	data/criticalsmall_alt22.png
-	data/criticalsmall_alt32.png
-	data/criticalsmall_alt64.png
+	data/dnd22.png
+	data/dnd32.png
+	data/dnd64.png
+	data/dndwithdescription22.png
+	data/dndwithdescription32.png
+	data/dndwithdescription64.png
+	data/ffc22.png
+	data/ffc32.png
+	data/ffc64.png
+	data/ffcwithdescription22.png
+	data/ffcwithdescription32.png
+	data/ffcwithdescription64.png
 	data/invisible22.png
 	data/invisible32.png
 	data/invisible64.png
