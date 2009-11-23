@@ -14,7 +14,9 @@
 class ContactShared;
 
 TlenContactDetails::TlenContactDetails(ContactShared *contactShared) :
-		ContactDetails(contactShared), MaxImageSize(0)
+		ContactDetails(contactShared), MaxImageSize(0), TlenProtocolVersion(0),
+		LookingFor(0), Job(0), TodayPlans(0),
+		ShowStatus(false), HaveMic(false), HaveCam(false)
 {
 }
 
