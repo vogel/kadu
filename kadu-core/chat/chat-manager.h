@@ -16,7 +16,6 @@
 #include <QtCore/QUuid>
 
 #include "accounts/account.h"
-#include "accounts/accounts-aware-object.h"
 #include "configuration/storable-object.h"
 
 #include "chat.h"
@@ -27,7 +26,7 @@ class Account;
 class BuddyList;
 class XmlConfigFile;
 
-class KADUAPI ChatManager : public QObject, public StorableObject, public AccountsAwareObject
+class KADUAPI ChatManager : public QObject, public StorableObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(ChatManager)
@@ -39,20 +38,13 @@ class KADUAPI ChatManager : public QObject, public StorableObject, public Accoun
 	ChatManager();
 	virtual ~ChatManager();
 
-	void init();
-
-	void load(Account account);
-	void store(Account account);
-
 protected:
 	virtual StoragePoint * createStoragePoint();
-
-	virtual void accountRegistered(Account account);
-	virtual void accountUnregistered(Account account);
 
 public:
 	static ChatManager * instance();
 
+	virtual void load();
 	virtual void store();
 
 	void addChat(Chat *chat);

@@ -28,9 +28,6 @@ void ChatDetailsSimple::load()
 	if (!isValidStorage())
 		return;
 
-	if (!needsLoad())
-		return;
-
 	ChatDetails::load();
 
 	QString cadUuid = loadValue<QString>("Contact");

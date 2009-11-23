@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include "buddies/buddy.h"
+#include "chat/chat.h"
 #include "configuration/configuration-file.h"
 #include "parser/parser.h"
 #include "debug.h"
@@ -15,8 +16,8 @@
 
 #include "chat-details.h"
 
-ChatDetails::ChatDetails(Chat*chat) :
-		CurrentChat(chat)
+ChatDetails::ChatDetails(Chat *chat) :
+		StorableObject(chat->storage()), CurrentChat(chat)
 {
 }
 

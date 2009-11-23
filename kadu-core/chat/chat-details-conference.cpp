@@ -27,9 +27,6 @@ void ChatDetailsConference::load()
 	if (!isValidStorage())
 		return;
 
-	if (!needsLoad())
-		return;
-
 	ChatDetails::load();
 
 	Buddies = BuddySetConfigurationHelper::loadFromConfiguration(this, "Contacts");

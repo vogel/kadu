@@ -17,16 +17,12 @@ ChatManager * ChatManager::Instance = 0;
 ChatManager *  ChatManager::instance()
 {
 	if (0 == Instance)
-	{
 		Instance = new ChatManager();
-		Instance->init();
-	}
 
 	return Instance;
 }
 
-ChatManager::ChatManager() :
-		StorableObject(StateLoaded)
+ChatManager::ChatManager()
 {
 	ConfigurationManager::instance()->registerStorableObject(this);
 }
@@ -34,13 +30,6 @@ ChatManager::ChatManager() :
 ChatManager::~ChatManager()
 {
 	ConfigurationManager::instance()->unregisterStorableObject(this);
-
-	triggerAllAccountsUnregistered();
-}
-
-void ChatManager::init()
-{
-	triggerAllAccountsRegistered();
 }
 
 StoragePoint * ChatManager::createStoragePoint()
@@ -48,10 +37,15 @@ StoragePoint * ChatManager::createStoragePoint()
 	return new StoragePoint(xml_config_file, xml_config_file->getNode("Chats"));
 }
 
-void ChatManager::load(Account account)
+void ChatManager::load()
 {
 	if (!isValidStorage())
 		return;
+
+	if (!needsLoad())
+		return;
+
+	StorableObject::load();
 
 	XmlConfigFile *configurationStorage = storage()->storage();
 	QDomElement chatsNode = storage()->point();
@@ -65,14 +59,10 @@ void ChatManager::load(Account account)
 
 	int count = chatNodes.count();
 
-	QString uuid = account.uuid().toString();
 	for (int i = 0; i < count; i++)
 	{
 		QDomElement chatElement = chatNodes.at(i).toElement();
 		if (chatElement.isNull())
-			continue;
-
-		if (configurationStorage->getTextNode(chatElement, "Account") != uuid)
 			continue;
 
 		StoragePoint *contactStoragePoint = new StoragePoint(configurationStorage, chatElement);
@@ -83,14 +73,10 @@ void ChatManager::load(Account account)
 	}
 }
 
-void ChatManager::store(Account account)
-{
-	foreach (Chat *chat, Chats[account])
-		chat->store();
-}
-
 void ChatManager::store()
 {
+	ensureLoaded();
+
 	foreach (QList<Chat *> list, Chats.values())
 		foreach (Chat *chat, list)
 			chat->store();
@@ -98,6 +84,8 @@ void ChatManager::store()
 
 void ChatManager::addChat(Chat *chat)
 {
+	ensureLoaded();
+
 	emit chatAboutToBeAdded(chat);
 	if (!Chats.contains(chat->account()))
 		Chats[chat->account()] = QList<Chat *>();
@@ -107,6 +95,8 @@ void ChatManager::addChat(Chat *chat)
 
 void ChatManager::removeChat(Chat *chat)
 {
+	ensureLoaded();
+
 	if (!Chats.contains(chat->account()))
 		return;
 
@@ -120,6 +110,8 @@ void ChatManager::removeChat(Chat *chat)
 
 QList<Chat *> ChatManager::chatsForAccount(Account account)
 {
+	ensureLoaded();
+
 	if (!Chats.contains(account))
 		return QList<Chat *>();
 	return Chats[account];
@@ -127,19 +119,11 @@ QList<Chat *> ChatManager::chatsForAccount(Account account)
 
 Chat * ChatManager::byUuid(QUuid uuid)
 {
+	ensureLoaded();
+
 	foreach (QList<Chat *> list, Chats.values())
 		foreach (Chat *chat, list)
 			if (chat->uuid() == uuid)
 				return chat;
 	return 0;
-}
-
-void ChatManager::accountRegistered(Account account)
-{
-	load(account);
-}
-
-void ChatManager::accountUnregistered(Account account)
-{
-	store(account);
 }

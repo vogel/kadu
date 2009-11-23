@@ -139,6 +139,8 @@ Chat * Protocol::findChat(BuddySet contacts, bool create)
 
 	chat->setDetails(details);
 	ChatManager::instance()->addChat(chat);
+
+	return chat;
 }
 
 Chat * Protocol::loadChatFromStorage(StoragePoint *chatStorage)

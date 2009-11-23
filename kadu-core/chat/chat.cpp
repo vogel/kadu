@@ -9,6 +9,9 @@
 
 #include "accounts/account-manager.h"
 #include "chat/chat-details.h"
+#include "chat/chat-details-simple.h"
+#include "chat/chat-details-conference.h"
+#include "chat/chat-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"
 #include "parser/parser.h"
@@ -17,7 +20,6 @@
 #include "protocols/protocol.h"
 
 #include "chat.h"
-#include "chat-manager.h"
 
 Chat * Chat::loadFromStorage(StoragePoint *chatStoragePoint)
 {
@@ -28,10 +30,32 @@ Chat * Chat::loadFromStorage(StoragePoint *chatStoragePoint)
 	QDomElement point = chatStoragePoint->point();
 
 	Account account = AccountManager::instance()->byUuid(QUuid(storage->getTextNode(point, "Account")));
-	if (account.isNull() || !account.protocolHandler())
-		return 0;
 
-	return account.protocolHandler()->loadChatFromStorage(chatStoragePoint);
+	QString type = storage->getTextNode(point, "Type");
+	if ("Simple" == type)
+	{
+		Chat *chat = new Chat(chatStoragePoint);
+		ChatDetailsSimple *details = new ChatDetailsSimple(chat);
+		chat->setDetails(details);
+		chat->setState(StorableObject::StateUnloaded);
+		details->setState(StorableObject::StateUnloaded);
+		chat->load();
+		details->load();
+		return chat;
+	}
+	else if ("Conference" == type)
+	{
+		Chat *chat = new Chat(chatStoragePoint);
+		ChatDetailsConference *details = new ChatDetailsConference(chat);
+		chat->setDetails(details);
+		chat->setState(StorableObject::StateUnloaded);
+		details->setState(StorableObject::StateUnloaded);
+		chat->load();
+		details->load();
+		return chat;
+	}
+	else
+		return 0;
 }
 
 Chat::Chat(StoragePoint *storage) :
@@ -56,6 +80,9 @@ Chat::~Chat()
 void Chat::load()
 {
 	if (!isValidStorage())
+		return;
+
+	if (!needsLoad())
 		return;
 
 	UuidStorableObject::load();
