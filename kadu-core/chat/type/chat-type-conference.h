@@ -32,6 +32,8 @@ public:
 	virtual QString displayName() const;
 	virtual QIcon icon() const;
 
+	virtual ChatDetails * createChatDetails(Chat *chat) const;
+
 };
 
 Q_DECLARE_METATYPE(ChatTypeConference *)

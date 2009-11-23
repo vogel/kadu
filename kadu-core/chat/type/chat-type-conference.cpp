@@ -7,6 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "chat/chat-details-conference.h"
 #include "icons-manager.h"
 
 #include "chat-type-conference.h"
@@ -29,4 +30,9 @@ QString ChatTypeConference::displayName() const
 QIcon ChatTypeConference::icon() const
 {
 	return IconsManager::instance()->loadIcon("ManageModules");
+}
+
+ChatDetails * ChatTypeConference::createChatDetails(Chat *chat) const
+{
+	return new ChatDetailsConference(chat);
 }
