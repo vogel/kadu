@@ -136,6 +136,7 @@ void tlen::socketReadyRead() {
 }
 
 QString tlen::localAddress() {
+	kdebugf();
 	if( socket->isOpen() )
 		return socket->localAddress().toString();
 
@@ -394,6 +395,8 @@ void tlen::event(QDomNode n) {
 
 void tlen::socketDisconnected()
 {
+	kdebugf();
+
 	state=tlen::Disconnected;
 	ping->stop();
 
@@ -451,10 +454,12 @@ bool tlen::tlenLogin() {
 	query.appendChild( resource );
 	text = doc.createTextNode( "w" ); // t
 	resource.appendChild( text );
+	// w iq jeszcze  : <host>tlen.pl</host>
 	return write(doc);
 }
 
 bool tlen::write( const QDomDocument &d ) {
+	kdebugf();
 	if( !(isConnected() || isConnecting()) ) {
 		return FALSE;
 	}
@@ -464,6 +469,8 @@ bool tlen::write( const QDomDocument &d ) {
 	return (socket->write(d.toByteArray()) == (qint64)d.toByteArray().size());
 }
 // "<iq type='get' id='GetRoster'><query xmlns="jabber:iq:roster"/></iq>"
+// t7 : <iq type="get" id="PJTCPW" ><query xmlns="jabber:iq:roster"/></iq>
+// t7 reply: <iq id="PJTCPW" type='result'>...
 void tlen::rosterRequest() {
 	kdebugf();
 	QDomDocument doc;
@@ -477,6 +484,8 @@ void tlen::rosterRequest() {
 	write(doc);
 }
 // "<iq to='tcfg' type='get' id='TcfgGetAfterLoggedIn'></iq>"
+// t7 : <iq type="get" to="tcfg" id="VHF1OX" ><query><t/></query></iq>
+// t7 reply : <iq from='tcfg' to='user' id='VHF1OX' type='result'><query> ...
 void tlen::tcfgRequest() {
 	kdebugf();
 
@@ -573,6 +582,7 @@ QByteArray tlen::encode( const QString &in ) {
 }
 //<presence type=\"invisible\" ><status>description</status></presence>
 //<presence><show>status</show><status>description</status></presence>
+// t7 po pobraniu roster-a <presence><show>available</show></presence><iq type="7" to="c" />
 void tlen::writeStatus() {
 	kdebugf();
 	QDomDocument doc;
