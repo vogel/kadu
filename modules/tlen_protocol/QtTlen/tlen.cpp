@@ -669,10 +669,12 @@ void tlen::addItem( QString jid, QString name, QString g, bool subscribe ) {
 	QDomElement item=doc.createElement("item");
 
 	int atPos=jid.indexOf("@");
-	if(atPos!=-1)
-		jid.remove(atPos, jid.length()-atPos);
+	//if(atPos!=-1)
+	//	jid.remove(atPos, jid.length()-atPos);
+	//jid+="@tlen.pl";
 
-	jid+="@tlen.pl";
+	if (atPos==-1)
+		jid+="@tlen.pl";
 
 	item.setAttribute("jid", jid.toLower());
 
