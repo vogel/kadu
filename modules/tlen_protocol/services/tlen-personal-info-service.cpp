@@ -31,6 +31,7 @@ void TlenPersonalInfoService::handlePubdirReceived(QDomNodeList node)
 		return;
 	
 	disconnect(client, SIGNAL(pubdirReceived(QDomNodeList)), this, SLOT(handlePubdirReceived(QDomNodeList)));
+	disconnect(client, SIGNAL(pubdirUpdated(bool)), this, SIGNAL(personalInfoUpdated(bool)));
 
 	if (1 != node.count())
 	{
@@ -40,11 +41,6 @@ void TlenPersonalInfoService::handlePubdirReceived(QDomNodeList node)
 
 	emit personalInfoAvailable(Protocol->nodeToBuddy(node.item(0)));
 }
-/*
-void TlenPersonalInfoService::handleEventPubdir50Write(struct gg_event *e)
-{
-	emit personalInfoUpdated(true);
-}*/
 
 void TlenPersonalInfoService::fetchPersonalInfo()
 {
@@ -54,6 +50,7 @@ void TlenPersonalInfoService::fetchPersonalInfo()
 		return;
 
 	connect(client, SIGNAL(pubdirReceived(QDomNodeList)), this, SLOT(handlePubdirReceived(QDomNodeList)));
+	connect(client, SIGNAL(pubdirUpdated(bool)), this, SIGNAL(personalInfoUpdated(bool)));
 	client->getPubDirInfoRequest();
 
 }
