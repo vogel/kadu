@@ -1238,8 +1238,8 @@ Jest to wysoce ryzykowne!</translation>
         <translation>Komunikator internetowy</translation>
     </message>
     <message>
-        <source>Support:&lt;br&gt;%1</source>
-        <translation>Wsparcie:&lt;br&gt;%1</translation>
+        <source>Support:</source>
+        <translation>Wsparcie:</translation>
     </message>
 </context>
 <context>
