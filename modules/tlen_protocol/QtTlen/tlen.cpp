@@ -73,6 +73,10 @@ tlen::tlen( QObject* parent ): QObject( parent ) {
 
 void tlen::openConn() {
 	kdebugf();
+
+	if (isConnecting())
+		return;
+
 	state=tlen::ConnectingToHub;
 	socket->connectToHost(hostname, hostport);
 }
