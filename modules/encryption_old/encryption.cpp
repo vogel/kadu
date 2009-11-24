@@ -305,7 +305,8 @@ void EncryptionManager::decryptMessage(Protocol *protocol, UserListElements send
 	kdebugm(KDEBUG_DUMP, "Decrypted message is(len:%u): %s\n", decoded ? strlen(decoded) : 0, decoded);
 	if (decoded != NULL)
 	{
-		msg = decoded;
+		QString tmp = cp2unicode(decoded);
+		msg = tmp.toUtf8();
 		free(decoded);
 
 		// FIXME: remove
@@ -374,6 +375,7 @@ void EncryptionManager::sendMessageFilter(const UserListElements users, QByteArr
 //	kdebugm(KDEBUG_INFO, "length: %d\n", msg.length());
 	if (users.count() == 1 && EncryptionEnabled[chat])
 	{
+		msg = unicode2cp(QString::fromUtf8(msg.constData()));
 		char *msg_c = sim_message_encrypt((const unsigned char *)msg.data(), (*users.constBegin()).ID("Gadu").toUInt());
 		if (!msg_c)
 		{
