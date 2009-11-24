@@ -773,9 +773,10 @@ void tlen::setStatusDescr(QString status,QString description) {
 
 void tlen::authorize( QString to, bool subscribe ) {
 	kdebugf();
+	QString encodedTo = QString(encode(to));
 	QDomDocument doc;
 	QDomElement p=doc.createElement("presence");
-	p.setAttribute("to", encode(to));
+	p.setAttribute("to", encodedTo);
 
 	if(subscribe) {
 		p.setAttribute("type", "subscribe");
@@ -783,7 +784,7 @@ void tlen::authorize( QString to, bool subscribe ) {
 		write(doc);
 		doc.clear();
 		p=doc.createElement("presence");
-		p.setAttribute("to", encode(to));
+		p.setAttribute("to", encodedTo);
 		p.setAttribute("type", "subscribed");
 	}
 	else {
@@ -814,7 +815,7 @@ void tlen::addItem( QString jid, QString name, QString g, bool subscribe ) {
 	if (atPos==-1)
 		jid+="@tlen.pl";
 
-	item.setAttribute("jid", encode(jid.toLower()));
+	item.setAttribute("jid", QString(encode(jid.toLower())));
 
 	if(!name.isEmpty())
 		item.setAttribute("name", QString( encode( name ) ) );
@@ -835,7 +836,7 @@ void tlen::addItem( QString jid, QString name, QString g, bool subscribe ) {
 		doc.clear();
 		QDomElement p=doc.createElement("presence");
 		p.setAttribute("type","subscribe");
-		p.setAttribute("to", encode(jid.toLower()));
+		p.setAttribute("to", QString(encode(jid.toLower())));
 		doc.appendChild(p);
 		write(doc);
 	}
@@ -853,7 +854,7 @@ void tlen::remove(QString jid) {
 
 	QDomElement item=doc.createElement("item");
 	item.setAttribute("subscription","remove");
-	item.setAttribute("jid", encode(jid));
+	item.setAttribute("jid", QString(encode(jid)));
 
 	query.appendChild(item);
 	iq.appendChild(query);
@@ -881,7 +882,7 @@ void tlen::chatNotify( QString to, bool t )
 	kdebugf();
 	QDomDocument doc;
 	QDomElement m=doc.createElement("m");
-	m.setAttribute("to", encode(to));
+	m.setAttribute("to", QString(encode(to)));
 
 	if(t)
 		m.setAttribute("tp", "t");
@@ -897,7 +898,7 @@ void tlen::sendAlarm(QString to)
 	kdebugf();
 	QDomDocument doc;
 	QDomElement m=doc.createElement("m");
-	m.setAttribute("to", encode(to));
+	m.setAttribute("to", QString(encode(to)));
 	m.setAttribute("tp", "a");
 	doc.appendChild(m);
 	write(doc);
