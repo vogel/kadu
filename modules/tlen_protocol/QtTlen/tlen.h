@@ -64,8 +64,6 @@ public:
 	bool reconnect() { return Reconnect; }
 	void setReconnect(bool reconnect) { Reconnect = reconnect; }
 
-	void remove(QString);
-
 	QString decode(const QByteArray&);
 	QString decode(const QString&);
 	QByteArray encode(const QString&);
@@ -112,7 +110,11 @@ public slots:
 	void setStatus(QString status);
 	void setStatusDescr(QString status,QString description);
 
+	// add Contact
 	void addItem(QString jid, QString name, QString group, bool subscribe);
+	// remove Contact
+	void remove(QString jid);
+
 	void receiveFile(QString,QString,bool);
 	bool write(const QDomDocument &d);
 
