@@ -95,6 +95,8 @@ void ChatManager::unregisterChat(Chat chat)
 	if (!Chats.contains(chat))
 		return;
 
+	printf("chat unregistered\n");
+
 	emit chatAboutToBeRemoved(chat);
 	chat.removeFromStorage();
 	emit chatRemoved(chat);
@@ -146,6 +148,8 @@ void ChatManager::chatTypeUnloaded()
 
 QList<Chat> ChatManager::chats()
 {
+	ensureLoaded();
+
 	return Chats;
 }
 
