@@ -316,7 +316,9 @@ void EncryptionManager::decryptMessage(Protocol *protocol, UserListElements send
 		//QTextStream encodingConverter(&msg);
 		//encodingConverter.setCodec("Windows-1250");
 		//encodingConverter << message;
-		msg = message;
+		QString tmp = cp2unicode(message);
+		msg = tmp.toUtf8();
+
 		// FIXME: remove
 		gg_msg_richtext_format format;
 		format.position = 0;
@@ -378,11 +380,11 @@ void EncryptionManager::turnEncryption(UserGroup *group, bool on)
 
 void EncryptionManager::sendMessageFilter(const UserListElements users, QByteArray &msg, bool &stop)
 {
-
 	ChatWidget* chat = chat_manager->findChatWidget(users);
 //	kdebugm(KDEBUG_INFO, "length: %d\n", msg.length());
 	if (users.count() == 1 && EncryptionEnabled[chat])
 	{
+		msg = unicode2cp(QString::fromUtf8(msg.constData()));
 		if(!EncryptionObject->encrypt(msg, (*users.constBegin()).ID("Gadu")))
 		{
 			kdebugm(KDEBUG_ERROR, "EncryptionObject->encrypt() failed! error=%d errorDescription=%s\n", EncryptionObject->error(), EncryptionObject->errorDescription());
