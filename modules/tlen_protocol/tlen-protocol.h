@@ -98,6 +98,13 @@ class TlenProtocol : public Protocol
 
 		void fetchAvatars(QString jid, QString type, QString md5);
 
+		void contactAdded(Buddy &buddy);
+		void contactRemoved(Buddy &buddy);
+		void contactUpdated(Buddy &buddy);
+		void contactAdded(Buddy &buddy, Account contactAccount);
+		void contactAboutToBeRemoved(Buddy &buddy, Account contactAccount);
+		void contactAccountIdChanged(Buddy &buddy, Account account, const QString &oldId);
+
 	public slots:
 		bool sendMessage(Chat *chat, FormattedMessage &message);
 

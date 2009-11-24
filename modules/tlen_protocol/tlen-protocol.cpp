@@ -87,11 +87,37 @@ TlenProtocol::TlenProtocol(Account account, ProtocolFactory *factory): Protocol(
 	CurrentAvatarService = new TlenAvatarService(this);
 	CurrentPersonalInfoService = new TlenPersonalInfoService(this);
 
+	connect(BuddyManager::instance(), SIGNAL(buddyAdded(Buddy &)),
+			this, SLOT(contactAdded(Buddy &)));
+	connect(BuddyManager::instance(), SIGNAL(buddyRemoved(Buddy &)),
+			this, SLOT(contactRemoved(Buddy &)));
+	connect(BuddyManager::instance(), SIGNAL(contactAdded(Buddy &, Account)),
+			this, SLOT(contactAboutToBeRemoved(Buddy & , Account)));
+	connect(BuddyManager::instance(), SIGNAL(contactAboutToBeRemoved(Buddy &, Account)),
+			this, SLOT(contactAboutToBeRemoved(Buddy &, Account)));
+	connect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy &)),
+			this, SLOT(contactUpdated(Buddy &)));
+	connect(BuddyManager::instance(), SIGNAL(contactIdChanged(Buddy &, Account, const QString &)),
+			this, SLOT(contactAccountIdChanged(Buddy &, Account, const QString &)));
+
 	kdebugf2();
 }
 
 TlenProtocol::~TlenProtocol()
 {
+	disconnect(BuddyManager::instance(), SIGNAL(buddyAdded(Buddy &)),
+			this, SLOT(contactAdded(Buddy &)));
+	disconnect(BuddyManager::instance(), SIGNAL(buddyRemoved(Buddy &)),
+			this, SLOT(contactRemoved(Buddy &)));
+	disconnect(BuddyManager::instance(), SIGNAL(contactAdded(Buddy &, Account)),
+			this, SLOT(contactAboutToBeRemoved(Buddy & , Account)));
+	disconnect(BuddyManager::instance(), SIGNAL(contactAboutToBeRemoved(Buddy &, Account)),
+			this, SLOT(contactAboutToBeRemoved(Buddy &, Account)));
+	disconnect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy &)),
+			this, SLOT(contactUpdated(Buddy &)));
+	disconnect(BuddyManager::instance(), SIGNAL(contactIdChanged(Buddy &, Account, const QString &)),
+			this, SLOT(contactAccountIdChanged(Buddy &, Account, const QString &)));
+
 	logout();
 }
 
@@ -418,6 +444,70 @@ Buddy TlenProtocol::nodeToBuddy(QDomNode node)
 
 	result.addContact(contact);
 	return result;
+}
+
+void TlenProtocol::contactAdded(Buddy &buddy)
+{
+	Contact contact = buddy.contact(account());
+	if (contact.isNull() || buddy.isAnonymous() || !TlenClient)
+		return;
+
+	QStringList groupsList;
+
+	//foreach (Group group, buddy.groups())
+	//	groupsList.append(group.name());
+	//TODO tlen pozwala na tylko 1 grupe
+	//TODO opcja żądania autoryzacji, na razie na sztywno true
+
+	TlenClient->addItem(contact.id(), buddy.display(), QString(), true);
+}
+
+void TlenProtocol::contactRemoved(Buddy &buddy)
+{
+	Contact contact = buddy.contact(account());
+	if (contact.isNull() || !isConnected() || !TlenClient)
+		return;
+
+	TlenClient->remove(contact.id());
+}
+
+void TlenProtocol::contactUpdated(Buddy &buddy)
+{
+	Contact contact = buddy.contact(account());
+	if (contact.isNull() || buddy.isAnonymous() || !TlenClient)
+		return;
+
+	QStringList groupsList;
+	//foreach (Group group, buddy.groups())
+	//	groupsList.append(group.name());
+
+	// TODO implement
+	//JabberClient->updateContact(contact.id(), buddy.display(), QString());
+}
+
+void TlenProtocol::contactAdded(Buddy &buddy, Account contactAccount)
+{
+	if (contactAccount != account())
+		return;
+
+	contactAdded(buddy);
+}
+
+void TlenProtocol::contactAboutToBeRemoved(Buddy &buddy, Account contactAccount)
+{
+	if (contactAccount != account())
+		return;
+
+	contactRemoved(buddy);
+}
+
+
+void TlenProtocol::contactAccountIdChanged(Buddy &buddy, Account contactAccount, const QString &oldId)
+{
+	if (contactAccount != account())
+		return;
+
+	contactUpdated(buddy);
 }
 
 void TlenProtocol::itemReceived(QString jid, QString name, QString subscription, QString group, bool sort)
