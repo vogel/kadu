@@ -105,6 +105,10 @@ public slots:
 	void tcfgRequest();
 	// pobiera dane zapisane w katalogu publicznym
 	void getPubDirInfoRequest();
+	// wysyla dane do katalogu publicznego
+	void setPubDirInfo(QString first, QString last, QString nick, QString email,
+			 QString city, int birth, int sex, int lookingFor, int job,
+			 int todayPlans, bool visible, bool mic, bool cam);
 
 	// "available","chat","away","xa","dnd","invisible","unavailable"
 	void setStatus(QString status);

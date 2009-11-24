@@ -467,6 +467,118 @@ void tlen::getPubDirInfoRequest() {
 	doc.appendChild( iq );
 	write(doc);
 }
+//<iq type="set" id="tw" to="tuba"><query xmlns="jabber:iq:register">...<nick>nick</nick>...</query></iq>
+void tlen::setPubDirInfo(QString first, QString last, QString nick, QString email,
+			 QString city, int birth, int sex, int lookingFor, int job,
+			 int todayPlans, bool visible, bool mic, bool cam)
+{
+	kdebugf();
+
+	QDomDocument doc;
+	QDomElement iq = doc.createElement( "iq" );
+	iq.setAttribute( "to", "tuba" );
+	iq.setAttribute( "type", "set" );
+	iq.setAttribute( "id", "tw" );
+
+	QDomElement query = doc.createElement( "query" );
+	query.setAttribute( "xmlns", "jabber:iq:register" );
+	iq.appendChild( query );
+
+	if (!first.isEmpty())
+	{
+		QDomElement tmp=doc.createElement("first");
+		QDomText t=doc.createTextNode(first);
+		tmp.appendChild(t);
+		query.appendChild(tmp);
+	}
+	if (!last.isEmpty())
+	{
+		QDomElement tmp=doc.createElement("last");
+		QDomText t=doc.createTextNode(last);
+		tmp.appendChild(t);
+		query.appendChild(tmp);
+	}
+	if (!nick.isEmpty())
+	{
+		QDomElement tmp=doc.createElement("nick");
+		QDomText t=doc.createTextNode(nick);
+		tmp.appendChild(t);
+		query.appendChild(tmp);
+	}
+	if (!email.isEmpty())
+	{
+		QDomElement tmp=doc.createElement("email");
+		QDomText t=doc.createTextNode(email);
+		tmp.appendChild(t);
+		query.appendChild(tmp);
+	}
+	if (!city.isEmpty())
+	{
+		QDomElement tmp=doc.createElement("city");
+		QDomText t=doc.createTextNode(city);
+		tmp.appendChild(t);
+		query.appendChild(tmp);
+	}
+	if (birth > 0)
+	{
+		QDomElement tmp=doc.createElement("b");
+		QDomText t=doc.createTextNode(QString::number(birth));
+		tmp.appendChild(t);
+		query.appendChild(tmp);
+	}
+	if (sex > 0)
+	{
+		QDomElement tmp=doc.createElement("s");
+		QDomText t=doc.createTextNode(QString::number(sex));
+		tmp.appendChild(t);
+		query.appendChild(tmp);
+	}
+	if (lookingFor > 0)
+	{
+		QDomElement tmp=doc.createElement("r");
+		QDomText t=doc.createTextNode(QString::number(lookingFor));
+		tmp.appendChild(t);
+		query.appendChild(tmp);
+	}
+	if (job > 0)
+	{
+		QDomElement tmp=doc.createElement("j");
+		QDomText t=doc.createTextNode(QString::number(job));
+		tmp.appendChild(t);
+		query.appendChild(tmp);
+	}
+	if (todayPlans > 0)
+	{
+		QDomElement tmp=doc.createElement("p");
+		QDomText t=doc.createTextNode(QString::number(todayPlans));
+		tmp.appendChild(t);
+		query.appendChild(tmp);
+	}
+	if (visible)
+	{
+		QDomElement tmp=doc.createElement("v");
+		QDomText t=doc.createTextNode("1");
+		tmp.appendChild(t);
+		query.appendChild(tmp);
+	}
+	if (mic)
+	{
+		QDomElement tmp=doc.createElement("g");
+		QDomText t=doc.createTextNode("1");
+		tmp.appendChild(t);
+		query.appendChild(tmp);
+	}
+	if (cam)
+	{
+		QDomElement tmp=doc.createElement("k");
+		QDomText t=doc.createTextNode("1");
+		tmp.appendChild(t);
+		query.appendChild(tmp);
+	}
+
+	doc.appendChild( iq );
+	write(doc);
+}
 
 void tlen::tcfgReceived(QDomElement &n)
 {
