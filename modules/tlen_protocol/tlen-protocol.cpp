@@ -585,7 +585,7 @@ void TlenProtocol::presenceChanged(QString from, QString newstatus, QString desc
 	kdebugf2();
 }
 
-void TlenProtocol::authorizationAsk(QString from)
+void TlenProtocol::authorizationAsk(QString to)
 {
 	kdebugf();
 //	if( rosterItem *item = rosterModel->find(from) ) {
@@ -597,12 +597,12 @@ void TlenProtocol::authorizationAsk(QString from)
 				tr("User authorization"),
 				tr("User %1 requested authorization from You."
 				"Do you want to authorize him?")
-				.arg(from),
+				.arg(to),
 				tr("&Yes"), tr("&No"),
 				QString(), 2, 1))
-		emit authorize(from, false);
+		emit authorize(to, false);
 	else
-		emit authorize(from, true);
+		emit authorize(to, true);
 }
 
 void TlenProtocol::removeItem(QString a)

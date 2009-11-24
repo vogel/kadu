@@ -81,7 +81,7 @@ class TlenProtocol : public Protocol
 		void presenceDisconnected();
 		void itemReceived(QString jid, QString name, QString subscription, QString group, bool sort);
 		void presenceChanged(QString from, QString status, QString description);
-		void authorizationAsk(QString);
+		void authorizationAsk(QString to);
 		void removeItem(QString);
 
 		void sortRoster();
@@ -109,7 +109,7 @@ class TlenProtocol : public Protocol
 		bool sendMessage(Chat *chat, FormattedMessage &message);
 
 	signals:
-		void authorize(QString,bool);
+		void authorize(QString to, bool subscribe);
 
 		void userStatusChangeIgnored(Buddy);
                 void sendMessageFiltering(Chat *chat, QByteArray &msg, bool &stop);
