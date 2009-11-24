@@ -400,7 +400,7 @@ Buddy TlenProtocol::nodeToBuddy(QDomNode node)
 		}
 		else if (mmName == "email")
 		{
-			result.setEmail(mm.text());
+			result.setEmail(TlenClient->decode(mm.text()));
 		}
 		else if (mmName == "b")
 		{

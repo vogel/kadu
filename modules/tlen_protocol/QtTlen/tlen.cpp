@@ -515,7 +515,7 @@ void tlen::setPubDirInfo(QString first, QString last, QString nick, QString emai
 	if (!email.isEmpty())
 	{
 		QDomElement tmp=doc.createElement("email");
-		QDomText t=doc.createTextNode(email);
+		QDomText t=doc.createTextNode(QString(encode(email)));
 		tmp.appendChild(t);
 		query.appendChild(tmp);
 	}
