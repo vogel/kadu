@@ -225,7 +225,7 @@ void tlen::event(QDomNode n) {
 	}
 	else if(nodeName=="item") {
 		QDomElement e=n.toElement();
-		QString jid=e.attribute("jid");
+		QString jid=decode(e.attribute("jid"));
 		QString subscription=e.attribute("subscription");
 		QString name=NULL, group=NULL;
 
@@ -260,7 +260,7 @@ void tlen::event(QDomNode n) {
 	}
 	else if(nodeName=="presence") {
 		QDomElement e=n.toElement();
-		QString from=e.attribute("from");
+		QString from=decode(e.attribute("from"));
 
 		if(e.hasAttribute("type") && e.attribute("type")=="subscribe") {
 			emit authorizationAsk(from);
@@ -289,7 +289,7 @@ void tlen::event(QDomNode n) {
 					QDomElement avatar = l.item(i).toElement().elementsByTagName("a").item(0).toElement();
 					if (avatar.hasAttribute("type") && avatar.hasAttribute("md5"))
 					{
-						emit avatarReceived(from, avatar.attribute("type"), avatar.attribute("md5"));
+						emit avatarReceived(decode(from), avatar.attribute("type"), avatar.attribute("md5"));
 						qDebug() << "Avatar " << from << "type:" <<avatar.attribute("type") << "md5:" << avatar.attribute("md5");
 					}
 				}
@@ -308,7 +308,7 @@ void tlen::event(QDomNode n) {
 	else if(nodeName=="m") {
 		QDomElement e=n.toElement();
 		if(e.hasAttribute("tp")) {
-			emit chatNotify(e.attribute("f"), e.attribute("tp"));
+			emit chatNotify(decode(e.attribute("f")), e.attribute("tp"));
 		}
 	}
 	else if(nodeName=="n") {
@@ -768,7 +768,7 @@ void tlen::authorize( QString to, bool subscribe ) {
 	kdebugf();
 	QDomDocument doc;
 	QDomElement p=doc.createElement("presence");
-	p.setAttribute("to", to);
+	p.setAttribute("to", encode(to));
 
 	if(subscribe) {
 		p.setAttribute("type", "subscribe");
@@ -776,7 +776,7 @@ void tlen::authorize( QString to, bool subscribe ) {
 		write(doc);
 		doc.clear();
 		p=doc.createElement("presence");
-		p.setAttribute("to", to);
+		p.setAttribute("to", encode(to));
 		p.setAttribute("type", "subscribed");
 	}
 	else {
@@ -807,7 +807,7 @@ void tlen::addItem( QString jid, QString name, QString g, bool subscribe ) {
 	if (atPos==-1)
 		jid+="@tlen.pl";
 
-	item.setAttribute("jid", jid.toLower());
+	item.setAttribute("jid", encode(jid.toLower()));
 
 	if(!name.isEmpty())
 		item.setAttribute("name", QString( encode( name ) ) );
@@ -828,7 +828,7 @@ void tlen::addItem( QString jid, QString name, QString g, bool subscribe ) {
 		doc.clear();
 		QDomElement p=doc.createElement("presence");
 		p.setAttribute("type","subscribe");
-		p.setAttribute("to", jid.toLower());
+		p.setAttribute("to", encode(jid.toLower()));
 		doc.appendChild(p);
 		write(doc);
 	}
@@ -846,7 +846,7 @@ void tlen::remove(QString jid) {
 
 	QDomElement item=doc.createElement("item");
 	item.setAttribute("subscription","remove");
-	item.setAttribute("jid", jid);
+	item.setAttribute("jid", encode(jid));
 
 	query.appendChild(item);
 	iq.appendChild(query);
@@ -874,7 +874,7 @@ void tlen::chatNotify( QString to, bool t )
 	kdebugf();
 	QDomDocument doc;
 	QDomElement m=doc.createElement("m");
-	m.setAttribute("to", to);
+	m.setAttribute("to", encode(to));
 
 	if(t)
 		m.setAttribute("tp", "t");
@@ -890,7 +890,7 @@ void tlen::sendAlarm(QString to)
 	kdebugf();
 	QDomDocument doc;
 	QDomElement m=doc.createElement("m");
-	m.setAttribute("to", to);
+	m.setAttribute("to", encode(to));
 	m.setAttribute("tp", "a");
 	doc.appendChild(m);
 	write(doc);
