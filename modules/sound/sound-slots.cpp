@@ -179,14 +179,14 @@ void SoundSlots::testSamplePlaying()
 	QFile file(chatsound);
 	if (!file.open(IO_ReadOnly))
 	{
-		MessageBox::msg(tr("Opening test sample file failed."), false, "Warning");
+		MessageDialog::msg(tr("Opening test sample file failed."), false, "Warning");
 		return;
 	}
 	// we are allocating 1 more word just in case of file.size() % sizeof(qint16) != 0
 	SamplePlayingTestSample = new qint16[file.size() / sizeof(qint16) + 1];
 	if (file.readBlock((char*)SamplePlayingTestSample, file.size()) != (unsigned)file.size())
 	{
-		MessageBox::msg(tr("Reading test sample file failed."), false, "Warning");
+		MessageDialog::msg(tr("Reading test sample file failed."), false, "Warning");
 		file.close();
 		delete[] SamplePlayingTestSample;
 		SamplePlayingTestSample = NULL;
@@ -197,7 +197,7 @@ void SoundSlots::testSamplePlaying()
 	SamplePlayingTestDevice = sound_manager->openDevice(PLAY_ONLY, 11025);
 	if (SamplePlayingTestDevice == NULL)
 	{
-		MessageBox::msg(tr("Opening sound device failed."), false, "Warning");
+		MessageDialog::msg(tr("Opening sound device failed."), false, "Warning");
 		delete[] SamplePlayingTestSample;
 		SamplePlayingTestSample = NULL;
 		return;
@@ -207,7 +207,7 @@ void SoundSlots::testSamplePlaying()
 	sound_manager->setFlushingEnabled(SamplePlayingTestDevice, true);
 	connect(sound_manager, SIGNAL(samplePlayed(SoundDevice)), this, SLOT(samplePlayingTestSamplePlayed(SoundDevice)));
 
-	SamplePlayingTestMsgBox = new MessageBox(tr("Testing sample playing. You should hear some sound now."));
+	SamplePlayingTestMsgBox = new MessageDialog(tr("Testing sample playing. You should hear some sound now."));
 	SamplePlayingTestMsgBox->show();
 
 	sound_manager->playSample(SamplePlayingTestDevice, SamplePlayingTestSample, file.size());
@@ -238,7 +238,7 @@ void SoundSlots::testSampleRecording()
 	SampleRecordingTestDevice = sound_manager->openDevice(SoundDeviceRecordOnly, 8000);
 	if (SampleRecordingTestDevice == NULL)
 	{
-		MessageBox::msg(tr("Opening sound device failed."), false, "Warning");
+		MessageDialog::msg(tr("Opening sound device failed."), false, "Warning");
 		return;
 	}
 	SampleRecordingTestSample = new qint16[8000 * 3];//3 seconds of 16-bit sound with 8000Hz frequency
@@ -247,7 +247,7 @@ void SoundSlots::testSampleRecording()
 	sound_manager->setFlushingEnabled(SampleRecordingTestDevice, true);
 	connect(sound_manager, SIGNAL(sampleRecorded(SoundDevice)), this, SLOT(sampleRecordingTestSampleRecorded(SoundDevice)));
 
-	SampleRecordingTestMsgBox = new MessageBox(tr("Testing sample recording. Please talk now (3 seconds)."));
+	SampleRecordingTestMsgBox = new MessageDialog(tr("Testing sample recording. Please talk now (3 seconds)."));
 	SampleRecordingTestMsgBox->show();
 
 	sound_manager->recordSample(SampleRecordingTestDevice, SampleRecordingTestSample, sizeof(qint16) * 8000 * 3);
@@ -268,14 +268,14 @@ void SoundSlots::sampleRecordingTestSampleRecorded(SoundDevice device)
 		if (device == NULL)
 		{
 			delete[] SampleRecordingTestSample;
-			MessageBox::msg(tr("Cannot open sound device for playing!"), false, "Warning");
+			MessageDialog::msg(tr("Cannot open sound device for playing!"), false, "Warning");
 			kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "end: cannot open play device\n");
 			return;
 		}
 
 		sound_manager->enableThreading(SampleRecordingTestDevice);
 		sound_manager->setFlushingEnabled(SampleRecordingTestDevice, true);
-		SampleRecordingTestMsgBox = new MessageBox(tr("You should hear your recorded sample now."));
+		SampleRecordingTestMsgBox = new MessageDialog(tr("You should hear your recorded sample now."));
 		SampleRecordingTestMsgBox->show();
 
 		connect(sound_manager, SIGNAL(samplePlayed(SoundDevice)), this, SLOT(sampleRecordingTestSamplePlayed(SoundDevice)));
@@ -308,7 +308,7 @@ void SoundSlots::testFullDuplex()
 	FullDuplexTestDevice = sound_manager->openDevice(SoundDevicePlayAndRecord, 8000);
 	if (FullDuplexTestDevice == NULL)
 	{
-		MessageBox::msg(tr("Opening sound device failed."), false, "Warning");
+		MessageDialog::msg(tr("Opening sound device failed."), false, "Warning");
 		return;
 	}
 	FullDuplexTestSample = new qint16[8000];
@@ -316,7 +316,7 @@ void SoundSlots::testFullDuplex()
 	sound_manager->enableThreading(FullDuplexTestDevice);
 	connect(sound_manager, SIGNAL(sampleRecorded(SoundDevice)), this, SLOT(fullDuplexTestSampleRecorded(SoundDevice)));
 
-	FullDuplexTestMsgBox = new MessageBox(tr("Testing fullduplex. Please talk now.\nYou should hear it with one second delay."), MessageBox::OK);
+	FullDuplexTestMsgBox = new MessageDialog(tr("Testing fullduplex. Please talk now.\nYou should hear it with one second delay."), MessageDialog::OK);
 	connect(FullDuplexTestMsgBox, SIGNAL(okPressed()), this, SLOT(closeFullDuplexTest()));
 	FullDuplexTestMsgBox->show();
 

@@ -10,17 +10,17 @@
 #ifndef JABBER_AVATAR_SERVICE_H
 #define JABBER_AVATAR_SERVICE_H
 
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "protocols/services/avatar-service.h"
 
 class JabberAvatarService : public AvatarService
 {
 	Q_OBJECT
-	ContactAccountData *MyContactAccountData;
+	Contact MyContact;
 
 public:
 	JabberAvatarService(QObject *parent = 0) : AvatarService(parent) {}
-	void fetchAvatar(ContactAccountData *contactAccountData);
+	void fetchAvatar(Contact contact);
 
 };
 

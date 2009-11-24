@@ -11,10 +11,11 @@
 #define CHAT_NAME_FILTER_H
 
 #include "chat/filter/chat-filter.h"
+#include "exports.h"
 
 class BuddyNameFilter;
 
-class ChatNameFilter : public ChatFilter
+class KADUAPI ChatNameFilter : public ChatFilter
 {
 	QString Name;
 	BuddyNameFilter *Filter;

@@ -16,14 +16,14 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/group.h"
 #include "buddies/group-manager.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "gui/actions/action.h"
 #include "gui/widgets/buddies-list-view-menu-manager.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/custom-input.h"
 #include "gui/windows/main-configuration-window.h"
 #include "gui/windows/main-window.h"
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
 #include "notify/contact-notify-data.h"
 #include "notify/notifier.h"
 #include "notify/notify-configuration-ui-handler.h"
@@ -75,7 +75,7 @@ void NotificationManager::init()
 
 	BuddiesListViewMenuManager::instance()->addManagementActionDescription(notifyAboutUserActionDescription);
 
-	foreach (Group *group, GroupManager::instance()->groups())
+	foreach (Group group, GroupManager::instance()->groups())
 		groupAdded(group);
 
 	new WindowNotifier(this);
@@ -182,8 +182,12 @@ void NotificationManager::accountRegistered(Account account)
 void NotificationManager::accountUnregistered(Account account)
 {
 	Protocol *protocol = account.protocolHandler();
+
+	if (!protocol)
+		return;
+
 	disconnect(protocol, SIGNAL(connectionError(Account, const QString &, const QString &)),
-			this, SLOT(connectionError(Account, const QString &, const QString &)));
+			this, SLOT(connectionError(Account, const QString &, const QString &))); // TODO: fix
 	disconnect(account.data(), SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
 			this, SLOT(statusChanged(Account, Buddy, Status)));
 
@@ -225,19 +229,19 @@ void NotificationManager::statusChanged(Account account, Buddy buddy, Status old
 	if (buddy.id(account) == account.id()) // myself
 		return;
 
-	ContactAccountData *data = buddy.accountData(account);
-	if (!data)
+	Contact data = buddy.contact(account);
+	if (data.isNull())
 		return;
 
-	if (oldStatus == data->status())
+	if (oldStatus == data.currentStatus())
 		return;
 
 	if (config_file.readBoolEntry("Notify", "IgnoreOnlineToOnline") &&
-			!data->status().isDisconnected() &&
+			!data.currentStatus().isDisconnected() &&
 			!oldStatus.isDisconnected())
 		return;
 
-	QString changedTo = "/To" + Status::name(data->status(), false);
+	QString changedTo = "/To" + Status::name(data.currentStatus(), false);
 
 	BuddySet buddies(buddy);
 
@@ -368,19 +372,23 @@ void NotificationManager::notify(Notification *notification)
 	notification->release();
 
 	if (!foundNotifierWithCallbackSupported)
-		MessageBox::msg(tr("Unable to find notifier for %1 event").arg(notification->type()), true, "Warning");
+		MessageDialog::msg(tr("Unable to find notifier for %1 event").arg(notification->type()), true, "Warning");
 
 	kdebugf2();
 }
 
-void NotificationManager::groupAdded(Group *group)
+void NotificationManager::groupAdded(Group group)
 {
-	connect(group, SIGNAL(notifyAboutStatusesChanged(Group *)), this, SLOT(groupNotifyChanged(Group *)));
+	connect(group, SIGNAL(updated()), this, SLOT(groupUpdated()));
 }
 
-void NotificationManager::groupNotifyChanged(Group *group)
+void NotificationManager::groupUpdated()
 {
-	bool notify = group->notifyAboutStatusChanges();
+	Group group = sender();
+	if (group.isNull())
+		return;
+
+	bool notify = group.notifyAboutStatusChanges();
 
 	if (NotifyAboutAll)
 	{
@@ -426,7 +434,7 @@ void checkNotify(Action *action)
 	kdebugf();
 
 	foreach(Buddy buddy, action->buddies())
-		if (!buddy.hasAccountData(buddy.prefferedAccount()))
+		if (!buddy.hasContact(buddy.prefferedAccount()))
 		{
 			action->setEnabled(false);
 			return;

@@ -12,7 +12,7 @@
 #include "non-account-buddy-filter.h"
 
 NonAccountBuddyFilter::NonAccountBuddyFilter(QObject *parent) :
-		AbstractBuddyFilter(parent), CurrentAccount(0)
+		AbstractBuddyFilter(parent), CurrentAccount(Account::null)
 {
 }
 
@@ -31,5 +31,5 @@ void NonAccountBuddyFilter::setAccount(Account account)
 
 bool NonAccountBuddyFilter::acceptBuddy(Buddy buddy)
 {
-	return CurrentAccount.isNull() || !buddy.hasAccountData(CurrentAccount);
+	return CurrentAccount.isNull() || !buddy.hasContact(CurrentAccount);
 }

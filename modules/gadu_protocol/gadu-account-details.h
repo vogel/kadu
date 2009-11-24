@@ -17,8 +17,6 @@
 
 class GaduAccountDetails : public AccountDetails
 {
-	UinType Uin;
-
 	PROPERTY_DEC(bool, AllowDcc)
 	PROPERTY_DEC(QHostAddress, DccIP)
 	PROPERTY_DEC(bool, DccIpDetect)
@@ -32,7 +30,7 @@ class GaduAccountDetails : public AccountDetails
 	GaduOpenChatWithRunner *OpenChatRunner;
 
 public:
-	explicit GaduAccountDetails(StoragePoint *storagePoint, Account parent = Account::null);
+	explicit GaduAccountDetails(AccountShared *data);
 	virtual ~GaduAccountDetails();
 
 	virtual void load();

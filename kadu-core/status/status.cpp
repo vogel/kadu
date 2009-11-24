@@ -34,7 +34,7 @@ Status::~Status()
 
 void Status::setType(const QString& type)
 {
-	Group = "Offline";
+	Group= "Offline";
 	Type = type;
 
 	StatusType *statusType = StatusTypeManager::instance()->statusType(Type);
@@ -46,7 +46,7 @@ void Status::setType(const QString& type)
 
 	StatusGroup *statusGroup = statusType->statusGroup();
 	if (statusGroup)
-		Group = statusGroup->name();
+		Group= statusGroup->name();
 }
 
 QString Status::name(const Status &status, bool fullName)

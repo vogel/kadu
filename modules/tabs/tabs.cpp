@@ -102,7 +102,7 @@ void disableNewTab(Action *action)
 }
 
 TabsManager::TabsManager(bool firstload) :
-	QObject(), StorableObject("ModuleTabs", 0, false)
+	QObject(), StorableObject("ModuleTabs", 0)
 {
 	kdebugf();
 
@@ -119,7 +119,7 @@ TabsManager::TabsManager(bool firstload) :
 	connect(&timer, SIGNAL(timeout()),
 			this, SLOT(onTimer()));
 
-	Core::instance()->configuration()->registerStorableObject(this);
+	ConfigurationManager::instance()->registerStorableObject(this);
 
 	openInNewTabActionDescription = new ActionDescription(
 		0, ActionDescription::TypeUser, "openInNewTabAction",
@@ -618,17 +618,9 @@ void TabsManager::load()
 	XmlConfigFile *storageFile = storage()->storage();
 	QDomElement point = storage()->point();
 
-	QDomNodeList nodes = storageFile->getNodes(point, "Tab");
-	int count = nodes.count();
-
-	for (int i = 0; i < count; i++)
+	QList<QDomElement> nodes = storageFile->getNodes(point, "Tab");
+	foreach (QDomElement element, nodes)
 	{
-		QDomNode node = nodes.at(i);
-		if (!node.isElement())
-			return;
-
-		QDomElement element = node.toElement();
-
 		QUuid chatId(element.attribute("chat"));
 
 		if (chatId.isNull())
@@ -859,7 +851,6 @@ void TabsManager::repaintTabs()
 
 QString TabsManager::formatTabName(ChatWidget * chatWidget)
 {
-	//int contactsCount = chat->contacts().count();
 	int contactsCount = chatWidget->chat()->buddies().count();
 
 	QString TabName;
@@ -867,8 +858,7 @@ QString TabsManager::formatTabName(ChatWidget * chatWidget)
 	if (contactsCount > 1)
 		TabName = tr("Conference [%1]").arg(contactsCount);
 	else
-		//TabName = chat->contacts()[0].display();
-		TabName = chatWidget->chat()->buddies().toBuddyList()[0].display();
+		TabName = chatWidget->chat()->name();
 
 	return TabName;
 }

@@ -15,12 +15,12 @@
 
 #include "gadu-account-details.h"
 
-GaduAccountDetails::GaduAccountDetails(StoragePoint *storagePoint, Account parent) :
-		AccountDetails(storagePoint, parent),
+GaduAccountDetails::GaduAccountDetails(AccountShared *data) :
+		AccountDetails(data),
 		AllowDcc(true), DccIP(QHostAddress()), DccExternalIP(QHostAddress()), DccIpDetect(true),
 		DccPort(0), DccExternalPort(0), DccLocalPort(0), RemoveCompletedTransfers(0), DccForwarding(0)
 {
-	OpenChatRunner = new GaduOpenChatWithRunner(parent);
+	OpenChatRunner = new GaduOpenChatWithRunner(data);
 	OpenChatWithRunnerManager::instance()->registerRunner(OpenChatRunner);
 }
 
@@ -93,5 +93,5 @@ void GaduAccountDetails::import_0_6_5_LastStatus()
 
 UinType GaduAccountDetails::uin()
 {
-	return account().id().toULong();
+	return accountData()->id().toULong();
 }

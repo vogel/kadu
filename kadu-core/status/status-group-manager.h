@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef STATUS_GROUP_MANAGER
-#define STATUS_GROUP_MANAGER
+#ifndef STATUS_GROUP_MANAGER_H
+#define STATUS_GROUP_MANAGER_H
 
 #include <QtCore/QList>
 #include <QtCore/QMap>
@@ -38,4 +38,4 @@ public:
 
 };
 
-#endif // STATUS_GROUP_MANAGER
+#endif // STATUS_GROUP_MANAGER_H

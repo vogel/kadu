@@ -63,7 +63,7 @@ Agent::Agent() : QObject(NULL, "agent")
 		listFile.setName(QString(ggPath("spy-unknownslist").ascii()));
 		if(listFile.open(IO_ReadOnly))
 		{
-			if(MessageBox::ask(tr("Agent has founded spy's unknown-users list. Do you want to append this list to agent module?")))
+			if(MessageDialog::ask(tr("Agent has founded spy's unknown-users list. Do you want to append this list to agent module?")))
 			{
 				QTextStream stream(&listFile);
 

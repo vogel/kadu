@@ -17,7 +17,7 @@
 #include "configuration/configuration-file.h"
 #include "buddies/buddy-kadu-data.h"
 #include "gui/widgets/chat-widget-manager.h"
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
 
 #include "activate.h"
 #include "debug.h"
@@ -178,7 +178,7 @@ void ChatWindow::closeEvent(QCloseEvent *e)
 
 		if (QDateTime::currentDateTime() < currentChatWidget->lastMessageTime().addSecs(period))
 		{
-			if (!MessageBox::ask(tr("New message received, close window anyway?")))
+			if (!MessageDialog::ask(tr("New message received, close window anyway?")))
 			{
 				e->ignore();
 				return;

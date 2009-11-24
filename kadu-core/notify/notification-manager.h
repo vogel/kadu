@@ -66,8 +66,8 @@ private slots:
 
 	void notifyAboutUserActionActivated(QAction *sender, bool toggled);
 
-	void groupAdded(Group *group);
-	void groupNotifyChanged(Group *group);
+	void groupAdded(Group group);
+	void groupUpdated();
 
 protected:
 	virtual void accountRegistered(Account account);

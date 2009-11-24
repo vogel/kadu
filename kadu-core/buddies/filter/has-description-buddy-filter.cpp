@@ -9,7 +9,7 @@
 
 #include "accounts/account.h"
 
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 
 #include "has-description-buddy-filter.h"
 
@@ -36,5 +36,5 @@ bool HasDescriptionBuddyFilter::acceptBuddy(Buddy buddy)
 	if (prefferedAccount.isNull())
 		return false;
 
-	return !buddy.accountData(prefferedAccount)->status().description().isEmpty();
+	return !buddy.contact(prefferedAccount).currentStatus().description().isEmpty();
 }

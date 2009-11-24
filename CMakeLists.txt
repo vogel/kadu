@@ -19,10 +19,9 @@ include (FindPkgConfig)
 include (CheckIncludeFiles)
 include (CheckFunctionExists)
 
-find_package (Subversion)
-if (Subversion_FOUND)
-	execute_process (COMMAND svnversion -n ${CMAKE_CURRENT_SOURCE_DIR} OUTPUT_VARIABLE DETAILED_VERSION)
-endif (Subversion_FOUND)
+if (NOT DETAILED_VERSION)
+	set(DETAILED_VERSION "0" CACHE STRING "Additional version numer" FORCE)
+endif(NOT DETAILED_VERSION)
 
 file (READ ${CMAKE_CURRENT_SOURCE_DIR}/VERSION KADU_VERSION)
 string (REPLACE "\n" "" KADU_VERSION ${KADU_VERSION})

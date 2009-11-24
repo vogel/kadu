@@ -11,10 +11,14 @@
 #include <QtCore/QFile>
 
 #include "accounts/account.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "buddies/avatar.h"
+#include "buddies/avatar-shared.h"
+#include "configuration/configuration-manager.h"
+#include "contacts/contact.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
 #include "protocols/services/avatar-service.h"
+#include "debug.h"
 
 #include "avatar-manager.h"
 
@@ -30,12 +34,104 @@ AvatarManager * AvatarManager::instance()
 
 AvatarManager::AvatarManager()
 {
+	ConfigurationManager::instance()->registerStorableObject(this);
 	triggerAllAccountsRegistered();
 }
 
 AvatarManager::~AvatarManager()
 {
+	ConfigurationManager::instance()->unregisterStorableObject(this);
 	triggerAllAccountsUnregistered();
+}
+
+void AvatarManager::load()
+{
+	if (!isValidStorage())
+		return;
+	
+	if (!needsLoad())
+		return;
+	
+	StorableObject::load();
+	
+	QDomElement avatarsNode = storage()->point();
+	if (avatarsNode.isNull())
+		return;
+	
+	QList<QDomElement> avatarElements = storage()->storage()->getNodes(avatarsNode, "Avatar");
+	foreach (QDomElement avatarElement, avatarElements)
+	{
+		StoragePoint *storagePoint = new StoragePoint(storage()->storage(), avatarElement);
+		Avatar avatar = Avatar::loadFromStorage(storagePoint);
+		addAvatar(avatar);
+	}
+}
+
+void AvatarManager::store()
+{
+	if (!isValidStorage())
+		return;
+
+	StorableObject::ensureLoaded();
+
+	foreach (Avatar avatar, Avatars)
+		avatar.store();
+}
+
+void AvatarManager::addAvatar(Avatar avatar)
+{
+	if (avatar.isNull())
+		return;
+
+	StorableObject::ensureLoaded();
+
+	if (Avatars.contains(avatar))
+		return;
+
+	emit avatarAboutToBeAdded(avatar);
+	Avatars.append(avatar);
+	emit avatarAdded(avatar);
+}
+
+void AvatarManager::removeAvatar(Avatar avatar)
+{
+	kdebugf();
+
+	if (avatar.isNull())
+		return;
+
+	StorableObject::ensureLoaded();
+
+	if (!Avatars.contains(avatar))
+		return;
+
+	emit avatarAboutToBeRemoved(avatar);
+	Avatars.removeAll(avatar);
+	emit avatarRemoved(avatar);
+}
+
+Avatar AvatarManager::byIndex(unsigned int index)
+{
+	StorableObject::ensureLoaded();
+
+	if (index < 0 || index >= count())
+		return Avatar::null;
+
+	return Avatars.at(index);
+}
+
+Avatar AvatarManager::byUuid(const QString &uuid)
+{
+	StorableObject::ensureLoaded();
+
+	if (uuid.isEmpty())
+		return Avatar::null;
+
+	foreach (Avatar avatar, Avatars)
+		if (uuid == avatar.uuid().toString())
+			return avatar;
+
+	return Avatar::null;
 }
 
 AvatarService * AvatarManager::avatarService(Account account)
@@ -47,9 +143,9 @@ AvatarService * AvatarManager::avatarService(Account account)
 	return protocol->avatarService();
 }
 
-AvatarService * AvatarManager::avatarService(ContactAccountData *contactAccountData)
+AvatarService * AvatarManager::avatarService(Contact contact)
 {
-	Account account = contactAccountData->account();
+	Account account = contact.contactAccount();
 	if (account.isNull())
 		return 0;
 
@@ -58,15 +154,12 @@ AvatarService * AvatarManager::avatarService(ContactAccountData *contactAccountD
 
 QString AvatarManager::avatarFileName(Avatar avatar)
 {
-	ContactAccountData *cad = avatar.contactAccountData();
-	if (!cad)
-		return QString::null;
+	return avatar.uuid().toString();
+}
 
-	Account account = cad->account();
-	if (account.isNull())
-		return QString::null;
-
-	return QString("%1-%2").arg(cad->buddy().uuid().toString(), account.uuid().toString());
+StoragePoint * AvatarManager::createStoragePoint()
+{
+	return new StoragePoint(xml_config_file, xml_config_file->getNode("Avatars"));
 }
 
 void AvatarManager::accountRegistered(Account account)
@@ -75,8 +168,8 @@ void AvatarManager::accountRegistered(Account account)
 	if (!service)
 		return;
 
-	connect(service, SIGNAL(avatarFetched(ContactAccountData *, const QByteArray &)),
-			this, SLOT(avatarFetched(ContactAccountData *, const QByteArray &)));
+	connect(service, SIGNAL(avatarFetched(Contact, const QByteArray &)),
+			this, SLOT(avatarFetched(Contact, const QByteArray &)));
 }
 
 void AvatarManager::accountUnregistered(Account account)
@@ -85,27 +178,27 @@ void AvatarManager::accountUnregistered(Account account)
 	if (!service)
 		return;
 
-	disconnect(service, SIGNAL(avatarFetched(ContactAccountData *, const QByteArray &)),
-			   this, SLOT(avatarFetched(ContactAccountData *, const QByteArray &)));
+	disconnect(service, SIGNAL(avatarFetched(Contact, const QByteArray &)),
+			   this, SLOT(avatarFetched(Contact, const QByteArray &)));
 }
 
-void AvatarManager::updateAvatar(ContactAccountData *contactAccountData)
+void AvatarManager::updateAvatar(Contact contact)
 {
-	QDateTime lastUpdated = contactAccountData->avatar().lastUpdated();
-	QDateTime nextUpdate = contactAccountData->avatar().nextUpdate();
-	if (lastUpdated.isValid() && lastUpdated.secsTo(QDateTime::currentDateTime()) < 60*60 || QFile::exists(contactAccountData->avatar().filePath()) && nextUpdate > QDateTime::currentDateTime())
+	QDateTime lastUpdated = contact.contactAvatar().lastUpdated();
+	QDateTime nextUpdate = contact.contactAvatar().nextUpdate();
+	if (lastUpdated.isValid() && lastUpdated.secsTo(QDateTime::currentDateTime()) < 60*60 || QFile::exists(contact.contactAvatar().filePath()) && nextUpdate > QDateTime::currentDateTime())
 		return;
 
-	AvatarService *service = avatarService(contactAccountData);
+	AvatarService *service = avatarService(contact);
 	if (!service)
 		return;
 
-	service->fetchAvatar(contactAccountData);
+	service->fetchAvatar(contact);
 }
 
-void AvatarManager::avatarFetched(ContactAccountData *contactAccountData, const QByteArray &data)
+void AvatarManager::avatarFetched(Contact contact, const QByteArray &data)
 {
-	Avatar &avatar = contactAccountData->avatar();
+	Avatar avatar = contact.contactAvatar();
 	avatar.setLastUpdated(QDateTime::currentDateTime());
 
 	QPixmap pixmap;
@@ -120,11 +213,12 @@ void AvatarManager::avatarFetched(ContactAccountData *contactAccountData, const 
 		avatarsDir.mkpath(ggPath("avatars"));
 
 	QFile file(avatarsDir.canonicalPath() + "/" + avatarFile);
+
 	if (!file.open(QIODevice::WriteOnly))
 		return;
 
 	file.write(data);
 	file.close();
 
-	emit avatarUpdated(contactAccountData);
+	emit avatarUpdated(contact);
 }

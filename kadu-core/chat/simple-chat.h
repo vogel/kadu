@@ -10,17 +10,19 @@
 #ifndef SIMPLE_CHAT_H
 #define SIMPLE_CHAT_H
 
+#include "contacts/contact.h"
+
 #include "chat/chat.h"
 
 class XmlConfigFile;
 
 class SimpleChat : public Chat
 {
-	ContactAccountData *CurrentContactAccountData;
+	Contact CurrentContact;
 
 public:
 	explicit SimpleChat(StoragePoint *storage);
-	explicit SimpleChat(Account parentAccount, ContactAccountData *cad, QUuid uuid = QUuid());
+	explicit SimpleChat(Account parentAccount, Contact contact, QUuid uuid = QUuid());
 	virtual ~SimpleChat();
 
 	virtual void load();

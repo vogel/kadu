@@ -10,19 +10,19 @@
 #ifndef GADU_CONTACT_ACCOUNT_DATA
 #define GADU_CONTACT_ACCOUNT_DATA
 
-#include "buddies/account-data/contact-account-data-details.h"
+#include "contacts/contact-details.h"
 
 #include "gadu-protocol.h"
 
 class Account;
 
-class GaduContactAccountDataDetails : public ContactAccountDataDetails
+class GaduContactDetails : public ContactDetails
 {
 	unsigned long MaxImageSize;
 	unsigned int GaduProtocolVersion;
 
 public:
-	GaduContactAccountDataDetails();
+	GaduContactDetails();
 
 	virtual bool validateId();
 

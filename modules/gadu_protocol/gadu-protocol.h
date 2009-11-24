@@ -31,7 +31,7 @@
 #include "protocols/protocol.h"
 
 class DccManager;
-class GaduContactAccountData;
+class GaduContactDetails;
 class GaduProtocolSocketNotifiers;
 
 class GADUAPI GaduProtocol : public Protocol
@@ -105,11 +105,11 @@ private slots:
 	void connectionTimeoutTimerSlot();
 	void everyMinuteActions();
 
-	void contactAdded(Buddy &buddy);
-	void contactRemoved(Buddy &buddy);
-	void contactAccountDataAdded(Buddy &buddy, Account contactAccount);
-	void contactAccountDataAboutToBeRemoved(Buddy &buddy, Account contactAccount);
-	void contactAccountDataIdChanged(Buddy &buddy, Account contactAccount, const QString &oldId);
+	void buddyAdded(Buddy &buddy);
+	void buddyRemoved(Buddy &buddy);
+	void contactAdded(Buddy &buddy, Account contactAccount);
+	void contactAboutToBeRemoved(Buddy &buddy, Account contactAccount);
+	void contactIdChanged(Buddy &buddy, Account contactAccount, const QString &oldId);
 
 protected:
 	virtual void changeStatus();
@@ -118,6 +118,7 @@ protected:
 public:
 	static QString statusTypeFromGaduStatus(unsigned int index);
 	static unsigned int gaduStatusFromStatus(const Status &status);
+	Buddy searchResultToBuddy(gg_pubdir50_t res, int number);
 
 	GaduProtocol(Account account, ProtocolFactory *factory);
 	virtual ~GaduProtocol();
@@ -135,7 +136,7 @@ public:
 	virtual QPixmap statusPixmap(const QString &statusType);
 
 	UinType uin(Buddy buddy) const;
-	GaduContactAccountData * gaduContactAccountData(Buddy buddy) const;
+	GaduContactDetails * gaduContactDetails(Buddy buddy) const;
 
 	virtual int maxDescriptionLength();
 

@@ -34,7 +34,7 @@ public:
 	QString name() { return Name; }
 	QString displayName() { return DisplayName; }
 
-	StatusGroup * statusGroup() { return MyStatusGroup; }
+	StatusGroup *statusGroup() { return MyStatusGroup; }
 
 	int sortIndex() { return SortIndex; }
 

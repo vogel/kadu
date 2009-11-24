@@ -15,7 +15,8 @@
 #include <QtGui/QRadioButton>
 
 #include "gui/widgets/choose-identity-widget.h"
-#include "tlen-account.h"
+#include "protocols/protocols-manager.h"
+#include "tlen-account-details.h"
 #include "tlen-protocol-factory.h"
 
 #include "tlen-create-account-widget.h"
@@ -105,11 +106,16 @@ void TlenCreateAccountWidget::iHaveAccountDataChanged()
 
 void TlenCreateAccountWidget::addThisAccount()
 {
-	Account *tlenAccount = TlenProtocolFactory::instance()->newAccount();
-	tlenAccount->setName(AccountName->text());
-	tlenAccount->setId(AccountId->text());
-	tlenAccount->setPassword(AccountPassword->text());
-	tlenAccount->setRememberPassword(RememberPassword->isChecked());
+	Account tlenAccount;
+	tlenAccount.data()->setState(StorableObject::StateNew);
+	tlenAccount.data()->setProtocolName("tlen");
+	tlenAccount.data()->protocolRegistered(ProtocolsManager::instance()->byName("tlen"));
+	tlenAccount.setDetails(new TlenAccountDetails(tlenAccount));
+	tlenAccount.setName(AccountName->text());
+	tlenAccount.setId(AccountId->text());
+	tlenAccount.setPassword(AccountPassword->text());
+	tlenAccount.setHasPassword(!AccountPassword->text().isEmpty());
+	tlenAccount.setRememberPassword(RememberPassword->isChecked());
 
 	emit accountCreated(tlenAccount);
 }

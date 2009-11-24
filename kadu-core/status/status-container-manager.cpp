@@ -111,21 +111,21 @@ void StatusContainerManager::setStatus(Status newStatus)
 
 const Status & StatusContainerManager::status()
 {
-	return !AccountManager::instance()->defaultAccount().isNull()
+	return AccountManager::instance()->defaultAccount().statusContainer()
 			? AccountManager::instance()->defaultAccount().statusContainer()->status()
-			: Status("Offline");
+			: Status::null;
 }
 
 QString StatusContainerManager::statusName()
 {
-	return !AccountManager::instance()->defaultAccount().isNull()
+	return AccountManager::instance()->defaultAccount().statusContainer()
 			? AccountManager::instance()->defaultAccount().statusContainer()->statusName()
 			: tr("Offline");
 }
 
 QPixmap StatusContainerManager::statusPixmap()
 {
-	return !AccountManager::instance()->defaultAccount().isNull()
+	return AccountManager::instance()->defaultAccount().statusContainer()
 			? AccountManager::instance()->defaultAccount().statusContainer()->statusPixmap()
 			: IconsManager::instance()->loadPixmap("Offline");
 }
@@ -137,23 +137,31 @@ QPixmap StatusContainerManager::statusPixmap(Status status)
 
 QPixmap StatusContainerManager::statusPixmap(const QString &statusType)
 {
-	return !AccountManager::instance()->defaultAccount().isNull() && AccountManager::instance()->defaultAccount().statusContainer()
+	return AccountManager::instance()->defaultAccount().statusContainer()
 			? AccountManager::instance()->defaultAccount().statusContainer()->statusPixmap(statusType)
-			: IconsManager::instance()->loadPixmap(statusType);
+			: QPixmap();
+// 			: IconsManager::instance()->loadPixmap(statusType);
 }
 
 QList<StatusType *> StatusContainerManager::supportedStatusTypes()
 {
-	return !AccountManager::instance()->defaultAccount().isNull()
+	return AccountManager::instance()->defaultAccount().statusContainer()
 			? AccountManager::instance()->defaultAccount().statusContainer()->supportedStatusTypes()
-			: StatusTypeManager::instance()->statusTypes();
+			: QList<StatusType *>();
+// 			: StatusTypeManager::instance()->statusTypes();
 }
 
 int StatusContainerManager::maxDescriptionLength()
 {
-	return !AccountManager::instance()->defaultAccount().isNull()
+	return AccountManager::instance()->defaultAccount().statusContainer()
 			? AccountManager::instance()->defaultAccount().statusContainer()->maxDescriptionLength()
 			: -1;
+}
+
+
+QString StatusContainerManager::statusNamePrefix()
+{
+	return QString(tr("All")) + " ";
 }
 
 void StatusContainerManager::setPrivateStatus(bool isPrivate)

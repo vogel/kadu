@@ -25,7 +25,7 @@ class Filtering : public QWidget, ConfigurationAwareObject
 	QPushButton *clearPB;
 	QLineEdit *textLE;
 #endif
-	UserGroup *filter;
+	UserGroupfilter;
 
 	void createDefaultConfiguration();
 	

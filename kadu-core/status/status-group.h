@@ -31,9 +31,9 @@ public:
 
 	int sortIndex() { return SortIndex; }
 
-	bool operator < (const StatusGroup &compare) const;
-	bool operator == (const StatusGroup &compare) const;
-	bool operator != (const StatusGroup &compare) const;
+	bool operator < (const StatusGroup&compare) const;
+	bool operator == (const StatusGroup&compare) const;
+	bool operator != (const StatusGroup&compare) const;
 
 };
 

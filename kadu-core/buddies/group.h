@@ -10,63 +10,35 @@
 #ifndef GROUP_H
 #define GROUP_H
 
-#include <QtCore/QObject>
-#include <QtCore/QUuid>
+#include "buddies/group-shared.h"
 
-#include "configuration/uuid-storable-object.h"
+#include "shared/shared-base.h"
 
-class Group : public QObject, public UuidStorableObject
+class Group : public SharedBase<GroupShared>
 {
-	friend class GroupManager;
-
-	Q_OBJECT
-
-	QUuid Uuid;
-	QString Name;
-	QString Icon;
-	bool NotifyAboutStatusChanges;
-	bool ShowInAllGroup;
-	bool OfflineToGroup;
-	bool ShowIcon;
-	bool ShowName;
-	int TabPosition;
-
-	void importConfiguration(const QString &name);
+	explicit Group(bool null);
 
 public:
-	static Group * loadFromStorage(StoragePoint *groupStoragePoint);
+	static Group loadFromStorage(StoragePoint *storage);
+	static Group null;
 
-	explicit Group(StoragePoint *storagePoint);
-	explicit Group(QUuid uuid = QUuid());
+	Group();
+	Group(GroupShared *data);
+	Group(QObject *data);
+	Group(const Group&copy);
 	virtual ~Group();
 
-	virtual void load();
-	virtual void store();
+	KaduSharedBase_Property(QString, name, Name)
+	KaduSharedBase_Property(QString, icon, Icon)
+	KaduSharedBase_Property(bool, notifyAboutStatusChanges, NotifyAboutStatusChanges)
+	KaduSharedBase_Property(bool, showInAllGroup, ShowInAllGroup)
+	KaduSharedBase_Property(bool, offlineToGroup, OfflineToGroup)
+	KaduSharedBase_Property(bool, showIcon, ShowIcon)
+	KaduSharedBase_Property(bool, showName, ShowName)
+	KaduSharedBase_Property(int, tabPosition, TabPosition)
 
-	virtual QUuid uuid() const { return Uuid; }
-
-	QString name() const { return Name; }
-	QString icon() const { return Icon; }
-	int tabPosition() const { return TabPosition; }
-	bool showIcon() const { return ShowIcon; }
-	bool showName() const { return ShowName; }
-	bool offlineToGroup() const { return OfflineToGroup; }
-	bool showInAllGroup() const { return ShowInAllGroup; }
-	bool notifyAboutStatusChanges() const { return NotifyAboutStatusChanges; }
-	
-
-	void setName(const QString &name);
-	void setTabPosition(int tabPosition) { TabPosition = tabPosition; }
-	void setAppearance(bool showName, bool showIcon, const QString &icon);
-	void setNotifyAboutStatuses(bool notify);
-	void setOfflineTo(bool offline);
-	void setShowInAllGroup(bool show);
-
-signals:
-	void appearanceChanged(const Group *group);
-	void nameChanged(const Group *group);
-	void showInAllChanged();
-	void notifyAboutStatusesChanged(Group *group);
 };
+
+Q_DECLARE_METATYPE(Group)
 
 #endif // GROUP_H

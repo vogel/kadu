@@ -17,7 +17,8 @@
 #include <QtGui/QRadioButton>
 
 #include "gui/widgets/choose-identity-widget.h"
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
+#include "protocols/protocols-manager.h"
 #include "server/jabber-server-register-account.h"
 #include "jabber-account-details.h"
 #include "jabber-protocol-factory.h"
@@ -260,7 +261,7 @@ void JabberCreateAccountWidget::createRegisterAccountGui(QGridLayout *gridLayout
 bool JabberCreateAccountWidget::checkSSL()
 {
 	if(!QCA::isSupported("tls")) {
-		MessageBox::msg(tr("Cannot enable SSL/TLS.  Plugin not found."));
+		MessageDialog::msg(tr("Cannot enable SSL/TLS.  Plugin not found."));
 		return false;
 	}
 	return true;
@@ -283,7 +284,7 @@ void JabberCreateAccountWidget::sslActivated(int i)
 		EncryptionMode->setCurrentIndex(EncryptionMode->findData(1));
 	}
 	else if (EncryptionMode->itemData(i) == 2 && !CustomHostPort->isChecked()) {
-		MessageBox::msg(tr("Legacy SSL is only available in combination with manual host/port."));
+		MessageDialog::msg(tr("Legacy SSL is only available in combination with manual host/port."));
 		EncryptionMode->setCurrentIndex(EncryptionMode->findData(1));
 	}
 }
@@ -313,9 +314,13 @@ void JabberCreateAccountWidget::iHaveAccountDataChanged()
 void JabberCreateAccountWidget::addThisAccount()
 {
 	Account jabberAccount;
+	jabberAccount.data()->setProtocolName("jabber");
+	jabberAccount.data()->protocolRegistered(ProtocolsManager::instance()->byName("jabber"));
+	jabberAccount.setDetails(new JabberAccountDetails(jabberAccount));
 	jabberAccount.setName(AccountName->text());
 	jabberAccount.setId(AccountId->text());
 	jabberAccount.setPassword(AccountPassword->text());
+	jabberAccount.setHasPassword(!AccountPassword->text().isEmpty());
 	jabberAccount.setRememberPassword(HaveJidRememberPassword->isChecked());
 
 	emit accountCreated(jabberAccount);
@@ -333,7 +338,7 @@ void JabberCreateAccountWidget::registerNewAccount()
 {
     	if (NewPassword->text() != ReNewPassword->text())
 	{
-		MessageBox::msg(tr("Error data typed in required fields.\n\n"
+		MessageDialog::msg(tr("Error data typed in required fields.\n\n"
 			"Passwords typed in both fields (\"New password\" and \"Retype password\") "
 			"should be the same!"));
 		return;
@@ -356,10 +361,11 @@ void JabberCreateAccountWidget::registerNewAccountFinished(JabberServerRegisterA
 {
 	if (jsra->result())
 	{
-		MessageBox::msg(tr("Registration was successful. Your new Jabber ID is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(jsra->jid()), false, "Information", this);
+		MessageDialog::msg(tr("Registration was successful. Your new Jabber ID is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(jsra->jid()), false, "Information", this);
 
 		Account jabberAccount;
-		JabberAccountDetails *details = new JabberAccountDetails(jabberAccount.storage(), jabberAccount);
+		jabberAccount.data()->protocolRegistered(ProtocolsManager::instance()->byName("jabber"));
+		JabberAccountDetails *details = new JabberAccountDetails(jabberAccount);
 
 		jabberAccount.setDetails(details);
 		jabberAccount.setName(AccountName->text());
@@ -372,7 +378,7 @@ void JabberCreateAccountWidget::registerNewAccountFinished(JabberServerRegisterA
 		emit accountCreated(jabberAccount);
 	}
 	else
-		MessageBox::msg(tr("An error has occured while registration. Please try again later."), false, "Warning", this);
+		MessageDialog::msg(tr("An error has occured while registration. Please try again later."), false, "Warning", this);
 
 	delete jsra;
 }

@@ -11,11 +11,11 @@
 #include <QtGui/QVBoxLayout>
 
 #include "buddies/buddy-manager.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "buddies/model/buddies-model.h"
 #include "buddies/model/buddies-model-proxy.h"
 #include "buddies/filter/account-buddy-filter.h"
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
 
 #include "debug.h"
 #include "protocols/protocol.h"
@@ -59,7 +59,12 @@ AccountBuddyListWidget::AccountBuddyListWidget(Account account, QWidget *parent)
 
 	ContactListService *manager = CurrentAccount.protocolHandler()->contactListService();
 	if (!manager)
+	{
+		ImportButton->setEnabled(false);
+		ExportButton->setEnabled(false);
 		return;
+	}
+
 	connect(manager, SIGNAL(contactListExported(bool)), this, SLOT(contactListExported(bool)));
 	connect(manager, SIGNAL(contactListImported(bool, BuddyList)),
 		this, SLOT(buddiesListImported(bool, BuddyList)));
@@ -71,7 +76,7 @@ void AccountBuddyListWidget::startImportTransfer()
 
 	if (!CurrentAccount.protocolHandler()->isConnected())
 	{
-		MessageBox::msg(tr("Cannot import user list from server in offline mode"), false, "Critical", this);
+		MessageDialog::msg(tr("Cannot import user list from server in offline mode"), false, "Critical", this);
 		return;
 	}
 
@@ -90,7 +95,7 @@ void AccountBuddyListWidget::startExportTransfer()
 
 	if (!CurrentAccount.protocolHandler()->isConnected())
 	{
-		MessageBox::msg(tr("Cannot export user list to server in offline mode"), false, "Critical", this);
+		MessageDialog::msg(tr("Cannot export user list to server in offline mode"), false, "Critical", this);
 		kdebugf2();
 		return;
 	}
@@ -117,20 +122,20 @@ void AccountBuddyListWidget::buddiesListImported(bool ok, BuddyList buddies)
 
 	foreach (Buddy buddy, buddies)
 	{
-		Buddy c = BuddyManager::instance()->byId(CurrentAccount, buddy.accountData(CurrentAccount)->id());
-		foreach (Buddy b, beforeImportList)
-			if (b.accountData(CurrentAccount) && b.accountData(CurrentAccount)->id() == c.accountData(CurrentAccount)->id())
-				beforeImportList.removeOne(b);
-		c.setFirstName(buddy.firstName());
-		c.setLastName(buddy.lastName());
-		c.setNickName(buddy.nickName());
-		c.setMobile(buddy.mobile());
-		c.setGroups(buddy.groups());
-		c.setEmail(buddy.email());
-		c.setDisplay(buddy.display());
-		c.setHomePhone(buddy.homePhone());
-		if (c.isAnonymous())
-			BuddyManager::instance()->addBuddy(c);
+		Buddy buddy = BuddyManager::instance()->byId(CurrentAccount, buddy.contact(CurrentAccount).id());
+		foreach (Buddy beforeImportBuddy, beforeImportList)
+			if (!beforeImportBuddy.contact(CurrentAccount).isNull() && beforeImportBuddy.contact(CurrentAccount).id() == buddy.contact(CurrentAccount).id())
+				beforeImportList.removeOne(beforeImportBuddy);
+		buddy.setFirstName(buddy.firstName());
+		buddy.setLastName(buddy.lastName());
+		buddy.setNickName(buddy.nickName());
+		buddy.setMobile(buddy.mobile());
+		buddy.setGroups(buddy.groups());
+		buddy.setEmail(buddy.email());
+		buddy.setDisplay(buddy.display());
+		buddy.setHomePhone(buddy.homePhone());
+		if (buddy.isAnonymous())
+			BuddyManager::instance()->addBuddy(buddy);
 	}
 
 	if (!beforeImportList.isEmpty())
@@ -138,12 +143,12 @@ void AccountBuddyListWidget::buddiesListImported(bool ok, BuddyList buddies)
 		QStringList contactsList;
 		foreach (Buddy c, beforeImportList)
 			contactsList.append(c.display());
-		if (MessageBox::ask(tr("Following contacts from your list were not found on server: %0.\nDo you want to remove them from contacts list?").arg(contactsList.join(", "))))
+		if (MessageDialog::ask(tr("Following contacts from your list were not found on server: %0.\nDo you want to remove them from contacts list?").arg(contactsList.join(", "))))
 			foreach (Buddy c, beforeImportList)
 				BuddyManager::instance()->removeBuddy(c);
 	}
 
-	MessageBox::msg(tr("Your contact list has been successfully imported from server"), false, "Infromation", this);
+	MessageDialog::msg(tr("Your contact list has been successfully imported from server"), false, "Infromation", this);
 
 	kdebugf2();
 }
@@ -154,14 +159,14 @@ void AccountBuddyListWidget::buddiesListExported(bool ok)
 
 	if (Clear)
 		if (ok)
-			MessageBox::msg(tr("Your contact list has been successfully deleted on server"), false, "Infromation", this);
+			MessageDialog::msg(tr("Your contact list has been successfully deleted on server"), false, "Infromation", this);
 		else
-			MessageBox::msg(tr("The application encountered an internal error\nThe delete userlist on server was unsuccessful"), false, "Critical", this);
+			MessageDialog::msg(tr("The application encountered an internal error\nThe delete userlist on server was unsuccessful"), false, "Critical", this);
 	else
 		if (ok)
-			MessageBox::msg(tr("Your contact list has been successfully exported to server"), false, "Information", this);
+			MessageDialog::msg(tr("Your contact list has been successfully exported to server"), false, "Information", this);
 		else
-			MessageBox::msg(tr("The application encountered an internal error\nThe export was unsuccessful"), false, "Critical", this);
+			MessageDialog::msg(tr("The application encountered an internal error\nThe export was unsuccessful"), false, "Critical", this);
 
 	ExportButton->setEnabled(true);
 

@@ -2,6 +2,9 @@
  *   Copyright (C) 2004-2005 by Naresh [Kamil Klimek]                      *
  *   naresh@tlen.pl                                                        *
  *                                                                         *
+ *   Copyright (C) 2008-2009 by uzi18 [Bartłomiej Zimoń]                   *
+ *   uzi18@tlen.pl                                                         *
+ *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
@@ -44,10 +47,8 @@ public:
 
 	bool isConnected();
 
-	int intStatus();
-
-	QString strStatus() { return status; }
-	QString description() { return descr; }
+	QString strStatus() { return Status; }
+	QString description() { return Descr; }
 
 	QString uname() { return u; }
 	void setUname(QString uname) { u = uname; }
@@ -100,10 +101,15 @@ public slots:
 	void sendAlarm(QString to);
 	void chatNotify(QString to, bool t);
 	void rosterRequest();
+	// tlen configuration request
 	void tcfgRequest();
-	void setStatus();
-	void setStatus(QString s);
-	void setStatusDescr(QString,QString);
+	// pobiera dane zapisane w katalogu publicznym
+	void getPubDirInfoRequest();
+
+	// "available","chat","away","xa","dnd","invisible","unavailable"
+	void setStatus(QString status);
+	void setStatusDescr(QString status,QString description);
+
 	void addItem(QString jid, QString name, QString group, bool subscribe);
 	void receiveFile(QString,QString,bool);
 	bool write(const QDomDocument &d);
@@ -126,6 +132,7 @@ signals:
 	void authorizationAsk(QString);
 	void removeItem(QString);
 	void avatarReceived(QString jid, QString type, QString md5);
+	void pubdirReceived(QDomNodeList n);
 
 	void sortRoster();
 
@@ -135,7 +142,7 @@ signals:
 	void tlenLoggedIn();
 	void statusChanged(); // FOR GUI TO UPDATE ICONS
 	void statusUpdate();	// FOR TLEN TO WRITE STATUS
-	void eventReceived(QDomNode);
+	void eventReceived(QDomNode n);
 
 	void chatNotify(QString from, QString type);
 private:
@@ -156,8 +163,8 @@ private:
 		p,
 		sid,
 		hostname,
-		status,
-		descr;
+		Status,
+		Descr;
 
 	quint16 hostport;
 	QTcpSocket *socket;

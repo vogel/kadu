@@ -29,7 +29,7 @@ FileTransferManager * FileTransferManager::instance()
 }
 
 FileTransferManager::FileTransferManager() :
-		StorableObject(true)
+		StorableObject(StateLoaded)
 {
 	triggerAllAccountsRegistered();
 }

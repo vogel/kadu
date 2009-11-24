@@ -4,7 +4,7 @@
 #include <QtCore/QMap>
 #include <QtCore/QStringList>
 
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
 
 #include "gui/widgets/configuration/notifier-configuration-widget.h"
 
@@ -55,15 +55,15 @@ class SoundSlots : public QObject, public ConfigurationAwareObject
 	QStringList soundNames;
 	QStringList soundTexts;
 
-	MessageBox* SamplePlayingTestMsgBox;
+	MessageDialog* SamplePlayingTestMsgBox;
 	SoundDevice SamplePlayingTestDevice;
 	qint16*    SamplePlayingTestSample;
 
-	MessageBox* SampleRecordingTestMsgBox;
+	MessageDialog* SampleRecordingTestMsgBox;
 	SoundDevice SampleRecordingTestDevice;
 	qint16*    SampleRecordingTestSample;
 
-	MessageBox* FullDuplexTestMsgBox;
+	MessageDialog* FullDuplexTestMsgBox;
 	SoundDevice FullDuplexTestDevice;
 	qint16*    FullDuplexTestSample;
 

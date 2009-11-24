@@ -11,17 +11,16 @@
 
 #ifdef Q_OS_WIN
 #include <winsock2.h>
-#undef MessageBox
 #else
 #include <arpa/inet.h>
 #endif
 
 #include "accounts/account.h"
-#include "configuration/configuration-file.h"
 #include "buddies/buddy.h"
 #include "buddies/buddy-manager.h"
-#include "buddies/account-data/contact-account-data.h"
-#include "gui/windows/message-box.h"
+#include "configuration/configuration-file.h"
+#include "contacts/contact.h"
+#include "gui/windows/message-dialog.h"
 
 #include "debug.h"
 #include "misc/misc.h"
@@ -32,7 +31,7 @@
 #include "services/gadu-file-transfer-service.h"
 #include "socket-notifiers/gadu-protocol-socket-notifiers.h"
 #include "gadu-account-details.h"
-#include "gadu-contact-account-data.h"
+#include "gadu-contact-details.h"
 
 #include "gadu-protocol.h"
 
@@ -105,7 +104,7 @@ void DccManager::setUpDcc()
 		kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "Couldn't bind DCC socket.\n");
 
 		// TODO: 0.6.6
-		// MessageBox::msg(tr("Couldn't create DCC socket.\nDirect connections disabled."), true, "Warning");
+		// MessageDialog::msg(tr("Couldn't create DCC socket.\nDirect connections disabled."), true, "Warning");
 		kdebugf2();
 		return;
 	}
@@ -179,7 +178,7 @@ bool DccManager::dccEnabled() const
 // void DccManager::timeout()
 // {
 	// TODO: change into notification
-// 	MessageBox::msg(tr("Direct connection timeout!\nThe receiver doesn't support direct connections or\nboth machines are behind routers with NAT."), true, "Warning");
+// 	MessageDialog::msg(tr("Direct connection timeout!\nThe receiver doesn't support direct connections or\nboth machines are behind routers with NAT."), true, "Warning");
 // }
 
 void DccManager::closeDcc()
@@ -218,15 +217,15 @@ void DccManager::connectionRequestReceived(Buddy buddy)
 {
 	kdebugf();
 
-	GaduContactAccountData *gcad = Protocol->gaduContactAccountData(buddy);
-	if (!gcad)
+	Contact contact = buddy.contact(Protocol->account());
+	if (contact.isNull())
 		return;
 
-	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(Protocol->account().details());
-	if (!gaduAccountDetails)
+	GaduContactDetails *details = Protocol->gaduContactDetails(buddy);
+	if (!details)
 		return;
 
-	struct gg_dcc *dcc = gg_dcc_get_file(htonl(gcad->ip().toIPv4Address()), gcad->port(), gaduAccountDetails->uin(), gcad->uin());
+	struct gg_dcc *dcc = gg_dcc_get_file(htonl(contact.address().toIPv4Address()), contact.port(), details->uin(), details->uin());
 	if (!dcc)
 		return;
 
@@ -251,8 +250,8 @@ bool DccManager::acceptConnection(unsigned int uin, unsigned int peerUin, unsign
 		return false;
 	}
 
-	GaduContactAccountData *gcad = Protocol->gaduContactAccountData(buddy);
-	if (!gcad)
+	Contact contact = buddy.contact(Protocol->account());
+	if (contact.isNull())
 		return false;
 
 	BuddyList buddies(buddy);
@@ -265,19 +264,19 @@ bool DccManager::acceptConnection(unsigned int uin, unsigned int peerUin, unsign
 
 	QHostAddress remoteAddress(ntohl(peerAddr));
 
-	if (remoteAddress == gcad->ip())
+	if (remoteAddress == contact.address())
 		return true;
 
 	kdebugm(KDEBUG_WARNING, "possible spoofing attempt from %s (uin:%d)\n", qPrintable(remoteAddress.toString()), peerUin);
 
-	return MessageBox::ask(narg(
+	return MessageDialog::ask(narg(
 			tr("%1 is asking for direct connection but his/her\n"
 				"IP address (%2) differs from what GG server returned\n"
 				"as his/her IP address (%3). It may be spoofing\n"
 				"or he/she has port forwarding. Continue connection?"),
 			buddy.display(),
 			remoteAddress.toString(),
-			gcad->ip().toString()));
+			contact.address().toString()));
 }
 
 void DccManager::needIncomingFileTransferAccept(DccSocketNotifiers *socket)
@@ -408,14 +407,21 @@ void DccManager::handleEventDcc7Error(struct gg_event *e)
 	}
 }
 
-void DccManager::attachSendFileTransferSocket6(unsigned int uin, GaduContactAccountData *gcad, GaduFileTransfer *gft)
+void DccManager::attachSendFileTransferSocket6(unsigned int uin, Contact contact, GaduFileTransfer *gft)
 {
 	kdebugf();
 
-	int port = gcad->port();
+	if (contact.isNull())
+		return;
+
+	GaduContactDetails *details = dynamic_cast<GaduContactDetails *>(contact.details());
+	if (!details)
+		return;
+
+	int port = contact.port();
 	if (port >= 10)
 	{
-		struct gg_dcc *socket = gg_dcc_send_file(htonl(gcad->ip().toIPv4Address()), port, uin, gcad->uin());
+		struct gg_dcc *socket = gg_dcc_send_file(htonl(contact.address().toIPv4Address()), port, uin, details->uin());
 		if (socket)
 		{
 			DccSocketNotifiers *fileTransferNotifiers = new DccSocketNotifiers(Protocol, this);
@@ -429,14 +435,21 @@ void DccManager::attachSendFileTransferSocket6(unsigned int uin, GaduContactAcco
 
 // startTimeOut
 	WaitingFileTransfers << gft;
-	gg_dcc_request(Protocol->gaduSession(), gcad->uin());
+	gg_dcc_request(Protocol->gaduSession(), details->uin());
 }
 
-void DccManager::attachSendFileTransferSocket7(unsigned int uin, GaduContactAccountData *gcad, GaduFileTransfer *gft)
+void DccManager::attachSendFileTransferSocket7(unsigned int uin, Contact contact, GaduFileTransfer *gft)
 {
 	kdebugf();
 
-	gg_dcc7 *dcc = gg_dcc7_send_file(Protocol->gaduSession(), gcad->uin(),
+	if (contact.isNull())
+		return;
+
+	GaduContactDetails *details = dynamic_cast<GaduContactDetails *>(contact.details());
+	if (!details)
+		return;
+
+	gg_dcc7 *dcc = gg_dcc7_send_file(Protocol->gaduSession(), details->uin(),
 			qPrintable(gft->localFileName()), unicode2cp(gft->localFileName()).data(), 0);
 
 	if (dcc)
@@ -455,26 +468,30 @@ void DccManager::attachSendFileTransferSocket7(unsigned int uin, GaduContactAcco
 void DccManager::attachSendFileTransferSocket(GaduFileTransfer *gft)
 {
 	Buddy peer = gft->buddy();
-	GaduContactAccountData *gcad = Protocol->gaduContactAccountData(peer);
-	if (!gcad)
+	Contact contact = peer.contact(Protocol->account());
+	if (contact.isNull())
+		return;
+
+	GaduContactDetails *details = Protocol->gaduContactDetails(peer);
+	if (!details)
 		return;
 
 	GaduAccountDetails *account = dynamic_cast<GaduAccountDetails *>(Protocol->account().details());
 	if (!account)
 		return;
 
-	DccVersion version = (gcad->gaduProtocolVersion() & 0x0000ffff) >= 0x29
+	DccVersion version = (details->gaduProtocolVersion() & 0x0000ffff) >= 0x29
 		? Dcc7
 		: Dcc6;
 
 	switch (version)
 	{
 		case Dcc6:
-			attachSendFileTransferSocket6(account->uin(), gcad, gft);
+			attachSendFileTransferSocket6(account->uin(), contact, gft);
 			break;
 
 		case Dcc7:
-			attachSendFileTransferSocket7(account->uin(), gcad, gft);
+			attachSendFileTransferSocket7(account->uin(), contact, gft);
 			break;
 	}
 }

@@ -24,9 +24,9 @@ KADUAPI IdentityManager * IdentityManager::instance()
 }
 
 IdentityManager::IdentityManager() :
-		StorableObject(true)
+		StorableObject(StorableObject::StateLoaded)
 {
-    	Core::instance()->configuration()->registerStorableObject(this);
+    	ConfigurationManager::instance()->registerStorableObject(this);
 }
 
 IdentityManager::~IdentityManager()
@@ -56,7 +56,7 @@ void IdentityManager::load()
 			continue;
 
 		StoragePoint *identityStoragePoint = new StoragePoint(xml_config_file, identityElement);
-		registerIdentity(Identity::loadFromStorage(identityStoragePoint));
+		registerIdentity(new Identity(IdentityShared::loadFromStorage(identityStoragePoint)));
 	}
 }
 
@@ -68,7 +68,7 @@ void IdentityManager::store()
 	QDomElement identityNode = storage()->point();
 
 	foreach (Identity *identity, Identities)
-		identity->store();
+		identity->data()->store();
 }
 
 Identity * IdentityManager::byUuid(const QString &uuid)
@@ -97,7 +97,7 @@ Identity * IdentityManager::byName(const QString &name, bool create)
 	if (!create)
 		return 0;
 
-	Identity *newIdentity = new Identity();
+	Identity *newIdentity = new Identity(new IdentityShared(QUuid::createUuid()));
 	registerIdentity(newIdentity);
 
 	return newIdentity;
@@ -131,5 +131,5 @@ void IdentityManager::deleteIdentity(Identity *identity)
 {
 	unregisterIdentity(identity);
 
-	identity->removeFromStorage();
+	identity->data()->removeFromStorage();
 }

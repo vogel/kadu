@@ -38,12 +38,11 @@ StatusMenu::StatusMenu(StatusContainer *statusContainer, QWidget *parent) :
 	QList<StatusType *> statusTypes = MyStatusContainer->supportedStatusTypes();
 	foreach (StatusType *statusType, statusTypes)
 	{
-		QAction *statusAction = new QAction(MyStatusContainer->statusPixmap(statusType->name()),
-											MyStatusContainer->statusNamePrefix() + statusType->displayName(), this);
+		QAction *statusAction = ChangeStatusActionGroup->addAction(
+				MyStatusContainer->statusPixmap(statusType->name()),
+				MyStatusContainer->statusNamePrefix() + statusType->displayName());
 		statusAction->setCheckable(true);
 		statusAction->setData(QVariant::fromValue(statusType));
-
-		ChangeStatusActionGroup->addAction(statusAction);
 
 		if (statusTypeName == statusType->name())
 			statusAction->setChecked(true);
@@ -158,6 +157,8 @@ void StatusMenu::statusChanged()
 	if (!AccountManager::instance()->defaultAccount().isNull())
 	{
 		Protocol *protocol = AccountManager::instance()->defaultAccount().protocolHandler();
+		if (!protocol)
+			return;
 		ChangePrivateStatus->setChecked(protocol->privateMode());
 	}
 

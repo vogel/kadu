@@ -24,7 +24,7 @@
 #include "gui/actions/action.h"
 #include "gui/widgets/buddies-list-view-menu-manager.h"
 #include "gui/windows/kadu-window.h"
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
 
 #include "debug.h"
 #include "exports.h"
@@ -261,7 +261,7 @@ void FileTransferModule::incomingFileTransferNeedAccept(FileTransfer *fileTransf
 			flags |= QIODevice::Truncate;
 
 		if (!file.open(flags))
-			MessageBox::msg(tr("Could not open file. Select another one."), true, "Warning");
+			MessageDialog::msg(tr("Could not open file. Select another one."), true, "Warning");
 		else
 		{
 			fileTransfer->accept(file);

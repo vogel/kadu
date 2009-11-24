@@ -13,71 +13,39 @@
 #include <QtCore/QUuid>
 #include <QtCore/QStringList>
 
-#include "accounts/account.h"
-#include "accounts/accounts-aware-object.h"
-#include "status/base-status-container.h"
-
+#include "identities/identity-shared.h"
 #include "exports.h"
 
-class QPixmap;
+#include "shared/shared-base.h"
 
 class Account;
-class Status;
 
-class KADUAPI Identity : public BaseStatusContainer, public AccountsAwareObject
+class KADUAPI Identity : public SharedBase<IdentityShared>
 {
-	Q_OBJECT
-
-	QString Name;
-	QUuid Uuid;
-
-	QList<Account> Accounts;
-	QStringList AccountsUuids;
+	Identity(bool);
 
 public:
-	static Identity * loadFromStorage(StoragePoint *groupStoragePoint);
+	static Identity loadFromStorage(StoragePoint *identityStoragePoint);
+	static Identity null;
 
-	explicit Identity(StoragePoint *storagePoint);
-	explicit Identity(const QUuid &uuid = QUuid());
+	Identity();
+	Identity(IdentityShared *data);
+	Identity(QObject *data);
+	Identity(const Identity &copy);
 	virtual ~Identity();
 
-	virtual void load();
-	virtual void store();
-
-	virtual QUuid uuid() const { return Uuid; }
-
-	void setName(const QString &name) { Name = name; }
-
-	QString name() const { return Name; }
-
-	QList<Account> accounts() const { return Accounts; }
-	bool hasAccount(Account account) const { return Accounts.contains(account); }
-
-	void accountRegistered(Account account);
-	void accountUnregistered(Account account);
+	Identity & operator = (const Identity &copy)
+	{
+		SharedBase<IdentityShared>::operator=(copy);
+		return *this;
+	}
 
 	void addAccount(Account account);
-
-	// StatusContainer implementation
-	virtual QString statusContainerName() { return Name; }
-
-	virtual void setStatus(Status newStatus);
-	virtual const Status & status();
-
-	virtual QString statusName();
-	virtual QPixmap statusPixmap();
-	virtual QPixmap statusPixmap(Status status);
-	virtual QPixmap statusPixmap(const QString &statusType);
-
-	virtual QList<StatusType *> supportedStatusTypes();
-
-	virtual int maxDescriptionLength();
-
-	virtual void setPrivateStatus(bool isPrivate);
-
-
-public slots:
 	void removeAccount(Account account);
+	bool hasAccount(Account account);
+
+	KaduSharedBase_Property(QString, name, Name)
+	KaduSharedBase_Property(QList<Account>, accounts, Accounts)
 
 };
 

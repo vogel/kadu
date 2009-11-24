@@ -13,10 +13,11 @@
 
 #include "debug.h"
 
-#include "tlen-contact-account-data.h"
+#include "tlen-contact-details.h"
 #include "tlen-open-chat-with-runner.h"
 
-TlenOpenChatWithRunner::TlenOpenChatWithRunner(Account *account) : ParentAccount(account)
+TlenOpenChatWithRunner::TlenOpenChatWithRunner(Account account)
+		: ParentAccount(account)
 {
 }
 
@@ -28,28 +29,34 @@ BuddyList TlenOpenChatWithRunner::matchingContacts(const QString &query)
 	if (!validateUserID(query))
 		return matchedContacts;
 
-	Buddy c;
+	Buddy buddy;
 
-	TlenContactAccountData *gcad = new TlenContactAccountData(ParentAccount, c, query);
-	c.addAccountData(gcad);
-	c.setDisplay(ParentAccount->name() + ": " + query);
-	matchedContacts.append(c);
+	Contact contact;
+	contact.setContactAccount(ParentAccount);
+	contact.setOwnerBuddy(buddy);
+	contact.setId(query);
+	contact.setDetails(new TlenContactDetails(contact));
+
+	buddy.addContact(contact);
+	buddy.setDisplay(ParentAccount.name() + ": " + query);
+	matchedContacts.append(buddy);
 
 	return matchedContacts;
 }
+
 
 bool TlenOpenChatWithRunner::validateUserID(const QString &uid)
 {
 	// TODO validate ID
 	// login : 3-25 ascii chars (1st letter), small letters, numbers and "-", "." , "_"
 	// pass : 5-15 ascii chars, no pl chars
-	QString text = uid;
+	//QString text = uid;
 
-	if (3 > text.count() || 25 < text.count())
-		return false;
+	//if (3 > text.count() || 25 < text.count())
+	//	return false;
 
-	if (text != text.toLower())
-		return false;
+	//if (text != text.toLower())
+	//	return false;
 
 	return true;
 }

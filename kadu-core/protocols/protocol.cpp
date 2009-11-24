@@ -16,7 +16,7 @@
 #include "chat/simple-chat.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-set-configuration-helper.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "icons-manager.h"
 #include "protocols/protocol-factory.h"
 #include "status/status.h"
@@ -44,16 +44,16 @@ void Protocol::setAllOffline()
 {
 	Status status;
 	Status oldStatus;
-	ContactAccountData *data;
+	Contact data;
 
 	foreach (Buddy buddy, BuddyManager::instance()->buddies(CurrentAccount, true))
 	{
-		data = buddy.accountData(CurrentAccount);
-		oldStatus = data->status();
+		data = buddy.contact(CurrentAccount);
+		oldStatus = data.currentStatus();
 
 		if (oldStatus != status)
 		{
-			data->setStatus(status);
+			data.setCurrentStatus(status);
 			emit buddyStatusChanged(CurrentAccount, buddy, oldStatus);
 		}
 	}
@@ -117,11 +117,11 @@ Chat * Protocol::findChat(BuddySet contacts, bool create)
 	if (contacts.count() == 1)
 	{
 		Buddy buddy = *contacts.begin();
-		ContactAccountData *cad = buddy.accountData(account());
-		if (!cad)
+		Contact contact = buddy.contact(account());
+		if (contact.isNull())
 			return 0;
 
-		SimpleChat *simple = new SimpleChat(account(), cad);
+		SimpleChat *simple = new SimpleChat(account(), contact);
 		ChatManager::instance()->addChat(simple);
 		return simple;
 	}
@@ -147,12 +147,14 @@ Chat * Protocol::loadChatFromStorage(StoragePoint *chatStorage)
 	if ("Simple" == type)
 	{
 		SimpleChat *result = new SimpleChat(chatStorage);
+		result->setState(StorableObject::StateUnloaded);
 		result->load();
 		return result;
 	}
 	else if ("Conference" == type)
 	{
 		ConferenceChat *result = new ConferenceChat(chatStorage);
+		result->setState(StorableObject::StateUnloaded);
 		result->load();
 		return result;
 	}

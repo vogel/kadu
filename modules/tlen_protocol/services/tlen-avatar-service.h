@@ -12,22 +12,22 @@
 
 #include <QList>
 
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "protocols/services/avatar-service.h"
 
 class TlenAvatarService : public AvatarService
 {
 	Q_OBJECT
 
-	QList<ContactAccountData *> InProgress;
+	QList<Contact> InProgress;
 
 public:
 	TlenAvatarService(QObject *parent = 0) : AvatarService(parent) {}
 
-	void fetchAvatar(ContactAccountData *contactAccountData);
+	void fetchAvatar(Contact contact);
 
 private slots:
-	void avatarReady(ContactAccountData *contactAccountData, const QByteArray &avatar);
+	void avatarReady(Contact contact, const QByteArray &avatar);
 
 };
 

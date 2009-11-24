@@ -428,7 +428,7 @@ void Firewall::changeRight_after_connection()
 void Firewall::chatDestroyed(ChatWidget *chat)
 {
 	kdebugf();
-	const UserGroup *group = chat->users();
+	const UserGroup group = chat->users();
 //	CONST_FOREACH (i, *group)
 	UserListElements users = group->toUserListElements();
 	foreach(const UserListElement &user, users)

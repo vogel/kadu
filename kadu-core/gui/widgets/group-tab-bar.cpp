@@ -21,16 +21,16 @@
 #include "gui/windows/add-buddy-window.h"
 #include "gui/windows/group-properties-window.h"
 #include "gui/windows/kadu-window.h"
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
 
 #include "debug.h"
 #include "icons-manager.h"
 
 #include "group-tab-bar.h"
 
- bool compareGroups(Group *g1, Group *g2)
+ bool compareGroups(Group g1, Group g2)
  {
-     return g1->tabPosition() < g2->tabPosition();
+     return g1.tabPosition() < g2.tabPosition();
  }
 
 GroupTabBar::GroupTabBar(QWidget *parent)
@@ -50,18 +50,18 @@ GroupTabBar::GroupTabBar(QWidget *parent)
 	setIconSize(QSize(16, 16));
 
 	GroupManager::instance()->ensureLoaded();
-	QList<Group *> groups = GroupManager::instance()->groups();
+	QList<Group> groups = GroupManager::instance()->groups();
 	qStableSort(groups.begin(), groups.end(), compareGroups);
-	foreach (const Group *group, groups)
+	foreach (const Group group, groups)
 		addGroup(group);
 
 	connect(this, SIGNAL(currentChanged(int)), this, SLOT(currentChangedSlot(int)));
 
-	connect(GroupManager::instance(), SIGNAL(groupAdded(Group *)), this, SLOT(groupAdded(Group *)));
-	connect(GroupManager::instance(), SIGNAL(groupAboutToBeRemoved(Group *)), this, SLOT(groupRemoved(Group *)));
+	connect(GroupManager::instance(), SIGNAL(groupAdded(Group)), this, SLOT(groupAdded(Group)));
+	connect(GroupManager::instance(), SIGNAL(groupAboutToBeRemoved(Group)), this, SLOT(groupRemoved(Group)));
 	connect(GroupManager::instance(), SIGNAL(saveGroupData()), this, SLOT(saveGroupTabsPosition()));
 
-	showAllGroup = config_file.readBoolEntry("Look", "ShowGroupAll", true);
+	showAllGroup= config_file.readBoolEntry("Look", "ShowGroupAll", true);
 	if (showAllGroup)
 	{
 		AutoGroupTabPosition = config_file.readNumEntry("Look", "AllGroupTabPosition", 0);
@@ -89,36 +89,34 @@ GroupTabBar::~GroupTabBar()
 	config_file.writeEntry("Look", "CurrentGroupTab", currentIndex());
 }
 
-void GroupTabBar::addGroup(const Group *group)
+void GroupTabBar::addGroup(const Group group)
 {
-	int index = addTab(group->name());
-	setTabData(index, group->uuid().toString());
-	connect(group, SIGNAL(appearanceChanged(const Group *)), this, SLOT(groupAppearanceChanged(const Group *)));
-	connect(group, SIGNAL(nameChanged(const Group *)), this, SLOT(groupNameChanged(const Group *)));
-	connect(group, SIGNAL(showInAllChanged()), this, SLOT(showInAllGroupChanged()));
+	int index = addTab(group.name());
+	setTabData(index, group.uuid().toString());
+	connect(group, SIGNAL(updated()), this, SLOT(groupUpdated()));
 
-	groupAppearanceChanged(group);
+	updateGroup(group);
 }
 
 void GroupTabBar::currentChangedSlot(int index)
 {
-	Group *group = GroupManager::instance()->byUuid(tabData(index).toString());
+	Group group = GroupManager::instance()->byUuid(tabData(index).toString());
 	emit currentGroupChanged(group);
 	Filter->setGroup(group);
 }
 
-void GroupTabBar::groupAdded(Group *group)
+void GroupTabBar::groupAdded(Group group)
 {
-	QString groupUuid = group->uuid().toString();
+	QString groupUuid = group.uuid().toString();
 	for (int i = 0; i < count(); ++i)
 		if (tabData(i).toString() == groupUuid) //group is already in tabbar
 			return;
 	addGroup(group);
 }
 
-void GroupTabBar::groupRemoved(Group *group)
+void GroupTabBar::groupRemoved(Group group)
 {
-	QString groupUuid = group->uuid().toString();
+	QString groupUuid = group.uuid().toString();
 	for (int i = 0; i < count(); ++i)
 		if (tabData(i).toString() == groupUuid)
 		{
@@ -127,37 +125,36 @@ void GroupTabBar::groupRemoved(Group *group)
 		}
 }
 
-void GroupTabBar::groupAppearanceChanged(const Group *group)
-{	
-	QString groupUuid = group->uuid().toString();
+void GroupTabBar::updateGroup(Group group)
+{
+	if (tabData(currentIndex()).toString() == "AutoTab")
+		Filter->refresh();
+
+	QString groupUuid = group.uuid().toString();
+	int groupId = -1;
 	for (int i = 0; i < count(); ++i)
 		if (tabData(i).toString() == groupUuid)
-		{
-			setTabIcon(i, QIcon(group->showIcon() ? group->icon() : ""));
-			setTabText(i, group->showName() ? group->name() : "");
-			break;
-		}
-			
-}
+			groupId = i;
 
-void GroupTabBar::groupNameChanged(const Group *group)
-{
-	if (!group->showName())
+	if (-1 == groupId)
 		return;
 
-	QString groupUuid = group->uuid().toString();
-	for (int i = 0; i < count(); ++i)
-		if (tabData(i).toString() == groupUuid)
-		{
-			setTabText(i, group->name());
-			break;
-		}
+	setTabIcon(groupId, QIcon(group.showIcon() ? group.icon() : ""));
+	setTabText(groupId, group.showName() ? group.name() : "");
+
+	if (group.showName())
+		setTabText(groupId, group.name());
+	else
+		setTabText(groupId, "");
 }
 
-void GroupTabBar::showInAllGroupChanged()
+void GroupTabBar::groupUpdated()
 {
-    if (tabData(currentIndex()).toString() == "AutoTab")
-		Filter->refresh();
+	Group group = sender();
+	if (group.isNull())
+		return;
+
+	updateGroup(group);
 }
 
 void GroupTabBar::contextMenuEvent(QContextMenuEvent *event)
@@ -165,7 +162,7 @@ void GroupTabBar::contextMenuEvent(QContextMenuEvent *event)
 	int tabIndex = tabAt(event->pos());
 
 	if (tabIndex != -1)
-		currentGroup = GroupManager::instance()->byUuid(tabData(tabIndex).toString());
+		currentGroup= GroupManager::instance()->byUuid(tabData(tabIndex).toString());
 
 	QMenu *menu = new QMenu(this);
 	
@@ -219,7 +216,7 @@ void GroupTabBar::dropEvent(QDropEvent *event)
 		}
 		while (!ok);
 
-		Group *group = GroupManager::instance()->byName(newGroupName);
+		Group group = GroupManager::instance()->byName(newGroupName);
 
 		foreach (Buddy buddy, buddies)
 			buddy.addToGroup(group);
@@ -229,16 +226,16 @@ void GroupTabBar::dropEvent(QDropEvent *event)
 		return;
 	}
 	else
-		currentGroup = GroupManager::instance()->byUuid(tabData(tabIndex).toString());
+		currentGroup= GroupManager::instance()->byUuid(tabData(tabIndex).toString());
 
 	currentBuddies = buddies;
 
 	QMenu menu(this);
 	if (currentGroup)
 	{
-		menu.addAction(tr("Move to group %1").arg(currentGroup->name()), this, SLOT(moveToGroup()))
+		menu.addAction(tr("Move to group %1").arg(currentGroup.name()), this, SLOT(moveToGroup()))
 				->setEnabled(tabData(currentIndex()).toString() != "AutoTab");
-		menu.addAction(tr("Add to group %1").arg(currentGroup->name()), this, SLOT(addToGroup()));
+		menu.addAction(tr("Add to group %1").arg(currentGroup.name()), this, SLOT(addToGroup()));
 	}
 
 	menu.exec(QCursor::pos());
@@ -268,13 +265,13 @@ void GroupTabBar::renameGroup()
 				QString::null, &ok);
 
 	if (ok && !text.isEmpty() && GroupManager::instance()->acceptableGroupName(text))
-		currentGroup->setName(text);
+		currentGroup.setName(text);
 }
 
 void GroupTabBar::deleteGroup()
 {
-	if (currentGroup && MessageBox::ask(tr("Selected group:\n%0 will be deleted. Are you sure?").arg(currentGroup->name()), "Warning", Core::instance()->kaduWindow()))
-		GroupManager::instance()->removeGroup(currentGroup->uuid().toString());
+	if (currentGroup && MessageDialog::ask(tr("Selected group:\n%0 will be deleted. Are you sure?").arg(currentGroup.name()), "Warning", Core::instance()->kaduWindow()))
+		GroupManager::instance()->removeGroup(currentGroup);
 }
 
 void GroupTabBar::createNewGroup()
@@ -323,12 +320,12 @@ void GroupTabBar::moveToGroup()
 
  void GroupTabBar::saveGroupTabsPosition()
  {
-	Group *group;
+	Group group;
 	for (int i = 0; i < count(); ++i)
 	{
 		group = GroupManager::instance()->byUuid(tabData(i).toString());
 		if (group)
-			group->setTabPosition(i);
+			group.setTabPosition(i);
 		else
 			AutoGroupTabPosition = i;
 	}
@@ -338,10 +335,10 @@ void GroupTabBar::configurationUpdated()
 {
 	bool show = config_file.readBoolEntry("Look", "ShowGroupAll", true);
 
-	if (showAllGroup == show)
+	if (showAllGroup== show)
 		return;
 
-	showAllGroup = show;
+	showAllGroup= show;
 	Filter->setAllGroupShown(showAllGroup);
 
 	int autoGroupOldPosition;

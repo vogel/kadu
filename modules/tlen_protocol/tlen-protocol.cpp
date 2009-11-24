@@ -18,13 +18,18 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "chat/message/message.h"
-#include "configuration/configuration-file.h"
+
 #include "buddies/buddy-manager.h"
+
+#include "configuration/configuration-file.h"
 #include "core/core.h"
+
 #include "gui/windows/kadu-window.h"
+#include "gui/windows/message-dialog.h"
+#include "gui/windows/password-window.h"
 #include "gui/windows/main-configuration-window.h"
-#include "gui/windows/message-box.h"
+
+#include "chat/message/message.h"
 #include "debug.h"
 #include "icons-manager.h"
 #include "status/status.h"
@@ -34,9 +39,10 @@
 
 #include "tlen.h"
 
-#include "tlen-contact-account-data.h"
-#include "tlen-account.h"
+#include "tlen-account-details.h"
+#include "tlen-contact-details.h"
 #include "tlen-protocol-factory.h"
+
 #include "tlen-protocol.h"
 
 #include "exports.h"
@@ -73,12 +79,13 @@ void TlenProtocol::closeModule()
 	kdebugf2();
 }
 
-TlenProtocol::TlenProtocol(Account *account, ProtocolFactory *factory): Protocol(account,factory), TlenClient(0)
+TlenProtocol::TlenProtocol(Account account, ProtocolFactory *factory): Protocol(account,factory), TlenClient(0)
 {
 	kdebugf();
 
 	CurrentChatService = new TlenChatService(this);
 	CurrentAvatarService = new TlenAvatarService(this);
+	CurrentPersonalInfoService = new TlenPersonalInfoService(this);
 
 	kdebugf2();
 }
@@ -92,16 +99,23 @@ void TlenProtocol::fetchAvatars(QString jid, QString type, QString md5)
 {
 	kdebugf();
 
-	Buddy buddy = account()->getContactById(jid);
+	Buddy buddy = account().getBuddyById(jid);
 
- 	if (contact.isAnonymous())
-	{
-		BuddyManager::instance()->addBuddy(contact);
-	}
+ 	if (buddy.isAnonymous())
+		buddy.setAnonymous(false);
 
-	CurrentAvatarService->fetchAvatar(contact.accountData(account()));
+	CurrentAvatarService->fetchAvatar(buddy.contact(account()));
 
 	kdebugf2();
+}
+
+void TlenProtocol::login(const QString &password, bool permanent)
+{
+	account().setPassword(password);
+	account().setRememberPassword(permanent);
+	account().setHasPassword(!password.isEmpty());
+
+	connectToServer();
 }
 
 void TlenProtocol::connectToServer()
@@ -159,12 +173,22 @@ void TlenProtocol::connectToServer()
 
 	}
 
-	TlenAccount *tlenAccount = dynamic_cast<TlenAccount *>(account());
-	if (tlenAccount->id().isNull() || tlenAccount->password().isNull())
+	TlenAccountDetails *tlenAccountDetails = dynamic_cast<TlenAccountDetails *>(account().details());
+	if (!tlenAccountDetails)
+		return;
+
+	if (account().id().isEmpty())
 	{
-		MessageBox::msg(tr("tlen ID or password not set!"), false, "Warning");
-		//NextStatus->setOffline();
-		kdebugmf(KDEBUG_FUNCTION_END, "end: Tlen ID or password not set\n");
+		MessageDialog::msg(tr("Tlen ID not set!"), false, "Warning");
+		setStatus(Status());
+		kdebugmf(KDEBUG_FUNCTION_END, "end: Tlen id not set\n");
+		return;
+	}
+
+	if (!account().hasPassword())
+	{
+		PasswordWindow::getPassword(tr("Please provide password for %1 account").arg(account().name()),
+				this, SLOT(login(const QString &, bool)));
 		return;
 	}
 
@@ -173,8 +197,8 @@ void TlenProtocol::connectToServer()
 
 	TlenClient->setReconnect(true);
 
-	TlenClient->setUname(tlenAccount->id());
-	TlenClient->setPass (tlenAccount->password());
+	TlenClient->setUname(account().id());
+	TlenClient->setPass (account().password());
 
 	changeStatus(nextStatus());
 
@@ -189,6 +213,7 @@ void TlenProtocol::login()
 	connectToServer();
 	// TODO set here something from kadu, last status?
 	setStatus(Status("Online", ""));
+
 	networkStateChanged(NetworkConnected);
 	kdebugf2();
 }
@@ -222,7 +247,7 @@ bool TlenProtocol::sendMessage(Chat *chat, FormattedMessage &formattedMessage)
 	// TODO send to more users
 	Buddy buddy = (*users.begin());
 	QString plain = formattedMessage.toPlain();
-	QString tlenid = contact.id(account());
+	QString tlenid = buddy.id(account());
 
 	bool stop = false;
 	//plain na QByteArray
@@ -281,8 +306,8 @@ void TlenProtocol::chatMsgReceived(QDomNode n)
 	//		w->displayMsg(Tlen->decode(body.toUtf8()),timeStamp);
 
 	// TODO - zaimplementowac to samo w ContactList
-	Buddy buddy = account()->getContactById(from);
-	BuddySet contacts = BuddySet(contact);
+	Buddy buddy = account().getBuddyById(from);
+	BuddySet contacts = BuddySet(buddy);
 	// FIXME: dunno why, but commenting it fixed for now (08.04.2009) problem with finding chat for contact (conference window was always being opened for 1 contact)
 	//contacts << contact;
 
@@ -295,13 +320,13 @@ void TlenProtocol::chatMsgReceived(QDomNode n)
 
 	// TODO  : contacts?
 	Chat *chat = this->findChat(contacts);
-	emit receivedMessageFilter(chat, contact, formattedMessage.toPlain(), msgtime, ignore);
+	emit receivedMessageFilter(chat, buddy, formattedMessage.toPlain(), msgtime, ignore);
 	if (ignore)
 		return;
 
 	HtmlDocument::escapeText(plain);
 
-	Message message(chat, Message::TypeReceived, contact);
+	Message message(chat, Message::TypeReceived, buddy);
 	message
 		.setContent(plain)
 		.setSendDate(timeStamp)
@@ -325,17 +350,15 @@ void TlenProtocol::itemReceived(QString jid, QString name, QString subscription,
 	kdebugf();
 	kdebugm(KDEBUG_WARNING, "Tlen contact rcv %s\n", qPrintable(jid));
 
-	Buddy buddy = account()->getContactById(jid);
+	Buddy buddy = account().getBuddyById(jid);
 
 	if(!name.isNull())
-		contact.setDisplay(name);
+		buddy.setDisplay(name);
 
- 	if (contact.isAnonymous())
-	{
-		BuddyManager::instance()->addBuddy(contact);
-	}
+ 	if (buddy.isAnonymous())
+		buddy.setAnonymous(false);
 
-	// remember to set every contact offline after add to cntact list
+	// remember to set every contact offline after add to contact list
 	presenceChanged(jid, "unavailable", QString::null);
 
 	kdebugf2();
@@ -366,9 +389,12 @@ void TlenProtocol::presenceChanged(QString from, QString newstatus, QString desc
 	if (!description.isEmpty())
 		status.setDescription(description);
 
-	Buddy buddy = account()->getContactById(from);
+	Buddy buddy = account().getBuddyById(from);
 
 	kdebugm(KDEBUG_WARNING, "Tlen status change: %s %s\n%s", qPrintable(from), qPrintable(newstatus), qPrintable(description));
+
+	if (buddy.isAnonymous())
+		buddy.setAnonymous(false);
 
 	/* is this contact realy anonymous? - need deep check
 	if (contact.isAnonymous())
@@ -380,18 +406,17 @@ void TlenProtocol::presenceChanged(QString from, QString newstatus, QString desc
 	}
 	*/
 
-	TlenContactAccountData *data = dynamic_cast<TlenContactAccountData *>(contact.accountData(account()));
-
-	if (!data)
+	Contact contact = buddy.contact(account());
+	if (contact.isNull())
 		return;
 
-	Status oldStatus = data->status();
-	data->setStatus(status);
+	Status oldStatus = contact.currentStatus();
+	contact.setCurrentStatus(status);
 
 	if (!TypingUsers[from].isEmpty())
 		TypingUsers[from] = description;
 
-	emit buddyStatusChanged(account(), contact, oldStatus);
+	emit buddyStatusChanged(account(), buddy, oldStatus);
 	kdebugf2();
 }
 
@@ -454,24 +479,26 @@ void TlenProtocol::chatNotify(QString from, QString type)
 {
 	kdebugf();
 
-	Buddy buddy = account()->getContactById(from);
+	Buddy buddy = account().getBuddyById(from);
 
-	TlenContactAccountData *data = dynamic_cast<TlenContactAccountData *>(contact.accountData(account()));
-
-	if (!data)
+	Contact contact = buddy.contact(account());
+	if (contact.isNull())
 		return;
 
-	Status oldStatus = data->status();
-	Status newStatus = data->status();
+	Status oldStatus = contact.currentStatus();
+	Status newStatus = contact.currentStatus();
 
 	if(type=="t")
 	{
+		if (TypingUsers.contains(from))
+			return;
+
 		//typing start
 		QString oldDesc = oldStatus.description();
 		TypingUsers.insert(from, oldDesc);
 		newStatus.setDescription(QString("[pisze] %1").arg(oldDesc));
-		data->setStatus(newStatus);
-		emit buddyStatusChanged(account(), contact, oldStatus);
+		contact.setCurrentStatus(newStatus);
+		emit buddyStatusChanged(account(), buddy, oldStatus);
 	}
 	else if(type=="u")
 	{
@@ -479,8 +506,8 @@ void TlenProtocol::chatNotify(QString from, QString type)
 		QString oldDesc = TypingUsers[from];
 		TypingUsers.remove(from);
 		newStatus.setDescription(oldDesc);
-		data->setStatus(newStatus);
-		emit buddyStatusChanged(account(), contact, oldStatus);
+		contact.setCurrentStatus(newStatus);
+		emit buddyStatusChanged(account(),buddy, oldStatus);
 	}
 	else if(type=="a")
 	{

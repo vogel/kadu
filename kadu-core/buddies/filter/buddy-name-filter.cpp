@@ -8,7 +8,7 @@
  ***************************************************************************/
 
 #include "buddies/buddy.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 
 #include "buddy-name-filter.h"
 
@@ -28,8 +28,8 @@ bool BuddyNameFilter::acceptBuddy(Buddy buddy)
 	if (buddy.email().contains(Name, Qt::CaseInsensitive))
 		return true;
 
-	foreach (ContactAccountData *cad, buddy.accountDatas())
-		if (cad->id().contains(Name, Qt::CaseInsensitive))
+	foreach (Contact contact, buddy.contacts())
+		if (contact.id().contains(Name, Qt::CaseInsensitive))
 			return true;
 
 	return false;

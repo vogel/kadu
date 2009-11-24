@@ -1,12 +1,13 @@
 /***************************************************************************
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-***************************************************************************/
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
 
+#include <QtCore/QDateTime>
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtCore/QUrl>
@@ -14,13 +15,15 @@
 #include <QtXml/QDomDocument>
 
 #include "accounts/account.h"
+#include "buddies/avatar.h"
 #include "buddies/avatar-manager.h"
+#include "buddies/avatar-shared.h"
 #include "misc/path-conversion.h"
 
 #include "gadu-avatar-fetcher.h"
 
-GaduAvatarFetcher::GaduAvatarFetcher(ContactAccountData *contactAccountData, QObject *parent) :
-		QObject(parent), MyContactAccountData(contactAccountData)
+GaduAvatarFetcher::GaduAvatarFetcher(Contact contact, QObject *parent) :
+		QObject(parent), MyContact(contact)
 {
 }
 
@@ -30,7 +33,7 @@ void GaduAvatarFetcher::fetchAvatar()
 	MyHttp = new QHttp("api.gadu-gadu.pl", 80, this);
 	connect(MyHttp, SIGNAL(requestFinished(int, bool)),
 			this, SLOT(requestFinished(int, bool)));
-	MyHttp->get("/avatars/" + MyContactAccountData->id() + "/0.xml", &MyBuffer);
+	MyHttp->get("/avatars/" + MyContact.id() + "/0.xml", &MyBuffer);
 }
 
 void GaduAvatarFetcher::requestFinished(int id, bool error)
@@ -88,12 +91,15 @@ void GaduAvatarFetcher::requestFinished(int id, bool error)
 		return;
 	}
 
+	if (MyContact.contactAvatar().isNull())
+		MyContact.setContactAvatar(Avatar());
+
 	QDateTime timestamp;
 	QDomElement timestampElement = avatarElement.firstChildElement("timestamp");
 	if (!timestampElement.isNull())
 	{
 		timestamp = QDateTime::fromString(timestampElement.text());
-		if (MyContactAccountData->avatar().lastUpdated() == timestamp)
+		if (MyContact.contactAvatar().lastUpdated() == timestamp)
 		{
 // 			deleteLater(); TODO: check if file is present
 // 			return;
@@ -104,7 +110,7 @@ void GaduAvatarFetcher::requestFinished(int id, bool error)
 	if (!packageDelayElement.isNull())
 	{
 		int delay = packageDelayElement.text().toInt();
-		MyContactAccountData->avatar().setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + delay));
+		MyContact.contactAvatar().setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + delay));
 	}
 
 	QDomElement avatarFileElement = avatarElement.firstChildElement("bigAvatar");
@@ -125,7 +131,8 @@ void GaduAvatarFetcher::requestFinished(int id, bool error)
 		return;
 	}
 
-	MyContactAccountData->avatar().setLastUpdated(timestamp);
+	MyContact.contactAvatar().setLastUpdated(timestamp);
+	AvatarManager::instance()->addAvatar(MyContact.contactAvatar());
 
 	QUrl url = avatarUrl;
 
@@ -138,7 +145,7 @@ void GaduAvatarFetcher::requestFinished(int id, bool error)
 
 void GaduAvatarFetcher::avatarDownloaded(int id, bool error)
 {
-	emit avatarFetched(MyContactAccountData, AvatarBuffer.buffer());
+	emit avatarFetched(MyContact, AvatarBuffer.buffer());
 
 	deleteLater();
 }

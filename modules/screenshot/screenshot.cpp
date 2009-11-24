@@ -274,7 +274,7 @@ void ScreenShot::handleShot(QPixmap p)
 	QDir dir(dirPath);
 	if (!dir.exists() && !dir.mkpath(dirPath))
 	{
-		MessageBox::msg(tr("Unable to create direcotry %1 for storing screenshots!").arg(dirPath));
+		MessageDialog::msg(tr("Unable to create direcotry %1 for storing screenshots!").arg(dirPath));
 		return;
 	}
 
@@ -295,7 +295,7 @@ void ScreenShot::handleShot(QPixmap p)
 	int quality = config_file.readNumEntry("ScreenShot", "quality", -1);
 	if (!p.save(path, format, quality))
 	{
-		MessageBox::msg(tr("Can't write file %1.\nAccess denied or other problem!").arg(path));
+		MessageDialog::msg(tr("Can't write file %1.\nAccess denied or other problem!").arg(path));
 		return;
 	}
 
@@ -304,7 +304,7 @@ void ScreenShot::handleShot(QPixmap p)
 
 	if (size == 0)
 	{
-		MessageBox::msg(tr("Screenshot %1 has 0 size!\nIt should be bigger.").arg(path));
+		MessageDialog::msg(tr("Screenshot %1 has 0 size!\nIt should be bigger.").arg(path));
 		return;
 	}
 
@@ -347,9 +347,9 @@ void ScreenShot::checkConferenceImageSizes(int size)
 		return;
 
 	if (list.count() == users.count())
-		MessageBox::msg(tr("Image size is bigger than maximal image size\nset by all of conference contacts."), true);
+		MessageDialog::msg(tr("Image size is bigger than maximal image size\nset by all of conference contacts."), true);
 	else
-		MessageBox::msg(tr("Image size is bigger than maximal image size\nset by some of conference contacts:\n%1.").arg(list.join(", ")), true);
+		MessageDialog::msg(tr("Image size is bigger than maximal image size\nset by some of conference contacts:\n%1.").arg(list.join(", ")), true);
 }
 
 bool ScreenShot::checkSingleUserImageSize(int size)
@@ -359,7 +359,7 @@ bool ScreenShot::checkSingleUserImageSize(int size)
 	if (users[0].protocolData("Gadu", "MaxImageSize").toInt() * 1024 >= size)
 		return true;
 
-	return MessageBox::ask(tr("Image size is bigger than maximal image size set by %1. Send it anyway?").arg(users[0].altNick()));
+	return MessageDialog::ask(tr("Image size is bigger than maximal image size set by %1. Send it anyway?").arg(users[0].altNick()));
 }
 
 void ScreenShot::keyPressEvent(QKeyEvent* e)

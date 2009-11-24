@@ -14,14 +14,15 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/group.h"
 #include "buddies/group-manager.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
+#include "contacts/contact-shared.h"
 
 #include "protocols/protocol.h"
 
 #include "debug.h"
 #include "misc/misc.h"
 
-#include "../gadu-contact-account-data.h"
+#include "../gadu-contact-details.h"
 
 #include "gadu-list-helper.h"
 
@@ -34,10 +35,10 @@ QString GaduListHelper::contactListToString(Account account, BuddyList buddies)
 	foreach (Buddy buddy, buddies)
 	{
 		QStringList buddyGroups;
-		foreach (Group *group, buddy.groups())
-			buddyGroups << group->name();
+		foreach (Group group, buddy.groups())
+			buddyGroups << group.name();
 
-		ContactAccountData *cad = buddy.accountData(account);
+		Contact contact = buddy.contact(account);
 
 		contactsStringList << QString("%1;%2;%3;%4;%5;%6;%7;%8;%9;%10;%11;%12;%13")
 			.arg(buddy.firstName())
@@ -46,15 +47,13 @@ QString GaduListHelper::contactListToString(Account account, BuddyList buddies)
 			.arg(buddy.display())
 			.arg(buddy.mobile())
 			.arg(buddyGroups.join(";"))
-			.arg(cad
-				? cad->id()
-				: "")
+			.arg(contact.id())
 			// TODO: 0.6.6
 			.arg("0")
 			.arg("")
 			.arg("0")
 			.arg("")
-			.arg(buddy.isOfflineTo(account))
+			.arg(buddy.isOfflineTo())
 			.arg(buddy.homePhone());
 	}
 
@@ -81,7 +80,7 @@ BuddyList GaduListHelper::streamToContactList(Account account, QTextStream &cont
 	BuddyList result;
 
 	QStringList sections;
-	QList<Group *> groups;
+	QList<Group> groups;
 	QString line;
 	unsigned int i, secCount;
 	bool ok;
@@ -129,8 +128,13 @@ BuddyList GaduListHelper::streamToContactList(Account account, QTextStream &cont
 				uin = 0;
 			if (uin)
 			{
-				GaduContactAccountData *gcad = new GaduContactAccountData(account, buddy, QString::number(uin), false);
-				buddy.addAccountData(gcad);
+				Contact contact;
+				contact.setContactAccount(account);
+				contact.setOwnerBuddy(buddy);
+				contact.setId(QString::number(uin));
+				contact.data()->setState(StorableObject::StateNew);
+				contact.setDetails(new GaduContactDetails(contact));
+				buddy.addContact(contact);
 			}
 		}
 
@@ -151,7 +155,7 @@ BuddyList GaduListHelper::streamToContactList(Account account, QTextStream &cont
 
 		if (i < secCount)
 		{
-			buddy.setOfflineTo(account, bool(sections[i].toInt()));
+			buddy.setOfflineTo(bool(sections[i].toInt()));
 			i++;
 		}
 

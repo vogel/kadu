@@ -12,34 +12,51 @@
 #include "configuration/configuration-manager.h"
 #include "configuration/xml-configuration-file.h"
 #include "buddies/avatar.h"
+#include "buddies/avatar-shared.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-remove-predicate-object.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
+#include "contacts/contact-shared.h"
 #include "core/core.h"
+#include "protocols/protocol.h"
 #include "protocols/protocols-manager.h"
 #include "icons-manager.h"
 
 #include "buddy.h"
 
-Buddy Buddy::null(BuddyShared::TypeNull);
+Buddy Buddy::null(true);
 
 Buddy Buddy::loadFromStorage(StoragePoint* contactStoragePoint)
 {
 	return Buddy(BuddyShared::loadFromStorage(contactStoragePoint));
 }
 
-Buddy::Buddy(BuddyShared *contactData) :
-		Data(contactData)
+Buddy::Buddy(bool null) :
+		SharedBase<BuddyShared>(null)
 {
 }
 
-Buddy::Buddy(BuddyShared::BuddyType type) :
-		Data(BuddyShared::TypeNull != type ? new BuddyShared(type) : 0)
+Buddy::Buddy()
 {
+	data()->setState(StorableObject::StateNew);
+}
+
+Buddy::Buddy(BuddyShared *data) :
+		SharedBase<BuddyShared>(data)
+{
+	data->ref.ref();
+}
+
+Buddy::Buddy(QObject *data) :
+		SharedBase<BuddyShared>(true)
+{
+	BuddyShared *shared = dynamic_cast<BuddyShared *>(data);
+	if (shared)
+		setData(shared);
 }
 
 Buddy::Buddy(const Buddy &copy) :
-		Data(copy.Data)
+		SharedBase<BuddyShared>(copy)
 {
 }
 
@@ -47,200 +64,111 @@ Buddy::~Buddy()
 {
 }
 
-void Buddy::checkNull()
-{
-	if (isNull())
-		Data = new BuddyShared(BuddyShared::TypeNull);
-}
-
-Buddy & Buddy::operator = (const Buddy& copy)
-{
-	Data = copy.Data;
-	return *this;
-}
-
-bool Buddy::operator == (const Buddy& compare) const
-{
-	return Data == compare.Data;
-}
-
-bool Buddy::operator != (const Buddy& compare) const
-{
-	return Data != compare.Data;
-}
-
-int Buddy::operator < (const Buddy& compare) const
-{
-	return Data.data() - compare.Data.data();
-}
-
 void Buddy::importConfiguration(XmlConfigFile *configurationStorage, QDomElement parent)
 {
-	Data->importConfiguration(configurationStorage, parent);
-}
-
-void Buddy::loadConfiguration()
-{
-	Data->load();
+	data()->importConfiguration(configurationStorage, parent);
 }
 
 void Buddy::store()
 {
 	if ((!isNull() && !isAnonymous()) || (isAnonymous() && !BuddyRemovePredicateObject::inquireAll(*this)))
-		Data->store();
+		data()->store();
 	else
-		Data->removeFromStorage();
-}
-
-void Buddy::removeFromStorage()
-{
-	Data->removeFromStorage();
+		data()->removeFromStorage();
 }
 
 StoragePoint * Buddy::storagePointForModuleData(const QString& module, bool create) const
 {
-	return Data->storagePointForModuleData(module, create);
+	return data()->storagePointForModuleData(module, create);
 }
 
-QUuid Buddy::uuid() const
+QString Buddy::customData(const QString &key)
 {
-	return isNull() ? QUuid() : Data->uuid();
+	return isNull() ? QString::null : data()->customData()[key];
 }
 
-QMap<QString, QString> & Buddy::customData()
+void Buddy::setCustomData(const QString &key, const QString &value)
 {
-	checkNull();
-	return Data->customData();
+	if (!isNull())
+		data()->customData().insert(key, value);
+}
+
+void Buddy::removeCustomData(const QString &key)
+{
+	if (!isNull())
+		data()->customData().remove(key);
 }
 
 Account Buddy::prefferedAccount() const
 {
-	return isNull()
-			? Account::null
-			: Data->prefferedAccount();
+	return isNull() ? Account::null : data()->prefferedAccount();
 }
 
 QList<Account> Buddy::accounts() const
 {
-	return isNull()
-		? QList<Account>()
-		: Data->accounts();
+	return isNull() ? QList<Account>() : data()->accounts();
 }
 
-void Buddy::addAccountData(ContactAccountData *accountData)
+void Buddy::addContact(Contact contact)
 {
-	if (!accountData)
+	if (isNull() || contact.isNull())
 		return;
 
-	checkNull();
-	Data->addAccountData(accountData);
+	data()->addContact(contact);
 }
 
-void Buddy::removeAccountData(ContactAccountData *accountData) const
+void Buddy::removeContact(Contact contact) const
 {
 	if (!isNull())
-		Data->removeAccountData(accountData);
+		data()->removeContact(contact);
 }
 
-void Buddy::removeAccountData(Account account) const
+void Buddy::removeContact(Account account) const
 {
 	if (!isNull())
-		Data->removeAccountData(account);
+		data()->removeContact(account);
 }
 
-ContactAccountData * Buddy::accountData(Account account) const
+Contact Buddy::contact(Account account) const
 {
-	return isNull()
-			? 0
-			: Data->accountData(account);
+	return isNull() ? Contact::null : data()->contact(account);
 }
 
-QList<ContactAccountData *> Buddy::accountDatas() const
+QList<Contact> Buddy::contacts() const
 {
-	return isNull()
-			? QList<ContactAccountData *>()
-			: Data->accountDatas();
+	return isNull() ? QList<Contact>() : data()->contacts();
 }
 
-StoragePoint * Buddy::storagePointForAccountData(Account account) const
+bool Buddy::hasContact(Account account) const
 {
-	return isNull()
-			? 0
-			: Data->storagePointForAccountData(account);
-}
-
-bool Buddy::hasAccountData(Account account) const
-{
-	return isNull()
-			? false
-			: 0 != Data->accountData(account);
+	return isNull() ? false : !data()->contact(account).isNull();
 }
 
 QString Buddy::id(Account account) const
 {
-	return isNull()
-			? QString::null
-			: Data->id(account);
+	return isNull() ? QString::null : data()->id(account);
 }
 
-bool Buddy::isIgnored() const
+bool Buddy::isInGroup(Group group) const
 {
-	return isNull()
-			? false
-			: Data->isIgnored();
-}
-
-bool Buddy::setIgnored(bool ignored)
-{
-	return isNull()
-		? false
-		: Data->setIgnored(ignored);
-}
-
-bool Buddy::isBlocked(Account account) const
-{
-	return isNull()
-			? false
-			: Data->isBlocked(account);
-}
-
-bool Buddy::isOfflineTo(Account account) const
-{
-	return isNull()
-			? false
-			: Data->isOfflineTo(account);
-}
-
-void Buddy::setOfflineTo(Account account, bool offlineTo) const
-{
-	if (!isNull())
-		Data->setOfflineTo(account, offlineTo);
-}
-
-bool Buddy::isInGroup(Group *group) const
-{
-	return isNull()
-			? false
-			: Data->isInGroup(group);
+	return isNull() ? false : data()->isInGroup(group);
 }
 
 bool Buddy::showInAllGroup() const
 {
-	return isNull()
-			? false
-			: Data->showInAllGroup();
+	return isNull() ? false : data()->showInAllGroup();
 }
 
-void Buddy::addToGroup(Group *group)
+void Buddy::addToGroup(Group group)
 {
-	if (!isNull() && !Data->isInGroup(group))
-			Data->addToGroup(group);
+	if (!isNull() && !data()->isInGroup(group))
+		data()->addToGroup(group);
 
 }
-void Buddy::removeFromGroup(Group *group)
+void Buddy::removeFromGroup(Group group)
 {
-	if (!isNull() && Data->isInGroup(group))
-		Data->removeFromGroup(group);
+	if (!isNull() && data()->isInGroup(group))
+		data()->removeFromGroup(group);
 }
 
 QString Buddy::display() const
@@ -249,11 +177,11 @@ QString Buddy::display() const
 			? QString::null
 			: isAnonymous() && !prefferedAccount().isNull()
 					? (prefferedAccount().name() + ":" + id(prefferedAccount()))
-					: Data->display().isEmpty()
-							? Data->nickName().isEmpty()
-									? Data->firstName()
-									: Data->nickName()
-							: Data->display();
+					: data()->display().isEmpty()
+							? data()->nickName().isEmpty()
+									? data()->firstName()
+									: data()->nickName()
+							: data()->display();
 }
 
 Buddy Buddy::dummy()
@@ -268,23 +196,60 @@ Buddy Buddy::dummy()
 	example.setEmail("jimbo@mail.server.net");
 	example.setHomePhone("+481234567890");
 
-	Account account;
+	Account account = Account::null;
 
-	ContactAccountData *contactData = new ContactAccountData(account, example, "999999", true);
-	contactData->setStatus(Status("Away", tr("Example description")));
-	contactData->setIp(QHostAddress(2130706433));
-	contactData->setPort(80);
-	Avatar &avatar = contactData->avatar();
-	avatar.setLastUpdated(QDateTime::currentDateTime());
-	avatar.setPixmap(IconsManager::instance()->loadPixmap("ContactsTab"));
-	avatar.setFileName(IconsManager::instance()->iconPath("ContactsTab"));
+	if (!AccountManager::instance()->defaultAccount().isNull())
+		account = AccountManager::instance()->defaultAccount();
+	else if (ProtocolsManager::instance()->protocolFactories().count())
+	{
+		account.createData();
+		account.data()->setState(StorableObject::StateNew);
+		account.setProtocolName(ProtocolsManager::instance()->protocolFactories()[0]->name());
+		account.data()->protocolRegistered(ProtocolsManager::instance()->protocolFactories()[0]);
+		account.setDetails(ProtocolsManager::instance()->protocolFactories()[0]->createAccountDetails(account));
+	}
 
-	example.addAccountData(contactData);
+	if (!account.isNull())
+	{
+		Contact contactData;
+		contactData.setContactAccount(account);
+		contactData.setOwnerBuddy(example);
+		contactData.setId("999999");
+		contactData.data()->setState(StorableObject::StateNew);
+		contactData.setCurrentStatus(Status("Away", tr("Example description")));
+		contactData.setAddress(QHostAddress(2130706433));
+		contactData.setPort(80);
+		contactData.setDetails(account.protocolHandler()->protocolFactory()->createContactDetails(contactData));
 
-	return example;
+		Avatar avatar;
+		avatar.data()->setState(StorableObject::StateNew);
+		avatar.setLastUpdated(QDateTime::currentDateTime());
+		avatar.setPixmap(IconsManager::instance()->loadPixmap("ContactsTab"));
+		avatar.setFileName("ContactsTab");
+		contactData.setContactAvatar(avatar);
+
+		example.addContact(contactData);
+
+		return example;
+	}
+	return null;
 }
 
-uint qHash(const Buddy &buddy)
-{
-	return qHash(buddy.uuid().toString());
-}
+KaduSharedBase_PropertyWriteDef(Buddy, QString, display, Display, QString::null)
+KaduSharedBase_PropertyDef(Buddy, QString, firstName, FirstName, QString::null)
+KaduSharedBase_PropertyDef(Buddy, QString, lastName, LastName, QString::null)
+KaduSharedBase_PropertyDef(Buddy, QString, familyName, FamilyName, QString::null)
+KaduSharedBase_PropertyDef(Buddy, QString, city, City, QString::null)
+KaduSharedBase_PropertyDef(Buddy, QString, familyCity, FamilyCity, QString::null)
+KaduSharedBase_PropertyDef(Buddy, QString, nickName, NickName, QString::null)
+KaduSharedBase_PropertyDef(Buddy, QString, homePhone, HomePhone, QString::null)
+KaduSharedBase_PropertyDef(Buddy, QString, mobile, Mobile, QString::null)
+KaduSharedBase_PropertyDef(Buddy, QString, email, Email, QString::null)
+KaduSharedBase_PropertyDef(Buddy, QString, website, Website, QString::null)
+KaduSharedBase_PropertyDef(Buddy, unsigned short, birthYear, BirthYear, 0)
+KaduSharedBase_PropertyDef(Buddy, BuddyShared::BuddyGender, gender, Gender, BuddyShared::GenderUnknown)
+KaduSharedBase_PropertyDef(Buddy, QList<Group>, groups, Groups, QList<Group>())
+KaduSharedBase_PropertyBoolDef(Buddy, Anonymous, false)
+KaduSharedBase_PropertyBoolDef(Buddy, Ignored, false)
+KaduSharedBase_PropertyBoolDef(Buddy, Blocked, false)
+KaduSharedBase_PropertyBoolDef(Buddy, OfflineTo, false)

@@ -29,7 +29,7 @@
 #include "core/core.h"
 #include "configuration/configuration-file.h"
 #include "configuration/xml-configuration-file.h"
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
 #include "protocols/protocols-manager.h"
 
 #include "debug.h"
@@ -118,7 +118,9 @@ void kaduQtMessageHandler(QtMsgType type, const char *msg)
 			fprintf(stderr, "\033[31;1mCritical: %s\033[0m\n", msg);
 			fflush(stderr);
 			printBacktrace("critical error from Qt (above)");
+#if QT_VERSION != 0x040600 // TODO: remove after next Qt alpha
 			abort();
+#endif
 	}
 }
 
@@ -394,7 +396,7 @@ int main(int argc, char *argv[])
 	// and disable this feature for win32 ;)
 #ifndef Q_OS_WIN
 	if (geteuid() == 0)
-		MessageBox::msg(qApp->translate("@default", QT_TR_NOOP("Please do not run Kadu as a root!\nIt's a high security risk!")), false, "Warning");
+		MessageDialog::msg(qApp->translate("@default", QT_TR_NOOP("Please do not run Kadu as a root!\nIt's a high security risk!")), false, "Warning");
 #endif
 
 // 	if (ggnumber)

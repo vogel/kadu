@@ -10,7 +10,7 @@
 #ifndef GADU_AVATAR_SERVICE_H
 #define GADU_AVATAR_SERVICE_H
 
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "protocols/services/avatar-service.h"
 
 class GaduAvatarService : public AvatarService
@@ -20,7 +20,7 @@ class GaduAvatarService : public AvatarService
 public:
 	GaduAvatarService(QObject *parent = 0) : AvatarService(parent) {}
 
-	void fetchAvatar(ContactAccountData *contactAccountData);
+	void fetchAvatar(Contact contact);
 
 };
 

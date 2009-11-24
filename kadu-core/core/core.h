@@ -22,7 +22,6 @@
 
 #include "exports.h"
 
-class ConfigurationManager;
 class KaduWindow;
 class Message;
 class UserStatusChanger;
@@ -33,8 +32,6 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	Q_DISABLE_COPY(Core)
 
 	static Core *Instance;
-
-	ConfigurationManager *Configuration;
 
 	Buddy Myself;
 	KaduWindow *Window;
@@ -66,8 +63,6 @@ protected:
 
 public:
 	static Core * instance();
-
-	ConfigurationManager * configuration() { return Configuration; }
 
 	virtual QString readToken(const QPixmap &tokenPixmap);
 

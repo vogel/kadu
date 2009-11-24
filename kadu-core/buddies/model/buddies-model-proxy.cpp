@@ -9,7 +9,7 @@
 
 #include "accounts/account-manager.h"
 #include "buddies/buddy.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "status/status.h"
 #include "status/status-type.h"
 
@@ -62,15 +62,15 @@ bool BuddiesModelProxy::lessThan(const QModelIndex &left, const QModelIndex &rig
 	Account leftAccount = leftBuddy.prefferedAccount();
 	Account rightAccount = rightBuddy.prefferedAccount();
 
-	ContactAccountData *leftBuddyAccountData = leftBuddy.accountData(leftAccount);
-	ContactAccountData *rightBuddyAccountData = rightBuddy.accountData(rightAccount);
+	Contact leftBuddyAccountData = leftBuddy.contact(leftAccount);
+	Contact rightBuddyAccountData = rightBuddy.contact(rightAccount);
 
-	Status leftStatus = leftBuddyAccountData
-		? leftBuddyAccountData->status()
-		: Status();
-	Status rightStatus = rightBuddyAccountData
-		? rightBuddyAccountData->status()
-		: Status();
+	Status leftStatus = !leftBuddyAccountData.isNull()
+		? leftBuddyAccountData.currentStatus()
+		: Status::null;
+	Status rightStatus = !rightBuddyAccountData.isNull()
+		? rightBuddyAccountData.currentStatus()
+		: Status::null;
 
 	if (leftStatus.isDisconnected() && !rightStatus.isDisconnected())
 		return false;

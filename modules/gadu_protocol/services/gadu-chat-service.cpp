@@ -10,7 +10,7 @@
 #include "configuration/configuration-file.h"
 #include "buddies/ignored-helper.h"
 #include "core/core.h"
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
 #include "misc/misc.h"
 #include "status/status-group.h"
 #include "status/status-type.h"
@@ -68,13 +68,13 @@ bool GaduChatService::sendMessage(Chat *chat, FormattedMessage &message)
 		if (formats)
 			delete[] formats;
 
-		MessageBox::msg(tr("Filtered message too long (%1>=%2)").arg(data.length()).arg(2000), false, "Warning");
+		MessageDialog::msg(tr("Filtered message too long (%1>=%2)").arg(data.length()).arg(2000), false, "Warning");
 		kdebugmf(KDEBUG_FUNCTION_END, "end: filtered message too long\n");
 		return false;
 	}
 
 	foreach (const Buddy &buddy, contacts)
-		if (buddy.accountData(Protocol->account()))
+		if (!buddy.contact(Protocol->account()).isNull())
 			++uinsCount;
 
 	int messageId = -1;
@@ -84,7 +84,7 @@ bool GaduChatService::sendMessage(Chat *chat, FormattedMessage &message)
 		unsigned int i = 0;
 
 		foreach (const Buddy &buddy, contacts)
-			if (buddy.accountData(Protocol->account()))
+			if (!buddy.contact(Protocol->account()).isNull())
 				uins[i++] = Protocol->uin(buddy);
 		if (formatsSize)
 			messageId = gg_send_message_confer_richtext(
@@ -97,7 +97,7 @@ bool GaduChatService::sendMessage(Chat *chat, FormattedMessage &message)
 	}
 	else
 		foreach (const Buddy &buddy, contacts)
-			if (buddy.accountData(Protocol->account()))
+			if (!buddy.contact(Protocol->account()).isNull())
 			{
 				if (formatsSize)
 					messageId = gg_send_message_richtext(

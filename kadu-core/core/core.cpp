@@ -13,12 +13,12 @@
 #include <QtCore/QSettings>
 
 #include "accounts/account-manager.h"
+#include "buddies/buddy-manager.h"
+#include "buddies/group-manager.h"
 #include "chat/message/pending-messages-manager.h"
 #include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
-#include "buddies/buddy-manager.h"
-#include "buddies/group-manager.h"
-#include "buddies/account-data/contact-account-data-manager.h"
+#include "contacts/contact-manager.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/kadu-window.h"
@@ -30,8 +30,6 @@
 #include "status/status-container-manager.h"
 #include "status/status-type.h"
 #include "status/status-type-manager.h"
-
-#include "../modules/gadu_protocol/gadu-protocol.h"
 
 #include "debug.h"
 #include "emoticons.h"
@@ -50,14 +48,12 @@ Core * Core::instance()
 	{
 		Instance = new Core();
 		Instance->init();
-
-		NotificationManager::instance(); // TODO: 0.6.6
 	}
 
 	return Instance;
 }
 
-Core::Core() : Myself(BuddyShared::TypeNull), Window(0), ShowMainWindowOnStart(true)
+Core::Core() : Myself(Buddy::null), Window(0), ShowMainWindowOnStart(true)
 {
 	connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(quit()));
 	createDefaultConfiguration();
@@ -66,9 +62,9 @@ Core::Core() : Myself(BuddyShared::TypeNull), Window(0), ShowMainWindowOnStart(t
 
 Core::~Core()
 {
-	Configuration->store();
-	delete Configuration;
-	Configuration = 0;
+	ConfigurationManager::instance()->store();
+// 	delete Configuration;
+// 	Configuration = 0;
 
 	storeConfiguration();
 
@@ -262,18 +258,15 @@ void Core::createAllDefaultToolbars()
 
 void Core::init()
 {
-	Configuration = new ConfigurationManager();
-	Configuration->load();
-
 	// protocol modules should be loaded before gui
 	// it fixes crash on loading pending messages from config, contacts import from 0.6.5, and maybe other issues
 	ModulesManager::instance()->loadProtocolModules();
 
 	Myself = Buddy();
-	Myself.setDisplay(config_file.readEntry("General", "Nick"));
+	QString nickName(config_file.readEntry("General", "Nick"));
+	Myself.setDisplay(nickName.isEmpty() ? tr("Me") : nickName);
 
 	connect(StatusContainerManager::instance(), SIGNAL(statusChanged()), this, SLOT(statusChanged()));
-
 	// TODO 0.6.6:
 	StatusChanger = new UserStatusChanger();
 	StatusChangerManager::instance()->registerStatusChanger(StatusChanger);
@@ -290,8 +283,11 @@ void Core::init()
 #endif
 	QTimer::singleShot(15000, this, SLOT(deleteOldConfigurationFiles()));
 
-	ContactAccountDataManager::instance();
+	NotificationManager::instance(); // TODO: 0.6.6
+
 	AccountManager::instance()->load();
+	BuddyManager::instance()->load();
+	ContactManager::instance()->load();
 }
 
 void Core::storeConfiguration()
@@ -306,7 +302,7 @@ void Core::deleteOldConfigurationFiles()
 {
 	kdebugf();
 
-	QDir oldConfigs2(ggPath(), "kadu.conf.xml.backup.*", QDir::Name, QDir::Files);
+	QDir oldConfigs2(ggPath(), "kadu-0.6.6.conf.xml.backup.*", QDir::Name, QDir::Files);
 
 	if (oldConfigs2.count() > 20)
 		for (unsigned int i = 0, max = oldConfigs2.count() - 20; i < max; ++i)
@@ -364,30 +360,33 @@ void Core::accountRegistered(Account account)
 	connect(protocol, SIGNAL(connected(Account)), this, SIGNAL(connected()));
 	connect(protocol, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
 /* TODO: 0.6.6
-	ContactAccountData *contactAccountData = protocol->protocolFactory()->loadContactAccountData(account, Myself);
-	if (!contactAccountData)
-		contactAccountData = protocol->protocolFactory()->newContactAccountData(account, Myself, account->id());
-	Myself.addAccountData(contactAccountData);*/
+	Contact contact = protocol->protocolFactory()->loadContact(account, Myself);
+	if (!contact)
+		contact = protocol->protocolFactory()->newContact(account, Myself, account->id());
+	Myself.addAccountData(contact);*/
 }
 
 void Core::accountUnregistered(Account account)
 {
 	Protocol *protocol = account.protocolHandler();
 
-	ChatService *chatService = protocol->chatService();
-	if (chatService)
+	if (protocol)
 	{
-		disconnect(chatService, SIGNAL(messageReceived(const Message &)),
-			this, SIGNAL(messageReceived(const Message &)));
-		disconnect(chatService, SIGNAL(messageSent(const Message &)),
-			this, SIGNAL(messageSent(const Message &)));
+		ChatService *chatService = protocol->chatService();
+		if (chatService)
+		{
+			disconnect(chatService, SIGNAL(messageReceived(const Message &)),
+				this, SIGNAL(messageReceived(const Message &)));
+			disconnect(chatService, SIGNAL(messageSent(const Message &)),
+				this, SIGNAL(messageSent(const Message &)));
+		}
+
+		disconnect(protocol, SIGNAL(connecting(Account)), this, SIGNAL(connecting()));
+		disconnect(protocol, SIGNAL(connected(Account)), this, SIGNAL(connected()));
+		disconnect(protocol, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
 	}
 
-	disconnect(protocol, SIGNAL(connecting(Account)), this, SIGNAL(connecting()));
-	disconnect(protocol, SIGNAL(connected(Account)), this, SIGNAL(connected()));
-	disconnect(protocol, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
-
-	Myself.removeAccountData(account);
+	Myself.removeContact(account);
 }
 
 void Core::configurationUpdated()
@@ -404,10 +403,7 @@ void Core::configurationUpdated()
 		settings.remove("Kadu");
 #endif
 
-#ifdef DEBUG_ENABLED
 	debug_mask = config_file.readNumEntry("General", "DEBUG_MASK");
-	gg_debug_level = debug_mask | ~255;
-#endif
 }
 
 QString Core::readToken(const QPixmap &tokenPixmap)

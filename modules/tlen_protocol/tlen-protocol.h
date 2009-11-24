@@ -16,8 +16,7 @@
 
 #include "services/tlen-avatar-service.h"
 #include "services/tlen-chat-service.h"
-
-#include "tlen-account.h"
+#include "services/tlen-personal-info-service.h"
 
 class ActionDescription;
 class Conference;
@@ -31,7 +30,7 @@ class TlenProtocol : public Protocol
 	public:
 		static int initModule();
 		static void closeModule();
-		TlenProtocol(Account *account, ProtocolFactory *factory);
+		TlenProtocol(Account account, ProtocolFactory *factory);
 		~TlenProtocol();
 
 		bool validateUserID(QString& uid);
@@ -46,6 +45,7 @@ class TlenProtocol : public Protocol
 
 		virtual AvatarService *avatarService() { return CurrentAvatarService; }
 		virtual ChatService * chatService() { return CurrentChatService; }
+		virtual PersonalInfoService * personalInfoService() { return CurrentPersonalInfoService; }
 
 	protected:
 		virtual void changeStatus();
@@ -65,9 +65,11 @@ class TlenProtocol : public Protocol
 
 		TlenAvatarService *CurrentAvatarService;
 		TlenChatService *CurrentChatService;
+		TlenPersonalInfoService *CurrentPersonalInfoService;
 		friend class TlenChatService;
 
 	private slots:
+		void login(const QString &password, bool permanent);
 		void connectToServer();
 		void login();
 		void logout();

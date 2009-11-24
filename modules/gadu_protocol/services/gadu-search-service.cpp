@@ -11,7 +11,7 @@
 #include "misc/misc.h"
 
 #include "socket-notifiers/gadu-protocol-socket-notifiers.h"
-#include "gadu-contact-account-data.h"
+#include "gadu-contact-details.h"
 #include "gadu-protocol.h"
 
 #include "gadu-search-service.h"
@@ -25,7 +25,9 @@ GaduSearchService::GaduSearchService(GaduProtocol *protocol) :
 void GaduSearchService::searchFirst(BuddySearchCriteria criteria)
 {
 	Query = criteria;
-	From = Query.SearchBuddy.hasAccountData(Protocol->account()) ? Query.SearchBuddy.accountData(Protocol->account())->id().toUInt() : 0;
+	From = Query.SearchBuddy.hasContact(Protocol->account())
+			? Query.SearchBuddy.contact(Protocol->account()).id().toUInt()
+			: 0;
 	searchNext();
 }
 
@@ -34,8 +36,8 @@ void GaduSearchService::searchNext()
 	Stopped = false;
 	gg_pubdir50_t req = gg_pubdir50_new(GG_PUBDIR50_SEARCH);
 
-	if (Query.SearchBuddy.hasAccountData(Protocol->account()))
-		gg_pubdir50_add(req, GG_PUBDIR50_UIN, (const char *)unicode2cp(Query.SearchBuddy.accountData(Protocol->account())->id()).data());
+	if (Query.SearchBuddy.hasContact(Protocol->account()))
+		gg_pubdir50_add(req, GG_PUBDIR50_UIN, (const char *)unicode2cp(Query.SearchBuddy.contact(Protocol->account()).id()).data());
 	if (!Query.SearchBuddy.firstName().isEmpty())
 		gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, (const char *)unicode2cp(Query.SearchBuddy.firstName()).data());
 	if (!Query.SearchBuddy.lastName().isEmpty())
@@ -84,25 +86,7 @@ void GaduSearchService::handleEventPubdir50SearchReply(struct gg_event *e)
 
 	for (int i = 0; i < count; i++)
 	{
-		Buddy result;
-
-		GaduContactAccountData *gcad = new GaduContactAccountData(Protocol->account(), result,
-				gg_pubdir50_get(res, i, GG_PUBDIR50_UIN));
-		Status status;
-		status.setType(Protocol->statusTypeFromGaduStatus(atoi(gg_pubdir50_get(res, i, GG_PUBDIR50_STATUS)) & 127));
-		gcad->setStatus(status);
-		result.addAccountData(gcad);
-
-		result.setFirstName(cp2unicode(gg_pubdir50_get(res, i, GG_PUBDIR50_FIRSTNAME)));
-		result.setLastName(cp2unicode(gg_pubdir50_get(res, i, GG_PUBDIR50_LASTNAME)));
-		result.setNickName(cp2unicode(gg_pubdir50_get(res, i, GG_PUBDIR50_NICKNAME)));
-		result.setBirthYear(QString::fromAscii(gg_pubdir50_get(res, i, GG_PUBDIR50_BIRTHYEAR)).toUShort());
-		result.setCity(cp2unicode(gg_pubdir50_get(res, i, GG_PUBDIR50_CITY)));
-		result.setFamilyName(cp2unicode(gg_pubdir50_get(res, i, GG_PUBDIR50_FAMILYNAME)));
-		result.setFamilyCity(cp2unicode(gg_pubdir50_get(res, i, GG_PUBDIR50_FAMILYCITY)));
-		result.setGender((BuddyShared::BuddyGender)QString::fromAscii(gg_pubdir50_get(res, i, GG_PUBDIR50_GENDER)).toUShort());
-
-		results.append(result);
+		results.append(Protocol->searchResultToBuddy(res, i));
 	}
 
 	From = gg_pubdir50_next(res);

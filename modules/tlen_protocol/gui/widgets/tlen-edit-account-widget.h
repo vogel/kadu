@@ -19,6 +19,7 @@ class QVBoxLayout;
 
 class ChooseIdentityWidget;
 class ProxyGroupBox;
+class TlenPersonalInfoWidget;
 
 class TlenEditAccountWidget : public AccountEditWidget
 {
@@ -31,6 +32,8 @@ class TlenEditAccountWidget : public AccountEditWidget
 
 	ChooseIdentityWidget *ChooseIdentity;
 	ProxyGroupBox *proxy;
+
+	TlenPersonalInfoWidget *gpiw;
 
 	void createGui();
 	void createGeneralTab(QTabWidget *);
@@ -45,7 +48,7 @@ private slots:
 	void removeAccount();
 
 public:
-	explicit TlenEditAccountWidget(Account *account, QWidget *parent = 0);
+	explicit TlenEditAccountWidget(Account account, QWidget *parent = 0);
 	virtual ~TlenEditAccountWidget();
 
 	virtual void apply();

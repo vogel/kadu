@@ -15,19 +15,21 @@
 #include "accounts/account.h"
 #include "configuration/storable-object.h"
 
-class AccountData;
+#include "exports.h"
 
-class AccountDetails : public QObject, public StorableObject
+class AccountShared;
+
+class KADUAPI AccountDetails : public QObject, public StorableObject
 {
 	Q_OBJECT
 
-	AccountData *MyAccountData;
+	AccountShared *MyAccountData;
 
 public:
-	explicit AccountDetails(StoragePoint *storagePoint, Account parent);
+	explicit AccountDetails(AccountShared *accountData);
 	virtual ~AccountDetails();
 
-	Account account() { return Account(MyAccountData); }
+	AccountShared * accountData() { return MyAccountData; }
 
 };
 

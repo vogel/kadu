@@ -12,7 +12,7 @@
 
 #include "accounts/account.h"
 #include "chat/chat-manager.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "misc/misc.h"
 #include "notify/notify-event.h"
 #include "protocols/protocol.h"
@@ -93,10 +93,10 @@ void StatusChangedNotification::unregisterEvents()
 
 StatusChangedNotification::StatusChangedNotification(const QString &toStatus, BuddySet &contacts, Account account) :
 		ChatNotification(account.protocolHandler()->findChat(contacts), QString("StatusChanged") + toStatus,
-			account.protocolHandler()->statusPixmap(contacts.begin()->accountData(account)->status()))
+			account.protocolHandler()->statusPixmap(contacts.begin()->contact(account).currentStatus()))
 {
 	const Buddy &buddy = *contacts.begin();
-	Status status = buddy.accountData(account)->status();
+	Status status = buddy.contact(account).currentStatus();
 	QString syntax;
 
 	if (!status.description().isNull())

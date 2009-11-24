@@ -13,10 +13,11 @@
 #include "chat/type/chat-type.h"
 
 #include "chat/chat.h"
+#include "exports.h"
 
 class XmlConfigFile;
 
-class AggregateChat : public Chat
+class KADUAPI AggregateChat : public Chat
 {
 	Q_OBJECT
 	QList<Chat *> Chats;

@@ -19,7 +19,7 @@
 #include "buddies/buddy-kadu-data.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "buddies/filter/has-description-buddy-filter.h"
 #include "buddies/filter/offline-buddy-filter.h"
 #include "buddies/filter/online-and-description-buddy-filter.h"
@@ -36,7 +36,7 @@
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/main-configuration-window.h"
 #include "gui/windows/merge-buddies-window.h"
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
 #include "gui/windows/search-window.h"
 #include "gui/windows/your-accounts.h"
 #include "misc/misc.h"
@@ -56,7 +56,7 @@ void disableNonIdUles(Action *action)
 {
 	kdebugf();
 	foreach (const Buddy buddy, action->buddies())
-		if (buddy.accountData(AccountManager::instance()->defaultAccount()) == 0)
+		if (buddy.contact(AccountManager::instance()->defaultAccount()).isNull())
 		{
 			action->setEnabled(false);
 			return;
@@ -80,10 +80,9 @@ void disableContainsSelfUles(Action *action)
 void checkOfflineTo(Action *action)
 {
 	kdebugf();
-	Account account = AccountManager::instance()->defaultAccount();
 	bool on = true;
 	foreach (const Buddy buddy, action->buddies())
-		if (buddy.accountData(account) == 0 || !buddy.isOfflineTo(account))
+		if (!buddy.isOfflineTo())
 		{
 			on = false;
 			break;
@@ -97,7 +96,7 @@ void checkHideDescription(Action *action)
 	Account account = AccountManager::instance()->defaultAccount();
 
 	foreach (const Buddy buddy, action->buddies())
-		if (buddy.accountData(account) == 0)
+		if (buddy.contact(account).isNull())
 		{
 			action->setEnabled(false);
 			return;
@@ -147,7 +146,7 @@ void disableNoGaduUle(Action *action)
 		return;
 	}
 
-	if (!buddy.accountData(AccountManager::instance()->defaultAccount()))
+	if (buddy.contact(AccountManager::instance()->defaultAccount()).isNull())
 	{
 		action->setEnabled(false);
 		return;
@@ -170,13 +169,13 @@ void disableNoGaduDescription(Action *action)
 		return;
 	}
 
-	if (!buddy.accountData(account))
+	if (buddy.contact(account).isNull())
 	{
 		action->setEnabled(false);
 		return;
 	}
 
-	if (buddy.accountData(account)->status().description().isEmpty())
+	if (buddy.contact(account).currentStatus().description().isEmpty())
 	{
 		action->setEnabled(false);
 		return;
@@ -199,19 +198,19 @@ void disableNoGaduDescriptionUrl(Action *action)
 		return;
 	}
 
-	if (!buddy.accountData(account))
+	if (buddy.contact(account).isNull())
 	{
 		action->setEnabled(false);
 		return;
 	}
 
-	if (buddy.accountData(account)->status().description().isEmpty())
+	if (buddy.contact(account).currentStatus().description().isEmpty())
 	{
 		action->setEnabled(false);
 		return;
 	}
 
-	if (buddy.accountData(account)->status().description().indexOf(HtmlDocument::urlRegExp()) < 0)
+	if (buddy.contact(account).currentStatus().description().indexOf(HtmlDocument::urlRegExp()) < 0)
 	{
 		action->setEnabled(false);
 		return;
@@ -288,7 +287,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	
 	BuddiesListViewMenuManager::instance()->insertManagementActionDescription(2, 0);
 
-	AddGroup = new ActionDescription(this,
+	AddGroup= new ActionDescription(this,
 		ActionDescription::TypeGlobal, "addGroupAction",
 		this, SLOT(addGroupActionActivated(QAction *, bool)),
 		//TODO 0.6.6 proper icon
@@ -717,12 +716,12 @@ void KaduWindowActions::copyDescriptionActionActivated(QAction *sender, bool tog
 		return;
 
 	Account account = buddy.prefferedAccount();
-	ContactAccountData *data = buddy.accountData(account);
+	Contact data = buddy.contact(account);
 
-	if (!data)
+	if (data.isNull())
 		return;
 
-	QString description = data->status().description();
+	QString description = data.currentStatus().description();
 	if (description.isEmpty())
 		return;
 
@@ -745,12 +744,12 @@ void KaduWindowActions::openDescriptionLinkActionActivated(QAction *sender, bool
 		return;
 
 	Account account = buddy.prefferedAccount();
-	ContactAccountData *data = buddy.accountData(account);
+	Contact data = buddy.contact(account);
 
-	if (!data)
+	if (data.isNull())
 		return;
 
-	QString description = data->status().description();
+	QString description = data.currentStatus().description();
 	if (description.isEmpty())
 		return;
 
@@ -809,11 +808,11 @@ void KaduWindowActions::lookupInDirectoryActionActivated(QAction *sender, bool t
 void KaduWindowActions::offlineToUserActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
-	Account account = AccountManager::instance()->defaultAccount();
+
 	if (toggled && !config_file.readBoolEntry("General", "PrivateStatus"))
 	{
 // TODO: 0.6.6
-// 		if (MessageBox::ask("You need to have private status to do it, would you like to set private status now?"))
+// 		if (MessageDialog::ask("You need to have private status to do it, would you like to set private status now?"))
 // 			changePrivateStatus->setChecked(true);
 // 		else
 // 		{
@@ -829,7 +828,7 @@ void KaduWindowActions::offlineToUserActionActivated(QAction *sender, bool toggl
 	BuddySet buddies = window->buddies();
 	bool on = true;
 	foreach (const Buddy buddy, buddies)
-		if (buddy.accountData(account) == 0 || !buddy.isOfflineTo(account))
+		if (!buddy.isOfflineTo())
 		{
 			on = false;
 			break;
@@ -901,7 +900,7 @@ void KaduWindowActions::deleteUsersActionActivated(QAction *sender, bool toggled
 	QStringList displays;
 	foreach (Buddy buddy, buddies)
 		displays.append(buddy.display());
-	if (MessageBox::ask(tr("Selected users:\n%0 will be deleted. Are you sure?").arg(displays.join(", ")), "Warning", Core::instance()->kaduWindow()))
+	if (MessageDialog::ask(tr("Selected users:\n%0 will be deleted. Are you sure?").arg(displays.join(", ")), "Warning", Core::instance()->kaduWindow()))
 	{
 		foreach (Buddy buddy, buddies)
 			BuddyManager::instance()->removeBuddy(buddy);

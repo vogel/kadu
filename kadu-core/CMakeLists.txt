@@ -1,9 +1,9 @@
 set (kadu_SRCS
 
 	accounts/account.cpp
-	accounts/account-data.cpp
 	accounts/account-details.cpp
 	accounts/account-manager.cpp
+	accounts/account-shared.cpp
 	accounts/accounts-aware-object.cpp
 
 	accounts/filter/id-regular-expression-filter.cpp
@@ -14,6 +14,7 @@ set (kadu_SRCS
 
 	buddies/avatar.cpp
 	buddies/avatar-manager.cpp
+	buddies/avatar-shared.cpp
 	buddies/buddies-aware-object.cpp
 	buddies/buddy.cpp
 	buddies/buddy-kadu-data.cpp
@@ -28,12 +29,8 @@ set (kadu_SRCS
 	buddies/buddy-shared.cpp
 	buddies/group.cpp
 	buddies/group-manager.cpp
+	buddies/group-shared.cpp
 	buddies/ignored-helper.cpp
-
-	buddies/account-data/contact-account-data.cpp
-	buddies/account-data/contact-account-data-manager.cpp
-
-	buddies/account-data/model/buddy-account-data-model.cpp
 
 	buddies/filter/account-buddy-filter.cpp
 	buddies/filter/anonymous-buddy-filter.cpp
@@ -82,7 +79,7 @@ set (kadu_SRCS
 	configuration/account-data-manager.cpp
 	configuration/config-file-data-manager.cpp
 	configuration/configuration-aware-object.cpp
-	configuration/configuration-contact-account-data-manager.cpp
+	configuration/configuration-contact-data-manager.cpp
 	configuration/configuration-file.cpp
 	configuration/configuration-manager.cpp
 	configuration/notifier-configuration-data-manager.cpp
@@ -90,6 +87,13 @@ set (kadu_SRCS
 	configuration/storable-string-list.cpp
 	configuration/uuid-storable-object.cpp
 	configuration/xml-configuration-file.cpp
+
+	contacts/contact.cpp
+	contacts/contact-details.cpp
+	contacts/contact-manager.cpp
+	contacts/contact-shared.cpp
+
+	contacts/model/buddy-contact-model.cpp
 
 	core/core.cpp
 	core/core-actions.cpp
@@ -122,7 +126,7 @@ set (kadu_SRCS
 	gui/widgets/choose-identity-widget.cpp
 	gui/widgets/color-button.cpp
 	gui/widgets/color-selector.cpp
-	gui/widgets/contact-account-data-widget.cpp
+	gui/widgets/contact-widget.cpp
 	gui/widgets/custom-input.cpp
 	gui/widgets/delayed-line-edit.cpp
 	gui/widgets/group-tab-bar.cpp
@@ -182,7 +186,7 @@ set (kadu_SRCS
 	gui/windows/main-configuration-window.cpp
 	gui/windows/main-window.cpp
 	gui/windows/merge-buddies-window.cpp
-	gui/windows/message-box.cpp
+	gui/windows/message-dialog.cpp
 	gui/windows/password-window.cpp
 	gui/windows/search-window.cpp
 	gui/windows/syntax-editor-window.cpp
@@ -195,6 +199,7 @@ set (kadu_SRCS
 
 	identities/identity.cpp
 	identities/identity-manager.cpp
+	identities/identity-shared.cpp
 
 	misc/coding-conversion.cpp
 	misc/date-time.cpp
@@ -225,9 +230,13 @@ set (kadu_SRCS
 	protocols/connection-error-notification.cpp
 	protocols/protocol.cpp
 	protocols/protocol-menu-manager.cpp
+	protocols/protocols-aware-object.cpp
 	protocols/protocols-manager.cpp
 	protocols/model/protocols-model.cpp
 	protocols/services/chat-service.cpp
+
+	shared/shared.cpp
+	shared/shared-base.cpp
 
 	status/base-status-container.cpp
 	status/description-manager.cpp
@@ -263,10 +272,9 @@ if (UNIX AND NOT APPLE)
 endif (UNIX AND NOT APPLE)
 
 set (kadu_MOC_SRCS
-	accounts/account.h
-	accounts/account-data.h
 	accounts/account-details.h
 	accounts/account-manager.h
+	accounts/account-shared.h
 
 	accounts/filter/abstract-account-filter.h
 	accounts/filter/id-regular-expression-filter.h
@@ -278,17 +286,9 @@ set (kadu_MOC_SRCS
 	buddies/avatar-manager.h
 	buddies/buddy.h
 	buddies/buddy-shared.h
-	#buddies/buddy-list.h
-	#buddies/buddy-list-configuration-helper.h
 	buddies/buddy-manager.h
-	#buddies/buddy-search-criteria.h
-	#buddies/buddy-set.h
-	buddies/group.h
 	buddies/group-manager.h
-
-	buddies/account-data/contact-account-data.h
-	buddies/account-data/contact-account-data-manager.h
-	buddies/account-data/model/buddy-account-data-model.h
+	buddies/group-shared.h
 
 	buddies/filter/abstract-buddy-filter.h
 	buddies/filter/account-buddy-filter.h
@@ -332,6 +332,12 @@ set (kadu_MOC_SRCS
 
 	chat/type/chat-type-manager.h
 
+	contacts/contact-details.h
+	contacts/contact-manager.h
+	contacts/contact-shared.h
+
+	contacts/model/buddy-contact-model.h
+
 	configuration/configuration-window-data-manager.h
 	configuration/notifier-configuration-data-manager.h
 
@@ -364,7 +370,7 @@ set (kadu_MOC_SRCS
 	gui/widgets/choose-identity-widget.h
 	gui/widgets/color-button.h
 	gui/widgets/color-selector.h
-	gui/widgets/contact-account-data-widget.h
+	gui/widgets/contact-widget.h
 	gui/widgets/custom-input.h
 	gui/widgets/delayed-line-edit.h
 	gui/widgets/group-tab-bar.h
@@ -404,7 +410,7 @@ set (kadu_MOC_SRCS
 	gui/windows/main-configuration-window.h
 	gui/windows/main-window.h
 	gui/windows/merge-buddies-window.h
-	gui/windows/message-box.h
+	gui/windows/message-dialog.h
 	gui/windows/password-window.h
 	gui/windows/search-window.h
 	gui/windows/syntax-editor-window.h
@@ -414,6 +420,7 @@ set (kadu_MOC_SRCS
 
 	identities/identity.h
 	identities/identity-manager.h
+	identities/identity-shared.h
 
 	model/actions-proxy-model.h
 

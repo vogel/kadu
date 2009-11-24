@@ -30,7 +30,7 @@ class KADUAPI GroupManager : public QObject, public StorableObject
 	GroupManager();
 	~GroupManager();
 
-	QList<Group *> Groups;
+	QList<Group> Groups;
 
 	void importConfiguration();
 
@@ -43,28 +43,30 @@ public:
 	virtual void load();
 	virtual void store();
 
-	QList<Group *> groups();
+	QList<Group> groups();
 
-	void addGroup(Group *newGroup);
-	void removeGroup(QString groupUuid);
+	void addGroup(Group group);
+	void removeGroup(Group group);
 
-	Group * byUuid(const QString &uuid);
-	Group * byIndex(unsigned int index) const;
-	Group * byName(const QString &name, bool create = true);
+	Group byUuid(const QString &uuid);
+	Group byIndex(unsigned int index) const;
+	Group byName(const QString &name, bool create = true);
 	
-	unsigned int indexOf(Group *group) const { return Groups.indexOf(group); }
+	unsigned int indexOf(Group group) const;
 	unsigned int count() const { return Groups.count(); }
 
 	bool acceptableGroupName(const QString &groupName);
 
 signals:
-	void groupAboutToBeAdded(Group *group);
-	void groupAdded(Group *group);
-	void groupAboutToBeRemoved(Group *group);
-	void groupRemoved(Group *group);
+	void groupAboutToBeAdded(Group group);
+	void groupAdded(Group group);
+	void groupAboutToBeRemoved(Group group);
+	void groupRemoved(Group group);
 
 	void saveGroupData();
 
 };
+
+#include "buddies/group.h" // for MOC
 
 #endif // GROUP_MANAGER_H

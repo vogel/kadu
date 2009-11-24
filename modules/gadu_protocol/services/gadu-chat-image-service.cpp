@@ -129,7 +129,7 @@ bool GaduChatImageService::sendImageRequest(Buddy buddy, int size, uint32_t crc3
 {
 	kdebugf();
 
-	if (!buddy.accountData(Protocol->account()) ||
+	if (buddy.contact(Protocol->account()).isNull() ||
 			(CurrentMinuteSendImageRequests > config_file.readUnsignedNumEntry("Chat", "MaxImageRequests")))
 		return false;
 

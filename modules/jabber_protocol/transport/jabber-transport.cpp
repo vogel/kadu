@@ -46,7 +46,7 @@ JabberTransport::JabberTransport (Account parentAccount, const XMPP::RosterItem 
 ///	m_account->addTransport( this,item.jid().bare() );
 
 //TODO: dodaj kontakt reprezentujący transport
-//	JabberContact *myContact = m_account->contactPool()->addContact ( item , Kopete::ContactList::self()->myself(), false );
+//	JabberContactmyContact = m_account->contactPool()->addContact ( item , Kopete::ContactList::self()->myself(), false );
 //	setMyself( myContact );
 	
 ///	kDebug(JABBER_DEBUG_GLOBAL) << accountId() <<" transport created:  myself: " << myContact;
@@ -104,7 +104,7 @@ JabberTransport::JabberTransport( Account parentAccount, const QString & _accoun
 	
 	///m_account->addTransport( this, contactJID.bare() );
 	
-	///JabberContact *myContact = m_account->contactPool()->addContact ( contactJID , Kopete::ContactList::self()->myself(), false );
+	///JabberContactmyContact = m_account->contactPool()->addContact ( contactJID , Kopete::ContactList::self()->myself(), false );
 	///setMyself( myContact );
 	
 	///kDebug(JABBER_DEBUG_GLOBAL) << accountId() <<" transport created:  myself: " << myContact;
@@ -172,7 +172,7 @@ bool JabberTransport::hasCustomStatusMenu() const
 }
 
 
-bool JabberTransport::createContact (const QString & contactId/*,  Kopete::MetaContact * metaContact*/)
+bool JabberTransport::createContact (const QString & contactId/*,  Kopete::MetaContact metaContact*/)
 {
 	Q_UNUSED(contactId);
 	//Q_UNUSED(metaContact);
@@ -180,7 +180,7 @@ bool JabberTransport::createContact (const QString & contactId/*,  Kopete::MetaC
 	// collect all group names
 	QStringList groupNames;
 	Kopete::GroupList groupList = metaContact->groups();
-	for(Kopete::Group *group = groupList.first(); group; group = groupList.next())
+	for(Kopete::Group group = groupList.first(); group; group = groupList.next())
 		groupNames += group->displayName();
 
 	XMPP::Jid jid ( contactId );
@@ -190,7 +190,7 @@ bool JabberTransport::createContact (const QString & contactId/*,  Kopete::MetaC
 
 	// this contact will be created with the "dirty" flag set
 	// (it will get reset if the contact appears in the roster during connect)
-	JabberContact *contact = contactPool()->addContact ( item, metaContact, true );
+	JabberContact contact = contactPool()->addContact ( item, metaContact, true );
 
 	return ( contact != 0 );
 #endif
@@ -282,7 +282,7 @@ bool JabberTransport::removeAccount( )
 // 	XMPP::JT_Register *task = new XMPP::JT_Register ( m_account->protocol()->client()->rootTask () );
 // 	QObject::connect ( task, SIGNAL ( finished () ), this, SLOT ( removeAllContacts() ) );*/
 
-	//JabberContact *my=static_cast<JabberContact*>(myself());
+	//JabberContactmy=static_cast<JabberContact*>(myself());
 // 	task->unreg (""/** myself()->contactId() */);
 // 	task->go ( true );
 	return false; //delay the removal
@@ -341,15 +341,15 @@ void JabberTransport::eatContacts( )
 	QHash<QString, Kopete::Contact*>::ConstIterator it, itEnd = cts.constEnd(); 
 	for( it = cts.constBegin(); it != itEnd; ++it )
 	{
-		JabberContact *contact=dynamic_cast<JabberContact*>(it.value());
+		JabberContact contact=dynamic_cast<JabberContact*>(it.value());
 		if( contact && !contact->transport() && contact->rosterItem().jid().domain() == myself()->contactId() && contact != account()->myself())
 		{
 			XMPP::RosterItem item=contact->rosterItem();
-			Kopete::MetaContact *mc=contact->metaContact();
+			Kopete::MetaContactmc=contact->metaContact();
 			Kopete::OnlineStatus status = contact->onlineStatus();
 			kDebug(JABBER_DEBUG_GLOBAL) << item.jid().full() << " will be soon eat  - " << contact;
 			delete contact;
-			Kopete::Contact *c2=account()->contactPool()->addContact( item , mc , false ); //not sure this is false;
+			Kopete::Contactc2=account()->contactPool()->addContact( item , mc , false ); //not sure this is false;
 			if(c2)
 				c2->setOnlineStatus( status ); //put back the old status
 		}

@@ -27,7 +27,7 @@
 #include "gui/actions/actions.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/delayed-line-edit.h"
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
 #include "misc/misc.h"
 #include "model/roles.h"
 #include "activate.h"
@@ -341,7 +341,7 @@ void HistoryWindow::show(Chat *chat)
 {
 	if (!History::instance()->currentStorage())
 	{
-		MessageBox::msg(tr("There is no history storage module loaded!"), false, "Warning");
+		MessageDialog::msg(tr("There is no history storage module loaded!"), false, "Warning");
 		return;
 	}
 

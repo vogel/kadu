@@ -27,20 +27,28 @@
 
 class KADUAPI StorableObject
 {
+public:
+	enum StorableObjectState
+	{
+		StateNew,
+		StateUnloaded,
+		StateLoaded
+	};
+
 	StorableObject *Parent;
 	QString NodeName;
 	StoragePoint *Storage;
-	bool Loaded;
+	StorableObjectState State;
 	QMap<QString, ModuleData *> ModulesData;
 
 protected:
 	virtual StoragePoint * createStoragePoint();
 
 public:
-	explicit StorableObject(bool loaded = false);
-	explicit StorableObject(const QString &nodeName, bool loaded = false);
-	StorableObject(StoragePoint *storage, bool loaded = false);
-	StorableObject(const QString &nodeName, StorableObject *parent, bool loaded = false);
+	explicit StorableObject(StorableObjectState state = StateUnloaded);
+	explicit StorableObject(const QString &nodeName, StorableObjectState state = StateUnloaded);
+	StorableObject(StoragePoint *storage, StorableObjectState state = StateUnloaded);
+	StorableObject(const QString &nodeName, StorableObject *parent, StorableObjectState state = StateUnloaded);
 
 	StorableObject * parent() { return Parent; }
 	void setStorageParent(StorableObject *parent) { Parent = parent; } // TODO: 0.8 removed
@@ -52,8 +60,11 @@ public:
 
 	virtual void load();
 	virtual void store() = 0;
-	bool isLoaded() { return Loaded; }
-	void setLoaded(bool loaded) { Loaded = loaded; }
+
+	StorableObjectState state() { return State; }
+	void setState(StorableObjectState state) { State = state; }
+
+	bool needsLoad();
 	void ensureLoaded();
 	void removeFromStorage();
 

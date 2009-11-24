@@ -10,7 +10,7 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "buddies/ignored-helper.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "gui/actions/action.h"
@@ -21,7 +21,7 @@
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/kadu-window-actions.h"
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
 #include "gui/windows/search-window.h"
 
 #include "custom-input.h"
@@ -44,7 +44,6 @@ void disableEmptyTextBox(Action *action)
 
 void checkBlocking(Action *action)
 {
-	Account account = AccountManager::instance()->defaultAccount();
 	BuddySet contacts = action->buddies();
 
 	if (contacts.contains(Core::instance()->myself()))
@@ -55,7 +54,7 @@ void checkBlocking(Action *action)
 
 	bool on = false;
 	foreach (const Buddy buddy, action->buddies())
-		if (buddy.isBlocked(account))
+		if (buddy.isBlocked())
 		{
 			on = true;
 			break;
@@ -346,7 +345,7 @@ void ChatWidgetActions::ignoreUserActionActivated(QAction *sender, bool toggled)
 		bool ContainsBad = false;
 		foreach (Buddy buddy, contacts)
 		{
-			QString uid = buddy.accountData(account)->id();
+			QString uid = buddy.contact(account).id();
 			if (!account.protocolHandler()->validateUserID(uid))
 			{
 				ContainsBad = true;
@@ -392,16 +391,16 @@ void ChatWidgetActions::blockUserActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-	BuddySet contacts = window->buddies();
-	if (contacts.count() > 0)
+	BuddySet buddies = window->buddies();
+	if (buddies.count() > 0)
 	{
 		bool on = true;
 		bool blocked_anonymous = false; // true, if we blocked at least one anonymous user
 
-		BuddySet copy = contacts;
+		BuddySet copy = buddies;
 
 		foreach(Buddy user, copy)
-			if (user.accountData(account) == 0 || !user.isBlocked(account))
+			if (user.contact(account).isNull() || !user.isBlocked())
 			{
 				on = false;
 				break;
@@ -409,8 +408,8 @@ void ChatWidgetActions::blockUserActionActivated(QAction *sender, bool toggled)
 
 		foreach(Buddy user, copy)
 		{
-			QString uid = user.accountData(account)->id();
-			if (account.protocolHandler()->validateUserID(uid) && user.isBlocked(account) != !on)
+			QString uid = user.contact(account).id();
+			if (account.protocolHandler()->validateUserID(uid) && user.isBlocked() != !on)
 			{
 //TODO: 0.6.6
 /// 				user.setProtocolData("Gadu", "Blocking", !on);
@@ -419,11 +418,11 @@ void ChatWidgetActions::blockUserActionActivated(QAction *sender, bool toggled)
 			}
 		}
 
-		Chat *chat = account.protocolHandler()->findChat(contacts);
+		Chat *chat = account.protocolHandler()->findChat(buddies);
 		if (chat && !on) // if we were blocking, we also close the chat (and show info if blocked anonymous)
 		{
 			if (blocked_anonymous)
-				MessageBox::msg(tr("Anonymous users will be unblocked after restarting Kadu"), false, "Information", Core::instance()->kaduWindow());
+				MessageDialog::msg(tr("Anonymous users will be unblocked after restarting Kadu"), false, "Information", Core::instance()->kaduWindow());
 
 			ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat);
 			if (chatWidget)
@@ -439,7 +438,7 @@ void ChatWidgetActions::blockUserActionActivated(QAction *sender, bool toggled)
 
 		foreach (Action *action, BlockUser->actions())
 		{
-			if (action->buddies() == contacts)
+			if (action->buddies() == buddies)
 				action->setChecked(!on);
 		}
 	}

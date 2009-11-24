@@ -23,13 +23,13 @@
 #include "accounts/account-manager.h"
 #include "chat/chat-manager.h"
 #include "configuration/configuration-file.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "buddies/buddy-manager.h"
 #include "debug.h"
 #include "core/core.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/add-buddy-window.h"
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
 #include "misc/misc.h"
 #include "gui/widgets/toolbar.h"
 #include "protocols/protocol.h"
@@ -226,7 +226,7 @@ SearchWindow::SearchWindow(QWidget *parent, Buddy buddy)
 	if (!buddy.isNull())
 	{
 		CurrentSearchCriteria.SearchBuddy = buddy;
-		e_uin->insert(buddy.accountData(CurrentAccount)->id());
+		e_uin->insert(buddy.contact(CurrentAccount).id());
 	}
 
 	kdebugf2();
@@ -408,14 +408,14 @@ void SearchWindow::firstSearch()
 
 	if (!CurrentSearchService)
 	{
-		MessageBox::msg(tr("For this network we dont offer contacts search feature yet"), false, "Critical", this);
+		MessageDialog::msg(tr("For this network we dont offer contacts search feature yet"), false, "Critical", this);
 		kdebugf2();
 		return;
 	}
 
 	if (!CurrentAccount.protocolHandler()->isConnected())
 	{
-		MessageBox::msg(tr("Cannot search contacts in offline mode"), false, "Critical", this);
+		MessageDialog::msg(tr("Cannot search contacts in offline mode"), false, "Critical", this);
 		kdebugf2();
 		return;
 	}
@@ -503,15 +503,15 @@ void SearchWindow::newSearchResults(BuddyList buddies)
 
 	foreach(Buddy buddy, buddies)
 	{
-		ContactAccountData *cad = buddy.accountData(CurrentAccount);
-		QList <QTreeWidgetItem *> items = results->findItems(cad->id(), Qt::MatchExactly, 1);
+		Contact contact = buddy.contact(CurrentAccount);
+		QList <QTreeWidgetItem *> items = results->findItems(contact.id(), Qt::MatchExactly, 1);
 		if (items.count())
 			qlv = items[0];		
-		pix = cad->account().statusContainer()->statusPixmap(cad->status());
+		pix = contact.contactAccount().statusContainer()->statusPixmap(contact.currentStatus());
 
 		if (qlv)
 		{
-			qlv->setText(1, cad->id());
+			qlv->setText(1, contact.id());
 			qlv->setText(2, buddy.firstName());
 			qlv->setText(3, buddy.city());
 			qlv->setText(4, buddy.nickName());
@@ -520,7 +520,7 @@ void SearchWindow::newSearchResults(BuddyList buddies)
 		else
 		{
 			QStringList strings;
-			strings << QString::null << cad->id() << buddy.firstName() << buddy.city() << buddy.nickName() << QString::number(buddy.birthYear());
+			strings << QString::null << contact.id() << buddy.firstName() << buddy.city() << buddy.nickName() << QString::number(buddy.birthYear());
 			qlv = new QTreeWidgetItem(results, strings);
 			qlv->setIcon(0, QIcon(pix));
 			qlv = 0;
@@ -536,7 +536,7 @@ void SearchWindow::newSearchResults(BuddyList buddies)
 	if (buddies.isEmpty()  || (buddies.count() == items))
 	{
 		kdebugmf(KDEBUG_INFO, "No results. Exit.\n");
-		MessageBox::msg(tr("There were no results of your search"), false, "Information", this);
+		MessageDialog::msg(tr("There were no results of your search"), false, "Information", this);
 	}
 	else
 	{

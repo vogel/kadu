@@ -20,7 +20,7 @@
 #include "select-buddy-combobox.h"
 
 SelectBuddyCombobox::SelectBuddyCombobox(QWidget *parent) :
-		QComboBox(parent), MyBuddy(BuddyShared::TypeNull)
+		QComboBox(parent), MyBuddy(Buddy::null)
 {
 	setEditable(true);
 

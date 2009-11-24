@@ -17,7 +17,8 @@
 #include <QtGui/QRadioButton>
 
 #include "gui/widgets/choose-identity-widget.h"
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
+#include "protocols/protocols-manager.h"
 #include "../../server/gadu-server-register-account.h"
 #include "html_document.h"
 #include "gadu-account-details.h"
@@ -188,10 +189,13 @@ void GaduCreateAccountWidget::iHaveAccountDataChanged()
 void GaduCreateAccountWidget::addThisAccount()
 {
 	Account gaduAccount;
-	gaduAccount.setDetails(new GaduAccountDetails(gaduAccount.storage(), gaduAccount));
+	gaduAccount.data()->setProtocolName("gadu");
+	gaduAccount.data()->protocolRegistered(ProtocolsManager::instance()->byName("gadu"));
+	gaduAccount.setDetails(new GaduAccountDetails(gaduAccount));
 	gaduAccount.setName(AccountName->text());
 	gaduAccount.setId(AccountId->text());
 	gaduAccount.setPassword(AccountPassword->text());
+	gaduAccount.setHasPassword(!AccountPassword->text().isEmpty());
 	gaduAccount.setRememberPassword(HaveNumberRememberPassword->isChecked());
 
 	emit accountCreated(gaduAccount);
@@ -210,7 +214,7 @@ void GaduCreateAccountWidget::registerNewAccount()
 {
     if (NewPassword->text() != ReNewPassword->text())
 	{
-		MessageBox::msg(tr("Error data typed in required fields.\n\n"
+		MessageDialog::msg(tr("Error data typed in required fields.\n\n"
 			"Passwords typed in both fields (\"New password\" and \"Retype password\") "
 			"should be the same!"));
 		return;
@@ -228,10 +232,11 @@ void GaduCreateAccountWidget::registerNewAccountFinished(GaduServerRegisterAccou
 {
 	if (gsra->result())
 	{
-		MessageBox::msg(tr("Registration was successful. Your new number is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(gsra->uin()), false, "Information", this);
+		MessageDialog::msg(tr("Registration was successful. Your new number is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(gsra->uin()), false, "Information", this);
 		
 		Account gaduAccount;
-		gaduAccount.setDetails(new GaduAccountDetails(gaduAccount.storage(), gaduAccount));
+		gaduAccount.data()->protocolRegistered(ProtocolsManager::instance()->byName("gadu"));
+		gaduAccount.setDetails(new GaduAccountDetails(gaduAccount));
 		gaduAccount.setName(AccountName->text());
 		gaduAccount.setId(QString::number(gsra->uin()));
 		gaduAccount.setPassword(NewPassword->text());
@@ -240,7 +245,7 @@ void GaduCreateAccountWidget::registerNewAccountFinished(GaduServerRegisterAccou
 		emit accountCreated(gaduAccount);
 	}
 	else
-		MessageBox::msg(tr("An error has occured while registration. Please try again later."), false, "Warning", this);
+		MessageDialog::msg(tr("An error has occured while registration. Please try again later."), false, "Warning", this);
 
 	delete gsra;
 }

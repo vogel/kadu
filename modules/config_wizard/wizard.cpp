@@ -193,7 +193,7 @@ void WizardStarter::connected()
 	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocolHandler());
 	if (!gadu->doImportUserList())
 	{
-		MessageBox::msg(tr("User list couldn't be imported"));
+		MessageDialog::msg(tr("User list couldn't be imported"));
 		disconnect(gadu, SIGNAL(userListImported(bool, QList<UserListElement>)), this, SLOT(userListImported(bool, QList<UserListElement>)));
 	}
 
@@ -209,7 +209,7 @@ void Wizard::registerGGAccount()
 
 	if (ggNewPassword->text() != ggReNewPassword->text())
 	{
-		MessageBox::msg(tr("Error data typed in required fields.\n\n"
+		MessageDialog::msg(tr("Error data typed in required fields.\n\n"
 			"Passwords typed in both fields (\"New password\" and \"Retype new password\") "
 			"should be the same!"));
 		return;
@@ -217,13 +217,13 @@ void Wizard::registerGGAccount()
 
 	if (ggNewPassword->text().isEmpty() || ggEMail->text().isEmpty())
 	{
-		MessageBox::msg(tr("Please fill out all fields"), false, "Warning");
+		MessageDialog::msg(tr("Please fill out all fields"), false, "Warning");
 		return;
 	}
 
 	if (ggEMail->text().find(HtmlDocument::mailRegExp()) == -1)
 	{
-		MessageBox::msg(tr("Email address you have entered is not valid"), false, "Warning");
+		MessageDialog::msg(tr("Email address you have entered is not valid"), false, "Warning");
 		return;
 	}
 
@@ -257,7 +257,7 @@ void Wizard::registeredGGAccount(bool ok, UinType uin)
 		// gadu->changeID(QString::number(uin));
 		kadu->setOnline();	//jak zarejestrowal to od razu sie laczy
 
-		MessageBox::msg(tr("Registration was successful.\nYou UIN is: ") + QString::number(int(uin))+tr("\nAccount configuration was saved.\nPress Ok to continue"));
+		MessageDialog::msg(tr("Registration was successful.\nYou UIN is: ") + QString::number(int(uin))+tr("\nAccount configuration was saved.\nPress Ok to continue"));
 
 		haveNumber->setChecked(true);
 		ggNumber->setText(QString::number((int)uin));
@@ -265,7 +265,7 @@ void Wizard::registeredGGAccount(bool ok, UinType uin)
 	}
 	else
 	{
-		MessageBox::msg(tr("An error has occured while registration. Please try again later."), false, "Warning");
+		MessageDialog::msg(tr("An error has occured while registration. Please try again later."), false, "Warning");
 
 		foreach(QWidget *widget, dontHaveNumberWidgets)
 			widget->setEnabled(true);
@@ -301,7 +301,7 @@ void Wizard::tryImport()
 	} //jak polaczony to bez cyrkow robi import
 	else if (!gadu->doImportUserList())
 	{
-		MessageBox::msg(tr("User list wasn't imported because of some error"));
+		MessageDialog::msg(tr("User list wasn't imported because of some error"));
 		disconnect(gadu, SIGNAL(userListImported(bool, QList<UserListElement>)), wizardStarter, SLOT(userListImported(bool, QList<UserListElement>)));
 	}
 }
@@ -375,7 +375,7 @@ void Wizard::createGGAccountPage()
 	connect(ggRegisterAccount, SIGNAL(clicked()), this, SLOT(registerGGAccount()));
 	gridLayout->addMultiCellWidget(ggRegisterAccount, 8, 8, 2, 3);
 
-	QButtonGroup *haveNumberGroup = new QButtonGroup();
+	QButtonGrouphaveNumberGroup= new QButtonGroup();
 	haveNumberGroup->insert(haveNumber);
 	haveNumberGroup->insert(dontHaveNumber);
 

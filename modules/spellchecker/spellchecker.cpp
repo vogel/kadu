@@ -20,7 +20,7 @@
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "configuration/configuration-file.h"
 #include "gui/widgets/custom-input.h"
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
 #include "misc/misc.h"
 
 #include "highlighter.h"
@@ -120,7 +120,7 @@ bool SpellChecker::addCheckedLang(QString &name)
 	AspellCanHaveError* possibleErr = new_aspell_speller(spellConfig);
 	if (aspell_error_number(possibleErr) != 0)
 	{
-		MessageBox::msg(aspell_error_message(possibleErr));
+		MessageDialog::msg(aspell_error_message(possibleErr));
 		return false;
 	}
 	else

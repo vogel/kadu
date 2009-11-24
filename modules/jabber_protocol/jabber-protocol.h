@@ -15,7 +15,7 @@
 #include "protocols/protocols-manager.h"
 
 #include "client/jabber-client.h"
-#include "jabber-contact-account-data.h"
+#include "jabber-contact-details.h"
 #include "resource/jabber-resource-pool.h"
 #include "services/jabber-avatar-service.h"
 #include "services/jabber-chat-service.h"
@@ -73,19 +73,19 @@ class JabberProtocol : public Protocol
 		virtual SearchService * searchService() { return 0; }
 		JabberResourcePool *resourcePool();
 
-		JabberContactAccountData * jabberContactAccountData(Buddy buddy) const;
+		JabberContactDetails * jabberContactDetails(Buddy buddy) const;
 
 	protected:
 		virtual void changeStatus();
 		virtual void changePrivateMode();
 
 	private slots:
+		void login(const QString &password, bool permanent);
 		void connectedToServer();
 		void disconnectedFromServer();
 		void disconnect(const XMPP::Status &s = XMPP::Status ("", "", 0, false));
 		void rosterRequestFinished(bool success);
-		void clientResourceAvailable(const XMPP::Jid &j, const XMPP::Resource &r);
-		void clientResourceUnavailable(const XMPP::Jid &j, const XMPP::Resource &r);
+		void clientResourceReceived(const XMPP::Jid &j, const XMPP::Resource &r);
 		void slotContactUpdated(const XMPP::RosterItem &ri);
 		void slotContactDeleted(const XMPP::RosterItem &ri);
 		void slotIncomingFileTransfer();
@@ -95,8 +95,8 @@ class JabberProtocol : public Protocol
 		void contactAdded(Buddy &buddy);
 		void contactRemoved(Buddy &buddy);
 		void contactUpdated(Buddy &buddy);
-		void contactAccountDataAdded(Buddy &buddy, Account contactAccount);
-		void contactAccountDataAboutToBeRemoved(Buddy &buddy, Account contactAccount);
+		void contactAdded(Buddy &buddy, Account contactAccount);
+		void contactAboutToBeRemoved(Buddy &buddy, Account contactAccount);
 		void contactAccountIdChanged(Buddy &buddy, Account account, const QString &oldId);
 
 	public slots:

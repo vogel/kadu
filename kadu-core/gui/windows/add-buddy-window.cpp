@@ -28,6 +28,7 @@
 #include "buddies/group-manager.h"
 #include "buddies/filter/non-account-buddy-filter.h"
 #include "buddies/model/groups-model.h"
+#include "contacts/contact.h"
 #include "gui/widgets/select-buddy-combobox.h"
 #include "misc/misc.h"
 #include "model/actions-proxy-model.h"
@@ -39,7 +40,7 @@
 #include "add-buddy-window.h"
 
 AddBuddyWindow::AddBuddyWindow(QWidget *parent) :
-		QDialog(parent, Qt::Window), MyBuddy(BuddyShared::TypeNull)
+		QDialog(parent, Qt::Window), MyBuddy(Buddy::null)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 
@@ -201,7 +202,7 @@ void AddBuddyWindow::setUsernameLabel()
 void AddBuddyWindow::setAddContactEnabled()
 {
 	Account account = selectedAccount();
-	if (account.isNull())
+	if (account.isNull() || !account.protocolHandler())
 	{
 		AddContactButton->setEnabled(false);
 		return;
@@ -229,13 +230,13 @@ void AddBuddyWindow::setAddContactEnabled()
 	if (mergeWith.isNull())
 		AddContactButton->setEnabled(false);
 	else
-		AddContactButton->setEnabled(0 == mergeWith.accountData(account));
+		AddContactButton->setEnabled(mergeWith.contact(account).isNull());
 }
 
 void AddBuddyWindow::setValidateRegularExpression()
 {
 	Account account = selectedAccount();
-	if (!account.isNull())
+	if (!account.isNull() && account.protocolHandler())
 	{
 		UserNameValidator->setRegExp(account.protocolHandler()->protocolFactory()->idRegularExpression());
 		return;
@@ -302,8 +303,8 @@ void AddBuddyWindow::accept()
 	{
 		if (MyBuddy.isNull())
 			MyBuddy = BuddyManager::instance()->byId(account, UserNameEdit->text());
-		
-		MyBuddy.setType(BuddyShared::TypeNormal);
+
+		MyBuddy.setAnonymous(false);
 		MyBuddy.setDisplay(DisplayNameEdit->text());
 	}
 	else
@@ -312,9 +313,12 @@ void AddBuddyWindow::accept()
 		if (buddy.isNull())
 			return;
 
-		ContactAccountData *cad = account.protocolHandler()->protocolFactory()
-		->newContactAccountData(account, buddy, UserNameEdit->text());
-		buddy.addAccountData(cad);
+		Contact contact;
+		contact.setContactAccount(account);
+		contact.setOwnerBuddy(buddy);
+		contact.setId(UserNameEdit->text());
+		contact.setDetails(account.protocolHandler()->protocolFactory()->createContactDetails(contact));
+		buddy.addContact(contact);
 	}
 
 	QDialog::accept();

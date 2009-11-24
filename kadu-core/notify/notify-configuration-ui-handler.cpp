@@ -18,7 +18,7 @@
 #include "configuration/configuration-file.h"
 #include "buddies/buddy-list.h"
 #include "buddies/buddy-manager.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "contact-notify-data.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/configuration/configuration-widget.h"

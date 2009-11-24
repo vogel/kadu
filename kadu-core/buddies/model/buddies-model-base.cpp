@@ -14,7 +14,7 @@
 #include "buddies/buddy.h"
 #include "buddies/buddy-list-mime-data-helper.h"
 #include "buddies/buddy-manager.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "model/roles.h"
 #include "protocols/protocol.h"
 
@@ -66,7 +66,7 @@ int BuddiesModelBase::rowCount(const QModelIndex &parentIndex) const
 		return 0;
 
 	Buddy con = buddyAt(parentIndex);
-	return con.accountDatas().size();
+	return con.contacts().size();
 }
 
 QFlags<Qt::ItemFlag> BuddiesModelBase::flags(const QModelIndex& index) const
@@ -96,30 +96,30 @@ QVariant BuddiesModelBase::headerData(int section, Qt::Orientation orientation, 
 		return QString("Row %1").arg(section);
 }
 
-ContactAccountData * BuddiesModelBase::buddyDefaultAccountData(const QModelIndex &index) const
+Contact BuddiesModelBase::buddyDefaultAccountData(const QModelIndex &index) const
 {
-	Buddy con = buddyAt(index);
-	if (con.isNull())
-		return 0;
+	Buddy buddy = buddyAt(index);
+	if (buddy.isNull())
+		return Contact::null;
 
-	Account account = con.prefferedAccount();
+	Account account = buddy.prefferedAccount();
 	if (account.isNull())
 		account = AccountManager::instance()->defaultAccount();
 	
-	return con.accountData(account);
+	return buddy.contact(account);
 }
 
-ContactAccountData * BuddiesModelBase::buddyAccountData(const QModelIndex &index, int accountIndex) const
+Contact BuddiesModelBase::buddyAccountData(const QModelIndex &index, int accountIndex) const
 {
-	Buddy con = buddyAt(index);
-	if (con.isNull())
-		return 0;
+	Buddy buddy = buddyAt(index);
+	if (buddy.isNull())
+		return Contact::null;
 
-	QList<ContactAccountData *> accountDatas = con.accountDatas();
-	if (accountDatas.size() <= accountIndex)
-		return 0;
+	QList<Contact> contacts = buddy.contacts();
+	if (contacts.size() <= accountIndex)
+		return Contact::null;
 
-	return accountDatas[accountIndex];
+	return contacts[accountIndex];
 }
 
 QVariant BuddiesModelBase::data(Buddy buddy, int role) const
@@ -137,26 +137,26 @@ QVariant BuddiesModelBase::data(Buddy buddy, int role) const
 	}
 }
 
-QVariant BuddiesModelBase::data(ContactAccountData *cad, int role, bool useDisplay) const
+QVariant BuddiesModelBase::data(Contact contact, int role, bool useDisplay) const
 {
-	if (!cad)
+	if (contact.isNull())
 		return QVariant();
 
 	switch (role)
 	{
 		case Qt::DisplayRole:
 			return useDisplay
-				? cad->buddy().display()
-				: QString("%1: %2").arg(cad->account().name()).arg(cad->id());
+					? contact.ownerBuddy().display()
+					: QString("%1: %2").arg(contact.contactAccount().name()).arg(contact.id());
 		case Qt::DecorationRole:
-			if (0 == cad)
+			if (contact.isNull())
 				return QVariant();
 			// TODO generic icon
-			return !cad->account().isNull()
-				? cad->account().statusContainer()->statusPixmap(cad->status())
-				: QVariant();
+			return !contact.contactAccount().isNull()
+					? contact.contactAccount().statusContainer()->statusPixmap(contact.currentStatus())
+					: QVariant();
 		case BuddyRole:
-			return QVariant::fromValue(cad->buddy());
+			return QVariant::fromValue(contact.ownerBuddy());
 		case DescriptionRole:
 			//TODO 0.6.6:
 			//	ContactKaduData *ckd = contact.moduleData<ContactKaduData>(true);
@@ -169,16 +169,16 @@ QVariant BuddiesModelBase::data(ContactAccountData *cad, int role, bool useDispl
 				//	}
 				//	delete ckd;
 				//
-				return cad->status().description();
+				return contact.currentStatus().description();
 		case StatusRole:
-			return QVariant::fromValue(cad->status());
+			return QVariant::fromValue(contact.currentStatus());
 		case AccountRole:
-			return QVariant::fromValue(cad->account());
+			return QVariant::fromValue(contact.contactAccount());
 		case AvatarRole:
 			// TODO: 0.6.6 move it
-			if (cad->avatar().pixmap().isNull())
-				AvatarManager::instance()->updateAvatar(cad);
-			return QVariant::fromValue(cad->avatar().pixmap());
+			if (contact.contactAvatar().pixmap().isNull())
+				AvatarManager::instance()->updateAvatar(contact);
+			return QVariant::fromValue(contact.contactAvatar().pixmap());
 		default:
 			return QVariant();
 	}
@@ -192,8 +192,8 @@ QVariant BuddiesModelBase::data(const QModelIndex &index, int role) const
 	QModelIndex parentIndex = parent(index);
 	if (!parentIndex.isValid())
 	{
-		ContactAccountData *cad = buddyDefaultAccountData(index);
-		return cad ? data(cad, role, true) : data(buddyAt(index), role);
+		Contact contact = buddyDefaultAccountData(index);
+		return !contact.isNull() ? data(contact, role, true) : data(buddyAt(index), role);
 	}
 	else
 		return data(buddyAccountData(parentIndex, index.row()), role, false);

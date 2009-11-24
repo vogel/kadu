@@ -12,8 +12,6 @@
 
 #ifdef Q_OS_WIN
 #include <winsock2.h>
-// name conflict..
-#undef MessageBox
 #else
 #include <arpa/inet.h>
 #endif
@@ -25,7 +23,7 @@
 #include "configuration/configuration-file.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/ignored-helper.h"
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
 #include "gui/windows/password-window.h"
 #include "protocols/protocols-manager.h"
 #include "status/status.h"
@@ -42,7 +40,7 @@
 
 #include "helpers/gadu-importer.h"
 #include "gadu-account-details.h"
-#include "gadu-contact-account-data.h"
+#include "gadu-contact-details.h"
 #include "gadu-protocol-factory.h"
 
 #include "gadu-protocol.h"
@@ -121,6 +119,37 @@ unsigned int GaduProtocol::gaduStatusFromStatus(const Status &status)
 	return hasDescription ? GG_STATUS_NOT_AVAIL_DESCR : GG_STATUS_NOT_AVAIL;
 }
 
+Buddy GaduProtocol::searchResultToBuddy(gg_pubdir50_t res, int number)
+{
+	Buddy result;
+
+	Contact contact;
+	contact.setContactAccount(account());
+	contact.setOwnerBuddy(result);
+	contact.setId(gg_pubdir50_get(res, number, GG_PUBDIR50_UIN));
+	contact.setDetails(new GaduContactDetails(contact));
+
+	const char *pubdirStatus = gg_pubdir50_get(res, number, GG_PUBDIR50_STATUS);
+	if (pubdirStatus)
+	{	Status status;
+		status.setType(statusTypeFromGaduStatus(atoi(pubdirStatus) & 127));
+		contact.setCurrentStatus(status);
+	}
+
+	result.addContact(contact);
+
+	result.setFirstName(cp2unicode(gg_pubdir50_get(res, number, GG_PUBDIR50_FIRSTNAME)));
+	result.setLastName(cp2unicode(gg_pubdir50_get(res, number, GG_PUBDIR50_LASTNAME)));
+	result.setNickName(cp2unicode(gg_pubdir50_get(res, number, GG_PUBDIR50_NICKNAME)));
+	result.setBirthYear(QString::fromAscii(gg_pubdir50_get(res, number, GG_PUBDIR50_BIRTHYEAR)).toUShort());
+	result.setCity(cp2unicode(gg_pubdir50_get(res, number, GG_PUBDIR50_CITY)));
+	result.setFamilyName(cp2unicode(gg_pubdir50_get(res, number, GG_PUBDIR50_FAMILYNAME)));
+	result.setFamilyCity(cp2unicode(gg_pubdir50_get(res, number, GG_PUBDIR50_FAMILYCITY)));
+	result.setGender((BuddyShared::BuddyGender)QString::fromAscii(gg_pubdir50_get(res, number, GG_PUBDIR50_GENDER)).toUShort());
+
+	return result;
+}
+
 GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 		Protocol(account, factory), Dcc(0),
 		ActiveServer(), GaduLoginParams(), GaduSession(0), PingTimer(0)
@@ -140,13 +169,13 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 	CurrentSearchService = new GaduSearchService(this);
 
 	connect(BuddyManager::instance(), SIGNAL(buddyAdded(Buddy &)),
-			this, SLOT(contactAdded(Buddy &)));
+			this, SLOT(buddyAdded(Buddy &)));
 	connect(BuddyManager::instance(), SIGNAL(buddyRemoved(Buddy &)),
-			this, SLOT(contactRemoved(Buddy &)));
-	connect(BuddyManager::instance(), SIGNAL(contactAccountDataAdded(Buddy &, Account)),
-			this, SLOT(contactAccountDataAboutToBeRemoved(Buddy &, Account)));
-	connect(BuddyManager::instance(), SIGNAL(contactAccountDataAboutToBeRemoved(Buddy &, Account)),
-			this, SLOT(contactAccountDataAboutToBeRemoved(Buddy &, Account)));
+			this, SLOT(buddyRemoved(Buddy &)));
+	connect(BuddyManager::instance(), SIGNAL(contactAdded(Buddy &, Account)),
+			this, SLOT(contactAdded(Buddy &, Account)));
+	connect(BuddyManager::instance(), SIGNAL(contactAboutToBeRemoved(Buddy &, Account)),
+			this, SLOT(contactAboutToBeRemoved(Buddy &, Account)));
 
 	kdebugf2();
 }
@@ -154,8 +183,8 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 void GaduProtocol::fetchAvatars(Account account)
 {
 	foreach (Buddy buddy, BuddyManager::instance()->buddies(account))
-		if (buddy.hasAccountData(account))
-			CurrentAvatarService->fetchAvatar(buddy.accountData(account));
+		if (buddy.hasContact(account))
+			CurrentAvatarService->fetchAvatar(buddy.contact(account));
 }
 
 GaduProtocol::~GaduProtocol()
@@ -163,13 +192,13 @@ GaduProtocol::~GaduProtocol()
 	kdebugf();
 
 	disconnect(BuddyManager::instance(), SIGNAL(buddyAdded(Buddy &)),
-			this, SLOT(contactAdded(Buddy &)));
+			this, SLOT(buddyAdded(Buddy &)));
 	disconnect(BuddyManager::instance(), SIGNAL(buddyRemoved(Buddy &)),
-			this, SLOT(contactRemoved(Buddy &)));
-	disconnect(BuddyManager::instance(), SIGNAL(contactAccountDataAdded(Buddy &, Account)),
-			this, SLOT(contactAccountDataAboutToBeRemoved(Buddy &, Account)));
-	disconnect(BuddyManager::instance(), SIGNAL(contactAccountDataAboutToBeRemoved(Buddy &, Account)),
-			this, SLOT(contactAccountDataAboutToBeRemoved(Buddy &, Account)));
+			this, SLOT(buddyRemoved(Buddy &)));
+	disconnect(BuddyManager::instance(), SIGNAL(contactAdded(Buddy &, Account)),
+			this, SLOT(contactAdded(Buddy &, Account)));
+	disconnect(BuddyManager::instance(), SIGNAL(contactAboutToBeRemoved(Buddy &, Account)),
+			this, SLOT(contactAboutToBeRemoved(Buddy &, Account)));
 
 	networkDisconnected(false);
 	delete SocketNotifiers;
@@ -227,8 +256,6 @@ void GaduProtocol::changeStatus()
 		gg_change_status_descr(GaduSession, type | friends, unicode2cp(newStatus.description()));
 	else
 		gg_change_status(GaduSession, type | friends);
-
-	printf("done\n");
 
 	if (newStatus.isDisconnected())
 		networkDisconnected(false);
@@ -428,6 +455,7 @@ void GaduProtocol::login(const QString &password, bool permanent)
 {
 	account().setPassword(password);
 	account().setRememberPassword(permanent);
+	account().setHasPassword(!password.isEmpty());
 
 	login();
 }
@@ -443,9 +471,9 @@ void GaduProtocol::login()
 
 	if (0 == gaduAccountDetails->uin())
 	{
-		MessageBox::msg(tr("UIN not set!"), false, "Warning");
+		MessageDialog::msg(tr("UIN not set!"), false, "Warning");
 		setStatus(Status());
-		kdebugmf(KDEBUG_FUNCTION_END, "end: uin or password not set\n");
+		kdebugmf(KDEBUG_FUNCTION_END, "end: gadu UIN not set\n");
 		return;
 	}
 
@@ -620,9 +648,9 @@ void GaduProtocol::networkDisconnected(bool tryAgain)
 
 int GaduProtocol::notifyTypeFromContact(Buddy &buddy)
 {
-	return buddy.isOfflineTo(account())
+	return buddy.isOfflineTo()
 		? GG_USER_OFFLINE
-		: buddy.isBlocked(account())
+		: buddy.isBlocked()
 			? GG_USER_BLOCKED
 			: GG_USER_NORMAL;
 }
@@ -677,18 +705,23 @@ void GaduProtocol::socketContactStatusChanged(unsigned int uin, unsigned int sta
 		return;
 	}
 
-	GaduContactAccountData *accountData = gaduContactAccountData(buddy);
-	accountData->setIp(ip);
-	accountData->setPort(port);
-	accountData->setMaxImageSize(maxImageSize);
-	accountData->setProtocolVersion(QString::number(version));
-	accountData->setGaduProtocolVersion(version);
+	Contact contact = buddy.contact(account());
+	contact.setAddress(ip);
+	contact.setPort(port);
+	contact.setProtocolVersion(QString::number(version));
 
-	Status oldStatus = accountData->status();
+	GaduContactDetails *details = gaduContactDetails(buddy);
+	if (details)
+	{
+		details->setMaxImageSize(maxImageSize);
+		details->setGaduProtocolVersion(version);
+	}
+
+	Status oldStatus = contact.currentStatus();
 	Status newStatus;
 	newStatus.setType(statusTypeFromGaduStatus(status));
 	newStatus.setDescription(description);
-	accountData->setStatus(newStatus);
+	contact.setCurrentStatus(newStatus);
 
 	emit buddyStatusChanged(account(), buddy, oldStatus);
 }
@@ -713,7 +746,7 @@ void GaduProtocol::socketConnFailed(GaduError error)
 			msg = tr("Please change your email in \"Change password / email\" window. "
 				"Leave new password field blank.");
 			tryAgain = false;
-			MessageBox::msg(msg, false, "Warning");
+			MessageDialog::msg(msg, false, "Warning");
 			break;
 
 		case ConnectionInvalidData:
@@ -731,7 +764,7 @@ void GaduProtocol::socketConnFailed(GaduError error)
 		case ConnectionIncorrectPassword:
 			msg = tr("Unable to connect, incorrect password");
 			tryAgain = false;
-			MessageBox::msg(tr("Connection will be stopped\nYour password is incorrect!"), false, "Critical");
+			MessageDialog::msg(tr("Connection will be stopped\nYour password is incorrect!"), false, "Critical");
 			break;
 
 		case ConnectionTlsError:
@@ -741,7 +774,7 @@ void GaduProtocol::socketConnFailed(GaduError error)
 		case ConnectionIntruderError:
 			msg = tr("Too many connection attempts with bad password!");
 			tryAgain = false;
-			MessageBox::msg(tr("Connection will be stopped\nToo many attempts with bad password"), false, "Critical");
+			MessageDialog::msg(tr("Connection will be stopped\nToo many attempts with bad password"), false, "Critical");
 			break;
 
 		case ConnectionUnavailableError:
@@ -819,15 +852,18 @@ void GaduProtocol::socketDisconnected()
 
 unsigned int GaduProtocol::uin(Buddy buddy) const
 {
-	GaduContactAccountData *data = gaduContactAccountData(buddy);
+	GaduContactDetails *data = gaduContactDetails(buddy);
 	return data
-		? data->uin()
-		: 0;
+			? data->uin()
+			: 0;
 }
 
-GaduContactAccountData * GaduProtocol::gaduContactAccountData(Buddy buddy) const
+GaduContactDetails * GaduProtocol::gaduContactDetails(Buddy buddy) const
 {
-	return dynamic_cast<GaduContactAccountData *>(buddy.accountData(account()));
+	Contact contact = buddy.contact(account());
+	if (contact.isNull())
+		return 0;
+	return dynamic_cast<GaduContactDetails *>(contact.details());
 }
 
 QPixmap GaduProtocol::statusPixmap(Status status)
@@ -853,45 +889,45 @@ QPixmap GaduProtocol::statusPixmap(const QString &statusType)
 			"Away" == statusType ? "Busy" : statusType);
 }
 
-void GaduProtocol::contactAdded(Buddy &buddy)
+void GaduProtocol::buddyAdded(Buddy &buddy)
 {
-	GaduContactAccountData *gcad = gaduContactAccountData(buddy);
-	if (!gcad)
+	GaduContactDetails *details = gaduContactDetails(buddy);
+	if (!details)
 		return;
 
-	gg_add_notify_ex(GaduSession, gcad->uin(), notifyTypeFromContact(buddy));
+	gg_add_notify_ex(GaduSession, details->uin(), notifyTypeFromContact(buddy));
 }
 
-void GaduProtocol::contactRemoved(Buddy &buddy)
+void GaduProtocol::buddyRemoved(Buddy &buddy)
 {
-	GaduContactAccountData *gcad = gaduContactAccountData(buddy);
-	if (!gcad)
+	GaduContactDetails *details = gaduContactDetails(buddy);
+	if (!details)
 		return;
 
 //	TODO: 0.6.6 which one is the *right* way?
 // 	gg_remove_notify_ex(GaduSession, gcad->uin(), GG_USER_NORMAL);
 // 	gg_remove_notify_ex(GaduSession, gcad->uin(), GG_USER_BLOCKED);
 // 	gg_remove_notify_ex(GaduSession, gcad->uin(), GG_USER_OFFLINE);
-	gg_remove_notify(GaduSession, gcad->uin());
+	gg_remove_notify(GaduSession, details->uin());
 }
 
-void GaduProtocol::contactAccountDataAdded(Buddy &buddy, Account contactAccount)
+void GaduProtocol::contactAdded(Buddy &buddy, Account contactAccount)
 {
 	if (contactAccount != account())
 		return;
 
-	contactAdded(buddy);
+	buddyAdded(buddy);
 }
 
-void GaduProtocol::contactAccountDataAboutToBeRemoved(Buddy &buddy, Account contactAccount)
+void GaduProtocol::contactAboutToBeRemoved(Buddy &buddy, Account contactAccount)
 {
 	if (contactAccount != account())
 		return;
 
-	contactRemoved(buddy);
+	buddyRemoved(buddy);
 }
 
-void GaduProtocol::contactAccountDataIdChanged(Buddy &buddy, Account contactAccount, const QString &oldId)
+void GaduProtocol::contactIdChanged(Buddy &buddy, Account contactAccount, const QString &oldId)
 {
 	if (contactAccount != account())
 		return;

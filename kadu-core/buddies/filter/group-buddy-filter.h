@@ -10,21 +10,21 @@
 #ifndef GROUP_BUDDY_FILTER
 #define GROUP_BUDDY_FILTER
 
-#include "abstract-buddy-filter.h"
+#include "buddies/group.h"
 
-class Group;
+#include "abstract-buddy-filter.h"
 
 class GroupBuddyFilter : public AbstractBuddyFilter
 {
 	Q_OBJECT
 
-	Group *CurrentGroup;
+	Group CurrentGroup;
 	bool AllGroupShown;
 
 public:
 	GroupBuddyFilter(QObject *parent = 0);
 
-	void setGroup(Group *group);
+	void setGroup(Group group);
 	virtual bool acceptBuddy(Buddy buddy);
 
 	void refresh();

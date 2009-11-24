@@ -26,7 +26,7 @@ KADUAPI DescriptionManager * DescriptionManager::instance()
 DescriptionManager::DescriptionManager() :
 		StorableStringList("Descriptions", "Description", 0)
 {
-	Core::instance()->configuration()->registerStorableObject(this);
+	ConfigurationManager::instance()->registerStorableObject(this);
 
 	if (xml_config_file->getNode("Description", XmlConfigFile::ModeFind).isNull())
 		import();

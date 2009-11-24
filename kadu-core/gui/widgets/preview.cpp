@@ -12,7 +12,7 @@
 
 #include "accounts/account-manager.h"
 #include "configuration/configuration-file.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "parser/parser.h"
 #include "status/status.h"
 #include "status/status-type-manager.h"

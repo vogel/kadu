@@ -12,6 +12,7 @@
 
 #include "modules/module-data.h"
 
+#undef Property
 #define Property(type, name, capitalized_name) \
 	type name() const { return capitalized_name; } \
 	void set##capitalized_name(const type &name) { capitalized_name = name; }
@@ -32,7 +33,5 @@ public:
 	Property(bool, notify, Notify)
 
 };
-
-#undef Property
 
 #endif // CONTACT_NOTIFY_DATA_H

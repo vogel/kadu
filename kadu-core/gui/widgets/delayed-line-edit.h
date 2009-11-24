@@ -12,8 +12,9 @@
 
 #include <QtCore/QTimer>
 #include <QtGui/QLineEdit>
+#include "exports.h"
 
-class DelayedLineEdit : public QLineEdit
+class KADUAPI DelayedLineEdit : public QLineEdit
 {
 	Q_OBJECT
 

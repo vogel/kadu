@@ -18,8 +18,8 @@
 
 #include "exports.h"
 
-class ContactAccountData;
-class ContactAccountDataManager;
+class Contact;
+class ContactManager;
 
 class KADUAPI BuddyOptionsConfigurationWidget : public QWidget
 {

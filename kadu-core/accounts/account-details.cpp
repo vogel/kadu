@@ -11,8 +11,8 @@
 
 #include "account-details.h"
 
-AccountDetails::AccountDetails(StoragePoint *storagePoint, Account parent) :
-		QObject(parent.data()), StorableObject(storagePoint), MyAccountData(parent.data())
+AccountDetails::AccountDetails(AccountShared *accountData) :
+		StorableObject(accountData->storage()), MyAccountData(accountData)
 {
 }
 

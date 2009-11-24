@@ -13,7 +13,7 @@
 
 #include "debug.h"
 
-#include "jabber-contact-account-data.h"
+#include "jabber-contact-details.h"
 #include "jabber-open-chat-with-runner.h"
 
 JabberOpenChatWithRunner::JabberOpenChatWithRunner(Account account) :
@@ -29,12 +29,17 @@ BuddyList JabberOpenChatWithRunner::matchingContacts(const QString &query)
 	if (!validateUserID(query))
 		return matchedContacts;
 
-	Buddy c;
+	Buddy buddy;
 
-	JabberContactAccountData *gcad = new JabberContactAccountData(ParentAccount, c, query);
-	c.addAccountData(gcad);
-	c.setDisplay(ParentAccount.name() + ": " + query);
-	matchedContacts.append(c);
+	Contact contact;
+	contact.setContactAccount(ParentAccount);
+	contact.setOwnerBuddy(buddy);
+	contact.setId(query);
+	contact.setDetails(new JabberContactDetails(contact));
+
+	buddy.addContact(contact);
+	buddy.setDisplay(ParentAccount.name() + ": " + query);
+	matchedContacts.append(buddy);
 
 	return matchedContacts;
 }

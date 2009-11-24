@@ -8,35 +8,31 @@
  ***************************************************************************/
 
 #include "configuration/configuration-file.h"
+#include "configuration/storable-object.h"
 
 #include "base-status-container.h"
 
-BaseStatusContainer::BaseStatusContainer(StoragePoint *storagePoint) :
-		UuidStorableObject(storagePoint)
-{
-}
-
-BaseStatusContainer::BaseStatusContainer(const QString &nodeName, StorableObject *parent) :
-		UuidStorableObject(nodeName, parent)
+BaseStatusContainer::BaseStatusContainer(StorableObject *storableObject) :
+		MyStorableObject(storableObject)
 {
 }
 
 void BaseStatusContainer::setDefaultStatus(const QString &startupStatus, bool offlineToInvisible,
 				      const QString &startupDescription, bool StartupLastDescription)
 {
-	if (!isValidStorage())
+	if (!MyStorableObject->isValidStorage())
 		return;
 
 	QString description;
     	if (StartupLastDescription)
-		description = loadValue<QString>("LastStatusDescription");
+		description = MyStorableObject->loadValue<QString>("LastStatusDescription");
 	else
 		description = startupDescription;
 
 	QString name;
 	if (startupStatus == "LastStatus")
 	{
-		name = loadValue<QString>("LastStatusName");
+		name = MyStorableObject->loadValue<QString>("LastStatusName");
 		if (name.isEmpty())
 			name = "Online";
 		else if ("Offline" == name && offlineToInvisible)
@@ -56,15 +52,16 @@ void BaseStatusContainer::setDefaultStatus(const QString &startupStatus, bool of
 
 	setStatus(status);
 }
+
 void BaseStatusContainer::disconnectAndStoreLastStatus(bool disconnectWithCurrentDescription,
 						  const QString &disconnectDescription)
 {
-	if (!isValidStorage())
+	if (!MyStorableObject->isValidStorage())
 		return;
 
-	storeValue("LastStatusDescription", status().description());
+	MyStorableObject->storeValue("LastStatusDescription", status().description());
 
-	storeValue("LastStatusName", statusName());
+	MyStorableObject->storeValue("LastStatusName", statusName());
 
 	if (status().type() == "Offline")
 		return;

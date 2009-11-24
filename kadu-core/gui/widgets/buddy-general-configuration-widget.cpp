@@ -19,9 +19,10 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "buddies/avatar.h"
 #include "buddies/buddy-manager.h"
-#include "buddies/account-data/contact-account-data.h"
-#include "configuration/configuration-contact-account-data-manager.h"
+#include "contacts/contact.h"
+#include "configuration/configuration-contact-data-manager.h"
 #include "icons-manager.h"
 #include "misc/misc.h"
 #include "model/actions-proxy-model.h"
@@ -68,7 +69,7 @@ void BuddyGeneralConfigurationWidget::createGui()
 	photoLayout->setSpacing(2);
 
 	QLabel *photoLabel = new QLabel(this);
-	QPixmap photoPixmap = QPixmap(MyBuddy.accountDatas().at(0)->avatar().pixmap());
+	QPixmap photoPixmap = QPixmap(MyBuddy.contacts().at(0).contactAvatar().pixmap());
 	photoLabel->setPixmap(photoPixmap);
 	photoLayout->addWidget(photoLabel);
 
@@ -89,7 +90,7 @@ void BuddyGeneralConfigurationWidget::createGui()
 	QLabel *defaultContactLabel = new QLabel(tr("Default Contact") + ":");
 
 	DefaultAccountCombo = new QComboBox(this);
-	AccountDataModel = new BuddyAccountDataModel(MyBuddy, DefaultAccountCombo);
+	AccountDataModel = new BuddyContactModel(MyBuddy, DefaultAccountCombo);
 //	ContactsModelProxy *AccountComboProxyModel = new ContactsModelProxy(DefaultContactCombo);
 //	AccountComboProxyModel->setSourceModel(AccountComboModel);
 	
@@ -102,7 +103,7 @@ void BuddyGeneralConfigurationWidget::createGui()
 	DefaultAccountCombo->setModel(AccountDataModel);
 	DefaultAccountCombo->setModelColumn(1); // use long account name
 	
-	DefaultAccountCombo->setDisabled(MyBuddy.accountDatas().count() <= 1);
+	DefaultAccountCombo->setDisabled(MyBuddy.contacts().count() <= 1);
 
 	QLabel *defaultContactNoticeLabel = new QLabel(tr("Chat messages will be sent to this username when you select the name from the buddy list"));
 	AccountsLayout->addWidget(defaultContactLabel, row, 0, 1, 1);
@@ -114,9 +115,9 @@ void BuddyGeneralConfigurationWidget::createGui()
 	AccountsLayout->setColumnStretch(0, 2);
 	AccountsLayout->setColumnStretch(2, 2);
 	
-	foreach (ContactAccountData *data, MyBuddy.accountDatas())
+	foreach (Contact data, MyBuddy.contacts())
 	{
-		DefaultAccountCombo->addItem(data->id());
+		DefaultAccountCombo->addItem(data.id());
 		addAccountDataRow(data);
 	}
 
@@ -125,7 +126,7 @@ void BuddyGeneralConfigurationWidget::createGui()
 	QPushButton *addContactButton = new QPushButton(tr("Add Contact..."), this);
 	connect(addContactButton, SIGNAL(clicked()), this, SLOT(addAccountDataRow()));
 	QPushButton *setOrderButton = new QPushButton(tr("Set Order..."), this);
-	setOrderButton->setDisabled(MyBuddy.accountDatas().count() <= 1);
+	setOrderButton->setDisabled(MyBuddy.contacts().count() <= 1);
 	connect(setOrderButton, SIGNAL(clicked()), this, SLOT(showOrderDialog()));
 
 	AccountsLayout->addWidget(addContactButton, row, 0, 1, 1);
@@ -173,7 +174,7 @@ void BuddyGeneralConfigurationWidget::createGui()
 	layout->setRowStretch(8, 100);
 }
 
-void BuddyGeneralConfigurationWidget::addAccountDataRow(ContactAccountData *data)
+void BuddyGeneralConfigurationWidget::addAccountDataRow(Contact data)
 {
 	int row = ContactsLayout->rowCount();
 
@@ -189,7 +190,7 @@ void BuddyGeneralConfigurationWidget::addAccountDataRow(ContactAccountData *data
 	QLabel *inLabel = new QLabel(tr("in"), accountRow);
 	QComboBox *accountsCombo = new QComboBox(accountRow);
 	QPushButton *unmergeButton = new QPushButton(IconsManager::instance()->loadIcon("CloseWindowButton"), tr("Unmerge contact..."), accountRow);
-	unmergeButton->setDisabled(ContactsAccounts.count() == 0 && MyBuddy.accountDatas().count() <= 1);
+	unmergeButton->setDisabled(ContactsAccounts.count() == 0 && MyBuddy.contacts().count() <= 1);
 	connect(unmergeButton, SIGNAL(clicked(bool)), accountRow, SLOT(hide()));
 	connect(unmergeButton, SIGNAL(clicked(bool)), contactLineEdit, SLOT(clear()));
 
@@ -201,7 +202,7 @@ void BuddyGeneralConfigurationWidget::addAccountDataRow(ContactAccountData *data
 	ContactsIds.append(contactLineEdit);
 	ContactsAccounts.append(accountsCombo);
 
-	if (!data)
+	if (data.isNull())
 		accountsCombo->addItem("-" + tr("Select a Network") + "-");
 	foreach (Account account, AccountManager::instance()->accounts())
 	{
@@ -211,13 +212,13 @@ void BuddyGeneralConfigurationWidget::addAccountDataRow(ContactAccountData *data
 				account.uuid().toString()
 		);
 	}
-	if (data)
-		accountsCombo->setCurrentIndex(accountsCombo->findData(data->account().uuid().toString()));
+	if (!data.isNull())
+		accountsCombo->setCurrentIndex(accountsCombo->findData(data.contactAccount().uuid().toString()));
 
 	ContactsLayout->addWidget(accountRow, row, 0, 1, 6);
 
-	if (data)
-		contactLineEdit->setText(data->id());
+	if (!data.isNull())
+		contactLineEdit->setText(data.id());
 }
 
 void BuddyGeneralConfigurationWidget::saveConfiguration()
@@ -235,24 +236,27 @@ void BuddyGeneralConfigurationWidget::saveConfiguration()
 		Account account = AccountManager::instance()->byUuid(QUuid(ContactsAccounts.at(i)->itemData(ContactsAccounts.at(i)->currentIndex()).toString()));
 		QString contactId = ContactsIds.at(i)->text();
 
-		if (MyBuddy.hasAccountData(account))
+		if (MyBuddy.hasContact(account))
 		{
 			if (!contactId.isEmpty()/* && account.protocolHandler()->validateId(ContactsIds.at(i)->text())*/)
 			{
-				MyBuddy.accountData(account)->setId(contactId);
+				MyBuddy.contact(account).setId(contactId);
 			}
 			else
-				MyBuddy.removeAccountData(account);
+				MyBuddy.removeContact(account);
 		}
 		else
 		{
-			foreach (ContactAccountData *accountData, MyBuddy.accountDatas())
-					if (accountData->id() == contactId) // check if user has only changed account for previous existing ID
-						MyBuddy.removeAccountData(accountData->account()); // if so, remove old CAD, otherwise there will appear 2 identical contacts with different accounts
+			foreach (Contact contact, MyBuddy.contacts())
+				if (contact.id() == contactId) // check if user has only changed account for previous existing ID
+					MyBuddy.removeContact(contact.contactAccount()); // if so, remove old CAD, otherwise there will appear 2 identical contacts with different accounts
 
-			ContactAccountData *cad = account.protocolHandler()->protocolFactory()
-				->newContactAccountData(account, MyBuddy, contactId);
-			MyBuddy.addAccountData(cad);
+			Contact contact;
+			contact.setContactAccount(account);
+			contact.setOwnerBuddy(MyBuddy);
+			contact.setId(contactId);
+			contact.setDetails(account.protocolHandler()->protocolFactory()->createContactDetails(contact));
+			MyBuddy.addContact(contact);
 		}
 	}
 }

@@ -11,7 +11,7 @@
 #include "accounts/account.h"
 #include "buddies/buddy-manager.h"
 #include "debug.h"
-#include "jabber-contact-account-data.h"
+#include "jabber-contact-details.h"
 #include "../jabber-protocol.h"
 
 #include "libiris/include/filetransfer.h"
@@ -166,8 +166,8 @@ void JabberFileTransfer::send()
 		return;
 	}
 
-	JabberContactAccountData *jcad = jabberProtocol->jabberContactAccountData(buddy());
-	if (!jcad)
+	JabberContactDetails *details = jabberProtocol->jabberContactDetails(buddy());
+	if (!details)
 	{
 		changeFileTransferStatus(FileTransfer::StatusNotConnected);
 		return;
@@ -240,12 +240,12 @@ bool JabberFileTransfer::accept(const QFile &file)
 		KGuiItem resumeButton ( i18n ( "&Resume" ) );
 		KGuiItem overwriteButton ( i18n ( "Over&write" ) );
 
-		switch ( KMessageBox::questionYesNoCancel ( Kopete::UI::Global::mainWidget (),
+		switch ( KMessageDialog::questionYesNoCancel ( Kopete::UI::Global::mainWidget (),
 													i18n ( "The file %1 already exists, do you want to resume or overwrite it?", fileName ),
 													i18n ( "File Exists: %1", fileName ),
 													resumeButton, overwriteButton ) )
 		{
-			case KMessageBox::Yes:		// resume
+			case KMessageDialog::Yes:		// resume
 										couldOpen = mLocalFile.open ( QIODevice::ReadWrite );
 										if ( couldOpen )
 										{
@@ -257,7 +257,7 @@ bool JabberFileTransfer::accept(const QFile &file)
 										}
 										break;
 
-			case KMessageBox::No:		// overwrite
+			case KMessageDialog::No:		// overwrite
 										couldOpen = mLocalFile.open ( QIODevice::WriteOnly );
 										break;
 

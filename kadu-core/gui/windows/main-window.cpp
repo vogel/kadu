@@ -279,7 +279,7 @@ void MainWindow::addRightToolbar()
 void MainWindow::actionAdded(Action *action)
 {
 	if (contactsListView())
-		connect(contactsListView(), SIGNAL(contactsSelectionChanged()), action, SLOT(checkState()));
+		connect(contactsListView(), SIGNAL(buddySelectionChanged()), action, SLOT(checkState()));
 }
 
 Buddy MainWindow::buddy()

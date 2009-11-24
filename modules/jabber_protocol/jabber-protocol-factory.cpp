@@ -11,11 +11,11 @@
 #include "status/status-type.h"
 #include "status/status-type-manager.h"
 
-#include "gui/widgets/jabber-contact-account-data-widget.h"
+#include "gui/widgets/jabber-contact-widget.h"
 #include "gui/widgets/jabber-create-account-widget.h"
 #include "gui/widgets/jabber-edit-account-widget.h"
 #include "jabber-account-details.h"
-#include "jabber-contact-account-data.h"
+#include "jabber-contact-details.h"
 #include "jabber-protocol.h"
 #include "jabber-protocol-factory.h"
 
@@ -55,22 +55,14 @@ Protocol * JabberProtocolFactory::createProtocolHandler(Account account)
 	return new JabberProtocol(account, this);
 }
 
-AccountDetails * JabberProtocolFactory::createAccountDetails(Account account)
+AccountDetails * JabberProtocolFactory::createAccountDetails(AccountShared *accountShared)
 {
-	return new JabberAccountDetails(account.storage(), account);
+	return new JabberAccountDetails(accountShared);
 }
 
-ContactAccountData * JabberProtocolFactory::newContactAccountData(Account account, Buddy buddy, const QString &id)
+ContactDetails * JabberProtocolFactory::createContactDetails(ContactShared *contactShared)
 {
-	return new JabberContactAccountData(account, buddy, id, true);
-}
-
-ContactAccountData * JabberProtocolFactory::loadContactAccountData(StoragePoint *storagePoint)
-{
-	if (!storagePoint)
-		return 0;
-
-	return new JabberContactAccountData(storagePoint);
+	return new JabberContactDetails(contactShared);
 }
 
 AccountCreateWidget * JabberProtocolFactory::newCreateAccountWidget(QWidget *parent)
@@ -98,11 +90,11 @@ QRegExp JabberProtocolFactory::idRegularExpression()
 	return IdRegularExpression;
 }
 
-ContactAccountDataWidget * JabberProtocolFactory::newContactAccountDataWidget(ContactAccountData *contactAccountData, QWidget *parent)
+ContactWidget * JabberProtocolFactory::newContactWidget(Contact contact, QWidget *parent)
 {
-	JabberContactAccountData *jabberContactAccountData = dynamic_cast<JabberContactAccountData *>(contactAccountData);
+	JabberContactDetails *jabberContactDetails = dynamic_cast<JabberContactDetails *>(contact.details());
 
-	return 0 != jabberContactAccountData
-		? new JabberContactAccountDataWidget(jabberContactAccountData, parent)
-		: 0;
+	return 0 != jabberContactDetails
+			? new JabberContactWidget(contact, parent)
+			: 0;
 }

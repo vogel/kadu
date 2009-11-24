@@ -20,10 +20,10 @@ class GroupsModel : public QAbstractListModel
 	Q_OBJECT
 
 private slots:
-	void groupAboutToBeAdded(Group *group);
-	void groupAdded(Group *group);
-	void groupAboutToBeRemoved(Group *group);
-	void groupRemoved(Group *group);
+	void groupAboutToBeAdded(Group group);
+	void groupAdded(Group group);
+	void groupAboutToBeRemoved(Group group);
+	void groupRemoved(Group group);
 
 public:
 	GroupsModel(QObject *parent = 0);
@@ -34,10 +34,12 @@ public:
 	virtual QVariant data(const QModelIndex &index, int role) const;
 	virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 
-	Group * group(const QModelIndex &index) const;
-	int groupIndex(Group *group);
-	QModelIndex groupModelIndex(Group *group);
+	Group group(const QModelIndex &index) const;
+	int groupIndex(Group group);
+	QModelIndex groupModelIndex(Group group);
 
 };
+
+#include "buddies/group.h" // for MOC
 
 #endif // GROUPS_MODEL

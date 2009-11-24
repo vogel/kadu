@@ -254,7 +254,7 @@ void KeysManager::refreshKeysList()
 void KeysManager::removeKey()
 {
 	kdebugf();
-	if (MessageBox::ask(tr("Are you sure you want to delete the selected key?")))
+	if (MessageDialog::ask(tr("Are you sure you want to delete the selected key?")))
 	{
 		QString id = getSelected()->text(1);
 		QString path = ggPath("keys/")+id+QString(".pem");
@@ -265,7 +265,7 @@ void KeysManager::removeKey()
 			emit keyRemoved(userlist->byID("Gadu", id));
 		}
 		else
-			MessageBox::msg(tr("Cannot remove key\nCheck if you have access to file \"%1\"").arg(path));
+			MessageDialog::msg(tr("Cannot remove key\nCheck if you have access to file \"%1\"").arg(path));
 
 		delete file;
 	}

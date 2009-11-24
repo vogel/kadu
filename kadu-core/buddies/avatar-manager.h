@@ -14,41 +14,65 @@
 #include <QtGui/QPixmap>
 
 #include "accounts/accounts-aware-object.h"
+#include "buddies/avatar.h"
+#include "configuration/storable-object.h"
 
-class Avatar;
 class AvatarService;
-class ContactAccountData;
+class Contact;
 
-class AvatarManager : public QObject, public AccountsAwareObject
+class AvatarManager : public QObject, public StorableObject, AccountsAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(AvatarManager)
 
 	static AvatarManager *Instance;
 
+	QList<Avatar> Avatars;
+
 	AvatarManager();
 	virtual ~AvatarManager();
 
 	AvatarService * avatarService(Account account);
-	AvatarService * avatarService(ContactAccountData *contactAccountData);
+	AvatarService * avatarService(Contact contact);
 
 	QString avatarFileName(Avatar avatar);
 
 private slots:
-	void avatarFetched(ContactAccountData *contactAccountData, const QByteArray &data);
+	void avatarFetched(Contact contact, const QByteArray &data);
 
 protected:
+	virtual StoragePoint * createStoragePoint();
+
 	virtual void accountRegistered(Account account);
 	virtual void accountUnregistered(Account account);
 
 public:
 	static AvatarManager * instance();
 
-	void updateAvatar(ContactAccountData *contactAccountData);
+	virtual void load();
+	virtual void store();
+
+	void addAvatar(Avatar avatar);
+	void removeAvatar(Avatar avatar);
+
+	unsigned int count() { return Avatars.count(); }
+
+	Avatar byIndex(unsigned int index);
+	Avatar byUuid(const QString &uuid);
+
+	void updateAvatar(Contact contact);
 
 signals:
-	void avatarUpdated(ContactAccountData *contactAccountData);
+	void avatarAboutToBeAdded(Avatar avatar);
+	void avatarAdded(Avatar avatar);
+	void avatarAboutToBeRemoved(Avatar avatar);
+	void avatarRemoved(Avatar avatar);
+
+	void avatarUpdated(Contact contact);
 
 };
+
+// for MOC
+#include "contacts/contact.h"
 
 #endif // AVATAR_MANAGER_H

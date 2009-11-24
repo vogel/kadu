@@ -9,10 +9,11 @@
 
 #include "accounts/account-details.h"
 #include "accounts/account-manager.h"
+#include "buddies/buddy-manager.h"
 #include "configuration/configuration-file.h"
 #include "configuration/xml-configuration-file.h"
-#include "buddies/buddy-manager.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
+#include "contacts/contact-details.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocols-manager.h"
@@ -20,117 +21,50 @@
 
 #include "account.h"
 
-Account Account::null(AccountData::TypeNull);
+Account Account::null(true);
 
 Account Account::loadFromStorage(StoragePoint *accountStoragePoint)
 {
-	return Account(AccountData::loadFromStorage(accountStoragePoint));
+	return AccountShared::loadFromStorage(accountStoragePoint);
 }
 
-Account::Account(AccountData::AccountType type) :
-		Data(AccountData::TypeNull != type ? new AccountData(type) : 0)
+Account::Account(bool null) :
+		SharedBase<AccountShared>(null)
 {
-	connectDataSignals();
 }
 
-Account::Account(AccountData *data) :
-		Data(data)
+Account::Account()
 {
-	connectDataSignals();
+	data()->setState(StorableObject::StateNew);
+}
+
+Account::Account(AccountShared *data) :
+		SharedBase<AccountShared>(data)
+{
+	data->ref.ref();
+}
+
+Account::Account(QObject *data) :
+		SharedBase<AccountShared>(true)
+{
+	AccountShared *shared = dynamic_cast<AccountShared *>(data);
+	if (shared)
+		setData(shared);
 }
 
 Account::Account(const Account &copy) :
-		Data(copy.Data)
+		SharedBase<AccountShared>(copy)
 {
-	connectDataSignals();
 }
 
 Account::~Account()
 {
-	disconnectDataSignals();
 }
 
-bool Account::isNull() const
+Account & Account::operator=(const Account &copy)
 {
-	return !Data.data() || Data->isNull();
-}
-
-Account & Account::operator = (const Account &copy)
-{
-	disconnectDataSignals();
-	Data = copy.Data;
-	connectDataSignals();
-
+	clone(copy);
 	return *this;
-}
-
-bool Account::operator == (const Account &compare) const
-{
-	return Data == compare.Data;
-}
-
-bool Account::operator != (const Account &compare) const
-{
-	return Data != compare.Data;
-}
-
-int Account::operator < (const Account& compare) const
-{
-	return Data.data() - compare.Data.data();
-}
-
-void Account::connectDataSignals()
-{
-	if (isNull())
-		return;
-
-	connect(Data.data(), SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
-			this, SIGNAL(buddyStatusChanged(Account, Buddy, Status)));
-}
-
-void Account::disconnectDataSignals()
-{
-	if (isNull())
-		return;
-
-	disconnect(Data.data(), SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
-			this, SIGNAL(buddyStatusChanged(Account, Buddy, Status)));
-}
-
-QUuid Account::uuid() const
-{
-	return isNull() ? QUuid() : Data->uuid();
-}
-
-StoragePoint * Account::storage() const
-{
-	return isNull() ? 0 : Data->storage();
-}
-
-void Account::loadProtocol(ProtocolFactory *protocolFactory)
-{
-	if (isNull())
-		return;
-
-	Data->loadProtocol(protocolFactory);
-}
-
-void Account::unloadProtocol()
-{
-	if (Data)
-		Data->unloadProtocol();
-}
-
-void Account::store()
-{
-	if (Data)
-		Data->store();
-}
-
-void Account::removeFromStorage()
-{
-	if (Data)
-		Data->removeFromStorage();
 }
 
 Buddy Account::getBuddyById(const QString& id)
@@ -140,40 +74,59 @@ Buddy Account::getBuddyById(const QString& id)
 
 Buddy Account::createAnonymous(const QString& id)
 {
-	if (!Data)
+	if (isNull())
 		return Buddy::null;
 
-	Buddy result(BuddyShared::TypeAnonymous);
-	ProtocolFactory *protocolFactory = Data->protocolHandler()->protocolFactory();
-	ContactAccountData *contactAccountData = protocolFactory->newContactAccountData(*this, result, id);
-	if (!contactAccountData->isValid())
-	{
-		delete contactAccountData;
-		return Buddy::null;
-	}
+	Buddy result;
+	result.data()->setState(StorableObject::StateNew);
+	result.setAnonymous(true);
 
-	result.addAccountData(contactAccountData);
+	ProtocolFactory *protocolFactory = data()->protocolHandler()->protocolFactory();
+
+	Contact contact;
+	ContactDetails *details = protocolFactory->createContactDetails(contact);
+	details->setState(StorableObject::StateNew);
+	contact.setContactAccount(*this);
+	contact.setOwnerBuddy(result);
+	contact.setId(id);
+
+	if (!contact.isValid())
+		return Buddy::null;
+
+	result.addContact(contact);
 	return result;
 }
 
 void Account::importProxySettings()
 {
-	if (!Data)
+	if (isNull())
 		return;
 
 	Account defaultAccount = AccountManager::instance()->defaultAccount();
 	if (!defaultAccount.isNull() && defaultAccount.proxyHost().toString() != "0.0.0.0")
 	{
-		Data->setUseProxy(defaultAccount.useProxy());
-		Data->setProxyHost(defaultAccount.proxyHost());
-		Data->setProxyPort(defaultAccount.proxyPort());
-		Data->setProxyRequiresAuthentication(defaultAccount.proxyRequiresAuthentication());
-		Data->setProxyUser(defaultAccount.proxyUser());
-		Data->setProxyPassword(defaultAccount.proxyPassword());
+		data()->setUseProxy(defaultAccount.useProxy());
+		data()->setProxyHost(defaultAccount.proxyHost());
+		data()->setProxyPort(defaultAccount.proxyPort());
+		data()->setProxyRequiresAuthentication(defaultAccount.proxyRequiresAuthentication());
+		data()->setProxyUser(defaultAccount.proxyUser());
+		data()->setProxyPassword(defaultAccount.proxyPassword());
 	}
 }
 
-uint qHash(const Account &account)
-{
-	return qHash(account.uuid().toString());
-}
+KaduSharedBase_PropertyReadDef(Account, StoragePoint *, storage, Storage, 0)
+KaduSharedBase_PropertyDef(Account, QString, protocolName, ProtocolName, QString::null)
+KaduSharedBase_PropertyDef(Account, Protocol *, protocolHandler, ProtocolHandler, 0)
+KaduSharedBase_PropertyDef(Account, AccountDetails *, details, Details, 0)
+KaduSharedBase_PropertyDef(Account, QString, name, Name, QString::null)
+KaduSharedBase_PropertyDef(Account, QString, id, Id, QString::null)
+KaduSharedBase_PropertyDef(Account, bool, rememberPassword, RememberPassword, true)
+KaduSharedBase_PropertyDef(Account, bool, hasPassword, HasPassword, false)
+KaduSharedBase_PropertyDef(Account, QString, password, Password, QString::null)
+KaduSharedBase_PropertyDef(Account, bool, connectAtStart, ConnectAtStart, true)
+KaduSharedBase_PropertyDef(Account, bool, useProxy, UseProxy, false)
+KaduSharedBase_PropertyDef(Account, QHostAddress, proxyHost, ProxyHost, QHostAddress())
+KaduSharedBase_PropertyDef(Account, short int, proxyPort, ProxyPort, 0)
+KaduSharedBase_PropertyDef(Account, bool, proxyRequiresAuthentication, ProxyRequiresAuthentication, false)
+KaduSharedBase_PropertyDef(Account, QString, proxyUser, ProxyUser, QString::null)
+KaduSharedBase_PropertyDef(Account, QString, proxyPassword, ProxyPassword, QString::null)

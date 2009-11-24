@@ -12,16 +12,19 @@
 
 #include "configuration/account-data-manager.h"
 
-class TlenAccount;
+class TlenAccountDetails;
 
 class TlenAccountDataManager : public AccountDataManager
 {
+	TlenAccountDetails *Data;
+
 public:
-	TlenAccountDataManager(TlenAccount *data);
+	TlenAccountDataManager(Account data);
+
+	TlenAccountDetails * data() { return Data; }
 
 	virtual void writeEntry(const QString &section, const QString &name, const QVariant &value);
 	virtual QVariant readEntry(const QString &section, const QString &name);
 
 };
-
 #endif // TLEN_ACCOUNT_DATA_MANAGER_H

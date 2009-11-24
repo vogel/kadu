@@ -9,23 +9,23 @@
 
 #include "storable-object.h"
 
-StorableObject::StorableObject(bool loaded) :
-		Parent(0), Storage(0), Loaded(loaded)
+StorableObject::StorableObject(StorableObjectState state) :
+		Parent(0), Storage(0), State(state)
 {
 }
 
-StorableObject::StorableObject(StoragePoint *storage, bool loaded) :
-		Parent(0), Storage(storage), Loaded(loaded)
+StorableObject::StorableObject(StoragePoint *storage, StorableObjectState state) :
+		Parent(0), Storage(storage), State(state)
 {
 }
 
-StorableObject::StorableObject(const QString &nodeName, bool loaded) :
-		Parent(0), NodeName(nodeName), Storage(0), Loaded(loaded)
+StorableObject::StorableObject(const QString &nodeName, StorableObjectState state) :
+		Parent(0), NodeName(nodeName), Storage(0), State(state)
 {
 }
 
-StorableObject::StorableObject(const QString &nodeName, StorableObject *parent, bool loaded) :
-		Parent(parent), NodeName(nodeName), Storage(0), Loaded(loaded)
+StorableObject::StorableObject(const QString &nodeName, StorableObject *parent, StorableObjectState state) :
+		Parent(parent), NodeName(nodeName), Storage(0), State(state)
 {
 }
 
@@ -52,15 +52,18 @@ StoragePoint * StorableObject::storage()
 
 void StorableObject::load()
 {
-	Loaded = true;
+	State = StateLoaded;
+}
+
+bool StorableObject::needsLoad()
+{
+	return StateUnloaded == State;
 }
 
 void StorableObject::ensureLoaded()
 {
-	if (Loaded)
-		return;
-
-	load();
+	if (needsLoad())
+		load();
 }
 
 void StorableObject::removeFromStorage()

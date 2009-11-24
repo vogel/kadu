@@ -24,7 +24,7 @@
 #include "gui/widgets/account-buddy-list-widget.h"
 #include "gui/widgets/choose-identity-widget.h"
 #include "gui/widgets/proxy-group-box.h"
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
 
 #include "jabber-account-details.h"
 #include "jabber-personal-info-widget.h"
@@ -291,7 +291,7 @@ void JabberEditAccountWidget::autoResourceToggled(bool on)
 bool JabberEditAccountWidget::checkSSL()
 {
 	if(!QCA::isSupported("tls")) {
-		MessageBox::msg(tr("Cannot enable SSL/TLS. Plugin not found."));
+		MessageDialog::msg(tr("Cannot enable SSL/TLS. Plugin not found."));
 		return false;
 	}
 	return true;
@@ -303,7 +303,7 @@ void JabberEditAccountWidget::sslActivated(int i)
 		EncryptionMode->setCurrentIndex(EncryptionMode->findData(1));
 	}
 	else if (EncryptionMode->itemData(i) == 2 && !CustomHostPort->isChecked()) {
-		MessageBox::msg(tr("Legacy SSL is only available in combination with manual host/port."));
+		MessageDialog::msg(tr("Legacy SSL is only available in combination with manual host/port."));
 		EncryptionMode->setCurrentIndex(EncryptionMode->findData(1));
 	}
 }
@@ -344,6 +344,7 @@ void JabberEditAccountWidget::apply()
 	account().setId(AccountId->text());
 	account().setRememberPassword(RememberPassword->isChecked());
 	account().setPassword(AccountPassword->text());
+	account().setHasPassword(!AccountPassword->text().isEmpty());
 	jabberAccountDetails->setUseCustomHostPort(CustomHostPort->isChecked());
 	jabberAccountDetails->setCustomHost(CustomHost->text());
 	jabberAccountDetails->setCustomPort(CustomPort->text().toInt());

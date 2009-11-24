@@ -37,18 +37,20 @@ class KADUAPI BuddyManager : public QObject, public StorableObject
 	BuddyManager();
 	virtual ~BuddyManager();
 
+	void init();
+
 	const Buddy & byBuddyShared(BuddyShared *data);
 	void importConfiguration(XmlConfigFile *configurationStorage);
 
 private slots:
 	void buddyDataUpdated();
-	void contactAccountDataAboutToBeAdded(Account account);
-	void contactAccountDataAdded(Account account);
-	void contactAccountDataAboutToBeRemoved(Account account);
-	void contactAccountDataRemoved(Account account);
-	void contactAccountDataIdChanged(Account account, const QString &oldId);
+	void contactAboutToBeAdded(Account account);
+	void contactAdded(Account account);
+	void contactAboutToBeRemoved(Account account);
+	void contactRemoved(Account account);
+	void contactIdChanged(Account account, const QString &oldId);
 
-	void groupRemoved(Group *group);
+	void groupRemoved(Group group);
 
 protected:
 	virtual StoragePoint * createStoragePoint();
@@ -84,11 +86,11 @@ signals:
 	void buddyRemoved(Buddy &buddy);
 
 	void buddyUpdated(Buddy &buddy);
-	void contactAccountDataAboutToBeAdded(Buddy &buddy, Account account);
-	void contactAccountDataAdded(Buddy &buddy, Account account);
-	void contactAccountDataAboutToBeRemoved(Buddy &buddy, Account account);
-	void contactAccountDataRemoved(Buddy &buddy, Account account);
-	void contactAccountIdChanged(Buddy &buddy, Account account, const QString &oldId);
+	void contactAboutToBeAdded(Buddy &buddy, Account account);
+	void contactAdded(Buddy &buddy, Account account);
+	void contactAboutToBeRemoved(Buddy &buddy, Account account);
+	void contactRemoved(Buddy &buddy, Account account);
+	void contactIdChanged(Buddy &buddy, Account account, const QString &oldId);
 
 };
 

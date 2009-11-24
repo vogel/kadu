@@ -13,43 +13,38 @@
 #include <QtCore/QDateTime>
 #include <QtGui/QPixmap>
 
-#include "configuration/storable-object.h"
+#include "shared/shared-base.h"
 
 #include "exports.h"
 
-class ContactAccountData;
+class AvatarShared;
+class Contact;
+class StoragePoint;
 
-class KADUAPI Avatar : public StorableObject
+class KADUAPI Avatar : public SharedBase<AvatarShared>
 {
-	ContactAccountData *MyContactAccountData;
-	QDateTime LastUpdated;
-	QDateTime NextUpdate;
-	QString FileName;
-	QPixmap Pixmap;
-	QString FilePath;
+	Avatar(bool null);
 
 public:
-	Avatar(ContactAccountData *contactAccountData, bool loadFromConfiguration = true);
+	static Avatar loadFromStorage(StoragePoint *storage);
+	static Avatar null;
+
+	Avatar();
+	Avatar(AvatarShared *data);
+	Avatar(const Avatar &copy);
 	virtual ~Avatar();
 
-	virtual void load();
-	virtual void store();
-
-	ContactAccountData * contactAccountData();
-
-	QDateTime lastUpdated();
-	void setLastUpdated(const QDateTime &lastUpdated);
-
-	QDateTime nextUpdate();
-	void setNextUpdate(const QDateTime &nextUpdate);
-
-	QString fileName();
-	void setFileName(const QString &fileName);
+	Avatar & operator = (const Avatar &copy);
 
 	QString filePath();
+	void setFilePath(const QString &filePath);
 
-	QPixmap pixmap();
-	void setPixmap(const QPixmap &pixmap);
+	KaduSharedBase_Property(Contact, avatarContact, AvatarContact)
+	KaduSharedBase_Property(QDateTime, lastUpdated, LastUpdated)
+	KaduSharedBase_Property(QDateTime, nextUpdate, NextUpdate)
+	KaduSharedBase_Property(QString, fileName, FileName)
+	KaduSharedBase_Property(QPixmap, pixmap, Pixmap)
+
 };
 
 #endif // AVATAR_H

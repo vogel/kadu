@@ -15,8 +15,8 @@
 #include "status/status-type-manager.h"
 
 #include "gadu-account-details.h"
-#include "gadu-contact-account-data-widget.h"
-#include "gadu-contact-account-data.h"
+#include "gadu-contact-widget.h"
+#include "gadu-contact-details.h"
 #include "gadu-protocol.h"
 
 #include "gadu-protocol-factory.h"
@@ -49,22 +49,14 @@ Protocol * GaduProtocolFactory::createProtocolHandler(Account account)
 	return new GaduProtocol(account, this);
 }
 
-AccountDetails * GaduProtocolFactory::createAccountDetails(Account account)
+AccountDetails * GaduProtocolFactory::createAccountDetails(AccountShared *accountShared)
 {
-	return new GaduAccountDetails(account.storage(), account);
+	return new GaduAccountDetails(accountShared);
 }
 
-ContactAccountData * GaduProtocolFactory::newContactAccountData(Account account, Buddy buddy, const QString &id)
+ContactDetails * GaduProtocolFactory::createContactDetails(ContactShared *contactShared)
 {
-	return new GaduContactAccountData(account, buddy, id, true);
-}
-
-ContactAccountData * GaduProtocolFactory::loadContactAccountData(StoragePoint *storagePoint)
-{
-	if (!storagePoint)
-		return 0;
-
-	return new GaduContactAccountData(storagePoint);
+	return new GaduContactDetails(contactShared);
 }
 
 AccountCreateWidget * GaduProtocolFactory::newCreateAccountWidget(QWidget *parent)
@@ -92,11 +84,11 @@ QRegExp GaduProtocolFactory::idRegularExpression()
 	return IdRegularExpression;
 }
 
-ContactAccountDataWidget * GaduProtocolFactory::newContactAccountDataWidget(ContactAccountData *contactAccountData, QWidget *parent)
+ContactWidget * GaduProtocolFactory::newContactWidget(Contact contact, QWidget *parent)
 {
-	GaduContactAccountData *gaduContactAccountData = dynamic_cast<GaduContactAccountData *>(contactAccountData);
+	GaduContactDetails *gaduContactDetails = dynamic_cast<GaduContactDetails *>(contact.details());
 
-	return 0 != gaduContactAccountData
-		? new GaduContactAccountDataWidget(gaduContactAccountData, parent)
-		: 0;
+	return 0 != gaduContactDetails
+			? new GaduContactWidget(contact, parent)
+			: 0;
 }

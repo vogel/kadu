@@ -12,8 +12,8 @@
 #include <QtGui/QGroupBox>
 #include <QtGui/QLabel>
 
-#include "configuration/configuration-contact-account-data-manager.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "configuration/configuration-contact-data-manager.h"
+#include "contacts/contact.h"
 #include "buddies/group.h"
 #include "buddies/group-manager.h"
 #include "misc/misc.h"
@@ -61,9 +61,9 @@ void BuddyGroupsConfigurationWidget::createGui()
 
 	layout->setRowStretch(row++, 3);
 
-	foreach (Group *group, GroupManager::instance()->groups())
+	foreach (Group group, GroupManager::instance()->groups())
 	{
-		QCheckBox *groupCheckBox = new QCheckBox(group->name(), this);
+		QCheckBox *groupCheckBox = new QCheckBox(group.name(), this);
 		groupCheckBox->setChecked(MyBuddy.isInGroup(group));
 		layout->addWidget(groupCheckBox, row++, 2, 1, 2);
 		GroupCheckBoxList.append(groupCheckBox);
@@ -74,7 +74,7 @@ void BuddyGroupsConfigurationWidget::createGui()
 
 void BuddyGroupsConfigurationWidget::saveConfiguration()
 {
-	foreach (Group *group, MyBuddy.groups())
+	foreach (Group group, MyBuddy.groups())
 	{
 		MyBuddy.removeFromGroup(group);
 	}

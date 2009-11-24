@@ -19,7 +19,7 @@
 #include "configuration/xml-configuration-file.h"
 #include "gui/actions/actions.h"
 #include "gui/windows/main-window.h"
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
 
 #include "debug.h"
 #include "icons-manager.h"
@@ -498,8 +498,8 @@ QMenu * ToolBar::createContextMenu(QToolButton *button)
 			Text = textPositionMenu->addAction(tr("Text alongside icon"), this, SLOT(slotContextTextRight()));
 			TextUnder = textPositionMenu->addAction(tr("Text under icon"), this, SLOT(slotContextTextUnder()));
 
-			QActionGroup* textGroup = new QActionGroup(textPositionMenu);
-			foreach (QAction* action, textPositionMenu->actions())
+			QActionGroup *textGroup = new QActionGroup(textPositionMenu);
+			foreach (QAction *action, textPositionMenu->actions())
 			{
 				action->setActionGroup(textGroup);
 				action->setCheckable(true);
@@ -575,7 +575,7 @@ QMenu * ToolBar::createContextMenu(QToolButton *button)
 void ToolBar::deleteToolbar()
 {
 	kdebugf();
-	if (MessageBox::ask(tr("Remove toolbar?"), "Warning", this))
+	if (MessageDialog::ask(tr("Remove toolbar?"), "Warning", this))
 		deleteLater();
 	kdebugf2();
 }

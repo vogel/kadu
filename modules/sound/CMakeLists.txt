@@ -36,9 +36,11 @@ kadu_module (sound
 	MODULE_BUILDDEF SOUND_BUILD
 )
 
+if(NOT WIN32)
 pkg_search_module (SNDFILE REQUIRED sndfile>=1.0)
 
 include_directories (${SNDFILE_INCLUDE_DIRS})
 link_directories (${SNDFILE_LIBRARY_DIRS})
 
 target_link_libraries (sound ${SNDFILE_LIBRARIES})
+endif(NOT WIN32)

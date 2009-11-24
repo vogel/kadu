@@ -9,7 +9,7 @@
 
 #include "accounts/account-manager.h"
 #include "configuration/configuration-file.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "parser/parser.h"
 #include "debug.h"
 #include "icons-manager.h"
@@ -34,20 +34,20 @@ Chat * Chat::loadFromStorage(StoragePoint *chatStoragePoint)
 }
 
 Chat::Chat(StoragePoint *storage) :
-		UuidStorableObject(storage)
+		UuidStorableObject(storage), CurrentAccount(Account::null)
 {
 }
 
 Chat::Chat(Account currentAccount, QUuid uuid) :
 		UuidStorableObject("Chat", ChatManager::instance()), CurrentAccount(currentAccount), Uuid(uuid.isNull() ? QUuid::createUuid() : uuid)
 {
-	connect(&CurrentAccount, SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
+	connect(CurrentAccount, SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
 			this, SLOT(refreshTitle()));
 }
 
 Chat::~Chat()
 {
-	disconnect(&CurrentAccount, SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
+	disconnect(CurrentAccount, SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
 			this, SLOT(refreshTitle()));
 }
 
@@ -61,7 +61,7 @@ void Chat::load()
 	Uuid = loadAttribute<QString>("uuid");
 	CurrentAccount = AccountManager::instance()->byUuid(QUuid(loadValue<QString>("Account")));
 
-	connect(&CurrentAccount, SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
+	connect(CurrentAccount, SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
 			this, SLOT(refreshTitle()));
 	refreshTitle();
 }
@@ -130,10 +130,9 @@ void Chat::refreshTitle()
 		else
 			title = Parser::parse(config_file.readEntry("Look","ChatContents"), account(), buddy, false);
 
-		ContactAccountData *cad = buddy.accountData(account());
-
-		if (cad)
-			Icon = account().statusContainer()->statusPixmap(cad->status());
+		Contact contact = buddy.contact(account());
+		if (!contact.isNull())
+			Icon = account().statusContainer()->statusPixmap(contact.currentStatus());
 	}
 
 	title.replace("<br/>", " ");

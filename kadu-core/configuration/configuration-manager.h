@@ -12,18 +12,26 @@
 
 #include <QtCore/QList>
 
+#include "exports.h"
+
 class StorableObject;
 
-class ConfigurationManager
+class KADUAPI ConfigurationManager
 {
+	static ConfigurationManager *Instance;
+
 	QList<StorableObject *> RegisteredStorableObjects;
 
+	ConfigurationManager();
+
 	void importConfiguration();
-	void importOldContactAccountData(); // TODO: remove after 0.6.6 release
+	void copyOldContactsToImport();
+	void importOldContact(); // TODO: remove after 0.6.6 release
 	void importContactsIntoBuddies(); // TODO: remove after 0.6.6 release
+	void importContactAccountDatasIntoContacts(); // TODO: remove after 0.6.6 release
 
 public:
-	ConfigurationManager();
+	static ConfigurationManager * instance();
 
 	void load();
 	void store();

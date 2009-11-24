@@ -15,7 +15,7 @@
 
 #include "exports.h"
 
-class ContactAccountData;
+class Contact;
 
 class KADUAPI AvatarService : public QObject
 {
@@ -24,11 +24,14 @@ class KADUAPI AvatarService : public QObject
 public:
 	AvatarService(QObject *parent = 0) : QObject(parent) {}
 
-	virtual void fetchAvatar(ContactAccountData *contactAccountData) = 0;
+	virtual void fetchAvatar(Contact contact) = 0;
 
 signals:
-	void avatarFetched(ContactAccountData *contactAccountData, const QByteArray &avatar);
+	void avatarFetched(Contact contact, const QByteArray &avatar);
 
 };
+
+// for MOC
+#include "contacts/contact.h"
 
 #endif // AVATAR_SERVICE_H

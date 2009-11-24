@@ -11,7 +11,7 @@
 
 #include "buddies/buddy.h"
 #include "buddies/buddy-manager.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 
 #include "open-chat-with-contact-list-runner.h"
 
@@ -22,8 +22,8 @@ BuddyList OpenChatWithContactListRunner::matchingContacts(const QString &query)
 	foreach (Buddy buddy, BuddyManager::instance()->buddies())
 	{
 		bool found = false;
-		foreach (ContactAccountData *data, buddy.accountDatas())
-			if (data->id().contains(query, Qt::CaseInsensitive))
+		foreach (Contact data, buddy.contacts())
+			if (data.id().contains(query, Qt::CaseInsensitive))
 			{
 				matchedContacts.append(buddy);
 				found = true;

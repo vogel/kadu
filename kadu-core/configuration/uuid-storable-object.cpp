@@ -9,8 +9,8 @@
 
 #include "uuid-storable-object.h"
 
-UuidStorableObject::UuidStorableObject(const QString &nodeName, bool loaded) :
-		StorableObject(nodeName, loaded)
+UuidStorableObject::UuidStorableObject(const QString &nodeName, StorableObjectState state) :
+		StorableObject(nodeName, state)
 {
 
 }
@@ -20,8 +20,8 @@ UuidStorableObject::UuidStorableObject(StoragePoint *storage) :
 {
 }
 
-UuidStorableObject::UuidStorableObject(const QString &nodeName, StorableObject *parent, bool loaded) :
-		StorableObject(nodeName, parent, loaded)
+UuidStorableObject::UuidStorableObject(const QString &nodeName, StorableObject *parent, StorableObjectState state) :
+		StorableObject(nodeName, parent, state)
 {
 }
 

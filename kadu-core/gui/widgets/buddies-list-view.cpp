@@ -141,6 +141,9 @@ Chat * BuddiesListView::chatForIndex(const QModelIndex &index) const
 	if (con.isNull())
 		return 0;
 
+	if (!account.protocolHandler())
+		return 0;
+
 	return account.protocolHandler()->findChat(BuddySet(con));
 }
 

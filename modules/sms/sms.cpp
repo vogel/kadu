@@ -134,7 +134,7 @@ SmsGateway::SmsGateway(QObject* parent)
 void SmsGateway::httpError()
 {
 	kdebugf();
-	MessageBox::msg(tr("Network error. Provider gateway page is probably unavailable"), false, "Warning", (QDialog*)(parent()->parent()));
+	MessageDialog::msg(tr("Network error. Provider gateway page is probably unavailable"), false, "Warning", (QDialog*)(parent()->parent()));
 	emit finished(false);
 	kdebugf2();
 }
@@ -171,14 +171,14 @@ void SmsSender::send(const QString& number,const QString& message, const QString
 		Number=Number.right(9);
 	if (Number.length() != 9)
 	{
-		MessageBox::msg(tr("Mobile number is incorrect"), false, "Warning", (QWidget*)parent());
+		MessageDialog::msg(tr("Mobile number is incorrect"), false, "Warning", (QWidget*)parent());
 		emit finished(false);
 		kdebugf2();
 		return;
 	}
 	if (signature.isEmpty())
 	{
-		MessageBox::msg(tr("Signature can't be empty"), false, "Warning", (QWidget*)parent());
+		MessageDialog::msg(tr("Signature can't be empty"), false, "Warning", (QWidget*)parent());
 		emit finished(false);
 		kdebugf2();
 		return;
@@ -187,7 +187,7 @@ void SmsSender::send(const QString& number,const QString& message, const QString
 
 	if (!Gateway)
 	{
-		MessageBox::msg(tr("Mobile number is incorrect or gateway is not available"), false, "Warning", (QWidget*)parent());
+		MessageDialog::msg(tr("Mobile number is incorrect or gateway is not available"), false, "Warning", (QWidget*)parent());
 		emit finished(false);
 		kdebugf2();
 		return;
@@ -366,7 +366,7 @@ void Sms::sendSms()
 	{
 		if (config_file.readEntry("SMS", "SmsApp").isEmpty())
 		{
-			MessageBox::msg(tr("Sms application was not specified. Visit the configuration section"), false, "Warning", this);
+			MessageDialog::msg(tr("Sms application was not specified. Visit the configuration section"), false, "Warning", this);
 			kdebugm(KDEBUG_WARNING, "SMS application NOT specified. Exit.\n");
 			return;
 		}
@@ -392,7 +392,7 @@ void Sms::sendSms()
 		}
 
 		if (!smsProcess->waitForStarted())
-			MessageBox::msg(tr("Could not spawn child process. Check if the program is functional"), false, "Warning", this);
+			MessageDialog::msg(tr("Could not spawn child process. Check if the program is functional"), false, "Warning", this);
 		connect(smsProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(smsSigHandler()));
 	}
 	kdebugf2();
@@ -402,9 +402,9 @@ void Sms::smsSigHandler()
 {
 	kdebugf();
 	if (smsProcess->exitStatus() == QProcess::NormalExit)
-		MessageBox::msg(tr("The process exited normally. The SMS should be on its way"), false, "Information", this);
+		MessageDialog::msg(tr("The process exited normally. The SMS should be on its way"), false, "Information", this);
 	else
-		MessageBox::msg(tr("The process exited abnormally. The SMS may not be sent"), false, "Warning", this);
+		MessageDialog::msg(tr("The process exited abnormally. The SMS may not be sent"), false, "Warning", this);
 	delete smsProcess;
 	smsProcess = 0;
 
@@ -431,7 +431,7 @@ void Sms::onSmsSenderFinished(bool success)
 	{
 		if (c_saveInHistory->isChecked())
 			history->appendSms(recipient->text(), body->text());
-		if (!MessageBox::ask(tr("The SMS was sent and should be on its way.\nDo you want to send next message?"), "Information", this))
+		if (!MessageDialog::ask(tr("The SMS was sent and should be on its way.\nDo you want to send next message?"), "Information", this))
 			deleteLater();
 		body->clear();
 	}

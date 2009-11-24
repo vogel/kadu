@@ -18,7 +18,7 @@
 #include "chat/html-messages-renderer.h"
 #include "chat/message/message-render-info.h"
 #include "buddies/avatar.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "gui/widgets/chat-messages-view.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/preview.h"
@@ -374,11 +374,11 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat *chat, QString &styleHref, QS
 
 	if (chat->buddies().count() > 1)
 		photoIncoming = QString("file://") + styleHref + QString("Incoming/buddy_icon.png");
-	else
+	else if (chat->buddies().count() == 1)
 	{
-		ContactAccountData *cad = (*chat->buddies().begin()).accountData(chat->account());
-		if (cad && !cad->avatar().pixmap().isNull())
-			photoIncoming = QString("file://") + cad->avatar().filePath();
+		Contact contact = (*chat->buddies().begin()).contact(chat->account());
+		if (!contact.isNull() && !contact.contactAvatar().pixmap().isNull())
+			photoIncoming = QString("file://") + contact.contactAvatar().filePath();
 		else
 			photoIncoming = QString("file://") + styleHref + QString("Incoming/buddy_icon.png");
 	}
@@ -390,6 +390,7 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat *chat, QString &styleHref, QS
 
 	return result;
 }
+
 QString AdiumChatStyleEngine::replaceKeywords(Chat *chat, QString &styleHref, QString &source, MessageRenderInfo *message)
 {
 	if (!chat)
@@ -431,9 +432,9 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat *chat, QString &styleHref, QS
 	{
 		result.replace(QString("%messageClasses%"), "message incoming");
 
-		ContactAccountData *cad = msg.sender().accountData(chat->account());
-		if (cad && !cad->avatar().pixmap().isNull())
-			photoPath = QString("file://") + cad->avatar().filePath();
+		Contact contact = msg.sender().contact(chat->account());
+		if (!contact.isNull() && !contact.contactAvatar().pixmap().isNull())
+			photoPath = QString("file://") + contact.contactAvatar().filePath();
 		else
 			photoPath = QString("file://") + styleHref + QString("Incoming/buddy_icon.png");
 	}

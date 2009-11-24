@@ -11,7 +11,6 @@
 #define TLEN_PROTOCOL_FACTORY_H
 
 #include "protocols/protocol-factory.h"
-#include "misc/misc.h"
 
 class TlenProtocolFactory : public ProtocolFactory
 {
@@ -26,20 +25,20 @@ class TlenProtocolFactory : public ProtocolFactory
 public:
 	static TlenProtocolFactory * instance();
 
-	virtual Account * newAccount();
-	virtual Account * loadAccount(StoragePoint *accountStoragePoint);
-	virtual ContactAccountData * newContactAccountData(Account *account, Contact contact, const QString &id);
-	virtual ContactAccountData * loadContactAccountData(StoragePoint *storagePoint);
+	virtual Protocol * createProtocolHandler(Account account);
+	virtual AccountDetails * createAccountDetails(AccountShared *accountShared);
+	virtual ContactDetails * createContactDetails(ContactShared *contactShared);
 	virtual AccountCreateWidget * newCreateAccountWidget(QWidget *parent);
-	virtual AccountEditWidget* newEditAccountWidget(Account*, QWidget*);
-	virtual ContactAccountDataWidget * newContactAccountDataWidget(ContactAccountData *contactAccountData, QWidget *parent = 0);
+	virtual AccountEditWidget* newEditAccountWidget(Account, QWidget*);
+	virtual ContactWidget * newContactWidget(Contact contact, QWidget *parent = 0);
+
 	virtual QList<StatusType *> supportedStatusTypes();
 	virtual QString idLabel();
 	virtual QRegExp idRegularExpression();
 
 	virtual QString name() { return "tlen"; }
 	virtual QString displayName() { return "Tlen"; }
-	virtual QString iconName() {return dataPath("kadu/modules/data/tlen_protocol/").append("online.png");}
+	virtual QString iconName();
 };
 
 #endif // TLEN_PROTOCOL_FACTORY_H

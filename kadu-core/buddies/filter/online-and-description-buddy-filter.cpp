@@ -9,7 +9,7 @@
 
 #include "accounts/account.h"
 
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 
 #include "online-and-description-buddy-filter.h"
 
@@ -36,6 +36,6 @@ bool OnlineAndDescriptionBuddyFilter::acceptBuddy(Buddy buddy)
 	if (prefferedAccount.isNull())
 		return false;
 
-	Status status = buddy.accountData(prefferedAccount)->status();
+	Status status = buddy.contact(prefferedAccount).currentStatus();
 	return !status.isDisconnected() || !status.description().isEmpty();
 }

@@ -27,8 +27,8 @@
 #include "accounts/account-manager.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/group.h"
-#include "buddies/account-data/contact-account-data.h"
-#include "gui/windows/message-box.h"
+#include "contacts/contact.h"
+#include "gui/windows/message-dialog.h"
 #include "protocols/protocol.h"
 #include "protocols/services/contact-list-service.h"
 
@@ -251,7 +251,7 @@ void UserlistImportExport::fromfile()
 // 			}
 		}
 		else
-			MessageBox::msg(tr("The application encountered an internal error\nThe import userlist from file was unsuccessful"), false, "Critical", this);
+			MessageDialog::msg(tr("The application encountered an internal error\nThe import userlist from file was unsuccessful"), false, "Critical", this);
 	}
 	kdebugf2();
 }
@@ -263,7 +263,7 @@ void UserlistImportExport::startImportTransfer()
 	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount().protocolHandler());
 	if (!gadu->isConnected())
 	{
-		MessageBox::msg(tr("Cannot import user list from server in offline mode"), false, "Critical", this);
+		MessageDialog::msg(tr("Cannot import user list from server in offline mode"), false, "Critical", this);
 		return;
 	}
 
@@ -279,7 +279,7 @@ void UserlistImportExport::makeUserlist()
 {
 	kdebugf();
 
-	if (!MessageBox::ask(tr("This operation will delete your current user list. Are you sure you want this?")))
+	if (!MessageDialog::ask(tr("This operation will delete your current user list. Are you sure you want this?")))
 		return;
 
 	// userlist->clear();
@@ -320,12 +320,12 @@ void UserlistImportExport::contactListImported(bool ok, BuddyList buddies)
 	foreach (Buddy buddy, buddies)
 	{
 		QString id;
-		if (buddy.hasAccountData(account))
-			id = buddy.accountData(account)->id();
+		if (buddy.hasContact(account))
+			id = buddy.contact(account).id();
 
 		QStringList groups;
-		foreach (Group *group, buddy.groups())
-			groups << group->name();
+		foreach (Group group, buddy.groups())
+			groups << group.name();
 
 		QStringList values;
 		values
@@ -350,7 +350,7 @@ void UserlistImportExport::startExportTransfer()
 	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount().protocolHandler());
 	if (!gadu->isConnected())
 	{
-		MessageBox::msg(tr("Cannot export user list to server in offline mode"), false, "Critical", this);
+		MessageDialog::msg(tr("Cannot export user list to server in offline mode"), false, "Critical", this);
 		kdebugf2();
 		return;
 	}
@@ -380,7 +380,7 @@ void UserlistImportExport::ExportToFile(void)
 	if (!fname.isEmpty())
 	{
 		QFile file(fname);
-		if ((!file.exists()) || (MessageBox::ask(tr("File exists. Are you sure you want to overwrite it?"), QString::null, this)))
+		if ((!file.exists()) || (MessageDialog::ask(tr("File exists. Are you sure you want to overwrite it?"), QString::null, this)))
 		{
 			if (file.open(QIODevice::WriteOnly))
 			{
@@ -388,10 +388,10 @@ void UserlistImportExport::ExportToFile(void)
 				stream.setCodec(codec_latin2);
 				stream << GaduListHelper::contactListToString(account, BuddyManager::instance()->buddies(account));
 				file.close();
-				MessageBox::msg(tr("Your userlist has been successfully exported to file"), false, "Information", this);
+				MessageDialog::msg(tr("Your userlist has been successfully exported to file"), false, "Information", this);
 			}
 			else
-				MessageBox::msg(tr("The application encountered an internal error\nThe export userlist to file was unsuccessful"), false, "Critical", this);
+				MessageDialog::msg(tr("The application encountered an internal error\nThe export userlist to file was unsuccessful"), false, "Critical", this);
 		}
 		else
 			QTimer::singleShot(0, this, SLOT(ExportToFile()));
@@ -411,7 +411,7 @@ void UserlistImportExport::clean()
 	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount().protocolHandler());
 	if (!gadu->isConnected())
 	{
-		MessageBox::msg(tr("Cannot clear user list on server in offline mode"), false, "Critical", this);
+		MessageDialog::msg(tr("Cannot clear user list on server in offline mode"), false, "Critical", this);
 		kdebugf2();
 		return;
 	}
@@ -433,14 +433,14 @@ void UserlistImportExport::contactListExported(bool ok)
 
 	if (Clear)
 		if (ok)
-			MessageBox::msg(tr("Your userlist has been successfully deleted on server"), false, "Infromation", this);
+			MessageDialog::msg(tr("Your userlist has been successfully deleted on server"), false, "Infromation", this);
 		else
-			MessageBox::msg(tr("The application encountered an internal error\nThe delete userlist on server was unsuccessful"), false, "Critical", this);
+			MessageDialog::msg(tr("The application encountered an internal error\nThe delete userlist on server was unsuccessful"), false, "Critical", this);
 	else
 		if (ok)
-			MessageBox::msg(tr("Your userlist has been successfully exported to server"), false, "Information", this);
+			MessageDialog::msg(tr("Your userlist has been successfully exported to server"), false, "Information", this);
 		else
-			MessageBox::msg(tr("The application encountered an internal error\nThe export was unsuccessful"), false, "Critical", this);
+			MessageDialog::msg(tr("The application encountered an internal error\nThe export was unsuccessful"), false, "Critical", this);
 
 	pb_send->setEnabled(true);
 	pb_delete->setEnabled(true);

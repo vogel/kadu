@@ -2,6 +2,9 @@
  *   Copyright (C) 2004-2005 by Naresh [Kamil Klimek]                      *
  *   naresh@tlen.pl                                                        *
  *                                                                         *
+ *   Copyright (C) 2008-2009 by uzi18 [Bartłomiej Zimoń]                   *
+ *   uzi18@tlen.pl                                                         *
+ *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
@@ -47,8 +50,8 @@ tlen::tlen( QObject* parent ): QObject( parent ) {
 	Secure = false;
 	Reconnect = false;
 
-	status="unavailable";
-	descr="";
+	Status="unavailable";
+	Descr="";
 
 	tmpDoc=new QDomDocument;
 
@@ -101,8 +104,8 @@ bool tlen::isConnected() {
 void tlen::socketReadyRead() {
 	kdebugf();
 	stream+=socket->readAll();
-	stream.append("</xmlroot>");
 	stream.prepend("<xmlroot>");
+	stream.append("</xmlroot>");
 
 	if( tmpDoc->setContent(stream) || stream.startsWith("<xmlroot><s ") ) {
 		qDebug()<<"Read:"<<tmpDoc->toString();
@@ -136,10 +139,10 @@ void tlen::socketConnected() {
 	state = tlen::Connecting;
 	socket->write( QByteArray(
 	  isSecureConn()
-	  ?"<s s=\"1\" v=\"9\" t=\"0600010C\">"
-	  :"<s v=\"9\" t=\"0600010C\">") );
-//	  ?"<s s=\"1\" v=\"7\" t=\"05170402\">"
-//	  :"<s v=\"7\" t=\"05170402\">") );
+	  ?"<s s=\"1\" v=\"15\" t=\"07000000\">"
+	  :"<s v=\"15\" t=\"07000000\">") );
+//	  ?"<s s=\"1\" v=\"9\" t=\"0600010C\">"
+//	  :"<s v=\"9\" t=\"0600010C\">") );
 }
 
 void tlen::event(QDomNode n) {
@@ -156,11 +159,21 @@ void tlen::event(QDomNode n) {
 	}
 	else if(nodeName=="iq") {
 		if(element.hasAttribute( "type" ) && element.attribute("type") == "result") {
+			// tcfg
 			if(element.hasAttribute("id") && element.attribute("id")==sid) {
 				tcfgRequest();
 				rosterRequest();
 			}
-
+			// <iq from="tuba" type="result" to="jid" id="tr">
+			// <query xmlns="jabber:iq:register">
+			// <item></item></query></iq>
+			if(element.hasAttribute("from") && element.attribute("from")=="tuba"
+				&& element.hasAttribute("id") && element.attribute("id")=="tr") {
+					QDomElement query = element.elementsByTagName("query").item(0).toElement();
+					//if (query.hasAttribute("xmlns") && element.attribute("xmlns")=="jabber:iq:register")
+						emit pubdirReceived(query.childNodes());
+					return;
+			}
 			if(element.hasAttribute("id") && element.attribute("id")=="GetRoster") {
 				emit clearRosterView();
 				sort=FALSE;
@@ -382,18 +395,22 @@ void tlen::socketDisconnected()
 	}
 	else
 	{
-		status="unavailable";
-		descr="";
+		Status="unavailable";
+		Descr="";
 		emit presenceDisconnected();
 	}
 	emit statusChanged();
 }
-
+// every 60s
 void tlen::sendPing() {
 	kdebugf();
-	socket->write(QString("  \t  ").toUtf8());
+	//socket->write(QString("  \t  ").toUtf8());
+	// 7.00 sends one space
+	socket->write(QString(" ").toUtf8());
 }
-
+// TODO
+// "<iq type='set' sid='GetRoster'><query xmlns="jabber:iq:auth"/>
+// </iq>"
 bool tlen::tlenLogin() {
 	kdebugf();
 	if( !isConnected() )
@@ -439,7 +456,7 @@ bool tlen::write( const QDomDocument &d ) {
 
 	return (socket->write(d.toByteArray()) == (qint64)d.toByteArray().size());
 }
-
+// "<iq type='get' id='GetRoster'><query xmlns="jabber:iq:roster"/></iq>"
 void tlen::rosterRequest() {
 	kdebugf();
 	QDomDocument doc;
@@ -455,11 +472,30 @@ void tlen::rosterRequest() {
 // "<iq to='tcfg' type='get' id='TcfgGetAfterLoggedIn'></iq>"
 void tlen::tcfgRequest() {
 	kdebugf();
+
 	QDomDocument doc;
 	QDomElement iq = doc.createElement( "iq" );
 	iq.setAttribute( "to", "tcfg" );
 	iq.setAttribute( "type", "get" );
 	iq.setAttribute( "id", "TcfgGetAfterLoggedIn" );
+
+	doc.appendChild( iq );
+	write(doc);
+}
+// "<iq type="get" id="tr" to="tuba"><query xmlns="jabber:iq:register"/></iq>"
+void tlen::getPubDirInfoRequest() {
+	kdebugf();
+
+	QDomDocument doc;
+	QDomElement iq = doc.createElement( "iq" );
+	iq.setAttribute( "to", "tuba" );
+	iq.setAttribute( "type", "get" );
+	iq.setAttribute( "id", "tr" );
+
+	QDomElement query = doc.createElement( "query" );
+	query.setAttribute( "xmlns", "jabber:iq:register" );
+	iq.appendChild( query );
+
 	doc.appendChild( iq );
 	write(doc);
 }
@@ -528,23 +564,26 @@ QByteArray tlen::encode( const QString &in ) {
 
 	return out;
 }
-
+//<presence type=\"invisible\" ><status>description</status></presence>
+//<presence><show>status</show><status>description</status></presence>
 void tlen::writeStatus() {
 	kdebugf();
 	QDomDocument doc;
 	QDomElement p = doc.createElement("presence");
-	QDomElement s = doc.createElement("show");
 	QDomElement d = doc.createElement("status");
 
-	if(status=="unavailable" || status=="invisible")
-		p.setAttribute("type", status);
+	if(Status=="unavailable" || Status=="invisible")
+		p.setAttribute("type", Status);
 	else
-		s.appendChild(doc.createTextNode(status));
+	{
+		QDomElement s = doc.createElement("show");
+		s.appendChild(doc.createTextNode(Status));
+		p.appendChild(s);
+	}
 
-	if(!descr.isEmpty())
-		d.appendChild(doc.createTextNode(QString(encode(descr))));
+	if(!Descr.isEmpty())
+		d.appendChild(doc.createTextNode(QString(encode(Descr))));
 
-	p.appendChild(s);
 	p.appendChild(d);
 	doc.appendChild(p);
 
@@ -552,52 +591,24 @@ void tlen::writeStatus() {
 		emit statusChanged();
 }
 
-void tlen::setStatus() {
+void tlen::setStatus(QString status) {
 	kdebugf();
-	QAction *a=qobject_cast<QAction*>(sender());
-	if(intStatus()==a->data().toInt() && descr=="")
+	if(Status==status && Descr == "")
 		return;
-	switch(a->data().toInt()) {
-	case 0: status="available"; break;
-	case 1: status="chat"; break;
-	case 2: status="away"; break;
-	case 3: status="xa"; break;
-	case 4: status="dnd"; break;
-	case 5: status="invisible"; break;
-	case 6: status="unavailable"; break;
-	}
-	descr="";
+
+	Status = status;
+	
 	emit statusUpdate();
 }
 
-void tlen::setStatus( QString s ) {
+void tlen::setStatusDescr(QString status,QString description) {
 	kdebugf();
-	if(status==s && descr == "")
+	if(Descr==description && Status==status)
 		return;
 
-	status=s;
+	Descr = description;
+	Status = status;
 	emit statusUpdate();
-}
-
-void tlen::setStatusDescr( QString s, QString d ) {
-	kdebugf();
-	if(descr==d && status==s)
-		return;
-
-	descr=d;
-	status=s;
-	emit statusUpdate();
-}
-
-int tlen::intStatus() {
-	if(status=="available") return 0;
-	else if(status=="chat") return 1;
-	else if(status=="away") return 2;
-	else if(status=="xa") return 3;
-	else if(status=="dnd") return 4;
-	else if(status=="invisible") return 5;
-
-	return 6;
 }
 
 void tlen::authorize( QString to, bool subscribe ) {

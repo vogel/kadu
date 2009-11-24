@@ -42,7 +42,7 @@ private:
 	PROPERTY_DEC(QString, TlsOverrideDomain)
 
 public:
-	explicit JabberAccountDetails(StoragePoint *storagePoint, Account parent);
+	explicit JabberAccountDetails(AccountShared *data);
 	virtual ~JabberAccountDetails();
 
 	virtual void load();

@@ -9,7 +9,9 @@
 
 #include <QtGlobal>
 
+#ifndef Q_OS_WIN
 #include <sndfile.h>
+#endif
 #include <string.h>
 
 #include "sound-file.h"
@@ -21,6 +23,7 @@
  */
 SoundFile::SoundFile(const char *path):length(0),data(NULL),channels(-1),speed(0)
 {
+#ifndef Q_OS_WIN
 	SF_INFO info;
 	memset(&info, 0, sizeof(info));
 	SNDFILE *f = sf_open(path, SFM_READ, &info);
@@ -68,6 +71,7 @@ SoundFile::SoundFile(const char *path):length(0),data(NULL),channels(-1),speed(0
 	}
 
 	sf_close(f);
+#endif
 }
 
 #define SAMPLE_MAX 0x7fff

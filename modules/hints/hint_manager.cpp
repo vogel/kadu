@@ -15,7 +15,7 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QSpinBox>
 
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "gui/widgets/chat-widget-manager.h"
@@ -553,8 +553,8 @@ void HintManager::prepareOverUserHint(QFrame *tipFrame, QLabel *iconLabel, QLabe
 	while (text.startsWith("<br/>"))
 		text = text.right(text.length() - 5 /* 5 == QString("<br/>").length()*/);
 
-//TODO 0.6.6: icon:
-	iconLabel->setPixmap(buddy.prefferedAccount().statusContainer()->statusPixmap(buddy.accountData(buddy.prefferedAccount())->status()));
+	// TODO 0.6.6: icon:
+	iconLabel->setPixmap(buddy.prefferedAccount().statusContainer()->statusPixmap(buddy.contact(buddy.prefferedAccount()).currentStatus()));
 	tipLabel->setFont(config_file.readFontEntry("Hints", "HintOverUser_font"));
 	tipLabel->setText(text);
 

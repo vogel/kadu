@@ -124,7 +124,7 @@ protected:
 	 * @param contactId The unique ID for this protocol
 	 * @param parentContact The metacontact to add this contact to
 	 */
-	virtual bool createContact (const QString & contactID/*, Kopete::MetaContact * parentContact*/);
+	virtual bool createContact (const QString & contactID/*, Kopete::MetaContact parentContact*/);
 
 private:
 	Account m_account;

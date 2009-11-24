@@ -18,7 +18,7 @@
 #include <QtWebKit/QWebHitTestResult>
 
 #include "configuration/configuration-file.h"
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
 
 #include "debug.h"
 #include "html_document.h"
@@ -161,12 +161,12 @@ void KaduTextBrowser::saveImage()
 
 		QString file = fd.selectedFiles()[0];
 		if (QFile::exists(file))
-			if (MessageBox::ask(tr("File already exists. Overwrite?")))
+			if (MessageDialog::ask(tr("File already exists. Overwrite?")))
 			{
 				QFile removeMe(file);
 				if (!removeMe.remove())
 				{
-					MessageBox::msg(tr("Cannot save image: %1").arg(removeMe.errorString()), false, "Warning");
+					MessageDialog::msg(tr("Cannot save image: %1").arg(removeMe.errorString()), false, "Warning");
 					continue;
 				}
 			}
@@ -180,7 +180,7 @@ void KaduTextBrowser::saveImage()
 		QFile src(image);
 		if (!src.copy(dst))
 		{
-			MessageBox::msg(tr("Cannot save image: %1").arg(src.errorString()), false, "Warning");
+			MessageDialog::msg(tr("Cannot save image: %1").arg(src.errorString()), false, "Warning");
 			continue;
 		}
 

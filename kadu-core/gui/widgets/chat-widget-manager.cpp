@@ -18,7 +18,7 @@
 #include "configuration/xml-configuration-file.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/ignored-helper.h"
-#include "buddies/account-data/contact-account-data.h"
+#include "contacts/contact.h"
 #include "core/core.h"
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
@@ -29,7 +29,7 @@
 #include "gui/windows/chat-window.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/kadu-window-actions.h"
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
 #include "gui/windows/open-chat-with/open-chat-with.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocols-manager.h"
@@ -76,7 +76,7 @@ ChatWidgetManager::ChatWidgetManager() :
 	connect(ClosedChatsTimer, SIGNAL(timeout()), this, SLOT(clearClosedChats()));
 	ClosedChatsTimer->start(30*1000);
 
-	Core::instance()->configuration()->registerStorableObject(this);
+	ConfigurationManager::instance()->registerStorableObject(this);
 
 	// TODO 0.6.6 : Implement import old Config
 	//if (xml_config_file->getNode("ChatWindows", XmlConfigFile::ModeFind).isNull())

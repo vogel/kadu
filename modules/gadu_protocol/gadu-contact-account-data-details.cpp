@@ -7,14 +7,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "gadu-contact-account-data.h"
+#include "gadu-contact-details.h"
 
-unsigned int GaduContactAccountData::uin()
+unsigned int GaduContact::uin()
 {
 	return id().toUInt();
 }
 
-bool GaduContactAccountData::validateId()
+bool GaduContact::validateId()
 {
 	bool ok;
 	id().toUInt(&ok);

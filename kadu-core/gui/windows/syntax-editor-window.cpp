@@ -16,7 +16,7 @@
 
 #include "configuration/configuration-file.h"
 #include "gui/widgets/preview.h"
-#include "gui/windows/message-box.h"
+#include "gui/windows/message-dialog.h"
 #include "misc/misc.h"
 #include "misc/syntax-list.h"
 #include "icons-manager.h"
@@ -129,12 +129,12 @@ void SyntaxEditorWindow::saveAs()
 
 		if (syntaxList->isGlobal(newSyntaxName))
 		{
-			MessageBox::msg(tr("Syntax %1 already exists and cannot be modified").arg(newSyntaxName), true, "Warning");
+			MessageDialog::msg(tr("Syntax %1 already exists and cannot be modified").arg(newSyntaxName), true, "Warning");
 			continue;
 		}
 		else
 		{
-			if (MessageBox::ask(tr("Overwrite %1 syntax?").arg(newSyntaxName)))
+			if (MessageDialog::ask(tr("Overwrite %1 syntax?").arg(newSyntaxName)))
 				break;
 		}
 	}

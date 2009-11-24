@@ -17,12 +17,12 @@
 #include <QtGui/QTreeView>
 
 #include "buddies/buddy.h"
-#include "buddies/account-data/model/buddy-account-data-model.h"
+#include "contacts/model/buddy-contact-model.h"
 
 #include "exports.h"
 
-class ContactAccountData;
-class ContactAccountDataManager;
+class Contact;
+class ContactManager;
 
 class KADUAPI BuddyGeneralConfigurationWidget : public QWidget
 {
@@ -44,13 +44,13 @@ class KADUAPI BuddyGeneralConfigurationWidget : public QWidget
 	QGridLayout *ContactsLayout;
 
 	Buddy MyBuddy;
-	BuddyAccountDataModel *AccountDataModel;
+	BuddyContactModel *AccountDataModel;
 
 	void createGui();
 	void updateOrder();
 
 private slots:
-	void addAccountDataRow(ContactAccountData *data = 0);
+	void addAccountDataRow(Contact data = Contact::null);
 	void showOrderDialog();
 	void updateOrderAndClose();
 
