@@ -31,6 +31,7 @@ class TlenPersonalInfoWidget : public QWidget
 	QLineEdit *NickName;
 	QLineEdit *FirstName;
 	QLineEdit *LastName;
+	QLineEdit *EMail;
 	QComboBox *Sex;
 	QLineEdit *BirthYear;
 	QLineEdit *City;

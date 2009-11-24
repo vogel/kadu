@@ -57,6 +57,7 @@ void TlenPersonalInfoWidget::createGui()
 	QLabel *showStatusLabel = new QLabel(tr("Show status"), this);
 	QLabel *haveMicLabel = new QLabel(tr("Have mic"), this);
 	QLabel *haveCamLabel = new QLabel(tr("Have cam"), this);
+	QLabel *emailLabel = new QLabel(tr("e-mail"), this);
 
 	NickName = new QLineEdit(this);
 	FirstName = new QLineEdit(this);
@@ -89,6 +90,7 @@ void TlenPersonalInfoWidget::createGui()
 	ShowStatus = new QCheckBox(this);
 	HaveMic = new QCheckBox(this);
 	HaveCam = new QCheckBox(this);
+	EMail = new QLineEdit(this);
 
 	layout->addWidget(nickNameLabel, 0, 0);
 	layout->addWidget(NickName, 1, 0);
@@ -117,6 +119,8 @@ void TlenPersonalInfoWidget::createGui()
 	layout->addWidget(HaveMic, 7, 1);
 	layout->addWidget(haveCamLabel, 6, 2);
 	layout->addWidget(HaveCam, 7, 2);
+	layout->addWidget(emailLabel, 8, 1);
+	layout->addWidget(EMail, 9, 1);
 
 	layout->setRowStretch(11, 100);
 
@@ -163,6 +167,7 @@ void TlenPersonalInfoWidget::applyData()
 	buddy.setBirthYear((*BirthYear).text().toUShort());
 	buddy.setCity((*City).text());
 	buddy.setGender((BuddyShared::BuddyGender)Sex->currentIndex());
+	buddy.setEmail((*EMail).text());
 
 	Contact contact;
 	contact.setContactAccount(TAccount);
