@@ -58,24 +58,29 @@ void TlenPersonalInfoService::fetchPersonalInfo()
 void TlenPersonalInfoService::updatePersonalInfo(Buddy buddy)
 {
 	kdebugf();
-/*	gg_pubdir50_t req = gg_pubdir50_new(GG_PUBDIR50_WRITE);
 
-	if (!buddy.firstName().isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, (const char *)(unicode2cp(buddy.firstName()).data()));
-	if (!buddy.lastName().isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_LASTNAME, (const char *)(unicode2cp(buddy.lastName()).data()));
-	if (!buddy.nickName().isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_NICKNAME, (const char *)(unicode2cp(buddy.nickName()).data()));
-	if (!buddy.city().isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_CITY, (const char *)(unicode2cp(buddy.city()).data()));
-	if (0 != buddy.birthYear())
-		gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, (const char *)(unicode2cp(QString::number(buddy.birthYear())).data()));
-	// TODO: 0.6.6
-	if (BuddyShared::GenderUnknown != buddy.gender())
-		gg_pubdir50_add(req, GG_PUBDIR50_GENDER, (const char *)(unicode2cp(QString::number(buddy.gender())).data()));
-	if (!buddy.familyName().isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_FAMILYNAME, (const char *)(unicode2cp(buddy.familyName()).data()));
-	if (!buddy.familyCity().isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_FAMILYCITY, (const char *)(unicode2cp(buddy.familyCity()).data()));
-*/
+	client = Protocol->client();
+	if (!client || !client->isConnected())
+		return;
+
+	Contact contact = buddy.contact(Protocol->account());
+	if (contact.isNull())
+	{
+		emit personalInfoUpdated(false);
+		return;
+	}
+
+	TlenContactDetails *tlenDetails = dynamic_cast<TlenContactDetails *>(contact.details());
+	if (!tlenDetails)
+	{
+		emit personalInfoUpdated(false);
+		return;
+	}
+
+	// TODO add email!!
+	client->setPubDirInfo(buddy.firstName(), buddy.lastName(), buddy.nickName(), buddy.email(),
+		 buddy.city(), buddy.birthYear(), (int)buddy.gender(),
+		(int) tlenDetails->lookingFor(), (int) tlenDetails->job(),
+		(int) tlenDetails->todayPlans(), tlenDetails->showStatus(),
+		tlenDetails->haveMic(), tlenDetails->haveCam());
 }
