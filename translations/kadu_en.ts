@@ -1121,7 +1121,7 @@ It&apos;s a high security risk!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Support:&lt;br&gt;%1</source>
+        <source>Support:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -25,15 +25,16 @@
 class KaduLink : public QLabel
 {
 protected:
+	QString link;
 	virtual void mousePressEvent(QMouseEvent *)
 	{
-		openWebBrowser("http://www.kadu.net/");
+		openWebBrowser(link);
 	}
 
 public:
-	KaduLink() : QLabel()
+	KaduLink(QString s) : QLabel(), link(s)
 	{
-		setText("<a href=\"http://www.kadu.net/\">www.kadu.net</a>");
+		setText(QString("<a href=\"%1\">%1</a>").arg(s));
 		setCursor(QCursor(Qt::PointingHandCursor));
 		setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed));
 	}
@@ -80,9 +81,11 @@ About::About(QWidget *parent)
 	QWidget *wb_about = new QWidget(tw_about);
 	QVBoxLayout *about_layout = new QVBoxLayout(wb_about);
 	about_layout->addWidget(new QLabel(tr("Instant Messenger")));
-	about_layout->addWidget(new QLabel(tr("Support:<br>%1").arg("<a href=\"http://www.kadu.net/forum\">http://www.kadu.net/forum</a>")));
+	about_layout->addWidget(new QLabel(tr("Support:")));
+	about_layout->addWidget(new KaduLink("http://www.kadu.net/forum/"));
+	about_layout->addSpacing(20);
 	about_layout->addWidget(new QLabel("(C) 2001-2009 Kadu Team"));
-	about_layout->addWidget(new KaduLink());
+	about_layout->addWidget(new KaduLink("http://www.kadu.net/"));
 
 	// create our info widgets
 	// authors
