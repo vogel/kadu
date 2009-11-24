@@ -21,11 +21,11 @@
 class KADUAPI AggregateChat : public Chat
 {
 	Q_OBJECT
-	QList<Chat > Chats;
+	QList<Chat> Chats;
 
 public:
 	AggregateChat(Chat chat);
-	AggregateChat(QList<Chat > chats);
+	AggregateChat(QList<Chat> chats);
 	virtual ~AggregateChat();
 
 	virtual void load();
@@ -40,8 +40,8 @@ public:
 	QString title() { return Chats.at(0)->title(); }
 	QPixmap icon() { return Chats.at(0)->icon(); }
 
-	QList<Chat > chats() const { return Chats; };
-	void setChats(QList<Chat > chats) { Chats = chats; };
+	QList<Chat> chats() const { return Chats; };
+	void setChats(QList<Chat> chats) { Chats = chats; };
 
 	void addChat(Chat chat);
 	void removeChat(Chat chat);

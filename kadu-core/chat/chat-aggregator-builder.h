@@ -22,7 +22,7 @@ class KADUAPI ChatAggregatorBuilder : public QObject
 	Q_OBJECT
 public:
 	ChatAggregatorBuilder();
-	//ChatAggregatorBuilder(QList<Chat > chats);
+	//ChatAggregatorBuilder(QList<Chat> chats);
 	virtual ~ChatAggregatorBuilder();
 
 	static Chat  buildAggregateChat(BuddySet contacts);
@@ -37,8 +37,8 @@ public:
 	QString title() { return Chats.at(0)->title(); }
 	QPixmap icon() { return Chats.at(0)->icon(); }
 
-	QList<Chat > chats() const { return Chats; };
-	void setChats(QList<Chat > chats) { Chats = chats; };
+	QList<Chat> chats() const { return Chats; };
+	void setChats(QList<Chat> chats) { Chats = chats; };
 
 	void addChat(Chat chat);
 	void removeChat(Chat chat);*/

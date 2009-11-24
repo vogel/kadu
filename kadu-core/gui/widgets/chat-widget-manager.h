@@ -40,7 +40,7 @@ class KADUAPI ChatWidgetManager : public QObject, ConfigurationAwareObject, Stor
 	ChatWidgetActions *Actions;
 
 	QHash<Chat , ChatWidget *> Chats;
-	QList<Chat > ClosedChats; /*!< u�ytkownicy, kt�rych okna zosta�y zamkni�te*/
+	QList<Chat> ClosedChats; /*!< u�ytkownicy, kt�rych okna zosta�y zamkni�te*/
 	QList<QDateTime> ClosedChatsDates;
 
 	ChatWidgetManager();
@@ -65,7 +65,7 @@ public:
 	ChatWidgetActions * actions() { return Actions; }
 
 	const QHash<Chat , ChatWidget *> & chats() const;
-	const QList<Chat > closedChats() const;
+	const QList<Chat> closedChats() const;
 
 	ChatWidget * byChat(Chat chat, bool create = false) const;
 

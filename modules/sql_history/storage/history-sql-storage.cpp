@@ -210,7 +210,7 @@ void HistorySqlStorage::clearChatHistory(Chat chat)
 	DatabaseMutex.unlock();
 }
 
-QList<Chat > HistorySqlStorage::chats(HistorySearchParameters search)
+QList<Chat> HistorySqlStorage::chats(HistorySearchParameters search)
 {
 	kdebugf();
 
@@ -235,7 +235,7 @@ QList<Chat > HistorySqlStorage::chats(HistorySearchParameters search)
 	if (search.toDate().isValid())
 		query.bindValue(":toDate", search.toDate());
 
-	QList<Chat > chats;
+	QList<Chat> chats;
 
 	executeQuery(query);
 	while (query.next())

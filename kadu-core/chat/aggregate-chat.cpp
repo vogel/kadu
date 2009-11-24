@@ -17,7 +17,7 @@ AggregateChat::AggregateChat(Chat chat) :
 	Chats.append(chat);
 }
 
-AggregateChat::AggregateChat(QList<Chat > chats) :
+AggregateChat::AggregateChat(QList<Chat> chats) :
 		Chat((StoragePoint *)0), Chats(chats)
 {
 }

@@ -188,7 +188,7 @@ const QHash<Chat , ChatWidget *> & ChatWidgetManager::chats() const
 	return Chats;
 }
 
-const QList<Chat > ChatWidgetManager::closedChats() const
+const QList<Chat> ChatWidgetManager::closedChats() const
 {
 	return ClosedChats;
 }

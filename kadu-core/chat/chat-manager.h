@@ -10,7 +10,6 @@
 #ifndef CHAT_MANAGER
 #define CHAT_MANAGER
 
-#include <QtCore/QMap>
 #include <QtCore/QList>
 #include <QtCore/QObject>
 #include <QtCore/QUuid>
@@ -33,10 +32,18 @@ class KADUAPI ChatManager : public QObject, public StorableObject
 
 	static ChatManager * Instance;
 
-	QMap<Account, QList<Chat > > Chats;
+	QList<Chat> Chats;
+	QList<Chat> AllChats;
 
 	ChatManager();
 	virtual ~ChatManager();
+
+	void registerChat(Chat chat);
+	void unregisterChat(Chat chat);
+
+private slots:
+	void chatTypeLoaded();
+	void chatTypeUnloaded();
 
 protected:
 	virtual StoragePoint * createStoragePoint();
@@ -49,7 +56,8 @@ public:
 
 	void addChat(Chat chat);
 	void removeChat(Chat chat);
-	QList<Chat > chatsForAccount(Account account);
+	QList<Chat> chats();
+
 	Chat  byUuid(QUuid uuid);
 
 signals:

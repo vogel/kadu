@@ -60,7 +60,7 @@ public:
 	HistorySqlStorage();
 	~HistorySqlStorage();
 
-	virtual QList<Chat > chats(HistorySearchParameters search);
+	virtual QList<Chat> chats(HistorySearchParameters search);
 	virtual QList<QDate> chatDates(Chat chat, HistorySearchParameters search);
 	virtual QList<Message> messages(Chat chat, QDate date = QDate(), int limit = 0);
 	virtual QList<Message> messagesSince(Chat chat, QDate date);

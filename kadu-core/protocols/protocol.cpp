@@ -105,9 +105,8 @@ void Protocol::networkStateChanged(NetworkState state)
 
 Chat Protocol::findChat(BuddySet contacts, bool create)
 {
-	QList<Chat > chats = ChatManager::instance()->chatsForAccount(account());
-	foreach (Chat c, chats)
-		if (c.buddies() == contacts)
+	foreach (Chat c, ChatManager::instance()->chats())
+		if (c.chatAccount() == account() && c.buddies() == contacts)
 			return c;
 
 	if (!create)

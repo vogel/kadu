@@ -39,7 +39,7 @@ bool HistoryChatsModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex &
 		return true;
 
 	QModelIndex sourceChild = sourceParent.child(sourceRow, 0);
-	Chat chat = sourceChild.data(ChatRole).value<Chat >();
+	Chat chat = sourceChild.data(ChatRole).value<Chat>();
 	if (!chat)
 		return true;
 
@@ -53,8 +53,8 @@ bool HistoryChatsModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex &
 bool HistoryChatsModelProxy::lessThan(const QModelIndex &left, const QModelIndex &right) const
 {
 	// chats?
-	Chat leftChat = left.data(ChatRole).value<Chat >();
-	Chat rightChat = right.data(ChatRole).value<Chat >();
+	Chat leftChat = left.data(ChatRole).value<Chat>();
+	Chat rightChat = right.data(ChatRole).value<Chat>();
 
 	if (!leftChat.isNull() && !rightChat.isNull())
 		return compareNames(leftChat.name(), rightChat.name()) < 0;

@@ -186,16 +186,16 @@ void HistoryWindow::updateData()
 	kdebugf();
 
 	ChatsModel->clear();
-	QList<Chat > usedChats;
-	QList<Chat > chatsList = History::instance()->chatsList(Search);
-	QList<Chat > result;
+	QList<Chat> usedChats;
+	QList<Chat> chatsList = History::instance()->chatsList(Search);
+	QList<Chat> result;
 
 	foreach (Chat chat, chatsList)
 	{
 		if (usedChats.contains(chat))
 			continue;
 // TODO: disabled for a moment
-// 		AggregateChat aggregate = dynamic_cast<AggregateChat >(ChatAggregatorBuilder::buildAggregateChat(chat->buddies()));
+// 		AggregateChat aggregate = dynamic_cast<AggregateChat>(ChatAggregatorBuilder::buildAggregateChat(chat->buddies()));
 // 		if (!aggregate)
 // 			continue;
 // 		if (aggregate->chats().size() > 1)
@@ -242,7 +242,7 @@ void HistoryWindow::chatActivated(const QModelIndex &index)
 {
 	kdebugf();
 
-	Chat chat = index.data(ChatRole).value<Chat >();
+	Chat chat = index.data(ChatRole).value<Chat>();
 	if (!chat)
 		return;
 
@@ -267,7 +267,7 @@ void HistoryWindow::dateActivated(const QModelIndex &index)
 {
 	kdebugf();
 
-	Chat chat = index.data(ChatRole).value<Chat >();
+	Chat chat = index.data(ChatRole).value<Chat>();
 	if (!chat)
 		return;
 
@@ -277,7 +277,7 @@ void HistoryWindow::dateActivated(const QModelIndex &index)
 
 	QList<Message> messages = History::instance()->messages(chat, date);
 
-// 	AggregateChat aggregate = qobject_cast<AggregateChat >(chat);
+// 	AggregateChat aggregate = qobject_cast<AggregateChat>(chat);
 // 	if (aggregate)
 // 		ContentBrowser->setChat(aggregate->chats().at(0));
 // 	else
@@ -315,7 +315,7 @@ void HistoryWindow::toDateChanged(const QDate &date)
 void HistoryWindow::showMainPopupMenu(const QPoint &pos)
 {
 	bool isValid = true;
-	Chat chat = ChatsTree->indexAt(pos).data(ChatRole).value<Chat >();
+	Chat chat = ChatsTree->indexAt(pos).data(ChatRole).value<Chat>();
 	if (!chat)
 		isValid = false;
 
@@ -328,7 +328,7 @@ void HistoryWindow::showMainPopupMenu(const QPoint &pos)
 void HistoryWindow::showDetailsPopupMenu(const QPoint &pos)
 {
 	bool isValid = true;
-	Chat chat = DetailsListView->indexAt(pos).data(ChatRole).value<Chat >();
+	Chat chat = DetailsListView->indexAt(pos).data(ChatRole).value<Chat>();
 	QDate date = DetailsListView->indexAt(pos).data(DateRole).value<QDate>();
 
 	if (!chat || !date.isValid())
@@ -358,7 +358,7 @@ void HistoryWindow::show(Chat chat)
 void HistoryWindow::openChat()
 {
 	kdebugf();
-	Chat chat = ChatsTree->currentIndex().data(ChatRole).value<Chat >();
+	Chat chat = ChatsTree->currentIndex().data(ChatRole).value<Chat>();
 	if (!chat)
 		return;
 

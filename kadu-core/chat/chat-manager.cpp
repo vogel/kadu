@@ -68,8 +68,7 @@ void ChatManager::load()
 		StoragePoint *contactStoragePoint = new StoragePoint(configurationStorage, chatElement);
 		Chat chat = Chat::loadFromStorage(contactStoragePoint);
 
-		if (chat.details())
-			addChat(chat);
+		addChat(chat);
 	}
 }
 
@@ -77,52 +76,86 @@ void ChatManager::store()
 {
 	ensureLoaded();
 
-	foreach (QList<Chat > list, Chats.values())
-		foreach (Chat chat, list)
-			chat.store();
+	foreach (Chat chat, AllChats)
+		chat.store();
+}
+
+void ChatManager::registerChat(Chat chat)
+{
+	if (Chats.contains(chat))
+		return;
+
+	emit chatAboutToBeAdded(chat);
+	Chats.append(chat);
+	emit chatAdded(chat);
+}
+
+void ChatManager::unregisterChat(Chat chat)
+{
+	if (!Chats.contains(chat))
+		return;
+
+	emit chatAboutToBeRemoved(chat);
+	chat.removeFromStorage();
+	emit chatRemoved(chat);
 }
 
 void ChatManager::addChat(Chat chat)
 {
 	ensureLoaded();
 
-	emit chatAboutToBeAdded(chat);
-	if (!Chats.contains(chat.chatAccount()))
-		Chats[chat.chatAccount()] = QList<Chat >();
-	Chats[chat.chatAccount()].append(chat);
-	emit chatAdded(chat);
+	if (AllChats.contains(chat))
+		return;
+
+	connect(chat, SIGNAL(chatTypeLoaded()), this, SLOT(chatTypeLoaded()));
+	connect(chat, SIGNAL(chatTypeUnloaded()), this, SLOT(chatTypeUnloaded()));
+
+	AllChats.append(chat);
+	if (chat.details())
+		registerChat(chat);
 }
 
 void ChatManager::removeChat(Chat chat)
 {
 	ensureLoaded();
 
-	if (!Chats.contains(chat.chatAccount()))
+	if (!AllChats.contains(chat))
 		return;
 
-	emit chatAboutToBeRemoved(chat);
-	Chats[chat.chatAccount()].removeOne(chat);
-	chat.removeFromStorage();
-	emit chatRemoved(chat);
+	disconnect(chat, SIGNAL(chatTypeLoaded()), this, SLOT(chatTypeLoaded()));
+	disconnect(chat, SIGNAL(chatTypeUnloaded()), this, SLOT(chatTypeUnloaded()));
+
+	AllChats.removeAll(chat);
+	if (chat.details())
+		unregisterChat(chat);
 }
 
-QList<Chat > ChatManager::chatsForAccount(Account account)
+void ChatManager::chatTypeLoaded()
 {
-	ensureLoaded();
+	Chat chat(sender());
+	if (!chat.isNull())
+		registerChat(chat);
+}
 
-	if (!Chats.contains(account))
-		return QList<Chat>();
-	return Chats[account];
+void ChatManager::chatTypeUnloaded()
+{
+	Chat chat(sender());
+	if (!chat.isNull())
+		unregisterChat(chat);
+}
+
+QList<Chat> ChatManager::chats()
+{
+	return Chats;
 }
 
 Chat  ChatManager::byUuid(QUuid uuid)
 {
 	ensureLoaded();
 
-	foreach (QList<Chat> list, Chats.values())
-		foreach (Chat chat, list)
-			if (chat.uuid() == uuid)
-				return chat;
+	foreach (Chat chat, Chats)
+		if (chat.uuid() == uuid)
+			return chat;
 
 	return Chat::null;
 }
