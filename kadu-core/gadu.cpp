@@ -9,7 +9,6 @@
 
 #include <QtCore/QTimer>
 #include <QtGui/QApplication>
-#include <QtGui/QIntValidator>
 
 #ifdef Q_WS_WIN
 #include <winsock2.h>
@@ -491,13 +490,9 @@ GaduProtocol::~GaduProtocol()
 
 bool GaduProtocol::validateUserID(QString &uid)
 {
-	QIntValidator v(1, 999999999, this);
-	int pos = 0;
-
-	if ((uid != id) && (v.validate(uid, pos) == QValidator::Acceptable))
-		return true;
-
-	return false;
+	bool ret = false;
+	uid.toULong(&ret);
+	return ret;
 }
 
 UserStatus *GaduProtocol::newStatus() const

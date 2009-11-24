@@ -17,6 +17,7 @@
 #include <QtGui/QRadioButton>
 #include <QtGui/QTreeWidget>
 #include <QtGui/QTreeWidgetItem>
+#include <QtGui/QRegExpValidator>
 
 #include "chat_manager.h"
 #include "config_file.h"
@@ -111,8 +112,8 @@ SearchDialog::SearchDialog(QWidget *parent, UinType whoisSearchUin)
 	QHBoxLayout *uinLayout = new QHBoxLayout(qgrp1);
 	l_uin = new QLabel(tr("Uin"),qgrp1);
 	e_uin = new QLineEdit(qgrp1);
-	e_uin->setMaxLength(9);
-	e_uin->setValidator(new QIntValidator(1, 999999999, centralWidget));
+	e_uin->setMaxLength(10);
+	e_uin->setValidator(new QRegExpValidator(QRegExp("[1-9][0-9]*"), this));
 	connect(e_uin, SIGNAL(textChanged(const QString &)), this, SLOT(uinTyped()));
 	connect(e_uin, SIGNAL(returnPressed()), this, SLOT(firstSearch()));
 	uinLayout->addWidget(l_uin);

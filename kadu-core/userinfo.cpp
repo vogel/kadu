@@ -9,6 +9,7 @@
 
 #include <QtGui/QCheckBox>
 #include <QtGui/QIntValidator>
+#include <QtGui/QRegExpValidator>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
@@ -123,8 +124,8 @@ void UserInfo::setupTab1()
 
 	// UIN and disp
 	e_uin = new QLineEdit(generalWidget);
-	e_uin->setMaxLength(9);
-	e_uin->setValidator(new QIntValidator(1, 999999999, this));
+	e_uin->setMaxLength(10);
+	e_uin->setValidator(new QRegExpValidator(QRegExp("[1-9][0-9]*"), this));
 
 	e_altnick = new QComboBox(generalWidget);
 	e_altnick->setEditable(true);
