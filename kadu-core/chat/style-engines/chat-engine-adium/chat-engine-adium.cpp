@@ -8,8 +8,6 @@
  ***************************************************************************/
 
 #include <QtCore/QDir>
-#include <QtCore/QTextCodec>
-#include <QtCore/QTextStream>
 #include <QtWebKit/QWebFrame>
 
 #include "accounts/account.h"
@@ -25,6 +23,8 @@
 #include "parser/parser.h"
 #include "protocols/protocol-factory.h"
 #include "misc/misc.h"
+
+#include "adium-style.h"
 #include "adium-time-formatter.h"
 
 #include "chat-engine-adium.h"
@@ -56,25 +56,12 @@ void AdiumChatStyleEngine::clearMessages(HtmlMessagesRenderer *renderer)
 
 QString AdiumChatStyleEngine::isThemeValid(QString stylePath)
 {
-	// Minimal Adium style layout
-	QDir dir(stylePath);
-	if (!dir.cd("Contents/Resources/"))
-		return QString::null;
+	return AdiumStyle::isThemeValid(stylePath) ? QDir(stylePath).dirName() : QString::null;
+}
 
-	QFileInfo fi(dir, "Incoming/Content.html");	
-	if (!fi.isReadable())
-		return QString::null;
-	
-	fi.setFile(dir, "main.css");
-	if (!fi.isReadable())
-		return QString::null;
-
-	fi.setFile(dir, "Status.html");
-	if (!fi.isReadable())
-		return QString::null;
-	
-	dir.setPath(stylePath);
-	return dir.dirName();
+QString AdiumChatStyleEngine::currentStyleVariant()
+{
+	return CurrentStyle.currentVariant();
 }
 
 QStringList AdiumChatStyleEngine::styleVariants(QString styleName)
@@ -119,27 +106,27 @@ void AdiumChatStyleEngine::appendMessage(HtmlMessagesRenderer *renderer, Message
 		case Message::TypeReceived:
 		{
 			if (includeHeader)
-				formattedMessageHtml = IncomingHtml;
+				formattedMessageHtml = CurrentStyle.incomingHtml();
 			else
-				formattedMessageHtml = NextIncomingHtml;
+				formattedMessageHtml = CurrentStyle.nextIncomingHtml();
 			break;
 		}
 		case Message::TypeSent:
 		{
 			if (includeHeader)
-				formattedMessageHtml = OutgoingHtml;
+				formattedMessageHtml = CurrentStyle.outgoingHtml();
 			else
-				formattedMessageHtml = NextOutgoingHtml;
+				formattedMessageHtml = CurrentStyle.nextOutgoingHtml();
 			break;
 		}//TODO 0.6.6:
 		case Message::TypeSystem:
 		{
-			formattedMessageHtml = StatusHtml;
+			formattedMessageHtml = CurrentStyle.statusHtml();
 			break;
 		}
 	}
 	
-	formattedMessageHtml = replaceKeywords(renderer->chat(), BaseHref, formattedMessageHtml, message);
+	formattedMessageHtml = replaceKeywords(renderer->chat(), CurrentStyle.baseHref(), formattedMessageHtml, message);
 	formattedMessageHtml.replace("\n", " ");
 	formattedMessageHtml.replace("'", "\\'");
 	formattedMessageHtml.prepend("<span>");
@@ -155,17 +142,13 @@ void AdiumChatStyleEngine::appendMessage(HtmlMessagesRenderer *renderer, Message
 
 void AdiumChatStyleEngine::refreshView(HtmlMessagesRenderer *renderer)
 {
-	QFile file(TemplateHref);
-	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-		return;
-
-	QString styleBaseHtml  = file.readAll();
-	styleBaseHtml.replace(styleBaseHtml.indexOf("%@"), 2,"file://" + BaseHref);
-	styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, replaceKeywords(renderer->chat(), BaseHref, FooterHtml));
-	styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, replaceKeywords(renderer->chat(), BaseHref, HeaderHtml));
+	QString styleBaseHtml = CurrentStyle.templateHtml();
+	styleBaseHtml.replace(styleBaseHtml.indexOf("%@"), 2,"file://" + CurrentStyle.baseHref());
+	styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, replaceKeywords(renderer->chat(), CurrentStyle.baseHref(), CurrentStyle.footerHtml()));
+	styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, replaceKeywords(renderer->chat(), CurrentStyle.baseHref(), CurrentStyle.headerHtml()));
 	//TODO: implement style versions:
-	if (StyleVariantName != "Default")
-		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2,"Variants/" + StyleVariantName);
+	if (CurrentStyle.currentVariant() != "Default")
+		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2,"Variants/" + CurrentStyle.currentVariant());
 	else
 		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2,"main.css");
 
@@ -179,61 +162,10 @@ void AdiumChatStyleEngine::refreshView(HtmlMessagesRenderer *renderer)
 		appendMessage(renderer, message);
 }
 
-QString AdiumChatStyleEngine::readThemePart(QString part)
-{
-	QFile fileAccess;
-	QString resultHtml = QString::null;
-	if (QFile::exists(part))
-	{
-
-		fileAccess.setFileName(part);
-		fileAccess.open(QIODevice::ReadOnly);
-		QTextStream stream(&fileAccess);
-		stream.setCodec(QTextCodec::codecForName("UTF-8"));
-		resultHtml = stream.readAll();
-
-		fileAccess.close();
-	}
-	return resultHtml;
-}
-
 void AdiumChatStyleEngine::loadTheme(const QString &styleName, const QString &variantName)
 {
-	QDir dir;
-	CurrentStyleName = styleName;
-	StyleVariantName = variantName;
-	BaseHref = ggPath() + "/syntax/chat/" + styleName + "/Contents/Resources/";
-	if (!dir.exists(BaseHref))
-		BaseHref = dataPath("kadu") + "/syntax/chat/" + styleName + "/Contents/Resources/";
-
-	IncomingHtml = readThemePart(BaseHref + "Incoming/Content.html");
-
-	if (QFile::exists(BaseHref + "Template.html"))
-		TemplateHref = BaseHref + "Template.html";
-	else if (QFile::exists(BaseHref + "template.html"))
-		TemplateHref = BaseHref + "template.html";
-	else // TODO 0.6.6: move it to proper place
-		TemplateHref = dataPath("kadu") + "/syntax/chat/Default/Template.html";
-
-	if (QFile::exists(BaseHref + "Incoming/NextContent.html"))
-		NextIncomingHtml = readThemePart(BaseHref + "Incoming/NextContent.html");
-	else
-		NextIncomingHtml = IncomingHtml;
-
-	if (QFile::exists(BaseHref + "Outgoing/Content.html"))
-		OutgoingHtml = readThemePart(BaseHref + "Outgoing/Content.html");
-	else
-		OutgoingHtml = IncomingHtml;
-
-	if (QFile::exists(BaseHref + "Outgoing/NextContent.html"))
-		NextOutgoingHtml = readThemePart(BaseHref + "Outgoing/NextContent.html");
-	else
-		NextOutgoingHtml = OutgoingHtml;
-
-	HeaderHtml = readThemePart(BaseHref + "Header.html");
-	FooterHtml = readThemePart(BaseHref + "Footer.html");
-
-	StatusHtml = readThemePart(BaseHref + "Status.html");
+	CurrentStyle = AdiumStyle(styleName);
+	CurrentStyle.setCurrentVariant(variantName);
 }
 
 bool AdiumChatStyleEngine::clearDirectory(const QString &directory)
@@ -267,28 +199,8 @@ bool AdiumChatStyleEngine::removeStyle(const QString &styleName)
 
 void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleName, QString variantName)
 {
-	QDir dir;
-	QString styleHref = ggPath() + "/syntax/chat/" + styleName + "/Contents/Resources/";
-	if (!dir.exists(styleHref))
-		styleHref = dataPath("kadu") + "/syntax/chat/" + styleName + "/Contents/Resources/";
-
-	QString templateHref;
-	if (QFile::exists(styleHref + "Template.html"))
-		templateHref = styleHref + "Template.html";
-	else if (QFile::exists(styleHref + "template.html"))
-		templateHref = styleHref + "template.html";
-	else // TODO 0.6.6: move it to proper place
-		templateHref = dataPath("kadu") + "/syntax/chat/Default/Template.html";
-
-	QString incomingHtml = readThemePart(styleHref + "Incoming/Content.html");
-	QString outgoingHtml;
-	if (QFile::exists(styleHref + "Outgoing/Content.html"))
-		outgoingHtml = readThemePart(styleHref + "Outgoing/Content.html");
-	else
-		outgoingHtml = incomingHtml;
-
-	QString headerHtml = readThemePart(styleHref + "Header.html");
-	QString footerHtml = readThemePart(styleHref + "Footer.html");
+	AdiumStyle style(styleName);
+	style.setCurrentVariant(variantName);
 	if (preview->getObjectsToParse().count() != 2)
 		return;
 
@@ -297,17 +209,13 @@ void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNa
 		return;
 	Message msg = message->message();
 
-	QFile file(templateHref);
-	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-		return;
-
-	QString styleBaseHtml  = file.readAll();
-	styleBaseHtml.replace(styleBaseHtml.indexOf("%@"), 2,"file://" + styleHref);
-	styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, replaceKeywords(msg.chat(), styleHref, footerHtml));
-	styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, replaceKeywords(msg.chat(), styleHref, headerHtml));
+	QString styleBaseHtml = style.templateHtml();
+	styleBaseHtml.replace(styleBaseHtml.indexOf("%@"), 2,"file://" + style.baseHref());
+	styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, replaceKeywords(msg.chat(), style.baseHref(), style.footerHtml()));
+	styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, replaceKeywords(msg.chat(), style.baseHref(), style.headerHtml()));
 	//TODO: implement style versions:
-	if (StyleVariantName != "Default")
-		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2,"Variants/" + StyleVariantName);
+	if (style.currentVariant() != "Default")
+		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2,"Variants/" + style.currentVariant());
 	else
 		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2,"main.css");
 
@@ -317,14 +225,14 @@ void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNa
 	preview->page()->mainFrame()->setHtml(styleBaseHtml);
 	preview->page()->mainFrame()->evaluateJavaScript(jsCode);
 
-	incomingHtml = replaceKeywords(msg.chat(), styleHref, incomingHtml, message);
+	QString incomingHtml = replaceKeywords(msg.chat(), style.baseHref(), style.incomingHtml(), message);
 	incomingHtml.replace("\n", " ");
 	incomingHtml.prepend("<span>");
 	incomingHtml.append("</span>");
 	preview->page()->mainFrame()->evaluateJavaScript("appendMessage(\'"+ incomingHtml +"\')");
 
 	message = dynamic_cast<MessageRenderInfo *>(preview->getObjectsToParse().at(1));
-	outgoingHtml = replaceKeywords(msg.chat(), styleHref, outgoingHtml, message);
+	QString outgoingHtml = replaceKeywords(msg.chat(), style.baseHref(), style.outgoingHtml(), message);
 	outgoingHtml.replace("\n", " ");
 	outgoingHtml.prepend("<span>");
 	outgoingHtml.append("</span>");
@@ -332,7 +240,7 @@ void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNa
 }
 
 // Some parts of the code below are borrowed from Kopete project (http://kopete.kde.org/)
-QString AdiumChatStyleEngine::replaceKeywords(Chat *chat, QString &styleHref, QString &style)
+QString AdiumChatStyleEngine::replaceKeywords(Chat *chat, const QString &styleHref, const QString &style)
 {
     	if (!chat)
 		return QString("");
@@ -391,7 +299,7 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat *chat, QString &styleHref, QS
 	return result;
 }
 
-QString AdiumChatStyleEngine::replaceKeywords(Chat *chat, QString &styleHref, QString &source, MessageRenderInfo *message)
+QString AdiumChatStyleEngine::replaceKeywords(Chat *chat, const QString &styleHref, const QString &source, MessageRenderInfo *message)
 {
 	if (!chat)
 		return QString("");
@@ -463,7 +371,7 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat *chat, QString &styleHref, QS
 		if (doLight && lightColorName.isNull())
 			lightColorName = QColor(colorName).light(light).name();
 
-		result.replace(textPos ,senderColorRegExp.cap(0).length(), doLight ? lightColorName : colorName);
+		result.replace(textPos, senderColorRegExp.cap(0).length(), doLight ? lightColorName : colorName);
 	}
 
 	// Replace message TODO: do sth with formatMessage

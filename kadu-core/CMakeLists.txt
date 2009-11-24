@@ -69,6 +69,7 @@ set (kadu_SRCS
 	chat/message/message-render-info.cpp
 	chat/message/pending-messages-manager.cpp
 
+	chat/style-engines/chat-engine-adium/adium-style.cpp
 	chat/style-engines/chat-engine-adium/adium-time-formatter.cpp
 	chat/style-engines/chat-engine-adium/chat-engine-adium.cpp
 	chat/style-engines/chat-engine-kadu/chat-engine-kadu.cpp

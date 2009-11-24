@@ -11,6 +11,7 @@
 #define CHAT_ENGINE_ADIUM_H
 
 #include "../chat-style-engine.h"
+#include "adium-style.h"
 
 class AdiumTimeFormatter;
 class Chat;
@@ -20,23 +21,12 @@ class AdiumChatStyleEngine : public ChatStyleEngine
 {
 	AdiumTimeFormatter *timeFormatter;
 
+	AdiumStyle CurrentStyle;
+
 	QString jsCode;
 
-	QString StyleVariantName;
-	QString BaseHref;
-	QString TemplateHref;
-	QString HeaderHtml;
-	QString FooterHtml;
-	QString IncomingHtml;
-	QString NextIncomingHtml;
-	QString OutgoingHtml;
-	QString NextOutgoingHtml;
-	QString StatusHtml;
-
-	QString readThemePart(QString part);
-
-	QString replaceKeywords(Chat *chat, QString &styleHref, QString &style);
-	QString replaceKeywords(Chat *chat, QString &styleHref, QString &source, MessageRenderInfo *message);
+	QString replaceKeywords(Chat *chat, const QString &styleHref, const QString &style);
+	QString replaceKeywords(Chat *chat, const QString &styleHref, const QString &source, MessageRenderInfo *message);
 
 	bool clearDirectory(const QString &directory);
 
@@ -47,7 +37,7 @@ public:
 	virtual bool supportVariants() { return true; }
 	virtual bool supportEditing() { return false; }
 	virtual QString isThemeValid(QString styleName);
-	virtual QString currentStyleVariant() { return StyleVariantName; }	
+	virtual QString currentStyleVariant();
 
 	virtual QStringList styleVariants(QString styleName);
 
