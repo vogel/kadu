@@ -16,8 +16,8 @@
 
 #include "accounts/account-manager.h"
 #include "chat/simple-chat.h"
-#include "chat/style-engines/chat-engine-adium.h"
-#include "chat/style-engines/chat-engine-kadu.h"
+#include "chat/style-engines/chat-engine-adium/chat-engine-adium.h"
+#include "chat/style-engines/chat-engine-kadu/chat-engine-kadu.h"
 #include "chat/message/message-render-info.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"

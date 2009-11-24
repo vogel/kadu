@@ -69,9 +69,9 @@ set (kadu_SRCS
 	chat/message/message-render-info.cpp
 	chat/message/pending-messages-manager.cpp
 
-	chat/style-engines/adium-time-formatter.cpp
-	chat/style-engines/chat-engine-adium.cpp
-	chat/style-engines/chat-engine-kadu.cpp
+	chat/style-engines/chat-engine-adium/adium-time-formatter.cpp
+	chat/style-engines/chat-engine-adium/chat-engine-adium.cpp
+	chat/style-engines/chat-engine-kadu/chat-engine-kadu.cpp
 
 	chat/type/chat-type.cpp
 	chat/type/chat-type-manager.cpp
@@ -327,8 +327,8 @@ set (kadu_MOC_SRCS
 	chat/message/message-render-info.h
 	chat/message/pending-messages-manager.h
 
-	chat/style-engines/adium-time-formatter.h
-	chat/style-engines/chat-engine-kadu.h
+	chat/style-engines/chat-engine-adium/adium-time-formatter.h
+	chat/style-engines/chat-engine-kadu/chat-engine-kadu.h
 
 	chat/type/chat-type-manager.h
 
@@ -532,7 +532,7 @@ if (UNIX AND NOT APPLE)
 	#install (FILES hi256-app-kadu.png DESTINATION "share/icons/hicolor/256x256/apps" RENAME kadu.png)
 endif(UNIX AND NOT APPLE)
 
-install (FILES "chat/style-engines/adium-style-scripts.js" DESTINATION ${KADU_DATA_DIR}/scripts)
+install (FILES "chat/style-engines/chat-engine-adium/adium-style-scripts.js" DESTINATION ${KADU_DATA_DIR}/scripts)
 
 if (APPLE)
 	pkg_search_module (SNDFILE REQUIRED sndfile>=1.0)
