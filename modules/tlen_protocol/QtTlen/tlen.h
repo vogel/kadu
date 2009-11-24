@@ -119,15 +119,20 @@ public slots:
 	bool write(const QDomDocument &d);
 
 private slots:
-	void writeStatus();
 	void socketConnected();
 	void socketReadyRead();
 	void socketDisconnected();
-	void authorize(QString, bool);
 
+	// send subscription to user
+	void authorize(QString to, bool subscribe);
+	// send status and connect or disconnect if needed
+	void writeStatus();
+	// event parse
 	void event(QDomNode n);
-
+	// keep-alive session every 50-60 s.
 	void sendPing();
+	// tlen configuration received
+	void tcfgReceived(QDomElement &n);
 
 signals:
 	void presenceDisconnected();

@@ -188,60 +188,8 @@ void tlen::event(QDomNode n) {
 				sort=FALSE;
 			}
 			if(element.hasAttribute("from") && element.attribute("from") == "tcfg") {
-				// parse tlen config
-				kdebugf();
-				QDomElement query = element.elementsByTagName("query").item(0).toElement();
-				QDomElement minimail = query.elementsByTagName("mini-mail").item(0).toElement();
-				QDomNodeList minimailChailds = minimail.childNodes();
-				for (int i=0;i<minimailChailds.count();++i)
-				{
-					QDomElement mm = minimailChailds.item(i).toElement();
-					QString mmName = minimailChailds.item(i).nodeName();
-					if (mmName == "base")
-					{
-						MiniMailBase = mm.text();
-					}
-					else if (mmName == "msg")
-					{
-						MiniMailMsg = mm.text();
-						MiniMailMsgMethod = mm.attribute("method");
-					}
-					else if (mmName == "index")
-					{
-						MiniMailIndex = mm.text();
-						MiniMailIndexMethod = mm.attribute("method");
-					}
-					else if (mmName == "login")
-					{
-						MiniMailLogin = mm.text();
-						MiniMailLoginMethod = mm.attribute("method");
-					}
-					else if (mmName == "logout")
-					{
-						MiniMailLogout = mm.text();
-						MiniMailLogoutMethod = mm.attribute("method");
-					}
-					else if (mmName == "compose")
-					{
-						MiniMailCompose = mm.text();
-						MiniMailComposeMethod = mm.attribute("method");
-					}
-					else if (mmName == "avatar-get")
-					{
-						MiniMailAvatarGet = mm.text();
-						MiniMailAvatarGetMethod = mm.attribute("method");
-					}
-					else if (mmName == "avatar-upload")
-					{
-						MiniMailAvatarUpload = mm.text();
-						MiniMailAvatarUploadMethod = mm.attribute("method");
-					}
-					else if (mmName == "avatar-remove")
-					{
-						MiniMailAvatarRemove = mm.text();
-						MiniMailAvatarRemoveMethod = mm.attribute("method");
-					}
-				}
+				tcfgReceived(element);
+				return;
 			}
 
 			if(n.hasChildNodes()) {
@@ -516,6 +464,64 @@ void tlen::getPubDirInfoRequest() {
 	write(doc);
 }
 
+void tlen::tcfgReceived(QDomElement &n)
+{
+	kdebugf();
+	// parse tlen config
+	QDomElement query = n.elementsByTagName("query").item(0).toElement();
+	QDomElement minimail = query.elementsByTagName("mini-mail").item(0).toElement();
+	QDomNodeList minimailChailds = minimail.childNodes();
+	for (int i=0;i<minimailChailds.count();++i)
+	{
+		QDomElement mm = minimailChailds.item(i).toElement();
+		QString mmName = minimailChailds.item(i).nodeName();
+		if (mmName == "base")
+		{
+			MiniMailBase = mm.text();
+		}
+		else if (mmName == "msg")
+		{
+			MiniMailMsg = mm.text();
+			MiniMailMsgMethod = mm.attribute("method");
+		}
+		else if (mmName == "index")
+		{
+			MiniMailIndex = mm.text();
+			MiniMailIndexMethod = mm.attribute("method");
+		}
+		else if (mmName == "login")
+		{
+			MiniMailLogin = mm.text();
+			MiniMailLoginMethod = mm.attribute("method");
+		}
+		else if (mmName == "logout")
+		{
+			MiniMailLogout = mm.text();
+			MiniMailLogoutMethod = mm.attribute("method");
+		}
+		else if (mmName == "compose")
+		{
+			MiniMailCompose = mm.text();
+			MiniMailComposeMethod = mm.attribute("method");
+		}
+		else if (mmName == "avatar-get")
+		{
+			MiniMailAvatarGet = mm.text();
+			MiniMailAvatarGetMethod = mm.attribute("method");
+		}
+		else if (mmName == "avatar-upload")
+		{
+			MiniMailAvatarUpload = mm.text();
+			MiniMailAvatarUploadMethod = mm.attribute("method");
+		}
+		else if (mmName == "avatar-remove")
+		{
+			MiniMailAvatarRemove = mm.text();
+			MiniMailAvatarRemoveMethod = mm.attribute("method");
+		}
+	}
+}
+
 QString tlen::decode( const QByteArray &in ) {
 	kdebugf();
 	QByteArray o;
@@ -656,14 +662,13 @@ void tlen::authorize( QString to, bool subscribe ) {
 		p=doc.createElement("presence");
 		p.setAttribute("to", to);
 		p.setAttribute("type", "subscribed");
-		doc.appendChild(p);
-		write(doc);
 	}
 	else {
 		p.setAttribute("type", "unsubscribed");
-		doc.appendChild(p);
-		write(doc);
 	}
+	
+	doc.appendChild(p);
+	write(doc);
 }
 
 void tlen::addItem( QString jid, QString name, QString g, bool subscribe ) {
