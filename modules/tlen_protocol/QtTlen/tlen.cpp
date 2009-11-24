@@ -168,7 +168,7 @@ void tlen::event(QDomNode n) {
 		if(tlenLogin())
  			state = tlen::Connected;
 		else
-			socket->close(); // TODO: Dont close connection and repeat login
+			socket->close(); // TODO: Dont close connection and repeat login, after n times disconnect, signal
 	}
 	else if(nodeName=="iq") {
 		if(element.hasAttribute( "type" ) && element.attribute("type") == "result") {
