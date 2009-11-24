@@ -33,6 +33,7 @@ void BuddiesModelProxy::setSourceModel(QAbstractItemModel *sourceModel)
 	SourceBuddyModel = dynamic_cast<AbstractBuddiesModel *>(sourceModel);
 	QSortFilterProxyModel::setSourceModel(sourceModel);
 
+	// TODO 0.6.6 Cannot connect (null)::destroyed(QObject *) to BuddiesModelProxy::modelDestroyed() 
 	connect(sourceModel, SIGNAL(destroyed(QObject *)), this, SLOT(modelDestroyed()));
 
 	setDynamicSortFilter(true);
