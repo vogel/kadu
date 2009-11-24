@@ -2,6 +2,9 @@
  *   Copyright (C) 2004-2005 by Naresh [Kamil Klimek]                      *
  *   naresh@tlen.pl                                                        *
  *                                                                         *
+ *   Copyright (C) 2008-2009 by uzi18 [Bartłomiej Zimoń]                   *
+ *   uzi18@tlen.pl                                                         *
+ *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
@@ -43,6 +46,8 @@ public:
 	tlen(QObject *parent=0);
 
 	bool isConnected();
+	bool isConnecting();
+	bool isDisconnected();
 
 	QString strStatus() { return Status; }
 	QString description() { return Descr; }
@@ -58,8 +63,6 @@ public:
 
 	bool reconnect() { return Reconnect; }
 	void setReconnect(bool reconnect) { Reconnect = reconnect; }
-
-	void remove(QString);
 
 	QString decode(const QByteArray&);
 	QString decode(const QString&);
@@ -102,25 +105,38 @@ public slots:
 	void tcfgRequest();
 	// pobiera dane zapisane w katalogu publicznym
 	void getPubDirInfoRequest();
+	// wysyla dane do katalogu publicznego
+	void setPubDirInfo(QString first, QString last, QString nick, QString email,
+			 QString city, int birth, int sex, int lookingFor, int job,
+			 int todayPlans, bool visible, bool mic, bool cam);
 
 	// "available","chat","away","xa","dnd","invisible","unavailable"
 	void setStatus(QString status);
 	void setStatusDescr(QString status,QString description);
 
+	// add Contact
 	void addItem(QString jid, QString name, QString group, bool subscribe);
+	// remove Contact
+	void remove(QString jid);
+
 	void receiveFile(QString,QString,bool);
 	bool write(const QDomDocument &d);
 
 private slots:
-	void writeStatus();
 	void socketConnected();
 	void socketReadyRead();
 	void socketDisconnected();
-	void authorize(QString, bool);
 
+	// send subscription to user
+	void authorize(QString to, bool subscribe);
+	// send status and connect or disconnect if needed
+	void writeStatus();
+	// event parse
 	void event(QDomNode n);
-
+	// keep-alive session every 50-60 s.
 	void sendPing();
+	// tlen configuration received
+	void tcfgReceived(QDomElement &n);
 
 signals:
 	void presenceDisconnected();
@@ -130,6 +146,7 @@ signals:
 	void removeItem(QString);
 	void avatarReceived(QString jid, QString type, QString md5);
 	void pubdirReceived(QDomNodeList n);
+	void pubdirUpdated(bool success);
 
 	void sortRoster();
 

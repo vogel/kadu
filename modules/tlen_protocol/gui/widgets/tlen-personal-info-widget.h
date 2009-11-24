@@ -15,6 +15,7 @@
 #include "buddies/buddy.h"
 
 class QComboBox;
+class QCheckBox;
 class QLineEdit;
 
 class Account;
@@ -25,15 +26,25 @@ class TlenPersonalInfoWidget : public QWidget
 	Q_OBJECT
 
 	PersonalInfoService *Service;
+	Account TAccount;
 
 	QLineEdit *NickName;
 	QLineEdit *FirstName;
 	QLineEdit *LastName;
+	QLineEdit *EMail;
 	QComboBox *Sex;
-	QLineEdit *FamilyName;
 	QLineEdit *BirthYear;
 	QLineEdit *City;
-	QLineEdit *FamilyCity;
+
+	QComboBox *LookingFor;
+	QComboBox *Job;
+	QComboBox *TodayPlans;
+
+	QCheckBox *ShowStatus;
+	QCheckBox *HaveMic;
+	QCheckBox *HaveCam;
+
+	bool FetchOk;
 
 	void createGui();
 

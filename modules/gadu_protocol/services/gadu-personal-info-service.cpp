@@ -36,25 +36,7 @@ void GaduPersonalInfoService::handleEventPubdir50Read(struct gg_event *e)
 		return;
 	}
 
-	Contact contact;
-	contact.setContactAccount(Protocol->account());
-	contact.setOwnerBuddy(result);
-	contact.setId(gg_pubdir50_get(res, 0, GG_PUBDIR50_UIN));
-	contact.setDetails(new GaduContactDetails(contact));
-
-	result.addContact(contact);
-	result.setFirstName(cp2unicode(gg_pubdir50_get(res, 0, GG_PUBDIR50_FIRSTNAME)));
-	result.setLastName(cp2unicode(gg_pubdir50_get(res, 0, GG_PUBDIR50_LASTNAME)));
-	result.setNickName(cp2unicode(gg_pubdir50_get(res, 0, GG_PUBDIR50_NICKNAME)));
-	result.setBirthYear(QString::fromAscii(gg_pubdir50_get(res, 0, GG_PUBDIR50_BIRTHYEAR)).toUShort());
-	result.setCity(cp2unicode(gg_pubdir50_get(res, 0, GG_PUBDIR50_CITY)));
-	result.setFamilyName(cp2unicode(gg_pubdir50_get(res, 0, GG_PUBDIR50_FAMILYNAME)));
-	result.setFamilyCity(cp2unicode(gg_pubdir50_get(res, 0, GG_PUBDIR50_FAMILYCITY)));
-	result.setGender((BuddyShared::BuddyGender)QString::fromAscii(gg_pubdir50_get(res, 0, GG_PUBDIR50_GENDER)).toUShort());
-	// TODO: 0.6.6
-	// result.setStatus(gg_pubdir50_get(res, 0, GG_PUBDIR50_STATUS));
-
-	emit personalInfoAvailable(result);
+	emit personalInfoAvailable(Protocol->searchResultToBuddy(res, 0));
 }
 
 void GaduPersonalInfoService::handleEventPubdir50Write(struct gg_event *e)

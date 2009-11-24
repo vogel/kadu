@@ -31,6 +31,7 @@ void TlenPersonalInfoService::handlePubdirReceived(QDomNodeList node)
 		return;
 	
 	disconnect(client, SIGNAL(pubdirReceived(QDomNodeList)), this, SLOT(handlePubdirReceived(QDomNodeList)));
+	disconnect(client, SIGNAL(pubdirUpdated(bool)), this, SIGNAL(personalInfoUpdated(bool)));
 
 	if (1 != node.count())
 	{
@@ -38,94 +39,8 @@ void TlenPersonalInfoService::handlePubdirReceived(QDomNodeList node)
 		return;
 	}
 
-	Buddy result;
-
-	Contact contact;
-	contact.setContactAccount(Protocol->account());
-	contact.setOwnerBuddy(result);
-	contact.setId(Protocol->account().id());
-	contact.setDetails(new TlenContactDetails(contact));
-
-	result.addContact(contact);
-
-	/*
-            <first>imie</first><last>nazwisko</last>
-            <nick>nick</nick><email>email</email>
-            <c>miesjcowosc</c><b>1984</b><s>1</s><e>szkola</e>
-            <r>1</r><j>12</j><p>0</p><v>0</v><g>1</g><k>1</k>
-
-	*/
-	QDomElement itemelement = node.item(0).toElement();
-	QDomNodeList items = itemelement.childNodes();
-	for (int i=0;i<items.count();++i)
-	{
-		QDomElement mm = items.item(i).toElement();
-		QString mmName = items.item(i).nodeName();
-		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "tlen node = %s\n", qPrintable(mm.text()));
-		if (mmName == "first")
-		{
-			result.setFirstName(mm.text());
-		}
-		else if (mmName == "last")
-		{
-			result.setLastName(mm.text());
-		}
-		else if (mmName == "nick")
-		{
-			result.setNickName(mm.text());
-		}
-		else if (mmName == "email")
-		{
-			result.setEmail(mm.text());
-		}
-		else if (mmName == "b")
-		{
-			result.setBirthYear(mm.text().toUShort());
-		}
-		else if (mmName == "s")
-		{
-			result.setGender((BuddyShared::BuddyGender)mm.text().toUShort());
-		}
-		else if (mmName == "c")
-		{
-			result.setCity(mm.text());
-		}
-		else if (mmName == "r")
-		{
-			// searching for
-		}
-		else if (mmName == "j")
-		{
-			// job
-		}
-		else if (mmName == "p")
-		{
-			// my plan for 
-		}
-		else if (mmName == "v")
-		{
-			// status visible in catalog
-		}
-		else if (mmName == "g")
-		{
-			// mic
-		}
-		else if (mmName == "k")
-		{
-			// cam
-		}
-
-	}
-
-	//result.setStatus();
-
-	emit personalInfoAvailable(result);
+	emit personalInfoAvailable(Protocol->nodeToBuddy(node.item(0)));
 }
-/*
-void TlenPersonalInfoService::handleEventPubdir50Write(struct gg_event *e)
-{
-	emit personalInfoUpdated(true);
-}*/
 
 void TlenPersonalInfoService::fetchPersonalInfo()
 {
@@ -135,6 +50,7 @@ void TlenPersonalInfoService::fetchPersonalInfo()
 		return;
 
 	connect(client, SIGNAL(pubdirReceived(QDomNodeList)), this, SLOT(handlePubdirReceived(QDomNodeList)));
+	connect(client, SIGNAL(pubdirUpdated(bool)), this, SIGNAL(personalInfoUpdated(bool)));
 	client->getPubDirInfoRequest();
 
 }
@@ -142,24 +58,29 @@ void TlenPersonalInfoService::fetchPersonalInfo()
 void TlenPersonalInfoService::updatePersonalInfo(Buddy buddy)
 {
 	kdebugf();
-/*	gg_pubdir50_t req = gg_pubdir50_new(GG_PUBDIR50_WRITE);
 
-	if (!buddy.firstName().isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, (const char *)(unicode2cp(buddy.firstName()).data()));
-	if (!buddy.lastName().isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_LASTNAME, (const char *)(unicode2cp(buddy.lastName()).data()));
-	if (!buddy.nickName().isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_NICKNAME, (const char *)(unicode2cp(buddy.nickName()).data()));
-	if (!buddy.city().isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_CITY, (const char *)(unicode2cp(buddy.city()).data()));
-	if (0 != buddy.birthYear())
-		gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, (const char *)(unicode2cp(QString::number(buddy.birthYear())).data()));
-	// TODO: 0.6.6
-	if (BuddyShared::GenderUnknown != buddy.gender())
-		gg_pubdir50_add(req, GG_PUBDIR50_GENDER, (const char *)(unicode2cp(QString::number(buddy.gender())).data()));
-	if (!buddy.familyName().isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_FAMILYNAME, (const char *)(unicode2cp(buddy.familyName()).data()));
-	if (!buddy.familyCity().isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_FAMILYCITY, (const char *)(unicode2cp(buddy.familyCity()).data()));
-*/
+	client = Protocol->client();
+	if (!client || !client->isConnected())
+		return;
+
+	Contact contact = buddy.contact(Protocol->account());
+	if (contact.isNull())
+	{
+		emit personalInfoUpdated(false);
+		return;
+	}
+
+	TlenContactDetails *tlenDetails = dynamic_cast<TlenContactDetails *>(contact.details());
+	if (!tlenDetails)
+	{
+		emit personalInfoUpdated(false);
+		return;
+	}
+
+	// TODO add email!!
+	client->setPubDirInfo(buddy.firstName(), buddy.lastName(), buddy.nickName(), buddy.email(),
+		 buddy.city(), buddy.birthYear(), (int)buddy.gender(),
+		(int) tlenDetails->lookingFor(), (int) tlenDetails->job(),
+		(int) tlenDetails->todayPlans(), tlenDetails->showStatus(),
+		tlenDetails->haveMic(), tlenDetails->haveCam());
 }

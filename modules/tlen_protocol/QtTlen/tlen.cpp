@@ -2,6 +2,9 @@
  *   Copyright (C) 2004-2005 by Naresh [Kamil Klimek]                      *
  *   naresh@tlen.pl                                                        *
  *                                                                         *
+ *   Copyright (C) 2008-2009 by uzi18 [Bartłomiej Zimoń]                   *
+ *   uzi18@tlen.pl                                                         *
+ *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
@@ -70,13 +73,17 @@ tlen::tlen( QObject* parent ): QObject( parent ) {
 
 void tlen::openConn() {
 	kdebugf();
-	state=tlen::Connecting;
+
+	if (isConnecting())
+		return;
+
+	state=tlen::ConnectingToHub;
 	socket->connectToHost(hostname, hostport);
 }
 
 void tlen::closeConn() {
 	kdebugf();
-	socket->close();
+	socket->abort();
 	state=tlen::Disconnected;
 	// clear tcfg
 	MiniMailBase = "";
@@ -85,8 +92,12 @@ void tlen::closeConn() {
 }
 
 bool tlen::isConnected() {
+	return state == tlen::Connected;
+}
+
+bool tlen::isConnecting() {
 	switch(state) {
-	case tlen::Connected:
+	case tlen::ConnectingToHub:
 	case tlen::Connecting:
 		return true;
 	break;
@@ -96,6 +107,10 @@ bool tlen::isConnected() {
 	break;
 	}
 	return false;
+}
+
+bool tlen::isDisconnected() {
+	return state == tlen::Disconnected;
 }
 
 void tlen::socketReadyRead() {
@@ -125,6 +140,7 @@ void tlen::socketReadyRead() {
 }
 
 QString tlen::localAddress() {
+	kdebugf();
 	if( socket->isOpen() )
 		return socket->localAddress().toString();
 
@@ -152,7 +168,7 @@ void tlen::event(QDomNode n) {
 		if(tlenLogin())
  			state = tlen::Connected;
 		else
-			socket->close();
+			socket->close(); // TODO: Dont close connection and repeat login, after n times disconnect, signal
 	}
 	else if(nodeName=="iq") {
 		if(element.hasAttribute( "type" ) && element.attribute("type") == "result") {
@@ -161,75 +177,30 @@ void tlen::event(QDomNode n) {
 				tcfgRequest();
 				rosterRequest();
 			}
-			// <iq from="tuba" type="result" to="jid" id="tr">
-			// <query xmlns="jabber:iq:register">
-			// <item></item></query></iq>
-			if(element.hasAttribute("from") && element.attribute("from")=="tuba"
-				&& element.hasAttribute("id") && element.attribute("id")=="tr") {
+			if(element.hasAttribute("from") && element.attribute("from")=="tuba" && element.hasAttribute("id")){
+				// <iq from="tuba" type="result" to="jid" id="tr">
+				// <query xmlns="jabber:iq:register">
+				// <item></item></query></iq>
+				if(element.attribute("id")=="tr") {
 					QDomElement query = element.elementsByTagName("query").item(0).toElement();
 					//if (query.hasAttribute("xmlns") && element.attribute("xmlns")=="jabber:iq:register")
-						emit pubdirReceived(query.childNodes());
+					emit pubdirReceived(query.childNodes());
 					return;
+				}
+				if(element.attribute("id")=="tw") {
+					//if (query.hasAttribute("xmlns") && element.attribute("xmlns")=="jabber:iq:register")
+					// TODO implement unsuccess if timeout
+					emit pubdirUpdated(true);
+					return;
+				}
 			}
 			if(element.hasAttribute("id") && element.attribute("id")=="GetRoster") {
 				emit clearRosterView();
 				sort=FALSE;
 			}
 			if(element.hasAttribute("from") && element.attribute("from") == "tcfg") {
-				// parse tlen config
-				kdebugf();
-				QDomElement query = element.elementsByTagName("query").item(0).toElement();
-				QDomElement minimail = query.elementsByTagName("mini-mail").item(0).toElement();
-				QDomNodeList minimailChailds = minimail.childNodes();
-				for (int i=0;i<minimailChailds.count();++i)
-				{
-					QDomElement mm = minimailChailds.item(i).toElement();
-					QString mmName = minimailChailds.item(i).nodeName();
-					if (mmName == "base")
-					{
-						MiniMailBase = mm.text();
-					}
-					else if (mmName == "msg")
-					{
-						MiniMailMsg = mm.text();
-						MiniMailMsgMethod = mm.attribute("method");
-					}
-					else if (mmName == "index")
-					{
-						MiniMailIndex = mm.text();
-						MiniMailIndexMethod = mm.attribute("method");
-					}
-					else if (mmName == "login")
-					{
-						MiniMailLogin = mm.text();
-						MiniMailLoginMethod = mm.attribute("method");
-					}
-					else if (mmName == "logout")
-					{
-						MiniMailLogout = mm.text();
-						MiniMailLogoutMethod = mm.attribute("method");
-					}
-					else if (mmName == "compose")
-					{
-						MiniMailCompose = mm.text();
-						MiniMailComposeMethod = mm.attribute("method");
-					}
-					else if (mmName == "avatar-get")
-					{
-						MiniMailAvatarGet = mm.text();
-						MiniMailAvatarGetMethod = mm.attribute("method");
-					}
-					else if (mmName == "avatar-upload")
-					{
-						MiniMailAvatarUpload = mm.text();
-						MiniMailAvatarUploadMethod = mm.attribute("method");
-					}
-					else if (mmName == "avatar-remove")
-					{
-						MiniMailAvatarRemove = mm.text();
-						MiniMailAvatarRemoveMethod = mm.attribute("method");
-					}
-				}
+				tcfgReceived(element);
+				return;
 			}
 
 			if(n.hasChildNodes()) {
@@ -261,7 +232,7 @@ void tlen::event(QDomNode n) {
 	}
 	else if(nodeName=="item") {
 		QDomElement e=n.toElement();
-		QString jid=e.attribute("jid");
+		QString jid=decode(e.attribute("jid"));
 		QString subscription=e.attribute("subscription");
 		QString name=NULL, group=NULL;
 
@@ -296,7 +267,7 @@ void tlen::event(QDomNode n) {
 	}
 	else if(nodeName=="presence") {
 		QDomElement e=n.toElement();
-		QString from=e.attribute("from");
+		QString from=decode(e.attribute("from"));
 
 		if(e.hasAttribute("type") && e.attribute("type")=="subscribe") {
 			emit authorizationAsk(from);
@@ -325,7 +296,7 @@ void tlen::event(QDomNode n) {
 					QDomElement avatar = l.item(i).toElement().elementsByTagName("a").item(0).toElement();
 					if (avatar.hasAttribute("type") && avatar.hasAttribute("md5"))
 					{
-						emit avatarReceived(from, avatar.attribute("type"), avatar.attribute("md5"));
+						emit avatarReceived(decode(from), avatar.attribute("type"), avatar.attribute("md5"));
 						qDebug() << "Avatar " << from << "type:" <<avatar.attribute("type") << "md5:" << avatar.attribute("md5");
 					}
 				}
@@ -344,7 +315,7 @@ void tlen::event(QDomNode n) {
 	else if(nodeName=="m") {
 		QDomElement e=n.toElement();
 		if(e.hasAttribute("tp")) {
-			emit chatNotify(e.attribute("f"), e.attribute("tp"));
+			emit chatNotify(decode(e.attribute("f")), e.attribute("tp"));
 		}
 	}
 	else if(nodeName=="n") {
@@ -383,6 +354,8 @@ void tlen::event(QDomNode n) {
 
 void tlen::socketDisconnected()
 {
+	kdebugf();
+
 	state=tlen::Disconnected;
 	ping->stop();
 
@@ -394,8 +367,8 @@ void tlen::socketDisconnected()
 	{
 		Status="unavailable";
 		Descr="";
-		emit presenceDisconnected();
 	}
+	emit presenceDisconnected();
 	emit statusChanged();
 }
 // every 60s
@@ -410,7 +383,7 @@ void tlen::sendPing() {
 // </iq>"
 bool tlen::tlenLogin() {
 	kdebugf();
-	if( !isConnected() )
+	if(!isConnecting()/*!isConnected()*/)
 		return false;
 
 	QDomDocument doc;
@@ -440,12 +413,13 @@ bool tlen::tlenLogin() {
 	query.appendChild( resource );
 	text = doc.createTextNode( "w" ); // t
 	resource.appendChild( text );
+	// w iq jeszcze  : <host>tlen.pl</host>
 	return write(doc);
 }
 
 bool tlen::write( const QDomDocument &d ) {
-	if( !isConnected() ) {
-		openConn();
+	kdebugf();
+	if( !(isConnected() || isConnecting()) ) {
 		return FALSE;
 	}
 
@@ -454,6 +428,8 @@ bool tlen::write( const QDomDocument &d ) {
 	return (socket->write(d.toByteArray()) == (qint64)d.toByteArray().size());
 }
 // "<iq type='get' id='GetRoster'><query xmlns="jabber:iq:roster"/></iq>"
+// t7 : <iq type="get" id="PJTCPW" ><query xmlns="jabber:iq:roster"/></iq>
+// t7 reply: <iq id="PJTCPW" type='result'>...
 void tlen::rosterRequest() {
 	kdebugf();
 	QDomDocument doc;
@@ -467,6 +443,8 @@ void tlen::rosterRequest() {
 	write(doc);
 }
 // "<iq to='tcfg' type='get' id='TcfgGetAfterLoggedIn'></iq>"
+// t7 : <iq type="get" to="tcfg" id="VHF1OX" ><query><t/></query></iq>
+// t7 reply : <iq from='tcfg' to='user' id='VHF1OX' type='result'><query> ...
 void tlen::tcfgRequest() {
 	kdebugf();
 
@@ -495,6 +473,176 @@ void tlen::getPubDirInfoRequest() {
 
 	doc.appendChild( iq );
 	write(doc);
+}
+//<iq type="set" id="tw" to="tuba"><query xmlns="jabber:iq:register">...<nick>nick</nick>...</query></iq>
+void tlen::setPubDirInfo(QString first, QString last, QString nick, QString email,
+			 QString city, int birth, int sex, int lookingFor, int job,
+			 int todayPlans, bool visible, bool mic, bool cam)
+{
+	kdebugf();
+
+	QDomDocument doc;
+	QDomElement iq = doc.createElement( "iq" );
+	iq.setAttribute( "to", "tuba" );
+	iq.setAttribute( "type", "set" );
+	iq.setAttribute( "id", "tw" );
+
+	QDomElement query = doc.createElement( "query" );
+	query.setAttribute( "xmlns", "jabber:iq:register" );
+	iq.appendChild( query );
+
+	if (!first.isEmpty())
+	{
+		QDomElement tmp=doc.createElement("first");
+		QDomText t=doc.createTextNode(first);
+		tmp.appendChild(t);
+		query.appendChild(tmp);
+	}
+	if (!last.isEmpty())
+	{
+		QDomElement tmp=doc.createElement("last");
+		QDomText t=doc.createTextNode(last);
+		tmp.appendChild(t);
+		query.appendChild(tmp);
+	}
+	if (!nick.isEmpty())
+	{
+		QDomElement tmp=doc.createElement("nick");
+		QDomText t=doc.createTextNode(nick);
+		tmp.appendChild(t);
+		query.appendChild(tmp);
+	}
+	if (!email.isEmpty())
+	{
+		QDomElement tmp=doc.createElement("email");
+		QDomText t=doc.createTextNode(QString(encode(email)));
+		tmp.appendChild(t);
+		query.appendChild(tmp);
+	}
+	if (!city.isEmpty())
+	{
+		QDomElement tmp=doc.createElement("city");
+		QDomText t=doc.createTextNode(city);
+		tmp.appendChild(t);
+		query.appendChild(tmp);
+	}
+	if (birth > 0)
+	{
+		QDomElement tmp=doc.createElement("b");
+		QDomText t=doc.createTextNode(QString::number(birth));
+		tmp.appendChild(t);
+		query.appendChild(tmp);
+	}
+	if (sex > 0)
+	{
+		QDomElement tmp=doc.createElement("s");
+		QDomText t=doc.createTextNode(QString::number(sex));
+		tmp.appendChild(t);
+		query.appendChild(tmp);
+	}
+	if (lookingFor > 0)
+	{
+		QDomElement tmp=doc.createElement("r");
+		QDomText t=doc.createTextNode(QString::number(lookingFor));
+		tmp.appendChild(t);
+		query.appendChild(tmp);
+	}
+	if (job > 0)
+	{
+		QDomElement tmp=doc.createElement("j");
+		QDomText t=doc.createTextNode(QString::number(job));
+		tmp.appendChild(t);
+		query.appendChild(tmp);
+	}
+	if (todayPlans > 0)
+	{
+		QDomElement tmp=doc.createElement("p");
+		QDomText t=doc.createTextNode(QString::number(todayPlans));
+		tmp.appendChild(t);
+		query.appendChild(tmp);
+	}
+	if (visible)
+	{
+		QDomElement tmp=doc.createElement("v");
+		QDomText t=doc.createTextNode("1");
+		tmp.appendChild(t);
+		query.appendChild(tmp);
+	}
+	if (mic)
+	{
+		QDomElement tmp=doc.createElement("g");
+		QDomText t=doc.createTextNode("1");
+		tmp.appendChild(t);
+		query.appendChild(tmp);
+	}
+	if (cam)
+	{
+		QDomElement tmp=doc.createElement("k");
+		QDomText t=doc.createTextNode("1");
+		tmp.appendChild(t);
+		query.appendChild(tmp);
+	}
+
+	doc.appendChild( iq );
+	write(doc);
+}
+
+void tlen::tcfgReceived(QDomElement &n)
+{
+	kdebugf();
+	// parse tlen config
+	QDomElement query = n.elementsByTagName("query").item(0).toElement();
+	QDomElement minimail = query.elementsByTagName("mini-mail").item(0).toElement();
+	QDomNodeList minimailChailds = minimail.childNodes();
+	for (int i=0;i<minimailChailds.count();++i)
+	{
+		QDomElement mm = minimailChailds.item(i).toElement();
+		QString mmName = minimailChailds.item(i).nodeName();
+		if (mmName == "base")
+		{
+			MiniMailBase = mm.text();
+		}
+		else if (mmName == "msg")
+		{
+			MiniMailMsg = mm.text();
+			MiniMailMsgMethod = mm.attribute("method");
+		}
+		else if (mmName == "index")
+		{
+			MiniMailIndex = mm.text();
+			MiniMailIndexMethod = mm.attribute("method");
+		}
+		else if (mmName == "login")
+		{
+			MiniMailLogin = mm.text();
+			MiniMailLoginMethod = mm.attribute("method");
+		}
+		else if (mmName == "logout")
+		{
+			MiniMailLogout = mm.text();
+			MiniMailLogoutMethod = mm.attribute("method");
+		}
+		else if (mmName == "compose")
+		{
+			MiniMailCompose = mm.text();
+			MiniMailComposeMethod = mm.attribute("method");
+		}
+		else if (mmName == "avatar-get")
+		{
+			MiniMailAvatarGet = mm.text();
+			MiniMailAvatarGetMethod = mm.attribute("method");
+		}
+		else if (mmName == "avatar-upload")
+		{
+			MiniMailAvatarUpload = mm.text();
+			MiniMailAvatarUploadMethod = mm.attribute("method");
+		}
+		else if (mmName == "avatar-remove")
+		{
+			MiniMailAvatarRemove = mm.text();
+			MiniMailAvatarRemoveMethod = mm.attribute("method");
+		}
+	}
 }
 
 QString tlen::decode( const QByteArray &in ) {
@@ -563,6 +711,7 @@ QByteArray tlen::encode( const QString &in ) {
 }
 //<presence type=\"invisible\" ><status>description</status></presence>
 //<presence><show>status</show><status>description</status></presence>
+// t7 po pobraniu roster-a <presence><show>available</show></presence><iq type="7" to="c" />
 void tlen::writeStatus() {
 	kdebugf();
 	QDomDocument doc;
@@ -586,6 +735,12 @@ void tlen::writeStatus() {
 
 	if(write(doc))
 		emit statusChanged();
+
+	if(Status == "unavailable")
+	{
+		Reconnect = false;
+		closeConn();
+	}
 }
 
 void tlen::setStatus(QString status) {
@@ -605,14 +760,23 @@ void tlen::setStatusDescr(QString status,QString description) {
 
 	Descr = description;
 	Status = status;
-	emit statusUpdate();
+
+	if (isConnected())
+	{
+		emit statusUpdate();
+	}
+	else
+	{
+		openConn();
+	}
 }
 
 void tlen::authorize( QString to, bool subscribe ) {
 	kdebugf();
+	QString encodedTo = QString(encode(to));
 	QDomDocument doc;
 	QDomElement p=doc.createElement("presence");
-	p.setAttribute("to", to);
+	p.setAttribute("to", encodedTo);
 
 	if(subscribe) {
 		p.setAttribute("type", "subscribe");
@@ -620,16 +784,15 @@ void tlen::authorize( QString to, bool subscribe ) {
 		write(doc);
 		doc.clear();
 		p=doc.createElement("presence");
-		p.setAttribute("to", to);
+		p.setAttribute("to", encodedTo);
 		p.setAttribute("type", "subscribed");
-		doc.appendChild(p);
-		write(doc);
 	}
 	else {
 		p.setAttribute("type", "unsubscribed");
-		doc.appendChild(p);
-		write(doc);
 	}
+	
+	doc.appendChild(p);
+	write(doc);
 }
 
 void tlen::addItem( QString jid, QString name, QString g, bool subscribe ) {
@@ -645,12 +808,14 @@ void tlen::addItem( QString jid, QString name, QString g, bool subscribe ) {
 	QDomElement item=doc.createElement("item");
 
 	int atPos=jid.indexOf("@");
-	if(atPos!=-1)
-		jid.remove(atPos, jid.length()-atPos);
+	//if(atPos!=-1)
+	//	jid.remove(atPos, jid.length()-atPos);
+	//jid+="@tlen.pl";
 
-	jid+="@tlen.pl";
+	if (atPos==-1)
+		jid+="@tlen.pl";
 
-	item.setAttribute("jid", jid.toLower());
+	item.setAttribute("jid", QString(encode(jid.toLower())));
 
 	if(!name.isEmpty())
 		item.setAttribute("name", QString( encode( name ) ) );
@@ -671,7 +836,7 @@ void tlen::addItem( QString jid, QString name, QString g, bool subscribe ) {
 		doc.clear();
 		QDomElement p=doc.createElement("presence");
 		p.setAttribute("type","subscribe");
-		p.setAttribute("to", jid.toLower());
+		p.setAttribute("to", QString(encode(jid.toLower())));
 		doc.appendChild(p);
 		write(doc);
 	}
@@ -689,7 +854,7 @@ void tlen::remove(QString jid) {
 
 	QDomElement item=doc.createElement("item");
 	item.setAttribute("subscription","remove");
-	item.setAttribute("jid", jid);
+	item.setAttribute("jid", QString(encode(jid)));
 
 	query.appendChild(item);
 	iq.appendChild(query);
@@ -717,7 +882,7 @@ void tlen::chatNotify( QString to, bool t )
 	kdebugf();
 	QDomDocument doc;
 	QDomElement m=doc.createElement("m");
-	m.setAttribute("to", to);
+	m.setAttribute("to", QString(encode(to)));
 
 	if(t)
 		m.setAttribute("tp", "t");
@@ -733,7 +898,7 @@ void tlen::sendAlarm(QString to)
 	kdebugf();
 	QDomDocument doc;
 	QDomElement m=doc.createElement("m");
-	m.setAttribute("to", to);
+	m.setAttribute("to", QString(encode(to)));
 	m.setAttribute("tp", "a");
 	doc.appendChild(m);
 	write(doc);
