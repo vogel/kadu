@@ -30,7 +30,7 @@ ChatShared * ChatShared::loadFromStorage(StoragePoint *storagePoint)
 
 ChatShared::ChatShared(QUuid uuid) :
 		Shared(uuid, "Chat", ChatManager::instance()),
-		ChatAccount(Account::null)
+		ChatAccount(Account::null), Details(0)
 {
 }
 
