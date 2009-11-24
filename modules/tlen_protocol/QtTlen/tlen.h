@@ -46,6 +46,8 @@ public:
 	tlen(QObject *parent=0);
 
 	bool isConnected();
+	bool isConnecting();
+	bool isDisconnected();
 
 	QString strStatus() { return Status; }
 	QString description() { return Descr; }

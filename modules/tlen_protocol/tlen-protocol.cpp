@@ -192,7 +192,7 @@ void TlenProtocol::connectToServer()
 		return;
 	}
 
-	if( TlenClient->isConnected() )
+	if( TlenClient->isConnected() || TlenClient->isConnecting())
 		TlenClient->closeConn();
 
 	TlenClient->setReconnect(true);
@@ -211,8 +211,6 @@ void TlenProtocol::login()
 	kdebugf();
 
 	connectToServer();
-	// TODO set here something from kadu, last status?
-	setStatus(Status("Online", ""));
 
 	networkStateChanged(NetworkConnected);
 	kdebugf2();
@@ -225,7 +223,7 @@ void TlenProtocol::logout()
 	if (!TlenClient)
 		return;
 
-	if (TlenClient->isConnected())
+	if (TlenClient->isConnected() || TlenClient->isConnecting())
 	{
 		//TlenClient->setStatus("unavailable");
 		TlenClient->closeConn();
@@ -362,7 +360,6 @@ Buddy TlenProtocol::nodeToBuddy(QDomNode node)
 	{
 		QDomElement mm = items.item(i).toElement();
 		QString mmName = items.item(i).nodeName();
-		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "tlen node = %s\n", qPrintable(mm.text()));
 		if (mmName == "first")
 		{
 			result.setFirstName(mm.text());

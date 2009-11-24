@@ -73,13 +73,13 @@ tlen::tlen( QObject* parent ): QObject( parent ) {
 
 void tlen::openConn() {
 	kdebugf();
-	state=tlen::Connecting;
+	state=tlen::ConnectingToHub;
 	socket->connectToHost(hostname, hostport);
 }
 
 void tlen::closeConn() {
 	kdebugf();
-	socket->close();
+	socket->abort();
 	state=tlen::Disconnected;
 	// clear tcfg
 	MiniMailBase = "";
@@ -88,8 +88,12 @@ void tlen::closeConn() {
 }
 
 bool tlen::isConnected() {
+	return state == tlen::Connected;
+}
+
+bool tlen::isConnecting() {
 	switch(state) {
-	case tlen::Connected:
+	case tlen::ConnectingToHub:
 	case tlen::Connecting:
 		return true;
 	break;
@@ -99,6 +103,10 @@ bool tlen::isConnected() {
 	break;
 	}
 	return false;
+}
+
+bool tlen::isDisconnected() {
+	return state == tlen::Disconnected;
 }
 
 void tlen::socketReadyRead() {
@@ -155,7 +163,7 @@ void tlen::event(QDomNode n) {
 		if(tlenLogin())
  			state = tlen::Connected;
 		else
-			socket->close();
+			socket->close(); // TODO: Dont close connection and repeat login
 	}
 	else if(nodeName=="iq") {
 		if(element.hasAttribute( "type" ) && element.attribute("type") == "result") {
@@ -397,8 +405,8 @@ void tlen::socketDisconnected()
 	{
 		Status="unavailable";
 		Descr="";
-		emit presenceDisconnected();
 	}
+	emit presenceDisconnected();
 	emit statusChanged();
 }
 // every 60s
@@ -413,7 +421,7 @@ void tlen::sendPing() {
 // </iq>"
 bool tlen::tlenLogin() {
 	kdebugf();
-	if( !isConnected() )
+	if(!isConnecting()/*!isConnected()*/)
 		return false;
 
 	QDomDocument doc;
@@ -447,8 +455,7 @@ bool tlen::tlenLogin() {
 }
 
 bool tlen::write( const QDomDocument &d ) {
-	if( !isConnected() ) {
-		openConn();
+	if( !(isConnected() || isConnecting()) ) {
 		return FALSE;
 	}
 
@@ -589,6 +596,12 @@ void tlen::writeStatus() {
 
 	if(write(doc))
 		emit statusChanged();
+
+	if(Status == "unavailable")
+	{
+		Reconnect = false;
+		closeConn();
+	}
 }
 
 void tlen::setStatus(QString status) {
@@ -608,7 +621,15 @@ void tlen::setStatusDescr(QString status,QString description) {
 
 	Descr = description;
 	Status = status;
-	emit statusUpdate();
+
+	if (isConnected())
+	{
+		emit statusUpdate();
+	}
+	else
+	{
+		openConn();
+	}
 }
 
 void tlen::authorize( QString to, bool subscribe ) {
