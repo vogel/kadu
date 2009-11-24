@@ -164,6 +164,21 @@ void TlenPersonalInfoWidget::applyData()
 	buddy.setCity((*City).text());
 	buddy.setGender((BuddyShared::BuddyGender)Sex->currentIndex());
 
+	Contact contact;
+	contact.setContactAccount(TAccount);
+	contact.setOwnerBuddy(buddy);
+	contact.setId(TAccount.id());
+
+	TlenContactDetails *tlenDetails = new TlenContactDetails(contact);
+	contact.setDetails(tlenDetails);
+
+	tlenDetails->setLookingFor(LookingFor->currentIndex());
+	tlenDetails->setJob(Job->currentIndex());
+	tlenDetails->setTodayPlans(TodayPlans->currentIndex());
+	tlenDetails->setShowStatus(ShowStatus->isChecked());
+	tlenDetails->setHaveMic(HaveMic->isChecked());
+	tlenDetails->setHaveCam(HaveCam->isChecked());
+
 	if (FetchOk)
 		Service->updatePersonalInfo(buddy);
 }
