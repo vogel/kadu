@@ -328,7 +328,10 @@ void ChatWidget::messageStatusChanged(int messageId, ChatService::MessageStatus 
 
 void ChatWidget::connectAcknowledgeSlots()
 {
-	ChatService *chatService = CurrentChat.chatAccount().protocolHandler()->chatService();
+	if (!currentProtocol() || !currentProtocol()->chatService())
+		return;
+
+	ChatService *chatService = currentProtocol()->chatService();
 	if (chatService)
 		connect(chatService, SIGNAL(messageStatusChanged(int, ChatService::MessageStatus)),
 				this, SLOT(messageStatusChanged(int, ChatService::MessageStatus)));
@@ -336,7 +339,10 @@ void ChatWidget::connectAcknowledgeSlots()
 
 void ChatWidget::disconnectAcknowledgeSlots()
 {
-	ChatService *chatService = CurrentChat.chatAccount().protocolHandler()->chatService();
+	if (!currentProtocol() || !currentProtocol()->chatService())
+		return;
+
+	ChatService *chatService = currentProtocol()->chatService();
 	if (chatService)
 		disconnect(chatService, SIGNAL(messageStatusChanged(int, ChatService::MessageStatus)),
 				this, SLOT(messageStatusChanged(int, ChatService::MessageStatus)));
