@@ -177,15 +177,22 @@ void tlen::event(QDomNode n) {
 				tcfgRequest();
 				rosterRequest();
 			}
-			// <iq from="tuba" type="result" to="jid" id="tr">
-			// <query xmlns="jabber:iq:register">
-			// <item></item></query></iq>
-			if(element.hasAttribute("from") && element.attribute("from")=="tuba"
-				&& element.hasAttribute("id") && element.attribute("id")=="tr") {
+			if(element.hasAttribute("from") && element.attribute("from")=="tuba" && element.hasAttribute("id")){
+				// <iq from="tuba" type="result" to="jid" id="tr">
+				// <query xmlns="jabber:iq:register">
+				// <item></item></query></iq>
+				if(element.attribute("id")=="tr") {
 					QDomElement query = element.elementsByTagName("query").item(0).toElement();
 					//if (query.hasAttribute("xmlns") && element.attribute("xmlns")=="jabber:iq:register")
-						emit pubdirReceived(query.childNodes());
+					emit pubdirReceived(query.childNodes());
 					return;
+				}
+				if(element.attribute("id")=="tw") {
+					//if (query.hasAttribute("xmlns") && element.attribute("xmlns")=="jabber:iq:register")
+					// TODO implement unsuccess if timeout
+					emit pubdirUpdated(true);
+					return;
+				}
 			}
 			if(element.hasAttribute("id") && element.attribute("id")=="GetRoster") {
 				emit clearRosterView();

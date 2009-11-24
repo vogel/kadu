@@ -146,7 +146,7 @@ signals:
 	void removeItem(QString);
 	void avatarReceived(QString jid, QString type, QString md5);
 	void pubdirReceived(QDomNodeList n);
-	void pubdirUpdated();
+	void pubdirUpdated(bool success);
 
 	void sortRoster();
 
