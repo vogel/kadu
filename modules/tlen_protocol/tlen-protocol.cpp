@@ -425,7 +425,7 @@ void TlenProtocol::itemReceived(QString jid, QString name, QString subscription,
 	kdebugf();
 	kdebugm(KDEBUG_WARNING, "Tlen contact rcv %s\n", qPrintable(jid));
 
-	Buddy buddy = account().getBuddyById(jid);
+	Buddy buddy = BuddyManager::instance()->byId(account(), jid);
 
 	if(!name.isNull())
 		buddy.setDisplay(name);
@@ -464,7 +464,7 @@ void TlenProtocol::presenceChanged(QString from, QString newstatus, QString desc
 	if (!description.isEmpty())
 		status.setDescription(description);
 
-	Buddy buddy = account().getBuddyById(from);
+	Buddy buddy = BuddyManager::instance()->byId(account(), from);
 
 	kdebugm(KDEBUG_WARNING, "Tlen status change: %s %s\n%s", qPrintable(from), qPrintable(newstatus), qPrintable(description));
 
@@ -554,7 +554,7 @@ void TlenProtocol::chatNotify(QString from, QString type)
 {
 	kdebugf();
 
-	Buddy buddy = account().getBuddyById(from);
+	Buddy buddy = BuddyManager::instance()->byId(account(), from);
 
 	Contact contact = buddy.contact(account());
 	if (contact.isNull())
