@@ -7,13 +7,76 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtCore/QIODevice>
 #include <QtCore/QDir>
+#include <QtCore/QSettings>
 #include <QtCore/QTextCodec>
 #include <QtCore/QTextStream>
+#include <QtXml/QDomNode>
+#include <QtXml/QDomElement>
 
 #include "misc/path-conversion.h"
 
 #include "adium-style.h"
+
+//Functions to parse plist format are borrowed from pluginsystem.cpp from qutIM instant messenger (see: http://www.qutim.org/)
+QSettings::SettingsMap parseDict(const QDomNode &rootElement)
+{
+	QSettings::SettingsMap styleHash;
+
+	if (rootElement.isNull())
+		return styleHash;
+
+	QDomNode subelement = rootElement;
+
+	QString key = "";
+
+	for (QDomNode node = subelement.firstChild(); !node.isNull(); node = node.nextSibling())
+	{
+		QDomElement element = node.toElement();
+		if (element.nodeName() == "key")
+			key = element.text();
+		else
+		{
+			QVariant value;
+			if (element.nodeName() == "true")
+				value = QVariant(true);
+			else if (element.nodeName() == "false")
+				value = QVariant(false);
+			else if (element.nodeName() == "real")
+				value = QVariant(element.text().toDouble());
+			else if (element.nodeName() == "string")
+				value=QVariant(element.text());
+			else if (element.nodeName() == "integer")
+				value = QVariant(element.text().toInt());
+			else if (element.nodeName() == "dict")
+				value = parseDict(node);
+			styleHash.insert(key, value);
+		}
+	}
+	return styleHash;
+}
+
+bool plistWriteFunction(QIODevice &device, const QSettings::SettingsMap &map)
+{
+}
+
+bool plistReadFunction(QIODevice &device, QSettings::SettingsMap &map)
+{
+	QDomDocument documentElement;
+
+	if (documentElement.setContent(&device))
+	{
+		QDomElement rootElement = documentElement.documentElement();
+		if (rootElement.isNull())
+			return false;
+
+		map = parseDict(rootElement.firstChild());
+	}
+	return true;
+}
+
+QSettings::Format AdiumStyle::plistFormat = QSettings::registerFormat("plist", plistReadFunction, plistWriteFunction);
 
 AdiumStyle::AdiumStyle(const QString &styleName) :
 		Name(styleName)
@@ -23,8 +86,25 @@ AdiumStyle::AdiumStyle(const QString &styleName) :
 	if (!dir.exists(BaseHref))
 		BaseHref = dataPath("kadu") + "/syntax/chat/" + styleName + "/Contents/Resources/";
 
+	readConfiugrationFile();
 	loadHtmlFiles();
 	loadVariants();
+}
+
+void AdiumStyle::readConfiugrationFile()
+{
+	QSettings styleSettings(BaseHref + "../Info.plist", plistFormat);
+
+	bool ok = false;
+	QRgb color = styleSettings.value("DefaultBackgroundColor", "ffffff").toString().toInt(&ok, 16);
+	DefaultBackgroundColor = QColor(ok ? color : 0xffffff);
+
+	DefaultBackgroundIsTransparent = styleSettings.value("DefaultBackgroundIsTransparent", false).toBool();
+
+	StyleViewVersion = styleSettings.value("MessageViewVersion", 4).toInt();
+
+	DisplayNameForNoVariant = styleSettings.value("DisplayNameForNoVariant", "Default").toString();
+	DefaultVariant = styleSettings.value("DefaultVariant ", "Default").toString() + ".css";
 }
 
 void AdiumStyle::loadHtmlFiles()
@@ -70,10 +150,15 @@ bool AdiumStyle::isThemeValid(const QString &stylePath)
 {
 	// Minimal Adium style layout
 	QDir dir(stylePath);
+
+	QFileInfo fi(dir, "Contents/Info.plist");
+	if (!fi.isReadable())
+		return false;
+
 	if (!dir.cd("Contents/Resources/"))
 		return false;
 
-	QFileInfo fi(dir, "Incoming/Content.html");
+	fi.setFile(dir, "Incoming/Content.html");
 	if (!fi.isReadable())
 		return false;
 
@@ -110,8 +195,3 @@ QString AdiumStyle::templateHtml()
 {
 	return readThemePart(TemplateHref);
 }
-
-QStringList AdiumStyle::styleVariants()
-{
-}
-

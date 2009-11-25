@@ -10,7 +10,9 @@
 #ifndef ADIUM_STYLE_H
 #define ADIUM_STYLE_H
 
+#include <QtCore/QSettings>
 #include <QtCore/QStringList>
+#include <QtGui/QColor>
 
 #undef PROPERTY
 #define PROPERTY(type, name, capitalized_name) \
@@ -19,8 +21,14 @@
 
 class AdiumStyle
 {
-	bool Valid;
+	static QSettings::Format plistFormat;
+
 	QString Name;
+
+	bool StyleViewVersion;
+	QString DisplayNameForNoVariant;
+	QColor DefaultBackgroundColor;
+	bool DefaultBackgroundIsTransparent;
 
 	QString BaseHref;
 	QString TemplateHref;
@@ -38,8 +46,10 @@ class AdiumStyle
 
 	QString readThemePart(const QString &part);
 
+	void readConfiugrationFile();
 	void loadHtmlFiles();
 	void loadVariants();
+
 public:
 	AdiumStyle() { }
 	AdiumStyle(const QString &styleName);
@@ -59,7 +69,7 @@ public:
 
 	QString	templateHtml();
 
-	QStringList styleVariants();
+	QStringList styleVariants() { return StyleVariants; }
 
 };
 
