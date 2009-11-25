@@ -17,7 +17,7 @@
 #include <QtXml/QDomElement>
 
 #include "buddies/buddy-shared.h"
-#include "shared/shared-base.h"
+#include "storage/shared-base.h"
 #include "exports.h"
 
 class Account;

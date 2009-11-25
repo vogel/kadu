@@ -12,7 +12,7 @@
 
 #include "buddies/group-shared.h"
 
-#include "shared/shared-base.h"
+#include "storage/shared-base.h"
 
 class Group : public SharedBase<GroupShared>
 {

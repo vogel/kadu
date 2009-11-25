@@ -15,7 +15,7 @@
 #include <QtCore/QUuid>
 
 #include "contacts/contact-shared.h"
-#include "manager/manager.h"
+#include "storage/manager.h"
 #include "exports.h"
 
 class Contact;

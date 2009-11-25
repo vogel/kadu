@@ -14,7 +14,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QUuid>
 
-#include "manager/manager.h"
+#include "storage/manager.h"
 
 #include "chat.h"
 

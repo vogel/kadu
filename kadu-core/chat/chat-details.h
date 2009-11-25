@@ -10,7 +10,7 @@
 #ifndef CHAT_DETAILS_H
 #define CHAT_DETAILS_H
 
-#include "configuration/storable-object.h"
+#include "storage/storable-object.h"
 
 class BuddySet;
 class Chat;

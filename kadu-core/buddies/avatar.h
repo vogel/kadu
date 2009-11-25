@@ -13,7 +13,7 @@
 #include <QtCore/QDateTime>
 #include <QtGui/QPixmap>
 
-#include "shared/shared-base.h"
+#include "storage/shared-base.h"
 
 #include "exports.h"
 

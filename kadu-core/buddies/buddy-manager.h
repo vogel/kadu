@@ -14,10 +14,9 @@
 #include <QtCore/QObject>
 #include <QtCore/QUuid>
 
-#include "configuration/storable-object.h"
-
 #include "buddies/buddy.h"
 #include "buddies/buddy-list.h"
+#include "storage/storable-object.h"
 
 #include "exports.h"
 

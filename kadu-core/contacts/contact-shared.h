@@ -19,7 +19,7 @@
 #include "protocols/protocols-aware-object.h"
 #include "status/status.h"
 
-#include "shared/shared.h"
+#include "storage/shared.h"
 
 class ContactDetails;
 

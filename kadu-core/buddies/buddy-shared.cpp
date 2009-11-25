@@ -11,13 +11,13 @@
 #include <QtXml/QDomNamedNodeMap>
 
 #include "accounts/account.h"
-#include "configuration/storage-point.h"
 #include "configuration/xml-configuration-file.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/group.h"
 #include "buddies/group-manager.h"
 #include "contacts/contact.h"
 #include "contacts/contact-manager.h"
+#include "storage/storage-point.h"
 
 #include "buddy-shared.h"
 

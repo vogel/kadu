@@ -12,7 +12,7 @@
 
 #include <QtCore/QStringList>
 
-#include "configuration/storable-object.h"
+#include "storage/storable-object.h"
 
 class StorableStringList : protected QStringList, public StorableObject
 {

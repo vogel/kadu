@@ -10,7 +10,7 @@
 #ifndef DESCRIPTION_MANAGER_H
 #define DESCRIPTION_MANAGER_H
 
-#include "configuration/storable-string-list.h"
+#include "storage/storable-string-list.h"
 
 class DescriptionModel;
 

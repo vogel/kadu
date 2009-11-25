@@ -18,7 +18,7 @@
 #include <QtXml/QDomElement>
 
 #include "buddies/group.h"
-#include "shared/shared.h"
+#include "storage/shared.h"
 
 #include "exports.h"
 

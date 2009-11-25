@@ -13,7 +13,7 @@
 #include <QtCore/QObject>
 
 #include "contacts/contact.h"
-#include "configuration/storable-object.h"
+#include "storage/storable-object.h"
 
 class ContactShared;
 

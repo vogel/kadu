@@ -11,11 +11,11 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "configuration/storage-point.h"
 #include "configuration/xml-configuration-file.h"
 #include "file-transfer/file-transfer-manager.h"
 #include "protocols/protocol.h"
 #include "protocols/services/file-transfer-service.h"
+#include "storage/storage-point.h"
 
 #include "file-transfer.h"
 #include <buddies/buddy-manager.h>

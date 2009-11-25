@@ -22,10 +22,9 @@
 #include "chat/chat-manager.h"
 
 #include "configuration/configuration-aware-object.h"
-#include "configuration/storable-object.h"
-
 #include "gui/windows/main-configuration-window.h"
 #include "misc/misc.h"
+#include "storage/storable-object.h"
 
 #include "tabwidget.h"
 
@@ -47,7 +46,7 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Sto
 		bool no_tabs, autoswith, force_tabs;
 
 		/**
-		* pozycja na kt贸rej ma zosta膰 dodana nowa karta
+		* pozycja na której ma zostać dodana nowa karta
 		*/
 		int target_tabs;
 		void insertTab(ChatWidget *chat);
@@ -63,14 +62,14 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Sto
 		void loadTabs();
 
 		/**
-		* Zapisuje stan kart w momencie wyj艣cia z kadu.
+		* Zapisuje stan kart w momencie wyjścia z kadu.
 		*/
 		void saveTabs();
 
 		/**
 		* Rezerwuje lub usuwa miejsce na kartach przeznaczone
-		* na przycisk zamkni臋cia chata na karcie
-		* Od艣wie偶a r贸wnie偶 ikonki
+		* na przycisk zamknięcia chata na karcie
+		* Odświeża również ikonki
 		*/
 		void repaintTabs();
 
@@ -101,7 +100,7 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Sto
 
 	protected:
 		/**
-		* Metoda jest wywo艂ywana po zmianie w oknie konfiguracyjnym.
+		* Metoda jest wywoływana po zmianie w oknie konfiguracyjnym.
 		*/
 		virtual void configurationUpdated();
 
@@ -110,14 +109,14 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Sto
 		virtual ~TabsManager();
 
 		/**
-		* Metoda jest wywo艂ywana w momencie otwarcia okna konfiguracji
+		* Metoda jest wywoływana w momencie otwarcia okna konfiguracji
 		*/
 		virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
 		/**
-		* Od艂膮cza rozmow臋 od kart.
-		* @param chat wska藕nik do rozmowy
-		* @return prawda je艣li rozmowa by艂a w kartach
+		* Odłącza rozmowę od kart.
+		* @param chat wskaźnik do rozmowy
+		* @return prawda jeśli rozmowa była w kartach
 		*/
 		bool detachChat(ChatWidget *chat);
 
@@ -133,33 +132,33 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Sto
 
 	public slots:
 		/**
-		* Slot zostaje wywo艂any w momencie otwarcia okna rozmowy.
+		* Slot zostaje wywołany w momencie otwarcia okna rozmowy.
 		* @param chat okno
 		*/
 		void onNewChat(ChatWidget *chat, bool &handled);
 
 		/**
-		* Slot zostaje wywo艂any w momencie zamkni臋cia rozmowy.
+		* Slot zostaje wywołany w momencie zamknięcia rozmowy.
 		* @param chat okno
 		*/
 		void onDestroyingChat(ChatWidget *chat);
 
 		/**
-		* Slot zostaje wywo艂any za ka偶dym razem gdy nast膮pi pr贸ba otwarcia okna rozmowy.
+		* Slot zostaje wywołany za każdym razem gdy nastąpi próba otwarcia okna rozmowy.
 		* @param chat okno
 		*/
 		void onOpenChat(ChatWidget *chat);
 
 		/**
-		* Slot zostaje wywo艂any w momencie zmiany statusu.
-		* @param account konto, na kt贸rym zmieni艂 si臋 status
-		* @param contact kontakt, dla kt贸rego zmieni艂 si臋 status
+		* Slot zostaje wywołany w momencie zmiany statusu.
+		* @param account konto, na którym zmienił się status
+		* @param contact kontakt, dla którego zmienił się status
 		* @param oldStatus poprzedni status
 		*/
 		void onTitleChanged(Chat chatChanged, const QString &newTitle);
 
 		/**
-		* Slot zostaje wywo艂any w momencie zmiany aktywnej karty
+		* Slot zostaje wywołany w momencie zmiany aktywnej karty
 		* @param index numer aktywowanej karty
 		*/
 		void onTabChange(int index);
@@ -167,28 +166,28 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Sto
 		void onNewTab(QAction *sender, bool toggled);
 
 		/**
-		* Slot zostaje wywo艂any w momencie "upuszczenia" grupy kontakt贸w na pasek kart
-		* @param altnicks lista u偶ytkownik贸w rozdzielonych "/n"
-		* @param index pozycja na kt贸rej ma zosta膰 umieszczona nowa karta
+		* Slot zostaje wywołany w momencie "upuszczenia" grupy kontaktów na pasek kart
+		* @param altnicks lista użytkowników rozdzielonych "/n"
+		* @param index pozycja na której ma zostać umieszczona nowa karta
 		*/
 		void openTabWith(QStringList altnicks, int index);
 
 		/**
-		* Slot zostaje wywo艂any w momencie zmiany stanu przycisku do艂膮czenia/od艂膮czania okna do/od kart.
-		* @param users lista u偶ytkownik贸w rozmowy
-		* @param source wska藕nik do widgeta
+		* Slot zostaje wywołany w momencie zmiany stanu przycisku dołączenia/odłączania okna do/od kart.
+		* @param users lista użytkowników rozmowy
+		* @param source wskaźnik do widgeta
 		* @param isOn stan przycisku
 		*/
 		void onTabAttach(QAction *sender, bool toggled);
 
 		/**
-		* Slot zostaje wywo艂any w momencie dodania przycisku do toolbara.
-		* @param users lista u偶ytkownik贸w rozmowy
+		* Slot zostaje wywołany w momencie dodania przycisku do toolbara.
+		* @param users lista użytkowników rozmowy
 		*/
 		void attachToTabsActionCreated(Action *action);
 
 		/**
-		* Slot zostaje wywo艂any w momencie zamykania chata skr贸tem klawiszowym
+		* Slot zostaje wywołany w momencie zamykania chata skrótem klawiszowym
 		*/
 		void closeChat();
 

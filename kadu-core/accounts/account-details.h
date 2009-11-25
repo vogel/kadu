@@ -13,7 +13,7 @@
 #include <QtCore/QObject>
 
 #include "accounts/account.h"
-#include "configuration/storable-object.h"
+#include "storage/storable-object.h"
 
 #include "exports.h"
 

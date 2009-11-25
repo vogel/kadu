@@ -15,8 +15,8 @@
 #include <QtCore/QUuid>
 
 #include "protocols/protocols-aware-object.h"
-#include "shared/shared.h"
 #include "status/base-status-container.h"
+#include "storage/shared.h"
 
 class AccountDetails;
 class Buddy;

@@ -9,8 +9,8 @@
 
 #include <QtCore/QVariant>
 
-#include "configuration/storage-point.h"
 #include "configuration/xml-configuration-file.h"
+#include "storage/storage-point.h"
 
 #include "misc/misc.h"
 

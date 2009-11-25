@@ -14,7 +14,7 @@
 #include <QtCore/QUuid>
 
 #include "accounts/accounts-aware-object.h"
-#include "configuration/storable-object.h"
+#include "storage/storable-object.h"
 
 #include "exports.h"
 

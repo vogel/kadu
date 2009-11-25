@@ -15,7 +15,7 @@
 
 #include "contacts/contact.h"
 
-#include "shared/shared.h"
+#include "storage/shared.h"
 
 class KADUAPI AvatarShared : public Shared
 {

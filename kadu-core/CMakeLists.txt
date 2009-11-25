@@ -87,9 +87,6 @@ set (kadu_SRCS
 	configuration/configuration-file.cpp
 	configuration/configuration-manager.cpp
 	configuration/notifier-configuration-data-manager.cpp
-	configuration/storable-object.cpp
-	configuration/storable-string-list.cpp
-	configuration/uuid-storable-object.cpp
 	configuration/xml-configuration-file.cpp
 
 	contacts/contact.cpp
@@ -239,9 +236,6 @@ set (kadu_SRCS
 	protocols/model/protocols-model.cpp
 	protocols/services/chat-service.cpp
 
-	shared/shared.cpp
-	shared/shared-base.cpp
-
 	status/base-status-container.cpp
 	status/description-manager.cpp
 	status/description-model.cpp
@@ -252,6 +246,12 @@ set (kadu_SRCS
 	status/status-group-manager.cpp
 	status/status-type.cpp
 	status/status-type-manager.cpp
+
+	storage/shared.cpp
+	storage/shared-base.cpp
+	storage/storable-object.cpp
+	storage/storable-string-list.cpp
+	storage/uuid-storable-object.cpp
 
 	activate.cpp
 	debug.cpp

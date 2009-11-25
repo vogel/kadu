@@ -11,8 +11,8 @@
 #define IDENTITY_SHARED_H
 
 #include "accounts/account.h"
-#include "shared/shared.h"
 #include "status/base-status-container.h"
+#include "storage/shared.h"
 
 class KADUAPI IdentityShared : public BaseStatusContainer, public Shared
 {

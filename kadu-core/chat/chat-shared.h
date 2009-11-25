@@ -14,7 +14,7 @@
 
 #include "accounts/account.h"
 #include "chat/type/chat-type-aware-object.h"
-#include "shared/shared.h"
+#include "storage/shared.h"
 
 class BuddySet;
 class Chat;
