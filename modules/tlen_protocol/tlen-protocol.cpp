@@ -19,6 +19,7 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 
+#include "buddies/buddy-set.h"
 #include "buddies/buddy-manager.h"
 
 #include "configuration/configuration-file.h"
@@ -267,7 +268,7 @@ bool TlenProtocol::sendMessage(Chat chat, FormattedMessage &formattedMessage)
 {
 	kdebugf();
 
-	BuddySet users = chat->buddies();
+	BuddySet users = chat.buddies();
 	// TODO send to more users
 	Buddy buddy = (*users.begin());
 	QString plain = formattedMessage.toPlain();
@@ -330,10 +331,8 @@ void TlenProtocol::chatMsgReceived(QDomNode n)
 	//		w->displayMsg(Tlen->decode(body.toUtf8()),timeStamp);
 
 	// TODO - zaimplementowac to samo w ContactList
-	Buddy buddy = account().getBuddyById(from);
+	Buddy buddy = account().getBuddyById(TlenClient->decode(from));
 	BuddySet contacts = BuddySet(buddy);
-	// FIXME: dunno why, but commenting it fixed for now (08.04.2009) problem with finding chat for contact (conference window was always being opened for 1 contact)
-	//contacts << contact;
 
 	time_t msgtime = timeStamp.toTime_t();
 	FormattedMessage formattedMessage(TlenClient->decode(body));
