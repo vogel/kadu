@@ -305,7 +305,7 @@ void TlenProtocol::chatMsgReceived(QDomNode n)
 	kdebugf();
 	bool ignore = false;
 	QDomElement msg = n.toElement();
-	QString from = msg.attribute("from");
+	QString from = msg.attribute("from").split("/")[0]); // but what about res?
 	QString body;
 	QDateTime timeStamp;
 
@@ -561,7 +561,8 @@ void TlenProtocol::presenceChanged(QString from, QString newstatus, QString desc
 	if (!description.isEmpty())
 		status.setDescription(description);
 
-	Buddy buddy = BuddyManager::instance()->byId(account(), from);
+	// find user@server
+	Buddy buddy = BuddyManager::instance()->byId(account(), from.split("/")[0]); // but what about res?
 
 	kdebugm(KDEBUG_WARNING, "Tlen status change: %s %s\n%s", qPrintable(from), qPrintable(newstatus), qPrintable(description));
 
