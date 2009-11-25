@@ -49,18 +49,22 @@ void ContactManager::itemRemoved(Contact item)
 
 void ContactManager::itemAboutToBeRegistered(Contact item)
 {
+	emit contactAboutToBeAdded(item);
 }
 
 void ContactManager::itemRegisterd(Contact item)
 {
+	emit contactAdded(item);
 }
 
 void ContactManager::itemAboutToBeUnregisterd(Contact item)
 {
+	emit contactAboutToBeRemoved(item);
 }
 
 void ContactManager::itemUnregistered(Contact item)
 {
+	emit contactRemoved(item);
 }
 
 void ContactManager::contactProtocolLoaded()
