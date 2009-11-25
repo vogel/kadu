@@ -17,10 +17,11 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "buddies/model/buddy-list-model.h"
-#include "contacts/contact.h"
+#include "buddies/buddy-set.h"
 #include "chat/chat-manager.h"
 #include "chat/message/message-render-info.h"
-#include "configuration/configuration-file.h"
+#include "configuration/configuration-file.h""
+#include "contacts/contact.h"
 #include "core/core.h"
 #include "gui/hot-key.h"
 #include "gui/actions/action.h"
@@ -44,7 +45,7 @@
 
 #include "chat-widget.h"
 
-ChatWidget::ChatWidget(Chat *chat, QWidget *parent) :
+ChatWidget::ChatWidget(Chat chat, QWidget *parent) :
 		QWidget(parent), CurrentChat(chat),
 		BuddiesView(0), horizSplit(0),
 		NewMessagesCount(0), SelectionFromMessagesView(true), InputBox(0)
@@ -96,7 +97,7 @@ void ChatWidget::createGui()
 	connect(shortcut, SIGNAL(activated()), MessagesView, SLOT(pageDown()));
 	horizSplit->addWidget(MessagesView);
 
-	if (CurrentChat->buddies().count() > 1)
+	if (CurrentChat.buddies().count() > 1)
 		createContactsList();
 
 	vertSplit->addWidget(horizSplit);
@@ -121,7 +122,7 @@ void ChatWidget::createContactsList()
 	layout->setSpacing(0);
 
 	BuddiesView = new BuddiesListView(getChatEditBox(), this);
-	BuddiesView->setModel(new BuddyListModel(CurrentChat->buddies().toBuddyList(), this));
+	BuddiesView->setModel(new BuddyListModel(CurrentChat.buddies().toBuddyList(), this));
 	BuddiesView->setMinimumSize(QSize(30, 30));
 
 	connect(BuddiesView, SIGNAL(contactActivated(Buddy)),
@@ -196,7 +197,7 @@ bool ChatWidget::keyPressEventHandled(QKeyEvent *e)
 
 QIcon ChatWidget::icon()
 {
-	return chat()->icon();
+	return chat().icon();
 }
 
 void ChatWidget::keyPressEvent(QKeyEvent *e)
@@ -327,7 +328,7 @@ void ChatWidget::messageStatusChanged(int messageId, ChatService::MessageStatus 
 
 void ChatWidget::connectAcknowledgeSlots()
 {
-	ChatService *chatService = CurrentChat->account().protocolHandler()->chatService();
+	ChatService *chatService = CurrentChat.chatAccount().protocolHandler()->chatService();
 	if (chatService)
 		connect(chatService, SIGNAL(messageStatusChanged(int, ChatService::MessageStatus)),
 				this, SLOT(messageStatusChanged(int, ChatService::MessageStatus)));
@@ -335,7 +336,7 @@ void ChatWidget::connectAcknowledgeSlots()
 
 void ChatWidget::disconnectAcknowledgeSlots()
 {
-	ChatService *chatService = CurrentChat->account().protocolHandler()->chatService();
+	ChatService *chatService = CurrentChat.chatAccount().protocolHandler()->chatService();
 	if (chatService)
 		disconnect(chatService, SIGNAL(messageStatusChanged(int, ChatService::MessageStatus)),
 				this, SLOT(messageStatusChanged(int, ChatService::MessageStatus)));
@@ -454,7 +455,7 @@ void ChatWidget::dropEvent(QDropEvent *e)
 
 Protocol *ChatWidget::currentProtocol()
 {
-	return CurrentChat->account().protocolHandler();
+	return CurrentChat.chatAccount().protocolHandler();
 }
 
 void ChatWidget::makeActive()

@@ -140,8 +140,8 @@ void AddBuddyWindow::createGui()
 	connect(MergeContact, SIGNAL(toggled(bool)), SelectContact, SLOT(setEnabled(bool)));
 	connect(MergeContact, SIGNAL(toggled(bool)), DisplayNameEdit, SLOT(setDisabled(bool)));
 	connect(MergeContact, SIGNAL(toggled(bool)), this, SLOT(setAddContactEnabled()));
-	connect(SelectContact, SIGNAL(contactChanged(Buddy)), this, SLOT(setAddContactEnabled()));
-	connect(SelectContact, SIGNAL(contactChanged(Buddy)), this, SLOT(setAccountFilter()));
+	connect(SelectContact, SIGNAL(buddyChanged(Buddy)), this, SLOT(setAddContactEnabled()));
+	connect(SelectContact, SIGNAL(buddyChanged(Buddy)), this, SLOT(setAccountFilter()));
 
 	AllowToSeeMeCheck = new QCheckBox(tr("Allow contact to see me when I'm available"), this);
 	AllowToSeeMeCheck->setChecked(true);

@@ -324,7 +324,7 @@ void SearchWindow::chatFound()
 	BuddySet contacts = selected();
 	if (contacts.count() > 0)
 	{
-		Chat *chat = (*contacts.begin()).prefferedAccount().protocolHandler()->findChat(contacts);
+		Chat chat = (*contacts.begin()).prefferedAccount().protocolHandler()->findChat(contacts);
 		if (chat)
 			ChatWidgetManager::instance()->openChatWidget(chat, true);
 	}

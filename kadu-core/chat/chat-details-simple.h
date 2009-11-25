@@ -7,22 +7,33 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CHAT_NOTIFICATION_H
-#define CHAT_NOTIFICATION_H
+#ifndef CHAT_DETAILS_SIMPLE_H
+#define CHAT_DETAILS_SIMPLE_H
 
-#include "account-notification.h"
+#include "contacts/contact.h"
 
-#include "chat/chat.h"
+#include "chat/chat-details.h"
 
-class ChatNotification : public AccountNotification
+class ChatDetailsSimple : public ChatDetails
 {
-	Chat CurrentChat;
+	Q_OBJECT
+
+	Contact CurrentContact;
 
 public:
-	ChatNotification(Chat chat, const QString &type, const QIcon &icon);
-	virtual ~ChatNotification() {}
+	explicit ChatDetailsSimple(ChatShared *chatData);
+	virtual ~ChatDetailsSimple();
 
-	Chat chat() { return CurrentChat; }
+	virtual void load();
+	virtual void store();
+
+	virtual ChatType * type() const;
+	virtual BuddySet buddies() const;
+	virtual QString name() const;
+
+	void setContact(Contact contact);
+	Contact contact();
+
 };
 
-#endif // CHAT_NOTIFICATION_H
+#endif // CHAT_DETAILS_SIMPLE_H

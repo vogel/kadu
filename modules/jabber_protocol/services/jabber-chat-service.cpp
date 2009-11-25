@@ -7,11 +7,12 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "buddies/buddy-set.h"
+#include "buddies/ignored-helper.h"
 #include "chat/chat.h"
 #include "chat/message/message.h"
 #include "core/core.h"
 #include "configuration/configuration-file.h"
-#include "buddies/ignored-helper.h"
 #include "gui/windows/message-dialog.h"
 #include "misc/misc.h"
 
@@ -29,20 +30,20 @@ JabberChatService::JabberChatService(JabberProtocol *protocol)
 
 	//connect(protocol, SIGNAL(ackReceived(int, uin_t, int)),
 	//	this, SLOT(ackReceived(int, uin_t, int)));
-// 	connect(protocol, SIGNAL(sendMessageFiltering(Chat *, QByteArray &, bool &)),
-// 		this, SIGNAL(sendMessageFiltering(Chat *, QByteArray &, bool &)));
+// 	connect(protocol, SIGNAL(sendMessageFiltering(Chat , QByteArray &, bool &)),
+// 		this, SIGNAL(sendMessageFiltering(Chat , QByteArray &, bool &)));
 // 	connect(protocol, SIGNAL(messageStatusChanged(int , ChatService::MessageStatus)),
 //     		this, SIGNAL(messageStatusChanged(int , ChatService::MessageStatus)));
-// 	connect(protocol, SIGNAL(receivedMessageFilter(Chat *, Contact, const QString &, time_t , bool &)),
-// 		this, SIGNAL(receivedMessageFilter(Chat *, Contact, const QString &, time_t, bool &)));
+// 	connect(protocol, SIGNAL(receivedMessageFilter(Chat , Contact, const QString &, time_t , bool &)),
+// 		this, SIGNAL(receivedMessageFilter(Chat , Contact, const QString &, time_t, bool &)));
 	connect(protocol->client(), SIGNAL(messageReceived(const XMPP::Message &)),
 		this, SLOT(clientMessageReceived(const XMPP::Message &)));
 }
 
-bool JabberChatService::sendMessage(Chat *chat, FormattedMessage &formattedMessage)
+bool JabberChatService::sendMessage(Chat chat, FormattedMessage &formattedMessage)
 {
 	kdebugf();
-	BuddySet contacts = chat->buddies();
+	BuddySet contacts = chat.buddies();
         // TODO send to more users
 	Buddy buddy = (*contacts.begin());
 	//QString cleanmsg = toPlainText(mesg);
@@ -107,7 +108,7 @@ void JabberChatService::clientMessageReceived(const XMPP::Message &msg)
 	QString plain = formattedMessage.toPlain();
 
 	bool ignore = false;
-	Chat *chat = Protocol->findChat(contacts);
+	Chat chat = Protocol->findChat(contacts);
 	emit receivedMessageFilter(chat, buddy, plain, msgtime, ignore);
 	if (ignore)
 		return;

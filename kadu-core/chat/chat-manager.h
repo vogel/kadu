@@ -10,13 +10,11 @@
 #ifndef CHAT_MANAGER
 #define CHAT_MANAGER
 
-#include <QtCore/QMap>
 #include <QtCore/QList>
 #include <QtCore/QObject>
 #include <QtCore/QUuid>
 
 #include "accounts/account.h"
-#include "accounts/accounts-aware-object.h"
 #include "configuration/storable-object.h"
 
 #include "chat.h"
@@ -27,44 +25,46 @@ class Account;
 class BuddyList;
 class XmlConfigFile;
 
-class KADUAPI ChatManager : public QObject, public StorableObject, public AccountsAwareObject
+class KADUAPI ChatManager : public QObject, public StorableObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(ChatManager)
 
 	static ChatManager * Instance;
 
-	QMap<Account, QList<Chat *> > Chats;
+	QList<Chat> Chats;
+	QList<Chat> AllChats;
 
 	ChatManager();
 	virtual ~ChatManager();
 
-	void init();
+	void registerChat(Chat chat);
+	void unregisterChat(Chat chat);
 
-	void load(Account account);
-	void store(Account account);
+private slots:
+	void chatTypeLoaded();
+	void chatTypeUnloaded();
 
 protected:
 	virtual StoragePoint * createStoragePoint();
 
-	virtual void accountRegistered(Account account);
-	virtual void accountUnregistered(Account account);
-
 public:
 	static ChatManager * instance();
 
+	virtual void load();
 	virtual void store();
 
-	void addChat(Chat *chat);
-	void removeChat(Chat *chat);
-	QList<Chat *> chatsForAccount(Account account);
-	Chat * byUuid(QUuid uuid);
+	void addChat(Chat chat);
+	void removeChat(Chat chat);
+	QList<Chat> chats();
+
+	Chat  byUuid(QUuid uuid);
 
 signals:
-	void chatAboutToBeAdded(Chat *chat);
-	void chatAdded(Chat *chat);
-	void chatAboutToBeRemoved(Chat *chat);
-	void chatRemoved(Chat *chat);
+	void chatAboutToBeAdded(Chat chat);
+	void chatAdded(Chat chat);
+	void chatAboutToBeRemoved(Chat chat);
+	void chatRemoved(Chat chat);
 
 };
 

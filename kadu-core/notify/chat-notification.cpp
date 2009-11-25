@@ -11,7 +11,7 @@
 
 #include "chat-notification.h"
 
-ChatNotification::ChatNotification(Chat *chat, const QString &type, const QIcon &icon) :
-	AccountNotification(chat->account(), type, icon), CurrentChat(chat)
+ChatNotification::ChatNotification(Chat chat, const QString &type, const QIcon &icon) :
+		AccountNotification(chat.chatAccount(), type, icon), CurrentChat(chat)
 {
 }

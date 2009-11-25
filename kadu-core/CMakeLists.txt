@@ -54,11 +54,13 @@ set (kadu_SRCS
 	chat/aggregate-chat.cpp
 	chat/chat.cpp
 	chat/chat-aggregator-builder.cpp
+	chat/chat-details.cpp
+	chat/chat-details-conference.cpp
+	chat/chat-details-simple.cpp
 	chat/chat-manager.cpp
-	chat/conference-chat.cpp
-	chat/html-messages-renderer.cpp
-	chat/simple-chat.cpp
+	chat/chat-shared.cpp
 	chat/chat-styles-manager.cpp
+	chat/html-messages-renderer.cpp
 
 	chat/filter/chat-name-filter.cpp
 
@@ -75,7 +77,10 @@ set (kadu_SRCS
 	chat/style-engines/chat-engine-kadu/chat-engine-kadu.cpp
 
 	chat/type/chat-type.cpp
+	chat/type/chat-type-aware-object.cpp
+	chat/type/chat-type-conference.cpp
 	chat/type/chat-type-manager.cpp
+	chat/type/chat-type-simple.cpp
 
 	configuration/account-data-manager.cpp
 	configuration/config-file-data-manager.cpp
@@ -312,13 +317,14 @@ set (kadu_MOC_SRCS
 	buddies/model/groups-model.h
 
 	chat/aggregate-chat.h
-	chat/chat.h
 	chat/chat-aggregator-builder.h
+	chat/chat-details.h
+	chat/chat-details-conference.h
+	chat/chat-details-simple.h
 	chat/chat-manager.h
+	chat/chat-shared.h
 	chat/chat-styles-manager.h
 	chat/html-messages-renderer.h
-	#chat/conference-chat.h
-	#chat/simple-chat.h
 
 	chat/filter/chat-filter.h
 	#chat/filter/chat-name-filter.h
@@ -331,7 +337,11 @@ set (kadu_MOC_SRCS
 	chat/style-engines/chat-engine-adium/adium-time-formatter.h
 	chat/style-engines/chat-engine-kadu/chat-engine-kadu.h
 
+	chat/type/chat-type.h
+	chat/type/chat-type-aware-object.h
+	chat/type/chat-type-conference.h
 	chat/type/chat-type-manager.h
+	chat/type/chat-type-simple.h
 
 	contacts/contact-details.h
 	contacts/contact-manager.h

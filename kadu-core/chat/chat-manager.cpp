@@ -11,23 +11,18 @@
 #include "core/core.h"
 #include "chat.h"
 #include "chat-manager.h"
-#include "simple-chat.h"
 
 ChatManager * ChatManager::Instance = 0;
 
 ChatManager *  ChatManager::instance()
 {
 	if (0 == Instance)
-	{
 		Instance = new ChatManager();
-		Instance->init();
-	}
 
 	return Instance;
 }
 
-ChatManager::ChatManager() :
-		StorableObject(StateLoaded)
+ChatManager::ChatManager()
 {
 	ConfigurationManager::instance()->registerStorableObject(this);
 }
@@ -35,13 +30,6 @@ ChatManager::ChatManager() :
 ChatManager::~ChatManager()
 {
 	ConfigurationManager::instance()->unregisterStorableObject(this);
-
-	triggerAllAccountsUnregistered();
-}
-
-void ChatManager::init()
-{
-	triggerAllAccountsRegistered();
 }
 
 StoragePoint * ChatManager::createStoragePoint()
@@ -49,10 +37,15 @@ StoragePoint * ChatManager::createStoragePoint()
 	return new StoragePoint(xml_config_file, xml_config_file->getNode("Chats"));
 }
 
-void ChatManager::load(Account account)
+void ChatManager::load()
 {
 	if (!isValidStorage())
 		return;
+
+	if (!needsLoad())
+		return;
+
+	StorableObject::load();
 
 	XmlConfigFile *configurationStorage = storage()->storage();
 	QDomElement chatsNode = storage()->point();
@@ -66,81 +59,107 @@ void ChatManager::load(Account account)
 
 	int count = chatNodes.count();
 
-	QString uuid = account.uuid().toString();
 	for (int i = 0; i < count; i++)
 	{
 		QDomElement chatElement = chatNodes.at(i).toElement();
 		if (chatElement.isNull())
 			continue;
 
-		if (configurationStorage->getTextNode(chatElement, "Account") != uuid)
-			continue;
-
 		StoragePoint *contactStoragePoint = new StoragePoint(configurationStorage, chatElement);
-		Chat *chat = Chat::loadFromStorage(contactStoragePoint);
+		Chat chat = Chat::loadFromStorage(contactStoragePoint);
 
-		if (chat)
-			addChat(chat);
+		addChat(chat);
 	}
-}
-
-void ChatManager::store(Account account)
-{
-	foreach (Chat *chat, Chats[account])
-		chat->store();
 }
 
 void ChatManager::store()
 {
-	foreach (QList<Chat *> list, Chats.values())
-		foreach (Chat *chat, list)
-			chat->store();
+	ensureLoaded();
+
+	foreach (Chat chat, AllChats)
+		chat.store();
 }
 
-void ChatManager::addChat(Chat *chat)
+void ChatManager::registerChat(Chat chat)
 {
+	if (Chats.contains(chat))
+		return;
+
 	emit chatAboutToBeAdded(chat);
-	if (!Chats.contains(chat->account()))
-		Chats[chat->account()] = QList<Chat *>();
-	Chats[chat->account()].append(chat);
+	Chats.append(chat);
 	emit chatAdded(chat);
 }
 
-void ChatManager::removeChat(Chat *chat)
+void ChatManager::unregisterChat(Chat chat)
 {
-	if (!Chats.contains(chat->account()))
+	if (!Chats.contains(chat))
 		return;
 
+	printf("chat unregistered\n");
+
 	emit chatAboutToBeRemoved(chat);
-	Chats[chat->account()].removeOne(chat);
-	chat->removeFromStorage();
+	chat.removeFromStorage();
 	emit chatRemoved(chat);
-
-	delete chat;
 }
 
-QList<Chat *> ChatManager::chatsForAccount(Account account)
+void ChatManager::addChat(Chat chat)
 {
-	if (!Chats.contains(account))
-		return QList<Chat *>();
-	return Chats[account];
+	ensureLoaded();
+
+	if (AllChats.contains(chat))
+		return;
+
+	connect(chat, SIGNAL(chatTypeLoaded()), this, SLOT(chatTypeLoaded()));
+	connect(chat, SIGNAL(chatTypeUnloaded()), this, SLOT(chatTypeUnloaded()));
+
+	AllChats.append(chat);
+	if (chat.details())
+		registerChat(chat);
 }
 
-Chat * ChatManager::byUuid(QUuid uuid)
+void ChatManager::removeChat(Chat chat)
 {
-	foreach (QList<Chat *> list, Chats.values())
-		foreach (Chat *chat, list)
-			if (chat->uuid() == uuid)
-				return chat;
-	return 0;
+	ensureLoaded();
+
+	if (!AllChats.contains(chat))
+		return;
+
+	disconnect(chat, SIGNAL(chatTypeLoaded()), this, SLOT(chatTypeLoaded()));
+	disconnect(chat, SIGNAL(chatTypeUnloaded()), this, SLOT(chatTypeUnloaded()));
+
+	AllChats.removeAll(chat);
+	if (chat.details())
+		unregisterChat(chat);
 }
 
-void ChatManager::accountRegistered(Account account)
+void ChatManager::chatTypeLoaded()
 {
-	load(account);
+	Chat chat(sender());
+	if (!chat.isNull())
+		registerChat(chat);
 }
 
-void ChatManager::accountUnregistered(Account account)
+void ChatManager::chatTypeUnloaded()
 {
-	store(account);
+	Chat chat(sender());
+	if (!chat.isNull())
+		unregisterChat(chat);
+}
+
+QList<Chat> ChatManager::chats()
+{
+	ensureLoaded();
+
+	return Chats;
+}
+
+Chat  ChatManager::byUuid(QUuid uuid)
+{
+	ensureLoaded();
+
+	foreach (Chat chat, Chats)
+		if (chat.uuid() == uuid)
+			return chat;
+
+	return Chat::null;
 }

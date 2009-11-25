@@ -7,22 +7,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CHAT_NOTIFICATION_H
-#define CHAT_NOTIFICATION_H
-
-#include "account-notification.h"
-
+#include "buddies/buddy.h"
 #include "chat/chat.h"
+#include "configuration/configuration-file.h"
+#include "parser/parser.h"
+#include "debug.h"
+#include "icons-manager.h"
 
-class ChatNotification : public AccountNotification
+#include "chat-details.h"
+
+ChatDetails::ChatDetails(ChatShared *chatShared) :
+		StorableObject(chatShared->storage()), ChatData(chatShared)
 {
-	Chat CurrentChat;
+}
 
-public:
-	ChatNotification(Chat chat, const QString &type, const QIcon &icon);
-	virtual ~ChatNotification() {}
-
-	Chat chat() { return CurrentChat; }
-};
-
-#endif // CHAT_NOTIFICATION_H
+ChatDetails::~ChatDetails()
+{
+}

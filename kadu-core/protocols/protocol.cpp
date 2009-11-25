@@ -11,9 +11,9 @@
 #include <QtGui/QTextDocument>
 
 #include "accounts/account-manager.h"
+#include "chat/chat-details-conference.h"
+#include "chat/chat-details-simple.h"
 #include "chat/chat-manager.h"
-#include "chat/conference-chat.h"
-#include "chat/simple-chat.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-set-configuration-helper.h"
 #include "contacts/contact.h"
@@ -103,61 +103,39 @@ void Protocol::networkStateChanged(NetworkState state)
 	}
 }
 
-
-Chat * Protocol::findChat(BuddySet contacts, bool create)
+Chat Protocol::findChat(BuddySet contacts, bool create)
 {
-	QList<Chat *> chats = ChatManager::instance()->chatsForAccount(account());
-	foreach (Chat *c, chats)
-		if (c->buddies() == contacts)
+	foreach (Chat c, ChatManager::instance()->chats())
+		if (c.chatAccount() == account() && c.buddies() == contacts)
 			return c;
 
 	if (!create)
-		return 0;
+		return Chat::null;
+
+	Chat chat = Chat::create();
+	chat.setChatAccount(account());
+	ChatDetails *details = 0;
 
 	if (contacts.count() == 1)
 	{
 		Buddy buddy = *contacts.begin();
 		Contact contact = buddy.contact(account());
 		if (contact.isNull())
-			return 0;
+			return Chat::null;
 
-		SimpleChat *simple = new SimpleChat(account(), contact);
-		ChatManager::instance()->addChat(simple);
-		return simple;
+		ChatDetailsSimple *simple = new ChatDetailsSimple(chat);
+		simple->setContact(contact);
+		details = simple;
 	}
 	else
 	{
-		ConferenceChat *conference = new ConferenceChat(account(), contacts);
-		ChatManager::instance()->addChat(conference);
-		return conference;
+		ChatDetailsConference *conference = new ChatDetailsConference(chat);
+		conference->setBuddies(contacts);
+		details = conference;
 	}
-}
 
-Chat * Protocol::loadChatFromStorage(StoragePoint *chatStorage)
-{
-	if (!chatStorage || !chatStorage->storage())
-		return 0;
+	chat.setDetails(details);
+	ChatManager::instance()->addChat(chat);
 
-	XmlConfigFile *storage = chatStorage->storage();
-	QDomElement point = chatStorage->point();
-
-	Account account = AccountManager::instance()->byUuid(QUuid(storage->getTextNode(point, "Account")));
-
-	QString type = storage->getTextNode(point, "Type");
-	if ("Simple" == type)
-	{
-		SimpleChat *result = new SimpleChat(chatStorage);
-		result->setState(StorableObject::StateUnloaded);
-		result->load();
-		return result;
-	}
-	else if ("Conference" == type)
-	{
-		ConferenceChat *result = new ConferenceChat(chatStorage);
-		result->setState(StorableObject::StateUnloaded);
-		result->load();
-		return result;
-	}
-	else 
-		return 0;
+	return chat;
 }

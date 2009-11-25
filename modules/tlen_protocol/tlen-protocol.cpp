@@ -87,11 +87,37 @@ TlenProtocol::TlenProtocol(Account account, ProtocolFactory *factory): Protocol(
 	CurrentAvatarService = new TlenAvatarService(this);
 	CurrentPersonalInfoService = new TlenPersonalInfoService(this);
 
+	connect(BuddyManager::instance(), SIGNAL(buddyAdded(Buddy &)),
+			this, SLOT(contactAdded(Buddy &)));
+	connect(BuddyManager::instance(), SIGNAL(buddyRemoved(Buddy &)),
+			this, SLOT(contactRemoved(Buddy &)));
+	connect(BuddyManager::instance(), SIGNAL(contactAdded(Buddy &, Account)),
+			this, SLOT(contactAboutToBeRemoved(Buddy & , Account)));
+	connect(BuddyManager::instance(), SIGNAL(contactAboutToBeRemoved(Buddy &, Account)),
+			this, SLOT(contactAboutToBeRemoved(Buddy &, Account)));
+	connect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy &)),
+			this, SLOT(contactUpdated(Buddy &)));
+	connect(BuddyManager::instance(), SIGNAL(contactIdChanged(Buddy &, Account, const QString &)),
+			this, SLOT(contactAccountIdChanged(Buddy &, Account, const QString &)));
+
 	kdebugf2();
 }
 
 TlenProtocol::~TlenProtocol()
 {
+	disconnect(BuddyManager::instance(), SIGNAL(buddyAdded(Buddy &)),
+			this, SLOT(contactAdded(Buddy &)));
+	disconnect(BuddyManager::instance(), SIGNAL(buddyRemoved(Buddy &)),
+			this, SLOT(contactRemoved(Buddy &)));
+	disconnect(BuddyManager::instance(), SIGNAL(contactAdded(Buddy &, Account)),
+			this, SLOT(contactAboutToBeRemoved(Buddy & , Account)));
+	disconnect(BuddyManager::instance(), SIGNAL(contactAboutToBeRemoved(Buddy &, Account)),
+			this, SLOT(contactAboutToBeRemoved(Buddy &, Account)));
+	disconnect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy &)),
+			this, SLOT(contactUpdated(Buddy &)));
+	disconnect(BuddyManager::instance(), SIGNAL(contactIdChanged(Buddy &, Account, const QString &)),
+			this, SLOT(contactAccountIdChanged(Buddy &, Account, const QString &)));
+
 	logout();
 }
 
@@ -192,7 +218,7 @@ void TlenProtocol::connectToServer()
 		return;
 	}
 
-	if( TlenClient->isConnected() )
+	if( TlenClient->isConnected() || TlenClient->isConnecting())
 		TlenClient->closeConn();
 
 	TlenClient->setReconnect(true);
@@ -211,8 +237,6 @@ void TlenProtocol::login()
 	kdebugf();
 
 	connectToServer();
-	// TODO set here something from kadu, last status?
-	setStatus(Status("Online", ""));
 
 	networkStateChanged(NetworkConnected);
 	kdebugf2();
@@ -225,7 +249,7 @@ void TlenProtocol::logout()
 	if (!TlenClient)
 		return;
 
-	if (TlenClient->isConnected())
+	if (TlenClient->isConnected() || TlenClient->isConnecting())
 	{
 		//TlenClient->setStatus("unavailable");
 		TlenClient->closeConn();
@@ -239,7 +263,7 @@ void TlenProtocol::logout()
 	kdebugf2();
 }
 
-bool TlenProtocol::sendMessage(Chat *chat, FormattedMessage &formattedMessage)
+bool TlenProtocol::sendMessage(Chat chat, FormattedMessage &formattedMessage)
 {
 	kdebugf();
 
@@ -319,7 +343,7 @@ void TlenProtocol::chatMsgReceived(QDomNode n)
 	kdebugm(KDEBUG_WARNING, "Tlen message to %s\n%s", qPrintable(from), qPrintable(body));
 
 	// TODO  : contacts?
-	Chat *chat = this->findChat(contacts);
+	Chat chat = this->findChat(contacts);
 	emit receivedMessageFilter(chat, buddy, formattedMessage.toPlain(), msgtime, ignore);
 	if (ignore)
 		return;
@@ -345,12 +369,153 @@ void TlenProtocol::presenceDisconnected()
 	kdebugf2();
 }
 
+Buddy TlenProtocol::nodeToBuddy(QDomNode node)
+{
+	Buddy result;
+
+	Contact contact;
+	contact.setContactAccount(account());
+	contact.setOwnerBuddy(result);
+	contact.setId(account().id());
+
+	TlenContactDetails *tlenDetails = new TlenContactDetails(contact);
+	contact.setDetails(tlenDetails);
+
+	QDomNodeList items = node.toElement().childNodes();
+	for (int i=0;i<items.count();++i)
+	{
+		QDomElement mm = items.item(i).toElement();
+		QString mmName = items.item(i).nodeName();
+		if (mmName == "first")
+		{
+			result.setFirstName(mm.text());
+		}
+		else if (mmName == "last")
+		{
+			result.setLastName(mm.text());
+		}
+		else if (mmName == "nick")
+		{
+			result.setNickName(mm.text());
+		}
+		else if (mmName == "email")
+		{
+			result.setEmail(TlenClient->decode(mm.text()));
+		}
+		else if (mmName == "b")
+		{
+			result.setBirthYear(mm.text().toUShort());
+		}
+		else if (mmName == "s")
+		{
+			result.setGender((BuddyShared::BuddyGender)mm.text().toUShort());
+		}
+		else if (mmName == "c")
+		{
+			result.setCity(mm.text());
+		}
+		else if (mmName == "r")
+		{
+			tlenDetails->setLookingFor(mm.text().toUShort());
+		}
+		else if (mmName == "j")
+		{
+			tlenDetails->setJob(mm.text().toUShort());
+		}
+		else if (mmName == "p")
+		{
+			tlenDetails->setTodayPlans(mm.text().toUShort());
+		}
+		else if (mmName == "v")
+		{
+			tlenDetails->setShowStatus(mm.text() == "1");
+		}
+		else if (mmName == "g")
+		{
+			tlenDetails->setHaveMic(mm.text() == "1");
+		}
+		else if (mmName == "k")
+		{
+			tlenDetails->setHaveCam(mm.text() == "1");
+		}
+	}
+
+	//result.setStatus();
+
+	result.addContact(contact);
+	return result;
+}
+
+void TlenProtocol::contactAdded(Buddy &buddy)
+{
+	Contact contact = buddy.contact(account());
+	if (contact.isNull() || buddy.isAnonymous() || !TlenClient)
+		return;
+
+	QStringList groupsList;
+
+	//foreach (Group group, buddy.groups())
+	//	groupsList.append(group.name());
+	//TODO tlen pozwala na tylko 1 grupe
+	//TODO opcja żądania autoryzacji, na razie na sztywno true
+
+	TlenClient->addItem(contact.id(), buddy.display(), QString(), true);
+}
+
+void TlenProtocol::contactRemoved(Buddy &buddy)
+{
+	Contact contact = buddy.contact(account());
+	if (contact.isNull() || !isConnected() || !TlenClient)
+		return;
+
+	TlenClient->remove(contact.id());
+}
+
+void TlenProtocol::contactUpdated(Buddy &buddy)
+{
+	Contact contact = buddy.contact(account());
+	if (contact.isNull() || buddy.isAnonymous() || !TlenClient)
+		return;
+
+	QStringList groupsList;
+	//foreach (Group group, buddy.groups())
+	//	groupsList.append(group.name());
+
+	// TODO implement
+	//JabberClient->updateContact(contact.id(), buddy.display(), QString());
+}
+
+void TlenProtocol::contactAdded(Buddy &buddy, Account contactAccount)
+{
+	if (contactAccount != account())
+		return;
+
+	contactAdded(buddy);
+}
+
+void TlenProtocol::contactAboutToBeRemoved(Buddy &buddy, Account contactAccount)
+{
+	if (contactAccount != account())
+		return;
+
+	contactRemoved(buddy);
+}
+
+
+void TlenProtocol::contactAccountIdChanged(Buddy &buddy, Account contactAccount, const QString &oldId)
+{
+	if (contactAccount != account())
+		return;
+
+	contactUpdated(buddy);
+}
+
 void TlenProtocol::itemReceived(QString jid, QString name, QString subscription, QString group, bool sort)
 {
 	kdebugf();
 	kdebugm(KDEBUG_WARNING, "Tlen contact rcv %s\n", qPrintable(jid));
 
-	Buddy buddy = account().getBuddyById(jid);
+	Buddy buddy = BuddyManager::instance()->byId(account(), jid);
 
 	if(!name.isNull())
 		buddy.setDisplay(name);
@@ -389,7 +554,7 @@ void TlenProtocol::presenceChanged(QString from, QString newstatus, QString desc
 	if (!description.isEmpty())
 		status.setDescription(description);
 
-	Buddy buddy = account().getBuddyById(from);
+	Buddy buddy = BuddyManager::instance()->byId(account(), from);
 
 	kdebugm(KDEBUG_WARNING, "Tlen status change: %s %s\n%s", qPrintable(from), qPrintable(newstatus), qPrintable(description));
 
@@ -420,7 +585,7 @@ void TlenProtocol::presenceChanged(QString from, QString newstatus, QString desc
 	kdebugf2();
 }
 
-void TlenProtocol::authorizationAsk(QString from)
+void TlenProtocol::authorizationAsk(QString to)
 {
 	kdebugf();
 //	if( rosterItem *item = rosterModel->find(from) ) {
@@ -432,12 +597,12 @@ void TlenProtocol::authorizationAsk(QString from)
 				tr("User authorization"),
 				tr("User %1 requested authorization from You."
 				"Do you want to authorize him?")
-				.arg(from),
+				.arg(to),
 				tr("&Yes"), tr("&No"),
 				QString(), 2, 1))
-		emit authorize(from, false);
+		emit authorize(to, false);
 	else
-		emit authorize(from, true);
+		emit authorize(to, true);
 }
 
 void TlenProtocol::removeItem(QString a)
@@ -479,7 +644,7 @@ void TlenProtocol::chatNotify(QString from, QString type)
 {
 	kdebugf();
 
-	Buddy buddy = account().getBuddyById(from);
+	Buddy buddy = BuddyManager::instance()->byId(account(), from);
 
 	Contact contact = buddy.contact(account());
 	if (contact.isNull())

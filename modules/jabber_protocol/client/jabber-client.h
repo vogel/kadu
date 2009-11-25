@@ -158,8 +158,8 @@ public:
 		InvalidPassword,	/** Password used to connect to the server was incorrect. */
 		AlreadyConnected,	/** A new connection was attempted while the previous one hasn't been closed. */
 		NoTLS,				/** Use of TLS has been forced (see @ref forceTLS) but TLS is not available, either server- or client-side. */
-		InvalidPasswordForMUC = 401,	/** A password is require to enter on this Multi-User Chat */
-		NicknameConflict = 409,		/** There is already someone with that nick connected to the Multi-User Chat */
+		InvalidPasswordForMUC = 401,	/** A password is require to enter on this Multi-User Chat /
+		NicknameConflict = 409,		/** There is already someone with that nick connected to the Multi-User Chat /
 		BannedFromThisMUC = 403,	/** You can't join this Multi-User Chat because you were bannished */
 		MaxUsersReachedForThisMuc = 503	/** You can't join this Multi-User Chat because it is full */
 	};

@@ -17,6 +17,7 @@ class Account;
 class AccountCreateWidget;
 class AccountDetails;
 class AccountEditWidget;
+class AccountShared;
 class Buddy;
 class ConfigurationWindow;
 class Contact;

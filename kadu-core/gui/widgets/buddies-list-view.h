@@ -40,7 +40,7 @@ class BuddiesListView : public QTreeView
 	Buddy buddyAt(const QModelIndex &index) const;
 	void triggerActivate(const QModelIndex &index);
 
-	Chat * chatForIndex(const QModelIndex &index) const;
+	Chat  chatForIndex(const QModelIndex &index) const;
 
 	// Tool tips
 	Buddy ToolTipContact;
@@ -98,13 +98,13 @@ public:
 	Buddy currentBuddy() const;
 	BuddySet selectedBuddies() const;
 
-	Chat * currentChat() const;
+	Chat  currentChat() const;
 
 	void setBackground(const QString &backgroundColor, const QString &file = QString::null, BackgroundMode mode = BackgroundNone);
 	void updateBackground();
 
 signals:
-	void chatActivated(Chat *chat);
+	void chatActivated(Chat chat);
 	void buddySelectionChanged();
 
 	void currentBuddyChanged(Buddy buddy);

@@ -23,7 +23,7 @@ class HtmlMessagesRenderer : public QObject
 {
 	Q_OBJECT
 
-	Chat *MyChat;
+	Chat MyChat;
 	QList<MessageRenderInfo *> MyChatMessages;
 	MessageRenderInfo *LastMessage;
 	QWebPage *MyWebPage;
@@ -34,11 +34,11 @@ class HtmlMessagesRenderer : public QObject
 	void pruneMessages();
 
 public:
-	HtmlMessagesRenderer(Chat *chat, QObject *parent = 0);
+	HtmlMessagesRenderer(Chat chat, QObject *parent = 0);
 	virtual ~HtmlMessagesRenderer();
 
-	Chat * chat() { return MyChat; }
-	void setChat(Chat *chat);
+	Chat  chat() { return MyChat; }
+	void setChat(Chat chat);
 
 	QWebPage * webPage() { return MyWebPage; }
 

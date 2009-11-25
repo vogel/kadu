@@ -30,17 +30,17 @@ private slots:
 	virtual void messageSent(const Message &message) = 0;
 
 public:
-	virtual QList<Chat *> chats(HistorySearchParameters search) = 0;
+	virtual QList<Chat> chats(HistorySearchParameters search) = 0;
 
-	virtual QList<QDate> chatDates(Chat *chat, HistorySearchParameters search) = 0;
-	virtual QList<Message> messages(Chat *chat, QDate date = QDate(), int limit = 0) = 0;
-	virtual QList<Message> messagesSince(Chat *chat, QDate date) = 0;
-	virtual QList<Message> messagesBackTo(Chat *chat, QDateTime datetime, int limit) = 0;
-	virtual int messagesCount(Chat *chat, QDate date = QDate()) = 0;
+	virtual QList<QDate> chatDates(Chat chat, HistorySearchParameters search) = 0;
+	virtual QList<Message> messages(Chat chat, QDate date = QDate(), int limit = 0) = 0;
+	virtual QList<Message> messagesSince(Chat chat, QDate date) = 0;
+	virtual QList<Message> messagesBackTo(Chat chat, QDateTime datetime, int limit) = 0;
+	virtual int messagesCount(Chat chat, QDate date = QDate()) = 0;
 
 	virtual void appendMessage(const Message &message) = 0;
 
-	virtual void clearChatHistory(Chat *chat) = 0;
+	virtual void clearChatHistory(Chat chat) = 0;
 
 };
 

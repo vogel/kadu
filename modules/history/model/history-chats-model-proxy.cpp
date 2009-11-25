@@ -39,7 +39,7 @@ bool HistoryChatsModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex &
 		return true;
 
 	QModelIndex sourceChild = sourceParent.child(sourceRow, 0);
-	Chat *chat = sourceChild.data(ChatRole).value<Chat *>();
+	Chat chat = sourceChild.data(ChatRole).value<Chat>();
 	if (!chat)
 		return true;
 
@@ -53,16 +53,19 @@ bool HistoryChatsModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex &
 bool HistoryChatsModelProxy::lessThan(const QModelIndex &left, const QModelIndex &right) const
 {
 	// chats?
-	Chat *leftChat = left.data(ChatRole).value<Chat *>();
-	Chat *rightChat = right.data(ChatRole).value<Chat *>();
+	Chat leftChat = left.data(ChatRole).value<Chat>();
+	Chat rightChat = right.data(ChatRole).value<Chat>();
 
-	if (leftChat && rightChat)
-		return compareNames(leftChat->name(), rightChat->name()) < 0;
+	if (!leftChat.isNull() && !rightChat.isNull())
+		return compareNames(leftChat.name(), rightChat.name()) < 0;
 
-	ChatType leftType = left.data(ChatTypeRole).value<ChatType>();
-	ChatType rightType = right.data(ChatTypeRole).value<ChatType>();
+	ChatType *leftType = left.data(ChatTypeRole).value<ChatType *>();
+	ChatType *rightType = right.data(ChatTypeRole).value<ChatType *>();
 
-	return compareNames(leftType.displayName(), rightType.displayName()) < 0;
+	QString leftName = leftType ? leftType->displayName() : "";
+	QString rightName = rightType ? rightType->displayName() : "";
+
+	return compareNames(leftName, rightName) < 0;
 }
 
 void HistoryChatsModelProxy::setSourceModel(QAbstractItemModel *sourceModel)
@@ -93,7 +96,7 @@ void HistoryChatsModelProxy::removeFilter(ChatFilter *filter)
 	invalidateFilter();
 }
 
-QModelIndex HistoryChatsModelProxy::chatTypeIndex(ChatType type) const
+QModelIndex HistoryChatsModelProxy::chatTypeIndex(ChatType *type) const
 {
 	if (!Model)
 		return QModelIndex();
@@ -102,7 +105,7 @@ QModelIndex HistoryChatsModelProxy::chatTypeIndex(ChatType type) const
 	return mapFromSource(index);
 }
 
-QModelIndex HistoryChatsModelProxy::chatIndex(Chat *chat) const
+QModelIndex HistoryChatsModelProxy::chatIndex(Chat chat) const
 {
 	if (!Model)
 		return QModelIndex();

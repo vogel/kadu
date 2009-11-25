@@ -25,7 +25,7 @@
 
 #include "chat-messages-view.h"
 
-ChatMessagesView::ChatMessagesView(Chat *chat, QWidget *parent) : KaduTextBrowser(parent),
+ChatMessagesView::ChatMessagesView(Chat chat, QWidget *parent) : KaduTextBrowser(parent),
 	LastScrollValue(0), LastLine(false), CurrentChat(chat)
 {
 	Renderer = new HtmlMessagesRenderer(CurrentChat, this);
@@ -53,10 +53,10 @@ ChatMessagesView::~ChatMessagesView()
 
 void ChatMessagesView::connectChat()
 {
-	if (!CurrentChat || CurrentChat->account().isNull())
+	if (CurrentChat.isNull() || CurrentChat.chatAccount().isNull())
 		return;
 
-	ChatImageService *chatImageService = CurrentChat->account().protocolHandler()->chatImageService();
+	ChatImageService *chatImageService = CurrentChat.chatAccount().protocolHandler()->chatImageService();
 	if (chatImageService)
 		connect(chatImageService, SIGNAL(imageReceived(const QString &, const QString &)),
 				this, SLOT(imageReceived(const QString &, const QString &)));
@@ -64,16 +64,16 @@ void ChatMessagesView::connectChat()
 
 void ChatMessagesView::disconnectChat()
 {
-	if (!CurrentChat || CurrentChat->account().isNull())
+	if (CurrentChat.isNull() || CurrentChat.chatAccount().isNull())
 		return;
 	
-	ChatImageService *chatImageService = CurrentChat->account().protocolHandler()->chatImageService();
+	ChatImageService *chatImageService = CurrentChat.chatAccount().protocolHandler()->chatImageService();
 	if (chatImageService)
 		disconnect(chatImageService, SIGNAL(imageReceived(const QString &, const QString &)),
 				this, SLOT(imageReceived(const QString &, const QString &)));
 }
 
-void ChatMessagesView::setChat(Chat *chat)
+void ChatMessagesView::setChat(Chat chat)
 {
 	disconnectChat();
 	CurrentChat = chat;

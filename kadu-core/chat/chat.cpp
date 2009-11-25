@@ -7,139 +7,75 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "accounts/account-manager.h"
-#include "configuration/configuration-file.h"
-#include "contacts/contact.h"
-#include "parser/parser.h"
-#include "debug.h"
-#include "icons-manager.h"
-#include "protocols/protocol.h"
+#include "accounts/account.h"
+#include "buddies/buddy-set.h"
+#include "chat/chat-shared.h"
 
 #include "chat.h"
-#include "chat-manager.h"
 
-Chat * Chat::loadFromStorage(StoragePoint *chatStoragePoint)
+Chat Chat::null(true);
+
+Chat Chat::create()
 {
-	if (!chatStoragePoint || !chatStoragePoint->storage())
-		return 0;
-
-	XmlConfigFile *storage = chatStoragePoint->storage();
-	QDomElement point = chatStoragePoint->point();
-
-	Account account = AccountManager::instance()->byUuid(QUuid(storage->getTextNode(point, "Account")));
-	if (account.isNull() || !account.protocolHandler())
-		return 0;
-
-	return account.protocolHandler()->loadChatFromStorage(chatStoragePoint);
+	Chat result;
+	result.createData();
+	return result;
 }
 
-Chat::Chat(StoragePoint *storage) :
-		UuidStorableObject(storage), CurrentAccount(Account::null)
+Chat Chat::loadFromStorage(StoragePoint *accountStoragePoint)
+{
+	return ChatShared::loadFromStorage(accountStoragePoint);
+}
+
+Chat::Chat(bool null) :
+		SharedBase<ChatShared>(null)
 {
 }
 
-Chat::Chat(Account currentAccount, QUuid uuid) :
-		UuidStorableObject("Chat", ChatManager::instance()), CurrentAccount(currentAccount), Uuid(uuid.isNull() ? QUuid::createUuid() : uuid)
+Chat::Chat()
 {
-	connect(CurrentAccount, SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
-			this, SLOT(refreshTitle()));
+	data()->setState(StorableObject::StateNew);
+}
+
+Chat::Chat(ChatShared *data) :
+		SharedBase<ChatShared>(data)
+{
+	data->ref.ref();
+}
+
+Chat::Chat(QObject *data) :
+		SharedBase<ChatShared>(true)
+{
+	ChatShared *shared = dynamic_cast<ChatShared *>(data);
+	if (shared)
+		setData(shared);
+}
+
+Chat::Chat(const Chat &copy) :
+		SharedBase<ChatShared>(copy)
+{
 }
 
 Chat::~Chat()
 {
-	disconnect(CurrentAccount, SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
-			this, SLOT(refreshTitle()));
 }
 
-void Chat::load()
+Chat & Chat::operator=(const Chat &copy)
 {
-	if (!isValidStorage())
-		return;
-
-	UuidStorableObject::load();
-
-	Uuid = loadAttribute<QString>("uuid");
-	CurrentAccount = AccountManager::instance()->byUuid(QUuid(loadValue<QString>("Account")));
-
-	connect(CurrentAccount, SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
-			this, SLOT(refreshTitle()));
-	refreshTitle();
-}
-
-void Chat::store()
-{
-	if (!isValidStorage())
-		return;
-
-	storeValue("Account", CurrentAccount.uuid().toString());
-}
-
-void Chat::setTitle(const QString &newTitle)
-{
-	if (Title == newTitle)
-		return;
-	Title = newTitle;
-	emit titleChanged(this, newTitle);
+	clone(copy);
+	return *this;
 }
 
 void Chat::refreshTitle()
 {
-	kdebugf();
-	QString title;
-
-	int contactsSize = buddies().count();
-	kdebugmf(KDEBUG_FUNCTION_START, "contacts().size() = %d\n", contactsSize);
-	if (contactsSize > 1)
-	{
-		if (config_file.readEntry("Look","ConferencePrefix").isEmpty())
-			title = tr("Conference with ");
-		else
-			title = config_file.readEntry("Look","ConferencePrefix");
-		int i = 0;
-
-		if (config_file.readEntry("Look", "ConferenceContents").isEmpty())
-			foreach(const Buddy buddy, buddies())
-			{
-				title.append(Parser::parse("%a", account(), buddy, false));
-
-				if (++i < contactsSize)
-					title.append(", ");
-			}
-		else
-			foreach(const Buddy buddy, buddies())
-			{
-				title.append(Parser::parse(config_file.readEntry("Look", "ConferenceContents"), account(), buddy, false));
-
-				if (++i < contactsSize)
-					title.append(", ");
-			}
-
- 		Icon = IconsManager::instance()->loadPixmap("Online");
-	}
-	else if (contactsSize > 0)
-	{
-		Buddy buddy = *buddies().begin();
-
-		if (config_file.readEntry("Look", "ChatContents").isEmpty())
-		{
-			if (buddy.isAnonymous())
-				title = Parser::parse(tr("Chat with ")+"%a", account(), buddy, false);
-			else
-				title = Parser::parse(tr("Chat with ")+"%a (%s[: %d])", account(), buddy, false);
-		}
-		else
-			title = Parser::parse(config_file.readEntry("Look","ChatContents"), account(), buddy, false);
-
-		Contact contact = buddy.contact(account());
-		if (!contact.isNull())
-			Icon = account().statusContainer()->statusPixmap(contact.currentStatus());
-	}
-
-	title.replace("<br/>", " ");
-	title.replace("&nbsp;", " ");
-
-	setTitle(title);
-
-	kdebugf2();
+	if (!isNull())
+		data()->refreshTitle();
 }
 
+KaduSharedBase_PropertyReadDef(Chat, BuddySet, buddies, Buddies, BuddySet())
+KaduSharedBase_PropertyReadDef(Chat, QString, name, Name, QString::null)
+KaduSharedBase_PropertyDef(Chat, ChatDetails *, details, Details, 0)
+KaduSharedBase_PropertyDef(Chat, Account, chatAccount, ChatAccount, Account::null)
+KaduSharedBase_PropertyDef(Chat, QString, type, Type, QString::null)
+KaduSharedBase_PropertyDef(Chat, QString, title, Title, QString::null)
+KaduSharedBase_PropertyDef(Chat, QPixmap, icon, Icon, QPixmap())

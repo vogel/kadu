@@ -39,8 +39,8 @@ class KADUAPI ChatWidgetManager : public QObject, ConfigurationAwareObject, Stor
 
 	ChatWidgetActions *Actions;
 
-	QHash<Chat *, ChatWidget *> Chats;
-	QList<Chat *> ClosedChats; /*!< u�ytkownicy, kt�rych okna zosta�y zamkni�te*/
+	QHash<Chat , ChatWidget *> Chats;
+	QList<Chat> ClosedChats; /*!< u�ytkownicy, kt�rych okna zosta�y zamkni�te*/
 	QList<QDateTime> ClosedChatsDates;
 
 	ChatWidgetManager();
@@ -64,10 +64,10 @@ public:
 
 	ChatWidgetActions * actions() { return Actions; }
 
-	const QHash<Chat *, ChatWidget *> & chats() const;
-	const QList<Chat *> closedChats() const;
+	const QHash<Chat , ChatWidget *> & chats() const;
+	const QList<Chat> closedChats() const;
 
-	ChatWidget * byChat(Chat *chat, bool create = false) const;
+	ChatWidget * byChat(Chat chat, bool create = false) const;
 
 	virtual void load();
 	virtual void store();
@@ -75,7 +75,7 @@ public:
 	void activateChatWidget(ChatWidget *chatWidget, bool forceActivate);
 
 public slots:
-	ChatWidget * openChatWidget(Chat *chat, bool forceActivate = false);
+	ChatWidget * openChatWidget(Chat chat, bool forceActivate = false);
 
 	/**
 		\fn void openPendingMsgs(ContactList users)
@@ -83,7 +83,7 @@ public slots:
 		z u�ytkownikami "users"
 		\param users lista u�ytkownik�w identyfikuj�cych okno
 	**/
-	void openPendingMsgs(Chat *chat, bool forceActivate = false);
+	void openPendingMsgs(Chat chat, bool forceActivate = false);
 
 	/**
 		\fn void openPendingMsgs()
@@ -98,9 +98,9 @@ public slots:
 		z u�ytkownikami "users"
 		\param users lista u�ytkownik�w identyfikuj�cych okno
 	**/
-	void deletePendingMsgs(Chat *chat);
+	void deletePendingMsgs(Chat chat);
 
-	void sendMessage(Chat *chat);
+	void sendMessage(Chat chat);
 
 	/**
 		\fn void closeAllWindows()
@@ -169,7 +169,7 @@ signals:
 	void chatWidgetTitlesUpdated();
 
 	/**
-		\fn void messageSentAndConfirmed(Chat *chat, const QString& message)
+		\fn void messageSentAndConfirmed(Chat chat, const QString& message)
 		This signal is emited when message was sent
 		and it was confirmed.
 		When confirmations are turned off signal is
@@ -177,7 +177,7 @@ signals:
 		\param receivers list of receivers
 		\param message the message
 	**/
-	void messageSentAndConfirmed(Chat *chat, const QString& message);
+	void messageSentAndConfirmed(Chat chat, const QString& message);
 
 };
 

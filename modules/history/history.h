@@ -94,10 +94,10 @@ public:
 	HistoryStorage * currentStorage() { return CurrentStorage; }
 	void registerStorage(HistoryStorage *storage);
 	void unregisterStorage(HistoryStorage *storage);
-	QList<Chat *> chatsList(HistorySearchParameters search);
-	QList<QDate> datesForChat(Chat *chat, HistorySearchParameters search);
-	QList<Message> messages(Chat *chat, QDate date = QDate(), int limit = 0);
-	int messagesCount(Chat *chat, QDate date = QDate());
+	QList<Chat> chatsList(HistorySearchParameters search);
+	QList<QDate> datesForChat(Chat chat, HistorySearchParameters search);
+	QList<Message> messages(Chat chat, QDate date = QDate(), int limit = 0);
+	int messagesCount(Chat chat, QDate date = QDate());
 
 };
 

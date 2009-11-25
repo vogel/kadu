@@ -56,7 +56,7 @@ bool PendingMessagesManager::pendingMsgs(Buddy buddy) const
 	return false;
 }
 
-unsigned int PendingMessagesManager::pendingMsgsCount(Chat *chat) const
+unsigned int PendingMessagesManager::pendingMsgsCount(Chat chat) const
 {
 	unsigned int count = 0;
 
@@ -103,7 +103,7 @@ void PendingMessagesManager::loadConfiguration(XmlConfigFile *configurationStora
 	{
 		Message msg;
 		QDomElement chatNode = configurationStorage->getNode(messageElement, "Chat", XmlConfigFile::ModeFind);
-		Chat *chat = ChatManager::instance()->byUuid(chatNode.text());
+		Chat chat = ChatManager::instance()->byUuid(chatNode.text());
 		msg.setChat(chat);
 
 		QDomElement timeNode = configurationStorage->getNode(messageElement, "ReceiveTime", XmlConfigFile::ModeFind);
@@ -133,7 +133,7 @@ void PendingMessagesManager::storeConfiguration(XmlConfigFile *configurationStor
 		QDomElement pendingMessageNode = configurationStorage->getNode(pendingMsgsNode,
 			"PendingMessage", XmlConfigFile::ModeCreate);
 
-		configurationStorage->createTextNode(pendingMessageNode, "Chat", i.chat()->uuid().toString());
+		configurationStorage->createTextNode(pendingMessageNode, "Chat", i.chat().uuid().toString());
 		configurationStorage->createTextNode(pendingMessageNode, "ReceiveTime", QString::number(i.receiveDate().toTime_t()));
 		configurationStorage->createTextNode(pendingMessageNode, "SentTime", QString::number(i.sendDate().toTime_t()));
 

@@ -38,7 +38,7 @@ class KADUAPI ChatWidget : public QWidget, ConfigurationAwareObject
 
 	friend class ChatWidgetManager;
 
-	Chat *CurrentChat;
+	Chat CurrentChat;
 
 	ChatMessagesView *MessagesView;
 	BuddiesListView *BuddiesView;
@@ -74,10 +74,10 @@ protected:
 	virtual void configurationUpdated();
 
 public:
-	explicit ChatWidget(Chat *chat, QWidget *parent = 0);
+	explicit ChatWidget(Chat chat, QWidget *parent = 0);
 	virtual ~ChatWidget();
 
-	Chat * chat() { return CurrentChat; }
+	Chat  chat() { return CurrentChat; }
 
 	/**
 		Dodaje now� wiadomos� systemow� do okna.
@@ -201,8 +201,8 @@ signals:
 		\param receivers list of receivers
 		\param message the message
 	**/
-	void messageSentAndConfirmed(Chat *chat, const QString &message);
-	void messageReceived(Chat *chat);
+	void messageSentAndConfirmed(Chat chat, const QString &message);
+	void messageReceived(Chat chat);
 
 	/**
 		\fn void fileDropped(const UserGroupusers, const QString& fileName)
@@ -211,7 +211,7 @@ signals:
 	\param users lista u�ytkownik�w
 		\param fileName nazwa pliku
 	**/
-	void fileDropped(Chat *contacts, const QString &fileName);
+	void fileDropped(Chat contacts, const QString &fileName);
 
 	void captionUpdated();
 	void closed();

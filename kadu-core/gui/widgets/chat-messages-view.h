@@ -30,7 +30,7 @@ class KADUAPI ChatMessagesView : public KaduTextBrowser
 {
 	Q_OBJECT
 
-	Chat *CurrentChat;
+	Chat CurrentChat;
 	HtmlMessagesRenderer *Renderer;
 
 	int LastScrollValue;
@@ -54,7 +54,7 @@ private slots:
 	void messageStatusChanged(Message message, Message::Status);
 
 public:
-	ChatMessagesView(Chat *chat = 0, QWidget *parent = 0);
+	ChatMessagesView(Chat chat = 0, QWidget *parent = 0);
 	virtual ~ChatMessagesView();
 
 	HtmlMessagesRenderer * renderer() { return Renderer; }
@@ -74,8 +74,8 @@ public:
 
 	void rememberScrollBarPosition();
 
-	Chat *chat() const { return CurrentChat; }
-	void setChat(Chat *chat);
+	Chat chat() const { return CurrentChat; }
+	void setChat(Chat chat);
 
 public slots:
 	void clearMessages();

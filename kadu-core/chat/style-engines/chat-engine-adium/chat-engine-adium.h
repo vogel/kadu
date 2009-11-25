@@ -25,8 +25,8 @@ class AdiumChatStyleEngine : public ChatStyleEngine
 
 	QString jsCode;
 
-	QString replaceKeywords(Chat *chat, const QString &styleHref, const QString &style);
-	QString replaceKeywords(Chat *chat, const QString &styleHref, const QString &source, MessageRenderInfo *message);
+	QString replaceKeywords(Chat chat, const QString &styleHref, const QString &style);
+	QString replaceKeywords(Chat chat, const QString &styleHref, const QString &source, MessageRenderInfo *message);
 
 	bool clearDirectory(const QString &directory);
 

@@ -30,9 +30,9 @@ class HistoryImportThread : public QThread
 	unsigned long TotalEntries;
 	unsigned long ImportedEntries;
 
-	Chat * chatFromUinsList(QStringList uinsList);
+	Chat  chatFromUinsList(QStringList uinsList);
 	QList<HistoryEntry> historyEntries(QStringList uins, int mask);
-	void importEntry(Chat *chat, const HistoryEntry &entry);
+	void importEntry(Chat chat, const HistoryEntry &entry);
 	QStringList mySplit(const QChar &sep, const QString &str);
 
 public:

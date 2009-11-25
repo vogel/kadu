@@ -15,7 +15,7 @@
 #include <QtGui/QPushButton>
 
 #include "accounts/account-manager.h"
-#include "chat/simple-chat.h"
+#include "chat/chat-details-simple.h"
 #include "chat/style-engines/chat-engine-adium/chat-engine-adium.h"
 #include "chat/style-engines/chat-engine-kadu/chat-engine-kadu.h"
 #include "chat/message/message-render-info.h"
@@ -291,7 +291,12 @@ void ChatStylesManager::preparePreview(Preview *preview)
 	if (example.isNull())
 		return;
 
-	SimpleChat *chat = new SimpleChat(example.prefferedAccount(), example.contact(example.prefferedAccount()));
+	Chat chat = Chat::create();
+	chat.setChatAccount(example.prefferedAccount());
+	ChatDetailsSimple *details = new ChatDetailsSimple(chat);
+	details->setContact(example.contact(example.prefferedAccount()));
+	chat.setDetails(details);
+
 	connect(preview, SIGNAL(destroyed(QObject *)), chat, SLOT(deleteLater()));
 
 	Message messageSent(chat, Message::TypeSent, Core::instance()->myself());

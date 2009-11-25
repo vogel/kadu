@@ -7,31 +7,33 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SIMPLE_CHAT_H
-#define SIMPLE_CHAT_H
+#ifndef CHAT_DETAILS_CONFERENCE_H
+#define CHAT_DETAILS_CONFERENCE_H
 
+#include "buddies/buddy-set.h"
 #include "contacts/contact.h"
 
-#include "chat/chat.h"
+#include "chat/chat-details.h"
 
-class XmlConfigFile;
-
-class SimpleChat : public Chat
+class ChatDetailsConference : public ChatDetails
 {
-	Contact CurrentContact;
+	Q_OBJECT
+
+	BuddySet Buddies;
 
 public:
-	explicit SimpleChat(StoragePoint *storage);
-	explicit SimpleChat(Account parentAccount, Contact contact, QUuid uuid = QUuid());
-	virtual ~SimpleChat();
+	explicit ChatDetailsConference(ChatShared *chatData);
+	virtual ~ChatDetailsConference();
 
 	virtual void load();
 	virtual void store();
 
-	virtual ChatType type() const;
-	virtual BuddySet buddies() const;
+	virtual ChatType * type() const;
+	virtual BuddySet buddies() const { return Buddies; }
 	virtual QString name() const;
+
+	void setBuddies(BuddySet buddies);
 
 };
 
-#endif // SIMPLE_CHAT_H
+#endif // CHAT_DETAILS_CONFERENCE_H

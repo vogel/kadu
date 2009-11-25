@@ -1,11 +1,11 @@
 /***************************************************************************
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-***************************************************************************/
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
 
 #ifndef CHAT_TYPE_H
 #define CHAT_TYPE_H
@@ -16,28 +16,30 @@
 
 #include "exports.h"
 
-class KADUAPI ChatType
+class ChatDetails;
+class ChatShared;
+
+class KADUAPI ChatType : public QObject
 {
-	int SortIndex;
-	QString Name;
-	QString DisplayName;
-	QIcon Icon;
+	Q_OBJECT
+	Q_DISABLE_COPY(ChatType)
 
 public:
-	ChatType();
-	ChatType(int sortIndex, const QString &name, const QString &displayName, const QIcon &icon);
-	ChatType(const ChatType &copy);
+	ChatType() {}
+	virtual ~ChatType() {}
 
-	int sortIndex() const { return SortIndex; }
-	QString name() const { return Name; }
-	QString displayName() const { return DisplayName; }
-	QIcon icon() const { return Icon; }
+	virtual int sortIndex() const = 0;
+	virtual QString name() const = 0;
+	virtual QString displayName() const = 0;
+	virtual QIcon icon() const = 0;
+
+	virtual ChatDetails * createChatDetails(ChatShared *chatData) const = 0;
 
 	bool operator == (const ChatType &compare) const;
 	bool operator < (const ChatType &compare) const;
 
 };
 
-Q_DECLARE_METATYPE(ChatType)
+Q_DECLARE_METATYPE(ChatType *)
 
 #endif // CHAT_TYPE_H

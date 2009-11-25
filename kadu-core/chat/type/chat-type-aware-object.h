@@ -7,22 +7,29 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CHAT_NOTIFICATION_H
-#define CHAT_NOTIFICATION_H
+#ifndef CHAT_TYPE_AWARE_OBJECT
+#define CHAT_TYPE_AWARE_OBJECT
 
-#include "account-notification.h"
+#include <QtCore/QList>
 
-#include "chat/chat.h"
+#include "aware-object.h"
 
-class ChatNotification : public AccountNotification
+class ChatType;
+
+class KADUAPI ChatTypeAwareObject : public AwareObject<ChatTypeAwareObject>
 {
-	Chat CurrentChat;
+
+protected:
+	virtual void chatTypeRegistered(ChatType *chatType) = 0;
+	virtual void chatTypeUnregistered(ChatType *chatType) = 0;
 
 public:
-	ChatNotification(Chat chat, const QString &type, const QIcon &icon);
-	virtual ~ChatNotification() {}
+	static void notifyChatTypeRegistered(ChatType *chatType);
+	static void notifyChatTypeUnregistered(ChatType *chatType);
 
-	Chat chat() { return CurrentChat; }
+	void triggerAllChatTypesRegistered();
+	void triggerAllChatTypesUnregistered();
+
 };
 
-#endif // CHAT_NOTIFICATION_H
+#endif // CHAT_TYPE_AWARE_OBJECT

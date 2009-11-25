@@ -21,7 +21,7 @@ class Qt4Notify : public Notifier
 	void createDefaultConfiguration();
 	QString toPlainText(const QString &text);
 	QString parseText(const QString &text, Notification *notification, const QString &def);
-	Chat *chat;
+	Chat chat;
 	Qt4NotifyConfigurationWidget *configurationWidget;
 
 public:

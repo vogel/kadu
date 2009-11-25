@@ -16,14 +16,13 @@
 #include <QtGui/QStatusBar>
 #include <QtGui/QVBoxLayout>
 
-#include "chat/message/message.h"
-
-#include "chat/type/chat-type.h"
+#include "buddies/model/buddies-model-base.h"
 #include "chat/filter/chat-name-filter.h"
+#include "chat/message/message.h"
+#include "chat/type/chat-type.h"
+#include "chat/type/chat-type-manager.h"
 #include "chat/aggregate-chat.h"
 #include "chat/chat-aggregator-builder.h"
-#include "buddies/model/buddies-model-base.h"
-
 #include "gui/actions/actions.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/delayed-line-edit.h"
@@ -103,10 +102,10 @@ void HistoryWindow::createGui()
 	rightLayout->addWidget(DetailsListView);
 
 	DetailsListView->setRootIsDecorated(false);
-	DetailsListView->setModel(new ChatDatesModel(0, QList<QDate>(), this));
+	DetailsListView->setModel(new ChatDatesModel(Chat::null, QList<QDate>(), this));
 	DetailsListView->setUniformRowHeights(true);
 
-	ContentBrowser = new ChatMessagesView(0, rightSplitter);
+	ContentBrowser = new ChatMessagesView(Chat::null, rightSplitter);
 	ContentBrowser->setPruneEnabled(false);
 
 	QList<int> sizes;
@@ -187,37 +186,41 @@ void HistoryWindow::updateData()
 	kdebugf();
 
 	ChatsModel->clear();
-	QList<Chat *> usedChats;
-	QList<Chat *> chatsList = History::instance()->chatsList(Search);
-	QList<Chat *> result;
+	QList<Chat> usedChats;
+	QList<Chat> chatsList = History::instance()->chatsList(Search);
+	QList<Chat> result;
 
-	foreach (Chat *chat, chatsList)
+	foreach (Chat chat, chatsList)
 	{
 		if (usedChats.contains(chat))
 			continue;
-
-		AggregateChat *aggregate = dynamic_cast<AggregateChat *>(ChatAggregatorBuilder::buildAggregateChat(chat->buddies()));
-		if (!aggregate)
-			continue;
-		if (aggregate->chats().size() > 1)
-		{
-			result.append(aggregate);
-			foreach (Chat *usedChat, aggregate->chats())
-				usedChats.append(usedChat);
-		}
-		else
-		{
-			result.append(chat);
-			usedChats.append(chat);
-		}
+// TODO: disabled for a moment
+// 		AggregateChat aggregate = dynamic_cast<AggregateChat>(ChatAggregatorBuilder::buildAggregateChat(chat->buddies()));
+// 		if (!aggregate)
+// 			continue;
+// 		if (aggregate->chats().size() > 1)
+// 		{
+// 			result.append(aggregate);
+// 			foreach (Chat usedChat, aggregate->chats())
+// 				usedChats.append(usedChat);
+// 		}
+// 		else
+// 		{
+// 			result.append(chat);
+// 			usedChats.append(chat);
+// 		}
 	}
 
 	ChatsModel->addChats(result);
 }
 
-void HistoryWindow::selectChat(Chat *chat)
+void HistoryWindow::selectChat(Chat chat)
 {
-	ChatType type = chat->type();
+	QString typeName = chat.type();
+	ChatType *type = ChatTypeManager::instance()->chatType(typeName);
+	if (!type)
+		return;
+
 	QModelIndex chatTypeIndex = ChatsModelProxy->chatTypeIndex(type);
 
 	if (!chatTypeIndex.isValid())
@@ -239,7 +242,7 @@ void HistoryWindow::chatActivated(const QModelIndex &index)
 {
 	kdebugf();
 
-	Chat *chat = index.data(ChatRole).value<Chat *>();
+	Chat chat = index.data(ChatRole).value<Chat>();
 	if (!chat)
 		return;
 
@@ -264,7 +267,7 @@ void HistoryWindow::dateActivated(const QModelIndex &index)
 {
 	kdebugf();
 
-	Chat *chat = index.data(ChatRole).value<Chat *>();
+	Chat chat = index.data(ChatRole).value<Chat>();
 	if (!chat)
 		return;
 
@@ -274,10 +277,10 @@ void HistoryWindow::dateActivated(const QModelIndex &index)
 
 	QList<Message> messages = History::instance()->messages(chat, date);
 
-	AggregateChat *aggregate = qobject_cast<AggregateChat *>(chat);
-	if (aggregate)
-		ContentBrowser->setChat(aggregate->chats().at(0));
-	else
+// 	AggregateChat aggregate = qobject_cast<AggregateChat>(chat);
+// 	if (aggregate)
+// 		ContentBrowser->setChat(aggregate->chats().at(0));
+// 	else
 		ContentBrowser->setChat(chat);
 
 	ContentBrowser->clearMessages();
@@ -312,7 +315,7 @@ void HistoryWindow::toDateChanged(const QDate &date)
 void HistoryWindow::showMainPopupMenu(const QPoint &pos)
 {
 	bool isValid = true;
-	Chat *chat = ChatsTree->indexAt(pos).data(ChatRole).value<Chat *>();
+	Chat chat = ChatsTree->indexAt(pos).data(ChatRole).value<Chat>();
 	if (!chat)
 		isValid = false;
 
@@ -325,7 +328,7 @@ void HistoryWindow::showMainPopupMenu(const QPoint &pos)
 void HistoryWindow::showDetailsPopupMenu(const QPoint &pos)
 {
 	bool isValid = true;
-	Chat *chat = DetailsListView->indexAt(pos).data(ChatRole).value<Chat *>();
+	Chat chat = DetailsListView->indexAt(pos).data(ChatRole).value<Chat>();
 	QDate date = DetailsListView->indexAt(pos).data(DateRole).value<QDate>();
 
 	if (!chat || !date.isValid())
@@ -337,7 +340,7 @@ void HistoryWindow::showDetailsPopupMenu(const QPoint &pos)
 	DetailsPopupMenu->exec(QCursor::pos());
 }
 
-void HistoryWindow::show(Chat *chat)
+void HistoryWindow::show(Chat chat)
 {
 	if (!History::instance()->currentStorage())
 	{
@@ -355,7 +358,7 @@ void HistoryWindow::show(Chat *chat)
 void HistoryWindow::openChat()
 {
 	kdebugf();
-	Chat *chat = ChatsTree->currentIndex().data(ChatRole).value<Chat *>();
+	Chat chat = ChatsTree->currentIndex().data(ChatRole).value<Chat>();
 	if (!chat)
 		return;
 

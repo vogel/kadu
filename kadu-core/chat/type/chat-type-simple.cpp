@@ -7,22 +7,32 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CHAT_NOTIFICATION_H
-#define CHAT_NOTIFICATION_H
+#include "chat/chat-details-simple.h"
+#include "icons-manager.h"
 
-#include "account-notification.h"
+#include "chat-type-simple.h"
 
-#include "chat/chat.h"
-
-class ChatNotification : public AccountNotification
+int ChatTypeSimple::sortIndex() const
 {
-	Chat CurrentChat;
+	return 0;
+}
 
-public:
-	ChatNotification(Chat chat, const QString &type, const QIcon &icon);
-	virtual ~ChatNotification() {}
+QString ChatTypeSimple::name() const
+{
+	return "Simple";
+}
 
-	Chat chat() { return CurrentChat; }
-};
+QString ChatTypeSimple::displayName() const
+{
+	return tr("Chat");
+}
 
-#endif // CHAT_NOTIFICATION_H
+QIcon ChatTypeSimple::icon() const
+{
+	return IconsManager::instance()->loadIcon("OpenChat");
+}
+
+ChatDetails * ChatTypeSimple::createChatDetails(ChatShared *chatData) const
+{
+	return new ChatDetailsSimple(chatData);
+}

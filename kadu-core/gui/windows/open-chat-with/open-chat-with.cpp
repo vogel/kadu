@@ -16,6 +16,7 @@
 #include "accounts/account-manager.h"
 #include "buddies/model/buddy-list-model.h"
 #include "buddies/buddy-manager.h"
+#include "buddies/buddy-set.h"
 #include "configuration/xml-configuration-file.h"
 #include "core/core.h"
 #include "gui/widgets/chat-widget-manager.h"
@@ -107,7 +108,7 @@ void OpenChatWith::openChat(Buddy buddy)
 
 	if (!account.isNull() && !buddies.isEmpty() && !buddies.contains(Core::instance()->myself()))
 	{
-		Chat *chat = account.protocolHandler()->findChat(buddies);
+		Chat chat = account.protocolHandler()->findChat(buddies);
 		if (chat)
 		{
 			ChatWidgetManager::instance()->sendMessage(chat);

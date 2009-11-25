@@ -156,7 +156,7 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Sto
 		* @param contact kontakt, dla którego zmienił się status
 		* @param oldStatus poprzedni status
 		*/
-		void onTitleChanged(Chat *chatChanged, const QString &newTitle);
+		void onTitleChanged(Chat chatChanged, const QString &newTitle);
 
 		/**
 		* Slot zostaje wywołany w momencie zmiany aktywnej karty

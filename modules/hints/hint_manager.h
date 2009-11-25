@@ -39,7 +39,7 @@ private:
 	QLabel *overUserConfigurationIconLabel;
 	QLabel *overUserConfigurationTipLabel;
 
-	QMap<QPair<Chat *, QString>, Hint *> linkedHints;
+	QMap<QPair<Chat , QString>, Hint *> linkedHints;
 
 	/**
 		ustala r�g, od kt�rego b�dzie liczona pozycja grupy dymk�w

@@ -11,7 +11,7 @@
 
 #include "message.h"
 
-Message::Message(Chat *chat, Type type, Buddy sender) :
+Message::Message(Chat chat, Type type, Buddy sender) :
 		Data(new MessageData(chat, type, sender))
 {
 	if (Data.data())
@@ -47,14 +47,14 @@ void Message::statusChanged(Message::Status status)
 	emit statusChanged(*this, status);
 }
 
-Chat * Message::chat() const
+Chat Message::chat() const
 {
 	return Data.data()
 			? Data->chat()
-			: 0;
+			: Chat::null;
 }
 
-Message & Message::setChat(Chat *chat)
+Message & Message::setChat(Chat chat)
 {
 	if (Data.data())
 		Data->setChat(chat);

@@ -13,9 +13,10 @@
 #include <QtGui/QMessageBox>
 
 #include "accounts/account.h"
+#include "buddies/buddy.h"
+#include "buddies/buddy-set.h"
 #include "configuration/configuration-file.h"
 #include "configuration/xml-configuration-file.h"
-#include "buddies/buddy.h"
 #include "core/core.h"
 #include "file-transfer/file-transfer.h"
 #include "file-transfer/file-transfer-manager.h"

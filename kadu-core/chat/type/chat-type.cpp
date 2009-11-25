@@ -9,29 +9,12 @@
 
 #include "chat-type.h"
 
-ChatType::ChatType()
-{
-}
-
-ChatType::ChatType(int sortIndex, const QString &name, const QString &displayName, const QIcon &icon) :
-		SortIndex(sortIndex), Name(name), DisplayName(displayName), Icon(icon)
-{
-}
-
-ChatType::ChatType(const ChatType &copy)
-{
-	SortIndex = copy.SortIndex;
-	Name = copy.Name;
-	DisplayName = copy.DisplayName;
-	Icon = copy.Icon;
-}
-
 bool ChatType::operator == (const ChatType &compare) const
 {
-	return Name == compare.Name;
+	return name() == compare.name();
 }
 
 bool ChatType::operator < (const ChatType &compare) const
 {
-	return SortIndex < compare.SortIndex;
+	return sortIndex() < compare.sortIndex();
 }

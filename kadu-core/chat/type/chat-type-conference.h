@@ -7,22 +7,35 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CHAT_NOTIFICATION_H
-#define CHAT_NOTIFICATION_H
+#ifndef CHAT_TYPE_CONFERENCE_H
+#define CHAT_TYPE_CONFERENCE_H
 
-#include "account-notification.h"
+#include <QtCore/QString>
+#include <QtCore/QVariant>
+#include <QtGui/QIcon>
 
-#include "chat/chat.h"
+#include "chat/type/chat-type.h"
 
-class ChatNotification : public AccountNotification
+#include "exports.h"
+
+class KADUAPI ChatTypeConference : public ChatType
 {
-	Chat CurrentChat;
+	Q_OBJECT
+	Q_DISABLE_COPY(ChatTypeConference)
 
 public:
-	ChatNotification(Chat chat, const QString &type, const QIcon &icon);
-	virtual ~ChatNotification() {}
+	ChatTypeConference() {}
+	virtual ~ChatTypeConference() {}
 
-	Chat chat() { return CurrentChat; }
+	virtual int sortIndex() const;
+	virtual QString name() const;
+	virtual QString displayName() const;
+	virtual QIcon icon() const;
+
+	virtual ChatDetails * createChatDetails(ChatShared *chatData) const;
+
 };
 
-#endif // CHAT_NOTIFICATION_H
+Q_DECLARE_METATYPE(ChatTypeConference *)
+
+#endif // CHAT_TYPE_CONFERENCE_H

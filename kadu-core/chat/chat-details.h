@@ -7,35 +7,37 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CONFERENCE_CHAT_H
-#define CONFERENCE_CHAT_H
+#ifndef CHAT_DETAILS_H
+#define CHAT_DETAILS_H
 
-#include <QtCore/QObject>
-#include <QtCore/QUuid>
-
-#include "accounts/account.h"
-#include "chat/chat.h"
 #include "configuration/storable-object.h"
-#include "buddies/buddy-list.h"
 
-class XmlConfigFile;
+class BuddySet;
+class Chat;
+class ChatShared;
+class ChatType;
 
-class ConferenceChat : public Chat
+class ChatDetails : public QObject, public StorableObject
 {
-	BuddySet CurrentContacts;
+	Q_OBJECT
+
+	ChatShared *ChatData;
 
 public:
-	ConferenceChat(StoragePoint *storage);
-	ConferenceChat(Account parentAccount, BuddySet contacts, QUuid uuid = QUuid());
-	virtual ~ConferenceChat();
+	explicit ChatDetails(ChatShared *chat);
+	virtual ~ChatDetails();
 
-	virtual void load();
-	virtual void store();
+	ChatShared * chatData() { return ChatData; }
 
-	virtual ChatType type() const;
-	virtual BuddySet buddies() const { return CurrentContacts; }
-	virtual QString name() const;
+	virtual ChatType * type() const = 0;
+	virtual BuddySet buddies() const = 0;
+	virtual QString name() const = 0;
+
+signals:
+	void titleChanged(Chat chat, const QString &newTitle);
 
 };
 
-#endif // CONFERENCE_CHAT_H
+#include "chat/chat.h" // for MOC
+
+#endif // CHAT_DETAILS_H

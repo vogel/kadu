@@ -10,14 +10,14 @@
 #include "buddies/buddy-set-configuration-helper.h"
 
 #include "chat/aggregate-chat.h"
-
-AggregateChat::AggregateChat(Chat *chat) : 
+/*
+AggregateChat::AggregateChat(Chat chat) : 
 		Chat((StoragePoint *)0)
 {
 	Chats.append(chat);
 }
 
-AggregateChat::AggregateChat(QList<Chat *> chats) :
+AggregateChat::AggregateChat(QList<Chat> chats) :
 		Chat((StoragePoint *)0), Chats(chats)
 {
 }
@@ -34,17 +34,17 @@ void AggregateChat::store()
 {
 }
 
-void AggregateChat::addChat(Chat *chat)
+void AggregateChat::addChat(Chat chat)
 {
 	Chats.append(chat);
 }
 
-void AggregateChat::removeChat(Chat *chat)
+void AggregateChat::removeChat(Chat chat)
 {
 	if (Chats.size() == 1)
 		return;
 
-	foreach (Chat *c, Chats)
+	foreach (Chat c, Chats)
 	if (c->uuid() == chat->uuid())
 		Chats.removeAll(c);
-}
+}*/

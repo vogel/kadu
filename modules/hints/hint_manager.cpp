@@ -435,8 +435,8 @@ void HintManager::openChat(Hint *hint)
 
 void HintManager::chatWidgetActivated(ChatWidget *chatWidget)
 {
-	QPair<Chat *, QString> newChat = qMakePair(chatWidget->chat(), QString("NewChat"));
-	QPair<Chat *, QString> newMessage = qMakePair(chatWidget->chat(), QString("NewMessage"));
+	QPair<Chat , QString> newChat = qMakePair(chatWidget->chat(), QString("NewChat"));
+	QPair<Chat , QString> newMessage = qMakePair(chatWidget->chat(), QString("NewMessage"));
 
 	if (linkedHints.count(newChat))
 	{

@@ -7,36 +7,29 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "accounts/account-manager.h"
-#include "chat/type/chat-type-manager.h"
-#include "contacts/contact.h"
-#include "contacts/contact-manager.h"
 #include "buddies/buddy-manager.h"
-#include "protocols/protocol.h"
+#include "buddies/buddy-set.h"
+#include "chat/chat.h"
+#include "chat/type/chat-type-manager.h"
+#include "contacts/contact-manager.h"
 
-#include "simple-chat.h"
-#include "chat-manager.h"
+#include "chat-details-simple.h"
 
-SimpleChat::SimpleChat(StoragePoint *storage) :
-		Chat(storage), CurrentContact(Contact::null)
+ChatDetailsSimple::ChatDetailsSimple(ChatShared *chatData) :
+		ChatDetails(chatData), CurrentContact(Contact::null)
 {
 }
 
-SimpleChat::SimpleChat(Account currentAccount, Contact contact, QUuid uuid) :
-		Chat(currentAccount, uuid), CurrentContact(contact)
+ChatDetailsSimple::~ChatDetailsSimple()
 {
 }
 
-SimpleChat::~SimpleChat()
-{
-}
-
-void SimpleChat::load()
+void ChatDetailsSimple::load()
 {
 	if (!isValidStorage())
 		return;
 
-	Chat::load();
+	ChatDetails::load();
 
 	QString cadUuid = loadValue<QString>("Contact");
 	if (cadUuid.isNull())
@@ -50,40 +43,44 @@ void SimpleChat::load()
 		if (CurrentContact.isNull())
 		{
 			Buddy buddy = BuddyManager::instance()->byUuid(cadUuid);
-			CurrentContact = buddy.contact(account());
+			CurrentContact = buddy.contact(chatData()->chatAccount());
 		}
 	}
 
-	refreshTitle();
+	chatData()->refreshTitle();
 }
 
-void SimpleChat::store()
+void ChatDetailsSimple::store()
 {
 	if (!isValidStorage())
 		return;
 
-	Chat::store();
-	storeValue("Type", "Simple");
+	ensureLoaded();
 
 	if (!CurrentContact.isNull())
 		storeValue("Contact", CurrentContact.uuid().toString());
 }
 
-ChatType SimpleChat::type() const
+ChatType * ChatDetailsSimple::type() const
 {
 	return ChatTypeManager::instance()->chatType("SimpleChat");
 }
 
-BuddySet SimpleChat::buddies() const
+BuddySet ChatDetailsSimple::buddies() const
 {
 	if (CurrentContact.isNull())
 		return BuddySet();
 	return BuddySet(CurrentContact.ownerBuddy());
 }
 
-QString SimpleChat::name() const
+QString ChatDetailsSimple::name() const
 {
 	if (CurrentContact.isNull())
 		return QString::null;
 	return CurrentContact.ownerBuddy().display();
+}
+
+void ChatDetailsSimple::setContact(Contact contact)
+{
+	CurrentContact = contact;
 }

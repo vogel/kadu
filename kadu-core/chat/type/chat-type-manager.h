@@ -24,8 +24,8 @@ class KADUAPI ChatTypeManager : public QObject
 
 	static ChatTypeManager * Instance;
 
-	QList<ChatType> ChatTypes;
-	QMap<QString, ChatType> ChatTypesMap;
+	QList<ChatType *> ChatTypes;
+	QMap<QString, ChatType *> ChatTypesMap;
 
 	ChatTypeManager();
 	virtual ~ChatTypeManager();
@@ -33,18 +33,18 @@ class KADUAPI ChatTypeManager : public QObject
 public:
 	static ChatTypeManager * instance();
 
-	void addChatType(ChatType chatType);
-	void removeChatType(ChatType chatType);
+	void addChatType(ChatType *chatType);
+	void removeChatType(ChatType *chatType);
 
-	const QList<ChatType> & chatTypes() const { return ChatTypes; }
-	QList<ChatType> chatTypes() { return ChatTypes; }
-	ChatType chatType(const QString &name);
+	const QList<ChatType *> & chatTypes() const { return ChatTypes; }
+	QList<ChatType *> chatTypes() { return ChatTypes; }
+	ChatType * chatType(const QString &name);
 
 signals:
-	void chatTypeAboutToBeAdded(ChatType chatType);
-	void chatTypeAdded(ChatType chatType);
-	void chatTypeAboutToBeRemoved(ChatType chatType);
-	void chatTypeRemoved(ChatType chatType);
+	void chatTypeAboutToBeAdded(ChatType *chatType);
+	void chatTypeAdded(ChatType *chatType);
+	void chatTypeAboutToBeRemoved(ChatType *chatType);
+	void chatTypeRemoved(ChatType *chatType);
 
 };
 

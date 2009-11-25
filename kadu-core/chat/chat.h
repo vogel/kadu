@@ -10,55 +10,48 @@
 #ifndef CHAT_H
 #define CHAT_H
 
-#include <QtCore/QObject>
-#include <QtCore/QUuid>
-#include <QtGui/QPixmap>
-
-#include "accounts/account.h"
-#include "configuration/uuid-storable-object.h"
-#include "buddies/buddy-set.h"
-
+#include "chat/chat-shared.h"
+#include "shared/shared-base.h"
 #include "exports.h"
 
+class QPixmap;
+
+class Account;
+class BuddySet;
+class ChatDetails;
 class ChatType;
+class StoragePoint;
 
-class KADUAPI Chat : public QObject, public UuidStorableObject
+class KADUAPI Chat : public SharedBase<ChatShared>
 {
-	Q_OBJECT
-
-	Account CurrentAccount;
-	QUuid Uuid;
-	QString Title;
-	QPixmap Icon;
+	Chat(bool null);
 
 public:
-	static Chat * loadFromStorage(StoragePoint *conferenceStoragePoint);
+	static Chat create();
+	static Chat loadFromStorage(StoragePoint *storage);
+	static Chat null;
 
-	explicit Chat(StoragePoint *storage);
-	explicit Chat(Account parentAccount, QUuid uuid = QUuid());
+	Chat();
+	Chat(ChatShared *data);
+	Chat(QObject *data);
+	Chat(const Chat &copy);
 	virtual ~Chat();
 
-	virtual void load();
-	virtual void store();
+	Chat & operator = (const Chat &copy);
 
-	virtual QUuid uuid() const { return Uuid; }
-	virtual ChatType type() const = 0;
-	virtual BuddySet buddies() const = 0;
-	virtual QString name() const = 0;
-
-	Account account() { return CurrentAccount; }
-	void setTitle(const QString &newTitle);
-	QString title() { return Title; }
-	QPixmap icon() { return Icon; }
-
-public slots:
 	void refreshTitle();
 
-signals:
-	void titleChanged(Chat *chat, const QString &newTitle);
+	BuddySet buddies() const;
+	QString name() const;
+
+	KaduSharedBase_Property(ChatDetails *, details, Details)
+	KaduSharedBase_Property(Account, chatAccount, ChatAccount)
+	KaduSharedBase_Property(QString, type, Type)
+	KaduSharedBase_Property(QString, title, Title)
+	KaduSharedBase_Property(QPixmap, icon, Icon)
 
 };
 
-Q_DECLARE_METATYPE(Chat *)
+Q_DECLARE_METATYPE(Chat )
 
 #endif // CHAT_H

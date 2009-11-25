@@ -128,33 +128,33 @@ Buddy BuddiesListView::buddyAt(const QModelIndex &index) const
 	return model->buddyAt(index);
 }
 
-Chat * BuddiesListView::chatForIndex(const QModelIndex &index) const
+Chat BuddiesListView::chatForIndex(const QModelIndex &index) const
 {
 	if (!index.isValid())
-		return 0;
+		return Chat::null;
 
 	Account account = index.data(AccountRole).value<Account>();
 	if (account.isNull())
-		return 0;
+		return Chat::null;
 
 	Buddy con = buddyAt(index);
 	if (con.isNull())
-		return 0;
+		return Chat::null;
 
 	if (!account.protocolHandler())
-		return 0;
+		return Chat::null;
 
 	return account.protocolHandler()->findChat(BuddySet(con));
 }
 
-Chat * BuddiesListView::currentChat() const
+Chat  BuddiesListView::currentChat() const
 {
 	return chatForIndex(currentIndex());
 }
 
 void BuddiesListView::triggerActivate(const QModelIndex& index)
 {
-	Chat *chat = chatForIndex(index);
+	Chat chat = chatForIndex(index);
 	if (chat)
 		emit chatActivated(chat);
 }
