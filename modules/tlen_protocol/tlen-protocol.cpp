@@ -305,7 +305,7 @@ void TlenProtocol::chatMsgReceived(QDomNode n)
 	kdebugf();
 	bool ignore = false;
 	QDomElement msg = n.toElement();
-	QString from = msg.attribute("from").split("/")[0]); // but what about res?
+	QString from = msg.attribute("from").split("/")[0]; // but what about res?
 	QString body;
 	QDateTime timeStamp;
 
