@@ -43,8 +43,8 @@
 
 #include "activate.h"
 
-ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &caption, ConfigurationWindowDataManager *dataManager)
-	: QDialog(Core::instance()->kaduWindow(), Qt::Window), Name(name)
+ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &caption, const QString &section, ConfigurationWindowDataManager *dataManager)
+	: QDialog(Core::instance()->kaduWindow(), Qt::Window), Name(name), Section(section)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(caption);
@@ -70,12 +70,12 @@ ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &cap
 	main_layout->addWidget(configurationWidget);
 	main_layout->addWidget(buttons_layout);
 	
-	loadWindowGeometry(this, "General", name + "_Geometry", 0, 50, 790, 480);
+	loadWindowGeometry(this, section, name + "_Geometry", 0, 50, 790, 480);
 }
 
 ConfigurationWindow::~ConfigurationWindow()
 {
-	saveWindowGeometry(this, "General", this->name() + "_Geometry");
+	saveWindowGeometry(this, this->section(), this->name() + "_Geometry");
 }
 
 void ConfigurationWindow::show()
