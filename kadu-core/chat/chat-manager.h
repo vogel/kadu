@@ -34,10 +34,6 @@ class KADUAPI ChatManager : public QObject, public Manager<Chat>
 	ChatManager();
 	virtual ~ChatManager();
 
-private slots:
-	void chatTypeLoaded();
-	void chatTypeUnloaded();
-
 protected:
 	virtual QString configurationNodeName() { return QLatin1String("Chats"); }
 	virtual QString configurationNodeItemName() { return QLatin1String("Chat"); }
@@ -53,6 +49,10 @@ protected:
 
 public:
 	static ChatManager * instance();
+
+	// TODO: hide it someway...
+	void detailsLoaded(Chat chat);
+	void detailsUnloaded(Chat chat);
 
 signals:
 	void chatAboutToBeAdded(Chat chat);

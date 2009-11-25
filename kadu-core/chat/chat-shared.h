@@ -20,8 +20,9 @@
 class BuddySet;
 class Chat;
 class ChatDetails;
+class ChatManager;
 
-class KADUAPI ChatShared : public QObject, public Shared, public DetailsHolder<ChatDetails>, ChatTypeAwareObject
+class KADUAPI ChatShared : public QObject, public Shared, public DetailsHolder<ChatShared, ChatDetails, ChatManager>, ChatTypeAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(ChatShared)

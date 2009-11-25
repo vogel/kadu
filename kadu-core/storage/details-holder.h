@@ -10,10 +10,19 @@
 #ifndef DETAILS_HOLDER_H
 #define DETAILS_HOLDER_H
 
-template <class DetailsClass>
+template <class Class, class DetailsClass, class ManagerClass>
 class DetailsHolder
 {
 	DetailsClass *Details;
+
+	void setDetails()
+	{
+		if (!Details)
+			return;
+
+		detailsAdded();
+		ManagerClass::instance()->detailsLoaded((Class *)this);
+	}
 
 	void removeDetails()
 	{
@@ -23,6 +32,8 @@ class DetailsHolder
 		detailsAboutToBeRemoved();
 		delete Details;
 		Details = 0;
+
+		ManagerClass::instance()->detailsUnloaded((Class *)this);
 	}
 
 protected:
@@ -44,8 +55,7 @@ public:
 	{
 		removeDetails();
 		Details = details;
-		if (Details)
-			detailsAdded();
+		setDetails();
 	}
 
 	DetailsClass * details() const

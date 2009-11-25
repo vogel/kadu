@@ -59,16 +59,14 @@ void ChatManager::itemUnregistered(Chat item)
 	emit chatRemoved(item);
 }
 
-void ChatManager::chatTypeLoaded()
+void ChatManager::detailsLoaded(Chat chat)
 {
-	Chat chat(sender());
 	if (!chat.isNull())
 		registerItem(chat);
 }
 
-void ChatManager::chatTypeUnloaded()
+void ChatManager::detailsUnloaded(Chat chat)
 {
-	Chat chat(sender());
 	if (!chat.isNull())
 		unregisterItem(chat);
 }
