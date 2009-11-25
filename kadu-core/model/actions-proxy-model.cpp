@@ -25,33 +25,35 @@ ActionsProxyModel::~ActionsProxyModel()
 void ActionsProxyModel::setSourceModel(QAbstractItemModel *newSourceModel)
 {
 	QAbstractItemModel *currentModel = sourceModel();
-
-	disconnect(currentModel, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)),
-			this, SLOT(sourceDataChanged(const QModelIndex &, const QModelIndex &)));
-	disconnect(currentModel, SIGNAL(headerDataChanged(Qt::Orientation, int, int)),
-			this, SLOT(sourceHeaderDataChanged(Qt::Orientation, int, int)));
-	disconnect(currentModel, SIGNAL(rowsAboutToBeInserted(const QModelIndex &, int, int)),
-			this, SLOT(sourceRowsAboutToBeInserted(const QModelIndex &, int, int)));
-	disconnect(currentModel, SIGNAL(rowsInserted(const QModelIndex &, int, int)),
-			this, SLOT(sourceRowsInserted(const QModelIndex &, int, int)));
-	disconnect(currentModel, SIGNAL(columnsAboutToBeInserted(const QModelIndex &, int, int)),
-			this, SLOT(sourceColumnsAboutToBeInserted(const QModelIndex &, int, int)));
-	disconnect(currentModel, SIGNAL(columnsInserted(const QModelIndex &, int, int)),
-			this, SLOT(sourceColumnsInserted(const QModelIndex &, int, int)));
-	disconnect(currentModel, SIGNAL(rowsAboutToBeRemoved(const QModelIndex &, int, int)),
-			this, SLOT(sourceRowsAboutToBeRemoved(const QModelIndex &, int, int)));
-	disconnect(currentModel, SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
-			this, SLOT(sourceRowsRemoved(const QModelIndex &, int, int)));
-	disconnect(currentModel, SIGNAL(columnsAboutToBeRemoved(const QModelIndex &, int, int)),
-			this, SLOT(sourceColumnsAboutToBeRemoved(const QModelIndex &, int, int)));
-	disconnect(currentModel, SIGNAL(columnsRemoved(const QModelIndex &, int, int)),
-			this, SLOT(sourceColumnsRemoved(const QModelIndex &, int, int)));
-	disconnect(currentModel, SIGNAL(layoutAboutToBeChanged()),
-			this, SLOT(sourceLayoutAboutToBeChanged()));
-	disconnect(currentModel, SIGNAL(layoutChanged()),
-			this, SLOT(sourceLayoutChanged()));
-	disconnect(currentModel, SIGNAL(modelAboutToBeReset()), this, SLOT(sourceAboutToBeReset()));
-	disconnect(currentModel, SIGNAL(modelReset()), this, SLOT(sourceReset()));
+	if (currentModel)
+	{
+		disconnect(currentModel, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)),
+				this, SLOT(sourceDataChanged(const QModelIndex &, const QModelIndex &)));
+		disconnect(currentModel, SIGNAL(headerDataChanged(Qt::Orientation, int, int)),
+				this, SLOT(sourceHeaderDataChanged(Qt::Orientation, int, int)));
+		disconnect(currentModel, SIGNAL(rowsAboutToBeInserted(const QModelIndex &, int, int)),
+				this, SLOT(sourceRowsAboutToBeInserted(const QModelIndex &, int, int)));
+		disconnect(currentModel, SIGNAL(rowsInserted(const QModelIndex &, int, int)),
+				this, SLOT(sourceRowsInserted(const QModelIndex &, int, int)));
+		disconnect(currentModel, SIGNAL(columnsAboutToBeInserted(const QModelIndex &, int, int)),
+				this, SLOT(sourceColumnsAboutToBeInserted(const QModelIndex &, int, int)));
+		disconnect(currentModel, SIGNAL(columnsInserted(const QModelIndex &, int, int)),
+				this, SLOT(sourceColumnsInserted(const QModelIndex &, int, int)));
+		disconnect(currentModel, SIGNAL(rowsAboutToBeRemoved(const QModelIndex &, int, int)),
+				this, SLOT(sourceRowsAboutToBeRemoved(const QModelIndex &, int, int)));
+		disconnect(currentModel, SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
+				this, SLOT(sourceRowsRemoved(const QModelIndex &, int, int)));
+		disconnect(currentModel, SIGNAL(columnsAboutToBeRemoved(const QModelIndex &, int, int)),
+				this, SLOT(sourceColumnsAboutToBeRemoved(const QModelIndex &, int, int)));
+		disconnect(currentModel, SIGNAL(columnsRemoved(const QModelIndex &, int, int)),
+				this, SLOT(sourceColumnsRemoved(const QModelIndex &, int, int)));
+		disconnect(currentModel, SIGNAL(layoutAboutToBeChanged()),
+				this, SLOT(sourceLayoutAboutToBeChanged()));
+		disconnect(currentModel, SIGNAL(layoutChanged()),
+				this, SLOT(sourceLayoutChanged()));
+		disconnect(currentModel, SIGNAL(modelAboutToBeReset()), this, SLOT(sourceAboutToBeReset()));
+		disconnect(currentModel, SIGNAL(modelReset()), this, SLOT(sourceReset()));
+	}
 
 	QAbstractProxyModel::setSourceModel(newSourceModel);
 
