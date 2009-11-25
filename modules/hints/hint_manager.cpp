@@ -805,8 +805,8 @@ void HintManager::createDefaultConfiguration()
 	config_file.addVariable("Hints", "HintOverUser_bgcolor", &qApp->palette().background().color());
 	config_file.addVariable("Hints", "HintOverUser_fgcolor", &qApp->palette().foreground().color());
 	config_file.addVariable("Hints", "HintOverUser_font", qApp->font());
-	config_file.addVariable("General", "HintOverUser_Geometry", "50, 50, 640, 610");
-	config_file.addVariable("General", "HintEventConfiguration_Geometry", "50, 50, 520, 345");
+	config_file.addVariable("Hints", "HintOverUser_Geometry", "50, 50, 640, 610");
+	config_file.addVariable("Hints", "HintEventConfiguration_Geometry", "50, 50, 520, 345");
 }
 
 HintManager *hint_manager = NULL;

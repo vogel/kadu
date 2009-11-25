@@ -23,7 +23,7 @@
 QMap<QString, HintsConfigurationWindow *> HintsConfigurationWindow::ConfigurationWindows;
 
 HintsConfigurationWindow::HintsConfigurationWindow(const QString &eventName, NotifierConfigurationDataManager *dataManager) :
-	ConfigurationWindow("HintEventConfiguration", tr("Hints configuration"), dataManager), EventName(eventName)
+	ConfigurationWindow("HintEventConfiguration", tr("Hints configuration"), "Hints", dataManager), EventName(eventName)
 {
 	widget()->appendUiFile(dataPath("kadu/modules/configuration/hints-notifier.ui"));
 
