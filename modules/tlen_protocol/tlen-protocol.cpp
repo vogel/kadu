@@ -25,6 +25,9 @@
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 
+#include "buddies/group.h"
+#include "buddies/group-manager.h"
+
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/password-window.h"
@@ -302,7 +305,7 @@ void TlenProtocol::chatMsgReceived(QDomNode n)
 	kdebugf();
 	bool ignore = false;
 	QDomElement msg = n.toElement();
-	QString from = msg.attribute("from");
+	QString from = msg.attribute("from").split("/")[0]; // but what about res?
 	QString body;
 	QDateTime timeStamp;
 
@@ -516,8 +519,13 @@ void TlenProtocol::itemReceived(QString jid, QString name, QString subscription,
 
 	Buddy buddy = BuddyManager::instance()->byId(account(), jid);
 
-	if(!name.isNull())
+	if(name.isEmpty())
+		buddy.setDisplay(jid);
+	else
 		buddy.setDisplay(name);
+
+	if(!group.isEmpty())
+		buddy.addToGroup(GroupManager::instance()->byName(group, true /* create group */));
 
  	if (buddy.isAnonymous())
 		buddy.setAnonymous(false);
@@ -553,7 +561,8 @@ void TlenProtocol::presenceChanged(QString from, QString newstatus, QString desc
 	if (!description.isEmpty())
 		status.setDescription(description);
 
-	Buddy buddy = BuddyManager::instance()->byId(account(), from);
+	// find user@server
+	Buddy buddy = BuddyManager::instance()->byId(account(), from.split("/")[0]); // but what about res?
 
 	kdebugm(KDEBUG_WARNING, "Tlen status change: %s %s\n%s", qPrintable(from), qPrintable(newstatus), qPrintable(description));
 

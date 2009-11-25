@@ -259,9 +259,9 @@ void TabsManager::onDestroyingChat(ChatWidget* chat)
 	detachedchats.removeOne(chat);
 	chatsWithNewMessages.removeOne(chat);
 	disconnect(chat->edit(), SIGNAL(keyPressed(QKeyEvent*, CustomInput*, bool&)), tabdialog, SLOT(chatKeyPressed(QKeyEvent*, CustomInput*, bool&)));
-	disconnect(chat, SIGNAL(messageReceived(ChatWidget *)), this, SLOT(onMessageReceived(ChatWidget *)));
+	disconnect(chat, SIGNAL(messageReceived(Chat)), this, SLOT(onMessageReceived(Chat)));
 	disconnect(chat, SIGNAL(closed()), this, SLOT(closeChat()));
-	disconnect(chat, SIGNAL(titleChanged(Chat , const QString &)), this, SLOT(onTitleChanged(Chat , const QString &)));
+	disconnect(chat->chat(), SIGNAL(titleChanged(Chat , const QString &)), this, SLOT(onTitleChanged(Chat , const QString &)));
 	kdebugf2();
 }
 
@@ -324,18 +324,23 @@ void TabsManager::onOpenChat(ChatWidget *chat)
 	kdebugf2();
 }
 
-void TabsManager::onMessageReceived(ChatWidget *chat)
+void TabsManager::onMessageReceived(Chat chat)
 {
 	kdebugf();
-	if (!(chatsWithNewMessages.contains(chat)) && ((tabdialog->currentWidget() != chat) || !_isActiveWindow(tabdialog)))
+
+	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat, false);
+	if (!chatWidget)
+		return;
+
+	if (!(chatsWithNewMessages.contains(chatWidget)) && ((tabdialog->currentWidget() != chatWidget) || !_isActiveWindow(tabdialog)))
 	{
-		chatsWithNewMessages.append(chat);
+		chatsWithNewMessages.append(chatWidget);
 		if (!timer.isActive())
 			timer.start(500);
 	}
 	// jezelo chat jest aktywny zerujemy licznik nowych wiadomosci
-	if (_isActiveWindow(tabdialog) && tabdialog->currentWidget() == chat)
-		chat->markAllMessagesRead();
+	if (_isActiveWindow(tabdialog) && tabdialog->currentWidget() == chatWidget)
+		chatWidget->markAllMessagesRead();
 	kdebugf2();
 }
 
@@ -427,9 +432,9 @@ void TabsManager::insertTab(ChatWidget* chat)
 
 	connect(chat->edit(), SIGNAL(keyPressed(QKeyEvent*, CustomInput*, bool&)), tabdialog, SLOT(chatKeyPressed(QKeyEvent*, CustomInput*, bool&)));
 	// Podlaczamy sie do nowej wiadomości w chacie, tylko jesli dodany on zostal do kart
-	connect(chat, SIGNAL(messageReceived(ChatWidget *)), this, SLOT(onMessageReceived(ChatWidget *)));
+	connect(chat, SIGNAL(messageReceived(Chat)), this, SLOT(onMessageReceived(Chat)));
 	connect(chat, SIGNAL(closed()), this, SLOT(closeChat()));
-	connect(chat, SIGNAL(titleChanged(Chat , const QString &)), this, SLOT(onTitleChanged(Chat , const QString &)));
+	connect(chat->chat(), SIGNAL(titleChanged(Chat , const QString &)), this, SLOT(onTitleChanged(Chat , const QString &)));
 
 	kdebugf2();
 }
