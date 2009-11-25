@@ -7,10 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "configuration/configuration-manager.h"
-#include "core/core.h"
-#include "chat.h"
-#include "chat-manager.h"
+#include "chat/chat-manager.h"
 
 ChatManager * ChatManager::Instance = 0;
 
@@ -24,142 +21,54 @@ ChatManager *  ChatManager::instance()
 
 ChatManager::ChatManager()
 {
-	ConfigurationManager::instance()->registerStorableObject(this);
 }
 
 ChatManager::~ChatManager()
 {
-	ConfigurationManager::instance()->unregisterStorableObject(this);
 }
 
-StoragePoint * ChatManager::createStoragePoint()
+void ChatManager::itemAdded(Chat item)
 {
-	return new StoragePoint(xml_config_file, xml_config_file->getNode("Chats"));
+	connect(item, SIGNAL(chatTypeLoaded()), this, SLOT(chatTypeLoaded()));
+	connect(item, SIGNAL(chatTypeUnloaded()), this, SLOT(chatTypeUnloaded()));
 }
 
-void ChatManager::load()
+void ChatManager::itemRemoved(Chat item)
 {
-	if (!isValidStorage())
-		return;
-
-	if (!needsLoad())
-		return;
-
-	StorableObject::load();
-
-	XmlConfigFile *configurationStorage = storage()->storage();
-	QDomElement chatsNode = storage()->point();
-
-	if (chatsNode.isNull())
-		return;
-
-	// TODO 0.6.6: by tag does not work, this works only if childNodes are "Chat"
-	QDomNodeList chatNodes = chatsNode.childNodes();
-	//QDomNodeList chatNodes = chatsNode.elementsByTagName("Chat");
-
-	int count = chatNodes.count();
-
-	for (int i = 0; i < count; i++)
-	{
-		QDomElement chatElement = chatNodes.at(i).toElement();
-		if (chatElement.isNull())
-			continue;
-
-		StoragePoint *contactStoragePoint = new StoragePoint(configurationStorage, chatElement);
-		Chat chat = Chat::loadFromStorage(contactStoragePoint);
-
-		addChat(chat);
-	}
+	disconnect(item, SIGNAL(chatTypeLoaded()), this, SLOT(chatTypeLoaded()));
+	disconnect(item, SIGNAL(chatTypeUnloaded()), this, SLOT(chatTypeUnloaded()));
 }
 
-void ChatManager::store()
+void ChatManager::itemAboutToBeRegistered(Chat item)
 {
-	ensureLoaded();
-
-	foreach (Chat chat, AllChats)
-		chat.store();
+	emit chatAboutToBeAdded(item);
 }
 
-void ChatManager::registerChat(Chat chat)
+void ChatManager::itemRegisterd(Chat item)
 {
-	if (Chats.contains(chat))
-		return;
-
-	emit chatAboutToBeAdded(chat);
-	Chats.append(chat);
-	emit chatAdded(chat);
+	emit chatAdded(item);
 }
 
-void ChatManager::unregisterChat(Chat chat)
+void ChatManager::itemAboutToBeUnregisterd(Chat item)
 {
-	if (!Chats.contains(chat))
-		return;
-
-	printf("chat unregistered\n");
-
-	emit chatAboutToBeRemoved(chat);
-	chat.removeFromStorage();
-	emit chatRemoved(chat);
+	emit chatAboutToBeRemoved(item);
 }
 
-void ChatManager::addChat(Chat chat)
+void ChatManager::itemUnregistered(Chat item)
 {
-	ensureLoaded();
-
-	if (AllChats.contains(chat))
-		return;
-
-	connect(chat, SIGNAL(chatTypeLoaded()), this, SLOT(chatTypeLoaded()));
-	connect(chat, SIGNAL(chatTypeUnloaded()), this, SLOT(chatTypeUnloaded()));
-
-	AllChats.append(chat);
-	if (chat.details())
-		registerChat(chat);
-}
-
-void ChatManager::removeChat(Chat chat)
-{
-	ensureLoaded();
-
-	if (!AllChats.contains(chat))
-		return;
-
-	disconnect(chat, SIGNAL(chatTypeLoaded()), this, SLOT(chatTypeLoaded()));
-	disconnect(chat, SIGNAL(chatTypeUnloaded()), this, SLOT(chatTypeUnloaded()));
-
-	AllChats.removeAll(chat);
-	if (chat.details())
-		unregisterChat(chat);
+	emit chatRemoved(item);
 }
 
 void ChatManager::chatTypeLoaded()
 {
 	Chat chat(sender());
 	if (!chat.isNull())
-		registerChat(chat);
+		registerItem(chat);
 }
 
 void ChatManager::chatTypeUnloaded()
 {
 	Chat chat(sender());
 	if (!chat.isNull())
-		unregisterChat(chat);
-}
-
-QList<Chat> ChatManager::chats()
-{
-	ensureLoaded();
-
-	return Chats;
-}
-
-Chat  ChatManager::byUuid(QUuid uuid)
-{
-	ensureLoaded();
-
-	foreach (Chat chat, Chats)
-		if (chat.uuid() == uuid)
-			return chat;
-
-	return Chat::null;
+		unregisterItem(chat);
 }

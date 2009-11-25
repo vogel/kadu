@@ -105,7 +105,7 @@ void Protocol::networkStateChanged(NetworkState state)
 
 Chat Protocol::findChat(BuddySet contacts, bool create)
 {
-	foreach (Chat c, ChatManager::instance()->chats())
+	foreach (Chat c, ChatManager::instance()->items())
 		if (c.chatAccount() == account() && c.buddies() == contacts)
 			return c;
 
@@ -135,7 +135,7 @@ Chat Protocol::findChat(BuddySet contacts, bool create)
 	}
 
 	chat.setDetails(details);
-	ChatManager::instance()->addChat(chat);
+	ChatManager::instance()->addItem(chat);
 
 	return chat;
 }
