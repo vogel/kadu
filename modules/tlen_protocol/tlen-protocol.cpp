@@ -25,6 +25,9 @@
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 
+#include "buddies/group.h"
+#include "buddies/group-manager.h"
+
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/password-window.h"
@@ -519,6 +522,8 @@ void TlenProtocol::itemReceived(QString jid, QString name, QString subscription,
 	if(!name.isNull())
 		buddy.setDisplay(name);
 
+	if(!group.isEmpty())
+		buddy.addToGroup(GroupManager::instance()->byName(group, true /* create group */));
  	if (buddy.isAnonymous())
 		buddy.setAnonymous(false);
 
