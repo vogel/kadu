@@ -519,11 +519,14 @@ void TlenProtocol::itemReceived(QString jid, QString name, QString subscription,
 
 	Buddy buddy = BuddyManager::instance()->byId(account(), jid);
 
-	if(!name.isNull())
+	if(name.isEmpty())
+		buddy.setDisplay(jid);
+	else
 		buddy.setDisplay(name);
 
 	if(!group.isEmpty())
 		buddy.addToGroup(GroupManager::instance()->byName(group, true /* create group */));
+
  	if (buddy.isAnonymous())
 		buddy.setAnonymous(false);
 
