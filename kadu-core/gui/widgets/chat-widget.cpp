@@ -20,7 +20,7 @@
 #include "buddies/buddy-set.h"
 #include "chat/chat-manager.h"
 #include "chat/message/message-render-info.h"
-#include "configuration/configuration-file.h""
+#include "configuration/configuration-file.h"
 #include "contacts/contact.h"
 #include "core/core.h"
 #include "gui/hot-key.h"
