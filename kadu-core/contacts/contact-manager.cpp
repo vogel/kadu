@@ -96,6 +96,7 @@ void ContactManager::addContact(Contact contact)
 
 	emit contactAboutToBeAdded(contact);
 	LoadedContacts.append(contact);
+	AllContacts.append(contact);
 	emit contactAdded(contact);
 }
 
@@ -130,10 +131,10 @@ Contact ContactManager::byId(Account account, const QString &id)
 {
 	ensureLoaded();
 
-	if (id.isEmpty())
+	if (id.isEmpty() || account.isNull())
 		return Contact::null;
 
-	foreach (const Contact &contact, AllContacts)
+	foreach (const Contact &contact, contacts(account))
 		if (id == contact.id())
 			return contact;
 
@@ -150,9 +151,8 @@ QList<Contact> ContactManager::contacts(Account account)
 		return contacts;
 
 	foreach (const Contact &contact, AllContacts)
-		if (!contact.isNull())
-			if (account == contact.contactAccount())
-				contacts.append(contact);
+		if (account == contact.contactAccount())
+			contacts.append(contact);
 
 	return contacts;
 }
