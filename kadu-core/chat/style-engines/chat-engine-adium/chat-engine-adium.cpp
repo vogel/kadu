@@ -144,14 +144,14 @@ void AdiumChatStyleEngine::appendMessage(HtmlMessagesRenderer *renderer, Message
 void AdiumChatStyleEngine::refreshView(HtmlMessagesRenderer *renderer)
 {
 	QString styleBaseHtml = CurrentStyle.templateHtml();
-	styleBaseHtml.replace(styleBaseHtml.indexOf("%@"), 2,"file://" + CurrentStyle.baseHref());
+	styleBaseHtml.replace(styleBaseHtml.indexOf("%@"), 2, "file://" + CurrentStyle.baseHref());
 	styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, replaceKeywords(renderer->chat(), CurrentStyle.baseHref(), CurrentStyle.footerHtml()));
 	styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, replaceKeywords(renderer->chat(), CurrentStyle.baseHref(), CurrentStyle.headerHtml()));
 	//TODO: implement style versions:
 	if (CurrentStyle.currentVariant() != "Default")
-		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2,"Variants/" + CurrentStyle.currentVariant());
+		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, "Variants/" + CurrentStyle.currentVariant());
 	else
-		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2,"main.css");
+		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, "main.css");
 
 	if (styleBaseHtml.contains("%@"))
 		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, "@import url( \"main.css\" );");
@@ -211,7 +211,7 @@ void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNa
 	Message msg = message->message();
 
 	QString styleBaseHtml = style.templateHtml();
-	styleBaseHtml.replace(styleBaseHtml.indexOf("%@"), 2,"file://" + style.baseHref());
+	styleBaseHtml.replace(styleBaseHtml.indexOf("%@"), 2, "file://" + style.baseHref());
 	styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, replaceKeywords(msg.chat(), style.baseHref(), style.footerHtml()));
 	styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, replaceKeywords(msg.chat(), style.baseHref(), style.headerHtml()));
 	//TODO: implement style versions:
@@ -230,14 +230,14 @@ void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNa
 	incomingHtml.replace("\n", " ");
 	incomingHtml.prepend("<span>");
 	incomingHtml.append("</span>");
-	preview->page()->mainFrame()->evaluateJavaScript("appendMessage(\'"+ incomingHtml +"\')");
+	preview->page()->mainFrame()->evaluateJavaScript("appendMessage(\'" + incomingHtml + "\')");
 
 	message = dynamic_cast<MessageRenderInfo *>(preview->getObjectsToParse().at(1));
 	QString outgoingHtml = replaceKeywords(msg.chat(), style.baseHref(), style.outgoingHtml(), message);
 	outgoingHtml.replace("\n", " ");
 	outgoingHtml.prepend("<span>");
 	outgoingHtml.append("</span>");
-	preview->page()->mainFrame()->evaluateJavaScript("appendMessage(\'"+ outgoingHtml +"\')");
+	preview->page()->mainFrame()->evaluateJavaScript("appendMessage(\'" + outgoingHtml + "\')");
 }
 
 // Some parts of the code below are borrowed from Kopete project (http://kopete.kde.org/)
@@ -250,20 +250,18 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, const QString &styleHre
 	QString name;
 
 //TODO: get Chat name (contacts' nicks?)
-	if (chat)
+	// Replace %chatName% //TODO. Find way to dynamic update this tag (add id ?)
+	int uinsSize = chat.buddies().count();
+	int i = 0;
+
+	foreach (const Buddy &buddy, chat.buddies())
 	{
-		// Replace %chatName% //TODO. Find way to dynamic update this tag (add id ?)
-		int uinsSize = chat.buddies().count();
-		int i = 0;
+		name.append(buddy.display());
 
-		foreach (const Buddy &buddy, chat.buddies())
-		{
-			name.append(buddy.display());
-
-			if (++i < uinsSize)
-				name.append(", ");
-		}
+		if (++i < uinsSize)
+			name.append(", ");
 	}
+
 	result.replace(QString("%chatName%"), name);
 	// Replace %sourceName%
 	result.replace(QString("%sourceName%"), chat.chatAccount().name());
@@ -274,7 +272,7 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, const QString &styleHre
 
 	//TODO 0.6.6: get real time!!!
 	QRegExp timeRegExp("%timeOpened\\{([^}]*)\\}%");
-	int pos=0;
+	int pos = 0;
 	while ((pos=timeRegExp.indexIn(result, pos)) != -1)
 		result.replace(pos, timeRegExp.cap(0).length(), timeFormatter->convertTimeDate(timeRegExp.cap(1), QDateTime::currentDateTime()));
 
@@ -362,11 +360,11 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, const QString &styleHre
 	QString lightColorName;
 	QRegExp senderColorRegExp("%senderColor(?:\\{([^}]*)\\})?%");
 	textPos = 0;
-	while((textPos = senderColorRegExp.indexIn(result, textPos)) != -1)
+	while ((textPos = senderColorRegExp.indexIn(result, textPos)) != -1)
 	{
 		int light = 100;
 		bool doLight = false;
-		if(senderColorRegExp.numCaptures()>=1)
+		if (senderColorRegExp.numCaptures() >= 1)
 			light = senderColorRegExp.cap(1).toUInt(&doLight);
 
 		if (doLight && lightColorName.isNull())
@@ -381,4 +379,3 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, const QString &styleHre
 
 	return result;
 }
-
