@@ -20,6 +20,7 @@
 #include "buddies/buddy-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"
+#include "contacts/contact-manager.h"
 #include "gui/windows/message-dialog.h"
 
 #include "debug.h"
@@ -213,15 +214,14 @@ void DccManager::socketNotifiersDestroyed(QObject *socketNotifiers)
 	SocketNotifiers.removeAll(dynamic_cast<DccSocketNotifiers *>(socketNotifiers));
 }
 
-void DccManager::connectionRequestReceived(Buddy buddy)
+void DccManager::connectionRequestReceived(Contact contact)
 {
 	kdebugf();
 
-	Contact contact = buddy.contact(Protocol->account());
 	if (contact.isNull())
 		return;
 
-	GaduContactDetails *details = Protocol->gaduContactDetails(buddy);
+	GaduContactDetails *details = Protocol->gaduContactDetails(contact);
 	if (!details)
 		return;
 
@@ -243,18 +243,16 @@ bool DccManager::acceptConnection(unsigned int uin, unsigned int peerUin, unsign
 	if (!gaduAccountDetails)
 		return false;
 
-	Buddy buddy = BuddyManager::instance()->byId(Protocol->account(), QString::number(peerUin));
+	Contact contact = ContactManager::instance()->byId(Protocol->account(), QString::number(peerUin));
+	if (contact.isNull())
+		return false;
+
+	Buddy buddy = contact.ownerBuddy();
 	if (uin != gaduAccountDetails->uin() || buddy.isAnonymous() || buddy.isNull())
 	{
 		kdebugm(KDEBUG_WARNING, "insane values: uin:%d peer_uin:%d\n", uin, peerUin);
 		return false;
 	}
-
-	Contact contact = buddy.contact(Protocol->account());
-	if (contact.isNull())
-		return false;
-
-	BuddyList buddies(buddy);
 
 	if (buddy.isIgnored())
 	{
@@ -282,7 +280,7 @@ bool DccManager::acceptConnection(unsigned int uin, unsigned int peerUin, unsign
 void DccManager::needIncomingFileTransferAccept(DccSocketNotifiers *socket)
 {
 	GaduFileTransfer *gft = new GaduFileTransfer(Protocol->account(),
-			BuddyManager::instance()->byId(Protocol->account(), QString::number(socket->peerUin())),
+			ContactManager::instance()->byId(Protocol->account(), QString::number(socket->peerUin())),
 			FileTransfer::TypeReceive);
 
 	gft->setFileTransferNotifiers(socket);
@@ -295,7 +293,7 @@ GaduFileTransfer * DccManager::findFileTransfer(DccSocketNotifiers *notifiers)
 {
 	foreach (GaduFileTransfer *gft, WaitingFileTransfers)
 	{
-		UinType uin = Protocol->uin(gft->buddy());
+		UinType uin = Protocol->uin(gft->contact());
 		if (uin == notifiers->peerUin())
 		{
 			disconnectSocketNotifiers(notifiers);
@@ -414,7 +412,7 @@ void DccManager::attachSendFileTransferSocket6(unsigned int uin, Contact contact
 	if (contact.isNull())
 		return;
 
-	GaduContactDetails *details = dynamic_cast<GaduContactDetails *>(contact.details());
+	GaduContactDetails *details = Protocol->gaduContactDetails(contact);
 	if (!details)
 		return;
 
@@ -445,7 +443,7 @@ void DccManager::attachSendFileTransferSocket7(unsigned int uin, Contact contact
 	if (contact.isNull())
 		return;
 
-	GaduContactDetails *details = dynamic_cast<GaduContactDetails *>(contact.details());
+	GaduContactDetails *details = Protocol->gaduContactDetails(contact);
 	if (!details)
 		return;
 
@@ -467,12 +465,11 @@ void DccManager::attachSendFileTransferSocket7(unsigned int uin, Contact contact
 
 void DccManager::attachSendFileTransferSocket(GaduFileTransfer *gft)
 {
-	Buddy peer = gft->buddy();
-	Contact contact = peer.contact(Protocol->account());
+	Contact contact = gft->contact();
 	if (contact.isNull())
 		return;
 
-	GaduContactDetails *details = Protocol->gaduContactDetails(peer);
+	GaduContactDetails *details = Protocol->gaduContactDetails(contact);
 	if (!details)
 		return;
 

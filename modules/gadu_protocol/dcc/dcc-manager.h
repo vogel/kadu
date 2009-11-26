@@ -61,7 +61,7 @@ class DccManager : public QObject
 	friend class DccSocketNotifiers;
 	void handleEventDccNew(struct gg_event *e);
 
-	void connectionRequestReceived(Buddy buddy);
+	void connectionRequestReceived(Contact contact);
 	bool acceptConnection(unsigned int uin, unsigned int peerUin, unsigned int peerAddr);
 	void needIncomingFileTransferAccept(DccSocketNotifiers *socket);
 

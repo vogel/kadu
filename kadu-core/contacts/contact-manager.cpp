@@ -126,6 +126,37 @@ Contact ContactManager::byIndex(unsigned int index)
 	return LoadedContacts.at(index);
 }
 
+Contact ContactManager::byId(Account account, const QString &id)
+{
+	ensureLoaded();
+
+	if (id.isEmpty())
+		return Contact::null;
+
+	foreach (const Contact &contact, AllContacts)
+		if (id == contact.id())
+			return contact;
+
+	return Contact::null;
+}
+
+QList<Contact> ContactManager::contacts(Account account)
+{
+	ensureLoaded();
+
+	QList<Contact> contacts;
+	
+	if (account.isNull())
+		return contacts;
+
+	foreach (const Contact &contact, AllContacts)
+		if (!contact.isNull())
+			if (account == contact.contactAccount())
+				contacts.append(contact);
+
+	return contacts;
+}
+
 Contact ContactManager::byUuid(const QString &uuid)
 {
 	ensureLoaded();

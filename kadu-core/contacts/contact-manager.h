@@ -49,10 +49,13 @@ public:
 
 	void addContact(Contact contact);
 	void removeContact(Contact contact);
-	
+	void changeContactId(Contact contact, const QString &oldId);
+
 	unsigned int count() { return LoadedContacts.count(); }
 
 	Contact byIndex(unsigned int index);
+	Contact byId(Account account, const QString &id);
+	QList<Contact> contacts(Account account);
 	Contact byUuid(const QString &uuid);
 	Contact byContactShared(ContactShared *data);
 
@@ -61,6 +64,8 @@ signals:
 	void contactAdded(Contact contact);
 	void contactAboutToBeRemoved(Contact contact);
 	void contactRemoved(Contact contact);
+	// TODO emit somewhere
+	void contactIdChanged(Contact contact, const QString &oldId);
 
 };
 

@@ -10,6 +10,8 @@
 #ifndef BUDDY_GENERAL_CONFIGURATION_WIDGET_H
 #define BUDDY_GENERAL_CONFIGURATION_WIDGET_H
 
+#include <QtCore/QList>
+#include <QtCore/QUuid>
 #include <QtGui/QComboBox>
 #include <QtGui/QDialog>
 #include <QtGui/QGridLayout>
@@ -17,6 +19,7 @@
 #include <QtGui/QTreeView>
 
 #include "buddies/buddy.h"
+#include "contacts/contact.h"
 #include "contacts/model/buddy-contact-model.h"
 
 #include "exports.h"
@@ -38,6 +41,7 @@ class KADUAPI BuddyGeneralConfigurationWidget : public QWidget
 	QDialog *OrderDialog;
 
 	QList<QLineEdit *> ContactsIds;
+	QList<QUuid> ContactsUuids;
 	QList<QComboBox *> ContactsAccounts;
 
 	QGridLayout *AccountsLayout;

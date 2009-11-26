@@ -93,10 +93,11 @@ void StatusChangedNotification::unregisterEvents()
 
 StatusChangedNotification::StatusChangedNotification(const QString &toStatus, BuddySet &contacts, Account account) :
 		ChatNotification(account.protocolHandler()->findChat(contacts), QString("StatusChanged") + toStatus,
-			account.protocolHandler()->statusPixmap(contacts.begin()->contact(account).currentStatus()))
+			contacts.toContactList(account)[0].contactAccount().protocolHandler()->statusPixmap(contacts.toContactList(account)[0].currentStatus()))
 {
-	const Buddy &buddy = *contacts.begin();
-	Status status = buddy.contact(account).currentStatus();
+	// TODO 0.6.6: move above to constructor ?? - no - move to ContactList
+	Contact contact = contacts.toContactList(account)[0];
+	Status status = contact.currentStatus();
 	QString syntax;
 
 	if (!status.description().isNull())
@@ -106,7 +107,7 @@ StatusChangedNotification::StatusChangedNotification(const QString &toStatus, Bu
 
 	setTitle(tr("Status changed"));
 	setText(narg(syntax,
-		Qt::escape(buddy.display()),
+		Qt::escape(contact.ownerBuddy().display()),
 		qApp->translate("@default", Status::name(status, false).toAscii().data()),
 		Qt::escape(status.description())
 	));

@@ -102,11 +102,7 @@ Contact BuddiesModelBase::buddyDefaultAccountData(const QModelIndex &index) cons
 	if (buddy.isNull())
 		return Contact::null;
 
-	Account account = buddy.prefferedAccount();
-	if (account.isNull())
-		account = AccountManager::instance()->defaultAccount();
-	
-	return buddy.contact(account);
+	return buddy.prefferedContact();
 }
 
 Contact BuddiesModelBase::buddyAccountData(const QModelIndex &index, int accountIndex) const

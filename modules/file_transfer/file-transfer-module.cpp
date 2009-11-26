@@ -191,13 +191,14 @@ void FileTransferModule::selectFilesAndSend(BuddySet contacts)
 	foreach (const Buddy &buddy, contacts)
 	{
 		Account account = buddy.prefferedAccount();
+		Contact contact = buddy.prefferedContact();
 		FileTransferService *service = account.protocolHandler()->fileTransferService();
 		if (!service)
 			continue;
 
 		foreach (const QString &file, files)
 		{
-			FileTransfer *fileTransfer = service->createOutgoingFileTransfer(buddy);
+			FileTransfer *fileTransfer = service->createOutgoingFileTransfer(contact);
 			fileTransfer->setLocalFileName(file);
 			fileTransfer->send();
 

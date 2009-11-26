@@ -13,6 +13,7 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "contacts/contact-manager.h"
 #include "chat/message/formatted-message.h"
 #include "configuration/configuration-file.h"
 #include "buddies/buddy-manager.h"
@@ -174,7 +175,7 @@ void GaduFormater::appendToMessage(Account account, FormattedMessage &result, Ui
 		if (gadu)
 		{
 			dynamic_cast<GaduChatImageService *>(gadu->chatImageService())->
-					sendImageRequest(account.getBuddyById(QString::number(sender)), size, crc32);
+					sendImageRequest(ContactManager::instance()->byId(account, QString::number(sender)), size, crc32);
 			result << FormattedMessagePart(createImageId(sender, size, crc32), true);
 		}
 	}

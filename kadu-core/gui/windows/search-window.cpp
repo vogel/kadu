@@ -209,6 +209,7 @@ SearchWindow::SearchWindow(QWidget *parent, Buddy buddy)
 	{
 		foreach (Account a, AccountManager::instance()->accounts())
 		{
+			// TODO 0.6.6: !!!
 			if (a.protocolHandler()->isConnected() && a.protocolHandler()->protocolFactory()->name() == "gadu")
 			{
 				CurrentAccount = a;
@@ -219,7 +220,9 @@ SearchWindow::SearchWindow(QWidget *parent, Buddy buddy)
 			CurrentAccount = AccountManager::instance()->accounts().at(0);
 	}
 
-	CurrentSearchService = CurrentAccount.protocolHandler()->searchService();
+	if (CurrentAccount.protocolHandler())
+		CurrentSearchService = CurrentAccount.protocolHandler()->searchService();
+
 	if (CurrentSearchService)
 		connect(CurrentSearchService, SIGNAL(newResults(BuddyList)), this, SLOT(newSearchResults(BuddyList)));
 

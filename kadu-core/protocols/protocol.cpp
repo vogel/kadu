@@ -46,15 +46,20 @@ void Protocol::setAllOffline()
 	Status oldStatus;
 	Contact data;
 
-	foreach (Buddy buddy, BuddyManager::instance()->buddies(CurrentAccount, true))
+	foreach (const Buddy &buddy, BuddyManager::instance()->buddies(CurrentAccount, true))
 	{
-		data = buddy.contact(CurrentAccount);
-		oldStatus = data.currentStatus();
-
-		if (oldStatus != status)
+		foreach (const Contact &contact, buddy.contacts())
 		{
-			data.setCurrentStatus(status);
-			emit buddyStatusChanged(CurrentAccount, buddy, oldStatus);
+			if (contact.contactAccount() != CurrentAccount)
+				continue;
+
+			oldStatus = contact.currentStatus();
+
+			if (oldStatus != status)
+			{
+				data.setCurrentStatus(status);
+				emit buddyStatusChanged(CurrentAccount, buddy, oldStatus);
+			}
 		}
 	}
 }

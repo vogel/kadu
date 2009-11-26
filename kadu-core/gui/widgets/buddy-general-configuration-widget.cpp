@@ -22,6 +22,7 @@
 #include "buddies/avatar.h"
 #include "buddies/buddy-manager.h"
 #include "contacts/contact.h"
+#include "contacts/contact-manager.h"
 #include "configuration/configuration-contact-data-manager.h"
 #include "icons-manager.h"
 #include "misc/misc.h"
@@ -69,7 +70,7 @@ void BuddyGeneralConfigurationWidget::createGui()
 	photoLayout->setSpacing(2);
 
 	QLabel *photoLabel = new QLabel(this);
-	QPixmap photoPixmap = QPixmap(MyBuddy.contacts().at(0).contactAvatar().pixmap());
+	QPixmap photoPixmap = QPixmap(MyBuddy.contacts().count() > 0 ? MyBuddy.contacts().at(0).contactAvatar().pixmap() : QPixmap());
 	photoLabel->setPixmap(photoPixmap);
 	photoLayout->addWidget(photoLabel);
 
@@ -115,7 +116,7 @@ void BuddyGeneralConfigurationWidget::createGui()
 	AccountsLayout->setColumnStretch(0, 2);
 	AccountsLayout->setColumnStretch(2, 2);
 	
-	foreach (Contact data, MyBuddy.contacts())
+	foreach (const Contact &data, MyBuddy.contacts())
 	{
 		DefaultAccountCombo->addItem(data.id());
 		addAccountDataRow(data);
@@ -201,6 +202,7 @@ void BuddyGeneralConfigurationWidget::addAccountDataRow(Contact data)
 
 	ContactsIds.append(contactLineEdit);
 	ContactsAccounts.append(accountsCombo);
+	ContactsUuids.append(data.uuid()); // Contact::null => contact.uuid().isNull?
 
 	if (data.isNull())
 		accountsCombo->addItem("-" + tr("Select a Network") + "-");
@@ -235,21 +237,22 @@ void BuddyGeneralConfigurationWidget::saveConfiguration()
 			break;
 		Account account = AccountManager::instance()->byUuid(QUuid(ContactsAccounts.at(i)->itemData(ContactsAccounts.at(i)->currentIndex()).toString()));
 		QString contactId = ContactsIds.at(i)->text();
+		Contact contact = ContactManager::instance()->byUuid(ContactsUuids.at(i));
 
-		if (MyBuddy.hasContact(account))
+		// TODO: Tricky someone please check?
+		// if we have contact and not changed account
+		if (!contact.isNull() && account == contact.contactAccount())
 		{
 			if (!contactId.isEmpty()/* && account.protocolHandler()->validateId(ContactsIds.at(i)->text())*/)
-			{
-				MyBuddy.contact(account).setId(contactId);
-			}
+				contact.setId(contactId);
 			else
-				MyBuddy.removeContact(account);
+				MyBuddy.removeContact(contact);
 		}
 		else
 		{
-			foreach (Contact contact, MyBuddy.contacts())
-				if (contact.id() == contactId) // check if user has only changed account for previous existing ID
-					MyBuddy.removeContact(contact.contactAccount()); // if so, remove old CAD, otherwise there will appear 2 identical contacts with different accounts
+			foreach (const Contact &tmpcontact, MyBuddy.contacts())
+				if (tmpcontact.id() == contactId) // check if user has only changed account for previous existing ID
+					MyBuddy.removeContact(tmpcontact.contactAccount()); // if so, remove old CAD, otherwise there will appear 2 identical contacts with different accounts
 
 			Contact contact;
 			contact.setContactAccount(account);
