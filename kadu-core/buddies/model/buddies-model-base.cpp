@@ -32,19 +32,19 @@ BuddiesModelBase::~BuddiesModelBase()
 
 void BuddiesModelBase::accountRegistered(Account account)
 {
-	connect(account.data(), SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
-			this, SLOT(buddyStatusChanged(Account, Buddy, Status)));
+	connect(account.data(), SIGNAL(buddyStatusChanged(Contact, Status)),
+			this, SLOT(buddyStatusChanged(Contact, Status)));
 }
 
 void BuddiesModelBase::accountUnregistered(Account account)
 {
-	disconnect(account.data(), SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
-			this, SLOT(buddyStatusChanged(Account, Buddy, Status)));
+	disconnect(account.data(), SIGNAL(buddyStatusChanged(Contact, Status)),
+			this, SLOT(buddyStatusChanged(Contact, Status)));
 }
 
-void BuddiesModelBase::buddyStatusChanged(Account account, Buddy buddy, Status oldStatus)
+void BuddiesModelBase::buddyStatusChanged(Contact contact, Status oldStatus)
 {
-	QModelIndex index = buddyIndex(buddy);
+	QModelIndex index = buddyIndex(contact.ownerBuddy());
 
 	if (index.isValid())
 		emit dataChanged(index, index);

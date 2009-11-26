@@ -91,12 +91,12 @@ void StatusChangedNotification::unregisterEvents()
 	StatusChangedToOfflineNotifyEvent = 0;
 }
 
-StatusChangedNotification::StatusChangedNotification(const QString &toStatus, BuddySet &contacts, Account account) :
-		ChatNotification(account.protocolHandler()->findChat(contacts), QString("StatusChanged") + toStatus,
-			contacts.toContactList(account)[0].contactAccount().protocolHandler()->statusPixmap(contacts.toContactList(account)[0].currentStatus()))
+StatusChangedNotification::StatusChangedNotification(const QString &toStatus, QList<Contact> &contacts) :
+		ChatNotification(contacts[0].contactAccount().protocolHandler()->findChat(contacts), QString("StatusChanged") + toStatus,
+			contacts[0].contactAccount().protocolHandler()->statusPixmap(contacts[0].currentStatus()))
 {
 	// TODO 0.6.6: move above to constructor ?? - no - move to ContactList
-	Contact contact = contacts.toContactList(account)[0];
+	Contact contact = contacts[0];
 	Status status = contact.currentStatus();
 	QString syntax;
 

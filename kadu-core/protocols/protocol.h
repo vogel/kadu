@@ -12,6 +12,7 @@
 
 #include <QtCore/QDateTime>
 #include <QtCore/QObject>
+#include <QtCore/QList>
 #include <QtGui/QIcon>
 
 #ifdef __sun__
@@ -92,6 +93,7 @@ public:
 	virtual bool validateUserID(QString &uid) = 0;
 
 	Chat findChat(BuddySet contacts, bool create = true);
+	Chat findChat(QList<Contact> &contacts, bool create = true);
 
 	NetworkState state() { return State; }
 	bool isConnected() { return (State == NetworkConnected); }
@@ -117,7 +119,7 @@ signals:
 	void disconnected(Account account);
 
 	void statusChanged(Account account, Status newStatus);
-	void buddyStatusChanged(Account account, Buddy buddy, Status oldStatus);
+	void buddyStatusChanged(Contact contact, Status oldStatus);
 
 // TODO: REVIEW
 	void connectionError(Account account, const QString &server, const QString &reason);

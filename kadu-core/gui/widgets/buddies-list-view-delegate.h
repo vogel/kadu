@@ -44,7 +44,7 @@ class BuddiesListViewDelegate : public QItemDelegate, public ConfigurationAwareO
 	QPixmap avatar(const QModelIndex &index) const;
 
 private slots:
-	void buddyStatusChanged(Account account, Buddy buddy, Status oldStatus);
+	void buddyStatusChanged(Contact contact, Status oldStatus);
 	void modelDestroyed();
 
 protected:

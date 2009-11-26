@@ -54,7 +54,7 @@ void ChatShared::load()
 
 	triggerAllChatTypesRegistered();
 
-	connect(ChatAccount, SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
+	connect(ChatAccount, SIGNAL(buddyStatusChanged(Contact, Status)),
 			this, SLOT(refreshTitle()));
 	refreshTitle();
 }

@@ -32,7 +32,7 @@ class BuddiesModelBase : public QAbstractItemModel, public AbstractBuddiesModel,
 	QVariant data(Contact contact, int role, bool useDisplay = true) const;
 
 private slots:
-	void buddyStatusChanged(Account account, Buddy buddy, Status oldStatus);
+	void buddyStatusChanged(Contact contact, Status oldStatus);
 
 protected:
 	virtual void accountRegistered(Account account);

@@ -46,6 +46,7 @@ void Protocol::setAllOffline()
 	Status oldStatus;
 	Contact data;
 
+	// TODO 0.6.6: -> toCM?
 	foreach (const Buddy &buddy, BuddyManager::instance()->buddies(CurrentAccount, true))
 	{
 		foreach (const Contact &contact, buddy.contacts())
@@ -58,7 +59,7 @@ void Protocol::setAllOffline()
 			if (oldStatus != status)
 			{
 				data.setCurrentStatus(status);
-				emit buddyStatusChanged(CurrentAccount, buddy, oldStatus);
+				emit buddyStatusChanged(contact, oldStatus);
 			}
 		}
 	}
@@ -143,4 +144,14 @@ Chat Protocol::findChat(BuddySet contacts, bool create)
 	ChatManager::instance()->addChat(chat);
 
 	return chat;
+}
+
+// TODO 0.6.6: temporary
+Chat Protocol::findChat(QList<Contact> &contacts, bool create)
+{
+	BuddySet buddys;
+	foreach (const Contact &contact, contacts)
+		buddys.insert(contact.ownerBuddy());
+	
+	return findChat(buddys, create);
 }

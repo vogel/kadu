@@ -258,6 +258,7 @@ void BuddyGeneralConfigurationWidget::saveConfiguration()
 			contact.setContactAccount(account);
 			contact.setOwnerBuddy(MyBuddy);
 			contact.setId(contactId);
+			// TODO crash here
 			contact.setDetails(account.protocolHandler()->protocolFactory()->createContactDetails(contact));
 			MyBuddy.addContact(contact);
 		}
