@@ -15,7 +15,8 @@
 
 void JabberAvatarService::fetchAvatar(Contact contact)
 {
-
+// TODO
+return;
 	if (contact.id().isEmpty())
 		return;
 
