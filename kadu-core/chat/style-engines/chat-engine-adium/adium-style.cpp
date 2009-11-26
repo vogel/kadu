@@ -141,7 +141,7 @@ void AdiumStyle::loadHtmlFiles()
 
 void AdiumStyle::loadVariants()
 {
-	QDir dir(BaseHref);
+	QDir dir(BaseHref + "Variants/");
 	dir.setNameFilters(QStringList("*.css"));
 	StyleVariants = dir.entryList();
 }
