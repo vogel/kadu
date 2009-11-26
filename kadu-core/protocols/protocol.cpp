@@ -17,6 +17,7 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-set-configuration-helper.h"
 #include "contacts/contact.h"
+#include "contacts/contact-manager.h"
 #include "icons-manager.h"
 #include "protocols/protocol-factory.h"
 #include "status/status.h"
@@ -44,23 +45,15 @@ void Protocol::setAllOffline()
 {
 	Status status;
 	Status oldStatus;
-	Contact data;
 
-	// TODO 0.6.6: -> toCM?
-	foreach (const Buddy &buddy, BuddyManager::instance()->buddies(CurrentAccount, true))
+	foreach (const Contact &contact, ContactManager::instance()->contacts(CurrentAccount))
 	{
-		foreach (const Contact &contact, buddy.contacts())
+		oldStatus = contact.currentStatus();
+
+		if (oldStatus != status)
 		{
-			if (contact.contactAccount() != CurrentAccount)
-				continue;
-
-			oldStatus = contact.currentStatus();
-
-			if (oldStatus != status)
-			{
-				data.setCurrentStatus(status);
-				emit buddyStatusChanged(contact, oldStatus);
-			}
+			contact.setCurrentStatus(status);
+			emit buddyStatusChanged(contact, oldStatus);
 		}
 	}
 }
