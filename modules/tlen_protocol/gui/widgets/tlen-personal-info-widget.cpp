@@ -140,7 +140,8 @@ void TlenPersonalInfoWidget::personalInfoAvailable(Buddy buddy)
 	// TODO 0.6.6: dangerous - no details means not this account?
 	FetchOk = false;
 
-	Contact contact = buddy.contact(TAccount);
+	// allways one contact
+	Contact contact = buddy.contacts()[0];
 	if (contact.isNull())
 		return;
 
