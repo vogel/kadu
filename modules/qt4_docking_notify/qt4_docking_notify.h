@@ -1,13 +1,12 @@
 #ifndef QT4_DOCKING_NOTIFY_H
 #define QT4_DOCKING_NOTIFY_H
 
+#include "chat/chat.h"
 #include "gui/windows/main-configuration-window.h"
 #include "notify/notifier.h"
 #include "../qt4_docking/qt4_docking.h"
 
 #include "qt4_docking_notify_configuration_widget.h"
-
-class Chat;
 
 /**
  * @defgroup qt4_notify Qt4 Notify

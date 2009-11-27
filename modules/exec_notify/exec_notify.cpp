@@ -229,7 +229,7 @@ void ExecNotify::notify(Notification *notification)
 	ChatNotification *chatNotification = dynamic_cast<ChatNotification *>(notification);
 	if (chatNotification)
 	{
-		BuddyList buddies = chatNotification->chat()->buddies().toBuddyList();
+		BuddyList buddies = chatNotification->chat().buddies().toBuddyList();
 
 		QStringList sendersList;
 		foreach (Buddy buddy, buddies)
