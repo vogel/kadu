@@ -169,8 +169,8 @@ void NotificationManager::accountRegistered(Account account)
 // 	TODO: 0.6.6
 // 	connect(protocol, SIGNAL(connectionError(Account, const QString &, const QString &)),
 // 			this, SLOT(connectionError(Account, const QString &, const QString &)));
-	connect(account.data(), SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
-			this, SLOT(statusChanged(Account, Buddy, Status)));
+	connect(account.data(), SIGNAL(buddyStatusChanged(Contact, Status)),
+			this, SLOT(statusChanged(Contact, Status)));
 
 	ChatService *chatService = protocol->chatService();
 	if (chatService)
