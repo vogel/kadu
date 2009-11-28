@@ -71,11 +71,13 @@ public:
 	QString strStatus() { return Status; }
 	QString description() { return Descr; }
 
-	QString uname() { return u; }
-	void setUname(QString uname) { u = uname; }
+	// user name
+	QString uname() { return User; }
+	void setUname(QString uname) { User = uname; }
 
-	QString pass() { return p; }
-	void setPass(QString pass) { p = pass; }
+	// password
+	QString pass() { return Password; }
+	void setPass(QString pass) { Password = pass; }
 
 	bool isSecureConn() { return Secure; }
 	void setSecureConn(bool secure) { Secure = secure; }
@@ -184,6 +186,7 @@ signals:
 	void eventReceived(QDomNode n);
 
 	void chatNotify(QString from, QString type);
+
 private:
 	bool tlenLogin();
 	bool sort;
@@ -198,12 +201,12 @@ private:
 
 	int state;
 
-	QString	u,
-		p,
-		sid,
-		hostname,
-		Status,
-		Descr;
+	QString	User;
+	QString	Password;
+	QString	sid;
+	QString	hostname;
+	QString	Status;
+	QString	Descr;
 
 	quint16 hostport;
 	QTcpSocket *socket;
