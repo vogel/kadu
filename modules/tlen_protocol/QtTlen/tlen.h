@@ -64,9 +64,15 @@ public:
 	bool reconnect() { return Reconnect; }
 	void setReconnect(bool reconnect) { Reconnect = reconnect; }
 
+	// helpers
 	QString decode(const QByteArray&);
 	QString decode(const QString&);
 	QByteArray encode(const QString&);
+	
+	// sets text : <tag>text</tag>
+	QDomElement textNode(const QString &tag, const QString &text);
+	// gets text from tag: <tag>text</tag>
+	QString getTextNode(const QDomElement &n, const QString &tag);
 
 	QString localAddress();
 
