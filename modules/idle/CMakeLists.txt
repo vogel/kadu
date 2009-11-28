@@ -45,7 +45,7 @@ add_library (idle ${idle} ${SOURCES} ${MOC_FILES})
 set_target_properties(idle PROPERTIES COMPILE_FLAGS "-DIDLE_BUILD" )
 
 if (UNIX AND NOT APPLE)
-	set_target_properties(idle PROPERTIES LINK_FLAGS "-lXss")
+	target_link_libraries(idle ${X11_Xscreensaver_LIB})
 endif (UNIX AND NOT APPLE)
 
 if (idle STREQUAL STATIC)
