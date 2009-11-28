@@ -50,7 +50,7 @@ public:
 	static ContactManager * instance();
 
 	Contact byId(Account account, const QString &id);
-	QList<Contact> ContactManager::contacts(Account account);
+	QList<Contact> contacts(Account account);
 
 signals:
 	void contactAboutToBeAdded(Contact contact);
