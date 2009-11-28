@@ -45,6 +45,8 @@ protected:
 	{
 		if (ItemsWithDetails.contains(item))
 			return;
+		if (!Items.contains(item))
+			return;
 
 		itemAboutToBeRegistered(item);
 		ItemsWithDetails.append(item);
@@ -55,7 +57,9 @@ protected:
 	{
 		if (!ItemsWithDetails.contains(item))
 			return;
-		
+		if (!Items.contains(item))
+			return;
+
 		itemAboutToBeUnregisterd(item);
 		ItemsWithDetails.removeAll(item);
 		itemUnregistered(item);
