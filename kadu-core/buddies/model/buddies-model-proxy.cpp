@@ -33,7 +33,8 @@ void BuddiesModelProxy::setSourceModel(QAbstractItemModel *sourceModel)
 	SourceBuddyModel = dynamic_cast<AbstractBuddiesModel *>(sourceModel);
 	QSortFilterProxyModel::setSourceModel(sourceModel);
 
-	connect(sourceModel, SIGNAL(destroyed(QObject *)), this, SLOT(modelDestroyed()));
+	if (sourceModel)
+		connect(sourceModel, SIGNAL(destroyed(QObject *)), this, SLOT(modelDestroyed()));
 
 	setDynamicSortFilter(true);
 	sort(0);
@@ -62,8 +63,8 @@ bool BuddiesModelProxy::lessThan(const QModelIndex &left, const QModelIndex &rig
 	Account leftAccount = leftBuddy.prefferedAccount();
 	Account rightAccount = rightBuddy.prefferedAccount();
 
-	Contact leftBuddyAccountData = leftBuddy.contact(leftAccount);
-	Contact rightBuddyAccountData = rightBuddy.contact(rightAccount);
+	Contact leftBuddyAccountData = leftBuddy.prefferedContact();
+	Contact rightBuddyAccountData = rightBuddy.prefferedContact();
 
 	Status leftStatus = !leftBuddyAccountData.isNull()
 		? leftBuddyAccountData.currentStatus()

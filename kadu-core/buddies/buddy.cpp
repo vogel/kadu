@@ -131,7 +131,16 @@ void Buddy::removeContact(Account account) const
 
 Contact Buddy::contact(Account account) const
 {
-	return isNull() ? Contact::null : data()->contact(account);
+       return isNull() ? Contact::null : data()->contact(account);
+}
+
+Contact Buddy::prefferedContact() const
+{
+	if (isNull() || 0 == contacts().count())
+		return Contact::null;
+
+	// TODO 0.6.6: implement it to have most available contact
+	return contacts().first();
 }
 
 QList<Contact> Buddy::contacts() const

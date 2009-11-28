@@ -187,11 +187,8 @@ void BuddyManager::mergeBuddies(Buddy destination, Buddy source)
 {
 	ensureLoaded();
 
-	while (source.accounts().size())
-	{
-		Contact contact = source.contact(source.accounts()[0]);
+	foreach (const Contact &contact, source.contacts())
 		contact.setOwnerBuddy(destination);
-	}
 
 	source.setAnonymous(true);
 	removeBuddy(source);

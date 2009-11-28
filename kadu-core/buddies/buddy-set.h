@@ -11,7 +11,9 @@
 #define BUDDY_SET_H
 
 #include <QtCore/QSet>
+#include <QtCore/QSet>
 
+#include "accounts/account.h"
 #include "buddies/buddy.h"
 
 #include "exports.h"
@@ -27,7 +29,11 @@ public:
 	explicit BuddySet(Buddy buddy);
 
 	BuddyList toBuddyList() const;
-	Account prefferedAccount();
+	// return list of Contacts on prefferedAccount
+	QList<Contact> toContactList(Account account = Account::null) const;
+	QList<Contact> toAllContactList() const;
+	// return same Account (or null) for all buddies 
+	Account prefferedAccount() const;
 
 };
 

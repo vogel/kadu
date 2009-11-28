@@ -80,3 +80,33 @@ void ContactManager::contactProtocolUnloaded()
 	if (!contact.isNull())
 		unregisterItem(contact);
 }
+
+Contact ContactManager::byId(Account account, const QString &id)
+{
+	ensureLoaded();
+
+	if (id.isEmpty() || account.isNull())
+		return Contact::null;
+
+	foreach (const Contact &contact, contacts(account))
+		if (id == contact.id())
+			return contact;
+
+	return Contact::null;
+}
+
+QList<Contact> ContactManager::contacts(Account account)
+{
+	ensureLoaded();
+
+	QList<Contact> contacts;
+
+	if (account.isNull())
+		return contacts;
+
+	foreach (const Contact &contact, allItems())
+		if (account == contact.contactAccount())
+			contacts.append(contact);
+
+	return contacts;
+}

@@ -14,7 +14,6 @@
 #include "notify/notification-manager.h"
 #include "notify/notification.h"
 
-#include "chat/chat.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/message-dialog.h"
 #include "configuration/configuration-file.h"
@@ -52,7 +51,7 @@ extern "C" KADU_EXPORT void qt4_docking_notify_close()
 }
 
 Qt4Notify::Qt4Notify()
-	: Notifier("Tray Icon Baloon", "Tray Icon Baloon", IconsManager::instance()->loadIcon("Qt4Notify")), chat(0)
+	: Notifier("Tray Icon Baloon", "Tray Icon Baloon", IconsManager::instance()->loadIcon("Qt4Notify"))
 {
 	kdebugf();
 
@@ -94,12 +93,12 @@ QString Qt4Notify::parseText(const QString &text, Notification *notification, co
 	QString ret;
 
 	ChatNotification *chatNotification = dynamic_cast<ChatNotification *>(notification);
-	chat = chatNotification ? chatNotification->chat() : 0;
+	chat = chatNotification ? chatNotification->chat() : Chat();
 
 	if (!text.isEmpty())
 	{
 		if (chatNotification)
-			ret = Parser::parse(text, chatNotification->account(), *chatNotification->chat()->buddies().begin(), notification);
+			ret = Parser::parse(text, chatNotification->account(), *chatNotification->chat().buddies().begin(), notification);
 		else
 			ret = Parser::parse(text, notification);
 

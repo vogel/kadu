@@ -21,6 +21,8 @@
 #include "buddies/group.h"
 #include "buddies/group-manager.h"
 
+#include "contacts/contact-manager.h"
+
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
@@ -484,7 +486,7 @@ void JabberProtocol::clientResourceReceived(const XMPP::Jid &jid, const XMPP::Re
 	description.replace("\r", "\n");
 	status.setDescription(description);
 
-	Buddy buddy = account().getBuddyById(jid.bare());
+	Contact contact = ContactManager::instance()->byId(account(), jid.bare());
 
 	// TODO remove all ?
 	/*if (buddy.isAnonymous())
@@ -499,14 +501,13 @@ void JabberProtocol::clientResourceReceived(const XMPP::Jid &jid, const XMPP::Re
 	}
 	*/
 
-	Contact contact = buddy.contact(account());
 	if (contact.isNull())
 		return;
 
 	Status oldStatus = contact.currentStatus();
 	contact.setCurrentStatus(status);
 
-	emit buddyStatusChanged(account(), buddy, oldStatus);
+	emit buddyStatusChanged(contact, oldStatus);
 	kdebugf2();
 }
 

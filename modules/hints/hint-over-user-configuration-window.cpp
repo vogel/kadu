@@ -138,7 +138,8 @@ void HintOverUserConfigurationWindow::borderWidthChanged(int width)
 //TODO 0.6.6:
 void HintOverUserConfigurationWindow::iconSizeChanged(int index)
 {
-	previewIconLabel->setPixmap(ExampleContact.prefferedAccount().statusContainer()->statusPixmap(ExampleContact.contact(ExampleContact.prefferedAccount()).currentStatus()));
+	Contact contact = ExampleContact.prefferedContact();
+	previewIconLabel->setPixmap(contact.contactAccount().statusContainer()->statusPixmap(contact.currentStatus()));
 }
 
 void HintOverUserConfigurationWindow::syntaxChanged()

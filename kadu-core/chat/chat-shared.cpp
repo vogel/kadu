@@ -54,8 +54,10 @@ void ChatShared::load()
 
 	triggerAllChatTypesRegistered();
 
-	connect(ChatAccount, SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
-			this, SLOT(refreshTitle()));
+	if (ChatAccount)
+		connect(ChatAccount, SIGNAL(buddyStatusChanged(Contact, Status)),
+				this, SLOT(refreshTitle()));
+
 	refreshTitle();
 }
 
@@ -127,7 +129,7 @@ void ChatShared::refreshTitle()
 		int i = 0;
 
 		if (config_file.readEntry("Look", "ConferenceContents").isEmpty())
-			foreach(const Buddy buddy, buddies())
+			foreach (const Buddy &buddy, buddies())
 			{
 				title.append(Parser::parse("%a", ChatAccount, buddy, false));
 
@@ -135,7 +137,7 @@ void ChatShared::refreshTitle()
 					title.append(", ");
 			}
 		else
-			foreach(const Buddy buddy, buddies())
+			foreach (const Buddy &buddy, buddies())
 			{
 				title.append(Parser::parse(config_file.readEntry("Look", "ConferenceContents"), ChatAccount, buddy, false));
 

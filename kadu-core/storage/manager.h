@@ -137,6 +137,12 @@ public:
 		ensureLoaded();
 		return ItemsWithDetails.count();
 	}
+	
+	const QList<Item> allItems()
+	{
+		ensureLoaded();
+		return Items;
+	}
 
 	const QList<Item> items()
 	{

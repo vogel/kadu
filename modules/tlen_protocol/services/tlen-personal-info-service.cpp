@@ -63,7 +63,8 @@ void TlenPersonalInfoService::updatePersonalInfo(Buddy buddy)
 	if (!client || !client->isConnected())
 		return;
 
-	Contact contact = buddy.contact(Protocol->account());
+	// always 1 contact
+	Contact contact = buddy.contacts()[0];
 	if (contact.isNull())
 	{
 		emit personalInfoUpdated(false);

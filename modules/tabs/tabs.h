@@ -96,7 +96,7 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Sto
 		void onMenuActionDetachAll();
 		void onMenuActionClose();
 		void onMenuActionCloseAll();
-		void onMessageReceived(ChatWidget *chat);
+		void onMessageReceived(Chat chat);
 
 	protected:
 		/**

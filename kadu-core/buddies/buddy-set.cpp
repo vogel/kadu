@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include "accounts/account-manager.h"
+#include "contacts/contact-manager.h"
 #include "buddies/buddy-list.h"
 
 #include "buddy-set.h"
@@ -26,7 +27,36 @@ BuddyList BuddySet::toBuddyList() const
 	return toList();
 }
 
-Account BuddySet::prefferedAccount()
+QList<Contact> BuddySet::toContactList(Account account) const
+{
+	Account acc(account.isNull() ? this->prefferedAccount() : account);
+
+	// if not have same account return empty list
+	if (acc.isNull())
+		return QList<Contact>();
+	
+	QList<Contact> contacts;
+	foreach (const Buddy &buddy, toList())
+	{
+		// TODO 0.6.6: change to buddy.contact(acc) ??
+		Contact tmp = ContactManager::instance()->byId(acc, buddy.id(acc));
+		if (tmp != Contact::null)
+			contacts.append(tmp);
+	}
+
+	return contacts;
+}
+
+QList<Contact> BuddySet::toAllContactList() const
+{
+	QList<Contact> contacts;
+	foreach (const Buddy &buddy, toList())
+		contacts.append(buddy.contacts());
+
+	return contacts;
+}
+
+Account BuddySet::prefferedAccount() const
 {
 	QList<Account> accounts;
 	QList<Account> contactAccounts;

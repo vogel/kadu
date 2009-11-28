@@ -17,6 +17,7 @@
 #include "buddies/group.h"
 #include "buddies/group-manager.h"
 #include "contacts/contact.h"
+#include "contacts/contact-manager.h"
 #include "gui/actions/action.h"
 #include "gui/widgets/buddies-list-view-menu-manager.h"
 #include "gui/widgets/chat-widget-manager.h"
@@ -168,8 +169,8 @@ void NotificationManager::accountRegistered(Account account)
 // 	TODO: 0.6.6
 // 	connect(protocol, SIGNAL(connectionError(Account, const QString &, const QString &)),
 // 			this, SLOT(connectionError(Account, const QString &, const QString &)));
-	connect(account.data(), SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
-			this, SLOT(statusChanged(Account, Buddy, Status)));
+	connect(account.data(), SIGNAL(buddyStatusChanged(Contact, Status)),
+			this, SLOT(statusChanged(Contact, Status)));
 
 	ChatService *chatService = protocol->chatService();
 	if (chatService)
@@ -188,8 +189,8 @@ void NotificationManager::accountUnregistered(Account account)
 
 	disconnect(protocol, SIGNAL(connectionError(Account, const QString &, const QString &)),
 			this, SLOT(connectionError(Account, const QString &, const QString &))); // TODO: fix
-	disconnect(account.data(), SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
-			this, SLOT(statusChanged(Account, Buddy, Status)));
+	disconnect(account.data(), SIGNAL(buddyStatusChanged(Contact, Status)),
+			this, SLOT(statusChanged(Contact, Status)));
 
 	ChatService *chatService = protocol->chatService();
 	if (chatService)
@@ -199,7 +200,7 @@ void NotificationManager::accountUnregistered(Account account)
 	}
 }
 
-void NotificationManager::statusChanged(Account account, Buddy buddy, Status oldStatus)
+void NotificationManager::statusChanged(Contact contact, Status oldStatus)
 {
 	kdebugf();
 
@@ -212,7 +213,7 @@ void NotificationManager::statusChanged(Account account, Buddy buddy, Status old
 
 	// TODO 0.6.6 display -> uuid?
 	bool notify_contact = true;
-	ContactNotifyData *cnd = buddy.moduleData<ContactNotifyData>();
+	ContactNotifyData *cnd = contact.ownerBuddy().moduleData<ContactNotifyData>();
 
 	if (!cnd || !cnd->notify())
 		notify_contact = false;
@@ -226,30 +227,34 @@ void NotificationManager::statusChanged(Account account, Buddy buddy, Status old
 		return;
 	}
 
-	if (buddy.id(account) == account.id()) // myself
+	// TODO 0.6.6:
+	//Buddy buddy = contact.ownerBuddy();
+	//QString id = buddy.id(account);
+	//if ( id == account.id()) // myself
+	//	return;
+
+	if (contact.isNull())
 		return;
 
-	Contact data = buddy.contact(account);
-	if (data.isNull())
-		return;
-
-	if (oldStatus == data.currentStatus())
+	Status status = contact.currentStatus();
+	if (oldStatus == status)
 		return;
 
 	if (config_file.readBoolEntry("Notify", "IgnoreOnlineToOnline") &&
-			!data.currentStatus().isDisconnected() &&
+			!status.isDisconnected() &&
 			!oldStatus.isDisconnected())
 		return;
 
-	QString changedTo = "/To" + Status::name(data.currentStatus(), false);
+	QString changedTo = "/To" + Status::name(status, false);
 
-	BuddySet buddies(buddy);
+	QList<Contact> contacts;
+	contacts.append(contact);
 
 	StatusChangedNotification *statusChangedNotification;
 	if (config_file.readBoolEntry("Notify", "StatusChanged" + changedTo + "_UseCustomSettings", true))
-		statusChangedNotification = new StatusChangedNotification(changedTo, buddies, account);
+		statusChangedNotification = new StatusChangedNotification(changedTo, contacts);
 	else
-		statusChangedNotification = new StatusChangedNotification("", buddies, account);
+		statusChangedNotification = new StatusChangedNotification("", contacts);
 
 	notify(statusChangedNotification);
 

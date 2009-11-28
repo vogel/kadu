@@ -20,6 +20,7 @@
 
 class AccountDetails;
 class Buddy;
+class Contact;
 class Protocol;
 class ProtocolFactory;
 class StatusType;
@@ -102,7 +103,7 @@ public:
 	virtual void setPrivateStatus(bool isPrivate);
 
 signals:
-	void buddyStatusChanged(Account account, Buddy buddy, Status oldStatus);
+	void buddyStatusChanged(Contact contact, Status oldStatus);
 	void protocolLoaded();
 	void protocolUnloaded();
 

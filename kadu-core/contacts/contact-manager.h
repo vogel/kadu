@@ -49,11 +49,17 @@ protected:
 public:
 	static ContactManager * instance();
 
+	Contact byId(Account account, const QString &id);
+	QList<Contact> ContactManager::contacts(Account account);
+
 signals:
 	void contactAboutToBeAdded(Contact contact);
 	void contactAdded(Contact contact);
 	void contactAboutToBeRemoved(Contact contact);
 	void contactRemoved(Contact contact);
+
+	// TODO emit somewhere
+	void contactIdChanged(Contact contact, const QString &oldId);
 
 };
 

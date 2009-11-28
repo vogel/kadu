@@ -19,10 +19,14 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 
+#include "buddies/buddy-set.h"
 #include "buddies/buddy-manager.h"
 
 #include "configuration/configuration-file.h"
 #include "core/core.h"
+
+#include "buddies/group.h"
+#include "buddies/group-manager.h"
 
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
@@ -267,7 +271,7 @@ bool TlenProtocol::sendMessage(Chat chat, FormattedMessage &formattedMessage)
 {
 	kdebugf();
 
-	BuddySet users = chat->buddies();
+	BuddySet users = chat.buddies();
 	// TODO send to more users
 	Buddy buddy = (*users.begin());
 	QString plain = formattedMessage.toPlain();
@@ -301,7 +305,7 @@ void TlenProtocol::chatMsgReceived(QDomNode n)
 	kdebugf();
 	bool ignore = false;
 	QDomElement msg = n.toElement();
-	QString from = msg.attribute("from");
+	QString from = msg.attribute("from").split("/")[0]; // but what about res?
 	QString body;
 	QDateTime timeStamp;
 
@@ -330,10 +334,8 @@ void TlenProtocol::chatMsgReceived(QDomNode n)
 	//		w->displayMsg(Tlen->decode(body.toUtf8()),timeStamp);
 
 	// TODO - zaimplementowac to samo w ContactList
-	Buddy buddy = account().getBuddyById(from);
+	Buddy buddy = account().getBuddyById(TlenClient->decode(from));
 	BuddySet contacts = BuddySet(buddy);
-	// FIXME: dunno why, but commenting it fixed for now (08.04.2009) problem with finding chat for contact (conference window was always being opened for 1 contact)
-	//contacts << contact;
 
 	time_t msgtime = timeStamp.toTime_t();
 	FormattedMessage formattedMessage(TlenClient->decode(body));
@@ -517,8 +519,13 @@ void TlenProtocol::itemReceived(QString jid, QString name, QString subscription,
 
 	Buddy buddy = BuddyManager::instance()->byId(account(), jid);
 
-	if(!name.isNull())
+	if(name.isEmpty())
+		buddy.setDisplay(jid);
+	else
 		buddy.setDisplay(name);
+
+	if(!group.isEmpty())
+		buddy.addToGroup(GroupManager::instance()->byName(group, true /* create group */));
 
  	if (buddy.isAnonymous())
 		buddy.setAnonymous(false);
@@ -554,7 +561,8 @@ void TlenProtocol::presenceChanged(QString from, QString newstatus, QString desc
 	if (!description.isEmpty())
 		status.setDescription(description);
 
-	Buddy buddy = BuddyManager::instance()->byId(account(), from);
+	// find user@server
+	Buddy buddy = BuddyManager::instance()->byId(account(), from.split("/")[0]); // but what about res?
 
 	kdebugm(KDEBUG_WARNING, "Tlen status change: %s %s\n%s", qPrintable(from), qPrintable(newstatus), qPrintable(description));
 

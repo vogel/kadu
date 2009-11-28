@@ -120,8 +120,8 @@ void AccountShared::protocolRegistered(ProtocolFactory *factory)
 	Details = factory->createAccountDetails(this);
 
 	connect(ProtocolHandler, SIGNAL(statusChanged(Account, Status)), this, SIGNAL(statusChanged()));
-	connect(ProtocolHandler, SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
-			this, SIGNAL(buddyStatusChanged(Account, Buddy, Status)));
+	connect(ProtocolHandler, SIGNAL(buddyStatusChanged(Contact, Status)),
+			this, SIGNAL(buddyStatusChanged(Contact, Status)));
 
 	emit protocolLoaded();
 }

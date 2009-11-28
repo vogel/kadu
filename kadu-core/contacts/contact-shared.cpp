@@ -29,7 +29,7 @@ ContactShared * ContactShared::loadFromStorage(StoragePoint *storagePoint)
 }
 
 ContactShared::ContactShared(QUuid uuid) :
-		Shared(uuid, "Account", ContactManager::instance()),
+		Shared(uuid, "Contact", ContactManager::instance()),
 		ContactAccount(Account::null), ContactAvatar(Avatar::null), OwnerBuddy(Buddy::null),
 		Details(0)
 {

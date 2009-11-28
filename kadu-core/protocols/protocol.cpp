@@ -17,6 +17,7 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-set-configuration-helper.h"
 #include "contacts/contact.h"
+#include "contacts/contact-manager.h"
 #include "icons-manager.h"
 #include "protocols/protocol-factory.h"
 #include "status/status.h"
@@ -44,17 +45,15 @@ void Protocol::setAllOffline()
 {
 	Status status;
 	Status oldStatus;
-	Contact data;
 
-	foreach (Buddy buddy, BuddyManager::instance()->buddies(CurrentAccount, true))
+	foreach (const Contact &contact, ContactManager::instance()->contacts(CurrentAccount))
 	{
-		data = buddy.contact(CurrentAccount);
-		oldStatus = data.currentStatus();
+		oldStatus = contact.currentStatus();
 
 		if (oldStatus != status)
 		{
-			data.setCurrentStatus(status);
-			emit buddyStatusChanged(CurrentAccount, buddy, oldStatus);
+			contact.setCurrentStatus(status);
+			emit buddyStatusChanged(contact, oldStatus);
 		}
 	}
 }
@@ -138,4 +137,14 @@ Chat Protocol::findChat(BuddySet contacts, bool create)
 	ChatManager::instance()->addItem(chat);
 
 	return chat;
+}
+
+// TODO 0.6.6: temporary
+Chat Protocol::findChat(QList<Contact> &contacts, bool create)
+{
+	BuddySet buddys;
+	foreach (const Contact &contact, contacts)
+		buddys.insert(contact.ownerBuddy());
+	
+	return findChat(buddys, create);
 }

@@ -70,6 +70,7 @@ public:
 	void removeContact(Contact contact) const;
 	void removeContact(Account account) const;
 	Contact contact(Account account) const;
+	Contact prefferedContact() const;
 	QList<Contact> contacts() const;
 	bool hasContact(Account account) const;
 
