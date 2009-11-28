@@ -63,6 +63,7 @@ public:
 	} PubDirInfo;
 
 	tlen(QObject *parent=0);
+	~tlen();
 
 	bool isConnected();
 	bool isConnecting();
