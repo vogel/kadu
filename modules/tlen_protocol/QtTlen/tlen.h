@@ -37,11 +37,30 @@ class tlen: public QObject {
 Q_OBJECT
 
 public:
-	enum ConnectionState{	ConnectingToHub = 0,
-				Connecting = 1,
-				Connected = 2,
-				ErrorDisconnected = 3,
-				Disconnected = 4 };
+	enum ConnectionState{
+		ConnectingToHub = 0,
+		Connecting = 1,
+		Connected = 2,
+		ErrorDisconnected = 3,
+		Disconnected = 4
+	} ConnectionState;
+
+	// TODO use QMultiMap<PubDirInfo, QVariant>
+	enum PubDirInfo {
+		first = 0,
+		last,
+		nick,
+		email,
+		city,
+		birth,
+		sex,
+		lookingFor,
+		job,
+		todayPlans,
+		visible,
+		mic,
+		cam
+	} PubDirInfo;
 
 	tlen(QObject *parent=0);
 
