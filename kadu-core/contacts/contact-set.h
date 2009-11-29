@@ -7,19 +7,31 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BUDDY_SET_CONFIGURATION_HELPER_H
-#define BUDDY_SET_CONFIGURATION_HELPER_H
+#ifndef CONTACT_SET_H
+#define CONTACT_SET_H
 
+#include <QtCore/QSet>
+
+#include "accounts/account.h"
 #include "buddies/buddy-set.h"
+#include "contacts/contact.h"
 
-class BuddySetConfigurationHelper
+#include "exports.h"
+
+class Contact;
+class BuddySet;
+
+class KADUAPI ContactSet : public QSet<Contact>
 {
+
 public:
-	static BuddySet loadFromConfiguration(StorableObject *parent, const QString &nodeName);
-	static BuddySet loadFromConfiguration(XmlConfigFile *configurationStorage, QDomElement contactSetNode);
-	static void saveToConfiguration(StorableObject *parent, const QString &nodeName, BuddySet contactSet);
-	static void saveToConfiguration(XmlConfigFile *configurationStorage, QDomElement contactSetNode, BuddySet contactSet);
+	ContactSet();
+	explicit ContactSet(Contact contact);
+
+	QList<Contact> toContactList() const;
+	BuddySet toBuddySet() const;
+	Contact toContact() const;
 
 };
 
-#endif // BUDDY_SET_CONFIGURATION_HELPER_H
+#endif // CONTACT_SET_H

@@ -37,13 +37,34 @@ class tlen: public QObject {
 Q_OBJECT
 
 public:
-	enum ConnectionState{	ConnectingToHub = 0,
-				Connecting = 1,
-				Connected = 2,
-				ErrorDisconnected = 3,
-				Disconnected = 4 };
+
+	enum ConnectionState{
+		ConnectingToHub = 0,
+		Connecting = 1,
+		Connected = 2,
+		ErrorDisconnected = 3,
+		Disconnected = 4
+	} ConnectionState;
+
+	// TODO use QMultiMap<PubDirInfo, QVariant>
+	enum PubDirInfo {
+		first = 0,
+		last,
+		nick,
+		email,
+		city,
+		birth,
+		sex,
+		lookingFor,
+		job,
+		todayPlans,
+		visible,
+		mic,
+		cam
+	} PubDirInfo;
 
 	tlen(QObject *parent=0);
+	~tlen();
 
 	bool isConnected();
 	bool isConnecting();
@@ -52,11 +73,13 @@ public:
 	QString strStatus() { return Status; }
 	QString description() { return Descr; }
 
-	QString uname() { return u; }
-	void setUname(QString uname) { u = uname; }
+	// user name
+	QString uname() { return User; }
+	void setUname(QString uname) { User = uname; }
 
-	QString pass() { return p; }
-	void setPass(QString pass) { p = pass; }
+	// password
+	QString pass() { return Password; }
+	void setPass(QString pass) { Password = pass; }
 
 	bool isSecureConn() { return Secure; }
 	void setSecureConn(bool secure) { Secure = secure; }
@@ -64,9 +87,15 @@ public:
 	bool reconnect() { return Reconnect; }
 	void setReconnect(bool reconnect) { Reconnect = reconnect; }
 
+	// helpers
 	QString decode(const QByteArray&);
 	QString decode(const QString&);
 	QByteArray encode(const QString&);
+	
+	// sets text : <tag>text</tag>
+	QDomElement textNode(const QString &tag, const QString &text);
+	// gets text from tag: <tag>text</tag>
+	QString getTextNode(const QDomElement &n, const QString &tag);
 
 	QString localAddress();
 
@@ -140,7 +169,7 @@ private slots:
 
 signals:
 	void presenceDisconnected();
-	void itemReceived(QString jid, QString name, QString subscription, QString group, bool sort);
+	void itemReceived(QString jid, QString name, QString subscription, QString group);
 	void presenceChanged(QString from, QString status, QString description);
 	void authorizationAsk(QString);
 	void removeItem(QString);
@@ -159,9 +188,10 @@ signals:
 	void eventReceived(QDomNode n);
 
 	void chatNotify(QString from, QString type);
+
 private:
 	bool tlenLogin();
-	bool sort;
+
 	bool Secure;
 	bool Reconnect;
 
@@ -171,14 +201,15 @@ private:
 
 	QByteArray stream;
 
+	// connection state
 	int state;
 
-	QString	u,
-		p,
-		sid,
-		hostname,
-		Status,
-		Descr;
+	QString	User;
+	QString	Password;
+	QString	sid;
+	QString	hostname;
+	QString	Status;
+	QString	Descr;
 
 	quint16 hostport;
 	QTcpSocket *socket;

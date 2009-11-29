@@ -13,6 +13,7 @@
 #include "chat/chat-details.h"
 #include "chat/chat-manager.h"
 #include "configuration/configuration-file.h"
+#include "contacts/contact-set.h"
 #include "parser/parser.h"
 #include "debug.h"
 #include "icons-manager.h"
@@ -114,38 +115,27 @@ void ChatShared::refreshTitle()
 	kdebugf();
 	QString title;
 
-	int contactsSize = buddies().count();
+	int contactsSize = contacts().count();
 	kdebugmf(KDEBUG_FUNCTION_START, "contacts().size() = %d\n", contactsSize);
 	if (contactsSize > 1)
 	{
-		if (config_file.readEntry("Look","ConferencePrefix").isEmpty())
+		title = config_file.readEntry("Look","ConferencePrefix");
+		if (title.isEmpty())
 			title = tr("Conference with ");
-		else
-			title = config_file.readEntry("Look","ConferencePrefix");
-		int i = 0;
 
-		if (config_file.readEntry("Look", "ConferenceContents").isEmpty())
-			foreach (const Buddy &buddy, buddies())
-			{
-				title.append(Parser::parse("%a", ChatAccount, buddy, false));
-
-				if (++i < contactsSize)
-					title.append(", ");
-			}
-		else
-			foreach (const Buddy &buddy, buddies())
-			{
-				title.append(Parser::parse(config_file.readEntry("Look", "ConferenceContents"), ChatAccount, buddy, false));
-
-				if (++i < contactsSize)
-					title.append(", ");
-			}
+		QString conferenceContents = config_file.readEntry("Look", "ConferenceContents");
+		QStringList contactslist;
+		foreach (const Buddy &buddy, contacts().toBuddySet())
+			contactslist.append(Parser::parse(conferenceContents.isEmpty() ? "%a" : conferenceContents, ChatAccount, buddy, false));
+	
+		title.append(contactslist.join(", "));
 
  		Icon = IconsManager::instance()->loadPixmap("Online");
 	}
 	else if (contactsSize > 0)
 	{
-		Buddy buddy = *buddies().begin();
+		Contact contact = contacts().toContact();
+		Buddy buddy = contact.ownerBuddy();
 
 		if (config_file.readEntry("Look", "ChatContents").isEmpty())
 		{
@@ -157,7 +147,6 @@ void ChatShared::refreshTitle()
 		else
 			title = Parser::parse(config_file.readEntry("Look","ChatContents"), ChatAccount, buddy, false);
 
-		Contact contact = buddy.contact(ChatAccount);
 		if (!contact.isNull() && ChatAccount.statusContainer())
 			Icon = ChatAccount.statusContainer()->statusPixmap(contact.currentStatus());
 	}
@@ -170,9 +159,9 @@ void ChatShared::refreshTitle()
 	kdebugf2();
 }
 
-BuddySet ChatShared::buddies() const
+ContactSet ChatShared::contacts() const
 {
-	return details() ? details()->buddies() : BuddySet();
+	return details() ? details()->contacts() : ContactSet();
 }
 
 QString ChatShared::name() const

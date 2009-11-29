@@ -41,11 +41,11 @@ class KADUAPI BuddyManager : public QObject, public SimpleManager<Buddy>
 
 private slots:
 	void buddyDataUpdated();
-	void contactAboutToBeAdded(Account account);
-	void contactAdded(Account account);
-	void contactAboutToBeRemoved(Account account);
-	void contactRemoved(Account account);
-	void contactIdChanged(Account account, const QString &oldId);
+	void contactAboutToBeAdded(Contact contact);
+	void contactAdded(Contact contact);
+	void contactAboutToBeRemoved(Contact contact);
+	void contactRemoved(Contact contact);
+	void contactIdChanged(Contact contact, const QString &oldId);
 
 	void groupRemoved(Group group);
 

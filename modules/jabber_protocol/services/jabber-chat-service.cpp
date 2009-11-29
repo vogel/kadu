@@ -13,6 +13,7 @@
 #include "chat/message/message.h"
 #include "core/core.h"
 #include "configuration/configuration-file.h"
+#include "contacts/contact-set.h"
 #include "gui/windows/message-dialog.h"
 #include "misc/misc.h"
 
@@ -43,12 +44,16 @@ JabberChatService::JabberChatService(JabberProtocol *protocol)
 bool JabberChatService::sendMessage(Chat chat, FormattedMessage &formattedMessage)
 {
 	kdebugf();
-	BuddySet contacts = chat.buddies();
+	ContactSet contacts = chat.contacts();
         // TODO send to more users
-	Buddy buddy = (*contacts.begin());
+	if (contacts.count() > 1 || contacts.count() == 0)
+		return false;
+
 	//QString cleanmsg = toPlainText(mesg);
 	QString plain = formattedMessage.toPlain();
-	const XMPP::Jid jus = buddy.id(Protocol->account());
+	QString jid = contacts.toContact().id();
+	kdebugmf(KDEBUG_INFO, "jabber: chat msg to %s body %s\n", qPrintable(jid), qPrintable(plain));
+	const XMPP::Jid jus = jid;
 	XMPP::Message msg = XMPP::Message(jus);
 
 	bool stop = false;

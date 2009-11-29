@@ -12,6 +12,7 @@
 
 #include "buddies/buddy-set.h"
 #include "contacts/contact.h"
+#include "contacts/contact-set.h"
 
 #include "chat/chat-details.h"
 
@@ -19,7 +20,7 @@ class ChatDetailsConference : public ChatDetails
 {
 	Q_OBJECT
 
-	BuddySet Buddies;
+	ContactSet Contacts;
 
 public:
 	explicit ChatDetailsConference(ChatShared *chatData);
@@ -29,10 +30,10 @@ public:
 	virtual void store();
 
 	virtual ChatType * type() const;
-	virtual BuddySet buddies() const { return Buddies; }
+	virtual ContactSet contacts() const { return Contacts; }
 	virtual QString name() const;
 
-	void setBuddies(BuddySet buddies);
+	void setContacts(ContactSet contacts);
 
 };
 

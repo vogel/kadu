@@ -7,38 +7,39 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CHAT_DETAILS_H
-#define CHAT_DETAILS_H
+#include "accounts/account-manager.h"
+#include "contacts/contact-manager.h"
+#include "buddies/buddy-list.h"
 
-#include "storage/storable-object.h"
+#include "contact-set.h"
 
-class BuddySet;
-class Chat;
-class ChatShared;
-class ChatType;
-class ContactSet;
-
-class ChatDetails : public QObject, public StorableObject
+ContactSet::ContactSet()
 {
-	Q_OBJECT
+}
 
-	ChatShared *ChatData;
+ContactSet::ContactSet(Contact contact)
+{
+	insert(contact);
+}
 
-public:
-	explicit ChatDetails(ChatShared *chat);
-	virtual ~ChatDetails();
+QList<Contact> ContactSet::toContactList() const
+{
+	return toList();
+}
 
-	ChatShared * chatData() { return ChatData; }
+BuddySet ContactSet::toBuddySet() const
+{
+	BuddySet buddies;
+	foreach (const Contact &contact, toList())
+		buddies.insert(contact.ownerBuddy());
 
-	virtual ChatType * type() const = 0;
-	virtual ContactSet contacts() const = 0;
-	virtual QString name() const = 0;
+	return buddies;
+}
 
-signals:
-	void titleChanged(Chat chat, const QString &newTitle);
+Contact ContactSet::toContact() const
+{
+	if (count() != 1)
+		return Contact::null;
 
-};
-
-#include "chat/chat.h" // for MOC
-
-#endif // CHAT_DETAILS_H
+	return (*begin());
+}

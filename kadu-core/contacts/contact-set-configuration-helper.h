@@ -7,38 +7,18 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CHAT_DETAILS_H
-#define CHAT_DETAILS_H
+#ifndef CONTACT_SET_CONFIGURATION_HELPER_H
+#define CONTACT_SET_CONFIGURATION_HELPER_H
 
-#include "storage/storable-object.h"
+#include "contacts/contact-set.h"
 
-class BuddySet;
-class Chat;
-class ChatShared;
-class ChatType;
-class ContactSet;
-
-class ChatDetails : public QObject, public StorableObject
+class ContactSetConfigurationHelper
 {
-	Q_OBJECT
-
-	ChatShared *ChatData;
-
 public:
-	explicit ChatDetails(ChatShared *chat);
-	virtual ~ChatDetails();
-
-	ChatShared * chatData() { return ChatData; }
-
-	virtual ChatType * type() const = 0;
-	virtual ContactSet contacts() const = 0;
-	virtual QString name() const = 0;
-
-signals:
-	void titleChanged(Chat chat, const QString &newTitle);
-
+	static ContactSet loadFromConfiguration(StorableObject *parent, const QString &nodeName);
+	static ContactSet loadFromConfiguration(XmlConfigFile *configurationStorage, QDomElement contactSetNode);
+	static void saveToConfiguration(StorableObject *parent, const QString &nodeName, ContactSet contactSet);
+	static void saveToConfiguration(XmlConfigFile *configurationStorage, QDomElement contactSetNode, ContactSet contactSet);
 };
 
-#include "chat/chat.h" // for MOC
-
-#endif // CHAT_DETAILS_H
+#endif // CONTACT_SET_CONFIGURATION_HELPER_H

@@ -23,6 +23,7 @@
 #include "chat/message/pending-messages-manager.h"
 #include "configuration/configuration-file.h"
 #include "buddies/buddy.h"
+#include "contacts/contact-set.h"
 #include "core/core.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
@@ -461,9 +462,8 @@ bool History::removeContactFromStorage(Buddy buddy)
 		return true;
 
 	// TODO: optimize
-	QList<Chat> chats = ChatManager::instance()->items();
-	foreach (Chat chat, chats)
-		if (chat.buddies().contains(buddy) && !CurrentStorage->chatDates(chat, HistorySearchParameters()).isEmpty())
+	foreach (const Chat &chat, ChatManager::instance()->items())
+		if (chat.contacts().toBuddySet().contains(buddy) && !CurrentStorage->chatDates(chat, HistorySearchParameters()).isEmpty())
 			return false;
 
 	return true;

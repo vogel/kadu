@@ -22,6 +22,9 @@
 #include "buddies/buddy-set.h"
 #include "buddies/buddy-manager.h"
 
+#include "contacts/contact-manager.h"
+#include "contacts/contact-set.h"
+
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 
@@ -134,7 +137,8 @@ void TlenProtocol::fetchAvatars(QString jid, QString type, QString md5)
  	if (buddy.isAnonymous())
 		buddy.setAnonymous(false);
 
-	CurrentAvatarService->fetchAvatar(buddy.contact(account()));
+	Contact contact = ContactManager::instance()->byId(account(), jid);
+	CurrentAvatarService->fetchAvatar(contact);
 
 	kdebugf2();
 }
@@ -162,8 +166,8 @@ void TlenProtocol::connectToServer()
 		connect( TlenClient, SIGNAL ( presenceDisconnected() ),
 				this, SLOT (presenceDisconnected()) );
 		// lista kontaktow - odebrano kontakt
-		connect( TlenClient, SIGNAL ( itemReceived(QString, QString, QString, QString,bool) ),
-				this, SLOT (itemReceived(QString, QString, QString, QString,bool)) );
+		connect( TlenClient, SIGNAL ( itemReceived(QString, QString, QString, QString) ),
+				this, SLOT (itemReceived(QString, QString, QString, QString)) );
 		// lista kontaktow - zmiana statusu
 		connect( TlenClient, SIGNAL ( presenceChanged(QString, QString, QString) ),
 				this, SLOT (presenceChanged(QString, QString, QString)) );
@@ -271,11 +275,13 @@ bool TlenProtocol::sendMessage(Chat chat, FormattedMessage &formattedMessage)
 {
 	kdebugf();
 
-	BuddySet users = chat.buddies();
 	// TODO send to more users
-	Buddy buddy = (*users.begin());
+	if (chat.contacts().count() != 1)
+		return false;
+
+	Contact contact = chat.contacts().toContact();
+	QString tlenid = contact.id();
 	QString plain = formattedMessage.toPlain();
-	QString tlenid = buddy.id(account());
 
 	bool stop = false;
 	//plain na QByteArray
@@ -303,9 +309,11 @@ bool TlenProtocol::sendMessage(Chat chat, FormattedMessage &formattedMessage)
 void TlenProtocol::chatMsgReceived(QDomNode n)
 {
 	kdebugf();
+
 	bool ignore = false;
 	QDomElement msg = n.toElement();
 	QString from = msg.attribute("from").split("/")[0]; // but what about res?
+	QString fromresource = msg.attribute("from");
 	QString body;
 	QDateTime timeStamp;
 
@@ -448,35 +456,9 @@ Buddy TlenProtocol::nodeToBuddy(QDomNode node)
 	return result;
 }
 
-void TlenProtocol::contactAdded(Buddy &buddy)
+void TlenProtocol::contactUpdated(Contact contact)
 {
-	Contact contact = buddy.contact(account());
-	if (contact.isNull() || buddy.isAnonymous() || !TlenClient)
-		return;
-
-	QStringList groupsList;
-
-	//foreach (Group group, buddy.groups())
-	//	groupsList.append(group.name());
-	//TODO tlen pozwala na tylko 1 grupe
-	//TODO opcja żądania autoryzacji, na razie na sztywno true
-
-	TlenClient->addItem(contact.id(), buddy.display(), QString(), true);
-}
-
-void TlenProtocol::contactRemoved(Buddy &buddy)
-{
-	Contact contact = buddy.contact(account());
-	if (contact.isNull() || !isConnected() || !TlenClient)
-		return;
-
-	TlenClient->remove(contact.id());
-}
-
-void TlenProtocol::contactUpdated(Buddy &buddy)
-{
-	Contact contact = buddy.contact(account());
-	if (contact.isNull() || buddy.isAnonymous() || !TlenClient)
+	if (contact.contactAccount() == account() || !isConnected() || !TlenClient)
 		return;
 
 	QStringList groupsList;
@@ -487,37 +469,64 @@ void TlenProtocol::contactUpdated(Buddy &buddy)
 	//JabberClient->updateContact(contact.id(), buddy.display(), QString());
 }
 
-void TlenProtocol::contactAdded(Buddy &buddy, Account contactAccount)
+void TlenProtocol::contactAdded(Contact contact)
 {
-	if (contactAccount != account())
+	if (contact.contactAccount() != account() || !TlenClient)
 		return;
 
-	contactAdded(buddy);
+	QStringList groupsList;
+
+	//foreach (Group group, buddy.groups())
+	//	groupsList.append(group.name());
+	//TODO tlen pozwala na tylko 1 grupe
+	//TODO opcja żądania autoryzacji, na razie na sztywno true
+
+	TlenClient->addItem(contact.id(), contact.ownerBuddy().display(), QString(), true);
 }
 
-void TlenProtocol::contactAboutToBeRemoved(Buddy &buddy, Account contactAccount)
+void TlenProtocol::contactAboutToBeRemoved(Contact contact)
 {
-	if (contactAccount != account())
+	if (contact.contactAccount() != account() || !isConnected() || !TlenClient)
 		return;
 
-	contactRemoved(buddy);
+	TlenClient->remove(contact.id());
 }
 
 
-void TlenProtocol::contactAccountIdChanged(Buddy &buddy, Account contactAccount, const QString &oldId)
+void TlenProtocol::contactAccountIdChanged(Contact contact, const QString &oldId)
 {
-	if (contactAccount != account())
+	if (contact.contactAccount() != account() || !isConnected() || !TlenClient)
 		return;
 
-	contactUpdated(buddy);
+	// TODO
+	//contactUpdated(buddy);
 }
 
-void TlenProtocol::itemReceived(QString jid, QString name, QString subscription, QString group, bool sort)
+void TlenProtocol::itemReceived(QString jid, QString name, QString subscription, QString group)
 {
 	kdebugf();
 	kdebugm(KDEBUG_WARNING, "Tlen contact rcv %s\n", qPrintable(jid));
 
-	Buddy buddy = BuddyManager::instance()->byId(account(), jid);
+	Buddy buddy;
+
+	Contact contact = ContactManager::instance()->byId(account(), jid);
+	if (contact.isNull())
+	{
+		contact = Contact();
+		contact.setContactAccount(account());
+		contact.setOwnerBuddy(buddy);
+		contact.setId(jid);
+
+		TlenContactDetails *tlenDetails = new TlenContactDetails(contact);
+		contact.setDetails(tlenDetails);
+		
+		buddy.addContact(contact);
+		//ContactManager::instance()->addContact(contact);
+		BuddyManager::instance()->addBuddy(buddy);
+		//buddy.store();
+	}
+	else
+		buddy = contact.ownerBuddy();
 
 	if(name.isEmpty())
 		buddy.setDisplay(jid);
@@ -531,7 +540,7 @@ void TlenProtocol::itemReceived(QString jid, QString name, QString subscription,
 		buddy.setAnonymous(false);
 
 	// remember to set every contact offline after add to contact list
-	presenceChanged(jid, "unavailable", QString::null);
+	//presenceChanged(jid, "unavailable", QString::null);
 
 	kdebugf2();
 }
@@ -561,13 +570,100 @@ void TlenProtocol::presenceChanged(QString from, QString newstatus, QString desc
 	if (!description.isEmpty())
 		status.setDescription(description);
 
-	// find user@server
-	Buddy buddy = BuddyManager::instance()->byId(account(), from.split("/")[0]); // but what about res?
+	QString jid(from.split("/")[0]); // to dziala
 
+	// find user@server
+	
+	
+	
+	
+	
 	kdebugm(KDEBUG_WARNING, "Tlen status change: %s %s\n%s", qPrintable(from), qPrintable(newstatus), qPrintable(description));
 
-	if (buddy.isAnonymous())
-		buddy.setAnonymous(false);
+	
+	//if (contact.isNull())
+	//	return;
+
+	// find id
+	
+	Contact contact = ContactManager::instance()->byId(account(), jid);
+	Buddy buddy = contact.ownerBuddy();
+
+	// id resource add new contact
+	if (jid != from)
+	{
+		Contact contactRes = ContactManager::instance()->byId(account(), from);
+		contactRes.setOwnerBuddy(buddy);
+
+		//if (contactRes.ownerBuddy().isNull())
+		//{
+ 		//	contactRes.setOwnerBuddy(buddy);
+		//}
+
+		/*if (contactRes.isNull())
+		{
+			contactRes = Contact();
+			contactRes.setContactAccount(account());
+			contactRes.setOwnerBuddy(buddy);
+			contactRes.setId(from);
+
+			TlenContactDetails *tlenDetails = new TlenContactDetails(contactRes);
+			contactRes.setDetails(tlenDetails);
+			
+			buddy.addContact(contact);
+			ContactManager::instance()->addContact(contact);
+			BuddyManager::instance()->addBuddy(buddy);
+			buddy.store();
+		}*/
+
+		Status oldStatus = contactRes.currentStatus();
+		contactRes.setCurrentStatus(status);
+
+		if (!TypingUsers[from].isEmpty())
+			TypingUsers[from] = description;
+
+		emit buddyStatusChanged(contactRes, oldStatus);
+		return;
+	}
+
+// 	Contact contact = ContactManager::instance()->byId(account(), from);
+// 	//Contact contactRes = ContactManager::instance()->byId(account(), from);
+// 	//Contact contact = ContactManager::instance()->byId(account(), from);
+// 	//kdebugm(KDEBUG_WARNING, "Tlen contact: j=%s i=%s u=%s b=%s\n", 
+// 	//	qPrintable(jid),qPrintable(contact.id()), qPrintable(contact.uuid().toString()),qPrintable(contact.ownerBuddy().uuid().toString()));
+// 
+// 	kdebugm(KDEBUG_WARNING, "Tlen status change: %s %s\n%s", qPrintable(from), qPrintable(newstatus), qPrintable(description));
+// 
+// 	
+// 	//if (contact.isNull())
+// 	//	return;
+// 
+// 	if (jid != from)
+// 	{
+// 		Contact contactRes = ContactManager::instance()->byId(account(), jid);
+// 		if (!contactRes.isNull())
+// 		{
+// 			contactRes.ownerBuddy().addContact(contact);
+// 			contact.setOwnerBuddy(contactRes.ownerBuddy());
+// 		}
+// 	}
+// 
+// 	Buddy buddy = contact.ownerBuddy();
+// 	if (buddy.isAnonymous())
+// 		buddy.setAnonymous(false);
+
+	//kdebugm(KDEBUG_WARNING, "Tlen buddy: B:%s count:%d c1:%s c2:%s", qPrintable(buddy.display()), buddy.contacts().count(), qPrintable(contact.id()), qPrintable(contactRes.id()));
+
+	// add resource contact to jid contact
+	//contactRes.setOwnerBuddy(contact.ownerBuddy());
+	//Buddy buddy = account().getBuddyById(jid);
+	//buddy.addContact(contact);
+	//contact.setOwnerBuddy(buddy);
+
+	//if (buddy.isAnonymous())
+	//	buddy.setAnonymous(false);
+	//if (contact.ownerBuddy().isAnonymous())
+	//	contact.ownerBuddy().setAnonymous(false);
 
 	/* is this contact realy anonymous? - need deep check
 	if (contact.isAnonymous())
@@ -579,17 +675,13 @@ void TlenProtocol::presenceChanged(QString from, QString newstatus, QString desc
 	}
 	*/
 
-	Contact contact = buddy.contact(account());
-	if (contact.isNull())
-		return;
-
 	Status oldStatus = contact.currentStatus();
 	contact.setCurrentStatus(status);
 
 	if (!TypingUsers[from].isEmpty())
 		TypingUsers[from] = description;
 
-	emit buddyStatusChanged(account(), buddy, oldStatus);
+	emit buddyStatusChanged(contact, oldStatus);
 	kdebugf2();
 }
 
@@ -652,9 +744,7 @@ void TlenProtocol::chatNotify(QString from, QString type)
 {
 	kdebugf();
 
-	Buddy buddy = BuddyManager::instance()->byId(account(), from);
-
-	Contact contact = buddy.contact(account());
+	Contact contact = ContactManager::instance()->byId(account(), from);
 	if (contact.isNull())
 		return;
 
@@ -671,7 +761,7 @@ void TlenProtocol::chatNotify(QString from, QString type)
 		TypingUsers.insert(from, oldDesc);
 		newStatus.setDescription(QString("[pisze] %1").arg(oldDesc));
 		contact.setCurrentStatus(newStatus);
-		emit buddyStatusChanged(account(), buddy, oldStatus);
+		emit buddyStatusChanged(contact, oldStatus);
 	}
 	else if(type=="u")
 	{
@@ -680,7 +770,7 @@ void TlenProtocol::chatNotify(QString from, QString type)
 		TypingUsers.remove(from);
 		newStatus.setDescription(oldDesc);
 		contact.setCurrentStatus(newStatus);
-		emit buddyStatusChanged(account(),buddy, oldStatus);
+		emit buddyStatusChanged(contact, oldStatus);
 	}
 	else if(type=="a")
 	{

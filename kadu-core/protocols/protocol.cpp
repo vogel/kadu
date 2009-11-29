@@ -15,9 +15,9 @@
 #include "chat/chat-details-simple.h"
 #include "chat/chat-manager.h"
 #include "buddies/buddy-manager.h"
-#include "buddies/buddy-set-configuration-helper.h"
 #include "contacts/contact.h"
 #include "contacts/contact-manager.h"
+#include "contacts/contact-set.h"
 #include "icons-manager.h"
 #include "protocols/protocol-factory.h"
 #include "status/status.h"
@@ -101,11 +101,11 @@ void Protocol::networkStateChanged(NetworkState state)
 			break;
 	}
 }
-
+// TODO move to contactset
 Chat Protocol::findChat(BuddySet contacts, bool create)
 {
 	foreach (Chat c, ChatManager::instance()->items())
-		if (c.chatAccount() == account() && c.buddies() == contacts)
+		if (c.chatAccount() == account() && c.contacts().toBuddySet() == contacts)
 			return c;
 
 	if (!create)
@@ -118,7 +118,8 @@ Chat Protocol::findChat(BuddySet contacts, bool create)
 	if (contacts.count() == 1)
 	{
 		Buddy buddy = *contacts.begin();
-		Contact contact = buddy.contact(account());
+		QList<Contact> contactslist = buddy.contacts(account());
+		Contact contact = contactslist.isEmpty() ? Contact::null : contactslist[0];
 		if (contact.isNull())
 			return Chat::null;
 
@@ -129,7 +130,10 @@ Chat Protocol::findChat(BuddySet contacts, bool create)
 	else
 	{
 		ChatDetailsConference *conference = new ChatDetailsConference(chat);
-		conference->setBuddies(contacts);
+		ContactSet contactlist;
+		foreach (const Contact &contact, contacts.toContactList(account()))
+			contactlist.insert(contact);
+		conference->setContacts(contactlist);
 		details = conference;
 	}
 

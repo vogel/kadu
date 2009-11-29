@@ -44,7 +44,7 @@ tlen* Tlen=0;
 
 tlen::tlen( QObject* parent ): QObject( parent ) {
 	state = tlen::Disconnected;
-	sort=TRUE;
+
 	hostname = "s1.tlen.pl";
 	hostport = 443;
 	Secure = false;
@@ -69,6 +69,28 @@ tlen::tlen( QObject* parent ): QObject( parent ) {
 
 	connect(ping, SIGNAL(timeout()), this, SLOT(sendPing()));
 	srand(time(NULL));
+}
+
+tlen::~tlen()
+{
+	if (ping)
+	{
+		delete ping;
+		ping = 0;
+	}
+	
+	if (socket)
+	{
+		socket->abort();
+		delete socket;
+		socket = 0;
+	}
+
+	if (tmpDoc)
+	{
+		delete tmpDoc;
+		tmpDoc = 0;
+	}
 }
 
 void tlen::openConn() {
@@ -196,7 +218,6 @@ void tlen::event(QDomNode n) {
 			}
 			if(element.hasAttribute("id") && element.attribute("id")=="GetRoster") {
 				emit clearRosterView();
-				sort=FALSE;
 			}
 			if(element.hasAttribute("from") && element.attribute("from") == "tcfg") {
 				tcfgReceived(element);
@@ -209,10 +230,8 @@ void tlen::event(QDomNode n) {
 					emit eventReceived(el.item(i));
 			}
 
-			if(!sort) {
-				emit sortRoster();
+			if(0) {
 				emit tlenLoggedIn();
-				sort=TRUE;
 			}
 
 		}
@@ -262,7 +281,7 @@ void tlen::event(QDomNode n) {
 		group=decode(group.toUtf8());
 		name=decode(name.toUtf8());
 
-		emit itemReceived(jid, name, subscription, group, sort);
+		emit itemReceived(jid, name, subscription, group);
 
 	}
 	else if(nodeName=="presence") {
@@ -397,22 +416,9 @@ bool tlen::tlenLogin() {
 	query.setAttribute( "xmlns", "jabber:iq:auth" );
 	iq.appendChild( query );
 
-	QDomElement username_node = doc.createElement( "username" );
-	query.appendChild( username_node );
-
-	QDomText text = doc.createTextNode( u );
-	username_node.appendChild( text );
-
-	QDomElement digest = doc.createElement( "digest" );
-	query.appendChild( digest );
-
-	text = doc.createTextNode( tlen_hash( p.toAscii().data(), sid.toAscii().data() ) );
-	digest.appendChild( text );
-
-	QDomElement resource = doc.createElement( "resource" );
-	query.appendChild( resource );
-	text = doc.createTextNode( "w" ); // t
-	resource.appendChild( text );
+	query.appendChild(textNode("username", User));
+	query.appendChild(textNode("digest", tlen_hash( Password.toAscii().data(), sid.toAscii().data() )));
+	query.appendChild(textNode("resource", "w")); // t
 	// w iq jeszcze  : <host>tlen.pl</host>
 	return write(doc);
 }
@@ -492,99 +498,62 @@ void tlen::setPubDirInfo(QString first, QString last, QString nick, QString emai
 	iq.appendChild( query );
 
 	if (!first.isEmpty())
-	{
-		QDomElement tmp=doc.createElement("first");
-		QDomText t=doc.createTextNode(first);
-		tmp.appendChild(t);
-		query.appendChild(tmp);
-	}
+		query.appendChild(textNode("first", first));
+
 	if (!last.isEmpty())
-	{
-		QDomElement tmp=doc.createElement("last");
-		QDomText t=doc.createTextNode(last);
-		tmp.appendChild(t);
-		query.appendChild(tmp);
-	}
+		query.appendChild(textNode("last", last));
+
 	if (!nick.isEmpty())
-	{
-		QDomElement tmp=doc.createElement("nick");
-		QDomText t=doc.createTextNode(nick);
-		tmp.appendChild(t);
-		query.appendChild(tmp);
-	}
+		query.appendChild(textNode("nick", nick));
+
 	if (!email.isEmpty())
-	{
-		QDomElement tmp=doc.createElement("email");
-		QDomText t=doc.createTextNode(QString(encode(email)));
-		tmp.appendChild(t);
-		query.appendChild(tmp);
-	}
+		query.appendChild(textNode("email", QString(encode(email))));
+
 	if (!city.isEmpty())
-	{
-		QDomElement tmp=doc.createElement("city");
-		QDomText t=doc.createTextNode(city);
-		tmp.appendChild(t);
-		query.appendChild(tmp);
-	}
+		query.appendChild(textNode("city", city));
+
 	if (birth > 0)
-	{
-		QDomElement tmp=doc.createElement("b");
-		QDomText t=doc.createTextNode(QString::number(birth));
-		tmp.appendChild(t);
-		query.appendChild(tmp);
-	}
+		query.appendChild(textNode("b", QString::number(birth)));
+
 	if (sex > 0)
-	{
-		QDomElement tmp=doc.createElement("s");
-		QDomText t=doc.createTextNode(QString::number(sex));
-		tmp.appendChild(t);
-		query.appendChild(tmp);
-	}
+		query.appendChild(textNode("s", QString::number(sex)));
+
 	if (lookingFor > 0)
-	{
-		QDomElement tmp=doc.createElement("r");
-		QDomText t=doc.createTextNode(QString::number(lookingFor));
-		tmp.appendChild(t);
-		query.appendChild(tmp);
-	}
+		query.appendChild(textNode("r", QString::number(lookingFor)));
+
 	if (job > 0)
-	{
-		QDomElement tmp=doc.createElement("j");
-		QDomText t=doc.createTextNode(QString::number(job));
-		tmp.appendChild(t);
-		query.appendChild(tmp);
-	}
+		query.appendChild(textNode("j", QString::number(job)));
+
 	if (todayPlans > 0)
-	{
-		QDomElement tmp=doc.createElement("p");
-		QDomText t=doc.createTextNode(QString::number(todayPlans));
-		tmp.appendChild(t);
-		query.appendChild(tmp);
-	}
+		query.appendChild(textNode("p", QString::number(todayPlans)));
+
 	if (visible)
-	{
-		QDomElement tmp=doc.createElement("v");
-		QDomText t=doc.createTextNode("1");
-		tmp.appendChild(t);
-		query.appendChild(tmp);
-	}
+		query.appendChild(textNode("v","1"));
+
 	if (mic)
-	{
-		QDomElement tmp=doc.createElement("g");
-		QDomText t=doc.createTextNode("1");
-		tmp.appendChild(t);
-		query.appendChild(tmp);
-	}
+		query.appendChild(textNode("g","1"));
+
 	if (cam)
-	{
-		QDomElement tmp=doc.createElement("k");
-		QDomText t=doc.createTextNode("1");
-		tmp.appendChild(t);
-		query.appendChild(tmp);
-	}
+		query.appendChild(textNode("k","1"));
 
 	doc.appendChild( iq );
 	write(doc);
+}
+
+QDomElement tlen::textNode(const QString &name, const QString &text)
+{
+	  QDomDocument doc;
+	  QDomElement tmp=doc.createElement(name);
+	  QDomText t=doc.createTextNode(text);
+	  tmp.appendChild(t);
+
+	  return tmp;
+}
+
+// TODO!!
+QString tlen::getTextNode(const QDomElement &n, const QString &name)
+{
+	return QString();
 }
 
 void tlen::tcfgReceived(QDomElement &n)

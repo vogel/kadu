@@ -18,6 +18,7 @@
 #include "storage/manager.h"
 #include "exports.h"
 
+class Account;
 class Contact;
 
 class KADUAPI ContactManager : public QObject, public Manager<Contact>

@@ -14,6 +14,7 @@
 #include "configuration/configuration-file.h"
 #include "configuration/xml-configuration-file.h"
 #include "contacts/contact.h"
+#include "contacts/contact-set.h"
 #include "gui/actions/action.h"
 #include "gui/widgets/chat-widget-actions.h"
 #include "gui/widgets/chat-widget-manager.h"
@@ -120,7 +121,7 @@ bool ChatEditBox::supportsActionType(ActionDescription::ActionType type)
 BuddiesListView * ChatEditBox::contactsListView()
 {
 	ChatWidget *cw = chatWidget();
-	if (cw && cw->chat().buddies().count() > 1)
+	if (cw && cw->chat().contacts().count() > 1)
 		return cw->contactsListWidget();
 
 	return 0;
@@ -130,7 +131,7 @@ BuddySet ChatEditBox::buddies()
 {
 	ChatWidget *cw = chatWidget();
 	if (cw)
-		return cw->chat().buddies();
+		return cw->chat().contacts().toBuddySet();
 
 	return BuddySet();
 }
@@ -231,10 +232,9 @@ void ChatEditBox::openInsertImageDialog()
 
 		int counter = 0;
 
-		foreach (Buddy buddy, CurrentChat.buddies())
+		foreach (const Contact &contact, CurrentChat.contacts())
 		{
 			// TODO: 0.6.6
-			Contact contact = buddy.contact(CurrentChat.chatAccount());
 // 			if (contact && contact->hasFeature(/*EmbedImageInChatMessage*/))
 // 			{
 // 				unsigned long maxImageSize = contact->maxEmbededImageSize();
@@ -245,13 +245,13 @@ void ChatEditBox::openInsertImageDialog()
 				counter++;
 			// unsigned int maximagesize = user.protocolData("Gadu", "MaxImageSize").toUInt();
 		}
-		if (counter == 1 && CurrentChat.buddies().count() == 1)
+		if (counter == 1 && CurrentChat.contacts().count() == 1)
 		{
-			if (!MessageDialog::ask(tr("This file is too big for %1.\nDo you really want to send this image?\n").arg((*CurrentChat.buddies().begin()).display())))
+			if (!MessageDialog::ask(tr("This file is too big for %1.\nDo you really want to send this image?\n").arg((*CurrentChat.contacts().begin()).ownerBuddy().display())))
 				continue;
 		}
 		else if (counter > 0 &&
-			!MessageDialog::ask(tr("This file is too big for %1 of %2 contacts.\nDo you really want to send this image?\nSome of them probably will not get it.").arg(counter).arg(CurrentChat.buddies().count())))
+			!MessageDialog::ask(tr("This file is too big for %1 of %2 contacts.\nDo you really want to send this image?\nSome of them probably will not get it.").arg(counter).arg(CurrentChat.contacts().count())))
 			continue;
 
 		InputBox->insertPlainText(QString("[IMAGE %1]").arg(selectedFile));

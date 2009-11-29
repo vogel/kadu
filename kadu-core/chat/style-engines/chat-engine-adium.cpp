@@ -20,6 +20,7 @@
 #include "chat/html-messages-renderer.h"
 #include "chat/message/message-render-info.h"
 #include "contacts/contact.h"
+#include "contacts/contact-set.h"
 #include "gui/widgets/chat-messages-view.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/preview.h"
@@ -331,21 +332,14 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, QString &styleHref, QSt
 	QString result = style;
 	QString name;
 
-//TODO: get Chat name (contacts' nicks?)
-	if (chat)
-	{
-		// Replace %chatName% //TODO. Find way to dynamic update this tag (add id ?)
-		int uinsSize = chat.buddies().count();
-		int i = 0;
+	//TODO: get Chat name (contacts' nicks?)
+	//Replace %chatName% //TODO. Find way to dynamic update this tag (add id ?)
+	int contactsSize = chat.contacts().count();
+	QStringList names;
+	foreach (const Buddy &buddy, chat.contacts().toBuddySet())
+		name.append(buddy.display());
+	name.append(names.join(", "));
 
-		foreach (const Buddy &buddy, chat.buddies())
-		{
-			name.append(buddy.display());
-
-			if (++i < uinsSize)
-				name.append(", ");
-		}
-	}
 	result.replace(QString("%chatName%"), name);
 	// Replace %sourceName%
 	result.replace(QString("%sourceName%"), chat.chatAccount().name());
@@ -363,11 +357,11 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, QString &styleHref, QSt
 	QString photoIncoming;
 	QString photoOutgoing;
 
-	if (chat.buddies().count() > 1)
+	if (contactsSize > 1)
 		photoIncoming = QString("file://") + styleHref + QString("Incoming/buddy_icon.png");
-	else if (chat.buddies().count() == 1)
+	else if (contactsSize == 1)
 	{
-		Contact contact = chat.buddies().toContactList(chat.chatAccount()).first();
+		Contact contact = chat.contacts().toContact();
 		if (!contact.isNull() && !contact.contactAvatar().pixmap().isNull())
 			photoIncoming = QString("file://") + contact.contactAvatar().filePath();
 		else
@@ -426,7 +420,8 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, QString &styleHref, QSt
 	{
 		result.replace(QString("%messageClasses%"), "message incoming");
 
-		Contact contact = msg.sender().contact(chat.chatAccount());
+		QList<Contact> contactslist = msg.sender().contacts(chat.chatAccount());
+		Contact contact = contactslist.isEmpty() ? Contact::null : contactslist[0];
 		if (!contact.isNull() && !contact.contactAvatar().pixmap().isNull())
 			photoPath = QString("file://") + contact.contactAvatar().filePath();
 		else

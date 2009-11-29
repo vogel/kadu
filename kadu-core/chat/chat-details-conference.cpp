@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "buddies/buddy-set-configuration-helper.h"
+#include "contacts/contact-set-configuration-helper.h"
 #include "chat/type/chat-type-manager.h"
 #include "chat/chat.h"
 
@@ -29,7 +29,7 @@ void ChatDetailsConference::load()
 
 	ChatDetails::load();
 
-	Buddies = BuddySetConfigurationHelper::loadFromConfiguration(this, "Contacts");
+	Contacts = ContactSetConfigurationHelper::loadFromConfiguration(this, "Contacts");
 
 	chatData()->refreshTitle();
 }
@@ -41,7 +41,7 @@ void ChatDetailsConference::store()
 
 	ensureLoaded();
 
-	BuddySetConfigurationHelper::saveToConfiguration(this, "Contacts", Buddies);
+	ContactSetConfigurationHelper::saveToConfiguration(this, "Contacts", Contacts);
 }
 
 ChatType * ChatDetailsConference::type() const
@@ -52,16 +52,16 @@ ChatType * ChatDetailsConference::type() const
 QString ChatDetailsConference::name() const
 {
 	QStringList displays;
-	foreach (Buddy buddy, Buddies)
-		displays.append(buddy.display());
+	foreach (const Contact &contact, Contacts.toContactList())
+		displays.append(contact.ownerBuddy().display());
 
 	displays.sort();
 	return displays.join(", ");
 }
 
-void ChatDetailsConference::setBuddies(BuddySet buddies)
+void ChatDetailsConference::setContacts(ContactSet contacts)
 {
 	ensureLoaded();
 
-	Buddies = buddies;
+	Contacts = contacts;
 }

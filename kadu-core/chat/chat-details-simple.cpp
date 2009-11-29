@@ -12,6 +12,7 @@
 #include "chat/chat.h"
 #include "chat/type/chat-type-manager.h"
 #include "contacts/contact-manager.h"
+#include "contacts/contact-set.h"
 
 #include "chat-details-simple.h"
 
@@ -67,11 +68,11 @@ ChatType * ChatDetailsSimple::type() const
 	return ChatTypeManager::instance()->chatType("SimpleChat");
 }
 
-BuddySet ChatDetailsSimple::buddies() const
+ContactSet ChatDetailsSimple::contacts() const
 {
 	if (CurrentContact.isNull())
-		return BuddySet();
-	return BuddySet(CurrentContact.ownerBuddy());
+		return ContactSet();
+	return ContactSet(CurrentContact);
 }
 
 QString ChatDetailsSimple::name() const

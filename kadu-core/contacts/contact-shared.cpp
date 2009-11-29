@@ -95,8 +95,12 @@ void ContactShared::emitUpdated()
 
 void ContactShared::setOwnerBuddy(Buddy buddy)
 {
+	if (OwnerBuddy == buddy)
+		return;
+	
 	if (!OwnerBuddy.isNull())
 		OwnerBuddy.removeContact(Contact(this));
+
 	OwnerBuddy = buddy;
 	if (!OwnerBuddy.isNull())
 		OwnerBuddy.addContact(this);

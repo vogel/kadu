@@ -123,15 +123,9 @@ void Buddy::removeContact(Contact contact) const
 		data()->removeContact(contact);
 }
 
-void Buddy::removeContact(Account account) const
+QList<Contact> Buddy::contacts(Account account) const
 {
-	if (!isNull())
-		data()->removeContact(account);
-}
-
-Contact Buddy::contact(Account account) const
-{
-       return isNull() ? Contact::null : data()->contact(account);
+	return isNull() ? QList<Contact>() : data()->contacts(account);
 }
 
 Contact Buddy::prefferedContact() const
@@ -139,8 +133,7 @@ Contact Buddy::prefferedContact() const
 	if (isNull() || 0 == contacts().count())
 		return Contact::null;
 
-	// TODO 0.6.6: implement it to have most available contact
-	return contacts().first();
+	return data()->prefferedContact();
 }
 
 QList<Contact> Buddy::contacts() const
@@ -150,7 +143,7 @@ QList<Contact> Buddy::contacts() const
 
 bool Buddy::hasContact(Account account) const
 {
-	return isNull() ? false : !data()->contact(account).isNull();
+	return isNull() ? false : data()->contacts(account).count() > 0;
 }
 
 QString Buddy::id(Account account) const

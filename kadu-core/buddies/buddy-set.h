@@ -11,7 +11,6 @@
 #define BUDDY_SET_H
 
 #include <QtCore/QSet>
-#include <QtCore/QSet>
 
 #include "accounts/account.h"
 #include "buddies/buddy.h"

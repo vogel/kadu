@@ -73,7 +73,7 @@ class JabberProtocol : public Protocol
 		virtual SearchService * searchService() { return 0; }
 		JabberResourcePool *resourcePool();
 
-		JabberContactDetails * jabberContactDetails(Buddy buddy) const;
+		JabberContactDetails * jabberContactDetails(Contact contact) const;
 
 	protected:
 		virtual void changeStatus();

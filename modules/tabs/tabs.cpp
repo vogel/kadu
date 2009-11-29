@@ -29,6 +29,7 @@
 #include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
 #include "configuration/xml-configuration-file.h"
+#include "contacts/contact-set.h"
 #include "core/core.h"
 #include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
@@ -217,7 +218,7 @@ void TabsManager::onNewChat(ChatWidget* chat, bool &handled)
 		return;
 	}
 
-	if (config_defaultTabs && (config_conferencesInTabs || chat->chat().buddies().count() == 1))
+	if (config_defaultTabs && (config_conferencesInTabs || chat->chat().contacts().count() == 1))
 	{
 		// jesli jest juz otwarte okno z kartami to dodajemy bezwzglednie nowe rozmowy do kart
 		if (tabdialog->count() > 0)
@@ -406,7 +407,7 @@ void TabsManager::insertTab(ChatWidget* chat)
 	else
 		chat->kaduRestoreGeometry();
 
-	BuddySet contacts = chat->chat().buddies();
+	BuddySet contacts = chat->chat().contacts().toBuddySet();
 
 	detachedchats.removeOne(chat);
 
@@ -851,7 +852,7 @@ void TabsManager::repaintTabs()
 
 QString TabsManager::formatTabName(ChatWidget * chatWidget)
 {
-	int contactsCount = chatWidget->chat().buddies().count();
+	int contactsCount = chatWidget->chat().contacts().count();
 
 	QString TabName;
 

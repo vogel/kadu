@@ -123,12 +123,16 @@ void AccountBuddyListWidget::buddiesListImported(bool ok, BuddyList buddies)
 
 	foreach (Buddy onebuddy, buddies)
 	{
-		Contact contact = onebuddy.contact(CurrentAccount);
+		QList<Contact> contactslist = onebuddy.contacts(CurrentAccount);
+		Contact contact = contactslist.isEmpty() ? Contact::null : contactslist[0];
 		Buddy buddy = BuddyManager::instance()->byId(CurrentAccount, contact.id());
-		foreach (Buddy beforeImportBuddy, beforeImportList)
-			if (!beforeImportBuddy.contact(CurrentAccount).isNull()
-				&& beforeImportBuddy.contact(CurrentAccount).id() == contact.id())
+		foreach (const Buddy &beforeImportBuddy, beforeImportList)
+		{
+			contactslist = beforeImportBuddy.contacts(CurrentAccount);
+			contact = contactslist.isEmpty() ? Contact::null : contactslist[0];
+			if (!contact.isNull() && contact.id() == contact.id())
 					beforeImportList.removeOne(beforeImportBuddy);
+		}
 
 		buddy.setFirstName(onebuddy.firstName());
 		buddy.setLastName(onebuddy.lastName());
