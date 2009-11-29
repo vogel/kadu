@@ -28,6 +28,7 @@ public:
 	explicit ContactSet(Contact contact);
 
 	QList<Contact> toContactList() const;
+	Contact firstContact() const;
 	Account account() const;
 
 };

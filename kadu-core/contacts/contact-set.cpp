@@ -27,6 +27,14 @@ QList<Contact> ContactSet::toContactList() const
 	return toList();
 }
 
+Contact ContactSet::firstContact() const
+{
+	if (isEmpty())
+		return Contact::null;
+
+	return toList()[0];
+}
+
 Account ContactSet::account() const
 {
 	if (isEmpty())
