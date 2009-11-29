@@ -16,6 +16,7 @@ class BuddySet;
 class Chat;
 class ChatShared;
 class ChatType;
+class ContactSet;
 
 class ChatDetails : public QObject, public StorableObject
 {
@@ -30,7 +31,7 @@ public:
 	ChatShared * chatData() { return ChatData; }
 
 	virtual ChatType * type() const = 0;
-	virtual BuddySet buddies() const = 0;
+	virtual ContactSet contacts() const = 0;
 	virtual QString name() const = 0;
 
 signals:

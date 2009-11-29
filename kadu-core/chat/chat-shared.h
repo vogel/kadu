@@ -21,6 +21,7 @@ class BuddySet;
 class Chat;
 class ChatDetails;
 class ChatManager;
+class ContactSet;
 
 class KADUAPI ChatShared : public QObject, public Shared, public DetailsHolder<ChatShared, ChatDetails, ChatManager>, ChatTypeAwareObject
 {
@@ -51,6 +52,7 @@ public:
 	virtual void store();
 
 	BuddySet buddies() const;
+	ContactSet contacts() const;
 	QString name() const;
 
 	KaduShared_Property(Account, chatAccount, ChatAccount)

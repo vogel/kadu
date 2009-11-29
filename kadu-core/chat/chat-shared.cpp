@@ -13,6 +13,7 @@
 #include "chat/chat-details.h"
 #include "chat/chat-manager.h"
 #include "configuration/configuration-file.h"
+#include "contacts/contact-set.h"
 #include "parser/parser.h"
 #include "debug.h"
 #include "icons-manager.h"
@@ -177,10 +178,16 @@ void ChatShared::refreshTitle()
 
 BuddySet ChatShared::buddies() const
 {
-	return details() ? details()->buddies() : BuddySet();
+	return details() ? details()->contacts().toBuddySet() : BuddySet();
+}
+
+ContactSet ChatShared::contacts() const
+{
+	return details() ? details()->contacts() : ContactSet();
 }
 
 QString ChatShared::name() const
 {
 	return details() ? details()->name() : QString::null;
 }
+
