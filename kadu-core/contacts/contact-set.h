@@ -13,7 +13,7 @@
 #include <QtCore/QSet>
 
 #include "accounts/account.h"
-#include "buddies/buddy.h"
+#include "buddies/buddy-set.h"
 #include "contacts/contact.h"
 
 #include "exports.h"
@@ -28,6 +28,7 @@ public:
 	explicit ContactSet(Contact contact);
 
 	QList<Contact> toContactList() const;
+	BuddySet toBuddySet() const;
 	Contact firstContact() const;
 	Account account() const;
 

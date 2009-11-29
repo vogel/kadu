@@ -27,6 +27,15 @@ QList<Contact> ContactSet::toContactList() const
 	return toList();
 }
 
+BuddySet ContactSet::toBuddySet() const
+{
+	BuddySet buddies;
+	foreach (const Contact &contact, toList())
+		buddies.insert(contact);
+	
+	return buddies;
+}
+
 Contact ContactSet::firstContact() const
 {
 	if (isEmpty())
