@@ -207,7 +207,7 @@ SearchWindow::SearchWindow(QWidget *parent, Buddy buddy)
 	}
 	else
 	{
-		foreach (Account a, AccountManager::instance()->accounts())
+		foreach (Account a, AccountManager::instance()->items())
 		{
 			// TODO 0.6.6: !!!
 			if (a.protocolHandler()->isConnected() && a.protocolHandler()->protocolFactory()->name() == "gadu")
@@ -217,7 +217,7 @@ SearchWindow::SearchWindow(QWidget *parent, Buddy buddy)
 			}
 		}
 		if (CurrentAccount.isNull())
-			CurrentAccount = AccountManager::instance()->accounts().at(0);
+			CurrentAccount = AccountManager::instance()->items().at(0);
 	}
 
 	if (CurrentAccount.protocolHandler())

@@ -30,10 +30,6 @@ class KADUAPI ContactManager : public QObject, public Manager<Contact>
 	ContactManager();
 	virtual ~ContactManager();
 
-private slots:
-	void contactProtocolLoaded();
-	void contactProtocolUnloaded();
-
 protected:
 	virtual QString configurationNodeName() { return QLatin1String("Contacts"); }
 	virtual QString configurationNodeItemName() { return QLatin1String("Contact"); }
@@ -48,6 +44,10 @@ protected:
 
 public:
 	static ContactManager * instance();
+
+	// TODO: 0.6.6, hide it
+	void detailsLoaded(Contact item);
+	void detailsUnloaded(Contact item);
 
 	Contact byId(Account account, const QString &id);
 	QList<Contact> contacts(Account account);

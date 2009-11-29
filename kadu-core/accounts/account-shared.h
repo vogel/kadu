@@ -16,16 +16,18 @@
 
 #include "protocols/protocols-aware-object.h"
 #include "status/base-status-container.h"
+#include "storage/details-holder.h"
 #include "storage/shared.h"
 
 class AccountDetails;
+class AccountManager;
 class Buddy;
 class Contact;
 class Protocol;
 class ProtocolFactory;
 class StatusType;
 
-class KADUAPI AccountShared : public BaseStatusContainer, public Shared, ProtocolsAwareObject
+class KADUAPI AccountShared : public BaseStatusContainer, public Shared, public DetailsHolder<AccountShared, AccountDetails, AccountManager>, ProtocolsAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(AccountShared)
@@ -33,7 +35,6 @@ class KADUAPI AccountShared : public BaseStatusContainer, public Shared, Protoco
 private:
 	QString ProtocolName;
 	Protocol *ProtocolHandler;
-	AccountDetails *Details;
 
 	QString Name;
 	QString Id;
@@ -54,6 +55,8 @@ private:
 protected:
 	void emitUpdated();
 
+	virtual void detailsAdded();
+	virtual void detailsAboutToBeRemoved();
 	virtual void protocolUnregistered(ProtocolFactory *protocolHandler);
 
 public:
@@ -70,7 +73,6 @@ public:
 
 	KaduShared_Property(QString, protocolName, ProtocolName)
 	KaduShared_Property(Protocol *, protocolHandler, ProtocolHandler)
-	KaduShared_Property(AccountDetails *, details, Details)
 	KaduShared_Property(QString, name, Name)
 	KaduShared_Property(QString, id, Id)
 	KaduShared_Property(bool, rememberPassword, RememberPassword)

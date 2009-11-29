@@ -24,7 +24,7 @@ ChatAggregatorBuilder::~ChatAggregatorBuilder()
 Chat ChatAggregatorBuilder::buildAggregateChat(BuddySet contacts)
 {
 	QList<Chat> chats;
-	foreach (Account account, AccountManager::instance()->accounts())
+	foreach (Account account, AccountManager::instance()->items())
 	{
 		Chat chat = account.protocolHandler()->findChat(contacts, false);
 		if (chat)

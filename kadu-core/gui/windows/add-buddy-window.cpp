@@ -244,7 +244,7 @@ void AddBuddyWindow::setValidateRegularExpression()
 
 	QStringList regularExpressions;
 
-	foreach (Account account, AccountManager::instance()->accounts())
+	foreach (Account account, AccountManager::instance()->items())
 	{
 		QRegExp regularExpression = account.protocolHandler()->protocolFactory()->idRegularExpression();
 		if (!regularExpression.isEmpty())

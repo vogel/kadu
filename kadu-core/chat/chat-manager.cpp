@@ -27,18 +27,6 @@ ChatManager::~ChatManager()
 {
 }
 
-void ChatManager::itemAboutToBeAdded(Chat item)
-{
-	connect(item, SIGNAL(chatTypeLoaded()), this, SLOT(chatTypeLoaded()));
-	connect(item, SIGNAL(chatTypeUnloaded()), this, SLOT(chatTypeUnloaded()));
-}
-
-void ChatManager::itemAboutToBeRemoved(Chat item)
-{
-	disconnect(item, SIGNAL(chatTypeLoaded()), this, SLOT(chatTypeLoaded()));
-	disconnect(item, SIGNAL(chatTypeUnloaded()), this, SLOT(chatTypeUnloaded()));
-}
-
 void ChatManager::itemAboutToBeRegistered(Chat item)
 {
 	emit chatAboutToBeAdded(item);

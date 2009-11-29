@@ -18,17 +18,16 @@
 #include "buddies/buddy.h"
 #include "protocols/protocols-aware-object.h"
 #include "status/status.h"
-
+#include "storage/details-holder.h"
 #include "storage/shared.h"
 
 class ContactDetails;
+class ContactManager;
 
-class KADUAPI ContactShared : public QObject, public Shared, ProtocolsAwareObject
+class KADUAPI ContactShared : public QObject, public Shared, public DetailsHolder<ContactShared, ContactDetails, ContactManager>, ProtocolsAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(ContactShared)
-
-	ContactDetails *Details;
 
 	Account ContactAccount;
 	Avatar ContactAvatar;
@@ -49,6 +48,9 @@ protected:
 	virtual void protocolRegistered(ProtocolFactory *protocolFactory);
 	virtual void protocolUnregistered(ProtocolFactory *protocolFactory);
 
+	virtual void detailsAdded();
+	virtual void detailsAboutToBeRemoved();
+
 public:
 	static ContactShared * loadFromStorage(StoragePoint *contactStoragePoint);
 
@@ -58,10 +60,6 @@ public:
 	virtual void load();
 	virtual void store();
 
-	void loadDetails();
-	void unloadDetails();
-
-	KaduShared_Property(ContactDetails *, details, Details)
 	KaduShared_Property(Account, contactAccount, ContactAccount)
 	KaduShared_Property(Avatar, contactAvatar, ContactAvatar)
 	KaduShared_PropertyRead(Buddy, ownerBuddy, OwnerBuddy)
@@ -78,11 +76,7 @@ public:
 
 signals:
 	void updated();
-
 	void idChanged(const QString &id);
-
-	void protocolLoaded();
-	void protocolUnloaded();
 
 };
 

@@ -27,12 +27,12 @@ void AccountsAwareObject::notifyAccountUnregistered(Account account)
 
 void AccountsAwareObject::triggerAllAccountsRegistered()
 {
-	foreach (Account account, AccountManager::instance()->accounts())
+	foreach (Account account, AccountManager::instance()->items())
 		accountRegistered(account);
 }
 
 void AccountsAwareObject::triggerAllAccountsUnregistered()
 {
-	foreach (Account account, AccountManager::instance()->accounts())
+	foreach (Account account, AccountManager::instance()->items())
 		accountUnregistered(account);
 }

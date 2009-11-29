@@ -76,7 +76,7 @@ void GaduImporter::importAccounts()
 
 	accountDetails->import_0_6_5_LastStatus();
 
-	AccountManager::instance()->registerAccount(defaultGaduGadu);
+	AccountManager::instance()->addItem(defaultGaduGadu);
 }
 
 void GaduImporter::importContacts()

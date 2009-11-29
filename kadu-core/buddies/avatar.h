@@ -13,11 +13,10 @@
 #include <QtCore/QDateTime>
 #include <QtGui/QPixmap>
 
+#include "buddies/avatar-shared.h"
 #include "storage/shared-base.h"
-
 #include "exports.h"
 
-class AvatarShared;
 class Contact;
 class StoragePoint;
 

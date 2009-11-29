@@ -27,10 +27,8 @@ AccountShared * AccountShared::loadFromStorage(StoragePoint *storagePoint)
 AccountShared::AccountShared(QUuid uuid) :
 		Shared(uuid, "Account", AccountManager::instance()),
 		BaseStatusContainer(this),
-		ProtocolHandler(0), Details(0),
-		RememberPassword(false), HasPassword(false),
-		ConnectAtStart(true),
-		UseProxy(false), ProxyPort(0)
+		ProtocolHandler(0), RememberPassword(false), HasPassword(false),
+		ConnectAtStart(true), UseProxy(false), ProxyPort(0)
 {
 }
 
@@ -117,7 +115,7 @@ void AccountShared::protocolRegistered(ProtocolFactory *factory)
 		return;
 
 	ProtocolHandler = factory->createProtocolHandler(this);
-	Details = factory->createAccountDetails(this);
+	setDetails(factory->createAccountDetails(this));
 
 	connect(ProtocolHandler, SIGNAL(statusChanged(Account, Status)), this, SIGNAL(statusChanged()));
 	connect(ProtocolHandler, SIGNAL(buddyStatusChanged(Contact, Status)),
@@ -138,15 +136,20 @@ void AccountShared::protocolUnregistered(ProtocolFactory* factory)
 
 	emit protocolUnloaded();
 
+	setDetails(0);
+}
+
+void AccountShared::detailsAdded()
+{
+	details()->ensureLoaded();
+}
+
+void AccountShared::detailsAboutToBeRemoved()
+{
 	delete ProtocolHandler;
 	ProtocolHandler = 0;
 
-	if (Details)
-	{
-		Details->store();
-		delete Details;
-		Details = 0;
-	}
+	details()->store();
 }
 
 QString AccountShared::statusContainerName()
