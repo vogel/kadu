@@ -27,13 +27,13 @@ ChatManager::~ChatManager()
 {
 }
 
-void ChatManager::itemAdded(Chat item)
+void ChatManager::itemAboutToBeAdded(Chat item)
 {
 	connect(item, SIGNAL(chatTypeLoaded()), this, SLOT(chatTypeLoaded()));
 	connect(item, SIGNAL(chatTypeUnloaded()), this, SLOT(chatTypeUnloaded()));
 }
 
-void ChatManager::itemRemoved(Chat item)
+void ChatManager::itemAboutToBeRemoved(Chat item)
 {
 	disconnect(item, SIGNAL(chatTypeLoaded()), this, SLOT(chatTypeLoaded()));
 	disconnect(item, SIGNAL(chatTypeUnloaded()), this, SLOT(chatTypeUnloaded()));

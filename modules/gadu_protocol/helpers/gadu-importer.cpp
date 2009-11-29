@@ -84,7 +84,7 @@ void GaduImporter::importContacts()
 	connect(BuddyManager::instance(), SIGNAL(buddyAdded(Buddy &)),
 			this, SLOT(buddyAdded(Buddy &)));
 
-	foreach (Buddy buddy, BuddyManager::instance()->buddies())
+	foreach (Buddy buddy, BuddyManager::instance()->items())
 		buddyAdded(buddy);
 
 	importIgnored();

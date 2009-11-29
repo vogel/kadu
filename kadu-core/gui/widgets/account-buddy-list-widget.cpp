@@ -142,7 +142,7 @@ void AccountBuddyListWidget::buddiesListImported(bool ok, BuddyList buddies)
 		if (buddy.isAnonymous())
 		{
 			buddy.setAnonymous(false);
-			BuddyManager::instance()->addBuddy(buddy);
+			BuddyManager::instance()->addItem(buddy);
 		}
 	}
 
@@ -153,7 +153,7 @@ void AccountBuddyListWidget::buddiesListImported(bool ok, BuddyList buddies)
 			contactsList.append(c.display());
 		if (MessageDialog::ask(tr("Following contacts from your list were not found on server: %0.\nDo you want to remove them from contacts list?").arg(contactsList.join(", "))))
 			foreach (Buddy c, beforeImportList)
-				BuddyManager::instance()->removeBuddy(c);
+				BuddyManager::instance()->removeItem(c);
 	}
 
 	MessageDialog::msg(tr("Your contact list has been successfully imported from server"), false, "Infromation", this);
