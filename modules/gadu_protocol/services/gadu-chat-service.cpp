@@ -12,6 +12,7 @@
 #include "configuration/configuration-file.h"
 #include "buddies/buddy-set.h"
 #include "buddies/ignored-helper.h"
+#include "contacts/contact-set.h"
 #include "core/core.h"
 #include "gui/windows/message-dialog.h"
 #include "misc/misc.h"
@@ -40,7 +41,7 @@ bool GaduChatService::sendMessage(Chat chat, FormattedMessage &message)
 	kdebugf();
 
 	QString plain = message.toPlain();
-	QList<Contact> contacts = chat.buddies().toContactList(Protocol->account());
+	QList<Contact> contacts = chat.contacts().toContactList();
 
 	unsigned int uinsCount = 0;
 	unsigned int formatsSize = 0;

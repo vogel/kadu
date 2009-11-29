@@ -22,6 +22,7 @@
 #include "chat/message/message-render-info.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"
+#include "contacts/contact-set.h"
 #include "core/core.h"
 #include "gui/hot-key.h"
 #include "gui/actions/action.h"
@@ -97,7 +98,7 @@ void ChatWidget::createGui()
 	connect(shortcut, SIGNAL(activated()), MessagesView, SLOT(pageDown()));
 	horizSplit->addWidget(MessagesView);
 
-	if (CurrentChat.buddies().count() > 1)
+	if (CurrentChat.contacts().count() > 1)
 		createContactsList();
 
 	vertSplit->addWidget(horizSplit);
@@ -122,7 +123,7 @@ void ChatWidget::createContactsList()
 	layout->setSpacing(0);
 
 	BuddiesView = new BuddiesListView(getChatEditBox(), this);
-	BuddiesView->setModel(new BuddyListModel(CurrentChat.buddies().toBuddyList(), this));
+	BuddiesView->setModel(new BuddyListModel(CurrentChat.contacts().toBuddySet().toBuddyList(), this));
 	BuddiesView->setMinimumSize(QSize(30, 30));
 
 	connect(BuddiesView, SIGNAL(contactActivated(Buddy)),
@@ -362,7 +363,7 @@ void ChatWidget::sendMessage()
 
 	if (!currentProtocol()->isConnected())
 	{
-		MessageDialog::msg(tr("Cannot send message while being offline."), false, "Critical", this);
+		MessageDialog::msg(tr("Cannot send message while being offline.")+tr("Account:")+chat().chatAccount().id(), false, "Critical", this);
 		kdebugmf(KDEBUG_FUNCTION_END, "not connected!\n");
 		return;
 	}

@@ -11,6 +11,7 @@
 #include "chat/chat.h"
 #include "buddies/filter/buddy-name-filter.h"
 #include "buddies/buddy-list.h"
+#include "contacts/contact-set.h"
 
 #include "chat-name-filter.h"
 
@@ -37,8 +38,7 @@ bool ChatNameFilter::acceptChat(Chat chat)
 		return false;
 	}*/
 
-	BuddyList buddies = chat.buddies().toBuddyList();
-	foreach (Buddy buddy, buddies)
+	foreach (const Buddy &buddy, chat.contacts().toBuddySet())
 		if (Filter->acceptBuddy(buddy))
 			return true;
 

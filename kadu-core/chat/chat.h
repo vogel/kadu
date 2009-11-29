@@ -17,7 +17,7 @@
 class QPixmap;
 
 class Account;
-class BuddySet;
+class ContactSet;
 class ChatDetails;
 class ChatType;
 class StoragePoint;
@@ -41,7 +41,7 @@ public:
 
 	void refreshTitle();
 
-	BuddySet buddies() const;
+	ContactSet contacts() const;
 	QString name() const;
 
 	KaduSharedBase_Property(ChatDetails *, details, Details)

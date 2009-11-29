@@ -51,7 +51,6 @@ public:
 	virtual void load();
 	virtual void store();
 
-	BuddySet buddies() const;
 	ContactSet contacts() const;
 	QString name() const;
 

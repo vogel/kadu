@@ -8,10 +8,10 @@
  ***************************************************************************/
 
 #include "accounts/account.h"
-#include "buddies/buddy-set.h"
 #include "chat/chat-details.h"
 #include "chat/chat-manager.h"
 #include "chat/chat-shared.h"
+#include "contacts/contact-set.h"
 
 #include "chat.h"
 
@@ -74,7 +74,8 @@ void Chat::refreshTitle()
 		data()->refreshTitle();
 }
 
-KaduSharedBase_PropertyReadDef(Chat, BuddySet, buddies, Buddies, BuddySet())
+
+KaduSharedBase_PropertyReadDef(Chat, ContactSet, contacts, Contacts, ContactSet())
 KaduSharedBase_PropertyReadDef(Chat, QString, name, Name, QString::null)
 KaduSharedBase_PropertyDef(Chat, ChatDetails *, details, Details, 0)
 KaduSharedBase_PropertyDef(Chat, Account, chatAccount, ChatAccount, Account::null)
