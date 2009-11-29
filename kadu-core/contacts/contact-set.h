@@ -8,7 +8,7 @@
  ***************************************************************************/
 
 #ifndef CONTACT_SET_H
-#define CONTACT_SET
+#define CONTACT_SET_H
 
 #include <QtCore/QSet>
 
@@ -19,6 +19,7 @@
 #include "exports.h"
 
 class Contact;
+class BuddySet;
 
 class KADUAPI ContactSet : public QSet<Contact>
 {
