@@ -9,6 +9,8 @@
 
 #include "accounts/account.h"
 #include "buddies/buddy-set.h"
+#include "chat/chat-details.h"
+#include "chat/chat-manager.h"
 #include "chat/chat-shared.h"
 
 #include "chat.h"

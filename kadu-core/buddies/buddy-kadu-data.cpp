@@ -9,9 +9,9 @@
 
 #include <QtCore/QVariant>
 
-#include "configuration/storage-point.h"
 #include "configuration/xml-configuration-file.h"
 #include "misc/misc.h"
+#include "storage/storage-point.h"
 
 #include "buddy-kadu-data.h"
 

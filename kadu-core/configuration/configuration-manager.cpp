@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "configuration/storable-object.h"
 #include "configuration/xml-configuration-file.h"
+#include "storage/storable-object.h"
 
 #include "configuration-manager.h"
 

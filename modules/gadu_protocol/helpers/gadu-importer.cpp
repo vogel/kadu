@@ -110,7 +110,7 @@ void GaduImporter::importGaduContact(Buddy &buddy)
 
 	buddy.addContact(contact);
 
-	ContactManager::instance()->addContact(contact);
+	ContactManager::instance()->addItem(contact);
 }
 
 void GaduImporter::importIgnored()

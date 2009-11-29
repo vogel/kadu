@@ -11,13 +11,13 @@
 #include <QtXml/QDomNamedNodeMap>
 
 #include "accounts/account.h"
-#include "configuration/storage-point.h"
 #include "configuration/xml-configuration-file.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/group.h"
 #include "buddies/group-manager.h"
 #include "contacts/contact.h"
 #include "contacts/contact-manager.h"
+#include "storage/storage-point.h"
 
 #include "buddy-shared.h"
 
@@ -188,7 +188,7 @@ void BuddyShared::addContact(Contact contact)
 
 	emit contactAboutToBeAdded(contact.contactAccount());
 	Contacts.insert(contact.contactAccount(), contact);
-	ContactManager::instance()->addContact(contact);
+	ContactManager::instance()->addItem(contact);
 	emit contactAdded(contact.contactAccount());
 }
 
@@ -201,7 +201,7 @@ void BuddyShared::removeContact(Contact contact)
 void BuddyShared::removeContact(Account account)
 {
 	emit contactAboutToBeRemoved(account);
-	ContactManager::instance()->removeContact(Contacts[account]);
+	ContactManager::instance()->removeItem(Contacts[account]);
 	Contacts.remove(account);
 	emit contactRemoved(account);
 }

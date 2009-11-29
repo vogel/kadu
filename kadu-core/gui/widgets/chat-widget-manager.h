@@ -12,10 +12,10 @@
 
 #include <QtCore/QTimer>
 
-#include "configuration/configuration-aware-object.h"
-#include "configuration/storable-string-list.h"
 #include "buddies/buddy-list.h"
+#include "configuration/configuration-aware-object.h"
 #include "gui/widgets/chat-widget.h"
+#include "storage/storable-string-list.h"
 
 #include "exports.h"
 

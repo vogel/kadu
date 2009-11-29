@@ -15,7 +15,7 @@
 
 #include "accounts/accounts-aware-object.h"
 #include "buddies/avatar.h"
-#include "configuration/storable-object.h"
+#include "storage/storable-object.h"
 
 class AvatarService;
 class Contact;

@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "configuration/storage-point.h"
+#include "storage/storage-point.h"
 
 #include "module-data.h"
 

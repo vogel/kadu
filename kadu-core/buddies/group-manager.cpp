@@ -14,10 +14,10 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/group.h"
 #include "configuration/configuration-manager.h"
-#include "configuration/storage-point.h"
 #include "configuration/xml-configuration-file.h"
 #include "core/core.h"
 #include "gui/windows/message-dialog.h"
+#include "storage/storage-point.h"
 
 #include "debug.h"
 

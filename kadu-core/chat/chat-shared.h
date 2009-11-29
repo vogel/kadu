@@ -14,18 +14,18 @@
 
 #include "accounts/account.h"
 #include "chat/type/chat-type-aware-object.h"
-#include "shared/shared.h"
+#include "storage/details-holder.h"
+#include "storage/shared.h"
 
 class BuddySet;
 class Chat;
 class ChatDetails;
+class ChatManager;
 
-class KADUAPI ChatShared : public QObject, public Shared, ChatTypeAwareObject
+class KADUAPI ChatShared : public QObject, public Shared, public DetailsHolder<ChatShared, ChatDetails, ChatManager>, ChatTypeAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(ChatShared)
-
-	ChatDetails *Details;
 
 	Account ChatAccount;
 	QString Type;
@@ -37,6 +37,9 @@ protected:
 
 	virtual void chatTypeRegistered(ChatType *chatType);
 	virtual void chatTypeUnregistered(ChatType *chatType);
+
+	virtual void detailsAdded();
+	virtual void detailsAboutToBeRemoved();
 
 public:
 	static ChatShared * loadFromStorage(StoragePoint *storagePoint);
@@ -50,7 +53,6 @@ public:
 	BuddySet buddies() const;
 	QString name() const;
 
-	KaduShared_Property(ChatDetails *, details, Details)
 	KaduShared_Property(Account, chatAccount, ChatAccount)
 	KaduShared_Property(QString, type, Type)
 	KaduShared_Property(QString, title, Title)

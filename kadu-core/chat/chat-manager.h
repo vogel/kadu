@@ -7,15 +7,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CHAT_MANAGER
-#define CHAT_MANAGER
+#ifndef CHAT_MANAGER_H
+#define CHAT_MANAGER_H
 
 #include <QtCore/QList>
 #include <QtCore/QObject>
 #include <QtCore/QUuid>
 
-#include "accounts/account.h"
-#include "configuration/storable-object.h"
+#include "storage/manager.h"
 
 #include "chat.h"
 
@@ -25,40 +24,35 @@ class Account;
 class BuddyList;
 class XmlConfigFile;
 
-class KADUAPI ChatManager : public QObject, public StorableObject
+class KADUAPI ChatManager : public QObject, public Manager<Chat>
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(ChatManager)
 
 	static ChatManager * Instance;
 
-	QList<Chat> Chats;
-	QList<Chat> AllChats;
-
 	ChatManager();
 	virtual ~ChatManager();
 
-	void registerChat(Chat chat);
-	void unregisterChat(Chat chat);
-
-private slots:
-	void chatTypeLoaded();
-	void chatTypeUnloaded();
-
 protected:
-	virtual StoragePoint * createStoragePoint();
+	virtual QString configurationNodeName() { return QLatin1String("Chats"); }
+	virtual QString configurationNodeItemName() { return QLatin1String("Chat"); }
+
+	virtual void itemAdded(Chat item);
+	virtual void itemRemoved(Chat item);
+
+	virtual void itemAboutToBeRegistered(Chat item);
+	virtual void itemRegisterd(Chat item);
+	virtual void itemAboutToBeUnregisterd(Chat item);
+	virtual void itemUnregistered(Chat item);
+
 
 public:
 	static ChatManager * instance();
 
-	virtual void load();
-	virtual void store();
-
-	void addChat(Chat chat);
-	void removeChat(Chat chat);
-	QList<Chat> chats();
-
-	Chat  byUuid(QUuid uuid);
+	// TODO: hide it someway...
+	void detailsLoaded(Chat chat);
+	void detailsUnloaded(Chat chat);
 
 signals:
 	void chatAboutToBeAdded(Chat chat);
@@ -68,4 +62,4 @@ signals:
 
 };
 
-#endif // CHAT_MANAGER
+#endif // CHAT_MANAGER_H

@@ -12,8 +12,8 @@
 
 #include <QtCore/QObject>
 
-#include "configuration/storable-object.h"
 #include "contacts/contact.h"
+#include "storage/storable-object.h"
 
 #include "exports.h"
 

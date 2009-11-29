@@ -15,9 +15,9 @@
 #include "buddies/group-manager.h"
 #include "contacts/contact.h"
 #include "configuration/configuration-manager.h"
-#include "configuration/storage-point.h"
 #include "configuration/xml-configuration-file.h"
 #include "core/core.h"
+#include "storage/storage-point.h"
 
 #include "debug.h"
 #include "group.h"

@@ -30,7 +30,7 @@ ChatShared * ChatShared::loadFromStorage(StoragePoint *storagePoint)
 
 ChatShared::ChatShared(QUuid uuid) :
 		Shared(uuid, "Chat", ChatManager::instance()),
-		ChatAccount(Account::null), Details(0)
+		ChatAccount(Account::null)
 {
 }
 
@@ -79,31 +79,38 @@ void ChatShared::emitUpdated()
 
 void ChatShared::chatTypeRegistered(ChatType *chatType)
 {
-	if (Details)
+	if (details())
 		return;
 
 	if (chatType->name() != Type)
 		return;
 
-	Details = chatType->createChatDetails(this);
-	Details->ensureLoaded();
+	setDetails(chatType->createChatDetails(this));
 
 	emit chatTypeLoaded();
 }
 
 void ChatShared::chatTypeUnregistered(ChatType *chatType)
 {
-	if (!Details)
+	if (!details())
 		return;
 
 	if (chatType->name() != Type)
 		return;
 
-	Details->store();
-	delete Details;
-	Details = 0;
+	setDetails(0);
 
 	emit chatTypeUnloaded();
+}
+
+void ChatShared::detailsAdded()
+{
+	details()->ensureLoaded();
+}
+
+void ChatShared::detailsAboutToBeRemoved()
+{
+	details()->store();
 }
 
 void ChatShared::refreshTitle()
@@ -169,10 +176,10 @@ void ChatShared::refreshTitle()
 
 BuddySet ChatShared::buddies() const
 {
-	return Details ? Details->buddies() : BuddySet();
+	return details() ? details()->buddies() : BuddySet();
 }
 
 QString ChatShared::name() const
 {
-	return Details ? Details->name() : QString::null;
+	return details() ? details()->name() : QString::null;
 }

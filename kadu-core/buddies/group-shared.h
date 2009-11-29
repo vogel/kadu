@@ -16,7 +16,7 @@
 
 #include "status/status.h"
 
-#include "shared/shared.h"
+#include "storage/shared.h"
 
 class KADUAPI GroupShared : public QObject, public Shared
 {

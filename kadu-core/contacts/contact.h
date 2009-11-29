@@ -15,8 +15,8 @@
 
 #include "accounts/account.h"
 #include "buddies/buddy.h"
-#include "shared/shared-base.h"
 #include "status/status.h"
+#include "storage/shared-base.h"
 
 #include "exports.h"
 

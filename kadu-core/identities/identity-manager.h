@@ -14,7 +14,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QUuid>
 
-#include "configuration/storable-object.h"
+#include "storage/storable-object.h"
 
 #include "exports.h"
 
