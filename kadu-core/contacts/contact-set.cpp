@@ -36,18 +36,10 @@ BuddySet ContactSet::toBuddySet() const
 	return buddies;
 }
 
-Contact ContactSet::firstContact() const
+Contact ContactSet::toContact() const
 {
-	if (isEmpty())
+	if (count() != 1)
 		return Contact::null;
 
-	return toList()[0];
-}
-
-Account ContactSet::account() const
-{
-	if (isEmpty())
-		return Account::null;
-	
-	return toList()[0].contactAccount();
+	return (*begin());
 }

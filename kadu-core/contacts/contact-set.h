@@ -29,8 +29,7 @@ public:
 
 	QList<Contact> toContactList() const;
 	BuddySet toBuddySet() const;
-	Contact firstContact() const;
-	Account account() const;
+	Contact toContact() const;
 
 };
 
