@@ -344,7 +344,7 @@ set (kadu_MOC_SRCS
 
 	contacts/contact-details.h
 	contacts/contact-manager.h
-	contacts/contact-set.h
+	#contacts/contact-set.h
 	contacts/contact-shared.h
 
 	contacts/model/buddy-contact-model.h
