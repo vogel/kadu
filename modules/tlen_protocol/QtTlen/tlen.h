@@ -37,6 +37,7 @@ class tlen: public QObject {
 Q_OBJECT
 
 public:
+
 	enum ConnectionState{
 		ConnectingToHub = 0,
 		Connecting = 1,
@@ -168,7 +169,7 @@ private slots:
 
 signals:
 	void presenceDisconnected();
-	void itemReceived(QString jid, QString name, QString subscription, QString group, bool sort);
+	void itemReceived(QString jid, QString name, QString subscription, QString group);
 	void presenceChanged(QString from, QString status, QString description);
 	void authorizationAsk(QString);
 	void removeItem(QString);
@@ -190,7 +191,7 @@ signals:
 
 private:
 	bool tlenLogin();
-	bool sort;
+
 	bool Secure;
 	bool Reconnect;
 
@@ -200,6 +201,7 @@ private:
 
 	QByteArray stream;
 
+	// connection state
 	int state;
 
 	QString	User;

@@ -44,7 +44,7 @@ tlen* Tlen=0;
 
 tlen::tlen( QObject* parent ): QObject( parent ) {
 	state = tlen::Disconnected;
-	sort=TRUE;
+
 	hostname = "s1.tlen.pl";
 	hostport = 443;
 	Secure = false;
@@ -218,7 +218,6 @@ void tlen::event(QDomNode n) {
 			}
 			if(element.hasAttribute("id") && element.attribute("id")=="GetRoster") {
 				emit clearRosterView();
-				sort=FALSE;
 			}
 			if(element.hasAttribute("from") && element.attribute("from") == "tcfg") {
 				tcfgReceived(element);
@@ -231,10 +230,8 @@ void tlen::event(QDomNode n) {
 					emit eventReceived(el.item(i));
 			}
 
-			if(!sort) {
-				emit sortRoster();
+			if(0) {
 				emit tlenLoggedIn();
-				sort=TRUE;
 			}
 
 		}
@@ -284,7 +281,7 @@ void tlen::event(QDomNode n) {
 		group=decode(group.toUtf8());
 		name=decode(name.toUtf8());
 
-		emit itemReceived(jid, name, subscription, group, sort);
+		emit itemReceived(jid, name, subscription, group);
 
 	}
 	else if(nodeName=="presence") {

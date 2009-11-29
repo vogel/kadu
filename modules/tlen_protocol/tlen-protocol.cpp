@@ -162,8 +162,8 @@ void TlenProtocol::connectToServer()
 		connect( TlenClient, SIGNAL ( presenceDisconnected() ),
 				this, SLOT (presenceDisconnected()) );
 		// lista kontaktow - odebrano kontakt
-		connect( TlenClient, SIGNAL ( itemReceived(QString, QString, QString, QString,bool) ),
-				this, SLOT (itemReceived(QString, QString, QString, QString,bool)) );
+		connect( TlenClient, SIGNAL ( itemReceived(QString, QString, QString, QString) ),
+				this, SLOT (itemReceived(QString, QString, QString, QString)) );
 		// lista kontaktow - zmiana statusu
 		connect( TlenClient, SIGNAL ( presenceChanged(QString, QString, QString) ),
 				this, SLOT (presenceChanged(QString, QString, QString)) );
@@ -303,9 +303,11 @@ bool TlenProtocol::sendMessage(Chat chat, FormattedMessage &formattedMessage)
 void TlenProtocol::chatMsgReceived(QDomNode n)
 {
 	kdebugf();
+
 	bool ignore = false;
 	QDomElement msg = n.toElement();
 	QString from = msg.attribute("from").split("/")[0]; // but what about res?
+	QString fromresource = msg.attribute("from");
 	QString body;
 	QDateTime timeStamp;
 
@@ -512,7 +514,7 @@ void TlenProtocol::contactAccountIdChanged(Buddy &buddy, Account contactAccount,
 	contactUpdated(buddy);
 }
 
-void TlenProtocol::itemReceived(QString jid, QString name, QString subscription, QString group, bool sort)
+void TlenProtocol::itemReceived(QString jid, QString name, QString subscription, QString group)
 {
 	kdebugf();
 	kdebugm(KDEBUG_WARNING, "Tlen contact rcv %s\n", qPrintable(jid));

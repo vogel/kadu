@@ -79,7 +79,7 @@ class TlenProtocol : public Protocol
 		//void disconnectedFromServer();
 
 		void presenceDisconnected();
-		void itemReceived(QString jid, QString name, QString subscription, QString group, bool sort);
+		void itemReceived(QString jid, QString name, QString subscription, QString group);
 		void presenceChanged(QString from, QString status, QString description);
 		void authorizationAsk(QString to);
 		void removeItem(QString);
