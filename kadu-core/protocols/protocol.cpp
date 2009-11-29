@@ -118,7 +118,8 @@ Chat Protocol::findChat(BuddySet contacts, bool create)
 	if (contacts.count() == 1)
 	{
 		Buddy buddy = *contacts.begin();
-		Contact contact = buddy.contact(account());
+		QList<Contact> contactslist = buddy.contacts(account());
+		Contact contact = contactslist.isEmpty() ? Contact::null : contactslist[0];
 		if (contact.isNull())
 			return Chat::null;
 

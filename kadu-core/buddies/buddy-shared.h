@@ -11,6 +11,7 @@
 #define BUDDY_SHARED_DATA
 
 #include <QtCore/QMap>
+#include <QtCore/QList>
 #include <QtCore/QSharedData>
 #include <QtCore/QString>
 #include <QtCore/QStringList>
@@ -40,7 +41,7 @@ public:
 
 private:
 	QMap<QString, QString> CustomData;
-	QHash<Account, Contact> Contacts;
+	QList<Contact> Contacts;
 
 	QString Display;
 	QString FirstName;
@@ -88,9 +89,10 @@ public:
 
 	void addContact(Contact contact);
 	void removeContact(Contact contact);
-	void removeContact(Account account);
-	Contact contact(Account account);
+	QList<Contact> contacts(Account account);
 	QList<Contact> contacts();
+	Contact prefferedContact();
+
 
 	// properties
 	bool showInAllGroup();
@@ -118,11 +120,11 @@ public:
 	KaduShared_PropertyBool(OfflineTo)
 
 signals:
-	void contactAboutToBeAdded(Account account);
-	void contactAdded(Account account);
-	void contactAboutToBeRemoved(Account account);
-	void contactRemoved(Account account);
-	void contactIdChanged(Account account, const QString &oldId);
+	void contactAboutToBeAdded(Contact contact);
+	void contactAdded(Contact contact);
+	void contactAboutToBeRemoved(Contact contact);
+	void contactRemoved(Contact contact);
+	void contactIdChanged(Contact contact, const QString &oldId);
 
 	void updated();
 

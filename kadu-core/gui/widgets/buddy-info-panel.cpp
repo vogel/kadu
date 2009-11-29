@@ -19,7 +19,7 @@
 
 #include "buddy-info-panel.h"
 
-BuddyInfoPanel::BuddyInfoPanel(QWidget *parent) : KaduTextBrowser(parent)
+BuddyInfoPanel::BuddyInfoPanel(QWidget *parent) : KaduTextBrowser(parent), MyBuddy(Buddy::null)
 {
 // TODO: 0.6.5
 // 	InfoPanel->setFrameStyle(QFrame::NoFrame);

@@ -62,15 +62,14 @@ public:
 	void removeCustomData(const QString &key);
 
 	Account prefferedAccount() const;
+	Contact prefferedContact() const;
 	QList<Account> accounts() const;
 
 // 	void setData(BuddyShared *data) { Data = data; }  // TODO: 0.8 tricky merge, this should work well ;)
 
 	void addContact(Contact contact);
 	void removeContact(Contact contact) const;
-	void removeContact(Account account) const;
-	Contact contact(Account account) const;
-	Contact prefferedContact() const;
+	QList<Contact> contacts(Account account) const;
 	QList<Contact> contacts() const;
 	bool hasContact(Account account) const;
 

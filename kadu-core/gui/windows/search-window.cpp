@@ -229,7 +229,9 @@ SearchWindow::SearchWindow(QWidget *parent, Buddy buddy)
 	if (!buddy.isNull())
 	{
 		CurrentSearchCriteria.SearchBuddy = buddy;
-		e_uin->insert(buddy.contact(CurrentAccount).id());
+		QList<Contact> contactslist = buddy.contacts(CurrentAccount);
+		Contact contact = contactslist.isEmpty() ? Contact::null : contactslist[0];
+		e_uin->insert(contact.id());
 	}
 
 	kdebugf2();
@@ -506,7 +508,8 @@ void SearchWindow::newSearchResults(BuddyList buddies)
 
 	foreach(Buddy buddy, buddies)
 	{
-		Contact contact = buddy.contact(CurrentAccount);
+		QList<Contact> contactslist = buddy.contacts(CurrentAccount);
+		Contact contact = contactslist.isEmpty() ? Contact::null : contactslist[0];
 		QList <QTreeWidgetItem *> items = results->findItems(contact.id(), Qt::MatchExactly, 1);
 		if (items.count())
 			qlv = items[0];		

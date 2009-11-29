@@ -250,9 +250,10 @@ void BuddyGeneralConfigurationWidget::saveConfiguration()
 		}
 		else
 		{
+			// TODO 0.6.6
 			foreach (const Contact &tmpcontact, MyBuddy.contacts())
 				if (tmpcontact.id() == contactId) // check if user has only changed account for previous existing ID
-					MyBuddy.removeContact(tmpcontact.contactAccount()); // if so, remove old CAD, otherwise there will appear 2 identical contacts with different accounts
+					MyBuddy.removeContact(tmpcontact); // if so, remove old CAD, otherwise there will appear 2 identical contacts with different accounts
 
 			Contact contact;
 			contact.setContactAccount(account);

@@ -230,7 +230,7 @@ void AddBuddyWindow::setAddContactEnabled()
 	if (mergeWith.isNull())
 		AddContactButton->setEnabled(false);
 	else
-		AddContactButton->setEnabled(mergeWith.contact(account).isNull());
+		AddContactButton->setEnabled(mergeWith.contacts(account).isEmpty());
 }
 
 void AddBuddyWindow::setValidateRegularExpression()

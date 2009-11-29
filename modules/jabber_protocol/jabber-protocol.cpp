@@ -513,7 +513,7 @@ void JabberProtocol::clientResourceReceived(const XMPP::Jid &jid, const XMPP::Re
 
 void JabberProtocol::contactAdded(Buddy &buddy)
 {
-	Contact contact = buddy.contact(account());
+/*	Contact contact = buddy.contact(account());
 	if (contact.isNull() || buddy.isAnonymous())
 		return;
 
@@ -523,23 +523,23 @@ void JabberProtocol::contactAdded(Buddy &buddy)
 		groupsList.append(group.name());
 	//TODO opcja żądania autoryzacji, na razie na sztywno true
 
-	JabberClient->addContact(contact.id(), buddy.display(), groupsList, true);
+	JabberClient->addContact(contact.id(), buddy.display(), groupsList, true);*/
 }
 
 void JabberProtocol::contactRemoved(Buddy &buddy)
 {
-	Contact contact = buddy.contact(account());
+/*	Contact contact = buddy.contact(account());
 	if (contact.isNull() || !isConnected())
 		return;
 
 	JabberClient->removeContact(contact.id());
 	if (buddy.contacts().count() == 1)
-		buddy.setAnonymous(true); // TODO: why?
+		buddy.setAnonymous(true); // TODO: why?*/
 }
 
 void JabberProtocol::contactUpdated(Buddy &buddy)
 {
-	Contact contact = buddy.contact(account());
+/*	Contact contact = buddy.contact(account());
 	if (contact.isNull() || buddy.isAnonymous())
 		return;
 
@@ -547,27 +547,27 @@ void JabberProtocol::contactUpdated(Buddy &buddy)
 	foreach (Group group, buddy.groups())
 		groupsList.append(group.name());
 
-	JabberClient->updateContact(contact.id(), buddy.display(), groupsList);
+	JabberClient->updateContact(contact.id(), buddy.display(), groupsList);*/
 }
 
 void JabberProtocol::contactAdded(Buddy &buddy, Account contactAccount)
 {
-	if (contactAccount != account())
+/*	if (contactAccount != account())
 		return;
-	contactAdded(buddy);
+	contactAdded(buddy);*/
 }
 
 void JabberProtocol::contactAboutToBeRemoved(Buddy &buddy, Account contactAccount)
 {
-	if (contactAccount != account())
+/*	if (contactAccount != account())
 		return;
-	contactRemoved(buddy);
+	contactRemoved(buddy);*/
 }
 
 
 void JabberProtocol::contactAccountIdChanged(Buddy &buddy, Account account, const QString &oldId)
 {
-	contactUpdated(buddy);
+/*	contactUpdated(buddy);*/
 }
 
 void JabberProtocol::slotContactUpdated(const XMPP::RosterItem &item)
@@ -840,9 +840,8 @@ QPixmap JabberProtocol::statusPixmap(const QString &statusType)
 	return IconsManager::instance()->loadPixmap(pixmapName);
 }
 
-JabberContactDetails * JabberProtocol::jabberContactDetails(Buddy buddy) const
+JabberContactDetails * JabberProtocol::jabberContactDetails(Contact contact) const
 {
-	Contact contact = buddy.contact(account());
 	if (contact.isNull())
 		return 0;
 	return dynamic_cast<JabberContactDetails *>(contact.details());

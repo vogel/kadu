@@ -161,7 +161,8 @@ void ChatShared::refreshTitle()
 		else
 			title = Parser::parse(config_file.readEntry("Look","ChatContents"), ChatAccount, buddy, false);
 
-		Contact contact = buddy.contact(ChatAccount);
+		QList<Contact> contactslist = buddy.contacts(ChatAccount);
+		Contact contact = contactslist.isEmpty() ? Contact::null : contactslist[0];
 		if (!contact.isNull())
 			Icon = ChatAccount.statusContainer()->statusPixmap(contact.currentStatus());
 	}

@@ -183,62 +183,74 @@ void BuddyShared::store()
 
 void BuddyShared::addContact(Contact contact)
 {
-	if (contact.isNull())
+	if (contact.isNull() || Contacts.contains(contact))
 		return;
 
-	emit contactAboutToBeAdded(contact.contactAccount());
-	Contacts.insert(contact.contactAccount(), contact);
-	ContactManager::instance()->addItem(contact);
-	emit contactAdded(contact.contactAccount());
+	emit contactAboutToBeAdded(contact);
+	Contacts.append(contact);
+	ContactManager::instance()->addContact(contact);
+	emit contactAdded(contact);
 }
 
 void BuddyShared::removeContact(Contact contact)
 {
-	if (Contacts[contact.contactAccount()] == contact)
-		removeContact(contact.contactAccount());
+	if (contact.isNull() || !Contacts.contains(contact))
+		return;
+
+	emit contactAboutToBeRemoved(contact);
+	ContactManager::instance()->removeContact(contact);
+	Contacts.removeAll(contact);
+	emit contactRemoved(contact);
 }
 
-void BuddyShared::removeContact(Account account)
+QList<Contact> BuddyShared::contacts(Account account)
 {
-	emit contactAboutToBeRemoved(account);
-	ContactManager::instance()->removeItem(Contacts[account]);
-	Contacts.remove(account);
-	emit contactRemoved(account);
-}
+	QList<Contact> contacts;
 
-Contact BuddyShared::contact(Account account)
-{
-	if (!Contacts.contains(account))
-		return Contact::null;
+	foreach (const Contact &contact, Contacts)
+		if (contact.contactAccount() == account)
+			contacts.append(contact);
 
-	return Contacts[account];
+	// TODO 0.6.6 : if count() > 1 ... sort out! (0 - preffered)
+	return contacts;
 }
 
 QList<Contact> BuddyShared::contacts()
 {
-	return Contacts.values();
+	return Contacts;
 }
 
 QString BuddyShared::id(Account account)
 {
-	if (Contacts.contains(account))
-		return Contacts[account].id();
+	QList<Contact> contactslist;
+	contactslist = contacts(account);
+	if (contactslist.count() > 0)
+		return contactslist[0].id();
 
 	return QString::null;
+}
+Contact BuddyShared::prefferedContact()
+{
+	// TODO 0.6.6: implement it to have most available contact
+	return Contacts.count() > 0
+		? Contacts[0]
+		: Contact::null;
 }
 
 Account BuddyShared::prefferedAccount()
 {
-	return Contacts.count() > 0
-		? Contacts.keys()[0]
-		: Account::null;
+	return prefferedContact().contactAccount();
 }
 
 QList<Account> BuddyShared::accounts()
 {
-	return Contacts.count() > 0
-			? Contacts.keys()
-			: QList<Account>();
+	QList<Account> accounts;
+
+	foreach (const Contact &contact, Contacts)
+		if (!accounts.contains(contact.contactAccount()))
+			accounts.append(contact.contactAccount());
+
+	return accounts;
 }
 
 void BuddyShared::emitUpdated()
@@ -277,5 +289,5 @@ void BuddyShared::accountContactDataIdChanged(const QString &id)
 {
 	Contact contact = *(dynamic_cast<Contact *>(sender()));
 	if (!contact.isNull() && !contact.contactAccount().isNull())
-		emit contactIdChanged(contact.contactAccount(), id);
+		emit contactIdChanged(contact, id);
 }

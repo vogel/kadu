@@ -423,7 +423,8 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, QString &styleHref, QSt
 	{
 		result.replace(QString("%messageClasses%"), "message incoming");
 
-		Contact contact = msg.sender().contact(chat.chatAccount());
+		QList<Contact> contactslist = msg.sender().contacts(chat.chatAccount());
+		Contact contact = contactslist.isEmpty() ? Contact::null : contactslist[0];
 		if (!contact.isNull() && !contact.contactAvatar().pixmap().isNull())
 			photoPath = QString("file://") + contact.contactAvatar().filePath();
 		else
