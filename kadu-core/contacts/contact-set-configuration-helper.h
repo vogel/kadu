@@ -7,19 +7,18 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BUDDY_SET_CONFIGURATION_HELPER_H
-#define BUDDY_SET_CONFIGURATION_HELPER_H
+#ifndef CONTACT_SET_CONFIGURATION_HELPER_H
+#define CONTACT_SET_CONFIGURATION_HELPER_H
 
-#include "buddies/buddy-set.h"
+#include "contacts/contact-set.h"
 
-class BuddySetConfigurationHelper
+class ContactSetConfigurationHelper
 {
 public:
-	static BuddySet loadFromConfiguration(StorableObject *parent, const QString &nodeName);
-	static BuddySet loadFromConfiguration(XmlConfigFile *configurationStorage, QDomElement contactSetNode);
-	static void saveToConfiguration(StorableObject *parent, const QString &nodeName, BuddySet contactSet);
-	static void saveToConfiguration(XmlConfigFile *configurationStorage, QDomElement contactSetNode, BuddySet contactSet);
-
+	static ContactSet loadFromConfiguration(StorableObject *parent, const QString &nodeName);
+	static ContactSet loadFromConfiguration(XmlConfigFile *configurationStorage, QDomElement contactSetNode);
+	static void saveToConfiguration(StorableObject *parent, const QString &nodeName, ContactSet contactSet);
+	static void saveToConfiguration(XmlConfigFile *configurationStorage, QDomElement contactSetNode, ContactSet contactSet);
 };
 
-#endif // BUDDY_SET_CONFIGURATION_HELPER_H
+#endif // CONTACT_SET_CONFIGURATION_HELPER_H

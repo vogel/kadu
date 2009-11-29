@@ -24,7 +24,6 @@ set (kadu_SRCS
 	buddies/buddy-remove-predicate-object.cpp
 	buddies/buddy-search-criteria.cpp
 	buddies/buddy-set.cpp
-	buddies/buddy-set-configuration-helper.cpp
 	buddies/buddy-shared.cpp
 	buddies/group.cpp
 	buddies/group-manager.cpp
@@ -93,6 +92,7 @@ set (kadu_SRCS
 	contacts/contact-details.cpp
 	contacts/contact-manager.cpp
 	contacts/contact-set.cpp
+	contacts/contact-set-configuration-helper.cpp
 	contacts/contact-shared.cpp
 
 	contacts/model/buddy-contact-model.cpp
