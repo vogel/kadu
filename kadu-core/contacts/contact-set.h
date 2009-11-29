@@ -34,4 +34,4 @@ public:
 
 };
 
-#endif // BUDDY_SET_H
+#endif // CONTACT_SET_H
