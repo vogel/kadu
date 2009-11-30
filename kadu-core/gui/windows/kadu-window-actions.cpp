@@ -596,7 +596,7 @@ void KaduWindowActions::addUserActionActivated(QAction *sender, bool toggled)
 	AddBuddyWindow *addBuddyWindow = new AddBuddyWindow(window);
 
 	if (buddy.isAnonymous())
-		addBuddyWindow->setContact(buddy);
+		addBuddyWindow->setBuddy(buddy);
 
 	addBuddyWindow->show();
 
@@ -964,7 +964,7 @@ void KaduWindowActions::editUserActionActivated(QAction *sender, bool toggled)
 	if (buddy.isAnonymous())
 	{
 		AddBuddyWindow *addBuddyWindow = new AddBuddyWindow(window);
-		addBuddyWindow->setContact(buddy);
+		addBuddyWindow->setBuddy(buddy);
 		addBuddyWindow->show();
 	}
 	else

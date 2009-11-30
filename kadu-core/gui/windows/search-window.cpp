@@ -319,7 +319,7 @@ void SearchWindow::addFound()
 	foreach (Buddy buddy, found)
 	{
 		AddBuddyWindow *a = new AddBuddyWindow(this);
-		a->setContact(CurrentSearchCriteria.SearchBuddy);
+		a->setBuddy(CurrentSearchCriteria.SearchBuddy);
 		a->show();
 	}
 }

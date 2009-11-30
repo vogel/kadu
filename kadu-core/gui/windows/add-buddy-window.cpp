@@ -176,7 +176,7 @@ Account AddBuddyWindow::selectedAccount()
 	return index.data(AccountRole).value<Account>();
 }
 
-void AddBuddyWindow::setContact(Buddy buddy)
+void AddBuddyWindow::setBuddy(Buddy buddy)
 {
 	MyBuddy = buddy;
 
@@ -306,6 +306,8 @@ void AddBuddyWindow::accept()
 
 		MyBuddy.setAnonymous(false);
 		MyBuddy.setDisplay(DisplayNameEdit->text());
+
+		BuddyManager::instance()->addItem(MyBuddy);
 	}
 	else
 	{

@@ -95,7 +95,7 @@ Account BuddySet::prefferedAccount() const
 		accounts.append(contactAccounts);
 	}
 
-	foreach (const Account &account, AccountManager::instance()->accounts())
+	foreach (const Account &account, AccountManager::instance()->items())
 		if (contactsCount == accounts.count(account))
 			return account;
 
