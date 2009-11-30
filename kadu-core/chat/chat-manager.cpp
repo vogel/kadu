@@ -93,12 +93,14 @@ Chat ChatManager::findChat(ContactSet contacts, bool create)
 	if (!contact.isNull())
 	{
 		ChatDetailsSimple *simple = new ChatDetailsSimple(chat);
+		simple->setState(StateNew);
 		simple->setContact(contact);
 		details = simple;
 	}
 	else if (contacts.size() > 1)
 	{
 		ChatDetailsConference *conference = new ChatDetailsConference(chat);
+		conference->setState(StateNew);
 		conference->setContacts(contacts);
 		details = conference;
 	}
