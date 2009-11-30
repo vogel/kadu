@@ -85,7 +85,7 @@ void HistoryImporter::run()
 		return;
 
 	Account gaduAccount = Account::null;
-	foreach (Account account, AccountManager::instance()->accounts())
+	foreach (Account account, AccountManager::instance()->items())
 		if (account.protocolHandler() && account.protocolHandler()->protocolFactory()
 			&& account.protocolHandler()->protocolFactory()->name() == "gadu")
 		{

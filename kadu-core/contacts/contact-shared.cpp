@@ -30,8 +30,7 @@ ContactShared * ContactShared::loadFromStorage(StoragePoint *storagePoint)
 
 ContactShared::ContactShared(QUuid uuid) :
 		Shared(uuid, "Contact", ContactManager::instance()),
-		ContactAccount(Account::null), ContactAvatar(Avatar::null), OwnerBuddy(Buddy::null),
-		Details(0)
+		ContactAccount(Account::null), ContactAvatar(Avatar::null), OwnerBuddy(Buddy::null)
 {
 }
 
@@ -114,12 +113,10 @@ void ContactShared::protocolRegistered(ProtocolFactory *protocolFactory)
 	if (ContactAccount.protocolName() != protocolFactory->name())
 		return;
 
-	if (Details)
+	if (details())
 		return;
 
-	Details = protocolFactory->createContactDetails(this);
-
-	emit protocolLoaded();
+	setDetails(protocolFactory->createContactDetails(this));
 }
 
 void ContactShared::protocolUnregistered(ProtocolFactory *protocolFactory)
@@ -129,24 +126,26 @@ void ContactShared::protocolUnregistered(ProtocolFactory *protocolFactory)
 
 	// TODO 0.6.6: if empty config must: store(),Details->store()
 	store();
+	setDetails(0);
+}
 
-	if (Details)
-	{
-		Details->store();
-		delete Details;
-		Details = 0;
-	}
+void ContactShared::detailsAdded()
+{
+	details()->ensureLoaded();
+}
 
-	emit protocolUnloaded();
+void ContactShared::detailsAboutToBeRemoved()
+{
+	details()->store();
 }
 
 void ContactShared::setId(const QString &id)
 {
 	if (Id == id)
 		return;
-	
+
 	QString oldId = Id;
 	Id = id;
-	
+
 	emit idChanged(oldId);
 }

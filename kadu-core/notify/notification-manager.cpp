@@ -400,7 +400,7 @@ void NotificationManager::groupUpdated()
 		config_file.writeEntry("Notify", "NotifyAboutAll", false);
 	}
 
-	foreach (const Buddy buddy, BuddyManager::instance()->buddies())
+	foreach (const Buddy buddy, BuddyManager::instance()->items())
 	{
 		if (buddy.isNull() || buddy.isAnonymous() || buddy.groups().contains(group))
 			continue;

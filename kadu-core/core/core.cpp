@@ -285,9 +285,9 @@ void Core::init()
 
 	NotificationManager::instance(); // TODO: 0.6.6
 
-	AccountManager::instance()->load();
-	BuddyManager::instance()->load();
-	ContactManager::instance()->load();
+	AccountManager::instance()->ensureLoaded();
+	BuddyManager::instance()->ensureLoaded();
+	ContactManager::instance()->ensureLoaded();
 }
 
 void Core::storeConfiguration()

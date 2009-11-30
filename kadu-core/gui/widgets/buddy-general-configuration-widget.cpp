@@ -206,7 +206,7 @@ void BuddyGeneralConfigurationWidget::addAccountDataRow(Contact data)
 
 	if (data.isNull())
 		accountsCombo->addItem("-" + tr("Select a Network") + "-");
-	foreach (Account account, AccountManager::instance()->accounts())
+	foreach (Account account, AccountManager::instance()->items())
 	{
 		accountsCombo->addItem(
 				account.protocolHandler()->icon(),

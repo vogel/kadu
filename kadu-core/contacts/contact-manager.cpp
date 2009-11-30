@@ -67,18 +67,16 @@ void ContactManager::itemUnregistered(Contact item)
 	emit contactRemoved(item);
 }
 
-void ContactManager::contactProtocolLoaded()
+void ContactManager::detailsLoaded(Contact item)
 {
-	Contact contact(sender());
-	if (!contact.isNull())
-		registerItem(contact);
+	if (!item.isNull())
+		registerItem(item);
 }
 
-void ContactManager::contactProtocolUnloaded()
+void ContactManager::detailsUnloaded(Contact item)
 {
-	Contact contact(sender());
-	if (!contact.isNull())
-		unregisterItem(contact);
+	if (!item.isNull())
+		unregisterItem(item);
 }
 
 Contact ContactManager::byId(Account account, const QString &id)

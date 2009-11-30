@@ -34,104 +34,32 @@ AvatarManager * AvatarManager::instance()
 
 AvatarManager::AvatarManager()
 {
-	ConfigurationManager::instance()->registerStorableObject(this);
 	triggerAllAccountsRegistered();
 }
 
 AvatarManager::~AvatarManager()
 {
-	ConfigurationManager::instance()->unregisterStorableObject(this);
 	triggerAllAccountsUnregistered();
 }
 
-void AvatarManager::load()
+void AvatarManager::itemAboutToBeAdded(Avatar item)
 {
-	if (!isValidStorage())
-		return;
-	
-	if (!needsLoad())
-		return;
-	
-	StorableObject::load();
-	
-	QDomElement avatarsNode = storage()->point();
-	if (avatarsNode.isNull())
-		return;
-	
-	QList<QDomElement> avatarElements = storage()->storage()->getNodes(avatarsNode, "Avatar");
-	foreach (QDomElement avatarElement, avatarElements)
-	{
-		StoragePoint *storagePoint = new StoragePoint(storage()->storage(), avatarElement);
-		Avatar avatar = Avatar::loadFromStorage(storagePoint);
-		addAvatar(avatar);
-	}
+	emit avatarAboutToBeAdded(item);
 }
 
-void AvatarManager::store()
+void AvatarManager::itemAdded(Avatar item)
 {
-	if (!isValidStorage())
-		return;
-
-	StorableObject::ensureLoaded();
-
-	foreach (Avatar avatar, Avatars)
-		avatar.store();
+	emit avatarAdded(item);
 }
 
-void AvatarManager::addAvatar(Avatar avatar)
+void AvatarManager::itemAboutToBeRemoved(Avatar item)
 {
-	if (avatar.isNull())
-		return;
-
-	StorableObject::ensureLoaded();
-
-	if (Avatars.contains(avatar))
-		return;
-
-	emit avatarAboutToBeAdded(avatar);
-	Avatars.append(avatar);
-	emit avatarAdded(avatar);
+	emit avatarAboutToBeRemoved(item);
 }
 
-void AvatarManager::removeAvatar(Avatar avatar)
+void AvatarManager::itemRemoved(Avatar item)
 {
-	kdebugf();
-
-	if (avatar.isNull())
-		return;
-
-	StorableObject::ensureLoaded();
-
-	if (!Avatars.contains(avatar))
-		return;
-
-	emit avatarAboutToBeRemoved(avatar);
-	Avatars.removeAll(avatar);
-	emit avatarRemoved(avatar);
-}
-
-Avatar AvatarManager::byIndex(unsigned int index)
-{
-	StorableObject::ensureLoaded();
-
-	if (index < 0 || index >= count())
-		return Avatar::null;
-
-	return Avatars.at(index);
-}
-
-Avatar AvatarManager::byUuid(const QString &uuid)
-{
-	StorableObject::ensureLoaded();
-
-	if (uuid.isEmpty())
-		return Avatar::null;
-
-	foreach (Avatar avatar, Avatars)
-		if (uuid == avatar.uuid().toString())
-			return avatar;
-
-	return Avatar::null;
+	emit avatarRemoved(item);
 }
 
 AvatarService * AvatarManager::avatarService(Account account)
@@ -155,11 +83,6 @@ AvatarService * AvatarManager::avatarService(Contact contact)
 QString AvatarManager::avatarFileName(Avatar avatar)
 {
 	return avatar.uuid().toString();
-}
-
-StoragePoint * AvatarManager::createStoragePoint()
-{
-	return new StoragePoint(xml_config_file, xml_config_file->getNode("Avatars"));
 }
 
 void AvatarManager::accountRegistered(Account account)

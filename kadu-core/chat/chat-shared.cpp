@@ -87,8 +87,6 @@ void ChatShared::chatTypeRegistered(ChatType *chatType)
 		return;
 
 	setDetails(chatType->createChatDetails(this));
-
-	emit chatTypeLoaded();
 }
 
 void ChatShared::chatTypeUnregistered(ChatType *chatType)
@@ -100,8 +98,6 @@ void ChatShared::chatTypeUnregistered(ChatType *chatType)
 		return;
 
 	setDetails(0);
-
-	emit chatTypeUnloaded();
 }
 
 void ChatShared::detailsAdded()
@@ -151,7 +147,7 @@ void ChatShared::refreshTitle()
 		else
 			title = Parser::parse(config_file.readEntry("Look","ChatContents"), ChatAccount, buddy, false);
 
-		if (!contact.isNull())
+		if (!contact.isNull() && ChatAccount.statusContainer())
 			Icon = ChatAccount.statusContainer()->statusPixmap(contact.currentStatus());
 	}
 
@@ -172,4 +168,3 @@ QString ChatShared::name() const
 {
 	return details() ? details()->name() : QString::null;
 }
-

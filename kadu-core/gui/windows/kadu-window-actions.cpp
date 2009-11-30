@@ -900,7 +900,7 @@ void KaduWindowActions::deleteUsersActionActivated(QAction *sender, bool toggled
 	if (MessageDialog::ask(tr("Selected users:\n%0 will be deleted. Are you sure?").arg(displays.join(", ")), "Warning", Core::instance()->kaduWindow()))
 	{
 		foreach (Buddy buddy, buddies)
-			BuddyManager::instance()->removeBuddy(buddy);
+			BuddyManager::instance()->removeItem(buddy);
 		BuddyManager::instance()->store();
 	}
 

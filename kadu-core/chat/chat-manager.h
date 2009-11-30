@@ -38,14 +38,10 @@ protected:
 	virtual QString configurationNodeName() { return QLatin1String("Chats"); }
 	virtual QString configurationNodeItemName() { return QLatin1String("Chat"); }
 
-	virtual void itemAdded(Chat item);
-	virtual void itemRemoved(Chat item);
-
 	virtual void itemAboutToBeRegistered(Chat item);
 	virtual void itemRegisterd(Chat item);
 	virtual void itemAboutToBeUnregisterd(Chat item);
 	virtual void itemUnregistered(Chat item);
-
 
 public:
 	static ChatManager * instance();

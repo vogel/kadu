@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include "accounts/account.h"
+#include "accounts/account-shared.h"
 #include "accounts/accounts-aware-object.h"
 #include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
@@ -32,8 +33,7 @@ KADUAPI AccountManager * AccountManager::instance()
 	return Instance;
 }
 
-AccountManager::AccountManager() :
-		StorableObject()
+AccountManager::AccountManager()
 {
 	ConfigurationManager::instance()->registerStorableObject(this);
 }
@@ -43,48 +43,50 @@ AccountManager::~AccountManager()
 	ConfigurationManager::instance()->unregisterStorableObject(this);
 }
 
-StoragePoint * AccountManager::createStoragePoint()
+void AccountManager::itemAboutToBeAdded(Account item)
 {
-	return new StoragePoint(xml_config_file, xml_config_file->getNode("Accounts"));
+	if (item.data())
+		item.data()->ensureLoaded();
 }
 
-void AccountManager::load()
+void AccountManager::itemAboutToBeRegistered(Account item)
 {
-	if (!isValidStorage())
-		return;
-
-	if (!needsLoad())
-		return;
-
-	StorableObject::load();
-
-	QDomElement accountsNode = storage()->point();
-	if (accountsNode.isNull())
-		return;
-
-	QList<QDomElement> accountElements = storage()->storage()->getNodes(accountsNode, "Account");
-	foreach (QDomElement accountElement, accountElements)
-	{
-		StoragePoint *storagePoint = new StoragePoint(storage()->storage(), accountElement);
-		Account account = Account::loadFromStorage(storagePoint);
-		AllAccounts.append(account);
-
-		connect(account, SIGNAL(protocolLoaded()), this, SLOT(accountProtocolLoaded()));
-		connect(account, SIGNAL(protocolUnloaded()), this, SLOT(accountProtocolUnloaded()));
-
-		if (account.protocolHandler())
-			registerAccount(account);
-	}
+	emit accountAboutToBeRegistered(item);
 }
 
-void AccountManager::store()
+void AccountManager::itemRegisterd(Account item)
 {
-	if (!isValidStorage())
-		return;
+	AccountsAwareObject::notifyAccountRegistered(item);
+	connect(item.protocolHandler(), SIGNAL(connectionError(Account, const QString &, const QString &)),
+			this, SLOT(connectionError(Account, const QString &, const QString &)));
 
-	ensureLoaded();
-	foreach (Account account, AllAccounts)
-		account.store();
+	emit accountRegistered(item);
+}
+
+void AccountManager::itemAboutToBeUnregisterd(Account item)
+{
+	AccountsAwareObject::notifyAccountUnregistered(item);
+	disconnect(item.protocolHandler(), SIGNAL(connectionError(Account, const QString &, const QString &)),
+			this, SLOT(connectionError(Account, const QString &, const QString &)));
+
+	emit accountAboutToBeUnregistered(item);
+}
+
+void AccountManager::itemUnregistered(Account item)
+{
+	emit accountUnregistered(item);
+}
+
+void AccountManager::detailsLoaded(Account account)
+{
+	if (!account.isNull())
+		registerItem(account);
+}
+
+void AccountManager::detailsUnloaded(Account account)
+{
+	if (!account.isNull())
+		unregisterItem(account);
 }
 
 Account AccountManager::defaultAccount()
@@ -93,76 +95,16 @@ Account AccountManager::defaultAccount()
 	return byIndex(0);
 }
 
-Account AccountManager::byIndex(unsigned int index)
-{
-	ensureLoaded();
-
-	if (index < 0 || index >= count())
-		return Account::null;
-
-	return RegisteredAccounts.at(index);
-}
-
-Account AccountManager::byUuid(const QUuid &uuid)
-{
-	ensureLoaded();
-
-	if (uuid.isNull())
-		return Account::null;
-
-	foreach (Account account, AllAccounts)
-		if (uuid == account.uuid())
-			return account;
-
-	return Account::null;
-}
-
 const QList<Account> AccountManager::byProtocolName(const QString &name)
 {
 	ensureLoaded();
 
 	QList<Account> list;
-	foreach (Account account, AllAccounts)
+	foreach (Account account, allItems())
 		if (account.protocolName() == name)
 			list.append(account);
 
 	return list;
-}
-
-void AccountManager::registerAccount(Account account)
-{
-	ensureLoaded();
-
-	emit accountAboutToBeRegistered(account);
-	RegisteredAccounts << account;
-	emit accountRegistered(account);
-	AccountsAwareObject::notifyAccountRegistered(account);
-
-	connect(account.protocolHandler(), SIGNAL(connectionError(Account, const QString &, const QString &)),
-			this, SLOT(connectionError(Account, const QString &, const QString &)));
-}
-
-void AccountManager::unregisterAccount(Account account)
-{
-	ensureLoaded();
-
-	disconnect(account.protocolHandler(), SIGNAL(connectionError(Account, const QString &, const QString &)),
-			this, SLOT(connectionError(Account, const QString &, const QString &)));
-
-	AccountsAwareObject::notifyAccountUnregistered(account);
-	emit accountAboutToBeUnregistered(account);
-	RegisteredAccounts.removeAll(account);
-	emit accountUnregistered(account);
-}
-
-void AccountManager::deleteAccount(Account account)
-{
-	ensureLoaded();
-
-	emit accountAboutToBeRemoved(account);
-	unregisterAccount(account);
-	account.removeFromStorage();
-	emit accountRemoved(account);
 }
 
 Status AccountManager::status()
@@ -185,18 +127,4 @@ void AccountManager::connectionError(Account account, const QString &server, con
 	}
 
 	kdebugf2();
-}
-
-void AccountManager::accountProtocolLoaded()
-{
-	Account account(sender());
-	if (!account.isNull())
-		registerAccount(account);
-}
-
-void AccountManager::accountProtocolUnloaded()
-{
-	Account account(sender());
-	if (!account.isNull())
-		unregisterAccount(account);
 }

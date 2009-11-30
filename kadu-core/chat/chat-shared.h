@@ -64,10 +64,6 @@ public slots:
 
 signals:
 	void titleChanged(Chat chat, const QString &newTitle);
-
-	void chatTypeLoaded();
-	void chatTypeUnloaded();
-
 	void updated();
 
 };

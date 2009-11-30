@@ -19,7 +19,7 @@ BuddyList OpenChatWithContactListRunner::matchingContacts(const QString &query)
 {
 	BuddyList matchedContacts;
 
-	foreach (Buddy buddy, BuddyManager::instance()->buddies())
+	foreach (Buddy buddy, BuddyManager::instance()->items())
 	{
 		bool found = false;
 		foreach (Contact data, buddy.contacts())

@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MANAGER_H
-#define MANAGER_H
+#ifndef SIMPLE_MANAGER_H
+#define SIMPLE_MANAGER_H
 
 #include <QtCore/QMap>
 #include <QtCore/QObject>
@@ -20,18 +20,17 @@
 #include "exports.h"
 
 template<class Item>
-class KADUAPI Manager : public StorableObject
+class KADUAPI SimpleManager : public StorableObject
 {
 	QList<Item> Items;
-	QList<Item> ItemsWithDetails;
 
 protected:
-	Manager()
+	SimpleManager()
 	{
 		ConfigurationManager::instance()->registerStorableObject(this);
 	}
 
-	virtual ~Manager()
+	virtual ~SimpleManager()
 	{
 		ConfigurationManager::instance()->unregisterStorableObject(this);
 	}
@@ -41,40 +40,13 @@ protected:
 		return new StoragePoint(xml_config_file, xml_config_file->getNode(configurationNodeName()));
 	}
 
-	void registerItem(Item item)
-	{
-		if (ItemsWithDetails.contains(item))
-			return;
-		if (!Items.contains(item))
-			return;
-
-		itemAboutToBeRegistered(item);
-		ItemsWithDetails.append(item);
-		itemRegisterd(item);
-	}
-
-	void unregisterItem(Item item)
-	{
-		if (!ItemsWithDetails.contains(item))
-			return;
-		if (!Items.contains(item))
-			return;
-
-		itemAboutToBeUnregisterd(item);
-		ItemsWithDetails.removeAll(item);
-		itemUnregistered(item);
-	}
-
 	virtual QString configurationNodeName() = 0;
 	virtual QString configurationNodeItemName() = 0;
 
 	virtual void itemAboutToBeAdded(Item item) {}
+	virtual void itemAdded(Item item) {}
 	virtual void itemAboutToBeRemoved(Item item) {}
-
-	virtual void itemAboutToBeRegistered(Item item) {}
-	virtual void itemRegisterd(Item item) {}
-	virtual void itemAboutToBeUnregisterd(Item item) {}
-	virtual void itemUnregistered(Item item) {}
+	virtual void itemRemoved(Item item) {}
 
 public:
 	virtual void load()
@@ -116,7 +88,7 @@ public:
 		if (index < 0 || index >= count())
 			return Item::null;
 
-		return ItemsWithDetails.at(index);
+		return Items.at(index);
 	}
 
 	Item byUuid(const QUuid &uuid)
@@ -133,25 +105,19 @@ public:
 	unsigned int indexOf(Item item)
 	{
 		ensureLoaded();
-		return ItemsWithDetails.indexOf(item);
+		return Items.indexOf(item);
 	}
 
 	unsigned int count()
 	{
 		ensureLoaded();
-		return ItemsWithDetails.count();
-	}
-
-	const QList<Item> allItems()
-	{
-		ensureLoaded();
-		return Items;
+		return Items.count();
 	}
 
 	const QList<Item> items()
 	{
 		ensureLoaded();
-		return ItemsWithDetails;
+		return Items;
 	}
 
 	void addItem(Item item)
@@ -162,10 +128,8 @@ public:
 			return;
 
 		itemAboutToBeAdded(item);
-
 		Items.append(item);
-		if (item.details())
-			registerItem(item);
+		itemAdded(item);
 	}
 
 	void removeItem(Item item)
@@ -176,12 +140,10 @@ public:
 			return;
 
 		itemAboutToBeRemoved(item);
-
 		Items.removeAll(item);
-		if (item.details())
-			unregisterItem(item);
+		itemRemoved(item);
 	}
 
 };
 
-#endif // MANAGER_H
+#endif // SIMPLE_MANAGER_H

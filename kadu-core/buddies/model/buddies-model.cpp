@@ -64,7 +64,7 @@ Buddy BuddiesModel::buddyAt(const QModelIndex &index) const
 
 const QModelIndex BuddiesModel::buddyIndex(Buddy buddy) const
 {
-	return index(Manager->contactIndex(buddy), 0);
+	return index(Manager->indexOf(buddy), 0);
 }
 
 void BuddiesModel::buddyAboutToBeAdded(Buddy &buddy)

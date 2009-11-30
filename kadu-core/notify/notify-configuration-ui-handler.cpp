@@ -146,7 +146,7 @@ void NotifyConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurat
 
 	statusGroupBox->addWidgets(0, notifyUsers);
 
-	foreach(Buddy buddy, BuddyManager::instance()->buddies())
+	foreach(Buddy buddy, BuddyManager::instance()->items())
 		if (!buddy.isAnonymous())
 		{
 			ContactNotifyData *cnd = buddy.moduleData<ContactNotifyData>();

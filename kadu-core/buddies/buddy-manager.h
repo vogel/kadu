@@ -16,7 +16,7 @@
 
 #include "buddies/buddy.h"
 #include "buddies/buddy-list.h"
-#include "storage/storable-object.h"
+#include "storage/simple-manager.h"
 
 #include "exports.h"
 
@@ -24,14 +24,12 @@ class Account;
 class Group;
 class XmlConfigFile;
 
-class KADUAPI BuddyManager : public QObject, public StorableObject
+class KADUAPI BuddyManager : public QObject, public SimpleManager<Buddy>
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(BuddyManager)
 
 	static BuddyManager * Instance;
-
-	BuddyList Buddies;
 
 	BuddyManager();
 	virtual ~BuddyManager();
@@ -52,27 +50,23 @@ private slots:
 	void groupRemoved(Group group);
 
 protected:
-	virtual StoragePoint * createStoragePoint();
+	virtual QString configurationNodeName() { return QLatin1String("Buddies"); }
+	virtual QString configurationNodeItemName() { return QLatin1String("Buddy"); }
+
+	virtual void itemAboutToBeAdded(Buddy buddy);
+	virtual void itemAdded(Buddy buddy);
+	virtual void itemAboutToBeRemoved(Buddy buddy);
+	virtual void itemRemoved(Buddy buddy);
 
 public:
 	static BuddyManager * instance();
 
 	virtual void load();
-	virtual void store();
 
-	BuddyList buddies();
 	BuddyList buddies(Account account, bool includeAnonymous = false);
-	void addBuddy(Buddy buddy);
-	void removeBuddy(Buddy buddy);
 	void mergeBuddies(Buddy destination, Buddy source);
 
-	unsigned int count() { return Buddies.count(); }
-
-	Buddy byIndex(unsigned int index);
-	int contactIndex(Buddy buddy) { return Buddies.indexOf(buddy); }
-
 	Buddy byId(Account account, const QString &id);
-	Buddy byUuid(const QString &uuid);
 	Buddy byDisplay(const QString &display);
 
 	void blockUpdatedSignal(Buddy &buddy);
