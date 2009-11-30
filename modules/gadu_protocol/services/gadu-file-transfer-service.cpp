@@ -26,7 +26,7 @@ FileTransfer * GaduFileTransferService::loadFileTransferFromStorage(StoragePoint
 {
 	GaduFileTransfer *gft = new GaduFileTransfer(Protocol->account());
 	gft->setStorage(storage);
-	gft->load();
+	gft->ensureLoaded();
 
 	return gft;
 }

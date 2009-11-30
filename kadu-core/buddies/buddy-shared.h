@@ -67,6 +67,7 @@ private slots:
 	void accountContactDataIdChanged(const QString &id);
 
 protected:
+	virtual void load();
 	virtual void emitUpdated();
 
 public:
@@ -77,7 +78,6 @@ public:
 
 	void importConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
 
-	virtual void load();
 	virtual void store();
 
 	QString id(Account account);

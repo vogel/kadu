@@ -35,12 +35,12 @@ class KADUAPI IdentityManager : public QObject, public StorableObject
 	QList<Identity *> Identities;
 
 protected:
+	virtual void load();
 	virtual StoragePoint * createStoragePoint();
 
 public:
 	static IdentityManager * instance();
 
-	virtual void load();
 	virtual void store();
 
 	Identity * byUuid(const QString &uuid);

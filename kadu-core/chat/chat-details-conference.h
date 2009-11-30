@@ -22,11 +22,13 @@ class ChatDetailsConference : public ChatDetails
 
 	ContactSet Contacts;
 
+protected:
+	virtual void load();
+
 public:
 	explicit ChatDetailsConference(ChatShared *chatData);
 	virtual ~ChatDetailsConference();
 
-	virtual void load();
 	virtual void store();
 
 	virtual ChatType * type() const;

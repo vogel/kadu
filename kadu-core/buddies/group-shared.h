@@ -36,6 +36,7 @@ class KADUAPI GroupShared : public QObject, public Shared
 	void importConfiguration(const QString &name);
 
 protected:
+	virtual void load();
 	virtual void emitUpdated();
 
 public:
@@ -44,7 +45,6 @@ public:
 	explicit GroupShared(QUuid uuid = QUuid());
 	virtual ~GroupShared();
 
-	virtual void load();
 	virtual void store();
 
 	KaduShared_Property(QString, name, Name)

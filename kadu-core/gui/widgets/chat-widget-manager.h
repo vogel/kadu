@@ -57,6 +57,8 @@ private slots:
 	void messageSent(const Message &message);
 
 protected:
+	virtual void load();
+
 	virtual void configurationUpdated();
 
 public:
@@ -69,7 +71,6 @@ public:
 
 	ChatWidget * byChat(Chat chat, bool create = false) const;
 
-	virtual void load();
 	virtual void store();
 
 	void activateChatWidget(ChatWidget *chatWidget, bool forceActivate);

@@ -50,6 +50,8 @@ private slots:
 	void groupRemoved(Group group);
 
 protected:
+	virtual void load();
+
 	virtual QString configurationNodeName() { return QLatin1String("Buddies"); }
 	virtual QString configurationNodeItemName() { return QLatin1String("Buddy"); }
 
@@ -60,8 +62,6 @@ protected:
 
 public:
 	static BuddyManager * instance();
-
-	virtual void load();
 
 	BuddyList buddies(Account account, bool includeAnonymous = false);
 	void mergeBuddies(Buddy destination, Buddy source);

@@ -34,6 +34,7 @@ class KADUAPI ChatShared : public QObject, public Shared, public DetailsHolder<C
 	QPixmap Icon;
 
 protected:
+	virtual void load();
 	void emitUpdated();
 
 	virtual void chatTypeRegistered(ChatType *chatType);
@@ -48,7 +49,6 @@ public:
 	explicit ChatShared(QUuid uuid = QUuid());
 	virtual ~ChatShared();
 
-	virtual void load();
 	virtual void store();
 
 	ContactSet contacts() const;

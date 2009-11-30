@@ -43,9 +43,6 @@ void AvatarShared::load()
 	if (!isValidStorage())
 		return;
 
-	if (!needsLoad())
-		return;
-
 	Shared::load();
 
 	LastUpdated = loadValue<QDateTime>("LastUpdated");

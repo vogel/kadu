@@ -41,11 +41,13 @@ private:
 	PROPERTY_DEC(QByteArray, TlsOverrideCert)
 	PROPERTY_DEC(QString, TlsOverrideDomain)
 
+protected:
+	virtual void load();
+
 public:
 	explicit JabberAccountDetails(AccountShared *data);
 	virtual ~JabberAccountDetails();
 
-	virtual void load();
 	virtual void store();
 
 	PROPERTY_DEF(QString, resource, setResource, Resource)

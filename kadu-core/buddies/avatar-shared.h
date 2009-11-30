@@ -27,13 +27,15 @@ class KADUAPI AvatarShared : public Shared
 
 	QString AvatarsDir;
 
+protected:
+	virtual void load();
+
 public:
 	static AvatarShared * loadFromStorage(StoragePoint *avatarStoragePoint);
 
 	explicit AvatarShared(QUuid uuid = QUuid());
 	virtual ~AvatarShared();
 
-	virtual void load();
 	virtual void store();
 
 	QString filePath();

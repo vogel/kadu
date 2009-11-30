@@ -29,11 +29,13 @@ class GaduAccountDetails : public AccountDetails
 
 	GaduOpenChatWithRunner *OpenChatRunner;
 
+protected:
+	virtual void load();
+
 public:
 	explicit GaduAccountDetails(AccountShared *data);
 	virtual ~GaduAccountDetails();
 
-	virtual void load();
 	virtual void store();
 
 	UinType uin();
