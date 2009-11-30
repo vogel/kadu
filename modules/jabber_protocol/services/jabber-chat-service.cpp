@@ -106,7 +106,8 @@ void JabberChatService::clientMessageReceived(const XMPP::Message &msg)
 
 	// TODO - zaimplementowac to samo w ContactList
 	Buddy buddy = Protocol->account().getBuddyById(msg.from().bare());
-	BuddySet contacts = BuddySet(buddy);
+	ContactSet contacts(buddy.prefferedContact());
+
 	time_t msgtime = msg.timeStamp().toTime_t();
 	FormattedMessage formattedMessage(msg.body());
 

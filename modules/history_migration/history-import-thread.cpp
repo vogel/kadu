@@ -12,6 +12,8 @@
 #include "chat/chat.h"
 #include "chat/message/message.h"
 #include "buddies/buddy-set.h"
+#include "contacts/contact-set.h"
+#include "contacts/contact-shared.h"
 #include "core/core.h"
 #include "misc/misc.h"
 #include "modules/history/history.h"
@@ -99,12 +101,9 @@ void HistoryImportThread::importEntry(Chat chat, const HistoryEntry &entry)
 
 Chat  HistoryImportThread::chatFromUinsList(QStringList uinsList)
 {
-	BuddySet buddies;
+	ContactSet buddies;
 	foreach (const QString &uin, uinsList)
-	{
-		Buddy buddy = GaduAccount.getBuddyById(uin);
-		buddies.insert(buddy);
-	}
+		buddies.insert(GaduAccount.getBuddyById(uin).prefferedContact());
 
 	return GaduAccount.protocolHandler()->findChat(buddies);
 }

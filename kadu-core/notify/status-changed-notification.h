@@ -13,6 +13,7 @@
 #include "notify/notification-manager.h"
 #include "chat-notification.h"
 
+class ContactSet;
 class NotifyEvent;
 
 class StatusChangedNotification : public ChatNotification
@@ -32,7 +33,7 @@ public:
 	static void registerEvents();
 	static void unregisterEvents();
 
-	StatusChangedNotification(const QString &toStatus, QList<Contact> &contacts);
+	StatusChangedNotification(const QString &toStatus, const ContactSet &contacts);
 	virtual ~StatusChangedNotification() {}
 
 };

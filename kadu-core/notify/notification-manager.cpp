@@ -247,8 +247,7 @@ void NotificationManager::statusChanged(Contact contact, Status oldStatus)
 
 	QString changedTo = "/To" + Status::name(status, false);
 
-	QList<Contact> contacts;
-	contacts.append(contact);
+	ContactSet contacts(contact);
 
 	StatusChangedNotification *statusChangedNotification;
 	if (config_file.readBoolEntry("Notify", "StatusChanged" + changedTo + "_UseCustomSettings", true))

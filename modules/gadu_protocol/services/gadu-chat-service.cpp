@@ -254,7 +254,12 @@ void GaduChatService::handleEventMsg(struct gg_event *e)
 
 	BuddySet chatContacts = conference;
 	chatContacts.remove(Core::instance()->myself());
-	Chat chat = Protocol->findChat(chatContacts);
+	
+// 	QList<Contact> chatContactsList;
+// 	foreach (const Buddy &buddy, chatContacts)
+// 		  chatContactsList.append(buddy.prefferedContact());
+
+	Chat chat = Protocol->findChat(chatContacts.toContactSet());
 
 	QDateTime time = QDateTime::fromTime_t(e->event.msg.time);
 

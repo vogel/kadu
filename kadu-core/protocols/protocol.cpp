@@ -21,6 +21,7 @@
 #include "icons-manager.h"
 #include "protocols/protocol-factory.h"
 #include "status/status.h"
+#include "debug.h"
 
 #include "protocol.h"
 
@@ -104,7 +105,7 @@ void Protocol::networkStateChanged(NetworkState state)
 // TODO move to contactset
 Chat Protocol::findChat(BuddySet contacts, bool create)
 {
-	foreach (Chat c, ChatManager::instance()->items())
+	foreach (const Chat &c, ChatManager::instance()->items())
 		if (c.chatAccount() == account() && c.contacts().toBuddySet() == contacts)
 			return c;
 
@@ -124,7 +125,7 @@ Chat Protocol::findChat(BuddySet contacts, bool create)
 			return Chat::null;
 
 		ChatDetailsSimple *simple = new ChatDetailsSimple(chat);
-		simple->setContact(contact);
+		simple->setContact(Contact(contact));
 		details = simple;
 	}
 	else
@@ -143,12 +144,38 @@ Chat Protocol::findChat(BuddySet contacts, bool create)
 	return chat;
 }
 
-// TODO 0.6.6: temporary
-Chat Protocol::findChat(QList<Contact> &contacts, bool create)
+Chat Protocol::findChat(ContactSet contacts, bool create)
 {
-	BuddySet buddys;
-	foreach (const Contact &contact, contacts)
-		buddys.insert(contact.ownerBuddy());
-	
-	return findChat(buddys, create);
+	foreach (const Chat &c, ChatManager::instance()->items())
+		if (c.chatAccount() == account() && c.contacts().toBuddySet() == contacts.toBuddySet())
+			return c;
+
+	if (!create)
+		return Chat::null;
+
+	Chat chat = Chat::create();
+	chat.setChatAccount(account());
+	ChatDetails *details = 0;
+
+	if (contacts.count() == 1)
+	{
+		Contact contact = contacts.toContact();
+		if (contact.isNull())
+			return Chat::null;
+
+		ChatDetailsSimple *simple = new ChatDetailsSimple(chat);
+		simple->setContact(contact);
+		details = simple;
+	}
+	else
+	{
+		ChatDetailsConference *conference = new ChatDetailsConference(chat);
+		conference->setContacts(contacts);
+		details = conference;
+	}
+
+	chat.setDetails(details);
+	ChatManager::instance()->addItem(chat);
+
+	return chat;
 }

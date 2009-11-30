@@ -12,7 +12,6 @@
 
 #include <QtCore/QDateTime>
 #include <QtCore/QObject>
-#include <QtCore/QList>
 #include <QtGui/QIcon>
 
 #ifdef __sun__
@@ -35,6 +34,7 @@ class AvatarService;
 class ChatImageService;
 class ChatService;
 class ContactListService;
+class ContactSet;
 class FileTransferService;
 class Message;
 class PersonalInfoService;
@@ -93,7 +93,7 @@ public:
 	virtual bool validateUserID(QString &uid) = 0;
 
 	Chat findChat(BuddySet contacts, bool create = true);
-	Chat findChat(QList<Contact> &contacts, bool create = true);
+	Chat findChat(ContactSet contacts, bool create = true);
 
 	NetworkState state() { return State; }
 	bool isConnected() { return (State == NetworkConnected); }

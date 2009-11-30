@@ -13,6 +13,7 @@
 #include "accounts/account.h"
 #include "chat/chat-manager.h"
 #include "contacts/contact.h"
+#include "contacts/contact-set.h"
 #include "misc/misc.h"
 #include "notify/notify-event.h"
 #include "protocols/protocol.h"
@@ -91,12 +92,12 @@ void StatusChangedNotification::unregisterEvents()
 	StatusChangedToOfflineNotifyEvent = 0;
 }
 
-StatusChangedNotification::StatusChangedNotification(const QString &toStatus, QList<Contact> &contacts) :
-		ChatNotification(contacts[0].contactAccount().protocolHandler()->findChat(contacts), QString("StatusChanged") + toStatus,
-			contacts[0].contactAccount().protocolHandler()->statusPixmap(contacts[0].currentStatus()))
+StatusChangedNotification::StatusChangedNotification(const QString &toStatus, const ContactSet &contacts) :
+		ChatNotification(contacts.toContact().contactAccount().protocolHandler()->findChat(contacts), QString("StatusChanged") + toStatus,
+			contacts.toContact().contactAccount().protocolHandler()->statusPixmap(contacts.toContact().currentStatus()))
 {
-	// TODO 0.6.6: move above to constructor ?? - no - move to ContactList
-	Contact contact = contacts[0];
+	// TODO 0.6.6: ABOVE Contact::null if count() != 1
+	Contact contact = contacts.toContact();
 	Status status = contact.currentStatus();
 	QString syntax;
 
