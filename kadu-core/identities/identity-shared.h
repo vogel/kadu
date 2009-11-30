@@ -21,13 +21,15 @@ class KADUAPI IdentityShared : public BaseStatusContainer, public Shared
 	QString Name;
 	QList<Account> Accounts;
 
+protected:
+	virtual void load();
+
 public:
 	static IdentityShared * loadFromStorage(StoragePoint *accountStoragePoint);
 
 	explicit IdentityShared(const QUuid &uuid = QUuid());
 	virtual ~IdentityShared();
 
-	virtual void load();
 	virtual void store();
 
 	void addAccount(Account account);

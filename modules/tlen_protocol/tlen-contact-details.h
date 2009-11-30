@@ -27,13 +27,15 @@ class TlenContactDetails : public ContactDetails
 	PROPERTY_DEC(bool, HaveMic)
 	PROPERTY_DEC(bool, HaveCam)
 
+protected:
+	virtual void load();
+
 public:
 	explicit TlenContactDetails(ContactShared *contactShared);
 	virtual ~TlenContactDetails();
 
 	virtual bool validateId();
 
-	virtual void load();
 	virtual void store();
 
 	PROPERTY_DEF(unsigned long, maxImageSize, setMaxImageSize, MaxImageSize)

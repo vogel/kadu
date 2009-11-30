@@ -43,6 +43,8 @@ class KADUAPI ContactShared : public QObject, public Shared, public DetailsHolde
 	QString DnsName;
 
 protected:
+	virtual void load();
+
 	virtual void emitUpdated();
 
 	virtual void protocolRegistered(ProtocolFactory *protocolFactory);
@@ -57,7 +59,6 @@ public:
 	explicit ContactShared(QUuid uuid = QUuid());
 	virtual ~ContactShared();
 
-	virtual void load();
 	virtual void store();
 
 	KaduShared_Property(Account, contactAccount, ContactAccount)

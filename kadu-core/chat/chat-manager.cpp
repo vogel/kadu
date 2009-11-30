@@ -7,6 +7,10 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "chat/chat-details-conference.h"
+#include "chat/chat-details-simple.h"
+#include "contacts/contact-shared.h"
+
 #include "chat/chat-manager.h"
 
 ChatManager * ChatManager::Instance = 0;
@@ -57,4 +61,54 @@ void ChatManager::detailsUnloaded(Chat chat)
 {
 	if (!chat.isNull())
 		unregisterItem(chat);
+}
+
+Chat ChatManager::findChat(ContactSet contacts, bool create)
+{
+	if (contacts.size() == 0)
+		return Chat::null;
+
+	// check if every contact has the same account
+	// if not true, we cannot create chat for them
+	Account account = (*contacts.begin()).contactAccount();
+	if (account.isNull())
+		return Chat::null;
+
+	foreach (Contact contact, contacts)
+		if (account != contact.contactAccount())
+			return Chat::null;
+
+	foreach (const Chat &c, ChatManager::instance()->items())
+		if (c.contacts() == contacts)
+			return c;
+
+	if (!create)
+		return Chat::null;
+
+	Chat chat = Chat::create();
+	chat.setChatAccount(account);
+	ChatDetails *details = 0;
+
+	Contact contact = contacts.toContact();
+	if (!contact.isNull())
+	{
+		ChatDetailsSimple *simple = new ChatDetailsSimple(chat);
+		simple->setState(StateNew);
+		simple->setContact(contact);
+		details = simple;
+	}
+	else if (contacts.size() > 1)
+	{
+		ChatDetailsConference *conference = new ChatDetailsConference(chat);
+		conference->setState(StateNew);
+		conference->setContacts(contacts);
+		details = conference;
+	}
+	else
+		return Chat::null;
+
+	chat.setDetails(details);
+	addItem(chat);
+
+	return chat;
 }

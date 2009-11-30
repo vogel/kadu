@@ -39,9 +39,6 @@ void IdentityShared::load()
 	if (!isValidStorage())
 		return;
 
-	if (!needsLoad())
-		return;
-
 	Shared::load();
 
 	Name = loadValue<QString>("Name");

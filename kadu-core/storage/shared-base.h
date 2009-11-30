@@ -14,6 +14,8 @@
 #include <QtCore/QObject>
 #include <QtCore/QUuid>
 
+#include "storage/storable-object.h"
+
 #define KaduSharedBase_PropertyRead(type, name, capitalized_name) \
 	type name() const;
 #define KaduSharedBase_PropertyWrite(type, name, capitalized_name) \
@@ -156,6 +158,7 @@ public:
 	void createData()
 	{
 		Data = new T;
+		Data->setState(StorableObject::StateNew);
 	}
 
 	void blockUpdatedSignal()

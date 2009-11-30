@@ -9,9 +9,10 @@
 
 #include <QtCore/QHash>
 
-#include "configuration/configuration-file.h"
 #include "buddies/buddy-set.h"
 #include "buddies/ignored-helper.h"
+#include "chat/chat-manager.h"
+#include "configuration/configuration-file.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
 #include "gui/windows/message-dialog.h"
@@ -254,12 +255,12 @@ void GaduChatService::handleEventMsg(struct gg_event *e)
 
 	BuddySet chatContacts = conference;
 	chatContacts.remove(Core::instance()->myself());
-	
+
 // 	QList<Contact> chatContactsList;
 // 	foreach (const Buddy &buddy, chatContacts)
 // 		  chatContactsList.append(buddy.prefferedContact());
 
-	Chat chat = Protocol->findChat(chatContacts.toContactSet());
+	Chat chat = ChatManager::instance()->findChat(chatContacts.toContactSet(Protocol->account()));
 
 	QDateTime time = QDateTime::fromTime_t(e->event.msg.time);
 

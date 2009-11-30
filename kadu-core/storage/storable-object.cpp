@@ -55,14 +55,9 @@ void StorableObject::load()
 	State = StateLoaded;
 }
 
-bool StorableObject::needsLoad()
-{
-	return StateUnloaded == State;
-}
-
 void StorableObject::ensureLoaded()
 {
-	if (needsLoad())
+	if (StateUnloaded == State)
 		load();
 }
 

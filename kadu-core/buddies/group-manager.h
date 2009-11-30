@@ -35,12 +35,12 @@ class KADUAPI GroupManager : public QObject, public StorableObject
 	void importConfiguration();
 
 protected:
+	virtual void load();
 	virtual StoragePoint * createStoragePoint();
 
 public:
 	static GroupManager * instance();
 
-	virtual void load();
 	virtual void store();
 
 	QList<Group> groups();

@@ -194,10 +194,13 @@ QVariant ActionsProxyModel::data(const QModelIndex &proxyIndex, int role) const
 {
 	ModelAction action;
 
-	if (proxyIndex.row() < BeforeActions.count())
+	int beforeIndex = proxyIndex.row();
+	int afterIndex = proxyIndex.row() - BeforeActions.count() - sourceModel()->rowCount(QModelIndex());
+
+	if (beforeIndex >= 0 && beforeIndex < BeforeActions.count())
 		action = BeforeActions[proxyIndex.row()];
-	else if (proxyIndex.row() >= BeforeActions.count() + sourceModel()->rowCount(QModelIndex()))
-		action = AfterActions[proxyIndex.row() - BeforeActions.count() - sourceModel()->rowCount(QModelIndex())];
+	else if (afterIndex >= 0 && afterIndex < AfterActions.count())
+		action = AfterActions[afterIndex];
 	else
 		return sourceModel()->data(mapToSource(proxyIndex), role);
 

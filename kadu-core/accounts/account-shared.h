@@ -53,6 +53,7 @@ private:
 	QString ProxyPassword;
 
 protected:
+	virtual void load();
 	void emitUpdated();
 
 	virtual void detailsAdded();
@@ -68,7 +69,6 @@ public:
 	explicit AccountShared(QUuid uuid = QUuid());
 	virtual ~AccountShared();
 
-	virtual void load();
 	virtual void store();
 
 	KaduShared_Property(QString, protocolName, ProtocolName)

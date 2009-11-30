@@ -46,6 +46,8 @@ protected:
 public:
 	static ChatManager * instance();
 
+	Chat findChat(ContactSet contacts, bool create = true);
+
 	// TODO: hide it someway...
 	void detailsLoaded(Chat chat);
 	void detailsUnloaded(Chat chat);

@@ -45,9 +45,6 @@ void ChatShared::load()
 	if (!isValidStorage())
 		return;
 
-	if (!needsLoad())
-		return;
-
 	Shared::load();
 
 	Type = loadValue<QString>("Type");

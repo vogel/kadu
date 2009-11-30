@@ -76,13 +76,9 @@ protected:
 	virtual void itemAboutToBeUnregisterd(Item item) {}
 	virtual void itemUnregistered(Item item) {}
 
-public:
 	virtual void load()
 	{
 		if (!isValidStorage())
-			return;
-
-		if (!needsLoad())
 			return;
 
 		StorableObject::load();
@@ -101,6 +97,7 @@ public:
 		}
 	}
 
+public:
 	virtual void store()
 	{
 		ensureLoaded();

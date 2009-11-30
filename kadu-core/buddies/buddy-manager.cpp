@@ -69,9 +69,6 @@ void BuddyManager::importConfiguration(XmlConfigFile *configurationStorage)
 
 void BuddyManager::load()
 {
-	if (!needsLoad())
-		return;
-
 	if (xml_config_file->getNode("Buddies", XmlConfigFile::ModeFind).isNull())
 	{
 		importConfiguration(xml_config_file);

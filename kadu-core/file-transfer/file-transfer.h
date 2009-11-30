@@ -68,6 +68,7 @@ private:
 	FileTransferError TransferError;
 
 protected:
+	virtual void load();
 	virtual StoragePoint * createStoragePoint();
 
 	void changeFileTransferStatus(FileTransferStatus transferStatus);
@@ -86,7 +87,6 @@ public:
 	FileTransfer(Account account, Contact peer, FileTransferType transferType);
 	virtual ~FileTransfer();
 
-	virtual void load();
 	virtual void store();
 
 	Account account() { return CurrentAccount; }

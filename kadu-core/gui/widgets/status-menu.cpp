@@ -135,7 +135,7 @@ void StatusMenu::changeDescription()
 
 void StatusMenu::changeStatusPrivate(bool toggled)
 {
-	if (!AccountManager::instance()->defaultAccount().isNull())
+	if (AccountManager::instance()->defaultAccount().protocolHandler())
 		AccountManager::instance()->defaultAccount().protocolHandler()->setPrivateMode(toggled);
 
 	config_file.writeEntry("General", "PrivateStatus", toggled);

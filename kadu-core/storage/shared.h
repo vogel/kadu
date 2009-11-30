@@ -44,6 +44,8 @@ class Shared : public UuidStorableObject, public QSharedData
 	void doEmitUpdated();
 
 protected:
+	virtual void load();
+
 	void dataUpdated();
 	virtual void emitUpdated();
 
@@ -51,7 +53,6 @@ public:
 	explicit Shared(const QUuid uuid, const QString &tagName, StorableObject *parent = 0);
 	virtual ~Shared();
 
-	virtual void load();
 	virtual void store();
 
 	virtual QUuid uuid() const { return Uuid; }

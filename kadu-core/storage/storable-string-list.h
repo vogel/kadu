@@ -18,10 +18,12 @@ class StorableStringList : protected QStringList, public StorableObject
 {
 	QString ContentNodeName;
 
+protected:
+	virtual void load();
+
 public:
 	StorableStringList(const QString &nodeName, const QString contentNodeName, StorableObject *parent);
 
-	virtual void load();
 	virtual void store();
 
 	const QStringList content() const;

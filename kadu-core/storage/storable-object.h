@@ -43,6 +43,7 @@ public:
 
 protected:
 	virtual StoragePoint * createStoragePoint();
+	virtual void load();
 
 public:
 	explicit StorableObject(StorableObjectState state = StateUnloaded);
@@ -58,13 +59,11 @@ public:
 
 	StoragePoint * storage();
 
-	virtual void load();
 	virtual void store() = 0;
 
 	StorableObjectState state() { return State; }
 	void setState(StorableObjectState state) { State = state; }
 
-	bool needsLoad();
 	void ensureLoaded();
 	void removeFromStorage();
 
