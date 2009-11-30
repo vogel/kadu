@@ -102,46 +102,10 @@ void Protocol::networkStateChanged(NetworkState state)
 			break;
 	}
 }
-// TODO move to contactset
+// TODO to remove
 Chat Protocol::findChat(BuddySet contacts, bool create)
 {
-	foreach (const Chat &c, ChatManager::instance()->items())
-		if (c.chatAccount() == account() && c.contacts().toBuddySet() == contacts)
-			return c;
-
-	if (!create)
-		return Chat::null;
-
-	Chat chat = Chat::create();
-	chat.setChatAccount(account());
-	ChatDetails *details = 0;
-
-	if (contacts.count() == 1)
-	{
-		Buddy buddy = *contacts.begin();
-		QList<Contact> contactslist = buddy.contacts(account());
-		Contact contact = contactslist.isEmpty() ? Contact::null : contactslist[0];
-		if (contact.isNull())
-			return Chat::null;
-
-		ChatDetailsSimple *simple = new ChatDetailsSimple(chat);
-		simple->setContact(Contact(contact));
-		details = simple;
-	}
-	else
-	{
-		ChatDetailsConference *conference = new ChatDetailsConference(chat);
-		ContactSet contactlist;
-		foreach (const Contact &contact, contacts.toContactList(account()))
-			contactlist.insert(contact);
-		conference->setContacts(contactlist);
-		details = conference;
-	}
-
-	chat.setDetails(details);
-	ChatManager::instance()->addItem(chat);
-
-	return chat;
+	return findChat(contacts.toContactSet(account()), create);
 }
 
 Chat Protocol::findChat(ContactSet contacts, bool create)
