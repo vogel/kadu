@@ -522,7 +522,7 @@ void TlenProtocol::itemReceived(QString jid, QString name, QString subscription,
 		
 		buddy.addContact(contact);
 		//ContactManager::instance()->addContact(contact);
-		BuddyManager::instance()->addBuddy(buddy);
+		BuddyManager::instance()->addItem(buddy);
 		//buddy.store();
 	}
 	else
