@@ -10,6 +10,7 @@
 #include "buddies/buddy-set.h"
 #include "buddies/ignored-helper.h"
 #include "chat/chat.h"
+#include "chat/chat-manager.h"
 #include "chat/message/message.h"
 #include "core/core.h"
 #include "configuration/configuration-file.h"
@@ -114,7 +115,7 @@ void JabberChatService::clientMessageReceived(const XMPP::Message &msg)
 	QString plain = formattedMessage.toPlain();
 
 	bool ignore = false;
-	Chat chat = Protocol->findChat(contacts);
+	Chat chat = ChatManager::instance()->findChat(contacts, Protocol->account());
 	emit receivedMessageFilter(chat, buddy, plain, msgtime, ignore);
 	if (ignore)
 		return;

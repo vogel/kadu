@@ -23,7 +23,7 @@ FileTransfer * JabberFileTransferService::loadFileTransferFromStorage(StoragePoi
 {
 	JabberFileTransfer *jft = new JabberFileTransfer(Protocol->account());
 	jft->setStorage(storage);
-	jft->load();
+	jft->ensureLoaded();
 
 	return jft;
 }
