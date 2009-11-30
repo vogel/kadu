@@ -1244,7 +1244,7 @@ void Kadu::sendMessage(UserListElement elem)
 	UserListElements users  = userbox->selectedUsers();
 	if (!users.isEmpty())
 	{
-		if (elem.usesProtocol("Gadu") && elem != Myself) //TODO: elem.hasFeature("SendingMessages")
+		if (elem.usesProtocol("Gadu") && elem.ID("Gadu") != Myself.ID("Gadu")) //TODO: elem.hasFeature("SendingMessages")
 			chat_manager->sendMessage(elem, users);
 		else if (elem.mobile().isEmpty() && !elem.email().isEmpty())
 			openMailClient(elem.email());
