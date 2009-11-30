@@ -111,7 +111,7 @@ Chat Protocol::findChat(BuddySet contacts, bool create)
 Chat Protocol::findChat(ContactSet contacts, bool create)
 {
 	foreach (const Chat &c, ChatManager::instance()->items())
-		if (c.chatAccount() == account() && c.contacts().toBuddySet() == contacts.toBuddySet())
+		if (c.chatAccount() == account() && c.contacts() == contacts)
 			return c;
 
 	if (!create)
@@ -121,22 +121,21 @@ Chat Protocol::findChat(ContactSet contacts, bool create)
 	chat.setChatAccount(account());
 	ChatDetails *details = 0;
 
-	if (contacts.count() == 1)
+	Contact contact = contacts.toContact();;
+	if (!contact.isNull())
 	{
-		Contact contact = contacts.toContact();
-		if (contact.isNull())
-			return Chat::null;
-
 		ChatDetailsSimple *simple = new ChatDetailsSimple(chat);
 		simple->setContact(contact);
 		details = simple;
 	}
-	else
+	else if (contacts.size() > 1)
 	{
 		ChatDetailsConference *conference = new ChatDetailsConference(chat);
 		conference->setContacts(contacts);
 		details = conference;
 	}
+	else
+		return Chat::null;
 
 	chat.setDetails(details);
 	ChatManager::instance()->addItem(chat);
