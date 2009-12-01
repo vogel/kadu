@@ -61,6 +61,7 @@ void BuddyShared::importConfiguration(XmlConfigFile *configurationStorage, QDomE
 	QStringList groups = CustomData["groups"].split(',', QString::SkipEmptyParts);
 	foreach (const QString &group, groups)
 		Groups << GroupManager::instance()->byName(group);
+
 	CustomData.remove("groups");
 
 	ImportProperty(Display, altnick)
