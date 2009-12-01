@@ -128,6 +128,15 @@ Buddy BuddiesListView::buddyAt(const QModelIndex &index) const
 	return model->buddyAt(index);
 }
 
+Contact BuddiesListView::contactAt(const QModelIndex &index) const
+{
+	const AbstractBuddiesModel *model = dynamic_cast<const AbstractBuddiesModel *>(index.model());
+	if (!model)
+		return Contact::null;
+
+	return model->contactAt(index);
+}
+
 Chat BuddiesListView::chatForIndex(const QModelIndex &index) const
 {
 	if (!index.isValid())
