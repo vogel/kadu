@@ -12,6 +12,7 @@
 #include "contacts/contact.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
+#include "protocols/protocols-manager.h"
 
 #include "account-shared.h"
 
@@ -142,6 +143,18 @@ void AccountShared::protocolUnregistered(ProtocolFactory* factory)
 void AccountShared::detailsAdded()
 {
 	details()->ensureLoaded();
+
+	ProtocolFactory *factory = ProtocolsManager::instance()->byName(ProtocolName);
+	if (!factory)
+		return;
+
+	ProtocolHandler = factory->createProtocolHandler(this);
+
+	connect(ProtocolHandler, SIGNAL(statusChanged(Account, Status)), this, SIGNAL(statusChanged()));
+	connect(ProtocolHandler, SIGNAL(buddyStatusChanged(Contact, Status)),
+			this, SIGNAL(buddyStatusChanged(Contact, Status)));
+
+	emit protocolLoaded();
 }
 
 void AccountShared::detailsAboutToBeRemoved()
