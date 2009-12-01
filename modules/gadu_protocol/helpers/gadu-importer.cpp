@@ -92,7 +92,12 @@ void GaduImporter::importContacts()
 
 void GaduImporter::importGaduContact(Buddy &buddy)
 {
-	Account account = AccountManager::instance()->defaultAccount();
+	QList<Account> allGaduAccounts = AccountManager::instance()->byProtocolName("gadu");
+	if (0 == allGaduAccounts.count())
+		return;
+
+	// take 1st one
+	Account account = allGaduAccounts[0];
 	QString id = buddy.customData("uin");
 
 	Contact contact;
