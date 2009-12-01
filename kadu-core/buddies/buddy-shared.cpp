@@ -16,6 +16,7 @@
 #include "buddies/group.h"
 #include "buddies/group-manager.h"
 #include "contacts/contact.h"
+#include "contacts/contact-shared.h"
 #include "contacts/contact-manager.h"
 #include "storage/storage-point.h"
 
@@ -233,9 +234,19 @@ QString BuddyShared::id(Account account)
 Contact BuddyShared::prefferedContact()
 {
 	// TODO 0.6.6: implement it to have most available contact
-	return Contacts.count() > 0
-		? Contacts[0]
-		: Contact::null;
+	int count = Contacts.count();
+	if (count == 0)
+		return Contact::null;
+
+	if (count == 1)
+		return Contacts[0];
+
+	Contact prefferedContact = Contacts[0];
+	foreach (const Contact &contact, Contacts)
+		if (prefferedContact.currentStatus() < contact.currentStatus())
+			prefferedContact = contact;
+
+	return prefferedContact;
 }
 
 Account BuddyShared::prefferedAccount()
