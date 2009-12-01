@@ -153,6 +153,8 @@ QVariant BuddiesModelBase::data(Contact contact, int role, bool useDisplay) cons
 					: QVariant();
 		case BuddyRole:
 			return QVariant::fromValue(contact.ownerBuddy());
+		case ContactRole:
+			return QVariant::fromValue(contact);
 		case DescriptionRole:
 			//TODO 0.6.6:
 			//	ContactKaduData *ckd = contact.moduleData<ContactKaduData>(true);
