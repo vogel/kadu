@@ -330,21 +330,14 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, QString &styleHref, QSt
 		return QString("");
 
 	QString result = style;
-	QString name;
 
 	//TODO: get Chat name (contacts' nicks?)
 	//Replace %chatName% //TODO. Find way to dynamic update this tag (add id ?)
-	int contactsSize = chat.contacts().count();
-	QStringList names;
-	foreach (const Buddy &buddy, chat.contacts().toBuddySet())
-		name.append(buddy.display());
-	name.append(names.join(", "));
-
-	result.replace(QString("%chatName%"), name);
+	result.replace(QString("%chatName%"), chat.name());
 	// Replace %sourceName%
 	result.replace(QString("%sourceName%"), chat.chatAccount().name());
 	// Replace %destinationName%
-	result.replace(QString("%destinationName%"), name);
+	result.replace(QString("%destinationName%"), chat.name());
 	// For %timeOpened%, display the date and time. TODO: get real time 
 	result.replace(QString("%timeOpened%"), printDateTime(QDateTime::currentDateTime()));
 
@@ -357,6 +350,7 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, QString &styleHref, QSt
 	QString photoIncoming;
 	QString photoOutgoing;
 
+	int contactsSize = chat.contacts().size();
 	if (contactsSize > 1)
 		photoIncoming = QString("file://") + styleHref + QString("Incoming/buddy_icon.png");
 	else if (contactsSize == 1)
