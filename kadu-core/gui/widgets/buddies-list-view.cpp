@@ -23,6 +23,7 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-set.h"
 #include "buddies/model/buddies-model-proxy.h"
+#include "chat/chat-manager.h"
 #include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
 #include "model/roles.h"
@@ -142,18 +143,11 @@ Chat BuddiesListView::chatForIndex(const QModelIndex &index) const
 	if (!index.isValid())
 		return Chat::null;
 
-	Account account = index.data(AccountRole).value<Account>();
-	if (account.isNull())
-		return Chat::null;
-
-	Buddy con = buddyAt(index);
+	Contact con = contactAt(index);
 	if (con.isNull())
 		return Chat::null;
 
-	if (!account.protocolHandler())
-		return Chat::null;
-
-	return account.protocolHandler()->findChat(BuddySet(con));
+	return ChatManager::instance()->findChat(ContactSet(con));
 }
 
 Chat  BuddiesListView::currentChat() const
