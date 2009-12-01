@@ -13,12 +13,14 @@
 class QModelIndex;
 
 class Buddy;
+class Contact;
 
 class AbstractBuddiesModel
 {
 
 public:
 	virtual Buddy buddyAt(const QModelIndex &index) const;
+	virtual Contact contactAt(const QModelIndex &index) const;
 	virtual const QModelIndex buddyIndex(Buddy buddy) const = 0;
 
 };
