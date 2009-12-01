@@ -50,7 +50,7 @@ protected:
 	virtual void emitUpdated();
 
 public:
-	explicit Shared(const QUuid uuid, const QString &tagName, StorableObject *parent = 0);
+	explicit Shared(QUuid Uuid);
 	virtual ~Shared();
 
 	virtual void store();

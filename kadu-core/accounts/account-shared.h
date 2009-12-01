@@ -63,11 +63,14 @@ protected:
 public:
 	static AccountShared * loadFromStorage(StoragePoint *storagePoint);
 
+	explicit AccountShared(QUuid uuid = QUuid());
+	virtual ~AccountShared();
+	
 	// TODO: 0.6.6 look at buddy.cpp:197, need to be hidden again
 	virtual void protocolRegistered(ProtocolFactory *protocolHandler);
 
-	explicit AccountShared(QUuid uuid = QUuid());
-	virtual ~AccountShared();
+	virtual StorableObject * storageParent();
+	virtual QString storageNodeName();
 
 	virtual void store();
 

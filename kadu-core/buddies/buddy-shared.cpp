@@ -32,14 +32,23 @@ BuddyShared * BuddyShared::loadFromStorage(StoragePoint *contactStoragePoint)
 }
 
 BuddyShared::BuddyShared(QUuid uuid) :
-		QObject(BuddyManager::instance()),
-		Shared(uuid, "Buddy", BuddyManager::instance()),
+		QObject(BuddyManager::instance()), Shared(uuid),
 		Anonymous(false), Ignored(false), Blocked(false), OfflineTo(false)
 {
 }
 
 BuddyShared::~BuddyShared()
 {
+}
+
+StorableObject * BuddyShared::storageParent()
+{
+	return BuddyManager::instance();
+}
+
+QString BuddyShared::storageNodeName()
+{
+	return QLatin1String("Buddy");
 }
 
 #define ImportProperty(name, old_name) \

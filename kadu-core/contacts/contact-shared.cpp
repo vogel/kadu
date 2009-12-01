@@ -29,7 +29,7 @@ ContactShared * ContactShared::loadFromStorage(StoragePoint *storagePoint)
 }
 
 ContactShared::ContactShared(QUuid uuid) :
-		Shared(uuid, "Contact", ContactManager::instance()),
+		Shared(uuid),
 		ContactAccount(Account::null), ContactAvatar(Avatar::null), OwnerBuddy(Buddy::null)
 {
 }
@@ -37,6 +37,16 @@ ContactShared::ContactShared(QUuid uuid) :
 ContactShared::~ContactShared()
 {
 	triggerAllProtocolsUnregistered();
+}
+
+StorableObject * ContactShared::storageParent()
+{
+	return ContactManager::instance();
+}
+
+QString ContactShared::storageNodeName()
+{
+	return QLatin1String("Contact");
 }
 
 void ContactShared::load()

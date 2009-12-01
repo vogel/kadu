@@ -30,9 +30,9 @@ class XmlConfigFile;
 
 class KADUAPI Account : public SharedBase<AccountShared>
 {
-	Account(bool null);
 
 public:
+	static Account create();
 	static Account loadFromStorage(StoragePoint *storage);
 	static Account null;
 

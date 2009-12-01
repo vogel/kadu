@@ -35,9 +35,6 @@ class KADUAPI ChatManager : public QObject, public Manager<Chat>
 	virtual ~ChatManager();
 
 protected:
-	virtual QString configurationNodeName() { return QLatin1String("Chats"); }
-	virtual QString configurationNodeItemName() { return QLatin1String("Chat"); }
-
 	virtual void itemAboutToBeRegistered(Chat item);
 	virtual void itemRegisterd(Chat item);
 	virtual void itemAboutToBeUnregisterd(Chat item);
@@ -45,6 +42,9 @@ protected:
 
 public:
 	static ChatManager * instance();
+
+	virtual QString storageNodeName() { return QLatin1String("Chats"); }
+	virtual QString storageNodeItemName() { return QLatin1String("Chat"); }
 
 	Chat findChat(ContactSet contacts, bool create = true);
 

@@ -27,6 +27,7 @@ class KADUAPI SimpleManager : public StorableObject
 protected:
 	SimpleManager()
 	{
+		setState(StateNotLoaded);
 		ConfigurationManager::instance()->registerStorableObject(this);
 	}
 
@@ -35,13 +36,12 @@ protected:
 		ConfigurationManager::instance()->unregisterStorableObject(this);
 	}
 
-	virtual StoragePoint * createStoragePoint()
+	virtual StorableObject * storageParent()
 	{
-		return new StoragePoint(xml_config_file, xml_config_file->getNode(configurationNodeName()));
+		return 0;
 	}
 
-	virtual QString configurationNodeName() = 0;
-	virtual QString configurationNodeItemName() = 0;
+	virtual QString storageNodeItemName() = 0;
 
 	virtual void itemAboutToBeAdded(Item item) {}
 	virtual void itemAdded(Item item) {}
@@ -59,7 +59,7 @@ protected:
 		if (itemsNode.isNull())
 			return;
 
-		QList<QDomElement> itemElements = storage()->storage()->getNodes(itemsNode, configurationNodeItemName());
+		QList<QDomElement> itemElements = storage()->storage()->getNodes(itemsNode, storageNodeItemName());
 		foreach (QDomElement itemElement, itemElements)
 		{
 			StoragePoint *storagePoint = new StoragePoint(storage()->storage(), itemElement);

@@ -32,9 +32,6 @@ class KADUAPI ContactManager : public QObject, public Manager<Contact>
 	virtual ~ContactManager();
 
 protected:
-	virtual QString configurationNodeName() { return QLatin1String("Contacts"); }
-	virtual QString configurationNodeItemName() { return QLatin1String("Contact"); }
-
 	virtual void itemAdded(Contact item);
 	virtual void itemRemoved(Contact item);
 
@@ -45,6 +42,9 @@ protected:
 
 public:
 	static ContactManager * instance();
+
+	virtual QString storageNodeName() { return QLatin1String("Contacts"); }
+	virtual QString storageNodeItemName() { return QLatin1String("Contact"); }
 
 	// TODO: 0.6.6, hide it
 	void detailsLoaded(Contact item);

@@ -13,6 +13,8 @@
 #include <QtCore/QString>
 #include <QtGui/QDialog>
 
+#include "contacts/contact-details.h"
+
 class Account;
 class AccountCreateWidget;
 class AccountDetails;
@@ -21,7 +23,6 @@ class AccountShared;
 class Buddy;
 class ConfigurationWindow;
 class Contact;
-class ContactDetails;
 class ContactShared;
 class ContactWidget;
 class Protocol;

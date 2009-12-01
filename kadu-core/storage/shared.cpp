@@ -9,8 +9,7 @@
 
 #include "shared.h"
 
-Shared::Shared(const QUuid uuid, const QString &tagName, StorableObject *parent) :
-		UuidStorableObject(tagName, parent),
+Shared::Shared(QUuid uuid) :
 		Uuid(uuid.isNull() ? QUuid::createUuid() : uuid)
 {
 }

@@ -43,12 +43,6 @@ GroupManager::~GroupManager()
 	ConfigurationManager::instance()->unregisterStorableObject(this);
 }
 
-StoragePoint * GroupManager::createStoragePoint()
-{
-	QDomElement groupsNode = xml_config_file->getNode("Groups");
-	return new StoragePoint(xml_config_file, groupsNode);
-}
-
 void GroupManager::importConfiguration()
 {
 	StoragePoint *sp = storage();
@@ -73,85 +67,15 @@ void GroupManager::importConfiguration()
 
 void GroupManager::load()
 {
-	StorableObject::load();
-
 	QDomElement groupsNode = xml_config_file->getNode("Groups", XmlConfigFile::ModeFind);
 	if (groupsNode.isNull())
 	{
 		importConfiguration();
+		setState(StateLoaded);
 		return;
 	}
 
-	QDomNodeList groupNodes = groupsNode.elementsByTagName("Group");
-
-	int count = groupNodes.count();
-	for (int i = 0; i < count; i++)
-	{
-		QDomElement groupElement = groupNodes.at(i).toElement();
-		if (groupElement.isNull())
-			continue;
-
-		StoragePoint *groupStoragePoint = new StoragePoint(xml_config_file, groupElement);
-		addGroup(Group::loadFromStorage(groupStoragePoint));
-	}
-}
-
-void GroupManager::store()
-{
-	if (!isValidStorage())
-		return;
-
-	ensureLoaded();
-	emit saveGroupData();
-
-	foreach (Group group, Groups)
-		group.store();
-}
-
-QList<Group> GroupManager::groups()
-{
-	ensureLoaded();
-	return Groups;
-}
-
-void GroupManager::addGroup(Group group)
-{
-	ensureLoaded();
-
-	emit groupAboutToBeAdded(group);
-	Groups << group;
-	emit groupAdded(group);
-}
-
-void GroupManager::removeGroup(Group group)
-{
-	group.removeFromStorage();
-
-	emit groupAboutToBeRemoved(group);
-	Groups.removeAll(group);
-	emit groupRemoved(group);
-}
-
-Group GroupManager::byUuid(const QString &uuid)
-{
-	if (uuid.isEmpty())
-		return Group::null;
-
-	ensureLoaded();
-
-	foreach (Group group, Groups)
-		if (uuid == group.uuid().toString())
-			return group;
-
-	return Group::null;
-}
-
-Group GroupManager::byIndex(unsigned int index) const
-{
-	if (index < 0 || index >= count())
-		return Group::null;
-	
-	return Groups.at(index);
+	SimpleManager<Group>::load();
 }
 
 Group GroupManager::byName(const QString &name, bool create)
@@ -161,7 +85,7 @@ Group GroupManager::byName(const QString &name, bool create)
 
 	ensureLoaded();
 
-	foreach (Group group, Groups)
+	foreach (Group group, items())
 		if (name == group.name())
 			return group;
 
@@ -170,14 +94,9 @@ Group GroupManager::byName(const QString &name, bool create)
 
 	Group group;
 	group.data()->importConfiguration(name);
-	addGroup(group);
+	addItem(group);
 
 	return group;
-}
-
-unsigned int GroupManager::indexOf(Group group) const
-{
-	return Groups.indexOf(group);
 }
 
 // TODO: move some of this to %like-encoding, so we don't block normal names
@@ -225,4 +144,24 @@ bool GroupManager::acceptableGroupName(const QString &groupName)
 
 	kdebugf2();
 	return true;
+}
+
+void GroupManager::itemAboutToBeAdded(Group item)
+{
+	emit groupAboutToBeAdded(item);
+}
+
+void GroupManager::itemAdded(Group item)
+{
+	emit groupAdded(item);
+}
+
+void GroupManager::itemAboutToBeRemoved(Group item)
+{
+	emit groupAboutToBeRemoved(item);
+}
+
+void GroupManager::itemRemoved(Group item)
+{
+	emit groupRemoved(item);
 }

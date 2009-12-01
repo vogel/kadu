@@ -39,6 +39,16 @@ FileTransfer::~FileTransfer()
 {
 }
 
+StorableObject * FileTransfer::storageParent()
+{
+	return FileTransferManager::instance();
+}
+
+QString FileTransfer::storageNodeName()
+{
+	return QLatin1String("FileTransfer");
+}
+
 FileTransfer * FileTransfer::loadFromStorage(StoragePoint *fileTransferStoragePoint)
 {
 	if (!fileTransferStoragePoint || !fileTransferStoragePoint->storage())
@@ -60,16 +70,6 @@ FileTransfer * FileTransfer::loadFromStorage(StoragePoint *fileTransferStoragePo
 		return 0;
 
 	return ft;
-}
-
-StoragePoint * FileTransfer::createStoragePoint()
-{
-	StoragePoint *parent = FileTransferManager::instance()->storage();
-	if (!parent)
-		return 0;
-
-	QDomElement contactNode = parent->storage()->getUuidNode(parent->point(), "FileTransfer", Uuid.toString());
-	return new StoragePoint(parent->storage(), contactNode);
 }
 
 void FileTransfer::load()

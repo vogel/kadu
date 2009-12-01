@@ -23,8 +23,7 @@ KADUAPI DescriptionManager * DescriptionManager::instance()
 	return Instance;
 }
 
-DescriptionManager::DescriptionManager() :
-		StorableStringList("Descriptions", "Description", 0)
+DescriptionManager::DescriptionManager()
 {
 	ConfigurationManager::instance()->registerStorableObject(this);
 
@@ -34,6 +33,21 @@ DescriptionManager::DescriptionManager() :
 
 DescriptionManager::~DescriptionManager()
 {
+}
+
+StorableObject * DescriptionManager::storageParent()
+{
+	return 0;
+}
+
+QString DescriptionManager::storageNodeName()
+{
+	return QLatin1String("Descriptions");
+}
+
+QString DescriptionManager::storageItemNodeName()
+{
+	return QLatin1String("Description");
 }
 
 DescriptionModel * DescriptionManager::model()

@@ -29,8 +29,9 @@ FileTransferManager * FileTransferManager::instance()
 }
 
 FileTransferManager::FileTransferManager() :
-		StorableObject(StateLoaded)
+		StorableObject()
 {
+	setState(StateLoaded);
 	triggerAllAccountsRegistered();
 }
 
@@ -39,9 +40,14 @@ FileTransferManager::~FileTransferManager()
 	triggerAllAccountsUnregistered();
 }
 
-StoragePoint * FileTransferManager::createStoragePoint()
+StorableObject * FileTransferManager::storageParent()
 {
-	return new StoragePoint(xml_config_file, xml_config_file->getNode("FileTransfersNew"));
+	return 0;
+}
+
+QString FileTransferManager::storageNodeName()
+{
+	return QLatin1String("FileTransfersNew");
 }
 
 void FileTransferManager::load(Account account)

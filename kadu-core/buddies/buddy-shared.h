@@ -76,6 +76,9 @@ public:
 	explicit BuddyShared(QUuid uuid = QUuid());
 	virtual ~BuddyShared();
 
+	virtual StorableObject * storageParent();
+	virtual QString storageNodeName();
+
 	void importConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
 
 	virtual void store();

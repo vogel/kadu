@@ -31,31 +31,24 @@ public:
 	enum StorableObjectState
 	{
 		StateNew,
-		StateUnloaded,
+		StateNotLoaded,
 		StateLoaded
 	};
 
-	StorableObject *Parent;
-	QString NodeName;
 	StoragePoint *Storage;
 	StorableObjectState State;
 	QMap<QString, ModuleData *> ModulesData;
 
 protected:
 	virtual StoragePoint * createStoragePoint();
+
 	virtual void load();
 
 public:
-	explicit StorableObject(StorableObjectState state = StateUnloaded);
-	explicit StorableObject(const QString &nodeName, StorableObjectState state = StateUnloaded);
-	StorableObject(StoragePoint *storage, StorableObjectState state = StateUnloaded);
-	StorableObject(const QString &nodeName, StorableObject *parent, StorableObjectState state = StateUnloaded);
+	StorableObject();
 
-	StorableObject * parent() { return Parent; }
-	void setStorageParent(StorableObject *parent) { Parent = parent; } // TODO: 0.8 removed
-
-	QString nodeName() { return NodeName; }
-	void setNodeName(const QString &nodeName) { NodeName = nodeName; } // TODO: 0.8 removed
+	virtual StorableObject * storageParent() = 0;
+	virtual QString storageNodeName() = 0;
 
 	StoragePoint * storage();
 
@@ -67,7 +60,7 @@ public:
 	void ensureLoaded();
 	void removeFromStorage();
 
-	void setStorage(StoragePoint *storage) { Storage = storage; }
+	void setStorage(StoragePoint *storage);
 	bool isValidStorage() { return storage() && storage()->storage(); }
 	StoragePoint * storagePointForModuleData(const QString &module, bool create = false);
 

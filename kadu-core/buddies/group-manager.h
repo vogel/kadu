@@ -14,13 +14,13 @@
 #include <QtCore/QObject>
 #include <QtCore/QString>
 
-#include "storage/storable-object.h"
+#include "storage/simple-manager.h"
 
 #include "exports.h"
 
 class Group;
 
-class KADUAPI GroupManager : public QObject, public StorableObject
+class KADUAPI GroupManager : public QObject, public SimpleManager<Group>
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(GroupManager)
@@ -28,32 +28,25 @@ class KADUAPI GroupManager : public QObject, public StorableObject
 	static GroupManager *Instance;
 
 	GroupManager();
-	~GroupManager();
-
-	QList<Group> Groups;
+	virtual ~GroupManager();
 
 	void importConfiguration();
 
 protected:
 	virtual void load();
-	virtual StoragePoint * createStoragePoint();
+
+	virtual void itemAboutToBeAdded(Group item);
+	virtual void itemAdded(Group item);
+	virtual void itemAboutToBeRemoved(Group item);
+	virtual void itemRemoved(Group item);
 
 public:
 	static GroupManager * instance();
 
-	virtual void store();
+	virtual QString storageNodeName() { return QLatin1String("Groups"); }
+	virtual QString storageNodeItemName() { return QLatin1String("Group"); }
 
-	QList<Group> groups();
-
-	void addGroup(Group group);
-	void removeGroup(Group group);
-
-	Group byUuid(const QString &uuid);
-	Group byIndex(unsigned int index) const;
 	Group byName(const QString &name, bool create = true);
-	
-	unsigned int indexOf(Group group) const;
-	unsigned int count() const { return Groups.count(); }
 
 	bool acceptableGroupName(const QString &groupName);
 

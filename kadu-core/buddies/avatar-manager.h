@@ -42,9 +42,6 @@ protected:
 	virtual void accountRegistered(Account account);
 	virtual void accountUnregistered(Account account);
 
-	virtual QString configurationNodeName() { return QLatin1String("Avatars"); }
-	virtual QString configurationNodeItemName() { return QLatin1String("Avatar"); }
-
 	virtual void itemAboutToBeAdded(Avatar item);
 	virtual void itemAdded(Avatar item);
 	virtual void itemAboutToBeRemoved(Avatar item);
@@ -52,6 +49,9 @@ protected:
 
 public:
 	static AvatarManager * instance();
+
+	virtual QString storageNodeName() { return QLatin1String("Avatars"); }
+	virtual QString storageNodeItemName() { return QLatin1String("Avatar"); }
 
 	void updateAvatar(Contact contact);
 

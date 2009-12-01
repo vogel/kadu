@@ -37,9 +37,6 @@ private slots:
 	void connectionError(Account account, const QString &server, const QString &message);
 
 protected:
-	virtual QString configurationNodeName() { return QLatin1String("Accounts"); }
-	virtual QString configurationNodeItemName() { return QLatin1String("Account"); }
-
 	virtual void itemAboutToBeAdded(Account item);
 
 	virtual void itemAboutToBeRegistered(Account item);
@@ -49,6 +46,9 @@ protected:
 
 public:
 	static AccountManager * instance();
+
+	virtual QString storageNodeName() { return QLatin1String("Accounts"); }
+	virtual QString storageNodeItemName() { return QLatin1String("Account"); }
 
 	// TODO: hide it someway...
 	void detailsLoaded(Account account);

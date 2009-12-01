@@ -7,20 +7,42 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "buddies/buddy.h"
-#include "chat/chat.h"
-#include "configuration/configuration-file.h"
-#include "parser/parser.h"
-#include "debug.h"
-#include "icons-manager.h"
+#ifndef DETAILS_H
+#define DETAILS_H
 
-#include "chat-details.h"
+#include "storage/storable-object.h"
 
-ChatDetails::ChatDetails(ChatShared *chatShared) :
-		StorableObject(chatShared->storage()), ChatData(chatShared)
+template<typename T>
+class Details : public StorableObject
 {
-}
+	T *MainData;
 
-ChatDetails::~ChatDetails()
-{
-}
+public:
+	explicit Details(T *mainData) :
+			MainData(mainData)
+	{
+		setStorage(mainData->storage());
+		setState(StateNotLoaded);
+	}
+
+	virtual ~Details() {}
+
+	T * mainData() { return MainData; }
+
+	virtual StorableObject * storageParent()
+	{
+		return MainData
+				? MainData->storageParent()
+				: 0;
+	}
+
+	virtual QString storageNodeName()
+	{
+		return MainData
+				? MainData->storageNodeName()
+				: QString::null;
+	}
+
+};
+
+#endif // DETAILS_H

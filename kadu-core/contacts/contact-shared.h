@@ -16,12 +16,12 @@
 
 #include "buddies/avatar.h"
 #include "buddies/buddy.h"
+#include "contacts/contact-details.h"
 #include "protocols/protocols-aware-object.h"
 #include "status/status.h"
 #include "storage/details-holder.h"
 #include "storage/shared.h"
 
-class ContactDetails;
 class ContactManager;
 
 class KADUAPI ContactShared : public QObject, public Shared, public DetailsHolder<ContactShared, ContactDetails, ContactManager>, ProtocolsAwareObject
@@ -58,6 +58,9 @@ public:
 
 	explicit ContactShared(QUuid uuid = QUuid());
 	virtual ~ContactShared();
+
+	virtual StorableObject * storageParent();
+	virtual QString storageNodeName();
 
 	virtual void store();
 

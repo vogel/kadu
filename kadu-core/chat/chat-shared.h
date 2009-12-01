@@ -49,6 +49,9 @@ public:
 	explicit ChatShared(QUuid uuid = QUuid());
 	virtual ~ChatShared();
 
+	virtual StorableObject * storageParent();
+	virtual QString storageNodeName();
+
 	virtual void store();
 
 	ContactSet contacts() const;

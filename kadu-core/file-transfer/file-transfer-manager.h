@@ -40,13 +40,14 @@ private slots:
 	void incomingFileTransfer(FileTransfer *fileTransfer);
 
 protected:
-	virtual StoragePoint * createStoragePoint();
-
 	virtual void accountRegistered(Account account);
 	virtual void accountUnregistered(Account account);
 
 public:
 	static FileTransferManager * instance();
+
+	virtual StorableObject * storageParent();
+	virtual QString storageNodeName();
 
 	virtual void store();
 

@@ -22,9 +22,9 @@ class StoragePoint;
 
 class KADUAPI Avatar : public SharedBase<AvatarShared>
 {
-	Avatar(bool null);
 
 public:
+	static Avatar create();
 	static Avatar loadFromStorage(StoragePoint *storage);
 	static Avatar null;
 

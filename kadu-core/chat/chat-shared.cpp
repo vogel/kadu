@@ -30,14 +30,23 @@ ChatShared * ChatShared::loadFromStorage(StoragePoint *storagePoint)
 }
 
 ChatShared::ChatShared(QUuid uuid) :
-		Shared(uuid, "Chat", ChatManager::instance()),
-		ChatAccount(Account::null)
+		Shared(uuid), ChatAccount(Account::null)
 {
 }
 
 ChatShared::~ChatShared()
 {
 	triggerAllChatTypesUnregistered();
+}
+
+StorableObject * ChatShared::storageParent()
+{
+	return ChatManager::instance();
+}
+
+QString ChatShared::storageNodeName()
+{
+	return QLatin1String("Chat");
 }
 
 void ChatShared::load()

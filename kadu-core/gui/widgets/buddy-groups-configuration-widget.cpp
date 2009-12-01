@@ -61,7 +61,7 @@ void BuddyGroupsConfigurationWidget::createGui()
 
 	layout->setRowStretch(row++, 3);
 
-	foreach (Group group, GroupManager::instance()->groups())
+	foreach (Group group, GroupManager::instance()->items())
 	{
 		QCheckBox *groupCheckBox = new QCheckBox(group.name(), this);
 		groupCheckBox->setChecked(MyBuddy.isInGroup(group));

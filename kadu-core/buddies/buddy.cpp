@@ -24,21 +24,20 @@
 
 #include "buddy.h"
 
-Buddy Buddy::null(true);
+Buddy Buddy::null;
 
-Buddy Buddy::loadFromStorage(StoragePoint* contactStoragePoint)
+Buddy Buddy::create()
 {
-	return Buddy(BuddyShared::loadFromStorage(contactStoragePoint));
+	return new BuddyShared();
 }
 
-Buddy::Buddy(bool null) :
-		SharedBase<BuddyShared>(null)
+Buddy Buddy::loadFromStorage(StoragePoint *contactStoragePoint)
 {
+	return BuddyShared::loadFromStorage(contactStoragePoint);
 }
 
 Buddy::Buddy()
 {
-	data()->setState(StorableObject::StateNew);
 }
 
 Buddy::Buddy(BuddyShared *data) :
@@ -47,8 +46,7 @@ Buddy::Buddy(BuddyShared *data) :
 	data->ref.ref();
 }
 
-Buddy::Buddy(QObject *data) :
-		SharedBase<BuddyShared>(true)
+Buddy::Buddy(QObject *data)
 {
 	BuddyShared *shared = dynamic_cast<BuddyShared *>(data);
 	if (shared)
@@ -198,14 +196,15 @@ Buddy Buddy::dummy()
 	example.setEmail("jimbo@mail.server.net");
 	example.setHomePhone("+481234567890");
 
-	Account account = Account::null;
+	Account account;
 
 	if (!AccountManager::instance()->defaultAccount().isNull())
 		account = AccountManager::instance()->defaultAccount();
 	else if (ProtocolsManager::instance()->protocolFactories().count())
 	{
-		account.createData();
-		account.data()->setState(StorableObject::StateNew);
+		account = Account::create();
+// 		it should be now in StateNew, if not this is a BUG
+// 		account.data()->setState(StorableObject::StateNew);
 		account.setProtocolName(ProtocolsManager::instance()->protocolFactories()[0]->name());
 		account.data()->protocolRegistered(ProtocolsManager::instance()->protocolFactories()[0]);
 		account.setDetails(ProtocolsManager::instance()->protocolFactories()[0]->createAccountDetails(account));

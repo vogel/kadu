@@ -21,8 +21,8 @@ ChooseIdentityWidget::ChooseIdentityWidget(QWidget *parent) : QWidget(parent)
 	description = new QComboBox;
 
 	QStringList items;
-	foreach (const Identity *identity, IdentityManager::instance()->identities())
-		items << identity->name();
+	foreach (const Identity identity, IdentityManager::instance()->items())
+		items << identity.name();
 
 	description->addItems(items);
 	description->insertSeparator(items.count());

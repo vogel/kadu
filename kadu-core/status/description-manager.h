@@ -29,6 +29,10 @@ class KADUAPI DescriptionManager : public QObject, public StorableStringList
 public:
 	static DescriptionManager * instance();
 
+	virtual StorableObject * storageParent();
+	virtual QString storageNodeName();
+	virtual QString storageItemNodeName();
+
 	DescriptionModel * model();
 
 	void addDescription(const QString &description);

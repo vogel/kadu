@@ -21,21 +21,20 @@
 
 #include "account.h"
 
-Account Account::null(true);
+Account Account::null;
+
+Account Account::create()
+{
+	return new AccountShared();
+}
 
 Account Account::loadFromStorage(StoragePoint *accountStoragePoint)
 {
 	return AccountShared::loadFromStorage(accountStoragePoint);
 }
 
-Account::Account(bool null) :
-		SharedBase<AccountShared>(null)
-{
-}
-
 Account::Account()
 {
-	data()->setState(StorableObject::StateNew);
 }
 
 Account::Account(AccountShared *data) :
@@ -44,8 +43,7 @@ Account::Account(AccountShared *data) :
 	data->ref.ref();
 }
 
-Account::Account(QObject *data) :
-		SharedBase<AccountShared>(true)
+Account::Account(QObject *data)
 {
 	AccountShared *shared = dynamic_cast<AccountShared *>(data);
 	if (shared)

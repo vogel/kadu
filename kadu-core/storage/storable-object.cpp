@@ -9,37 +9,32 @@
 
 #include "storable-object.h"
 
-StorableObject::StorableObject(StorableObjectState state) :
-		Parent(0), Storage(0), State(state)
-{
-}
-
-StorableObject::StorableObject(StoragePoint *storage, StorableObjectState state) :
-		Parent(0), Storage(storage), State(state)
-{
-}
-
-StorableObject::StorableObject(const QString &nodeName, StorableObjectState state) :
-		Parent(0), NodeName(nodeName), Storage(0), State(state)
-{
-}
-
-StorableObject::StorableObject(const QString &nodeName, StorableObject *parent, StorableObjectState state) :
-		Parent(parent), NodeName(nodeName), Storage(0), State(state)
+StorableObject::StorableObject() :
+		Storage(0), State(StateNew)
 {
 }
 
 StoragePoint * StorableObject::createStoragePoint()
 {
-	if (!Parent)
-		return new StoragePoint(xml_config_file, xml_config_file->getNode(NodeName));
+	if (storageNodeName().isEmpty())
+		return 0;
 
-	StoragePoint *parentStoragePoint = Parent->storage();
+	StorableObject *parent = storageParent();
+	if (!parent)
+		return new StoragePoint(xml_config_file, xml_config_file->getNode(storageNodeName()));
+
+	StoragePoint *parentStoragePoint = storageParent()->storage();
 	if (!parentStoragePoint)
 		return 0;
 
-	QDomElement node = parentStoragePoint->storage()->getNode(parentStoragePoint->point(), NodeName);
+	QDomElement node = parentStoragePoint->storage()->getNode(parentStoragePoint->point(), storageNodeName());
 	return new StoragePoint(parentStoragePoint->storage(), node);
+}
+
+void StorableObject::setStorage(StoragePoint *storage)
+{
+	State = StateNotLoaded;
+	Storage = storage;
 }
 
 StoragePoint * StorableObject::storage()
@@ -57,7 +52,7 @@ void StorableObject::load()
 
 void StorableObject::ensureLoaded()
 {
-	if (StateUnloaded == State)
+	if (StateNotLoaded == State)
 		load();
 }
 
@@ -105,4 +100,3 @@ StoragePoint * StorableObject::storagePointForModuleData(const QString &module, 
 			? 0
 			: new StoragePoint(parent->storage(), moduleDataNode);
 }
-

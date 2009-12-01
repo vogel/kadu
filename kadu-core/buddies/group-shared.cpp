@@ -22,7 +22,7 @@ GroupShared * GroupShared::loadFromStorage(StoragePoint *storagePoint)
 }
 
 GroupShared::GroupShared(QUuid uuid) :
-		Shared(uuid, "Group", GroupManager::instance()),
+		Shared(uuid),
 		NotifyAboutStatusChanges(false), ShowInAllGroup(false),
 		OfflineToGroup(false), ShowIcon(false), ShowName(false),
 		TabPosition(-1)
@@ -31,6 +31,16 @@ GroupShared::GroupShared(QUuid uuid) :
 
 GroupShared::~GroupShared()
 {
+}
+
+StorableObject * GroupShared::storageParent()
+{
+	return GroupManager::instance();
+}
+
+QString GroupShared::storageNodeName()
+{
+	return QLatin1String("Group");
 }
 
 void GroupShared::importConfiguration(const QString &name)

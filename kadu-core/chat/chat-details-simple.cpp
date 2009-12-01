@@ -49,7 +49,7 @@ void ChatDetailsSimple::load()
 		}
 	}
 
-	chatData()->refreshTitle();
+	mainData()->refreshTitle();
 }
 
 void ChatDetailsSimple::store()

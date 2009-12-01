@@ -24,7 +24,6 @@ class StoragePoint;
 
 class KADUAPI Chat : public SharedBase<ChatShared>
 {
-	Chat(bool null);
 
 public:
 	static Chat create();
@@ -52,6 +51,6 @@ public:
 
 };
 
-Q_DECLARE_METATYPE(Chat )
+Q_DECLARE_METATYPE(Chat)
 
 #endif // CHAT_H

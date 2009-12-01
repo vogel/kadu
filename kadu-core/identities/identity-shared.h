@@ -30,6 +30,9 @@ public:
 	explicit IdentityShared(const QUuid &uuid = QUuid());
 	virtual ~IdentityShared();
 
+	virtual StorableObject * storageParent();
+	virtual QString storageNodeName();
+
 	virtual void store();
 
 	void addAccount(Account account);

@@ -9,28 +9,20 @@
 
 #include "uuid-storable-object.h"
 
-UuidStorableObject::UuidStorableObject(const QString &nodeName, StorableObjectState state) :
-		StorableObject(nodeName, state)
-{
-
-}
-
-UuidStorableObject::UuidStorableObject(StoragePoint *storage) :
-		StorableObject(storage)
-{
-}
-
-UuidStorableObject::UuidStorableObject(const QString &nodeName, StorableObject *parent, StorableObjectState state) :
-		StorableObject(nodeName, parent, state)
+UuidStorableObject::UuidStorableObject()
 {
 }
 
 StoragePoint * UuidStorableObject::createStoragePoint()
 {
-	if (!parent())
+	if (storageNodeName().isEmpty())
 		return 0;
 
-	StoragePoint *parentStoragePoint = parent()->storage();
+	StorableObject *parent = storageParent();
+	if (!parent)
+		return 0;
+
+	StoragePoint *parentStoragePoint = storageParent()->storage();
 	if (!parentStoragePoint)
 		return 0;
 
@@ -38,6 +30,6 @@ StoragePoint * UuidStorableObject::createStoragePoint()
 	if (id.isNull())
 		return 0;
 
-	QDomElement node = parentStoragePoint->storage()->getUuidNode(parentStoragePoint->point(), nodeName(), id);
+	QDomElement node = parentStoragePoint->storage()->getUuidNode(parentStoragePoint->point(), storageNodeName(), id);
 	return new StoragePoint(parentStoragePoint->storage(), node);
 }

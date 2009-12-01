@@ -52,9 +52,6 @@ private slots:
 protected:
 	virtual void load();
 
-	virtual QString configurationNodeName() { return QLatin1String("Buddies"); }
-	virtual QString configurationNodeItemName() { return QLatin1String("Buddy"); }
-
 	virtual void itemAboutToBeAdded(Buddy buddy);
 	virtual void itemAdded(Buddy buddy);
 	virtual void itemAboutToBeRemoved(Buddy buddy);
@@ -62,6 +59,9 @@ protected:
 
 public:
 	static BuddyManager * instance();
+
+	virtual QString storageNodeName() { return QLatin1String("Buddies"); }
+	virtual QString storageNodeItemName() { return QLatin1String("Buddy"); }
 
 	BuddyList buddies(Account account, bool includeAnonymous = false);
 	void mergeBuddies(Buddy destination, Buddy source);

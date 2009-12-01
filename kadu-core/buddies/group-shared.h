@@ -45,6 +45,9 @@ public:
 	explicit GroupShared(QUuid uuid = QUuid());
 	virtual ~GroupShared();
 
+	virtual StorableObject * storageParent();
+	virtual QString storageNodeName();
+
 	virtual void store();
 
 	KaduShared_Property(QString, name, Name)

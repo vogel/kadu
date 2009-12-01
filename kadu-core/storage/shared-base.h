@@ -76,9 +76,6 @@ class SharedBase
 	QExplicitlySharedDataPointer<T> Data;
 
 protected:
-	SharedBase(bool null) :
-			Data(0) {}
-
 	void setData(T *data)
 	{
 		Data = data;
@@ -86,7 +83,7 @@ protected:
 
 public:
 	SharedBase() :
-			Data(new T())
+			Data(0)
 	{
 	}
 
@@ -153,12 +150,6 @@ public:
 	int operator < (const SharedBase<T> &compare) const
 	{
 		return Data < compare.Data;
-	}
-
-	void createData()
-	{
-		Data = new T;
-		Data->setState(StorableObject::StateNew);
 	}
 
 	void blockUpdatedSignal()

@@ -16,14 +16,14 @@
 
 class StorableStringList : protected QStringList, public StorableObject
 {
-	QString ContentNodeName;
 
 protected:
 	virtual void load();
 
 public:
-	StorableStringList(const QString &nodeName, const QString contentNodeName, StorableObject *parent);
+	StorableStringList();
 
+	virtual QString storageItemNodeName() = 0;
 	virtual void store();
 
 	const QStringList content() const;

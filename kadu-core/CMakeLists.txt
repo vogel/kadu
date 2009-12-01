@@ -52,7 +52,6 @@ set (kadu_SRCS
 	chat/aggregate-chat.cpp
 	chat/chat.cpp
 	chat/chat-aggregator-builder.cpp
-	chat/chat-details.cpp
 	chat/chat-details-conference.cpp
 	chat/chat-details-simple.cpp
 	chat/chat-manager.cpp
@@ -277,7 +276,6 @@ if (UNIX AND NOT APPLE)
 endif (UNIX AND NOT APPLE)
 
 set (kadu_MOC_SRCS
-	accounts/account-details.h
 	accounts/account-manager.h
 	accounts/account-shared.h
 
@@ -342,9 +340,7 @@ set (kadu_MOC_SRCS
 	chat/type/chat-type-manager.h
 	chat/type/chat-type-simple.h
 
-	contacts/contact-details.h
 	contacts/contact-manager.h
-	#contacts/contact-set.h
 	contacts/contact-shared.h
 
 	contacts/model/buddy-contact-model.h

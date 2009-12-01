@@ -7,13 +7,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "contacts/contact.h"
-#include "contacts/contact-shared.h"
-
 #include "contact-details.h"
 
-ContactDetails::ContactDetails(ContactShared *contactShared) :
-		StorableObject(contactShared->storage()), MyContactData(contactShared)
+ContactDetails::ContactDetails(ContactShared *mainData) :
+		Details<ContactShared>(mainData)
 {
 }
 

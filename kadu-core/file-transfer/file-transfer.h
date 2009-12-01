@@ -69,7 +69,6 @@ private:
 
 protected:
 	virtual void load();
-	virtual StoragePoint * createStoragePoint();
 
 	void changeFileTransferStatus(FileTransferStatus transferStatus);
 	void changeFileTransferError(FileTransferError transferError);
@@ -86,6 +85,9 @@ public:
 	FileTransfer(Account account);
 	FileTransfer(Account account, Contact peer, FileTransferType transferType);
 	virtual ~FileTransfer();
+
+	virtual StorableObject * storageParent();
+	virtual QString storageNodeName();
 
 	virtual void store();
 

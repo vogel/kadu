@@ -22,14 +22,23 @@ AvatarShared * AvatarShared::loadFromStorage(StoragePoint *storagePoint)
 }
 
 AvatarShared::AvatarShared(QUuid uuid) :
-		Shared(uuid, "Avatar", AvatarManager::instance()),
-		AvatarContact(Contact::null)
+		Shared(uuid), AvatarContact(Contact::null)
 {
 	AvatarsDir = ggPath("avatars/");
 }
 
 AvatarShared::~AvatarShared()
 {
+}
+
+StorableObject * AvatarShared::storageParent()
+{
+	return AvatarManager::instance();
+}
+
+QString AvatarShared::storageNodeName()
+{
+	return QLatin1String("Avatar");
 }
 
 QString AvatarShared::filePath()

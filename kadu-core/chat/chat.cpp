@@ -15,13 +15,11 @@
 
 #include "chat.h"
 
-Chat Chat::null(true);
+Chat Chat::null;
 
 Chat Chat::create()
 {
-	Chat result;
-	result.createData();
-	return result;
+	return new ChatShared();
 }
 
 Chat Chat::loadFromStorage(StoragePoint *accountStoragePoint)
@@ -29,14 +27,8 @@ Chat Chat::loadFromStorage(StoragePoint *accountStoragePoint)
 	return ChatShared::loadFromStorage(accountStoragePoint);
 }
 
-Chat::Chat(bool null) :
-		SharedBase<ChatShared>(null)
-{
-}
-
 Chat::Chat()
 {
-	data()->setState(StorableObject::StateNew);
 }
 
 Chat::Chat(ChatShared *data) :
@@ -45,8 +37,7 @@ Chat::Chat(ChatShared *data) :
 	data->ref.ref();
 }
 
-Chat::Chat(QObject *data) :
-		SharedBase<ChatShared>(true)
+Chat::Chat(QObject *data)
 {
 	ChatShared *shared = dynamic_cast<ChatShared *>(data);
 	if (shared)

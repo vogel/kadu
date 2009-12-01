@@ -16,9 +16,9 @@
 
 class Group : public SharedBase<GroupShared>
 {
-	explicit Group(bool null);
 
 public:
+	static Group create();
 	static Group loadFromStorage(StoragePoint *storage);
 	static Group null;
 

@@ -36,6 +36,9 @@ public:
 	explicit AvatarShared(QUuid uuid = QUuid());
 	virtual ~AvatarShared();
 
+	virtual StorableObject * storageParent();
+	virtual QString storageNodeName();
+
 	virtual void store();
 
 	QString filePath();

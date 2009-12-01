@@ -27,9 +27,9 @@ class XmlConfigFile;
 
 class KADUAPI Contact : public SharedBase<ContactShared>
 {
-	explicit Contact(bool null);
 
 public:
+	static Contact create();
 	static Contact loadFromStorage(StoragePoint *storage);
 	static Contact null;
 	

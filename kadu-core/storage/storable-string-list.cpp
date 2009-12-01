@@ -9,8 +9,7 @@
 
 #include "storable-string-list.h"
 
-StorableStringList::StorableStringList(const QString &nodeName, const QString contentNodeName, StorableObject *parent) :
-		StorableObject(nodeName, parent), ContentNodeName(contentNodeName)
+StorableStringList::StorableStringList()
 {
 }
 
@@ -26,7 +25,7 @@ void StorableStringList::load()
 	XmlConfigFile *storageFile = storage()->storage();
 	QDomElement point = storage()->point();
 
-	QList<QDomElement> elements = storageFile->getNodes(point, ContentNodeName);
+	QList<QDomElement> elements = storageFile->getNodes(point, storageItemNodeName());
 	foreach (QDomElement element, elements)
 		append(element.text());
 }
@@ -42,7 +41,7 @@ void StorableStringList::store()
 	storageFile->removeChildren(point);
 
 	foreach (const QString &value, content())
-		storageFile->appendTextNode(point, ContentNodeName, value);
+		storageFile->appendTextNode(point, storageItemNodeName(), value);
 }
 
 const QStringList StorableStringList::content() const

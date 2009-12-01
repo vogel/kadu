@@ -7,12 +7,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "accounts/account.h"
+#include "accounts/account-details.h"
 
-#include "account-details.h"
-
-AccountDetails::AccountDetails(AccountShared *accountData) :
-		StorableObject(accountData->storage()), MyAccountData(accountData)
+AccountDetails::AccountDetails(AccountShared *mainData)
+		: Details<AccountShared>(mainData)
 {
 }
 

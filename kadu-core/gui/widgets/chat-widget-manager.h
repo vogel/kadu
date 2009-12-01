@@ -40,7 +40,7 @@ class KADUAPI ChatWidgetManager : public QObject, ConfigurationAwareObject, Stor
 	ChatWidgetActions *Actions;
 
 	QHash<Chat , ChatWidget *> Chats;
-	QList<Chat> ClosedChats; /*!< u�ytkownicy, kt�rych okna zosta�y zamkni�te*/
+	QList<Chat> ClosedChats;
 	QList<QDateTime> ClosedChatsDates;
 
 	ChatWidgetManager();
@@ -63,6 +63,10 @@ protected:
 
 public:
 	static ChatWidgetManager * instance();
+
+	virtual StorableObject * storageParent();
+	virtual QString storageNodeName();
+	virtual QString storageItemNodeName();
 
 	ChatWidgetActions * actions() { return Actions; }
 

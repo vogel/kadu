@@ -22,9 +22,9 @@ class Account;
 
 class KADUAPI Identity : public SharedBase<IdentityShared>
 {
-	Identity(bool);
 
 public:
+	static Identity create();
 	static Identity loadFromStorage(StoragePoint *identityStoragePoint);
 	static Identity null;
 

@@ -10,25 +10,21 @@
 #ifndef CHAT_DETAILS_H
 #define CHAT_DETAILS_H
 
-#include "storage/storable-object.h"
+#include "chat/chat-shared.h"
+#include "storage/details.h"
 
 class BuddySet;
 class Chat;
-class ChatShared;
 class ChatType;
 class ContactSet;
 
-class ChatDetails : public QObject, public StorableObject
+class ChatDetails : public QObject, public Details<ChatShared>
 {
 	Q_OBJECT
 
-	ChatShared *ChatData;
-
 public:
-	explicit ChatDetails(ChatShared *chat);
-	virtual ~ChatDetails();
-
-	ChatShared * chatData() { return ChatData; }
+	explicit ChatDetails(ChatShared *mainData) : Details<ChatShared>(mainData) {}
+	virtual ~ChatDetails() {}
 
 	virtual ChatType * type() const = 0;
 	virtual ContactSet contacts() const = 0;

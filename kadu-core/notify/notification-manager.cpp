@@ -76,7 +76,7 @@ void NotificationManager::init()
 
 	BuddiesListViewMenuManager::instance()->addManagementActionDescription(notifyAboutUserActionDescription);
 
-	foreach (Group group, GroupManager::instance()->groups())
+	foreach (Group group, GroupManager::instance()->items())
 		groupAdded(group);
 
 	new WindowNotifier(this);

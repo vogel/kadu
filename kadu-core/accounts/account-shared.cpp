@@ -26,8 +26,7 @@ AccountShared * AccountShared::loadFromStorage(StoragePoint *storagePoint)
 }
 
 AccountShared::AccountShared(QUuid uuid) :
-		Shared(uuid, "Account", AccountManager::instance()),
-		BaseStatusContainer(this),
+		Shared(uuid), BaseStatusContainer(this),
 		ProtocolHandler(0), RememberPassword(false), HasPassword(false),
 		ConnectAtStart(true), UseProxy(false), ProxyPort(0)
 {
@@ -42,6 +41,16 @@ AccountShared::~AccountShared()
 		delete ProtocolHandler;
 		ProtocolHandler = 0;
 	}
+}
+
+StorableObject * AccountShared::storageParent()
+{
+	return AccountManager::instance();
+}
+
+QString AccountShared::storageNodeName()
+{
+	return QLatin1String("Account");
 }
 
 void AccountShared::load()

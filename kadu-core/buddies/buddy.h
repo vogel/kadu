@@ -30,9 +30,8 @@ class KADUAPI Buddy : public QObject, public SharedBase<BuddyShared>
 {
 	Q_OBJECT
 
-	explicit Buddy(bool null);
-
 public:
+	static Buddy create();
 	static Buddy loadFromStorage(StoragePoint *contactStoragePoint);
 	static Buddy null;
 

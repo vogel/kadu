@@ -31,7 +31,7 @@ void ChatDetailsConference::load()
 
 	Contacts = ContactSetConfigurationHelper::loadFromConfiguration(this, "Contacts");
 
-	chatData()->refreshTitle();
+	mainData()->refreshTitle();
 }
 
 void ChatDetailsConference::store()
