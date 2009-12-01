@@ -9,6 +9,7 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "accounts/account-shared.h"
 #include "configuration/configuration-file.h"
 #include "configuration/xml-configuration-file.h"
 #include "buddies/buddy-manager.h"
@@ -41,13 +42,24 @@ void GaduImporter::importAccounts()
 		return;
 	
 	Account defaultGaduGadu;
-	GaduAccountDetails *accountDetails = new GaduAccountDetails(defaultGaduGadu);
-	defaultGaduGadu.setDetails(accountDetails);
-
+	defaultGaduGadu.data()->setState(StorableObject::StateNew);
+	defaultGaduGadu.data()->setProtocolName("gadu");
+	defaultGaduGadu.data()->protocolRegistered(ProtocolsManager::instance()->byName("gadu"));
+	
+	//GaduAccountDetails *accountDetails = new GaduAccountDetails(defaultGaduGadu);
+	//defaultGaduGadu.setDetails(accountDetails);
+	
+	// TODO: 0.6.6 details are created already by protocolRegistered(factory)
+	// this is workaround because above (setDetails) deletes details and does not set protocolhandler (in AccountShared::detailsAdded)
+	GaduAccountDetails *accountDetails = dynamic_cast <GaduAccountDetails *> (defaultGaduGadu.details());
+	if (!accountDetails)
+		return;
+	
 	defaultGaduGadu.setName("Gadu-Gadu");
 	defaultGaduGadu.setId(config_file.readEntry("General", "UIN"));
 	defaultGaduGadu.setPassword(unicode2cp(pwHash(config_file.readEntry("General", "Password"))));
 	defaultGaduGadu.setRememberPassword(true);
+	defaultGaduGadu.setHasPassword(!defaultGaduGadu.password().isEmpty());
 	accountDetails->setAllowDcc(config_file.readBoolEntry("Network", "AllowDCC"));
 
 	QHostAddress host;
