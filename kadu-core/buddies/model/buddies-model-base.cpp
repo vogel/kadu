@@ -96,7 +96,7 @@ QVariant BuddiesModelBase::headerData(int section, Qt::Orientation orientation, 
 		return QString("Row %1").arg(section);
 }
 
-Contact BuddiesModelBase::buddyDefaultAccountData(const QModelIndex &index) const
+Contact BuddiesModelBase::buddyDefaultContact(const QModelIndex &index) const
 {
 	Buddy buddy = buddyAt(index);
 	if (buddy.isNull())
@@ -105,7 +105,7 @@ Contact BuddiesModelBase::buddyDefaultAccountData(const QModelIndex &index) cons
 	return buddy.prefferedContact();
 }
 
-Contact BuddiesModelBase::buddyAccountData(const QModelIndex &index, int accountIndex) const
+Contact BuddiesModelBase::buddyContact(const QModelIndex &index, int accountIndex) const
 {
 	Buddy buddy = buddyAt(index);
 	if (buddy.isNull())
@@ -188,11 +188,11 @@ QVariant BuddiesModelBase::data(const QModelIndex &index, int role) const
 	QModelIndex parentIndex = parent(index);
 	if (!parentIndex.isValid())
 	{
-		Contact contact = buddyDefaultAccountData(index);
+		Contact contact = buddyDefaultContact(index);
 		return !contact.isNull() ? data(contact, role, true) : data(buddyAt(index), role);
 	}
 	else
-		return data(buddyAccountData(parentIndex, index.row()), role, false);
+		return data(buddyContact(parentIndex, index.row()), role, false);
 }
 
 // D&D
