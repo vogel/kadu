@@ -12,20 +12,44 @@
 
 #include <QtXml/QDomElement>
 
+/**
+ * @ingroup Storage
+ * @{
+ */
+
 class XmlConfigFile;
 
+/**
+ * @class StoragePoint
+ * @author Rafal 'Vogel' Malinowski
+ * @short Unique place that can store any data.
+ *
+ * StoragePoint provides unique place that can store any data
+ * Storage point consists of two parts:
+ * <ul>
+ *   <li>storage - pointer to XML file that contains persistent data</li>
+ *   <li>point - DOM node that is parent of all nodes this object uses for storage</li>
+ * </ul>
+ *
+ * Storage points are created in @link StorableObject class in @link createStoragePoint
+ * method. You generally should not create instances of StoragePoint outside these
+ * classes. Consider derivering from them instead.
+ */
 class StoragePoint
 {
 	XmlConfigFile *Storage;
 	QDomElement Point;
 
 public:
-	StoragePoint(XmlConfigFile *storage, QDomElement point)
-		: Storage(storage), Point(point) {}
+	StoragePoint(XmlConfigFile *storage, QDomElement point);
 
-	XmlConfigFile * storage() { return Storage; }
-	QDomElement point() { return Point; }
+	XmlConfigFile * storage();
+	QDomElement point();
 
 };
+
+/**
+ * @}
+ */
 
 #endif // STORAGE_POINT_H

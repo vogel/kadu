@@ -251,6 +251,7 @@ set (kadu_SRCS
 	storage/shared-base.cpp
 	storage/storable-object.cpp
 	storage/storable-string-list.cpp
+	storage/storage-point.cpp
 	storage/uuid-storable-object.cpp
 
 	activate.cpp
