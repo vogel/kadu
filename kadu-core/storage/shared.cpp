@@ -35,6 +35,10 @@ void Shared::store()
 	storeValue("uuid", Uuid.toString(), true);
 }
 
+void Shared::aboutToBeRemoved()
+{
+}
+
 void Shared::blockUpdatedSignal()
 {
 	if (0 == BlockUpdatedSignalCount)

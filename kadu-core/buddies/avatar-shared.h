@@ -40,6 +40,7 @@ public:
 	virtual QString storageNodeName();
 
 	virtual void store();
+	virtual void aboutToBeRemoved();
 
 	QString filePath();
 

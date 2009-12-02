@@ -41,6 +41,8 @@ bool GaduChatService::sendMessage(Chat chat, FormattedMessage &message)
 {
 	kdebugf();
 
+	printf("sending message to chat: %s\n", qPrintable(chat.uuid().toString()));
+
 	QString plain = message.toPlain();
 	QList<Contact> contacts = chat.contacts().toContactList();
 
@@ -83,11 +85,13 @@ bool GaduChatService::sendMessage(Chat chat, FormattedMessage &message)
 	int messageId = -1;
 	if (uinsCount > 1)
 	{
-		UinType* uins = new UinType[uinsCount];
+		UinType *uins = new UinType[uinsCount];
 		unsigned int i = 0;
 
 		foreach (const Contact &contact, contacts)
+		{
 			uins[i++] = Protocol->uin(contact);
+		}
 		if (formatsSize)
 			messageId = gg_send_message_confer_richtext(
 					Protocol->gaduSession(), GG_CLASS_CHAT, uinsCount, uins, (unsigned char *)data.data(),

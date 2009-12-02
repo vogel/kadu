@@ -7,6 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtCore/QFile>
+
 #include "buddies/avatar-manager.h"
 #include "misc/misc.h"
 
@@ -72,4 +74,14 @@ void AvatarShared::store()
 	storeValue("LastUpdated", LastUpdated);
 	storeValue("NextUpdate", NextUpdate);
 	storeValue("FileName", FileName);
+}
+
+void AvatarShared::aboutToBeRemoved()
+{
+	// cleanup referenced
+	AvatarContact = Contact::null;
+
+	QFile avatarFile(filePath());
+	if (avatarFile.exists())
+		avatarFile.remove();
 }

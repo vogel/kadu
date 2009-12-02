@@ -92,6 +92,11 @@ void IdentityShared::store()
 		configurationStorage->removeNode(storage()->point(), "Accounts");
 }
 
+void IdentityShared::aboutToBeRemoved()
+{
+	Accounts = QList<Account>();
+}
+
 void IdentityShared::addAccount(Account account)
 {
 	Accounts.append(account);

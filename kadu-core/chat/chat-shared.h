@@ -35,6 +35,7 @@ class KADUAPI ChatShared : public QObject, public Shared, public DetailsHolder<C
 
 protected:
 	virtual void load();
+
 	void emitUpdated();
 
 	virtual void chatTypeRegistered(ChatType *chatType);
@@ -53,6 +54,7 @@ public:
 	virtual QString storageNodeName();
 
 	virtual void store();
+	virtual void aboutToBeRemoved();
 
 	ContactSet contacts() const;
 	QString name() const;

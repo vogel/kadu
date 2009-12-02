@@ -170,10 +170,13 @@ public:
 			Data->store();
 	}
 
-	void removeFromStorage()
+	void remove()
 	{
 		if (!isNull())
+		{
+			Data->aboutToBeRemoved();
 			Data->removeFromStorage();
+		}
 	}
 
 	KaduSharedBase_Property(QUuid, uuid, Uuid)

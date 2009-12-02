@@ -177,6 +177,8 @@ public:
 		Items.removeAll(item);
 		if (item.details())
 			unregisterItem(item);
+
+		item.remove();
 	}
 
 };

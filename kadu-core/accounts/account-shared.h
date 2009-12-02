@@ -73,6 +73,7 @@ public:
 	virtual QString storageNodeName();
 
 	virtual void store();
+	virtual void aboutToBeRemoved();
 
 	KaduShared_Property(QString, protocolName, ProtocolName)
 	KaduShared_Property(Protocol *, protocolHandler, ProtocolHandler)

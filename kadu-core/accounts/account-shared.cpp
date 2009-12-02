@@ -112,6 +112,11 @@ void AccountShared::store()
 	storeValue("ProxyHost", ProxyHost.toString());
 }
 
+void AccountShared::aboutToBeRemoved()
+{
+	setDetails(0);
+}
+
 void AccountShared::emitUpdated()
 {
 	emit updated();

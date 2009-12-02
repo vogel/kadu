@@ -79,6 +79,12 @@ void ChatShared::store()
 	storeValue("Account", ChatAccount.uuid().toString());
 }
 
+void ChatShared::aboutToBeRemoved()
+{
+	ChatAccount = Account::null;
+	setDetails(0);
+}
+
 void ChatShared::emitUpdated()
 {
 	emit updated();

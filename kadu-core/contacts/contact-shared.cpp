@@ -78,6 +78,18 @@ void ContactShared::load()
 	triggerAllProtocolsRegistered();
 }
 
+void ContactShared::aboutToBeRemoved()
+{
+	// clean up references
+	ContactAccount = Account::null;
+	OwnerBuddy = Buddy::null;
+
+	AvatarManager::instance()->removeItem(ContactAvatar);
+	ContactAvatar = Avatar::null;
+
+	setDetails(0);
+}
+
 void ContactShared::store()
 {
 	if (!isValidStorage())

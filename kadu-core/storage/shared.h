@@ -54,6 +54,7 @@ public:
 	virtual ~Shared();
 
 	virtual void store();
+	virtual void aboutToBeRemoved();
 
 	virtual QUuid uuid() const { return Uuid; }
 	void setUuid(const QUuid uuid) { Uuid = uuid; }

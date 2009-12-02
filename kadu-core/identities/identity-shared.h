@@ -34,6 +34,7 @@ public:
 	virtual QString storageNodeName();
 
 	virtual void store();
+	virtual void aboutToBeRemoved();
 
 	void addAccount(Account account);
 	void removeAccount(Account account);

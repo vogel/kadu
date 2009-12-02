@@ -192,6 +192,15 @@ void BuddyShared::store()
 	storeModuleData();
 }
 
+void BuddyShared::aboutToBeRemoved()
+{
+	foreach (Contact contact, Contacts)
+		ContactManager::instance()->removeItem(contact);
+
+	Contacts = QList<Contact>();
+	Groups = QList<Group>();
+}
+
 void BuddyShared::addContact(Contact contact)
 {
 	if (contact.isNull() || Contacts.contains(contact))
@@ -199,6 +208,7 @@ void BuddyShared::addContact(Contact contact)
 
 	emit contactAboutToBeAdded(contact);
 	Contacts.append(contact);
+	// TODO: move
 	ContactManager::instance()->addItem(contact);
 	emit contactAdded(contact);
 }
@@ -209,6 +219,7 @@ void BuddyShared::removeContact(Contact contact)
 		return;
 
 	emit contactAboutToBeRemoved(contact);
+	// TODO: move
 	ContactManager::instance()->removeItem(contact);
 	Contacts.removeAll(contact);
 	emit contactRemoved(contact);

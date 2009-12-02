@@ -139,6 +139,8 @@ public:
 		itemAboutToBeRemoved(item);
 		Items.removeAll(item);
 		itemRemoved(item);
+
+		item.remove();
 	}
 
 };
