@@ -386,7 +386,10 @@ int main(int argc, char *argv[])
 	new Kadu(0);
 
 	qApp->setApplicationName("Kadu");
+#ifndef Q_OS_HAIKU
+	/* http://dev.osdrawer.net/issues/418 */
 	qApp->setMainWidget(kadu);
+#endif
 	QPixmap pix;
 #ifdef Q_OS_MACX
 	pix = icons_manager->loadPixmap("BigOffline");
