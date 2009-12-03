@@ -10,15 +10,12 @@
 #include "storage/storage-point.h"
 
 /**
- * @ingroup Storage
- * @{
- */
-
-/**
  * @author Rafal 'Vogel' Malinowski
  * @short Constructs StoragePoint.
  * @arg storage pointer to XML storage file
  * @arg point DOM Node - parent of all data stored by this class
+ *
+ * Constructs StoragePoint from given XML file and DOM node.
  */
 StoragePoint::StoragePoint(XmlConfigFile *storage, QDomElement point)
 		: Storage(storage), Point(point)
@@ -28,6 +25,8 @@ StoragePoint::StoragePoint(XmlConfigFile *storage, QDomElement point)
 /**
  * @author Rafal 'Vogel' Malinowski
  * @short Returns pointer to current XML storage file.
+ *
+ * Returns pointer to current XML storage file.
  */
 XmlConfigFile * StoragePoint::storage()
 {
@@ -37,12 +36,10 @@ XmlConfigFile * StoragePoint::storage()
 /**
  * @author Rafal 'Vogel' Malinowski
  * @short Returns current parent DOM Node for this object.
+ *
+ * Returns current parent DOM Node for this object.
  */
 QDomElement StoragePoint::point()
 {
 	return Point;
 }
-
-/**
- * @}
- */
