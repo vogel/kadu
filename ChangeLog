@@ -3,14 +3,18 @@ Postaæ (x/y) oznacza, ¿e x jest pomys³odawc± lub podes³a³ patcha, a zrobi³ to kt
 Je¶li jest w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 
 +++ wersja 0.6.5.4
+* wsparcie dla Haiku OS (kaliber/dorr)
 * wsparcie dla protoko³u gg8 (libgadu 1.9.0) (dorr)
 * dalsze poprawki w wyszukiwaniu w historii (dorr)
 * poprawiona kompilacja modu³ów zale¿nych od QtDBus (reavertm/dorr)
-* od¶wie¿one okno o programie (dorr)
+* od¶wie¿one okno "O programie" (dorr)
 * mo¿liwo¶æ dodania przycisków sterujacych odtwarzaczem przez modu³y mediaplayer (dorr)
 * w komunikacie o braku mo¿liwo¶ci wy³adowania modu³u wymienione s± modu³y z niego korzystaj±ce (dorr)
 * usuniête kilka warningów przy kompilacji (neeo)
 * dodany nowy modu³ mpris_mediaplayer dodaj±cy wsparcie dla odtwarzaczy z obs³ug± standardu MPRIS (dorr)
+* modu³ speech zosta³ naprawiony (uzi)
+* poprawione kodowanie polskich znaków w module encryption i encryption_old (dorr)
+* poprawki ró¿nych drobnych b³êdów
 
 +++ wersja 0.6.5.3
 * poprawki w module history (beevvy/dorr, dorr)
