@@ -9,6 +9,9 @@
 
 #include <QtNetwork/QHttp>
 #include <QtCore/QSysInfo>
+#if defined(Q_OS_LINUX)
+# include <QtCore/QFile>
+#endif
 
 #include "config_file.h"
 #include "debug.h"
@@ -33,8 +36,18 @@ Updates::Updates(UinType uin)
 	{
 		QString platform("&system=");
 #if defined(Q_OS_LINUX)
-		/* TODO: obtain the distribution name and version */
-		platform.append("Linux");
+		platform.append("Linux-");
+
+		QFile issue("/etc/issue");
+		if (issue.open(QIODevice::ReadOnly | QIODevice::Text))
+		{
+			QString tmp = issue.readLine();
+			tmp.truncate(tmp.indexOf(" "));
+			platform.append(tmp);
+			issue.close();
+		}
+		else
+			platform.append("Unknown");
 #elif defined(Q_OS_FREEBSD)
 		platform.append("FreeBSD");
 #elif defined(Q_OS_NETBSD)
