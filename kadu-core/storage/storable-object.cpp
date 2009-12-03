@@ -9,11 +9,34 @@
 
 #include "storable-object.h"
 
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Contructs object with 'new' state and null storage point.
+ *
+ * Constructs object with @link<StorableObject::StateNew state @endlink and null
+ * (invalid) @link<StorableObject::storage storage point @endlink.
+ */
 StorableObject::StorableObject() :
 		Storage(0), State(StateNew)
 {
 }
 
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Creates default storage point for object.
+ *
+ * Constructs storage point: XML node that is child of storage point of object
+ * returned by @link<StorableObject::storageParent storageParent @endlink method.
+ * Node name is given by @link<StorableObject::storageNodeName @endlink method.
+ *
+ * If @link<StorableObject::storageNodeName @endlink returns invalid node name
+ * (empty string) or @link<StorableObject::storageParent storageParent @endlink
+ * returns object that has invalid storage point, this method returns invalid
+ * storage point.
+ *
+ * If parent is NULL this method will return storage point that is child of
+ * root node of XML configuration file.
+ */
 StoragePoint * StorableObject::createStoragePoint()
 {
 	if (storageNodeName().isEmpty())

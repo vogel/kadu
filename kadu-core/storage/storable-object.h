@@ -25,16 +25,61 @@
 	type getMethodName() { ensureLoaded(); return fieldName; } \
 	void setMethodName(type value) { ensureLoaded(); fieldName = value; }
 
+/**
+ * @addtogroup Storage
+ * @{
+ */
+/**
+ * @class StorableObject
+ * @author Rafal 'Vogel' Malinowski
+ * @short Object that can load itself from XML file and store data there.
+ *
+ * Any class that derives from StorableObject can aasily store and load objects
+ * from XML configuration file. File and XML node that contains data about
+ * given object is stored using @link<StoragePoint> StoragePoint @endlink
+ * object stored in private Storage field.
+ *
+ * Object can be in one of three @link<StorableObject::StorableObjectState states
+ * @endlink that controls behavior of loading and storing.
+ *
+ * Value of @link<StoragePoint> StoragePoint @endlink can be given to object
+ * from outside (so object can load/store to arbitrary node) using @link<StorableObject::setStorage>
+ * setStorage @endlink method. When storage point is not set and an attemp
+ * to load/store is done, object will create its own storage point using two
+ * abstract methods: @link<StorableObject::storageParent> storageParent @endlink
+ * and @link<StorableObject::storageNodeName> storageNodeName @endlink.
+ */
 class KADUAPI StorableObject
 {
 public:
+	/**
+	 * This enum controls how the object behaves when loading/storing data.
+	 */
 	enum StorableObjectState
 	{
+		/**
+		 * @enum StorableObjectState
+		 * @author Rafal 'Vogel' Malinowski
+		 *
+		 * Object is treated as 'new' - one, that has never been stored before.
+		 * Such object can not be loaded, @link<ensureLoaded> ensureLoaded @endlink
+		 * will do nothing on such object.
+		 */
 		StateNew,
+		/**
+		 * Object is treated as 'not loaded' - one, that has not been loaded but is
+		 * stored. Such object will be loaded when @link<ensureLoaded> ensureLoaded @endlink
+		 * is called.
+		 */
 		StateNotLoaded,
+		/**
+		 * Object is treated as 'loaded'. Method @link<ensureLoaded> ensureLoaded @endlink
+		 * will have no effect on that object.
+		 */
 		StateLoaded
 	};
 
+private:
 	StoragePoint *Storage;
 	StorableObjectState State;
 	QMap<QString, ModuleData *> ModulesData;
@@ -137,5 +182,9 @@ template<class T>
 	void storeModuleData();
 
 };
+
+/**
+ * @}
+ */
 
 #endif // STORABLE_OBJECT_H
