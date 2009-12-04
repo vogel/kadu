@@ -189,9 +189,12 @@ void GaduCreateAccountWidget::iHaveAccountDataChanged()
 void GaduCreateAccountWidget::addThisAccount()
 {
 	Account gaduAccount = Account::create();
-	gaduAccount.data()->setProtocolName("gadu");
-	gaduAccount.data()->protocolRegistered(ProtocolsManager::instance()->byName("gadu"));
-	gaduAccount.setDetails(new GaduAccountDetails(gaduAccount));
+	// TODO: 0.6.6 set protocol after details because of crash
+	//gaduAccount.setProtocolName("gadu");
+	GaduAccountDetails *gad = new GaduAccountDetails(gaduAccount);
+	gad->setState(StorableObject::StateNew);
+	gaduAccount.setDetails(gad);
+	gaduAccount.setProtocolName("gadu");
 	gaduAccount.setName(AccountName->text());
 	gaduAccount.setId(AccountId->text());
 	gaduAccount.setPassword(AccountPassword->text());
@@ -234,9 +237,13 @@ void GaduCreateAccountWidget::registerNewAccountFinished(GaduServerRegisterAccou
 	{
 		MessageDialog::msg(tr("Registration was successful. Your new number is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(gsra->uin()), false, "Information", this);
 		
-		Account gaduAccount;
-		gaduAccount.data()->protocolRegistered(ProtocolsManager::instance()->byName("gadu"));
-		gaduAccount.setDetails(new GaduAccountDetails(gaduAccount));
+		Account gaduAccount = Account::create();
+		// TODO: 0.6.6 set protocol after details because of crash
+		//gaduAccount.setProtocolName("gadu");
+		GaduAccountDetails *gad = new GaduAccountDetails(gaduAccount);
+		gad->setState(StorableObject::StateNew);
+		gaduAccount.setDetails(gad);
+		gaduAccount.setProtocolName("gadu");
 		gaduAccount.setName(AccountName->text());
 		gaduAccount.setId(QString::number(gsra->uin()));
 		gaduAccount.setPassword(NewPassword->text());
