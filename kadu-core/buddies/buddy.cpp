@@ -186,7 +186,7 @@ QString Buddy::display() const
 
 Buddy Buddy::dummy()
 {
-	Buddy example;
+	Buddy example = Buddy::create();
 
 	example.setFirstName("Mark");
 	example.setLastName("Smith");
@@ -196,44 +196,25 @@ Buddy Buddy::dummy()
 	example.setEmail("jimbo@mail.server.net");
 	example.setHomePhone("+481234567890");
 
-	Account account;
+	Account account = Account::create();
 
-	if (!AccountManager::instance()->defaultAccount().isNull())
-		account = AccountManager::instance()->defaultAccount();
-	else if (ProtocolsManager::instance()->protocolFactories().count())
-	{
-		account = Account::create();
-// 		it should be now in StateNew, if not this is a BUG
-// 		account.data()->setState(StorableObject::StateNew);
-		account.setProtocolName(ProtocolsManager::instance()->protocolFactories()[0]->name());
-		account.data()->protocolRegistered(ProtocolsManager::instance()->protocolFactories()[0]);
-		account.setDetails(ProtocolsManager::instance()->protocolFactories()[0]->createAccountDetails(account));
-	}
+	Contact contactData = Contact::create();
+	contactData.setContactAccount(account);
+	contactData.setOwnerBuddy(example);
+	contactData.setId("999999");
+	contactData.setCurrentStatus(Status("Away", tr("Example description")));
+	contactData.setAddress(QHostAddress(2130706433));
+	contactData.setPort(80);
 
-	if (!account.isNull())
-	{
-		Contact contactData;
-		contactData.setContactAccount(account);
-		contactData.setOwnerBuddy(example);
-		contactData.setId("999999");
-		contactData.data()->setState(StorableObject::StateNew);
-		contactData.setCurrentStatus(Status("Away", tr("Example description")));
-		contactData.setAddress(QHostAddress(2130706433));
-		contactData.setPort(80);
-		contactData.setDetails(account.protocolHandler()->protocolFactory()->createContactDetails(contactData));
+	Avatar avatar = Avatar::create();
+	avatar.setLastUpdated(QDateTime::currentDateTime());
+	avatar.setPixmap(IconsManager::instance()->loadPixmap("ContactsTab"));
+	avatar.setFileName("ContactsTab");
+	contactData.setContactAvatar(avatar);
 
-		Avatar avatar;
-		avatar.data()->setState(StorableObject::StateNew);
-		avatar.setLastUpdated(QDateTime::currentDateTime());
-		avatar.setPixmap(IconsManager::instance()->loadPixmap("ContactsTab"));
-		avatar.setFileName("ContactsTab");
-		contactData.setContactAvatar(avatar);
+	example.addContact(contactData);
 
-		example.addContact(contactData);
-
-		return example;
-	}
-	return null;
+	return example;
 }
 
 KaduSharedBase_PropertyWriteDef(Buddy, QString, display, Display, QString::null)
