@@ -14,6 +14,7 @@
 #include <QtGui/QLabel>
 #include <QtGui/QPushButton>
 #include <QtGui/QVBoxLayout>
+#include <QtGui/QDesktopWidget>
 
 #include "debug.h"
 #include "icons_manager.h"
@@ -33,7 +34,6 @@ MessageBox::MessageBox(const QString &message, int components, bool modal, const
 
 	setWindowTitle("Kadu");
 	setAttribute(Qt::WA_DeleteOnClose);
-	
 	setModal(modal);
 
 	QVBoxLayout *vbox = new QVBoxLayout(this);
@@ -76,7 +76,12 @@ MessageBox::MessageBox(const QString &message, int components, bool modal, const
 
 	buttons->setLayout(buttons_layout);
 	hboxbuttons->addWidget(buttons, 0, Qt::AlignCenter);
- 	buttons->setMaximumSize(buttons_layout->sizeHint());
+	buttons->setMaximumSize(buttons_layout->sizeHint());
+
+	/* center on screen */
+	resize(sizeHint());
+	move(QApplication::desktop()->screenGeometry().center() - geometry().center());
+
 	kdebugf2();
 }
 
