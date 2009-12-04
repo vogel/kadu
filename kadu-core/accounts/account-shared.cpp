@@ -129,8 +129,11 @@ void AccountShared::protocolRegistered(ProtocolFactory *factory)
 	if (factory->name() != ProtocolName)
 		return;
 
+	if (!details())
+		setDetails(factory->createAccountDetails(this));
+
 	ProtocolHandler = factory->createProtocolHandler(this);
-	setDetails(factory->createAccountDetails(this));
+
 
 	connect(ProtocolHandler, SIGNAL(statusChanged(Account, Status)), this, SIGNAL(statusChanged()));
 	connect(ProtocolHandler, SIGNAL(buddyStatusChanged(Contact, Status)),
@@ -161,14 +164,8 @@ void AccountShared::detailsAdded()
 	ProtocolFactory *factory = ProtocolsManager::instance()->byName(ProtocolName);
 	if (!factory)
 		return;
-
-	ProtocolHandler = factory->createProtocolHandler(this);
-
-	connect(ProtocolHandler, SIGNAL(statusChanged(Account, Status)), this, SIGNAL(statusChanged()));
-	connect(ProtocolHandler, SIGNAL(buddyStatusChanged(Contact, Status)),
-			this, SIGNAL(buddyStatusChanged(Contact, Status)));
-
-	emit protocolLoaded();
+	
+	protocolRegistered(factory);
 }
 
 void AccountShared::detailsAboutToBeRemoved()
@@ -177,6 +174,14 @@ void AccountShared::detailsAboutToBeRemoved()
 	ProtocolHandler = 0;
 
 	details()->store();
+}
+
+void AccountShared::setProtocolName(QString protocolName)
+{
+	ensureLoaded();
+	ProtocolName = protocolName ;
+	dataUpdated();
+	detailsAdded();
 }
 
 QString AccountShared::statusContainerName()
