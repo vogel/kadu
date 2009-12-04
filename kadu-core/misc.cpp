@@ -1017,7 +1017,6 @@ OpenChatWith::OpenChatWith(QWidget *parent)
 	c_text = new QComboBox;
 	c_text->setAutoCompletion(true);
 	c_text->setEditable(true);
-	c_text->setFocus();
 	c_text->setToolTip(tr("UIN or nick"));
 
 	QStringList posibilities;
@@ -1058,6 +1057,7 @@ OpenChatWith::OpenChatWith(QWidget *parent)
 
 	loadWindowGeometry(this, "General", "OpenChatWith", 100, 100, 250, 80);
 	setFixedHeight(sizeHint().height());
+	c_text->setFocus();
 
 	kdebugf2();
 }
