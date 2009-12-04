@@ -188,7 +188,7 @@ void GaduCreateAccountWidget::iHaveAccountDataChanged()
 
 void GaduCreateAccountWidget::addThisAccount()
 {
-	Account gaduAccount;
+	Account gaduAccount = Account::create();
 	gaduAccount.data()->setProtocolName("gadu");
 	gaduAccount.data()->protocolRegistered(ProtocolsManager::instance()->byName("gadu"));
 	gaduAccount.setDetails(new GaduAccountDetails(gaduAccount));

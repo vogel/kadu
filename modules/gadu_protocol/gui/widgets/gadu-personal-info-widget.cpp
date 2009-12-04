@@ -100,7 +100,7 @@ void GaduPersonalInfoWidget::personalInfoAvailable(Buddy buddy)
 
 void GaduPersonalInfoWidget::applyData()
 {
-	Buddy buddy;
+	Buddy buddy = Buddy::create();
 
 	buddy.setNickName((*NickName).text());
 	buddy.setFirstName((*FirstName).text());
