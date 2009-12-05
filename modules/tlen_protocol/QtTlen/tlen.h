@@ -65,12 +65,12 @@ public:
 	
 	enum TlenStatus {
 		available,
-		chat ,
+		chat,
 		xa,
 		away,
 		dnd,
 		invisible,
-		offline,
+		unavailable
 	};
 
 	tlen(QObject *parent=0);

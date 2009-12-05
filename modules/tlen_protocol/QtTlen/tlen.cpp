@@ -875,14 +875,31 @@ void tlen::sendAlarm(QString to)
 
 QString tlen::statusName(TlenStatus index)
 {
-	return QString();
+	switch(index)
+	{
+		case tlen::available	: return "available";
+		case tlen::chat		: return "chat";
+		case tlen::xa		: return "xa";
+		case tlen::away		: return "away";
+		case tlen::dnd		: return "dnd";
+		case tlen::invisible	: return "invisible";
+		case tlen::unavailable	: return "unavailable";
+		default			: return "unavailable";
+	}
 }
 
 tlen::TlenStatus tlen::statusType(const QString &status)
 {
-	return tlen::available;
-}
+	if (status == "available")	return tlen::available;
+	if (status == "chat")		return tlen::chat;
+	if (status == "xa")		return tlen::xa;
+	if (status == "away")		return tlen::away;
+	if (status == "dnd")		return tlen::dnd;
+	if (status == "invisible")	return tlen::invisible;
+	if (status == "unavailable")	return tlen::unavailable;
 
+	return tlen::unavailable;
+}
 
 void tlen::receiveFile(QString rndid, QString sender, bool receive) {
 	kdebugf();
