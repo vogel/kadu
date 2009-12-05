@@ -143,12 +143,9 @@ void AccountBuddyListWidget::buddiesListImported(bool ok, BuddyList buddies)
 		buddy.setEmail(onebuddy.email());
 		buddy.setDisplay(onebuddy.display());
 		buddy.setHomePhone(onebuddy.homePhone());
+		buddy.setAnonymous(false);
 
-		if (buddy.isAnonymous())
-		{
-			buddy.setAnonymous(false);
-			BuddyManager::instance()->addItem(buddy);
-		}
+		BuddyManager::instance()->addItem(buddy);
 	}
 
 	if (!beforeImportList.isEmpty())

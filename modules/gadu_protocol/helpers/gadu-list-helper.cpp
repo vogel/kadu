@@ -162,7 +162,6 @@ BuddyList GaduListHelper::streamToContactList(Account account, QTextStream &cont
 		if (i < secCount)
 			buddy.setHomePhone(sections[i++]);
 
-		// because of bad display read
 		buddy.setAnonymous(false);
 		result.append(buddy);
 	}

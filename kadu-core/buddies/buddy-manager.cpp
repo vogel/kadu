@@ -77,11 +77,8 @@ void BuddyManager::load()
 
 void BuddyManager::itemAboutToBeAdded(Buddy buddy)
 {
-	buddy.setAnonymous(false);
-
-	emit buddyAboutToBeAdded(buddy);
-
 	connect(buddy, SIGNAL(updated()), this, SLOT(buddyDataUpdated()));
+	emit buddyAboutToBeAdded(buddy);
 }
 
 void BuddyManager::itemAdded(Buddy buddy)
@@ -91,8 +88,7 @@ void BuddyManager::itemAdded(Buddy buddy)
 
 void BuddyManager::itemAboutToBeRemoved(Buddy buddy)
 {
-	buddy.setAnonymous(true);
-
+	disconnect(buddy, SIGNAL(updated()), this, SLOT(buddyDataUpdated()));
 	emit buddyAboutToBeRemoved(buddy);
 }
 
