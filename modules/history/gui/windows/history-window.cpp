@@ -25,11 +25,14 @@
 #include "chat/aggregate-chat.h"
 #include "chat/chat-aggregator-builder.h"
 #include "gui/actions/actions.h"
+#include "gui/widgets/buddies-list-view-menu-manager.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/delayed-line-edit.h"
 #include "gui/windows/message-dialog.h"
 #include "misc/misc.h"
 #include "model/roles.h"
+#include "protocols/protocol-factory.h"
+#include "protocols/protocol-menu-manager.h"
 #include "activate.h"
 #include "debug.h"
 #include "icons-manager.h"
@@ -55,11 +58,6 @@ HistoryWindow::HistoryWindow(QWidget *parent) :
 
 	loadWindowGeometry(this, "History", "HistoryWindowGeometry", 200, 200, 700, 500);
 //TODO 0.6.6:
-	MainPopupMenu = new QMenu(this);
-	MainPopupMenu->addAction(IconsManager::instance()->loadIcon("OpenChat"), tr("&Open chat"), this, SLOT(openChat()));
-//	MainPopupMenu->addAction(IconsManager::instance()->loadIcon("LookupUserInfo"), tr("&Search in directory"), this, SLOT(lookupUserInfo()));
-//	MainPopupMenu->addAction(IconsManager::instance()->loadIcon("ClearHistory"), tr("&Clear history"), this, SLOT(removeHistoryEntriesPerUser()));
-
 	DetailsPopupMenu = new QMenu(this);
 //	DetailsPopupMenu->addAction(IconsManager::instance()->loadIcon("ClearHistory"), tr("&Remove entries"), this, SLOT(removeHistoryEntriesPerDate()));
 
@@ -332,16 +330,90 @@ void HistoryWindow::toDateChanged(const QDate &date)
 }
 
 void HistoryWindow::showMainPopupMenu(const QPoint &pos)
-{
-	bool isValid = true;
+{	
 	Chat chat = ChatsTree->indexAt(pos).data(ChatRole).value<Chat>();
 	if (!chat)
-		isValid = false;
+		return;
 
-	foreach (QAction *action, MainPopupMenu->actions())
-		action->setEnabled(isValid);
+	bool first = true;
+	QMenu *menu = new QMenu(this);
 
-	MainPopupMenu->exec(QCursor::pos());
+	QMenu *actions = new QMenu(tr("Actions"));
+	foreach (ActionDescription *actionDescription, BuddiesListViewMenuManager::instance()->buddyListActions())
+		if (actionDescription)
+		{
+			Action *action = actionDescription->createAction(this);
+			actions->addAction(action);
+			action->checkState();
+		}
+		else
+			actions->addSeparator();
+
+	foreach (ActionDescription *actionDescription, BuddiesListViewMenuManager::instance()->buddiesContexMenu())
+	{
+		if (actionDescription)
+		{
+
+			Action *action = actionDescription->createAction(this);
+			menu->addAction(action);
+			action->checkState();
+		}
+		else
+		{
+			menu->addSeparator();
+			if (first)
+			{
+				menu->addMenu(actions);
+				first = false;
+			}
+		}
+	}
+
+	QMenu *management = menu->addMenu(tr("Buddy Options"));
+
+	foreach (ActionDescription *actionDescription, BuddiesListViewMenuManager::instance()->managementActions())
+		if (actionDescription)
+		{
+			Action *action = actionDescription->createAction(this);
+			management->addAction(action);
+			action->checkState();
+		}
+		else
+			management->addSeparator();
+		
+	QList<Account> accounts;
+	foreach (Contact con, chat.contacts())
+		accounts.append(con.contactAccount());
+	
+	foreach (Account account, accounts)
+	{
+		if (account.isNull())
+			continue;
+
+		ProtocolFactory *protocolFactory = account.protocolHandler()->protocolFactory();
+
+		if (!protocolFactory || !protocolFactory->protocolMenuManager())
+			continue;
+
+		QMenu *account_menu = menu->addMenu(account.name());
+		if (!protocolFactory->iconName().isEmpty())
+			account_menu->setIcon(IconsManager::instance()->loadIcon(protocolFactory->iconName()));
+
+		if (protocolFactory->protocolMenuManager()->protocolActions(account, (*chat.contacts().toBuddySet().begin())).size() == 0)
+			continue;
+
+		foreach (ActionDescription *actionDescription, protocolFactory->protocolMenuManager()->protocolActions(account, (*chat.contacts().toBuddySet().begin())))
+			if (actionDescription)
+			{
+				Action *action = actionDescription->createAction(this);
+				account_menu->addAction(action);
+				action->checkState();
+			}
+			else
+				account_menu->addSeparator();
+	}
+	menu->addAction(IconsManager::instance()->loadIcon("ClearHistory"), tr("&Clear history"), this, SLOT(clearHistory()));
+	menu->exec(QCursor::pos());
 }
 
 void HistoryWindow::showDetailsPopupMenu(const QPoint &pos)
@@ -383,6 +455,18 @@ void HistoryWindow::openChat()
 
 	ChatWidgetManager::instance()->openChatWidget(chat, true);
 
+	kdebugf2();
+}
+
+void HistoryWindow::clearHistory()
+{
+	kdebugf();
+	Chat chat = ChatsTree->currentIndex().data(ChatRole).value<Chat>();
+	if (!chat)
+		return;
+
+	History::instance()->currentStorage()->clearChatHistory(chat);
+	updateData();
 	kdebugf2();
 }
 

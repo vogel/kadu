@@ -39,7 +39,6 @@ class HistoryWindow : public MainWindow
 	HistoryChatsModelProxy *ChatsModelProxy;
 	ChatNameFilter *NameFilter;
 
-	QMenu *MainPopupMenu;
 	QMenu *DetailsPopupMenu;
 
 	ChatMessagesView* ContentBrowser;
@@ -72,6 +71,7 @@ private slots:
 	void showDetailsPopupMenu(const QPoint &pos);
 
 	void openChat();
+	void clearHistory();
 
 protected:
 	virtual void keyPressEvent(QKeyEvent *e);
