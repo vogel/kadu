@@ -29,6 +29,7 @@
 #include "buddies/filter/non-account-buddy-filter.h"
 #include "buddies/model/groups-model.h"
 #include "contacts/contact.h"
+#include "contacts/contact-manager.h"
 #include "gui/widgets/select-buddy-combobox.h"
 #include "misc/misc.h"
 #include "model/actions-proxy-model.h"
@@ -302,7 +303,7 @@ void AddBuddyWindow::accept()
 	if (!MergeContact->isChecked())
 	{
 		if (MyBuddy.isNull())
-			MyBuddy = BuddyManager::instance()->byId(account, UserNameEdit->text());
+			MyBuddy = ContactManager::instance()->byId(account, UserNameEdit->text()).ownerBuddy();
 
 		MyBuddy.setAnonymous(false);
 		MyBuddy.setDisplay(DisplayNameEdit->text());

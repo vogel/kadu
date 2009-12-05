@@ -24,8 +24,7 @@
 #include "chat/chat-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"
-#include "buddies/buddy-manager.h"
-#include "debug.h"
+#include "contacts/contact-manager.h"
 #include "core/core.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/add-buddy-window.h"
@@ -34,6 +33,7 @@
 #include "gui/widgets/toolbar.h"
 #include "protocols/protocol.h"
 #include "protocols/services/search-service.h"
+#include "debug.h"
 
 #include "search-window.h"
 #include <protocols/protocol-factory.h>
@@ -358,7 +358,7 @@ BuddySet SearchWindow::selected()
 	else
 		altnick = uin; // If above are empty, use uin.
 
-	Buddy e = BuddyManager::instance()->byId(CurrentAccount, uin);
+	Buddy e = ContactManager::instance()->byId(CurrentAccount, uin).ownerBuddy();
 
 	if (e.isAnonymous())
 	{

@@ -15,9 +15,9 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "buddies/buddy-list.h"
-#include "buddies/buddy-manager.h"
 #include "buddies/buddy-set.h"
 #include "configuration/configuration-file.h"
+#include "contacts/contact-manager.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/message-dialog.h"
 #include "debug.h"
@@ -194,7 +194,7 @@ void openGGChat(const QString &gg)
 	}
 
 	Account account = AccountManager::instance()->defaultAccount();
-	BuddySet contacts(BuddyManager::instance()->byId(account, gadu));
+	BuddySet contacts(ContactManager::instance()->byId(account, gadu).ownerBuddy());
 // TODO: 0.6.6
 // 	chat_manager->openPendingMsgs(contacts);
 

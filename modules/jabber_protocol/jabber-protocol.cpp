@@ -615,7 +615,7 @@ void JabberProtocol::slotContactUpdated(const XMPP::RosterItem &item)
 		 * See if the contact is already on our contact list
 		 * if not add contact to our list
 		 */
-		Buddy buddy = BuddyManager::instance()->byId(account(), item.jid().bare());
+		Buddy buddy = ContactManager::instance()->byId(account(), item.jid().bare()).ownerBuddy();
 
 		// if contact has name set it to display
 		if (!item.name().isNull())
@@ -717,7 +717,7 @@ void JabberProtocol::slotSubscription(const XMPP::Jid & jid, const QString &type
 		*/
 		if (MessageDialog::ask(tr("The user %1 wants to add you to his contact list.\n Do you agree?").arg(jid.full())))
 		{
-			BuddyManager::instance()->byId(account(), jid.bare());
+			ContactManager::instance()->byId(account(), jid.bare()).ownerBuddy().setAnonymous(false);
 			XMPP::JT_Presence *task = new XMPP::JT_Presence(JabberClient->rootTask());
 			task->sub(jid, "subscribed");
 			task->go(true);

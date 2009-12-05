@@ -12,6 +12,7 @@
 
 #include "buddies/buddy-manager.h"
 #include "contacts/contact.h"
+#include "contacts/contact-manager.h"
 #include "buddies/model/buddies-model.h"
 #include "buddies/model/buddies-model-proxy.h"
 #include "buddies/filter/account-buddy-filter.h"
@@ -125,7 +126,7 @@ void AccountBuddyListWidget::buddiesListImported(bool ok, BuddyList buddies)
 	{
 		QList<Contact> contactslist = onebuddy.contacts(CurrentAccount);
 		Contact contact = contactslist.isEmpty() ? Contact::null : contactslist[0];
-		Buddy buddy = BuddyManager::instance()->byId(CurrentAccount, contact.id());
+		Buddy buddy = ContactManager::instance()->byId(CurrentAccount, contact.id()).ownerBuddy();
 		foreach (const Buddy &beforeImportBuddy, beforeImportList)
 		{
 			contactslist = beforeImportBuddy.contacts(CurrentAccount);

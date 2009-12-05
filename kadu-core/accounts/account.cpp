@@ -9,11 +9,11 @@
 
 #include "accounts/account-details.h"
 #include "accounts/account-manager.h"
-#include "buddies/buddy-manager.h"
 #include "configuration/configuration-file.h"
 #include "configuration/xml-configuration-file.h"
 #include "contacts/contact.h"
 #include "contacts/contact-details.h"
+#include "contacts/contact-manager.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocols-manager.h"
@@ -67,7 +67,7 @@ Account & Account::operator=(const Account &copy)
 
 Buddy Account::getBuddyById(const QString& id)
 {
-	return BuddyManager::instance()->byId(*this, id);
+	return ContactManager::instance()->byId(*this, id).ownerBuddy();
 }
 
 Buddy Account::createAnonymous(const QString& id)

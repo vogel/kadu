@@ -126,25 +126,6 @@ void BuddyManager::mergeBuddies(Buddy destination, Buddy source)
 	ConfigurationManager::instance()->flush();
 }
 
-Buddy BuddyManager::byId(Account account, const QString &id)
-{
-	ensureLoaded();
-
-	if (id.isEmpty() || account.isNull())
-		return Buddy::null;
-
-	foreach (Buddy buddy, items())
-	{
-		if (id == buddy.id(account))
-			return buddy;
-	}
-
-	Buddy anonymous = account.createAnonymous(id);
-	addItem(anonymous);
-
-	return anonymous;
-}
-
 Buddy BuddyManager::byDisplay(const QString &display)
 {
 	ensureLoaded();

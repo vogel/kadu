@@ -60,7 +60,6 @@ public:
 	BuddyList buddies(Account account, bool includeAnonymous = false);
 	void mergeBuddies(Buddy destination, Buddy source);
 
-	Buddy byId(Account account, const QString &id);
 	Buddy byDisplay(const QString &display);
 
 	void blockUpdatedSignal(Buddy &buddy);

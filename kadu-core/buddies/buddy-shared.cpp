@@ -33,7 +33,7 @@ BuddyShared * BuddyShared::loadFromStorage(StoragePoint *contactStoragePoint)
 
 BuddyShared::BuddyShared(QUuid uuid) :
 		QObject(BuddyManager::instance()), Shared(uuid),
-		Anonymous(false), Ignored(false), Blocked(false), OfflineTo(false)
+		Anonymous(true), Ignored(false), Blocked(false), OfflineTo(false)
 {
 }
 
@@ -100,7 +100,7 @@ void BuddyShared::load()
 		parent.removeAttribute("type");
 	}
 	else
-		Anonymous = loadValue<bool>("Anonymous");
+		Anonymous = loadValue<bool>("Anonymous", true);
 
 	QDomElement customDataValues = configurationStorage->getNode(parent, "CustomDataValues", XmlConfigFile::ModeFind);
 	QDomNodeList customDataValuesList = customDataValues.elementsByTagName("CustomDataValue");
