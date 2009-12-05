@@ -194,21 +194,20 @@ void HistoryWindow::updateData()
 	{
 		if (usedChats.contains(chat))
 			continue;
-// TODO: disabled for a moment
-// 		AggregateChat aggregate = dynamic_cast<AggregateChat>(ChatAggregatorBuilder::buildAggregateChat(chat->buddies()));
-// 		if (!aggregate)
-// 			continue;
-// 		if (aggregate->chats().size() > 1)
-// 		{
-// 			result.append(aggregate);
-// 			foreach (Chat usedChat, aggregate->chats())
-// 				usedChats.append(usedChat);
-// 		}
-// 		else
-// 		{
-// 			result.append(chat);
-// 			usedChats.append(chat);
-// 		}
+		AggregateChat aggregate = ChatAggregatorBuilder::buildAggregateChat(chat.contacts().toBuddySet());
+		if (!aggregate)
+			continue;
+		if (aggregate.chats().size() > 1)
+		{
+			result.append(aggregate);
+			foreach (Chat usedChat, aggregate.chats())
+				usedChats.append(usedChat);
+		}
+		else
+		{
+			result.append(chat);
+			usedChats.append(chat);
+		}
 	}
 
 	ChatsModel->addChats(result);
