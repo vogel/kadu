@@ -64,9 +64,6 @@ private:
 	bool Blocked;
 	bool OfflineTo;
 
-private slots:
-	void accountContactDataIdChanged(const QString &id);
-
 protected:
 	virtual void load();
 	virtual void emitUpdated();
@@ -129,7 +126,6 @@ signals:
 	void contactAdded(Contact contact);
 	void contactAboutToBeRemoved(Contact contact);
 	void contactRemoved(Contact contact);
-	void contactIdChanged(Contact contact, const QString &oldId);
 
 	void updated();
 

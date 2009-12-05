@@ -81,7 +81,7 @@ public:
 
 signals:
 	void updated();
-	void idChanged(const QString &id);
+	void idChanged(const QString &oldId);
 
 };
 

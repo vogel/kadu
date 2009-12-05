@@ -188,8 +188,6 @@ void BuddyShared::store()
 		configurationStorage->removeNode(parent, "ContactGroups");
 
 	configurationStorage->createTextNode(parent, "Ignored", QVariant(Ignored).toString());
-
-	storeModuleData();
 }
 
 void BuddyShared::aboutToBeRemoved()
@@ -251,6 +249,7 @@ QString BuddyShared::id(Account account)
 
 	return QString::null;
 }
+
 Contact BuddyShared::prefferedContact()
 {
 	// TODO 0.6.6: implement it to have most available contact
@@ -315,11 +314,4 @@ void BuddyShared::removeFromGroup(Group group)
 {
 	Groups.removeAll(group);
 	dataUpdated();
-}
-
-void BuddyShared::accountContactDataIdChanged(const QString &id)
-{
-	Contact contact = *(dynamic_cast<Contact *>(sender()));
-	if (!contact.isNull() && !contact.contactAccount().isNull())
-		emit contactIdChanged(contact, id);
 }

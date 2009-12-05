@@ -31,10 +31,10 @@ class KADUAPI ContactManager : public QObject, public Manager<Contact>
 	ContactManager();
 	virtual ~ContactManager();
 
-protected:
-	virtual void itemAdded(Contact item);
-	virtual void itemRemoved(Contact item);
+private slots:
+	void idChanged(const QString &oldId);
 
+protected:
 	virtual void itemAboutToBeRegistered(Contact item);
 	virtual void itemRegisterd(Contact item);
 	virtual void itemAboutToBeUnregisterd(Contact item);
@@ -59,7 +59,6 @@ signals:
 	void contactAboutToBeRemoved(Contact contact);
 	void contactRemoved(Contact contact);
 
-	// TODO emit somewhere
 	void contactIdChanged(Contact contact, const QString &oldId);
 
 };

@@ -81,17 +81,7 @@ void BuddyManager::itemAboutToBeAdded(Buddy buddy)
 
 	emit buddyAboutToBeAdded(buddy);
 
-	connect(buddy.data(), SIGNAL(updated()), this, SLOT(buddyDataUpdated()));
-	connect(buddy.data(), SIGNAL(contactAboutToBeAdded(Contact)),
-			this, SLOT(contactAboutToBeAdded(Contact)));
-	connect(buddy.data(), SIGNAL(contactAdded(Contact)),
-			this, SLOT(contactAdded(Contact)));
-	connect(buddy.data(), SIGNAL(contactAboutToBeRemoved(Contact)),
-			this, SLOT(contactAboutToBeRemoved(Contact)));
-	connect(buddy.data(), SIGNAL(contactRemoved(Contact)),
-			this, SLOT(contactRemoved(Contact)));
-	connect(buddy.data(), SIGNAL(contactIdChanged(Contact, const QString &)),
-			this, SLOT(contactIdChanged(Contact, const QString &)));
+	connect(buddy, SIGNAL(updated()), this, SLOT(buddyDataUpdated()));
 }
 
 void BuddyManager::itemAdded(Buddy buddy)
@@ -108,17 +98,7 @@ void BuddyManager::itemAboutToBeRemoved(Buddy buddy)
 
 void BuddyManager::itemRemoved(Buddy buddy)
 {
-	disconnect(buddy.data(), SIGNAL(updated()), this, SLOT(buddyDataUpdated()));
-	disconnect(buddy.data(), SIGNAL(contactAboutToBeAdded(Contact)),
-			this, SLOT(contactAboutToBeAdded(Contact)));
-	disconnect(buddy.data(), SIGNAL(contactAdded(Contact)),
-			this, SLOT(contactAdded(Contact)));
-	disconnect(buddy.data(), SIGNAL(contactAboutToBeRemoved(Contact)),
-			this, SLOT(contactAboutToBeRemoved(Contact)));
-	disconnect(buddy.data(), SIGNAL(contactRemoved(Contact)),
-			this, SLOT(contactRemoved(Contact)));
-	disconnect(buddy.data(), SIGNAL(contactIdChanged(Contact, const QString &)),
-			this, SLOT(contactIdChanged(Contact, const QString &)));
+	disconnect(buddy, SIGNAL(updated()), this, SLOT(buddyDataUpdated()));
 
 // TODO: 0.6.6
 // 	if (BuddyRemovePredicateObject::inquireAll(buddy))
@@ -220,57 +200,6 @@ void BuddyManager::buddyDataUpdated()
 	Buddy buddy(sender());
 	if (!buddy.isNull())
 		emit buddyUpdated(buddy);
-}
-
-void BuddyManager::contactAboutToBeAdded(Contact contact)
-{
-	Buddy buddy(sender());
-	if (!buddy.isNull())
-		emit contactAboutToBeAdded(buddy, contact.contactAccount());
-}
-
-void BuddyManager::contactAdded(Contact contact)
-{
-	BuddyShared *cd = dynamic_cast<BuddyShared *>(sender());
-	if (!cd)
-		return;
-
-	Buddy buddy = byBuddyShared(cd);
-	if (!buddy.isNull())
-		emit contactAdded(buddy, contact.contactAccount());
-}
-
-void BuddyManager::contactAboutToBeRemoved(Contact contact)
-{
-	BuddyShared *cd = dynamic_cast<BuddyShared *>(sender());
-	if (!cd)
-		return;
-
-	Buddy buddy = byBuddyShared(cd);
-	if (!buddy.isNull())
-		emit contactAboutToBeRemoved(buddy, contact.contactAccount());
-}
-
-void BuddyManager::contactRemoved(Contact contact)
-{
-	BuddyShared *cd = dynamic_cast<BuddyShared *>(sender());
-	if (!cd)
-		return;
-
-	Buddy buddy = byBuddyShared(cd);
-	if (!buddy.isNull())
-		emit contactRemoved(buddy, contact.contactAccount());
-}
-
-void BuddyManager::contactIdChanged(Contact contact, const QString &oldId)
-{
-	BuddyShared *cd = dynamic_cast<BuddyShared *>(sender());
-	if (!cd)
-		return;
-
-	Buddy buddy = byBuddyShared(cd);
-	if (!buddy.isNull())
-		emit contactIdChanged(buddy, contact.contactAccount(), oldId);
 }
 
 void BuddyManager::groupRemoved(Group group)

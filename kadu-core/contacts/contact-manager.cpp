@@ -35,16 +35,11 @@ ContactManager::~ContactManager()
 {
 }
 
-void ContactManager::itemAdded(Contact item)
+void ContactManager::idChanged(const QString &oldId)
 {
-	connect(item, SIGNAL(protocolLoaded()), this, SLOT(contactProtocolLoaded()));
-	connect(item, SIGNAL(protocolUnloaded()), this, SLOT(contactProtocolUnloaded()));
-}
-
-void ContactManager::itemRemoved(Contact item)
-{
-	disconnect(item, SIGNAL(protocolLoaded()), this, SLOT(contactProtocolLoaded()));
-	disconnect(item, SIGNAL(protocolUnloaded()), this, SLOT(contactProtocolUnloaded()));
+	Contact contact(sender());
+	if (!contact.isNull())
+		emit contactIdChanged(contact, oldId);
 }
 
 void ContactManager::itemAboutToBeRegistered(Contact item)
@@ -55,11 +50,13 @@ void ContactManager::itemAboutToBeRegistered(Contact item)
 void ContactManager::itemRegisterd(Contact item)
 {
 	emit contactAdded(item);
+	connect(item, SIGNAL(contactIdChanged(const QString &)), this, SLOT(idChanged(const QString &)));
 }
 
 void ContactManager::itemAboutToBeUnregisterd(Contact item)
 {
 	emit contactAboutToBeRemoved(item);
+	disconnect(item, SIGNAL(contactIdChanged(const QString &)), this, SLOT(idChanged(const QString &)));
 }
 
 void ContactManager::itemUnregistered(Contact item)
