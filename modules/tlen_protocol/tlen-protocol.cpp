@@ -796,21 +796,21 @@ void TlenProtocol::changeStatus(Status status)
 		login();
 
 	if("Online" == type)
-		TlenClient->setStatusDescr("available", status.description());
+		TlenClient->setStatusDescr(tlen::available, status.description());
 	else if("FreeForChat" == type)
-		TlenClient->setStatusDescr("chat", status.description());
+		TlenClient->setStatusDescr(tlen::chat, status.description());
 	else if("DoNotDisturb" == type)
-		TlenClient->setStatusDescr("dnd", status.description());
+		TlenClient->setStatusDescr(tlen::dnd, status.description());
 	else if("Away" == type)
-		TlenClient->setStatusDescr("away", status.description());
+		TlenClient->setStatusDescr(tlen::away, status.description());
 	else if("NotAvailable" == type)
-		TlenClient->setStatusDescr("xa", status.description());
+		TlenClient->setStatusDescr(tlen::xa, status.description());
 	else if("Invisible" == type)
-		TlenClient->setStatusDescr("invisible", status.description());
+		TlenClient->setStatusDescr(tlen::invisible, status.description());
 	else
 	{
 		// Offline
-		TlenClient->setStatusDescr("unavailable", status.description());
+		TlenClient->setStatusDescr(tlen::unavailable, status.description());
 
 		networkStateChanged(NetworkDisconnected);
 

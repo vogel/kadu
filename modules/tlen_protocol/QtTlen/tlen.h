@@ -80,7 +80,7 @@ public:
 	bool isConnecting();
 	bool isDisconnected();
 
-	QString status() { return Status; }
+	TlenStatus status() { return Status; }
 	QString description() { return Descr; }
 
 	// user name
@@ -150,8 +150,8 @@ public slots:
 			 int todayPlans, bool visible, bool mic, bool cam);
 
 	// "available","chat","away","xa","dnd","invisible","unavailable"
-	void setStatus(QString status);
-	void setStatusDescr(QString status,QString description);
+	void setStatus(TlenStatus status);
+	void setStatusDescr(TlenStatus status,QString description);
 
 	// add Contact
 	void addItem(QString jid, QString name, QString group, bool subscribe);
@@ -223,7 +223,7 @@ private:
 	QString	sid;
 	QString	hostname;
 
-	QString Status;
+	TlenStatus Status;
 	QString	Descr;
 
 	quint16 hostport;
