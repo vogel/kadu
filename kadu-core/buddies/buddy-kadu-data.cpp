@@ -15,34 +15,37 @@
 
 #include "buddy-kadu-data.h"
 
-BuddyKaduData::BuddyKaduData(StoragePoint *storage)
-	: ModuleData(storage)
+BuddyKaduData::BuddyKaduData(StorableObject *parent)
+		: ModuleData(parent)
 {
 }
 
-void BuddyKaduData::loadFromStorage()
+BuddyKaduData::~BuddyKaduData()
 {
-	StoragePoint *sp = storage();
-	if (!sp)
+}
+
+void BuddyKaduData::load()
+{
+	if (!isValidStorage())
 		return;
 
-	XmlConfigFile *configurationStorage = sp->storage();
-	QDomElement parent = sp->point();
+	StorableObject::load();
 
-	ChatGeometry = stringToRect(configurationStorage->getTextNode(parent, "ChatGeometry"));
-	HideDescription = QVariant(configurationStorage->getTextNode(parent, "HideDescription")).toBool();
+	ChatGeometry = stringToRect(loadValue<QString>("ChatGeometry"));
+	HideDescription = loadValue<bool>("HideDescription");
 
 }
 
-void BuddyKaduData::storeConfiguration() const
+void BuddyKaduData::store()
 {
-	StoragePoint *sp = storage();
-	if (!sp)
+	if (!isValidStorage())
 		return;
 
-	XmlConfigFile *configurationStorage = sp->storage();
-	QDomElement parent = sp->point();
+	storeValue("ChatGeometry", rectToString(ChatGeometry));
+	storeValue("HideDescription", HideDescription);
+}
 
-	configurationStorage->createTextNode(parent, "ChatGeometry", rectToString(ChatGeometry));
-	configurationStorage->createTextNode(parent, "HideDescription", QVariant(HideDescription).toString());
+QString BuddyKaduData::name() const
+{
+	return QLatin1String("kadu");
 }

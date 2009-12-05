@@ -13,6 +13,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QSharedData>
 #include <QtCore/QUuid>
+#include <QtNetwork/QHostAddress>
 
 #include "protocols/protocols-aware-object.h"
 #include "status/base-status-container.h"

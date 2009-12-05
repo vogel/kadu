@@ -23,6 +23,7 @@
 
 #include "exports.h"
 
+class Account;
 class Contact;
 class XmlConfigFile;
 

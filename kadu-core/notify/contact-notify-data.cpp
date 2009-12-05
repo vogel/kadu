@@ -16,32 +16,34 @@
 
 #include "contact-notify-data.h"
 
-ContactNotifyData::ContactNotifyData(StoragePoint *storage)
-	: ModuleData(storage)
+ContactNotifyData::ContactNotifyData(StorableObject *parent)
+		: ModuleData(parent)
 {
-
 }
 
-void ContactNotifyData::loadFromStorage()
+ContactNotifyData::~ContactNotifyData()
 {
-	StoragePoint *sp = storage();
-	if (!sp)
-		return;
-
-	XmlConfigFile *configurationStorage = sp->storage();
-	QDomElement parent = sp->point();
-
-	Notify = QVariant(configurationStorage->getTextNode(parent, "Notify", "true")).toBool();
 }
 
-void ContactNotifyData::storeConfiguration() const
+void ContactNotifyData::load()
 {
-	StoragePoint *sp = storage();
-	if (!sp)
+	if (!isValidStorage())
 		return;
 
-	XmlConfigFile *configurationStorage = sp->storage();
-	QDomElement parent = sp->point();
+	StorableObject::load();
 
-	configurationStorage->createTextNode(parent, "Notify", QVariant(Notify).toString());
+	Notify = loadValue<bool>("Notify", true);
+}
+
+void ContactNotifyData::store()
+{
+	if (!isValidStorage())
+		return;
+
+	storeValue("Notify", Notify);
+}
+
+QString ContactNotifyData::name() const
+{
+	return QLatin1String("notify");
 }

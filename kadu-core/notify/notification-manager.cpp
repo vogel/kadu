@@ -126,7 +126,7 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 	bool on = true;
 	foreach (const Buddy buddy, buddies)
 	{
-		ContactNotifyData *cnd = buddy.moduleData<ContactNotifyData>();
+		ContactNotifyData *cnd = buddy.moduleData<ContactNotifyData>("notify");
 
 		if (!cnd || !cnd->notify())
 		{
@@ -142,15 +142,14 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 		if (buddy.isNull() || buddy.isAnonymous())
 			continue;
 
-		ContactNotifyData *cnd = buddy.moduleData<ContactNotifyData>();
+		ContactNotifyData *cnd = buddy.moduleData<ContactNotifyData>("notify");
 		if (!cnd)
 			continue;
 
 		if (cnd->notify() == on)
 		{
 			cnd->setNotify(!on);
-			cnd->storeConfiguration();
-			delete cnd;
+			cnd->store();
 		}
 	}
 
@@ -213,7 +212,7 @@ void NotificationManager::statusChanged(Contact contact, Status oldStatus)
 
 	// TODO 0.6.6 display -> uuid?
 	bool notify_contact = true;
-	ContactNotifyData *cnd = contact.ownerBuddy().moduleData<ContactNotifyData>();
+	ContactNotifyData *cnd = contact.ownerBuddy().moduleData<ContactNotifyData>("notify");
 
 	if (!cnd || !cnd->notify())
 		notify_contact = false;
@@ -405,13 +404,12 @@ void NotificationManager::groupUpdated()
 		if (buddy.isNull() || buddy.isAnonymous() || buddy.groups().contains(group))
 			continue;
 
-		ContactNotifyData *cnd = buddy.moduleData<ContactNotifyData>();
+		ContactNotifyData *cnd = buddy.moduleData<ContactNotifyData>("notify");
 		if (!cnd)
 			continue;
 
 		cnd->setNotify(notify);
-		cnd->storeConfiguration();
-		delete cnd;
+		cnd->store();
 	}
 }
 
@@ -449,7 +447,7 @@ void checkNotify(Action *action)
 	bool on = true;
 	foreach (const Buddy buddy, action->buddies())
 	{
-		ContactNotifyData *cnd = buddy.moduleData<ContactNotifyData>();
+		ContactNotifyData *cnd = buddy.moduleData<ContactNotifyData>("notify");
 
 		if (!cnd || !cnd->notify())
 		{

@@ -73,9 +73,9 @@ public:
 	bool hasContact(Account account) const;
 
 template<class T>
-	T * moduleData(bool create = false, bool cache = false) const
+	T * moduleData(const QString &nodeName, bool create = false) const
 	{
-		return isNull() ? 0 : data()->moduleData<T>(create, cache);
+		return isNull() ? 0 : data()->moduleData<T>(nodeName, create);
 	}
 
 	QString id(Account account) const;

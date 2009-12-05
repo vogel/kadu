@@ -210,8 +210,6 @@ set (kadu_SRCS
 
 	model/actions-proxy-model.cpp
 
-	modules/module-data.cpp
-
 	notify/account-notification.cpp
 	notify/chat-notification.cpp
 	notify/contact-notify-data.cpp
@@ -247,6 +245,8 @@ set (kadu_SRCS
 	status/status-type.cpp
 	status/status-type-manager.cpp
 
+	storage/named-storable-object.cpp
+	storage/module-data.cpp
 	storage/shared.cpp
 	storage/shared-base.cpp
 	storage/storable-object.cpp

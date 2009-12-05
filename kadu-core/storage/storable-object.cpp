@@ -204,8 +204,8 @@ void StorableObject::removeAttribute(const QString& name)
  */
 void StorableObject::storeModuleData()
 {
-	foreach (ModuleData *moduleData, ModulesData.values())
-		moduleData->storeConfiguration();
+	foreach (StorableObject *moduleData, ModulesData.values())
+		moduleData->store();
 }
 
 StoragePoint * StorableObject::storagePointForModuleData(const QString &module, bool create)

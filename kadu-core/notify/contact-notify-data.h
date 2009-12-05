@@ -10,25 +10,26 @@
 #ifndef CONTACT_NOTIFY_DATA_H
 #define CONTACT_NOTIFY_DATA_H
 
-#include "modules/module-data.h"
+#include "storage/module-data.h"
 
 #undef Property
 #define Property(type, name, capitalized_name) \
-	type name() const { return capitalized_name; } \
-	void set##capitalized_name(const type &name) { capitalized_name = name; }
+	type name() { ensureLoaded(); return capitalized_name; } \
+	void set##capitalized_name(const type &name) { ensureLoaded(); capitalized_name = name; }
 
 class ContactNotifyData : public ModuleData
 {
 	bool Notify;
 
+protected:
+	virtual void load();
+
 public:
-	static QString key() { return "notify"; }
+	ContactNotifyData(StorableObject *parent);
+	virtual ~ContactNotifyData();
 
-	ContactNotifyData(StoragePoint *storage);
-
-	virtual void loadFromStorage();
-
-	virtual void storeConfiguration() const;
+	virtual void store();
+	virtual QString name() const;
 
 	Property(bool, notify, Notify)
 

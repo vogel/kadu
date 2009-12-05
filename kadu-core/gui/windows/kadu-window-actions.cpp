@@ -104,7 +104,7 @@ void checkHideDescription(Action *action)
 	bool on = false;
 	foreach (const Buddy buddy, action->buddies())
 	{
-		BuddyKaduData *ckd = buddy.moduleData<BuddyKaduData>(true);
+		BuddyKaduData *ckd = buddy.moduleData<BuddyKaduData>("kadu", true);
 		if (!ckd)
 			continue;
 
@@ -861,15 +861,14 @@ void KaduWindowActions::hideDescriptionActionActivated(QAction *sender, bool tog
 		if (buddy.isNull() || buddy.isAnonymous())
 			continue;
 
-		BuddyKaduData *ckd = buddy.moduleData<BuddyKaduData>(true);
+		BuddyKaduData *ckd = buddy.moduleData<BuddyKaduData>("kadu", true);
 		if (!ckd)
 			continue;
 
 		if (ckd->hideDescription() != toggled)
 		{
 			ckd->setHideDescription(toggled);
-			ckd->storeConfiguration();
-			delete ckd;
+			ckd->store();
 		}
 	}
 
