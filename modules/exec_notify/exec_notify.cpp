@@ -197,6 +197,15 @@ QStringList mySplit(const QChar &sep, const QString &str)
 
 void ExecNotify::notify(Notification *notification)
 {
+	QString text = notification->text();
+	if (!text.isEmpty())
+	{
+		text.replace("&nbsp;", " ");
+		text.replace("&lt;", "<");
+		text.replace("&gt;", ">");
+		text.replace("&amp;", "&");
+	}
+
 	QString syntax = config_file.readEntry("Exec Notify", notification->type() + "Cmd");
 	if (syntax.isEmpty())
 		return;
@@ -217,7 +226,7 @@ void ExecNotify::notify(Notification *notification)
 	foreach(QString it, s)
 		result.append(KaduParser::parse(it.replace("%ids", sendersString), ule, notification));
 
-	run(result, QString::null);
+	run(result, text);
 }
 
 void ExecNotify::run(const QStringList &args, const QString &in)
@@ -233,7 +242,8 @@ void ExecNotify::run(const QStringList &args, const QString &in)
 	arguments.removeAt(0);
 	connect(p, SIGNAL(finished(int, QProcess::ExitStatus)), p, SLOT(deleteLater()));
 	p->start(cmd, arguments);
-	//p->launch(stdin.local8Bit());
+	p->write(in.local8Bit());
+	p->closeWriteChannel();
 }
 
 void ExecNotify::import_0_5_0_ConfigurationFromTo(const QString &from, const QString &to)
