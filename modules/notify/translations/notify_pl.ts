@@ -69,6 +69,14 @@
         <translation>Kontakt zmienił status na &apos;Niedostępny&apos;</translation>
     </message>
     <message>
+        <source>User changed status to talk with me</source>
+        <translation>Kontakt zmienił status na &apos;Porozmawiaj ze mną&apos;</translation>
+    </message>
+    <message>
+        <source>User changed status to do not disturb</source>
+        <translation>Kontakt zmienił status na &apos;Nie przeszkadzać&apos;</translation>
+    </message>
+    <message>
         <source>New chat</source>
         <translation>Nowa rozmowa</translation>
     </message>

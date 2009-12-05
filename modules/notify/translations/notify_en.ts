@@ -30,6 +30,14 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>User changed status to talk with me</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User changed status to do not disturb</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Notifications</source>
         <translation type="unfinished"></translation>
     </message>

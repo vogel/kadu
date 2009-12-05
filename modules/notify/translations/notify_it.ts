@@ -68,6 +68,14 @@ durante primo colegamento Kadu con serwer</translation>
         <translation>Contatto ha cambiato status a Fuori line</translation>
     </message>
     <message>
+        <source>User changed status to talk with me</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User changed status to do not disturb</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>New chat</source>
         <translation>Nuovo chat</translation>
     </message>
