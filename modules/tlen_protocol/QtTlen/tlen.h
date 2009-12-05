@@ -80,7 +80,7 @@ public:
 	bool isConnecting();
 	bool isDisconnected();
 
-	QString strStatus() { return Status; }
+	QString status() { return Status; }
 	QString description() { return Descr; }
 
 	// user name
@@ -176,6 +176,10 @@ private slots:
 	void sendPing();
 	// tlen configuration received
 	void tcfgReceived(QDomElement &n);
+
+	// status translations
+	QString statusName(TlenStatus index);
+	TlenStatus statusType(const QString &status);
 
 signals:
 	void presenceDisconnected();

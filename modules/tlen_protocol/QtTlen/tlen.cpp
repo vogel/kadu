@@ -873,6 +873,17 @@ void tlen::sendAlarm(QString to)
 	write(doc);
 }
 
+QString tlen::statusName(TlenStatus index)
+{
+	return QString();
+}
+
+tlen::TlenStatus tlen::statusType(const QString &status)
+{
+	return tlen::available;
+}
+
+
 void tlen::receiveFile(QString rndid, QString sender, bool receive) {
 	kdebugf();
 	QDomDocument doc;
