@@ -53,14 +53,14 @@ class KADUAPI StorableObject
 {
 public:
 	/**
+	 * @enum StorableObjectState
+	 * @author Rafal 'Vogel' Malinowski
+	 *
 	 * This enum controls how the object behaves when loading/storing data.
 	 */
 	enum StorableObjectState
 	{
 		/**
-		 * @enum StorableObjectState
-		 * @author Rafal 'Vogel' Malinowski
-		 *
 		 * Object is treated as 'new' - one, that has never been stored before.
 		 * Such object can not be loaded, @link<ensureLoaded> ensureLoaded @endlink
 		 * will do nothing on such object.
