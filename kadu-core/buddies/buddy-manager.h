@@ -61,9 +61,6 @@ public:
 
 	Buddy byDisplay(const QString &display);
 
-	void blockUpdatedSignal(Buddy &buddy);
-	void unblockUpdatedSignal(Buddy &buddy);
-
 signals:
 	void buddyAboutToBeAdded(Buddy &buddy);
 	void buddyAdded(Buddy &buddy);

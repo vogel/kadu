@@ -304,13 +304,13 @@ void BuddyGeneralConfigurationWidget::showOrderDialog()
 
 void BuddyGeneralConfigurationWidget::updateOrder()
 {
-	BuddyManager::instance()->blockUpdatedSignal(MyBuddy);
+	MyBuddy.blockUpdatedSignal();
 
 // 	ContactTab->saveConfiguration();
 // 	GroupsTab->saveConfiguration(); 
 // 	OptionsTab->saveConfiguration(); 
 
-	BuddyManager::instance()->unblockUpdatedSignal(MyBuddy);
+	MyBuddy.unblockUpdatedSignal();
 }
 
 void BuddyGeneralConfigurationWidget::updateOrderAndClose()

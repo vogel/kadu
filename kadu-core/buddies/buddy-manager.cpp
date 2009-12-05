@@ -88,21 +88,12 @@ void BuddyManager::itemAdded(Buddy buddy)
 
 void BuddyManager::itemAboutToBeRemoved(Buddy buddy)
 {
-	disconnect(buddy, SIGNAL(updated()), this, SLOT(buddyDataUpdated()));
 	emit buddyAboutToBeRemoved(buddy);
 }
 
 void BuddyManager::itemRemoved(Buddy buddy)
 {
 	disconnect(buddy, SIGNAL(updated()), this, SLOT(buddyDataUpdated()));
-
-// TODO: 0.6.6
-// 	if (BuddyRemovePredicateObject::inquireAll(buddy))
-// 	{
-// 		Buddies.removeAll(buddy);
-// 		buddy.removeFromStorage();
-// 	}
-
 	emit buddyRemoved(buddy);
 }
 
@@ -136,16 +127,6 @@ Buddy BuddyManager::byDisplay(const QString &display)
 	}
 
 	return Buddy::null;
-}
-
-void BuddyManager::blockUpdatedSignal(Buddy &buddy)
-{
-	buddy.data()->blockUpdatedSignal();
-}
-
-void BuddyManager::unblockUpdatedSignal(Buddy &buddy)
-{
-	buddy.data()->unblockUpdatedSignal();
 }
 
 BuddyList BuddyManager::buddies(Account account, bool includeAnonymous)
