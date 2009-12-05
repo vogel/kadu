@@ -100,6 +100,22 @@ StoragePoint * StorableObject::storage()
 
 /**
  * @author Rafal 'Vogel' Malinowski
+ * @short Stores object data in XML node.
+ *
+ * Stores all module data object by calling store method on these objects.
+ * Reimplementations of this method should store all needed object data
+ * using storeValue and storeAttribute methods and should call super class
+ * method.
+ */
+
+void StorableObject::store()
+{
+	foreach (StorableObject *moduleData, ModulesData.values())
+		moduleData->store();
+}
+
+/**
+ * @author Rafal 'Vogel' Malinowski
  * @short Loads data from storage point. Sets state to StateLoaded.
  *
  * This is base implementation of load method, that is calles by ensureLoaded method.
@@ -174,7 +190,7 @@ void StorableObject::storeAttribute(const QString &name, const QVariant value)
 
 /**
  * @author Rafal 'Vogel' Malinowski
- * @short Removed value (a subnode) from XML node.
+ * @short Removes value (a subnode) from XML node.
  * @param name name of subnode that will be removed
  *
  * Removes subnode 'name' from XML storage file.
@@ -186,7 +202,7 @@ void StorableObject::removeValue(const QString& name)
 
 /**
  * @author Rafal 'Vogel' Malinowski
- * @short Removed value (an attribute) from XML node.
+ * @short Removes value (an attribute) from XML node.
  * @param name name of attribute that will be removed
  *
  * Removes attribute 'name' from XML storage file.
@@ -198,16 +214,18 @@ void StorableObject::removeAttribute(const QString& name)
 
 /**
  * @author Rafal 'Vogel' Malinowski
- * @short Stores all module data registered for this object.
+ * @short Creates storage point object for given module data.
+ * @param module name of module data
+ * @param create if true this method can create new nodes
+ * @return storage point object for given module data
  *
- * Stores all module data object by calling store method on these objects.
+ * Creates storage point for given module data. If XML node is non present
+ * and create parameter is false this method will return NULL. Else it will
+ * return storage point that points for right XML node (even it that needs
+ * creating new XML node).
+ *
+ * Node is named ModuleData with attribute name with value from module parameter.
  */
-void StorableObject::storeModuleData()
-{
-	foreach (StorableObject *moduleData, ModulesData.values())
-		moduleData->store();
-}
-
 StoragePoint * StorableObject::storagePointForModuleData(const QString &module, bool create)
 {
 	StoragePoint *parent = storage();

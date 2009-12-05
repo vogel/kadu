@@ -81,7 +81,8 @@
  *
  * Every plugin can attach any data to any StorableObject by using @link moduleData @endlink
  * system. It allows to create named subnodes of arbitrary types under main XML node
- * of StorableObject.
+ * of StorableObject. All module data object are stored as ModuleData subnodes and are
+ * identified by 'name' attribute, that has to be unique per ModuleData subtype.
  */
 class KADUAPI StorableObject
 {
@@ -148,14 +149,7 @@ public:
 
 	StoragePoint * storage();
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Stores object data in XML node.
-	 *
-	 * Reimplementations of this method should store all needed object data
-	 * using storeValue and storeAttribute methods.
-	 */
-	virtual void store() = 0;
+	virtual void store();
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
@@ -182,6 +176,15 @@ public:
 	bool isValidStorage();
 	StoragePoint * storagePointForModuleData(const QString &module, bool create = false);
 
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Loads value from XML node (as an attribute).
+	 * @param T type of returned value
+	 * @param name name of attribute that will be loaded
+	 * @return value of XML attribute
+	 *
+	 * Loads value from XML node as an attribute 'name' with type T.
+	 */
 template<class T>
 	T loadAttribute(const QString &name) const
 	{
@@ -189,6 +192,15 @@ template<class T>
 		return value.value<T>();
 	}
 
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Loads value from XML node (as subnode).
+	 * @param T type of returned value
+	 * @param name name of subnode that will be loaded
+	 * @return value of XML subnode
+	 *
+	 * Loads value from XML node as subnode 'name' with type T.
+	 */
 template<class T>
 	T loadValue(const QString &name) const
 	{
@@ -200,6 +212,17 @@ template<class T>
 		return value.value<T>();
 	}
 
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Loads value from XML node (as an attribute).
+	 * @param T type of returned value
+	 * @param name name of attribute that will be loaded
+	 * @param def default value, returned when attribute non present
+	 * @return value of XML attribute
+	 *
+	 * Loads value from XML node as an attribute 'name' with type T.
+	 * If attribute is non present this method will return value of def.
+	 */
 template<class T>
 	T loadAttribute(const QString &name, T def) const
 	{
@@ -212,6 +235,17 @@ template<class T>
 		return def;
 	}
 
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Loads value from XML node (as subnode).
+	 * @param T type of returned value
+	 * @param name name of subnode that will be loaded
+	 * @param def default value, returned when subnode non present
+	 * @return value of XML subnode
+	 *
+	 * Loads value from XML node as subnode 'name' with type T.
+	 * If subnode is non present this method will return value of def.
+	 */
 template<class T>
 	T loadValue(const QString &name, T def) const
 	{
@@ -224,7 +258,18 @@ template<class T>
 		return def;
 	}
 
-	// TODO: 0.6.6 - check create and cache implementation
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Loads ModuleObject data from XML node (as subnode).
+	 * @param T type of returned value (must be class that inherits from @link ModuleData @endlink)
+	 * @param module name of module to be loaded
+	 * @param create when true this method can create new ModuleData (if non present)
+	 * @return value of XML subnode, as an object
+	 *
+	 * Loads object from XML subnode 'modules' with type T. If subnode is non present
+	 * and create is false this method will return NULL value, else it will at least
+	 * create new object with default values.
+	 */
 template<class T>
 	T * moduleData(const QString &module, bool create = false)
 	{
@@ -246,8 +291,6 @@ template<class T>
 
 	void removeValue(const QString &name);
 	void removeAttribute(const QString &name);
-
-	void storeModuleData();
 
 };
 
