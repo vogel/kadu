@@ -38,17 +38,17 @@ Q_OBJECT
 
 public:
 
-	enum ConnectionState{
-		ConnectingToHub = 0,
-		Connecting = 1,
-		Connected = 2,
-		ErrorDisconnected = 3,
-		Disconnected = 4
-	} ConnectionState;
+	enum TlenConnectionState{
+		ConnectingToHub,
+		Connecting,
+		Connected,
+		ErrorDisconnected,
+		Disconnected
+	};
 
 	// TODO use QMultiMap<PubDirInfo, QVariant>
-	enum PubDirInfo {
-		first = 0,
+	enum TlenPubDirInfo {
+		first,
 		last,
 		nick,
 		email,
@@ -61,7 +61,17 @@ public:
 		visible,
 		mic,
 		cam
-	} PubDirInfo;
+	};
+	
+	enum TlenStatus {
+		available,
+		chat ,
+		xa,
+		away,
+		dnd,
+		invisible,
+		offline,
+	};
 
 	tlen(QObject *parent=0);
 	~tlen();
@@ -202,13 +212,14 @@ private:
 	QByteArray stream;
 
 	// connection state
-	int state;
+	TlenConnectionState state;
 
 	QString	User;
 	QString	Password;
 	QString	sid;
 	QString	hostname;
-	QString	Status;
+
+	QString Status;
 	QString	Descr;
 
 	quint16 hostport;
