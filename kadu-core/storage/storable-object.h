@@ -48,6 +48,41 @@
  * to load/store is done, object will create its own storage point using two
  * abstract methods: @link<StorableObject::storageParent> storageParent @endlink
  * and @link<StorableObject::storageNodeName> storageNodeName @endlink.
+ *
+ * Storing example:
+ *
+ * <pre>
+ * storeAttribute("id", 15);
+ * storeValue("ApplicationName", "Kadu");
+ * storeValue("ApplicationVersion", "0.6.6-master");
+ * </pre>
+ *
+ * when storageNodeName is defined as:
+ *
+ * <pre>
+ * return QLatin1String("Application");
+ * </pre>
+ *
+ * will result in following XML structure:
+ *
+ * <pre>
+ * &lt;Application id="15"&gt;
+ *   &lt;ApplicationName&gt;Kadu&lt;ApplicationName&gt;
+ *   &lt;ApplicationVersion&gt;0.6.6&lt;ApplicationVersion&gt;
+ * &lt;/Application&gt;
+ * </pre>
+ *
+ * To load these values use:
+ *
+ * <pre>
+ * Id = loadAttribute&lt;int&gt;("id");
+ * Name = loadValue&lt;QString&gt;("ApplicationName");
+ * Version = loadValue&lt;QString&gt;("ApplicationVersion");
+ * </pre>
+ *
+ * Every plugin can attach any data to any StorableObject by using @link moduleData @endlink
+ * system. It allows to create named subnodes of arbitrary types under main XML node
+ * of StorableObject.
  */
 class KADUAPI StorableObject
 {
@@ -92,21 +127,60 @@ protected:
 public:
 	StorableObject();
 
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Returns object that holds parent storage point for this object.
+	 *
+	 * Reimplementations of this method in derivered classes should return object
+	 * that holds parent storage point for this object. If NULL is returned, this
+	 * object will be stored directly below root XML node of storage file. If value
+	 * is not NULL, this object will be stored below XML node of parent object.
+	 */
 	virtual StorableObject * storageParent() = 0;
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Returns node name of XML storage of this object.
+	 *
+	 * Reimplementations of this method in derivered classes should return name
+	 * of XML node that holds this object data.
+	 */
 	virtual QString storageNodeName() = 0;
 
 	StoragePoint * storage();
 
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Stores object data in XML node.
+	 *
+	 * Reimplementations of this method should store all needed object data
+	 * using storeValue and storeAttribute methods.
+	 */
 	virtual void store() = 0;
 
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Returns current object state.
+	 * @return current object state
+	 *
+	 * Return current object state.
+	 */
 	StorableObjectState state() { return State; }
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Sets new state of object.
+	 * @param state object's new state
+	 *
+	 * Sets new state of object.
+	 */
 	void setState(StorableObjectState state) { State = state; }
 
 	void ensureLoaded();
 	void removeFromStorage();
 
 	void setStorage(StoragePoint *storage);
-	bool isValidStorage() { return storage() && storage()->storage(); }
+	bool isValidStorage();
 	StoragePoint * storagePointForModuleData(const QString &module, bool create = false);
 
 template<class T>
