@@ -161,17 +161,6 @@ BuddyList BuddyManager::buddies(Account account, bool includeAnonymous)
 	return result;
 }
 
-const Buddy & BuddyManager::byBuddyShared(BuddyShared *data)
-{
-	ensureLoaded();
-
-	foreach (const Buddy &buddy, items())
-		if (data == buddy.data())
-			return buddy;
-
-	return Buddy::null;
-}
-
 void BuddyManager::buddyDataUpdated()
 {
 	Buddy buddy(sender());

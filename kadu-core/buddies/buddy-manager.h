@@ -36,7 +36,6 @@ class KADUAPI BuddyManager : public QObject, public SimpleManager<Buddy>
 
 	void init();
 
-	const Buddy & byBuddyShared(BuddyShared *data);
 	void importConfiguration(XmlConfigFile *configurationStorage);
 
 private slots:
