@@ -28,12 +28,13 @@
  * @addtogroup Storage
  * @{
  */
+
 /**
  * @class StorableObject
  * @author Rafal 'Vogel' Malinowski
  * @short Object that can load itself from XML file and store data there.
  *
- * Any class that derives from StorableObject can aasily store and load objects
+ * Any class that derives from StorableObject can easily store and load objects
  * from XML configuration file. File and XML node that contains data about
  * given object is stored using @link<StoragePoint> StoragePoint @endlink
  * object stored in private Storage field.
