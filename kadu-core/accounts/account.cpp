@@ -91,6 +91,8 @@ Buddy Account::createAnonymous(const QString& id)
 	if (!contact.isValid())
 		return Buddy::null;
 
+	ContactManager::instance()->addItem(contact);
+
 	result.addContact(contact);
 	return result;
 }

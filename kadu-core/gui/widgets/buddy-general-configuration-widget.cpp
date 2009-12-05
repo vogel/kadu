@@ -246,14 +246,20 @@ void BuddyGeneralConfigurationWidget::saveConfiguration()
 			if (!contactId.isEmpty()/* && account.protocolHandler()->validateId(ContactsIds.at(i)->text())*/)
 				contact.setId(contactId);
 			else
+			{
 				MyBuddy.removeContact(contact);
+				ContactManager::instance()->removeItem(contact);
+			}
 		}
 		else
 		{
 			// TODO 0.6.6
 			foreach (const Contact &tmpcontact, MyBuddy.contacts())
 				if (tmpcontact.id() == contactId) // check if user has only changed account for previous existing ID
+				{
 					MyBuddy.removeContact(tmpcontact); // if so, remove old CAD, otherwise there will appear 2 identical contacts with different accounts
+					ContactManager::instance()->removeItem(tmpcontact);
+				}
 
 			Contact contact;
 			contact.setContactAccount(account);
@@ -261,6 +267,8 @@ void BuddyGeneralConfigurationWidget::saveConfiguration()
 			contact.setId(contactId);
 			// TODO crash here
 			contact.setDetails(account.protocolHandler()->protocolFactory()->createContactDetails(contact));
+			ContactManager::instance()->addItem(contact);
+
 			MyBuddy.addContact(contact);
 		}
 	}

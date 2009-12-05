@@ -385,7 +385,8 @@ Buddy TlenProtocol::nodeToBuddy(QDomNode node)
 {
 	Buddy result = Buddy::create();
 
-	Contact contact = Contact::create() ;
+	// TODO: 0.6.6 check if that contact is already in manager
+	Contact contact = Contact::create();
 	contact.setContactAccount(account());
 	contact.setOwnerBuddy(result);
 	contact.setId(account().id());

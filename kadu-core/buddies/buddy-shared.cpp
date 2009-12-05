@@ -206,8 +206,6 @@ void BuddyShared::addContact(Contact contact)
 
 	emit contactAboutToBeAdded(contact);
 	Contacts.append(contact);
-	// TODO: move
-	ContactManager::instance()->addItem(contact);
 	emit contactAdded(contact);
 }
 
@@ -217,8 +215,6 @@ void BuddyShared::removeContact(Contact contact)
 		return;
 
 	emit contactAboutToBeRemoved(contact);
-	// TODO: move
-	ContactManager::instance()->removeItem(contact);
 	Contacts.removeAll(contact);
 	emit contactRemoved(contact);
 }

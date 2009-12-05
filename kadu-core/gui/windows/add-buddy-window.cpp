@@ -316,11 +316,12 @@ void AddBuddyWindow::accept()
 		if (buddy.isNull())
 			return;
 
-		Contact contact;
+		Contact contact = Contact::create();
 		contact.setContactAccount(account);
 		contact.setOwnerBuddy(buddy);
 		contact.setId(UserNameEdit->text());
 		contact.setDetails(account.protocolHandler()->protocolFactory()->createContactDetails(contact));
+		ContactManager::instance()->addItem(contact);
 		buddy.addContact(contact);
 	}
 

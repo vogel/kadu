@@ -15,6 +15,7 @@
 #include "buddies/group.h"
 #include "buddies/group-manager.h"
 #include "contacts/contact.h"
+#include "contacts/contact-manager.h"
 #include "contacts/contact-shared.h"
 
 #include "protocols/protocol.h"
@@ -128,12 +129,17 @@ BuddyList GaduListHelper::streamToContactList(Account account, QTextStream &cont
 				uin = 0;
 			if (uin)
 			{
-				Contact contact;
-				contact.setContactAccount(account);
+				Contact contact = ContactManager::instance()->byId(account, QString::number(uin));
+				if (contact.isNull())
+				{
+					contact = Contact::create();
+					contact.setContactAccount(account);
+					contact.setDetails(new GaduContactDetails(contact));
+					contact.setId(QString::number(uin));
+					contact.data()->setState(StorableObject::StateNew);
+				}
+
 				contact.setOwnerBuddy(buddy);
-				contact.setId(QString::number(uin));
-				contact.data()->setState(StorableObject::StateNew);
-				contact.setDetails(new GaduContactDetails(contact));
 				buddy.addContact(contact);
 			}
 		}
