@@ -50,7 +50,7 @@ tlen::tlen( QObject* parent ): QObject( parent ) {
 	Secure = false;
 	Reconnect = false;
 
-	Status="unavailable";
+	Status= tlen::unavailable;
 	Descr="";
 
 	tmpDoc=new QDomDocument;
@@ -384,7 +384,7 @@ void tlen::socketDisconnected()
 	}
 	else
 	{
-		Status="unavailable";
+		Status=tlen::unavailable;
 		Descr="";
 	}
 	emit presenceDisconnected();
@@ -687,12 +687,12 @@ void tlen::writeStatus() {
 	QDomElement p = doc.createElement("presence");
 	QDomElement d = doc.createElement("status");
 
-	if(Status=="unavailable" || Status=="invisible")
-		p.setAttribute("type", Status);
+	if(Status== tlen::unavailable || Status== tlen::invisible)
+		p.setAttribute("type", statusName(Status));
 	else
 	{
 		QDomElement s = doc.createElement("show");
-		s.appendChild(doc.createTextNode(Status));
+		s.appendChild(doc.createTextNode(statusName(Status)));
 		p.appendChild(s);
 	}
 
@@ -705,14 +705,14 @@ void tlen::writeStatus() {
 	if(write(doc))
 		emit statusChanged();
 
-	if(Status == "unavailable")
+	if(Status == tlen::unavailable)
 	{
 		Reconnect = false;
 		closeConn();
 	}
 }
 
-void tlen::setStatus(QString status) {
+void tlen::setStatus(TlenStatus status) {
 	kdebugf();
 	if(Status==status && Descr == "")
 		return;
@@ -722,7 +722,7 @@ void tlen::setStatus(QString status) {
 	emit statusUpdate();
 }
 
-void tlen::setStatusDescr(QString status,QString description) {
+void tlen::setStatusDescr(TlenStatus status, QString description) {
 	kdebugf();
 	if(Descr==description && Status==status)
 		return;
@@ -871,6 +871,34 @@ void tlen::sendAlarm(QString to)
 	m.setAttribute("tp", "a");
 	doc.appendChild(m);
 	write(doc);
+}
+
+QString tlen::statusName(TlenStatus index)
+{
+	switch(index)
+	{
+		case tlen::available	: return "available";
+		case tlen::chat		: return "chat";
+		case tlen::xa		: return "xa";
+		case tlen::away		: return "away";
+		case tlen::dnd		: return "dnd";
+		case tlen::invisible	: return "invisible";
+		case tlen::unavailable	: return "unavailable";
+		default			: return "unavailable";
+	}
+}
+
+tlen::TlenStatus tlen::statusType(const QString &status)
+{
+	if (status == "available")	return tlen::available;
+	if (status == "chat")		return tlen::chat;
+	if (status == "xa")		return tlen::xa;
+	if (status == "away")		return tlen::away;
+	if (status == "dnd")		return tlen::dnd;
+	if (status == "invisible")	return tlen::invisible;
+	if (status == "unavailable")	return tlen::unavailable;
+
+	return tlen::unavailable;
 }
 
 void tlen::receiveFile(QString rndid, QString sender, bool receive) {

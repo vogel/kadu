@@ -12,6 +12,7 @@
 #include "protocols/protocol.h"
 
 #include "chat/chat-aggregator-builder.h"
+#include "chat/chat-manager.h"
 
 ChatAggregatorBuilder::ChatAggregatorBuilder()
 {
@@ -26,12 +27,11 @@ Chat ChatAggregatorBuilder::buildAggregateChat(BuddySet contacts)
 	QList<Chat> chats;
 	foreach (Account account, AccountManager::instance()->items())
 	{
-		Chat chat = account.protocolHandler()->findChat(contacts, false);
+		Chat chat = ChatManager::instance()->findChat(contacts.toContactSet(), false);
 		if (chat)
 			chats.append(chat);
 	}
 
-// 	if (!chats.isEmpty()) enable after chat-rework
-// 		return new AggregateChat(chats);
-	return Chat::null;
+	if (!chats.isEmpty())
+		return AggregateChat(chats);
 }

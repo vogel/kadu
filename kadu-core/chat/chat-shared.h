@@ -47,7 +47,7 @@ protected:
 public:
 	static ChatShared * loadFromStorage(StoragePoint *storagePoint);
 
-	explicit ChatShared(QUuid uuid = QUuid());
+	explicit ChatShared(QUuid uuid = QUuid::createUuid());
 	virtual ~ChatShared();
 
 	virtual StorableObject * storageParent();
