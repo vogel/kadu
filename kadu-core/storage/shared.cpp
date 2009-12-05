@@ -32,7 +32,7 @@ void Shared::store()
 	if (!isValidStorage())
 		return;
 
-	storeValue("uuid", Uuid.toString(), true);
+	storeAttribute("uuid", Uuid.toString());
 }
 
 void Shared::aboutToBeRemoved()

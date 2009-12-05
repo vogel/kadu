@@ -89,20 +89,24 @@ void StorableObject::removeFromStorage()
 	Storage = 0;
 }
 
-void StorableObject::storeValue(const QString &name, const QVariant value, bool attribute)
+void StorableObject::storeValue(const QString &name, const QVariant value)
 {
-	if (attribute)
-		Storage->point().setAttribute(name, value.toString());
-	else
-		Storage->storage()->createTextNode(Storage->point(), name, value.toString());
+	Storage->storage()->createTextNode(Storage->point(), name, value.toString());
 }
 
-void StorableObject::removeValue(const QString& name, bool attribute)
+void StorableObject::storeAttribute(const QString &name, const QVariant value)
 {
-	if (attribute)
-		Storage->point().removeAttribute(name);
-	else
-		Storage->storage()->removeNode(Storage->point(), name);
+	Storage->point().setAttribute(name, value.toString());
+}
+
+void StorableObject::removeValue(const QString& name)
+{
+	Storage->storage()->removeNode(Storage->point(), name);
+}
+
+void StorableObject::removeAttribute(const QString& name)
+{
+	Storage->point().removeAttribute(name);
 }
 
 void StorableObject::storeModuleData()

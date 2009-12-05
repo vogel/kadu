@@ -176,8 +176,11 @@ template<class T>
 		return result;
 	}
 
-	void storeValue(const QString &name, const QVariant value, bool attribute = false);
-	void removeValue(const QString &name, bool attribute = false);
+	void storeValue(const QString &name, const QVariant value);
+	void storeAttribute(const QString &name, const QVariant value);
+
+	void removeValue(const QString &name);
+	void removeAttribute(const QString &name);
 
 	void storeModuleData();
 
