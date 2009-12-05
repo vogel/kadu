@@ -9,10 +9,35 @@
 
 #include "named-storable-object.h"
 
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Contructs object with StateNew state and null storage point.
+ *
+ * Constructs object with @link<StorableObject::StateNew state @endlink and null
+ * (invalid) @link<StorableObject::storage storage point @endlink.
+ */
 NamedStorableObject::NamedStorableObject()
 {
 }
 
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Creates default storage point for object.
+ *
+ * Constructs storage point: XML node that is child of storage point of object
+ * returned by @link<StorableObject::storageParent storageParent @endlink method.
+ * Node name is given by @link<StorableObject::storageNodeName @endlink method.
+ * Node contains one attribute: name, that contains value returned by
+ * @link<uuid> name @endlink method.
+ *
+ * If @link<StorableObject::storageNodeName @endlink returns invalid node name
+ * (empty string) or @link<StorableObject::storageParent storageParent @endlink
+ * returns object that has invalid storage point, this method returns invalid
+ * storage point.
+ *
+ * If parent is NULL this method will return storage point that is child of
+ * root node of XML configuration file.
+ */
 StoragePoint * NamedStorableObject::createStoragePoint()
 {
 	if (storageNodeName().isEmpty())

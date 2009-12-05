@@ -14,6 +14,18 @@
 
 #include "exports.h"
 
+/**
+ * @addtogroup Storage
+ * @{
+ */
+/**
+ * @class NamedStorableObject
+ * @author Rafal 'Vogel' Malinowski
+ * @short Object that can load itself from XML file and store data there. Object is identified by string name.
+ *
+ * Many objects of this class can be stored under one master XML node in storage.
+ * Each object is identified by unique name.
+ */
 class KADUAPI NamedStorableObject : public StorableObject
 {
 
@@ -23,8 +35,20 @@ protected:
 public:
 	NamedStorableObject();
 
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Returns name of this object.
+	 * @return name of this object
+	 *
+	 * This method returns string that represents name of this object.
+	 * Each derivered class should ovveride that method to return meaningfull name.
+	 */
 	virtual QString name() const = 0;
 
 };
+
+/**
+ * @}
+ */
 
 #endif // NAMED_STORABLE_OBJECT_H
