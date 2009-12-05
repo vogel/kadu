@@ -92,7 +92,7 @@ Group GroupManager::byName(const QString &name, bool create)
 	if (!create)
 		return Group::null;
 
-	Group group;
+	Group group = Group::create();
 	group.data()->importConfiguration(name);
 	addItem(group);
 

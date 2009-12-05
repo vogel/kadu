@@ -25,7 +25,7 @@ JabberContactDetails::~JabberContactDetails()
 
 bool JabberContactDetails::validateId()
 {
-	XMPP::Jid newJid(JIDUtil::accountFromString(contactData()->id()));
+	XMPP::Jid newJid(JIDUtil::accountFromString(mainData()->id()));
 	return !newJid.node().isEmpty() && !newJid.domain().isEmpty();
 }
 

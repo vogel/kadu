@@ -41,13 +41,14 @@ void GaduImporter::importAccounts()
 	if (0 == config_file.readNumEntry("General", "UIN"))
 		return;
 	
-	Account defaultGaduGadu;
-	defaultGaduGadu.data()->setState(StorableObject::StateNew);
-	defaultGaduGadu.data()->setProtocolName("gadu");
-	defaultGaduGadu.data()->protocolRegistered(ProtocolsManager::instance()->byName("gadu"));
+	Account defaultGaduGadu = Account::create();
+	// TODO: 0.6.6 set protocol after details because of crash
+	//defaultGaduGadu.setProtocolName("gadu");
 
 	GaduAccountDetails *accountDetails = new GaduAccountDetails(defaultGaduGadu);
+	accountDetails->setState(StorableObject::StateNew);
 	defaultGaduGadu.setDetails(accountDetails);
+	defaultGaduGadu.setProtocolName("gadu");
 
 	defaultGaduGadu.setName("Gadu-Gadu");
 	defaultGaduGadu.setId(config_file.readEntry("General", "UIN"));
@@ -106,7 +107,7 @@ void GaduImporter::importGaduContact(Buddy &buddy)
 	Account account = allGaduAccounts[0];
 	QString id = buddy.customData("uin");
 
-	Contact contact;
+	Contact contact = Contact::create();
 	contact.setDetails(new GaduContactDetails(contact));
 	contact.setContactAccount(account);
 	contact.setOwnerBuddy(buddy);

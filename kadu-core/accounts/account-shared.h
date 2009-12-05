@@ -59,6 +59,7 @@ protected:
 	virtual void detailsAdded();
 	virtual void detailsAboutToBeRemoved();
 	virtual void protocolUnregistered(ProtocolFactory *protocolHandler);
+	virtual void protocolRegistered(ProtocolFactory *protocolHandler);
 
 public:
 	static AccountShared * loadFromStorage(StoragePoint *storagePoint);
@@ -66,16 +67,15 @@ public:
 	explicit AccountShared(QUuid uuid = QUuid());
 	virtual ~AccountShared();
 	
-	// TODO: 0.6.6 look at buddy.cpp:197, need to be hidden again
-	virtual void protocolRegistered(ProtocolFactory *protocolHandler);
-
 	virtual StorableObject * storageParent();
 	virtual QString storageNodeName();
 
 	virtual void store();
 	virtual void aboutToBeRemoved();
 
-	KaduShared_Property(QString, protocolName, ProtocolName)
+	void setProtocolName(QString protocolName);
+
+	KaduShared_PropertyRead(QString, protocolName, ProtocolName)
 	KaduShared_Property(Protocol *, protocolHandler, ProtocolHandler)
 	KaduShared_Property(QString, name, Name)
 	KaduShared_Property(QString, id, Id)

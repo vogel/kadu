@@ -275,6 +275,7 @@ bool TlenProtocol::sendMessage(Chat chat, FormattedMessage &formattedMessage)
 {
 	kdebugf();
 
+	kdebugm(KDEBUG_WARNING, "Tlen send count %d\n", chat.contacts().count());
 	// TODO send to more users
 	if (chat.contacts().count() != 1)
 		return false;
@@ -343,6 +344,7 @@ void TlenProtocol::chatMsgReceived(QDomNode n)
 
 	// TODO - zaimplementowac to samo w ContactList
 	Buddy buddy = account().getBuddyById(TlenClient->decode(from));
+	//Contact contact = 
 	BuddySet contacts = BuddySet(buddy);
 
 	time_t msgtime = timeStamp.toTime_t();
@@ -381,9 +383,9 @@ void TlenProtocol::presenceDisconnected()
 
 Buddy TlenProtocol::nodeToBuddy(QDomNode node)
 {
-	Buddy result;
+	Buddy result = Buddy::create();
 
-	Contact contact;
+	Contact contact = Contact::create() ;
 	contact.setContactAccount(account());
 	contact.setOwnerBuddy(result);
 	contact.setId(account().id());
@@ -507,17 +509,18 @@ void TlenProtocol::itemReceived(QString jid, QString name, QString subscription,
 	kdebugf();
 	kdebugm(KDEBUG_WARNING, "Tlen contact rcv %s\n", qPrintable(jid));
 
-	Buddy buddy;
+	Buddy buddy = Buddy::create();
 
 	Contact contact = ContactManager::instance()->byId(account(), jid);
 	if (contact.isNull())
 	{
-		contact = Contact();
+		contact = Contact::create();
 		contact.setContactAccount(account());
 		contact.setOwnerBuddy(buddy);
 		contact.setId(jid);
 
 		TlenContactDetails *tlenDetails = new TlenContactDetails(contact);
+		tlenDetails->setState(StorableObject::StateNew);
 		contact.setDetails(tlenDetails);
 		
 		buddy.addContact(contact);

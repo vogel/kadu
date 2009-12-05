@@ -106,11 +106,13 @@ void TlenCreateAccountWidget::iHaveAccountDataChanged()
 
 void TlenCreateAccountWidget::addThisAccount()
 {
-	Account tlenAccount;
-	tlenAccount.data()->setState(StorableObject::StateNew);
-	tlenAccount.data()->setProtocolName("tlen");
-	tlenAccount.data()->protocolRegistered(ProtocolsManager::instance()->byName("tlen"));
-	tlenAccount.setDetails(new TlenAccountDetails(tlenAccount));
+	Account tlenAccount = Account::create();
+	// TODO: 0.6.6 set protocol after details because of crash
+	//tlenAccount.setProtocolName("tlen");
+	TlenAccountDetails *details = new TlenAccountDetails(tlenAccount);
+	details->setState(StorableObject::StateNew);
+	tlenAccount.setDetails(details);
+	tlenAccount.setProtocolName("tlen");
 	tlenAccount.setName(AccountName->text());
 	tlenAccount.setId(AccountId->text());
 	tlenAccount.setPassword(AccountPassword->text());

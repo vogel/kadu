@@ -161,7 +161,10 @@ void TlenPersonalInfoWidget::personalInfoAvailable(Buddy buddy)
 
 void TlenPersonalInfoWidget::applyData()
 {
-	Buddy buddy;
+	if (!FetchOk)
+		return;
+
+	Buddy buddy = Buddy::create();
 
 	buddy.setNickName((*NickName).text());
 	buddy.setFirstName((*FirstName).text());
@@ -171,12 +174,13 @@ void TlenPersonalInfoWidget::applyData()
 	buddy.setGender((BuddyShared::BuddyGender)Sex->currentIndex());
 	buddy.setEmail((*EMail).text());
 
-	Contact contact;
+	Contact contact = Contact::create();
 	contact.setContactAccount(TAccount);
 	contact.setOwnerBuddy(buddy);
 	contact.setId(TAccount.id());
 
 	TlenContactDetails *tlenDetails = new TlenContactDetails(contact);
+	tlenDetails->setState(StorableObject::StateNew);
 	contact.setDetails(tlenDetails);
 
 	tlenDetails->setLookingFor(LookingFor->currentIndex());
@@ -186,6 +190,5 @@ void TlenPersonalInfoWidget::applyData()
 	tlenDetails->setHaveMic(HaveMic->isChecked());
 	tlenDetails->setHaveCam(HaveCam->isChecked());
 
-	if (FetchOk)
-		Service->updatePersonalInfo(buddy);
+	Service->updatePersonalInfo(buddy);
 }

@@ -313,10 +313,13 @@ void JabberCreateAccountWidget::iHaveAccountDataChanged()
 
 void JabberCreateAccountWidget::addThisAccount()
 {
-	Account jabberAccount;
-	jabberAccount.data()->setProtocolName("jabber");
-	jabberAccount.data()->protocolRegistered(ProtocolsManager::instance()->byName("jabber"));
-	jabberAccount.setDetails(new JabberAccountDetails(jabberAccount));
+	Account jabberAccount = Account::create();
+	// TODO: 0.6.6 set protocol after details because of crash
+	//jabberAccount.setProtocolName("jabber");
+	JabberAccountDetails *details = new JabberAccountDetails(jabberAccount);
+	details->setState(StorableObject::StateNew);
+	jabberAccount.setDetails(details);
+	jabberAccount.setProtocolName("jabber");
 	jabberAccount.setName(AccountName->text());
 	jabberAccount.setId(AccountId->text());
 	jabberAccount.setPassword(AccountPassword->text());
@@ -364,10 +367,12 @@ void JabberCreateAccountWidget::registerNewAccountFinished(JabberServerRegisterA
 		MessageDialog::msg(tr("Registration was successful. Your new Jabber ID is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(jsra->jid()), false, "Information", this);
 
 		Account jabberAccount;
-		jabberAccount.data()->protocolRegistered(ProtocolsManager::instance()->byName("jabber"));
+		// TODO: 0.6.6 set protocol after details because of crash
+		//jabberAccount.setProtocolName("jabber");
 		JabberAccountDetails *details = new JabberAccountDetails(jabberAccount);
-
+		details->setState(StorableObject::StateNew);
 		jabberAccount.setDetails(details);
+		jabberAccount.setProtocolName("jabber");
 		jabberAccount.setName(AccountName->text());
 		jabberAccount.setId(jsra->jid());
 		jabberAccount.setPassword(NewPassword->text());
