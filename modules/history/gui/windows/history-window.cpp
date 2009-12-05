@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include <QtGui/QDateEdit>
+#include <QtGui/QGridLayout>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QLineEdit>
 #include <QtGui/QMenu>
@@ -92,6 +93,8 @@ void HistoryWindow::createGui()
 
 	QWidget *rightWidget = new QWidget(rightSplitter);
 	QVBoxLayout *rightLayout = new QVBoxLayout(rightWidget);
+	rightLayout->setSpacing(0);
+	rightLayout->setMargin(0);
 
 	QWidget *filterWidget = new QWidget(rightWidget);
 	rightLayout->addWidget(filterWidget);
@@ -144,18 +147,35 @@ void HistoryWindow::createChatTree(QWidget *parent)
 
 void HistoryWindow::createFilterBar(QWidget *parent)
 {
-	QHBoxLayout *layout = new QHBoxLayout(parent);
+	QGridLayout *layout = new QGridLayout(parent);
+	layout->setSpacing(0);
+	layout->setMargin(0);
 
+	layout->setColumnStretch(1, 2);
+	layout->setColumnStretch(2, 1);
+
+	QLabel *filterLabel = new QLabel(tr("Filter") + ": ", parent);
+	layout->addWidget(filterLabel, 0, 0, 1, 1);
+	
 	DelayedLineEdit *searchLineEdit = new DelayedLineEdit(parent);
-	layout->addWidget(searchLineEdit);
+	layout->addWidget(searchLineEdit, 0, 1, 1, 1);
 
+	QCheckBox *filterByDate = new QCheckBox(tr("by date"), parent);
+	layout->addWidget(filterByDate, 0, 2, 1, 1);
+	
+	QLabel *fromDateLabel = new QLabel(tr("From") + ": ", parent);
+	layout->addWidget(fromDateLabel, 0, 3, 1, 1);
+	
 	QDateEdit *fromDate = new QDateEdit(parent);
 	fromDate->setCalendarPopup(true);
-	layout->addWidget(fromDate);
+	layout->addWidget(fromDate, 0, 4, 1, 1);
 
+	QLabel *toDateLabel = new QLabel(tr("To") + ": ", parent);
+	layout->addWidget(toDateLabel, 0, 5, 1, 1);
+	
 	QDateEdit *toDate = new QDateEdit(parent);
 	toDate->setCalendarPopup(true);
-	layout->addWidget(toDate);
+	layout->addWidget(toDate, 0, 6, 1, 1);
 
 	connect(searchLineEdit, SIGNAL(delayedTextChanged(const QString &)),
 			this, SLOT(searchTextChanged(const QString &)));
