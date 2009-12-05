@@ -18,6 +18,7 @@
  * @addtogroup Storage
  * @{
  */
+
 /**
  * @class NamedStorableObject
  * @author Rafal 'Vogel' Malinowski

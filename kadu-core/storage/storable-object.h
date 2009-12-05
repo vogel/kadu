@@ -142,6 +142,7 @@ public:
 	/**
 	 * @author Rafal 'Vogel' Malinowski
 	 * @short Returns node name of XML storage of this object.
+	 * @return node name of XML storage of this object
 	 *
 	 * Reimplementations of this method in derivered classes should return name
 	 * of XML node that holds this object data.
