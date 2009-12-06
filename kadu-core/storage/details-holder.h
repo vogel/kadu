@@ -15,8 +15,9 @@ class DetailsHolder
 {
 	DetailsClass *Details;
 
-	void setDetails()
+	void setNewDetails(DetailsClass *details)
 	{
+		Details = details;
 		if (!Details)
 			return;
 
@@ -24,7 +25,7 @@ class DetailsHolder
 		ManagerClass::instance()->detailsLoaded((Class *)this);
 	}
 
-	void removeDetails()
+	void removeOldDetails()
 	{
 		if (!Details)
 			return;
@@ -44,7 +45,7 @@ protected:
 
 	virtual ~DetailsHolder()
 	{
-		removeDetails();
+		removeOldDetails();
 	}
 
 	virtual void detailsAdded() {}
@@ -53,9 +54,8 @@ protected:
 public:
 	void setDetails(DetailsClass *details)
 	{
-		removeDetails();
-		Details = details;
-		setDetails();
+		removeOldDetails();
+		setNewDetails(details);
 	}
 
 	DetailsClass * details() const
