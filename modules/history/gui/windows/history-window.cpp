@@ -486,4 +486,12 @@ void HistoryWindow::keyPressEvent(QKeyEvent *e)
 		QWidget::keyPressEvent(e);
 }
 
+BuddySet HistoryWindow::buddies()
+{
+	Chat chat = ChatsTree->currentIndex().data(ChatRole).value<Chat>();
+	if (!chat)
+		return BuddySet();
+	return chat.contacts().toBuddySet();
+}
+
 HistoryWindow *historyDialog = 0;

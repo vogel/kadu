@@ -85,7 +85,7 @@ public:
 	virtual ChatMessagesView * contentBrowser() { return ContentBrowser; }
 
 	virtual bool supportsActionType(ActionDescription::ActionType type);
-	virtual BuddySet buddies() { return BuddySet(); }
+	virtual BuddySet buddies();
 	virtual ChatWidget * chatWidget() { return 0; }
 	virtual BuddiesListView * contactsListView() { return 0; }
 	virtual Chat chat() { return Chat::null; }
