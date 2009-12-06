@@ -56,7 +56,7 @@ void disableNonIdUles(Action *action)
 {
 	kdebugf();
 	foreach (const Buddy buddy, action->buddies())
-		if (buddy.contact(AccountManager::instance()->defaultAccount()).isNull())
+		if (buddy.prefferedContact().isNull())
 		{
 			action->setEnabled(false);
 			return;
@@ -93,10 +93,8 @@ void checkOfflineTo(Action *action)
 
 void checkHideDescription(Action *action)
 {
-	Account account = AccountManager::instance()->defaultAccount();
-
 	foreach (const Buddy buddy, action->buddies())
-		if (buddy.contact(account).isNull())
+		if (buddy.prefferedContact().isNull())
 		{
 			action->setEnabled(false);
 			return;
@@ -106,7 +104,7 @@ void checkHideDescription(Action *action)
 	bool on = false;
 	foreach (const Buddy buddy, action->buddies())
 	{
-		BuddyKaduData *ckd = buddy.moduleData<BuddyKaduData>(true);
+		BuddyKaduData *ckd = buddy.moduleData<BuddyKaduData>("kadu", true);
 		if (!ckd)
 			continue;
 
@@ -146,7 +144,7 @@ void disableNoGaduUle(Action *action)
 		return;
 	}
 
-	if (buddy.contact(AccountManager::instance()->defaultAccount()).isNull())
+	if (buddy.prefferedContact().isNull())
 	{
 		action->setEnabled(false);
 		return;
@@ -161,7 +159,7 @@ void disableNoGaduDescription(Action *action)
 	kdebugf();
 
 	Buddy buddy = action->buddy();
-	Account account = buddy.prefferedAccount();
+	Contact contact = buddy.prefferedContact();
 
 	if (buddy.isNull())
 	{
@@ -169,13 +167,13 @@ void disableNoGaduDescription(Action *action)
 		return;
 	}
 
-	if (buddy.contact(account).isNull())
+	if (contact.isNull())
 	{
 		action->setEnabled(false);
 		return;
 	}
 
-	if (buddy.contact(account).currentStatus().description().isEmpty())
+	if (contact.currentStatus().description().isEmpty())
 	{
 		action->setEnabled(false);
 		return;
@@ -190,7 +188,7 @@ void disableNoGaduDescriptionUrl(Action *action)
 	kdebugf();
 
 	Buddy buddy = action->buddy();
-	Account account = buddy.prefferedAccount();
+	Contact contact = buddy.prefferedContact();
 
 	if (buddy.isNull())
 	{
@@ -198,19 +196,20 @@ void disableNoGaduDescriptionUrl(Action *action)
 		return;
 	}
 
-	if (buddy.contact(account).isNull())
+	if (contact.isNull())
 	{
 		action->setEnabled(false);
 		return;
 	}
 
-	if (buddy.contact(account).currentStatus().description().isEmpty())
+	Status status = contact.currentStatus();
+	if (status.description().isEmpty())
 	{
 		action->setEnabled(false);
 		return;
 	}
 
-	if (buddy.contact(account).currentStatus().description().indexOf(HtmlDocument::urlRegExp()) < 0)
+	if (status.description().indexOf(HtmlDocument::urlRegExp()) < 0)
 	{
 		action->setEnabled(false);
 		return;
@@ -597,7 +596,7 @@ void KaduWindowActions::addUserActionActivated(QAction *sender, bool toggled)
 	AddBuddyWindow *addBuddyWindow = new AddBuddyWindow(window);
 
 	if (buddy.isAnonymous())
-		addBuddyWindow->setContact(buddy);
+		addBuddyWindow->setBuddy(buddy);
 
 	addBuddyWindow->show();
 
@@ -715,8 +714,7 @@ void KaduWindowActions::copyDescriptionActionActivated(QAction *sender, bool tog
 	if (buddy.isNull())
 		return;
 
-	Account account = buddy.prefferedAccount();
-	Contact data = buddy.contact(account);
+	Contact data = buddy.prefferedContact();
 
 	if (data.isNull())
 		return;
@@ -743,8 +741,7 @@ void KaduWindowActions::openDescriptionLinkActionActivated(QAction *sender, bool
 	if (buddy.isNull())
 		return;
 
-	Account account = buddy.prefferedAccount();
-	Contact data = buddy.contact(account);
+	Contact data = buddy.prefferedContact();
 
 	if (data.isNull())
 		return;
@@ -864,15 +861,14 @@ void KaduWindowActions::hideDescriptionActionActivated(QAction *sender, bool tog
 		if (buddy.isNull() || buddy.isAnonymous())
 			continue;
 
-		BuddyKaduData *ckd = buddy.moduleData<BuddyKaduData>(true);
+		BuddyKaduData *ckd = buddy.moduleData<BuddyKaduData>("kadu", true);
 		if (!ckd)
 			continue;
 
 		if (ckd->hideDescription() != toggled)
 		{
 			ckd->setHideDescription(toggled);
-			ckd->storeConfiguration();
-			delete ckd;
+			ckd->store();
 		}
 	}
 
@@ -903,7 +899,7 @@ void KaduWindowActions::deleteUsersActionActivated(QAction *sender, bool toggled
 	if (MessageDialog::ask(tr("Selected users:\n%0 will be deleted. Are you sure?").arg(displays.join(", ")), "Warning", Core::instance()->kaduWindow()))
 	{
 		foreach (Buddy buddy, buddies)
-			BuddyManager::instance()->removeBuddy(buddy);
+			BuddyManager::instance()->removeItem(buddy);
 		BuddyManager::instance()->store();
 	}
 
@@ -967,7 +963,7 @@ void KaduWindowActions::editUserActionActivated(QAction *sender, bool toggled)
 	if (buddy.isAnonymous())
 	{
 		AddBuddyWindow *addBuddyWindow = new AddBuddyWindow(window);
-		addBuddyWindow->setContact(buddy);
+		addBuddyWindow->setBuddy(buddy);
 		addBuddyWindow->show();
 	}
 	else

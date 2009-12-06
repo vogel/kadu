@@ -16,15 +16,15 @@
 #include "identities/identity-shared.h"
 #include "exports.h"
 
-#include "shared/shared-base.h"
+#include "storage/shared-base.h"
 
 class Account;
 
 class KADUAPI Identity : public SharedBase<IdentityShared>
 {
-	Identity(bool);
 
 public:
+	static Identity create();
 	static Identity loadFromStorage(StoragePoint *identityStoragePoint);
 	static Identity null;
 

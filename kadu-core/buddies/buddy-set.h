@@ -11,13 +11,18 @@
 #define BUDDY_SET_H
 
 #include <QtCore/QSet>
+#include <QtCore/QList>
 
+#include "accounts/account.h"
 #include "buddies/buddy.h"
+#include "contacts/contact-set.h"
 
 #include "exports.h"
 
-class BuddyList;
 class Account;
+class BuddyList;
+class Contact;
+class ContactSet;
 
 class KADUAPI BuddySet : public QSet<Buddy>
 {
@@ -27,7 +32,12 @@ public:
 	explicit BuddySet(Buddy buddy);
 
 	BuddyList toBuddyList() const;
-	Account prefferedAccount();
+	// return list of Contacts on prefferedAccount
+	QList<Contact> toContactList(Account account = Account::null) const;
+	ContactSet toContactSet(Account account = Account::null) const;
+	QList<Contact> toAllContactList() const;
+	// return same Account (or null) for all buddies 
+	Account prefferedAccount() const;
 
 };
 

@@ -15,8 +15,8 @@
 
 #include "accounts/account.h"
 #include "buddies/buddy.h"
-#include "shared/shared-base.h"
 #include "status/status.h"
+#include "storage/shared-base.h"
 
 #include "exports.h"
 
@@ -27,9 +27,9 @@ class XmlConfigFile;
 
 class KADUAPI Contact : public SharedBase<ContactShared>
 {
-	explicit Contact(bool null);
 
 public:
+	static Contact create();
 	static Contact loadFromStorage(StoragePoint *storage);
 	static Contact null;
 	

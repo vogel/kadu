@@ -7,6 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtCore/QFile>
+
 #include "buddies/avatar-manager.h"
 #include "misc/misc.h"
 
@@ -22,14 +24,23 @@ AvatarShared * AvatarShared::loadFromStorage(StoragePoint *storagePoint)
 }
 
 AvatarShared::AvatarShared(QUuid uuid) :
-		Shared(uuid, "Avatar", AvatarManager::instance()),
-		AvatarContact(Contact::null)
+		Shared(uuid), AvatarContact(Contact::null)
 {
 	AvatarsDir = ggPath("avatars/");
 }
 
 AvatarShared::~AvatarShared()
 {
+}
+
+StorableObject * AvatarShared::storageParent()
+{
+	return AvatarManager::instance();
+}
+
+QString AvatarShared::storageNodeName()
+{
+	return QLatin1String("Avatar");
 }
 
 QString AvatarShared::filePath()
@@ -41,9 +52,6 @@ QString AvatarShared::filePath()
 void AvatarShared::load()
 {
 	if (!isValidStorage())
-		return;
-
-	if (!needsLoad())
 		return;
 
 	Shared::load();
@@ -66,4 +74,14 @@ void AvatarShared::store()
 	storeValue("LastUpdated", LastUpdated);
 	storeValue("NextUpdate", NextUpdate);
 	storeValue("FileName", FileName);
+}
+
+void AvatarShared::aboutToBeRemoved()
+{
+	// cleanup referenced
+	AvatarContact = Contact::null;
+
+	QFile avatarFile(filePath());
+	if (avatarFile.exists())
+		avatarFile.remove();
 }

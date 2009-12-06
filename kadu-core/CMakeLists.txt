@@ -1,5 +1,4 @@
 set (kadu_SRCS
-
 	accounts/account.cpp
 	accounts/account-details.cpp
 	accounts/account-manager.cpp
@@ -25,7 +24,6 @@ set (kadu_SRCS
 	buddies/buddy-remove-predicate-object.cpp
 	buddies/buddy-search-criteria.cpp
 	buddies/buddy-set.cpp
-	buddies/buddy-set-configuration-helper.cpp
 	buddies/buddy-shared.cpp
 	buddies/group.cpp
 	buddies/group-manager.cpp
@@ -54,7 +52,6 @@ set (kadu_SRCS
 	chat/aggregate-chat.cpp
 	chat/chat.cpp
 	chat/chat-aggregator-builder.cpp
-	chat/chat-details.cpp
 	chat/chat-details-conference.cpp
 	chat/chat-details-simple.cpp
 	chat/chat-manager.cpp
@@ -89,14 +86,13 @@ set (kadu_SRCS
 	configuration/configuration-file.cpp
 	configuration/configuration-manager.cpp
 	configuration/notifier-configuration-data-manager.cpp
-	configuration/storable-object.cpp
-	configuration/storable-string-list.cpp
-	configuration/uuid-storable-object.cpp
 	configuration/xml-configuration-file.cpp
 
 	contacts/contact.cpp
 	contacts/contact-details.cpp
 	contacts/contact-manager.cpp
+	contacts/contact-set.cpp
+	contacts/contact-set-configuration-helper.cpp
 	contacts/contact-shared.cpp
 
 	contacts/model/buddy-contact-model.cpp
@@ -215,8 +211,6 @@ set (kadu_SRCS
 
 	model/actions-proxy-model.cpp
 
-	modules/module-data.cpp
-
 	notify/account-notification.cpp
 	notify/chat-notification.cpp
 	notify/contact-notify-data.cpp
@@ -241,9 +235,6 @@ set (kadu_SRCS
 	protocols/model/protocols-model.cpp
 	protocols/services/chat-service.cpp
 
-	shared/shared.cpp
-	shared/shared-base.cpp
-
 	status/base-status-container.cpp
 	status/description-manager.cpp
 	status/description-model.cpp
@@ -254,6 +245,15 @@ set (kadu_SRCS
 	status/status-group-manager.cpp
 	status/status-type.cpp
 	status/status-type-manager.cpp
+
+	storage/named-storable-object.cpp
+	storage/module-data.cpp
+	storage/shared.cpp
+	storage/shared-base.cpp
+	storage/storable-object.cpp
+	storage/storable-string-list.cpp
+	storage/storage-point.cpp
+	storage/uuid-storable-object.cpp
 
 	activate.cpp
 	debug.cpp
@@ -278,7 +278,6 @@ if (UNIX AND NOT APPLE)
 endif (UNIX AND NOT APPLE)
 
 set (kadu_MOC_SRCS
-	accounts/account-details.h
 	accounts/account-manager.h
 	accounts/account-shared.h
 
@@ -343,7 +342,6 @@ set (kadu_MOC_SRCS
 	chat/type/chat-type-manager.h
 	chat/type/chat-type-simple.h
 
-	contacts/contact-details.h
 	contacts/contact-manager.h
 	contacts/contact-shared.h
 

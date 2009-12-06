@@ -18,6 +18,7 @@
 #include "chat/html-messages-renderer.h"
 #include "chat/message/message-render-info.h"
 #include "contacts/contact.h"
+#include "contacts/contact-set.h"
 #include "gui/widgets/chat-messages-view.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/preview.h"
@@ -247,26 +248,14 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, const QString &styleHre
 		return QString("");
 
 	QString result = style;
-	QString name;
 
-//TODO: get Chat name (contacts' nicks?)
-	// Replace %chatName% //TODO. Find way to dynamic update this tag (add id ?)
-	int uinsSize = chat.buddies().count();
-	int i = 0;
-
-	foreach (const Buddy &buddy, chat.buddies())
-	{
-		name.append(buddy.display());
-
-		if (++i < uinsSize)
-			name.append(", ");
-	}
-
-	result.replace(QString("%chatName%"), name);
+	//TODO: get Chat name (contacts' nicks?)
+	//Replace %chatName% //TODO. Find way to dynamic update this tag (add id ?)
+	result.replace(QString("%chatName%"), chat.name());
 	// Replace %sourceName%
 	result.replace(QString("%sourceName%"), chat.chatAccount().name());
 	// Replace %destinationName%
-	result.replace(QString("%destinationName%"), name);
+	result.replace(QString("%destinationName%"), chat.name());
 	// For %timeOpened%, display the date and time. TODO: get real time 
 	result.replace(QString("%timeOpened%"), printDateTime(QDateTime::currentDateTime()));
 
@@ -279,11 +268,12 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, const QString &styleHre
 	QString photoIncoming;
 	QString photoOutgoing;
 
-	if (chat.buddies().count() > 1)
+	int contactsSize = chat.contacts().size();
+	if (contactsSize > 1)
 		photoIncoming = QString("file://") + styleHref + QString("Incoming/buddy_icon.png");
-	else if (chat.buddies().count() == 1)
+	else if (contactsSize == 1)
 	{
-		Contact contact = (*chat.buddies().begin()).contact(chat.chatAccount());
+		Contact contact = chat.contacts().toContact();
 		if (!contact.isNull() && !contact.contactAvatar().pixmap().isNull())
 			photoIncoming = QString("file://") + contact.contactAvatar().filePath();
 		else
@@ -313,7 +303,10 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, const QString &styleHre
 	// Replace %screenName% (contact ID)
 	result.replace(QString("%senderScreenName%"), msg.sender().id(chat.chatAccount()));
 	// Replace service name (protocol name)
-	result.replace(QString("%service%"), chat.chatAccount().protocolHandler()->protocolFactory()->displayName());
+	if (chat.chatAccount().protocolHandler() && chat.chatAccount().protocolHandler()->protocolFactory())
+		result.replace(QString("%service%"), chat.chatAccount().protocolHandler()->protocolFactory()->displayName());
+	else
+		result.replace(QString("%service%"), "");
 	// Replace protocolIcon (sender statusIcon). TODO:
 	result.replace(QString("%senderStatusIcon%"), chat.chatAccount().protocolHandler()->protocolFactory()->iconName());
 
@@ -339,7 +332,8 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, const QString &styleHre
 	{
 		result.replace(QString("%messageClasses%"), "message incoming");
 
-		Contact contact = msg.sender().contact(chat.chatAccount());
+		QList<Contact> contactslist = msg.sender().contacts(chat.chatAccount());
+		Contact contact = contactslist.isEmpty() ? Contact::null : contactslist[0];
 		if (!contact.isNull() && !contact.contactAvatar().pixmap().isNull())
 			photoPath = QString("file://") + contact.contactAvatar().filePath();
 		else

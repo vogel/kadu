@@ -25,14 +25,14 @@ class BuddiesModelBase : public QAbstractItemModel, public AbstractBuddiesModel,
 {
 	Q_OBJECT
 
-	Contact buddyDefaultAccountData(const QModelIndex &index) const;
-	Contact buddyAccountData(const QModelIndex &index, int accountIndex) const;
+	Contact buddyDefaultContact(const QModelIndex &index) const;
+	Contact buddyContact(const QModelIndex &index, int accountIndex) const;
 
 	QVariant data(Buddy buddy, int role) const;
 	QVariant data(Contact contact, int role, bool useDisplay = true) const;
 
 private slots:
-	void buddyStatusChanged(Account account, Buddy buddy, Status oldStatus);
+	void buddyStatusChanged(Contact contact, Status oldStatus);
 
 protected:
 	virtual void accountRegistered(Account account);

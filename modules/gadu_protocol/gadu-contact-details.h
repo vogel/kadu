@@ -12,6 +12,7 @@
 
 #include "contacts/contact.h"
 #include "contacts/contact-details.h"
+#include "contacts/contact-shared.h"
 
 #include "gadu-protocol.h"
 

@@ -67,7 +67,7 @@ QVariant BuddyContactModel::data(const QModelIndex &index, int role) const
 		case Qt::DecorationRole:
 			return data.contactAccount().protocolHandler()->icon();
 
-		case AccountDataRole:
+		case ContactRole:
 			return QVariant::fromValue<Contact>(data);
 
 		default:

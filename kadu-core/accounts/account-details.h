@@ -12,24 +12,17 @@
 
 #include <QtCore/QObject>
 
-#include "accounts/account.h"
-#include "configuration/storable-object.h"
+#include "accounts/account-shared.h"
+#include "storage/details.h"
 
 #include "exports.h"
 
-class AccountShared;
-
-class KADUAPI AccountDetails : public QObject, public StorableObject
+class AccountDetails : public Details<AccountShared>
 {
-	Q_OBJECT
-
-	AccountShared *MyAccountData;
 
 public:
-	explicit AccountDetails(AccountShared *accountData);
+	explicit AccountDetails(AccountShared *mainData);
 	virtual ~AccountDetails();
-
-	AccountShared * accountData() { return MyAccountData; }
 
 };
 

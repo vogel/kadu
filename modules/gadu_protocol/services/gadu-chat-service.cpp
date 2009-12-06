@@ -9,9 +9,11 @@
 
 #include <QtCore/QHash>
 
-#include "configuration/configuration-file.h"
 #include "buddies/buddy-set.h"
 #include "buddies/ignored-helper.h"
+#include "chat/chat-manager.h"
+#include "configuration/configuration-file.h"
+#include "contacts/contact-set.h"
 #include "core/core.h"
 #include "gui/windows/message-dialog.h"
 #include "misc/misc.h"
@@ -39,8 +41,10 @@ bool GaduChatService::sendMessage(Chat chat, FormattedMessage &message)
 {
 	kdebugf();
 
+	printf("sending message to chat: %s\n", qPrintable(chat.uuid().toString()));
+
 	QString plain = message.toPlain();
-	BuddySet contacts = chat.buddies();
+	QList<Contact> contacts = chat.contacts().toContactList();
 
 	unsigned int uinsCount = 0;
 	unsigned int formatsSize = 0;
@@ -76,19 +80,18 @@ bool GaduChatService::sendMessage(Chat chat, FormattedMessage &message)
 		return false;
 	}
 
-	foreach (const Buddy &buddy, contacts)
-		if (!buddy.contact(Protocol->account()).isNull())
-			++uinsCount;
+	uinsCount = contacts.count();
 
 	int messageId = -1;
 	if (uinsCount > 1)
 	{
-		UinType* uins = new UinType[uinsCount];
+		UinType *uins = new UinType[uinsCount];
 		unsigned int i = 0;
 
-		foreach (const Buddy &buddy, contacts)
-			if (!buddy.contact(Protocol->account()).isNull())
-				uins[i++] = Protocol->uin(buddy);
+		foreach (const Contact &contact, contacts)
+		{
+			uins[i++] = Protocol->uin(contact);
+		}
 		if (formatsSize)
 			messageId = gg_send_message_confer_richtext(
 					Protocol->gaduSession(), GG_CLASS_CHAT, uinsCount, uins, (unsigned char *)data.data(),
@@ -99,16 +102,15 @@ bool GaduChatService::sendMessage(Chat chat, FormattedMessage &message)
 		delete[] uins;
 	}
 	else
-		foreach (const Buddy &buddy, contacts)
-			if (!buddy.contact(Protocol->account()).isNull())
+		foreach (const Contact &contact, contacts)
 			{
 				if (formatsSize)
 					messageId = gg_send_message_richtext(
-							Protocol->gaduSession(), GG_CLASS_CHAT, Protocol->uin(buddy), (unsigned char *)data.data(),
+							Protocol->gaduSession(), GG_CLASS_CHAT, Protocol->uin(contact), (unsigned char *)data.data(),
 							formats, formatsSize);
 				else
 					messageId = gg_send_message(
-							Protocol->gaduSession(), GG_CLASS_CHAT, Protocol->uin(buddy), (unsigned char *)data.data());
+							Protocol->gaduSession(), GG_CLASS_CHAT, Protocol->uin(contact), (unsigned char *)data.data());
 
 				break;
 			}
@@ -158,7 +160,7 @@ bool GaduChatService::ignoreSender(gg_event *e, Buddy sender)
 			);
 
 	if (ignore)
-		kdebugmf(KDEBUG_INFO, "Ignored anonymous. %d is ignored\n", Protocol->uin(sender));
+		kdebugmf(KDEBUG_INFO, "Ignored anonymous. %d is ignored\n", sender.id(Protocol->account()).toUInt());
 
 	return ignore;
 }
@@ -219,9 +221,9 @@ FormattedMessage GaduChatService::createFormattedMessage(gg_event *e, Buddy send
 // 		return;
 
 	if (ignoreRichText(e, sender))
-		return GaduFormater::createMessage(Protocol->account(), Protocol->uin(sender), content, 0, 0, false);
+		return GaduFormater::createMessage(Protocol->account(), sender.id(Protocol->account()).toUInt(), content, 0, 0, false);
 	else
-		return GaduFormater::createMessage(Protocol->account(), Protocol->uin(sender), content,
+		return GaduFormater::createMessage(Protocol->account(), sender.id(Protocol->account()).toUInt(), content,
 				(unsigned char *)e->event.msg.formats, e->event.msg.formats_length, !ignoreImages(e, sender));
 }
 
@@ -253,11 +255,16 @@ void GaduChatService::handleEventMsg(struct gg_event *e)
 		return;
 
 	kdebugmf(KDEBUG_INFO, "Got message from %d saying \"%s\"\n",
-			Protocol->uin(sender), qPrintable(message.toPlain()));
+			sender.id(Protocol->account()).toUInt(), qPrintable(message.toPlain()));
 
 	BuddySet chatContacts = conference;
 	chatContacts.remove(Core::instance()->myself());
-	Chat chat = Protocol->findChat(chatContacts);
+
+// 	QList<Contact> chatContactsList;
+// 	foreach (const Buddy &buddy, chatContacts)
+// 		  chatContactsList.append(buddy.prefferedContact());
+
+	Chat chat = ChatManager::instance()->findChat(chatContacts.toContactSet(Protocol->account()));
 
 	QDateTime time = QDateTime::fromTime_t(e->event.msg.time);
 

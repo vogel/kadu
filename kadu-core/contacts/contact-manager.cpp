@@ -29,139 +29,79 @@ ContactManager * ContactManager::instance()
 
 ContactManager::ContactManager()
 {
-	ConfigurationManager::instance()->registerStorableObject(this);
 }
 
 ContactManager::~ContactManager()
 {
-	ConfigurationManager::instance()->unregisterStorableObject(this);
 }
 
-StoragePoint * ContactManager::createStoragePoint()
+void ContactManager::idChanged(const QString &oldId)
 {
-	return new StoragePoint(xml_config_file, xml_config_file->getNode("Contacts"));
+	Contact contact(sender());
+	if (!contact.isNull())
+		emit contactIdChanged(contact, oldId);
 }
 
-void ContactManager::load()
+void ContactManager::itemAboutToBeRegistered(Contact item)
 {
-	if (!isValidStorage())
-		return;
-
-	if (!needsLoad())
-		return;
-
-	StorableObject::load();
-
-	QDomElement contactsNode = storage()->point();
-	if (contactsNode.isNull())
-		return;
-
-	QList<QDomElement> contactElements = storage()->storage()->getNodes(contactsNode, "Contact");
-	foreach (QDomElement contactElement, contactElements)
-	{
-		StoragePoint *storagePoint = new StoragePoint(storage()->storage(), contactElement);
-		Contact contact = Contact::loadFromStorage(storagePoint);
-
-		AllContacts.append(contact);
-
-		connect(contact, SIGNAL(protocolLoaded()), this, SLOT(contactProtocolLoaded()));
-		connect(contact, SIGNAL(protocolUnloaded()), this, SLOT(contactProtocolUnloaded()));
-
-		if (contact.contactAccount().protocolHandler())
-			addContact(contact);
-	}
+	emit contactAboutToBeAdded(item);
 }
 
-void ContactManager::store()
+void ContactManager::itemRegisterd(Contact item)
 {
-	if (!isValidStorage())
-		return;
-
-	StorableObject::ensureLoaded();
-
-	foreach (Contact contact, AllContacts)
-		if (!contact.isNull())
-			contact.store();
+	emit contactAdded(item);
+	connect(item.data(), SIGNAL(idChanged(const QString &)), this, SLOT(idChanged(const QString &)));
 }
 
-void ContactManager::addContact(Contact contact)
+void ContactManager::itemAboutToBeUnregisterd(Contact item)
 {
-	if (contact.isNull())
-		return;
-
-	StorableObject::ensureLoaded();
-
-	if (LoadedContacts.contains(contact))
-		return;
-
-	emit contactAboutToBeAdded(contact);
-	LoadedContacts.append(contact);
-	emit contactAdded(contact);
+	emit contactAboutToBeRemoved(item);
+	disconnect(item.data(), SIGNAL(idChanged(const QString &)), this, SLOT(idChanged(const QString &)));
 }
 
-void ContactManager::removeContact(Contact contact)
+void ContactManager::itemUnregistered(Contact item)
 {
-	kdebugf();
-
-	if (contact.isNull())
-		return;
-
-	ensureLoaded();
-
-	if (!LoadedContacts.contains(contact))
-		return;
-
-	emit contactAboutToBeRemoved(contact);
-	LoadedContacts.removeAll(contact);
-	emit contactRemoved(contact);
+	emit contactRemoved(item);
 }
 
-Contact ContactManager::byIndex(unsigned int index)
+void ContactManager::detailsLoaded(Contact item)
+{
+	if (!item.isNull())
+		registerItem(item);
+}
+
+void ContactManager::detailsUnloaded(Contact item)
+{
+	if (!item.isNull())
+		unregisterItem(item);
+}
+
+Contact ContactManager::byId(Account account, const QString &id)
 {
 	ensureLoaded();
 
-	if (index < 0 || index >= count())
+	if (id.isEmpty() || account.isNull())
 		return Contact::null;
 
-	return LoadedContacts.at(index);
-}
-
-Contact ContactManager::byUuid(const QString &uuid)
-{
-	ensureLoaded();
-
-	if (uuid.isEmpty())
-		return Contact::null;
-
-	foreach (Contact contact, AllContacts)
-		if (!contact.isNull())
-			if (uuid == contact.uuid().toString())
-				return contact;
+	foreach (const Contact &contact, contacts(account))
+		if (id == contact.id())
+			return contact;
 
 	return Contact::null;
 }
 
-Contact ContactManager::byContactShared(ContactShared *data)
+QList<Contact> ContactManager::contacts(Account account)
 {
 	ensureLoaded();
 
-	foreach (Contact contact, AllContacts)
-		if (data == contact.data())
-			return contact;
+	QList<Contact> contacts;
 
-	return data;
-}
+	if (account.isNull())
+		return contacts;
 
-void ContactManager::contactProtocolLoaded()
-{
-	Contact contact(sender());
-	if (!contact.isNull())
-		addContact(contact);
-}
+	foreach (const Contact &contact, allItems())
+		if (account == contact.contactAccount())
+			contacts.append(contact);
 
-void ContactManager::contactProtocolUnloaded()
-{
-	Contact contact(sender());
-	if (!contact.isNull())
-		removeContact(contact);
+	return contacts;
 }

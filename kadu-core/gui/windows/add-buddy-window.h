@@ -70,7 +70,7 @@ public:
 	AddBuddyWindow(QWidget *parent = 0);
 	virtual ~AddBuddyWindow();
 
-	void setContact(Buddy buddy);
+	void setBuddy(Buddy buddy);
 
 };
 

@@ -9,8 +9,7 @@
 
 #include "shared.h"
 
-Shared::Shared(const QUuid uuid, const QString &tagName, StorableObject *parent) :
-		UuidStorableObject(tagName, parent),
+Shared::Shared(QUuid uuid) :
 		Uuid(uuid.isNull() ? QUuid::createUuid() : uuid)
 {
 }
@@ -33,7 +32,11 @@ void Shared::store()
 	if (!isValidStorage())
 		return;
 
-	storeValue("uuid", Uuid.toString(), true);
+	storeAttribute("uuid", Uuid.toString());
+}
+
+void Shared::aboutToBeRemoved()
+{
 }
 
 void Shared::blockUpdatedSignal()

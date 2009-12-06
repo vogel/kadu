@@ -93,5 +93,5 @@ void GaduAccountDetails::import_0_6_5_LastStatus()
 
 UinType GaduAccountDetails::uin()
 {
-	return accountData()->id().toULong();
+	return mainData()->id().toULong();
 }

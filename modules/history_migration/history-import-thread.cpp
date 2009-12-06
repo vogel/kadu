@@ -9,9 +9,12 @@
 
 #include <QtCore/QFile>
 
-#include "chat/chat.h"
-#include "chat/message/message.h"
 #include "buddies/buddy-set.h"
+#include "chat/chat.h"
+#include "chat/chat-manager.h"
+#include "chat/message/message.h"
+#include "contacts/contact-set.h"
+#include "contacts/contact-shared.h"
 #include "core/core.h"
 #include "misc/misc.h"
 #include "modules/history/history.h"
@@ -97,16 +100,13 @@ void HistoryImportThread::importEntry(Chat chat, const HistoryEntry &entry)
 	ImportedEntries++;
 }
 
-Chat  HistoryImportThread::chatFromUinsList(QStringList uinsList)
+Chat HistoryImportThread::chatFromUinsList(QStringList uinsList)
 {
-	BuddySet buddies;
+	ContactSet contacts;
 	foreach (const QString &uin, uinsList)
-	{
-		Buddy buddy = GaduAccount.getBuddyById(uin);
-		buddies.insert(buddy);
-	}
+		contacts.insert(GaduAccount.getBuddyById(uin).prefferedContact());
 
-	return GaduAccount.protocolHandler()->findChat(buddies);
+	return ChatManager::instance()->findChat(contacts);
 }
 
 QList<HistoryEntry> HistoryImportThread::historyEntries(QStringList uins, int mask)

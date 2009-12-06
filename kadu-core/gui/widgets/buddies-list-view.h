@@ -16,6 +16,7 @@
 
 #include "chat/chat.h"
 #include "buddies/buddy.h"
+#include "contacts/contact.h"
 
 class QContextMenuEvent;
 class QModelIndex;
@@ -38,6 +39,7 @@ class BuddiesListView : public QTreeView
 	BuddiesModelProxy *ProxyModel;
 
 	Buddy buddyAt(const QModelIndex &index) const;
+	Contact contactAt(const QModelIndex &index) const;
 	void triggerActivate(const QModelIndex &index);
 
 	Chat  chatForIndex(const QModelIndex &index) const;
@@ -112,3 +114,4 @@ signals:
 };
 
 #endif // BUDDIES_LIST_VIEW_H
+

@@ -13,18 +13,22 @@
 #include <QtCore/QObject>
 #include <QtCore/QSharedData>
 #include <QtCore/QUuid>
+#include <QtNetwork/QHostAddress>
 
 #include "protocols/protocols-aware-object.h"
-#include "shared/shared.h"
 #include "status/base-status-container.h"
+#include "storage/details-holder.h"
+#include "storage/shared.h"
 
 class AccountDetails;
+class AccountManager;
 class Buddy;
+class Contact;
 class Protocol;
 class ProtocolFactory;
 class StatusType;
 
-class KADUAPI AccountShared : public BaseStatusContainer, public Shared, ProtocolsAwareObject
+class KADUAPI AccountShared : public BaseStatusContainer, public Shared, public DetailsHolder<AccountShared, AccountDetails, AccountManager>, ProtocolsAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(AccountShared)
@@ -32,7 +36,6 @@ class KADUAPI AccountShared : public BaseStatusContainer, public Shared, Protoco
 private:
 	QString ProtocolName;
 	Protocol *ProtocolHandler;
-	AccountDetails *Details;
 
 	QString Name;
 	QString Id;
@@ -51,25 +54,31 @@ private:
 	QString ProxyPassword;
 
 protected:
+	virtual void load();
 	void emitUpdated();
 
+	virtual void detailsAdded();
+	virtual void detailsAboutToBeRemoved();
 	virtual void protocolUnregistered(ProtocolFactory *protocolHandler);
 
-public:
-	static AccountShared * loadFromStorage(StoragePoint *storagePoint);
-
-	// TODO: 0.6.6 look at buddy.cpp:197, need to be hidden again
+public: //TODO 0.6.6: it is needed in Buddy::dummy()
 	virtual void protocolRegistered(ProtocolFactory *protocolHandler);
+
+	static AccountShared * loadFromStorage(StoragePoint *storagePoint);
 
 	explicit AccountShared(QUuid uuid = QUuid());
 	virtual ~AccountShared();
+	
+	virtual StorableObject * storageParent();
+	virtual QString storageNodeName();
 
-	virtual void load();
 	virtual void store();
+	virtual void aboutToBeRemoved();
 
-	KaduShared_Property(QString, protocolName, ProtocolName)
+	void setProtocolName(QString protocolName);
+
+	KaduShared_PropertyRead(QString, protocolName, ProtocolName)
 	KaduShared_Property(Protocol *, protocolHandler, ProtocolHandler)
-	KaduShared_Property(AccountDetails *, details, Details)
 	KaduShared_Property(QString, name, Name)
 	KaduShared_Property(QString, id, Id)
 	KaduShared_Property(bool, rememberPassword, RememberPassword)
@@ -102,7 +111,7 @@ public:
 	virtual void setPrivateStatus(bool isPrivate);
 
 signals:
-	void buddyStatusChanged(Account account, Buddy buddy, Status oldStatus);
+	void buddyStatusChanged(Contact contact, Status oldStatus);
 	void protocolLoaded();
 	void protocolUnloaded();
 

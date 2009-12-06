@@ -179,7 +179,7 @@ void TlenEditAccountWidget::removeAccount()
 	switch (messageBox->exec())
 	{
 		case QMessageBox::AcceptRole:
-			AccountManager::instance()->unregisterAccount(account());
+			AccountManager::instance()->removeItem(account());
 			deleteLater();
 			break;
 

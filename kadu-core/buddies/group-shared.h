@@ -16,7 +16,7 @@
 
 #include "status/status.h"
 
-#include "shared/shared.h"
+#include "storage/shared.h"
 
 class KADUAPI GroupShared : public QObject, public Shared
 {
@@ -36,6 +36,7 @@ class KADUAPI GroupShared : public QObject, public Shared
 	void importConfiguration(const QString &name);
 
 protected:
+	virtual void load();
 	virtual void emitUpdated();
 
 public:
@@ -44,7 +45,9 @@ public:
 	explicit GroupShared(QUuid uuid = QUuid());
 	virtual ~GroupShared();
 
-	virtual void load();
+	virtual StorableObject * storageParent();
+	virtual QString storageNodeName();
+
 	virtual void store();
 
 	KaduShared_Property(QString, name, Name)

@@ -294,7 +294,7 @@ void ChatStylesManager::preparePreview(Preview *preview)
 	Chat chat = Chat::create();
 	chat.setChatAccount(example.prefferedAccount());
 	ChatDetailsSimple *details = new ChatDetailsSimple(chat);
-	details->setContact(example.contact(example.prefferedAccount()));
+	details->setContact(example.prefferedContact());
 	chat.setDetails(details);
 
 	connect(preview, SIGNAL(destroyed(QObject *)), chat, SLOT(deleteLater()));

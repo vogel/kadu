@@ -23,6 +23,8 @@
 #include "buddies/filter/group-buddy-filter.h"
 #include "chat/chat-manager.h"
 #include "configuration/configuration-file.h"
+#include "contacts/contact.h"
+#include "contacts/contact-set.h"
 #include "core/core.h"
 #include "gui/hot-key.h"
 #include "gui/actions/action.h"
@@ -192,7 +194,7 @@ void KaduWindow::createHelpMenu()
 
 void KaduWindow::openChatWindow(Chat chat)
 {
-	if (!chat.buddies().contains(Core::instance()->myself()))
+	if (!chat.contacts().toBuddySet().contains(Core::instance()->myself()))
 	{
 		ChatWidgetManager::instance()->sendMessage(chat);
 		return;
@@ -225,10 +227,10 @@ void KaduWindow::createRecentChatsMenu()
 		QStringList displays;
 
 		int i = 0;
-		foreach (Buddy buddy, chat.buddies())
+		foreach (const Contact &contact, chat.contacts())
 		{
 			i++;
-			displays.append(buddy.display());
+			displays.append(contact.ownerBuddy().display());
 
 			if (5 == i)
 			{

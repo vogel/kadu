@@ -117,7 +117,7 @@ void FileTransferWidget::createGui()
 	buttons->setLayout(buttons_layout);
  	layout->addWidget(buttons, 2, 2, Qt::AlignRight);
 
-	Buddy buddy = CurrentTransfer->buddy();
+	Buddy buddy = CurrentTransfer->contact().ownerBuddy();
 
 	QString fileName = QFileInfo(CurrentTransfer->localFileName()).fileName();
 

@@ -48,13 +48,11 @@ void BuddyOptionsConfigurationWidget::createGui()
 	layout->addWidget(OfflineToCheckBox, row++, 2, 1, 2);        
 
 	NotifyCheckBox = new QCheckBox(tr("Notify when contact's status changes"), this);
-	ContactNotifyData *cnd = MyBuddy.moduleData<ContactNotifyData>();
+	ContactNotifyData *cnd = MyBuddy.moduleData<ContactNotifyData>("notify");
 	if (cnd)
-	{
 		NotifyCheckBox->setChecked(cnd->notify());
-		delete cnd;
-	}
-	layout->addWidget(NotifyCheckBox, row++, 2, 1, 2);   
+
+	layout->addWidget(NotifyCheckBox, row++, 2, 1, 2);
 
 	layout->setRowStretch(row, 100);
 }
@@ -64,11 +62,10 @@ void BuddyOptionsConfigurationWidget::saveConfiguration()
 
 	MyBuddy.setBlocked(BlockCheckBox->isChecked());
 	MyBuddy.setOfflineTo(OfflineToCheckBox->isChecked());
-	ContactNotifyData *cnd = MyBuddy.moduleData<ContactNotifyData>();
+	ContactNotifyData *cnd = MyBuddy.moduleData<ContactNotifyData>("notify");
 	if (cnd)
 	{
 		cnd->setNotify(NotifyCheckBox->isChecked());
-		cnd->storeConfiguration();
-		delete cnd;
+		cnd->store();
 	}
 }

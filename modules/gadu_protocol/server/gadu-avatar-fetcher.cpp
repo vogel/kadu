@@ -132,7 +132,7 @@ void GaduAvatarFetcher::requestFinished(int id, bool error)
 	}
 
 	MyContact.contactAvatar().setLastUpdated(timestamp);
-	AvatarManager::instance()->addAvatar(MyContact.contactAvatar());
+	AvatarManager::instance()->addItem(MyContact.contactAvatar());
 
 	QUrl url = avatarUrl;
 

@@ -16,19 +16,18 @@
 
 #include "buddies/avatar.h"
 #include "buddies/buddy.h"
+#include "contacts/contact-details.h"
 #include "protocols/protocols-aware-object.h"
 #include "status/status.h"
+#include "storage/details-holder.h"
+#include "storage/shared.h"
 
-#include "shared/shared.h"
+class ContactManager;
 
-class ContactDetails;
-
-class KADUAPI ContactShared : public QObject, public Shared, ProtocolsAwareObject
+class KADUAPI ContactShared : public QObject, public Shared, public DetailsHolder<ContactShared, ContactDetails, ContactManager>, ProtocolsAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(ContactShared)
-
-	ContactDetails *Details;
 
 	Account ContactAccount;
 	Avatar ContactAvatar;
@@ -44,10 +43,15 @@ class KADUAPI ContactShared : public QObject, public Shared, ProtocolsAwareObjec
 	QString DnsName;
 
 protected:
+	virtual void load();
+
 	virtual void emitUpdated();
 
 	virtual void protocolRegistered(ProtocolFactory *protocolFactory);
 	virtual void protocolUnregistered(ProtocolFactory *protocolFactory);
+
+	virtual void detailsAdded();
+	virtual void detailsAboutToBeRemoved();
 
 public:
 	static ContactShared * loadFromStorage(StoragePoint *contactStoragePoint);
@@ -55,13 +59,12 @@ public:
 	explicit ContactShared(QUuid uuid = QUuid());
 	virtual ~ContactShared();
 
-	virtual void load();
+	virtual StorableObject * storageParent();
+	virtual QString storageNodeName();
+
 	virtual void store();
+	virtual void aboutToBeRemoved();
 
-	void loadDetails();
-	void unloadDetails();
-
-	KaduShared_Property(ContactDetails *, details, Details)
 	KaduShared_Property(Account, contactAccount, ContactAccount)
 	KaduShared_Property(Avatar, contactAvatar, ContactAvatar)
 	KaduShared_PropertyRead(Buddy, ownerBuddy, OwnerBuddy)
@@ -78,11 +81,7 @@ public:
 
 signals:
 	void updated();
-
-	void idChanged(const QString &id);
-
-	void protocolLoaded();
-	void protocolUnloaded();
+	void idChanged(const QString &oldId);
 
 };
 

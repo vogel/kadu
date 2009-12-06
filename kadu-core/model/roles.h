@@ -23,6 +23,6 @@ const int ChatRole = KaduRoles + 7;
 const int ChatTypeRole = KaduRoles + 8;
 const int DateRole = KaduRoles + 9;
 const int ActionRole = KaduRoles + 10;
-const int AccountDataRole = KaduRoles + 11;
+const int ContactRole = KaduRoles + 11;
 
 #endif // ROLES_H

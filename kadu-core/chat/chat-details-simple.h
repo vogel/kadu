@@ -20,15 +20,17 @@ class ChatDetailsSimple : public ChatDetails
 
 	Contact CurrentContact;
 
+protected:
+	virtual void load();
+
 public:
 	explicit ChatDetailsSimple(ChatShared *chatData);
 	virtual ~ChatDetailsSimple();
 
-	virtual void load();
 	virtual void store();
 
 	virtual ChatType * type() const;
-	virtual BuddySet buddies() const;
+	virtual ContactSet contacts() const;
 	virtual QString name() const;
 
 	void setContact(Contact contact);

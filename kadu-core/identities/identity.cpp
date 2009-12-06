@@ -14,21 +14,20 @@
 
 #include "identity.h"
 
-Identity Identity::null(true);
+Identity Identity::null;
+
+Identity Identity::create()
+{
+	return new IdentityShared();
+}
 
 Identity Identity::loadFromStorage(StoragePoint *accountStoragePoint)
 {
 	return IdentityShared::loadFromStorage(accountStoragePoint);
 }
 
-Identity::Identity(bool null) :
-		SharedBase<IdentityShared>(null)
-{
-}
-
 Identity::Identity()
 {
-	data()->setState(StorableObject::StateNew);
 }
 
 Identity::Identity(IdentityShared *data) :
@@ -37,8 +36,7 @@ Identity::Identity(IdentityShared *data) :
 	data->ref.ref();
 }
 
-Identity::Identity(QObject *data) :
-		SharedBase<IdentityShared>(true)
+Identity::Identity(QObject *data)
 {
 	IdentityShared *shared = dynamic_cast<IdentityShared *>(data);
 	if (shared)

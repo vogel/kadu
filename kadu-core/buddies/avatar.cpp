@@ -13,21 +13,20 @@
 
 #include "avatar.h"
 
-Avatar Avatar::null(true);
+Avatar Avatar::null;
+
+Avatar Avatar::create()
+{
+	return new AvatarShared();
+}
 
 Avatar Avatar::loadFromStorage(StoragePoint *contactStoragePoint)
 {
 	return Avatar(AvatarShared::loadFromStorage(contactStoragePoint));
 }
 
-Avatar::Avatar(bool null) :
-		SharedBase<AvatarShared>(null)
-{
-}
-
 Avatar::Avatar()
 {
-	data()->setState(StorableObject::StateNew);
 }
 
 Avatar::Avatar(AvatarShared *data) :

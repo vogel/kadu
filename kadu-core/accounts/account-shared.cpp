@@ -12,6 +12,7 @@
 #include "contacts/contact.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
+#include "protocols/protocols-manager.h"
 
 #include "account-shared.h"
 
@@ -25,12 +26,9 @@ AccountShared * AccountShared::loadFromStorage(StoragePoint *storagePoint)
 }
 
 AccountShared::AccountShared(QUuid uuid) :
-		Shared(uuid, "Account", AccountManager::instance()),
-		BaseStatusContainer(this),
-		ProtocolHandler(0), Details(0),
-		RememberPassword(false), HasPassword(false),
-		ConnectAtStart(true),
-		UseProxy(false), ProxyPort(0)
+		Shared(uuid), BaseStatusContainer(this),
+		ProtocolHandler(0), RememberPassword(false), HasPassword(false),
+		ConnectAtStart(true), UseProxy(false), ProxyPort(0)
 {
 }
 
@@ -43,6 +41,16 @@ AccountShared::~AccountShared()
 		delete ProtocolHandler;
 		ProtocolHandler = 0;
 	}
+}
+
+StorableObject * AccountShared::storageParent()
+{
+	return AccountManager::instance();
+}
+
+QString AccountShared::storageNodeName()
+{
+	return QLatin1String("Account");
 }
 
 void AccountShared::load()
@@ -104,6 +112,11 @@ void AccountShared::store()
 	storeValue("ProxyHost", ProxyHost.toString());
 }
 
+void AccountShared::aboutToBeRemoved()
+{
+	setDetails(0);
+}
+
 void AccountShared::emitUpdated()
 {
 	emit updated();
@@ -116,12 +129,15 @@ void AccountShared::protocolRegistered(ProtocolFactory *factory)
 	if (factory->name() != ProtocolName)
 		return;
 
+	if (!details())
+		setDetails(factory->createAccountDetails(this));
+
 	ProtocolHandler = factory->createProtocolHandler(this);
-	Details = factory->createAccountDetails(this);
+
 
 	connect(ProtocolHandler, SIGNAL(statusChanged(Account, Status)), this, SIGNAL(statusChanged()));
-	connect(ProtocolHandler, SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
-			this, SIGNAL(buddyStatusChanged(Account, Buddy, Status)));
+	connect(ProtocolHandler, SIGNAL(buddyStatusChanged(Contact, Status)),
+			this, SIGNAL(buddyStatusChanged(Contact, Status)));
 
 	emit protocolLoaded();
 }
@@ -138,15 +154,34 @@ void AccountShared::protocolUnregistered(ProtocolFactory* factory)
 
 	emit protocolUnloaded();
 
+	setDetails(0);
+}
+
+void AccountShared::detailsAdded()
+{
+	details()->ensureLoaded();
+
+	ProtocolFactory *factory = ProtocolsManager::instance()->byName(ProtocolName);
+	if (!factory)
+		return;
+	
+	protocolRegistered(factory);
+}
+
+void AccountShared::detailsAboutToBeRemoved()
+{
 	delete ProtocolHandler;
 	ProtocolHandler = 0;
 
-	if (Details)
-	{
-		Details->store();
-		delete Details;
-		Details = 0;
-	}
+	details()->store();
+}
+
+void AccountShared::setProtocolName(QString protocolName)
+{
+	ensureLoaded();
+	ProtocolName = protocolName ;
+	dataUpdated();
+	detailsAdded();
 }
 
 QString AccountShared::statusContainerName()

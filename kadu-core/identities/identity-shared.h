@@ -11,8 +11,8 @@
 #define IDENTITY_SHARED_H
 
 #include "accounts/account.h"
-#include "shared/shared.h"
 #include "status/base-status-container.h"
+#include "storage/shared.h"
 
 class KADUAPI IdentityShared : public BaseStatusContainer, public Shared
 {
@@ -21,14 +21,20 @@ class KADUAPI IdentityShared : public BaseStatusContainer, public Shared
 	QString Name;
 	QList<Account> Accounts;
 
+protected:
+	virtual void load();
+
 public:
 	static IdentityShared * loadFromStorage(StoragePoint *accountStoragePoint);
 
 	explicit IdentityShared(const QUuid &uuid = QUuid());
 	virtual ~IdentityShared();
 
-	virtual void load();
+	virtual StorableObject * storageParent();
+	virtual QString storageNodeName();
+
 	virtual void store();
+	virtual void aboutToBeRemoved();
 
 	void addAccount(Account account);
 	void removeAccount(Account account);

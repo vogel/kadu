@@ -13,6 +13,7 @@
 #include "accounts/account.h"
 #include "chat/chat-manager.h"
 #include "contacts/contact.h"
+#include "contacts/contact-set.h"
 #include "misc/misc.h"
 #include "notify/notify-event.h"
 #include "protocols/protocol.h"
@@ -91,12 +92,13 @@ void StatusChangedNotification::unregisterEvents()
 	StatusChangedToOfflineNotifyEvent = 0;
 }
 
-StatusChangedNotification::StatusChangedNotification(const QString &toStatus, BuddySet &contacts, Account account) :
-		ChatNotification(account.protocolHandler()->findChat(contacts), QString("StatusChanged") + toStatus,
-			account.protocolHandler()->statusPixmap(contacts.begin()->contact(account).currentStatus()))
+StatusChangedNotification::StatusChangedNotification(const QString &toStatus, const ContactSet &contacts) :
+		ChatNotification(ChatManager::instance()->findChat(contacts), QString("StatusChanged") + toStatus,
+			contacts.toContact().contactAccount().protocolHandler()->statusPixmap(contacts.toContact().currentStatus()))
 {
-	const Buddy &buddy = *contacts.begin();
-	Status status = buddy.contact(account).currentStatus();
+	// TODO 0.6.6: ABOVE Contact::null if count() != 1
+	Contact contact = contacts.toContact();
+	Status status = contact.currentStatus();
 	QString syntax;
 
 	if (!status.description().isNull())
@@ -106,7 +108,7 @@ StatusChangedNotification::StatusChangedNotification(const QString &toStatus, Bu
 
 	setTitle(tr("Status changed"));
 	setText(narg(syntax,
-		Qt::escape(buddy.display()),
+		Qt::escape(contact.ownerBuddy().display()),
 		qApp->translate("@default", Status::name(status, false).toAscii().data()),
 		Qt::escape(status.description())
 	));

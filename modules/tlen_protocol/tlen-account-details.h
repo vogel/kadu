@@ -20,11 +20,13 @@ class TlenAccountDetails : public AccountDetails
 {
 	TlenOpenChatWithRunner *OpenChatRunner;
 
+protected:
+	virtual void load();
+
 public:
 	explicit TlenAccountDetails(AccountShared *data);
 	virtual ~TlenAccountDetails();
 
-	virtual void load();
 	virtual void store();
 
 };

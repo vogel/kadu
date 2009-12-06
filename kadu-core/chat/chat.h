@@ -11,20 +11,19 @@
 #define CHAT_H
 
 #include "chat/chat-shared.h"
-#include "shared/shared-base.h"
+#include "storage/shared-base.h"
 #include "exports.h"
 
 class QPixmap;
 
 class Account;
-class BuddySet;
+class ContactSet;
 class ChatDetails;
 class ChatType;
 class StoragePoint;
 
 class KADUAPI Chat : public SharedBase<ChatShared>
 {
-	Chat(bool null);
 
 public:
 	static Chat create();
@@ -41,7 +40,7 @@ public:
 
 	void refreshTitle();
 
-	BuddySet buddies() const;
+	ContactSet contacts() const;
 	QString name() const;
 
 	KaduSharedBase_Property(ChatDetails *, details, Details)
@@ -52,6 +51,6 @@ public:
 
 };
 
-Q_DECLARE_METATYPE(Chat )
+Q_DECLARE_METATYPE(Chat)
 
 #endif // CHAT_H

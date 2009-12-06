@@ -12,6 +12,7 @@
 
 #include "buddies/buddy-manager.h"
 #include "contacts/contact.h"
+#include "contacts/contact-manager.h"
 #include "buddies/model/buddies-model.h"
 #include "buddies/model/buddies-model-proxy.h"
 #include "buddies/filter/account-buddy-filter.h"
@@ -123,12 +124,16 @@ void AccountBuddyListWidget::buddiesListImported(bool ok, BuddyList buddies)
 
 	foreach (Buddy onebuddy, buddies)
 	{
-		Contact contact = onebuddy.contact(CurrentAccount);
-		Buddy buddy = BuddyManager::instance()->byId(CurrentAccount, contact.id());
-		foreach (Buddy beforeImportBuddy, beforeImportList)
-			if (!beforeImportBuddy.contact(CurrentAccount).isNull()
-				&& beforeImportBuddy.contact(CurrentAccount).id() == contact.id())
+		QList<Contact> contactslist = onebuddy.contacts(CurrentAccount);
+		Contact contact = contactslist.isEmpty() ? Contact::null : contactslist[0];
+		Buddy buddy = ContactManager::instance()->byId(CurrentAccount, contact.id()).ownerBuddy();
+		foreach (const Buddy &beforeImportBuddy, beforeImportList)
+		{
+			contactslist = beforeImportBuddy.contacts(CurrentAccount);
+			contact = contactslist.isEmpty() ? Contact::null : contactslist[0];
+			if (!contact.isNull() && contact.id() == contact.id())
 					beforeImportList.removeOne(beforeImportBuddy);
+		}
 
 		buddy.setFirstName(onebuddy.firstName());
 		buddy.setLastName(onebuddy.lastName());
@@ -138,12 +143,9 @@ void AccountBuddyListWidget::buddiesListImported(bool ok, BuddyList buddies)
 		buddy.setEmail(onebuddy.email());
 		buddy.setDisplay(onebuddy.display());
 		buddy.setHomePhone(onebuddy.homePhone());
+		buddy.setAnonymous(false);
 
-		if (buddy.isAnonymous())
-		{
-			buddy.setAnonymous(false);
-			BuddyManager::instance()->addBuddy(buddy);
-		}
+		BuddyManager::instance()->addItem(buddy);
 	}
 
 	if (!beforeImportList.isEmpty())
@@ -153,7 +155,7 @@ void AccountBuddyListWidget::buddiesListImported(bool ok, BuddyList buddies)
 			contactsList.append(c.display());
 		if (MessageDialog::ask(tr("Following contacts from your list were not found on server: %0.\nDo you want to remove them from contacts list?").arg(contactsList.join(", "))))
 			foreach (Buddy c, beforeImportList)
-				BuddyManager::instance()->removeBuddy(c);
+				BuddyManager::instance()->removeItem(c);
 	}
 
 	MessageDialog::msg(tr("Your contact list has been successfully imported from server"), false, "Infromation", this);

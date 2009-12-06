@@ -57,8 +57,7 @@ ChatWidgetManager * ChatWidgetManager::instance()
 	return Instance;
 }
 
-ChatWidgetManager::ChatWidgetManager() :
-	StorableStringList("ChatWindows", "Chat", 0)
+ChatWidgetManager::ChatWidgetManager()
 {
 	kdebugf();
 
@@ -85,6 +84,21 @@ ChatWidgetManager::ChatWidgetManager() :
 	configurationUpdated();
 
 	kdebugf2();
+}
+
+StorableObject * ChatWidgetManager::storageParent()
+{
+	return 0;
+}
+
+QString ChatWidgetManager::storageNodeName()
+{
+	return QLatin1String("ChatWindows");
+}
+
+QString ChatWidgetManager::storageItemNodeName()
+{
+	return QLatin1String("Chat");
 }
 
 void ChatWidgetManager::closeAllWindows()

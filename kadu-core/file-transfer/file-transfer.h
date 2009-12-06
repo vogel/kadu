@@ -12,8 +12,8 @@
 
 #include <QtCore/QObject>
 
-#include "configuration/storable-object.h"
-#include "buddies/buddy.h"
+#include "contacts/contact.h"
+#include "storage/storable-object.h"
 
 #include "exports.h"
 
@@ -56,7 +56,7 @@ private:
 	QUuid Uuid;
 
 	Account CurrentAccount;
-	Buddy Peer;
+	Contact Peer;
 	QString LocalFileName;
 	QString RemoteFileName;
 
@@ -68,7 +68,7 @@ private:
 	FileTransferError TransferError;
 
 protected:
-	virtual StoragePoint * createStoragePoint();
+	virtual void load();
 
 	void changeFileTransferStatus(FileTransferStatus transferStatus);
 	void changeFileTransferError(FileTransferError transferError);
@@ -83,14 +83,16 @@ public:
 	static FileTransfer * loadFromStorage(StoragePoint *fileTransferStoragePoint);
 
 	FileTransfer(Account account);
-	FileTransfer(Account account, Buddy peer, FileTransferType transferType);
+	FileTransfer(Account account, Contact peer, FileTransferType transferType);
 	virtual ~FileTransfer();
 
-	virtual void load();
+	virtual StorableObject * storageParent();
+	virtual QString storageNodeName();
+
 	virtual void store();
 
 	Account account() { return CurrentAccount; }
-	Buddy buddy() { return Peer; }
+	Contact contact() { return Peer; }
 
 	FileTransferType transferType() { return TransferType; }
 	FileTransferStatus transferStatus() { return TransferStatus; }

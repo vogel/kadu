@@ -10,9 +10,11 @@
 #include "buddies/buddy-set.h"
 #include "buddies/ignored-helper.h"
 #include "chat/chat.h"
+#include "chat/chat-manager.h"
 #include "chat/message/message.h"
 #include "core/core.h"
 #include "configuration/configuration-file.h"
+#include "contacts/contact-set.h"
 #include "gui/windows/message-dialog.h"
 #include "misc/misc.h"
 
@@ -43,12 +45,16 @@ JabberChatService::JabberChatService(JabberProtocol *protocol)
 bool JabberChatService::sendMessage(Chat chat, FormattedMessage &formattedMessage)
 {
 	kdebugf();
-	BuddySet contacts = chat.buddies();
+	ContactSet contacts = chat.contacts();
         // TODO send to more users
-	Buddy buddy = (*contacts.begin());
+	if (contacts.count() > 1 || contacts.count() == 0)
+		return false;
+
 	//QString cleanmsg = toPlainText(mesg);
 	QString plain = formattedMessage.toPlain();
-	const XMPP::Jid jus = buddy.id(Protocol->account());
+	QString jid = contacts.toContact().id();
+	kdebugmf(KDEBUG_INFO, "jabber: chat msg to %s body %s\n", qPrintable(jid), qPrintable(plain));
+	const XMPP::Jid jus = jid;
 	XMPP::Message msg = XMPP::Message(jus);
 
 	bool stop = false;
@@ -101,14 +107,15 @@ void JabberChatService::clientMessageReceived(const XMPP::Message &msg)
 
 	// TODO - zaimplementowac to samo w ContactList
 	Buddy buddy = Protocol->account().getBuddyById(msg.from().bare());
-	BuddySet contacts = BuddySet(buddy);
+	ContactSet contacts(buddy.prefferedContact());
+
 	time_t msgtime = msg.timeStamp().toTime_t();
 	FormattedMessage formattedMessage(msg.body());
 
 	QString plain = formattedMessage.toPlain();
 
 	bool ignore = false;
-	Chat chat = Protocol->findChat(contacts);
+	Chat chat = ChatManager::instance()->findChat(contacts, Protocol->account());
 	emit receivedMessageFilter(chat, buddy, plain, msgtime, ignore);
 	if (ignore)
 		return;

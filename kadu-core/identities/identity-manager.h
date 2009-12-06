@@ -14,7 +14,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QUuid>
 
-#include "configuration/storable-object.h"
+#include "storage/simple-manager.h"
 
 #include "exports.h"
 
@@ -22,7 +22,7 @@ class Account;
 class Identity;
 class Status;
 
-class KADUAPI IdentityManager : public QObject, public StorableObject
+class KADUAPI IdentityManager : public QObject, public SimpleManager<Identity>
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(IdentityManager)
@@ -32,33 +32,29 @@ class KADUAPI IdentityManager : public QObject, public StorableObject
 	IdentityManager();
 	virtual ~IdentityManager();
 
-	QList<Identity *> Identities;
-
 protected:
-	virtual StoragePoint * createStoragePoint();
+	virtual void itemAboutToBeAdded(Identity item);
+	virtual void itemAdded(Identity item);
+	virtual void itemAboutToBeRemoved(Identity item);
+	virtual void itemRemoved(Identity item);
 
 public:
 	static IdentityManager * instance();
 
-	virtual void load();
-	virtual void store();
+	virtual QString storageNodeName() { return QLatin1String("Identities"); }
+	virtual QString storageNodeItemName() { return QLatin1String("Identity"); }
 
-	Identity * byUuid(const QString &uuid);
-	Identity * byName(const QString &name, bool create = true);
-	Identity * identityForAcccount(Account account);
-
-	const QList<Identity *> identities() { return Identities; }
-
-	void registerIdentity(Identity *identity);
-	void unregisterIdentity(Identity *identity);
-	void deleteIdentity(Identity *identity);
+	Identity byName(const QString &name, bool create = true);
+	Identity identityForAcccount(Account account);
 
 signals:
-	void identityAboutToBeRegistered(Identity *);
-	void identityRegistered(Identity *);
-	void identityAboutToBeUnregistered(Identity *);
-	void identityUnregistered(Identity *);
+	void identityAboutToBeRegistered(Identity);
+	void identityRegistered(Identity);
+	void identityAboutToBeUnregistered(Identity);
+	void identityUnregistered(Identity);
 
 };
+
+#include "identities/identity.h" // for MOC
 
 #endif // IDENTITY_MANAGER_H

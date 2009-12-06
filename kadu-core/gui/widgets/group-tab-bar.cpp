@@ -50,7 +50,7 @@ GroupTabBar::GroupTabBar(QWidget *parent)
 	setIconSize(QSize(16, 16));
 
 	GroupManager::instance()->ensureLoaded();
-	QList<Group> groups = GroupManager::instance()->groups();
+	QList<Group> groups = GroupManager::instance()->items();
 	qStableSort(groups.begin(), groups.end(), compareGroups);
 	foreach (const Group group, groups)
 		addGroup(group);
@@ -271,7 +271,7 @@ void GroupTabBar::renameGroup()
 void GroupTabBar::deleteGroup()
 {
 	if (currentGroup && MessageDialog::ask(tr("Selected group:\n%0 will be deleted. Are you sure?").arg(currentGroup.name()), "Warning", Core::instance()->kaduWindow()))
-		GroupManager::instance()->removeGroup(currentGroup);
+		GroupManager::instance()->removeItem(currentGroup);
 }
 
 void GroupTabBar::createNewGroup()

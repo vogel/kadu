@@ -26,7 +26,7 @@ void GaduSearchService::searchFirst(BuddySearchCriteria criteria)
 {
 	Query = criteria;
 	From = Query.SearchBuddy.hasContact(Protocol->account())
-			? Query.SearchBuddy.contact(Protocol->account()).id().toUInt()
+			? Query.SearchBuddy.id(Protocol->account()).toUInt()
 			: 0;
 	searchNext();
 }
@@ -37,7 +37,7 @@ void GaduSearchService::searchNext()
 	gg_pubdir50_t req = gg_pubdir50_new(GG_PUBDIR50_SEARCH);
 
 	if (Query.SearchBuddy.hasContact(Protocol->account()))
-		gg_pubdir50_add(req, GG_PUBDIR50_UIN, (const char *)unicode2cp(Query.SearchBuddy.contact(Protocol->account()).id()).data());
+		gg_pubdir50_add(req, GG_PUBDIR50_UIN, (const char *)unicode2cp(Query.SearchBuddy.id(Protocol->account())).data());
 	if (!Query.SearchBuddy.firstName().isEmpty())
 		gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, (const char *)unicode2cp(Query.SearchBuddy.firstName()).data());
 	if (!Query.SearchBuddy.lastName().isEmpty())

@@ -34,6 +34,7 @@ class AvatarService;
 class ChatImageService;
 class ChatService;
 class ContactListService;
+class ContactSet;
 class FileTransferService;
 class Message;
 class PersonalInfoService;
@@ -117,7 +118,7 @@ signals:
 	void disconnected(Account account);
 
 	void statusChanged(Account account, Status newStatus);
-	void buddyStatusChanged(Account account, Buddy buddy, Status oldStatus);
+	void buddyStatusChanged(Contact contact, Status oldStatus);
 
 // TODO: REVIEW
 	void connectionError(Account account, const QString &server, const QString &reason);

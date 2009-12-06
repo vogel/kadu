@@ -37,7 +37,7 @@ QVariant JabberContactDataManager::readEntry(const QString &section, const QStri
 		return ConfigurationContactDataManager::readEntry(section, name);
 
 	if (name == "Jid")
-		return Data->contactData()->id();
+		return Data->mainData()->id();
 
 	// other data
 

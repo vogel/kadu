@@ -16,53 +16,47 @@
 
 #include "accounts/account.h"
 #include "protocols/protocol-factory.h"
+#include "storage/manager.h"
 #include "exports.h"
 
 class AccountShared;
 class Status;
 class XmlConfigFile;
 
-class KADUAPI AccountManager : public QObject, public StorableObject
+class KADUAPI AccountManager : public QObject, public Manager<Account>
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(AccountManager)
 
 	static AccountManager *Instance;
 
-	QList<Account> AllAccounts;
-	QList<Account> RegisteredAccounts;
-
 	AccountManager();
 	virtual ~AccountManager();
 
 private slots:
 	void connectionError(Account account, const QString &server, const QString &message);
-	void accountProtocolLoaded();
-	void accountProtocolUnloaded();
 
 protected:
-	virtual StoragePoint * createStoragePoint();
+	virtual void itemAboutToBeAdded(Account item);
+
+	virtual void itemAboutToBeRegistered(Account item);
+	virtual void itemRegisterd(Account item);
+	virtual void itemAboutToBeUnregisterd(Account item);
+	virtual void itemUnregistered(Account item);
 
 public:
 	static AccountManager * instance();
 
-	virtual void load();
-	virtual void store();
+	virtual QString storageNodeName() { return QLatin1String("Accounts"); }
+	virtual QString storageNodeItemName() { return QLatin1String("Account"); }
+
+	// TODO: hide it someway...
+	void detailsLoaded(Account account);
+	void detailsUnloaded(Account account);
 
 	Account defaultAccount();
 
-	Account byIndex(unsigned int index);
-	Account byUuid(const QUuid &uuid);
-
-	unsigned int indexOf(Account account) { ensureLoaded(); return RegisteredAccounts.indexOf(account); }
-	unsigned int count() { ensureLoaded(); return RegisteredAccounts.count(); }
-
-	const QList<Account> accounts() { return RegisteredAccounts; }
 	const QList<Account> byProtocolName(const QString &name);
-
-	void registerAccount(Account account);
-	void unregisterAccount(Account account);
-	void deleteAccount(Account account);
 
 	Status status();
 

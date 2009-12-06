@@ -9,10 +9,10 @@
 
 #include "accounts/account.h"
 #include "configuration/configuration-file.h"
-#include "configuration/storage-point.h"
 #include "file-transfer/file-transfer.h"
 #include "protocols/protocol.h"
 #include "protocols/services/file-transfer-service.h"
+#include "storage/storage-point.h"
 
 #include "modules.h"
 
@@ -29,8 +29,9 @@ FileTransferManager * FileTransferManager::instance()
 }
 
 FileTransferManager::FileTransferManager() :
-		StorableObject(StateLoaded)
+		StorableObject()
 {
+	setState(StateLoaded);
 	triggerAllAccountsRegistered();
 }
 
@@ -39,9 +40,14 @@ FileTransferManager::~FileTransferManager()
 	triggerAllAccountsUnregistered();
 }
 
-StoragePoint * FileTransferManager::createStoragePoint()
+StorableObject * FileTransferManager::storageParent()
 {
-	return new StoragePoint(xml_config_file, xml_config_file->getNode("FileTransfersNew"));
+	return 0;
+}
+
+QString FileTransferManager::storageNodeName()
+{
+	return QLatin1String("FileTransfersNew");
 }
 
 void FileTransferManager::load(Account account)

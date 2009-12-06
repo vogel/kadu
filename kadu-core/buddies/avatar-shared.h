@@ -15,7 +15,7 @@
 
 #include "contacts/contact.h"
 
-#include "shared/shared.h"
+#include "storage/shared.h"
 
 class KADUAPI AvatarShared : public Shared
 {
@@ -27,14 +27,20 @@ class KADUAPI AvatarShared : public Shared
 
 	QString AvatarsDir;
 
+protected:
+	virtual void load();
+
 public:
 	static AvatarShared * loadFromStorage(StoragePoint *avatarStoragePoint);
 
 	explicit AvatarShared(QUuid uuid = QUuid());
 	virtual ~AvatarShared();
 
-	virtual void load();
+	virtual StorableObject * storageParent();
+	virtual QString storageNodeName();
+
 	virtual void store();
+	virtual void aboutToBeRemoved();
 
 	QString filePath();
 

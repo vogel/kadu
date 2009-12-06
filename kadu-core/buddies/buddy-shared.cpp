@@ -11,13 +11,14 @@
 #include <QtXml/QDomNamedNodeMap>
 
 #include "accounts/account.h"
-#include "configuration/storage-point.h"
 #include "configuration/xml-configuration-file.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/group.h"
 #include "buddies/group-manager.h"
 #include "contacts/contact.h"
+#include "contacts/contact-shared.h"
 #include "contacts/contact-manager.h"
+#include "storage/storage-point.h"
 
 #include "buddy-shared.h"
 
@@ -31,14 +32,23 @@ BuddyShared * BuddyShared::loadFromStorage(StoragePoint *contactStoragePoint)
 }
 
 BuddyShared::BuddyShared(QUuid uuid) :
-		QObject(BuddyManager::instance()),
-		Shared(uuid, "Buddy", BuddyManager::instance()),
-		Anonymous(false), Ignored(false), Blocked(false), OfflineTo(false)
+		QObject(BuddyManager::instance()), Shared(uuid),
+		Anonymous(true), Ignored(false), Blocked(false), OfflineTo(false)
 {
 }
 
 BuddyShared::~BuddyShared()
 {
+}
+
+StorableObject * BuddyShared::storageParent()
+{
+	return BuddyManager::instance();
+}
+
+QString BuddyShared::storageNodeName()
+{
+	return QLatin1String("Buddy");
 }
 
 #define ImportProperty(name, old_name) \
@@ -61,6 +71,7 @@ void BuddyShared::importConfiguration(XmlConfigFile *configurationStorage, QDomE
 	QStringList groups = CustomData["groups"].split(',', QString::SkipEmptyParts);
 	foreach (const QString &group, groups)
 		Groups << GroupManager::instance()->byName(group);
+
 	CustomData.remove("groups");
 
 	ImportProperty(Display, altnick)
@@ -89,7 +100,7 @@ void BuddyShared::load()
 		parent.removeAttribute("type");
 	}
 	else
-		Anonymous = loadValue<bool>("Anonymous");
+		Anonymous = loadValue<bool>("Anonymous", true);
 
 	QDomElement customDataValues = configurationStorage->getNode(parent, "CustomDataValues", XmlConfigFile::ModeFind);
 	QDomNodeList customDataValuesList = customDataValues.elementsByTagName("CustomDataValue");
@@ -177,68 +188,96 @@ void BuddyShared::store()
 		configurationStorage->removeNode(parent, "ContactGroups");
 
 	configurationStorage->createTextNode(parent, "Ignored", QVariant(Ignored).toString());
+}
 
-	storeModuleData();
+void BuddyShared::aboutToBeRemoved()
+{
+	foreach (Contact contact, Contacts)
+		ContactManager::instance()->removeItem(contact);
+
+	Contacts = QList<Contact>();
+	Groups = QList<Group>();
 }
 
 void BuddyShared::addContact(Contact contact)
 {
-	if (contact.isNull())
+	if (contact.isNull() || Contacts.contains(contact))
 		return;
 
-	emit contactAboutToBeAdded(contact.contactAccount());
-	Contacts.insert(contact.contactAccount(), contact);
-	ContactManager::instance()->addContact(contact);
-	emit contactAdded(contact.contactAccount());
+	emit contactAboutToBeAdded(contact);
+	Contacts.append(contact);
+	emit contactAdded(contact);
 }
 
 void BuddyShared::removeContact(Contact contact)
 {
-	if (Contacts[contact.contactAccount()] == contact)
-		removeContact(contact.contactAccount());
+	if (contact.isNull() || !Contacts.contains(contact))
+		return;
+
+	emit contactAboutToBeRemoved(contact);
+	Contacts.removeAll(contact);
+	emit contactRemoved(contact);
 }
 
-void BuddyShared::removeContact(Account account)
+QList<Contact> BuddyShared::contacts(Account account)
 {
-	emit contactAboutToBeRemoved(account);
-	ContactManager::instance()->removeContact(Contacts[account]);
-	Contacts.remove(account);
-	emit contactRemoved(account);
-}
+	QList<Contact> contacts;
 
-Contact BuddyShared::contact(Account account)
-{
-	if (!Contacts.contains(account))
-		return Contact::null;
+	foreach (const Contact &contact, Contacts)
+		if (contact.contactAccount() == account)
+			contacts.append(contact);
 
-	return Contacts[account];
+	// TODO 0.6.6 : if count() > 1 ... sort out! (0 - preffered)
+	return contacts;
 }
 
 QList<Contact> BuddyShared::contacts()
 {
-	return Contacts.values();
+	return Contacts;
 }
 
 QString BuddyShared::id(Account account)
 {
-	if (Contacts.contains(account))
-		return Contacts[account].id();
+	QList<Contact> contactslist;
+	contactslist = contacts(account);
+	if (contactslist.count() > 0)
+		return contactslist[0].id();
 
 	return QString::null;
 }
 
+Contact BuddyShared::prefferedContact()
+{
+	// TODO 0.6.6: implement it to have most available contact
+	int count = Contacts.count();
+	if (count == 0)
+		return Contact::null;
+
+	if (count == 1)
+		return Contacts[0];
+
+	Contact prefferedContact = Contacts[0];
+	foreach (const Contact &contact, Contacts)
+		if (prefferedContact.currentStatus() < contact.currentStatus())
+			prefferedContact = contact;
+
+	return prefferedContact;
+}
+
 Account BuddyShared::prefferedAccount()
 {
-	return Contacts.count() > 0
-		? Contacts.keys()[0]
-		: Account::null;
+	return prefferedContact().contactAccount();
 }
 
 QList<Account> BuddyShared::accounts()
 {
-	return Contacts.count() > 0
-			? Contacts.keys()
-			: QList<Account>();
+	QList<Account> accounts;
+
+	foreach (const Contact &contact, Contacts)
+		if (!accounts.contains(contact.contactAccount()))
+			accounts.append(contact.contactAccount());
+
+	return accounts;
 }
 
 void BuddyShared::emitUpdated()
@@ -271,11 +310,4 @@ void BuddyShared::removeFromGroup(Group group)
 {
 	Groups.removeAll(group);
 	dataUpdated();
-}
-
-void BuddyShared::accountContactDataIdChanged(const QString &id)
-{
-	Contact contact = *(dynamic_cast<Contact *>(sender()));
-	if (!contact.isNull() && !contact.contactAccount().isNull())
-		emit contactIdChanged(contact.contactAccount(), id);
 }

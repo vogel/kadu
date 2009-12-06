@@ -17,7 +17,7 @@
 #include <QtXml/QDomElement>
 
 #include "buddies/buddy-shared.h"
-#include "shared/shared-base.h"
+#include "storage/shared-base.h"
 #include "exports.h"
 
 class Account;
@@ -30,9 +30,8 @@ class KADUAPI Buddy : public QObject, public SharedBase<BuddyShared>
 {
 	Q_OBJECT
 
-	explicit Buddy(bool null);
-
 public:
+	static Buddy create();
 	static Buddy loadFromStorage(StoragePoint *contactStoragePoint);
 	static Buddy null;
 
@@ -62,21 +61,21 @@ public:
 	void removeCustomData(const QString &key);
 
 	Account prefferedAccount() const;
+	Contact prefferedContact() const;
 	QList<Account> accounts() const;
 
 // 	void setData(BuddyShared *data) { Data = data; }  // TODO: 0.8 tricky merge, this should work well ;)
 
 	void addContact(Contact contact);
 	void removeContact(Contact contact) const;
-	void removeContact(Account account) const;
-	Contact contact(Account account) const;
+	QList<Contact> contacts(Account account) const;
 	QList<Contact> contacts() const;
 	bool hasContact(Account account) const;
 
 template<class T>
-	T * moduleData(bool create = false, bool cache = false) const
+	T * moduleData(const QString &nodeName, bool create = false) const
 	{
-		return isNull() ? 0 : data()->moduleData<T>(create, cache);
+		return isNull() ? 0 : data()->moduleData<T>(nodeName, create);
 	}
 
 	QString id(Account account) const;

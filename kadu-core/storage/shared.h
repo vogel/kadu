@@ -16,7 +16,7 @@
 
 #include "status/status.h"
 
-#include "configuration/uuid-storable-object.h"
+#include "storage/uuid-storable-object.h"
 
 #define KaduShared_PropertyRead(type, name, capitalized_name) \
 	type name() { ensureLoaded(); return capitalized_name; }
@@ -44,15 +44,17 @@ class Shared : public UuidStorableObject, public QSharedData
 	void doEmitUpdated();
 
 protected:
+	virtual void load();
+
 	void dataUpdated();
 	virtual void emitUpdated();
 
 public:
-	explicit Shared(const QUuid uuid, const QString &tagName, StorableObject *parent = 0);
+	explicit Shared(QUuid Uuid);
 	virtual ~Shared();
 
-	virtual void load();
 	virtual void store();
+	virtual void aboutToBeRemoved();
 
 	virtual QUuid uuid() const { return Uuid; }
 	void setUuid(const QUuid uuid) { Uuid = uuid; }

@@ -15,11 +15,13 @@
 #include "chat/chat-details-simple.h"
 #include "chat/chat-manager.h"
 #include "buddies/buddy-manager.h"
-#include "buddies/buddy-set-configuration-helper.h"
 #include "contacts/contact.h"
+#include "contacts/contact-manager.h"
+#include "contacts/contact-set.h"
 #include "icons-manager.h"
 #include "protocols/protocol-factory.h"
 #include "status/status.h"
+#include "debug.h"
 
 #include "protocol.h"
 
@@ -44,17 +46,15 @@ void Protocol::setAllOffline()
 {
 	Status status;
 	Status oldStatus;
-	Contact data;
 
-	foreach (Buddy buddy, BuddyManager::instance()->buddies(CurrentAccount, true))
+	foreach (const Contact &contact, ContactManager::instance()->contacts(CurrentAccount))
 	{
-		data = buddy.contact(CurrentAccount);
-		oldStatus = data.currentStatus();
+		oldStatus = contact.currentStatus();
 
 		if (oldStatus != status)
 		{
-			data.setCurrentStatus(status);
-			emit buddyStatusChanged(CurrentAccount, buddy, oldStatus);
+			contact.setCurrentStatus(status);
+			emit buddyStatusChanged(contact, oldStatus);
 		}
 	}
 }
@@ -102,40 +102,8 @@ void Protocol::networkStateChanged(NetworkState state)
 			break;
 	}
 }
-
+// TODO to remove
 Chat Protocol::findChat(BuddySet contacts, bool create)
 {
-	foreach (Chat c, ChatManager::instance()->chats())
-		if (c.chatAccount() == account() && c.buddies() == contacts)
-			return c;
-
-	if (!create)
-		return Chat::null;
-
-	Chat chat = Chat::create();
-	chat.setChatAccount(account());
-	ChatDetails *details = 0;
-
-	if (contacts.count() == 1)
-	{
-		Buddy buddy = *contacts.begin();
-		Contact contact = buddy.contact(account());
-		if (contact.isNull())
-			return Chat::null;
-
-		ChatDetailsSimple *simple = new ChatDetailsSimple(chat);
-		simple->setContact(contact);
-		details = simple;
-	}
-	else
-	{
-		ChatDetailsConference *conference = new ChatDetailsConference(chat);
-		conference->setBuddies(contacts);
-		details = conference;
-	}
-
-	chat.setDetails(details);
-	ChatManager::instance()->addChat(chat);
-
-	return chat;
+	return ChatManager::instance()->findChat(contacts.toContactSet(account()), create);
 }

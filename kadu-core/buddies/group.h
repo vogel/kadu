@@ -12,13 +12,13 @@
 
 #include "buddies/group-shared.h"
 
-#include "shared/shared-base.h"
+#include "storage/shared-base.h"
 
 class Group : public SharedBase<GroupShared>
 {
-	explicit Group(bool null);
 
 public:
+	static Group create();
 	static Group loadFromStorage(StoragePoint *storage);
 	static Group null;
 

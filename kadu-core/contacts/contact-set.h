@@ -7,25 +7,31 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef STORABLE_STRING_LIST_H
-#define STORABLE_STRING_LIST_H
+#ifndef CONTACT_SET_H
+#define CONTACT_SET_H
 
-#include <QtCore/QStringList>
+#include <QtCore/QSet>
 
-#include "configuration/storable-object.h"
+#include "accounts/account.h"
+#include "buddies/buddy-set.h"
+#include "contacts/contact.h"
 
-class StorableStringList : protected QStringList, public StorableObject
+#include "exports.h"
+
+class Contact;
+class BuddySet;
+
+class KADUAPI ContactSet : public QSet<Contact>
 {
-	QString ContentNodeName;
 
 public:
-	StorableStringList(const QString &nodeName, const QString contentNodeName, StorableObject *parent);
+	ContactSet();
+	explicit ContactSet(Contact contact);
 
-	virtual void load();
-	virtual void store();
-
-	const QStringList content() const;
+	QList<Contact> toContactList() const;
+	BuddySet toBuddySet() const;
+	Contact toContact() const;
 
 };
 
-#endif // STORABLE_STRING_LIST_H
+#endif // CONTACT_SET_H

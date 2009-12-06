@@ -10,6 +10,7 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "contacts/contact.h"
+#include "contacts/contact-manager.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
 
@@ -43,10 +44,10 @@ void BuddyPersonalInfoConfigurationWidget::createGui()
 	layout->addWidget(usernameLabel, row, 3, 1, 1); 
 
 	ContactIdCombo = new QComboBox(this);
-	foreach (Contact data, MyBuddy.contacts())
+	foreach (const Contact &data, MyBuddy.contacts())
 		ContactIdCombo->addItem(data.contactAccount().protocolHandler()->icon(),
 				data.id(),
-				data.contactAccount().uuid().toString()
+				data.uuid().toString()
 		);
 	connect(ContactIdCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(accountSelectionChanged(int)));
 	layout->addWidget(ContactIdCombo, row++, 4, 1, 1);
@@ -138,11 +139,13 @@ void BuddyPersonalInfoConfigurationWidget::createGui()
 
 void BuddyPersonalInfoConfigurationWidget::accountSelectionChanged(int index)
 {
-	QString accountUuid = ContactIdCombo->itemData(index).toString();
-	if (accountUuid.isEmpty())
+	// TODO 0.6.6: is it needed?
+	QString contactUuid = ContactIdCombo->itemData(index).toString();
+	if (contactUuid.isEmpty())
 		return;
-	Account account = AccountManager::instance()->byUuid(QUuid(accountUuid));
-	if (account.isNull())
+
+	Contact contact = ContactManager::instance()->byUuid(QUuid(contactUuid));
+	if (contact.isNull())
 		return;
 
 	//TODO 0.6.6 proper values
@@ -151,12 +154,12 @@ void BuddyPersonalInfoConfigurationWidget::accountSelectionChanged(int index)
 	NicknameText->setText(MyBuddy.nickName());
 	GenderText->setText(MyBuddy.firstName());
 	BirthdateText->setText(MyBuddy.firstName());
-	CityText->setText(MyBuddy.firstName());
+	CityText->setText(MyBuddy.city());
 	StateProvinceText->setText(MyBuddy.firstName());
 
 	//
-	IpText->setText(MyBuddy.contact(account).address().toString());
-	PortText->setText(QString::number(MyBuddy.contact(account).port()));
-	DnsNameText->setText(MyBuddy.contact(account).dnsName());
-	ProtocolVerText->setText(MyBuddy.contact(account).protocolVersion());
+	IpText->setText(contact.address().toString());
+	PortText->setText(QString::number(contact.port()));
+	DnsNameText->setText(contact.dnsName());
+	ProtocolVerText->setText(contact.protocolVersion());
 }

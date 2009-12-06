@@ -23,113 +23,61 @@ KADUAPI IdentityManager * IdentityManager::instance()
 	return Instance;
 }
 
-IdentityManager::IdentityManager() :
-		StorableObject(StorableObject::StateLoaded)
+IdentityManager::IdentityManager()
 {
-    	ConfigurationManager::instance()->registerStorableObject(this);
 }
 
 IdentityManager::~IdentityManager()
 {
 }
 
-StoragePoint * IdentityManager::createStoragePoint()
-{
-	return new StoragePoint(xml_config_file, xml_config_file->getNode("Identities"));
-}
-
-void IdentityManager::load()
-{
-	StorableObject::load();
-
-	QDomElement identitiesNode = xml_config_file->getNode("Identities", XmlConfigFile::ModeFind);
-	if (identitiesNode.isNull())
-		return;
-
-	QDomNodeList identityNodes = identitiesNode.elementsByTagName("Identity");
-
-	int count = identityNodes.count();
-	for (int i = 0; i < count; i++)
-	{
-		QDomElement identityElement = identityNodes.at(i).toElement();
-		if (identityElement.isNull())
-			continue;
-
-		StoragePoint *identityStoragePoint = new StoragePoint(xml_config_file, identityElement);
-		registerIdentity(new Identity(IdentityShared::loadFromStorage(identityStoragePoint)));
-	}
-}
-
-void IdentityManager::store()
-{
-	if (!isValidStorage())
-		return;
-
-	QDomElement identityNode = storage()->point();
-
-	foreach (Identity *identity, Identities)
-		identity->data()->store();
-}
-
-Identity * IdentityManager::byUuid(const QString &uuid)
-{
-    	if (uuid.isEmpty())
-		return 0;
-
-	foreach (Identity *identity, Identities)
-		if (uuid == identity->uuid())
-			return identity;
-
-	return 0;
-}
-
-Identity * IdentityManager::byName(const QString &name, bool create)
+Identity IdentityManager::byName(const QString &name, bool create)
 {
 	if (name.isEmpty())
-		return 0;
+		return Identity::null;
 
-	foreach (Identity *identity, Identities)
+	foreach (Identity identity, items())
 	{
-		if (name == identity->name())
+		if (name == identity.name())
 			return identity;
 	}
 
 	if (!create)
-		return 0;
+		return Identity::null;
 
-	Identity *newIdentity = new Identity(new IdentityShared(QUuid::createUuid()));
-	registerIdentity(newIdentity);
+	Identity newIdentity = Identity::create();
+	newIdentity.setName(name);
+	addItem(newIdentity);
 
 	return newIdentity;
 }
 
-Identity * IdentityManager::identityForAcccount(Account account)
+Identity IdentityManager::identityForAcccount(Account account)
 {
-	foreach (Identity *identity, Identities)
-	{
-		if (identity->hasAccount(account))
+	foreach (Identity identity, items())
+		if (identity.hasAccount(account))
 			return identity;
-	}
-	return 0;
+
+	return Identity::null;
 }
 
-void IdentityManager::registerIdentity(Identity *identity)
+
+void IdentityManager::itemAboutToBeAdded(Identity item)
 {
-	emit identityAboutToBeRegistered(identity);
-	Identities << identity;
-	emit identityRegistered(identity);
+	emit identityAboutToBeRegistered(item);
 }
 
-void IdentityManager::unregisterIdentity(Identity *identity)
+void IdentityManager::itemAdded(Identity item)
 {
-	emit identityAboutToBeUnregistered(identity);
-	Identities.removeAll(identity);
-	emit identityUnregistered(identity);
+	emit identityRegistered(item);
 }
 
-void IdentityManager::deleteIdentity(Identity *identity)
+void IdentityManager::itemAboutToBeRemoved(Identity item)
 {
-	unregisterIdentity(identity);
+	emit identityAboutToBeUnregistered(item);
+}
 
-	identity->data()->removeFromStorage();
+void IdentityManager::itemRemoved(Identity item)
+{
+	emit identityUnregistered(item);
 }

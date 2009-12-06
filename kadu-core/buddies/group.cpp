@@ -8,28 +8,27 @@
  ***************************************************************************/
 
 #include "configuration/configuration-file.h"
-#include "configuration/storage-point.h"
 #include "configuration/xml-configuration-file.h"
+#include "storage/storage-point.h"
 
 #include "group-manager.h"
 
 #include "group.h"
 
-Group Group::null(true);
+Group Group::null;
+
+Group Group::create()
+{
+	return new GroupShared();
+}
 
 Group Group::loadFromStorage(StoragePoint *contactStoragePoint)
 {
 	return GroupShared::loadFromStorage(contactStoragePoint);
 }
 
-Group::Group(bool null) :
-		SharedBase<GroupShared>(null)
-{
-}
-
 Group::Group()
 {
-	data()->setState(StorableObject::StateNew);
 }
 
 Group::Group(GroupShared *data) :
@@ -38,8 +37,7 @@ Group::Group(GroupShared *data) :
 	data->ref.ref();
 }
 
-Group::Group(QObject *data) :
-		SharedBase<GroupShared>(true)
+Group::Group(QObject *data)
 {
 	GroupShared *shared = dynamic_cast<GroupShared *>(data);
 	if (shared)

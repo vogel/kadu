@@ -16,11 +16,10 @@
 
 #include "chat/chat.h"
 
-// class XmlConfigFile; TODO: disabled for a moment
-/*
+class XmlConfigFile;
+
 class KADUAPI AggregateChat : public Chat
 {
-	Q_OBJECT
 	QList<Chat> Chats;
 
 public:
@@ -31,21 +30,26 @@ public:
 	virtual void load();
 	virtual void store();
 
-	virtual BuddySet buddies() const { return Chats.at(0)->buddies(); }
-	virtual QString type() const { return Chats.at(0)->type(); }
-	virtual QUuid uuid() const { return Chats.at(0)->uuid(); }
-	virtual QString name() const { return Chats.at(0)->name(); }
+	virtual ContactSet contacts() const { return Chats.at(0).contacts(); }
+	virtual QString type() const { return Chats.at(0).type(); }
+	virtual QUuid uuid() const { return Chats.at(0).uuid(); }
+	virtual QString name() const { return Chats.at(0).name(); }
 
-	Account chatAccount() { return Chats.at(0)->chatAccount(); }
-	QString title() { return Chats.at(0)->title(); }
-	QPixmap icon() { return Chats.at(0)->icon(); }
+	Account chatAccount() { return Chats.at(0).chatAccount(); }
+	QString title() { return Chats.at(0).title(); }
+	QPixmap icon() { return Chats.at(0).icon(); }
 
-	QList<Chat> chats() const { return Chats; };
-	void setChats(QList<Chat> chats) { Chats = chats; };
+	QList<Chat> chats() const { return Chats; }
+	void setChats(QList<Chat> chats) { Chats = chats; }
 
 	void addChat(Chat chat);
 	void removeChat(Chat chat);
 
-};*/
+	operator bool () const // for ! and ifs
+	{
+		return Chats.count();
+	}
+
+};
 
 #endif // AGGREGATE_CHAT_H

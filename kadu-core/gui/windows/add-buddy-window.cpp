@@ -29,6 +29,7 @@
 #include "buddies/filter/non-account-buddy-filter.h"
 #include "buddies/model/groups-model.h"
 #include "contacts/contact.h"
+#include "contacts/contact-manager.h"
 #include "gui/widgets/select-buddy-combobox.h"
 #include "misc/misc.h"
 #include "model/actions-proxy-model.h"
@@ -176,7 +177,7 @@ Account AddBuddyWindow::selectedAccount()
 	return index.data(AccountRole).value<Account>();
 }
 
-void AddBuddyWindow::setContact(Buddy buddy)
+void AddBuddyWindow::setBuddy(Buddy buddy)
 {
 	MyBuddy = buddy;
 
@@ -230,7 +231,7 @@ void AddBuddyWindow::setAddContactEnabled()
 	if (mergeWith.isNull())
 		AddContactButton->setEnabled(false);
 	else
-		AddContactButton->setEnabled(mergeWith.contact(account).isNull());
+		AddContactButton->setEnabled(mergeWith.contacts(account).isEmpty());
 }
 
 void AddBuddyWindow::setValidateRegularExpression()
@@ -244,7 +245,7 @@ void AddBuddyWindow::setValidateRegularExpression()
 
 	QStringList regularExpressions;
 
-	foreach (Account account, AccountManager::instance()->accounts())
+	foreach (Account account, AccountManager::instance()->items())
 	{
 		QRegExp regularExpression = account.protocolHandler()->protocolFactory()->idRegularExpression();
 		if (!regularExpression.isEmpty())
@@ -302,10 +303,12 @@ void AddBuddyWindow::accept()
 	if (!MergeContact->isChecked())
 	{
 		if (MyBuddy.isNull())
-			MyBuddy = BuddyManager::instance()->byId(account, UserNameEdit->text());
+			MyBuddy = ContactManager::instance()->byId(account, UserNameEdit->text()).ownerBuddy();
 
 		MyBuddy.setAnonymous(false);
 		MyBuddy.setDisplay(DisplayNameEdit->text());
+
+		BuddyManager::instance()->addItem(MyBuddy);
 	}
 	else
 	{
@@ -313,11 +316,12 @@ void AddBuddyWindow::accept()
 		if (buddy.isNull())
 			return;
 
-		Contact contact;
+		Contact contact = Contact::create();
 		contact.setContactAccount(account);
 		contact.setOwnerBuddy(buddy);
 		contact.setId(UserNameEdit->text());
 		contact.setDetails(account.protocolHandler()->protocolFactory()->createContactDetails(contact));
+		ContactManager::instance()->addItem(contact);
 		buddy.addContact(contact);
 	}
 

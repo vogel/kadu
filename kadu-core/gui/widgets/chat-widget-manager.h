@@ -12,10 +12,10 @@
 
 #include <QtCore/QTimer>
 
-#include "configuration/configuration-aware-object.h"
-#include "configuration/storable-string-list.h"
 #include "buddies/buddy-list.h"
+#include "configuration/configuration-aware-object.h"
 #include "gui/widgets/chat-widget.h"
+#include "storage/storable-string-list.h"
 
 #include "exports.h"
 
@@ -40,7 +40,7 @@ class KADUAPI ChatWidgetManager : public QObject, ConfigurationAwareObject, Stor
 	ChatWidgetActions *Actions;
 
 	QHash<Chat , ChatWidget *> Chats;
-	QList<Chat> ClosedChats; /*!< u�ytkownicy, kt�rych okna zosta�y zamkni�te*/
+	QList<Chat> ClosedChats;
 	QList<QDateTime> ClosedChatsDates;
 
 	ChatWidgetManager();
@@ -57,10 +57,16 @@ private slots:
 	void messageSent(const Message &message);
 
 protected:
+	virtual void load();
+
 	virtual void configurationUpdated();
 
 public:
 	static ChatWidgetManager * instance();
+
+	virtual StorableObject * storageParent();
+	virtual QString storageNodeName();
+	virtual QString storageItemNodeName();
 
 	ChatWidgetActions * actions() { return Actions; }
 
@@ -69,7 +75,6 @@ public:
 
 	ChatWidget * byChat(Chat chat, bool create = false) const;
 
-	virtual void load();
 	virtual void store();
 
 	void activateChatWidget(ChatWidget *chatWidget, bool forceActivate);

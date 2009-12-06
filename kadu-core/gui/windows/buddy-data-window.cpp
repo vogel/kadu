@@ -135,13 +135,13 @@ void BuddyDataWindow::createButtons(QLayout *layout)
 
 void BuddyDataWindow::updateBuddy()
 {
-	BuddyManager::instance()->blockUpdatedSignal(MyBuddy);
+	MyBuddy.blockUpdatedSignal();
 
 	ContactTab->saveConfiguration();
-	GroupsTab->saveConfiguration(); 
-	OptionsTab->saveConfiguration(); 
+	GroupsTab->saveConfiguration();
+	OptionsTab->saveConfiguration();
 
-	BuddyManager::instance()->unblockUpdatedSignal(MyBuddy);
+	MyBuddy.unblockUpdatedSignal();
 }
 
 void BuddyDataWindow::updateBuddyAndClose()

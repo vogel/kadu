@@ -9,6 +9,7 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "accounts/account-shared.h"
 #include "configuration/configuration-file.h"
 #include "configuration/xml-configuration-file.h"
 #include "buddies/buddy-manager.h"
@@ -40,14 +41,20 @@ void GaduImporter::importAccounts()
 	if (0 == config_file.readNumEntry("General", "UIN"))
 		return;
 	
-	Account defaultGaduGadu;
+	Account defaultGaduGadu = Account::create();
+	// TODO: 0.6.6 set protocol after details because of crash
+	//defaultGaduGadu.setProtocolName("gadu");
+
 	GaduAccountDetails *accountDetails = new GaduAccountDetails(defaultGaduGadu);
+	accountDetails->setState(StorableObject::StateNew);
 	defaultGaduGadu.setDetails(accountDetails);
+	defaultGaduGadu.setProtocolName("gadu");
 
 	defaultGaduGadu.setName("Gadu-Gadu");
 	defaultGaduGadu.setId(config_file.readEntry("General", "UIN"));
 	defaultGaduGadu.setPassword(unicode2cp(pwHash(config_file.readEntry("General", "Password"))));
 	defaultGaduGadu.setRememberPassword(true);
+	defaultGaduGadu.setHasPassword(!defaultGaduGadu.password().isEmpty());
 	accountDetails->setAllowDcc(config_file.readBoolEntry("Network", "AllowDCC"));
 
 	QHostAddress host;
@@ -76,7 +83,7 @@ void GaduImporter::importAccounts()
 
 	accountDetails->import_0_6_5_LastStatus();
 
-	AccountManager::instance()->registerAccount(defaultGaduGadu);
+	AccountManager::instance()->addItem(defaultGaduGadu);
 }
 
 void GaduImporter::importContacts()
@@ -84,7 +91,7 @@ void GaduImporter::importContacts()
 	connect(BuddyManager::instance(), SIGNAL(buddyAdded(Buddy &)),
 			this, SLOT(buddyAdded(Buddy &)));
 
-	foreach (Buddy buddy, BuddyManager::instance()->buddies())
+	foreach (Buddy buddy, BuddyManager::instance()->items())
 		buddyAdded(buddy);
 
 	importIgnored();
@@ -92,10 +99,15 @@ void GaduImporter::importContacts()
 
 void GaduImporter::importGaduContact(Buddy &buddy)
 {
-	Account account = AccountManager::instance()->defaultAccount();
+	QList<Account> allGaduAccounts = AccountManager::instance()->byProtocolName("gadu");
+	if (0 == allGaduAccounts.count())
+		return;
+
+	// take 1st one
+	Account account = allGaduAccounts[0];
 	QString id = buddy.customData("uin");
 
-	Contact contact;
+	Contact contact = Contact::create();
 	contact.setDetails(new GaduContactDetails(contact));
 	contact.setContactAccount(account);
 	contact.setOwnerBuddy(buddy);
@@ -110,7 +122,7 @@ void GaduImporter::importGaduContact(Buddy &buddy)
 
 	buddy.addContact(contact);
 
-	ContactManager::instance()->addContact(contact);
+	ContactManager::instance()->addItem(contact);
 }
 
 void GaduImporter::importIgnored()
@@ -129,7 +141,7 @@ void GaduImporter::importIgnored()
 		BuddySet ignoredList;
 		QList<QDomElement> ignoredContacts = xml_config_file->getNodes(ignoredGroup, "IgnoredContact");
 		foreach (QDomElement ignoredContact, ignoredContacts)
-			ignoredList.insert(BuddyManager::instance()->byId(account, ignoredContact.attribute("uin")));
+			ignoredList.insert(ContactManager::instance()->byId(account, ignoredContact.attribute("uin")).ownerBuddy());
 
 		if (0 == ignoredList.count())
 			continue;

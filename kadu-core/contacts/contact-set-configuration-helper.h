@@ -7,25 +7,18 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef STORAGE_POINT_H
-#define STORAGE_POINT_H
+#ifndef CONTACT_SET_CONFIGURATION_HELPER_H
+#define CONTACT_SET_CONFIGURATION_HELPER_H
 
-#include <QtXml/QDomElement>
+#include "contacts/contact-set.h"
 
-class XmlConfigFile;
-
-class StoragePoint
+class ContactSetConfigurationHelper
 {
-	XmlConfigFile *Storage;
-	QDomElement Point;
-
 public:
-	StoragePoint(XmlConfigFile *storage, QDomElement point)
-		: Storage(storage), Point(point) {}
-
-	XmlConfigFile * storage() { return Storage; }
-	QDomElement point() { return Point; }
-
+	static ContactSet loadFromConfiguration(StorableObject *parent, const QString &nodeName);
+	static ContactSet loadFromConfiguration(XmlConfigFile *configurationStorage, QDomElement contactSetNode);
+	static void saveToConfiguration(StorableObject *parent, const QString &nodeName, ContactSet contactSet);
+	static void saveToConfiguration(XmlConfigFile *configurationStorage, QDomElement contactSetNode, ContactSet contactSet);
 };
 
-#endif // STORAGE_POINT_H
+#endif // CONTACT_SET_CONFIGURATION_HELPER_H

@@ -12,13 +12,15 @@
 #include "configuration/xml-configuration-file.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy.h"
+#include "contacts/contact-manager.h"
+#include "contacts/contact.h"
 
-#include "buddy-set-configuration-helper.h"
+#include "contact-set-configuration-helper.h"
 
-BuddySet BuddySetConfigurationHelper::loadFromConfiguration(StorableObject *parent, const QString &nodeName)
+ContactSet ContactSetConfigurationHelper::loadFromConfiguration(StorableObject *parent, const QString &nodeName)
 {
 	if (!parent->isValidStorage())
-		return BuddySet();
+		return ContactSet();
 
 	XmlConfigFile *configurationStorage = parent->storage()->storage();
 	QDomElement contactSetNode = configurationStorage->getNode(parent->storage()->point(), nodeName);
@@ -26,18 +28,25 @@ BuddySet BuddySetConfigurationHelper::loadFromConfiguration(StorableObject *pare
 	return loadFromConfiguration(configurationStorage, contactSetNode);
 }
 
-BuddySet BuddySetConfigurationHelper::loadFromConfiguration(XmlConfigFile *configurationStorage, QDomElement contactSetNode)
+ContactSet ContactSetConfigurationHelper::loadFromConfiguration(XmlConfigFile *configurationStorage, QDomElement contactSetNode)
 {
-	BuddySet result;
+	ContactSet result;
 
 	QList<QDomElement> contactElements = configurationStorage->getNodes(contactSetNode, "Contact");
 	foreach (QDomElement contactElement, contactElements)
-		result.insert(BuddyManager::instance()->byUuid(contactElement.text()));
+	{
+		Contact contact = ContactManager::instance()->byUuid(contactElement.text());
+		// TODO: 0.6.6 this only for compatibility with previous builds of 0.6.6
+		if (contact.isNull())
+			contact = BuddyManager::instance()->byUuid(contactElement.text()).prefferedContact();
+		if (!contact.isNull())
+			result.insert(contact);
+	}
 
 	return result;
 }
 
-void BuddySetConfigurationHelper::saveToConfiguration(StorableObject *parent, const QString &nodeName, BuddySet contactSet)
+void ContactSetConfigurationHelper::saveToConfiguration(StorableObject *parent, const QString &nodeName, ContactSet contactSet)
 {
 	if (!parent->isValidStorage())
 		return;
@@ -48,11 +57,11 @@ void BuddySetConfigurationHelper::saveToConfiguration(StorableObject *parent, co
 	saveToConfiguration(configurationStorage, contactSetNode, contactSet);
 }
 
-void BuddySetConfigurationHelper::saveToConfiguration(XmlConfigFile *configurationStorage, QDomElement contactSetNode, BuddySet contactSet)
+void ContactSetConfigurationHelper::saveToConfiguration(XmlConfigFile *configurationStorage, QDomElement contactSetNode, ContactSet contactSet)
 {
 	while (contactSetNode.childNodes().count())
 		contactSetNode.removeChild(contactSetNode.childNodes().at(0));
 
-	foreach (Buddy c, contactSet)
+	foreach (const Contact &c, contactSet)
 		configurationStorage->appendTextNode(contactSetNode, "Contact", c.uuid());
 }

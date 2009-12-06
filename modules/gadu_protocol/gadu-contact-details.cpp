@@ -23,13 +23,13 @@ GaduContactDetails::~GaduContactDetails()
 
 unsigned int GaduContactDetails::uin()
 {
-	return contactData()->id().toUInt();
+	return mainData()->id().toUInt();
 }
 
 bool GaduContactDetails::validateId()
 {
 	bool ok;
-	contactData()->id().toUInt(&ok);
+	mainData()->id().toUInt(&ok);
 	return ok;
 }
 

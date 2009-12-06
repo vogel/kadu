@@ -10,29 +10,29 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "configuration/xml-configuration-file.h"
-#include "configuration/storage-point.h"
+#include "contacts/contact-details.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-shared.h"
 #include "buddies/buddy-manager.h"
+#include "storage/storage-point.h"
 #include "dnshandler.h"
 
 #include "contact.h"
 
-Contact Contact::null(true);
+Contact Contact::null;
+
+Contact Contact::create()
+{
+	return new ContactShared();
+}
 
 Contact Contact::loadFromStorage(StoragePoint *contactStoragePoint)
 {
 	return ContactShared::loadFromStorage(contactStoragePoint);
 }
 
-Contact::Contact(bool null) :
-		SharedBase<ContactShared>(null)
-{
-}
-
 Contact::Contact()
 {
-	data()->setState(StorableObject::StateNew);
 }
 
 Contact::Contact(ContactShared *data) :
@@ -41,8 +41,7 @@ Contact::Contact(ContactShared *data) :
 	data->ref.ref();
 }
 
-Contact::Contact(QObject *data) :
-		SharedBase<ContactShared>(true)
+Contact::Contact(QObject *data)
 {
 	ContactShared *shared = dynamic_cast<ContactShared *>(data);
 	if (shared)

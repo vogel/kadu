@@ -7,18 +7,18 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "buddies/buddy-set-configuration-helper.h"
+#include "contacts/contact-set-configuration-helper.h"
 
 #include "chat/aggregate-chat.h"
-/*
+
 AggregateChat::AggregateChat(Chat chat) : 
-		Chat((StoragePoint *)0)
+		Chat()
 {
 	Chats.append(chat);
 }
 
 AggregateChat::AggregateChat(QList<Chat> chats) :
-		Chat((StoragePoint *)0), Chats(chats)
+		Chat(), Chats(chats)
 {
 }
 
@@ -45,6 +45,6 @@ void AggregateChat::removeChat(Chat chat)
 		return;
 
 	foreach (Chat c, Chats)
-	if (c->uuid() == chat->uuid())
+	if (c.uuid() == chat.uuid())
 		Chats.removeAll(c);
-}*/
+}

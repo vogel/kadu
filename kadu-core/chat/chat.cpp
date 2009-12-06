@@ -8,18 +8,18 @@
  ***************************************************************************/
 
 #include "accounts/account.h"
-#include "buddies/buddy-set.h"
+#include "chat/chat-details.h"
+#include "chat/chat-manager.h"
 #include "chat/chat-shared.h"
+#include "contacts/contact-set.h"
 
 #include "chat.h"
 
-Chat Chat::null(true);
+Chat Chat::null;
 
 Chat Chat::create()
 {
-	Chat result;
-	result.createData();
-	return result;
+	return new ChatShared();
 }
 
 Chat Chat::loadFromStorage(StoragePoint *accountStoragePoint)
@@ -27,14 +27,8 @@ Chat Chat::loadFromStorage(StoragePoint *accountStoragePoint)
 	return ChatShared::loadFromStorage(accountStoragePoint);
 }
 
-Chat::Chat(bool null) :
-		SharedBase<ChatShared>(null)
-{
-}
-
 Chat::Chat()
 {
-	data()->setState(StorableObject::StateNew);
 }
 
 Chat::Chat(ChatShared *data) :
@@ -43,8 +37,7 @@ Chat::Chat(ChatShared *data) :
 	data->ref.ref();
 }
 
-Chat::Chat(QObject *data) :
-		SharedBase<ChatShared>(true)
+Chat::Chat(QObject *data)
 {
 	ChatShared *shared = dynamic_cast<ChatShared *>(data);
 	if (shared)
@@ -72,7 +65,8 @@ void Chat::refreshTitle()
 		data()->refreshTitle();
 }
 
-KaduSharedBase_PropertyReadDef(Chat, BuddySet, buddies, Buddies, BuddySet())
+
+KaduSharedBase_PropertyReadDef(Chat, ContactSet, contacts, Contacts, ContactSet())
 KaduSharedBase_PropertyReadDef(Chat, QString, name, Name, QString::null)
 KaduSharedBase_PropertyDef(Chat, ChatDetails *, details, Details, 0)
 KaduSharedBase_PropertyDef(Chat, Account, chatAccount, ChatAccount, Account::null)

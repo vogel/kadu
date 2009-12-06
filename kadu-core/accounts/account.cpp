@@ -9,11 +9,11 @@
 
 #include "accounts/account-details.h"
 #include "accounts/account-manager.h"
-#include "buddies/buddy-manager.h"
 #include "configuration/configuration-file.h"
 #include "configuration/xml-configuration-file.h"
 #include "contacts/contact.h"
 #include "contacts/contact-details.h"
+#include "contacts/contact-manager.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocols-manager.h"
@@ -21,21 +21,20 @@
 
 #include "account.h"
 
-Account Account::null(true);
+Account Account::null;
+
+Account Account::create()
+{
+	return new AccountShared();
+}
 
 Account Account::loadFromStorage(StoragePoint *accountStoragePoint)
 {
 	return AccountShared::loadFromStorage(accountStoragePoint);
 }
 
-Account::Account(bool null) :
-		SharedBase<AccountShared>(null)
-{
-}
-
 Account::Account()
 {
-	data()->setState(StorableObject::StateNew);
 }
 
 Account::Account(AccountShared *data) :
@@ -44,8 +43,7 @@ Account::Account(AccountShared *data) :
 	data->ref.ref();
 }
 
-Account::Account(QObject *data) :
-		SharedBase<AccountShared>(true)
+Account::Account(QObject *data)
 {
 	AccountShared *shared = dynamic_cast<AccountShared *>(data);
 	if (shared)
@@ -69,7 +67,7 @@ Account & Account::operator=(const Account &copy)
 
 Buddy Account::getBuddyById(const QString& id)
 {
-	return BuddyManager::instance()->byId(*this, id);
+	return ContactManager::instance()->byId(*this, id).ownerBuddy();
 }
 
 Buddy Account::createAnonymous(const QString& id)
@@ -77,21 +75,23 @@ Buddy Account::createAnonymous(const QString& id)
 	if (isNull())
 		return Buddy::null;
 
-	Buddy result;
-	result.data()->setState(StorableObject::StateNew);
+	Buddy result = Buddy::create();
 	result.setAnonymous(true);
 
 	ProtocolFactory *protocolFactory = data()->protocolHandler()->protocolFactory();
 
-	Contact contact;
+	Contact contact = Contact::create();
 	ContactDetails *details = protocolFactory->createContactDetails(contact);
 	details->setState(StorableObject::StateNew);
+	contact.setDetails(details);
 	contact.setContactAccount(*this);
 	contact.setOwnerBuddy(result);
 	contact.setId(id);
 
 	if (!contact.isValid())
 		return Buddy::null;
+
+	ContactManager::instance()->addItem(contact);
 
 	result.addContact(contact);
 	return result;

@@ -16,9 +16,9 @@
 #include "accounts/account-shared.h"
 #include "buddies/buddy.h"
 #include "buddies/buddies-aware-object.h"
-#include "shared/shared-base.h"
 #include "status/base-status-container.h"
 #include "status/status.h"
+#include "storage/shared-base.h"
 
 class QPixmap;
 
@@ -30,9 +30,9 @@ class XmlConfigFile;
 
 class KADUAPI Account : public SharedBase<AccountShared>
 {
-	Account(bool null);
 
 public:
+	static Account create();
 	static Account loadFromStorage(StoragePoint *storage);
 	static Account null;
 

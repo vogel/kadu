@@ -14,53 +14,52 @@
 #include <QtCore/QObject>
 #include <QtCore/QUuid>
 
-#include "configuration/storable-object.h"
+#include "contacts/contact-shared.h"
+#include "storage/manager.h"
 #include "exports.h"
 
+class Account;
 class Contact;
-class ContactShared;
 
-class KADUAPI ContactManager : public QObject, public StorableObject
+class KADUAPI ContactManager : public QObject, public Manager<Contact>
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(ContactManager)
 
 	static ContactManager * Instance;
 
-	QList<Account> LoadedAccounts;
-	QList<Contact> AllContacts;
-	QList<Contact> LoadedContacts;
-
 	ContactManager();
 	virtual ~ContactManager();
 
 private slots:
-	void contactProtocolLoaded();
-	void contactProtocolUnloaded();
+	void idChanged(const QString &oldId);
 
 protected:
-	virtual StoragePoint * createStoragePoint();
+	virtual void itemAboutToBeRegistered(Contact item);
+	virtual void itemRegisterd(Contact item);
+	virtual void itemAboutToBeUnregisterd(Contact item);
+	virtual void itemUnregistered(Contact item);
 
 public:
 	static ContactManager * instance();
 
-	virtual void load();
-	virtual void store();
+	virtual QString storageNodeName() { return QLatin1String("Contacts"); }
+	virtual QString storageNodeItemName() { return QLatin1String("Contact"); }
 
-	void addContact(Contact contact);
-	void removeContact(Contact contact);
-	
-	unsigned int count() { return LoadedContacts.count(); }
+	// TODO: 0.6.6, hide it
+	void detailsLoaded(Contact item);
+	void detailsUnloaded(Contact item);
 
-	Contact byIndex(unsigned int index);
-	Contact byUuid(const QString &uuid);
-	Contact byContactShared(ContactShared *data);
+	Contact byId(Account account, const QString &id);
+	QList<Contact> contacts(Account account);
 
 signals:
 	void contactAboutToBeAdded(Contact contact);
 	void contactAdded(Contact contact);
 	void contactAboutToBeRemoved(Contact contact);
 	void contactRemoved(Contact contact);
+
+	void contactIdChanged(Contact contact, const QString &oldId);
 
 };
 

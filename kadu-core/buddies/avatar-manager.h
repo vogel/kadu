@@ -15,19 +15,17 @@
 
 #include "accounts/accounts-aware-object.h"
 #include "buddies/avatar.h"
-#include "configuration/storable-object.h"
+#include "storage/simple-manager.h"
 
 class AvatarService;
 class Contact;
 
-class AvatarManager : public QObject, public StorableObject, AccountsAwareObject
+class AvatarManager : public QObject, public SimpleManager<Avatar>, AccountsAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(AvatarManager)
 
 	static AvatarManager *Instance;
-
-	QList<Avatar> Avatars;
 
 	AvatarManager();
 	virtual ~AvatarManager();
@@ -41,24 +39,19 @@ private slots:
 	void avatarFetched(Contact contact, const QByteArray &data);
 
 protected:
-	virtual StoragePoint * createStoragePoint();
-
 	virtual void accountRegistered(Account account);
 	virtual void accountUnregistered(Account account);
+
+	virtual void itemAboutToBeAdded(Avatar item);
+	virtual void itemAdded(Avatar item);
+	virtual void itemAboutToBeRemoved(Avatar item);
+	virtual void itemRemoved(Avatar item);
 
 public:
 	static AvatarManager * instance();
 
-	virtual void load();
-	virtual void store();
-
-	void addAvatar(Avatar avatar);
-	void removeAvatar(Avatar avatar);
-
-	unsigned int count() { return Avatars.count(); }
-
-	Avatar byIndex(unsigned int index);
-	Avatar byUuid(const QString &uuid);
+	virtual QString storageNodeName() { return QLatin1String("Avatars"); }
+	virtual QString storageNodeItemName() { return QLatin1String("Avatar"); }
 
 	void updateAvatar(Contact contact);
 

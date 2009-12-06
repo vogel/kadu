@@ -12,26 +12,27 @@
 
 #include <QtCore/QRect>
 
-#include "modules/module-data.h"
+#include "storage/module-data.h"
 
 #undef Property
 #define Property(type, name, capitalized_name) \
-	type name() const { return capitalized_name; } \
-	void set##capitalized_name(const type &name) { capitalized_name = name; }
+	type name() { ensureLoaded(); return capitalized_name; } \
+	void set##capitalized_name(const type &name) { ensureLoaded(); capitalized_name = name; }
 
 class BuddyKaduData : public ModuleData
 {
 	QRect ChatGeometry;
 	bool HideDescription;
 
+protected:
+	virtual void load();
+
 public:
-	static QString key() { return "kadu"; }
+	BuddyKaduData(StorableObject *parent);
+	virtual ~BuddyKaduData();
 
-	BuddyKaduData(StoragePoint *storage);
-
-	virtual void loadFromStorage();
-
-	virtual void storeConfiguration() const;
+	virtual void store();
+	virtual QString name() const;
 
 	Property(QRect, chatGeometry, ChatGeometry)
 	Property(bool, hideDescription, HideDescription)

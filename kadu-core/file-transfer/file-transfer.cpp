@@ -11,24 +11,24 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "configuration/storage-point.h"
 #include "configuration/xml-configuration-file.h"
 #include "file-transfer/file-transfer-manager.h"
 #include "protocols/protocol.h"
 #include "protocols/services/file-transfer-service.h"
+#include "storage/storage-point.h"
 
 #include "file-transfer.h"
-#include <buddies/buddy-manager.h>
-#include <buddies/buddy-manager.h>
+#include "buddies/buddy-manager.h"
+#include "contacts/contact-manager.h"
 
 FileTransfer::FileTransfer(Account account) :
-		Uuid(QUuid::createUuid()), CurrentAccount(account), Peer(Buddy::null),
+		Uuid(QUuid::createUuid()), CurrentAccount(account), Peer(Contact::null),
 		FileSize(0), TransferredSize(0),
 		TransferType(TypeReceive), TransferStatus(StatusNotConnected), TransferError(ErrorOk)
 {
 }
 
-FileTransfer::FileTransfer(Account account, Buddy peer, FileTransferType transferType) :
+FileTransfer::FileTransfer(Account account, Contact peer, FileTransferType transferType) :
 		Uuid(QUuid::createUuid()), CurrentAccount(account), Peer(peer),
 		FileSize(0), TransferredSize(0),
 		TransferType(transferType), TransferStatus(StatusNotConnected), TransferError(ErrorOk)
@@ -37,6 +37,16 @@ FileTransfer::FileTransfer(Account account, Buddy peer, FileTransferType transfe
 
 FileTransfer::~FileTransfer()
 {
+}
+
+StorableObject * FileTransfer::storageParent()
+{
+	return FileTransferManager::instance();
+}
+
+QString FileTransfer::storageNodeName()
+{
+	return QLatin1String("FileTransfer");
 }
 
 FileTransfer * FileTransfer::loadFromStorage(StoragePoint *fileTransferStoragePoint)
@@ -62,16 +72,6 @@ FileTransfer * FileTransfer::loadFromStorage(StoragePoint *fileTransferStoragePo
 	return ft;
 }
 
-StoragePoint * FileTransfer::createStoragePoint()
-{
-	StoragePoint *parent = FileTransferManager::instance()->storage();
-	if (!parent)
-		return 0;
-
-	QDomElement contactNode = parent->storage()->getUuidNode(parent->point(), "FileTransfer", Uuid.toString());
-	return new StoragePoint(parent->storage(), contactNode);
-}
-
 void FileTransfer::load()
 {
 	StorableObject::load();
@@ -80,7 +80,7 @@ void FileTransfer::load()
 		return;
 
 	CurrentAccount = AccountManager::instance()->byUuid(loadValue<QString>("Account"));
-	Peer = BuddyManager::instance()->byUuid(loadValue<QString>("Peer"));
+	Peer = ContactManager::instance()->byUuid(loadValue<QString>("Peer"));
 	LocalFileName = loadValue<QString>("LocalFileName");
 	RemoteFileName = loadValue<QString>("RemoteFileName");
 	TransferType = ("Send" == loadValue<QString>("TransferType")) ? TypeSend : TypeReceive;

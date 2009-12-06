@@ -13,6 +13,7 @@
 #include "contacts/contact.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"
+#include "chat/chat-manager.h"
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
 #include "gui/widgets/buddies-list-view-menu-manager.h"
@@ -345,8 +346,9 @@ void ChatWidgetActions::ignoreUserActionActivated(QAction *sender, bool toggled)
 		bool ContainsBad = false;
 		foreach (Buddy buddy, contacts)
 		{
-			QString uid = buddy.contact(account).id();
-			if (!account.protocolHandler()->validateUserID(uid))
+			Contact contact = buddy.prefferedContact();
+			QString uid = contact.id();
+			if (!contact.contactAccount().protocolHandler() || !contact.contactAccount().protocolHandler()->validateUserID(uid))
 			{
 				ContainsBad = true;
 				break;
@@ -386,6 +388,7 @@ void ChatWidgetActions::ignoreUserActionActivated(QAction *sender, bool toggled)
 void ChatWidgetActions::blockUserActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
+
 	Account account = AccountManager::instance()->defaultAccount();
 	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
 	if (!window)
@@ -400,7 +403,7 @@ void ChatWidgetActions::blockUserActionActivated(QAction *sender, bool toggled)
 		BuddySet copy = buddies;
 
 		foreach(Buddy user, copy)
-			if (user.contact(account).isNull() || !user.isBlocked())
+			if (user.prefferedContact().isNull() || !user.isBlocked())
 			{
 				on = false;
 				break;
@@ -408,8 +411,9 @@ void ChatWidgetActions::blockUserActionActivated(QAction *sender, bool toggled)
 
 		foreach(Buddy user, copy)
 		{
-			QString uid = user.contact(account).id();
-			if (account.protocolHandler()->validateUserID(uid) && user.isBlocked() != !on)
+			Contact contact = user.prefferedContact();
+			QString uid = contact.id();
+			if (contact.contactAccount().protocolHandler() && contact.contactAccount().protocolHandler()->validateUserID(uid) && user.isBlocked() != !on)
 			{
 //TODO: 0.6.6
 /// 				user.setProtocolData("Gadu", "Blocking", !on);

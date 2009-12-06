@@ -22,7 +22,7 @@
 #include "preview.h"
 
 Preview::Preview(QWidget *parent)
-	: KaduTextBrowser(parent)
+	: KaduTextBrowser(parent), buddy(Buddy::null)
 {
 	setFixedHeight(170);
 	setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);

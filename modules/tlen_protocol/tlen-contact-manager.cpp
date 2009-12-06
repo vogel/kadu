@@ -40,7 +40,7 @@ QVariant TlenContactManager::readEntry(const QString &section, const QString &na
 		return ConfigurationContactDataManager::readEntry(section, name);
 
 	if (name == "Tlenid")
-		return Data->contactData()->id();
+		return Data->mainData()->id();
 
 	// other data
 

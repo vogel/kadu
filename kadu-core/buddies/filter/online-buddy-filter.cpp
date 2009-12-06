@@ -32,11 +32,11 @@ bool OnlineBuddyFilter::acceptBuddy(Buddy buddy)
 	if (!Enabled)
 		return true;
 
-	Account prefferedAccount = buddy.prefferedAccount();
-	if (prefferedAccount.isNull())
+	Contact prefferedContact = buddy.prefferedContact();
+	if (prefferedContact.isNull())
 		return false;
 
-	Status status = buddy.contact(prefferedAccount).currentStatus();
+	Status status = prefferedContact.currentStatus();
 	return !status.isDisconnected();
 }
 

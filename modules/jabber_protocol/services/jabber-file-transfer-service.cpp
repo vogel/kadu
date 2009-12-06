@@ -23,14 +23,14 @@ FileTransfer * JabberFileTransferService::loadFileTransferFromStorage(StoragePoi
 {
 	JabberFileTransfer *jft = new JabberFileTransfer(Protocol->account());
 	jft->setStorage(storage);
-	jft->load();
+	jft->ensureLoaded();
 
 	return jft;
 }
 
-FileTransfer * JabberFileTransferService::createOutgoingFileTransfer(Buddy buddy)
+FileTransfer * JabberFileTransferService::createOutgoingFileTransfer(Contact contact)
 {
-	return new JabberFileTransfer(Protocol->account(), buddy, FileTransfer::TypeSend);
+	return new JabberFileTransfer(Protocol->account(), contact, FileTransfer::TypeSend);
 }
 
 void JabberFileTransferService::incomingFile(JabberFileTransfer *transfer)

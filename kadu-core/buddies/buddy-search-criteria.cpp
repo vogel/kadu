@@ -22,7 +22,9 @@ BuddySearchCriteria::~BuddySearchCriteria()
 
 void BuddySearchCriteria::reqUin(Account account, const QString &uin)
 {
-	Contact contact = SearchBuddy.contact(account);
+	// TODO ???
+	QList<Contact> contactslist = SearchBuddy.contacts(account);
+	Contact contact = contactslist.isEmpty() ? Contact::null : contactslist[0];
 	if (contact.isNull())
 	{
 		contact = Contact();

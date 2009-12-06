@@ -14,6 +14,8 @@
 #include <QtCore/QObject>
 #include <QtCore/QUuid>
 
+#include "storage/storable-object.h"
+
 #define KaduSharedBase_PropertyRead(type, name, capitalized_name) \
 	type name() const;
 #define KaduSharedBase_PropertyWrite(type, name, capitalized_name) \
@@ -74,9 +76,6 @@ class SharedBase
 	QExplicitlySharedDataPointer<T> Data;
 
 protected:
-	SharedBase(bool null) :
-			Data(0) {}
-
 	void setData(T *data)
 	{
 		Data = data;
@@ -84,7 +83,7 @@ protected:
 
 public:
 	SharedBase() :
-			Data(new T())
+			Data(0)
 	{
 	}
 
@@ -153,11 +152,6 @@ public:
 		return Data < compare.Data;
 	}
 
-	void createData()
-	{
-		Data = new T;
-	}
-
 	void blockUpdatedSignal()
 	{
 		if (!isNull())
@@ -176,10 +170,13 @@ public:
 			Data->store();
 	}
 
-	void removeFromStorage()
+	void remove()
 	{
 		if (!isNull())
+		{
+			Data->aboutToBeRemoved();
 			Data->removeFromStorage();
+		}
 	}
 
 	KaduSharedBase_Property(QUuid, uuid, Uuid)

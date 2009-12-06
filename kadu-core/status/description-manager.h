@@ -10,7 +10,7 @@
 #ifndef DESCRIPTION_MANAGER_H
 #define DESCRIPTION_MANAGER_H
 
-#include "configuration/storable-string-list.h"
+#include "storage/storable-string-list.h"
 
 class DescriptionModel;
 
@@ -28,6 +28,10 @@ class KADUAPI DescriptionManager : public QObject, public StorableStringList
 
 public:
 	static DescriptionManager * instance();
+
+	virtual StorableObject * storageParent();
+	virtual QString storageNodeName();
+	virtual QString storageItemNodeName();
 
 	DescriptionModel * model();
 

@@ -125,16 +125,16 @@ void GaduChatImageService::handleEventImageReply(struct gg_event *e)
 			e->event.image_reply.size, e->event.image_reply.crc32), fullPath);
 }
 
-bool GaduChatImageService::sendImageRequest(Buddy buddy, int size, uint32_t crc32)
+bool GaduChatImageService::sendImageRequest(Contact contact, int size, uint32_t crc32)
 {
 	kdebugf();
 
-	if (buddy.contact(Protocol->account()).isNull() ||
+	if (contact.isNull() ||
 			(CurrentMinuteSendImageRequests > config_file.readUnsignedNumEntry("Chat", "MaxImageRequests")))
 		return false;
 
 	CurrentMinuteSendImageRequests++;
-	return 0 == gg_image_request(Protocol->gaduSession(), Protocol->uin(buddy), size, crc32);
+	return 0 == gg_image_request(Protocol->gaduSession(), Protocol->uin(contact), size, crc32);
 }
 
 void GaduChatImageService::prepareImageToSend(const QString &imageFileName, uint32_t &size, uint32_t &crc32)

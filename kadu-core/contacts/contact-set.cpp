@@ -7,19 +7,39 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BUDDY_SET_CONFIGURATION_HELPER_H
-#define BUDDY_SET_CONFIGURATION_HELPER_H
+#include "accounts/account-manager.h"
+#include "contacts/contact-manager.h"
+#include "buddies/buddy-list.h"
 
-#include "buddies/buddy-set.h"
+#include "contact-set.h"
 
-class BuddySetConfigurationHelper
+ContactSet::ContactSet()
 {
-public:
-	static BuddySet loadFromConfiguration(StorableObject *parent, const QString &nodeName);
-	static BuddySet loadFromConfiguration(XmlConfigFile *configurationStorage, QDomElement contactSetNode);
-	static void saveToConfiguration(StorableObject *parent, const QString &nodeName, BuddySet contactSet);
-	static void saveToConfiguration(XmlConfigFile *configurationStorage, QDomElement contactSetNode, BuddySet contactSet);
+}
 
-};
+ContactSet::ContactSet(Contact contact)
+{
+	insert(contact);
+}
 
-#endif // BUDDY_SET_CONFIGURATION_HELPER_H
+QList<Contact> ContactSet::toContactList() const
+{
+	return toList();
+}
+
+BuddySet ContactSet::toBuddySet() const
+{
+	BuddySet buddies;
+	foreach (const Contact &contact, toList())
+		buddies.insert(contact.ownerBuddy());
+
+	return buddies;
+}
+
+Contact ContactSet::toContact() const
+{
+	if (count() != 1)
+		return Contact::null;
+
+	return (*begin());
+}

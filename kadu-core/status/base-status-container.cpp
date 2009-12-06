@@ -8,7 +8,7 @@
  ***************************************************************************/
 
 #include "configuration/configuration-file.h"
-#include "configuration/storable-object.h"
+#include "storage/storable-object.h"
 
 #include "base-status-container.h"
 

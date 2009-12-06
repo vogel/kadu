@@ -32,19 +32,19 @@ BuddiesModelBase::~BuddiesModelBase()
 
 void BuddiesModelBase::accountRegistered(Account account)
 {
-	connect(account.data(), SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
-			this, SLOT(buddyStatusChanged(Account, Buddy, Status)));
+	connect(account.data(), SIGNAL(buddyStatusChanged(Contact, Status)),
+			this, SLOT(buddyStatusChanged(Contact, Status)));
 }
 
 void BuddiesModelBase::accountUnregistered(Account account)
 {
-	disconnect(account.data(), SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
-			this, SLOT(buddyStatusChanged(Account, Buddy, Status)));
+	disconnect(account.data(), SIGNAL(buddyStatusChanged(Contact, Status)),
+			this, SLOT(buddyStatusChanged(Contact, Status)));
 }
 
-void BuddiesModelBase::buddyStatusChanged(Account account, Buddy buddy, Status oldStatus)
+void BuddiesModelBase::buddyStatusChanged(Contact contact, Status oldStatus)
 {
-	QModelIndex index = buddyIndex(buddy);
+	QModelIndex index = buddyIndex(contact.ownerBuddy());
 
 	if (index.isValid())
 		emit dataChanged(index, index);
@@ -96,20 +96,16 @@ QVariant BuddiesModelBase::headerData(int section, Qt::Orientation orientation, 
 		return QString("Row %1").arg(section);
 }
 
-Contact BuddiesModelBase::buddyDefaultAccountData(const QModelIndex &index) const
+Contact BuddiesModelBase::buddyDefaultContact(const QModelIndex &index) const
 {
 	Buddy buddy = buddyAt(index);
 	if (buddy.isNull())
 		return Contact::null;
 
-	Account account = buddy.prefferedAccount();
-	if (account.isNull())
-		account = AccountManager::instance()->defaultAccount();
-	
-	return buddy.contact(account);
+	return buddy.prefferedContact();
 }
 
-Contact BuddiesModelBase::buddyAccountData(const QModelIndex &index, int accountIndex) const
+Contact BuddiesModelBase::buddyContact(const QModelIndex &index, int accountIndex) const
 {
 	Buddy buddy = buddyAt(index);
 	if (buddy.isNull())
@@ -157,6 +153,8 @@ QVariant BuddiesModelBase::data(Contact contact, int role, bool useDisplay) cons
 					: QVariant();
 		case BuddyRole:
 			return QVariant::fromValue(contact.ownerBuddy());
+		case ContactRole:
+			return QVariant::fromValue(contact);
 		case DescriptionRole:
 			//TODO 0.6.6:
 			//	ContactKaduData *ckd = contact.moduleData<ContactKaduData>(true);
@@ -192,11 +190,11 @@ QVariant BuddiesModelBase::data(const QModelIndex &index, int role) const
 	QModelIndex parentIndex = parent(index);
 	if (!parentIndex.isValid())
 	{
-		Contact contact = buddyDefaultAccountData(index);
+		Contact contact = buddyDefaultContact(index);
 		return !contact.isNull() ? data(contact, role, true) : data(buddyAt(index), role);
 	}
 	else
-		return data(buddyAccountData(parentIndex, index.row()), role, false);
+		return data(buddyContact(parentIndex, index.row()), role, false);
 }
 
 // D&D

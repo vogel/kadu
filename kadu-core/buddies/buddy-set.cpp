@@ -8,6 +8,8 @@
  ***************************************************************************/
 
 #include "accounts/account-manager.h"
+#include "contacts/contact-manager.h"
+#include "contacts/contact-set.h"
 #include "buddies/buddy-list.h"
 
 #include "buddy-set.h"
@@ -26,14 +28,64 @@ BuddyList BuddySet::toBuddyList() const
 	return toList();
 }
 
-Account BuddySet::prefferedAccount()
+QList<Contact> BuddySet::toContactList(Account account) const
+{
+	Account acc(account.isNull() ? this->prefferedAccount() : account);
+
+	// if not have same account return empty list
+	if (acc.isNull())
+		return QList<Contact>();
+	
+	QList<Contact> contacts;
+	foreach (const Buddy &buddy, toList())
+	{
+		// TODO 0.6.6: change to buddy.contact(acc) ??
+		Contact tmp = ContactManager::instance()->byId(acc, buddy.id(acc));
+		if (tmp != Contact::null)
+			contacts.append(tmp);
+	}
+
+	return contacts;
+}
+
+ContactSet BuddySet::toContactSet(Account account) const
+{
+	Account acc(account.isNull() ? this->prefferedAccount() : account);
+
+	// if not have same account return empty list
+	if (acc.isNull())
+		return ContactSet();
+	
+	ContactSet contacts;
+	foreach (const Buddy &buddy, toList())
+	{
+		// TODO 0.6.6: change to buddy.contact(acc) ??
+		Contact tmp = ContactManager::instance()->byId(acc, buddy.id(acc));
+		if (tmp != Contact::null)
+			contacts.insert(tmp);
+	}
+
+	return contacts;
+
+}
+
+QList<Contact> BuddySet::toAllContactList() const
+{
+	QList<Contact> contacts;
+	foreach (const Buddy &buddy, toList())
+		contacts.append(buddy.contacts());
+
+	return contacts;
+}
+
+Account BuddySet::prefferedAccount() const
 {
 	QList<Account> accounts;
 	QList<Account> contactAccounts;
 	int contactsCount = count();
 	// TODO 0.6.6 - Rework it if more than 1 account on the same proto.
 
-	foreach (Buddy buddy, toList())
+	foreach (const Buddy &buddy, toList())
 	{
 		contactAccounts = buddy.accounts();
 		// one contact have no account = no common account
@@ -43,7 +95,7 @@ Account BuddySet::prefferedAccount()
 		accounts.append(contactAccounts);
 	}
 
-	foreach (Account account, AccountManager::instance()->accounts())
+	foreach (const Account &account, AccountManager::instance()->items())
 		if (contactsCount == accounts.count(account))
 			return account;
 

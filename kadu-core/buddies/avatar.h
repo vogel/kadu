@@ -13,19 +13,18 @@
 #include <QtCore/QDateTime>
 #include <QtGui/QPixmap>
 
-#include "shared/shared-base.h"
-
+#include "buddies/avatar-shared.h"
+#include "storage/shared-base.h"
 #include "exports.h"
 
-class AvatarShared;
 class Contact;
 class StoragePoint;
 
 class KADUAPI Avatar : public SharedBase<AvatarShared>
 {
-	Avatar(bool null);
 
 public:
+	static Avatar create();
 	static Avatar loadFromStorage(StoragePoint *storage);
 	static Avatar null;
 

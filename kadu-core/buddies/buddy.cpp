@@ -24,21 +24,20 @@
 
 #include "buddy.h"
 
-Buddy Buddy::null(true);
+Buddy Buddy::null;
 
-Buddy Buddy::loadFromStorage(StoragePoint* contactStoragePoint)
+Buddy Buddy::create()
 {
-	return Buddy(BuddyShared::loadFromStorage(contactStoragePoint));
+	return new BuddyShared();
 }
 
-Buddy::Buddy(bool null) :
-		SharedBase<BuddyShared>(null)
+Buddy Buddy::loadFromStorage(StoragePoint *contactStoragePoint)
 {
+	return BuddyShared::loadFromStorage(contactStoragePoint);
 }
 
 Buddy::Buddy()
 {
-	data()->setState(StorableObject::StateNew);
 }
 
 Buddy::Buddy(BuddyShared *data) :
@@ -47,8 +46,7 @@ Buddy::Buddy(BuddyShared *data) :
 	data->ref.ref();
 }
 
-Buddy::Buddy(QObject *data) :
-		SharedBase<BuddyShared>(true)
+Buddy::Buddy(QObject *data)
 {
 	BuddyShared *shared = dynamic_cast<BuddyShared *>(data);
 	if (shared)
@@ -123,15 +121,17 @@ void Buddy::removeContact(Contact contact) const
 		data()->removeContact(contact);
 }
 
-void Buddy::removeContact(Account account) const
+QList<Contact> Buddy::contacts(Account account) const
 {
-	if (!isNull())
-		data()->removeContact(account);
+	return isNull() ? QList<Contact>() : data()->contacts(account);
 }
 
-Contact Buddy::contact(Account account) const
+Contact Buddy::prefferedContact() const
 {
-	return isNull() ? Contact::null : data()->contact(account);
+	if (isNull() || 0 == contacts().count())
+		return Contact::null;
+
+	return data()->prefferedContact();
 }
 
 QList<Contact> Buddy::contacts() const
@@ -141,7 +141,7 @@ QList<Contact> Buddy::contacts() const
 
 bool Buddy::hasContact(Account account) const
 {
-	return isNull() ? false : !data()->contact(account).isNull();
+	return isNull() ? false : data()->contacts(account).count() > 0;
 }
 
 QString Buddy::id(Account account) const
@@ -186,7 +186,7 @@ QString Buddy::display() const
 
 Buddy Buddy::dummy()
 {
-	Buddy example;
+	Buddy example = Buddy::create();
 
 	example.setFirstName("Mark");
 	example.setLastName("Smith");
@@ -196,14 +196,13 @@ Buddy Buddy::dummy()
 	example.setEmail("jimbo@mail.server.net");
 	example.setHomePhone("+481234567890");
 
-	Account account = Account::null;
+	Account account;
 
 	if (!AccountManager::instance()->defaultAccount().isNull())
 		account = AccountManager::instance()->defaultAccount();
 	else if (ProtocolsManager::instance()->protocolFactories().count())
 	{
-		account.createData();
-		account.data()->setState(StorableObject::StateNew);
+		account = Account::create();
 		account.setProtocolName(ProtocolsManager::instance()->protocolFactories()[0]->name());
 		account.data()->protocolRegistered(ProtocolsManager::instance()->protocolFactories()[0]);
 		account.setDetails(ProtocolsManager::instance()->protocolFactories()[0]->createAccountDetails(account));
@@ -211,24 +210,22 @@ Buddy Buddy::dummy()
 
 	if (!account.isNull())
 	{
-		Contact contactData;
-		contactData.setContactAccount(account);
-		contactData.setOwnerBuddy(example);
-		contactData.setId("999999");
-		contactData.data()->setState(StorableObject::StateNew);
-		contactData.setCurrentStatus(Status("Away", tr("Example description")));
-		contactData.setAddress(QHostAddress(2130706433));
-		contactData.setPort(80);
-		contactData.setDetails(account.protocolHandler()->protocolFactory()->createContactDetails(contactData));
+		Contact contact = Contact::create();
+		contact.setContactAccount(account);
+		contact.setOwnerBuddy(example);
+		contact.setId("999999");
+		contact.setCurrentStatus(Status("Away", tr("Example description")));
+		contact.setAddress(QHostAddress(2130706433));
+		contact.setPort(80);
+		contact.setDetails(account.protocolHandler()->protocolFactory()->createContactDetails(contact.data()));
 
-		Avatar avatar;
-		avatar.data()->setState(StorableObject::StateNew);
+		Avatar avatar = Avatar::create();
 		avatar.setLastUpdated(QDateTime::currentDateTime());
 		avatar.setPixmap(IconsManager::instance()->loadPixmap("ContactsTab"));
 		avatar.setFileName("ContactsTab");
-		contactData.setContactAvatar(avatar);
+		contact.setContactAvatar(avatar);
 
-		example.addContact(contactData);
+		example.addContact(contact);
 
 		return example;
 	}

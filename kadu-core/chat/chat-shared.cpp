@@ -13,6 +13,7 @@
 #include "chat/chat-details.h"
 #include "chat/chat-manager.h"
 #include "configuration/configuration-file.h"
+#include "contacts/contact-set.h"
 #include "parser/parser.h"
 #include "debug.h"
 #include "icons-manager.h"
@@ -29,8 +30,7 @@ ChatShared * ChatShared::loadFromStorage(StoragePoint *storagePoint)
 }
 
 ChatShared::ChatShared(QUuid uuid) :
-		Shared(uuid, "Chat", ChatManager::instance()),
-		ChatAccount(Account::null), Details(0)
+		Shared(uuid), ChatAccount(Account::null)
 {
 }
 
@@ -39,12 +39,19 @@ ChatShared::~ChatShared()
 	triggerAllChatTypesUnregistered();
 }
 
+StorableObject * ChatShared::storageParent()
+{
+	return ChatManager::instance();
+}
+
+QString ChatShared::storageNodeName()
+{
+	return QLatin1String("Chat");
+}
+
 void ChatShared::load()
 {
 	if (!isValidStorage())
-		return;
-
-	if (!needsLoad())
 		return;
 
 	Shared::load();
@@ -55,7 +62,7 @@ void ChatShared::load()
 	triggerAllChatTypesRegistered();
 
 	if (ChatAccount)
-		connect(ChatAccount, SIGNAL(buddyStatusChanged(Account, Buddy, Status)),
+		connect(ChatAccount, SIGNAL(buddyStatusChanged(Contact, Status)),
 				this, SLOT(refreshTitle()));
 
 	refreshTitle();
@@ -72,6 +79,12 @@ void ChatShared::store()
 	storeValue("Account", ChatAccount.uuid().toString());
 }
 
+void ChatShared::aboutToBeRemoved()
+{
+	ChatAccount = Account::null;
+	setDetails(0);
+}
+
 void ChatShared::emitUpdated()
 {
 	emit updated();
@@ -79,31 +92,34 @@ void ChatShared::emitUpdated()
 
 void ChatShared::chatTypeRegistered(ChatType *chatType)
 {
-	if (Details)
+	if (details())
 		return;
 
 	if (chatType->name() != Type)
 		return;
 
-	Details = chatType->createChatDetails(this);
-	Details->ensureLoaded();
-
-	emit chatTypeLoaded();
+	setDetails(chatType->createChatDetails(this));
 }
 
 void ChatShared::chatTypeUnregistered(ChatType *chatType)
 {
-	if (!Details)
+	if (!details())
 		return;
 
 	if (chatType->name() != Type)
 		return;
 
-	Details->store();
-	delete Details;
-	Details = 0;
+	setDetails(0);
+}
 
-	emit chatTypeUnloaded();
+void ChatShared::detailsAdded()
+{
+	details()->ensureLoaded();
+}
+
+void ChatShared::detailsAboutToBeRemoved()
+{
+	details()->store();
 }
 
 void ChatShared::refreshTitle()
@@ -111,38 +127,27 @@ void ChatShared::refreshTitle()
 	kdebugf();
 	QString title;
 
-	int contactsSize = buddies().count();
+	int contactsSize = contacts().count();
 	kdebugmf(KDEBUG_FUNCTION_START, "contacts().size() = %d\n", contactsSize);
 	if (contactsSize > 1)
 	{
-		if (config_file.readEntry("Look","ConferencePrefix").isEmpty())
+		title = config_file.readEntry("Look","ConferencePrefix");
+		if (title.isEmpty())
 			title = tr("Conference with ");
-		else
-			title = config_file.readEntry("Look","ConferencePrefix");
-		int i = 0;
 
-		if (config_file.readEntry("Look", "ConferenceContents").isEmpty())
-			foreach (const Buddy &buddy, buddies())
-			{
-				title.append(Parser::parse("%a", ChatAccount, buddy, false));
-
-				if (++i < contactsSize)
-					title.append(", ");
-			}
-		else
-			foreach (const Buddy &buddy, buddies())
-			{
-				title.append(Parser::parse(config_file.readEntry("Look", "ConferenceContents"), ChatAccount, buddy, false));
-
-				if (++i < contactsSize)
-					title.append(", ");
-			}
+		QString conferenceContents = config_file.readEntry("Look", "ConferenceContents");
+		QStringList contactslist;
+		foreach (const Buddy &buddy, contacts().toBuddySet())
+			contactslist.append(Parser::parse(conferenceContents.isEmpty() ? "%a" : conferenceContents, ChatAccount, buddy, false));
+	
+		title.append(contactslist.join(", "));
 
  		Icon = IconsManager::instance()->loadPixmap("Online");
 	}
 	else if (contactsSize > 0)
 	{
-		Buddy buddy = *buddies().begin();
+		Contact contact = contacts().toContact();
+		Buddy buddy = contact.ownerBuddy();
 
 		if (config_file.readEntry("Look", "ChatContents").isEmpty())
 		{
@@ -154,8 +159,7 @@ void ChatShared::refreshTitle()
 		else
 			title = Parser::parse(config_file.readEntry("Look","ChatContents"), ChatAccount, buddy, false);
 
-		Contact contact = buddy.contact(ChatAccount);
-		if (!contact.isNull())
+		if (!contact.isNull() && ChatAccount.statusContainer())
 			Icon = ChatAccount.statusContainer()->statusPixmap(contact.currentStatus());
 	}
 
@@ -167,12 +171,12 @@ void ChatShared::refreshTitle()
 	kdebugf2();
 }
 
-BuddySet ChatShared::buddies() const
+ContactSet ChatShared::contacts() const
 {
-	return Details ? Details->buddies() : BuddySet();
+	return details() ? details()->contacts() : ContactSet();
 }
 
 QString ChatShared::name() const
 {
-	return Details ? Details->name() : QString::null;
+	return details() ? details()->name() : QString::null;
 }

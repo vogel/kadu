@@ -25,8 +25,7 @@ IdentityShared * IdentityShared::loadFromStorage(StoragePoint *storagePoint)
 }
 
 IdentityShared::IdentityShared(const QUuid &uuid) :
-		Shared(uuid, "Identity", IdentityManager::instance()),
-		BaseStatusContainer(this)
+		Shared(uuid), BaseStatusContainer(this)
 {
 }
 
@@ -34,12 +33,19 @@ IdentityShared::~IdentityShared()
 {
 }
 
+StorableObject * IdentityShared::storageParent()
+{
+	return IdentityManager::instance();
+}
+
+QString IdentityShared::storageNodeName()
+{
+	return QLatin1String("Identity");
+}
+
 void IdentityShared::load()
 {
 	if (!isValidStorage())
-		return;
-
-	if (!needsLoad())
 		return;
 
 	Shared::load();
@@ -84,6 +90,11 @@ void IdentityShared::store()
 	}
 	else
 		configurationStorage->removeNode(storage()->point(), "Accounts");
+}
+
+void IdentityShared::aboutToBeRemoved()
+{
+	Accounts = QList<Account>();
 }
 
 void IdentityShared::addAccount(Account account)

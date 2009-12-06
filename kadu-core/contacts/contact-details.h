@@ -12,22 +12,15 @@
 
 #include <QtCore/QObject>
 
-#include "contacts/contact.h"
-#include "configuration/storable-object.h"
+#include "contacts/contact-shared.h"
+#include "storage/details.h"
 
-class ContactShared;
-
-class ContactDetails : public QObject, public StorableObject
+class ContactDetails : public Details<ContactShared>
 {
-	Q_OBJECT
-
-	ContactShared *MyContactData;
 
 public:
-	explicit ContactDetails(ContactShared *contactData);
+	explicit ContactDetails(ContactShared *mainData);
 	virtual ~ContactDetails();
-
-	ContactShared *contactData() { return MyContactData; }
 
 };
 

@@ -146,10 +146,10 @@ void NotifyConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurat
 
 	statusGroupBox->addWidgets(0, notifyUsers);
 
-	foreach(Buddy buddy, BuddyManager::instance()->buddies())
+	foreach(Buddy buddy, BuddyManager::instance()->items())
 		if (!buddy.isAnonymous())
 		{
-			ContactNotifyData *cnd = buddy.moduleData<ContactNotifyData>();
+			ContactNotifyData *cnd = buddy.moduleData<ContactNotifyData>("notify");
 
 			if (!cnd || !cnd->notify())
 				allUsers->addItem(buddy.display());
@@ -244,13 +244,12 @@ void NotifyConfigurationUiHandler::configurationWindowApplied()
 		if (buddy.isNull() || buddy.isAnonymous())
 			continue;
 
-		ContactNotifyData *cnd = buddy.moduleData<ContactNotifyData>();
+		ContactNotifyData *cnd = buddy.moduleData<ContactNotifyData>("notify");
 		if (!cnd)
 			continue;
 
 		cnd->setNotify(true);
-		cnd->storeConfiguration();
-		delete cnd;
+		cnd->store();
 	}
 
 	count = allUsers->count();
@@ -260,13 +259,12 @@ void NotifyConfigurationUiHandler::configurationWindowApplied()
 		if (buddy.isNull() || buddy.isAnonymous())
 			continue;
 
-		ContactNotifyData *cnd = buddy.moduleData<ContactNotifyData>();
+		ContactNotifyData *cnd = buddy.moduleData<ContactNotifyData>("notify");
 		if (!cnd)
 			continue;
 
 		cnd->setNotify(false);
-		cnd->storeConfiguration();
-		delete cnd;
+		cnd->store();
 	}
 
 	foreach (NotifyEvent *notifyEvent, NotificationManager::instance()->notifyEvents())

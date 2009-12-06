@@ -53,7 +53,7 @@ ChatMessagesView::~ChatMessagesView()
 
 void ChatMessagesView::connectChat()
 {
-	if (CurrentChat.isNull() || CurrentChat.chatAccount().isNull())
+	if (CurrentChat.isNull() || CurrentChat.chatAccount().isNull() || !CurrentChat.chatAccount().protocolHandler())
 		return;
 
 	ChatImageService *chatImageService = CurrentChat.chatAccount().protocolHandler()->chatImageService();
@@ -64,7 +64,7 @@ void ChatMessagesView::connectChat()
 
 void ChatMessagesView::disconnectChat()
 {
-	if (CurrentChat.isNull() || CurrentChat.chatAccount().isNull())
+	if (CurrentChat.isNull() || CurrentChat.chatAccount().isNull() || !CurrentChat.chatAccount().protocolHandler())
 		return;
 	
 	ChatImageService *chatImageService = CurrentChat.chatAccount().protocolHandler()->chatImageService();

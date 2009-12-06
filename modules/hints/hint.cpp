@@ -13,6 +13,7 @@
 
 #include "chat/chat.h"
 #include "configuration/configuration-file.h"
+#include "contacts/contact-set.h"
 #include "misc/misc.h"
 #include "notify/chat-notification.h"
 #include "notify/notification.h"
@@ -138,7 +139,7 @@ void Hint::updateText()
 		kdebug("syntax is: %s, text is: %s\n", syntax.toAscii().data(), notification->text().toAscii().data());
 
 		if (CurrentChat)
-			text = Parser::parse(syntax, CurrentChat.chatAccount(), *CurrentChat.buddies().begin(), notification);
+			text = Parser::parse(syntax, CurrentChat.chatAccount(), (*CurrentChat.contacts().begin()).ownerBuddy(), notification);
 		else
 			text = Parser::parse(syntax, notification);
 		/* Dorr: the file:// in img tag doesn't generate the image on hint.

@@ -24,8 +24,7 @@
 #include "chat/chat-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"
-#include "buddies/buddy-manager.h"
-#include "debug.h"
+#include "contacts/contact-manager.h"
 #include "core/core.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/add-buddy-window.h"
@@ -34,6 +33,7 @@
 #include "gui/widgets/toolbar.h"
 #include "protocols/protocol.h"
 #include "protocols/services/search-service.h"
+#include "debug.h"
 
 #include "search-window.h"
 #include <protocols/protocol-factory.h>
@@ -207,8 +207,9 @@ SearchWindow::SearchWindow(QWidget *parent, Buddy buddy)
 	}
 	else
 	{
-		foreach (Account a, AccountManager::instance()->accounts())
+		foreach (Account a, AccountManager::instance()->items())
 		{
+			// TODO 0.6.6: !!!
 			if (a.protocolHandler()->isConnected() && a.protocolHandler()->protocolFactory()->name() == "gadu")
 			{
 				CurrentAccount = a;
@@ -216,17 +217,21 @@ SearchWindow::SearchWindow(QWidget *parent, Buddy buddy)
 			}
 		}
 		if (CurrentAccount.isNull())
-			CurrentAccount = AccountManager::instance()->accounts().at(0);
+			CurrentAccount = AccountManager::instance()->items().at(0);
 	}
 
-	CurrentSearchService = CurrentAccount.protocolHandler()->searchService();
+	if (CurrentAccount.protocolHandler())
+		CurrentSearchService = CurrentAccount.protocolHandler()->searchService();
+
 	if (CurrentSearchService)
 		connect(CurrentSearchService, SIGNAL(newResults(BuddyList)), this, SLOT(newSearchResults(BuddyList)));
 
 	if (!buddy.isNull())
 	{
 		CurrentSearchCriteria.SearchBuddy = buddy;
-		e_uin->insert(buddy.contact(CurrentAccount).id());
+		QList<Contact> contactslist = buddy.contacts(CurrentAccount);
+		Contact contact = contactslist.isEmpty() ? Contact::null : contactslist[0];
+		e_uin->insert(contact.id());
 	}
 
 	kdebugf2();
@@ -314,7 +319,7 @@ void SearchWindow::addFound()
 	foreach (Buddy buddy, found)
 	{
 		AddBuddyWindow *a = new AddBuddyWindow(this);
-		a->setContact(CurrentSearchCriteria.SearchBuddy);
+		a->setBuddy(CurrentSearchCriteria.SearchBuddy);
 		a->show();
 	}
 }
@@ -353,7 +358,7 @@ BuddySet SearchWindow::selected()
 	else
 		altnick = uin; // If above are empty, use uin.
 
-	Buddy e = BuddyManager::instance()->byId(CurrentAccount, uin);
+	Buddy e = ContactManager::instance()->byId(CurrentAccount, uin).ownerBuddy();
 
 	if (e.isAnonymous())
 	{
@@ -503,7 +508,8 @@ void SearchWindow::newSearchResults(BuddyList buddies)
 
 	foreach(Buddy buddy, buddies)
 	{
-		Contact contact = buddy.contact(CurrentAccount);
+		QList<Contact> contactslist = buddy.contacts(CurrentAccount);
+		Contact contact = contactslist.isEmpty() ? Contact::null : contactslist[0];
 		QList <QTreeWidgetItem *> items = results->findItems(contact.id(), Qt::MatchExactly, 1);
 		if (items.count())
 			qlv = items[0];		

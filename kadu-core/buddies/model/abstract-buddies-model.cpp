@@ -11,6 +11,7 @@
 #include <QtGui/QAbstractProxyModel>
 
 #include "buddies/buddy.h"
+#include "contacts/contact.h"
 #include "model/roles.h"
 
 #include "abstract-buddies-model.h"
@@ -22,4 +23,13 @@ Buddy AbstractBuddiesModel::buddyAt(const QModelIndex &index) const
 		return Buddy::null;
 
 	return conVariant.value<Buddy>();
+}
+
+Contact AbstractBuddiesModel::contactAt(const QModelIndex &index) const
+{
+	QVariant conVariant = index.data(ContactRole);
+	if (!conVariant.canConvert<Contact>())
+		return Contact::null;
+
+	return conVariant.value<Contact>();
 }
