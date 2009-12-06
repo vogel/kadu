@@ -60,9 +60,10 @@ protected:
 	virtual void detailsAdded();
 	virtual void detailsAboutToBeRemoved();
 	virtual void protocolUnregistered(ProtocolFactory *protocolHandler);
+
+public: //TODO 0.6.6: it is needed in Buddy::dummy()
 	virtual void protocolRegistered(ProtocolFactory *protocolHandler);
 
-public:
 	static AccountShared * loadFromStorage(StoragePoint *storagePoint);
 
 	explicit AccountShared(QUuid uuid = QUuid());

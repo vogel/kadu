@@ -186,7 +186,7 @@ QString Buddy::display() const
 
 Buddy Buddy::dummy()
 {
-	Buddy example;
+	Buddy example = Buddy::create();
 
 	example.setFirstName("Mark");
 	example.setLastName("Smith");
@@ -203,8 +203,6 @@ Buddy Buddy::dummy()
 	else if (ProtocolsManager::instance()->protocolFactories().count())
 	{
 		account = Account::create();
-// 		it should be now in StateNew, if not this is a BUG
-// 		account.data()->setState(StorableObject::StateNew);
 		account.setProtocolName(ProtocolsManager::instance()->protocolFactories()[0]->name());
 		account.data()->protocolRegistered(ProtocolsManager::instance()->protocolFactories()[0]);
 		account.setDetails(ProtocolsManager::instance()->protocolFactories()[0]->createAccountDetails(account));
@@ -212,24 +210,22 @@ Buddy Buddy::dummy()
 
 	if (!account.isNull())
 	{
-		Contact contactData;
-		contactData.setContactAccount(account);
-		contactData.setOwnerBuddy(example);
-		contactData.setId("999999");
-		contactData.data()->setState(StorableObject::StateNew);
-		contactData.setCurrentStatus(Status("Away", tr("Example description")));
-		contactData.setAddress(QHostAddress(2130706433));
-		contactData.setPort(80);
-		contactData.setDetails(account.protocolHandler()->protocolFactory()->createContactDetails(contactData));
+		Contact contact = Contact::create();
+		contact.setContactAccount(account);
+		contact.setOwnerBuddy(example);
+		contact.setId("999999");
+		contact.setCurrentStatus(Status("Away", tr("Example description")));
+		contact.setAddress(QHostAddress(2130706433));
+		contact.setPort(80);
+		contact.setDetails(account.protocolHandler()->protocolFactory()->createContactDetails(contact.data()));
 
-		Avatar avatar;
-		avatar.data()->setState(StorableObject::StateNew);
+		Avatar avatar = Avatar::create();
 		avatar.setLastUpdated(QDateTime::currentDateTime());
 		avatar.setPixmap(IconsManager::instance()->loadPixmap("ContactsTab"));
 		avatar.setFileName("ContactsTab");
-		contactData.setContactAvatar(avatar);
+		contact.setContactAvatar(avatar);
 
-		example.addContact(contactData);
+		example.addContact(contact);
 
 		return example;
 	}
