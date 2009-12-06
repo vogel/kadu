@@ -27,7 +27,7 @@ Chat ChatAggregatorBuilder::buildAggregateChat(BuddySet contacts)
 	QList<Chat> chats;
 	foreach (Account account, AccountManager::instance()->items())
 	{
-		Chat chat = ChatManager::instance()->findChat(contacts.toContactSet(), false);
+		Chat chat = ChatManager::instance()->findChat(contacts.toContactSet(account), false);
 		if (chat)
 			chats.append(chat);
 	}

@@ -12,13 +12,13 @@
 #include "chat/aggregate-chat.h"
 
 AggregateChat::AggregateChat(Chat chat) : 
-		Chat(chat)
+		Chat()
 {
 	Chats.append(chat);
 }
 
 AggregateChat::AggregateChat(QList<Chat> chats) :
-		Chat(chats.at(0)), Chats(chats)
+		Chat(), Chats(chats)
 {
 }
 
