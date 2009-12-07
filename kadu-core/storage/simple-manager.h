@@ -322,4 +322,8 @@ public:
 
 };
 
+/**
+ * @}
+ */
+
 #endif // SIMPLE_MANAGER_H
