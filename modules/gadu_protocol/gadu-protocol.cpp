@@ -122,9 +122,9 @@ unsigned int GaduProtocol::gaduStatusFromStatus(const Status &status)
 
 Buddy GaduProtocol::searchResultToBuddy(gg_pubdir50_t res, int number)
 {
-	Buddy result;
+	Buddy result = Buddy::create();
 
-	Contact contact;
+	Contact contact = Contact::create();
 	contact.setContactAccount(account());
 	contact.setOwnerBuddy(result);
 	contact.setId(gg_pubdir50_get(res, number, GG_PUBDIR50_UIN));
