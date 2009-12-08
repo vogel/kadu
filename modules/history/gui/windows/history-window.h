@@ -10,7 +10,9 @@
 #ifndef HISTORY_WINDOW_H
 #define HISTORY_WINDOW_H
 
+#include <QtGui/QDateEdit>
 #include <QtGui/QTreeWidget>
+
 
 #include "buddies/buddy-set.h"
 #include "gui/actions/action-description.h"
@@ -40,6 +42,10 @@ class HistoryWindow : public MainWindow
 	ChatNameFilter *NameFilter;
 
 	QMenu *DetailsPopupMenu;
+	QLabel *FromDateLabel;
+	QDateEdit *FromDate;
+	QLabel *ToDateLabel;
+	QDateEdit *ToDate;
 
 	ChatMessagesView* ContentBrowser;
 	QLineEdit *quickSearchPhraseEdit;
@@ -69,6 +75,7 @@ private slots:
 
 	void showMainPopupMenu(const QPoint &pos);
 	void showDetailsPopupMenu(const QPoint &pos);
+	void dateFilteringEnabled(int state);
 
 	void openChat();
 	void clearHistory();
