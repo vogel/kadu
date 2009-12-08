@@ -255,7 +255,7 @@ public:
 	 * @short Returns number of loaded items.
 	 * @return number of loaded items
 	 *
-	 * Return number of loaded items
+	 * Return number of loaded items.
 	 */
 	unsigned int count()
 	{
@@ -268,7 +268,7 @@ public:
 	 * @short Returns list of items.
 	 * @return list of items
 	 *
-	 * Return list of items
+	 * Return list of items.
 	 */
 	const QList<Item> items()
 	{
@@ -305,6 +305,8 @@ public:
 	 * Removes item from list. If item is not on list this method does nothing.
 	 * This method calls @link itemAboutToBeRemoved @endlink and @link itemRemoved
 	 * @endlink virtual methods.
+	 *
+	 * Item is removed from storage.
 	 */
 	void removeItem(Item item)
 	{
