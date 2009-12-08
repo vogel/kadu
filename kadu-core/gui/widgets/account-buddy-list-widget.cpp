@@ -124,17 +124,36 @@ void AccountBuddyListWidget::buddiesListImported(bool ok, BuddyList buddies)
 
 	foreach (Buddy onebuddy, buddies)
 	{
+		// TODO 0.6.6: foreach contact on contactslist ?
 		QList<Contact> contactslist = onebuddy.contacts(CurrentAccount);
-		Contact contact = contactslist.isEmpty() ? Contact::null : contactslist[0];
-		Buddy buddy = ContactManager::instance()->byId(CurrentAccount, contact.id()).ownerBuddy();
-		foreach (const Buddy &beforeImportBuddy, beforeImportList)
+		// TODO 0.6.6: dont continue and set buddy data - some of them could have only phone no.
+		if (contactslist.isEmpty())
+			continue;
+
+		Contact contact = contactslist[0];
+		Contact contactOnList = ContactManager::instance()->byId(CurrentAccount, contact.id());
+		Buddy buddy = contactOnList.ownerBuddy();
+
+		// not on list so create one
+		if (contactOnList.isNull())
 		{
-			contactslist = beforeImportBuddy.contacts(CurrentAccount);
-			contact = contactslist.isEmpty() ? Contact::null : contactslist[0];
-			if (!contact.isNull() && contact.id() == contact.id())
-					beforeImportList.removeOne(beforeImportBuddy);
+			buddy = Buddy::create();
+			// move contact to buddy
+			contact.setOwnerBuddy(buddy);
+		}
+		else // already on list
+		{
+			// it is very ugly part ... to rewrite
+			foreach (const Buddy &beforeImportBuddy, beforeImportList)
+			{
+				contactslist = beforeImportBuddy.contacts(CurrentAccount);
+				Contact contactOld = contactslist.isEmpty() ? Contact::null : contactslist[0];
+				if (!contact.isNull() && contact.id() == contactOld.id())
+						beforeImportList.removeOne(beforeImportBuddy);
+			}
 		}
 
+		// update rest data, consider to add some logic here
 		buddy.setFirstName(onebuddy.firstName());
 		buddy.setLastName(onebuddy.lastName());
 		buddy.setNickName(onebuddy.nickName());
@@ -159,6 +178,9 @@ void AccountBuddyListWidget::buddiesListImported(bool ok, BuddyList buddies)
 	}
 
 	MessageDialog::msg(tr("Your contact list has been successfully imported from server"), false, "Infromation", this);
+
+	// flush configuration to save all changes
+	ConfigurationManager::instance()->flush();
 
 	kdebugf2();
 }
