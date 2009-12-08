@@ -68,6 +68,9 @@ void BuddyManager::importConfiguration(XmlConfigFile *configurationStorage)
 
 		addItem(buddy);
 	}
+	
+	// flush configuration to save all changes
+	ConfigurationManager::instance()->flush();
 }
 
 void BuddyManager::load()
