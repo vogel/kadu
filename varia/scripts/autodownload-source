@@ -89,5 +89,5 @@ function autodownload()
 
 for name in $*;
 do
-	autodownload $name $type
+	autodownload `basename $name .web` $type
 done
