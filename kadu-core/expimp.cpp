@@ -388,7 +388,7 @@ void UserlistImportExport::ExportToFile(void)
 			{
 				QTextStream stream(&file);
 				stream.setCodec(codec_latin2);
-				stream << GaduListHelper::contactListToString(account, BuddyManager::instance()->buddies(account));
+				stream << GaduListHelper::buddyListToString(account, BuddyManager::instance()->buddies(account));
 				file.close();
 				MessageDialog::msg(tr("Your userlist has been successfully exported to file"), false, "Information", this);
 			}
