@@ -109,7 +109,7 @@ Buddy GaduListHelper::linePre70ToBuddy(Account account, QStringList &sections)
 {
 	QList<Group> groups;
 	unsigned int i, secCount;
-	bool ok;
+	bool ok = false;
 
 	Buddy buddy = Buddy::create();
 
@@ -126,7 +126,6 @@ Buddy GaduListHelper::linePre70ToBuddy(Account account, QStringList &sections)
 		groups.append(GroupManager::instance()->byName(sections[5]));
 
 	i = 6;
-	ok = false;
 	while (!ok && i < secCount)
 	{
 		sections[i].toULong(&ok);
@@ -195,8 +194,6 @@ Buddy GaduListHelper::line70ToBuddy(Account account, QStringList &sections)
 	QList<Group> groups;
 	unsigned int i, secCount;
 	bool ok = false;
-
-	kdebugm(KDEBUG_DUMP, "\n>==>%s", qPrintable(sections.join("|")));
 
 	Buddy buddy = Buddy::create();
 
