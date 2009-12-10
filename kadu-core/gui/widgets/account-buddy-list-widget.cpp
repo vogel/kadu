@@ -11,7 +11,10 @@
 #include <QtGui/QVBoxLayout>
 
 #include "buddies/buddy-manager.h"
+#include "buddies/buddy-shared.h"
 #include "contacts/contact.h"
+#include "contacts/contact-shared.h"
+#include "contacts/contact-details.h"
 #include "contacts/contact-manager.h"
 #include "buddies/model/buddies-model.h"
 #include "buddies/model/buddies-model-proxy.h"
@@ -120,40 +123,53 @@ void AccountBuddyListWidget::buddiesListImported(bool ok, BuddyList buddies)
 	if (!ok)
 		return;
 
-	BuddyList beforeImportList = BuddyManager::instance()->buddies(CurrentAccount, true);
+	QList<Contact> unImportedContacts;// = ContactManager::instance()->contacts(CurrentAccount);
 
-	foreach (Buddy onebuddy, buddies)
+	foreach (const Buddy &onebuddy, buddies)
 	{
-		// TODO 0.6.6: foreach contact on contactslist ?
-		QList<Contact> contactslist = onebuddy.contacts(CurrentAccount);
-		// TODO 0.6.6: dont continue and set buddy data - some of them could have only phone no.
-		if (contactslist.isEmpty())
-			continue;
+		Buddy buddy;
+		QList<Contact> oneBuddyContacts = onebuddy.contacts(CurrentAccount);
 
-		Contact contact = contactslist[0];
-		Contact contactOnList = ContactManager::instance()->byId(CurrentAccount, contact.id());
-		Buddy buddy = contactOnList.ownerBuddy();
-
-		// not on list so create one
-		if (contactOnList.isNull())
+		if (oneBuddyContacts.count() > 0)
 		{
-			buddy = Buddy::create();
-			// move contact to buddy
-			contact.setOwnerBuddy(buddy);
-		}
-		else // already on list
-		{
-			// it is very ugly part ... to rewrite
-			foreach (const Buddy &beforeImportBuddy, beforeImportList)
+			foreach (const Contact &contact, oneBuddyContacts)
 			{
-				contactslist = beforeImportBuddy.contacts(CurrentAccount);
-				Contact contactOld = contactslist.isEmpty() ? Contact::null : contactslist[0];
-				if (!contact.isNull() && contact.id() == contactOld.id())
-						beforeImportList.removeOne(beforeImportBuddy);
+				// TODO 0.6.6: somwhere bellow comes double contacts after 2nd import (double buddies, double contacts)
+				Contact contactOnList = ContactManager::instance()->byId(CurrentAccount, contact.id());
+				if (contactOnList.isNull()) // not on list add this one as new
+				{
+					buddy = Buddy::create();
+					// move contact to buddy
+					ContactManager::instance()->addItem(contact);
+					kdebugmf(KDEBUG_FUNCTION_START, "\nuuid add: '%s' %s\n",
+						 qPrintable(contactOnList.uuid().toString()), qPrintable(buddy.display()));
+					contact.setOwnerBuddy(buddy);
+				}
+				else // already on list
+				{
+					// found contact so use his buddy
+					//kdebugmf(KDEBUG_FUNCTION_START, "\nuuid before: '%s'\n", qPrintable(contactOnList.ownerBuddy().uuid().toString()));
+					buddy = contactOnList.ownerBuddy();
+					kdebugmf(KDEBUG_FUNCTION_START, "\nuuid owner: '%s' %s\n",
+						 qPrintable(contactOnList.uuid().toString()), qPrintable(buddy.display()));
+					//unImportedContacts.removeOne(contactOnList);
+				}
+			}
+		}
+		else
+		{
+			// THIS WORKS NICE
+			// find one by display, but what if display().isEmpty()?
+			buddy = BuddyManager::instance()->byDisplay(onebuddy.display());
+			if (buddy.isNull() || onebuddy.display().isEmpty())
+			{
+				// not found so add new one
+				buddy = Buddy::create();
 			}
 		}
 
-		// update rest data, consider to add some logic here
+		// TODO 0.6.6: update rest data, consider to add some logic here
+		// TODO 0.6.6: consider to find contact by some data if no contacts inside buddy
 		buddy.setFirstName(onebuddy.firstName());
 		buddy.setLastName(onebuddy.lastName());
 		buddy.setNickName(onebuddy.nickName());
@@ -167,14 +183,20 @@ void AccountBuddyListWidget::buddiesListImported(bool ok, BuddyList buddies)
 		BuddyManager::instance()->addItem(buddy);
 	}
 
-	if (!beforeImportList.isEmpty())
+	if (!unImportedContacts.isEmpty())
 	{
+		// create names list
 		QStringList contactsList;
-		foreach (Buddy c, beforeImportList)
-			contactsList.append(c.display());
+		foreach (const Contact &c, unImportedContacts)
+		{
+			QString display = c.ownerBuddy().display();
+			if (!contactsList.contains(display))
+				contactsList.append(display);
+		}
+
 		if (MessageDialog::ask(tr("Following contacts from your list were not found on server: %0.\nDo you want to remove them from contacts list?").arg(contactsList.join(", "))))
-			foreach (Buddy c, beforeImportList)
-				BuddyManager::instance()->removeItem(c);
+			foreach (const Contact &c, unImportedContacts)
+				ContactManager::instance()->removeItem(c);
 	}
 
 	MessageDialog::msg(tr("Your contact list has been successfully imported from server"), false, "Infromation", this);
