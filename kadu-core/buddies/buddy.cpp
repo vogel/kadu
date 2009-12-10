@@ -229,6 +229,7 @@ Buddy Buddy::dummy()
 
 		return example;
 	}
+
 	return null;
 }
 
