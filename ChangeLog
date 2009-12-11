@@ -6,6 +6,8 @@ Je¶li jest w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * wsparcie dla Haiku OS (kaliber/dorr)
 * wsparcie dla protoko³u gg8 (libgadu 1.9.0) (dorr)
 * dalsze poprawki w wyszukiwaniu w historii (dorr)
+* komunikaty s± wy¶wietlane na ¶rodku ekranu nie w lewym górnym rogu (dorr)
+* dodany automatyczny focus na polu edycji w oknie Rozpocznij rozmowê z (dorr)
 * poprawiona kompilacja modu³ów zale¿nych od QtDBus (reavertm/dorr)
 * od¶wie¿one okno "O programie" (dorr)
 * mo¿liwo¶æ dodania przycisków sterujacych odtwarzaczem przez modu³y mediaplayer (dorr)
@@ -13,6 +15,7 @@ Je¶li jest w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * usuniête kilka warningów przy kompilacji (neeo)
 * dodany nowy modu³ mpris_mediaplayer dodaj±cy wsparcie dla odtwarzaczy z obs³ug± standardu MPRIS (dorr)
 * modu³ speech zosta³ naprawiony (uzi)
+* modu³ ext_notify zosta³ rozszerzony o mo¿liwo¶æ przekazania tre¶ci wiadomo¶ci do zewnêtznej aplikacji (uzi)
 * poprawione kodowanie polskich znaków w module encryption i encryption_old (dorr)
 * poprawki ró¿nych drobnych b³êdów
 
