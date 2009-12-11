@@ -80,7 +80,8 @@ MessageBox::MessageBox(const QString &message, int components, bool modal, const
 
 	/* center on screen */
 	resize(sizeHint());
-	move(QApplication::desktop()->screenGeometry().center() - geometry().center());
+	QDesktopWidget *desktop = QApplication::desktop();
+	move(desktop->screenGeometry(desktop->screenNumber(this)).center() - geometry().center());
 
 	kdebugf2();
 }
