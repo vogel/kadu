@@ -28,26 +28,6 @@ BuddyList BuddySet::toBuddyList() const
 	return toList();
 }
 
-QList<Contact> BuddySet::toContactList(Account account) const
-{
-	Account acc(account.isNull() ? this->prefferedAccount() : account);
-
-	// if not have same account return empty list
-	if (acc.isNull())
-		return QList<Contact>();
-	
-	QList<Contact> contacts;
-	foreach (const Buddy &buddy, toList())
-	{
-		// TODO 0.6.6: change to buddy.contact(acc) ??
-		Contact tmp = ContactManager::instance()->byId(acc, buddy.id(acc));
-		if (tmp != Contact::null)
-			contacts.append(tmp);
-	}
-
-	return contacts;
-}
-
 ContactSet BuddySet::toContactSet(Account account) const
 {
 	Account acc(account.isNull() ? this->prefferedAccount() : account);

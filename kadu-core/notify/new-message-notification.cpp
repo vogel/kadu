@@ -62,7 +62,7 @@ MessageNotification::MessageNotification(MessageType messageType, const Message 
 		syntax = tr("New message from <b>%1</b>");
 	}
 
-	setText(syntax.arg(Qt::escape(message.sender().display())));
+	setText(syntax.arg(Qt::escape(message.sender().ownerBuddy().display())));
 	setDetails(message.content());
 }
 

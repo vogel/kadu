@@ -299,7 +299,7 @@ void ChatStylesManager::preparePreview(Preview *preview)
 
 	connect(preview, SIGNAL(destroyed(QObject *)), chat, SLOT(deleteLater()));
 
-	Message messageSent(chat, Message::TypeSent, Core::instance()->myself());
+	Message messageSent(chat, Message::TypeSent, Core::instance()->myself().contacts()[0]);
 	messageSent
 		.setContent(tr("Your message"))
 		.setReceiveDate(QDateTime::currentDateTime())
@@ -309,7 +309,7 @@ void ChatStylesManager::preparePreview(Preview *preview)
 	messageRenderInfo->setSeparatorSize(CfgHeaderSeparatorHeight);
 	preview->addObjectToParse(Core::instance()->myself(), messageRenderInfo);
 
-	Message messageReceived(chat, Message::TypeReceived, example);
+	Message messageReceived(chat, Message::TypeReceived, example.contacts()[0]);
 	messageReceived
 		.setContent(tr("Message from Your friend"))
 		.setReceiveDate(QDateTime::currentDateTime())

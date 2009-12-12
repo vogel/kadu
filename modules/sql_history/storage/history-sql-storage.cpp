@@ -188,7 +188,7 @@ void HistorySqlStorage::appendMessage(const Message &message)
 	record.setValue("receive_time", message.receiveDate());
 	record.setValue("content", message.content());
 
-	QString outgoing = (message.sender() == Core::instance()->myself())
+	QString outgoing = (message.sender().ownerBuddy() == Core::instance()->myself())
 			? "1"
 			: "0";
 	record.setValue("attributes", QString("outgoing=%1").arg(outgoing));
@@ -401,7 +401,14 @@ QList<Message> HistorySqlStorage::messagesFromQuery(Chat chat, QSqlQuery query)
 	{
 		bool outgoing = QVariant(query.value(4).toString().split('=').last()).toBool();
 		Message::Type type = outgoing ? Message::TypeSent : Message::TypeReceived;
-		Buddy sender = outgoing ? Core::instance()->myself() : BuddyManager::instance()->byUuid(query.value(0).toString());
+		Buddy senderBuddy = outgoing ? Core::instance()->myself() : BuddyManager::instance()->byUuid(query.value(0).toString());
+		QList<Contact> contacts = senderBuddy.contacts(chat.chatAccount());
+		Contact sender;
+
+		if (!contacts.isEmpty())
+			sender = contacts[0];
+		else
+			continue;
 		
 		Message message(chat, type, sender);
 		message

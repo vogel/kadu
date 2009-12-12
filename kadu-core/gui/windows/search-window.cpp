@@ -201,7 +201,7 @@ SearchWindow::SearchWindow(QWidget *parent, Buddy buddy)
 
 	loadWindowGeometry(this, "General", "SearchWindowGeometry", 0, 50, 800, 350);
 
-	if (Buddy::null != buddy)
+	if (buddy)
 	{
 		CurrentAccount = buddy.prefferedAccount();
 	}

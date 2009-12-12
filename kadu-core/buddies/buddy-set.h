@@ -33,10 +33,9 @@ public:
 
 	BuddyList toBuddyList() const;
 	// return list of Contacts on prefferedAccount
-	QList<Contact> toContactList(Account account = Account::null) const;
 	ContactSet toContactSet(Account account = Account::null) const;
 	QList<Contact> toAllContactList() const;
-	// return same Account (or null) for all buddies 
+	// return same Account (or null) for all buddies
 	Account prefferedAccount() const;
 
 };

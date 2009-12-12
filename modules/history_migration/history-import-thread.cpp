@@ -13,6 +13,7 @@
 #include "chat/chat.h"
 #include "chat/chat-manager.h"
 #include "chat/message/message.h"
+#include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact-shared.h"
 #include "core/core.h"
@@ -90,7 +91,9 @@ void HistoryImportThread::importEntry(Chat chat, const HistoryEntry &entry)
 	Message msg;
 	msg
 		.setChat(chat)
-		.setSender(outgoing ? Core::instance()->myself() : GaduAccount.getBuddyById(id))
+		.setSender(outgoing
+				? Core::instance()->myself().contacts(GaduAccount)[0]
+				: ContactManager::instance()->byId(GaduAccount, id))
 		.setContent(entry.message)
 		.setSendDate(entry.sdate)
 		.setReceiveDate(entry.date);

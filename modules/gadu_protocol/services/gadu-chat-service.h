@@ -29,13 +29,13 @@ class GaduChatService : public ChatService
 	friend class GaduProtocolSocketNotifiers;
 
 	bool isSystemMessage(struct gg_event *e);
-	Buddy getSender(struct gg_event *e);
+	Contact getSender(struct gg_event *e);
 	bool ignoreSender(gg_event *e, Buddy sender);
-	BuddySet getRecipients(struct gg_event *e);
+	ContactSet getRecipients(struct gg_event *e);
 	QString getContent(struct gg_event *e);
-	bool ignoreRichText(struct gg_event *e, Buddy sender);
-	bool ignoreImages(struct gg_event *e, Buddy sender);
-	FormattedMessage createFormattedMessage(struct gg_event *e, Buddy sender);
+	bool ignoreRichText(struct gg_event *e, Contact sender);
+	bool ignoreImages(struct gg_event *e, Contact sender);
+	FormattedMessage createFormattedMessage(struct gg_event *e, Contact sender);
 
 	void removeTimeoutUndeliveredMessages();
 

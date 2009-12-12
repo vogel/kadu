@@ -381,9 +381,9 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, QString &styleHref, QSt
 	Message msg = message->message();
 
 	// Replace sender (contact nick)
-	result.replace(QString("%sender%"), msg.sender().display());
+	result.replace(QString("%sender%"), msg.sender().ownerBuddy().display());
 	// Replace %screenName% (contact ID)
-	result.replace(QString("%senderScreenName%"), msg.sender().id(chat.chatAccount()));
+	result.replace(QString("%senderScreenName%"), msg.sender().id());
 	// Replace service name (protocol name)
 	if (chat.chatAccount().protocolHandler() && chat.chatAccount().protocolHandler()->protocolFactory())
 		result.replace(QString("%service%"), chat.chatAccount().protocolHandler()->protocolFactory()->displayName());
@@ -414,10 +414,8 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, QString &styleHref, QSt
 	{
 		result.replace(QString("%messageClasses%"), "message incoming");
 
-		QList<Contact> contactslist = msg.sender().contacts(chat.chatAccount());
-		Contact contact = contactslist.isEmpty() ? Contact::null : contactslist[0];
-		if (!contact.isNull() && !contact.contactAvatar().pixmap().isNull())
-			photoPath = QString("file://") + contact.contactAvatar().filePath();
+		if (!msg.sender().contactAvatar().pixmap().isNull())
+			photoPath = QString("file://") + msg.sender().contactAvatar().filePath();
 		else
 			photoPath = QString("file://") + styleHref + QString("Incoming/buddy_icon.png");
 	}
