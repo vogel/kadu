@@ -494,12 +494,12 @@ void HistoryWindow::keyPressEvent(QKeyEvent *e)
 		QWidget::keyPressEvent(e);
 }
 
-BuddySet HistoryWindow::buddies()
+ContactSet HistoryWindow::contacts()
 {
 	Chat chat = ChatsTree->currentIndex().data(ChatRole).value<Chat>();
 	if (!chat)
-		return BuddySet();
-	return chat.contacts().toBuddySet();
+		return ContactSet();
+	return chat.contacts();
 }
 
 void HistoryWindow::dateFilteringEnabled(int state)

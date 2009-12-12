@@ -121,7 +121,7 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 		config_file.writeEntry("Notify", "NotifyAboutAll", false);
 	}
 
-	BuddySet buddies = window->buddies();
+	BuddySet buddies = window->contacts().toBuddySet();
 
 	bool on = true;
 	foreach (const Buddy buddy, buddies)
@@ -154,7 +154,7 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 	}
 
 	foreach (Action *action, notifyAboutUserActionDescription->actions())
-		if (action->buddies() == buddies)
+		if (action->contacts().toBuddySet() == buddies)
 			action->setChecked(!on);
 
 	kdebugf2();
@@ -435,17 +435,10 @@ void checkNotify(Action *action)
 {
 	kdebugf();
 
-	foreach(Buddy buddy, action->buddies())
-		if (!buddy.hasContact(buddy.prefferedAccount()))
-		{
-			action->setEnabled(false);
-			return;
-		}
-
 	action->setEnabled(true);
 
 	bool on = true;
-	foreach (const Buddy buddy, action->buddies())
+	foreach (const Buddy buddy, action->contacts().toBuddySet())
 	{
 		ContactNotifyData *cnd = buddy.moduleData<ContactNotifyData>("notify");
 

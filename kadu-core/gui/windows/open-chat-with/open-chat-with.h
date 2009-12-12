@@ -38,7 +38,7 @@ class KADUAPI OpenChatWith : public QWidget
 private slots:
 	void inputAccepted();
 	void inputChanged(const QString &text);
-	void openChat(Buddy buddy);
+	void openChat();
 
 protected:
 	virtual void keyPressEvent(QKeyEvent *e);
