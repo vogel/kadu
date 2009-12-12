@@ -28,35 +28,11 @@ BuddyList BuddySet::toBuddyList() const
 	return toList();
 }
 
-QList<Contact> BuddySet::toAllContactList() const
+QList<Contact> BuddySet::getAllContacts() const
 {
-	QList<Contact> contacts;
+	QList<Contact> allContacts;
 	foreach (const Buddy &buddy, toList())
-		contacts.append(buddy.contacts());
+		allContacts.append(buddy.contacts());
 
-	return contacts;
-}
-
-Account BuddySet::prefferedAccount() const
-{
-	QList<Account> accounts;
-	QList<Account> contactAccounts;
-	int contactsCount = count();
-	// TODO 0.6.6 - Rework it if more than 1 account on the same proto.
-
-	foreach (const Buddy &buddy, toList())
-	{
-		contactAccounts = buddy.accounts();
-		// one contact have no account = no common account
-		if (0 == contactAccounts.count())
-			return Account::null;
-
-		accounts.append(contactAccounts);
-	}
-
-	foreach (const Account &account, AccountManager::instance()->items())
-		if (contactsCount == accounts.count(account))
-			return account;
-
-	return Account::null;
+	return allContacts;
 }
