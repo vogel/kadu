@@ -88,7 +88,7 @@ class KADUAPI SearchWindow : public MainWindow
 
 	bool isPersonalDataEmpty() const;
 
-	BuddySet selected();
+	ContactSet selected();
 
 	QTreeWidgetItem * selectedItem();
 

@@ -25,6 +25,7 @@
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"
 #include "contacts/contact-manager.h"
+#include "contacts/contact-set.h"
 #include "core/core.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/add-buddy-window.h"
@@ -314,9 +315,7 @@ QTreeWidgetItem * SearchWindow::selectedItem()
 
 void SearchWindow::addFound()
 {
-	BuddyList found = selected().toBuddyList();
-
-	foreach (Buddy buddy, found)
+	foreach (Buddy buddy, selected().toBuddySet().toList())
 	{
 		AddBuddyWindow *a = new AddBuddyWindow(this);
 		a->setBuddy(CurrentSearchCriteria.SearchBuddy);
@@ -326,10 +325,10 @@ void SearchWindow::addFound()
 
 void SearchWindow::chatFound()
 {
-	BuddySet contacts = selected();
+	ContactSet contacts = selected();
 	if (contacts.count() > 0)
 	{
-		Chat chat = (*contacts.begin()).prefferedAccount().protocolHandler()->findChat(contacts);
+		Chat chat = ChatManager::instance()->findChat(contacts, true);
 		if (chat)
 			ChatWidgetManager::instance()->openChatWidget(chat, true);
 	}
@@ -337,9 +336,9 @@ void SearchWindow::chatFound()
 }
 
 // TODO: return real list
-BuddySet SearchWindow::selected()
+ContactSet SearchWindow::selected()
 {
-	BuddySet result;
+	ContactSet result;
 
 	QTreeWidgetItem *selected = selectedItem();
 
@@ -358,7 +357,13 @@ BuddySet SearchWindow::selected()
 	else
 		altnick = uin; // If above are empty, use uin.
 
-	Buddy e = ContactManager::instance()->byId(CurrentAccount, uin).ownerBuddy();
+	Contact contact = ContactManager::instance()->byId(CurrentAccount, uin, true);
+	Buddy e = contact.ownerBuddy();
+	if (e.isNull())
+	{
+		e = Buddy::create();
+		contact.setOwnerBuddy(e);
+	}
 
 	if (e.isAnonymous())
 	{
@@ -367,7 +372,7 @@ BuddySet SearchWindow::selected()
 		e.setDisplay(altnick);
 	}
 
-	result.insert(e);
+	result.insert(contact);
 	return result;
 }
 

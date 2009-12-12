@@ -25,7 +25,7 @@ public:
 	//ChatAggregatorBuilder(QList<Chat> chats);
 	virtual ~ChatAggregatorBuilder();
 
-	static Chat  buildAggregateChat(BuddySet contacts);
+	static Chat  buildAggregateChat(BuddySet buddies);
 /*
 	virtual void load();
 	virtual void store();

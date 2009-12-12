@@ -92,8 +92,6 @@ public:
 
 	virtual bool validateUserID(QString &uid) = 0;
 
-	Chat findChat(BuddySet contacts, bool create = true);
-
 	NetworkState state() { return State; }
 	bool isConnected() { return (State == NetworkConnected); }
 
