@@ -91,7 +91,7 @@ ProfileManager::~ProfileManager()
 }
 
 QString ProfileManager::dirString() {
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN)
 	return ggPath() + "kadupro\\clones\\";
 #else
 	return ggPath() + "kadupro/clones/";
@@ -286,7 +286,9 @@ void ProfileManager::runAutostarted()
 		if (p.autostart == true)
 		{
 			QString profilePath = p.directory;
-#ifndef Q_OS_WIN
+#if defined(Q_OS_MAC)
+			profilePath = profilePath.right(profilePath.length() - profilePath.find("Library"));
+#elif !defined(Q_OS_WIN)
 			profilePath = profilePath.right(profilePath.length() - profilePath.find(".kadu"));
 #endif
 			runKadu(profilePath, p.protectPassword);
@@ -362,7 +364,9 @@ void ProfileManager::openProfile(int index)
 
 	Profile p = list.at(index);
 	QString profilePath = p.directory;
-#ifndef Q_OS_WIN
+#if defined(Q_OS_MAC)
+	profilePath = profilePath.right(profilePath.length() - profilePath.find("Library"));
+#elif !defined(Q_OS_WIN)
 	profilePath = profilePath.right(profilePath.length() - profilePath.find(".kadu"));
 #endif
 	runKadu(profilePath, p.protectPassword);
@@ -494,7 +498,9 @@ void ProfileConfigurationWindow::openBtnPressed()
 	if (profileName->text().compare("") == 0) return;
 	
 	QString profilePath = this->profileDir->text();
-#ifndef Q_OS_WIN
+#if defined(Q_OS_MAC)
+	profilePath = profilePath.right(profilePath.length() - profilePath.find("Library"));
+#elif !defined(Q_OS_WIN)
 	profilePath = profilePath.right(profilePath.length()-profilePath.find(".kadu"));
 #endif
 	//uruchom kadu w nowym watku
@@ -591,7 +597,11 @@ void ProfileConfigurationWindow::saveBtnPressed()
 		}
 	
 		//zapisujemy konfiguracje do nowego pliku
-		xml_config_file->saveTo(profileDir->text()+"/kadu/"+kaduConfFile);		
+#ifdef Q_OS_MAC
+		xml_config_file->saveTo(profileDir->text()+"/Kadu/"+kaduConfFile);
+#else
+		xml_config_file->saveTo(profileDir->text()+"/kadu/"+kaduConfFile);
+#endif
 		delete xml_config_file;
 	//}
 	
