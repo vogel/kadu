@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include "accounts/account.h"
+#include "accounts/account-details.h"
 #include "accounts/account-manager.h"
 #include "configuration/configuration-manager.h"
 #include "configuration/xml-configuration-file.h"
@@ -206,9 +207,12 @@ Buddy Buddy::dummy()
 	else if (ProtocolsManager::instance()->protocolFactories().count())
 	{
 		account = Account::create();
-		account.setProtocolName(ProtocolsManager::instance()->protocolFactories()[0]->name());
-		account.data()->protocolRegistered(ProtocolsManager::instance()->protocolFactories()[0]);
-		account.setDetails(ProtocolsManager::instance()->protocolFactories()[0]->createAccountDetails(account));
+		ProtocolFactory *firstProto = ProtocolsManager::instance()->protocolFactories().first() ;
+		AccountDetails *accDetails = firstProto->createAccountDetails(account);
+		accDetails->setState(StorableObject::StateNew);
+		account.setDetails(accDetails);
+		// TODO 0.6.6: set proto name after setting details becouse of crash
+		account.setProtocolName(firstProto->name());
 	}
 
 	if (!account.isNull())
