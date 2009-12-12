@@ -1475,6 +1475,10 @@ bool Kadu::close(bool quit)
 		}
 		if (config_file.readBoolEntry("Look", "ShowStatusButton"))
 			config_file.writeEntry("General", "UserBoxHeight", Userbox->height());
+#ifdef Q_OS_MAC
+		/* workaround for: http://bugreports.qt.nokia.com/browse/QTBUG-1767 */
+		move(x(), y()-42);
+#endif
  		saveWindowGeometry(this, "General", "Geometry");
 
 		if (wasHidden) hide(); /* Dorr: now we can hide it again */
