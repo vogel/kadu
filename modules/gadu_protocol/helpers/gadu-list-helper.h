@@ -14,6 +14,7 @@ class QString;
 class QTextStream;
 
 class Account;
+class Buddy;
 class BuddyList;
 
 class GaduListHelper

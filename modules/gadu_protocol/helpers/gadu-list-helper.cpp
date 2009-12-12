@@ -144,18 +144,13 @@ Buddy GaduListHelper::linePre70ToBuddy(Account account, QStringList &sections)
 			uin = 0;
 		if (uin)
 		{
-			Contact contact = ContactManager::instance()->byId(account, QString::number(uin));
-			if (contact.isNull())
-			{
-				contact = Contact::create();
-				contact.setContactAccount(account);
-				GaduContactDetails *details = new GaduContactDetails(contact);
-				details->setState(StorableObject::StateNew);
-				contact.setDetails(details);
-				contact.setId(QString::number(uin));
-				contact.data()->setState(StorableObject::StateNew);
-			}
-
+			Contact contact = Contact::create();
+			contact.setContactAccount(account);
+			GaduContactDetails *details = new GaduContactDetails(contact.data());
+			details->setState(StorableObject::StateNew);
+			contact.setDetails(details);
+			contact.setId(QString::number(uin));
+			contact.data()->setState(StorableObject::StateNew);
 			contact.setOwnerBuddy(buddy);
 			buddy.addContact(contact);
 		}
@@ -221,18 +216,13 @@ Buddy GaduListHelper::line70ToBuddy(Account account, QStringList &sections)
 			uin = 0;
 		if (uin)
 		{
-			Contact contact = ContactManager::instance()->byId(account, QString::number(uin));
-			if (contact.isNull())
-			{
-				contact = Contact::create();
-				contact.setContactAccount(account);
-				GaduContactDetails *details = new GaduContactDetails(contact);
-				details->setState(StorableObject::StateNew);
-				contact.setDetails(details);
-				contact.setId(QString::number(uin));
-				contact.data()->setState(StorableObject::StateNew);
-			}
-
+			Contact contact = Contact::create();
+			contact.setContactAccount(account);
+			GaduContactDetails *details = new GaduContactDetails(contact.data());
+			details->setState(StorableObject::StateNew);
+			contact.setDetails(details);
+			contact.setId(QString::number(uin));
+			contact.data()->setState(StorableObject::StateNew);
 			contact.setOwnerBuddy(buddy);
 			buddy.addContact(contact);
 		}
