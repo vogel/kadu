@@ -37,6 +37,7 @@
 #include "gui/windows/main-configuration-window.h"
 
 #include "chat/message/message.h"
+#include "chat/chat-manager.h"
 #include "debug.h"
 #include "icons-manager.h"
 #include "status/status.h"
@@ -295,7 +296,7 @@ bool TlenProtocol::sendMessage(Chat chat, FormattedMessage &formattedMessage)
 
 	HtmlDocument::escapeText(plain);
 
-	Message message(chat, Message::TypeSent, Core::instance()->myself());
+	Message message(chat, Message::TypeSent, ContactManager::instance()->byId(account(), account().id(), true));
 	message
 		.setContent(plain)
 		.setSendDate(QDateTime::currentDateTime())
@@ -343,9 +344,8 @@ void TlenProtocol::chatMsgReceived(QDomNode n)
 	//		w->displayMsg(Tlen->decode(body.toUtf8()),timeStamp);
 
 	// TODO - zaimplementowac to samo w ContactList
-	Buddy buddy = account().getBuddyById(TlenClient->decode(from));
-	//Contact contact = 
-	BuddySet contacts = BuddySet(buddy);
+	Contact contact = ContactManager::instance()->byId(account(), TlenClient->decode(from), true);
+	ContactSet contacts = ContactSet(contact);
 
 	time_t msgtime = timeStamp.toTime_t();
 	FormattedMessage formattedMessage(TlenClient->decode(body));
@@ -355,14 +355,14 @@ void TlenProtocol::chatMsgReceived(QDomNode n)
 	kdebugm(KDEBUG_WARNING, "Tlen message to %s\n%s", qPrintable(from), qPrintable(body));
 
 	// TODO  : contacts?
-	Chat chat = this->findChat(contacts);
-	emit receivedMessageFilter(chat, buddy, formattedMessage.toPlain(), msgtime, ignore);
+	Chat chat = ChatManager::instance()->findChat(contacts);
+	emit receivedMessageFilter(chat, contact, formattedMessage.toPlain(), msgtime, ignore);
 	if (ignore)
 		return;
 
 	HtmlDocument::escapeText(plain);
 
-	Message message(chat, Message::TypeReceived, buddy);
+	Message message(chat, Message::TypeReceived, contact);
 	message
 		.setContent(plain)
 		.setSendDate(timeStamp)
