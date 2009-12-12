@@ -22,6 +22,7 @@ class Account;
 
 class KADUAPI Identity : public SharedBase<IdentityShared>
 {
+	KaduSharedBaseClass(Identity)
 
 public:
 	static Identity create();
@@ -33,12 +34,6 @@ public:
 	Identity(QObject *data);
 	Identity(const Identity &copy);
 	virtual ~Identity();
-
-	Identity & operator = (const Identity &copy)
-	{
-		SharedBase<IdentityShared>::operator=(copy);
-		return *this;
-	}
 
 	void addAccount(Account account);
 	void removeAccount(Account account);

@@ -23,6 +23,48 @@
 
 /**
  * @author Rafal 'Vogel' Malinowski
+ * @short Declares standard interface for SharedBase class. Use this macro in each SharedBase subclass declaration.
+ * @param className name of defined class
+ *
+ * Declares operators for SharedBase subclass.
+ */
+#define KaduSharedBaseClass(className)\
+public:\
+	className & operator = (const className &copy);\
+\
+	bool operator == (const className &compare) const\
+	{\
+		return data() == compare.data();\
+	}\
+\
+	bool operator != (const className &compare) const\
+	{\
+		return data() != compare.data();\
+	}\
+\
+	int operator < (const className &compare) const\
+	{\
+		return data() < compare.data();\
+	}\
+private:
+
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Defines standard interface for SharedBase class. Use this macro in each SharedBase subclass definition file.
+ * @param className name of defined class
+ *
+ * Defines operators for SharedBase subclass.
+ */
+#define KaduSharedBaseClassImpl(className)\
+	className & className::operator = (const className &copy)\
+	{\
+		setData(copy.data());\
+		return *this;\
+	}\
+	
+
+/**
+ * @author Rafal 'Vogel' Malinowski
  * @short Declares getter for given property of SharedBase's Shared class.
  * @param type type of property
  * @param name name of getter
@@ -313,7 +355,7 @@ public:
 	 *
 	 * Returns data object. Allows for use SharedBase as T * variables.
 	 */
-	operator T * () const // allow using SharedBase classes like Shared *
+	operator T * () const
 	{
 		return Data.data();
 	}
@@ -354,46 +396,6 @@ public:
 	bool isNull() const
 	{
 		return !Data.data();
-	}
-
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Cloned data from given object.
-	 *
-	 * Clones data from given object. Own data is lost (and its reference counter is decreased).
-	 * Reference counter of cloned data is increatsed.
-	 */
-	void clone(const SharedBase<T> &copy)
-	{
-		Data = copy.Data;
-	}
-
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Copies object.
-	 * @param copy object that will be copied
-	 * @return this object
-	 *
-	 * Clones data from given object. Own data is lost (and its reference counter is decreased).
-	 * Reference counter of cloned data is increatsed. Returns assigned object.
-	 */
-	SharedBase<T> & operator = (const SharedBase<T> &copy)
-	{
-		clone(copy);
-		return *this;
-	}
-
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Check if two objects are equal.
-	 * @param compare object to compare with
-	 * @return true, if two objects are identical
-	 *
-	 * Returns true if two objects contains the same data object (or both are null).
-	 */
-	bool operator == (const SharedBase<T> &compare) const
-	{
-		return Data == compare.Data;
 	}
 
 	/**

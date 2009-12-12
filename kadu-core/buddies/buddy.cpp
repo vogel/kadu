@@ -24,6 +24,8 @@
 
 #include "buddy.h"
 
+KaduSharedBaseClassImpl(Buddy)
+
 Buddy Buddy::null;
 
 Buddy Buddy::create()
@@ -64,7 +66,8 @@ Buddy::~Buddy()
 
 void Buddy::importConfiguration(XmlConfigFile *configurationStorage, QDomElement parent)
 {
-	data()->importConfiguration(configurationStorage, parent);
+	if (data())
+		data()->importConfiguration(configurationStorage, parent);
 }
 
 void Buddy::store()
@@ -217,7 +220,7 @@ Buddy Buddy::dummy()
 		contact.setCurrentStatus(Status("Away", tr("Example description")));
 		contact.setAddress(QHostAddress(2130706433));
 		contact.setPort(80);
-		contact.setDetails(account.protocolHandler()->protocolFactory()->createContactDetails(contact.data()));
+		contact.setDetails(account.protocolHandler()->protocolFactory()->createContactDetails(contact));
 
 		Avatar avatar = Avatar::create();
 		avatar.setLastUpdated(QDateTime::currentDateTime());

@@ -9,6 +9,7 @@
 
 #include "accounts/account-details.h"
 #include "accounts/account-manager.h"
+#include "buddies/buddy-manager.h"
 #include "configuration/configuration-file.h"
 #include "configuration/xml-configuration-file.h"
 #include "contacts/contact.h"
@@ -20,6 +21,8 @@
 #include "misc/misc.h"
 
 #include "account.h"
+
+KaduSharedBaseClassImpl(Account)
 
 Account Account::null;
 
@@ -59,12 +62,6 @@ Account::~Account()
 {
 }
 
-Account & Account::operator=(const Account &copy)
-{
-	clone(copy);
-	return *this;
-}
-
 Buddy Account::getBuddyById(const QString& id)
 {
 	return ContactManager::instance()->byId(*this, id).ownerBuddy();
@@ -92,6 +89,7 @@ Buddy Account::createAnonymous(const QString& id)
 		return Buddy::null;
 
 	ContactManager::instance()->addItem(contact);
+	BuddyManager::instance()->addItem(result);
 
 	result.addContact(contact);
 	return result;

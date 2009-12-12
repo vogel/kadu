@@ -27,6 +27,7 @@ class XmlConfigFile;
 
 class KADUAPI Contact : public SharedBase<ContactShared>
 {
+	KaduSharedBaseClass(Contact)
 
 public:
 	static Contact create();
@@ -38,8 +39,6 @@ public:
 	Contact(QObject *data);
 	Contact(const Contact &copy);
 	virtual ~Contact();
-
-	Contact & operator = (const Contact &copy);
 
 	virtual bool validateId();
 	bool isValid();

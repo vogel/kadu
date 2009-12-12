@@ -29,6 +29,7 @@ class XmlConfigFile;
 class KADUAPI Buddy : public QObject, public SharedBase<BuddyShared>
 {
 	Q_OBJECT
+	KaduSharedBaseClass(Buddy)
 
 public:
 	static Buddy create();
@@ -42,12 +43,6 @@ public:
 	Buddy(QObject *data);
 	Buddy(const Buddy &copy);
 	virtual ~Buddy();
-
-	Buddy & operator = (const Buddy &copy)
-	{
-		clone(copy);
-		return *this;
-	}
 
 	void mergeWith(Buddy buddy); // TODO: 0.8 refactor
 

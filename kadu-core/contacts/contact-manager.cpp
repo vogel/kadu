@@ -83,8 +83,8 @@ Contact ContactManager::byId(Account account, const QString &id)
 	if (id.isEmpty() || account.isNull())
 		return Contact::null;
 
-	foreach (const Contact &contact, contacts(account))
-		if (id == contact.id())
+	foreach (const Contact &contact, allItems())
+		if (account == contact.contactAccount() && id == contact.id())
 			return contact;
 
 	return Contact::null;

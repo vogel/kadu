@@ -118,7 +118,7 @@ void ContactShared::setOwnerBuddy(Buddy buddy)
 		return;
 	
 	if (!OwnerBuddy.isNull())
-		OwnerBuddy.removeContact(Contact(this));
+		OwnerBuddy.removeContact(this);
 
 	OwnerBuddy = buddy;
 	if (!OwnerBuddy.isNull())
@@ -143,8 +143,6 @@ void ContactShared::protocolUnregistered(ProtocolFactory *protocolFactory)
 	if (ContactAccount.protocolName() != protocolFactory->name())
 		return;
 
-	// TODO 0.6.6: if empty config must: store(),Details->store()
-	store();
 	setDetails(0);
 }
 
@@ -155,7 +153,9 @@ void ContactShared::detailsAdded()
 
 void ContactShared::detailsAboutToBeRemoved()
 {
-	details()->store();
+	// do not store contacts that are not in contact manager
+	if (ContactManager::instance()->allItems().contains(this))
+		details()->store();
 }
 
 void ContactShared::setId(const QString &id)

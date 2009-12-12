@@ -30,6 +30,7 @@ class XmlConfigFile;
 
 class KADUAPI Account : public SharedBase<AccountShared>
 {
+	KaduSharedBaseClass(Account)
 
 public:
 	static Account create();
@@ -41,8 +42,6 @@ public:
 	Account(QObject *data);
 	Account(const Account &copy);
 	virtual ~Account();
-
-	Account & operator = (const Account &copy);
 
 	void importProxySettings();
 
