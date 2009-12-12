@@ -8,7 +8,7 @@ QTDIR=/Users/tomek/Desktop/kadu/qt
 # prefix of compiled libsndfile and openssl
 # prefiks skompilowanych bibliotek libsndfile i libgadu
 SNDFILEPATH=/Users/tomek/Desktop/kadu/libsndfile
-LIBGADU=/Users/tomek/Desktop/kadu/libgadu/
+LIBGADU=/Users/tomek/Desktop/kadu/libgadu
 
 #OPENSSLPATH=/Users/tomek/Desktop/kadu/openssl
 OPENSSLPATH=/usr
