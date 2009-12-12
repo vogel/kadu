@@ -233,6 +233,7 @@ Buddy Buddy::dummy()
 		contact.setContactAvatar(avatar);
 
 		example.addContact(contact);
+		example.setAnonymous(false);
 
 		return example;
 	}
