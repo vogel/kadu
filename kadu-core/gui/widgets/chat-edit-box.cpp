@@ -127,13 +127,13 @@ BuddiesListView * ChatEditBox::contactsListView()
 	return 0;
 }
 
-BuddySet ChatEditBox::buddies()
+ContactSet ChatEditBox::contacts()
 {
 	ChatWidget *cw = chatWidget();
 	if (cw)
-		return cw->chat().contacts().toBuddySet();
+		return cw->chat().contacts();
 
-	return BuddySet();
+	return ContactSet();
 }
 
 ChatWidget * ChatEditBox::chatWidget()

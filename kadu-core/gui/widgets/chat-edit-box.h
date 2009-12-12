@@ -50,7 +50,7 @@ public:
 
 	virtual bool supportsActionType(ActionDescription::ActionType type);
 	virtual BuddiesListView * contactsListView();
-	virtual BuddySet buddies();
+	virtual ContactSet contacts();
 	virtual Chat  chat() { return CurrentChat; }
 	ChatWidget * chatWidget();
 

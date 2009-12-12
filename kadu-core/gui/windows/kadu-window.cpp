@@ -275,7 +275,7 @@ void KaduWindow::storeConfiguration()
 
 void KaduWindow::updateInformationPanel()
 {
-	InfoPanel->displayBuddy(ContactsWidget->view()->currentBuddy());
+	InfoPanel->displayBuddy(ContactsWidget->view()->currentContact().ownerBuddy());
 }
 
 void KaduWindow::closeEvent(QCloseEvent *e)
@@ -342,9 +342,9 @@ BuddiesListView * KaduWindow::contactsListView()
 	return ContactsWidget->view();
 }
 
-BuddySet KaduWindow::buddies()
+ContactSet KaduWindow::contacts()
 {
-	return ContactsWidget->view()->selectedBuddies();
+	return ContactsWidget->view()->selectedContacts();
 }
 
 Chat  KaduWindow::chat()

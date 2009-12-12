@@ -104,18 +104,18 @@ void BuddiesListView::removeFilter(AbstractBuddyFilter *filter)
 	ProxyModel->removeFilter(filter);
 }
 
-Buddy BuddiesListView::currentBuddy() const
+Contact BuddiesListView::currentContact() const
 {
-	return buddyAt(currentIndex());
+	return contactAt(currentIndex());
 }
 
-BuddySet BuddiesListView::selectedBuddies() const
+ContactSet BuddiesListView::selectedContacts() const
 {
-	BuddySet result;
+	ContactSet result;
 
 	QModelIndexList selectionList = selectedIndexes();
 	foreach (QModelIndex selection, selectionList)
-		result.insert(buddyAt(selection));
+		result.insert(contactAt(selection));
 
 	return result;
 }

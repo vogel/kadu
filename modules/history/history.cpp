@@ -61,17 +61,17 @@ void disableNonHistoryContacts(Action *action)
 {
 	kdebugf();
 	action->setEnabled(false);
-	BuddySet contacts = action->buddies();
+	ContactSet contacts = action->contacts();
 
 	if (!contacts.count())
 		return;
 
-	foreach (const Buddy &buddy, contacts)
+	foreach (const Contact &contact, contacts)
 	{
-		if (Core::instance()->myself() == buddy)
+		if (Core::instance()->myself() == contact.ownerBuddy())
 			return;
 
-		Account account = buddy.prefferedAccount();
+		Account account = contact.contactAccount();
 		if (!account.protocolHandler() || !account.protocolHandler()->chatService())
 			return;
 	}
