@@ -28,56 +28,11 @@ BuddyList BuddySet::toBuddyList() const
 	return toList();
 }
 
-ContactSet BuddySet::toContactSet(Account account) const
+QList<Contact> BuddySet::getAllContacts() const
 {
-	Account acc(account.isNull() ? this->prefferedAccount() : account);
-
-	// if not have same account return empty list
-	if (acc.isNull())
-		return ContactSet();
-	
-	ContactSet contacts;
+	QList<Contact> allContacts;
 	foreach (const Buddy &buddy, toList())
-	{
-		// TODO 0.6.6: change to buddy.contact(acc) ??
-		Contact tmp = ContactManager::instance()->byId(acc, buddy.id(acc));
-		if (tmp != Contact::null)
-			contacts.insert(tmp);
-	}
+		allContacts.append(buddy.contacts());
 
-	return contacts;
-
-}
-
-QList<Contact> BuddySet::toAllContactList() const
-{
-	QList<Contact> contacts;
-	foreach (const Buddy &buddy, toList())
-		contacts.append(buddy.contacts());
-
-	return contacts;
-}
-
-Account BuddySet::prefferedAccount() const
-{
-	QList<Account> accounts;
-	QList<Account> contactAccounts;
-	int contactsCount = count();
-	// TODO 0.6.6 - Rework it if more than 1 account on the same proto.
-
-	foreach (const Buddy &buddy, toList())
-	{
-		contactAccounts = buddy.accounts();
-		// one contact have no account = no common account
-		if (0 == contactAccounts.count())
-			return Account::null;
-
-		accounts.append(contactAccounts);
-	}
-
-	foreach (const Account &account, AccountManager::instance()->items())
-		if (contactsCount == accounts.count(account))
-			return account;
-
-	return Account::null;
+	return allContacts;
 }

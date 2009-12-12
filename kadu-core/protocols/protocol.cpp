@@ -102,8 +102,3 @@ void Protocol::networkStateChanged(NetworkState state)
 			break;
 	}
 }
-// TODO to remove
-Chat Protocol::findChat(BuddySet contacts, bool create)
-{
-	return ChatManager::instance()->findChat(contacts.toContactSet(account()), create);
-}
