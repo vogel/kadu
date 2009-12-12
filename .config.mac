@@ -403,7 +403,7 @@ module_itunes_mediaplayer=n
 # Description: Media player support for mediaplayer using MPRIS interface
 # PL: Wsparcie w mediaplayer dla odtwarzaczy z interfejsem MPRIS
 # Platform: Linux
-module_mpris_mediaplayer=m
+module_mpris_mediaplayer=n
 
 # Description: VLC support for mediaplayer
 # PL: Wsparcie dla VLC w mediaplayer
