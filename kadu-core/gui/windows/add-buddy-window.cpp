@@ -26,7 +26,6 @@
 #include "buddies/buddy.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
-#include "buddies/filter/non-account-buddy-filter.h"
 #include "buddies/model/groups-model.h"
 #include "contacts/contact.h"
 #include "contacts/contact-manager.h"
@@ -76,7 +75,6 @@ void AddBuddyWindow::createGui()
 	connect(AccountCombo, SIGNAL(activated(int)), this, SLOT(setUsernameLabel()));
 	connect(AccountCombo, SIGNAL(activated(int)), this, SLOT(setAddContactEnabled()));
 	connect(AccountCombo, SIGNAL(activated(int)), this, SLOT(setValidateRegularExpression()));
-	connect(AccountCombo, SIGNAL(activated(int)), this, SLOT(setMergeContactFilter()));
 
 	AccountComboModel = new AccountsModel(AccountCombo);
 	AccountComboProxyModel = new AccountsProxyModel(AccountCombo);
@@ -134,8 +132,6 @@ void AddBuddyWindow::createGui()
 	MergeContact = new QCheckBox(tr("Merge with an existing contact"), this);
 	layout->addWidget(MergeContact, 4, 1, 1, 3);
 	SelectContact = new SelectBuddyCombobox(this);
-	SelectContactFilter = new NonAccountBuddyFilter(SelectContact);
-	SelectContact->addFilter(SelectContactFilter);
 	SelectContact->setEnabled(false);
 	layout->addWidget(SelectContact, 5, 1, 1, 3);
 	connect(MergeContact, SIGNAL(toggled(bool)), SelectContact, SLOT(setEnabled(bool)));
@@ -144,6 +140,7 @@ void AddBuddyWindow::createGui()
 	connect(SelectContact, SIGNAL(buddyChanged(Buddy)), this, SLOT(setAddContactEnabled()));
 	connect(SelectContact, SIGNAL(buddyChanged(Buddy)), this, SLOT(setAccountFilter()));
 
+	// TODO 0.6.6: it is not used anywhere
 	AllowToSeeMeCheck = new QCheckBox(tr("Allow contact to see me when I'm available"), this);
 	AllowToSeeMeCheck->setChecked(true);
 	layout->addWidget(AllowToSeeMeCheck, 7, 1, 1, 3);
@@ -264,11 +261,6 @@ void AddBuddyWindow::setAccountFilter()
 		AccountComboNotInContactFilter->setContact(SelectContact->buddy());
 	else
 		AccountComboNotInContactFilter->setContact(Buddy::null);
-}
-
-void AddBuddyWindow::setMergeContactFilter()
-{
-	SelectContactFilter->setAccount(selectedAccount());
 }
 
 void AddBuddyWindow::groupChanged(int index)
