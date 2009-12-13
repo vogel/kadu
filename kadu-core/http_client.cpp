@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include <QtCore/QTime>
+#include <QtCore/QUrl>
 
 #include "config_file.h"
 #include "debug.h"
@@ -286,9 +287,8 @@ const QByteArray & HttpClient::data() const
 
 QString HttpClient::encode(const QString& text)
 {
-	QString encoded = text;
-	Q3Url::encode(encoded);
-	return encoded;
+	QUrl encoded(text);
+	return encoded.toEncoded();
 }
 
 const QString & HttpClient::cookie(const QString& name) const
