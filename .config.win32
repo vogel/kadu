@@ -458,6 +458,11 @@ module_plus_pl_sms=n
 # Platform: Linux, Mac OS X, Windows
 module_tabs=n
 
+# Description: Single Window Mode
+# PL: Tryb pojedynczego okna
+# Platform: Linux, Mac OS X, Windows
+module_single_window=n
+
 # Description: Notifications by Scroll Lock LED
 # PL: Powiadomiania diod¹ Scroll Lock
 # Platform: Linux
