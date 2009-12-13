@@ -1192,15 +1192,19 @@ void PixmapPreview::previewUrl(const Q3Url& url)
 }*/
 
 ImageDialog::ImageDialog(QWidget *parent)
-	: Q3FileDialog(parent,"image dialog",true)
+	: QFileDialog(parent,"image dialog")
 {
 // 	PixmapPreview* pp = new PixmapPreview();
 	setFilter(qApp->translate("ImageDialog", "Images")+" (*.png *.PNG *.jpg *.JPG *.jpeg *.JPEG *.gif *.GIF *.bmp *.BMP)");
 // 	setContentsPreviewEnabled(true);
 // 	setContentsPreview(pp, pp);
-	setPreviewMode(Q3FileDialog::Contents);
+//	setPreviewMode(Q3FileDialog::Contents);
 }
 
+QString ImageDialog::dirPath()
+{
+	return directory().path();
+}
 
 QList<int> toIntList(const QList<QVariant> &in)
 {

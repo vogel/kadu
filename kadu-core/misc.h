@@ -1,8 +1,7 @@
 #ifndef KADU_MISC_H
 #define KADU_MISC_H
 
-// TODO remove
-#include <Qt3Support/Q3FileDialog>
+#include <QtGui/QFileDialog>
 
 #include "status.h"
 #include "exports.h"
@@ -181,15 +180,14 @@ class PixmapPreview : public QLabel, public Q3FilePreview
 		void previewUrl(const Q3Url& url);
 };*/
 
-class ImageDialog : public Q3FileDialog
+class ImageDialog : public QFileDialog
 {
 public:
 	ImageDialog(QWidget *parent);
-
+	QString dirPath();
 };
 
 class QLabel;
-class Q3SimpleRichText;
 
 QList<int> toIntList(const QList<QVariant> &in);
 QList<QVariant> toVariantList(const QList<int> &in);
