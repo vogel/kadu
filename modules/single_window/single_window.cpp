@@ -120,4 +120,14 @@ void SingleWindow::resizeEvent(QResizeEvent *event)
 	split->resize(newSize);
 }
 
+void SingleWindow::closeChatWidget(ChatWidget *w)
+{
+	if (w)
+	{
+		int index = tabs->indexOf(w);
+		if (index >= 0)
+			closeTab(index);
+	}
+}
+
 SingleWindow *singleWindow = NULL;

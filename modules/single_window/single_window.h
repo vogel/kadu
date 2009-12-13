@@ -7,7 +7,7 @@
 
 #include "chat_manager.h"
 
-class SingleWindow : public QWidget
+class SingleWindow : public QWidget, public ChatContainer
 {
 	Q_OBJECT
 	QSplitter *split;
@@ -20,6 +20,7 @@ protected:
 public:
 	SingleWindow();
 	~SingleWindow();
+	void closeChatWidget(ChatWidget *);
 
 public slots:
 	void onOpenChat(ChatWidget *);
