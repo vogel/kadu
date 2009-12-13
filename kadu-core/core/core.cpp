@@ -262,7 +262,7 @@ void Core::init()
 	// it fixes crash on loading pending messages from config, contacts import from 0.6.5, and maybe other issues
 	ModulesManager::instance()->loadProtocolModules();
 
-	Myself = Buddy();
+	Myself = Buddy::create();
 	QString nickName(config_file.readEntry("General", "Nick"));
 	Myself.setDisplay(nickName.isEmpty() ? tr("Me") : nickName);
 
@@ -343,6 +343,8 @@ void Core::kaduWindowDestroyed()
 
 void Core::accountRegistered(Account account)
 {
+	account.accountContact().setOwnerBuddy(Myself);
+
 	Protocol *protocol = account.protocolHandler();
 	if (!protocol)
 		return;
@@ -359,11 +361,6 @@ void Core::accountRegistered(Account account)
 	connect(protocol, SIGNAL(connecting(Account)), this, SIGNAL(connecting()));
 	connect(protocol, SIGNAL(connected(Account)), this, SIGNAL(connected()));
 	connect(protocol, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
-/* TODO: 0.6.6
-	Contact contact = protocol->protocolFactory()->loadContact(account, Myself);
-	if (!contact)
-		contact = protocol->protocolFactory()->newContact(account, Myself, account->id());
-	Myself.addAccountData(contact);*/
 }
 
 void Core::accountUnregistered(Account account)

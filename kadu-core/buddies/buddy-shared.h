@@ -18,6 +18,7 @@
 #include <QtCore/QUuid>
 #include <QtXml/QDomElement>
 
+#include "buddies/buddy-gender.h"
 #include "buddies/group.h"
 #include "storage/shared.h"
 
@@ -31,14 +32,6 @@ class KADUAPI BuddyShared : public QObject, public Shared
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(BuddyShared)
-
-public:
-	enum BuddyGender
-	{
-		GenderUnknown,
-		GenderMale,
-		GenderFemale
-	};
 
 private:
 	QMap<QString, QString> CustomData;

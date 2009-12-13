@@ -78,7 +78,7 @@ bool JabberChatService::sendMessage(Chat chat, FormattedMessage &formattedMessag
 
 	HtmlDocument::escapeText(plain);
 
-	Message message(chat, Message::TypeSent, ContactManager::instance()->byId(Protocol->account(), Protocol->account().id(), true));
+	Message message(chat, Message::TypeSent, Protocol->account().accountContact());
 	message
 		.setContent(plain)
 		.setSendDate(QDateTime::currentDateTime())
@@ -107,7 +107,7 @@ void JabberChatService::clientMessageReceived(const XMPP::Message &msg)
 		return;
 
 	// TODO - zaimplementowac to samo w ContactList
-	Contact contact = ContactManager::instance()->byId(Protocol->account(), msg.from().bare(), true);
+	Contact contact = Protocol->account().accountContact();
 	ContactSet contacts(contact);
 
 	time_t msgtime = msg.timeStamp().toTime_t();

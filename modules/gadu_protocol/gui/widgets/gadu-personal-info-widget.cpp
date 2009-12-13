@@ -109,7 +109,7 @@ void GaduPersonalInfoWidget::applyData()
 	buddy.setBirthYear((*BirthYear).text().toUShort());
 	buddy.setCity((*City).text());
 	buddy.setFamilyCity((*FamilyCity).text());
-	buddy.setGender((BuddyShared::BuddyGender)Sex->currentIndex());
+	buddy.setGender((BuddyGender)Sex->currentIndex());
 
 	Service->updatePersonalInfo(buddy);
 }

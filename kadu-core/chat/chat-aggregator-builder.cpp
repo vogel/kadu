@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include "accounts/account-manager.h"
+#include "buddies/buddy-shared.h"
 #include "chat/aggregate-chat.h"
 #include "protocols/protocol.h"
 

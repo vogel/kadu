@@ -14,6 +14,7 @@
 #include <QtCore/QSharedData>
 #include <QtCore/QUuid>
 
+#include "accounts/account.h"
 #include "buddies/avatar.h"
 #include "buddies/buddy.h"
 #include "contacts/contact-details.h"

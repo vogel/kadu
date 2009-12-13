@@ -14,6 +14,7 @@
 #include "buddies/buddy-list.h"
 #include "buddies/buddy-list-mime-data-helper.h"
 #include "buddies/buddy-manager.h"
+#include "buddies/buddy-shared.h"
 
 QLatin1String BuddyListMimeDataHelper::MimeType("application/x-kadu-ules");
 

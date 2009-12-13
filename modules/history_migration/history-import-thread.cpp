@@ -92,7 +92,7 @@ void HistoryImportThread::importEntry(Chat chat, const HistoryEntry &entry)
 	msg
 		.setChat(chat)
 		.setSender(outgoing
-				? Core::instance()->myself().contacts(GaduAccount)[0]
+				? GaduAccount.accountContact()
 				: ContactManager::instance()->byId(GaduAccount, id))
 		.setContent(entry.message)
 		.setSendDate(entry.sdate)

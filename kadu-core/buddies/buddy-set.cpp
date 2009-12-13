@@ -11,6 +11,7 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 #include "buddies/buddy-list.h"
+#include "buddies/buddy-shared.h"
 
 #include "buddy-set.h"
 

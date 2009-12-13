@@ -10,12 +10,13 @@
 #include "accounts/account.h"
 #include "accounts/account-details.h"
 #include "accounts/account-manager.h"
-#include "configuration/configuration-manager.h"
-#include "configuration/xml-configuration-file.h"
 #include "buddies/avatar.h"
 #include "buddies/avatar-shared.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-remove-predicate-object.h"
+#include "buddies/buddy-shared.h"
+#include "configuration/configuration-manager.h"
+#include "configuration/xml-configuration-file.h"
 #include "contacts/contact.h"
 #include "contacts/contact-shared.h"
 #include "core/core.h"
@@ -253,7 +254,7 @@ KaduSharedBase_PropertyDef(Buddy, QString, mobile, Mobile, QString::null)
 KaduSharedBase_PropertyDef(Buddy, QString, email, Email, QString::null)
 KaduSharedBase_PropertyDef(Buddy, QString, website, Website, QString::null)
 KaduSharedBase_PropertyDef(Buddy, unsigned short, birthYear, BirthYear, 0)
-KaduSharedBase_PropertyDef(Buddy, BuddyShared::BuddyGender, gender, Gender, BuddyShared::GenderUnknown)
+KaduSharedBase_PropertyDef(Buddy, BuddyGender, gender, Gender, GenderUnknown)
 KaduSharedBase_PropertyDef(Buddy, QList<Group>, groups, Groups, QList<Group>())
 KaduSharedBase_PropertyBoolDef(Buddy, Anonymous, false)
 KaduSharedBase_PropertyBoolDef(Buddy, Ignored, false)

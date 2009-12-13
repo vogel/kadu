@@ -7,40 +7,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "accounts/account-manager.h"
-#include "buddies/buddy-set.h"
-#include "buddies/buddy-shared.h"
-#include "contacts/contact-manager.h"
+#ifndef BUDDY_GENDER_H
+#define BUDDY_GENDER_H
 
-#include "contact-set.h"
-
-ContactSet::ContactSet()
+enum BuddyGender
 {
-}
+	GenderUnknown,
+	GenderMale,
+	GenderFemale
+};
 
-ContactSet::ContactSet(Contact contact)
-{
-	insert(contact);
-}
+#endif // BUDDY_GENDER_H
 
-QList<Contact> ContactSet::toContactList() const
-{
-	return toList();
-}
-
-BuddySet ContactSet::toBuddySet() const
-{
-	BuddySet buddies;
-	foreach (const Contact &contact, toList())
-		buddies.insert(contact.ownerBuddy());
-
-	return buddies;
-}
-
-Contact ContactSet::toContact() const
-{
-	if (count() != 1)
-		return Contact::null;
-
-	return (*begin());
-}

@@ -9,6 +9,7 @@
 
 #include "accounts/account-details.h"
 #include "accounts/account-manager.h"
+#include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
@@ -134,7 +135,6 @@ void AccountShared::protocolRegistered(ProtocolFactory *factory)
 
 	ProtocolHandler = factory->createProtocolHandler(this);
 
-
 	connect(ProtocolHandler, SIGNAL(statusChanged(Account, Status)), this, SIGNAL(statusChanged()));
 	connect(ProtocolHandler, SIGNAL(buddyStatusChanged(Contact, Status)),
 			this, SIGNAL(buddyStatusChanged(Contact, Status)));
@@ -182,6 +182,31 @@ void AccountShared::setProtocolName(QString protocolName)
 	ProtocolName = protocolName ;
 	dataUpdated();
 	detailsAdded();
+}
+
+void AccountShared::setId(const QString &id)
+{
+	ensureLoaded();
+	if (Id == id)
+		return;
+
+	Id = id;
+	AccountContact.setId(id);
+
+	dataUpdated();
+}
+
+Contact AccountShared::accountContact()
+{
+	ensureLoaded();
+
+	if (AccountContact.isNull())
+	{
+		AccountContact = ContactManager::instance()->byId(this, Id, true);
+		ContactManager::instance()->addItem(AccountContact);
+	}
+
+	return AccountContact;
 }
 
 QString AccountShared::statusContainerName()

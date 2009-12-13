@@ -13,7 +13,6 @@
 #include <QtNetwork/QHostAddress>
 #include <QtXml/QDomElement>
 
-#include "accounts/account.h"
 #include "buddies/buddy.h"
 #include "status/status.h"
 #include "storage/shared-base.h"

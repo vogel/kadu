@@ -13,6 +13,7 @@
 #include "buddies/avatar-manager.h"
 #include "buddies/avatar-shared.h"
 #include "buddies/buddy-manager.h"
+#include "buddies/buddy-shared.h"
 #include "contacts/contact-details.h"
 #include "contacts/contact-manager.h"
 #include "protocols/protocol.h"

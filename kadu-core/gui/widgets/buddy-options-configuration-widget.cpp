@@ -10,6 +10,7 @@
 #include <QtGui/QGridLayout>
 #include <QtGui/QLabel>
 
+#include "buddies/buddy-shared.h"
 #include "contacts/contact.h"
 #include "notify/contact-notify-data.h"
 
@@ -48,7 +49,9 @@ void BuddyOptionsConfigurationWidget::createGui()
 	layout->addWidget(OfflineToCheckBox, row++, 2, 1, 2);        
 
 	NotifyCheckBox = new QCheckBox(tr("Notify when contact's status changes"), this);
-	ContactNotifyData *cnd = MyBuddy.moduleData<ContactNotifyData>("notify");
+	ContactNotifyData *cnd = 0;
+	if (MyBuddy.data())
+		cnd = MyBuddy.data()->moduleData<ContactNotifyData>("notify");
 	if (cnd)
 		NotifyCheckBox->setChecked(cnd->notify());
 
@@ -62,7 +65,10 @@ void BuddyOptionsConfigurationWidget::saveConfiguration()
 
 	MyBuddy.setBlocked(BlockCheckBox->isChecked());
 	MyBuddy.setOfflineTo(OfflineToCheckBox->isChecked());
-	ContactNotifyData *cnd = MyBuddy.moduleData<ContactNotifyData>("notify");
+
+	ContactNotifyData *cnd = 0;
+	if (MyBuddy.data())
+		cnd = MyBuddy.data()->moduleData<ContactNotifyData>("notify");
 	if (cnd)
 	{
 		cnd->setNotify(NotifyCheckBox->isChecked());

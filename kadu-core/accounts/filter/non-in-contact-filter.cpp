@@ -7,6 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "accounts/account.h"
 #include "contacts/contact.h"
 
 #include "non-in-contact-filter.h"

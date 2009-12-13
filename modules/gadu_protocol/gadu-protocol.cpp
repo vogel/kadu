@@ -146,7 +146,7 @@ Buddy GaduProtocol::searchResultToBuddy(gg_pubdir50_t res, int number)
 	result.setCity(cp2unicode(gg_pubdir50_get(res, number, GG_PUBDIR50_CITY)));
 	result.setFamilyName(cp2unicode(gg_pubdir50_get(res, number, GG_PUBDIR50_FAMILYNAME)));
 	result.setFamilyCity(cp2unicode(gg_pubdir50_get(res, number, GG_PUBDIR50_FAMILYCITY)));
-	result.setGender((BuddyShared::BuddyGender)QString::fromAscii(gg_pubdir50_get(res, number, GG_PUBDIR50_GENDER)).toUShort());
+	result.setGender((BuddyGender)QString::fromAscii(gg_pubdir50_get(res, number, GG_PUBDIR50_GENDER)).toUShort());
 
 	return result;
 }

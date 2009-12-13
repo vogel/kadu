@@ -13,9 +13,10 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "buddies/buddy-manager.h"
+#include "buddies/buddy-shared.h"
 #include "chat/chat-manager.h"
 #include "chat/message/message.h"
-#include "buddies/buddy-manager.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "debug.h"

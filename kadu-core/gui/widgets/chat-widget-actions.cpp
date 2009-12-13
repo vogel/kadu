@@ -9,6 +9,7 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "buddies/buddy-shared.h"
 #include "buddies/ignored-helper.h"
 #include "contacts/contact.h"
 #include "configuration/configuration-file.h"

@@ -15,10 +15,11 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "configuration/configuration-file.h"
 #include "buddies/buddy-kadu-data.h"
 #include "buddies/buddy-manager.h"
+#include "buddies/buddy-shared.h"
 #include "buddies/group-manager.h"
+#include "configuration/configuration-file.h"
 #include "contacts/contact.h"
 #include "buddies/filter/has-description-buddy-filter.h"
 #include "buddies/filter/offline-buddy-filter.h"
@@ -105,7 +106,9 @@ void checkHideDescription(Action *action)
 	bool on = false;
 	foreach (const Buddy buddy, action->contacts().toBuddySet())
 	{
-		BuddyKaduData *ckd = buddy.moduleData<BuddyKaduData>("kadu", true);
+		BuddyKaduData *ckd = 0;
+		if (buddy.data())
+			ckd = buddy.data()->moduleData<BuddyKaduData>("kadu", true);
 		if (!ckd)
 			continue;
 
@@ -834,7 +837,9 @@ void KaduWindowActions::hideDescriptionActionActivated(QAction *sender, bool tog
 		if (buddy.isNull() || buddy.isAnonymous())
 			continue;
 
-		BuddyKaduData *ckd = buddy.moduleData<BuddyKaduData>("kadu", true);
+		BuddyKaduData *ckd = 0;
+		if (buddy.data())
+			ckd = buddy.data()->moduleData<BuddyKaduData>("kadu", true);
 		if (!ckd)
 			continue;
 

@@ -14,6 +14,7 @@
 #include "configuration/xml-configuration-file.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-set.h"
+#include "buddies/buddy-shared.h"
 #include "buddies/buddy.h"
 #include "buddies/ignored-helper.h"
 #include "contacts/contact-manager.h"

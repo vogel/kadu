@@ -10,6 +10,7 @@
 #ifndef BUDDY_MERGABLE_FILTER_H
 #define BUDDY_MERGABLE_FILTER_H
 
+#include "accounts/account.h"
 #include "buddies/buddy.h"
 
 #include "buddies/filter/abstract-buddy-filter.h"

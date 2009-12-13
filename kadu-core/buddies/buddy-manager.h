@@ -71,4 +71,7 @@ signals:
 
 };
 
+// for MOC
+#include "buddies/group.h"
+
 #endif // BUDDY_MANAGER_H

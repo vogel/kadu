@@ -11,10 +11,11 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "chat/chat-manager.h"
-#include "configuration/xml-configuration-file.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-list-configuration-helper.h"
+#include "buddies/buddy-shared.h"
+#include "chat/chat-manager.h"
+#include "configuration/xml-configuration-file.h"
 #include "gui/widgets/chat-widget-manager.h"
 
 #include "debug.h"

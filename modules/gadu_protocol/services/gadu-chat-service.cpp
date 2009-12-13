@@ -122,7 +122,7 @@ bool GaduChatService::sendMessage(Chat chat, FormattedMessage &message)
 	if (formats)
 		delete[] formats;
 
-	Message msg(chat, Message::TypeSent, ContactManager::instance()->byId(Protocol->account(), Protocol->account().id(), true));
+	Message msg(chat, Message::TypeSent, Protocol->account().accountContact());
 	msg
 		.setStatus(Message::StatusSent)
 		.setContent(message.toHtml())
@@ -256,7 +256,7 @@ void GaduChatService::handleEventMsg(struct gg_event *e)
 			sender.id().toUInt(), qPrintable(message.toPlain()));
 
 	ContactSet chatContacts = conference;
-	chatContacts -= Core::instance()->myself().contacts(Protocol->account()).toSet();
+	chatContacts.remove(Protocol->account().accountContact());
 
 // 	QList<Contact> chatContactsList;
 // 	foreach (const Buddy &buddy, chatContacts)

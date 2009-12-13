@@ -54,6 +54,7 @@ public:
 	KaduSharedBase_Property(QString, protocolName, ProtocolName)
 	KaduSharedBase_Property(Protocol *, protocolHandler, ProtocolHandler)
 	KaduSharedBase_Property(AccountDetails *, details, Details)
+	KaduSharedBase_PropertyRead(Contact, accountContact, AccountContact)
 	KaduSharedBase_Property(QString, name, Name)
 	KaduSharedBase_Property(QString, id, Id)
 	KaduSharedBase_Property(bool, rememberPassword, RememberPassword)

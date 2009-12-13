@@ -16,13 +16,14 @@
 #include <QtCore/QUuid>
 #include <QtXml/QDomElement>
 
-#include "buddies/buddy-shared.h"
+#include "buddies/buddy-gender.h"
 #include "storage/shared-base.h"
 #include "exports.h"
 
 class Account;
 class BuddyShared;
 class Contact;
+class Group;
 class StoragePoint;
 class XmlConfigFile;
 
@@ -67,12 +68,6 @@ public:
 	QList<Contact> contacts() const;
 	bool hasContact(Account account) const;
 
-template<class T>
-	T * moduleData(const QString &nodeName, bool create = false) const
-	{
-		return isNull() ? 0 : data()->moduleData<T>(nodeName, create);
-	}
-
 	QString id(Account account) const;
 	// properties
 
@@ -95,7 +90,7 @@ template<class T>
 	KaduSharedBase_Property(QString, email, Email)
 	KaduSharedBase_Property(QString, website, Website)
 	KaduSharedBase_Property(unsigned short, birthYear, BirthYear)
-	KaduSharedBase_Property(BuddyShared::BuddyGender, gender, Gender)
+	KaduSharedBase_Property(BuddyGender, gender, Gender)
 	KaduSharedBase_Property(QList<Group>, groups, Groups)
 	KaduSharedBase_PropertyBool(Anonymous)
 	KaduSharedBase_PropertyBool(Ignored)
@@ -105,5 +100,8 @@ template<class T>
 };
 
 Q_DECLARE_METATYPE(Buddy)
+
+// for MOC
+#include "buddies/group.h"
 
 #endif // BUDDY_H
