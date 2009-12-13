@@ -12,13 +12,13 @@
 
 #include <QtGui/QWidget>
 
+#include "accounts/account.h"
 #include "buddies/buddy.h"
 
 class QComboBox;
 class QCheckBox;
 class QLineEdit;
 
-class Account;
 class PersonalInfoService;
 
 class TlenPersonalInfoWidget : public QWidget

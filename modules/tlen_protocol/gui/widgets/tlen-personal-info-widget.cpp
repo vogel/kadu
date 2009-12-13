@@ -13,10 +13,12 @@
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
 
+#include "buddies/buddy-shared.h"
+#include "protocols/services/personal-info-service.h"
 #include "debug.h"
+
 #include "tlen-account-details.h"
 #include "tlen-contact-details.h"
-#include "protocols/services/personal-info-service.h"
 
 #include "tlen-personal-info-widget.h"
 
@@ -171,7 +173,7 @@ void TlenPersonalInfoWidget::applyData()
 	buddy.setLastName((*LastName).text());
 	buddy.setBirthYear((*BirthYear).text().toUShort());
 	buddy.setCity((*City).text());
-	buddy.setGender((BuddyShared::BuddyGender)Sex->currentIndex());
+	buddy.setGender((BuddyGender)Sex->currentIndex());
 	buddy.setEmail((*EMail).text());
 
 	Contact contact = Contact::create();

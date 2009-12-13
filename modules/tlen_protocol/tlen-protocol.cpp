@@ -421,7 +421,7 @@ Buddy TlenProtocol::nodeToBuddy(QDomNode node)
 		}
 		else if (mmName == "s")
 		{
-			result.setGender((BuddyShared::BuddyGender)mm.text().toUShort());
+			result.setGender((BuddyGender)mm.text().toUShort());
 		}
 		else if (mmName == "c")
 		{
