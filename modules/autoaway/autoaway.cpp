@@ -91,21 +91,21 @@ void AutoAwayStatusChanger::changeStatus(UserStatus &status)
 		return;
 	}
 
-	if (status.isDoNotDisturb())
-		return;
-
-	if (changeStatusTo == ChangeStatusToDoNotDisturb)
-	{
-		status.setDoNotDisturb(description);
-		return;
-	}
-
 	if (status.isInvisible())
 		return;
 
 	if (changeStatusTo == ChangeStatusToInvisible)
 	{
 		status.setInvisible(description);
+		return;
+	}
+
+	if (status.isDoNotDisturb())
+		return;
+
+	if (changeStatusTo == ChangeStatusToDoNotDisturb)
+	{
+		status.setDoNotDisturb(description);
 		return;
 	}
 
