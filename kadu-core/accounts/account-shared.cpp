@@ -136,7 +136,7 @@ void AccountShared::protocolRegistered(ProtocolFactory *factory)
 	ProtocolHandler = factory->createProtocolHandler(this);
 
 	connect(ProtocolHandler, SIGNAL(statusChanged(Account, Status)), this, SIGNAL(statusChanged()));
-	connect(ProtocolHandler, SIGNAL(buddyStatusChanged(Contact, Status)),
+	connect(ProtocolHandler, SIGNAL(contactStatusChanged(Contact, Status)),
 			this, SIGNAL(buddyStatusChanged(Contact, Status)));
 
 	emit protocolLoaded();

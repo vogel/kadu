@@ -507,7 +507,7 @@ void JabberProtocol::clientResourceReceived(const XMPP::Jid &jid, const XMPP::Re
 	Status oldStatus = contact.currentStatus();
 	contact.setCurrentStatus(status);
 
-	emit buddyStatusChanged(contact, oldStatus);
+	emit contactStatusChanged(contact, oldStatus);
 	kdebugf2();
 }
 

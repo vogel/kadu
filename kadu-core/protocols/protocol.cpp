@@ -54,7 +54,7 @@ void Protocol::setAllOffline()
 		if (oldStatus != status)
 		{
 			contact.setCurrentStatus(status);
-			emit buddyStatusChanged(contact, oldStatus);
+			emit contactStatusChanged(contact, oldStatus);
 		}
 	}
 }

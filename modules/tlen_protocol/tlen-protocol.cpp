@@ -605,7 +605,7 @@ void TlenProtocol::presenceChanged(QString from, QString newstatus, QString desc
 		if (!TypingUsers[from].isEmpty())
 			TypingUsers[from] = description;
 
-		emit buddyStatusChanged(contactRes, oldStatus);
+		emit contactStatusChanged(contactRes, oldStatus);
 		return;
 	}
 

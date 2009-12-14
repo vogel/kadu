@@ -722,7 +722,7 @@ void GaduProtocol::socketContactStatusChanged(unsigned int uin, unsigned int sta
 	newStatus.setDescription(description);
 	contact.setCurrentStatus(newStatus);
 
-	emit buddyStatusChanged(contact, oldStatus);
+	emit contactStatusChanged(contact, oldStatus);
 }
 
 void GaduProtocol::socketConnFailed(GaduError error)
