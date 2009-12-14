@@ -45,6 +45,11 @@ SingleWindow::SingleWindow()
 	loadWindowGeometry(this, "SingleWindow", "WindowGeometry", 0, 0, 600, 600);
 
 	QList<int> splitSizes;
+
+#ifdef Q_WS_HILDON
+	if (kadu->width() >= 300)
+		kadu->resize(300, kadu->height());
+#endif
 	splitSizes.append(kadu->width());
 	splitSizes.append(width() - kadu->width());
 	split->setSizes(splitSizes);
