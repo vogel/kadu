@@ -192,9 +192,6 @@ void BuddyShared::store()
 
 void BuddyShared::aboutToBeRemoved()
 {
-	foreach (Contact contact, Contacts)
-		ContactManager::instance()->removeItem(contact);
-
 	Contacts = QList<Contact>();
 	Groups = QList<Group>();
 }
