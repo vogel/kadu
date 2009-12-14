@@ -139,6 +139,7 @@ ModulesDialog::ModulesDialog(QWidget *parent)
 	lv_modules->setAlternatingRowColors(true);
 	// end our QListView
 
+#ifndef Q_WS_HILDON
 	//our QVGroupBox
 	QGroupBox *vgb_info = new QGroupBox(center);
 	QVBoxLayout *infoLayout = new QVBoxLayout(vgb_info);
@@ -149,10 +150,11 @@ ModulesDialog::ModulesDialog(QWidget *parent)
 	l_moduleinfo->setText(tr("<b>Module:</b><br/><b>Depends on:</b><br/><b>Conflicts with:</b><br/><b>Provides:</b><br/><b>Author:</b><br/><b>Version:</b><br/><b>Description:</b>"));
 #ifndef	Q_OS_MAC
 	l_moduleinfo->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
-#endif
+#endif /* Q_OS_MAC */
 	l_moduleinfo->setWordWrap(true);
 
 	infoLayout->addWidget(l_moduleinfo);
+#endif /* Q_WS_HILDON */
 
 	// buttons
 	QWidget *bottom = new QWidget(center);
@@ -174,7 +176,9 @@ ModulesDialog::ModulesDialog(QWidget *parent)
 
 	centerLayout->addWidget(l_info);
 	centerLayout->addWidget(lv_modules);
+#ifndef Q_WS_HILDON
 	centerLayout->addWidget(vgb_info);
+#endif
 	centerLayout->addWidget(bottom);
 
 	QHBoxLayout *layout = new QHBoxLayout(this);
@@ -182,7 +186,9 @@ ModulesDialog::ModulesDialog(QWidget *parent)
 	layout->addWidget(center);
 
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
+#ifndef Q_WS_HILDON
 	connect(lv_modules, SIGNAL(itemSelectionChanged()), this, SLOT(itemsChanging()));
+#endif
 	connect(lv_modules, SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)), this, SLOT(moduleAction(QTreeWidgetItem *)));
 
 	loadWindowGeometry(this, "General", "ModulesDialogGeometry", 0, 50, 600, 620);
