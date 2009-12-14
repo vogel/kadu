@@ -56,6 +56,8 @@ Updates::Updates(UinType uin)
 		platform.append("OpenBSD");
 #elif defined(Q_OS_SOLARIS)
 		platform.append("Solaris");
+#elif defined(Q_WS_HILDON)
+		platform.append("Maemo");
 #elif defined(Q_OS_MAC)
 		switch (QSysInfo::MacintoshVersion)
 		{
