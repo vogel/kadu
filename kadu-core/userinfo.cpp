@@ -120,7 +120,16 @@ void UserInfo::setupTab1()
 
 	QWidget *generalWidget = new QWidget(tw_main);
 
-	tw_main->addTab(generalWidget, tr("General"));
+	QScrollArea *scrollArea = new QScrollArea(this);
+	scrollArea->setFrameStyle(QFrame::NoFrame);
+	scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+	scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	scrollArea->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
+
+	scrollArea->setWidget(generalWidget);
+	scrollArea->setWidgetResizable(true);
+
+	tw_main->addTab(scrollArea, tr("General"));
 
 	// UIN and disp
 	e_uin = new QLineEdit(generalWidget);
