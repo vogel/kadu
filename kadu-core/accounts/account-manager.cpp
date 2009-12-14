@@ -43,10 +43,16 @@ AccountManager::~AccountManager()
 	ConfigurationManager::instance()->unregisterStorableObject(this);
 }
 
-void AccountManager::itemAboutToBeAdded(Account item)
+void AccountManager::itemAdded(Account item)
 {
 	if (item.data())
 		item.data()->ensureLoaded();
+	AccountsAwareObject::notifyAccountAdded(item);
+}
+
+void AccountManager::itemRemoved(Account item)
+{
+	AccountsAwareObject::notifyAccountRemoved(item);
 }
 
 void AccountManager::itemAboutToBeRegistered(Account item)

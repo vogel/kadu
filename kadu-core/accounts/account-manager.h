@@ -37,7 +37,8 @@ private slots:
 	void connectionError(Account account, const QString &server, const QString &message);
 
 protected:
-	virtual void itemAboutToBeAdded(Account item);
+	virtual void itemAdded(Account item);
+	virtual void itemRemoved(Account item);
 
 	virtual void itemAboutToBeRegistered(Account item);
 	virtual void itemRegisterd(Account item);
@@ -65,6 +66,7 @@ signals:
 	void accountRegistered(Account);
 	void accountAboutToBeUnregistered(Account);
 	void accountUnregistered(Account);
+
 	void accountAboutToBeRemoved(Account);
 	void accountRemoved(Account);
 

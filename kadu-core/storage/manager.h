@@ -113,6 +113,10 @@ protected:
 	{
 	}
 
+	virtual void itemAdded(Item item)
+	{
+	}
+
 	/**
 	 * @author Rafal 'Vogel' Malinowski
 	 * @short Method called just before item is removed from manager.
@@ -120,6 +124,10 @@ protected:
 	 * This method is called just before item is removed from manager.
 	 */
 	virtual void itemAboutToBeRemoved(Item item)
+	{
+	}
+
+	virtual void itemRemoved(Item item)
 	{
 	}
 
@@ -239,9 +247,11 @@ protected:
 		foreach (QDomElement itemElement, itemElements)
 		{
 			StoragePoint *storagePoint = new StoragePoint(storage()->storage(), itemElement);
-			Item item = Item::loadFromStorage(storagePoint);
 
-			addItem(item);
+			QUuid uuid = storagePoint->point().attribute("uuid");
+			Item item = byUuid(uuid);
+
+			printf("found item with uuid: %s\n", qPrintable(item.uuid().toString()));
 		}
 	}
 
@@ -307,7 +317,13 @@ public:
 			if (item.uuid() == uuid)
 				return item;
 
-		return Item::null;
+		Item item = Item::create();
+		item.setUuid(uuid);
+		item.data()->setState(StateNotLoaded);
+
+		addItem(item);
+
+		return item;
 	}
 
 	/**
@@ -381,7 +397,7 @@ public:
 	 */
 	void addItem(Item item)
 	{
-		ensureLoaded();
+// 		ensureLoaded();
 
 		if (Items.contains(item))
 			return;
@@ -389,6 +405,9 @@ public:
 		itemAboutToBeAdded(item);
 
 		Items.append(item);
+		
+		itemAdded(item);
+	
 		if (item.details())
 			registerItem(item);
 	}
@@ -418,6 +437,8 @@ public:
 		Items.removeAll(item);
 
 		item.remove();
+
+		itemRemoved(item);
 	}
 
 };

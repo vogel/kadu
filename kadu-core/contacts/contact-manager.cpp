@@ -90,7 +90,7 @@ Contact ContactManager::byId(Account account, const QString &id, bool create)
 	if (!create)
 		return Contact::null;
 
-	Contact contact = contact.create();
+	Contact contact = Contact::create();
 	contact.setContactAccount(account);
 	contact.setId(id);
 

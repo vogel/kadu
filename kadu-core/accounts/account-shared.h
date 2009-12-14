@@ -54,6 +54,8 @@ private:
 	QString ProxyUser;
 	QString ProxyPassword;
 
+	void useProtocolFactory(ProtocolFactory *factory);
+
 protected:
 	virtual void load();
 	void emitUpdated();

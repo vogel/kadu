@@ -24,7 +24,6 @@ ContactShared * ContactShared::loadFromStorage(StoragePoint *storagePoint)
 {
 	ContactShared *result = new ContactShared();
 	result->setStorage(storagePoint);
-	result->load();
 
 	return result;
 }
@@ -60,6 +59,8 @@ void ContactShared::load()
 	Id = loadValue<QString>("Id");
 
 	ContactAccount = AccountManager::instance()->byUuid(loadValue<QString>("Account"));
+	printf("contact loaded, account is: %s %s\n", qPrintable(ContactAccount.name()), qPrintable(ContactAccount.protocolName()));
+
 	QString buddyUuid = loadValue<QString>("Buddy");
 	if (buddyUuid.isNull())
 		buddyUuid = loadValue<QString>("Contact");

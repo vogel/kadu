@@ -13,6 +13,27 @@
 
 KADU_AWARE_CLASS(AccountsAwareObject)
 
+
+void AccountsAwareObject::accountAdded(Account account)
+{
+}
+
+void AccountsAwareObject::accountRemoved(Account account)
+{
+}
+
+void AccountsAwareObject::notifyAccountAdded(Account account)
+{
+	foreach (AccountsAwareObject *object, Objects)
+		object->accountAdded(account);
+}
+
+void AccountsAwareObject::notifyAccountRemoved(Account account)
+{
+	foreach (AccountsAwareObject *object, Objects)
+		object->accountRemoved(account);
+}
+
 void AccountsAwareObject::notifyAccountRegistered(Account account)
 {
 	foreach (AccountsAwareObject *object, Objects)
@@ -23,6 +44,18 @@ void AccountsAwareObject::notifyAccountUnregistered(Account account)
 {
 	foreach (AccountsAwareObject *object, Objects)
 		object->accountUnregistered(account);
+}
+
+void AccountsAwareObject::triggerAllAccountsAdded()
+{
+	foreach (Account account, AccountManager::instance()->items())
+		accountAdded(account);
+}
+
+void AccountsAwareObject::triggerAllAccountsRemoved()
+{
+	foreach (Account account, AccountManager::instance()->items())
+		accountRemoved(account);
 }
 
 void AccountsAwareObject::triggerAllAccountsRegistered()

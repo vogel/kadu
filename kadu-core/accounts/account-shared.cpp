@@ -21,7 +21,6 @@ AccountShared * AccountShared::loadFromStorage(StoragePoint *storagePoint)
 {
 	AccountShared *result = new AccountShared();
 	result->setStorage(storagePoint);
-	result->load();
 
 	return result;
 }
@@ -66,6 +65,8 @@ void AccountShared::load()
 	Name = loadValue<QString>("Name");
 	ProtocolName = loadValue<QString>("Protocol");
 	setId(loadValue<QString>("Id"));
+
+	printf("protocol loaded: %s %s\n", qPrintable(Name), qPrintable(ProtocolName));
 
 	RememberPassword = loadValue<bool>("RememberPassword", true);
 	HasPassword = RememberPassword;
@@ -123,6 +124,38 @@ void AccountShared::emitUpdated()
 	emit updated();
 }
 
+void AccountShared::useProtocolFactory(ProtocolFactory *factory)
+{
+	printf("useProtocolFactory: %s %s\n", qPrintable(factory->name()), qPrintable(ProtocolName));
+
+	if (ProtocolHandler)
+	{
+		disconnect(ProtocolHandler, SIGNAL(statusChanged(Account, Status)), this, SIGNAL(statusChanged()));
+		disconnect(ProtocolHandler, SIGNAL(contactStatusChanged(Contact, Status)),
+				this, SIGNAL(buddyStatusChanged(Contact, Status)));
+	}
+
+	if (!factory)
+	{
+		setDetails(0);
+		ProtocolHandler = 0;
+		emit protocolUnloaded();
+	}
+	else
+	{
+		setDetails(factory->createAccountDetails(this));
+		ProtocolHandler = factory->createProtocolHandler(this);
+		emit protocolLoaded();
+	}
+
+	if (ProtocolHandler)
+	{
+		connect(ProtocolHandler, SIGNAL(statusChanged(Account, Status)), this, SIGNAL(statusChanged()));
+		connect(ProtocolHandler, SIGNAL(contactStatusChanged(Contact, Status)),
+				this, SIGNAL(buddyStatusChanged(Contact, Status)));
+	}
+}
+
 void AccountShared::protocolRegistered(ProtocolFactory *factory)
 {
 	ensureLoaded();
@@ -130,63 +163,49 @@ void AccountShared::protocolRegistered(ProtocolFactory *factory)
 	if (factory->name() != ProtocolName)
 		return;
 
-	if (!details())
-		setDetails(factory->createAccountDetails(this));
+	if (ProtocolHandler && (ProtocolHandler->protocolFactory() == factory))
+		return;
 
-	ProtocolHandler = factory->createProtocolHandler(this);
-
-	connect(ProtocolHandler, SIGNAL(statusChanged(Account, Status)), this, SIGNAL(statusChanged()));
-	connect(ProtocolHandler, SIGNAL(contactStatusChanged(Contact, Status)),
-			this, SIGNAL(buddyStatusChanged(Contact, Status)));
-
-	emit protocolLoaded();
+	useProtocolFactory(factory);
 }
 
 void AccountShared::protocolUnregistered(ProtocolFactory* factory)
 {
 	ensureLoaded();
 
-	if (factory->name() != ProtocolName)
+	if (!ProtocolHandler)
 		return;
 
-	// TODO 0.6.6: if empty config must: store(),Details->store()
-	store();
+	if (factory != ProtocolHandler->protocolFactory())
+		return;
 
-	emit protocolUnloaded();
-
-	setDetails(0);
+	useProtocolFactory(0);
 }
 
 void AccountShared::detailsAdded()
 {
 	details()->ensureLoaded();
-
-	ProtocolFactory *factory = ProtocolsManager::instance()->byName(ProtocolName);
-	if (!factory)
-		return;
-	
-	protocolRegistered(factory);
 }
 
 void AccountShared::detailsAboutToBeRemoved()
 {
-	delete ProtocolHandler;
-	ProtocolHandler = 0;
-
 	details()->store();
 }
 
 void AccountShared::setProtocolName(QString protocolName)
 {
 	ensureLoaded();
-	ProtocolName = protocolName ;
+
+	ProtocolName = protocolName;
+	useProtocolFactory(ProtocolsManager::instance()->byName(protocolName));
+
 	dataUpdated();
-	detailsAdded();
 }
 
 void AccountShared::setId(const QString &id)
 {
 	ensureLoaded();
+
 	if (Id == id)
 		return;
 

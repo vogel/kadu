@@ -341,10 +341,13 @@ void Core::kaduWindowDestroyed()
 	Window = 0;
 }
 
-void Core::accountRegistered(Account account)
+void Core::accountAdded(Account account)
 {
 	account.accountContact().setOwnerBuddy(Myself);
+}
 
+void Core::accountRegistered(Account account)
+{
 	Protocol *protocol = account.protocolHandler();
 	if (!protocol)
 		return;

@@ -136,6 +136,8 @@ Buddy BuddyManager::byDisplay(const QString &display)
 
 Buddy BuddyManager::byId(Account account, const QString &id, bool create)
 {
+	ensureLoaded();
+
 	Contact contact = ContactManager::instance()->byId(account, id, create);
 	if (contact.isNull())
 		return Buddy::null;
@@ -145,6 +147,8 @@ Buddy BuddyManager::byId(Account account, const QString &id, bool create)
 
 Buddy BuddyManager::byContact(Contact contact, bool create)
 {
+	ensureLoaded();
+
 	if (contact.isNull())
 		return Buddy::null;
 
