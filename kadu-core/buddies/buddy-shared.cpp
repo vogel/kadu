@@ -192,6 +192,9 @@ void BuddyShared::store()
 
 void BuddyShared::aboutToBeRemoved()
 {
+	foreach (Contact contact, Contacts)
+		contact.setOwnerBuddy(Buddy::null);
+
 	Contacts = QList<Contact>();
 	Groups = QList<Group>();
 }

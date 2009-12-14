@@ -13,10 +13,13 @@
 #include "protocols/services/contact-list-service.h"
 
 class GaduProtocol;
+class GaduProtocolSocketNotifiers;
 
 class GaduContactListService : public ContactListService
 {
 	Q_OBJECT
+
+	bool AsFile;
 
 	GaduProtocol *Protocol;
 	QString ImportReply;
@@ -30,8 +33,12 @@ public:
 	GaduContactListService(GaduProtocol *protocol);
 
 	virtual void importContactList();
+	virtual void importContactListAsFile();
 	virtual void exportContactList();
 	virtual void exportContactList(BuddyList buddies);
+
+signals:
+	void contactListDownloaded(const QString &contactList);
 
 };
 
