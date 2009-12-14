@@ -11,6 +11,7 @@
 #include "debug.h"
 #include "kadu.h"
 #include "misc.h"
+#include "icons_manager.h"
 
 #include "single_window.h"
 
@@ -54,7 +55,10 @@ SingleWindow::SingleWindow()
 	splitSizes.append(width() - kadu->width());
 	split->setSizes(splitSizes);
 
+	setWindowTitle(kadu->windowTitle());
+
 	connect(tabs, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
+	connect(tabs, SIGNAL(currentChanged(int)), this, SLOT(onTabChange(int)));
 
 	connect(chat_manager, SIGNAL(handleNewChatWidget(ChatWidget *,bool &)),
 			this, SLOT(onNewChat(ChatWidget *,bool &)));
@@ -86,6 +90,9 @@ SingleWindow::~SingleWindow()
 	disconnect(chat_manager, SIGNAL(chatWidgetOpen(ChatWidget *)),
 			this, SLOT(onOpenChat(ChatWidget *)));
 
+	disconnect(tabs, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
+	disconnect(tabs, SIGNAL(currentChanged(int)), this, SLOT(onTabChange(int)));
+
 	disconnect(kadu, SIGNAL(shown()), this, SLOT(show()));
 	disconnect(kadu, SIGNAL(hiding()), this, SLOT(hide()));
 }
@@ -93,10 +100,7 @@ SingleWindow::~SingleWindow()
 void SingleWindow::onNewChat(ChatWidget *w, bool &handled)
 {
 	handled = true;
-	QString title = w->caption();
-	if (title.length() > 20)
-		title = title.left(17) + "...";
-	tabs->addTab(w, w->icon(), title);
+	onOpenChat(w);
 }
 
 void SingleWindow::onOpenChat(ChatWidget *w)
@@ -105,12 +109,15 @@ void SingleWindow::onOpenChat(ChatWidget *w)
 	if (title.length() > 20)
 		title = title.left(17) + "...";
 	tabs->addTab(w, w->icon(), title);
+
+	connect(w, SIGNAL(messageReceived(ChatWidget *)),
+		this, SLOT(onNewMessage(ChatWidget *)));
 }
 
 void SingleWindow::closeTab(int index)
 {
-	tabs->widget(index)->deleteLater();
 	tabs->removeTab(index);
+	tabs->widget(index)->deleteLater();
 }
 
 void SingleWindow::closeEvent(QCloseEvent *event)
@@ -133,6 +140,20 @@ void SingleWindow::closeChatWidget(ChatWidget *w)
 		if (index >= 0)
 			closeTab(index);
 	}
+}
+
+void SingleWindow::onNewMessage(ChatWidget *w)
+{
+	if (w != tabs->currentWidget())
+	{
+		tabs->setTabIcon(tabs->indexOf(w),
+			icons_manager->loadIcon("Message"));
+	}
+}
+
+void SingleWindow::onTabChange(int index)
+{
+	tabs->setTabIcon(index, tabs->widget(index)->windowIcon());
 }
 
 SingleWindow *singleWindow = NULL;

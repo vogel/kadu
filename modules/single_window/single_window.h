@@ -25,6 +25,8 @@ public:
 public slots:
 	void onOpenChat(ChatWidget *);
 	void onNewChat(ChatWidget *,bool &);
+	void onNewMessage(ChatWidget *);
+	void onTabChange(int index);
 	void closeTab(int index);
 };
 
