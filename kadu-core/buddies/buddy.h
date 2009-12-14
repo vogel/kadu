@@ -23,6 +23,7 @@
 class Account;
 class BuddyShared;
 class Contact;
+class ContactShared;
 class Group;
 class StoragePoint;
 class XmlConfigFile;
@@ -31,6 +32,11 @@ class KADUAPI Buddy : public QObject, public SharedBase<BuddyShared>
 {
 	Q_OBJECT
 	KaduSharedBaseClass(Buddy)
+
+	friend class ContactShared;
+	// only allow ContactShared to access these methods
+	void addContact(Contact contact);
+	void removeContact(Contact contact) const;
 
 public:
 	static Buddy create();
@@ -58,12 +64,9 @@ public:
 
 	Account prefferedAccount() const;
 	Contact prefferedContact() const;
-	QList<Account> accounts() const;
 
 // 	void setData(BuddyShared *data) { Data = data; }  // TODO: 0.8 tricky merge, this should work well ;)
 
-	void addContact(Contact contact);
-	void removeContact(Contact contact) const;
 	QList<Contact> contacts(Account account) const;
 	QList<Contact> contacts() const;
 	bool hasContact(Account account) const;

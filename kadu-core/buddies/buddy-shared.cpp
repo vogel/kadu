@@ -266,17 +266,6 @@ Account BuddyShared::prefferedAccount()
 	return prefferedContact().contactAccount();
 }
 
-QList<Account> BuddyShared::accounts()
-{
-	QList<Account> accounts;
-
-	foreach (const Contact &contact, Contacts)
-		if (!accounts.contains(contact.contactAccount()))
-			accounts.append(contact.contactAccount());
-
-	return accounts;
-}
-
 void BuddyShared::emitUpdated()
 {
 	emit updated();

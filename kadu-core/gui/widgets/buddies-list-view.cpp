@@ -217,11 +217,9 @@ void BuddiesListView::contextMenuEvent(QContextMenuEvent *event)
 		else
 			management->addSeparator();
 
-	foreach (Account account, con.accounts())
+	foreach (Contact contact, con.contacts())
 	{
-		if (account.isNull())
-			continue;
-
+		Account account = contact.contactAccount();
 		ProtocolFactory *protocolFactory = account.protocolHandler()->protocolFactory();
 
 		if (!protocolFactory || !protocolFactory->protocolMenuManager())

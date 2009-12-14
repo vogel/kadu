@@ -78,7 +78,6 @@ public:
 	QString id(Account account);
 
 	Account prefferedAccount();
-	QList<Account> accounts();
 
 	QMap<QString, QString> & customData() { return CustomData; }
 

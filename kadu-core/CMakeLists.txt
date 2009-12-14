@@ -33,7 +33,6 @@ set (kadu_SRCS
 	buddies/filter/account-buddy-filter.cpp
 	buddies/filter/anonymous-buddy-filter.cpp
 	buddies/filter/anonymous-without-messages-buddy-filter.cpp
-	buddies/filter/buddy-mergable-filter.cpp
 	buddies/filter/buddy-name-filter.cpp
 	buddies/filter/group-buddy-filter.cpp
 	buddies/filter/has-description-buddy-filter.cpp
@@ -298,8 +297,6 @@ set (kadu_MOC_SRCS
 	buddies/filter/account-buddy-filter.h
 	buddies/filter/anonymous-buddy-filter.h
 	buddies/filter/anonymous-without-messages-buddy-filter.h
-	buddies/filter/buddy-mergable-filter.h
-	#buddies/filter/buddy-name-filter.h
 	buddies/filter/group-buddy-filter.h
 	buddies/filter/has-description-buddy-filter.h
 	buddies/filter/non-account-buddy-filter.h
@@ -307,7 +304,6 @@ set (kadu_MOC_SRCS
 	buddies/filter/online-and-description-buddy-filter.h
 	buddies/filter/online-buddy-filter.h
 
-	#buddies/model/abstract-buddies-model.h
 	buddies/model/buddy-list-model.h
 	buddies/model/buddies-model.h
 	buddies/model/buddies-model-base.h

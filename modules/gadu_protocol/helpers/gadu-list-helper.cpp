@@ -152,7 +152,6 @@ Buddy GaduListHelper::linePre70ToBuddy(Account account, QStringList &sections)
 			contact.setId(QString::number(uin));
 			contact.data()->setState(StorableObject::StateNew);
 			contact.setOwnerBuddy(buddy);
-			buddy.addContact(contact);
 		}
 	}
 
@@ -224,7 +223,6 @@ Buddy GaduListHelper::line70ToBuddy(Account account, QStringList &sections)
 			contact.setId(QString::number(uin));
 			contact.data()->setState(StorableObject::StateNew);
 			contact.setOwnerBuddy(buddy);
-			buddy.addContact(contact);
 		}
 	}
 

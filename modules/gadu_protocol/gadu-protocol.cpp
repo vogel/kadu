@@ -137,8 +137,6 @@ Buddy GaduProtocol::searchResultToBuddy(gg_pubdir50_t res, int number)
 		contact.setCurrentStatus(status);
 	}
 
-	result.addContact(contact);
-
 	result.setFirstName(cp2unicode(gg_pubdir50_get(res, number, GG_PUBDIR50_FIRSTNAME)));
 	result.setLastName(cp2unicode(gg_pubdir50_get(res, number, GG_PUBDIR50_LASTNAME)));
 	result.setNickName(cp2unicode(gg_pubdir50_get(res, number, GG_PUBDIR50_NICKNAME)));

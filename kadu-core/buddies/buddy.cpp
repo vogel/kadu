@@ -107,11 +107,6 @@ Account Buddy::prefferedAccount() const
 	return isNull() ? Account::null : data()->prefferedAccount();
 }
 
-QList<Account> Buddy::accounts() const
-{
-	return isNull() ? QList<Account>() : data()->accounts();
-}
-
 void Buddy::addContact(Contact contact)
 {
 	if (isNull() || contact.isNull())
