@@ -18,6 +18,7 @@
 #include "chat/chat-manager.h"
 #include "chat/message/message.h"
 #include "configuration/configuration-file.h"
+#include "contacts/contact-manager.h"
 #include "core/core.h"
 #include "debug.h"
 #include "gui/windows/message-dialog.h"
@@ -184,7 +185,10 @@ void HistorySqlStorage::appendMessage(const Message &message)
 	QSqlRecord record = MessagesModel->record();
 
 	record.setValue("chat", message.chat().uuid().toString());
-	record.setValue("sender", message.sender().uuid().toString());
+	if (message.sender().contacts(message.chat().chatAccount()).count() > 0)
+		record.setValue("sender", message.sender().contacts(message.chat().chatAccount())[0].uuid().toString());
+	else if (message.sender().contacts().count() > 0)
+		record.setValue("sender", message.sender().contacts()[0].uuid().toString());
 	record.setValue("send_time", message.sendDate());
 	record.setValue("receive_time", message.receiveDate());
 	record.setValue("content", message.content());
@@ -357,9 +361,10 @@ QList<Message> HistorySqlStorage::messagesBackTo(Chat chat, QDateTime datetime, 
 	DatabaseMutex.unlock();
 
 	QList<Message> messages;
+	
 	for (int i = result.size() - 1; i >= 0; --i)
 		messages.append(result.at(i));
-
+	
 	return messages;
 }
 
@@ -402,6 +407,7 @@ QList<Message> HistorySqlStorage::messagesFromQuery(Chat chat, QSqlQuery query)
 	{
 		bool outgoing = QVariant(query.value(4).toString().split('=').last()).toBool();
 		Message::Type type = outgoing ? Message::TypeSent : Message::TypeReceived;
+
 		Buddy senderBuddy = outgoing ? Core::instance()->myself() : BuddyManager::instance()->byUuid(query.value(0).toString());
 		QList<Contact> contacts = senderBuddy.contacts(chat.chatAccount());
 		Contact sender;
@@ -411,7 +417,7 @@ QList<Message> HistorySqlStorage::messagesFromQuery(Chat chat, QSqlQuery query)
 		else
 			continue;
 		
-		Message message(chat, type, sender);
+		Message message(chat, type, senderBuddy);
 		message
 			.setContent(query.value(1).toString())
 			.setSendDate(query.value(2).toDateTime())
@@ -422,4 +428,23 @@ QList<Message> HistorySqlStorage::messagesFromQuery(Chat chat, QSqlQuery query)
 	}
 
 	return messages;
+}
+
+void HistorySqlStorage::convertSenderToContact()
+{
+	QSqlQuery firstQuery = QSqlQuery(Database);
+	firstQuery.prepare("SELECT sender, chat FROM kadu_messages");
+	
+	while (firstQuery.next())
+	{
+		Buddy b = BuddyManager::instance()->byUuid(firstQuery.value(0).toString());
+		Chat c = ChatManager::instance()->byUuid(firstQuery.value(1).toString());
+		QSqlQuery second = QSqlQuery(Database);
+		second.prepare("UPDATE kadu_messages SET sender=:sender WHERE sender=:old_sender");
+		second.bindValue(":old_sender", firstQuery.value(0).toString());
+		second.bindValue(":sender", b.contacts(c.chatAccount())[0].uuid().toString());
+		second.exec();
+	}
+	
+	MessageDialog::msg("All teh werk dun!", false, "Warning");
 }

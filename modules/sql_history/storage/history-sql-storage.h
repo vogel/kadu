@@ -70,6 +70,9 @@ public:
 
 	void appendMessage(const Message &message);
 	void clearChatHistory(Chat chat);
+	
+	//TODO 0.6.6
+	void convertSenderToContact();
 
 };
 
