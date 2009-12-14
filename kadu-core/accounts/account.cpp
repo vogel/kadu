@@ -62,39 +62,6 @@ Account::~Account()
 {
 }
 
-Buddy Account::getBuddyById(const QString& id)
-{
-	return ContactManager::instance()->byId(*this, id).ownerBuddy();
-}
-
-Buddy Account::createAnonymous(const QString& id)
-{
-	if (isNull())
-		return Buddy::null;
-
-	Buddy result = Buddy::create();
-	result.setAnonymous(true);
-
-	ProtocolFactory *protocolFactory = data()->protocolHandler()->protocolFactory();
-
-	Contact contact = Contact::create();
-	ContactDetails *details = protocolFactory->createContactDetails(contact);
-	details->setState(StorableObject::StateNew);
-	contact.setDetails(details);
-	contact.setContactAccount(*this);
-	contact.setOwnerBuddy(result);
-	contact.setId(id);
-
-	if (!contact.isValid())
-		return Buddy::null;
-
-	ContactManager::instance()->addItem(contact);
-	BuddyManager::instance()->addItem(result);
-
-	result.addContact(contact);
-	return result;
-}
-
 void Account::importProxySettings()
 {
 	if (isNull())

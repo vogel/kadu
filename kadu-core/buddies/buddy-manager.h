@@ -60,6 +60,8 @@ public:
 	void mergeBuddies(Buddy destination, Buddy source);
 
 	Buddy byDisplay(const QString &display);
+	Buddy byId(Account account, const QString &id, bool create = false);
+	Buddy byContact(Contact contact, bool create = false);
 
 signals:
 	void buddyAboutToBeAdded(Buddy &buddy);

@@ -297,30 +297,22 @@ void AddBuddyWindow::accept()
 	if (!MergeContact->isChecked())
 	{
 		if (MyBuddy.isNull())
-			buddy = ContactManager::instance()->byId(account, UserNameEdit->text()).ownerBuddy();
-
-		if (buddy.isNull())
-			buddy = Buddy::create();
+			buddy = BuddyManager::instance()->byId(account, UserNameEdit->text(), true);
+		else
+			buddy = MyBuddy;
 
 		buddy.setAnonymous(false);
 		buddy.setDisplay(DisplayNameEdit->text());
 	}
 	else
+	{
 		buddy = SelectContact->buddy();
+		if (buddy.isNull())
+			return;
+	}
 
-	if (buddy.isNull())
-		return;
-
-	Contact contact = Contact::create();
-	contact.setContactAccount(account);
+	Contact contact = ContactManager::instance()->byId(account, UserNameEdit->text(), true);
 	contact.setOwnerBuddy(buddy);
-	contact.setId(UserNameEdit->text());
-	contact.setDetails(account.protocolHandler()->protocolFactory()->createContactDetails(contact));
-	ContactManager::instance()->addItem(contact);
-	buddy.addContact(contact);
-
-	if (!MergeContact->isChecked())
-		BuddyManager::instance()->addItem(buddy);
 
 	QDialog::accept();
 }

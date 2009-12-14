@@ -296,7 +296,7 @@ bool TlenProtocol::sendMessage(Chat chat, FormattedMessage &formattedMessage)
 
 	HtmlDocument::escapeText(plain);
 
-	Message message(chat, Message::TypeSent, ContactManager::instance()->byId(account(), account().id(), true));
+	Message message(chat, Message::TypeSent, account().accountContact());
 	message
 		.setContent(plain)
 		.setSendDate(QDateTime::currentDateTime())
@@ -510,40 +510,19 @@ void TlenProtocol::itemReceived(QString jid, QString name, QString subscription,
 	kdebugf();
 	kdebugm(KDEBUG_WARNING, "Tlen contact rcv %s\n", qPrintable(jid));
 
-	Buddy buddy = Buddy::create();
+	Buddy buddy = ContactManager::instance()->byId(account(), jid, true);
 
-	Contact contact = ContactManager::instance()->byId(account(), jid);
-	if (contact.isNull())
-	{
-		contact = Contact::create();
-		contact.setContactAccount(account());
-		contact.setOwnerBuddy(buddy);
-		contact.setId(jid);
-
-		TlenContactDetails *tlenDetails = new TlenContactDetails(contact);
-		tlenDetails->setState(StorableObject::StateNew);
-		contact.setDetails(tlenDetails);
-		
-		buddy.addContact(contact);
-		//ContactManager::instance()->addContact(contact);
-		BuddyManager::instance()->addItem(buddy);
-		//buddy.store();
-	}
-	else
-		buddy = contact.ownerBuddy();
-
-	if(name.isEmpty())
+	if (name.isEmpty())
 		buddy.setDisplay(jid);
 	else
 		buddy.setDisplay(name);
 
-	if(!group.isEmpty())
+	if (!group.isEmpty())
 		buddy.addToGroup(GroupManager::instance()->byName(group, true /* create group */));
 
- 	if (buddy.isAnonymous())
-		buddy.setAnonymous(false);
+	buddy.setAnonymous(false);
 
-	// remember to set every contact offline after add to contact list
+	// TODO: 0.6.6 remember to set every contact offline after add to contact list
 	//presenceChanged(jid, "unavailable", QString::null);
 
 	kdebugf2();
@@ -755,7 +734,7 @@ void TlenProtocol::chatNotify(QString from, QString type)
 	Status oldStatus = contact.currentStatus();
 	Status newStatus = contact.currentStatus();
 
-	if(type=="t")
+	if (type=="t")
 	{
 		if (TypingUsers.contains(from))
 			return;
@@ -767,7 +746,7 @@ void TlenProtocol::chatNotify(QString from, QString type)
 		contact.setCurrentStatus(newStatus);
 		emit buddyStatusChanged(contact, oldStatus);
 	}
-	else if(type=="u")
+	else if (type=="u")
 	{
 		//typing stop
 		QString oldDesc = TypingUsers[from];

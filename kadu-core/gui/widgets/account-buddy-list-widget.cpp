@@ -134,7 +134,6 @@ void AccountBuddyListWidget::buddiesListImported(bool ok, BuddyList buddies)
 		{
 			foreach (const Contact &contact, oneBuddyContacts)
 			{
-				// TODO 0.6.6: somwhere bellow comes double contacts after 2nd import (double buddies, double contacts)
 				Contact contactOnList = ContactManager::instance()->byId(CurrentAccount, contact.id());
 				if (contactOnList.isNull()) // not on list add this one as new
 				{

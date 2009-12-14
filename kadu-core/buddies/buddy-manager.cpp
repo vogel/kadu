@@ -14,6 +14,7 @@
 #include "buddies/buddy-remove-predicate-object.h"
 #include "buddies/buddy-shared.h"
 #include "buddies/group-manager.h"
+#include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 #include "configuration/configuration-manager.h"
 #include "configuration/xml-configuration-file.h"
@@ -131,6 +132,30 @@ Buddy BuddyManager::byDisplay(const QString &display)
 	}
 
 	return Buddy::null;
+}
+
+Buddy BuddyManager::byId(Account account, const QString &id, bool create)
+{
+	Contact contact = ContactManager::instance()->byId(account, id, create);
+	if (contact.isNull())
+		return Buddy::null;
+
+	return byContact(contact, create);
+}
+
+Buddy BuddyManager::byContact(Contact contact, bool create)
+{
+	if (contact.isNull())
+		return Buddy::null;
+
+	if (!create || !contact.ownerBuddy().isNull())
+		return contact.ownerBuddy();
+
+	Buddy buddy = Buddy::create();
+	buddy.setDisplay(QString("%1: %2").arg(contact.contactAccount().name()).arg(contact.id()));
+	addItem(buddy);
+
+	return buddy;
 }
 
 BuddyList BuddyManager::buddies(Account account, bool includeAnonymous)

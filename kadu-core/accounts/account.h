@@ -45,9 +45,6 @@ public:
 
 	void importProxySettings();
 
-	Buddy getBuddyById(const QString &id);
-	Buddy createAnonymous(const QString &id);
-
 	StatusContainer * statusContainer() { return data(); }
 
 	KaduSharedBase_PropertyRead(StoragePoint *, storage, Storage)
