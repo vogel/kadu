@@ -42,8 +42,6 @@ bool GaduChatService::sendMessage(Chat chat, FormattedMessage &message)
 {
 	kdebugf();
 
-	printf("sending message to chat: %s\n", qPrintable(chat.uuid().toString()));
-
 	QString plain = message.toPlain();
 	QList<Contact> contacts = chat.contacts().toContactList();
 

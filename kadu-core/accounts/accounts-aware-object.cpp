@@ -13,7 +13,6 @@
 
 KADU_AWARE_CLASS(AccountsAwareObject)
 
-
 void AccountsAwareObject::accountAdded(Account account)
 {
 }

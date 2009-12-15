@@ -166,9 +166,9 @@ protected:
 		foreach (QDomElement itemElement, itemElements)
 		{
 			StoragePoint *storagePoint = new StoragePoint(storage()->storage(), itemElement);
-			Item item = Item::loadFromStorage(storagePoint);
-
-			addItem(item);
+			QUuid uuid = storagePoint->point().attribute("uuid");
+			if (!uuid.isNull())
+				byUuid(uuid); // this method loads
 		}
 	}
 
@@ -220,17 +220,22 @@ public:
 	 * Returns item with given uuid. Uuid are arbitrary but can not
 	 * change (even between application restarts).
 	 *
-	 * When no item with given uuid is found, Item::null value is returned.
+	 * When no item with given uuid is found, new item is created
+	 * and added to manager.
 	 */
 	Item byUuid(const QUuid &uuid)
 	{
-		ensureLoaded();
-
 		foreach (Item item, Items)
 			if (item.uuid() == uuid)
 				return item;
 
-		return Item::null;
+		Item item = Item::create();
+		item.setUuid(uuid);
+		item.data()->setState(StateNotLoaded);
+
+		addItem(item);
+
+		return item;
 	}
 
 	/**

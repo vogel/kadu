@@ -113,6 +113,12 @@ protected:
 	{
 	}
 
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Method called just after item is added to manager.
+	 *
+	 * This method is called just after item is added to manager.
+	 */
 	virtual void itemAdded(Item item)
 	{
 	}
@@ -127,6 +133,12 @@ protected:
 	{
 	}
 
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Method called just after item is removed from manager.
+	 *
+	 * This method is called just after item is removed from manager.
+	 */
 	virtual void itemRemoved(Item item)
 	{
 	}
@@ -249,9 +261,8 @@ protected:
 			StoragePoint *storagePoint = new StoragePoint(storage()->storage(), itemElement);
 
 			QUuid uuid = storagePoint->point().attribute("uuid");
-			Item item = byUuid(uuid);
-
-			printf("found item with uuid: %s\n", qPrintable(item.uuid().toString()));
+			if (!uuid.isNull())
+				byUuid(uuid); // this method loads
 		}
 	}
 
@@ -305,14 +316,13 @@ public:
 	 * Returns item with given uuid. Uuid are arbitrary but can not
 	 * change (even between application restarts).
 	 *
-	 * When no item with given uuid is found, Item::null value is returned.
+	 * When no item with given uuid is found, new one is created and added
+	 * to manager.
 	 *
 	 * This method works on registered and unregisted items.
 	 */
 	Item byUuid(const QUuid &uuid)
 	{
-		ensureLoaded();
-
 		foreach (Item item, Items)
 			if (item.uuid() == uuid)
 				return item;
