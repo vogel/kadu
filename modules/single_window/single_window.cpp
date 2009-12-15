@@ -13,6 +13,8 @@
 #include "misc.h"
 #include "icons_manager.h"
 
+#include <QtCore/QStringList>
+
 #include "single_window.h"
 
 extern "C" KADU_EXPORT int single_window_init(bool firstLoad)
@@ -48,8 +50,8 @@ SingleWindow::SingleWindow()
 	QList<int> splitSizes;
 
 #ifdef Q_WS_HILDON
-	if (kadu->width() >= 300)
-		kadu->resize(300, kadu->height());
+	if (kadu->width() >= 250)
+		kadu->resize(250, kadu->height());
 #endif
 	splitSizes.append(kadu->width());
 	splitSizes.append(width() - kadu->width());
@@ -105,9 +107,11 @@ void SingleWindow::onNewChat(ChatWidget *w, bool &handled)
 
 void SingleWindow::onOpenChat(ChatWidget *w)
 {
-	QString title = w->caption();
-	if (title.length() > 20)
-		title = title.left(17) + "...";
+	QStringList nicks = w->users()->altNicks();
+	QString title = nicks[0];
+	if (nicks.count() > 1)
+		title.append(", ...");
+
 	tabs->addTab(w, w->icon(), title);
 
 	connect(w, SIGNAL(messageReceived(ChatWidget *)),
@@ -116,8 +120,8 @@ void SingleWindow::onOpenChat(ChatWidget *w)
 
 void SingleWindow::closeTab(int index)
 {
-	tabs->removeTab(index);
 	tabs->widget(index)->deleteLater();
+	tabs->removeTab(index);
 }
 
 void SingleWindow::closeEvent(QCloseEvent *event)
