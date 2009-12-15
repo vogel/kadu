@@ -1,13 +1,13 @@
 #ifndef SINGLE_WINDOW_H
 #define SINGLE_WINDOW_H
 
-#include <QtGui/QWidget>
+#include <QtGui/QMainWindow>
 #include <QtGui/QSplitter>
 #include <QtGui/QTabWidget>
 
 #include "chat_manager.h"
 
-class SingleWindow : public QWidget, public ChatContainer
+class SingleWindow : public QMainWindow, public ChatContainer
 {
 	Q_OBJECT
 	QSplitter *split;

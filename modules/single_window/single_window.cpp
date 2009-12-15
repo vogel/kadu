@@ -14,6 +14,10 @@
 #include "icons_manager.h"
 
 #include <QtCore/QStringList>
+#ifdef Q_WS_HILDON
+#include <QtGui/QMenuBar>
+#include <QtGui/QMenu>
+#endif /* Q_WS_HILDON */
 
 #include "single_window.h"
 
@@ -50,6 +54,8 @@ SingleWindow::SingleWindow()
 	QList<int> splitSizes;
 
 #ifdef Q_WS_HILDON
+	menuBar()->addMenu(kadu->mainMenu());
+
 	if (kadu->width() >= 250)
 		kadu->resize(250, kadu->height());
 #endif

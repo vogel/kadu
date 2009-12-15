@@ -194,8 +194,11 @@ public:
 
 	/**
 		Zwraca wskaznik do glownego menu programu.
+		(Potrzebne dla modulu single_window pod maemo)
 	**/
-//	QMenu * mainMenu() const;
+#ifdef Q_WS_HILDON
+	QMenu * mainMenu() const;
+#endif
 
 	/**
 		Zwraca wskaznik do zakladek z nazwami grup.

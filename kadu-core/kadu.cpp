@@ -1984,10 +1984,12 @@ void Kadu::infoPanelSyntaxFixup(QString &syntax)
 // 	return MenuBar;
 // }
 
-//QMenu* Kadu::mainMenu() const
-//{
-//	return MainMenu;
-//}
+#ifdef Q_WS_HILDON
+QMenu* Kadu::mainMenu() const
+{
+	return MainMenu;
+}
+#endif
 
 KaduTabBar* Kadu::groupBar() const
 {
