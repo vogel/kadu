@@ -64,6 +64,7 @@ public:
 	virtual QString storageNodeName();
 
 	virtual void store();
+	virtual bool shouldStore();
 	virtual void aboutToBeRemoved();
 
 	KaduShared_Property(Account, contactAccount, ContactAccount)

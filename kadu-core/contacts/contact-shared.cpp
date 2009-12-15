@@ -108,6 +108,13 @@ void ContactShared::store()
 	removeValue("Contact");
 }
 
+bool ContactShared::shouldStore()
+{
+	ensureLoaded();
+
+	return UuidStorableObject::shouldStore() && !Id.isEmpty();
+}
+
 void ContactShared::emitUpdated()
 {
 	emit updated();

@@ -58,3 +58,16 @@ StoragePoint * UuidStorableObject::createStoragePoint()
 	QDomElement node = parentStoragePoint->storage()->getUuidNode(parentStoragePoint->point(), storageNodeName(), id);
 	return new StoragePoint(parentStoragePoint->storage(), node);
 }
+
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Determines if object is worth to be stored.
+ * @return true if object should be stored, defaults to true
+ * @todo this method is used only in managers, in 0.8 it should be used in every place
+ *
+ * Returns true if object has valid uuid. Otherwise object will not be stored.
+ */
+bool UuidStorableObject::shouldStore()
+{
+	return StorableObject::shouldStore() && !uuid().isNull();
+}

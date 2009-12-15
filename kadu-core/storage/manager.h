@@ -280,7 +280,10 @@ public:
 		ensureLoaded();
 
 		foreach (Item item, Items)
-			item.store();
+			if (item.data()->shouldStore())
+				item.store();
+			else
+				item.data()->removeFromStorage();
 	}
 
 	/**
