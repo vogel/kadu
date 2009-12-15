@@ -38,15 +38,15 @@ void BuddyOptionsConfigurationWidget::createGui()
 
 	int row = 0;
 
-	layout->setRowStretch(row++, 1);       
+	layout->setRowStretch(row++, 1);   
+	
+	OfflineToCheckBox = new QCheckBox(tr("Allow contact to see when I'm available"), this);
+	OfflineToCheckBox->setChecked(!MyBuddy.isOfflineTo());
+	layout->addWidget(OfflineToCheckBox, row++, 2, 1, 2);   
 
-	BlockCheckBox = new QCheckBox(tr("Block contact"), this);
+	BlockCheckBox = new QCheckBox(tr("Ignore contact"), this);
 	BlockCheckBox->setChecked(MyBuddy.isBlocked());
-	layout->addWidget(BlockCheckBox, row++, 2, 1, 2);      
-
-	OfflineToCheckBox = new QCheckBox(tr("Always appear as offline to contact"), this);
-	OfflineToCheckBox->setChecked(MyBuddy.isOfflineTo());
-	layout->addWidget(OfflineToCheckBox, row++, 2, 1, 2);        
+	layout->addWidget(BlockCheckBox, row++, 2, 1, 2);           
 
 	NotifyCheckBox = new QCheckBox(tr("Notify when contact's status changes"), this);
 	ContactNotifyData *cnd = 0;
@@ -62,9 +62,9 @@ void BuddyOptionsConfigurationWidget::createGui()
 
 void BuddyOptionsConfigurationWidget::saveConfiguration()
 {
-
+	//TODO 0.6.6 not sure
 	MyBuddy.setBlocked(BlockCheckBox->isChecked());
-	MyBuddy.setOfflineTo(OfflineToCheckBox->isChecked());
+	MyBuddy.setOfflineTo(!OfflineToCheckBox->isChecked());
 
 	ContactNotifyData *cnd = 0;
 	if (MyBuddy.data())

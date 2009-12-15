@@ -57,12 +57,16 @@ private slots:
 	void addAccountDataRow(Contact data = Contact::null);
 	void showOrderDialog();
 	void updateOrderAndClose();
+	void unmergeContact();
 
 public:
 	BuddyGeneralConfigurationWidget(Buddy &buddy, QWidget *parent = 0);
 	~BuddyGeneralConfigurationWidget();
 
 	void saveConfiguration();
+
+signals:
+	void doUnmergeContact();
 
 };
 
