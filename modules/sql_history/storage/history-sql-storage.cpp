@@ -185,10 +185,7 @@ void HistorySqlStorage::appendMessage(const Message &message)
 	QSqlRecord record = MessagesModel->record();
 
 	record.setValue("chat", message.chat().uuid().toString());
-	if (message.sender().contacts(message.chat().chatAccount()).count() > 0)
-		record.setValue("sender", message.sender().contacts(message.chat().chatAccount())[0].uuid().toString());
-	else if (message.sender().contacts().count() > 0)
-		record.setValue("sender", message.sender().contacts()[0].uuid().toString());
+	record.setValue("sender", message.sender().uuid().toString());
 	record.setValue("send_time", message.sendDate());
 	record.setValue("receive_time", message.receiveDate());
 	record.setValue("content", message.content());
@@ -417,7 +414,7 @@ QList<Message> HistorySqlStorage::messagesFromQuery(Chat chat, QSqlQuery query)
 		else
 			continue;
 		
-		Message message(chat, type, senderBuddy);
+		Message message(chat, type, sender);
 		message
 			.setContent(query.value(1).toString())
 			.setSendDate(query.value(2).toDateTime())
@@ -438,6 +435,9 @@ void HistorySqlStorage::convertSenderToContact()
 	while (firstQuery.next())
 	{
 		Buddy b = BuddyManager::instance()->byUuid(firstQuery.value(0).toString());
+		if (Buddy::null == b)
+			continue;
+		
 		Chat c = ChatManager::instance()->byUuid(firstQuery.value(1).toString());
 		QSqlQuery second = QSqlQuery(Database);
 		second.prepare("UPDATE kadu_messages SET sender=:sender WHERE sender=:old_sender");

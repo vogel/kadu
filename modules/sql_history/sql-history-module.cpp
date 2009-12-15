@@ -51,7 +51,7 @@ void SqlHistoryModule::mainConfigurationWindowCreated(MainConfigurationWindow *m
 {
 	//TODO 0.6.6
   	QWidget *clickMe = mainConfigurationWindow->widget()->widgetById("sql_history/import");
-	connect(clickMe, SIGNAL(clicked()), sqlHistoryModule, SLOT(doSomeImport()));
+	connect(clickMe, SIGNAL(clicked()), this, SLOT(doSomeImport()));
 
 	portSpinBox = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("sql_history/databasehostport"));
 	connect(portSpinBox, SIGNAL(valueChanged(int)), this, SLOT(portSpinBoxValueChanged(int)));
