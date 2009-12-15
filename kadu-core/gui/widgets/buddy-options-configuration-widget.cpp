@@ -62,7 +62,6 @@ void BuddyOptionsConfigurationWidget::createGui()
 
 void BuddyOptionsConfigurationWidget::saveConfiguration()
 {
-	//TODO 0.6.6 not sure
 	MyBuddy.setBlocked(BlockCheckBox->isChecked());
 	MyBuddy.setOfflineTo(!OfflineToCheckBox->isChecked());
 
