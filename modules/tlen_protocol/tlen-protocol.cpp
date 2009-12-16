@@ -498,10 +498,11 @@ void TlenProtocol::itemReceived(QString jid, QString name, QString subscription,
 	kdebugf();
 	kdebugm(KDEBUG_WARNING, "Tlen contact rcv %s\n", qPrintable(jid));
 
-	Buddy buddy = ContactManager::instance()->byId(account(), jid, true);
+	Contact contact = ContactManager::instance()->byId(account(), jid, true);
+	Buddy buddy = BuddyManager::instance()->byContact(contact, true);
 
 	if (name.isEmpty())
-		buddy.setDisplay(jid);
+	{/*buddy.setDisplay(jid);*/} // BM sets display
 	else
 		buddy.setDisplay(name);
 
@@ -557,35 +558,17 @@ void TlenProtocol::presenceChanged(QString from, QString newstatus, QString desc
 
 	// find id
 	
-	Contact contact = ContactManager::instance()->byId(account(), jid);
-	Buddy buddy = contact.ownerBuddy();
+	Contact contact = ContactManager::instance()->byId(account(), jid, true);
+	Buddy buddy = BuddyManager::instance()->byContact(contact, true);
+
+	if (buddy.isAnonymous())
+		buddy.setAnonymous(false);
 
 	// id resource add new contact
 	if (jid != from)
 	{
-		Contact contactRes = ContactManager::instance()->byId(account(), from);
+		Contact contactRes = ContactManager::instance()->byId(account(), from, true);
 		contactRes.setOwnerBuddy(buddy);
-
-		//if (contactRes.ownerBuddy().isNull())
-		//{
- 		//	contactRes.setOwnerBuddy(buddy);
-		//}
-
-		/*if (contactRes.isNull())
-		{
-			contactRes = Contact();
-			contactRes.setContactAccount(account());
-			contactRes.setOwnerBuddy(buddy);
-			contactRes.setId(from);
-
-			TlenContactDetails *tlenDetails = new TlenContactDetails(contactRes);
-			contactRes.setDetails(tlenDetails);
-			
-			buddy.addContact(contact);
-			ContactManager::instance()->addContact(contact);
-			BuddyManager::instance()->addBuddy(buddy);
-			buddy.store();
-		}*/
 
 		Status oldStatus = contactRes.currentStatus();
 		contactRes.setCurrentStatus(status);
@@ -594,47 +577,15 @@ void TlenProtocol::presenceChanged(QString from, QString newstatus, QString desc
 			TypingUsers[from] = description;
 
 		emit contactStatusChanged(contactRes, oldStatus);
+		
+		// if general jid status was same so need to set same also or calc some
+		if (contact.currentStatus() == oldStatus)
+		{
+			contact.setCurrentStatus(status);
+			emit contactStatusChanged(contact, oldStatus);
+		}
 		return;
 	}
-
-// 	Contact contact = ContactManager::instance()->byId(account(), from);
-// 	//Contact contactRes = ContactManager::instance()->byId(account(), from);
-// 	//Contact contact = ContactManager::instance()->byId(account(), from);
-// 	//kdebugm(KDEBUG_WARNING, "Tlen contact: j=%s i=%s u=%s b=%s\n", 
-// 	//	qPrintable(jid),qPrintable(contact.id()), qPrintable(contact.uuid().toString()),qPrintable(contact.ownerBuddy().uuid().toString()));
-// 
-// 	kdebugm(KDEBUG_WARNING, "Tlen status change: %s %s\n%s", qPrintable(from), qPrintable(newstatus), qPrintable(description));
-// 
-// 	
-// 	//if (contact.isNull())
-// 	//	return;
-// 
-// 	if (jid != from)
-// 	{
-// 		Contact contactRes = ContactManager::instance()->byId(account(), jid);
-// 		if (!contactRes.isNull())
-// 		{
-// 			contactRes.ownerBuddy().addContact(contact);
-// 			contact.setOwnerBuddy(contactRes.ownerBuddy());
-// 		}
-// 	}
-// 
-// 	Buddy buddy = contact.ownerBuddy();
-// 	if (buddy.isAnonymous())
-// 		buddy.setAnonymous(false);
-
-	//kdebugm(KDEBUG_WARNING, "Tlen buddy: B:%s count:%d c1:%s c2:%s", qPrintable(buddy.display()), buddy.contacts().count(), qPrintable(contact.id()), qPrintable(contactRes.id()));
-
-	// add resource contact to jid contact
-	//contactRes.setOwnerBuddy(contact.ownerBuddy());
-	//Buddy buddy = account().getBuddyById(jid);
-	//buddy.addContact(contact);
-	//contact.setOwnerBuddy(buddy);
-
-	//if (buddy.isAnonymous())
-	//	buddy.setAnonymous(false);
-	//if (contact.ownerBuddy().isAnonymous())
-	//	contact.ownerBuddy().setAnonymous(false);
 
 	/* is this contact realy anonymous? - need deep check
 	if (contact.isAnonymous())
