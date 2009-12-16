@@ -124,11 +124,6 @@ void AccountShared::emitUpdated()
 
 void AccountShared::useProtocolFactory(ProtocolFactory *factory)
 {
-<<<<<<< HEAD
-	printf("useProtocolFactory: %s %s\n", qPrintable(factory->name()), qPrintable(ProtocolName));
-
-=======
->>>>>>> b61555b... core: messaging is again possible
 	if (ProtocolHandler)
 	{
 		disconnect(ProtocolHandler, SIGNAL(statusChanged(Account, Status)), this, SIGNAL(statusChanged()));

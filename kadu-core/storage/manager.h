@@ -261,15 +261,11 @@ protected:
 			StoragePoint *storagePoint = new StoragePoint(storage()->storage(), itemElement);
 
 			QUuid uuid = storagePoint->point().attribute("uuid");
-<<<<<<< HEAD
 			if (!uuid.isNull())
 			{
 				Item item = byUuid(uuid); // this method loads
 				item.data()->setStorage(storagePoint);
 			}
-=======
-			Item item = byUuid(uuid);
->>>>>>> b61555b... core: messaging is again possible
 		}
 	}
 
