@@ -47,6 +47,7 @@ private slots:
 public:
 	SqlHistoryModule(bool firstLoad);
 	~SqlHistoryModule();
+
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
 

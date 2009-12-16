@@ -38,20 +38,22 @@ SqlHistoryModule::SqlHistoryModule(bool firstLoad)
 	if (firstLoad)
 		createDefaultConfiguration();
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/sql-history.ui"));
+	MainConfigurationWindow::registerUiHandler(this);
 	Storage = new HistorySqlStorage();
 	History::instance()->registerStorage(Storage);
 }
 
 SqlHistoryModule::~SqlHistoryModule()
 {
+	MainConfigurationWindow::unregisterUiHandler(this);
 	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/sql-history.ui"));
 }
 
 void SqlHistoryModule::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
 	//TODO 0.6.6
-  	QWidget *clickMe = mainConfigurationWindow->widget()->widgetById("sql_history/import");
-	connect(clickMe, SIGNAL(clicked()), this, SLOT(doSomeImport()));
+	QPushButton *clickMe = dynamic_cast<QPushButton *>(mainConfigurationWindow->widget()->widgetById("sql_history/import"));
+	connect(clickMe, SIGNAL(clicked(bool)), this, SLOT(doSomeImport()));
 
 	portSpinBox = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("sql_history/databasehostport"));
 	connect(portSpinBox, SIGNAL(valueChanged(int)), this, SLOT(portSpinBoxValueChanged(int)));

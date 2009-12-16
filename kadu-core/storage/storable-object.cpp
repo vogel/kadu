@@ -166,15 +166,10 @@ void StorableObject::ensureLoaded()
  */
 void StorableObject::ensureStored()
 {
-	printf("ensureStored\n");
-
 	if (shouldStore())
 		store();
 	else
-	{
-		printf("  ooo, reomve\n");
 		removeFromStorage();
-	}
 }
 
 /**

@@ -299,6 +299,9 @@ void ChatStylesManager::preparePreview(Preview *preview)
 
 	connect(preview, SIGNAL(destroyed(QObject *)), chat, SLOT(deleteLater()));
 
+	if (Core::instance()->myself().contacts().isEmpty())
+		return;
+
 	Message messageSent(chat, Message::TypeSent, Core::instance()->myself().contacts()[0]);
 	messageSent
 		.setContent(tr("Your message"))

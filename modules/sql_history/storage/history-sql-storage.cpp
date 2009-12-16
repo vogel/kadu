@@ -405,15 +405,11 @@ QList<Message> HistorySqlStorage::messagesFromQuery(Chat chat, QSqlQuery query)
 		bool outgoing = QVariant(query.value(4).toString().split('=').last()).toBool();
 		Message::Type type = outgoing ? Message::TypeSent : Message::TypeReceived;
 
-		Buddy senderBuddy = outgoing ? Core::instance()->myself() : BuddyManager::instance()->byUuid(query.value(0).toString());
-		QList<Contact> contacts = senderBuddy.contacts(chat.chatAccount());
-		Contact sender;
-
-		if (!contacts.isEmpty())
-			sender = contacts[0];
-		else
+		// ignore non-existing contacts
+		Contact sender = ContactManager::instance()->byUuid(query.value(0).toString(), false);
+		if (sender.isNull())
 			continue;
-		
+
 		Message message(chat, type, sender);
 		message
 			.setContent(query.value(1).toString())
@@ -429,22 +425,25 @@ QList<Message> HistorySqlStorage::messagesFromQuery(Chat chat, QSqlQuery query)
 
 void HistorySqlStorage::convertSenderToContact()
 {
-	QSqlQuery firstQuery = QSqlQuery(Database);
-	firstQuery.prepare("SELECT sender, chat FROM kadu_messages");
-	
-	while (firstQuery.next())
-	{
-		Buddy b = BuddyManager::instance()->byUuid(firstQuery.value(0).toString());
-		if (Buddy::null == b)
-			continue;
-		
-		Chat c = ChatManager::instance()->byUuid(firstQuery.value(1).toString());
-		QSqlQuery second = QSqlQuery(Database);
-		second.prepare("UPDATE kadu_messages SET sender=:sender WHERE sender=:old_sender");
-		second.bindValue(":old_sender", firstQuery.value(0).toString());
-		second.bindValue(":sender", b.contacts(c.chatAccount())[0].uuid().toString());
-		second.exec();
-	}
-	
+	QList<Chat> allChats = ChatManager::instance()->allItems();
+	QList<Buddy> allBuddies = BuddyManager::instance()->items();
+
+	foreach (Chat chat, allChats)
+		foreach (Buddy buddy, allBuddies)
+		{
+			QList<Contact> contacts = buddy.contacts(chat.chatAccount());
+			if (contacts.isEmpty())
+				continue;
+
+			Contact contact = contacts[0];
+
+			QSqlQuery import = QSqlQuery(Database);
+			import.prepare("UPDATE kadu_messages SET sender=:sender WHERE sender=:old_sender AND chat=:old_chat");
+			import.bindValue(":old_sender", buddy.uuid().toString());
+			import.bindValue(":old_chat", chat.uuid().toString());
+			import.bindValue(":sender", contact.uuid().toString());
+			import.exec();
+		}
+
 	MessageDialog::msg("All teh werk dun!", false, "Warning");
 }
