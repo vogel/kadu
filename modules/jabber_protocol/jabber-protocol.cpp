@@ -492,7 +492,7 @@ void JabberProtocol::clientResourceReceived(const XMPP::Jid &jid, const XMPP::Re
 	description.replace("\r", "\n");
 	status.setDescription(description);
 
-	Contact contact = ContactManager::instance()->byId(account(), jid.bare());
+	Contact contact = ContactManager::instance()->byId(account(), jid.bare(), true);
 
 	// TODO remove all ?
 	/*if (buddy.isAnonymous())
