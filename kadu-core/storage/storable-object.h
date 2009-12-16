@@ -173,6 +173,7 @@ public:
 	void setState(StorableObjectState state) { State = state; }
 
 	void ensureLoaded();
+	void ensureStored();
 	void removeFromStorage();
 
 	void setStorage(StoragePoint *storage);

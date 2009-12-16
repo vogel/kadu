@@ -12,6 +12,8 @@
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
 
+#include "accounts/account-shared.h"
+
 #include "debug.h"
 #include "gadu-account-details.h"
 

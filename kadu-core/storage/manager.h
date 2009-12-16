@@ -262,7 +262,10 @@ protected:
 
 			QUuid uuid = storagePoint->point().attribute("uuid");
 			if (!uuid.isNull())
-				byUuid(uuid); // this method loads
+			{
+				Item item = byUuid(uuid); // this method loads
+				item.data()->setStorage(storagePoint);
+			}
 		}
 	}
 
@@ -280,10 +283,7 @@ public:
 		ensureLoaded();
 
 		foreach (Item item, Items)
-			if (item.data()->shouldStore())
-				item.store();
-			else
-				item.data()->removeFromStorage();
+			item.ensureStored();
 	}
 
 	/**

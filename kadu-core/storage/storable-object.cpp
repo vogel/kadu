@@ -157,6 +157,21 @@ void StorableObject::ensureLoaded()
 
 /**
  * @author Rafal 'Vogel' Malinowski
+ * @short Stores or removes data from storage, depends on shouldStore result.
+ *
+ * If shouldStore method returns true this method stores object in storage file.
+ * Else, object is removed from storage.
+ */
+void StorableObject::ensureStored()
+{
+	if (shouldStore())
+		store();
+	else
+		removeFromStorage();
+}
+
+/**
+ * @author Rafal 'Vogel' Malinowski
  * @short Removed object from storage.
  *
  * Removes current object from storage (it will not be possible to load it anymore).

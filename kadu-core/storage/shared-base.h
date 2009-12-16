@@ -463,6 +463,18 @@ public:
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
+	 * @short Delegates ensureStored method to Shared object.
+	 *
+	 * @see Shared::ensureStored
+	 */
+	void ensureStored()
+	{
+		if (!isNull())
+			Data->ensureStored();
+	}
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
 	 * @short Removes object completly.
 	 *
 	 * If object is null, this method does nothing.

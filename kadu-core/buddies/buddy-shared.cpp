@@ -26,7 +26,7 @@ BuddyShared * BuddyShared::loadFromStorage(StoragePoint *contactStoragePoint)
 {
 	BuddyShared *result = new BuddyShared();
 	result->setStorage(contactStoragePoint);
-	result->load();
+// 	result->load();
 	
 	return result;
 }
@@ -151,6 +151,8 @@ void BuddyShared::load()
 
 void BuddyShared::store()
 {
+	ensureLoaded();
+
 	StoragePoint *sp = storage();
 	if (!sp)
 		return;
@@ -201,6 +203,8 @@ void BuddyShared::aboutToBeRemoved()
 
 void BuddyShared::addContact(Contact contact)
 {
+	ensureLoaded();
+
 	if (contact.isNull() || Contacts.contains(contact))
 		return;
 
@@ -211,6 +215,8 @@ void BuddyShared::addContact(Contact contact)
 
 void BuddyShared::removeContact(Contact contact)
 {
+	ensureLoaded();
+
 	if (contact.isNull() || !Contacts.contains(contact))
 		return;
 
@@ -221,6 +227,8 @@ void BuddyShared::removeContact(Contact contact)
 
 QList<Contact> BuddyShared::contacts(Account account)
 {
+	ensureLoaded();
+
 	QList<Contact> contacts;
 
 	foreach (const Contact &contact, Contacts)
@@ -233,11 +241,15 @@ QList<Contact> BuddyShared::contacts(Account account)
 
 QList<Contact> BuddyShared::contacts()
 {
+	ensureLoaded();
+
 	return Contacts;
 }
 
 QString BuddyShared::id(Account account)
 {
+	ensureLoaded();
+
 	QList<Contact> contactslist;
 	contactslist = contacts(account);
 	if (contactslist.count() > 0)
@@ -248,6 +260,8 @@ QString BuddyShared::id(Account account)
 
 Contact BuddyShared::prefferedContact()
 {
+	ensureLoaded();
+
 	// TODO 0.6.6: implement it to have most available contact
 	int count = Contacts.count();
 	if (count == 0)
@@ -266,6 +280,8 @@ Contact BuddyShared::prefferedContact()
 
 Account BuddyShared::prefferedAccount()
 {
+	ensureLoaded();
+
 	return prefferedContact().contactAccount();
 }
 
@@ -278,25 +294,34 @@ void BuddyShared::emitUpdated()
 
 bool BuddyShared::isInGroup(Group group)
 {
+	ensureLoaded();
+
 	return Groups.contains(group);
 }
 
 bool BuddyShared::showInAllGroup()
 {
+	ensureLoaded();
+
 	foreach (const Group group, Groups)
 		if (!group.isNull() && !group.showInAllGroup())
 			return false;
+
 	return true;
 }
 
 void BuddyShared::addToGroup(Group group)
 {
+	ensureLoaded();
+
 	Groups.append(group);
 	dataUpdated();
 }
 
 void BuddyShared::removeFromGroup(Group group)
 {
+	ensureLoaded();
+
 	Groups.removeAll(group);
 	dataUpdated();
 }

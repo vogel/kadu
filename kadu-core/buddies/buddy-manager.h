@@ -16,6 +16,7 @@
 
 #include "buddies/buddy.h"
 #include "buddies/buddy-list.h"
+#include "buddies/buddy-shared.h"
 #include "storage/simple-manager.h"
 
 #include "exports.h"

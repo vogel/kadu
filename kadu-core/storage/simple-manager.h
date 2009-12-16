@@ -168,7 +168,10 @@ protected:
 			StoragePoint *storagePoint = new StoragePoint(storage()->storage(), itemElement);
 			QUuid uuid = storagePoint->point().attribute("uuid");
 			if (!uuid.isNull())
-				byUuid(uuid); // this method loads
+			{
+				Item item = byUuid(uuid); // this method loads
+				item.data()->setStorage(storagePoint);
+			}
 		}
 	}
 
@@ -186,10 +189,7 @@ public:
 		ensureLoaded();
 
 		foreach (Item item, Items)
-			if (item.data()->shouldStore())
-				item.store();
-			else
-				item.data()->removeFromStorage();
+			item.ensureStored();
 	}
 
 	/**
@@ -228,6 +228,9 @@ public:
 	 */
 	Item byUuid(const QUuid &uuid)
 	{
+		if (uuid.isNull())
+			return Item::null;
+
 		foreach (Item item, Items)
 			if (item.uuid() == uuid)
 				return item;
