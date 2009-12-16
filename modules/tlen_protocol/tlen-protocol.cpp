@@ -95,36 +95,38 @@ TlenProtocol::TlenProtocol(Account account, ProtocolFactory *factory): Protocol(
 	CurrentAvatarService = new TlenAvatarService(this);
 	CurrentPersonalInfoService = new TlenPersonalInfoService(this);
 
-	connect(BuddyManager::instance(), SIGNAL(buddyAdded(Buddy &)),
-			this, SLOT(contactAdded(Buddy &)));
-	connect(BuddyManager::instance(), SIGNAL(buddyRemoved(Buddy &)),
-			this, SLOT(contactRemoved(Buddy &)));
-	connect(BuddyManager::instance(), SIGNAL(contactAdded(Buddy &, Account)),
-			this, SLOT(contactAboutToBeRemoved(Buddy & , Account)));
-	connect(BuddyManager::instance(), SIGNAL(contactAboutToBeRemoved(Buddy &, Account)),
-			this, SLOT(contactAboutToBeRemoved(Buddy &, Account)));
+	connect(ContactManager::instance(), SIGNAL(contactAboutToBeAdded(Contact)),
+			this, SLOT(contactAboutToBeAdded(Contact)));
+	connect(ContactManager::instance(), SIGNAL(contactAdded(Contact)),
+			this, SLOT(contactAdded(Contact)));
+	connect(ContactManager::instance(), SIGNAL(contactAboutToBeRemoved(Contact)),
+			this, SLOT(contactAboutToBeRemoved(Contact)));
+	connect(ContactManager::instance(), SIGNAL(contactRemoved(Contact)),
+			this, SLOT(contactRemoved(Contact)));
+	connect(ContactManager::instance(), SIGNAL(contactIdChanged(Contact, const QString &)),
+			this, SLOT(contactIdChanged(Contact, const QString &)));
+
 	connect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy &)),
 			this, SLOT(contactUpdated(Buddy &)));
-	connect(BuddyManager::instance(), SIGNAL(contactIdChanged(Buddy &, Account, const QString &)),
-			this, SLOT(contactAccountIdChanged(Buddy &, Account, const QString &)));
 
 	kdebugf2();
 }
 
 TlenProtocol::~TlenProtocol()
 {
-	disconnect(BuddyManager::instance(), SIGNAL(buddyAdded(Buddy &)),
-			this, SLOT(contactAdded(Buddy &)));
-	disconnect(BuddyManager::instance(), SIGNAL(buddyRemoved(Buddy &)),
-			this, SLOT(contactRemoved(Buddy &)));
-	disconnect(BuddyManager::instance(), SIGNAL(contactAdded(Buddy &, Account)),
-			this, SLOT(contactAboutToBeRemoved(Buddy & , Account)));
-	disconnect(BuddyManager::instance(), SIGNAL(contactAboutToBeRemoved(Buddy &, Account)),
-			this, SLOT(contactAboutToBeRemoved(Buddy &, Account)));
+	disconnect(ContactManager::instance(), SIGNAL(contactAboutToBeAdded(Contact)),
+			this, SLOT(contactAboutToBeAdded(Contact)));
+	disconnect(ContactManager::instance(), SIGNAL(contactAdded(Contact)),
+			this, SLOT(contactAdded(Contact)));
+	disconnect(ContactManager::instance(), SIGNAL(contactAboutToBeRemoved(Contact)),
+			this, SLOT(contactAboutToBeRemoved(Contact)));
+	disconnect(ContactManager::instance(), SIGNAL(contactRemoved(Contact)),
+			this, SLOT(contactRemoved(Contact)));
+	disconnect(ContactManager::instance(), SIGNAL(contactIdChanged(Contact, const QString &)),
+			this, SLOT(contactIdChanged(Contact, const QString &)));
+
 	disconnect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy &)),
 			this, SLOT(contactUpdated(Buddy &)));
-	disconnect(BuddyManager::instance(), SIGNAL(contactIdChanged(Buddy &, Account, const QString &)),
-			this, SLOT(contactAccountIdChanged(Buddy &, Account, const QString &)));
 
 	logout();
 }
@@ -133,12 +135,7 @@ void TlenProtocol::fetchAvatars(QString jid, QString type, QString md5)
 {
 	kdebugf();
 
-	Buddy buddy = account().getBuddyById(jid);
-
- 	if (buddy.isAnonymous())
-		buddy.setAnonymous(false);
-
-	Contact contact = ContactManager::instance()->byId(account(), jid);
+	Contact contact = ContactManager::instance()->byId(account(), jid, true);
 	CurrentAvatarService->fetchAvatar(contact);
 
 	kdebugf2();
@@ -496,7 +493,7 @@ void TlenProtocol::contactAboutToBeRemoved(Contact contact)
 }
 
 
-void TlenProtocol::contactAccountIdChanged(Contact contact, const QString &oldId)
+void TlenProtocol::contactIdChanged(Contact contact, const QString &oldId)
 {
 	if (contact.contactAccount() != account() || !isConnected() || !TlenClient)
 		return;

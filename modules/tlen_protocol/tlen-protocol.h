@@ -101,7 +101,7 @@ class TlenProtocol : public Protocol
 		void contactAdded(Contact contact);
 		void contactUpdated(Contact contact);
 		void contactAboutToBeRemoved(Contact contact);
-		void contactAccountIdChanged(Contact contact,const QString &oldId);
+		void contactIdChanged(Contact contact,const QString &oldId);
 
 	public slots:
 		bool sendMessage(Chat chat, FormattedMessage &message);
