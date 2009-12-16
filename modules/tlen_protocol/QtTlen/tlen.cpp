@@ -612,6 +612,9 @@ void tlen::tcfgReceived(QDomElement &n)
 			MiniMailAvatarRemoveMethod = mm.attribute("method");
 		}
 	}
+
+	// tlen bug? - need to set status 2nd time, to recive real status of contacts, move this after roster rcv
+	writeStatus();
 }
 
 QString tlen::decode( const QByteArray &in ) {
