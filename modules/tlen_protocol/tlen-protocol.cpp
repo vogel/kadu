@@ -441,9 +441,9 @@ Buddy TlenProtocol::nodeToBuddy(QDomNode node)
 		}
 	}
 
-	//result.setStatus();
+	//contact.setStatus();
 
-	result.addContact(contact);
+	contact.setOwnerBuddy(result);
 	return result;
 }
 
