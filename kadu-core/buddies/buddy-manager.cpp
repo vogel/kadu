@@ -157,6 +157,7 @@ Buddy BuddyManager::byContact(Contact contact, bool create)
 
 	Buddy buddy = Buddy::create();
 	buddy.setDisplay(QString("%1: %2").arg(contact.contactAccount().name()).arg(contact.id()));
+	contact.setOwnerBuddy(buddy);
 	addItem(buddy);
 
 	return buddy;
