@@ -624,7 +624,8 @@ void JabberProtocol::slotContactUpdated(const XMPP::RosterItem &item)
 		 * See if the contact is already on our contact list
 		 * if not add contact to our list
 		 */
-		Buddy buddy = ContactManager::instance()->byId(account(), item.jid().bare()).ownerBuddy();
+		Contact contact = ContactManager::instance()->byId(account(), item.jid().bare(), true);
+		Buddy buddy = BuddyManager::instance()->byContact(contact, true);
 
 		// if contact has name set it to display
 		if (!item.name().isNull())
