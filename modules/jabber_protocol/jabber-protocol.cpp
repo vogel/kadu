@@ -520,7 +520,7 @@ void JabberProtocol::clientResourceReceived(const XMPP::Jid &jid, const XMPP::Re
 void JabberProtocol::contactAdded(Contact contact)
 {
 
-	if (contact.isNull() || contact.contactAccount() != account() /* ||contact.ownerBuddy().isAnonymous()*/)
+	if (contact.isNull() || contact.contactAccount() != account() || !isConnected()/* ||contact.ownerBuddy().isAnonymous()*/)
 		return;
 
 	Buddy buddy = contact.ownerBuddy();
