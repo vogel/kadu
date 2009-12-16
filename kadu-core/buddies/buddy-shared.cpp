@@ -272,7 +272,7 @@ Contact BuddyShared::prefferedContact()
 
 	Contact prefferedContact = Contacts[0];
 	foreach (const Contact &contact, Contacts)
-		if (prefferedContact.currentStatus() < contact.currentStatus())
+		if (contact.currentStatus() < prefferedContact.currentStatus())
 			prefferedContact = contact;
 
 	return prefferedContact;
