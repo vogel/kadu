@@ -24,7 +24,6 @@ ChatShared * ChatShared::loadFromStorage(StoragePoint *storagePoint)
 {
 	ChatShared *result = new ChatShared();
 	result->setStorage(storagePoint);
-	result->ensureLoaded();
 
 	return result;
 }

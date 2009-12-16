@@ -7,6 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "chat/type/chat-type-aware-object.h"
 #include "chat/type/chat-type-conference.h"
 #include "chat/type/chat-type-simple.h"
 #include "icons-manager.h"
@@ -34,6 +35,8 @@ ChatTypeManager::~ChatTypeManager()
 {
 }
 
+#include <stdio.h>
+
 void ChatTypeManager::addChatType(ChatType *chatType)
 {
 	if (ChatTypes.contains(chatType))
@@ -43,17 +46,21 @@ void ChatTypeManager::addChatType(ChatType *chatType)
 	ChatTypes.append(chatType);
 	ChatTypesMap.insert(chatType->name(), chatType);
 	emit chatTypeAdded(chatType);
+
+	ChatTypeAwareObject::notifyChatTypeRegistered(chatType);
 }
 
 void ChatTypeManager::removeChatType(ChatType *chatType)
 {
 	if (!ChatTypes.contains(chatType))
 		return;
-	
+
 	emit chatTypeAboutToBeRemoved(chatType);
 	ChatTypes.removeAll(chatType);
 	ChatTypesMap.remove(chatType->name());
 	emit chatTypeRemoved(chatType);
+
+	ChatTypeAwareObject::notifyChatTypeUnregistered(chatType);
 }
 
 ChatType * ChatTypeManager::chatType(const QString &name)
