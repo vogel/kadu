@@ -16,17 +16,10 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QMessageBox>
 
-#include "accounts/account.h"
-#include "accounts/account-manager.h"
-
-#include "buddies/buddy-set.h"
 #include "buddies/buddy-manager.h"
 
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
-
-#include "configuration/configuration-file.h"
-#include "core/core.h"
 
 #include "buddies/group.h"
 #include "buddies/group-manager.h"
@@ -34,7 +27,6 @@
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/password-window.h"
-#include "gui/windows/main-configuration-window.h"
 
 #include "chat/message/message.h"
 #include "chat/chat-manager.h"
@@ -42,7 +34,6 @@
 #include "icons-manager.h"
 #include "status/status.h"
 #include "misc/misc.h"
-#include "configuration/xml-configuration-file.h"
 #include "html_document.h"
 
 #include "tlen.h"
