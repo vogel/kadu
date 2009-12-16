@@ -60,7 +60,7 @@ void AccountManager::itemAboutToBeRegistered(Account item)
 	emit accountAboutToBeRegistered(item);
 }
 
-void AccountManager::itemRegisterd(Account item)
+void AccountManager::itemRegistered(Account item)
 {
 	AccountsAwareObject::notifyAccountRegistered(item);
 	connect(item.protocolHandler(), SIGNAL(connectionError(Account, const QString &, const QString &)),

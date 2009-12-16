@@ -70,6 +70,8 @@ void ChatShared::load()
 
 void ChatShared::store()
 {
+	ensureLoaded();
+
 	if (!isValidStorage())
 		return;
 
@@ -171,12 +173,16 @@ void ChatShared::refreshTitle()
 	kdebugf2();
 }
 
-ContactSet ChatShared::contacts() const
+ContactSet ChatShared::contacts()
 {
+	ensureLoaded();
+
 	return details() ? details()->contacts() : ContactSet();
 }
 
-QString ChatShared::name() const
+QString ChatShared::name()
 {
+	ensureLoaded();
+
 	return details() ? details()->name() : QString::null;
 }

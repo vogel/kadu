@@ -41,7 +41,7 @@ protected:
 	virtual void itemRemoved(Account item);
 
 	virtual void itemAboutToBeRegistered(Account item);
-	virtual void itemRegisterd(Account item);
+	virtual void itemRegistered(Account item);
 	virtual void itemAboutToBeUnregisterd(Account item);
 	virtual void itemUnregistered(Account item);
 

@@ -10,6 +10,7 @@
 #include <QtCore/QHash>
 
 #include "buddies/buddy-set.h"
+#include "buddies/buddy-shared.h"
 #include "buddies/ignored-helper.h"
 #include "chat/chat-manager.h"
 #include "configuration/configuration-file.h"
@@ -88,9 +89,8 @@ bool GaduChatService::sendMessage(Chat chat, FormattedMessage &message)
 		unsigned int i = 0;
 
 		foreach (const Contact &contact, contacts)
-		{
 			uins[i++] = Protocol->uin(contact);
-		}
+
 		if (formatsSize)
 			messageId = gg_send_message_confer_richtext(
 					Protocol->gaduSession(), GG_CLASS_CHAT, uinsCount, uins, (unsigned char *)data.data(),
@@ -102,17 +102,17 @@ bool GaduChatService::sendMessage(Chat chat, FormattedMessage &message)
 	}
 	else
 		foreach (const Contact &contact, contacts)
-			{
-				if (formatsSize)
-					messageId = gg_send_message_richtext(
-							Protocol->gaduSession(), GG_CLASS_CHAT, Protocol->uin(contact), (unsigned char *)data.data(),
-							formats, formatsSize);
-				else
-					messageId = gg_send_message(
-							Protocol->gaduSession(), GG_CLASS_CHAT, Protocol->uin(contact), (unsigned char *)data.data());
+		{
+			if (formatsSize)
+				messageId = gg_send_message_richtext(
+						Protocol->gaduSession(), GG_CLASS_CHAT, Protocol->uin(contact), (unsigned char *)data.data(),
+						formats, formatsSize);
+			else
+				messageId = gg_send_message(
+						Protocol->gaduSession(), GG_CLASS_CHAT, Protocol->uin(contact), (unsigned char *)data.data());
 
-				break;
-			}
+			break;
+		}
 
 	if (-1 == messageId)
 		return false;

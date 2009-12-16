@@ -66,8 +66,6 @@ void AccountShared::load()
 	ProtocolName = loadValue<QString>("Protocol");
 	setId(loadValue<QString>("Id"));
 
-	printf("protocol loaded: %s %s\n", qPrintable(Name), qPrintable(ProtocolName));
-
 	RememberPassword = loadValue<bool>("RememberPassword", true);
 	HasPassword = RememberPassword;
 	if (RememberPassword)
@@ -126,8 +124,11 @@ void AccountShared::emitUpdated()
 
 void AccountShared::useProtocolFactory(ProtocolFactory *factory)
 {
+<<<<<<< HEAD
 	printf("useProtocolFactory: %s %s\n", qPrintable(factory->name()), qPrintable(ProtocolName));
 
+=======
+>>>>>>> b61555b... core: messaging is again possible
 	if (ProtocolHandler)
 	{
 		disconnect(ProtocolHandler, SIGNAL(statusChanged(Account, Status)), this, SIGNAL(statusChanged()));
@@ -143,8 +144,8 @@ void AccountShared::useProtocolFactory(ProtocolFactory *factory)
 	}
 	else
 	{
-		setDetails(factory->createAccountDetails(this));
 		ProtocolHandler = factory->createProtocolHandler(this);
+		setDetails(factory->createAccountDetails(this));
 		emit protocolLoaded();
 	}
 

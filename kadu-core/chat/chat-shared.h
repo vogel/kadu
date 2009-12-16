@@ -56,8 +56,8 @@ public:
 	virtual void store();
 	virtual void aboutToBeRemoved();
 
-	ContactSet contacts() const;
-	QString name() const;
+	ContactSet contacts();
+	QString name();
 
 	KaduShared_Property(Account, chatAccount, ChatAccount)
 	KaduShared_Property(QString, type, Type)

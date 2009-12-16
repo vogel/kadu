@@ -12,24 +12,25 @@
 
 #include "ignored-helper.h"
 
-bool IgnoredHelper::isIgnored(BuddySet contacts)
+bool IgnoredHelper::isIgnored(BuddySet buddies)
 {
-	if (1 == contacts.count())
+	if (1 == buddies.count())
 	{
-		return (*contacts.begin()).isIgnored();
+		return (*buddies.begin()).isIgnored();
 	}
 	else
 	{
 		// TODO: 0.6.6 implement
 		// ConferenceManager::instance()->byContactList(senders)->isIgnored(true)
+		return false;
 	}
 }
 
-void IgnoredHelper::setIgnored(BuddySet contacts, bool ignored)
+void IgnoredHelper::setIgnored(BuddySet buddies, bool ignored)
 {
-	if (1 == contacts.count())
+	if (1 == buddies.count())
 	{
-		Buddy c = (*contacts.begin());
+		Buddy c = (*buddies.begin());
 		c.setIgnored(ignored);
 	}
 	else

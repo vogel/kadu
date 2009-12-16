@@ -9,6 +9,8 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "buddies/buddy-manager.h"
+#include "buddies/ignored-helper.h"
 #include "chat/chat-manager.h"
 #include "chat/message/message.h"
 #include "chat/message/message-render-info.h"
@@ -16,9 +18,8 @@
 #include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
 #include "configuration/xml-configuration-file.h"
-#include "buddies/buddy-manager.h"
-#include "buddies/ignored-helper.h"
 #include "contacts/contact.h"
+#include "contacts/contact-set.h"
 #include "core/core.h"
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
@@ -378,6 +379,8 @@ void ChatWidgetManager::messageReceived(const Message &message)
 	kdebugf();
 
 	Chat chat = message.chat();
+	ContactSet contacts = chat.contacts();
+
 	ChatWidget *chatWidget = byChat(chat);
 	if (chatWidget)
 	{
