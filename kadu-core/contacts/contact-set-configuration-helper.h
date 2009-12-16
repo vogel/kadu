@@ -15,8 +15,8 @@
 class ContactSetConfigurationHelper
 {
 public:
-	static ContactSet loadFromConfiguration(StorableObject *parent, const QString &nodeName);
-	static ContactSet loadFromConfiguration(XmlConfigFile *configurationStorage, QDomElement contactSetNode);
+	static ContactSet loadFromConfiguration(StorableObject *parent, const QString &nodeName, Account fromAccount = Account::null);
+	static ContactSet loadFromConfiguration(XmlConfigFile *configurationStorage, QDomElement contactSetNode, Account fromAccount = Account::null);
 	static void saveToConfiguration(StorableObject *parent, const QString &nodeName, ContactSet contactSet);
 	static void saveToConfiguration(XmlConfigFile *configurationStorage, QDomElement contactSetNode, ContactSet contactSet);
 };

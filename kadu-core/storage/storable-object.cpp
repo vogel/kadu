@@ -155,6 +155,8 @@ void StorableObject::ensureLoaded()
 		load();
 }
 
+#include <stdio.h>
+
 /**
  * @author Rafal 'Vogel' Malinowski
  * @short Stores or removes data from storage, depends on shouldStore result.
@@ -164,10 +166,15 @@ void StorableObject::ensureLoaded()
  */
 void StorableObject::ensureStored()
 {
+	printf("ensureStored\n");
+
 	if (shouldStore())
 		store();
 	else
+	{
+		printf("  ooo, reomve\n");
 		removeFromStorage();
+	}
 }
 
 /**

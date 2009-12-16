@@ -35,6 +35,7 @@ public:
 
 	void setContact(Contact contact);
 	Contact contact();
+	void chatData();
 
 };
 

@@ -54,6 +54,7 @@ public:
 	virtual QString storageNodeName();
 
 	virtual void store();
+	virtual bool shouldStore();
 	virtual void aboutToBeRemoved();
 
 	ContactSet contacts();

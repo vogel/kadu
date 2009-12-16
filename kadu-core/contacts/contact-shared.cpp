@@ -112,7 +112,7 @@ bool ContactShared::shouldStore()
 {
 	ensureLoaded();
 
-	return UuidStorableObject::shouldStore() && !Id.isEmpty();
+	return UuidStorableObject::shouldStore() && !Id.isEmpty() && !ContactAccount.uuid().isNull();
 }
 
 void ContactShared::emitUpdated()

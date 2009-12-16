@@ -42,12 +42,14 @@ void ChatDetailsSimple::load()
 	}
 	else
 	{
-		CurrentContact = ContactManager::instance()->byUuid(cadUuid);
+		CurrentContact = ContactManager::instance()->byUuid(cadUuid, false);
 		if (CurrentContact.isNull())
 		{
 			// TODO 0.6.6 how it work?
 			Buddy buddy = BuddyManager::instance()->byUuid(cadUuid);
-			//CurrentContact = buddy.contact(chatData()->chatAccount());
+			QList<Contact> contactList = buddy.contacts(mainData()->chatAccount());
+			if (!contactList.isEmpty())
+				CurrentContact = contactList[0];
 		}
 	}
 
