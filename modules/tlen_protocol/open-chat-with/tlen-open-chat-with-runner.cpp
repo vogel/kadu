@@ -58,5 +58,8 @@ bool TlenOpenChatWithRunner::validateUserID(const QString &uid)
 	//if (text != text.toLower())
 	//	return false;
 
+	if (!uid.contains("@"))
+		return false;
+
 	return true;
 }
