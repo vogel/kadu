@@ -92,12 +92,14 @@ class JabberProtocol : public Protocol
 		void slotSubscription(const XMPP::Jid &jid, const QString &type);
 		void slotClientDebugMessage (const QString &msg);
 
-		void contactAdded(Buddy &buddy);
-		void contactRemoved(Buddy &buddy);
+		void contactAboutToBeAdded(Contact contact);
+		void contactAdded(Contact contact);
+		void contactAboutToBeRemoved(Contact contact);
+		void contactRemoved(Contact contact);
+		
 		void contactUpdated(Buddy &buddy);
-		void contactAdded(Buddy &buddy, Account contactAccount);
-		void contactAboutToBeRemoved(Buddy &buddy, Account contactAccount);
-		void contactAccountIdChanged(Buddy &buddy, Account account, const QString &oldId);
+
+		void contactIdChanged(Contact contact, const QString &oldId);
 
 	public slots:
 		void connectToServer();
