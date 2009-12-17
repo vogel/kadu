@@ -2114,7 +2114,9 @@ void GaduProtocol::userListReceived(const struct gg_event *e)
 		user.refreshDNSName("Gadu");
 
 		user.setProtocolData("Gadu", "Version", e->event.notify60[nr].version, true, nr + 1 == cnt);
-		user.setProtocolData("Gadu", "MaxImageSize", e->event.notify60[nr].image_size, true, nr + 1 == cnt);
+		int maxImageSize = e->event.notify60[nr].image_size;
+		if (maxImageSize != 0)
+			user.setProtocolData("Gadu", "MaxImageSize", maxImageSize , true, nr + 1 == cnt);
 
 		oldStatus = user.status("Gadu");
 
@@ -2263,7 +2265,8 @@ void GaduProtocol::userStatusChanged(const struct gg_event *e)
 	}
 	user.setAddressAndPort("Gadu", QHostAddress((quint32)(ntohl(remote_ip))), remote_port);
 	user.setProtocolData("Gadu", "Version", version);
-	user.setProtocolData("Gadu", "MaxImageSize", image_size);
+	if (image_size != 0)
+		user.setProtocolData("Gadu", "MaxImageSize", image_size);
 
 	user.refreshDNSName("Gadu");
 
