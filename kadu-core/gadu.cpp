@@ -2490,7 +2490,7 @@ unsigned char * GaduFormater::createFormats(const Message &message, unsigned int
 
 	foreach (const MessagePart part, message.parts())
 	{
-		if (first && !part.bold() && !part.italic() && !part.underline() && !part.color().isValid())
+		if (first && !part.isImage() && !part.bold() && !part.italic() && !part.underline() && !part.color().isValid())
 		{
 			first = false;
 			textPosition += part.content().length();
