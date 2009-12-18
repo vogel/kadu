@@ -341,17 +341,23 @@ void JabberProtocol::setPresence(const XMPP::Status &status)
 		newStatus.setCapsExt(JabberClient->capsExt());
 	}
 
-	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(account().details());
-	newStatus.setPriority(jabberAccountDetails->priority());
+	// TODO 0.6.6: CLEAN THIS UP
 	//TODO whatever
 	XMPP::Jid jid(jabberID);
-	XMPP::Resource newResource(jabberAccountDetails->resource(), newStatus);
+	
+	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(account().details());
+	if (jabberAccountDetails)
+	{
+		newStatus.setPriority(jabberAccountDetails->priority());
 
-	// update our resource in the resource pool
-	resourcePool()->addResource(jid, newResource);
+		XMPP::Resource newResource(jabberAccountDetails->resource(), newStatus);
 
-	// make sure that we only consider our own resource locally
-	resourcePool()->lockToResource(jid, newResource);
+		// update our resource in the resource pool
+		resourcePool()->addResource(jid, newResource);
+
+		// make sure that we only consider our own resource locally
+		resourcePool()->lockToResource(jid, newResource);
+	}
 
 	/*
 	 * Unless we are in the connecting status, send a presence packet to the server
