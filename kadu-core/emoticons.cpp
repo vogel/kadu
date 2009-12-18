@@ -355,6 +355,7 @@ EmoticonSelectorButton::EmoticonSelectorButton(const QString& emoticon_string, c
 	: QToolButton(parent), EmoticonString(emoticon_string), AnimPath(anim_path), StaticPath(static_path), Movie(0)
 {
 	setPixmap(QPixmap(StaticPath));
+	setIconSize(QSize(18,18));
 	setAutoRaise(true);
 	setMouseTracking(true);
 	setToolTip(emoticon_string);
@@ -388,6 +389,7 @@ void EmoticonSelectorButton::enterEvent(QEvent* e)
 	if (Movie == NULL)
 	{
 		Movie = new QMovie(AnimPath);
+		Movie->setScaledSize(QSize(24,24));
 		Movie->start();
 		connect(Movie, SIGNAL(updated(const QRect &)), this, SLOT(movieUpdate()));
 	}
