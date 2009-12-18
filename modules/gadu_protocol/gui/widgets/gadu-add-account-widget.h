@@ -7,43 +7,40 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GADU_CREATE_ACCOUNT_WIDGET_H
-#define GADU_CREATE_ACCOUNT_WIDGET_H
+#ifndef GADU_ADD_ACCOUNT_WIDGET_H
+#define GADU_ADD_ACCOUNT_WIDGET_H
 
-#include "gui/widgets/account-create-widget.h"
+#include "gui/widgets/account-add-widget.h"
 
 class QCheckBox;
 class QGridLayout;
+class QLabel;
 class QLineEdit;
 class QPushButton;
 
 class ChooseIdentityWidget;
-class GaduServerRegisterAccount;
-class TokenWidget;
 
-class GaduCreateAccountWidget : public AccountCreateWidget
+class GaduAddAccountWidget : public AccountAddWidget
 {
 	Q_OBJECT
 
-	QLineEdit *NewPassword;
-	QLineEdit *ReNewPassword;
-	QCheckBox *RememberPassword;	
-	QLineEdit *EMail;
+	QLineEdit *AccountId;
+	QLineEdit *AccountPassword;
+	QCheckBox *RememberPassword;
+	QLabel *RemindPassword;
 	ChooseIdentityWidget *Identity;
-	TokenWidget *tokenWidget;
-
+	
+	QPushButton *AddThisAccount;
 
 	void createGui();
 
 private slots:
+	void addThisAccount();
 	void dataChanged();
-	void registerNewAccount();
-	void registerNewAccountFinished(GaduServerRegisterAccount *gsra);
-
 public:
-	explicit GaduCreateAccountWidget(QWidget *parent = 0);
-	virtual ~GaduCreateAccountWidget();
+	explicit GaduAddAccountWidget(QWidget *parent = 0);
+	virtual ~GaduAddAccountWidget();
 
 };
 
-#endif // GADU_CREATE_ACCOUNT_WIDGET_H
+#endif // GADU_ADD_ACCOUNT_WIDGET_H

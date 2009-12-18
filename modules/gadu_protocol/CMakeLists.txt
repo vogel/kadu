@@ -5,6 +5,7 @@ set (SOURCES
 
 	file-transfer/gadu-file-transfer.cpp
 
+	gui/widgets/gadu-add-account-widget.cpp
 	gui/widgets/gadu-create-account-widget.cpp
 	gui/widgets/gadu-edit-account-widget.cpp
 	gui/widgets/gadu-personal-info-widget.cpp
@@ -53,6 +54,7 @@ set (MOC_SOURCES
 
 	file-transfer/gadu-file-transfer.h
 
+	gui/widgets/gadu-add-account-widget.h
 	gui/widgets/gadu-create-account-widget.h
 	gui/widgets/gadu-edit-account-widget.h
 	gui/widgets/gadu-personal-info-widget.h

@@ -9,6 +9,7 @@
 
 #include <QtGui/QComboBox>
 #include <QtGui/QDialogButtonBox>
+#include <QtGui/QGroupBox>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QLabel>
@@ -19,6 +20,7 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/model/accounts-model.h"
+#include "gui/widgets/account-add-widget.h"
 #include "gui/widgets/account-create-widget.h"
 #include "gui/widgets/account-edit-widget.h"
 #include "misc/misc.h"
@@ -59,10 +61,6 @@ void YourAccounts::createGui()
 	contentLayout->addItem(sideLayout);
 	contentLayout->setStretchFactor(sideLayout, 1);
 
-	QPushButton *newAccount = new QPushButton(tr("New account"), this);
-	sideLayout->addWidget(newAccount);
-	connect(newAccount, SIGNAL(clicked()), this, SLOT(newAccountClicked()));
-
 	AccountsView = new QListView(this);
 	sideLayout->addWidget(AccountsView);
 	MyAccountsModel = new AccountsModel(AccountsView);
@@ -72,6 +70,14 @@ void YourAccounts::createGui()
 	AccountsView->setIconSize(QSize(32, 32));
 	connect(AccountsView->selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
 			this, SLOT(accountSelectionChanged(const QItemSelection &, const QItemSelection &)));
+			
+	QPushButton *addAccount = new QPushButton(tr("Add Existing Account"), this);
+	sideLayout->addWidget(addAccount);
+	connect(addAccount, SIGNAL(clicked()), this, SLOT(addAccountClicked()));
+	
+	QPushButton *createAccount = new QPushButton(tr("Create New Account"), this);
+	sideLayout->addWidget(createAccount);
+	connect(createAccount, SIGNAL(clicked()), this, SLOT(newAccountClicked()));
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 	mainLayout->addWidget(buttons);
@@ -92,6 +98,8 @@ void YourAccounts::createGui()
 	contentLayout->addWidget(CreateEditStack, 100);
 
 	createNewAccountWidget();
+	createNewAccountCreatedWidget();
+	createAddAccountWidget();
 	createEditAccountWidget();
 
 	CreateEditStack->setCurrentWidget(NewAccountContainer);
@@ -103,30 +111,103 @@ void YourAccounts::createNewAccountWidget()
 	CreateEditStack->addWidget(NewAccountContainer);
 
 	QVBoxLayout *newAccountLayout = new QVBoxLayout(NewAccountContainer);
+	
+	QLabel *createAccountLabel = new QLabel(tr("Create New Account"));
+	newAccountLayout->addWidget(createAccountLabel);
+	
+	QGroupBox *selectNetworkGroupbox = new QGroupBox(tr("Choose a network"), NewAccountContainer);
+	QGridLayout *selectNetworkLayout = new QGridLayout(selectNetworkGroupbox);
 
-	QHBoxLayout *selectProtocolLayout = new QHBoxLayout;
-	newAccountLayout->addItem(selectProtocolLayout);
-	newAccountLayout->setStretchFactor(selectProtocolLayout, 1);
+	QLabel *imNetworkLabel = new QLabel(tr("IM Network") + ":", NewAccountContainer);
+	selectNetworkLayout->addWidget(imNetworkLabel, 0, 1, 1, 1);
 
-	selectProtocolLayout->addWidget(new QLabel(tr("Select network") + ":", NewAccountContainer));
-	selectProtocolLayout->addSpacing(20);
-
-	Protocols = new QComboBox(NewAccountContainer);
-	ProtocolsModel *model = new ProtocolsModel(Protocols);
+	NewAccountProtocols = new QComboBox(NewAccountContainer);
+	ProtocolsModel *model = new ProtocolsModel(NewAccountProtocols);
 
 	ActionsProxyModel::ModelActionList beforeActions;
-	beforeActions.append(qMakePair<QString, QString>(tr("Choose a network to add"), ""));
-	ActionsProxyModel *actionsModel = new ActionsProxyModel(beforeActions, ActionsProxyModel::ModelActionList(), Protocols);
+	beforeActions.append(qMakePair<QString, QString>("", ""));
+	ActionsProxyModel *actionsModel = new ActionsProxyModel(beforeActions, ActionsProxyModel::ModelActionList(), NewAccountProtocols);
 	actionsModel->setSourceModel(model);
 
-	Protocols->setModel(actionsModel);
-	selectProtocolLayout->addWidget(Protocols, 10);
+	NewAccountProtocols->setModel(actionsModel);
+	selectNetworkLayout->addWidget(NewAccountProtocols, 0, 2, 1, 1);
+	
+	QLabel *protocolComboLabel = new QLabel(tr("The default network has been selected based on your language settings."));
+	selectNetworkLayout->addWidget(protocolComboLabel, 1, 2, 1, 1);
+	
+	newAccountLayout->addWidget(selectNetworkGroupbox);
+	
+	QGroupBox *createAccountGroupbox = new QGroupBox(tr("Create a New Account"), NewAccountContainer);
+	QGridLayout *createAccountLayout = new QGridLayout(createAccountGroupbox);
+	
+	CreateStack = new QStackedWidget(createAccountGroupbox);
+	createAccountLayout->addWidget(CreateStack, 0, 1, 1, 1);
+	
+	newAccountLayout->addWidget(createAccountGroupbox, 100, Qt::AlignTop);
 
-	CreateStack = new QStackedWidget(this);
-	newAccountLayout->addWidget(CreateStack, 100, Qt::AlignTop);
+	connect(NewAccountProtocols, SIGNAL(activated(int)), this, SLOT(newAccountProtocolChanged(int)));
+	newAccountProtocolChanged(0);
+}
 
-	connect(Protocols, SIGNAL(activated(int)), this, SLOT(protocolChanged(int)));
-	protocolChanged(0);
+void YourAccounts::createNewAccountCreatedWidget()
+{
+	NewAccountCreatedContainer = new QWidget(this);
+	CreateEditStack->addWidget(NewAccountCreatedContainer);
+	//TODO 0.6.6 some text formatting
+	QVBoxLayout *newAccountCreatedLayout = new QVBoxLayout(NewAccountCreatedContainer);
+	
+	QLabel *createAccountLabel = new QLabel(tr("Create New Account"));
+	newAccountCreatedLayout->addWidget(createAccountLabel);
+	
+	QLabel *successLabel = new QLabel(tr("Account Added"));
+	newAccountCreatedLayout->addWidget(successLabel);
+	
+	QLabel *successDetailsLabel = new QLabel(tr("Your new account was added successfully and has been added to your account list on the left."));
+	newAccountCreatedLayout->addWidget(successDetailsLabel);
+}
+
+void YourAccounts::createAddAccountWidget()
+{
+	AddAccountContainer = new QWidget(this);
+	CreateEditStack->addWidget(AddAccountContainer);
+
+	QVBoxLayout *newAccountLayout = new QVBoxLayout(AddAccountContainer);
+	
+	QLabel *createAccountLabel = new QLabel(tr("Add Existing Account"));
+	newAccountLayout->addWidget(createAccountLabel);
+	
+	QGroupBox *selectNetworkGroupbox = new QGroupBox(tr("Choose a network"), AddAccountContainer);
+	QGridLayout *selectNetworkLayout = new QGridLayout(selectNetworkGroupbox);
+
+	QLabel *imNetworkLabel = new QLabel(tr("IM Network") + ":", AddAccountContainer);
+	selectNetworkLayout->addWidget(imNetworkLabel, 0, 1, 1, 1);
+
+	AddAccountProtocols = new QComboBox(AddAccountContainer);
+	ProtocolsModel *model = new ProtocolsModel(AddAccountProtocols);
+
+	ActionsProxyModel::ModelActionList beforeActions;
+	beforeActions.append(qMakePair<QString, QString>("", ""));
+	ActionsProxyModel *actionsModel = new ActionsProxyModel(beforeActions, ActionsProxyModel::ModelActionList(), AddAccountProtocols);
+	actionsModel->setSourceModel(model);
+
+	AddAccountProtocols->setModel(actionsModel);
+	selectNetworkLayout->addWidget(AddAccountProtocols, 0, 2, 1, 1);
+	
+	QLabel *protocolComboLabel = new QLabel(tr("The default network has been selected based on your language settings.\nYou can change IM Network"));
+	selectNetworkLayout->addWidget(protocolComboLabel, 1, 2, 1, 1);
+	
+	newAccountLayout->addWidget(selectNetworkGroupbox);
+	
+	QGroupBox *createAccountGroupbox = new QGroupBox(tr("Setup an Existing Account"), AddAccountContainer);
+	QGridLayout *createAccountLayout = new QGridLayout(createAccountGroupbox);
+	
+	AddStack = new QStackedWidget(createAccountGroupbox);
+	createAccountLayout->addWidget(AddStack, 0, 1, 1, 1);
+	
+	newAccountLayout->addWidget(createAccountGroupbox, 100, Qt::AlignTop);
+
+	connect(AddAccountProtocols, SIGNAL(activated(int)), this, SLOT(addAccountProtocolChanged(int)));
+	addAccountProtocolChanged(0);
 }
 
 void YourAccounts::createEditAccountWidget()
@@ -142,12 +223,18 @@ void YourAccounts::newAccountClicked()
 	CreateEditStack->setCurrentWidget(NewAccountContainer);
 }
 
-void YourAccounts::protocolChanged(int protocolIndex)
+void YourAccounts::addAccountClicked()
 {
-	if (protocolIndex < 0 || protocolIndex >= Protocols->count())
+	AccountsView->selectionModel()->clearSelection();
+	CreateEditStack->setCurrentWidget(AddAccountContainer);
+}
+
+void YourAccounts::newAccountProtocolChanged(int protocolIndex)
+{
+	if (protocolIndex < 0 || protocolIndex >= NewAccountProtocols->count())
 		return;
 
-	ProtocolFactory *factory = ProtocolsManager::instance()->byName(Protocols->itemData(protocolIndex, ProtocolRole).toString());
+	ProtocolFactory *factory = ProtocolsManager::instance()->byName(NewAccountProtocols->itemData(protocolIndex, ProtocolRole).toString());
 	AccountCreateWidget *createWidget;
 
 	if (!CreateWidgets.contains(factory))
@@ -171,12 +258,42 @@ void YourAccounts::protocolChanged(int protocolIndex)
 		CreateStack->setCurrentWidget(createWidget);
 }
 
+void YourAccounts::addAccountProtocolChanged(int protocolIndex)
+{
+	if (protocolIndex < 0 || protocolIndex >= AddAccountProtocols->count())
+		return;
+
+	ProtocolFactory *factory = ProtocolsManager::instance()->byName(AddAccountProtocols->itemData(protocolIndex, ProtocolRole).toString());
+	AccountAddWidget *addWidget;
+
+	if (!AddWidgets.contains(factory))
+	{
+		if (factory)
+			addWidget = factory->newAddAccountWidget(AddAccountContainer);
+		else
+			addWidget = new AccountAddWidget(this);
+
+		AddWidgets[factory] = addWidget;
+		if (addWidget)
+		{
+			connect(addWidget, SIGNAL(accountCreated(Account)), this, SLOT(accountCreated(Account)));
+			AddStack->addWidget(addWidget);
+		}
+	}
+	else
+		addWidget = AddWidgets[factory];
+
+	if (addWidget)
+		AddStack->setCurrentWidget(addWidget);
+}
+
 void YourAccounts::accountCreated(Account account)
 {
 	account.importProxySettings();
 	AccountManager::instance()->addItem(account);
 	AccountsView->selectionModel()->clearSelection();
 	AccountsView->selectionModel()->select(MyAccountsModel->accountModelIndex(account), QItemSelectionModel::Select);
+	CreateEditStack->setCurrentWidget(NewAccountCreatedContainer);
 }
 
 void YourAccounts::accountSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected)

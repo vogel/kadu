@@ -9,6 +9,7 @@
 
 #include <QtGui/QPushButton>
 
+#include "gui/widgets/gadu-add-account-widget.h"
 #include "gui/widgets/gadu-create-account-widget.h"
 #include "gui/widgets/gadu-edit-account-widget.h"
 #include "status/status-type.h"
@@ -57,6 +58,11 @@ AccountDetails * GaduProtocolFactory::createAccountDetails(AccountShared *accoun
 ContactDetails * GaduProtocolFactory::createContactDetails(ContactShared *contactShared)
 {
 	return new GaduContactDetails(contactShared);
+}
+
+AccountAddWidget * GaduProtocolFactory::newAddAccountWidget(QWidget *parent)
+{
+	return new GaduAddAccountWidget(parent);
 }
 
 AccountCreateWidget * GaduProtocolFactory::newCreateAccountWidget(QWidget *parent)

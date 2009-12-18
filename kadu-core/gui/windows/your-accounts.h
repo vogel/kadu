@@ -24,6 +24,7 @@ class QListView;
 class QStackedWidget;
 class QVBoxLayout;
 
+class AccountAddWidget;
 class AccountCreateWidget;
 class AccountEditWidget;
 class AccountsModel;
@@ -37,22 +38,31 @@ KADUAPI class YourAccounts : public QWidget, AccountsAwareObject
 	AccountsModel *MyAccountsModel;
 
 	QStackedWidget *CreateEditStack;
+	QStackedWidget *AddStack;
 	QStackedWidget *CreateStack;
 	QStackedWidget *EditStack;
 
-	QComboBox *Protocols;
+	QComboBox *AddAccountProtocols;
+	QComboBox *NewAccountProtocols;
 	QWidget *NewAccountContainer;
+	QWidget *NewAccountCreatedContainer;
+	QWidget *AddAccountContainer;
 
 	QMap<ProtocolFactory *, AccountCreateWidget *> CreateWidgets;
+	QMap<ProtocolFactory *, AccountAddWidget *> AddWidgets;
 	QMap<Account, AccountEditWidget *> EditWidgets;
 
 	void createGui();
 	void createNewAccountWidget();
+	void createNewAccountCreatedWidget();
+	void createAddAccountWidget();
 	void createEditAccountWidget();
 
 private slots:
+  	void addAccountClicked();
 	void newAccountClicked();
-	void protocolChanged(int protocolIndex);
+	void addAccountProtocolChanged(int protocolIndex);
+	void newAccountProtocolChanged(int protocolIndex);
 	void accountCreated(Account account);
 	void accountSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 

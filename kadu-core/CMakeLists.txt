@@ -355,6 +355,7 @@ set (kadu_MOC_SRCS
 	gui/actions/action-description.h
 
 	gui/widgets/account-buddy-list-widget.h
+	gui/widgets/account-add-widget.h
 	gui/widgets/account-create-widget.h
 	gui/widgets/account-edit-widget.h
 	gui/widgets/buddies-line-edit.h
