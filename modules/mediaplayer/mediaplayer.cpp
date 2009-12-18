@@ -35,8 +35,8 @@
 
 #include "mediaplayer.h"
 
-#define MODULE_MEDIAPLAYER_VERSION 1.2
-#define CHECK_STATUS_INTERVAL 10*1000 /* 10s */
+#define MODULE_MEDIAPLAYER_VERSION 1.3
+#define CHECK_STATUS_INTERVAL 1*1000 /* 1s */
 
 #define SHORTCUT_KEY Qt::Key_Meta
 
@@ -100,6 +100,7 @@ MediaPlayer::MediaPlayer(bool firstLoad)
 	// Initialization
 	playerInfo = 0;
 	playerCommands = 0;
+	statusInterval = CHECK_STATUS_INTERVAL;
 
 	// MediaPlayer menus in chats
 	menu = new QMenu();
@@ -654,8 +655,8 @@ void MediaPlayer::mediaPlayerStatusChangerActivated(QAction *sender, bool toggle
 	}
 
 	mediaPlayerStatusChanger->setDisable(!toggled);
-	if (toggled)
-		timer->start(CHECK_STATUS_INTERVAL);
+	if (toggled && statusInterval > 0)
+		timer->start(statusInterval);
 	else
 		timer->stop();
 }
@@ -669,10 +670,26 @@ void MediaPlayer::toggleStatuses(bool toggled)
 	}
 	
 	mediaPlayerStatusChanger->setDisable(!toggled);
-	if (toggled)
-		timer->start(CHECK_STATUS_INTERVAL);
+	if (toggled && statusInterval > 0)
+		timer->start(statusInterval);
 	else
 		timer->stop();
+}
+
+void MediaPlayer::titleChanged()
+{
+	if (!mediaPlayerStatusChanger->isDisabled())
+		checkTitle();
+}
+
+void MediaPlayer::statusChanged()
+{
+	checkTitle();
+}
+
+void MediaPlayer::setInterval(int seconds)
+{
+	statusInterval = seconds * 1000;
 }
 
 void MediaPlayer::checkTitle()

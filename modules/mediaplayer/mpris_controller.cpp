@@ -78,6 +78,8 @@ MPRISController::MPRISController(QString s) : service(s)
 	currentTrack_.track  = "";
 	currentTrack_.time   =  0;
 	currentStatus_.i1    =  2;
+
+	mediaplayer->setInterval(0);
 }
 
 MPRISController::~MPRISController()
@@ -109,6 +111,7 @@ void MPRISController::statusChanged(PlayerStatus status)
 		active_ = true;
 
 	currentStatus_ = status;
+	mediaplayer->statusChanged();
 };
 
 void MPRISController::trackChanged(QVariantMap map)
@@ -129,4 +132,5 @@ void MPRISController::trackChanged(QVariantMap map)
 		if (currentTrack_.time == 0) /* for audacious... */
 			currentTrack_.time    = map.value("length").toUInt();
 	}
+	mediaplayer->titleChanged();
 };

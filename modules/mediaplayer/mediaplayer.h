@@ -34,6 +34,7 @@ class MEDIAPLAYERAPI MediaPlayer : public ConfigurationUiHandler, ConfigurationA
 	QAction *mediaplayerStatus;
 
 	QTimer *timer;
+	int statusInterval;
 	QString currentTitle;
 	QMenu *menu;
 	int popups[6];
@@ -156,6 +157,10 @@ public:
 	void unregisterMediaPlayer();
 
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
+
+	void titleChanged();
+	void statusChanged();
+	void setInterval(int seconds);
 
 public slots:
 	/**

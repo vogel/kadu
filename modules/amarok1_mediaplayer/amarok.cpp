@@ -30,6 +30,7 @@ extern "C" int amarok1_mediaplayer_init()
 {
 	amarok = new AmarokMediaPlayer();
 	bool res = mediaplayer->registerMediaPlayer(amarok, amarok);
+	mediaplayer->setInterval(5);
 	return res ? 0 : 1;
 }
 
