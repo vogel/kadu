@@ -386,11 +386,16 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, QString &styleHref, QSt
 	result.replace(QString("%senderScreenName%"), msg.sender().id());
 	// Replace service name (protocol name)
 	if (chat.chatAccount().protocolHandler() && chat.chatAccount().protocolHandler()->protocolFactory())
+	{
 		result.replace(QString("%service%"), chat.chatAccount().protocolHandler()->protocolFactory()->displayName());
+		// Replace protocolIcon (sender statusIcon). TODO:
+		result.replace(QString("%senderStatusIcon%"), chat.chatAccount().protocolHandler()->protocolFactory()->iconName());
+	}
 	else
+	{
 		result.replace(QString("%service%"), "");
-	// Replace protocolIcon (sender statusIcon). TODO:
-	result.replace(QString("%senderStatusIcon%"), chat.chatAccount().protocolHandler()->protocolFactory()->iconName());
+		result.replace(QString("%senderStatusIcon%"), "");
+	}
 
 	// Replace time
 	QDateTime time = msg.sendDate().isNull() ? msg.receiveDate(): msg.sendDate();

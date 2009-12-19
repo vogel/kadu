@@ -219,10 +219,13 @@ void BuddiesListView::contextMenuEvent(QContextMenuEvent *event)
 
 	foreach (Contact contact, con.contacts())
 	{
+		if (!contact.contactAccount() || !contact.contactAccount().protocolHandler())
+			continue;
+
 		Account account = contact.contactAccount();
 		ProtocolFactory *protocolFactory = account.protocolHandler()->protocolFactory();
 
-		if (!protocolFactory || !protocolFactory->protocolMenuManager())
+		if (!account.protocolHandler()->protocolFactory() || !protocolFactory->protocolMenuManager())
 			continue;
 
 		QMenu *account_menu = menu->addMenu(account.name());
