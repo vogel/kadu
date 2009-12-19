@@ -29,6 +29,7 @@ public:
 	~SingleWindow();
 	void closeChatWidget(ChatWidget *);
 	int rosterPosition() { return rosterPos; }
+	void changeRosterPos(int newRosterPos);
 
 public slots:
 	void onOpenChat(ChatWidget *w);
