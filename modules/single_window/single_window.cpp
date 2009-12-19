@@ -57,10 +57,10 @@ SingleWindowManager::~SingleWindowManager()
 
 void SingleWindowManager::configurationUpdated()
 {
-	if (singleWindow->rosterPosition() != config_file.readNumEntry("SingleWindow", "RosterPosition", 0))
+	int newRosterPos = config_file.readNumEntry("SingleWindow", "RosterPosition", 0);
+	if (singleWindow->rosterPosition() != newRosterPos)
 	{
-		delete singleWindow;
-		singleWindow = new SingleWindow();
+		singleWindow->changeRosterPos(newRosterPos);
 	}
 }
 
@@ -148,6 +148,12 @@ SingleWindow::~SingleWindow()
 	disconnect(kadu, SIGNAL(shown()), this, SLOT(show()));
 	disconnect(kadu, SIGNAL(hiding()), this, SLOT(hide()));
 	disconnect(kadu, SIGNAL(keyPressed(QKeyEvent *)), this, SLOT(onkaduKeyPressed(QKeyEvent *)));
+}
+
+void SingleWindow::changeRosterPos(int newRosterPos)
+{
+	rosterPos = newRosterPos;
+	split->insertWidget(rosterPos, kadu);
 }
 
 void SingleWindow::onNewChat(ChatWidget *w, bool &handled)
