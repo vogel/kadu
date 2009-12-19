@@ -288,7 +288,7 @@ void FileTransfer::start(StartType startType)
 
 	setVersion();
 	if (Version == DccUnknow)
-		return;
+		Version = Dcc7; // if version is unknown use dcc7
 
 	prepareFileInfo();
 
