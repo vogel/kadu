@@ -243,6 +243,7 @@ set (SOURCES
 	client/mini-client.cpp
 	file-transfer/jabber-file-transfer.cpp
 	gui/widgets/jabber-contact-widget.cpp
+	gui/widgets/jabber-add-account-widget.cpp
 	gui/widgets/jabber-create-account-widget.cpp
 	gui/widgets/jabber-edit-account-widget.cpp
 	gui/widgets/jabber-personal-info-widget.cpp
@@ -271,6 +272,7 @@ set (MOC_SOURCES
 	client/mini-client.h
 	file-transfer/jabber-file-transfer.h
 	gui/widgets/jabber-contact-widget.h
+	gui/widgets/jabber-add-account-widget.h
 	gui/widgets/jabber-create-account-widget.h
 	gui/widgets/jabber-edit-account-widget.h
 	gui/widgets/jabber-personal-info-widget.h

@@ -12,6 +12,7 @@
 #include "status/status-type-manager.h"
 
 #include "gui/widgets/jabber-contact-widget.h"
+#include "gui/widgets/jabber-add-account-widget.h"
 #include "gui/widgets/jabber-create-account-widget.h"
 #include "gui/widgets/jabber-edit-account-widget.h"
 #include "jabber-account-details.h"
@@ -63,6 +64,11 @@ AccountDetails * JabberProtocolFactory::createAccountDetails(AccountShared *acco
 ContactDetails * JabberProtocolFactory::createContactDetails(ContactShared *contactShared)
 {
 	return new JabberContactDetails(contactShared);
+}
+
+AccountAddWidget * JabberProtocolFactory::newAddAccountWidget(QWidget *parent)
+{
+	return new JabberAddAccountWidget(parent);
 }
 
 AccountCreateWidget * JabberProtocolFactory::newCreateAccountWidget(QWidget *parent)
