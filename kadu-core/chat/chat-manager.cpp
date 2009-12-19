@@ -113,7 +113,9 @@ Chat ChatManager::findChat(ContactSet contacts, bool create)
 		return Chat::null;
 
 	chat.setDetails(details);
-	addItem(chat);
+	//TODO 0.6.6:
+	chat.setType(details->type()->name());
 
+	addItem(chat);
 	return chat;
 }

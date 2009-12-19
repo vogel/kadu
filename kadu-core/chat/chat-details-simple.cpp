@@ -69,7 +69,7 @@ void ChatDetailsSimple::store()
 
 ChatType * ChatDetailsSimple::type() const
 {
-	return ChatTypeManager::instance()->chatType("SimpleChat");
+	return ChatTypeManager::instance()->chatType("Simple");
 }
 
 ContactSet ChatDetailsSimple::contacts() const

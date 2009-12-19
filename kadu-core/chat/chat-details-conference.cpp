@@ -46,7 +46,7 @@ void ChatDetailsConference::store()
 
 ChatType * ChatDetailsConference::type() const
 {
-	return ChatTypeManager::instance()->chatType("ConferenceChat");
+	return ChatTypeManager::instance()->chatType("Conference");
 }
 
 QString ChatDetailsConference::name() const
