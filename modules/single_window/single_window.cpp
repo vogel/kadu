@@ -287,8 +287,8 @@ void SingleWindow::onChatKeyPressed(QKeyEvent* e, ChatWidget* w, bool &handled)
 	else if (HotKey::shortCut(e, "ShortCuts", "HideShowRoster"))
 	{
 		QList<int> sizes = split->sizes();
-		if (sizes[0] != 0)
-			sizes[0] = 0;
+		if (sizes[rosterPos] != 0)
+			sizes[rosterPos] = 0;
 		else
 			sizes = splitSizes;
 		split->setSizes(sizes);
