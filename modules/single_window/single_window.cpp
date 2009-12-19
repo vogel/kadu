@@ -7,21 +7,28 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "config_file.h"
-#include "debug.h"
-#include "kadu.h"
-#include "misc.h"
-#include "icons_manager.h"
-
+#ifdef Q_WS_HILDON
+# include <QtGui/QMenu>
+# include <QtGui/QMenuBar>
+#endif
 #include <QtCore/QStringList>
 
+#include "kadu.h"
+#include "misc.h"
+#include "debug.h"
+#include "hot_key.h"
+#include "config_file.h"
+#include "custom_input.h"
+#include "icons_manager.h"
 #include "single_window.h"
 
 extern "C" KADU_EXPORT int single_window_init(bool firstLoad)
 {
 	kdebugf();
 
-	singleWindow = new SingleWindow();
+	singleWindowManager = new SingleWindowManager();
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/single_window.ui"),
+		singleWindowManager);
 	kdebugf2();
 
 	return 0;
@@ -30,31 +37,71 @@ extern "C" KADU_EXPORT void single_window_close()
 {
 	kdebugf();
 
-	delete singleWindow;
-	singleWindow = NULL;
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/single_window.ui"),
+		singleWindowManager);
+	delete singleWindowManager;
+	singleWindowManager = NULL;
 
 	kdebugf2();
+}
+
+SingleWindowManager::SingleWindowManager()
+{
+	singleWindow = new SingleWindow();
+}
+
+SingleWindowManager::~SingleWindowManager()
+{
+	delete singleWindow;
+}
+
+void SingleWindowManager::configurationUpdated()
+{
+	if (singleWindow->rosterPosition() != config_file.readNumEntry("SingleWindow", "RosterPosition", 0))
+	{
+		delete singleWindow;
+		singleWindow = new SingleWindow();
+	}
 }
 
 SingleWindow::SingleWindow()
 {
 	split = new QSplitter(Qt::Horizontal, this);
-	split->addWidget(kadu);
 
 	tabs = new QTabWidget(this);
 	tabs->setTabsClosable(true);
-	split->addWidget(tabs);
 
-	loadWindowGeometry(this, "SingleWindow", "WindowGeometry", 0, 0, 600, 600);
-
-	QList<int> splitSizes;
+	rosterPos = config_file.readNumEntry("SingleWindow", "RosterPosition", 0);
+	if (rosterPos == 0)
+	{
+		split->addWidget(kadu);
+		split->addWidget(tabs);
+	}
+	else
+	{
+		split->addWidget(tabs);
+		split->addWidget(kadu);
+	}
 
 #ifdef Q_WS_HILDON
+	menuBar()->addMenu(kadu->mainMenu());
+
 	if (kadu->width() >= 250)
 		kadu->resize(250, kadu->height());
 #endif
-	splitSizes.append(kadu->width());
-	splitSizes.append(width() - kadu->width());
+
+	loadWindowGeometry(this, "SingleWindow", "WindowGeometry", 0, 0, 600, 600);
+
+	if (rosterPos == 0)
+	{
+		splitSizes.append(kadu->width());
+		splitSizes.append(width() - kadu->width());
+	}
+	else
+	{
+		splitSizes.append(width() - kadu->width());
+		splitSizes.append(kadu->width());
+	}
 	split->setSizes(splitSizes);
 
 	setWindowTitle(kadu->windowTitle());
@@ -69,6 +116,7 @@ SingleWindow::SingleWindow()
 
 	connect(kadu, SIGNAL(shown()), this, SLOT(show()));
 	connect(kadu, SIGNAL(hiding()), this, SLOT(hide()));
+	connect(kadu, SIGNAL(keyPressed(QKeyEvent *)), this, SLOT(onkaduKeyPressed(QKeyEvent *)));
 
 	show();
 }
@@ -81,6 +129,8 @@ SingleWindow::~SingleWindow()
 		tabs->removeTab(i);
 		delete tabs->widget(i);
 	}
+
+	split->setSizes(splitSizes);
 
 	// reparent kadu
 	kadu->setParent(NULL);
@@ -97,6 +147,7 @@ SingleWindow::~SingleWindow()
 
 	disconnect(kadu, SIGNAL(shown()), this, SLOT(show()));
 	disconnect(kadu, SIGNAL(hiding()), this, SLOT(hide()));
+	disconnect(kadu, SIGNAL(keyPressed(QKeyEvent *)), this, SLOT(onkaduKeyPressed(QKeyEvent *)));
 }
 
 void SingleWindow::onNewChat(ChatWidget *w, bool &handled)
@@ -116,6 +167,9 @@ void SingleWindow::onOpenChat(ChatWidget *w)
 
 	connect(w, SIGNAL(messageReceived(ChatWidget *)),
 		this, SLOT(onNewMessage(ChatWidget *)));
+
+	connect(w, SIGNAL(keyPressed(QKeyEvent*, ChatWidget*, bool&)),
+		this, SLOT(onChatKeyPressed(QKeyEvent*, ChatWidget*, bool&)));
 }
 
 void SingleWindow::closeTab(int index)
@@ -150,14 +204,101 @@ void SingleWindow::onNewMessage(ChatWidget *w)
 {
 	if (w != tabs->currentWidget())
 	{
-		tabs->setTabIcon(tabs->indexOf(w),
-			icons_manager->loadIcon("Message"));
+		int index = tabs->indexOf(w);
+		tabs->setTabIcon(index, icons_manager->loadIcon("Message"));
+
+		if (config_file.readBoolEntry("SingleWindow", "NumMessagesInTab", false))
+		{
+			QString title = tabs->tabText(index);
+			int pos = title.indexOf(" [");
+			if (pos > -1)
+				title.truncate(pos);
+			title += QString(" [%1]").arg(w->newMessagesCount());
+			tabs->setTabText(index, title);
+		}
+	}
+	else
+	{
+		w->markAllMessagesRead();
 	}
 }
 
 void SingleWindow::onTabChange(int index)
 {
-	tabs->setTabIcon(index, tabs->widget(index)->windowIcon());
+	if (index == -1)
+		return;
+
+	ChatWidget *w = (ChatWidget *)tabs->widget(index);
+	tabs->setTabIcon(index, w->icon());
+
+	QString title = tabs->tabText(index);
+	int pos = title.indexOf(" [");
+	if (pos > -1)
+		title.truncate(pos);
+	tabs->setTabText(index, title);
+
+	w->markAllMessagesRead();
 }
 
-SingleWindow *singleWindow = NULL;
+void SingleWindow::onkaduKeyPressed(QKeyEvent *e)
+{
+	/* unfortunatelly does not work correctly */
+	if (HotKey::shortCut(e, "ShortCuts", "FocusOnRosterTab"))
+	{
+		ChatWidget *w = (ChatWidget *)tabs->currentWidget();
+		if (w)
+		{
+			w->edit()->setFocus();
+		}
+	}
+}
+
+void SingleWindow::onChatKeyPressed(QKeyEvent* e, ChatWidget* w, bool &handled)
+{
+	/* workaround: we're receiving the same key event twice so ignore the duplicate */
+	static int duplicate = 0;
+	if (duplicate++)
+	{
+		duplicate = 0;
+		handled = false;
+		return;
+	}
+
+	handled = false;
+
+	if (HotKey::shortCut(e, "ShortCuts", "SwitchTabLeft"))
+	{
+		int index = tabs->currentIndex();
+		if (index > 0)
+		{
+			tabs->setCurrentIndex(index-1);
+		}
+		handled = true;
+	}
+	else if (HotKey::shortCut(e, "ShortCuts", "SwitchTabRight"))
+	{
+		int index = tabs->currentIndex();
+		if (index < tabs->count())
+		{
+			tabs->setCurrentIndex(index+1);
+		}
+		handled = true;
+	}
+	else if (HotKey::shortCut(e, "ShortCuts", "HideShowRoster"))
+	{
+		QList<int> sizes = split->sizes();
+		if (sizes[0] != 0)
+			sizes[0] = 0;
+		else
+			sizes = splitSizes;
+		split->setSizes(sizes);
+		handled = true;
+	}
+	else if (HotKey::shortCut(e, "ShortCuts", "FocusOnRosterTab"))
+	{
+		kadu->userBox()->setFocus();
+		handled = true;
+	}
+}
+
+SingleWindowManager *singleWindowManager = NULL;
