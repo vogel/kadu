@@ -1,0 +1,23 @@
+<configuration-ui>
+	<section name="Look">
+		<tab name="SingleWindow">
+			<group-box name="General">
+				<combo-box caption="Roster position" config-section="SingleWindow" config-item="RosterPosition" tool-tip="Choose position of roster in Single Window mode">
+					<item value="0" caption="Left" />
+					<item value="1" caption="Right" />
+				</combo-box>
+				<check-box caption="Show number of messages on tab" config-section="SingleWindow" config-item="NumMessagesInTab" />
+			</group-box>
+		</tab>
+	</section>
+	<section name="Shortcuts">
+		<tab name="SingleWindow">
+			<group-box name="Tabs">
+				<hot-key-edit caption="Switch to previous tab" config-section="ShortCuts" config-item="SwitchTabLeft" />
+				<hot-key-edit caption="Switch to next tab" config-section="ShortCuts" config-item="SwitchTabRight" />
+				<hot-key-edit caption="Show/hide roster" config-section="ShortCuts" config-item="HideShowRoster" />
+				<hot-key-edit caption="Switch focus between roster and tabs" config-section="ShortCuts" config-item="FocusOnRosterTab" />
+			</group-box>
+		</tab>
+	</section>
+</configuration-ui>
