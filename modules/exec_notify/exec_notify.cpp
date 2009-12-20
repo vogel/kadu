@@ -20,6 +20,8 @@
 
 #include "configuration/configuration-file.h"
 
+#include "contacts/contact-set.h"
+
 #include "gui/widgets/configuration/notify-group-box.h"
 #include "gui/windows/main-configuration-window.h"
 
@@ -229,15 +231,15 @@ void ExecNotify::notify(Notification *notification)
 	ChatNotification *chatNotification = dynamic_cast<ChatNotification *>(notification);
 	if (chatNotification)
 	{
-		BuddyList buddies = chatNotification->chat().buddies().toBuddyList();
+		ContactSet contacts = chatNotification->chat().contacts();
 
 		QStringList sendersList;
-		foreach (Buddy buddy, buddies)
-			sendersList.append(buddy.id(chatNotification->account()));
+		foreach (Contact contact, contacts)
+			sendersList.append(contact.id());
 		QString sendersString = sendersList.join(",");
 
 		foreach (QString it, s)
-			result.append(Parser::parse(it.replace("%ids", sendersString), chatNotification->account(), buddies[0], notification));
+			result.append(Parser::parse(it.replace("%ids", sendersString), chatNotification->account(), *contacts.toBuddySet().begin(), notification));
 	}
 	else
 		foreach (QString it, s)
