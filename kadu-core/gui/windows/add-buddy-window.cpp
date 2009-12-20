@@ -61,6 +61,7 @@ void AddBuddyWindow::createGui()
 	QGridLayout *layout = new QGridLayout(this);
 
 	UserNameLabel = new QLabel(tr("Username:"), this);
+	UserNameLabel->setAlignment(Qt::AlignRight);
 	layout->addWidget(UserNameLabel, 0, 0, Qt::AlignRight);
 	UserNameEdit = new QLineEdit(this);
 	connect(UserNameEdit, SIGNAL(textChanged(const QString &)), this, SLOT(setAddContactEnabled()));
@@ -96,6 +97,7 @@ void AddBuddyWindow::createGui()
 
 	layout->addWidget(new QLabel(tr("Add in group:"), this), 1, 0, Qt::AlignRight);
 	GroupCombo = new QComboBox(this);
+	GroupCombo->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 	connect(GroupCombo, SIGNAL(activated(int)), this, SLOT(groupChanged(int)));
 	GroupsModel *groupComboModel = new GroupsModel(GroupCombo);
 
@@ -120,7 +122,7 @@ void AddBuddyWindow::createGui()
 	layout->addWidget(new QLabel(tr("Visible name:"), this), 2, 0, Qt::AlignRight);
 	DisplayNameEdit = new QLineEdit(this);
 	connect(DisplayNameEdit, SIGNAL(textChanged(const QString &)), this, SLOT(setAddContactEnabled()));
-	layout->addWidget(DisplayNameEdit, 2, 1, 1, 3);
+	layout->addWidget(DisplayNameEdit, 2, 1, 1, 1);
 
 	QLabel *hintLabel = new QLabel(tr("Enter a name for this contact"));
 	QFont hintLabelFont = hintLabel->font();
@@ -162,6 +164,8 @@ void AddBuddyWindow::createGui()
 	buttons->addButton(AddContactButton, QDialogButtonBox::AcceptRole);
 	buttons->addButton(cancel, QDialogButtonBox::DestructiveRole);
 
+	layout->setColumnMinimumWidth(0, 150);
+	layout->setColumnMinimumWidth(1, 200);d
 // 	TODO: NOW, does not work
 // 	setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 // 	setMaximumHeight(layout->minimumSize().height());
