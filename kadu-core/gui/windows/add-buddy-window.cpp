@@ -20,7 +20,6 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "accounts/filter/id-regular-expression-filter.h"
-#include "accounts/filter/non-in-contact-filter.h"
 #include "accounts/model/accounts-model.h"
 #include "accounts/model/accounts-proxy-model.h"
 #include "buddies/buddy.h"
@@ -81,9 +80,7 @@ void AddBuddyWindow::createGui()
 	AccountComboProxyModel = new AccountsProxyModel(AccountCombo);
 	AccountComboProxyModel->setSourceModel(AccountComboModel);
 	AccountComboIdFilter = new IdRegularExpressionFilter(AccountCombo);
-	AccountComboNotInContactFilter = new NonInContactFilter(AccountCombo);
 	AccountComboProxyModel->addFilter(AccountComboIdFilter);
-	AccountComboProxyModel->addFilter(AccountComboNotInContactFilter);
 
 	ActionsProxyModel::ModelActionList accountsModelBeforeActions;
 	accountsModelBeforeActions.append(qMakePair<QString, QString>(tr(" - Select account - "), ""));
@@ -298,11 +295,6 @@ void AddBuddyWindow::setValidateRegularExpression()
 void AddBuddyWindow::setAccountFilter()
 {
 	AccountComboIdFilter->setId(UserNameEdit->text());
-
-	if (MergeContact->isChecked())
-		AccountComboNotInContactFilter->setContact(SelectContact->buddy());
-	else
-		AccountComboNotInContactFilter->setContact(Buddy::null);
 }
 
 void AddBuddyWindow::groupChanged(int index)

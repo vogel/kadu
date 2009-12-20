@@ -6,7 +6,6 @@ set (kadu_SRCS
 	accounts/accounts-aware-object.cpp
 
 	accounts/filter/id-regular-expression-filter.cpp
-	accounts/filter/non-in-contact-filter.cpp
 
 	accounts/model/accounts-model.cpp
 	accounts/model/accounts-proxy-model.cpp
@@ -281,7 +280,6 @@ set (kadu_MOC_SRCS
 
 	accounts/filter/abstract-account-filter.h
 	accounts/filter/id-regular-expression-filter.h
-	accounts/filter/non-in-contact-filter.h
 
 	accounts/model/accounts-model.h
 	accounts/model/accounts-proxy-model.h

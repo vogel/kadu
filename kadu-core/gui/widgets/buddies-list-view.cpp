@@ -83,6 +83,8 @@ BuddiesListView::~BuddiesListView()
 
 void BuddiesListView::setModel(AbstractBuddiesModel *model)
 {
+	Model = model;
+
 	if (ProxyModel->sourceModel())
 	{
 		delete ProxyModel->sourceModel();
@@ -102,6 +104,14 @@ void BuddiesListView::addFilter(AbstractBuddyFilter *filter)
 void BuddiesListView::removeFilter(AbstractBuddyFilter *filter)
 {
 	ProxyModel->removeFilter(filter);
+}
+
+void BuddiesListView::selectBuddy(Buddy buddy)
+{
+	QModelIndex index = Model->buddyIndex(buddy);
+	index = ProxyModel->mapFromSource(index);
+
+	setCurrentIndex(index);
 }
 
 Contact BuddiesListView::currentContact() const

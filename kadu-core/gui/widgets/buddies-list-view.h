@@ -37,6 +37,7 @@ class BuddiesListView : public QTreeView
 
 	MainWindow *MyMainWindow;
 	BuddiesListViewDelegate *Delegate;
+	AbstractBuddiesModel *Model;
 	BuddiesModelProxy *ProxyModel;
 
 	Buddy buddyAt(const QModelIndex &index) const;
@@ -97,6 +98,8 @@ public:
 	virtual void setModel(AbstractBuddiesModel *model);
 	void addFilter(AbstractBuddyFilter *filter);
 	void removeFilter(AbstractBuddyFilter *filter);
+
+	void selectBuddy(Buddy buddy);
 
 	Contact currentContact() const;
 	ContactSet selectedContacts() const;

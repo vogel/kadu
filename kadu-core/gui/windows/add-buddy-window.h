@@ -23,7 +23,6 @@ class QRegExpValidator;
 class AccountsModel;
 class AccountsProxyModel;
 class IdRegularExpressionFilter;
-class NonInContactFilter;
 class SelectBuddyCombobox;
 
 class AddBuddyWindow : public QDialog
@@ -37,7 +36,6 @@ class AddBuddyWindow : public QDialog
 	AccountsModel *AccountComboModel;
 	AccountsProxyModel *AccountComboProxyModel;
 	IdRegularExpressionFilter *AccountComboIdFilter;
-	NonInContactFilter *AccountComboNotInContactFilter;
 	QComboBox *GroupCombo;
 	QLineEdit *DisplayNameEdit;
 	QCheckBox *MergeContact;

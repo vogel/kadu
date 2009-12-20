@@ -27,7 +27,7 @@ public:
 	explicit SelectBuddyPopup(QWidget *parent = 0);
 	virtual ~SelectBuddyPopup();
 
-	void show(const QString &text);
+	void show(Buddy buddy);
 
 signals:
 	void buddySelected(Buddy buddy);

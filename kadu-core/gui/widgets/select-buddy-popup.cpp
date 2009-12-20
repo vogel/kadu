@@ -32,17 +32,16 @@ SelectBuddyPopup::~SelectBuddyPopup()
 {
 }
 
-void SelectBuddyPopup::show(const QString &text)
+void SelectBuddyPopup::show(Buddy buddy)
 {
-	nameFilterEdit()->setText(text);
 	nameFilterEdit()->setFocus();
+
+	view()->selectBuddy(buddy);
 	BuddiesListWidget::show();
 }
 
 void SelectBuddyPopup::itemClicked(const QModelIndex &index)
 {
-	printf("item clicked\n");
-
 	close();
 
 	QVariant buddyVariant = index.data(BuddyRole);
@@ -53,6 +52,5 @@ void SelectBuddyPopup::itemClicked(const QModelIndex &index)
 	if (!buddy)
 		return;
 
-	printf("buddy emited: %s\n", qPrintable(buddy.display()));
 	emit buddySelected(buddy);
 }

@@ -64,7 +64,7 @@ void SelectBuddyCombobox::showPopup()
 	Popup->setGeometry(QRect(
 			mapToGlobal(rect().bottomLeft()),
 			QSize(geometry().width(), Popup->geometry().height())));
-	Popup->show(buddy().display());
+	Popup->show(buddy());
 }
 
 void SelectBuddyCombobox::hidePopup()
