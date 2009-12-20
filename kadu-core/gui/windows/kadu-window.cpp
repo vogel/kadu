@@ -85,7 +85,7 @@ void KaduWindow::createGui()
 	// groupbar
 	GroupBar = new GroupTabBar(this);
 
-	ContactsWidget = new BuddiesListWidget(this);
+	ContactsWidget = new BuddiesListWidget(BuddiesListWidget::FilterAtTop, this);
 	ContactsWidget->view()->setModel(new BuddiesModel(BuddyManager::instance(), this));
 	ContactsWidget->view()->addFilter(GroupBar->filter());
 	AnonymousWithoutMessagesBuddyFilter *anonymousFilter = new AnonymousWithoutMessagesBuddyFilter(this);

@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include <QtGui/QCompleter>
+#include <QtGui/QListView>
 
 #include "buddies/buddy-manager.h"
 #include "buddies/filter/buddy-name-filter.h"
@@ -22,7 +23,7 @@
 SelectBuddyCombobox::SelectBuddyCombobox(QWidget *parent) :
 		QComboBox(parent), MyBuddy(Buddy::null)
 {
-	setEditable(true);
+// 	setEditable(true);
 
 	connect(this, SIGNAL(editTextChanged(const QString &)),
 			this, SLOT(buddyTextChanged(const QString &)));
@@ -30,6 +31,8 @@ SelectBuddyCombobox::SelectBuddyCombobox(QWidget *parent) :
 	BuddiesModel *model = new BuddiesModel(BuddyManager::instance(), this);
 	ProxyModel = new BuddiesModelProxy(this);
 	ProxyModel->setSourceModel(model);
+
+	setModel(ProxyModel);
 
 	QCompleter *completer = new QCompleter(this);
 	completer->setPopup(new BuddiesListView(0, this));
@@ -75,13 +78,12 @@ void SelectBuddyCombobox::buddyTextChanged(const QString &contactText)
 void SelectBuddyCombobox::showPopup()
 {
 	Popup->setGeometry(QRect(
-			mapToGlobal(QPoint(0, 0)),
+			mapToGlobal(rect().bottomLeft()),
 			QSize(geometry().width(), Popup->geometry().height())));
-	Popup->show(lineEdit()->text());
+	Popup->show(MyBuddy.display());
 }
 
 void SelectBuddyCombobox::hidePopup()
 {
 	Popup->hide();
-	setEditText(Popup->nameFilterEdit()->text());
 }

@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include <QtGui/QHBoxLayout>
+#include <QtGui/QLabel>
 #include <QtGui/QVBoxLayout>
 
 #include "buddies/filter/buddy-name-filter.h"
@@ -16,16 +17,16 @@
 
 #include "buddies-list-widget.h"
 
-BuddiesListWidget::BuddiesListWidget(MainWindow *mainWindow, QWidget *parent) :
+BuddiesListWidget::BuddiesListWidget(FilterPosition filterPosition, MainWindow *mainWindow, QWidget *parent) :
 		QWidget(parent)
 {
 	QVBoxLayout *layout = new QVBoxLayout(this);
 	layout->setMargin(0);
 
 	QWidget *topWidget = new QWidget(this);
-	layout->addWidget(topWidget);
 
 	QHBoxLayout *topLayout = new QHBoxLayout(topWidget);
+	topLayout->addWidget(new QLabel(tr("Filter") + ":", this));
 	topLayout->setMargin(0);
 
 	NameFilterEdit = new BuddiesLineEdit(this);
@@ -36,10 +37,21 @@ BuddiesListWidget::BuddiesListWidget(MainWindow *mainWindow, QWidget *parent) :
 	connect(NameFilterEdit, SIGNAL(previous()), this, SLOT(selectPrevious()));
 
 	View = new BuddiesListView(mainWindow, this);
-	layout->addWidget(View);
 
 	NameFilter = new BuddyNameFilter(this);
 	View->addFilter(NameFilter);
+
+	if (FilterAtTop == filterPosition)
+	{
+		layout->addWidget(topWidget);
+		layout->addWidget(View);
+	}
+	else
+	{
+		layout->addWidget(View);
+		layout->addWidget(topWidget);
+	}
+
 /*
 	setFocusProxy(NameFilterEdit);
 	View->setFocusPolicy(Qt::NoFocus);*/
