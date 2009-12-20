@@ -156,9 +156,15 @@ void AddBuddyWindow::createGui()
 	layout->setRowMinimumHeight(6, 20);
 	layout->setRowMinimumHeight(8, 20);
 	layout->setRowStretch(8, 100);
+	
+	ErrorLabel = new QLabel();
+	QFont labelFont = ErrorLabel->font();
+	labelFont.setBold(true);
+	ErrorLabel->setFont(labelFont);
+	layout->addWidget(ErrorLabel, 9, 1, 1, 4);
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(this);
-	layout->addWidget(buttons, 9, 0, 1, 4);
+	layout->addWidget(buttons, 10, 0, 1, 4);
 
 	AddContactButton = new QPushButton(IconsManager::instance()->loadIcon("OkWindowButton"), tr("Add contact"), this);
 	AddContactButton->setDefault(true);
@@ -176,6 +182,11 @@ void AddBuddyWindow::createGui()
 // 	setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 // 	setMaximumHeight(layout->minimumSize().height());
 // 	layout->setSizeConstraint(QLayout::SetMinAndMaxSize);
+}
+
+void AddBuddyWindow::displayErrorMessage(const QString &message)
+{
+	ErrorLabel->setText(message);
 }
 
 Account AddBuddyWindow::selectedAccount()
@@ -210,35 +221,48 @@ void AddBuddyWindow::setUsernameLabel()
 void AddBuddyWindow::setAddContactEnabled()
 {
 	Account account = selectedAccount();
-	if (account.isNull() || !account.protocolHandler())
+	if (account.isNull() || !account.protocolHandler() || !account.protocolHandler()->protocolFactory())
 	{
 		AddContactButton->setEnabled(false);
+		displayErrorMessage(tr("Account is not selected"));
 		return;
 	}
 
 	if (!account.protocolHandler()->protocolFactory()->idRegularExpression().exactMatch(UserNameEdit->text()))
 	{
 		AddContactButton->setEnabled(false);
+		displayErrorMessage(tr("Entered username is invalid"));
 		return;
 	}
 
-	if (DisplayNameEdit->text().isEmpty())
+	if (MergeContact->isChecked())
 	{
-		AddContactButton->setEnabled(false);
-		return;
+		if (!SelectContact->buddy())
+		{
+			AddContactButton->setEnabled(false);
+			displayErrorMessage(tr("Select contact to merge with"));
+			return;
+		}
 	}
-
-	if (!MergeContact->isChecked())
-	{
-		AddContactButton->setEnabled(BuddyManager::instance()->byDisplay(DisplayNameEdit->text()).isNull());
-		return;
-	}
-
-	Buddy mergeWith = SelectContact->buddy();
-	if (mergeWith.isNull())
-		AddContactButton->setEnabled(false);
 	else
-		AddContactButton->setEnabled(mergeWith.contacts(account).isEmpty());
+	{
+		if (DisplayNameEdit->text().isEmpty())
+		{
+			AddContactButton->setEnabled(false);
+			displayErrorMessage(tr("Visible name can not be empty"));
+			return;
+		}
+
+		if (BuddyManager::instance()->byDisplay(DisplayNameEdit->text()))
+		{
+			AddContactButton->setEnabled(false);
+			displayErrorMessage(tr("Visible name is already used for another contact"));
+			return;
+		}
+	}
+
+	AddContactButton->setEnabled(true);
+	displayErrorMessage(QString::null);
 }
 
 void AddBuddyWindow::setValidateRegularExpression()

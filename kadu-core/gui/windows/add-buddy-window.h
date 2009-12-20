@@ -43,11 +43,13 @@ class AddBuddyWindow : public QDialog
 	QCheckBox *MergeContact;
 	SelectBuddyCombobox *SelectContact;
 	QCheckBox *AllowToSeeMeCheck;
+	QLabel *ErrorLabel;
 	QPushButton *AddContactButton;
 
 	Buddy MyBuddy;
 
 	void createGui();
+	void displayErrorMessage(const QString &message);
 
 	Account selectedAccount();
 
