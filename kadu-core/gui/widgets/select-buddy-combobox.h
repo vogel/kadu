@@ -30,6 +30,7 @@ class SelectBuddyCombobox : public QComboBox
 	SelectBuddyPopup *Popup;
 
 private slots:
+	void activatedSlot();
 	void buddySelected(Buddy);
 
 protected:

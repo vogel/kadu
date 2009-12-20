@@ -17,15 +17,14 @@
 #include "gui/widgets/buddies-list-view.h"
 #include "gui/widgets/select-buddy-popup.h"
 #include "model/actions-proxy-model.h"
+#include "model/roles.h"
 
 #include "select-buddy-combobox.h"
-#include <model/roles.h>
 
 SelectBuddyCombobox::SelectBuddyCombobox(QWidget *parent) :
 		QComboBox(parent)
 {
-	connect(this, SIGNAL(editTextChanged(const QString &)),
-			this, SLOT(buddyTextChanged(const QString &)));
+	connect(this, SIGNAL(activated(int)), this, SLOT(activatedSlot()));
 
 	Popup = new SelectBuddyPopup();
 	connect(Popup, SIGNAL(buddySelected(Buddy)), this, SLOT(buddySelected(Buddy)));
@@ -75,7 +74,15 @@ void SelectBuddyCombobox::hidePopup()
 
 Buddy SelectBuddyCombobox::buddy()
 {
-	return ProxyModel->buddyAt(view()->currentIndex());
+	QVariant buddyVariant = ActionsModel->index(currentIndex(), 0).data(BuddyRole);
+	return buddyVariant.canConvert<Buddy>()
+			? buddyVariant.value<Buddy>()
+			: Buddy::null;
+}
+
+void SelectBuddyCombobox::activatedSlot()
+{
+	emit buddyChanged(buddy());
 }
 
 void SelectBuddyCombobox::buddySelected(Buddy buddy)
@@ -84,4 +91,6 @@ void SelectBuddyCombobox::buddySelected(Buddy buddy)
 	index = ProxyModel->mapFromSource(index);
 	index = ActionsModel->mapFromSource(index);
 	setCurrentIndex(index.row());
+
+	emit buddyChanged(buddy);
 }
