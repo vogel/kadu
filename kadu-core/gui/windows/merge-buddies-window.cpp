@@ -44,7 +44,7 @@ void MergeBuddiesWindow::createGui()
 
 	chooseLayout->addWidget(new QLabel(tr("Contact:"), this));
 	SelectCombo = new SelectBuddyCombobox(this);
-	connect(SelectCombo, SIGNAL(contactChanged(Buddy)), this, SLOT(selectedBuddyChanged(Buddy)));
+	connect(SelectCombo, SIGNAL(buddyChanged(Buddy)), this, SLOT(selectedBuddyChanged(Buddy)));
 	chooseLayout->addWidget(SelectCombo);
 
 	layout->addStretch(100);
