@@ -160,6 +160,10 @@ void BuddiesListView::triggerActivate(const QModelIndex& index)
 	Chat chat = chatForIndex(index);
 	if (chat)
 		emit chatActivated(chat);
+
+	Buddy buddy = buddyAt(index);
+	if (buddy)
+		emit buddyActivated(buddy);
 }
 
 void BuddiesListView::contextMenuEvent(QContextMenuEvent *event)

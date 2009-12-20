@@ -108,8 +108,9 @@ public:
 
 signals:
 	void chatActivated(Chat chat);
-	void buddySelectionChanged();
+	void buddyActivated(Buddy buddy);
 
+	void buddySelectionChanged();
 	void currentBuddyChanged(Buddy buddy);
 
 };
