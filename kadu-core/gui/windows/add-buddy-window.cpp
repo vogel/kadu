@@ -127,15 +127,21 @@ void AddBuddyWindow::createGui()
 	QLabel *hintLabel = new QLabel(tr("Enter a name for this contact"));
 	QFont hintLabelFont = hintLabel->font();
 	hintLabelFont.setItalic(true);
-	hintLabelFont.setPointSize(hintLabelFont.pointSize() - 1);
+	hintLabelFont.setPointSize(hintLabelFont.pointSize() - 2);
 	hintLabel->setFont(hintLabelFont);
 	layout->addWidget(hintLabel, 3, 1, 1, 3);
 
 	MergeContact = new QCheckBox(tr("Merge with an existing contact"), this);
 	layout->addWidget(MergeContact, 4, 1, 1, 3);
-	SelectContact = new SelectBuddyCombobox(this);
+
+	QWidget *selectContactWidget = new QWidget(this);
+	QHBoxLayout *selectContactLayout = new QHBoxLayout(selectContactWidget);
+	selectContactLayout->addSpacing(20);
+	SelectContact = new SelectBuddyCombobox(selectContactWidget);
 	SelectContact->setEnabled(false);
-	layout->addWidget(SelectContact, 5, 1, 1, 3);
+	selectContactLayout->addWidget(SelectContact);
+	layout->addWidget(selectContactWidget, 5, 1, 1, 3);
+
 	connect(MergeContact, SIGNAL(toggled(bool)), SelectContact, SLOT(setEnabled(bool)));
 	connect(MergeContact, SIGNAL(toggled(bool)), DisplayNameEdit, SLOT(setDisabled(bool)));
 	connect(MergeContact, SIGNAL(toggled(bool)), this, SLOT(setAddContactEnabled()));
@@ -165,7 +171,7 @@ void AddBuddyWindow::createGui()
 	buttons->addButton(cancel, QDialogButtonBox::DestructiveRole);
 
 	layout->setColumnMinimumWidth(0, 150);
-	layout->setColumnMinimumWidth(1, 200);d
+	layout->setColumnMinimumWidth(1, 200);
 // 	TODO: NOW, does not work
 // 	setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 // 	setMaximumHeight(layout->minimumSize().height());
