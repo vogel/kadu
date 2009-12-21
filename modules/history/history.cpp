@@ -854,7 +854,8 @@ uint HistoryManager::getHistoryDate(QTextStream &stream)
 
 	if (pos < tokens.count())
 	{
-		return ((tokens[pos].toInt()) / 86400);
+		//return ((tokens[pos].toInt()) / 86400);
+		return QDateTime::fromTime_t(0).daysTo(QDateTime::fromTime_t(tokens[pos].toInt()));
 	}
 	else
 		return 0;
