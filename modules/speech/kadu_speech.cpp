@@ -326,12 +326,12 @@ void Speech::notify(Notification *notification)
 	{
 		ule = notification->userListElements()[0];
 		if (isFemale(ule.firstName()))
-			sex = "/Female";
+			sex = "Female";
 		else
-			sex = "/Male";
+			sex = "Male";
 	}
 
-	QString syntax = config_file.readEntry("Speech", notification->type() + "_Syntax" + sex, "");
+	QString syntax = config_file.readEntry("Speech", notification->type() + "_Syntax/" + sex, "");
 	if (syntax == "")
 		text = notification->text();
 	else
