@@ -53,7 +53,7 @@ Core * Core::instance()
 	return Instance;
 }
 
-Core::Core() : Myself(Buddy::null), Window(0), ShowMainWindowOnStart(true)
+Core::Core() : Myself(Buddy::create()), Window(0), ShowMainWindowOnStart(true)
 {
 	connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(quit()));
 	createDefaultConfiguration();
@@ -262,7 +262,6 @@ void Core::init()
 	// it fixes crash on loading pending messages from config, contacts import from 0.6.5, and maybe other issues
 	ModulesManager::instance()->loadProtocolModules();
 
-	Myself = Buddy::create();
 	Myself.setAnonymous(false);
 	Myself.setDisplay(config_file.readEntry("General", "Nick", tr("Me")));
 
@@ -343,6 +342,9 @@ void Core::kaduWindowDestroyed()
 
 void Core::accountAdded(Account account)
 {
+	printf("account: %s\n", qPrintable(account.uuid().toString()));
+	printf("contact: %s\n", qPrintable(account.accountContact().uuid().toString()));
+	printf("buddy: %s\n", qPrintable(Myself.uuid().toString()));
 	account.accountContact().setOwnerBuddy(Myself);
 }
 
