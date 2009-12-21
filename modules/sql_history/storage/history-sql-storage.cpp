@@ -403,12 +403,22 @@ QList<Message> HistorySqlStorage::messagesFromQuery(Chat chat, QSqlQuery query)
 	while (query.next())
 	{
 		bool outgoing = QVariant(query.value(4).toString().split('=').last()).toBool();
-		Message::Type type = outgoing ? Message::TypeSent : Message::TypeReceived;
+		Message::Type type;
+		Contact sender;
+		if (outgoing)
+		{
+			type = Message::TypeSent;
+			sender = chat.chatAccount().accountContact();
+		}
+		else
+		{
+			type = Message::TypeReceived;
 
-		// ignore non-existing contacts
-		Contact sender = ContactManager::instance()->byUuid(query.value(0).toString(), false);
-		if (sender.isNull())
-			continue;
+			// ignore non-existing contacts
+			sender = ContactManager::instance()->byUuid(query.value(0).toString(), false);
+			if (sender.isNull())
+				continue;
+		}
 
 		Message message(chat, type, sender);
 		message
