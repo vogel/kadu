@@ -203,6 +203,8 @@ void SmsPlusGateway::httpRedirected(QString link)
 void SmsPlusGateway::send(const QString& number, const QString& message, const QString& /*contact*/, const QString& signature)
 {
 	kdebugf();
+	//basing on http://code.google.com/p/skrypty-sms/source/browse/trunk/sms.miastoplusa.pl by R. Matczak, M. Knappe
+
 	Number = number;
 	Message = message;
 	State = SMS_LOADING_RESULTS;
@@ -214,17 +216,18 @@ void SmsPlusGateway::send(const QString& number, const QString& message, const Q
 	separator += (const char)0xef;
 	separator += (const char)0xbf;
 	separator += (const char)0xbf;
+
 	QString postData =
-		"3" + separator + "0" + separator + "9" + separator +
+		"3" + separator + "0" + separator + "11" + separator +
 		"http://www1.plus.pl/bsm/" + separator +
-		"BB205D38BD6DC27BAB2E91C384A21325" + separator +
+		"0C1263E2047195AA1A9BA7FDDF8A4B74" + separator +
 		"pl.plus.map.bsm.gwt.client.service.SendSmsService" + separator + "send" + separator +
-		"pl.plus.map.bsm.gwt.client.dto.SmsMessageTO" + separator +
-		"pl.plus.map.bsm.gwt.client.dto.SmsMessageTO/2299909364" + separator +
+		"pl.plus.map.bsm.core.gwt.dto.MessageTO" + separator +
+		"pl.plus.map.bsm.core.gwt.dto.MessageTO/2025876352" + separator +
+		"638fe7871b8f5e6bcb4e3fc6a44a69ce" + separator +
 		Message + separator +
 		Number + separator +
-		signature + separator +
-		// 1...2...3...4...1...5...6...0...0...0...7...0...0...1...1...0...0...0...0...0...0...0...0...0...0...0...8...0...0...0...9...0...0...0...
+		signature + separator + separator + 
 		"1" + separator +
 		"2" + separator +
 		"3" + separator +
@@ -234,28 +237,37 @@ void SmsPlusGateway::send(const QString& number, const QString& message, const Q
 		"6" + separator +
 		"0" + separator +
 		"0" + separator +
-		"0" + separator +
 		"7" + separator +
-		"0" + separator +
-		"0" + separator +
-		"1" + separator +
-		"1" + separator +
-		"0" + separator +
-		"0" + separator +
-		"0" + separator +
-		"0" + separator +
-		"0" + separator +
-		"0" + separator +
-		"0" + separator +
-		"0" + separator +
-		"0" + separator +
 		"0" + separator +
 		"0" + separator +
 		"8" + separator +
 		"0" + separator +
 		"0" + separator +
+		"1" + separator +
+		"2" + separator +
+		"0" + separator +
+		"0" + separator +
+		"0" + separator +
+		"0" + separator +
+		"0" + separator +
+		"0" + separator +
+		"0" + separator +
+		"0" + separator +
+		"0" + separator +
+		"0" + separator +
+		"0" + separator +
+		"0" + separator +
+		"0" + separator +
+		"0" + separator +
 		"0" + separator +
 		"9" + separator +
+		"0" + separator +
+		"0" + separator +
+		"0" + separator +
+		"10"+ separator +
+		"0" + separator +
+		"0" + separator +
+		"11"+ separator +
 		"0" + separator +
 		"0" + separator +
 		"0" + separator + (char)0x0d + (char)0x0a +
