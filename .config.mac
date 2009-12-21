@@ -125,7 +125,7 @@ module_mx610_notify=n
 # Platform: Linux, Mac OS X, Windows
 # Needs: libsndfile
 # Depends: notify
-module_sound=y
+module_sound=m
 
 # Description: ALSA sound support
 # PL: Obsługa dźwięku przez ALSĘ
@@ -139,7 +139,7 @@ module_alsa_sound=n
 # Platform: Linux (requires NAS), Mac OS X, Windows
 # Needs: QtSound
 # Depends: sound
-module_qt4_sound=y
+module_qt4_sound=m
 
 # Description: Phonon sound support
 # PL: Obsługa dźwięku przez Phonon
