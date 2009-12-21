@@ -43,7 +43,7 @@ class HistorySearchDialog : public QDialog
 		void resetToDate();
 	public:
 		HistorySearchDialog(QWidget *parent, UinsList uins);
-		void setDialogValues(HistoryFindRec &findrec);
+		void setDialogValues(HistoryFindRec &findrec, bool enable);
 		HistoryFindRec getDialogValues() const;
 
 	public slots:

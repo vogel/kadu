@@ -194,7 +194,7 @@ HistoryDialog::HistoryDialog(UinsList uins)
 		{
 			QTreeWidgetItem *dateItem;
 			selectedUinsItem->setExpanded(true);
-			dateItem = selectedUinsItem->child(0);//selectedUinsItem->childCount()-1
+			dateItem = selectedUinsItem->child(selectedUinsItem->childCount()-1);
 			uinsTreeWidget->setCurrentItem(dateItem);
 			dateItem->setSelected(true);
 			dateChanged(dateItem);
@@ -403,7 +403,7 @@ void HistoryDialog::searchButtonClicked()
 	}
 
 //	hs->resetBtnClicked();
-	hs->setDialogValues(findRec);
+	hs->setDialogValues(findRec, false);
 	if (hs->exec() == QDialog::Accepted)
 	{
 		findRec = hs->getDialogValues();

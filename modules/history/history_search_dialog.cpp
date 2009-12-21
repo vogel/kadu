@@ -317,11 +317,11 @@ void HistorySearchDialog::resetBtnClicked()
 	kdebugf2();
 }
 
-void HistorySearchDialog::setDialogValues(HistoryFindRec &findrec)
+void HistorySearchDialog::setDialogValues(HistoryFindRec &findrec, bool enable)
 {
 	kdebugf();
-	fromCheckBox->setChecked(!findrec.fromdate.isNull());
-	fromGroupBox->setEnabled(!findrec.fromdate.isNull());
+	fromCheckBox->setChecked(!findrec.fromdate.isNull() && enable);
+	fromGroupBox->setEnabled(!findrec.fromdate.isNull() && enable);
 	if (findrec.fromdate.isNull())
 		resetFromDate();
 	else
@@ -333,8 +333,8 @@ void HistorySearchDialog::setDialogValues(HistoryFindRec &findrec)
 		fromMinComboBox->setCurrentIndex(findrec.fromdate.time().minute());
 		correctFromDays(findrec.fromdate.date().month() - 1);
 	}
-	toCheckBox->setChecked(!findrec.todate.isNull());
-	toGroupBox->setEnabled(!findrec.todate.isNull());
+	toCheckBox->setChecked(!findrec.todate.isNull() && enable);
+	toGroupBox->setEnabled(!findrec.todate.isNull() && enable);
 
 	if (findrec.todate.isNull())
 		resetToDate();
