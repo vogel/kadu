@@ -269,6 +269,8 @@ if [ -f ${DEST}//Kadu.app/kadu/modules/libencryption_old.so ]; then
 	install_name_tool -change ${OPENSSLPATH}/lib/libcrypto.${SSLVER}.dylib @executable_path/../Frameworks/libcrypto.${SSLVER}.dylib ${DEST}/Kadu.app/kadu/modules/libencryption_old.so
 fi
 
+echo "LoadByDefault=true" >> ${DEST}/Kadu.app/kadu/modules/qt4_sound.desc
+
 echo "log: stripping binaries"
 strip -x ${FM_DIR}/Qt*  ${CNT_DIR}/plugins/imageformats/* ${MACOS_DIR}/kadu
 #Qt3Support QtCore QtGui QtNetwork QtSql QtWebKit QtXml phonon
