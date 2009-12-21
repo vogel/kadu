@@ -331,7 +331,6 @@ void TlenProtocol::chatMsgReceived(QDomNode n)
 
 	//		w->displayMsg(Tlen->decode(body.toUtf8()),timeStamp);
 
-	// TODO - zaimplementowac to samo w ContactList
 	Contact contact = ContactManager::instance()->byId(account(), TlenClient->decode(from), true);
 	ContactSet contacts = ContactSet(contact);
 
