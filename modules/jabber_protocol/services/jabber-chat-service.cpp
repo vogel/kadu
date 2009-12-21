@@ -106,8 +106,7 @@ void JabberChatService::clientMessageReceived(const XMPP::Message &msg)
 	if (msg.body().isEmpty())
 		return;
 
-	// TODO - zaimplementowac to samo w ContactList
-	Contact contact = Protocol->account().accountContact();
+	Contact contact = ContactManager::instance()->byId(Protocol->account(), msg.from().bare(), true);
 	ContactSet contacts(contact);
 
 	time_t msgtime = msg.timeStamp().toTime_t();
