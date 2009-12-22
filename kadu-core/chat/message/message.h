@@ -20,11 +20,9 @@
 
 class MessageShared;
 
-class KADUAPI Message : public QObject
+class KADUAPI Message : public SharedBase<MessageShared>
 {
-	Q_OBJECT
-
-	QExplicitlySharedDataPointer<MessageShared> Data;
+	KaduSharedBaseClass(Message)
 
 public:
 	enum Status
@@ -43,42 +41,25 @@ public:
 		TypeSystem
 	};
 
-private slots:
-	void statusChanged(Message::Status);
-
 public:
-	Message(Chat chat = Chat::null, Type type = TypeUnknown, Contact sender = Contact::null);
+	static Message create();
+	static Message loadFromStorage(StoragePoint *messageStoragePoint);
+	static Message null;
+
+	Message();
+	Message(MessageShared *data);
+	Message(QObject *data);
 	Message(const Message &copy);
 	virtual ~Message();
 
-	void operator = (const Message &copy);
-
-	Chat chat() const;
-	Message & setChat(Chat chat);
-
-	Contact sender() const;
-	Message & setSender(Contact sender);
-
-	QString content() const;
-	Message & setContent(const QString &content);
-
-	QDateTime receiveDate() const;
-	Message & setReceiveDate(QDateTime receiveDate);
-
-	QDateTime sendDate() const;
-	Message & setSendDate(QDateTime sendDate);
-
-	Message::Status status() const;
-	Message & setStatus(Message::Status status);
-
-	Message::Type type() const;
-	Message & setType(Message::Type type);
-
-	int id() const;
-	Message & setId(int id);
-
-signals:
-	void statusChanged(Message, Message::Status);
+	KaduSharedBase_Property(Chat, messageChat, MessageChat)
+	KaduSharedBase_Property(Contact, messageSender, MessageSender)
+	KaduSharedBase_Property(QString, content, Content)
+	KaduSharedBase_Property(QDateTime, receiveDate, ReceiveDate)
+	KaduSharedBase_Property(QDateTime, sendDate, SendDate)
+	KaduSharedBase_Property(Message::Status, status, Status)
+	KaduSharedBase_Property(Message::Type, type, Type)
+	KaduSharedBase_Property(int, id, Id)
 
 };
 

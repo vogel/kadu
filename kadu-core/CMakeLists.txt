@@ -284,7 +284,6 @@ set (kadu_MOC_SRCS
 	accounts/model/accounts-proxy-model.h
 
 	buddies/avatar-manager.h
-	buddies/buddy.h
 	buddies/buddy-shared.h
 	buddies/buddy-manager.h
 	buddies/group-manager.h
@@ -320,7 +319,6 @@ set (kadu_MOC_SRCS
 	chat/filter/chat-filter.h
 	#chat/filter/chat-name-filter.h
 
-	chat/message/message.h
 	chat/message/message-render-info.h
 	chat/message/pending-messages-manager.h
 	chat/message/message-shared.h

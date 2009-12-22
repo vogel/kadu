@@ -295,7 +295,7 @@ void ChatWidgetManager::deletePendingMsgs(Chat chat)
 {
 	kdebugf();
 	for (int i = 0; i < PendingMessagesManager::instance()->count(); ++i)
-		if ((*PendingMessagesManager::instance())[i].chat() == chat)
+		if ((*PendingMessagesManager::instance())[i].messageChat() == chat)
 		{
 			PendingMessagesManager::instance()->deleteMsg(i);
 			--i;
@@ -320,7 +320,7 @@ void ChatWidgetManager::openPendingMsgs(Chat chat, bool forceActivate)
 	for (int i = 0; i < PendingMessagesManager::instance()->count(); ++i)
 	{
 		msg = (*PendingMessagesManager::instance())[i];
-		if (msg.chat() != chat)
+		if (msg.messageChat() != chat)
 			continue;
 		messages.append(new MessageRenderInfo(msg));
 		PendingMessagesManager::instance()->deleteMsg(i--);
@@ -343,7 +343,7 @@ void ChatWidgetManager::openPendingMsgs(bool forceActivate)
 	kdebugf();
 
 	if (PendingMessagesManager::instance()->count())
-		openPendingMsgs((*PendingMessagesManager::instance())[0].chat(), forceActivate);
+		openPendingMsgs((*PendingMessagesManager::instance())[0].messageChat(), forceActivate);
 
 	kdebugf2();
 }
@@ -353,9 +353,9 @@ void ChatWidgetManager::sendMessage(Chat chat)
 	kdebugf();
 
 	for (int i = 0; i < PendingMessagesManager::instance()->count(); ++i)
-		if ((*PendingMessagesManager::instance())[i].chat() == chat)
+		if ((*PendingMessagesManager::instance())[i].messageChat() == chat)
 		{
-			openPendingMsgs((*PendingMessagesManager::instance())[i].chat());
+			openPendingMsgs((*PendingMessagesManager::instance())[i].messageChat());
 			return;
 		}
 
@@ -378,7 +378,7 @@ void ChatWidgetManager::messageReceived(const Message &message)
 {
 	kdebugf();
 
-	Chat chat = message.chat();
+	Chat chat = message.messageChat();
 	ContactSet contacts = chat.contacts();
 
 	ChatWidget *chatWidget = byChat(chat);
@@ -420,7 +420,7 @@ void ChatWidgetManager::messageReceived(const Message &message)
 
 void ChatWidgetManager::messageSent(const Message &message)
 {
-	Chat chat = message.chat();
+	Chat chat = message.messageChat ();
 	ChatWidget *chatWidget = byChat(chat);
 	MessageRenderInfo *messageRenderInfo = new MessageRenderInfo(message);
 

@@ -11,155 +11,51 @@
 
 #include "message.h"
 
-Message::Message(Chat chat, Type type, Contact sender) :
-		Data(new MessageShared())
+KaduSharedBaseClassImpl(Message)
+
+Message Message::null;
+
+Message Message::create()
 {
-	if (Data.data())
-	{
-		Data.data()->setMessageChat(chat);
-		Data.data()->setType(type);
-		Data.data()->setMessageSender(sender);
-		connect(Data.data(), SIGNAL(statusChanged(Message::Status)),
-				this, SLOT(statusChanged(Message::Status)));
-	}
+	return new MessageShared();
 }
 
-Message::Message(const Message& copy) :
-		Data(copy.Data)
+Message Message::loadFromStorage(StoragePoint *messageStoragePoint)
 {
-	if (Data.data())
-		connect(Data.data(), SIGNAL(statusChanged(Message::Status)),
-				this, SLOT(statusChanged(Message::Status)));
+	return MessageShared::loadFromStorage(messageStoragePoint);
+}
+
+Message::Message()
+{
+}
+
+Message::Message(MessageShared *data) :
+		SharedBase<MessageShared>(data)
+{
+	data->ref.ref();
+}
+
+Message::Message(QObject *data)
+{
+	MessageShared *shared = dynamic_cast<MessageShared *>(data);
+	if (shared)
+		setData(shared);
+}
+
+Message::Message(const Message &copy) :
+		SharedBase<MessageShared>(copy)
+{
 }
 
 Message::~Message()
 {
 }
 
-void Message::operator = (const Message &copy)
-{
-	if (Data.data())
-		disconnect(Data.data(), SIGNAL(statusChanged(Message::Status)),
-				this, SLOT(statusChanged(Message::Status)));
-	Data = copy.Data;
-	if (Data.data())
-		connect(Data.data(), SIGNAL(statusChanged(Message::Status)),
-				this, SLOT(statusChanged(Message::Status)));
-}
-
-void Message::statusChanged(Message::Status status)
-{
-	emit statusChanged(*this, status);
-}
-
-Chat Message::chat() const
-{
-	return Data.data()
-			? Data->messageChat()
-			: Chat::null;
-}
-
-Message & Message::setChat(Chat chat)
-{
-	if (Data.data())
-		Data->setMessageChat(chat);
-	return *this;
-}
-
-Contact Message::sender() const
-{
-	return Data.data()
-			? Data->messageSender()
-			: Contact::null;
-}
-
-Message & Message::setSender(Contact sender)
-{
-	if (Data.data())
-		Data->setMessageSender(sender);
-	return *this;
-}
-
-QString Message::content() const
-{
-	return Data.data()
-			? Data->content()
-			: QString::null;
-}
-
-Message & Message::setContent(const QString &content)
-{
-	if (Data.data())
-		Data->setContent(content);
-	return *this;
-}
-
-QDateTime Message::receiveDate() const
-{
-	return Data.data()
-			? Data->receiveDate()
-			: QDateTime();
-}
-
-Message & Message::setReceiveDate(QDateTime receiveDate)
-{
-	if (Data.data())
-		Data->setReceiveDate(receiveDate);
-	return *this;
-}
-
-QDateTime Message::sendDate() const
-{
-	return Data.data()
-			? Data->sendDate()
-			: QDateTime();
-}
-
-Message & Message::setSendDate(QDateTime sendDate)
-{
-	if (Data.data())
-		Data->setSendDate(sendDate);
-	return *this;
-}
-
-Message::Status Message::status() const
-{
-	return Data.data()
-			? Data->status()
-			: StatusUnknown;
-}
-
-Message & Message::setStatus(Message::Status status)
-{
-	if (Data.data())
-		Data->setStatus(status);
-	return *this;
-}
-
-Message::Type Message::type() const
-{
-	return Data.data()
-			? Data->type()
-			: TypeUnknown;
-}
-
-Message & Message::setType(Message::Type type)
-{
-	if (Data.data())
-		Data->setType(type);
-	return *this;
-}
-
-int Message::id() const
-{
-	return Data.data()
-			? Data->id()
-			: 0;
-}
-
-Message & Message::setId(int id)
-{
-    	if (Data.data())
-		Data->setId(id);
-	return *this;
-}
+KaduSharedBase_PropertyDef(Message, Chat, messageChat, MessageChat, Chat::null)
+KaduSharedBase_PropertyDef(Message, Contact, messageSender, MessageSender, Contact::null)
+KaduSharedBase_PropertyDef(Message, QString, content, Content, QString::null)
+KaduSharedBase_PropertyDef(Message, QDateTime, receiveDate, ReceiveDate, QDateTime())
+KaduSharedBase_PropertyDef(Message, QDateTime, sendDate, SendDate, QDateTime())
+KaduSharedBase_PropertyDef(Message, Message::Status, status, Status, Message::StatusUnknown)
+KaduSharedBase_PropertyDef(Message, Message::Type, type, Type, Message::TypeUnknown)
+KaduSharedBase_PropertyDef(Message, int, id, Id, -1)

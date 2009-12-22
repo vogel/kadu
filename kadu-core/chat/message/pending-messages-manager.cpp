@@ -41,7 +41,7 @@ PendingMessagesManager::PendingMessagesManager() : msgs()
 void PendingMessagesManager::deleteMsg(int index)
 {
 	kdebugm(KDEBUG_INFO, "PendingMessagesManager::(pre)deleteMsg(%d), count=%d\n", index, count());
-	Buddy e = msgs[index].sender().ownerBuddy();
+	Buddy e = msgs[index].messageSender().ownerBuddy();
 	msgs.removeAt(index);
 	storeConfiguration(xml_config_file);
 	kdebugm(KDEBUG_INFO, "PendingMessagesManager::deleteMsg(%d), count=%d\n", index, count());
@@ -51,7 +51,7 @@ void PendingMessagesManager::deleteMsg(int index)
 bool PendingMessagesManager::pendingMsgs(Buddy buddy) const
 {
 	foreach (const Message &msg, msgs)
-		if (msg.sender().ownerBuddy() == buddy)
+		if (msg.messageSender().ownerBuddy() == buddy)
 			return true;
 
 	return false;
@@ -63,7 +63,7 @@ unsigned int PendingMessagesManager::pendingMsgsCount(Chat chat) const
 
 	foreach (const Message &msg, msgs)
 	{
-		if (chat == msg.chat())
+		if (chat == msg.messageChat())
 			count++;
 	}
 
@@ -90,7 +90,7 @@ void PendingMessagesManager::addMsg(const Message &msg)
 	Message message = msg;
 	msgs.append(message);
 	storeConfiguration(xml_config_file);
-	emit messageFromUserAdded(msg.sender().ownerBuddy());
+	emit messageFromUserAdded(msg.messageSender().ownerBuddy());
 }
 
 void PendingMessagesManager::loadConfiguration(XmlConfigFile *configurationStorage)
@@ -102,10 +102,10 @@ void PendingMessagesManager::loadConfiguration(XmlConfigFile *configurationStora
 	QList<QDomElement> pendingMsgsElements = configurationStorage->getNodes(pendingMsgsNode, "PendingMessage");
 	foreach (QDomElement messageElement, pendingMsgsElements)
 	{
-		Message msg;
+		Message msg = Message::create();
 		QDomElement chatNode = configurationStorage->getNode(messageElement, "Chat", XmlConfigFile::ModeFind);
 		Chat chat = ChatManager::instance()->byUuid(chatNode.text());
-		msg.setChat(chat);
+		msg.setMessageChat(chat);
 
 		QDomElement timeNode = configurationStorage->getNode(messageElement, "ReceiveTime", XmlConfigFile::ModeFind);
 		msg.setReceiveDate(QDateTime::fromString(timeNode.text()));
@@ -118,7 +118,7 @@ void PendingMessagesManager::loadConfiguration(XmlConfigFile *configurationStora
 
 		QDomElement senderNode = configurationStorage->getNode(messageElement, "Sender", XmlConfigFile::ModeFind);
 		Buddy sender = BuddyManager::instance()->byUuid(senderNode.text());
-		msg.setSender(sender.contacts()[0]);
+		msg.setMessageSender(sender.contacts()[0]);
 
 		msgs.append(msg);
 		emit messageFromUserAdded(sender);
@@ -134,13 +134,13 @@ void PendingMessagesManager::storeConfiguration(XmlConfigFile *configurationStor
 		QDomElement pendingMessageNode = configurationStorage->getNode(pendingMsgsNode,
 			"PendingMessage", XmlConfigFile::ModeCreate);
 
-		configurationStorage->createTextNode(pendingMessageNode, "Chat", i.chat().uuid().toString());
+		configurationStorage->createTextNode(pendingMessageNode, "Chat", i.messageChat().uuid().toString());
 		configurationStorage->createTextNode(pendingMessageNode, "ReceiveTime", QString::number(i.receiveDate().toTime_t()));
 		configurationStorage->createTextNode(pendingMessageNode, "SentTime", QString::number(i.sendDate().toTime_t()));
 
 		configurationStorage->createTextNode(pendingMessageNode, "Message", codec_latin2->fromUnicode(i.content()));
 
-		configurationStorage->createTextNode(pendingMessageNode, "Sender", i.sender().uuid().toString());
+		configurationStorage->createTextNode(pendingMessageNode, "Sender", i.messageSender().uuid().toString());
 	}
 }
 

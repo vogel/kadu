@@ -78,11 +78,13 @@ bool JabberChatService::sendMessage(Chat chat, FormattedMessage &formattedMessag
 
 	HtmlDocument::escapeText(plain);
 
-	Message message(chat, Message::TypeSent, Protocol->account().accountContact());
-	message
-		.setContent(plain)
-		.setSendDate(QDateTime::currentDateTime())
-		.setReceiveDate(QDateTime::currentDateTime());
+	Message message = Message::create();
+	message.setMessageChat(chat);
+	message.setType(Message::TypeSent);
+	message.setMessageSender(Protocol->account().accountContact());
+	message.setContent(plain);
+	message.setSendDate(QDateTime::currentDateTime());
+	message.setReceiveDate(QDateTime::currentDateTime());
 
 	emit messageSent(message);
 
@@ -122,14 +124,15 @@ void JabberChatService::clientMessageReceived(const XMPP::Message &msg)
 
 	HtmlDocument::escapeText(plain);
 
-	Message message(chat, Message::TypeReceived, contact);
-	message
-		.setContent(plain)
-		.setSendDate(msg.timeStamp())
-		.setReceiveDate(QDateTime::currentDateTime());
+	Message message = Message::create();
+	message.setMessageChat(chat);
+	message.setType(Message::TypeReceived);
+	message.setMessageSender(contact);
+	message.setContent(plain);
+	message.setSendDate(msg.timeStamp());
+	message.setReceiveDate(QDateTime::currentDateTime());
 
 	emit messageReceived(message);
 
 	kdebugf2();
 }
-

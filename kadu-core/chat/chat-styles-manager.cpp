@@ -299,22 +299,27 @@ void ChatStylesManager::preparePreview(Preview *preview)
 
 	connect(preview, SIGNAL(destroyed(QObject *)), chat, SLOT(deleteLater()));
 
-	Message messageSent(chat, Message::TypeSent, chat.chatAccount().accountContact());
-	messageSent
-		.setContent(tr("Your message"))
-		.setReceiveDate(QDateTime::currentDateTime())
-		.setSendDate(QDateTime::currentDateTime());
+	Message messageSent = Message::create();
+	messageSent.setMessageChat(chat);
+	messageSent.setType(Message::TypeSent);
+	messageSent.setMessageSender(chat.chatAccount().accountContact());
+	messageSent.setContent(tr("Your message"));
+	messageSent.setReceiveDate(QDateTime::currentDateTime());
+	messageSent.setSendDate(QDateTime::currentDateTime());
 
 	MessageRenderInfo *messageRenderInfo = new MessageRenderInfo(messageSent);
 	messageRenderInfo->setSeparatorSize(CfgHeaderSeparatorHeight);
 	preview->addObjectToParse(Core::instance()->myself(), messageRenderInfo);
 
-	Message messageReceived(chat, Message::TypeReceived, example.prefferedContact());
-	messageReceived
-		.setContent(tr("Message from Your friend"))
-		.setReceiveDate(QDateTime::currentDateTime())
-		.setSendDate(QDateTime::currentDateTime());
-		messageRenderInfo = new MessageRenderInfo(messageReceived);
+	Message messageReceived = Message::create();
+	messageReceived.setMessageChat(chat);
+	messageReceived.setType(Message::TypeReceived);
+	messageReceived.setMessageSender(example.prefferedContact());
+	messageReceived.setContent(tr("Message from Your friend"));
+	messageReceived.setReceiveDate(QDateTime::currentDateTime());
+	messageReceived.setSendDate(QDateTime::currentDateTime());
+
+	messageRenderInfo = new MessageRenderInfo(messageReceived);
 	messageRenderInfo->setSeparatorSize(CfgHeaderSeparatorHeight);
 	preview->addObjectToParse(example, messageRenderInfo);
 }

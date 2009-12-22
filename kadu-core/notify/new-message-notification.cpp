@@ -46,7 +46,7 @@ void MessageNotification::unregisterEvents()
 }
 
 MessageNotification::MessageNotification(MessageType messageType, const Message &message) :
-		ChatNotification(message.chat(), messageType == NewChat ? "NewChat" : "NewMessage",
+		ChatNotification(message.messageChat(), messageType == NewChat ? "NewChat" : "NewMessage",
 			IconsManager::instance()->loadIcon("Message"))
 {
 	QString syntax;
@@ -62,7 +62,7 @@ MessageNotification::MessageNotification(MessageType messageType, const Message 
 		syntax = tr("New message from <b>%1</b>");
 	}
 
-	setText(syntax.arg(Qt::escape(message.sender().ownerBuddy().display())));
+	setText(syntax.arg(Qt::escape(message.messageSender().ownerBuddy().display())));
 	setDetails(message.content());
 }
 

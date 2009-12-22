@@ -141,7 +141,7 @@ void AdiumChatStyleEngine::appendMessage(HtmlMessagesRenderer *renderer, Message
 		includeHeader =
 			(last.type() != Message::TypeSystem) &&
 			((msg.receiveDate().toTime_t() - last.receiveDate().toTime_t() > (ChatStylesManager::instance()->cfgNoHeaderInterval() * 60)) ||
-			(msg.sender() != last.sender()));
+			(msg.messageSender() != last.messageSender()));
 	}
 	switch (msg.type())
 	{
@@ -300,22 +300,22 @@ void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNa
 	Message msg = message->message();
 
 	QString styleBaseHtml = QString(xhtmlBase).arg(styleHref)
-		.arg(replaceKeywords(msg.chat(), styleHref, headerHtml))
-		.arg(replaceKeywords(msg.chat(), styleHref, footerHtml))
+		.arg(replaceKeywords(msg.messageChat(), styleHref, headerHtml))
+		.arg(replaceKeywords(msg.messageChat(), styleHref, footerHtml))
 		.arg("Variants/" + variantName)
 		.arg(ChatStylesManager::instance()->mainStyle());
 	preview->setHtml(styleBaseHtml);
 
 	preview->page()->mainFrame()->evaluateJavaScript(jsCode);
 
-	incomingHtml = replaceKeywords(msg.chat(), styleHref, incomingHtml, message);
+	incomingHtml = replaceKeywords(msg.messageChat(), styleHref, incomingHtml, message);
 	incomingHtml.replace("\n", " ");
 	incomingHtml.prepend("<span>");
 	incomingHtml.append("</span>");
 	preview->page()->mainFrame()->evaluateJavaScript("kadu_appendNextMessage(\'"+ incomingHtml +"\')");
 
 	message = dynamic_cast<MessageRenderInfo *>(preview->getObjectsToParse().at(1));
-	outgoingHtml = replaceKeywords(msg.chat(), styleHref, outgoingHtml, message);
+	outgoingHtml = replaceKeywords(msg.messageChat(), styleHref, outgoingHtml, message);
 	outgoingHtml.replace("\n", " ");
 	outgoingHtml.prepend("<span>");
 	outgoingHtml.append("</span>");
@@ -381,9 +381,9 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, QString &styleHref, QSt
 	Message msg = message->message();
 
 	// Replace sender (contact nick)
-	result.replace(QString("%sender%"), msg.sender().ownerBuddy().display());
+	result.replace(QString("%sender%"), msg.messageSender().ownerBuddy().display());
 	// Replace %screenName% (contact ID)
-	result.replace(QString("%senderScreenName%"), msg.sender().id());
+	result.replace(QString("%senderScreenName%"), msg.messageSender().id());
 	// Replace service name (protocol name)
 	if (chat.chatAccount().protocolHandler() && chat.chatAccount().protocolHandler()->protocolFactory())
 	{
@@ -419,8 +419,8 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, QString &styleHref, QSt
 	{
 		result.replace(QString("%messageClasses%"), "message incoming");
 
-		if (!msg.sender().contactAvatar().pixmap().isNull())
-			photoPath = QString("file://") + msg.sender().contactAvatar().filePath();
+		if (!msg.messageSender().contactAvatar().pixmap().isNull())
+			photoPath = QString("file://") + msg.messageSender().contactAvatar().filePath();
 		else
 			photoPath = QString("file://") + styleHref + QString("Incoming/buddy_icon.png");
 	}

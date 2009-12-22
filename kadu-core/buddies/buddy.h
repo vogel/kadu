@@ -28,9 +28,8 @@ class Group;
 class StoragePoint;
 class XmlConfigFile;
 
-class KADUAPI Buddy : public QObject, public SharedBase<BuddyShared>
+class KADUAPI Buddy : public SharedBase<BuddyShared>
 {
-	Q_OBJECT
 	KaduSharedBaseClass(Buddy)
 
 	friend class ContactShared;
@@ -40,7 +39,7 @@ class KADUAPI Buddy : public QObject, public SharedBase<BuddyShared>
 
 public:
 	static Buddy create();
-	static Buddy loadFromStorage(StoragePoint *contactStoragePoint);
+	static Buddy loadFromStorage(StoragePoint *buddyStoragePoint);
 	static Buddy null;
 
 	static Buddy dummy();

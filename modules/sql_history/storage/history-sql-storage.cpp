@@ -184,13 +184,13 @@ void HistorySqlStorage::appendMessage(const Message &message)
 
 	QSqlRecord record = MessagesModel->record();
 
-	record.setValue("chat", message.chat().uuid().toString());
-	record.setValue("sender", message.sender().uuid().toString());
+	record.setValue("chat", message.messageChat().uuid().toString());
+	record.setValue("sender", message.messageSender().uuid().toString());
 	record.setValue("send_time", message.sendDate());
 	record.setValue("receive_time", message.receiveDate());
 	record.setValue("content", message.content());
 
-	QString outgoing = (message.sender().ownerBuddy() == Core::instance()->myself())
+	QString outgoing = (message.messageSender().ownerBuddy() == Core::instance()->myself())
 			? "1"
 			: "0";
 	record.setValue("attributes", QString("outgoing=%1").arg(outgoing));
@@ -411,12 +411,14 @@ QList<Message> HistorySqlStorage::messagesFromQuery(Chat chat, QSqlQuery query)
 		if (sender.isNull())
 			continue;
 
-		Message message(chat, type, sender);
-		message
-			.setContent(query.value(1).toString())
-			.setSendDate(query.value(2).toDateTime())
-			.setReceiveDate(query.value(3).toDateTime())
-			.setStatus(outgoing ? Message::StatusDelivered : Message::StatusReceived);
+		Message message = Message::create();
+		message.setMessageChat(chat);
+		message.setType(type);
+		message.setMessageSender(sender);
+		message.setContent(query.value(1).toString());
+		message.setSendDate(query.value(2).toDateTime());
+		message.setReceiveDate(query.value(3).toDateTime());
+		message.setStatus(outgoing ? Message::StatusDelivered : Message::StatusReceived);
 		
 		messages.append(message);
 	}
