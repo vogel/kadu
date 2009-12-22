@@ -5,6 +5,8 @@ Jeśli jest w postaci (z) to zarówno pomysł jak i wykonanie należy do z.
 +++ version 0.6.6-alpha1
 * gadu: fixed receiving conference messages
 * gui: better SelectBuddyCombobox
+* core: PendingMessages ported to new API
+* gui: contacts with pending messages have envelope icon next to protocol icon
 
 +++ version 0.6.6-alpha0
 * better build system for modules - kadu_module macro instead of dozen lines in each module (vogel)
