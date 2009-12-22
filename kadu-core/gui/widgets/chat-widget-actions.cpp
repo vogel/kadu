@@ -9,6 +9,7 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "buddies/buddy-shared.h"
 #include "buddies/ignored-helper.h"
 #include "contacts/contact.h"
 #include "configuration/configuration-file.h"
@@ -45,17 +46,17 @@ void disableEmptyTextBox(Action *action)
 
 void checkBlocking(Action *action)
 {
-	BuddySet contacts = action->buddies();
+	ContactSet contacts = action->contacts();
 
-	if (contacts.contains(Core::instance()->myself()))
+	if (contacts.toBuddySet().contains(Core::instance()->myself()))
 	{
 		action->setEnabled(false);
 		return;
 	}
 
 	bool on = false;
-	foreach (const Buddy buddy, action->buddies())
-		if (buddy.isBlocked())
+	foreach (const Contact &contact, contacts)
+		if (contact.ownerBuddy().isBlocked())
 		{
 			on = true;
 			break;
@@ -65,15 +66,15 @@ void checkBlocking(Action *action)
 
 void checkIgnoreUser(Action *action)
 {
-	BuddySet contacts = action->buddies();
+	BuddySet buddies = action->contacts().toBuddySet();
 
-	if (contacts.contains(Core::instance()->myself()))
+	if (buddies.contains(Core::instance()->myself()))
 	{
 		action->setEnabled(false);
 		return;
 	}
 
-	action->setChecked(IgnoredHelper::isIgnored(action->buddies()));
+	action->setChecked(IgnoredHelper::isIgnored(buddies));
 }
 
 ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
@@ -321,7 +322,7 @@ void ChatWidgetActions::whoisActionActivated(QAction *sender, bool toggled)
 		return;
 	}
 
-	Buddy buddy = window->buddy();
+	Buddy buddy = window->contact().ownerBuddy();
 	if (buddy.isNull())
 		return;
 
@@ -340,29 +341,18 @@ void ChatWidgetActions::ignoreUserActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-	BuddySet contacts = window->buddies();
+	ContactSet contacts = window->contacts();
+	BuddySet buddies = contacts.toBuddySet();
 	if (contacts.count() > 0)
 	{
-		bool ContainsBad = false;
-		foreach (Buddy buddy, contacts)
+		if (IgnoredHelper::isIgnored(buddies))
+			IgnoredHelper::setIgnored(buddies, false);
+		else
 		{
-			Contact contact = buddy.prefferedContact();
-			QString uid = contact.id();
-			if (!contact.contactAccount().protocolHandler() || !contact.contactAccount().protocolHandler()->validateUserID(uid))
+			IgnoredHelper::setIgnored(buddies);
+			Chat chat = ChatManager::instance()->findChat(contacts);
+			if (chat)
 			{
-				ContainsBad = true;
-				break;
-			}
-		}
-
-		Chat chat = account.protocolHandler()->findChat(contacts);
-		if (chat && !ContainsBad)
-		{
-			if (IgnoredHelper::isIgnored(contacts))
-				IgnoredHelper::setIgnored(contacts, false);
-			else
-			{
-				IgnoredHelper::setIgnored(contacts);
 				ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat);
 				if (chatWidget)
 				{
@@ -371,15 +361,13 @@ void ChatWidgetActions::ignoreUserActionActivated(QAction *sender, bool toggled)
 						container->closeChatWidget(chatWidget);
 				}
 			}
-// TODO: 0.6.6
-// 			kadu->userbox()->refresh();
-
-			foreach (Action *action, IgnoreUser->actions())
-			{
-				if (action->buddies() == contacts)
-					action->setChecked(IgnoredHelper::isIgnored(contacts));
-			}
-
+		}
+		
+		bool set = IgnoredHelper::isIgnored(buddies);
+		foreach (Action *action, IgnoreUser->actions())
+		{
+			if (action->contacts().toBuddySet() == buddies)
+				action->setChecked(set);
 		}
 	}
 	kdebugf2();
@@ -394,58 +382,50 @@ void ChatWidgetActions::blockUserActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-	BuddySet buddies = window->buddies();
-	if (buddies.count() > 0)
+	ContactSet contacts = window->contacts();
+	BuddySet buddies = contacts.toBuddySet();
+	if (buddies.isEmpty());
+		return;
+
+	bool on = true;
+	bool blocked_anonymous = false; // true, if we blocked at least one anonymous user
+
+	foreach (Buddy user, buddies)
+		if (!user.isBlocked())
+		{
+			on = false;
+			break;
+		}
+
+	foreach (Buddy buddy, buddies)
+		if (buddy.isAnonymous());
+			blocked_anonymous = true;
+
+	Chat chat = ChatManager::instance()->findChat(contacts);
+	if (chat && !on) // if we were blocking, we also close the chat (and show info if blocked anonymous)
 	{
-		bool on = true;
-		bool blocked_anonymous = false; // true, if we blocked at least one anonymous user
+// 		TODO: 0.6.6, is that true?
+// 		if (blocked_anonymous)
+// 			MessageDialog::msg(tr("Anonymous users will be unblocked after restarting Kadu"), false, "Information", Core::instance()->kaduWindow());
 
-		BuddySet copy = buddies;
-
-		foreach(Buddy user, copy)
-			if (user.prefferedContact().isNull() || !user.isBlocked())
-			{
-				on = false;
-				break;
-			}
-
-		foreach(Buddy user, copy)
+		ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat);
+		if (chatWidget)
 		{
-			Contact contact = user.prefferedContact();
-			QString uid = contact.id();
-			if (contact.contactAccount().protocolHandler() && contact.contactAccount().protocolHandler()->validateUserID(uid) && user.isBlocked() != !on)
-			{
-//TODO: 0.6.6
-/// 				user.setProtocolData("Gadu", "Blocking", !on);
-				if ((!on) && (!blocked_anonymous) && user.isAnonymous())
-					blocked_anonymous = true;
-			}
+			ChatContainer *container = dynamic_cast<ChatContainer *>(chatWidget->window());
+			if (container)
+				container->closeChatWidget(chatWidget);
 		}
-
-		Chat chat = account.protocolHandler()->findChat(buddies);
-		if (chat && !on) // if we were blocking, we also close the chat (and show info if blocked anonymous)
-		{
-			if (blocked_anonymous)
-				MessageDialog::msg(tr("Anonymous users will be unblocked after restarting Kadu"), false, "Information", Core::instance()->kaduWindow());
-
-			ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat);
-			if (chatWidget)
-			{
-				ChatContainer *container = dynamic_cast<ChatContainer *>(chatWidget->window());
-				if (container)
-					container->closeChatWidget(chatWidget);
-			}
-		}
+	}
 
 // TODO: 0.6.6
 // 		userlist->writeToConfig();
 
-		foreach (Action *action, BlockUser->actions())
-		{
-			if (action->buddies() == buddies)
-				action->setChecked(!on);
-		}
+	foreach (Action *action, BlockUser->actions())
+	{
+		if (action->contacts().toBuddySet() == buddies)
+			action->setChecked(!on);
 	}
+
 	kdebugf2();
 }
 
@@ -456,13 +436,9 @@ void ChatWidgetActions::openChatActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-	BuddySet contacts = window->buddies();
-	if (contacts.count() > 0)
-	{
-		Chat chat = (*contacts.begin()).prefferedAccount().protocolHandler()->findChat(contacts);
-		if (chat)
-			ChatWidgetManager::instance()->openChatWidget(chat, true);
-	}
+	Chat chat = ChatManager::instance()->findChat(window->contacts());
+	if (chat)
+		ChatWidgetManager::instance()->openChatWidget(chat, true);
 
 	kdebugf2();
 }

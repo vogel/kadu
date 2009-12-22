@@ -57,17 +57,17 @@ void disableNonFileTransferContacts(Action *action)
 
 	action->setEnabled(false);
 
-	const BuddySet &contacts = action->buddies();
+	const ContactSet &contacts = action->contacts();
 
 	if (!contacts.count())
 		return;
 
-	foreach (const Buddy &buddy, contacts)
+	foreach (const Contact &contact, contacts)
 	{
-		if (Core::instance()->myself() == buddy)
+		if (Core::instance()->myself() == contact.ownerBuddy())
 			return;
 
-		Account account = buddy.prefferedAccount();
+		Account account = contact.contactAccount();
 		if (account.isNull() || !account.protocolHandler()->fileTransferService())
 			return;
 	}
@@ -138,7 +138,7 @@ void FileTransferModule::sendFileActionActivated(QAction *sender, bool toggled)
 	if (!kaduMainWindow)
 		return;
 
-	BuddySet contacts = kaduMainWindow->buddies();
+	ContactSet contacts = kaduMainWindow->contacts();
 	if (contacts.count())
 		selectFilesAndSend(contacts);
 
@@ -179,7 +179,7 @@ QStringList FileTransferModule::selectFilesToSend()
 			config_file.readEntry("Network", "LastUploadDirectory"));
 }
 
-void FileTransferModule::selectFilesAndSend(BuddySet contacts)
+void FileTransferModule::selectFilesAndSend(ContactSet contacts)
 {
 	QStringList files = selectFilesToSend();
 	if (!files.count())
@@ -188,10 +188,9 @@ void FileTransferModule::selectFilesAndSend(BuddySet contacts)
 		return;
 	}
 
-	foreach (const Buddy &buddy, contacts)
+	foreach (const Contact &contact, contacts)
 	{
-		Account account = buddy.prefferedAccount();
-		Contact contact = buddy.prefferedContact();
+		Account account = contact.contactAccount();
 		FileTransferService *service = account.protocolHandler()->fileTransferService();
 		if (!service)
 			continue;

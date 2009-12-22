@@ -13,8 +13,10 @@
 #include "accounts/account-manager.h"
 
 #include "buddies/buddy.h"
-#include "buddies/buddy-manager.h"
+#include "buddies/buddy-shared.h"
+
 #include "contacts/contact.h"
+#include "contacts/contact-manager.h"
 
 #include "debug.h"
 
@@ -34,18 +36,16 @@ BuddyList GaduOpenChatWithRunner::matchingContacts(const QString &query)
 	if (!validateUserID(query))
 		return matchedContacts;
 
-	Buddy buddy;
-
-	Contact contact;
-	contact.setContactAccount(ParentAccount);
-	contact.setOwnerBuddy(buddy);
-	contact.setId(query);
-	contact.setDetails(new GaduContactDetails(contact));
-
-	buddy.addContact(contact);
-	buddy.setDisplay(ParentAccount.name() + ": " + query);
-	
+	Contact contact = ContactManager::instance()->byId(ParentAccount, query, true);
+	Buddy buddy = contact.ownerBuddy();
+	if (buddy.isNull())
+	{
+		Buddy buddy = Buddy::create();
+		buddy.setDisplay(QString("%1: %2").arg(ParentAccount.name()).arg(query));
+		contact.setOwnerBuddy(buddy);
+	}
 	matchedContacts.append(buddy);
+
 	return matchedContacts;
 }
 

@@ -88,7 +88,7 @@ class KADUAPI SearchWindow : public MainWindow
 
 	bool isPersonalDataEmpty() const;
 
-	BuddySet selected();
+	ContactSet selected();
 
 	QTreeWidgetItem * selectedItem();
 
@@ -120,9 +120,8 @@ public:
 
 	virtual bool supportsActionType(ActionDescription::ActionType type) { return type & ActionDescription::TypeSearch; }
 	virtual BuddiesListView* contactsListView() { return 0; }
-	virtual BuddySet buddies() { return BuddySet(); }
+	virtual ContactSet contacts() { return ContactSet(); }
 	virtual Chat chat() { return Chat::null; }
-
 
 	void nextSearch();
 	void stopSearch();

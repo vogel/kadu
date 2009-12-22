@@ -18,6 +18,7 @@
 #include "accounts/account-manager.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-set.h"
+#include "buddies/buddy-shared.h"
 #include "buddies/model/buddies-model.h"
 #include "buddies/filter/anonymous-without-messages-buddy-filter.h"
 #include "buddies/filter/group-buddy-filter.h"
@@ -84,7 +85,7 @@ void KaduWindow::createGui()
 	// groupbar
 	GroupBar = new GroupTabBar(this);
 
-	ContactsWidget = new BuddiesListWidget(this);
+	ContactsWidget = new BuddiesListWidget(BuddiesListWidget::FilterAtTop, this);
 	ContactsWidget->view()->setModel(new BuddiesModel(BuddyManager::instance(), this));
 	ContactsWidget->view()->addFilter(GroupBar->filter());
 	AnonymousWithoutMessagesBuddyFilter *anonymousFilter = new AnonymousWithoutMessagesBuddyFilter(this);
@@ -275,7 +276,7 @@ void KaduWindow::storeConfiguration()
 
 void KaduWindow::updateInformationPanel()
 {
-	InfoPanel->displayBuddy(ContactsWidget->view()->currentBuddy());
+	InfoPanel->displayBuddy(ContactsWidget->view()->currentContact().ownerBuddy());
 }
 
 void KaduWindow::closeEvent(QCloseEvent *e)
@@ -342,9 +343,9 @@ BuddiesListView * KaduWindow::contactsListView()
 	return ContactsWidget->view();
 }
 
-BuddySet KaduWindow::buddies()
+ContactSet KaduWindow::contacts()
 {
-	return ContactsWidget->view()->selectedBuddies();
+	return ContactsWidget->view()->selectedContacts();
 }
 
 Chat  KaduWindow::chat()

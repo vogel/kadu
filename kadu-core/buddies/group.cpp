@@ -15,6 +15,8 @@
 
 #include "group.h"
 
+KaduSharedBaseClassImpl(Group)
+
 Group Group::null;
 
 Group Group::create()

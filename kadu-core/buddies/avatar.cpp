@@ -13,6 +13,8 @@
 
 #include "avatar.h"
 
+KaduSharedBaseClassImpl(Avatar)
+
 Avatar Avatar::null;
 
 Avatar Avatar::create()
@@ -42,12 +44,6 @@ Avatar::Avatar(const Avatar &copy) :
 
 Avatar::~Avatar()
 {
-}
-
-Avatar & Avatar::operator = (const Avatar &copy)
-{
-	SharedBase<AvatarShared>::operator=(copy);
-	return *this;
 }
 
 QString Avatar::filePath()

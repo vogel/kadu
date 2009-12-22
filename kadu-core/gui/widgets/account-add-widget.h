@@ -1,4 +1,4 @@
- /***************************************************************************
+/***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -7,28 +7,26 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef NON_IN_CONTACT_FILTER
-#define NON_IN_CONTACT_FILTER
+#ifndef ACCOUNT_ADD_WIDGET_H
+#define ACCOUNT_ADD_WIDGET_H
 
-#include "buddies/buddy.h"
+#include <QtGui/QWidget>
 
-#include "accounts/filter/abstract-account-filter.h"
+#include "accounts/account.h"
 
-class NonInContactFilter : public AbstractAccountFilter
+#include "exports.h"
+
+class KADUAPI AccountAddWidget : public QWidget
 {
 	Q_OBJECT
 
-	Buddy MyContact;
-
-protected:
-	virtual bool acceptAccount(Account account);
-
 public:
-	explicit NonInContactFilter(QObject *parent = 0);
-	virtual ~NonInContactFilter();
+	explicit AccountAddWidget(QWidget *parent = 0) : QWidget(parent) {}
+	virtual ~AccountAddWidget() {}
 
-	void setContact(Buddy buddy);
+signals:
+	void accountCreated(Account account);
 
 };
 
-#endif // NON_IN_CONTACT_FILTER
+#endif // ACCOUNT_ADD_WIDGET_H

@@ -18,6 +18,7 @@
 #include "configuration/configuration-file.h"
 #include "buddies/buddy-list.h"
 #include "buddies/buddy-manager.h"
+#include "buddies/buddy-shared.h"
 #include "contacts/contact.h"
 #include "contact-notify-data.h"
 #include "gui/widgets/chat-widget.h"
@@ -149,7 +150,9 @@ void NotifyConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurat
 	foreach(Buddy buddy, BuddyManager::instance()->items())
 		if (!buddy.isAnonymous())
 		{
-			ContactNotifyData *cnd = buddy.moduleData<ContactNotifyData>("notify");
+			ContactNotifyData *cnd = 0;
+			if (buddy.data())
+				cnd = buddy.data()->moduleData<ContactNotifyData>("notify");
 
 			if (!cnd || !cnd->notify())
 				allUsers->addItem(buddy.display());
@@ -244,7 +247,9 @@ void NotifyConfigurationUiHandler::configurationWindowApplied()
 		if (buddy.isNull() || buddy.isAnonymous())
 			continue;
 
-		ContactNotifyData *cnd = buddy.moduleData<ContactNotifyData>("notify");
+		ContactNotifyData *cnd = 0;
+		if (buddy.data())
+			cnd = buddy.data()->moduleData<ContactNotifyData>("notify");
 		if (!cnd)
 			continue;
 
@@ -259,7 +264,9 @@ void NotifyConfigurationUiHandler::configurationWindowApplied()
 		if (buddy.isNull() || buddy.isAnonymous())
 			continue;
 
-		ContactNotifyData *cnd = buddy.moduleData<ContactNotifyData>("notify");
+		ContactNotifyData *cnd = 0;
+		if (buddy.data())
+			buddy.data()->moduleData<ContactNotifyData>("notify");
 		if (!cnd)
 			continue;
 

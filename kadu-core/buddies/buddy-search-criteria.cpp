@@ -12,7 +12,7 @@
 #include "buddy-search-criteria.h"
 
 BuddySearchCriteria::BuddySearchCriteria() :
-	SearchBuddy(Buddy()), BirthYearTo(), Active(false), IgnoreResults(false)
+		SearchBuddy(Buddy()), BirthYearTo(), Active(false), IgnoreResults(false)
 {
 }
 
@@ -31,7 +31,6 @@ void BuddySearchCriteria::reqUin(Account account, const QString &uin)
 		contact.setContactAccount(account);
 		contact.setOwnerBuddy(SearchBuddy);
 		contact.data()->setState(StorableObject::StateNew);
-		SearchBuddy.addContact(contact);
 	}
 	contact.setId(uin);
 }
@@ -64,7 +63,7 @@ void BuddySearchCriteria::reqBirthYear(const QString &birthYearFrom, const QStri
 
 void BuddySearchCriteria::reqGender(bool female)
 {
-	SearchBuddy.setGender(female ? BuddyShared::GenderFemale : BuddyShared::GenderMale);
+	SearchBuddy.setGender(female ? GenderFemale : GenderMale);
 }
 
 void BuddySearchCriteria::reqActive()

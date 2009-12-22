@@ -10,6 +10,7 @@
 #include <QtGui/QGridLayout>
 #include <QtGui/QLabel>
 
+#include "buddies/buddy-shared.h"
 #include "contacts/contact.h"
 #include "notify/contact-notify-data.h"
 
@@ -37,18 +38,20 @@ void BuddyOptionsConfigurationWidget::createGui()
 
 	int row = 0;
 
-	layout->setRowStretch(row++, 1);       
+	layout->setRowStretch(row++, 1);   
+	
+	OfflineToCheckBox = new QCheckBox(tr("Allow contact to see when I'm available"), this);
+	OfflineToCheckBox->setChecked(!MyBuddy.isOfflineTo());
+	layout->addWidget(OfflineToCheckBox, row++, 2, 1, 2);   
 
-	BlockCheckBox = new QCheckBox(tr("Block contact"), this);
+	BlockCheckBox = new QCheckBox(tr("Ignore contact"), this);
 	BlockCheckBox->setChecked(MyBuddy.isBlocked());
-	layout->addWidget(BlockCheckBox, row++, 2, 1, 2);      
-
-	OfflineToCheckBox = new QCheckBox(tr("Always appear as offline to contact"), this);
-	OfflineToCheckBox->setChecked(MyBuddy.isOfflineTo());
-	layout->addWidget(OfflineToCheckBox, row++, 2, 1, 2);        
+	layout->addWidget(BlockCheckBox, row++, 2, 1, 2);           
 
 	NotifyCheckBox = new QCheckBox(tr("Notify when contact's status changes"), this);
-	ContactNotifyData *cnd = MyBuddy.moduleData<ContactNotifyData>("notify");
+	ContactNotifyData *cnd = 0;
+	if (MyBuddy.data())
+		cnd = MyBuddy.data()->moduleData<ContactNotifyData>("notify");
 	if (cnd)
 		NotifyCheckBox->setChecked(cnd->notify());
 
@@ -59,10 +62,12 @@ void BuddyOptionsConfigurationWidget::createGui()
 
 void BuddyOptionsConfigurationWidget::saveConfiguration()
 {
-
 	MyBuddy.setBlocked(BlockCheckBox->isChecked());
-	MyBuddy.setOfflineTo(OfflineToCheckBox->isChecked());
-	ContactNotifyData *cnd = MyBuddy.moduleData<ContactNotifyData>("notify");
+	MyBuddy.setOfflineTo(!OfflineToCheckBox->isChecked());
+
+	ContactNotifyData *cnd = 0;
+	if (MyBuddy.data())
+		cnd = MyBuddy.data()->moduleData<ContactNotifyData>("notify");
 	if (cnd)
 	{
 		cnd->setNotify(NotifyCheckBox->isChecked());

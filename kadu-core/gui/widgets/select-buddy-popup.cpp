@@ -11,15 +11,18 @@
 #include "buddies/model/buddies-model.h"
 #include "gui/widgets/buddies-line-edit.h"
 #include "gui/widgets/buddies-list-view.h"
+#include "model/roles.h"
 
 #include "select-buddy-popup.h"
 
 SelectBuddyPopup::SelectBuddyPopup(QWidget *parent) :
-		BuddiesListWidget(0, parent)
+		BuddiesListWidget(FilterAtBottom, 0, parent)
 {
 	setWindowFlags(Qt::Popup);
 
 	BuddiesModel *model = new BuddiesModel(BuddyManager::instance(), this);
+
+	connect(view(), SIGNAL(clicked(QModelIndex)), this, SLOT(itemClicked(QModelIndex)));
 
 	view()->setItemsExpandable(false);
 	view()->setModel(model);
@@ -29,9 +32,25 @@ SelectBuddyPopup::~SelectBuddyPopup()
 {
 }
 
-void SelectBuddyPopup::show(const QString &text)
+void SelectBuddyPopup::show(Buddy buddy)
 {
-	nameFilterEdit()->setText(text);
 	nameFilterEdit()->setFocus();
+
+	view()->selectBuddy(buddy);
 	BuddiesListWidget::show();
+}
+
+void SelectBuddyPopup::itemClicked(const QModelIndex &index)
+{
+	close();
+
+	QVariant buddyVariant = index.data(BuddyRole);
+	if (!buddyVariant.canConvert<Buddy>())
+		return;
+
+	Buddy buddy = buddyVariant.value<Buddy>();
+	if (!buddy)
+		return;
+
+	emit buddySelected(buddy);
 }

@@ -65,15 +65,15 @@ extern "C" KADU_EXPORT void tabs_close()
 void disableNewTab(Action *action)
 {
 	action->setEnabled(false);
-	BuddySet buddies = action->buddies();
+	ContactSet contacts = action->contacts();
 
-	if (!buddies.count())
+	if (!contacts.count())
 		return;
 
 	bool config_defaultTabs = config_file.readBoolEntry("Chat", "DefaultTabs");
 	action->setEnabled(true);
 
-	if (buddies.count() != 1 && !config_defaultTabs)
+	if (contacts.count() != 1 && !config_defaultTabs)
 		action->setEnabled(false);
 
 	if (config_defaultTabs)
@@ -82,12 +82,12 @@ void disableNewTab(Action *action)
 		action->setText(qApp->translate("TabsManager", "Open in new tab"));
 
 	// TODO 0.6.6 dla siebie samego deaktywujemy opcje w menu, a konfernecje?
-	foreach (const Buddy &buddy, buddies)
+	foreach (const Contact &contact, contacts)
 	{
-		if (Core::instance()->myself() == buddy)
+		if (Core::instance()->myself() == contact.ownerBuddy())
 			return;
 
-		Account account = buddy.prefferedAccount();
+		Account account = contact.contactAccount();
 		if (account.isNull() || !account.protocolHandler()->chatService())
 			return;
 	}
@@ -354,18 +354,18 @@ void TabsManager::onNewTab(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-	BuddySet contacts = window->buddies();
+	ContactSet contacts = window->contacts();
 	int contactsCount = contacts.count();
 
 	if (0 == contactsCount)
 		return;
 
-	// sprawdzic czy to ma sens?
-	Account account = contacts.prefferedAccount();
+	// TODO 0.6.6: check if every contact has the same account
+	Account account = (*contacts.begin()).contactAccount();
 	if (account.isNull() || !account.protocolHandler() || !account.protocolHandler()->chatService())
 		return;
 
-	Chat chat = account.protocolHandler()->findChat(contacts);
+	Chat chat = ChatManager::instance()->findChat(contacts);
 
 	// exists - bring to front
 	if (chat)
@@ -408,13 +408,13 @@ void TabsManager::insertTab(ChatWidget* chat)
 	else
 		chat->kaduRestoreGeometry();
 
-	BuddySet contacts = chat->chat().contacts().toBuddySet();
+	ContactSet contacts = chat->chat().contacts();
 
 	detachedchats.removeOne(chat);
 
 	foreach (Action *action, attachToTabsActionDescription->actions())
 	{
-		if (action->buddies() == contacts)
+		if (action->contacts() == contacts)
 			action->setChecked(true);
 	}
 
@@ -526,7 +526,7 @@ void TabsManager::onTabAttach(QAction *sender, bool toggled)
 		detachChat(chatWidget);
 	else
 	{
-		if (chatEditBox->buddies().count()!=1 && !config_conferencesInTabs)
+		if (chatEditBox->contacts().count()!=1 && !config_conferencesInTabs)
 			return;
 		newchats.clear();
 		insertTab(chatWidget);
@@ -588,7 +588,7 @@ void TabsManager::attachToTabsActionCreated(Action *action)
 	if (!chatWidget)
 		return;
 
-	BuddySet contacts = action->buddies();
+	ContactSet contacts = action->contacts();
 
 	if (contacts.count() != 1 && !config_conferencesInTabs && tabdialog->indexOf(chatWidget) == -1)
 		action->setEnabled(false);

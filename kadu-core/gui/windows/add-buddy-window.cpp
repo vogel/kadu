@@ -20,13 +20,11 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "accounts/filter/id-regular-expression-filter.h"
-#include "accounts/filter/non-in-contact-filter.h"
 #include "accounts/model/accounts-model.h"
 #include "accounts/model/accounts-proxy-model.h"
 #include "buddies/buddy.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
-#include "buddies/filter/non-account-buddy-filter.h"
 #include "buddies/model/groups-model.h"
 #include "contacts/contact.h"
 #include "contacts/contact-manager.h"
@@ -62,6 +60,7 @@ void AddBuddyWindow::createGui()
 	QGridLayout *layout = new QGridLayout(this);
 
 	UserNameLabel = new QLabel(tr("Username:"), this);
+	UserNameLabel->setAlignment(Qt::AlignRight);
 	layout->addWidget(UserNameLabel, 0, 0, Qt::AlignRight);
 	UserNameEdit = new QLineEdit(this);
 	connect(UserNameEdit, SIGNAL(textChanged(const QString &)), this, SLOT(setAddContactEnabled()));
@@ -76,15 +75,12 @@ void AddBuddyWindow::createGui()
 	connect(AccountCombo, SIGNAL(activated(int)), this, SLOT(setUsernameLabel()));
 	connect(AccountCombo, SIGNAL(activated(int)), this, SLOT(setAddContactEnabled()));
 	connect(AccountCombo, SIGNAL(activated(int)), this, SLOT(setValidateRegularExpression()));
-	connect(AccountCombo, SIGNAL(activated(int)), this, SLOT(setMergeContactFilter()));
 
 	AccountComboModel = new AccountsModel(AccountCombo);
 	AccountComboProxyModel = new AccountsProxyModel(AccountCombo);
 	AccountComboProxyModel->setSourceModel(AccountComboModel);
 	AccountComboIdFilter = new IdRegularExpressionFilter(AccountCombo);
-	AccountComboNotInContactFilter = new NonInContactFilter(AccountCombo);
 	AccountComboProxyModel->addFilter(AccountComboIdFilter);
-	AccountComboProxyModel->addFilter(AccountComboNotInContactFilter);
 
 	ActionsProxyModel::ModelActionList accountsModelBeforeActions;
 	accountsModelBeforeActions.append(qMakePair<QString, QString>(tr(" - Select account - "), ""));
@@ -98,6 +94,7 @@ void AddBuddyWindow::createGui()
 
 	layout->addWidget(new QLabel(tr("Add in group:"), this), 1, 0, Qt::AlignRight);
 	GroupCombo = new QComboBox(this);
+	GroupCombo->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 	connect(GroupCombo, SIGNAL(activated(int)), this, SLOT(groupChanged(int)));
 	GroupsModel *groupComboModel = new GroupsModel(GroupCombo);
 
@@ -122,28 +119,33 @@ void AddBuddyWindow::createGui()
 	layout->addWidget(new QLabel(tr("Visible name:"), this), 2, 0, Qt::AlignRight);
 	DisplayNameEdit = new QLineEdit(this);
 	connect(DisplayNameEdit, SIGNAL(textChanged(const QString &)), this, SLOT(setAddContactEnabled()));
-	layout->addWidget(DisplayNameEdit, 2, 1, 1, 3);
+	layout->addWidget(DisplayNameEdit, 2, 1, 1, 1);
 
 	QLabel *hintLabel = new QLabel(tr("Enter a name for this contact"));
 	QFont hintLabelFont = hintLabel->font();
 	hintLabelFont.setItalic(true);
-	hintLabelFont.setPointSize(hintLabelFont.pointSize() - 1);
+	hintLabelFont.setPointSize(hintLabelFont.pointSize() - 2);
 	hintLabel->setFont(hintLabelFont);
 	layout->addWidget(hintLabel, 3, 1, 1, 3);
 
 	MergeContact = new QCheckBox(tr("Merge with an existing contact"), this);
 	layout->addWidget(MergeContact, 4, 1, 1, 3);
-	SelectContact = new SelectBuddyCombobox(this);
-	SelectContactFilter = new NonAccountBuddyFilter(SelectContact);
-	SelectContact->addFilter(SelectContactFilter);
+
+	QWidget *selectContactWidget = new QWidget(this);
+	QHBoxLayout *selectContactLayout = new QHBoxLayout(selectContactWidget);
+	selectContactLayout->addSpacing(20);
+	SelectContact = new SelectBuddyCombobox(selectContactWidget);
 	SelectContact->setEnabled(false);
-	layout->addWidget(SelectContact, 5, 1, 1, 3);
+	selectContactLayout->addWidget(SelectContact);
+	layout->addWidget(selectContactWidget, 5, 1, 1, 3);
+
 	connect(MergeContact, SIGNAL(toggled(bool)), SelectContact, SLOT(setEnabled(bool)));
 	connect(MergeContact, SIGNAL(toggled(bool)), DisplayNameEdit, SLOT(setDisabled(bool)));
 	connect(MergeContact, SIGNAL(toggled(bool)), this, SLOT(setAddContactEnabled()));
 	connect(SelectContact, SIGNAL(buddyChanged(Buddy)), this, SLOT(setAddContactEnabled()));
 	connect(SelectContact, SIGNAL(buddyChanged(Buddy)), this, SLOT(setAccountFilter()));
 
+	// TODO 0.6.6: it is not used anywhere
 	AllowToSeeMeCheck = new QCheckBox(tr("Allow contact to see me when I'm available"), this);
 	AllowToSeeMeCheck->setChecked(true);
 	layout->addWidget(AllowToSeeMeCheck, 7, 1, 1, 3);
@@ -151,9 +153,15 @@ void AddBuddyWindow::createGui()
 	layout->setRowMinimumHeight(6, 20);
 	layout->setRowMinimumHeight(8, 20);
 	layout->setRowStretch(8, 100);
+	
+	ErrorLabel = new QLabel();
+	QFont labelFont = ErrorLabel->font();
+	labelFont.setBold(true);
+	ErrorLabel->setFont(labelFont);
+	layout->addWidget(ErrorLabel, 9, 1, 1, 4);
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(this);
-	layout->addWidget(buttons, 9, 0, 1, 4);
+	layout->addWidget(buttons, 10, 0, 1, 4);
 
 	AddContactButton = new QPushButton(IconsManager::instance()->loadIcon("OkWindowButton"), tr("Add contact"), this);
 	AddContactButton->setDefault(true);
@@ -165,10 +173,17 @@ void AddBuddyWindow::createGui()
 	buttons->addButton(AddContactButton, QDialogButtonBox::AcceptRole);
 	buttons->addButton(cancel, QDialogButtonBox::DestructiveRole);
 
+	layout->setColumnMinimumWidth(0, 150);
+	layout->setColumnMinimumWidth(1, 200);
 // 	TODO: NOW, does not work
 // 	setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 // 	setMaximumHeight(layout->minimumSize().height());
 // 	layout->setSizeConstraint(QLayout::SetMinAndMaxSize);
+}
+
+void AddBuddyWindow::displayErrorMessage(const QString &message)
+{
+	ErrorLabel->setText(message);
 }
 
 Account AddBuddyWindow::selectedAccount()
@@ -203,35 +218,56 @@ void AddBuddyWindow::setUsernameLabel()
 void AddBuddyWindow::setAddContactEnabled()
 {
 	Account account = selectedAccount();
-	if (account.isNull() || !account.protocolHandler())
+	if (account.isNull() || !account.protocolHandler() || !account.protocolHandler()->protocolFactory())
 	{
 		AddContactButton->setEnabled(false);
+		displayErrorMessage(tr("Account is not selected"));
 		return;
 	}
 
 	if (!account.protocolHandler()->protocolFactory()->idRegularExpression().exactMatch(UserNameEdit->text()))
 	{
 		AddContactButton->setEnabled(false);
+		displayErrorMessage(tr("Entered username is invalid"));
 		return;
 	}
 
-	if (DisplayNameEdit->text().isEmpty())
+	Contact contact = ContactManager::instance()->byId(account, UserNameEdit->text(), false);
+	if (contact && contact.ownerBuddy() && !contact.ownerBuddy().isAnonymous())
 	{
 		AddContactButton->setEnabled(false);
+		displayErrorMessage(tr("This contact is already available as <i>%1</i>").arg(contact.ownerBuddy().display()));
 		return;
 	}
 
-	if (!MergeContact->isChecked())
+	if (MergeContact->isChecked())
 	{
-		AddContactButton->setEnabled(BuddyManager::instance()->byDisplay(DisplayNameEdit->text()).isNull());
-		return;
+		if (!SelectContact->buddy())
+		{
+			AddContactButton->setEnabled(false);
+			displayErrorMessage(tr("Select contact to merge with"));
+			return;
+		}
 	}
-
-	Buddy mergeWith = SelectContact->buddy();
-	if (mergeWith.isNull())
-		AddContactButton->setEnabled(false);
 	else
-		AddContactButton->setEnabled(mergeWith.contacts(account).isEmpty());
+	{
+		if (DisplayNameEdit->text().isEmpty())
+		{
+			AddContactButton->setEnabled(false);
+			displayErrorMessage(tr("Visible name can not be empty"));
+			return;
+		}
+
+		if (BuddyManager::instance()->byDisplay(DisplayNameEdit->text()))
+		{
+			AddContactButton->setEnabled(false);
+			displayErrorMessage(tr("Visible name is already used for another contact"));
+			return;
+		}
+	}
+
+	AddContactButton->setEnabled(true);
+	displayErrorMessage(QString::null);
 }
 
 void AddBuddyWindow::setValidateRegularExpression()
@@ -259,16 +295,6 @@ void AddBuddyWindow::setValidateRegularExpression()
 void AddBuddyWindow::setAccountFilter()
 {
 	AccountComboIdFilter->setId(UserNameEdit->text());
-
-	if (MergeContact->isChecked())
-		AccountComboNotInContactFilter->setContact(SelectContact->buddy());
-	else
-		AccountComboNotInContactFilter->setContact(Buddy::null);
-}
-
-void AddBuddyWindow::setMergeContactFilter()
-{
-	SelectContactFilter->setAccount(selectedAccount());
 }
 
 void AddBuddyWindow::groupChanged(int index)
@@ -300,30 +326,27 @@ void AddBuddyWindow::accept()
 	if (account.isNull())
 		return;
 
+	Buddy buddy;
+
 	if (!MergeContact->isChecked())
 	{
 		if (MyBuddy.isNull())
-			MyBuddy = ContactManager::instance()->byId(account, UserNameEdit->text()).ownerBuddy();
+			buddy = BuddyManager::instance()->byId(account, UserNameEdit->text(), true);
+		else
+			buddy = MyBuddy;
 
-		MyBuddy.setAnonymous(false);
-		MyBuddy.setDisplay(DisplayNameEdit->text());
-
-		BuddyManager::instance()->addItem(MyBuddy);
+		buddy.setAnonymous(false);
+		buddy.setDisplay(DisplayNameEdit->text());
 	}
 	else
 	{
-		Buddy buddy = SelectContact->buddy();
+		buddy = SelectContact->buddy();
 		if (buddy.isNull())
 			return;
-
-		Contact contact = Contact::create();
-		contact.setContactAccount(account);
-		contact.setOwnerBuddy(buddy);
-		contact.setId(UserNameEdit->text());
-		contact.setDetails(account.protocolHandler()->protocolFactory()->createContactDetails(contact));
-		ContactManager::instance()->addItem(contact);
-		buddy.addContact(contact);
 	}
+
+	Contact contact = ContactManager::instance()->byId(account, UserNameEdit->text(), true);
+	contact.setOwnerBuddy(buddy);
 
 	QDialog::accept();
 }

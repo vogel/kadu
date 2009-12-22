@@ -14,6 +14,7 @@
 #include <QtCore/QSharedData>
 #include <QtCore/QUuid>
 
+#include "accounts/account.h"
 #include "buddies/avatar.h"
 #include "buddies/buddy.h"
 #include "contacts/contact-details.h"
@@ -63,6 +64,7 @@ public:
 	virtual QString storageNodeName();
 
 	virtual void store();
+	virtual bool shouldStore();
 	virtual void aboutToBeRemoved();
 
 	KaduShared_Property(Account, contactAccount, ContactAccount)

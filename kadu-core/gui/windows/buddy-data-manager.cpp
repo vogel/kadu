@@ -42,7 +42,7 @@ void BuddyDataManager::writeEntry(const QString &section, const QString &name, c
 	else if (name == "birthYear")
 		MyBuddy.setBirthYear(value.toInt());
 	else if (name == "gender")
-		MyBuddy.setGender((BuddyShared::BuddyGender)value.toInt());
+		MyBuddy.setGender((BuddyGender)value.toInt());
 }
 
 QVariant BuddyDataManager::readEntry(const QString &section, const QString &name) {

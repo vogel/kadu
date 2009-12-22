@@ -46,4 +46,7 @@ public:
 
 };
 
+// for MOC
+#include "contacts/contact.h"
+
 #endif // BUDDY_CONTACT_MODEL_H

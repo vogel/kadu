@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QtGui/QCompleter>
+#include <QtGui/QListView>
 
 #include "buddies/buddy-manager.h"
 #include "buddies/filter/buddy-name-filter.h"
@@ -16,31 +16,29 @@
 #include "gui/widgets/buddies-line-edit.h"
 #include "gui/widgets/buddies-list-view.h"
 #include "gui/widgets/select-buddy-popup.h"
+#include "model/actions-proxy-model.h"
+#include "model/roles.h"
 
 #include "select-buddy-combobox.h"
 
 SelectBuddyCombobox::SelectBuddyCombobox(QWidget *parent) :
-		QComboBox(parent), MyBuddy(Buddy::null)
+		QComboBox(parent)
 {
-	setEditable(true);
-
-	connect(this, SIGNAL(editTextChanged(const QString &)),
-			this, SLOT(buddyTextChanged(const QString &)));
-
-	BuddiesModel *model = new BuddiesModel(BuddyManager::instance(), this);
-	ProxyModel = new BuddiesModelProxy(this);
-	ProxyModel->setSourceModel(model);
-
-	QCompleter *completer = new QCompleter(this);
-	completer->setPopup(new BuddiesListView(0, this));
-	completer->setModel(ProxyModel);
-	completer->setCaseSensitivity(Qt::CaseInsensitive);
-	completer->setCompletionRole(Qt::DisplayRole);
-	completer->setCompletionMode(QCompleter::PopupCompletion);
-
-	setCompleter(completer);
+	connect(this, SIGNAL(activated(int)), this, SLOT(activatedSlot()));
 
 	Popup = new SelectBuddyPopup();
+	connect(Popup, SIGNAL(buddySelected(Buddy)), this, SLOT(buddySelected(Buddy)));
+
+	Model = new BuddiesModel(BuddyManager::instance(), this);
+	ProxyModel = new BuddiesModelProxy(this);
+	ProxyModel->setSourceModel(Model);
+
+	ActionsProxyModel::ModelActionList beforeActions;
+	beforeActions << ActionsProxyModel::ModelAction(tr(" - Select contact - "), "");
+	ActionsModel = new ActionsProxyModel(beforeActions, ActionsProxyModel::ModelActionList(), this);
+	ActionsModel->setSourceModel(ProxyModel);
+
+	setModel(ActionsModel);
 }
 
 SelectBuddyCombobox::~SelectBuddyCombobox()
@@ -48,7 +46,6 @@ SelectBuddyCombobox::~SelectBuddyCombobox()
 	delete Popup;
 	Popup = 0;
 }
-
 
 void SelectBuddyCombobox::addFilter(AbstractBuddyFilter *filter)
 {
@@ -62,26 +59,38 @@ void SelectBuddyCombobox::removeFilter(AbstractBuddyFilter *filter)
 	Popup->view()->removeFilter(filter);
 }
 
-void SelectBuddyCombobox::buddyTextChanged(const QString &contactText)
-{
-	Buddy named = BuddyManager::instance()->byDisplay(contactText);
-	if (named != MyBuddy)
-	{
-		MyBuddy = named;
-		emit buddyChanged(MyBuddy);
-	}
-}
-
 void SelectBuddyCombobox::showPopup()
 {
 	Popup->setGeometry(QRect(
-			mapToGlobal(QPoint(0, 0)),
+			mapToGlobal(rect().bottomLeft()),
 			QSize(geometry().width(), Popup->geometry().height())));
-	Popup->show(lineEdit()->text());
+	Popup->show(buddy());
 }
 
 void SelectBuddyCombobox::hidePopup()
 {
 	Popup->hide();
-	setEditText(Popup->nameFilterEdit()->text());
+}
+
+Buddy SelectBuddyCombobox::buddy()
+{
+	QVariant buddyVariant = ActionsModel->index(currentIndex(), 0).data(BuddyRole);
+	return buddyVariant.canConvert<Buddy>()
+			? buddyVariant.value<Buddy>()
+			: Buddy::null;
+}
+
+void SelectBuddyCombobox::activatedSlot()
+{
+	emit buddyChanged(buddy());
+}
+
+void SelectBuddyCombobox::buddySelected(Buddy buddy)
+{
+	QModelIndex index = Model->buddyIndex(buddy);
+	index = ProxyModel->mapFromSource(index);
+	index = ActionsModel->mapFromSource(index);
+	setCurrentIndex(index.row());
+
+	emit buddyChanged(buddy);
 }

@@ -13,10 +13,12 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "buddies/buddy-manager.h"
+#include "buddies/buddy-shared.h"
 #include "chat/chat-manager.h"
 #include "chat/message/message.h"
-#include "buddies/buddy-manager.h"
 #include "configuration/configuration-file.h"
+#include "contacts/contact-manager.h"
 #include "core/core.h"
 #include "debug.h"
 #include "gui/windows/message-dialog.h"
@@ -188,7 +190,7 @@ void HistorySqlStorage::appendMessage(const Message &message)
 	record.setValue("receive_time", message.receiveDate());
 	record.setValue("content", message.content());
 
-	QString outgoing = (message.sender() == Core::instance()->myself())
+	QString outgoing = (message.sender().ownerBuddy() == Core::instance()->myself())
 			? "1"
 			: "0";
 	record.setValue("attributes", QString("outgoing=%1").arg(outgoing));
@@ -356,9 +358,10 @@ QList<Message> HistorySqlStorage::messagesBackTo(Chat chat, QDateTime datetime, 
 	DatabaseMutex.unlock();
 
 	QList<Message> messages;
+	
 	for (int i = result.size() - 1; i >= 0; --i)
 		messages.append(result.at(i));
-
+	
 	return messages;
 }
 
@@ -400,9 +403,14 @@ QList<Message> HistorySqlStorage::messagesFromQuery(Chat chat, QSqlQuery query)
 	while (query.next())
 	{
 		bool outgoing = QVariant(query.value(4).toString().split('=').last()).toBool();
+
 		Message::Type type = outgoing ? Message::TypeSent : Message::TypeReceived;
-		Buddy sender = outgoing ? Core::instance()->myself() : BuddyManager::instance()->byUuid(query.value(0).toString());
-		
+
+		// ignore non-existing contacts
+		Contact sender = ContactManager::instance()->byUuid(query.value(0).toString(), false);
+		if (sender.isNull())
+			continue;
+
 		Message message(chat, type, sender);
 		message
 			.setContent(query.value(1).toString())
@@ -414,4 +422,41 @@ QList<Message> HistorySqlStorage::messagesFromQuery(Chat chat, QSqlQuery query)
 	}
 
 	return messages;
+}
+
+void HistorySqlStorage::convertSenderToContact()
+{
+	QList<Chat> allChats = ChatManager::instance()->allItems();
+	QList<Buddy> allBuddies = BuddyManager::instance()->items();
+
+	foreach (Chat chat, allChats)
+	{
+		foreach (Buddy buddy, allBuddies)
+		{
+			QList<Contact> contacts = buddy.contacts(chat.chatAccount());
+			if (contacts.isEmpty())
+				continue;
+
+			Contact contact = contacts[0];
+
+			QSqlQuery import = QSqlQuery(Database);
+			import.prepare("UPDATE kadu_messages SET sender=:sender WHERE sender=:old_sender AND chat=:old_chat");
+			import.bindValue(":old_sender", buddy.uuid().toString());
+			import.bindValue(":old_chat", chat.uuid().toString());
+			import.bindValue(":sender", contact.uuid().toString());
+			import.exec();
+		}
+		if (!chat.chatAccount())
+			continue;
+
+		Contact sender = chat.chatAccount().accountContact();
+		QSqlQuery import = QSqlQuery(Database);
+		import.prepare("UPDATE kadu_messages SET sender=:sender WHERE attributes=:old_attr AND chat=:old_chat");
+		import.bindValue(":old_attr", "outgoing=1");
+		import.bindValue(":old_chat", chat.uuid().toString());
+		import.bindValue(":sender", sender.uuid().toString());
+		import.exec();
+	}
+
+	MessageDialog::msg("All teh werk dun!", false, "Warning");
 }

@@ -100,7 +100,7 @@ QString KaduChatStyleEngine::formatMessage(MessageRenderInfo *message, MessageRe
 	Message msg = message->message();
 	Message aft = after->message();
 
-	Buddy buddy = msg.sender();
+	Buddy buddy = msg.sender().ownerBuddy();
 	Account account = msg.chat().chatAccount();
 
 	if (msg.type() == Message::TypeSystem)
@@ -165,7 +165,7 @@ void KaduChatStyleEngine::repaintMessages(HtmlMessagesRenderer *renderer)
 		Message msg = (*message)->message();
 		(*message)->setSeparatorSize(0);
 
-		Buddy buddy = msg.sender();
+		Buddy buddy = msg.sender().ownerBuddy();
 		Account account = msg.chat().chatAccount();
 
 		if (msg.type() == Message::TypeSystem)
@@ -213,7 +213,7 @@ void KaduChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNam
 		{
 			message = dynamic_cast<MessageRenderInfo *>(preview->getObjectsToParse().at(i));
 			text += Parser::parse(content, message->message().chat().chatAccount(),
-					message->message().sender(), message);
+					message->message().sender().ownerBuddy(), message);
 		}
 	}
 	preview->setHtml(QString("<html><head><style type='text/css'>%1</style></head><body>%2</body>").arg(ChatStylesManager::instance()->mainStyle(), text));

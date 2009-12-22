@@ -16,19 +16,27 @@
 #include <QtCore/QUuid>
 #include <QtXml/QDomElement>
 
-#include "buddies/buddy-shared.h"
+#include "buddies/buddy-gender.h"
 #include "storage/shared-base.h"
 #include "exports.h"
 
 class Account;
 class BuddyShared;
 class Contact;
+class ContactShared;
+class Group;
 class StoragePoint;
 class XmlConfigFile;
 
 class KADUAPI Buddy : public QObject, public SharedBase<BuddyShared>
 {
 	Q_OBJECT
+	KaduSharedBaseClass(Buddy)
+
+	friend class ContactShared;
+	// only allow ContactShared to access these methods
+	void addContact(Contact contact);
+	void removeContact(Contact contact) const;
 
 public:
 	static Buddy create();
@@ -43,12 +51,6 @@ public:
 	Buddy(const Buddy &copy);
 	virtual ~Buddy();
 
-	Buddy & operator = (const Buddy &copy)
-	{
-		clone(copy);
-		return *this;
-	}
-
 	void mergeWith(Buddy buddy); // TODO: 0.8 refactor
 
 	void importConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
@@ -62,21 +64,12 @@ public:
 
 	Account prefferedAccount() const;
 	Contact prefferedContact() const;
-	QList<Account> accounts() const;
 
 // 	void setData(BuddyShared *data) { Data = data; }  // TODO: 0.8 tricky merge, this should work well ;)
 
-	void addContact(Contact contact);
-	void removeContact(Contact contact) const;
 	QList<Contact> contacts(Account account) const;
 	QList<Contact> contacts() const;
 	bool hasContact(Account account) const;
-
-template<class T>
-	T * moduleData(const QString &nodeName, bool create = false) const
-	{
-		return isNull() ? 0 : data()->moduleData<T>(nodeName, create);
-	}
 
 	QString id(Account account) const;
 	// properties
@@ -100,7 +93,7 @@ template<class T>
 	KaduSharedBase_Property(QString, email, Email)
 	KaduSharedBase_Property(QString, website, Website)
 	KaduSharedBase_Property(unsigned short, birthYear, BirthYear)
-	KaduSharedBase_Property(BuddyShared::BuddyGender, gender, Gender)
+	KaduSharedBase_Property(BuddyGender, gender, Gender)
 	KaduSharedBase_Property(QList<Group>, groups, Groups)
 	KaduSharedBase_PropertyBool(Anonymous)
 	KaduSharedBase_PropertyBool(Ignored)
@@ -110,5 +103,8 @@ template<class T>
 };
 
 Q_DECLARE_METATYPE(Buddy)
+
+// for MOC
+#include "buddies/group.h"
 
 #endif // BUDDY_H

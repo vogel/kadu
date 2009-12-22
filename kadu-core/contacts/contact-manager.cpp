@@ -76,18 +76,39 @@ void ContactManager::detailsUnloaded(Contact item)
 		unregisterItem(item);
 }
 
-Contact ContactManager::byId(Account account, const QString &id)
+Contact ContactManager::byId(Account account, const QString &id, bool create)
 {
 	ensureLoaded();
 
 	if (id.isEmpty() || account.isNull())
 		return Contact::null;
 
-	foreach (const Contact &contact, contacts(account))
-		if (id == contact.id())
+	foreach (const Contact &contact, allItems())
+		if (account == contact.contactAccount() && id == contact.id())
 			return contact;
 
-	return Contact::null;
+	if (!create)
+		return Contact::null;
+
+	Contact contact = Contact::create();
+	contact.setContactAccount(account);
+	contact.setId(id);
+
+	addItem(contact);
+
+	Protocol *protocolHandler = account.protocolHandler();
+	if (!protocolHandler)
+		return contact;
+
+	ProtocolFactory *factory = protocolHandler->protocolFactory();
+	if (!factory)
+		return contact;
+
+	ContactDetails *details = factory->createContactDetails(contact);
+	details->setState(StateNotLoaded);
+	contact.setDetails(details);
+
+	return contact;
 }
 
 QList<Contact> ContactManager::contacts(Account account)

@@ -19,8 +19,8 @@
 #include "exports.h"
 
 class ActionDescription;
-class Buddy;
-class BuddySet;
+class Contact;
+class ContactSet;
 class MainWindow;
 
 class KADUAPI Action : public QAction
@@ -45,8 +45,8 @@ public:
 	Action(ActionDescription *description, MainWindow *parent);
 	virtual ~Action();
 
-	Buddy buddy();
-	BuddySet buddies();
+	Contact contact();
+	ContactSet contacts();
 
 public slots:
 	void checkState();
@@ -60,6 +60,6 @@ signals:
 
 };
 
-void disableEmptyUles(Action *action);
+void disableEmptyContacts(Action *action);
 
 #endif // ACTION_H

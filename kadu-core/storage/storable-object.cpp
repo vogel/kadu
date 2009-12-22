@@ -107,11 +107,24 @@ StoragePoint * StorableObject::storage()
  * using storeValue and storeAttribute methods and should call super class
  * method.
  */
-
 void StorableObject::store()
 {
 	foreach (StorableObject *moduleData, ModulesData.values())
 		moduleData->store();
+}
+
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Determines if object is worth to be stored.
+ * @return true if object should be stored, defaults to true
+ * @todo this method is used only in managers, in 0.8 it should be used in every place
+ *
+ * If object is incomplete or invalid this method should return false
+ * so it will not be stored in persistent storage.
+ */
+bool StorableObject::shouldStore()
+{
+	return true;
 }
 
 /**
@@ -140,6 +153,23 @@ void StorableObject::ensureLoaded()
 {
 	if (StateNotLoaded == State)
 		load();
+}
+
+#include <stdio.h>
+
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Stores or removes data from storage, depends on shouldStore result.
+ *
+ * If shouldStore method returns true this method stores object in storage file.
+ * Else, object is removed from storage.
+ */
+void StorableObject::ensureStored()
+{
+	if (shouldStore())
+		store();
+	else
+		removeFromStorage();
 }
 
 /**

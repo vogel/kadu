@@ -15,6 +15,8 @@
 #include "buddies/buddy.h"
 
 class AbstractBuddyFilter;
+class ActionsProxyModel;
+class BuddiesModel;
 class BuddiesModelProxy;
 class SelectBuddyPopup;
 
@@ -22,12 +24,14 @@ class SelectBuddyCombobox : public QComboBox
 {
 	Q_OBJECT
 
-	Buddy MyBuddy;
+	BuddiesModel *Model;
 	BuddiesModelProxy *ProxyModel;
+	ActionsProxyModel *ActionsModel;
 	SelectBuddyPopup *Popup;
 
 private slots:
-	void buddyTextChanged(const QString &);
+	void activatedSlot();
+	void buddySelected(Buddy);
 
 protected:
 	virtual void showPopup();
@@ -40,7 +44,7 @@ public:
 	void addFilter(AbstractBuddyFilter *filter);
 	void removeFilter(AbstractBuddyFilter *filter);
 
-	Buddy buddy() { return MyBuddy; }
+	Buddy buddy();
 
 signals:
 	void buddyChanged(Buddy buddy);

@@ -27,7 +27,7 @@
 
 #include "gadu-list-helper.h"
 
-QString GaduListHelper::contactListToString(Account account, BuddyList buddies)
+QString GaduListHelper::buddyListToString(Account account, BuddyList buddies)
 {
 	kdebugf();
 
@@ -71,106 +71,185 @@ QString GaduListHelper::contactListToString(Account account, BuddyList buddies)
 	return contactsString;
 }
 
-BuddyList GaduListHelper::stringToContactList(Account account, QString &content) {
+BuddyList GaduListHelper::stringToBuddyList(Account account, QString &content) {
 	QTextStream stream(&content, QIODevice::ReadOnly);
-	return streamToContactList(account, stream);
+	return streamToBuddyList(account, stream);
 }
 
-BuddyList GaduListHelper::streamToContactList(Account account, QTextStream &content)
+BuddyList GaduListHelper::streamToBuddyList(Account account, QTextStream &content)
 {
 	BuddyList result;
-
 	QStringList sections;
-	QList<Group> groups;
 	QString line;
-	unsigned int i, secCount;
-	bool ok;
+	bool gg70 = false;
 
 	content.setCodec(codec_latin2);
 
 	while (!content.atEnd())
 	{
-		Buddy buddy;
 		line = content.readLine();
-//		kdebugm(KDEBUG_DUMP, ">>%s\n", qPrintable(line));
 		sections = line.split(";", QString::KeepEmptyParts);
-		secCount = sections.count();
-
-		if (secCount < 7)
+		//kdebugm(KDEBUG_DUMP, ">>%s\n", qPrintable(line));
+		if (line.startsWith("GG70ExportString"))
+		{
+			gg70 = true;
+			continue;
+		}
+		
+		if (sections.count() < 7)
 			continue;
 
-		buddy.setFirstName(sections[0]);
-		buddy.setLastName(sections[1]);
-		buddy.setNickName(sections[2]);
-		buddy.setDisplay(sections[3]);
-		buddy.setMobile(sections[4]);
-
-		groups.clear();
-		if (!sections[5].isEmpty())
-			groups.append(GroupManager::instance()->byName(sections[5]));
-
-		i = 6;
-		ok = false;
-		while (!ok && i < secCount)
-		{
-			sections[i].toULong(&ok);
-			ok = ok || sections[i].isEmpty();
-			if (!ok)
-				groups.append(GroupManager::instance()->byName(sections[i]));
-			++i;
-		}
-		buddy.setGroups(groups);
-		--i;
-
-		if (i < secCount)
-		{
-			UinType uin = sections[i++].toULong(&ok);
-			if (!ok)
-				uin = 0;
-			if (uin)
-			{
-				Contact contact = ContactManager::instance()->byId(account, QString::number(uin));
-				if (contact.isNull())
-				{
-					contact = Contact::create();
-					contact.setContactAccount(account);
-					contact.setDetails(new GaduContactDetails(contact));
-					contact.setId(QString::number(uin));
-					contact.data()->setState(StorableObject::StateNew);
-				}
-
-				contact.setOwnerBuddy(buddy);
-				buddy.addContact(contact);
-			}
-		}
-
-		if (i < secCount)
-			buddy.setEmail(sections[i++]);
-
-// TODO: 0.6.6
-		if (i+1 < secCount)
-		{
-// 			contact.setAliveSound((NotifyType)sections[i].toInt(), sections[i+1]);
-			i+=2;
-		}
-		if (i+1 < secCount)
-		{
-// 			e.setMessageSound((NotifyType)sections[i].toInt(), sections[i+1]);
-			i+=2;
-		}
-
-		if (i < secCount)
-		{
-			buddy.setOfflineTo(bool(sections[i].toInt()));
-			i++;
-		}
-
-		if (i < secCount)
-			buddy.setHomePhone(sections[i++]);
-
-		buddy.setAnonymous(false);
-		result.append(buddy);
+		result.append(gg70 ? line70ToBuddy(account, sections) : linePre70ToBuddy(account, sections));
 	}
 
 	return result;
+}
+
+Buddy GaduListHelper::linePre70ToBuddy(Account account, QStringList &sections)
+{
+	QList<Group> groups;
+	unsigned int i, secCount;
+	bool ok = false;
+
+	Buddy buddy = Buddy::create();
+
+	secCount = sections.count();
+
+	buddy.setFirstName(sections[0]);
+	buddy.setLastName(sections[1]);
+	buddy.setNickName(sections[2]);
+	buddy.setDisplay(sections[3]);
+	buddy.setMobile(sections[4]);
+
+	groups.clear();
+	if (!sections[5].isEmpty())
+		groups.append(GroupManager::instance()->byName(sections[5]));
+
+	i = 6;
+	while (!ok && i < secCount)
+	{
+		sections[i].toULong(&ok);
+		ok = ok || sections[i].isEmpty();
+		if (!ok)
+			groups.append(GroupManager::instance()->byName(sections[i]));
+		++i;
+	}
+	buddy.setGroups(groups);
+	--i;
+
+	if (i < secCount)
+	{
+		UinType uin = sections[i++].toULong(&ok);
+		if (!ok)
+			uin = 0;
+		if (uin)
+		{
+			Contact contact = Contact::create();
+			contact.setContactAccount(account);
+			GaduContactDetails *details = new GaduContactDetails(contact.data());
+			details->setState(StorableObject::StateNew);
+			contact.setDetails(details);
+			contact.setId(QString::number(uin));
+			contact.data()->setState(StorableObject::StateNew);
+			contact.setOwnerBuddy(buddy);
+		}
+	}
+
+	if (i < secCount)
+		buddy.setEmail(sections[i++]);
+
+// TODO: 0.6.6
+	if (i+1 < secCount)
+	{
+// 			contact.setAliveSound((NotifyType)sections[i].toInt(), sections[i+1]);
+		i+=2;
+	}
+	if (i+1 < secCount)
+	{
+// 			e.setMessageSound((NotifyType)sections[i].toInt(), sections[i+1]);
+		i+=2;
+	}
+
+	if (i < secCount)
+	{
+		buddy.setOfflineTo(bool(sections[i].toInt()));
+		i++;
+	}
+
+	if (i < secCount)
+		buddy.setHomePhone(sections[i++]);
+
+	buddy.setAnonymous(false);
+	return buddy;
+}
+
+Buddy GaduListHelper::line70ToBuddy(Account account, QStringList &sections)
+{
+	QList<Group> groups;
+	unsigned int i, secCount;
+	bool ok = false;
+
+	Buddy buddy = Buddy::create();
+
+	secCount = sections.count();
+
+	buddy.setFirstName(sections[0]);
+	buddy.setLastName(sections[1]);
+	buddy.setNickName(sections[2]);
+	buddy.setDisplay(sections[3]);
+	buddy.setMobile(sections[4]);
+
+	if (!sections[5].isEmpty())
+	{
+		foreach (const QString group, sections[5].split(",", QString::SkipEmptyParts))
+			groups.append(GroupManager::instance()->byName(group));
+
+		buddy.setGroups(groups);
+	}
+
+	i = 6;
+	if (i < secCount)
+	{
+		UinType uin = sections[i++].toULong(&ok);
+		if (!ok)
+			uin = 0;
+		if (uin)
+		{
+			Contact contact = Contact::create();
+			contact.setContactAccount(account);
+			GaduContactDetails *details = new GaduContactDetails(contact.data());
+			details->setState(StorableObject::StateNew);
+			contact.setDetails(details);
+			contact.setId(QString::number(uin));
+			contact.data()->setState(StorableObject::StateNew);
+			contact.setOwnerBuddy(buddy);
+		}
+	}
+
+	if (i < secCount)
+		buddy.setEmail(sections[i++]);
+
+// TODO: 0.6.6
+	if (i+1 < secCount)
+	{
+// 			contact.setAliveSound((NotifyType)sections[i].toInt(), sections[i+1]);
+		i+=2;
+	}
+	if (i+1 < secCount)
+	{
+// 			e.setMessageSound((NotifyType)sections[i].toInt(), sections[i+1]);
+		i+=2;
+	}
+
+	if (i < secCount)
+	{
+		buddy.setOfflineTo(bool(sections[i].toInt()));
+		i++;
+	}
+
+	if (i < secCount)
+		buddy.setHomePhone(sections[i++]);
+
+	buddy.setAnonymous(false);
+	return buddy;
 }

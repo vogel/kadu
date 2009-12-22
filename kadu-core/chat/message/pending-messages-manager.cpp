@@ -11,10 +11,11 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "chat/chat-manager.h"
-#include "configuration/xml-configuration-file.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-list-configuration-helper.h"
+#include "buddies/buddy-shared.h"
+#include "chat/chat-manager.h"
+#include "configuration/xml-configuration-file.h"
 #include "gui/widgets/chat-widget-manager.h"
 
 #include "debug.h"
@@ -40,7 +41,7 @@ PendingMessagesManager::PendingMessagesManager() : msgs()
 void PendingMessagesManager::deleteMsg(int index)
 {
 	kdebugm(KDEBUG_INFO, "PendingMessagesManager::(pre)deleteMsg(%d), count=%d\n", index, count());
-	Buddy e = msgs[index].sender();
+	Buddy e = msgs[index].sender().ownerBuddy();
 	msgs.removeAt(index);
 	storeConfiguration(xml_config_file);
 	kdebugm(KDEBUG_INFO, "PendingMessagesManager::deleteMsg(%d), count=%d\n", index, count());
@@ -50,7 +51,7 @@ void PendingMessagesManager::deleteMsg(int index)
 bool PendingMessagesManager::pendingMsgs(Buddy buddy) const
 {
 	foreach (const Message &msg, msgs)
-		if (msg.sender() == buddy)
+		if (msg.sender().ownerBuddy() == buddy)
 			return true;
 
 	return false;
@@ -89,7 +90,7 @@ void PendingMessagesManager::addMsg(const Message &msg)
 	Message message = msg;
 	msgs.append(message);
 	storeConfiguration(xml_config_file);
-	emit messageFromUserAdded(msg.sender());
+	emit messageFromUserAdded(msg.sender().ownerBuddy());
 }
 
 void PendingMessagesManager::loadConfiguration(XmlConfigFile *configurationStorage)
@@ -117,7 +118,7 @@ void PendingMessagesManager::loadConfiguration(XmlConfigFile *configurationStora
 
 		QDomElement senderNode = configurationStorage->getNode(messageElement, "Sender", XmlConfigFile::ModeFind);
 		Buddy sender = BuddyManager::instance()->byUuid(senderNode.text());
-		msg.setSender(sender);
+		msg.setSender(sender.contacts()[0]);
 
 		msgs.append(msg);
 		emit messageFromUserAdded(sender);

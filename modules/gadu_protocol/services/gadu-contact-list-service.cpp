@@ -50,7 +50,10 @@ void GaduContactListService::handleEventUserlistGetReply(struct gg_event *e)
 
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "\n%s\n", unicode2latin(ImportReply).data());
 
-	emit contactListImported(true, GaduListHelper::stringToContactList(Protocol->account(), ImportReply));
+	if (AsFile)
+		emit contactListDownloaded(ImportReply);
+	else
+		emit contactListImported(true, GaduListHelper::stringToBuddyList(Protocol->account(), ImportReply));
 }
 
 void GaduContactListService::handleEventUserlistPutReply(struct gg_event *e)
@@ -75,10 +78,19 @@ void GaduContactListService::handleEventUserlist(struct gg_event *e)
 
 void GaduContactListService::importContactList()
 {
+	AsFile = false;
 	ImportReply.truncate(0);
 
 	if (-1 == gg_userlist_request(Protocol->gaduSession(), GG_USERLIST_GET, 0))
 		emit contactListImported(false, BuddyList());
+}
+
+void GaduContactListService::importContactListAsFile()
+{
+	ImportReply.truncate(0);
+	AsFile = true;
+
+	gg_userlist_request(Protocol->gaduSession(), GG_USERLIST_GET, 0);
 }
 
 void GaduContactListService::exportContactList()
@@ -88,7 +100,7 @@ void GaduContactListService::exportContactList()
 
 void GaduContactListService::exportContactList(BuddyList buddies)
 {
-	QString contactsString = GaduListHelper::contactListToString(Protocol->account(), buddies);
+	QString contactsString = GaduListHelper::buddyListToString(Protocol->account(), buddies);
 
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "\n%s\n", unicode2cp(contactsString).data());
 

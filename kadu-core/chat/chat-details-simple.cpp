@@ -9,8 +9,10 @@
 
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-set.h"
-#include "chat/chat.h"
+#include "buddies/buddy-shared.h"
 #include "chat/type/chat-type-manager.h"
+#include "chat/chat.h"
+#include "chat/chat-shared.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 
@@ -40,12 +42,14 @@ void ChatDetailsSimple::load()
 	}
 	else
 	{
-		CurrentContact = ContactManager::instance()->byUuid(cadUuid);
+		CurrentContact = ContactManager::instance()->byUuid(cadUuid, false);
 		if (CurrentContact.isNull())
 		{
 			// TODO 0.6.6 how it work?
 			Buddy buddy = BuddyManager::instance()->byUuid(cadUuid);
-			//CurrentContact = buddy.contact(chatData()->chatAccount());
+			QList<Contact> contactList = buddy.contacts(mainData()->chatAccount());
+			if (!contactList.isEmpty())
+				CurrentContact = contactList[0];
 		}
 	}
 
@@ -65,7 +69,7 @@ void ChatDetailsSimple::store()
 
 ChatType * ChatDetailsSimple::type() const
 {
-	return ChatTypeManager::instance()->chatType("SimpleChat");
+	return ChatTypeManager::instance()->chatType("Simple");
 }
 
 ContactSet ChatDetailsSimple::contacts() const

@@ -15,6 +15,8 @@
 
 #include "chat.h"
 
+KaduSharedBaseClassImpl(Chat)
+
 Chat Chat::null;
 
 Chat Chat::create()
@@ -53,18 +55,11 @@ Chat::~Chat()
 {
 }
 
-Chat & Chat::operator=(const Chat &copy)
-{
-	clone(copy);
-	return *this;
-}
-
 void Chat::refreshTitle()
 {
 	if (!isNull())
 		data()->refreshTitle();
 }
-
 
 KaduSharedBase_PropertyReadDef(Chat, ContactSet, contacts, Contacts, ContactSet())
 KaduSharedBase_PropertyReadDef(Chat, QString, name, Name, QString::null)

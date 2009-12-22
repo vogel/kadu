@@ -98,7 +98,7 @@ QString Qt4Notify::parseText(const QString &text, Notification *notification, co
 	if (!text.isEmpty())
 	{
 		if (chatNotification)
-			ret = Parser::parse(text, chatNotification->account(), *chatNotification->chat().buddies().begin(), notification);
+			ret = Parser::parse(text, chatNotification->account(), *chatNotification->chat().contacts().toBuddySet().begin(), notification);
 		else
 			ret = Parser::parse(text, notification);
 

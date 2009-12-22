@@ -9,6 +9,7 @@
 
 #include <QtGui/QCheckBox>
 #include <QtGui/QComboBox>
+#include <QtGui/QFileDialog>
 #include <QtGui/QGridLayout>
 #include <QtGui/QGroupBox>
 #include <QtGui/QLabel>
@@ -22,6 +23,10 @@
 #include "gui/widgets/account-buddy-list-widget.h"
 #include "gui/widgets/choose-identity-widget.h"
 #include "gui/widgets/proxy-group-box.h"
+#include "protocols/services/contact-list-service.h"
+#include "protocols/protocol.h"
+
+#include "services/gadu-contact-list-service.h"
 
 #include "gadu-personal-info-widget.h"
 
@@ -122,7 +127,16 @@ void GaduEditAccountWidget::createPersonalDataTab(QTabWidget *tabWidget)
 
 void GaduEditAccountWidget::createBuddiesTab(QTabWidget *tabWidget)
 {
-	AccountBuddyListWidget *widget = new AccountBuddyListWidget(account(), this);
+	QWidget *widget = new QWidget(this);
+	QVBoxLayout *layout = new QVBoxLayout(widget);
+
+	AccountBuddyListWidget *buddiesWidget = new AccountBuddyListWidget(account(), widget);
+	layout->addWidget(buddiesWidget);
+
+	QPushButton *getListAsFile = new QPushButton("Import contacts list as file", widget);
+	connect(getListAsFile, SIGNAL(clicked(bool)), this, SLOT(importListAsFile()));
+	layout->addWidget(getListAsFile);
+
 	tabWidget->addTab(widget, tr("Buddies"));
 }
 
@@ -224,4 +238,35 @@ void GaduEditAccountWidget::removeAccount()
 	}
 
 	delete messageBox;
+}
+
+
+void GaduEditAccountWidget::importListAsFile()
+{
+	Protocol *protocol = account().protocolHandler();
+	if (!protocol)
+		return;
+
+	ContactListService *service = protocol->contactListService();
+	if (!service)
+		return;
+
+	GaduContactListService *gaduService = dynamic_cast<GaduContactListService *>(service);
+	if (!gaduService)
+		return;
+
+	connect(gaduService, SIGNAL(contactListDownloaded(QString)), this, SLOT(contactListDownloaded(QString)));
+	gaduService->importContactListAsFile();
+}
+
+void GaduEditAccountWidget::contactListDownloaded(QString content)
+{
+	QString fileName = QFileDialog::getSaveFileName();
+	if (fileName.isEmpty())
+		return;
+
+	QFile file(fileName);
+	file.open(QIODevice::WriteOnly);
+	file.write(content.toLocal8Bit());
+	file.close();
 }

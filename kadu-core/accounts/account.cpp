@@ -9,6 +9,7 @@
 
 #include "accounts/account-details.h"
 #include "accounts/account-manager.h"
+#include "buddies/buddy-manager.h"
 #include "configuration/configuration-file.h"
 #include "configuration/xml-configuration-file.h"
 #include "contacts/contact.h"
@@ -20,6 +21,8 @@
 #include "misc/misc.h"
 
 #include "account.h"
+
+KaduSharedBaseClassImpl(Account)
 
 Account Account::null;
 
@@ -59,44 +62,6 @@ Account::~Account()
 {
 }
 
-Account & Account::operator=(const Account &copy)
-{
-	clone(copy);
-	return *this;
-}
-
-Buddy Account::getBuddyById(const QString& id)
-{
-	return ContactManager::instance()->byId(*this, id).ownerBuddy();
-}
-
-Buddy Account::createAnonymous(const QString& id)
-{
-	if (isNull())
-		return Buddy::null;
-
-	Buddy result = Buddy::create();
-	result.setAnonymous(true);
-
-	ProtocolFactory *protocolFactory = data()->protocolHandler()->protocolFactory();
-
-	Contact contact = Contact::create();
-	ContactDetails *details = protocolFactory->createContactDetails(contact);
-	details->setState(StorableObject::StateNew);
-	contact.setDetails(details);
-	contact.setContactAccount(*this);
-	contact.setOwnerBuddy(result);
-	contact.setId(id);
-
-	if (!contact.isValid())
-		return Buddy::null;
-
-	ContactManager::instance()->addItem(contact);
-
-	result.addContact(contact);
-	return result;
-}
-
 void Account::importProxySettings()
 {
 	if (isNull())
@@ -118,6 +83,7 @@ KaduSharedBase_PropertyReadDef(Account, StoragePoint *, storage, Storage, 0)
 KaduSharedBase_PropertyDef(Account, QString, protocolName, ProtocolName, QString::null)
 KaduSharedBase_PropertyDef(Account, Protocol *, protocolHandler, ProtocolHandler, 0)
 KaduSharedBase_PropertyDef(Account, AccountDetails *, details, Details, 0)
+KaduSharedBase_PropertyReadDef(Account, Contact, accountContact, AccountContact, Contact::null)
 KaduSharedBase_PropertyDef(Account, QString, name, Name, QString::null)
 KaduSharedBase_PropertyDef(Account, QString, id, Id, QString::null)
 KaduSharedBase_PropertyDef(Account, bool, rememberPassword, RememberPassword, true)

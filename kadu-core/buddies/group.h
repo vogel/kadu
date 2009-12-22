@@ -16,6 +16,7 @@
 
 class Group : public SharedBase<GroupShared>
 {
+	KaduSharedBaseClass(Group)
 
 public:
 	static Group create();
@@ -25,7 +26,8 @@ public:
 	Group();
 	Group(GroupShared *data);
 	Group(QObject *data);
-	Group(const Group&copy);
+	Group(const Group &copy);
+
 	virtual ~Group();
 
 	KaduSharedBase_Property(QString, name, Name)

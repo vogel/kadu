@@ -24,7 +24,6 @@ ChatShared * ChatShared::loadFromStorage(StoragePoint *storagePoint)
 {
 	ChatShared *result = new ChatShared();
 	result->setStorage(storagePoint);
-	result->ensureLoaded();
 
 	return result;
 }
@@ -70,6 +69,8 @@ void ChatShared::load()
 
 void ChatShared::store()
 {
+	ensureLoaded();
+
 	if (!isValidStorage())
 		return;
 
@@ -77,6 +78,13 @@ void ChatShared::store()
 
 	storeValue("Type", Type);
 	storeValue("Account", ChatAccount.uuid().toString());
+}
+
+bool ChatShared::shouldStore()
+{
+	ensureLoaded();
+
+	return UuidStorableObject::shouldStore() && !ChatAccount.uuid().isNull();
 }
 
 void ChatShared::aboutToBeRemoved()
@@ -171,12 +179,16 @@ void ChatShared::refreshTitle()
 	kdebugf2();
 }
 
-ContactSet ChatShared::contacts() const
+ContactSet ChatShared::contacts()
 {
+	ensureLoaded();
+
 	return details() ? details()->contacts() : ContactSet();
 }
 
-QString ChatShared::name() const
+QString ChatShared::name()
 {
+	ensureLoaded();
+
 	return details() ? details()->name() : QString::null;
 }

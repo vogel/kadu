@@ -15,7 +15,6 @@
 #include <QtGui/QVBoxLayout>
 
 #include "buddies/buddy-manager.h"
-#include "buddies/filter/buddy-mergable-filter.h"
 #include "gui/widgets/select-buddy-combobox.h"
 #include "icons-manager.h"
 
@@ -45,8 +44,7 @@ void MergeBuddiesWindow::createGui()
 
 	chooseLayout->addWidget(new QLabel(tr("Contact:"), this));
 	SelectCombo = new SelectBuddyCombobox(this);
-	SelectCombo->addFilter(new BuddyMergableFilter(MyBuddy, SelectCombo));
-	connect(SelectCombo, SIGNAL(contactChanged(Buddy)), this, SLOT(selectedBuddyChanged(Buddy)));
+	connect(SelectCombo, SIGNAL(buddyChanged(Buddy)), this, SLOT(selectedBuddyChanged(Buddy)));
 	chooseLayout->addWidget(SelectCombo);
 
 	layout->addStretch(100);

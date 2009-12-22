@@ -53,7 +53,7 @@ Core * Core::instance()
 	return Instance;
 }
 
-Core::Core() : Myself(Buddy::null), Window(0), ShowMainWindowOnStart(true)
+Core::Core() : Myself(Buddy::create()), Window(0), ShowMainWindowOnStart(true)
 {
 	connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(quit()));
 	createDefaultConfiguration();
@@ -262,9 +262,8 @@ void Core::init()
 	// it fixes crash on loading pending messages from config, contacts import from 0.6.5, and maybe other issues
 	ModulesManager::instance()->loadProtocolModules();
 
-	Myself = Buddy();
-	QString nickName(config_file.readEntry("General", "Nick"));
-	Myself.setDisplay(nickName.isEmpty() ? tr("Me") : nickName);
+	Myself.setAnonymous(false);
+	Myself.setDisplay(config_file.readEntry("General", "Nick", tr("Me")));
 
 	connect(StatusContainerManager::instance(), SIGNAL(statusChanged()), this, SLOT(statusChanged()));
 	// TODO 0.6.6:
@@ -341,6 +340,14 @@ void Core::kaduWindowDestroyed()
 	Window = 0;
 }
 
+void Core::accountAdded(Account account)
+{
+	printf("account: %s\n", qPrintable(account.uuid().toString()));
+	printf("contact: %s\n", qPrintable(account.accountContact().uuid().toString()));
+	printf("buddy: %s\n", qPrintable(Myself.uuid().toString()));
+	account.accountContact().setOwnerBuddy(Myself);
+}
+
 void Core::accountRegistered(Account account)
 {
 	Protocol *protocol = account.protocolHandler();
@@ -359,11 +366,6 @@ void Core::accountRegistered(Account account)
 	connect(protocol, SIGNAL(connecting(Account)), this, SIGNAL(connecting()));
 	connect(protocol, SIGNAL(connected(Account)), this, SIGNAL(connected()));
 	connect(protocol, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
-/* TODO: 0.6.6
-	Contact contact = protocol->protocolFactory()->loadContact(account, Myself);
-	if (!contact)
-		contact = protocol->protocolFactory()->newContact(account, Myself, account->id());
-	Myself.addAccountData(contact);*/
 }
 
 void Core::accountUnregistered(Account account)

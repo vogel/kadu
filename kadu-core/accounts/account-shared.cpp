@@ -9,6 +9,7 @@
 
 #include "accounts/account-details.h"
 #include "accounts/account-manager.h"
+#include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
@@ -20,7 +21,6 @@ AccountShared * AccountShared::loadFromStorage(StoragePoint *storagePoint)
 {
 	AccountShared *result = new AccountShared();
 	result->setStorage(storagePoint);
-	result->load();
 
 	return result;
 }
@@ -122,6 +122,36 @@ void AccountShared::emitUpdated()
 	emit updated();
 }
 
+void AccountShared::useProtocolFactory(ProtocolFactory *factory)
+{
+	if (ProtocolHandler)
+	{
+		disconnect(ProtocolHandler, SIGNAL(statusChanged(Account, Status)), this, SIGNAL(statusChanged()));
+		disconnect(ProtocolHandler, SIGNAL(contactStatusChanged(Contact, Status)),
+				this, SIGNAL(buddyStatusChanged(Contact, Status)));
+	}
+
+	if (!factory)
+	{
+		setDetails(0);
+		ProtocolHandler = 0;
+		emit protocolUnloaded();
+	}
+	else
+	{
+		ProtocolHandler = factory->createProtocolHandler(this);
+		setDetails(factory->createAccountDetails(this));
+		emit protocolLoaded();
+	}
+
+	if (ProtocolHandler)
+	{
+		connect(ProtocolHandler, SIGNAL(statusChanged(Account, Status)), this, SIGNAL(statusChanged()));
+		connect(ProtocolHandler, SIGNAL(contactStatusChanged(Contact, Status)),
+				this, SIGNAL(buddyStatusChanged(Contact, Status)));
+	}
+}
+
 void AccountShared::protocolRegistered(ProtocolFactory *factory)
 {
 	ensureLoaded();
@@ -129,59 +159,69 @@ void AccountShared::protocolRegistered(ProtocolFactory *factory)
 	if (factory->name() != ProtocolName)
 		return;
 
-	if (!details())
-		setDetails(factory->createAccountDetails(this));
+	if (ProtocolHandler && (ProtocolHandler->protocolFactory() == factory))
+		return;
 
-	ProtocolHandler = factory->createProtocolHandler(this);
-
-
-	connect(ProtocolHandler, SIGNAL(statusChanged(Account, Status)), this, SIGNAL(statusChanged()));
-	connect(ProtocolHandler, SIGNAL(buddyStatusChanged(Contact, Status)),
-			this, SIGNAL(buddyStatusChanged(Contact, Status)));
-
-	emit protocolLoaded();
+	useProtocolFactory(factory);
 }
 
 void AccountShared::protocolUnregistered(ProtocolFactory* factory)
 {
 	ensureLoaded();
 
-	if (factory->name() != ProtocolName)
+	if (!ProtocolHandler)
 		return;
 
-	// TODO 0.6.6: if empty config must: store(),Details->store()
-	store();
+	if (factory != ProtocolHandler->protocolFactory())
+		return;
 
-	emit protocolUnloaded();
-
-	setDetails(0);
+	useProtocolFactory(0);
 }
 
 void AccountShared::detailsAdded()
 {
 	details()->ensureLoaded();
-
-	ProtocolFactory *factory = ProtocolsManager::instance()->byName(ProtocolName);
-	if (!factory)
-		return;
-	
-	protocolRegistered(factory);
 }
 
 void AccountShared::detailsAboutToBeRemoved()
 {
-	delete ProtocolHandler;
-	ProtocolHandler = 0;
-
 	details()->store();
 }
 
 void AccountShared::setProtocolName(QString protocolName)
 {
 	ensureLoaded();
-	ProtocolName = protocolName ;
+
+	ProtocolName = protocolName;
+	useProtocolFactory(ProtocolsManager::instance()->byName(protocolName));
+
 	dataUpdated();
-	detailsAdded();
+}
+
+void AccountShared::setId(const QString &id)
+{
+	ensureLoaded();
+
+	if (Id == id)
+		return;
+
+	Id = id;
+	AccountContact.setId(id);
+
+	dataUpdated();
+}
+
+Contact AccountShared::accountContact()
+{
+	ensureLoaded();
+
+	if (AccountContact.isNull())
+	{
+		AccountContact = ContactManager::instance()->byId(this, Id, true);
+		ContactManager::instance()->addItem(AccountContact);
+	}
+
+	return AccountContact;
 }
 
 QString AccountShared::statusContainerName()

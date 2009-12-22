@@ -29,7 +29,7 @@ void ChatDetailsConference::load()
 
 	ChatDetails::load();
 
-	Contacts = ContactSetConfigurationHelper::loadFromConfiguration(this, "Contacts");
+	Contacts = ContactSetConfigurationHelper::loadFromConfiguration(this, "Contacts", mainData()->chatAccount());
 
 	mainData()->refreshTitle();
 }
@@ -46,7 +46,7 @@ void ChatDetailsConference::store()
 
 ChatType * ChatDetailsConference::type() const
 {
-	return ChatTypeManager::instance()->chatType("ConferenceChat");
+	return ChatTypeManager::instance()->chatType("Conference");
 }
 
 QString ChatDetailsConference::name() const

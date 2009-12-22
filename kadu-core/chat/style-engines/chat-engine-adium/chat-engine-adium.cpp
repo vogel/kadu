@@ -301,16 +301,21 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, const QString &styleHre
 	Message msg = message->message();
 
 	// Replace sender (contact nick)
-	result.replace(QString("%sender%"), msg.sender().display());
+	result.replace(QString("%sender%"), msg.sender().ownerBuddy().display());
 	// Replace %screenName% (contact ID)
-	result.replace(QString("%senderScreenName%"), msg.sender().id(chat.chatAccount()));
+	result.replace(QString("%senderScreenName%"), msg.sender().id());
 	// Replace service name (protocol name)
 	if (chat.chatAccount().protocolHandler() && chat.chatAccount().protocolHandler()->protocolFactory())
+	{
 		result.replace(QString("%service%"), chat.chatAccount().protocolHandler()->protocolFactory()->displayName());
+		// Replace protocolIcon (sender statusIcon). TODO:
+		result.replace(QString("%senderStatusIcon%"), chat.chatAccount().protocolHandler()->protocolFactory()->iconName());
+	}
 	else
+	{
 		result.replace(QString("%service%"), "");
-	// Replace protocolIcon (sender statusIcon). TODO:
-	result.replace(QString("%senderStatusIcon%"), chat.chatAccount().protocolHandler()->protocolFactory()->iconName());
+		result.replace(QString("%senderStatusIcon%"), "");
+	}
 
 	// Replace time
 	QDateTime time = msg.sendDate().isNull() ? msg.receiveDate(): msg.sendDate();
@@ -334,10 +339,8 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, const QString &styleHre
 	{
 		result.replace(QString("%messageClasses%"), "message incoming");
 
-		QList<Contact> contactslist = msg.sender().contacts(chat.chatAccount());
-		Contact contact = contactslist.isEmpty() ? Contact::null : contactslist[0];
-		if (!contact.isNull() && !contact.contactAvatar().pixmap().isNull())
-			photoPath = QString("file://") + contact.contactAvatar().filePath();
+		if (!msg.sender().contactAvatar().pixmap().isNull())
+			photoPath = QString("file://") + msg.sender().contactAvatar().filePath();
 		else
 			photoPath = QString("file://") + styleHref + QString("Incoming/buddy_icon.png");
 	}

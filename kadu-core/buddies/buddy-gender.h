@@ -7,30 +7,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "buddy-mergable-filter.h"
+#ifndef BUDDY_GENDER_H
+#define BUDDY_GENDER_H
 
-BuddyMergableFilter::BuddyMergableFilter(Buddy buddy, QObject *parent) :
-		AbstractBuddyFilter(parent), MyBuddy(buddy)
+enum BuddyGender
 {
-	Accounts = MyBuddy.accounts().toSet();
-}
+	GenderUnknown,
+	GenderMale,
+	GenderFemale
+};
 
-BuddyMergableFilter::~BuddyMergableFilter()
-{
-}
+#endif // BUDDY_GENDER_H
 
-void BuddyMergableFilter::setContact(Buddy buddy)
-{
-	if (MyBuddy == buddy)
-		return;
-
-	MyBuddy = buddy;
-	Accounts = buddy.accounts().toSet();
-
-	emit filterChanged();
-}
-
-bool BuddyMergableFilter::acceptBuddy(Buddy buddy)
-{
-	return buddy.accounts().toSet().intersect(Accounts).empty();
-}

@@ -8,13 +8,15 @@
  ***************************************************************************/
 
 #include "accounts/account.h"
+#include "accounts/account-details.h"
 #include "accounts/account-manager.h"
-#include "configuration/configuration-manager.h"
-#include "configuration/xml-configuration-file.h"
 #include "buddies/avatar.h"
 #include "buddies/avatar-shared.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-remove-predicate-object.h"
+#include "buddies/buddy-shared.h"
+#include "configuration/configuration-manager.h"
+#include "configuration/xml-configuration-file.h"
 #include "contacts/contact.h"
 #include "contacts/contact-shared.h"
 #include "core/core.h"
@@ -23,6 +25,8 @@
 #include "icons-manager.h"
 
 #include "buddy.h"
+
+KaduSharedBaseClassImpl(Buddy)
 
 Buddy Buddy::null;
 
@@ -64,7 +68,8 @@ Buddy::~Buddy()
 
 void Buddy::importConfiguration(XmlConfigFile *configurationStorage, QDomElement parent)
 {
-	data()->importConfiguration(configurationStorage, parent);
+	if (data())
+		data()->importConfiguration(configurationStorage, parent);
 }
 
 void Buddy::store()
@@ -100,11 +105,6 @@ void Buddy::removeCustomData(const QString &key)
 Account Buddy::prefferedAccount() const
 {
 	return isNull() ? Account::null : data()->prefferedAccount();
-}
-
-QList<Account> Buddy::accounts() const
-{
-	return isNull() ? QList<Account>() : data()->accounts();
 }
 
 void Buddy::addContact(Contact contact)
@@ -203,9 +203,12 @@ Buddy Buddy::dummy()
 	else if (ProtocolsManager::instance()->protocolFactories().count())
 	{
 		account = Account::create();
-		account.setProtocolName(ProtocolsManager::instance()->protocolFactories()[0]->name());
-		account.data()->protocolRegistered(ProtocolsManager::instance()->protocolFactories()[0]);
-		account.setDetails(ProtocolsManager::instance()->protocolFactories()[0]->createAccountDetails(account));
+		ProtocolFactory *firstProto = ProtocolsManager::instance()->protocolFactories().first() ;
+		AccountDetails *accDetails = firstProto->createAccountDetails(account);
+		accDetails->setState(StorableObject::StateNew);
+		account.setDetails(accDetails);
+		// TODO 0.6.6: set proto name after setting details becouse of crash
+		account.setProtocolName(firstProto->name());
 	}
 
 	if (!account.isNull())
@@ -217,7 +220,7 @@ Buddy Buddy::dummy()
 		contact.setCurrentStatus(Status("Away", tr("Example description")));
 		contact.setAddress(QHostAddress(2130706433));
 		contact.setPort(80);
-		contact.setDetails(account.protocolHandler()->protocolFactory()->createContactDetails(contact.data()));
+		contact.setDetails(account.protocolHandler()->protocolFactory()->createContactDetails(contact));
 
 		Avatar avatar = Avatar::create();
 		avatar.setLastUpdated(QDateTime::currentDateTime());
@@ -226,13 +229,15 @@ Buddy Buddy::dummy()
 		contact.setContactAvatar(avatar);
 
 		example.addContact(contact);
+		example.setAnonymous(false);
 
 		return example;
 	}
+
 	return null;
 }
 
-KaduSharedBase_PropertyWriteDef(Buddy, QString, display, Display, QString::null)
+KaduSharedBase_PropertyWriteDef(Buddy, QString, display, Display)
 KaduSharedBase_PropertyDef(Buddy, QString, firstName, FirstName, QString::null)
 KaduSharedBase_PropertyDef(Buddy, QString, lastName, LastName, QString::null)
 KaduSharedBase_PropertyDef(Buddy, QString, familyName, FamilyName, QString::null)
@@ -244,7 +249,7 @@ KaduSharedBase_PropertyDef(Buddy, QString, mobile, Mobile, QString::null)
 KaduSharedBase_PropertyDef(Buddy, QString, email, Email, QString::null)
 KaduSharedBase_PropertyDef(Buddy, QString, website, Website, QString::null)
 KaduSharedBase_PropertyDef(Buddy, unsigned short, birthYear, BirthYear, 0)
-KaduSharedBase_PropertyDef(Buddy, BuddyShared::BuddyGender, gender, Gender, BuddyShared::GenderUnknown)
+KaduSharedBase_PropertyDef(Buddy, BuddyGender, gender, Gender, GenderUnknown)
 KaduSharedBase_PropertyDef(Buddy, QList<Group>, groups, Groups, QList<Group>())
 KaduSharedBase_PropertyBoolDef(Buddy, Anonymous, false)
 KaduSharedBase_PropertyBoolDef(Buddy, Ignored, false)

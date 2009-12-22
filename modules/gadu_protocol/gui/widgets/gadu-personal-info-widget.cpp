@@ -12,6 +12,8 @@
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
 
+#include "accounts/account-shared.h"
+
 #include "debug.h"
 #include "gadu-account-details.h"
 
@@ -109,7 +111,7 @@ void GaduPersonalInfoWidget::applyData()
 	buddy.setBirthYear((*BirthYear).text().toUShort());
 	buddy.setCity((*City).text());
 	buddy.setFamilyCity((*FamilyCity).text());
-	buddy.setGender((BuddyShared::BuddyGender)Sex->currentIndex());
+	buddy.setGender((BuddyGender)Sex->currentIndex());
 
 	Service->updatePersonalInfo(buddy);
 }

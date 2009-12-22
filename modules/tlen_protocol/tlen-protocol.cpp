@@ -16,17 +16,10 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QMessageBox>
 
-#include "accounts/account.h"
-#include "accounts/account-manager.h"
-
-#include "buddies/buddy-set.h"
 #include "buddies/buddy-manager.h"
 
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
-
-#include "configuration/configuration-file.h"
-#include "core/core.h"
 
 #include "buddies/group.h"
 #include "buddies/group-manager.h"
@@ -34,14 +27,13 @@
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/password-window.h"
-#include "gui/windows/main-configuration-window.h"
 
 #include "chat/message/message.h"
+#include "chat/chat-manager.h"
 #include "debug.h"
 #include "icons-manager.h"
 #include "status/status.h"
 #include "misc/misc.h"
-#include "configuration/xml-configuration-file.h"
 #include "html_document.h"
 
 #include "tlen.h"
@@ -94,36 +86,38 @@ TlenProtocol::TlenProtocol(Account account, ProtocolFactory *factory): Protocol(
 	CurrentAvatarService = new TlenAvatarService(this);
 	CurrentPersonalInfoService = new TlenPersonalInfoService(this);
 
-	connect(BuddyManager::instance(), SIGNAL(buddyAdded(Buddy &)),
-			this, SLOT(contactAdded(Buddy &)));
-	connect(BuddyManager::instance(), SIGNAL(buddyRemoved(Buddy &)),
-			this, SLOT(contactRemoved(Buddy &)));
-	connect(BuddyManager::instance(), SIGNAL(contactAdded(Buddy &, Account)),
-			this, SLOT(contactAboutToBeRemoved(Buddy & , Account)));
-	connect(BuddyManager::instance(), SIGNAL(contactAboutToBeRemoved(Buddy &, Account)),
-			this, SLOT(contactAboutToBeRemoved(Buddy &, Account)));
+	connect(ContactManager::instance(), SIGNAL(contactAboutToBeAdded(Contact)),
+			this, SLOT(contactAboutToBeAdded(Contact)));
+	connect(ContactManager::instance(), SIGNAL(contactAdded(Contact)),
+			this, SLOT(contactAdded(Contact)));
+	connect(ContactManager::instance(), SIGNAL(contactAboutToBeRemoved(Contact)),
+			this, SLOT(contactAboutToBeRemoved(Contact)));
+	connect(ContactManager::instance(), SIGNAL(contactRemoved(Contact)),
+			this, SLOT(contactRemoved(Contact)));
+	connect(ContactManager::instance(), SIGNAL(contactIdChanged(Contact, const QString &)),
+			this, SLOT(contactIdChanged(Contact, const QString &)));
+
 	connect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy &)),
 			this, SLOT(contactUpdated(Buddy &)));
-	connect(BuddyManager::instance(), SIGNAL(contactIdChanged(Buddy &, Account, const QString &)),
-			this, SLOT(contactAccountIdChanged(Buddy &, Account, const QString &)));
 
 	kdebugf2();
 }
 
 TlenProtocol::~TlenProtocol()
 {
-	disconnect(BuddyManager::instance(), SIGNAL(buddyAdded(Buddy &)),
-			this, SLOT(contactAdded(Buddy &)));
-	disconnect(BuddyManager::instance(), SIGNAL(buddyRemoved(Buddy &)),
-			this, SLOT(contactRemoved(Buddy &)));
-	disconnect(BuddyManager::instance(), SIGNAL(contactAdded(Buddy &, Account)),
-			this, SLOT(contactAboutToBeRemoved(Buddy & , Account)));
-	disconnect(BuddyManager::instance(), SIGNAL(contactAboutToBeRemoved(Buddy &, Account)),
-			this, SLOT(contactAboutToBeRemoved(Buddy &, Account)));
+	disconnect(ContactManager::instance(), SIGNAL(contactAboutToBeAdded(Contact)),
+			this, SLOT(contactAboutToBeAdded(Contact)));
+	disconnect(ContactManager::instance(), SIGNAL(contactAdded(Contact)),
+			this, SLOT(contactAdded(Contact)));
+	disconnect(ContactManager::instance(), SIGNAL(contactAboutToBeRemoved(Contact)),
+			this, SLOT(contactAboutToBeRemoved(Contact)));
+	disconnect(ContactManager::instance(), SIGNAL(contactRemoved(Contact)),
+			this, SLOT(contactRemoved(Contact)));
+	disconnect(ContactManager::instance(), SIGNAL(contactIdChanged(Contact, const QString &)),
+			this, SLOT(contactIdChanged(Contact, const QString &)));
+
 	disconnect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy &)),
 			this, SLOT(contactUpdated(Buddy &)));
-	disconnect(BuddyManager::instance(), SIGNAL(contactIdChanged(Buddy &, Account, const QString &)),
-			this, SLOT(contactAccountIdChanged(Buddy &, Account, const QString &)));
 
 	logout();
 }
@@ -132,12 +126,7 @@ void TlenProtocol::fetchAvatars(QString jid, QString type, QString md5)
 {
 	kdebugf();
 
-	Buddy buddy = account().getBuddyById(jid);
-
- 	if (buddy.isAnonymous())
-		buddy.setAnonymous(false);
-
-	Contact contact = ContactManager::instance()->byId(account(), jid);
+	Contact contact = ContactManager::instance()->byId(account(), jid, true);
 	CurrentAvatarService->fetchAvatar(contact);
 
 	kdebugf2();
@@ -295,7 +284,7 @@ bool TlenProtocol::sendMessage(Chat chat, FormattedMessage &formattedMessage)
 
 	HtmlDocument::escapeText(plain);
 
-	Message message(chat, Message::TypeSent, Core::instance()->myself());
+	Message message(chat, Message::TypeSent, account().accountContact());
 	message
 		.setContent(plain)
 		.setSendDate(QDateTime::currentDateTime())
@@ -343,9 +332,8 @@ void TlenProtocol::chatMsgReceived(QDomNode n)
 	//		w->displayMsg(Tlen->decode(body.toUtf8()),timeStamp);
 
 	// TODO - zaimplementowac to samo w ContactList
-	Buddy buddy = account().getBuddyById(TlenClient->decode(from));
-	//Contact contact = 
-	BuddySet contacts = BuddySet(buddy);
+	Contact contact = ContactManager::instance()->byId(account(), TlenClient->decode(from), true);
+	ContactSet contacts = ContactSet(contact);
 
 	time_t msgtime = timeStamp.toTime_t();
 	FormattedMessage formattedMessage(TlenClient->decode(body));
@@ -355,14 +343,14 @@ void TlenProtocol::chatMsgReceived(QDomNode n)
 	kdebugm(KDEBUG_WARNING, "Tlen message to %s\n%s", qPrintable(from), qPrintable(body));
 
 	// TODO  : contacts?
-	Chat chat = this->findChat(contacts);
-	emit receivedMessageFilter(chat, buddy, formattedMessage.toPlain(), msgtime, ignore);
+	Chat chat = ChatManager::instance()->findChat(contacts);
+	emit receivedMessageFilter(chat, contact, formattedMessage.toPlain(), msgtime, ignore);
 	if (ignore)
 		return;
 
 	HtmlDocument::escapeText(plain);
 
-	Message message(chat, Message::TypeReceived, buddy);
+	Message message(chat, Message::TypeReceived, contact);
 	message
 		.setContent(plain)
 		.setSendDate(timeStamp)
@@ -421,7 +409,7 @@ Buddy TlenProtocol::nodeToBuddy(QDomNode node)
 		}
 		else if (mmName == "s")
 		{
-			result.setGender((BuddyShared::BuddyGender)mm.text().toUShort());
+			result.setGender((BuddyGender)mm.text().toUShort());
 		}
 		else if (mmName == "c")
 		{
@@ -453,9 +441,9 @@ Buddy TlenProtocol::nodeToBuddy(QDomNode node)
 		}
 	}
 
-	//result.setStatus();
+	//contact.setStatus();
 
-	result.addContact(contact);
+	contact.setOwnerBuddy(result);
 	return result;
 }
 
@@ -496,7 +484,7 @@ void TlenProtocol::contactAboutToBeRemoved(Contact contact)
 }
 
 
-void TlenProtocol::contactAccountIdChanged(Contact contact, const QString &oldId)
+void TlenProtocol::contactIdChanged(Contact contact, const QString &oldId)
 {
 	if (contact.contactAccount() != account() || !isConnected() || !TlenClient)
 		return;
@@ -510,40 +498,20 @@ void TlenProtocol::itemReceived(QString jid, QString name, QString subscription,
 	kdebugf();
 	kdebugm(KDEBUG_WARNING, "Tlen contact rcv %s\n", qPrintable(jid));
 
-	Buddy buddy = Buddy::create();
+	Contact contact = ContactManager::instance()->byId(account(), jid, true);
+	Buddy buddy = BuddyManager::instance()->byContact(contact, true);
 
-	Contact contact = ContactManager::instance()->byId(account(), jid);
-	if (contact.isNull())
-	{
-		contact = Contact::create();
-		contact.setContactAccount(account());
-		contact.setOwnerBuddy(buddy);
-		contact.setId(jid);
-
-		TlenContactDetails *tlenDetails = new TlenContactDetails(contact);
-		tlenDetails->setState(StorableObject::StateNew);
-		contact.setDetails(tlenDetails);
-		
-		buddy.addContact(contact);
-		//ContactManager::instance()->addContact(contact);
-		BuddyManager::instance()->addItem(buddy);
-		//buddy.store();
-	}
-	else
-		buddy = contact.ownerBuddy();
-
-	if(name.isEmpty())
-		buddy.setDisplay(jid);
+	if (name.isEmpty())
+	{/*buddy.setDisplay(jid);*/} // BM sets display
 	else
 		buddy.setDisplay(name);
 
-	if(!group.isEmpty())
+	if (!group.isEmpty())
 		buddy.addToGroup(GroupManager::instance()->byName(group, true /* create group */));
 
- 	if (buddy.isAnonymous())
-		buddy.setAnonymous(false);
+	buddy.setAnonymous(false);
 
-	// remember to set every contact offline after add to contact list
+	// TODO: 0.6.6 remember to set every contact offline after add to contact list
 	//presenceChanged(jid, "unavailable", QString::null);
 
 	kdebugf2();
@@ -590,35 +558,17 @@ void TlenProtocol::presenceChanged(QString from, QString newstatus, QString desc
 
 	// find id
 	
-	Contact contact = ContactManager::instance()->byId(account(), jid);
-	Buddy buddy = contact.ownerBuddy();
+	Contact contact = ContactManager::instance()->byId(account(), jid, true);
+	Buddy buddy = BuddyManager::instance()->byContact(contact, true);
+
+	if (buddy.isAnonymous())
+		buddy.setAnonymous(false);
 
 	// id resource add new contact
 	if (jid != from)
 	{
-		Contact contactRes = ContactManager::instance()->byId(account(), from);
+		Contact contactRes = ContactManager::instance()->byId(account(), from, true);
 		contactRes.setOwnerBuddy(buddy);
-
-		//if (contactRes.ownerBuddy().isNull())
-		//{
- 		//	contactRes.setOwnerBuddy(buddy);
-		//}
-
-		/*if (contactRes.isNull())
-		{
-			contactRes = Contact();
-			contactRes.setContactAccount(account());
-			contactRes.setOwnerBuddy(buddy);
-			contactRes.setId(from);
-
-			TlenContactDetails *tlenDetails = new TlenContactDetails(contactRes);
-			contactRes.setDetails(tlenDetails);
-			
-			buddy.addContact(contact);
-			ContactManager::instance()->addContact(contact);
-			BuddyManager::instance()->addBuddy(buddy);
-			buddy.store();
-		}*/
 
 		Status oldStatus = contactRes.currentStatus();
 		contactRes.setCurrentStatus(status);
@@ -626,48 +576,16 @@ void TlenProtocol::presenceChanged(QString from, QString newstatus, QString desc
 		if (!TypingUsers[from].isEmpty())
 			TypingUsers[from] = description;
 
-		emit buddyStatusChanged(contactRes, oldStatus);
+		emit contactStatusChanged(contactRes, oldStatus);
+		
+		// if general jid status was same so need to set same also or calc some
+		if (contact.currentStatus() == oldStatus)
+		{
+			contact.setCurrentStatus(status);
+			emit contactStatusChanged(contact, oldStatus);
+		}
 		return;
 	}
-
-// 	Contact contact = ContactManager::instance()->byId(account(), from);
-// 	//Contact contactRes = ContactManager::instance()->byId(account(), from);
-// 	//Contact contact = ContactManager::instance()->byId(account(), from);
-// 	//kdebugm(KDEBUG_WARNING, "Tlen contact: j=%s i=%s u=%s b=%s\n", 
-// 	//	qPrintable(jid),qPrintable(contact.id()), qPrintable(contact.uuid().toString()),qPrintable(contact.ownerBuddy().uuid().toString()));
-// 
-// 	kdebugm(KDEBUG_WARNING, "Tlen status change: %s %s\n%s", qPrintable(from), qPrintable(newstatus), qPrintable(description));
-// 
-// 	
-// 	//if (contact.isNull())
-// 	//	return;
-// 
-// 	if (jid != from)
-// 	{
-// 		Contact contactRes = ContactManager::instance()->byId(account(), jid);
-// 		if (!contactRes.isNull())
-// 		{
-// 			contactRes.ownerBuddy().addContact(contact);
-// 			contact.setOwnerBuddy(contactRes.ownerBuddy());
-// 		}
-// 	}
-// 
-// 	Buddy buddy = contact.ownerBuddy();
-// 	if (buddy.isAnonymous())
-// 		buddy.setAnonymous(false);
-
-	//kdebugm(KDEBUG_WARNING, "Tlen buddy: B:%s count:%d c1:%s c2:%s", qPrintable(buddy.display()), buddy.contacts().count(), qPrintable(contact.id()), qPrintable(contactRes.id()));
-
-	// add resource contact to jid contact
-	//contactRes.setOwnerBuddy(contact.ownerBuddy());
-	//Buddy buddy = account().getBuddyById(jid);
-	//buddy.addContact(contact);
-	//contact.setOwnerBuddy(buddy);
-
-	//if (buddy.isAnonymous())
-	//	buddy.setAnonymous(false);
-	//if (contact.ownerBuddy().isAnonymous())
-	//	contact.ownerBuddy().setAnonymous(false);
 
 	/* is this contact realy anonymous? - need deep check
 	if (contact.isAnonymous())
@@ -685,7 +603,7 @@ void TlenProtocol::presenceChanged(QString from, QString newstatus, QString desc
 	if (!TypingUsers[from].isEmpty())
 		TypingUsers[from] = description;
 
-	emit buddyStatusChanged(contact, oldStatus);
+	emit contactStatusChanged(contact, oldStatus);
 	kdebugf2();
 }
 
@@ -755,7 +673,7 @@ void TlenProtocol::chatNotify(QString from, QString type)
 	Status oldStatus = contact.currentStatus();
 	Status newStatus = contact.currentStatus();
 
-	if(type=="t")
+	if (type=="t")
 	{
 		if (TypingUsers.contains(from))
 			return;
@@ -765,16 +683,16 @@ void TlenProtocol::chatNotify(QString from, QString type)
 		TypingUsers.insert(from, oldDesc);
 		newStatus.setDescription(QString("[pisze] %1").arg(oldDesc));
 		contact.setCurrentStatus(newStatus);
-		emit buddyStatusChanged(contact, oldStatus);
+		emit contactStatusChanged(contact, oldStatus);
 	}
-	else if(type=="u")
+	else if (type=="u")
 	{
 		//typing stop
 		QString oldDesc = TypingUsers[from];
 		TypingUsers.remove(from);
 		newStatus.setDescription(oldDesc);
 		contact.setCurrentStatus(newStatus);
-		emit buddyStatusChanged(contact, oldStatus);
+		emit contactStatusChanged(contact, oldStatus);
 	}
 	else if(type=="a")
 	{

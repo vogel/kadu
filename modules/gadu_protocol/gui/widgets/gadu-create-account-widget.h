@@ -25,37 +25,18 @@ class GaduCreateAccountWidget : public AccountCreateWidget
 {
 	Q_OBJECT
 
-	QList<QWidget *> HaveNumberWidgets;
-	QList<QWidget *> DontHaveNumberWidgets;
-
-	QLineEdit *AccountName;
-	QLineEdit *AccountId;
-	QLineEdit *AccountPassword;
-	ChooseIdentityWidget *HaveNumberIdentity;
-	QCheckBox *HaveNumberRememberPassword;
-
-	QPushButton *AddThisAccount;
-	QPushButton *RemindPassword;
-
 	QLineEdit *NewPassword;
 	QLineEdit *ReNewPassword;
+	QCheckBox *RememberPassword;	
 	QLineEdit *EMail;
-	ChooseIdentityWidget *DontHaveNumberIdentity;
-	QCheckBox *DontHaveNumberRememberPassword;
-
+	ChooseIdentityWidget *Identity;
 	TokenWidget *tokenWidget;
 
-	QPushButton *registerAccount;
 
 	void createGui();
-	void createIHaveAccountGui(QGridLayout *gridLayout, int &row);
-	void createRegisterAccountGui(QGridLayout *gridLayout, int &row);
 
 private slots:
-	void haveNumberChanged(bool haveNumber);
-	void iHaveAccountDataChanged();
-	void addThisAccount();
-	void registerAccountDataChanged();
+	void dataChanged();
 	void registerNewAccount();
 	void registerNewAccountFinished(GaduServerRegisterAccount *gsra);
 

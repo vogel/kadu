@@ -9,6 +9,7 @@
 
 #include <QtWebKit/QWebFrame>
 
+#include "accounts/account.h"
 #include "configuration/configuration-file.h"
 #include "misc/syntax-list.h"
 #include "parser/parser.h"

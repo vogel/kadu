@@ -47,17 +47,17 @@ private slots:
 	void statusChanged(Message::Status);
 
 public:
-	Message(Chat chat = Chat::null, Type type = TypeUnknown, Buddy sender = Buddy::null);
+	Message(Chat chat = Chat::null, Type type = TypeUnknown, Contact sender = Contact::null);
 	Message(const Message &copy);
 	virtual ~Message();
 
 	void operator = (const Message &copy);
 
-	Chat  chat() const;
+	Chat chat() const;
 	Message & setChat(Chat chat);
 
-	Buddy sender() const;
-	Message & setSender(Buddy sender);
+	Contact sender() const;
+	Message & setSender(Contact sender);
 
 	QString content() const;
 	Message & setContent(const QString &content);

@@ -17,6 +17,7 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "buddies/buddy-manager.h"
+#include "buddies/buddy-shared.h"
 #include "chat/chat.h"
 #include "chat/chat-manager.h"
 #include "chat/message/message.h"
@@ -61,17 +62,17 @@ void disableNonHistoryContacts(Action *action)
 {
 	kdebugf();
 	action->setEnabled(false);
-	BuddySet contacts = action->buddies();
+	ContactSet contacts = action->contacts();
 
 	if (!contacts.count())
 		return;
 
-	foreach (const Buddy &buddy, contacts)
+	foreach (const Contact &contact, contacts)
 	{
-		if (Core::instance()->myself() == buddy)
+		if (Core::instance()->myself() == contact.ownerBuddy())
 			return;
 
-		Account account = buddy.prefferedAccount();
+		Account account = contact.contactAccount();
 		if (!account.protocolHandler() || !account.protocolHandler()->chatService())
 			return;
 	}

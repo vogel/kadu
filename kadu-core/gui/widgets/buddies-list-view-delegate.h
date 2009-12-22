@@ -63,4 +63,7 @@ public:
 	virtual void configurationUpdated();
 };
 
+// for MOC
+#include "contacts/contact.h"
+
 #endif // BUDDIES_LIST_VIEW_DELEGATE_H

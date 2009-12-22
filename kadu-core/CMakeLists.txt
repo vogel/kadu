@@ -6,7 +6,6 @@ set (kadu_SRCS
 	accounts/accounts-aware-object.cpp
 
 	accounts/filter/id-regular-expression-filter.cpp
-	accounts/filter/non-in-contact-filter.cpp
 
 	accounts/model/accounts-model.cpp
 	accounts/model/accounts-proxy-model.cpp
@@ -33,7 +32,6 @@ set (kadu_SRCS
 	buddies/filter/account-buddy-filter.cpp
 	buddies/filter/anonymous-buddy-filter.cpp
 	buddies/filter/anonymous-without-messages-buddy-filter.cpp
-	buddies/filter/buddy-mergable-filter.cpp
 	buddies/filter/buddy-name-filter.cpp
 	buddies/filter/group-buddy-filter.cpp
 	buddies/filter/has-description-buddy-filter.cpp
@@ -283,7 +281,6 @@ set (kadu_MOC_SRCS
 
 	accounts/filter/abstract-account-filter.h
 	accounts/filter/id-regular-expression-filter.h
-	accounts/filter/non-in-contact-filter.h
 
 	accounts/model/accounts-model.h
 	accounts/model/accounts-proxy-model.h
@@ -299,8 +296,6 @@ set (kadu_MOC_SRCS
 	buddies/filter/account-buddy-filter.h
 	buddies/filter/anonymous-buddy-filter.h
 	buddies/filter/anonymous-without-messages-buddy-filter.h
-	buddies/filter/buddy-mergable-filter.h
-	#buddies/filter/buddy-name-filter.h
 	buddies/filter/group-buddy-filter.h
 	buddies/filter/has-description-buddy-filter.h
 	buddies/filter/non-account-buddy-filter.h
@@ -308,7 +303,6 @@ set (kadu_MOC_SRCS
 	buddies/filter/online-and-description-buddy-filter.h
 	buddies/filter/online-buddy-filter.h
 
-	#buddies/model/abstract-buddies-model.h
 	buddies/model/buddy-list-model.h
 	buddies/model/buddies-model.h
 	buddies/model/buddies-model-base.h
@@ -360,6 +354,7 @@ set (kadu_MOC_SRCS
 	gui/actions/action-description.h
 
 	gui/widgets/account-buddy-list-widget.h
+	gui/widgets/account-add-widget.h
 	gui/widgets/account-create-widget.h
 	gui/widgets/account-edit-widget.h
 	gui/widgets/buddies-line-edit.h

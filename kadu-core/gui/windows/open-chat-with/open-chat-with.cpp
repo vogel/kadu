@@ -17,6 +17,8 @@
 #include "buddies/model/buddy-list-model.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-set.h"
+#include "buddies/buddy-shared.h"
+#include "chat/chat-manager.h"
 #include "configuration/xml-configuration-file.h"
 #include "core/core.h"
 #include "gui/widgets/chat-widget-manager.h"
@@ -46,7 +48,7 @@ OpenChatWith::OpenChatWith(QWidget *parent)
 	
 	BuddiesWidget = new BuddiesListView(0); // TODO: 0.6.6 fix that one
 	//ContactsWidget->setModel(new ContactsModel(ContactManager::instance(), this));
-	connect(BuddiesWidget, SIGNAL(contactActivated(Buddy)), this, SLOT(openChat(Buddy)));
+	connect(BuddiesWidget, SIGNAL(chatActivated(Chat)), this, SLOT(openChat()));
 	MainLayout->addWidget(BuddiesWidget);
 	
 	QWidget *buttons = new QWidget;
@@ -97,18 +99,18 @@ void OpenChatWith::inputChanged(const QString &text)
 	kdebugf2();
 }
 
-void OpenChatWith::openChat(Buddy buddy)
+void OpenChatWith::openChat()
 {
 	BuddiesListView *widget = dynamic_cast<BuddiesListView *>(sender());
 	if (!widget)
 		return;
 
-	Account account = AccountManager::instance()->defaultAccount();
-	BuddySet buddies = widget->selectedBuddies();
+	ContactSet contacts = widget->selectedContacts();
+	BuddySet buddies = contacts.toBuddySet();
 
-	if (!account.isNull() && !buddies.isEmpty() && !buddies.contains(Core::instance()->myself()))
+	if (!buddies.isEmpty() && !buddies.contains(Core::instance()->myself()))
 	{
-		Chat chat = account.protocolHandler()->findChat(buddies);
+		Chat chat = ChatManager::instance()->findChat(contacts);
 		if (chat)
 		{
 			ChatWidgetManager::instance()->sendMessage(chat);
@@ -117,7 +119,7 @@ void OpenChatWith::openChat(Buddy buddy)
 		}
 	}
 
-	buddy = *buddies.begin();
+	Buddy buddy = *buddies.begin();
 	if (buddy.mobile().isEmpty() && !buddy.email().isEmpty())
 		openMailClient(buddy.email());
 
@@ -126,5 +128,5 @@ void OpenChatWith::openChat(Buddy buddy)
 
 void OpenChatWith::inputAccepted()
 {
-	openChat(Buddy::null);
+	openChat();
 }

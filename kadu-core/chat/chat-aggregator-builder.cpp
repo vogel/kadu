@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include "accounts/account-manager.h"
+#include "buddies/buddy-shared.h"
 #include "chat/aggregate-chat.h"
 #include "protocols/protocol.h"
 
@@ -22,13 +23,12 @@ ChatAggregatorBuilder::~ChatAggregatorBuilder()
 {
 }
 
-Chat ChatAggregatorBuilder::buildAggregateChat(BuddySet contacts)
+Chat ChatAggregatorBuilder::buildAggregateChat(BuddySet buddies)
 {
 	QList<Chat> chats;
-	foreach (Account account, AccountManager::instance()->items())
+	foreach (Chat chat, ChatManager::instance()->allItems())
 	{
-		Chat chat = ChatManager::instance()->findChat(contacts.toContactSet(account), false);
-		if (chat)
+		if (chat.contacts().toBuddySet() == buddies)
 			chats.append(chat);
 	}
 

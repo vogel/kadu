@@ -71,7 +71,7 @@ void GaduPersonalInfoService::updatePersonalInfo(Buddy buddy)
 	if (0 != buddy.birthYear())
 		gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, (const char *)(unicode2cp(QString::number(buddy.birthYear())).data()));
 	// TODO: 0.6.6
-	if (BuddyShared::GenderUnknown != buddy.gender())
+	if (GenderUnknown != buddy.gender())
 		gg_pubdir50_add(req, GG_PUBDIR50_GENDER, (const char *)(unicode2cp(QString::number(buddy.gender())).data()));
 	if (!buddy.familyName().isEmpty())
 		gg_pubdir50_add(req, GG_PUBDIR50_FAMILYNAME, (const char *)(unicode2cp(buddy.familyName()).data()));

@@ -21,9 +21,11 @@
 #include "accounts/account-manager.h"
 #include "buddies/avatar.h"
 #include "buddies/buddy-manager.h"
+#include "buddies/buddy-shared.h"
 #include "contacts/contact.h"
 #include "contacts/contact-manager.h"
 #include "configuration/configuration-contact-data-manager.h"
+#include "gui/windows/message-dialog.h"
 #include "icons-manager.h"
 #include "misc/misc.h"
 #include "model/actions-proxy-model.h"
@@ -192,8 +194,9 @@ void BuddyGeneralConfigurationWidget::addAccountDataRow(Contact data)
 	QComboBox *accountsCombo = new QComboBox(accountRow);
 	QPushButton *unmergeButton = new QPushButton(IconsManager::instance()->loadIcon("CloseWindowButton"), tr("Unmerge contact..."), accountRow);
 	unmergeButton->setDisabled(ContactsAccounts.count() == 0 && MyBuddy.contacts().count() <= 1);
-	connect(unmergeButton, SIGNAL(clicked(bool)), accountRow, SLOT(hide()));
-	connect(unmergeButton, SIGNAL(clicked(bool)), contactLineEdit, SLOT(clear()));
+	connect(unmergeButton, SIGNAL(clicked(bool)), this, SLOT(unmergeContact()));
+	connect(this, SIGNAL(doUnmergeContact()), accountRow, SLOT(hide()));
+	connect(this, SIGNAL(doUnmergeContact()), contactLineEdit, SLOT(clear()));
 
 	accountRowLayout->addWidget(contactLineEdit, 0, 0, 1, 1);
 	accountRowLayout->addWidget(inLabel, 0, 1, 1, 1);
@@ -223,6 +226,13 @@ void BuddyGeneralConfigurationWidget::addAccountDataRow(Contact data)
 		contactLineEdit->setText(data.id());
 }
 
+void BuddyGeneralConfigurationWidget::unmergeContact()
+{
+	//TODO 0.6.6 how to get contact ID here?
+	if (MessageDialog::ask(qApp->translate("MergedContactProperties", "Are you sure you want to remove the contact <contact name> from the merged contact %1?")./*arg().*/arg(MyBuddy.display())))
+		emit doUnmergeContact();
+}
+
 void BuddyGeneralConfigurationWidget::saveConfiguration()
 {
 	MyBuddy.setDisplay(DisplayEdit->text());
@@ -247,29 +257,26 @@ void BuddyGeneralConfigurationWidget::saveConfiguration()
 				contact.setId(contactId);
 			else
 			{
-				MyBuddy.removeContact(contact);
-				ContactManager::instance()->removeItem(contact);
+				contact.setOwnerBuddy(Buddy::null);
 			}
 		}
 		else
 		{
-			// TODO 0.6.6
-			foreach (const Contact &tmpcontact, MyBuddy.contacts())
-				if (tmpcontact.id() == contactId) // check if user has only changed account for previous existing ID
-				{
-					MyBuddy.removeContact(tmpcontact); // if so, remove old CAD, otherwise there will appear 2 identical contacts with different accounts
-					ContactManager::instance()->removeItem(tmpcontact);
-				}
+			// TODO 0.6.6 SHOULD just change ID of existing contact
+// 			foreach (const Contact &tmpcontact, MyBuddy.contacts())
+// 				if (tmpcontact.id() == contactId) // check if user has only changed account for previous existing ID
+// 				{
+// 					MyBuddy.removeContact(tmpcontact); // if so, remove old CAD, otherwise there will appear 2 identical contacts with different accounts
+// 					ContactManager::instance()->removeItem(tmpcontact);
+// 				}
 
-			Contact contact;
+			Contact contact = Contact::create();
 			contact.setContactAccount(account);
 			contact.setOwnerBuddy(MyBuddy);
 			contact.setId(contactId);
 			// TODO crash here
 			contact.setDetails(account.protocolHandler()->protocolFactory()->createContactDetails(contact));
 			ContactManager::instance()->addItem(contact);
-
-			MyBuddy.addContact(contact);
 		}
 	}
 }

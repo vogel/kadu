@@ -11,7 +11,7 @@
 
 #include "message.h"
 
-Message::Message(Chat chat, Type type, Buddy sender) :
+Message::Message(Chat chat, Type type, Contact sender) :
 		Data(new MessageData(chat, type, sender))
 {
 	if (Data.data())
@@ -61,14 +61,14 @@ Message & Message::setChat(Chat chat)
 	return *this;
 }
 
-Buddy Message::sender() const
+Contact Message::sender() const
 {
 	return Data.data()
 			? Data->sender()
-			: Buddy::null;
+			: Contact::null;
 }
 
-Message & Message::setSender(Buddy sender)
+Message & Message::setSender(Contact sender)
 {
 	if (Data.data())
 		Data->setSender(sender);

@@ -53,10 +53,10 @@ void GaduSearchService::searchNext()
 	}
 	switch (Query.SearchBuddy.gender())
 	{
-		case BuddyShared::GenderMale:
+		case GenderMale:
 			gg_pubdir50_add(req, GG_PUBDIR50_GENDER, GG_PUBDIR50_GENDER_MALE);
 			break;
-		case BuddyShared::GenderFemale:
+		case GenderFemale:
 			gg_pubdir50_add(req, GG_PUBDIR50_GENDER, GG_PUBDIR50_GENDER_FEMALE);
 			break;
 	}

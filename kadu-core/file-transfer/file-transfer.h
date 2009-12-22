@@ -12,6 +12,7 @@
 
 #include <QtCore/QObject>
 
+#include "accounts/account.h"
 #include "contacts/contact.h"
 #include "storage/storable-object.h"
 
@@ -19,7 +20,6 @@
 
 class QFile;
 
-class Account;
 class Buddy;
 
 class KADUAPI FileTransfer : public QObject, public StorableObject

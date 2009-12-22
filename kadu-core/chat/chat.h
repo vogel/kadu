@@ -24,6 +24,7 @@ class StoragePoint;
 
 class KADUAPI Chat : public SharedBase<ChatShared>
 {
+	KaduSharedBaseClass(Chat)
 
 public:
 	static Chat create();
@@ -34,9 +35,8 @@ public:
 	Chat(ChatShared *data);
 	Chat(QObject *data);
 	Chat(const Chat &copy);
-	virtual ~Chat();
 
-	Chat & operator = (const Chat &copy);
+	virtual ~Chat();
 
 	void refreshTitle();
 

@@ -21,6 +21,14 @@ class BuddiesListWidget : public QWidget
 {
 	Q_OBJECT
 
+public:
+	enum FilterPosition
+	{
+		FilterAtTop,
+		FilterAtBottom
+	};
+
+private:
 	BuddiesLineEdit *NameFilterEdit;
 	BuddiesListView *View;
 	BuddyNameFilter *NameFilter;
@@ -31,7 +39,7 @@ private slots:
 	void nameFilterChanged(const QString &filter);
 
 public:
-	explicit BuddiesListWidget(MainWindow *mainWindow, QWidget *parent = 0);
+	explicit BuddiesListWidget(FilterPosition filterPosition, MainWindow *mainWindow, QWidget *parent = 0);
 	virtual ~BuddiesListWidget();
 
 	BuddiesListView * view() { return View; }

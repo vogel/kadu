@@ -8,8 +8,9 @@
  ***************************************************************************/
 
 #include "accounts/account-manager.h"
+#include "buddies/buddy-set.h"
+#include "buddies/buddy-shared.h"
 #include "contacts/contact-manager.h"
-#include "buddies/buddy-list.h"
 
 #include "contact-set.h"
 

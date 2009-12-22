@@ -14,9 +14,9 @@
 
 #include "configuration/configuration-aware-object.h"
 #include "buddies/buddy-list.h"
+#include "buddies/group.h"
 
 class GroupBuddyFilter;
-class Group;
 
 class GroupTabBar : public QTabBar, ConfigurationAwareObject
 {

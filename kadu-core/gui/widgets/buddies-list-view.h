@@ -28,6 +28,7 @@ class Buddy;
 class BuddySet;
 class BuddiesListViewDelegate;
 class BuddiesModelProxy;
+class ContactSet;
 class MainWindow;
 
 class BuddiesListView : public QTreeView
@@ -36,6 +37,7 @@ class BuddiesListView : public QTreeView
 
 	MainWindow *MyMainWindow;
 	BuddiesListViewDelegate *Delegate;
+	AbstractBuddiesModel *Model;
 	BuddiesModelProxy *ProxyModel;
 
 	Buddy buddyAt(const QModelIndex &index) const;
@@ -97,8 +99,10 @@ public:
 	void addFilter(AbstractBuddyFilter *filter);
 	void removeFilter(AbstractBuddyFilter *filter);
 
-	Buddy currentBuddy() const;
-	BuddySet selectedBuddies() const;
+	void selectBuddy(Buddy buddy);
+
+	Contact currentContact() const;
+	ContactSet selectedContacts() const;
 
 	Chat  currentChat() const;
 
@@ -107,8 +111,9 @@ public:
 
 signals:
 	void chatActivated(Chat chat);
-	void buddySelectionChanged();
+	void buddyActivated(Buddy buddy);
 
+	void buddySelectionChanged();
 	void currentBuddyChanged(Buddy buddy);
 
 };

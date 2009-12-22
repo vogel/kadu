@@ -30,6 +30,7 @@ class XmlConfigFile;
 
 class KADUAPI Account : public SharedBase<AccountShared>
 {
+	KaduSharedBaseClass(Account)
 
 public:
 	static Account create();
@@ -42,12 +43,7 @@ public:
 	Account(const Account &copy);
 	virtual ~Account();
 
-	Account & operator = (const Account &copy);
-
 	void importProxySettings();
-
-	Buddy getBuddyById(const QString &id);
-	Buddy createAnonymous(const QString &id);
 
 	StatusContainer * statusContainer() { return data(); }
 
@@ -55,6 +51,7 @@ public:
 	KaduSharedBase_Property(QString, protocolName, ProtocolName)
 	KaduSharedBase_Property(Protocol *, protocolHandler, ProtocolHandler)
 	KaduSharedBase_Property(AccountDetails *, details, Details)
+	KaduSharedBase_PropertyRead(Contact, accountContact, AccountContact)
 	KaduSharedBase_Property(QString, name, Name)
 	KaduSharedBase_Property(QString, id, Id)
 	KaduSharedBase_Property(bool, rememberPassword, RememberPassword)

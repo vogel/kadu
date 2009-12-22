@@ -7,6 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "chat/type/chat-type-manager.h"
 #include "chat/chat-details-conference.h"
 #include "chat/chat-details-simple.h"
 #include "contacts/contact-shared.h"
@@ -65,6 +66,8 @@ void ChatManager::detailsUnloaded(Chat chat)
 
 Chat ChatManager::findChat(ContactSet contacts, bool create)
 {
+	ensureLoaded();
+
 	if (contacts.size() == 0)
 		return Chat::null;
 
@@ -78,8 +81,10 @@ Chat ChatManager::findChat(ContactSet contacts, bool create)
 		if (account != contact.contactAccount())
 			return Chat::null;
 
-	foreach (const Chat &c, ChatManager::instance()->items())
-		if (c.contacts() == contacts)
+	ChatTypeManager::instance(); // load standard chat types
+	
+	foreach (const Chat &c, allItems()) // search allItems, chats can be not loaded yet
+		if ((c.type() == QLatin1String("Simple") || c.type() == QLatin1String("Conference")) && c.contacts() == contacts)
 			return c;
 
 	if (!create)
@@ -108,7 +113,9 @@ Chat ChatManager::findChat(ContactSet contacts, bool create)
 		return Chat::null;
 
 	chat.setDetails(details);
-	addItem(chat);
+	//TODO 0.6.6:
+	chat.setType(details->type()->name());
 
+	addItem(chat);
 	return chat;
 }

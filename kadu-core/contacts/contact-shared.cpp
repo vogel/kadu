@@ -13,6 +13,7 @@
 #include "buddies/avatar-manager.h"
 #include "buddies/avatar-shared.h"
 #include "buddies/buddy-manager.h"
+#include "buddies/buddy-shared.h"
 #include "contacts/contact-details.h"
 #include "contacts/contact-manager.h"
 #include "protocols/protocol.h"
@@ -23,7 +24,6 @@ ContactShared * ContactShared::loadFromStorage(StoragePoint *storagePoint)
 {
 	ContactShared *result = new ContactShared();
 	result->setStorage(storagePoint);
-	result->load();
 
 	return result;
 }
@@ -59,6 +59,7 @@ void ContactShared::load()
 	Id = loadValue<QString>("Id");
 
 	ContactAccount = AccountManager::instance()->byUuid(loadValue<QString>("Account"));
+
 	QString buddyUuid = loadValue<QString>("Buddy");
 	if (buddyUuid.isNull())
 		buddyUuid = loadValue<QString>("Contact");
@@ -107,6 +108,13 @@ void ContactShared::store()
 	removeValue("Contact");
 }
 
+bool ContactShared::shouldStore()
+{
+	ensureLoaded();
+
+	return UuidStorableObject::shouldStore() && !Id.isEmpty() && !ContactAccount.uuid().isNull();
+}
+
 void ContactShared::emitUpdated()
 {
 	emit updated();
@@ -116,11 +124,12 @@ void ContactShared::setOwnerBuddy(Buddy buddy)
 {
 	if (OwnerBuddy == buddy)
 		return;
-	
+
 	if (!OwnerBuddy.isNull())
-		OwnerBuddy.removeContact(Contact(this));
+		OwnerBuddy.removeContact(this);
 
 	OwnerBuddy = buddy;
+
 	if (!OwnerBuddy.isNull())
 		OwnerBuddy.addContact(this);
 
@@ -143,8 +152,6 @@ void ContactShared::protocolUnregistered(ProtocolFactory *protocolFactory)
 	if (ContactAccount.protocolName() != protocolFactory->name())
 		return;
 
-	// TODO 0.6.6: if empty config must: store(),Details->store()
-	store();
 	setDetails(0);
 }
 
@@ -155,7 +162,9 @@ void ContactShared::detailsAdded()
 
 void ContactShared::detailsAboutToBeRemoved()
 {
-	details()->store();
+	// do not store contacts that are not in contact manager
+	if (ContactManager::instance()->allItems().contains(this))
+		details()->store();
 }
 
 void ContactShared::setId(const QString &id)

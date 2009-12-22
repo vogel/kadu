@@ -15,6 +15,7 @@
 #include "core/core.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-set.h"
+#include "contacts/contact-manager.h"
 #include "gui/windows/message-dialog.h"
 #include "misc/misc.h"
 
@@ -77,7 +78,7 @@ bool JabberChatService::sendMessage(Chat chat, FormattedMessage &formattedMessag
 
 	HtmlDocument::escapeText(plain);
 
-	Message message(chat, Message::TypeSent, Core::instance()->myself());
+	Message message(chat, Message::TypeSent, Protocol->account().accountContact());
 	message
 		.setContent(plain)
 		.setSendDate(QDateTime::currentDateTime())
@@ -105,9 +106,8 @@ void JabberChatService::clientMessageReceived(const XMPP::Message &msg)
 	if (msg.body().isEmpty())
 		return;
 
-	// TODO - zaimplementowac to samo w ContactList
-	Buddy buddy = Protocol->account().getBuddyById(msg.from().bare());
-	ContactSet contacts(buddy.prefferedContact());
+	Contact contact = ContactManager::instance()->byId(Protocol->account(), msg.from().bare(), true);
+	ContactSet contacts(contact);
 
 	time_t msgtime = msg.timeStamp().toTime_t();
 	FormattedMessage formattedMessage(msg.body());
@@ -116,13 +116,13 @@ void JabberChatService::clientMessageReceived(const XMPP::Message &msg)
 
 	bool ignore = false;
 	Chat chat = ChatManager::instance()->findChat(contacts, Protocol->account());
-	emit receivedMessageFilter(chat, buddy, plain, msgtime, ignore);
+	emit receivedMessageFilter(chat, contact, plain, msgtime, ignore);
 	if (ignore)
 		return;
 
 	HtmlDocument::escapeText(plain);
 
-	Message message(chat, Message::TypeReceived, buddy);
+	Message message(chat, Message::TypeReceived, contact);
 	message
 		.setContent(plain)
 		.setSendDate(msg.timeStamp())

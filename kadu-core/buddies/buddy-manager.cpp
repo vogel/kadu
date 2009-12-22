@@ -12,7 +12,9 @@
 #include "buddies/buddy.h"
 #include "buddies/buddy-list.h"
 #include "buddies/buddy-remove-predicate-object.h"
+#include "buddies/buddy-shared.h"
 #include "buddies/group-manager.h"
+#include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 #include "configuration/configuration-manager.h"
 #include "configuration/xml-configuration-file.h"
@@ -68,6 +70,9 @@ void BuddyManager::importConfiguration(XmlConfigFile *configurationStorage)
 
 		addItem(buddy);
 	}
+	
+	// flush configuration to save all changes
+	ConfigurationManager::instance()->flush();
 }
 
 void BuddyManager::load()
@@ -127,6 +132,35 @@ Buddy BuddyManager::byDisplay(const QString &display)
 	}
 
 	return Buddy::null;
+}
+
+Buddy BuddyManager::byId(Account account, const QString &id, bool create)
+{
+	ensureLoaded();
+
+	Contact contact = ContactManager::instance()->byId(account, id, create);
+	if (contact.isNull())
+		return Buddy::null;
+
+	return byContact(contact, create);
+}
+
+Buddy BuddyManager::byContact(Contact contact, bool create)
+{
+	ensureLoaded();
+
+	if (contact.isNull())
+		return Buddy::null;
+
+	if (!create || !contact.ownerBuddy().isNull())
+		return contact.ownerBuddy();
+
+	Buddy buddy = Buddy::create();
+	buddy.setDisplay(QString("%1: %2").arg(contact.contactAccount().name()).arg(contact.id()));
+	contact.setOwnerBuddy(buddy);
+	addItem(buddy);
+
+	return buddy;
 }
 
 BuddyList BuddyManager::buddies(Account account, bool includeAnonymous)

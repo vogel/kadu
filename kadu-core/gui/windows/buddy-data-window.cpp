@@ -24,11 +24,12 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "configuration/configuration-file.h"
-#include "configuration/xml-configuration-file.h"
 #include "buddies/buddy-manager.h"
+#include "buddies/buddy-shared.h"
 #include "buddies/group.h"
 #include "buddies/group-manager.h"
+#include "configuration/configuration-file.h"
+#include "configuration/xml-configuration-file.h"
 
 #include "contacts/contact.h"
 #include "gui/widgets/buddy-general-configuration-widget.h"

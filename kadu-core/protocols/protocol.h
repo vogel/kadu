@@ -92,8 +92,6 @@ public:
 
 	virtual bool validateUserID(QString &uid) = 0;
 
-	Chat findChat(BuddySet contacts, bool create = true);
-
 	NetworkState state() { return State; }
 	bool isConnected() { return (State == NetworkConnected); }
 
@@ -118,7 +116,7 @@ signals:
 	void disconnected(Account account);
 
 	void statusChanged(Account account, Status newStatus);
-	void buddyStatusChanged(Contact contact, Status oldStatus);
+	void contactStatusChanged(Contact contact, Status oldStatus);
 
 // TODO: REVIEW
 	void connectionError(Account account, const QString &server, const QString &reason);

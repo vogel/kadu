@@ -65,7 +65,9 @@ QVariant BuddyContactModel::data(const QModelIndex &index, int role) const
 				return QString("%1 (%2)").arg(data.id(), data.contactAccount().name());
 
 		case Qt::DecorationRole:
-			return data.contactAccount().protocolHandler()->icon();
+			return data.contactAccount().protocolHandler()
+				? data.contactAccount().protocolHandler()->icon()
+				: QIcon();
 
 		case ContactRole:
 			return QVariant::fromValue<Contact>(data);

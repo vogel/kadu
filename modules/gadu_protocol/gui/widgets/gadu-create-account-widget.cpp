@@ -49,168 +49,58 @@ void GaduCreateAccountWidget::createGui()
 
 	int row = 0;
 
-	QLabel *nameLabel = new QLabel(tr("Account name") + ":", this);
-	gridLayout->addWidget(nameLabel, row, 1, Qt::AlignRight);
-	AccountName = new QLineEdit(this);
-	gridLayout->addWidget(AccountName, row++, 2, 1, 2);
-
-	createIHaveAccountGui(gridLayout, row);
-	createRegisterAccountGui(gridLayout, row);
-
-	haveNumberChanged(true);
-}
-
-void GaduCreateAccountWidget::createIHaveAccountGui(QGridLayout *gridLayout, int &row)
-{
-	QRadioButton *haveNumber = new QRadioButton(tr("I have a Gadu-Gadu number"), this);
-	haveNumber->setChecked(true);
-	connect(haveNumber, SIGNAL(toggled(bool)), this, SLOT(haveNumberChanged(bool)));
-	gridLayout->addWidget(haveNumber, row++, 0, 1, 4);
-
-	QLabel *numberLabel = new QLabel(tr("Gadu-Gadu number") + ":", this);
-	gridLayout->addWidget(numberLabel, row, 1, Qt::AlignRight);
-	AccountId = new QLineEdit(this);
-	AccountId->setValidator(new QIntValidator(1, 999999999, this));
-	connect(AccountId, SIGNAL(textChanged(QString)), this, SLOT(iHaveAccountDataChanged()));
-	gridLayout->addWidget(AccountId, row++, 2, 1, 2);
-
-	QLabel *passwordLabel = new QLabel(tr("Password") + ":", this);
-	gridLayout->addWidget(passwordLabel, row, 1, Qt::AlignRight);
-	AccountPassword = new QLineEdit(this);
-	connect(AccountPassword, SIGNAL(textChanged(QString)), this, SLOT(iHaveAccountDataChanged()));
-	AccountPassword->setEchoMode(QLineEdit::Password);
-	gridLayout->addWidget(AccountPassword, row, 2);
-	RemindPassword = new QPushButton(tr("Forgot password"), this);
-	RemindPassword->setEnabled(false);
-	gridLayout->addWidget(RemindPassword, row++, 3, Qt::AlignLeft);
-
-	QLabel *descriptionLabel = new QLabel(tr("Account description"), this);
-	gridLayout->addWidget(descriptionLabel, row, 1, Qt::AlignRight);
-	HaveNumberIdentity = new ChooseIdentityWidget(this);
-	connect(HaveNumberIdentity, SIGNAL(identityChanged()), this, SLOT(iHaveAccountDataChanged()));
-	gridLayout->addWidget(HaveNumberIdentity, row++, 2, 1, 2);
-
-	HaveNumberRememberPassword = new QCheckBox(tr("Remember password"), this);
-	HaveNumberRememberPassword->setChecked(true);
-	gridLayout->addWidget(HaveNumberRememberPassword, row++, 2, 1, 2);
-
-	AddThisAccount = new QPushButton(tr("Add this account"), this);
-	AddThisAccount->setEnabled(false);
-	connect(AddThisAccount, SIGNAL(clicked(bool)), this, SLOT(addThisAccount()));
-	gridLayout->addWidget(AddThisAccount, row++, 1, 1, 4);
-
-	HaveNumberWidgets.append(numberLabel);
-	HaveNumberWidgets.append(AccountId);
-	HaveNumberWidgets.append(passwordLabel);
-	HaveNumberWidgets.append(AccountPassword);
-	HaveNumberWidgets.append(RemindPassword);
-	HaveNumberWidgets.append(descriptionLabel);
-	HaveNumberWidgets.append(HaveNumberIdentity);
-	HaveNumberWidgets.append(HaveNumberRememberPassword);
-	HaveNumberWidgets.append(AddThisAccount);
-}
-
-void GaduCreateAccountWidget::createRegisterAccountGui(QGridLayout *gridLayout, int &row)
-{
-	QRadioButton *dontHaveNumber = new QRadioButton(tr("I don't have a Gadu-Gadu number"), this);
-	gridLayout->addWidget(dontHaveNumber, row++, 0, 1, 4);
-
-	QLabel *newPasswordLabel = new QLabel(tr("New password") + ":", this);
+	QLabel *newPasswordLabel = new QLabel(tr("Password") + ":", this);
 	gridLayout->addWidget(newPasswordLabel, row, 1, Qt::AlignRight);
 	NewPassword = new QLineEdit(this);
-	connect(NewPassword, SIGNAL(textChanged(const QString &)), this, SLOT(registerAccountDataChanged()));
+	connect(NewPassword, SIGNAL(textChanged(const QString &)), this, SLOT(dataChanged()));
 	NewPassword->setEchoMode(QLineEdit::Password);
 	gridLayout->addWidget(NewPassword, row++, 2, 1, 2);
 
-	QLabel *reNewPasswordLabel = new QLabel(tr("Retype password") + ":", this);
+	QLabel *reNewPasswordLabel = new QLabel(tr("Retype Password") + ":", this);
 	gridLayout->addWidget(reNewPasswordLabel, row, 1, Qt::AlignRight);
 	ReNewPassword = new QLineEdit(this);
-	connect(ReNewPassword, SIGNAL(textChanged(const QString &)), this, SLOT(registerAccountDataChanged()));
+	connect(ReNewPassword, SIGNAL(textChanged(const QString &)), this, SLOT(dataChanged()));
 	ReNewPassword->setEchoMode(QLineEdit::Password);
 	gridLayout->addWidget(ReNewPassword, row++, 2, 1, 2);
-
-	QLabel *eMailLabel = new QLabel(tr("Your e-mail address") + ":", this);
+	
+	RememberPassword = new QCheckBox(tr("Remember password"), this);
+	RememberPassword->setChecked(true);
+	gridLayout->addWidget(RememberPassword, row++, 2, 1, 2);
+	
+	QLabel *eMailLabel = new QLabel(tr("E-Mail Address") + ":", this);
 	gridLayout->addWidget(eMailLabel, row, 1, Qt::AlignRight);
 	EMail = new QLineEdit(this);
-	connect(EMail, SIGNAL(textChanged(const QString &)), this, SLOT(registerAccountDataChanged()));
+	connect(EMail, SIGNAL(textChanged(const QString &)), this, SLOT(dataChanged()));
 	gridLayout->addWidget(EMail, row++, 2, 1, 2);
 
-	QLabel *descriptionLabel = new QLabel(tr("Account description"), this);
+	QLabel *descriptionLabel = new QLabel(tr("Account Identity") + ":", this);
 	gridLayout->addWidget(descriptionLabel, row, 1, Qt::AlignRight);
-	DontHaveNumberIdentity = new ChooseIdentityWidget(this);
-	connect(DontHaveNumberIdentity, SIGNAL(identityChanged()), this, SLOT(registerAccountDataChanged()));
-	gridLayout->addWidget(DontHaveNumberIdentity, row++, 2, 1, 2);
-
-	QLabel *tokenLabel = new QLabel(tr("Type this code") + ":", this);
+	Identity = new ChooseIdentityWidget(this);
+	connect(Identity, SIGNAL(identityChanged()), this, SLOT(dataChanged()));
+	gridLayout->addWidget(Identity, row++, 2, 1, 2);
+	
+	QLabel *identityHelpLabel = new QLabel(tr("Select or enter the identity that will be associated with this account."), this);
+	gridLayout->addWidget(identityHelpLabel, row++, 2);
+	
+	QLabel *tokenLabel = new QLabel(tr("Characters") + ":", this);
 	gridLayout->addWidget(tokenLabel, row, 1, Qt::AlignRight);
 
 	tokenWidget = new TokenWidget(this);
-	connect(tokenWidget, SIGNAL(modified()), this, SLOT(registerAccountDataChanged()));
+	connect(tokenWidget, SIGNAL(modified()), this, SLOT(dataChanged()));
 	gridLayout->addWidget(tokenWidget, row++, 2, 1, 2);
+	QLabel *tokenHelpLabel = new QLabel(tr("For verification purposes, please type the characters above."), this);
+	gridLayout->addWidget(tokenHelpLabel, row, 2);
 
-	DontHaveNumberRememberPassword = new QCheckBox(tr("Remember password"), this);
-	DontHaveNumberRememberPassword->setChecked(true);
-	gridLayout->addWidget(DontHaveNumberRememberPassword, row++, 2, 1, 2);
 
-	registerAccount = new QPushButton(tr("Register"), this);
-	registerAccount->setEnabled(false);
-	connect(registerAccount, SIGNAL(clicked(bool)), this, SLOT(registerNewAccount()));
-	gridLayout->addWidget(registerAccount, row++, 1, 1, 3);
-
-	DontHaveNumberWidgets.append(newPasswordLabel);
-	DontHaveNumberWidgets.append(NewPassword);
-	DontHaveNumberWidgets.append(reNewPasswordLabel);
-	DontHaveNumberWidgets.append(ReNewPassword);
-	DontHaveNumberWidgets.append(eMailLabel);
-	DontHaveNumberWidgets.append(EMail);
-	DontHaveNumberWidgets.append(descriptionLabel);
-	DontHaveNumberWidgets.append(DontHaveNumberIdentity);
-	DontHaveNumberWidgets.append(tokenLabel);
-	DontHaveNumberWidgets.append(tokenWidget);
-	DontHaveNumberWidgets.append(DontHaveNumberRememberPassword);
-	DontHaveNumberWidgets.append(registerAccount);
 }
 
-void GaduCreateAccountWidget::haveNumberChanged(bool haveNumber)
-{
-	foreach (QWidget *widget, HaveNumberWidgets)
-		widget->setVisible(haveNumber);
-	foreach (QWidget *widget, DontHaveNumberWidgets)
-		widget->setVisible(!haveNumber);
-}
-
-void GaduCreateAccountWidget::iHaveAccountDataChanged()
-{
-	RemindPassword->setEnabled(!AccountId->text().isEmpty());
-	AddThisAccount->setEnabled(!AccountId->text().isEmpty() && !AccountPassword->text().isEmpty()
-				   && !HaveNumberIdentity->identityName().isEmpty());
-}
-
-void GaduCreateAccountWidget::addThisAccount()
-{
-	Account gaduAccount = Account::create();
-	// TODO: 0.6.6 set protocol after details because of crash
-	//gaduAccount.setProtocolName("gadu");
-	GaduAccountDetails *gad = new GaduAccountDetails(gaduAccount);
-	gad->setState(StorableObject::StateNew);
-	gaduAccount.setDetails(gad);
-	gaduAccount.setProtocolName("gadu");
-	gaduAccount.setName(AccountName->text());
-	gaduAccount.setId(AccountId->text());
-	gaduAccount.setPassword(AccountPassword->text());
-	gaduAccount.setHasPassword(!AccountPassword->text().isEmpty());
-	gaduAccount.setRememberPassword(HaveNumberRememberPassword->isChecked());
-
-	emit accountCreated(gaduAccount);
-}
-
-void GaduCreateAccountWidget::registerAccountDataChanged()
+void GaduCreateAccountWidget::dataChanged()
 {
 	bool disable = NewPassword->text().isEmpty() || ReNewPassword->text().isEmpty()
 		      || EMail->text().indexOf(HtmlDocument::mailRegExp()) < 0 || tokenWidget->tokenValue().isEmpty()
-		      || DontHaveNumberIdentity->identityName().isEmpty();
+		      || Identity->identityName().isEmpty();
 
-	registerAccount->setEnabled(!disable);
+	//registerAccount->setEnabled(!disable);
 }
 
 void GaduCreateAccountWidget::registerNewAccount()
@@ -218,7 +108,7 @@ void GaduCreateAccountWidget::registerNewAccount()
     if (NewPassword->text() != ReNewPassword->text())
 	{
 		MessageDialog::msg(tr("Error data typed in required fields.\n\n"
-			"Passwords typed in both fields (\"New password\" and \"Retype password\") "
+			"Passwords typed in both fields (\"Password\" and \"Retype Password\") "
 			"should be the same!"));
 		return;
 	}
@@ -244,10 +134,10 @@ void GaduCreateAccountWidget::registerNewAccountFinished(GaduServerRegisterAccou
 		gad->setState(StorableObject::StateNew);
 		gaduAccount.setDetails(gad);
 		gaduAccount.setProtocolName("gadu");
-		gaduAccount.setName(AccountName->text());
+		//gaduAccount.setName(AccountName->text());
 		gaduAccount.setId(QString::number(gsra->uin()));
 		gaduAccount.setPassword(NewPassword->text());
-		gaduAccount.setRememberPassword(DontHaveNumberRememberPassword->isChecked());
+		gaduAccount.setRememberPassword(RememberPassword->isChecked());
 
 		emit accountCreated(gaduAccount);
 	}

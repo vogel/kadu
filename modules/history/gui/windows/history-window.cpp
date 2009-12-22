@@ -159,27 +159,35 @@ void HistoryWindow::createFilterBar(QWidget *parent)
 	layout->addWidget(searchLineEdit, 0, 1, 1, 1);
 
 	QCheckBox *filterByDate = new QCheckBox(tr("by date"), parent);
+	filterByDate->setChecked(false);
 	layout->addWidget(filterByDate, 0, 2, 1, 1);
 	
-	QLabel *fromDateLabel = new QLabel(tr("From") + ": ", parent);
-	layout->addWidget(fromDateLabel, 0, 3, 1, 1);
+	FromDateLabel = new QLabel(tr("From") + ": ", parent);
+	FromDateLabel->setEnabled(false);
+	layout->addWidget(FromDateLabel, 0, 3, 1, 1);
 	
-	QDateEdit *fromDate = new QDateEdit(parent);
-	fromDate->setCalendarPopup(true);
-	layout->addWidget(fromDate, 0, 4, 1, 1);
+	FromDate = new QDateEdit(parent);
+	FromDate->setEnabled(false);
+	FromDate->setCalendarPopup(true);
+	layout->addWidget(FromDate, 0, 4, 1, 1);
 
-	QLabel *toDateLabel = new QLabel(tr("To") + ": ", parent);
-	layout->addWidget(toDateLabel, 0, 5, 1, 1);
+	ToDateLabel = new QLabel(tr("To") + ": ", parent);
+	ToDateLabel->setEnabled(false);
+	layout->addWidget(ToDateLabel, 0, 5, 1, 1);
 	
-	QDateEdit *toDate = new QDateEdit(parent);
-	toDate->setCalendarPopup(true);
-	layout->addWidget(toDate, 0, 6, 1, 1);
+	ToDate = new QDateEdit(parent);
+	ToDate->setEnabled(false);
+	ToDate->setCalendarPopup(true);
+	layout->addWidget(ToDate, 0, 6, 1, 1);
+	
+	connect(filterByDate, SIGNAL(stateChanged(int)),
+			this, SLOT(dateFilteringEnabled(int)));
 
 	connect(searchLineEdit, SIGNAL(delayedTextChanged(const QString &)),
 			this, SLOT(searchTextChanged(const QString &)));
-	connect(fromDate, SIGNAL(dateChanged(const QDate &)),
+	connect(FromDate, SIGNAL(dateChanged(const QDate &)),
 			this, SLOT(fromDateChanged(const QDate &)));
-	connect(toDate, SIGNAL(dateChanged(const QDate &)),
+	connect(ToDate, SIGNAL(dateChanged(const QDate &)),
 			this, SLOT(toDateChanged(const QDate &)));
 }
 
@@ -314,19 +322,19 @@ void HistoryWindow::filterLineChanged(const QString &filterText)
 void HistoryWindow::searchTextChanged(const QString &searchText)
 {
 	Search.setQuery(searchText);
-	updateData();
+	chatActivated(ChatsTree->currentIndex());
 }
 
 void HistoryWindow::fromDateChanged(const QDate &date)
 {
 	Search.setFromDate(date);
-	updateData();
+	chatActivated(ChatsTree->currentIndex());
 }
 
 void HistoryWindow::toDateChanged(const QDate &date)
 {
 	Search.setToDate(date);
-	updateData();
+	chatActivated(ChatsTree->currentIndex());
 }
 
 void HistoryWindow::showMainPopupMenu(const QPoint &pos)
@@ -486,12 +494,21 @@ void HistoryWindow::keyPressEvent(QKeyEvent *e)
 		QWidget::keyPressEvent(e);
 }
 
-BuddySet HistoryWindow::buddies()
+ContactSet HistoryWindow::contacts()
 {
 	Chat chat = ChatsTree->currentIndex().data(ChatRole).value<Chat>();
 	if (!chat)
-		return BuddySet();
-	return chat.contacts().toBuddySet();
+		return ContactSet();
+	return chat.contacts();
+}
+
+void HistoryWindow::dateFilteringEnabled(int state)
+{
+	bool enabled = state == 2;
+	FromDateLabel->setEnabled(enabled);
+	FromDate->setEnabled(enabled);
+	ToDateLabel->setEnabled(enabled);
+	ToDate->setEnabled(enabled);
 }
 
 HistoryWindow *historyDialog = 0;

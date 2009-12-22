@@ -612,6 +612,9 @@ void tlen::tcfgReceived(QDomElement &n)
 			MiniMailAvatarRemoveMethod = mm.attribute("method");
 		}
 	}
+
+	// tlen bug? - need to set status 2nd time, to recive real status of contacts, move this after roster rcv
+	writeStatus();
 }
 
 QString tlen::decode( const QByteArray &in ) {
@@ -764,7 +767,10 @@ void tlen::authorize( QString to, bool subscribe ) {
 	write(doc);
 }
 
-void tlen::addItem( QString jid, QString name, QString g, bool subscribe ) {
+//<presence type="subscribe" to="jid" />
+//<iq type="set" id="Q2WLO5" ><query xmlns="jabber:iq:roster">
+//<item name="name" jid="jid" ><group>Kontakty</group></item></query></iq>
+void tlen::addItem( QString jid, QString name, QString group, bool subscribe ) {
 	kdebugf();
 	QDomDocument doc;
 	QDomElement iq=doc.createElement("iq");
@@ -789,12 +795,8 @@ void tlen::addItem( QString jid, QString name, QString g, bool subscribe ) {
 	if(!name.isEmpty())
 		item.setAttribute("name", QString( encode( name ) ) );
 
-	if(!g.isEmpty()) {
-		QDomElement group=doc.createElement("group");
-		QDomText t=doc.createTextNode(g);
-		group.appendChild(t);
-		item.appendChild(group);
-	}
+	if(!group.isEmpty())
+		item.appendChild(textNode("group", group));
 
 	query.appendChild(item);
 	iq.appendChild(query);
@@ -811,6 +813,8 @@ void tlen::addItem( QString jid, QString name, QString g, bool subscribe ) {
 	}
 }
 
+//<iq type="set" id="G14KEU" ><query xmlns="jabber:iq:roster">
+//<item subscription="remove" jid="jid" /></query></iq>
 void tlen::remove(QString jid) {
 	kdebugf();
 	QDomDocument doc;
@@ -837,11 +841,8 @@ void tlen::writeMsg( QString msg, QString to ) {
 	QDomElement message=doc.createElement("message");
 	message.setAttribute("type", "chat");
 	message.setAttribute("to", to);
+	message.appendChild(textNode("body",QString(encode(msg))));
 
-	QDomElement body=doc.createElement("body");
-	QDomText text=doc.createTextNode(QString(encode(msg)));
-	body.appendChild(text);
-	message.appendChild(body);
 	doc.appendChild(message);
 	write(doc);
 }

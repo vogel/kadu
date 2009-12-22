@@ -11,11 +11,12 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "chat/message/message.h"
-#include "configuration/configuration-file.h"
 #include "buddies/buddy-manager.h"
+#include "buddies/buddy-shared.h"
 #include "buddies/group.h"
 #include "buddies/group-manager.h"
+#include "chat/message/message.h"
+#include "configuration/configuration-file.h"
 #include "contacts/contact.h"
 #include "contacts/contact-manager.h"
 #include "gui/actions/action.h"
@@ -121,12 +122,14 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 		config_file.writeEntry("Notify", "NotifyAboutAll", false);
 	}
 
-	BuddySet buddies = window->buddies();
+	BuddySet buddies = window->contacts().toBuddySet();
 
 	bool on = true;
 	foreach (const Buddy buddy, buddies)
 	{
-		ContactNotifyData *cnd = buddy.moduleData<ContactNotifyData>("notify");
+		ContactNotifyData *cnd = 0;
+		if (buddy.data())
+			cnd = buddy.data()->moduleData<ContactNotifyData>("notify");
 
 		if (!cnd || !cnd->notify())
 		{
@@ -142,7 +145,9 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 		if (buddy.isNull() || buddy.isAnonymous())
 			continue;
 
-		ContactNotifyData *cnd = buddy.moduleData<ContactNotifyData>("notify");
+		ContactNotifyData *cnd = 0;
+		if (buddy.data())
+			cnd = buddy.data()->moduleData<ContactNotifyData>("notify");
 		if (!cnd)
 			continue;
 
@@ -154,7 +159,7 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 	}
 
 	foreach (Action *action, notifyAboutUserActionDescription->actions())
-		if (action->buddies() == buddies)
+		if (action->contacts().toBuddySet() == buddies)
 			action->setChecked(!on);
 
 	kdebugf2();
@@ -212,7 +217,10 @@ void NotificationManager::statusChanged(Contact contact, Status oldStatus)
 
 	// TODO 0.6.6 display -> uuid?
 	bool notify_contact = true;
-	ContactNotifyData *cnd = contact.ownerBuddy().moduleData<ContactNotifyData>("notify");
+	ContactNotifyData *cnd = 0;
+	Buddy buddy = contact.ownerBuddy();
+	if (buddy.data())
+		cnd = buddy.data()->moduleData<ContactNotifyData>("notify");
 
 	if (!cnd || !cnd->notify())
 		notify_contact = false;
@@ -404,7 +412,9 @@ void NotificationManager::groupUpdated()
 		if (buddy.isNull() || buddy.isAnonymous() || buddy.groups().contains(group))
 			continue;
 
-		ContactNotifyData *cnd = buddy.moduleData<ContactNotifyData>("notify");
+		ContactNotifyData *cnd = 0;
+		if (buddy.data())
+			buddy.data()->moduleData<ContactNotifyData>("notify");
 		if (!cnd)
 			continue;
 
@@ -435,19 +445,14 @@ void checkNotify(Action *action)
 {
 	kdebugf();
 
-	foreach(Buddy buddy, action->buddies())
-		if (!buddy.hasContact(buddy.prefferedAccount()))
-		{
-			action->setEnabled(false);
-			return;
-		}
-
 	action->setEnabled(true);
 
 	bool on = true;
-	foreach (const Buddy buddy, action->buddies())
+	foreach (const Buddy buddy, action->contacts().toBuddySet())
 	{
-		ContactNotifyData *cnd = buddy.moduleData<ContactNotifyData>("notify");
+		ContactNotifyData *cnd = 0;
+		if (buddy.data())
+			cnd = buddy.data()->moduleData<ContactNotifyData>("notify");
 
 		if (!cnd || !cnd->notify())
 		{

@@ -22,6 +22,7 @@ class StoragePoint;
 
 class KADUAPI Avatar : public SharedBase<AvatarShared>
 {
+	KaduSharedBaseClass(Avatar)
 
 public:
 	static Avatar create();
@@ -32,8 +33,6 @@ public:
 	Avatar(AvatarShared *data);
 	Avatar(const Avatar &copy);
 	virtual ~Avatar();
-
-	Avatar & operator = (const Avatar &copy);
 
 	QString filePath();
 	void setFilePath(const QString &filePath);

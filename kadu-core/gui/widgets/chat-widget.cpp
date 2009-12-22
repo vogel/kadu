@@ -361,6 +361,9 @@ void ChatWidget::sendMessage()
 
 	emit messageSendRequested(this);
 
+	if (!currentProtocol())
+		return;
+
 	if (!currentProtocol()->isConnected())
 	{
 		MessageDialog::msg(tr("Cannot send message while being offline.")+tr("Account:")+chat().chatAccount().id(), false, "Critical", this);

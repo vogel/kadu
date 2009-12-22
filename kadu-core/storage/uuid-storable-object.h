@@ -48,6 +48,8 @@ public:
 	 */
 	virtual QUuid uuid() const = 0;
 
+	virtual bool shouldStore();
+
 };
 
 /**

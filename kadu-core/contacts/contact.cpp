@@ -19,6 +19,8 @@
 
 #include "contact.h"
 
+KaduSharedBaseClassImpl(Contact)
+
 Contact Contact::null;
 
 Contact Contact::create()
@@ -55,12 +57,6 @@ Contact::Contact(const Contact &copy) :
 
 Contact::~Contact()
 {
-}
-
-Contact & Contact::operator = (const Contact &copy)
-{
-	SharedBase<ContactShared>::operator=(copy);
-	return *this;
 }
 
 /*

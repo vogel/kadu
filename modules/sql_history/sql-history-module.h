@@ -42,10 +42,12 @@ private slots:
 	void driverComboBoxValueChanged(int index);
 	void configurationWindowApplied();
 	void portSpinBoxValueChanged(int value);
+	void doSomeImport();
 
 public:
 	SqlHistoryModule(bool firstLoad);
 	~SqlHistoryModule();
+
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
 

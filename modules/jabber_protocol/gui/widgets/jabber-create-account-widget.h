@@ -30,26 +30,15 @@ class TokenWidget;
 class JabberCreateAccountWidget : public AccountCreateWidget
 {
 	Q_OBJECT
-
-	QList<QWidget *> HaveJidWidgets;
-	QList<QWidget *> DontHaveJidWidgets;
-
-	QLineEdit *AccountName;
-	QLineEdit *AccountId;
-	QLineEdit *AccountPassword;
-	ChooseIdentityWidget *HaveJidIdentity;
-	QCheckBox *HaveJidRememberPassword;
-
-	QPushButton *AddThisAccount;
-	QPushButton *RemindPassword;
-
-	QLineEdit *NewPassword;
-	QLineEdit *ReNewPassword;
-	QLineEdit *Server;
+	
 	QLineEdit *Username;
-	ChooseIdentityWidget *DontHaveJidIdentity;
-	QCheckBox *DontHaveJidRememberPassword;
-	QPushButton *RegisterAccount;
+	QComboBox *Domain;
+	QLineEdit *Password;
+	QLineEdit *RetypePassword;
+	QCheckBox *RememberPassword;
+	QLabel *RemindPassword;
+	ChooseIdentityWidget *Identity;
+
 	QPushButton *ExpandConnectionOptionsButton;
 	QGroupBox *ConnectionOptions;
 	QCheckBox *CustomHostPort;
@@ -66,17 +55,13 @@ class JabberCreateAccountWidget : public AccountCreateWidget
 	bool opt_host_, legacy_ssl_probe_;
 	QString host_;
 	int port_;
-
 	bool ShowConnectionOptions;
+	
 	void createGui();
-	void createIHaveAccountGui(QGridLayout *gridLayout, int &row);
-	void createRegisterAccountGui(QGridLayout *gridLayout, int &row);
 	bool checkSSL();
 
 private slots:
-	void haveJidChanged(bool haveNumber);
-	void iHaveAccountDataChanged();
-	void addThisAccount();
+	void dataChanged();
 	void registerAccountDataChanged();
 	void registerNewAccount();
 	void registerNewAccountFinished(JabberServerRegisterAccount *jsra);

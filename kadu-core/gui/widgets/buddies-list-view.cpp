@@ -83,6 +83,8 @@ BuddiesListView::~BuddiesListView()
 
 void BuddiesListView::setModel(AbstractBuddiesModel *model)
 {
+	Model = model;
+
 	if (ProxyModel->sourceModel())
 	{
 		delete ProxyModel->sourceModel();
@@ -104,18 +106,26 @@ void BuddiesListView::removeFilter(AbstractBuddyFilter *filter)
 	ProxyModel->removeFilter(filter);
 }
 
-Buddy BuddiesListView::currentBuddy() const
+void BuddiesListView::selectBuddy(Buddy buddy)
 {
-	return buddyAt(currentIndex());
+	QModelIndex index = Model->buddyIndex(buddy);
+	index = ProxyModel->mapFromSource(index);
+
+	setCurrentIndex(index);
 }
 
-BuddySet BuddiesListView::selectedBuddies() const
+Contact BuddiesListView::currentContact() const
 {
-	BuddySet result;
+	return contactAt(currentIndex());
+}
+
+ContactSet BuddiesListView::selectedContacts() const
+{
+	ContactSet result;
 
 	QModelIndexList selectionList = selectedIndexes();
 	foreach (QModelIndex selection, selectionList)
-		result.insert(buddyAt(selection));
+		result.insert(contactAt(selection));
 
 	return result;
 }
@@ -160,6 +170,10 @@ void BuddiesListView::triggerActivate(const QModelIndex& index)
 	Chat chat = chatForIndex(index);
 	if (chat)
 		emit chatActivated(chat);
+
+	Buddy buddy = buddyAt(index);
+	if (buddy)
+		emit buddyActivated(buddy);
 }
 
 void BuddiesListView::contextMenuEvent(QContextMenuEvent *event)
@@ -217,14 +231,15 @@ void BuddiesListView::contextMenuEvent(QContextMenuEvent *event)
 		else
 			management->addSeparator();
 
-	foreach (Account account, con.accounts())
+	foreach (Contact contact, con.contacts())
 	{
-		if (account.isNull())
+		if (!contact.contactAccount() || !contact.contactAccount().protocolHandler())
 			continue;
 
+		Account account = contact.contactAccount();
 		ProtocolFactory *protocolFactory = account.protocolHandler()->protocolFactory();
 
-		if (!protocolFactory || !protocolFactory->protocolMenuManager())
+		if (!account.protocolHandler()->protocolFactory() || !protocolFactory->protocolMenuManager())
 			continue;
 
 		QMenu *account_menu = menu->addMenu(account.name());

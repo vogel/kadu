@@ -54,10 +54,11 @@ public:
 	virtual QString storageNodeName();
 
 	virtual void store();
+	virtual bool shouldStore();
 	virtual void aboutToBeRemoved();
 
-	ContactSet contacts() const;
-	QString name() const;
+	ContactSet contacts();
+	QString name();
 
 	KaduShared_Property(Account, chatAccount, ChatAccount)
 	KaduShared_Property(QString, type, Type)

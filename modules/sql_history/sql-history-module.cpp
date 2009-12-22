@@ -6,6 +6,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+#include <QtGui/QPushButton>
 
 #include "configuration/configuration-file.h"
 #include "debug.h"
@@ -36,19 +37,24 @@ SqlHistoryModule::SqlHistoryModule(bool firstLoad)
 {
 	if (firstLoad)
 		createDefaultConfiguration();
-//	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/sql_history.ui"));
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/sql-history.ui"));
+	MainConfigurationWindow::registerUiHandler(this);
 	Storage = new HistorySqlStorage();
 	History::instance()->registerStorage(Storage);
 }
 
 SqlHistoryModule::~SqlHistoryModule()
 {
-//	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/sql_history.ui"));
+	MainConfigurationWindow::unregisterUiHandler(this);
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/sql-history.ui"));
 }
 
 void SqlHistoryModule::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-/*
+	//TODO 0.6.6
+	QPushButton *clickMe = dynamic_cast<QPushButton *>(mainConfigurationWindow->widget()->widgetById("sql_history/import"));
+	connect(clickMe, SIGNAL(clicked(bool)), this, SLOT(doSomeImport()));
+
 	portSpinBox = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("sql_history/databasehostport"));
 	connect(portSpinBox, SIGNAL(valueChanged(int)), this, SLOT(portSpinBoxValueChanged(int)));
 
@@ -68,7 +74,7 @@ void SqlHistoryModule::mainConfigurationWindowCreated(MainConfigurationWindow *m
 		passLineEdit->setEnabled(false);
 		prefixLineEdit->setEnabled(false);
 	}
-*/
+
 }
 
 void SqlHistoryModule::configurationWindowApplied()
@@ -124,6 +130,15 @@ void SqlHistoryModule::configurationUpdated()
 	kdebugf2();
 }
 
+//TODO 0.6.6
+void SqlHistoryModule::doSomeImport()
+{
+	kdebugf();
+	
+	Storage->convertSenderToContact();
+	
+	kdebugf2();
+}
 
 void SqlHistoryModule::createDefaultConfiguration()
 {

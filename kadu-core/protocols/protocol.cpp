@@ -54,7 +54,7 @@ void Protocol::setAllOffline()
 		if (oldStatus != status)
 		{
 			contact.setCurrentStatus(status);
-			emit buddyStatusChanged(contact, oldStatus);
+			emit contactStatusChanged(contact, oldStatus);
 		}
 	}
 }
@@ -101,9 +101,4 @@ void Protocol::networkStateChanged(NetworkState state)
 			emit disconnected(CurrentAccount);
 			break;
 	}
-}
-// TODO to remove
-Chat Protocol::findChat(BuddySet contacts, bool create)
-{
-	return ChatManager::instance()->findChat(contacts.toContactSet(account()), create);
 }

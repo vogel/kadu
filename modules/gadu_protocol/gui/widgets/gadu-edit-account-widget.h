@@ -52,12 +52,15 @@ class GaduEditAccountWidget : public AccountEditWidget
 
 private slots:
 	void removeAccount();
+	void importListAsFile();
+	void contactListDownloaded(QString);
 
 public:
 	explicit GaduEditAccountWidget(Account account, QWidget *parent = 0);
 	virtual ~GaduEditAccountWidget();
 
 	virtual void apply();
+	void protcooaccount();
 
 };
 

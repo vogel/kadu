@@ -44,7 +44,7 @@ public slots:
 signals:
 	void sendMessageFiltering(Chat chat, QByteArray &msg, bool &stop);
 	void messageStatusChanged(int messsageId, ChatService::MessageStatus status);
-	void receivedMessageFilter(Chat chat, Buddy sender, const QString &message, time_t time, bool &ignore);
+	void receivedMessageFilter(Chat chat, Contact sender, const QString &message, time_t time, bool &ignore);
 	void messageSent(const Message &message);
 	void messageReceived(const Message &message);
 

@@ -122,9 +122,9 @@ unsigned int GaduProtocol::gaduStatusFromStatus(const Status &status)
 
 Buddy GaduProtocol::searchResultToBuddy(gg_pubdir50_t res, int number)
 {
-	Buddy result;
+	Buddy result = Buddy::create();
 
-	Contact contact;
+	Contact contact = Contact::create();
 	contact.setContactAccount(account());
 	contact.setOwnerBuddy(result);
 	contact.setId(gg_pubdir50_get(res, number, GG_PUBDIR50_UIN));
@@ -137,8 +137,6 @@ Buddy GaduProtocol::searchResultToBuddy(gg_pubdir50_t res, int number)
 		contact.setCurrentStatus(status);
 	}
 
-	result.addContact(contact);
-
 	result.setFirstName(cp2unicode(gg_pubdir50_get(res, number, GG_PUBDIR50_FIRSTNAME)));
 	result.setLastName(cp2unicode(gg_pubdir50_get(res, number, GG_PUBDIR50_LASTNAME)));
 	result.setNickName(cp2unicode(gg_pubdir50_get(res, number, GG_PUBDIR50_NICKNAME)));
@@ -146,7 +144,7 @@ Buddy GaduProtocol::searchResultToBuddy(gg_pubdir50_t res, int number)
 	result.setCity(cp2unicode(gg_pubdir50_get(res, number, GG_PUBDIR50_CITY)));
 	result.setFamilyName(cp2unicode(gg_pubdir50_get(res, number, GG_PUBDIR50_FAMILYNAME)));
 	result.setFamilyCity(cp2unicode(gg_pubdir50_get(res, number, GG_PUBDIR50_FAMILYCITY)));
-	result.setGender((BuddyShared::BuddyGender)QString::fromAscii(gg_pubdir50_get(res, number, GG_PUBDIR50_GENDER)).toUShort());
+	result.setGender((BuddyGender)QString::fromAscii(gg_pubdir50_get(res, number, GG_PUBDIR50_GENDER)).toUShort());
 
 	return result;
 }
@@ -722,7 +720,7 @@ void GaduProtocol::socketContactStatusChanged(unsigned int uin, unsigned int sta
 	newStatus.setDescription(description);
 	contact.setCurrentStatus(newStatus);
 
-	emit buddyStatusChanged(contact, oldStatus);
+	emit contactStatusChanged(contact, oldStatus);
 }
 
 void GaduProtocol::socketConnFailed(GaduError error)

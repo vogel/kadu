@@ -12,16 +12,28 @@
 
 #include "gui/widgets/buddies-list-widget.h"
 
+class QModelIndex;
+
+class Buddy;
+
 class SelectBuddyPopup : public BuddiesListWidget
 {
 	Q_OBJECT
+
+private slots:
+	void itemClicked(const QModelIndex &index);
 
 public:
 	explicit SelectBuddyPopup(QWidget *parent = 0);
 	virtual ~SelectBuddyPopup();
 
-	void show(const QString &text);
+	void show(Buddy buddy);
+
+signals:
+	void buddySelected(Buddy buddy);
 
 };
+
+#include "buddies/buddy.h" // for MOC
 
 #endif // SELECT_BUDDY_POPUP_H
