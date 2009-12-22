@@ -68,7 +68,7 @@ void Account::importProxySettings()
 		return;
 
 	Account defaultAccount = AccountManager::instance()->defaultAccount();
-	if (!defaultAccount.isNull() && defaultAccount.proxyHost().toString() != "0.0.0.0")
+	if (defaultAccount && defaultAccount.proxyHost().toString() != "0.0.0.0")
 	{
 		data()->setUseProxy(defaultAccount.useProxy());
 		data()->setProxyHost(defaultAccount.proxyHost());

@@ -89,7 +89,6 @@ private:
 #define KaduSharedBase_PropertyWrite(type, name, capitalized_name) \
 	void set##capitalized_name(type name) const;
 
-
 /**
  * @author Rafal 'Vogel' Malinowski
  * @short Declares getter and setter for given property of SharedBase's Shared class.
@@ -114,7 +113,6 @@ private:
  */
 #define KaduSharedBase_PropertyBoolRead(capitalized_name) \
 	bool is##capitalized_name() const;
-
 
 /**
  * @author Rafal 'Vogel' Malinowski

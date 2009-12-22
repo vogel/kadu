@@ -44,6 +44,7 @@ public:
 
 signals:
 	void finished(GaduServerRegisterAccount *);
+
 };
 
 #endif // GADU_SERVER_REGISTER_ACCOUNT_H
