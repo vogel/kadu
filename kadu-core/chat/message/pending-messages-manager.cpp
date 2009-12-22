@@ -14,8 +14,10 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-list-configuration-helper.h"
 #include "buddies/buddy-shared.h"
+#include "chat/message/message-shared.h"
 #include "chat/chat-manager.h"
 #include "configuration/xml-configuration-file.h"
+#include "contacts/contact-set.h"
 #include "gui/widgets/chat-widget-manager.h"
 
 #include "debug.h"
@@ -26,134 +28,134 @@
 
 PendingMessagesManager * PendingMessagesManager::Instance = 0;
 
-PendingMessagesManager *  PendingMessagesManager::instance()
+PendingMessagesManager * PendingMessagesManager::instance()
 {
 	if (0 == Instance)
 		Instance = new PendingMessagesManager();
-
+	
 	return Instance;
 }
 
-PendingMessagesManager::PendingMessagesManager() : msgs()
+PendingMessagesManager::PendingMessagesManager()
 {
 }
 
-void PendingMessagesManager::deleteMsg(int index)
+PendingMessagesManager::~PendingMessagesManager()
 {
-	kdebugm(KDEBUG_INFO, "PendingMessagesManager::(pre)deleteMsg(%d), count=%d\n", index, count());
-	Buddy e = msgs[index].messageSender().ownerBuddy();
-	msgs.removeAt(index);
-	storeConfiguration(xml_config_file);
-	kdebugm(KDEBUG_INFO, "PendingMessagesManager::deleteMsg(%d), count=%d\n", index, count());
-	emit messageFromUserDeleted(e);
 }
 
-bool PendingMessagesManager::pendingMsgs(Buddy buddy) const
+// TODO: optimize
+bool PendingMessagesManager::hasPendingMessagesForContact(Contact contact)
 {
-	foreach (const Message &msg, msgs)
-		if (msg.messageSender().ownerBuddy() == buddy)
+	foreach (Message message, items())
+		if (message.isPending() && message.messageChat().contacts().contains(contact))
 			return true;
 
 	return false;
 }
 
-unsigned int PendingMessagesManager::pendingMsgsCount(Chat chat) const
+bool PendingMessagesManager::hasPendingMessagesForBuddy(Buddy buddy)
 {
-	unsigned int count = 0;
+	QSet<Contact> contacts = buddy.contacts().toSet();
 
-	foreach (const Message &msg, msgs)
-	{
-		if (chat == msg.messageChat())
-			count++;
-	}
+	foreach (Message message, items())
+		if (message.isPending() && !message.messageChat().contacts().intersect(contacts).isEmpty())
+			return true;
 
-	return count;
+	return false;
 }
 
-bool PendingMessagesManager::pendingMsgs() const
+bool PendingMessagesManager::hasPendingMessagesForChat(Chat chat)
 {
-	return !msgs.isEmpty();
+	foreach (Message message, items())
+		if (message.isPending() && message.messageChat() == chat)
+			return true;
+
+	return false;
 }
 
-int PendingMessagesManager::count() const
+bool PendingMessagesManager::hasPendingMessages()
 {
-	return msgs.count();
+	foreach (Message message, items())
+		if (message.isPending())
+			return true;
+
+	return false;
 }
 
-Message &PendingMessagesManager::operator[](int index)
+QList<Message> PendingMessagesManager::pendingMessagesForContact(Contact contact)
 {
-	return msgs[index];
+	QList<Message> result;
+
+	foreach (Message message, items())
+		if (message.isPending() && message.messageChat().contacts().contains(contact))
+			result.append(message);
+
+	return result;
 }
 
-void PendingMessagesManager::addMsg(const Message &msg)
+QList<Message> PendingMessagesManager::pendingMessagesForBuddy(Buddy buddy)
 {
-	Message message = msg;
-	msgs.append(message);
-	storeConfiguration(xml_config_file);
-	emit messageFromUserAdded(msg.messageSender().ownerBuddy());
+	QList<Message> result;
+	QSet<Contact> contacts = buddy.contacts().toSet();
+
+	foreach (Message message, items())
+		if (message.isPending() && !message.messageChat().contacts().intersect(contacts).isEmpty())
+			result.append(message);
+
+	return result;
 }
 
-void PendingMessagesManager::loadConfiguration(XmlConfigFile *configurationStorage)
+QList<Message> PendingMessagesManager::pendingMessagesForChat(Chat chat)
 {
-	QDomElement pendingMsgsNode = configurationStorage->getNode("PendingMessages", XmlConfigFile::ModeFind);
-	if (pendingMsgsNode.isNull())
-		return;
+	QList<Message> result;
 
-	QList<QDomElement> pendingMsgsElements = configurationStorage->getNodes(pendingMsgsNode, "PendingMessage");
-	foreach (QDomElement messageElement, pendingMsgsElements)
-	{
-		Message msg = Message::create();
-		QDomElement chatNode = configurationStorage->getNode(messageElement, "Chat", XmlConfigFile::ModeFind);
-		Chat chat = ChatManager::instance()->byUuid(chatNode.text());
-		msg.setMessageChat(chat);
+	foreach (Message message, items())
+		if (message.isPending() && message.messageChat() == chat)
+			result.append(message);
 
-		QDomElement timeNode = configurationStorage->getNode(messageElement, "ReceiveTime", XmlConfigFile::ModeFind);
-		msg.setReceiveDate(QDateTime::fromString(timeNode.text()));
-
-		timeNode = configurationStorage->getNode(messageElement, "SentTime", XmlConfigFile::ModeFind);
-		msg.setSendDate(QDateTime::fromString(timeNode.text()));
-
-		QDomElement messageNode = configurationStorage->getNode(messageElement, "Message", XmlConfigFile::ModeFind);
-		msg.setContent(codec_latin2->toUnicode(messageNode.text().toLocal8Bit().data()));
-
-		QDomElement senderNode = configurationStorage->getNode(messageElement, "Sender", XmlConfigFile::ModeFind);
-		Buddy sender = BuddyManager::instance()->byUuid(senderNode.text());
-		msg.setMessageSender(sender.contacts()[0]);
-
-		msgs.append(msg);
-		emit messageFromUserAdded(sender);
-	}
+	return result;
 }
 
-void PendingMessagesManager::storeConfiguration(XmlConfigFile *configurationStorage)
+QList<Message> PendingMessagesManager::pendingMessages()
 {
-	QDomElement pendingMsgsNode = configurationStorage->getNode("PendingMessages");
-	configurationStorage->removeChildren(pendingMsgsNode);
-	foreach (const Message &i, msgs)
-	{
-		QDomElement pendingMessageNode = configurationStorage->getNode(pendingMsgsNode,
-			"PendingMessage", XmlConfigFile::ModeCreate);
+	QList<Message> result;
 
-		configurationStorage->createTextNode(pendingMessageNode, "Chat", i.messageChat().uuid().toString());
-		configurationStorage->createTextNode(pendingMessageNode, "ReceiveTime", QString::number(i.receiveDate().toTime_t()));
-		configurationStorage->createTextNode(pendingMessageNode, "SentTime", QString::number(i.sendDate().toTime_t()));
+	foreach (Message message, items())
+		if (message.isPending())
+			result.append(message);
 
-		configurationStorage->createTextNode(pendingMessageNode, "Message", codec_latin2->fromUnicode(i.content()));
-
-		configurationStorage->createTextNode(pendingMessageNode, "Sender", i.messageSender().uuid().toString());
-	}
+	return result;
 }
 
-void PendingMessagesManager::openMessages()
+Message PendingMessagesManager::firstPendingMessage()
 {
-	ChatWidgetManager::instance()->openPendingMsgs();
+	foreach (Message message, items())
+		if (message.isPending())
+			return message;
+
+	return Message::null;
 }
 
-bool PendingMessagesManager::removeContactFromStorage(Buddy buddy)
+void PendingMessagesManager::itemAboutToBeAdded(Message message)
 {
-	return !pendingMsgs(buddy);
+	emit messageAboutToBeAdded(message);
 }
 
+void PendingMessagesManager::itemAdded(Message message)
+{
+	emit messageAdded(message);
+}
+
+void PendingMessagesManager::itemAboutToBeRemoved(Message message)
+{
+	emit messageAboutToBeRemoved(message);
+}
+
+void PendingMessagesManager::itemRemoved(Message message)
+{
+	emit messageRemoved(message);
+}
 
 // void Kadu::imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString &/*path*/)
 // {

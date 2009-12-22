@@ -7,6 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "chat/message/pending-messages-manager.h"
 #include "chat/chat-manager.h"
 #include "contacts/contact-manager.h"
 
@@ -30,7 +31,7 @@ MessageShared::~MessageShared()
 
 StorableObject * MessageShared::storageParent()
 {
-	return 0; // TODO: use PendingMessageManager or STH
+	return PendingMessagesManager::instance();
 }
 
 QString MessageShared::storageNodeName()

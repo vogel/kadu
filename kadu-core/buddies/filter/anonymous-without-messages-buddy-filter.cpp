@@ -50,5 +50,5 @@ bool AnonymousWithoutMessagesBuddyFilter::acceptBuddy(Buddy buddy)
 // 	if (elem.isAnonymous() && withoutMessages(contact))
 // 		addUser(elem);
 
-	return !buddy.isAnonymous() || PendingMessagesManager::instance()->pendingMsgs(buddy);
+	return !buddy.isAnonymous() || PendingMessagesManager::instance()->hasPendingMessagesForBuddy(buddy);
 }

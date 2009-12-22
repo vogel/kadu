@@ -264,8 +264,9 @@ void History::chatCreated(ChatWidget *chatWidget)
 
 	QList<Message> messages;
 
-	unsigned int chatHistoryQuotation = config_file.readUnsignedNumEntry("History", "ChatHistoryCitation")
-					    + PendingMessagesManager::instance()->pendingMsgsCount(chatWidget->chat());
+	unsigned int chatHistoryQuotation = config_file.readUnsignedNumEntry("History", "ChatHistoryCitation");
+	// TODO: NOW do it other way
+					    // + PendingMessagesManager::instance()->pendingMsgsCount(chatWidget->chat());
 
 	QDateTime backTo = QDateTime::currentDateTime().addDays(config_file.readNumEntry("History", "ChatHistoryQuotationTime", -744)/24);
 	messages = CurrentStorage->messagesBackTo(chatWidget->chat(), backTo, chatHistoryQuotation);

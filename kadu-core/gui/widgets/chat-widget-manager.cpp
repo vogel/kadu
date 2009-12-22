@@ -11,10 +11,11 @@
 #include "accounts/account-manager.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/ignored-helper.h"
-#include "chat/chat-manager.h"
 #include "chat/message/message.h"
 #include "chat/message/message-render-info.h"
+#include "chat/message/message-shared.h"
 #include "chat/message/pending-messages-manager.h"
+#include "chat/chat-manager.h"
 #include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
 #include "configuration/xml-configuration-file.h"
@@ -294,12 +295,13 @@ ChatWidget * ChatWidgetManager::openChatWidget(Chat chat, bool forceActivate)
 void ChatWidgetManager::deletePendingMsgs(Chat chat)
 {
 	kdebugf();
-	for (int i = 0; i < PendingMessagesManager::instance()->count(); ++i)
-		if ((*PendingMessagesManager::instance())[i].messageChat() == chat)
-		{
-			PendingMessagesManager::instance()->deleteMsg(i);
-			--i;
-		}
+
+	QList<Message> messages = PendingMessagesManager::instance()->pendingMessagesForChat(chat);
+	foreach (Message message, messages)
+	{
+		message.setPending(false);
+		PendingMessagesManager::instance()->removeItem(message);
+	}
 
 // TODO: 0.6.6
 // 	UserBox::refreshAllLater();
@@ -317,13 +319,12 @@ void ChatWidgetManager::openPendingMsgs(Chat chat, bool forceActivate)
 	if (!chatWidget)
 		return;
 
-	for (int i = 0; i < PendingMessagesManager::instance()->count(); ++i)
+	QList<Message> pendingMessages = PendingMessagesManager::instance()->pendingMessagesForChat(chat);
+	foreach (Message message, pendingMessages)
 	{
-		msg = (*PendingMessagesManager::instance())[i];
-		if (msg.messageChat() != chat)
-			continue;
-		messages.append(new MessageRenderInfo(msg));
-		PendingMessagesManager::instance()->deleteMsg(i--);
+		messages.append(new MessageRenderInfo(message));
+		message.setPending(false);
+		PendingMessagesManager::instance()->removeItem(message);
 	}
 
 	if (messages.size())
@@ -342,8 +343,9 @@ void ChatWidgetManager::openPendingMsgs(bool forceActivate)
 {
 	kdebugf();
 
-	if (PendingMessagesManager::instance()->count())
-		openPendingMsgs((*PendingMessagesManager::instance())[0].messageChat(), forceActivate);
+	Message message = PendingMessagesManager::instance()->firstPendingMessage();
+	if (message)
+		openPendingMsgs(message.messageChat(), forceActivate);
 
 	kdebugf2();
 }
@@ -352,12 +354,11 @@ void ChatWidgetManager::sendMessage(Chat chat)
 {
 	kdebugf();
 
-	for (int i = 0; i < PendingMessagesManager::instance()->count(); ++i)
-		if ((*PendingMessagesManager::instance())[i].messageChat() == chat)
-		{
-			openPendingMsgs((*PendingMessagesManager::instance())[i].messageChat());
-			return;
-		}
+	if (PendingMessagesManager::instance()->hasPendingMessagesForChat(chat))
+	{
+		openPendingMsgs(chat);
+		return;
+	}
 
 	if (chat)
 		openChatWidget(chat, true);
@@ -402,7 +403,7 @@ void ChatWidgetManager::messageReceived(const Message &message)
 			if (config_file.readBoolEntry("Chat", "OpenChatOnMessageWhenOnline") && (!handler || (handler->status().group() != "Online")))
 			{
 				message.setPending(true);
-				PendingMessagesManager::instance()->addMsg(message);
+				PendingMessagesManager::instance()->addItem(message);
 				return;
 			}
 
@@ -416,7 +417,7 @@ void ChatWidgetManager::messageReceived(const Message &message)
 		else
 		{
 			message.setPending(true);
-			PendingMessagesManager::instance()->addMsg(message);
+			PendingMessagesManager::instance()->addItem(message);
 		}
 	}
 
