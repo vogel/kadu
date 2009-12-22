@@ -171,7 +171,6 @@ class NOTIFYAPI Notify : public ConfigurationUiHandler
 
 	QString CurrentEvent;
 
-	int silent_mode;
 	ActionDescription* silent_action;
 
 	void import_connection_from_0_5_0(const QString &notifierName, const QString &oldConnectionName, const QString &newConnectionName);

@@ -20,6 +20,7 @@
 #include "message_box.h"
 #include "usergroup.h"
 #include "misc.h"
+#include "kadu.h"
 
 ChatWindow::ChatWindow(QWidget *parent)
 	: QWidget(parent), currentChatWidget(0), title_timer(new QTimer(this, "title_timer"))
@@ -146,13 +147,16 @@ void ChatWindow::updateTitle()
 
 void ChatWindow::blinkTitle()
 {
- 	if (!isActiveWindow())
-  	{
+	if (kadu->silentMode())
+		return;
+
+	if (!isActiveWindow())
+	{
 		if (!caption().contains(currentChatWidget->caption()) || !blinkChatTitle)
 		{
-  			if (!showNewMessagesNum) // if we don't show number od new messages waiting
-  				setWindowTitle(currentChatWidget->escapedCaption());
-  			else
+			if (!showNewMessagesNum) // if we don't show number od new messages waiting
+				setWindowTitle(currentChatWidget->escapedCaption());
+			else
 				showNewMessagesNumInTitle();
 		}
 		else
@@ -188,6 +192,9 @@ void ChatWindow::windowActivationChange(bool b)
 
 void ChatWindow::alertNewMessage()
 {
+	if (kadu->silentMode())
+		return;
+
 	if (!isActiveWindow())
 	{
 		if (activateWithNewMessages && qApp->activeWindow() && !isMinimized())

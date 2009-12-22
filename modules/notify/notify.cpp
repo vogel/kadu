@@ -82,7 +82,6 @@ Notify::Notify(QObject *parent, const char *name)
 	connect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
 		this, SLOT(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)));
 
-	silent_mode = config_file.readBoolEntry("Notify", "SilentMode", false);
 	silent_action = new ActionDescription(
 		ActionDescription::TypeGlobal, "silentModeAction",
 		this, SLOT(silentActionActivated(QAction *, bool)),
@@ -101,17 +100,17 @@ void Notify::silentActionActivated(QAction  *action, bool is_on)
 {
 	Q_UNUSED(action)
 	kdebugf();
-	silent_mode = is_on;
+	kadu->setSilentMode(is_on);
  	foreach (KaduAction *action, silent_action->actions())
-		action->setChecked(silent_mode);
-	config_file.writeEntry("Notify", "SilentMode", silent_mode);
+		action->setChecked(is_on);
+	config_file.writeEntry("Notify", "SilentMode", is_on);
 	kdebugf2();
 }
 
 void Notify::setSilentActionState()
 {
  	foreach (KaduAction *action, silent_action->actions())
-		action->setChecked(silent_mode);
+		action->setChecked(kadu->silentMode());
 }
 
 void Notify::checkSilentMode()
@@ -120,13 +119,13 @@ void Notify::checkSilentMode()
 	if (config_file.readBoolEntry("Notify", "AwaySilentMode") && gadu->currentStatus().isBusy())
 	{
 		silent_mode_enabled = 1;
-		silent_mode = 1;
+		kadu->setSilentMode(true);
 		setSilentActionState();
 	}
 	else if (silent_mode_enabled)
 	{
 		silent_mode_enabled = 0;
-		silent_mode = 0;
+		kadu->setSilentMode(false);
 		setSilentActionState();
 	}
 }
@@ -361,7 +360,7 @@ void Notify::statusChanged(UserListElement elem, QString protocolName,
 	kdebugf();
 
 	checkSilentMode();
-	if (silent_mode)
+	if (kadu->silentMode())
 		return;
 
 	if (massively && config_file.readBoolEntry("Notify", "NotifyIgnoreOnConnection"))
@@ -411,7 +410,7 @@ void Notify::messageReceived(Protocol *protocol, UserListElements senders, const
 	kdebugf();
 
 	checkSilentMode();
-	if (silent_mode)
+	if (kadu->silentMode())
 		return;
 
 	ChatWidget *chat = chat_manager->findChatWidget(senders);
@@ -429,7 +428,7 @@ void Notify::connectionError(Protocol *protocol, const QString &server, const QS
 	kdebugf();
 
 	checkSilentMode();
-	if (silent_mode)
+	if (kadu->silentMode())
 		return;
 
 	if (!ConnectionErrorNotification::activeError(message))

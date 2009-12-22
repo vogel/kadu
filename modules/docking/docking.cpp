@@ -114,6 +114,11 @@ void DockingManager::changeIcon()
 	kdebugf();
 	if (pending.pendingMsgs() && !icon_timer->isActive())
 	{
+		if (kadu->silentMode())
+		{
+			emit trayPixmapChanged(icons_manager->loadIcon("Message"), "Message");
+			return;
+		}
 		switch (newMessageIcon)
 		{
 			case AnimatedEnvelope:

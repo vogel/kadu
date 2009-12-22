@@ -635,6 +635,8 @@ Kadu::Kadu(QWidget *parent)
 	if (config_file.readBoolEntry("Chat", "SaveOpenedWindows", true))
 		chat_manager->loadOpenedWindows();
 
+	setSilentMode(config_file.readBoolEntry("Notify", "SilentMode", false));
+
 	configurationUpdated();
 
 	kdebugf2();
