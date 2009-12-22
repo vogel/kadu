@@ -474,6 +474,13 @@ set (kadu_MOC_SRCS
 )
 
 if (UNIX AND NOT APPLE)
+	include (FindX11)
+	if (X11_Xfixes_FOUND)
+		MESSAGE(STATUS "Found X11 Xfixes extension: ${X11_Xfixes_LIB}")
+	else (X11_Xfixes_FOUND)
+		MESSAGE(FATAL_ERROR "Could not find X11 Xfixes extension")
+	endif (X11_Xfixes_FOUND)
+
 	if (NOT DESKTOP_ENTRY)
 		set (DESKTOP_ENTRY ${CMAKE_CURRENT_BINARY_DIR}/kadu.desktop)
 	endif (NOT DESKTOP_ENTRY)
@@ -514,12 +521,16 @@ if (WIN32)
 	install (TARGETS kadu_core RUNTIME DESTINATION ${KADU_BIN_DIR} ARCHIVE DESTINATION ${KADU_DATA_DIR}/kadu-sdk/lib LIBRARY DESTINATION ${KADU_DATA_DIR}/kadu-sdk/lib)
 	install (TARGETS kadu_c DESTINATION ${KADU_BIN_DIR})
 	install (DIRECTORY "." DESTINATION ${KADU_DATA_DIR}/kadu-sdk/include/kadu-core FILES_MATCHING PATTERN "*.h" PATTERN ".svn" EXCLUDE )
-else (WIN32)	
+else (WIN32)
 	add_executable (kadu main.cpp main_unix.cpp ${kadu_SRCS} ${MOC_FILES})
 	set_target_properties(kadu PROPERTIES ENABLE_EXPORTS ON)
 	set_target_properties(kadu PROPERTIES COMPILE_FLAGS "-DKADULIB" )
 
 	target_link_libraries (kadu ${STATIC_MODULES} ${QT_LIBRARIES} ${LIBGADU_LIBRARIES})
+
+	if (NOT APPLE)
+		target_link_libraries (kadu ${X11_Xfixes_LIB})
+	endif (NOT APPLE)
 endif (WIN32)
 
 

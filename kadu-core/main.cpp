@@ -25,7 +25,13 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #endif
-
+#ifdef Q_WS_X11
+#include <QtGui/QX11Info>
+#include <X11/Xatom.h>
+#include <X11/extensions/Xfixes.h>
+#undef Bool
+#undef Status
+#endif
 #include "core/core.h"
 #include "configuration/configuration-file.h"
 #include "configuration/xml-configuration-file.h"
@@ -48,8 +54,12 @@ static OSStatus appleEventProcessor(const AppleEvent *ae,
 
 class KaduApplication: public QApplication
 {
+#ifdef Q_WS_X11
+		Atom net_wm_state;
+		int xfixes_event_base;
+#endif
 	public:
-		KaduApplication(int &argc, char **argv): QApplication(argc, argv)
+		KaduApplication(int &argc, char **argv) : QApplication(argc, argv), xfixes_event_base(-1)
 		{
 #ifdef Q_OS_MAC
 			/* Install Reopen Application Event (Dock Clicked) */
@@ -57,7 +67,32 @@ class KaduApplication: public QApplication
 			AEInstallEventHandler(kCoreEventClass, kAEReopenApplication,
 				m_appleEventProcessorUPP, (long) this, true);
 #endif
-		};
+
+#ifdef Q_WS_X11
+			int dummy;
+			if (XFixesQueryExtension(QX11Info::display(), &xfixes_event_base, &dummy))
+			{
+				net_wm_state = XInternAtom(QX11Info::display(), "_NET_WM_CM_S0", False);
+				XFixesSelectSelectionInput(QX11Info::display(), QX11Info::appRootWindow(0) , net_wm_state,
+				XFixesSetSelectionOwnerNotifyMask |
+				XFixesSelectionWindowDestroyNotifyMask |
+				XFixesSelectionClientCloseNotifyMask);
+			}
+#endif
+		}
+
+#ifdef Q_WS_X11
+		bool x11EventFilter(XEvent *event)
+		{
+			if (xfixes_event_base != -1 && event->type == xfixes_event_base + XFixesSelectionNotify)
+			{
+				XFixesSelectionNotifyEvent* ev = reinterpret_cast<XFixesSelectionNotifyEvent* >(event);
+				if (ev->selection == net_wm_state)
+					qDebug("composite state changed");
+			}
+			return false;
+		}
+#endif
 		void commitData(QSessionManager & manager)
 		{
 			qApp->quit();

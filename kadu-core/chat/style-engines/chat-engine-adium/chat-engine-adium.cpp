@@ -217,9 +217,9 @@ void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNa
 	styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, replaceKeywords(msg.chat(), style.baseHref(), style.headerHtml()));
 	//TODO: implement style versions:
 	if (style.currentVariant() != "Default")
-		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2,"Variants/" + style.currentVariant());
+		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, "Variants/" + style.currentVariant());
 	else
-		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2,"main.css");
+		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, "main.css");
 
 	if (styleBaseHtml.contains("%@"))
 		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, "@import url( \"main.css\" );");
@@ -229,6 +229,7 @@ void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNa
 
 	QString incomingHtml = replaceKeywords(msg.chat(), style.baseHref(), style.incomingHtml(), message);
 	incomingHtml.replace("\n", " ");
+	incomingHtml.replace("'", "\\'");
 	incomingHtml.prepend("<span>");
 	incomingHtml.append("</span>");
 	preview->page()->mainFrame()->evaluateJavaScript("appendMessage(\'" + incomingHtml + "\')");
@@ -236,6 +237,7 @@ void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNa
 	message = dynamic_cast<MessageRenderInfo *>(preview->getObjectsToParse().at(1));
 	QString outgoingHtml = replaceKeywords(msg.chat(), style.baseHref(), style.outgoingHtml(), message);
 	outgoingHtml.replace("\n", " ");
+	outgoingHtml.replace("'", "\\'");
 	outgoingHtml.prepend("<span>");
 	outgoingHtml.append("</span>");
 	preview->page()->mainFrame()->evaluateJavaScript("appendMessage(\'" + outgoingHtml + "\')");
