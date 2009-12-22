@@ -15,6 +15,7 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "buddies/avatar.h"
+#include "buddies/buddy-manager.h"
 #include "buddies/buddy-set.h"
 #include "chat/chat-styles-manager.h"
 #include "chat/html-messages-renderer.h"
@@ -381,7 +382,7 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, QString &styleHref, QSt
 	Message msg = message->message();
 
 	// Replace sender (contact nick)
-	result.replace(QString("%sender%"), msg.messageSender().ownerBuddy().display());
+	result.replace(QString("%sender%"), BuddyManager::instance()->byContact(msg.messageSender(), true).display());
 	// Replace %screenName% (contact ID)
 	result.replace(QString("%senderScreenName%"), msg.messageSender().id());
 	// Replace service name (protocol name)

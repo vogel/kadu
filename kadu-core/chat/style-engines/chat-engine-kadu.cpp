@@ -11,6 +11,7 @@
 #include <QtWebKit/QWebFrame>
 
 #include "accounts/account-manager.h"
+#include "buddies/buddy-manager.h"
 #include "chat/chat-styles-manager.h"
 #include "chat/html-messages-renderer.h"
 #include "chat/message/message-render-info.h"
@@ -100,7 +101,7 @@ QString KaduChatStyleEngine::formatMessage(MessageRenderInfo *message, MessageRe
 	Message msg = message->message();
 	Message aft = after->message();
 
-	Buddy buddy = msg.messageSender().ownerBuddy();
+	Buddy buddy = BuddyManager::instance()->byContact(msg.messageSender(), true);
 	Account account = msg.messageChat().chatAccount();
 
 	if (msg.type() == Message::TypeSystem)
