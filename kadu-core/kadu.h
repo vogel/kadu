@@ -47,6 +47,7 @@ class KADUAPI Kadu : public KaduMainWindow, ConfigurationAwareObject
 	ActionDescription *notifyAboutUserActionDescription;
 	ActionDescription *showStatusActionDescription;
 	ActionDescription *deleteUsersActionDescription;
+	ActionDescription *silentActionDescription;
 
 	QActionGroup *changeStatusActionGroup;
 	QAction *changeStatusToOnline;
@@ -130,6 +131,8 @@ private slots:
 	void copyPersonalInfoActionActivated(QAction *sender, bool toggled);
 	void lookupInDirectoryActionActivated(QAction *sender, bool toggled);
 	void deleteUsersActionActivated(QAction *sender, bool toggled);
+	void silentActionActivated(QAction  *sender, bool toggled);
+	void SilentActionCreated();
 
 	void messageReceived(Protocol *protocol, UserListElements senders, const QString &msg, time_t time);
 	void createRecentChatsMenu();

@@ -559,6 +559,12 @@ Kadu::Kadu(QWidget *parent)
 	);
 	connect(showStatusActionDescription, SIGNAL(actionCreated(KaduAction *)), this, SLOT(showStatusActionCreated(KaduAction *)));
 
+	silentActionDescription = new ActionDescription(
+		ActionDescription::TypeGlobal, "silentModeAction",
+		this, SLOT(silentActionActivated(QAction *, bool)),
+		"SilentMode", tr("Enable Silent Mode"), true, tr("Disable Silent Mode")
+	);
+	connect(silentActionDescription, SIGNAL(actionCreated(KaduAction *)), this, SLOT(SilentActionCreated()));
 
 	/* guess what */
 	createMenu();
@@ -635,7 +641,7 @@ Kadu::Kadu(QWidget *parent)
 	if (config_file.readBoolEntry("Chat", "SaveOpenedWindows", true))
 		chat_manager->loadOpenedWindows();
 
-	setSilentMode(config_file.readBoolEntry("Notify", "SilentMode", false));
+	//setSilentMode(config_file.readBoolEntry("Notify", "SilentMode", false));
 
 	configurationUpdated();
 
@@ -892,6 +898,23 @@ void Kadu::deleteUsersActionActivated(QAction *sender, bool toggled)
 	removeUsers(users);
 
 	kdebugf2();
+}
+
+void Kadu::silentActionActivated(QAction  *sender, bool toggled)
+{
+	Q_UNUSED(sender)
+	kdebugf();
+	kadu->setSilentMode(toggled);
+	foreach (KaduAction *action, silentActionDescription->actions())
+		action->setChecked(toggled);
+	//config_file.writeEntry("Notify", "SilentMode", toggled);
+	kdebugf2();
+}
+
+void Kadu::SilentActionCreated()
+{
+	foreach (KaduAction *action, silentActionDescription->actions())
+		action->setChecked(kadu->silentMode());
 }
 
 void Kadu::openRecentChats(QAction *action)

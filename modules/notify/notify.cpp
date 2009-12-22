@@ -82,52 +82,11 @@ Notify::Notify(QObject *parent, const char *name)
 	connect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
 		this, SLOT(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)));
 
-	silent_action = new ActionDescription(
-		ActionDescription::TypeGlobal, "silentModeAction",
-		this, SLOT(silentActionActivated(QAction *, bool)),
-		"SilentMode", tr("Enable Silent Mode"), true, tr("Disable Silent Mode")
-	);
-	connect(silent_action, SIGNAL(actionCreated(KaduAction *)), this, SLOT(setSilentActionState()));
-
 	MessageNotification::registerEvents(this);
 	ConnectionErrorNotification::registerEvent(this);
 	StatusChangedNotification::registerEvents(this);
 
 	kdebugf2();
-}
-
-void Notify::silentActionActivated(QAction  *action, bool is_on)
-{
-	Q_UNUSED(action)
-	kdebugf();
-	kadu->setSilentMode(is_on);
- 	foreach (KaduAction *action, silent_action->actions())
-		action->setChecked(is_on);
-	config_file.writeEntry("Notify", "SilentMode", is_on);
-	kdebugf2();
-}
-
-void Notify::setSilentActionState()
-{
- 	foreach (KaduAction *action, silent_action->actions())
-		action->setChecked(kadu->silentMode());
-}
-
-void Notify::checkSilentMode()
-{
-	static int silent_mode_enabled = 0;
-	if (config_file.readBoolEntry("Notify", "AwaySilentMode") && gadu->currentStatus().isBusy())
-	{
-		silent_mode_enabled = 1;
-		kadu->setSilentMode(true);
-		setSilentActionState();
-	}
-	else if (silent_mode_enabled)
-	{
-		silent_mode_enabled = 0;
-		kadu->setSilentMode(false);
-		setSilentActionState();
-	}
 }
 
 Notify::~Notify()
@@ -144,9 +103,6 @@ Notify::~Notify()
 	// TODO:
 	disconnect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
 		this, SLOT(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)));
-
-	delete silent_action;
-	silent_action = 0;
 
 	if (!Notifiers.isEmpty())
 	{
@@ -359,7 +315,6 @@ void Notify::statusChanged(UserListElement elem, QString protocolName,
 {
 	kdebugf();
 
-	checkSilentMode();
 	if (kadu->silentMode())
 		return;
 
@@ -409,7 +364,6 @@ void Notify::messageReceived(Protocol *protocol, UserListElements senders, const
 {
 	kdebugf();
 
-	checkSilentMode();
 	if (kadu->silentMode())
 		return;
 
@@ -427,7 +381,6 @@ void Notify::connectionError(Protocol *protocol, const QString &server, const QS
 {
 	kdebugf();
 
-	checkSilentMode();
 	if (kadu->silentMode())
 		return;
 
