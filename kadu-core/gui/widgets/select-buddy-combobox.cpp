@@ -10,6 +10,7 @@
 #include <QtGui/QListView>
 
 #include "buddies/buddy-manager.h"
+#include "buddies/filter/anonymous-buddy-filter.h"
 #include "buddies/filter/buddy-name-filter.h"
 #include "buddies/model/buddies-model.h"
 #include "buddies/model/buddies-model-proxy.h"
@@ -27,10 +28,12 @@ SelectBuddyCombobox::SelectBuddyCombobox(QWidget *parent) :
 	connect(this, SIGNAL(activated(int)), this, SLOT(activatedSlot()));
 
 	Popup = new SelectBuddyPopup();
+	Popup->view()->proxyModel()->setSortByStatus(false);
 	connect(Popup, SIGNAL(buddySelected(Buddy)), this, SLOT(buddySelected(Buddy)));
 
 	Model = new BuddiesModel(BuddyManager::instance(), this);
 	ProxyModel = new BuddiesModelProxy(this);
+	ProxyModel->setSortByStatus(false);
 	ProxyModel->setSourceModel(Model);
 
 	ActionsProxyModel::ModelActionList beforeActions;
@@ -39,6 +42,10 @@ SelectBuddyCombobox::SelectBuddyCombobox(QWidget *parent) :
 	ActionsModel->setSourceModel(ProxyModel);
 
 	setModel(ActionsModel);
+
+	AnonymousBuddyFilter *anonymousFilter = new AnonymousBuddyFilter(this);
+	anonymousFilter->setEnabled(true);
+	addFilter(anonymousFilter);
 }
 
 SelectBuddyCombobox::~SelectBuddyCombobox()

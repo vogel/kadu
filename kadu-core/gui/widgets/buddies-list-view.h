@@ -99,6 +99,8 @@ public:
 	void addFilter(AbstractBuddyFilter *filter);
 	void removeFilter(AbstractBuddyFilter *filter);
 
+	BuddiesModelProxy * proxyModel() { return ProxyModel; }
+
 	void selectBuddy(Buddy buddy);
 
 	Contact currentContact() const;

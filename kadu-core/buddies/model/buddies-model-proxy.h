@@ -23,6 +23,7 @@ class BuddiesModelProxy : public QSortFilterProxyModel, public AbstractBuddiesMo
 	QList<AbstractBuddyFilter *> Filters;
 
 	bool BrokenStringCompare;
+	bool SortByStatus;
 	int compareNames(QString n1, QString n2) const;
 	
 private slots:
@@ -38,6 +39,8 @@ public:
 	virtual void setSourceModel(QAbstractItemModel *sourceModel);
 	void addFilter(AbstractBuddyFilter *filter);
 	void removeFilter(AbstractBuddyFilter *filter);
+
+	void setSortByStatus(bool sortByStatus);
 
 	// AbstractBuddiesModel implementation
 	virtual Buddy buddyAt(const QModelIndex &index) const;

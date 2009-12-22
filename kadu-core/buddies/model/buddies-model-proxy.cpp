@@ -18,7 +18,7 @@
 #include "buddies-model-proxy.h"
 
 BuddiesModelProxy::BuddiesModelProxy(QObject *parent)
-	: QSortFilterProxyModel(parent), SourceBuddyModel(0)
+	: QSortFilterProxyModel(parent), SourceBuddyModel(0), SortByStatus(true)
 {
 	setDynamicSortFilter(true);
 	sort(0);
@@ -47,6 +47,19 @@ int BuddiesModelProxy::compareNames(QString n1, QString n2) const
 		: n1.localeAwareCompare(n2);
 }
 
+void BuddiesModelProxy::setSortByStatus(bool sortByStatus)
+{
+	if (SortByStatus == sortByStatus)
+		return;
+
+	SortByStatus = sortByStatus;
+	invalidateFilter();
+	invalidate();
+
+	sort(1);
+	sort(0);
+}
+
 void BuddiesModelProxy::modelDestroyed()
 {
 	SourceBuddyModel = 0;
@@ -60,24 +73,27 @@ bool BuddiesModelProxy::lessThan(const QModelIndex &left, const QModelIndex &rig
 	Buddy leftBuddy = SourceBuddyModel->buddyAt(left);
 	Buddy rightBuddy = SourceBuddyModel->buddyAt(right);
 
-	Account leftAccount = leftBuddy.prefferedAccount();
-	Account rightAccount = rightBuddy.prefferedAccount();
+	if (SortByStatus)
+	{
+		Account leftAccount = leftBuddy.prefferedAccount();
+		Account rightAccount = rightBuddy.prefferedAccount();
 
-	Contact leftBuddyAccountData = leftBuddy.prefferedContact();
-	Contact rightBuddyAccountData = rightBuddy.prefferedContact();
+		Contact leftBuddyAccountData = leftBuddy.prefferedContact();
+		Contact rightBuddyAccountData = rightBuddy.prefferedContact();
 
-	Status leftStatus = !leftBuddyAccountData.isNull()
-		? leftBuddyAccountData.currentStatus()
-		: Status::null;
-	Status rightStatus = !rightBuddyAccountData.isNull()
-		? rightBuddyAccountData.currentStatus()
-		: Status::null;
+		Status leftStatus = !leftBuddyAccountData.isNull()
+				? leftBuddyAccountData.currentStatus()
+				: Status::null;
+		Status rightStatus = !rightBuddyAccountData.isNull()
+				? rightBuddyAccountData.currentStatus()
+				: Status::null;
 
-	if (leftStatus.isDisconnected() && !rightStatus.isDisconnected())
-		return false;
+		if (leftStatus.isDisconnected() && !rightStatus.isDisconnected())
+			return false;
 
-	if (!leftStatus.isDisconnected() && rightStatus.isDisconnected())
-		return true;
+		if (!leftStatus.isDisconnected() && rightStatus.isDisconnected())
+			return true;
+	}
 
 	int displayCompare = compareNames(leftBuddy.display(), rightBuddy.display());
 	return displayCompare < 0;
