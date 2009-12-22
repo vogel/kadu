@@ -2,7 +2,22 @@ Teksty w nawiasach na koñcu wpisu mówi± o tym, kto dokona³ poprawki lub rozbudow
 Postaæ (x/y) oznacza, ¿e x jest pomys³odawc± lub podes³a³ patcha, a zrobi³ to kto¶ oznaczony przez y.
 Je¶li jest w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 
-+++ wersja 0.6.5.4
++++ wersja 0.6.5.4-rc2
+* definitywnie naprawione zosta³o wysy³anie obrazków (uzi)
+* naprawione zosta³o przesy³anie plików za pomoc± po³±czeñ bezpo¶rednich (uzi)
+* bramka Plus GSM zosta³a dostosowana do ostatnich zmian operatora (dorr)
+* wsparcie dla Maemo (dorr)
+* dodany modu³ single_window (dorr)
+* poprawione zosta³o niepoprawne prze³±czanie statusów przez modu³ autoaway (dorr)
+* workaround na QTBUG-1767 pod Mac OS X (dorr)
+* komunikaty s± wy¶wietlane na ¶rodku ekranu a nie lewym górnym rogu (dorr)
+* poprawione dzia³anie modu³u profiles pod Mac OS X (dorr)
+* usuniête zosta³y opó¼nienia przy zmianie statusu przez modu³ audacious_mediaplayer (dorr)
+* historia otwiera siê z powrotem na ostatniej rozmowie z kontaktem (dorr)
+* rzadki problem b³êdnych dat w historii zosta³ rozwiazany (dorr)
+* wy¶wietlanie powiêkszenia emotek w oknie ich wyboru po najechaniu kursorem (dorr)
+
++++ wersja 0.6.5.4-rc1
 * wsparcie dla Haiku OS (kaliber/dorr)
 * wsparcie dla protoko³u gg8 (libgadu 1.9.0) (dorr)
 * dalsze poprawki w wyszukiwaniu w historii (dorr)
