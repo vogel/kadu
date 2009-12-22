@@ -403,22 +403,13 @@ QList<Message> HistorySqlStorage::messagesFromQuery(Chat chat, QSqlQuery query)
 	while (query.next())
 	{
 		bool outgoing = QVariant(query.value(4).toString().split('=').last()).toBool();
-		Message::Type type;
-		Contact sender;
-		if (outgoing)
-		{
-			type = Message::TypeSent;
-			sender = chat.chatAccount().accountContact();
-		}
-		else
-		{
-			type = Message::TypeReceived;
 
-			// ignore non-existing contacts
-			sender = ContactManager::instance()->byUuid(query.value(0).toString(), false);
-			if (sender.isNull())
-				continue;
-		}
+		Message::Type type = outgoing ? Message::TypeSent : Message::TypeReceived;
+
+		// ignore non-existing contacts
+		Contact sender = ContactManager::instance()->byUuid(query.value(0).toString(), false);
+		if (sender.isNull())
+			continue;
 
 		Message message(chat, type, sender);
 		message
@@ -439,6 +430,7 @@ void HistorySqlStorage::convertSenderToContact()
 	QList<Buddy> allBuddies = BuddyManager::instance()->items();
 
 	foreach (Chat chat, allChats)
+	{
 		foreach (Buddy buddy, allBuddies)
 		{
 			QList<Contact> contacts = buddy.contacts(chat.chatAccount());
@@ -454,6 +446,17 @@ void HistorySqlStorage::convertSenderToContact()
 			import.bindValue(":sender", contact.uuid().toString());
 			import.exec();
 		}
+		if (!chat.chatAccount())
+			continue;
+
+		Contact sender = chat.chatAccount().accountContact();
+		QSqlQuery import = QSqlQuery(Database);
+		import.prepare("UPDATE kadu_messages SET sender=:sender WHERE attributes=:old_attr AND chat=:old_chat");
+		import.bindValue(":old_attr", "outgoing=1");
+		import.bindValue(":old_chat", chat.uuid().toString());
+		import.bindValue(":sender", sender.uuid().toString());
+		import.exec();
+	}
 
 	MessageDialog::msg("All teh werk dun!", false, "Warning");
 }
