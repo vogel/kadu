@@ -12,8 +12,9 @@
 
 #include <QtGui/QWidget>
 
+class QLineEdit;
+
 class BuddyNameFilter;
-class BuddiesLineEdit;
 class BuddiesListView;
 class MainWindow;
 
@@ -29,7 +30,7 @@ public:
 	};
 
 private:
-	BuddiesLineEdit *NameFilterEdit;
+	QLineEdit *NameFilterEdit;
 	BuddiesListView *View;
 	BuddyNameFilter *NameFilter;
 
@@ -38,12 +39,15 @@ private slots:
 	void selectPrevious();
 	void nameFilterChanged(const QString &filter);
 
+protected:
+	virtual bool eventFilter(QObject *, QEvent *);
+
 public:
 	explicit BuddiesListWidget(FilterPosition filterPosition, MainWindow *mainWindow, QWidget *parent = 0);
 	virtual ~BuddiesListWidget();
 
 	BuddiesListView * view() { return View; }
-	BuddiesLineEdit * nameFilterEdit() { return NameFilterEdit; }
+	QLineEdit * nameFilterEdit() { return NameFilterEdit; }
 	BuddyNameFilter * nameFilter() { return NameFilter; }
 
 };

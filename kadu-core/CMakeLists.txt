@@ -107,7 +107,6 @@ set (kadu_SRCS
 	gui/actions/action-description.cpp
 
 	gui/widgets/account-buddy-list-widget.cpp
-	gui/widgets/buddies-line-edit.cpp
 	gui/widgets/buddies-list-view.cpp
 	gui/widgets/buddies-list-view-delegate.cpp
 	gui/widgets/buddies-list-view-menu-manager.cpp
@@ -356,7 +355,6 @@ set (kadu_MOC_SRCS
 	gui/widgets/account-add-widget.h
 	gui/widgets/account-create-widget.h
 	gui/widgets/account-edit-widget.h
-	gui/widgets/buddies-line-edit.h
 	gui/widgets/buddies-list-view.h
 	gui/widgets/buddies-list-view-delegate.h
 	gui/widgets/buddies-list-widget.h

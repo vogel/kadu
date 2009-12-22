@@ -7,9 +7,10 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtGui/QLineEdit>
+
 #include "buddies/buddy-manager.h"
 #include "buddies/model/buddies-model.h"
-#include "gui/widgets/buddies-line-edit.h"
 #include "gui/widgets/buddies-list-view.h"
 #include "model/roles.h"
 

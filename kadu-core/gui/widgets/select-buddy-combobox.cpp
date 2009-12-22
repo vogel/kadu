@@ -14,7 +14,6 @@
 #include "buddies/filter/buddy-name-filter.h"
 #include "buddies/model/buddies-model.h"
 #include "buddies/model/buddies-model-proxy.h"
-#include "gui/widgets/buddies-line-edit.h"
 #include "gui/widgets/buddies-list-view.h"
 #include "gui/widgets/select-buddy-popup.h"
 #include "model/actions-proxy-model.h"
