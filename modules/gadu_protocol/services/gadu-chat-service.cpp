@@ -168,7 +168,7 @@ ContactSet GaduChatService::getRecipients(gg_event *e)
 {
 	ContactSet recipients;
 	for (int i = 0; i < e->event.msg.recipients_count; ++i)
-		recipients.insert(ContactManager::instance()->byId(Protocol->account(), QString::number(e->event.msg.sender), true));
+		recipients.insert(ContactManager::instance()->byId(Protocol->account(), QString::number(e->event.msg.recipients[i]), true));
 
 	return recipients;
 }
