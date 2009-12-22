@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESSAGE_DATA_H
-#define MESSAGE_DATA_H
+#ifndef MESSAGE_SHARED_H
+#define MESSAGE_SHARED_H
 
 #include <QtCore/QSharedData>
 
@@ -17,10 +17,10 @@
 
 class Chat;
 
-class MessageData : public QObject, public QSharedData
+class MessageShared : public QObject, public QSharedData
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(MessageData)
+	Q_DISABLE_COPY(MessageShared)
 
 	Chat MyChat;
 	Contact Sender;
@@ -32,36 +32,36 @@ class MessageData : public QObject, public QSharedData
 	int Id;
 
 public:
-	MessageData(Chat chat = 0, Message::Type type = Message::TypeUnknown, Contact sender = Contact::null);
-	virtual ~MessageData();
+	MessageShared(Chat chat = 0, Message::Type type = Message::TypeUnknown, Contact sender = Contact::null);
+	virtual ~MessageShared();
 
 	Chat  chat() const { return MyChat; }
-	MessageData & setChat(Chat chat);
+	MessageShared & setChat(Chat chat);
 
 	Contact sender() const { return Sender; }
-	MessageData & setSender(Contact sender);
+	MessageShared & setSender(Contact sender);
 
 	QString content() const { return Content; }
-	MessageData & setContent(const QString &content);
+	MessageShared & setContent(const QString &content);
 
 	QDateTime receiveDate() const { return ReceiveDate; }
-	MessageData & setReceiveDate(QDateTime receiveDate);
+	MessageShared & setReceiveDate(QDateTime receiveDate);
 
 	QDateTime sendDate() const { return SendDate; }
-	MessageData & setSendDate(QDateTime sendDate);
+	MessageShared & setSendDate(QDateTime sendDate);
 
 	Message::Status status() const { return MyStatus; }
-	MessageData & setStatus(Message::Status status);
+	MessageShared & setStatus(Message::Status status);
 
 	Message::Type type() const { return MyType; }
-	MessageData & setType(Message::Type type);
+	MessageShared & setType(Message::Type type);
 
 	int id() const { return Id; }
-	MessageData & setId(int id);
+	MessageShared & setId(int id);
 
 signals:
 	void statusChanged(Message::Status);
 
 };
 
-#endif // MESSAGE_DATA_H
+#endif // MESSAGE_SHARED_H

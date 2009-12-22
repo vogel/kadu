@@ -7,12 +7,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "chat/message/message-data.h"
+#include "chat/message/message-shared.h"
 
 #include "message.h"
 
 Message::Message(Chat chat, Type type, Contact sender) :
-		Data(new MessageData(chat, type, sender))
+		Data(new MessageShared(chat, type, sender))
 {
 	if (Data.data())
 		connect(Data.data(), SIGNAL(statusChanged(Message::Status)),

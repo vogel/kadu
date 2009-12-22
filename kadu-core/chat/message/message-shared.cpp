@@ -7,48 +7,48 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "message-data.h"
+#include "message-shared.h"
 
-MessageData::MessageData(Chat chat, Message::Type type, Contact sender) :
+MessageShared::MessageShared(Chat chat, Message::Type type, Contact sender) :
 		QObject(), MyChat(chat), Sender(sender), MyStatus(Message::StatusUnknown), MyType(type), Id(0)
 {
 }
 
-MessageData::~MessageData()
+MessageShared::~MessageShared()
 {
 }
 
-MessageData & MessageData::setChat(Chat chat)
+MessageShared & MessageShared::setChat(Chat chat)
 {
 	MyChat = chat;
 	return *this;
 }
 
-MessageData & MessageData::setSender(Contact sender)
+MessageShared & MessageShared::setSender(Contact sender)
 {
 	Sender = sender;
 	return *this;
 }
 
-MessageData & MessageData::setContent(const QString &content)
+MessageShared & MessageShared::setContent(const QString &content)
 {
 	Content = content;
 	return *this;
 }
 
-MessageData & MessageData::setReceiveDate(QDateTime receiveDate)
+MessageShared & MessageShared::setReceiveDate(QDateTime receiveDate)
 {
 	ReceiveDate = receiveDate;
 	return *this;
 }
 
-MessageData & MessageData::setSendDate(QDateTime sendDate)
+MessageShared & MessageShared::setSendDate(QDateTime sendDate)
 {
 	SendDate = sendDate;
 	return *this;
 }
 
-MessageData & MessageData::setStatus(Message::Status status)
+MessageShared & MessageShared::setStatus(Message::Status status)
 {
 	if (status != MyStatus)
 	{
@@ -59,13 +59,13 @@ MessageData & MessageData::setStatus(Message::Status status)
 	return *this;
 }
 
-MessageData& MessageData::setType(Message::Type type)
+MessageShared& MessageShared::setType(Message::Type type)
 {
 	MyType = type;
 	return *this;
 }
 
-MessageData& MessageData::setId(int id)
+MessageShared& MessageShared::setId(int id)
 {
 	Id = id;
 	return *this;

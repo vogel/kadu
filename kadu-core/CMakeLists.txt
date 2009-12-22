@@ -62,9 +62,9 @@ set (kadu_SRCS
 	chat/message/formatted-message.cpp
 	chat/message/formatted-message-part.cpp
 	chat/message/message.cpp
-	chat/message/message-data.cpp
 	chat/message/message-render-info.cpp
 	chat/message/pending-messages-manager.cpp
+	chat/message/message-shared.cpp
 
 	chat/style-engines/adium-time-formatter.cpp
 	chat/style-engines/chat-engine-adium.cpp
@@ -321,9 +321,9 @@ set (kadu_MOC_SRCS
 	#chat/filter/chat-name-filter.h
 
 	chat/message/message.h
-	chat/message/message-data.h
 	chat/message/message-render-info.h
 	chat/message/pending-messages-manager.h
+	chat/message/message-shared.h
 
 	chat/style-engines/adium-time-formatter.h
 	chat/style-engines/chat-engine-kadu.h

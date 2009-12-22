@@ -18,13 +18,13 @@
 
 #include "exports.h"
 
-class MessageData;
+class MessageShared;
 
 class KADUAPI Message : public QObject
 {
 	Q_OBJECT
 
-	QExplicitlySharedDataPointer<MessageData> Data;
+	QExplicitlySharedDataPointer<MessageShared> Data;
 
 public:
 	enum Status
