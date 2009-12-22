@@ -35,12 +35,12 @@ class GaduAddAccountWidget : public AccountAddWidget
 	void createGui();
 
 private slots:
-	void addThisAccount();
 	void dataChanged();
 public:
 	explicit GaduAddAccountWidget(QWidget *parent = 0);
 	virtual ~GaduAddAccountWidget();
 
+	virtual void apply();
 };
 
 #endif // GADU_ADD_ACCOUNT_WIDGET_H

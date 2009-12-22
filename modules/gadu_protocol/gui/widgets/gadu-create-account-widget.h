@@ -37,12 +37,13 @@ class GaduCreateAccountWidget : public AccountCreateWidget
 
 private slots:
 	void dataChanged();
-	void registerNewAccount();
 	void registerNewAccountFinished(GaduServerRegisterAccount *gsra);
 
 public:
 	explicit GaduCreateAccountWidget(QWidget *parent = 0);
 	virtual ~GaduCreateAccountWidget();
+	
+	virtual void apply();
 
 };
 

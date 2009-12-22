@@ -234,7 +234,7 @@ void JabberCreateAccountWidget::registerAccountDataChanged()
 ///	RegisterAccount->setEnabled(!disable);
 }
 
-void JabberCreateAccountWidget::registerNewAccount()
+void JabberCreateAccountWidget::apply()
 {
     	if (Password->text() != RetypePassword->text())
 	{

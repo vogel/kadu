@@ -63,7 +63,6 @@ class JabberCreateAccountWidget : public AccountCreateWidget
 private slots:
 	void dataChanged();
 	void registerAccountDataChanged();
-	void registerNewAccount();
 	void registerNewAccountFinished(JabberServerRegisterAccount *jsra);
 	void connectionOptionsChanged();
 	void hostToggled(bool on);
@@ -71,6 +70,8 @@ private slots:
 public:
 	explicit JabberCreateAccountWidget(QWidget *parent = 0);
 	virtual ~JabberCreateAccountWidget();
+	
+	virtual void apply();
 
 };
 

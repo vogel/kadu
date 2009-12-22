@@ -83,15 +83,15 @@ void YourAccounts::createGui()
 	mainLayout->addWidget(buttons);
 
 	QPushButton *okButton = new QPushButton(IconsManager::instance()->loadIcon("OkWindowButton"), tr("Ok"), this);
-	QPushButton *applyButton = new QPushButton(IconsManager::instance()->loadIcon("ApplyWindowButton"), tr("Apply"), this);
+	QPushButton *addAccountButton = new QPushButton(IconsManager::instance()->loadIcon("ApplyWindowButton"), tr("Add Account"), this);
 	QPushButton *cancelButton = new QPushButton(IconsManager::instance()->loadIcon("CloseWindowButton"), tr("Cancel"), this);
 
 	connect(okButton, SIGNAL(clicked(bool)), this, SLOT(okClicked()));
-	connect(applyButton, SIGNAL(clicked(bool)), this, SLOT(applyClicked()));
+	connect(addAccountButton, SIGNAL(clicked(bool)), this, SLOT(addAccountButtonClicked()));
 	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(close()));
 
 	buttons->addButton(okButton, QDialogButtonBox::AcceptRole);
-	buttons->addButton(applyButton, QDialogButtonBox::ApplyRole);
+	buttons->addButton(addAccountButton, QDialogButtonBox::ApplyRole);
 	buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
 
 	CreateEditStack = new QStackedWidget(this);
@@ -242,7 +242,7 @@ void YourAccounts::newAccountProtocolChanged(int protocolIndex)
 		if (factory)
 			createWidget = factory->newCreateAccountWidget(NewAccountContainer);
 		else
-			createWidget = new AccountCreateWidget(this);
+			createWidget = 0;
 
 		CreateWidgets[factory] = createWidget;
 		if (createWidget)
@@ -271,7 +271,7 @@ void YourAccounts::addAccountProtocolChanged(int protocolIndex)
 		if (factory)
 			addWidget = factory->newAddAccountWidget(AddAccountContainer);
 		else
-			addWidget = new AccountAddWidget(this);
+			addWidget = 0;
 
 		AddWidgets[factory] = addWidget;
 		if (addWidget)
@@ -337,14 +337,22 @@ void YourAccounts::accountUnregistered(Account account)
 
 void YourAccounts::okClicked()
 {
-	applyClicked();
+	foreach (AccountEditWidget *editWidget, EditWidgets)
+		editWidget->apply();
 	close();
 }
 
-void YourAccounts::applyClicked()
+void YourAccounts::addAccountButtonClicked()
 {
-	foreach (AccountEditWidget *editWidget, EditWidgets)
-		editWidget->apply();
+  	AccountCreateWidget *widget = dynamic_cast<AccountCreateWidget *>(CreateStack->currentWidget());
+	if (!widget)
+	{
+		AccountAddWidget *widgetAdd = dynamic_cast<AccountAddWidget *>(CreateStack->currentWidget());
+		if (!widgetAdd)
+			return;
+		widgetAdd->apply();
+	}
+	widget->apply();
 }
 
 void YourAccounts::keyPressEvent(QKeyEvent *e)
