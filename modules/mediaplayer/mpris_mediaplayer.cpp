@@ -30,6 +30,11 @@ MPRISMediaPlayer::MPRISMediaPlayer(QString n, QString s) : name(n), service(s)
 {
 	kdebugf();
 	controller = new MPRISController(service);
+
+	if (name == "Audacious")
+		mediaplayer->setInterval(5);
+	else
+		mediaplayer->setInterval(0);
 }
 
 MPRISMediaPlayer::~MPRISMediaPlayer()
@@ -181,10 +186,10 @@ QString MPRISMediaPlayer::getTitle(int position)
 	kdebugf();
 	if (!isPlaying()) return "";
 
-	if ((position == -1) && !controller->currentTrack().title.isEmpty())
+	if (position == -1)
 		return controller->currentTrack().title;
-
-	return getStringMapValue("/TrackList", "GetMetadata", position, "title");
+	else
+		return getStringMapValue("/TrackList", "GetMetadata", position, "title");
 	kdebugf2();
 }
 
@@ -347,6 +352,10 @@ void MPRISMediaPlayer::decrVolume()
 bool MPRISMediaPlayer::isPlaying()
 {
 	kdebugf();
+
+	/* refresh the status for audacious */
+	if (name == "Audacious")
+		controller->getStatus();
 
 	return (controller->currentStatus().i1 == 0);
 

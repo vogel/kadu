@@ -78,8 +78,6 @@ MPRISController::MPRISController(QString s) : service(s)
 	currentTrack_.track  = "";
 	currentTrack_.time   =  0;
 	currentStatus_.i1    =  2;
-
-	mediaplayer->setInterval(0);
 }
 
 MPRISController::~MPRISController()
@@ -134,3 +132,17 @@ void MPRISController::trackChanged(QVariantMap map)
 	}
 	mediaplayer->titleChanged();
 };
+
+void MPRISController::getStatus()
+{
+	if (!service.isEmpty())
+	{
+		QDBusInterface mprisApp(service, "/Player", "org.freedesktop.MediaPlayer");
+		QDBusReply<PlayerStatus> reply = mprisApp.call("GetStatus");
+		if (reply.isValid())
+		{
+			PlayerStatus status = reply.value();
+			currentStatus_ = status;
+		}
+	}
+}

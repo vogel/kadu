@@ -655,8 +655,12 @@ void MediaPlayer::mediaPlayerStatusChangerActivated(QAction *sender, bool toggle
 	}
 
 	mediaPlayerStatusChanger->setDisable(!toggled);
-	if (toggled && statusInterval > 0)
-		timer->start(statusInterval);
+	if (toggled)
+	{
+		checkTitle();
+		if (statusInterval > 0)
+			timer->start(statusInterval);
+	}
 	else
 		timer->stop();
 }
