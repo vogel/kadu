@@ -30,6 +30,7 @@ class MessageShared : public QObject, public Shared
 	QDateTime SendDate;
 	Message::Status Status;
 	Message::Type Type;
+	bool Pending;
 	int Id;
 
 protected:
@@ -46,6 +47,7 @@ public:
 	virtual QString storageNodeName();
 
 	virtual void store();
+	virtual bool shouldStore();
 
 	void setStatus(Message::Status status);
 
@@ -56,6 +58,7 @@ public:
 	KaduShared_Property(QDateTime, sendDate, SendDate)
 	KaduShared_PropertyRead(Message::Status, status, Status)
 	KaduShared_Property(Message::Type, type, Type)
+	KaduShared_PropertyBool(Pending)
 	KaduShared_Property(int, id, Id)
 
 signals:

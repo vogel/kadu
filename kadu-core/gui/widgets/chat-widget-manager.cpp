@@ -374,6 +374,7 @@ void ChatWidgetManager::configurationUpdated()
 	kdebugf2();
 }
 
+// TODO: 0.8, move to core or somewhere else
 void ChatWidgetManager::messageReceived(const Message &message)
 {
 	kdebugf();
@@ -397,9 +398,10 @@ void ChatWidgetManager::messageReceived(const Message &message)
 
 		if (config_file.readBoolEntry("Chat", "OpenChatOnMessage"))
 		{
-			// TODO: 0.6.6
-			if (config_file.readBoolEntry("Chat", "OpenChatOnMessageWhenOnline") && false /*!Myself.status("Gadu").isOnline()*/)
+			Protocol *handler = message.messageChat().chatAccount().protocolHandler();
+			if (config_file.readBoolEntry("Chat", "OpenChatOnMessageWhenOnline") && (!handler || (handler->status().group() != "Online")))
 			{
+				message.setPending(true);
 				PendingMessagesManager::instance()->addMsg(message);
 				return;
 			}
@@ -412,7 +414,10 @@ void ChatWidgetManager::messageReceived(const Message &message)
 			chatWidget->newMessage(messageRenderInfo);
 		}
 		else
+		{
+			message.setPending(true);
 			PendingMessagesManager::instance()->addMsg(message);
+		}
 	}
 
 	kdebugf2();
@@ -420,7 +425,7 @@ void ChatWidgetManager::messageReceived(const Message &message)
 
 void ChatWidgetManager::messageSent(const Message &message)
 {
-	Chat chat = message.messageChat ();
+	Chat chat = message.messageChat();
 	ChatWidget *chatWidget = byChat(chat);
 	MessageRenderInfo *messageRenderInfo = new MessageRenderInfo(message);
 

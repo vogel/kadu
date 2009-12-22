@@ -59,6 +59,7 @@ public:
 	KaduSharedBase_Property(QDateTime, sendDate, SendDate)
 	KaduSharedBase_Property(Message::Status, status, Status)
 	KaduSharedBase_Property(Message::Type, type, Type)
+	KaduSharedBase_PropertyBool(Pending)
 	KaduSharedBase_Property(int, id, Id)
 
 };

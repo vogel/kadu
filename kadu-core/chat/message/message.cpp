@@ -58,4 +58,5 @@ KaduSharedBase_PropertyDef(Message, QDateTime, receiveDate, ReceiveDate, QDateTi
 KaduSharedBase_PropertyDef(Message, QDateTime, sendDate, SendDate, QDateTime())
 KaduSharedBase_PropertyDef(Message, Message::Status, status, Status, Message::StatusUnknown)
 KaduSharedBase_PropertyDef(Message, Message::Type, type, Type, Message::TypeUnknown)
+KaduSharedBase_PropertyBoolDef(Message, Pending, false)
 KaduSharedBase_PropertyDef(Message, int, id, Id, -1)
