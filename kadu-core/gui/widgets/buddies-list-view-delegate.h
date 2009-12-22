@@ -39,9 +39,14 @@ class BuddiesListViewDelegate : public QItemDelegate, public ConfigurationAwareO
 
 	QSize DefaultAvatarSize;
 
+	QPixmap MessagePixmap;
+
 	QTextDocument * descriptionDocument(const QString &text, int width, QColor color) const;
 	bool isBold(const QModelIndex &index) const;
 	QPixmap avatar(const QModelIndex &index) const;
+
+	bool useMessagePixmap(const QModelIndex &index) const;
+	int iconsWidth(const QModelIndex &index, int margin) const;
 
 private slots:
 	void buddyStatusChanged(Contact contact, Status oldStatus);

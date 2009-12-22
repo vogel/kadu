@@ -24,8 +24,9 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "contacts/contact.h"
 #include "buddies/model/buddies-model.h"
+#include "chat/message/pending-messages-manager.h"
+#include "contacts/contact.h"
 #include "configuration/configuration-file.h"
 #include "model/roles.h"
 #include "icons-manager.h"
@@ -39,6 +40,7 @@ BuddiesListViewDelegate::BuddiesListViewDelegate(QObject *parent)
 	configurationUpdated();
 
 	DefaultAvatarSize = IconsManager::instance()->loadPixmap("ContactsTab").size();
+	MessagePixmap = IconsManager::instance()->loadPixmap("Message");
 }
 
 BuddiesListViewDelegate::~BuddiesListViewDelegate()
@@ -102,6 +104,33 @@ QTextDocument * BuddiesListViewDelegate::descriptionDocument(const QString &text
 	return doc;
 }
 
+bool BuddiesListViewDelegate::useMessagePixmap(const QModelIndex &index) const
+{
+	if (index.parent().isValid()) // contact
+	{
+		Contact contact = qvariant_cast<Contact>(index.data(ContactRole));
+		return contact && PendingMessagesManager::instance()->hasPendingMessagesForContact(contact);
+	}
+	else
+	{
+		Buddy buddy = qvariant_cast<Buddy>(index.data(BuddyRole));
+		return buddy && PendingMessagesManager::instance()->hasPendingMessagesForBuddy(buddy);
+	}
+}
+
+int BuddiesListViewDelegate::iconsWidth(const QModelIndex &index, int margin) const
+{
+	QPixmap pixmap = qvariant_cast<QPixmap>(index.data(Qt::DecorationRole));
+
+	int result = 0;
+	if (!pixmap.isNull())
+		result += pixmap.width() + margin;
+	if (useMessagePixmap(index))
+		result += MessagePixmap.width() + margin;
+
+	return result;
+}
+
 QSize BuddiesListViewDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
 	QSize size(0, 0);
@@ -136,9 +165,7 @@ QSize BuddiesListViewDelegate::sizeHint(const QStyleOptionViewItem &option, cons
 	int descriptionHeight = 0;
 
 	QPixmap pixmap = qvariant_cast<QPixmap>(index.data(Qt::DecorationRole));
-	int textLeft = pixmap.isNull()
-		? textMargin
-		: pixmap.width() + textMargin * 2;
+	int textLeft = textMargin + iconsWidth(index, textMargin);
 
 	if (!description.isEmpty())
 	{
@@ -202,9 +229,7 @@ void BuddiesListViewDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 
 	QTextDocument *dd = 0;
 	int descriptionHeight = 0;
-	int textLeft = pixmap.isNull()
-		? textMargin
-		: pixmap.width() + 2 * textMargin;
+	int textLeft = textMargin + iconsWidth(index, textMargin);
 
 	if (hasDescription)
 	{
@@ -219,8 +244,16 @@ void BuddiesListViewDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 	int height = qMax(pixmapHeight, displayHeight + descriptionHeight);
 	int itemHeight = AlignTop ? displayHeight : rect.height();
 
+	int pixmapMargin = 0;
+
 	if (!pixmap.isNull())
+	{
 		painter->drawPixmap(textMargin, (itemHeight - pixmap.height()) / 2, pixmap);
+		pixmapMargin = pixmap.width() + textMargin;
+	}
+
+	if (useMessagePixmap(index))
+		painter->drawPixmap(textMargin + pixmapMargin, (itemHeight - MessagePixmap.height()) / 2, MessagePixmap);
 
 	QString display = index.data(Qt::DisplayRole).toString();
 	if (display.isEmpty())
