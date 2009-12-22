@@ -9,8 +9,15 @@
 
 #include "message-shared.h"
 
-MessageShared::MessageShared(Chat chat, Message::Type type, Contact sender) :
-		QObject(), MyChat(chat), Sender(sender), MyStatus(Message::StatusUnknown), MyType(type), Id(0)
+MessageShared * MessageShared::loadFromStorage(StoragePoint *messageStoragePoint)
+{
+	MessageShared *result = new MessageShared();
+	result->setStorage(messageStoragePoint);
+	return result;
+}
+
+MessageShared::MessageShared(QUuid uuid) :
+		Shared(uuid), Status(Message::StatusUnknown), Type(Message::TypeUnknown)
 {
 }
 
@@ -18,55 +25,38 @@ MessageShared::~MessageShared()
 {
 }
 
-MessageShared & MessageShared::setChat(Chat chat)
+StorableObject * MessageShared::storageParent()
 {
-	MyChat = chat;
-	return *this;
+	return 0; // TODO: use PendingMessageManager or STH
 }
 
-MessageShared & MessageShared::setSender(Contact sender)
+QString MessageShared::storageNodeName()
 {
-	Sender = sender;
-	return *this;
+	return QLatin1String("Message");
 }
 
-MessageShared & MessageShared::setContent(const QString &content)
+void MessageShared::load()
 {
-	Content = content;
-	return *this;
+	// TODO: write real implementation
+	Shared::load();
 }
 
-MessageShared & MessageShared::setReceiveDate(QDateTime receiveDate)
+void MessageShared::store()
 {
-	ReceiveDate = receiveDate;
-	return *this;
+	// TODO: write real implementation
+	Shared::store();
 }
 
-MessageShared & MessageShared::setSendDate(QDateTime sendDate)
+void MessageShared::emitUpdated()
 {
-	SendDate = sendDate;
-	return *this;
+	emit updated();
 }
 
-MessageShared & MessageShared::setStatus(Message::Status status)
+void MessageShared::setStatus(Message::Status status)
 {
-	if (status != MyStatus)
+	if (status != Status)
 	{
-		MyStatus = status;
-		emit statusChanged(MyStatus);
+		Status = status;
+		emit statusChanged(Status);
 	}
-
-	return *this;
-}
-
-MessageShared& MessageShared::setType(Message::Type type)
-{
-	MyType = type;
-	return *this;
-}
-
-MessageShared& MessageShared::setId(int id)
-{
-	Id = id;
-	return *this;
 }

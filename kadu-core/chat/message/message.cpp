@@ -12,11 +12,16 @@
 #include "message.h"
 
 Message::Message(Chat chat, Type type, Contact sender) :
-		Data(new MessageShared(chat, type, sender))
+		Data(new MessageShared())
 {
 	if (Data.data())
+	{
+		Data.data()->setMessageChat(chat);
+		Data.data()->setType(type);
+		Data.data()->setMessageSender(sender);
 		connect(Data.data(), SIGNAL(statusChanged(Message::Status)),
 				this, SLOT(statusChanged(Message::Status)));
+	}
 }
 
 Message::Message(const Message& copy) :
@@ -50,28 +55,28 @@ void Message::statusChanged(Message::Status status)
 Chat Message::chat() const
 {
 	return Data.data()
-			? Data->chat()
+			? Data->messageChat()
 			: Chat::null;
 }
 
 Message & Message::setChat(Chat chat)
 {
 	if (Data.data())
-		Data->setChat(chat);
+		Data->setMessageChat(chat);
 	return *this;
 }
 
 Contact Message::sender() const
 {
 	return Data.data()
-			? Data->sender()
+			? Data->messageSender()
 			: Contact::null;
 }
 
 Message & Message::setSender(Contact sender)
 {
 	if (Data.data())
-		Data->setSender(sender);
+		Data->setMessageSender(sender);
 	return *this;
 }
 

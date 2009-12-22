@@ -12,55 +12,56 @@
 
 #include <QtCore/QSharedData>
 
-#include "chat/message/message.h"
 #include "buddies/buddy.h"
+#include "chat/message/message.h"
+#include "storage/shared.h"
 
 class Chat;
 
-class MessageShared : public QObject, public QSharedData
+class MessageShared : public QObject, public Shared
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(MessageShared)
 
-	Chat MyChat;
-	Contact Sender;
+	Chat MessageChat;
+	Contact MessageSender;
 	QString Content;
 	QDateTime ReceiveDate;
 	QDateTime SendDate;
-	Message::Status MyStatus;
-	Message::Type MyType;
+	Message::Status Status;
+	Message::Type Type;
 	int Id;
 
+protected:
+	virtual void load();
+	virtual void emitUpdated();
+
 public:
-	MessageShared(Chat chat = 0, Message::Type type = Message::TypeUnknown, Contact sender = Contact::null);
+	static MessageShared * loadFromStorage(StoragePoint *messageStoragePoint);
+
+	explicit MessageShared(QUuid uuid = QUuid());
 	virtual ~MessageShared();
 
-	Chat  chat() const { return MyChat; }
-	MessageShared & setChat(Chat chat);
+	virtual StorableObject * storageParent();
+	virtual QString storageNodeName();
 
-	Contact sender() const { return Sender; }
-	MessageShared & setSender(Contact sender);
+	virtual void store();
 
-	QString content() const { return Content; }
-	MessageShared & setContent(const QString &content);
+	void setStatus(Message::Status status);
 
-	QDateTime receiveDate() const { return ReceiveDate; }
-	MessageShared & setReceiveDate(QDateTime receiveDate);
-
-	QDateTime sendDate() const { return SendDate; }
-	MessageShared & setSendDate(QDateTime sendDate);
-
-	Message::Status status() const { return MyStatus; }
-	MessageShared & setStatus(Message::Status status);
-
-	Message::Type type() const { return MyType; }
-	MessageShared & setType(Message::Type type);
-
-	int id() const { return Id; }
-	MessageShared & setId(int id);
+	KaduShared_Property(Chat, messageChat, MessageChat)
+	KaduShared_Property(Contact, messageSender, MessageSender)
+	KaduShared_Property(QString, content, Content)
+	KaduShared_Property(QDateTime, receiveDate, ReceiveDate)
+	KaduShared_Property(QDateTime, sendDate, SendDate)
+	KaduShared_PropertyRead(Message::Status, status, Status)
+	KaduShared_Property(Message::Type, type, Type)
+	KaduShared_Property(int, id, Id)
 
 signals:
 	void statusChanged(Message::Status);
+
+	void updated();
 
 };
 
