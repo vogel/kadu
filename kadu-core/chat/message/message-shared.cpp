@@ -46,8 +46,8 @@ void MessageShared::load()
 
 	Shared::load();
 
-	MessageChat = ChatManager::instance()->byUuid(loadValue<QString>("Chat"), false);
-	MessageSender = ContactManager::instance()->byUuid(loadValue<QString>("Sender"), false);
+	MessageChat = ChatManager::instance()->byUuid(loadValue<QString>("Chat"));
+	MessageSender = ContactManager::instance()->byUuid(loadValue<QString>("Sender"));
 	Content = loadValue<QString>("Content");
 	ReceiveDate = loadValue<QDateTime>("ReceiveDate");
 	SendDate = loadValue<QDateTime>("SendDate");

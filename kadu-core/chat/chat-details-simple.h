@@ -28,6 +28,7 @@ public:
 	virtual ~ChatDetailsSimple();
 
 	virtual void store();
+	virtual bool shouldStore();
 
 	virtual ChatType * type() const;
 	virtual ContactSet contacts() const;

@@ -78,13 +78,18 @@ void ChatShared::store()
 
 	storeValue("Type", Type);
 	storeValue("Account", ChatAccount.uuid().toString());
+
+	if (details())
+		details()->store();
 }
 
 bool ChatShared::shouldStore()
 {
 	ensureLoaded();
 
-	return UuidStorableObject::shouldStore() && !ChatAccount.uuid().isNull();
+	return UuidStorableObject::shouldStore()
+			&& !ChatAccount.uuid().isNull()
+			&& (!details() || details()->shouldStore());
 }
 
 void ChatShared::aboutToBeRemoved()

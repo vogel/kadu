@@ -67,6 +67,12 @@ void ChatDetailsSimple::store()
 		storeValue("Contact", CurrentContact.uuid().toString());
 }
 
+bool ChatDetailsSimple::shouldStore()
+{
+	return StorableObject::shouldStore()
+			&& !CurrentContact.uuid().isNull();
+}
+
 ChatType * ChatDetailsSimple::type() const
 {
 	return ChatTypeManager::instance()->chatType("Simple");
