@@ -343,7 +343,7 @@ set (kadu_MOC_SRCS
 
 	core/core.h
 
-	file-transfer/file-transfer.h
+	file-transfer/file-transfer-handler.h
 	file-transfer/file-transfer-manager.h
 	file-transfer/file-transfer-shared.h
 

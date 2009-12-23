@@ -7,32 +7,34 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FILE_TRANSFER_SERVICE_H
-#define FILE_TRANSFER_SERVICE_H
+#ifndef FILE_TRANSFER_HANDLER_H
+#define FILE_TRANSFER_HANDLER_H
 
 #include <QtCore/QObject>
 
-#include "buddies/buddy.h"
 #include "file-transfer/file-transfer.h"
 
-#include "exports.h"
-
-class FileTransferHandler;
-
-class KADUAPI FileTransferService : public QObject
+class FileTransferHandler : public QObject
 {
-	Q_OBJECT
+	Q_OBJECT;
 
-	friend class DccManager;
+	FileTransfer Transfer;
 
 public:
-	FileTransferService(QObject *parent = 0) : QObject(parent) {}
+	FileTransferHandler(FileTransfer transfer) { Transfer = transfer; }
+	virtual ~FileTransferHandler() {}
 
-	virtual FileTransferHandler * createFileTransferHandler(FileTransfer fileTransfer) = 0;
+	FileTransfer transfer() { return Transfer; }
+	void setTransfer(FileTransfer transfer) { Transfer = transfer; }
 
-signals:
-	void incomingFileTransfer(FileTransfer fileTransfer);
+	virtual void send() = 0;
+	virtual void stop() = 0;
+	virtual void pause() = 0;
+	virtual void restore() = 0;
+
+	virtual bool accept(const QFile &file) = 0;
+	virtual void reject() = 0;
 
 };
 
-#endif // FILE_TRANSFER_SERVICE_H
+#endif // FILE_TRANSFER_HANDLER_H

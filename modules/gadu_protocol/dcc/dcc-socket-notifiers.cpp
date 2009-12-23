@@ -12,7 +12,7 @@
 #include "debug.h"
 #include "misc/misc.h"
 
-#include "file-transfer/gadu-file-transfer.h"
+#include "file-transfer/gadu-file-transfer-handler.h"
 #include "socket-notifiers/gadu-protocol-socket-notifiers.h"
 
 #include "dcc-socket-notifiers.h"
@@ -127,11 +127,11 @@ void DccSocketNotifiers::handleEventDccCallback(struct gg_event *e)
 {
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "uin:%d peer_uin:%d\n", Socket->uin, Socket->peer_uin);
 
-	GaduFileTransfer *gft = Manager->findFileTransfer(this);
-	if (gft)
+	GaduFileTransferHandler *handler = Manager->findFileTransferHandler(this);
+	if (handler)
 	{
 		gg_dcc_set_type(Socket, GG_SESSION_DCC_SEND); // TODO: 0.6.6 for voice it wont look that way
-		gft->setFileTransferNotifiers(this);
+		handler->setFileTransferNotifiers(this);
 		return;
 	}
 	else
@@ -142,9 +142,10 @@ void DccSocketNotifiers::handleEventDccNeedFileInfo(struct gg_event *e)
 {
 	kdebugf();
 
-	if (Version == Dcc6 && FileTransfer)
+	if (Version == Dcc6 && FileTransferHandler)
 	{
-		gg_dcc_fill_file_info2(Socket, unicode2cp(FileTransfer->localFileName()), qPrintable(FileTransfer->localFileName()));
+		FileTransfer transfer = FileTransferHandler->transfer();
+		gg_dcc_fill_file_info2(Socket, unicode2cp(transfer.localFileName()), qPrintable(transfer.localFileName()));
 		watchFor(Socket);
 	}
 	else
@@ -221,14 +222,14 @@ void DccSocketNotifiers::socketEvent()
 	{
 		case Dcc6:
 			e = gg_dcc_watch_fd(Socket);
-			if (FileTransfer)
-				FileTransfer->updateFileInfo();
+			if (FileTransferHandler)
+				FileTransferHandler->updateFileInfo();
 			break;
 
 		case Dcc7:
 			e = gg_dcc7_watch_fd(Socket7);
-			if (FileTransfer)
-				FileTransfer->updateFileInfo();
+			if (FileTransferHandler)
+				FileTransferHandler->updateFileInfo();
 			break;
 
 		default:
@@ -352,15 +353,15 @@ void DccSocketNotifiers::connectionTimeout()
 
 void DccSocketNotifiers::accepted()
 {
-	if (FileTransfer)
-		FileTransfer->changeFileTransferStatus(FileTransfer::StatusTransfer);
+	if (FileTransferHandler)
+		FileTransferHandler->transfer().setTransferStatus(StatusTransfer);
 	watchFor(Socket7);
 }
 
 void DccSocketNotifiers::rejected()
 {
-	if (FileTransfer)
-		FileTransfer->changeFileTransferStatus(FileTransfer::StatusRejected);
+	if (FileTransferHandler)
+		FileTransferHandler->transfer().setTransferStatus(StatusRejected);
 	deleteLater();
 }
 
@@ -370,8 +371,8 @@ void DccSocketNotifiers::finished(bool ok)
 	deleteLater();
 	emit done(ok);
 
-	if (FileTransfer)
-		FileTransfer->finished(ok);
+	if (FileTransferHandler)
+		FileTransferHandler->finished(ok);
 }
 
 UinType DccSocketNotifiers::peerUin()
@@ -426,9 +427,9 @@ QString DccSocketNotifiers::remoteFileName()
 	return QString::null;
 }
 
-void DccSocketNotifiers::setGaduFileTransfer(GaduFileTransfer *fileTransfer)
+void DccSocketNotifiers::setGaduFileTransferHandler(GaduFileTransferHandler *fileTransferHandler)
 {
-	FileTransfer = fileTransfer;
+	FileTransferHandler = fileTransferHandler;
 }
 
 bool DccSocketNotifiers::acceptFileTransfer(const QFile &file)

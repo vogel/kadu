@@ -38,7 +38,7 @@
 #include "protocols/protocol-menu-manager.h"
 #include "status/status.h"
 
-#include "file-transfer/jabber-file-transfer.h"
+#include "file-transfer/jabber-file-transfer-handler.h"
 #include "jabber-account-details.h"
 #include "jabber-protocol.h"
 #include "jabber-protocol-factory.h"
@@ -464,10 +464,15 @@ void JabberProtocol::changeStatus(Status status)
 
 void JabberProtocol::slotIncomingFileTransfer()
 {
-	JabberFileTransfer *jft = new JabberFileTransfer(account(),
-			FileTransfer::TypeReceive, client()->fileTransferManager()->takeIncoming());
+	FileTransfer transfer = FileTransfer::create();
+	transfer.setFileTransferAccount(account());
+	transfer.setTransferType(TypeReceive);
 
-	CurrentFileTransferService->incomingFile(jft);
+	JabberFileTransferHandler *handler = dynamic_cast<JabberFileTransferHandler *>(fileTransferService()->createFileTransferHandler(transfer));
+	if (handler)
+		handler->setJTransfer(client()->fileTransferManager()->takeIncoming());
+
+	CurrentFileTransferService->incomingFile(transfer);
 }
 
 void JabberProtocol::clientResourceReceived(const XMPP::Jid &jid, const XMPP::Resource &resource)

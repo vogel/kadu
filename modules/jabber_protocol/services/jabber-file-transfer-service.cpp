@@ -9,7 +9,7 @@
 
 #include "misc/misc.h"
 
-#include "file-transfer/jabber-file-transfer.h"
+#include "file-transfer/jabber-file-transfer-handler.h"
 #include "jabber-protocol.h"
 
 #include "jabber-file-transfer-service.h"
@@ -19,21 +19,15 @@ JabberFileTransferService::JabberFileTransferService(JabberProtocol *protocol) :
 {
 }
 
-FileTransfer * JabberFileTransferService::loadFileTransferFromStorage(StoragePoint *storage)
+FileTransferHandler * JabberFileTransferService::createFileTransferHandler(FileTransfer fileTransfer)
 {
-	JabberFileTransfer *jft = new JabberFileTransfer(Protocol->account());
-	jft->setStorage(storage);
-	jft->ensureLoaded();
+	JabberFileTransferHandler *handler = new JabberFileTransferHandler(fileTransfer);
+	fileTransfer.setHandler(handler);
 
-	return jft;
+	return handler;
 }
 
-FileTransfer * JabberFileTransferService::createOutgoingFileTransfer(Contact contact)
-{
-	return new JabberFileTransfer(Protocol->account(), contact, FileTransfer::TypeSend);
-}
-
-void JabberFileTransferService::incomingFile(JabberFileTransfer *transfer)
+void JabberFileTransferService::incomingFile(FileTransfer transfer)
 {
 		emit incomingFileTransfer(transfer);
 }

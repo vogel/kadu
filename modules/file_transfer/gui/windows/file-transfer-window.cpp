@@ -31,10 +31,10 @@ FileTransferWindow::FileTransferWindow(QWidget *parent) :
 	createGui();
 	loadWindowGeometry(this, "General", "TransferWindowGeometry", 200, 200, 500, 300);
 
-	foreach (FileTransfer *fileTransfer, FileTransferManager::instance()->fileTransfer())
+	foreach (FileTransfer fileTransfer, FileTransferManager::instance()->items())
 			fileTransferAdded(fileTransfer);
-	connect(FileTransferManager::instance(), SIGNAL(fileTransferAdded(FileTransfer *)),
-			this, SLOT(fileTransferAdded(FileTransfer *)));
+	connect(FileTransferManager::instance(), SIGNAL(fileTransferAdded(FileTransfer)),
+			this, SLOT(fileTransferAdded(FileTransfer)));
 
 	contentsChanged();
 
@@ -108,7 +108,7 @@ void FileTransferWindow::keyPressEvent(QKeyEvent *e)
 		QFrame::keyPressEvent(e);
 }
 
-void FileTransferWindow::fileTransferAdded(FileTransfer *fileTransfer)
+void FileTransferWindow::fileTransferAdded(FileTransfer fileTransfer)
 {
 	FileTransferWidget *ftm = new FileTransferWidget(fileTransfer, InnerFrame);
 	TransfersLayout->addWidget(ftm);

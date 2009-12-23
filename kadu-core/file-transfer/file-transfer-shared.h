@@ -11,8 +11,10 @@
 #define FILE_TRANSFER_SHARED_H
 
 #include "accounts/account.h"
-#include "file-transfer/file-transfer.h"
+#include "file-transfer/file-transfer-enums.h"
 #include "storage/shared.h"
+
+class FileTransferHandler;
 
 class KADUAPI FileTransferShared : public QObject, public Shared
 {
@@ -27,9 +29,11 @@ class KADUAPI FileTransferShared : public QObject, public Shared
 	unsigned long FileSize;
 	unsigned long TransferredSize;
 
-	FileTransfer::FileTransferType TransferType;
-	FileTransfer::FileTransferStatus TransferStatus;
-	FileTransfer::FileTransferError TransferError;
+	FileTransferType TransferType;
+	FileTransferStatus TransferStatus;
+	FileTransferError TransferError;
+
+	FileTransferHandler *Handler;
 
 protected:
 	virtual void load();
@@ -46,7 +50,8 @@ public:
 	virtual StorableObject * storageParent();
 	virtual QString storageNodeName();
 
-	void setTransferStatus(FileTransfer::FileTransferStatus transferStatus);
+	void setTransferStatus(FileTransferStatus transferStatus);
+	void setTransferError(FileTransferError transferError);
 
 	KaduShared_Property(Account, fileTransferAccount, FileTransferAccount)
 	KaduShared_Property(Contact, fileTransferContact, FileTransferContact)
@@ -54,9 +59,10 @@ public:
 	KaduShared_Property(QString, remoteFileName, RemoteFileName)
 	KaduShared_Property(unsigned long, fileSize, FileSize)
 	KaduShared_Property(unsigned long, transferredSize, TransferredSize)
-	KaduShared_Property(FileTransfer::FileTransferType, transferType, TransferType)
-	KaduShared_PropertyRead(FileTransfer::FileTransferStatus, transferStatus, TransferStatus)
-	KaduShared_Property(FileTransfer::FileTransferError, transferError, TransferError)
+	KaduShared_Property(FileTransferType, transferType, TransferType)
+	KaduShared_PropertyRead(FileTransferStatus, transferStatus, TransferStatus)
+	KaduShared_PropertyRead(FileTransferError, transferError, TransferError)
+	KaduShared_Property(FileTransferHandler *, handler, Handler)
 
 signals:
 	void statusChanged();
@@ -66,4 +72,3 @@ signals:
 };
 
 #endif // FILE_TRANSFER_SHARED_H
-

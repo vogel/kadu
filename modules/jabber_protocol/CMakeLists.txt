@@ -241,7 +241,7 @@ set (SOURCES
 	certificates/certificate-helpers.cpp
 	client/jabber-client.cpp
 	client/mini-client.cpp
-	file-transfer/jabber-file-transfer.cpp
+	file-transfer/jabber-file-transfer-handler.cpp
 	gui/widgets/jabber-contact-widget.cpp
 	gui/widgets/jabber-add-account-widget.cpp
 	gui/widgets/jabber-create-account-widget.cpp
@@ -270,7 +270,7 @@ set (MOC_SOURCES
 	certificates/certificate-display-dialog.h
 	client/jabber-client.h
 	client/mini-client.h
-	file-transfer/jabber-file-transfer.h
+	file-transfer/jabber-file-transfer-handler.h
 	gui/widgets/jabber-contact-widget.h
 	gui/widgets/jabber-add-account-widget.h
 	gui/widgets/jabber-create-account-widget.h

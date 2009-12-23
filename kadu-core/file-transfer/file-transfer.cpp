@@ -21,17 +21,39 @@
 #include "buddies/buddy-manager.h"
 #include "contacts/contact-manager.h"
 
-FileTransfer::FileTransfer(Account account) :
-		Uuid(QUuid::createUuid()), CurrentAccount(account), Peer(Contact::null),
-		FileSize(0), TransferredSize(0),
-		TransferType(TypeReceive), TransferStatus(StatusNotConnected), TransferError(ErrorOk)
+KaduSharedBaseClassImpl(FileTransfer)
+
+FileTransfer FileTransfer::null;
+
+FileTransfer FileTransfer::create()
+{
+	return new FileTransferShared();
+}
+
+FileTransfer FileTransfer::loadFromStorage(StoragePoint *fileTransferStoragePoint)
+{
+	return FileTransferShared::loadFromStorage(fileTransferStoragePoint);
+}
+
+FileTransfer::FileTransfer()
 {
 }
 
-FileTransfer::FileTransfer(Account account, Contact peer, FileTransferType transferType) :
-		Uuid(QUuid::createUuid()), CurrentAccount(account), Peer(peer),
-		FileSize(0), TransferredSize(0),
-		TransferType(transferType), TransferStatus(StatusNotConnected), TransferError(ErrorOk)
+FileTransfer::FileTransfer(FileTransferShared *data) :
+		SharedBase<FileTransferShared>(data)
+{
+	data->ref.ref();
+}
+
+FileTransfer::FileTransfer(QObject *data)
+{
+	FileTransferShared *shared = dynamic_cast<FileTransferShared *>(data);
+	if (shared)
+		setData(shared);
+}
+
+FileTransfer::FileTransfer(const FileTransfer &copy) :
+		SharedBase<FileTransferShared>(copy)
 {
 }
 
@@ -39,104 +61,28 @@ FileTransfer::~FileTransfer()
 {
 }
 
-StorableObject * FileTransfer::storageParent()
-{
-	return FileTransferManager::instance();
-}
-
-QString FileTransfer::storageNodeName()
-{
-	return QLatin1String("FileTransfer");
-}
-
-FileTransfer * FileTransfer::loadFromStorage(StoragePoint *fileTransferStoragePoint)
-{
-	if (!fileTransferStoragePoint || !fileTransferStoragePoint->storage())
-		return 0;
-
-	XmlConfigFile *storage = fileTransferStoragePoint->storage();
-	QDomElement point = fileTransferStoragePoint->point();
-
-	Account account = AccountManager::instance()->byUuid(QUuid(storage->getTextNode(point, "Account")));
-	if (account.isNull() || !account.protocolHandler())
-		return 0;
-
-	FileTransferService *service = account.protocolHandler()->fileTransferService();
-	if (!service)
-		return 0;
-
-	FileTransfer *ft = service->loadFileTransferFromStorage(fileTransferStoragePoint);
-	if (!ft)
-		return 0;
-
-	return ft;
-}
-
-void FileTransfer::load()
-{
-	StorableObject::load();
-
-	if (!isValidStorage())
-		return;
-
-	CurrentAccount = AccountManager::instance()->byUuid(loadValue<QString>("Account"));
-	Peer = ContactManager::instance()->byUuid(loadValue<QString>("Peer"));
-	LocalFileName = loadValue<QString>("LocalFileName");
-	RemoteFileName = loadValue<QString>("RemoteFileName");
-	TransferType = ("Send" == loadValue<QString>("TransferType")) ? TypeSend : TypeReceive;
-	FileSize = loadValue<qulonglong>("FileSize");
-	TransferredSize = loadValue<qulonglong>("TransferredSize");
-
-	if (FileSize == TransferredSize)
-		changeFileTransferStatus(StatusFinished);
-}
-
-void FileTransfer::store()
-{
-	if (!isValidStorage())
-		return;
-
-	ensureLoaded();
-
-	storeValue("Account", CurrentAccount.uuid().toString());
-	storeValue("Peer", Peer.uuid().toString());
-	storeValue("LocalFileName", LocalFileName);
-	storeValue("RemoteFileName", RemoteFileName);
-	storeValue("TransferType", TypeSend == TransferType ? "Send" : "Receive");
-	storeValue("FileSize", (qulonglong)FileSize);
-	storeValue("TransferredSize", (qulonglong)TransferredSize);
-}
-
-void FileTransfer::changeFileTransferStatus(FileTransferStatus transferStatus)
-{
-	if (TransferStatus == transferStatus)
-		return;
-
-	TransferStatus = transferStatus;
-	emit statusChanged();
-}
-
-void FileTransfer::changeFileTransferError(FileTransferError transferError)
-{
-	if (TransferStatus == StatusNotConnected && TransferError == transferError)
-		return;
-
-	TransferStatus = StatusNotConnected;
-	TransferError = transferError;
-	emit statusChanged();
-}
-
 unsigned int FileTransfer::percent()
 {
-	if (FileSize != 0)
-		return (100 * TransferredSize) / FileSize;
+	if (fileSize() != 0)
+		return (100 * transferredSize()) / fileSize();
 	else
 		return 0;
 }
 
 bool FileTransfer::accept(const QFile &file)
 {
-	LocalFileName = file.fileName();
+	setLocalFileName(file.fileName());
 	// XXX
 	return true;
 }
+
+KaduSharedBase_PropertyDef(FileTransfer, Account, fileTransferAccount, FileTransferAccount, Account::null)
+KaduSharedBase_PropertyDef(FileTransfer, Contact, fileTransferContact, FileTransferContact, Contact::null)
+KaduSharedBase_PropertyDef(FileTransfer, QString, localFileName, LocalFileName, QString::null)
+KaduSharedBase_PropertyDef(FileTransfer, QString, remoteFileName, RemoteFileName, QString::null)
+KaduSharedBase_PropertyDef(FileTransfer, unsigned long, fileSize, FileSize, 0)
+KaduSharedBase_PropertyDef(FileTransfer, unsigned long, transferredSize, TransferredSize, 0)
+KaduSharedBase_PropertyDef(FileTransfer, FileTransferType, transferType, TransferType, TypeSend)
+KaduSharedBase_PropertyDef(FileTransfer, FileTransferStatus, transferStatus, TransferStatus, StatusNotConnected)
+KaduSharedBase_PropertyDef(FileTransfer, FileTransferError, transferError, TransferError, ErrorOk)
+KaduSharedBase_PropertyDef(FileTransfer, FileTransferHandler *, handler, Handler, 0)

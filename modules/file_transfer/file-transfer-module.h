@@ -48,7 +48,7 @@ private slots:
 
 	void fileTransferWindowDestroyed();
 
-	void incomingFileTransferNeedAccept(FileTransfer *fileTransfer);
+	void incomingFileTransferNeedAccept(FileTransfer fileTransfer);
 
 };
 

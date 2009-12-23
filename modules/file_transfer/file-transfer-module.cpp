@@ -19,6 +19,7 @@
 #include "configuration/xml-configuration-file.h"
 #include "core/core.h"
 #include "file-transfer/file-transfer.h"
+#include "file-transfer/file-transfer-handler.h"
 #include "file-transfer/file-transfer-manager.h"
 #include "protocols/protocol.h"
 #include "protocols/services/file-transfer-service.h"
@@ -197,17 +198,23 @@ void FileTransferModule::selectFilesAndSend(ContactSet contacts)
 
 		foreach (const QString &file, files)
 		{
-			FileTransfer *fileTransfer = service->createOutgoingFileTransfer(contact);
-			fileTransfer->setLocalFileName(file);
-			fileTransfer->send();
+			FileTransfer fileTransfer = FileTransfer::create();
+			fileTransfer.setFileTransferAccount(account);
+			fileTransfer.setFileTransferContact(contact);
+			fileTransfer.setTransferType(TypeSend);
+			fileTransfer.setLocalFileName(file);
+			FileTransferManager::instance()->addItem(fileTransfer);
 
-			FileTransferManager::instance()->addFileTransfer(fileTransfer);
+			FileTransferHandler *handler = service->createFileTransferHandler(fileTransfer);
+			if (handler)
+				handler->send();
+
 			showFileTransferWindow();
 		}
 	}
 }
 
-void FileTransferModule::incomingFileTransferNeedAccept(FileTransfer *fileTransfer)
+void FileTransferModule::incomingFileTransferNeedAccept(FileTransfer fileTransfer)
 {
 	QString fileName;
 
@@ -220,13 +227,13 @@ void FileTransferModule::incomingFileTransferNeedAccept(FileTransfer *fileTransf
 	{
 		if (!haveFileName || fileName.isEmpty())
 			fileName = QFileDialog::getSaveFileName(Core::instance()->kaduWindow(), tr("Select file location"),
-					config_file.readEntry("Network", "LastDownloadDirectory") + fileTransfer->remoteFileName(),
+					config_file.readEntry("Network", "LastDownloadDirectory") + fileTransfer.remoteFileName(),
 					QString::null, 0, QFileDialog::DontConfirmOverwrite);
 
 		if (fileName.isEmpty())
 		{
 			kdebugmf(KDEBUG_INFO, "rejected\n");
-			fileTransfer->reject();
+// 			fileTransfer->reject(); TODO: current
 			return;
 		}
 
@@ -265,10 +272,10 @@ void FileTransferModule::incomingFileTransferNeedAccept(FileTransfer *fileTransf
 			MessageDialog::msg(tr("Could not open file. Select another one."), true, "Warning");
 		else
 		{
-			fileTransfer->accept(file);
+			fileTransfer.accept(file);
 			showFileTransferWindow();
 		}
 	}
 
-	FileTransferManager::instance()->addFileTransfer(fileTransfer);
+	FileTransferManager::instance()->addItem(fileTransfer);
 }

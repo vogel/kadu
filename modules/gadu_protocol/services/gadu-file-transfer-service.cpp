@@ -10,7 +10,7 @@
 #include "misc/misc.h"
 
 #include "dcc/dcc-manager.h"
-#include "file-transfer/gadu-file-transfer.h"
+#include "file-transfer/gadu-file-transfer-handler.h"
 #include "socket-notifiers/gadu-protocol-socket-notifiers.h"
 #include "gadu-contact-details.h"
 #include "gadu-protocol.h"
@@ -22,18 +22,12 @@ GaduFileTransferService::GaduFileTransferService(GaduProtocol *protocol) :
 {
 }
 
-FileTransfer * GaduFileTransferService::loadFileTransferFromStorage(StoragePoint *storage)
-{
-	GaduFileTransfer *gft = new GaduFileTransfer(Protocol->account());
-	gft->setStorage(storage);
-	gft->ensureLoaded();
 
-	return gft;
+FileTransferHandler * GaduFileTransferService::createFileTransferHandler(FileTransfer fileTransfer)
+{
+	GaduFileTransferHandler *handler = new GaduFileTransferHandler(fileTransfer);
+	fileTransfer.setHandler(handler);
+
+	return handler;
 }
 
-FileTransfer * GaduFileTransferService::createOutgoingFileTransfer(Contact contact)
-{
-	return new GaduFileTransfer(Protocol->account(), contact, FileTransfer::TypeSend);
-}
-
-// kate: indent-mode cstyle; replace-tabs off; tab-width 4; 

@@ -23,8 +23,8 @@ FileTransferShared * FileTransferShared::loadFromStorage(StoragePoint *fileTrans
 FileTransferShared::FileTransferShared(QUuid uuid) :
 		QObject(FileTransferManager::instance()), Shared(uuid),
 		FileSize(0), TransferredSize(0),
-		TransferType(FileTransfer::TypeReceive), TransferStatus(FileTransfer::StatusNotConnected),
-		TransferError(FileTransfer::ErrorOk)
+		TransferType(TypeReceive), TransferStatus(StatusNotConnected),
+		TransferError(ErrorOk)
 {
 }
 
@@ -53,12 +53,12 @@ void FileTransferShared::load()
 	FileTransferContact = ContactManager::instance()->byUuid(loadValue<QString>("Peer"), true);
 	LocalFileName = loadValue<QString>("LocalFileName");
 	RemoteFileName = loadValue<QString>("RemoteFileName");
-	TransferType = ("Send" == loadValue<QString>("TransferType")) ? FileTransfer::TypeSend : FileTransfer::TypeReceive;
+	TransferType = ("Send" == loadValue<QString>("TransferType")) ? TypeSend : TypeReceive;
 	FileSize = loadValue<qulonglong>("FileSize");
 	TransferredSize = loadValue<qulonglong>("TransferredSize");
 
 	if (FileSize == TransferredSize)
-		setTransferStatus(FileTransfer::StatusFinished);
+		setTransferStatus(StatusFinished);
 }
 
 void FileTransferShared::store()
@@ -72,17 +72,28 @@ void FileTransferShared::store()
 	storeValue("Peer", FileTransferContact.uuid().toString());
 	storeValue("LocalFileName", LocalFileName);
 	storeValue("RemoteFileName", RemoteFileName);
-	storeValue("TransferType", FileTransfer::TypeSend == TransferType ? "Send" : "Receive");
+	storeValue("TransferType", TypeSend == TransferType ? "Send" : "Receive");
 	storeValue("FileSize", (qulonglong)FileSize);
 	storeValue("TransferredSize", (qulonglong)TransferredSize);
 }
 
-void FileTransferShared::setTransferStatus(FileTransfer::FileTransferStatus transferStatus)
+void FileTransferShared::setTransferStatus(FileTransferStatus transferStatus)
 {
 	if (TransferStatus == transferStatus)
 		return;
 
 	TransferStatus = transferStatus;
+	emit statusChanged();
+	dataUpdated();
+}
+
+void FileTransferShared::setTransferError(FileTransferError transferError)
+{
+	if (TransferStatus == StatusNotConnected && TransferError == transferError)
+		return;
+
+	TransferStatus = StatusNotConnected;
+	TransferError = transferError;
 	emit statusChanged();
 	dataUpdated();
 }

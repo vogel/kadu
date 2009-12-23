@@ -10,12 +10,12 @@
 #ifndef GADU_FILE_TRANSFER_H
 #define GADU_FILE_TRANSFER_H
 
-#include "file-transfer/file-transfer.h"
+#include "file-transfer/file-transfer-handler.h"
 
 class DccSocketNotifiers;
 class GaduProtocol;
 
-class GaduFileTransfer : public FileTransfer
+class GaduFileTransferHandler : public FileTransferHandler
 {
 	Q_OBJECT
 
@@ -33,9 +33,8 @@ protected:
 	virtual void updateFileInfo();
 
 public:
-	GaduFileTransfer(Account account);
-	GaduFileTransfer(Account account, Contact peer, FileTransferType transferType);
-	virtual ~GaduFileTransfer();
+	GaduFileTransferHandler(FileTransfer fileTransfer);
+	virtual ~GaduFileTransferHandler();
 
 	void setFileTransferNotifiers(DccSocketNotifiers *);
 	void socketNotAvailable();

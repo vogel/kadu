@@ -7,12 +7,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef JABBER_FILE_TRANSFER_H
-#define JABBER_FILE_TRANSFER_H
+#ifndef JABBER_FILE_TRANSFER_HANDLER_H
+#define JABBER_FILE_TRANSFER_HANDLER_H
 
  #include <QtCore/QFile>
 
-#include "file-transfer/file-transfer.h"
+#include "file-transfer/file-transfer-handler.h"
 #include <xmpp.h>
 
 class JabberProtocol;
@@ -21,7 +21,7 @@ namespace XMPP
 	class FileTransfer;
 };
 
-class JabberFileTransfer : public FileTransfer
+class JabberFileTransferHandler : public FileTransferHandler
 {
 	Q_OBJECT
 	
@@ -55,10 +55,11 @@ private slots:
 public:
 	enum { ErrReject, ErrTransfer, ErrFile };
 	enum { Sending, Receiving };
-	JabberFileTransfer(Account account);
-	JabberFileTransfer(Account account, Contact peer, FileTransferType transferType);
-	JabberFileTransfer(Account account, FileTransferType transferType, XMPP::FileTransfer *jTransfer);
-	virtual ~JabberFileTransfer();
+
+	JabberFileTransferHandler(FileTransfer fileTransfer);
+	virtual ~JabberFileTransferHandler();
+
+	void setJTransfer(XMPP::FileTransfer *jTransfer);
 
 	virtual void send();
 	virtual void stop();
@@ -68,6 +69,9 @@ public:
 	virtual bool accept(const QFile &file);
 	virtual void reject();
 
+signals:
+	void statusChanged();
+
 };
 
-#endif // JABBER_FILE_TRANSFER_H
+#endif // JABBER_FILE_TRANSFER_HANDLER_H

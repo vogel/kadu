@@ -11,7 +11,7 @@
 #define JABBER_FILE_TRANSFER_SERVICE_H
 
 #include "protocols/services/file-transfer-service.h"
-#include "file-transfer/jabber-file-transfer.h"
+#include "file-transfer/jabber-file-transfer-handler.h"
 
 class JabberProtocol;
 
@@ -24,11 +24,10 @@ class JabberFileTransferService : public FileTransferService
 public:
 	JabberFileTransferService(JabberProtocol *protocol);
 
-	virtual FileTransfer * loadFileTransferFromStorage(StoragePoint *storage);
-	virtual FileTransfer * createOutgoingFileTransfer(Contact contact);
-	
-  public slots:
-	void incomingFile(JabberFileTransfer *transfer);
+	virtual FileTransferHandler * createFileTransferHandler(FileTransfer fileTransfer);
+
+public slots:
+	void incomingFile(FileTransfer transfer);
 
 };
 
