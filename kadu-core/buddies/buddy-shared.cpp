@@ -22,12 +22,10 @@
 
 #include "buddy-shared.h"
 
-BuddyShared * BuddyShared::loadFromStorage(StoragePoint *contactStoragePoint)
+BuddyShared * BuddyShared::loadFromStorage(StoragePoint *buddyStoragePoint)
 {
 	BuddyShared *result = new BuddyShared();
-	result->setStorage(contactStoragePoint);
-// 	result->load();
-	
+	result->setStorage(buddyStoragePoint);
 	return result;
 }
 

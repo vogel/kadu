@@ -94,7 +94,7 @@ void JabberAddAccountWidget::dataChanged()
 	///			   && !Identity->identityName().isEmpty());
 }
 
-void JabberAddAccountWidget::addThisAccount()
+void JabberAddAccountWidget::apply()
 {
 	Account jabberAccount = Account::create();
 	// TODO: 0.6.6 set protocol after details because of crash

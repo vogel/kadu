@@ -11,6 +11,7 @@
 #include <QtWebKit/QWebFrame>
 
 #include "accounts/account-manager.h"
+#include "buddies/buddy-manager.h"
 #include "chat/chat-styles-manager.h"
 #include "chat/html-messages-renderer.h"
 #include "chat/message/message-render-info.h"
@@ -100,8 +101,8 @@ QString KaduChatStyleEngine::formatMessage(MessageRenderInfo *message, MessageRe
 	Message msg = message->message();
 	Message aft = after->message();
 
-	Buddy buddy = msg.sender().ownerBuddy();
-	Account account = msg.chat().chatAccount();
+	Buddy buddy = BuddyManager::instance()->byContact(msg.messageSender(), true);
+	Account account = msg.messageChat().chatAccount();
 
 	if (msg.type() == Message::TypeSystem)
 	{
@@ -121,7 +122,7 @@ QString KaduChatStyleEngine::formatMessage(MessageRenderInfo *message, MessageRe
 			includeHeader =
 				(aft.type() != Message::TypeSystem) &&
 				((msg.receiveDate().toTime_t() - aft.receiveDate().toTime_t() > (ChatStylesManager::instance()->cfgNoHeaderInterval() * 60)) ||
-				 (msg.sender() != aft.sender()));
+				 (msg.messageSender() != aft.messageSender()));
 		}
 
 		if (includeHeader)
@@ -165,8 +166,8 @@ void KaduChatStyleEngine::repaintMessages(HtmlMessagesRenderer *renderer)
 		Message msg = (*message)->message();
 		(*message)->setSeparatorSize(0);
 
-		Buddy buddy = msg.sender().ownerBuddy();
-		Account account = msg.chat().chatAccount();
+		Buddy buddy = msg.messageSender().ownerBuddy();
+		Account account = msg.messageChat().chatAccount();
 
 		if (msg.type() == Message::TypeSystem)
 			text += Parser::parse(ChatSyntaxWithoutHeader, account, buddy, *message);
@@ -212,8 +213,8 @@ void KaduChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNam
 		for (int i = 0; i < count; i++)
 		{
 			message = dynamic_cast<MessageRenderInfo *>(preview->getObjectsToParse().at(i));
-			text += Parser::parse(content, message->message().chat().chatAccount(),
-					message->message().sender().ownerBuddy(), message);
+			text += Parser::parse(content, message->message().messageChat().chatAccount(),
+					message->message().messageSender().ownerBuddy(), message);
 		}
 	}
 	preview->setHtml(QString("<html><head><style type='text/css'>%1</style></head><body>%2</body>").arg(ChatStylesManager::instance()->mainStyle(), text));

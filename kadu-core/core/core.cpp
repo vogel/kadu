@@ -271,8 +271,6 @@ void Core::init()
 	StatusChangerManager::instance()->registerStatusChanger(StatusChanger);
 	StatusChangerManager::instance()->enable();
 
-	PendingMessagesManager::instance()->loadConfiguration(xml_config_file);
-
 	Updates::initModule();
 
 #ifdef Q_OS_MACX
@@ -291,8 +289,6 @@ void Core::init()
 
 void Core::storeConfiguration()
 {
-	PendingMessagesManager::instance()->storeConfiguration(xml_config_file);
-
 	xml_config_file->makeBackup();
 }
 

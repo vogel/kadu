@@ -13,6 +13,7 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "buddies/avatar.h"
+#include "buddies/buddy-manager.h"
 #include "buddies/buddy-set.h"
 #include "chat/chat-styles-manager.h"
 #include "chat/html-messages-renderer.h"
@@ -101,7 +102,7 @@ void AdiumChatStyleEngine::appendMessage(HtmlMessagesRenderer *renderer, Message
 		includeHeader =
 			(last.type() != Message::TypeSystem) &&
 			((msg.receiveDate().toTime_t() - last.receiveDate().toTime_t() > (ChatStylesManager::instance()->cfgNoHeaderInterval() * 60)) ||
-			(msg.sender() != last.sender()));
+			(msg.messageSender() != last.messageSender()));
 	}
 	switch (msg.type())
 	{
@@ -213,8 +214,8 @@ void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNa
 
 	QString styleBaseHtml = style.templateHtml();
 	styleBaseHtml.replace(styleBaseHtml.indexOf("%@"), 2, "file://" + style.baseHref());
-	styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, replaceKeywords(msg.chat(), style.baseHref(), style.footerHtml()));
-	styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, replaceKeywords(msg.chat(), style.baseHref(), style.headerHtml()));
+	styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, replaceKeywords(msg.messageChat(), style.baseHref(), style.footerHtml()));
+	styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, replaceKeywords(msg.messageChat(), style.baseHref(), style.headerHtml()));
 	//TODO: implement style versions:
 	if (style.currentVariant() != "Default")
 		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, "Variants/" + style.currentVariant());
@@ -227,7 +228,7 @@ void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNa
 	preview->page()->mainFrame()->setHtml(styleBaseHtml);
 	preview->page()->mainFrame()->evaluateJavaScript(jsCode);
 
-	QString incomingHtml = replaceKeywords(msg.chat(), style.baseHref(), style.incomingHtml(), message);
+	QString incomingHtml = replaceKeywords(msg.messageChat(), style.baseHref(), style.incomingHtml(), message);
 	incomingHtml.replace("\n", " ");
 	incomingHtml.replace("'", "\\'");
 	incomingHtml.prepend("<span>");
@@ -235,7 +236,7 @@ void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNa
 	preview->page()->mainFrame()->evaluateJavaScript("appendMessage(\'" + incomingHtml + "\')");
 
 	message = dynamic_cast<MessageRenderInfo *>(preview->getObjectsToParse().at(1));
-	QString outgoingHtml = replaceKeywords(msg.chat(), style.baseHref(), style.outgoingHtml(), message);
+	QString outgoingHtml = replaceKeywords(msg.messageChat(), style.baseHref(), style.outgoingHtml(), message);
 	outgoingHtml.replace("\n", " ");
 	outgoingHtml.replace("'", "\\'");
 	outgoingHtml.prepend("<span>");
@@ -301,9 +302,9 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, const QString &styleHre
 	Message msg = message->message();
 
 	// Replace sender (contact nick)
-	result.replace(QString("%sender%"), msg.sender().ownerBuddy().display());
+	result.replace(QString("%sender%"), BuddyManager::instance()->byContact(msg.messageSender(), true).display());
 	// Replace %screenName% (contact ID)
-	result.replace(QString("%senderScreenName%"), msg.sender().id());
+	result.replace(QString("%senderScreenName%"), msg.messageSender().id());
 	// Replace service name (protocol name)
 	if (chat.chatAccount().protocolHandler() && chat.chatAccount().protocolHandler()->protocolFactory())
 	{
@@ -339,8 +340,8 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, const QString &styleHre
 	{
 		result.replace(QString("%messageClasses%"), "message incoming");
 
-		if (!msg.sender().contactAvatar().pixmap().isNull())
-			photoPath = QString("file://") + msg.sender().contactAvatar().filePath();
+		if (!msg.messageSender().contactAvatar().pixmap().isNull())
+			photoPath = QString("file://") + msg.messageSender().contactAvatar().filePath();
 		else
 			photoPath = QString("file://") + styleHref + QString("Incoming/buddy_icon.png");
 	}

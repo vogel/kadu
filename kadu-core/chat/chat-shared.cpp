@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include "accounts/account-manager.h"
+#include "buddies/buddy-manager.h"
 #include "buddies/buddy-set.h"
 #include "chat/type/chat-type.h"
 #include "chat/chat-details.h"
@@ -78,13 +79,18 @@ void ChatShared::store()
 
 	storeValue("Type", Type);
 	storeValue("Account", ChatAccount.uuid().toString());
+
+	if (details())
+		details()->store();
 }
 
 bool ChatShared::shouldStore()
 {
 	ensureLoaded();
 
-	return UuidStorableObject::shouldStore() && !ChatAccount.uuid().isNull();
+	return UuidStorableObject::shouldStore()
+			&& !ChatAccount.uuid().isNull()
+			&& (!details() || details()->shouldStore());
 }
 
 void ChatShared::aboutToBeRemoved()
@@ -155,7 +161,7 @@ void ChatShared::refreshTitle()
 	else if (contactsSize > 0)
 	{
 		Contact contact = contacts().toContact();
-		Buddy buddy = contact.ownerBuddy();
+		Buddy buddy = BuddyManager::instance()->byContact(contact, true);
 
 		if (config_file.readEntry("Look", "ChatContents").isEmpty())
 		{

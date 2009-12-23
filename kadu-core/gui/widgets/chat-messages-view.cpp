@@ -14,11 +14,12 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "configuration/configuration-file.h"
-#include "chat/chat.h"
+#include "chat/style-engines/chat-style-engine.h"
 #include "chat/message/message-render-info.h"
+#include "chat/message/message-shared.h"
+#include "chat/chat.h"
 #include "chat/chat-styles-manager.h"
 #include "chat/html-messages-renderer.h"
-#include "chat/style-engines/chat-style-engine.h"
 #include "protocols/services/chat-image-service.h"
 
 #include "debug.h"
@@ -131,7 +132,7 @@ void ChatMessagesView::appendMessage(MessageRenderInfo *message)
 {
 	kdebugf();
 
-	connect(&message->message(), SIGNAL(statusChanged(Message, Message::Status)),
+	connect(message->message(), SIGNAL(statusChanged(Message, Message::Status)),
 				this, SLOT(messageStatusChanged(Message, Message::Status)));
 
 	rememberScrollBarPosition();

@@ -7,6 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "buddies/buddy-manager.h"
 #include "contacts/contact-set-configuration-helper.h"
 #include "chat/type/chat-type-manager.h"
 #include "chat/chat.h"
@@ -53,7 +54,7 @@ QString ChatDetailsConference::name() const
 {
 	QStringList displays;
 	foreach (const Contact &contact, Contacts.toContactList())
-		displays.append(contact.ownerBuddy().display());
+		displays.append(BuddyManager::instance()->byContact(contact, true).display());
 
 	displays.sort();
 	return displays.join(", ");

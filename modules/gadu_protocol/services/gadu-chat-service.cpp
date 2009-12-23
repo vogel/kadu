@@ -120,13 +120,15 @@ bool GaduChatService::sendMessage(Chat chat, FormattedMessage &message)
 	if (formats)
 		delete[] formats;
 
-	Message msg(chat, Message::TypeSent, Protocol->account().accountContact());
-	msg
-		.setStatus(Message::StatusSent)
-		.setContent(message.toHtml())
-		.setSendDate(QDateTime::currentDateTime())
-		.setReceiveDate(QDateTime::currentDateTime())
-		.setId(messageId);
+	Message msg = Message::create();
+	msg.setMessageChat(chat);
+	msg.setType(Message::TypeSent);
+	msg.setMessageSender(Protocol->account().accountContact());
+	msg.setStatus(Message::StatusSent);
+	msg.setContent(message.toHtml());
+	msg.setSendDate(QDateTime::currentDateTime());
+	msg.setReceiveDate(QDateTime::currentDateTime());
+	msg.setId(messageId);
 
 	UndeliveredMessages.insert(messageId, msg);
 	emit messageSent(msg);
@@ -168,7 +170,7 @@ ContactSet GaduChatService::getRecipients(gg_event *e)
 {
 	ContactSet recipients;
 	for (int i = 0; i < e->event.msg.recipients_count; ++i)
-		recipients.insert(ContactManager::instance()->byId(Protocol->account(), QString::number(e->event.msg.sender), true));
+		recipients.insert(ContactManager::instance()->byId(Protocol->account(), QString::number(e->event.msg.recipients[i]), true));
 
 	return recipients;
 }
@@ -265,12 +267,14 @@ void GaduChatService::handleEventMsg(struct gg_event *e)
 	if (ignore)
 		return;
 
-	Message msg(chat, Message::TypeReceived, sender);
-	msg
-		.setStatus(Message::StatusReceived)
-		.setContent(message.toHtml())
-		.setSendDate(time)
-		.setReceiveDate(QDateTime::currentDateTime());
+	Message msg = Message::create();
+	msg.setMessageChat(chat);
+	msg.setType(Message::TypeReceived);
+	msg.setMessageSender(sender);
+	msg.setStatus(Message::StatusReceived);
+	msg.setContent(message.toHtml());
+	msg.setSendDate(time);
+	msg.setReceiveDate(QDateTime::currentDateTime());
 	emit messageReceived(msg);
 }
 

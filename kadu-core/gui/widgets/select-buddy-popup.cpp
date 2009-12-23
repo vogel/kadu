@@ -7,9 +7,10 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtGui/QLineEdit>
+
 #include "buddies/buddy-manager.h"
 #include "buddies/model/buddies-model.h"
-#include "gui/widgets/buddies-line-edit.h"
 #include "gui/widgets/buddies-list-view.h"
 #include "model/roles.h"
 
@@ -23,6 +24,8 @@ SelectBuddyPopup::SelectBuddyPopup(QWidget *parent) :
 	BuddiesModel *model = new BuddiesModel(BuddyManager::instance(), this);
 
 	connect(view(), SIGNAL(clicked(QModelIndex)), this, SLOT(itemClicked(QModelIndex)));
+	connect(view(), SIGNAL(buddyActivated(Buddy)), this, SIGNAL(buddySelected(Buddy)));
+	connect(view(), SIGNAL(buddyActivated(Buddy)), this, SLOT(close()));
 
 	view()->setItemsExpandable(false);
 	view()->setModel(model);

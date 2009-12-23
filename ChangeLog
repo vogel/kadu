@@ -2,7 +2,13 @@ Teksty w nawiasach na końcu wpisu mówią o tym, kto dokonał poprawki lub rozb
 Postać (x/y) oznacza, że x jest pomysłodawcą lub podesłał patcha, a zrobił to ktoś oznaczony przez y.
 Jeśli jest w postaci (z) to zarówno pomysł jak i wykonanie należy do z.
 
-+++ wersja 0.6.6
++++ version 0.6.6-alpha1
+* gadu: fixed receiving conference messages
+* gui: better SelectBuddyCombobox
+* core: PendingMessages ported to new API
+* gui: contacts with pending messages have envelope icon next to protocol icon
+
++++ version 0.6.6-alpha0
 * better build system for modules - kadu_module macro instead of dozen lines in each module (vogel)
 * signals messageReceived/Queued... removed, replaces by messageStatusChanged (vogel)
 * big rewrite of UserListElements into Contact/ContactData/ContactsList/ContactsSet/ContactsManager/ContactsModel and so on (vogel)

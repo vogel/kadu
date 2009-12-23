@@ -67,6 +67,12 @@ void ChatDetailsSimple::store()
 		storeValue("Contact", CurrentContact.uuid().toString());
 }
 
+bool ChatDetailsSimple::shouldStore()
+{
+	return StorableObject::shouldStore()
+			&& !CurrentContact.uuid().isNull();
+}
+
 ChatType * ChatDetailsSimple::type() const
 {
 	return ChatTypeManager::instance()->chatType("Simple");
@@ -83,7 +89,7 @@ QString ChatDetailsSimple::name() const
 {
 	if (CurrentContact.isNull())
 		return QString::null;
-	return CurrentContact.ownerBuddy().display();
+	return BuddyManager::instance()->byContact(CurrentContact, true).display();
 }
 
 void ChatDetailsSimple::setContact(Contact contact)

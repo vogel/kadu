@@ -88,15 +88,14 @@ void HistoryImportThread::importEntry(Chat chat, const HistoryEntry &entry)
 	QDateTime recieveTime = entry.date;
 	QString messageString = entry.message;
 
-	Message msg;
-	msg
-		.setChat(chat)
-		.setSender(outgoing
-				? GaduAccount.accountContact()
-				: ContactManager::instance()->byId(GaduAccount, id, true))
-		.setContent(entry.message)
-		.setSendDate(entry.sdate)
-		.setReceiveDate(entry.date);
+	Message msg = Message::create();
+	msg.setMessageChat(chat);
+	msg.setMessageSender(outgoing
+			? GaduAccount.accountContact()
+			: ContactManager::instance()->byId(GaduAccount, id, true));
+	msg.setContent(entry.message);
+	msg.setSendDate(entry.sdate);
+	msg.setReceiveDate(entry.date);
 
 	//TODO 0.6.6: it's damn slow!
 	History::instance()->currentStorage()->appendMessage(msg);

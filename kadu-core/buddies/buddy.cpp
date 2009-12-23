@@ -217,7 +217,7 @@ Buddy Buddy::dummy()
 		contact.setContactAccount(account);
 		contact.setOwnerBuddy(example);
 		contact.setId("999999");
-		contact.setCurrentStatus(Status("Away", tr("Example description")));
+		contact.setCurrentStatus(Status("Away", example.data()->tr("Example description")));
 		contact.setAddress(QHostAddress(2130706433));
 		contact.setPort(80);
 		contact.setDetails(account.protocolHandler()->protocolFactory()->createContactDetails(contact));

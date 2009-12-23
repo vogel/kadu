@@ -7,12 +7,15 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtCore/QEvent>
+#include <QtGui/QApplication>
 #include <QtGui/QHBoxLayout>
+#include <QtGui/QKeyEvent>
 #include <QtGui/QLabel>
+#include <QtGui/QLineEdit>
 #include <QtGui/QVBoxLayout>
 
 #include "buddies/filter/buddy-name-filter.h"
-#include "gui/widgets/buddies-line-edit.h"
 #include "gui/widgets/buddies-list-view.h"
 
 #include "buddies-list-widget.h"
@@ -29,7 +32,9 @@ BuddiesListWidget::BuddiesListWidget(FilterPosition filterPosition, MainWindow *
 	topLayout->addWidget(new QLabel(tr("Filter") + ":", this));
 	topLayout->setMargin(0);
 
-	NameFilterEdit = new BuddiesLineEdit(this);
+	NameFilterEdit = new QLineEdit(this);
+	NameFilterEdit->installEventFilter(this);
+
 	topLayout->addWidget(NameFilterEdit);
 	connect(NameFilterEdit, SIGNAL(textChanged(const QString &)),
 			this, SLOT(nameFilterChanged(const QString &)));
@@ -61,8 +66,31 @@ BuddiesListWidget::~BuddiesListWidget()
 {
 }
 
-void BuddiesListWidget::selectNext()
+
+bool BuddiesListWidget::eventFilter(QObject *object, QEvent *event)
 {
+	if (QEvent::KeyPress == event->type())
+	{
+		QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+		switch (keyEvent->key())
+		{
+			case Qt::Key_Down:
+			case Qt::Key_Up:
+			case Qt::Key_PageDown:
+			case Qt::Key_PageUp:
+			case Qt::Key_Enter:
+			case Qt::Key_Return:
+				qApp->sendEvent(view(), event);
+				return true;
+		}
+	}
+
+	return QObject::eventFilter(object, event);
+}
+
+
+void BuddiesListWidget::selectNext()
+{/*
 	QModelIndexList selection = View->selectionModel()->selectedIndexes();
 	QModelIndex index;
 
@@ -79,11 +107,11 @@ void BuddiesListWidget::selectNext()
 			index = first;
 	}
 
-	View->selectionModel()->setCurrentIndex(index, QItemSelectionModel::SelectCurrent);
+	View->selectionModel()->setCurrentIndex(index, QItemSelectionModel::SelectCurrent);*/
 }
 
 void BuddiesListWidget::selectPrevious()
-{
+{/*
 	QModelIndexList selection = View->selectionModel()->selectedIndexes();
 	QModelIndex index;
 	
@@ -100,7 +128,7 @@ void BuddiesListWidget::selectPrevious()
 			index = first;
 	}
 	
-	View->selectionModel()->setCurrentIndex(index, QItemSelectionModel::SelectCurrent);
+	View->selectionModel()->setCurrentIndex(index, QItemSelectionModel::SelectCurrent);*/
 }
 
 void BuddiesListWidget::nameFilterChanged(const QString &filter)

@@ -62,7 +62,7 @@ protected:
 	virtual void emitUpdated();
 
 public:
-	static BuddyShared * loadFromStorage(StoragePoint *contactStoragePoint);
+	static BuddyShared * loadFromStorage(StoragePoint *buddyStoragePoint);
 
 	explicit BuddyShared(QUuid uuid = QUuid());
 	virtual ~BuddyShared();
@@ -86,7 +86,6 @@ public:
 	QList<Contact> contacts(Account account);
 	QList<Contact> contacts();
 	Contact prefferedContact();
-
 
 	// properties
 	bool showInAllGroup();

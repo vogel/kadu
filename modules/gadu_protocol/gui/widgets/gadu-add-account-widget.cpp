@@ -89,7 +89,7 @@ void GaduAddAccountWidget::dataChanged()
 	//			   && !Identity->identityName().isEmpty());
 }
 
-void GaduAddAccountWidget::addThisAccount()
+void GaduAddAccountWidget::apply()
 {
 	Account gaduAccount = Account::create();
 	// TODO: 0.6.6 set protocol after details because of crash

@@ -40,10 +40,11 @@ class JabberAddAccountWidget : public AccountAddWidget
 
 private slots:
 	void dataChanged();
-	void addThisAccount();
 public:
 	explicit JabberAddAccountWidget(QWidget *parent = 0);
 	virtual ~JabberAddAccountWidget();
+	
+	virtual void apply();
 
 };
 

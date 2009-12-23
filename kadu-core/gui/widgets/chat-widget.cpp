@@ -248,10 +248,11 @@ void ChatWidget::appendMessage(MessageRenderInfo *message, bool pending)
 
 void ChatWidget::appendSystemMessage(const QString &rawContent, const QString &backgroundColor, const QString &fontColor)
 {
-	Message message(CurrentChat, Message::TypeSystem);
-	message
-		.setContent(rawContent)
-		.setSendDate(QDateTime::currentDateTime());
+	Message message = Message::create();
+	message.setMessageChat(CurrentChat);
+	message.setType(Message::TypeSystem);
+	message.setContent(rawContent);
+	message.setSendDate(QDateTime::currentDateTime());
 	MessageRenderInfo *messageRenderInfo = new MessageRenderInfo(message);
 	messageRenderInfo->setBackgroundColor(backgroundColor)
 		.setFontColor(fontColor)

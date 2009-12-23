@@ -271,7 +271,7 @@ void NotificationManager::messageReceived(const Message &message)
 {
 	kdebugf();
 
-	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(message.chat());
+	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(message.messageChat());
 	if (!chatWidget) // new chat
 		notify(new MessageNotification(MessageNotification::NewChat, message));
 	else // new message in chat
