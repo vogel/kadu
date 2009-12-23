@@ -31,14 +31,18 @@ FileTransferManager * FileTransferManager::instance()
 
 FileTransferManager::FileTransferManager()
 {
+	triggerAllAccountsRegistered();
 }
 
 FileTransferManager::~FileTransferManager()
 {
+	triggerAllAccountsUnregistered();
 }
 
 void FileTransferManager::accountRegistered(Account account)
 {
+	printf("Account registered\n");
+
 	Protocol *protocol = account.protocolHandler();
 	if (!protocol)
 		return;
@@ -47,6 +51,7 @@ void FileTransferManager::accountRegistered(Account account)
 	if (!service)
 		return;
 
+	printf("connected\n");
 	connect(service, SIGNAL(incomingFileTransfer(FileTransfer)),
 			this, SLOT(incomingFileTransfer(FileTransfer)));
 }
@@ -79,9 +84,14 @@ void FileTransferManager::cleanUp()
 
 void FileTransferManager::incomingFileTransfer(FileTransfer fileTransfer)
 {
+	printf("incoming file transfer\n");
+
 	if (!ModulesManager::instance()->loadedModules().contains("file_transfer"))
+	{
+		printf("no module loaded\n");
 		if (fileTransfer.handler())
 			fileTransfer.handler()->reject();
+	}
 
 	emit incomingFileTransferNeedAccept(fileTransfer);
 }

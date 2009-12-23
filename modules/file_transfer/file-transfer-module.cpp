@@ -81,14 +81,14 @@ FileTransferModule::FileTransferModule() :
 {
 	createActionDecriptions();
 
-	connect(FileTransferManager::instance(), SIGNAL(incomingFileTransferNeedAccept(FileTransfer *)),
-		this, SLOT(incomingFileTransferNeedAccept(FileTransfer *)));
+	connect(FileTransferManager::instance(), SIGNAL(incomingFileTransferNeedAccept(FileTransfer)),
+		this, SLOT(incomingFileTransferNeedAccept(FileTransfer)));
 }
 
 FileTransferModule::~FileTransferModule()
 {
-	disconnect(FileTransferManager::instance(), SIGNAL(incomingFileTransferNeedAccept(FileTransfer *)),
-		this, SLOT(incomingFileTransferNeedAccept(FileTransfer *)));
+	disconnect(FileTransferManager::instance(), SIGNAL(incomingFileTransferNeedAccept(FileTransfer)),
+		this, SLOT(incomingFileTransferNeedAccept(FileTransfer)));
 
 	deleteActionDecriptions();
 
@@ -150,14 +150,14 @@ void FileTransferModule::toggleFileTransferWindow(QAction *sender, bool toggled)
 {
 	if (Window)
 	{
-		disconnect(Window, SIGNAL(destroyed()), this, SLOT(fileTransferWindowDestroyed()));
+		disconnect(Window, SIGNAL(destroyed(QObject *)), this, SLOT(fileTransferWindowDestroyed()));
 		delete Window;
 		Window = 0;
 	}
 	else
 	{
 		Window = new FileTransferWindow();
-		connect(Window, SIGNAL(destroyed()), this, SLOT(fileTransferWindowDestroyed()));
+		connect(Window, SIGNAL(destroyed(QObject *)), this, SLOT(fileTransferWindowDestroyed()));
 		Window->show();
 	}
 }
@@ -216,6 +216,8 @@ void FileTransferModule::selectFilesAndSend(ContactSet contacts)
 
 void FileTransferModule::incomingFileTransferNeedAccept(FileTransfer fileTransfer)
 {
+	printf("incoming file transfer need accept\n");
+
 	QString fileName;
 
 	bool resume = false;
