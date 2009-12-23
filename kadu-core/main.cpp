@@ -153,6 +153,7 @@ void printKaduOptions()
 		"  --help                     Print Kadu options\n"
 		"  --help-qt                  Print Qt options\n"
 		"  --help-all                 Print all options\n"
+		"  --safe-mode                Safe mode (no modules loaded)"
 		"  --version                  Print Kadu and Qt version\n"
 		"\nOptions:\n"
 		"  --debug <mask>             Set debugging mask\n"
@@ -210,6 +211,7 @@ int main(int argc, char *argv[])
 	time_t sec;
 	int msec;
 	int i;
+	bool safe_mode = false;
 	char *d;
 	QString param;
 	time_t startTimeT = time(0);
@@ -263,6 +265,11 @@ int main(int argc, char *argv[])
 			printKaduOptions();
 			printQtOptions();
 			return 0;
+		}
+		else if (param == "--safe-mode")
+		{
+			safe_mode = true;
+			kdebugm(KDEBUG_INFO, "Running in safe mode (with no modules loaded)\n");
 		}
 		else if ((param == "--debug") && (argc > i + 1))
 			debug_mask = atol(argv[++i]);
@@ -397,6 +404,7 @@ int main(int argc, char *argv[])
 	pix = icons_manager->loadPixmap("Offline");
 #endif
 	kadu->setMainWindowIcon(pix);
+	kadu->setSafeMode(safe_mode);
 
 	QString path_ = ggPath(QString::null);
 #ifndef Q_OS_WIN

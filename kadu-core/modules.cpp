@@ -418,6 +418,9 @@ ModulesManager::ModulesManager() : QObject(NULL, "modules_manager"),
 		if (!moduleIsActive(i))
 			activateModule(i);
 
+	if (kadu->safeMode())
+		return;
+
 	foreach(const QString &i, installed_list)
 	{
 		if (!moduleIsActive(i))

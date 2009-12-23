@@ -104,6 +104,7 @@ class KADUAPI Kadu : public KaduMainWindow, ConfigurationAwareObject
 	bool Docked;
 	bool dontHideOnClose;
 	bool SilentMode;
+	bool SafeMode;
 
 	void createMenu();
 	void createStatusPopupMenu();
@@ -257,6 +258,8 @@ public:
 	void removeMenuSeparator(QAction *separator);
 	void setSilentMode(bool enable) { SilentMode = enable; }
 	bool silentMode() { return SilentMode; }
+	void setSafeMode(bool enable) { SafeMode = enable; }
+	bool safeMode() { return SafeMode; }
 
 public slots:
 	virtual void show();
