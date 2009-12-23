@@ -33,7 +33,6 @@ class KADUAPI BuddyShared : public QObject, public Shared
 	Q_OBJECT
 	Q_DISABLE_COPY(BuddyShared)
 
-private:
 	QMap<QString, QString> CustomData;
 	QList<Contact> Contacts;
 

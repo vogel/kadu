@@ -99,6 +99,7 @@ set (kadu_SRCS
 
 	file-transfer/file-transfer.cpp
 	file-transfer/file-transfer-manager.cpp
+	file-transfer/file-transfer-shared.cpp
 
 	gui/hot-key.cpp
 
@@ -344,6 +345,7 @@ set (kadu_MOC_SRCS
 
 	file-transfer/file-transfer.h
 	file-transfer/file-transfer-manager.h
+	file-transfer/file-transfer-shared.h
 
 	gui/actions/action.h
 	gui/actions/actions.h
