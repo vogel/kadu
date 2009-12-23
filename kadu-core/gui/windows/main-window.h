@@ -20,6 +20,8 @@
 class QContextMenuEvent;
 
 class BuddiesListView;
+class Buddy;
+class BuddySet;
 class Chat;
 class Contact;
 class ContactSet;
@@ -56,8 +58,10 @@ public:
 	virtual bool supportsActionType(ActionDescription::ActionType type) = 0;
 	virtual BuddiesListView * contactsListView() = 0;
 	virtual ContactSet contacts() = 0;
+	virtual BuddySet buddies() = 0;
 	virtual Chat  chat() = 0;
 	Contact contact();
+	Buddy buddy();
 
 	void actionAdded(Action *action);
 

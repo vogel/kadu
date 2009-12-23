@@ -125,7 +125,31 @@ ContactSet BuddiesListView::selectedContacts() const
 
 	QModelIndexList selectionList = selectedIndexes();
 	foreach (QModelIndex selection, selectionList)
-		result.insert(contactAt(selection));
+	{
+		Contact contact = contactAt(selection);
+		if (contact)
+			result.insert(contact);
+	}
+
+	return result;
+}
+
+Buddy BuddiesListView::currentBuddy() const
+{
+	return buddyAt(currentIndex());
+}
+
+BuddySet BuddiesListView::selectedBuddies() const
+{
+	BuddySet result;
+
+	QModelIndexList selectionList = selectedIndexes();
+	foreach (QModelIndex selection, selectionList)
+	{
+		Buddy buddy = buddyAt(selection);
+		if (buddy)
+			result.insert(buddy);
+	}
 
 	return result;
 }

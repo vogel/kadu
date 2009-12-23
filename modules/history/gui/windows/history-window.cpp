@@ -502,6 +502,11 @@ ContactSet HistoryWindow::contacts()
 	return chat.contacts();
 }
 
+BuddySet HistoryWindow::buddies()
+{
+	return contacts().toBuddySet();
+}
+
 void HistoryWindow::dateFilteringEnabled(int state)
 {
 	bool enabled = state == 2;

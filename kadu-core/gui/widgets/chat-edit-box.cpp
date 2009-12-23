@@ -136,6 +136,11 @@ ContactSet ChatEditBox::contacts()
 	return ContactSet();
 }
 
+BuddySet ChatEditBox::buddies()
+{
+	return contacts().toBuddySet();
+}
+
 ChatWidget * ChatEditBox::chatWidget()
 {
 	ChatWidget *result = dynamic_cast<ChatWidget *>(parent());
