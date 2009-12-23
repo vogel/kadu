@@ -69,7 +69,7 @@ void disableNonIdUles(Action *action)
 
 void disableContainsSelfUles(Action *action)
 {
-	if (action->contacts().toBuddySet().contains(Core::instance()->myself()))
+	if (action->buddies().contains(Core::instance()->myself()))
 	{
 		action->setEnabled(false);
 		return;
@@ -82,7 +82,7 @@ void checkOfflineTo(Action *action)
 {
 	kdebugf();
 	bool on = true;
-	foreach (const Buddy buddy, action->contacts().toBuddySet())
+	foreach (const Buddy buddy, action->buddies())
 		if (!buddy.isOfflineTo())
 		{
 			on = false;
@@ -94,17 +94,10 @@ void checkOfflineTo(Action *action)
 
 void checkHideDescription(Action *action)
 {
-	foreach (const Contact &contact, action->contacts())
-		if (contact.isNull())
-		{
-			action->setEnabled(false);
-			return;
-		}
-
 	action->setEnabled(true);
 
 	bool on = false;
-	foreach (const Buddy buddy, action->contacts().toBuddySet())
+	foreach (const Buddy buddy, action->buddies())
 	{
 		BuddyKaduData *ckd = 0;
 		if (buddy.data())
@@ -742,7 +735,7 @@ void KaduWindowActions::copyPersonalInfoActionActivated(QAction *sender, bool to
 	if (!window)
 		return;
 
-	BuddySet buddies = window->contacts().toBuddySet();
+	BuddySet buddies = window->buddies();
 
 	QStringList infoList;
 	QString copyPersonalDataSyntax = config_file.readEntry("General", "CopyPersonalDataSyntax", tr("Contact: %a[ (%u)]\n[First name: %f\n][Last name: %r\n][Mobile: %m\n]"));
@@ -798,7 +791,7 @@ void KaduWindowActions::offlineToUserActionActivated(QAction *sender, bool toggl
 	if (!window)
 		return;
 
-	BuddySet buddies = window->contacts().toBuddySet();
+	BuddySet buddies = window->buddies();
 	bool on = true;
 	foreach (const Buddy buddy, buddies)
 		if (!buddy.isOfflineTo())
@@ -816,7 +809,7 @@ void KaduWindowActions::offlineToUserActionActivated(QAction *sender, bool toggl
 // 	userlist->writeToConfig();
 
 	foreach (Action *action, OfflineToUser->actions())
-		if (action->contacts().toBuddySet() == buddies)
+		if (action->buddies() == buddies)
 			action->setChecked(!on);
 
 	kdebugf2();
@@ -830,7 +823,7 @@ void KaduWindowActions::hideDescriptionActionActivated(QAction *sender, bool tog
 	if (!window)
 		return;
 
-	BuddySet buddies = window->contacts().toBuddySet();
+	BuddySet buddies = window->buddies();
 
 	foreach (const Buddy &buddy, buddies)
 	{
@@ -852,7 +845,7 @@ void KaduWindowActions::hideDescriptionActionActivated(QAction *sender, bool tog
 
 	foreach (Action *action, HideDescription->actions())
 	{
-		if (action->contacts().toBuddySet() == buddies)
+		if (action->buddies() == buddies)
 			action->setChecked(toggled);
 	}
 
@@ -867,7 +860,7 @@ void KaduWindowActions::deleteUsersActionActivated(QAction *sender, bool toggled
 	if (!window)
 		return;
 
-	BuddySet buddies = window->contacts().toBuddySet();
+	BuddySet buddies = window->buddies();
 	if (buddies.isEmpty())
 		return;
 

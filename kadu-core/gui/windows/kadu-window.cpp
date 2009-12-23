@@ -348,6 +348,11 @@ ContactSet KaduWindow::contacts()
 	return ContactsWidget->view()->selectedContacts();
 }
 
+BuddySet KaduWindow::buddies()
+{
+	return ContactsWidget->view()->selectedBuddies();
+}
+
 Chat  KaduWindow::chat()
 {
 	return ContactsWidget->view()->currentChat();

@@ -74,6 +74,24 @@ ContactSet Action::contacts()
 		return ContactSet();
 }
 
+Buddy Action::buddy()
+{
+	BuddySet buddySet = buddies();
+	if (1 != buddySet.count())
+		return Buddy::null;
+	else
+		return *buddySet.begin();
+}
+
+BuddySet Action::buddies()
+{
+	MainWindow *kaduMainWindow = dynamic_cast<MainWindow *>(parent());
+	if (kaduMainWindow)
+		return kaduMainWindow->buddies();
+	else
+		return BuddySet();
+}
+
 void Action::changedSlot()
 {
 	emit changed(this);

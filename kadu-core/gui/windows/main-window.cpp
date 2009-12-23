@@ -289,3 +289,11 @@ Contact MainWindow::contact()
 			? *contactSet.begin()
 			: Contact::null;
 }
+
+Buddy MainWindow::buddy()
+{
+	BuddySet buddySet = buddies();
+	return 1 == buddySet.count()
+			? *buddySet.begin()
+			: Buddy::null;
+}

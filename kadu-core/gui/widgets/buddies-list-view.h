@@ -106,6 +106,9 @@ public:
 	Contact currentContact() const;
 	ContactSet selectedContacts() const;
 
+	Buddy currentBuddy() const;
+	BuddySet selectedBuddies() const;
+
 	Chat  currentChat() const;
 
 	void setBackground(const QString &backgroundColor, const QString &file = QString::null, BackgroundMode mode = BackgroundNone);

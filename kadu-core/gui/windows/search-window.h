@@ -121,6 +121,7 @@ public:
 	virtual bool supportsActionType(ActionDescription::ActionType type) { return type & ActionDescription::TypeSearch; }
 	virtual BuddiesListView* contactsListView() { return 0; }
 	virtual ContactSet contacts() { return ContactSet(); }
+	virtual BuddySet buddies() { return BuddySet(); }
 	virtual Chat chat() { return Chat::null; }
 
 	void nextSearch();
