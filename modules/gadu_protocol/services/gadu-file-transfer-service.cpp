@@ -22,7 +22,6 @@ GaduFileTransferService::GaduFileTransferService(GaduProtocol *protocol) :
 {
 }
 
-
 FileTransferHandler * GaduFileTransferService::createFileTransferHandler(FileTransfer fileTransfer)
 {
 	GaduFileTransferHandler *handler = new GaduFileTransferHandler(fileTransfer);
@@ -30,4 +29,3 @@ FileTransferHandler * GaduFileTransferService::createFileTransferHandler(FileTra
 
 	return handler;
 }
-

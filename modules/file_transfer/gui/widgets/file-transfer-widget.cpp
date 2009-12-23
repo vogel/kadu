@@ -30,13 +30,14 @@ FileTransferWidget::FileTransferWidget(FileTransfer ft, QWidget *parent)
 	: QFrame(parent), CurrentTransfer(ft), UpdateTimer(0)
 {
 	kdebugf();
+	
+	createGui();
 
 	connect(CurrentTransfer, SIGNAL(statusChanged()), this, SLOT(fileTransferStatusChanged()));
 	connect(CurrentTransfer, SIGNAL(destroyed(QObject *)), this, SLOT(fileTransferDestroyed(QObject *)));
 
 	LastTransferredSize = CurrentTransfer.transferredSize();
 
-	createGui();
 	fileTransferStatusChanged();
 
 	show();

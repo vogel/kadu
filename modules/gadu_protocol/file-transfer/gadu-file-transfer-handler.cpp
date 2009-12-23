@@ -115,7 +115,9 @@ void GaduFileTransferHandler::send()
 	// async call, will return in setFileTransferNotifiers
 	transfer().setTransferStatus(StatusWaitingForConnection);
 	WaitingForSocketNotifiers = true;
-	gaduProtocol->dccManager()->attachSendFileTransferSocket(this);
+
+	if (gaduProtocol->dccManager())
+		gaduProtocol->dccManager()->attachSendFileTransferSocket(this);
 }
 
 void GaduFileTransferHandler::stop()

@@ -47,8 +47,8 @@ void FileTransferManager::accountRegistered(Account account)
 	if (!service)
 		return;
 
-	connect(service, SIGNAL(incomingFileTransfer(FileTransfer *)),
-			this, SLOT(incomingFileTransfer(FileTransfer *)));
+	connect(service, SIGNAL(incomingFileTransfer(FileTransfer)),
+			this, SLOT(incomingFileTransfer(FileTransfer)));
 }
 
 void FileTransferManager::accountUnregistered(Account account)
@@ -61,16 +61,20 @@ void FileTransferManager::accountUnregistered(Account account)
 	if (!service)
 		return;
 
-	disconnect(service, SIGNAL(incomingFileTransfer(FileTransfer *)),
-			this, SLOT(incomingFileTransfer(FileTransfer *)));
+	disconnect(service, SIGNAL(incomingFileTransfer(FileTransfer)),
+			this, SLOT(incomingFileTransfer(FileTransfer)));
 }
 
 void FileTransferManager::cleanUp()
 {
-	// TODO: current
-// 	foreach (FileTransfer fileTransfer, items())
-// 		if (FileTransfer::StatusFinished == fileTransfer->transferStatus())
-// 			removeFileTransfer(fileTransfer);
+	QList<FileTransfer> toRemove;
+
+	foreach (FileTransfer fileTransfer, items())
+		if (StatusFinished == fileTransfer.transferStatus())
+			toRemove.append(fileTransfer);
+
+	foreach (FileTransfer fileTransfer, toRemove)
+		removeItem(fileTransfer);
 }
 
 void FileTransferManager::incomingFileTransfer(FileTransfer fileTransfer)
