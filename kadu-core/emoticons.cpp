@@ -354,8 +354,14 @@ EmoticonsManager *emoticons;
 EmoticonSelectorButton::EmoticonSelectorButton(const QString& emoticon_string, const QString& anim_path, const QString& static_path, QWidget *parent)
 	: QToolButton(parent), EmoticonString(emoticon_string), AnimPath(anim_path), StaticPath(static_path), Movie(0)
 {
-	setPixmap(QPixmap(StaticPath));
-	setIconSize(QSize(18,18));
+	QPixmap p(StaticPath);
+	QSize s(18, 18);
+	if (p.width() > 18)
+	{
+		p = p.scaled(s, Qt::KeepAspectRatioByExpanding);
+	}
+	setPixmap(p);
+	setIconSize(s);
 	setAutoRaise(true);
 	setMouseTracking(true);
 	setToolTip(emoticon_string);
@@ -389,7 +395,7 @@ void EmoticonSelectorButton::enterEvent(QEvent* e)
 	if (Movie == NULL)
 	{
 		Movie = new QMovie(AnimPath);
-		Movie->setScaledSize(QSize(24,24));
+		Movie->setScaledSize(QSize(18,18));
 		Movie->start();
 		connect(Movie, SIGNAL(updated(const QRect &)), this, SLOT(movieUpdate()));
 	}
@@ -414,7 +420,7 @@ EmoticonSelector::EmoticonSelector(ChatWidget *caller, QWidget *parent)
 
 	int selector_count = emoticons->selectorCount();
 	int selector_width = (int)sqrt((double)selector_count);
-	int btn_width = 0;
+	int btn_width = 0, factor;
 	QGridLayout *grid = new QGridLayout(this);
 	grid->setMargin(0);
 	grid->setSpacing(0);
