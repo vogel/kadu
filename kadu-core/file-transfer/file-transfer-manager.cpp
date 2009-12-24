@@ -142,10 +142,10 @@ FileTransfer FileTransferManager::byData(Account account, Contact peer, FileTran
 
 void FileTransferManager::acceptFileTransfer(FileTransfer transfer, const QString &localFileName, bool cont)
 {
-	QString fileName;
+	QString fileName = localFileName;
 
 	bool resume = false;
-	bool haveFileName = false;
+	bool haveFileName = !localFileName.isEmpty();
 
 	QFileInfo fi;
 
@@ -196,9 +196,20 @@ void FileTransferManager::acceptFileTransfer(FileTransfer transfer, const QStrin
 			flags |= QIODevice::Truncate;
 
 		if (!file.open(flags))
+		{
 			MessageDialog::msg(tr("Could not open file. Select another one."), true, "Warning");
-		else if (transfer.handler())
-			transfer.handler()->accept(file);
+			fileName = QString::null;
+		}
+
+		transfer.createHandler();
+		if (transfer.handler())
+		{
+			if (!transfer.handler()->accept(file))
+			{
+				MessageDialog::msg(tr("Could not open file. Select another one."), true, "Warning");
+				fileName = QString::null;
+			}
+		}
 	}
 
 	FileTransferManager::instance()->addItem(transfer);
@@ -244,13 +255,23 @@ void FileTransferManager::incomingFileTransfer(FileTransfer fileTransfer)
 {
 	Chat chat = ChatManager::instance()->findChat(ContactSet(fileTransfer.fileTransferContact()));
 	NewFileTransferNotification *notification = new NewFileTransferNotification("FileTransfer/IncomingFile", fileTransfer,
-			chat, StartNew);
+			chat, fileTransfer.localFileName().isEmpty() ? StartNew : StartRestore);
 	notification->setTitle(tr("Incoming transfer"));
-	notification->setText(tr("User <b>%1</b> wants to send you a file <b>%2</b>\nof size <b>%3kB</b> using account <b>%4</b>. Accept transfer?")
-			.arg(chat.name())
-			.arg(fileTransfer.remoteFileName())
-			.arg(fileTransfer.fileSize() / 1024)
-			.arg(chat.chatAccount().name()));
+
+	if (fileTransfer.localFileName().isEmpty())
+		notification->setText(tr("User <b>%1</b> wants to send you a file <b>%2</b><br />of size <b>%3kB</b> using account <b>%4</b>. Accept transfer?")
+				.arg(chat.name())
+				.arg(fileTransfer.remoteFileName())
+				.arg(fileTransfer.fileSize() / 1024)
+				.arg(chat.chatAccount().name()));
+	else
+		notification->setText(tr("User <b>%1</b> wants to send you a file <b/>%2</b>\nof size <b>%3kB</b> using account <b>%4</b>.<br />"
+				"This is probably a next part of <b>%5</b><br /> What should I do?")
+				.arg(chat.name())
+				.arg(fileTransfer.remoteFileName())
+				.arg(fileTransfer.fileSize() / 1024)
+				.arg(chat.chatAccount().name())
+				.arg(fileTransfer.localFileName()));
 
 	NotificationManager::instance()->notify(notification);
 }
