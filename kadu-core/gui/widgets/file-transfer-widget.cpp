@@ -27,18 +27,15 @@
 #include "file-transfer-widget.h"
 
 FileTransferWidget::FileTransferWidget(FileTransfer ft, QWidget *parent)
-	: QFrame(parent), CurrentTransfer(ft), UpdateTimer(0)
+	: QFrame(parent), CurrentTransfer(ft)
 {
 	kdebugf();
 	
 	createGui();
-
-	connect(CurrentTransfer, SIGNAL(statusChanged()), this, SLOT(fileTransferStatusChanged()));
-	connect(CurrentTransfer, SIGNAL(destroyed(QObject *)), this, SLOT(fileTransferDestroyed(QObject *)));
-
+	
 	LastTransferredSize = CurrentTransfer.transferredSize();
-
-	fileTransferStatusChanged();
+	connect(CurrentTransfer, SIGNAL(updated()), this, SLOT(fileTransferUpdate()));
+	fileTransferUpdate();
 
 	show();
 }
@@ -47,20 +44,7 @@ FileTransferWidget::~FileTransferWidget()
 {
 	kdebugf();
 
-	if (CurrentTransfer)
-	{
-		disconnect(CurrentTransfer, SIGNAL(statusChanged()), this, SLOT(fileTransferStatusChanged()));
-		disconnect(CurrentTransfer, SIGNAL(destroyed(QObject *)), this, SLOT(fileTransferDestroyed(QObject *)));
-	}
-}
-
-void FileTransferWidget::fileTransferDestroyed(QObject *)
-{
-	disconnect(CurrentTransfer, SIGNAL(statusChanged()), this, SLOT(fileTransferStatusChanged()));
-	disconnect(CurrentTransfer, SIGNAL(destroyed(QObject *)), this, SLOT(fileTransferDestroyed(QObject *)));
-
-	CurrentTransfer = FileTransfer::null;
-	deleteLater();
+	disconnect(CurrentTransfer, SIGNAL(updated()), this, SLOT(fileTransferUpdate()));
 }
 
 void FileTransferWidget::createGui()
@@ -123,6 +107,8 @@ void FileTransferWidget::createGui()
 	Buddy buddy = CurrentTransfer.fileTransferContact().ownerBuddy();
 
 	QString fileName = QFileInfo(CurrentTransfer.localFileName()).fileName();
+	if (fileName.isEmpty())
+		fileName = CurrentTransfer.remoteFileName();
 
 	if (TypeSend == CurrentTransfer.transferType())
 	{
@@ -178,39 +164,9 @@ void FileTransferWidget::continueTransfer()
 		handler()->restore();
 }
 
-void FileTransferWidget::fileTransferStatusChanged()
-{
-	printf("transfer status: %d\n", CurrentTransfer.transferStatus());
-
-	if (StatusTransfer == CurrentTransfer.transferStatus())
-	{
-		if (!UpdateTimer)
-		{
-			UpdateTimer = new QTimer(this);
-			connect(UpdateTimer, SIGNAL(timeout()), this, SLOT(fileTransferUpdate()));
-
-			printf("starting timer\n");
-			UpdateTimer->setSingleShot(false);
-			UpdateTimer->setInterval(2500);
-			UpdateTimer->start();
-		}
-	}
-	else
-	{
-		printf("stopping timer\n");
-		if (UpdateTimer)
-		{
-			delete UpdateTimer;
-			UpdateTimer = 0;
-		}
-	}
-
-	fileTransferUpdate();
-}
-
 void FileTransferWidget::fileTransferUpdate()
 {
-	printf("timer fired\n");
+	printf("file transfer update\n");
 
 	if (!CurrentTransfer)
 	{
@@ -239,12 +195,18 @@ void FileTransferWidget::fileTransferUpdate()
 	{
 		QDateTime now = QDateTime::currentDateTime();
 		int timeDiff = now.toTime_t() - LastUpdateTime.toTime_t();
-		if (0 < timeDiff)
-			speed = (CurrentTransfer.transferredSize() - LastTransferredSize) / 1024;
+		if (1 < timeDiff)
+		{
+			speed = ((CurrentTransfer.transferredSize() - LastTransferredSize) / 1024) / timeDiff;
+			LastUpdateTime = QDateTime::currentDateTime();
+			LastTransferredSize = CurrentTransfer.transferredSize();
+		}
 	}
-
-	LastUpdateTime = QDateTime::currentDateTime();
-	LastTransferredSize = CurrentTransfer.transferredSize();
+	else
+	{
+		LastUpdateTime = QDateTime::currentDateTime();
+		LastTransferredSize = CurrentTransfer.transferredSize();
+	}
 
 	switch (CurrentTransfer.transferStatus())
 	{

@@ -65,8 +65,6 @@ FileTransferManager::~FileTransferManager()
 
 void FileTransferManager::accountRegistered(Account account)
 {
-	printf("Account registered\n");
-
 	Protocol *protocol = account.protocolHandler();
 	if (!protocol)
 		return;
@@ -75,7 +73,6 @@ void FileTransferManager::accountRegistered(Account account)
 	if (!service)
 		return;
 
-	printf("connected\n");
 	connect(service, SIGNAL(incomingFileTransfer(FileTransfer)),
 			this, SLOT(incomingFileTransfer(FileTransfer)));
 }
@@ -213,6 +210,7 @@ void FileTransferManager::acceptFileTransfer(FileTransfer transfer, const QStrin
 	}
 
 	FileTransferManager::instance()->addItem(transfer);
+	transfer.setTransferStatus(StatusTransfer);
 }
 
 void FileTransferManager::rejectFileTransfer(FileTransfer transfer)
@@ -257,6 +255,8 @@ void FileTransferManager::incomingFileTransfer(FileTransfer fileTransfer)
 	NewFileTransferNotification *notification = new NewFileTransferNotification("FileTransfer/IncomingFile", fileTransfer,
 			chat, fileTransfer.localFileName().isEmpty() ? StartNew : StartRestore);
 	notification->setTitle(tr("Incoming transfer"));
+
+	fileTransfer.setTransferStatus(StatusWaitingForAccept);
 
 	if (fileTransfer.localFileName().isEmpty())
 		notification->setText(tr("User <b>%1</b> wants to send you a file <b>%2</b><br />of size <b>%3kB</b> using account <b>%4</b>. Accept transfer?")

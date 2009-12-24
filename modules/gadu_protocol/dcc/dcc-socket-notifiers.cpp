@@ -395,7 +395,7 @@ unsigned long DccSocketNotifiers::fileSize()
 		case Dcc6:
 			return gg_fix32(Socket->file_info.size);
 		case Dcc7:
-			return gg_fix32( Socket7->size);
+			return gg_fix32(Socket7->size);
 	}
 
 	return 0;

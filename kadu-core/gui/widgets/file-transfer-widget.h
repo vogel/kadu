@@ -26,7 +26,6 @@ class FileTransferWidget : public QFrame
 
 	FileTransfer CurrentTransfer;
 
-	QTimer *UpdateTimer;
 	QDateTime LastUpdateTime;
 	unsigned long LastTransferredSize;
 
@@ -41,9 +40,7 @@ class FileTransferWidget : public QFrame
 	FileTransferHandler * handler();
 
 private slots:
-	void fileTransferStatusChanged();
 	void fileTransferUpdate();
-	void fileTransferDestroyed(QObject *);
 
 	void removeTransfer();
 	void pauseTransfer();

@@ -17,9 +17,13 @@
 class QScrollArea;
 class QVBoxLayout;
 
+class FileTransferWidget;
+
 class FileTransferWindow : public QFrame
 {
 	Q_OBJECT
+
+	QList<FileTransferWidget *> Widgets;
 
 	QScrollArea *ScrollView;
 
@@ -30,6 +34,7 @@ class FileTransferWindow : public QFrame
 
 private slots:
 	void fileTransferAdded(FileTransfer fileTransfer);
+	void fileTransferRemoved(FileTransfer fileTransfer);
 
 	void clearClicked();
 
