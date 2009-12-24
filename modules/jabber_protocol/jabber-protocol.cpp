@@ -27,6 +27,7 @@
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/password-window.h"
+#include "gui/windows/subscription-window.h"
 #include "gui/windows/main-configuration-window.h"
 
 #include "configuration/configuration-file.h"
@@ -728,16 +729,7 @@ void JabberProtocol::slotSubscription(const XMPP::Jid & jid, const QString &type
 
 	if (type == "subscribe")
 	{
-		/*
-		* Authorize user.
-		*/
-		if (MessageDialog::ask(tr("The user %1 wants to add you to his contact list.\n Do you agree?").arg(jid.full())))
-		{
-			ContactManager::instance()->byId(account(), jid.bare()).ownerBuddy().setAnonymous(false);
-			XMPP::JT_Presence *task = new XMPP::JT_Presence(JabberClient->rootTask());
-			task->sub(jid, "subscribed");
-			task->go(true);
-		}
+		SubscriptionWindow::getSubscription(jid.bare(), this, SLOT(authorizeContact(QString &)));
 	}
 	else if (type == "subscribed")
 		MessageDialog::msg(QString("You are authorized by %1").arg(jid.bare()), false, "Warning");
@@ -745,6 +737,14 @@ void JabberProtocol::slotSubscription(const XMPP::Jid & jid, const QString &type
 		MessageDialog::msg(QString("Contact %1 has removed authorization for you.").arg(jid.bare()), false, "Warning");
 		//TODO: usuwa� kontakt z listy... ta, chyba tak
 
+}
+
+void JabberProtocol::authorizeContact(QString &uid)
+{
+	ContactManager::instance()->byId(account(), uid).ownerBuddy().setAnonymous(false);
+	XMPP::JT_Presence *task = new XMPP::JT_Presence(JabberClient->rootTask());
+	task->sub(XMPP::Jid(uid), "subscribed");
+	task->go(true);
 }
 
 bool JabberProtocol::validateUserID(QString& uid)

@@ -100,6 +100,7 @@ class JabberProtocol : public Protocol
 		void contactUpdated(Buddy &buddy);
 
 		void contactIdChanged(Contact contact, const QString &oldId);
+		void authorizeContact(QString &uid);
 
 	public slots:
 		void connectToServer();

@@ -187,6 +187,7 @@ set (kadu_SRCS
 	gui/windows/message-dialog.cpp
 	gui/windows/password-window.cpp
 	gui/windows/search-window.cpp
+	gui/windows/subscription-window.cpp
 	gui/windows/syntax-editor-window.cpp
 	gui/windows/window-notifier-window.cpp
 	gui/windows/your-accounts.cpp
@@ -412,6 +413,7 @@ set (kadu_MOC_SRCS
 	gui/windows/message-dialog.h
 	gui/windows/password-window.h
 	gui/windows/search-window.h
+	gui/windows/subscription-window.h
 	gui/windows/syntax-editor-window.h
 	gui/windows/your-accounts.h
 
