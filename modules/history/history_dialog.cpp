@@ -391,19 +391,25 @@ void HistoryDialog::searchButtonClicked()
 
 	HistorySearchDialog* hs = new HistorySearchDialog(this, uins);
 
-	if (findRec.actualrecord <= 0)
+	QTreeWidgetItem *actlvi = uinsTreeWidget->currentItem();
+	if (actlvi->parent() != NULL)
 	{
-		QTreeWidgetItem *actlvi = uinsTreeWidget->currentItem();
-		if (actlvi->parent() != NULL)
+		findRec.fromdate = dynamic_cast<DateListViewText *>(actlvi)->getDate().date;
+	}
+	else
+	{
+		if (actlvi->childCount() > 0)
 		{
-			findRec.fromdate = dynamic_cast<DateListViewText *>(actlvi)->getDate().date;
+			uinsTreeWidget->setCurrentItem(actlvi->child(0));
+			findRec.fromdate = dynamic_cast<DateListViewText *>(actlvi->child(0))->getDate().date;
 		}
 		else
 			findRec.fromdate = QDateTime();
 	}
+	hs->setDialogValues(findRec, true);
 
 //	hs->resetBtnClicked();
-	hs->setDialogValues(findRec, false);
+
 	if (hs->exec() == QDialog::Accepted)
 	{
 		findRec = hs->getDialogValues();
@@ -417,16 +423,22 @@ void HistoryDialog::searchButtonClicked()
 void HistoryDialog::searchNextButtonClicked()
 {
 	kdebugf();
-	findRec.reverse = false;
-	searchHistory();
+	if (!findRec.data.isEmpty())
+	{
+		findRec.reverse = false;
+		searchHistory();
+	}
 	kdebugf2();
 }
 
 void HistoryDialog::searchPrevButtonClicked()
 {
 	kdebugf();
-	findRec.reverse = true;
-	searchHistory();
+	if (!findRec.data.isEmpty())
+	{
+		findRec.reverse = true;
+		searchHistory();
+	}
 	kdebugf2();
 }
 

@@ -196,6 +196,11 @@ HistorySearchDialog::HistorySearchDialog(QWidget *parent, UinsList uins)
 	grid->addWidget(resetButton, 5, 2);
 	grid->addWidget(cancelButton, 5, 3);
 
+	fromCheckBox->setChecked(false);
+	fromGroupBox->setEnabled(false);
+	toCheckBox->setChecked(false);
+	toGroupBox->setEnabled(false);
+
 	phraseEdit->setFocus();
 	kdebugf2();
 }
