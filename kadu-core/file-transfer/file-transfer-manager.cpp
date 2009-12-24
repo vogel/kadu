@@ -106,6 +106,40 @@ void FileTransferManager::cleanUp()
 		removeItem(fileTransfer);
 }
 
+FileTransfer FileTransferManager::byData(Account account, Contact peer, FileTransferType type, const QString &fileName, bool create)
+{
+	if (!account || !peer || fileName.isNull())
+		return FileTransfer::null;
+
+	foreach (FileTransfer transfer, items())
+	{
+		if (transfer.fileTransferAccount() != account || transfer.fileTransferContact() != peer || transfer.transferType() != type)
+			continue;
+
+		if (type == TypeReceive && transfer.remoteFileName() == fileName)
+			return transfer;
+
+		if (type == TypeSend && transfer.localFileName() == fileName)
+			return transfer;
+	}
+
+	if (!create)
+		return FileTransfer::null;
+
+	FileTransfer result = FileTransfer::create();
+	result.setFileTransferAccount(account);
+	result.setFileTransferContact(peer);
+	result.setTransferType(type);
+	if (type == TypeReceive)
+		result.setRemoteFileName(fileName);
+	else
+		result.setLocalFileName(fileName);
+
+	addItem(result);
+
+	return result;
+}
+
 void FileTransferManager::acceptFileTransfer(FileTransfer transfer, const QString &localFileName, bool cont)
 {
 	QString fileName;
@@ -125,7 +159,8 @@ void FileTransferManager::acceptFileTransfer(FileTransfer transfer, const QStrin
 		if (fileName.isEmpty())
 		{
 			kdebugmf(KDEBUG_INFO, "rejected\n");
-// 			fileTransfer->reject(); TODO: current
+			if (transfer.handler())
+				transfer.handler()->reject();
 			return;
 		}
 
@@ -210,6 +245,12 @@ void FileTransferManager::incomingFileTransfer(FileTransfer fileTransfer)
 	Chat chat = ChatManager::instance()->findChat(ContactSet(fileTransfer.fileTransferContact()));
 	NewFileTransferNotification *notification = new NewFileTransferNotification("FileTransfer/IncomingFile", fileTransfer,
 			chat, StartNew);
+	notification->setTitle(tr("Incoming transfer"));
+	notification->setText(tr("User <b>%1</b> wants to send you a file <b>%2</b>\nof size <b>%3kB</b> using account <b>%4</b>. Accept transfer?")
+			.arg(chat.name())
+			.arg(fileTransfer.remoteFileName())
+			.arg(fileTransfer.fileSize() / 1024)
+			.arg(chat.chatAccount().name()));
 
 	NotificationManager::instance()->notify(notification);
 }

@@ -42,8 +42,6 @@ void GaduFileTransferHandler::updateFileInfo()
 		transfer().setFileSize(0);
 		transfer().setTransferredSize(0);
 	}
-
-// 	emit statusChanged();
 }
 
 void GaduFileTransferHandler::setFileTransferNotifiers(DccSocketNotifiers *socketNotifiers)

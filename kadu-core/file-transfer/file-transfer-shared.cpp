@@ -9,7 +9,10 @@
 
 #include "accounts/account-manager.h"
 #include "contacts/contact-manager.h"
+#include "file-transfer/file-transfer-handler.h"
 #include "file-transfer/file-transfer-manager.h"
+#include "protocols/services/file-transfer-service.h"
+#include "protocols/protocol.h"
 
 #include "file-transfer-shared.h"
 
@@ -24,7 +27,7 @@ FileTransferShared::FileTransferShared(QUuid uuid) :
 		QObject(FileTransferManager::instance()), Shared(uuid),
 		FileSize(0), TransferredSize(0),
 		TransferType(TypeReceive), TransferStatus(StatusNotConnected),
-		TransferError(ErrorOk)
+		TransferError(ErrorOk), Handler(0)
 {
 }
 
@@ -98,7 +101,41 @@ void FileTransferShared::setTransferError(FileTransferError transferError)
 	dataUpdated();
 }
 
+void FileTransferShared::setHandler(FileTransferHandler *handler)
+{
+	if (Handler == handler)
+		return;
+
+	if (Handler)
+		disconnect(Handler, SIGNAL(destroyed(QObject *)), this, SLOT(handlerDestroyed()));
+
+	Handler = handler;
+	connect(Handler, SIGNAL(destroyed(QObject *)), this, SLOT(handlerDestroyed()));
+	dataUpdated();
+}
+
+void FileTransferShared::createHandler()
+{
+	if (Handler)
+		return;
+
+	Protocol *protocol = FileTransferAccount.protocolHandler();
+	if (!protocol)
+		return;
+
+	FileTransferService *service = protocol->fileTransferService();
+	if (!service)
+		return;
+
+	Handler = service->createFileTransferHandler(this);
+}
+
 void FileTransferShared::emitUpdated()
 {
 	emit updated();
+}
+
+void FileTransferShared::handlerDestroyed()
+{
+	setHandler(0);
 }

@@ -14,6 +14,7 @@
 #include <QtCore/QUuid>
 
 #include "accounts/accounts-aware-object.h"
+#include "file-transfer/file-transfer-enums.h"
 #include "file-transfer/file-transfer.h"
 #include "storage/simple-manager.h"
 
@@ -54,6 +55,8 @@ public:
 
 	virtual QString storageNodeName() { return QLatin1String("FileTransfersNew"); }
 	virtual QString storageNodeItemName() { return QLatin1String("FileTransfer"); }
+
+	FileTransfer byData(Account account, Contact peer, FileTransferType type, const QString &fileName, bool create = false);
 
 	void acceptFileTransfer(FileTransfer transfer, const QString &localFileName = QString::null, bool cont = false);
 	void rejectFileTransfer(FileTransfer transfer);

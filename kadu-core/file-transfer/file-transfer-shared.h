@@ -35,6 +35,9 @@ class KADUAPI FileTransferShared : public QObject, public Shared
 
 	FileTransferHandler *Handler;
 
+private slots:
+	void handlerDestroyed();
+
 protected:
 	virtual void load();
 	virtual void emitUpdated();
@@ -52,6 +55,8 @@ public:
 
 	void setTransferStatus(FileTransferStatus transferStatus);
 	void setTransferError(FileTransferError transferError);
+	void setHandler(FileTransferHandler *handler);
+	void createHandler();
 
 	KaduShared_Property(Account, fileTransferAccount, FileTransferAccount)
 	KaduShared_Property(Contact, fileTransferContact, FileTransferContact)
@@ -62,7 +67,7 @@ public:
 	KaduShared_Property(FileTransferType, transferType, TransferType)
 	KaduShared_PropertyRead(FileTransferStatus, transferStatus, TransferStatus)
 	KaduShared_PropertyRead(FileTransferError, transferError, TransferError)
-	KaduShared_Property(FileTransferHandler *, handler, Handler)
+	KaduShared_PropertyRead(FileTransferHandler *, handler, Handler)
 
 signals:
 	void statusChanged();

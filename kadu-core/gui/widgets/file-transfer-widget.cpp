@@ -180,18 +180,24 @@ void FileTransferWidget::continueTransfer()
 
 void FileTransferWidget::fileTransferStatusChanged()
 {
+	printf("transfer status: %d\n", CurrentTransfer.transferStatus());
+
 	if (StatusTransfer == CurrentTransfer.transferStatus())
 	{
 		if (!UpdateTimer)
 		{
 			UpdateTimer = new QTimer(this);
 			connect(UpdateTimer, SIGNAL(timeout()), this, SLOT(fileTransferUpdate()));
+
+			printf("starting timer\n");
 			UpdateTimer->setSingleShot(false);
-			UpdateTimer->start(2500);
+			UpdateTimer->setInterval(2500);
+			UpdateTimer->start();
 		}
 	}
 	else
 	{
+		printf("stopping timer\n");
 		if (UpdateTimer)
 		{
 			delete UpdateTimer;
@@ -204,6 +210,8 @@ void FileTransferWidget::fileTransferStatusChanged()
 
 void FileTransferWidget::fileTransferUpdate()
 {
+	printf("timer fired\n");
+
 	if (!CurrentTransfer)
 	{
 		StatusLabel->setText(tr("<b>Not connected</b>"));

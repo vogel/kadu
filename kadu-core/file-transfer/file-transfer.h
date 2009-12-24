@@ -49,6 +49,7 @@ public:
 
 	virtual bool accept(const QFile &file);
 
+	void createHandler();
 	unsigned int percent();
 
 };

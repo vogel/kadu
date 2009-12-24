@@ -7,6 +7,9 @@
  *                                                                         *
  ***************************************************************************/
 
+#ifndef FILE_TRANSFER_ENUMS_H
+#define FILE_TRANSFER_ENUMS_H
+
 enum FileTransferType {
 	TypeSend,
 	TypeReceive
@@ -31,3 +34,5 @@ enum StartType {
 	StartNew,
 	StartRestore
 };
+
+#endif FILE_TRANSFER_ENUMS_H

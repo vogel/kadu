@@ -280,19 +280,21 @@ bool DccManager::acceptConnection(unsigned int uin, unsigned int peerUin, unsign
 
 void DccManager::needIncomingFileTransferAccept(DccSocketNotifiers *socket)
 {
-	FileTransfer fileTransfer = FileTransfer::create();
-	fileTransfer.setFileTransferAccount(Protocol->account());
-	fileTransfer.setFileTransferContact(ContactManager::instance()->byId(Protocol->account(), QString::number(socket->peerUin()), true));
-	fileTransfer.setTransferType(TypeReceive);
-	FileTransferManager::instance()->addItem(fileTransfer);
+	Contact peer = ContactManager::instance()->byId(Protocol->account(), QString::number(socket->peerUin()), true);
+	FileTransfer fileTransfer = FileTransferManager::instance()->byData(Protocol->account(), peer, TypeReceive, socket->remoteFileName(), true);
+	if (!fileTransfer)
+		return;
 
-	GaduFileTransferHandler *handler = new GaduFileTransferHandler(fileTransfer);
-	fileTransfer.setHandler(handler);
+	fileTransfer.createHandler();
 
-	handler->setFileTransferNotifiers(socket);
-	socket->setGaduFileTransferHandler(handler);
+	GaduFileTransferHandler *handler = dynamic_cast<GaduFileTransferHandler *>(fileTransfer.handler());
+	if (handler)
+	{
+		handler->setFileTransferNotifiers(socket);
+		socket->setGaduFileTransferHandler(handler);
+	}
 
-	emit Protocol->CurrentFileTransferService->incomingFileTransfer(fileTransfer);
+	Protocol->CurrentFileTransferService->newIncomingFileTransfer(fileTransfer);
 }
 
 GaduFileTransferHandler * DccManager::findFileTransferHandler(DccSocketNotifiers *notifiers)

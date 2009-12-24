@@ -45,8 +45,8 @@ FileTransferWindow::~FileTransferWindow()
 {
 	kdebugf();
 
-	disconnect(FileTransferManager::instance(), SIGNAL(fileTransferAdded(FileTransfer *)),
-			this, SLOT(fileTransferAdded(FileTransfer *)));
+	disconnect(FileTransferManager::instance(), SIGNAL(fileTransferAdded(FileTransfer)),
+			this, SLOT(fileTransferAdded(FileTransfer)));
 
 // TODO: 0.6.6
 //  	saveWindowGeometry(this, "General", "TransferWindowGeometry");

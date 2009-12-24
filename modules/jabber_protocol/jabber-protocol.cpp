@@ -20,16 +20,15 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/group.h"
 #include "buddies/group-manager.h"
-
+#include "configuration/configuration-file.h"
 #include "contacts/contact-manager.h"
-
+#include "file-transfer/file-transfer-manager.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/password-window.h"
 #include "gui/windows/main-configuration-window.h"
 
-#include "configuration/configuration-file.h"
 #include "debug.h"
 #include "exports.h"
 #include "icons-manager.h"
@@ -464,11 +463,16 @@ void JabberProtocol::changeStatus(Status status)
 
 void JabberProtocol::slotIncomingFileTransfer()
 {
-	FileTransfer transfer = FileTransfer::create();
-	transfer.setFileTransferAccount(account());
-	transfer.setTransferType(TypeReceive);
+	XMPP::FileTransfer *jTransfer = client()->fileTransferManager()->takeIncoming();
+	Contact peer = ContactManager::instance()->byId(account(), jTransfer->peer().bare(), true);
+	FileTransfer transfer = FileTransferManager::instance()->byData(account(), peer, TypeReceive, jTransfer->fileName(), true);
 
-	JabberFileTransferHandler *handler = dynamic_cast<JabberFileTransferHandler *>(fileTransferService()->createFileTransferHandler(transfer));
+	if (!transfer)
+		return;
+
+	transfer.createHandler();
+
+	JabberFileTransferHandler *handler = dynamic_cast<JabberFileTransferHandler *>(transfer.handler());
 	if (handler)
 		handler->setJTransfer(client()->fileTransferManager()->takeIncoming());
 

@@ -7,29 +7,32 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GADU_FILE_TRANSFER_SERVICE_H
-#define GADU_FILE_TRANSFER_SERVICE_H
+#ifndef FILE_TRANSFER_ACTIONS_H
+#define FILE_TRANSFER_ACTIONS_H
 
-#include <libgadu.h>
+#include <QtGui/QAction>
 
-#include "protocols/services/file-transfer-service.h"
+class ActionDescription;
+class ContactSet;
 
-class GaduProtocol;
-
-class GaduFileTransferService : public FileTransferService
+class FileTransferActions : public QObject
 {
 	Q_OBJECT
 
-	GaduProtocol *Protocol;
+	ActionDescription *SendFileActionDescription;
+	ActionDescription *FileTransferWindowActionDescription;
+
+	QStringList selectFilesToSend();
+	void selectFilesAndSend(ContactSet contacts);
+
+private slots:
+	void sendFileActionActivated(QAction *sender, bool toggled);
+	void toggleFileTransferWindow(QAction *sender, bool toggled);
 
 public:
-	GaduFileTransferService(GaduProtocol *protocol);
-
-	virtual FileTransferHandler * createFileTransferHandler(FileTransfer fileTransfer);
-	void newIncomingFileTransfer(FileTransfer fileTransfer);
+	explicit FileTransferActions(QObject *parent = 0);
+	virtual ~FileTransferActions();
 
 };
 
-#endif // GADU_FILE_TRANSFER_SERVICE_H
-
-// kate: indent-mode cstyle; replace-tabs off; tab-width 4; 
+#endif // FILE_TRANSFER_ACTIONS_H

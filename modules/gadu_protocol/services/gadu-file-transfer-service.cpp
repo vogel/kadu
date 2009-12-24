@@ -29,3 +29,8 @@ FileTransferHandler * GaduFileTransferService::createFileTransferHandler(FileTra
 
 	return handler;
 }
+
+void GaduFileTransferService::newIncomingFileTransfer(FileTransfer fileTransfer)
+{
+	emit incomingFileTransfer(fileTransfer);
+}
