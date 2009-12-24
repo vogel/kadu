@@ -51,19 +51,21 @@ void GaduFileTransferHandler::setFileTransferNotifiers(DccSocketNotifiers *socke
 		socketNotAvailable();
 		return;
 	}
-
-	transfer().setRemoteFileName(socketNotifiers->remoteFileName());
-	transfer().setFileSize(socketNotifiers->fileSize());
-	transfer().setTransferredSize(socketNotifiers->transferredFileSize());
-
+	
 	SocketNotifiers = socketNotifiers;
-	connect(SocketNotifiers, SIGNAL(destroyed(QObject *)), this, SLOT(socketNotifiersDeleted()));
+	if (SocketNotifiers)
+	{
+		transfer().setRemoteFileName(SocketNotifiers->remoteFileName());
+		transfer().setFileSize(SocketNotifiers->fileSize());
+		transfer().setTransferredSize(SocketNotifiers->transferredFileSize());
+		transfer().setTransferStatus(StatusTransfer);
 
-	SocketNotifiers->setGaduFileTransferHandler(this);
+		connect(SocketNotifiers, SIGNAL(destroyed(QObject *)), this, SLOT(socketNotifiersDeleted()));
+
+		SocketNotifiers->setGaduFileTransferHandler(this);
+	}
+
 	WaitingForSocketNotifiers = false;
-
-	transfer().setRemoteFileName(socketNotifiers->remoteFileName());
-	transfer().setTransferStatus(StatusTransfer);
 }
 
 void GaduFileTransferHandler::socketNotAvailable()

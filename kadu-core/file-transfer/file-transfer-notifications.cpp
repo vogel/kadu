@@ -66,25 +66,34 @@ void NewFileTransferNotification::callbackAccept()
 {
 	kdebugf();
 
-	if (Continue)
-		FileTransferManager::instance()->acceptFileTransfer(ft, ft.localFileName(), true);
-	else
-		FileTransferManager::instance()->acceptFileTransfer(ft);
 	close();
+	if (Continue)
+		FileTransferManager::instance()->acceptFileTransfer(ft, ft.localFileName());
+	else // under new name = new file transfer
+	{
+		FileTransfer newTransfer = FileTransfer::create();
+		newTransfer.setFileTransferAccount(ft.fileTransferAccount());
+		newTransfer.setFileTransferContact(ft.fileTransferContact());
+		newTransfer.setFileSize(ft.fileSize());
+		newTransfer.setRemoteFileName(ft.remoteFileName());
+		newTransfer.setTransferType(ft.transferType());
+		FileTransferManager::instance()->addItem(newTransfer);
+		FileTransferManager::instance()->acceptFileTransfer(newTransfer);
+	}
 }
 
 void NewFileTransferNotification::callbackAcceptAsNew()
 {
 	kdebugf();
-
-	FileTransferManager::instance()->acceptFileTransfer(ft);
+	
 	close();
+	FileTransferManager::instance()->acceptFileTransfer(ft);
 }
 
 void NewFileTransferNotification::callbackReject()
 {
 	kdebugf();
-
-	FileTransferManager::instance()->rejectFileTransfer(ft);
+	
 	close();
+	FileTransferManager::instance()->rejectFileTransfer(ft);
 }

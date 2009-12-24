@@ -137,7 +137,7 @@ FileTransfer FileTransferManager::byData(Account account, Contact peer, FileTran
 	return result;
 }
 
-void FileTransferManager::acceptFileTransfer(FileTransfer transfer, const QString &localFileName, bool cont)
+void FileTransferManager::acceptFileTransfer(FileTransfer transfer, const QString &localFileName)
 {
 	QString fileName = localFileName;
 
@@ -146,9 +146,9 @@ void FileTransferManager::acceptFileTransfer(FileTransfer transfer, const QStrin
 
 	QFileInfo fi;
 
-	while (fileName.isEmpty())
+	while (true)
 	{
-		if (!haveFileName || fileName.isEmpty())
+		if (fileName.isEmpty())
 			fileName = QFileDialog::getSaveFileName(Core::instance()->kaduWindow(), tr("Select file location"),
 					config_file.readEntry("Network", "LastDownloadDirectory") + transfer.remoteFileName(),
 							QString::null, 0, QFileDialog::DontConfirmOverwrite);
@@ -205,8 +205,11 @@ void FileTransferManager::acceptFileTransfer(FileTransfer transfer, const QStrin
 			{
 				MessageDialog::msg(tr("Could not open file. Select another one."), true, "Warning");
 				fileName = QString::null;
+				continue;
 			}
 		}
+
+		break;
 	}
 
 	FileTransferManager::instance()->addItem(transfer);

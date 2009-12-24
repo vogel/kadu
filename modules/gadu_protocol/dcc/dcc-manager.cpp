@@ -289,10 +289,7 @@ void DccManager::needIncomingFileTransferAccept(DccSocketNotifiers *socket)
 
 	GaduFileTransferHandler *handler = dynamic_cast<GaduFileTransferHandler *>(fileTransfer.handler());
 	if (handler)
-	{
 		handler->setFileTransferNotifiers(socket);
-		socket->setGaduFileTransferHandler(handler);
-	}
 
 	Protocol->CurrentFileTransferService->newIncomingFileTransfer(fileTransfer);
 }

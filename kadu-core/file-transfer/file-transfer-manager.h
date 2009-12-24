@@ -58,7 +58,7 @@ public:
 
 	FileTransfer byData(Account account, Contact peer, FileTransferType type, const QString &fileName, bool create = false);
 
-	void acceptFileTransfer(FileTransfer transfer, const QString &localFileName = QString::null, bool cont = false);
+	void acceptFileTransfer(FileTransfer transfer, const QString &localFileName = QString::null);
 	void rejectFileTransfer(FileTransfer transfer);
 
 	void showFileTransferWindow();
