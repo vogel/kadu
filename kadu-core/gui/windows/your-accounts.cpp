@@ -347,10 +347,10 @@ void YourAccounts::addAccountButtonClicked()
   	AccountCreateWidget *widget = dynamic_cast<AccountCreateWidget *>(CreateStack->currentWidget());
 	if (!widget)
 	{
-		AccountAddWidget *widgetAdd = dynamic_cast<AccountAddWidget *>(CreateStack->currentWidget());
-		if (!widgetAdd)
-			return;
-		widgetAdd->apply();
+		AccountAddWidget *widgetAdd = dynamic_cast<AccountAddWidget *>(AddStack->currentWidget());
+		if (widgetAdd)
+			widgetAdd->apply();
+		return;
 	}
 	widget->apply();
 }
