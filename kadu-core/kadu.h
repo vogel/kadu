@@ -132,7 +132,6 @@ private slots:
 	void copyPersonalInfoActionActivated(QAction *sender, bool toggled);
 	void lookupInDirectoryActionActivated(QAction *sender, bool toggled);
 	void deleteUsersActionActivated(QAction *sender, bool toggled);
-	void silentActionActivated(QAction  *sender, bool toggled);
 	void SilentActionCreated();
 
 	void messageReceived(Protocol *protocol, UserListElements senders, const QString &msg, time_t time);
@@ -315,6 +314,7 @@ public slots:
 	void editUserActionSetParams(QString protocolName, UserListElement user);
 	void showStatusActionActivated(QAction *sender, bool toggled);
 	void showStatusActionCreated(KaduAction *action);
+	void silentActionActivated(QAction  *sender, bool toggled);
 
 	void infoPanelSyntaxFixup(QString &syntax);
 
