@@ -54,6 +54,12 @@ void JabberCreateAccountWidget::createGui()
 	gridLayout->setColumnStretch(5, 1);
 
 	int row = 0;
+	
+	QLabel *accountNameLabel = new QLabel(tr("Account Name") + ":", this);
+	gridLayout->addWidget(accountNameLabel, row, 1);
+	AccountName = new QLineEdit(this);
+	connect(AccountName, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
+	gridLayout->addWidget(AccountName, row++, 2);
 
 	QLabel *numberLabel = new QLabel(tr("Username") + ":", this);
 	gridLayout->addWidget(numberLabel, row, 1, Qt::AlignRight);

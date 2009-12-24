@@ -25,6 +25,7 @@ class GaduCreateAccountWidget : public AccountCreateWidget
 {
 	Q_OBJECT
 
+	QLineEdit *AccountName;
 	QLineEdit *NewPassword;
 	QLineEdit *ReNewPassword;
 	QCheckBox *RememberPassword;	

@@ -154,16 +154,19 @@ void YourAccounts::createNewAccountCreatedWidget()
 	NewAccountCreatedContainer = new QWidget(this);
 	CreateEditStack->addWidget(NewAccountCreatedContainer);
 	//TODO 0.6.6 some text formatting
-	QVBoxLayout *newAccountCreatedLayout = new QVBoxLayout(NewAccountCreatedContainer);
+	QGridLayout *newAccountCreatedLayout = new QGridLayout(NewAccountCreatedContainer);
+	int row = 0;
 	
 	QLabel *createAccountLabel = new QLabel(tr("Create New Account"));
-	newAccountCreatedLayout->addWidget(createAccountLabel);
+	newAccountCreatedLayout->addWidget(createAccountLabel, row++, 0, 1, 1);
 	
 	QLabel *successLabel = new QLabel(tr("Account Added"));
-	newAccountCreatedLayout->addWidget(successLabel);
+	newAccountCreatedLayout->addWidget(successLabel, row++, 0, 1, 1);
 	
 	QLabel *successDetailsLabel = new QLabel(tr("Your new account was added successfully and has been added to your account list on the left."));
-	newAccountCreatedLayout->addWidget(successDetailsLabel);
+	newAccountCreatedLayout->addWidget(successDetailsLabel, row++, 0, 1, 1);
+	
+	newAccountCreatedLayout->setRowStretch(row, 100);
 }
 
 void YourAccounts::createAddAccountWidget()
