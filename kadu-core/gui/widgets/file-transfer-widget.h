@@ -28,6 +28,7 @@ class FileTransferWidget : public QFrame
 
 	QDateTime LastUpdateTime;
 	unsigned long LastTransferredSize;
+	unsigned long Speed;
 
 	QLabel *DescriptionLabel;
 	QLabel *StatusLabel;

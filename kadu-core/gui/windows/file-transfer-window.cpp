@@ -88,7 +88,7 @@ void FileTransferWindow::createGui()
 	buttonBox_layout->setContentsMargins(2, 2, 2, 2);
 	buttonBox_layout->setSpacing(2);
 
-	QPushButton *cleanButton = new QPushButton(tr("Clean"), this);
+	QPushButton *cleanButton = new QPushButton(tr("Clear"), this);
 	connect(cleanButton, SIGNAL(clicked()), this, SLOT(clearClicked()));
 
 	QPushButton *hideButton = new QPushButton(tr("Hide"), this);

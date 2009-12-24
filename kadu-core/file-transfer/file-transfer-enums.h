@@ -35,4 +35,4 @@ enum StartType {
 	StartRestore
 };
 
-#endif FILE_TRANSFER_ENUMS_H
+#endif // FILE_TRANSFER_ENUMS_H

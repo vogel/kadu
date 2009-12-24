@@ -441,6 +441,8 @@ bool DccSocketNotifiers::acceptFileTransfer(const QFile &file)
 		case Dcc6:
 			Socket->file_fd = dup(file.handle());
 			Socket->offset = file.size();
+			if (FileTransferHandler)
+				FileTransferHandler->transfer().setTransferStatus(StatusTransfer);
 
 			unlock();
 			break;
@@ -449,6 +451,8 @@ bool DccSocketNotifiers::acceptFileTransfer(const QFile &file)
 			Socket7->file_fd = dup(file.handle());
 			Socket7->offset = file.size();
 			gg_dcc7_accept(Socket7, Socket7->offset);
+			if (FileTransferHandler)
+				FileTransferHandler->transfer().setTransferStatus(StatusTransfer);
 			watchFor(Socket7); // descriptor may be changed
 			break;
 
