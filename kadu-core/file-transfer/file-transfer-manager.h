@@ -19,6 +19,8 @@
 
 #include "exports.h"
 
+class FileTransferActions;
+class FileTransferWindow;
 class XmlConfigFile;
 
 class KADUAPI FileTransferManager : public QObject, public SimpleManager<FileTransfer>, AccountsAwareObject
@@ -28,10 +30,14 @@ class KADUAPI FileTransferManager : public QObject, public SimpleManager<FileTra
 
 	static FileTransferManager * Instance;
 
+	FileTransferActions *Actions;
+	FileTransferWindow *Window;
+
 	FileTransferManager();
 	virtual ~FileTransferManager();
 
 private slots:
+	void fileTransferWindowDestroyed();
 	void incomingFileTransfer(FileTransfer fileTransfer);
 
 protected:
@@ -49,6 +55,13 @@ public:
 	virtual QString storageNodeName() { return QLatin1String("FileTransfersNew"); }
 	virtual QString storageNodeItemName() { return QLatin1String("FileTransfer"); }
 
+	void acceptFileTransfer(FileTransfer transfer, const QString &localFileName = QString::null, bool cont = false);
+	void rejectFileTransfer(FileTransfer transfer);
+
+	void showFileTransferWindow();
+	void hideFileTransferWindow();
+	bool isFileTransferWindowVisible();
+
 	void cleanUp();
 
 signals:
@@ -56,8 +69,6 @@ signals:
 	void fileTransferAdded(FileTransfer fileTransfer);
 	void fileTransferAboutToBeRemoved(FileTransfer fileTransfer);
 	void fileTransferRemoved(FileTransfer fileTransfer);
-
-	void incomingFileTransferNeedAccept(FileTransfer fileTransfer);
 
 };
 

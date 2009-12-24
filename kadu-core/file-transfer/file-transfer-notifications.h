@@ -10,39 +10,38 @@
 #ifndef FILE_TRANSFER_NOTIFICATION_H
 #define FILE_TRANSFER_NOTIFICATION_H
 
-#include "../notify/notification.h"
+#include "file-transfer/file-transfer.h"
+#include "notify/chat-notification.h"
 
-#include "file_transfer.h"
-
-class FileTransfer;
 class FileTransferManager;
 class DccSocket;
+class NotifyEvent;
 
-class NewFileTransferNotification : public Notification
+class NewFileTransferNotification : public ChatNotification
 {
 	Q_OBJECT
 
-private:
+	static NotifyEvent *FileTransferNotifyEvent;
+	static NotifyEvent *FileTransferIncomingFileNotifyEvent;
 
 	bool Continue;
 
-	FileTransfer *ft;
-	DccSocket *socket;
+	FileTransfer ft;
 
 	QString fileName;
 
 private slots:
-
 	void callbackAcceptAsNew();
 
 public slots:
-
 	virtual void callbackAccept();
 	virtual void callbackReject();
 
 public:
+	static void registerEvents();
+	static void unregisterEvents();
 
-	NewFileTransferNotification(QString &type, FileTransfer *ft, DccSocket *socket, const UserListElements &userListElements, FileTransfer::StartType startType);
+	NewFileTransferNotification(const QString &type, FileTransfer ft, Chat chat, StartType startType);
 
 };
 
