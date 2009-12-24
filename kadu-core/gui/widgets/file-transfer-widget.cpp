@@ -9,6 +9,7 @@
 
 #include <QtCore/QFileInfo>
 #include <QtCore/QTimer>
+#include <QtGui/QApplication>
 #include <QtGui/QGridLayout>
 #include <QtGui/QLabel>
 #include <QtGui/QProgressBar>
@@ -16,7 +17,9 @@
 
 #include "buddies/buddy.h"
 #include "file-transfer/file-transfer.h"
+#include "file-transfer/file-transfer-handler.h"
 #include "file-transfer/file-transfer-manager.h"
+#include "file-transfer/file-transfer-shared.h"
 #include "gui/windows/message-dialog.h"
 
 #include "debug.h"
@@ -24,18 +27,16 @@
 
 #include "file-transfer-widget.h"
 
-FileTransferWidget::FileTransferWidget(FileTransfer *ft, QWidget *parent)
-	: QFrame(parent), CurrentTransfer(ft), UpdateTimer(0)
+FileTransferWidget::FileTransferWidget(FileTransfer ft, QWidget *parent)
+	: QFrame(parent), CurrentTransfer(ft), Speed(0)
 {
 	kdebugf();
-
-	connect(CurrentTransfer, SIGNAL(statusChanged()), this, SLOT(fileTransferStatusChanged()));
-	connect(CurrentTransfer, SIGNAL(destroyed(QObject *)), this, SLOT(fileTransferDestroyed(QObject *)));
-
-	LastTransferredSize = CurrentTransfer->transferredSize();
-
+	
 	createGui();
-	fileTransferStatusChanged();
+	
+	LastTransferredSize = CurrentTransfer.transferredSize();
+	connect(CurrentTransfer, SIGNAL(updated()), this, SLOT(fileTransferUpdate()));
+	fileTransferUpdate();
 
 	show();
 }
@@ -44,20 +45,7 @@ FileTransferWidget::~FileTransferWidget()
 {
 	kdebugf();
 
-	if (CurrentTransfer)
-	{
-		disconnect(CurrentTransfer, SIGNAL(statusChanged()), this, SLOT(fileTransferStatusChanged()));
-		disconnect(CurrentTransfer, SIGNAL(destroyed(QObject *)), this, SLOT(fileTransferDestroyed(QObject *)));
-	}
-}
-
-void FileTransferWidget::fileTransferDestroyed(QObject *)
-{
-	disconnect(CurrentTransfer, SIGNAL(statusChanged()), this, SLOT(fileTransferStatusChanged()));
-	disconnect(CurrentTransfer, SIGNAL(destroyed(QObject *)), this, SLOT(fileTransferDestroyed(QObject *)));
-
-	CurrentTransfer = 0;
-	deleteLater();
+	disconnect(CurrentTransfer, SIGNAL(updated()), this, SLOT(fileTransferUpdate()));
 }
 
 void FileTransferWidget::createGui()
@@ -117,11 +105,13 @@ void FileTransferWidget::createGui()
 	buttons->setLayout(buttons_layout);
  	layout->addWidget(buttons, 2, 2, Qt::AlignRight);
 
-	Buddy buddy = CurrentTransfer->contact().ownerBuddy();
+	Buddy buddy = CurrentTransfer.fileTransferContact().ownerBuddy();
 
-	QString fileName = QFileInfo(CurrentTransfer->localFileName()).fileName();
+	QString fileName = QFileInfo(CurrentTransfer.localFileName()).fileName();
+	if (fileName.isEmpty())
+		fileName = CurrentTransfer.remoteFileName();
 
-	if (FileTransfer::TypeSend == CurrentTransfer->transferType())
+	if (TypeSend == CurrentTransfer.transferType())
 	{
 		icon->setPixmap(IconsManager::instance()->loadPixmap("FileTransferSend"));
 		DescriptionLabel->setText(tr("<b>File</b> %1 <b>to</b> %2").arg(fileName).arg(buddy.display()));
@@ -133,6 +123,11 @@ void FileTransferWidget::createGui()
 	}
 }
 
+FileTransferHandler * FileTransferWidget::handler()
+{
+	return CurrentTransfer.handler();
+}
+
 void FileTransferWidget::removeTransfer()
 {
 	kdebugf();
@@ -140,13 +135,16 @@ void FileTransferWidget::removeTransfer()
 	if (!CurrentTransfer)
 		return;
 
-	if (FileTransfer::StatusFinished != CurrentTransfer->transferStatus())
+	if (StatusFinished != CurrentTransfer.transferStatus())
 		if (!MessageDialog::ask(tr("Are you sure you want to remove this transfer?"), QString::null, this))
 			return;
 		else
-			CurrentTransfer->stop();
+		{
+			if (handler())
+				handler()->stop();
+		}
 
-	FileTransferManager::instance()->removeFileTransfer(CurrentTransfer);
+	FileTransferManager::instance()->removeItem(CurrentTransfer);
 
 	deleteLater();
 }
@@ -155,40 +153,16 @@ void FileTransferWidget::pauseTransfer()
 {
 	kdebugf();
 
-	if (CurrentTransfer)
-		CurrentTransfer->pause();
+	if (handler())
+		handler()->pause();
 }
 
 void FileTransferWidget::continueTransfer()
 {
 	kdebugf();
 
-	if (CurrentTransfer)
-		CurrentTransfer->restore();
-}
-
-void FileTransferWidget::fileTransferStatusChanged()
-{
-	if (FileTransfer::StatusTransfer == CurrentTransfer->transferStatus())
-	{
-		if (!UpdateTimer)
-		{
-			UpdateTimer = new QTimer(this);
-			connect(UpdateTimer, SIGNAL(timeout()), this, SLOT(fileTransferUpdate()));
-			UpdateTimer->setSingleShot(false);
-			UpdateTimer->start(2500);
-		}
-	}
-	else
-	{
-		if (UpdateTimer)
-		{
-			delete UpdateTimer;
-			UpdateTimer = 0;
-		}
-	}
-
-	fileTransferUpdate();
+	if (handler())
+		handler()->restore();
 }
 
 void FileTransferWidget::fileTransferUpdate()
@@ -201,7 +175,7 @@ void FileTransferWidget::fileTransferUpdate()
 		return;
 	}
 
-	if (FileTransfer::ErrorOk != CurrentTransfer->transferError())
+	if (ErrorOk != CurrentTransfer.transferError())
 	{
 		StatusLabel->setText(tr("<b>Error</b>"));
 		PauseButton->hide();
@@ -209,54 +183,61 @@ void FileTransferWidget::fileTransferUpdate()
 		return;
 	}
 
-	if (FileTransfer::StatusFinished != CurrentTransfer->transferStatus())
-		ProgressBar->setValue(CurrentTransfer->percent());
+	if (StatusFinished != CurrentTransfer.transferStatus())
+		ProgressBar->setValue(CurrentTransfer.percent());
 	else
 		ProgressBar->setValue(100);
 
-	unsigned long speed = 0;
-
-	if (LastUpdateTime.isValid())
+	if (StatusTransfer == CurrentTransfer.transferStatus())
 	{
-		QDateTime now = QDateTime::currentDateTime();
-		int timeDiff = now.toTime_t() - LastUpdateTime.toTime_t();
-		if (0 < timeDiff)
-			speed = (CurrentTransfer->transferredSize() - LastTransferredSize) / 1024;
+		if (LastUpdateTime.isValid())
+		{
+			QDateTime now = QDateTime::currentDateTime();
+			int timeDiff = now.toTime_t() - LastUpdateTime.toTime_t();
+			if (0 < timeDiff)
+			{
+				Speed = ((CurrentTransfer.transferredSize() - LastTransferredSize) / 1024) / timeDiff;
+				LastUpdateTime = QDateTime::currentDateTime();
+				LastTransferredSize = CurrentTransfer.transferredSize();
+			}
+		}
+		else
+		{
+			Speed = 0;
+			LastUpdateTime = QDateTime::currentDateTime();
+			LastTransferredSize = CurrentTransfer.transferredSize();
+		}
 	}
 
-	LastUpdateTime = QDateTime::currentDateTime();
-	LastTransferredSize = CurrentTransfer->transferredSize();
-
-	switch (CurrentTransfer->transferStatus())
+	switch (CurrentTransfer.transferStatus())
 	{
-		case FileTransfer::StatusNotConnected:
+		case StatusNotConnected:
 			StatusLabel->setText(tr("<b>Not connected</b>"));
 			PauseButton->hide();
 			ContinueButton->show();
 			break;
 
-		case FileTransfer::StatusWaitingForConnection:
+		case StatusWaitingForConnection:
 			StatusLabel->setText(tr("<b>Wait for connection</b>"));
 			break;
 
-		case FileTransfer::StatusWaitingForAccept:
+		case StatusWaitingForAccept:
 			StatusLabel->setText(tr("<b>Wait for accept</b>"));
 			break;
 
-		case FileTransfer::StatusTransfer:
-			// TOdO: 0.6.6
-			StatusLabel->setText(tr("<b>Transfer</b>: %1 kB/s").arg(QString::number(speed)));
+		case StatusTransfer:
+			StatusLabel->setText(tr("<b>Transfer</b>: %1 kB/s").arg(QString::number(Speed)));
 			PauseButton->show();
 			ContinueButton->hide();
 			break;
 
-		case FileTransfer::StatusFinished:
+		case StatusFinished:
 			StatusLabel->setText(tr("<b>Finished</b>"));
 			PauseButton->hide();
 			ContinueButton->hide();
 			break;
 
-		case FileTransfer::StatusRejected:
+		case StatusRejected:
 			StatusLabel->setText(tr("<b>Rejected</b>"));
 			PauseButton->hide();
 			ContinueButton->hide();
@@ -266,4 +247,6 @@ void FileTransferWidget::fileTransferUpdate()
 			PauseButton->hide();
 			ContinueButton->hide();
 	}
+
+	qApp->processEvents();
 }

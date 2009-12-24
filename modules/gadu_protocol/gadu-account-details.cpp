@@ -38,7 +38,7 @@ void GaduAccountDetails::load()
 
 	AccountDetails::load();
 
-	AllowDcc = loadValue<bool>("AllowDcC");
+	AllowDcc = loadValue<bool>("AllowDcc");
 	DccIpDetect = loadValue<bool>("DccIpDetect");
 	DccPort = loadValue<int>("DccPort");
 	DccExternalPort = loadValue<int>("DccExternalPort");

@@ -20,7 +20,7 @@
 
 class DccSocketNotifiers;
 class GaduContact;
-class GaduFileTransfer;
+class GaduFileTransferHandler;
 class GaduProtocol;
 
 enum DccVersion
@@ -38,7 +38,7 @@ class DccManager : public QObject
 
 	DccSocketNotifiers *MainSocketNotifiers;
 	QList<DccSocketNotifiers *> SocketNotifiers;
-	QList<GaduFileTransfer *> WaitingFileTransfers;
+	QList<GaduFileTransferHandler *> WaitingFileTransfers;
 
 	bool DccEnabled;
 	QHostAddress DccExternalIP;
@@ -56,7 +56,7 @@ class DccManager : public QObject
 	void connectSocketNotifiers(DccSocketNotifiers *notifiers);
 	void disconnectSocketNotifiers(DccSocketNotifiers *notifiers);
 
-	GaduFileTransfer * findFileTransfer(DccSocketNotifiers *notifiers);
+	GaduFileTransferHandler * findFileTransferHandler(DccSocketNotifiers *notifiers);
 
 	friend class DccSocketNotifiers;
 	void handleEventDccNew(struct gg_event *e);
@@ -76,8 +76,11 @@ class DccManager : public QObject
 
 	void socketNotifiersDestroyed(QObject *socketNotifiers);
 
-	void attachSendFileTransferSocket6(unsigned int uin, Contact contact, GaduFileTransfer *gft);
-	void attachSendFileTransferSocket7(unsigned int uin, Contact contact, GaduFileTransfer *gft);
+	void attachSendFileTransferSocket6(unsigned int uin, Contact contact, GaduFileTransferHandler *handler);
+	void attachSendFileTransferSocket7(unsigned int uin, Contact contact, GaduFileTransferHandler *handler);
+
+private slots:
+	void fileTransferHandlerDestroyed(QObject *object);
 
 protected:
 	virtual void configurationUpdated();
@@ -88,7 +91,7 @@ public:
 
 	void setUpExternalAddress(gg_login_params &loginParams);
 
-	void attachSendFileTransferSocket(GaduFileTransfer *gft);
+	void attachSendFileTransferSocket(GaduFileTransferHandler *handler);
 
 // 	void getFileTransferSocket(uint32_t ip, uint16_t port, UinType myUin, UinType peerUin, DccHandler *handler, bool request = false);
 // 	void getVoiceSocket(uint32_t ip, uint16_t port, UinType myUin, UinType peerUin, DccHandler *handler, bool request = false);

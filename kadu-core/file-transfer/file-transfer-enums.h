@@ -7,18 +7,32 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _DCC_EXPORTS_H
+#ifndef FILE_TRANSFER_ENUMS_H
+#define FILE_TRANSFER_ENUMS_H
 
-#include "exports.h"
-#ifdef KADULIB
-#define DCCAPI KADU_EXPORT
-#else
-#ifdef DCC_BUILD
-#define DCCAPI KADU_EXPORT
-#else
-#define DCCAPI KADU_IMPORT
-#endif
-#endif
+enum FileTransferType {
+	TypeSend,
+	TypeReceive
+};
 
-#define _DCC_EXPORTS_H
-#endif
+enum FileTransferStatus {
+	StatusNotConnected,
+	StatusWaitingForConnection,
+	StatusWaitingForAccept,
+	StatusTransfer,
+	StatusFinished,
+	StatusRejected
+};
+
+enum FileTransferError {
+	ErrorOk,
+	ErrorNetworkError,
+	ErrorUnableToOpenFile
+};
+
+enum StartType {
+	StartNew,
+	StartRestore
+};
+
+#endif // FILE_TRANSFER_ENUMS_H

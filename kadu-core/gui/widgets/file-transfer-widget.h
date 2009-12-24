@@ -13,22 +13,22 @@
 #include <QtCore/QDateTime>
 #include <QtGui/QFrame>
 
+#include "file-transfer/file-transfer.h"
+
 class QLabel;
 class QProgressBar;
 class QPushButton;
 class QTimer;
 
-class FileTransfer;
-
 class FileTransferWidget : public QFrame
 {
 	Q_OBJECT
 
-	FileTransfer *CurrentTransfer;
+	FileTransfer CurrentTransfer;
 
-	QTimer *UpdateTimer;
 	QDateTime LastUpdateTime;
 	unsigned long LastTransferredSize;
+	unsigned long Speed;
 
 	QLabel *DescriptionLabel;
 	QLabel *StatusLabel;
@@ -38,20 +38,20 @@ class FileTransferWidget : public QFrame
 
 	void createGui();
 
+	FileTransferHandler * handler();
+
 private slots:
-	void fileTransferStatusChanged();
 	void fileTransferUpdate();
-	void fileTransferDestroyed(QObject *);
 
 	void removeTransfer();
 	void pauseTransfer();
 	void continueTransfer();
 
 public:
-	FileTransferWidget(FileTransfer *fileTransfer = 0, QWidget *parent = 0);
+	FileTransferWidget(FileTransfer fileTransfer = FileTransfer::null, QWidget *parent = 0);
 	virtual ~FileTransferWidget();
 
-	FileTransfer * fileTransfer() { return CurrentTransfer; }
+	FileTransfer fileTransfer() { return CurrentTransfer; }
 
 };
 

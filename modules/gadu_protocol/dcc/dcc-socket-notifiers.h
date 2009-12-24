@@ -30,7 +30,7 @@
 
 class QFile;
 
-class GaduFileTransfer;
+class GaduFileTransferHandler;
 
 class GADU_LOCAL DccSocketNotifiers : public GaduSocketNotifiers
 {
@@ -41,7 +41,7 @@ class GADU_LOCAL DccSocketNotifiers : public GaduSocketNotifiers
 	friend class DccManager;
 	DccManager *Manager;
 
-	GaduFileTransfer *FileTransfer;
+	GaduFileTransferHandler *FileTransferHandler;
 
 	DccVersion Version;
 	struct gg_dcc *Socket;
@@ -85,7 +85,7 @@ protected:
 public:
 	DccSocketNotifiers(GaduProtocol *protocol, DccManager *manager) :
 			GaduSocketNotifiers(manager), Protocol(protocol),
-			Manager(manager), FileTransfer(0), DccCheckField(0) {}
+			Manager(manager), FileTransferHandler(0), DccCheckField(0) {}
 
 	void watchFor(struct gg_dcc *socket);
 	void watchFor(struct gg_dcc7 *socket);
@@ -96,7 +96,7 @@ public:
 	unsigned long transferredFileSize();
 	QString remoteFileName();
 
-	void setGaduFileTransfer(GaduFileTransfer *fileTransfer);
+	void setGaduFileTransferHandler(GaduFileTransferHandler *fileTransferHandler);
 	bool acceptFileTransfer(const QFile &file);
 	void rejectFileTransfer();
 
