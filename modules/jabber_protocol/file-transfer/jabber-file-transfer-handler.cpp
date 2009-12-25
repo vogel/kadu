@@ -12,6 +12,7 @@
 #include "buddies/buddy-manager.h"
 #include "contacts/contact-manager.h"
 #include "debug.h"
+#include "../jabber-account-details.h"
 #include "jabber-contact-details.h"
 #include "../jabber-protocol.h"
 
