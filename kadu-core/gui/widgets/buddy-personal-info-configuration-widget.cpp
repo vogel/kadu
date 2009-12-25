@@ -31,10 +31,10 @@ BuddyPersonalInfoConfigurationWidget::~BuddyPersonalInfoConfigurationWidget()
 void BuddyPersonalInfoConfigurationWidget::createGui()
 {
 	QGridLayout *layout = new QGridLayout(this);
-	layout->setColumnMinimumWidth(0, 10);
-	layout->setColumnMinimumWidth(1, 10);
-	layout->setColumnMinimumWidth(3, 10);
-	layout->setColumnMinimumWidth(6, 20);
+// 	layout->setColumnMinimumWidth(0, 10);
+// 	layout->setColumnMinimumWidth(1, 10);
+// 	layout->setColumnMinimumWidth(3, 10);
+// 	layout->setColumnMinimumWidth(6, 20);
 
 	int row = 0;
 	
@@ -54,8 +54,8 @@ void BuddyPersonalInfoConfigurationWidget::createGui()
 
 	QGroupBox *infoWidget = new QGroupBox(this);
 	QGridLayout *infoLayout = new QGridLayout(infoWidget);
-	infoLayout->setColumnMinimumWidth(0, 10);
-	infoLayout->setColumnMinimumWidth(4, 10);
+// 	infoLayout->setColumnMinimumWidth(0, 10);
+// 	infoLayout->setColumnMinimumWidth(4, 10);
 	infoLayout->setColumnStretch(1, 3);
 	infoLayout->setColumnStretch(2, 3);
 	infoLayout->setColumnStretch(3, 8);
