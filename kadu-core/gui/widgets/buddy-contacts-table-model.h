@@ -36,6 +36,8 @@ public:
 	virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 	virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
+	virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
+
 };
 
 #endif // BUDDY_CONTACTS_TABLE_MODEL_H

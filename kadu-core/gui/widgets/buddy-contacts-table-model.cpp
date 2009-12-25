@@ -67,7 +67,7 @@ QVariant BuddyContactsTableModel::headerData(int section, Qt::Orientation orient
 
 QVariant BuddyContactsTableModel::data(const QModelIndex &index, int role) const
 {
-	if (Qt::DisplayRole != role)
+	if (Qt::DisplayRole != role && Qt::EditRole != role)
 		return QVariant();
 
 	if (index.row() < 0 || index.row() >= Contacts.size())
@@ -81,4 +81,25 @@ QVariant BuddyContactsTableModel::data(const QModelIndex &index, int role) const
 	}
 
 	return QVariant();
+}
+
+bool BuddyContactsTableModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+	if (index.row() < 0 || index.row() >= Contacts.size())
+		return false;
+
+	BuddyContactsTableItem item = Contacts.at(index.row());
+	switch (index.column())
+	{
+		case 0:
+			item.setId(value.toString());
+			break;
+
+		case 1: // TODO
+			break;
+	}
+
+	Contacts.replace(index.row(), item);
+
+	return true;
 }
