@@ -107,6 +107,8 @@ void JabberAddAccountWidget::apply()
 	//jabberAccount.setProtocolName("jabber");
 	JabberAccountDetails *details = new JabberAccountDetails(jabberAccount);
 	details->setState(StorableObject::StateNew);
+	details->setResource("Kadu");
+	details->setPriority(5);
 	jabberAccount.setDetails(details);
 	jabberAccount.setProtocolName("jabber");
 ///	jabberAccount.setName(AccountName->text());
