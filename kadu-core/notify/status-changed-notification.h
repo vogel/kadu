@@ -20,7 +20,7 @@ class StatusChangedNotification : public ChatNotification
 {
 	Q_OBJECT
 
-    	static NotifyEvent *StatusChangedNotifyEvent;
+	static NotifyEvent *StatusChangedNotifyEvent;
 	static NotifyEvent *StatusChangedToFreeForChatNotifyEvent;
 	static NotifyEvent *StatusChangedToOnlineNotifyEvent;
 	static NotifyEvent *StatusChangedToAwayNotifyEvent;
@@ -29,7 +29,6 @@ class StatusChangedNotification : public ChatNotification
 	static NotifyEvent *StatusChangedToOfflineNotifyEvent;
 
 public:
-
 	static void registerEvents();
 	static void unregisterEvents();
 

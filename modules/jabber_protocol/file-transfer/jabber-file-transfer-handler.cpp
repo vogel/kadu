@@ -12,12 +12,13 @@
 #include "buddies/buddy-manager.h"
 #include "contacts/contact-manager.h"
 #include "debug.h"
+#include "../jabber-account-details.h"
 #include "jabber-contact-details.h"
 #include "../jabber-protocol.h"
 
 #include "libiris/include/filetransfer.h"
 
-#include "jabber-file-transfer.h"
+#include "jabber-file-transfer-handler.h"
 
 //typedef Q_UINT64 LARGE_TYPE;
 typedef long long LARGE_TYPE;
@@ -108,32 +109,26 @@ static QString clean_filename(const QString &s)
 }
 
 
-JabberFileTransfer::JabberFileTransfer(Account account) :
-		FileTransfer(account), InProgress(false)
+JabberFileTransferHandler::JabberFileTransferHandler(FileTransfer transfer) :
+		FileTransferHandler(transfer), InProgress(false)
 {
 }
 
-JabberFileTransfer::JabberFileTransfer(Account account, Contact peer, FileTransferType transferType) :
-		FileTransfer(account, peer, transferType), InProgress(false)
+JabberFileTransferHandler::~JabberFileTransferHandler()
 {
 }
 
-JabberFileTransfer::JabberFileTransfer(Account account, FileTransferType transferType, XMPP::FileTransfer *jTransfer) :
-		FileTransfer(account, ContactManager::instance()->byId(account, jTransfer->peer().bare()), transferType), 
-		InProgress(false), JabberTransfer(jTransfer)
+void JabberFileTransferHandler::setJTransfer(XMPP::FileTransfer* jTransfer)
 {
+	JabberTransfer = jTransfer;
 }
 
-JabberFileTransfer::~JabberFileTransfer()
-{
-}
-
-void JabberFileTransfer::updateFileInfo()
+void JabberFileTransferHandler::updateFileInfo()
 {
 // 	if (SocketNotifiers)
 // 	{
-		setFileSize(LocalFile.size());
-		setTransferredSize(BytesSent);
+		transfer().setFileSize(LocalFile.size());
+		transfer().setTransferredSize(BytesSent);
 // 	}
 // 	else
 // 	{
@@ -144,44 +139,49 @@ void JabberFileTransfer::updateFileInfo()
 // 	emit statusChanged();
 }
 
-void JabberFileTransfer::send()
+void JabberFileTransferHandler::send()
 {
-	if (FileTransfer::TypeSend != transferType()) // maybe assert here?
+	if (TypeSend != transfer().transferType()) // maybe assert here?
 		return;
 
 	if (InProgress) // already sending/receiving
 		return;
 
-	setRemoteFile(QString::null);
+	transfer().setRemoteFileName(transfer().localFileName());
 
-	if (account().isNull() || localFileName().isEmpty())
+	if (transfer().fileTransferAccount().isNull() || transfer().localFileName().isEmpty())
 	{
-		changeFileTransferStatus(FileTransfer::StatusNotConnected);
+		transfer().setTransferStatus(StatusNotConnected);
 		return; // TODO: notify
 	}
 
-	JabberProtocol *jabberProtocol = dynamic_cast<JabberProtocol *>(account().protocolHandler());
+	Account acc = transfer().fileTransferAccount();
+	JabberProtocol *jabberProtocol = dynamic_cast<JabberProtocol *>(acc.protocolHandler());
 	if (!jabberProtocol)
 	{
-		changeFileTransferStatus(FileTransfer::StatusNotConnected);
+		transfer().setTransferStatus(StatusNotConnected);
 		return;
 	}
 
-	if (!dynamic_cast<JabberContactDetails *>(contact().details()))
+	if (!jabberProtocol->jabberContactDetails(transfer().fileTransferContact()))
 	{
-		changeFileTransferStatus(FileTransfer::StatusNotConnected);
+		transfer().setTransferStatus(StatusNotConnected);
 		return;
 	}
 
-	Shift = calcShift(fileSize());
-	Complement = calcComplement(fileSize(), Shift);
-	PeerJid = XMPP::Jid(contact().id());
+	XMPP::Jid proxy;
+	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(acc.details());
+	if (0 != jabberAccountDetails)
+		proxy = jabberAccountDetails->dataTransferProxy();
+
+	Shift = calcShift(transfer().fileSize());
+	Complement = calcComplement(transfer().fileSize(), Shift);
+	PeerJid = XMPP::Jid(transfer().fileTransferContact().id());
 
 	JabberTransfer = jabberProtocol->client()->fileTransferManager()->createTransfer();
-/*	Jid proxy = d->pa->userAccount().dtProxy;
 	if(proxy.isValid())
-		d->ft->setProxy(proxy);
-*/
+		JabberTransfer->setProxy(proxy);
+
 	connect(JabberTransfer, SIGNAL(accepted()), SLOT(ft_accepted()));
 	connect(JabberTransfer, SIGNAL(connected()), SLOT(ft_connected()));
 	connect(JabberTransfer, SIGNAL(readyRead(const QByteArray &)), SLOT(ft_readyRead(const QByteArray &)));
@@ -190,12 +190,12 @@ void JabberFileTransfer::send()
 
 	Description = "I iz in ur file transfer, steelin ur bytes";
 
-	changeFileTransferStatus(FileTransfer::StatusWaitingForConnection);
+	transfer().setTransferStatus(StatusWaitingForConnection);
 	InProgress = true;
-	JabberTransfer->sendFile(PeerJid, localFileName(), fileSize(), Description);
+	JabberTransfer->sendFile(PeerJid, transfer().localFileName(), transfer().fileSize(), Description);
 }
 
-void JabberFileTransfer::stop()
+void JabberFileTransferHandler::stop()
 {
 // 	if (SocketNotifiers)
 // 	{
@@ -205,20 +205,20 @@ void JabberFileTransfer::stop()
 // 	}
 }
 
-void JabberFileTransfer::pause()
+void JabberFileTransferHandler::pause()
 {
 	stop();
 }
 
-void JabberFileTransfer::restore()
+void JabberFileTransferHandler::restore()
 {
-	if (FileTransfer::TypeSend == transferType())
+	if (TypeSend == transfer().transferType())
 		send();
 }
 
-bool JabberFileTransfer::accept(const QFile &file)
+bool JabberFileTransferHandler::accept(const QFile &file)
 {
-	FileTransfer::accept(file);
+	transfer().accept(file);
 
 	LocalFile.setFileName(file.fileName());// = QFile("");
 	Length = JabberTransfer->fileSize();
@@ -226,11 +226,11 @@ bool JabberFileTransfer::accept(const QFile &file)
 	qlonglong offset = 0;
 	qlonglong length = 0;
 
-	setRemoteFile(file.fileName());
-	setFileSize(JabberTransfer->fileSize());
-	setTransferredSize(BytesSent);
+	transfer().setRemoteFileName(file.fileName());
+	transfer().setFileSize(JabberTransfer->fileSize());
+	transfer().setTransferredSize(BytesSent);
 
-	changeFileTransferStatus(FileTransfer::StatusTransfer);
+	transfer().setTransferStatus(StatusTransfer);
 
 	BytesSent = 0;
 	mBytesToTransfer = file.size();
@@ -290,7 +290,7 @@ bool JabberFileTransfer::accept(const QFile &file)
 //	return SocketNotifiers->acceptFileTransfer(file);
 }
 
-void JabberFileTransfer::reject()
+void JabberFileTransferHandler::reject()
 {
 //	if (SocketNotifiers)
 //		SocketNotifiers->rejectFileTransfer();
@@ -298,7 +298,7 @@ void JabberFileTransfer::reject()
 	deleteLater();
 }
 
-void JabberFileTransfer::ft_accepted()
+void JabberFileTransferHandler::ft_accepted()
 {
 	Offset = JabberTransfer->offset();
 	Length = JabberTransfer->length();
@@ -320,7 +320,7 @@ kdebug("send file: accepted!");
 		statusMessage(QString());*/
 }
 
-void JabberFileTransfer::ft_connected()
+void JabberFileTransferHandler::ft_connected()
 {
 
 kdebug("send file: connected!");
@@ -384,7 +384,7 @@ kdebug("send file: connected!");
 }
 
 
-void JabberFileTransfer::ft_readyRead(const QByteArray &a)
+void JabberFileTransferHandler::ft_readyRead(const QByteArray &a)
 {
 /*	if(!d->sending) {
 		//printf("%d bytes read\n", a.size());
@@ -402,7 +402,7 @@ void JabberFileTransfer::ft_readyRead(const QByteArray &a)
 */
 }
 
-void JabberFileTransfer::ft_bytesWritten(int x)
+void JabberFileTransferHandler::ft_bytesWritten(int x)
 {
 /*
 	if(d->sending) {
@@ -420,7 +420,7 @@ void JabberFileTransfer::ft_bytesWritten(int x)
 */
 }
 
-void JabberFileTransfer::ft_error(int x)
+void JabberFileTransferHandler::ft_error(int x)
 {
 
 	if(LocalFile.isOpen())
@@ -441,7 +441,7 @@ void JabberFileTransfer::ft_error(int x)
 
 }
 
-void JabberFileTransfer::ft_error(int x, int fx, const QString &)
+void JabberFileTransferHandler::ft_error(int x, int fx, const QString &)
 {
 //	d->t.stop();
 //	busy->stop();
@@ -490,34 +490,34 @@ void JabberFileTransfer::ft_error(int x, int fx, const QString &)
 	//	close();
 }
 
-void JabberFileTransfer::slotTransferError ( int errorCode )
+void JabberFileTransferHandler::slotTransferError ( int errorCode )
 {
 
 	switch ( errorCode )
 	{
 		case XMPP::FileTransfer::ErrReject:
 			// user rejected the transfer request
-			changeFileTransferStatus(FileTransfer::StatusRejected);
+			transfer().setTransferStatus(StatusRejected);
 			break;
 
 		case XMPP::FileTransfer::ErrNeg:
 			// unable to negotiate a suitable connection for the file transfer with the user
-			changeFileTransferStatus(FileTransfer::StatusNotConnected);
+			transfer().setTransferStatus(StatusNotConnected);
 			break;
 
 		case XMPP::FileTransfer::ErrConnect:
 			// could not connect to the user
-			changeFileTransferStatus(FileTransfer::StatusNotConnected);
+			transfer().setTransferStatus(StatusNotConnected);
 			break;
 
 		case XMPP::FileTransfer::ErrStream:
 			// data stream was disrupted, probably cancelled
-			changeFileTransferStatus(FileTransfer::StatusNotConnected);
+			transfer().setTransferStatus(StatusNotConnected);
 			break;
 
 		default:
 			// unknown error
-			changeFileTransferStatus(FileTransfer::StatusNotConnected);
+			transfer().setTransferStatus(StatusNotConnected);
 			break;
 	}
 
@@ -525,7 +525,7 @@ void JabberFileTransfer::slotTransferError ( int errorCode )
 
 }
 
-void JabberFileTransfer::trySend()
+void JabberFileTransferHandler::trySend()
 {
 /*
 	// Since trySend comes from singleShot which is an "uncancelable"
@@ -563,7 +563,7 @@ void JabberFileTransfer::trySend()
 */
 }
 
-void JabberFileTransfer::slotIncomingDataReady ( const QByteArray &data )
+void JabberFileTransferHandler::slotIncomingDataReady ( const QByteArray &data )
 {
 	kdebug("Incoming data ...\n");
 	//if(!d->sending) {
@@ -582,14 +582,14 @@ void JabberFileTransfer::slotIncomingDataReady ( const QByteArray &data )
 	emit statusChanged();
 }
 
-void JabberFileTransfer::doFinish()
+void JabberFileTransferHandler::doFinish()
 {
 	if(BytesSent == Length) {
 		LocalFile.close();
 		kdebug("Transfer finished... close file.\n");
 		delete JabberTransfer;
 		JabberTransfer = 0;
-		changeFileTransferStatus(FileTransfer::StatusFinished);
+		transfer().setTransferStatus(StatusFinished);
 	}
 }
 

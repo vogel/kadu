@@ -19,6 +19,7 @@
 #include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
 #include "contacts/contact-manager.h"
+#include "file-transfer/file-transfer-manager.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/kadu-window.h"
@@ -426,6 +427,9 @@ void Core::createGui()
 	Window = new KaduWindow(0);
 	Window->setWindowIcon(QApplication::windowIcon());
 	connect(Window, SIGNAL(destroyed(QObject *)), this, SLOT(kaduWindowDestroyed()));
+
+	// initialize file transfers
+	FileTransferManager::instance();
 
 	if (ShowMainWindowOnStart)
 		Window->show();

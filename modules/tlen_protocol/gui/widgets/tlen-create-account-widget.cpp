@@ -121,3 +121,7 @@ void TlenCreateAccountWidget::addThisAccount()
 
 	emit accountCreated(tlenAccount);
 }
+
+void TlenCreateAccountWidget::apply()
+{
+}

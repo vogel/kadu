@@ -12,14 +12,18 @@
 
 #include <QtGui/QFrame>
 
+#include "file-transfer/file-transfer.h"
+
 class QScrollArea;
 class QVBoxLayout;
 
-class FileTransfer;
+class FileTransferWidget;
 
 class FileTransferWindow : public QFrame
 {
 	Q_OBJECT
+
+	QList<FileTransferWidget *> Widgets;
 
 	QScrollArea *ScrollView;
 
@@ -29,7 +33,8 @@ class FileTransferWindow : public QFrame
 	void createGui();
 
 private slots:
-	void fileTransferAdded(FileTransfer *fileTransfer);
+	void fileTransferAdded(FileTransfer fileTransfer);
+	void fileTransferRemoved(FileTransfer fileTransfer);
 
 	void clearClicked();
 

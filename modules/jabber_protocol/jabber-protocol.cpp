@@ -20,16 +20,16 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/group.h"
 #include "buddies/group-manager.h"
-
+#include "configuration/configuration-file.h"
 #include "contacts/contact-manager.h"
-
+#include "file-transfer/file-transfer-manager.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/password-window.h"
+#include "gui/windows/subscription-window.h"
 #include "gui/windows/main-configuration-window.h"
 
-#include "configuration/configuration-file.h"
 #include "debug.h"
 #include "exports.h"
 #include "icons-manager.h"
@@ -38,7 +38,7 @@
 #include "protocols/protocol-menu-manager.h"
 #include "status/status.h"
 
-#include "file-transfer/jabber-file-transfer.h"
+#include "file-transfer/jabber-file-transfer-handler.h"
 #include "jabber-account-details.h"
 #include "jabber-protocol.h"
 #include "jabber-protocol-factory.h"
@@ -464,10 +464,20 @@ void JabberProtocol::changeStatus(Status status)
 
 void JabberProtocol::slotIncomingFileTransfer()
 {
-	JabberFileTransfer *jft = new JabberFileTransfer(account(),
-			FileTransfer::TypeReceive, client()->fileTransferManager()->takeIncoming());
+	XMPP::FileTransfer *jTransfer = client()->fileTransferManager()->takeIncoming();
+	Contact peer = ContactManager::instance()->byId(account(), jTransfer->peer().bare(), true);
+	FileTransfer transfer = FileTransferManager::instance()->byData(account(), peer, TypeReceive, jTransfer->fileName(), true);
 
-	CurrentFileTransferService->incomingFile(jft);
+	if (!transfer)
+		return;
+
+	transfer.createHandler();
+
+	JabberFileTransferHandler *handler = dynamic_cast<JabberFileTransferHandler *>(transfer.handler());
+	if (handler)
+		handler->setJTransfer(client()->fileTransferManager()->takeIncoming());
+
+	CurrentFileTransferService->incomingFile(transfer);
 }
 
 void JabberProtocol::clientResourceReceived(const XMPP::Jid &jid, const XMPP::Resource &resource)
@@ -728,16 +738,7 @@ void JabberProtocol::slotSubscription(const XMPP::Jid & jid, const QString &type
 
 	if (type == "subscribe")
 	{
-		/*
-		* Authorize user.
-		*/
-		if (MessageDialog::ask(tr("The user %1 wants to add you to his contact list.\n Do you agree?").arg(jid.full())))
-		{
-			ContactManager::instance()->byId(account(), jid.bare()).ownerBuddy().setAnonymous(false);
-			XMPP::JT_Presence *task = new XMPP::JT_Presence(JabberClient->rootTask());
-			task->sub(jid, "subscribed");
-			task->go(true);
-		}
+		SubscriptionWindow::getSubscription(jid.bare(), this, SLOT(authorizeContact(QString &)));
 	}
 	else if (type == "subscribed")
 		MessageDialog::msg(QString("You are authorized by %1").arg(jid.bare()), false, "Warning");
@@ -745,6 +746,14 @@ void JabberProtocol::slotSubscription(const XMPP::Jid & jid, const QString &type
 		MessageDialog::msg(QString("Contact %1 has removed authorization for you.").arg(jid.bare()), false, "Warning");
 		//TODO: usuwa� kontakt z listy... ta, chyba tak
 
+}
+
+void JabberProtocol::authorizeContact(QString &uid)
+{
+	ContactManager::instance()->byId(account(), uid).ownerBuddy().setAnonymous(false);
+	XMPP::JT_Presence *task = new XMPP::JT_Presence(JabberClient->rootTask());
+	task->sub(XMPP::Jid(uid), "subscribed");
+	task->go(true);
 }
 
 bool JabberProtocol::validateUserID(QString& uid)

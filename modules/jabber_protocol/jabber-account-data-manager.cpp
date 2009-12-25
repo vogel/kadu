@@ -42,6 +42,9 @@ void JabberAccountDataManager::writeEntry(const QString &section, const QString 
 			Data->setPriority(5);
 	}
 
+	if (name == "DataTransferProxy")
+		Data->setDataTransferProxy(value.value<QString>());
+
 	// other data
 }
 
@@ -58,6 +61,9 @@ QVariant JabberAccountDataManager::readEntry(const QString &section, const QStri
 
 	if (name == "Priority")
 		return Data->priority();
+
+	if (name == "DataTransferProxy")
+		return Data->dataTransferProxy();
 
 	// other data
 

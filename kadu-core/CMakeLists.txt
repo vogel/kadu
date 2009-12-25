@@ -99,7 +99,10 @@ set (kadu_SRCS
 	core/core-actions.cpp
 
 	file-transfer/file-transfer.cpp
+	file-transfer/file-transfer-actions.cpp
 	file-transfer/file-transfer-manager.cpp
+	file-transfer/file-transfer-notifications.cpp
+	file-transfer/file-transfer-shared.cpp
 
 	gui/hot-key.cpp
 
@@ -128,6 +131,7 @@ set (kadu_SRCS
 	gui/widgets/contact-widget.cpp
 	gui/widgets/custom-input.cpp
 	gui/widgets/delayed-line-edit.cpp
+	gui/widgets/file-transfer-widget.cpp
 	gui/widgets/group-tab-bar.cpp
 	gui/widgets/image-widget.cpp
 	gui/widgets/kadu-text-browser.cpp
@@ -178,6 +182,7 @@ set (kadu_SRCS
 	gui/windows/chat-window.cpp
 	gui/windows/choose-description.cpp
 	gui/windows/configuration-window.cpp
+	gui/windows/file-transfer-window.cpp
 	gui/windows/group-properties-window.cpp
 	gui/windows/image-dialog.cpp
 	gui/windows/kadu-window.cpp
@@ -188,6 +193,7 @@ set (kadu_SRCS
 	gui/windows/message-dialog.cpp
 	gui/windows/password-window.cpp
 	gui/windows/search-window.cpp
+	gui/windows/subscription-window.cpp
 	gui/windows/syntax-editor-window.cpp
 	gui/windows/window-notifier-window.cpp
 	gui/windows/your-accounts.cpp
@@ -343,8 +349,11 @@ set (kadu_MOC_SRCS
 
 	core/core.h
 
-	file-transfer/file-transfer.h
+	file-transfer/file-transfer-actions.h
+	file-transfer/file-transfer-handler.h
 	file-transfer/file-transfer-manager.h
+	file-transfer/file-transfer-notifications.h
+	file-transfer/file-transfer-shared.h
 
 	gui/actions/action.h
 	gui/actions/actions.h
@@ -373,6 +382,7 @@ set (kadu_MOC_SRCS
 	gui/widgets/contact-widget.h
 	gui/widgets/custom-input.h
 	gui/widgets/delayed-line-edit.h
+	gui/widgets/file-transfer-widget.h
 	gui/widgets/group-tab-bar.h
 	gui/widgets/kadu-text-browser.h
 	gui/widgets/path-list-edit.h
@@ -404,6 +414,7 @@ set (kadu_MOC_SRCS
 	gui/windows/chat-window.h
 	gui/windows/choose-description.h
 	gui/windows/configuration-window.h
+	gui/windows/file-transfer-window.h
 	gui/windows/group-properties-window.h
 	gui/windows/kadu-window.h
 	gui/windows/kadu-window-actions.h
@@ -413,6 +424,7 @@ set (kadu_MOC_SRCS
 	gui/windows/message-dialog.h
 	gui/windows/password-window.h
 	gui/windows/search-window.h
+	gui/windows/subscription-window.h
 	gui/windows/syntax-editor-window.h
 	gui/windows/your-accounts.h
 

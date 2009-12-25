@@ -7,36 +7,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FILE_TRANSFER_MODULE
-#define FILE_TRANSFER_MODULE
+#ifndef FILE_TRANSFER_ACTIONS_H
+#define FILE_TRANSFER_ACTIONS_H
 
-#include <QtCore/QObject>
-
-#include "file-transfer/file-transfer.h"
-
-class QAction;
-class QStringList;
+#include <QtGui/QAction>
 
 class ActionDescription;
 class ContactSet;
-class FileTransferWindow;
 
-class FileTransferModule : public QObject
+class FileTransferActions : public QObject
 {
 	Q_OBJECT
 
-	static FileTransferModule Module;
-
 	ActionDescription *SendFileActionDescription;
 	ActionDescription *FileTransferWindowActionDescription;
-
-	FileTransferWindow *Window;
-
-	FileTransferModule();
-	~FileTransferModule();
-
-	void createActionDecriptions();
-	void deleteActionDecriptions();
 
 	QStringList selectFilesToSend();
 	void selectFilesAndSend(ContactSet contacts);
@@ -44,12 +28,11 @@ class FileTransferModule : public QObject
 private slots:
 	void sendFileActionActivated(QAction *sender, bool toggled);
 	void toggleFileTransferWindow(QAction *sender, bool toggled);
-	void showFileTransferWindow();
 
-	void fileTransferWindowDestroyed();
-
-	void incomingFileTransferNeedAccept(FileTransfer *fileTransfer);
+public:
+	explicit FileTransferActions(QObject *parent = 0);
+	virtual ~FileTransferActions();
 
 };
 
-#endif //  FILE_TRANSFER_MODULE
+#endif // FILE_TRANSFER_ACTIONS_H

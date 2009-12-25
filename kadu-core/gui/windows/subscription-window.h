@@ -7,18 +7,34 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _DCC_EXPORTS_H
+#ifndef SUBSCRIPTION_WINDOW_H
+#define SUBSCRIPTION_WINDOW_H
 
-#include "exports.h"
-#ifdef KADULIB
-#define DCCAPI KADU_EXPORT
-#else
-#ifdef DCC_BUILD
-#define DCCAPI KADU_EXPORT
-#else
-#define DCCAPI KADU_IMPORT
-#endif
-#endif
+#include <QtGui/QDialog>
 
-#define _DCC_EXPORTS_H
-#endif
+class QCheckBox;
+class QLineEdit;
+
+class SubscriptionWindow : public QDialog
+{
+	Q_OBJECT
+
+	QString Uid;
+	QLineEdit *Subscription;
+	QCheckBox *Store;
+
+private slots:
+	void accepted();
+
+public:
+	static void getSubscription(const QString& uid, QObject* receiver, const char* slot);
+	
+	explicit SubscriptionWindow(const QString& uid, QWidget* parent = 0);
+	virtual ~SubscriptionWindow();
+
+signals:
+	void requestAccepted(QString &uid);
+
+};
+
+#endif // SUBSCRIPTION_WINDOW_H

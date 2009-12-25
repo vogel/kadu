@@ -51,7 +51,8 @@ public:
 	virtual bool supportsActionType(ActionDescription::ActionType type);
 	virtual BuddiesListView * contactsListView();
 	virtual ContactSet contacts();
-	virtual Chat  chat() { return CurrentChat; }
+	virtual BuddySet buddies();
+	virtual Chat chat() { return CurrentChat; }
 	ChatWidget * chatWidget();
 
 	void openEmoticonSelector(const QWidget *activatingWidget);

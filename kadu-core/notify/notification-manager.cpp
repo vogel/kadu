@@ -257,6 +257,8 @@ void NotificationManager::statusChanged(Contact contact, Status oldStatus)
 	ContactSet contacts(contact);
 
 	StatusChangedNotification *statusChangedNotification;
+	// TODO: 0.6.6 this SUXX use '/' and usecustomsettings to get real setting
+	// this fucks up callbacks for file transfers
 	if (config_file.readBoolEntry("Notify", "StatusChanged" + changedTo + "_UseCustomSettings", true))
 		statusChangedNotification = new StatusChangedNotification(changedTo, contacts);
 	else

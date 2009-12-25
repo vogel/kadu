@@ -14,56 +14,64 @@
 #include <QtCore/QUuid>
 
 #include "accounts/accounts-aware-object.h"
-#include "storage/storable-object.h"
+#include "file-transfer/file-transfer-enums.h"
+#include "file-transfer/file-transfer.h"
+#include "storage/simple-manager.h"
 
 #include "exports.h"
 
-class FileTransfer;
+class FileTransferActions;
+class FileTransferWindow;
 class XmlConfigFile;
 
-class KADUAPI FileTransferManager : public QObject, public AccountsAwareObject, public StorableObject
+class KADUAPI FileTransferManager : public QObject, public SimpleManager<FileTransfer>, AccountsAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(FileTransferManager)
 
-	static FileTransferManager *Instance;
+	static FileTransferManager * Instance;
+
+	FileTransferActions *Actions;
+	FileTransferWindow *Window;
 
 	FileTransferManager();
 	virtual ~FileTransferManager();
 
-	QList<FileTransfer *> FileTransfers;
-
-	void load(Account account);
-	void store(Account account);
-
 private slots:
-	void incomingFileTransfer(FileTransfer *fileTransfer);
+	void fileTransferWindowDestroyed();
+	void incomingFileTransfer(FileTransfer fileTransfer);
 
 protected:
 	virtual void accountRegistered(Account account);
 	virtual void accountUnregistered(Account account);
 
+	virtual void itemAboutToBeAdded(FileTransfer fileTransfer);
+	virtual void itemAdded(FileTransfer fileTransfer);
+	virtual void itemAboutToBeRemoved(FileTransfer fileTransfer);
+	virtual void itemRemoved(FileTransfer fileTransfer);
+
 public:
 	static FileTransferManager * instance();
 
-	virtual StorableObject * storageParent();
-	virtual QString storageNodeName();
+	virtual QString storageNodeName() { return QLatin1String("FileTransfersNew"); }
+	virtual QString storageNodeItemName() { return QLatin1String("FileTransfer"); }
 
-	virtual void store();
+	FileTransfer byData(Account account, Contact peer, FileTransferType type, const QString &fileName, bool create = false);
 
-	QList<FileTransfer *> fileTransfer() { return FileTransfers; }
-	void addFileTransfer(FileTransfer *fileTransfer);
-	void removeFileTransfer(FileTransfer *fileTransfer);
+	void acceptFileTransfer(FileTransfer transfer, const QString &localFileName = QString::null);
+	void rejectFileTransfer(FileTransfer transfer);
+
+	void showFileTransferWindow();
+	void hideFileTransferWindow();
+	bool isFileTransferWindowVisible();
 
 	void cleanUp();
 
 signals:
-	void fileTransferAboutToBeAdded(FileTransfer *contact);
-	void fileTransferAdded(FileTransfer *contact);
-	void fileTransferAboutToBeRemoved(FileTransfer *contact);
-	void fileTransferRemoved(FileTransfer *contact);
-
-	void incomingFileTransferNeedAccept(FileTransfer *fileTransfer);
+	void fileTransferAboutToBeAdded(FileTransfer fileTransfer);
+	void fileTransferAdded(FileTransfer fileTransfer);
+	void fileTransferAboutToBeRemoved(FileTransfer fileTransfer);
+	void fileTransferRemoved(FileTransfer fileTransfer);
 
 };
 

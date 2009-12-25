@@ -7,29 +7,32 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GADU_FILE_TRANSFER_SERVICE_H
-#define GADU_FILE_TRANSFER_SERVICE_H
+#ifndef FILE_TRANSFER_ENUMS_H
+#define FILE_TRANSFER_ENUMS_H
 
-#include <libgadu.h>
-
-#include "protocols/services/file-transfer-service.h"
-
-class GaduProtocol;
-
-class GaduFileTransferService : public FileTransferService
-{
-	Q_OBJECT
-
-	GaduProtocol *Protocol;
-
-public:
-	GaduFileTransferService(GaduProtocol *protocol);
-
-	virtual FileTransferHandler * createFileTransferHandler(FileTransfer fileTransfer);
-	void newIncomingFileTransfer(FileTransfer fileTransfer);
-
+enum FileTransferType {
+	TypeSend,
+	TypeReceive
 };
 
-#endif // GADU_FILE_TRANSFER_SERVICE_H
+enum FileTransferStatus {
+	StatusNotConnected,
+	StatusWaitingForConnection,
+	StatusWaitingForAccept,
+	StatusTransfer,
+	StatusFinished,
+	StatusRejected
+};
 
-// kate: indent-mode cstyle; replace-tabs off; tab-width 4; 
+enum FileTransferError {
+	ErrorOk,
+	ErrorNetworkError,
+	ErrorUnableToOpenFile
+};
+
+enum StartType {
+	StartNew,
+	StartRestore
+};
+
+#endif // FILE_TRANSFER_ENUMS_H

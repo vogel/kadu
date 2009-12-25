@@ -31,10 +31,12 @@ FileTransferWindow::FileTransferWindow(QWidget *parent) :
 	createGui();
 	loadWindowGeometry(this, "General", "TransferWindowGeometry", 200, 200, 500, 300);
 
-	foreach (FileTransfer *fileTransfer, FileTransferManager::instance()->fileTransfer())
+	foreach (FileTransfer fileTransfer, FileTransferManager::instance()->items())
 			fileTransferAdded(fileTransfer);
-	connect(FileTransferManager::instance(), SIGNAL(fileTransferAdded(FileTransfer *)),
-			this, SLOT(fileTransferAdded(FileTransfer *)));
+	connect(FileTransferManager::instance(), SIGNAL(fileTransferAdded(FileTransfer)),
+			this, SLOT(fileTransferAdded(FileTransfer)));
+	connect(FileTransferManager::instance(), SIGNAL(fileTransferRemoved(FileTransfer)),
+			this, SLOT(fileTransferRemoved(FileTransfer)));
 
 	contentsChanged();
 
@@ -45,11 +47,12 @@ FileTransferWindow::~FileTransferWindow()
 {
 	kdebugf();
 
-	disconnect(FileTransferManager::instance(), SIGNAL(fileTransferAdded(FileTransfer *)),
-			this, SLOT(fileTransferAdded(FileTransfer *)));
+	disconnect(FileTransferManager::instance(), SIGNAL(fileTransferAdded(FileTransfer)),
+			this, SLOT(fileTransferAdded(FileTransfer)));
+	disconnect(FileTransferManager::instance(), SIGNAL(fileTransferRemoved(FileTransfer)),
+			this, SLOT(fileTransferRemoved(FileTransfer)));
 
-// TODO: 0.6.6
-//  	saveWindowGeometry(this, "General", "TransferWindowGeometry");
+	saveWindowGeometry(this, "General", "TransferWindowGeometry");
 
 	kdebugf2();
 }
@@ -85,7 +88,7 @@ void FileTransferWindow::createGui()
 	buttonBox_layout->setContentsMargins(2, 2, 2, 2);
 	buttonBox_layout->setSpacing(2);
 
-	QPushButton *cleanButton = new QPushButton(tr("Clean"), this);
+	QPushButton *cleanButton = new QPushButton(tr("Clear"), this);
 	connect(cleanButton, SIGNAL(clicked()), this, SLOT(clearClicked()));
 
 	QPushButton *hideButton = new QPushButton(tr("Hide"), this);
@@ -108,12 +111,25 @@ void FileTransferWindow::keyPressEvent(QKeyEvent *e)
 		QFrame::keyPressEvent(e);
 }
 
-void FileTransferWindow::fileTransferAdded(FileTransfer *fileTransfer)
+void FileTransferWindow::fileTransferAdded(FileTransfer fileTransfer)
 {
 	FileTransferWidget *ftm = new FileTransferWidget(fileTransfer, InnerFrame);
 	TransfersLayout->addWidget(ftm);
+	Widgets.append(ftm);
 
 	contentsChanged();
+}
+
+void FileTransferWindow::fileTransferRemoved(FileTransfer fileTransfer)
+{
+	foreach (FileTransferWidget *ftm, Widgets)
+		if (ftm->fileTransfer() == fileTransfer)
+		{
+			ftm->deleteLater();
+			contentsChanged();
+			Widgets.removeAll(ftm);
+			return;
+		}
 }
 
 void FileTransferWindow::clearClicked()

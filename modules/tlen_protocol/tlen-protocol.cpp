@@ -284,12 +284,14 @@ bool TlenProtocol::sendMessage(Chat chat, FormattedMessage &formattedMessage)
 
 	HtmlDocument::escapeText(plain);
 
-	Message message(chat, Message::TypeSent, account().accountContact());
-	message
-		.setContent(plain)
-		.setSendDate(QDateTime::currentDateTime())
-		.setReceiveDate(QDateTime::currentDateTime());
-
+	Message message = Message::create();
+	message.setMessageChat(chat);
+	message.setType(Message::TypeSent);
+	message.setMessageSender(account().accountContact());
+	message.setContent(plain);
+	message.setSendDate(QDateTime::currentDateTime());
+	message.setReceiveDate(QDateTime::currentDateTime());
+	
 	emit messageSent(message);
 
 	kdebugf2();
@@ -331,7 +333,6 @@ void TlenProtocol::chatMsgReceived(QDomNode n)
 
 	//		w->displayMsg(Tlen->decode(body.toUtf8()),timeStamp);
 
-	// TODO - zaimplementowac to samo w ContactList
 	Contact contact = ContactManager::instance()->byId(account(), TlenClient->decode(from), true);
 	ContactSet contacts = ContactSet(contact);
 
@@ -350,12 +351,14 @@ void TlenProtocol::chatMsgReceived(QDomNode n)
 
 	HtmlDocument::escapeText(plain);
 
-	Message message(chat, Message::TypeReceived, contact);
-	message
-		.setContent(plain)
-		.setSendDate(timeStamp)
-		.setReceiveDate(QDateTime::currentDateTime());
-
+	Message message = Message::create();
+	message.setMessageChat(chat);
+	message.setType(Message::TypeReceived);
+	message.setMessageSender(contact);
+	message.setContent(plain);
+	message.setSendDate(timeStamp);
+	message.setReceiveDate(QDateTime::currentDateTime());
+	
 	emit messageReceived(message);
 
 	kdebugf2();

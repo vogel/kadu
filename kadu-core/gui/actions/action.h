@@ -19,6 +19,8 @@
 #include "exports.h"
 
 class ActionDescription;
+class Buddy;
+class BuddySet;
 class Contact;
 class ContactSet;
 class MainWindow;
@@ -47,6 +49,8 @@ public:
 
 	Contact contact();
 	ContactSet contacts();
+	Buddy buddy();
+	BuddySet buddies();
 
 public slots:
 	void checkState();

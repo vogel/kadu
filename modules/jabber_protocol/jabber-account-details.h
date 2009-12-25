@@ -40,6 +40,7 @@ private:
 	PROPERTY_DEC(bool, LegacySSLProbe)
 	PROPERTY_DEC(QByteArray, TlsOverrideCert)
 	PROPERTY_DEC(QString, TlsOverrideDomain)
+	PROPERTY_DEC(QString, DataTransferProxy)
 
 protected:
 	virtual void load();
@@ -60,6 +61,7 @@ public:
 	PROPERTY_DEF(bool, legacySSLProbe, setLegacySSLProbe, LegacySSLProbe)
 	PROPERTY_DEF(QByteArray, tlsOverrideCert, setTlsOverrideCert, TlsOverrideCert)
 	PROPERTY_DEF(QString, tlsOverrideDomain, setTlsOverrideDomain, TlsOverrideDomain)
+	PROPERTY_DEF(QString, dataTransferProxy, setDataTransferProxy, DataTransferProxy)
 
 };
 
