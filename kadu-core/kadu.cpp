@@ -1068,7 +1068,12 @@ void Kadu::manageIgnored(QAction *sender, bool toggled)
 
 void Kadu::showStatusActionActivated(QAction *sender, bool toggled)
 {
-	statusMenu->exec(QCursor::pos());
+	raiseStatusMenu(QCursor::pos());
+}
+
+void Kadu::raiseStatusMenu(const QPoint &pos)
+{
+	statusMenu->exec(pos);
 }
 
 void Kadu::showStatusActionCreated(KaduAction *action)

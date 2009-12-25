@@ -314,6 +314,7 @@ public slots:
 	void editUserActionSetParams(QString protocolName, UserListElement user);
 	void showStatusActionActivated(QAction *sender, bool toggled);
 	void showStatusActionCreated(KaduAction *action);
+	void raiseStatusMenu(const QPoint &pos);
 	void silentActionActivated(QAction  *sender, bool toggled);
 
 	void infoPanelSyntaxFixup(QString &syntax);
