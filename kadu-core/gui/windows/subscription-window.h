@@ -10,30 +10,33 @@
 #ifndef SUBSCRIPTION_WINDOW_H
 #define SUBSCRIPTION_WINDOW_H
 
+#include <QtGui/QComboBox>
 #include <QtGui/QDialog>
 
-class QCheckBox;
+#include "contacts/contact.h"
+
 class QLineEdit;
 
 class SubscriptionWindow : public QDialog
 {
 	Q_OBJECT
 
-	QString Uid;
-	QLineEdit *Subscription;
-	QCheckBox *Store;
+	Contact CurrentContact;
+	QLineEdit *VisibleName;
+	QComboBox *GroupCombo;
 
 private slots:
 	void accepted();
+	void groupChanged(int index);
 
 public:
-	static void getSubscription(const QString& uid, QObject* receiver, const char* slot);
+	static void getSubscription(Contact contact, QObject* receiver, const char* slot);
 	
-	explicit SubscriptionWindow(const QString& uid, QWidget* parent = 0);
+	explicit SubscriptionWindow(Contact contact, QWidget* parent = 0);
 	virtual ~SubscriptionWindow();
 
 signals:
-	void requestAccepted(QString &uid);
+	void requestAccepted(Contact contact);
 
 };
 
