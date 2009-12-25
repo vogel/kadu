@@ -50,6 +50,7 @@ void JabberAccountDetails::load()
 	if (!ok)
 		priority = 5;
 	setPriority(priority);
+	setDataTransferProxy(loadValue<QString>("DataTransferProxy"));
 
 	setUseCustomHostPort(loadValue<bool>("UseCustomHostPort"));
 	setCustomHost(loadValue<QString>("CustomHost"));
@@ -69,6 +70,7 @@ void JabberAccountDetails::store()
 	storeValue("AutoResource", autoResource());
 	storeValue("Resource", resource());
 	storeValue("Priority", priority());
+	storeValue("DataTransferProxy", dataTransferProxy());
 
 	storeValue("UseCustomHostPort", useCustomHostPort());
 	storeValue("CustomHost", customHost());
