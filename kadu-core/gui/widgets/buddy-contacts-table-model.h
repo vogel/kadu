@@ -13,12 +13,16 @@
 #include <QtCore/QAbstractTableModel>
 
 #include "buddies/buddy.h"
+#include "gui/widgets/buddy-contacts-table-item.h"
 
 class BuddyContactsTableModel : public QAbstractTableModel
 {
 	Q_OBJECT
 
 	Buddy ModelBuddy;
+	QList<BuddyContactsTableItem> Contacts;
+
+	void contactsFromBuddy();
 
 public:
 	explicit BuddyContactsTableModel(Buddy buddy, QObject *parent = 0);

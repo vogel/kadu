@@ -21,7 +21,7 @@ class BuddyContactsTableItem
 
 public:
 	BuddyContactsTableItem(Contact contact = Contact::null);
-	~BuddyContactsTableItem();
+	~BuddyContactsTableItem() {}
 
 	Contact itemContact() { return ItemContact; }
 	void setItemContact(Contact contact) { ItemContact = contact; }

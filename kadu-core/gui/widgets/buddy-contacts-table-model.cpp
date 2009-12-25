@@ -13,26 +13,34 @@
 BuddyContactsTableModel::BuddyContactsTableModel(Buddy buddy, QObject *parent) :
 		QAbstractTableModel(parent), ModelBuddy(buddy)
 {
+	contactsFromBuddy();
 }
 
 BuddyContactsTableModel::~BuddyContactsTableModel()
 {
 }
 
+void BuddyContactsTableModel::contactsFromBuddy()
+{
+	Contacts.clear();
+	foreach (Contact contact, ModelBuddy.contacts())
+		Contacts.append(BuddyContactsTableItem(contact));
+}
+
 int BuddyContactsTableModel::columnCount(const QModelIndex &parent) const
 {
 	if (parent.isValid())
 		return 0;
-	else
-		return 2;
+
+	return 2;
 }
 
 int BuddyContactsTableModel::rowCount(const QModelIndex &parent) const
 {
 	if (parent.isValid())
 		return 0;
-	else
-		return 4;
+
+	return Contacts.count();
 }
 
 Qt::ItemFlags BuddyContactsTableModel::flags(const QModelIndex &index) const
@@ -62,5 +70,15 @@ QVariant BuddyContactsTableModel::data(const QModelIndex &index, int role) const
 	if (Qt::DisplayRole != role)
 		return QVariant();
 
-	return "ooo, fake data!!";
+	if (index.row() < 0 || index.row() >= Contacts.size())
+		return QVariant();
+
+	BuddyContactsTableItem item = Contacts.at(index.row());
+	switch (index.column())
+	{
+		case 0: return item.id();
+		case 1: return item.itemAccount().name();
+	}
+
+	return QVariant();
 }
