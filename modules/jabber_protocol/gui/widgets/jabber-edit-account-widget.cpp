@@ -268,7 +268,19 @@ void JabberEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 	connect(AutoResource, SIGNAL(toggled(bool)), SLOT(autoResourceToggled(bool)));
 
 	layout->addLayout(ResourceLayout);
+	
+	DataTransferProxyLayout = new QHBoxLayout();
+	DataTransferProxyLayout->setSpacing(6);
+	DataTransferProxyLayout->setMargin(0);
 
+	DataTransferProxyLabel = new QLabel;
+	DataTransferProxyLabel->setText(tr("Data transfer proxy")+":");
+	DataTransferProxyLayout->addWidget(DataTransferProxyLabel);
+
+	DataTransferProxy = new QLineEdit;
+	DataTransferProxyLayout->addWidget(DataTransferProxy);
+
+	layout->addLayout(DataTransferProxyLayout);
 }
 
 void JabberEditAccountWidget::hostToggled(bool on)
@@ -332,6 +344,7 @@ void JabberEditAccountWidget::loadConnectionData()
 	AutoResource->setChecked(jabberAccountDetails->autoResource());
 	ResourceName->setText(jabberAccountDetails->resource());
 	Priority->setText(QString::number(jabberAccountDetails->priority()));
+	DataTransferProxy->setText(jabberAccountDetails->dataTransferProxy());
 }
 
 void JabberEditAccountWidget::apply()
@@ -353,6 +366,7 @@ void JabberEditAccountWidget::apply()
 	jabberAccountDetails->setAutoResource(AutoResource->isChecked());
 	jabberAccountDetails->setResource(ResourceName->text());
 	jabberAccountDetails->setPriority(Priority->text().toInt());
+	jabberAccountDetails->setDataTransferProxy(DataTransferProxy->text());
 }
 
 void JabberEditAccountWidget::removeAccount()
