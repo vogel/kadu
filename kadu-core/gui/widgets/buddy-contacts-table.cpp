@@ -14,6 +14,7 @@
 #include "gui/widgets/buddy-contacts-table-model.h"
 
 #include "buddy-contacts-table.h"
+#include <QHeaderView>
 
 BuddyContactsTable::BuddyContactsTable(Buddy buddy, QWidget *parent) :
 		QWidget(parent)
@@ -33,9 +34,15 @@ void BuddyContactsTable::createGui()
 	QHBoxLayout *layout = new QHBoxLayout(this);
 
 	View = new QTableView(this);
+	View->setAlternatingRowColors(true);
+	View->setDragEnabled(true);
+	View->setEditTriggers(QAbstractItemView::AllEditTriggers);
 	View->setItemDelegate(Delegate);
-	View->setVerticalHeader(0);
 	View->setModel(Model);
+	View->setVerticalHeader(0);
+
+	View->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
+	View->horizontalHeader()->setStretchLastSection(true);
 
 	layout->addWidget(View);
 }
