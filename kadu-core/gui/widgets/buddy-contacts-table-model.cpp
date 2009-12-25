@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include "model/roles.h"
+#include "protocols/protocol.h"
 
 #include "buddy-contacts-table-model.h"
 
@@ -85,6 +86,10 @@ QVariant BuddyContactsTableModel::data(const QModelIndex &index, int role) const
 				case Qt::DisplayRole:
 				case Qt::EditRole:
 					return item.itemAccount().name();
+				case Qt::DecorationRole:
+					return item.itemAccount().protocolHandler()
+							? item.itemAccount().protocolHandler()->icon()
+							: QVariant();
 				case AccountRole:
 					return QVariant::fromValue<Account>(item.itemAccount());
 			}
