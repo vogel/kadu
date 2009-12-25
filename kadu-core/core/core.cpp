@@ -153,6 +153,8 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("General", "StartupStatusInvisibleWhenLastWasOffline", true);
 	config_file.addVariable("General", "UserBoxHeight", 300);
 	config_file.addVariable("General", "WindowActivationMethod", 0);
+	config_file.addVariable("General", "MainConfiguration_Geometry", "50, 50, 790, 480");
+	config_file.addVariable("General", "LookChatAdvanced_Geometry", "50, 50, 620, 540");
 
 	config_file.addVariable("Look", "AlignUserboxIconsTop", true);
 	config_file.addVariable("Look", "ChatContents", "");
