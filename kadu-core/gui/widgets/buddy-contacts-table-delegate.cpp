@@ -9,7 +9,9 @@
 
 #include <QtGui/QComboBox>
 
+#include "accounts/account.h"
 #include "gui/widgets/accounts-combo-box.h"
+#include "model/roles.h"
 
 #include "buddy-contacts-table-delegate.h"
 
@@ -28,4 +30,28 @@ QWidget * BuddyContactsTableDelegate::createEditor(QWidget *parent, const QStyle
 		return QStyledItemDelegate::createEditor(parent, option, index);
 
 	return new AccountsComboBox(false, parent);
+}
+
+void BuddyContactsTableDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
+{
+	AccountsComboBox *accountsComboBox = dynamic_cast<AccountsComboBox *>(editor);
+	if (!accountsComboBox)
+	{
+		QStyledItemDelegate::setEditorData(editor, index);
+		return;
+	}
+
+	accountsComboBox->setCurrentAccount(qvariant_cast<Account>(index.data(AccountRole)));
+}
+
+void BuddyContactsTableDelegate::setModelData(QWidget* editor, QAbstractItemModel *model, const QModelIndex &index) const
+{
+	AccountsComboBox *accountsComboBox = dynamic_cast<AccountsComboBox *>(editor);
+	if (!accountsComboBox)
+	{
+		QStyledItemDelegate::setModelData(editor, model, index);
+		return;
+	}
+
+	model->setData(index, QVariant::fromValue<Account>(accountsComboBox->currentAccount()), AccountRole);
 }

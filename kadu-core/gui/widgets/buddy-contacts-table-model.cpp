@@ -105,10 +105,13 @@ bool BuddyContactsTableModel::setData(const QModelIndex &index, const QVariant &
 	switch (index.column())
 	{
 		case 0:
-			item.setId(value.toString());
+			if (Qt::EditRole == role)
+				item.setId(value.toString());
 			break;
 
-		case 1: // TODO
+		case 1:
+			if (AccountRole == role)
+				item.setItemAccount(qvariant_cast<Account>(value));
 			break;
 	}
 
