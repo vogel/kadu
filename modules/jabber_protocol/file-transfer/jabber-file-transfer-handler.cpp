@@ -146,7 +146,7 @@ void JabberFileTransferHandler::send()
 	if (InProgress) // already sending/receiving
 		return;
 
-	transfer().setRemoteFileName(QString::null);
+	transfer().setRemoteFileName(transfer().localFileName());
 
 	if (transfer().fileTransferAccount().isNull() || transfer().localFileName().isEmpty())
 	{
@@ -154,28 +154,33 @@ void JabberFileTransferHandler::send()
 		return; // TODO: notify
 	}
 
-	JabberProtocol *jabberProtocol = dynamic_cast<JabberProtocol *>(transfer().fileTransferAccount().protocolHandler());
+	Account acc = transfer().fileTransferAccount();
+	JabberProtocol *jabberProtocol = dynamic_cast<JabberProtocol *>(acc.protocolHandler());
 	if (!jabberProtocol)
 	{
 		transfer().setTransferStatus(StatusNotConnected);
 		return;
 	}
 
-	if (!dynamic_cast<JabberContactDetails *>(transfer().fileTransferContact().details()))
+	if (!jabberProtocol->jabberContactDetails(transfer().fileTransferContact()))
 	{
 		transfer().setTransferStatus(StatusNotConnected);
 		return;
 	}
+
+	XMPP::Jid proxy;
+	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(acc.details());
+	if (0 != jabberAccountDetails)
+		proxy = jabberAccountDetails->dataTransferProxy();
 
 	Shift = calcShift(transfer().fileSize());
 	Complement = calcComplement(transfer().fileSize(), Shift);
 	PeerJid = XMPP::Jid(transfer().fileTransferContact().id());
 
 	JabberTransfer = jabberProtocol->client()->fileTransferManager()->createTransfer();
-/*	Jid proxy = d->pa->userAccount().dtProxy;
 	if(proxy.isValid())
-		d->ft->setProxy(proxy);
-*/
+		JabberTransfer->setProxy(proxy);
+
 	connect(JabberTransfer, SIGNAL(accepted()), SLOT(ft_accepted()));
 	connect(JabberTransfer, SIGNAL(connected()), SLOT(ft_connected()));
 	connect(JabberTransfer, SIGNAL(readyRead(const QByteArray &)), SLOT(ft_readyRead(const QByteArray &)));
