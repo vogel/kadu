@@ -276,7 +276,7 @@ set (MOC_SOURCES
 	gui/widgets/jabber-create-account-widget.h
 	gui/widgets/jabber-edit-account-widget.h
 	gui/widgets/jabber-personal-info-widget.h
-	jabber-account-details.h
+	#jabber-account-details.h
 	jabber-protocol.h
 	resource/jabber-resource.h
 	resource/jabber-resource-pool.h
