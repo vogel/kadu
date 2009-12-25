@@ -9,6 +9,8 @@
 
 #include <QtGui/QComboBox>
 
+#include "gui/widgets/accounts-combo-box.h"
+
 #include "buddy-contacts-table-delegate.h"
 
 BuddyContactsTableDelegate::BuddyContactsTableDelegate(QObject *parent) :
@@ -22,5 +24,8 @@ BuddyContactsTableDelegate::~BuddyContactsTableDelegate()
 
 QWidget * BuddyContactsTableDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-	return new QComboBox(parent);
+	if (1 != index.column()) // not account
+		return QStyledItemDelegate::createEditor(parent, option, index);
+
+	return new AccountsComboBox(false, parent);
 }

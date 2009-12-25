@@ -28,6 +28,7 @@
 #include "buddies/model/groups-model.h"
 #include "contacts/contact.h"
 #include "contacts/contact-manager.h"
+#include "gui/widgets/accounts-combo-box.h"
 #include "gui/widgets/select-buddy-combobox.h"
 #include "misc/misc.h"
 #include "model/actions-proxy-model.h"
@@ -71,24 +72,13 @@ void AddBuddyWindow::createGui()
 	layout->addWidget(UserNameEdit, 0, 1);
 	layout->addWidget(new QLabel(tr("in"), this), 0, 2);
 
-	AccountCombo = new QComboBox(this);
+	AccountCombo = new AccountsComboBox(true, this);
 	connect(AccountCombo, SIGNAL(activated(int)), this, SLOT(setUsernameLabel()));
 	connect(AccountCombo, SIGNAL(activated(int)), this, SLOT(setAddContactEnabled()));
 	connect(AccountCombo, SIGNAL(activated(int)), this, SLOT(setValidateRegularExpression()));
 
-	AccountComboModel = new AccountsModel(AccountCombo);
-	AccountComboProxyModel = new AccountsProxyModel(AccountCombo);
-	AccountComboProxyModel->setSourceModel(AccountComboModel);
 	AccountComboIdFilter = new IdRegularExpressionFilter(AccountCombo);
-	AccountComboProxyModel->addFilter(AccountComboIdFilter);
-
-	ActionsProxyModel::ModelActionList accountsModelBeforeActions;
-	accountsModelBeforeActions.append(qMakePair<QString, QString>(tr(" - Select account - "), ""));
-	ActionsProxyModel *accountsProxyModel = new ActionsProxyModel(accountsModelBeforeActions,
-			ActionsProxyModel::ModelActionList(), AccountCombo);
-	accountsProxyModel->setSourceModel(AccountComboProxyModel);
-
-	AccountCombo->setModel(accountsProxyModel);
+	AccountCombo->addFilter(AccountComboIdFilter);
 	AccountCombo->setModelColumn(1); // use long account name
 	layout->addWidget(AccountCombo, 0, 3);
 
@@ -199,7 +189,7 @@ void AddBuddyWindow::setBuddy(Buddy buddy)
 	Account account = buddy.prefferedAccount();
 	if (!account.isNull())
 	{
-		AccountCombo->setCurrentIndex(AccountComboModel->accountIndex(account));
+		AccountCombo->setCurrentAccount(account);
 		UserNameEdit->setText(buddy.id(account));
 	}
 
