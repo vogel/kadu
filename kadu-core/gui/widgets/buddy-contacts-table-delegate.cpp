@@ -7,31 +7,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BUDDY_CONTACTS_TABLE_H
-#define BUDDY_CONTACTS_TABLE_H
+#include <QtGui/QComboBox>
 
-#include <QtGui/QWidget>
+#include "buddy-contacts-table-delegate.h"
 
-class QTableView;
-
-class Buddy;
-class BuddyContactsTableDelegate;
-class BuddyContactsTableModel;
-
-class BuddyContactsTable : public QWidget
+BuddyContactsTableDelegate::BuddyContactsTableDelegate(QObject *parent) :
+		QStyledItemDelegate(parent)
 {
-	Q_OBJECT
+}
 
-	QTableView *View;
-	BuddyContactsTableDelegate *Delegate;
-	BuddyContactsTableModel *Model;
+BuddyContactsTableDelegate::~BuddyContactsTableDelegate()
+{
+}
 
-	void createGui();
-
-public:
-	explicit BuddyContactsTable(Buddy buddy, QWidget *parent = 0);
-	virtual ~BuddyContactsTable();
-
-};
-
-#endif // BUDDY_CONTACTS_TABLE_H
+QWidget * BuddyContactsTableDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+	return new QComboBox(parent);
+}

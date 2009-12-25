@@ -7,8 +7,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "buddy-contacts-table-model.h"
+#include "model/roles.h"
 
+#include "buddy-contacts-table-model.h"
 
 BuddyContactsTableModel::BuddyContactsTableModel(Buddy buddy, QObject *parent) :
 		QAbstractTableModel(parent), ModelBuddy(buddy)
@@ -67,17 +68,29 @@ QVariant BuddyContactsTableModel::headerData(int section, Qt::Orientation orient
 
 QVariant BuddyContactsTableModel::data(const QModelIndex &index, int role) const
 {
-	if (Qt::DisplayRole != role && Qt::EditRole != role)
-		return QVariant();
-
 	if (index.row() < 0 || index.row() >= Contacts.size())
 		return QVariant();
 
 	BuddyContactsTableItem item = Contacts.at(index.row());
 	switch (index.column())
 	{
-		case 0: return item.id();
-		case 1: return item.itemAccount().name();
+		case 0:
+			if (Qt::DisplayRole != role && Qt::EditRole != role)
+				return QVariant();
+			return item.id();
+		case 1:
+		{
+			switch (role)
+			{
+				case Qt::DisplayRole:
+				case Qt::EditRole:
+					return item.itemAccount().name();
+				case AccountRole:
+					return QVariant::fromValue<Account>(item.itemAccount());
+			}
+
+			return QVariant();
+		}
 	}
 
 	return QVariant();

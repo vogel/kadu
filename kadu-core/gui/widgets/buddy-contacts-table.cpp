@@ -10,6 +10,7 @@
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QTableView>
 
+#include "gui/widgets/buddy-contacts-table-delegate.h"
 #include "gui/widgets/buddy-contacts-table-model.h"
 
 #include "buddy-contacts-table.h"
@@ -17,6 +18,7 @@
 BuddyContactsTable::BuddyContactsTable(Buddy buddy, QWidget *parent) :
 		QWidget(parent)
 {
+	Delegate = new BuddyContactsTableDelegate(this);
 	Model = new BuddyContactsTableModel(buddy, this);
 
 	createGui();
@@ -31,6 +33,7 @@ void BuddyContactsTable::createGui()
 	QHBoxLayout *layout = new QHBoxLayout(this);
 
 	View = new QTableView(this);
+	View->setItemDelegate(Delegate);
 	View->setVerticalHeader(0);
 	View->setModel(Model);
 

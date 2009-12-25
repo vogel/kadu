@@ -7,31 +7,22 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BUDDY_CONTACTS_TABLE_H
-#define BUDDY_CONTACTS_TABLE_H
+#ifndef BUDDY_CONTACTS_TABLE_DELEGATE_H
+#define BUDDY_CONTACTS_TABLE_DELEGATE_H
 
-#include <QtGui/QWidget>
+#include <QtGui/QStyledItemDelegate>
 
-class QTableView;
-
-class Buddy;
-class BuddyContactsTableDelegate;
-class BuddyContactsTableModel;
-
-class BuddyContactsTable : public QWidget
+class BuddyContactsTableDelegate : public QStyledItemDelegate
 {
 	Q_OBJECT
 
-	QTableView *View;
-	BuddyContactsTableDelegate *Delegate;
-	BuddyContactsTableModel *Model;
-
-	void createGui();
-
 public:
-	explicit BuddyContactsTable(Buddy buddy, QWidget *parent = 0);
-	virtual ~BuddyContactsTable();
+	explicit BuddyContactsTableDelegate(QObject *parent = 0);
+	virtual ~BuddyContactsTableDelegate();
+
+	virtual QWidget * createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
 };
 
-#endif // BUDDY_CONTACTS_TABLE_H
+#endif // BUDDY_CONTACTS_TABLE_DELEGATE_H
+
