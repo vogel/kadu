@@ -176,7 +176,10 @@ void JabberFileTransferHandler::send()
 
 	Shift = calcShift(transfer().fileSize());
 	Complement = calcComplement(transfer().fileSize(), Shift);
-	PeerJid = XMPP::Jid(transfer().fileTransferContact().id());
+
+	QString jid = transfer().fileTransferContact().id();
+	// sendFile needs jid with resource so take best from ResourcePool
+	PeerJid = XMPP::Jid(jid).withResource(jabberProtocol->resourcePool()->bestResource(jid).name());
 
 	JabberTransfer = jabberProtocol->client()->fileTransferManager()->createTransfer();
 	if(proxy.isValid())
