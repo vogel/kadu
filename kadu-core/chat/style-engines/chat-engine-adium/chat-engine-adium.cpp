@@ -176,6 +176,8 @@ void AdiumChatStyleEngine::loadStyle(const QString &styleName, const QString &va
 {
 	CurrentStyle = AdiumStyle(styleName);
 	CurrentStyle.setCurrentVariant(variantName);
+
+	CurrentStyleName = styleName;
 }
 
 bool AdiumChatStyleEngine::clearDirectory(const QString &directory)
