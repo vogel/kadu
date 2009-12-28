@@ -253,7 +253,6 @@ void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNa
 	outgoingHtml.prepend("<span>");
 	outgoingHtml.append("</span>");
 	preview->page()->mainFrame()->evaluateJavaScript("appendMessage(\'" + outgoingHtml + "\')");
-	qDebug(qPrintable(preview->page()->mainFrame()->toHtml()));
 }
 
 // Some parts of the code below are borrowed from Kopete project (http://kopete.kde.org/)
