@@ -66,6 +66,7 @@ public:
 	PROPERTY(QString, nextOutgoingHtml, NextOutgoingHtml)
 	PROPERTY(QString, statusHtml, StatusHtml)
 	PROPERTY(QString, currentVariant, CurrentVariant)
+	PROPERTY(bool, defaultBackgroundIsTransparent, DefaultBackgroundIsTransparent)
 
 	QString	templateHtml();
 

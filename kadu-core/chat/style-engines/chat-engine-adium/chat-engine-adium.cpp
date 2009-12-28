@@ -62,6 +62,13 @@ QString AdiumChatStyleEngine::isThemeValid(QString stylePath)
 	return AdiumStyle::isThemeValid(stylePath) ? QDir(stylePath).dirName() : QString::null;
 }
 
+bool AdiumChatStyleEngine::styleUsesTransparencyByDefault(QString styleName)
+{
+	//TODO: optimize:
+	AdiumStyle style(styleName);
+	return style.defaultBackgroundIsTransparent();
+}
+
 QString AdiumChatStyleEngine::currentStyleVariant()
 {
 	return CurrentStyle.currentVariant();

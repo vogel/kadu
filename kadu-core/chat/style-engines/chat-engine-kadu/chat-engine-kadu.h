@@ -41,6 +41,7 @@ public:
 	virtual bool supportVariants() { return false; }
 	virtual bool supportEditing() { return true; }
 	virtual QString isThemeValid(QString styleName);
+	virtual bool styleUsesTransparencyByDefault(QString styleName) { return false; }
 	
 	virtual void clearMessages(HtmlMessagesRenderer *renderer);
 	virtual void appendMessages(HtmlMessagesRenderer *renderer, QList<MessageRenderInfo *> messages);

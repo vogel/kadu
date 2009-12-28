@@ -17,8 +17,9 @@
 #include "gui/windows/main-configuration-window.h"
 #include "os/generic/compositing-aware-object.h"
 
-class QPushButton;
+class QCheckBox;
 class QComboBox;
+class QPushButton;
 
 class AdiumChatStyleEngine;
 class ChatMessagesView;
@@ -69,6 +70,8 @@ class ChatStylesManager : public QObject, ConfigurationAwareObject, CompositingA
 	QPushButton *deleteButton;
 
 	QComboBox *variantListCombo;
+
+	QCheckBox *turnOnTransparency;
 
 	Preview *preview;
 

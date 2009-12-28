@@ -10,6 +10,7 @@
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDir>
 #include <QtGui/QComboBox>
+#include <QtGui/QCheckBox>
 #include <QtGui/QLabel>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QPalette>
@@ -200,6 +201,9 @@ void ChatStylesManager::compositingEnabled()
 		view->renderer()->webPage()->setPalette(palette);
 		CurrentEngine->refreshView(view->renderer());
 	}
+
+	if (turnOnTransparency)
+		turnOnTransparency->setEnabled(true);
 }
 
 void ChatStylesManager::compositingDisabled()
@@ -213,6 +217,9 @@ void ChatStylesManager::compositingDisabled()
 		view->renderer()->webPage()->setPalette(palette);
 		CurrentEngine->refreshView(view->renderer());
 	}
+
+	if (turnOnTransparency)
+		turnOnTransparency->setEnabled(false);
 }
 
 //any better ideas?
@@ -316,6 +323,9 @@ void ChatStylesManager::mainConfigurationWindowCreated(MainConfigurationWindow *
 	groupBox->addWidgets(editorLabel, editor);
 	groupBox->addWidgets(new QLabel(qApp->translate("@default", "Style variant") + ":"), variantListCombo);
 	groupBox->addWidgets(new QLabel(qApp->translate("@default", "Preview") + ":"), preview);
+
+	turnOnTransparency = dynamic_cast<QCheckBox *>(window->widget()->widgetById("useTransparency"));
+
 }
 
 void ChatStylesManager::configurationApplied()
@@ -373,6 +383,7 @@ void ChatStylesManager::styleChangedSlot(const QString &styleName)
 	variantListCombo->addItems(engine->styleVariants(styleName));
 	variantListCombo->setEnabled(engine->supportVariants());
 	engine->prepareStylePreview(preview, styleName, variantListCombo->currentText());
+	turnOnTransparency->setChecked(engine->styleUsesTransparencyByDefault(styleName));
 }
 
 void ChatStylesManager::variantChangedSlot(const QString &variantName)
@@ -425,4 +436,5 @@ void ChatStylesManager::addStyle(const QString &syntaxName, ChatStyleEngine *eng
 void ChatStylesManager::configurationWindowDestroyed()
 {
 	syntaxListCombo = 0;
+	turnOnTransparency = 0;
 }

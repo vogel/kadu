@@ -40,6 +40,7 @@ public:
 	virtual QString currentStyleVariant();
 
 	virtual QStringList styleVariants(QString styleName);
+	virtual bool styleUsesTransparencyByDefault(QString styleName);
 
 	virtual void clearMessages(HtmlMessagesRenderer *renderer);
 	virtual void appendMessages(HtmlMessagesRenderer *renderer, QList<MessageRenderInfo *> messages);

@@ -177,8 +177,6 @@ MainConfigurationWindow::MainConfigurationWindow()
 	mailCommandLineEdit = dynamic_cast<ConfigLineEdit *>(widget()->widgetById("mailPath"));
 	connect(mailComboBox, SIGNAL(activated(int)), this, SLOT(onChangeMail(int)));
 
-	turnOnTransparency = dynamic_cast<QCheckBox *>(widget()->widgetById("useTransparency"));
-
 	connect(widget()->widgetById("lookChatAdvanced"), SIGNAL(clicked()), this, SLOT(showLookChatAdvanced()));
 
 	Preview *infoPanelSyntaxPreview = dynamic_cast<Preview *>(widget()->widgetById("infoPanelSyntaxPreview"));
@@ -198,8 +196,6 @@ MainConfigurationWindow::MainConfigurationWindow()
 
 	widget()->widgetById("parseStatus")->setToolTip(qApp->translate("@default", SyntaxText));
 	(dynamic_cast<ConfigSyntaxEditor *>(widget()->widgetById("infoPanelSyntax")))->setSyntaxHint(qApp->translate("@default", SyntaxText));
-
-	triggerCompositingStateChanged();
 }
 
 MainConfigurationWindow::~MainConfigurationWindow()
@@ -645,16 +641,6 @@ QString MainConfigurationWindow::emailIndexToString(int emailIndex)
 void MainConfigurationWindow::onInfoPanelSyntaxEditorWindowCreated(SyntaxEditorWindow *syntaxEditorWindow)
 {
 	connect(syntaxEditorWindow->preview(), SIGNAL(needFixup(QString &)), Core::instance()->kaduWindow()->infoPanel(), SLOT(styleFixup(QString &)));
-}
-
-void MainConfigurationWindow::compositingEnabled()
-{
-	turnOnTransparency->setEnabled(true);
-}
-
-void MainConfigurationWindow::compositingDisabled()
-{
-	turnOnTransparency->setEnabled(false);
 }
 
 void MainConfigurationWindow::showLookChatAdvanced()
