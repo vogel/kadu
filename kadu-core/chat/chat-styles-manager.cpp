@@ -44,7 +44,7 @@ ChatStylesManager * ChatStylesManager::instance()
 	return Instance;
 }
 
-ChatStylesManager::ChatStylesManager() : CurrentEngine(0), kaduEngine(0)
+ChatStylesManager::ChatStylesManager() : CurrentEngine(0), kaduEngine(0), turnOnTransparency(0)
 {
 	//FIXME:
 	kaduEngine = new KaduChatStyleEngine();
