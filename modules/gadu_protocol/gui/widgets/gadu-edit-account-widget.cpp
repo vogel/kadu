@@ -237,7 +237,7 @@ void GaduEditAccountWidget::removeAccount()
 			break;
 	}
 
-	delete messageBox;
+	messageBox->deleteLater();
 }
 
 

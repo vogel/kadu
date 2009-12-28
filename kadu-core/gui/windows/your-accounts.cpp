@@ -334,6 +334,7 @@ void YourAccounts::accountUnregistered(Account account)
 	if (EditWidgets.contains(account))
 	{
 		EditStack->removeWidget(EditWidgets[account]);
+		EditWidgets[account]->deleteLater();
 		EditWidgets.remove(account);
 	}
 }
