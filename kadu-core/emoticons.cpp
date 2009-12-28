@@ -40,7 +40,7 @@ void EmoticonsManager::initModule()
 	kdebugf();
 
 	emoticons = new EmoticonsManager("emoticons", "emots.txt");
-	emoticons->setPaths(config_file.readEntry("Chat", "EmoticonsPaths").split(QRegExp("(;|:|&)")));
+	emoticons->setPaths(config_file.readEntry("Chat", "EmoticonsPaths").split(QRegExp("(;|:|&)"), QString::SkipEmptyParts));
 	emoticons->setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
 
 	kdebugf2();
@@ -139,7 +139,8 @@ bool EmoticonsManager::loadGGEmoticonThemePart(const QString &subdir)
 	QFile theme_file(path + ConfigName);
 	if (!theme_file.open(QIODevice::ReadOnly))
 	{
-		kdebugm(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "Error opening emots.txt file\n");
+		kdebugm(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "Error opening %s file\n",
+			qPrintable(theme_file.fileName()));
 		return false;
 	}
 	QTextStream theme_stream(&theme_file);
@@ -355,13 +356,8 @@ EmoticonSelectorButton::EmoticonSelectorButton(const QString& emoticon_string, c
 	: QToolButton(parent), EmoticonString(emoticon_string), AnimPath(anim_path), StaticPath(static_path), Movie(0)
 {
 	QPixmap p(StaticPath);
-	QSize s(18, 18);
-	if (p.width() > 18)
-	{
-		p = p.scaled(s, Qt::KeepAspectRatioByExpanding);
-	}
 	setPixmap(p);
-	setIconSize(s);
+	setIconSize(QSize(18, 18));
 	setAutoRaise(true);
 	setMouseTracking(true);
 	setToolTip(emoticon_string);
@@ -420,7 +416,6 @@ EmoticonSelector::EmoticonSelector(ChatWidget *caller, QWidget *parent)
 
 	int selector_count = emoticons->selectorCount();
 	int selector_width = (int)sqrt((double)selector_count);
-	int btn_width = 0, factor;
 	QGridLayout *grid = new QGridLayout(this);
 	grid->setMargin(0);
 	grid->setSpacing(0);
@@ -432,7 +427,6 @@ EmoticonSelector::EmoticonSelector(ChatWidget *caller, QWidget *parent)
 			emoticons->selectorAnimPath(i),
 			emoticons->selectorStaticPath(i),
 			this);
-		btn_width = btn->sizeHint().width();
 		grid->addWidget(btn, i / selector_width, i % selector_width);
 		connect(btn, SIGNAL(clicked(const QString&)), this, SLOT(iconClicked(const QString&)));
 	}
