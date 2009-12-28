@@ -28,6 +28,13 @@ class BuddyContactsTable : public QWidget
 
 	void createGui();
 
+private slots:
+	void moveUpClicked();
+	void moveDownClicked();
+	void addClicked();
+	void detachClicked();
+	void removeClicked();
+
 public:
 	explicit BuddyContactsTable(Buddy buddy, QWidget *parent = 0);
 	virtual ~BuddyContactsTable();

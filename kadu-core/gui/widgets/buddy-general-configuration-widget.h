@@ -36,16 +36,8 @@ class KADUAPI BuddyGeneralConfigurationWidget : public QWidget
 	QLineEdit *MobileEdit;
 	QLineEdit *EmailEdit;
 	QLineEdit *WebsiteEdit;
-	QComboBox *DefaultAccountCombo;
 
 	QDialog *OrderDialog;
-
-	QList<QLineEdit *> ContactsIds;
-	QList<QUuid> ContactsUuids;
-	QList<QComboBox *> ContactsAccounts;
-
-	QGridLayout *AccountsLayout;
-	QGridLayout *ContactsLayout;
 
 	Buddy MyBuddy;
 	BuddyContactModel *AccountDataModel;
@@ -54,7 +46,6 @@ class KADUAPI BuddyGeneralConfigurationWidget : public QWidget
 	void updateOrder();
 
 private slots:
-	void addAccountDataRow(Contact data = Contact::null);
 	void showOrderDialog();
 	void updateOrderAndClose();
 	void unmergeContact();

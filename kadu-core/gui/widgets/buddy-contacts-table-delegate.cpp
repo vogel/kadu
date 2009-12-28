@@ -32,6 +32,11 @@ QWidget * BuddyContactsTableDelegate::createEditor(QWidget *parent, const QStyle
 	return new AccountsComboBox(false, parent);
 }
 
+void BuddyContactsTableDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem& option, const QModelIndex& index) const
+{
+	editor->setGeometry(option.rect); // use full rect, does not allow to display image next to combo-box
+}
+
 void BuddyContactsTableDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
 {
 	AccountsComboBox *accountsComboBox = dynamic_cast<AccountsComboBox *>(editor);
