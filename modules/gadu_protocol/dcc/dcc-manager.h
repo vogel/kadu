@@ -74,12 +74,11 @@ class DccManager : public QObject
 
 // 	void onIpAutotetectToggled(bool toggled);
 
-	void socketNotifiersDestroyed(QObject *socketNotifiers);
-
 	void attachSendFileTransferSocket6(unsigned int uin, Contact contact, GaduFileTransferHandler *handler);
 	void attachSendFileTransferSocket7(unsigned int uin, Contact contact, GaduFileTransferHandler *handler);
 
 private slots:
+	void socketNotifiersDestroyed(QObject *socketNotifiers);
 	void fileTransferHandlerDestroyed(QObject *object);
 
 protected:

@@ -85,7 +85,7 @@ DockingManager::DockingManager()
 	CloseKaduAction = new QAction(IconsManager::instance()->loadIcon("Exit"), tr("&Exit Kadu"), this);
 	connect(CloseKaduAction, SIGNAL(triggered()), qApp, SLOT(quit()));
 
-	connect(this, SIGNAL(mousePressMidButton()), PendingMessagesManager::instance(), SLOT(openMessages()));
+	connect(this, SIGNAL(mousePressMidButton()), ChatWidgetManager::instance(), SLOT(openPendingMsgs(bool)));
 
 	configurationUpdated();
 

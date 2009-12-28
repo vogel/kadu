@@ -38,8 +38,6 @@ BuddiesListWidget::BuddiesListWidget(FilterPosition filterPosition, MainWindow *
 	topLayout->addWidget(NameFilterEdit);
 	connect(NameFilterEdit, SIGNAL(textChanged(const QString &)),
 			this, SLOT(nameFilterChanged(const QString &)));
-	connect(NameFilterEdit, SIGNAL(next()), this, SLOT(selectNext()));
-	connect(NameFilterEdit, SIGNAL(previous()), this, SLOT(selectPrevious()));
 
 	View = new BuddiesListView(mainWindow, this);
 
@@ -66,7 +64,6 @@ BuddiesListWidget::~BuddiesListWidget()
 {
 }
 
-
 bool BuddiesListWidget::eventFilter(QObject *object, QEvent *event)
 {
 	if (QEvent::KeyPress == event->type())
@@ -86,49 +83,6 @@ bool BuddiesListWidget::eventFilter(QObject *object, QEvent *event)
 	}
 
 	return QObject::eventFilter(object, event);
-}
-
-
-void BuddiesListWidget::selectNext()
-{/*
-	QModelIndexList selection = View->selectionModel()->selectedIndexes();
-	QModelIndex index;
-
-	if (0 == selection.size())
-		index = View->model()->index(0, 0);
-	else
-	{
-		QModelIndex first = selection.first();
-		QModelIndex next = View->indexBelow(first);
-		selection.clear();
-		if (next.isValid())
-			index = next;
-		else
-			index = first;
-	}
-
-	View->selectionModel()->setCurrentIndex(index, QItemSelectionModel::SelectCurrent);*/
-}
-
-void BuddiesListWidget::selectPrevious()
-{/*
-	QModelIndexList selection = View->selectionModel()->selectedIndexes();
-	QModelIndex index;
-	
-	if (0 == selection.size())
-		index = View->model()->index(View->model()->rowCount() - 1, 0);
-	else
-	{
-		QModelIndex first = selection.first();
-		QModelIndex previous = View->indexAbove(first);
-		selection.clear();
-		if (previous.isValid())
-			index = previous;
-		else
-			index = first;
-	}
-	
-	View->selectionModel()->setCurrentIndex(index, QItemSelectionModel::SelectCurrent);*/
 }
 
 void BuddiesListWidget::nameFilterChanged(const QString &filter)
