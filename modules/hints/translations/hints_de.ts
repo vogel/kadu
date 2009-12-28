@@ -89,6 +89,10 @@
         <source>Set for all</source>
         <translation>Für alle setzen</translation>
     </message>
+	<message>
+		<source>Hints position preview</source>
+		<translation>Hints position preview</translation>
+	</message>
     <message>
         <source>&lt;b&gt;Text&lt;/b&gt; preview</source>
         <translation>&lt;b&gt;Text&lt;/b&gt; Vorschau</translation>

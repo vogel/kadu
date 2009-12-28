@@ -90,6 +90,10 @@
         <source>Set for all</source>
         <translation>Ustaw dla wszystkich</translation>
     </message>
+	<message>
+		<source>Hints position preview</source>
+		<translation>Podgląd pozycji dymków</translation>
+	</message>
     <message>
         <source>&lt;b&gt;Text&lt;/b&gt; preview</source>
         <translation>&lt;b&gt;Text&lt;/b&gt; podgląd</translation>
