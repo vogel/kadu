@@ -34,6 +34,7 @@
 #include "protocols/protocol-factory.h"
 
 #include "buddy-general-configuration-widget.h"
+#include "buddy-contacts-table.h"
 
 BuddyGeneralConfigurationWidget::BuddyGeneralConfigurationWidget(Buddy &buddy, QWidget *parent)
 		: QWidget(parent), MyBuddy(buddy)
@@ -174,7 +175,9 @@ void BuddyGeneralConfigurationWidget::createGui()
 	communicationLayout->addWidget(WebsiteEdit, row++, 1, 1, 1);
 
 	layout->addWidget(communicationBox, 6, 2, 2, 6);
-	layout->setRowStretch(8, 100);
+// 	layout->setRowStretch(8, 100);
+
+	layout->addWidget(new BuddyContactsTable(MyBuddy, this), 7, 2, 2, 6);
 }
 
 void BuddyGeneralConfigurationWidget::addAccountDataRow(Contact data)

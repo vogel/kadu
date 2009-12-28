@@ -91,28 +91,28 @@ void BuddyDataWindow::createTabs(QLayout *layout)
 void BuddyDataWindow::createGeneralTab(QTabWidget *tabWidget)
 {
 	ContactTab = new BuddyGeneralConfigurationWidget(MyBuddy, this);
-	ContactTab->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
+// 	ContactTab->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
 	tabWidget->addTab(ContactTab, tr("General"));
 }
 
 void BuddyDataWindow::createGroupsTab(QTabWidget *tabWidget)
 {
 	GroupsTab = new BuddyGroupsConfigurationWidget(MyBuddy, this);
-	GroupsTab->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
+// 	GroupsTab->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
 	tabWidget->addTab(GroupsTab, tr("Groups"));
 }
 
 void BuddyDataWindow::createPersonalInfoTab(QTabWidget *tabWidget)
 {
 	PersonalInfoTab = new BuddyPersonalInfoConfigurationWidget(MyBuddy, this);
-	PersonalInfoTab->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
+// 	PersonalInfoTab->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
 	tabWidget->addTab(PersonalInfoTab, tr("Personal Information"));
 }
 
 void BuddyDataWindow::createOptionsTab(QTabWidget *tabWidget)
 {
 	OptionsTab = new BuddyOptionsConfigurationWidget(MyBuddy, this);
-	OptionsTab->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
+// 	OptionsTab->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
 	tabWidget->addTab(OptionsTab, tr("Options"));
 }
 
