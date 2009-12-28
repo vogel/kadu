@@ -64,14 +64,14 @@ void KaduChatStyleEngine::messageStatusChanged(HtmlMessagesRenderer *renderer, M
 	repaintMessages(renderer);
 }
 
-QString KaduChatStyleEngine::isThemeValid(QString stylePath)
+QString KaduChatStyleEngine::isStyleValid(QString stylePath)
 {
 	QFileInfo fi;
 	fi.setFile(stylePath);
 	return fi.suffix() == "syntax" ? fi.completeBaseName() : QString::null;
 }
 
-void KaduChatStyleEngine::loadTheme(const QString &styleName, const QString &variantName)
+void KaduChatStyleEngine::loadStyle(const QString &styleName, const QString &variantName)
 {
 	QString chatSyntax = SyntaxList::readSyntax("chat", styleName,
 		"<p style=\"background-color: #{backgroundColor};\">#{separator}"
@@ -194,7 +194,7 @@ void KaduChatStyleEngine::configurationUpdated()
 {
 	QString chatSyntax = SyntaxList::readSyntax("chat", CurrentStyleName, "");
 	if (ChatSyntaxWithHeader != chatSyntax)
-		loadTheme(CurrentStyleName, "");
+		loadStyle(CurrentStyleName, "");
 }
 
 void KaduChatStyleEngine::prepareStylePreview(Preview *preview, QString styleName, QString variantName)

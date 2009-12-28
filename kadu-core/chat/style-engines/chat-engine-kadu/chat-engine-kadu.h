@@ -40,7 +40,7 @@ public:
 	~KaduChatStyleEngine();
 	virtual bool supportVariants() { return false; }
 	virtual bool supportEditing() { return true; }
-	virtual QString isThemeValid(QString styleName);
+	virtual QString isStyleValid(QString styleName);
 	virtual bool styleUsesTransparencyByDefault(QString styleName) { return false; }
 	
 	virtual void clearMessages(HtmlMessagesRenderer *renderer);
@@ -54,7 +54,7 @@ public:
 
 	virtual void configurationUpdated();
 
-	virtual void loadTheme(const QString &styleName, const QString &variantName);
+	virtual void loadStyle(const QString &styleName, const QString &variantName);
 
 	virtual void styleEditionRequested(QString styleName);
 

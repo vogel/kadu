@@ -36,7 +36,7 @@ public:
 
 	virtual bool supportVariants() { return true; }
 	virtual bool supportEditing() { return false; }
-	virtual QString isThemeValid(QString styleName);
+	virtual QString isStyleValid(QString styleName);
 	virtual QString currentStyleVariant();
 
 	virtual QStringList styleVariants(QString styleName);
@@ -53,7 +53,7 @@ public:
 
 	virtual void configurationUpdated() {}
 
-	virtual void loadTheme(const QString &styleName, const QString &variantName);
+	virtual void loadStyle(const QString &styleName, const QString &variantName);
 
 	virtual void styleEditionRequested(QString ) {} //do nothing. Adium styles don't support editing
 

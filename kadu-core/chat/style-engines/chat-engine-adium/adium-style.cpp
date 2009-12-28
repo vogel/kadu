@@ -109,7 +109,7 @@ void AdiumStyle::readConfiugrationFile()
 
 void AdiumStyle::loadHtmlFiles()
 {
-	IncomingHtml = readThemePart(BaseHref + "Incoming/Content.html");
+	IncomingHtml = readStylePart(BaseHref + "Incoming/Content.html");
 
 	if (QFile::exists(BaseHref + "Template.html"))
 		TemplateHref = BaseHref + "Template.html";
@@ -119,24 +119,24 @@ void AdiumStyle::loadHtmlFiles()
 		TemplateHref = dataPath("kadu") + "/syntax/chat/Default/Template.html";
 
 	if (QFile::exists(BaseHref + "Incoming/NextContent.html"))
-		NextIncomingHtml = readThemePart(BaseHref + "Incoming/NextContent.html");
+		NextIncomingHtml = readStylePart(BaseHref + "Incoming/NextContent.html");
 	else
 		NextIncomingHtml = IncomingHtml;
 
 	if (QFile::exists(BaseHref + "Outgoing/Content.html"))
-		OutgoingHtml = readThemePart(BaseHref + "Outgoing/Content.html");
+		OutgoingHtml = readStylePart(BaseHref + "Outgoing/Content.html");
 	else
 		OutgoingHtml = IncomingHtml;
 
 	if (QFile::exists(BaseHref + "Outgoing/NextContent.html"))
-		NextOutgoingHtml = readThemePart(BaseHref + "Outgoing/NextContent.html");
+		NextOutgoingHtml = readStylePart(BaseHref + "Outgoing/NextContent.html");
 	else
 		NextOutgoingHtml = OutgoingHtml;
 
-	HeaderHtml = readThemePart(BaseHref + "Header.html");
-	FooterHtml = readThemePart(BaseHref + "Footer.html");
+	HeaderHtml = readStylePart(BaseHref + "Header.html");
+	FooterHtml = readStylePart(BaseHref + "Footer.html");
 
-	StatusHtml = readThemePart(BaseHref + "Status.html");
+	StatusHtml = readStylePart(BaseHref + "Status.html");
 }
 
 void AdiumStyle::loadVariants()
@@ -146,7 +146,7 @@ void AdiumStyle::loadVariants()
 	StyleVariants = dir.entryList();
 }
 
-bool AdiumStyle::isThemeValid(const QString &stylePath)
+bool AdiumStyle::isStyleValid(const QString &stylePath)
 {
 	// Minimal Adium style layout
 	QDir dir(stylePath);
@@ -173,7 +173,7 @@ bool AdiumStyle::isThemeValid(const QString &stylePath)
 	return true;
 }
 
-QString AdiumStyle::readThemePart(const QString &part)
+QString AdiumStyle::readStylePart(const QString &part)
 {
 	QFile fileAccess;
 	QString resultHtml = QString::null;
@@ -193,5 +193,5 @@ QString AdiumStyle::readThemePart(const QString &part)
 
 QString AdiumStyle::templateHtml()
 {
-	return readThemePart(TemplateHref);
+	return readStylePart(TemplateHref);
 }

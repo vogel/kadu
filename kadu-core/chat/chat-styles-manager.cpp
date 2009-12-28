@@ -53,7 +53,7 @@ ChatStylesManager::ChatStylesManager() : CurrentEngine(0), kaduEngine(0)
 	adiumEngine = new AdiumChatStyleEngine();
 	registerChatStyleEngine("Adium", adiumEngine);
 
-	loadThemes();
+	loadStyles();
 	configurationUpdated();
 }
 
@@ -166,14 +166,14 @@ void ChatStylesManager::configurationUpdated()
 
 	QString newStyleName = config_file.readEntry("Look", "Style");
 	QString newVariantName = config_file.readEntry("Look", "ChatStyleVariant");
-	// if theme was changed, load new theme
+	// if Style was changed, load new Style
 	if (!CurrentEngine || CurrentEngine->currentStyleName() != newStyleName || CurrentEngine->currentStyleVariant() != newVariantName)
 	{
-		if (!availableStyles.contains(newStyleName))// if theme not exists load kadu theme
+		if (!availableStyles.contains(newStyleName))// if Style not exists load kadu Style
 			newStyleName = "kadu";
 		if (availableStyles[newStyleName].engine != CurrentEngine)
 			CurrentEngine = availableStyles[newStyleName].engine;
-		CurrentEngine->loadTheme(newStyleName, newVariantName);
+		CurrentEngine->loadStyle(newStyleName, newVariantName);
 	}
 	else
 		CurrentEngine->configurationUpdated();
@@ -223,10 +223,10 @@ void ChatStylesManager::compositingDisabled()
 }
 
 //any better ideas?
-void ChatStylesManager::loadThemes()
+void ChatStylesManager::loadStyles()
 {
 	QDir dir;
-	QString path, themeName;
+	QString path, StyleName;
 	QFileInfo fi;
 	QStringList files;
 
@@ -242,10 +242,10 @@ void ChatStylesManager::loadThemes()
 		{
 			foreach (ChatStyleEngine *engine, registeredEngines.values())
 			{
-				if ((themeName = engine->isThemeValid(path + file)) != QString::null)
+				if ((StyleName = engine->isStyleValid(path + file)) != QString::null)
 				{
-					availableStyles[themeName].engine = engine;
-					availableStyles[themeName].global = false;
+					availableStyles[StyleName].engine = engine;
+					availableStyles[StyleName].global = false;
 					break;
 				}
 			}
@@ -264,10 +264,10 @@ void ChatStylesManager::loadThemes()
 		{
 			foreach (ChatStyleEngine *engine, registeredEngines.values())
 			{
-				if ((themeName = engine->isThemeValid(path + file)) != QString::null)
+				if ((StyleName = engine->isStyleValid(path + file)) != QString::null)
 				{
-					availableStyles[themeName].engine = engine;
-					availableStyles[themeName].global = true;
+					availableStyles[StyleName].engine = engine;
+					availableStyles[StyleName].global = true;
 					break;
 				}
 			}
@@ -418,7 +418,7 @@ void ChatStylesManager::syntaxUpdated(const QString &syntaxName)
 		styleChangedSlot(syntaxName);
 
 	if (CurrentEngine->currentStyleName() == syntaxName)
-		CurrentEngine->loadTheme(syntaxName, variantListCombo->currentText());
+		CurrentEngine->loadStyle(syntaxName, variantListCombo->currentText());
 }
 
 void ChatStylesManager::addStyle(const QString &syntaxName, ChatStyleEngine *engine)

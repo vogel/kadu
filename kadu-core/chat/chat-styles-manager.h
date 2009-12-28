@@ -103,7 +103,7 @@ public:
 
 	ChatStyleEngine * currentEngine() { return CurrentEngine; }
 
-	void loadThemes();
+	void loadStyles();
 
 	bool cfgNoHeaderRepeat() { return CfgNoHeaderRepeat; }
 	unsigned int cfgHeaderSeparatorHeight() { return CfgHeaderSeparatorHeight; }

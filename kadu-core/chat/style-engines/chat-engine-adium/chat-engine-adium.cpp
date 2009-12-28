@@ -57,9 +57,9 @@ void AdiumChatStyleEngine::clearMessages(HtmlMessagesRenderer *renderer)
 	renderer->webPage()->mainFrame()->evaluateJavaScript("kadu_clearMessages()");
 }
 
-QString AdiumChatStyleEngine::isThemeValid(QString stylePath)
+QString AdiumChatStyleEngine::isStyleValid(QString stylePath)
 {
-	return AdiumStyle::isThemeValid(stylePath) ? QDir(stylePath).dirName() : QString::null;
+	return AdiumStyle::isStyleValid(stylePath) ? QDir(stylePath).dirName() : QString::null;
 }
 
 bool AdiumChatStyleEngine::styleUsesTransparencyByDefault(QString styleName)
@@ -172,7 +172,7 @@ void AdiumChatStyleEngine::refreshView(HtmlMessagesRenderer *renderer)
 		appendMessage(renderer, message);
 }
 
-void AdiumChatStyleEngine::loadTheme(const QString &styleName, const QString &variantName)
+void AdiumChatStyleEngine::loadStyle(const QString &styleName, const QString &variantName)
 {
 	CurrentStyle = AdiumStyle(styleName);
 	CurrentStyle.setCurrentVariant(variantName);

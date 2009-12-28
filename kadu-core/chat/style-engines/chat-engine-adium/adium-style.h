@@ -44,7 +44,7 @@ class AdiumStyle
 	QString DefaultVariant;
 	QStringList StyleVariants;
 
-	QString readThemePart(const QString &part);
+	QString readStylePart(const QString &part);
 
 	void readConfiugrationFile();
 	void loadHtmlFiles();
@@ -54,7 +54,7 @@ public:
 	AdiumStyle() { }
 	AdiumStyle(const QString &styleName);
 
-	static bool isThemeValid(const QString &stylePath);
+	static bool isStyleValid(const QString &stylePath);
 
 	PROPERTY(QString, name, Name)
 	PROPERTY(QString, baseHref, BaseHref)
