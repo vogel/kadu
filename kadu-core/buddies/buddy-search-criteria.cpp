@@ -27,7 +27,7 @@ void BuddySearchCriteria::reqUin(Account account, const QString &uin)
 	Contact contact = contactslist.isEmpty() ? Contact::null : contactslist[0];
 	if (contact.isNull())
 	{
-		contact = Contact::create;
+		contact = Contact::create();
 		contact.setContactAccount(account);
 		contact.setOwnerBuddy(SearchBuddy);
 	}
