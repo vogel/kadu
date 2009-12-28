@@ -1,0 +1,197 @@
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
+#include <QtCore/QIODevice>
+#include <QtCore/QDir>
+#include <QtCore/QSettings>
+#include <QtCore/QTextCodec>
+#include <QtCore/QTextStream>
+#include <QtXml/QDomNode>
+#include <QtXml/QDomElement>
+
+#include "misc/path-conversion.h"
+
+#include "adium-style.h"
+
+//Functions to parse plist format are borrowed from pluginsystem.cpp from qutIM instant messenger (see: http://www.qutim.org/)
+QSettings::SettingsMap parseDict(const QDomNode &rootElement)
+{
+	QSettings::SettingsMap styleHash;
+
+	if (rootElement.isNull())
+		return styleHash;
+
+	QDomNode subelement = rootElement;
+
+	QString key = "";
+
+	for (QDomNode node = subelement.firstChild(); !node.isNull(); node = node.nextSibling())
+	{
+		QDomElement element = node.toElement();
+		if (element.nodeName() == "key")
+			key = element.text();
+		else
+		{
+			QVariant value;
+			if (element.nodeName() == "true")
+				value = QVariant(true);
+			else if (element.nodeName() == "false")
+				value = QVariant(false);
+			else if (element.nodeName() == "real")
+				value = QVariant(element.text().toDouble());
+			else if (element.nodeName() == "string")
+				value=QVariant(element.text());
+			else if (element.nodeName() == "integer")
+				value = QVariant(element.text().toInt());
+			else if (element.nodeName() == "dict")
+				value = parseDict(node);
+			styleHash.insert(key, value);
+		}
+	}
+	return styleHash;
+}
+
+bool plistWriteFunction(QIODevice &device, const QSettings::SettingsMap &map)
+{
+}
+
+bool plistReadFunction(QIODevice &device, QSettings::SettingsMap &map)
+{
+	QDomDocument documentElement;
+
+	if (documentElement.setContent(&device))
+	{
+		QDomElement rootElement = documentElement.documentElement();
+		if (rootElement.isNull())
+			return false;
+
+		map = parseDict(rootElement.firstChild());
+	}
+	return true;
+}
+
+QSettings::Format AdiumStyle::plistFormat = QSettings::registerFormat("plist", plistReadFunction, plistWriteFunction);
+
+AdiumStyle::AdiumStyle(const QString &styleName) :
+		Name(styleName)
+{
+	QDir dir;
+	BaseHref = ggPath() + "/syntax/chat/" + styleName + "/Contents/Resources/";
+	if (!dir.exists(BaseHref))
+		BaseHref = dataPath("kadu") + "/syntax/chat/" + styleName + "/Contents/Resources/";
+
+	readConfiugrationFile();
+	loadHtmlFiles();
+	loadVariants();
+}
+
+void AdiumStyle::readConfiugrationFile()
+{
+	QSettings styleSettings(BaseHref + "../Info.plist", plistFormat);
+
+	bool ok = false;
+	QRgb color = styleSettings.value("DefaultBackgroundColor", "ffffff").toString().toInt(&ok, 16);
+	DefaultBackgroundColor = QColor(ok ? color : 0xffffff);
+
+	DefaultBackgroundIsTransparent = styleSettings.value("DefaultBackgroundIsTransparent", false).toBool();
+
+	StyleViewVersion = styleSettings.value("MessageViewVersion", 4).toInt();
+
+	DisplayNameForNoVariant = styleSettings.value("DisplayNameForNoVariant", "Default").toString();
+	DefaultVariant = styleSettings.value("DefaultVariant ", "Default").toString() + ".css";
+}
+
+void AdiumStyle::loadHtmlFiles()
+{
+	IncomingHtml = readStylePart(BaseHref + "Incoming/Content.html");
+
+	if (QFile::exists(BaseHref + "Template.html"))
+		TemplateHref = BaseHref + "Template.html";
+	else if (QFile::exists(BaseHref + "template.html"))
+		TemplateHref = BaseHref + "template.html";
+	else // TODO 0.6.6: move it to proper place
+		TemplateHref = dataPath("kadu") + "/syntax/chat/Default/Template.html";
+
+	if (QFile::exists(BaseHref + "Incoming/NextContent.html"))
+		NextIncomingHtml = readStylePart(BaseHref + "Incoming/NextContent.html");
+	else
+		NextIncomingHtml = IncomingHtml;
+
+	if (QFile::exists(BaseHref + "Outgoing/Content.html"))
+		OutgoingHtml = readStylePart(BaseHref + "Outgoing/Content.html");
+	else
+		OutgoingHtml = IncomingHtml;
+
+	if (QFile::exists(BaseHref + "Outgoing/NextContent.html"))
+		NextOutgoingHtml = readStylePart(BaseHref + "Outgoing/NextContent.html");
+	else
+		NextOutgoingHtml = OutgoingHtml;
+
+	HeaderHtml = readStylePart(BaseHref + "Header.html");
+	FooterHtml = readStylePart(BaseHref + "Footer.html");
+
+	StatusHtml = readStylePart(BaseHref + "Status.html");
+}
+
+void AdiumStyle::loadVariants()
+{
+	QDir dir(BaseHref + "Variants/");
+	dir.setNameFilters(QStringList("*.css"));
+	StyleVariants = dir.entryList();
+}
+
+bool AdiumStyle::isStyleValid(const QString &stylePath)
+{
+	// Minimal Adium style layout
+	QDir dir(stylePath);
+
+	QFileInfo fi(dir, "Contents/Info.plist");
+	if (!fi.isReadable())
+		return false;
+
+	if (!dir.cd("Contents/Resources/"))
+		return false;
+
+	fi.setFile(dir, "Incoming/Content.html");
+	if (!fi.isReadable())
+		return false;
+
+	fi.setFile(dir, "main.css");
+	if (!fi.isReadable())
+		return false;
+
+	fi.setFile(dir, "Status.html");
+	if (!fi.isReadable())
+		return false;
+
+	return true;
+}
+
+QString AdiumStyle::readStylePart(const QString &part)
+{
+	QFile fileAccess;
+	QString resultHtml = QString::null;
+	if (QFile::exists(part))
+	{
+
+		fileAccess.setFileName(part);
+		fileAccess.open(QIODevice::ReadOnly);
+		QTextStream stream(&fileAccess);
+		stream.setCodec(QTextCodec::codecForName("UTF-8"));
+		resultHtml = stream.readAll();
+
+		fileAccess.close();
+	}
+	return resultHtml;
+}
+
+QString AdiumStyle::templateHtml()
+{
+	return readStylePart(TemplateHref);
+}

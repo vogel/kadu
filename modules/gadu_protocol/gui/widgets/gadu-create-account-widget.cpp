@@ -49,6 +49,12 @@ void GaduCreateAccountWidget::createGui()
 
 	int row = 0;
 
+	QLabel *accountNameLabel = new QLabel(tr("Account Name") + ":", this);
+	gridLayout->addWidget(accountNameLabel, row, 1);
+	AccountName = new QLineEdit(this);
+	connect(AccountName, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
+	gridLayout->addWidget(AccountName, row++, 2);
+	
 	QLabel *newPasswordLabel = new QLabel(tr("Password") + ":", this);
 	gridLayout->addWidget(newPasswordLabel, row, 1, Qt::AlignRight);
 	NewPassword = new QLineEdit(this);
@@ -134,7 +140,7 @@ void GaduCreateAccountWidget::registerNewAccountFinished(GaduServerRegisterAccou
 		gad->setState(StorableObject::StateNew);
 		gaduAccount.setDetails(gad);
 		gaduAccount.setProtocolName("gadu");
-		//gaduAccount.setName(AccountName->text());
+		gaduAccount.setName(AccountName->text());
 		gaduAccount.setId(QString::number(gsra->uin()));
 		gaduAccount.setPassword(NewPassword->text());
 		gaduAccount.setRememberPassword(RememberPassword->isChecked());

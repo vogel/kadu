@@ -1,3 +1,12 @@
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
 #ifndef CHAT_STYLE_ENGINE_H
 #define CHAT_STYLE_ENGINE_H
 
@@ -25,7 +34,8 @@ public:
 
 	virtual bool supportVariants() = 0;
 	virtual bool supportEditing() = 0;
-	virtual QString isThemeValid(QString) = 0; //return QString::null, if theme is not valid
+	virtual QString isStyleValid(QString) = 0; //return QString::null, if style is not valid
+	virtual bool styleUsesTransparencyByDefault(QString) = 0;
 	
 	virtual void clearMessages(HtmlMessagesRenderer *) = 0;
 	virtual void appendMessages(HtmlMessagesRenderer *, QList<MessageRenderInfo *>) = 0;
@@ -38,7 +48,7 @@ public:
 
 	virtual void configurationUpdated() = 0;
 
-	virtual void loadTheme(const QString &, const QString &) = 0;
+	virtual void loadStyle(const QString &, const QString &) = 0;
 
 	virtual void styleEditionRequested(QString) = 0;
 

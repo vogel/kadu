@@ -62,7 +62,9 @@ void ConfigurationManager::unregisterStorableObject(StorableObject *object)
 void ConfigurationManager::importConfiguration()
 {
 	QDomElement root = xml_config_file->rootElement();
-
+	QDomElement general = xml_config_file->findElementByProperty(root.firstChild().firstChild().toElement(), "Group", "name", "General");
+	QDomElement mainConfiguration = xml_config_file->findElementByProperty(general, "Entry", "name", "ConfigGeometry");
+	
 	if (root.elementsByTagName("Contacts").count() == 1 &&
 		root.elementsByTagName("ContactsNew").count() == 0 &&
 		root.elementsByTagName("Buddies").count() == 0 &&
@@ -79,6 +81,11 @@ void ConfigurationManager::importConfiguration()
 	
 	if (root.elementsByTagName("ContactAccountDatas").count() == 1)
 		importContactAccountDatasIntoContacts();
+	
+	if(!mainConfiguration.isNull())
+		  mainConfiguration.setAttribute("name", "MainConfiguration_Geometry");
+
+	
 }
 
 void ConfigurationManager::copyOldContactsToImport()

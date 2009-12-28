@@ -21,6 +21,7 @@
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"
 #include "contacts/contact-manager.h"
+#include "file-transfer/file-transfer-manager.h"
 #include "gui/windows/message-dialog.h"
 
 #include "debug.h"
@@ -28,7 +29,7 @@
 
 #include "dcc/dcc-manager.h"
 #include "dcc/dcc-socket-notifiers.h"
-#include "file-transfer/gadu-file-transfer.h"
+#include "file-transfer/gadu-file-transfer-handler.h"
 #include "services/gadu-file-transfer-service.h"
 #include "socket-notifiers/gadu-protocol-socket-notifiers.h"
 #include "gadu-account-details.h"
@@ -197,16 +198,17 @@ void DccManager::connectSocketNotifiers(DccSocketNotifiers *notifiers)
 {
 	connect(notifiers, SIGNAL(destroyed(QObject *)),
 			this, SLOT(socketNotifiersDestroyed(QObject *)));
-	connect(notifiers, SIGNAL(incomingConnection(struct gg_dcc *)),
-			this, SLOT(dccIncomingConnection(struct gg_dcc *)));
+// 	TODO: 0.6.6 signal never emited
+// 	connect(notifiers, SIGNAL(incomingConnection(struct gg_dcc *)),
+// 			this, SLOT(dccIncomingConnection(struct gg_dcc *)));
 }
 
 void DccManager::disconnectSocketNotifiers(DccSocketNotifiers *notifiers)
 {
 	disconnect(notifiers, SIGNAL(destroyed(QObject *)),
 			this, SLOT(socketNotifiersDestroyed(QObject *)));
-	disconnect(notifiers, SIGNAL(incomingConnection(struct gg_dcc *)),
-			this, SLOT(dccIncomingConnection(struct gg_dcc *)));
+// 	disconnect(notifiers, SIGNAL(incomingConnection(struct gg_dcc *)),
+// 			this, SLOT(dccIncomingConnection(struct gg_dcc *)));
 }
 
 void DccManager::socketNotifiersDestroyed(QObject *socketNotifiers)
@@ -279,26 +281,30 @@ bool DccManager::acceptConnection(unsigned int uin, unsigned int peerUin, unsign
 
 void DccManager::needIncomingFileTransferAccept(DccSocketNotifiers *socket)
 {
-	GaduFileTransfer *gft = new GaduFileTransfer(Protocol->account(),
-			ContactManager::instance()->byId(Protocol->account(), QString::number(socket->peerUin())),
-			FileTransfer::TypeReceive);
+	Contact peer = ContactManager::instance()->byId(Protocol->account(), QString::number(socket->peerUin()), true);
+	FileTransfer fileTransfer = FileTransferManager::instance()->byData(Protocol->account(), peer, TypeReceive, socket->remoteFileName(), true);
+	if (!fileTransfer)
+		return;
 
-	gft->setFileTransferNotifiers(socket);
-	socket->setGaduFileTransfer(gft);
+	fileTransfer.createHandler();
 
-	emit Protocol->CurrentFileTransferService->incomingFileTransfer(gft);
+	GaduFileTransferHandler *handler = dynamic_cast<GaduFileTransferHandler *>(fileTransfer.handler());
+	if (handler)
+		handler->setFileTransferNotifiers(socket);
+
+	Protocol->CurrentFileTransferService->newIncomingFileTransfer(fileTransfer);
 }
 
-GaduFileTransfer * DccManager::findFileTransfer(DccSocketNotifiers *notifiers)
+GaduFileTransferHandler * DccManager::findFileTransferHandler(DccSocketNotifiers *notifiers)
 {
-	foreach (GaduFileTransfer *gft, WaitingFileTransfers)
+	foreach (GaduFileTransferHandler *handler, WaitingFileTransfers)
 	{
-		UinType uin = Protocol->uin(gft->contact());
+		UinType uin = Protocol->uin(handler->transfer().fileTransferContact());
 		if (uin == notifiers->peerUin())
 		{
 			disconnectSocketNotifiers(notifiers);
 			SocketNotifiers.removeAll(notifiers);
-			return gft;
+			return handler;
 		}
 	}
 
@@ -405,7 +411,15 @@ void DccManager::handleEventDcc7Error(struct gg_event *e)
 	}
 }
 
-void DccManager::attachSendFileTransferSocket6(unsigned int uin, Contact contact, GaduFileTransfer *gft)
+void DccManager::fileTransferHandlerDestroyed(QObject *object)
+{
+	GaduFileTransferHandler *handler = qobject_cast<GaduFileTransferHandler *>(object);
+
+	if (handler)
+		WaitingFileTransfers.removeAll(handler);
+}
+
+void DccManager::attachSendFileTransferSocket6(unsigned int uin, Contact contact, GaduFileTransferHandler *handler)
 {
 	kdebugf();
 
@@ -423,7 +437,7 @@ void DccManager::attachSendFileTransferSocket6(unsigned int uin, Contact contact
 		if (socket)
 		{
 			DccSocketNotifiers *fileTransferNotifiers = new DccSocketNotifiers(Protocol, this);
-			gft->setFileTransferNotifiers(fileTransferNotifiers);
+			handler->setFileTransferNotifiers(fileTransferNotifiers);
 			fileTransferNotifiers->watchFor(socket);
 			return;
 		}
@@ -432,11 +446,12 @@ void DccManager::attachSendFileTransferSocket6(unsigned int uin, Contact contact
 	kdebugmf(KDEBUG_INFO | KDEBUG_NETWORK, "needs callback\n");
 
 // startTimeOut
-	WaitingFileTransfers << gft;
+	connect(handler, SIGNAL(destroyed(QObject *)), this, SLOT(fileTransferHandlerDestroyed(QObject *)));
+	WaitingFileTransfers << handler;
 	gg_dcc_request(Protocol->gaduSession(), details->uin());
 }
 
-void DccManager::attachSendFileTransferSocket7(unsigned int uin, Contact contact, GaduFileTransfer *gft)
+void DccManager::attachSendFileTransferSocket7(unsigned int uin, Contact contact, GaduFileTransferHandler *handler)
 {
 	kdebugf();
 
@@ -448,24 +463,24 @@ void DccManager::attachSendFileTransferSocket7(unsigned int uin, Contact contact
 		return;
 
 	gg_dcc7 *dcc = gg_dcc7_send_file(Protocol->gaduSession(), details->uin(),
-			qPrintable(gft->localFileName()), unicode2cp(gft->localFileName()).data(), 0);
+			qPrintable(handler->transfer().localFileName()), unicode2cp(handler->transfer().localFileName()).data(), 0);
 
 	if (dcc)
 	{
 		DccSocketNotifiers *fileTransferNotifiers = new DccSocketNotifiers(Protocol, this);
-		gft->setFileTransferNotifiers(fileTransferNotifiers);
-		gft->changeFileTransferStatus(FileTransfer::StatusWaitingForAccept);
+		handler->setFileTransferNotifiers(fileTransferNotifiers);
+		handler->transfer().setTransferStatus(StatusWaitingForAccept);
 		fileTransferNotifiers->watchFor(dcc);
 
 		SocketNotifiers << fileTransferNotifiers;
 	}
 	else
-		gft->socketNotAvailable();
+		handler->socketNotAvailable();
 }
 
-void DccManager::attachSendFileTransferSocket(GaduFileTransfer *gft)
+void DccManager::attachSendFileTransferSocket(GaduFileTransferHandler *handler)
 {
-	Contact contact = gft->contact();
+	Contact contact = handler->transfer().fileTransferContact();
 	if (contact.isNull())
 		return;
 
@@ -484,11 +499,11 @@ void DccManager::attachSendFileTransferSocket(GaduFileTransfer *gft)
 	switch (version)
 	{
 		case Dcc6:
-			attachSendFileTransferSocket6(account->uin(), contact, gft);
+			attachSendFileTransferSocket6(account->uin(), contact, handler);
 			break;
 
 		case Dcc7:
-			attachSendFileTransferSocket7(account->uin(), contact, gft);
+			attachSendFileTransferSocket7(account->uin(), contact, handler);
 			break;
 	}
 }

@@ -66,9 +66,10 @@ set (kadu_SRCS
 	chat/message/pending-messages-manager.cpp
 	chat/message/message-shared.cpp
 
-	chat/style-engines/adium-time-formatter.cpp
-	chat/style-engines/chat-engine-adium.cpp
-	chat/style-engines/chat-engine-kadu.cpp
+	chat/style-engines/chat-engine-adium/adium-style.cpp
+	chat/style-engines/chat-engine-adium/adium-time-formatter.cpp
+	chat/style-engines/chat-engine-adium/chat-engine-adium.cpp
+	chat/style-engines/chat-engine-kadu/chat-engine-kadu.cpp
 
 	chat/type/chat-type.cpp
 	chat/type/chat-type-aware-object.cpp
@@ -98,7 +99,10 @@ set (kadu_SRCS
 	core/core-actions.cpp
 
 	file-transfer/file-transfer.cpp
+	file-transfer/file-transfer-actions.cpp
 	file-transfer/file-transfer-manager.cpp
+	file-transfer/file-transfer-notifications.cpp
+	file-transfer/file-transfer-shared.cpp
 
 	gui/hot-key.cpp
 
@@ -107,10 +111,15 @@ set (kadu_SRCS
 	gui/actions/action-description.cpp
 
 	gui/widgets/account-buddy-list-widget.cpp
+	gui/widgets/accounts-combo-box.cpp
 	gui/widgets/buddies-list-view.cpp
 	gui/widgets/buddies-list-view-delegate.cpp
 	gui/widgets/buddies-list-view-menu-manager.cpp
 	gui/widgets/buddies-list-widget.cpp
+	gui/widgets/buddy-contacts-table-delegate.cpp
+	gui/widgets/buddy-contacts-table-item.cpp
+	gui/widgets/buddy-contacts-table-model.cpp
+	gui/widgets/buddy-contacts-table.cpp
 	gui/widgets/buddy-general-configuration-widget.cpp
 	gui/widgets/buddy-groups-configuration-widget.cpp
 	gui/widgets/buddy-personal-info-configuration-widget.cpp
@@ -127,6 +136,7 @@ set (kadu_SRCS
 	gui/widgets/contact-widget.cpp
 	gui/widgets/custom-input.cpp
 	gui/widgets/delayed-line-edit.cpp
+	gui/widgets/file-transfer-widget.cpp
 	gui/widgets/group-tab-bar.cpp
 	gui/widgets/image-widget.cpp
 	gui/widgets/kadu-text-browser.cpp
@@ -177,6 +187,7 @@ set (kadu_SRCS
 	gui/windows/chat-window.cpp
 	gui/windows/choose-description.cpp
 	gui/windows/configuration-window.cpp
+	gui/windows/file-transfer-window.cpp
 	gui/windows/group-properties-window.cpp
 	gui/windows/image-dialog.cpp
 	gui/windows/kadu-window.cpp
@@ -220,6 +231,7 @@ set (kadu_SRCS
 	notify/status-changed-notification.cpp
 	notify/window-notifier.cpp
 
+	os/generic/compositing-aware-object.cpp
 	os/generic/system-info.cpp
 
 	parser/parser.cpp
@@ -324,8 +336,8 @@ set (kadu_MOC_SRCS
 	chat/message/pending-messages-manager.h
 	chat/message/message-shared.h
 
-	chat/style-engines/adium-time-formatter.h
-	chat/style-engines/chat-engine-kadu.h
+	chat/style-engines/chat-engine-adium/adium-time-formatter.h
+	chat/style-engines/chat-engine-kadu/chat-engine-kadu.h
 
 	chat/type/chat-type.h
 	chat/type/chat-type-aware-object.h
@@ -343,20 +355,27 @@ set (kadu_MOC_SRCS
 
 	core/core.h
 
-	file-transfer/file-transfer.h
+	file-transfer/file-transfer-actions.h
+	file-transfer/file-transfer-handler.h
 	file-transfer/file-transfer-manager.h
+	file-transfer/file-transfer-notifications.h
+	file-transfer/file-transfer-shared.h
 
 	gui/actions/action.h
 	gui/actions/actions.h
 	gui/actions/action-description.h
 
-	gui/widgets/account-buddy-list-widget.h
 	gui/widgets/account-add-widget.h
+	gui/widgets/account-buddy-list-widget.h
 	gui/widgets/account-create-widget.h
 	gui/widgets/account-edit-widget.h
+	gui/widgets/accounts-combo-box.h
 	gui/widgets/buddies-list-view.h
 	gui/widgets/buddies-list-view-delegate.h
 	gui/widgets/buddies-list-widget.h
+	gui/widgets/buddy-contacts-table-delegate.h
+	gui/widgets/buddy-contacts-table-model.h
+	gui/widgets/buddy-contacts-table.h
 	gui/widgets/buddy-general-configuration-widget.h
 	gui/widgets/buddy-groups-configuration-widget.h
 	gui/widgets/buddy-personal-info-configuration-widget.h
@@ -373,6 +392,7 @@ set (kadu_MOC_SRCS
 	gui/widgets/contact-widget.h
 	gui/widgets/custom-input.h
 	gui/widgets/delayed-line-edit.h
+	gui/widgets/file-transfer-widget.h
 	gui/widgets/group-tab-bar.h
 	gui/widgets/kadu-text-browser.h
 	gui/widgets/path-list-edit.h
@@ -404,6 +424,7 @@ set (kadu_MOC_SRCS
 	gui/windows/chat-window.h
 	gui/windows/choose-description.h
 	gui/windows/configuration-window.h
+	gui/windows/file-transfer-window.h
 	gui/windows/group-properties-window.h
 	gui/windows/kadu-window.h
 	gui/windows/kadu-window-actions.h
@@ -466,6 +487,13 @@ set (kadu_MOC_SRCS
 )
 
 if (UNIX AND NOT APPLE)
+	include (FindX11)
+	if (X11_Xfixes_FOUND)
+		MESSAGE(STATUS "Found X11 Xfixes extension: ${X11_Xfixes_LIB}")
+	else (X11_Xfixes_FOUND)
+		MESSAGE(FATAL_ERROR "Could not find X11 Xfixes extension")
+	endif (X11_Xfixes_FOUND)
+
 	if (NOT DESKTOP_ENTRY)
 		set (DESKTOP_ENTRY ${CMAKE_CURRENT_BINARY_DIR}/kadu.desktop)
 	endif (NOT DESKTOP_ENTRY)
@@ -506,12 +534,16 @@ if (WIN32)
 	install (TARGETS kadu_core RUNTIME DESTINATION ${KADU_BIN_DIR} ARCHIVE DESTINATION ${KADU_DATA_DIR}/kadu-sdk/lib LIBRARY DESTINATION ${KADU_DATA_DIR}/kadu-sdk/lib)
 	install (TARGETS kadu_c DESTINATION ${KADU_BIN_DIR})
 	install (DIRECTORY "." DESTINATION ${KADU_DATA_DIR}/kadu-sdk/include/kadu-core FILES_MATCHING PATTERN "*.h" PATTERN ".svn" EXCLUDE )
-else (WIN32)	
+else (WIN32)
 	add_executable (kadu main.cpp main_unix.cpp ${kadu_SRCS} ${MOC_FILES})
 	set_target_properties(kadu PROPERTIES ENABLE_EXPORTS ON)
 	set_target_properties(kadu PROPERTIES COMPILE_FLAGS "-DKADULIB" )
 
 	target_link_libraries (kadu ${STATIC_MODULES} ${QT_LIBRARIES} ${LIBGADU_LIBRARIES})
+
+	if (NOT APPLE)
+		target_link_libraries (kadu ${X11_Xfixes_LIB})
+	endif (NOT APPLE)
 endif (WIN32)
 
 
@@ -533,7 +565,7 @@ if (UNIX AND NOT APPLE)
 	#install (FILES hi256-app-kadu.png DESTINATION "share/icons/hicolor/256x256/apps" RENAME kadu.png)
 endif(UNIX AND NOT APPLE)
 
-install (FILES "chat/style-engines/adium-style-scripts.js" DESTINATION ${KADU_DATA_DIR}/scripts)
+install (FILES "chat/style-engines/chat-engine-adium/adium-style-scripts.js" DESTINATION ${KADU_DATA_DIR}/scripts)
 
 if (APPLE)
 	pkg_search_module (SNDFILE REQUIRED sndfile>=1.0)

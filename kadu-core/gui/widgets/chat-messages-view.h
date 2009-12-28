@@ -51,7 +51,7 @@ private slots:
 
 	void imageReceived(const QString &imageId, const QString &imagePath);
 
-	void messageStatusChanged(Message message, Message::Status);
+	void messageStatusChanged(Message::Status);
 
 public:
 	ChatMessagesView(Chat chat = 0, QWidget *parent = 0);

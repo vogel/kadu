@@ -34,6 +34,7 @@
 #include "protocols/protocol-factory.h"
 
 #include "buddy-general-configuration-widget.h"
+#include "buddy-contacts-table.h"
 
 BuddyGeneralConfigurationWidget::BuddyGeneralConfigurationWidget(Buddy &buddy, QWidget *parent)
 		: QWidget(parent), MyBuddy(buddy)
@@ -81,61 +82,11 @@ void BuddyGeneralConfigurationWidget::createGui()
 
 	layout->addWidget(photoWidget, 1, 6, 3, 1);
 
-	QGroupBox *accountsBox = new QGroupBox(tr("Merged Contact Accounts"));
-	AccountsLayout = new QGridLayout(accountsBox);
-	AccountsLayout->setColumnMinimumWidth(2, 20);
-	AccountsLayout->setColumnStretch(0, 1);
-	AccountsLayout->setColumnStretch(1, 1);
-	AccountsLayout->setColumnStretch(5, 2);
-	AccountsLayout->setColumnStretch(6, 2);
-	row = 0;
+	QGroupBox *contactsBox = new QGroupBox(tr("Buddy contacts"));
+	QVBoxLayout *contactsLayout = new QVBoxLayout(contactsBox);
+	contactsLayout ->addWidget(new BuddyContactsTable(MyBuddy, contactsBox));
 
-	QLabel *defaultContactLabel = new QLabel(tr("Default Contact") + ":");
-
-	DefaultAccountCombo = new QComboBox(this);
-	AccountDataModel = new BuddyContactModel(MyBuddy, DefaultAccountCombo);
-//	ContactsModelProxy *AccountComboProxyModel = new ContactsModelProxy(DefaultContactCombo);
-//	AccountComboProxyModel->setSourceModel(AccountComboModel);
-	
-// 		ActionsProxyModel::ModelActionList accountsModelBeforeActions;
-// 	accountsModelBeforeActions.append(qMakePair<QString, QString>(tr(" - Select merged account - "), ""));
-// 	ActionsProxyModel *accountsProxyModel = new ActionsProxyModel(accountsModelBeforeActions,
-// 			ActionsProxyModel::ModelActionList(), DefaultContactCombo);
-	//accountsProxyModel->setSourceModel(AccountComboProxyModel);
-	
-	DefaultAccountCombo->setModel(AccountDataModel);
-	DefaultAccountCombo->setModelColumn(1); // use long account name
-	
-	DefaultAccountCombo->setDisabled(MyBuddy.contacts().count() <= 1);
-
-	QLabel *defaultContactNoticeLabel = new QLabel(tr("Chat messages will be sent to this username when you select the name from the buddy list"));
-	AccountsLayout->addWidget(defaultContactLabel, row, 0, 1, 1);
-	AccountsLayout->addWidget(DefaultAccountCombo, row++, 1, 1, 4);
-	AccountsLayout->addWidget(defaultContactNoticeLabel, row++, 1, 1, 5);
-
-	QWidget *contactsWidget = new QWidget(this);
-	ContactsLayout = new QGridLayout(contactsWidget);
-	AccountsLayout->setColumnStretch(0, 2);
-	AccountsLayout->setColumnStretch(2, 2);
-	
-	foreach (const Contact &data, MyBuddy.contacts())
-	{
-		DefaultAccountCombo->addItem(data.id());
-		addAccountDataRow(data);
-	}
-
-	AccountsLayout->addWidget(contactsWidget, row++, 0, 1, 5);
-
-	QPushButton *addContactButton = new QPushButton(tr("Add Contact..."), this);
-	connect(addContactButton, SIGNAL(clicked()), this, SLOT(addAccountDataRow()));
-	QPushButton *setOrderButton = new QPushButton(tr("Set Order..."), this);
-	setOrderButton->setDisabled(MyBuddy.contacts().count() <= 1);
-	connect(setOrderButton, SIGNAL(clicked()), this, SLOT(showOrderDialog()));
-
-	AccountsLayout->addWidget(addContactButton, row, 0, 1, 1);
-	AccountsLayout->addWidget(setOrderButton, row, 1, 1, 1);
-
-	layout->addWidget(accountsBox, 4, 2, 2, 6);
+	layout->addWidget(contactsBox, 4, 2, 2, 6);
 
 	QGroupBox *communicationBox = new QGroupBox(tr("Communication Information"));
 	QGridLayout *communicationLayout = new QGridLayout(communicationBox);
@@ -177,55 +128,6 @@ void BuddyGeneralConfigurationWidget::createGui()
 	layout->setRowStretch(8, 100);
 }
 
-void BuddyGeneralConfigurationWidget::addAccountDataRow(Contact data)
-{
-	int row = ContactsLayout->rowCount();
-
-	QWidget *accountRow = new QWidget(this);
-	QGridLayout *accountRowLayout = new QGridLayout(accountRow);
-	accountRowLayout->setColumnMinimumWidth(0, 100);
-	accountRowLayout->setColumnMinimumWidth(2, 100);
-	accountRowLayout->setColumnStretch(0, 5);
-	accountRowLayout->setColumnStretch(2, 5);
-	accountRowLayout->setColumnStretch(3, 2);
-
-	QLineEdit *contactLineEdit = new QLineEdit(accountRow);
-	QLabel *inLabel = new QLabel(tr("in"), accountRow);
-	QComboBox *accountsCombo = new QComboBox(accountRow);
-	QPushButton *unmergeButton = new QPushButton(IconsManager::instance()->loadIcon("CloseWindowButton"), tr("Unmerge contact..."), accountRow);
-	unmergeButton->setDisabled(ContactsAccounts.count() == 0 && MyBuddy.contacts().count() <= 1);
-	connect(unmergeButton, SIGNAL(clicked(bool)), this, SLOT(unmergeContact()));
-	connect(this, SIGNAL(doUnmergeContact()), accountRow, SLOT(hide()));
-	connect(this, SIGNAL(doUnmergeContact()), contactLineEdit, SLOT(clear()));
-
-	accountRowLayout->addWidget(contactLineEdit, 0, 0, 1, 1);
-	accountRowLayout->addWidget(inLabel, 0, 1, 1, 1);
-	accountRowLayout->addWidget(accountsCombo, 0, 2, 1, 1);
-	accountRowLayout->addWidget(unmergeButton, 0, 3, 1, 1);
-
-	ContactsIds.append(contactLineEdit);
-	ContactsAccounts.append(accountsCombo);
-	ContactsUuids.append(data.uuid()); // Contact::null => contact.uuid().isNull?
-
-	if (data.isNull())
-		accountsCombo->addItem("-" + tr("Select a Network") + "-");
-	foreach (Account account, AccountManager::instance()->items())
-	{
-		accountsCombo->addItem(
-				account.protocolHandler()->icon(),
-				account.protocolHandler()->protocolFactory()->displayName() + " (" + account.id() + ")",
-				account.uuid().toString()
-		);
-	}
-	if (!data.isNull())
-		accountsCombo->setCurrentIndex(accountsCombo->findData(data.contactAccount().uuid().toString()));
-
-	ContactsLayout->addWidget(accountRow, row, 0, 1, 6);
-
-	if (!data.isNull())
-		contactLineEdit->setText(data.id());
-}
-
 void BuddyGeneralConfigurationWidget::unmergeContact()
 {
 	//TODO 0.6.6 how to get contact ID here?
@@ -240,45 +142,6 @@ void BuddyGeneralConfigurationWidget::saveConfiguration()
 	MyBuddy.setMobile(MobileEdit->text());
 	MyBuddy.setEmail(EmailEdit->text());
 	MyBuddy.setWebsite(WebsiteEdit->text());
-
-	for (int i = 0; i < ContactsAccounts.count(); i++)
-	{
-		if (ContactsAccounts.at(i)->itemData(ContactsAccounts.at(i)->currentIndex()).toString().isEmpty())
-			break;
-		Account account = AccountManager::instance()->byUuid(QUuid(ContactsAccounts.at(i)->itemData(ContactsAccounts.at(i)->currentIndex()).toString()));
-		QString contactId = ContactsIds.at(i)->text();
-		Contact contact = ContactManager::instance()->byUuid(ContactsUuids.at(i));
-
-		// TODO: Tricky someone please check?
-		// if we have contact and not changed account
-		if (!contact.isNull() && account == contact.contactAccount())
-		{
-			if (!contactId.isEmpty()/* && account.protocolHandler()->validateId(ContactsIds.at(i)->text())*/)
-				contact.setId(contactId);
-			else
-			{
-				contact.setOwnerBuddy(Buddy::null);
-			}
-		}
-		else
-		{
-			// TODO 0.6.6 SHOULD just change ID of existing contact
-// 			foreach (const Contact &tmpcontact, MyBuddy.contacts())
-// 				if (tmpcontact.id() == contactId) // check if user has only changed account for previous existing ID
-// 				{
-// 					MyBuddy.removeContact(tmpcontact); // if so, remove old CAD, otherwise there will appear 2 identical contacts with different accounts
-// 					ContactManager::instance()->removeItem(tmpcontact);
-// 				}
-
-			Contact contact = Contact::create();
-			contact.setContactAccount(account);
-			contact.setOwnerBuddy(MyBuddy);
-			contact.setId(contactId);
-			// TODO crash here
-			contact.setDetails(account.protocolHandler()->protocolFactory()->createContactDetails(contact));
-			ContactManager::instance()->addItem(contact);
-		}
-	}
 }
 
 void BuddyGeneralConfigurationWidget::showOrderDialog()

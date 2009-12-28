@@ -16,6 +16,11 @@
 
 ChatManager * ChatManager::Instance = 0;
 
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Returns singleton instance of ChatManager.
+ * @return singleton instance of ChatManager
+ */
 ChatManager *  ChatManager::instance()
 {
 	if (0 == Instance)
@@ -52,18 +57,55 @@ void ChatManager::itemUnregistered(Chat item)
 	emit chatRemoved(item);
 }
 
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Method is called after details for chat were loaded.
+ *
+ * Method is calles after details for chat were loaded. It means that
+ * chat has all data loaded. It can now be registered in ChatManager
+ * and itemAboutToBeAdded and itemAdded methods will be called.
+ */
 void ChatManager::detailsLoaded(Chat chat)
 {
 	if (!chat.isNull())
 		registerItem(chat);
 }
 
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Method is called after details for chat were unloaded.
+ *
+ * Method is calles after details for chat were unloaded. It means that
+ * chat has soem data unloaded. It can now be unregistered in ChatManager
+ * and itemAboutToBeRemoved and itemRemoved methods will be called.
+ */
 void ChatManager::detailsUnloaded(Chat chat)
 {
 	if (!chat.isNull())
 		unregisterItem(chat);
 }
 
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Finds chat for given lsit of contacts.
+ * @param contacts set of contacts that builds chat
+ * @param create when true new chat will be returned when none was found with contacts
+ * @return chat for given lsit of contacts
+ *
+ * Every contact in contacts parameters needs to be in the same account. When there
+ * is no contact in set or one of them is assigned to different account, Chat::null
+ * will be returned.
+ *
+ * This method search list of all registered chats to find one with type "Simple"
+ * or "Conference" that has exactly the same set of contacts like in the parameter.
+ * When one is found - it is returned. Else, if create parameter is false, Chat::null
+ * is returned. When it is true - new chat with type "Simple" or "Conference" (when
+ * constacts set contains more than one contact) is created, added to manager,
+ * fully loaded and returned.
+ *
+ * Do not manually create chats of type "Simple" and "Conference" - use this
+ * method instead.
+ */
 Chat ChatManager::findChat(ContactSet contacts, bool create)
 {
 	ensureLoaded();

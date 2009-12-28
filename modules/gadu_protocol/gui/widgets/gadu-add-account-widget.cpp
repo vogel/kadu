@@ -48,6 +48,12 @@ void GaduAddAccountWidget::createGui()
 	gridLayout->setColumnStretch(3, 10);
 
 	int row = 0;
+	
+	QLabel *accountNameLabel = new QLabel(tr("Account Name") + ":", this);
+	gridLayout->addWidget(accountNameLabel, row, 1);
+	AccountName = new QLineEdit(this);
+	connect(AccountName, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
+	gridLayout->addWidget(AccountName, row++, 2);
 
 	QLabel *numberLabel = new QLabel(tr("Gadu-Gadu number") + ":", this);
 	gridLayout->addWidget(numberLabel, row, 1, Qt::AlignRight);
@@ -85,8 +91,6 @@ void GaduAddAccountWidget::createGui()
 void GaduAddAccountWidget::dataChanged()
 {
 	RemindPassword->setEnabled(!AccountId->text().isEmpty());
-	//AddThisAccount->setEnabled(!AccountId->text().isEmpty() && !AccountPassword->text().isEmpty()
-	//			   && !Identity->identityName().isEmpty());
 }
 
 void GaduAddAccountWidget::apply()
@@ -98,7 +102,7 @@ void GaduAddAccountWidget::apply()
 	gad->setState(StorableObject::StateNew);
 	gaduAccount.setDetails(gad);
 	gaduAccount.setProtocolName("gadu");
-	//gaduAccount.setName(AccountName->text());
+	gaduAccount.setName(AccountName->text());
 	gaduAccount.setId(AccountId->text());
 	gaduAccount.setPassword(AccountPassword->text());
 	gaduAccount.setHasPassword(!AccountPassword->text().isEmpty());

@@ -13,11 +13,11 @@
 #include <QtCore/QObject>
 
 #include "buddies/buddy.h"
+#include "file-transfer/file-transfer.h"
 
 #include "exports.h"
 
-class FileTransfer;
-class StoragePoint;
+class FileTransferHandler;
 
 class KADUAPI FileTransferService : public QObject
 {
@@ -28,11 +28,10 @@ class KADUAPI FileTransferService : public QObject
 public:
 	FileTransferService(QObject *parent = 0) : QObject(parent) {}
 
-	virtual FileTransfer * loadFileTransferFromStorage(StoragePoint *storage) = 0;
-	virtual FileTransfer * createOutgoingFileTransfer(Contact contact) = 0;
+	virtual FileTransferHandler * createFileTransferHandler(FileTransfer fileTransfer) = 0;
 
 signals:
-	void incomingFileTransfer(FileTransfer *fileTransfer);
+	void incomingFileTransfer(FileTransfer fileTransfer);
 
 };
 

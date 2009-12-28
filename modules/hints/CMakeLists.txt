@@ -24,6 +24,7 @@ set (TRANSLATION_SOURCES
 
 set (CONFIGURATION_FILES
 	configuration/hint-over-user.ui
+	configuration/hints-notifier.ui
 	configuration/hints.ui
 )
 

@@ -10,14 +10,17 @@
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDir>
 #include <QtGui/QComboBox>
+#include <QtGui/QCheckBox>
 #include <QtGui/QLabel>
 #include <QtGui/QHBoxLayout>
+#include <QtGui/QPalette>
 #include <QtGui/QPushButton>
 
 #include "accounts/account-manager.h"
 #include "chat/chat-details-simple.h"
-#include "chat/style-engines/chat-engine-adium.h"
-#include "chat/style-engines/chat-engine-kadu.h"
+#include "chat/html-messages-renderer.h"
+#include "chat/style-engines/chat-engine-adium/chat-engine-adium.h"
+#include "chat/style-engines/chat-engine-kadu/chat-engine-kadu.h"
 #include "chat/message/message-render-info.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"
@@ -41,7 +44,7 @@ ChatStylesManager * ChatStylesManager::instance()
 	return Instance;
 }
 
-ChatStylesManager::ChatStylesManager() : CurrentEngine(0), kaduEngine(0)
+ChatStylesManager::ChatStylesManager() : CurrentEngine(0), kaduEngine(0), turnOnTransparency(0)
 {
 	//FIXME:
 	kaduEngine = new KaduChatStyleEngine();
@@ -50,7 +53,7 @@ ChatStylesManager::ChatStylesManager() : CurrentEngine(0), kaduEngine(0)
 	adiumEngine = new AdiumChatStyleEngine();
 	registerChatStyleEngine("Adium", adiumEngine);
 
-	loadThemes();
+	loadStyles();
 	configurationUpdated();
 }
 
@@ -81,6 +84,12 @@ void ChatStylesManager::chatViewCreated(ChatMessagesView *view)
 	{
 		chatViews.append(view);
 		CurrentEngine->refreshView(view->renderer());
+		if (CompositingEnabled && config_file.readBoolEntry("Chat", "UseTransparency", false))
+		{
+			QPalette palette = view->renderer()->webPage()->palette();
+			palette.setBrush(QPalette::Base, Qt::transparent);
+			view->renderer()->webPage()->setPalette(palette);
+		}
 	}
 }
 
@@ -157,17 +166,19 @@ void ChatStylesManager::configurationUpdated()
 
 	QString newStyleName = config_file.readEntry("Look", "Style");
 	QString newVariantName = config_file.readEntry("Look", "ChatStyleVariant");
-	// if theme was changed, load new theme
+	// if Style was changed, load new Style
 	if (!CurrentEngine || CurrentEngine->currentStyleName() != newStyleName || CurrentEngine->currentStyleVariant() != newVariantName)
 	{
-		if (!availableStyles.contains(newStyleName))// if theme not exists load kadu theme
+		if (!availableStyles.contains(newStyleName))// if Style not exists load kadu Style
 			newStyleName = "kadu";
 		if (availableStyles[newStyleName].engine != CurrentEngine)
 			CurrentEngine = availableStyles[newStyleName].engine;
-		CurrentEngine->loadTheme(newStyleName, newVariantName);
+		CurrentEngine->loadStyle(newStyleName, newVariantName);
 	}
 	else
 		CurrentEngine->configurationUpdated();
+
+	triggerCompositingStateChanged();
 
 	foreach (ChatMessagesView *view, chatViews)
 	{
@@ -176,11 +187,46 @@ void ChatStylesManager::configurationUpdated()
 	}
 }
 
+void ChatStylesManager::compositingEnabled()
+{
+	CompositingEnabled = true;
+	foreach (ChatMessagesView *view, chatViews)
+	{
+		QPalette palette = view->renderer()->webPage()->palette();
+		if (config_file.readBoolEntry("Chat", "UseTransparency", false))
+			palette.setBrush(QPalette::Base, Qt::transparent);
+		else
+			palette.setBrush(QPalette::Base, config_file.readColorEntry("Look", "ChatBgColor"));
+
+		view->renderer()->webPage()->setPalette(palette);
+		CurrentEngine->refreshView(view->renderer());
+	}
+
+	if (turnOnTransparency)
+		turnOnTransparency->setEnabled(true);
+}
+
+void ChatStylesManager::compositingDisabled()
+{
+	CompositingEnabled = false;
+	foreach (ChatMessagesView *view, chatViews)
+	{
+		QPalette palette = view->renderer()->webPage()->palette();
+		palette.setBrush(QPalette::Base, config_file.readColorEntry("Look", "ChatBgColor"));
+
+		view->renderer()->webPage()->setPalette(palette);
+		CurrentEngine->refreshView(view->renderer());
+	}
+
+	if (turnOnTransparency)
+		turnOnTransparency->setEnabled(false);
+}
+
 //any better ideas?
-void ChatStylesManager::loadThemes()
+void ChatStylesManager::loadStyles()
 {
 	QDir dir;
-	QString path, themeName;
+	QString path, StyleName;
 	QFileInfo fi;
 	QStringList files;
 
@@ -196,10 +242,10 @@ void ChatStylesManager::loadThemes()
 		{
 			foreach (ChatStyleEngine *engine, registeredEngines.values())
 			{
-				if ((themeName = engine->isThemeValid(path + file)) != QString::null)
+				if ((StyleName = engine->isStyleValid(path + file)) != QString::null)
 				{
-					availableStyles[themeName].engine = engine;
-					availableStyles[themeName].global = false;
+					availableStyles[StyleName].engine = engine;
+					availableStyles[StyleName].global = false;
 					break;
 				}
 			}
@@ -218,10 +264,10 @@ void ChatStylesManager::loadThemes()
 		{
 			foreach (ChatStyleEngine *engine, registeredEngines.values())
 			{
-				if ((themeName = engine->isThemeValid(path + file)) != QString::null)
+				if ((StyleName = engine->isStyleValid(path + file)) != QString::null)
 				{
-					availableStyles[themeName].engine = engine;
-					availableStyles[themeName].global = true;
+					availableStyles[StyleName].engine = engine;
+					availableStyles[StyleName].global = true;
 					break;
 				}
 			}
@@ -277,6 +323,9 @@ void ChatStylesManager::mainConfigurationWindowCreated(MainConfigurationWindow *
 	groupBox->addWidgets(editorLabel, editor);
 	groupBox->addWidgets(new QLabel(qApp->translate("@default", "Style variant") + ":"), variantListCombo);
 	groupBox->addWidgets(new QLabel(qApp->translate("@default", "Preview") + ":"), preview);
+
+	turnOnTransparency = dynamic_cast<QCheckBox *>(window->widget()->widgetById("useTransparency"));
+
 }
 
 void ChatStylesManager::configurationApplied()
@@ -334,6 +383,7 @@ void ChatStylesManager::styleChangedSlot(const QString &styleName)
 	variantListCombo->addItems(engine->styleVariants(styleName));
 	variantListCombo->setEnabled(engine->supportVariants());
 	engine->prepareStylePreview(preview, styleName, variantListCombo->currentText());
+	turnOnTransparency->setChecked(engine->styleUsesTransparencyByDefault(styleName));
 }
 
 void ChatStylesManager::variantChangedSlot(const QString &variantName)
@@ -368,7 +418,7 @@ void ChatStylesManager::syntaxUpdated(const QString &syntaxName)
 		styleChangedSlot(syntaxName);
 
 	if (CurrentEngine->currentStyleName() == syntaxName)
-		CurrentEngine->loadTheme(syntaxName, variantListCombo->currentText());
+		CurrentEngine->loadStyle(syntaxName, variantListCombo->currentText());
 }
 
 void ChatStylesManager::addStyle(const QString &syntaxName, ChatStyleEngine *engine)
@@ -386,4 +436,5 @@ void ChatStylesManager::addStyle(const QString &syntaxName, ChatStyleEngine *eng
 void ChatStylesManager::configurationWindowDestroyed()
 {
 	syntaxListCombo = 0;
+	turnOnTransparency = 0;
 }

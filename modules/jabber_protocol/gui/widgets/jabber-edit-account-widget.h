@@ -53,6 +53,10 @@ class JabberEditAccountWidget : public AccountEditWidget
 	QLineEdit *ResourceName;
 	QLabel *PriorityLabel;
 	QLineEdit *Priority;
+	
+	QLabel *DataTransferProxyLabel;
+	QLineEdit *DataTransferProxy;
+	QHBoxLayout *DataTransferProxyLayout;
 
 	void createGui();
 	void createGeneralTab(QTabWidget *);

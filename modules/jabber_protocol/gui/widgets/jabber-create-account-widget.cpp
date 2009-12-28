@@ -1,4 +1,5 @@
- /***************************************************************************
+
+/***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -54,6 +55,12 @@ void JabberCreateAccountWidget::createGui()
 	gridLayout->setColumnStretch(5, 1);
 
 	int row = 0;
+	
+	QLabel *accountNameLabel = new QLabel(tr("Account Name") + ":", this);
+	gridLayout->addWidget(accountNameLabel, row, 1);
+	AccountName = new QLineEdit(this);
+	connect(AccountName, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
+	gridLayout->addWidget(AccountName, row++, 2);
 
 	QLabel *numberLabel = new QLabel(tr("Username") + ":", this);
 	gridLayout->addWidget(numberLabel, row, 1, Qt::AlignRight);
@@ -221,7 +228,7 @@ void JabberCreateAccountWidget::connectionOptionsChanged()
 
 void JabberCreateAccountWidget::dataChanged()
 {
-	RemindPassword->setEnabled(!Username->text().isEmpty());
+// 	RemindPassword->setEnabled(!Username->text().isEmpty());
 ///	AddThisAccount->setEnabled(!Username->text().isEmpty() && !Password->text().isEmpty()
 ///				   && !Identity->identityName().isEmpty());
 }
@@ -263,7 +270,7 @@ void JabberCreateAccountWidget::registerNewAccountFinished(JabberServerRegisterA
 	{
 		MessageDialog::msg(tr("Registration was successful. Your new Jabber ID is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(jsra->jid()), false, "Information", this);
 
-		Account jabberAccount;
+		Account jabberAccount = Account::create();
 		// TODO: 0.6.6 set protocol after details because of crash
 		//jabberAccount.setProtocolName("jabber");
 		JabberAccountDetails *details = new JabberAccountDetails(jabberAccount);

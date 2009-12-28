@@ -79,6 +79,7 @@ class KADUAPI ConfigurationWindow : public QDialog
 	Q_OBJECT
 
 	QString Name;
+	QString Section;
 
 	ConfigurationWidget *configurationWidget;
 
@@ -95,10 +96,11 @@ public:
 		jest przy zapamiętywaniu pozycji okna oraz jego ostatnio
 		otwartej karty.
 	 **/
-	ConfigurationWindow(const QString &name, const QString &caption, ConfigurationWindowDataManager *dataManager);
+	ConfigurationWindow(const QString &name, const QString &caption, const QString &section, ConfigurationWindowDataManager *dataManager);
 	virtual ~ConfigurationWindow();
 
 	QString name() { return Name; }
+	QString section() { return Section; }
 	ConfigurationWidget * widget() { return configurationWidget; }
 
 	/**

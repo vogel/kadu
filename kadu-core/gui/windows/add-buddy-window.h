@@ -20,8 +20,7 @@ class QLabel;
 class QLineEdit;
 class QRegExpValidator;
 
-class AccountsModel;
-class AccountsProxyModel;
+class AccountsComboBox;
 class IdRegularExpressionFilter;
 class SelectBuddyCombobox;
 
@@ -32,9 +31,7 @@ class AddBuddyWindow : public QDialog
 	QLabel *UserNameLabel;
 	QLineEdit *UserNameEdit;
 	QRegExpValidator *UserNameValidator;
-	QComboBox *AccountCombo;
-	AccountsModel *AccountComboModel;
-	AccountsProxyModel *AccountComboProxyModel;
+	AccountsComboBox *AccountCombo;
 	IdRegularExpressionFilter *AccountComboIdFilter;
 	QComboBox *GroupCombo;
 	QLineEdit *DisplayNameEdit;

@@ -15,7 +15,7 @@
 /**
  * @defgroup Storage Kadu Storage API
  *
- * This group contains classes and tempaltes that allows to store and load
+ * This group contains classes and templates that allows to store and load
  * data from XML file. This includes support for Managers (@link<Manager> Manager @endlink
  * and @link<SimpleManager> SimpleManager @endlink) that automates all basic tasks
  * (loading, storing, counting) and @link<Details> Details @endlink and @link<DetailsHolder>

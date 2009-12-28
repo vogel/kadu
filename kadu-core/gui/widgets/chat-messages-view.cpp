@@ -132,8 +132,8 @@ void ChatMessagesView::appendMessage(MessageRenderInfo *message)
 {
 	kdebugf();
 
-	connect(message->message(), SIGNAL(statusChanged(Message, Message::Status)),
-				this, SLOT(messageStatusChanged(Message, Message::Status)));
+	connect(message->message(), SIGNAL(statusChanged(Message::Status)),
+				this, SLOT(messageStatusChanged(Message::Status)));
 
 	rememberScrollBarPosition();
 
@@ -153,8 +153,8 @@ void ChatMessagesView::appendMessages(QList<MessageRenderInfo *> messages)
 	kdebugf2();
 
 	foreach (MessageRenderInfo *message, messages)
-		connect(message, SIGNAL(statusChanged(Message, Message::Status)),
-				this, SLOT(messageStatusChanged(Message, Message::Status)));
+		connect(message, SIGNAL(statusChanged(Message::Status)),
+				this, SLOT(messageStatusChanged(Message::Status)));
 	rememberScrollBarPosition();
 
 	Renderer->appendMessages(messages);
@@ -170,10 +170,12 @@ unsigned int ChatMessagesView::countMessages()
 	return Renderer->messages().count();
 }
 
-void ChatMessagesView::messageStatusChanged(Message message, Message::Status status)
+void ChatMessagesView::messageStatusChanged(Message::Status status)
 {
+	if (!sender())
+		return;
 	rememberScrollBarPosition();
-	Renderer->messageStatusChanged(message, status);
+	Renderer->messageStatusChanged(Message(sender()), status);
 }
 
 void ChatMessagesView::resizeEvent(QResizeEvent *e)

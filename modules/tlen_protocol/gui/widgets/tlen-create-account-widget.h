@@ -44,7 +44,8 @@ private slots:
 public:
 	explicit TlenCreateAccountWidget(QWidget *parent = 0);
 	virtual ~TlenCreateAccountWidget();
-
+	
+	virtual void apply();
 };
 
 #endif // TLEN_CREATE_ACCOUNT_WIDGET_H

@@ -19,6 +19,7 @@
 #include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
 #include "contacts/contact-manager.h"
+#include "file-transfer/file-transfer-manager.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/kadu-window.h"
@@ -152,6 +153,8 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("General", "StartupStatusInvisibleWhenLastWasOffline", true);
 	config_file.addVariable("General", "UserBoxHeight", 300);
 	config_file.addVariable("General", "WindowActivationMethod", 0);
+	config_file.addVariable("General", "MainConfiguration_Geometry", "50, 50, 790, 480");
+	config_file.addVariable("General", "LookChatAdvanced_Geometry", "50, 50, 620, 540");
 
 	config_file.addVariable("Look", "AlignUserboxIconsTop", true);
 	config_file.addVariable("Look", "ChatContents", "");
@@ -426,6 +429,9 @@ void Core::createGui()
 	Window = new KaduWindow(0);
 	Window->setWindowIcon(QApplication::windowIcon());
 	connect(Window, SIGNAL(destroyed(QObject *)), this, SLOT(kaduWindowDestroyed()));
+
+	// initialize file transfers
+	FileTransferManager::instance();
 
 	if (ShowMainWindowOnStart)
 		Window->show();

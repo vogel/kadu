@@ -3,7 +3,7 @@ set (SOURCES
 	dcc/dcc-manager.cpp
 	dcc/dcc-socket-notifiers.cpp
 
-	file-transfer/gadu-file-transfer.cpp
+	file-transfer/gadu-file-transfer-handler.cpp
 
 	gui/widgets/gadu-add-account-widget.cpp
 	gui/widgets/gadu-create-account-widget.cpp
@@ -52,7 +52,7 @@ set (MOC_SOURCES
 	dcc/dcc-manager.h
 	dcc/dcc-socket-notifiers.h
 
-	file-transfer/gadu-file-transfer.h
+	file-transfer/gadu-file-transfer-handler.h
 
 	gui/widgets/gadu-add-account-widget.h
 	gui/widgets/gadu-create-account-widget.h

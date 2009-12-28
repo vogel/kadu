@@ -49,6 +49,12 @@ void JabberAddAccountWidget::createGui()
 	gridLayout->setColumnStretch(5, 1);
 
 	int row = 0;
+	
+	QLabel *accountNameLabel = new QLabel(tr("Account Name") + ":", this);
+	gridLayout->addWidget(accountNameLabel, row, 1);
+	AccountName = new QLineEdit(this);
+	connect(AccountName, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
+	gridLayout->addWidget(AccountName, row++, 2);
 
 	QLabel *numberLabel = new QLabel(tr("Username") + ":", this);
 	gridLayout->addWidget(numberLabel, row, 1, Qt::AlignRight);
@@ -101,6 +107,8 @@ void JabberAddAccountWidget::apply()
 	//jabberAccount.setProtocolName("jabber");
 	JabberAccountDetails *details = new JabberAccountDetails(jabberAccount);
 	details->setState(StorableObject::StateNew);
+	details->setResource("Kadu");
+	details->setPriority(5);
 	jabberAccount.setDetails(details);
 	jabberAccount.setProtocolName("jabber");
 ///	jabberAccount.setName(AccountName->text());

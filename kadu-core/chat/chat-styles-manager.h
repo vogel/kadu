@@ -15,9 +15,11 @@
 
 #include "configuration/configuration-aware-object.h"
 #include "gui/windows/main-configuration-window.h"
+#include "os/generic/compositing-aware-object.h"
 
-class QPushButton;
+class QCheckBox;
 class QComboBox;
+class QPushButton;
 
 class AdiumChatStyleEngine;
 class ChatMessagesView;
@@ -32,7 +34,7 @@ struct StyleInfo
 	ChatStyleEngine *engine;
 };
 
-class ChatStylesManager : public QObject, public ConfigurationAwareObject
+class ChatStylesManager : public QObject, ConfigurationAwareObject, CompositingAwareObject
 {
 	Q_OBJECT
 
@@ -44,6 +46,8 @@ class ChatStylesManager : public QObject, public ConfigurationAwareObject
 	QMap<QString, StyleInfo> availableStyles;
 
 	ChatStyleEngine *CurrentEngine;
+
+	bool CompositingEnabled;
 
 	bool CfgNoHeaderRepeat; /*!< Remove repeated message headers. */
 	unsigned int CfgHeaderSeparatorHeight; /*!< Header separator height. */
@@ -67,7 +71,12 @@ class ChatStylesManager : public QObject, public ConfigurationAwareObject
 
 	QComboBox *variantListCombo;
 
+	QCheckBox *turnOnTransparency;
+
 	Preview *preview;
+
+	void compositingEnabled();
+	void compositingDisabled();
 
 private slots:
 	void styleChangedSlot(const QString &styleName);
@@ -94,7 +103,7 @@ public:
 
 	ChatStyleEngine * currentEngine() { return CurrentEngine; }
 
-	void loadThemes();
+	void loadStyles();
 
 	bool cfgNoHeaderRepeat() { return CfgNoHeaderRepeat; }
 	unsigned int cfgHeaderSeparatorHeight() { return CfgHeaderSeparatorHeight; }
