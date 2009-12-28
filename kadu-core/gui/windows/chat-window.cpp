@@ -49,6 +49,8 @@ ChatWindow::~ChatWindow()
 
 void ChatWindow::configurationUpdated()
 {
+	triggerCompositingStateChanged();
+
 	activateWithNewMessages = config_file.readBoolEntry("Chat", "ActivateWithNewMessages", false);
 	showNewMessagesNum = config_file.readBoolEntry("Chat", "NewMessagesInChatTitle", false);
 	blinkChatTitle = config_file.readBoolEntry("Chat", "BlinkChatTitle", true);
@@ -83,6 +85,24 @@ void ChatWindow::setChatWidget(ChatWidget *newChatWidget)
 ChatWidget * ChatWindow::chatWidget()
 {
 	return currentChatWidget;
+}
+
+void ChatWindow::compositingEnabled()
+{
+	if (config_file.readBoolEntry("Chat", "UseTransparency", false))
+	{
+		setAutoFillBackground(false);
+		setAttribute(Qt::WA_TranslucentBackground, true);
+	}
+	else
+		compositingDisabled();
+}
+
+void ChatWindow::compositingDisabled()
+{
+	setAttribute(Qt::WA_TranslucentBackground, false);
+	setAttribute(Qt::WA_NoSystemBackground, false);
+	setAutoFillBackground(true);
 }
 
 // TODO: zrobi� od pocz�tku, strukturalnie spieprzone

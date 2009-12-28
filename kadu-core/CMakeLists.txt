@@ -231,6 +231,7 @@ set (kadu_SRCS
 	notify/status-changed-notification.cpp
 	notify/window-notifier.cpp
 
+	os/generic/compositing-aware-object.cpp
 	os/generic/system-info.cpp
 
 	parser/parser.cpp

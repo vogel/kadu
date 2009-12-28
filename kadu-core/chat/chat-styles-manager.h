@@ -15,6 +15,7 @@
 
 #include "configuration/configuration-aware-object.h"
 #include "gui/windows/main-configuration-window.h"
+#include "os/generic/compositing-aware-object.h"
 
 class QPushButton;
 class QComboBox;
@@ -32,7 +33,7 @@ struct StyleInfo
 	ChatStyleEngine *engine;
 };
 
-class ChatStylesManager : public QObject, public ConfigurationAwareObject
+class ChatStylesManager : public QObject, ConfigurationAwareObject, CompositingAwareObject
 {
 	Q_OBJECT
 
@@ -44,6 +45,8 @@ class ChatStylesManager : public QObject, public ConfigurationAwareObject
 	QMap<QString, StyleInfo> availableStyles;
 
 	ChatStyleEngine *CurrentEngine;
+
+	bool CompositingEnabled;
 
 	bool CfgNoHeaderRepeat; /*!< Remove repeated message headers. */
 	unsigned int CfgHeaderSeparatorHeight; /*!< Header separator height. */
@@ -68,6 +71,9 @@ class ChatStylesManager : public QObject, public ConfigurationAwareObject
 	QComboBox *variantListCombo;
 
 	Preview *preview;
+
+	void compositingEnabled();
+	void compositingDisabled();
 
 private slots:
 	void styleChangedSlot(const QString &styleName);

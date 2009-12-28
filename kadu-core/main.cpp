@@ -36,6 +36,7 @@
 #include "configuration/configuration-file.h"
 #include "configuration/xml-configuration-file.h"
 #include "gui/windows/message-dialog.h"
+#include "os/generic/compositing-aware-object.h"
 #include "protocols/protocols-manager.h"
 
 #include "debug.h"
@@ -78,6 +79,8 @@ class KaduApplication: public QApplication
 				XFixesSelectionWindowDestroyNotifyMask |
 				XFixesSelectionClientCloseNotifyMask);
 			}
+			if (QX11Info::isCompositingManagerRunning())
+				CompositingAwareObject::compositingStateChanged();
 #endif
 		}
 
@@ -88,7 +91,7 @@ class KaduApplication: public QApplication
 			{
 				XFixesSelectionNotifyEvent* ev = reinterpret_cast<XFixesSelectionNotifyEvent* >(event);
 				if (ev->selection == net_wm_state)
-					qDebug("composite state changed");
+					CompositingAwareObject::compositingStateChanged();
 			}
 			return false;
 		}

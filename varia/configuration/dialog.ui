@@ -181,7 +181,7 @@ Text is plain black." />
 			</group-box>
 
 			<group-box name="Style">
-
+				<check-box caption="Turn on transparency" config-section="Chat" config-item="UseTransparency" id="useTransparency" />
 			</group-box>
 
 			<group-box name="Emoticons">

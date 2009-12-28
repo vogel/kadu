@@ -12,10 +12,12 @@
 #include <QtGui/QComboBox>
 #include <QtGui/QLabel>
 #include <QtGui/QHBoxLayout>
+#include <QtGui/QPalette>
 #include <QtGui/QPushButton>
 
 #include "accounts/account-manager.h"
 #include "chat/chat-details-simple.h"
+#include "chat/html-messages-renderer.h"
 #include "chat/style-engines/chat-engine-adium/chat-engine-adium.h"
 #include "chat/style-engines/chat-engine-kadu/chat-engine-kadu.h"
 #include "chat/message/message-render-info.h"
@@ -81,6 +83,12 @@ void ChatStylesManager::chatViewCreated(ChatMessagesView *view)
 	{
 		chatViews.append(view);
 		CurrentEngine->refreshView(view->renderer());
+		if (CompositingEnabled && config_file.readBoolEntry("Chat", "UseTransparency", false))
+		{
+			QPalette palette = view->renderer()->webPage()->palette();
+			palette.setBrush(QPalette::Base, Qt::transparent);
+			view->renderer()->webPage()->setPalette(palette);
+		}
 	}
 }
 
@@ -169,9 +177,40 @@ void ChatStylesManager::configurationUpdated()
 	else
 		CurrentEngine->configurationUpdated();
 
+	triggerCompositingStateChanged();
+
 	foreach (ChatMessagesView *view, chatViews)
 	{
 		view->updateBackgroundsAndColors();
+		CurrentEngine->refreshView(view->renderer());
+	}
+}
+
+void ChatStylesManager::compositingEnabled()
+{
+	CompositingEnabled = true;
+	foreach (ChatMessagesView *view, chatViews)
+	{
+		QPalette palette = view->renderer()->webPage()->palette();
+		if (config_file.readBoolEntry("Chat", "UseTransparency", false))
+			palette.setBrush(QPalette::Base, Qt::transparent);
+		else
+			palette.setBrush(QPalette::Base, config_file.readColorEntry("Look", "ChatBgColor"));
+
+		view->renderer()->webPage()->setPalette(palette);
+		CurrentEngine->refreshView(view->renderer());
+	}
+}
+
+void ChatStylesManager::compositingDisabled()
+{
+	CompositingEnabled = false;
+	foreach (ChatMessagesView *view, chatViews)
+	{
+		QPalette palette = view->renderer()->webPage()->palette();
+		palette.setBrush(QPalette::Base, config_file.readColorEntry("Look", "ChatBgColor"));
+
+		view->renderer()->webPage()->setPalette(palette);
 		CurrentEngine->refreshView(view->renderer());
 	}
 }

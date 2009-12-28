@@ -4,10 +4,11 @@
 #include "gui/widgets/chat-widget.h"
 
 #include "configuration/configuration-aware-object.h"
+#include "os/generic/compositing-aware-object.h"
 
 class QTimer;
 
-class ChatWindow : public QWidget, public ChatContainer, ConfigurationAwareObject
+class ChatWindow : public QWidget, public ChatContainer, ConfigurationAwareObject, CompositingAwareObject
 {
 	Q_OBJECT
 
@@ -39,6 +40,9 @@ protected:
 	virtual void windowActivationChange(bool oldActive);
 
 	virtual void configurationUpdated();
+
+	virtual void compositingEnabled();
+	virtual void compositingDisabled();
 
 public:
 	ChatWindow(QWidget *parent = 0);

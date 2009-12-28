@@ -2,6 +2,7 @@
 #define MAIN_CONFIGURATION_WINDOW_H
 
 #include "gui/windows/configuration-window.h"
+#include "os/generic/compositing-aware-object.h"
 
 #include "exports.h"
 
@@ -41,7 +42,7 @@ class ConfigFileDataManager;
 	@author Vogel
 	@short G��wne okno konfiguracyjne.
  **/
-class KADUAPI MainConfigurationWindow : public ConfigurationWindow
+class KADUAPI MainConfigurationWindow : public ConfigurationWindow, CompositingAwareObject
 {
 	Q_OBJECT
 
@@ -66,12 +67,17 @@ class KADUAPI MainConfigurationWindow : public ConfigurationWindow
 	ConfigComboBox *mailComboBox;
 	ConfigLineEdit *mailCommandLineEdit;
 
+	QCheckBox *turnOnTransparency;
+
 	void setLanguages();
 
 	void setQtThemes();
 	void setToolTipClasses();
 
 	static QString findExecutable(const QStringList &paths, const QStringList &executableNames);
+
+	void compositingEnabled();
+	void compositingDisabled();
 
 private slots:
 	void onChangeEmoticonsStyle(int index);
