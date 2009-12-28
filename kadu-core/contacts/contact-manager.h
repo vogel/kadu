@@ -36,7 +36,7 @@ private slots:
 
 protected:
 	virtual void itemAboutToBeRegistered(Contact item);
-	virtual void itemRegisterd(Contact item);
+	virtual void itemRegistered(Contact item);
 	virtual void itemAboutToBeUnregisterd(Contact item);
 	virtual void itemUnregistered(Contact item);
 

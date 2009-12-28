@@ -35,8 +35,6 @@ private:
 	BuddyNameFilter *NameFilter;
 
 private slots:
-	void selectNext();
-	void selectPrevious();
 	void nameFilterChanged(const QString &filter);
 
 protected:

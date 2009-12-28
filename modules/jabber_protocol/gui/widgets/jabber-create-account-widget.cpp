@@ -227,7 +227,7 @@ void JabberCreateAccountWidget::connectionOptionsChanged()
 
 void JabberCreateAccountWidget::dataChanged()
 {
-	RemindPassword->setEnabled(!Username->text().isEmpty());
+// 	RemindPassword->setEnabled(!Username->text().isEmpty());
 ///	AddThisAccount->setEnabled(!Username->text().isEmpty() && !Password->text().isEmpty()
 ///				   && !Identity->identityName().isEmpty());
 }

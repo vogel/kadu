@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include <QtGui/QHBoxLayout>
+#include <QtGui/QPushButton>
 #include <QtGui/QTableView>
 
 #include "gui/widgets/buddy-contacts-table-delegate.h"
@@ -45,4 +46,49 @@ void BuddyContactsTable::createGui()
 	View->horizontalHeader()->setStretchLastSection(true);
 
 	layout->addWidget(View);
+
+	QWidget *buttons = new QWidget(View);
+	QVBoxLayout *buttonsLayout = new QVBoxLayout(buttons);
+
+	QPushButton *moveUpButton = new QPushButton(tr("Move up"), buttons);
+	connect(moveUpButton, SIGNAL(clicked(bool)), this, SLOT(moveUpClicked()));
+	buttonsLayout->addWidget(moveUpButton);
+
+	QPushButton *moveDownButton = new QPushButton(tr("Move down"), buttons);
+	connect(moveDownButton, SIGNAL(clicked(bool)), this, SLOT(moveDownClicked()));
+	buttonsLayout->addWidget(moveDownButton);
+
+	QPushButton *addContactButton = new QPushButton(tr("Add contact"), buttons);
+	connect(addContactButton, SIGNAL(clicked(bool)), this, SLOT(addClicked()));
+	buttonsLayout->addWidget(addContactButton);
+
+	QPushButton *detachContactButton = new QPushButton(tr("Detach contact"), buttons);
+	connect(detachContactButton, SIGNAL(clicked(bool)), this, SLOT(detachClicked()));
+	buttonsLayout->addWidget(detachContactButton);
+
+	QPushButton *removeContactButton = new QPushButton(tr("Remove contact"), buttons);
+	connect(removeContactButton, SIGNAL(clicked(bool)), this, SLOT(removeClicked()));
+	buttonsLayout->addWidget(removeContactButton);
+
+	layout->addWidget(buttons);
+}
+
+void BuddyContactsTable::moveUpClicked()
+{
+}
+
+void BuddyContactsTable::moveDownClicked()
+{
+}
+
+void BuddyContactsTable::addClicked()
+{
+}
+
+void BuddyContactsTable::detachClicked()
+{
+}
+
+void BuddyContactsTable::removeClicked()
+{
 }

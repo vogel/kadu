@@ -198,16 +198,17 @@ void DccManager::connectSocketNotifiers(DccSocketNotifiers *notifiers)
 {
 	connect(notifiers, SIGNAL(destroyed(QObject *)),
 			this, SLOT(socketNotifiersDestroyed(QObject *)));
-	connect(notifiers, SIGNAL(incomingConnection(struct gg_dcc *)),
-			this, SLOT(dccIncomingConnection(struct gg_dcc *)));
+// 	TODO: 0.6.6 signal never emited
+// 	connect(notifiers, SIGNAL(incomingConnection(struct gg_dcc *)),
+// 			this, SLOT(dccIncomingConnection(struct gg_dcc *)));
 }
 
 void DccManager::disconnectSocketNotifiers(DccSocketNotifiers *notifiers)
 {
 	disconnect(notifiers, SIGNAL(destroyed(QObject *)),
 			this, SLOT(socketNotifiersDestroyed(QObject *)));
-	disconnect(notifiers, SIGNAL(incomingConnection(struct gg_dcc *)),
-			this, SLOT(dccIncomingConnection(struct gg_dcc *)));
+// 	disconnect(notifiers, SIGNAL(incomingConnection(struct gg_dcc *)),
+// 			this, SLOT(dccIncomingConnection(struct gg_dcc *)));
 }
 
 void DccManager::socketNotifiersDestroyed(QObject *socketNotifiers)

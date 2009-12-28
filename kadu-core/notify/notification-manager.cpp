@@ -191,8 +191,8 @@ void NotificationManager::accountUnregistered(Account account)
 	if (!protocol)
 		return;
 
-	disconnect(protocol, SIGNAL(connectionError(Account, const QString &, const QString &)),
-			this, SLOT(connectionError(Account, const QString &, const QString &))); // TODO: fix
+// 	disconnect(protocol, SIGNAL(connectionError(Account, const QString &, const QString &)),
+// 			this, SLOT(connectionError(Account, const QString &, const QString &))); // TODO: 0.6.6 fix
 	disconnect(account.data(), SIGNAL(buddyStatusChanged(Contact, Status)),
 			this, SLOT(statusChanged(Contact, Status)));
 
