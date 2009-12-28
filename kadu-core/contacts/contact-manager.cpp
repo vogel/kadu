@@ -47,7 +47,7 @@ void ContactManager::itemAboutToBeRegistered(Contact item)
 	emit contactAboutToBeAdded(item);
 }
 
-void ContactManager::itemRegisterd(Contact item)
+void ContactManager::itemRegistered(Contact item)
 {
 	emit contactAdded(item);
 	connect(item.data(), SIGNAL(idChanged(const QString &)), this, SLOT(idChanged(const QString &)));
