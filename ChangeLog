@@ -7,6 +7,11 @@ Jeśli jest w postaci (z) to zarówno pomysł jak i wykonanie należy do z.
 * gui: better SelectBuddyCombobox
 * core: PendingMessages ported to new API
 * gui: contacts with pending messages have envelope icon next to protocol icon
+* gui: BuddyDataWindow contacts widget upgraded
+* gui: XFixes extension for X11 is now required
+* file-transfer: file transfer ported to new API with new logic (split FileTransferHandler from FileTransfer)
+* gui: YourAccounts window allows adding accounts again
+* gui: SubscriptionWindow added
 
 +++ version 0.6.6-alpha0
 * better build system for modules - kadu_module macro instead of dozen lines in each module (vogel)

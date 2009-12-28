@@ -1,4 +1,5 @@
- /***************************************************************************
+
+/***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -269,7 +270,7 @@ void JabberCreateAccountWidget::registerNewAccountFinished(JabberServerRegisterA
 	{
 		MessageDialog::msg(tr("Registration was successful. Your new Jabber ID is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(jsra->jid()), false, "Information", this);
 
-		Account jabberAccount;
+		Account jabberAccount = Account::create();
 		// TODO: 0.6.6 set protocol after details because of crash
 		//jabberAccount.setProtocolName("jabber");
 		JabberAccountDetails *details = new JabberAccountDetails(jabberAccount);
