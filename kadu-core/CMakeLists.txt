@@ -57,6 +57,7 @@ set (kadu_SRCS
 	chat/chat-shared.cpp
 	chat/chat-styles-manager.cpp
 	chat/html-messages-renderer.cpp
+	chat/recent-chat-manager.cpp
 
 	chat/filter/chat-name-filter.cpp
 
@@ -330,6 +331,7 @@ set (kadu_MOC_SRCS
 	chat/chat-shared.h
 	chat/chat-styles-manager.h
 	chat/html-messages-renderer.h
+	chat/recent-chat-manager.h
 
 	chat/filter/chat-filter.h
 	#chat/filter/chat-name-filter.h
