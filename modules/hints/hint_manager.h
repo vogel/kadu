@@ -121,7 +121,7 @@ private slots:
 	void hintOverUserConfigurationWindowDestroyed();
 	void showOverUserConfigurationWindow();
 	void updateOverUserPreview();
-	void hintsPreview();
+	void showHintsPreview();
 
 protected:
 	virtual void configurationUpdated();

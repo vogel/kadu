@@ -133,7 +133,7 @@ void HintManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainCo
 	connect(maximumWidth, SIGNAL(valueChanged(int)), this, SLOT(maximumWidthChanged(int)));
 
 	QPushButton *previewButton = dynamic_cast<QPushButton *>(mainConfigurationWindow->widget()->widgetById("hints/preview"));
-	connect(previewButton, SIGNAL(clicked()), this, SLOT(hintsPreview()));
+	connect(previewButton, SIGNAL(clicked()), this, SLOT(showHintsPreview()));
 
 	connect(mainConfigurationWindow->widget()->widgetById("toolTipClasses"), SIGNAL(currentIndexChanged(const QString &)),
 		this, SLOT(toolTipClassesHighlighted(const QString &)));
@@ -173,7 +173,7 @@ void HintManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainCo
 	toolTipBox->addWidgets(new QLabel("Hint over userlist: "), configureHint);
 }
 
-void HintManager::hintsPreview()
+void HintManager::showHintsPreview()
 {
 	Notification *notify = new Notification(QString(), IconsManager::instance()->loadIcon("Message"));
 	notify->setText(qApp->translate("@default", "Hints position preview"));
