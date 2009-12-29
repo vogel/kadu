@@ -13,6 +13,7 @@
 #include "model/roles.h"
 
 #include "accounts-combo-box.h"
+#include <accounts/filter/abstract-account-filter.h>
 
 AccountsComboBox::AccountsComboBox(bool includeSelectAccount, QWidget *parent) :
 		QComboBox(parent)
@@ -20,7 +21,9 @@ AccountsComboBox::AccountsComboBox(bool includeSelectAccount, QWidget *parent) :
 	Model = new AccountsModel(this);
 	ProxyModel = new AccountsProxyModel(this);
 	ProxyModel->setSourceModel(Model);
-	
+
+	connect(ProxyModel, SIGNAL(filterChanged()), this, SLOT(resetAccount()));
+
 	ActionsProxyModel::ModelActionList accountsModelBeforeActions;
 	if (includeSelectAccount)
 		accountsModelBeforeActions.append(qMakePair<QString, QString>(tr(" - Select account - "), ""));
@@ -29,6 +32,8 @@ AccountsComboBox::AccountsComboBox(bool includeSelectAccount, QWidget *parent) :
 	ActionsModel->setSourceModel(ProxyModel);
 
 	setModel(ActionsModel);
+
+	connect(this, SIGNAL(activated(int)), this, SLOT(activatedSlot(int)));
 }
 
 AccountsComboBox::~AccountsComboBox()
@@ -40,12 +45,19 @@ void AccountsComboBox::setCurrentAccount(Account account)
 	QModelIndex index = Model->accountModelIndex(account);
 	index = ProxyModel->mapFromSource(index);
 	index = ActionsModel->mapFromSource(index);
-	setCurrentIndex(index.row());
+
+	if (index.row() < 0 || index.row() >= count())
+		setCurrentIndex(0);
+	else
+		setCurrentIndex(index.row());
+
+	CurrentAccount = account;
 }
 
 Account AccountsComboBox::currentAccount()
 {
-	return qvariant_cast<Account>(ActionsModel->index(currentIndex(), 0).data(AccountRole));
+	CurrentAccount = qvariant_cast<Account>(ActionsModel->index(currentIndex(), 0).data(AccountRole));
+	return CurrentAccount;
 }
 
 void AccountsComboBox::addFilter(AbstractAccountFilter *filter)
@@ -56,4 +68,14 @@ void AccountsComboBox::addFilter(AbstractAccountFilter *filter)
 void AccountsComboBox::removeFilter(AbstractAccountFilter *filter)
 {
 	ProxyModel->removeFilter(filter);
+}
+
+void AccountsComboBox::activatedSlot(int index)
+{
+	currentAccount(); // sets CurrentAccount variable
+}
+
+void AccountsComboBox::resetAccount()
+{
+	setCurrentAccount(CurrentAccount);
 }

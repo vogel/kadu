@@ -74,12 +74,18 @@ void AccountsProxyModel::addFilter(AbstractAccountFilter *filter)
 {
 	Filters.append(filter);
 	invalidateFilter();
-	connect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
+	connect(filter, SIGNAL(filterChanged()), this, SLOT(filterChangedSlot()));
 }
 
 void AccountsProxyModel::removeFilter(AbstractAccountFilter *filter)
 {
 	Filters.removeAll(filter);
 	invalidateFilter();
-	connect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
+	connect(filter, SIGNAL(filterChanged()), this, SLOT(filterChangedSlot()));
+}
+
+void AccountsProxyModel::filterChangedSlot()
+{
+	invalidateFilter();
+	emit filterChanged();
 }

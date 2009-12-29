@@ -12,8 +12,9 @@
 
 #include <QtGui/QComboBox>
 
+#include "accounts/account.h"
+
 class AbstractAccountFilter;
-class Account;
 class AccountsModel;
 class AccountsProxyModel;
 class ActionsProxyModel;
@@ -25,6 +26,12 @@ class AccountsComboBox : public QComboBox
 	AccountsModel *Model;
 	AccountsProxyModel *ProxyModel;
 	ActionsProxyModel *ActionsModel;
+
+	Account CurrentAccount;
+
+private slots:
+	void activatedSlot(int index);
+	void resetAccount();
 
 public:
 	explicit AccountsComboBox(bool includeSelectAccount = false, QWidget *parent = 0);
