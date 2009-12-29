@@ -152,7 +152,7 @@ void NotifyConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurat
 		{
 			ContactNotifyData *cnd = 0;
 			if (buddy.data())
-				cnd = buddy.data()->moduleData<ContactNotifyData>("notify");
+				cnd = buddy.data()->moduleStorableData<ContactNotifyData>("notify");
 
 			if (!cnd || !cnd->notify())
 				allUsers->addItem(buddy.display());
@@ -249,7 +249,7 @@ void NotifyConfigurationUiHandler::configurationWindowApplied()
 
 		ContactNotifyData *cnd = 0;
 		if (buddy.data())
-			cnd = buddy.data()->moduleData<ContactNotifyData>("notify");
+			cnd = buddy.data()->moduleStorableData<ContactNotifyData>("notify");
 		if (!cnd)
 			continue;
 
@@ -266,7 +266,7 @@ void NotifyConfigurationUiHandler::configurationWindowApplied()
 
 		ContactNotifyData *cnd = 0;
 		if (buddy.data())
-			buddy.data()->moduleData<ContactNotifyData>("notify");
+			buddy.data()->moduleStorableData<ContactNotifyData>("notify");
 		if (!cnd)
 			continue;
 

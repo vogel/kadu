@@ -196,6 +196,9 @@ MainConfigurationWindow::MainConfigurationWindow()
 
 	widget()->widgetById("parseStatus")->setToolTip(qApp->translate("@default", SyntaxText));
 	(dynamic_cast<ConfigSyntaxEditor *>(widget()->widgetById("infoPanelSyntax")))->setSyntaxHint(qApp->translate("@default", SyntaxText));
+
+	connect(widget()->widgetById("recentChatsStore"), SIGNAL(toggled(bool)),
+			widget()->widgetById("recentChatsTimeout"), SLOT(setDisabled(bool)));
 }
 
 MainConfigurationWindow::~MainConfigurationWindow()

@@ -118,7 +118,8 @@ public:
 private:
 	StoragePoint *Storage;
 	StorableObjectState State;
-	QMap<QString, StorableObject *> ModulesData;
+	QMap<QString, StorableObject *> ModulesStorableData;
+	QMap<QString, void *> ModulesData;
 
 protected:
 	virtual StoragePoint * createStoragePoint();
@@ -127,6 +128,7 @@ protected:
 
 public:
 	StorableObject();
+	virtual ~StorableObject();
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
@@ -264,7 +266,7 @@ template<class T>
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
-	 * @short Loads ModuleObject data from XML node (as subnode).
+	 * @short Loads storable ModuleData data from XML node (as subnode).
 	 * @param T type of returned value (must be class that inherits from @link ModuleData @endlink)
 	 * @param module name of module to be loaded
 	 * @param create when true this method can create new ModuleData (if non present)
@@ -275,17 +277,46 @@ template<class T>
 	 * create new object with default values.
 	 */
 template<class T>
-	T * moduleData(const QString &module, bool create = false)
+	T * moduleStorableData(const QString &module, bool create = false)
 	{
-		if (ModulesData.contains(module))
-			return dynamic_cast<T *>(ModulesData[module]);
+		if (ModulesStorableData.contains(module))
+			return dynamic_cast<T *>(ModulesStorableData[module]);
 
 		StoragePoint *storagePoint = storagePointForModuleData(module, create);
 		if (!storagePoint)
 			return 0;
 
+		if (!create)
+			return 0;
+
 		T *result = new T(this);
 		result->setStorage(storagePoint);
+		ModulesStorableData[module] = result;
+		return result;
+	}
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Returns non-storable module data for object.
+	 * @param T type of returned value (any class)
+	 * @param module name of module to be loaded
+	 * @param create when true this method can create new ModuleData (if non present)
+	 * @return object of type T assigned with this storable object
+	 *
+	 * Returns object of type T with name module assigned with this obejct. If no
+	 * gived object is present and create is set to true, new object is created,
+	 * assigned and returned.
+	 */
+template<class T>
+	T * moduleData(const QString &module, bool create = false)
+	{
+		if (ModulesData.contains(module))
+			return reinterpret_cast<T *>(ModulesData[module]);
+
+		if (!create)
+			return 0;
+
+		T *result = new T();
 		ModulesData[module] = result;
 		return result;
 	}

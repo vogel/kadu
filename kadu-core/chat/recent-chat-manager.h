@@ -12,11 +12,14 @@
 
 #include <QtCore/QObject>
 
+#include "configuration/configuration-aware-object.h"
 #include "storage/storable-object.h"
+
+class QTimer;
 
 class Chat;
 
-class KADUAPI RecentChatManager : public QObject, public StorableObject
+class KADUAPI RecentChatManager : public QObject, public StorableObject, private ConfigurationAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(RecentChatManager)
@@ -24,6 +27,7 @@ class KADUAPI RecentChatManager : public QObject, public StorableObject
 	static RecentChatManager * Instance;
 
 	QList<Chat> RecentChats;
+	QTimer *CleanUpTimer;
 
 	RecentChatManager();
 	virtual ~RecentChatManager();
@@ -31,6 +35,12 @@ class KADUAPI RecentChatManager : public QObject, public StorableObject
 	virtual void load();
 
 	void removeRecentChat(Chat chat);
+
+private slots:
+	void cleanUp();
+
+protected:
+	virtual void configurationUpdated();
 
 public:
 	static RecentChatManager * instance();

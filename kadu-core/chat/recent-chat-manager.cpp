@@ -7,7 +7,11 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtCore/QDateTime>
+#include <QtCore/QTimer>
+
 #include "chat/chat-manager.h"
+#include "configuration/configuration-file.h"
 
 #include "recent-chat-manager.h"
 
@@ -23,10 +27,13 @@ RecentChatManager *  RecentChatManager::instance()
 	return Instance;
 }
 
-RecentChatManager::RecentChatManager()
+RecentChatManager::RecentChatManager() :
+		CleanUpTimer(0)
 {
 	setState(StateNotLoaded);
 	ConfigurationManager::instance()->registerStorableObject(this);
+
+	configurationUpdated();
 }
 
 RecentChatManager::~RecentChatManager()
@@ -85,9 +92,10 @@ void RecentChatManager::store()
 	for (int i = 0; i < count; i++)
 		mainElement.removeChild(chatElements.at(i));
 
-	foreach (Chat chat, RecentChats)
-		if (chat && !chat.uuid().isNull())
-			file->appendTextNode(mainElement, "Chat", chat.uuid().toString());
+	if (config_file.readBoolEntry("Chat", "RecentChatsStore", false))
+		foreach (Chat chat, RecentChats)
+			if (chat && !chat.uuid().isNull())
+				file->appendTextNode(mainElement, "Chat", chat.uuid().toString());
 }
 
 QList<Chat> RecentChatManager::recentChats()
@@ -98,8 +106,14 @@ QList<Chat> RecentChatManager::recentChats()
 
 void RecentChatManager::addRecentChat(Chat chat)
 {
+	if (!chat)
+		return;
+
 	ensureLoaded();
 	removeRecentChat(chat);
+
+	QDateTime *recentChatData = chat.data()->moduleData<QDateTime>("recent-chat", true);
+	*recentChatData = QDateTime::currentDateTime();
 
 	emit recentChatAboutToBeAdded(chat);
 	RecentChats.prepend(chat);
@@ -119,4 +133,48 @@ void RecentChatManager::removeRecentChat(Chat chat)
 	emit recentChatAboutToBeRemoved(chat);
 	RecentChats.removeAll(chat);
 	emit recentChatRemoved(chat);
+}
+
+void RecentChatManager::configurationUpdated()
+{
+	if (config_file.readBoolEntry("Chat", "RecentChatsStore", false))
+	{
+		delete CleanUpTimer;
+		CleanUpTimer = 0;
+		return;
+	}
+
+	if (CleanUpTimer)
+		return;
+
+	CleanUpTimer = new QTimer(this);
+	CleanUpTimer->setInterval(30 * 1000);
+	connect(CleanUpTimer, SIGNAL(timeout()), this, SLOT(cleanUp()));
+	CleanUpTimer->start();
+}
+
+void RecentChatManager::cleanUp()
+{
+	if (config_file.readBoolEntry("Chat", "RecentChatsStore", false))
+		return;
+
+	int secs = config_file.readNumEntry("Chat", "RecentChatsTimeout") * 60;
+	QDateTime now = QDateTime::currentDateTime();
+
+	QList<Chat> toRemove;
+	foreach (Chat chat, RecentChats)
+	{
+		QDateTime *recentChatData = chat.data()->moduleData<QDateTime>("recent-chat");
+		if (!recentChatData)
+		{
+			toRemove.append(chat);
+			continue;
+		}
+
+		if (recentChatData->addSecs(secs) < now)
+			toRemove.append(chat);
+	}
+
+	foreach (Chat chat, toRemove)
+		removeRecentChat(chat);
 }

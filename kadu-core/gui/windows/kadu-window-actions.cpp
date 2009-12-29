@@ -101,7 +101,7 @@ void checkHideDescription(Action *action)
 	{
 		BuddyKaduData *ckd = 0;
 		if (buddy.data())
-			ckd = buddy.data()->moduleData<BuddyKaduData>("kadu", true);
+			ckd = buddy.data()->moduleStorableData<BuddyKaduData>("kadu", true);
 		if (!ckd)
 			continue;
 
@@ -832,7 +832,7 @@ void KaduWindowActions::hideDescriptionActionActivated(QAction *sender, bool tog
 
 		BuddyKaduData *ckd = 0;
 		if (buddy.data())
-			ckd = buddy.data()->moduleData<BuddyKaduData>("kadu", true);
+			ckd = buddy.data()->moduleStorableData<BuddyKaduData>("kadu", true);
 		if (!ckd)
 			continue;
 

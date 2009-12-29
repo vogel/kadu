@@ -305,6 +305,7 @@ Text is plain black." />
 					   tool-tip="Ask before clearing chat window" />
 				<check-box caption="Save opened windows on exit" config-section="Chat" config-item="SaveOpenedWindows"
 					   tool-tip="Save opened chat windows when exiting" />
+				<check-box caption="Store recent chats between program runs" config-section="Chat" config-item="RecentChatsStore" id="recentChatsStore" tool-tip="" />
 				<spin-box caption="Remember recent chats for" config-section="Chat" config-item="RecentChatsTimeout" min-value="1" max-value="1000000" suffix=" min." id="recentChatsTimeout" tool-tip="" />
 			</group-box>
 

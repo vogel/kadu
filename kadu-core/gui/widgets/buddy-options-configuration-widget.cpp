@@ -51,7 +51,7 @@ void BuddyOptionsConfigurationWidget::createGui()
 	NotifyCheckBox = new QCheckBox(tr("Notify when contact's status changes"), this);
 	ContactNotifyData *cnd = 0;
 	if (MyBuddy.data())
-		cnd = MyBuddy.data()->moduleData<ContactNotifyData>("notify");
+		cnd = MyBuddy.data()->moduleStorableData<ContactNotifyData>("notify");
 	if (cnd)
 		NotifyCheckBox->setChecked(cnd->notify());
 
@@ -67,7 +67,7 @@ void BuddyOptionsConfigurationWidget::saveConfiguration()
 
 	ContactNotifyData *cnd = 0;
 	if (MyBuddy.data())
-		cnd = MyBuddy.data()->moduleData<ContactNotifyData>("notify");
+		cnd = MyBuddy.data()->moduleStorableData<ContactNotifyData>("notify");
 	if (cnd)
 	{
 		cnd->setNotify(NotifyCheckBox->isChecked());

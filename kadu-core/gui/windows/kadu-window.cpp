@@ -219,7 +219,7 @@ void KaduWindow::createRecentChatsMenu()
 	foreach (const Chat chat, recentChats)
 		if (!ChatWidgetManager::instance()->byChat(chat))
 		{
-			QAction *action = new QAction(IconsManager::instance()->loadIcon("OpenChat"), chat.title(), this);
+			QAction *action = new QAction(IconsManager::instance()->loadIcon("OpenChat"), chat.name(), this);
 			action->setData(QVariant::fromValue<Chat>(chat));
 			RecentChatsMenu->addAction(action);
 

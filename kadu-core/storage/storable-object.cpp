@@ -21,6 +21,14 @@ StorableObject::StorableObject() :
 {
 }
 
+StorableObject::~StorableObject()
+{
+	foreach (StorableObject *moduleData, ModulesStorableData)
+		delete moduleData;
+	foreach (void *moduleData, ModulesData)
+		delete moduleData;
+}
+
 /**
  * @author Rafal 'Vogel' Malinowski
  * @short Creates default storage point for object.
@@ -109,7 +117,7 @@ StoragePoint * StorableObject::storage()
  */
 void StorableObject::store()
 {
-	foreach (StorableObject *moduleData, ModulesData.values())
+	foreach (StorableObject *moduleData, ModulesStorableData.values())
 		moduleData->store();
 }
 
