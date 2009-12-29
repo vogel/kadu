@@ -215,36 +215,18 @@ void KaduWindow::createRecentChatsMenu()
 	RecentChatsMenu->clear();
 
 	QList<Chat> recentChats = RecentChatManager::instance()->recentChats();
-	if (recentChats.isEmpty())
-	{
-		RecentChatsMenuAction->setEnabled(false);
-		kdebugf2();
-		return;
-	}
-
-	RecentChatsMenuAction->setEnabled(true);
-
+	bool addedAnyChat = false;
 	foreach (const Chat chat, recentChats)
-	{/*
-		QStringList displays;
-
-		int i = 0;
-		foreach (const Contact &contact, chat.contacts())
+		if (!ChatWidgetManager::instance()->byChat(chat))
 		{
-			i++;
-			displays.append(contact.ownerBuddy().display());
+			QAction *action = new QAction(IconsManager::instance()->loadIcon("OpenChat"), chat.title(), this);
+			action->setData(QVariant::fromValue<Chat>(chat));
+			RecentChatsMenu->addAction(action);
 
-			if (5 == i)
-			{
-				displays.append("[...]");
-				break;
-			}
-		}*/
+			addedAnyChat = true;
+		}
 
-		QAction *action = new QAction(IconsManager::instance()->loadIcon("OpenChat"), chat.title(), this);
-		action->setData(QVariant::fromValue<Chat>(chat));
-		RecentChatsMenu->addAction(action);
-	}
+	RecentChatsMenuAction->setEnabled(addedAnyChat);
 
 	kdebugf2();
 }
