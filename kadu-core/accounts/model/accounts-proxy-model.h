@@ -23,6 +23,9 @@ class AccountsProxyModel : public QSortFilterProxyModel
 	bool BrokenStringCompare;
 	int compareNames(QString n1, QString n2) const;
 
+private slots:
+	void filterChangedSlot();
+
 protected:
 	virtual bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
 	virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
@@ -34,6 +37,9 @@ public:
 	virtual void setSourceModel(QAbstractItemModel *sourceModel);
 	void addFilter(AbstractAccountFilter *filter);
 	void removeFilter(AbstractAccountFilter *filter);
+
+signals:
+	void filterChanged();
 
 };
 

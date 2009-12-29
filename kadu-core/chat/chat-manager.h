@@ -80,7 +80,7 @@ class KADUAPI ChatManager : public QObject, public Manager<Chat>
 
 protected:
 	virtual void itemAboutToBeRegistered(Chat item);
-	virtual void itemRegisterd(Chat item);
+	virtual void itemRegistered(Chat item);
 	virtual void itemAboutToBeUnregisterd(Chat item);
 	virtual void itemUnregistered(Chat item);
 

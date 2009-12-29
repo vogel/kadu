@@ -68,7 +68,7 @@ ChatWidget::~ChatWidget()
 
 	ChatWidgetManager::instance()->unregisterChatWidget(this);
 
-	disconnectAcknowledgeSlots();
+//	disconnectAcknowledgeSlots();
 
 	kdebugmf(KDEBUG_FUNCTION_END, "chat destroyed\n");
 }
@@ -126,8 +126,8 @@ void ChatWidget::createContactsList()
 	BuddiesView->setModel(new BuddyListModel(CurrentChat.contacts().toBuddySet().toBuddyList(), this));
 	BuddiesView->setMinimumSize(QSize(30, 30));
 
-	connect(BuddiesView, SIGNAL(contactActivated(Buddy)),
-			Core::instance()->kaduWindow(), SLOT(sendMessage(Buddy)));
+	connect(BuddiesView, SIGNAL(chatActivated(Chat)),
+			Core::instance()->kaduWindow(), SLOT(openChatWindow(Chat)));
 
 	QPushButton *leaveConference = new QPushButton(tr("Leave conference"), contactsListContainer);
 	leaveConference->setMinimumWidth(BuddiesView->minimumWidth());

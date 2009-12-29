@@ -85,8 +85,6 @@ DockingManager::DockingManager()
 	CloseKaduAction = new QAction(IconsManager::instance()->loadIcon("Exit"), tr("&Exit Kadu"), this);
 	connect(CloseKaduAction, SIGNAL(triggered()), qApp, SLOT(quit()));
 
-	connect(this, SIGNAL(mousePressMidButton()), ChatWidgetManager::instance(), SLOT(openPendingMsgs(bool)));
-
 	configurationUpdated();
 
 	updateContextMenu();
@@ -196,6 +194,7 @@ void DockingManager::trayMousePressEvent(QMouseEvent * e)
 	if (e->button() == Qt::MidButton)
 	{
 		emit mousePressMidButton();
+		ChatWidgetManager::instance()->openPendingMsgs();
 		return;
 	}
 

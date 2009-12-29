@@ -104,6 +104,9 @@ void BuddyManager::itemRemoved(Buddy buddy)
 
 void BuddyManager::mergeBuddies(Buddy destination, Buddy source)
 {
+	if (destination == source)
+		return;
+
 	ensureLoaded();
 
 	foreach (const Contact &contact, source.contacts())
