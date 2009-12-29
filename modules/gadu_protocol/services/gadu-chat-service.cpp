@@ -346,8 +346,6 @@ void GaduChatService::removeTimeoutUndeliveredMessages()
 			toRemove.append(message.key());
 			UndeliveredMessages[message.key()].setStatus(Message::StatusWontDeliver);
 		}
-
-		message++;
 	}
 
 	foreach (int messageId, toRemove)
