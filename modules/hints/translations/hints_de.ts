@@ -91,7 +91,7 @@
     </message>
 	<message>
 		<source>Hints position preview</source>
-		<translation>Hints position preview</translation>
+		<translation type="unfinished"></translation>
 	</message>
     <message>
         <source>&lt;b&gt;Text&lt;/b&gt; preview</source>
