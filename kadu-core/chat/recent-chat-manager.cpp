@@ -11,6 +11,8 @@
 
 #include "recent-chat-manager.h"
 
+#define MAX_RECENT_CHAT_COUNT 20
+
 RecentChatManager * RecentChatManager::Instance = 0;
 
 RecentChatManager *  RecentChatManager::instance()
@@ -102,6 +104,10 @@ void RecentChatManager::addRecentChat(Chat chat)
 	emit recentChatAboutToBeAdded(chat);
 	RecentChats.prepend(chat);
 	emit recentChatAdded(chat);
+
+	// limit
+	while (RecentChats.count() > MAX_RECENT_CHAT_COUNT)
+		removeRecentChat(RecentChats.last());
 }
 
 void RecentChatManager::removeRecentChat(Chat chat)
