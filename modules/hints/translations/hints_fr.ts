@@ -89,6 +89,10 @@
         <source>Set for all</source>
         <translation type="unfinished"></translation>
     </message>
+	<message>
+		<source>Hints position preview</source>
+		<translation type="unfinished"></translation>
+	</message>
     <message>
         <source>&lt;b&gt;Text&lt;/b&gt; preview</source>
         <translation type="unfinished"></translation>
