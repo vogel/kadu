@@ -60,7 +60,7 @@ class KaduApplication: public QApplication
 		int xfixes_event_base;
 #endif
 	public:
-		KaduApplication(int &argc, char **argv) : QApplication(argc, argv), xfixes_event_base(-1)
+		KaduApplication(int &argc, char **argv) : QApplication(argc, argv)
 		{
 #ifdef Q_OS_MAC
 			/* Install Reopen Application Event (Dock Clicked) */
@@ -70,6 +70,7 @@ class KaduApplication: public QApplication
 #endif
 
 #ifdef Q_WS_X11
+			xfixes_event_base = -1;
 			int dummy;
 			if (XFixesQueryExtension(QX11Info::display(), &xfixes_event_base, &dummy))
 			{
