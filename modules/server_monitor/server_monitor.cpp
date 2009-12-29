@@ -31,8 +31,8 @@ extern "C" KADU_EXPORT int server_monitor_init(bool firstLoad)
     {
         config_file_ptr->addVariable( "serverMonitor", "autorefresh", true );
         config_file_ptr->addVariable( "serverMonitor", "fileName", "kadu/modules/configuration/serverslist.txt" );
-        config_file_ptr->addVariable( "serverMonitor", "serverListHost", "www.ziemniakk1.yoyo.pl" );
-        config_file_ptr->addVariable( "serverMonitor", "gaduServerList", true );
+        config_file_ptr->addVariable( "serverMonitor", "serverListHost", "sifaka.pl" );
+        config_file_ptr->addVariable( "serverMonitor", "useListFromServer", true );
         config_file_ptr->addVariable( "serverMonitor", "timerInterval", 5 );
         config_file_ptr->addVariable( "serverMonitor", "showResetButton", false );
     }
@@ -187,7 +187,7 @@ void ServerMonitor::readServerList()
 void ServerMonitor::configurationUpdated()
 {
     kdebugf();
-/*
+
     serverFileListName = config_file_ptr->readEntry( "serverMonitor", "fileName", "kadu/modules/configuration/serverslist.txt");
     readServerList();
 
@@ -200,7 +200,7 @@ void ServerMonitor::configurationUpdated()
         refreshTimer.start( 60000 * config_file_ptr->readNumEntry( "serverMonitor", "timerInterval", 5));
     else
         refreshTimer.stop();
-*/
+
     setConfiguration();
     kdebugf2();
 }
@@ -217,28 +217,31 @@ void ServerMonitor::setConfiguration()
     else
         refreshTimer.stop();
 
-    if ( config_file_ptr->readBoolEntry( "serverMonitor", "gaduServerList" ), true )
+   if ( config_file_ptr->readBoolEntry( "serverMonitor", "useListFromServer", false) ) // if ( config_file_ptr->readBoolEntry( "serverMonitor", "useListFromServer" ), true )
     {
-        serverFileListName = config_file_ptr->readEntry( "serverMonitor", "fileName", "kadu/modules/configuration/serverslist.txt");
-        readServerList();
-    }
-    else
-    {
+
         serverListBuffer = new QBuffer();
-        http = new QHttp ( config_file_ptr->readEntry( "serverMonitor", "serverListHost", "www.ziemniakk1.yoyo.pl" ), 80, this );
+        http = new QHttp ( config_file_ptr->readEntry( "serverMonitor", "serverListHost" ), 80, this );
         http->get( "/serverslist.txt", serverListBuffer );
         connect ( http, SIGNAL ( done (bool) ),
                     this, SLOT( downloadedServersList(bool) ));
+    }
+    else
+    {
+        serverFileListName = config_file_ptr->readEntry( "serverMonitor", "fileName", "kadu/modules/configuration/serverslist.txt");
+        readServerList();
     }
 }
 
 void ServerMonitor::downloadedServersList( bool err )
 {
     kdebugf();
+
     if ( err )
     {
         kdebugm( KDEBUG_WARNING, "Cannont download server's list!" );
         serverFileListName = config_file_ptr->readEntry( "serverMonitor", "fileName", "kadu/modules/configuration/serverslist.txt");
+        return;
     }
 
     QFile fileList(QDir::tempPath()+"/serverslist.txt");
@@ -248,11 +251,11 @@ void ServerMonitor::downloadedServersList( bool err )
 
     serverFileListName = QDir::tempPath()+"/serverslist.txt";
     readServerList();
-    kdebugm( KDEBUG_WARNING, "Cannont download server's list!" );
 
-    disconnect ( http, SIGNAL ( done (bool) ),
-        this, SLOT( downloadedServersList(bool) ));
+//    disconnect ( http, SIGNAL ( done (bool) ),
+//        this, SLOT( downloadedServersList(bool) ));
     delete http;
+    delete serverListBuffer;
 
     kdebugf2();
 }
