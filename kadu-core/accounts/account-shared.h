@@ -121,6 +121,9 @@ signals:
 	void protocolLoaded();
 	void protocolUnloaded();
 
+	void connected();
+	void disconnected();
+
 	void updated();
 
 };

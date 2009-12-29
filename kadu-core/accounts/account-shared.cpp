@@ -128,7 +128,9 @@ void AccountShared::useProtocolFactory(ProtocolFactory *factory)
 	{
 		disconnect(ProtocolHandler, SIGNAL(statusChanged(Account, Status)), this, SIGNAL(statusChanged()));
 		disconnect(ProtocolHandler, SIGNAL(contactStatusChanged(Contact, Status)),
-				this, SIGNAL(buddyStatusChanged(Contact, Status)));
+				   this, SIGNAL(buddyStatusChanged(Contact, Status)));
+		disconnect(ProtocolHandler, SIGNAL(connected(Account)), this, SIGNAL(connected()));
+		disconnect(ProtocolHandler, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
 	}
 
 	if (!factory)
@@ -149,6 +151,8 @@ void AccountShared::useProtocolFactory(ProtocolFactory *factory)
 		connect(ProtocolHandler, SIGNAL(statusChanged(Account, Status)), this, SIGNAL(statusChanged()));
 		connect(ProtocolHandler, SIGNAL(contactStatusChanged(Contact, Status)),
 				this, SIGNAL(buddyStatusChanged(Contact, Status)));
+		connect(ProtocolHandler, SIGNAL(connected(Account)), this, SIGNAL(connected()));
+		connect(ProtocolHandler, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
 	}
 }
 

@@ -14,17 +14,13 @@
 #include <QtGui/QLineEdit>
 
 #include "accounts/account.h"
-#include "accounts/account-manager.h"
-
+#include "configuration/configuration-file.h"
 #include "gui/widgets/configuration/configuration-widget.h"
-
-#include "config_file.h"
+#include "gui/windows/main-configuration-window.h"
+#include "misc/path-conversion.h"
 #include "debug.h"
-#include "kadu.h"
-#include "kadu_parser.h"
-#include "misc/misc.h"
 
-#include "../idle/idle.h"
+#include "modules/idle/idle.h"
 
 #include "autoaway.h"
 
@@ -40,7 +36,8 @@ extern "C" KADU_EXPORT int autoaway_init(bool firstLoad)
 
 	autoAway = new AutoAway();
 
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/autoaway.ui"), autoAway);
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/autoaway.ui"));
+	MainConfigurationWindow::registerUiHandler(autoAway);
 
 	kdebugf2();
 	return 0;
@@ -50,7 +47,8 @@ extern "C" KADU_EXPORT void autoaway_close()
 {
 	kdebugf();
 
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/autoaway.ui"), autoAway);
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/autoaway.ui"));
+	MainConfigurationWindow::unregisterUiHandler(autoAway);
 
 	delete autoAway;
 	autoAway = 0;
@@ -72,7 +70,7 @@ void AutoAwayStatusChanger::changeStatus(Status &status)
 	if (changeStatusTo == NoChangeStatus)
 		return;
 
-	if (status.isOffline())
+	if (status.isDisconnected())
 		return;
 
 	QString description = status.description();
@@ -96,27 +94,27 @@ void AutoAwayStatusChanger::changeStatus(Status &status)
 
 	if (changeStatusTo == ChangeStatusToOffline)
 	{
-		status.setType(Status::Offline);
+		status.setType("Offline");
 		status.setDescription(description);
 		return;
 	}
 
-	if (status.isInvisible())
+	if (status.group() == "Invisible")
 		return;
 
 	if (changeStatusTo == ChangeStatusToInvisible)
 	{
-		status.setType(Status::Invisible);
+		status.setType("Invisible");
 		status.setDescription(description);
 		return;
 	}
 
-	if (status.isBusy())
+	if (status.group() == "Busy")
 		return;
 
 	if (changeStatusTo == ChangeStatusToBusy)
 	{
-		status.setType(Status::Busy);
+		status.setType("Busy");
 		status.setDescription(description);
 		return;
 	}
@@ -134,14 +132,10 @@ void AutoAwayStatusChanger::setChangeDescriptionTo(ChangeDescriptionTo newChange
 	descriptionAddon = newDescriptionAddon;
 }
 
-AutoAway::AutoAway()
-	: autoAwayStatusChanger(0), timer(0), updateDescripion(true)
+AutoAway::AutoAway() :
+		autoAwayStatusChanger(0), timer(0), updateDescripion(true)
 {
-//TODO 0.6.6:
-	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
-
-	connect(gadu, SIGNAL(connected(Account *)), this, SLOT(on()));
-	connect(gadu, SIGNAL(disconnected(Account *)), this, SLOT(off()));
+	triggerAllAccountsRegistered();
 
 	createDefaultConfiguration();
 	configurationUpdated();
@@ -149,6 +143,8 @@ AutoAway::AutoAway()
 
 AutoAway::~AutoAway()
 {
+	triggerAllAccountsUnregistered();
+
 	if (timer)
 	{
 		delete timer;
@@ -161,12 +157,24 @@ AutoAway::~AutoAway()
 		delete autoAwayStatusChanger;
 		autoAwayStatusChanger = 0;
 	}
-//TODO 0.6.6:
-	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
-	disconnect(gadu, SIGNAL(connected(Account *)), this, SLOT(on()));
-	disconnect(gadu, SIGNAL(disconnected(Account *)), this, SLOT(off()));
 
 	qApp->removeEventFilter(this);
+}
+
+void AutoAway::accountRegistered(Account account)
+{
+// 	connect(account, SIGNAL(connected()), this, SLOT(
+	
+// 	connect(gadu, SIGNAL(connected(Account *)), this, SLOT(on()));
+// 	connect(gadu, SIGNAL(disconnected(Account *)), this, SLOT(off()));
+}
+
+void AutoAway::accountUnregistered(Account account)
+{
+	//TODO 0.6.6:
+// 	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
+// 	disconnect(gadu, SIGNAL(connected(Account *)), this, SLOT(on()));
+// 	disconnect(gadu, SIGNAL(disconnected(Account *)), this, SLOT(off()));
 }
 
 void AutoAway::on()
@@ -183,7 +191,10 @@ void AutoAway::on()
 	{
 		timer = new QTimer();
 		connect(timer, SIGNAL(timeout()), this, SLOT(checkIdleTime()));
-		timer->start(config_file.readNumEntry("General", "AutoAwayCheckTime") * 1000, TRUE);
+
+		timer->setInterval(config_file.readNumEntry("General", "AutoAwayCheckTime") * 1000);
+		timer->setSingleShot(true);
+		timer->start();
 	}
 }
 
@@ -197,7 +208,7 @@ void AutoAway::off()
 	}
 }
 
-//metoda wywo³ywana co sekundê(mo¿liwa zmiana w konfiguracji) w celu sprawdzenia czy mamy zmieniæ status
+//metoda wywoï¿½ywana co sekundï¿½(moï¿½liwa zmiana w konfiguracji) w celu sprawdzenia czy mamy zmieniï¿½ status
 void AutoAway::checkIdleTime()
 {
 	kdebugf();
@@ -231,7 +242,11 @@ void AutoAway::checkIdleTime()
 		refreshStatusTime = refreshStatusInterval;
 
 	if (timer)
-		timer->start(checkInterval * 1000, true);
+	{
+		timer->setInterval(checkInterval * 1000);
+		timer->setSingleShot(true);
+		timer->start();
+	}
 
 	kdebugf2();
 }
@@ -280,11 +295,11 @@ void AutoAway::configurationUpdated()
 
 	changeTo = (AutoAwayStatusChanger::ChangeDescriptionTo)config_file.readNumEntry("General", "AutoChangeDescription");
 //TODO 0.6.6:
-	Protocol *protocol = AccountManager::instance()->defaultAccount()->protocol();
-	if ((autoAwayEnabled || autoInvisibleEnabled || autoDisconnectEnabled) && protocol->isConnected())
-		on();
-	else
-		off();
+// 	Protocol *protocol = AccountManager::instance()->defaultAccount()->protocol();
+// 	if ((autoAwayEnabled || autoInvisibleEnabled || autoDisconnectEnabled) && protocol->isConnected())
+// 		on();
+// 	else
+// 		off();
 }
 
 void AutoAway::autoAwaySpinBoxValueChanged(int value)
@@ -316,10 +331,10 @@ void AutoAway::descriptionChangeChanged(int index)
 
 QString AutoAway::parseDescription(const QString &parseDescription)
 {
-	if (parseAutoStatus)//TODO 0.6.6:
-		return (KaduParser::parse(parseDescription, AccountManager::instance()->defaultAccount(), kadu->myself(), true));
-	else
-		return parseDescription;
+// 	if (parseAutoStatus)//TODO 0.6.6:
+// 		return (KaduParser::parse(parseDescription, AccountManager::instance()->defaultAccount(), kadu->myself(), true));
+// 	else
+// 		return parseDescription;
 }
 
 void AutoAway::createDefaultConfiguration()

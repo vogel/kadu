@@ -4,10 +4,10 @@
 #include <QtCore/QTimer>
 #include <QtCore/QObject>
 
-#include "configuration_aware_object.h"
-#include "main_configuration_window.h"
+#include "accounts/accounts-aware-object.h"
+#include "gui/windows/main-configuration-window.h"
+
 #include "status_changer.h"
-//#include "../modules/gadu_protocol/gadu.h"
 
 class QLineEdit;
 class QSpinBox;
@@ -54,7 +54,7 @@ public:
 
 };
 
-class AutoAway : public ConfigurationUiHandler, ConfigurationAwareObject
+class AutoAway : public ConfigurationUiHandler, ConfigurationAwareObject, AccountsAwareObject
 {
 	Q_OBJECT
 
@@ -109,6 +109,9 @@ private slots:
 
 protected:
 	virtual void configurationUpdated();
+
+	virtual void accountRegistered(Account account);
+	virtual void accountUnregistered(Account account);
 
 public:
 	AutoAway();
