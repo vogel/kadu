@@ -17,25 +17,32 @@ UserStatusChanger::UserStatusChanger() :
 }
 
 UserStatusChanger::~UserStatusChanger()
-
 {
 }
 
-void UserStatusChanger::changeStatus(Status &status)
+void UserStatusChanger::changeStatus(StatusContainer *container, Status &status)
 {
 	kdebugf();
 
-	status = UserStatus;
+	UserStatuses[container] = status;
 
 	kdebugf2();
 }
 
-void UserStatusChanger::userStatusSet(const Status &status)
+Status UserStatusChanger::status(StatusContainer *container)
+{
+	if (UserStatuses.contains(container))
+		return UserStatuses[container];
+	else
+		return Status::null;
+}
+
+void UserStatusChanger::userStatusSet(StatusContainer *container, const Status &status)
 {
 	kdebugf();
 
-	UserStatus = status;
-	emit statusChanged();
+	UserStatuses[container] = status;
+	emit statusChanged(container);
 
 	kdebugf2();
 }

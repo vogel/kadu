@@ -68,7 +68,7 @@ public:
 	virtual QString readToken(const QPixmap &tokenPixmap);
 
 	Buddy myself() { return Myself; }
-	Status status();
+	Status status(StatusContainer *container);
 
 	void createGui();
 	void setShowMainWindowOnStart(bool show);
@@ -77,11 +77,11 @@ public:
 	void setIcon(const QPixmap &icon);
 
 public slots:
-	void setStatus(const Status &status);
-	void setOnline(const QString &description = QString::null);
-	void setAway(const QString &description = QString::null);
-	void setInvisible(const QString &description = QString::null);
-	void setOffline(const QString &description = QString::null);
+	void setStatus(StatusContainer *container, const Status &status);
+	void setOnline(StatusContainer *container, const QString &description = QString::null);
+	void setAway(StatusContainer *container, const QString &description = QString::null);
+	void setInvisible(StatusContainer *container, const QString &description = QString::null);
+	void setOffline(StatusContainer *container, const QString &description = QString::null);
 
 	void quit();
 

@@ -11,8 +11,8 @@
 
 #include "status-changer.h"
 
-StatusChanger::StatusChanger(int priority)
-	: Priority(priority)
+StatusChanger::StatusChanger(int priority) :
+		Priority(priority)
 {
 }
 

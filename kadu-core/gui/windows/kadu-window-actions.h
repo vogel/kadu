@@ -16,6 +16,7 @@
 
 class QAction;
 
+class Account;
 class Action;
 class ActionDescription;
 
@@ -57,7 +58,7 @@ class KaduWindowActions : QObject
 	ActionDescription *UseProxy;
 
 private slots:
-	void statusChanged(Status status);
+	void statusChanged(Account account, Status status);
 
 	void inactiveUsersActionCreated(Action *action);
 	void descriptionUsersActionCreated(Action *action);
@@ -112,5 +113,7 @@ void disableNoGaduUle(Action *action);
 void disableNoGaduDescription(Action *action);
 void disableNoGaduDescriptionUrl(Action *action);
 void disableNoEMail(Action *action);
+
+#include "accounts/account.h" // for MOC
 
 #endif // KADU_WINDOW_ACTIONS_H

@@ -15,6 +15,7 @@
 #include "exports.h"
 
 class Status;
+class StatusContainer;
 
 class KADUAPI StatusChanger : public QObject
 {
@@ -28,10 +29,10 @@ public:
 
 	int priority();
 
-	virtual void changeStatus(Status &status) = 0;
+	virtual void changeStatus(StatusContainer *container, Status &status) = 0;
 
 signals:
-	void statusChanged();
+	void statusChanged(StatusContainer *);
 
 };
 

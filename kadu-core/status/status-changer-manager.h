@@ -10,9 +10,13 @@
 #ifndef STATUS_CHANGER_MANAGER_H
 #define STATUS_CHANGER_MANAGER_H
 
+#include <QtCore/QMap>
+
 #include "status/status.h"
 
+class Account;
 class StatusChanger;
+class StatusContainer;
 
 class KADUAPI StatusChangerManager : public QObject
 {
@@ -21,9 +25,9 @@ class KADUAPI StatusChangerManager : public QObject
 
 	static StatusChangerManager *Instance;
 
-	QList<StatusChanger *> statusChangers;
-	Status LastStatus;
-	bool enabled;
+	QList<StatusChanger *> StatusChangers;
+	QMap<StatusContainer *, Status> LastStatuses;
+	bool Enabled;
 
 	StatusChangerManager();
 	virtual ~StatusChangerManager();
@@ -36,14 +40,17 @@ public:
 	void registerStatusChanger(StatusChanger *statusChanger);
 	void unregisterStatusChanger(StatusChanger *statusChanger);
 
-	Status status() { return LastStatus; }
+	Status status(StatusContainer *statusContainer);
 
 public slots:
 	void statusChanged();
+	void statusChanged(StatusContainer *container);
 
 signals:
-	void statusChanged(Status);
+	void statusChanged(StatusContainer *container, Status status);
 
 };
+
+#include "accounts/account.h" // for MOC
 
 #endif // STATUS_CHANGER_MANAGER_H

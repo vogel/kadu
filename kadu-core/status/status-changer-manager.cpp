@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include "status/status-changer.h"
+#include "status/status-container-manager.h"
 #include "debug.h"
 
 #include "status-changer-manager.h"
@@ -22,8 +23,8 @@ StatusChangerManager * StatusChangerManager::instance()
 	return Instance;
 }
 
-StatusChangerManager::StatusChangerManager()
-	: enabled(false)
+StatusChangerManager::StatusChangerManager() :
+		Enabled(false)
 {
 }
 
@@ -35,16 +36,16 @@ void StatusChangerManager::registerStatusChanger(StatusChanger *statusChanger)
 {
 	kdebugf();
 
-	connect(statusChanger, SIGNAL(statusChanged()), this, SLOT(statusChanged()));
+	connect(statusChanger, SIGNAL(statusChanged(StatusContainer *)), this, SLOT(statusChanged(StatusContainer *)));
 
-	for (int i = 0; i < statusChangers.count(); i++)
-		if (statusChangers.at(i)->priority() > statusChanger->priority())
+	for (int i = 0; i < StatusChangers.count(); i++)
+		if (StatusChangers.at(i)->priority() > statusChanger->priority())
 		{
-			statusChangers.insert(i, statusChanger);
+			StatusChangers.insert(i, statusChanger);
 			return;
 		}
 
-	statusChangers.insert(statusChangers.end(), statusChanger);
+	StatusChangers.insert(StatusChangers.end(), statusChanger);
 	statusChanged();
 
 	kdebugf2();
@@ -54,9 +55,9 @@ void StatusChangerManager::unregisterStatusChanger(StatusChanger *statusChanger)
 {
 	kdebugf();
 
-	if (statusChangers.removeAll(statusChanger))
+	if (StatusChangers.removeAll(statusChanger))
 	{
-		disconnect(statusChanger, SIGNAL(statusChanged()), this, SLOT(statusChanged()));
+		disconnect(statusChanger, SIGNAL(statusChanged(StatusContainer *)), this, SLOT(statusChanged(StatusContainer *)));
 		statusChanged();
 	}
 
@@ -65,25 +66,32 @@ void StatusChangerManager::unregisterStatusChanger(StatusChanger *statusChanger)
 
 void StatusChangerManager::statusChanged()
 {
+	foreach (StatusContainer *container, StatusContainerManager::instance()->statusContainers())
+		statusChanged(container);
+}
+
+void StatusChangerManager::statusChanged(StatusContainer *container)
+{
 	kdebugf();
 
-	if (!enabled)
+	if (!Enabled)
 		return;
 
-	LastStatus = Status();
-	for (int i = 0; i < statusChangers.count(); i++)
-		statusChangers.at(i)->changeStatus(LastStatus);
+	Status status = Status();
+	for (int i = 0; i < StatusChangers.count(); i++)
+		StatusChangers.at(i)->changeStatus(container, status);
+	LastStatuses[container] = status;
 
-	emit statusChanged(LastStatus);
+	emit statusChanged(container, status);
 
 	kdebugf2();
 }
 
 void StatusChangerManager::enable()
 {
-	if (enabled)
+	if (Enabled)
 		return;
 
-	enabled = true;
+	Enabled = true;
 	statusChanged();
 }

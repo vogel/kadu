@@ -417,9 +417,9 @@ QString Core::readToken(const QPixmap &tokenPixmap)
 	return "";
 }
 
-Status Core::status()
+Status Core::status(StatusContainer *container)
 {
-	return StatusChanger->status();
+	return StatusChanger->status(container);
 }
 
 void Core::createGui()
@@ -459,30 +459,30 @@ void Core::setIcon(const QPixmap &pixmap)
 		emit mainIconChanged(icon);
 	}
 }
-//TODO 0.6.6:
-void Core::setStatus(const Status &status)
+
+void Core::setStatus(StatusContainer *container, const Status &status)
 {
-	StatusChanger->userStatusSet(status);
+	StatusChanger->userStatusSet(container, status);
 }
 
-void Core::setOnline(const QString &description)
+void Core::setOnline(StatusContainer *container, const QString &description)
 {
-	StatusChanger->userStatusSet(Status("Online", description));
+	StatusChanger->userStatusSet(container, Status("Online", description));
 }
 
-void Core::setAway(const QString &description)
+void Core::setAway(StatusContainer *container, const QString &description)
 {
-	StatusChanger->userStatusSet(Status("Away", description));
+	StatusChanger->userStatusSet(container, Status("Away", description));
 }
 
-void Core::setInvisible(const QString &description)
+void Core::setInvisible(StatusContainer *container, const QString &description)
 {
-	StatusChanger->userStatusSet(Status("Invisible", description));
+	StatusChanger->userStatusSet(container, Status("Invisible", description));
 }
 
-void Core::setOffline(const QString &description)
+void Core::setOffline(StatusContainer *container, const QString &description)
 {
-	StatusChanger->userStatusSet(Status("Offline", description));
+	StatusChanger->userStatusSet(container, Status("Offline", description));
 }
 
 void Core::quit()

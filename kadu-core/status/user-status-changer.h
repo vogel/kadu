@@ -10,6 +10,8 @@
 #ifndef USER_STATUS_CHANGER_H
 #define USER_STATUS_CHANGER_H
 
+#include <QtCore/QMap>
+
 #include "status/status.h"
 
 #include "status/status-changer.h"
@@ -18,17 +20,17 @@ class KADUAPI UserStatusChanger : public StatusChanger
 {
 	Q_OBJECT
 
-	Status UserStatus;
+	QMap<StatusContainer *, Status> UserStatuses;
 
 public:
 	UserStatusChanger();
 	virtual ~UserStatusChanger();
 
-	virtual void changeStatus(Status &status);
-	const Status & status() { return UserStatus; }
+	virtual void changeStatus(StatusContainer *, Status &status);
+	Status status(StatusContainer *);
 
 public slots:
-	void userStatusSet(const Status &status);
+	void userStatusSet(StatusContainer *container, const Status &status);
 
 };
 

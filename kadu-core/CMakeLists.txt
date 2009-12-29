@@ -249,7 +249,6 @@ set (kadu_SRCS
 	status/base-status-container.cpp
 	status/description-manager.cpp
 	status/description-model.cpp
-	status/split-status-changer.cpp
 	status/status.cpp
 	status/status-changer.cpp
 	status/status-changer-manager.cpp
@@ -478,7 +477,6 @@ set (kadu_MOC_SRCS
 
 	status/description-manager.h
 	status/description-model.h
-	status/split-status-changer.h
 	status/status-changer.h
 	status/status-changer-manager.h
 	status/status-container.h
