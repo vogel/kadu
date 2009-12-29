@@ -7,29 +7,27 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "buddies/buddy.h"
+#include "non-buddy-filter.h"
 
-#include "non-account-buddy-filter.h"
-
-NonAccountBuddyFilter::NonAccountBuddyFilter(QObject *parent) :
+NonBuddyFilter::NonBuddyFilter(QObject *parent) :
 		AbstractBuddyFilter(parent)
 {
 }
 
-NonAccountBuddyFilter::~NonAccountBuddyFilter()
+NonBuddyFilter::~NonBuddyFilter()
 {
 }
 
-void NonAccountBuddyFilter::setAccount(Account account)
+void NonBuddyFilter::setBuddy(Buddy buddy)
 {
-	if (CurrentAccount != account)
+	if (CurrentBuddy != buddy)
 	{
-		CurrentAccount = account;
+		CurrentBuddy = buddy;
 		emit filterChanged();
 	}
 }
 
-bool NonAccountBuddyFilter::acceptBuddy(Buddy buddy)
+bool NonBuddyFilter::acceptBuddy(Buddy buddy)
 {
-	return CurrentAccount.isNull() || !buddy.hasContact(CurrentAccount);
+	return buddy != CurrentBuddy;
 }

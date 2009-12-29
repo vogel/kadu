@@ -21,7 +21,6 @@ class NonAccountBuddyFilter : public AbstractBuddyFilter
 	Q_OBJECT
 
 	Account CurrentAccount;
-	bool Enabled;
 
 public:
 	explicit NonAccountBuddyFilter(QObject *parent = 0);

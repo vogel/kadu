@@ -7,29 +7,30 @@
  *                                                                         *
  ***************************************************************************/
 
+#ifndef NON_BUDDY_FILTER_H
+#define NON_BUDDY_FILTER_H
+
+#include <QtCore/QMetaType>
+
 #include "buddies/buddy.h"
 
-#include "non-account-buddy-filter.h"
+#include "abstract-buddy-filter.h"
 
-NonAccountBuddyFilter::NonAccountBuddyFilter(QObject *parent) :
-		AbstractBuddyFilter(parent)
+class NonBuddyFilter : public AbstractBuddyFilter
 {
-}
+	Q_OBJECT
 
-NonAccountBuddyFilter::~NonAccountBuddyFilter()
-{
-}
+	Buddy CurrentBuddy;
 
-void NonAccountBuddyFilter::setAccount(Account account)
-{
-	if (CurrentAccount != account)
-	{
-		CurrentAccount = account;
-		emit filterChanged();
-	}
-}
+public:
+	explicit NonBuddyFilter(QObject *parent = 0);
+	virtual ~NonBuddyFilter();
 
-bool NonAccountBuddyFilter::acceptBuddy(Buddy buddy)
-{
-	return CurrentAccount.isNull() || !buddy.hasContact(CurrentAccount);
-}
+	void setBuddy(Buddy buddy);
+	virtual bool acceptBuddy(Buddy buddy);
+
+};
+
+Q_DECLARE_METATYPE(NonBuddyFilter *)
+
+#endif // NON_BUDDY_FILTER_H
