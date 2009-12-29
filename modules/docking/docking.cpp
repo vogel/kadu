@@ -33,8 +33,8 @@
 #include "icons-manager.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
+#include "status/status-changer.h"
 #include "status/status-container-manager.h"
-#include "status_changer.h"
 #include "debug.h"
 
 #include "docking.h"

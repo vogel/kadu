@@ -9,55 +9,13 @@
 
 #include <QtCore/QTimer>
 
+#include "status/status.h"
 #include "debug.h"
 
-#include "status_changer.h"
+#include "split-status-changer.h"
 
-StatusChanger::StatusChanger(int priority)
-	: Priority(priority)
-{
-}
-
-StatusChanger::~StatusChanger()
-{
-}
-
-int StatusChanger::priority()
-{
-	return Priority;
-}
-
-UserStatusChanger::UserStatusChanger()
-	: StatusChanger(0)
-{
-}
-
-UserStatusChanger::~UserStatusChanger()
-
-{
-}
-
-void UserStatusChanger::changeStatus(Status &status)
-{
-	kdebugf();
-
-	status = UserStatus;
-
-	kdebugf2();
-}
-
-void UserStatusChanger::userStatusSet(const Status &status)
-{
-	kdebugf();
-
-	UserStatus = status;
-	emit statusChanged();
-
-	kdebugf2();
-}
-
-SplitStatusChanger::SplitStatusChanger(unsigned int splitSize)
-	: StatusChanger(1000), splitSize(splitSize), descriptionSplitBegin(0), descriptionSplitLength(0), splitTimer(0), enabled(false)
+SplitStatusChanger::SplitStatusChanger(unsigned int splitSize) :
+		StatusChanger(1000), splitSize(splitSize), descriptionSplitBegin(0), descriptionSplitLength(0), splitTimer(0), enabled(false)
 {
 }
 
@@ -155,82 +113,3 @@ void SplitStatusChanger::timerInvoked()
 
 	kdebugf2();
 }
-
-
-StatusChangerManager * StatusChangerManager::Instance = 0;
-
-StatusChangerManager * StatusChangerManager::instance()
-{
-	if (0 == Instance)
-		Instance = new StatusChangerManager();
-
-	return Instance;
-}
-
-StatusChangerManager::StatusChangerManager()
-	: enabled(false)
-{
-}
-
-StatusChangerManager::~StatusChangerManager()
-{
-}
-
-void StatusChangerManager::registerStatusChanger(StatusChanger *statusChanger)
-{
-	kdebugf();
-
-	connect(statusChanger, SIGNAL(statusChanged()), this, SLOT(statusChanged()));
-
-	for (int i = 0; i < statusChangers.count(); i++)
-		if (statusChangers.at(i)->priority() > statusChanger->priority())
-		{
-			statusChangers.insert(i, statusChanger);
-			return;
-		}
-
-	statusChangers.insert(statusChangers.end(), statusChanger);
-	statusChanged();
-
-	kdebugf2();
-}
-
-void StatusChangerManager::unregisterStatusChanger(StatusChanger *statusChanger)
-{
-	kdebugf();
-
-	if (statusChangers.removeAll(statusChanger))
-	{
-		disconnect(statusChanger, SIGNAL(statusChanged()), this, SLOT(statusChanged()));
-		statusChanged();
-	}
-
-	kdebugf2();
-}
-
-void StatusChangerManager::statusChanged()
-{
-	kdebugf();
-
-	if (!enabled)
-		return;
-
-	LastStatus = Status();
-	for (int i = 0; i < statusChangers.count(); i++)
-		statusChangers.at(i)->changeStatus(LastStatus);
-
-	emit statusChanged(LastStatus);
-
-	kdebugf2();
-}
-
-void StatusChangerManager::enable()
-{
-	if (enabled)
-		return;
-
-	enabled = true;
-	statusChanged();
-}
-
-//StatusChangerManager *status_changer_manager;

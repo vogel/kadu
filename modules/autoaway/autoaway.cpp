@@ -18,6 +18,7 @@
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/path-conversion.h"
+#include "status/status-changer-manager.h"
 #include "debug.h"
 
 #include "modules/idle/idle.h"

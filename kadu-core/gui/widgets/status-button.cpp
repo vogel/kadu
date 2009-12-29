@@ -14,7 +14,6 @@
 #include "gui/widgets/status-menu.h"
 #include "protocols/protocol.h"
 #include "status/status-container.h"
-#include "status_changer.h"
 
 #include "status-button.h"
 

@@ -42,6 +42,7 @@
 #include "gui/windows/your-accounts.h"
 #include "misc/misc.h"
 #include "parser/parser.h"
+#include "status/status-changer-manager.h"
 
 #include "about.h"
 #include "debug.h"
@@ -49,7 +50,6 @@
 #include "html_document.h"
 #include "ignore.h"
 #include "modules.h"
-#include "status_changer.h"
 
 #include "kadu-window-actions.h"
 

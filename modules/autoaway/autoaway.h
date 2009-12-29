@@ -6,8 +6,7 @@
 
 #include "accounts/accounts-aware-object.h"
 #include "gui/windows/main-configuration-window.h"
-
-#include "status_changer.h"
+#include "status/status-changer.h"
 
 class QLineEdit;
 class QSpinBox;

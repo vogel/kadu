@@ -21,7 +21,6 @@
 #include "status/status-type.h"
 #include "status/status-type-manager.h"
 
-#include "status_changer.h"
 
 #include "status-menu.h"
 

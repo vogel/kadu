@@ -249,13 +249,17 @@ set (kadu_SRCS
 	status/base-status-container.cpp
 	status/description-manager.cpp
 	status/description-model.cpp
+	status/split-status-changer.cpp
 	status/status.cpp
+	status/status-changer.cpp
+	status/status-changer-manager.cpp
 	status/status-container-aware-object.cpp
 	status/status-container-manager.cpp
 	status/status-group.cpp
 	status/status-group-manager.cpp
 	status/status-type.cpp
 	status/status-type-manager.cpp
+	status/user-status-changer.cpp
 
 	storage/named-storable-object.cpp
 	storage/module-data.cpp
@@ -276,7 +280,6 @@ set (kadu_SRCS
 	icons-manager.cpp
 	ignore.cpp
 	modules.cpp
-	status_changer.cpp
 	themes.cpp
 	updates.cpp
 )
@@ -475,8 +478,12 @@ set (kadu_MOC_SRCS
 
 	status/description-manager.h
 	status/description-model.h
+	status/split-status-changer.h
+	status/status-changer.h
+	status/status-changer-manager.h
 	status/status-container.h
 	status/status-container-manager.h
+	status/user-status-changer.h
 
 	dnshandler.h
 	emoticons.h
@@ -485,7 +492,6 @@ set (kadu_MOC_SRCS
 	icons-manager.h
 	ignore.h
 	modules.h
-	status_changer.h
 	themes.h
 	updates.h
 )

@@ -28,15 +28,16 @@
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/services/chat-service.h"
+#include "status/status-changer-manager.h"
 #include "status/status-container-manager.h"
 #include "status/status-type.h"
 #include "status/status-type-manager.h"
+#include "status/user-status-changer.h"
 
 #include "debug.h"
 #include "emoticons.h"
 #include "icons-manager.h"
 #include "modules.h"
-#include "status_changer.h"
 #include "updates.h"
 
 #include "core.h"
