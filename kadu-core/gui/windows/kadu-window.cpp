@@ -23,6 +23,7 @@
 #include "buddies/filter/anonymous-without-messages-buddy-filter.h"
 #include "buddies/filter/group-buddy-filter.h"
 #include "chat/chat-manager.h"
+#include "chat/recent-chat-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"
 #include "contacts/contact-set.h"
@@ -212,19 +213,19 @@ void KaduWindow::createRecentChatsMenu()
 	kdebugf();
 
 	RecentChatsMenu->clear();
-	QAction *action;
-	if (ChatWidgetManager::instance()->closedChats().isEmpty())
+
+	QList<Chat> recentChats = RecentChatManager::instance()->recentChats();
+	if (recentChats.isEmpty())
 	{
 		RecentChatsMenuAction->setEnabled(false);
 		kdebugf2();
 		return;
 	}
+
 	RecentChatsMenuAction->setEnabled(true);
 
-	unsigned int index = 0; // indeks pozycji w popupie
-
-	foreach (const Chat chat, ChatWidgetManager::instance()->closedChats())
-	{
+	foreach (const Chat chat, recentChats)
+	{/*
 		QStringList displays;
 
 		int i = 0;
@@ -238,13 +239,11 @@ void KaduWindow::createRecentChatsMenu()
 				displays.append("[...]");
 				break;
 			}
-		}
+		}*/
 
-		action = new QAction(IconsManager::instance()->loadIcon("OpenChat"), displays.join(", "), this);
-		action->setData(index);
+		QAction *action = new QAction(IconsManager::instance()->loadIcon("OpenChat"), chat.title(), this);
+		action->setData(QVariant::fromValue<Chat>(chat));
 		RecentChatsMenu->addAction(action);
-
-		index++;
 	}
 
 	kdebugf2();
@@ -253,7 +252,7 @@ void KaduWindow::createRecentChatsMenu()
 void KaduWindow::openRecentChats(QAction *action)
 {
 	kdebugf();
-	ChatWidgetManager::instance()->openPendingMsgs(ChatWidgetManager::instance()->closedChats().at(action->data().toInt()), true);
+	ChatWidgetManager::instance()->openPendingMsgs(qvariant_cast<Chat>(action->data()), true);
 	kdebugf2();
 }
 

@@ -341,9 +341,6 @@ void Core::kaduWindowDestroyed()
 
 void Core::accountAdded(Account account)
 {
-	printf("account: %s\n", qPrintable(account.uuid().toString()));
-	printf("contact: %s\n", qPrintable(account.accountContact().uuid().toString()));
-	printf("buddy: %s\n", qPrintable(Myself.uuid().toString()));
 	account.accountContact().setOwnerBuddy(Myself);
 }
 

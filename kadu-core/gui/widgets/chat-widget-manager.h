@@ -40,8 +40,6 @@ class KADUAPI ChatWidgetManager : public QObject, ConfigurationAwareObject, Stor
 	ChatWidgetActions *Actions;
 
 	QHash<Chat , ChatWidget *> Chats;
-	QList<Chat> ClosedChats;
-	QList<QDateTime> ClosedChatsDates;
 
 	ChatWidgetManager();
 	virtual ~ChatWidgetManager();
@@ -51,7 +49,6 @@ class KADUAPI ChatWidgetManager : public QObject, ConfigurationAwareObject, Stor
 
 private slots:
 	void openChatWith();
-	void clearClosedChats();
 
 	void messageReceived(const Message &message);
 	void messageSent(const Message &message);
@@ -71,7 +68,6 @@ public:
 	ChatWidgetActions * actions() { return Actions; }
 
 	const QHash<Chat , ChatWidget *> & chats() const;
-	const QList<Chat> closedChats() const;
 
 	ChatWidget * byChat(Chat chat, bool create = false) const;
 
