@@ -42,7 +42,7 @@ void ChatManager::itemAboutToBeRegistered(Chat item)
 	emit chatAboutToBeAdded(item);
 }
 
-void ChatManager::itemRegisterd(Chat item)
+void ChatManager::itemRegistered(Chat item)
 {
 	emit chatAdded(item);
 }

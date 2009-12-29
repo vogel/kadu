@@ -39,7 +39,7 @@
  *
  * As a template, this class cannot be QObject and cannot emit signals. Each derivered class
  * that has to emits signals must also derive from QObject class and reimplement abstract
- * functions: @link itemAboutToBeRegistered @endlink, @link itemRegisterd @endlink,
+ * functions: @link itemAboutToBeRegistered @endlink, @link itemRegistered @endlink,
  * @link itemAboutToBeUnregistered @endlink, @link itemUnregisterd @endlink to emit signals.
  *
  * To manager objects not derivered from @link DetailsHolder @endlink class use
@@ -199,7 +199,7 @@ protected:
 	 * has already been added to manager. This method has no effect
 	 * for items not added to manager or to items that has already been
 	 * registered. This method calls @link itemAboutToBeRegistered @endlink
-	 * and @link itemRegisterd @endlink.
+	 * and @link itemRegistered @endlink.
 	 */
 	void registerItem(Item item)
 	{
