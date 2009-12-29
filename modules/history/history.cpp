@@ -254,6 +254,12 @@ void History::chatCreated(ChatWidget *chatWidget)
 {
 	kdebugf();
 
+	if (!chatWidget)
+		return;
+
+	if (!CurrentStorage)
+		return;
+
 	// don't do it for already opened chats with discussions
 	if (chatWidget->countMessages())
 		return;
