@@ -50,6 +50,8 @@ class AdiumStyle
 	void loadHtmlFiles();
 	void loadVariants();
 
+	void performTemplateHtmlWorkarounds(QString &html);
+
 public:
 	AdiumStyle() { }
 	AdiumStyle(const QString &styleName);
