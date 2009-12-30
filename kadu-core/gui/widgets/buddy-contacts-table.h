@@ -39,6 +39,8 @@ public:
 	explicit BuddyContactsTable(Buddy buddy, QWidget *parent = 0);
 	virtual ~BuddyContactsTable();
 
+	void save();
+
 };
 
 #endif // BUDDY_CONTACTS_TABLE_H

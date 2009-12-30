@@ -23,10 +23,18 @@ class BuddyContactsTableModel : public QAbstractTableModel
 	QList<BuddyContactsTableItem> Contacts;
 
 	void contactsFromBuddy();
+	void buddyFromContacts();
+	void performItemAction(const BuddyContactsTableItem &item);
+	void performItemActionEdit(const BuddyContactsTableItem &item);
+	void performItemActionAdd(const BuddyContactsTableItem &item);
+	void performItemActionDetach(const BuddyContactsTableItem &item);
+	void performItemActionRemove(const BuddyContactsTableItem &item);
 
 public:
 	explicit BuddyContactsTableModel(Buddy buddy, QObject *parent = 0);
 	virtual ~BuddyContactsTableModel();
+
+	void save();
 
 	virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
 	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;

@@ -31,7 +31,7 @@ private slots:
 	void contactRemoved(Contact data);
 
 public:
-	BuddyContactModel(Buddy contact, QObject *parent = 0);
+	explicit BuddyContactModel(Buddy contact, QObject *parent = 0);
 	virtual ~BuddyContactModel();
 
 	virtual int columnCount(const QModelIndex &parent) const;

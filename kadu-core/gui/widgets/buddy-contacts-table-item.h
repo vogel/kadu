@@ -15,22 +15,39 @@
 
 class BuddyContactsTableItem
 {
+public:
+	enum ItemAction {
+		ItemEdit,
+		ItemAdd,
+		ItemDetach,
+		ItemRemove
+	};
+
+private:
 	Contact ItemContact;
 	Account ItemAccount;
 	QString Id;
+	ItemAction Action;
+	QString DetachedBuddyName;
 
 public:
 	BuddyContactsTableItem(Contact contact = Contact::null);
 	~BuddyContactsTableItem() {}
 
-	Contact itemContact() { return ItemContact; }
+	Contact itemContact() const { return ItemContact; }
 	void setItemContact(Contact contact) { ItemContact = contact; }
 
-	Account itemAccount() { return ItemAccount; }
+	Account itemAccount() const { return ItemAccount; }
 	void setItemAccount(Account account) { ItemAccount = account; }
 
-	QString id() { return Id; }
+	QString id() const { return Id; }
 	void setId(const QString &id) { Id = id; }
+
+	ItemAction action() const { return Action; }
+	void setAction(ItemAction action) { Action = action; }
+
+	QString detachedBuddyName() const { return DetachedBuddyName; }
+	void setDetachedBuddyName(const QString &detachedBuddyName) { DetachedBuddyName = detachedBuddyName; }
 
 };
 

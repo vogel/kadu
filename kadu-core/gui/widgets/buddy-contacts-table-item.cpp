@@ -14,4 +14,5 @@ BuddyContactsTableItem::BuddyContactsTableItem(Contact contact)
 	ItemContact = contact;
 	ItemAccount = contact.contactAccount();
 	Id = contact.id();
+	Action = ItemEdit;
 }

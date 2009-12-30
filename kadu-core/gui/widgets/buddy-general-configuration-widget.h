@@ -24,6 +24,7 @@
 
 #include "exports.h"
 
+class BuddyContactsTable;
 class Contact;
 class ContactManager;
 
@@ -36,6 +37,8 @@ class KADUAPI BuddyGeneralConfigurationWidget : public QWidget
 	QLineEdit *MobileEdit;
 	QLineEdit *EmailEdit;
 	QLineEdit *WebsiteEdit;
+
+	BuddyContactsTable *ContactsTable;
 
 	QDialog *OrderDialog;
 

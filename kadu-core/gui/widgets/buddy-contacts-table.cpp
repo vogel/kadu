@@ -73,6 +73,11 @@ void BuddyContactsTable::createGui()
 	layout->addWidget(buttons);
 }
 
+void BuddyContactsTable::save()
+{
+	Model->save();
+}
+
 void BuddyContactsTable::moveUpClicked()
 {
 }

@@ -7,6 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "buddies/buddy-manager.h"
+#include "contacts/contact-manager.h"
 #include "model/roles.h"
 #include "protocols/protocol.h"
 
@@ -22,11 +24,89 @@ BuddyContactsTableModel::~BuddyContactsTableModel()
 {
 }
 
+void BuddyContactsTableModel::save()
+{
+	buddyFromContacts();
+}
+
 void BuddyContactsTableModel::contactsFromBuddy()
 {
 	Contacts.clear();
 	foreach (Contact contact, ModelBuddy.contacts())
 		Contacts.append(BuddyContactsTableItem(contact));
+}
+
+void BuddyContactsTableModel::buddyFromContacts()
+{
+	foreach (BuddyContactsTableItem item, Contacts)
+		performItemAction(item);
+}
+
+void BuddyContactsTableModel::performItemAction(const BuddyContactsTableItem &item)
+{
+	switch (item.action())
+	{
+		case BuddyContactsTableItem::ItemEdit:
+			performItemActionEdit(item);
+			break;
+
+		case BuddyContactsTableItem::ItemAdd:
+			performItemActionAdd(item);
+			break;
+
+		case BuddyContactsTableItem::ItemDetach:
+			performItemActionDetach(item);
+			break;
+
+		case BuddyContactsTableItem::ItemRemove:
+			performItemActionRemove(item);
+			break;
+	}
+}
+
+void BuddyContactsTableModel::performItemActionEdit(const BuddyContactsTableItem &item)
+{
+	Contact contact = item.itemContact();
+	if (!contact)
+		return;
+
+	if (contact.contactAccount() != item.itemAccount())
+	{
+		// allow protocol handles to handle that
+		ContactManager::instance()->removeItem(contact);
+		contact.setContactAccount(item.itemAccount());
+		contact.setId(item.id());
+		ContactManager::instance()->addItem(contact);
+	}
+	else
+		contact.setId(item.id());
+}
+
+void BuddyContactsTableModel::performItemActionAdd(const BuddyContactsTableItem &item)
+{
+	Contact contact = ContactManager::instance()->byId(item.itemAccount(), item.id(), true);
+	contact.setOwnerBuddy(ModelBuddy);
+}
+
+void BuddyContactsTableModel::performItemActionDetach(const BuddyContactsTableItem &item)
+{
+	Contact contact = item.itemContact();
+	if (!contact)
+		return;
+
+	QString display = item.detachedBuddyName();
+	if (display.isEmpty())
+		return;
+
+	Buddy newBuddy = BuddyManager::instance()->byDisplay(display, true);
+	contact.setOwnerBuddy(newBuddy);
+}
+
+void BuddyContactsTableModel::performItemActionRemove(const BuddyContactsTableItem &item)
+{
+	// save in configuration, but do not use
+	Contact contact = item.itemContact();
+	contact.setOwnerBuddy(Buddy::null);
 }
 
 int BuddyContactsTableModel::columnCount(const QModelIndex &parent) const

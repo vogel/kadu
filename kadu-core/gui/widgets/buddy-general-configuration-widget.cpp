@@ -84,7 +84,8 @@ void BuddyGeneralConfigurationWidget::createGui()
 
 	QGroupBox *contactsBox = new QGroupBox(tr("Buddy contacts"));
 	QVBoxLayout *contactsLayout = new QVBoxLayout(contactsBox);
-	contactsLayout ->addWidget(new BuddyContactsTable(MyBuddy, contactsBox));
+	ContactsTable = new BuddyContactsTable(MyBuddy, contactsBox);
+	contactsLayout ->addWidget(ContactsTable);
 
 	layout->addWidget(contactsBox, 4, 2, 2, 6);
 
@@ -142,6 +143,8 @@ void BuddyGeneralConfigurationWidget::saveConfiguration()
 	MyBuddy.setMobile(MobileEdit->text());
 	MyBuddy.setEmail(EmailEdit->text());
 	MyBuddy.setWebsite(WebsiteEdit->text());
+
+	ContactsTable->save();
 }
 
 void BuddyGeneralConfigurationWidget::showOrderDialog()
