@@ -22,6 +22,7 @@
 #include "buddies/model/buddies-model.h"
 #include "buddies/filter/anonymous-without-messages-buddy-filter.h"
 #include "buddies/filter/group-buddy-filter.h"
+#include "chat/type/chat-type-manager.h"
 #include "chat/chat-manager.h"
 #include "chat/recent-chat-manager.h"
 #include "configuration/configuration-file.h"
@@ -219,7 +220,8 @@ void KaduWindow::createRecentChatsMenu()
 	foreach (const Chat chat, recentChats)
 		if (!ChatWidgetManager::instance()->byChat(chat))
 		{
-			QAction *action = new QAction(IconsManager::instance()->loadIcon("OpenChat"), chat.name(), this);
+			ChatType *type = ChatTypeManager::instance()->chatType(chat.type());
+			QAction *action = new QAction(type ? type->icon() : QIcon(), chat.name(), this);
 			action->setData(QVariant::fromValue<Chat>(chat));
 			RecentChatsMenu->addAction(action);
 
