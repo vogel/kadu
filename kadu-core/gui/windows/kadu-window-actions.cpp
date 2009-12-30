@@ -43,6 +43,7 @@
 #include "misc/misc.h"
 #include "parser/parser.h"
 #include "status/status-changer-manager.h"
+#include "status/status-container-manager.h"
 
 #include "about.h"
 #include "debug.h"
@@ -937,12 +938,20 @@ void KaduWindowActions::editUserActionActivated(QAction *sender, bool toggled)
 }
 
 void KaduWindowActions::showStatusActionActivated(QAction *sender, bool toggled)
-{ // TODO: 0.6.6
-// 	QMenu *menu = new QMenu();
-// 	StatusMenu *status = new StatusMenu(menu);
-// 	status->addToMenu(menu);
-// 	menu->exec(QCursor::pos());
-// 	delete menu;
+{
+	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
+	if (!window)
+		return;
+
+	StatusContainer *container = window->statusContainer();
+	if (!container)
+		container = StatusContainerManager::instance();
+
+	QMenu *menu = new QMenu();
+	StatusMenu *status = new StatusMenu(container, menu);
+	status->addToMenu(menu);
+	menu->exec(QCursor::pos());
+	delete menu;
 }
 
 void KaduWindowActions::useProxyActionActivated(QAction *sender, bool toggled)

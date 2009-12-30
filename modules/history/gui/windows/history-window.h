@@ -96,6 +96,7 @@ public:
 	virtual BuddySet buddies();
 	virtual ChatWidget * chatWidget() { return 0; }
 	virtual BuddiesListView * contactsListView() { return 0; }
+	virtual StatusContainer* statusContainer() { return 0; }
 	virtual Chat chat() { return Chat::null; }
 
 	void show(Chat chat);

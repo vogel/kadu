@@ -127,6 +127,11 @@ BuddiesListView * ChatEditBox::contactsListView()
 	return 0;
 }
 
+StatusContainer * ChatEditBox::statusContainer()
+{
+	return CurrentChat.chatAccount().statusContainer();
+}
+
 ContactSet ChatEditBox::contacts()
 {
 	ChatWidget *cw = chatWidget();

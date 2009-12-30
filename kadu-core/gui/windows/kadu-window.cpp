@@ -326,6 +326,11 @@ BuddiesListView * KaduWindow::contactsListView()
 	return ContactsWidget->view();
 }
 
+StatusContainer * KaduWindow::statusContainer()
+{
+	return 0;
+}
+
 ContactSet KaduWindow::contacts()
 {
 	return ContactsWidget->view()->selectedContacts();
