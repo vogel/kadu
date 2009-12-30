@@ -9,6 +9,7 @@
 
 #include "buddies/buddy-manager.h"
 #include "contacts/contact-manager.h"
+#include "gui/widgets/buddy-contacts-table-item.h"
 #include "model/roles.h"
 #include "protocols/protocol.h"
 
@@ -22,6 +23,7 @@ BuddyContactsTableModel::BuddyContactsTableModel(Buddy buddy, QObject *parent) :
 
 BuddyContactsTableModel::~BuddyContactsTableModel()
 {
+	qDeleteAll(Contacts);
 }
 
 void BuddyContactsTableModel::save()
@@ -29,22 +31,30 @@ void BuddyContactsTableModel::save()
 	buddyFromContacts();
 }
 
+BuddyContactsTableItem * BuddyContactsTableModel::item(int row)
+{
+	if (row >= 0 && row < Contacts.count())
+		return Contacts[row];
+	else
+		return 0;
+}
+
 void BuddyContactsTableModel::contactsFromBuddy()
 {
 	Contacts.clear();
 	foreach (Contact contact, ModelBuddy.contacts())
-		Contacts.append(BuddyContactsTableItem(contact));
+		Contacts.append(new BuddyContactsTableItem(contact));
 }
 
 void BuddyContactsTableModel::buddyFromContacts()
 {
-	foreach (BuddyContactsTableItem item, Contacts)
+	foreach (BuddyContactsTableItem *item, Contacts)
 		performItemAction(item);
 }
 
-void BuddyContactsTableModel::performItemAction(const BuddyContactsTableItem &item)
+void BuddyContactsTableModel::performItemAction(BuddyContactsTableItem *item)
 {
-	switch (item.action())
+	switch (item->action())
 	{
 		case BuddyContactsTableItem::ItemEdit:
 			performItemActionEdit(item);
@@ -64,48 +74,49 @@ void BuddyContactsTableModel::performItemAction(const BuddyContactsTableItem &it
 	}
 }
 
-void BuddyContactsTableModel::performItemActionEdit(const BuddyContactsTableItem &item)
+void BuddyContactsTableModel::performItemActionEdit(BuddyContactsTableItem *item)
 {
-	Contact contact = item.itemContact();
+	Contact contact = item->itemContact();
 	if (!contact)
 		return;
 
-	if (contact.contactAccount() != item.itemAccount())
+	if (contact.contactAccount() != item->itemAccount())
 	{
 		// allow protocol handles to handle that
 		ContactManager::instance()->removeItem(contact);
-		contact.setContactAccount(item.itemAccount());
-		contact.setId(item.id());
+		contact.setContactAccount(item->itemAccount());
+		contact.setId(item->id());
 		ContactManager::instance()->addItem(contact);
 	}
 	else
-		contact.setId(item.id());
+		contact.setId(item->id());
 }
 
-void BuddyContactsTableModel::performItemActionAdd(const BuddyContactsTableItem &item)
+void BuddyContactsTableModel::performItemActionAdd(BuddyContactsTableItem *item)
 {
-	Contact contact = ContactManager::instance()->byId(item.itemAccount(), item.id(), true);
+	Contact contact = ContactManager::instance()->byId(item->itemAccount(), item->id(), true);
 	contact.setOwnerBuddy(ModelBuddy);
 }
 
-void BuddyContactsTableModel::performItemActionDetach(const BuddyContactsTableItem &item)
+void BuddyContactsTableModel::performItemActionDetach(BuddyContactsTableItem *item)
 {
-	Contact contact = item.itemContact();
+	Contact contact = item->itemContact();
 	if (!contact)
 		return;
 
-	QString display = item.detachedBuddyName();
+	QString display = item->detachedBuddyName();
 	if (display.isEmpty())
 		return;
 
 	Buddy newBuddy = BuddyManager::instance()->byDisplay(display, true);
+	newBuddy.setAnonymous(false);
 	contact.setOwnerBuddy(newBuddy);
 }
 
-void BuddyContactsTableModel::performItemActionRemove(const BuddyContactsTableItem &item)
+void BuddyContactsTableModel::performItemActionRemove(BuddyContactsTableItem *item)
 {
 	// save in configuration, but do not use
-	Contact contact = item.itemContact();
+	Contact contact = item->itemContact();
 	contact.setOwnerBuddy(Buddy::null);
 }
 
@@ -131,8 +142,8 @@ bool BuddyContactsTableModel::insertRows(int row, int count, const QModelIndex& 
 
 	for (int i = 0; i < count; i++)
 	{
-		BuddyContactsTableItem item;
-		item.setAction(BuddyContactsTableItem::ItemAdd);
+		BuddyContactsTableItem *item = new BuddyContactsTableItem();
+		item->setAction(BuddyContactsTableItem::ItemAdd);
 		Contacts.insert(row, item);
 	}
 
@@ -166,26 +177,29 @@ QVariant BuddyContactsTableModel::data(const QModelIndex &index, int role) const
 	if (index.row() < 0 || index.row() >= Contacts.size())
 		return QVariant();
 
-	BuddyContactsTableItem item = Contacts.at(index.row());
+	BuddyContactsTableItem *item = Contacts.at(index.row());
+	if (role == BuddyContactsTableItemRole)
+		return QVariant::fromValue<BuddyContactsTableItem *>(item);
+
 	switch (index.column())
 	{
 		case 0:
 			if (Qt::DisplayRole != role && Qt::EditRole != role)
 				return QVariant();
-			return item.id();
+			return item->id();
 		case 1:
 		{
 			switch (role)
 			{
 				case Qt::DisplayRole:
 				case Qt::EditRole:
-					return item.itemAccount().name();
+					return item->itemAccount().name();
 				case Qt::DecorationRole:
-					return item.itemAccount().protocolHandler()
-							? item.itemAccount().protocolHandler()->icon()
+					return item->itemAccount().protocolHandler()
+							? item->itemAccount().protocolHandler()->icon()
 							: QVariant();
 				case AccountRole:
-					return QVariant::fromValue<Account>(item.itemAccount());
+					return QVariant::fromValue<Account>(item->itemAccount());
 			}
 
 			return QVariant();
@@ -200,21 +214,19 @@ bool BuddyContactsTableModel::setData(const QModelIndex &index, const QVariant &
 	if (index.row() < 0 || index.row() >= Contacts.size())
 		return false;
 
-	BuddyContactsTableItem item = Contacts.at(index.row());
+	BuddyContactsTableItem *item = Contacts.at(index.row());
 	switch (index.column())
 	{
 		case 0:
 			if (Qt::EditRole == role)
-				item.setId(value.toString());
+				item->setId(value.toString());
 			break;
 
 		case 1:
 			if (AccountRole == role)
-				item.setItemAccount(qvariant_cast<Account>(value));
+				item->setItemAccount(qvariant_cast<Account>(value));
 			break;
 	}
-
-	Contacts.replace(index.row(), item);
 
 	return true;
 }

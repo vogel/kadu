@@ -17,6 +17,7 @@ class QTableView;
 class Buddy;
 class BuddyContactsTableDelegate;
 class BuddyContactsTableModel;
+class BuddyContactsTableModelProxy;
 
 class BuddyContactsTable : public QWidget
 {
@@ -25,6 +26,7 @@ class BuddyContactsTable : public QWidget
 	QTableView *View;
 	BuddyContactsTableDelegate *Delegate;
 	BuddyContactsTableModel *Model;
+	BuddyContactsTableModelProxy *Proxy;
 
 	void createGui();
 

@@ -13,28 +13,31 @@
 #include <QtCore/QAbstractTableModel>
 
 #include "buddies/buddy.h"
-#include "gui/widgets/buddy-contacts-table-item.h"
+
+class BuddyContactsTableItem;
 
 class BuddyContactsTableModel : public QAbstractTableModel
 {
 	Q_OBJECT
 
 	Buddy ModelBuddy;
-	QList<BuddyContactsTableItem> Contacts;
+	QList<BuddyContactsTableItem *> Contacts;
 
 	void contactsFromBuddy();
 	void buddyFromContacts();
-	void performItemAction(const BuddyContactsTableItem &item);
-	void performItemActionEdit(const BuddyContactsTableItem &item);
-	void performItemActionAdd(const BuddyContactsTableItem &item);
-	void performItemActionDetach(const BuddyContactsTableItem &item);
-	void performItemActionRemove(const BuddyContactsTableItem &item);
+	void performItemAction(BuddyContactsTableItem *);
+	void performItemActionEdit(BuddyContactsTableItem *item);
+	void performItemActionAdd(BuddyContactsTableItem *);
+	void performItemActionDetach(BuddyContactsTableItem *);
+	void performItemActionRemove(BuddyContactsTableItem *);
 
 public:
 	explicit BuddyContactsTableModel(Buddy buddy, QObject *parent = 0);
 	virtual ~BuddyContactsTableModel();
 
 	void save();
+
+	BuddyContactsTableItem * item(int row);
 
 	virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
 	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;

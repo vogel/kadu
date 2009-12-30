@@ -8,20 +8,25 @@
  ***************************************************************************/
 
 #include <QtGui/QHBoxLayout>
+#include <QtGui/QHeaderView>
 #include <QtGui/QPushButton>
 #include <QtGui/QTableView>
 
 #include "gui/widgets/buddy-contacts-table-delegate.h"
+#include "gui/widgets/buddy-contacts-table-item.h"
 #include "gui/widgets/buddy-contacts-table-model.h"
+#include "gui/widgets/buddy-contacts-table-model-proxy.h"
+#include "model/roles.h"
 
 #include "buddy-contacts-table.h"
-#include <QHeaderView>
 
 BuddyContactsTable::BuddyContactsTable(Buddy buddy, QWidget *parent) :
 		QWidget(parent)
 {
 	Delegate = new BuddyContactsTableDelegate(this);
 	Model = new BuddyContactsTableModel(buddy, this);
+	Proxy = new BuddyContactsTableModelProxy(Model);
+	Proxy->setSourceModel(Model);
 
 	createGui();
 }
@@ -39,7 +44,9 @@ void BuddyContactsTable::createGui()
 	View->setDragEnabled(true);
 	View->setEditTriggers(QAbstractItemView::AllEditTriggers);
 	View->setItemDelegate(Delegate);
-	View->setModel(Model);
+	View->setModel(Proxy);
+
+	View->setSelectionBehavior(QAbstractItemView::SelectRows);
 	View->setVerticalHeader(0);
 
 	View->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
@@ -93,8 +100,29 @@ void BuddyContactsTable::addClicked()
 
 void BuddyContactsTable::detachClicked()
 {
+	QVariant selected = View->currentIndex().data(BuddyContactsTableItemRole);
+	if (!selected.canConvert<BuddyContactsTableItem *>())
+		return;
+
+	BuddyContactsTableItem *item = qvariant_cast<BuddyContactsTableItem *>(selected);
+	if (item)
+	{
+		item->setAction(BuddyContactsTableItem::ItemDetach);
+		item->setDetachedBuddyName("detached");
+	}
+
+	Proxy->invalidate();
 }
 
 void BuddyContactsTable::removeClicked()
 {
+	QVariant selected = View->currentIndex().data(BuddyContactsTableItemRole);
+	if (!selected.canConvert<BuddyContactsTableItem *>())
+		return;
+
+	BuddyContactsTableItem *item = qvariant_cast<BuddyContactsTableItem *>(selected);
+	if (item)
+		item->setAction(BuddyContactsTableItem::ItemRemove);
+
+	Proxy->invalidate();
 }

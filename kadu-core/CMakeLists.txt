@@ -121,6 +121,7 @@ set (kadu_SRCS
 	gui/widgets/buddy-contacts-table-delegate.cpp
 	gui/widgets/buddy-contacts-table-item.cpp
 	gui/widgets/buddy-contacts-table-model.cpp
+	gui/widgets/buddy-contacts-table-model-proxy.cpp
 	gui/widgets/buddy-contacts-table.cpp
 	gui/widgets/buddy-general-configuration-widget.cpp
 	gui/widgets/buddy-groups-configuration-widget.cpp
@@ -380,6 +381,7 @@ set (kadu_MOC_SRCS
 	gui/widgets/buddies-list-widget.h
 	gui/widgets/buddy-contacts-table-delegate.h
 	gui/widgets/buddy-contacts-table-model.h
+	gui/widgets/buddy-contacts-table-model-proxy.h
 	gui/widgets/buddy-contacts-table.h
 	gui/widgets/buddy-general-configuration-widget.h
 	gui/widgets/buddy-groups-configuration-widget.h

@@ -7,23 +7,22 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ROLES_H
-#define ROLES_H
+#ifndef BUDDY_CONTACTS_TABLE_MODEL_PROXY_H
+#define BUDDY_CONTACTS_TABLE_MODEL_PROXY_H
 
-const int KaduRoles = 1000;
+#include <QtGui/QSortFilterProxyModel>
 
-const int BuddyRoles = KaduRoles + 0;
-const int BuddyRole = KaduRoles + 1;
-const int DescriptionRole = KaduRoles + 2;
-const int StatusRole = KaduRoles + 3;
-const int ProtocolRole = KaduRoles + 4;
-const int AccountRole = KaduRoles + 5;
-const int AvatarRole = KaduRoles + 6;
-const int ChatRole = KaduRoles + 7;
-const int ChatTypeRole = KaduRoles + 8;
-const int DateRole = KaduRoles + 9;
-const int ActionRole = KaduRoles + 10;
-const int ContactRole = KaduRoles + 11;
-const int BuddyContactsTableItemRole = KaduRoles + 12;
+class BuddyContactsTableModelProxy : public QSortFilterProxyModel
+{
+	Q_OBJECT
 
-#endif // ROLES_H
+protected:
+	virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
+
+public:
+	explicit BuddyContactsTableModelProxy(QObject *parent = 0);
+	virtual ~BuddyContactsTableModelProxy();
+
+};
+
+#endif // BUDDY_CONTACTS_TABLE_MODEL_PROXY_H

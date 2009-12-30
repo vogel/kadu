@@ -51,4 +51,6 @@ public:
 
 };
 
+Q_DECLARE_METATYPE(BuddyContactsTableItem *)
+
 #endif // BUDDY_CONTACTS_TABLE_ITEM_H
