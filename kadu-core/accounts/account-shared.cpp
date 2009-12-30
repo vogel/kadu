@@ -9,6 +9,7 @@
 
 #include "accounts/account-details.h"
 #include "accounts/account-manager.h"
+#include "configuration/configuration-file.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 #include "misc/misc.h"

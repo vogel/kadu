@@ -64,6 +64,10 @@ Core::Core() : Myself(Buddy::create()), Window(0), ShowMainWindowOnStart(true)
 
 Core::~Core()
 {
+	bool disconnectWithCurrentDescription = config_file.readBoolEntry("General", "DisconnectWithCurrentDescription");
+	QString disconnectDescription = config_file.readEntry("General", "DisconnectDescription");
+	StatusContainerManager::instance()->disconnectAndStoreLastStatus(disconnectWithCurrentDescription, disconnectDescription);
+
 	ConfigurationManager::instance()->store();
 // 	delete Configuration;
 // 	Configuration = 0;
@@ -276,6 +280,9 @@ void Core::init()
 	connect(StatusChangerManager::instance(), SIGNAL(statusChanged(StatusContainer *, Status)),
 			this, SLOT(statusChanged(StatusContainer *, Status)));
 	StatusChangerManager::instance()->registerStatusChanger(StatusChanger);
+
+	foreach (StatusContainer *container, StatusContainerManager::instance()->statusContainers())
+		StatusChanger->userStatusSet(container, container->status());
 	StatusChangerManager::instance()->enable();
 
 	Updates::initModule();
@@ -393,9 +400,6 @@ void Core::accountUnregistered(Account account)
 		disconnect(protocol, SIGNAL(connected(Account)), this, SIGNAL(connected()));
 		disconnect(protocol, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
 	}
-
-	// TODO: 0.6.6
-	//Myself.removeContact(account);
 }
 
 void Core::configurationUpdated()
