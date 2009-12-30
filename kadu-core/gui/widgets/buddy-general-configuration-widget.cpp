@@ -51,38 +51,37 @@ BuddyGeneralConfigurationWidget::~BuddyGeneralConfigurationWidget()
 
 void BuddyGeneralConfigurationWidget::createGui()
 {
-	QGridLayout *layout = new QGridLayout(this);
-	layout->setColumnMinimumWidth(0, 10);
-	layout->setColumnMinimumWidth(1, 10);
-	layout->setColumnMinimumWidth(4, 20);
-	layout->setColumnMinimumWidth(5, 100);
-	layout->setColumnMinimumWidth(8, 20);
-	layout->setColumnStretch(3, 10);
-	layout->setColumnStretch(6, 2);
+	QVBoxLayout *layout = new QVBoxLayout(this);
 
-	int row = 0;
-	layout->setRowStretch(row++, 1); 
-	
-	QLabel *numberLabel = new QLabel(tr("Visible Name") + ":", this);
-	layout->addWidget(numberLabel, 2, 2, 1, 1);
-	DisplayEdit = new QLineEdit(this);
-	DisplayEdit->setText(MyBuddy.display());
-	layout->addWidget(DisplayEdit, 2, 3, 1, 1);
+	QWidget *nameWidget = new QWidget(this);
+	layout->addWidget(nameWidget);
+
+	QHBoxLayout *nameLayout = new QHBoxLayout(nameWidget);
+
+	QLabel *numberLabel = new QLabel(tr("Visible Name") + ":", nameWidget);
+	nameLayout->addWidget(numberLabel);
+
+	DisplayEdit = new QLineEdit(nameWidget);
 	connect(DisplayEdit, SIGNAL(textChanged(QString)), this, SIGNAL(validChanged()));
+	DisplayEdit->setText(MyBuddy.display());
+	nameLayout->addWidget(DisplayEdit);
 
-	QWidget *photoWidget = new QWidget;
+	QWidget *photoWidget = new QWidget(nameWidget);
 	QVBoxLayout *photoLayout = new QVBoxLayout(photoWidget);
 	photoLayout->setSpacing(2);
 
-	QLabel *photoLabel = new QLabel(this);
-	QPixmap photoPixmap = QPixmap(MyBuddy.contacts().count() > 0 ? MyBuddy.contacts().at(0).contactAvatar().pixmap() : QPixmap());
+	QLabel *photoLabel = new QLabel(photoWidget);
+	QPixmap photoPixmap = QPixmap(MyBuddy.contacts().count() > 0
+			? MyBuddy.contacts().at(0).contactAvatar().pixmap()
+			: QPixmap()).scaled(64, 64, Qt::KeepAspectRatio);
 	photoLabel->setPixmap(photoPixmap);
-	photoLayout->addWidget(photoLabel);
+	photoLabel->setFixedSize(QSize(70, 70));
+	photoLayout->addWidget(photoLabel, 0, Qt::AlignCenter);
 
 	QPushButton *changePhotoButton = new QPushButton(tr("Change Icon..."));
 	photoLayout->addWidget(changePhotoButton);
 
-	layout->addWidget(photoWidget, 1, 6, 3, 1);
+	nameLayout->addWidget(photoWidget);
 
 	QGroupBox *contactsBox = new QGroupBox(tr("Buddy contacts"));
 	QVBoxLayout *contactsLayout = new QVBoxLayout(contactsBox);
@@ -90,7 +89,7 @@ void BuddyGeneralConfigurationWidget::createGui()
 	connect(ContactsTable, SIGNAL(validChanged()), this, SIGNAL(validChanged()));
 	contactsLayout ->addWidget(ContactsTable);
 
-	layout->addWidget(contactsBox, 4, 2, 2, 6);
+	layout->addWidget(contactsBox);
 
 	QGroupBox *communicationBox = new QGroupBox(tr("Communication Information"));
 	QFormLayout *communicationLayout = new QFormLayout(communicationBox);
@@ -111,8 +110,8 @@ void BuddyGeneralConfigurationWidget::createGui()
 	WebsiteEdit->setText(MyBuddy.website());
 	communicationLayout->addRow(new QLabel(tr("Website") + ":"), WebsiteEdit);
 
-	layout->addWidget(communicationBox, 6, 2, 2, 6);
-	layout->setRowStretch(8, 100);
+	layout->addWidget(communicationBox);
+	layout->addStretch(100);
 }
 
 bool BuddyGeneralConfigurationWidget::isValid()
