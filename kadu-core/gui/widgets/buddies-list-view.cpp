@@ -186,12 +186,12 @@ Chat BuddiesListView::chatForIndex(const QModelIndex &index) const
 
 Chat  BuddiesListView::currentChat() const
 {
-	return chatForIndex(currentIndex());
+	return ChatManager::instance()->findChat(selectedContacts());
 }
 
 void BuddiesListView::triggerActivate(const QModelIndex& index)
 {
-	Chat chat = chatForIndex(index);
+	Chat chat = currentChat();
 	if (chat)
 		emit chatActivated(chat);
 
