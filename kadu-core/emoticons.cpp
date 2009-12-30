@@ -357,7 +357,11 @@ EmoticonSelectorButton::EmoticonSelectorButton(const QString& emoticon_string, c
 {
 	QPixmap p(StaticPath);
 	setPixmap(p);
-	setIconSize(QSize(18, 18));
+	const int max_height = 18;
+	if (p.height() > max_height)
+		setIconSize(QSize(ceil((qreal) max_height / p.height() * p.width()), max_height));
+	else
+		setIconSize(p.size());
 	setAutoRaise(true);
 	setMouseTracking(true);
 	setToolTip(emoticon_string);
@@ -391,7 +395,6 @@ void EmoticonSelectorButton::enterEvent(QEvent* e)
 	if (Movie == NULL)
 	{
 		Movie = new QMovie(AnimPath);
-		Movie->setScaledSize(QSize(18,18));
 		Movie->start();
 		connect(Movie, SIGNAL(updated(const QRect &)), this, SLOT(movieUpdate()));
 	}
@@ -415,10 +418,12 @@ EmoticonSelector::EmoticonSelector(ChatWidget *caller, QWidget *parent)
 	setAttribute(Qt::WA_DeleteOnClose);
 
 	int selector_count = emoticons->selectorCount();
-	int selector_width = (int)sqrt((double)selector_count);
-	QGridLayout *grid = new QGridLayout(this);
-	grid->setMargin(0);
-	grid->setSpacing(0);
+	const int selector_width = 480; // this can be tuned
+	int cur_width = 0, btn_width;
+	QVBoxLayout *layout = new QVBoxLayout(this);
+	QHBoxLayout *row = 0;
+	layout->setSpacing(0);
+	layout->setContentsMargins(0, 0, 0, 0);
 
 	for(int i = 0; i < selector_count; ++i)
 	{
@@ -427,9 +432,21 @@ EmoticonSelector::EmoticonSelector(ChatWidget *caller, QWidget *parent)
 			emoticons->selectorAnimPath(i),
 			emoticons->selectorStaticPath(i),
 			this);
-		grid->addWidget(btn, i / selector_width, i % selector_width);
+		btn_width = btn->sizeHint().width();
+
+		if (cur_width + btn_width >= selector_width)
+			cur_width = 0;
+
+		if (cur_width == 0)
+			row = new QHBoxLayout(layout);
+
+		row->addWidget(btn);
+		cur_width += btn_width;
+
 		connect(btn, SIGNAL(clicked(const QString&)), this, SLOT(iconClicked(const QString&)));
 	}
+	if (row)
+		row->setAlignment(Qt::AlignLeft); // align the last column to left
 }
 
 void EmoticonSelector::closeEvent(QCloseEvent *e)
