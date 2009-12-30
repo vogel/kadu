@@ -8,12 +8,13 @@
  ***************************************************************************/
 
 #include <QtGui/QDialogButtonBox>
+#include <QtGui/QFormLayout>
+#include <QtGui/QGroupBox>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QLabel>
 #include <QtGui/QPushButton>
-#include <QtGui/QVBoxLayout>
-#include <QtGui/QGroupBox>
 #include <QtGui/QRadioButton>
+#include <QtGui/QVBoxLayout>
 
 #include <QtGui/QLineEdit>
 
@@ -92,40 +93,23 @@ void BuddyGeneralConfigurationWidget::createGui()
 	layout->addWidget(contactsBox, 4, 2, 2, 6);
 
 	QGroupBox *communicationBox = new QGroupBox(tr("Communication Information"));
-	QGridLayout *communicationLayout = new QGridLayout(communicationBox);
-	communicationLayout->setColumnStretch(0, 1);
-	communicationLayout->setColumnStretch(1, 3);
-	communicationLayout->setColumnStretch(2, 3);
-
-	row = 0;
-
-	QHBoxLayout *phoneLayout = new QHBoxLayout;
-	QLabel *phoneLabel = new QLabel(tr("Phone") + ":");
+	QFormLayout *communicationLayout = new QFormLayout(communicationBox);
+	
 	PhoneEdit = new QLineEdit(this);
 	PhoneEdit->setText(MyBuddy.homePhone());
-	communicationLayout->addWidget(phoneLabel, row, 0, 1, 1);
-	communicationLayout->addWidget(PhoneEdit, row++, 1, 1, 1);
+	communicationLayout->addRow(new QLabel(tr("Phone") + ":"), PhoneEdit);
 
-	QHBoxLayout *mobileLayout = new QHBoxLayout;
-	QLabel *mobileLabel = new QLabel(tr("Mobile") + ":");
 	MobileEdit = new QLineEdit(this);
 	MobileEdit->setText(MyBuddy.mobile());
-	communicationLayout->addWidget(mobileLabel, row, 0, 1, 1);
-	communicationLayout->addWidget(MobileEdit, row++, 1, 1, 1);
+	communicationLayout->addRow(new QLabel(tr("Mobile") + ":"), MobileEdit);
 
-	QHBoxLayout *emailLayout = new QHBoxLayout;
-	QLabel *emailLabel = new QLabel(tr("E-Mail") + ":");
 	EmailEdit = new QLineEdit(this);
 	EmailEdit->setText(MyBuddy.email());
-	communicationLayout->addWidget(emailLabel, row, 0, 1, 1);
-	communicationLayout->addWidget(EmailEdit, row++, 1, 1, 1);
+	communicationLayout->addRow(new QLabel(tr("E-Mail") + ":"), EmailEdit);
 
-	QHBoxLayout *websiteLayout = new QHBoxLayout;
-	QLabel *websiteLabel = new QLabel(tr("Website") + ":");
 	WebsiteEdit = new QLineEdit(this);
 	WebsiteEdit->setText(MyBuddy.website());
-	communicationLayout->addWidget(websiteLabel, row, 0, 1, 1);
-	communicationLayout->addWidget(WebsiteEdit, row++, 1, 1, 1);
+	communicationLayout->addRow(new QLabel(tr("Website") + ":"), WebsiteEdit);
 
 	layout->addWidget(communicationBox, 6, 2, 2, 6);
 	layout->setRowStretch(8, 100);
