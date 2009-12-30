@@ -19,9 +19,10 @@
 #include "model/roles.h"
 
 #include "buddy-contacts-table.h"
+#include <gui/windows/message-dialog.h>
 
 BuddyContactsTable::BuddyContactsTable(Buddy buddy, QWidget *parent) :
-		QWidget(parent)
+		QWidget(parent), MyBuddy(buddy)
 {
 	Delegate = new BuddyContactsTableDelegate(this);
 	Model = new BuddyContactsTableModel(buddy, this);
@@ -129,6 +130,11 @@ void BuddyContactsTable::removeClicked()
 
 	BuddyContactsTableItem *item = qvariant_cast<BuddyContactsTableItem *>(selected);
 	if (!item)
+		return;
+
+	bool sure = MessageDialog::ask(tr("Are you sure do you want to delete this contact from buddy <b>%1</b>?").arg(MyBuddy.display()),
+			"Warning", this);
+	if (!sure)
 		return;
 
 	if (item->action() == BuddyContactsTableItem::ItemAdd)

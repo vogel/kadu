@@ -12,9 +12,10 @@
 
 #include <QtGui/QWidget>
 
+#include "buddies/buddy.h"
+
 class QTableView;
 
-class Buddy;
 class BuddyContactsTableDelegate;
 class BuddyContactsTableModel;
 class BuddyContactsTableModelProxy;
@@ -23,6 +24,7 @@ class BuddyContactsTable : public QWidget
 {
 	Q_OBJECT
 
+	Buddy MyBuddy;
 	QTableView *View;
 	BuddyContactsTableDelegate *Delegate;
 	BuddyContactsTableModel *Model;
