@@ -420,17 +420,6 @@ void Core::configurationUpdated()
 	debug_mask = config_file.readNumEntry("General", "DEBUG_MASK");
 }
 
-QString Core::readToken(const QPixmap &tokenPixmap)
-{
-/*	TokenDialog *td = new TokenDialog(tokenPixmap, 0);
-	QString result;
-
-	if (td->exec() == QDialog::Accepted)
-		result = td->getValue();
-	delete td;*/
-	return "";
-}
-
 Status Core::status(StatusContainer *container)
 {
 	return StatusChanger->status(container);

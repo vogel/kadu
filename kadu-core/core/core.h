@@ -17,7 +17,6 @@
 #include "configuration/configuration-aware-object.h"
 #include "buddies/buddy.h"
 #include "buddies/buddy-list.h"
-#include "misc/token-reader.h"
 #include "status/status.h"
 
 #include "exports.h"
@@ -26,7 +25,7 @@ class KaduWindow;
 class Message;
 class UserStatusChanger;
 
-class KADUAPI Core : public QObject, private AccountsAwareObject, public ConfigurationAwareObject, public TokenReader
+class KADUAPI Core : public QObject, private AccountsAwareObject, public ConfigurationAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(Core)
@@ -66,8 +65,6 @@ protected:
 
 public:
 	static Core * instance();
-
-	virtual QString readToken(const QPixmap &tokenPixmap);
 
 	Buddy myself() { return Myself; }
 	Status status(StatusContainer *container);
