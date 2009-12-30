@@ -139,7 +139,10 @@ void BuddyContactsTableModel::itemUpdated(BuddyContactsTableItem *item)
 {
 	int index = Contacts.indexOf(item);
 	if (index != -1)
+	{
 		emit dataChanged(createIndex(index, 0), createIndex(index, 2));
+		emit validChanged();
+	}
 }
 
 int BuddyContactsTableModel::columnCount(const QModelIndex &parent) const
@@ -172,6 +175,19 @@ bool BuddyContactsTableModel::insertRows(int row, int count, const QModelIndex& 
 	endInsertRows();
 }
 
+bool BuddyContactsTableModel::removeRows(int row, int count, const QModelIndex& parent)
+{
+	beginRemoveRows(parent, row, row + count - 1);
+
+	for (int i = 0; i < count; i++)
+	{
+		BuddyContactsTableItem *item = Contacts.takeAt(row);
+		delete item;
+	}
+
+	endRemoveRows();
+}
+
 Qt::ItemFlags BuddyContactsTableModel::flags(const QModelIndex &index) const
 {
 	return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
@@ -200,8 +216,16 @@ QVariant BuddyContactsTableModel::data(const QModelIndex &index, int role) const
 		return QVariant();
 
 	BuddyContactsTableItem *item = Contacts.at(index.row());
-	if (role == BuddyContactsTableItemRole)
-		return QVariant::fromValue<BuddyContactsTableItem *>(item);
+	switch (role)
+	{
+		case BuddyContactsTableItemRole:
+			return QVariant::fromValue<BuddyContactsTableItem *>(item);
+
+		case Qt::BackgroundColorRole:
+			return item->isValid()
+					? QVariant()
+					: QColor(255, 0, 0, 25);
+	}
 
 	switch (index.column())
 	{

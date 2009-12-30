@@ -67,6 +67,7 @@ void BuddyGeneralConfigurationWidget::createGui()
 	DisplayEdit = new QLineEdit(this);
 	DisplayEdit->setText(MyBuddy.display());
 	layout->addWidget(DisplayEdit, 2, 3, 1, 1);
+	connect(DisplayEdit, SIGNAL(textChanged(QString)), this, SIGNAL(validChanged()));
 
 	QWidget *photoWidget = new QWidget;
 	QVBoxLayout *photoLayout = new QVBoxLayout(photoWidget);
@@ -85,6 +86,7 @@ void BuddyGeneralConfigurationWidget::createGui()
 	QGroupBox *contactsBox = new QGroupBox(tr("Buddy contacts"));
 	QVBoxLayout *contactsLayout = new QVBoxLayout(contactsBox);
 	ContactsTable = new BuddyContactsTable(MyBuddy, contactsBox);
+	connect(ContactsTable, SIGNAL(validChanged()), this, SIGNAL(validChanged()));
 	contactsLayout ->addWidget(ContactsTable);
 
 	layout->addWidget(contactsBox, 4, 2, 2, 6);
@@ -129,14 +131,20 @@ void BuddyGeneralConfigurationWidget::createGui()
 	layout->setRowStretch(8, 100);
 }
 
-void BuddyGeneralConfigurationWidget::unmergeContact()
+bool BuddyGeneralConfigurationWidget::isValid()
 {
-	//TODO 0.6.6 how to get contact ID here?
-	if (MessageDialog::ask(qApp->translate("MergedContactProperties", "Are you sure you want to remove the contact <contact name> from the merged contact %1?")./*arg().*/arg(MyBuddy.display())))
-		emit doUnmergeContact();
+	QString display = DisplayEdit->text();
+	if (display.isEmpty())
+		return false;
+
+	Buddy buddy = BuddyManager::instance()->byDisplay(display);
+	if (buddy && buddy != MyBuddy)
+		return false;
+
+	return ContactsTable->isValid();
 }
 
-void BuddyGeneralConfigurationWidget::saveConfiguration()
+void BuddyGeneralConfigurationWidget::save()
 {
 	MyBuddy.setDisplay(DisplayEdit->text());
 	MyBuddy.setHomePhone(PhoneEdit->text());

@@ -41,7 +41,11 @@ public:
 	explicit BuddyContactsTable(Buddy buddy, QWidget *parent = 0);
 	virtual ~BuddyContactsTable();
 
+	bool isValid();
 	void save();
+
+signals:
+	void validChanged();
 
 };
 

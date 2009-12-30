@@ -51,16 +51,16 @@ class KADUAPI BuddyGeneralConfigurationWidget : public QWidget
 private slots:
 	void showOrderDialog();
 	void updateOrderAndClose();
-	void unmergeContact();
 
 public:
-	BuddyGeneralConfigurationWidget(Buddy &buddy, QWidget *parent = 0);
-	~BuddyGeneralConfigurationWidget();
+	explicit BuddyGeneralConfigurationWidget(Buddy &buddy, QWidget *parent = 0);
+	virtual ~BuddyGeneralConfigurationWidget();
 
-	void saveConfiguration();
+	bool isValid();
+	void save();
 
 signals:
-	void doUnmergeContact();
+	void validChanged();
 
 };
 

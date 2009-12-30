@@ -28,6 +28,10 @@ BuddyContactsTable::BuddyContactsTable(Buddy buddy, QWidget *parent) :
 	Proxy = new BuddyContactsTableModelProxy(Model);
 	Proxy->setSourceModel(Model);
 
+	connect(Model, SIGNAL(validChanged()), this, SIGNAL(validChanged()));
+	connect(Model, SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SIGNAL(validChanged()));
+	connect(Model, SIGNAL(rowsRemoved(const QModelIndex &, int, int)), this, SIGNAL(validChanged()));
+
 	createGui();
 }
 
@@ -80,6 +84,11 @@ void BuddyContactsTable::createGui()
 	layout->addWidget(buttons);
 }
 
+bool BuddyContactsTable::isValid()
+{
+	return Model->isValid();
+}
+
 void BuddyContactsTable::save()
 {
 	Model->save();
@@ -110,8 +119,6 @@ void BuddyContactsTable::detachClicked()
 		item->setAction(BuddyContactsTableItem::ItemDetach);
 		item->setDetachedBuddyName("detached");
 	}
-
-// 	Proxy->invalidate();
 }
 
 void BuddyContactsTable::removeClicked()
@@ -121,8 +128,12 @@ void BuddyContactsTable::removeClicked()
 		return;
 
 	BuddyContactsTableItem *item = qvariant_cast<BuddyContactsTableItem *>(selected);
-	if (item)
-		item->setAction(BuddyContactsTableItem::ItemRemove);
+	if (!item)
+		return;
 
-// 	Proxy->invalidate();
+	if (item->action() == BuddyContactsTableItem::ItemAdd)
+		// remove it, we don't need it anyway
+		Model->removeRow(View->currentIndex().row());
+	else
+		item->setAction(BuddyContactsTableItem::ItemRemove);
 }
