@@ -18,7 +18,7 @@ Je¶li jest w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * historia otwiera siê z powrotem na ostatniej rozmowie z kontaktem (dorr)
 * wyszukiwanie w historii rozpoczyna siê od aktualnie przegl±danego dnia (dorr)
 * zosta³ rozwiazany rzadki problem b³êdnych dat w historii (dorr)
-* zosta³a zwiêkszona trochê czytelno¶æ okna wyboru emotek (dorr)
+* zosta³a zwiêkszona czytelno¶æ okna wyboru emotek (beevvy/dorr)
 
 +++ wersja 0.6.5.4-rc1
 * dodane zosta³o wsparcie dla Haiku OS (kaliber/dorr)
