@@ -20,6 +20,7 @@
 
 #include "buddy-contacts-table.h"
 #include <gui/windows/message-dialog.h>
+#include <QInputDialog>
 
 BuddyContactsTable::BuddyContactsTable(Buddy buddy, QWidget *parent) :
 		QWidget(parent), MyBuddy(buddy)
@@ -115,11 +116,18 @@ void BuddyContactsTable::detachClicked()
 		return;
 
 	BuddyContactsTableItem *item = qvariant_cast<BuddyContactsTableItem *>(selected);
-	if (item)
-	{
-		item->setAction(BuddyContactsTableItem::ItemDetach);
-		item->setDetachedBuddyName("detached");
-	}
+	if (!item)
+		return;
+
+	QString display = QString("%1 (%2)").arg(item->id()).arg(item->itemAccount().name());
+	display = QInputDialog::getText(this, tr("New buddy display name"),
+			tr("Give name for new buddy for this contact"), QLineEdit::Normal, display);
+
+	if (display.isEmpty())
+		return;
+
+	item->setAction(BuddyContactsTableItem::ItemDetach);
+	item->setDetachedBuddyName(display);
 }
 
 void BuddyContactsTable::removeClicked()
