@@ -88,6 +88,7 @@ void BuddyContactsTable::moveDownClicked()
 
 void BuddyContactsTable::addClicked()
 {
+	Model->insertRow(Model->rowCount());
 }
 
 void BuddyContactsTable::detachClicked()

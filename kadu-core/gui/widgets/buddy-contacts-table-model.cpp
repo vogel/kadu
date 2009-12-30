@@ -125,6 +125,20 @@ int BuddyContactsTableModel::rowCount(const QModelIndex &parent) const
 	return Contacts.count();
 }
 
+bool BuddyContactsTableModel::insertRows(int row, int count, const QModelIndex& parent)
+{
+	beginInsertRows(parent, row, row + count - 1);
+
+	for (int i = 0; i < count; i++)
+	{
+		BuddyContactsTableItem item;
+		item.setAction(BuddyContactsTableItem::ItemAdd);
+		Contacts.insert(row, item);
+	}
+
+	endInsertRows();
+}
+
 Qt::ItemFlags BuddyContactsTableModel::flags(const QModelIndex &index) const
 {
 	return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
