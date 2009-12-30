@@ -273,7 +273,6 @@ set (kadu_SRCS
 	debug.cpp
 	dnshandler.cpp
 	emoticons.cpp
-	expimp.cpp
 	html_document.cpp
 	http_client.cpp
 	icons-manager.cpp
@@ -485,7 +484,6 @@ set (kadu_MOC_SRCS
 
 	dnshandler.h
 	emoticons.h
-	expimp.h
 	http_client.h
 	icons-manager.h
 	ignore.h

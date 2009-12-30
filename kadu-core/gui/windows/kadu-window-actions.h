@@ -34,7 +34,6 @@ class KaduWindowActions : QObject
 	ActionDescription *OpenSearch;
 	ActionDescription *ManageIgnored;
 	ActionDescription *ManageModules;
-	ActionDescription *ImportExportContacts;
 	ActionDescription *Help;
 	ActionDescription *Bugs;
 	ActionDescription *Support;
@@ -75,7 +74,6 @@ private slots:
 	void addGroupActionActivated(QAction *sender, bool toggled);
 	void openSearchActionActivated(QAction *sender, bool toggled);
 	void manageIgnoredActionActivated(QAction *sender, bool toggled);
-	void importExportContactsActionActivated(QAction *sender, bool toggled);
 	void helpActionActivated(QAction *sender, bool toggled);
 	void bugsActionActivated(QAction *sender, bool toggled);
 	void supportActionActivated(QAction *sender, bool toggled);

@@ -46,7 +46,6 @@
 
 #include "about.h"
 #include "debug.h"
-#include "expimp.h"
 #include "html_document.h"
 #include "ignore.h"
 #include "modules.h"
@@ -281,12 +280,6 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		this, SLOT(manageIgnoredActionActivated(QAction *, bool)),
 		"Ignore", tr("Ignored Buddies...")
 	);
-
-	ImportExportContacts = new ActionDescription(this,
-		ActionDescription::TypeMainMenu, "importExportUserlisAction",
-		this, SLOT(importExportContactsActionActivated(QAction *, bool)),
-		"ImportExport", tr("I&mport / Export userlist")
-	); //TODO 0.6.6: remove
 
 	Help = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "helpAction",
@@ -620,11 +613,6 @@ void KaduWindowActions::openSearchActionActivated(QAction *sender, bool toggled)
 void KaduWindowActions::manageIgnoredActionActivated(QAction *sender, bool toggled)
 {
 	(new Ignored(dynamic_cast<QWidget *>(sender->parent())))->show();
-}
-
-void KaduWindowActions::importExportContactsActionActivated(QAction *sender, bool toggled)
-{
-	(new UserlistImportExport(dynamic_cast<QWidget *>(sender->parent())))->show();
 }
 
 void KaduWindowActions::helpActionActivated(QAction *sender, bool toggled)
