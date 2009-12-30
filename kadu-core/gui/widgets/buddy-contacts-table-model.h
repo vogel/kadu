@@ -31,10 +31,16 @@ class BuddyContactsTableModel : public QAbstractTableModel
 	void performItemActionDetach(BuddyContactsTableItem *);
 	void performItemActionRemove(BuddyContactsTableItem *);
 
+	void addItem(BuddyContactsTableItem *item);
+
+private slots:
+	void itemUpdated(BuddyContactsTableItem *item);
+
 public:
 	explicit BuddyContactsTableModel(Buddy buddy, QObject *parent = 0);
 	virtual ~BuddyContactsTableModel();
 
+	bool isValid();
 	void save();
 
 	BuddyContactsTableItem * item(int row);

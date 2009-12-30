@@ -15,6 +15,7 @@
 BuddyContactsTableModelProxy::BuddyContactsTableModelProxy(QObject *parent) :
 		QSortFilterProxyModel(parent)
 {
+	setDynamicSortFilter(true);
 }
 
 BuddyContactsTableModelProxy::~BuddyContactsTableModelProxy()

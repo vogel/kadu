@@ -703,7 +703,7 @@ void TlenProtocol::chatNotify(QString from, QString type)
 	}
 }
 
-bool TlenProtocol::validateUserID(QString& uid)
+bool TlenProtocol::validateUserID(const QString& uid)
 {
 	//TODO:
 	return true;

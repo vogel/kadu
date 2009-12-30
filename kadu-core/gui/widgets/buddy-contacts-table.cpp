@@ -111,7 +111,7 @@ void BuddyContactsTable::detachClicked()
 		item->setDetachedBuddyName("detached");
 	}
 
-	Proxy->invalidate();
+// 	Proxy->invalidate();
 }
 
 void BuddyContactsTable::removeClicked()
@@ -124,5 +124,5 @@ void BuddyContactsTable::removeClicked()
 	if (item)
 		item->setAction(BuddyContactsTableItem::ItemRemove);
 
-	Proxy->invalidate();
+// 	Proxy->invalidate();
 }

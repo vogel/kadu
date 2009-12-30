@@ -129,7 +129,7 @@ public:
 	virtual PersonalInfoService * personalInfoService() { return CurrentPersonalInfoService; }
 	virtual SearchService * searchService() { return CurrentSearchService; }
 
-	virtual bool validateUserID(QString &uid);
+	virtual bool validateUserID(const QString &uid);
 	virtual QPixmap statusPixmap(Status status);
 	virtual QPixmap statusPixmap(const QString &statusType);
 

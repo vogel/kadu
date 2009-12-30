@@ -756,7 +756,7 @@ void JabberProtocol::authorizeContact(Contact contact)
 	task->go(true);
 }
 
-bool JabberProtocol::validateUserID(QString& uid)
+bool JabberProtocol::validateUserID(const QString& uid)
 {
 	//TODO: this does not work
 	XMPP::Jid j = uid;

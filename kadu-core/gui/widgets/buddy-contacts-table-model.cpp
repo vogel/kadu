@@ -23,7 +23,15 @@ BuddyContactsTableModel::BuddyContactsTableModel(Buddy buddy, QObject *parent) :
 
 BuddyContactsTableModel::~BuddyContactsTableModel()
 {
-	qDeleteAll(Contacts);
+}
+
+bool BuddyContactsTableModel::isValid()
+{
+	foreach (BuddyContactsTableItem *item, Contacts)
+		if (!item->isValid())
+			return false;
+
+	return true;
 }
 
 void BuddyContactsTableModel::save()
@@ -43,7 +51,7 @@ void BuddyContactsTableModel::contactsFromBuddy()
 {
 	Contacts.clear();
 	foreach (Contact contact, ModelBuddy.contacts())
-		Contacts.append(new BuddyContactsTableItem(contact));
+		addItem(new BuddyContactsTableItem(contact, this));
 }
 
 void BuddyContactsTableModel::buddyFromContacts()
@@ -120,6 +128,20 @@ void BuddyContactsTableModel::performItemActionRemove(BuddyContactsTableItem *it
 	contact.setOwnerBuddy(Buddy::null);
 }
 
+void BuddyContactsTableModel::addItem(BuddyContactsTableItem *item)
+{
+	connect(item, SIGNAL(updated(BuddyContactsTableItem*)),
+			this, SLOT(itemUpdated(BuddyContactsTableItem*)));
+	Contacts.append(item);
+}
+
+void BuddyContactsTableModel::itemUpdated(BuddyContactsTableItem *item)
+{
+	int index = Contacts.indexOf(item);
+	if (index != -1)
+		emit dataChanged(createIndex(index, 0), createIndex(index, 2));
+}
+
 int BuddyContactsTableModel::columnCount(const QModelIndex &parent) const
 {
 	if (parent.isValid())
@@ -142,9 +164,9 @@ bool BuddyContactsTableModel::insertRows(int row, int count, const QModelIndex& 
 
 	for (int i = 0; i < count; i++)
 	{
-		BuddyContactsTableItem *item = new BuddyContactsTableItem();
+		BuddyContactsTableItem *item = new BuddyContactsTableItem(this);
 		item->setAction(BuddyContactsTableItem::ItemAdd);
-		Contacts.insert(row, item);
+		addItem(item);
 	}
 
 	endInsertRows();

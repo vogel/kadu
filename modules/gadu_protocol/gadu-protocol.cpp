@@ -200,12 +200,13 @@ GaduProtocol::~GaduProtocol()
 	kdebugf2();
 }
 
-bool GaduProtocol::validateUserID(QString &uid)
+bool GaduProtocol::validateUserID(const QString &uid)
 {
 	QIntValidator v(1, 999999999, this);
 	int pos = 0;
 
-	if (v.validate(uid, pos) == QValidator::Acceptable)
+	QString id = uid; // need non-const copy
+	if (v.validate(id, pos) == QValidator::Acceptable)
 		return true;
 
 	return false;

@@ -380,6 +380,7 @@ set (kadu_MOC_SRCS
 	gui/widgets/buddies-list-view-delegate.h
 	gui/widgets/buddies-list-widget.h
 	gui/widgets/buddy-contacts-table-delegate.h
+	gui/widgets/buddy-contacts-table-item.h
 	gui/widgets/buddy-contacts-table-model.h
 	gui/widgets/buddy-contacts-table-model-proxy.h
 	gui/widgets/buddy-contacts-table.h

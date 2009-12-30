@@ -55,7 +55,7 @@ class JabberProtocol : public Protocol
 		JabberProtocol(Account account, ProtocolFactory *factory);
 		~JabberProtocol();
 		XMPP::JabberClient * client() { return JabberClient; }
-		bool validateUserID(QString& uid);
+		bool validateUserID(const QString& uid);
 		bool isConnecting() { return whileConnecting/*(State == NetworkConnecting)*/; }
 
 		virtual Conference * loadConferenceFromStorage(StoragePoint *storage) { return 0; }

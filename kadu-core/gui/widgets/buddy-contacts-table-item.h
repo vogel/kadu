@@ -13,8 +13,10 @@
 #include "accounts/account.h"
 #include "contacts/contact.h"
 
-class BuddyContactsTableItem
+class BuddyContactsTableItem : public QObject
 {
+	Q_OBJECT
+
 public:
 	enum ItemAction {
 		ItemEdit,
@@ -30,24 +32,32 @@ private:
 	ItemAction Action;
 	QString DetachedBuddyName;
 
+	bool isAddValid() const;
+	bool isEditValid() const;
+
 public:
-	BuddyContactsTableItem(Contact contact = Contact::null);
-	~BuddyContactsTableItem() {}
+	explicit BuddyContactsTableItem(Contact contact = Contact::null, QObject *parent = 0);
+	virtual ~BuddyContactsTableItem() {}
 
 	Contact itemContact() const { return ItemContact; }
-	void setItemContact(Contact contact) { ItemContact = contact; }
+	void setItemContact(Contact contact);
 
 	Account itemAccount() const { return ItemAccount; }
-	void setItemAccount(Account account) { ItemAccount = account; }
+	void setItemAccount(Account account);
 
 	QString id() const { return Id; }
-	void setId(const QString &id) { Id = id; }
+	void setId(const QString &id);
 
 	ItemAction action() const { return Action; }
-	void setAction(ItemAction action) { Action = action; }
+	void setAction(ItemAction action);
 
 	QString detachedBuddyName() const { return DetachedBuddyName; }
-	void setDetachedBuddyName(const QString &detachedBuddyName) { DetachedBuddyName = detachedBuddyName; }
+	void setDetachedBuddyName(const QString &detachedBuddyName);
+
+	bool isValid() const;
+
+signals:
+	void updated(BuddyContactsTableItem *item);
 
 };
 

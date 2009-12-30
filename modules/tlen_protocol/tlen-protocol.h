@@ -33,7 +33,7 @@ class TlenProtocol : public Protocol
 		TlenProtocol(Account account, ProtocolFactory *factory);
 		~TlenProtocol();
 
-		bool validateUserID(QString& uid);
+		bool validateUserID(const QString& uid);
 
 		tlen * client() { return TlenClient; }
 

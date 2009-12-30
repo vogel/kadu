@@ -90,7 +90,7 @@ public:
 	virtual PersonalInfoService * personalInfoService() { return 0; }
 	virtual SearchService * searchService() { return 0; }
 
-	virtual bool validateUserID(QString &uid) = 0;
+	virtual bool validateUserID(const QString &uid) = 0;
 
 	NetworkState state() { return State; }
 	bool isConnected() { return (State == NetworkConnected); }
