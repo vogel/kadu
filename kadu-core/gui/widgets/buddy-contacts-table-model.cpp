@@ -37,6 +37,13 @@ bool BuddyContactsTableModel::isValid()
 void BuddyContactsTableModel::save()
 {
 	buddyFromContacts();
+
+	beginRemoveRows(QModelIndex(), 0, Contacts.count() - 1);
+	qDeleteAll<>(Contacts);
+	Contacts.clear();
+	endRemoveRows();
+
+	contactsFromBuddy();
 }
 
 BuddyContactsTableItem * BuddyContactsTableModel::item(int row)
@@ -130,9 +137,13 @@ void BuddyContactsTableModel::performItemActionRemove(BuddyContactsTableItem *it
 
 void BuddyContactsTableModel::addItem(BuddyContactsTableItem *item)
 {
+	beginInsertRows(QModelIndex(), Contacts.count(), Contacts.count());
+
 	connect(item, SIGNAL(updated(BuddyContactsTableItem*)),
 			this, SLOT(itemUpdated(BuddyContactsTableItem*)));
 	Contacts.append(item);
+
+	endInsertRows();
 }
 
 void BuddyContactsTableModel::itemUpdated(BuddyContactsTableItem *item)
