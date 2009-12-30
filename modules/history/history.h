@@ -80,7 +80,6 @@ private slots:
 	void accountUnregistered(Account);
 
 	void showHistoryActionActivated(QAction *sender, bool toggled);
-	void showMoreMessagesActionActivated(QAction *sender, bool toggled);
 	void showMoreMessages(QAction *action);
 	void clearHistoryActionActivated(QAction *sender, bool toggled);
 

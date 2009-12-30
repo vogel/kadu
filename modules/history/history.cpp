@@ -128,12 +128,6 @@ void History::createActionDescriptions()
 	);
 	Core::instance()->kaduWindow()->insertMenuActionDescription(ChatsHistoryActionDescription, KaduWindow::MenuKadu, 5);
 
-	ShowMoreMessagesInChatWidgetActionDescription = new ActionDescription(0,
-		ActionDescription::TypeChat, "chatShowMoreMessagesAction",
-		this, SLOT(showMoreMessagesActionActivated(QAction *, bool)),
-		"History", tr("Show more messages...")
-	);
-
 	ClearHistoryActionDescription = new ActionDescription(0,
 		ActionDescription::TypeUser, "clearHistoryAction",
 		this, SLOT(clearHistoryActionActivated(QAction *, bool)),
@@ -154,27 +148,20 @@ void History::deleteActionDescriptions()
 	Core::instance()->kaduWindow()->removeMenuActionDescription(ChatsHistoryActionDescription);
 	delete ChatsHistoryActionDescription;
 	ChatsHistoryActionDescription = 0;
-
-	delete ShowMoreMessagesInChatWidgetActionDescription;
-	ShowMoreMessagesInChatWidgetActionDescription = 0;
-
 }
 
 void History::showHistoryActionActivated(QAction *sender, bool toggled)
 {
-	kdebugf();
-	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
-	if (window)
-		HistoryDialog->show(window->chat());
-	kdebugf2();
-}
-
-void History::showMoreMessagesActionActivated(QAction *sender, bool toggled)
-{
+  
 	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(sender->parent());
 	if (!chatEditBox)
+	{
+		MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
+		if (window)
+			HistoryDialog->show(window->chat());
 		return;
-	
+	}
+
 	ChatWidget *chatWidget = chatEditBox->chatWidget();
 	if (chatWidget)
 	{
@@ -196,11 +183,13 @@ void History::showMoreMessagesActionActivated(QAction *sender, bool toggled)
 		menu->addAction(tr("Show messages since yesterday"))->setData(1);
 		menu->addAction(tr("Show messages from last 7 days"))->setData(7);
 		menu->addAction(tr("Show messages from last 30 days"))->setData(30);
+		menu->addAction(tr("Show whole history"))->setData(-1);
 
 		connect(menu, SIGNAL(triggered(QAction *)), this, SLOT(showMoreMessages(QAction *)));
 
 		menu->popup(widget->mapToGlobal(QPoint(0, widget->height())));
 	}
+
 }
 
 void History::showMoreMessages(QAction *action)
@@ -225,7 +214,12 @@ void History::showMoreMessages(QAction *action)
 	chatMessagesView->setForcePruneDisabled(0 != days);
 	QList<Message> messages;
 
-	if (0 != days)
+	if (-1 == days)
+	{
+		HistoryDialog->show(chatWidget->chat());
+		return;
+	}
+	else if (0 != days)
 	{
 		QDate since = QDate::currentDate().addDays(-days);
 		messages = CurrentStorage->messagesSince(chatWidget->chat(), since);
