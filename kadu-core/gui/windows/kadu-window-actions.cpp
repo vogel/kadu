@@ -431,23 +431,20 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	);
 	connect(UseProxy, SIGNAL(actionCreated(Action *)), this, SLOT(useProxyActionCreated(Action *)));
 
-	connect(StatusChangerManager::instance(), SIGNAL(statusChanged(Account, Status)), this, SLOT(statusChanged(Account, Status)));
+	connect(StatusChangerManager::instance(), SIGNAL(statusChanged(StatusContainer *, Status)), this, SLOT(statusChanged(StatusContainer *, Status)));
 }
 
 KaduWindowActions::~KaduWindowActions()
 {
 }
 
-void KaduWindowActions::statusChanged(Account account, Status status)
+void KaduWindowActions::statusChanged(StatusContainer *container, Status status)
 {
-	if (account.isNull())
-		return;
-
-	if (!account.statusContainer())
+	if (!container)
 		return;
 
 	// TODO: 0.6.6, this really SUXX
-	QIcon icon = account.statusContainer()->statusPixmap(status);
+	QIcon icon = container->statusPixmap(status);
 	foreach (Action *action, ShowStatus->actions())
 		action->setIcon(icon);
 }
