@@ -529,7 +529,7 @@ link_directories (modules)
 if (WIN32)
 	add_library(kadu_core SHARED ${kadu_SRCS} ${MOC_FILES} kadu_core.rc)
 	set_target_properties(kadu_core PROPERTIES DEFINE_SYMBOL KADULIB )
-	target_link_libraries (kadu_core ${QT_LIBRARIES} ${LIBGADU_LIBRARIES} ${STATIC_MODULES})
+	target_link_libraries (kadu_core ${QT_LIBRARIES})
 	set_property(TARGET kadu_core PROPERTY LINK_INTERFACE_LIBRARIES "")
 
 	add_executable(kadu WIN32 main.cpp main_win32.cpp kadu.rc)
@@ -548,7 +548,7 @@ else (WIN32)
 	set_target_properties(kadu PROPERTIES ENABLE_EXPORTS ON)
 	set_target_properties(kadu PROPERTIES COMPILE_FLAGS "-DKADULIB" )
 
-	target_link_libraries (kadu ${STATIC_MODULES} ${QT_LIBRARIES} ${LIBGADU_LIBRARIES})
+	target_link_libraries (kadu ${QT_LIBRARIES})
 
 	if (NOT APPLE)
 		target_link_libraries (kadu ${X11_Xfixes_LIB})

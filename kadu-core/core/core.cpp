@@ -79,7 +79,6 @@ Core::~Core()
 	StatusChanger = 0;
 
 	ModulesManager::instance()->unloadAllModules();
-	Updates::closeModule();
 
 #ifdef Q_OS_MACX
 	setIcon(QPixmap(dataPath("kadu.png")));
@@ -285,7 +284,7 @@ void Core::init()
 		StatusChanger->userStatusSet(container, container->status());
 	StatusChangerManager::instance()->enable();
 
-	Updates::initModule();
+	new Updates();
 
 #ifdef Q_OS_MACX
 	setIcon(IconsManager::instance()->loadPixmap("BigOffline"));
