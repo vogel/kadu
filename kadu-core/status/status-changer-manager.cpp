@@ -64,14 +64,15 @@ void StatusChangerManager::unregisterStatusChanger(StatusChanger *statusChanger)
 	kdebugf2();
 }
 
-void StatusChangerManager::statusChanged()
-{
-	foreach (StatusContainer *container, StatusContainerManager::instance()->statusContainers())
-		statusChanged(container);
-}
-
 void StatusChangerManager::statusChanged(StatusContainer *container)
 {
+	if (0 == container)
+	{
+		foreach (StatusContainer *statusContainer, StatusContainerManager::instance()->statusContainers())
+			if (statusContainer)
+				statusChanged(statusContainer);
+	}
+
 	kdebugf();
 
 	if (!Enabled)

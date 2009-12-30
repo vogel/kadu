@@ -53,6 +53,8 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 
 private slots:
 	void statusChanged();
+	void statusChanged(StatusContainer *, Status);
+
 	void deleteOldConfigurationFiles();
 	void kaduWindowDestroyed();
 

@@ -224,6 +224,8 @@ int GaduProtocol::maxDescriptionLength()
 void GaduProtocol::changeStatus()
 {
 	Status newStatus = nextStatus();
+	if (newStatus == status())
+		return; // dont reset password
 
 	if (newStatus.isDisconnected() && status().isDisconnected())
 	{
@@ -242,7 +244,7 @@ void GaduProtocol::changeStatus()
 	}
 
 // TODO: 0.6.6
-	int friends = (!newStatus.isDisconnected() && privateMode() ? GG_STATUS_FRIENDS_MASK : 0);
+	int friends (!newStatus.isDisconnected() && privateMode() ? GG_STATUS_FRIENDS_MASK : 0);
 	int type = gaduStatusFromStatus(newStatus);
 	bool hasDescription = !newStatus.description().isEmpty();
 

@@ -57,95 +57,26 @@ extern "C" KADU_EXPORT void autoaway_close()
 	kdebugf2();
 }
 
-AutoAwayStatusChanger::AutoAwayStatusChanger()
-	: StatusChanger(900), changeStatusTo(NoChangeStatus), changeDescriptionTo(NoChangeDescription)
-{
-}
-
-AutoAwayStatusChanger::~AutoAwayStatusChanger()
-{
-}
-
-void AutoAwayStatusChanger::changeStatus(Status &status)
-{
-	if (changeStatusTo == NoChangeStatus)
-		return;
-
-	if (status.isDisconnected())
-		return;
-
-	QString description = status.description();
-	switch (changeDescriptionTo)
-	{
-		case NoChangeDescription:
-			break;
-
-		case ChangeDescriptionPrepend:
-			description = descriptionAddon + description;
-			break;
-
-		case ChangeDescriptionReplace:
-			description = descriptionAddon;
-			break;
-
-		case ChangeDescriptionAppend:
-			description = description + descriptionAddon;
-			break;
-	}
-
-	if (changeStatusTo == ChangeStatusToOffline)
-	{
-		status.setType("Offline");
-		status.setDescription(description);
-		return;
-	}
-
-	if (status.group() == "Invisible")
-		return;
-
-	if (changeStatusTo == ChangeStatusToInvisible)
-	{
-		status.setType("Invisible");
-		status.setDescription(description);
-		return;
-	}
-
-	if (status.group() == "Busy")
-		return;
-
-	if (changeStatusTo == ChangeStatusToBusy)
-	{
-		status.setType("Busy");
-		status.setDescription(description);
-		return;
-	}
-}
-
-void AutoAwayStatusChanger::setChangeStatusTo(ChangeStatusTo newChangeStatusTo)
-{
-	changeStatusTo = newChangeStatusTo;
-	emit statusChanged();
-}
-
-void AutoAwayStatusChanger::setChangeDescriptionTo(ChangeDescriptionTo newChangeDescriptionTo, const QString &newDescriptionAddon)
-{
-	changeDescriptionTo = newChangeDescriptionTo;
-	descriptionAddon = newDescriptionAddon;
-}
-
 AutoAway::AutoAway() :
 		autoAwayStatusChanger(0), timer(0), updateDescripion(true)
 {
-	triggerAllAccountsRegistered();
+	autoAwayStatusChanger = new AutoAwayStatusChanger();
+	StatusChangerManager::instance()->registerStatusChanger(autoAwayStatusChanger);
+
+	timer = new QTimer();
+	connect(timer, SIGNAL(timeout()), this, SLOT(checkIdleTime()));
+
+	timer->setInterval(config_file.readNumEntry("General", "AutoAwayCheckTime", 5) * 1000);
+	timer->setSingleShot(true);
+	timer->start();
 
 	createDefaultConfiguration();
 	configurationUpdated();
+
 }
 
 AutoAway::~AutoAway()
 {
-	triggerAllAccountsUnregistered();
-
 	if (timer)
 	{
 		delete timer;
@@ -162,53 +93,6 @@ AutoAway::~AutoAway()
 	qApp->removeEventFilter(this);
 }
 
-void AutoAway::accountRegistered(Account account)
-{
-// 	connect(account, SIGNAL(connected()), this, SLOT(
-	
-// 	connect(gadu, SIGNAL(connected(Account *)), this, SLOT(on()));
-// 	connect(gadu, SIGNAL(disconnected(Account *)), this, SLOT(off()));
-}
-
-void AutoAway::accountUnregistered(Account account)
-{
-	//TODO 0.6.6:
-// 	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
-// 	disconnect(gadu, SIGNAL(connected(Account *)), this, SLOT(on()));
-// 	disconnect(gadu, SIGNAL(disconnected(Account *)), this, SLOT(off()));
-}
-
-void AutoAway::on()
-{
-	if (!autoAwayStatusChanger)
-	{
-		autoAwayStatusChanger = new AutoAwayStatusChanger();
-		StatusChangerManager::instance()->registerStatusChanger(autoAwayStatusChanger);
-	}
-
-	autoAwayStatusChanger->setChangeDescriptionTo(changeTo, parseDescription(autoStatusText));
-
-	if (!timer)
-	{
-		timer = new QTimer();
-		connect(timer, SIGNAL(timeout()), this, SLOT(checkIdleTime()));
-
-		timer->setInterval(config_file.readNumEntry("General", "AutoAwayCheckTime") * 1000);
-		timer->setSingleShot(true);
-		timer->start();
-	}
-}
-
-void AutoAway::off()
-{
-	if (timer)
-	{
-		timer->stop();
-		delete timer;
-		timer = 0;
-	}
-}
-
 //metoda wywo�ywana co sekund�(mo�liwa zmiana w konfiguracji) w celu sprawdzenia czy mamy zmieni� status
 void AutoAway::checkIdleTime()
 {
@@ -222,7 +106,7 @@ void AutoAway::checkIdleTime()
 		refreshStatusTime = idleTime + refreshStatusInterval;
 	}
  	else if (updateDescripion)
-        {
+	{
 		autoAwayStatusChanger->setChangeDescriptionTo(changeTo, parseDescription(autoStatusText));
 		updateDescripion = false;
 	}
@@ -295,12 +179,9 @@ void AutoAway::configurationUpdated()
 	autoStatusText = config_file.readEntry("General", "AutoStatusText");
 
 	changeTo = (AutoAwayStatusChanger::ChangeDescriptionTo)config_file.readNumEntry("General", "AutoChangeDescription");
-//TODO 0.6.6:
-// 	Protocol *protocol = AccountManager::instance()->defaultAccount()->protocol();
-// 	if ((autoAwayEnabled || autoInvisibleEnabled || autoDisconnectEnabled) && protocol->isConnected())
-// 		on();
-// 	else
-// 		off();
+
+	autoAwayStatusChanger->setChangeDescriptionTo(changeTo, parseDescription(autoStatusText));
+	timer->setInterval(config_file.readNumEntry("General", "AutoAwayCheckTime") * 1000);
 }
 
 void AutoAway::autoAwaySpinBoxValueChanged(int value)
@@ -335,7 +216,7 @@ QString AutoAway::parseDescription(const QString &parseDescription)
 // 	if (parseAutoStatus)//TODO 0.6.6:
 // 		return (KaduParser::parse(parseDescription, AccountManager::instance()->defaultAccount(), kadu->myself(), true));
 // 	else
-// 		return parseDescription;
+		return parseDescription;
 }
 
 void AutoAway::createDefaultConfiguration()

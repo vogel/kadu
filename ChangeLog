@@ -5,6 +5,9 @@ Jeśli jest w postaci (z) to zarówno pomysł jak i wykonanie należy do z.
 +++ version 0.6.6-alpha2
 * gui: hint position preview added (Kermit)
 * gui: recent chats can be stored between runs (Vogel)
+* core: StatusChanger API is now aware of multiple accounts (Vogel)
+* idle: module ported (Vogel)
+* autoaway: module ported (Vogel)
 
 +++ version 0.6.6-alpha1
 * gadu: fixed receiving conference messages (Vogel)

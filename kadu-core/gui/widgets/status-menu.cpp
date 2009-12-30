@@ -21,7 +21,6 @@
 #include "status/status-type.h"
 #include "status/status-type-manager.h"
 
-
 #include "status-menu.h"
 
 StatusMenu::StatusMenu(StatusContainer *statusContainer, QWidget *parent) :
@@ -122,9 +121,9 @@ void StatusMenu::changeStatus(QAction *action)
 	if (!statusType)
 		return;
 
-	Status status(MyStatusContainer->status());
+	Status status(Core::instance()->status(MyStatusContainer));
 	status.setType(statusType->name());
-	MyStatusContainer->setStatus(status);
+	Core::instance()->setStatus(MyStatusContainer, status);
 }
 
 void StatusMenu::changeDescription()

@@ -9,6 +9,7 @@
 
 #include "accounts/account-manager.h"
 #include "contacts/contact.h"
+#include "core/core.h"
 #include "identities/identity-manager.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
@@ -116,7 +117,7 @@ void IdentityShared::setStatus(Status status)
 {
 	foreach (Account account, Accounts)
 		if (account.statusContainer())
-			account.statusContainer()->setStatus(status);
+			Core::instance()->setStatus(account.statusContainer(), status);
 }
 
 const Status & IdentityShared::status()

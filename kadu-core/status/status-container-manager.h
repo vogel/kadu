@@ -79,7 +79,6 @@ public:
 
 	virtual void setPrivateStatus(bool isPrivate);
 
-
 signals:
 	void statusContainerAboutToBeRegistered(StatusContainer *);
 	void statusContainerRegistered(StatusContainer *);

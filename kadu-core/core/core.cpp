@@ -270,8 +270,11 @@ void Core::init()
 	Myself.setDisplay(config_file.readEntry("General", "Nick", tr("Me")));
 
 	connect(StatusContainerManager::instance(), SIGNAL(statusChanged()), this, SLOT(statusChanged()));
-	// TODO 0.6.6:
+
 	StatusChanger = new UserStatusChanger();
+
+	connect(StatusChangerManager::instance(), SIGNAL(statusChanged(StatusContainer *, Status)),
+			this, SLOT(statusChanged(StatusContainer *, Status)));
 	StatusChangerManager::instance()->registerStatusChanger(StatusChanger);
 	StatusChangerManager::instance()->enable();
 
@@ -333,6 +336,12 @@ void Core::statusChanged()
 	kdebugf();
 
 	setIcon(StatusContainerManager::instance()->statusPixmap());
+}
+
+void Core::statusChanged(StatusContainer *container, Status status)
+{
+	if (container)
+		container->setStatus(status);
 }
 
 void Core::kaduWindowDestroyed()

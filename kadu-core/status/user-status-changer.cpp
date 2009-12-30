@@ -24,7 +24,7 @@ void UserStatusChanger::changeStatus(StatusContainer *container, Status &status)
 {
 	kdebugf();
 
-	UserStatuses[container] = status;
+	status = UserStatuses[container];
 
 	kdebugf2();
 }

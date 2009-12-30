@@ -43,8 +43,7 @@ public:
 	Status status(StatusContainer *statusContainer);
 
 public slots:
-	void statusChanged();
-	void statusChanged(StatusContainer *container);
+	void statusChanged(StatusContainer *container = 0);
 
 signals:
 	void statusChanged(StatusContainer *container, Status status);

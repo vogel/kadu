@@ -1,12 +1,22 @@
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
 #ifndef AUTOAWAY_H
 #define AUTOAWAY_H
 
 #include <QtCore/QTimer>
 #include <QtCore/QObject>
 
-#include "accounts/accounts-aware-object.h"
 #include "gui/windows/main-configuration-window.h"
 #include "status/status-changer.h"
+
+#include "autoaway-status-changer.h"
 
 class QLineEdit;
 class QSpinBox;
@@ -16,44 +26,7 @@ class QCheckBox;
  * @defgroup autoaway Autoaway
  * @{
  */
-class AutoAwayStatusChanger : public StatusChanger
-{
-	Q_OBJECT
-
-	friend class AutoAway;
-
-public:
-	enum ChangeStatusTo {
-		NoChangeStatus,
-		ChangeStatusToBusy,
-		ChangeStatusToInvisible,
-		ChangeStatusToOffline
-	};
-
-	enum ChangeDescriptionTo {
-		NoChangeDescription,
-		ChangeDescriptionReplace,
-		ChangeDescriptionPrepend,
-		ChangeDescriptionAppend
-	};
-
-private:
-	ChangeStatusTo changeStatusTo;
-	ChangeDescriptionTo changeDescriptionTo;
-	QString descriptionAddon;
-
-public:
-	AutoAwayStatusChanger();
-	virtual ~AutoAwayStatusChanger();
-
-	virtual void changeStatus(Status &status);
-
-	void setChangeStatusTo(ChangeStatusTo newChangeStatusTo);
-	void setChangeDescriptionTo(ChangeDescriptionTo newChangeDescriptionTo, const QString &newDescriptionAddon);
-
-};
-
-class AutoAway : public ConfigurationUiHandler, ConfigurationAwareObject, AccountsAwareObject
+class AutoAway : public ConfigurationUiHandler, ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -103,14 +76,8 @@ private slots:
 
 	void descriptionChangeChanged(int index);
 
-	void on();
-	void off();
-
 protected:
 	virtual void configurationUpdated();
-
-	virtual void accountRegistered(Account account);
-	virtual void accountUnregistered(Account account);
 
 public:
 	AutoAway();

@@ -11,6 +11,7 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "configuration/configuration-file.h"
+#include "core/core.h"
 #include "status/status-container-aware-object.h"
 #include "status/status-type-manager.h"
 #include "icons-manager.h"
@@ -106,7 +107,7 @@ QString StatusContainerManager::statusContainerName()
 void StatusContainerManager::setStatus(Status newStatus)
 {
 	foreach (StatusContainer *container, StatusContainers)
-		container->setStatus(newStatus);
+		Core::instance()->setStatus(container, newStatus);
 }
 
 const Status & StatusContainerManager::status()
