@@ -162,10 +162,6 @@ bool AdiumStyle::isStyleValid(const QString &stylePath)
 	if (!fi.isReadable())
 		return false;
 
-	fi.setFile(dir, "main.css");
-	if (!fi.isReadable())
-		return false;
-
 	fi.setFile(dir, "Status.html");
 	if (!fi.isReadable())
 		return false;
