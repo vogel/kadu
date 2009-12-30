@@ -524,7 +524,7 @@ void KaduWindowActions::showStatusActionCreated(Action *action)
 {
 	Account account = AccountManager::instance()->defaultAccount();
 
-	if (account.isNull())
+	if (account.protocolHandler())
 		action->setIcon(account.protocolHandler()->statusPixmap());
 }
 
