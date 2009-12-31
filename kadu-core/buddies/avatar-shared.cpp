@@ -79,7 +79,7 @@ void AvatarShared::store()
 
 void AvatarShared::aboutToBeRemoved()
 {
-	// cleanup referenced
+	// cleanup references
 	AvatarContact = Contact::null;
 
 	QFile avatarFile(filePath());

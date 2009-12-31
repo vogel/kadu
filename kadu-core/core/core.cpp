@@ -13,6 +13,7 @@
 #include <QtCore/QSettings>
 
 #include "accounts/account-manager.h"
+#include "buddies/avatar-manager.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
 #include "chat/message/pending-messages-manager.h"
@@ -298,6 +299,7 @@ void Core::init()
 	AccountManager::instance()->ensureLoaded();
 	BuddyManager::instance()->ensureLoaded();
 	ContactManager::instance()->ensureLoaded();
+	AvatarManager::instance(); // initialize that
 }
 
 void Core::storeConfiguration()

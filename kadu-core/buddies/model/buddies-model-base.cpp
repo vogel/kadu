@@ -175,11 +175,8 @@ QVariant BuddiesModelBase::data(Contact contact, int role, bool useBuddyData) co
 		case AvatarRole:
 			if (useBuddyData && !contact.ownerBuddy().buddyAvatar().isEmpty())
 				return QVariant::fromValue(contact.ownerBuddy().buddyAvatar().pixmap());
-
-			// TODO: 0.6.6 move it
-			if (contact.contactAvatar().pixmap().isNull())
-				AvatarManager::instance()->updateAvatar(contact);
-			return QVariant::fromValue(contact.contactAvatar().pixmap());
+			else
+				return QVariant::fromValue(contact.contactAvatar().pixmap());
 		default:
 			return QVariant();
 	}

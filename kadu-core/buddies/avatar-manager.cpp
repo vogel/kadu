@@ -13,6 +13,7 @@
 #include "buddies/avatar.h"
 #include "buddies/avatar-shared.h"
 #include "configuration/configuration-manager.h"
+#include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
@@ -86,6 +87,8 @@ QString AvatarManager::avatarFileName(Avatar avatar)
 
 void AvatarManager::accountRegistered(Account account)
 {
+	connect(account, SIGNAL(connected()), this, SLOT(updateAccountAvatars()));
+
 	AvatarService *service = avatarService(account);
 	if (!service)
 		return;
@@ -96,6 +99,8 @@ void AvatarManager::accountRegistered(Account account)
 
 void AvatarManager::accountUnregistered(Account account)
 {
+	disconnect(account, SIGNAL(connected()), this, SLOT(updateAccountAvatars()));
+
 	AvatarService *service = avatarService(account);
 	if (!service)
 		return;
@@ -131,4 +136,14 @@ void AvatarManager::avatarFetched(Contact contact, const QByteArray &data)
 	avatar.setPixmap(pixmap);
 
 	emit avatarUpdated(contact);
+}
+
+void AvatarManager::updateAccountAvatars()
+{
+	Account account(sender());
+	if (!account)
+		return;
+
+	foreach (Contact contact, ContactManager::instance()->contacts(account))
+		updateAvatar(contact);
 }

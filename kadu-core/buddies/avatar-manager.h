@@ -37,6 +37,7 @@ class AvatarManager : public QObject, public SimpleManager<Avatar>, AccountsAwar
 
 private slots:
 	void avatarFetched(Contact contact, const QByteArray &data);
+	void updateAccountAvatars();
 
 protected:
 	virtual void accountRegistered(Account account);
