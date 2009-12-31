@@ -37,7 +37,7 @@ public:
 
 	Account chatAccount() { return Chats.at(0).chatAccount(); }
 	QString title() { return Chats.at(0).title(); }
-	QPixmap icon() { return Chats.at(0).icon(); }
+	QIcon icon() { return Chats.at(0).icon(); }
 
 	QList<Chat> chats() const { return Chats; }
 	void setChats(QList<Chat> chats) { Chats = chats; }

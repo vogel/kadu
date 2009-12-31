@@ -47,7 +47,7 @@ public:
 	KaduSharedBase_Property(Account, chatAccount, ChatAccount)
 	KaduSharedBase_Property(QString, type, Type)
 	KaduSharedBase_Property(QString, title, Title)
-	KaduSharedBase_Property(QPixmap, icon, Icon)
+	KaduSharedBase_Property(QIcon, icon, Icon)
 
 };
 

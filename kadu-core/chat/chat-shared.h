@@ -10,7 +10,7 @@
 #ifndef CHAT_SHARED_H
 #define CHAT_SHARED_H
 
-#include <QtGui/QPixmap>
+#include <QtGui/QIcon>
 
 #include "accounts/account.h"
 #include "chat/type/chat-type-aware-object.h"
@@ -31,7 +31,7 @@ class KADUAPI ChatShared : public QObject, public Shared, public DetailsHolder<C
 	Account ChatAccount;
 	QString Type;
 	QString Title;
-	QPixmap Icon;
+	QIcon Icon;
 
 protected:
 	virtual void load();
@@ -63,7 +63,7 @@ public:
 	KaduShared_Property(Account, chatAccount, ChatAccount)
 	KaduShared_Property(QString, type, Type)
 	KaduShared_Property(QString, title, Title)
-	KaduShared_Property(QPixmap, icon, Icon)
+	KaduShared_Property(QIcon, icon, Icon)
 
 public slots:
 	void refreshTitle();

@@ -11,6 +11,7 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-set.h"
 #include "chat/type/chat-type.h"
+#include "chat/type/chat-type-manager.h"
 #include "chat/chat-details.h"
 #include "chat/chat-manager.h"
 #include "configuration/configuration-file.h"
@@ -156,7 +157,7 @@ void ChatShared::refreshTitle()
 	
 		title.append(contactslist.join(", "));
 
- 		Icon = IconsManager::instance()->loadPixmap("Online");
+ 		Icon = ChatTypeManager::instance()->chatType("Conference")->icon();
 	}
 	else if (contactsSize > 0)
 	{
