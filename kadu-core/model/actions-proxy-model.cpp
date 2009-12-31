@@ -163,12 +163,12 @@ void ActionsProxyModel::sourceLayoutChanged()
 
 int ActionsProxyModel::columnCount(const QModelIndex &parent) const
 {
-	return sourceModel()->columnCount(parent);
+	return sourceModel()->columnCount(mapToSource(parent));
 }
 
 int ActionsProxyModel::rowCount(const QModelIndex &parent) const
 {
-	return sourceModel()->rowCount(parent) + BeforeActions.count() + AfterActions.count();
+	return sourceModel()->rowCount(mapToSource(parent)) + BeforeActions.count() + AfterActions.count();
 }
 
 QModelIndex ActionsProxyModel::index(int row, int column, const QModelIndex &parent) const
