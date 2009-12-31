@@ -10,6 +10,7 @@ Jeśli jest w postaci (z) to zarówno pomysł jak i wykonanie należy do z.
 * autoaway: module ported (Vogel)
 * history: only one history tool button (Juzef)
 * gadu: allow gadu_protocol to be dynamic module (Vogel)
+* gui: buddy list is now expandable (to show all contacts) (Vogel)
 
 +++ version 0.6.6-alpha1
 * gadu: fixed receiving conference messages (Vogel)
