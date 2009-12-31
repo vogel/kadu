@@ -230,10 +230,11 @@ void BuddiesListViewDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 	QTextDocument *dd = 0;
 	int descriptionHeight = 0;
 	int textLeft = textMargin + iconsWidth(index, textMargin);
+	int textWidth = rect.width() - textLeft - textMargin - avatarSize;
 
 	if (hasDescription)
 	{
-		dd = descriptionDocument(description, rect.width() - textLeft - textMargin - avatarSize,
+		dd = descriptionDocument(description, textWidth,
 			option.state & QStyle::State_Selected
 			? textcolor
 			: DescriptionColor);
@@ -292,7 +293,31 @@ void BuddiesListViewDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 	else
 		painter->setPen(config_file.readColorEntry("Look", "UserboxFgColor"));
 
-	painter->drawText(textLeft, top, display);
+	Account account = qvariant_cast<Account>(index.data(AccountRole));
+	QString accountDisplay;
+	if (account)
+		accountDisplay = account.name();
+
+	// only display account name when in contact-mode, not buddy-mode
+	if (index.parent().isValid() && !accountDisplay.isEmpty())
+	{
+		// use 60% for display, 30% for account and 10% for space
+		int share = textWidth / 10;
+		int accountDisplayWidth = 3 * share;
+		int displayWidth = 6 * share;
+
+		display = fontMetrics.elidedText(display, Qt::ElideRight, displayWidth);
+		accountDisplay = fontMetrics.elidedText(accountDisplay, Qt::ElideRight, accountDisplayWidth);
+
+		painter->drawText(textLeft, 0, textWidth, itemHeight, 0, display);
+
+		painter->setFont(DescriptionFont);
+		painter->drawText(textLeft, 0, textWidth, itemHeight, Qt::AlignRight | Qt::AlignVCenter, accountDisplay);
+		painter->setFont(Font);
+	}
+	else
+		painter->drawText(textLeft, top, display);
+
 	painter->setPen(pen);
 
 	if (isBold(index))

@@ -143,7 +143,7 @@ QVariant BuddiesModelBase::data(Contact contact, int role, bool useDisplay) cons
 		case Qt::DisplayRole:
 			return useDisplay
 					? contact.ownerBuddy().display()
-					: QString("%1: %2").arg(contact.contactAccount().name()).arg(contact.id());
+					: contact.id();
 		case Qt::DecorationRole:
 			if (contact.isNull())
 				return QVariant();
