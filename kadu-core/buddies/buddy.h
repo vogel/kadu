@@ -21,6 +21,7 @@
 #include "exports.h"
 
 class Account;
+class Avatar;
 class BuddyShared;
 class Contact;
 class ContactShared;
@@ -80,6 +81,7 @@ public:
 
 	QString display() const;
 
+	KaduSharedBase_Property(Avatar, buddyAvatar, BuddyAvatar)
 	KaduSharedBase_PropertyWrite(QString, display, Display)
 	KaduSharedBase_Property(QString, firstName, FirstName)
 	KaduSharedBase_Property(QString, lastName, LastName)

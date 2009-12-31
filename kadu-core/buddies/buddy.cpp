@@ -237,6 +237,7 @@ Buddy Buddy::dummy()
 	return null;
 }
 
+KaduSharedBase_PropertyDef(Buddy, Avatar, buddyAvatar, BuddyAvatar, Avatar::null)
 KaduSharedBase_PropertyWriteDef(Buddy, QString, display, Display)
 KaduSharedBase_PropertyDef(Buddy, QString, firstName, FirstName, QString::null)
 KaduSharedBase_PropertyDef(Buddy, QString, lastName, LastName, QString::null)

@@ -11,10 +11,11 @@
 #include <QtXml/QDomNamedNodeMap>
 
 #include "accounts/account.h"
-#include "configuration/xml-configuration-file.h"
+#include "buddies/avatar-manager.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/group.h"
 #include "buddies/group-manager.h"
+#include "configuration/xml-configuration-file.h"
 #include "contacts/contact.h"
 #include "contacts/contact-shared.h"
 #include "contacts/contact-manager.h"
@@ -134,6 +135,8 @@ void BuddyShared::load()
 		}
 	}
 
+	AvatarManager::instance()->ensureLoaded(); // byUuid does not do it
+	BuddyAvatar = AvatarManager::instance()->byUuid(loadValue<QString>("Avatar"));
 	Display = loadValue<QString>("Display");
 	FirstName = loadValue<QString>("FirstName");
 	LastName = loadValue<QString>("LastName");
@@ -164,6 +167,11 @@ void BuddyShared::store()
 
 	foreach (const QString &key, CustomData.keys())
 		configurationStorage->createNamedTextNode(customDataValues, "CustomDataValue", key, CustomData[key]);
+
+	if (BuddyAvatar.uuid().isNull())
+		removeValue("Avatar");
+	else
+		storeValue("Avatar", BuddyAvatar.uuid().toString());
 
 	storeValue("Display", Display);
 	storeValue("FirstName", FirstName);
