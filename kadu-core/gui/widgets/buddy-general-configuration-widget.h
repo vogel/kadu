@@ -10,19 +10,17 @@
 #ifndef BUDDY_GENERAL_CONFIGURATION_WIDGET_H
 #define BUDDY_GENERAL_CONFIGURATION_WIDGET_H
 
-#include <QtCore/QList>
-#include <QtCore/QUuid>
-#include <QtGui/QComboBox>
-#include <QtGui/QDialog>
-#include <QtGui/QGridLayout>
-#include <QtGui/QLineEdit>
-#include <QtGui/QTreeView>
+#include <QtGui/QWidget>
 
 #include "buddies/buddy.h"
 #include "contacts/contact.h"
 #include "contacts/model/buddy-contact-model.h"
 
 #include "exports.h"
+
+class QDialog;
+class QLabel;
+class QLineEdit;
 
 class BuddyContactsTable;
 class Contact;
@@ -37,6 +35,7 @@ class KADUAPI BuddyGeneralConfigurationWidget : public QWidget
 	QLineEdit *MobileEdit;
 	QLineEdit *EmailEdit;
 	QLineEdit *WebsiteEdit;
+	QLabel *AvatarLabel;
 
 	BuddyContactsTable *ContactsTable;
 
@@ -49,6 +48,7 @@ class KADUAPI BuddyGeneralConfigurationWidget : public QWidget
 	void updateOrder();
 
 private slots:
+	void changeAvatar();
 	void showOrderDialog();
 	void updateOrderAndClose();
 

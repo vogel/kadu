@@ -45,10 +45,12 @@ void BuddyPersonalInfoConfigurationWidget::createGui()
 
 	ContactIdCombo = new QComboBox(this);
 	foreach (const Contact &data, MyBuddy.contacts())
-		ContactIdCombo->addItem(data.contactAccount().protocolHandler()->icon(),
-				data.id(),
-				data.uuid().toString()
-		);
+	{
+		QIcon icon = data.contactAccount().protocolHandler()
+				? data.contactAccount().protocolHandler()->icon()
+				: QIcon();
+		ContactIdCombo->addItem(icon, data.id(), data.uuid().toString());
+	}
 	connect(ContactIdCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(accountSelectionChanged(int)));
 	layout->addWidget(ContactIdCombo, row++, 4, 1, 1);
 

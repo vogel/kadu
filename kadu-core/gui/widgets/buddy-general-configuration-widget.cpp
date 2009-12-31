@@ -8,15 +8,15 @@
  ***************************************************************************/
 
 #include <QtGui/QDialogButtonBox>
+#include <QtGui/QFileDialog>
 #include <QtGui/QFormLayout>
+#include <QtGui/QGridLayout>
 #include <QtGui/QGroupBox>
-#include <QtGui/QHBoxLayout>
 #include <QtGui/QLabel>
-#include <QtGui/QPushButton>
-#include <QtGui/QRadioButton>
-#include <QtGui/QVBoxLayout>
-
 #include <QtGui/QLineEdit>
+#include <QtGui/QPushButton>
+#include <QtGui/QTreeView>
+#include <QtGui/QVBoxLayout>
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
@@ -70,15 +70,15 @@ void BuddyGeneralConfigurationWidget::createGui()
 	QVBoxLayout *photoLayout = new QVBoxLayout(photoWidget);
 	photoLayout->setSpacing(2);
 
-	QLabel *photoLabel = new QLabel(photoWidget);
-	QPixmap photoPixmap = QPixmap(MyBuddy.contacts().count() > 0
-			? MyBuddy.contacts().at(0).contactAvatar().pixmap()
-			: QPixmap()).scaled(64, 64, Qt::KeepAspectRatio);
-	photoLabel->setPixmap(photoPixmap);
-	photoLabel->setFixedSize(QSize(70, 70));
-	photoLayout->addWidget(photoLabel, 0, Qt::AlignCenter);
+	AvatarLabel = new QLabel(photoWidget);
+	AvatarLabel->setScaledContents(true);
+	if (!MyBuddy.buddyAvatar().pixmap().isNull())
+		AvatarLabel->setPixmap(MyBuddy.buddyAvatar().pixmap());
+	AvatarLabel->setFixedSize(QSize(70, 70));
+	photoLayout->addWidget(AvatarLabel, 0, Qt::AlignCenter);
 
 	QPushButton *changePhotoButton = new QPushButton(tr("Change Icon..."));
+	connect(changePhotoButton, SIGNAL(clicked(bool)), this, SLOT(changeAvatar()));
 	photoLayout->addWidget(changePhotoButton);
 
 	nameLayout->addWidget(photoWidget);
@@ -135,7 +135,34 @@ void BuddyGeneralConfigurationWidget::save()
 	MyBuddy.setEmail(EmailEdit->text());
 	MyBuddy.setWebsite(WebsiteEdit->text());
 
+	const QPixmap *avatar = AvatarLabel->pixmap();
+	if (!avatar || avatar->isNull())
+		MyBuddy.setBuddyAvatar(Avatar::null);
+	else
+	{
+		Avatar buddyAvatar = MyBuddy.buddyAvatar();
+		if (!buddyAvatar)
+		{
+			buddyAvatar = Avatar::create();
+			MyBuddy.setBuddyAvatar(buddyAvatar);
+		}
+
+		buddyAvatar.setPixmap(*avatar);
+		MyBuddy.setBuddyAvatar(buddyAvatar);
+	}
+
 	ContactsTable->save();
+}
+
+void BuddyGeneralConfigurationWidget::changeAvatar()
+{
+	QString newAvatar = QFileDialog::getOpenFileName(this, tr("Select new avatar"), "", "Image Files (*.png *.jpg *.bmp)", 0);
+	if (newAvatar.isEmpty())
+		return;
+
+	QPixmap pixmap;
+	if (pixmap.load(newAvatar))
+		AvatarLabel->setPixmap(pixmap);
 }
 
 void BuddyGeneralConfigurationWidget::showOrderDialog()
@@ -190,4 +217,3 @@ void BuddyGeneralConfigurationWidget::updateOrderAndClose()
 	updateOrder();
 	OrderDialog->close();
 }
-
