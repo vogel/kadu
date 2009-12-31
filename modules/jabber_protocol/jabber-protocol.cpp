@@ -409,13 +409,15 @@ void JabberProtocol::disconnectedFromServer()
 {
 	kdebugf();
 
-	if (!status().isDisconnected())
-		setStatus(Status());
-
-	//if (!Kadu::closing())
-		setAllOffline();
+	setAllOffline();
 
 	networkStateChanged(NetworkDisconnected);
+	
+	if (!nextStatus().isDisconnected()) // user still wants to login
+		QTimer::singleShot(1000, this, SLOT(login())); // try again after one second
+	else if (!nextStatus().isDisconnected())
+		setStatus(Status());
+	
 	kdebugf2();
 }
 
