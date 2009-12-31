@@ -84,6 +84,7 @@ KaduSharedBase_PropertyDef(Contact, Account, contactAccount, ContactAccount, Acc
 KaduSharedBase_PropertyDef(Contact, Avatar, contactAvatar, ContactAvatar, Avatar::null)
 KaduSharedBase_PropertyDef(Contact, Buddy, ownerBuddy, OwnerBuddy, Buddy::null)
 KaduSharedBase_PropertyDef(Contact, QString, id, Id, QString::null)
+KaduSharedBase_PropertyDef(Contact, int, priority, Priority, -1)
 KaduSharedBase_PropertyDef(Contact, Status, currentStatus, CurrentStatus, Status::null)
 KaduSharedBase_PropertyDef(Contact, QString, protocolVersion, ProtocolVersion, QString::null)
 KaduSharedBase_PropertyDef(Contact, QHostAddress, address, Address, QHostAddress())

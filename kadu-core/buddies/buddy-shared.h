@@ -88,6 +88,9 @@ public:
 	QList<Contact> contacts();
 	Contact prefferedContact();
 
+	void sortContacts();
+	void normalizePriorities();
+
 	// properties
 	bool showInAllGroup();
 	bool isInGroup(Group group);

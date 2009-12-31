@@ -30,7 +30,8 @@ ContactShared * ContactShared::loadFromStorage(StoragePoint *storagePoint)
 
 ContactShared::ContactShared(QUuid uuid) :
 		Shared(uuid),
-		ContactAccount(Account::null), ContactAvatar(Avatar::null), OwnerBuddy(Buddy::null)
+		ContactAccount(Account::null), ContactAvatar(Avatar::null), OwnerBuddy(Buddy::null),
+		Priority(-1)
 {
 }
 
@@ -57,6 +58,7 @@ void ContactShared::load()
 	Shared::load();
 
 	Id = loadValue<QString>("Id");
+	Priority = loadValue<int>("Priority", -1);
 
 	ContactAccount = AccountManager::instance()->byUuid(loadValue<QString>("Account"));
 
@@ -101,6 +103,7 @@ void ContactShared::store()
 	Shared::store();
 
 	storeValue("Id", Id);
+	storeValue("Priority", Priority);
 	storeValue("Account", ContactAccount.uuid().toString());
 	storeValue("Buddy", OwnerBuddy.uuid().toString());
 	if (!ContactAvatar.isNull())

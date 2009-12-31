@@ -216,6 +216,17 @@ void BuddyShared::addContact(Contact contact)
 
 	emit contactAboutToBeAdded(contact);
 	Contacts.append(contact);
+
+	if (contact.priority() != -1)
+		sortContacts();
+	else
+	{
+		int last = Contacts.count() > 1
+				? Contacts[Contacts.count() - 2].priority()
+				: 0;
+		contact.setPriority(last);
+	}
+
 	emit contactAdded(contact);
 }
 
@@ -229,6 +240,8 @@ void BuddyShared::removeContact(Contact contact)
 	emit contactAboutToBeRemoved(contact);
 	Contacts.removeAll(contact);
 	emit contactRemoved(contact);
+
+	normalizePriorities();
 }
 
 QList<Contact> BuddyShared::contacts(Account account)
@@ -282,6 +295,23 @@ Contact BuddyShared::prefferedContact()
 			prefferedContact = contact;
 
 	return prefferedContact;
+}
+
+bool contactPriorityLessThan(const Contact &c1, const Contact &c2)
+{
+	return c1.priority() < c2.priority();
+}
+
+void BuddyShared::sortContacts()
+{
+	qStableSort(Contacts.begin(), Contacts.end(), contactPriorityLessThan);
+}
+
+void BuddyShared::normalizePriorities()
+{
+	int priority = 0;
+	foreach (Contact contact, Contacts)
+		contact.setPriority(priority++);
 }
 
 Account BuddyShared::prefferedAccount()

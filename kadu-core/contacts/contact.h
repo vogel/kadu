@@ -49,6 +49,7 @@ public:
 	KaduSharedBase_Property(Avatar, contactAvatar, ContactAvatar)
 	KaduSharedBase_Property(Buddy, ownerBuddy, OwnerBuddy)
 	KaduSharedBase_Property(QString, id, Id)
+	KaduSharedBase_Property(int, priority, Priority)
 	KaduSharedBase_Property(Status, currentStatus, CurrentStatus)
 	KaduSharedBase_Property(QString, protocolVersion, ProtocolVersion)
 	KaduSharedBase_Property(QHostAddress, address, Address)
