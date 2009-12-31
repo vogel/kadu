@@ -27,6 +27,8 @@ class AvatarManager : public QObject, public SimpleManager<Avatar>, AccountsAwar
 
 	static AvatarManager *Instance;
 
+	QTimer *UpdateTimer;
+
 	AvatarManager();
 	virtual ~AvatarManager();
 
@@ -35,8 +37,12 @@ class AvatarManager : public QObject, public SimpleManager<Avatar>, AccountsAwar
 
 	QString avatarFileName(Avatar avatar);
 
+	bool needUpdate(Contact contact);
+	void updateAvatar(Contact contact, bool force = false);
+
 private slots:
 	void avatarFetched(Contact contact, const QByteArray &data);
+	void updateAvatars();
 	void updateAccountAvatars();
 
 protected:
@@ -53,8 +59,6 @@ public:
 
 	virtual QString storageNodeName() { return QLatin1String("Avatars"); }
 	virtual QString storageNodeItemName() { return QLatin1String("Avatar"); }
-
-	void updateAvatar(Contact contact);
 
 signals:
 	void avatarAboutToBeAdded(Avatar avatar);

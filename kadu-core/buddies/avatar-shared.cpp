@@ -98,5 +98,10 @@ void AvatarShared::setPixmap(QPixmap pixmap)
 	if (!avatarsDir.exists())
 		avatarsDir.mkpath(ggPath("avatars"));
 
-	pixmap.save(avatarsDir.canonicalPath() + "/" + FileName, "PNG");
+	Pixmap = pixmap;
+
+	if (pixmap.isNull())
+		QFile::remove(avatarsDir.canonicalPath() + "/" + FileName);
+	else
+		pixmap.save(avatarsDir.canonicalPath() + "/" + FileName, "PNG");
 }

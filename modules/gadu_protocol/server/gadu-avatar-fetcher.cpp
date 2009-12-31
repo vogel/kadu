@@ -42,6 +42,7 @@ void GaduAvatarFetcher::requestFinished(int id, bool error)
 
 	if (response.isEmpty())
 	{
+		emit avatarFetched(MyContact, QByteArray());
 		deleteLater();
 		return;
 	}
@@ -52,6 +53,7 @@ void GaduAvatarFetcher::requestFinished(int id, bool error)
 	QDomElement resultElement = document.firstChildElement("result");
 	if (resultElement.isNull())
 	{
+		emit avatarFetched(MyContact, QByteArray());
 		deleteLater();
 		return;
 	}
@@ -59,6 +61,7 @@ void GaduAvatarFetcher::requestFinished(int id, bool error)
 	QDomElement usersElement = resultElement.firstChildElement("users");
 	if (usersElement.isNull())
 	{
+		emit avatarFetched(MyContact, QByteArray());
 		deleteLater();
 		return;
 	}
@@ -66,6 +69,7 @@ void GaduAvatarFetcher::requestFinished(int id, bool error)
 	QDomElement userElement = usersElement.firstChildElement("user");
 	if (userElement.isNull())
 	{
+		emit avatarFetched(MyContact, QByteArray());
 		deleteLater();
 		return;
 	}
@@ -73,6 +77,7 @@ void GaduAvatarFetcher::requestFinished(int id, bool error)
 	QString uin = userElement.attribute("uin");
 	if (uin.isEmpty())
 	{
+		emit avatarFetched(MyContact, QByteArray());
 		deleteLater();
 		return;
 	}
@@ -80,6 +85,7 @@ void GaduAvatarFetcher::requestFinished(int id, bool error)
 	QDomElement avatarsElement = userElement.firstChildElement("avatars");
 	if (avatarsElement.isNull())
 	{
+		emit avatarFetched(MyContact, QByteArray());
 		deleteLater();
 		return;
 	}
@@ -87,6 +93,7 @@ void GaduAvatarFetcher::requestFinished(int id, bool error)
 	QDomElement avatarElement = avatarsElement.firstChildElement("avatar");
 	if (avatarElement.isNull())
 	{
+		emit avatarFetched(MyContact, QByteArray());
 		deleteLater();
 		return;
 	}
@@ -118,6 +125,7 @@ void GaduAvatarFetcher::requestFinished(int id, bool error)
 		avatarFileElement = avatarElement.firstChildElement("smallAvatar");
 	if (avatarFileElement.isNull())
 	{
+		emit avatarFetched(MyContact, QByteArray());
 		deleteLater();
 		return;
 	}
@@ -127,6 +135,7 @@ void GaduAvatarFetcher::requestFinished(int id, bool error)
 	// Do not cache empty avatars
 	if (avatarUrl.contains("avatar-empty.gif") || avatarUrl.contains("a1.gif"))
 	{
+		emit avatarFetched(MyContact, QByteArray());
 		deleteLater();
 		return;
 	}

@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include <QtCore/QFile>
+#include <QtCore/QTimer>
 
 #include "accounts/account.h"
 #include "buddies/avatar.h"
@@ -35,6 +36,10 @@ AvatarManager * AvatarManager::instance()
 AvatarManager::AvatarManager()
 {
 	triggerAllAccountsRegistered();
+
+	UpdateTimer = new QTimer(this);
+	UpdateTimer->setInterval(5 * 60 * 1000); // 5 minutes
+	connect(UpdateTimer, SIGNAL(timeout()), this, SLOT(updateAvatars()));
 }
 
 AvatarManager::~AvatarManager()
@@ -109,11 +114,25 @@ void AvatarManager::accountUnregistered(Account account)
 			   this, SLOT(avatarFetched(Contact, const QByteArray &)));
 }
 
-void AvatarManager::updateAvatar(Contact contact)
+bool AvatarManager::needUpdate(Contact contact)
 {
 	QDateTime lastUpdated = contact.contactAvatar().lastUpdated();
+	if (!lastUpdated.isValid())
+		return true;
+	// one hour passed
+	if (lastUpdated.secsTo(QDateTime::currentDateTime()) > 60 * 60)
+		return true;
+
 	QDateTime nextUpdate = contact.contactAvatar().nextUpdate();
-	if (lastUpdated.isValid() && lastUpdated.secsTo(QDateTime::currentDateTime()) < 60*60 || QFile::exists(contact.contactAvatar().filePath()) && nextUpdate > QDateTime::currentDateTime())
+	if (nextUpdate > QDateTime::currentDateTime())
+		return true;
+
+	return false;
+}
+
+void AvatarManager::updateAvatar(Contact contact, bool force)
+{
+	if (!force && !needUpdate(contact))
 		return;
 
 	AvatarService *service = avatarService(contact);
@@ -129,13 +148,21 @@ void AvatarManager::avatarFetched(Contact contact, const QByteArray &data)
 	avatar.setLastUpdated(QDateTime::currentDateTime());
 
 	QPixmap pixmap;
-	pixmap.loadFromData(data);
+	if (!data.isEmpty())
+		pixmap.loadFromData(data);
 
 	QString avatarFile = avatarFileName(avatar);
 	avatar.setFileName(avatarFile);
 	avatar.setPixmap(pixmap);
 
 	emit avatarUpdated(contact);
+}
+
+void AvatarManager::updateAvatars()
+{
+	foreach (Contact contact, ContactManager::instance()->items())
+		if (!contact.ownerBuddy().isAnonymous())
+			updateAvatar(contact);
 }
 
 void AvatarManager::updateAccountAvatars()
@@ -145,5 +172,6 @@ void AvatarManager::updateAccountAvatars()
 		return;
 
 	foreach (Contact contact, ContactManager::instance()->contacts(account))
-		updateAvatar(contact);
+		if (!contact.ownerBuddy().isAnonymous())
+			updateAvatar(contact);
 }
