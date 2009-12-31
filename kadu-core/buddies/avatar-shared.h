@@ -44,11 +44,15 @@ public:
 
 	QString filePath();
 
+	bool isEmpty() const;
+
+	void setPixmap(QPixmap pixmap);
+
 	KaduShared_Property(Contact, avatarContact, AvatarContact)
 	KaduShared_Property(QDateTime, lastUpdated, LastUpdated)
 	KaduShared_Property(QDateTime, nextUpdate, NextUpdate)
 	KaduShared_Property(QString, fileName, FileName)
-	KaduShared_Property(QPixmap, pixmap, Pixmap)
+	KaduShared_PropertyRead(QPixmap, pixmap, Pixmap)
 
 };
 

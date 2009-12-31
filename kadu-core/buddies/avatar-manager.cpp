@@ -7,7 +7,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QtCore/QDir>
 #include <QtCore/QFile>
 
 #include "accounts/account.h"
@@ -126,22 +125,10 @@ void AvatarManager::avatarFetched(Contact contact, const QByteArray &data)
 
 	QPixmap pixmap;
 	pixmap.loadFromData(data);
-	avatar.setPixmap(pixmap);
 
 	QString avatarFile = avatarFileName(avatar);
 	avatar.setFileName(avatarFile);
-
-	QDir avatarsDir(ggPath("avatars"));
-	if (!avatarsDir.exists())
-		avatarsDir.mkpath(ggPath("avatars"));
-
-	QFile file(avatarsDir.canonicalPath() + "/" + avatarFile);
-
-	if (!file.open(QIODevice::WriteOnly))
-		return;
-
-	file.write(data);
-	file.close();
+	avatar.setPixmap(pixmap);
 
 	emit avatarUpdated(contact);
 }

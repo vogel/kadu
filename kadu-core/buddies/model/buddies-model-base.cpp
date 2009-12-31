@@ -133,7 +133,7 @@ QVariant BuddiesModelBase::data(Buddy buddy, int role) const
 	}
 }
 
-QVariant BuddiesModelBase::data(Contact contact, int role, bool useDisplay) const
+QVariant BuddiesModelBase::data(Contact contact, int role, bool useBuddyData) const
 {
 	if (contact.isNull())
 		return QVariant();
@@ -141,7 +141,7 @@ QVariant BuddiesModelBase::data(Contact contact, int role, bool useDisplay) cons
 	switch (role)
 	{
 		case Qt::DisplayRole:
-			return useDisplay
+			return useBuddyData
 					? contact.ownerBuddy().display()
 					: contact.id();
 		case Qt::DecorationRole:
@@ -173,6 +173,9 @@ QVariant BuddiesModelBase::data(Contact contact, int role, bool useDisplay) cons
 		case AccountRole:
 			return QVariant::fromValue(contact.contactAccount());
 		case AvatarRole:
+			if (useBuddyData && !contact.ownerBuddy().buddyAvatar().isEmpty())
+				return QVariant::fromValue(contact.ownerBuddy().buddyAvatar().pixmap());
+
 			// TODO: 0.6.6 move it
 			if (contact.contactAvatar().pixmap().isNull())
 				AvatarManager::instance()->updateAvatar(contact);

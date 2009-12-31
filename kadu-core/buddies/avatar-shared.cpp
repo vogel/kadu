@@ -7,6 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtCore/QDir>
 #include <QtCore/QFile>
 
 #include "buddies/avatar-manager.h"
@@ -84,4 +85,18 @@ void AvatarShared::aboutToBeRemoved()
 	QFile avatarFile(filePath());
 	if (avatarFile.exists())
 		avatarFile.remove();
+}
+
+bool AvatarShared::isEmpty() const
+{
+	return Pixmap.isNull();
+}
+
+void AvatarShared::setPixmap(QPixmap pixmap)
+{
+	QDir avatarsDir(ggPath("avatars"));
+	if (!avatarsDir.exists())
+		avatarsDir.mkpath(ggPath("avatars"));
+
+	pixmap.save(avatarsDir.canonicalPath() + "/" + FileName, "PNG");
 }
