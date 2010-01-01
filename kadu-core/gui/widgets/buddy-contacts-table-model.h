@@ -23,6 +23,8 @@ class BuddyContactsTableModel : public QAbstractTableModel
 	Buddy ModelBuddy;
 	QList<BuddyContactsTableItem *> Contacts;
 
+	int CurrentMaxPriority;
+
 	void contactsFromBuddy();
 	void buddyFromContacts();
 	void performItemAction(BuddyContactsTableItem *);

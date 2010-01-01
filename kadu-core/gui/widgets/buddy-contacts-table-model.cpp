@@ -16,7 +16,7 @@
 #include "buddy-contacts-table-model.h"
 
 BuddyContactsTableModel::BuddyContactsTableModel(Buddy buddy, QObject *parent) :
-		QAbstractTableModel(parent), ModelBuddy(buddy)
+		QAbstractTableModel(parent), ModelBuddy(buddy), CurrentMaxPriority(-1)
 {
 	contactsFromBuddy();
 }
@@ -56,6 +56,12 @@ BuddyContactsTableItem * BuddyContactsTableModel::item(int row)
 
 void BuddyContactsTableModel::contactsFromBuddy()
 {
+	ModelBuddy.normalizePriorities();
+	if (ModelBuddy.contacts().isEmpty())
+		CurrentMaxPriority = -1;
+	else
+		CurrentMaxPriority = ModelBuddy.contacts().last().priority();
+
 	Contacts.clear();
 	foreach (Contact contact, ModelBuddy.contacts())
 		addItem(new BuddyContactsTableItem(contact, this));
@@ -65,6 +71,9 @@ void BuddyContactsTableModel::buddyFromContacts()
 {
 	foreach (BuddyContactsTableItem *item, Contacts)
 		performItemAction(item);
+
+	ModelBuddy.sortContacts();
+	ModelBuddy.normalizePriorities();
 }
 
 void BuddyContactsTableModel::performItemAction(BuddyContactsTableItem *item)
@@ -95,6 +104,8 @@ void BuddyContactsTableModel::performItemActionEdit(BuddyContactsTableItem *item
 	if (!contact)
 		return;
 
+	contact.setPriority(item->itemContactPriority());
+
 	if (contact.contactAccount() != item->itemAccount())
 	{
 		// allow protocol handles to handle that
@@ -111,6 +122,7 @@ void BuddyContactsTableModel::performItemActionAdd(BuddyContactsTableItem *item)
 {
 	Contact contact = ContactManager::instance()->byId(item->itemAccount(), item->id(), true);
 	contact.setOwnerBuddy(ModelBuddy);
+	contact.setPriority(item->itemContactPriority());
 }
 
 void BuddyContactsTableModel::performItemActionDetach(BuddyContactsTableItem *item)
@@ -178,8 +190,11 @@ bool BuddyContactsTableModel::insertRows(int row, int count, const QModelIndex& 
 
 	for (int i = 0; i < count; i++)
 	{
+		CurrentMaxPriority++;
+
 		BuddyContactsTableItem *item = new BuddyContactsTableItem(this);
 		item->setAction(BuddyContactsTableItem::ItemAdd);
+		item->setItemContactPriority(CurrentMaxPriority);
 		addItem(item);
 	}
 

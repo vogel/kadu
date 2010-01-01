@@ -107,6 +107,18 @@ Account Buddy::prefferedAccount() const
 	return isNull() ? Account::null : data()->prefferedAccount();
 }
 
+void Buddy::sortContacts()
+{
+	if (!isNull())
+		data()->sortContacts();
+}
+
+void Buddy::normalizePriorities()
+{
+	if (!isNull())
+		data()->normalizePriorities();
+}
+
 void Buddy::addContact(Contact contact)
 {
 	if (isNull() || contact.isNull())

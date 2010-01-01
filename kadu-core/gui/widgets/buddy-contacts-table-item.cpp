@@ -17,6 +17,7 @@ BuddyContactsTableItem::BuddyContactsTableItem(Contact contact, QObject *parent)
 		QObject(parent)
 {
 	ItemContact = contact;
+	ItemContactPriority = contact.priority();
 	ItemAccount = contact.contactAccount();
 	Id = contact.id();
 	Action = ItemEdit;
@@ -27,6 +28,15 @@ void BuddyContactsTableItem::setItemContact(Contact contact)
 	if (ItemContact != contact)
 	{
 		ItemContact = contact;
+		emit updated(this);
+	}
+}
+
+void BuddyContactsTableItem::setItemContactPriority(int itemContactPriority)
+{
+	if (ItemContactPriority != itemContactPriority)
+	{
+		ItemContactPriority = itemContactPriority;
 		emit updated(this);
 	}
 }

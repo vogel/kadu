@@ -65,6 +65,9 @@ public:
 	Account prefferedAccount() const;
 	Contact prefferedContact() const;
 
+	void sortContacts();
+	void normalizePriorities();
+
 // 	void setData(BuddyShared *data) { Data = data; }  // TODO: 0.8 tricky merge, this should work well ;)
 
 	QList<Contact> contacts(Account account) const;

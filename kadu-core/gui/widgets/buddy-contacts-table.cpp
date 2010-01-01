@@ -98,10 +98,38 @@ void BuddyContactsTable::save()
 
 void BuddyContactsTable::moveUpClicked()
 {
+	QModelIndex currentItem = View->currentIndex();
+	QModelIndex previousItem = currentItem.sibling(currentItem.row() - 1, currentItem.column());
+	if (!previousItem.isValid())
+		return;
+
+	BuddyContactsTableItem *current = qvariant_cast<BuddyContactsTableItem *>(currentItem.data(BuddyContactsTableItemRole));
+	BuddyContactsTableItem *previous = qvariant_cast<BuddyContactsTableItem *>(previousItem.data(BuddyContactsTableItemRole));
+
+	if (!current || !previous)
+		return;
+
+	int priority = current->itemContactPriority();
+	current->setItemContactPriority(previous->itemContactPriority());
+	previous->setItemContactPriority(priority);
 }
 
 void BuddyContactsTable::moveDownClicked()
 {
+	QModelIndex currentItem = View->currentIndex();
+	QModelIndex nextItem = currentItem.sibling(currentItem.row() + 1, currentItem.column());
+	if (!nextItem.isValid())
+		return;
+	
+	BuddyContactsTableItem *current = qvariant_cast<BuddyContactsTableItem *>(currentItem.data(BuddyContactsTableItemRole));
+	BuddyContactsTableItem *next = qvariant_cast<BuddyContactsTableItem *>(nextItem.data(BuddyContactsTableItemRole));
+	
+	if (!current || !next)
+		return;
+	
+	int priority = current->itemContactPriority();
+	current->setItemContactPriority(next->itemContactPriority());
+	next->setItemContactPriority(priority);
 }
 
 void BuddyContactsTable::addClicked()

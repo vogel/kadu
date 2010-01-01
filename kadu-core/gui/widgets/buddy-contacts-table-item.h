@@ -27,6 +27,7 @@ public:
 
 private:
 	Contact ItemContact;
+	int ItemContactPriority;
 	Account ItemAccount;
 	QString Id;
 	ItemAction Action;
@@ -41,6 +42,9 @@ public:
 
 	Contact itemContact() const { return ItemContact; }
 	void setItemContact(Contact contact);
+
+	int itemContactPriority() const { return ItemContactPriority; }
+	void setItemContactPriority(int itemContactPriority);
 
 	Account itemAccount() const { return ItemAccount; }
 	void setItemAccount(Account account);

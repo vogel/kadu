@@ -18,6 +18,7 @@ class BuddyContactsTableModelProxy : public QSortFilterProxyModel
 
 protected:
 	virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
+	virtual bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
 
 public:
 	explicit BuddyContactsTableModelProxy(QObject *parent = 0);
