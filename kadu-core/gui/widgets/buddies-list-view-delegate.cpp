@@ -301,10 +301,10 @@ void BuddiesListViewDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 	// only display account name when in contact-mode, not buddy-mode
 	if (index.parent().isValid() && !accountDisplay.isEmpty())
 	{
-		// use 60% for display, 30% for account and 10% for space
-		int share = textWidth / 10;
-		int accountDisplayWidth = 3 * share;
-		int displayWidth = 6 * share;
+		// use 45% for display, 45% for account and 10% for space
+		int share = textWidth / 20;
+		int accountDisplayWidth = 9 * share;
+		int displayWidth = 9 * share;
 
 		display = fontMetrics.elidedText(display, Qt::ElideRight, displayWidth);
 		accountDisplay = fontMetrics.elidedText(accountDisplay, Qt::ElideRight, accountDisplayWidth);
