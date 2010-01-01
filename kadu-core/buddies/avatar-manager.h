@@ -35,8 +35,6 @@ class AvatarManager : public QObject, public SimpleManager<Avatar>, AccountsAwar
 	AvatarService * avatarService(Account account);
 	AvatarService * avatarService(Contact contact);
 
-	QString avatarFileName(Avatar avatar);
-
 	bool needUpdate(Contact contact);
 	void updateAvatar(Contact contact, bool force = false);
 

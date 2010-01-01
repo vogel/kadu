@@ -85,11 +85,6 @@ AvatarService * AvatarManager::avatarService(Contact contact)
 	return avatarService(account);
 }
 
-QString AvatarManager::avatarFileName(Avatar avatar)
-{
-	return avatar.uuid().toString();
-}
-
 void AvatarManager::accountRegistered(Account account)
 {
 	connect(account, SIGNAL(connected()), this, SLOT(updateAccountAvatars()));
@@ -151,8 +146,6 @@ void AvatarManager::avatarFetched(Contact contact, const QByteArray &data)
 	if (!data.isEmpty())
 		pixmap.loadFromData(data);
 
-	QString avatarFile = avatarFileName(avatar);
-	avatar.setFileName(avatarFile);
 	avatar.setPixmap(pixmap);
 
 	emit avatarUpdated(contact);

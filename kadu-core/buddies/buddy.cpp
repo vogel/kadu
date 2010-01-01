@@ -237,7 +237,6 @@ Buddy Buddy::dummy()
 		Avatar avatar = Avatar::create();
 		avatar.setLastUpdated(QDateTime::currentDateTime());
 		avatar.setPixmap(IconsManager::instance()->loadPixmap("ContactsTab"));
-		avatar.setFileName("ContactsTab");
 		contact.setContactAvatar(avatar);
 
 		example.addContact(contact);

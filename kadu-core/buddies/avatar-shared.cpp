@@ -47,7 +47,7 @@ QString AvatarShared::storageNodeName()
 QString AvatarShared::filePath()
 {
 	ensureLoaded();
-	return AvatarsDir + FileName;
+	return AvatarsDir + uuid().toString();
 }
 
 void AvatarShared::load()
@@ -59,7 +59,6 @@ void AvatarShared::load()
 
 	LastUpdated = loadValue<QDateTime>("LastUpdated");
 	NextUpdate = loadValue<QDateTime>("NextUpdate");
-	FileName = loadValue<QString>("FileName");
 	Pixmap.load(filePath());
 }
 
@@ -74,7 +73,11 @@ void AvatarShared::store()
 
 	storeValue("LastUpdated", LastUpdated);
 	storeValue("NextUpdate", NextUpdate);
-	storeValue("FileName", FileName);
+}
+
+bool AvatarShared::shouldStore()
+{
+	return UuidStorableObject::shouldStore() && !Pixmap.isNull();
 }
 
 void AvatarShared::aboutToBeRemoved()
@@ -87,8 +90,10 @@ void AvatarShared::aboutToBeRemoved()
 		avatarFile.remove();
 }
 
-bool AvatarShared::isEmpty() const
+bool AvatarShared::isEmpty()
 {
+	ensureLoaded();
+
 	return Pixmap.isNull();
 }
 
@@ -101,7 +106,7 @@ void AvatarShared::setPixmap(QPixmap pixmap)
 	Pixmap = pixmap;
 
 	if (pixmap.isNull())
-		QFile::remove(avatarsDir.canonicalPath() + "/" + FileName);
+		QFile::remove(filePath());
 	else
-		pixmap.save(avatarsDir.canonicalPath() + "/" + FileName, "PNG");
+		pixmap.save(filePath(), "PNG");
 }

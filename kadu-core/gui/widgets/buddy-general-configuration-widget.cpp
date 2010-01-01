@@ -147,6 +147,7 @@ void BuddyGeneralConfigurationWidget::save()
 			MyBuddy.setBuddyAvatar(buddyAvatar);
 		}
 
+		printf("setting avatar for %s in %s\n", qPrintable(buddyAvatar.uuid().toString()), qPrintable(MyBuddy.uuid().toString()));
 		buddyAvatar.setPixmap(*avatar);
 		MyBuddy.setBuddyAvatar(buddyAvatar);
 	}
