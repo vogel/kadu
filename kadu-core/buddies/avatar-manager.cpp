@@ -111,6 +111,9 @@ void AvatarManager::accountUnregistered(Account account)
 
 bool AvatarManager::needUpdate(Contact contact)
 {
+	if (!contact.contactAvatar())
+		return true;
+
 	QDateTime lastUpdated = contact.contactAvatar().lastUpdated();
 	if (!lastUpdated.isValid())
 		return true;
@@ -124,7 +127,7 @@ bool AvatarManager::needUpdate(Contact contact)
 
 	return false;
 }
-
+#include <stdio.h>
 void AvatarManager::updateAvatar(Contact contact, bool force)
 {
 	if (!force && !needUpdate(contact))
@@ -140,6 +143,12 @@ void AvatarManager::updateAvatar(Contact contact, bool force)
 void AvatarManager::avatarFetched(Contact contact, const QByteArray &data)
 {
 	Avatar avatar = contact.contactAvatar();
+	if (!avatar)
+	{
+		avatar = Avatar::create();
+		contact.setContactAvatar(avatar);
+	}
+
 	avatar.setLastUpdated(QDateTime::currentDateTime());
 
 	QPixmap pixmap;
@@ -166,5 +175,5 @@ void AvatarManager::updateAccountAvatars()
 
 	foreach (Contact contact, ContactManager::instance()->contacts(account))
 		if (!contact.ownerBuddy().isAnonymous())
-			updateAvatar(contact);
+			updateAvatar(contact, true);
 }
