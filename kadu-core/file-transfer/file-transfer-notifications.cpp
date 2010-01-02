@@ -62,7 +62,7 @@ NewFileTransferNotification::NewFileTransferNotification(const QString &type, Fi
 	setDefaultCallback(30 * 60 * 1000, SLOT(callbackDiscard()));
 }
 
-void NewFileTransferNotification::callbackAccept()
+void NewFileTransferNotification::callbackAcceptAsNew()
 {
 	kdebugf();
 
@@ -82,7 +82,7 @@ void NewFileTransferNotification::callbackAccept()
 	}
 }
 
-void NewFileTransferNotification::callbackAcceptAsNew()
+void NewFileTransferNotification::callbackAccept()
 {
 	kdebugf();
 	
