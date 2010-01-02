@@ -13,6 +13,7 @@ Jeśli jest w postaci (z) to zarówno pomysł jak i wykonanie należy do z.
 * gui: buddy list is now expandable (to show all contacts) (Vogel)
 * gui: better display of contacts on buddy list (Vogel)
 * gui: avatar logic updated, enabled setting custom avatars on buddies (Vogel)
+* gui: allow to sort contacts in buddy (Vogel)
 
 +++ version 0.6.6-alpha1
 * gadu: fixed receiving conference messages (Vogel)
