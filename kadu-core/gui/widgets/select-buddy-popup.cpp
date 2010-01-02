@@ -29,6 +29,7 @@ SelectBuddyPopup::SelectBuddyPopup(QWidget *parent) :
 
 	view()->setItemsExpandable(false);
 	view()->setModel(model);
+	view()->setRootIsDecorated(false);
 }
 
 SelectBuddyPopup::~SelectBuddyPopup()

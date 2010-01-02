@@ -50,11 +50,11 @@ BuddiesListView::BuddiesListView(MainWindow *mainWindow, QWidget *parent) :
 	setExpandsOnDoubleClick(false);
 	setHeaderHidden(true);
 	setItemsExpandable(true);
+	setMouseTracking(true);
 	setRootIsDecorated(true);
 	setSelectionMode(QAbstractItemView::ExtendedSelection);
 	setUniformRowHeights(false);
 	setWordWrap(true);
-	setMouseTracking(true);
 
 	Delegate = new BuddiesListViewDelegate(this);
 	setItemDelegate(Delegate);
