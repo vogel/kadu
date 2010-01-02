@@ -85,8 +85,6 @@ void StatusChangerManager::statusChanged(StatusContainer *container)
 
 	kdebugf();
 
-	printf("chaning status for %p\n", container);
-
 	Status status = Statuses[container];
 	for (int i = 0; i < StatusChangers.count(); i++)
 		StatusChangers.at(i)->changeStatus(container, status);
@@ -99,8 +97,6 @@ void StatusChangerManager::statusChanged(StatusContainer *container)
 
 Status StatusChangerManager::status(StatusContainer *statusContainer)
 {
-	printf("Get status for %p [%d] [%d]\n", statusContainer, RealStatuses.contains(statusContainer),
-		   Statuses.contains(statusContainer));
 	if (RealStatuses.contains(statusContainer))
 		return RealStatuses[statusContainer];
 	if (Statuses.contains(statusContainer))

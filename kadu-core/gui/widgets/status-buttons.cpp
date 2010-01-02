@@ -23,10 +23,7 @@ StatusButtons::StatusButtons(QWidget *parent) :
 	triggerAllStatusContainerRegistered();
 
 	if (0 == StatusContainerManager::instance()->count())
-	{
-		printf("register manaager\n");
 		statusContainerRegistered(StatusContainerManager::instance());
-	}
 }
 
 StatusButtons::~StatusButtons()

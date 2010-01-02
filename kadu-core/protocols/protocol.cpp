@@ -64,7 +64,6 @@ void Protocol::setAllOffline()
 
 void Protocol::setStatus(Status status)
 {
-	printf("setting status for %p\n", this);
 	StatusChangerManager::instance()->setStatus(account().statusContainer(), status);
 }
 
@@ -80,7 +79,6 @@ Status Protocol::nextStatus() const
 
 void Protocol::statusChanged(StatusContainer *container, Status status)
 {
-	printf("get signal status changed for %p [%s %s]\n", container, qPrintable(status.type()), qPrintable(CurrentStatus.type()));
 	if (container && container == account().statusContainer() && CurrentStatus != status)
 		changeStatus();
 }

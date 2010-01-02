@@ -41,7 +41,6 @@ StatusContainerManager::~StatusContainerManager()
 
 void StatusContainerManager::accountRegistered(Account account)
 {
-	printf("Regiser scm for %s %p\n", qPrintable(account.name()), account.statusContainer());
 	registerStatusContainer(account.statusContainer());
 }
 
