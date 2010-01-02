@@ -467,6 +467,9 @@ void JabberProtocol::changeStatus(Status status)
 void JabberProtocol::slotIncomingFileTransfer()
 {
 	XMPP::FileTransfer *jTransfer = client()->fileTransferManager()->takeIncoming();
+	if (!jTransfer)
+		return;
+
 	Contact peer = ContactManager::instance()->byId(account(), jTransfer->peer().bare(), true);
 	FileTransfer transfer = FileTransferManager::instance()->byData(account(), peer, TypeReceive, jTransfer->fileName(), true);
 
@@ -477,7 +480,7 @@ void JabberProtocol::slotIncomingFileTransfer()
 
 	JabberFileTransferHandler *handler = dynamic_cast<JabberFileTransferHandler *>(transfer.handler());
 	if (handler)
-		handler->setJTransfer(client()->fileTransferManager()->takeIncoming());
+		handler->setJTransfer(jTransfer);
 
 	CurrentFileTransferService->incomingFile(transfer);
 }
