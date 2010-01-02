@@ -650,7 +650,8 @@ void HintManager::notify(Notification *notification)
 	kdebugf();
 
 	ChatNotification *chatNotification = dynamic_cast<ChatNotification *>(notification);
-	if (!chatNotification)
+	//TODO 0.6.6: hack
+	if (!chatNotification || notification->type().contains("StatusChanged"))
 	{
 		addHint(notification);
 

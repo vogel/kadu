@@ -31,5 +31,3 @@ void JabberFileTransferService::incomingFile(FileTransfer transfer)
 {
 	emit incomingFileTransfer(transfer);
 }
-
-// kate: indent-mode cstyle; replace-tabs off; tab-width 4; 
