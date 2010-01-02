@@ -65,6 +65,7 @@ void NotificationManager::init()
 	MainConfigurationWindow::registerUiHandler(UiHandler);
 
 	createDefaultConfiguration();
+	configurationUpdated();
 	//TODO 0.6.6:
 	//triggerAllAccountsRegistered();
 
@@ -229,13 +230,10 @@ void NotificationManager::statusChanged(Contact contact, Status oldStatus)
 		return;
 	}
 
-	// TODO 0.6.6:
-	//Buddy buddy = contact.ownerBuddy();
-	//QString id = buddy.id(account);
-	//if ( id == account.id()) // myself
-	//	return;
+	if (!contact.contactAccount())
+		return;
 
-	if (contact.isNull())
+	if (contact.id() == contact.contactAccount().accountContact().id()) // myself
 		return;
 
 	Status status = contact.currentStatus();
