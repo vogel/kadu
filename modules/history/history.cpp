@@ -279,7 +279,7 @@ void History::chatCreated(ChatWidget *chatWidget)
 
 void History::accountRegistered(Account account)
 {
-	if (!account.protocolHandler())
+	if (!account.protocolHandler() || !CurrentStorage)
 		return;
 
 	ChatService *service = account.protocolHandler()->chatService();
