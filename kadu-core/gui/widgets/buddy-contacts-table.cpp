@@ -58,31 +58,35 @@ void BuddyContactsTable::createGui()
 	View->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
 	View->horizontalHeader()->setStretchLastSection(true);
 
+	connect(View->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
+			this, SLOT(viewSelectionChanged(QModelIndex,QModelIndex)));
+
 	layout->addWidget(View);
 
 	QWidget *buttons = new QWidget(View);
 	QVBoxLayout *buttonsLayout = new QVBoxLayout(buttons);
 
-	QPushButton *moveUpButton = new QPushButton(tr("Move up"), buttons);
-	connect(moveUpButton, SIGNAL(clicked(bool)), this, SLOT(moveUpClicked()));
-	buttonsLayout->addWidget(moveUpButton);
+	MoveUpButton = new QPushButton(tr("Move up"), buttons);
+	connect(MoveUpButton, SIGNAL(clicked(bool)), this, SLOT(moveUpClicked()));
+	buttonsLayout->addWidget(MoveUpButton);
 
-	QPushButton *moveDownButton = new QPushButton(tr("Move down"), buttons);
-	connect(moveDownButton, SIGNAL(clicked(bool)), this, SLOT(moveDownClicked()));
-	buttonsLayout->addWidget(moveDownButton);
+	MoveDownButton = new QPushButton(tr("Move down"), buttons);
+	connect(MoveDownButton, SIGNAL(clicked(bool)), this, SLOT(moveDownClicked()));
+	buttonsLayout->addWidget(MoveDownButton);
 
-	QPushButton *addContactButton = new QPushButton(tr("Add contact"), buttons);
-	connect(addContactButton, SIGNAL(clicked(bool)), this, SLOT(addClicked()));
-	buttonsLayout->addWidget(addContactButton);
+	AddContactButton = new QPushButton(tr("Add contact"), buttons);
+	connect(AddContactButton, SIGNAL(clicked(bool)), this, SLOT(addClicked()));
+	buttonsLayout->addWidget(AddContactButton);
 
-	QPushButton *detachContactButton = new QPushButton(tr("Detach contact"), buttons);
-	connect(detachContactButton, SIGNAL(clicked(bool)), this, SLOT(detachClicked()));
-	buttonsLayout->addWidget(detachContactButton);
+	DetachContactButton = new QPushButton(tr("Detach contact"), buttons);
+	connect(DetachContactButton, SIGNAL(clicked(bool)), this, SLOT(detachClicked()));
+	buttonsLayout->addWidget(DetachContactButton);
 
-	QPushButton *removeContactButton = new QPushButton(tr("Remove contact"), buttons);
-	connect(removeContactButton, SIGNAL(clicked(bool)), this, SLOT(removeClicked()));
-	buttonsLayout->addWidget(removeContactButton);
+	RemoveContactButton = new QPushButton(tr("Remove contact"), buttons);
+	connect(RemoveContactButton, SIGNAL(clicked(bool)), this, SLOT(removeClicked()));
+	buttonsLayout->addWidget(RemoveContactButton);
 
+	viewSelectionChanged(QModelIndex(), QModelIndex());
 	layout->addWidget(buttons);
 }
 
@@ -94,6 +98,24 @@ bool BuddyContactsTable::isValid()
 void BuddyContactsTable::save()
 {
 	Model->save();
+}
+
+void BuddyContactsTable::viewSelectionChanged(const QModelIndex &current, const QModelIndex &previous)
+{
+	if (!current.isValid())
+	{
+		MoveUpButton->setEnabled(false);
+		MoveDownButton->setEnabled(false);
+		DetachContactButton->setEnabled(false);
+		RemoveContactButton->setEnabled(false);
+	}
+	else
+	{
+		MoveUpButton->setEnabled(current.sibling(current.row() - 1, current.column()).isValid());
+		MoveDownButton->setEnabled(current.sibling(current.row() + 1, current.column()).isValid());
+		DetachContactButton->setEnabled(true);
+		RemoveContactButton->setEnabled(true);
+	}
 }
 
 void BuddyContactsTable::moveUpClicked()

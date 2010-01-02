@@ -10,10 +10,12 @@
 #ifndef BUDDY_CONTACTS_TABLE_H
 #define BUDDY_CONTACTS_TABLE_H
 
+#include <QtCore/QModelIndex>
 #include <QtGui/QWidget>
 
 #include "buddies/buddy.h"
 
+class QPushButton;
 class QTableView;
 
 class BuddyContactsTableDelegate;
@@ -25,14 +27,23 @@ class BuddyContactsTable : public QWidget
 	Q_OBJECT
 
 	Buddy MyBuddy;
+
 	QTableView *View;
 	BuddyContactsTableDelegate *Delegate;
 	BuddyContactsTableModel *Model;
 	BuddyContactsTableModelProxy *Proxy;
 
+	QPushButton *MoveUpButton;
+	QPushButton *MoveDownButton;
+	QPushButton *AddContactButton;
+	QPushButton *DetachContactButton;
+	QPushButton *RemoveContactButton;
+
 	void createGui();
 
 private slots:
+	void viewSelectionChanged(const QModelIndex &current, const QModelIndex &previous);
+
 	void moveUpClicked();
 	void moveDownClicked();
 	void addClicked();

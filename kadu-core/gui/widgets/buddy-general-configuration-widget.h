@@ -39,18 +39,13 @@ class KADUAPI BuddyGeneralConfigurationWidget : public QWidget
 
 	BuddyContactsTable *ContactsTable;
 
-	QDialog *OrderDialog;
-
 	Buddy MyBuddy;
 	BuddyContactModel *AccountDataModel;
 
 	void createGui();
-	void updateOrder();
 
 private slots:
 	void changeAvatar();
-	void showOrderDialog();
-	void updateOrderAndClose();
 
 public:
 	explicit BuddyGeneralConfigurationWidget(Buddy &buddy, QWidget *parent = 0);
