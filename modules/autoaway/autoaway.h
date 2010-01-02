@@ -43,7 +43,6 @@ class AutoAway : public ConfigurationUiHandler, ConfigurationAwareObject
 	bool autoInvisibleEnabled;
 	bool autoDisconnectEnabled;
 	bool parseAutoStatus;
-	bool alreadyAway;
 
 	bool updateDescripion;
 

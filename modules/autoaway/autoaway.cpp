@@ -58,7 +58,7 @@ extern "C" KADU_EXPORT void autoaway_close()
 }
 
 AutoAway::AutoAway() :
-		autoAwayStatusChanger(0), timer(0), updateDescripion(true), alreadyAway(false)
+		autoAwayStatusChanger(0), timer(0), updateDescripion(true)
 {
 	autoAwayStatusChanger = new AutoAwayStatusChanger();
 	StatusChangerManager::instance()->registerStatusChanger(autoAwayStatusChanger);
@@ -115,16 +115,12 @@ void AutoAway::checkIdleTime()
 		autoAwayStatusChanger->setChangeStatusTo(AutoAwayStatusChanger::ChangeStatusToOffline);
 	else if (idleTime >= autoInvisibleTime && autoInvisibleEnabled)
 		autoAwayStatusChanger->setChangeStatusTo(AutoAwayStatusChanger::ChangeStatusToInvisible);
-	else if (idleTime >= autoAwayTime && autoAwayEnabled && !alreadyAway)
-	{
-	   	autoAwayStatusChanger->setChangeStatusTo(AutoAwayStatusChanger::ChangeStatusToBusy);
-	    alreadyAway = true;
-	}
-	else if (idleTime < autoAwayTime && alreadyAway)
+	else if (idleTime >= autoAwayTime && autoAwayEnabled)
+		autoAwayStatusChanger->setChangeStatusTo(AutoAwayStatusChanger::ChangeStatusToBusy);
+	else
 	{
 		autoAwayStatusChanger->setChangeStatusTo(AutoAwayStatusChanger::NoChangeStatus);
 		updateDescripion = true;
-		alreadyAway = false;
 	}
 
 	if (idleTime < refreshStatusTime)
