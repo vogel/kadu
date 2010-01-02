@@ -158,8 +158,6 @@ void NotifyConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurat
 				allUsers->addItem(buddy.display());
 			else
 				notifiedUsers->addItem(buddy.display());
-
-			delete cnd;
 		}
 
 	allUsers->sortItems();

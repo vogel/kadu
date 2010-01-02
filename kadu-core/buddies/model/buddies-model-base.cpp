@@ -12,6 +12,7 @@
 #include "buddies/avatar.h"
 #include "buddies/avatar-manager.h"
 #include "buddies/buddy.h"
+#include "buddies/buddy-kadu-data.h"
 #include "buddies/buddy-list-mime-data-helper.h"
 #include "buddies/buddy-manager.h"
 #include "contacts/contact.h"
@@ -156,18 +157,12 @@ QVariant BuddiesModelBase::data(Contact contact, int role, bool useBuddyData) co
 		case ContactRole:
 			return QVariant::fromValue(contact);
 		case DescriptionRole:
-			//TODO 0.6.6:
-			//	ContactKaduData *ckd = contact.moduleData<ContactKaduData>(true);
-			//	if (!ckd)
-			//		return QString::null;
-			//	if (ckd->hideDescription())
-			//	{
-				//		delete ckd;
-				//		return QString::null;
-				//	}
-				//	delete ckd;
-				//
-				return contact.currentStatus().description();
+		{
+			BuddyKaduData *bkd = contact.data()->moduleStorableData<BuddyKaduData>("kadu", true);
+			if (bkd && bkd->hideDescription())
+				return QVariant();
+			return contact.currentStatus().description();
+		}
 		case StatusRole:
 			return QVariant::fromValue(contact.currentStatus());
 		case AccountRole:

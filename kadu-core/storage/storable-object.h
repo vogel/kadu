@@ -282,16 +282,16 @@ template<class T>
 		if (ModulesStorableData.contains(module))
 			return dynamic_cast<T *>(ModulesStorableData[module]);
 
-		StoragePoint *storagePoint = storagePointForModuleData(module, create);
-		if (!storagePoint)
-			return 0;
-
 		if (!create)
 			return 0;
 
+		StoragePoint *storagePoint = storagePointForModuleData(module, create);
+			return 0;
+
 		T *result = new T(this);
+		result->setState(StateNew);
 		result->setStorage(storagePoint);
-		ModulesStorableData[module] = result;
+		ModulesStorableData.insert(module, result);
 		return result;
 	}
 

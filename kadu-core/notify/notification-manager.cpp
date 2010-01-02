@@ -136,8 +136,6 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 			on = false;
 			break;
 		}
-
-		delete cnd;
 	}
 
 	foreach (const Buddy buddy, buddies)
@@ -224,9 +222,6 @@ void NotificationManager::statusChanged(Contact contact, Status oldStatus)
 
 	if (!cnd || !cnd->notify())
 		notify_contact = false;
-
-	if (cnd)
-		delete cnd;
 
 	if (!notify_contact && !NotifyAboutAll)
 	{
@@ -461,8 +456,6 @@ void checkNotify(Action *action)
 			on = false;
 			break;
 		}
-
-		delete cnd;
 	}
 
 	action->setChecked(on);

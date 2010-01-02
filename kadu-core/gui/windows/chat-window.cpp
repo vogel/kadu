@@ -124,7 +124,6 @@ void ChatWindow::kaduRestoreGeometry()
 // 		if (ckd)
 // 		{
 // 			geom = ckd->chatGeometry();
-// 			delete ckd;
 // 		}
 // 	}
 
@@ -182,7 +181,6 @@ void ChatWindow::kaduStoreGeometry()
 		{
 			ckd->setChatGeometry(geometry());
 			ckd->storeConfiguration();
-			delete ckd;
 		}
 	}*/
 }

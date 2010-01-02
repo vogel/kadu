@@ -101,7 +101,7 @@ void checkHideDescription(Action *action)
 	{
 		BuddyKaduData *ckd = 0;
 		if (buddy.data())
-			ckd = buddy.data()->moduleStorableData<BuddyKaduData>("kadu", true);
+			ckd = buddy.data()->moduleStorableData<BuddyKaduData>("kadu", false);
 		if (!ckd)
 			continue;
 
