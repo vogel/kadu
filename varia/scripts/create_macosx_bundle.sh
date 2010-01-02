@@ -199,6 +199,12 @@ if [ -f ${LIBGADU}/lib/libgadu.3.dylib ]; then
 	install_name_tool -id @executable_path/../Frameworks/libgadu.3.dylib ${FM_DIR}/libgadu.3.dylib
 fi
 
+if [ -f  /Library/Frameworks/Growl.framework/Versions/A/Growl ]; then
+	echo "log: copying growl framework"
+	cp /Library/Frameworks/Growl.framework/Versions/A/Growl ${FM_DIR}
+	install_name_tool -change @executable_path/../Frameworks/Growl.framework/Versions/A/Growl @executable_path/../Frameworks/Growl ${FM_DIR}/Growl
+fi
+
 cd ${FM_DIR}
 echo "log: changing framework bindings"
 install_name_tool -change ${QTDIR}/lib/QtSql.framework/Versions/4/QtSql @executable_path/../Frameworks/QtSql ./QtCore
@@ -267,6 +273,10 @@ fi
 if [ -f ${DEST}//Kadu.app/kadu/modules/libencryption_old.so ]; then
 	install_name_tool -change ${OPENSSLPATH}/lib/libssl.${SSLVER}.dylib @executable_path/../Frameworks/libssl.${SSLVER}.dylib ${DEST}/Kadu.app/kadu/modules/libencryption_old.so
 	install_name_tool -change ${OPENSSLPATH}/lib/libcrypto.${SSLVER}.dylib @executable_path/../Frameworks/libcrypto.${SSLVER}.dylib ${DEST}/Kadu.app/kadu/modules/libencryption_old.so
+fi
+
+if [ -f ${DEST}//Kadu.app/kadu/modules/libgrowl_notify.so ]; then
+	install_name_tool -change @executable_path/../Frameworks/Growl.framework/Versions/A/Growl @executable_path/../Frameworks/Growl ${DEST}//Kadu.app/kadu/modules/libgrowl_notify.so
 fi
 
 echo "LoadByDefault=true" >> ${DEST}/Kadu.app/kadu/modules/qt4_sound.desc
