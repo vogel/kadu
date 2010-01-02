@@ -134,6 +134,8 @@ void BuddyContactsTable::moveUpClicked()
 	int priority = current->itemContactPriority();
 	current->setItemContactPriority(previous->itemContactPriority());
 	previous->setItemContactPriority(priority);
+
+	viewSelectionChanged(View->currentIndex(), previousItem);
 }
 
 void BuddyContactsTable::moveDownClicked()
@@ -152,6 +154,8 @@ void BuddyContactsTable::moveDownClicked()
 	int priority = current->itemContactPriority();
 	current->setItemContactPriority(next->itemContactPriority());
 	next->setItemContactPriority(priority);
+
+	viewSelectionChanged(View->currentIndex(), nextItem);
 }
 
 void BuddyContactsTable::addClicked()
