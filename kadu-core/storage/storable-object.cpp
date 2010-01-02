@@ -148,7 +148,7 @@ void StorableObject::load()
 {
 	State = StateLoaded;
 }
-
+#include <stdio.h>
 /**
  * @author Rafal 'Vogel' Malinowski
  * @short Ensured that this object data has been loaded.

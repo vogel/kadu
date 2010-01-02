@@ -43,14 +43,9 @@ void GaduImporter::importAccounts()
 		return;
 	
 	Account defaultGaduGadu = Account::create();
-	// TODO: 0.6.6 set protocol after details because of crash
-	//defaultGaduGadu.setProtocolName("gadu");
-
-	GaduAccountDetails *accountDetails = new GaduAccountDetails(defaultGaduGadu);
-	accountDetails->setState(StorableObject::StateNew);
-	defaultGaduGadu.setDetails(accountDetails);
 	defaultGaduGadu.setProtocolName("gadu");
 
+	GaduAccountDetails *accountDetails = dynamic_cast<GaduAccountDetails *>(defaultGaduGadu.details());
 	defaultGaduGadu.setName("Gadu-Gadu");
 	defaultGaduGadu.setId(config_file.readEntry("General", "UIN"));
 	defaultGaduGadu.setPassword(unicode2cp(pwHash(config_file.readEntry("General", "Password"))));

@@ -17,7 +17,7 @@
 
 GaduAccountDetails::GaduAccountDetails(AccountShared *data) :
 		AccountDetails(data),
-		AllowDcc(true), DccIP(QHostAddress()), DccExternalIP(QHostAddress()), DccIpDetect(true),
+		AllowDcc(true), DccIpDetect(true),
 		DccPort(0), DccExternalPort(0), DccLocalPort(0), RemoveCompletedTransfers(0), DccForwarding(0)
 {
 	OpenChatRunner = new GaduOpenChatWithRunner(data);
