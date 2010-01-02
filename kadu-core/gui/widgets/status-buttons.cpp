@@ -43,7 +43,6 @@ void StatusButtons::statusContainerRegistered(StatusContainer *statusContainer)
 	if (1 == StatusContainerManager::instance()->count())
 		statusContainerUnregistered(StatusContainerManager::instance());
 
-	printf("Creating button for %p\n", statusContainer);
 	StatusButton *button = new StatusButton(statusContainer);
 	Layout->addWidget(button);
 	Buttons[statusContainer] = button;

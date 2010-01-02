@@ -309,14 +309,14 @@ void BuddiesListViewDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 		display = fontMetrics.elidedText(display, Qt::ElideRight, displayWidth);
 		accountDisplay = fontMetrics.elidedText(accountDisplay, Qt::ElideRight, accountDisplayWidth);
 
-		painter->drawText(textLeft, 0, textWidth, itemHeight, 0, display);
+		painter->drawText(textLeft, 0, textWidth, displayHeight, Qt::AlignLeft | Qt::AlignTop, display);
 
 		painter->setFont(DescriptionFont);
-		painter->drawText(textLeft, 0, textWidth, itemHeight, Qt::AlignRight | Qt::AlignVCenter, accountDisplay);
+		painter->drawText(textLeft, 0, textWidth, displayHeight, Qt::AlignRight | Qt::AlignVCenter, accountDisplay);
 		painter->setFont(Font);
 	}
 	else
-		painter->drawText(textLeft, top, display);
+		painter->drawText(textLeft, 0, textWidth, displayHeight, Qt::AlignLeft | Qt::AlignTop, display);
 
 	painter->setPen(pen);
 
