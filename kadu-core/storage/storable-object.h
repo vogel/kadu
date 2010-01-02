@@ -286,6 +286,7 @@ template<class T>
 			return 0;
 
 		StoragePoint *storagePoint = storagePointForModuleData(module, create);
+		if (!storagePoint)
 			return 0;
 
 		T *result = new T(this);

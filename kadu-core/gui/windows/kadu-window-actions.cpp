@@ -819,24 +819,22 @@ void KaduWindowActions::hideDescriptionActionActivated(QAction *sender, bool tog
 		if (buddy.isNull() || buddy.isAnonymous())
 			continue;
 
-		BuddyKaduData *ckd = 0;
+		BuddyKaduData *bkd = 0;
 		if (buddy.data())
-			ckd = buddy.data()->moduleStorableData<BuddyKaduData>("kadu", true);
-		if (!ckd)
+			bkd = buddy.data()->moduleStorableData<BuddyKaduData>("kadu", true);
+		if (!bkd)
 			continue;
 
-		if (ckd->hideDescription() != toggled)
+		if (bkd->hideDescription() != toggled)
 		{
-			ckd->setHideDescription(toggled);
-			ckd->store();
+			bkd->setHideDescription(toggled);
+			bkd->store();
 		}
 	}
 
 	foreach (Action *action, HideDescription->actions())
-	{
 		if (action->buddies() == buddies)
 			action->setChecked(toggled);
-	}
 
 	kdebugf2();
 }

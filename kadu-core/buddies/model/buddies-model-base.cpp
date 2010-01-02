@@ -158,7 +158,7 @@ QVariant BuddiesModelBase::data(Contact contact, int role, bool useBuddyData) co
 			return QVariant::fromValue(contact);
 		case DescriptionRole:
 		{
-			BuddyKaduData *bkd = contact.data()->moduleStorableData<BuddyKaduData>("kadu", true);
+			BuddyKaduData *bkd = contact.ownerBuddy().data()->moduleStorableData<BuddyKaduData>("kadu", true);
 			if (bkd && bkd->hideDescription())
 				return QVariant();
 			return contact.currentStatus().description();
