@@ -10,32 +10,31 @@
 #ifndef BUDDY_OPTIONS_CONFIGURATION_WIDGET_H
 #define BUDDY_OPTIONS_CONFIGURATION_WIDGET_H
 
-#include <QtGui/QDialog>
-#include <QtGui/QCheckBox>
+#include <QtGui/QWidget>
 
 #include "buddies/buddy.h"
-#include "gui/widgets/configuration/configuration-widget.h"
 
 #include "exports.h"
 
-class Contact;
-class ContactManager;
+class QCheckBox;
 
 class KADUAPI BuddyOptionsConfigurationWidget : public QWidget
 {
 	Q_OBJECT
 
+	Buddy MyBuddy;
+
 	QCheckBox *BlockCheckBox;
 	QCheckBox *OfflineToCheckBox;
 	QCheckBox *NotifyCheckBox;
 
-	Buddy MyBuddy;
 	void createGui();
 
 public:
 	explicit BuddyOptionsConfigurationWidget(Buddy &buddy, QWidget *parent = 0);
 	virtual ~BuddyOptionsConfigurationWidget();
-	void saveConfiguration();
+
+	void save();
 
 };
 

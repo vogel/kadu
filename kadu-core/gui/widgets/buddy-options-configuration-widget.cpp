@@ -7,14 +7,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QtGui/QGridLayout>
-#include <QtGui/QLabel>
+#include <QtGui/QCheckBox>
+#include <QtGui/QVBoxLayout>
 
 #include "buddies/buddy-shared.h"
-#include "contacts/contact.h"
 #include "notify/contact-notify-data.h"
 
 #include "buddy-options-configuration-widget.h"
+
 
 BuddyOptionsConfigurationWidget::BuddyOptionsConfigurationWidget(Buddy &buddy, QWidget *parent) :
 		QWidget(parent), MyBuddy(buddy)
@@ -30,23 +30,15 @@ BuddyOptionsConfigurationWidget::~BuddyOptionsConfigurationWidget()
 
 void BuddyOptionsConfigurationWidget::createGui()
 {
-	QGridLayout *layout = new QGridLayout(this);
-	layout->setColumnMinimumWidth(0, 10);
-	layout->setColumnMinimumWidth(1, 10);
-	layout->setColumnMinimumWidth(4, 20);
-	layout->setColumnStretch(3, 10);
-
-	int row = 0;
-
-	layout->setRowStretch(row++, 1);   
+	QVBoxLayout *layout = new QVBoxLayout(this);
 	
 	OfflineToCheckBox = new QCheckBox(tr("Allow contact to see when I'm available"), this);
 	OfflineToCheckBox->setChecked(!MyBuddy.isOfflineTo());
-	layout->addWidget(OfflineToCheckBox, row++, 2, 1, 2);   
+	layout->addWidget(OfflineToCheckBox);
 
 	BlockCheckBox = new QCheckBox(tr("Ignore contact"), this);
 	BlockCheckBox->setChecked(MyBuddy.isBlocked());
-	layout->addWidget(BlockCheckBox, row++, 2, 1, 2);           
+	layout->addWidget(BlockCheckBox);
 
 	NotifyCheckBox = new QCheckBox(tr("Notify when contact's status changes"), this);
 	ContactNotifyData *cnd = 0;
@@ -55,12 +47,12 @@ void BuddyOptionsConfigurationWidget::createGui()
 	if (cnd)
 		NotifyCheckBox->setChecked(cnd->notify());
 
-	layout->addWidget(NotifyCheckBox, row++, 2, 1, 2);
+	layout->addWidget(NotifyCheckBox);
 
-	layout->setRowStretch(row, 100);
+	layout->addStretch(100);
 }
 
-void BuddyOptionsConfigurationWidget::saveConfiguration()
+void BuddyOptionsConfigurationWidget::save()
 {
 	MyBuddy.setBlocked(BlockCheckBox->isChecked());
 	MyBuddy.setOfflineTo(!OfflineToCheckBox->isChecked());
