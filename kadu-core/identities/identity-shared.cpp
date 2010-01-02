@@ -117,10 +117,10 @@ void IdentityShared::setStatus(Status status)
 {
 	foreach (Account account, Accounts)
 		if (account.statusContainer())
-			Core::instance()->setStatus(account.statusContainer(), status);
+			account.statusContainer()->setStatus(status);
 }
 
-const Status & IdentityShared::status()
+Status IdentityShared::status()
 {
 	foreach (Account account, Accounts)
 		if (account.statusContainer())

@@ -48,7 +48,7 @@ public:
 	virtual QString statusContainerName()  { return name(); };
 
 	virtual void setStatus(Status newStatus);
-	virtual const Status & status();
+	virtual Status status();
 	virtual int maxDescriptionLength();
 
 	virtual QString statusName();

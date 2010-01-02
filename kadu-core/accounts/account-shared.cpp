@@ -240,7 +240,7 @@ void AccountShared::setStatus(Status status)
 		ProtocolHandler->setStatus(status);
 }
 
-const Status & AccountShared::status()
+Status AccountShared::status()
 {
 	if (ProtocolHandler)
 		return ProtocolHandler->status();

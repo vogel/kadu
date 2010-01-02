@@ -24,10 +24,10 @@ class KADUAPI StatusChangerManager : public QObject
 	Q_DISABLE_COPY(StatusChangerManager)
 
 	static StatusChangerManager *Instance;
-
+	
+	QMap<StatusContainer *, Status> Statuses;
+	QMap<StatusContainer *, Status> RealStatuses;
 	QList<StatusChanger *> StatusChangers;
-	QMap<StatusContainer *, Status> LastStatuses;
-	bool Enabled;
 
 	StatusChangerManager();
 	virtual ~StatusChangerManager();
@@ -35,11 +35,10 @@ class KADUAPI StatusChangerManager : public QObject
 public:
 	static StatusChangerManager * instance();
 
-	void enable();
-
 	void registerStatusChanger(StatusChanger *statusChanger);
 	void unregisterStatusChanger(StatusChanger *statusChanger);
 
+	void setStatus(StatusContainer *statusContainer, Status status);
 	Status status(StatusContainer *statusContainer);
 
 public slots:

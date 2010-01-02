@@ -62,8 +62,10 @@ private:
 
 	NetworkState State;
 	Status CurrentStatus;
-	Status NextStatus;
 	bool PrivateMode;
+
+private slots:
+	void statusChanged(StatusContainer *container, Status status);
 
 protected:
 	void setAllOffline();
@@ -96,8 +98,8 @@ public:
 	bool isConnected() { return (State == NetworkConnected); }
 
 	void setStatus(Status status);
-	const Status & status() const { return CurrentStatus; }
-	const Status & nextStatus() const { return NextStatus; }
+	Status status() const;
+	Status nextStatus() const;
 	virtual int maxDescriptionLength() { return -1; }
 
 	void setPrivateMode(bool privateMode);

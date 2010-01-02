@@ -103,7 +103,7 @@ public: //TODO 0.6.6: it is needed in Buddy::dummy()
 	virtual QString statusContainerName();
 
 	virtual void setStatus(Status newStatus);
-	virtual const Status & status();
+	virtual Status status();
 	virtual int maxDescriptionLength();
 
 	virtual QString statusName();

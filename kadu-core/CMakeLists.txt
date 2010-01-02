@@ -259,7 +259,6 @@ set (kadu_SRCS
 	status/status-group-manager.cpp
 	status/status-type.cpp
 	status/status-type-manager.cpp
-	status/user-status-changer.cpp
 
 	storage/named-storable-object.cpp
 	storage/module-data.cpp
@@ -483,7 +482,6 @@ set (kadu_MOC_SRCS
 	status/status-changer-manager.h
 	status/status-container.h
 	status/status-container-manager.h
-	status/user-status-changer.h
 
 	dnshandler.h
 	emoticons.h

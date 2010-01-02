@@ -23,7 +23,6 @@
 
 class KaduWindow;
 class Message;
-class UserStatusChanger;
 
 class KADUAPI Core : public QObject, private AccountsAwareObject, public ConfigurationAwareObject
 {
@@ -35,9 +34,6 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	Buddy Myself;
 	KaduWindow *Window;
 	bool ShowMainWindowOnStart; // TODO: 0.7.1, it is a hack
-
-//	Status NextStatus;
-	UserStatusChanger *StatusChanger;
 
 	Core();
 	virtual ~Core();
@@ -52,7 +48,6 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 
 private slots:
 	void statusChanged();
-	void statusChanged(StatusContainer *, Status);
 
 	void deleteOldConfigurationFiles();
 	void kaduWindowDestroyed();
@@ -67,7 +62,6 @@ public:
 	static Core * instance();
 
 	Buddy myself() { return Myself; }
-	Status status(StatusContainer *container);
 
 	void createGui();
 	void setShowMainWindowOnStart(bool show);
@@ -76,12 +70,6 @@ public:
 	void setIcon(const QPixmap &icon);
 
 public slots:
-	void setStatus(StatusContainer *container, const Status &status);
-	void setOnline(StatusContainer *container, const QString &description = QString::null);
-	void setAway(StatusContainer *container, const QString &description = QString::null);
-	void setInvisible(StatusContainer *container, const QString &description = QString::null);
-	void setOffline(StatusContainer *container, const QString &description = QString::null);
-
 	void quit();
 
 signals:

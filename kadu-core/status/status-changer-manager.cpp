@@ -23,8 +23,7 @@ StatusChangerManager * StatusChangerManager::instance()
 	return Instance;
 }
 
-StatusChangerManager::StatusChangerManager() :
-		Enabled(false)
+StatusChangerManager::StatusChangerManager()
 {
 }
 
@@ -64,35 +63,47 @@ void StatusChangerManager::unregisterStatusChanger(StatusChanger *statusChanger)
 	kdebugf2();
 }
 
+void StatusChangerManager::setStatus(StatusContainer *statusContainer, Status status)
+{
+	if (statusContainer)
+	{
+		Statuses[statusContainer] = status;
+		statusChanged(statusContainer);
+	}
+}
+
 void StatusChangerManager::statusChanged(StatusContainer *container)
 {
-	if (0 == container)
+	if (!container)
 	{
 		foreach (StatusContainer *statusContainer, StatusContainerManager::instance()->statusContainers())
 			if (statusContainer)
 				statusChanged(statusContainer);
+
+		return;
 	}
 
 	kdebugf();
 
-	if (!Enabled)
-		return;
+	printf("chaning status for %p\n", container);
 
-	Status status = Status();
+	Status status = Statuses[container];
 	for (int i = 0; i < StatusChangers.count(); i++)
 		StatusChangers.at(i)->changeStatus(container, status);
-	LastStatuses[container] = status;
+	RealStatuses[container] = status;
 
 	emit statusChanged(container, status);
 
 	kdebugf2();
 }
 
-void StatusChangerManager::enable()
+Status StatusChangerManager::status(StatusContainer *statusContainer)
 {
-	if (Enabled)
-		return;
-
-	Enabled = true;
-	statusChanged();
+	printf("Get status for %p [%d] [%d]\n", statusContainer, RealStatuses.contains(statusContainer),
+		   Statuses.contains(statusContainer));
+	if (RealStatuses.contains(statusContainer))
+		return RealStatuses[statusContainer];
+	if (Statuses.contains(statusContainer))
+		return Statuses[statusContainer];
+	return Status("Offline");
 }

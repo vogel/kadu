@@ -224,6 +224,8 @@ int GaduProtocol::maxDescriptionLength()
 
 void GaduProtocol::changeStatus()
 {
+	printf("change status %s %s\n", qPrintable(status().type()), qPrintable(nextStatus().type()));
+
 	Status newStatus = nextStatus();
 	if (newStatus == status())
 		return; // dont reset password

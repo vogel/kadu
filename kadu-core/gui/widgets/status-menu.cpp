@@ -29,11 +29,13 @@ StatusMenu::StatusMenu(StatusContainer *statusContainer, QWidget *parent) :
 	ChangeStatusActionGroup = new QActionGroup(this);
 	ChangeStatusActionGroup->setExclusive(true); // HACK
 
-	// TODO: 0.6.6
+	printf("menu for: %p\n", MyStatusContainer);
 
 	const QString &statusTypeName = MyStatusContainer->status().type();
+	printf("type: %s\n", qPrintable(statusTypeName));
 
 	QList<StatusType *> statusTypes = MyStatusContainer->supportedStatusTypes();
+	printf("types: %d\n", statusTypes.count());
 	foreach (StatusType *statusType, statusTypes)
 	{
 		QAction *statusAction = ChangeStatusActionGroup->addAction(
@@ -121,9 +123,9 @@ void StatusMenu::changeStatus(QAction *action)
 	if (!statusType)
 		return;
 
-	Status status(Core::instance()->status(MyStatusContainer));
+	Status status(MyStatusContainer->status());
 	status.setType(statusType->name());
-	Core::instance()->setStatus(MyStatusContainer, status);
+	MyStatusContainer->setStatus(status);
 }
 
 void StatusMenu::changeDescription()

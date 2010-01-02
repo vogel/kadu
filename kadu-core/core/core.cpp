@@ -33,7 +33,6 @@
 #include "status/status-container-manager.h"
 #include "status/status-type.h"
 #include "status/status-type-manager.h"
-#include "status/user-status-changer.h"
 
 #include "debug.h"
 #include "emoticons.h"
@@ -74,10 +73,6 @@ Core::~Core()
 // 	Configuration = 0;
 
 	storeConfiguration();
-
-	StatusChangerManager::instance()->unregisterStatusChanger(StatusChanger);
-	delete StatusChanger;
-	StatusChanger = 0;
 
 	ModulesManager::instance()->unloadAllModules();
 
@@ -275,16 +270,6 @@ void Core::init()
 
 	connect(StatusContainerManager::instance(), SIGNAL(statusChanged()), this, SLOT(statusChanged()));
 
-	StatusChanger = new UserStatusChanger();
-
-	connect(StatusChangerManager::instance(), SIGNAL(statusChanged(StatusContainer *, Status)),
-			this, SLOT(statusChanged(StatusContainer *, Status)));
-	StatusChangerManager::instance()->registerStatusChanger(StatusChanger);
-
-	foreach (StatusContainer *container, StatusContainerManager::instance()->statusContainers())
-		StatusChanger->userStatusSet(container, container->status());
-	StatusChangerManager::instance()->enable();
-
 	new Updates();
 
 #ifdef Q_OS_MACX
@@ -344,12 +329,6 @@ void Core::statusChanged()
 	kdebugf();
 
 	setIcon(StatusContainerManager::instance()->statusPixmap());
-}
-
-void Core::statusChanged(StatusContainer *container, Status status)
-{
-	if (container)
-		container->setStatus(status);
 }
 
 void Core::kaduWindowDestroyed()
@@ -420,11 +399,6 @@ void Core::configurationUpdated()
 	debug_mask = config_file.readNumEntry("General", "DEBUG_MASK");
 }
 
-Status Core::status(StatusContainer *container)
-{
-	return StatusChanger->status(container);
-}
-
 void Core::createGui()
 {
 	Window = new KaduWindow(0);
@@ -461,31 +435,6 @@ void Core::setIcon(const QPixmap &pixmap)
 		QApplication::setWindowIcon(icon);
 		emit mainIconChanged(icon);
 	}
-}
-
-void Core::setStatus(StatusContainer *container, const Status &status)
-{
-	StatusChanger->userStatusSet(container, status);
-}
-
-void Core::setOnline(StatusContainer *container, const QString &description)
-{
-	StatusChanger->userStatusSet(container, Status("Online", description));
-}
-
-void Core::setAway(StatusContainer *container, const QString &description)
-{
-	StatusChanger->userStatusSet(container, Status("Away", description));
-}
-
-void Core::setInvisible(StatusContainer *container, const QString &description)
-{
-	StatusChanger->userStatusSet(container, Status("Invisible", description));
-}
-
-void Core::setOffline(StatusContainer *container, const QString &description)
-{
-	StatusChanger->userStatusSet(container, Status("Offline", description));
 }
 
 void Core::quit()

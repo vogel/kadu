@@ -41,6 +41,7 @@ StatusContainerManager::~StatusContainerManager()
 
 void StatusContainerManager::accountRegistered(Account account)
 {
+	printf("Regiser scm for %s %p\n", qPrintable(account.name()), account.statusContainer());
 	registerStatusContainer(account.statusContainer());
 }
 
@@ -99,10 +100,10 @@ QString StatusContainerManager::statusContainerName()
 void StatusContainerManager::setStatus(Status newStatus)
 {
 	foreach (StatusContainer *container, StatusContainers)
-		Core::instance()->setStatus(container, newStatus);
+		container->setStatus(newStatus);
 }
 
-const Status & StatusContainerManager::status()
+Status StatusContainerManager::status()
 {
 	return AccountManager::instance()->defaultAccount().statusContainer()
 			? AccountManager::instance()->defaultAccount().statusContainer()->status()

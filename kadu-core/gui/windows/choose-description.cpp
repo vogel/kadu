@@ -135,9 +135,9 @@ void ChooseDescription::setDescription()
 // 	if (config_file.readBoolEntry("General", "ParseStatus", false))
 // 		description = Parser::parse(description, account, Core::instance()->myself(), true);
 
-	Status status = Core::instance()->status(MyStatusContainer);
+	Status status = MyStatusContainer->status();
 	status.setDescription(description);
-	Core::instance()->setStatus(MyStatusContainer, status);
+	MyStatusContainer->setStatus(status);
 }
 
 void ChooseDescription::activated(int index)
