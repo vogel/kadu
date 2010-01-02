@@ -8,9 +8,10 @@
  ***************************************************************************/
 
 #include <QtGui/QCheckBox>
-#include <QtGui/QGridLayout>
 #include <QtGui/QGroupBox>
 #include <QtGui/QLabel>
+#include <QtGui/QScrollArea>
+#include <QtGui/QVBoxLayout>
 
 #include "configuration/configuration-contact-data-manager.h"
 #include "contacts/contact.h"
@@ -20,8 +21,8 @@
 
 #include "buddy-groups-configuration-widget.h"
 
-BuddyGroupsConfigurationWidget::BuddyGroupsConfigurationWidget(Buddy &buddy, QWidget *parent)
-		: QScrollArea(parent), MyBuddy(buddy)
+BuddyGroupsConfigurationWidget::BuddyGroupsConfigurationWidget(Buddy &buddy, QWidget *parent) :
+		QWidget(parent), MyBuddy(buddy)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 
@@ -34,53 +35,40 @@ BuddyGroupsConfigurationWidget::~BuddyGroupsConfigurationWidget()
 
 void BuddyGroupsConfigurationWidget::createGui()
 {
-	setFrameStyle(QFrame::NoFrame);
-	setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	QVBoxLayout *layout = new QVBoxLayout(this);
 
-	QWidget *groupsTab = new QWidget(this);
+	QLabel *label = new QLabel(tr("Add <b>%1</b> to the groups below by checking the box next to the appropriate groups.").arg(MyBuddy.display()), this);
+	label->setWordWrap(true);
 
-	QGridLayout *layout = new QGridLayout(groupsTab);
-	layout->setColumnMinimumWidth(0, 10);
-	layout->setColumnMinimumWidth(1, 10);
-	layout->setColumnMinimumWidth(5, 20);
-	layout->setColumnStretch(3, 10);
-	layout->setColumnStretch(6, 2);
+	layout->addWidget(label);
+	layout->addSpacing(64);
 
-	int row = 0;
-	
-	layout->setRowStretch(row++, 1); 
+	Groups = new QScrollArea(this);
+	layout->addWidget(Groups);
 
-	setWidget(groupsTab);
-	setWidgetResizable(true);
+	Groups->setFrameShape(QFrame::NoFrame);
+	Groups->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	Groups->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 
-	QLabel *tabSubLabel = new QLabel(tr("Add %1 to the groups below by checking the box next to the appropriate groups.").arg(MyBuddy.display()), this);
-
-	layout->setRowStretch(row, 1);
-	layout->addWidget(tabSubLabel, row++, 2, 1, 4);
-
-	layout->setRowStretch(row++, 3);
+	QVBoxLayout *groupsLayout = new QVBoxLayout(Groups);
 
 	foreach (Group group, GroupManager::instance()->items())
 	{
-		QCheckBox *groupCheckBox = new QCheckBox(group.name(), this);
+		QCheckBox *groupCheckBox = new QCheckBox(group.name(), Groups);
 		groupCheckBox->setChecked(MyBuddy.isInGroup(group));
-		layout->addWidget(groupCheckBox, row++, 2, 1, 2);
+		groupsLayout->addWidget(groupCheckBox);
 		GroupCheckBoxList.append(groupCheckBox);
 	}
 
-	layout->setRowStretch(row, 100);
+	groupsLayout->addStretch(100);
 }
 
-void BuddyGroupsConfigurationWidget::saveConfiguration()
+void BuddyGroupsConfigurationWidget::save()
 {
 	foreach (Group group, MyBuddy.groups())
-	{
 		MyBuddy.removeFromGroup(group);
-	}
+
 	foreach (QCheckBox *groupBox, GroupCheckBoxList)
-	{
 		if (groupBox->isChecked())
 			MyBuddy.addToGroup(GroupManager::instance()->byName(groupBox->text()));
-	}
 }

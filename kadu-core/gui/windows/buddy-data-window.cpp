@@ -140,7 +140,7 @@ void BuddyDataWindow::updateBuddy()
 		MyBuddy.blockUpdatedSignal();
 
 		ContactTab->save();
-		GroupsTab->saveConfiguration();
+		GroupsTab->save();
 		OptionsTab->saveConfiguration();
 
 		MyBuddy.unblockUpdatedSignal();
