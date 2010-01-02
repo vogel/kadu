@@ -46,6 +46,8 @@ void GaduImporter::importAccounts()
 	defaultGaduGadu.setProtocolName("gadu");
 
 	GaduAccountDetails *accountDetails = dynamic_cast<GaduAccountDetails *>(defaultGaduGadu.details());
+	accountDetails->setState(StorableObject::StateNew);
+
 	defaultGaduGadu.setName("Gadu-Gadu");
 	defaultGaduGadu.setId(config_file.readEntry("General", "UIN"));
 	defaultGaduGadu.setPassword(unicode2cp(pwHash(config_file.readEntry("General", "Password"))));
@@ -79,6 +81,7 @@ void GaduImporter::importAccounts()
 
 	accountDetails->import_0_6_5_LastStatus();
 
+	AccountManager::instance()->ensureLoaded();
 	AccountManager::instance()->addItem(defaultGaduGadu);
 }
 
