@@ -650,7 +650,10 @@ void JabberProtocol::slotContactUpdated(const XMPP::RosterItem &item)
 
 		// if contact has name set it to display
 		if (!item.name().isNull())
-			buddy.setDisplay(item.name());
+		{
+			if (item.name() != buddy.display())
+				buddy.setDisplay(item.name());
+		}
 		else
 			buddy.setDisplay(item.jid().bare());
 
