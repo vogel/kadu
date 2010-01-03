@@ -19,7 +19,12 @@
 
 RecentChatManager * RecentChatManager::Instance = 0;
 
-RecentChatManager *  RecentChatManager::instance()
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Returns singleton instance of RecentChatManager.
+ * @return singleton instance of RecentChatManager
+ */
+RecentChatManager * RecentChatManager::instance()
 {
 	if (0 == Instance)
 		Instance = new RecentChatManager();
@@ -41,6 +46,13 @@ RecentChatManager::~RecentChatManager()
 	ConfigurationManager::instance()->unregisterStorableObject(this);
 }
 
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Loads recent chats data from configuration.
+ *
+ * Loads recent chats data from configuration. Chats are stored as list
+ * of uuids. First chat in the list is the most rectent chat.
+ */
 void RecentChatManager::load()
 {
 	if (!isValidStorage())
@@ -71,6 +83,13 @@ void RecentChatManager::load()
 	}
 }
 
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Stores recent chats data into configuration.
+ *
+ * Stores recent chats data into configuration. Chats are stored as list
+ * of uuids. First chat in the list is the most rectent chat.
+ */
 void RecentChatManager::store()
 {
 	if (!isValidStorage())
@@ -98,12 +117,30 @@ void RecentChatManager::store()
 				file->appendTextNode(mainElement, "Chat", chat.uuid().toString());
 }
 
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Return list of recent chats.
+ * @return list of recent chats
+ *
+ * Returns list of recent chats sorted from most recent to least recent.
+ */
 QList<Chat> RecentChatManager::recentChats()
 {
 	ensureLoaded();
 	return RecentChats;
 }
 
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Adds new chat to list (or moves it on first position).
+ *
+ * Adds new chat to list. If chat is already on list it is just moved to the first place.
+ * Else, it is added at first place and all chats after 20th are removed. Time of add is
+ * assigned to chat variable, so it can be used to remove chat after configured amount
+ * of time.
+ *
+ * Signals recentChatAboutToBeAdded and recentChatAdded are emited.
+ */
 void RecentChatManager::addRecentChat(Chat chat)
 {
 	if (!chat)
@@ -124,6 +161,14 @@ void RecentChatManager::addRecentChat(Chat chat)
 		removeRecentChat(RecentChats.last());
 }
 
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Removes chat from list.
+ *
+ * Removes given chat from list.
+ *
+ * Signals recentChatAboutToBeRemoved and recentChatRemoved are emited.
+ */
 void RecentChatManager::removeRecentChat(Chat chat)
 {
 	ensureLoaded();
@@ -135,6 +180,17 @@ void RecentChatManager::removeRecentChat(Chat chat)
 	emit recentChatRemoved(chat);
 }
 
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Updates behaviour of manager to new configuration values.
+ *
+ * If RecentChatsStore is changed to true this manager will not try to remove
+ * chats from list by itself (afer RecentChatsTimeout timeout). All recent chats
+ * are stored and restored between program runs.
+ *
+ * If RecentChatsStore is changed to false this manager will try to remove
+ * chats from list by itself afer RecentChatsTimeout timeout.
+ */
 void RecentChatManager::configurationUpdated()
 {
 	if (config_file.readBoolEntry("Chat", "RecentChatsStore", false))
@@ -153,6 +209,13 @@ void RecentChatManager::configurationUpdated()
 	CleanUpTimer->start();
 }
 
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Removes too old recent chats.
+ *
+ * If RecentChatsStore configuration value is false this method will remove
+ * all chats that were added before RecentChatsTimeout minutes ago.
+ */
 void RecentChatManager::cleanUp()
 {
 	if (config_file.readBoolEntry("Chat", "RecentChatsStore", false))
