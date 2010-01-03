@@ -29,6 +29,7 @@ class BuddiesListViewDelegate : public QItemDelegate, public ConfigurationAwareO
 	AbstractBuddiesModel *Model;
 
 	QFont Font;
+	QFont BoldFont;
 	QFont DescriptionFont;
 
 	bool AlignTop;

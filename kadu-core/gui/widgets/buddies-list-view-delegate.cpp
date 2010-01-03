@@ -217,8 +217,12 @@ void BuddiesListViewDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 
 	painter->setFont(Font);
 	painter->setPen(textcolor);
+	
+	bool bold = isBold(index);
+	QFontMetrics fontMetrics(bold ? BoldFont : Font);
+	QFontMetrics descriptionFontMetrics(DescriptionFont);
 
-	QFontMetrics fontMetrics(Font);
+
 	int displayHeight = fontMetrics.lineSpacing() + 3;
 
 	QPixmap pixmap = qvariant_cast<QPixmap>(index.data(Qt::DecorationRole));
@@ -265,12 +269,8 @@ void BuddiesListViewDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 		return;
 	}
 
-	if (isBold(index))
-	{
-		QFont bold = QFont(Font);
-		bold.setWeight(QFont::Bold);
-		painter->setFont(bold);
-	}
+	if (bold)
+		painter->setFont(BoldFont);
 
 		// TODO: 0.6.6
 /*
@@ -299,15 +299,18 @@ void BuddiesListViewDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 		accountDisplay = account.name();
 
 	// only display account name when in contact-mode, not buddy-mode
-	if ((option.state & QStyle::State_MouseOver) || (index.parent().isValid() && !accountDisplay.isEmpty()))
+	if ((option.state & QStyle::State_MouseOver) || index.parent().isValid())
 	{
-		// use 45% for display, 45% for account and 10% for space
-		int share = textWidth / 20;
-		int accountDisplayWidth = 9 * share;
-		int displayWidth = 9 * share;
+		int accountDisplayWidth = descriptionFontMetrics.width(accountDisplay);
+		int displayWidth = fontMetrics.width(display);
 
-		display = fontMetrics.elidedText(display, Qt::ElideRight, displayWidth);
-		accountDisplay = fontMetrics.elidedText(accountDisplay, Qt::ElideRight, accountDisplayWidth);
+		if (accountDisplayWidth + displayWidth + 16 > textWidth)
+		{
+			displayWidth = textWidth - accountDisplayWidth - 16;
+			display = fontMetrics.elidedText(display, Qt::ElideRight, displayWidth);
+		}
+		else if (displayWidth > textWidth)
+			display = fontMetrics.elidedText(display, Qt::ElideRight, textWidth);
 
 		painter->drawText(textLeft, 0, textWidth, displayHeight, Qt::AlignLeft | Qt::AlignTop, display);
 
@@ -316,7 +319,13 @@ void BuddiesListViewDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 		painter->setFont(Font);
 	}
 	else
-		painter->drawText(textLeft, 0, textWidth, displayHeight, Qt::AlignLeft | Qt::AlignTop, display);
+	{
+		int displayWidth = fontMetrics.width(display);
+		if (displayWidth > textWidth)
+			display = fontMetrics.elidedText(display, Qt::ElideRight, textWidth);
+
+		painter->drawText(textLeft, 0, displayWidth, displayHeight, Qt::AlignLeft | Qt::AlignTop, display);
+	}
 
 	painter->setPen(pen);
 
@@ -378,6 +387,9 @@ QPixmap BuddiesListViewDelegate::avatar(const QModelIndex &index) const
 void BuddiesListViewDelegate::configurationUpdated()
 {
 	Font = config_file.readFontEntry("Look", "UserboxFont");
+	BoldFont = Font;
+	BoldFont.setBold(true);
+
 	DescriptionFont = Font;
 	DescriptionFont.setPointSize(Font.pointSize() - 2);
 
