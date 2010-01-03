@@ -10,6 +10,7 @@
 #include <QtGui/QLabel>
 #include <QtGui/QMouseEvent>
 #include <QtGui/QPushButton>
+#include <QtGui/QVBoxLayout>
 
 #include "chat/chat.h"
 #include "configuration/configuration-file.h"
@@ -105,7 +106,7 @@ void Hint::createLabels(const QPixmap &pixmap)
 	vbox = new QVBoxLayout(this);
 	vbox->setSpacing(2);
 	vbox->setMargin(1);
-	vbox->setSizeConstraint(QLayout::SetNoConstraint);
+	vbox->setSizeConstraint(QLayout::SetMinimumSize);
 	QWidget *widget = new QWidget(this);
 	labels = new QHBoxLayout(widget);
 	labels->setSpacing(0);
@@ -121,7 +122,6 @@ void Hint::createLabels(const QPixmap &pixmap)
 
 	label = new QLabel(this);
 	label->setTextInteractionFlags(Qt::NoTextInteraction);
-	label->setTextFormat(Qt::RichText);
 	label->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
 	label->setContentsMargins(10, 0, 0, 0);
 	labels->addWidget(label);
