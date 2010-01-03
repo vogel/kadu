@@ -270,7 +270,7 @@ void FileTransfer::setVersion()
 	const UserListElement &ule = userlist->byID("Gadu", QString::number(Contact));
 	int version = ule.protocolData("Gadu", "Version").toUInt() & 0x0000ffff;
 
-	if (version >= 0x29)
+	if (version >= 0x29 || version == 0)
 		Version = Dcc7;
 	else
 		Version = Dcc6;
