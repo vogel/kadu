@@ -5,8 +5,9 @@
  *  (at your option) any later version.
  */
 #include <QtGui/QApplication>
-#include <QBitmap>
-#include <QToolTip>
+#include <QtGui/QBitmap>
+#include <QtGui/QToolTip>
+#include <QtGui/QMovie>
 #include <QtGui/QCheckBox>
 #include <QtGui/QDesktopWidget>
 #include <QtGui/QMenu>
@@ -109,7 +110,7 @@ void DesktopDockWindow::startMoving()	/* rozpoczynamy wojaze po ekranie */
 }
 
 DesktopDock::DesktopDock()
-	: menuPos(0), separatorPos(0)
+	: menuPos(0), separatorPos(0), Movie(0)
 {
 	kdebugf();
 
@@ -123,7 +124,7 @@ DesktopDock::DesktopDock()
 	connect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setToolTip(const QString&)));
 	connect(docking_manager, SIGNAL(trayPixmapChanged(const QIcon&, const QString &)), this,  SLOT(setPixmap(const QIcon&, const QString &)));
 	connect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
-	connect(docking_manager, SIGNAL(trayMovieChanged(const QMovie &)), this, SLOT(setTrayMovie(const QMovie &)));
+	connect(docking_manager, SIGNAL(trayMovieChanged(const QString &)), this, SLOT(setTrayMovie(const QString &)));
 
 	connect(desktopDock, SIGNAL(dropped(const QPoint &)), this, SLOT(droppedOnDesktop(const QPoint &)));
 
@@ -144,7 +145,7 @@ DesktopDock::~DesktopDock()
 {
 	kdebugf();
 
-	disconnect(docking_manager, SIGNAL(trayMovieChanged(const QMovie &)), this, SLOT(setTrayMovie(const QMovie &)));
+	disconnect(docking_manager, SIGNAL(trayMovieChanged(const QString &)), this, SLOT(setTrayMovie(const QString &)));
 	disconnect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setToolTip(const QString&)));
 	disconnect(docking_manager, SIGNAL(trayPixmapChanged(const QIcon&, const QString &)), this, SLOT(setPixmap(const QIcon&, const QString &)));
 	disconnect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
@@ -200,15 +201,35 @@ void DesktopDock::setToolTip(const QString& statusText)
 
 void DesktopDock::setPixmap(const QIcon& DockIcon, const QString & /*iconName*/)
 {
+	if (Movie)
+	{
+		Movie->stop();
+		Movie->deleteLater();
+		Movie = 0;
+	}
 	desktopDock->setPixmap(DockIcon.pixmap(128,128));
 	desktopDock->repaint();
 	desktopDock->setMask(desktopDock->pixmap()->createHeuristicMask(false));
 }
 
-void DesktopDock::setTrayMovie(const QMovie &movie)
+void DesktopDock::setTrayMovie(const QString &movie)
 {
-	desktopDock->setMovie((QMovie *)&movie);
-	desktopDock->repaint();
+	if (Movie)
+	{
+		Movie->stop();
+		Movie->deleteLater();
+	}
+	else
+		desktopDock->setPixmap(QPixmap(""));
+
+	Movie = new QMovie(movie);
+	Movie->start();
+	connect(Movie, SIGNAL(updated(const QRect &)), this, SLOT(movieUpdate()));
+}
+
+void DesktopDock::movieUpdate()
+{
+	desktopDock->setPixmap(Movie->framePixmap());
 }
 
 void DesktopDock::findTrayPosition(QPoint& DockPoint)	/* zwrocenie krawedzi ikony */

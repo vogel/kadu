@@ -47,6 +47,7 @@ class DesktopDock : public ConfigurationUiHandler, ConfigurationAwareObject
 	DesktopDockWindow *desktopDock;
 	QSpinBox *xSpinBox;
 	QSpinBox *ySpinBox;
+	QMovie *Movie;
 
 	int menuPos;
 	int separatorPos;
@@ -59,10 +60,11 @@ protected:
 private slots:
 	void setToolTip(const QString &statusText);
 	void setPixmap(const QIcon &DockIcon, const QString &iconName);
-	void setTrayMovie(const QMovie &movie);
+	void setTrayMovie(const QString &movie);
 	void findTrayPosition(QPoint &DockPoint);
 	void droppedOnDesktop(const QPoint &);
 	void updateMenu(bool);
+	void movieUpdate();
 
 public:
 	DesktopDock();
