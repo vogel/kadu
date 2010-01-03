@@ -63,6 +63,7 @@ void FileTransferWidget::createGui()
 	layout->setColumnStretch(0, 1);
 	layout->setColumnStretch(1, 20);
 	layout->setColumnStretch(2, 20);
+	layout->setSizeConstraint(QLayout::SetMinimumSize);
 
 	QLabel *icon = new QLabel(this);
 	icon->setBackgroundRole(QPalette::Base);
@@ -70,9 +71,7 @@ void FileTransferWidget::createGui()
 
 	DescriptionLabel = new QLabel(this);
 	DescriptionLabel->setBackgroundRole(QPalette::Base);
-	DescriptionLabel->setScaledContents(false);
 	layout->addWidget(DescriptionLabel, 0, 1, 1, 2);
-	DescriptionLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
 	ProgressBar = new QProgressBar(this);
 	ProgressBar->setMinimum(0);
@@ -99,7 +98,6 @@ void FileTransferWidget::createGui()
 
 	QPushButton *deleteThis = new QPushButton(tr("Remove"), this);
 	connect(deleteThis, SIGNAL(clicked()), this, SLOT(removeTransfer()));
-	deleteThis->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
 	buttons_layout->addWidget(PauseButton);
 	buttons_layout->addWidget(ContinueButton);
