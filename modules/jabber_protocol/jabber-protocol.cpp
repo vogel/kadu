@@ -16,12 +16,12 @@
 #include <xmpp_tasks.h>
 
 #include "accounts/account-manager.h"
-#include "core/core.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/group.h"
 #include "buddies/group-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-manager.h"
+#include "core/core.h"
 #include "file-transfer/file-transfer-manager.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/kadu-window.h"
@@ -569,16 +569,16 @@ void JabberProtocol::contactRemoved(Contact contact)
 
 void JabberProtocol::contactUpdated(Buddy &buddy)
 {
-/*	Contact contact = buddy.contact(account());
-	if (contact.isNull() || buddy.isAnonymous())
+	QList<Contact> contacts = buddy.contacts(account());
+	if (contacts.isEmpty() || buddy.isAnonymous())
 		return;
 
 	QStringList groupsList;
 	foreach (Group group, buddy.groups())
 		groupsList.append(group.name());
 
-	JabberClient->updateContact(contact.id(), buddy.display(), groupsList);
-*/
+	foreach (const Contact &contact, contacts)
+		JabberClient->updateContact(contact.id(), buddy.display(), groupsList);
 }
 
 void JabberProtocol::contactAboutToBeAdded(Contact contact)
