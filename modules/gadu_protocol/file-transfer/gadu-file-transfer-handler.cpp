@@ -32,6 +32,8 @@ GaduFileTransferHandler::~GaduFileTransferHandler()
 
 void GaduFileTransferHandler::updateFileInfo()
 {
+	transfer().blockUpdatedSignal();
+
 	if (SocketNotifiers)
 	{
 		transfer().setFileSize(SocketNotifiers->fileSize());
@@ -42,6 +44,8 @@ void GaduFileTransferHandler::updateFileInfo()
 		transfer().setFileSize(0);
 		transfer().setTransferredSize(0);
 	}
+
+	transfer().unblockUpdatedSignal();
 }
 
 void GaduFileTransferHandler::setFileTransferNotifiers(DccSocketNotifiers *socketNotifiers)

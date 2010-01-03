@@ -35,7 +35,7 @@ FileTransferWidget::FileTransferWidget(FileTransfer ft, QWidget *parent)
 	createGui();
 	
 	LastTransferredSize = CurrentTransfer.transferredSize();
-	connect(CurrentTransfer, SIGNAL(updated()), this, SLOT(fileTransferUpdate()));
+	connect(CurrentTransfer, SIGNAL(updated()), this, SLOT(fileTransferUpdate()), Qt::QueuedConnection);
 	fileTransferUpdate();
 
 	show();
@@ -72,8 +72,9 @@ void FileTransferWidget::createGui()
 	DescriptionLabel->setBackgroundRole(QPalette::Base);
 	DescriptionLabel->setScaledContents(true);
 	layout->addWidget(DescriptionLabel, 0, 1, 1, 2);
+	DescriptionLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-	ProgressBar = new QProgressBar;
+	ProgressBar = new QProgressBar(this);
 	ProgressBar->setMinimum(0);
 	ProgressBar->setMaximum(100);
 	ProgressBar->setBackgroundRole(QPalette::Base);
@@ -83,8 +84,8 @@ void FileTransferWidget::createGui()
 	StatusLabel->setBackgroundRole(QPalette::Base);
 	layout->addWidget(StatusLabel, 2, 1);
 
-	QWidget *buttons = new QWidget;
-	QHBoxLayout *buttons_layout = new QHBoxLayout;
+	QWidget *buttons = new QWidget(this);
+	QHBoxLayout *buttons_layout = new QHBoxLayout(buttons);
 	buttons->setBackgroundRole(QPalette::Base);
 	buttons_layout->setSpacing(2);
 
@@ -98,11 +99,11 @@ void FileTransferWidget::createGui()
 
 	QPushButton *deleteThis = new QPushButton(tr("Remove"), this);
 	connect(deleteThis, SIGNAL(clicked()), this, SLOT(removeTransfer()));
+	deleteThis->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
 	buttons_layout->addWidget(PauseButton);
 	buttons_layout->addWidget(ContinueButton);
 	buttons_layout->addWidget(deleteThis);
-	buttons->setLayout(buttons_layout);
  	layout->addWidget(buttons, 2, 2, Qt::AlignRight);
 
 	Buddy buddy = CurrentTransfer.peer().ownerBuddy();
@@ -139,13 +140,13 @@ void FileTransferWidget::removeTransfer()
 		return;
 
 	if (StatusFinished != CurrentTransfer.transferStatus())
+	{
 		if (!MessageDialog::ask(tr("Are you sure you want to remove this transfer?"), QString::null, this))
 			return;
 		else
-		{
 			if (handler())
 				handler()->stop();
-		}
+	}
 
 	FileTransferManager::instance()->removeItem(CurrentTransfer);
 
