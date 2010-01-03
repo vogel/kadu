@@ -104,7 +104,7 @@ bool BuddyContactsTableItem::isAddValid() const
 
 	Protocol *handler = ItemAccount.protocolHandler();
 	if (!handler)
-		return false;
+		return true;
 
 	if (!handler->validateUserID(Id))
 		return false;
@@ -127,7 +127,7 @@ bool BuddyContactsTableItem::isEditValid() const
 
 	Protocol *handler = ItemAccount.protocolHandler();
 	if (!handler)
-		return false;
+		return true;
 
 	if (!handler->validateUserID(Id))
 		return false;
