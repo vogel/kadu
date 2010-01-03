@@ -107,8 +107,8 @@ void FileTransferManager::acceptFileTransfer(FileTransfer transfer)
 {
 	QString fileName = transfer.localFileName();
 
-	bool resume = false;
 	bool haveFileName = !fileName.isEmpty();
+	bool resume = haveFileName;
 
 	QFileInfo fi;
 
@@ -221,7 +221,7 @@ bool FileTransferManager::isFileTransferWindowVisible()
 FileTransfer FileTransferManager::byPeerAndRemoteFileName(Contact peer, const QString &remoteFileName)
 {
 	foreach (FileTransfer transfer, items())
-		if (transfer.peer() == peer && transfer.remoteFileName() == remoteFileName)
+		if (transfer.transferType() == TypeReceive && transfer.peer() == peer && transfer.remoteFileName() == remoteFileName)
 			return transfer;
 
 	return FileTransfer::null;
@@ -233,7 +233,7 @@ void FileTransferManager::incomingFileTransfer(FileTransfer fileTransfer)
 	{
 		FileTransfer alreadyTransferred = byPeerAndRemoteFileName(fileTransfer.peer(), fileTransfer.remoteFileName());
 		if (alreadyTransferred)
-			fileTransfer.setLocalFileName(fileTransfer.localFileName());
+			fileTransfer.setLocalFileName(alreadyTransferred.localFileName());
 	}
 
 	Chat chat = ChatManager::instance()->findChat(ContactSet(fileTransfer.peer()));
@@ -254,7 +254,7 @@ void FileTransferManager::incomingFileTransfer(FileTransfer fileTransfer)
 				.arg(fileTransfer.fileSize() / 1024)
 				.arg(chat.chatAccount().name()));
 	else
-		notification->setText(tr("User <b>%1</b> wants to send you a file <b/>%2</b>\nof size <b>%3kB</b> using account <b>%4</b>.'n"
+		notification->setText(tr("User <b>%1</b> wants to send you a file <b/>%2</b>\nof size <b>%3kB</b> using account <b>%4</b>.\n"
 				"This is probably a next part of <b>%5</b>\n What should I do?")
 				.arg(chat.name())
 				.arg(fileTransfer.remoteFileName())
