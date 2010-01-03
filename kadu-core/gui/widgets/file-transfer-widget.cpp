@@ -66,7 +66,7 @@ void FileTransferWidget::createGui()
 
 	QLabel *icon = new QLabel(this);
 	icon->setBackgroundRole(QPalette::Base);
-	layout->addWidget(icon, 0, 0, 3, 1);
+	layout->addWidget(icon, 0, 0, 3, 1, Qt::AlignTop);
 
 	DescriptionLabel = new QLabel(this);
 	DescriptionLabel->setBackgroundRole(QPalette::Base);
@@ -105,7 +105,8 @@ void FileTransferWidget::createGui()
 	buttons->setLayout(buttons_layout);
  	layout->addWidget(buttons, 2, 2, Qt::AlignRight);
 
-	Buddy buddy = CurrentTransfer.fileTransferContact().ownerBuddy();
+	Buddy buddy = CurrentTransfer.peer().ownerBuddy();
+	Account account = CurrentTransfer.peer().contactAccount();
 
 	QString fileName = QFileInfo(CurrentTransfer.localFileName()).fileName();
 	if (fileName.isEmpty())
@@ -114,12 +115,14 @@ void FileTransferWidget::createGui()
 	if (TypeSend == CurrentTransfer.transferType())
 	{
 		icon->setPixmap(IconsManager::instance()->loadPixmap("FileTransferSend"));
-		DescriptionLabel->setText(tr("<b>File</b> %1 <b>to</b> %2").arg(fileName).arg(buddy.display()));
+		DescriptionLabel->setText(tr("File <b>%1</b><br /> to <b>%2</b><br />on account <b>%3</b>")
+				.arg(fileName).arg(buddy.display()).arg(account.name()));
 	}
 	else
 	{
 		icon->setPixmap(IconsManager::instance()->loadPixmap("FileTransferReceive"));
-		DescriptionLabel->setText(tr("<b>File</b> %1 <b>from</b> %2").arg(fileName).arg(buddy.display()));
+		DescriptionLabel->setText(tr("File <b>%1</b><br /> from <b>%2</b><br />on account <b>%3</b>")
+				.arg(fileName).arg(buddy.display()).arg(account.name()));
 	}
 }
 

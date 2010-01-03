@@ -471,10 +471,12 @@ void JabberProtocol::slotIncomingFileTransfer()
 		return;
 
 	Contact peer = ContactManager::instance()->byId(account(), jTransfer->peer().bare(), true);
-	FileTransfer transfer = FileTransferManager::instance()->byData(account(), peer, TypeReceive, jTransfer->fileName(), true);
+	FileTransfer transfer = FileTransfer::create();
+	transfer.setPeer(peer);
+	transfer.setTransferType(TypeReceive);
+	transfer.setRemoteFileName(jTransfer->fileName());
 
-	if (!transfer)
-		return;
+	FileTransferManager::instance()->addItem(transfer);
 
 	transfer.createHandler();
 

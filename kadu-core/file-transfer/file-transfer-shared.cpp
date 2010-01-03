@@ -52,8 +52,7 @@ void FileTransferShared::load()
 
 	StorableObject::load();
 
-	FileTransferAccount = AccountManager::instance()->byUuid(loadValue<QString>("Account"), true);
-	FileTransferContact = ContactManager::instance()->byUuid(loadValue<QString>("Peer"), true);
+	Peer = ContactManager::instance()->byUuid(loadValue<QString>("Peer"), true);
 	LocalFileName = loadValue<QString>("LocalFileName");
 	RemoteFileName = loadValue<QString>("RemoteFileName");
 	TransferType = ("Send" == loadValue<QString>("TransferType")) ? TypeSend : TypeReceive;
@@ -71,8 +70,7 @@ void FileTransferShared::store()
 
 	ensureLoaded();
 
-	storeValue("Account", FileTransferAccount.uuid().toString());
-	storeValue("Peer", FileTransferContact.uuid().toString());
+	storeValue("Peer", Peer.uuid().toString());
 	storeValue("LocalFileName", LocalFileName);
 	storeValue("RemoteFileName", RemoteFileName);
 	storeValue("TransferType", TypeSend == TransferType ? "Send" : "Receive");
@@ -119,7 +117,7 @@ void FileTransferShared::createHandler()
 	if (Handler)
 		return;
 
-	Protocol *protocol = FileTransferAccount.protocolHandler();
+	Protocol *protocol = Peer.contactAccount().protocolHandler();
 	if (!protocol)
 		return;
 

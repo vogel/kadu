@@ -95,8 +95,8 @@ void GaduFileTransferHandler::send()
 	if (SocketNotifiers || WaitingForSocketNotifiers) // already sending/receiving
 		return;
 
-	Account account = transfer().fileTransferAccount();
-	Contact contact = transfer().fileTransferContact();
+	Contact contact = transfer().peer();
+	Account account = contact.contactAccount();
 	transfer().setRemoteFileName(QString::null);
 
 	if (account.isNull() || transfer().localFileName().isEmpty())

@@ -21,8 +21,7 @@ class KADUAPI FileTransferShared : public QObject, public Shared
 	Q_OBJECT
 	Q_DISABLE_COPY(FileTransferShared)
 
-	Account FileTransferAccount;
-	Contact FileTransferContact;
+	Contact Peer;
 	QString LocalFileName;
 	QString RemoteFileName;
 
@@ -58,8 +57,7 @@ public:
 	void setHandler(FileTransferHandler *handler);
 	void createHandler();
 
-	KaduShared_Property(Account, fileTransferAccount, FileTransferAccount)
-	KaduShared_Property(Contact, fileTransferContact, FileTransferContact)
+	KaduShared_Property(Contact, peer, Peer)
 	KaduShared_Property(QString, localFileName, LocalFileName)
 	KaduShared_Property(QString, remoteFileName, RemoteFileName)
 	KaduShared_Property(unsigned long, fileSize, FileSize)

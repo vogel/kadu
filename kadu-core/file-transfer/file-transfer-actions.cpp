@@ -128,7 +128,13 @@ void FileTransferActions::selectFilesAndSend(ContactSet contacts)
 
 		foreach (const QString &file, files)
 		{
-			FileTransfer fileTransfer = FileTransferManager::instance()->byData(account, contact, TypeSend, file, true);
+			FileTransfer fileTransfer = FileTransfer::create();
+			fileTransfer.setPeer(contact);
+			fileTransfer.setTransferType(TypeSend);
+			fileTransfer.setLocalFileName(file);
+
+			FileTransferManager::instance()->addItem(fileTransfer);
+
 			fileTransfer.createHandler();
 			if (fileTransfer.handler())
 				fileTransfer.handler()->send();
