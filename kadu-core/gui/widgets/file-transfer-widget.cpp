@@ -70,7 +70,7 @@ void FileTransferWidget::createGui()
 
 	DescriptionLabel = new QLabel(this);
 	DescriptionLabel->setBackgroundRole(QPalette::Base);
-	DescriptionLabel->setScaledContents(true);
+	DescriptionLabel->setScaledContents(false);
 	layout->addWidget(DescriptionLabel, 0, 1, 1, 2);
 	DescriptionLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 

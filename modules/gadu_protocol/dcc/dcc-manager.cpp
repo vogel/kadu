@@ -289,8 +289,6 @@ void DccManager::needIncomingFileTransferAccept(DccSocketNotifiers *socket)
 	fileTransfer.setRemoteFileName(socket->remoteFileName());
 	fileTransfer.createHandler();
 
-	FileTransferManager::instance()->addItem(fileTransfer);
-
 	GaduFileTransferHandler *handler = dynamic_cast<GaduFileTransferHandler *>(fileTransfer.handler());
 	if (handler)
 		handler->setFileTransferNotifiers(socket);

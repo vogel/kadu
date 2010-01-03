@@ -476,8 +476,6 @@ void JabberProtocol::slotIncomingFileTransfer()
 	transfer.setTransferType(TypeReceive);
 	transfer.setRemoteFileName(jTransfer->fileName());
 
-	FileTransferManager::instance()->addItem(transfer);
-
 	transfer.createHandler();
 
 	JabberFileTransferHandler *handler = dynamic_cast<JabberFileTransferHandler *>(transfer.handler());
