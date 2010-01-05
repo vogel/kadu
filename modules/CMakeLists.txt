@@ -59,6 +59,9 @@ else (WIN32)
 					if (DOWNLOAD_STATUS EQUAL 1)
 						message (FATAL_ERROR ${MODULE} " download failed!")
 					endif (DOWNLOAD_STATUS EQUAL 1)
+					exec_program (${CMAKE_SOURCE_DIR}/varia/scripts/autopatch ${CMAKE_SOURCE_DIR}
+						ARGS ${MODULE}
+					)
 				endif(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${MODULE}/.autodownloaded OR NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${MODULE}/CMakeLists.txt)
 			endif(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${MODULE}.web)
 		endforeach (MODULE)
