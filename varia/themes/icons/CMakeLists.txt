@@ -22,11 +22,10 @@ if (INSTALL_ICON_THEMES)
 
 	foreach (INSTALL_ICON_THEME ${INSTALL_ICON_THEMES})
 		message (STATUS "Icon theme: " ${INSTALL_ICON_THEME})
-		add_custom_command (OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/${INSTALL_ICON_THEME}
-			COMMAND  ../../scripts/autodownload ARGS icon ${INSTALL_ICON_THEME}
-			COMMENT "Downloading icon theme ${INSTALL_ICON_THEME}"
-			WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+		exec_program (${CMAKE_SOURCE_DIR}/varia/scripts/autodownload ${CMAKE_CURRENT_SOURCE_DIR}
+			ARGS theme ${INSTALL_ICON_THEME}
 		)
+
 	endforeach (INSTALL_ICON_THEME)
 
 	install (DIRECTORY ${INSTALL_ICON_THEMES}

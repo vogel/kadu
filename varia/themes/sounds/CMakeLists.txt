@@ -22,11 +22,10 @@ if (INSTALL_SOUND_THEMES)
 
 	foreach (INSTALL_SOUND_THEME ${INSTALL_SOUND_THEMES})
 		message (STATUS "Sound theme: " ${INSTALL_SOUND_THEME})
-		add_custom_command (OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/${INSTALL_SOUND_THEME}
-			COMMAND  ../../scripts/autodownload sound ${INSTALL_SOUND_THEME}
-			COMMENT "Downloading sound theme ${INSTALL_SOUND_THEMES}"
-			WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+		exec_program (${CMAKE_SOURCE_DIR}/varia/scripts/autodownload ${CMAKE_CURRENT_SOURCE_DIR}
+			ARGS theme ${INSTALL_SOUND_THEME}
 		)
+
 	endforeach (INSTALL_SOUND_THEME)
 
 	add_dependencies (kadu sound_themes)
