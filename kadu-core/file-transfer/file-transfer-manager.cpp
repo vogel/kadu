@@ -243,22 +243,31 @@ void FileTransferManager::incomingFileTransfer(FileTransfer fileTransfer)
 
 	fileTransfer.setTransferStatus(StatusWaitingForAccept);
 
+	QString textFileSize = QString("%1 kB");
+	double size = (double) fileTransfer.fileSize() / 1024;
+
+	if (size > 1024 )
+	{
+		size = size / 1024;
+		textFileSize = "%1 MB";
+	}
+
 	// TODO: 0.8 fix that
 	// we need to use \n insteadof <br />
 	// <br /> are escaped inside notifications
 	// \n are changed into <br />
 	if (fileTransfer.localFileName().isEmpty())
-		notification->setText(tr("User <b>%1</b> wants to send you a file <b>%2</b>\nof size <b>%3kB</b> using account <b>%4</b>.\nAccept transfer?")
+		notification->setText(tr("User <b>%1</b> wants to send you a file <b>%2</b>\nof size <b>%3</b> using account <b>%4</b>.\nAccept transfer?")
 				.arg(chat.name())
 				.arg(fileTransfer.remoteFileName())
-				.arg(fileTransfer.fileSize() / 1024)
+				.arg(textFileSize.arg(size, 0, 'f', 2))
 				.arg(chat.chatAccount().name()));
 	else
-		notification->setText(tr("User <b>%1</b> wants to send you a file <b/>%2</b>\nof size <b>%3kB</b> using account <b>%4</b>.\n"
+		notification->setText(tr("User <b>%1</b> wants to send you a file <b/>%2</b>\nof size <b>%3</b> using account <b>%4</b>.\n"
 				"This is probably a next part of <b>%5</b>\n What should I do?")
 				.arg(chat.name())
 				.arg(fileTransfer.remoteFileName())
-				.arg(fileTransfer.fileSize() / 1024)
+				.arg(textFileSize.arg(size, 0, 'f', 2))
 				.arg(chat.chatAccount().name())
 				.arg(fileTransfer.localFileName()));
 
