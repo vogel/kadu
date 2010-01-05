@@ -22,10 +22,8 @@ if (INSTALL_EMOTICON_THEMES)
 
 	foreach (INSTALL_EMOTICON_THEME ${INSTALL_EMOTICON_THEMES})
 		message (STATUS "Emoticon theme: " ${INSTALL_EMOTICON_THEME})
-		add_custom_command (OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/${INSTALL_EMOTICON_THEME}
-			COMMAND  ../../scripts/autodownload emoticon ${INSTALL_EMOTICON_THEME}
-			COMMENT "Downloading emoticons theme ${INSTALL_EMOTICON_THEME}"
-			WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+		exec_program (${CMAKE_SOURCE_DIR}/varia/scripts/autodownload ${CMAKE_CURRENT_SOURCE_DIR}
+			ARGS module ${INSTALL_EMOTICON_THEME}
 		)
 	endforeach (INSTALL_EMOTICON_THEME)
 
