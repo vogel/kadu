@@ -91,7 +91,7 @@ About::About(QWidget *parent)
 	// authors
 	QTextEdit *tb_authors = new QTextEdit(tw_about);
 	tb_authors->setReadOnly(true);
-	tb_authors->setFrameStyle(QFrame::StyledPanel | QFrame::Plain);
+	tb_authors->setFrameStyle(QFrame::NoFrame);
 	tb_authors->setWordWrapMode(QTextOption::NoWrap);
 	tb_authors->viewport()->setAutoFillBackground(false);
 	HtmlDocument doc;
@@ -109,7 +109,7 @@ About::About(QWidget *parent)
 	// people to thank
 	QTextEdit *tb_thanks = new QTextEdit(tw_about);
 	tb_thanks->setReadOnly(true);
-	tb_thanks->setFrameStyle(QFrame::StyledPanel | QFrame::Plain);
+	tb_thanks->setFrameStyle(QFrame::NoFrame);
 	tb_thanks->setWordWrapMode(QTextOption::NoWrap);
 	tb_thanks->viewport()->setAutoFillBackground(false);
 	tb_thanks->setText(loadFile("THANKS"));
@@ -117,7 +117,7 @@ About::About(QWidget *parent)
 	// license
 	QTextEdit *tb_license = new QTextEdit(tw_about);
 	tb_license->setReadOnly(true);
-	tb_license->setFrameStyle(QFrame::StyledPanel | QFrame::Plain);
+	tb_license->setFrameStyle(QFrame::NoFrame);
 	tb_license->setWordWrapMode(QTextOption::WordWrap);
 	tb_license->viewport()->setAutoFillBackground(false);
 	tb_license->setText(loadFile("COPYING"));
@@ -125,7 +125,7 @@ About::About(QWidget *parent)
 	// changelog
 	QTextEdit *tb_changelog = new QTextEdit(tw_about);
 	tb_changelog->setReadOnly(true);
-	tb_changelog->setFrameStyle(QFrame::StyledPanel | QFrame::Plain);
+	tb_changelog->setFrameStyle(QFrame::NoFrame);
 	tb_changelog->setWordWrapMode(QTextOption::NoWrap);
 	tb_changelog->viewport()->setAutoFillBackground(false);
 	tb_changelog->setText(loadFile("ChangeLog"));
