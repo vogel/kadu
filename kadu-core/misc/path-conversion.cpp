@@ -379,7 +379,7 @@ QString dataPath(const QString &p, const char *argv0)
 	if(path.startsWith("kadu")) path.remove(0, 4);
 #endif
 
-	kdebugm(KDEBUG_INFO, "%s%s\n", qPrintable(data_path), qPrintable(path));
+	//kdebugm(KDEBUG_INFO, "%s%s\n", qPrintable(data_path), qPrintable(path));
 
 	return data_path + path;
 }
