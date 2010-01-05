@@ -6,6 +6,7 @@
 #include <QtCore/QTimer>
 #include <QtGui/QKeyEvent>
 
+#include "kadu-config.h"
 #include "configuration_aware_object.h"
 #include "kadu_main_window.h"
 #include "protocol.h"
@@ -181,6 +182,8 @@ protected:
 public:
 	Kadu(QWidget *parent = 0);
 	~Kadu();
+	
+	QString version() { return VERSION; }
 
 	static void createDefaultToolbars(QDomElement parentConfig);
 	static void addAction(const QString &actionName, bool showLabel = false);
