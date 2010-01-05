@@ -369,7 +369,7 @@ void FileTransferManager::needFileAccept(DccSocket *socket)
 	QString fileName;
 	QString question;
 
-	QString fileSize = QString("%1").arg((float)(socket->fileSize() / 1024), 0, 'f', 2);
+	QString fileSize = QString("%1").arg(((float) socket->fileSize() / 1024), 0, 'f', 2);
 
 	FileTransfer *ft = search(FileTransfer::TypeReceive, socket->peerUin(), socket->fileName(), FileTransfer::FileNameGadu);
 
