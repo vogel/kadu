@@ -17,7 +17,6 @@
 #include "configuration/configuration-aware-object.h"
 #include "buddies/buddy.h"
 #include "buddies/buddy-list.h"
-#include "kadu-config.h"
 #include "status/status.h"
 
 #include "exports.h"
