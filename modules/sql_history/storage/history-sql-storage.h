@@ -13,7 +13,6 @@
 #include <QtCore/QMutex>
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlQuery>
-#include <QtSql/QSqlTableModel>
 
 #include "modules/history/storage/history-storage.h"
 
@@ -27,7 +26,6 @@ class HistorySqlStorage : public HistoryStorage
 	Q_OBJECT
 
 	QSqlDatabase Database;
-	QSqlTableModel *MessagesModel;
 
 	QSqlQuery ClearChatHistoryQuery;
 	QSqlQuery ListChatsQuery;

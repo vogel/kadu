@@ -88,10 +88,6 @@ void HistorySqlStorage::initTables()
 {
 	if (!Database.tables().contains("kadu_messages"))
 		initKaduMessagesTable();
-	
-	MessagesModel = new QSqlTableModel(0, Database);
-	MessagesModel->setTable("kadu_messages");
-	MessagesModel->setEditStrategy(QSqlTableModel::OnRowChange);
 }
 
 void HistorySqlStorage::initKaduMessagesTable()
