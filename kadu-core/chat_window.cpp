@@ -91,7 +91,7 @@ void ChatWindow::kaduRestoreGeometry()
 
 	if (geom.isEmpty())
 	{
-		geom = QRect(pos().x(), pos().y(), 400, 400);
+		geom = QRect(0, 0, 400, 400);
 		if (group->count() > 1)
 			geom.setWidth(550);
 	}
@@ -99,6 +99,11 @@ void ChatWindow::kaduRestoreGeometry()
 	QDesktopWidget *desktop = qApp->desktop();
 	QRect desktopRect = desktop->availableGeometry(desktop->screenNumber(this));
 	geom = desktopRect.intersected(geom);
+#ifdef Q_OS_WIN
+  /* Dorr: Workaround for window positioning on Windows (bug in Qt 4.5.3?) */ 
+	if (geom.y() < 30)
+      geom.moveTop(30);
+#endif
 	setGeometry(geom);
 	currentChatWidget->setGeometry(geom);
 	currentChatWidget->kaduRestoreGeometry();
