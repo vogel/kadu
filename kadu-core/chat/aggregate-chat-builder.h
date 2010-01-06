@@ -7,31 +7,21 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "accounts/account-manager.h"
-#include "buddies/buddy-shared.h"
-#include "chat/aggregate-chat.h"
-#include "protocols/protocol.h"
+#ifndef AGGREGATE_CHAT_BUILDER_H
+#define AGGREGATE_CHAT_BUILDER_H
 
-#include "chat/chat-aggregator-builder.h"
-#include "chat/chat-manager.h"
+#include <QtCore/QObject>
 
-ChatAggregatorBuilder::ChatAggregatorBuilder()
+#include "exports.h"
+
+class AggregateChat;
+class BuddySet;
+
+class KADUAPI AggregateChatBuilder
 {
-}
+public:
+	static AggregateChat buildAggregateChat(BuddySet buddies);
 
-ChatAggregatorBuilder::~ChatAggregatorBuilder()
-{
-}
+};
 
-Chat ChatAggregatorBuilder::buildAggregateChat(BuddySet buddies)
-{
-	QList<Chat> chats;
-	foreach (Chat chat, ChatManager::instance()->allItems())
-	{
-		if (chat.contacts().toBuddySet() == buddies)
-			chats.append(chat);
-	}
-
-	if (!chats.isEmpty())
-		return AggregateChat(chats);
-}
+#endif // AGGREGATE_CHAT_BUILDER_H

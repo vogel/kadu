@@ -23,8 +23,8 @@ class KADUAPI AggregateChat : public Chat
 	QList<Chat> Chats;
 
 public:
-	AggregateChat(Chat chat);
-	AggregateChat(QList<Chat> chats);
+	explicit AggregateChat(Chat chat);
+	explicit AggregateChat(QList<Chat> chats);
 	virtual ~AggregateChat();
 
 	virtual void load();

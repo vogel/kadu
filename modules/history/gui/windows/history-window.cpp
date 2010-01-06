@@ -23,7 +23,7 @@
 #include "chat/type/chat-type.h"
 #include "chat/type/chat-type-manager.h"
 #include "chat/aggregate-chat.h"
-#include "chat/chat-aggregator-builder.h"
+#include "chat/aggregate-chat-builder.h"
 #include "gui/actions/actions.h"
 #include "gui/widgets/buddies-list-view-menu-manager.h"
 #include "gui/widgets/chat-widget-manager.h"
@@ -220,9 +220,7 @@ void HistoryWindow::updateData()
 	{
 		if (usedChats.contains(chat))
 			continue;
-		AggregateChat aggregate = ChatAggregatorBuilder::buildAggregateChat(chat.contacts().toBuddySet());
-		if (!aggregate)
-			continue;
+		AggregateChat aggregate = AggregateChatBuilder::buildAggregateChat(chat.contacts().toBuddySet());
 		if (aggregate.chats().size() > 1)
 		{
 			result.append(aggregate);

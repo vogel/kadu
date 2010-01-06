@@ -7,42 +7,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "contacts/contact-set-configuration-helper.h"
-
+#include "accounts/account-manager.h"
+#include "buddies/buddy-shared.h"
 #include "chat/aggregate-chat.h"
+#include "protocols/protocol.h"
 
-AggregateChat::AggregateChat(Chat chat) : 
-		Chat()
+#include "chat/aggregate-chat-builder.h"
+#include "chat/chat-manager.h"
+
+AggregateChat AggregateChatBuilder::buildAggregateChat(BuddySet buddies)
 {
-	Chats.append(chat);
-}
+	QList<Chat> chats;
+	foreach (Chat chat, ChatManager::instance()->allItems())
+		if (chat.contacts().toBuddySet() == buddies)
+			chats.append(chat);
 
-AggregateChat::AggregateChat(QList<Chat> chats) :
-		Chat(), Chats(chats)
-{
-}
-
-AggregateChat::~AggregateChat()
-{
-}
-
-void AggregateChat::load()
-{
-}
-
-void AggregateChat::store()
-{
-}
-
-void AggregateChat::addChat(Chat chat)
-{
-	Chats.append(chat);
-}
-
-void AggregateChat::removeChat(Chat chat)
-{
-	if (Chats.size() == 1)
-		return;
-
-	Chats.removeAll(chat);
+	return AggregateChat(chats);
 }

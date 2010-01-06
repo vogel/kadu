@@ -207,7 +207,7 @@ void HistorySqlStorage::appendMessage(const Message &message)
 // 		   after.toTime_t(), after.time().msec(),
 // 		   after.toTime_t() - before.toTime_t(),
 // 		   after.time().msec() - before.time().msec());
-// 	DatabaseMutex.unlock();
+	DatabaseMutex.unlock();
 
 	kdebugf2();
 }
