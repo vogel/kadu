@@ -350,7 +350,7 @@ void BuddyShared::addToGroup(Group group)
 {
 	ensureLoaded();
 
-	if (Groups.contains(group))
+	if (Groups.contains(group) || group.isNull())
 		return;
 
 	Groups.append(group);
