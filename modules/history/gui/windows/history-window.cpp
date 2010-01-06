@@ -22,7 +22,6 @@
 #include "chat/message/message.h"
 #include "chat/type/chat-type.h"
 #include "chat/type/chat-type-manager.h"
-#include "chat/aggregate-chat.h"
 #include "chat/aggregate-chat-builder.h"
 #include "gui/actions/actions.h"
 #include "gui/widgets/buddies-list-view-menu-manager.h"
@@ -44,6 +43,7 @@
 
 #include "history-window.h"
 #include <QItemDelegate>
+#include <chat/chat-details-aggregate.h>
 
 HistoryWindow::HistoryWindow(QWidget *parent) :
 		MainWindow(parent)
@@ -220,12 +220,16 @@ void HistoryWindow::updateData()
 	{
 		if (usedChats.contains(chat))
 			continue;
-		AggregateChat aggregate = AggregateChatBuilder::buildAggregateChat(chat.contacts().toBuddySet());
-		if (aggregate.chats().size() > 1)
+		Chat aggregate = AggregateChatBuilder::buildAggregateChat(chat.contacts().toBuddySet());
+		if (aggregate)
 		{
+			ChatDetailsAggregate *details = dynamic_cast<ChatDetailsAggregate *>(aggregate.details());
+
+			if (details)
+				foreach (Chat usedChat, details->chats())
+					usedChats.append(usedChat);
+
 			result.append(aggregate);
-			foreach (Chat usedChat, aggregate.chats())
-				usedChats.append(usedChat);
 		}
 		else
 		{

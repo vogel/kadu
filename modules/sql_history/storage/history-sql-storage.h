@@ -27,17 +27,7 @@ class HistorySqlStorage : public HistoryStorage
 
 	QSqlDatabase Database;
 
-	QSqlQuery ClearChatHistoryQuery;
 	QSqlQuery ListChatsQuery;
-	QSqlQuery ListChatDatesQuery;
-	QSqlQuery ListChatMessagesQuery;
-	QSqlQuery ListChatMessagesByDateQuery;
-	QSqlQuery ListChatMessagesByDateLimitQuery;
-	QSqlQuery ListChatMessagesLimitQuery;
-	QSqlQuery ListChatMessagesSinceQuery;
-	QSqlQuery ListChatMessagesBackToQuery;
-	QSqlQuery CountChatMessagesQuery;
-	QSqlQuery CountChatMessagesByDateQuery;
 	QSqlQuery AppendMessageQuery;
 
 	QMutex DatabaseMutex;
@@ -47,6 +37,8 @@ class HistorySqlStorage : public HistoryStorage
 	void initTables();
 	void initIndexes();
 	void initKaduMessagesTable();
+
+	QString chatWhere(Chat chat);
 
 	void executeQuery(QSqlQuery query);
 	QList<Message> messagesFromQuery(Chat chat, QSqlQuery query);

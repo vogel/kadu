@@ -48,9 +48,9 @@ set (kadu_SRCS
 	buddies/model/buddies-model-proxy.cpp
 	buddies/model/groups-model.cpp
 
-	chat/aggregate-chat.cpp
 	chat/aggregate-chat-builder.cpp
 	chat/chat.cpp
+	chat/chat-details-aggregate.cpp
 	chat/chat-details-conference.cpp
 	chat/chat-details-simple.cpp
 	chat/chat-manager.cpp
@@ -74,6 +74,7 @@ set (kadu_SRCS
 	chat/style-engines/chat-engine-kadu/chat-engine-kadu.cpp
 
 	chat/type/chat-type.cpp
+	chat/type/chat-type-aggregate.cpp
 	chat/type/chat-type-aware-object.cpp
 	chat/type/chat-type-conference.cpp
 	chat/type/chat-type-manager.cpp
@@ -323,8 +324,8 @@ set (kadu_MOC_SRCS
 	buddies/model/buddies-model-proxy.h
 	buddies/model/groups-model.h
 
-	chat/aggregate-chat.h
 	chat/chat-details.h
+	chat/chat-details-aggregate.h
 	chat/chat-details-conference.h
 	chat/chat-details-simple.h
 	chat/chat-manager.h
@@ -344,6 +345,7 @@ set (kadu_MOC_SRCS
 	chat/style-engines/chat-engine-kadu/chat-engine-kadu.h
 
 	chat/type/chat-type.h
+	chat/type/chat-type-aggregate.h
 	chat/type/chat-type-aware-object.h
 	chat/type/chat-type-conference.h
 	chat/type/chat-type-manager.h

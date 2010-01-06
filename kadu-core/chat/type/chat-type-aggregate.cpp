@@ -7,42 +7,33 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "contacts/contact-set-configuration-helper.h"
+#include "chat/chat-details-aggregate.h"
 
-#include "chat/aggregate-chat.h"
+#include "icons-manager.h"
 
-AggregateChat::AggregateChat(Chat chat) : 
-		Chat()
+#include "chat-type-aggregate.h"
+
+int ChatTypeAggregate::sortIndex() const
 {
-	Chats.append(chat);
+	return -1;
 }
 
-AggregateChat::AggregateChat(QList<Chat> chats) :
-		Chat(), Chats(chats)
+QString ChatTypeAggregate::name() const
 {
+	return "Aggregate";
 }
 
-AggregateChat::~AggregateChat()
+QString ChatTypeAggregate::displayName() const
 {
+	return tr("Aggregate");
 }
 
-void AggregateChat::load()
+QIcon ChatTypeAggregate::icon() const
 {
+	return IconsManager::instance()->loadIcon("OpenChat");
 }
 
-void AggregateChat::store()
+ChatDetails * ChatTypeAggregate::createChatDetails(ChatShared *chatData) const
 {
-}
-
-void AggregateChat::addChat(Chat chat)
-{
-	Chats.append(chat);
-}
-
-void AggregateChat::removeChat(Chat chat)
-{
-	if (Chats.size() == 1)
-		return;
-
-	Chats.removeAll(chat);
+	return new ChatDetailsAggregate(chatData);
 }

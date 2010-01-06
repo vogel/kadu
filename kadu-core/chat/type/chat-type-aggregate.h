@@ -7,21 +7,35 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef AGGREGATE_CHAT_BUILDER_H
-#define AGGREGATE_CHAT_BUILDER_H
+#ifndef CHAT_TYPE_AGGREGATE_H
+#define CHAT_TYPE_AGGREGATE_H
 
-#include <QtCore/QObject>
+#include <QtCore/QString>
+#include <QtCore/QVariant>
+#include <QtGui/QIcon>
+
+#include "chat/type/chat-type.h"
 
 #include "exports.h"
 
-class BuddySet;
-class Chat;
-
-class KADUAPI AggregateChatBuilder
+class KADUAPI ChatTypeAggregate : public ChatType
 {
+	Q_OBJECT
+	Q_DISABLE_COPY(ChatTypeAggregate)
+
 public:
-	static Chat buildAggregateChat(BuddySet buddies);
+	ChatTypeAggregate() {}
+	virtual ~ChatTypeAggregate() {}
+
+	virtual int sortIndex() const;
+	virtual QString name() const;
+	virtual QString displayName() const;
+	virtual QIcon icon() const;
+
+	virtual ChatDetails * createChatDetails(ChatShared *chatData) const;
 
 };
 
-#endif // AGGREGATE_CHAT_BUILDER_H
+Q_DECLARE_METATYPE(ChatTypeAggregate *)
+
+#endif // CHAT_TYPE_AGGREGATE_H

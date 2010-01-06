@@ -7,21 +7,32 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef AGGREGATE_CHAT_BUILDER_H
-#define AGGREGATE_CHAT_BUILDER_H
+#ifndef CHAT_DETAILS_AGGREGATE_H
+#define CHAT_DETAILS_AGGREGATE_H
 
-#include <QtCore/QObject>
+#include "contacts/contact.h"
 
-#include "exports.h"
+#include "chat/chat-details.h"
 
-class BuddySet;
-class Chat;
-
-class KADUAPI AggregateChatBuilder
+class ChatDetailsAggregate : public ChatDetails
 {
+	Q_OBJECT
+
+	QList<Chat> Chats;
+
 public:
-	static Chat buildAggregateChat(BuddySet buddies);
+	explicit ChatDetailsAggregate(ChatShared *chatData);
+	virtual ~ChatDetailsAggregate();
+
+	virtual bool shouldStore();
+
+	virtual ChatType * type() const;
+	virtual ContactSet contacts() const;
+	virtual QString name() const;
+
+	void setChats(QList<Chat> chats);
+	QList<Chat> chats();
 
 };
 
-#endif // AGGREGATE_CHAT_BUILDER_H
+#endif // CHAT_DETAILS_AGGREGATE_H

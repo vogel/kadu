@@ -7,7 +7,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "chat/aggregate-chat.h"
 #include "chat/chat.h"
 #include "buddies/filter/buddy-name-filter.h"
 #include "buddies/buddy-list.h"

@@ -29,6 +29,8 @@
 #include "modules/history/search/history-search-parameters.h"
 
 #include "history-sql-storage.h"
+#include <chat/chat-details.h>
+#include <chat/chat-details-aggregate.h>
 
 HistorySqlStorage::HistorySqlStorage(QObject *parent) :
 		HistoryStorage(parent), DatabaseMutex(QMutex::NonRecursive)
@@ -128,42 +130,32 @@ void HistorySqlStorage::initIndexes()
 
 void HistorySqlStorage::initQueries()
 {
-	ClearChatHistoryQuery = QSqlQuery(Database);
-	ClearChatHistoryQuery.prepare("DELETE FROM kadu_messages WHERE chat=:chat;");
-
 	ListChatsQuery = QSqlQuery(Database);
 	ListChatsQuery.prepare("SELECT DISTINCT chat FROM kadu_messages");
-
-	ListChatDatesQuery = QSqlQuery(Database);
-	ListChatDatesQuery.prepare("SELECT DISTINCT date(receive_time) as date FROM kadu_messages WHERE chat=:chat");
-	
-	ListChatMessagesQuery = QSqlQuery(Database);
-	ListChatMessagesQuery.prepare("SELECT sender, content, send_time, receive_time, attributes FROM kadu_messages WHERE chat=:chat ORDER BY receive_time");
-
-	ListChatMessagesByDateQuery = QSqlQuery(Database);
-	ListChatMessagesByDateQuery.prepare("SELECT sender, content, send_time, receive_time, attributes FROM kadu_messages WHERE chat=:chat AND date(receive_time) = date(:date) ORDER BY receive_time");
-
-	ListChatMessagesByDateLimitQuery = QSqlQuery(Database);
-	ListChatMessagesByDateLimitQuery.prepare("SELECT sender, content, send_time, receive_time, attributes FROM kadu_messages WHERE chat=:chat AND date(receive_time) = date(:date) ORDER BY receive_time LIMIT :limit");
-
-	ListChatMessagesLimitQuery = QSqlQuery(Database);
-	ListChatMessagesLimitQuery.prepare("SELECT sender, content, send_time, receive_time, attributes FROM kadu_messages WHERE chat=:chat ORDER BY receive_time LIMIT :limit");
-	
-	ListChatMessagesSinceQuery = QSqlQuery(Database);
-	ListChatMessagesSinceQuery.prepare("SELECT sender, content, send_time, receive_time, attributes FROM kadu_messages WHERE chat=:chat AND date(receive_time) >= date(:date) ORDER BY receive_time");
-
-	ListChatMessagesBackToQuery = QSqlQuery(Database);
-	ListChatMessagesBackToQuery.prepare("SELECT sender, content, send_time, receive_time, attributes FROM kadu_messages WHERE chat=:chat AND datetime(receive_time) >= datetime(:date) ORDER BY receive_time DESC LIMIT :limit");
-
-	CountChatMessagesQuery = QSqlQuery(Database);
-	CountChatMessagesQuery.prepare("SELECT COUNT(chat) FROM kadu_messages WHERE chat=:chat");
-
-	CountChatMessagesByDateQuery = QSqlQuery(Database);
-	CountChatMessagesByDateQuery.prepare("SELECT COUNT(chat) FROM kadu_messages WHERE chat=:chat AND date(receive_time) = date(:date)");
 
 	AppendMessageQuery = QSqlQuery(Database);
 	AppendMessageQuery.prepare("INSERT INTO kadu_messages (chat, sender, send_time, receive_time, content, attributes) VALUES "
 			"(:chat, :sender, :send_time, :receive_time, :content, :attributes)");
+}
+
+QString HistorySqlStorage::chatWhere(Chat chat)
+{
+	if (!chat)
+		return QLatin1String("false");
+
+	ChatDetails *details = chat.details();
+	if (!details)
+		return QLatin1String("false");
+
+	ChatDetailsAggregate *aggregate = dynamic_cast<ChatDetailsAggregate *>(details);
+	if (!aggregate)
+		return QString("chat = '%1'").arg(chat.uuid().toString());
+
+	QStringList uuids;
+	foreach (Chat aggregatedChat, aggregate->chats())
+		uuids.append(QString("'%1'").arg(aggregatedChat.uuid().toString()));
+
+	return QString("chat IN (%1)").arg(uuids.join(QLatin1String(", ")));
 }
 
 void HistorySqlStorage::messageReceived(const Message &message)
@@ -215,9 +207,12 @@ void HistorySqlStorage::appendMessage(const Message &message)
 void HistorySqlStorage::clearChatHistory(Chat chat)
 {
 	DatabaseMutex.lock();
+	
+	QSqlQuery query(Database);
+	QString queryString = "DELETE FROM kadu_messages WHERE " + chatWhere(chat);
+	query.prepare(queryString);
 
-	ClearChatHistoryQuery.bindValue(":chat", chat.uuid().toString());
-	executeQuery(ClearChatHistoryQuery);
+	executeQuery(query);
 
 	DatabaseMutex.unlock();
 }
@@ -270,7 +265,7 @@ QList<QDate> HistorySqlStorage::chatDates(Chat chat, HistorySearchParameters sea
 	DatabaseMutex.lock();
 
 	QSqlQuery query(Database);
-	QString queryString = "SELECT DISTINCT date(receive_time) as date FROM kadu_messages WHERE chat=:chat";
+	QString queryString = "SELECT DISTINCT date(receive_time) as date FROM kadu_messages WHERE " + chatWhere(chat);
 
 	if (!search.query().isEmpty())
 		queryString += " AND content LIKE :content";
@@ -281,7 +276,6 @@ QList<QDate> HistorySqlStorage::chatDates(Chat chat, HistorySearchParameters sea
 
 	query.prepare(queryString);
 
-	query.bindValue(":chat", chat.uuid().toString());
 	if (!search.query().isEmpty())
 		query.bindValue(":content", QLatin1String("%") + search.query() + "%");
 	if (search.fromDate().isValid())
@@ -292,6 +286,7 @@ QList<QDate> HistorySqlStorage::chatDates(Chat chat, HistorySearchParameters sea
 	QList<QDate> dates;
 
 	executeQuery(query);
+
 	while (query.next())
 	{
 		QDate date = query.value(0).toDate();
@@ -310,16 +305,17 @@ QList<Message> HistorySqlStorage::messages(Chat chat, QDate date, int limit)
 
 	DatabaseMutex.lock();
 
-	QList<Message> messages;
-	QSqlQuery query = date.isNull()
-			? limit == 0
-					? ListChatMessagesQuery
-					: ListChatMessagesLimitQuery
-			: limit == 0
-					? ListChatMessagesByDateQuery
-					: ListChatMessagesByDateLimitQuery;
+	QSqlQuery query(Database);
+	QString queryString = "SELECT sender, content, send_time, receive_time, attributes FROM kadu_messages WHERE " + chatWhere(chat);
+	if (!date.isNull())
+		queryString += " AND date(receive_time) = date(:date)";
+	queryString += " ORDER BY receive_time";
+	if (0 != limit)
+		queryString += " LIMIT :limit";
 
-	query.bindValue(":chat", chat.uuid().toString());
+	QList<Message> messages;
+	query.prepare(queryString);
+
 	if (!date.isNull())
 		query.bindValue(":date", date.toString(Qt::ISODate));
 	if (limit != 0)
@@ -342,13 +338,20 @@ QList<Message> HistorySqlStorage::messagesSince(Chat chat, QDate date)
 	if (date.isNull())
 		return messages;
 	
-	ListChatMessagesSinceQuery.bindValue(":chat", chat.uuid().toString());
-	ListChatMessagesSinceQuery.bindValue(":date", date.toString(Qt::ISODate));
-	executeQuery(ListChatMessagesSinceQuery);
-	messages = messagesFromQuery(chat, ListChatMessagesSinceQuery);
+	QSqlQuery query(Database);
+	QString queryString = "SELECT sender, content, send_time, receive_time, attributes FROM kadu_messages WHERE " + chatWhere(chat) +
+			" AND date(receive_time) >= date(:date) ORDER BY receive_time";
+	query.prepare(queryString);
 	
+	query.bindValue(":chat", chat.uuid().toString());
+	query.bindValue(":date", date.toString(Qt::ISODate));
+
+	executeQuery(query);
+
+	messages = messagesFromQuery(chat, query);
+
 	DatabaseMutex.unlock();
-	
+
 	return messages;
 }
 
@@ -357,21 +360,27 @@ QList<Message> HistorySqlStorage::messagesBackTo(Chat chat, QDateTime datetime, 
 	DatabaseMutex.lock();
 
 	QList<Message> result;
-	QSqlQuery query = ListChatMessagesBackToQuery;
+
+	QSqlQuery query(Database);
+	QString queryString = "SELECT sender, content, send_time, receive_time, attributes FROM kadu_messages WHERE " + chatWhere(chat) +
+			" AND datetime(receive_time) >= datetime(:date) ORDER BY receive_time DESC LIMIT :limit";
+	query.prepare(queryString);
 
 	query.bindValue(":chat", chat.uuid().toString());
 	query.bindValue(":date", datetime.toString(Qt::ISODate));
 	query.bindValue(":limit", limit);
+
 	executeQuery(query);
+
 	result = messagesFromQuery(chat, query);
 
 	DatabaseMutex.unlock();
 
 	QList<Message> messages;
-	
+
 	for (int i = result.size() - 1; i >= 0; --i)
 		messages.append(result.at(i));
-	
+
 	return messages;
 }
 
@@ -381,11 +390,12 @@ int HistorySqlStorage::messagesCount(Chat chat, QDate date)
 
 	DatabaseMutex.lock();
 
-	QSqlQuery query = date.isNull()
-			? CountChatMessagesQuery
-			: CountChatMessagesByDateQuery;
+	QSqlQuery query(Database);
+	QString queryString = "SELECT COUNT(chat) FROM kadu_messages WHERE " + chatWhere(chat);
+	if (!date.isNull())
+		queryString += " AND date(receive_time) = date(:date)";
+	query.prepare(queryString);
 
-	query.bindValue(":chat", chat.uuid().toString());
 	if (!date.isNull())
 		query.bindValue(":date", date.toString(Qt::ISODate));
 
