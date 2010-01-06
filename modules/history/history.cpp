@@ -115,8 +115,7 @@ void History::createActionDescriptions()
 	ShowHistoryActionDescription = new ActionDescription(0,
 		ActionDescription::TypeUser, "showHistoryAction",
 		this, SLOT(showHistoryActionActivated(QAction *, bool)),
-		"History", tr("Show chat history"), false, QString::null,
-		disableNonHistoryContacts
+		"History", tr("Show chat history"), false, QString::null
 	);
 	ShowHistoryActionDescription->setShortcut("kadu_showhistory");
 	BuddiesListViewMenuManager::instance()->insertActionDescription(3, ShowHistoryActionDescription);
