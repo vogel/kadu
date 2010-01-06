@@ -90,16 +90,8 @@ void HttpClient::onReadyRead()
 	int size = Socket.bytesAvailable();
 	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: Data Block Retreived: %i bytes\n", size);
 	// Dodaj nowe dane do starych
-	char *buf=new char[size];
-	Socket.read(buf, size);
-	//
-//	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "%s\n",buf);
-	//
-	int old_size = Data.size();
-	Data.resize(old_size + size);
-	for(int i = 0; i < size; ++i)
-		Data[old_size + i] = buf[i];
-	delete buf;
+	Data.append(Socket.readAll());
+
 	// Jesli nie mamy jeszcze naglowka
 	if (!HeaderParsed)
 	{
@@ -174,15 +166,15 @@ void HttpClient::onReadyRead()
 			Cookies.insert(cookie_name, cookie_val);
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: Cookie retreived: %s=%s\n", qPrintable(cookie_name), qPrintable(cookie_val));
 		}
+
 		// Wytnij naglowek z Data
 		int header_size = p + 4;
-		int new_data_size = Data.size() - header_size;
-		for(int i = 0; i < new_data_size; ++i)
-			Data[i] = Data[header_size+i];
-		Data.resize(new_data_size);
+		Data.remove(0, header_size);
+
 		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: Header parsed and cutted off from data\n");
 		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: Header size: %i bytes\n", header_size);
-		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: New data block size: %i bytes\n", new_data_size);
+		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: New data block size: %i bytes\n", Data.size());
+
 		// Je�li status jest 100 - Continue to czekamy na dalsze dane
 		// (uniewa�niamy ten nag�owek i czekamy na nast�pny)
 		if (StatusCode == 100)
