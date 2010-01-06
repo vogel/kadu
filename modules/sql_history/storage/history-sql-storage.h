@@ -40,6 +40,7 @@ class HistorySqlStorage : public HistoryStorage
 	QSqlQuery ListChatMessagesBackToQuery;
 	QSqlQuery CountChatMessagesQuery;
 	QSqlQuery CountChatMessagesByDateQuery;
+	QSqlQuery AppendMessageQuery;
 
 	QMutex DatabaseMutex;
 
@@ -57,8 +58,8 @@ private slots:
 	virtual void messageSent(const Message &message);
 
 public:
-	HistorySqlStorage();
-	~HistorySqlStorage();
+	explicit HistorySqlStorage(QObject *parent = 0);
+	virtual ~HistorySqlStorage();
 
 	virtual QList<Chat> chats(HistorySearchParameters search);
 	virtual QList<QDate> chatDates(Chat chat, HistorySearchParameters search);

@@ -30,8 +30,8 @@
 
 #include "history-sql-storage.h"
 
-HistorySqlStorage::HistorySqlStorage() :
-		HistoryStorage()
+HistorySqlStorage::HistorySqlStorage(QObject *parent) :
+		HistoryStorage(parent), DatabaseMutex(QMutex::NonRecursive)
 {
 	kdebugf();
 
@@ -91,7 +91,7 @@ void HistorySqlStorage::initTables()
 	
 	MessagesModel = new QSqlTableModel(0, Database);
 	MessagesModel->setTable("kadu_messages");
-	MessagesModel->setEditStrategy(QSqlTableModel::OnFieldChange/* OnManualSubmit*/);
+	MessagesModel->setEditStrategy(QSqlTableModel::OnRowChange);
 }
 
 void HistorySqlStorage::initKaduMessagesTable()
@@ -164,6 +164,10 @@ void HistorySqlStorage::initQueries()
 
 	CountChatMessagesByDateQuery = QSqlQuery(Database);
 	CountChatMessagesByDateQuery.prepare("SELECT COUNT(chat) FROM kadu_messages WHERE chat=:chat AND date(receive_time) = date(:date)");
+
+	AppendMessageQuery = QSqlQuery(Database);
+	AppendMessageQuery.prepare("INSERT INTO kadu_messages (chat, sender, send_time, receive_time, content, attributes) VALUES "
+			"(:chat, :sender, :send_time, :receive_time, :content, :attributes)");
 }
 
 void HistorySqlStorage::messageReceived(const Message &message)
@@ -180,24 +184,34 @@ void HistorySqlStorage::appendMessage(const Message &message)
 {
 	kdebugf();
 
+// 	QDateTime before = QDateTime::currentDateTime();
 	DatabaseMutex.lock();
 
-	QSqlRecord record = MessagesModel->record();
-
-	record.setValue("chat", message.messageChat().uuid().toString());
-	record.setValue("sender", message.messageSender().uuid().toString());
-	record.setValue("send_time", message.sendDate());
-	record.setValue("receive_time", message.receiveDate());
-	record.setValue("content", message.content());
+// 	printf("locked\n");
 
 	QString outgoing = (message.messageSender().ownerBuddy() == Core::instance()->myself())
 			? "1"
 			: "0";
-	record.setValue("attributes", QString("outgoing=%1").arg(outgoing));
 
-	MessagesModel->insertRecord(-1, record);
+	AppendMessageQuery.bindValue(":chat", message.messageChat().uuid().toString());
+	AppendMessageQuery.bindValue(":sender", message.messageSender().uuid().toString());
+	AppendMessageQuery.bindValue(":send_time", message.sendDate());
+	AppendMessageQuery.bindValue(":receive_time", message.receiveDate());
+	AppendMessageQuery.bindValue(":content", message.content());
+	AppendMessageQuery.bindValue(":attributes", QString("outgoing=%1").arg(outgoing));
 
-	DatabaseMutex.unlock();
+	executeQuery(AppendMessageQuery);
+
+// 	printf("unlocked\n");
+	
+// 	QDateTime after = QDateTime::currentDateTime();
+// 	
+// 	printf("lock took: [%d.%d]-[%d.%d]/%d.%d\n",
+// 		   before.toTime_t(), before.time().msec(),
+// 		   after.toTime_t(), after.time().msec(),
+// 		   after.toTime_t() - before.toTime_t(),
+// 		   after.time().msec() - before.time().msec());
+// 	DatabaseMutex.unlock();
 
 	kdebugf2();
 }
@@ -391,7 +405,17 @@ void HistorySqlStorage::executeQuery(QSqlQuery query)
 {
 	kdebugf();
 
+// 	QDateTime before = QDateTime::currentDateTime();
 	query.exec();
+// 	QDateTime after = QDateTime::currentDateTime();
+
+// 	printf("[%s]\n[%d.%d]-[%d.%d]/%d.%d\n", qPrintable(query.executedQuery()),
+// 			before.toTime_t(), before.time().msec(),
+// 			after.toTime_t(), after.time().msec(),
+// 			after.toTime_t() - before.toTime_t(),
+// 			after.time().msec() - before.time().msec());
+
+
 	kdebug("db query: %s\n", qPrintable(query.executedQuery()));
 }
 
