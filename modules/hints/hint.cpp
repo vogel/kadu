@@ -33,6 +33,9 @@ Hint::Hint(QWidget *parent, Notification *notification)
 {
 	kdebugf();
 
+	if (notification->type() == "Preview")
+		haveCallbacks = true;
+
 	notification->acquire();
 
 	ChatNotification *chatNotification = dynamic_cast<ChatNotification *>(notification);
