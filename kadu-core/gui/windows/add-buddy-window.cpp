@@ -182,6 +182,12 @@ Account AddBuddyWindow::selectedAccount()
 	return index.data(AccountRole).value<Account>();
 }
 
+Group AddBuddyWindow::selectedGroup()
+{
+	QModelIndex index = GroupCombo->model()->index(GroupCombo->currentIndex(), 0);
+	return GroupManager::instance()->byName(index.data().value<QString>());
+}
+
 void AddBuddyWindow::setBuddy(Buddy buddy)
 {
 	MyBuddy = buddy;
@@ -337,6 +343,8 @@ void AddBuddyWindow::accept()
 
 	Contact contact = ContactManager::instance()->byId(account, UserNameEdit->text(), true);
 	contact.setOwnerBuddy(buddy);
+	
+	buddy.addToGroup(selectedGroup());
 
 	QDialog::accept();
 }

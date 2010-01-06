@@ -47,6 +47,7 @@ class AddBuddyWindow : public QDialog
 	void displayErrorMessage(const QString &message);
 
 	Account selectedAccount();
+	Group selectedGroup();
 
 private slots:
 	void setUsernameLabel();
