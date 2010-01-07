@@ -88,7 +88,7 @@ void disableNewTab(Action *action)
 			return;
 
 		Account account = contact.contactAccount();
-		if (account.isNull() || !account.protocolHandler()->chatService())
+		if (account.isNull() || !account.protocolHandler() || !account.protocolHandler()->chatService())
 			return;
 	}
 
