@@ -66,11 +66,8 @@ void GroupsComboBox::setCurrentGroup(Group group)
 
 Group GroupsComboBox::currentGroup()
 {
-	// TODO : implement ProxyModel ?
 	QModelIndex index = ActionsModel->index(currentIndex(), 0);
-	//index = ProxyModel->parent(index);
-	//CurrentGroup = Model->group(index);
-	CurrentGroup = GroupManager::instance()->byName(index.data().value<QString>(), false);
+	CurrentGroup = index.data(GroupRole).value<Group>();
 	return CurrentGroup;
 }
 
