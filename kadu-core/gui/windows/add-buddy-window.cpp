@@ -176,12 +176,6 @@ void AddBuddyWindow::displayErrorMessage(const QString &message)
 	ErrorLabel->setText(message);
 }
 
-Account AddBuddyWindow::selectedAccount()
-{
-	QModelIndex index = AccountCombo->model()->index(AccountCombo->currentIndex(), 0);
-	return index.data(AccountRole).value<Account>();
-}
-
 Group AddBuddyWindow::selectedGroup()
 {
 	QModelIndex index = GroupCombo->model()->index(GroupCombo->currentIndex(), 0);
@@ -204,7 +198,7 @@ void AddBuddyWindow::setBuddy(Buddy buddy)
 
 void AddBuddyWindow::setUsernameLabel()
 {
-	Account account = selectedAccount();
+	Account account = AccountCombo->currentAccount();
 	if (account.isNull())
 		UserNameLabel->setText(tr("Username:"));
 	else
@@ -213,7 +207,7 @@ void AddBuddyWindow::setUsernameLabel()
 
 void AddBuddyWindow::setAddContactEnabled()
 {
-	Account account = selectedAccount();
+	Account account = AccountCombo->currentAccount();
 	if (account.isNull() || !account.protocolHandler() || !account.protocolHandler()->protocolFactory())
 	{
 		AddContactButton->setEnabled(false);
@@ -268,7 +262,7 @@ void AddBuddyWindow::setAddContactEnabled()
 
 void AddBuddyWindow::setValidateRegularExpression()
 {
-	Account account = selectedAccount();
+	Account account = AccountCombo->currentAccount();
 	if (!account.isNull() && account.protocolHandler())
 	{
 		UserNameValidator->setRegExp(account.protocolHandler()->protocolFactory()->idRegularExpression());
@@ -318,7 +312,7 @@ void AddBuddyWindow::groupChanged(int index)
 
 void AddBuddyWindow::accept()
 {
-	Account account = selectedAccount();
+	Account account = AccountCombo->currentAccount();
 	if (account.isNull())
 		return;
 
