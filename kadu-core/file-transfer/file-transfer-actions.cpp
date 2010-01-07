@@ -41,7 +41,7 @@ void disableNonFileTransferContacts(Action *action)
 			return;
 
 		Account account = contact.contactAccount();
-		if (account.isNull() || !account.protocolHandler()->fileTransferService())
+		if (account.isNull() || !account.protocolHandler() || !account.protocolHandler()->fileTransferService())
 			return;
 	}
 
@@ -122,6 +122,9 @@ void FileTransferActions::selectFilesAndSend(ContactSet contacts)
 	foreach (const Contact &contact, contacts)
 	{
 		Account account = contact.contactAccount();
+		if (!account.protocolHandler())
+			continue;
+
 		FileTransferService *service = account.protocolHandler()->fileTransferService();
 		if (!service)
 			continue;
