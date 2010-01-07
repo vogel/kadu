@@ -10,6 +10,8 @@
 #include "buddies/group.h"
 #include "buddies/group-manager.h"
 
+#include "model/roles.h"
+
 #include "protocols/protocol.h"
 
 #include "groups-model.h"
@@ -56,6 +58,8 @@ QVariant GroupsModel::data(const QModelIndex &index, int role) const
 			return grp.name();
 		case Qt::DecorationRole:
 			return grp.icon();
+		case GroupRole:
+			return QVariant::fromValue(grp);
 		default:
 			return QVariant();
 	}
