@@ -142,6 +142,7 @@ set (kadu_SRCS
 	gui/widgets/delayed-line-edit.cpp
 	gui/widgets/file-transfer-widget.cpp
 	gui/widgets/group-tab-bar.cpp
+	gui/widgets/groups-combo-box.cpp
 	gui/widgets/image-widget.cpp
 	gui/widgets/kadu-text-browser.cpp
 	gui/widgets/path-list-edit.cpp
@@ -402,6 +403,7 @@ set (kadu_MOC_SRCS
 	gui/widgets/delayed-line-edit.h
 	gui/widgets/file-transfer-widget.h
 	gui/widgets/group-tab-bar.h
+	gui/widgets/groups-combo-box.h
 	gui/widgets/kadu-text-browser.h
 	gui/widgets/path-list-edit.h
 	gui/widgets/preview.h
