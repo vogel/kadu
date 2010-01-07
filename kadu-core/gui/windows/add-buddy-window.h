@@ -15,12 +15,12 @@
 #include "buddies/buddy.h"
 
 class QCheckBox;
-class QComboBox;
 class QLabel;
 class QLineEdit;
 class QRegExpValidator;
 
 class AccountsComboBox;
+class GroupsComboBox;
 class IdRegularExpressionFilter;
 class SelectBuddyCombobox;
 
@@ -33,7 +33,7 @@ class AddBuddyWindow : public QDialog
 	QRegExpValidator *UserNameValidator;
 	AccountsComboBox *AccountCombo;
 	IdRegularExpressionFilter *AccountComboIdFilter;
-	QComboBox *GroupCombo;
+	GroupsComboBox *GroupCombo;
 	QLineEdit *DisplayNameEdit;
 	QCheckBox *MergeContact;
 	SelectBuddyCombobox *SelectContact;
@@ -46,15 +46,11 @@ class AddBuddyWindow : public QDialog
 	void createGui();
 	void displayErrorMessage(const QString &message);
 
-	Group selectedGroup();
-
 private slots:
 	void setUsernameLabel();
 	void setAddContactEnabled();
 	void setValidateRegularExpression();
 	void setAccountFilter();
-
-	void groupChanged(int index);
 
 protected slots:
 	virtual void accept();
