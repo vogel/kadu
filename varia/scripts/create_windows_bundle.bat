@@ -1,8 +1,8 @@
 @ECHO OFF
 
-set DESTINATION="C:\Program Files\Kadu-0.6.5.3"
-set QT_DIR="C:\Qt\4.5.2\bin\"
-set LIBGADU_DIR="C:\Qt\libgadu-win32\"
+set DESTINATION="C:\Program Files\Kadu-0.6.5.4"
+set QT_DIR="C:\Qt\4.5.3\bin\"
+set LIBGADU_DIR="c:\Qt\libgadu-win32\"
 set LIBSNDFILE_DIR="C:\Qt\libsndfile\"
 set OPENSSL_DIR="C:\Qt\mingw32-openssl-0.9.8j\"
 set ZLIB_DIR="C:\Qt\zlib\"
@@ -53,7 +53,9 @@ for /D %%F in (*) do (
 		)
 	)
 )
-cd ..
+xcopy docking\configuration\docking.ui %DESTINATION%\modules\configuration\ /C /H /R /Y  >> install.log
+xcopy docking\*.qm %DESTINATION%\modules\translations\ /C /H /R /Y  >> install.log
+cd .. 
 
 ECHO Copying Qt
 xcopy %QT_DIR%Qt3Support4.dll  %DESTINATION%\ /C /H /R /Y  >> install.log
