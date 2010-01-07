@@ -137,8 +137,13 @@ QVariant HistoryChatsModel::data(const QModelIndex &index, int role) const
 
 void HistoryChatsModel::clear()
 {
-	triggerAllChatTypesUnregistered();
-	triggerAllChatTypesRegistered();
+	int count = rowCount();
+	for (int i = 0; i < count; i++)
+	{
+		beginRemoveRows(index(i, 0), 0, rowCount(index(i, 0)));
+		Chats[i].clear();
+		endRemoveRows();
+	}
 }
 
 void HistoryChatsModel::addChat(Chat chat)
