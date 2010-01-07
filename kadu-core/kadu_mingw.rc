@@ -1,8 +1,8 @@
 icon1		ICON	kadu.ico
 
 1 VERSIONINFO
-FILEVERSION     0,6,5,2
-PRODUCTVERSION  0,6,5,2
+FILEVERSION     0,6,5,4
+PRODUCTVERSION  0,6,5,4
 BEGIN
   BLOCK "StringFileInfo"
   BEGIN
@@ -10,12 +10,12 @@ BEGIN
     BEGIN
       VALUE "CompanyName", "Kadu Team"
       VALUE "FileDescription", "Kadu instant messenger"
-      VALUE "FileVersion", "0.6.5.2"
+      VALUE "FileVersion", "0.6.5.4"
       VALUE "InternalName", "kadu.exe"
       VALUE "LegalCopyright", "Kadu Team"
       VALUE "OriginalFilename", "kadu.exe"
       VALUE "ProductName", "Kadu"
-      VALUE "ProductVersion", "0.6.5.2"
+      VALUE "ProductVersion", "0.6.5.4"
     END
   END
   BLOCK "VarFileInfo"
