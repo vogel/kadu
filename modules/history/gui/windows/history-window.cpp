@@ -10,6 +10,7 @@
 #include <QtGui/QDateEdit>
 #include <QtGui/QGridLayout>
 #include <QtGui/QHBoxLayout>
+#include <QtGui/QHeaderView>
 #include <QtGui/QLineEdit>
 #include <QtGui/QMenu>
 #include <QtGui/QPushButton>
@@ -127,6 +128,7 @@ void HistoryWindow::createChatTree(QWidget *parent)
 	layout->addWidget(filterLineEdit);
 
 	ChatsTree = new QTreeView(parent);
+	ChatsTree->header()->hide();
 	layout->addWidget(ChatsTree);
 
 	ChatsModel = new HistoryChatsModel(this);
@@ -304,12 +306,7 @@ void HistoryWindow::dateActivated(const QModelIndex &index)
 
 	QList<Message> messages = History::instance()->messages(chat, date);
 
-// 	AggregateChat aggregate = qobject_cast<AggregateChat>(chat);
-// 	if (aggregate)
-// 		ContentBrowser->setChat(aggregate->chats().at(0));
-// 	else
-		ContentBrowser->setChat(chat);
-
+	ContentBrowser->setChat(chat);
 	ContentBrowser->clearMessages();
 	ContentBrowser->appendMessages(messages);
 
@@ -324,18 +321,21 @@ void HistoryWindow::filterLineChanged(const QString &filterText)
 void HistoryWindow::searchTextChanged(const QString &searchText)
 {
 	Search.setQuery(searchText);
+	updateData();
 	chatActivated(ChatsTree->currentIndex());
 }
 
 void HistoryWindow::fromDateChanged(const QDate &date)
 {
 	Search.setFromDate(date);
+	updateData();
 	chatActivated(ChatsTree->currentIndex());
 }
 
 void HistoryWindow::toDateChanged(const QDate &date)
 {
 	Search.setToDate(date);
+	updateData();
 	chatActivated(ChatsTree->currentIndex());
 }
 
