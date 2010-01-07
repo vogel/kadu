@@ -204,15 +204,16 @@ void GaduAvatars::gotResponse(int id, bool error)
 	if (!response.isEmpty())
 	{
 		int begin, end;
+		kdebugm(KDEBUG_INFO, "Response:\n%s\n", qPrintable(response));
 		if (mode == MODE_SMALL)
 		{
-			begin = response.indexOf("<smallAvatar>") + sizeof("<smallAvatar>");
-			end = response.indexOf("</smallAvatar>");
+			begin = response.indexOf("<originSmallAvatar>") + sizeof("<originSmallAvatar>");
+			end = response.indexOf("</originSmallAvatar>");
 		}
 		else
 		{
-			begin = response.indexOf("<bigAvatar>") + sizeof("<bigAvatar>");
-			end = response.indexOf("</bigAvatar>");
+			begin = response.indexOf("<originBigAvatar>") + sizeof("<originBigAvatar>");
+			end = response.indexOf("</originBigAvatar>");
 		}
 	
 		if ((begin > 0) && (end > begin))
