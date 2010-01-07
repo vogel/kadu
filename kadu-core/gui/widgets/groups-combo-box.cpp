@@ -90,8 +90,7 @@ void GroupsComboBox::activatedSlot(int index)
 		return;
 	}
 
-	GroupManager::instance()->byName(newGroupName);
-	setCurrentIndex(findText(newGroupName));
+	setCurrentGroup(GroupManager::instance()->byName(newGroupName));
 }
 
 void GroupsComboBox::resetGroup()
