@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef HINTS_CONFIGURATION_UI_HANDLER
-#define HINTS_CONFIGURATION_UI_HANDLER
+#ifndef HINTS_CONFIGURATION_UI_HANDLER_H
+#define HINTS_CONFIGURATION_UI_HANDLER_H
 
 #include "gui/windows/main-configuration-window.h"
 
@@ -64,4 +64,4 @@ public:
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 };
 
-#endif
+#endif // HINTS_CONFIGURATION_UI_HANDLER_H

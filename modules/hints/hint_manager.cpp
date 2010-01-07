@@ -115,13 +115,13 @@ void HintManager::hintUpdated()
 
 void HintManager::configurationUpdated()
 {
-   style = QString("QFrame {border-width: %1px; border-style: solid; border-color: %2; border-radius: %3px;}")
+	style = QString("QFrame {border-width: %1px; border-style: solid; border-color: %2; border-radius: %3px;}")
 			.arg(config_file.readNumEntry("Hints", "AllEvents_borderWidth", FRAME_WIDTH))
 			.arg(config_file.readColorEntry("Hints", "AllEvents_bdcolor").name())
 			.arg(BORDER_RADIUS);
 	frame->setStyleSheet(style);
 
-   	opacity = config_file.readNumEntry("Hints", "AllEvents_transparency", 0);
+	opacity = config_file.readNumEntry("Hints", "AllEvents_transparency", 0);
 	opacity = 1 - opacity/100;
 
 	setHint();
