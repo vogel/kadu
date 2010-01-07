@@ -213,6 +213,8 @@ void HistoryWindow::updateData()
 {
 	kdebugf();
 
+	Chat chat = ChatsTree->currentIndex().data(ChatRole).value<Chat>();
+
 	ChatsModel->clear();
 	QList<Chat> usedChats;
 	QList<Chat> chatsList = History::instance()->chatsList(Search);
@@ -241,6 +243,11 @@ void HistoryWindow::updateData()
 	}
 
 	ChatsModel->addChats(result);
+
+	if (result.contains(chat))
+		selectChat(chat);
+	else
+		selectChat(Chat::null);
 }
 
 void HistoryWindow::selectChat(Chat chat)
@@ -248,7 +255,10 @@ void HistoryWindow::selectChat(Chat chat)
 	QString typeName = chat.type();
 	ChatType *type = ChatTypeManager::instance()->chatType(typeName);
 	if (!type)
+	{
+		chatActivated(QModelIndex());
 		return;
+	}
 
 	QModelIndex chatTypeIndex = ChatsModelProxy->chatTypeIndex(type);
 
