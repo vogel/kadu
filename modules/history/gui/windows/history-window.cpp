@@ -171,6 +171,7 @@ void HistoryWindow::createFilterBar(QWidget *parent)
 	FromDate = new QDateEdit(parent);
 	FromDate->setEnabled(false);
 	FromDate->setCalendarPopup(true);
+	FromDate->setDate(QDateTime::currentDateTime().addDays(-7).date());
 	layout->addWidget(FromDate, 0, 4, 1, 1);
 
 	ToDateLabel = new QLabel(tr("To") + ": ", parent);
@@ -180,6 +181,7 @@ void HistoryWindow::createFilterBar(QWidget *parent)
 	ToDate = new QDateEdit(parent);
 	ToDate->setEnabled(false);
 	ToDate->setCalendarPopup(true);
+	ToDate->setDate(QDateTime::currentDateTime().date());
 	layout->addWidget(ToDate, 0, 6, 1, 1);
 	
 	connect(filterByDate, SIGNAL(stateChanged(int)),
@@ -349,13 +351,19 @@ void HistoryWindow::searchTextChanged(const QString &searchText)
 void HistoryWindow::fromDateChanged(const QDate &date)
 {
 	Search.setFromDate(date);
-	updateData();
+	if (ToDate->date() < date)
+		ToDate->setDate(date);
+	else
+		updateData();
 }
 
 void HistoryWindow::toDateChanged(const QDate &date)
 {
 	Search.setToDate(date);
-	updateData();
+	if (FromDate->date() > date)
+		FromDate->setDate(date);
+	else
+		updateData();
 }
 
 void HistoryWindow::showMainPopupMenu(const QPoint &pos)
@@ -535,6 +543,19 @@ void HistoryWindow::dateFilteringEnabled(int state)
 	FromDate->setEnabled(enabled);
 	ToDateLabel->setEnabled(enabled);
 	ToDate->setEnabled(enabled);
+
+	if (enabled)
+	{
+		Search.setFromDate(FromDate->date());
+		Search.setToDate(ToDate->date());
+		updateData();
+	}
+	else
+	{
+		Search.setFromDate(QDate());
+		Search.setToDate(QDate());
+		updateData();
+	}
 }
 
 HistoryWindow *historyDialog = 0;
