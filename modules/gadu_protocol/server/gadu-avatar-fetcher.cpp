@@ -120,9 +120,9 @@ void GaduAvatarFetcher::requestFinished(int id, bool error)
 		MyContact.contactAvatar().setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + delay));
 	}
 
-	QDomElement avatarFileElement = avatarElement.firstChildElement("bigAvatar");
+	QDomElement avatarFileElement = avatarElement.firstChildElement("originBigAvatar");
 	if (avatarFileElement.isNull())
-		avatarFileElement = avatarElement.firstChildElement("smallAvatar");
+		avatarFileElement = avatarElement.firstChildElement("originSmallAvatar");
 	if (avatarFileElement.isNull())
 	{
 		emit avatarFetched(MyContact, QByteArray());
