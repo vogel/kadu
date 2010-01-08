@@ -34,7 +34,7 @@
 #include "buddies-list-view-delegate.h"
 
 BuddiesListViewDelegate::BuddiesListViewDelegate(QObject *parent)
-	: QItemDelegate(parent), Model(0)
+	: QItemDelegate(parent), Model(0), ShowAccountName(true)
 {
 	triggerAllAccountsRegistered();
 	configurationUpdated();
@@ -299,7 +299,7 @@ void BuddiesListViewDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 		accountDisplay = account.name();
 
 	// only display account name when in contact-mode, not buddy-mode
-	if ((option.state & QStyle::State_MouseOver) || index.parent().isValid())
+	if ((option.state & QStyle::State_MouseOver && ShowAccountName) || index.parent().isValid())
 	{
 		int accountDisplayWidth = descriptionFontMetrics.width(accountDisplay);
 		int displayWidth = fontMetrics.width(display);

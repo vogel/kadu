@@ -33,6 +33,7 @@ class BuddiesListViewDelegate : public QItemDelegate, public ConfigurationAwareO
 	QFont DescriptionFont;
 
 	bool AlignTop;
+	bool ShowAccountName;
 	bool ShowBold;
 	bool ShowDescription;
 	bool ShowMultiLineDescription;
@@ -62,6 +63,8 @@ public:
 	virtual ~BuddiesListViewDelegate();
 
 	virtual void setModel(AbstractBuddiesModel *model);
+
+	virtual void setShowAccountName(bool show) { ShowAccountName = show; }
 
 	virtual QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index ) const;
 	virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;

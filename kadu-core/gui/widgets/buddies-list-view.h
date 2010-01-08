@@ -101,6 +101,8 @@ public:
 
 	BuddiesModelProxy * proxyModel() { return ProxyModel; }
 
+	void setShowAccountName(bool show);
+
 	void selectBuddy(Buddy buddy);
 
 	Contact currentContact() const;

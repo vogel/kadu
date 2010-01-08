@@ -127,6 +127,7 @@ void ChatWidget::createContactsList()
 	BuddiesView->setMinimumSize(QSize(30, 30));
 	BuddiesView->setModel(new BuddyListModel(CurrentChat.contacts().toBuddySet().toBuddyList(), this));
 	BuddiesView->setRootIsDecorated(false);
+	BuddiesView->setShowAccountName(false);
 
 	connect(BuddiesView, SIGNAL(chatActivated(Chat)),
 			Core::instance()->kaduWindow(), SLOT(openChatWindow(Chat)));

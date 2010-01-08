@@ -106,6 +106,11 @@ void BuddiesListView::removeFilter(AbstractBuddyFilter *filter)
 	ProxyModel->removeFilter(filter);
 }
 
+void BuddiesListView::setShowAccountName(bool show)
+{
+	Delegate->setShowAccountName(show);
+}
+
 void BuddiesListView::selectBuddy(Buddy buddy)
 {
 	QModelIndex index = Model->buddyIndex(buddy);
