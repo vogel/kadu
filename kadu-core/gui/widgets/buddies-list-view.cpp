@@ -379,6 +379,12 @@ void BuddiesListView::updateBackground()
 {
 	// TODO 0.6.6 fix image "Stretched" + update on resize event - write image into resource tree
 	QString style;
+	style.append("QTreeView::branch:has-siblings:!adjoins-item { border-image: none; image: none }");
+	style.append("QTreeView::branch:has-siblings:adjoins-item { border-image: none; image: none }");
+	style.append("QTreeView::branch:has-children:!has-siblings:closed, QTreeView::branch:closed:has-children:has-siblings "
+		     "{ border-image: none; image: url(" + IconsManager::instance()->iconPath("BranchClosed") + ") }");
+	style.append("QTreeView::branch:open:has-children:!has-siblings, QTreeView::branch:open:has-children:has-siblings "
+		     "{ border-image: none; image: url(" + IconsManager::instance()->iconPath("BranchOpen") + ") }");
 
 	style.append("QFrame {");
 
@@ -390,6 +396,7 @@ void BuddiesListView::updateBackground()
 		//TODO 0.6.6: make an option in configuration:
 		setAlternatingRowColors(false);
 		setStyleSheet(style);
+
 		return;
 	}
 
