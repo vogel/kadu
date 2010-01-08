@@ -96,9 +96,9 @@ QString KaduParser::executeCmd(const QString &cmd)
 	s.append(" >");
 	s.append(ggPath("execoutput"));
 
-	system(s.local8Bit());
+	int ret = system(s.local8Bit());
 	QFile *f = new QFile(ggPath("execoutput"));
-	if (f->open(IO_ReadOnly))
+	if ((ret != -1) && (f->open(IO_ReadOnly)))
 	{
 		s = QString(f->readAll());
 		f->close();
