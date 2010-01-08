@@ -262,6 +262,9 @@ QList<QDate> HistorySqlStorage::chatDates(Chat chat, HistorySearchParameters sea
 {
 	kdebugf();
 
+	if (!chat)
+		return QList<QDate>();
+
 	DatabaseMutex.lock();
 
 	QSqlQuery query(Database);

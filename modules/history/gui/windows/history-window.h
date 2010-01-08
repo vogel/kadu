@@ -64,6 +64,8 @@ class HistoryWindow : public MainWindow
 	void updateData();
 	void selectChat(Chat chat);
 
+	void chatActivated(Chat chat);
+
 private slots:
 	void chatActivated(const QModelIndex &index);
 	void dateActivated(const QModelIndex &index);

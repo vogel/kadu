@@ -213,7 +213,8 @@ void HistoryWindow::updateData()
 {
 	kdebugf();
 
-	Chat chat = ChatsTree->currentIndex().data(ChatRole).value<Chat>();
+	QModelIndex index = ChatsTree->selectionModel()->currentIndex();
+	Chat chat = index.data(ChatRole).value<Chat>();
 
 	ChatsModel->clear();
 	QList<Chat> usedChats;
@@ -254,6 +255,7 @@ void HistoryWindow::selectChat(Chat chat)
 {
 	QString typeName = chat.type();
 	ChatType *type = ChatTypeManager::instance()->chatType(typeName);
+
 	if (!type)
 	{
 		chatActivated(QModelIndex());
@@ -261,7 +263,6 @@ void HistoryWindow::selectChat(Chat chat)
 	}
 
 	QModelIndex chatTypeIndex = ChatsModelProxy->chatTypeIndex(type);
-
 	if (!chatTypeIndex.isValid())
 	{
 		chatActivated(QModelIndex());
@@ -274,16 +275,12 @@ void HistoryWindow::selectChat(Chat chat)
 	QModelIndex chatIndex = ChatsModelProxy->chatIndex(chat);
 	ChatsTree->selectionModel()->select(chatIndex, QItemSelectionModel::ClearAndSelect);
 
-	chatActivated(chatIndex);
+	chatActivated(chat);
 }
 
-void HistoryWindow::chatActivated(const QModelIndex &index)
+void HistoryWindow::chatActivated(Chat chat)
 {
 	kdebugf();
-
-	Chat chat = index.data(ChatRole).value<Chat>();
-	if (!chat)
-		return;
 
 	ChatDatesModel *model = dynamic_cast<ChatDatesModel *>(DetailsListView->model());
 	if (!model)
@@ -294,10 +291,22 @@ void HistoryWindow::chatActivated(const QModelIndex &index)
 	model->setDates(chatDates);
 
 	int lastRow = model->rowCount(QModelIndex()) - 1;
-	QModelIndex last = model->index(lastRow, 0, QModelIndex());
+	QModelIndex last;
+	if (lastRow >= 0)
+		last = model->index(lastRow);
+
 	DetailsListView->selectionModel()->setCurrentIndex(last, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
 
 	dateActivated(last);
+
+	kdebugf2();
+}
+
+void HistoryWindow::chatActivated(const QModelIndex &index)
+{
+	kdebugf();
+
+	chatActivated(index.data(ChatRole).value<Chat>());
 
 	kdebugf2();
 }
@@ -307,14 +316,11 @@ void HistoryWindow::dateActivated(const QModelIndex &index)
 	kdebugf();
 
 	Chat chat = index.data(ChatRole).value<Chat>();
-	if (!chat)
-		return;
-
 	QDate date = index.data(DateRole).value<QDate>();
-	if (!date.isValid())
-		return;
 
-	QList<Message> messages = History::instance()->messages(chat, date);
+	QList<Message> messages;
+	if (chat && date.isValid())
+		messages = History::instance()->messages(chat, date);
 
 	ContentBrowser->setChat(chat);
 	ContentBrowser->clearMessages();
@@ -332,21 +338,18 @@ void HistoryWindow::searchTextChanged(const QString &searchText)
 {
 	Search.setQuery(searchText);
 	updateData();
-	chatActivated(ChatsTree->currentIndex());
 }
 
 void HistoryWindow::fromDateChanged(const QDate &date)
 {
 	Search.setFromDate(date);
 	updateData();
-	chatActivated(ChatsTree->currentIndex());
 }
 
 void HistoryWindow::toDateChanged(const QDate &date)
 {
 	Search.setToDate(date);
 	updateData();
-	chatActivated(ChatsTree->currentIndex());
 }
 
 void HistoryWindow::showMainPopupMenu(const QPoint &pos)
