@@ -1,4 +1,4 @@
-/* $Id: obsolete.c 815 2009-09-20 20:52:29Z wojtekka $ */
+/* $Id: obsolete.c 854 2009-10-12 21:06:28Z wojtekka $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -224,6 +224,11 @@ void gg_resolve_pthread_cleanup(void *arg, int kill)
 }
 
 int gg_resolve_pthread(int *fd, void **resolver, const char *hostname)
+{
+	return -1;
+}
+
+int gg_pubdir50_handle_reply(struct gg_event *e, const char *packet, int length)
 {
 	return -1;
 }

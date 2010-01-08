@@ -1,4 +1,4 @@
-/* $Id: http.c 770 2009-08-30 18:25:12Z wojtekka $ */
+/* $Id: http.c 833 2009-10-01 20:48:01Z wojtekka $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -130,7 +130,7 @@ struct gg_http *gg_http_connect(const char *hostname, int port, int async, const
 	} else {
 		struct in_addr addr;
 
-		if (gg_gethostbyname(hostname, &addr, 0) == -1) {
+		if (gg_gethostbyname_real(hostname, &addr, 0) == -1) {
 			gg_debug(GG_DEBUG_MISC, "// gg_http_connect() host not found\n");
 			gg_http_free(h);
 			errno = ENOENT;

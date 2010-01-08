@@ -1,4 +1,4 @@
-/* $Id: common.c 801 2009-09-05 11:04:39Z wojtekka $ */
+/* $Id: common.c 878 2009-11-16 23:48:19Z wojtekka $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -105,7 +105,7 @@ void gg_debug_common(struct gg_session *sess, int level, const char *format, va_
 
 
 /**
- * Przekazuje informację odpluskawiania.
+ * \internal Przekazuje informację odpluskawiania.
  *
  * \param level Poziom wiadomości
  * \param format Format wiadomości (zgodny z \c printf)
@@ -123,7 +123,7 @@ void gg_debug(int level, const char *format, ...)
 }
 
 /**
- * Przekazuje informację odpluskwiania związaną z sesją.
+ * \internal Przekazuje informację odpluskwiania związaną z sesją.
  *
  * \param sess Struktura sesji
  * \param level Poziom wiadomości
@@ -144,7 +144,7 @@ void gg_debug_session(struct gg_session *sess, int level, const char *format, ..
 #endif
 
 /**
- * Odpowiednik funkcji \c vsprintf alokujący miejsce na wynik.
+ * \internal Odpowiednik funkcji \c vsprintf alokujący miejsce na wynik.
  *
  * Funkcja korzysta z funkcji \c vsnprintf, sprawdzając czy dostępna funkcja
  * systemowa jest zgodna ze standardem C99 czy wcześniejszymi.
@@ -222,7 +222,7 @@ char *gg_vsaprintf(const char *format, va_list ap)
 }
 
 /**
- * Odpowiednik funkcji \c sprintf alokujący miejsce na wynik.
+ * \internal Odpowiednik funkcji \c sprintf alokujący miejsce na wynik.
  *
  * Funkcja korzysta z funkcji \c vsnprintf, sprawdzając czy dostępna funkcja
  * systemowa jest zgodna ze standardem C99 czy wcześniejszymi.
@@ -303,7 +303,7 @@ char *gg_read_line(int sock, char *buf, int length)
 
 	for (; length > 1; buf++, length--) {
 		do {
-			if ((ret = read(sock, buf, 1)) == -1 && errno != EINTR && errno != EAGAIN) {
+			if ((ret = read(sock, buf, 1)) == -1 && errno != EINTR) {
 				gg_debug(GG_DEBUG_MISC, "// gg_read_line() error on read (errno=%d, %s)\n", errno, strerror(errno));
 				*buf = 0;
 				return NULL;
@@ -312,7 +312,7 @@ char *gg_read_line(int sock, char *buf, int length)
 				*buf = 0;
 				return NULL;
 			}
-		} while (ret == -1 && (errno == EINTR || errno == EAGAIN));
+		} while (ret == -1 && errno == EINTR);
 
 		if (*buf == '\n') {
 			buf++;
@@ -325,7 +325,7 @@ char *gg_read_line(int sock, char *buf, int length)
 }
 
 /**
- * Nawiązuje połączenie TCP.
+ * \internal Nawiązuje połączenie TCP.
  *
  * \param addr Wskaźnik na strukturę \c in_addr z adresem serwera
  * \param port Port serwera
@@ -399,7 +399,7 @@ int gg_connect(void *addr, int port, int async)
 }
 
 /**
- * Usuwa znaki końca linii.
+ * \internal Usuwa znaki końca linii.
  *
  * Funkcja działa bezpośrednio na buforze.
  *
@@ -423,7 +423,7 @@ void gg_chomp(char *line)
 }
 
 /**
- * Koduje ciąg znaków do postacji adresu HTTP.
+ * \internal Koduje ciąg znaków do postacji adresu HTTP.
  *
  * Zamienia znaki niedrukowalne, spoza ASCII i mające specjalne znaczenie
  * dla protokołu HTTP na encje postaci \c %XX, gdzie \c XX jest szesnastkową
@@ -597,7 +597,7 @@ static char gg_base64_charset[] =
 	"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
 /**
- * Koduje ciąg znaków do base64.
+ * \internal Koduje ciąg znaków do base64.
  *
  * Wynik funkcji należy zwolnić za pomocą \c free.
  *
@@ -656,7 +656,7 @@ char *gg_base64_encode(const char *buf)
 }
 
 /**
- * Dekoduje ciąg znaków zapisany w base64.
+ * \internal Dekoduje ciąg znaków zapisany w base64.
  *
  * Wynik funkcji należy zwolnić za pomocą \c free.
  *
