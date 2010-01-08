@@ -47,6 +47,8 @@ public:
 	void setChat(Chat chat);
 	void setDates(QList<QDate> dates);
 
+	QModelIndex indexForDate(QDate date);
+
 };
 
 #endif // CHAT_DATES_MODEL

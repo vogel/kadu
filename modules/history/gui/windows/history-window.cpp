@@ -286,18 +286,24 @@ void HistoryWindow::chatActivated(Chat chat)
 	if (!model)
 		return;
 
+	QModelIndex selectedIndex = DetailsListView->selectionModel()->currentIndex();
+	QDate date = selectedIndex.data(DateRole).toDate();
+
 	QList<QDate> chatDates = History::instance()->datesForChat(chat, Search);
 	model->setChat(chat);
 	model->setDates(chatDates);
 
-	int lastRow = model->rowCount(QModelIndex()) - 1;
-	QModelIndex last;
-	if (lastRow >= 0)
-		last = model->index(lastRow);
+	QModelIndex select = model->indexForDate(date);
+	if (!select.isValid())
+	{
+		int lastRow = model->rowCount(QModelIndex()) - 1;
+		if (lastRow >= 0)
+			select = model->index(lastRow);
+	}
 
-	DetailsListView->selectionModel()->setCurrentIndex(last, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+	DetailsListView->selectionModel()->setCurrentIndex(select, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
 
-	dateActivated(last);
+	dateActivated(select);
 
 	kdebugf2();
 }
