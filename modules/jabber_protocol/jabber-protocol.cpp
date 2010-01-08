@@ -132,6 +132,8 @@ JabberProtocol::~JabberProtocol()
 
 	QObject::disconnect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy &)),
 			this, SLOT(contactUpdated(Buddy &)));
+
+	logout();
 }
 
 void JabberProtocol::initializeJabberClient()
