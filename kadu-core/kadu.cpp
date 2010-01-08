@@ -1190,6 +1190,20 @@ void Kadu::changeAppearance()
 	foreach(KaduAction *action, showStatusActionDescription->actions())
 		action->setIcon(icon);
 
+	GaduStatus s;
+	changeStatusToOnline->setIcon(icons_manager->loadIcon(s.pixmapName(Online, false, false)));
+	changeStatusToOnlineDesc->setIcon(icons_manager->loadIcon(s.pixmapName(Online, true, false)));
+	changeStatusToBusy->setIcon(icons_manager->loadIcon(s.pixmapName(Busy, false, false)));
+	changeStatusToBusyDesc->setIcon(icons_manager->loadIcon(s.pixmapName(Busy, true, false)));
+	changeStatusToInvisible->setIcon(icons_manager->loadIcon(s.pixmapName(Invisible, false, false)));
+	changeStatusToInvisibleDesc->setIcon(icons_manager->loadIcon(s.pixmapName(Invisible, true, false)));
+	changeStatusToOffline->setIcon(icons_manager->loadIcon(s.pixmapName(Offline, false, false)));
+	changeStatusToOfflineDesc->setIcon(icons_manager->loadIcon(s.pixmapName(Offline, true, false)));
+	changeStatusToTalkWithMe->setIcon(icons_manager->loadIcon(s.pixmapName(FFC, false, false)));
+	changeStatusToTalkWithMeDesc->setIcon(icons_manager->loadIcon(s.pixmapName(FFC, true, false)));
+	changeStatusToDoNotDisturb->setIcon(icons_manager->loadIcon(s.pixmapName(DND, false, false)));
+	changeStatusToDoNotDisturbDesc->setIcon(icons_manager->loadIcon(s.pixmapName(DND, true, false)));
+
 	setMainWindowIcon(pix);
 	emit statusPixmapChanged(icon, stat.toString());
 	kdebugf2();
