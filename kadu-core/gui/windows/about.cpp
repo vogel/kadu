@@ -119,6 +119,7 @@ About::About(QWidget *parent)
 	tb_authors->setFrameStyle(QFrame::NoFrame);
 	tb_authors->setWordWrapMode(QTextOption::NoWrap);
 	tb_authors->viewport()->setAutoFillBackground(false);
+	tb_authors->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
 	HtmlDocument doc;
 	QString authors = loadFile("AUTHORS");
 	// convert the email addresses
