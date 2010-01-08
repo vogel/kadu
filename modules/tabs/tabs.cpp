@@ -282,8 +282,8 @@ void TabsManager::onTitleChanged(Chat chatChanged, const QString &newTitle)
 
 	if (tabdialog->currentIndex() == chatIndex)
 	{
-		tabdialog->setWindowTitle(chat->chat().title());
-		tabdialog->setWindowIcon(chat->chat().icon());
+		tabdialog->setWindowTitle(chatChanged.title());
+		tabdialog->setWindowIcon(chatChanged.icon());
 	}
 
 	kdebugf2();
