@@ -294,6 +294,7 @@ void ChatShared::refreshTitle()
 	title.replace("&nbsp;", " ");
 
 	setTitle(title);
+	emit titleChanged(this, title);
 
 	kdebugf2();
 }
