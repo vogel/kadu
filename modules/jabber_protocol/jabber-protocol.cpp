@@ -277,7 +277,7 @@ void JabberProtocol::connectedToServer()
 }
 
 // disconnect or stop reconnecting
-void JabberProtocol::logout(const XMPP::Status &s)
+void JabberProtocol::logout()
 {
 	kdebugf();
 

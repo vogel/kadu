@@ -108,7 +108,7 @@ class JabberProtocol : public Protocol
 		void connectToServer();
 		void setPresence(const XMPP::Status &status);
 		void login();
-		void logout(const XMPP::Status &s = XMPP::Status("", tr("Logged out"), 0, false));
+		void logout();
 
 	signals:
 		void userStatusChangeIgnored(Buddy);
