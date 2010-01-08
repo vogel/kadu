@@ -84,7 +84,7 @@ About::About(QWidget *parent)
 	about_layout->addWidget(new QLabel(tr("Support:")));
 	about_layout->addWidget(new KaduLink("http://www.kadu.net/forum/"));
 	about_layout->addSpacing(20);
-	about_layout->addWidget(new QLabel("(C) 2001-2009 Kadu Team"));
+	about_layout->addWidget(new QLabel("(C) 2001-2010 Kadu Team"));
 	about_layout->addWidget(new KaduLink("http://www.kadu.net/"));
 
 	// create our info widgets

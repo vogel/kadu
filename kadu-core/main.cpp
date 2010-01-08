@@ -136,7 +136,7 @@ bool isRuning(int);
 
 void printVersion()
 {
-	printf("Kadu %s Copyright (c) 2001-2009 Kadu Team\n"
+	printf("Kadu %s Copyright (c) 2001-2010 Kadu Team\n"
 		"Compiled with Qt %s\nRunning on Qt %s\n",
 		VERSION, QT_VERSION_STR, qVersion());
 }
