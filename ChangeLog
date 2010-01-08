@@ -2,9 +2,23 @@ Teksty w nawiasach na koñcu wpisu mówi± o tym, kto dokona³ poprawki lub rozbudow
 Postaæ (x/y) oznacza, ¿e x jest pomys³odawc± lub podes³a³ patcha, a zrobi³ to kto¶ oznaczony przez y.
 Je¶li jest w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 
++++ wersja 0.6.5.4
+* naprawione zosta³o wykrywanie zestawów ikon w ¶cie¿ce u¿ytkownika (dorr)
+* pe³nowymiarowy podgl±d emotek w oknie wyboru (beevvy/dorr)
+* zaktualizowana zosta³a lista serwerów GG w programie (dorr)
+* poprawiony zosta³ b³±d w pozycjonowaniu okna rozmowy z now± osob± pod Windows (dorr)
+* dodany zosta³ nowy modu³ - dbus (uzi)
+* zaktualizowany zosta³ modu³ gg_avatars (dorr)
+* modu³ desktop_docking zosta³ poprawiony (dorr)
+* wprowadzone zosta³y poprawki do autodownloadu zestawów ikon, d¼wiêków, emot (dorr)
+* poprawione zosta³y skrypty create_macosx_bundle.sh i create_windows_bundle.bat (dorr)
+* zosta³a dodana funkcjonalno¶æ automatycznego ³atania modu³ów zewnêtrznych (dorr)
+* druga czê¶æ zmian do po³±czeñ bezpo¶rednich zosta³a zaaplikowana (uzi)
+* inne drobne zmiany w kodzie aplikacji
+
 +++ wersja 0.6.5.4-rc2
 * definitywnie naprawione zosta³o wysy³anie obrazków (uzi)
-* naprawione zosta³o przesy³anie plików za pomoc± po³±czeñ bezpo¶rednich (uzi)
+* czê¶æ pierwsza poprawek dzia³ania po³±czeñ bezpo¶rednich zosta³a zaaplikowana (uzi)
 * bramka Plus GSM zosta³a dostosowana do ostatnich zmian operatora (dorr)
 * dodane zosta³o wsparcie dla Maemo (dorr)
 * dodany modu³ single_window (dorr)
