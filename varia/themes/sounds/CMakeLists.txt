@@ -22,11 +22,11 @@ if (INSTALL_SOUND_THEMES)
 
 	foreach (INSTALL_SOUND_THEME ${INSTALL_SOUND_THEMES})
 		message (STATUS "Sound theme: " ${INSTALL_SOUND_THEME})
-if (NOT WIN32)
+if (ENABLE_AUTODOWNLOAD AND NOT WIN32)
 		exec_program (${CMAKE_SOURCE_DIR}/varia/scripts/autodownload ${CMAKE_CURRENT_SOURCE_DIR}
 			ARGS theme ${INSTALL_SOUND_THEME}
 		)
-endif (NOT WIN32)
+endif (ENABLE_AUTODOWNLOAD AND NOT WIN32)
 	endforeach (INSTALL_SOUND_THEME)
 
 	add_dependencies (kadu sound_themes)
