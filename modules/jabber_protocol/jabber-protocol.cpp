@@ -281,11 +281,15 @@ void JabberProtocol::logout()
 {
 	kdebugf();
 
+	Status newstat = status();
 	if (!status().isDisconnected())
-		setStatus(Status());
+	{
+		newstat.setType("Offline");
+		setStatus(newstat);
+	}
 
+	disconnect(toXMPPStatus(newstat));
 	setAllOffline();
-	disconnect();
 
 	kdebugf2();
 }
