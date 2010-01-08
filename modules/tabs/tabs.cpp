@@ -875,9 +875,6 @@ void TabsManager::refreshTab(int tabIndex, ChatWidget * chatWidget)
 	if (0 == chat)
 		return;
 
-	// odsw. tytul chata
-	chat.refreshTitle();
-
 	// uaktualnienie podp.
 	tabdialog->setTabToolTip(tabIndex, chat.title());
 
