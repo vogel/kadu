@@ -57,6 +57,8 @@ class JabberProtocol : public Protocol
 		XMPP::JabberClient * client() { return JabberClient; }
 		bool validateUserID(const QString& uid);
 		bool isConnecting() { return whileConnecting/*(State == NetworkConnecting)*/; }
+		XMPP::Status toXMPPStatus(Status status);
+		Status toStatus(XMPP::Status status);
 
 		virtual Conference * loadConferenceFromStorage(StoragePoint *storage) { return 0; }
 

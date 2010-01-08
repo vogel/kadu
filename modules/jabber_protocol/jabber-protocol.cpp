@@ -428,7 +428,7 @@ void JabberProtocol::login()
 	connectToServer();
 }
 
-void JabberProtocol::changeStatus(Status status)
+XMPP::Status JabberProtocol::toXMPPStatus(Status status)
 {
 	XMPP::Status s = XMPP::Status();
 	const QString &type = status.type();
@@ -447,9 +447,41 @@ void JabberProtocol::changeStatus(Status status)
 		s.setType(XMPP::Status::Invisible);
 	else
 		s.setType(XMPP::Status::Offline);
-///WTF! kutfa, wywo�anie tego z protocol wywala kadu...
+
 	s.setStatus(status.description());
-	setPresence(s);
+	return s;
+}
+
+Status JabberProtocol::toStatus(XMPP::Status status)
+{
+	Status newstatus;
+	if (status.isAvailable())
+		newstatus.setType("Online");
+	else if (status.isInvisible())
+		newstatus.setType("Invisible");
+	else
+		newstatus.setType("Offline");
+
+	if (status.show() == "away")
+		newstatus.setType("Away");
+	else if (status.show() == "xa")
+		newstatus.setType("NotAvailable");
+	else if (status.show() == "dnd")
+		newstatus.setType("DoNotDisturb");
+	else if (status.show() == "chat")
+		newstatus.setType("FreeForChat");
+
+	QString description = status.status();
+	description.replace("\r\n", "\n");
+	description.replace("\r", "\n");
+	newstatus.setDescription(description);
+
+	return newstatus;
+}
+
+void JabberProtocol::changeStatus(Status status)
+{
+	setPresence(toXMPPStatus(status));
 
 	if (status.isDisconnected())
 	{
@@ -490,29 +522,8 @@ void JabberProtocol::clientResourceReceived(const XMPP::Jid &jid, const XMPP::Re
 	kdebugf();
 	kdebug("New resource available for %s\n", jid.full().toLocal8Bit().data());
 	resourcePool()->addResource(jid, resource);
-	//TODO: na razie brak lepszego miejsca na to
-	Status status;
-	if (resource.status().isAvailable())
-		status.setType("Online");
-	else if (resource.status().isInvisible())
-		status.setType("Invisible");
-	else
-		status.setType("Offline");
 
-	if (resource.status().show() == "away")
-		status.setType("Away");
-	else if (resource.status().show() == "xa")
-		status.setType("NotAvailable");
-	else if (resource.status().show() == "dnd")
-		status.setType("DoNotDisturb");
-	else if (resource.status().show() == "chat")
-		status.setType("FreeForChat");
-
-	QString description = resource.status().status();
-	description.replace("\r\n", "\n");
-	description.replace("\r", "\n");
-	status.setDescription(description);
-
+	Status status(toStatus(resource.status()));
 	Contact contact = ContactManager::instance()->byId(account(), jid.bare(), true);
 
 	// TODO remove all ?
