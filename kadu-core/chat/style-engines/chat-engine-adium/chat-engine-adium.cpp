@@ -340,6 +340,8 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, const QString &styleHre
 	while ((pos = timeRegExp.indexIn(result , pos)) != -1)
 		result.replace(pos, timeRegExp.cap(0).length(), timeFormatter->convertTimeDate(timeRegExp.cap(1), time));
 
+	result.replace("%shortTime%", printDateTime(time));
+
 	// Look for %textbackgroundcolor{X}%
 	// TODO: highlight background color: use the X value.
 	QRegExp textBackgroundRegExp("%textbackgroundcolor\\{([^}]*)\\}%");
