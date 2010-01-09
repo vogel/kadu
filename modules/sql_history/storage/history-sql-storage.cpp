@@ -55,6 +55,11 @@ HistorySqlStorage::~HistorySqlStorage()
 	QSqlDatabase::removeDatabase("kadu-history");
 }
 
+void HistorySqlStorage::crash()
+{
+	Database.commit();
+}
+
 void HistorySqlStorage::initDatabase()
 {
 	kdebugf();

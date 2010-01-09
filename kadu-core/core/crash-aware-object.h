@@ -18,7 +18,7 @@ class KADUAPI CrashAwareObject : public AwareObject<CrashAwareObject>
 {
 
 protected:
-	virtual void crash();
+	virtual void crash() = 0;
 
 public:
 	static void notifyCrash();
