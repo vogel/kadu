@@ -7,29 +7,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BUDDIES_AWARE_OBJECT_H
-#define BUDDIES_AWARE_OBJECT_H
+#include "crash-aware-object.h"
 
-#include <QtCore/QList>
+KADU_AWARE_CLASS(CrashAwareObject)
 
-#include "aware-object.h"
-
-class Buddy;
-
-class KADUAPI BuddiesAwareObject : public AwareObject<BuddiesAwareObject>
+void CrashAwareObject::notifyCrash()
 {
-
-protected:
-	virtual void contactAdded(Buddy buddy) = 0;
-	virtual void contactRemoved(Buddy buddy) = 0;
-
-public:
-	static void notifyBuddyAdded(Buddy buddy);
-	static void notifyBuddyRemoved(Buddy buddy);
-
-	void triggerAllBuddiesAdded();
-	void triggerAllBuddiesRemoved();
-
-};
-
-#endif // BUDDIES_AWARE_OBJECT_H
+	foreach (CrashAwareObject *object, Objects)
+		object->crash();
+}

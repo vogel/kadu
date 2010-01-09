@@ -20,6 +20,7 @@
 #include "configuration/configuration-file.h"
 #include "configuration/xml-configuration-file.h"
 #include "core/core.h"
+#include "core/crash-aware-object.h"
 #include "gui/windows/kadu-window.h"
 
 #include "debug.h"
@@ -54,6 +55,9 @@ static void kadu_signal_handler(int s)
 	{
 		++sigsegvCount;
 		kdebugm(KDEBUG_PANIC, "Kadu crashed :(\n");
+
+		CrashAwareObject::notifyCrash();
+
 		QString f = QString("kadu.conf.xml.backup.%1").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss"));
 		QString debug_file = QString("kadu.backtrace.%1").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss"));
 

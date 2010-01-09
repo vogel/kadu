@@ -19,6 +19,7 @@
 #include <dbghelp.h>
 #include "kadu-config.h"
 #include "configuration/xml-configuration-file.h"
+#include "core/crash-aware-object.h"
 
 typedef BOOL (WINAPI *MiniDumpWriteDump_t)(HANDLE hProcess, DWORD ProcessId, HANDLE hFile, MINIDUMP_TYPE DumpType,
 		PMINIDUMP_EXCEPTION_INFORMATION ExceptionParam,
@@ -50,6 +51,8 @@ class KaduMessageWindow : public QWidget
 
 LONG WINAPI exception_handler(struct _EXCEPTION_POINTERS* e)
 {
+	CrashAwareObject::notifyCrash();
+
 	LONG ret=EXCEPTION_CONTINUE_SEARCH;
 	if(MiniDumpWriteDump_f)
 	{

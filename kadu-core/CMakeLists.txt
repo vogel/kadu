@@ -100,6 +100,7 @@ set (kadu_SRCS
 
 	core/core.cpp
 	core/core-actions.cpp
+	core/crash-aware-object.cpp
 
 	file-transfer/file-transfer.cpp
 	file-transfer/file-transfer-actions.cpp
