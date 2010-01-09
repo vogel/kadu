@@ -23,6 +23,22 @@ HistorySaveThread::~HistorySaveThread()
 {
 }
 
+void HistorySaveThread::storeMessages()
+{
+	if (CurrentHistory->currentStorage())
+		while (Message message = CurrentHistory->dequeueUnsavedMessage())
+			CurrentHistory->currentStorage()->appendMessage(message);
+}
+
+void HistorySaveThread::sync()
+{
+	if (CurrentHistory->currentStorage())
+	{
+		CurrentHistory->currentStorage()->sync();
+		LastSyncTime = QDateTime::currentDateTime();
+	}
+}
+
 void HistorySaveThread::run()
 {
 	LastSyncTime = QDateTime::currentDateTime();
@@ -31,24 +47,16 @@ void HistorySaveThread::run()
 	{
 		SomethingToSave.lock();
 
-		if (CurrentHistory->currentStorage())
-		{
-			while (Message message = CurrentHistory->dequeueUnsavedMessage())
-				CurrentHistory->currentStorage()->appendMessage(message);
-
-			if (QDateTime::currentDateTime().addMSecs(-SYNCHRONIZATION_TIMEOUT) >= LastSyncTime)
-			{
-				CurrentHistory->currentStorage()->sync();
-				LastSyncTime = QDateTime::currentDateTime();
-			}
-		}
+		storeMessages();
+		if (QDateTime::currentDateTime().addMSecs(-SYNCHRONIZATION_TIMEOUT) >= LastSyncTime)
+			sync();
 
 		WaitForSomethingToSave.wait(&SomethingToSave, SYNCHRONIZATION_TIMEOUT);
 		SomethingToSave.unlock();
 	}
 
-	if (CurrentHistory->currentStorage())
-		CurrentHistory->currentStorage()->sync();
+	storeMessages();
+	sync();
 }
 
 void HistorySaveThread::newMessagesAvailable()

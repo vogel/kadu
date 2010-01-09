@@ -30,6 +30,9 @@ class HistorySaveThread : public QThread
 
 	bool Stopped;
 
+	void storeMessages();
+	void sync();
+
 public:
 	explicit HistorySaveThread(History *history, QObject *parent = 0);
 	virtual ~HistorySaveThread();

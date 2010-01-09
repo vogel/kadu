@@ -26,6 +26,7 @@
 #include <QtGui/QDialog>
 
 #include "configuration/configuration-aware-object.h"
+#include "core/crash-aware-object.h"
 #include "buddies/buddy-remove-predicate-object.h"
 #include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
@@ -50,7 +51,7 @@ class ChatWidget;
 class HistorySaveThread;
 class HistoryWindow;
 
-class HISTORYAPI History : public ConfigurationUiHandler, ConfigurationAwareObject, BuddyRemovePredicateObject
+class HISTORYAPI History : public ConfigurationUiHandler, ConfigurationAwareObject, BuddyRemovePredicateObject, CrashAwareObject
 {
 	Q_OBJECT
 
@@ -77,6 +78,9 @@ class HISTORYAPI History : public ConfigurationUiHandler, ConfigurationAwareObje
 	History();
 	virtual ~History();
 
+	void startSaveThread();
+	void stopSaveThread();
+
 	void createActionDescriptions();
 	void deleteActionDescriptions();
 	virtual void configurationUpdated();
@@ -97,6 +101,9 @@ private slots:
 
 	void updateQuoteTimeLabel(int value);
 	void configurationWindowApplied();
+
+protected:
+	virtual void crash();
 
 public:
 	static History * instance();

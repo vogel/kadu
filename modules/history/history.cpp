@@ -109,13 +109,7 @@ History::History() :
 History::~History()
 {
 	kdebugf();
-
-	if (SaveThread && SaveThread->isRunning())
-	{
-		SaveThread->stop();
-		SaveThread->wait();
-	}
-
+	stopSaveThread();
 	deleteActionDescriptions();
 	kdebugf2();
 }
@@ -340,6 +334,29 @@ Message History::dequeueUnsavedMessage()
 	return result;
 }
 
+void History::crash()
+{
+	stopSaveThread();
+}
+
+void History::startSaveThread()
+{
+	if (!SaveThread)
+		SaveThread = new HistorySaveThread(this, this);
+
+	if (!SaveThread->isRunning())
+		SaveThread->start();
+}
+
+void History::stopSaveThread()
+{
+	if (SaveThread && SaveThread->isRunning())
+	{
+		SaveThread->stop();
+		SaveThread->wait();
+	}
+}
+
 void History::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
 	ConfigGroupBox *chatsGroupBox = mainConfigurationWindow->widget()->configGroupBox("Chat", "History", "Chats history");
@@ -507,19 +524,12 @@ void History::registerStorage(HistoryStorage *storage)
 {
 	CurrentStorage = storage;
 
-	if (SaveThread && SaveThread->isRunning())
-	{
-		SaveThread->stop();
-		SaveThread->wait();
-		delete SaveThread;
-		SaveThread = 0;
-	}
+	stopSaveThread();
 
 	if (!CurrentStorage)
 		return;
 
-	SaveThread = new HistorySaveThread(this, this);
-	SaveThread->start();
+	startSaveThread();
 
 	foreach (ChatWidget *chat, ChatWidgetManager::instance()->chats())
 		chatCreated(chat);
@@ -536,13 +546,7 @@ void History::unregisterStorage(HistoryStorage *storage)
 	foreach (Account account, AccountManager::instance()->items())
 		accountUnregistered(account);
 
-	if (SaveThread && SaveThread->isRunning())
-	{
-		SaveThread->stop();
-		SaveThread->wait();
-		delete SaveThread;
-		SaveThread = 0;
-	}
+	stopSaveThread();
 
 	delete CurrentStorage;
 	CurrentStorage = 0;
