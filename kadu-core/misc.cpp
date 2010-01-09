@@ -82,6 +82,11 @@ void loadWindowGeometry(QWidget *w, const QString &section, const QString &name,
 	QDesktopWidget *desktop = qApp->desktop();
 	QRect desktopRect = desktop->availableGeometry(desktop->screenNumber(w));
 	rect = desktopRect.intersected(rect);
+#ifdef Q_OS_WIN
+	/* Dorr: Workaround for window positioning on Windows (bug in Qt?) */ 
+	if (rect.y() < 30)
+		rect.moveTop(30);
+#endif
 	w->setGeometry(rect);
 }
 
