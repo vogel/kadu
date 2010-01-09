@@ -49,7 +49,6 @@ HistorySqlStorage::~HistorySqlStorage()
 {
 	kdebugf();
 
-	CommitTimer->stop();
 	Database.commit();
 
 	QSqlDatabase::removeDatabase("kadu-history");
@@ -91,10 +90,6 @@ void HistorySqlStorage::initDatabase()
 	}
 
 	Database.transaction();
-	CommitTimer = new QTimer(this);
-	CommitTimer->setInterval(10000); // 10 sec
-	connect(CommitTimer, SIGNAL(timeout()), this, SLOT(newTransaction()));
-	CommitTimer->start();
 
 	initTables();
 	initIndexes();
@@ -172,7 +167,7 @@ QString HistorySqlStorage::chatWhere(Chat chat)
 	return QString("chat IN (%1)").arg(uuids.join(QLatin1String(", ")));
 }
 
-void HistorySqlStorage::newTransaction()
+void HistorySqlStorage::sync()
 {
 	DatabaseMutex.lock();
 

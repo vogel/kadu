@@ -42,6 +42,7 @@ public:
 	virtual int messagesCount(Chat chat, QDate date = QDate()) = 0;
 
 	virtual void appendMessage(const Message &message) = 0;
+	virtual void sync() = 0;
 
 	virtual void clearChatHistory(Chat chat) = 0;
 

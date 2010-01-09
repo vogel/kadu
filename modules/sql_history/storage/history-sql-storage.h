@@ -28,7 +28,6 @@ class HistorySqlStorage : public HistoryStorage, CrashAwareObject
 	Q_OBJECT
 
 	QSqlDatabase Database;
-	QTimer *CommitTimer;
 
 	QSqlQuery ListChatsQuery;
 	QSqlQuery AppendMessageQuery;
@@ -47,8 +46,6 @@ class HistorySqlStorage : public HistoryStorage, CrashAwareObject
 	QList<Message> messagesFromQuery(Chat chat, QSqlQuery query);
 
 private slots:
-	void newTransaction();
-
 	virtual void messageReceived(const Message &message);
 	virtual void messageSent(const Message &message);
 
@@ -68,6 +65,8 @@ public:
 	virtual int messagesCount(Chat chat, QDate date = QDate());
 
 	void appendMessage(const Message &message);
+	void sync();
+
 	void clearChatHistory(Chat chat);
 	
 	//TODO 0.6.6

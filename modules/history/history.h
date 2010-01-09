@@ -1,35 +1,29 @@
 /***************************************************************************
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-***************************************************************************/
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
 
 #ifndef HISTORY_H
 #define HISTORY_H
 
+#include <QtCore/QDateTime>
+#include <QtCore/QMap>
+#include <QtCore/QMutex>
 #include <QtCore/QObject>
+#include <QtCore/QPair>
+#include <QtCore/QQueue>
+#include <QtCore/QString>
+#include <QtCore/QStringList>
+#include <QtCore/QVariant>
 #include <QtGui/QLabel>
 #include <QtGui/QListWidget>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QCheckBox>
-#include <QtCore/QMap>
-#include <QtCore/QPair>
-#include <QtCore/QString>
-#include <QtCore/QStringList>
-#include <QtCore/QVariant>
-#include <QtCore/QDateTime>
 #include <QtGui/QDialog>
-
-enum HistoryEntryType
-{
-	EntryTypeMessage = 0x00000001,
-	EntryTypeStatus = 0x00000010,
-	EntryTypeSms = 0x00000020,
-	EntryTypeAll = 0x0000003f
-};
 
 #include "configuration/configuration-aware-object.h"
 #include "buddies/buddy-remove-predicate-object.h"
@@ -43,8 +37,17 @@ enum HistoryEntryType
 
 #include "history_exports.h"
 
+enum HistoryEntryType
+{
+	EntryTypeMessage = 0x00000001,
+	EntryTypeStatus = 0x00000010,
+	EntryTypeSms = 0x00000020,
+	EntryTypeAll = 0x0000003f
+};
+
 class Account;
 class ChatWidget;
+class HistorySaveThread;
 class HistoryWindow;
 
 class HISTORYAPI History : public ConfigurationUiHandler, ConfigurationAwareObject, BuddyRemovePredicateObject
@@ -52,6 +55,11 @@ class HISTORYAPI History : public ConfigurationUiHandler, ConfigurationAwareObje
 	Q_OBJECT
 
 	static History *Instance;
+
+	QQueue<Message> UnsavedMessages;
+	QMutex UnsavedMessagesMutex;
+	HistorySaveThread *SaveThread;
+
 	HistoryStorage *CurrentStorage;
 	HistoryWindow *HistoryDialog;
 
@@ -79,6 +87,8 @@ private slots:
 	void accountRegistered(Account);
 	void accountUnregistered(Account);
 
+	void enqueueMessage(const Message &);
+
 	void showHistoryActionActivated(QAction *sender, bool toggled);
 	void showMoreMessages(QAction *action);
 	void clearHistoryActionActivated(QAction *sender, bool toggled);
@@ -90,6 +100,9 @@ private slots:
 
 public:
 	static History * instance();
+
+	Message dequeueUnsavedMessage();
+
 	HistoryStorage * currentStorage() { return CurrentStorage; }
 	void registerStorage(HistoryStorage *storage);
 	void unregisterStorage(HistoryStorage *storage);
@@ -102,4 +115,4 @@ public:
 
 void disableNonHistoryContacts(Action *action);
 
-#endif
+#endif // HISTORY_H
