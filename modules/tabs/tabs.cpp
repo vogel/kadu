@@ -487,11 +487,11 @@ void TabsManager::onTimer()
 				else
 					tabdialog->setTabIcon(i, chat->icon());
 			}
-			else if (currentChat == chat && !tabsActive)
+			else if (currentChat == chat && tabsActive)
 				// wywal go z listy chatow z nowymi wiadomosciami
 				chatsWithNewMessages.removeOne(chat);
 
-			if (!tabsActive)
+			if (tabsActive)
 			{
 				if (currentChat == chat)
 				{
