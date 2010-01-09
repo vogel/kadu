@@ -449,6 +449,8 @@ void TabsManager::onTimer()
 	ChatWidget *chat;
 	static bool msg, wasactive = 1;
 
+	bool tabsActive = _isActiveWindow(tabdialog);
+	ChatWidget *currentChat = dynamic_cast<ChatWidget *>(tabdialog->currentWidget());
 	// sprawdzaj wszystkie okna ktore sa w tabach
 	for (int i = tabdialog->count() -1; i >= 0; i--)
 	{
@@ -458,10 +460,10 @@ void TabsManager::onTimer()
 		if (chatsWithNewMessages.contains(chat))
 		{
 			// okno nieaktywne to trzeba cos zrobic
-			if (_isActiveWindow(tabdialog))
+			if (!tabsActive)
 			{
 				// jesli chat jest na aktywnej karcie - zachowuje sie jak normalne okno
-				if (tabdialog->currentWidget() == chat)
+				if (currentChat == chat)
 				{	if (msg && config_blinkChatTitle)
 						tabdialog->setWindowTitle(QString().fill(' ', (chat->chat().title().length() + 5)));
 					else if (!msg)
@@ -478,20 +480,20 @@ void TabsManager::onTimer()
 			}
 
 			// tab aktualnie nieaktywny to ustaw ikonke
-			if (tabdialog->currentWidget() != chat)
+			if (currentChat != chat)
 			{
 				if (msg)
 					tabdialog->setTabIcon(i, IconsManager::instance()->loadIcon("Message"));
 				else
 					tabdialog->setTabIcon(i, chat->icon());
 			}
-			else if (tabdialog->currentWidget()==chat && _isActiveWindow(tabdialog))
+			else if (currentChat == chat && !tabsActive)
 				// wywal go z listy chatow z nowymi wiadomosciami
 				chatsWithNewMessages.removeOne(chat);
 
-			if (_isActiveWindow(tabdialog))
+			if (!tabsActive)
 			{
-				if (tabdialog->currentWidget()==chat)
+				if (currentChat == chat)
 				{
 					// zeruje licznik nowch wiadomosci w chat
 					chat->markAllMessagesRead();
@@ -507,7 +509,7 @@ void TabsManager::onTimer()
 	if (chatsWithNewMessages.size()==0)
 		timer.stop();
 
-	wasactive = _isActiveWindow(tabdialog);
+	wasactive = tabsActive;
 	msg = !msg;
 	kdebugf2();
 }
