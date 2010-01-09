@@ -4,6 +4,7 @@
 * core: class CrashAwareObject added, it reacts on all crashed (Vogel)
 * history: send commit to database even if crash occured (Vogel)
 * ChangeLog: split into 2 files (old and new) (Vogel)
+* notify: fixed fetching data from parent notification if 'use custom settings' is off
 
 +++ version 0.6.6-alpha2
 * gui: hint position preview added (Kermit)
