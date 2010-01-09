@@ -269,6 +269,7 @@ void ChatMessagesView::configurationUpdated()
 		"html {"
 		"	font: %1 %2 %3 %4;"
 		"	text-decoration: %5;"
+		"	word-wrap: break-word;"
 		"}"
 		"body {"
 		"	margin: %6;"
