@@ -76,7 +76,7 @@ void ContactManager::detailsUnloaded(Contact item)
 		unregisterItem(item);
 }
 
-Contact ContactManager::byId(Account account, const QString &id, bool create)
+Contact ContactManager::byId(Account account, const QString &id, NotFoundAction action)
 {
 	ensureLoaded();
 
@@ -87,14 +87,15 @@ Contact ContactManager::byId(Account account, const QString &id, bool create)
 		if (account == contact.contactAccount() && id == contact.id())
 			return contact;
 
-	if (!create)
+	if (action == ActionReturnNull)
 		return Contact::null;
 
 	Contact contact = Contact::create();
 	contact.setContactAccount(account);
 	contact.setId(id);
 
-	addItem(contact);
+	if (action == ActionCreateAndAdd)
+		addItem(contact);
 
 	Protocol *protocolHandler = account.protocolHandler();
 	if (!protocolHandler)

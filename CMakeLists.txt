@@ -230,4 +230,4 @@ message (STATUS " * install prefix: ${CMAKE_INSTALL_PREFIX}")
 message (STATUS " * build type: ${CMAKE_BUILD_TYPE}")
 
 # install data files
-install (FILES AUTHORS HISTORY README THANKS ChangeLog COPYING DESTINATION ${KADU_DATA_DIR})
+install (FILES AUTHORS HISTORY README THANKS ChangeLog ChangeLog.OLD-PL COPYING DESTINATION ${KADU_DATA_DIR})

@@ -38,6 +38,8 @@
 
 #include "debug.h"
 
+#include "history-save-thread.h"
+
 #include "history.h"
 
 extern "C" KADU_EXPORT int history_init(bool firstLoad)
@@ -90,7 +92,8 @@ History * History::instance()
 	return Instance;
 }
 
-History::History() : QObject(0), HistoryDialog(new HistoryWindow()), CurrentStorage(0)
+History::History() :
+		QObject(0), HistoryDialog(new HistoryWindow()), CurrentStorage(0), SaveThread(0)
 {
 	kdebugf();
 	createActionDescriptions();
@@ -106,6 +109,13 @@ History::History() : QObject(0), HistoryDialog(new HistoryWindow()), CurrentStor
 History::~History()
 {
 	kdebugf();
+
+	if (SaveThread && SaveThread->isRunning())
+	{
+		SaveThread->stop();
+		SaveThread->wait();
+	}
+
 	deleteActionDescriptions();
 	kdebugf2();
 }
@@ -151,7 +161,6 @@ void History::deleteActionDescriptions()
 
 void History::showHistoryActionActivated(QAction *sender, bool toggled)
 {
-  
 	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(sender->parent());
 	if (!chatEditBox)
 	{
@@ -188,7 +197,6 @@ void History::showHistoryActionActivated(QAction *sender, bool toggled)
 
 		menu->popup(widget->mapToGlobal(QPoint(0, widget->height())));
 	}
-
 }
 
 void History::showMoreMessages(QAction *action)
@@ -275,36 +283,61 @@ void History::chatCreated(ChatWidget *chatWidget)
 	kdebugf2();
 }
 
-
 void History::accountRegistered(Account account)
 {
-	if (!account.protocolHandler() || !CurrentStorage)
+	if (!account.protocolHandler())
 		return;
 
 	ChatService *service = account.protocolHandler()->chatService();
 	if (service)
 	{
 		connect(service, SIGNAL(messageReceived(const Message &)),
-			CurrentStorage, SLOT(messageReceived(const Message &)));
+				this, SLOT(enqueueMessage(const Message &)));
 		connect(service, SIGNAL(messageSent(const Message &)),
-			CurrentStorage, SLOT(messageSent(const Message &)));
+				this, SLOT(enqueueMessage(const Message &)));
 	}
 }
 
-
 void History::accountUnregistered(Account account)
 {
-	if (account.isNull() || !account.protocolHandler())
+	if (!account.protocolHandler())
 		return;
 
 	ChatService *service = account.protocolHandler()->chatService();
 	if (service)
 	{
 		disconnect(service, SIGNAL(messageReceived(const Message &)),
-			CurrentStorage, SLOT(messageReceived(const Message &)));
+				this, SLOT(enqueueMessage(const Message &)));
 		disconnect(service, SIGNAL(messageSent(const Message &)),
-			CurrentStorage, SLOT(messageSent(const Message &)));
+				this, SLOT(enqueueMessage(const Message &)));
 	}
+}
+
+void History::enqueueMessage(const Message &message)
+{
+	if (!CurrentStorage)
+		return;
+
+	UnsavedMessagesMutex.lock();
+	UnsavedMessages.enqueue(message);
+	UnsavedMessagesMutex.unlock();
+
+	SaveThread->newMessagesAvailable();
+}
+
+Message History::dequeueUnsavedMessage()
+{
+	UnsavedMessagesMutex.lock();
+	if (UnsavedMessages.isEmpty())
+	{
+		UnsavedMessagesMutex.unlock();
+		return Message::null;
+	}
+
+	Message result = UnsavedMessages.dequeue();
+	UnsavedMessagesMutex.unlock();
+
+	return result;
 }
 
 void History::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
@@ -474,6 +507,20 @@ void History::registerStorage(HistoryStorage *storage)
 {
 	CurrentStorage = storage;
 
+	if (SaveThread && SaveThread->isRunning())
+	{
+		SaveThread->stop();
+		SaveThread->wait();
+		delete SaveThread;
+		SaveThread = 0;
+	}
+
+	if (!CurrentStorage)
+		return;
+
+	SaveThread = new HistorySaveThread(this, this);
+	SaveThread->start();
+
 	foreach (ChatWidget *chat, ChatWidgetManager::instance()->chats())
 		chatCreated(chat);
 
@@ -488,6 +535,14 @@ void History::unregisterStorage(HistoryStorage *storage)
 
 	foreach (Account account, AccountManager::instance()->items())
 		accountUnregistered(account);
+
+	if (SaveThread && SaveThread->isRunning())
+	{
+		SaveThread->stop();
+		SaveThread->wait();
+		delete SaveThread;
+		SaveThread = 0;
+	}
 
 	delete CurrentStorage;
 	CurrentStorage = 0;

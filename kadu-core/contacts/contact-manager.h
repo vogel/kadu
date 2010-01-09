@@ -50,7 +50,7 @@ public:
 	void detailsLoaded(Contact item);
 	void detailsUnloaded(Contact item);
 
-	Contact byId(Account account, const QString &id, bool create = false);
+	Contact byId(Account account, const QString &id, NotFoundAction = ActionCreate);
 	QList<Contact> contacts(Account account);
 
 signals:

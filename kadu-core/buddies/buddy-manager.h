@@ -60,9 +60,9 @@ public:
 	BuddyList buddies(Account account, bool includeAnonymous = false);
 	void mergeBuddies(Buddy destination, Buddy source);
 
-	Buddy byDisplay(const QString &display, bool create = false);
-	Buddy byId(Account account, const QString &id, bool create = false);
-	Buddy byContact(Contact contact, bool create = false);
+	Buddy byDisplay(const QString &display, NotFoundAction action);
+	Buddy byId(Account account, const QString &id, NotFoundAction action);
+	Buddy byContact(Contact contact, NotFoundAction action);
 
 signals:
 	void buddyAboutToBeAdded(Buddy &buddy);

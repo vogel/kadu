@@ -195,7 +195,7 @@ void AddBuddyWindow::setAddContactEnabled()
 		return;
 	}
 
-	Contact contact = ContactManager::instance()->byId(account, UserNameEdit->text(), false);
+	Contact contact = ContactManager::instance()->byId(account, UserNameEdit->text(), ActionReturnNull);
 	if (contact && contact.ownerBuddy() && !contact.ownerBuddy().isAnonymous())
 	{
 		AddContactButton->setEnabled(false);
@@ -221,7 +221,7 @@ void AddBuddyWindow::setAddContactEnabled()
 			return;
 		}
 
-		if (BuddyManager::instance()->byDisplay(DisplayNameEdit->text()))
+		if (BuddyManager::instance()->byDisplay(DisplayNameEdit->text(), ActionReturnNull))
 		{
 			AddContactButton->setEnabled(false);
 			displayErrorMessage(tr("Visible name is already used for another contact"));
@@ -271,7 +271,7 @@ void AddBuddyWindow::accept()
 	if (!MergeContact->isChecked())
 	{
 		if (MyBuddy.isNull())
-			buddy = BuddyManager::instance()->byId(account, UserNameEdit->text(), true);
+			buddy = BuddyManager::instance()->byId(account, UserNameEdit->text(), ActionCreateAndAdd);
 		else
 			buddy = MyBuddy;
 
@@ -285,7 +285,7 @@ void AddBuddyWindow::accept()
 			return;
 	}
 
-	Contact contact = ContactManager::instance()->byId(account, UserNameEdit->text(), true);
+	Contact contact = ContactManager::instance()->byId(account, UserNameEdit->text(), ActionCreateAndAdd);
 	contact.setOwnerBuddy(buddy);
 	
 	buddy.addToGroup(GroupCombo->currentGroup());

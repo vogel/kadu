@@ -42,7 +42,7 @@ Hint::Hint(QWidget *parent, Notification *notification)
 	if (notification->details() != "")
 		details.append(notification->details());
 
-	startSecs = secs = config_file.readNumEntry("Hints", "Event_" + notification->type() + "_timeout", 10);
+	startSecs = secs = config_file.readNumEntry("Hints", "Event_" + notification->key() + "_timeout", 10);
 
 	createLabels(notification->icon().pixmap(config_file.readNumEntry("Hints", "AllEvents_iconSize", 32)));
 	updateText();
@@ -90,9 +90,9 @@ Hint::~Hint()
 
 void Hint::configurationUpdated()
 {
-	bcolor = config_file.readColorEntry("Hints", "Event_" + notification->type() + "_bgcolor", &qApp->palette().background().color());
-	fcolor = config_file.readColorEntry("Hints", "Event_" + notification->type() + "_fgcolor", &qApp->palette().foreground().color());
-	label->setFont(config_file.readFontEntry("Hints", "Event_" + notification->type() + "_font", &qApp->font()));
+	bcolor = config_file.readColorEntry("Hints", "Event_" + notification->key() + "_bgcolor", &qApp->palette().background().color());
+	fcolor = config_file.readColorEntry("Hints", "Event_" + notification->key() + "_fgcolor", &qApp->palette().foreground().color());
+	label->setFont(config_file.readFontEntry("Hints", "Event_" + notification->key() + "_font", &qApp->font()));
 	QString style = narg("QWidget {color:%1; background-color:%2; border-width:0px; border-color:%2}", fcolor.name(), bcolor.name());
 
 	setStyleSheet(style);
@@ -131,7 +131,7 @@ void Hint::updateText()
 {
 	QString text;
 
-	QString syntax = config_file.readEntry("Hints", "Event_" + notification->type() + "_syntax", "");
+	QString syntax = config_file.readEntry("Hints", "Event_" + notification->key() + "_syntax", "");
 	if (syntax == "")
 		text = notification->text();
 	else
@@ -158,7 +158,7 @@ void Hint::updateText()
 
 			int citeSign = config_file.readNumEntry("Hints","CiteSign");
 
-			QString itemSyntax = config_file.readEntry("Hints", "Event_" + notification->type() + "_detailSyntax", "\n&bull; <small>%1</small>");
+			QString itemSyntax = config_file.readEntry("Hints", "Event_" + notification->key() + "_detailSyntax", "\n&bull; <small>%1</small>");
 			for (; i < count; i++)
 			{
 				const QString &message = details[i];

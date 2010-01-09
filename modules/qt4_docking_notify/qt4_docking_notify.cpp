@@ -121,10 +121,10 @@ void Qt4Notify::notify(Notification *notification)
 	{
 		notification->acquire();
 
-		unsigned int timeout = config_file.readNumEntry("Qt4DockingNotify", QString("Event_") + notification->type() + "_timeout");
-		unsigned int icon = config_file.readNumEntry("Qt4DockingNotify", QString("Event_") + notification->type() + "_icon");
-		QString title = config_file.readEntry("Qt4DockingNotify", QString("Event_") + notification->type() + "_title");
-		QString syntax = config_file.readEntry("Qt4DockingNotify", QString("Event_") + notification->type() + "_syntax");
+		unsigned int timeout = config_file.readNumEntry("Qt4DockingNotify", QString("Event_") + notification->key() + "_timeout");
+		unsigned int icon = config_file.readNumEntry("Qt4DockingNotify", QString("Event_") + notification->key() + "_icon");
+		QString title = config_file.readEntry("Qt4DockingNotify", QString("Event_") + notification->key() + "_title");
+		QString syntax = config_file.readEntry("Qt4DockingNotify", QString("Event_") + notification->key() + "_syntax");
 
 		qt4_tray_icon->showMessage(parseText(title, notification, notification->text()),
 			parseText(syntax, notification, notification->details()),

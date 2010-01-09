@@ -144,6 +144,9 @@ public:
 		@return typ zdarzenia
 	 **/
 	QString type() const;
+
+	QString key() const;
+
 	/**
 		Ustawia tytu� zdarzenia.
 	 **/

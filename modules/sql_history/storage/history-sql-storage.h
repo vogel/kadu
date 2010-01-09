@@ -14,6 +14,8 @@
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlQuery>
 
+#include "core/crash-aware-object.h"
+
 #include "modules/history/storage/history-storage.h"
 
 /**
@@ -21,12 +23,11 @@
 	@author Juzef, Adrian
 **/
 
-class HistorySqlStorage : public HistoryStorage
+class HistorySqlStorage : public HistoryStorage, CrashAwareObject
 {
 	Q_OBJECT
 
 	QSqlDatabase Database;
-	QTimer *CommitTimer;
 
 	QSqlQuery ListChatsQuery;
 	QSqlQuery AppendMessageQuery;
@@ -45,10 +46,11 @@ class HistorySqlStorage : public HistoryStorage
 	QList<Message> messagesFromQuery(Chat chat, QSqlQuery query);
 
 private slots:
-	void newTransaction();
-
 	virtual void messageReceived(const Message &message);
 	virtual void messageSent(const Message &message);
+
+protected:
+	virtual void crash();
 
 public:
 	explicit HistorySqlStorage(QObject *parent = 0);
@@ -63,6 +65,8 @@ public:
 	virtual int messagesCount(Chat chat, QDate date = QDate());
 
 	void appendMessage(const Message &message);
+	void sync();
+
 	void clearChatHistory(Chat chat);
 	
 	//TODO 0.6.6

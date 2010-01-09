@@ -117,12 +117,6 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 	if (!window)
 		return;
 
-	if (NotifyAboutAll)
-	{
-		NotifyAboutAll = false;
-		config_file.writeEntry("Notify", "NotifyAboutAll", false);
-	}
-
 	BuddySet buddies = window->contacts().toBuddySet();
 
 	bool on = true;
@@ -137,6 +131,12 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 			on = false;
 			break;
 		}
+	}
+
+	if (NotifyAboutAll)
+	{
+		NotifyAboutAll = false;
+		config_file.writeEntry("Notify", "NotifyAboutAll", false);
 	}
 
 	foreach (const Buddy buddy, buddies)
@@ -233,7 +233,7 @@ void NotificationManager::statusChanged(Contact contact, Status oldStatus)
 	if (!contact.contactAccount())
 		return;
 
-	if (contact.id() == contact.contactAccount().accountContact().id()) // myself
+	if (contact == contact.contactAccount().accountContact()) // myself
 		return;
 
 	Status status = contact.currentStatus();
@@ -250,12 +250,7 @@ void NotificationManager::statusChanged(Contact contact, Status oldStatus)
 	ContactSet contacts(contact);
 
 	StatusChangedNotification *statusChangedNotification;
-	// TODO: 0.6.6 this SUXX use '/' and usecustomsettings to get real setting
-	// this fucks up callbacks for file transfers
-	if (config_file.readBoolEntry("Notify", "StatusChanged" + changedTo + "_UseCustomSettings", true))
-		statusChangedNotification = new StatusChangedNotification(changedTo, contacts);
-	else
-		statusChangedNotification = new StatusChangedNotification("", contacts);
+	statusChangedNotification = new StatusChangedNotification(changedTo, contacts);
 
 	notify(statusChangedNotification);
 
@@ -343,7 +338,7 @@ void NotificationManager::notify(Notification *notification)
 {
 	kdebugf();
 
-	QString notifyType = notification->type();
+	QString notifyType = notification->key();
 	bool foundNotifier = false;
 	bool foundNotifierWithCallbackSupported = notification->getCallbacks().count() == 0;
 
@@ -429,6 +424,23 @@ void NotificationManager::createDefaultConfiguration()
 	config_file.addVariable("Notify", "NewMessageOnlyIfInactive", true);
 	config_file.addVariable("Notify", "NotifyAboutAll", true);
 	config_file.addVariable("Notify", "NotifyIgnoreOnConnection", true);
+}
+
+QString NotificationManager::notifyConfigurationKey(const QString &eventType)
+{
+	QString event = eventType;
+
+	while (true)
+	{
+		int slashPosition = event.lastIndexOf('/');
+		if (-1 == slashPosition)
+			return event;
+
+		if (config_file.readBoolEntry("Notify", event + "_UseCustomSettings"))
+			return event;
+
+		event = event.left(slashPosition);
+	}
 }
 
 ConfigurationUiHandler * NotificationManager::configurationUiHandler()

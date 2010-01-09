@@ -106,7 +106,7 @@ void GaduImporter::importGaduContact(Buddy &buddy)
 	Account account = allGaduAccounts[0];
 	QString id = buddy.customData("uin");
 
-	Contact contact = ContactManager::instance()->byId(account, id, true);
+	Contact contact = ContactManager::instance()->byId(account, id, ActionCreateAndAdd);
 	
 	buddy.removeCustomData("uin");
 	buddy.setBlocked(QVariant(buddy.customData("blocking")).toBool());
@@ -135,7 +135,7 @@ void GaduImporter::importIgnored()
 		BuddySet ignoredList;
 		QList<QDomElement> ignoredContacts = xml_config_file->getNodes(ignoredGroup, "IgnoredContact");
 		foreach (QDomElement ignoredContact, ignoredContacts)
-			ignoredList.insert(BuddyManager::instance()->byId(account, ignoredContact.attribute("uin"), true));
+			ignoredList.insert(BuddyManager::instance()->byId(account, ignoredContact.attribute("uin"), ActionCreateAndAdd));
 
 		if (0 == ignoredList.count())
 			continue;

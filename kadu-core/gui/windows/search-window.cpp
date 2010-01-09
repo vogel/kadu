@@ -357,7 +357,7 @@ ContactSet SearchWindow::selected()
 	else
 		altnick = uin; // If above are empty, use uin.
 
-	Contact contact = ContactManager::instance()->byId(CurrentAccount, uin, true);
+	Contact contact = ContactManager::instance()->byId(CurrentAccount, uin, ActionCreateAndAdd);
 	Buddy e = contact.ownerBuddy();
 	if (e.isNull())
 	{

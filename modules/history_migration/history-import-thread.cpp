@@ -97,7 +97,7 @@ void HistoryImportThread::importEntry(Chat chat, const HistoryEntry &entry)
 	msg.setMessageChat(chat);
 	msg.setMessageSender(outgoing
 			? GaduAccount.accountContact()
-			: ContactManager::instance()->byId(GaduAccount, id, true));
+			: ContactManager::instance()->byId(GaduAccount, id, ActionCreateAndAdd));
 	msg.setContent(entry.message);
 	msg.setSendDate(entry.sdate);
 	msg.setReceiveDate(entry.date);
@@ -111,7 +111,7 @@ Chat HistoryImportThread::chatFromUinsList(QStringList uinsList)
 {
 	ContactSet contacts;
 	foreach (const QString &uin, uinsList)
-		contacts.insert(ContactManager::instance()->byId(GaduAccount, uin, true));
+		contacts.insert(ContactManager::instance()->byId(GaduAccount, uin, ActionCreateAndAdd));
 
 	return ChatManager::instance()->findChat(contacts);
 }

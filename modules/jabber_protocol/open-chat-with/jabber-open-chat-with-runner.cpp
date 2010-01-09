@@ -32,7 +32,7 @@ BuddyList JabberOpenChatWithRunner::matchingContacts(const QString &query)
 	if (!validateUserID(query))
 		return matchedContacts;
 
-	Contact contact = ContactManager::instance()->byId(ParentAccount, query, true);
+	Contact contact = ContactManager::instance()->byId(ParentAccount, query, ActionCreate);
 	Buddy buddy = contact.ownerBuddy();
 	if (buddy.isNull())
 	{

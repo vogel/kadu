@@ -7,29 +7,38 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BUDDIES_AWARE_OBJECT_H
-#define BUDDIES_AWARE_OBJECT_H
+#ifndef HISTORY_SAVE_THREAD_H
+#define HISTORY_SAVE_THREAD_H
 
-#include <QtCore/QList>
+#include <QtCore/QDateTime>
+#include <QtCore/QMutex>
+#include <QtCore/QThread>
+#include <QtCore/QWaitCondition>
 
-#include "aware-object.h"
+class History;
 
-class Buddy;
-
-class KADUAPI BuddiesAwareObject : public AwareObject<BuddiesAwareObject>
+class HistorySaveThread : public QThread
 {
+	Q_OBJECT
 
-protected:
-	virtual void contactAdded(Buddy buddy) = 0;
-	virtual void contactRemoved(Buddy buddy) = 0;
+	History *CurrentHistory;
+
+	QMutex SomethingToSave;
+	QWaitCondition WaitForSomethingToSave;
+
+	QDateTime LastSyncTime;
+
+	bool Stopped;
 
 public:
-	static void notifyBuddyAdded(Buddy buddy);
-	static void notifyBuddyRemoved(Buddy buddy);
+	explicit HistorySaveThread(History *history, QObject *parent = 0);
+	virtual ~HistorySaveThread();
 
-	void triggerAllBuddiesAdded();
-	void triggerAllBuddiesRemoved();
+	virtual void run();
+
+	void newMessagesAvailable();
+	void stop();
 
 };
 
-#endif // BUDDIES_AWARE_OBJECT_H
+#endif // HISTORY_SAVE_THREAD_H

@@ -89,6 +89,10 @@ public:
 	QList<Notifier *> notifiers();
 	QList<NotifyEvent *> notifyEvents();
 
+	bool notifyAboutAll() { return NotifyAboutAll; }
+
+	QString notifyConfigurationKey(const QString &eventType);
+
 	ConfigurationUiHandler * configurationUiHandler();
 
 signals:

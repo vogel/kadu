@@ -59,7 +59,7 @@ QString ChatDetailsConference::name() const
 {
 	QStringList displays;
 	foreach (const Contact &contact, Contacts.toContactList())
-		displays.append(BuddyManager::instance()->byContact(contact, true).display());
+		displays.append(BuddyManager::instance()->byContact(contact, ActionCreateAndAdd).display());
 
 	displays.sort();
 	return displays.join(", ");

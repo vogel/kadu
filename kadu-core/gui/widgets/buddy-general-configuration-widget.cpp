@@ -120,7 +120,7 @@ bool BuddyGeneralConfigurationWidget::isValid()
 	if (display.isEmpty())
 		return false;
 
-	Buddy buddy = BuddyManager::instance()->byDisplay(display);
+	Buddy buddy = BuddyManager::instance()->byDisplay(display, ActionReturnNull);
 	if (buddy && buddy != MyBuddy)
 		return false;
 

@@ -9,8 +9,10 @@
 
 #include <QtCore/QTimer>
 
+#include "notify/notification-manager.h"
 #include "parser/parser.h"
 #include "debug.h"
+
 #include "notification.h"
 
 static QString getNotificationTitle(const QObject * const object)
@@ -110,6 +112,11 @@ void Notification::clearDefaultCallback()
 QString Notification::type() const
 {
 	return Type;
+}
+
+QString Notification::key() const
+{
+	return NotificationManager::instance()->notifyConfigurationKey(Type);
 }
 
 void Notification::setTitle(const QString &title)

@@ -121,7 +121,7 @@ void BuddyManager::mergeBuddies(Buddy destination, Buddy source)
 	ConfigurationManager::instance()->flush();
 }
 
-Buddy BuddyManager::byDisplay(const QString &display, bool create)
+Buddy BuddyManager::byDisplay(const QString &display, NotFoundAction action)
 {
 	ensureLoaded();
 
@@ -134,41 +134,45 @@ Buddy BuddyManager::byDisplay(const QString &display, bool create)
 			return buddy;
 	}
 
-	if (!create)
+	if (ActionReturnNull == action)
 		return Buddy::null;
 
 	Buddy buddy = Buddy::create();
 	buddy.setDisplay(display);
-	addItem(buddy);
+
+	if (ActionCreateAndAdd == action)
+		addItem(buddy);
 
 	return buddy;
 }
 
-Buddy BuddyManager::byId(Account account, const QString &id, bool create)
+Buddy BuddyManager::byId(Account account, const QString &id, NotFoundAction action)
 {
 	ensureLoaded();
 
-	Contact contact = ContactManager::instance()->byId(account, id, create);
+	Contact contact = ContactManager::instance()->byId(account, id, action);
 	if (contact.isNull())
 		return Buddy::null;
 
-	return byContact(contact, create);
+	return byContact(contact, action);
 }
 
-Buddy BuddyManager::byContact(Contact contact, bool create)
+Buddy BuddyManager::byContact(Contact contact, NotFoundAction action)
 {
 	ensureLoaded();
 
 	if (contact.isNull())
 		return Buddy::null;
 
-	if (!create || !contact.ownerBuddy().isNull())
+	if (ActionReturnNull == action || !contact.ownerBuddy().isNull())
 		return contact.ownerBuddy();
 
 	Buddy buddy = Buddy::create();
 	buddy.setDisplay(QString("%1: %2").arg(contact.contactAccount().name()).arg(contact.id()));
 	contact.setOwnerBuddy(buddy);
-	addItem(buddy);
+
+	if (ActionCreateAndAdd == action)
+		addItem(buddy);
 
 	return buddy;
 }

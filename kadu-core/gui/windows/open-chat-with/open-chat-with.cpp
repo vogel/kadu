@@ -20,6 +20,7 @@
 #include "buddies/buddy-shared.h"
 #include "chat/chat-manager.h"
 #include "configuration/xml-configuration-file.h"
+#include "contacts/contact-manager.h"
 #include "core/core.h"
 #include "gui/widgets/chat-widget-manager.h"
 
@@ -106,6 +107,9 @@ void OpenChatWith::openChat()
 		return;
 
 	ContactSet contacts = widget->selectedContacts();
+	foreach (Contact contact, contacts)
+		ContactManager::instance()->addItem(contact);
+
 	BuddySet buddies = contacts.toBuddySet();
 
 	if (!buddies.isEmpty() && !buddies.contains(Core::instance()->myself()))

@@ -4,9 +4,12 @@ set (SOURCES
 	model/chat-dates-model.cpp
 	model/history-chats-model.cpp
 	model/history-chats-model-proxy.cpp
+
 	search/history-search-parameters.cpp
 	storage/history-storage.cpp
+
 	history.cpp
+	history-save-thread.cpp
 )
 
 set (MOC_SOURCES
@@ -16,7 +19,9 @@ set (MOC_SOURCES
 	model/history-chats-model.h
 	model/history-chats-model-proxy.h
 	storage/history-storage.h
+
 	history.h
+	history-save-thread.h
 )
 
 set (TRANSLATION_SOURCES

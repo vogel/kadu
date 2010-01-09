@@ -222,7 +222,7 @@ QStringList mySplit(const QChar &sep, const QString &str)
 
 void ExecNotify::notify(Notification *notification)
 {
-	QString syntax = config_file.readEntry("Exec Notify", notification->type() + "Cmd");
+	QString syntax = config_file.readEntry("Exec Notify", notification->key() + "Cmd");
 	if (syntax.isEmpty())
 		return;
 	QStringList s = mySplit(' ', syntax);

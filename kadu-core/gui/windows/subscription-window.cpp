@@ -122,7 +122,11 @@ void SubscriptionWindow::accepted()
 {
 	Buddy buddy = CurrentContact.ownerBuddy();
 	if (buddy.isNull())
-		buddy = BuddyManager::instance()->byId(CurrentContact.contactAccount(), VisibleName->text().isEmpty() ? CurrentContact.id() : VisibleName->text(), true);
+	{
+		QString id = VisibleName->text().isEmpty() ? CurrentContact.id() : VisibleName->text();
+		buddy = BuddyManager::instance()->byId(CurrentContact.contactAccount(), id, ActionCreateAndAdd);
+	}
+
 	buddy.setAnonymous(false);
 	if (!VisibleName->text().isEmpty())
 		buddy.setDisplay(VisibleName->text());

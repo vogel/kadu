@@ -120,7 +120,7 @@ void BuddyContactsTableModel::performItemActionEdit(BuddyContactsTableItem *item
 
 void BuddyContactsTableModel::performItemActionAdd(BuddyContactsTableItem *item)
 {
-	Contact contact = ContactManager::instance()->byId(item->itemAccount(), item->id(), true);
+	Contact contact = ContactManager::instance()->byId(item->itemAccount(), item->id(), ActionCreateAndAdd);
 	contact.setOwnerBuddy(ModelBuddy);
 	contact.setPriority(item->itemContactPriority());
 }
@@ -135,7 +135,7 @@ void BuddyContactsTableModel::performItemActionDetach(BuddyContactsTableItem *it
 	if (display.isEmpty())
 		return;
 
-	Buddy newBuddy = BuddyManager::instance()->byDisplay(display, true);
+	Buddy newBuddy = BuddyManager::instance()->byDisplay(display, ActionCreateAndAdd);
 	newBuddy.setAnonymous(false);
 	contact.setOwnerBuddy(newBuddy);
 }

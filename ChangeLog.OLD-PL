@@ -1,0 +1,3140 @@
+Teksty w nawiasach na końcu wpisu mówią o tym, kto dokonał poprawki lub rozbudowy.
+Postać (x/y) oznacza, że x jest pomysłodawcą lub podesłał patcha, a zrobił to ktoś oznaczony przez y.
+Jeśli jest w postaci (z) to zarówno pomysł jak i wykonanie należy do z.
+
++++ wersja 0.6.5.1 (14.01.2009)
+* poprawiony problem z zapisywaniem rozmiaru okien przy korzystaniu z twin view (dorr)
+* poprawki związane z wyborem zestawów dźwiękowych (dorr, White Eagle)
+* poprawki w module profiles (dorr)
+* poprawiony segfault z modułu screenshot (White Eagle)
+* poprawki w działaniu aplikacji pod Mac OS X (dorr)
+* moduł spellchecker działa również pod windows (michal)
+* dodane nowe składnie okna rozmowy (dorr)
+* dodane moduły mx610_notify, water_notify, weather (dorr)
+* dodane moduły odtwarzaczy audacious, amarok (1 i 2), bmpx, dragon player, falf, itunes, vlc, xmms (1 i 2) (dorr)
+* poprawki różnych drobnych błędów
+
++++ wersja 0.6.5 (08.12.2008)
+* wstępny port na Qt4.4
+
++++ wersja 0.6.0.3 (01.01.2009)
+* aktualizacja libgadu - drobne poprawki, dodana obsługa gg 8.0 (neeo)
+* zaktualizowany system budowania (neeo)
+* poprawione wyrażenie regularne dla URLi zawierających znaki '[' i ']' (neeo)
+* poprawione zachowanie przy sprawdzaniu dostępności aktualizacji (neeo)
+* drobne optymalizacje, usunięty wyciek pamięci dla obrazu listy kontaktów (neeo)
+* zaktualizowane miejsce instalacji pliku kadu.desktop (neeo)
+* zmiany statusów nie są logowane, gdy zapis historii jest wyłączony (neeo)
+* moduł nextinfo dodany do autodownloadu (neeo)
+* kadu nie łączy ponownie po rozłączeniu w wyniku zalogowania się innego klienta do serwera (White Eagle)
+* pozycje na liście 'Ostatnie rozmowy...' nie duplikują się (neeo)
+* poprawka kolorowania przychodzących wiadomości (daris/neeo)
+* dostępna długość opisu ustawiana w zależności od używanej wersji protokołu (neeo)
+* aktualizacja libgadu - poprawka bezpieczeństwa, rozwiązany problem przy kompilacji bez pthreads (neeo)
+* numer portu w panelu informacyjnym nie przyjmuje wartości ujemnych (dorr/neeo)
+* brakujące podpowiedzi dla opcji w oknie konfiguracji (Vogel,neeo)
+* poprawiona współpraca z bramką Ery (neeo)
+
++++ wersja 0.6.0.2 (03.07.2008)
+* poprawiona kolejność argumentów konstruktora klasy ConfigLineEdit (neeo)
+* wyświetlanie poprawnej ikony po zmianie zestawu lub zmianie statusu dla wcześniej otwartych okien (neeo)
+* poprawiona wywrotka programu przy odrzucaniu przychodzącego transferu pliku (White Eagle)
+* aktualizacja libgadu - poprawki w dcc7 i przy przesyłaniu obrazków (neeo)
+* drobne poprawki zachowania akcji w oknie wyszukiwania kontaktów (neeo)
+* poprawiona współpraca modułu SMS z bramką Ery (neeo)
+* poprawione zachowanie przy dodawaniu kontaktów z samym adresem e-mail (neeo)
+* moduł senthistory dodany do autodownloadu (neeo)
+* akcja historii jest odblokowana, nawet gdy nie wybrano żadnego kontaktu (neeo)
+
++++ wersja 0.6.0.1 (03.05.2008)
+* poprawka kompilacji na FreeBSD 7.0 (neeo)
+* poprawne działanie przy zmianie stanu akcji wysyłania wiadomości przez Return (neeo)
+* poprawione zachowanie okien pokazujących wiadomości przy zmianie ich rozmiaru (daris/neeo)
+* poprawka przy usuwaniu większej liczby kontaktów (neeo)
+* dodana akcja globalna umożliwiająca zmianę statusu (neeo)
+* moduł last_seen dodany do autodownloadu (neeo)
+* poprawione pozycjonowanie dymków dla kontaktów biorących udział w konferencji (ultr/neeo)
+* drobne poprawki w skrypcie configure (wisnia/neeo)
+* dodana nowa pula adresów serwerów gg (neeo)
+* aktualizacja tłumaczeń na język niemiecki (Ron_K/White Eagle)
+* aktualizacja libgadu - poprawki przy wyszukiwaniu kontaktów i w DCC (neeo)
+* dodanie komunikatu o wyborze zestawu dźwięku 'Własne', aby móc zmieniać poszczególne pliki dźwiękowe (White Eagle)
+* poprawka kolorowania wiadomości przychodzących (daris/neeo)
+* poprawka parsowania statusu w module autoaway (White Eagle)
+* poprawka łączenia, gdy kadu zostało uruchomione bez dostępu do sieci (White Eagle)
+* aktualizacja tłumaczeń (neeo)
+* poprawka cytowania wiadomości z historii w oknie chat (neeo)
+* moduły autostatus i globalhotkeys dodane do autodownloadu (White Eagle)
+* poprawka wysypu Kadu przy próbie zmiany/usunięcia ikony grupy o nazwie z polskimi znakami (duncan_idaho/White Eagle)
+* zmiana ikony dla aktywnej grupy nie powoduje przełączenia zakładki (neeo,White Eagle)
+* poprawki kompilacji w systemie Solaris (neeo)
+
++++ wersja 0.6.0 (02.03.2008)
+* zmiany w procedurze łączenia się: (joi)
+  - ekspresowe łączenie się z serwerem gg (zapamiętujemy adres serwera,
+  do którego ostatnio udało się podpiąć)
+  - losujemy kolejność łączenia się z serwerami
+  - gdy nie uda się połączyć na porcie 8074, próbujemy na 443
+  - dodane do rotacji 2 nowe serwery
+* wykorzystujemy właściwość gcc 4 i ukrywamy symbole, które nie mają prawa być używane przez moduły (joi)
+* nie pokazujemy okna z komunikatem o zablokowanym profilu, tylko pokazujemy główne okno programu (joi)
+* zapisujemy atrybuty czcionek wybranych w konfiguracji (montor/joi)
+* możliwość pomijania czasu serwera dla wiadomości przychodzących, gdy różnica z czasem lokalnym jest niewielka (neeo)
+* zmiana układu menu PPM na kontakcie - wydzielone 'Zarządzanie kontaktami' (FuKu,neeo)
+* nowa pozycja w menu kontaktu, pozwalająca na otwarcie w przeglądarce linku z opisu (neeo)
+* możliwość parsowania opisu statusu przez parser Kadu (Dorregaray/neeo)
+* domyślna składnia dymków korzysta z pola Wyświetlane (arvenil/neeo)
+* window_notify: powiadamianie o nowej rozmowie i nowej wiadomości znowu działa (joi)
+* configure: przy szukaniu bibliotek używamy $CXX, a nie $CC (joi)
+* poprawka wywrotki przy naciśnięciu prawego przycisku na liście kontaktów w specyficznych okolicznościach (joi)
+* refaktoryzacja modułu hints (Vogel)
+* nowe okno przesyłania plików (Vogel)
+* usunięty błąd związany z SIGPIPE przy transferze plików w dcc (bardzo rzadko występujący) (Vogel)
+* obsługa wywołań zwrotnych w notify (Vogel)
+* obsługa wywołań zwrotnych w window_notify (Vogel)
+* moduł dcc korzysta z wywołań zwrotnych w notify (Vogel)
+* poprawka wywkrywania execinfo (obsługa backtrace'ów) po ostatnich zabawach z configure (joi)
+* w Makefile'ach modułów nowy cel: update-translations (joi)
+* nowa opcja configure: --disable-autodownload, wyłączająca (uwaga, niespodzianka!) autodownload (joi)
+* poprawione pozycjonowanie menu kontekstowych (gdy menu otwierało się przy
+  krawędzi, wybierana była od razu pierwsza z brzegu pozycja) (joi)
+* ustawianie czcionek w module hints znowu działa (Vogel)
+* dodano kilka brakujących plików nagłówkowych w różnych miejscach (Vogel)
+* opcja pozwalająca włączyć pokazywanie na liście kontaktów anonimów z nieodebranymi wiadomościami (joi)
+* w oknie "O programie" pokazujemy dokładnieszą informację o wersji (joi)
+* przy wyłączaniu programu zapamiętujemy listę otwartych okien rozmowy,
+  a przy następnym uruchomieniu odtwarzamy je (joi)
+* nowa akcja umożliwiająca zatrzymanie wyszukiwania w katalogu (neeo)
+* możliwość zamknięcia okna wysyłania SMS z poziomu informacji o pomyślnym przesłaniu wiadomości (neeo)
+* przycisk wysyłania wiadomości w oknie rozmowy jest zablokowany, jeśli pole edycji jest puste (neeo)
+* usunięte połączenie do nieistniejących slotów w dcc (Vogel)
+* w oknie "O programie..." kursor zmienia się na łapkę po najechaniu nad link strony Kadu (Prezu/neeo)
+* QString -> const char * w wywołaniach zwrotnych w notyfikacjach (Vogel)
+* obsługa wywołań zwrotnych w hints (Vogel)
+* usunięto nieużywaną nigdzie metodę setShown z klasy Hint a także parametr show z metody set (Vogel)
+* usunięto nieużywaną nigdzie funkcję progress z klasy MessageBox (Vogel)
+* ładniejsze okno MessageBox (Vogel)
+* kilka poprawek w MessageBox i w window_notify (Vogel)
+* moduł encryption przy wyładowaniu usuwa przycisk szyfrowania z okna Chat (Prezu/neeo)
+* uruchomienie Kadu z parametrem numer, gg:numer, gg:/numer, gg://numer, itd. spowoduje otwarcie okna
+  rozmowy ze wskazanym numerem, TAKŻE gdy Kadu jest już uruchomione (joi)
+* przy ukrywaniu niedostępnych, konkakty z samym numerem telefonu są pokazywane (neeo)
+* zmiana nazwy wewnętrznego katalogu kadu na kadu-core (joi)
+* przy podwójnym kliknięciu na liście kontaktów, przywrócenie focusu oknu rozmowy, gdy jest ono zminimalizowane (joi)
+* poprawka wywrotki przy dodawaniu akcji "zatrzymania wyszukiwania w katalogu" (joi)
+* optymalizacja odświeżania listy kontaktów przy zmianie rozmiarów okna (joi)
+* ukrywanie niedostępnych uniezależnione od używanych protokołów (neeo)
+* przy odświeżaniu listy kontaktów, jeżeli pozycja żadnego z kontaktów się nie zmieniła, to odświeżenie
+  wykonujemy dużo sprytniej, co zaoszczędza czasu i mrugnięcia listy kontaktów (joi)
+* prawidłowe pozycjonowanie animowanych emotikon/obrazków w przypadku przesuwania poziomego scrollbara (joi)
+* dodana opcja w konfiguracji (na poziomie zaawansowanym), umożliwiająca wyłączenie
+  potwierdzania czyszczenia okna Chat (neeo)
+* nowy moduł "history", akcja pokazująca dialog historii przeniesiona do modułu (adrian)
+* dialog historii przeniesiony do modułu "history" (adrian)
+* nowy sygnał emitowany po obsłużeniu przychodzącej wiadomości (uzi18/neeo)
+* dialog wyszukiwania w historii przeniesiony do modułu "history" (adrian)
+* definicja zakładki historii w konfiguracji przeniesiona do modułu "history" (adrian)
+* cytowanie wiadomości w oknie rozmowy przeniesione do modułu "history" (adrian)
+* poprawka zapisywania modułu dźwiękowego wybranego z poziomu wizarda (Dorregaray/joi)
+* użycie rolki myszy w oknie rozmowy nie powoduje przeniesienia focusu z pola edycji (Arvenil/neeo)
+* opcje menu kontekstowego oraz obsługa skrótów związanych z historią przeniesione do modułu "history" (adrian)
+* tytuł okna Chat pokazuje liczbę oczekujących wiadomości (michał,neeo)
+* nowe sygnały w chat_manager: chatCreated(Chat *), chatCreated(Chat *, time_t), chatDestroying(Chat *),
+  chatDestroyed(Chat *) i ich wykorzystanie tam, gdzie jest to przydatne (Vogel)
+* usunieto przestarzałe sygnały w chat_manager: chatCreated(const UserGroup), chatCreated(const UsetGroup, time_t),
+  chatDestroying(const UserGroup) i wszystkie chatDestroyed() (Vogel)
+* sygnały w chat_manager: chatOpen(UserListElements) -> chatOpen(Chat *), dodano sygnał
+  Chat::messageReceived(Chat *) (Vogel)
+* zmiana sposobu modyfikacji statusu, klasa StatusChanger, zablokowanie możliwości
+  zmiany poprzez gadu->status(), dodano kadu->setOnline() i podobne (Vogel)
+* kosmetyka w hints (Vogel)
+* kosmetyka w sound (Vogel)
+* opcjonalne usuwanie historii podczas usuwania kontaktu przeniesione do modułu "history" (adrian)
+* usunięto nieużywane i nieaktualne pending_events.cpp/h (adrian)
+* dodano metody pixmapName() w klasie Status (Vogel)
+* dodano metodę removeVariable(const QString &group, const QString &name) w klasie ConfigFile (Vogel)
+* dodano możliwość sortowania UserListElements (operator <) (Vogel)
+* parametry UserListElements -> const UserListElements & w klasie Chat i ChatManager (Vogel)
+* sygnały chatActivated(Chat *) w Chat i ChatManager, usunięto sygnał Chat::windowActivationChanged() (Vogel)
+* VRadioBox -> ComboBox w wyborze typu dymka w konfiguracji notify (Vogel)
+* zmiana nazw notyfikacji w module dcc (Vogel)
+* pliki history.cpp/h przeniesiono do modułu "history" - zakończono wydzielanie (adrian)
+* hints: usunięto podział na zmianę statusu w zależności od istnienia opisu (Vogel)
+* notify: usunięto nadmierny sygnał StatusChanged (zastąpiony przez 4 inne) (Vogel)
+* config_dialog: możliwość dynamicznej modyfikacji zawartości kontrolek ComboBox (Vogel)
+* notify: wyrzucenie ShowUserBoxTooltip poza moduł notify, konfiguracja przeniesiona do zakładki 'Wygląd' (Vogel)
+* encryption: poprawiono błąd [0000586] - możliwość wysłania klucza do kilku kontaktów naraz (Vogel)
+* core: poprawiono błąd [0000518] - przeciąganie kontaktu z "Wszyscy" do innej grupy blokuje opcję "Przesuń do grupy" (Vogel)
+* klasa KaduParser stworzona z przestrzeni nazw KaduParser (Vogel)
+* klasa KaduParser ma możliwość parsowania stringów z wykorzystaniem dwóch obiektów ze zmiennymi
+  (UserListElement i dowolny pochodny od QObject) (Vogel)
+* notyfikacja "Błąd połączenia" zamieniona w klasę pochodną od Notification (Vogel)
+* hints: poprawione domyślne kolory dymków (Vogel)
+* toolbars: poprawiono błąd [0000538] - wyrównywanie toolbarów do prawej strony okna (Vogel)
+* poprawiono błąd [0000549] - anonimowy kontakt wyświetla się także po ponownym włączeniu kadu, jeżeli poprzednio
+  wiadomość nie została odebrana (Vogel)
+* kompilacja Kadu: poprawka po ostatnich zmianach, kompilacja z --enable-final znowu działa (White Eagle/neeo)
+* migration: po udanej migracji, moduł przestaje być ładowany (uzi18,neeo)
+* potwierdzanie nadpisania pliku wybranego przy eksporcie listy kontaktów (neeo)
+* message_box: poprawiono tworzenie okna, nie ma błędów Qt (Vogel)
+* notyfikacje "Zmiana statusu na..." zamieniona w klasę pochodną od Notification (Vogel)
+* notyfikacje "Nowa wiadomość/rozmowa" zamienione w klasy pochodne od Notification, grupowanie wiadomości w dymkach (Vogel)
+* porządki po ostatnich zmianach w notyfikacjach, część pierwsza (Vogel)
+* config_wizard: porządki po ostatnich zmianach w notyfikacjach, część druga (Vogel)
+* hints: porządki po ostatnich zmianach w notyfikacjach, część trzecia (Vogel)
+* sound: porządki po ostatnich zmianach w notyfikacjach, część czwarta (Vogel)
+* hints: lepsza kontrolka do ustawiania czasu znikania (Vogel)
+* porządki po ostatnich zmianach w notyfikacjach, część piąta, domyślne wartości (Vogel)
+* przesunięcie opcji 'informuj o nowej wiadomości tylko gdy okno nieaktywne' z sound do notify (Vogel)
+* niepotrzebne opcje w popupie na liście kontaktów są ukrywane, a nie blokowane (neeo)
+* mała reorganizacja popupu: "Pokaż/zmień informacje o kontakcie" wróciło do głównego menu (neeo)
+* encryption: ukryto możliwość wysłania klucza dla nas samych i kontaktów nieużywających protokołu Gadu (neeo)
+* dcc: wysyłanie plików jest ukrywane z popupu dla nas samych i kontaktów, które nie korzystają z protokołu Gadu (neeo)
+* uniemożliwiono dwukrotne dodanie akcji do tego samego paska narzędziowego (neeo)
+* aktualizacja do najnowszej wersji libgadu, zawierającej poprawki w resolverze (neeo)
+* hints: autoznikanie dymków po odebraniu wiadomości, na razie źle działa z opcją automatycznego otwierania
+  okna przy otrzymaniu nowej wiadomości (Vogel)
+* dcc: drobna poprawka, działa nieco lepiej (Vogel)
+* poprawiono błąd [0000617]: blokowanie możliwości otwarcia okna rozmowy z samym sobą (Vogel)
+* notify: poprawiono możliwą wywrotkę przy dwukrotnym zamykaniu tej samej notyfikacji (Vogel)
+* dcc: poprawki konsultowane z drużyną libgadu, nie powinno być już problemów z transferami kadu - kadu (Vogel)
+* encryption: szyfrowanie włączone domyślnie + autowłączanie szyfrowania po zainicjowaniu go z drugiej strony (Arvenil/Vogel)
+* dcc: poprawiono błąd [0000380]: dźwięki w kadu dla zdarzeń związanych z transferami plików (Vogel)
+* dcc: możliwość wysłania kilku plików na raz z menu (Vogel)
+* dcc: drobne optymalizacje (neeo)
+* wersja GG: prezentowana w oknie infromacji o kontakcie, oraz dostępna przez parser (neeo)
+* dodano ikony do kilku pozycji w popupie na liście kontaktów (neeo)
+* akcja dodająca kontakt wypełnia możliwe pola przy dodawaniu anonimów (neeo)
+* poprawiono segfault w oknie chat przy wyciągniętej akcji wysyłania wiadomości (neeo)
+* drobna optymalizacja otwierania odnośnika z opisu kontaktu (neeo)
+* skrót klawiszowy usuwający kontakty nie zadziała, gdy żaden kontakt nie został wybrany (neeo)
+* możliwość zdefiniowania klienta pocztowego, do obsługi adresów email (neeo)
+* drobne optymalizacje przy wyborze przeglądarki i wyszukiwaniu URLi (neeo)
+* system budowania zaktualizowany do autotools 1.9 z 1.7 (Vogel)
+* zmienna 'q' do wykorzystania w parserze: nazwa ikonki statusu kontaktu (Vogel)
+* drobne poprawki przy zmianie zestawu ikon (neeo)
+* grupy są kasowane zaraz po usunięciu z nich ostatniego użytkownika (neeo)
+* nowe okno konfiguracji - wstęp (Vogel)
+* poprawiono błąd przy zerwaniu połączenia przez serwer (neeo)
+* nowe okno konfiguracji: poprawiona zmiana składni panelu informacyjnego (Vogel)
+* nowy predefiniowany klient pocztowy (Evolution) oraz poprawka wykrywania
+  Thunderbirda na Debianie i pochodnych (White Eagle/neeo)
+* nowe okno konfiguracji: pełna edycja sładni panelu informacyjnego (Vogel)
+* ujednolicone Protocol::sendMessage (Juzef/Vogel)
+* userbox: szerokość kolumn -> liczba kolumn (Vogel)
+* poprawka ikonek w menu statusu (michal)
+* linki można bez obawy przekazywać w natywnym kodowaniu do przeglądarki,
+  nie trzeba ich konwertować (michal)
+* [0000594] wyświetlanie daty jako odstępu czasu w oknie chatu (michal)
+* możliwość ustawiania obrazka w tle listy kontaktu jako Tiled/Centered/Stretched (Vogel)
+* chat: format wiadomości parsowany przez KaduParser (Vogel)
+* chat: spore przeróbki formatowania wiadomosci (Vogel)
+* nowe okno konfiguracji: możliwość korzystania z nich przez moduły (Vogel)
+* chat: trochę porządków - podział Chat na ChatWindow i ChatWidget (Juzef/Vogel)
+* dodana lista w menu głównym z ostatnio zamkniętymi oknami Chat (neeo)
+* porządki w sygnałach chatMsgReceived (Vogel)
+* history: renderowanie historii jak w oknie rozmowy (Vogel)
+* odświeżanie toolbarów przy zmianie zestawu ikon (neeo)
+* nowa akcja dla okna chat oraz pozycja w menu głównym umożliwiająca
+  otwarcie okna Chat z kontaktem z listy lub UINem (White Eagle,neeo)
+* uporządkowanie nazw ikon w domyślnym zestawie (patpi/neeo)
+* powiadomienie o nowej wiadomości w oknie przez wysunięcie go na wierzch (neeo)
+* kliknięcie na odpowiednio sformatowany numer gg w oknie rozmowy,
+  powoduje otwarcie okna Chat z tym numerem (neeo)
+* możliwość używania zmiennych w autostatusie (Dorregaray,White Eagle,neeo)
+* możliwość opuszczenia konferencji w dowolnym momencie (Vogel)
+* Dcc w wersji 7 - wysyłanie plików (Vogel)
+* Dcc w wersji 7 - odbieranie plików (Vogel)
+* możliwość dodawania ikon w zakładkach grup (FuKu,White Eagle/neeo)
+
++++ wersja 0.5.0 (01.01.2007)
+* usunięty niewielki wyciek pamięci przy nieudanej próbie załadowania modułu (joi)
+* poprawiona kompatybilność z Qt 3.0 (joi)
+* poprawka wykrywania pthreadów w libgadu na FreeBSD 4.x (z cvsu EKG) (joi)
+* poprawka wykrywania bibliotek na MacOSX (joi)
+* usunięty wyciek pamięci w module encryption przy wysyłaniu zaszyfrowanej
+  wiadomości (joi)
+* wszystkie pliki użytkownika w katalogu .kadu zamiast .gg (adrian)
+* moduł migration - automatyczna migracja z katalogu .gg do .kadu (adrian)
+* usunięty potencjalny segfault w encryption przy zepsutej wiadomości (joi)
+* libgadu - poprawiony błąd przesyłu dużych zdjęć (EKG-devel/Ron_K)
+* dodany do autodownloadu moduł screenshot (joi)
+* opcja usuwania historii razem z kontaktem (michal)
+* klasa do obsługi xml-owego pliku konfiguracyjnego, odczyt kadu.conf.xml podczas startu,
+  zapis podczas zamykania kadu, atrybuty last_save_time i last_save_version (adrian)
+* możliwość wyboru przeglądarki Safari (Dorregaray/michal)
+* każdy zapis listy kontaktów do plików userlist i userattribs powoduje
+  również zapisanie listy kontaktów do kadu.conf.xml (adrian)
+* usunięty wyciek pamięci w module speech (joi)
+* nowa opcja "przywróć poprzedni status" ustawia status po włączeniu Kadu,
+  domyślnie włączona, usunięty kod kompatybilności z 0.3.x do obsługi
+  domyślnego statusu (Vogel/joi)
+* default_sms: domyślna wartość pola User dla bramki Ery = "48" (joi)
+* opcja usuwania nagłówków i/lub separatorów z kolejno przychodzących wiadomości
+  od jednego "nadawcy" (OBenY/Vogel/joi)
+* dodanie do "Zarządcy modułów" kolumny "Wersja", obsługa pola "Version"
+  w plikach .desc modułów (FuKu/joi)
+* usunięty segfault przy zakańczaniu rozmowy głosowej (joi)
+* moduł migration migruje listę kontaktów do pliku kadu.conf.xml (adrian)
+* pliki userlist i userattribs nie są już używane - lista kontaktów w kadu.conf.xml (adrian)
+* moduł migration migruje listę ignorowanych do pliku kadu.conf.xml (adrian)
+* lista ignorowanych jest wczytywana z kadu.conf.xml (adrian)
+* lista ignorowanych zapisywana do kadu.conf.xml - plik ignored już nie używany (adrian)
+* moduł ext_sound od dzisiaj nie da się załadować jednocześnie z innymi modułami
+  dźwiękowymi (joi)
+* poprawka dla proxy w HttpClient (michal)
+* opcja kasowania nadchodzących wiadomości przy usunięciu dymka z wiadomością (serine/joi)
+* dodany do autodownloadu moduł osdhints_notify (joi)
+* moduł migration migruje kadu.conf do pliku kadu.conf.xml (adrian)
+* moduł migration migruje wszystkie pliki konfiguracyjne do pliku kadu.conf.xml (adrian)
+* poprawka segfaulta w module voice gdy karta muzyczna byla zajeta (pawel_p)
+* zapisywanie wersji Qt, GCC, Kadu i czasu kompilacji do pliku backtrace (joi)
+* poziomy zaawansowania w konfiguracji (vogel/joi)
+* poprawa mechanizmów okna konfiguracji w celu lepszej współpracy z poziomami
+  zaawansowania; aktualizacja poziomów zaawansowania w core i w modułach (joi)
+* okno zmiany danych o kontakcie nie znika gdy wciśniemy "Uaktualnij",
+  a w jakimś polu wpisane są błędne dane (joi)
+* animowana ikona przy nadejściu wiadomości, grafika by SadMephisto & Arcisz (joi)
+* w oknie "O programie" dodany klikalny link do strony głównej Kadu (joi)
+* emotikony i obrazki obniżone o 2 piskele w dół dla lepszego wyśrodkowania (joi)
+* porzadki w includeach - szybsza kompilacja (pawel_p)
+* aktualizacja libgadu do wersji 20050627 (joi)
+* ułatwiacze dla kompilacji na MacOSX - opcje configure --without-png-checking,
+  --enable-macosx, poprawiona kolejność opcji budowania ze statycznym Qt (joi)
+* poprawiona endianowość libgadu (zepsuta przy aktualizacji libgadu)
+  + drobne poprawki w Kadu/GaduProtocol (joi)
+* moduły dynamiczne na MacOS X (joi)
+* w varia/scripts dodana wstępna wersja skryptu tworzącego bundle'a na
+  MacOS X + ikonka aplikacji (joi)
+* MacOS X: poprawki w kompilacji modułów, poprawki skryptu instalacyjnego (joi)
+* MacOS X: pozycje okien miały wartość y==0, co powodowało zasłanianie paska
+  tytułu okna przez menu systemu (efekt tzw. "braku ramki") (joi)
+* MacOS X: dodany moduł macosx_docking + szereg zmian potrzebnych temu modułowi (joi)
+* obsługa drag & drop plików na okno chata (vogel/joi)
+* MacOS X: poprawki w libgadu dotyczące endianowości i obrazków,
+  poprawne działanie formatowania i obrazków w Kadu (joi)
+* MacOS X: poprawnie wyświetlamy rozmiar przy przesyłaniu pliku,
+   domyślna aplikacja do odtwarzania dźwięku w ext_sound to playsound,
+   a nie play, poprawki w skrypcie instalacyjnym (joi)
+* MacOS X: katalog z ustawieniami to ~/Library/Kadu, a nie ~/.kadu (joi)
+* przełączanie focusu w oknie chat do pola edycji z powrotem włączone (joi)
+* MacOS X: przywracanie ikony aplikacji po wyłączeniu programu,
+   opcja "Uruchom zminimalizowany" wyłączona, ze względu na problemy z Qt (joi)
+* przy dodaniu kontaktu do listy nie pojawia się on dwukrotnie (joi)
+* poprawione problemy z encjami (&lt; &gt; itp.) w oknie chata (joi)
+* usunieto wycieki pamieci (pawel_p)
+* w razie padu backup pliku kadu.conf.xml zamiast kadu.conf (adrian)
+* klasa ConfigDialog zapisuje dodatkowo wartości w kadu.conf.xml (adrian)
+* poprawa błędu typu integer overflow w libgadu mogącego przy złośliwych danych
+  doprowadzić do zawieszenia Kadu lub wykonania dowolnego kodu (choć druga możliwość
+  jest mało prawdopodobna) (joi)
+* aktualizacja libgadu do wersji 20050718 (joi)
+* sprawdzanie przy uruchomieniu czy katalog z danymi ma odpowiednie prawa (joi)
+* usprawnienia w budowaniu: (joi)
+   - Makefile'e nie powinny się regenerować przy zmianach dat modyfikacji plików,
+     regenerowanie można przywrócić dzięki opcji --enable-maintainer-mode
+   - moduły: pliki cxxflags i ldflags przemianowane na .cxxflags i .ldflags
+   - moduły dają się zbudować przez make module_nazwa_modułu
+   - core: pliki *_moc.cpp lądują w podkatalogu moc
+   - core: pliki *.o lądują w podkatalogu obj
+* przy zwykłym odtwarzaniu pojedynczego dźwięku opróżniamy bufor urządzenia
+  (pomaga m.in. na freebsd) (joi)
+* kadu.conf i pozostałe conf z .kadu nie są już używane. wszystko w kadu.conf.xml (adrian)
+* poprawka tłumaczeń w oknie konfiguracji (pawel_p)
+* poprawka instalacji plików nagłówkowych w przypadku użycia zmiennej DESTDIR (joi)
+* komunikaty dotyczące migracji zebrane w jedno okno + różne poprawki (adrian)
+* poprawki w mechanizmach xml-owych plików konf. - pierwszy start kadu (adrian)
+* poprawione odświeżanie ikony w module desktop_docking (joi)
+* przebudowa UserListy i UserBoksa: (joi)
+   - pliki chat.* i userlist.* podzielone na mniejsze
+   - z klasy UserList wydzielona klasa UserGroup
+   - klasa UserListElement bierze pod uwagę protokoły
+   - zmiana danych kontaktu emituje sygnały we wszystkich UserGrupach do których należy
+   - kopiowanie UserListElementów jest bardzo szybkie (dzięki zliczaniu referencji)
+   - lista kontaktów jest ściśle spięta z jej graficznym odpowiednikiem (UserBox)
+   - dodany mechanizm filtrów na UserBoksa - blokujący, blokowani, bez opisu,
+     niedostępni, anonimowi, grupy kontaktów zrealizowane jako filtry
+   - dodany mechanizm pozwalający zmieniać kryteria sortowania listy kontaktów
+     bez ingerencji w kod
+   - ogólne uprotokołowanie kodu (choć i tak jest jeszcze duuużo pracy przy tym)
+* automatyczne tworzenie / aktualizacja binarnych plików translacji przy
+  kompilacji modułów (pan_wojtas/joi)
+* usunięcie komunikatów ostrzegawczych przy instalacji modułów (OBenY/joi)
+* podzielenie plików misc.* i gadu.* na mniejsze (joi)
+* alsa_sound: przed odegraniem / nagraniem próbki sprawdzamy czy karta
+  przyjmie / zwróci ją (joi)
+* usunięty kod kompatybilności z Qt < 3.2, configure sprawdza wersję Qt (joi)
+* poprawki w wykrywaniu ścieżki do Firefoksa na Gentoo (joi)
+* zaczątki klas Protocol i ProtocolsManager (joi)
+* automatyczne tworzenie / aktualizacja binarnych plików translacji przy
+  kompilacji całego kadu + make clean usuwa utworzone pliki (adrian)
+* restartowanie Kadu po wyborze języka w wizardzie (joi)
+* wydzielenie plików toolbar.cpp/h (adrian)
+* poprawiony drobny wyciek pamięci i losowy segfault przy zakończeniu programu
+  w "sprzyjających" okolicznościach (anonimowi na liście i włączony któryś
+  z filtrów na listę kontaktów) (joi)
+* usunięte kilka drobnych wycieków pamięci (joi)
+* poprawiona obsługa nowej bramki Ery (Belegdol/Ron_K)
+* nowe okno transferów dcc (Vogel/Ron_K)
+* przyciski w oknie chat przeniesione do toolbarów, początek edytowalnych toolbarów,
+  drag&drop przycisków, początek koncepcji akcji (adrian)
+* scrolllock i autosend są akcjami (adrian)
+* zapisywanie klucza w encryption znowu działa (joi)
+* poprawione zapisywanie numeru gg w config_wizard (joi)
+* config_wizard nie potrzebuje modułów sound i hints do działania -
+  wyrzuciłem je z jego zależności (joi)
+* poprawiono wykrywanie libexecinfo (wisnia/pawel_p)
+* przyciski z dolnego lewego paska okna chat zmienione na akcje (adrian)
+* przyspieszenie otwierania i zamykania okna konfiguracji
+	zmiana API rejestracji slotów na otwieranie i zamykanie okna konfiguracji (pawel_p)
+* wszystkie przyciski poza "wyślij" w oknie chat są akcjami (adrian)
+* zapisywanie konfiguracji danego obszaru dokowania okna chat po dodaniu
+  do niego nowego toolbara (adrian)
+* przeniesienie binarnych plików modułów do $prefix/lib/kadu/modules
+  różne drobne optymalizacje (joi)
+* możliwość automatycznego patchowania zewnętrznych modułów poprzez umieszczenie
+  łaty w katalogu modules/patches/nazwa_modułu (joi)
+* skrypt Instaluj poprosi o hasło roota przy deinstalacji z poziomu zwykłego
+  użytkownika (Belegdol/joi)
+* oddzielny nick do smsów (Belegdol/joi)
+* poprawiona obsługa bramki Orange (akasoft/joi)
+* poprawna zmiana uzytkownika i hasla w konfiguracji dla bramki Ery,
+	poprawne zapisywanie (pawel_p)
+* wszystkie przyciski w oknie chat są akcjami (adrian)
+* zapisywanie konfiguracji danego obszaru dokowania okna chat po dodaniu lub
+  usunięciu przycisku, oraz dwóch obszarów po przeciągnięciu przycisku z jednego
+  toolbara do drugiego (adrian)
+* wydzielone pliki action.cpp/h (adrian)
+* zapisana konfiguracja toolbarów okna chat jest przywracana (adrian)
+* bramka Ery obsługuje numery zaczynające się od 886 (joi)
+* gdy rozmawiamy z anonimem, w tytule okna rozmowy nie pokazujemy jego statusu (joi)
+* poprawki do drag'n'drop przycisków w toolbarach - przy "niedokończonym"
+  przenoszeniu przyciski nie pozostają wciśnięte (joi)
+* przy przenoszeniu przycisków między toolbarami lądują one tam gdzie je upuściliśmy,
+  kolejność przycisków jest zapamiętywana (adrian)
+* akcje "dodaj nowego użytkownika", "zmień informacje o kontakcie", "konfiguracja",
+  "pokaż tylko kontakty z opisem", "pokaż niedostępnych" (adrian)
+* poprawiono segfault przy zaniechaniu uruchomienia kopii kadu (pawel_p)
+* wstępna obsługa akcji dwustanowych, akcja "wycisz dźwięki" (adrian)
+* akcja "wyślij plik" (adrian)
+* korekta tłumaczenia na język niemiecki autorstwa Manuel Wiblishauser and Jens Zettelmeyer (Ron_K)
+* konfigurowalny główny toolbar (adrian)
+* wydzielone pliki dockarea.cpp/h i toolbutton.cpp/h (adrian)
+* dodany do autodownloadu moduł firewall (joi)
+* uporządkowana sprawa domyślnej zawartości toolbarów (adrian)
+* poprawne działanie akcji "dodaj kontakt" dla anonimów, nowa akcja "wyślij sms" (adrian)
+* zapisywanie konfiguracji toolbarów po usunięciu toolbara, jego przesunięciu lub
+  przeniesieniu do innego pola dokującego (adrian)
+* tło listy kontaktów może być obrazkiem - łata joi'a, przerobiona przez neeo (adrian)
+* możliwość przypisania akcji do konkretnej grupy pól dokujących, przypisanie akcji
+  specyficznych dla okna chat do odpowiedniej grupy (adrian)
+* opcja ignorowania formatowania tekstu i obrazków od anonimów, domyślnie włączona (adrian)
+* poprawione 2 błędy w parsowaniu formatowania tekstu i obrazków
+  (1 z nich, doprowadzający do segfaulta i wycieku dużej ilości danych
+  zgłoszony został przez Michała Gizowskiego) - UWAGA: oba błędy mają duże
+  znaczenie dla bezpieczeństwa (joi)
+* MacOSX: regulacja głośności domyślnie wyłączona (bo playsound jej nie obsługuje),
+  domyślny katalog instalcji to Kadu.app, a nie kadu.app (joi)
+* dodany do autodownloadu moduł iwait4u (joi)
+* w oknie "Wyślij SMS" przy wyborze "pustego" elementu w combie, w tymże combie
+  nie pojawia się nick losowego użytkownika (joi)
+* to czy dla danego przycisku w pasku narzędziowym pokazuje się tekstowa etykieta
+  jest konfigurowalne (adrian)
+* poprawione parsowanie linków - * może też w nim występować (joi)
+* próba założenia nowego profilu kończyła się komunikatem "Brak numeru GG lub
+  hasła" - poprawione (joi)
+* poprawione importowanie i łączenie list kontaktów (joi)
+* usunięty segfault przy usuwaniu całej historii dla wybranego użytkownika (joi)
+* poprawione odświeżanie wyglądu głównego okna po "zastosuj" w konfiguracji
+  (panel informacyjny, przycisk statusów, zakładki grup) (joi)
+* po zablokowaniu kontaktu przestawiamy jego status na niedostępny (joi)
+* kolejne poprawki w importowaniu / kasowaniu  listy kontaktów (joi)
+* poprawki w skryptach budujących gdy /bin/sh nie jest linkiem do basha
+  (np. w FreeBSD,PLD) (joi)
+* poprawiona aktualizacja opcji "Ikona nadejścia nowej wiadomości" po "zastosuj",
+  poprawione odświeżanie ikonki w docku po zmianie statusu,
+  usuwanie kontrolki z okna konfiguracji przy wyładowywaniu modułu docking (joi)
+* poprawione dodawanie anonima do listy kontaktów (joi)
+* poprawione odświeżanie listy kontaktów po usunieńciu numeru gg z informacji
+  o kontakcie (joi)
+* poprawione odświeżanie listy kontaktów po odebraniu wiadomości (joi)
+* zapamiętywanie rozmiarów okien / stanu szyfrowania znowu działa (joi)
+* kilka poprawek dotyczących konfiguracji obrazka w tle listy kontaktów (joi)
+* poprawki w wyglądzie przycisków formatowania w oknie rozmowy (widoczne przede
+  wszystkim przy ciemnej kolorystyce) (joi)
+* poprawki w odświeżaniu chata / historii (np. znikające separatory) (joi)
+* poprawiony segfault gdy okno historii uruchamiane jest przy pomocy skrotu (pawel_p)
+* w katalogu modules make install_nazwa_modulu instaluje tylko ten wybrany moduł (joi)
+* usprawnienia w budowaniu: po configure jeżeli nic się nie zmieniło w kadu-config.h,
+  moduły nie są powtórnie budowane, śledzenie zależności dla core'a w przypadku używania
+  prekompilowanych nagłówków rzeczywiście działa, opcja --disable-dependency-tracking
+  działa dla modułów, czytelniejsze logi z kompilacji (właściwe polecenia zapisywane
+  są do kadu/logfile.txt - czyszczone przy wykonywaniu configure)
+  uwaga developerzy: przy wydawaniu nowej wersji oprócz pliku VERSION, trzeba
+  zmodyfikować także version.m4 i przebudować configure (./admin/configure-gen) (joi)
+* nowa opcja configure "--enable-final" przyspieszająca około dwukrotnie kompilację,
+  ale wymagająca dużo pamięci i nieprzydatna dla developerów (joi)
+* poprawione odświeżanie listy kontaktów po dopisaniu komórki do danych o kontakcie,
+  poprawki w obsłudze kontaktów bez numeru gg i komórki (joi)
+* akcja "rozpocznij rozmowę", drobne zmiany/rozbudowa mechanizmów akcji, konfigurowalne
+  toolbary w oknie wyszukiwania, uwaga doszły dwa wpisy w zestawie ikony (adrian)
+* poprawki związane z --enable-final - obsługa zależności w modułach (joi)
+* poprawiona możliwość otworzenia kilku okien rozmowy z poziomu okna przeszukiwania
+  katalogu publicznego (joi)
+* opcja blokowania przemieszczania przycisków na paskach narzędziowych w menu
+  kontekstowym pola dokującego (adrian)
+* okno zmiany statusu opisowego pojawia się w okolicach aktualnej pozycji myszki (joi)
+* przyspieszenie parsowania plików z historią od 2 do 4 razy (joi)
+* optymalizacje w formatowaniu wiadomości wyświetlanych w chacie/historii/... (joi)
+* jeżeli główne okno jest zminimalizowane i klikniemy lewym przyciskiem w trayu,
+  to okno zostanie "odminimalizowane" (joi)
+* poprawki w kompilacji dla kombinacji: --enable-final, statyczny moduł,
+  zawierający pliki w C (np.: encryption) (joi)
+* używamy zmiennej CFLAGS, a nie CXXFLAGS do kompilacji plików w C (joi)
+* poprawione działanie opcji "Pokaż kontakty, które są blokowane" po restarcie Kadu (joi)
+* zapisywanie do pliku konfiguracyjnego rozmiarów i pozycji okien rozmowy oraz
+  stanu szyfrowania; opcja "Nie pokazuj opisu" w menu kontekstowym kontaktu;
+  w związku z powyższym: rozszerzenie API userlisty o możliwość zapisania
+  dowolnych danych razem z kontaktem (joi)
+* dodany do autodownloadu moduł exec_notify (joi)
+* możliwość dodawania nowych zdarzeń do modułu notify przez inne moduły,
+  powiadomienie o tym, że ktoś chce nam przysłać plik (Vogel/joi)
+* argument "handled" w sygnałach związanych z klawiaturą w klasie Chat (googie/adrian)
+* dostęp do menu toolbaru z menu przycisku i do menu panelu z menu toolbaru (adrian)
+* poprawka w odświeżaniu chata / historii (po zmianie tekstu w oknie) (joi)
+* dodanie adresów 3 nowych serwerów gg (joi)
+* obejście buga w Qt: jeżeli po obrazku/emotikonie jest spacja, to wymuśmy jej pokazanie (joi)
+* dodano do autodownloadu ikony glass autorstwa Mariusza Walugi (Ron_K)
+* kopiowanie opisu i danych personalnych z menu kontekstowego listy kontaktów (OBenY/joi)
+* kopiowanie danych personalnych używa parsera Kadu (własną składnię można
+  ustawić przez plik konfiguracyjny: General/CopyPersonalDataSyntax) (joi)
+* poprawiony występujący od dawna błąd (gdzieś od 0.3.7) związany z łączeniem się
+  z serwerem gg: jeżeli limit czasu łączenia przekraczany był w połowie procedury
+  logowania, to sprawdzanie timeoutów było wyłączane w nadziei, że za chwilę
+  się połączymy; niestety od czasu do czasu zdarza się, że serwer po tym fakcie
+  pada, a Kadu pozostawało niepołączone i nie próbowało nic z tym zrobić... (joi)
+* nowe zdarzenie w module notify: najechanie na kontakt na liście kontaktów
+  i odczekanie sekundy - obsługiwane w tej chwili przez moduł hints (joi)
+* konfiguracja składni powyższego (joi)
+* dodano do autodownloadu ikony glass16 i glass22 usunieto link do starego zestawu (dylemat/Ron_K)
+* limit do 5 odbieranych obrazków w jednej wiadomości (adrian)
+* używamy fcntl zamiast flock do blokowania profilu (działa na NFSie) (joi)
+* gdy zostawimy otwarte główne okno na innym pulpicie i klikniemy na trayu,
+  to Kadu przeniesie na bieżący pulpit (joi)
+* rozwiązane problemy z dokowaniem: (joi)
+   - GNOME: gdy "obszar powiadamiania" uruchamia się później niż Kadu
+   - GNOME: jednopikselowa ikona (obejście jakiegoś buga w gnome)
+   - gdy systray pada i zostaje ponownie uruchomiony, Kadu ponownie się dokuje
+* każdy moduł powiadamiający może sam zdecydować o tym co wyświetli
+  po najechaniu myszką na kontakt (joi)
+* poprawione wykrywanie padu traya na GNOME i XFCE (joi)
+* rozszerzona składnia parsera Kadu: (joi)
+   - możliwość zdefiniowania dowolnej ilości zmiennych globalnych o składni ${NAZWA}
+     przykładowe zmienne: HOME, KADU_CONFIG, DATA_PATH, LIB_PATH
+   - @{IKONA} zwraca ścieżkę do pliku o nazwie "IKONA" w bieżącym zestawie ikon
+   - możliwość eskejpowania znaków specjalnych przy pomocy backslasha
+   - moduły mogą dodawać własne zmienne poprzez zarejestrowanie funkcji
+     zwracającej odpowiedni napis; składnia: #{NAZWA}
+   - wykownywanie poleceń może być zapisywane także jako `{cmd} (zamiast `cmd')
+* wydzielenie parsera do oddzielnego pliku (joi)
+* łatka dodająca sygnał przy aktywowaniu okna chat (pan_wojtas/joi)
+* style w oknie rozmowy: Kadu, Hapi, IRC, własny (cheester,spav,joi)
+* usunięty denerwujący problem przeskakiwania listy kontaktów przy zmianie
+  czyjegoś statusu (joi)
+* optymalizacje w działaniu przy łączeniu się z serwerem; ikonka w trayu
+  nie zacina się gdy serwery natychmiastowo odrzucają połączenie (później wycofane) (joi)
+* rozwiązany jeszcze jeden problem z listą kontaktów: jeżeli zaznaczymy
+  sobie jakiś kontakt, przesuniemy suwak gdzie indziej, ukryjemy okno programu
+  i je przywrócimy, to suwak wraca na właściwą pozycję (joi)
+* poprawiony segfault przy zamykaniu modułu hints, gdy został jeszcze jakiś dymek (joi)
+* możliwość zaprzeczenia sprawdzania niepustości napisów w parserze, przykład:
+  [opis: %d][!brak opisu%d], do zaprzeczania przy sprawdzaniu istnienia pliku
+  można użyć ! zamiast ~ (joi)
+* nowe sygnały w klasie UserGroup dotyczące zdarzeń, emitowane po zakończeniu
+  zmian + dostosowanie reszty Kadu do tego - ok. 5% przyspieszenia w czasie
+  uruchamiania+zamykania (joi)
+* poprawka błędu wprowadzonego dzień wcześniej do parsera (joi)
+* jeżeli sami przestawiliśmy status na niedostępny, to wyłączamy autoawaya (joi)
+* rozwiązane (chyba ostatnie) problemy z zanikaniem separatorów w oknie
+  rozmowy i historii (joi)
+* przy włączonym usuwaniu nagłówków po wyczyszczeniu okna chat nagłówek
+  pojawia się z powrotem (neeo/joi)
+* zapamiętywanie rozmiaru okna "Znajdź kontakt w katalogu" (neeo/joi)
+* przy wyszukiwaniu po numerze odznaczamy opcję "tylko aktywni", bo serwer
+  nie zwróci nam żadnych danych jeżeli kontakt jest niedostępny (neeo/joi)
+* przy wyłączaniu Kadu (a właściwie przy wyładowywaniu któregoś z modułów
+  *_docking) nie pokazujemy na ułamek sekundy głównego okna programu (joi)
+* trochę optymalizacji związanych z uruchamianiem/zamykaniem programu
+  (kolejne 5%): zapisywanie pliku konfiguracyjnego tylko raz,
+  racjonalniejszy dostęp do czcionek (joi)
+* przy zmiennej środowiskowej SHOW_TIMES ustawionej na 1 i kompilacji
+  z --enable-debug, na konsoli dostajemy czasy każdego kdebuga w formacie:
+  "ilość sekund od 1.1.1970":"ilość mikrosekund od początku sekundy":"różnica
+  w mikrosekundach od ostatniego debuga" (joi)
+* przy ustawionej zmiennej CONFIG_DIR, jeżeli katalog nie istnieje, to zostanie
+  on utworzony (joi)
+* definicje styli okna rozmowy wydzielone jako klasy do chat_styles.cpp/h (adrian)
+* formatowanie wiadomości wydzielone jako funkcja formatMessage
+  w klasie ChatMessage (adrian)
+* klasy ChatColors, OwnChatColors, UserChatColors (adrian)
+* usunięta możliwość wyłączenia zapisywania rozmiaru głównego okna (joi)
+* poprawiony układ widgetów w oknie konfiguracji przy innych poziomach niż "Ekspert" (joi)
+* usunięta zabugowana i rzadko używana opcja skrolowania wiadomości w chacie w górę (joi)
+* w oknach: eksportu listy kontaktów, wyszukiwania kontaktów, menedżerze modułów,
+  o programie, ignorowanych, informacji o kontakcie, własnych danych personalnych,
+  wyboru ścieżek (konfiguracja), przypominania hasła, rejestracji nowego konta,
+  zmiany hasła, wyrejestrowania konta zrobione obejście błędu w Qt, dzięki któremu
+  można było zmniejszyć rozmiar okna poniżej minimalnego rozmiaru (joi)
+* dodano nowe emotikony autorstwa Mariusza Walugi  uzupelniajace kompatybilnosc z GG7
+  Licencja GPL szczegoly w pliku czytaj.txt (Ron_K)
+* stary zestaw emotikon w autodownloadzie (Ron_K)
+* mechanizm autodownloadu zestawów emotikonów (Ron_K, adrian)
+* możliwość zapisania obrazka z okna rozmowy przez wybranie opcji w menu
+  kontekstowym (montor,joi)
+* optymalizacje w kodzie dotyczącym XMLowego pliku konfiguracyjnego - skrócenie
+  czasu uruchamiania+zamykania o ok. 8% (joi)
+* teksty, które przyjmuje ConfigDialog::add*() przekazywane są jako const char *,
+  a nie QString, bo i tak będą one tłumaczone (a co za tym idzie rzutowane na char *);
+  przy okazji binarka kadu zmalała o 50 kB (joi)
+* poprawiona wywrotka przy wyładowywaniu modułu dcc (joi)
+* ======= FEATURE FREEZE ======= (adrian)
+* poprawka błędu przy zapisywaniu obrazka z chata - jeżeli okno nie było
+  wypełnione tekstem i kliknęło się poniżej obrazka (na tle), to w menu
+  kontekstowym dostępna była opcja zapisu obrazka (montor/joi)
+* usunięte kilka niewielkich wycieków pamięci + ogólne sprzątanie w ConfigDialogu (joi)
+* przechwytujemy błędy, które wyłapuje Qt i kolorujemy je wraz z pokazaniem
+  backtrace'a (joi)
+* klasa Action nie dziedziczy już z QAction, co rozwiązuje problem ze skrótami
+  klawiszowymi (montor/adrian)
+* poprawka wywrotki w module encryption gdy dostajemy od serwera wiadomość o długości 0 (joi)
+* przestawiona domyślna składnia panelu informacyjnego na składnię Dorregaraya (joi)
+* menu zmiany statusu, po kliknięciu na trayu, pojawia się 10 pikseli od miejsca
+  kliknięcia (a nie dokładnie w) (joi)
+* uproszczenie kodu sprawdzającego poprawność numeru gg w oknie danych o kontakcie (neeo/joi)
+* aktualizacja libgadu do wersji 20060518 + zmiany w Kadu dotyczące obsługi
+  nowych błędów zwracanych przez libgadu (neeo/joi)
+* default_sms, bramka Ery: okienko z ilością pozostałych smsów, pole podpis
+  doklejane jest do treści wiadomości, poprawione komunikaty o błędach,
+  usunięte polskie znaki z wiadomości (neeo/joi)
+* szereg usprawnień dotyczących sprawdzania poprawności wpisanych danych
+  w oknie szukania kontaktów w katalogu (neeo/joi)
+* przy wybraniu opcji "ukryj niedostępnych" pokazujemy ukrytych (Kubiś/joi)
+* poprawione działanie funkcji unicode2std i unicode2latinUrl (joi)
+* poprawka wywrotki w alsa_sound (u mnie pojawiała się gdy grał amarok 1.4
+  przez xine z wyjściem alsa) (joi)
+* szereg drobnych poprawek (~200), które wynikły z zastosowania do kompilacji flag
+  -Wextra -Weffc++: niezainicjowane lub nieużywane zmienne, zabezpieczenia przed
+  niewłaściwym użyciem - brak konstruktorów kopiujących, operatorów przypisania (joi)
+* usunięte kilka drobnych wycieków pamięci (joi)
+* drobne optymalizacje w formatowaniu wiadomości gdy wyłączone jest usuwanie nagłówków (neeo/joi)
+* nie można otworzyć okna rozmowy:
+  - z samym sobą z poziomu okna wyszukiwania w katalogu
+  - z kontaktem, który ma tylko numer telefonu przy pomocy przycisku w głównym toolbarze
+  (neeo/joi)
+* autoresponder korzysta z parsera Kadu (joi)
+* nowe emotikony "Penguins" - stare odeszły do lamusa (Ron_K)
+* kilka poprawek związanych z nowymi emotikonami (joi)
+* automatyczne usuwanie zakończonych transferów z "okna przesyłania plików" (Vogel/joi)
+* poprawiona obsługa skrótów klawiszowych w oknie rozmowy (joi)
+* drobne optymalizacje (neeo/joi)
+* poprawka wywrotki przy pierwszym wejściu do konfiguracji jeżeli locale ustawione
+  były na inne niż: pl|de|it|en|fr (joi)
+* usunięcie, pojawiającego się na konsoli, ostrzeżenia od Qt przy otworzeniu okna rozmowy (joi)
+* poprawione przenoszenie (drag and drop) kontaktów pomiędzy grupami (joi)
+* możliwość dodania (a nie tylko przeniesienia) użytkownika do grupy przy pomocy
+  "drag and drop" (joi)
+* błędy w toolbarach: akcja "Wyszukaj w katalogu" odpalana z głównego toolbara
+  nie powinna szukać w katalogu aktualnie wybranego użytkowika; w oknie szukania
+  kliknięcie na "dodaj kontakt" dla numeru, który już mamy na liście kontaktów
+  powoduje otwarcie pustego okna (neeo/joi)
+* obejście zepsutego (?) libca na FreeBSD - sortowanie listy kontaktów bez
+  uwzględniania wielkości liter (joi)
+* poprawka skalowania głównego okna - menu potrafiło zasłonić toolbar (pinkworm/joi)
+* drobna optymalizacja w określaniu listy dostępnych kontaktów i zmiana
+  w traktowaniu kontaktów blokujących - uznajemy ich za dostępnych (tak jak w 0.4.x) (neeo/joi)
+* przed usunięciem toolbara pytamy się czy użytkownik naprawdę chce go usunąć
+  + poprawki 2 segfaultów (neeo,joi)
+* nowa akcja: ignoruj użytkownika/konferencję (neeo,joi)
+* kolejne poprawki związane z layoutem głównego okna (joi)
+* pełna dowolność w umieszcaniu toolbarów w oknie rozmowy (zamiast tylko na środku
+  i na dole), po usunięciu toolbara przestrzeń po nim znika, etykietkę z napisem
+  "Okno edycji:" można usunąć ustawiając zmienną Chat/ShowEditWindowLabel w pliku
+  konfiguracyjnym (joi)
+* dopisane do rotacji 3 nowe adresy serwerów gg (joi)
+* dodane do autodownloadu 3 moduły: filtering, powerkadu, profiles (joi)
+* zapisywanie konfiguracji do tymczasowego pliku, a później zmiana nazwy na docelowy,
+  żeby uniknąć wyczyszczenia pliku w przypadku segfaulta (joi)
+* w przypadku problemów z otwarciem plików konfiguracyjnych lub dostępu do karty dźwiękowej,
+  wypisujemy komunikaty o błędach także gdy --enable-debug jest wyłączone (joi)
+* gdy ustawiona jest zmienna środowiskowa MEASURE_TIME, Kadu mierzy czas uruchomienia,
+  działania, zamykania i wyrzuca te dane na konsolę, użyteczne razem ze zmienną
+  CLOSE_AFTER (czas w milisekundach, po którym program zostanie zamknięty) (joi)
+* niewielka poprawka do skryptu configure, pomagająca w kompilacji na OpenBSD (Prezu/joi)
+* nowa akcja: "Blokuj kontakt" (neeo/joi)
+* czyszczenie okna rozmowy nie powoduje już ukradnięcie focusu (Juzef/joi)
+* poprawne ustalenie proporcji w oknie rozmowy + poprawka wyglądu okna konferencji (montor/joi)
+* poprawna inicjalizacja przy całkowicie pustym pliku konfiguracyjnym (Juzef/joi)
+* notify: przy wybranej opcji "Powiadamiaj o wszystkich kontaktach" pomijamy siebie (Juzef,neeo/joi)
+* jeżeli nie podamy kryteriów, szukanie w katalogu publicznym jest niemożliwe (Vogel,neeo/joi)
+* poprawna obsługa błędów odczytu obrazków do wysłania (joi)
+* poprawna obsługa opcji configure: --libdir --datadir --bindir (ustawiane przez
+  m.in. przez rpmbuild) (joi)
+* zachowujemy uprawnienia do plików .so przy instalacji modułów (joi)
+* aktualizacja gnuconfig do wersji 2006.08.14 (joi)
+* opcja umożliwiająca włączenie obsługi uruchamiania poleceń w parserze
+  (domyślnie wyłączona) (joi)
+* poprawiony błąd wyświetlania (w dymkach nad listą kontaktów) danych dla innych
+  kontaktów, w przypadku gdy jest kilka o tej samej wartości pola 'wyświetl' (joi)
+* przy imporcie listy kontaktów prawidłowo dołączamy dane osób, które u nas
+  występują jako tzw. "anonimy" (czyli np. gdy odezwały się do nas przy pustej
+  liście kontaktów) (joi)
+* poprawiony błąd niezapisywania się ostatniego statusu na czystym profilu (joi)
+* kilka błędów związanych z niezapisywaniem się domyślnych wartości opcji (joi)
+* usunięta wywrotka w obsłudze dymków nad listą kontaktów (po przeciągnięciu
+  kontaktu poza okno programu i najechaniu na pokazujący się dymek) (joi)
+* poprawiona wywrotka programu (na świeżym profilu) w chwili otwarcia okna
+  rozmowy, jeżeli nie było zainstalowanego zestawu emotikon 'penguins' (joi)
+* poprawiony błąd niezapisywania się ostatnio widocznej grupy kontaktów (joi)
+* spora optymalizacja wyświetlania animowanych emotikon/obrazków,
+  poprawione problemy ze znikaniem separatorów w oknie rozmowy,
+  możliwość ustawienia obrazka w tle oknie rozmowy - na razie oznaczone
+  jako eksperymentalna (joi)
+* drobne optymalizacje (neeo)
+* nowe pule numerów telefonów u wszystkich operatorów (neeo)
+* budowanie: w katalogach modułów tworzą się proste Makefile'e (cele: all,
+  install, clean, distclean) (joi)
+* budowanie: poprawa błędu tworzenia pustych plików zależności przy --enable-final (joi)
+* poprawiony błąd usuwania tekstu <span style=""></span> z treści wiadomości (joi)
+* poprawione akcje ignorowania i blokowania (neeo)
+* usunięta, zgodnie z TODO, metoda GaduProtocol::logout() (neeo)
+* drobna optymalizacja w GaduProtocol (neeo)
+* poprawiona obsługa sytuacji gdy Kadu uruchamiane jest przez link symboliczny
+  (np. gdy wrzuci się Kadu do autostartu w KDE) (joi)
+* wycofanie zmian (z 11 i 12 marca) w obsłudze błędów połączenia, które powodowały,
+  że Kadu nie zauważało, że serwer zerwał połączenie (joi)
+* dodanie możliwości zapisywania logów do pliku w /tmp, a nie na konsolę -
+  opcja SaveStdErr w sekcji General + możliwość zmiany tej wartości
+  przez zmienną środowiskową SAVE_STDERR (0 lub 1) (joi)
+* poprawione wykrywanie ścieżki do firefoksa na ubuntu (joi)
+* domyślnie włączona opcja ukrywania podstawowych modułów w oknie menedżera modułów (joi)
+* dodana możliwość ustawienia wysokości separatorów w oknie rozmowy (joi)
+* zaaplikowana łata Vogela porządkująca konfigurowalne toolbary (adrian)
+* poprawiono kilka błędów związanych z pływającymi toolbarami (adrian)
+* alsa_sound: wymuszamy rozpoczęcie nagrywania, bo od alsy 1.0.12 lub 1.0.13
+  jest to konieczne (inaczej nic nie nagramy) (joi)
+* migracja znowu działa (przez 7 miesięcy nikt tego nie zauważył!) (joi)
+* jako że od 0.5 moduł ext_sound koliduje z innymi modułami dźwiękowymi,
+  to wyłączamy go przy migracji, dzięki czemu przy następnym uruchomieniu
+  nie dostaniemy brzydkiej wiadomości o konflikcie modułów (joi)
+* zaaplikowana łata montora, poprawiająca działanie akcji typu toggle (neeo)
+* poprawki w akcjach ukrywających kontakty niedostępne i bez opisu,
+  oraz akcji wysyłania wiadomości (neeo)
+* nie pokazujemy głównego okna programu przy zamykaniu sesji gdy tacka systemowa
+  / obszar powiadamiania / itp. wyłącza się przed Kadu (joi)
+* jeżeli przy starcie programu nie uda się otworzyć głównego pliku konfiguracyjnego,
+  to próbujemy otworzyć ostatni backup; zaraz po uruchomieniu i tuż przed procedurą
+  zamknięcia robimy kopię pliku konfiguracyjnego (joi)
+* przycisk szyfrowania ustawia poprawny stan po dodaniu do okna rozmowy (neeo)
+* konfigurowalna liczba obrazków odbieranych w ciągu minuty (Juzef,neeo)
+* poprawione zasięgi niektórych akcji (neeo)
+* poprawka poprawki w module encryption - wiadomości były szyfrowane dwukrotnie (neeo)
+* poprawione zachowanie akcji w oknie wyszukiwania - akcje otrzymują poprawny
+  stan po dodaniu do toolbara (neeo)
+* przy blokowaniu anonimowych kontaktów pojawia sie komunikat informacyjny (neeo)
+* zmienione działanie akcji blokującej dla kilku kontaktów - odblokowanie
+  następuje wyłącznie, gdy wszyscy byli zablokowani, w przeciwnym wypadku
+  niezablokowane kontakty zostają zablokowane (neeo)
+* poprawny zapis w historii wiadomości SMS zawierających znaki <> (montor/neeo)
+* pozycje "Wyczyść historię" i "Pokaż historię" nie są blokowane dla nas samych
+  w popupie na liście kontaktów (montor/neeo)
+* dodany do autodownloadu moduł advanced_userlist (joi)
+* 0.5.0-rc1
+* poprawka instalacji modułów przy make install_nazwamodułu gdy katalogi docelowe
+  jeszcze nie istnieją (joi)
+* poprawka parsera Kadu, który usuwał wszystkie znaki przed ']}, jeżeli
+  nie było wcześniej (odpowiednio) znaków `[{ (joi)
+* wysokość pola edycji w oknie rozmowy nie zmienia się przy zmianie rozmiaru
+  całego okna (FuKu/joi)
+* poprawka wywrotki gdy w trakcie szukania serwera w konfiguracji zostanie zmieniona
+  lista serwerów (joi)
+* poprawione budowanie paczki na MacOSX (joi)
+* akcje nie umożliwiają blokowania i ignorowania nas samych (neeo)
+* poprawione wykrywanie przeglądarki Safari na MacOSX (joi)
+* usunięty niewielki wyciek pamięci przy każdej akcji wywoływanej przez
+  przycisk z głównego okna (joi)
+* poprawka wywrotki przy usuwaniu przycisku z toolbara wyciągniętego poza okno (joi)
+* poprawka wywrotki w oknie szukania w katalogu przy naciśnięciu "rozmowa" lub
+  "dodaj wybrany kontakt" gdy żadna pozycja nie jest zaznaczona (joi)
+* usunięty niewielki wyciek pamięci przy każdej akcji wywoływanej przez
+  przycisk z okna szukania w katalogu publicznym (joi)
+* poprawione kilka drobnych błędów przy wyborze przeglądarki www (arvenil/joi)
+* poprawka błędu możliwości utworzenia grupy złożonej z samych cyfr,
+  z przecinkiem lub średnikiem przy przeciągnięciu kontaktu na pasek zakładek (joi)
+* niewielkie poprawki w wyglądzie okien: wysyłania smsów, szukania w katalogu publicznym,
+  informacji o kontakcie (joi)
+* przy określaniu kiedy ma się pojawić dymek nad listą kontaktów, olewamy
+  zdarzenia zatrzymania/ruszenia rolką w myszce, mające źródło poza listą
+  kontaktów (gdy Qt jednak decyduje się nam je przekazać) (joi)
+* gdy nie ma załadowanego żadnego z modułów *_docking lub gdy załadowany jest
+  macosx_docking, to anonimowe kontakty z nadchodzącymi wiadomościami znowu
+  wyświetlane są na liście kontaktów (joi)
+* autoresponder: domyślnie włączona opcja ignorowania konferencji (joi)
+* MacOSX: ładniejsza ikonka aplikacji (MAX/joi)
+* blokowanie pasków narzędziowych działa jak powinno - nie da się zrobić nic (joi)
+* poprawka kompatybilności autodownloadu ze starymi shellami (m.in. na MacOSX) -
+  autodownload wywracał się na starym zestawie emotikon (joi)
+* dodany skrypt ułatwiający tworzenie Universal Binary dla MacOSX (MAX, joi)
+* 0.5.0-rc2
+* poprawiony błąd w oknie wyszukiwania, umożliwiający odblokowanie akcji szukania
+  bez wcześniejszego wypełnienia kryteriów (neeo)
+* przyciski "Ok" i "Anuluj" w oknie wpisywania tokena przy wysyłaniu smsów
+  do Orange (joi)
+
++++ wersja 0.4.0 (16.04.2005)
+* patch kida, poprawiający wygląd okna zarządzania ścieżkami do plików
+  w oknie konfiguracji (adrian)
+* poprawione 2 błędy związane z dymkami i docking gdy te pierwsze są wyłączone (joi)
+* patch vogela przenoszący obsługę zdarzenia zmiany statusu przez kontakt do
+  klasy GaduProtocol (adrian)
+* tylko jedna para funkcji escapujących: HtmlDocument::(un)escapeText (adrian)
+* nałożony patch znany pod nazwą kadu-speedup oraz współdziałający
+  patch joia kadu-speech (adrian)
+* porządki w dcc część pierwsza - wydzielenie klasy FileDccSocket (adrian)
+* teksty w dialogu wyboru obrazka tłumaczą się (chilek)
+* tytuł głównego paska narzędziowego tłumaczy się (chilek)
+* kolejny porządkujący patch vogela - sloty z EventManagera (adrian)
+* łatka bugiego dodająca opcję pokazywania tylko kontaktów z opisami (adrian)
+* paragrafy zamiast tabelek w historii i chacie według pomysłu chilka, gdy _wyłączone_
+  są animowane emotikony; przy włączonych animowanych emotikonach kopiowanie tekstu
+  wraz z odpowiadającym tekstem; usunięcie wariowania pionowego suwaka w chacie przy
+  kopiowaniu,  BUG_ID=285, BUG_ID=34, BUG_ID=203, topic=27166 (joi)
+* okno importu/eksportu: nie pokazujemy uinów równych zero (chilek)
+* usunięty wyciek pamięci w Chacie (po wczorejszych zmianach) (joi)
+* poprawione czyszczenie okna Chatu (joi)
+* po ostatnich zabawach Vogela/Adriana/Chilka nie działało odbieranie
+  wiadomości - poprawione (joi)
+* kolejny porządkujący patch vogela - likwidacja EventManagera (adrian)
+* patch kida przerabiający dialogi wyboru ścieżek do zestawów oraz
+  edycji informacji o kontakcie na modalne (adrian)
+* po ostatnich zmianach vogela/kida/adriana/joi-a nie kompilował się autoresponder;
+  postuluję zmianę wersji na 0.3.10-cvs (chilek)
+* moduły echo, kadu_speech znowu sie kompilują po zmianach vogela ;) (michal)
+* porządki w dcc część druga - powstanie klasy DccManager z części kodu
+  znajdującego się uprzednio w klasie Kadu (adrian)
+* łatka bugiego udostępniająca opcję wyrównania ikon statusów do nazwy
+  kontaktu przy włączonej opcji opisów na liście kontaktów (adrian)
+* patch vogela usuwający zmienne globalne kadusnr, kadusnw plus inne
+  drobne porządki z tym związane (adrian)
+* porządki w dcc część trzecia - przeniesienie reszty kodu dotyczącego dcc
+  z klasy Kadu do klasy DccManager (adrian)
+* porządki w dcc część czwarta - przeniesienie kodu dotyczącego dcc
+  z klasy EventConfigSlots to klasy DccManager (adrian)
+* porządki w dcc część piąta - kod w dcc.cpp/h nie jest już wykorzystywany
+  w innych miejsach kadu, przygotowanie do wydzielenia modułu (adrian)
+* patch vogela usuwający klasę EventConfigSlots (adrian)
+* usunięte zbędne już pliki events.cpp, events.h (adrian)
+* wydzielenie modułu dcc, domyślnie statyczny (adrian)
+* po uruchomieniu jako root kadu wyświetla ostrzeżenie (adrian)
+* łatka vogela usuwająca większość zmiennych globalnych z gadu.h (adrian)
+* moduły dcc i voice nie korzystają już z funkcji libgadu, jedynie z metod
+  klasy GaduProtocol, wywalone zbędne zmienne globalne z modułu dcc (adrian)
+* gdy załadowaniu modułu nie jest możliwe w komunikacie jest pokazywana
+  nazwa modułu (michal)
+* łatka dorregaray'a dodająca do modułu autorespondera opcję jednokrotnej
+  tylko odpowiedzi na czyjąś wiadomość (adrian)
+* łatka dorregaray'a dodająca do modułu autoaway opcje automatycznej zmiany
+  na status ukryty oraz automatycznego rozłączania się się (adrian)
+* drobna poprawka mania dla dla gcc 2.95.2 (adrian)
+* poprawka zachowania okna czat, historii, panela informacyjnego przy
+  altnickach zawierających znaki specjalne html, np. znak mniejszości (adrian)
+* w konfiguracji wyglądów dymków, w pozycji wyboru powiadomienia dodana
+  pozycja "Set for all" (mast3r)
+* w konfiguracji można wybrać jaki styl Qt ma zostać użyty (michal)
+* patch dorregaray'a dodająca do modułu autoaway opcję automatycznej
+  zmiany opisu, ew. doklejenia czegoś do poprzedniego (adrian)
+* wydzielenie do modułu rejestracji/wyrejestrowania konta,
+  zmiany/przypominania hasła (joi)
+* patch porządkujący vogela - klasa reprezentująca status (adrian)
+* 2 łatki Vogela na 2 błędy: segfault przy wyłączaniu Kadu oraz brak
+  połączenia z serwerami (joi)
+* drobne poprawki w api klasy Status (adrian)
+* usuwanie kontrolek z konfiguracji przy wyładowywaniu modułu dcc (joi)
+* poprawki w kodzie obsługi naszego statusu (adrian)
+* dcc nie używa bezpośrednio mechanizmu zdarzeń qt + po poproszeniu
+  odbiorcy o nazwiązanie połączenia czekamy tylko 3 sek. (adrian)
+* dalsza walka vogela ze statusami - sygnał changingStatus (adrian)
+* drobne optymalizacje libgadu, IconsManagera, GaduSocketNotifiers (joi)
+* łatka vogela - porządki w tokenach i przenosiny klasy Status (adrian)
+* eskejpowanie znaków htmla przy zapisie do historii statusów z opisami (joi)
+* poprawione parsowanie wiadomości pod kątem obrazków jeżeli w treści
+  wiadomości przed obrazkiem gdzieś pojawił się znak ']' (joi)
+* wydzielone moduły notify, window_notify, hints (domyślnie statyczne)
+  moduły sound i speech wymagają modułu notify, dodane nowe rodzaje zdarzeń dźwiękowych
+  moduły dźwiękowe zmodyfikowane do nowego sound
+  usunięty błąd w hintach powodujący błędne zapisanie wartości czasu znikania
+  hinty przy ustawieniu własnej pozycji nie wyjeżdżają poza ekran
+  zmiana wyglądu zakładki "Dymki" w konfiguracji
+  ConfigDialog: dodane ulepszone addComboBox (automatycznie zapisujące swój stan),
+      dodana nowa kontrolka poprzez addVRadioGroup, addHRadioGroup
+  (joi)
+* łatka SadMephisto dodająca do modułu możliwość wyboru koloru szyfrowanych
+  wiadomości (joi)
+* usuwanie kontrolek z konfiguracji przy wyładowywaniu modułu encryption
+  skrócenie kodu dodającego ColorButtony do konfiguracji (joi)
+* łatka Vogela ustawiająca właściwą ikonę statusu przy łączeniu się z serwerem (joi)
+* wyświetlanie własnego statusu na liście kontaktów znowu działa (na razie ;)) (joi)
+* usunięty błąd powodujący otwarcie okna rozmowy przy naciśnięciu entera
+  na liście kontaków mimo braku zaznaczenia (joi)
+* możliwość wyłączenia dymka w trayu (tego z własnym statusem i opisem co który
+  klawisz myszki robi) (joi)
+* usunięty segfault w module encryption przy odbiorze klucza (joi)
+* drobna przebudowa powiadamiania z usunięciem kilku błędów
+  opcja ignorowania zmian statusów zaraz po połączeniu z serwerem
+  uproszczenie modułów dźwiękowych (joi)
+* usuwanie kolejnych zbędnych tagów z wiadomości (<wsp></wsp>) (joi)
+* możliwość wyłączenia dymka nad listą kontaktów (joi)
+* rozwiązanie problemów z krzakami zamiast polskich znaków
+  w smsach wysłanych przez bramkę idei (joi)
+* konfigurowalna ilość ostatnich opisów (joi)
+* możliwość wybrania rogu, od którego będzie liczona pozycja dymków (joi)
+* ulepszona konfiguracja grup kontaktów (joi)
+* okna chatów w gnome nie powinny wyskakiwać poza ekranem (joi)
+* możliwość wyłączenia pokazywania blokowanych i blokujących na liście kontaktów (joi)
+* drobne poprawki do translacji (Ron_K)
+* porządki i poprawiona kompatybilność z Qt < 3.2 (joi)
+* poprawa błędu powiadomień - funkcja działała tylko przy włączonej
+  opcji powiadamiania o wszystkich kontaktach (joi)
+* poprawa głupiego błędu w hintach - domyślne wartości ustalane były dla
+  modułu window_notify (joi)
+* zakładki w konfiguracji mogą mieć ikonki (o ile będą w zestawie) (joi)
+* poprawki w hintach dla modułu tcl_scripting (joi)
+* w konfiguracji kolejny pseudo widget - "RadioGroup" (joi)
+* łata Vogela na obsługę statusów + moje zmiany, co by to działało ;) + drobne
+  optymalizacje (joi)
+* jeżeli w trakcie ładowania modułu autoaway ustawiony był status dostępny,
+  to moduł nie startował prawidłowo - poprawione (joi)
+* wybór przeglądarki do otwierania linków - patch Dorregaraya i moje spoore zmiany (joi)
+* poprawka Vogela na status "Tylko dla znajomych" (odznaczanie się checkboksa
+  przy połączeniu) (joi)
+* poprawiony błąd wyświetlania statusu "niedostępny z opisem" (joi)
+* autodownload obsługuje archiwa w formacie tar.gz i tar.bz2 (adrian)
+* autodownload potrafi obsłużyć archiwum zawierające katalog zgodny z nazwą
+  archiwum a nie z nazwą modułu lub zestawu - normalizuje nazwę (adrian)
+* możliwość konfiguracji zestawów icon w pliku .config i obsługa autodownload,
+  przygotowane zestawy crystal16 i crystal22 (adrian)
+* kolejne poprawki Vogela na obsługę statusów (joi)
+* drobne poprawki do wyboru przeglądarki: konfiguracja konquerora
+  i poprawka do firefoxa na debianie (joi)
+* zapamiętywanie stanu szyfrowania przy zamknięciu okna chatu (joi)
+* dodany moduł desktop_docking autorstwa Dorregaraya, służący symulacji dokowania
+  przy pomocy małego okna z ustawioną flagą "zawsze na wierzchu" (joi)
+* configure: zamiast opcji --with-qt-includes, with-qt-libs, with-qt-moc
+  bardziej ogólne --with-includes, with-libs, with-apps umożliwiające podanie
+  ścieżek, nawet kilku, do wyszukiwania. wpływa również na wyszukiwanie
+  bibliotek wymaganych przez moduły (adrian)
+* drobna poprawka michała w configure do ./config.status --recheck (adrian)
+* ikony NG by Arcisz (Ron_K)
+* proxy: ostrzeżenie przy błędnym ustawieniu hosta i usunięcie
+  sprawdzania czy port >= 1024 (joi)
+* kadu nie próbuje się zalogować przy rozłączaniu... (Vogel/joi)
+* opcja wyślij sms w menu głównym przesunięta wyżej, po otwarciu nią okna
+  wysyłanie sms domyślnie aktywne jest pole "odbiorca" (adrian)
+* łata Vogela: powiadomienia o statusach + trochę moich zmian (joi)
+* przywrócona możliwość wyboru portu przez który kadu ma sie łączyć z
+  serwerami (michal)
+* zmiana zestawu ikon nie wymaga restartowania całego programu + nowe ikonki (joi)
+* poprawne zamykanie po otrzymaniu sygnału SIGTERM lub SIGINT (joi)
+* przy starcie x11_docking w trayu ikonka nie pokazuje się dwukrotnie (joi)
+* usunięcie staarego kodu, który miał zabezpieczać przed ujawnianiem naszego "ukrycia",
+  a przy statusie "niewidoczny z opisem" robił coś dokładnie odwrotnego...
+  przy przechodzeniu z "niedostępny z opisem" na "niewidoczny z opisem"
+  nie pojawiają się 2 informacje o zmianie statusu (joi)
+* poprawione powiadamianie o statusach przy połączeniu + odświeżanie UserBoksa
+  dopiero po odebraniu od serwera całej listy kontaktów (joi)
+* dodana domyślna ścieżka odtwarzacza w ext_sound
+  jeżeli ścieżka nie jest ustawiona, to nie próbujemy w ogóle odpalać czegokolwiek
+  dźwięki domyślnie włączone, poprawione domyślne wielkości okien (joi)
+* dodany moduł weather do autodownloadu (joi)
+* moduły dynamiczne z ustawioną opcją LoadByDefault w pliku desc ładują się
+  domyślnie dopóki ich sami nie wyładujemy w menadżerze modułów. moduły
+  x11_docking, ext_sound i autoaway domyślne, ale dynamiczne (adrian)
+* tylko docking, sound i notify pozostają na stałe, reszta dynamicznie,
+  ale domyślnie ładują się (joi)
+* tradycyjnie już patch porządkujący vogela... tym razem likwiduje on zmienne
+  publiczne z klasy UserListElement i udostępnia odpowiednie funkcje (adrian)
+* ostatni chyba w tej wersji patch porządkujący vogela - nazwy dns (adrian)
+* poprawka vogela poprawek vogela ;) (adrian)
+* ======= FEATURE FREEZE =======
+  jeśli ktoś ma jakieś uwagi co do api, to niech szybko zgłasza (adrian)
+* dodano moduł kreatora konfiguracji autorstwa Dorregaray (Ron_K)
+* klasa Status przemianowana na UserStatus ze względu na konflikt nazw (joi)
+* dostosowanie autorespondera do którejś z ostatnich zmian Vogela (joi)
+* z powodu ciągłych problemów z pobieraniem modułów autodownload obsługuje
+  mirrory: w pliku .web możemy podawać kilka adresów w kolejnych wierszach (adrian)
+* poprawione segfaulty vogela związane z importem listy kontaktów (chilek)
+* przywrócone sprawdzanie najnowszej wersji Kadu (joi)
+* ======= API FREEZE =======
+  teraz je dokumentujemy i oczywiście szukamy błędów w nowym kadu (adrian)
+* patch Dorr-a na Config_wizard (Ron_K)
+* focus w oknie Chat przekazywany jest do pola edycji (joi)
+* dymki z opisem składni pojawiają się w konfiguracji nad polami w hintach i speech (joi)
+* eskejpowanie znaków specjalnych w nickach przy wyświetlaniu dymków (joi)
+* poprawne otwieranie linków zawierających spacje (joi)
+* "przytrzymywanie" stanu bocznego suwaka w zarządcy modułów przy
+  ładowaniu / wyładowywaniu (joi)
+* łata Vogela usuwająca segfault przy braku połączenia z serwerem (joi)
+* gdy w nicku występuje ',', to w oknie historii wpisy nie łączą się pod jedną datą (joi)
+* poprawki w UserList dotyczące małych/dużych liter i dokumentowanie (adrian)
+* powiadamianie o nowej rozmowie przy włączonej opcji "Nowa wiadomość otwiera
+  okno rozmowy" znowu działa (NKG/joi)
+* obejście problemów z otwieraniem linków ze spacjami w operze
+  + poprawne tłumaczenie pliterek w linkach (joi)
+* pod gnome przy włączonej opcji "Miganie paska tytułowego" nie zmienia się
+  szerokość paska zadań (joi)
+* usuwanie htmla (który jest dodawany prze encryption) z tego co czyta moduł speech (joi)
+* łatka joi'a, umożliwiająca przerwanie configure podczas przetwarzania
+  plików spec modułów (adrian)
+* obrazki w oknie rozmowy już nie zmieniają się znowu w klepsydrę po
+  przyjściu nowej wiadomości (adrian)
+* w autodownloadzie dodany limit czasu dla pobrań modułów (joi)
+* configure i spece modułów: poprawione wykrywanie dodatkowych narzędzi,
+  dodane ścieżki dla qt (joi)
+* usunięty segfault przy imporcie listy kontaktów (joi)
+* patch dokumentujący klasę GaduProtocol vogela + drobna poprawka
+  odświeżania userboxa (adrian)
+* łatka pinkworma na klasę UinsList (joi)
+* przy wyłączaniu zakładek grup zmieniamy aktualną grupę na "Wszyscy" (joi)
+* poprawione pozycjonowanie anim. emot. przy wł. opcji "paragrafy" (adrian)
+* animowane obrazki w chacie (joi)
+* poprawione kopiowanie tekstu z okna rozmowy przy włączonych paragrafach (joi)
+* animowane emotikony/obrazki są usuwane z pamięci po zamknięciu okna chatu (joi)
+* usprawnienie mechanizmu mirrorów w autodownload: w pliku .href możemy
+  podawać kilka adresów w kolejnych wierszach (adrian)
+* łata Vogela: ikona w trayu znowu miga i działają timeouty na połączenia
+  z serwerami (joi)
+* tło pod animowanymi obrazkami jest już odpowiedniego koloru (joi)
+* przywrócone zapisywanie nowych kontaktów [#333], usunięty martwy
+  sygnał UserList::userAdded i slot Kadu::userlistUserAdded (adrian)
+* obsługa blokowania przez serwer wiadomości oraz zapełnienia skrzynki przy
+  włączonej opcji "Potwierdzenie wysłania wiadomości (czekaj na dostarczenie)" (joi)
+* łapanie do linków '(' ')' (joi)
+* separatory paragrafów w oknie chat i historii (adrian, joi)
+* usunięta opcja "Wymuś użycie paragrafów", a dodana "Używaj paragrafów
+  zamiast tabelek" (wbrew pozorom jest różnica) + drobny tuning ;) paragrafów (joi)
+* łata Vogela na problemy z łączeniem i zrywaniem połączenia (joi)
+* paragrafy są już prawie nieodróżnialne od tabelek (joi)
+* usunięty segfault w encryption (próba wysłania klucza przy braku połączenia) (joi)
+* łata Vogela: wyłączanie checkboksa "Niedostępny dla kontaktu" w informacjach
+  o kontakcie przy wyłączonym statusie "Tylko dla znajomych" (joi)
+* dymki nie pojawiają się poza ekranem gdy panel jest ukryty (joi)
+* dymki z informacjami o zmianach statusów domyślnie nie otwierają okna chat
+  (możliwość włączenia w konfiguracji) (joi)
+* opcja ignorowania zmian statusów dostępny->dostępny, itp. (domyślnie włączona) (joi)
+* poprawki w module config_wizard - wyładowuje się już prawidłowo (adrian)
+* dodany moduł ext_info do autodownloadu (adrian)
+* encryption: usunięty segfault przy odbiorze klucza (joi)
+* paragrafy: nowa wersja separatorów + wycinanie emotikon przy wyłączonej animacji (joi)
+* paragrafy: lepsze pozycjonowanie animowanych emotikon/obrazków (joi)
+* przy eksporcie listy kontaktów na serwer polskie znaki nie są usuwane (joi)
+* autoaway: łata Dorregaraya + porządki + poprawki dla Linuksa 2.6 (joi)
+* escape znowu zamyka okno konfiguracji (joi)
+* przy włączonej podczas konfiguracji źródeł opcji --enable-debug w trakcie
+  działania programu można zmienić w konfiguracji wartość DEBUG_MASK +
+  możliwość wyłączenia obsługi sygnałów systemowych poprzez ustawienie
+  zmiennej środowiskowej SIGNAL_HANDLING na 0 (joi)
+* ostatnio wybrane katalogi przy przesyle plików oraz przy wyborze obrazków
+  są zapamiętywane (joi)
+* przy przechodzeniu kontaktu ze statusu niedostępnego na dostępny lub zaraz wracam
+  nie odświeżał się adres ip, port, maksymalny rozmiar obrazka - poprawione (joi)
+* dokowanie dla fvwm-crystal: WM_CLASS="kadudock" (joi)
+* dodane brakujące ikonki w menu modulów account_management config_wizard (Ron_K)
+* poprawka w odświeżaniu ikon po zmianie tematu (michal)
+* usunięty segfault przy próbie nawiązania połączenia DCC jeżeli nie mamy
+  wywołującego na liście kontaktów (joi)
+* w przypadku braku domyślnego zestawu ikon kadu przełącza się na pierwszy
+  dostępny zestaw (joi)
+* debug: dodana funkcja kdebugmf o identycznej składni co kdebugm, ale wypisująca
+  dodatkowo nazwę funkcji (joi)
+* ikony w dockmenu poprawnie odświeżają się przy zmianie zestawu ikon (joi)
+* ograniczenie ilości czytanych przez moduł speech znaków (joi)
+* prawidłowa obsługa wywoływania rozmowy głosowej z osobą za nat'em (adrian)
+* timeout i informacja, że nie można nawiązać połączenia dcc działa
+  również w obsłudze rozmów głosowych (adrian)
+* przysłane obrazki zapisują się w historii jeżeli dotrą w ciągu minuty od
+  wysłania żądania (joi)
+* jeżeli obrazek jest większy niż nasz limit, to nie prosimy nadawcy o jego
+  przysłanie (joi)
+* kolejne spore przeróbki w dcc i voice, inaczej nie poprawimy niektórych
+  błędów. poproszę o sporą ilość rozmaitych testów (adrian)
+* porządki, poprawki przy tworzeniu i niszczeniu dialogów FileTransferDialog
+  i VoiceChatDialog (adrian)
+* okno chat jeżeli jest zminimalizowane, to przy dwukliku na liście kontaktów
+  się odminimalizuje ;) (w Qt>=3.3) (joi)
+* libgadu: błędnie liczone sumy kontrolne obrazków (joi)
+* libgadu: wysyłanie dużych pakietów nie "zawiesza" połączenia - obrazki
+  powinny już zawsze dochodzić (joi)
+* przełączanie focusu w oknie chat jednak wyłączone - czasem
+  powodowało to problemy (joi)
+* podczas dodawania kontaktu brane są pod uwagę ustawienia
+  w zakładce "inne" (adrian)
+* usunięta obsługa okien chat za pomocą tabelek - tylko paragrafy (adrian)
+* sendFile(UinType) w FileTransferManager. pomysł z łatki googiego (adrian)
+* linki rozpoczynające się od "www." poprawnie otwierają się w konquerorze (joi)
+* ip, port i domena nie kasują się przy uaktualnianiu danych o kontakcie (joi)
+* dodane 2 domyślne serwery GG (joi)
+* łatka dorregaray'a - potwierdzenie czyszczenia okna rozmowy [#344] i
+  otwieranie okna historii gdy nie mamy zaznaczonych kontaktów [#342] (adrian)
+* poprawione znikanie dymków przy Qt 3.0.x (joi)
+* ustawienia kolorów tekstu w oknie chat również w historii [#340] (adrian)
+* upgrade libgadu: niektóre poprawki joi'a mieliśmy już wcześniej, ale
+  dodatkowo poprawki pobierania tokenów i obsługi proxy (adrian)
+* zmienna SystemMsgIndex była ładowana z sekcji Global, a powinna była być ładowana
+  z sekcji General (chilek)
+* jeśli wiadomość pochodzi od użytkownika z uinem równym 0 (wiadomość systemowa)
+  ignorujemy sprawdzanie czy jest to użytkownik anonimowy itd. (chilek)
+* domyślny indeks ostatnio odczytanej wiadomości systemowej ustawiony na 1389
+  (zgodnie z GG 6.0 build 147) (chilek)
+* usunięty segfault po usunięciu kontaktu z listy (joi)
+* usunięty niewielki wyciek pamięci w EmoticonSelectorze (joi)
+* przy konfiguracji wizardem poprawnie tworzą się katalogi profilu (joi)
+* poprawka segfaulta przy zerwaniu polaczenia i ponownym laczeniu (pawel_p)
+* aktualizacje sprawdzamy nie częściej niż co godzinę (chilek)
+* StartDelay w kadu.conf (w sekcji General) pozwala na opóźnienie w uruchomieniu
+  programu, może to być przydatne w GNOME przy odtwarzaniu sesji (joi)
+* config_wizard: łata Dorregaraya - wybór modułu dźwiękowego,
+  czyszczenie kodu, część pierwsza (joi)
+* poprawiona kompatybilność z Qt 3.0 (joi)
+* dodana możliwość ignorowania obrazków gdy jesteśmy ukryci
+  + współpraca z modułem "spy" (joi)
+* łata mig21 + drobne poprawki: jeżeli w ciągu kilku sekund (domyślnie 2) od przyjścia
+  wiadomości spróbujemy zamknąć okno chatu, to kadu zapyta się o potwierdzenie (joi)
+* istotne poprawki przy instalowaniu katalogu "data" modułów [#353] (adrian)
+* przy pierwszym uruchomieniu dcc ścieżki do domyślnych katalogów są
+  poprawnie ustawiane (joi)
+* drobne optymalizacje w wyświetlaniu opisów pod kontaktami (joi)
+* optymalizacje formatowania wiadomości w chacie (joi)
+* poprawione kopiowanie tekstu z chatu do schowka przy zaznaczeniu myszką (joi)
+* zmodyfikowana składnia panelu informacyjnego dla zestawu RonK2
+  (problemy na systemach, gdzie kodowanie było inne niż latin2) (joi)
+* usuwany z grupy kontakt nie jest z powrotem dodawany do bieżącego userboksa (joi)
+* encryption: jeżeli nie uda się zakodować wiadomości, to wyświetlany jest
+  odpowiedni komunikat (joi)
+* uproszczenia i poprawki w mechaniźmie łączenia z serwerami: wyrzucona stara
+  zmienna Autohammer, cała klasa AutoconnectTimer, niestety cofnięta ostatnia
+  poprawka pawła_p - powodowała inwazję hintów przy braku sieci ;) (adrian)
+* przy wyłączonych zakładkach grup kadu poprawnie dodaje nowe kontakty do listy (joi)
+* usunięte freeze'y w czasie konferencji (joi)
+* usunięty segfault przy dwukliku na liście kontaktów przy nowej wiadomości (joi)
+* dodany do autodownloadu moduł dcopexport (joi)
+* poprawne otwieranie linków z % (joi)
+* sms ląduje w historii tylko gdy bramka nie zwróciła błędu (joi)
+* możliwość łączenia okien chatów we Fluxboksie - WM_CLASS=kadu-chat (joi)
+* zmiana statusu na niedostępny prawidłowo przerywa proces łączenia (adrian)
+* przy statusie "tylko dla znajomych" gdy ktoś obcy się do nas odezwie,
+  to nie ujawniamy mu naszego statusu (joi)
+* bezproblemowa aktualizacja uinu kontaktu jeżeli mamy go na liście anonimowych (joi)
+* ignorujemy zmiany statusów dla anonimowych kontaktów, z którymi rozmawialiśmy (joi)
+* poprawki, uproszczenia przy zarządzaniu zewnętrznym ip w dcc (adrian)
+* usunięte błędy występujące w wielu miejscach kadu gdy np. nick osoby zawiera "%1" (joi)
+* usunięty wyciek pamięci z modułu dsp_sound (joi)
+* usunięty wyciek pamięci z okna konfiguracji (joi)
+* api do obsługi nagrywania i odtwarzania próbek w module sound (adrian)
+* obsługa nagrywania i odtwarzania próbek w module dsp_sound (adrian)
+* zaaplikowana łatka Dorra do config_wizarda, teraz okienka już pracują jak
+  należy i podgląd dla tematów panela info jest prawidłowy (Ron_K)
+* libgadu: drobne wycieki w specyficznych warunkach (joi)
+* poprawione przesyłanie plików przy przekierowaniu portów (joi)
+* opcja testowania odtwarzania próbek przez nowe api w konfiguracji (adrian)
+* w module notify "nowe" zdarzenie - użytkownik zmienił status na niewidoczny (joi)
+* usunięty kolejny wyciek pamięci - tym razem MessageBox (joi)
+* poprawiony błąd w formatowaniu wiadomości (objawiał się przy obrazkach) (joi)
+* porządki w dcc/voice - rozpoczynanie połączenia tylko w jednym miejscu (joi)
+* dcc: ostrzeżenie gdy ktoś próbuje rozpocząć z nami bezpośrednie połączenie,
+  a adres źródłowy nie zgadza się adresem, który otrzymaliśmy od serwera
+  + ignorowanie połączeń bezpośrednich od anonimów (joi)
+* poprawka Analyzera w kodzie dotyczącym ignorowania - błędny zapis listy
+  ignorowanych do pliku (joi)
+* dcc: porządki, usunięty błąd powodujący przesłanie serwerowi błędnego numeru portu (joi)
+* dcc + libgadu: poprawne przesyłanie nazw plików zawierających polskie znaki (joi)
+* dcc: gdy druga strona, mimo posiadania publicznego ip, nie chce z nami nawiązać
+  połączenia, to prosimy ją o połączenie zwrotne (joi)
+* dcc: zrobiony ładny interfejs do przesyłania plików (np. dla dcopexport) (joi)
+* dsp_sound: odtwarzanie różnych formatów dźwięków oraz regulacja głośności
+  uwaga: od dzisiaj do kompilacji modułu sound wymagana jest biblioteka libsndfile (joi)
+* dodany do autodownloadu moduł alsa_sound (joi)
+* hinty: ikonki statusów znowu się pokazują (joi)
+* opcja testowania nagrywania próbek przez nowe api w konfiguracji (adrian)
+* rozmowy głosowe używają nowego api nagrywania/odtwarzania próbek (adrian)
+* tła pod animowanymi obrazkami ustawiają się poprawnie (joi)
+* obsługa wątkowanego odtwarzania w nowym api próbek (adrian)
+* obsługa wątkowanego nagrywania w nowym api próbek (adrian)
+* testy odtwarzania i nagrywania używają wątkowania (adrian)
+* test fulldupleksu i kosmetyka w pozostałych testach (adrian)
+* lista kontaktów z gg 6.1 importuje sie poprawnie (michal)
+* możliwość zmiany koloru tła/okna edycji w oknie chat-u (michal)
+* test kodowania/dekodowania gsm w module rozmów głosowych (adrian)
+* możliwość włączenia trybu odtwarzania próbek zapewniającego bardziej
+  "płynne" ich łączenie - metoda setFlushingEnabled() (adrian)
+* dodano wersję francuską autorstwa Mirosława Jerzewskiego
+* łatka Dorregaraya dotycząca przemieszczania ikonki w desktop_docking (adrian)
+* libgadu: poprawki w obsłudze proxy (pobrane z cvsu libgadu) (joi)
+* encryption: uniemożliwienie wysłania klucza do samego siebie poprzez
+  menu kontekstowe nad listą kontaktów (joi)
+* okna utworzone za pomocą klasy MessageBoxdają się zamknąć tylko przeznaczonymi
+  do tego przyciskami, po co utrudniać sobie życie ;) (adrian)
+* Patch Dorr-a na segfault w desktop_docking (Ron_K)
+* kolejna łatka Dorregaraya dotycząca modułu config_wizard (adrian)
+* pole "Hasło" w konfiguracji proxy jest wygwiazdkowane (joi)
+* w konfiguracji proxy można podać nazwę hosta, a nie tylko IP (joi)
+* poprawiony segfault w teście nagrywania dźwięku (joi)
+* przepisany od zera moduł arts_sound (jest niewrażliwy na pady
+  wewnątrz artsa oraz obsługuje nagrywanie) (joi)
+* obsługa nagrywania dźwięku w esd_sound (joi)
+* przy dodawaniu nowego kontaktu lista nie zawsze się odświeżała - poprawione (joi)
+* configure dla modułu sound zbuntuje się jeżeli libsndfile jest zbyt stare (<1.0) (joi)
+* poprawna instalacja podprogramu dla modułu arts_sound (także dla xosd_notify) (joi)
+* gdy nie uda się uruchomić arts_connectora, kadu się nie zwiesi (analyzer/joi)
+* dodany moduł alsa_sound (joi)
+* usunięte 100% obciążenia procesora i segfault w przypadku problemów z siecią (joi)
+* nie pozwalamy się połączyć z serwerem jeżeli UIN lub hasło nie są ustawione
+  + drobne porządki w obsłudze sytuacji awaryjnych (joi)
+* łata Dorregaraya na config_wizard: zapisywanie uina i hasła przy "mam już numer"
+  oraz poprawne ustawianie domyślnych kolorów dymków (joi)
+* łata Dorregaraya: checkbox w oknie wysyłania smsa określający czy powinien
+  zostać zapisany do historii (joi)
+* poprawiony import listy kontaktów z serwera (przepisane od nowa parsowanie
+  pliku listu - teraz czytamy ją zawsze od lewej do prawej; wartości nowych pól
+  są zachowywane przy imporcie/eksporcie, mimo że nie wykorzystywane) (joi)
+* łata miga21 poprawiająca kilka błędów w formatowaniu wiadomości gdy
+  wklejamy obrazek (joi)
+* gdy ktoś przysyła nam obrazek większy niż nasz limit lub gdy obrazek pochodzi od
+  anonima/ignorowanego, to zamiast klepsydry pojawia się odpowiedni napis (joi)
+* usunięty potencjalny segfault przy aktualizacji informacji o kontakcie (joi)
+* usunięte 2 wycieki pamięci: w sound i voice (joi)
+* dsp_sound: kompatybilność z niektórymi starymi kartami dźwiękowymi,
+  poprawki niezainicjowanych zmiennych (joi)
+* łata Dorregaraya: poprawiony błąd kasowania UIN-a pobranego z serwera GG przy
+  rejestracji podczas kontynuacji config_wizarda (Ron_K)
+* łata Dorregaraya: dodano okienko potwierdzające, że rejestracja przebiegła
+  prawidłowo w config_wizard i UIN został zapisany (Ron_K)
+* config_wizard: działający automatyczny import listy kontaktów (joi)
+* po dołączeniu zaimportowanej listy kadu segfaultowało w losowych momentach (joi)
+* po zaimportowaniu listy kontaktów, "poprawnie" wysyłamy listę osób, których
+  statusy chcemy oglądać - obejście błędu w serwerze gg (joi)
+* szybsze otwarcie okna po kliknięciu na ikonę dokującą (joi)
+* dodana możliwość ustawienia koloru jakim pisany jest opis na liście kontaktów (joi)
+* optymalizacje: otwarcie i zapis pliku konfiguracyjnego, ekspansja emotikon,
+  wyświetlanie opisów pod kontaktami (joi)
+* okno wyboru pliku w konfiguracji modułów sound, ext_sound, speech nie powoduje
+  wyrzucenie na wierzch głównego okna kadu (joi)
+* poprawione kolorowanie opisów pod kontaktami (joi)
+* poprawione pozycjonowanie animowanych emotikon / obrazków (joi)
+* optymalizacje, m. in. menedżera ikon i odświeżania listy kontaktów (joi)
+* encryption: przyjmowanie klucza nie zależy od włączenia opcji "Używaj szyfrowania" (joi)
+* kolejne optymalizacje w obsłudze listy kontaktów (joi)
+* jeszcze lepsze pozycjonowanie emotikon (joi)
+* dodano dokumentacje w plikach about.h i chat.h (format doxygena) (pawel_p)
+* poprawione łączenie się z sewerem - timeouty (kadu zbyt wcześnie uznawało,
+  że udało się połączyć) (joi)
+* część poprawek związanych z blokowaniem się modułów dźwiękowych (joi)
+* poprawione dodawanie nowego kontaktu (odświeżanie userboksa) (joi)
+* drobne optymalizacje: obsługa plików konfiguracyjnych, czcionki (joi)
+* optymalizacje w oknie historii + małe optymalizacje rozsiane po całym kadu (joi)
+* dodana opcja (domyślnie włączona) pozostawiająca libgadu decyzję o porcie,
+  z którym będzie łączyć się kadu (joi)
+* dodana możliwość ustawienia w pliku konfiguracyjnym timeoutu dla połączeń (joi)
+* default_sms->bramka idei: obsługa braku aktywowanej usługi,
+  sms: pole podpis wymagane (Kubiś/joi)
+* bramka ery obsługuje nowy prefix Heyah: 889 (gringo/joi)
+* przy logowaniu nie wysyłamy do serwera informacji o zmianie statusu
+  w przypadku gdy nie musimy obchodzić błędu serwera (joi)
+* poprawka błędu: jeżeli zrezygnujemy z ustawienia statusu opisowego,
+  to nie wysyłamy jeszcze raz naszego statusu (joi)
+* prawidłowa akcja przy wybraniu opcji Powiadom o kontakcie/Blokuj/Niedostępny
+  dla kontaktu przy zaznaczonej grupie osób (joi)
+* make install instaluje ikony 22x22 i 24x24 (adrian)
+* poprawki budowania modułów: nas_sound (gentoo) i voice (amd64) (joi)
+* dodano dokumentację plików userlist.h oraz userinfo.h (googie/pawel_p)
+* poprawki w wykrywaniu ścieżki do firefoksa na gentoo (joi)
+* dodano dokumentację plików tabbar.h oraz userbox.h (googie/pawel_p)
+* poprawione testowanie nagrywania (joi)
+* zmniejszenie bufora w alsa_sound, aby voice mógł nagrywać małe próbki (joi)
+* dodawane kontakty nie powinny pojawiać się już dwukrotnie (joi)
+* skrypt Instaluj: ostrzeżenie jeżeli skrypt nie jest odpalany bezpośrednio
+  ze źródeł (SadMephisto/joi)
+* przy zajętej alsie, alsa_sound nie zablokuje się (joi)
+* dodany do autodownloadu moduł miastoplusa_sms,
+  przetłumaczenie opisów w pliku .config na język polski (joi)
+* dodany do autodownloadu moduł tabs (Ron_K)
+* dodany do autodownloadu moduł led_notify (joi)
+* dodano dokumentacje do plikow pending_events.h pending_msgs.h
+  personal_info.h search.h status.h (googie/pawel_p)
+* numery jako nazwy grup są zabronione (joi)
+* usunięty z konfiguracji zbędny checkbox "Odtwarzaj dźwięki w trakcie rozmowy" (joi)
+* poprawiony import starych list kontaktów (m.in. wyeksportowanych konnektem) (joi)
+* różne optymalizacje rozsiane po całym kodzie (joi)
+* dokumentacja pliku modules.h (googie/pawel_p)
+* autodownload ignoruje przyrostki wersji kadu, np. dla 0.4.0-cvs, 0.4.0-rcX
+  i 0.4.0 tylko jeden plik .href na serwerze (adrian)
+* kolejna grupa różnych optymalizacji (joi)
+* poprawka segfaulta przy otwieraniu okna historii (joi)
+* prawdopodobne obejście problemów z uprawnieniami do katalogów tworzonych
+  przy make install (joi)
+* przy wywrotce kadu zapisuje backtrace do pliku ~/.gg/kadu.backtrace.data,
+  stare backtrace'y i zachowane tą samą metodą kopie plików konfiguracyjnych
+  są kasowane (joi)
+* poprawionych kilka segfaultów przy zamykaniu rozmowy głosowej (pawel_p, joi)
+* libgsm: poprawka segfaulta na architekturach 64-bitowych (joi)
+* poprawka w tytule okna konferencji - pierwszy kontakt nie pojawia się podwójnie (joi)
+* kompatybilność z Psi: w opisach \r jest zamieniane na \n (i \r\n na \n) (joi)
+* poprawne zapisywanie listy kontaktów, o których chcemy być powiadamiani
+  przy zmianie statusu (joi)
+* znaczna poprawa jakości dźwięku produkowanego przez moduł voice (joi)
+* poprawiona współpraca alsa_sound z rozmowami głosowymi,
+  usunięte trzaski podczas zwykłego odtwarzania (joi)
+* w oknie szukania w katalogu publicznym dwuklik na znalezionym kontakcie
+  powoduje otwarcie okna rozmowy (pan_wojtas/joi)
+* poprawny eksport listy kontaktów zawierającej polskie znaki (joi)
+* poprawiony głupi segfault w voice (joi)
+* w konfiguracji przy zmianie kolorów nie odświeżały się podglądy (joi)
+* lepsze wykrywanie bibliotek przy configure (nie ma znaczenia rozszerzenie
+  biblioteki na danym systemie) oraz czytelniejsze komunikaty o braku Qt i png (joi)
+* poprawa wykrywania libpng na slackware, dodane domyślne ścieżki dla MacOSX (joi)
+* rozmowy głosowe: niewywracające (np. alsy) zamykanie połączenia i ogólne porządki
+  z tym związane; wykrywanie ciszy na mikrofonie i nie przesyłanie wtedy danych
+  przez sieć; przy braku możliwości odegrania wszystkich dźwięków, co jakiś czas
+  opuszczane jest kilka ramek (joi)
+* przyspiesznie okna konfiguracji (pawel_p, joi)
+* kadu nie zamrozi się, gdy arts padnie (joi)
+* ostatnio otwarta "zakładka" w konfiguracji jest zapamiętywana pomiędzy
+  uruchomieniami programu (joi)
+* nie pozwalamy na wysłanie obrazków większych niż limit rozmówcy (joi)
+* poprawne wykrywanie Qt na FreeBSD (joi)
+* usunięty segfault przy ładowaniu modułów na starcie (przy Qt < 3.2) (joi)
+* poprawa błędu w obsłudze prekompilowanych nagłówków, która uniemożliwiała
+  korzystanie z nich przy braku biblioteki execinfo (na FreeBSD) (joi)
+* katalog z kluczami tworzony jest na starcie modułu encryption (joi)
+* zaaplikowana łatka Prezu do sprawdzania zależności modułów na
+  etapie configure (adrian)
+* w konfiguracji powiadomień nie wyświetlamy na liście anonimów (joi)
+* dodana możliwość przechwycenia zdarzenia zmiany "zakładki" w konfiguracji (joi)
+* wybór języka francuskiego w config_wizard jest zapisywany w konfiguracji (dorr/Ron_K)
+* upgrade libgadu do wersji 20050408 (adrian)
+* gdy wysyłamy obrazek, a limit któregoś z rozmówców na niego nie pozwala,
+  to pytamy się czy aby na pewno chce się przesłać obrazek, który może nie dojść (joi)
+* działające obrazki w trakcie konferencji (joi)
+* nowy mechanizm przypominania hasła (adrian)
+* poprawione działanie skryptu Instaluj, aby poprawnie działał na FreeBSD
+  potrzebny jest programik devel/cdialog (dialog jest za stary) (pawel_p)
+* poprawka segfaulta przy czyszczeniu okna rozmowy dla QT<3.2 (pawel_p)
+* poprawka segfaulta przy zmianie altnicka (pawel_p)
+* poprawione odświeżanie wyników wyszukiwania w katalogu publicznym przy
+  maksymalizacji okna (joi)
+* encryption: poprawione dekodowanie długich wiadomości (joi)
+* poprawki w szyfrowaniu z cvsu ekg (joi)
+
++++ wersja 0.3.9 (01.07.2004)
+* ostrzeżenie, że drugie kadu jest uruchomione na tym samym profilu,
+  gdy tak rzeczywiście jest (joi)
+* Skrypt Instaluj -> naprawiony błąd cudzysłowów w prefix i opcjach
+  kompilacji, dodana pętla na okno konfiguracji, prefix domyślny to /usr,
+  <cancel> nie powoduje pustego prefixu zachowana jest opcja wyświetlana,
+  przy ponownej próbie edycji prefixu pamiętana jest wersja wcześniej
+  wybrana (Ron_K)
+* wygodna konfiguracja zachowania dymkow po kliknieciu na nie (michal)
+* zapamiętywanie rozmiarów okien chatów (joi)
+* usunięty problem ze skryptem Instaluj gdy LC_ALL i LANG nie są ustawione
+  na pl_PL (joi)
+* poprawka polecenia kompilowania w modułach - kompilator c++ dla *.cpp (adrian)
+* dodany zapomniany nagłówek dla abort() (joi)
+* wydzielony z kadu moduł "docking", domyślnie statyczny (adrian)
+* wydzielony z modułu "docking" moduł "x11_docking" domyślnie statyczny (adrian)
+* configure: usunięcie poszukiwania xlib.h, opcji --disable-modules,
+  dodana wersja kadu w podsumowaniu (adrian)
+* usunięcie ok. 150 ostrzeżeń przy CXXFLAGS="-Wall -std=c++98 -ansi"
+  (nadal jest ich mnóstwo, ale o te 150 mniej) (joi)
+* poprawione pozycjonowanie hintów po wydzieleniu modułu docking (adrian)
+* usunięty segfault w przypadky wywrotki gdy plik blokujący został już
+  zwolniony (michal)
+* podczas wywrotki kadu wypisuje backtrace (michal)
+* kadu nie wywróci się gdy zamkniemy je z menu w trayu - zwalnianie pamięci
+  po modułach opóźniane jest do czasu zakończenia bieżących czynności (joi)
+* przy wyładowywaniu x11_docking główne okno wraca na pulpit (joi)
+* wydzielony moduł voice do rozmów głosowych, z configure wyrzucona
+  ich obsługa, obsługa opcji MODULE_3RDPARTY w pliku spec modułów,
+  oznaczająca kompilację dodatkowych źródeł w podanym podkatalogu
+  przed kompilacją modułu (adrian)
+* dodana funkcja kdebugf2() analogiczna do kdebugf(), aby móc zaznaczyć
+  w debugu koniec funkcji (joi)
+* plik spec modułów może używać zmiennej MODULE_DIR - względna ścieżka do
+  katalogu z modułem, poprawna dla komp. stat. i dynam., można użyć np. w
+  MODULE_LDFLAGS, bo moduł może się linkować w katalogu kadu lub modules (adrian)
+* gdy ktoś wysyła nam obrazek wklejony w tekst widać w tym miejscu
+  oznaczenie [[[OBRAZEK]]] - taka chwilowa proteza (adrian)
+* odbierane obrazki zapisywane są w katalogu .gg/images pod nazwą
+  uin_nadawcy-wielkosc-crc32-nazwa_pliku, podziekowania dla masieq
+  za wsparcie z platformy win32 ;) (adrian)
+* lekka przebudowa odbierania i filtrowania wiadomości, teraz dopuszczamy
+  również wiadomości z pustą treścią - np same obrazki (adrian)
+* usunięcie ponad 160 ostrzeżeń od kompilatora (zostało już tylko koło 20) (michal/joi)
+* jeśli łączymy się ze statusem "ukryty z opisem" wysyłamy po połączeniu się
+  z serwerem GG drugi pakiet zmiany statusu (chilek)
+* pokazujemy na liście kontaktów nasz status ukryty (chilek)
+* w opcjach mozna ustawic maksymalna wielkosc odbieranych obrazkow (michal)
+* prymitywna obsługa wysyłanie obrazków: wstawiamy w wiadomości
+  [IMAGE ścieżka/do/pliku] i obrazek jest wstawiany u odbiorcy,
+  narazie trzeba też napisać jeszcze jakiś tekst, żeby zadziałało (adrian)
+* przycisk do wstawiania obrazków w oknie chat, dialog wyboru obrazka (adrian)
+* lekka przebudowa filtrowania wysyłanych wiadomości, teraz dopuszczamy
+  również wiadomości z pustą treścią - np same obrazki (adrian)
+* poprawa obsługi plików konfiguracyjnych przy tworzeniu nowej sekcji (joi)
+* konfiguracja odpowiedzi autorespondera (mkey/joi)
+* zachowywanie polskich znaków przez moduły autoresponder i echo (joi)
+* wysłane przez nas obrazki pokazują się w oknie rozmowy (adrian)
+* drobna optymalizacja funkcji ggPath() (joi)
+* moduł encryption dodająć znacznik [SSL] błędnie przesuwał formaty tekstu,
+  teraz zamiast tego stara się zaznaczać szyfrowaną wiadomość na niebiesko,
+  może się dorobi do tego konfigurację. konieczna była kolejna przebudowa
+  filtrów przychodzących wiadomości (adrian)
+* konfiguracja statusów w autoresponderze (mkey/joi)
+* względne ścieżki do plików danych jeżeli użytkownik przy konfiguracji źródeł
+  nie majstrował za bardzo przy DATADIR i BINDIR (UWAGA dla developerów: jeżeli
+  w konstruktorze obiektu używacie funkcji dataPath(), to obiekty tej klasy nie
+  mogą być statyczne, bo wewnętrzne dane funkcji dataPath nie zostaną zainicjowane) (joi)
+* ostatnia grupa poprawek usuwających ostrzeżenia od kompilatora przy włączonej
+  opcji -Wall (joi)
+* patch vogel-a wydzielający mechanizm szukania w katalogu jako gotowe do
+  użycia przez moduły metody klasy GaduProtocol (adrian)
+* kadu nie odbiera dwa razy tego samego obrazka w obrębie jednej sesji (adrian)
+* pokazywanie odebranych obrazków w oknie rozmowy (adrian)
+* obrazek klepsydry zanim otrzymamy ten właściwy, klepsydra by tomee (adrian)
+* klasa MessageBox ma nową metodę statyczną wrn() (ostrzeżenia) z ikonką.
+  metoda wrn() i msg() jako drugi argument przyjmuje bool modal=false.
+  Swoją drogą w kodzie przydałoby się poprzerabiać wszystkie QMessageBox
+  na wrn(), msg() lub ask()... (tomee)
+* nowe okienko wyboru obrazka do wysłania z podglądem (adrian)
+* configure: kompatybilność z gcc 2.95, ścieżka do qt dla Amd64,
+  wylaczona obsługa openssl - może wróci kiedy w końcu serwery GG
+  będą to obsługiwać, domyślnie włączone ostrzeżenia -Wall (adrian)
+* klasa HttpClient (ktora jest uzywana przez moduly sms) moze uzywac
+  servera proxy (michal)
+* uaktualnienie libgadu do wersji z dnia 02.05.2004 (michal)
+* mechanizm ściągania odpowiednich źródeł i rozpakowywania ich dla
+  popularnych zewnętrznych modułów, przygotowane: tcl_scripting, xmms (adrian)
+* łatka googiego dodająca sygnały chatMsgReceived0 i changingStatus (adrian)
+* pasek narzędziowy zajmuje całą szerokość okna (joi)
+* usunięte miganie okna przy włączonym module x11_docking i opcji RunDocked
+  oraz usunięty błąd powodujący znikanie paska narzędziowego przy powyższych warunkach
+  i załadowanym module sound (joi)
+* wydzielenie xlibowego dokowania dla WindowMakera do oddzielnego modułu (joi)
+* drugi patch porządkujący vogela: szukanie i (wy)rejestrowanie (adrian)
+* patch kida - blokada wysyłania pustych wiadomości (adrian)
+* Instalator - dodano wybór nowych modułów (Ron_K)
+* kadu nie zapętla się przy otwieraniu nowej rozmowy jeżeli mamy pustą
+  historię (michal)
+* kadu (gdy jest zadokowane) nie pojawia się na pasku zadań (joi)
+* poprawka szukania głównej binarki (akceptowanie początkowego ../) (joi)
+* trzeci patch porządkujący vogela: przypomnienie i zmiana hasła (adrian)
+* configure: rozszerzenia dla modułów, w pliku spec: MODULE_TOOLS -
+  lista wymaganych dostępnych plików wykonywalnych, sprawdzane w $PATH,
+  MODULE_CONFIGURE_CMD - dodatkowa komenda wykonywana na koniec konfigurowania
+  modułu, może być złożona np. z użyciem &&. "exit code" brany pod uwagę,
+  więc można używać polecenia test i tym podobnych (adrian)
+* make: rozszerzenie dla modułów, w pliku spec: MODULE_MAKE_CMD - dodatkowa
+  komenda wykonywana na koniec kompilowania modułu, dokładny odpowiednik
+  MODULE_CONFIGURE_CMD (adrian)
+* make install: jeśli w katalogu z modułem znajduje się podkatalog "data" to
+  jest on instalowany jako $(datadir)/kadu/modules/data/<nazwa_modulu> (adrian)
+* jednak wyłączone znikanie kadu z paska zadań (joi)
+* czwarty patch porządkujący vogela: eksport i import listy kontaktów (adrian)
+* możliwość automat. pobierania i instalacji modułów amarok i filedesc (adrian)
+* nowe okienko about by kid (tomee)
+* w dymku w tray-u pokazuje się własny status i opis (michal)
+* poprawiony układ komponentów w oknie "O programie"
+  oraz zapamiętywanie jego rozmiarów i położenia (joi)
+* dodane ogólne funkcje do zapamiętywania rozmiarów okien (loadGeometry
+  i saveGeometry) (joi)
+* patch Kida dotyczący odstępów między komponentami w oknie "O programie" (joi)
+* pełna obsługa linków w oknie historii, ogólne porządki związane z tym (adrian)
+* linki w panelu informacyjnym (joi)
+* graficzne emotikony w panelu informacyjnym i w historii (joi)
+* Instalator: dodano obsługę modułów zewnętrznych: amarok, mail, filedesc
+  oraz dodano opis w pomocy (Ron_K)
+* Instalator: poprawiony błąd podawania złych parametrów do configure (Ron_K)
+* dymek w tray'u pokazuje się także przed zmianą statusu (michal)
+* poprawione wyświetlanie emotikonów i obrazków w panelu + konfiguracja
+  emotikonów (domyślnie wyłączone) (joi)
+* przywrócone działanie powiadomień po zmianach Vogela (joi)
+* usunięcie pojawiającego się czasem &nbsp; w panelu (joi)
+* patch Kida: reorganizacja okna menedżera modułów (Ron_K)
+* sprawdzenie danych osobistych nie wywraca Kadu (joi)
+* walki z &nbsp; ciąg dalszy ;) (adrian/joi)
+* patch Kida: poprawione okno menedżera modułów - odświeżanie przy ładowaniu
+  zależności + poprawka wyglądu (joi)
+* poprawienie wybierania sciezek do zestawow (dzwieki / ikonki)
+  nalezy skasowac sobie wszystkie wpisy z "sciezki do ikon"
+  oraz "sciezki do dzwiekow" - od tej pory sa to tylko dodatkowe sciezki
+  a nie wszystkie (pawel_p)
+* łatka Kida poprawiająca wygląd okna importu/eksportu listy
+  kontaków (KID/michal)
+* łatka Kida poprawiająca odświeżanie listy modułów gdy żądany moduł nie udało
+  się załadować, ale załadowany został moduł zależny (joi)
+* configure: obsługa execinfo (backtrace na konsoli przy padzie programu),
+  nie musimy już ręcznie tego włączać grzebiąc w main.cpp (michal, adrian)
+* reorganizacja zakładki "Wygląd" w konfiguracji (według pomysłu Arcisza)
+  dodanie nowego "typu danych" do ConfigDialogu - ujednolicona obsługa
+  konfiguracji czcionek (joi)
+* obsługa starego formatu kolorów w pliku konfiguracyjnym (joi)
+* źródła modułów ręcznie skopiowanych do katalogu modules nie są usuwane
+  przez mechanizm autodownload, mają "wyższy priorytet" (adrian)
+* ======= FEATURE FREEZE =======
+  ale porządki jeszcze można robić (adrian)
+* następny patch KID-a tym razem na okno edycji kontaktu (KID/michal)
+* konfiguracja pionowego suwaka w panelu (joi)
+* znowu KID zrobił łatke i znowu ja to wrzucam :), tym razem okno
+  ignorowanych  (KID/michal)
+* patch joi - zawijanie statusow w oknie listy uzytkownikow (tomee)
+* przyspieszenie około 2,5 raza prędkości zawijania opisów (joi)
+* eksperymentalna obsługa prekompilowanych nagłówków gcc 3.4 dla kadu-core,
+  domyślnie wyłączona, wszak mamy feature freeze ;) (adrian)
+* KID - okno danych osobistych (KID/michal)
+* piąty patch porządkujący vogela: edycja danych osobistych (adrian)
+* szybki fix Vogela na wyszukiwanie w katalogu tylko aktywnych (vogel/michal)
+* jesli sie ma ustawiony status niewidoczny z opisem to jest to prawidłowo
+  wyświetlane (michal)
+* szósty patch porządkujący vogela: początek porzadków w logowaniu (adrian)
+* obsluga klawisza esc w przerabianych przez kida oknach (KID/michal)
+* siódmy patch porządkujący vogela: inicjalizacja proxy i dcc (adrian)
+* patch KID-a poprawiający wygląd okna zmianu hasło/adresu email (KID/michal)
+* ósmy patch porządkujący vogela: część sygnałów z EventManager przeniesiona
+  do GaduProtocol (adrian)
+* jeżeli załadujemy moduł gdy okno konfiguracji jest otwarte i zamkniemy
+  konfigurację, Kadu się nie wywróci (joi)
+* nowe okna rejestracji/wyrejestrowania użytkownika by KID (KID/michal)
+* moduły używają prekompilowanych nagłówków z kadu-core (adrian)
+* poprawione filtrowanie wychodzących wiadomości przez moduły (Googie/joi)
+* ostrzeżenie gdy przesyłana wiadomość jest za długa (joi)
+* poprawka powyższej poprawki ;) (joi)
+* usprawniony mechanizm debugowania - funkcja kdebug_mask zamiast kdebug, która
+  za 1. argument przyjmuje maskę bitową z informacją o typie wypisywanej
+  informacji, maskę ustawia się jako zmienną środowiskową DEBUG_MASK,
+  na razie tylko kilka plików przerobionych na nowy mechanizm (joi)
+* dziewiąty patch porządkujący vogela: walka z sygnałami i slotami (adrian)
+* przemianowanie kdebug_mask na kdebugm
+  wszystkie moduły korzystają z usprawnień mechanizmu debugowania (joi)
+* dziesiąty patch porządkujący vogela: drobne porządki (adrian)
+* ======= API FREEZE =======
+  zostanie wygenerowana dokumentacja api na stronie i kadu powinno już być z
+  nią kompatybilne - modułopisarze mogą szykować finalne wersje modułów (adrian)
+* wszystkie pliki przerobione na nowy mechanizm debugowania (joi)
+* poprawka segfaulta w ConfigDialog::changeTab() (chilek)
+* usunięcie paru ostrzeżeń przy kompilacji związanych z porównywaniem liczb całkowitych
+  ze znakiem i bez znaku (chilek)
+* po co używacie QString::latin1()?! (chilek)
+* poprawne ustawienie wysokości pojedynczego elementu listy kontaktów gdy obrazek
+  jest większy od czcionki (joi)
+* obejście błędu w niektórych stylach Qt (które zwracają zbyt dużą szerokość
+  scrollbara), powodujących złe wyświetlanie opisów pod kontaktami (joi)
+* zabezpieczenie przed zawieszeniem w zawijaniu opisów przy bardzo wąskim oknie (joi)
+* usunięty segfault przy zmianie danych o kontakcie (joi)
+* własny opis w ToolTipie na liście kontaktów po pierwszym przełączeniu się ze
+  statusu niedostępnego jest wyświetlany poprawnie (joi)
+* dodano obcinanie wyświetlanych linków, konfigurowalne (tomee)
+* zawijanie długich tekstów bez spacji w chacie/historii/panelu (joi)
+* nad odnośnikami w oknie rozmowy pokazują się dymki z ich pełną treścią (tomee)
+* poprawki w łączeniu z serwerami: przywrócone cykliczne łączenie, wszędzie
+  działają 5-cio sekundowe timeouty, informacje o błędach i timeoutach w
+  dymkach wraz z informacją o serwerze z którym próbowało się kadu połączyć,
+  jednostajnie migające słoneczko niosło ze sobą zbyt mało informacji (adrian)
+* w oknie konfiguracji opcje, które są liczbami ustawiane są przy pomocy
+  spinboksa, a nie zwykłego pola edycyjnego (joi)
+* lepsza (bo obliczana na podstawie czcionki) wartość domyślna szerokości
+  userboksa przy wielokolumnowej liście kontaktów (joi)
+* drobne porządki, usunięcie paru niepotrzebnych zmiennych, przeniesienie
+  paru globalnych do klas, zmiana publicznych na prywatne, nazwy.. (adrian)
+* w konferencji odświeżanie listy użytkowników gdy włączone są opisy pod kontaktami (joi)
+* emotikony w historii i w panelu infomacyjnym nie powinny się już rozjeżdżać (joi)
+* teoretycznie poprawiłem wysyłanie na bramkę Era Podstawowa (adrian)
+* kolejne drobne porządki: pingtimer ukryty w klasie GaduProtocol,
+  pozbycie się publicznych zmiennych z klasy Kadu (adrian)
+* porządki w wewnętrznym nazewnictwie obiektów (joi)
+* poprawione zwijanie linków (joi)
+* możliwość automat. pobierania i instalacji modułu spellchecker (adrian)
+* make clean uwzględnia opcją MODULE_3RDPARTY w pliku spec modułów,
+  niestety Makefile od libgsm jest kiepsko napisany (adrian)
+* make install: drobna poprawka związana ze zmienną $DESTDIR i instalacją
+  niektórych plików do /usr/share (mkostrze/adrian)
+* patch vogela naprawiający eksport/import z moimi poprawkami (adrian)
+* Skrypt Instaluj - Moduły domyślnie statyczne nie podlegają wyborowi (Ron_K)
+* historia rozmowy: gdy klikniemy na altnick wyświetla się pierwsza rozmowa (chilek)
+* bramka Ery obsługuje nowy prefix Heyah: 880 (d7:R-k,attis/adrian)
+* łatki bugiego poprawiające wybór dodatkowych ścieżek w zestawach ikon i
+  dźwięków. do tego moje drobne modyfikacje "techniczne" (adrian)
+* historia rozmowy: aktualna data przesuwa się wraz ze znalezionym wzorcem
+  (brakuje zaznaczania paragrafu w którym znaleziono wzorzec) (chilek)
+* Skrypt Instaluj - usunięta petla while teraz Cancel z konfiguracji działa (Ron_K)
+* możliwość automat. pobierania i instalacji modułu pcspeaker (adrian)
+* łapanie do linków w chacie/historii/panelu także polskich znaków (joi)
+* http://kadu.net/mantis/bug_view_page.php?bug_id=0000289 (googie/chilek)
+* o zachowaniu kadu decyduje obecność konkretnych modułów dokujących, a nie
+  ogólnego modułu docking + większe uwspólnienie kodu w module docking (adrian)
+* nasza wiadomość do historii dopiero po potwierdzeniu, BUG_ID=276 (adrian)
+* poprawiona opcja "Pomoc" w instalatorze "Instaluj" (adrian)
+* usunięcie ostrzeżenia od Qt (QGDict::hashKeyString: Invalid null key) (joi)
+* przy odświeżaniu listy kontaktów pozycja pionowego suwaka się nie zmienia (joi)
+* argument "%1" w polu "Własna przeglądarka" nie jest konieczny (joi)
+* poprawki "make uninstall", nie wszystkie pliki kadu były usuwane (adrian)
+* przeróbki instalatora by Sad Mephisto - postać wizarda i automatyczne
+  sprawdzenie dostępnych modułów (adrian)
+* wykrywanie błędów w ściąganiu plików w technologii autodownload i
+  ew. przerywanie działania configure (adrian)
+* gdy domyślny kolor czcionki w chacie jest inny niż czarny, to przy wyborze
+  koloru pojawia się dodatkowy przycisk z tym kolorem, BUG_ID=50 (joi)
+* skrypt kadu-mozilla współpracuje z nową Mozillą 1.7 (adrian)
+* poprawka segfaula w przypadku gdy nie ma zastawów emotionek
+  zainstalowanych (michal)
+* w modułach dokowania jest uwzględniony status "tylko dla znajomych" (michal)
+* mała łatka KID-a dla okna edycji/dodawania kontaktu (michal)
+
++++ wersja 0.3.8 (20.04.2004)
+* zaaplikowany patch nazgula przyspieszajacy ekspansje emotikonow.
+  moze powinnismy zmienic nazwe projektu na FastKadu? ;) (adrian)
+* zaaplikowany patch nazgula powodujacy zapamietywanie przez Kadu
+  ostatnio wybranej grupy kontaktow po restarcie (adrian)
+* zaaplikowany patch michala umozliwiajacy zmiane numeru portu
+  nasluchujacego polaczen bezposrednich DCC (adrian)
+* zaaplikowany patch romka przywracajacy kompatybilnosc z QT 3.0.x (adrian)
+* dodano mozliwosc wyboru zestawu ikonek zakladka "Wyglad" (pawel_p)
+* mała poprawka dotycząca kompatybilności z QT 3.0.x (skoot/mast3r)
+* debian/rules dodane do configure --enable-voice i --enable-modules (mast3r)
+* jesli przy starcie kadu wystapi blad w ladowaniu ktoregos z modulow
+  to drugi raz nie bedzie ladowany (adrian)
+* configure: domyslnie kompilowana obsluga modulow i rozmow glosowych,
+  i tak wszystkie binarki sa z tym robione, opcje --disable-modules i
+  --disable-voice (adrian)
+* configure: aktualizacja listy szukanych naglowkow i bibliotek
+  do nowych zrodel programu (adrian)
+* configure: pliki naglowkowe kadu instaluja sie
+  do $prefix/include/kadu (adrian)
+* configure: generowany i instalowany jest skrypt kadu-config, pomocny
+  przy instalacji modulow z poza glownych zrodel kadu (adrian)
+* zaaplikowany patch michala dodajacy przycisk rozpoczecia rozmowy
+  w oknie dialogowym "szukaj w katalogu" (adrian)
+* poprawka arcisza kilku blednie wyswietlanych emotikonow (adrian)
+* poprawka i rozbudowa skryptu kadu-config (michal/adrian)
+* wywalilem opcje "dodaj do opisu". to bylo kiepsko napisane, istnieje
+  juz zarowno modul do bezposredniej obslugi xmms jak i do czytania opisow
+  z pliku z duzo wiekszymi mozliwosciami (adrian)
+* kadu zapamiętuje "widoczność" ToolBar'a (mast3r)
+* configure: mozliwosc konfigurowania kompilacji modulow w pliku
+  ".config". pokazywanie ustawien w podsumowaniu configure.
+  niebawem bedzie tez dzialac kompilacja statyczna (adrian)
+* "łapanie" także w link znaku \ (mast3r)
+* dla modulow wybranych do statycznej kompilacji powstaja pliki ".a" (adrian)
+* konfiguracja i popupmenu w userboxie dopasowane do iconmanagera (adrian)
+* IconManager::loadIcon oprocz nazwy pliku z zestawu moze przyjmowac
+  bezposrednia sciezke do pliku (adrian)
+* wydzielenie obslugi dzwieku jako modulu "sound" (adrian)
+* funkcje unregisterSlotOnCreate, unregisterSlotOnDestroy, disconnectSlot,
+  umozliwiajace modulom odlaczenie sygnalow od okna konfiguracji (adrian)
+* wydzielenie funkcjonalnosci zwiazanej z glownym paskiem narzedziowym
+  do klasy ToolBar i dodanie metody unregisterButton. oprocz tego metody
+  register i unregister potrafia zmodyfikowac juz istniejacy toolbar (adrian)
+* poprawki modulu sound zwiazane z rejestrowaniem sie w pasku
+  narzedziowym i wyrejestrowaniem sie z paska narzedziowego oraz menu (adrian)
+* zaaplikowany patch Vogel-a wymieniajacy brzydki statusbar
+  na ladny statusbutton i usuwajacy troche zbednych komponentow (adrian)
+* zaaplikowany patch joia zawierajacy kilka optymalizacji, przede wszystkim
+  szybszy heapsort na podstawie zrodel QT (adrian)
+* jeśli odebrane UINy przy DCC są nieprawidłowe to zrywamy połączenie (chilek)
+* funkcja reserve z optymalizacji joia uzywana tylko dla QT >= 3.2 (adrian)
+* zaaplikowany patch michala rozbudowujacy menadzera modulow o pobieranie
+  informacji o module oraz obsluge zaleznosci miedzy modulami. wprowadzony
+  kod nie jest oryginalny - wprowadzilem w nim pewne zmiany (adrian)
+* funkcja ModulesManager::moduleSymbol() pobierajaca adres symbolu z
+  zaladowanego modulu i funkcja inline "soundManager" w module sound
+  wykorzystujaca ja zamiast laczenia extern (adrian)
+* zaaplikowany patch joia do modulu sound przerabiajacy go w ogolny modul
+  obslugi dzwieku + pierwszy z modulow "serwerowych" ext_sound obslugujacy
+  odtwarzanie przez zewnetrzny program. wszystko dostosowane przeze mnie
+  do nowych mozliwosci managera modulow (adrian)
+* dodany modul joia do obslugi serwera dzwieku arts + moje przerobki (adrian)
+* dodane pozostale trzy moduly joia do obslugi serwerow dzwieku:
+  dsp_sound, esd_sound i nas_sound (adrian)
+* nie działa wyszukiwanie niewidocznych - kod w search.cpp zakomentowany (chilek)
+* gdy mamy siebie na liście kontaktów kadu wyświetla nasz status i opis (chilek)
+* wydzielenie szyfrowania przez ssl do modulu "encryption" oraz zwiazane
+  z tym nowe mechanizmy dla modulow (adrian)
+* nalozona latka sajmona dodajaca kilka mozliwych sciezek do plikow Arts-a (adrian)
+* zaaplikowany patch michala umozliwiajacy ogladanie
+  wielolinijkowych opisow (adrian)
+* zaaplikowany patch uto poprawiajacy wylaczanie wielolinijkowych opisow (adrian)
+* zaaplikowany patch joia na modul sound poprawiajacy zachowywanie
+  minimalnych odstepow miedzy dzwiekami powiadamiajacymi (adrian)
+* zaaplikowany patch michala usuwajacy splitter przy guziku ze statusem
+  w oknie kadu i poprawiajacy tym samym jego wyglad (adrian)
+* nie można rozpoczynać rozmów jeśli w skład grupy rozmówców wchodzi nasz uin (chilek)
+* kadu łączy się z predefiniowaną listą serwerów GG jeśli nie może połączyć się z
+  hubem GG (chilek)
+* dodany moduł speech joia wraz z moimi poprawkami (chilek)
+* kompilacja modulow autoresponder, echo i speech domyslnie wylaczona (adrian)
+* poprawki kiemlo dla MacOS X (adrian)
+* zaaplikowany patch joia likwidujacy blad z obsluga popup menu
+  listy kontaktow (adrian)
+* poprawki w module encryption: zmiana umiejscowienia opcji "wyslij moj klucz"
+  oraz wyszarzanie, gdy nie mozna wyslac klucza (adrian)
+* dodana możliwość kopiowania hyperlinka w oknie rozmowy (chilek)
+* nałożona łata joia pokazująca w oknach rozmowy opisy emotikonek (chilek)
+* zaaplikowany patch michala rozbudowujacy autoaway o obsluge klawiatury
+  i myszki PS/2 pod linuxem 2.6.x (adrian)
+* nałożona łata joia przyspieszająca parser i dodająca w nim możliwość wstawiania
+  wyjścia zewnętrznych poleceń powłoki (chilek)
+* w oknie historii pokazywane są daty rozmów (chilek)
+* w oknie historii pokazywani są rozmówcy (chilek)
+* dodana możliwość przeglądania historii wysłanych smsów (chilek)
+* nie znika nam opis przy problemach z połączeniem? (chilek)
+* możliwość regulacji szerokości listy rozmówców w oknie historii (chilek)
+* historia rozmowy: hop na drzewko ;) (chilek)
+* jeśli mamy wyłączone dcc to otrzymanie wiadomości klasy CTCP nie powoduje
+  rozpoczęcia tranmisji dcc (chilek)
+* jeśli ktoś kto jest ignorowany próbuje z nami komunikować się przez DCC
+  odrzucamy jego próby połączeń (chilek)
+* nałożona wielka łatka - połączenie patchy joia i michała:
+  - dodaje możliwość kontroli głośności w modułach ESD i aRts
+  - poprawia błąd przy braku dźwięków
+  - poprawia wygląd okna konfiguracji dźwięków
+  - poprawia zachowanie przycisków w oknie konfiguracji (całym)
+  - dodaje do konfiguracji wielolinijkowe pole edycyjne (panel informacyjny)
+  - poprawia wygląd zakładki ze skrótami klawiszowymi
+  - poprawia błąd zmiany statusu "Tylko dla znajomych" w trakcie łączenia
+    się z serwerem
+  - dodaje możliwość usuwania kontrolek z okna konfiguracji
+    (głównie zmiany michała + kilka poprawek joia)
+  - usuwanie kontrolek z konfiguracji dla modułów sound, dsp_sound, ext_sound,
+    speech
+  - poprawia zachowanie przycisku włączania/wyłączania dźwięku na toolbarze
+    i w konfiguracji
+  - trochę porządków w config_dialog.cpp
+  (ron_k)
+* zmiana nazwy config.h -> kadu-config.h (adrian)
+* definicje BINDIR i DATADIR w kadu-config.h zamiast w argumentach gcc (adrian)
+* make clean nie kasuje plikow cxxflags i ldflags w modulach (adrian)
+* zaaplikowana latka googiego dodajaca sygnal emitowany przy nacisnieciu
+  klawisza w oknie chat (adrian)
+* zaaplikowana latka michala dodajaca w autoaway uniwersalna metode wykrywania
+  ruchu myszy (adrian)
+* zapamiętywanie rozmiaru okien: konfiguracji i historii (joi)
+* poprawka włączania/wyłączania dźwięków (joi)
+* poprawki związane z popup menu listy kontaktów (joi)
+* patch Googiego dot. sygnału emitowanego przy naciśnięciu przycisku w oknie
+  chat + drobna przeróbka (joi)
+* dana możliwość odgrywania dodatkowych dźwięków innym modułom (joi)
+* nowy, szybszy i czytelniejszy parser - `komenda` zamienione na `komenda',
+  {plik tekst} - jeżeli plik istnieje, to jest wstawiany "tekst",
+  {~plik tekst} - jeżeli plik nie istnieje, to jest wstawiany "tekst" (joi)
+* instalacja naglowkow modulow do $PREFIX/include/kadu/modules (adrian)
+* instalacja pliku kadu-config.h do $PREFIX/include/kadu (adrian)
+* w oknie konfiguracyjnym opcje moze byc zapisywane do alternatywnych
+  plikow (michal)
+* loginparams.has_audio = 1, gdy mamy DCC włączone; przedstawiamy się jako wersja
+  gg 6.0.0.132 (chilek)
+* w opcjach powiadamiania mozna wybierac wielu uzytkownikow (michal)
+* usuwanie polskich ogonków przy eksporcie listy kontaktów na serwer (chilek)
+* zaaplikowana poprawka - wojtekka - kompatybilnosci z shellem sh (adrian)
+* prace nad statycznymi modulami: lista tych modulów w pliku kadu-config.h,
+  najpierw kompilują się moduły a potem jądro kadu (adrian)
+* linkowanie plikow ".a" statycznych modulów do binarki kadu (adrian)
+* zależność kompilacji modułów od kadu-config.h i kadu/*.h (adrian)
+* podczas przeszukiwania listy kontaktow za pomoca klawiatury jest
+  uaktualniany panel informacyjny (michal)
+* dalsze porządki w przekazywaniu parametrów funkcji gg_login(...) (chilek)
+* nie wysyłamy dwóch zmian statusu przy statusie opisowym (chilek)
+* nie wyświetla się już pusty wiersz w oknie chatu przy przechodzeniu
+  do nowej linii (joi)
+* drobne porządki przy htmlu (joi)
+* dodano opcje konfiguracji modułów do skryptu Instaluj z wykorzystaniem
+  programu dialog. (Ron_K/Sad Mephisto)
+* poprawka odtwarzania dźwięków przez moduły (joi)
+* wlasne informacje w panelu informacyjnym sa pokazywane prawidlowo (michal)
+* opcja niezapisywania zmian statusow do historii (Ron_K/joi)
+* male porzadki w config dialog-u (michal)
+* emotikony lądują tam gdzie trzeba przy przesuwaniu splittera (joi)
+* indeksowane pliki ".a" statycznych modułów (adrian)
+* sprawdzanie zależności od plików nagłówkowych przy kompilacji modułów (adrian)
+* zapis informacji o grupach zgodny z gg (chilek)
+* lista modułów statycznych w menadżerze modułów (adrian)
+* obsługa funkcji init i close modułów statycznych (adrian)
+* konfiguracja timera w autoaway'u (joi)
+* tylko jedno Kadu może korzystać z profilu (joi)
+* zapisywanie pliku konfiguracyjnego w przypadku wywrotki (joi)
+* zapis także przy standardowych sygnałach zakończenia procesu (SIGINT,SIGTERM) (joi)
+* instalacja i użycie plików translacji statycznych modułów (adrian)
+* kadu podpina sie pod sygnaly tylko gdy jest skompilowane bez debuga (michal)
+* dodana kontrola głośności w module nas_sound (joi)
+* jeżeli wywróci się demon arts to Kadu się tym nie przejmie ;) (joi)
+* przycisk "Zastosuj" w konfiguracji (joi)
+* nie zwalniamy loginparams.client_version po wywołaniu gg_login(...) - jest zarezerwowane
+  na stałe (chilek)
+* klikniecie przyciskiem myszy na dymek nowej rozmowy otwiera okno chat-a (michal)
+* wyodrębnienie części wspólnej importu listy kontaktów z pliku i z serwera
+  z wykorzystaniem QTextStream (chilek)
+* ======= FEATURE FREEZE =======
+  jeszcze popracuję nad modułami ale raczej poprawiamy błędy (adrian)
+* drobne poprawki w chat.cpp związane z EmoticonSelectorem
+  i ColorSelectorem, nadal gdzieś tam jest wyciek pamięci :( (joi)
+* klikniecie na dymek w przypadku konferencji otwiera okno konferencji nie
+  chat z osoba ktora ja rozpoczela (michal)
+* usuniety blad pozwalajacy na konferencje z samym soba jesli pierwsza osoba w
+  konferencji jest na liscie ponad wlasnym numerem w userbox-ie (michal)
+* własna klasa Library zamiast QLibrary ładująca moduły z RTLD_GLOBAL (adrian)
+* usuwanie zbędnych <p dir="ltr"> z chatu (joi)
+* przyspieszenie (x2) działania obsługi plików konfiguracyjnych + optymalizacje
+  (w różnych miejscach kodu) dotyczące obsługi pliku konfiguracyjnego (joi)
+* opis modułów w plikach desc zamiast w funkcjach *_info (adrian)
+* jesli wystapi blad przy ladowaniu modulu to zostana pokazane informacje o
+  bledzie (michal)
+* usunięty wyciek pamięci z modułu encryption, usunięty wyciek przy wysyłaniu
+  listy kontaktów, poprawiony błąd wyświetlania własnego opisu dla kontaktów
+  tylko z komórką (joi)
+* przy sprawdzaniu zależności i blokady powtórnego uruchamiania modułu
+  uwzględniane są moduły wkompilowane statycznie w kadu (adrian)
+* problem z kompilacją modułu powoduje przerwanie procesu budowania kadu (adrian)
+* bramki SMS sa wydzielowe do modulow (michal)
+* łapanie do linków w chacie także: sftp:// smb:// file:/ rsync:// mailto: (joi)
+* nowy instalator kaduinstaller.sh Sad Mephisto (Ron_K)
+* opisy modulow w plikach .desc moga byc wielojezyczne (michal)
+* metody moduleIncUsageCount i moduleDecUsageCount w ModulesManager (michal)
+* bramka ery obsuguje siec hejah (owczi/michal)
+* autoaway do modułu (+trochę porządków) (joi)
+* poprawki w modulach sms (michal)
+* porzadki w config-dialogu (michal)
+* jeśli ładowanie/inicjalizacja modułu zawiedzie to nie zwiększamy licznika
+  użycia modułów występujących w zależnościach (adrian)
+* configure nie generuje bezpośrednio kodu wywołań funkcji init i close modułów
+  statycznych, tylko kod wypełniający tablicę StaticModules (adrian)
+* w obsłudze sygnałów systemowych konfigurację zapisujemy do innego pliku niż
+  kadu.conf (kadu.conf.backup.data) + obsługa sygnału SIGPIPE generowanego przez
+  niektóre WM przy zamykaniu iksów (joi)
+* usunieta translacja spacji w search.cpp (Ron_K)
+* usuniety blad powodujacy segfaulta przy dodawania anonimowego uzytkownika w
+  przypadku konferencji (michal)
+* jednak wyłączamy obsługę SIGPIPE, bo okazuje się, że nie pomaga,
+  a stwarza dodatkowe problemy (joi)
+* estetyczna poprawka okna transferu pliku (michal)
+* zunifikowany sposób inicjowania i rozwiązywania zależności dla
+  modułów statycznych i zewnętrznych, ładowalnych (adrian)
+* skrypt kaduinstaller.sh przemianowany na Instaluj, dodane menu
+  wyboru metody kompilacji modulow (Ron_K)
+* usunięty błąd dotyczący maksymalizacji okna chatu przy pewnych specyficznych
+  warunkach (http://www.kadu.net/forum/viewtopic.php?t=2486) (joi)
+* poprawa wyglądu okna "Zarządcy modułów" oraz zapamiętywanie jego rozmiarów (joi)
+* obsługa ścieżek do plików danych przeniesiona do jednej funkcji dataPath() (joi)
+* poprawa poważnego segfaulta w modułach dźwiękowych i w module speech (michal/joi)
+* configure: poprawka wykrywania bibliotek i opcja --disable-sig-handling (adrian)
+* poprawna deaktywacja modułów przy zamykaniu kadu (adrian)
+* poprawki przy statycznych modułach (joi)
+* sprawdzanie uaktualnień dopiero przy pierwszym zalogowaniu (joi)
+* drobna poprawka przy zamykaniu okna konfiguracji (michal)
+* dodany skrót klawiszowy dla zarządcy modułów (joi)
+* kliknięcie środkowym przyciskem myszy na kontakt który ma podany numer
+  telefonu znowu powoduje otwarcie okna wysyłania smsa (michal)
+* wzięta pod uwagę grubość czcionki przy obliczaniu szerokości listy kontaktów (joi)
+* porządki w chacie (joi)
+* poprawka błędu uniemożliwiającego zobaczenie informacji o statycznych modułach (joi)
+* moduły autoresponder i echo nie otwierają już okna przy rozpczęciu
+  i zakończeniu działania (joi)
+* zamykanie okien chatów i konfiguracji przed wyjściem + więcej komunikatów
+  debugujących (joi)
+* przy instalacji usuwane są stare moduły z docelowego katalogu (adrian)
+* moduły zgodne z funkcjonalnością kadu 0.3.7 domyślnie statyczne (adrian)
+* obsługa konfliktów pomiędzy modułami (Conflicts= w nazwa_modułu.desc) (joi)
+* obsługa dostarczania cech przez moduły (Provides= w nazwa_modułu.desc)
+  teraz jeżeli moduł chce być jedynym w danej kategorii, to musi dostarczać cechę
+  i konfliktować z innymi modułami dostarczającymi ją (joi)
+* moduły arts_sound, nas_sound, dsp_sound, esd_sound wykluczają się nazwzajem (joi)
+* zabezpieczenie przed zapętleniem się modułów echo i autoresponder (mkey/joi)
+* usunięty drobny wyciek pamięci w module sound (joi)
+* usunięty błąd w layoucie głównego okna (ostrzeżenia od Qt w trakcie działania) (joi)
+* przeniesienie inicjalizacji modułów _przed_ pytanie o konfigurację nowego konta (joi)
+* poprawka kompilacji z gcc 3.4 (michal)
+* poprawka przy sprawdzaniu uaktualnien (michal)
+
++++ wersja 0.3.7 (03.02.2004)
+* poprawka podpinania się pod sygnał dccFinished() (chilek)
+* okno konfiguracji: możliwość wyłączenia zmian statusu w historii (demsik/chilek)
+* porządki w configure + dodane wykrywanie nagłówków XFree,
+  jeśli coś zepsułem to krzyczcie :P (adrian)
+* jeśli nie możemy połączyć się z serwerem GG port 8074 po 3 sekundach próbujemy
+  połączyć się z portem 443 (Ron_K/chilek)
+* zmiana wygladu okna konfiguracji "zakladke" wybiera sie po lewej stronie okna
+  natomiast opcje wyswietlaja sie po prawej stronie okna (pawel_p)
+* w trakcie łączenia się z siecią gg po 3 sekundach nieaktywności próbujemy łączyć się
+  od nowa (chilek)
+* prace nad wydzieleniem ChatManager'a zawierajacego wszystkie operacje
+  na oknach Chat. spore porzadki w kodzie. nie zabijacie jesli zepsulem ;)
+  (adrian)
+* dalsze prace nad ChatManager'em i porzadki w kodzie obslugi Chatow (adrian)
+* spore porzadki w kadu.cpp/h, wydzielenie klasy GaduProtocol - gadu.cpp/h,
+  w ktorej beda wszystkie funkcje specyficzne dla gg (adrian)
+* eksperymentalna obsługa loadable modules. nowa opcja --enable-modules
+  w configure (adrian)
+* poprawka kompilacji pod FreeBSD 4.9 (paramah/adrian)
+* drastyczne uproszczenie wysylania wiadomosci w Chat. mechanizm w wiekszosci
+  przesuniety do klasy GaduProtocol w postaci wygodnej funkcji sendMessage,
+  ktora moze byc uzywana np. przez zewnetrzne moduly (adrian)
+* drobne porzadki w EventManagerze, przeniesienie czesci kodu do ChatManagera,
+  HistoryManagera (adrian)
+* mozliwosc zaladowania kilku modulow rownoczesnie, okienko dialogowe
+  z dwoma listami: modulow dostepnych i zaladowanych i mozliwosc zaladowania/
+  wyladowania modulu za pomoca podwojnego klikniecia (adrian)
+* dwa przykladowe moduly kompiluja sie i instaluja automatycznie jesli uzyjemy
+  opcji --enable-modules. oprocz tego pare poprawek i... to juz naprawde
+  zaczyna sensownie dzialac ;) (adrian)
+* poprawka dzialania przy podwojnym kliku na osobe bez numeru gg -
+  teraz otwiera okno sms zamiast chat z dziwnym numerem (adrian)
+* ChatManager::openChat() jednak publiczny + sygnal chatCreated()
+  a wszystko to na potrzeby modulow oczywiscie (googie/adrian)
+* Chat::uins() zwracajacy liste rozmowcow, ChatManager::chats() zwracajacy
+  liste okien Chat, skutkiem tego Chat::ChatsItem przestalo byc potrzebne,
+  wiec porzadki w kodzie (googie/adrian)
+* make kompiluje wszystkie moduly z katalogu modules, a nie tylko te znajdujace
+  sie standardowo w kadu. modul x.cpp moze miec odpowiadajacy mu plik
+  x.so.flags z wyrazeniem np. MODULE_LDFLAGS=-lxyz (googie/adrian)
+* enigmatyczne Kadu::mmb i ppm zmienione na Kadu::MenuBar i Kadu::MainMenu.
+  publiczne metody Kadu::menuBar() i Kadu::mainMenu() daja modulom mozliwosc
+  tworzenia nowych menu w oknie i nowych opcji w menu "Kadu" (googie/adrian)
+* kadu nie wysypuje sie przy wysylaniu sms'ow do plusa (pawel_p)
+* poprawiono ilosc cytowania linijek rozmowy (pawel_p)
+* porzadki w kodzie dodawania userow zwyklych i anonimowych. wszystko
+  w funkcjach UserList::addUser() i UserList::addAnonymous() (adrian)
+* ladniejsze, podrasowane okienko zarzadzania modulami (adrian)
+* poprawione ustawianie statusu "tylko dla znajomych"
+  w oknie konfiguracji (pawel_p)
+* przy zmianie czcionki w oknie rozmowy, rozmiar czcionki zostaje taki jaki byl
+  wybrany w poprzedniej czcionce (pawel_p)
+* dodany % sciagnietego pliku (na pasku zadan), poprawiony segfault przy
+  zamknieciu okna (transferu pliku) poprzez "ESC" (pawel_p)
+* bledy przy ladowaniu modulu pokazywane sa
+  jako messagebox a nie na konsoli  (adrian)
+* uruchomione moduly sa zapamietywane w pliku kadu.conf i uruchamiane
+  pomownie po restarcie kadu (adrian)
+* porzadki w kodzie, rozmieszczenie zmiennych globalnych z kadu.cpp/h
+  w innych, bardziej odpowiednich plikach (adrian)
+* poprawka ladowania modulow na niektorych systemach (adrian)
+* poprawka dodawania uzytkownikow do listy (adrian)
+* usuniete zostaly niepotrzebne zmienne
+  dodano mozliwosc wybierania zestawow dzwiekow (katalogi z dzwiekami
+  musza zawierac plik "sound.conf" aby zestaw zostal wykryty)
+  mozna dodawac katalogi niestandardowe (czyli nie $PREFIX/kadu/themes/)
+  zmieniony wyglad zakladki "sounds" (pawel_p)
+* poprawiony segfault przy wybieraniu katalogu w ktorym nie ma zestawu dzwiekow
+  oraz poprawka w oknie wybierania sciezek (ciuciu/pawel_p)
+* mozliwosc tworzenia modulow wieloplikowych. kazdy modul ma teraz oddzielny
+  katalog z dowolna iloscia plikow ".cpp", ".h" i innych. w katalogu z modulem
+  musi istniec plik "spec". ustawiamy tam nastepujace zmienne:
+  MODULE_SOURCES - lista plikow ".cpp", MODULE_MOC_HEADERS - naglowki dla moc'a,
+  MODULE_HEADERS - pozostale, MODULE_CXXFLAGS oraz MODULE_LDFLAGS - wiadomo.
+  generowany plik ".so" ma nazwe zgodna z nazwa katalogu modulu (adrian)
+* configure wspiera wykrywanie bibliotek i naglowkow potrzebnych modulom.
+  w pliku "spec" modulu mozemy okreslic: MODULE_LIBS - lista potrzebnych
+  bibliotek, np. "artsc". MODULE_INCLUDES - lista potrzebnych naglowkow,
+  np. "artsc.h", MODULE_LIBS_PATH i MODULE_INCLUDES_PATH - listy dodatkowych
+  katalogow w ktorych configure ma szukac bibliotek i naglowkow. potrzebne
+  do kompilacji modulu argumenty -I -L i -l dodawane sa automatycznie.
+* uporzadkowanie kodu dotyczacego dzwiekow (znajduje sie juz tylko w sound.cpp)
+* dodano mozliwosc wykonywania operacji na pasku narzedziowym
+  (API: addToolButton, addToolButtonSeparator, getToolButton, toolBar) (pawel_p)
+* zestawy dzwiekowe sa szukane katalogach "$PREFIX/kadu/themes/sounds"
+  i ".gg/sounds" oraz dodanych przez uzytkownika, domyslnym zestawem dzwiekowym
+  jest "default" (pawel_p)
+* opcja "zarzadca modulow" nie otwiera drugiego okna, jesli jedno juz jest
+  otwarte, tylko uaktywnie to poprzednie (adrian)
+* poprawione zapisywanie sciezek do zestawow (nie dubluja sie)
+  aby odczytac plik z konfiguracja wystarczy "r" a nie "rw"  (pawel_p)
+* poprawki/rozbudowa modulu autoresponder przyslane przez Daniela Rode.
+  prawidlowo dziala przy "tylko dla znajomych" i czyta plik autoresponder.conf.
+  od dzisiaj Daniel "uto" jest oficjalnym opiekunem tego modulu (adrian)
+* drobne poprawki przy Makefile do modulow (adrian)
+* poprawiony segfault, przy starcie kadu, zwiazany z zestawami
+  dzwiekowymi (mAR/pawel_p)
+* poprawka modulu autorespondera (uto)
+* poprawki przy Makefile do modulow - prawidlowo dziala "make clean"
+  i przekompilowuje tylko pliki .cpp ktore zmienialismy (adrian)
+* zmieniony interface modulow. "void init_module()"->"int <nazwa_mod.>_init()",
+  zwraca 0 jesli funkcja sie powiodla, albo nr bledu (narazie cokolwiek innego)
+  w przeciwnym wypadku. "void close_module"->"void <nazwa_mod.>_close()".
+  zmiana nazewnictwa potrzebna do przyszlego kompilowania statycznego modulow.
+* libgadu z 09.01.2004 (chilek)
+* ShowInfoPanel odpowiada za wyświetlanie panela informacyjnego (chilek)
+* możliwość wyświetlania statusów opisowych przy nazwach kontaktów ala GG6 (wojtekka/chilek)
+* kliknięcie przycisku wyszukiwania w katalogu publicznym w momencie, gdy żaden kontakt
+  nie został wybrany otwiera okno przeszukiwania katalogu publicznego (chilek)
+* w Kadu::disconnectNetwork() zawsze wywołujemy gg_logoff() (wojtekka/chilek)
+* na potrzeby modulow dodane dwa sygnaly w klasie Chat: messageSendRequested
+  i messageSent (nazgul/adrian)
+* na potrzeby modulow dwie nowe metody w klasie HtmlDocument:
+  insertTag i insertText (nazgul/adrian)
+* poprawka padu przy wybieraniu zaznaczonych kontaktow z userbox (joi/adrian)
+* dodano sygnal chatDestroyed() w klasie ChatManager (googie/pawel_p)
+* patch zmieniajacy pogrubienie nickow uzytkownikow dostepnych z poprzedniego
+  patcha w opcje ustawialna w konfiguracji (uto/adrian)
+* nowy, porzadny mechanizm --with-existing-libgadu (jotpel,sajmon / adrian)
+* dodany nowy sygnał EventManager::systemMessageReceived(); możliwe, że wiadomości
+  systemowe pochodzące od serwerów GG będą pojawiać się w oddzielnym oknie ;) (chilek)
+* poprawka libgadu zwiazana z GG_FAILURE_NEED_EMAIL (chilek)
+* jeśli pojawi się informacja o konieczności zmiany emaila, kadu przestaje łączyć
+  się cyklicznie z serwerami GG (chilek)
+* obsluga translacji w modulach - w katalogu modulu nalezy umiescic podkatalog
+  "translations" a w nim pliki <nazwa_modulu>_<kod_jezyka>.qm i
+  <nazwa_modulu>_<kod_jezyka>.ts np autoresponder_pl.qm i autoresponder_pl.ts.
+  translacja przez funkcje "tr" obslugiwana jest rowniez w
+  funkcji inicjalizujacej i zamykajacej modulu (adrian)
+* ogolny mechanizm informowania o powstawaniu nowych instancji klas
+  - klasa CreateNotifier - i jej zastosowanie w klasie UserInfo na
+  potrzeby modulow (adrian)
+* nie mozna zmienic altNick'a (wyswietl) oraz UIN'u uzytkownika na juz
+  istniejacy na liscie dodano funkcje getActiveUserBox() oraz poprawiono
+  funkcje getSelected.. w klasie UserBox (pawel_p)
+* zamiana cudzyslowia na "&quot;" i odwrotnie w HtmlDocument (nazgul/adrian)
+* poprawka segfaulta przy zmianie altnicka uczestnika konferencji (adrian)
+* poprawka problemu z dodaniem do listy anonimowego uzytkownika
+  z ktorym prowadzimy rozmowe (adrian)
+* poprawka "tylko dla znajomych" z okna konfiguracji. kadu juz sie nie laczy
+  przy wcisnieciu "ok" (pawel_p)
+* przed zakonczeniem kadu wyladowuje poprawnie wszystkie moduly,
+  pozwalajac im zapisac konfiguracje itp (adrian)
+* poprawka, poprawki adriana dotyczącej problemu z dodawaniem do listy
+  anonimowego użytkownika - występował segfault (mast3r)
+* poprawka przy zmianie wielkosci liter w nazwie wyswietlanej użytkownika -
+  juz nie powinno wyswietlać informacji, że juz taki kontakt istnieje (mast3r)
+* poprawka wczytywania konfiguracji - powinno pomoc na problemy z
+  logowaniem przy niektorych specyficznych haslach (adrian)
+
++++ wersja 0.3.6 (22.11.2003)
+* jeśli klikniemy na jakiś kontakt w userboxie, od którego otrzymaliśmy jakąś
+  wiadomość konferencyjną, to otwiera się okno konferencji (chilek)
+* jeśli wybierzemy w menu podręcznym "rozpocznij rozmowę" z jakimś kontaktem
+  w userboxie  i otrzymaliśmy od niego jakąś wiadomość, to wiadomość zostanie
+  umieszczona w otwieranym oknie rozmowy (chilek)
+* wywalenie starych(qt2?) headers z chat.h i kadu.h (mast3r)
+* poprawka statycznego linkowania libgadu (adrian)
+* poprawiono wysylanie smsow do ery (bramka podstawowa / omnix / platna)
+  poprawiono wysylanie smsow do ideii (pawel_p)
+* dodano pole kontaktu oraz podpisu w oknie wysylania smsow (pawel_p)
+* poprawna obsługa UseTLS (chilek)
+* "Change password" => "Change password/email" (chilek)
+* "Default status" w konfiguracji powinien tłumaczyć się na inne języki (chilek)
+* dodane tłumaczenie na język niemiecki (Robert "kolatzek"/chilek)
+* usunięcie optymalizacji -Os (adrian i master zepsuli na początku/chilek
+  zepsuł/adrian naprawił)
+* adres zaczynający się od https:// też jest "łapany" jako link (mast3r)
+* poprawiony komunikat "wiadomość za długa" (michal/chilek)
+* dodane tłumaczenie qt_de (chilek)
+* zablokowane wykorzystanie niedziałającego TLS (chilek)
+* w przypadku, gdy mamy pusty email w bazie GG, kadu przy błędzie połączenia
+  z serwerem GG wyświetla stosowny komunikat (oskar/chilek)
+* pierwszy krok ku integracji z Mozillą - instalowany automatycznie
+  skrypcik kadu-mozilla, docelowo chciałbym zrobić w konfiguracji
+  wybór przeglądarki Konqueror/Mozilla/Inna (adrian)
+* dodanie w libgadu kodu błędu GG_FAILURE_NEED_EMAIL przy GG_EVENT_FAILURE (chilek)
+* porządki w metodzie EventManager::connectionFailedSlot() (chilek)
+
++++ wersja 0.3.5 (05.11.2003)
+* dalsza część przeróbek mechanizmu konfiguracji. brakuje jeszcze
+  kilku zakładek (pawel_p/adrian)
+* drobne porządki w oknie konfiguracji - nowa zakładka SMS,
+  zlikwidowana zakładka Inne (adrian)
+* zmiana internacjonalizacji z gettext na zgodną z Qt (chilek)
+* configure: zmiana z gettext na internacjonalizację z QT (adrian)
+* dostępność w hincie wyświetla się w języku ojczystym (chilek)
+* Qt internationale kadu_it.ts (Ron_K)
+* przebudowane dodawanie kontaktów (jest case insensitive) (chilek)
+* nie pojawiają się okna błędu transmisji DCC, gdy tranmisja pliku nie
+  zaczęła się (chilek)
+* tworzenie nowego użytkownika po polsku (chilek)
+* poprawione hashowanie hasła - tymczasowo rozszyfrowane hasło
+  pojawia się na konsoli (chilek)
+* poprawiony bug przy dodawaniu użytkownika, który już do nas odezwał
+  się (ReGiS/chilek)
+* kolejna przebudowa mechanizmu konfiguracji + zakladka z ustawieniami
+  dzwieku (pawel_p/adrian)
+* nowe hinty druga wersja.. dokładnie nie testowane, ale powinny dzialać
+  wymagają jeszcze optymalizacji. Nowa zakładka.. stara konfiguracja nie jest
+  kompatybilna z nową(zadziałają ustawienia domyślne, które to mogą ulec
+  zmianie jak i inne nazwy zmiennych w pliku konfiguracyjnym) trzeba jeszcze
+  zrobić porządki w konfiguracji, wywalić nieaktualne kontrolki (mast3r)
+* gdy w danych osobistych otrzymamy rok urodzenia równy 0 pole rok urodzenia
+  w dialogu danych osobistych pozostaje puste (chilek)
+* okno userinfo: nie informujemy serwera GG o zmianach w informacji o
+  kontakcie, jeśli nie ma takiej potrzeby (chilek)
+* Hinty: <, > i & są wyświetlane poprawnie w cytowanej wiadomości (mast3r)
+* Hinty: poprawienie angielskiego w konfiguracji+mała przebudowa (mast3r)
+* Hinty: zmiana domyślnej wartości cytownych znaków na 50 (mast3r)
+* Hinty: mozliwość przetłumaczenia opcji w zakładce Hintów(dymków) (mast3r)
+* Hinty: poprawka - własna sładnia jest teraz zawsze używana
+  gdy jest włączona nie tylko gdy status jest z opisem (ciuciu/mast3r)
+* Hinty: przy zmianie statusu powinno działać już tłumaczenie, mała
+  przeróbka estetyczna w zakładce konfiguracji (mast3r)
+* rejestracja zgodna z GG6 (chilek)
+* zmiana hasła zgodna z GG6 (chilek)
+* udoskonalenie dialogow rejestracji i zmiany hasla (chilek)
+* wyrejestrowywanie zgodne z GG6 (chilek)
+* usunięty segfault przy imporcie pustej listy kontaktów (pawel_p/chilek)
+* dostosowanie importu listy kontaktów do nowego libgadu (chilek)
+* wydzielenie dialogu pobrania tokena (chilek)
+* przypomnienie hasła zgodne z GG6 (chilek)
+* skrypt Instaluj instaluje najpierw Libgadu a potem Kadu - ominienty
+  blad linkowania (Ron_K)
+* więcej informacji o błędach przy łączeniu się z serwerem, informacja o
+  niepoprawnym hasle i poprawka przy DISCONNECT - były wywoływane
+  dwie funkcje zamiast jednej (mast3r)
+* znowu dobrze zapamiętuje blokowanych itd. itp. (chilek)
+* wydzielenie funkcji openWebBrowser() - pomoc też otwiera się w zdefiniowanej
+  przez użytkownika przeglądarce WWW (chilek)
+* libgadu z pakietu kadu linkowane jest statycznie. w razie czego pozostała
+  opcja --with-existing-libgadu (adrian)
+* małe poprawki optymalizujące do dymków (mast3r)
+* mała przeróbka - moze nie będzie się teraz wywalać kadu (w szczególnych
+  wypadkach) przy znikaniu dymków.+Przygotowania do klikalności (mast3r)
+* male przeróbki w dymkach i dodano funkcje klikniecia na poszczegolnym
+  dymku powoduje jego zniknięcie (mast3r)
+* poprawiony błąd - dymki nie kompilowały się na qt 3.0.x (mast3r)
+* rozmowy głosowe - nowa działająca wersja! - faza alfa (chilek)
+* configure: wstęp do obsługi rozmów głosowych, narazie opcja
+  jest na stałe wyłączona i kadu kompiluje się poprawnie bez
+  libgsm i rozmów głosowych (adrian)
+* okno potwierdzania nadchodzącej rozmowy głosowej (chilek)
+* kadu wchłonęło bibliotekę libgsm 1.0.10 ;) (adrian)
+* konfiguracja: zakładki Chat i Notify według nowego mechanizmu.
+  Notify już jest, ale jeszcze nie działa (pawel_p/adrian)
+* configure: nowa opcja --enable-voice włączająca eksperymentalną
+  obsługę rozmów głosowych (adrian)
+* możliwość przerwania rozmowy głosowej (chilek)
+* poprawka wykrywania nagłówków QT - katalog /usr/X11R6/include/qt (adrian)
+* wyeliminowane "pyknięcia" przy nadawaniu głosu (chilek)
+* poprawki poprawek pawla_p ;) (pawel_p/adrian)
+* konfiguracja: logika zakładki notify i drobne poprawki (pawel_p/adrian)
+* konfiguracja: optymalizacja i kolejne poprawki (pawel_p/adrian)
+* poprawki w kodzie dymków, powinno kompilować sie na qt 3.0.x (mast3r)
+* porządki, podział na sygnały, narazie problemy z usuwaniem wszystkich
+  dymków(segfaultuje) (mast3r)
+* podswietlanie poszczególnych dymków - ułatwia usuwanie pojedynczych dymków (mast3r)
+* poprawka tlumaczeń w zakładce konfiguracji dymków (mast3r)
+* konfiguracja: zakładka Look według nowego mechanizmu (pawel_p/adrian)
+* konfiguracja: poprawki i możliwość wyboru języka (pawel_p/adrian)
+* okno rozmowy: guzik wyślij jest zamieniany na anuluj jeżeli mamy włączoną
+  opcje: czekaj na potwierdzenie - okno nie powinno się już rozszerzać (mast3r)
+* katalog .../share/apps/kadu przenosimy do .../share/kadu - ponieważ
+  kadu nie jest programem KDE (mast3r)
+* pliki .qm z translacją instalujemy do .../share/kadu/translations , a nie
+  jak do tej pory do .../share/locale (mast3r)
+* poprawki w debian/ dotyczące poprawek z miejscem instalacji
+  niektórych plików kadu (mast3r)
+* małe poprawki w kodzie dymków i kodzie korzystającym z dymków (mast3r)
+* opcja Voice w instalatorze Instaluj
+* w konstruktorze kopiującym UserList nie były uaktualniane pola Parent
+  w UserListElementach (chilek)
+* dymki: wreszcie naprawiony błąd z segfaultem podczas usuwania wszystkich
+  dymków, nie wiem jeszcze tylko jak to się zachowa na QT 3.0.x (mast3r)
+* możliwość złączenia posiadanej listy kontaktów z importowaną listą
+  kontaktów (demsik/chilek)
+* import: przy zapisie listy kontaktów lista ignorowanych jest czyszczona,
+  a przy łączeniu nie jest czyszczona (chilek)
+* na 3.0.x niestety zostawały puste pola po usunietych dymkach - teraz
+  powinno być już dobrze (mast3r)
+* dodano menu podreczne do konferencji
+  (przystosowanie menu do modularnosci) (pawel_p)
+* wyłączenie ikonki w panelu dokującym nie powoduje wywalenia
+  Kadu poprzez dymki (mast3r)
+* poprawiono zapamietywanie wybranego jezyka (pawel_p)
+* dokumentacja opuściła źródła kadu i przeniosła się do repozytorium kadu-doc.
+  opcja Pomoc zawsze otwiera dokumentację z kadu.net (adrian)
+* emotki sa niewrazliwe na wielkosc liter
+  (<ok>, <oK>, <OK> to ta sama ikonka) (pawel_p)
+* make install kopiuje do $PREFIX/share/kadu pliki AUTHORS, ChangeLog,
+  COPYING, HISTORY, README, THANKS na potrzeby nowego okna About (adrian)
+* przebudowane okno "O programie" (chilek)
+* libgadu z 03.11.2003 (chilek)
+* gdy mamy pustą listę kontaktów to sendUserlist() przekazuje NULL do
+  gg_notify*() (chilek)
+* poprawiono wybieranie zestawu emotek (zmiany nie byly wprowadzane w zycie) (pawel_p)
+
++++ wersja 0.3.4 (19.09.2003)
+* początki nowego formatu wewnętrznego przechowywania wiadomości
+  (klasa HtmlDocument) i wyławiania emotów i url-i. Naprawione
+  problemy z emotikonami w url-ach i w napisach takich jak "<<" (adrian)
+* przejście na sygnały w obsłudze menu głównego i podręcznego.
+  pozbycie się wielkiej brzydkiej funkcji Kadu::commandParser (pawel_p/adrian)
+* konfiguracja pozostałej klawiszologii Kadu (pawel_p/adrian)
+* poprawki w kadu/Makefile.am i systemie paczkującym dla Debiana
+  i wywalenie plików message.* (mast3r)
+* poprawka segfault w opcji wysyłaniu pliku jeśli żaden kontakt
+  nie jest zaznaczony, np. po starcie kadu (hutta/adrian)
+* można cytować max. 200 fraz (chilek)
+* aktualizacja libgadu na wersję z dnia 09.09.2003 (chilek)
+* obsługa zmian statusów zgodna z GG6 (chilek)
+* poprawne wyświetlanie wersji protokołu, ip użytkownika
+  i jego portu (chilek)
+* getMyIP() zbędne. działa mechanizm systemowy przydziału gniazdek dcc
+  wykorzystywany w libgadu (wcześniej też działał tyle, że nie ustawiałem
+  gg_dcc_ip na 255.255.255.255) (chilek)
+* poprawka wyświetlania roku urodzenia w danych osobistych (pawel_p/mast3r)
+* poprawka wyświetlania opisu z spacjami w tipach userboxu i panelu
+  informacyjnego (mast3r)
+* kadu nie powinno się wywalać jak otrzymamy wiadomość graficzną;
+  póki co obrazek jest ignorowany (chilek)
+* eksport/import listy użytkowników zgodny z GG6 (chilek)
+* libgadu z dnia 12.09.2003; poprawionych kilka bugów przy imporcie i
+  eksporcie listy użytkowników (chilek)
+* okna wyszukiwania użytkowników i danych osobistych używają sygnału generowanego
+  przez event_managera (chilek)
+* malutka optymalizacja i wywalenie juz niepotrzebnego debuga w parserze (mast3r)
+* w oknie rozmowy kadu nie ucina spacji sprzed tekstu (mast3r)
+* potwierdzanie wiadomości działa na slotach (chilek)
+* poprawka drobnego buga w libgadu (chilek)
+* poprawka z dzieleniem wiadomości w oknie rozmowy, przez co kadu znowu
+  ucina spacje w oknie rozmowy - to samo tyczy sie panelu informacyjnego (mast3r)
+* obsługa importu długich list kontaktu (chilek)
+* pola w oknie informacji o kontakcie są znowu tylko do odczytu, a nie disabled (mast3r)
+* nie są eksportowani użytkownicy "anonimowi" (chilek)
+* okno wysyłania sms: posortowana lista odbiorców (chilek)
+
++++ wersja 0.3.4-rc4
+* kadu nie pokazuje fałszywych statusów ukrytych w userboksie (chilek)
+* Monisia wysyła wiadomości klasy "0", a my jesteśmy na to odporni (chilek)
+* optymalizacja w funkcji Chat::convertCharacters (Vogel/mast3r)
+* optymalizacja w misc.cpp (Zenobiusz/mast3r)
+* pola których w oknie informacji o użytkowniku nie możemy zmieni
+  są teraz (disabled) (mast3r)
+* klawisz delete usuwa kontakt z listy (pawel_p/adrian)
+* wycofana optymalizacja Chat::convertCharacters - nie działa na QT 3.0.x (adrian)
+* poprawka wczytywania konfiguracji - QT 3.2 (arekm/adrian)
+* pamiętanie czterech ostatnich opisów (pawel_p/adrian)
+* poprawka okna chat - QT 3.2 (pawel_p/adrian)
+* klawisz insert w userbox'ie pokazuje info o kontakcie (pawel_p/adrian)
+* obsługa nowej bramki Idei (adrian)
+* mechanizm definiowania skrótów klawiszowych w oknie konfiguracji
+  oraz obsługa tego mechanizmu dla okien z rozmową (pawel_p/adrian)
+* wydzielenie reszty ikonek do plików png (pawel_p/adrian)
+* ikonka wyłączenia dźwięków na toolbarze (pawel_p/adrian)
+* obsługa %e (e-mail) w panelu informacyjnym itp. (pawel_p/adrian)
+* pokazywanie niedostępnych jako opcja i guzik na toolbarze (pawel_p/adrian)
+
++++ wersja 0.3.4-rc3
+* jeśli używamy połączenia TLSv1 i wpisujemy jawnie serwery GG to domyślnym
+  portem jest 443 (chilek)
+* "wyifdefowanie" connecta b_usetls w oknie konfiguracyjnym (chilek)
+* dodanie pola email do struktury UserListElement (chilek)
+* w pliku "userlist": użytkownicy nie posiadający numerów GG zapisywani
+  są z pustym polem odpowiadającym numerowi; zapisywanie pola email (chilek)
+* jeżeli nie mamy praw zapisu z usera który wykonuje make install do katalogu
+  /usr/share to ikonki i link kadu nie będą instalowane (mast3r)
+* eksport/import kontaktów dostosowany do standardu GG (chilek)
+* w oknie informacji o użytkowniku możliwość edycji emaila (chilek)
+* przeprojektowanie wyglądu okna "dodaj użytownika" (chilek)
+* poprawka - jak używamy przeciągania userów do grup za każdym razem jest
+  zapisywana userlista(wolne to ale konieczne, patrz plik tabbar.cpp!!!)
+  wczesniej zmiany po prostu nie zachodziły (mast3r)
+* poprawka seg faulta podczas przeciągania user'a na pole
+  niżej niż zakładki grup (mast3r)
+* przeciągając usera na pole gdzie nie ma zakładki grupy tj. niżej - otwiera
+  nam się okno dialogowe gdzie możemy wybrać grupę do której mamy go
+  przydzielić lub także mamy możliwość stworzyć nową grupe (odrazu
+  przydzielając usera do niej) (mast3r)
+* lewy klik na tray'u gdy jest koperta powoduje odebranie wiadomości, zaś
+  gdy koperty nie ma pokazywanie/ukrywanie okna głównego (mast3r)
+* dodanie do detekcji adresów url łapania w url znaków '!' i ',' (uto/mast3r)
+* CTRL + lewy klik na tray'u gdy jest wiadomość spowoduje pokazanie/ukrycie
+  okna głównego (mast3r)
+* przeciągając usera na grupe Wszyscy nie dodajemy go do grupy Wszyscy
+  tylko do grupy "" (to prawie to samo bo i tak userzy znajda sie
+  w grupie Wszyscy) (uto/mast3r)
+* zmiany w polu wyboru grupy w oknie dodawania nowego użytkownika i w oknie
+  zmiany danych o użytkowniku - bardziej intelegetne (mast3r)
+* pasek narzędziowy zajmuje całą szerokość okna kadu (towtys/chilek)
+* okno informacji o użytkowniku: pole grupy ma tą samą szerokość co inne pola
+  (chilek)
+* obsługa drag&drop kilku użytkowników równocześnie (adrian)
+* plik VERSION i jego obsługa w configure (adrian)
+* poprawka delete na delete[] w chat.cpp (mast3r)
+
++++ wersja 0.3.4-rc2
+* porzadki: kod rejestrujacy opcje modulow Chat i Sms w oknie konfiguracji
+  przeniesiony do Chat::initModule() i Sms:initModule(). W ten sposob
+  w przyszlosci beda sie rejestrowac wszystkie moduly Kadu (adrian)
+* w menu podręcznym użytkownika "niedostępny dla kontaktu" i "powiadom o kontakcie"
+  dostępne są, gdy mamy odpowiednio status "tylko dla znajomych" oraz mamy
+  globalnie włączone powiadamianie o zmianie statusów (ludwik/chilek)
+* kolorem szarym wyświetlani są użytkownicy dla których jesteśmy niedostępni
+  przy "tylko dla znajomych"; priorytety "kolorów" (czerwony, źółty, szary)
+  (ludwik/chilek)
+* modyfikacja formatu wyświetlania daty zdarzeń; teraz dodatkowo przy otrzymanych
+  wiadomościach mamy pełną datę nadania wiadomości (chilek)
+* informacje o proxy nie powinny już znikać po ponownej aktywacji (lol/mast3r)
+* porządki w kodzie, zoptymalizowano commandParser (mast3r)
+* poprawka ze zwalnianiem pamięci w chat.cpp (nazgul/mast3r)
+* porządki w libgadu: wywaliłem katalog win32 - narazie nie jest potrzebny,
+  oraz katalog z cachem m4. Usunąłem również historyczny ChangeLog.1,
+  bo to ponad 100KB, a nikt nie będzie i tak tego czytał (adrian)
+* configure: libgadu nie obsługuje już --disable-debug. Po konsultacji
+  z Wojtkiem rozwiązałem w inny sposób wyłączanie debugów libgadu (adrian)
+* poprawka z zwalnianiem pamięci w history.cpp powinno być delete [](mast3r)
+* "łapanie" w link też znaku ';' (mast3r)
+* w oknie informacji o użytkowniku dodane pole z numerem wersji GG (chilek)
+* wiadomości których klasa jest inna niż msg lub chat póki co, są ignorwane (mast3r)
+* poprawka zapamiętywania i wczytywania polożenia Kadu(przy pierwszym uruchomieniu
+  Kadu troszke sie przesunie) (ReGIs/mast3r)
+* możliwość połączeń szyfrowanych TLSv1 zgodnych z GG 5.7 beta (chilek)
+* Makefile.am i Makefile.in, ikonki instalują sie do /usr/share/pixmaps/ ,a
+  kadu.desktop do /usr/share/applnk/Internet (mast3r)
+
++++ wersja 0.3.4-rc1
+* większość kodu dotyczącego obsługi zdarzeń sieciowych przeniesiona z
+  kadu.cpp/h do klasy EventManager. Tam nastąpi jego dalsze porządkowanie
+  i wydzielanie sygnałów (adrian)
+* dalsze porządki w EventManager - wydzielenie sygnałów connected,
+  connectionFailed, disconnected i ackReceived (adrian)
+* nie można otwierać wielu okien konfiguracji (chilek)
+* zapamiętywanie ostatnio wybranej zakładki z okna konfiguracji (chilek)
+* dodane do parsera %p - port (mast3r)
+* dalsze porządki w EventManager - wydzielenie sygnałów
+  connectionBroken, dccConnectionReceived, pubdirReplyReceived (adrian)
+* jeden, globalny obiekt config_file i początki nowego mechanizmu
+  budowania okna konfiguracyjnego (adrian)
+* opcja automatycznego otwierania się okna rozmowy,
+  gdy nadejdzie wiadomość (adrian)
+* formatowanie kolorków i wyglądu czcionki w wiadomościach przychodzących od
+  użytkowników GG (chilek)
+* wywalenie z menu zdeaktywowanego "Wyslij wiadomosc" (mast3r)
+* możemy formatować swoje wiadomości (chilek)
+* po rozłączeniu z serwerem GG opisy kontaktów są kasowane (mast3r)
+* wywalenie snprintf - zamiast tego kdebug i drobne poprawki przy disconnect (mast3r)
+* poprawka: CTRL + klik nie pokazuje/ukrywa okna Kadu, ani
+  nie pokazuje się menu przy CTRL + prawy klik (mast3r)
+* okno rozmowy: znowu autosend działa prawidłowo (chilek)
+* okno rozmowy: dostosowanie wstawiania emotek do nowego typu pola edycji
+  wiadomości (chilek)
+* okno rozmowy: wstawienie emotki powoduje przesunięcie kursora zaraz za nią (chilek)
+* okno rozmowy: wstawienie znaku "-" nie powinno powodować wstawiania nadinteligentnych
+  znaków wyliczania (chilek)
+* jeśli nastąpi błąd połączenia to kadu kolejny raz będzie próbować się połączyć
+  po 1 sekundzie (chilek)
+* dodanie kodu selektora koloru, narazie jeszcze jest nie skończony i
+  nie do konca sprawy, trzeba go jeszcze podpiąc, narazie guzik jest ukryty (mast3r)
+* zapomniałem, że doConnect() w AutoConnectTimer powinno być slotem (chilek)
+* okno rozmowy: możliwość wybrania koloru tekstu (chilek)
+* okno rozmowy: wstawienie znaku "*" nie powinno powodować wstawiania nadinteligentnych
+  znaków wyliczania (chilek)
+* porządki w sms.cpp/h - obsługa każdej bramki w oddzielnej klasie. Wszystkie
+  dziedziczą z podstawowej SmsGateway. Można będzie łatwo dokładać nowe bramki.
+  Przymiarki do nowej ERY (adrian)
+* okno rozmowy: ustawianie koloru z poza tablicy nie jest możliwe (chilek)
+* rozłączenie z serwerem GG zawsze powinno wyłączać pingowanie serwera GG (chilek)
+* poprawka: Kadu z debugiem nie wywala się przy zamykaniu (mast3r)
+* okno rozmowy: nie powinny się już wyświetlać tagi font (chilek)
+* uporządkowanie kodu zamykania Kadu i kilka kosmetycznych poprawek w debugu (mast3r)
+* poprawki: teraz naprawde juz nie powinno seg faultować przy zamykaniu (mast3r)
+* ESC gdy wyłączona jest ikonka w panelu dokującym nic nie powoduje (mast3r)
+* przy zamykaniu Kadu przez np. KDE kadu powinno zapisać konfiguracje (mast3r)
+* ważna poprawka - Kadu wreszcie nie blokuje zamykania KDE !!! (mast3r)
+* mozna ustawić opis który zostanie ustawiony przy zamykaniu Kadu (mast3r)
+* zamkniecie Kadu przez KDE, moze tym razem będzie za kazdym razem zapisywac
+  konfiguracje (ogolnie to jest jakaś dziwna sytuacja) (mast3r)
+* przepuszczenie przez parser pliku dzwięku wiadomości czyli jest mozliwosc
+  ustawienia dla kazdej osoby innego pliku dzwiękowego (mast3r)
+* dodanie katalogu debian/ w katalogu glownym programu, teraz kazdy
+  bedzie mogl stworzyc wlasna paczke programu dla swojego Debian'a (mast3r)
+* Enter na klawiaturze alfanumerycznej też wysyła wiadomość (Abaddon/mast3r)
+* kolejne "pozbycie" sie seg faulta przy debugu (mast3r)
+* dodanie nowej funkcji do userlist, ktora przydaje sie w kilku miejscach (mast3r)
+* porządki w kodzie events.cpp i chat.cpp (mast3r)
+* status do autoconnecta jest statusem ostatnio ustawionym w Kadu (mast3r)
+* checkConnection i QTimer readevent - zakomentowane bo do niczego nie potrzebne (mast3r)
+* w oknie wyszukiwania pokazują się statusy "ukryte" (chilek)
+* wywalenie z kodu starej-niedziałającej metody wykrywania "ukrytych" (chilek)
+* rozwój nowego mechanizmu budowania okna konfiguracyjnego (adrian)
+* sms: obsługa nowej bramki ERA Standard (adrian)
+* użytkownicy blokowani przez nas wyświetlają się kolorem czerwonym,
+  użytkownicy ignorowani przez nas kolorem żółtym (chilek)
+* początki drag&drop - można przeciągać użytkowników z userbox'a.
+  narazie np. do jakiegoś edytora tekstowego (adrian)
+* zakładki z grupami przyjmują drag&drop z userbox'a. Przenosi
+  to kontakt do określonej grupy. trzeba to jeszcze dopracować.
+  przy okazji drobna przeróbka UserListElement (adrian)
+* podczas przebudowy zakładek z grupami kadu stara się
+  pamiętać aktualnie wybraną przez użytkownika grupę (adrian)
+* poprawka: Kadu nie powinno klonować kontaktów (mast3r)
+
++++ wersja 0.3.4-pre3
+* dodane przeszukiwanie historii (chilek)
+* w oknie konfiguracji pola puste zamieniane są na faktyczne
+  domyślne ustawienia (mast3r)
+* optymalizacja kodu w/w (mast3r)
+* dodany pasek narzędziowy (chilek)
+* zapamiętywanie odebranych wiadomości przy każdej operacji na liście wiadomości
+  oczekujących na odczytanie (chilek)
+* pasek narzędziowy dokowalny, guzik narzędziowy "dodaj użytkownika" (chilek)
+* porzadki w kodzie, zakomentowanie nieuzywanych zmiennych i
+  klasy Operation( nie uzywana od dluzszego czasu, moze czas
+  pozbyc sie jej i usunac network.cpp) (mast3r)
+* funkcja MessageBox::msg(), usunięte network.cpp i doc'e od libgadu oraz
+  porządki w pliku AUTHORS (adrian)
+* można chować pasek narzędziowy (chilek)
+* zapamiętywanie ustawień paska narzędziowego (chilek)
+* wszystkie adresy IP przechowywane są w obiektach klasy QHostAddress (chilek)
+* kadu po otrzymianiu pakietu GG_DISCONNECTING nie podejmuje kolejnych prób
+  łączenia się z siecią GG automatycznie (chilek)
+* domyślna kompilacja z flagami -Os -fno-exceptions -pipe i
+  jeśli nie włączymy debuga to dodatkowo -s. Kadu jest
+  teraz o połowę mniejsze (mast3r/adrian)
+* wyrównane ikonki statusów (jz)
+* nowy "image" okna informacji o użytkowniku (chilek)
+* w oknie informacji o użytkowniku dodane pole z nazwą dnsową (chilek)
+* program nie wywala się, gdy zamykamy okno historii w czasie
+  jej przeszukiwania (jz/chilek)
+* gdy zrezygnujemy z transmisji pliku nie pojawia się komunikat o błędzie
+  transmisji (jz/chilek)
+* obsługa dns-lookupów w klasie UserList (chilek)
+* dodatkowa zmienna do parsowania %v - zwraca revdns gdy ip jest znane (mast3r)
+* poprawka: tytuł okna rozmowy powinien wyswietlać się poprawnie < i > (kiemlo/mast3r)
+* oczyszczenie kadu.h i kadu.cpp ze śmieci (mast3r)
+* udoskonalony autoaway - dodatkowo zliczający przerwania klawiatury i myszki
+  na linuksie (chilek)
+* poprawka błędu w infopanelUpdate(uin_t) (chilek)
+* okno konfiguracji: nowa zakładka "Historia" (Ron_K/chilek)
+* możliwość skonfigurowania okresu czasu z którego są cytowane frazy
+  przy otwieraniu okna rozmowy (chilek)
+* guzik "Konfiguracja" na pasku narzędziowym (chilek)
+* okno historii: escape'owanie znaków < i > (chilek)
+* pod *bsd powinno sie już kompilować (paweł/mast3r)
+* akcja czyszczenia kodu, zakomentowanie kodu 2 klass rMessage i Message
+  - od dluzszego czasu nie uzywamy tego. Propozycja (patrz plik message.h)
+  usuniecia message.cpp i message.h, deaktywacja "Wyslij wiadomość" z
+  prawego menu na userze w userbox'ie (mast3r)
+* początki gruntownych porządków w events.cpp/h - stworzenie klasy
+  EventManager, sygnały messageReceived, chatReceived, userlistReceived,
+  userStatusChanged. Więcej porządków wkrótce (adrian)
+* oczyszczanie, porządki, optymalizacja kodu, poprawki starych funkcji,
+  krok ku przejsciu na sygnał'y (mast3r)
+* zmienna liczba kolumn w userbox'ie (chilek)
+* możliwość ustawienia w konfiguracji czy liczba kolumn w userbox'ie
+  ma być zmienna (chilek)
+
++++ wersja 0.3.4-pre2
+* graficzny instalator - instaluj.tcl (googie)
+* poprawka, polskie literki powinny już się wyświetlać poprawnie w
+  panelu infomacyjnym i tytule okna rozmowy, konferencji przy
+  wlasnej konfiguracji (mast3r)
+* parsowanie sieżki do pliku odtwarzanego przy powiadomieniu
+  o dostępności użytkownika (mast3r)
+* rozbudowa klasy MessageBox o obsługę wskaźników postępu (adrian)
+* poprawki przy parsowaniu - mam nadzieje, że teraz nie bedzie
+  już problemów, dodanie debugu do kodu parsowania (mast3r)
+* poprawka: parsowanie powinno działać juz poprawnie, poprawki
+  kosmetyczne w kodzie i w oknie konfiguracji "Wygląd" (mast3r)
+
++++ wersja 0.3.4-pre1
+* środkowy guzik myszki wciśnięty na użytkowniku
+  otwiera okno wysyłania smsa (chilek)
+* pierwsza próbna wersja animowanych emotikonów (adrian)
+* ładowanie pliku emoticons_selector w standardzie ISO-8859-2 (chilek)
+* poprawka zachowania animowanych emotikonów przy
+  zawijaniu tekstu i wstępna optymalizacja (adrian)
+* historie zapisują się w formacie zgodnym z EKG (chilek)
+* historie w starym formacie konwertują się automatycznie (on-demand) do nowego
+  formatu (chilek)
+* trochę porządków: config.cpp/h => config_dialog.cpp/h, struktura config
+  z kadu.h do config_dialog.h, usunąłem vuser.cpp/h (adrian)
+* make install instaluje style css od dokumentacji (adrian)
+* emotikony w selektorze animują się po "najechaniu" kursorem myszy,
+  przy okazji porządki: IconSelector,IconSelectorButton z chat.cpp/h =>
+  EmoticonSelector,EmoticonSelectorButton w emoticons.cpp/h (adrian)
+* porządki: rozbijanie kadu.cpp/h, przenoszenie kodu w bardziej
+  odpowiednie miejsca (adrian)
+* lista własnych serwerów nie znika po ustawieniu domyślnych serwerów (mast3r)
+* osoby nie mające uin, opisem jest: Mobile: nr_telefonu
+  + info o 3 klawiszu, aby wysłać sms (mast3r)
+* wykluczenie możliwości wysłania swojego klucza do osoby
+  nie mającej w userliscie uinu (mast3r)
+* poprawka zamykania się Kadu (mast3r)
+* malutkie przeoczenie, wywalilem info o 3 klawiszu z hinta
+  zapomniałem o 2kliku lewym :) (mast3r)
+* format zestawów emotikonów kompatybilny z gg, stare zestawy kadu nie będą
+  działać. Standardowo zestaw gadu-gadu z najnowszej wersji oryginalnego
+  klienta. Zestawy kadubis i original_kadu usunięte. Przy okazji wyszła
+  szybsza detekcja emotów w tekście - nie ma już regexpów (adrian)
+* zamiast zwykłego włączania/wyłączania emotikonów możliwość ustawienia
+  w oknie konfiguracji stylu emotikonów: brak/statyczne/animowane (adrian)
+* poprawka rozpoznawania adresów url w tekście. poprawka algorytmu dla
+  dłuższych napisów oraz rozpoznaje dodatkowo znaki ':','%' i '+' (adrian)
+* selektor emotikonów jest bardziej inteligentny i bardzo
+  się stara nie wystawać poza krawędzie ekranu (adrian)
+* sms idea: obsługiwane są dodatkowe sytuacje takie jak nieprawidłowo
+  wprowadzony tekst z obrazka, adresat z nieuaktywnioną usługą "sms standard".
+  Zamknięcie okienka z obrazkiem idei - np klawiszem esc - powoduje prawidłowy
+  powrót do edycji (adrian)
+* znaki < i > wyświetlają się prawidłowo w widoku opisu użytkownika (chilek)
+* historia wyświetla się tak jak kiedyś (z paroma dodatkowymi bajerami),
+  ale wykorzystuje już nowy format plików historii (chilek)
+* porządki z czasami zdarzeń (chilek)
+* okno rozmowy: gdy otwieramy pojawia się w nim 10 ostatnich wypowiedzi
+   z historii rozmowy (chilek)
+* historie rozmów: optymalizacja obsługi historii rozmów - wprowadzenie plików
+  z indeksami wpisów historii (chilek)
+* możliwość ustawienia domyślnego portu na który kadu ma łączyć się z serwerami
+  gg. Przy ustawieniu serwerów domyślnych kadu łącząc się z hubem - dostaje dane,
+  a ustawienie portu nie jest brane pod uwagę. Dopiero przy łączeniu się z pozostałymi
+  serwerami ustawienie portu jest uwzględniane. Przy własnych wpisach ip serwerów,
+  kadu łączy się odrazu z danym ip na ustawiony port (mast3r)
+* poprawka w konfiguracji: wybór "brak" emotikon - deaktywuje
+  możliwość wyboru themes-u, stary kod byl niepoprawny i wywalał
+  bląd na standardowe wyjście (mast3r)
+* okno rozmowy: nie czekamy na potwierdzenie dostarczenia wiadomości
+  do osoby niedostępnej lub ukrytej (chilek)
+* gdy wybierzemy "rozpocznij rozmowę" w menu podręcznym listy użytkowników,
+  otwiera się okno rozmowy wraz z wiadomościami z historii rozmowy oraz
+  wiadomościami, które otrzymaliśmy, a jeszcze nie przeczytaliśmy (chilek)
+* plik konfiguracyjny: dodana opcja ChatHistoryCitation w sekcji Others
+  określająca ilość cytowanych wypowiedzi przy otwieraniu okna rozmowy (chilek)
+* poprawka błędu, który powodował wywalanie się kadu, nie można wybrać już
+  statusu niedostepny z opisem, przy uruchomionym kadu z domyslnym statusem
+  niedostępny i poprawka w menu z docku- domyslny status nie byl checknięty (mast3r)
+* przy otwieraniu okna rozmowy wiadomości nie powinny się już dublować (chilek)
+* początki porządków z oknem historii (chilek)
+* jeśli z kimś już wcześniej "rozmawialiśmy" od włączenia kadu to nie są
+  cytowane wypowiedzi (chilek)
+* na razie zablokowałem poprzedni feature (chilek)
+* poprawki w konwersji historii - nick może zawierać spacje i nie tylko (chilek)
+* można ignorować grupy użytkowników (chilek)
+* próba optymalizacji animowanych emotikonów - konkretna animacja/emotikon
+  ładuje się z dysku tylko raz w ciągu danej sesji kadu i jest dzielona
+  między wszyskie te same emotikony we wszystkich oknach chat (adrian)
+* ograniczenie liczby jednocześnie akceptowanych połączeń DCC do ośmiu (chilek)
+* obsługa wznawiania zerwanych transmisji plików poprzez DCC (chilek)
+* pierwsze przymiarki do zrobienia konfiguralnego panelu
+  informacyjnego, na razie tylko pole w konfiguracji (mast3r)
+* możliwość skonfigurowania panelu informacyjnego (mast3r)
+* możliwość skonfigurowania tytułu okna rozmowy i konferencji (mast3r)
+* w informacji o użytkowniku pokazujemy port nawet gdy nie znamy ip (mast3r)
+* początki klasy MessageBox - z założenia lepszej i wygodniej od oryginalnej
+  QMessageBox. Mam parę pomysłów. Będę ją rozbudowywał w miarę potrzeb (adrian)
+* nowe okno dialogowe: definiowanie zapytania przeszukującego historię (chilek)
+
++++ wersja 0.3.3-final
+* ikonka wiadomości i ikon statusu "ukryty" z telefonikiem
+  do oddzielnych plików (chilek)
+* tray: przepisany kod dokowania w tray'u. Kadu powinno się już ładnie dokować
+  zarówno w KDE jak i w GNOME 1.x i 2.x oraz pod Window Maker'em (adrian)
+* tray: usunięta opcja UseWMakerStyleDocking z kadu.conf. Kadu dokuje się
+  automatycznie bez potrzeby ustawiania typu dokowania (adrian)
+* tray: po najechaniu myszą na ikonkę automatycznie dostaje ona focus.
+  Rozwiązuje to problem braku podpowiedzi (hint) z opisem guzików gdy
+  Kadu nie jest aktywne (adrian)
+* polskie znaczki w dymkach powinny być już - OK (mast3r)
+* nowe libgadu, zwiększenie tymczasowo wysokości okna konfiguracji (chilek)
+* uaktualnione wysyłanie smsów do telefonów komórkowych w sieci era (chilek)
+* poprawka w oknie about - Kadu już przecież nie bazuje na KDE (adrian)
+* zawsze otwiera się okno czatu niezależnie od statusu użytkownika (chilek)
+* kadu działa w unicode, pliki konfiguracyjne w ISO 8859-2, komunikacja z
+  serwerami GG w CP1250 (chilek)
+* drobne poprawki eksportu i importu listy użytkowników do i z pliku (chilek)
+
++++ wersja 0.3.3-rc4
+* dodatkowe opcje dostępne w menu podręcznym użytkownika (blokowanie, ignorowanie,
+  powiadamianie i niedostępny przy tylko dla znajomych) (chilek)
+* ignored: QArray -> QValueList, FILE -> QFile (chilek)
+* userinfo: możliwość zmiany uinu użytkownika (chilek)
+* userinfo: można użytkownikowi usuwać i dodawać UIN, poza tym jeśli np. usuniemy UIN
+  to nie są wysyłane bezsensowne powiadomienia do serwera GG (chilek)
+* menu podręczne użytkownika: jeśli użytkownik nie ma UINu nie wyświetlamy żadnych
+  haczyków (chilek)
+* poprawiony mechanizm zmiany wielkości komponentów w oknie chat. Teraz można
+  już naprawdę dowolnie, co do pixela ustawiać wielkość (adrian)
+* dodanie guzików przewijania zakładek grup (chilek)
+* czcionka w zakładkach grup to czcionka ustawiona w userboxie + bold,
+  powinno to poprawić troszke wygląd (mast3r)
+* debug: początki porządnego debuga. Pliki debug.cpp/h. Makra kdebug i kdebugf.
+  Od teraz używamy zamiast fprintf(stderr,...) (adrian)
+* debug: cały kod kadu przerobiony na nowy sposób debugowania (adrian)
+* debug: kadu kompilowane tradycyjnie (bez --enable-debug) nie zawiera
+  komunikatów debugujących, dzięki czemu jest mniejsze i szybsze (adrian)
+* configure: poprawka wykrywania QT (adrian)
+* poprawki kosmetyczne i optymalizacja (mast3r)
+* optymalizacja reszty kodu, w dialogu do opisu statusu jest liczba
+  informująca ile znaków można jeszcze wprowadzić, a także max. długość opisu jest
+  brana ze stałej deklerowanej w libgadu.h (mast3r)
+* poprawne wyswietlanie pola "wyswietl" w informacji o kontakcie (mast3r)
+* kontakty z ustawionym numerem telefonu mają ikonki z telefonami (jz,adrian)
+* wydzielenie ikon ze statusami do oddzielnych plików (chilek)
+
++++ wersja 0.3.3-rc3
+* sensowne potwierdzenie usunięcia kontaktu (adrian)
+* próba nowego "porządnego" autoaway'a (chilek)
+* autodetekcja adresu IP dla DCC jest robiona przy każdym połączeniu o ile
+  nie wpiszemy adresu IP jawnie (chilek)
+* poprawka dotycząca tytułu okna rozmowy - nie ma juz napisu
+  "opis" przy nazwie statusu rozmówcy (mast3r)
+* możliwość ustawienia wyglądu tray hinta w oknie konfiguracji
+  i kilka poprawek (mast3r)
+* pozbycie się snprintf - zamiast tego jest QString::number (mast3r)
+* make clean kasuje pliki *_moc.cpp (adrian)
+* simlite uzywa inttypes.h jesli w systemie nie ma stdint.h (adrian)
+* powiadomienie o nowej wiadomosci w rozmowie przez tray hint'a (mast3r)
+* ikonka Kadu instaluje sie w menu KDE w grupie Internet (adrian)
+* configure: obsługa --enable-doc=DIR z możliwością ustawienia
+  docelowego katalogu dla dokumentacji (adrian)
+* uzupełnienie i uporządkowanie listy domyślnych serwerów GG (chilek)
+* jeżeli nie mamy dokumentacji to jest ona otwierana
+  z http://www.kadu.net/index_doc.html (mast3r)
+* configure: prawidłowa obsługa przekazywanych przez użytkownika CXXFLAGS
+  oraz domyślna kompilacja z -O2 (adrian)
+* przepisany od zera błędny kod wykrywania adresów url w wiadomościach (adrian)
+* pionowe zakładki grup (chilek)
+* wyłączenie ikony w tray'u nie powoduje wywalenia się kadu, gdy jednocześnie
+  wyłączamy dymki (chilek)
+* configure: kolejne poprawki dla FreeBSD (adrian)
+* jeśli usuniemy ostatniego użytkownika z ostatniej grupy innej niż domyślna
+  lista użytkowników przełącza się na listę wszystkich użytkowników (chilek)
+* okno konfiguracja -> zakładka powiadom: listy użytkowników posortowane,
+  a ponadto nie wyświetlają się tam osoby, które nie mają numerów GG (chilek)
+
++++ wersja 0.3.3-rc2
+* sporo poprawek dla FreeBSD (adrian)
+* gdy mamy status domyślny "niedostępny" to nie ginie nam zapamiętany
+  opis statusu (chilek)
+* okno rozmowy: PAGEUP i PAGEDOWN nie przesuwają historii rozmowy (chilek)
+* jeśli okno wyboru statusu jest otwarte to kliknięcie informacji o statusie
+  zamyka to okno (chilek)
+* Geometry w kadu.conf zgodne z wersjami kadu wcześniejszymi
+  niż 0.3.3-rc1 (chilek)
+* okno rozmowy: poprawione podpowiedzi (hinty) do guzika
+  włączającego/wyłączającego szyfrowanie (chilek)
+* być może rozwiązanie problemu z tłem ikonki w tray'u (mast3r)
+* ESC w glownym oknie je minimalizuje
+* Wsparcie dla Window Maker'a (dokowanie).
+  Trzeba ustawic UseWMakerStyleDocking w kadu.conf (sekcja [Global]).
+  Uwaga: pod KDE wystepuja dziwne efekty (adrian)
+* escape'owanie znaków '<' i '>' w pokazywanych hintach w userbox (scooty)
+* prawdopodobnie rozwiązany problem z zapisywaniem hasła (adrian)
+* poprawiony błąd występujący gdy ustawiony jest nieistniejący już
+  zestaw emotów (adrian)
+* dockhint->trayhint(poprawki, ulepszenia i przygotowania do dodania powiadomień
+  o dostępnych osobach i ew. błędach podczas łączenia się z serwerem GG. (mast3r)
+* informacja o dostępności przez hinta w tray'u i wyświetlanie niektórych
+  błędów podczas próby łączenia się + poprawki (mast3r)
+* kadu nie wywala się, gdy są problemy z odczytaniem informacji o dostępności
+  nowych wersji (chilek)
+* drobne porządki z polem statusu (powinno zmniejszać się przy zmianie rozmiaru
+  okna kadu) (chilek)
+* wyrzucony pusty pasek pod menu (chilek)
+* poprawiony blad ktory mogl powodowac wywalanie się kadu przy reconnecie (mast3r)
+* przygotowania do zrobienia konfiguraloności trayhinta, narazie tylko w
+  pliku konfiguracyjnym (mast3r)
+
++++ wersja 0.3.3-rc1
+* sms.cpp ma szansę kompilować się na Qt < 3.0.5 (chilek)
+* przy odebraniu błędnej wiadomości dcc ctcp nie powinno wywalać się (chilek)
+* czeski błąd powodował, że mesgi mogły nie wpadać do okna rozmowy (chilek)
+* okna dialogowe z powiadomieniami o zmianie statusu użytkowników
+  nie powinny wywalać kadu (chilek)
+* wciśnięcie klawisza escape zamyka okno rozmowy
+* locales jest obsługiwane bez pośrednictwa KDE (chilek)
+* obsługa pliku konfiguracyjnego kadu.conf bez pośrednictwa KDE (chilek)
+* kadu nie używa klas KDE do obsługi ikon (chilek)
+* TrayIcon jest oddzielną klasą w której można zrobić obsługę ikon z
+  różnych menedżerów okien (chilek)
+* możliwość włączenia/wyłączenia TrayIcon w trakcie działania programu (chilek)
+* obsługa dokowania (TrayIcon) bez pośrednictwa KDE. Powinno działać
+  między innymi pod GNOME (adrian)
+* okno informacji o użytkowniku: zmiana pola "Wyświetl" aktualizuje
+  okna rozmów które mają w tytule starą nazwę użytkownika (chilek)
+* okno wyboru statusu (pojawiające się po kliknięciu pola z naszym
+  statusem) zawsze pokazuje się we właściwym miejscu (chilek)
+* główne okno programu można zmniejszać dowolnie po przeładowaniu kadu (chilek)
+* okno konfiguracji: można testować dźwięki po zmianie programu do
+  ich odgrywania
+
++++ wersja 0.3.3-pre5
+* wszystkie? wiadomości od użytkowników powinny wpadać do okna rozmowy (chilek)
+* jeśli nie mamy połączenia z internetem, a tym samym gg_login() zwróci NULL
+  to kadu nie wywala się? (chilek)
+* można dodawać wielu użytkowników, którzy nie mają swojego uina (chilek)
+* dodane czyszczenie listy użytkowników w oknie importu, gdy importujemy listę
+  użytkowników z pliku
+* możliwość usunięcia z listy wielu użytkowników na raz (chilek)
+* okno dodawania użytkownika: nie można dodać do listy użytkownika, który
+  ma puste pole "altnick" (chilek)
+* emotikony: kadu nie zapętla się jesli mamy ustawiony
+  nie istniejący juz zestaw (adrian)
+* okno rozmowy: możliwość zmieniania proporcji pomiędzy widokiem
+  historii rozmowy, a resztą okna (chilek)
+* sms: znowu powinny działać era i plus (standardowo przez zewnętrzny
+  program kadusms) (adrian)
+* szyfrowanie: odbierania klucza publicznego nie powoduje padów aplikacji,
+  a ponadto zatwierdzenie jego zapisania powoduje uaktywnienie guzika
+  "encryption" w rozmowie prowadzonej z osobą, która do nas przysłała
+  swój klucz publiczny
+* powiadamianie dźwiękiem o zmianie statusu kontaktów następuje tylko wtedy,
+  gdy czas jaki minął od ostatniego takiego zdarzenia przekracza 500ms (chilek)
+* okno rozmowy: SHIFT+PageUp, PageUp - przesuwają historię rozmowy do góry,
+  SHIFT+PageDown, PageDown - przesuwają historię rozmowy do dołu (chilek)
+* sms: wysyłanie smsów wewnętrznym mechanizmem kadu (z ew. wyświetlaniem
+  obrazka ze strony sms.idea.pl). Program SMS Mikołaja Rydzewskiego
+  został usunięty ze źródeł (adrian)
+
++++ wersja 0.3.3-pre4
+* przy imporcie listy użytkowników ustawiamy domyślne
+  atrybuty użytkowników (chilek)
+* poprawki związane z zarządzaniem widocznością
+  ikony programu w tray'u (chilek)
+* jeśli ikona programu jest widoczna w tray'u to wiadomości od użytkowniów
+  anonimowych nie powodują dodawania tych użytkowników do listy;
+  w przeciwnym przypadku użytkownicy są dodawani do listy
+  (serwer GG nie jest o tym informowany!) (chilek)
+* w oknie rozmowy dodano guzik blokujący przewijanie rozmowy
+  (można spokojnie przeczytać co ktoś do nas napisał dużo wcześniej) (chilek)
+* możliwość rezygnacji ze zmiany statusu na status opisowy (chilek)
+* usunięte wywalanie się kadu po otwarciu okna z danymi osobistymi
+  (w momencie gdy nie znaleziono informacji
+  o nas w katalogu publicznym) (chilek)
+* możliwość regulacji wielkości panela informacyjnego (chilek)
+* wyszukiwanie użytkowników zgodne z GG 5.0 (chilek)
+* w oknie rozmowy: można zmienić proporcję pomiędzy rozmiarem okna historii
+  rozmowy, a listą użytkowników (gdy prowadzimy konferencję) (chilek)
+* chyba poprawiony pad przy wiadomościach systemowych. UWAGA! teraz lecą
+  tylko na konsolę. Jeśli chcecie oglądać reklamy to dajcie znać ;) (adrian)
+* usprawnienia w oknie poszukiwań użytkowników (chilek):
+  - szukanie użytkowników najpierw powoduje wyczyszczenie listy użytkowników,
+  - szukanie kolejnych użytkowników nie powoduje dodawania do listy
+    już wcześniej znalezionych.
+* dane osobiste: pobieranie o nas informacji wykorzystuje
+  wyszukiwanie zgodne z GG 5.0 (chilek)
+* dane osobiste: działają w standardzie GG 5.0
+  (nie ma problemów z poszczególnymi polami naszego opisu) (chilek)
+* dane osobiste: obsługa FamilyName i FamilyCity (chilek,adrian)
+* szyfrowanie: gruntowna poprawka - przejscie na simlite z ekg. dziala juz
+  kadu<=>kadu, ale kod wymaga jeszcze troszke pracy (adrian)
+* przypominanie hasła nie blokuje kadu (chilek)
+* dodane okno zmiany hasła GG (chilek)
+* porządki związane z oknem rejestracji użytkownika GG (chilek)
+* zapisywanie pozycji podziału userlist(userbox) i opisu + poprawki zapisywania
+  geometrii okna i wartości domyślnych (chilek)
+* udoskonalenie zakładki wygląd i dodanie możliwości ustawienia wyglądu widgetu
+  w userboxie, który pokazuje dane uźytkownika + zmiany w sposobie zapisu
+  konfiguracji kolorów i czcionek. (mast3r)
+* dodane okno wyrejestrowania użytkownika GG (chilek)
+* dane osobiste: kosmetyka wyglądu okna (chilek)
+* konfiguracja: testowanie dźwięków uwzględnia zmiany dokonane w polach
+  konfiguracji plików dźwiękowych (chilek)
+* konfiguracja: dodano guzik testowania przy wyborze dźwięku powiadamiania o
+  obecności uzytkownika (chilek)
+* konfiguracja: zmiana konfiguracji wyglądu nie wymaga zrestartowania kadu, aby
+  zaszły zmiany w wyglądzie (chilek)
+* szyfrowanie: generowanie tylko kluczy 1024 bity
+  (innych nie obsługuje protokół) (adrian)
+* szyfrowanie: poprawki kosmetyczne interfejsu użytkownika
+  i samego kodu (adrian)
+* dodanie opcji usuwania userlisty z serwera, import/export userlisty z
+  pliku (pawel/canter)
+
++++ wersja 0.3.3-pre3
+* CTRL + klik dowolnego przycisku myszki na ikonce w tray'u powoduje
+  wyświetlenie wiadomości/rozmowy (mast3r)
+* szyfrowanie wiadomości przy użyciu OpenSSL (scooty) +
+  configure: opcja --with-openssl (całość eksperymentalna) (adrian)
+* dodanie do kodu domyślnych serwerów GG. Kadu łączy się najpierw
+  z hubem, dostaje ip serwera z którym sie próbuje połączyć.
+  Jeżeli to się nie uda, łączy się z 217.17.41.85, później .84 i .83
+  na porcie 8074.
+  Natomiast gdy uda się połączyć i z jakiejś przyczyny połączenie zostanie
+  zerwane lub po prostu osoba sama się rozłączy (status: niedostępny)
+  - cykl łączenia się z serwerami GG zaczyna się od początku czyli jw.
+  (mast3r)
+* informacja o błędzie sieciowym podczas próby wysłania wiadomości
+  przy braku połączenia z serwerem GG (chilek)
+* ikonka w tray'u powinna sygnalizować wiadomość do odczytania
+  po restarcie kadu (chilek)
+* u dołu pojawia się informacja o użytkowniku (chilek,adrian)
+* dostępność nowych wersji kadu nie jest sprawdzana, gdy nie mamy
+  przydzielonego numeru GG (chilek)
+* prawidłowe wyświetlanie polskich literek
+  w opisach osób niedostępnych (chilek)
+* poprawka domyślnej geometrii głównego okna (adrian)
+* po zmianie powiadomień w oknie konfiguracji ustawienia
+  powiadomień są zapamiętywane (chilek)
+* poprawione automatyczne otwieranie wszystkich oczekujących
+  wiadomości konferencyjnych (chilek)
+
++++ wersja 0.3.3-pre2
+* dostosowanie do QT 3.1.0 i KDE 3.1-rc5 (adrian)
+* lepszy selektor emotow - potrafi wystawac za chat
+  i zachowuje sie jak popup-menu (adrian)
+* można anulować oczekiwanie na potwierdzenie dostarczenia wiadomosci (chilek)
+* wyszukiwanie użytkowników: pierwszy znaleziony użytkownik staje się wybranym
+  - teraz nie można już dodać drugi raz tego samego użytkownika (chilek)
+* w oknie rozmowy: zastąpienie guzika "Zamknij" guzikiem "Anuluj"
+  - guzik "Anuluj" powoduje anulowanie oczekiwania na potwierdzenie
+  dostarczenia wiadomosci (chilek)
+* okno rozmowy: KTextBrowser -> QTextBrowser (chilek)
+* przycisk "Testuj" w oknie konfiguracji powodujący przetestowanie ustawień
+  dzwiękowych (mast3r)
+* możliwość wyboru przeglądarki www w jakiej ma pokazywać się wybrany
+  w oknie rozmowy hyperlink (chilek)
+* okno rozmowy: chmurki z opisem emotikonek w oknie wyboru emotikonki
+* playSound(): fork() -> QProcess (chilek)
+* użytkownicy na liście są sortowani z uwględnieniem polskich literek (chilek)
+* okno informacji o użytkowniku: wydzielenie zakładek z poszczególnymi
+  opcjami (chilek)
+* poprawiono wyświetlanie emotikonów (adrian)
+* możliwość blokowania użytkowników (chilek)
+* możliwość ukrycia się przed użytkownikami, których mamy na liście
+  przy statusie "tylko dla znajomych" (chilek)
+* poprawione wysyłanie smsów (przez bramka.org) - znowu działa idea,
+  oraz lepsza obsluga argumentów użytkownika do programu sms (adrian)
+* wyświetlanie hintów przy ikonce w docku - experimental (mast3r)
+* możliwość ignorowania wiadomości od użytkowników
+  spoza listy kontaktów (chilek)
+* obsługa zmiennej CONFIG_DIR - funkcja ggPath ogólnego zastosowania do
+  konwersji scieżek ze względnych w katalogu gg do bezwzględnych (adrian)
+* użytkownicy anonimowi nie są dodawani do listy. (chilek)
+* configure: możliwość wyłączenia kompilacji libgadu i zlinkowania z już
+  istniejącą w systemie instalacją (--with-existing-libgadu) (adrian)
+* configure: wkompilowywana informacja o typie dystrybucji, np. źródła, paczka
+  dla określonego systemu itp. (--enable-dist-info=DIST) (adrian)
+
++++ wersja 0.3.3-pre1
+* automatyczna kompilacja programu sms (adrian)
+* porządki w opcji wysyłania sms: brak opcji, jeśli osoba nie ma
+  numeru, osobna opcja w menu głównym do wysyłania sms'a pod wpisany z
+  klawiatury numer (adrian)
+* ustawienia kolorów i czcionek listy użytkowników i okna rozmowy
+* domyślna opcja wywołanie wbudowanego programu kadusms (adrian)
+* dynamiczne emotikony z możliwością wyboru zestawu
+  (+dołączony kadubis) (adrian)
+* hasło nie pokazuje się na konsoli (chilek)
+* wiadomości typu message "wpadają" do okna rozmowy (chilek)
+* historia wysłanych sms'ów (adrian)
+* ograniczenie statusu opisowego do 40 znaków i przejscie na QLineEdit (adrian)
+* możliwość konfiguracji serwera proxy w oknie konfiguracji (chilek)
+* w strukturze config: char *password -> QString password (chilek)
+* autoryzacja proxy (chilek)
+* ENTER/RETURN w liście użytkowników działa tak
+  jak podwójne kliknięcie myszką (chilek)
+* opcja powiadamiania o zmianie statusu wszystkich użytkowników (chilek)
+* kadu nie wysypuje się jak mamy włączone "autoaway" i jesteśmy offline (chilek)
+* w oknie poszukiwań: gdy znaleziono jednego użytkownika nie trzeba go
+  zaznaczać, aby dodać go do listy, albo uaktualnić informację o nim (chilek)
+* w oknie konfiguracji: gdy odznaczymy domyślny serwer GG i nie wpiszemy
+  żadnego serwera GG to kadu już nie wywala się przy próbie ponownego
+  łączenia się (chilek)
+* Autostatus z pliku ~/.gg/description jeśli istnieje - do
+  zastosowań związanych z XMMS i innymi (adrian)
+* okno rejestracji: przejście na QSocketNotifier (chilek)
+* status opisowy: bardziej restrykcyjne (zmienna sess) sprawdzanie czy jesteśmy
+  odłączeni od serwera
+* status opisowy: kasowanie pliku description po jego odczytaniu (adrian)
+* configure: pare pomocniczych komunikatów (adrian)
+* configure: możliwość wyłączenia kompilacji kadusms (--disable-sms) (adrian)
+* configure: instalacja dokumentacji wraz z Kadu
+  (i opcja --disable-doc) (adrian)
+* configure: symbole dla debugera nie sa wkompilowywane
+  (i opcja --enable-debug) (adrian)
+* opcja Pomoc w menu - otwiera Konqueror'a z
+  zainstalowaną dokumentacją (adrian)
+* usuneliśmy z kodów źródłowych poszczególnych modułów informacje
+  o autorach - wystarczy plik AUTHORS (adrian)
+* mrugający tytuł okna chat (zminimalizowanego też)
+  przy dojściu nowej wiadomości (mast3r)
+* status zmienia się prawidłowo
+* Instalator w jezyku polskim - Instaluj
+* Dodano funkcje warunkowe do skryptu Instaluj
+* mrugająca koperta nowej wiadomości (mast3r)
+* sprawdzanie dostępnych aktualizacji (chilek)
+* F9 - czyści zawartość okna rozmowy (mast3r)
+* ikonka okna rozmowy jest aktualnym stanem rozmowcy
+* doklejanie ~/.gg/description do statusu jesli chcemy (por.
+  XMMS - libsongchange.so)
+* kompilowanie libgadu jako .so i linkowanie dynamiczne (adrian)
+* dodane #define HAVE_PTHREAD 1 w libgadu.h - teraz kadu operuje na tej
+  samej strukturze gg_search co libgadu.so
+* powiadamianie o update'ach używa stałej VERSION (chilek)
+
++++ wersja 0.3.2
+* dalsze porządki w kodzie
+* rozmowy konferencyjne
+* masa drobiazgów
+
++++ wersja 0.3.1
+* częściowe uporządkowanie kodu
+* przesyłanie plików (DCC)
+* sporo drobiazgów
+* zmiany w metodach eventGot... (chilek)
+* dodanie obsługi własnego opisowego (chilek)
+* możliwość wyboru statusu (tylko dla znajomych) (chilek)
+
++++ wersja 0.3.0 :: 05/06/2002
+* domyślnie status tylko-dla-znajomych
+* poprawka w SearchDialog (Xlib)
+* cała masa poprawek od Tomka Chilińskiego
+* zmiana pingania z 60 na 180s, a potem jednak z powrotem ;).
+* usunięcie kodu grup, przygotowanie do wypuszczenia 0.3.0
+  wymaga bardziej sprawdzonego kodu.
+* poprawka UinToUser(), różne poprawki
+* długa walka z warningami QGArray okazała się bezowocna. cóż,
+  widocznie chwilowo musimy z tym żyć. poza tym Kadu kompiluje się
+  na GCC-3.1 bo od tej chwili na tym kompilatorze projekt będzie
+  rozwijany.
+* kolejna mikrorewolucja: ujednolicenie znaczenia pól nickname
+  versus alternate nickname. Kadu działa teraz tak jak EKG i GG.
+* poprawki obsługi grup, zastanawiam się, czy lepiej umożliwiść
+  dowolne kombinowanie do 32 grup, czy nielimitowaną ilość
+  wyświetlaną najwyżej po jednej
+* nieco mniej huraoptymistyczne wykrywanie niewidocznych: tylko,
+  gdy przyjdzie eventGotUserlist z NOT_AVAIL dla kogoś, kto na
+  naszej liście i tak jest NOT_AVAIL. a szkoda.
+* grupy użytkowników. to wcale nie musi działać dobrze już teraz.
+* włączenie poprawek kodu od Arka
+* naprawa SIGSEGVa przy wysyłaniu SMSów
+* kolejne drobne poprawki
+* możliwość użycia proxy (sekcja Proxy w kadu.conf)
+* dodanie migającej ikonki przy łączeniu, obsługa aktywnego i
+  (hipotetycznie) niewidocznego opisowego
+* uaktualnienie do nowego API libgadu
+* kolejne drobne poprawki, m.in. obsługa polskich liter w userliście
+* poprawki importu listy użytkowników i pierwszego uruchomienia
+* zapisywanie konfiguracji nie tylko przy wyjściu z programu, ale także
+  zaraz po zmianie konfiguracji
+* UWAGA! mała rewolucja -- kodowane hasła. po pierwszym uruchomieniu
+  nowej wersji upewnijmy się, że wpiszemy swoje hasło od nowa, by mogło
+  zostać zakodowane.
+* poprawki potencjalnych błędów
+* poprawka ukrywania okna, gdy nie ma ikonki w doku
+* poprawka SEGVa w obsłudze anonimowych wiadomości
+* rozmaite poprawki, choćby w userliście
+* próbny cleanup kodu, syncUserlist zamiast wyrywkowej zmiany danych
+* można sobie zdefiniować kolorki i czcionki tu i ówdzie, na razie
+  w ~/.gg/kadu.conf, niedługo w konfiguracji
+* QFile użyty do zapisywania userlisty zamiast FILE *
+* porządna obsługa SMSów (tzn. śledzenie procesu)
+* ładniutkie ikonki
+* poprawki i naprawki RegExp'ów
+***************** ZERWANA KOMPATYBILNOŚĆ Z QT2 *******************
+
++++ wersja 0.2.1 :: 17/03/2002
+* poprawka niedziałającego Entera w wysyłaniu wiadomości
+* kompiluje się już pod QT/KDE3, kompatybilność może zepsuję,
+  jak wszyscy będą już mieli KDE3
+* poprawka podwójnych mesgów, już ich nie powinno być
+* drobne różne poprawki związane ze stringami (viva QString, na
+  pohybel string.h)
+* poprawka ogromniastych błędów w rMessage (SIGSEGV)
+* obsługa statusów opisowych, reimplementacja widgeta z userlistą
+  (czekajcie cierpliwie na więcej zmian)
+* poprawka w oknie połączenia: wycieki pamięci i brak fokusu w
+  przypadku autohammeringu (fajna polszczyzna)
+* poprawka zapamiętyowania geometrii okna
+* o wybranych użytkownikach program może powiadamiać dźwiękiem
+  i/lub informacją na ekranie plus ładny konfig :)
+* próba połączenia aż do skutku (dosłownie) jeśli tak powiemy
+* automatyczne łączenie: DefaultStatus w kadu.conf
+* dalsza część poprawek w kodzie związanych z przejściem na bufory
+  dynamiczne. ogólnie Kadu się nie wiesza (zwykle), ale robiło znów
+  cyrki z userlistą. więc uwaga, komu wyznajemy miłość ;)
+* poprawka sercza, żeby nie segfaultował gdy nie trzeba
+* poprawka Makefile (sorry)
+* możliwość wyłączenia ikonki dokowania (dobra wiadomość dla wszystkich
+  nie-KDEowiczów)
+* poprawki w rMessage, żeby zarówno wiad. systemowe jak i normalne
+  wyświetlały się dobrze.
+* obsługa wiadomości systemowych
+* a także import użytkowników oraz listę ignorowanych ludzi
+* tym razem przyszła kolej na listę kontaktów: nie ma już odgórnych
+  ograniczeń co do jej wielkości.
+* różne poprawki wycieków pamięci (ale to wierzchołek góry lodowej)
+* poprawka ucinania czata przy ustawionym przewijaniu w górę
+* pojawiły się tajemnicze segfault'y, po krótkiej sesji z gdb
+  podejrzewam QTextView (KTextBrowser w QT-2.3 dziedziczy po
+  QTextView). pora zastanowić się nad QT-3.0...
+* poprawka słynnego błędu: jeśli mamy od kogoś wiadomość a ów
+  ktoś zmieni status, to znika koperta obok jego nicka.
+* zmiana okienka czata z QTextView na KTextBrowser, automatyczne
+  podświetlanie URLi
+* automatyczne zmniejszanie ilości widocznych wiadomości w czacie
+  do wybranej liczby (oszczędza pamięć i miejsce)
+* bardzo eksperymentalne odbieranie plików po DCC (config: AllowDCC)
+* poprawka buga, który powodował, że nie łączyliśmy się invisible
+* mała reorganizacja konfiguracji, nowa zakładka: Chat
+* trochę komentarzy do kodu. a może on nie jest aż tak niezrozumiały?
+* dodałem opcję autoawaya do konfiguracji
+* pliki ikonek itp. idą tam, gdzie ich miejsce: do $(prefix)/share
+* dodałem do oficjalnego tarballa ikonki aplikacji: 16x16 i 32x32
+* mała rewolucja: bufory dla wiadomości są alokowane dynamicznie;
+  to samo mam zamiar zrobić z userlistą, ignorami i tak dalej.
+  wymaga jeszcze oczywiście testowania, ale jak dotąd działa...
+* okienko czata może już przewijać się zarówno do góry, jak i do
+  dołu, zgodnie z uznaniem
+* nie powinien wywalać się, jeśli zamkniemy przed czasem np.
+  okienko sercza czy eksportu; poprawka wycieków pamięci.
+
++++ wersja 0.2.0 :: 16/02/2002
+* w czacie i historii wyświetla się czas nadania wiadomości
+  (tyle, że jest tak średnio akuratny...)
+* czat: emotikony i enter są teraz lepiej konfigurowalne
+* dodałem skrót Enter w serczu i przy dodawaniu użytkowników
+* drobne poprawki kosmetyczne i w kodzie
+* poprawka polskich znaczków Latin<->Latin
+* poprawka odgrywania dźwięku w czacie
+* dodałem opcję wysyłania wiadomości przy pomocy li tylko enter-a
+* dodałem selektor ikonek, nie trzeba pamiętać ich kodu
+* czas zacząć czyścić kod i poprawiać wycieki pamięci...
+* ;))))) zamieni się w ikonkę równie ładnie jak ;), i to bez nawiasów
+* poprawka głupiego błędu, który nie wyłączał emotikonów
+
++++ wersja 0.2.0b :: 15/02/2002
+* ogólnie masa zmian, poprawek, łatwość użycia, polecam 0.2.0
+* przymiarka do emotikonów
+* dźwięki mogą być odtwarzane w różnych sytuacjach z dowolnie
+  wybranych plików (opcja konfiguracji)
+* okno może zapamiętać swoją geometrię (opcja w konfiguracji)
+* zmiana Chata na QTextView, no i działają polskie znaczki
+* eksport i import kontaktów do/z serwera
+* można wyszukiwać informacji o użytkowniku z którym np. rozmawiamy
+* teraz plik konfiguracyjny nazywa sie kadu.conf, zapisuję
+  tam coraz więcej zmiennych
+* zwykłe zabiegi nie zamkną programu, tylko go ukryją
+* zapisywanie ignorów i wyszukiwanie nicka w userliście
+* kosmetyczne poprawki
+* po długiej przerwie -- zgodność z aktualnym libgadu (ex libgg)
+* można się rejestrować, i jak nie ma konfiga to się pyta grzecznie
+* zmieniłem logo w about
+* meniu!
+* ekg/ załączone w dystrybucji, libgg.a statycznie linkowane
+* stara się zgadnąć nickname, jeśli go brakuje (na podstawie pól first_name
+  i comment)
+* SMSiki. patrzcie do kadu.h. program ma przyjmować 2 argumenty:
+  numer telefonu i treść wiadomości (np. z ceti.pl/~miki). na razie
+  nie sprawdza, jaki był kod wyjścia programu wysyłającego SMSa
+* obsługa polskich znaczków w userliście. Tańczmy i cieszmy się.
+* Qrczak i Arek mi tłumaczyli, dlaczego się czasem nie kompiluje i nawet
+  zaproponowali patch'a, którego zaaplikowałem, ale czy działa nie wiem,
+  bo u mnie i tak działało...
+
++++ wersja 0.1.9 :: 19/11/2001
+* autoaway
+* wpisanie czegoś innego niż dane personalne w okienku wyszukiwania
+  powinno automagicznie zmienić rodzaj wyszukiwania
+* poprawiłem polskie znaczki w czat'cie. to mi zajęło ze 2 minuty. uff.
+* ciąg dalszy gwałcenia sieci...
+* dopóki nie wymyślę czegoś lepszego, sieć leci po QTimer i select().
+  teraz przynajmniej zachowuje się bardziej przewidywalnie...
+* naprawione gg_debug_level, wywalone stare fix32(), libgg.h
+  teraz leci ze standardowych lokalizacji
+* dodałem przyciski Cancel i Close to tu, to tam...
+* poprawiłem buga SIGSEGV w liście ignorowanych, jak się nic nie wpisało
+* dodałem about box. 50KB ramu to nie jest taki wydatek, co nie? :)
+* zróbcie sobie ~/.gg/ignore. Potrzebuję komentować? :)
+* tegez, dodawać luserów można
+
++++ wersja 0.1.9pre :: 03/11/2001
+* spsułem Kadu jeszcze bardziej, ale chociaż działa i jest
+  kompatybilne z najnowszym libgg. Jak kto chce, to niechaj
+  sobie 0.1.9pre obessie.
+* spsułem Kadu, tzn. z nowym libgg nie chce działać teraz jak
+  te czary z serwerami są. Niech ktoś to za mnie napisze ;>
+  02/11/01 18:23
+* przedwczoraj, 21 października, minęły całe 2 miesiące, odkąd po
+  raz pierwszy otworzyłem KDevelop z projektem 'Kadu'. nie jest
+  tak źle. za kilka miesięcy może to i będzie miało rence i nogi ;>
+* przy obecnym żółwim tempie prac może ma sens wydanie jeszcze
+  kadu-0.1.9, zanim wyjdzie 0.2.0pre1. -pre1 to ma być wszak feature
+  freeze, a nam brakuje listy ignorów, dodawania użyszkodników i
+  konfiguracji...
+* jakiś drobniutki code cleanup. ale przydałoby się porządnie go
+  odpluskwić i dodać sensowne komentarze (tylko jak, skoro sam
+  nie pamiętam, co zmienne robią? :>)
+* dodałem wyświetlanie adresu IP w okienku z informacjami
+* zmieniłem czat z QTextView na QMultiLineEdit. pro: polskie znaczki,
+  zawijanie wierszy, mniej RAMu. contro: brak podświetlania ;(
+* jeśli wiadomość jest == GG_CLASS_CHAT i klikniemy "Reply", to wysyła
+  się także jako chat
+* dodałem okienko z informacjami o użytkowniku, można edytować dane
+  i zapisać nową userlistę.
+* dodałem obsługę niewiedzialnych userów. tego nie ma w protokole, ale
+  skoro źle to napisali... ;>
+* lepsza obsługa userlisty. usuwanie, zapisywanie. czyszczenie historii
+  pyta o pozwolenie.
+* zapobieganie ww. deadlock'om, jak nie ma danych.
+* dodano dialog z wyszukowaniem użyszkodników (tyle, że czasem wpada w
+  nieskończoną pętlę albo nic nie robi, no, ale... ;>)
+* doubleClick() na pozycji w serczu spowoduje dodanie delikwenta do
+  userlisty (_tymczasowo_) jesli go tam jeszcze nie ma i otwarcie okienka
+  wysylania wiadomosci.
+
++++ wersja 0.1.8 :: 05/10/2001
+* wykrywanie libgg i libpthread (Sapek) (16:10 -- cancelled)
+* odgrywanie dźwięku nie zawiesza aplikacji (fork();)
+* zmieniłem dźwięk wiadomości (na ładniejszy): patrz website
+* cancel w okienku monitorowania połączenia powoduje przerwanie łączenia
+* zmiana ikonek na autorskie
+* informacje o błędzie w przypadku rozłączenia, niepowodzenia połączenia
+* uporządkowanie wiadomości na stderr
+* okienko pokazujące status łączenia się
+* zamiast 4 wątków mamy jeden ;P (QSocketNotifier vs. sygnały+wątki)
+* sortowanie userlisty: online na górze
+* polskie znaczki w wiadomościach (ISO<->CP)
+* blokowanie przycisku "Send" podczas wysyłania
+* cleanup tablicy pending[], co poprawiło sporo bugów.
+
++++ wersja 0.1.7 :: 29/09/2001
+* poprawiono SIGSEGV podczas uruchamiania i pisania wiadomości
+* dodano odczytywanie wiadomości middle-click na ikonce w dock
+  panel
+
++++ wersja 0.1.6 :: 29/09/2001
+* prościutki skrypt przedinstalacyjny, pobierający i budujący
+  bibliotekę libgg.
+* dodano potwierdzenia: dialog z wiadomością znika wtedy, gdy
+  zostanie ona dostarczona.
+* wiadomość może mieć już arbitralny rozmiar, większy nawet, niż
+  wartość MRU.
+* poprawiono ograniczenia w obsłudzie historii
+
++++ wersja 0.1.5 :: 29/09/2001
+* poprawiłem killer buga w Czacie. można już zamykać nawet młotkiem :>
+* dodanie obsługi dźwięków (jednego: msg.wav ;]) i możliwości
+  wyciszania.
+* dodanie "zaślepki" wyszukiwania, na razie niedziałającej.
+* obsługa anonimowych wiadomości: użytkownik jest automagicznie
+  dodawany do listy (ale nie do pliku listy) i traktowany jak każdy
+  inny. można zmienić mu nick, obejrzeć historię, a także usunąć,
+  czego nie da się zrobić (jeszcze) w trakcie działania programu
+  z innymi wpisami.
+* poprawiony bug SIGSEGV, gdy kliknięto w złe miejsce QListBox.
+* dodano status: Invisible
+
++++ wersja 0.1.4 :: 23/09/2001
+* uaktualniłem do nowego API, przygotowania do wyszukiwania
+userów i obróbki wiadomości bez pozycji w userliście.
+
++++ wersja 0.1.3a :: 17/09/2001
+* nowy snapszocik. trochę cleanupów
+
++++ wersja 0.1.3 :: 10/09/2001
+* Można już łączyć się po rozłączeniu, ale wciąż pojawiają się wątki
+(defunct). Nie zamierzam na razie przesiadać się na QThread i pokrewne,
+bo wymaga to biblioteki qt-mt, a nie każdy takową sobie skompilował.
+Poza tym, zamiast tekstu u dołu panelu pojawia się już ikonka, symbolizująca
+status.
+* Dokowanie zaczyna mieć sens: ikonka zmienia się na kopertę, gdy przyjdzie
+nowa wiadomość.
+* Zaimplementowałem (baaardzo źle napisane) okienko historii.
+
++++ wersja 0.1.2 :: 09/09/2001
+* Zaimplementowałem pliki historii, upiększyłem okienko chatu, zmieniłem
+format ikonek na XPM.
+
++++ wersja 0.1.1 :: 08/09/2001
+* Dodałem możliwość wyboru typu aplikacji, naprawiłem odświeżanie GUI.
+
++++ wersja 0.1 :: 07/09/2001
+* Pierwsza działająca wersja programu.

@@ -241,13 +241,13 @@ void NotifyConfigurationUiHandler::configurationWindowApplied()
 	int count = notifiedUsers->count();
 	for (int i = 0; i < count; i++)
 	{
-		Buddy buddy = BuddyManager::instance()->byDisplay(notifiedUsers->item(i)->text());
+		Buddy buddy = BuddyManager::instance()->byDisplay(notifiedUsers->item(i)->text(), ActionReturnNull);
 		if (buddy.isNull() || buddy.isAnonymous())
 			continue;
 
 		ContactNotifyData *cnd = 0;
 		if (buddy.data())
-			cnd = buddy.data()->moduleStorableData<ContactNotifyData>("notify");
+			cnd = buddy.data()->moduleStorableData<ContactNotifyData>("notify", true);
 		if (!cnd)
 			continue;
 
@@ -258,13 +258,13 @@ void NotifyConfigurationUiHandler::configurationWindowApplied()
 	count = allUsers->count();
 	for (int i = 0; i < count; i++)
 	{
-		Buddy buddy = BuddyManager::instance()->byDisplay(allUsers->item(i)->text());
+		Buddy buddy = BuddyManager::instance()->byDisplay(allUsers->item(i)->text(), ActionReturnNull);
 		if (buddy.isNull() || buddy.isAnonymous())
 			continue;
 
 		ContactNotifyData *cnd = 0;
 		if (buddy.data())
-			buddy.data()->moduleStorableData<ContactNotifyData>("notify");
+			buddy.data()->moduleStorableData<ContactNotifyData>("notify", true);
 		if (!cnd)
 			continue;
 

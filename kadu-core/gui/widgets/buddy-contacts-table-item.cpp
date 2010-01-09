@@ -110,7 +110,7 @@ bool BuddyContactsTableItem::isAddValid() const
 		return false;
 
 	// allow contacts without buddy or new ones
-	Contact contact = ContactManager::instance()->byId(ItemAccount, Id, false);
+	Contact contact = ContactManager::instance()->byId(ItemAccount, Id, ActionReturnNull);
 	return !contact.ownerBuddy();
 }
 
@@ -135,7 +135,7 @@ bool BuddyContactsTableItem::isEditValid() const
 	if (ItemAccount != ItemContact.contactAccount() || Id != ItemContact.id())
 	{
 		// allow contacts without buddy or new ones
-		Contact contact = ContactManager::instance()->byId(ItemAccount, Id, false);
+		Contact contact = ContactManager::instance()->byId(ItemAccount, Id, ActionReturnNull);
 		return !contact.ownerBuddy();
 	}
 

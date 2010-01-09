@@ -159,11 +159,13 @@ void AccountBuddyListWidget::buddiesListImported(bool ok, BuddyList buddies)
 		{
 			// THIS WORKS NICE
 			// find one by display, but what if display().isEmpty()?
-			buddy = BuddyManager::instance()->byDisplay(onebuddy.display());
-			if (buddy.isNull() || onebuddy.display().isEmpty())
+			buddy = BuddyManager::instance()->byDisplay(onebuddy.display(), ActionCreateAndAdd);
+			if (buddy.isNull())
 			{
 				// not found so add new one
 				buddy = Buddy::create();
+				// TODO: 0.6.6
+				buddy.setDisplay(buddy.uuid().toString());
 			}
 		}
 
