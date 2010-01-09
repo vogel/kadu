@@ -18,22 +18,81 @@ class Chat;
 class ChatType;
 class ContactSet;
 
+/**
+ * @addtogroup Chat
+ * @{
+ */
+
+/**
+ * @class ChatDetails
+ * @author Rafal 'Vogel' Malinowski
+ * @short Chat data specyfic to given chat type.
+ *
+ * Objects derivered from this class contains chat data that is specyfic to
+ * given chat type. This class creates common interface for this custom data
+ * - it can return list of contacts in that chat.
+ */
 class ChatDetails : public QObject, public Details<ChatShared>
 {
 	Q_OBJECT
 
 public:
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @param mainData ChatShared object described by this object
+	 * @short Default contructor.
+	 *
+	 * Contructor must be overriden and called by all subclasses. It assigns
+	 * new object ot mainData object.
+	 */
 	explicit ChatDetails(ChatShared *mainData) : Details<ChatShared>(mainData) {}
 	virtual ~ChatDetails() {}
 
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @return chat type of this object
+	 * @short Returns chat type of this object.
+	 *
+	 * Returns chat type of this object.
+	 */
 	virtual ChatType * type() const = 0;
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @return list of contacts with this chat
+	 * @short Returns list of contacts with this chat.
+	 *
+	 * Returns list of contacts with this chat.
+	 */
 	virtual ContactSet contacts() const = 0;
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @return name of this chat
+	 * @short Returns name of this chat.
+	 *
+	 * Returns name of this chat. This can be anything - like IRC room name
+	 * or list of names of contacts.
+	 */
 	virtual QString name() const = 0;
 
 signals:
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Emited when chat title changes.
+	 * @param chat this chat
+	 * @param newTitle new chat title
+	 *
+	 * Signal is emited when chat title changes. Title can be list of
+	 * chat names, topic of IRC room or anything else (depens on chat type).
+	 */
 	void titleChanged(Chat chat, const QString &newTitle);
 
 };
+
+/**
+ * @}
+ */
 
 #include "chat/chat.h" // for MOC
 
