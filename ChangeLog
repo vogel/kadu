@@ -15,6 +15,7 @@ Je¶li jest w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * zosta³a dodana funkcjonalno¶æ automatycznego ³atania modu³ów zewnêtrznych (dorr)
 * druga czê¶æ zmian do po³±czeñ bezpo¶rednich zosta³a zaaplikowana (uzi)
 * zmiana zestawu ikon powoduje tak¿e zmianê ikon w menu statusu  (dorr)
+* zawijanie zbyt d³ugich s³ów w oknie rozmowy (tomek-k/dorr)
 * inne drobne zmiany w kodzie aplikacji
 
 +++ wersja 0.6.5.4-rc2
