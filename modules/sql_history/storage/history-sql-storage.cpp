@@ -49,6 +49,9 @@ HistorySqlStorage::~HistorySqlStorage()
 {
 	kdebugf();
 
+	CommitTimer->stop();
+	Database.commit();
+
 	QSqlDatabase::removeDatabase("kadu-history");
 }
 
@@ -81,6 +84,12 @@ void HistorySqlStorage::initDatabase()
 		MessageDialog::msg(Database.lastError().text(), false, "Warning");
 		return;
 	}
+
+	Database.transaction();
+	CommitTimer = new QTimer(this);
+	CommitTimer->setInterval(10000); // 10 sec
+	connect(CommitTimer, SIGNAL(timeout()), this, SLOT(newTransaction()));
+	CommitTimer->start();
 
 	initTables();
 	initIndexes();
@@ -156,6 +165,24 @@ QString HistorySqlStorage::chatWhere(Chat chat)
 		uuids.append(QString("'%1'").arg(aggregatedChat.uuid().toString()));
 
 	return QString("chat IN (%1)").arg(uuids.join(QLatin1String(", ")));
+}
+
+void HistorySqlStorage::newTransaction()
+{
+	DatabaseMutex.lock();
+
+	QDateTime before = QDateTime::currentDateTime();
+	Database.commit();
+	Database.transaction();
+	QDateTime after = QDateTime::currentDateTime();
+	
+	printf("commit took: [%d.%d]-[%d.%d]/%d.%d\n",
+		   before.toTime_t(), before.time().msec(),
+		   after.toTime_t(), after.time().msec(),
+		   after.toTime_t() - before.toTime_t(),
+		   after.time().msec() - before.time().msec());
+
+	DatabaseMutex.unlock();
 }
 
 void HistorySqlStorage::messageReceived(const Message &message)
