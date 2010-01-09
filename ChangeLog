@@ -4,6 +4,7 @@ Jeśli jest w postaci (z) to zarówno pomysł jak i wykonanie należy do z.
 
 +++ version 0.6.6-alpha3
 * history: chat list cleanup in history window
+* history: using transaction, import is 10-50x faster, no more freezes
 
 +++ version 0.6.6-alpha2
 * gui: hint position preview added (Kermit)

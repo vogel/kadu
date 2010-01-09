@@ -175,7 +175,7 @@ void HistorySqlStorage::newTransaction()
 	Database.commit();
 	Database.transaction();
 	QDateTime after = QDateTime::currentDateTime();
-	
+
 	printf("commit took: [%d.%d]-[%d.%d]/%d.%d\n",
 		   before.toTime_t(), before.time().msec(),
 		   after.toTime_t(), after.time().msec(),
