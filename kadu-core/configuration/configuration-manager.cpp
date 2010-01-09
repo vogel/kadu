@@ -35,12 +35,18 @@ void ConfigurationManager::load()
 	xml_config_file->makeBackup();
 
 	importConfiguration();
+
+	Uuid = xml_config_file->rootElement().attribute("uuid");
+	if (Uuid.isNull())
+		Uuid = QUuid::createUuid();
 }
 
 void ConfigurationManager::store()
 {
 	foreach (StorableObject *object, RegisteredStorableObjects)
 		object->store();
+
+	xml_config_file->rootElement().setAttribute("uuid", Uuid.toString());
 }
 
 void ConfigurationManager::flush()

@@ -107,6 +107,18 @@ Account Buddy::prefferedAccount() const
 	return isNull() ? Account::null : data()->prefferedAccount();
 }
 
+void Buddy::sortContacts()
+{
+	if (!isNull())
+		data()->sortContacts();
+}
+
+void Buddy::normalizePriorities()
+{
+	if (!isNull())
+		data()->normalizePriorities();
+}
+
 void Buddy::addContact(Contact contact)
 {
 	if (isNull() || contact.isNull())
@@ -225,7 +237,6 @@ Buddy Buddy::dummy()
 		Avatar avatar = Avatar::create();
 		avatar.setLastUpdated(QDateTime::currentDateTime());
 		avatar.setPixmap(IconsManager::instance()->loadPixmap("ContactsTab"));
-		avatar.setFileName("ContactsTab");
 		contact.setContactAvatar(avatar);
 
 		example.addContact(contact);
@@ -237,6 +248,7 @@ Buddy Buddy::dummy()
 	return null;
 }
 
+KaduSharedBase_PropertyDef(Buddy, Avatar, buddyAvatar, BuddyAvatar, Avatar::null)
 KaduSharedBase_PropertyWriteDef(Buddy, QString, display, Display)
 KaduSharedBase_PropertyDef(Buddy, QString, firstName, FirstName, QString::null)
 KaduSharedBase_PropertyDef(Buddy, QString, lastName, LastName, QString::null)

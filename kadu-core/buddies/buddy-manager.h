@@ -60,7 +60,7 @@ public:
 	BuddyList buddies(Account account, bool includeAnonymous = false);
 	void mergeBuddies(Buddy destination, Buddy source);
 
-	Buddy byDisplay(const QString &display);
+	Buddy byDisplay(const QString &display, bool create = false);
 	Buddy byId(Account account, const QString &id, bool create = false);
 	Buddy byContact(Contact contact, bool create = false);
 

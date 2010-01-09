@@ -10,23 +10,31 @@
 #ifndef BUDDY_PERSONAL_INFO_CONFIGURATION_WIDGET_H
 #define BUDDY_PERSONAL_INFO_CONFIGURATION_WIDGET_H
 
-#include <QtGui/QComboBox>
-#include <QtGui/QGridLayout>
-#include <QtGui/QGroupBox>
-#include <QtGui/QLabel>
+#include <QtGui/QWidget>
 
 #include "buddies/buddy.h"
 
 #include "exports.h"
+
+class QComboBox;
+class QLabel;
 
 class KADUAPI BuddyPersonalInfoConfigurationWidget : public QWidget
 {
 	Q_OBJECT
 
 	QComboBox *ContactIdCombo;
-	QLabel *FirstNameText, *LastNameText, *NicknameText, *GenderText, 
-	*BirthdateText, *CityText, *StateProvinceText, *IpText, *PortText,
-	*DnsNameText, *ProtocolVerText;
+	QLabel *FirstNameText;
+	QLabel *LastNameText;
+	QLabel *NicknameText;
+	QLabel *GenderText;
+	QLabel *BirthdateText;
+	QLabel *CityText;
+	QLabel *StateProvinceText;
+	QLabel *IpText;
+	QLabel *PortText;
+	QLabel *DnsNameText;
+	QLabel *ProtocolVerText;
 
 	Buddy MyBuddy;
 	void createGui();
@@ -35,8 +43,8 @@ private slots:
 	void accountSelectionChanged(int index);
 
 public:
-	BuddyPersonalInfoConfigurationWidget(Buddy &buddy, QWidget *parent = 0);
-	~BuddyPersonalInfoConfigurationWidget();
+	explicit BuddyPersonalInfoConfigurationWidget(Buddy &buddy, QWidget *parent = 0);
+	virtual ~BuddyPersonalInfoConfigurationWidget();
 
 };
 

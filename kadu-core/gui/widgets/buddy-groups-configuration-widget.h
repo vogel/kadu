@@ -10,25 +10,31 @@
 #ifndef BUDDY_GROUPS_CONFIGURATION_WIDGET_H
 #define BUDDY_GROUPS_CONFIGURATION_WIDGET_H
 
-#include <QtGui/QCheckBox>
-#include <QtGui/QScrollArea>
+#include <QtGui/QWidget>
 
 #include "buddies/buddy.h"
 
 #include "exports.h"
 
-class KADUAPI BuddyGroupsConfigurationWidget : public QScrollArea
+class QCheckBox;
+class QScrollArea;
+
+class KADUAPI BuddyGroupsConfigurationWidget : public QWidget
 {
 	Q_OBJECT
 
 	Buddy MyBuddy;
+
+	QScrollArea *Groups;
 	QList<QCheckBox *> GroupCheckBoxList;
+
 	void createGui();
 
 public:
-	BuddyGroupsConfigurationWidget(Buddy &buddy, QWidget *parent = 0);
-	~BuddyGroupsConfigurationWidget();
-	void saveConfiguration();
+	explicit BuddyGroupsConfigurationWidget(Buddy &buddy, QWidget *parent = 0);
+	virtual ~BuddyGroupsConfigurationWidget();
+
+	void save();
 
 };
 

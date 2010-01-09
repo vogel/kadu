@@ -13,6 +13,7 @@
 #include <QtCore/QSettings>
 
 #include "accounts/account-manager.h"
+#include "buddies/avatar-manager.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
 #include "chat/message/pending-messages-manager.h"
@@ -28,6 +29,7 @@
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/services/chat-service.h"
+#include "status/status-changer-manager.h"
 #include "status/status-container-manager.h"
 #include "status/status-type.h"
 #include "status/status-type-manager.h"
@@ -36,7 +38,6 @@
 #include "emoticons.h"
 #include "icons-manager.h"
 #include "modules.h"
-#include "status_changer.h"
 #include "updates.h"
 
 #include "core.h"
@@ -63,18 +64,17 @@ Core::Core() : Myself(Buddy::create()), Window(0), ShowMainWindowOnStart(true)
 
 Core::~Core()
 {
+	bool disconnectWithCurrentDescription = config_file.readBoolEntry("General", "DisconnectWithCurrentDescription");
+	QString disconnectDescription = config_file.readEntry("General", "DisconnectDescription");
+	StatusContainerManager::instance()->disconnectAndStoreLastStatus(disconnectWithCurrentDescription, disconnectDescription);
+
 	ConfigurationManager::instance()->store();
 // 	delete Configuration;
 // 	Configuration = 0;
 
 	storeConfiguration();
 
-	StatusChangerManager::instance()->unregisterStatusChanger(StatusChanger);
-	delete StatusChanger;
-	StatusChanger = 0;
-
 	ModulesManager::instance()->unloadAllModules();
-	Updates::closeModule();
 
 #ifdef Q_OS_MACX
 	setIcon(QPixmap(dataPath("kadu.png")));
@@ -269,12 +269,8 @@ void Core::init()
 	Myself.setDisplay(config_file.readEntry("General", "Nick", tr("Me")));
 
 	connect(StatusContainerManager::instance(), SIGNAL(statusChanged()), this, SLOT(statusChanged()));
-	// TODO 0.6.6:
-	StatusChanger = new UserStatusChanger();
-	StatusChangerManager::instance()->registerStatusChanger(StatusChanger);
-	StatusChangerManager::instance()->enable();
 
-	Updates::initModule();
+	new Updates();
 
 #ifdef Q_OS_MACX
 	setIcon(IconsManager::instance()->loadPixmap("BigOffline"));
@@ -288,6 +284,7 @@ void Core::init()
 	AccountManager::instance()->ensureLoaded();
 	BuddyManager::instance()->ensureLoaded();
 	ContactManager::instance()->ensureLoaded();
+	AvatarManager::instance(); // initialize that
 }
 
 void Core::storeConfiguration()
@@ -341,9 +338,6 @@ void Core::kaduWindowDestroyed()
 
 void Core::accountAdded(Account account)
 {
-	printf("account: %s\n", qPrintable(account.uuid().toString()));
-	printf("contact: %s\n", qPrintable(account.accountContact().uuid().toString()));
-	printf("buddy: %s\n", qPrintable(Myself.uuid().toString()));
 	account.accountContact().setOwnerBuddy(Myself);
 }
 
@@ -386,9 +380,6 @@ void Core::accountUnregistered(Account account)
 		disconnect(protocol, SIGNAL(connected(Account)), this, SIGNAL(connected()));
 		disconnect(protocol, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
 	}
-
-	// TODO: 0.6.6
-	//Myself.removeContact(account);
 }
 
 void Core::configurationUpdated()
@@ -406,22 +397,6 @@ void Core::configurationUpdated()
 #endif
 
 	debug_mask = config_file.readNumEntry("General", "DEBUG_MASK");
-}
-
-QString Core::readToken(const QPixmap &tokenPixmap)
-{
-/*	TokenDialog *td = new TokenDialog(tokenPixmap, 0);
-	QString result;
-
-	if (td->exec() == QDialog::Accepted)
-		result = td->getValue();
-	delete td;*/
-	return "";
-}
-
-Status Core::status()
-{
-	return StatusChanger->status();
 }
 
 void Core::createGui()
@@ -460,31 +435,6 @@ void Core::setIcon(const QPixmap &pixmap)
 		QApplication::setWindowIcon(icon);
 		emit mainIconChanged(icon);
 	}
-}
-//TODO 0.6.6:
-void Core::setStatus(const Status &status)
-{
-	StatusChanger->userStatusSet(status);
-}
-
-void Core::setOnline(const QString &description)
-{
-	StatusChanger->userStatusSet(Status("Online", description));
-}
-
-void Core::setAway(const QString &description)
-{
-	StatusChanger->userStatusSet(Status("Away", description));
-}
-
-void Core::setInvisible(const QString &description)
-{
-	StatusChanger->userStatusSet(Status("Invisible", description));
-}
-
-void Core::setOffline(const QString &description)
-{
-	StatusChanger->userStatusSet(Status("Offline", description));
 }
 
 void Core::quit()

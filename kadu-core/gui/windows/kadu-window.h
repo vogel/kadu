@@ -94,6 +94,7 @@ protected:
 
 	virtual bool supportsActionType(ActionDescription::ActionType type);
 	virtual BuddiesListView * contactsListView();
+	virtual StatusContainer * statusContainer();
 	virtual ContactSet contacts();
 	virtual BuddySet buddies();
 	virtual Chat chat();

@@ -103,46 +103,12 @@ void FileTransferManager::cleanUp()
 		removeItem(fileTransfer);
 }
 
-FileTransfer FileTransferManager::byData(Account account, Contact peer, FileTransferType type, const QString &fileName, bool create)
+void FileTransferManager::acceptFileTransfer(FileTransfer transfer)
 {
-	if (!account || !peer || fileName.isNull())
-		return FileTransfer::null;
+	QString fileName = transfer.localFileName();
 
-	foreach (FileTransfer transfer, items())
-	{
-		if (transfer.fileTransferAccount() != account || transfer.fileTransferContact() != peer || transfer.transferType() != type)
-			continue;
-
-		if (type == TypeReceive && transfer.remoteFileName() == fileName)
-			return transfer;
-
-		if (type == TypeSend && transfer.localFileName() == fileName)
-			return transfer;
-	}
-
-	if (!create)
-		return FileTransfer::null;
-
-	FileTransfer result = FileTransfer::create();
-	result.setFileTransferAccount(account);
-	result.setFileTransferContact(peer);
-	result.setTransferType(type);
-	if (type == TypeReceive)
-		result.setRemoteFileName(fileName);
-	else
-		result.setLocalFileName(fileName);
-
-	addItem(result);
-
-	return result;
-}
-
-void FileTransferManager::acceptFileTransfer(FileTransfer transfer, const QString &localFileName)
-{
-	QString fileName = localFileName;
-
-	bool resume = false;
-	bool haveFileName = !localFileName.isEmpty();
+	bool haveFileName = !fileName.isEmpty();
+	bool resume = haveFileName;
 
 	QFileInfo fi;
 
@@ -252,27 +218,56 @@ bool FileTransferManager::isFileTransferWindowVisible()
 	return Window && Window->isVisible();
 }
 
+FileTransfer FileTransferManager::byPeerAndRemoteFileName(Contact peer, const QString &remoteFileName)
+{
+	foreach (FileTransfer transfer, items())
+		if (transfer.transferType() == TypeReceive && transfer.peer() == peer && transfer.remoteFileName() == remoteFileName)
+			return transfer;
+
+	return FileTransfer::null;
+}
+
 void FileTransferManager::incomingFileTransfer(FileTransfer fileTransfer)
 {
-	Chat chat = ChatManager::instance()->findChat(ContactSet(fileTransfer.fileTransferContact()));
+	if (fileTransfer.localFileName().isEmpty())
+	{
+		FileTransfer alreadyTransferred = byPeerAndRemoteFileName(fileTransfer.peer(), fileTransfer.remoteFileName());
+		if (alreadyTransferred)
+			fileTransfer.setLocalFileName(alreadyTransferred.localFileName());
+	}
+
+	Chat chat = ChatManager::instance()->findChat(ContactSet(fileTransfer.peer()));
 	NewFileTransferNotification *notification = new NewFileTransferNotification("FileTransfer/IncomingFile", fileTransfer,
 			chat, fileTransfer.localFileName().isEmpty() ? StartNew : StartRestore);
 	notification->setTitle(tr("Incoming transfer"));
 
 	fileTransfer.setTransferStatus(StatusWaitingForAccept);
 
+	QString textFileSize = QString("%1 kB");
+	double size = (double) fileTransfer.fileSize() / 1024;
+
+	if (size > 1024 )
+	{
+		size = size / 1024;
+		textFileSize = "%1 MB";
+	}
+
+	// TODO: 0.8 fix that
+	// we need to use \n insteadof <br />
+	// <br /> are escaped inside notifications
+	// \n are changed into <br />
 	if (fileTransfer.localFileName().isEmpty())
-		notification->setText(tr("User <b>%1</b> wants to send you a file <b>%2</b><br />of size <b>%3kB</b> using account <b>%4</b>. Accept transfer?")
+		notification->setText(tr("User <b>%1</b> wants to send you a file <b>%2</b>\nof size <b>%3</b> using account <b>%4</b>.\nAccept transfer?")
 				.arg(chat.name())
 				.arg(fileTransfer.remoteFileName())
-				.arg(fileTransfer.fileSize() / 1024)
+				.arg(textFileSize.arg(size, 0, 'f', 2))
 				.arg(chat.chatAccount().name()));
 	else
-		notification->setText(tr("User <b>%1</b> wants to send you a file <b/>%2</b>\nof size <b>%3kB</b> using account <b>%4</b>.<br />"
-				"This is probably a next part of <b>%5</b><br /> What should I do?")
+		notification->setText(tr("User <b>%1</b> wants to send you a file <b/>%2</b>\nof size <b>%3</b> using account <b>%4</b>.\n"
+				"This is probably a next part of <b>%5</b>\n What should I do?")
 				.arg(chat.name())
 				.arg(fileTransfer.remoteFileName())
-				.arg(fileTransfer.fileSize() / 1024)
+				.arg(textFileSize.arg(size, 0, 'f', 2))
 				.arg(chat.chatAccount().name())
 				.arg(fileTransfer.localFileName()));
 

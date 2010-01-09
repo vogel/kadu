@@ -22,7 +22,6 @@ class KADUAPI AvatarShared : public Shared
 	Contact AvatarContact;
 	QDateTime LastUpdated;
 	QDateTime NextUpdate;
-	QString FileName;
 	QPixmap Pixmap;
 
 	QString AvatarsDir;
@@ -40,15 +39,19 @@ public:
 	virtual QString storageNodeName();
 
 	virtual void store();
+	virtual bool shouldStore();
 	virtual void aboutToBeRemoved();
 
 	QString filePath();
 
+	bool isEmpty();
+
+	void setPixmap(QPixmap pixmap);
+
 	KaduShared_Property(Contact, avatarContact, AvatarContact)
 	KaduShared_Property(QDateTime, lastUpdated, LastUpdated)
 	KaduShared_Property(QDateTime, nextUpdate, NextUpdate)
-	KaduShared_Property(QString, fileName, FileName)
-	KaduShared_Property(QPixmap, pixmap, Pixmap)
+	KaduShared_PropertyRead(QPixmap, pixmap, Pixmap)
 
 };
 

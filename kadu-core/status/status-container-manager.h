@@ -59,7 +59,7 @@ public:
 	virtual QString statusContainerName();
 
 	virtual void setStatus(Status newStatus);
-	virtual const Status & status();
+	virtual Status status();
 
 	virtual QString statusName();
 	virtual QPixmap statusPixmap();
@@ -75,10 +75,9 @@ public:
 	virtual void setDefaultStatus(const QString &startupStatus, bool offlineToInvisible,
 				      const QString &startupDescription, bool StartupLastDescription) {}
 	virtual void disconnectAndStoreLastStatus(bool disconnectWithCurrentDescription,
-						  const QString &disconnectDescription) {}
+						  const QString &disconnectDescription);
 
 	virtual void setPrivateStatus(bool isPrivate);
-
 
 signals:
 	void statusContainerAboutToBeRegistered(StatusContainer *);

@@ -7,21 +7,30 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtGui/QComboBox>
+#include <QtGui/QFormLayout>
+#include <QtGui/QGroupBox>
+#include <QtGui/QLabel>
+#include <QtGui/QVBoxLayout>
+
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "contacts/model/buddy-contact-model.h"
 #include "contacts/contact.h"
 #include "contacts/contact-manager.h"
 #include "misc/misc.h"
+#include "model/roles.h"
 #include "protocols/protocol.h"
 
 #include "buddy-personal-info-configuration-widget.h"
 
-BuddyPersonalInfoConfigurationWidget::BuddyPersonalInfoConfigurationWidget(Buddy &buddy, QWidget *parent)
-		: QWidget(parent), MyBuddy(buddy)
+BuddyPersonalInfoConfigurationWidget::BuddyPersonalInfoConfigurationWidget(Buddy &buddy, QWidget *parent) :
+		QWidget(parent), MyBuddy(buddy)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 
 	createGui();
+	accountSelectionChanged(0);
 }
 
 BuddyPersonalInfoConfigurationWidget::~BuddyPersonalInfoConfigurationWidget()
@@ -30,136 +39,90 @@ BuddyPersonalInfoConfigurationWidget::~BuddyPersonalInfoConfigurationWidget()
 
 void BuddyPersonalInfoConfigurationWidget::createGui()
 {
-	QGridLayout *layout = new QGridLayout(this);
-// 	layout->setColumnMinimumWidth(0, 10);
-// 	layout->setColumnMinimumWidth(1, 10);
-// 	layout->setColumnMinimumWidth(3, 10);
-// 	layout->setColumnMinimumWidth(6, 20);
+	QVBoxLayout *layout = new QVBoxLayout(this);
 
-	int row = 0;
-	
-	layout->setRowStretch(row++, 1); 
+	QWidget *contactWidget = new QWidget(this);
+	layout->addWidget(contactWidget);
 
-	QLabel *usernameLabel = new QLabel(tr("Contact Username") + ":", this);
-	layout->addWidget(usernameLabel, row, 3, 1, 1); 
+	QFormLayout *contactLayout = new QFormLayout(contactWidget);
 
 	ContactIdCombo = new QComboBox(this);
-	foreach (const Contact &data, MyBuddy.contacts())
-		ContactIdCombo->addItem(data.contactAccount().protocolHandler()->icon(),
-				data.id(),
-				data.uuid().toString()
-		);
+	ContactIdCombo->setModel(new BuddyContactModel(MyBuddy));
+	ContactIdCombo->setModelColumn(1); // use long name
 	connect(ContactIdCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(accountSelectionChanged(int)));
-	layout->addWidget(ContactIdCombo, row++, 4, 1, 1);
+
+	contactLayout->addRow(new QLabel(tr("Buddy contact") + ":", contactWidget), ContactIdCombo);
 
 	QGroupBox *infoWidget = new QGroupBox(this);
-	QGridLayout *infoLayout = new QGridLayout(infoWidget);
-// 	infoLayout->setColumnMinimumWidth(0, 10);
-// 	infoLayout->setColumnMinimumWidth(4, 10);
-	infoLayout->setColumnStretch(1, 3);
-	infoLayout->setColumnStretch(2, 3);
-	infoLayout->setColumnStretch(3, 8);
+	QFormLayout *infoLayout = new QFormLayout(infoWidget);
 
-	int subRow = 0;
-	
-	QLabel *firstNameLabel = new QLabel(tr("First Name") + ":",this);
-	firstNameLabel->setAlignment(Qt::AlignRight);
-	infoLayout->addWidget(firstNameLabel, subRow, 1, 1, 1);
 	FirstNameText = new QLabel(this);
-	infoLayout->addWidget(FirstNameText, subRow++, 2, 1, 1);
+	infoLayout->addRow(new QLabel(tr("First Name") + ":", infoWidget), FirstNameText);
 
-	QLabel *lastNameLabel = new QLabel(tr("Last Name") + ":", this);
-	lastNameLabel->setAlignment(Qt::AlignRight);
-	infoLayout->addWidget(lastNameLabel, subRow, 1, 1, 1);
 	LastNameText = new QLabel(this);
-	infoLayout->addWidget(LastNameText, subRow++, 2, 1, 1);
+	infoLayout->addRow(new QLabel(tr("Last Name") + ":", infoWidget), LastNameText);
 
-	QLabel *nicknameLabel = new QLabel(tr("Nickname") + ":", this);
-	nicknameLabel->setAlignment(Qt::AlignRight);
-	infoLayout->addWidget(nicknameLabel, subRow, 1, 1, 1);
 	NicknameText = new QLabel(this);
-	infoLayout->addWidget(NicknameText, subRow++, 2, 1, 1);
+	infoLayout->addRow(new QLabel(tr("Nickname") + ":", infoWidget), NicknameText);
 
-	QLabel *genderLabel = new QLabel(tr("Gender") + ":", this);
-	genderLabel->setAlignment(Qt::AlignRight);
-	infoLayout->addWidget(genderLabel, subRow, 1, 1, 1);
 	GenderText = new QLabel(this);
-	infoLayout->addWidget(GenderText, subRow++, 2, 1, 1);
+	infoLayout->addRow(new QLabel(tr("Gender") + ":", infoWidget), GenderText);
 
-	QLabel *birthdateLabel = new QLabel(tr("Birthdate") + ":",this);
-	birthdateLabel->setAlignment(Qt::AlignRight);
-	infoLayout->addWidget(birthdateLabel, subRow, 1, 1, 1);
 	BirthdateText = new QLabel(this);
-	infoLayout->addWidget(BirthdateText, subRow++, 2, 1, 1);
+	infoLayout->addRow(new QLabel(tr("Birthdate") + ":", infoWidget), BirthdateText);
 
-	QLabel *cityLabel = new QLabel(tr("City") + ":",this);
-	cityLabel->setAlignment(Qt::AlignRight);
-	infoLayout->addWidget(cityLabel, subRow, 1, 1, 1);
 	CityText = new QLabel(this);
-	infoLayout->addWidget(CityText, subRow++, 2, 1, 1);
+	infoLayout->addRow(new QLabel(tr("City") + ":", infoWidget), CityText);
 
-	QLabel *stateProvinceLabel = new QLabel(tr("State/Province") + ":",this);
-	stateProvinceLabel->setAlignment(Qt::AlignRight);
-	infoLayout->addWidget(stateProvinceLabel, subRow, 1, 1, 1);
 	StateProvinceText = new QLabel(this);
-	infoLayout->addWidget(StateProvinceText, subRow++, 2, 1, 1);
+	infoLayout->addRow(new QLabel(tr("State/Province") + ":", infoWidget), StateProvinceText);
 
-	infoLayout->setRowStretch(subRow++, 20);
-
-	QLabel *ipLabel = new QLabel(tr("IP Address") + ":",this);
-	ipLabel->setAlignment(Qt::AlignRight);
-	infoLayout->addWidget(ipLabel, subRow, 1, 1, 1);
 	IpText = new QLabel(this);
-	infoLayout->addWidget(IpText, subRow++, 2, 1, 1);
+	infoLayout->addRow(new QLabel(tr("IP Address") + ":", infoWidget), IpText);
 
-	QLabel *portLabel = new QLabel(tr("Port") + ":",this);
-	portLabel->setAlignment(Qt::AlignRight);
-	infoLayout->addWidget(portLabel, subRow, 1, 1, 1);
 	PortText = new QLabel(this);
-	infoLayout->addWidget(PortText, subRow++, 2, 1, 1);
+	infoLayout->addRow(new QLabel(tr("Port") + ":", infoWidget), PortText);
 
-	QLabel *dnsNameLabel = new QLabel(tr("DNS Name") + ":",this);
-	dnsNameLabel->setAlignment(Qt::AlignRight);
-	infoLayout->addWidget(dnsNameLabel, subRow, 1, 1, 1);
 	DnsNameText = new QLabel(this);
-	infoLayout->addWidget(DnsNameText, subRow++, 2, 1, 1);
+	infoLayout->addRow(new QLabel(tr("DNS Name") + ":", infoWidget), DnsNameText);
 
-	QLabel *protocolVerLabel = new QLabel(tr("Protocol Version") + ":",this);
-	protocolVerLabel->setAlignment(Qt::AlignRight);
-	infoLayout->addWidget(protocolVerLabel, 11, 1, 1, 1);
 	ProtocolVerText = new QLabel(this);
-	infoLayout->addWidget(ProtocolVerText, 11, 2, 1, 1);
+	infoLayout->addRow(new QLabel(tr("Protocol Version") + ":", infoWidget), ProtocolVerText);
 
-	infoLayout->setRowStretch(12, 100);
-
-	layout->addWidget(infoWidget, row++, 2, 1, 4);
-
-	layout->setRowStretch(row, 100);
+	layout->addWidget(infoWidget);
+	layout->addStretch(100);
 }
 
 void BuddyPersonalInfoConfigurationWidget::accountSelectionChanged(int index)
 {
-	// TODO 0.6.6: is it needed?
-	QString contactUuid = ContactIdCombo->itemData(index).toString();
-	if (contactUuid.isEmpty())
-		return;
-
-	Contact contact = ContactManager::instance()->byUuid(QUuid(contactUuid));
-	if (contact.isNull())
-		return;
-
-	//TODO 0.6.6 proper values
-	FirstNameText->setText(MyBuddy.firstName());
-	LastNameText->setText(MyBuddy.lastName());
-	NicknameText->setText(MyBuddy.nickName());
-	GenderText->setText(MyBuddy.firstName());
-	BirthdateText->setText(MyBuddy.firstName());
-	CityText->setText(MyBuddy.city());
-	StateProvinceText->setText(MyBuddy.firstName());
-
-	//
-	IpText->setText(contact.address().toString());
-	PortText->setText(QString::number(contact.port()));
-	DnsNameText->setText(contact.dnsName());
-	ProtocolVerText->setText(contact.protocolVersion());
+	Contact contact = qvariant_cast<Contact>(ContactIdCombo->model()->index(index, 0).data(ContactRole));
+	if (!contact)
+	{
+		FirstNameText->setText(QString::null);
+		LastNameText->setText(QString::null);
+		NicknameText->setText(QString::null);
+		GenderText->setText(QString::null);
+		BirthdateText->setText(QString::null);
+		CityText->setText(QString::null);
+		StateProvinceText->setText(QString::null);
+		IpText->setText(QString::null);
+		PortText->setText(QString::null);
+		DnsNameText->setText(QString::null);
+		ProtocolVerText->setText(QString::null);
+	}
+	else
+	{
+		//TODO 0.6.6 proper values
+		FirstNameText->setText(MyBuddy.firstName());
+		LastNameText->setText(MyBuddy.lastName());
+		NicknameText->setText(MyBuddy.nickName());
+		GenderText->setText(MyBuddy.firstName());
+		BirthdateText->setText(MyBuddy.firstName());
+		CityText->setText(MyBuddy.city());
+		StateProvinceText->setText(MyBuddy.firstName());
+		IpText->setText(contact.address().toString());
+		PortText->setText(QString::number(contact.port()));
+		DnsNameText->setText(contact.dnsName());
+		ProtocolVerText->setText(contact.protocolVersion());
+	}
 }

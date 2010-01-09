@@ -15,18 +15,17 @@
 
 #include "contacts/contact.h"
 
-class QHttp;
+class HttpClient;
 
 class TlenAvatarFetcher : public QObject
 {
 	Q_OBJECT
 
 	Contact MyContact;
-	QBuffer MyAvatarBuffer;
-	QHttp *MyHttp;
+	HttpClient *MyHttp;
 
 private slots:
-	void avatarDownloaded(int id, bool error);
+	void avatarDownloaded();
 
 public:
 	TlenAvatarFetcher(Contact contact, QObject *parent = 0);

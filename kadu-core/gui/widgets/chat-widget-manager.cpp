@@ -16,6 +16,7 @@
 #include "chat/message/message-shared.h"
 #include "chat/message/pending-messages-manager.h"
 #include "chat/chat-manager.h"
+#include "chat/recent-chat-manager.h"
 #include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
 #include "configuration/xml-configuration-file.h"
@@ -72,10 +73,6 @@ ChatWidgetManager::ChatWidgetManager()
 			this, SLOT(messageSent(const Message &)));
 
 	Actions = new ChatWidgetActions(this);
-
-	QTimer *ClosedChatsTimer = new QTimer(this);
-	connect(ClosedChatsTimer, SIGNAL(timeout()), this, SLOT(clearClosedChats()));
-	ClosedChatsTimer->start(30*1000);
 
 	ConfigurationManager::instance()->registerStorableObject(this);
 
@@ -204,17 +201,9 @@ const QHash<Chat , ChatWidget *> & ChatWidgetManager::chats() const
 	return Chats;
 }
 
-const QList<Chat> ChatWidgetManager::closedChats() const
-{
-	return ClosedChats;
-}
-
 void ChatWidgetManager::registerChatWidget(ChatWidget *chat)
 {
 	kdebugf();
-	int index = ClosedChats.indexOf(chat->chat());
-	ClosedChats.removeAt(index);
-	ClosedChatsDates.removeAt(index);
 	Chats.insert(chat->chat(), chat);
 }
 
@@ -226,10 +215,7 @@ void ChatWidgetManager::unregisterChatWidget(ChatWidget *chat)
 		return;
 
 	if (chat->countMessages())
-	{
-		ClosedChats.prepend(chat->chat());
-		ClosedChatsDates.prepend(QDateTime::currentDateTime());
-	}
+		RecentChatManager::instance()->addRecentChat(chat->chat());
 
 	emit chatWidgetDestroying(chat);
 	Chats.remove(chat->chat());
@@ -311,6 +297,9 @@ void ChatWidgetManager::deletePendingMsgs(Chat chat)
 void ChatWidgetManager::openPendingMsgs(Chat chat, bool forceActivate)
 {
 	kdebugf();
+
+	if (!chat)
+		return;
 
 	QList<MessageRenderInfo *> messages;
 	Message msg;
@@ -440,22 +429,4 @@ void ChatWidgetManager::messageSent(const Message &message)
 		return;
 
 	chatWidget->appendMessage(messageRenderInfo);
-}
-
-void ChatWidgetManager::clearClosedChats()
-{
-	QDateTime now = QDateTime::currentDateTime();
-	int i = 0;
-	while (i < ClosedChatsDates.size())
-	{
-		if (ClosedChatsDates.at(i).addSecs(config_file.readNumEntry("Chat", "RecentChatsTimeout")*60) < now)
-		{
-			ClosedChats.removeAt(i);
-			ClosedChatsDates.removeAt(i);
-		}
-		else
-		{
-			i++;
-		}
-	}
 }

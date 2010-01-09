@@ -17,28 +17,66 @@
 
 KaduSharedBaseClassImpl(Chat)
 
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Null Chat object.
+ *
+ * Null Chat object (without @link ChatShared @endlink attached).
+ */
 Chat Chat::null;
 
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Creates new empty Chat object.
+ * @return new empty Chat object, with @link ChatShared @endlink attached.
+ *
+ * Creates new empty Chat object, with @link ChatShared @endlink attached.
+ */
 Chat Chat::create()
 {
 	return new ChatShared();
 }
 
-Chat Chat::loadFromStorage(StoragePoint *accountStoragePoint)
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Loads Chat object from storage.
+ * @param chatStoragePoint storage point from which chat data will be loaded
+ * @return Chat object loaded from given storage poin.
+ *
+ * Loads Chat object from storage point and returns it. Real data will be loaded
+ * at first usage of Chat object.
+ */
+Chat Chat::loadFromStorage(StoragePoint *chatStoragePoint)
 {
-	return ChatShared::loadFromStorage(accountStoragePoint);
+	return ChatShared::loadFromStorage(chatStoragePoint);
 }
 
 Chat::Chat()
 {
 }
 
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Returns new access object for given ChatShared instance.
+ * @return new access object for given ChatShared instance
+ *
+ * Returns new access object for given ChatShared instance.
+ */
 Chat::Chat(ChatShared *data) :
 		SharedBase<ChatShared>(data)
 {
 	data->ref.ref();
 }
 
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Casts QObject * to Chat class.
+ * @param data QObject * instance that could be casted to Chat object
+ * @return Chat object from given data object or Chat::null if data cannot be cast to Chat.
+ *
+ * If data parameter contains object of type ChatShared this method will create access
+ * object to this data and return it. Else, Chat::null will be returned.
+ */
 Chat::Chat(QObject *data)
 {
 	ChatShared *shared = dynamic_cast<ChatShared *>(data);
@@ -46,6 +84,14 @@ Chat::Chat(QObject *data)
 		setData(shared);
 }
 
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Copy contructor for other Chat object.
+ * @param copy Chat object to copy
+ * @return Chat object that will be access object for the same data as copy object.
+ *
+ * Creates new Chat object that will be access object fot he same data as copy object.
+ */
 Chat::Chat(const Chat &copy) :
 		SharedBase<ChatShared>(copy)
 {
@@ -55,6 +101,12 @@ Chat::~Chat()
 {
 }
 
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Refresh title for chat.
+ *
+ * Refresh title for chat. After successfull refred updated signal will be triggerred.
+ */
 void Chat::refreshTitle()
 {
 	if (!isNull())
@@ -67,4 +119,4 @@ KaduSharedBase_PropertyDef(Chat, ChatDetails *, details, Details, 0)
 KaduSharedBase_PropertyDef(Chat, Account, chatAccount, ChatAccount, Account::null)
 KaduSharedBase_PropertyDef(Chat, QString, type, Type, QString::null)
 KaduSharedBase_PropertyDef(Chat, QString, title, Title, QString::null)
-KaduSharedBase_PropertyDef(Chat, QPixmap, icon, Icon, QPixmap())
+KaduSharedBase_PropertyDef(Chat, QIcon, icon, Icon, QIcon())

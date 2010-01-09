@@ -37,10 +37,10 @@ public:
 	QString filePath();
 	void setFilePath(const QString &filePath);
 
+	KaduSharedBase_PropertyBoolRead(Empty)
 	KaduSharedBase_Property(Contact, avatarContact, AvatarContact)
 	KaduSharedBase_Property(QDateTime, lastUpdated, LastUpdated)
 	KaduSharedBase_Property(QDateTime, nextUpdate, NextUpdate)
-	KaduSharedBase_Property(QString, fileName, FileName)
 	KaduSharedBase_Property(QPixmap, pixmap, Pixmap)
 
 };

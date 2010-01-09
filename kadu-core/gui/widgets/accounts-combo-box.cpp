@@ -7,13 +7,13 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "accounts/filter/abstract-account-filter.h"
 #include "accounts/model/accounts-model.h"
 #include "accounts/model/accounts-proxy-model.h"
 #include "model/actions-proxy-model.h"
 #include "model/roles.h"
 
 #include "accounts-combo-box.h"
-#include <accounts/filter/abstract-account-filter.h>
 
 AccountsComboBox::AccountsComboBox(bool includeSelectAccount, QWidget *parent) :
 		QComboBox(parent)

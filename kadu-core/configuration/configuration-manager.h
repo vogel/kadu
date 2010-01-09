@@ -11,6 +11,7 @@
 #define CONFIGURATION_MANAGER
 
 #include <QtCore/QList>
+#include <QtCore/QUuid>
 
 #include "exports.h"
 
@@ -20,6 +21,7 @@ class KADUAPI ConfigurationManager
 {
 	static ConfigurationManager *Instance;
 
+	QUuid Uuid;
 	QList<StorableObject *> RegisteredStorableObjects;
 
 	ConfigurationManager();
@@ -36,6 +38,8 @@ public:
 	void load();
 	void store();
 	void flush();
+
+	QUuid uuid() { return Uuid; }
 
 	void registerStorableObject(StorableObject *object);
 	void unregisterStorableObject(StorableObject *object);

@@ -30,6 +30,7 @@ public:
 	virtual ~ChatDetailsConference();
 
 	virtual void store();
+	virtual bool shouldStore();
 
 	virtual ChatType * type() const;
 	virtual ContactSet contacts() const { return Contacts; }

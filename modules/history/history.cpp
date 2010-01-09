@@ -115,8 +115,7 @@ void History::createActionDescriptions()
 	ShowHistoryActionDescription = new ActionDescription(0,
 		ActionDescription::TypeUser, "showHistoryAction",
 		this, SLOT(showHistoryActionActivated(QAction *, bool)),
-		"History", tr("Show chat history"), false, QString::null,
-		disableNonHistoryContacts
+		"History", tr("Show chat history"), false, QString::null
 	);
 	ShowHistoryActionDescription->setShortcut("kadu_showhistory");
 	BuddiesListViewMenuManager::instance()->insertActionDescription(3, ShowHistoryActionDescription);
@@ -127,12 +126,6 @@ void History::createActionDescriptions()
 		"History", tr("Chats History...")
 	);
 	Core::instance()->kaduWindow()->insertMenuActionDescription(ChatsHistoryActionDescription, KaduWindow::MenuKadu, 5);
-
-	ShowMoreMessagesInChatWidgetActionDescription = new ActionDescription(0,
-		ActionDescription::TypeChat, "chatShowMoreMessagesAction",
-		this, SLOT(showMoreMessagesActionActivated(QAction *, bool)),
-		"History", tr("Show more messages...")
-	);
 
 	ClearHistoryActionDescription = new ActionDescription(0,
 		ActionDescription::TypeUser, "clearHistoryAction",
@@ -154,27 +147,20 @@ void History::deleteActionDescriptions()
 	Core::instance()->kaduWindow()->removeMenuActionDescription(ChatsHistoryActionDescription);
 	delete ChatsHistoryActionDescription;
 	ChatsHistoryActionDescription = 0;
-
-	delete ShowMoreMessagesInChatWidgetActionDescription;
-	ShowMoreMessagesInChatWidgetActionDescription = 0;
-
 }
 
 void History::showHistoryActionActivated(QAction *sender, bool toggled)
 {
-	kdebugf();
-	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
-	if (window)
-		HistoryDialog->show(window->chat());
-	kdebugf2();
-}
-
-void History::showMoreMessagesActionActivated(QAction *sender, bool toggled)
-{
+  
 	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(sender->parent());
 	if (!chatEditBox)
+	{
+		MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
+		if (window)
+			HistoryDialog->show(window->chat());
 		return;
-	
+	}
+
 	ChatWidget *chatWidget = chatEditBox->chatWidget();
 	if (chatWidget)
 	{
@@ -196,11 +182,13 @@ void History::showMoreMessagesActionActivated(QAction *sender, bool toggled)
 		menu->addAction(tr("Show messages since yesterday"))->setData(1);
 		menu->addAction(tr("Show messages from last 7 days"))->setData(7);
 		menu->addAction(tr("Show messages from last 30 days"))->setData(30);
+		menu->addAction(tr("Show whole history"))->setData(-1);
 
 		connect(menu, SIGNAL(triggered(QAction *)), this, SLOT(showMoreMessages(QAction *)));
 
 		menu->popup(widget->mapToGlobal(QPoint(0, widget->height())));
 	}
+
 }
 
 void History::showMoreMessages(QAction *action)
@@ -225,7 +213,12 @@ void History::showMoreMessages(QAction *action)
 	chatMessagesView->setForcePruneDisabled(0 != days);
 	QList<Message> messages;
 
-	if (0 != days)
+	if (-1 == days)
+	{
+		HistoryDialog->show(chatWidget->chat());
+		return;
+	}
+	else if (0 != days)
 	{
 		QDate since = QDate::currentDate().addDays(-days);
 		messages = CurrentStorage->messagesSince(chatWidget->chat(), since);
@@ -254,6 +247,12 @@ void History::chatCreated(ChatWidget *chatWidget)
 {
 	kdebugf();
 
+	if (!chatWidget)
+		return;
+
+	if (!CurrentStorage)
+		return;
+
 	// don't do it for already opened chats with discussions
 	if (chatWidget->countMessages())
 		return;
@@ -279,7 +278,7 @@ void History::chatCreated(ChatWidget *chatWidget)
 
 void History::accountRegistered(Account account)
 {
-	if (!account.protocolHandler())
+	if (!account.protocolHandler() || !CurrentStorage)
 		return;
 
 	ChatService *service = account.protocolHandler()->chatService();
@@ -406,8 +405,8 @@ void History::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfig
 
 	connect(mainConfigurationWindow->widget()->widgetById("history/savechats"), SIGNAL(toggled(bool)),
 		mainConfigurationWindow->widget()->widgetById("history/savechatswithanonymous"), SLOT(setEnabled(bool)));
-	connect(mainConfigurationWindow->widget()->widgetById("history/savechats"), SIGNAL(toggled(bool)),
-		mainConfigurationWindow->widget()->widgetById("history/saveundeliveredmsgs"), SLOT(setEnabled(bool)));
+//	connect(mainConfigurationWindow->widget()->widgetById("history/savechats"), SIGNAL(toggled(bool)),
+//		mainConfigurationWindow->widget()->widgetById("history/saveundeliveredmsgs"), SLOT(setEnabled(bool)));
 //	connect(mainConfigurationWindow->widget()->widgetById("history/savechats"), SIGNAL(toggled(bool)),
 //		selectedChatsUsersWidget, SLOT(setEnabled(bool)));
 	connect(mainConfigurationWindow->widget()->widgetById("history/savechats"), SIGNAL(toggled(bool)),

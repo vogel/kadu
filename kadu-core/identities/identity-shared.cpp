@@ -9,6 +9,7 @@
 
 #include "accounts/account-manager.h"
 #include "contacts/contact.h"
+#include "core/core.h"
 #include "identities/identity-manager.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
@@ -119,7 +120,7 @@ void IdentityShared::setStatus(Status status)
 			account.statusContainer()->setStatus(status);
 }
 
-const Status & IdentityShared::status()
+Status IdentityShared::status()
 {
 	foreach (Account account, Accounts)
 		if (account.statusContainer())

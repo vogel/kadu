@@ -227,17 +227,18 @@ void GaduEditAccountWidget::removeAccount()
 	switch (messageBox->exec())
 	{
 		case QMessageBox::AcceptRole:
-			// TODO: 0.6.6
-// 			AccountManager::instance()->deleteAccount(account());
+			AccountManager::instance()->removeItem(account());
 			deleteLater();
 			break;
 
 		case QMessageBox::DestructiveRole:
-			// not implemented
+			// TODO: 0.6.6, implement unregister here
+			AccountManager::instance()->removeItem(account());
+			deleteLater();
 			break;
 	}
 
-	messageBox->deleteLater();
+	delete messageBox;
 }
 
 

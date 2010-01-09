@@ -34,6 +34,7 @@ class KADUAPI ContactShared : public QObject, public Shared, public DetailsHolde
 	Avatar ContactAvatar;
 	Buddy OwnerBuddy;
 	QString Id;
+	int Priority;
 
 	Status CurrentStatus;
 
@@ -75,6 +76,7 @@ public:
 	KaduShared_PropertyRead(QString, id, Id)
 	void setId(const QString &id);
 
+	KaduShared_Property(int, priority, Priority)
 	KaduShared_Property(Status, currentStatus, CurrentStatus)
 	KaduShared_Property(QString, protocolVersion, ProtocolVersion)
 	KaduShared_Property(QHostAddress, address, Address)

@@ -50,11 +50,11 @@ BuddiesListView::BuddiesListView(MainWindow *mainWindow, QWidget *parent) :
 	setExpandsOnDoubleClick(false);
 	setHeaderHidden(true);
 	setItemsExpandable(true);
-	setRootIsDecorated(false);
+	setMouseTracking(true);
+	setRootIsDecorated(true);
 	setSelectionMode(QAbstractItemView::ExtendedSelection);
 	setUniformRowHeights(false);
 	setWordWrap(true);
-	setMouseTracking(true);
 
 	Delegate = new BuddiesListViewDelegate(this);
 	setItemDelegate(Delegate);
@@ -104,6 +104,11 @@ void BuddiesListView::addFilter(AbstractBuddyFilter *filter)
 void BuddiesListView::removeFilter(AbstractBuddyFilter *filter)
 {
 	ProxyModel->removeFilter(filter);
+}
+
+void BuddiesListView::setShowAccountName(bool show)
+{
+	Delegate->setShowAccountName(show);
 }
 
 void BuddiesListView::selectBuddy(Buddy buddy)
@@ -186,12 +191,12 @@ Chat BuddiesListView::chatForIndex(const QModelIndex &index) const
 
 Chat  BuddiesListView::currentChat() const
 {
-	return chatForIndex(currentIndex());
+	return ChatManager::instance()->findChat(selectedContacts());
 }
 
 void BuddiesListView::triggerActivate(const QModelIndex& index)
 {
-	Chat chat = chatForIndex(index);
+	Chat chat = currentChat();
 	if (chat)
 		emit chatActivated(chat);
 
@@ -379,6 +384,12 @@ void BuddiesListView::updateBackground()
 {
 	// TODO 0.6.6 fix image "Stretched" + update on resize event - write image into resource tree
 	QString style;
+	style.append("QTreeView::branch:has-siblings:!adjoins-item { border-image: none; image: none }");
+	style.append("QTreeView::branch:has-siblings:adjoins-item { border-image: none; image: none }");
+	style.append("QTreeView::branch:has-children:!has-siblings:closed, QTreeView::branch:closed:has-children:has-siblings "
+		     "{ border-image: none; image: url(" + IconsManager::instance()->iconPath("BranchClosed") + ") }");
+	style.append("QTreeView::branch:open:has-children:!has-siblings, QTreeView::branch:open:has-children:has-siblings "
+		     "{ border-image: none; image: url(" + IconsManager::instance()->iconPath("BranchOpen") + ") }");
 
 	style.append("QFrame {");
 
@@ -390,6 +401,7 @@ void BuddiesListView::updateBackground()
 		//TODO 0.6.6: make an option in configuration:
 		setAlternatingRowColors(false);
 		setStyleSheet(style);
+
 		return;
 	}
 

@@ -30,6 +30,9 @@ private slots:
 	virtual void messageSent(const Message &message) = 0;
 
 public:
+	explicit HistoryStorage(QObject *parent) : QObject(parent) {}
+	virtual ~HistoryStorage() {}
+
 	virtual QList<Chat> chats(HistorySearchParameters search) = 0;
 
 	virtual QList<QDate> chatDates(Chat chat, HistorySearchParameters search) = 0;

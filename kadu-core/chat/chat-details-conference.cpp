@@ -45,6 +45,11 @@ void ChatDetailsConference::store()
 	ContactSetConfigurationHelper::saveToConfiguration(this, "Contacts", Contacts);
 }
 
+bool ChatDetailsConference::shouldStore()
+{
+	return StorableObject::shouldStore() && !Contacts.isEmpty();
+}
+
 ChatType * ChatDetailsConference::type() const
 {
 	return ChatTypeManager::instance()->chatType("Conference");

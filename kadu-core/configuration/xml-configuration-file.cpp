@@ -357,7 +357,7 @@ QList<QDomElement> XmlConfigFile::getNodes(QDomElement parent, const QString &no
 		QDomElement element = nodes.at(i).toElement();
 		if (element.isNull())
 			continue;
-		
+
 		if (element.tagName() == nodeTagName)
 			result.append(element);
 	}

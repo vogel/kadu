@@ -48,15 +48,16 @@ set (kadu_SRCS
 	buddies/model/buddies-model-proxy.cpp
 	buddies/model/groups-model.cpp
 
-	chat/aggregate-chat.cpp
+	chat/aggregate-chat-builder.cpp
 	chat/chat.cpp
-	chat/chat-aggregator-builder.cpp
+	chat/chat-details-aggregate.cpp
 	chat/chat-details-conference.cpp
 	chat/chat-details-simple.cpp
 	chat/chat-manager.cpp
 	chat/chat-shared.cpp
 	chat/chat-styles-manager.cpp
 	chat/html-messages-renderer.cpp
+	chat/recent-chat-manager.cpp
 
 	chat/filter/chat-name-filter.cpp
 
@@ -73,6 +74,7 @@ set (kadu_SRCS
 	chat/style-engines/chat-engine-kadu/chat-engine-kadu.cpp
 
 	chat/type/chat-type.cpp
+	chat/type/chat-type-aggregate.cpp
 	chat/type/chat-type-aware-object.cpp
 	chat/type/chat-type-conference.cpp
 	chat/type/chat-type-manager.cpp
@@ -120,6 +122,7 @@ set (kadu_SRCS
 	gui/widgets/buddy-contacts-table-delegate.cpp
 	gui/widgets/buddy-contacts-table-item.cpp
 	gui/widgets/buddy-contacts-table-model.cpp
+	gui/widgets/buddy-contacts-table-model-proxy.cpp
 	gui/widgets/buddy-contacts-table.cpp
 	gui/widgets/buddy-general-configuration-widget.cpp
 	gui/widgets/buddy-groups-configuration-widget.cpp
@@ -139,6 +142,7 @@ set (kadu_SRCS
 	gui/widgets/delayed-line-edit.cpp
 	gui/widgets/file-transfer-widget.cpp
 	gui/widgets/group-tab-bar.cpp
+	gui/widgets/groups-combo-box.cpp
 	gui/widgets/image-widget.cpp
 	gui/widgets/kadu-text-browser.cpp
 	gui/widgets/path-list-edit.cpp
@@ -249,6 +253,8 @@ set (kadu_SRCS
 	status/description-manager.cpp
 	status/description-model.cpp
 	status/status.cpp
+	status/status-changer.cpp
+	status/status-changer-manager.cpp
 	status/status-container-aware-object.cpp
 	status/status-container-manager.cpp
 	status/status-group.cpp
@@ -269,13 +275,11 @@ set (kadu_SRCS
 	debug.cpp
 	dnshandler.cpp
 	emoticons.cpp
-	expimp.cpp
 	html_document.cpp
 	http_client.cpp
 	icons-manager.cpp
 	ignore.cpp
 	modules.cpp
-	status_changer.cpp
 	themes.cpp
 	updates.cpp
 )
@@ -321,15 +325,15 @@ set (kadu_MOC_SRCS
 	buddies/model/buddies-model-proxy.h
 	buddies/model/groups-model.h
 
-	chat/aggregate-chat.h
-	chat/chat-aggregator-builder.h
 	chat/chat-details.h
+	chat/chat-details-aggregate.h
 	chat/chat-details-conference.h
 	chat/chat-details-simple.h
 	chat/chat-manager.h
 	chat/chat-shared.h
 	chat/chat-styles-manager.h
 	chat/html-messages-renderer.h
+	chat/recent-chat-manager.h
 
 	chat/filter/chat-filter.h
 	#chat/filter/chat-name-filter.h
@@ -342,6 +346,7 @@ set (kadu_MOC_SRCS
 	chat/style-engines/chat-engine-kadu/chat-engine-kadu.h
 
 	chat/type/chat-type.h
+	chat/type/chat-type-aggregate.h
 	chat/type/chat-type-aware-object.h
 	chat/type/chat-type-conference.h
 	chat/type/chat-type-manager.h
@@ -376,7 +381,9 @@ set (kadu_MOC_SRCS
 	gui/widgets/buddies-list-view-delegate.h
 	gui/widgets/buddies-list-widget.h
 	gui/widgets/buddy-contacts-table-delegate.h
+	gui/widgets/buddy-contacts-table-item.h
 	gui/widgets/buddy-contacts-table-model.h
+	gui/widgets/buddy-contacts-table-model-proxy.h
 	gui/widgets/buddy-contacts-table.h
 	gui/widgets/buddy-general-configuration-widget.h
 	gui/widgets/buddy-groups-configuration-widget.h
@@ -396,6 +403,7 @@ set (kadu_MOC_SRCS
 	gui/widgets/delayed-line-edit.h
 	gui/widgets/file-transfer-widget.h
 	gui/widgets/group-tab-bar.h
+	gui/widgets/groups-combo-box.h
 	gui/widgets/kadu-text-browser.h
 	gui/widgets/path-list-edit.h
 	gui/widgets/preview.h
@@ -473,17 +481,17 @@ set (kadu_MOC_SRCS
 
 	status/description-manager.h
 	status/description-model.h
+	status/status-changer.h
+	status/status-changer-manager.h
 	status/status-container.h
 	status/status-container-manager.h
 
 	dnshandler.h
 	emoticons.h
-	expimp.h
 	http_client.h
 	icons-manager.h
 	ignore.h
 	modules.h
-	status_changer.h
 	themes.h
 	updates.h
 )
@@ -522,7 +530,7 @@ link_directories (modules)
 if (WIN32)
 	add_library(kadu_core SHARED ${kadu_SRCS} ${MOC_FILES} kadu_core.rc)
 	set_target_properties(kadu_core PROPERTIES DEFINE_SYMBOL KADULIB )
-	target_link_libraries (kadu_core ${QT_LIBRARIES} ${LIBGADU_LIBRARIES} ${STATIC_MODULES})
+	target_link_libraries (kadu_core ${QT_LIBRARIES})
 	set_property(TARGET kadu_core PROPERTY LINK_INTERFACE_LIBRARIES "")
 
 	add_executable(kadu WIN32 main.cpp main_win32.cpp kadu.rc)
@@ -541,7 +549,7 @@ else (WIN32)
 	set_target_properties(kadu PROPERTIES ENABLE_EXPORTS ON)
 	set_target_properties(kadu PROPERTIES COMPILE_FLAGS "-DKADULIB" )
 
-	target_link_libraries (kadu ${STATIC_MODULES} ${QT_LIBRARIES} ${LIBGADU_LIBRARIES})
+	target_link_libraries (kadu ${QT_LIBRARIES})
 
 	if (NOT APPLE)
 		target_link_libraries (kadu ${X11_Xfixes_LIB})

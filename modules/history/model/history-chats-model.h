@@ -13,17 +13,24 @@
 #include <QtCore/QAbstractItemModel>
 #include <QtCore/QMap>
 
+#include "chat/type/chat-type-aware-object.h"
+
 class Chat;
 class ChatType;
 
-class HistoryChatsModel : public QAbstractItemModel
+class HistoryChatsModel : public QAbstractItemModel, ChatTypeAwareObject
 {
 	Q_OBJECT
 
-	QMap<QString, QList<Chat> > Chats;
+	QList<ChatType *> ChatKeys;
+	QList<QList<Chat> > Chats;
 
 	QVariant chatTypeData(const QModelIndex &index, int role = Qt::DisplayRole) const;
 	QVariant chatData(const QModelIndex &index, int role = Qt::DisplayRole) const;
+
+protected:
+	virtual void chatTypeRegistered(ChatType *chatType);
+	virtual void chatTypeUnregistered(ChatType *chatType);
 
 public:
 	HistoryChatsModel(QObject *parent = 0);
@@ -43,6 +50,7 @@ public:
 
 	QModelIndex chatTypeIndex(ChatType *type) const;
 	QModelIndex chatIndex(Chat chat) const;
+	void instance();
 
 };
 

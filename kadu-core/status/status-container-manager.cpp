@@ -11,6 +11,7 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "configuration/configuration-file.h"
+#include "core/core.h"
 #include "status/status-container-aware-object.h"
 #include "status/status-type-manager.h"
 #include "icons-manager.h"
@@ -50,15 +51,10 @@ void StatusContainerManager::accountUnregistered(Account account)
 
 void StatusContainerManager::configurationUpdated()
 {
-	QString description;
 	StartupStatus = config_file.readEntry("General", "StartupStatus");
-
 	StartupLastDescription = config_file.readBoolEntry("General", "StartupLastDescription");
-
 	StartupDescription = config_file.readEntry("General", "StartupDescription");
-
 	OfflineToInvisible = config_file.readBoolEntry("General", "StartupStatusInvisibleWhenLastWasOffline");
-	QString name;
 
 	if (StartupStatus.isEmpty())
 		StartupStatus = "LastStatus";
@@ -82,7 +78,6 @@ void StatusContainerManager::registerStatusContainer(StatusContainer *statusCont
 	StatusContainerAwareObject::notifyStatusContainerRegistered(statusContainer);
 
 	statusContainer->setDefaultStatus(StartupStatus, OfflineToInvisible, StartupDescription, StartupLastDescription);
-
 }
 
 void StatusContainerManager::unregisterStatusContainer(StatusContainer *statusContainer)
@@ -94,8 +89,6 @@ void StatusContainerManager::unregisterStatusContainer(StatusContainer *statusCo
 	StatusContainers.removeAll(statusContainer);
 	emit statusContainerUnregistered(statusContainer);
 	StatusContainerAwareObject::notifyStatusContainerUnregistered(statusContainer);
-
-	statusContainer->disconnectAndStoreLastStatus(DisconnectWithCurrentDescription, DisconnectDescription);
 }
 
 QString StatusContainerManager::statusContainerName()
@@ -109,7 +102,7 @@ void StatusContainerManager::setStatus(Status newStatus)
 		container->setStatus(newStatus);
 }
 
-const Status & StatusContainerManager::status()
+Status StatusContainerManager::status()
 {
 	return AccountManager::instance()->defaultAccount().statusContainer()
 			? AccountManager::instance()->defaultAccount().statusContainer()->status()
@@ -162,6 +155,12 @@ int StatusContainerManager::maxDescriptionLength()
 QString StatusContainerManager::statusNamePrefix()
 {
 	return QString(tr("All")) + " ";
+}
+
+void StatusContainerManager::disconnectAndStoreLastStatus(bool disconnectWithCurrentDescription, const QString& disconnectDescription)
+{
+	foreach (StatusContainer *statusContainer, StatusContainers)
+		statusContainer->disconnectAndStoreLastStatus(DisconnectWithCurrentDescription, DisconnectDescription);
 }
 
 void StatusContainerManager::setPrivateStatus(bool isPrivate)

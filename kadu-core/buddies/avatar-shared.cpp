@@ -7,6 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtCore/QDir>
 #include <QtCore/QFile>
 
 #include "buddies/avatar-manager.h"
@@ -46,7 +47,7 @@ QString AvatarShared::storageNodeName()
 QString AvatarShared::filePath()
 {
 	ensureLoaded();
-	return AvatarsDir + FileName;
+	return AvatarsDir + uuid().toString();
 }
 
 void AvatarShared::load()
@@ -58,7 +59,6 @@ void AvatarShared::load()
 
 	LastUpdated = loadValue<QDateTime>("LastUpdated");
 	NextUpdate = loadValue<QDateTime>("NextUpdate");
-	FileName = loadValue<QString>("FileName");
 	Pixmap.load(filePath());
 }
 
@@ -73,15 +73,40 @@ void AvatarShared::store()
 
 	storeValue("LastUpdated", LastUpdated);
 	storeValue("NextUpdate", NextUpdate);
-	storeValue("FileName", FileName);
+}
+
+bool AvatarShared::shouldStore()
+{
+	return UuidStorableObject::shouldStore() && !Pixmap.isNull();
 }
 
 void AvatarShared::aboutToBeRemoved()
 {
-	// cleanup referenced
+	// cleanup references
 	AvatarContact = Contact::null;
 
 	QFile avatarFile(filePath());
 	if (avatarFile.exists())
 		avatarFile.remove();
+}
+
+bool AvatarShared::isEmpty()
+{
+	ensureLoaded();
+
+	return Pixmap.isNull();
+}
+
+void AvatarShared::setPixmap(QPixmap pixmap)
+{
+	QDir avatarsDir(ggPath("avatars"));
+	if (!avatarsDir.exists())
+		avatarsDir.mkpath(ggPath("avatars"));
+
+	Pixmap = pixmap;
+
+	if (pixmap.isNull())
+		QFile::remove(filePath());
+	else
+		pixmap.save(filePath(), "PNG");
 }

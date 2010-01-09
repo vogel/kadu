@@ -86,5 +86,5 @@ void BuddiesModel::buddyAboutToBeRemoved(Buddy &buddy)
 
 void BuddiesModel::buddyRemoved(Buddy &buddy)
 {
-    	endRemoveRows();
+	endRemoveRows();
 }

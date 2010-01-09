@@ -564,7 +564,9 @@ void HintManager::prepareOverUserHint(QFrame *tipFrame, QLabel *iconLabel, QLabe
 		text = text.right(text.length() - 5 /* 5 == QString("<br/>").length()*/);
 
 	Contact contact = buddy.prefferedContact();
-	iconLabel->setPixmap(contact.contactAccount().statusContainer()->statusPixmap(contact.currentStatus()));
+	if (contact.contactAccount() && contact.contactAccount().statusContainer())
+		iconLabel->setPixmap(contact.contactAccount().statusContainer()->statusPixmap(contact.currentStatus()));
+
 	tipLabel->setFont(config_file.readFontEntry("Hints", "HintOverUser_font"));
 	tipLabel->setText(text);
 
@@ -650,7 +652,8 @@ void HintManager::notify(Notification *notification)
 	kdebugf();
 
 	ChatNotification *chatNotification = dynamic_cast<ChatNotification *>(notification);
-	if (!chatNotification)
+	//TODO 0.6.6: hack
+	if (!chatNotification || notification->type().contains("StatusChanged"))
 	{
 		addHint(notification);
 

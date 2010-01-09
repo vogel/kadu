@@ -18,13 +18,13 @@ BaseStatusContainer::BaseStatusContainer(StorableObject *storableObject) :
 }
 
 void BaseStatusContainer::setDefaultStatus(const QString &startupStatus, bool offlineToInvisible,
-				      const QString &startupDescription, bool StartupLastDescription)
+		const QString &startupDescription, bool StartupLastDescription)
 {
 	if (!MyStorableObject->isValidStorage())
 		return;
 
 	QString description;
-    	if (StartupLastDescription)
+	if (StartupLastDescription)
 		description = MyStorableObject->loadValue<QString>("LastStatusDescription");
 	else
 		description = startupDescription;
@@ -54,13 +54,12 @@ void BaseStatusContainer::setDefaultStatus(const QString &startupStatus, bool of
 }
 
 void BaseStatusContainer::disconnectAndStoreLastStatus(bool disconnectWithCurrentDescription,
-						  const QString &disconnectDescription)
+		const QString &disconnectDescription)
 {
 	if (!MyStorableObject->isValidStorage())
 		return;
 
 	MyStorableObject->storeValue("LastStatusDescription", status().description());
-
 	MyStorableObject->storeValue("LastStatusName", statusName());
 
 	if (status().type() == "Offline")

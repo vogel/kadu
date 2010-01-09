@@ -10,7 +10,7 @@
 #ifndef CHAT_SHARED_H
 #define CHAT_SHARED_H
 
-#include <QtGui/QPixmap>
+#include <QtGui/QIcon>
 
 #include "accounts/account.h"
 #include "chat/type/chat-type-aware-object.h"
@@ -23,6 +23,21 @@ class ChatDetails;
 class ChatManager;
 class ContactSet;
 
+/**
+ * @addtogroup Chat
+ * @{
+ */
+
+/**
+ * @class ChatShared
+ * @author Rafal 'Vogel' Malinowski
+ * @short Chat data describing object.
+ *
+ * This class contains standard data that are common to all chat types used in application.
+ * Data specific to given chat type is stored in classes derivered from @link ChatDetails @endlink
+ * and attached to objects of this class using @link setDetails @endlink and @link details @endlink
+ * methods of @link DetailsHolder @endlink class.
+ */
 class KADUAPI ChatShared : public QObject, public Shared, public DetailsHolder<ChatShared, ChatDetails, ChatManager>, ChatTypeAwareObject
 {
 	Q_OBJECT
@@ -31,7 +46,7 @@ class KADUAPI ChatShared : public QObject, public Shared, public DetailsHolder<C
 	Account ChatAccount;
 	QString Type;
 	QString Title;
-	QPixmap Icon;
+	QIcon Icon;
 
 protected:
 	virtual void load();
@@ -60,10 +75,43 @@ public:
 	ContactSet contacts();
 	QString name();
 
-	KaduShared_Property(Account, chatAccount, ChatAccount)
-	KaduShared_Property(QString, type, Type)
-	KaduShared_Property(QString, title, Title)
-	KaduShared_Property(QPixmap, icon, Icon)
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Account of this chat.
+	 *
+	 * Every chat is assigned to account. All contacts in every chat must
+	 * belong to the same account as chat.
+	 */
+	KaduShared_Property(Account, chatAccount, ChatAccount);
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Name of chat type.
+	 *
+	 * Name of chat type. @link ChatType @endlink object with the same name must be loaded
+	 * and registered in @link ChatTypeManager @endlink to allow this chat object to
+	 * be fully functional and used. Example chat types are: 'simple' (for one-to-one chats)
+	 * and 'conference' (for on-to-many chats). Other what types could be: 'irc-room' (for irc room
+	 * chats).
+	 */
+	KaduShared_Property(QString, type, Type);
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Title of chat.
+	 *
+	 * Chat title is used to display in window titles.
+	 */
+	KaduShared_Property(QString, title, Title);
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Icon of chat.
+	 *
+	 * Chat icon is used to display in window titles. For 'simple' chats it is icon of status
+	 * of peer, for 'conference' chats it is generic icon.
+	 */
+	KaduShared_Property(QIcon, icon, Icon);
 
 public slots:
 	void refreshTitle();
@@ -73,6 +121,10 @@ signals:
 	void updated();
 
 };
+
+/**
+ * @}
+ */
 
 #include "chat/chat.h" // for MOC
 

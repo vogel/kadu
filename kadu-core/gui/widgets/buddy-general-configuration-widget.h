@@ -10,13 +10,7 @@
 #ifndef BUDDY_GENERAL_CONFIGURATION_WIDGET_H
 #define BUDDY_GENERAL_CONFIGURATION_WIDGET_H
 
-#include <QtCore/QList>
-#include <QtCore/QUuid>
-#include <QtGui/QComboBox>
-#include <QtGui/QDialog>
-#include <QtGui/QGridLayout>
-#include <QtGui/QLineEdit>
-#include <QtGui/QTreeView>
+#include <QtGui/QWidget>
 
 #include "buddies/buddy.h"
 #include "contacts/contact.h"
@@ -24,6 +18,11 @@
 
 #include "exports.h"
 
+class QDialog;
+class QLabel;
+class QLineEdit;
+
+class BuddyContactsTable;
 class Contact;
 class ContactManager;
 
@@ -36,28 +35,27 @@ class KADUAPI BuddyGeneralConfigurationWidget : public QWidget
 	QLineEdit *MobileEdit;
 	QLineEdit *EmailEdit;
 	QLineEdit *WebsiteEdit;
+	QLabel *AvatarLabel;
 
-	QDialog *OrderDialog;
+	BuddyContactsTable *ContactsTable;
 
 	Buddy MyBuddy;
 	BuddyContactModel *AccountDataModel;
 
 	void createGui();
-	void updateOrder();
 
 private slots:
-	void showOrderDialog();
-	void updateOrderAndClose();
-	void unmergeContact();
+	void changeAvatar();
 
 public:
-	BuddyGeneralConfigurationWidget(Buddy &buddy, QWidget *parent = 0);
-	~BuddyGeneralConfigurationWidget();
+	explicit BuddyGeneralConfigurationWidget(Buddy &buddy, QWidget *parent = 0);
+	virtual ~BuddyGeneralConfigurationWidget();
 
-	void saveConfiguration();
+	bool isValid();
+	void save();
 
 signals:
-	void doUnmergeContact();
+	void validChanged();
 
 };
 

@@ -11,10 +11,11 @@
 #include <QtXml/QDomNamedNodeMap>
 
 #include "accounts/account.h"
-#include "configuration/xml-configuration-file.h"
+#include "buddies/avatar-manager.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/group.h"
 #include "buddies/group-manager.h"
+#include "configuration/xml-configuration-file.h"
 #include "contacts/contact.h"
 #include "contacts/contact-shared.h"
 #include "contacts/contact-manager.h"
@@ -134,6 +135,8 @@ void BuddyShared::load()
 		}
 	}
 
+	AvatarManager::instance()->ensureLoaded(); // byUuid does not do it
+	BuddyAvatar = AvatarManager::instance()->byUuid(loadValue<QString>("Avatar"));
 	Display = loadValue<QString>("Display");
 	FirstName = loadValue<QString>("FirstName");
 	LastName = loadValue<QString>("LastName");
@@ -164,6 +167,11 @@ void BuddyShared::store()
 
 	foreach (const QString &key, CustomData.keys())
 		configurationStorage->createNamedTextNode(customDataValues, "CustomDataValue", key, CustomData[key]);
+
+	if (BuddyAvatar.uuid().isNull())
+		removeValue("Avatar");
+	else
+		storeValue("Avatar", BuddyAvatar.uuid().toString());
 
 	storeValue("Display", Display);
 	storeValue("FirstName", FirstName);
@@ -208,6 +216,17 @@ void BuddyShared::addContact(Contact contact)
 
 	emit contactAboutToBeAdded(contact);
 	Contacts.append(contact);
+
+	if (contact.priority() != -1)
+		sortContacts();
+	else
+	{
+		int last = Contacts.count() > 1
+				? Contacts[Contacts.count() - 2].priority()
+				: 0;
+		contact.setPriority(last);
+	}
+
 	emit contactAdded(contact);
 }
 
@@ -221,6 +240,8 @@ void BuddyShared::removeContact(Contact contact)
 	emit contactAboutToBeRemoved(contact);
 	Contacts.removeAll(contact);
 	emit contactRemoved(contact);
+
+	normalizePriorities();
 }
 
 QList<Contact> BuddyShared::contacts(Account account)
@@ -276,6 +297,23 @@ Contact BuddyShared::prefferedContact()
 	return prefferedContact;
 }
 
+bool contactPriorityLessThan(const Contact &c1, const Contact &c2)
+{
+	return c1.priority() < c2.priority();
+}
+
+void BuddyShared::sortContacts()
+{
+	qStableSort(Contacts.begin(), Contacts.end(), contactPriorityLessThan);
+}
+
+void BuddyShared::normalizePriorities()
+{
+	int priority = 0;
+	foreach (Contact contact, Contacts)
+		contact.setPriority(priority++);
+}
+
 Account BuddyShared::prefferedAccount()
 {
 	ensureLoaded();
@@ -311,6 +349,9 @@ bool BuddyShared::showInAllGroup()
 void BuddyShared::addToGroup(Group group)
 {
 	ensureLoaded();
+
+	if (Groups.contains(group) || group.isNull())
+		return;
 
 	Groups.append(group);
 	dataUpdated();

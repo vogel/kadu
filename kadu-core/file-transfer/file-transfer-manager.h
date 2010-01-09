@@ -37,6 +37,8 @@ class KADUAPI FileTransferManager : public QObject, public SimpleManager<FileTra
 	FileTransferManager();
 	virtual ~FileTransferManager();
 
+	FileTransfer byPeerAndRemoteFileName(Contact peer, const QString &remoteFileName);
+
 private slots:
 	void fileTransferWindowDestroyed();
 	void incomingFileTransfer(FileTransfer fileTransfer);
@@ -56,9 +58,7 @@ public:
 	virtual QString storageNodeName() { return QLatin1String("FileTransfersNew"); }
 	virtual QString storageNodeItemName() { return QLatin1String("FileTransfer"); }
 
-	FileTransfer byData(Account account, Contact peer, FileTransferType type, const QString &fileName, bool create = false);
-
-	void acceptFileTransfer(FileTransfer transfer, const QString &localFileName = QString::null);
+	void acceptFileTransfer(FileTransfer transfer);
 	void rejectFileTransfer(FileTransfer transfer);
 
 	void showFileTransferWindow();

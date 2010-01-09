@@ -22,7 +22,9 @@
 #include "buddies/model/buddies-model.h"
 #include "buddies/filter/anonymous-without-messages-buddy-filter.h"
 #include "buddies/filter/group-buddy-filter.h"
+#include "chat/type/chat-type-manager.h"
 #include "chat/chat-manager.h"
+#include "chat/recent-chat-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"
 #include "contacts/contact-set.h"
@@ -212,40 +214,21 @@ void KaduWindow::createRecentChatsMenu()
 	kdebugf();
 
 	RecentChatsMenu->clear();
-	QAction *action;
-	if (ChatWidgetManager::instance()->closedChats().isEmpty())
-	{
-		RecentChatsMenuAction->setEnabled(false);
-		kdebugf2();
-		return;
-	}
-	RecentChatsMenuAction->setEnabled(true);
 
-	unsigned int index = 0; // indeks pozycji w popupie
-
-	foreach (const Chat chat, ChatWidgetManager::instance()->closedChats())
-	{
-		QStringList displays;
-
-		int i = 0;
-		foreach (const Contact &contact, chat.contacts())
+	QList<Chat> recentChats = RecentChatManager::instance()->recentChats();
+	bool addedAnyChat = false;
+	foreach (const Chat chat, recentChats)
+		if (!ChatWidgetManager::instance()->byChat(chat))
 		{
-			i++;
-			displays.append(contact.ownerBuddy().display());
+			ChatType *type = ChatTypeManager::instance()->chatType(chat.type());
+			QAction *action = new QAction(type ? type->icon() : QIcon(), chat.name(), this);
+			action->setData(QVariant::fromValue<Chat>(chat));
+			RecentChatsMenu->addAction(action);
 
-			if (5 == i)
-			{
-				displays.append("[...]");
-				break;
-			}
+			addedAnyChat = true;
 		}
 
-		action = new QAction(IconsManager::instance()->loadIcon("OpenChat"), displays.join(", "), this);
-		action->setData(index);
-		RecentChatsMenu->addAction(action);
-
-		index++;
-	}
+	RecentChatsMenuAction->setEnabled(addedAnyChat);
 
 	kdebugf2();
 }
@@ -253,7 +236,7 @@ void KaduWindow::createRecentChatsMenu()
 void KaduWindow::openRecentChats(QAction *action)
 {
 	kdebugf();
-	ChatWidgetManager::instance()->openPendingMsgs(ChatWidgetManager::instance()->closedChats().at(action->data().toInt()), true);
+	ChatWidgetManager::instance()->openPendingMsgs(qvariant_cast<Chat>(action->data()), true);
 	kdebugf2();
 }
 
@@ -341,6 +324,11 @@ bool KaduWindow::supportsActionType(ActionDescription::ActionType type)
 BuddiesListView * KaduWindow::contactsListView()
 {
 	return ContactsWidget->view();
+}
+
+StatusContainer * KaduWindow::statusContainer()
+{
+	return 0;
 }
 
 ContactSet KaduWindow::contacts()

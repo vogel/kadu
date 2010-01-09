@@ -13,33 +13,37 @@
 #include <QtCore/QDateTime>
 #include <QtNetwork/QHttpResponseHeader>
 
+#include "accounts/accounts-aware-object.h"
 #include "protocols/protocol.h"
 
 class QHttp;
 
-class Updates : public QObject
+class Updates : public QObject, AccountsAwareObject
 {
 	Q_OBJECT
 
-	static bool UpdateChecked;
-	static Updates *instance;
-	static QDateTime LastUpdateCheck;
-		
-	QString query;
-	QHttp *httpClient;
+	bool UpdateChecked;
+	QDateTime LastUpdateCheck;
 
-	Updates(UinType uin);
-	virtual ~Updates();
-	static bool ifNewerVersion(const QString &newestversion);
-	static QString stripVersion(const QString stripversion);
+	QString Query;
+	QHttp *HttpClient;
+
+	void buildQuery();
+
+	bool isNewerVersion(const QString &newestversion);
+	QString stripVersion(const QString stripversion);
 
 private slots:
 	void gotUpdatesInfo(const QHttpResponseHeader &responseHeader);
 	void run();
 
+protected:
+	virtual void accountRegistered(Account account);
+	virtual void accountUnregistered(Account account);
+
 public:
-	static void initModule();
-	static void closeModule();
+	explicit Updates(QObject *parent = 0);
+	virtual ~Updates();
 
 };
 

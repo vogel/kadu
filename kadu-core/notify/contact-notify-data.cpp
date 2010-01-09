@@ -17,7 +17,7 @@
 #include "contact-notify-data.h"
 
 ContactNotifyData::ContactNotifyData(StorableObject *parent)
-		: ModuleData(parent)
+		: ModuleData(parent), Notify(false)
 {
 }
 
@@ -32,7 +32,7 @@ void ContactNotifyData::load()
 
 	StorableObject::load();
 
-	Notify = loadValue<bool>("Notify", true);
+	Notify = loadValue<bool>("Notify", false);
 }
 
 void ContactNotifyData::store()

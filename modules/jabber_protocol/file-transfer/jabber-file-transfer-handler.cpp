@@ -149,35 +149,35 @@ void JabberFileTransferHandler::send()
 
 	transfer().setRemoteFileName(transfer().localFileName());
 
-	if (transfer().fileTransferAccount().isNull() || transfer().localFileName().isEmpty())
+	Account account = transfer().peer().contactAccount();
+	if (account.isNull() || transfer().localFileName().isEmpty())
 	{
 		transfer().setTransferStatus(StatusNotConnected);
 		return; // TODO: notify
 	}
 
-	Account acc = transfer().fileTransferAccount();
-	JabberProtocol *jabberProtocol = dynamic_cast<JabberProtocol *>(acc.protocolHandler());
+	JabberProtocol *jabberProtocol = dynamic_cast<JabberProtocol *>(account.protocolHandler());
 	if (!jabberProtocol)
 	{
 		transfer().setTransferStatus(StatusNotConnected);
 		return;
 	}
 
-	if (!jabberProtocol->jabberContactDetails(transfer().fileTransferContact()))
+	if (!jabberProtocol->jabberContactDetails(transfer().peer()))
 	{
 		transfer().setTransferStatus(StatusNotConnected);
 		return;
 	}
 
 	XMPP::Jid proxy;
-	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(acc.details());
+	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(account.details());
 	if (0 != jabberAccountDetails)
 		proxy = jabberAccountDetails->dataTransferProxy();
 
 	Shift = calcShift(transfer().fileSize());
 	Complement = calcComplement(transfer().fileSize(), Shift);
 
-	QString jid = transfer().fileTransferContact().id();
+	QString jid = transfer().peer().id();
 	// sendFile needs jid with resource so take best from ResourcePool
 	PeerJid = XMPP::Jid(jid).withResource(jabberProtocol->resourcePool()->bestResource(jid).name());
 

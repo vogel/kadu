@@ -153,3 +153,8 @@ void ChatDatesModel::setDates(QList<QDate> dates)
 	Dates = dates;
 	endInsertRows();
 }
+
+QModelIndex ChatDatesModel::indexForDate(QDate date)
+{
+	return index(Dates.indexOf(date));
+}

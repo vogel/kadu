@@ -18,6 +18,7 @@
 #include <QtCore/QUuid>
 #include <QtXml/QDomElement>
 
+#include "buddies/avatar.h"
 #include "buddies/buddy-gender.h"
 #include "buddies/group.h"
 #include "storage/shared.h"
@@ -36,6 +37,7 @@ class KADUAPI BuddyShared : public QObject, public Shared
 	QMap<QString, QString> CustomData;
 	QList<Contact> Contacts;
 
+	Avatar BuddyAvatar;
 	QString Display;
 	QString FirstName;
 	QString LastName;
@@ -86,12 +88,16 @@ public:
 	QList<Contact> contacts();
 	Contact prefferedContact();
 
+	void sortContacts();
+	void normalizePriorities();
+
 	// properties
 	bool showInAllGroup();
 	bool isInGroup(Group group);
 	void addToGroup(Group group);
 	void removeFromGroup(Group group);
 
+	KaduShared_Property(Avatar, buddyAvatar, BuddyAvatar)
 	KaduShared_Property(QString, display, Display)
 	KaduShared_Property(QString, firstName, FirstName)
 	KaduShared_Property(QString, lastName, LastName)

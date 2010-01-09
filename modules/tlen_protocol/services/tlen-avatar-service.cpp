@@ -18,15 +18,14 @@ void TlenAvatarService::fetchAvatar(Contact contact)
 	if (contact.id().isEmpty())
 		return;
 
-	if (InProgress.contains(contact))
-		return;
+	//if (InProgress.contains(contact))
+	//	return;
 
-	InProgress.append(contact);
+	//InProgress.append(contact);
 
 	TlenAvatarFetcher *avatarFetcher = new TlenAvatarFetcher(contact, this);
 	connect(avatarFetcher, SIGNAL(avatarFetched(Contact, const QByteArray &)),
 			this, SLOT(avatarReady(Contact, const QByteArray &)));
-
 	avatarFetcher->fetchAvatar();
 	qDebug() << "Tlen Get Avatar" << contact.id();
 }
@@ -35,9 +34,9 @@ void TlenAvatarService::avatarReady(Contact contact, const QByteArray &avatar)
 {
 	InProgress.removeAll(contact);
 
-	if (avatar.isNull())
+	if (avatar.isEmpty())
 		return;
 
 	emit avatarFetched(contact, avatar);
-	qDebug() << "Tlen Have Avatar" << contact.id();
+	qDebug() << "Tlen Have Avatar" << contact.id()  << avatar.size();
 }

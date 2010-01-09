@@ -41,7 +41,7 @@ void disableNonFileTransferContacts(Action *action)
 			return;
 
 		Account account = contact.contactAccount();
-		if (account.isNull() || !account.protocolHandler()->fileTransferService())
+		if (account.isNull() || !account.protocolHandler() || !account.protocolHandler()->fileTransferService())
 			return;
 	}
 
@@ -122,13 +122,22 @@ void FileTransferActions::selectFilesAndSend(ContactSet contacts)
 	foreach (const Contact &contact, contacts)
 	{
 		Account account = contact.contactAccount();
+		if (!account.protocolHandler())
+			continue;
+
 		FileTransferService *service = account.protocolHandler()->fileTransferService();
 		if (!service)
 			continue;
 
 		foreach (const QString &file, files)
 		{
-			FileTransfer fileTransfer = FileTransferManager::instance()->byData(account, contact, TypeSend, file, true);
+			FileTransfer fileTransfer = FileTransfer::create();
+			fileTransfer.setPeer(contact);
+			fileTransfer.setTransferType(TypeSend);
+			fileTransfer.setLocalFileName(file);
+
+			FileTransferManager::instance()->addItem(fileTransfer);
+
 			fileTransfer.createHandler();
 			if (fileTransfer.handler())
 				fileTransfer.handler()->send();

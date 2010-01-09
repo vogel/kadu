@@ -17,16 +17,15 @@
 #include "configuration/configuration-aware-object.h"
 #include "buddies/buddy.h"
 #include "buddies/buddy-list.h"
-#include "misc/token-reader.h"
 #include "status/status.h"
 
 #include "exports.h"
+#include "kadu-config.h"
 
 class KaduWindow;
 class Message;
-class UserStatusChanger;
 
-class KADUAPI Core : public QObject, private AccountsAwareObject, public ConfigurationAwareObject, public TokenReader
+class KADUAPI Core : public QObject, private AccountsAwareObject, public ConfigurationAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(Core)
@@ -36,9 +35,6 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	Buddy Myself;
 	KaduWindow *Window;
 	bool ShowMainWindowOnStart; // TODO: 0.7.1, it is a hack
-
-//	Status NextStatus;
-	UserStatusChanger *StatusChanger;
 
 	Core();
 	virtual ~Core();
@@ -53,6 +49,7 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 
 private slots:
 	void statusChanged();
+
 	void deleteOldConfigurationFiles();
 	void kaduWindowDestroyed();
 
@@ -64,11 +61,10 @@ protected:
 
 public:
 	static Core * instance();
-
-	virtual QString readToken(const QPixmap &tokenPixmap);
+	
+	QString version() { return QString(VERSION);}
 
 	Buddy myself() { return Myself; }
-	Status status();
 
 	void createGui();
 	void setShowMainWindowOnStart(bool show);
@@ -77,12 +73,6 @@ public:
 	void setIcon(const QPixmap &icon);
 
 public slots:
-	void setStatus(const Status &status);
-	void setOnline(const QString &description = QString::null);
-	void setAway(const QString &description = QString::null);
-	void setInvisible(const QString &description = QString::null);
-	void setOffline(const QString &description = QString::null);
-
 	void quit();
 
 signals:

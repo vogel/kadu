@@ -103,7 +103,7 @@ public: //TODO 0.6.6: it is needed in Buddy::dummy()
 	virtual QString statusContainerName();
 
 	virtual void setStatus(Status newStatus);
-	virtual const Status & status();
+	virtual Status status();
 	virtual int maxDescriptionLength();
 
 	virtual QString statusName();
@@ -120,6 +120,9 @@ signals:
 	void buddyStatusChanged(Contact contact, Status oldStatus);
 	void protocolLoaded();
 	void protocolUnloaded();
+
+	void connected();
+	void disconnected();
 
 	void updated();
 

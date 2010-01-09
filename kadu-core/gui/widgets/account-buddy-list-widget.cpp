@@ -69,7 +69,7 @@ AccountBuddyListWidget::AccountBuddyListWidget(Account account, QWidget *parent)
 		return;
 	}
 
-	connect(manager, SIGNAL(contactListExported(bool)), this, SLOT(contactListExported(bool)));
+	connect(manager, SIGNAL(contactListExported(bool)), this, SLOT(buddiesListExported(bool)));
 	connect(manager, SIGNAL(contactListImported(bool, BuddyList)),
 		this, SLOT(buddiesListImported(bool, BuddyList)));
 }

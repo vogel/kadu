@@ -65,6 +65,7 @@ void NotificationManager::init()
 	MainConfigurationWindow::registerUiHandler(UiHandler);
 
 	createDefaultConfiguration();
+	configurationUpdated();
 	//TODO 0.6.6:
 	//triggerAllAccountsRegistered();
 
@@ -129,15 +130,13 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 	{
 		ContactNotifyData *cnd = 0;
 		if (buddy.data())
-			cnd = buddy.data()->moduleData<ContactNotifyData>("notify");
+			cnd = buddy.data()->moduleStorableData<ContactNotifyData>("notify");
 
 		if (!cnd || !cnd->notify())
 		{
 			on = false;
 			break;
 		}
-
-		delete cnd;
 	}
 
 	foreach (const Buddy buddy, buddies)
@@ -147,7 +146,7 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 
 		ContactNotifyData *cnd = 0;
 		if (buddy.data())
-			cnd = buddy.data()->moduleData<ContactNotifyData>("notify");
+			cnd = buddy.data()->moduleStorableData<ContactNotifyData>("notify");
 		if (!cnd)
 			continue;
 
@@ -220,13 +219,10 @@ void NotificationManager::statusChanged(Contact contact, Status oldStatus)
 	ContactNotifyData *cnd = 0;
 	Buddy buddy = contact.ownerBuddy();
 	if (buddy.data())
-		cnd = buddy.data()->moduleData<ContactNotifyData>("notify");
+		cnd = buddy.data()->moduleStorableData<ContactNotifyData>("notify");
 
 	if (!cnd || !cnd->notify())
 		notify_contact = false;
-
-	if (cnd)
-		delete cnd;
 
 	if (!notify_contact && !NotifyAboutAll)
 	{
@@ -234,13 +230,10 @@ void NotificationManager::statusChanged(Contact contact, Status oldStatus)
 		return;
 	}
 
-	// TODO 0.6.6:
-	//Buddy buddy = contact.ownerBuddy();
-	//QString id = buddy.id(account);
-	//if ( id == account.id()) // myself
-	//	return;
+	if (!contact.contactAccount())
+		return;
 
-	if (contact.isNull())
+	if (contact.id() == contact.contactAccount().accountContact().id()) // myself
 		return;
 
 	Status status = contact.currentStatus();
@@ -416,7 +409,7 @@ void NotificationManager::groupUpdated()
 
 		ContactNotifyData *cnd = 0;
 		if (buddy.data())
-			buddy.data()->moduleData<ContactNotifyData>("notify");
+			buddy.data()->moduleStorableData<ContactNotifyData>("notify");
 		if (!cnd)
 			continue;
 
@@ -454,15 +447,13 @@ void checkNotify(Action *action)
 	{
 		ContactNotifyData *cnd = 0;
 		if (buddy.data())
-			cnd = buddy.data()->moduleData<ContactNotifyData>("notify");
+			cnd = buddy.data()->moduleStorableData<ContactNotifyData>("notify");
 
 		if (!cnd || !cnd->notify())
 		{
 			on = false;
 			break;
 		}
-
-		delete cnd;
 	}
 
 	action->setChecked(on);

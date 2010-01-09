@@ -7,13 +7,13 @@
 *                                                                         *
 ***************************************************************************/
 
-#include <QtNetwork/QHttp>
 #include <QtCore/QUrl>
 
 #include "accounts/account.h"
 #include "buddies/avatar.h"
 #include "buddies/avatar-manager.h"
 #include "misc/path-conversion.h"
+#include "http_client.h"
 
 #include "tlen.h"
 #include "tlen-protocol.h"
@@ -36,6 +36,8 @@ void TlenAvatarFetcher::fetchAvatar()
 	// prevent fetch more than one avatar at the same time - contactlistwidget sends requests
 	QString login(MyContact.id());
 	login.remove(QString("@tlen.pl"));
+	// remove resource
+	login.truncate(login.indexOf("/"));
 
 	QString type("0");
 	QString token(tlenClient->token);
@@ -52,23 +54,29 @@ void TlenAvatarFetcher::fetchAvatar()
 	request.replace(QString("^type^"), type);
 	request.replace(QString("^token^"), token);
 	QUrl address(tlenClient->mmBase());
-	MyHttp = new QHttp(address.host(), 80, this);
 
-	connect(MyHttp, SIGNAL(requestFinished(int, bool)),
-			this, SLOT(avatarDownloaded(int, bool)));
-	MyHttp->get(request, &MyAvatarBuffer);
+	MyHttp = new HttpClient();
+	MyHttp->setHost(address.host());
+	connect(MyHttp, SIGNAL(finished()),
+			this, SLOT(avatarDownloaded()));
+	connect(MyHttp, SIGNAL(error()),
+			this, SLOT(avatarDownloaded()));
+
+	MyHttp->get(request, false);
 }
 
-void TlenAvatarFetcher::avatarDownloaded(int id, bool error)
+void TlenAvatarFetcher::avatarDownloaded()
 {
-	QImage image;
 	QPixmap pixmap;
 
-	// 200 OK and buffer not empty
-	if (!MyAvatarBuffer.data().isEmpty() && (MyHttp->lastResponse()).statusCode() == 200)
+	// 200 OK and buffer not empty and image can convert
+	if (!MyHttp->data().isEmpty() && MyHttp->status() == 200 || pixmap.loadFromData(MyHttp->data()))
 	{
-		//MyContact->avatar().setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + 7200));
-		emit avatarFetched(MyContact, MyAvatarBuffer.buffer());
+		if (MyContact.contactAvatar().isNull())
+			MyContact.setContactAvatar(Avatar());
+
+		MyContact.contactAvatar().setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + 7200));
+		emit avatarFetched(MyContact, MyHttp->data());
 	}
 
 	deleteLater();

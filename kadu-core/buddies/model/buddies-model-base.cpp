@@ -12,6 +12,7 @@
 #include "buddies/avatar.h"
 #include "buddies/avatar-manager.h"
 #include "buddies/buddy.h"
+#include "buddies/buddy-kadu-data.h"
 #include "buddies/buddy-list-mime-data-helper.h"
 #include "buddies/buddy-manager.h"
 #include "contacts/contact.h"
@@ -133,7 +134,7 @@ QVariant BuddiesModelBase::data(Buddy buddy, int role) const
 	}
 }
 
-QVariant BuddiesModelBase::data(Contact contact, int role, bool useDisplay) const
+QVariant BuddiesModelBase::data(Contact contact, int role, bool useBuddyData) const
 {
 	if (contact.isNull())
 		return QVariant();
@@ -141,9 +142,9 @@ QVariant BuddiesModelBase::data(Contact contact, int role, bool useDisplay) cons
 	switch (role)
 	{
 		case Qt::DisplayRole:
-			return useDisplay
+			return useBuddyData
 					? contact.ownerBuddy().display()
-					: QString("%1: %2").arg(contact.contactAccount().name()).arg(contact.id());
+					: contact.id();
 		case Qt::DecorationRole:
 			if (contact.isNull())
 				return QVariant();
@@ -156,27 +157,21 @@ QVariant BuddiesModelBase::data(Contact contact, int role, bool useDisplay) cons
 		case ContactRole:
 			return QVariant::fromValue(contact);
 		case DescriptionRole:
-			//TODO 0.6.6:
-			//	ContactKaduData *ckd = contact.moduleData<ContactKaduData>(true);
-			//	if (!ckd)
-			//		return QString::null;
-			//	if (ckd->hideDescription())
-			//	{
-				//		delete ckd;
-				//		return QString::null;
-				//	}
-				//	delete ckd;
-				//
-				return contact.currentStatus().description();
+		{
+			BuddyKaduData *bkd = contact.ownerBuddy().data()->moduleStorableData<BuddyKaduData>("kadu", true);
+			if (bkd && bkd->hideDescription())
+				return QVariant();
+			return contact.currentStatus().description();
+		}
 		case StatusRole:
 			return QVariant::fromValue(contact.currentStatus());
 		case AccountRole:
 			return QVariant::fromValue(contact.contactAccount());
 		case AvatarRole:
-			// TODO: 0.6.6 move it
-			if (contact.contactAvatar().pixmap().isNull())
-				AvatarManager::instance()->updateAvatar(contact);
-			return QVariant::fromValue(contact.contactAvatar().pixmap());
+			if (useBuddyData && !contact.ownerBuddy().buddyAvatar().isEmpty())
+				return QVariant::fromValue(contact.ownerBuddy().buddyAvatar().pixmap());
+			else
+				return QVariant::fromValue(contact.contactAvatar().pixmap());
 		default:
 			return QVariant();
 	}

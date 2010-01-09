@@ -22,15 +22,27 @@ class ChatDetails;
 class ChatType;
 class StoragePoint;
 
+/**
+ * @addtogroup Chat
+ * @{
+ */
+
+/**
+ * @class Chat
+ * @author Rafal 'Vogel' Malinowski
+ * @short Access object for chat data.
+ *
+ * This class allows to acces of chat data defined in @link ChatShared @endlink class.
+ */
 class KADUAPI Chat : public SharedBase<ChatShared>
 {
 	KaduSharedBaseClass(Chat)
 
 public:
 	static Chat create();
-	static Chat loadFromStorage(StoragePoint *storage);
+	static Chat loadFromStorage(StoragePoint *chatStoragePoint);
 	static Chat null;
-
+	
 	Chat();
 	Chat(ChatShared *data);
 	Chat(QObject *data);
@@ -43,13 +55,59 @@ public:
 	ContactSet contacts() const;
 	QString name() const;
 
-	KaduSharedBase_Property(ChatDetails *, details, Details)
-	KaduSharedBase_Property(Account, chatAccount, ChatAccount)
-	KaduSharedBase_Property(QString, type, Type)
-	KaduSharedBase_Property(QString, title, Title)
-	KaduSharedBase_Property(QPixmap, icon, Icon)
+	/**
+	* @author Rafal 'Vogel' Malinowski
+	* @short Details object for this chat.
+	*
+	* When ChatType for this chat is loaded and registered in ChatTypeManager
+	* this field contains ChatDetails object that holds detailed information
+	* about this chat.
+	*/
+	KaduSharedBase_Property(ChatDetails *, details, Details);
+
+	/**
+	* @author Rafal 'Vogel' Malinowski
+	* @short Account of this chat.
+	*
+	* Every chat is assigned to account. All contacts in every chat must
+	* belong to the same account as chat.
+	*/
+	KaduSharedBase_Property(Account, chatAccount, ChatAccount);
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Name of chat type.
+	 *
+	 * Name of chat type. @link ChatType @endlink object with the same name must be loaded
+	 * and registered in @link ChatTypeManager @endlink to allow this chat object to
+	 * be fully functional and used. Example chat types are: 'simple' (for one-to-one chats)
+	 * and 'conference' (for on-to-many chats). Other what types could be: 'irc-room' (for irc room
+	 * chats).
+	 */
+	KaduSharedBase_Property(QString, type, Type);
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Title of chat.
+	 *
+	 * Chat title is used to display in window titles.
+	 */
+	KaduSharedBase_Property(QString, title, Title);
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Icon of chat.
+	 *
+	 * Chat icon is used to display in window titles. For 'simple' chats it is icon of status
+	 * of peer, for 'conference' chats it is generic icon.
+	 */
+	KaduSharedBase_Property(QIcon, icon, Icon);
 
 };
+
+/**
+ * @}
+ */
 
 Q_DECLARE_METATYPE(Chat)
 

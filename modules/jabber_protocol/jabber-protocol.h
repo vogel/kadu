@@ -55,8 +55,10 @@ class JabberProtocol : public Protocol
 		JabberProtocol(Account account, ProtocolFactory *factory);
 		~JabberProtocol();
 		XMPP::JabberClient * client() { return JabberClient; }
-		bool validateUserID(QString& uid);
+		bool validateUserID(const QString& uid);
 		bool isConnecting() { return whileConnecting/*(State == NetworkConnecting)*/; }
+		XMPP::Status toXMPPStatus(Status status);
+		Status toStatus(XMPP::Status status);
 
 		virtual Conference * loadConferenceFromStorage(StoragePoint *storage) { return 0; }
 
@@ -100,13 +102,13 @@ class JabberProtocol : public Protocol
 		void contactUpdated(Buddy &buddy);
 
 		void contactIdChanged(Contact contact, const QString &oldId);
-		void authorizeContact(QString &uid);
+		void authorizeContact(Contact contact);
 
 	public slots:
 		void connectToServer();
 		void setPresence(const XMPP::Status &status);
 		void login();
-		void logout(const XMPP::Status &s = XMPP::Status("", tr("Logged out"), 0, false));
+		void logout();
 
 	signals:
 		void userStatusChangeIgnored(Buddy);

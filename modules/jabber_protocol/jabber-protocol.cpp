@@ -16,12 +16,12 @@
 #include <xmpp_tasks.h>
 
 #include "accounts/account-manager.h"
-#include "core/core.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/group.h"
 #include "buddies/group-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-manager.h"
+#include "core/core.h"
 #include "file-transfer/file-transfer-manager.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/kadu-window.h"
@@ -132,6 +132,8 @@ JabberProtocol::~JabberProtocol()
 
 	QObject::disconnect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy &)),
 			this, SLOT(contactUpdated(Buddy &)));
+
+	logout();
 }
 
 void JabberProtocol::initializeJabberClient()
@@ -277,15 +279,19 @@ void JabberProtocol::connectedToServer()
 }
 
 // disconnect or stop reconnecting
-void JabberProtocol::logout(const XMPP::Status &s)
+void JabberProtocol::logout()
 {
 	kdebugf();
 
+	Status newstat = status();
 	if (!status().isDisconnected())
-		setStatus(Status());
+	{
+		newstat.setType("Offline");
+		setStatus(newstat);
+	}
 
+	disconnect(toXMPPStatus(newstat));
 	setAllOffline();
-	disconnect();
 
 	kdebugf2();
 }
@@ -293,18 +299,17 @@ void JabberProtocol::logout(const XMPP::Status &s)
 void JabberProtocol::disconnect(const XMPP::Status &s)
 {
 	kdebugf();
-	kdebug("disconnect() called\n");
 
 	if (isConnected())
 	{
 		kdebug("Still connected, closing connection...\n");
+		// make sure that the connection animation gets stopped if we're still
+		// in the process of connecting
+		setPresence(s);
+
 		/* Tell backend class to disconnect. */
 		JabberClient->disconnect();
 	}
-
-	// make sure that the connection animation gets stopped if we're still
-	// in the process of connecting
-	setPresence(s);
 
 	/* FIXME:
 	 * We should delete the JabberClient instance here,
@@ -409,13 +414,15 @@ void JabberProtocol::disconnectedFromServer()
 {
 	kdebugf();
 
-	if (!status().isDisconnected())
-		setStatus(Status());
-
-	//if (!Kadu::closing())
-		setAllOffline();
+	setAllOffline();
 
 	networkStateChanged(NetworkDisconnected);
+	
+	if (!nextStatus().isDisconnected()) // user still wants to login
+		QTimer::singleShot(1000, this, SLOT(login())); // try again after one second
+	else if (!nextStatus().isDisconnected())
+		setStatus(Status());
+	
 	kdebugf2();
 }
 
@@ -426,7 +433,7 @@ void JabberProtocol::login()
 	connectToServer();
 }
 
-void JabberProtocol::changeStatus(Status status)
+XMPP::Status JabberProtocol::toXMPPStatus(Status status)
 {
 	XMPP::Status s = XMPP::Status();
 	const QString &type = status.type();
@@ -445,9 +452,41 @@ void JabberProtocol::changeStatus(Status status)
 		s.setType(XMPP::Status::Invisible);
 	else
 		s.setType(XMPP::Status::Offline);
-///WTF! kutfa, wywo�anie tego z protocol wywala kadu...
+
 	s.setStatus(status.description());
-	setPresence(s);
+	return s;
+}
+
+Status JabberProtocol::toStatus(XMPP::Status status)
+{
+	Status newstatus;
+	if (status.isAvailable())
+		newstatus.setType("Online");
+	else if (status.isInvisible())
+		newstatus.setType("Invisible");
+	else
+		newstatus.setType("Offline");
+
+	if (status.show() == "away")
+		newstatus.setType("Away");
+	else if (status.show() == "xa")
+		newstatus.setType("NotAvailable");
+	else if (status.show() == "dnd")
+		newstatus.setType("DoNotDisturb");
+	else if (status.show() == "chat")
+		newstatus.setType("FreeForChat");
+
+	QString description = status.status();
+	description.replace("\r\n", "\n");
+	description.replace("\r", "\n");
+	newstatus.setDescription(description);
+
+	return newstatus;
+}
+
+void JabberProtocol::changeStatus(Status status)
+{
+	setPresence(toXMPPStatus(status));
 
 	if (status.isDisconnected())
 	{
@@ -465,17 +504,20 @@ void JabberProtocol::changeStatus(Status status)
 void JabberProtocol::slotIncomingFileTransfer()
 {
 	XMPP::FileTransfer *jTransfer = client()->fileTransferManager()->takeIncoming();
-	Contact peer = ContactManager::instance()->byId(account(), jTransfer->peer().bare(), true);
-	FileTransfer transfer = FileTransferManager::instance()->byData(account(), peer, TypeReceive, jTransfer->fileName(), true);
-
-	if (!transfer)
+	if (!jTransfer)
 		return;
+
+	Contact peer = ContactManager::instance()->byId(account(), jTransfer->peer().bare(), true);
+	FileTransfer transfer = FileTransfer::create();
+	transfer.setPeer(peer);
+	transfer.setTransferType(TypeReceive);
+	transfer.setRemoteFileName(jTransfer->fileName());
 
 	transfer.createHandler();
 
 	JabberFileTransferHandler *handler = dynamic_cast<JabberFileTransferHandler *>(transfer.handler());
 	if (handler)
-		handler->setJTransfer(client()->fileTransferManager()->takeIncoming());
+		handler->setJTransfer(jTransfer);
 
 	CurrentFileTransferService->incomingFile(transfer);
 }
@@ -485,29 +527,8 @@ void JabberProtocol::clientResourceReceived(const XMPP::Jid &jid, const XMPP::Re
 	kdebugf();
 	kdebug("New resource available for %s\n", jid.full().toLocal8Bit().data());
 	resourcePool()->addResource(jid, resource);
-	//TODO: na razie brak lepszego miejsca na to
-	Status status;
-	if (resource.status().isAvailable())
-		status.setType("Online");
-	else if (resource.status().isInvisible())
-		status.setType("Invisible");
-	else
-		status.setType("Offline");
 
-	if (resource.status().show() == "away")
-		status.setType("Away");
-	else if (resource.status().show() == "xa")
-		status.setType("NotAvailable");
-	else if (resource.status().show() == "dnd")
-		status.setType("DoNotDisturb");
-	else if (resource.status().show() == "chat")
-		status.setType("FreeForChat");
-
-	QString description = resource.status().status();
-	description.replace("\r\n", "\n");
-	description.replace("\r", "\n");
-	status.setDescription(description);
-
+	Status status(toStatus(resource.status()));
 	Contact contact = ContactManager::instance()->byId(account(), jid.bare(), true);
 
 	// TODO remove all ?
@@ -564,16 +585,16 @@ void JabberProtocol::contactRemoved(Contact contact)
 
 void JabberProtocol::contactUpdated(Buddy &buddy)
 {
-/*	Contact contact = buddy.contact(account());
-	if (contact.isNull() || buddy.isAnonymous())
+	QList<Contact> contacts = buddy.contacts(account());
+	if (contacts.isEmpty() || buddy.isAnonymous())
 		return;
 
 	QStringList groupsList;
 	foreach (Group group, buddy.groups())
 		groupsList.append(group.name());
 
-	JabberClient->updateContact(contact.id(), buddy.display(), groupsList);
-*/
+	foreach (const Contact &contact, contacts)
+		JabberClient->updateContact(contact.id(), buddy.display(), groupsList);
 }
 
 void JabberProtocol::contactAboutToBeAdded(Contact contact)
@@ -645,7 +666,10 @@ void JabberProtocol::slotContactUpdated(const XMPP::RosterItem &item)
 
 		// if contact has name set it to display
 		if (!item.name().isNull())
-			buddy.setDisplay(item.name());
+		{
+			if (item.name() != buddy.display())
+				buddy.setDisplay(item.name());
+		}
 		else
 			buddy.setDisplay(item.jid().bare());
 
@@ -738,7 +762,8 @@ void JabberProtocol::slotSubscription(const XMPP::Jid & jid, const QString &type
 
 	if (type == "subscribe")
 	{
-		SubscriptionWindow::getSubscription(jid.bare(), this, SLOT(authorizeContact(QString &)));
+		Contact contact = ContactManager::instance()->byId(account(), jid.bare(), true);
+		SubscriptionWindow::getSubscription(contact, this, SLOT(authorizeContact(Contact)));
 	}
 	else if (type == "subscribed")
 		MessageDialog::msg(QString("You are authorized by %1").arg(jid.bare()), false, "Warning");
@@ -748,15 +773,14 @@ void JabberProtocol::slotSubscription(const XMPP::Jid & jid, const QString &type
 
 }
 
-void JabberProtocol::authorizeContact(QString &uid)
+void JabberProtocol::authorizeContact(Contact contact)
 {
-	ContactManager::instance()->byId(account(), uid).ownerBuddy().setAnonymous(false);
 	XMPP::JT_Presence *task = new XMPP::JT_Presence(JabberClient->rootTask());
-	task->sub(XMPP::Jid(uid), "subscribed");
+	task->sub(XMPP::Jid(contact.id()), "subscribed");
 	task->go(true);
 }
 
-bool JabberProtocol::validateUserID(QString& uid)
+bool JabberProtocol::validateUserID(const QString& uid)
 {
 	//TODO: this does not work
 	XMPP::Jid j = uid;

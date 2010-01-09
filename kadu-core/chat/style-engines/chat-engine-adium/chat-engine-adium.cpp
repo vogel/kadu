@@ -167,6 +167,8 @@ void AdiumChatStyleEngine::refreshView(HtmlMessagesRenderer *renderer)
 
 	renderer->webPage()->mainFrame()->setHtml(styleBaseHtml);
 	renderer->webPage()->mainFrame()->evaluateJavaScript(jsCode);
+	//I don't know why, sometimes 'initStyle' was performed after 'appendMessage'
+	renderer->webPage()->mainFrame()->evaluateJavaScript("initStyle()");
 
 	foreach (MessageRenderInfo *message, renderer->messages())
 		appendMessage(renderer, message);
@@ -337,6 +339,8 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, const QString &styleHre
 	int pos = 0;
 	while ((pos = timeRegExp.indexIn(result , pos)) != -1)
 		result.replace(pos, timeRegExp.cap(0).length(), timeFormatter->convertTimeDate(timeRegExp.cap(1), time));
+
+	result.replace("%shortTime%", printDateTime(time));
 
 	// Look for %textbackgroundcolor{X}%
 	// TODO: highlight background color: use the X value.

@@ -54,10 +54,10 @@ BuddyDataWindow::BuddyDataWindow(Buddy buddy, QWidget *parent) :
 	kdebugf();
 
 	setAttribute(Qt::WA_DeleteOnClose);
+	setWindowTitle(tr("Merged Contact Properties - %1").arg(MyBuddy.display()));
 
 	createGui();
-
-	setWindowTitle(tr("Merged Contact Properties - %1").arg(MyBuddy.display()));
+	updateButtons();
 
 	loadWindowGeometry(this, "General", "ManageUsersDialogGeometry", 0, 50, 425, 500);
 }
@@ -91,44 +91,43 @@ void BuddyDataWindow::createTabs(QLayout *layout)
 void BuddyDataWindow::createGeneralTab(QTabWidget *tabWidget)
 {
 	ContactTab = new BuddyGeneralConfigurationWidget(MyBuddy, this);
-// 	ContactTab->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
+	connect(ContactTab, SIGNAL(validChanged()), this, SLOT(updateButtons()));
+
 	tabWidget->addTab(ContactTab, tr("General"));
 }
 
 void BuddyDataWindow::createGroupsTab(QTabWidget *tabWidget)
 {
 	GroupsTab = new BuddyGroupsConfigurationWidget(MyBuddy, this);
-// 	GroupsTab->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
 	tabWidget->addTab(GroupsTab, tr("Groups"));
 }
 
 void BuddyDataWindow::createPersonalInfoTab(QTabWidget *tabWidget)
 {
 	PersonalInfoTab = new BuddyPersonalInfoConfigurationWidget(MyBuddy, this);
-// 	PersonalInfoTab->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
 	tabWidget->addTab(PersonalInfoTab, tr("Personal Information"));
 }
 
 void BuddyDataWindow::createOptionsTab(QTabWidget *tabWidget)
 {
 	OptionsTab = new BuddyOptionsConfigurationWidget(MyBuddy, this);
-// 	OptionsTab->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
 	tabWidget->addTab(OptionsTab, tr("Options"));
 }
 
 void BuddyDataWindow::createButtons(QLayout *layout)
 {
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
+	
+	OkButton = new QPushButton(IconsManager::instance()->loadIcon("OkWindowButton"), tr("OK"), this);
+	buttons->addButton(OkButton, QDialogButtonBox::AcceptRole);
+	ApplyButton = new QPushButton(IconsManager::instance()->loadIcon("OkWindowButton"), tr("Apply"), this);
+	buttons->addButton(ApplyButton, QDialogButtonBox::ApplyRole);
 
 	QPushButton *cancelButton = new QPushButton(IconsManager::instance()->loadIcon("CloseWindowButton"), tr("Cancel"), this);
 	buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
-	QPushButton *applyButton = new QPushButton(IconsManager::instance()->loadIcon("OkWindowButton"), tr("Apply"), this);
-	buttons->addButton(applyButton, QDialogButtonBox::ApplyRole);
-	QPushButton *saveButton = new QPushButton(IconsManager::instance()->loadIcon("OkWindowButton"), tr("OK"), this);
-	buttons->addButton(saveButton, QDialogButtonBox::AcceptRole);
 
-	connect(saveButton, SIGNAL(clicked(bool)), this, SLOT(updateBuddyAndClose()));
-	connect(applyButton, SIGNAL(clicked(bool)), this, SLOT(updateBuddy()));
+	connect(OkButton, SIGNAL(clicked(bool)), this, SLOT(updateBuddyAndClose()));
+	connect(ApplyButton, SIGNAL(clicked(bool)), this, SLOT(updateBuddy()));
 	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(close()));
 
 	layout->addWidget(buttons);
@@ -136,23 +135,41 @@ void BuddyDataWindow::createButtons(QLayout *layout)
 
 void BuddyDataWindow::updateBuddy()
 {
-	MyBuddy.blockUpdatedSignal();
+	if (isValid())
+	{
+		MyBuddy.blockUpdatedSignal();
 
-	ContactTab->saveConfiguration();
-	GroupsTab->saveConfiguration();
-	OptionsTab->saveConfiguration();
+		ContactTab->save();
+		GroupsTab->save();
+		OptionsTab->save();
 
-	MyBuddy.unblockUpdatedSignal();
+		MyBuddy.unblockUpdatedSignal();
+	}
 }
 
 void BuddyDataWindow::updateBuddyAndClose()
 {
-	updateBuddy();
-	close();
+	if (isValid())
+	{
+		updateBuddy();
+		close();
+	}
 }
 
 void BuddyDataWindow::keyPressEvent(QKeyEvent *ke_event)
 {
 	if (ke_event->key() == Qt::Key_Escape)
 		close();
+}
+
+bool BuddyDataWindow::isValid()
+{
+	return ContactTab->isValid();
+}
+
+void BuddyDataWindow::updateButtons()
+{
+	bool valid = isValid();
+	OkButton->setEnabled(valid);
+	ApplyButton->setEnabled(valid);
 }

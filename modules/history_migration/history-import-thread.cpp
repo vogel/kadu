@@ -62,6 +62,9 @@ void HistoryImportThread::run()
 
 	foreach (QStringList uinsList, UinsLists)
 	{
+		if (Canceled)
+			break;
+
 		Chat chat = chatFromUinsList(uinsList);
 		if (!chat)
 			continue;
@@ -69,7 +72,9 @@ void HistoryImportThread::run()
 		QList<HistoryEntry> entries = historyEntries(uinsList, HISTORYMANAGER_ENTRY_CHATSEND | HISTORYMANAGER_ENTRY_CHATRCV);
 
 		foreach (const HistoryEntry &entry, entries)
-			if (!Canceled)
+			if (Canceled)
+				break;
+			else
 				importEntry(chat, entry);
 	}
 }

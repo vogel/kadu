@@ -34,7 +34,7 @@
 #include "buddies-list-view-delegate.h"
 
 BuddiesListViewDelegate::BuddiesListViewDelegate(QObject *parent)
-	: QItemDelegate(parent), Model(0)
+	: QItemDelegate(parent), Model(0), ShowAccountName(true)
 {
 	triggerAllAccountsRegistered();
 	configurationUpdated();
@@ -217,8 +217,12 @@ void BuddiesListViewDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 
 	painter->setFont(Font);
 	painter->setPen(textcolor);
+	
+	bool bold = isBold(index);
+	QFontMetrics fontMetrics(bold ? BoldFont : Font);
+	QFontMetrics descriptionFontMetrics(DescriptionFont);
 
-	QFontMetrics fontMetrics(Font);
+
 	int displayHeight = fontMetrics.lineSpacing() + 3;
 
 	QPixmap pixmap = qvariant_cast<QPixmap>(index.data(Qt::DecorationRole));
@@ -230,10 +234,11 @@ void BuddiesListViewDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 	QTextDocument *dd = 0;
 	int descriptionHeight = 0;
 	int textLeft = textMargin + iconsWidth(index, textMargin);
+	int textWidth = rect.width() - textLeft - textMargin - avatarSize;
 
 	if (hasDescription)
 	{
-		dd = descriptionDocument(description, rect.width() - textLeft - textMargin - avatarSize,
+		dd = descriptionDocument(description, textWidth,
 			option.state & QStyle::State_Selected
 			? textcolor
 			: DescriptionColor);
@@ -264,12 +269,8 @@ void BuddiesListViewDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 		return;
 	}
 
-	if (isBold(index))
-	{
-		QFont bold = QFont(Font);
-		bold.setWeight(QFont::Bold);
-		painter->setFont(bold);
-	}
+	if (bold)
+		painter->setFont(BoldFont);
 
 		// TODO: 0.6.6
 /*
@@ -292,7 +293,40 @@ void BuddiesListViewDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 	else
 		painter->setPen(config_file.readColorEntry("Look", "UserboxFgColor"));
 
-	painter->drawText(textLeft, top, display);
+	Account account = qvariant_cast<Account>(index.data(AccountRole));
+	QString accountDisplay;
+	if (account)
+		accountDisplay = account.name();
+
+	// only display account name when in contact-mode, not buddy-mode
+	if ((option.state & QStyle::State_MouseOver && ShowAccountName) || index.parent().isValid())
+	{
+		int accountDisplayWidth = descriptionFontMetrics.width(accountDisplay);
+		int displayWidth = fontMetrics.width(display);
+
+		if (accountDisplayWidth + displayWidth + 16 > textWidth)
+		{
+			displayWidth = textWidth - accountDisplayWidth - 16;
+			display = fontMetrics.elidedText(display, Qt::ElideRight, displayWidth);
+		}
+		else if (displayWidth > textWidth)
+			display = fontMetrics.elidedText(display, Qt::ElideRight, textWidth);
+
+		painter->drawText(textLeft, 0, textWidth, displayHeight, Qt::AlignLeft | Qt::AlignTop, display);
+
+		painter->setFont(DescriptionFont);
+		painter->drawText(textLeft, 0, textWidth, displayHeight, Qt::AlignRight | Qt::AlignVCenter, accountDisplay);
+		painter->setFont(Font);
+	}
+	else
+	{
+		int displayWidth = fontMetrics.width(display);
+		if (displayWidth > textWidth)
+			display = fontMetrics.elidedText(display, Qt::ElideRight, textWidth);
+
+		painter->drawText(textLeft, 0, displayWidth, displayHeight, Qt::AlignLeft | Qt::AlignTop, display);
+	}
+
 	painter->setPen(pen);
 
 	if (isBold(index))
@@ -353,6 +387,9 @@ QPixmap BuddiesListViewDelegate::avatar(const QModelIndex &index) const
 void BuddiesListViewDelegate::configurationUpdated()
 {
 	Font = config_file.readFontEntry("Look", "UserboxFont");
+	BoldFont = Font;
+	BoldFont.setBold(true);
+
 	DescriptionFont = Font;
 	DescriptionFont.setPointSize(Font.pointSize() - 2);
 

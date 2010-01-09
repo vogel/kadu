@@ -10,6 +10,7 @@
 #include <QtGui/QDateEdit>
 #include <QtGui/QGridLayout>
 #include <QtGui/QHBoxLayout>
+#include <QtGui/QHeaderView>
 #include <QtGui/QLineEdit>
 #include <QtGui/QMenu>
 #include <QtGui/QPushButton>
@@ -22,8 +23,7 @@
 #include "chat/message/message.h"
 #include "chat/type/chat-type.h"
 #include "chat/type/chat-type-manager.h"
-#include "chat/aggregate-chat.h"
-#include "chat/chat-aggregator-builder.h"
+#include "chat/aggregate-chat-builder.h"
 #include "gui/actions/actions.h"
 #include "gui/widgets/buddies-list-view-menu-manager.h"
 #include "gui/widgets/chat-widget-manager.h"
@@ -44,6 +44,7 @@
 
 #include "history-window.h"
 #include <QItemDelegate>
+#include <chat/chat-details-aggregate.h>
 
 HistoryWindow::HistoryWindow(QWidget *parent) :
 		MainWindow(parent)
@@ -127,6 +128,7 @@ void HistoryWindow::createChatTree(QWidget *parent)
 	layout->addWidget(filterLineEdit);
 
 	ChatsTree = new QTreeView(parent);
+	ChatsTree->header()->hide();
 	layout->addWidget(ChatsTree);
 
 	ChatsModel = new HistoryChatsModel(this);
@@ -169,6 +171,7 @@ void HistoryWindow::createFilterBar(QWidget *parent)
 	FromDate = new QDateEdit(parent);
 	FromDate->setEnabled(false);
 	FromDate->setCalendarPopup(true);
+	FromDate->setDate(QDateTime::currentDateTime().addDays(-7).date());
 	layout->addWidget(FromDate, 0, 4, 1, 1);
 
 	ToDateLabel = new QLabel(tr("To") + ": ", parent);
@@ -178,6 +181,7 @@ void HistoryWindow::createFilterBar(QWidget *parent)
 	ToDate = new QDateEdit(parent);
 	ToDate->setEnabled(false);
 	ToDate->setCalendarPopup(true);
+	ToDate->setDate(QDateTime::currentDateTime().date());
 	layout->addWidget(ToDate, 0, 6, 1, 1);
 	
 	connect(filterByDate, SIGNAL(stateChanged(int)),
@@ -211,6 +215,9 @@ void HistoryWindow::updateData()
 {
 	kdebugf();
 
+	QModelIndex index = ChatsTree->selectionModel()->currentIndex();
+	Chat chat = index.data(ChatRole).value<Chat>();
+
 	ChatsModel->clear();
 	QList<Chat> usedChats;
 	QList<Chat> chatsList = History::instance()->chatsList(Search);
@@ -220,14 +227,16 @@ void HistoryWindow::updateData()
 	{
 		if (usedChats.contains(chat))
 			continue;
-		AggregateChat aggregate = ChatAggregatorBuilder::buildAggregateChat(chat.contacts().toBuddySet());
-		if (!aggregate)
-			continue;
-		if (aggregate.chats().size() > 1)
+		Chat aggregate = AggregateChatBuilder::buildAggregateChat(chat.contacts().toBuddySet());
+		if (aggregate)
 		{
+			ChatDetailsAggregate *details = dynamic_cast<ChatDetailsAggregate *>(aggregate.details());
+
+			if (details)
+				foreach (Chat usedChat, details->chats())
+					usedChats.append(usedChat);
+
 			result.append(aggregate);
-			foreach (Chat usedChat, aggregate.chats())
-				usedChats.append(usedChat);
 		}
 		else
 		{
@@ -237,17 +246,25 @@ void HistoryWindow::updateData()
 	}
 
 	ChatsModel->addChats(result);
+
+	if (result.contains(chat))
+		selectChat(chat);
+	else
+		selectChat(Chat::null);
 }
 
 void HistoryWindow::selectChat(Chat chat)
 {
 	QString typeName = chat.type();
 	ChatType *type = ChatTypeManager::instance()->chatType(typeName);
+
 	if (!type)
+	{
+		chatActivated(QModelIndex());
 		return;
+	}
 
 	QModelIndex chatTypeIndex = ChatsModelProxy->chatTypeIndex(type);
-
 	if (!chatTypeIndex.isValid())
 	{
 		chatActivated(QModelIndex());
@@ -260,30 +277,44 @@ void HistoryWindow::selectChat(Chat chat)
 	QModelIndex chatIndex = ChatsModelProxy->chatIndex(chat);
 	ChatsTree->selectionModel()->select(chatIndex, QItemSelectionModel::ClearAndSelect);
 
-	chatActivated(chatIndex);
+	chatActivated(chat);
+}
+
+void HistoryWindow::chatActivated(Chat chat)
+{
+	kdebugf();
+
+	ChatDatesModel *model = dynamic_cast<ChatDatesModel *>(DetailsListView->model());
+	if (!model)
+		return;
+
+	QModelIndex selectedIndex = DetailsListView->selectionModel()->currentIndex();
+	QDate date = selectedIndex.data(DateRole).toDate();
+
+	QList<QDate> chatDates = History::instance()->datesForChat(chat, Search);
+	model->setChat(chat);
+	model->setDates(chatDates);
+
+	QModelIndex select = model->indexForDate(date);
+	if (!select.isValid())
+	{
+		int lastRow = model->rowCount(QModelIndex()) - 1;
+		if (lastRow >= 0)
+			select = model->index(lastRow);
+	}
+
+	DetailsListView->selectionModel()->setCurrentIndex(select, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+
+	dateActivated(select);
+
+	kdebugf2();
 }
 
 void HistoryWindow::chatActivated(const QModelIndex &index)
 {
 	kdebugf();
 
-	Chat chat = index.data(ChatRole).value<Chat>();
-	if (!chat)
-		return;
-
-	ChatDatesModel *model = dynamic_cast<ChatDatesModel *>(DetailsListView->model());
-	if (!model)
-		return;
-
-	QList<QDate> chatDates = History::instance()->datesForChat(chat, Search);
-	model->setChat(chat);
-	model->setDates(chatDates);
-
-	int lastRow = model->rowCount(QModelIndex()) - 1;
-	QModelIndex last = model->index(lastRow, 0, QModelIndex());
-	DetailsListView->selectionModel()->setCurrentIndex(last, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
-
-	dateActivated(last);
+	chatActivated(index.data(ChatRole).value<Chat>());
 
 	kdebugf2();
 }
@@ -293,21 +324,13 @@ void HistoryWindow::dateActivated(const QModelIndex &index)
 	kdebugf();
 
 	Chat chat = index.data(ChatRole).value<Chat>();
-	if (!chat)
-		return;
-
 	QDate date = index.data(DateRole).value<QDate>();
-	if (!date.isValid())
-		return;
 
-	QList<Message> messages = History::instance()->messages(chat, date);
+	QList<Message> messages;
+	if (chat && date.isValid())
+		messages = History::instance()->messages(chat, date);
 
-// 	AggregateChat aggregate = qobject_cast<AggregateChat>(chat);
-// 	if (aggregate)
-// 		ContentBrowser->setChat(aggregate->chats().at(0));
-// 	else
-		ContentBrowser->setChat(chat);
-
+	ContentBrowser->setChat(chat);
 	ContentBrowser->clearMessages();
 	ContentBrowser->appendMessages(messages);
 
@@ -322,19 +345,25 @@ void HistoryWindow::filterLineChanged(const QString &filterText)
 void HistoryWindow::searchTextChanged(const QString &searchText)
 {
 	Search.setQuery(searchText);
-	chatActivated(ChatsTree->currentIndex());
+	updateData();
 }
 
 void HistoryWindow::fromDateChanged(const QDate &date)
 {
 	Search.setFromDate(date);
-	chatActivated(ChatsTree->currentIndex());
+	if (ToDate->date() < date)
+		ToDate->setDate(date);
+	else
+		updateData();
 }
 
 void HistoryWindow::toDateChanged(const QDate &date)
 {
 	Search.setToDate(date);
-	chatActivated(ChatsTree->currentIndex());
+	if (FromDate->date() > date)
+		FromDate->setDate(date);
+	else
+		updateData();
 }
 
 void HistoryWindow::showMainPopupMenu(const QPoint &pos)
@@ -514,6 +543,19 @@ void HistoryWindow::dateFilteringEnabled(int state)
 	FromDate->setEnabled(enabled);
 	ToDateLabel->setEnabled(enabled);
 	ToDate->setEnabled(enabled);
+
+	if (enabled)
+	{
+		Search.setFromDate(FromDate->date());
+		Search.setToDate(ToDate->date());
+		updateData();
+	}
+	else
+	{
+		Search.setFromDate(QDate());
+		Search.setToDate(QDate());
+		updateData();
+	}
 }
 
 HistoryWindow *historyDialog = 0;

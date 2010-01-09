@@ -132,10 +132,8 @@ void ChooseDescription::setDescription()
 	QString description = Description->currentText();
 	DescriptionManager::instance()->addDescription(description);
 
-	Account account = AccountManager::instance()->defaultAccount();
-
-	if (config_file.readBoolEntry("General", "ParseStatus", false))
-		description = Parser::parse(description, account, Core::instance()->myself(), true);
+// 	if (config_file.readBoolEntry("General", "ParseStatus", false))
+// 		description = Parser::parse(description, account, Core::instance()->myself(), true);
 
 	Status status = MyStatusContainer->status();
 	status.setDescription(description);

@@ -21,6 +21,7 @@
 #include "exports.h"
 
 class Account;
+class Avatar;
 class BuddyShared;
 class Contact;
 class ContactShared;
@@ -64,6 +65,9 @@ public:
 	Account prefferedAccount() const;
 	Contact prefferedContact() const;
 
+	void sortContacts();
+	void normalizePriorities();
+
 // 	void setData(BuddyShared *data) { Data = data; }  // TODO: 0.8 tricky merge, this should work well ;)
 
 	QList<Contact> contacts(Account account) const;
@@ -80,6 +84,7 @@ public:
 
 	QString display() const;
 
+	KaduSharedBase_Property(Avatar, buddyAvatar, BuddyAvatar)
 	KaduSharedBase_PropertyWrite(QString, display, Display)
 	KaduSharedBase_Property(QString, firstName, FirstName)
 	KaduSharedBase_Property(QString, lastName, LastName)

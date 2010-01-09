@@ -1,9 +1,11 @@
 set (SOURCES
 	autoaway.cpp
+	autoaway-status-changer.cpp
 )
 
 set (MOC_SOURCES
 	autoaway.h
+	autoaway-status-changer.h
 )
 
 set (TRANSLATION_SOURCES

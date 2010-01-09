@@ -412,7 +412,7 @@ public:
 	 */
 	void addItem(Item item)
 	{
-// 		ensureLoaded();
+		ensureLoaded();
 
 		if (Items.contains(item))
 			return;

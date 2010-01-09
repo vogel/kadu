@@ -9,6 +9,7 @@
 
 #include "accounts/account-details.h"
 #include "accounts/account-manager.h"
+#include "configuration/configuration-file.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 #include "misc/misc.h"
@@ -128,7 +129,9 @@ void AccountShared::useProtocolFactory(ProtocolFactory *factory)
 	{
 		disconnect(ProtocolHandler, SIGNAL(statusChanged(Account, Status)), this, SIGNAL(statusChanged()));
 		disconnect(ProtocolHandler, SIGNAL(contactStatusChanged(Contact, Status)),
-				this, SIGNAL(buddyStatusChanged(Contact, Status)));
+				   this, SIGNAL(buddyStatusChanged(Contact, Status)));
+		disconnect(ProtocolHandler, SIGNAL(connected(Account)), this, SIGNAL(connected()));
+		disconnect(ProtocolHandler, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
 	}
 
 	if (!factory)
@@ -149,6 +152,8 @@ void AccountShared::useProtocolFactory(ProtocolFactory *factory)
 		connect(ProtocolHandler, SIGNAL(statusChanged(Account, Status)), this, SIGNAL(statusChanged()));
 		connect(ProtocolHandler, SIGNAL(contactStatusChanged(Contact, Status)),
 				this, SIGNAL(buddyStatusChanged(Contact, Status)));
+		connect(ProtocolHandler, SIGNAL(connected(Account)), this, SIGNAL(connected()));
+		connect(ProtocolHandler, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
 	}
 }
 
@@ -235,7 +240,7 @@ void AccountShared::setStatus(Status status)
 		ProtocolHandler->setStatus(status);
 }
 
-const Status & AccountShared::status()
+Status AccountShared::status()
 {
 	if (ProtocolHandler)
 		return ProtocolHandler->status();

@@ -95,9 +95,16 @@ set (CONFIGURATION_FILES
 	configuration/gadu_contact.ui
 )
 
+pkg_search_module (LIBGADU REQUIRED libgadu>=1.8.0)
+include_directories (${LIBGADU_INCLUDE_DIRS})
+link_directories (${LIBGADU_LIBRARY_DIRS})
+
+message (STATUS " * libgadu found (version ${LIBGADU_VERSION}) in ${LIBGADU_LIBRARY_DIRS}")
+
 kadu_module (gadu_protocol
 	MODULE_SOURCES ${SOURCES}
 	MODULE_MOC_SOURCES ${MOC_SOURCES}
 #	MODULE_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
 	MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
+	MODULE_LIBRARIES ${LIBGADU_LIBRARIES}
 )

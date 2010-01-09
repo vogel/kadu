@@ -64,6 +64,8 @@ class HistoryWindow : public MainWindow
 	void updateData();
 	void selectChat(Chat chat);
 
+	void chatActivated(Chat chat);
+
 private slots:
 	void chatActivated(const QModelIndex &index);
 	void dateActivated(const QModelIndex &index);
@@ -96,6 +98,7 @@ public:
 	virtual BuddySet buddies();
 	virtual ChatWidget * chatWidget() { return 0; }
 	virtual BuddiesListView * contactsListView() { return 0; }
+	virtual StatusContainer* statusContainer() { return 0; }
 	virtual Chat chat() { return Chat::null; }
 
 	void show(Chat chat);

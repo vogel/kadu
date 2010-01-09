@@ -25,6 +25,7 @@ class BuddySet;
 class Chat;
 class Contact;
 class ContactSet;
+class StatusContainer;
 
 class KADUAPI MainWindow : public QMainWindow
 {
@@ -57,6 +58,7 @@ public:
 
 	virtual bool supportsActionType(ActionDescription::ActionType type) = 0;
 	virtual BuddiesListView * contactsListView() = 0;
+	virtual StatusContainer *statusContainer() = 0;
 	virtual ContactSet contacts() = 0;
 	virtual BuddySet buddies() = 0;
 	virtual Chat  chat() = 0;

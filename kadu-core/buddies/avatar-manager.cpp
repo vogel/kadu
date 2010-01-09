@@ -7,13 +7,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QtCore/QDir>
 #include <QtCore/QFile>
+#include <QtCore/QTimer>
 
 #include "accounts/account.h"
 #include "buddies/avatar.h"
 #include "buddies/avatar-shared.h"
 #include "configuration/configuration-manager.h"
+#include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
@@ -35,6 +36,10 @@ AvatarManager * AvatarManager::instance()
 AvatarManager::AvatarManager()
 {
 	triggerAllAccountsRegistered();
+
+	UpdateTimer = new QTimer(this);
+	UpdateTimer->setInterval(5 * 60 * 1000); // 5 minutes
+	connect(UpdateTimer, SIGNAL(timeout()), this, SLOT(updateAvatars()));
 }
 
 AvatarManager::~AvatarManager()
@@ -80,13 +85,10 @@ AvatarService * AvatarManager::avatarService(Contact contact)
 	return avatarService(account);
 }
 
-QString AvatarManager::avatarFileName(Avatar avatar)
-{
-	return avatar.uuid().toString();
-}
-
 void AvatarManager::accountRegistered(Account account)
 {
+	connect(account, SIGNAL(connected()), this, SLOT(updateAccountAvatars()));
+
 	AvatarService *service = avatarService(account);
 	if (!service)
 		return;
@@ -97,6 +99,8 @@ void AvatarManager::accountRegistered(Account account)
 
 void AvatarManager::accountUnregistered(Account account)
 {
+	disconnect(account, SIGNAL(connected()), this, SLOT(updateAccountAvatars()));
+
 	AvatarService *service = avatarService(account);
 	if (!service)
 		return;
@@ -105,11 +109,28 @@ void AvatarManager::accountUnregistered(Account account)
 			   this, SLOT(avatarFetched(Contact, const QByteArray &)));
 }
 
-void AvatarManager::updateAvatar(Contact contact)
+bool AvatarManager::needUpdate(Contact contact)
 {
+	if (!contact.contactAvatar())
+		return true;
+
 	QDateTime lastUpdated = contact.contactAvatar().lastUpdated();
+	if (!lastUpdated.isValid())
+		return true;
+	// one hour passed
+	if (lastUpdated.secsTo(QDateTime::currentDateTime()) > 60 * 60)
+		return true;
+
 	QDateTime nextUpdate = contact.contactAvatar().nextUpdate();
-	if (lastUpdated.isValid() && lastUpdated.secsTo(QDateTime::currentDateTime()) < 60*60 || QFile::exists(contact.contactAvatar().filePath()) && nextUpdate > QDateTime::currentDateTime())
+	if (nextUpdate > QDateTime::currentDateTime())
+		return true;
+
+	return false;
+}
+#include <stdio.h>
+void AvatarManager::updateAvatar(Contact contact, bool force)
+{
+	if (!force && !needUpdate(contact))
 		return;
 
 	AvatarService *service = avatarService(contact);
@@ -122,26 +143,37 @@ void AvatarManager::updateAvatar(Contact contact)
 void AvatarManager::avatarFetched(Contact contact, const QByteArray &data)
 {
 	Avatar avatar = contact.contactAvatar();
+	if (!avatar)
+	{
+		avatar = Avatar::create();
+		contact.setContactAvatar(avatar);
+	}
+
 	avatar.setLastUpdated(QDateTime::currentDateTime());
 
 	QPixmap pixmap;
-	pixmap.loadFromData(data);
+	if (!data.isEmpty())
+		pixmap.loadFromData(data);
+
 	avatar.setPixmap(pixmap);
 
-	QString avatarFile = avatarFileName(avatar);
-	avatar.setFileName(avatarFile);
+	emit avatarUpdated(contact);
+}
 
-	QDir avatarsDir(ggPath("avatars"));
-	if (!avatarsDir.exists())
-		avatarsDir.mkpath(ggPath("avatars"));
+void AvatarManager::updateAvatars()
+{
+	foreach (Contact contact, ContactManager::instance()->items())
+		if (!contact.ownerBuddy().isAnonymous())
+			updateAvatar(contact);
+}
 
-	QFile file(avatarsDir.canonicalPath() + "/" + avatarFile);
-
-	if (!file.open(QIODevice::WriteOnly))
+void AvatarManager::updateAccountAvatars()
+{
+	Account account(sender());
+	if (!account)
 		return;
 
-	file.write(data);
-	file.close();
-
-	emit avatarUpdated(contact);
+	foreach (Contact contact, ContactManager::instance()->contacts(account))
+		if (!contact.ownerBuddy().isAnonymous())
+			updateAvatar(contact, true);
 }

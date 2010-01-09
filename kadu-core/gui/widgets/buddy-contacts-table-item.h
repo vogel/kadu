@@ -13,25 +13,58 @@
 #include "accounts/account.h"
 #include "contacts/contact.h"
 
-class BuddyContactsTableItem
+class BuddyContactsTableItem : public QObject
 {
-	Contact ItemContact;
-	Account ItemAccount;
-	QString Id;
+	Q_OBJECT
 
 public:
-	BuddyContactsTableItem(Contact contact = Contact::null);
-	~BuddyContactsTableItem() {}
+	enum ItemAction {
+		ItemEdit,
+		ItemAdd,
+		ItemDetach,
+		ItemRemove
+	};
 
-	Contact itemContact() { return ItemContact; }
-	void setItemContact(Contact contact) { ItemContact = contact; }
+private:
+	Contact ItemContact;
+	int ItemContactPriority;
+	Account ItemAccount;
+	QString Id;
+	ItemAction Action;
+	QString DetachedBuddyName;
 
-	Account itemAccount() { return ItemAccount; }
-	void setItemAccount(Account account) { ItemAccount = account; }
+	bool isAddValid() const;
+	bool isEditValid() const;
 
-	QString id() { return Id; }
-	void setId(const QString &id) { Id = id; }
+public:
+	explicit BuddyContactsTableItem(Contact contact = Contact::null, QObject *parent = 0);
+	virtual ~BuddyContactsTableItem() {}
+
+	Contact itemContact() const { return ItemContact; }
+	void setItemContact(Contact contact);
+
+	int itemContactPriority() const { return ItemContactPriority; }
+	void setItemContactPriority(int itemContactPriority);
+
+	Account itemAccount() const { return ItemAccount; }
+	void setItemAccount(Account account);
+
+	QString id() const { return Id; }
+	void setId(const QString &id);
+
+	ItemAction action() const { return Action; }
+	void setAction(ItemAction action);
+
+	QString detachedBuddyName() const { return DetachedBuddyName; }
+	void setDetachedBuddyName(const QString &detachedBuddyName);
+
+	bool isValid() const;
+
+signals:
+	void updated(BuddyContactsTableItem *item);
 
 };
+
+Q_DECLARE_METATYPE(BuddyContactsTableItem *)
 
 #endif // BUDDY_CONTACTS_TABLE_ITEM_H

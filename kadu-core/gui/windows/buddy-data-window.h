@@ -44,6 +44,9 @@ class KADUAPI BuddyDataWindow : public QWidget
 	BuddyPersonalInfoConfigurationWidget *PersonalInfoTab;
 	BuddyOptionsConfigurationWidget *OptionsTab;
 
+	QPushButton *OkButton;
+	QPushButton *ApplyButton;
+
 	void createGui();
 	void createTabs(QLayout *layout);
 	void createGeneralTab(QTabWidget *tabWidget);
@@ -54,12 +57,16 @@ class KADUAPI BuddyDataWindow : public QWidget
 
 	void keyPressEvent(QKeyEvent *);
 
+	bool isValid();
+
 private slots:
+	void updateButtons();
+
 	void updateBuddy();
 	void updateBuddyAndClose();
 
 public:
-	BuddyDataWindow(Buddy buddy, QWidget *parent = 0);
+	explicit BuddyDataWindow(Buddy buddy, QWidget *parent = 0);
 	virtual ~BuddyDataWindow();
 
 };

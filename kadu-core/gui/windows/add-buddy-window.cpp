@@ -11,7 +11,6 @@
 #include <QtGui/QComboBox>
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QGridLayout>
-#include <QtGui/QInputDialog>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
@@ -24,11 +23,11 @@
 #include "accounts/model/accounts-proxy-model.h"
 #include "buddies/buddy.h"
 #include "buddies/buddy-manager.h"
-#include "buddies/group-manager.h"
 #include "buddies/model/groups-model.h"
 #include "contacts/contact.h"
 #include "contacts/contact-manager.h"
 #include "gui/widgets/accounts-combo-box.h"
+#include "gui/widgets/groups-combo-box.h"
 #include "gui/widgets/select-buddy-combobox.h"
 #include "misc/misc.h"
 #include "model/actions-proxy-model.h"
@@ -83,27 +82,7 @@ void AddBuddyWindow::createGui()
 	layout->addWidget(AccountCombo, 0, 3);
 
 	layout->addWidget(new QLabel(tr("Add in group:"), this), 1, 0, Qt::AlignRight);
-	GroupCombo = new QComboBox(this);
-	GroupCombo->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
-	connect(GroupCombo, SIGNAL(activated(int)), this, SLOT(groupChanged(int)));
-	GroupsModel *groupComboModel = new GroupsModel(GroupCombo);
-
-	QSortFilterProxyModel *sortModel = new QSortFilterProxyModel(GroupCombo);
-	sortModel->setSourceModel(groupComboModel);
-	sortModel->setDynamicSortFilter(true);
-	sortModel->sort(1);
-	sortModel->sort(0);
-
-	ActionsProxyModel::ModelActionList groupsModelBeforeActions;
-	groupsModelBeforeActions.append(qMakePair<QString, QString>(tr(" - Select group - "), ""));
-	ActionsProxyModel::ModelActionList groupsModelAfterActions;
-	groupsModelAfterActions.append(qMakePair<QString, QString>(tr("Create a new group..."), "createNewGroup"));
-
-	ActionsProxyModel *groupsProxyModel = new ActionsProxyModel(groupsModelBeforeActions,
-			groupsModelAfterActions, GroupCombo);
-	groupsProxyModel->setSourceModel(sortModel);
-
-	GroupCombo->setModel(groupsProxyModel);
+	GroupCombo = new GroupsComboBox(this);
 	layout->addWidget(GroupCombo, 1, 1, 1, 3);
 
 	layout->addWidget(new QLabel(tr("Visible name:"), this), 2, 0, Qt::AlignRight);
@@ -176,12 +155,6 @@ void AddBuddyWindow::displayErrorMessage(const QString &message)
 	ErrorLabel->setText(message);
 }
 
-Account AddBuddyWindow::selectedAccount()
-{
-	QModelIndex index = AccountCombo->model()->index(AccountCombo->currentIndex(), 0);
-	return index.data(AccountRole).value<Account>();
-}
-
 void AddBuddyWindow::setBuddy(Buddy buddy)
 {
 	MyBuddy = buddy;
@@ -198,7 +171,7 @@ void AddBuddyWindow::setBuddy(Buddy buddy)
 
 void AddBuddyWindow::setUsernameLabel()
 {
-	Account account = selectedAccount();
+	Account account = AccountCombo->currentAccount();
 	if (account.isNull())
 		UserNameLabel->setText(tr("Username:"));
 	else
@@ -207,7 +180,7 @@ void AddBuddyWindow::setUsernameLabel()
 
 void AddBuddyWindow::setAddContactEnabled()
 {
-	Account account = selectedAccount();
+	Account account = AccountCombo->currentAccount();
 	if (account.isNull() || !account.protocolHandler() || !account.protocolHandler()->protocolFactory())
 	{
 		AddContactButton->setEnabled(false);
@@ -262,7 +235,7 @@ void AddBuddyWindow::setAddContactEnabled()
 
 void AddBuddyWindow::setValidateRegularExpression()
 {
-	Account account = selectedAccount();
+	Account account = AccountCombo->currentAccount();
 	if (!account.isNull() && account.protocolHandler())
 	{
 		UserNameValidator->setRegExp(account.protocolHandler()->protocolFactory()->idRegularExpression());
@@ -287,32 +260,9 @@ void AddBuddyWindow::setAccountFilter()
 	AccountComboIdFilter->setId(UserNameEdit->text());
 }
 
-void AddBuddyWindow::groupChanged(int index)
-{
-	QModelIndex modelIndex = GroupCombo->model()->index(index, 0, QModelIndex());
-	QString action = modelIndex.data(ActionRole).toString();
-
-	if (action.isEmpty())
-		return;
-	bool ok;
-
-	QString newGroupName = QInputDialog::getText(this, tr("New Group"),
-			tr("Please enter the name for the new group:"), QLineEdit::Normal,
-			QString::null, &ok);
-
-	if (!ok || newGroupName.isEmpty() || !GroupManager::instance()->acceptableGroupName(newGroupName))
-	{
-		GroupCombo->setCurrentIndex(0);
-		return;
-	}
-
-	GroupManager::instance()->byName(newGroupName);
-	GroupCombo->setCurrentIndex(GroupCombo->findText(newGroupName));
-}
-
 void AddBuddyWindow::accept()
 {
-	Account account = selectedAccount();
+	Account account = AccountCombo->currentAccount();
 	if (account.isNull())
 		return;
 
@@ -337,6 +287,8 @@ void AddBuddyWindow::accept()
 
 	Contact contact = ContactManager::instance()->byId(account, UserNameEdit->text(), true);
 	contact.setOwnerBuddy(buddy);
+	
+	buddy.addToGroup(GroupCombo->currentGroup());
 
 	QDialog::accept();
 }

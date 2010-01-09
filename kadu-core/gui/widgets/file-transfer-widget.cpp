@@ -35,7 +35,7 @@ FileTransferWidget::FileTransferWidget(FileTransfer ft, QWidget *parent)
 	createGui();
 	
 	LastTransferredSize = CurrentTransfer.transferredSize();
-	connect(CurrentTransfer, SIGNAL(updated()), this, SLOT(fileTransferUpdate()));
+	connect(CurrentTransfer, SIGNAL(updated()), this, SLOT(fileTransferUpdate()), Qt::QueuedConnection);
 	fileTransferUpdate();
 
 	show();
@@ -63,17 +63,17 @@ void FileTransferWidget::createGui()
 	layout->setColumnStretch(0, 1);
 	layout->setColumnStretch(1, 20);
 	layout->setColumnStretch(2, 20);
+	layout->setSizeConstraint(QLayout::SetMinimumSize);
 
 	QLabel *icon = new QLabel(this);
 	icon->setBackgroundRole(QPalette::Base);
-	layout->addWidget(icon, 0, 0, 3, 1);
+	layout->addWidget(icon, 0, 0, 3, 1, Qt::AlignTop);
 
 	DescriptionLabel = new QLabel(this);
 	DescriptionLabel->setBackgroundRole(QPalette::Base);
-	DescriptionLabel->setScaledContents(true);
 	layout->addWidget(DescriptionLabel, 0, 1, 1, 2);
 
-	ProgressBar = new QProgressBar;
+	ProgressBar = new QProgressBar(this);
 	ProgressBar->setMinimum(0);
 	ProgressBar->setMaximum(100);
 	ProgressBar->setBackgroundRole(QPalette::Base);
@@ -83,8 +83,8 @@ void FileTransferWidget::createGui()
 	StatusLabel->setBackgroundRole(QPalette::Base);
 	layout->addWidget(StatusLabel, 2, 1);
 
-	QWidget *buttons = new QWidget;
-	QHBoxLayout *buttons_layout = new QHBoxLayout;
+	QWidget *buttons = new QWidget(this);
+	QHBoxLayout *buttons_layout = new QHBoxLayout(buttons);
 	buttons->setBackgroundRole(QPalette::Base);
 	buttons_layout->setSpacing(2);
 
@@ -102,10 +102,10 @@ void FileTransferWidget::createGui()
 	buttons_layout->addWidget(PauseButton);
 	buttons_layout->addWidget(ContinueButton);
 	buttons_layout->addWidget(deleteThis);
-	buttons->setLayout(buttons_layout);
  	layout->addWidget(buttons, 2, 2, Qt::AlignRight);
 
-	Buddy buddy = CurrentTransfer.fileTransferContact().ownerBuddy();
+	Buddy buddy = CurrentTransfer.peer().ownerBuddy();
+	Account account = CurrentTransfer.peer().contactAccount();
 
 	QString fileName = QFileInfo(CurrentTransfer.localFileName()).fileName();
 	if (fileName.isEmpty())
@@ -114,12 +114,14 @@ void FileTransferWidget::createGui()
 	if (TypeSend == CurrentTransfer.transferType())
 	{
 		icon->setPixmap(IconsManager::instance()->loadPixmap("FileTransferSend"));
-		DescriptionLabel->setText(tr("<b>File</b> %1 <b>to</b> %2").arg(fileName).arg(buddy.display()));
+		DescriptionLabel->setText(tr("File <b>%1</b><br /> to <b>%2</b><br />on account <b>%3</b>")
+				.arg(fileName).arg(buddy.display()).arg(account.name()));
 	}
 	else
 	{
 		icon->setPixmap(IconsManager::instance()->loadPixmap("FileTransferReceive"));
-		DescriptionLabel->setText(tr("<b>File</b> %1 <b>from</b> %2").arg(fileName).arg(buddy.display()));
+		DescriptionLabel->setText(tr("File <b>%1</b><br /> from <b>%2</b><br />on account <b>%3</b>")
+				.arg(fileName).arg(buddy.display()).arg(account.name()));
 	}
 }
 
@@ -136,13 +138,13 @@ void FileTransferWidget::removeTransfer()
 		return;
 
 	if (StatusFinished != CurrentTransfer.transferStatus())
+	{
 		if (!MessageDialog::ask(tr("Are you sure you want to remove this transfer?"), QString::null, this))
 			return;
 		else
-		{
 			if (handler())
 				handler()->stop();
-		}
+	}
 
 	FileTransferManager::instance()->removeItem(CurrentTransfer);
 

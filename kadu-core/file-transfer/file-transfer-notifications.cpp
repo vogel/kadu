@@ -62,31 +62,26 @@ NewFileTransferNotification::NewFileTransferNotification(const QString &type, Fi
 	setDefaultCallback(30 * 60 * 1000, SLOT(callbackDiscard()));
 }
 
-void NewFileTransferNotification::callbackAccept()
-{
-	kdebugf();
-
-	close();
-	if (Continue)
-		FileTransferManager::instance()->acceptFileTransfer(ft, ft.localFileName());
-	else // under new name = new file transfer
-	{
-		FileTransfer newTransfer = FileTransfer::create();
-		newTransfer.setFileTransferAccount(ft.fileTransferAccount());
-		newTransfer.setFileTransferContact(ft.fileTransferContact());
-		newTransfer.setFileSize(ft.fileSize());
-		newTransfer.setRemoteFileName(ft.remoteFileName());
-		newTransfer.setTransferType(ft.transferType());
-		FileTransferManager::instance()->addItem(newTransfer);
-		FileTransferManager::instance()->acceptFileTransfer(newTransfer);
-	}
-}
-
 void NewFileTransferNotification::callbackAcceptAsNew()
 {
 	kdebugf();
 	
 	close();
+	
+	// let user choose new file name
+	ft.setLocalFileName(QString::null);
+	FileTransferManager::instance()->acceptFileTransfer(ft);
+}
+
+void NewFileTransferNotification::callbackAccept()
+{
+	kdebugf();
+
+	close();
+
+	if (!Continue) // let user choose new file name
+		ft.setLocalFileName(QString::null);
+
 	FileTransferManager::instance()->acceptFileTransfer(ft);
 }
 
@@ -95,5 +90,6 @@ void NewFileTransferNotification::callbackReject()
 	kdebugf();
 	
 	close();
+
 	FileTransferManager::instance()->rejectFileTransfer(ft);
 }

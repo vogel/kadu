@@ -42,14 +42,14 @@
 #include "gui/windows/your-accounts.h"
 #include "misc/misc.h"
 #include "parser/parser.h"
+#include "status/status-changer-manager.h"
+#include "status/status-container-manager.h"
 
 #include "about.h"
 #include "debug.h"
-#include "expimp.h"
 #include "html_document.h"
 #include "ignore.h"
 #include "modules.h"
-#include "status_changer.h"
 
 #include "kadu-window-actions.h"
 
@@ -101,7 +101,7 @@ void checkHideDescription(Action *action)
 	{
 		BuddyKaduData *ckd = 0;
 		if (buddy.data())
-			ckd = buddy.data()->moduleData<BuddyKaduData>("kadu", true);
+			ckd = buddy.data()->moduleStorableData<BuddyKaduData>("kadu", false);
 		if (!ckd)
 			continue;
 
@@ -282,12 +282,6 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		"Ignore", tr("Ignored Buddies...")
 	);
 
-	ImportExportContacts = new ActionDescription(this,
-		ActionDescription::TypeMainMenu, "importExportUserlisAction",
-		this, SLOT(importExportContactsActionActivated(QAction *, bool)),
-		"ImportExport", tr("I&mport / Export userlist")
-	); //TODO 0.6.6: remove
-
 	Help = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "helpAction",
 		this, SLOT(helpActionActivated(QAction *, bool)),
@@ -437,20 +431,20 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	);
 	connect(UseProxy, SIGNAL(actionCreated(Action *)), this, SLOT(useProxyActionCreated(Action *)));
 
-	connect(StatusChangerManager::instance(), SIGNAL(statusChanged(Status)), this, SLOT(statusChanged(Status)));
+	connect(StatusChangerManager::instance(), SIGNAL(statusChanged(StatusContainer *, Status)), this, SLOT(statusChanged(StatusContainer *, Status)));
 }
 
 KaduWindowActions::~KaduWindowActions()
 {
 }
 
-void KaduWindowActions::statusChanged(Status status)
+void KaduWindowActions::statusChanged(StatusContainer *container, Status status)
 {
-	Account account = AccountManager::instance()->defaultAccount();
-	if (account.isNull())
+	if (!container)
 		return;
 
-	QIcon icon = account.statusContainer()->statusPixmap(status);
+	// TODO: 0.6.6, this really SUXX
+	QIcon icon = container->statusPixmap(status);
 	foreach (Action *action, ShowStatus->actions())
 		action->setIcon(icon);
 }
@@ -527,7 +521,7 @@ void KaduWindowActions::showStatusActionCreated(Action *action)
 {
 	Account account = AccountManager::instance()->defaultAccount();
 
-	if (account.isNull())
+	if (account.protocolHandler())
 		action->setIcon(account.protocolHandler()->statusPixmap());
 }
 
@@ -617,11 +611,6 @@ void KaduWindowActions::openSearchActionActivated(QAction *sender, bool toggled)
 void KaduWindowActions::manageIgnoredActionActivated(QAction *sender, bool toggled)
 {
 	(new Ignored(dynamic_cast<QWidget *>(sender->parent())))->show();
-}
-
-void KaduWindowActions::importExportContactsActionActivated(QAction *sender, bool toggled)
-{
-	(new UserlistImportExport(dynamic_cast<QWidget *>(sender->parent())))->show();
 }
 
 void KaduWindowActions::helpActionActivated(QAction *sender, bool toggled)
@@ -830,24 +819,22 @@ void KaduWindowActions::hideDescriptionActionActivated(QAction *sender, bool tog
 		if (buddy.isNull() || buddy.isAnonymous())
 			continue;
 
-		BuddyKaduData *ckd = 0;
+		BuddyKaduData *bkd = 0;
 		if (buddy.data())
-			ckd = buddy.data()->moduleData<BuddyKaduData>("kadu", true);
-		if (!ckd)
+			bkd = buddy.data()->moduleStorableData<BuddyKaduData>("kadu", true);
+		if (!bkd)
 			continue;
 
-		if (ckd->hideDescription() != toggled)
+		if (bkd->hideDescription() != toggled)
 		{
-			ckd->setHideDescription(toggled);
-			ckd->store();
+			bkd->setHideDescription(toggled);
+			bkd->store();
 		}
 	}
 
 	foreach (Action *action, HideDescription->actions())
-	{
 		if (action->buddies() == buddies)
 			action->setChecked(toggled);
-	}
 
 	kdebugf2();
 }
@@ -946,12 +933,20 @@ void KaduWindowActions::editUserActionActivated(QAction *sender, bool toggled)
 }
 
 void KaduWindowActions::showStatusActionActivated(QAction *sender, bool toggled)
-{ // TODO: 0.6.6
-// 	QMenu *menu = new QMenu();
-// 	StatusMenu *status = new StatusMenu(menu);
-// 	status->addToMenu(menu);
-// 	menu->exec(QCursor::pos());
-// 	delete menu;
+{
+	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
+	if (!window)
+		return;
+
+	StatusContainer *container = window->statusContainer();
+	if (!container)
+		container = StatusContainerManager::instance();
+
+	QMenu *menu = new QMenu();
+	StatusMenu *status = new StatusMenu(container, menu);
+	status->addToMenu(menu);
+	menu->exec(QCursor::pos());
+	delete menu;
 }
 
 void KaduWindowActions::useProxyActionActivated(QAction *sender, bool toggled)

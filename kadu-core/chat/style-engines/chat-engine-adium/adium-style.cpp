@@ -162,10 +162,6 @@ bool AdiumStyle::isStyleValid(const QString &stylePath)
 	if (!fi.isReadable())
 		return false;
 
-	fi.setFile(dir, "main.css");
-	if (!fi.isReadable())
-		return false;
-
 	fi.setFile(dir, "Status.html");
 	if (!fi.isReadable())
 		return false;
@@ -193,5 +189,19 @@ QString AdiumStyle::readStylePart(const QString &part)
 
 QString AdiumStyle::templateHtml()
 {
-	return readStylePart(TemplateHref);
+	QString styleHtml = readStylePart(TemplateHref);
+	//fix some known bugs in styles Template.hml
+	performTemplateHtmlWorkarounds(styleHtml);
+	return styleHtml;
+}
+
+void AdiumStyle::performTemplateHtmlWorkarounds(QString &html)
+{
+	if (Name.contains("renkoo") || Name.contains("Renkoo"))
+	{
+		//renkoo styles always scroll to bottom on new messages
+		int index = html.indexOf("alignChat(true);") + 1;
+		html.replace(html.indexOf("alignChat(true);", index), 16, "alignChat(shouldScroll);");
+		html.replace(html.indexOf("alignChat(true);", index), 16, "alignChat(shouldScroll);");
+	}
 }

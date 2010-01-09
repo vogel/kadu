@@ -121,7 +121,7 @@ void BuddyManager::mergeBuddies(Buddy destination, Buddy source)
 	ConfigurationManager::instance()->flush();
 }
 
-Buddy BuddyManager::byDisplay(const QString &display)
+Buddy BuddyManager::byDisplay(const QString &display, bool create)
 {
 	ensureLoaded();
 
@@ -134,7 +134,14 @@ Buddy BuddyManager::byDisplay(const QString &display)
 			return buddy;
 	}
 
-	return Buddy::null;
+	if (!create)
+		return Buddy::null;
+
+	Buddy buddy = Buddy::create();
+	buddy.setDisplay(display);
+	addItem(buddy);
+
+	return buddy;
 }
 
 Buddy BuddyManager::byId(Account account, const QString &id, bool create)

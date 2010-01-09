@@ -13,7 +13,6 @@
 #include <QtCore/QMutex>
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlQuery>
-#include <QtSql/QSqlTableModel>
 
 #include "modules/history/storage/history-storage.h"
 
@@ -27,19 +26,10 @@ class HistorySqlStorage : public HistoryStorage
 	Q_OBJECT
 
 	QSqlDatabase Database;
-	QSqlTableModel *MessagesModel;
+	QTimer *CommitTimer;
 
-	QSqlQuery ClearChatHistoryQuery;
 	QSqlQuery ListChatsQuery;
-	QSqlQuery ListChatDatesQuery;
-	QSqlQuery ListChatMessagesQuery;
-	QSqlQuery ListChatMessagesByDateQuery;
-	QSqlQuery ListChatMessagesByDateLimitQuery;
-	QSqlQuery ListChatMessagesLimitQuery;
-	QSqlQuery ListChatMessagesSinceQuery;
-	QSqlQuery ListChatMessagesBackToQuery;
-	QSqlQuery CountChatMessagesQuery;
-	QSqlQuery CountChatMessagesByDateQuery;
+	QSqlQuery AppendMessageQuery;
 
 	QMutex DatabaseMutex;
 
@@ -49,16 +39,20 @@ class HistorySqlStorage : public HistoryStorage
 	void initIndexes();
 	void initKaduMessagesTable();
 
+	QString chatWhere(Chat chat);
+
 	void executeQuery(QSqlQuery query);
 	QList<Message> messagesFromQuery(Chat chat, QSqlQuery query);
 
 private slots:
+	void newTransaction();
+
 	virtual void messageReceived(const Message &message);
 	virtual void messageSent(const Message &message);
 
 public:
-	HistorySqlStorage();
-	~HistorySqlStorage();
+	explicit HistorySqlStorage(QObject *parent = 0);
+	virtual ~HistorySqlStorage();
 
 	virtual QList<Chat> chats(HistorySearchParameters search);
 	virtual QList<QDate> chatDates(Chat chat, HistorySearchParameters search);

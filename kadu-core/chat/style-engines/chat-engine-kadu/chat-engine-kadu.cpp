@@ -180,7 +180,7 @@ void KaduChatStyleEngine::repaintMessages(HtmlMessagesRenderer *renderer)
 		prevMessage = message;
 		while (++message != end)
 		{
-			text += QString("[%1]" ).arg((*message)->message().status()) + formatMessage(*message, *prevMessage);
+			text += /*QString("[%1]" ).arg((*message)->message().status()) +*/ formatMessage(*message, *prevMessage);
 			prevMessage = message;
 		}
 	}

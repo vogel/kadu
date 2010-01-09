@@ -25,8 +25,8 @@
 
 #include "chat-window.h"
 
-ChatWindow::ChatWindow(QWidget *parent)
-	: QWidget(parent), currentChatWidget(0), title_timer(new QTimer(this))
+ChatWindow::ChatWindow(QWidget *parent) :
+		QWidget(parent), currentChatWidget(0), title_timer(new QTimer(this))
 {
 	kdebugf();
 
@@ -124,7 +124,6 @@ void ChatWindow::kaduRestoreGeometry()
 // 		if (ckd)
 // 		{
 // 			geom = ckd->chatGeometry();
-// 			delete ckd;
 // 		}
 // 	}
 
@@ -182,7 +181,6 @@ void ChatWindow::kaduStoreGeometry()
 		{
 			ckd->setChatGeometry(geometry());
 			ckd->storeConfiguration();
-			delete ckd;
 		}
 	}*/
 }

@@ -8,14 +8,15 @@
  ***************************************************************************/
 
 #include <QtGui/QDialogButtonBox>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QLabel>
-#include <QtGui/QPushButton>
-#include <QtGui/QVBoxLayout>
+#include <QtGui/QFileDialog>
+#include <QtGui/QFormLayout>
+#include <QtGui/QGridLayout>
 #include <QtGui/QGroupBox>
-#include <QtGui/QRadioButton>
-
+#include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
+#include <QtGui/QPushButton>
+#include <QtGui/QTreeView>
+#include <QtGui/QVBoxLayout>
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
@@ -50,150 +51,116 @@ BuddyGeneralConfigurationWidget::~BuddyGeneralConfigurationWidget()
 
 void BuddyGeneralConfigurationWidget::createGui()
 {
-	QGridLayout *layout = new QGridLayout(this);
-	layout->setColumnMinimumWidth(0, 10);
-	layout->setColumnMinimumWidth(1, 10);
-	layout->setColumnMinimumWidth(4, 20);
-	layout->setColumnMinimumWidth(5, 100);
-	layout->setColumnMinimumWidth(8, 20);
-	layout->setColumnStretch(3, 10);
-	layout->setColumnStretch(6, 2);
+	QVBoxLayout *layout = new QVBoxLayout(this);
 
-	int row = 0;
-	layout->setRowStretch(row++, 1); 
-	
-	QLabel *numberLabel = new QLabel(tr("Visible Name") + ":", this);
-	layout->addWidget(numberLabel, 2, 2, 1, 1);
-	DisplayEdit = new QLineEdit(this);
+	QWidget *nameWidget = new QWidget(this);
+	layout->addWidget(nameWidget);
+
+	QHBoxLayout *nameLayout = new QHBoxLayout(nameWidget);
+
+	QLabel *numberLabel = new QLabel(tr("Visible Name") + ":", nameWidget);
+	nameLayout->addWidget(numberLabel);
+
+	DisplayEdit = new QLineEdit(nameWidget);
+	connect(DisplayEdit, SIGNAL(textChanged(QString)), this, SIGNAL(validChanged()));
 	DisplayEdit->setText(MyBuddy.display());
-	layout->addWidget(DisplayEdit, 2, 3, 1, 1);
+	nameLayout->addWidget(DisplayEdit);
 
-	QWidget *photoWidget = new QWidget;
+	QWidget *photoWidget = new QWidget(nameWidget);
 	QVBoxLayout *photoLayout = new QVBoxLayout(photoWidget);
 	photoLayout->setSpacing(2);
 
-	QLabel *photoLabel = new QLabel(this);
-	QPixmap photoPixmap = QPixmap(MyBuddy.contacts().count() > 0 ? MyBuddy.contacts().at(0).contactAvatar().pixmap() : QPixmap());
-	photoLabel->setPixmap(photoPixmap);
-	photoLayout->addWidget(photoLabel);
+	AvatarLabel = new QLabel(photoWidget);
+	AvatarLabel->setScaledContents(true);
+	if (!MyBuddy.buddyAvatar().pixmap().isNull())
+		AvatarLabel->setPixmap(MyBuddy.buddyAvatar().pixmap());
+	AvatarLabel->setFixedSize(QSize(70, 70));
+	photoLayout->addWidget(AvatarLabel, 0, Qt::AlignCenter);
 
 	QPushButton *changePhotoButton = new QPushButton(tr("Change Icon..."));
+	connect(changePhotoButton, SIGNAL(clicked(bool)), this, SLOT(changeAvatar()));
 	photoLayout->addWidget(changePhotoButton);
 
-	layout->addWidget(photoWidget, 1, 6, 3, 1);
+	nameLayout->addWidget(photoWidget);
 
 	QGroupBox *contactsBox = new QGroupBox(tr("Buddy contacts"));
 	QVBoxLayout *contactsLayout = new QVBoxLayout(contactsBox);
-	contactsLayout ->addWidget(new BuddyContactsTable(MyBuddy, contactsBox));
+	ContactsTable = new BuddyContactsTable(MyBuddy, contactsBox);
+	connect(ContactsTable, SIGNAL(validChanged()), this, SIGNAL(validChanged()));
+	contactsLayout ->addWidget(ContactsTable);
 
-	layout->addWidget(contactsBox, 4, 2, 2, 6);
+	layout->addWidget(contactsBox);
 
 	QGroupBox *communicationBox = new QGroupBox(tr("Communication Information"));
-	QGridLayout *communicationLayout = new QGridLayout(communicationBox);
-	communicationLayout->setColumnStretch(0, 1);
-	communicationLayout->setColumnStretch(1, 3);
-	communicationLayout->setColumnStretch(2, 3);
-
-	row = 0;
-
-	QHBoxLayout *phoneLayout = new QHBoxLayout;
-	QLabel *phoneLabel = new QLabel(tr("Phone") + ":");
+	QFormLayout *communicationLayout = new QFormLayout(communicationBox);
+	
 	PhoneEdit = new QLineEdit(this);
 	PhoneEdit->setText(MyBuddy.homePhone());
-	communicationLayout->addWidget(phoneLabel, row, 0, 1, 1);
-	communicationLayout->addWidget(PhoneEdit, row++, 1, 1, 1);
+	communicationLayout->addRow(new QLabel(tr("Phone") + ":"), PhoneEdit);
 
-	QHBoxLayout *mobileLayout = new QHBoxLayout;
-	QLabel *mobileLabel = new QLabel(tr("Mobile") + ":");
 	MobileEdit = new QLineEdit(this);
 	MobileEdit->setText(MyBuddy.mobile());
-	communicationLayout->addWidget(mobileLabel, row, 0, 1, 1);
-	communicationLayout->addWidget(MobileEdit, row++, 1, 1, 1);
+	communicationLayout->addRow(new QLabel(tr("Mobile") + ":"), MobileEdit);
 
-	QHBoxLayout *emailLayout = new QHBoxLayout;
-	QLabel *emailLabel = new QLabel(tr("E-Mail") + ":");
 	EmailEdit = new QLineEdit(this);
 	EmailEdit->setText(MyBuddy.email());
-	communicationLayout->addWidget(emailLabel, row, 0, 1, 1);
-	communicationLayout->addWidget(EmailEdit, row++, 1, 1, 1);
+	communicationLayout->addRow(new QLabel(tr("E-Mail") + ":"), EmailEdit);
 
-	QHBoxLayout *websiteLayout = new QHBoxLayout;
-	QLabel *websiteLabel = new QLabel(tr("Website") + ":");
 	WebsiteEdit = new QLineEdit(this);
 	WebsiteEdit->setText(MyBuddy.website());
-	communicationLayout->addWidget(websiteLabel, row, 0, 1, 1);
-	communicationLayout->addWidget(WebsiteEdit, row++, 1, 1, 1);
+	communicationLayout->addRow(new QLabel(tr("Website") + ":"), WebsiteEdit);
 
-	layout->addWidget(communicationBox, 6, 2, 2, 6);
-	layout->setRowStretch(8, 100);
+	layout->addWidget(communicationBox);
+	layout->addStretch(100);
 }
 
-void BuddyGeneralConfigurationWidget::unmergeContact()
+bool BuddyGeneralConfigurationWidget::isValid()
 {
-	//TODO 0.6.6 how to get contact ID here?
-	if (MessageDialog::ask(qApp->translate("MergedContactProperties", "Are you sure you want to remove the contact <contact name> from the merged contact %1?")./*arg().*/arg(MyBuddy.display())))
-		emit doUnmergeContact();
+	QString display = DisplayEdit->text();
+	if (display.isEmpty())
+		return false;
+
+	Buddy buddy = BuddyManager::instance()->byDisplay(display);
+	if (buddy && buddy != MyBuddy)
+		return false;
+
+	return ContactsTable->isValid();
 }
 
-void BuddyGeneralConfigurationWidget::saveConfiguration()
+void BuddyGeneralConfigurationWidget::save()
 {
 	MyBuddy.setDisplay(DisplayEdit->text());
 	MyBuddy.setHomePhone(PhoneEdit->text());
 	MyBuddy.setMobile(MobileEdit->text());
 	MyBuddy.setEmail(EmailEdit->text());
 	MyBuddy.setWebsite(WebsiteEdit->text());
+
+	const QPixmap *avatar = AvatarLabel->pixmap();
+	if (!avatar || avatar->isNull())
+		MyBuddy.setBuddyAvatar(Avatar::null);
+	else
+	{
+		Avatar buddyAvatar = MyBuddy.buddyAvatar();
+		if (!buddyAvatar)
+		{
+			buddyAvatar = Avatar::create();
+			MyBuddy.setBuddyAvatar(buddyAvatar);
+		}
+
+		buddyAvatar.setPixmap(*avatar);
+		MyBuddy.setBuddyAvatar(buddyAvatar);
+	}
+
+	ContactsTable->save();
 }
 
-void BuddyGeneralConfigurationWidget::showOrderDialog()
+void BuddyGeneralConfigurationWidget::changeAvatar()
 {
-	OrderDialog = new QDialog(this);
-	OrderDialog->setAttribute(Qt::WA_DeleteOnClose);
-	OrderDialog->setWindowTitle(tr("Set Order"));
-	OrderDialog->resize(300, 200);
+	QString newAvatar = QFileDialog::getOpenFileName(this, tr("Select new avatar"), "", "Image Files (*.png *.jpg *.bmp)", 0);
+	if (newAvatar.isEmpty())
+		return;
 
-	QGridLayout *layout = new QGridLayout(OrderDialog);
-	layout->setColumnMinimumWidth(0, 10);
-	layout->setColumnMinimumWidth(1, 10);
-	layout->setColumnMinimumWidth(4, 20);
-	layout->setColumnMinimumWidth(5, 100);
-	layout->setColumnMinimumWidth(8, 20);
-	layout->setColumnStretch(3, 10);
-	layout->setColumnStretch(6, 2);
-
-	int row = 0;
-
-	QTreeView *orderView = new QTreeView(OrderDialog);
-	layout->addWidget(orderView, row++, 1, 1, 1);
-
-	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, OrderDialog);
-
-	QPushButton *cancelButton = new QPushButton(IconsManager::instance()->loadIcon("CloseWindowButton"), tr("Cancel"), OrderDialog);
-	buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
-	QPushButton *saveButton = new QPushButton(IconsManager::instance()->loadIcon("OkWindowButton"), tr("Save"), OrderDialog);
-	buttons->addButton(saveButton, QDialogButtonBox::AcceptRole);
-
-	connect(saveButton, SIGNAL(clicked(bool)), this, SLOT(updateOrderAndClose()));
-	connect(cancelButton, SIGNAL(clicked(bool)), OrderDialog, SLOT(close()));
-
-	layout->addWidget(buttons, row, 1, 1, 1);
-
-	OrderDialog->show();
+	QPixmap pixmap;
+	if (pixmap.load(newAvatar))
+		AvatarLabel->setPixmap(pixmap);
 }
-
-void BuddyGeneralConfigurationWidget::updateOrder()
-{
-	MyBuddy.blockUpdatedSignal();
-
-// 	ContactTab->saveConfiguration();
-// 	GroupsTab->saveConfiguration(); 
-// 	OptionsTab->saveConfiguration(); 
-
-	MyBuddy.unblockUpdatedSignal();
-}
-
-void BuddyGeneralConfigurationWidget::updateOrderAndClose()
-{
-	updateOrder();
-	OrderDialog->close();
-}
-

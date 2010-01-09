@@ -20,6 +20,7 @@
 #include "contacts/contact-set.h"
 #include "icons-manager.h"
 #include "protocols/protocol-factory.h"
+#include "status/status-changer-manager.h"
 #include "status/status.h"
 #include "debug.h"
 
@@ -28,6 +29,8 @@
 Protocol::Protocol(Account account, ProtocolFactory *factory) :
 		State(NetworkDisconnected), Factory(factory), CurrentAccount(account)
 {
+	connect(StatusChangerManager::instance(), SIGNAL(statusChanged(StatusContainer*,Status)),
+			this, SLOT(statusChanged(StatusContainer*,Status)));
 }
 
 Protocol::~Protocol()
@@ -61,8 +64,23 @@ void Protocol::setAllOffline()
 
 void Protocol::setStatus(Status status)
 {
-	NextStatus = status;
-	changeStatus();
+	StatusChangerManager::instance()->setStatus(account().statusContainer(), status);
+}
+
+Status Protocol::status() const
+{
+	return CurrentStatus;
+}
+
+Status Protocol::nextStatus() const
+{
+	return StatusChangerManager::instance()->status(account().statusContainer());
+}
+
+void Protocol::statusChanged(StatusContainer *container, Status status)
+{
+	if (container && container == account().statusContainer() && CurrentStatus != status)
+		changeStatus();
 }
 
 void Protocol::statusChanged(Status status)

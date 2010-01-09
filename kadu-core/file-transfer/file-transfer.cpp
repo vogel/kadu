@@ -82,8 +82,7 @@ bool FileTransfer::accept(const QFile &file)
 	return true;
 }
 
-KaduSharedBase_PropertyDef(FileTransfer, Account, fileTransferAccount, FileTransferAccount, Account::null)
-KaduSharedBase_PropertyDef(FileTransfer, Contact, fileTransferContact, FileTransferContact, Contact::null)
+KaduSharedBase_PropertyDef(FileTransfer, Contact, peer, Peer, Contact::null)
 KaduSharedBase_PropertyDef(FileTransfer, QString, localFileName, LocalFileName, QString::null)
 KaduSharedBase_PropertyDef(FileTransfer, QString, remoteFileName, RemoteFileName, QString::null)
 KaduSharedBase_PropertyDef(FileTransfer, unsigned long, fileSize, FileSize, 0)

@@ -18,6 +18,7 @@ class QAction;
 
 class Action;
 class ActionDescription;
+class StatusContainer;
 
 class KaduWindowActions : QObject
 {
@@ -33,7 +34,6 @@ class KaduWindowActions : QObject
 	ActionDescription *OpenSearch;
 	ActionDescription *ManageIgnored;
 	ActionDescription *ManageModules;
-	ActionDescription *ImportExportContacts;
 	ActionDescription *Help;
 	ActionDescription *Bugs;
 	ActionDescription *Support;
@@ -57,7 +57,7 @@ class KaduWindowActions : QObject
 	ActionDescription *UseProxy;
 
 private slots:
-	void statusChanged(Status status);
+	void statusChanged(StatusContainer *container, Status status);
 
 	void inactiveUsersActionCreated(Action *action);
 	void descriptionUsersActionCreated(Action *action);
@@ -74,7 +74,6 @@ private slots:
 	void addGroupActionActivated(QAction *sender, bool toggled);
 	void openSearchActionActivated(QAction *sender, bool toggled);
 	void manageIgnoredActionActivated(QAction *sender, bool toggled);
-	void importExportContactsActionActivated(QAction *sender, bool toggled);
 	void helpActionActivated(QAction *sender, bool toggled);
 	void bugsActionActivated(QAction *sender, bool toggled);
 	void supportActionActivated(QAction *sender, bool toggled);

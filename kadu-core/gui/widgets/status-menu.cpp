@@ -21,8 +21,6 @@
 #include "status/status-type.h"
 #include "status/status-type-manager.h"
 
-#include "status_changer.h"
-
 #include "status-menu.h"
 
 StatusMenu::StatusMenu(StatusContainer *statusContainer, QWidget *parent) :
@@ -30,8 +28,6 @@ StatusMenu::StatusMenu(StatusContainer *statusContainer, QWidget *parent) :
 {
 	ChangeStatusActionGroup = new QActionGroup(this);
 	ChangeStatusActionGroup->setExclusive(true); // HACK
-
-	// TODO: 0.6.6
 
 	const QString &statusTypeName = MyStatusContainer->status().type();
 
