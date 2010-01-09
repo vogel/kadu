@@ -118,18 +118,23 @@ SingleWindow::SingleWindow()
 	connect(kadu, SIGNAL(hiding()), this, SLOT(hide()));
 	connect(kadu, SIGNAL(keyPressed(QKeyEvent *)), this, SLOT(onkaduKeyPressed(QKeyEvent *)));
 
+	/* conquer all already open chats ;) */
+	ChatList chats = chat_manager->chats();
+	for (uint i = 0; i < chats.count(); i++)
+	{
+		ChatWidget* chat = chats[i];
+		if (chat->parent())
+			chat->parent()->deleteLater();
+		else
+			chat->kaduRestoreGeometry();
+		onOpenChat(chat);
+	}
+
 	show();
 }
 
 SingleWindow::~SingleWindow()
 {
-	int i;
-	for (i = 0; i < tabs->count(); ++i)
-	{
-		tabs->removeTab(i);
-		delete tabs->widget(i);
-	}
-
 	split->setSizes(splitSizes);
 
 	// reparent kadu
@@ -148,6 +153,19 @@ SingleWindow::~SingleWindow()
 	disconnect(kadu, SIGNAL(shown()), this, SLOT(show()));
 	disconnect(kadu, SIGNAL(hiding()), this, SLOT(hide()));
 	disconnect(kadu, SIGNAL(keyPressed(QKeyEvent *)), this, SLOT(onkaduKeyPressed(QKeyEvent *)));
+
+	if (!Kadu::closing())
+	{
+		for (int i = tabs->count()-1; i >= 0; --i)
+		{
+			ChatWidget* chat = dynamic_cast<ChatWidget *>(tabs->widget(i));
+			UserListElements users = chat->users()->toUserListElements();
+			tabs->removeTab(i);
+			delete chat;
+			chat_manager->openPendingMsgs(users);
+		}
+	}
+
 }
 
 void SingleWindow::changeRosterPos(int newRosterPos)
