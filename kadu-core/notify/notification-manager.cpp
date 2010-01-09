@@ -117,12 +117,6 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 	if (!window)
 		return;
 
-	if (NotifyAboutAll)
-	{
-		NotifyAboutAll = false;
-		config_file.writeEntry("Notify", "NotifyAboutAll", false);
-	}
-
 	BuddySet buddies = window->contacts().toBuddySet();
 
 	bool on = true;
@@ -137,6 +131,12 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 			on = false;
 			break;
 		}
+	}
+
+	if (NotifyAboutAll)
+	{
+		NotifyAboutAll = false;
+		config_file.writeEntry("Notify", "NotifyAboutAll", false);
 	}
 
 	foreach (const Buddy buddy, buddies)
@@ -233,7 +233,7 @@ void NotificationManager::statusChanged(Contact contact, Status oldStatus)
 	if (!contact.contactAccount())
 		return;
 
-	if (contact.id() == contact.contactAccount().accountContact().id()) // myself
+	if (contact == contact.contactAccount().accountContact()) // myself
 		return;
 
 	Status status = contact.currentStatus();

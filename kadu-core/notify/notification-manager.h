@@ -89,6 +89,8 @@ public:
 	QList<Notifier *> notifiers();
 	QList<NotifyEvent *> notifyEvents();
 
+	bool notifyAboutAll() { return NotifyAboutAll; }
+
 	ConfigurationUiHandler * configurationUiHandler();
 
 signals:
