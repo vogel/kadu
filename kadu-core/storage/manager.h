@@ -15,6 +15,7 @@
 #include <QtCore/QUuid>
 
 #include "configuration/configuration-manager.h"
+#include "storage/manager-common.h"
 #include "storage/storable-object.h"
 
 #include "exports.h"

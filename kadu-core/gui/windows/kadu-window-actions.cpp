@@ -918,7 +918,7 @@ void KaduWindowActions::editUserActionActivated(QAction *sender, bool toggled)
 
 	Buddy buddy = window->contact().ownerBuddy();
 	if (buddy.isNull())
-		buddy = BuddyManager::instance()->byContact(window->contact(), true);
+		buddy = BuddyManager::instance()->byContact(window->contact(), ActionCreateAndAdd);
 
 	if (buddy.isAnonymous())
 	{

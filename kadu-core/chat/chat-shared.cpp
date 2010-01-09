@@ -274,7 +274,7 @@ void ChatShared::refreshTitle()
 	else if (contactsSize > 0)
 	{
 		Contact contact = contacts().toContact();
-		Buddy buddy = BuddyManager::instance()->byContact(contact, true);
+		Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
 
 		if (config_file.readEntry("Look", "ChatContents").isEmpty())
 		{

@@ -222,7 +222,7 @@ Contact AccountShared::accountContact()
 
 	if (AccountContact.isNull())
 	{
-		AccountContact = ContactManager::instance()->byId(this, Id, true);
+		AccountContact = ContactManager::instance()->byId(this, Id, ActionCreateAndAdd);
 		ContactManager::instance()->addItem(AccountContact);
 	}
 

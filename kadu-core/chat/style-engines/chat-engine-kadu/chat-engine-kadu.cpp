@@ -101,7 +101,7 @@ QString KaduChatStyleEngine::formatMessage(MessageRenderInfo *message, MessageRe
 	Message msg = message->message();
 	Message aft = after->message();
 
-	Buddy buddy = BuddyManager::instance()->byContact(msg.messageSender(), true);
+	Buddy buddy = BuddyManager::instance()->byContact(msg.messageSender(), ActionCreateAndAdd);
 	Account account = msg.messageChat().chatAccount();
 
 	if (msg.type() == Message::TypeSystem)

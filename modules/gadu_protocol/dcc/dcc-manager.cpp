@@ -281,7 +281,7 @@ bool DccManager::acceptConnection(unsigned int uin, unsigned int peerUin, unsign
 
 void DccManager::needIncomingFileTransferAccept(DccSocketNotifiers *socket)
 {
-	Contact peer = ContactManager::instance()->byId(Protocol->account(), QString::number(socket->peerUin()), true);
+	Contact peer = ContactManager::instance()->byId(Protocol->account(), QString::number(socket->peerUin()), ActionCreateAndAdd);
 
 	FileTransfer fileTransfer = FileTransfer::create();
 	fileTransfer.setPeer(peer);

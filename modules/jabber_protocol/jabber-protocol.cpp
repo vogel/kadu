@@ -507,7 +507,7 @@ void JabberProtocol::slotIncomingFileTransfer()
 	if (!jTransfer)
 		return;
 
-	Contact peer = ContactManager::instance()->byId(account(), jTransfer->peer().bare(), true);
+	Contact peer = ContactManager::instance()->byId(account(), jTransfer->peer().bare(), ActionCreateAndAdd);
 	FileTransfer transfer = FileTransfer::create();
 	transfer.setPeer(peer);
 	transfer.setTransferType(TypeReceive);
@@ -529,7 +529,7 @@ void JabberProtocol::clientResourceReceived(const XMPP::Jid &jid, const XMPP::Re
 	resourcePool()->addResource(jid, resource);
 
 	Status status(toStatus(resource.status()));
-	Contact contact = ContactManager::instance()->byId(account(), jid.bare(), true);
+	Contact contact = ContactManager::instance()->byId(account(), jid.bare(), ActionCreateAndAdd);
 
 	// TODO remove all ?
 	/*if (buddy.isAnonymous())
@@ -661,8 +661,8 @@ void JabberProtocol::slotContactUpdated(const XMPP::RosterItem &item)
 		 * See if the contact is already on our contact list
 		 * if not add contact to our list
 		 */
-		Contact contact = ContactManager::instance()->byId(account(), item.jid().bare(), true);
-		Buddy buddy = BuddyManager::instance()->byContact(contact, true);
+		Contact contact = ContactManager::instance()->byId(account(), item.jid().bare(), ActionCreateAndAdd);
+		Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
 
 		// if contact has name set it to display
 		if (!item.name().isNull())
@@ -762,7 +762,7 @@ void JabberProtocol::slotSubscription(const XMPP::Jid & jid, const QString &type
 
 	if (type == "subscribe")
 	{
-		Contact contact = ContactManager::instance()->byId(account(), jid.bare(), true);
+		Contact contact = ContactManager::instance()->byId(account(), jid.bare(), ActionCreateAndAdd);
 		SubscriptionWindow::getSubscription(contact, this, SLOT(authorizeContact(Contact)));
 	}
 	else if (type == "subscribed")

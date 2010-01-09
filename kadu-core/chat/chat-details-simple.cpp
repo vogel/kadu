@@ -89,7 +89,7 @@ QString ChatDetailsSimple::name() const
 {
 	if (CurrentContact.isNull())
 		return QString::null;
-	return BuddyManager::instance()->byContact(CurrentContact, true).display();
+	return BuddyManager::instance()->byContact(CurrentContact, ActionCreateAndAdd).display();
 }
 
 void ChatDetailsSimple::setContact(Contact contact)

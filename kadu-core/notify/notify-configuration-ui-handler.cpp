@@ -241,7 +241,7 @@ void NotifyConfigurationUiHandler::configurationWindowApplied()
 	int count = notifiedUsers->count();
 	for (int i = 0; i < count; i++)
 	{
-		Buddy buddy = BuddyManager::instance()->byDisplay(notifiedUsers->item(i)->text());
+		Buddy buddy = BuddyManager::instance()->byDisplay(notifiedUsers->item(i)->text(), ActionReturnNull);
 		if (buddy.isNull() || buddy.isAnonymous())
 			continue;
 
@@ -258,7 +258,7 @@ void NotifyConfigurationUiHandler::configurationWindowApplied()
 	count = allUsers->count();
 	for (int i = 0; i < count; i++)
 	{
-		Buddy buddy = BuddyManager::instance()->byDisplay(allUsers->item(i)->text());
+		Buddy buddy = BuddyManager::instance()->byDisplay(allUsers->item(i)->text(), ActionReturnNull);
 		if (buddy.isNull() || buddy.isAnonymous())
 			continue;
 
