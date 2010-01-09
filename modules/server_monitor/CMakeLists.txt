@@ -1,11 +1,13 @@
 set (SOURCES                                                                                                                                                               
         server_monitor.cpp
         server_status.cpp
+        server_monitor_window.cpp
 )
 
 set (MOC_SOURCES
         server_monitor.h
         server_status.h
+        server_monitor_window.h
 )
 
 set (CONFIGURATION_FILES

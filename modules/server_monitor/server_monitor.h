@@ -10,50 +10,24 @@
 #ifndef SERVER_MONITOR_H
 #define SERVER_MONITOR_H
 
-#include <QGridLayout>
-#include <QLabel>
-#include <QScrollArea>
-#include <QTimer>
-#include <QtNetwork/QHttp>
-#include <QPushButton>
-
-#include "configuration/configuration-aware-object.h"
-
-#include "server_status.h"
-
+#include "gui/windows/main-configuration-window.h"
+#include "server_monitor_window.h"
 class ActionDescription;
+//class ServerMonitorWindow;
 
-class ServerMonitor : public QScrollArea, public ConfigurationAwareObject
+class ServerMonitor : public ConfigurationUiHandler
 {
     Q_OBJECT
 
 public:
     ServerMonitor(QWidget *parent = 0);
     ~ServerMonitor();
-
+    virtual void mainConfigurationWindowCreated ( MainConfigurationWindow* mainConfigurationWindow );
 private:
     ActionDescription *serverMonitorActionDescription;
-    QList<ServerStatus*> servers;
-    QString serverFileListName;
-
-    QPushButton buttonRefresh;
-    QTimer refreshTimer;
-
-    QLabel stats;
-    quint32 avalibleServers;
-    quint32 unavalibleServers;
-    quint32 unknownStatusServers;
-
-    QHttp   *http;
-    QBuffer *serverListBuffer;
-
-    virtual void configurationUpdated();
-    void setConfiguration();
+    ServerMonitorWindow dialog;
 
 private slots:
-    void downloadedServersList(bool);
-    void readServerList();
-    void updateStats( ServerStatus::ServerState, ServerStatus::ServerState );
     void serverMonitorActionActivated(QAction *, bool);
 };
 
