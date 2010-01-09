@@ -91,6 +91,8 @@ public:
 
 	bool notifyAboutAll() { return NotifyAboutAll; }
 
+	QString notifyConfigurationKey(const QString &eventType);
+
 	ConfigurationUiHandler * configurationUiHandler();
 
 signals:

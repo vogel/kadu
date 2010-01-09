@@ -274,7 +274,7 @@ void SoundManager::notify(Notification *notification)
 {
 	kdebugf();
 
-	playSound(notification->type());
+	playSound(notification->key());
 
 	kdebugf2();
 }
