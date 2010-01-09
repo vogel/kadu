@@ -26,7 +26,9 @@ ServerMonitorWindow::ServerMonitorWindow(QWidget *parent)
     : QScrollArea(parent),
       avalibleServers(0),
       unavalibleServers(0),
-      unknownStatusServers(0)
+      unknownStatusServers(0),
+      layout(0),
+      scrollBarLayout(0)
 {
     buttonRefresh.setParent( this );
     buttonRefresh.setGeometry(420, 75, 60, 25);
@@ -88,8 +90,11 @@ void ServerMonitorWindow::updateStats( ServerStatus::ServerState newStatus, Serv
 
 void ServerMonitorWindow::readServerList()
 {
-    QGridLayout *layout = new QGridLayout(this);
-    QWidget *scrollBarLayout = new QWidget(this);
+    if ( layout == 0 ) delete layout;
+    if ( scrollBarLayout == 0 ) delete scrollBarLayout;
+
+    layout = new QGridLayout(this);
+    scrollBarLayout = new QWidget(this);
 
     avalibleServers = 0;
     unavalibleServers = 0;
@@ -103,9 +108,7 @@ void ServerMonitorWindow::readServerList()
     {
         QLabel *labelInfo = new QLabel(tr("Cannot read server list!"));
         layout->addWidget(labelInfo, 1, 1 );
-        kdebugm ( KDEBUG_ERROR, serverFileListName.toAscii() );
-        setLayout( layout );
-        return;
+        stats.setText( tr("No information avalible"));
     }
 
     int serverCounter = 0;
@@ -152,27 +155,13 @@ void ServerMonitorWindow::readServerList()
 
 void ServerMonitorWindow::configurationUpdated()
 {
-    kdebugf();
-
-    serverFileListName = config_file_ptr->readEntry( "serverMonitor", "fileName", "kadu/modules/configuration/serverslist.txt");
-    readServerList();
-
-    if ( config_file_ptr->readBoolEntry( "serverMonitor", "showResetButton",false) )
-        buttonRefresh.show();
-    else
-        buttonRefresh.hide();
-
-    if ( config_file_ptr->readBoolEntry( "serverMonitor", "autorefresh", true) )
-        refreshTimer.start( 60000 * config_file_ptr->readNumEntry( "serverMonitor", "timerInterval", 5));
-    else
-        refreshTimer.stop();
-
     setConfiguration();
-    kdebugf2();
 }
 
 void ServerMonitorWindow::setConfiguration()
 {
+    kdebugf();
+
     if ( !config_file_ptr->readBoolEntry( "serverMonitor", "showResetButton", false) )
         buttonRefresh.hide();
     else
@@ -197,6 +186,8 @@ void ServerMonitorWindow::setConfiguration()
         serverFileListName = config_file_ptr->readEntry( "serverMonitor", "fileName", "kadu/modules/configuration/serverslist.txt");
         readServerList();
     }
+
+    kdebugf2();
 }
 
 void ServerMonitorWindow::downloadedServersList( bool err )

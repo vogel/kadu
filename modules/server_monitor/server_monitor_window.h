@@ -43,8 +43,13 @@ private:
     QHttp   *http;
     QBuffer *serverListBuffer;
 
+    QGridLayout *layout;
+    QWidget *scrollBarLayout;
+
     virtual void configurationUpdated();
     void setConfiguration();
+
+    void cleanLayout();
 
 private slots:
     void downloadedServersList(bool);
