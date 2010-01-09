@@ -3,7 +3,8 @@
 
 #include <QtCore/QList>
 #include <QtCore/QPair>
-#include <QtGui/QToolButton>
+#include <QtGui/QLabel>
+#include <QtGui/QScrollArea>
 
 #include "configuration/configuration-aware-object.h"
 #include "html_document.h"
@@ -107,29 +108,25 @@ public:
 /**
 	Klasa s�u��ca do wyboru emotikonki z zestawu
 **/
-class EmoticonSelectorButton : public QToolButton
+class EmoticonSelectorButton : public QLabel
 {
 	Q_OBJECT
 
 	QString EmoticonString;
 	QString AnimPath;
 	QString StaticPath;
-	QMovie *Movie;
 
 private slots:
 	void buttonClicked();
-	void movieUpdate();
 
 protected:
-	/**
-		Funkcja obs�uguj�ca najechanie kursorem myszki na dan� emotikonk�.
-	**/
-	void enterEvent(QEvent *e);
+	class MovieViewer;
+	friend class MovieViewer;
 
 	/**
-		Funkcja obs�uguj�ca opuszczenie obszaru wy�wietlania emotikonki.
+		Funkcja obs�uguj�ca ruch kursora na obszarze emotikonki.
 	**/
-	void leaveEvent(QEvent *e);
+	void mouseMoveEvent(QMouseEvent *e);
 
 public:
 	/**
@@ -141,7 +138,6 @@ public:
 		\param anim_path �cie�ka do animowanej emotikonki
 	**/
 	EmoticonSelectorButton(const QString &emoticon_string, const QString &static_path, const QString &anim_path, QWidget *parent);
-	~EmoticonSelectorButton();
 	
 signals:
 	/**
@@ -151,10 +147,27 @@ signals:
 	void clicked(const QString &emoticon_string);
 
 };
+
+class EmoticonSelectorButton::MovieViewer : public QLabel
+{
+	Q_OBJECT
+
+protected:
+	bool event(QEvent *e);
+	void mouseMoveEvent(QMouseEvent *e);
+	void mouseReleaseEvent(QMouseEvent *e);
+
+public:
+	explicit MovieViewer(EmoticonSelectorButton *parent);
+
+signals:
+	void clicked();
+};
+
 /**
 	Klasa wy�wietlaj�ca list� emotikonek z aktualnego zestawu.
 **/
-class EmoticonSelector : public QWidget
+class EmoticonSelector : public QScrollArea
 {
 	Q_OBJECT
 
@@ -162,6 +175,9 @@ class EmoticonSelector : public QWidget
 
 private slots:
 	void iconClicked(const QString &emoticon_string);
+
+protected:
+	bool event(QEvent *e);
 
 public:
 	/**

@@ -29,9 +29,12 @@
 #include <QtCore/QTextStream>
 #include <QtGui/QApplication>
 #include <QtGui/QDesktopWidget>
-#include <QtGui/QGridLayout>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QMouseEvent>
 #include <QtGui/QMovie>
 #include <QtGui/QPainter>
+#include <QtGui/QScrollBar>
+#include <QtGui/QVBoxLayout>
 
 #ifdef Q_OS_WIN32
 #include <windows.h>
@@ -64,13 +67,13 @@ EmoticonsManager::EmoticonsListItem::EmoticonsListItem()
 {
 }
 
-EmoticonsManager::EmoticonsManager()
-	: Themes("emoticons", "emots.txt"), Aliases(), Selector(), walker(0)
+EmoticonsManager::EmoticonsManager() :
+	Themes("emoticons", "emots.txt"), Aliases(), Selector(), walker(0)
 
 {
 	kdebugf();
 
-	setPaths(config_file.readEntry("Chat", "EmoticonsPaths").split(QRegExp("(;|:)")));
+	setPaths(config_file.readEntry("Chat", "EmoticonsPaths").split(QRegExp("(;|:|&)"), QString::SkipEmptyParts));
 	setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
 
 	kdebugf2();
@@ -91,7 +94,7 @@ void EmoticonsManager::configurationUpdated()
 	kdebugf2();
 }
 
-void EmoticonsManager::setEmoticonsTheme(const QString& theme)
+void EmoticonsManager::setEmoticonsTheme(const QString &theme)
 {
 	kdebugmf(KDEBUG_FUNCTION_START | KDEBUG_INFO, "theme: %s\n", qPrintable(theme));
 
@@ -120,7 +123,7 @@ void EmoticonsManager::setEmoticonsTheme(const QString& theme)
 	kdebugf2();
 }
 
-QString EmoticonsManager::getQuoted(const QString& s, unsigned int& pos)
+QString EmoticonsManager::getQuoted(const QString &s, unsigned int &pos)
 {
 	QString r;
 	++pos; // eat '"'
@@ -151,7 +154,8 @@ bool EmoticonsManager::loadGGEmoticonThemePart(const QString &subdir)
 	QFile theme_file(path + ConfigName);
 	if (!theme_file.open(QIODevice::ReadOnly))
 	{
-		kdebugm(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "Error opening emots.txt file\n");
+		kdebugm(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "Error opening %s file\n",
+			qPrintable(theme_file.fileName()));
 		return false;
 	}
 	QTextStream theme_stream(&theme_file);
@@ -238,7 +242,7 @@ bool EmoticonsManager::loadGGEmoticonTheme()
 	return something_loaded;
 }
 
-void EmoticonsManager::expandEmoticons(HtmlDocument& doc, const QColor& bgcolor, EmoticonsStyle style)
+void EmoticonsManager::expandEmoticons(HtmlDocument &doc, const QColor &bgcolor, EmoticonsStyle style)
 {
 	kdebugf();
 
@@ -361,23 +365,19 @@ QString EmoticonsManager::selectorStaticPath(int emot_num) const
 		return QString::null;
 }
 
-EmoticonSelectorButton::EmoticonSelectorButton(const QString& emoticon_string, const QString& anim_path, const QString& static_path, QWidget *parent)
-	: QToolButton(parent), EmoticonString(emoticon_string), AnimPath(anim_path), StaticPath(static_path), Movie(0)
+EmoticonSelectorButton::EmoticonSelectorButton(const QString &emoticon_string, const QString &anim_path, const QString &static_path, QWidget *parent) :
+		QLabel(parent), EmoticonString(emoticon_string), AnimPath(anim_path), StaticPath(static_path)
 {
-	setIcon(QPixmap(StaticPath));
-	setAutoRaise(true);
-	setMouseTracking(true);
-	setToolTip(emoticon_string);
-	connect(this, SIGNAL(clicked()), this, SLOT(buttonClicked()));
-}
+	if ((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle") != EMOTS_ANIMATED)
+		AnimPath = StaticPath;
 
-EmoticonSelectorButton::~EmoticonSelectorButton()
-{
-	if (Movie)
-	{
-		delete Movie;
-		Movie = NULL;
-	}
+	QPixmap p(StaticPath);
+	if (p.height() > 18)
+		p = p.scaledToHeight(18, Qt::SmoothTransformation);
+	setPixmap(p);
+	setMouseTracking(true);
+	setMargin(2);
+	setFixedSize(sizeHint());
 }
 
 void EmoticonSelectorButton::buttonClicked()
@@ -385,105 +385,234 @@ void EmoticonSelectorButton::buttonClicked()
 	emit clicked(EmoticonString);
 }
 
-void EmoticonSelectorButton::movieUpdate()
+void EmoticonSelectorButton::mouseMoveEvent(QMouseEvent *e)
 {
-	setIcon(Movie->currentPixmap());
+	QLabel::mouseMoveEvent(e);
+	MovieViewer *viewer = new MovieViewer(this);
+	connect(viewer, SIGNAL(clicked()), this, SLOT(buttonClicked()));
 }
 
-void EmoticonSelectorButton::enterEvent(QEvent* e)
-{
-	QToolButton::enterEvent(e);
-	if ((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle") != EMOTS_ANIMATED)
-		return;
-	if (Movie == NULL)
-	{
-		Movie = new QMovie(AnimPath);
-		Movie->start();
-		connect(Movie, SIGNAL(updated(const QRect &)), this, SLOT(movieUpdate()));
-	}
-}
-
-void EmoticonSelectorButton::leaveEvent(QEvent* e)
-{
-	QToolButton::leaveEvent(e);
-	if (Movie != NULL)
-	{
-		Movie->stop();
-		delete Movie;
-		Movie = NULL;
-		setIcon(QPixmap(StaticPath));
-	}
-}
-
-EmoticonSelector::EmoticonSelector(ChatEditBox *caller, QWidget *parent)
-	: QWidget (parent, Qt::Popup), callingwidget(caller)
+EmoticonSelectorButton::MovieViewer::MovieViewer(EmoticonSelectorButton *parent) :
+	QLabel(parent, Qt::Popup)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
+	setMinimumSize(parent->sizeHint());
+	setAlignment(Qt::AlignCenter);
+	setMouseTracking(true);
+	setToolTip(parent->EmoticonString);
+
+	QString style =
+		"QLabel {"
+		"	background-color: #fbe333;"
+		"	padding: 4px;"
+		"}";
+	setStyleSheet(style);
+
+	QMovie *movie = new QMovie(parent->AnimPath);
+	setMovie(movie);
+	movie->start();
+
+	// center on parent
+	QPoint new_pos = parent->mapToGlobal(QPoint(0, 0));
+	new_pos += QPoint(parent->sizeHint().width() / 2, parent->sizeHint().height() / 2);
+	new_pos -= QPoint(sizeHint().width() / 2, sizeHint().height() / 2);
+	move(new_pos);
+
+	show();
+}
+
+bool EmoticonSelectorButton::MovieViewer::event(QEvent *e)
+{
+	// FIXME make it work correctly (probably have to do it another way?)
+	//if (e->type() == QEvent::Wheel)
+	//{
+		//e->ignore();
+		//return false;
+	//}
+	//else
+	//{
+		return QLabel::event(e);
+	//}
+}
+
+void EmoticonSelectorButton::MovieViewer::mouseMoveEvent(QMouseEvent *e)
+{
+	QLabel::mouseMoveEvent(e);
+	if (!rect().contains(e->globalPos() - mapToGlobal(QPoint(0, 0))))
+		close();
+}
+
+void EmoticonSelectorButton::MovieViewer::mouseReleaseEvent(QMouseEvent *e)
+{
+	QLabel::mouseReleaseEvent(e);
+	emit clicked();
+}
+
+EmoticonSelector::EmoticonSelector(ChatEditBox *caller, QWidget *parent) :
+		QScrollArea(parent), callingwidget(caller)
+{
+	setAttribute(Qt::WA_DeleteOnClose);
+	setWindowFlags(Qt::Popup);
 
 	int selector_count = EmoticonsManager::instance()->selectorCount();
-	int selector_width = (int)sqrt((double)selector_count);
-	int btn_width = 0;
-	QGridLayout *grid = new QGridLayout(this);
-	grid->setMargin(0);
-	grid->setSpacing(0);
+	if (selector_count == 0)
+	{
+		close();
+		return;
+	}
+
+	int selector_width = 460;
+	int total_height = 0, cur_width = 0, btn_width = 0;
+	EmoticonSelectorButton **btns = new EmoticonSelectorButton*[selector_count];
+	QWidget *mainwidget = new QWidget(parent);
+	QVBoxLayout *layout = new QVBoxLayout(mainwidget);
+	QHBoxLayout *row = 0;
+	layout->setContentsMargins(QMargins());
+	layout->setSpacing(0);
 
 	for (int i = 0; i < selector_count; ++i)
 	{
-		EmoticonSelectorButton* btn = new EmoticonSelectorButton(
+		btns[i] = new EmoticonSelectorButton(
 			EmoticonsManager::instance()->selectorString(i),
 			EmoticonsManager::instance()->selectorAnimPath(i),
 			EmoticonsManager::instance()->selectorStaticPath(i),
-			this);
-		btn_width = btn->sizeHint().width();
-		grid->addWidget(btn, i / selector_width, i % selector_width);
-		connect(btn, SIGNAL(clicked(const QString&)), this, SLOT(iconClicked(const QString&)));
+			mainwidget);
+		btn_width = btns[i]->sizeHint().width();
+
+		if (cur_width + btn_width >= selector_width)
+			cur_width = 0;
+
+		if (cur_width == 0)
+			total_height += btns[i]->sizeHint().height() + 1;
+		cur_width += btn_width;
+
+		connect(btns[i], SIGNAL(clicked(const QString&)), this, SLOT(iconClicked(const QString&)));
 	}
+
+	if (total_height < selector_width - 80)
+		selector_width = sqrt(selector_width * total_height) * 1.1;
+	else if (total_height > selector_width + 40)
+		selector_width += 40;
+
+	cur_width = 0;
+	for (int i = 0; i < selector_count; ++i)
+	{
+		btn_width = btns[i]->sizeHint().width();
+
+		if (cur_width + btn_width >= selector_width)
+			cur_width = 0;
+
+		if (cur_width == 0)
+		{
+			row = new QHBoxLayout;
+			layout->addLayout(row);
+		}
+
+		row->addWidget(btns[i]);
+		cur_width += btn_width;
+	}
+	if (row)
+		row->setAlignment(Qt::AlignLeft); // align the last row to left
+
+	setFrameStyle(QFrame::NoFrame);
+	setWidget(mainwidget);
+
+	delete [] btns;
 }
 
-void EmoticonSelector::iconClicked(const QString& emoticon_string)
+void EmoticonSelector::iconClicked(const QString &emoticon_string)
 {
 	callingwidget->addEmoticon(emoticon_string);
 	close();
 }
 
-void EmoticonSelector::alignTo(QWidget* w)
+bool EmoticonSelector::event(QEvent *e)
 {
-	// oblicz pozycj� widgetu do kt�rego r�wnamy
-	QPoint w_pos = w->mapToGlobal(QPoint(0,0));
-	// oblicz rozmiar selektora
-	QSize e_size = sizeHint();
-	// oblicz rozmiar pulpitu
-	QSize s_size = QApplication::desktop()->size();
-	// oblicz dystanse od widgetu do lewego brzegu i do prawego
-	int l_dist = w_pos.x();
-	int r_dist = s_size.width() - (w_pos.x() + w->width());
-	// oblicz pozycj� w zale�no�ci od tego czy po lewej stronie
-	// jest wi�cej miejsca czy po prawej
-	int x;
-	if (l_dist >= r_dist)
-		x = w_pos.x() - e_size.width();
+	if (e->type() == QEvent::MouseButtonPress && !rect().contains(static_cast<QMouseEvent*>(e)->globalPos() - mapToGlobal(QPoint(0, 0))))
+	{
+		close();
+		return true;
+	}
 	else
+	{
+		return QScrollArea::event(e);
+	}
+}
+
+void EmoticonSelector::alignTo(QWidget *w)
+{
+	QPoint w_pos = w->mapToGlobal(QPoint(0,0));
+	QSize s_size = QApplication::desktop()->size();
+	QSize e_size = widget()->sizeHint();
+
+	bool is_on_left;
+	bool hscroll_needed = false;
+	int x, max_width;
+	int width = e_size.width();
+	int hscrollbar_height = horizontalScrollBar()->sizeHint().height();
+	int vscrollbar_width = verticalScrollBar()->sizeHint().width();
+
+	// if the distance to the left edge of the screen equals or is bigger than the distance to the right edge
+	if (w_pos.x() >= s_size.width() - (w_pos.x() + w->width()))
+	{
+		is_on_left = true;
+		x = w_pos.x() - e_size.width();
+		max_width = w_pos.x();
+		if (x < 0)
+		{
+			width = w_pos.x();
+			x = 0;
+			hscroll_needed = true;
+		}
+	}
+	else
+	{
+		is_on_left = false;
 		x = w_pos.x() + w->width();
-	// oblicz pozycj� y - centrujemy w pionie
-	int y = w_pos.y() + w->height()/2 - e_size.height()/2;
-	// je�li wychodzi poza doln� kraw�d� to r�wnamy do niej
-	if (y + e_size.height() > s_size.height())
-		y = s_size.height() - e_size.height();
-	// je�li wychodzi poza g�rn� kraw�d� to r�wnamy do niej
+		max_width = s_size.width() - x;
+		if (x + e_size.width() > s_size.width())
+		{
+			width = s_size.width() - (w_pos.x() + w->width());
+			hscroll_needed = true;
+		}
+	}
+
+	int height = e_size.height() + (hscroll_needed ? hscrollbar_height : 0);
+	// center vertically
+	int y = w_pos.y() + w->height()/2 - height/2;
+	// if we exceed the bottom edge of the screen, let's align the widget to it
+	if (y + height > s_size.height())
+		y = s_size.height() - height;
+	// if we exceed the top edge of the screen, let's align the widget to it
 	if (y < 0)
 		y = 0;
-	// ustawiamy selektor na wyliczonej pozycji
+	if (height > s_size.height())
+	{
+		height = s_size.height();
+
+		// due to vertical scrollbar added, width of the widget has been increased, so we have to reposition it
+		int add_width = vscrollbar_width;
+		if (width + add_width > max_width)
+			add_width = max_width - width;
+		width += add_width;
+		if (is_on_left)
+			x -= add_width;
+	}
+
+	setFixedSize(QSize(width, height));
 	move(x, y);
 }
 
-PrefixNode::PrefixNode() : emotIndex(-1), childs()
+PrefixNode::PrefixNode() :
+		emotIndex(-1), childs()
 {
 }
 
 /** create fresh emoticons dictionary, which will allow easy finding of occurrences
     of stored emots in text
 */
-EmotsWalker::EmotsWalker() : root(new PrefixNode()), myPair(), positions(), lengths(), amountPositions(0)
+EmotsWalker::EmotsWalker() :
+		root(new PrefixNode()), myPair(), positions(), lengths(), amountPositions(0)
 {
 	myPair.second = NULL;
 }
@@ -499,7 +628,7 @@ EmotsWalker::~EmotsWalker()
     edge marked by given character
     return NULL if there is none
 */
-PrefixNode* EmotsWalker::findChild(const PrefixNode* node, const QChar& c)
+PrefixNode* EmotsWalker::findChild(const PrefixNode* node, const QChar &c)
 {
 	myPair.first = c;
 	// create variable 'position' with result of binary search in childs
@@ -515,7 +644,7 @@ PrefixNode* EmotsWalker::findChild(const PrefixNode* node, const QChar& c)
 /** add successor to given node with edge marked by given characted
     (building of prefix tree)
 */
-PrefixNode* EmotsWalker::insertChild(PrefixNode* node, const QChar& c)
+PrefixNode* EmotsWalker::insertChild(PrefixNode* node, const QChar &c)
 {
 	PrefixNode* newNode = new PrefixNode();
 
@@ -540,7 +669,7 @@ void EmotsWalker::removeChilds(PrefixNode *node)
     number, which will be used later to notify occurrences of
     emot in analyzed text
 */
-void EmotsWalker::insertString(const QString& str, int num)
+void EmotsWalker::insertString(const QString &str, int num)
 {
 	PrefixNode *child, *node = root;
 	unsigned int len = str.length();
