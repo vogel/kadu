@@ -12,6 +12,7 @@
 #include <QtGui/QComboBox>
 #include <QtGui/QGroupBox>
 #include <QtGui/QGridLayout>
+#include <QtGui/QHeaderView>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
 #include <QtGui/QRadioButton>
@@ -163,17 +164,15 @@ SearchDialog::SearchDialog(QWidget *parent, UinType whoisSearchUin)
 	grid->addColSpacing(9, 10);
 
 	grid->setResizeMode(QLayout::Minimum);
-	
+
 	QStringList headers;
 	headers << tr("Status") << tr("Uin") << tr("Name") << tr("City") << tr("Nickname") << tr("Birth year");
 	results->setHeaderLabels(headers);
+	results->header()->setResizeMode(QHeaderView::Stretch);
 	results->setSortingEnabled(true);
 	results->setAllColumnsShowFocus(true);
 	results->setSelectionMode(QAbstractItemView::SingleSelection);
 	results->setIndentation(false);
-//	results->setResizeMode(Q3ListView::AllColumns);
-//	for (int i = 1; i < 5; ++i)
-//		results->setColumnWidthMode(i, Q3ListView::Maximum);
 
 //	searchhidden = false;
 	if (_whoisSearchUin)

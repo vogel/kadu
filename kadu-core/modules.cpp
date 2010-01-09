@@ -14,6 +14,7 @@
 #include <QtGui/QCheckBox>
 #include <QtGui/QGroupBox>
 #include <QtGui/QHBoxLayout>
+#include <QtGui/QHeaderView>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QLabel>
 #include <QtGui/QPushButton>
@@ -132,6 +133,7 @@ ModulesDialog::ModulesDialog(QWidget *parent)
 	QStringList headers;
 	headers << tr("Module name") << tr("Version") << tr("Module type") << tr("State");
 	lv_modules->setHeaderLabels(headers);
+	lv_modules->header()->setResizeMode(QHeaderView::Stretch);
 	lv_modules->setSortingEnabled(true);
 	lv_modules->setAllColumnsShowFocus(true);
 	lv_modules->setIndentation(false);
