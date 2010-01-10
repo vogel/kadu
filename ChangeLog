@@ -10,13 +10,15 @@ Je¶li jest w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * dodany zosta³ nowy modu³ - dbus (uzi)
 * zaktualizowany zosta³ modu³ gg_avatars (dorr)
 * modu³ desktop_docking zosta³ poprawiony (dorr)
+* zosta³y dodane drobne usprawnienia w module single_window (dorr)
 * wprowadzone zosta³y poprawki do autodownloadu zestawów ikon, d¼wiêków, emot (dorr)
 * poprawione zosta³y skrypty create_macosx_bundle.sh i create_windows_bundle.bat (dorr)
 * zosta³a dodana funkcjonalno¶æ automatycznego ³atania modu³ów zewnêtrznych (dorr)
 * druga czê¶æ zmian do po³±czeñ bezpo¶rednich zosta³a zaaplikowana (uzi)
 * zmiana zestawu ikon powoduje tak¿e zmianê ikon w menu statusu  (dorr)
 * zawijanie zbyt d³ugich s³ów w oknie rozmowy (tomek-k/dorr)
-* inne drobne zmiany w kodzie aplikacji
+* drobne usprawnienia kompilacji pod Windows (Darom/dorr, dorr)
+* inne poprawki drobnych b³êdów
 
 +++ wersja 0.6.5.4-rc2
 * definitywnie naprawione zosta³o wysy³anie obrazków (uzi)
