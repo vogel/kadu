@@ -26,8 +26,7 @@
 
 #include "hints-configuration-ui-handler.h"
 
-
-HintsConfigurationUiHandler::HintsConfigurationUiHandler(QObject *parent):
+HintsConfigurationUiHandler::HintsConfigurationUiHandler(QObject *parent, QString style):
 	overUserConfigurationWindow(0)
 {
 #ifdef Q_OS_MAC
@@ -41,7 +40,7 @@ HintsConfigurationUiHandler::HintsConfigurationUiHandler(QObject *parent):
 	previewHintsLayout->setSpacing(0);
 	previewHintsLayout->setMargin(1);
 	previewHintsLayout->setSizeConstraint(QLayout::SetFixedSize);
-	previewHintsFrame->setStyleSheet(hint_manager->Style());
+	previewHintsFrame->setStyleSheet(style);
 
 	connect(this, SIGNAL(searchingForTrayPosition(QPoint &)), Core::instance(), SIGNAL(searchingForTrayPosition(QPoint &)));
 }
@@ -58,6 +57,8 @@ void HintsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurati
 
 	connect(mainConfigurationWindow->widget()->widgetById("hints/showContent"), SIGNAL(toggled(bool)),
 	mainConfigurationWindow->widget()->widgetById("hints/showContentCount"), SLOT(setEnabled(bool)));
+
+	newHintUnder = dynamic_cast<QComboBox *>(mainConfigurationWindow->widget()->widgetById("hints/newHintUnder"));
 
 	ownPosition = dynamic_cast<QCheckBox *>(mainConfigurationWindow->widget()->widgetById("hints/ownPosition"));
 	connect(ownPosition, SIGNAL(toggled(bool)), mainConfigurationWindow->widget()->widgetById("hints/ownPositionX"), SLOT(setEnabled(bool)));
@@ -125,9 +126,9 @@ void HintsConfigurationUiHandler::addHintsPreview()
 	previewNotify->setText(qApp->translate("@default", "Hints position preview"));
 
 	Hint *previewHint = new Hint(previewHintsFrame, previewNotify);
-	hint_manager->hints.append(previewHint);
+	previewHints.append(previewHint);
 
-	hint_manager->setLayoutDirection();
+	setPreviewLayoutDirection();
 	previewHintsLayout->addWidget(static_cast<QWidget *>(previewHint));
 
 	connect(previewHint, SIGNAL(leftButtonClicked(Hint *)), this, SLOT(deleteHintsPreview(Hint *)));
@@ -138,6 +139,39 @@ void HintsConfigurationUiHandler::addHintsPreview()
 	previewHintsFrame->show();
 }
 
+void HintsConfigurationUiHandler::setPreviewLayoutDirection()
+{
+	QPoint trayPosition;
+	QSize desktopSize = QApplication::desktop()->screenGeometry(previewHintsFrame).size();
+	emit searchingForTrayPosition(trayPosition);
+	
+	switch (newHintUnder->currentIndex())
+	{
+		case 0:
+			if (trayPosition.isNull() || ownPosition->isChecked()) 
+			{
+				if (yPosition->value() < desktopSize.height()/2)
+					previewHintsLayout->setDirection(QBoxLayout::Down);
+				else
+					previewHintsLayout->setDirection(QBoxLayout::Up);
+			}
+			else
+			{
+				if (trayPosition.y() < desktopSize.height()/2)
+					previewHintsLayout->setDirection(QBoxLayout::Down);
+				else
+					previewHintsLayout->setDirection(QBoxLayout::Up);
+			}
+			break;
+		case 1:
+			previewHintsLayout->setDirection(QBoxLayout::Up);
+			break;
+		case 2:
+			previewHintsLayout->setDirection(QBoxLayout::Down);
+			break;
+	}
+	
+}
 
 void HintsConfigurationUiHandler::updateHintsPreview()
 {
@@ -209,11 +243,11 @@ void HintsConfigurationUiHandler::updateHintsPreview()
 
 void HintsConfigurationUiHandler::deleteHintsPreview(Hint *hint)
 {
-	hint_manager->hints.removeAll(hint);
+	previewHints.removeAll(hint);
 	previewHintsLayout->removeWidget(static_cast<QWidget *>(hint));
 	hint->deleteLater();
 
-	foreach (Hint *h, hint_manager->hints)
+	foreach (Hint *h, previewHints)
 	{
 		if (h->getNotification()->type() == "Preview")
 			return;
@@ -224,15 +258,17 @@ void HintsConfigurationUiHandler::deleteHintsPreview(Hint *hint)
 
 void HintsConfigurationUiHandler::deleteAllHintsPreview()
 {
-	foreach(Hint *h, hint_manager->hints)
+	foreach (Hint *h, previewHints)
 	{
 		if (h->getNotification()->type() == "Preview")
 		{
-			hint_manager->hints.removeAll(h);
+			previewHints.removeAll(h);
 			previewHintsLayout->removeWidget(static_cast<QWidget *>(h));
 			h->deleteLater();
 		}
 	}
+	
+	previewHintsFrame->hide();
 }
 
 void HintsConfigurationUiHandler::toolTipClassesHighlighted(const QString &value)
@@ -267,6 +303,7 @@ void HintsConfigurationUiHandler::updateOverUserPreview()
 
 void HintsConfigurationUiHandler::mainConfigurationWindowDestroyed()
 {
+	deleteAllHintsPreview();
 	overUserConfigurationPreview = 0;
 }
 

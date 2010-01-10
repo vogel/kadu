@@ -23,7 +23,9 @@ class HintsConfigurationUiHandler : public ConfigurationUiHandler
 
 private:
 	QFrame *previewHintsFrame;
-	QLayout *previewHintsLayout;
+	QVBoxLayout *previewHintsLayout;
+
+	QList<Hint *> previewHints;
 
 	QSpinBox *minimumWidth;
 	QSpinBox *maximumWidth;
@@ -31,6 +33,7 @@ private:
 	QSpinBox *yPosition;
 	QCheckBox *ownPosition;
 	QComboBox *ownPositionCorner;
+	QComboBox *newHintUnder;
 	
 	HintOverUserConfigurationWindow *overUserConfigurationWindow;
 	QFrame *overUserConfigurationPreview;
@@ -38,6 +41,7 @@ private:
 	QLabel *overUserConfigurationTipLabel;
 	
 	QPushButton *configureOverUserHint;
+	void setPreviewLayoutDirection();
 
 private slots:
 	void minimumWidthChanged(int value);
@@ -58,7 +62,7 @@ signals:
 	void searchingForTrayPosition(QPoint &pos);
 
 public:
-	explicit HintsConfigurationUiHandler(QObject *parent = 0);
+	HintsConfigurationUiHandler(QObject *parent = 0, QString style = NULL);
 	virtual ~HintsConfigurationUiHandler();
 
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
