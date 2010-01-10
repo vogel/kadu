@@ -7,17 +7,18 @@
 *                                                                         *
  ***************************************************************************/
 
-#include <QDir>
-#include <QFile>
-#include <QRegExpValidator>
+#include <QtCore/QDir>
+#include <QtCore/QFile>
+#include <QtGui/QGridLayout>
+#include <QtNetwork/QHttp>
 
-#include "debug.h"
 #include "core/core.h"
 #include "configuration/configuration-file.h"
+#include "debug.h"
 #include "gui/actions/action-description.h"
+#include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/main-configuration-window.h"
-#include "gui/widgets/configuration/configuration-widget.h"
 #include "misc/misc.h"
 
 #include "server_monitor_window.h"

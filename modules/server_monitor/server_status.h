@@ -10,13 +10,12 @@
 #ifndef SERVERSTATUS_H
 #define SERVERSTATUS_H
 
-#include <QBuffer>
-#include <QLabel>
+#include <QtCore/QBuffer>
+#include <QtGui/QLabel>
+#include <QtGui/QWidget>
+
 #include <QtNetwork/QTcpSocket>
 #include <QtNetwork/QHostAddress>
-#include <QString>
-#include <QWidget>
-#include <QPixmap>
 
 class ServerStatus : public QWidget
 {

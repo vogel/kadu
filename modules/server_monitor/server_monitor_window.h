@@ -10,12 +10,16 @@
 #ifndef SERVER_MONITOR_WINDOW_H
 #define SERVER_MONITOR_WINDOW_H
 
-#include <QGridLayout>
-#include <QLabel>
-#include <QScrollArea>
-#include <QTimer>
-#include <QtNetwork/QHttp>
-#include <QPushButton>
+#include <QtCore/QTimer>
+#include <QtGui/QLabel>
+#include <QtGui/QScrollArea>
+#include <QtGui/QPushButton>
+
+
+class QHttp;
+class QGridLayout;
+class QBuffer;
+
 
 #include "configuration/configuration-aware-object.h"
 

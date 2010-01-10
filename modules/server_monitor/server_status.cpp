@@ -6,9 +6,10 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
-#include <QPainter>
-#include <QBuffer>
+#include <QtCore/QBuffer>
+#include <QtGui/QPainter>
+#include <QtCore/QString>
+#include <QtNetwork/QTcpSocket>
 
 #include "debug.h"
 #include "icons-manager.h"

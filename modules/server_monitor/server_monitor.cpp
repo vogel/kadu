@@ -6,15 +6,15 @@
  *   (at your option) any later version.                                   *
 *                                                                         *
  ***************************************************************************/
-#include<QCheckBox>
+#include<QtGui/QCheckBox>
 
 #include "debug.h"
 #include "core/core.h"
 #include "configuration/configuration-file.h"
 #include "gui/actions/action-description.h"
+#include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/main-configuration-window.h"
-#include "gui/widgets/configuration/configuration-widget.h"
 #include "misc/misc.h"
 
 #include "server_monitor.h"
@@ -64,6 +64,7 @@ ServerMonitor::ServerMonitor(QWidget *parent)
 void ServerMonitor::serverMonitorActionActivated(QAction *, bool)
 {
    dialog.show();
+   dialog.raise();
 }
 
 void ServerMonitor::mainConfigurationWindowCreated ( MainConfigurationWindow* mainConfigurationWindow )
