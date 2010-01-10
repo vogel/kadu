@@ -416,20 +416,6 @@ EmoticonSelectorButton::MovieViewer::MovieViewer(EmoticonSelectorButton *parent)
 	move(new_pos);
 }
 
-bool EmoticonSelectorButton::MovieViewer::event(QEvent *e)
-{
-	// FIXME make it work correctly (probably have to do it another way?)
-	//if (e->type() == QEvent::Wheel)
-	//{
-		//e->ignore();
-		//return false;
-	//}
-	//else
-	//{
-		return QLabel::event(e);
-	//}
-}
-
 void EmoticonSelectorButton::MovieViewer::mouseMoveEvent(QMouseEvent *e)
 {
 	QLabel::mouseMoveEvent(e);

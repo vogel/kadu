@@ -156,12 +156,12 @@ signals:
 
 };
 
+// TODO: make it ignoring wheel events so the widget can be scrolled with mouse wheel
 class EmoticonSelectorButton::MovieViewer : public QLabel
 {
 	Q_OBJECT
 
 protected:
-	bool event(QEvent *e);
 	void mouseMoveEvent(QMouseEvent *e);
 	void mouseReleaseEvent(QMouseEvent *e);
 
