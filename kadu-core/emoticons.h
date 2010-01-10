@@ -162,6 +162,7 @@ public:
 
 signals:
 	void clicked();
+
 };
 
 /**
@@ -170,8 +171,6 @@ signals:
 class EmoticonSelector : public QScrollArea
 {
 	Q_OBJECT
-
-	ChatEditBox *callingwidget;
 
 private slots:
 	void iconClicked(const QString &emoticon_string);
@@ -182,18 +181,14 @@ protected:
 public:
 	/**
 		Konstruktor tworz�cy list� emotikonek.
+		\param activatingWidget okno wywo�uj�ce
 		\param parent rodzic na kt�rym ma by� wy�wietlona lista
-		\param name nazwa obiektu
-		\param caller okno chat do ktorego ma by� wpisana wybrana emotikonka
 	**/
-	explicit EmoticonSelector(ChatEditBox *caller, QWidget *parent = 0);
+	explicit EmoticonSelector(const QWidget *activatingWidget, QWidget *parent = 0);
 
-public slots:
-	/**
-		Slot obs�uguj�cy poprawne wy�wietlenie listy emotikonek, wyr�wnanie do
-		okna wywo�uj�cego.
-	**/
-	void alignTo(QWidget *w);
+signals:
+	// TODO: rename
+	void emoticonSelect(const QString &);
 
 };
 

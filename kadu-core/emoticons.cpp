@@ -68,7 +68,7 @@ EmoticonsManager::EmoticonsListItem::EmoticonsListItem()
 }
 
 EmoticonsManager::EmoticonsManager() :
-	Themes("emoticons", "emots.txt"), Aliases(), Selector(), walker(0)
+		Themes("emoticons", "emots.txt"), Aliases(), Selector(), walker(0)
 
 {
 	kdebugf();
@@ -390,10 +390,11 @@ void EmoticonSelectorButton::mouseMoveEvent(QMouseEvent *e)
 	QLabel::mouseMoveEvent(e);
 	MovieViewer *viewer = new MovieViewer(this);
 	connect(viewer, SIGNAL(clicked()), this, SLOT(buttonClicked()));
+	viewer->show();
 }
 
 EmoticonSelectorButton::MovieViewer::MovieViewer(EmoticonSelectorButton *parent) :
-	QLabel(parent, Qt::Popup)
+		QLabel(parent, Qt::Popup)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	setMinimumSize(parent->sizeHint());
@@ -417,8 +418,6 @@ EmoticonSelectorButton::MovieViewer::MovieViewer(EmoticonSelectorButton *parent)
 	new_pos += QPoint(parent->sizeHint().width() / 2, parent->sizeHint().height() / 2);
 	new_pos -= QPoint(sizeHint().width() / 2, sizeHint().height() / 2);
 	move(new_pos);
-
-	show();
 }
 
 bool EmoticonSelectorButton::MovieViewer::event(QEvent *e)
@@ -448,8 +447,8 @@ void EmoticonSelectorButton::MovieViewer::mouseReleaseEvent(QMouseEvent *e)
 	emit clicked();
 }
 
-EmoticonSelector::EmoticonSelector(ChatEditBox *caller, QWidget *parent) :
-		QScrollArea(parent), callingwidget(caller)
+EmoticonSelector::EmoticonSelector(const QWidget *activatingWidget, QWidget *parent) :
+		QScrollArea(parent)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowFlags(Qt::Popup);
@@ -514,36 +513,13 @@ EmoticonSelector::EmoticonSelector(ChatEditBox *caller, QWidget *parent) :
 	if (row)
 		row->setAlignment(Qt::AlignLeft); // align the last row to left
 
-	setFrameStyle(QFrame::NoFrame);
-	setWidget(mainwidget);
-
 	delete [] btns;
-}
 
-void EmoticonSelector::iconClicked(const QString &emoticon_string)
-{
-	callingwidget->addEmoticon(emoticon_string);
-	close();
-}
+	// align to the activating widget and calculate proper size
 
-bool EmoticonSelector::event(QEvent *e)
-{
-	if (e->type() == QEvent::MouseButtonPress && !rect().contains(static_cast<QMouseEvent*>(e)->globalPos() - mapToGlobal(QPoint(0, 0))))
-	{
-		close();
-		return true;
-	}
-	else
-	{
-		return QScrollArea::event(e);
-	}
-}
-
-void EmoticonSelector::alignTo(QWidget *w)
-{
-	QPoint w_pos = w->mapToGlobal(QPoint(0,0));
+	QPoint w_pos = activatingWidget->mapToGlobal(QPoint(0,0));
 	QSize s_size = QApplication::desktop()->size();
-	QSize e_size = widget()->sizeHint();
+	QSize e_size = mainwidget->sizeHint();
 
 	bool is_on_left;
 	bool hscroll_needed = false;
@@ -553,7 +529,7 @@ void EmoticonSelector::alignTo(QWidget *w)
 	int vscrollbar_width = verticalScrollBar()->sizeHint().width();
 
 	// if the distance to the left edge of the screen equals or is bigger than the distance to the right edge
-	if (w_pos.x() >= s_size.width() - (w_pos.x() + w->width()))
+	if (w_pos.x() >= s_size.width() - (w_pos.x() + activatingWidget->width()))
 	{
 		is_on_left = true;
 		x = w_pos.x() - e_size.width();
@@ -568,18 +544,18 @@ void EmoticonSelector::alignTo(QWidget *w)
 	else
 	{
 		is_on_left = false;
-		x = w_pos.x() + w->width();
+		x = w_pos.x() + activatingWidget->width();
 		max_width = s_size.width() - x;
 		if (x + e_size.width() > s_size.width())
 		{
-			width = s_size.width() - (w_pos.x() + w->width());
+			width = s_size.width() - (w_pos.x() + activatingWidget->width());
 			hscroll_needed = true;
 		}
 	}
 
 	int height = e_size.height() + (hscroll_needed ? hscrollbar_height : 0);
 	// center vertically
-	int y = w_pos.y() + w->height()/2 - height/2;
+	int y = w_pos.y() + activatingWidget->height()/2 - height/2;
 	// if we exceed the bottom edge of the screen, let's align the widget to it
 	if (y + height > s_size.height())
 		y = s_size.height() - height;
@@ -599,8 +575,29 @@ void EmoticonSelector::alignTo(QWidget *w)
 			x -= add_width;
 	}
 
+	setFrameStyle(QFrame::NoFrame);
 	setFixedSize(QSize(width, height));
+	setWidget(mainwidget);
 	move(x, y);
+}
+
+void EmoticonSelector::iconClicked(const QString &emoticon_string)
+{
+	emit emoticonSelect(emoticon_string);
+	close();
+}
+
+bool EmoticonSelector::event(QEvent *e)
+{
+	if (e->type() == QEvent::MouseButtonPress && !rect().contains(static_cast<QMouseEvent*>(e)->globalPos() - mapToGlobal(QPoint(0, 0))))
+	{
+		close();
+		return true;
+	}
+	else
+	{
+		return QScrollArea::event(e);
+	}
 }
 
 PrefixNode::PrefixNode() :

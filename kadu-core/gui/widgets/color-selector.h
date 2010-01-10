@@ -55,40 +55,17 @@ private slots:
 	**/
 	void iconClicked(const QColor &color);
 
-protected:
-	/**
-		\fn void closeEvent(QCloseEvent*)
-		Funkcja obs�uguj�ca zamkni�cie okna wyboru kolor�w
-	**/
-	void closeEvent(QCloseEvent *);
-
 public:
 	/**
 		\fn ColorSelector(const QColor &defColor, QWidget* parent = 0, const char* name = 0)
 		Konstruktor obiektu do wyboru kolor�w
 		\param defColor
+		\param activatingWidget okno wywo�uj�ce
 		\param parent rodzic okna
-		\param name nazwa obiektu
 	**/
-	ColorSelector(const QColor &defColor, QWidget *parent = 0);
-
-public slots:
-	// TODO: WTF? remove!!
-	/**
-		\fn void alignTo(QWidget* w)
-	  	Slot wyr�wnuje pozycj� do widgeta
-		\param w wka�nik do obiektu ktorego b�dziemy wyr�wnywac
-	**/
-	void alignTo(QWidget *w);
+	explicit ColorSelector(const QColor &defColor, const QWidget *activatingWidget, QWidget *parent = 0);
 
 signals:
-	// TODO: rename
-	/**
-		\fn void aboutToClose()
-		Sygna� jest emitowany gdy zamykany jest wyb�r kolor�w
-	**/
-	void aboutToClose();
-
 	// TODO: rename
 	/**
 		\fn void colorSelect(const QColor&)
