@@ -187,7 +187,7 @@ void HintsConfigurationUiHandler::updateHintsPreview()
 	{
 		newPosition = QPoint(xPosition->value(), yPosition->value());
 
-		switch(ownPositionCorner->currentIndex())
+		switch (ownPositionCorner->currentIndex())
 		{
 			case 1: // "TopRight"
 				newPosition -= QPoint(preferredSize.width(), 0);
@@ -238,7 +238,7 @@ void HintsConfigurationUiHandler::updateHintsPreview()
 
 	previewHintsFrame->setGeometry(newPosition.x(), newPosition.y(), preferredSize.width(), preferredSize.height());
 
-	previewHintsFrame->setWindowOpacity(hint_manager->Opacity());
+	previewHintsFrame->setWindowOpacity(hint_manager->opacity());
 }
 
 void HintsConfigurationUiHandler::deleteHintsPreview(Hint *hint)

@@ -19,16 +19,17 @@ class HintManager : public Notifier, public AbstractToolTip, public Configuratio
 {
 	Q_OBJECT
 
-private:
 	QFrame *frame;
 	QTimer *hint_timer;
 	QFrame *tipFrame;
 	QVBoxLayout *layout;
-	QString style;
-	double opacity;
+	QString Style;
+	double Opacity;
 
 	QList<Hint *> hints;
 	QMap<QPair<Chat , QString>, Hint *> linkedHints;
+
+	HintsConfigurationUiHandler *UiHandler;
 
 	HintsConfigurationWidget *configurationWidget;
 	
@@ -116,8 +117,6 @@ public:
 	HintManager(QWidget *parent = 0);
 	~HintManager();
 
-	HintsConfigurationUiHandler *uiHandler;
-
 	virtual CallbackCapacity callbackCapacity() { return CallbackSupported; }
 	virtual void notify(Notification *notification);
 
@@ -130,9 +129,9 @@ public:
 
 	void prepareOverUserHint(QFrame *tipFrame, QLabel *iconLabel, QLabel *tipLabel, Buddy buddy);
 
-	QString Style() { return style; }
-	double Opacity() { return opacity; }
-	HintsConfigurationUiHandler *UiHandler() { return uiHandler; }
+	QString style() { return Style; }
+	double opacity() { return Opacity; }
+	HintsConfigurationUiHandler *uiHandler() { return UiHandler; }
 };
 
 extern HintManager *hint_manager;

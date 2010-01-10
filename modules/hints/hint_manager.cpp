@@ -54,19 +54,19 @@ HintManager::HintManager(QWidget *parent)
 #endif
 	frame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
-	style = QString("QFrame {border-width: %1px; border-style: solid; border-color: %2; border-radius: %3px;}")
+	Style = QString("QFrame {border-width: %1px; border-style: solid; border-color: %2; border-radius: %3px;}")
 			.arg(config_file.readNumEntry("Hints", "AllEvents_borderWidth", FRAME_WIDTH))
 			.arg(config_file.readColorEntry("Hints", "AllEvents_bdcolor").name())
 			.arg(BORDER_RADIUS);
-	frame->setStyleSheet(style);
+	frame->setStyleSheet(Style);
 
 	layout = new QVBoxLayout(frame);
 	layout->setSpacing(0);
 	layout->setMargin(FRAME_WIDTH);
 	layout->setSizeConstraint(QLayout::SetFixedSize);
 
-	opacity = config_file.readNumEntry("Hints", "AllEvents_transparency", 0);
-	opacity = 1 - opacity/100;
+	Opacity = config_file.readNumEntry("Hints", "AllEvents_transparency", 0);
+	Opacity = 1 - Opacity/100;
 
 	connect(hint_timer, SIGNAL(timeout()), this, SLOT(oneSecond()));
 	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetActivated(ChatWidget *)), this, SLOT(chatWidgetActivated(ChatWidget *)));
@@ -80,7 +80,7 @@ HintManager::HintManager(QWidget *parent)
 	NotificationManager::instance()->registerNotifier(this);
 	ToolTipClassManager::instance()->registerToolTipClass(QT_TRANSLATE_NOOP("@default", "Hints"), this);
 
-	uiHandler = new HintsConfigurationUiHandler(this, style);
+	UiHandler = new HintsConfigurationUiHandler(this, Style);
 
 	kdebugf2();
 }
@@ -117,14 +117,14 @@ void HintManager::hintUpdated()
 
 void HintManager::configurationUpdated()
 {
-	style = QString("QFrame {border-width: %1px; border-style: solid; border-color: %2; border-radius: %3px;}")
+	Style = QString("QFrame {border-width: %1px; border-style: solid; border-color: %2; border-radius: %3px;}")
 			.arg(config_file.readNumEntry("Hints", "AllEvents_borderWidth", FRAME_WIDTH))
 			.arg(config_file.readColorEntry("Hints", "AllEvents_bdcolor").name())
 			.arg(BORDER_RADIUS);
-	frame->setStyleSheet(style);
+	frame->setStyleSheet(Style);
 
-	opacity = config_file.readNumEntry("Hints", "AllEvents_transparency", 0);
-	opacity = 1 - opacity/100;
+	Opacity = config_file.readNumEntry("Hints", "AllEvents_transparency", 0);
+	Opacity = 1 - Opacity/100;
 
 	setHint();
 }
@@ -204,7 +204,7 @@ void HintManager::setHint()
 
 	frame->setGeometry(newPosition.x(), newPosition.y(), preferredSize.width(), preferredSize.height());
 
-	frame->setWindowOpacity(opacity);
+	frame->setWindowOpacity(Opacity);
 
 	kdebugf2();
 }
