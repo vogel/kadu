@@ -74,14 +74,14 @@ ColorSelector::ColorSelector(const QColor &defColor, const QWidget *activatingWi
 	{
 		ColorSelectorButton *btn = new ColorSelectorButton(color, 1, this);
 		grid->addWidget(btn, i / selector_width, i % selector_width);
-		connect(btn, SIGNAL(clicked(const QColor&)), this, SLOT(iconClicked(const QColor&)));
+		connect(btn, SIGNAL(clicked(const QColor &)), this, SLOT(iconClicked(const QColor &)));
 		++i;
 	}
 	if (!qcolors.contains(defColor))
 	{
 		ColorSelectorButton* btn = new ColorSelectorButton(defColor, 4, this);
 		grid->addWidget(btn, 4, 0, 1, 4);
-		connect(btn, SIGNAL(clicked(const QColor&)), this, SLOT(iconClicked(const QColor&)));
+		connect(btn, SIGNAL(clicked(const QColor &)), this, SLOT(iconClicked(const QColor &)));
 	}
 
 	// oblicz pozycj� widgetu do kt�rego r�wnamy

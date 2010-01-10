@@ -63,7 +63,7 @@ public:
 		\param activatingWidget okno wywo�uj�ce
 		\param parent rodzic okna
 	**/
-	explicit ColorSelector(const QColor &defColor, const QWidget *activatingWidget, QWidget *parent = 0);
+	ColorSelector(const QColor &defColor, const QWidget *activatingWidget, QWidget *parent = 0);
 
 signals:
 	// TODO: rename

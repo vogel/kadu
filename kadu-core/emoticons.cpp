@@ -250,7 +250,7 @@ void EmoticonsManager::expandEmoticons(HtmlDocument &doc, const QColor &bgcolor,
 		return;
 
 	static bool emotsFound = false;
-	const static QString emotTemplate("<img emoticon=\"1\" title=\"%1\" src=\"file:///%2\" bgcolor=\"%3\" animated=\"%4\"/>");
+	const static QString emotTemplate("<img emoticon=\"1\" title=\"%1\" src=\"file:///%2\" bgcolor=\"%3\"/>");
 
 	if (!walker)
 	{
@@ -300,10 +300,7 @@ void EmoticonsManager::expandEmoticons(HtmlDocument &doc, const QColor &bgcolor,
 					// if so, then replace that previous occurrence
 					// with html tag
 					QString new_text;
-					if (animated)
-						new_text = narg(emotTemplate, Aliases[lastEmot].doubleEscapedAlias, Aliases[lastEmot].anim, bgcolor.name(), QString::number(animated));
-					else
-						new_text = narg(emotTemplate, Aliases[lastEmot].doubleEscapedAlias, Aliases[lastEmot].stat, bgcolor.name(), QString::number(animated));
+					new_text = narg(emotTemplate, Aliases[lastEmot].doubleEscapedAlias, animated ? Aliases[lastEmot].anim : Aliases[lastEmot].stat, bgcolor.name());
 
 					doc.splitElement(e_i, lastBegin, Aliases[lastEmot].alias.length());
 					doc.setElementValue(e_i, new_text, true);
@@ -323,10 +320,7 @@ void EmoticonsManager::expandEmoticons(HtmlDocument &doc, const QColor &bgcolor,
 		if (lastEmot >= 0)
 		{
 			QString new_text;
-			if (animated)
-				new_text = narg(emotTemplate, Aliases[lastEmot].doubleEscapedAlias, Aliases[lastEmot].anim, bgcolor.name(), QString::number(animated));
-			else
-				new_text = narg(emotTemplate, Aliases[lastEmot].doubleEscapedAlias, Aliases[lastEmot].stat, bgcolor.name(), QString::number(animated));
+			new_text = narg(emotTemplate, Aliases[lastEmot].doubleEscapedAlias, animated ? Aliases[lastEmot].anim : Aliases[lastEmot].stat, bgcolor.name());
 
 			doc.splitElement(e_i, lastBegin, Aliases[lastEmot].alias.length());
 			doc.setElementValue(e_i, new_text, true);
@@ -485,7 +479,7 @@ EmoticonSelector::EmoticonSelector(const QWidget *activatingWidget, QWidget *par
 			total_height += btns[i]->sizeHint().height() + 1;
 		cur_width += btn_width;
 
-		connect(btns[i], SIGNAL(clicked(const QString&)), this, SLOT(iconClicked(const QString&)));
+		connect(btns[i], SIGNAL(clicked(const QString &)), this, SLOT(iconClicked(const QString &)));
 	}
 
 	if (total_height < selector_width - 80)
