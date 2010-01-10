@@ -25,16 +25,21 @@ private:
 	QFrame *tipFrame;
 	QVBoxLayout *layout;
 	QString style;
-
-	HintsConfigurationWidget *configurationWidget;
-
-	QMap<QPair<Chat , QString>, Hint *> linkedHints;
-	
 	double opacity;
 
+	QList<Hint *> hints;
+	QMap<QPair<Chat , QString>, Hint *> linkedHints;
+
+	HintsConfigurationWidget *configurationWidget;
+	
 	void processButtonPress(const QString &buttonName, Hint *hint);
 
 	void showNewMessage(const QString &configurationDirective, const QString &title, const QString &contentTitle, BuddyList buddies, const QString &msg);
+
+	/**
+		ustala r�g, od kt�rego b�dzie liczona pozycja grupy dymk�w
+	**/
+	void setLayoutDirection();
 
 	// TODO: usun�� w 0.6
 	void realCopyConfiguration(const QString &fromCategory, const QString &fromHint, const QString &toHint);
@@ -111,9 +116,8 @@ public:
 	HintManager(QWidget *parent = 0);
 	~HintManager();
 
-	HintsConfigurationUiHandler *UiHandler;
-	QList<Hint *> hints;
-	
+	HintsConfigurationUiHandler *uiHandler;
+
 	virtual CallbackCapacity callbackCapacity() { return CallbackSupported; }
 	virtual void notify(Notification *notification);
 
@@ -126,13 +130,9 @@ public:
 
 	void prepareOverUserHint(QFrame *tipFrame, QLabel *iconLabel, QLabel *tipLabel, Buddy buddy);
 
-	/**
-		ustala r�g, od kt�rego b�dzie liczona pozycja grupy dymk�w
-	**/
-	void setLayoutDirection();
-
 	QString Style() { return style; }
 	double Opacity() { return opacity; }
+	HintsConfigurationUiHandler *UiHandler() { return uiHandler; }
 };
 
 extern HintManager *hint_manager;

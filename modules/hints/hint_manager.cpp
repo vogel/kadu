@@ -39,7 +39,7 @@
 
 HintManager::HintManager(QWidget *parent)
 	: Notifier("Hint", "Hints", IconsManager::instance()->loadIcon("OpenChat"), parent), AbstractToolTip(),
-	hint_timer(new QTimer(this)),
+	hint_timer(new QTimer(this)), 
 	hints(), tipFrame(0)
 {
 	kdebugf();
@@ -79,6 +79,8 @@ HintManager::HintManager(QWidget *parent)
 
 	NotificationManager::instance()->registerNotifier(this);
 	ToolTipClassManager::instance()->registerToolTipClass(QT_TRANSLATE_NOOP("@default", "Hints"), this);
+
+	uiHandler = new HintsConfigurationUiHandler(this, style);
 
 	kdebugf2();
 }
