@@ -126,7 +126,7 @@ void TlenProtocol::fetchAvatars(QString jid, QString type, QString md5)
 {
 	kdebugf();
 
-	Contact contact = ContactManager::instance()->byId(account(), jid, true);
+	Contact contact = ContactManager::instance()->byId(account(), jid, ActionCreate);
 	CurrentAvatarService->fetchAvatar(contact);
 
 	kdebugf2();
@@ -333,7 +333,7 @@ void TlenProtocol::chatMsgReceived(QDomNode n)
 
 	//		w->displayMsg(Tlen->decode(body.toUtf8()),timeStamp);
 
-	Contact contact = ContactManager::instance()->byId(account(), TlenClient->decode(from), true);
+	Contact contact = ContactManager::instance()->byId(account(), TlenClient->decode(from), ActionCreate);
 	ContactSet contacts = ContactSet(contact);
 
 	time_t msgtime = timeStamp.toTime_t();
@@ -501,8 +501,8 @@ void TlenProtocol::itemReceived(QString jid, QString name, QString subscription,
 	kdebugf();
 	kdebugm(KDEBUG_WARNING, "Tlen contact rcv %s\n", qPrintable(jid));
 
-	Contact contact = ContactManager::instance()->byId(account(), jid, true);
-	Buddy buddy = BuddyManager::instance()->byContact(contact, true);
+	Contact contact = ContactManager::instance()->byId(account(), jid, ActionCreate);
+	Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreate);
 
 	if (name.isEmpty())
 	{/*buddy.setDisplay(jid);*/} // BM sets display
@@ -561,8 +561,8 @@ void TlenProtocol::presenceChanged(QString from, QString newstatus, QString desc
 
 	// find id
 	
-	Contact contact = ContactManager::instance()->byId(account(), jid, true);
-	Buddy buddy = BuddyManager::instance()->byContact(contact, true);
+	Contact contact = ContactManager::instance()->byId(account(), jid, ActionCreate);
+	Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreate);
 
 	if (buddy.isAnonymous())
 		buddy.setAnonymous(false);
@@ -570,7 +570,7 @@ void TlenProtocol::presenceChanged(QString from, QString newstatus, QString desc
 	// id resource add new contact
 	if (jid != from)
 	{
-		Contact contactRes = ContactManager::instance()->byId(account(), from, true);
+		Contact contactRes = ContactManager::instance()->byId(account(), from, ActionCreate);
 		contactRes.setOwnerBuddy(buddy);
 
 		Status oldStatus = contactRes.currentStatus();
