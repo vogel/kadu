@@ -1,7 +1,7 @@
 #ifndef MEDIA_PLAYER_STATUS_CHANGER_H
 #define MEDIA_PLAYER_STATUS_CHANGER_H
 
-#include "status_changer.h"
+#include "status/status-changer.h"
 
 class MediaPlayerStatusChanger : public StatusChanger
 {
@@ -14,6 +14,7 @@ public:
 		DescriptionAppend,
 		PlayerTagReplace
 	};
+
 private:
 	QString title;
 	bool disabled;
@@ -24,7 +25,7 @@ public:
 	MediaPlayerStatusChanger();
 	virtual ~MediaPlayerStatusChanger();
 
-	virtual void changeStatus(UserStatus &status);
+	virtual void changeStatus(StatusContainer *container, Status &status);
 
 	void setTitle(const QString &newTitle);
 	void setDisable(bool disable);
