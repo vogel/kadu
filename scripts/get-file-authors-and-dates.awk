@@ -1,19 +1,23 @@
 BEGIN {
 	FS = "\t"
+	ALIAS["Rafał Malinowski (malinowskirafal@wp.pl)"] = "Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)"
 }
 
 {
-	if ($2 in AUTHORS) {
-		AUTHORS[$2] = AUTHORS[$2] ", " substr($1, 0, 4)
+	author = $2
+	if (author in ALIAS)
+		author = ALIAS[author]
+
+	# do not join dates, use 2002, 2003, 2004 instead of 2002-2004
+	if (author in AUTHORS) {
+		AUTHORS[author] = AUTHORS[author] ", " substr($1, 0, 4)
 	} else {
-		AUTHORS[$2] = substr($1, 0, 4)
+		AUTHORS[author] = substr($1, 0, 4)
 	}
 }
 
 END {
 	for (author in AUTHORS) {
-		years = AUTHORS[author]
-		item = sprintf("%s %s", years, author)
-		printf sprintf(" *   Copyright %-60s *\n", item)
+		printf sprintf(" * Copyright %s %s\n", AUTHORS[author], author)
 	}
 }
