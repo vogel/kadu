@@ -13,6 +13,7 @@ BEGIN {
 END {
 	for (author in AUTHORS) {
 		years = AUTHORS[author]
-		printf "Copyright %s %s\n", years, author
+		item = sprintf("%s %s", years, author)
+		printf sprintf(" *   Copyright %-60s *\n", item)
 	}
 }

@@ -3,6 +3,9 @@
 BASEDIR=${0%/*}
 FILE=$1
 
-AWK_SCRIPT=$BASEDIR/get-file-authors-and-dates.awk
+AWK_EXTRACT=$BASEDIR/get-file-authors-and-dates.awk
+AWK_INSERT=$BASEDIR/replace-copyright-block.awk
 
-git --no-pager log --date=short --pretty=format:"%ad%x09%an (%ae)" $FILE | cut -c1,2,3,4,11- | sort | uniq | awk -f $AWK_SCRIPT
+AUTHORS=`git --no-pager log --date=short --pretty=format:"%ad%x09%an (%ae)" $FILE | cut -c1,2,3,4,11- | sort | uniq | awk -f $AWK_EXTRACT`
+awk --assign AUTHORS="$AUTHORS" -f $AWK_INSERT $FILE > $FILE.copyright
+mv $FILE.copyright $FILE
