@@ -366,7 +366,7 @@ EmoticonSelectorButton::EmoticonSelectorButton(const QString &emoticon_string, c
 		AnimPath = StaticPath;
 
 	QPixmap p(StaticPath);
-	if (p.height() > 18)
+	if ((EmoticonsScaling)config_file.readNumEntry("Chat","EmoticonsScaling") & EMOTS_SCALE_STATIC && p.height() > 18)
 		p = p.scaledToHeight(18, Qt::SmoothTransformation);
 	setPixmap(p);
 	setMouseTracking(true);
@@ -405,6 +405,8 @@ EmoticonSelectorButton::MovieViewer::MovieViewer(EmoticonSelectorButton *parent)
 
 	QMovie *movie = new QMovie(parent->AnimPath);
 	setMovie(movie);
+	if((EmoticonsScaling)config_file.readNumEntry("Chat","EmoticonsScaling") & EMOTS_SCALE_ANIMATED)
+		movie->setScaledSize(parent->pixmap()->size());
 	movie->start();
 
 	// center on parent

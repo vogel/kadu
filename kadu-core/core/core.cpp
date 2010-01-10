@@ -123,6 +123,7 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("Chat", "ConfirmChatClear", true);
 	config_file.addVariable("Chat", "EmoticonsPaths", "");
 	config_file.addVariable("Chat", "EmoticonsStyle", EMOTS_ANIMATED);
+	config_file.addVariable("Chat", "EmoticonsScaling", EMOTS_SCALE_STATIC);
 	config_file.addVariable("Chat", "EmoticonsTheme", "penguins");
 	config_file.addVariable("Chat", "FoldLink", true);
 	config_file.addVariable("Chat", "LinkFoldTreshold", 50);

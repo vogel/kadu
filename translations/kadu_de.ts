@@ -690,6 +690,26 @@ It&apos;s a high security risk!</source>
         <translation>Geben Sie den Pfad zu Smilies an</translation>
     </message>
     <message>
+        <source>Selector behavior</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose the way emoticons are scaled in the selector</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Scale all emoticons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Scale only static emoticons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Don't scale emoticons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Advanced...</source>
         <translation>Erweitert...</translation>
     </message>

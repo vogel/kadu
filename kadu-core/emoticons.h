@@ -21,6 +21,14 @@ enum EmoticonsStyle
 	EMOTS_ANIMATED
 };
 
+enum EmoticonsScaling
+{
+	EMOTS_NO_SCALING,
+	EMOTS_SCALE_STATIC,
+	EMOTS_SCALE_ANIMATED,
+	EMOTS_SCALE_ALL
+};
+
 /**
 	Menad�er emotikon�w
 **/

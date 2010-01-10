@@ -191,6 +191,12 @@ Text is plain black." />
 					<item value="1" caption="Static" />
 					<item value="0" caption="None" />
 				</combo-box>
+				<combo-box caption="Selector behavior" config-section="Chat" config-item="EmoticonsScaling" id="emoticonsScaling"
+					   tool-tip="Choose the way emoticons are scaled in the selector" >
+					<item value="3" caption="Scale all emoticons" />
+					<item value="1" caption="Scale only static emoticons" />
+					<item value="0" caption="Don't scale emoticons" />
+				</combo-box>
 				<combo-box caption="Emoticons theme" config-section="Chat" config-item="EmoticonsTheme" id="emoticonsTheme"
 					   tool-tip="Choose emoticons theme" />
 				<path-list-edit caption="Emoticons paths" config-section="Chat" config-item="EmoticonsPaths" id="emoticonsPaths"

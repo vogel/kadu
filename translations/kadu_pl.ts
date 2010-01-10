@@ -690,6 +690,26 @@ Jest to wysoce ryzykowne!</translation>
         <translation>Podaj ścieżki do zestawów emotikon</translation>
     </message>
     <message>
+        <source>Selector behavior</source>
+        <translation>Zachowanie selektora</translation>
+    </message>
+    <message>
+        <source>Choose the way emoticons are scaled in the selector</source>
+        <translation>Wybierz, jak emotikony mają być skalowane w oknie selektora</translation>
+    </message>
+    <message>
+        <source>Scale all emoticons</source>
+        <translation>Skaluj wszystkie emotikony</translation>
+    </message>
+    <message>
+        <source>Scale only static emoticons</source>
+        <translation>Skaluj tylko statyczne emotikony</translation>
+    </message>
+    <message>
+        <source>Don't scale emoticons</source>
+        <translation>Nie skaluj emotikon</translation>
+    </message>
+    <message>
         <source>Advanced...</source>
         <translation>Zaawansowane...</translation>
     </message>

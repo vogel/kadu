@@ -689,6 +689,26 @@ Attention danger!
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Selector behavior</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose the way emoticons are scaled in the selector</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Scale all emoticons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Scale only static emoticons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Don't scale emoticons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Advanced...</source>
         <translation type="unfinished"></translation>
     </message>
