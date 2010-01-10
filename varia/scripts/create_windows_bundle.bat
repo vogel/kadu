@@ -1,7 +1,8 @@
 @ECHO OFF
 
+set QT_VERSION="4.5.3"
 set DESTINATION="C:\Program Files\Kadu-0.6.5.4"
-set QT_DIR="C:\Qt\4.5.3\bin\"
+set QT_DIR="C:\Qt\%QT_VERSION%\bin\"
 set LIBGADU_DIR="c:\Qt\libgadu-win32\"
 set LIBSNDFILE_DIR="C:\Qt\libsndfile\"
 set OPENSSL_DIR="C:\Qt\mingw32-openssl-0.9.8j\"
@@ -39,8 +40,10 @@ xcopy modules\gg_avatars\data\infopanel\* %DESTINATION%\syntax\infopanel\ /C /H 
 ECHO Copying modules
 cd modules
 for /D %%F in (*) do (
-	IF EXIST %%F\*.dll (
-		xcopy %%F\*.dll  %DESTINATION%\modules\ /C /H /R /Y  >> install.log
+	IF EXIST %%F\*.a (
+		IF EXIST %%F\*.dll (
+		  xcopy %%F\*.dll  %DESTINATION%\modules\ /C /H /R /Y  >> install.log
+		)
 		xcopy %%F\*.desc %DESTINATION%\modules\ /C /H /R /Y  >> install.log
 		IF EXIST %%F\configuration\*.ui (
 		  xcopy %%F\configuration\*.ui %DESTINATION%\modules\configuration\ /C /H /R /Y  >> install.log
@@ -53,19 +56,22 @@ for /D %%F in (*) do (
 		)
 	)
 )
-xcopy docking\configuration\docking.ui %DESTINATION%\modules\configuration\ /C /H /R /Y  >> install.log
-xcopy docking\*.qm %DESTINATION%\modules\translations\ /C /H /R /Y  >> install.log
 cd .. 
 
 ECHO Copying Qt
-xcopy %QT_DIR%Qt3Support4.dll  %DESTINATION%\ /C /H /R /Y  >> install.log
-xcopy %QT_DIR%QtCore4.dll      %DESTINATION%\ /C /H /R /Y  >> install.log
-xcopy %QT_DIR%QtGui4.dll       %DESTINATION%\ /C /H /R /Y  >> install.log
-xcopy %QT_DIR%QtNetwork4.dll   %DESTINATION%\ /C /H /R /Y  >> install.log
-xcopy %QT_DIR%QtSql4.dll       %DESTINATION%\ /C /H /R /Y  >> install.log
-xcopy %QT_DIR%QtWebKit4.dll    %DESTINATION%\ /C /H /R /Y  >> install.log
-xcopy %QT_DIR%QtXml4.dll       %DESTINATION%\ /C /H /R /Y  >> install.log
-xcopy %QT_DIR%mingwm10.dll     %DESTINATION%\ /C /H /R /Y  >> install.log
+xcopy %QT_DIR%Qt3Support4.dll    %DESTINATION%\ /C /H /R /Y  >> install.log
+xcopy %QT_DIR%QtCore4.dll        %DESTINATION%\ /C /H /R /Y  >> install.log
+xcopy %QT_DIR%QtGui4.dll         %DESTINATION%\ /C /H /R /Y  >> install.log
+xcopy %QT_DIR%QtNetwork4.dll     %DESTINATION%\ /C /H /R /Y  >> install.log
+xcopy %QT_DIR%QtSql4.dll         %DESTINATION%\ /C /H /R /Y  >> install.log
+xcopy %QT_DIR%QtWebKit4.dll      %DESTINATION%\ /C /H /R /Y  >> install.log
+xcopy %QT_DIR%QtXml4.dll         %DESTINATION%\ /C /H /R /Y  >> install.log
+xcopy %QT_DIR%mingwm10.dll       %DESTINATION%\ /C /H /R /Y  >> install.log
+IF (%QT_VERSION%)==("4.6.0") (
+xcopy %QT_DIR%QtXmlPatterns4.dll %DESTINATION%\ /C /H /R /Y  >> install.log
+xcopy %QT_DIR%phonon4.dll        %DESTINATION%\ /C /H /R /Y  >> install.log
+xcopy %QT_DIR%libgcc_s_dw2-1.dll %DESTINATION%\ /C /H /R /Y  >> install.log
+)
 
 ECHO Copying Qt plugins
 xcopy %QT_DIR%..\plugins\imageformats\qgif4.dll  %DESTINATION%\plugins\imageformats\ /C /H /R /Y  >> install.log
