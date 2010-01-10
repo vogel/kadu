@@ -18,8 +18,15 @@
 
 #include "chat-details-simple.h"
 
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Creates empty ChatDetailsSimple object.
+ * @param chatData Chat object that will be decribed by this object
+ *
+ * Creates empty ChatDetailsSimple object assigned to chatData object.
+ */
 ChatDetailsSimple::ChatDetailsSimple(ChatShared *chatData) :
-		ChatDetails(chatData), CurrentContact(Contact::null)
+		ChatDetails(chatData)
 {
 }
 
@@ -27,6 +34,13 @@ ChatDetailsSimple::~ChatDetailsSimple()
 {
 }
 
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Loads ChatDetailsSimple object from storage.
+ *
+ * Loads ChatDetailsSimple object from the same storage assigned Chat object is
+ * using. The only data loaded is assigned contact.
+ */
 void ChatDetailsSimple::load()
 {
 	if (!isValidStorage())
@@ -56,6 +70,13 @@ void ChatDetailsSimple::load()
 	mainData()->refreshTitle();
 }
 
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Stored ChatDetailsSimple object to storage.
+ *
+ * Stored ChatDetailsSimple object to the same storage assigned Chat object is
+ * using. The only data stored is assigned contact.
+ */
 void ChatDetailsSimple::store()
 {
 	if (!isValidStorage())
@@ -67,17 +88,41 @@ void ChatDetailsSimple::store()
 		storeValue("Contact", CurrentContact.uuid().toString());
 }
 
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Returns true if assigned contact is valid.
+ * @return true if assigned contact is valid
+ *
+ * Returns true if assigned contact is valid. No invalid chats (without contacts)
+ * will be stored thanks to this method.
+ */
 bool ChatDetailsSimple::shouldStore()
 {
 	return StorableObject::shouldStore()
 			&& !CurrentContact.uuid().isNull();
 }
 
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Returns true if assigned contact is valid.
+ * @return true if assigned contact is valid
+ *
+ * Returns true if assigned contact is valid. No invalid chats (without contacts)
+ * will be stored thanks to this method.
+ */
 ChatType * ChatDetailsSimple::type() const
 {
 	return ChatTypeManager::instance()->chatType("Simple");
 }
 
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Returns set of contacts of this chat (just assigned contact).
+ * @return set of contacts of this chat (just assigned contact)
+ *
+ * Returns set of contacts of this chat (just assigned contact or empty set if
+ * contact is not vaid).
+ */
 ContactSet ChatDetailsSimple::contacts() const
 {
 	if (CurrentContact.isNull())
@@ -85,6 +130,13 @@ ContactSet ChatDetailsSimple::contacts() const
 	return ContactSet(CurrentContact);
 }
 
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Returns name of this chat.
+ * @return name of this chat
+ *
+ * Returns name of this chat (which is display name of assigend contact buddy).
+ */
 QString ChatDetailsSimple::name() const
 {
 	if (CurrentContact.isNull())
@@ -92,6 +144,13 @@ QString ChatDetailsSimple::name() const
 	return BuddyManager::instance()->byContact(CurrentContact, ActionCreateAndAdd).display();
 }
 
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Assigns contact to this chat.
+ * @param contact assigned contact
+ *
+ * Assigns contact to this chat.
+ */
 void ChatDetailsSimple::setContact(Contact contact)
 {
 	CurrentContact = contact;

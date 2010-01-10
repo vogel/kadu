@@ -14,6 +14,19 @@
 
 #include "chat/chat-details.h"
 
+/**
+ * @addtogroup Chat
+ * @{
+ */
+
+/**
+ * @class ChatDetailsSimple
+ * @author Rafal 'Vogel' Malinowski
+ * @short Chat data specyfic to 'simple' chat type.
+ *
+ * Class contains one Contact object. Chat name is set to this Contact's
+ * Buddy's display name, chat title is that name with current description.
+ */
 class ChatDetailsSimple : public ChatDetails
 {
 	Q_OBJECT
@@ -36,8 +49,11 @@ public:
 
 	void setContact(Contact contact);
 	Contact contact();
-	void chatData();
 
 };
+
+/**
+ * @}
+ */
 
 #endif // CHAT_DETAILS_SIMPLE_H
