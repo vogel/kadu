@@ -117,7 +117,7 @@ void BuddyInfoPanel::displayBuddy(Buddy buddy)
 	doc.parseHtml(Parser::parse(Syntax, MyBuddy.prefferedAccount(), MyBuddy));
 	doc.convertUrlsToHtml();
 	doc.convertMailToHtml();
-	if (EMOTS_NONE != (EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") &&
+	if (EmoticonsStyleNone != (EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") &&
 			config_file.readBoolEntry("General", "ShowEmotPanel"))
 		EmoticonsManager::instance()->expandEmoticons(doc,
 				config_file.readColorEntry("Look", "InfoPanelBgColor"),

@@ -246,7 +246,7 @@ void EmoticonsManager::expandEmoticons(HtmlDocument &doc, const QColor &bgcolor,
 {
 	kdebugf();
 
-	if (EMOTS_NONE == style)
+	if (EmoticonsStyleNone == style)
 		return;
 
 	static bool emotsFound = false;
@@ -267,7 +267,7 @@ void EmoticonsManager::expandEmoticons(HtmlDocument &doc, const QColor &bgcolor,
 	emotsFound = true;
 
 	// check in config if user wants animated emots
-	bool animated = style == EMOTS_ANIMATED;
+	bool animated = style == EmoticonsStyleAnimated;
 
 	kdebugm(KDEBUG_INFO, "Expanding emoticons...\n");
 	// iterate through parsed html parts of message
@@ -362,15 +362,15 @@ QString EmoticonsManager::selectorStaticPath(int emot_num) const
 EmoticonSelectorButton::EmoticonSelectorButton(const QString &emoticon_string, const QString &anim_path, const QString &static_path, QWidget *parent) :
 		QLabel(parent), EmoticonString(emoticon_string), AnimPath(anim_path), StaticPath(static_path)
 {
-	if ((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle") != EMOTS_ANIMATED)
+	if ((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle") != EmoticonsStyleAnimated)
 		AnimPath = StaticPath;
 
 	QPixmap p(StaticPath);
-	if ((EmoticonsScaling)config_file.readNumEntry("Chat","EmoticonsScaling") & EMOTS_SCALE_STATIC && p.height() > 18)
+	if ((EmoticonsScaling)config_file.readNumEntry("Chat","EmoticonsScaling") & EmoticonsScalingStatic && p.height() > 18)
 		p = p.scaledToHeight(18, Qt::SmoothTransformation);
 	setPixmap(p);
 	setMouseTracking(true);
-	setMargin(2);
+	setMargin(4);
 	setFixedSize(sizeHint());
 }
 
@@ -405,7 +405,7 @@ EmoticonSelectorButton::MovieViewer::MovieViewer(EmoticonSelectorButton *parent)
 
 	QMovie *movie = new QMovie(parent->AnimPath);
 	setMovie(movie);
-	if((EmoticonsScaling)config_file.readNumEntry("Chat","EmoticonsScaling") & EMOTS_SCALE_ANIMATED)
+	if((EmoticonsScaling)config_file.readNumEntry("Chat","EmoticonsScaling") & EmoticonsScalingAnimated)
 		movie->setScaledSize(parent->pixmap()->size());
 	movie->start();
 
@@ -442,16 +442,23 @@ EmoticonSelector::EmoticonSelector(const QWidget *activatingWidget, QWidget *par
 		return;
 	}
 
+	QWidget *mainwidget = new QWidget(static_cast<QWidget *>(parent));
+
+	addEmoticonButtons(selector_count, mainwidget);
+	calculateSizeAndPosition(activatingWidget, mainwidget);
+}
+
+void EmoticonSelector::addEmoticonButtons(int num_emoticons, QWidget *mainwidget)
+{
 	int selector_width = 460;
 	int total_height = 0, cur_width = 0, btn_width = 0;
-	EmoticonSelectorButton **btns = new EmoticonSelectorButton*[selector_count];
-	QWidget *mainwidget = new QWidget(parent);
+	EmoticonSelectorButton **btns = new EmoticonSelectorButton*[num_emoticons];
 	QVBoxLayout *layout = new QVBoxLayout(mainwidget);
 	QHBoxLayout *row = 0;
 	layout->setContentsMargins(QMargins());
 	layout->setSpacing(0);
 
-	for (int i = 0; i < selector_count; ++i)
+	for (int i = 0; i < num_emoticons; ++i)
 	{
 		btns[i] = new EmoticonSelectorButton(
 			EmoticonsManager::instance()->selectorString(i),
@@ -476,7 +483,7 @@ EmoticonSelector::EmoticonSelector(const QWidget *activatingWidget, QWidget *par
 		selector_width += 40;
 
 	cur_width = 0;
-	for (int i = 0; i < selector_count; ++i)
+	for (int i = 0; i < num_emoticons; ++i)
 	{
 		btn_width = btns[i]->sizeHint().width();
 
@@ -496,9 +503,10 @@ EmoticonSelector::EmoticonSelector(const QWidget *activatingWidget, QWidget *par
 		row->setAlignment(Qt::AlignLeft); // align the last row to left
 
 	delete [] btns;
+}
 
-	// align to the activating widget and calculate proper size
-
+void EmoticonSelector::calculateSizeAndPosition(const QWidget *activatingWidget, QWidget *mainwidget)
+{
 	QPoint w_pos = activatingWidget->mapToGlobal(QPoint(0,0));
 	QSize s_size = QApplication::desktop()->size();
 	QSize e_size = mainwidget->sizeHint();
@@ -576,10 +584,7 @@ bool EmoticonSelector::event(QEvent *e)
 		close();
 		return true;
 	}
-	else
-	{
-		return QScrollArea::event(e);
-	}
+	return QScrollArea::event(e);
 }
 
 PrefixNode::PrefixNode() :

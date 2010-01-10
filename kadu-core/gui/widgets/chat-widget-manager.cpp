@@ -197,7 +197,7 @@ void ChatWidgetManager::insertEmoticonActionEnabled()
 {
  	foreach (Action *action, Actions->insertEmoticon()->actions())
 	{
-		if ((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle") == EMOTS_NONE)
+		if ((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle") == EmoticonsStyleNone)
 		{
 			action->setToolTip(tr("Insert emoticon - enable in configuration"));
 			action->setEnabled(false);

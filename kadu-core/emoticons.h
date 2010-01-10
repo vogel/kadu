@@ -16,17 +16,17 @@ class EmotsWalker;
 
 enum EmoticonsStyle
 {
-	EMOTS_NONE,
-	EMOTS_STATIC,
-	EMOTS_ANIMATED
+	EmoticonsStyleNone,
+	EmoticonsStyleStatic,
+	EmoticonsStyleAnimated
 };
 
 enum EmoticonsScaling
 {
-	EMOTS_NO_SCALING,
-	EMOTS_SCALE_STATIC,
-	EMOTS_SCALE_ANIMATED,
-	EMOTS_SCALE_ALL
+	EmoticonsScalingNone,
+	EmoticonsScalingStatic,
+	EmoticonsScalingAnimated,
+	EmoticonsScalingAll
 };
 
 /**
@@ -179,6 +179,9 @@ signals:
 class EmoticonSelector : public QScrollArea
 {
 	Q_OBJECT
+
+	void addEmoticonButtons(int num_emoticons, QWidget *mainwidget);
+	void calculateSizeAndPosition(const QWidget *activatingWidget, QWidget *mainwidget);
 
 private slots:
 	void iconClicked(const QString &emoticon_string);
