@@ -15,10 +15,10 @@ endif (COMMAND cmake_policy)
 
 add_library (dragon_mediaplayer ${dragon_mediaplayer} ${SOURCES} ${MOC_FILES})
 
-#target_link_libraries (dragon_mediaplayer -lQtDbus)
+target_link_libraries (dragon_mediaplayer ${QT_QTDBUS_LIBRARY})
 
 if (dragon_mediaplayer STREQUAL STATIC)
 	set_target_properties(dragon_mediaplayer PROPERTIES COMPILE_FLAGS "-DKADULIB" )
 else (dragon_mediaplayer STREQUAL STATIC)
-	install (TARGETS dragon_mediaplayer DESTINATION lib/kadu/modules)
+	install (TARGETS dragon_mediaplayer DESTINATION ${MODULEDIR})
 endif (dragon_mediaplayer STREQUAL STATIC)

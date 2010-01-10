@@ -1,0 +1,225 @@
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
+#include <QtCore/QProcess>
+
+#include "debug.h"
+#include "../mediaplayer/mediaplayer.h"
+
+#include "itunes.h"
+#include "itunescontroller.h"
+
+ITunesMediaPlayer* iTunes;
+
+extern "C" int itunes_mediaplayer_init()
+{
+	iTunes = new ITunesMediaPlayer();
+	bool res = mediaplayer->registerMediaPlayer(iTunes, iTunes);
+	return res ? 0 : 1;
+}
+
+extern "C" void itunes_mediaplayer_close()
+{
+	mediaplayer->unregisterMediaPlayer();
+	delete iTunes;
+	iTunes = NULL;
+}
+
+ITunesMediaPlayer::ITunesMediaPlayer()
+{
+	controller = new ITunesController();
+	kdebugf();
+}
+
+ITunesMediaPlayer::~ITunesMediaPlayer()
+{
+	delete controller;
+	controller = NULL;
+	kdebugf();
+}
+
+// PlayerInfo
+
+QString ITunesMediaPlayer::getPlayerName()
+{
+	return "iTunes";
+}
+
+QString ITunesMediaPlayer::getPlayerVersion()
+{
+	kdebugf();
+	return executeCommand("tell application \"iTunes\" to version");
+}
+
+QStringList ITunesMediaPlayer::getPlayListTitles()
+{
+	kdebugf();
+	QStringList list;
+
+	//TODO: obtain the playlist
+	return list;
+}
+
+QStringList ITunesMediaPlayer::getPlayListFiles()
+{
+	kdebugf();
+	QStringList list;
+
+	//TODO: obtain the playlist
+	return list;
+}
+
+uint ITunesMediaPlayer::getPlayListLength()
+{
+	kdebugf();
+	QByteArray reply = executeCommand("tell application \"iTunes\" to get duration of current playlist");
+	return reply.toInt();
+}
+
+QString ITunesMediaPlayer::getTitle(int position)
+{
+	kdebugf();
+	Tune t = controller->currentTune();
+	return t.name();
+}
+
+QString ITunesMediaPlayer::getAlbum(int position)
+{
+	kdebugf();
+	Tune t = controller->currentTune();
+	return t.album();
+}
+
+QString ITunesMediaPlayer::getArtist(int position)
+{
+	kdebugf();
+	Tune t = controller->currentTune();
+	return t.artist();
+}
+
+QString ITunesMediaPlayer::getFile(int position)
+{
+	kdebugf();
+	Tune t = controller->currentTune();
+	return t.location();
+}
+
+int ITunesMediaPlayer::getLength(int position)
+{
+	kdebugf();
+	Tune t = controller->currentTune();
+	return t.time();
+}
+
+int ITunesMediaPlayer::getCurrentPos()
+{
+	kdebugf();
+	Tune t = controller->currentTune();	
+	return (QDateTime::currentDateTime().toTime_t() -  t.started()) * 1000;
+}
+
+// PlayerCommands
+
+void ITunesMediaPlayer::nextTrack()
+{
+	kdebugf();
+	executeCommand("tell application \"iTunes\" to next track");
+}
+
+void ITunesMediaPlayer::prevTrack()
+{
+	kdebugf();
+	executeCommand("tell application \"iTunes\" to previous track");
+}
+
+void ITunesMediaPlayer::play()
+{
+	kdebugf();
+	executeCommand("tell application \"iTunes\" to play");
+}
+
+void ITunesMediaPlayer::stop()
+{
+	kdebugf();
+	executeCommand("tell application \"iTunes\" to stop");
+}
+
+void ITunesMediaPlayer::pause()
+{
+	kdebugf();
+	executeCommand("tell application \"iTunes\" to pause");
+}
+
+void ITunesMediaPlayer::setVolume(int vol)
+{
+	kdebugf();
+	executeCommand(QString("tell application \"iTunes\" to set sound volume to %1").arg(vol));
+}
+
+int ITunesMediaPlayer::getVolume()
+{
+	kdebugf();
+	QByteArray reply = executeCommand("tell application \"iTunes\" to get sound volume");
+	return reply.toInt();
+}
+
+void ITunesMediaPlayer::incrVolume()
+{
+	kdebugf();
+	int vol = getVolume();
+	if (vol < 98)
+		vol += 2;
+	setVolume(vol);
+}
+
+void ITunesMediaPlayer::decrVolume()
+{
+	kdebugf();
+	int vol = getVolume();
+	if (vol > 2)
+		vol -= 2;
+	setVolume(vol);
+}
+
+bool ITunesMediaPlayer::isPlaying()
+{
+	kdebugf();
+	Tune t = controller->currentTune();
+	return (t.state() == Tune::playing);
+}
+
+bool ITunesMediaPlayer::isActive()
+{
+	kdebugf();
+	Tune t = controller->currentTune();
+	return (t.state() != Tune::unknown);
+}
+
+QByteArray ITunesMediaPlayer::executeCommand(const QString &command)
+{
+	QByteArray result;
+	QStringList params;
+	QProcess process;
+
+	params << "-e" << "'" + command + "'";
+	process.start("osascript", params);
+
+	if (!process.waitForStarted(500))
+		return result;
+
+	if (!process.waitForFinished())
+		return result;
+
+	result = process.readAll();
+
+	kdebugmf(KDEBUG_INFO,"command: osascript -e %s - result: [%s]\n", 
+		qPrintable(command), qPrintable(QString(result)));
+
+	return result;
+}

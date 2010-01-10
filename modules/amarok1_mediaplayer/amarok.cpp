@@ -30,6 +30,7 @@ extern "C" int amarok1_mediaplayer_init()
 {
 	amarok = new AmarokMediaPlayer();
 	bool res = mediaplayer->registerMediaPlayer(amarok, amarok);
+	mediaplayer->setInterval(5);
 	return res ? 0 : 1;
 }
 
@@ -49,9 +50,12 @@ QByteArray AmarokMediaPlayer::executeCommand(QString obj, QString func)
 	params << "amarok" << obj << func;
 	process.start("dcop", params);
 
+	if (!process.waitForStarted(500))
+		return result;
+
 	if (!process.waitForFinished())
 		return result;
-                            
+
 	result = process.readAll();
 
 	kdebugmf(KDEBUG_INFO, "command: dcop amarok %s %s - result: [%s]\n", 

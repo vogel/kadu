@@ -15,8 +15,10 @@ endif (COMMAND cmake_policy)
 
 add_library (xmms2_mediaplayer ${xmms2_mediaplayer} ${SOURCES} ${MOC_FILES})
 
+target_link_libraries (xmms2_mediaplayer ${QT_QTDBUS_LIBRARY})
+
 if (xmms2_mediaplayer STREQUAL STATIC)
 	set_target_properties(xmms2_mediaplayer PROPERTIES COMPILE_FLAGS "-DKADULIB" )
 else (xmms2_mediaplayer STREQUAL STATIC)
-	install (TARGETS xmms2_mediaplayer DESTINATION lib/kadu/modules)
+	install (TARGETS xmms2_mediaplayer DESTINATION ${MODULEDIR})
 endif (xmms2_mediaplayer STREQUAL STATIC)

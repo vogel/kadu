@@ -17,12 +17,13 @@ endif (COMMAND cmake_policy)
 
 add_library (falf_mediaplayer ${falf_mediaplayer} ${SOURCES} ${MOC_FILES})
 
+target_link_libraries (falf_mediaplayer ${QT_QTDBUS_LIBRARY})
 #target_link_libraries (falf_mediaplayer ${FALF_LIBRARIES})
 #include_directories (${FALF_INCLUDE_DIRS})
 
 if (falf_mediaplayer STREQUAL STATIC)
 	set_target_properties(falf_mediaplayer PROPERTIES COMPILE_FLAGS "-DKADULIB" )
 else (falf_mediaplayer STREQUAL STATIC)
-	install (TARGETS falf_mediaplayer DESTINATION lib/kadu/modules)
+	install (TARGETS falf_mediaplayer DESTINATION ${MODULEDIR})
 endif (falf_mediaplayer STREQUAL STATIC)
 

@@ -3,5 +3,5 @@ Description=Media players support module
 Description[pl]=Modu³ obs³ugi odtwarzaczy multimediów
 Author=Googie, amdfanatyk, Dorregaray
 Provides=descriptions
-Dependencies=
-Version=1.2
+Dependencies=notify
+Version=1.3

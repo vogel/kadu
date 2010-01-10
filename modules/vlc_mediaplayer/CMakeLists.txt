@@ -15,8 +15,10 @@ endif (COMMAND cmake_policy)
 
 add_library (vlc_mediaplayer ${vlc_mediaplayer} ${SOURCES} ${MOC_FILES})
 
+target_link_libraries (vlc_mediaplayer ${QT_QTDBUS_LIBRARY})
+
 if (vlc_mediaplayer STREQUAL STATIC)
 	set_target_properties(vlc_mediaplayer PROPERTIES COMPILE_FLAGS "-DKADULIB" )
 else (vlc_mediaplayer STREQUAL STATIC)
-	install (TARGETS vlc_mediaplayer DESTINATION lib/kadu/modules)
+	install (TARGETS vlc_mediaplayer DESTINATION ${MODULEDIR})
 endif (vlc_mediaplayer STREQUAL STATIC)

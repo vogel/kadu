@@ -35,6 +35,7 @@ public:
 	uint getPlayListLength();
 	QString getPlayerName();
 	QString getPlayerVersion();
+	void setService(QString service);
 
 	void nextTrack();
 	void prevTrack();

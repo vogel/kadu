@@ -3,8 +3,10 @@
 
 #include "configuration_aware_object.h"
 #include "modules.h"
-#include "misc/misc.h"
+#include "misc.h"
 #include "main_configuration_window.h"
+
+#include "mediaplayer_exports.h"
 
 class QTimer;
 
@@ -18,7 +20,7 @@ class UserGroup;
 
 class MediaPlayerStatusChanger;
 
-class MediaPlayer : public ConfigurationUiHandler, ConfigurationAwareObject
+class MEDIAPLAYERAPI MediaPlayer : public ConfigurationUiHandler, ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -28,15 +30,18 @@ class MediaPlayer : public ConfigurationUiHandler, ConfigurationAwareObject
 
 	ActionDescription *enableMediaPlayerStatuses;
 	ActionDescription *mediaPlayerMenu;
+	ActionDescription *playAction, *stopAction, *prevAction, *nextAction, *volUpAction, *volDownAction;
 	QAction *mediaplayerStatus;
 
 	QTimer *timer;
+	int statusInterval;
 	QString currentTitle;
 	QMenu *menu;
 	int popups[6];
 	bool winKeyPressed; // TODO: this is lame, make it good ;)
 	QMap<ChatWidget *, QPushButton *> chatButtons;
 
+	bool isPaused;
 	int pos();
 
 	/**
@@ -70,6 +75,7 @@ private slots:
 	void setVolume(int vol);
 	void incrVolume();
 	void decrVolume();
+	void playPause();
 	QString getPlayerName();
 	QString getPlayerVersion();
 	QString getTitle(int position = -1);
@@ -152,6 +158,10 @@ public:
 
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
+	void titleChanged();
+	void statusChanged();
+	void setInterval(int seconds);
+
 public slots:
 	/**
 		Puts song title into current chat edit field.
@@ -170,6 +180,6 @@ public slots:
 
 };
 
-extern MediaPlayer *mediaplayer;
+extern MEDIAPLAYERAPI MediaPlayer *mediaplayer;
 
 #endif
