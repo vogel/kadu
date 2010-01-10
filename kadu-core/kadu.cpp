@@ -1521,7 +1521,7 @@ bool Kadu::close(bool quit)
 			config_file.writeEntry("General", "UserBoxHeight", Userbox->height());
 #ifdef Q_OS_MAC
 		/* workaround for: http://bugreports.qt.nokia.com/browse/QTBUG-1767 */
-		move(x(), y()-40);
+		move(x(), y()-36);
 #endif
  		saveWindowGeometry(this, "General", "Geometry");
 
