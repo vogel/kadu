@@ -72,9 +72,9 @@ void ChatDetailsSimple::load()
 
 /**
  * @author Rafal 'Vogel' Malinowski
- * @short Stored ChatDetailsSimple object to storage.
+ * @short Stores ChatDetailsSimple object to storage.
  *
- * Stored ChatDetailsSimple object to the same storage assigned Chat object is
+ * Stores ChatDetailsSimple object to the same storage assigned Chat object is
  * using. The only data stored is assigned contact.
  */
 void ChatDetailsSimple::store()
@@ -104,11 +104,10 @@ bool ChatDetailsSimple::shouldStore()
 
 /**
  * @author Rafal 'Vogel' Malinowski
- * @short Returns true if assigned contact is valid.
- * @return true if assigned contact is valid
+ * @short Returns type of this chat - 'Simple'.
+ * @return 'Simple' ChatType object
  *
- * Returns true if assigned contact is valid. No invalid chats (without contacts)
- * will be stored thanks to this method.
+ * Returns type of this chat - 'Simple'.
  */
 ChatType * ChatDetailsSimple::type() const
 {

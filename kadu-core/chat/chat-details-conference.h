@@ -16,6 +16,20 @@
 
 #include "chat/chat-details.h"
 
+/**
+ * @addtogroup Chat
+ * @{
+ */
+
+/**
+ * @class ChatDetailsConference
+ * @author Rafal 'Vogel' Malinowski
+ * @short Chat data specyfic to 'conference' chat type.
+ *
+ * Class contains set of Contact objects. Chat name is set to this Contacts'
+ * Buddys' display names joined by commas, chat title is list of that names
+ * with current descriptions.
+ */
 class ChatDetailsConference : public ChatDetails
 {
 	Q_OBJECT
@@ -39,5 +53,9 @@ public:
 	void setContacts(ContactSet contacts);
 
 };
+
+/**
+ * @}
+ */
 
 #endif // CHAT_DETAILS_CONFERENCE_H
