@@ -22,6 +22,10 @@ set (MOC_SOURCES ${MOC_SOURCES}
 	mpris_mediaplayer.h
 )
 
+set (DBUS_LIBS
+	${QT_QTDBUS_LIBRARY}
+)
+
 endif (UNIX AND NOT APPLE)
 
 
@@ -36,20 +40,14 @@ set (DATA_FILES
 	data/mediaplayer.png
 )
 
-if (WIN32)
-	include_directories (${CMAKE_CURRENT_SOURCE_DIR})
-	set (SOURCES ${SOURCES} ../module.rc)
-endif (WIN32)
-
-install (FILES ${DATA_FILES}
-	DESTINATION "share/kadu/modules/data/mediaplayer")
-
-
 kadu_module (mediaplayer
 	MODULE_SOURCES ${SOURCES}
 	MODULE_MOC_SOURCES ${MOC_SOURCES}
 	MODULE_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
 	MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
-	MODULE_LIBRARIES ${QT_QTDBUS_LIBRARY}
+	MODULE_LIBRARIES ${DBUS_LIBS}
 	MODULE_BUILDDEF MEDIAPLAYER_BUILD
 )
+
+install (FILES ${DATA_FILES}
+	DESTINATION "share/kadu/modules/data/mediaplayer")
