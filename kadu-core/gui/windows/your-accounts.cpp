@@ -348,15 +348,18 @@ void YourAccounts::okClicked()
 
 void YourAccounts::addAccountButtonClicked()
 {
-  	AccountCreateWidget *widget = dynamic_cast<AccountCreateWidget *>(CreateStack->currentWidget());
-	if (!widget)
+	if (CreateEditStack->currentWidget() == NewAccountContainer)
+	{
+		AccountCreateWidget *widget = dynamic_cast<AccountCreateWidget *>(CreateStack->currentWidget());
+		if (widget)
+			widget->apply();
+	}
+	else
 	{
 		AccountAddWidget *widgetAdd = dynamic_cast<AccountAddWidget *>(AddStack->currentWidget());
 		if (widgetAdd)
 			widgetAdd->apply();
-		return;
 	}
-	widget->apply();
 }
 
 void YourAccounts::keyPressEvent(QKeyEvent *e)
