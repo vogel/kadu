@@ -8,7 +8,7 @@
  * Copyright 2009 Bartłomiej Zimoń (uzi18@go2.pl)
  * Copyright 2008 Michał Podsiadlik (michal@kadu.net)
  * Copyright 2004 Roman Krzystyniak (Ron_K@tlen.pl)
- * Copyright 2009 Kermit (plaza.maciej@gmail.com)
+ * Copyright 2009, 2010 Kermit (plaza.maciej@gmail.com)
  * Copyright 2008, 2009 Tomasz Rostański (rozteck@interia.pl)
  * Copyright 2008, 2009, 2010 Piotr Galiszewski (piotrgaliszewski@gmail.com)
  * Copyright 2005 Paweł Płuciennik (pawel_p@kadu.net)

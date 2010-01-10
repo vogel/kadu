@@ -1,7 +1,8 @@
 /*
  * %kadu copyright begin%
+ * Copyright 2007 Dawid Stawiarski (neeo@kadu.net)
  * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
- * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2007, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2009 Piotr Galiszewski (piotrgaliszewski@gmail.com)
  * %kadu copyright end%
  *

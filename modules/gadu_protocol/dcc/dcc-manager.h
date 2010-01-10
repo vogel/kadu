@@ -2,7 +2,11 @@
  * %kadu copyright begin%
  * Copyright 2009 Bartlomiej Zimon (uzi18@o2.pl)
  * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
- * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2004, 2006 Marcin Ślusarz (joi@kadu.net)
+ * Copyright 2004 Adrian Smarzewski (adrian@kadu.net)
+ * Copyright 2007, 2008, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2008 Michał Podsiadlik (michal@kadu.net)
+ * Copyright 2005 Paweł Płuciennik (pawel_p@kadu.net)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or

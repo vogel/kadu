@@ -3,7 +3,7 @@
  * Copyright 2007 Dawid Stawiarski (neeo@kadu.net)
  * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2004, 2005, 2006 Marcin Ślusarz (joi@kadu.net)
- * Copyright 2004 Adrian Smarzewski (adrian@kadu.net)
+ * Copyright 2003, 2004 Adrian Smarzewski (adrian@kadu.net)
  * Copyright 2004 Tomasz Chiliński (chilek@chilan.com)
  * Copyright 2007, 2008, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2008 Michał Podsiadlik (michal@kadu.net)

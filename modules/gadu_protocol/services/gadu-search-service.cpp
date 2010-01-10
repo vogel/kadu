@@ -4,6 +4,7 @@
  * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2009 Juzef (juzefwt@tlen.pl)
  * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2009 Bartłomiej Zimoń (uzi18@go2.pl)
  * Copyright 2009 Piotr Galiszewski (piotrgaliszewski@gmail.com)
  * %kadu copyright end%
  *

@@ -1,9 +1,11 @@
 /*
  * %kadu copyright begin%
+ * Copyright 2007 Dawid Stawiarski (neeo@kadu.net)
  * Copyright 2009 Bartlomiej Zimon (uzi18@o2.pl)
  * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2009 Juzef (juzefwt@tlen.pl)
- * Copyright 2008, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2005, 2006, 2007 Marcin Ślusarz (joi@kadu.net)
+ * Copyright 2007, 2008, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2009 Bartłomiej Zimoń (uzi18@go2.pl)
  * %kadu copyright end%
  *

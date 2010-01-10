@@ -1,10 +1,13 @@
 /*
  * %kadu copyright begin%
  * Copyright 2008 Dawid Stawiarski (neeo@kadu.net)
- * Copyright 2007 Marcin Ślusarz (joi@kadu.net)
+ * Copyright 2004, 2005, 2006, 2007 Marcin Ślusarz (joi@kadu.net)
+ * Copyright 2003, 2004 Adrian Smarzewski (adrian@kadu.net)
  * Copyright 2007, 2008, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2008 Michał Podsiadlik (michal@kadu.net)
+ * Copyright 2004 Roman Krzystyniak (Ron_K@tlen.pl)
+ * Copyright 2004, 2008 Michał Podsiadlik (michal@kadu.net)
  * Copyright 2008, 2009 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * Copyright 2005 Paweł Płuciennik (pawel_p@kadu.net)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or

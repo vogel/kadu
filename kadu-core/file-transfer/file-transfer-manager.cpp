@@ -1,7 +1,7 @@
 /*
  * %kadu copyright begin%
  * Copyright 2010 Bartlomiej Zimon (uzi18@o2.pl)
- * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2007, 2008, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2009 Piotr Galiszewski (piotrgaliszewski@gmail.com)
  * %kadu copyright end%
  *
