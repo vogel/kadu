@@ -137,9 +137,6 @@ SingleWindow::~SingleWindow()
 {
 	split->setSizes(splitSizes);
 
-	// reparent kadu
-	kadu->setParent(NULL);
-
 	saveWindowGeometry(this, "SingleWindow", "WindowGeometry");
 
 	disconnect(chat_manager, SIGNAL(handleNewChatWidget(ChatWidget *,bool &)),
@@ -166,6 +163,9 @@ SingleWindow::~SingleWindow()
 		}
 	}
 
+	// reparent kadu
+	kadu->setParent(NULL);
+	loadWindowGeometry(kadu, "General", "Geometry", 0, 50, 205, 465);
 }
 
 void SingleWindow::changeRosterPos(int newRosterPos)
