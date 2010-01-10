@@ -3,6 +3,8 @@
 BASEDIR=${0%/*}
 FILE=$1
 
+echo "Updating copyright data for $FILE"
+
 AWK_EXTRACT=$BASEDIR/get-file-authors-and-dates.awk
 AWK_INSERT=$BASEDIR/replace-copyright-block.awk
 
