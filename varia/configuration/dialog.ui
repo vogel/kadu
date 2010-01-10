@@ -97,7 +97,7 @@ Text is plain black." />
 					   tool-tip="When enabled, you're visible only to users on your list" />
 			</group-box>
 
-			<group-box name="Descirption">
+			<group-box name="Description">
 				<combo-box caption="On startup, set" config-section="General" config-item="StartupStatus" id="startupStatus"
 					   tool-tip="Choose status which will be set on startup">
 					<item value="LastStatus" caption="Last status" />
