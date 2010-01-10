@@ -7,8 +7,8 @@
 *                                                                         *
 ***************************************************************************/
 
-#ifndef HTML_MESSAGES_RENDERER
-#define HTML_MESSAGES_RENDERER
+#ifndef HTML_MESSAGES_RENDERER_H
+#define HTML_MESSAGES_RENDERER_H
 
 #include <QtCore/QObject>
 
@@ -65,4 +65,4 @@ public:
 
 };
 
-#endif // HTML_MESSAGES_RENDERER
+#endif // HTML_MESSAGES_RENDERER_H

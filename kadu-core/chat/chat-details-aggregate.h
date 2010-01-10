@@ -14,6 +14,18 @@
 
 #include "chat/chat-details.h"
 
+/**
+ * @addtogroup Chat
+ * @{
+ */
+
+/**
+ * @class ChatDetailsAggregate
+ * @short Chat data that aggregates some chats into one.
+ *
+ * Class contains list of chat objects. It joins these chats into one chat.
+ * This is usable to join all chats for contacts of one buddy into one chat.
+ */
 class ChatDetailsAggregate : public ChatDetails
 {
 	Q_OBJECT
@@ -34,5 +46,9 @@ public:
 	QList<Chat> chats();
 
 };
+
+/**
+ * @}
+ */
 
 #endif // CHAT_DETAILS_AGGREGATE_H
