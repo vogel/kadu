@@ -178,8 +178,25 @@ void ServerMonitorWindow::setConfiguration()
     {
 
         serverListBuffer = new QBuffer();
-        http = new QHttp ( config_file_ptr->readEntry( "serverMonitor", "serverListHost" ), 80, this );
-        http->get( "/serverslist.txt", serverListBuffer );
+
+        QString url = config_file_ptr->readEntry( "serverMonitor", "serverListHost" );
+        QString hostName;
+        QString path;
+
+        int index = url.indexOf("/");
+        if ( index > 0 )
+        {
+            hostName = url.left(index);
+            path = "/"+url.section("/",1);
+        }
+        else
+        {
+            hostName = url;
+            path = "/serverslist.txt";
+        }
+
+        http = new QHttp ( hostName , 80, this );
+        http->get( path, serverListBuffer );
         connect ( http, SIGNAL ( done (bool) ),
                     this, SLOT( downloadedServersList(bool) ));
     }
