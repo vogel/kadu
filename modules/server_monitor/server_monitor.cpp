@@ -6,20 +6,17 @@
  *   (at your option) any later version.                                   *
 *                                                                         *
  ***************************************************************************/
-/*
-#include <QDir>
-#include <QFile>
-#include <QRegExpValidator>
-*/
+#include<QCheckBox>
+
 #include "debug.h"
 #include "core/core.h"
 #include "configuration/configuration-file.h"
 #include "gui/actions/action-description.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/main-configuration-window.h"
+#include "gui/widgets/configuration/configuration-widget.h"
 #include "misc/misc.h"
 
-// #include "server_monitor_window.h"
 #include "server_monitor.h"
 
 extern "C" KADU_EXPORT int server_monitor_init(bool firstLoad)
@@ -27,7 +24,7 @@ extern "C" KADU_EXPORT int server_monitor_init(bool firstLoad)
     kdebugf();
     serverMonitor = new ServerMonitor();
     MainConfigurationWindow::instance()->registerUiFile(dataPath("kadu/modules/configuration/server_monitor.ui"));
-
+    MainConfigurationWindow::registerUiHandler(serverMonitor);
     if ( firstLoad )
     {
         config_file_ptr->addVariable( "serverMonitor", "autorefresh", true );
@@ -46,6 +43,7 @@ extern "C" KADU_EXPORT void server_monitor_close()
 {
     kdebugf();
     MainConfigurationWindow::instance()->unregisterUiFile(dataPath("kadu/modules/configuration/server_monitor.ui"));
+    MainConfigurationWindow::instance()->unregisterUiHandler(serverMonitor);
     delete serverMonitor;
     serverMonitor = NULL;
     kdebugf2();
@@ -61,7 +59,6 @@ ServerMonitor::ServerMonitor(QWidget *parent)
         "Online", tr("Server's monitor")
     );
     Core::instance()->kaduWindow()->insertMenuActionDescription( serverMonitorActionDescription,KaduWindow::MenuKadu,6 );
-    
 }
 
 void ServerMonitor::serverMonitorActionActivated(QAction *, bool)
@@ -71,6 +68,13 @@ void ServerMonitor::serverMonitorActionActivated(QAction *, bool)
 
 void ServerMonitor::mainConfigurationWindowCreated ( MainConfigurationWindow* mainConfigurationWindow )
 {
+    kdebugf();
+    connect(mainConfigurationWindow->widget()->widgetById("serverMonitor/useListFromServer"), SIGNAL(toggled(bool)),
+        mainConfigurationWindow->widget()->widgetById("serverMonitor/hostNameEdit"), SLOT(setEnabled(bool)));
+
+    connect(mainConfigurationWindow->widget()->widgetById("serverMonitor/useListFromServer"), SIGNAL(toggled(bool)),
+        mainConfigurationWindow->widget()->widgetById("serverMonitor/fileSelect"), SLOT(setDisabled(bool)));
+    kdebugf2();
 }
 
 ServerMonitor::~ServerMonitor()

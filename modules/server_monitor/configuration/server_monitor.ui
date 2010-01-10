@@ -3,9 +3,9 @@
         <section name="Server Monitor" icon="GeneralTab">
                 <tab name="General">
 	                <group-box name="Data source">
-        	              	<check-box caption="Use gadu server list" config-section="serverMonitor" config-item="useListFromServer" />
-                               	<line-edit caption="Server with servers list" config-section="serverMonitor" config-item="serverListHost" />
-		               	<select-file caption="Server list" config-section="serverMonitor" config-item="fileName" type="all" id="serverMonitorSelectFile" />
+        	              	<check-box caption="Use gadu server list" config-section="serverMonitor" config-item="useListFromServer" id="serverMonitor/useListFromServer" />
+                               	<line-edit caption="Server with servers list" config-section="serverMonitor" config-item="serverListHost"id="serverMonitor/hostNameEdit" />
+		               	<select-file caption="Server list" config-section="serverMonitor" config-item="fileName" type="all" id="serverMonitor/fileSelect" />
                 	</group-box>
                         <group-box name="Adjustment">
 	                	<check-box caption="Show reset button" config-section="serverMonitor" config-item="showResetButton" />

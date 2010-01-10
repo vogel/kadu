@@ -12,8 +12,8 @@
 
 #include "gui/windows/main-configuration-window.h"
 #include "server_monitor_window.h"
+
 class ActionDescription;
-//class ServerMonitorWindow;
 
 class ServerMonitor : public ConfigurationUiHandler
 {

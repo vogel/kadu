@@ -43,6 +43,8 @@ ServerMonitorWindow::ServerMonitorWindow(QWidget *parent)
     stats.setParent( this );
     stats.setGeometry(420, 20, 150, 50 );
     stats.setText( tr("No information avalible"));
+
+    setWindowTitle( tr("Server monitor") );
 }
 
 void ServerMonitorWindow::updateStats( ServerStatus::ServerState newStatus, ServerStatus::ServerState oldStatus )
