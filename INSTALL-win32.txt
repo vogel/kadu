@@ -25,9 +25,13 @@ Kompilacja i instalacja Kadu pod Windows z wykorzystaniem MinGW
     Pobierz biblioteke zlib (http://www.zlib.net/zlib123-dll.zip) a nastepnie rozpakuj do katalogu
     C:\Qt\zlib
 11. Wykonaj polecenie cmake:
-    cmake . -G "MinGW Makefiles" -DMINGW_LIBGADU_DIR=C:/Qt/libgadu-win32 -DMINGW_LIBSNDFILE_DIR=C:/Qt/libsndfile -DMINGW_OPENSSL_DIR=C:/Qt/mingw32-openssl-0.9.8j
+    cmake . -G "MinGW Makefiles" -DMINGW_LIBGADU_DIR=C:/Qt/libgadu-win32 -DMINGW_LIBSNDFILE_DIR=C:/Qt/libsndfile
+    jesli kompilujesz modul encryption_old do wywolania polecenia dodaj jeszcze sciezke do katalogu z opensslem:
+    -DMINGW_OPENSSL_DIR=C:/Qt/mingw32-openssl-0.9.8j
+    w przypadku modulu encryption - sciezke do QCA 2:
+    -DMINGW_QCA2_DIR=C:/Qt/qca2
 12. Skompiluj kadu:
     mingw32-make
 13. Zainstaluj:
     varia/scripts/create_windows_bundle.bat
-14. Kadu zostanie zainstalowane do katalogu c:\Program Files\Kadu-0.6.5.2
+14. Kadu zostanie zainstalowane do katalogu c:\Program Files\Kadu
