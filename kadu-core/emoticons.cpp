@@ -457,7 +457,7 @@ void EmoticonSelector::addEmoticonButtons(int num_emoticons, QWidget *mainwidget
 	EmoticonSelectorButton **btns = new EmoticonSelectorButton*[num_emoticons];
 	QVBoxLayout *layout = new QVBoxLayout(mainwidget);
 	QHBoxLayout *row = 0;
-	layout->setContentsMargins(QMargins());
+	layout->setContentsMargins(0, 0, 0, 0);
 	layout->setSpacing(0);
 
 	for (int i = 0; i < num_emoticons; ++i)
