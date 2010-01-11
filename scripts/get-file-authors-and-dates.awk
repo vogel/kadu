@@ -3,6 +3,11 @@ BEGIN {
 	ALIAS["Rafał Malinowski (malinowskirafal@wp.pl)"] = "Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)"
 	ALIAS["Juzef (juzefwt@tlen.pl)"] = "Wojciech Treter (juzefwt@gmail.com)"
 	ALIAS["Juzef (juzefwt@gmail.com)"] = "Wojciech Treter (juzefwt@gmail.com)"
+	ALIAS["Juzef, Juzef (juzefwt@gmail.com)"] = "Wojciech Treter (juzefwt@gmail.com)"
+	ALIAS["Juzef, Wojciech Treter (juzefwt@gmail.com)"] = "Wojciech Treter (juzefwt@gmail.com)"
+	ALIAS["Wojtek (juzef@slack.(none))"] = "Wojciech Treter (juzefwt@gmail.com)"
+	ALIAS["root (root@slack.(none))"] = "Wojciech Treter (juzefwt@gmail.com)"
+	ALIAS["Bartlomiej Zimon (uzi18@o2.pl)"] = "Bartłomiej Zimoń (uzi18@o2.pl)"
 }
 
 {
