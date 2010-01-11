@@ -1,3 +1,26 @@
+/*
+ * %kadu copyright begin%
+ * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
+ * Copyright 2008 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2009 Michał Podsiadlik (michal@kadu.net)
+ * Copyright 2008 Tomasz Rostański (rozteck@interia.pl)
+ * Copyright 2008, 2009 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * %kadu copyright end%
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #ifndef QT4_DOCKING_H
 #define QT4_DOCKING_H
 
@@ -39,4 +62,4 @@ extern Qt4TrayIcon* qt4_tray_icon;
 
 /** @} */
 
-#endif
+#endif // QT4_DOCKING_H
