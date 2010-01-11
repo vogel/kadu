@@ -3,8 +3,7 @@
 
 #include <QtCore/QString>
 
-#include "configuration_aware_object.h"
-#include "main_configuration_window.h"
+#include "gui/windows/main-configuration-window.h"
 
 #include "../mediaplayer/mediaplayer.h"
 #include "../mediaplayer/mpris_mediaplayer.h"

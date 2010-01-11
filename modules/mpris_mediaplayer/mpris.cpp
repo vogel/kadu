@@ -28,7 +28,8 @@
 
 
 #include "modules.h"
-#include "config_file.h"
+#include "configuration/configuration-file.h"
+#include "misc/path-conversion.h"
 #include "debug.h"
 #include "mpris.h"
 
@@ -39,7 +40,8 @@ extern "C" int mpris_mediaplayer_init()
 	mpris = new MprisPlayer("MPRIS", QString::null);
 
 	MainConfigurationWindow::registerUiFile(
-		dataPath("kadu/modules/configuration/mpris_mediaplayer.ui"), mpris);
+		dataPath("kadu/modules/configuration/mpris_mediaplayer.ui"));
+	MainConfigurationWindow::registerUiHandler(mpris);
 
 	bool res = mediaplayer->registerMediaPlayer(mpris, mpris);
 	return res ? 0 : 1;
@@ -48,7 +50,8 @@ extern "C" int mpris_mediaplayer_init()
 extern "C" void mpris_mediaplayer_close()
 {
 	MainConfigurationWindow::unregisterUiFile(
-		dataPath("kadu/modules/configuration/mpris_mediaplayer.ui"), mpris);
+		dataPath("kadu/modules/configuration/mpris_mediaplayer.ui"));
+	MainConfigurationWindow::unregisterUiHandler(mpris);
 
 	mediaplayer->unregisterMediaPlayer();
 
