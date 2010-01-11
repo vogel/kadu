@@ -1,6 +1,8 @@
 BEGIN {
 	FS = "\t"
 	ALIAS["Rafał Malinowski (malinowskirafal@wp.pl)"] = "Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)"
+	ALIAS["Juzef (juzefwt@tlen.pl)"] = "Wojciech Treter (juzefwt@gmail.com)"
+	ALIAS["Juzef (juzefwt@gmail.com)"] = "Wojciech Treter (juzefwt@gmail.com)"
 }
 
 {
