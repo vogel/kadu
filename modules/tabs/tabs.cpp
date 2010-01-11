@@ -203,12 +203,16 @@ TabsManager::~TabsManager()
 		store(); //saveTabs();
 
 	// jesli kadu nie konczy dzialania to znaczy ze modul zostal tylko wyladowany wiec odlaczamy rozmowy z kart
-	//if (!Kadu::closing())
-	//{
+	
+	if (!Core::instance()->isClosing())
+	{
 		for (int i = tabdialog->count() - 1; i >= 0; i--)
 			detachChat(dynamic_cast<ChatWidget *>(tabdialog->widget(i)));
-	//}
-	//else // saveTabs()
+	}
+	else // saveTabs()
+	{
+		store();
+	}
 
 	delete tabdialog;
 	tabdialog = 0;
@@ -225,6 +229,7 @@ void TabsManager::onNewChat(ChatWidget* chat, bool &handled)
 		detachedchats.append(chat);
 		return;
 	}
+	
 	// jesli chat ma zostac bezwzglednie dodany do kart np w wyniku wyboru w menu
 	if (force_tabs)
 	{
