@@ -1,18 +1,19 @@
 #ifndef MEDIA_PLAYER_H
 #define MEDIA_PLAYER_H
 
-#include "configuration_aware_object.h"
-#include "modules.h"
-#include "misc.h"
-#include "main_configuration_window.h"
+#include "gui/windows/main-configuration-window.h"
 
 #include "mediaplayer_exports.h"
 
+class QAction;
+class QMenu;
 class QTimer;
 
+class ActionDescription;
 class ChatWidget;
 class CustomInput;
 class PlayerCommands;
+class NotifyEvent;
 class PlayerInfo;
 class ToolBar;
 class ToolButton;
@@ -32,12 +33,14 @@ class MEDIAPLAYERAPI MediaPlayer : public ConfigurationUiHandler, ConfigurationA
 	ActionDescription *mediaPlayerMenu;
 	ActionDescription *playAction, *stopAction, *prevAction, *nextAction, *volUpAction, *volDownAction;
 	QAction *mediaplayerStatus;
+	
+	NotifyEvent *mediaPlayerEvent;
 
 	QTimer *timer;
 	int statusInterval;
 	QString currentTitle;
 	QMenu *menu;
-	int popups[6];
+	QAction *popups[6];
 	bool winKeyPressed; // TODO: this is lame, make it good ;)
 	QMap<ChatWidget *, QPushButton *> chatButtons;
 
