@@ -6,6 +6,8 @@
 * ChangeLog: split into 2 files (old and new) (Vogel)
 * notify: fixed fetching data from parent notification if 'use custom settings' is off (Vogel)
 * gui: OpenChatWith window does not add to contacts list everything that was written (Vogel)
+* gui: new selector window (Bartosz Brachaczek)
+* gui: do not detach tabs when Kadu is closing (Kermit)
 
 +++ version 0.6.6-alpha2
 * gui: hint position preview added (Kermit)
