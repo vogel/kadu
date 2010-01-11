@@ -294,8 +294,9 @@ void DockingManager::setDocked(bool docked)
 	}
 	else
 	{
-// 		kdebugm(KDEBUG_INFO, "closing: %d\n", Kadu::closing());
-		Core::instance()->kaduWindow()->show(); // isClosing? TODO: 0.6.6
+ 		kdebugm(KDEBUG_INFO, "closing: %d\n", Core::instance()->isClosing());
+ 		if (!Core::instance()->isClosing())
+			Core::instance()->kaduWindow()->show(); // isClosing? TODO: 0.6.6 -> done?
 	}
 	Core::instance()->kaduWindow()->setDocked(docked);
 	kdebugf2();
