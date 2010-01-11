@@ -443,11 +443,11 @@ EmoticonSelector::EmoticonSelector(const QWidget *activatingWidget, QWidget *par
 		return;
 	}
 
-	QWidget *mainwidget = new QWidget(static_cast<QWidget *>(parent));
+	QWidget *mainwidget = new QWidget(this);
 
 	addEmoticonButtons(selector_count, mainwidget);
 	setWidget(mainwidget);
-	calculateSizeAndPosition(activatingWidget, mainwidget);
+	calculatePositionAndSize(activatingWidget, mainwidget);
 }
 
 void EmoticonSelector::addEmoticonButtons(int num_emoticons, QWidget *mainwidget)
@@ -507,7 +507,7 @@ void EmoticonSelector::addEmoticonButtons(int num_emoticons, QWidget *mainwidget
 	delete [] btns;
 }
 
-void EmoticonSelector::calculateSizeAndPosition(const QWidget *activatingWidget, const QWidget *mainwidget)
+void EmoticonSelector::calculatePositionAndSize(const QWidget *activatingWidget, const QWidget *mainwidget)
 {
 	QPoint w_pos = activatingWidget->mapToGlobal(QPoint(0,0));
 	QSize s_size = QApplication::desktop()->size();
