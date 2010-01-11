@@ -32,6 +32,12 @@ UserlistImportExport::UserlistImportExport(QWidget *parent)
 	: QWidget(parent, Qt::Window), pb_fetch(0), importedUserlist(), pb_send(0), pb_delete(0), pb_tofile(0), l_itemscount(0), lv_userlist(0)
 {
 	kdebugf();
+
+#ifdef Q_OS_WIN
+	/* Workaround for Windows7 minimalization bug */
+	setParent(NULL);
+#endif
+
 	setWindowTitle(tr("Import / export userlist"));
 	setAttribute(Qt::WA_DeleteOnClose);
 

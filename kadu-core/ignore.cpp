@@ -27,6 +27,12 @@ Ignored::Ignored(QWidget *parent, const char *name) : QWidget(parent, name, Qt::
 	lb_list(0), e_uin(0)
 {
 	kdebugf();
+
+#ifdef Q_OS_WIN
+	/* Workaround for Windows7 minimalization bug */
+	setParent(NULL);
+#endif
+
 	setWindowTitle(tr("Manage ignored users"));
 	setAttribute(Qt::WA_DeleteOnClose);
 

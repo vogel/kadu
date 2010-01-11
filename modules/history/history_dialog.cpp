@@ -98,6 +98,11 @@ HistoryDialog::HistoryDialog(UinsList uins)
 {
 	kdebugf();
 
+#ifdef Q_OS_WIN
+	/* Workaround for Windows7 minimalization bug */
+	setParent(NULL);
+#endif
+
 	setWindowTitle(tr("History"));
 	setAttribute(Qt::WA_DeleteOnClose);
 

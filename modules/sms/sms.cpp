@@ -76,6 +76,11 @@ SmsImageDialog::SmsImageDialog(QWidget* parent, const QByteArray& image)
 {
 	kdebugf();
 
+#ifdef Q_OS_WIN
+	/* Workaround for Windows7 minimalization bug */
+	setParent(NULL);
+#endif
+
 	ImageWidget *image_widget = new ImageWidget(image, this);
 	QLabel* label = new QLabel(tr("Enter text from the picture:"), this);
 	code_edit = new QLineEdit(this);
@@ -203,6 +208,11 @@ Sms::Sms(const QString& altnick, QWidget* parent) : QWidget(parent, Qt::Window),
 	e_signature(0), b_send(0), c_saveInHistory(0), smsProcess(0), Sender()
 {
 	kdebugf();
+
+#ifdef Q_OS_WIN
+	/* Workaround for Windows7 minimalization bug */
+	setParent(NULL);
+#endif
 
 	setWindowTitle(tr("Send SMS"));
 	setAttribute(Qt::WA_DeleteOnClose);

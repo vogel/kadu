@@ -46,6 +46,11 @@ About::About(QWidget *parent)
 {
 	kdebugf();
 
+#ifdef Q_OS_WIN
+	/* Workaround for Windows7 minimalization bug */
+	setParent(NULL);
+#endif
+
 	// set window properties and flags
 	setWindowTitle(tr("About"));
 	setAttribute(Qt::WA_DeleteOnClose);

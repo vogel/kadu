@@ -27,6 +27,12 @@ PersonalInfoDialog::PersonalInfoDialog(QWidget *parent)
 	le_familycity(0), pb_save(0), State(READY), data(new SearchRecord())
 {
 	kdebugf();
+
+#ifdef Q_OS_WIN
+	/* Workaround for Windows7 minimalization bug */
+	setParent(NULL);
+#endif
+
 	setWindowTitle(tr("Personal Information"));
 	setAttribute(Qt::WA_DeleteOnClose);
 
