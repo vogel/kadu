@@ -434,6 +434,7 @@ EmoticonSelector::EmoticonSelector(const QWidget *activatingWidget, QWidget *par
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowFlags(Qt::Popup);
+	setFrameStyle(QFrame::NoFrame);
 
 	int selector_count = EmoticonsManager::instance()->selectorCount();
 	if (selector_count == 0)
@@ -445,6 +446,7 @@ EmoticonSelector::EmoticonSelector(const QWidget *activatingWidget, QWidget *par
 	QWidget *mainwidget = new QWidget(static_cast<QWidget *>(parent));
 
 	addEmoticonButtons(selector_count, mainwidget);
+	setWidget(mainwidget);
 	calculateSizeAndPosition(activatingWidget, mainwidget);
 }
 
@@ -505,7 +507,7 @@ void EmoticonSelector::addEmoticonButtons(int num_emoticons, QWidget *mainwidget
 	delete [] btns;
 }
 
-void EmoticonSelector::calculateSizeAndPosition(const QWidget *activatingWidget, QWidget *mainwidget)
+void EmoticonSelector::calculateSizeAndPosition(const QWidget *activatingWidget, const QWidget *mainwidget)
 {
 	QPoint w_pos = activatingWidget->mapToGlobal(QPoint(0,0));
 	QSize s_size = QApplication::desktop()->size();
@@ -565,9 +567,7 @@ void EmoticonSelector::calculateSizeAndPosition(const QWidget *activatingWidget,
 			x -= add_width;
 	}
 
-	setFrameStyle(QFrame::NoFrame);
 	setFixedSize(QSize(width, height));
-	setWidget(mainwidget);
 	move(x, y);
 }
 
