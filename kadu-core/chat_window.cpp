@@ -40,7 +40,15 @@ ChatWindow::ChatWindow(QWidget *parent)
 
 ChatWindow::~ChatWindow()
 {
-	kaduStoreGeometry();
+	
+#ifdef Q_OS_WIN
+	/* Dorr: unfortunatelly works only on windows */
+	if (isMaximized())
+		showNormal();
+#endif
+	/* Dorr: do not store geometry if window is maximized */
+	if (!isMaximized())
+		kaduStoreGeometry();
 }
 
 void ChatWindow::configurationUpdated()
@@ -100,9 +108,9 @@ void ChatWindow::kaduRestoreGeometry()
 	QRect desktopRect = desktop->availableGeometry(desktop->screenNumber(this));
 	geom = desktopRect.intersected(geom);
 #ifdef Q_OS_WIN
-  /* Dorr: Workaround for window positioning on Windows (bug in Qt 4.5.3?) */ 
+	/* Dorr: Workaround for window positioning on Windows (bug in Qt 4.5.3?) */ 
 	if (geom.y() < 30)
-      geom.moveTop(30);
+		geom.moveTop(30);
 #endif
 	setGeometry(geom);
 	currentChatWidget->setGeometry(geom);
