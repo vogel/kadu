@@ -366,7 +366,7 @@ EmoticonSelectorButton::EmoticonSelectorButton(const QString &emoticon_string, c
 		AnimPath = StaticPath;
 
 	QPixmap p(StaticPath);
-	if ((EmoticonsScaling)config_file.readNumEntry("Chat","EmoticonsScaling") & EmoticonsScalingStatic && p.height() > 18)
+	if (((EmoticonsScaling)config_file.readNumEntry("Chat","EmoticonsScaling") & EmoticonsScalingStatic) && (p.height() > 18))
 		p = p.scaledToHeight(18, Qt::SmoothTransformation);
 	setPixmap(p);
 	setMouseTracking(true);
