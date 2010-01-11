@@ -8,6 +8,12 @@
 * gui: OpenChatWith window does not add to contacts list everything that was written (Vogel)
 * gui: new selector window (Bartosz Brachaczek)
 * gui: do not detach tabs when Kadu is closing (Kermit)
+* mediaplayer: initial port of mediaplayer moduled (Uzi)
+* dbus: module added (Uzi)
+* history: filtering in history-window fixed (Vogel)
+* gui: new expand icon in buddy list (White Eagle)
+* .config: converted to UTF8 (Uzi)
+* copyright: new copyright format (based on KDE)
 
 +++ version 0.6.6-alpha2
 * gui: hint position preview added (Kermit)
