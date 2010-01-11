@@ -29,7 +29,7 @@ AutoAwayStatusChanger::AutoAwayStatusChanger() :
 AutoAwayStatusChanger::~AutoAwayStatusChanger()
 {
 }
-#include <stdio.h>
+
 void AutoAwayStatusChanger::changeStatus(StatusContainer *container, Status &status)
 {
 	if (changeStatusTo == NoChangeStatus)
