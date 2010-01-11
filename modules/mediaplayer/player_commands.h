@@ -3,7 +3,9 @@
 
 #include <QtCore/QObject>
 
-class PlayerCommands : public QObject
+#include "mediaplayer_exports.h"
+
+class MEDIAPLAYERAPI PlayerCommands : public QObject
 {
 	Q_OBJECT
 

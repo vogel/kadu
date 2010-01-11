@@ -9,6 +9,25 @@ set (MOC_SOURCES
 	player_commands.h
 	player_info.h
 )
+	
+if (UNIX AND NOT APPLE)
+
+set (SOURCES ${SOURCES}
+	mpris_controller.cpp
+	mpris_mediaplayer.cpp
+)
+
+set (MOC_SOURCES ${MOC_SOURCES}
+	mpris_controller.h
+	mpris_mediaplayer.h
+)
+
+set (DBUS_LIBS
+	${QT_QTDBUS_LIBRARY}
+)
+
+endif (UNIX AND NOT APPLE)
+
 
 set (TRANSLATION_SOURCES
 	translations/mediaplayer_pl.ts
@@ -17,9 +36,18 @@ set (TRANSLATION_SOURCES
 set (CONFIGURATION_FILES
 	configuration/mediaplayer.ui)
 
+set (DATA_FILES
+	data/mediaplayer.png
+)
+
 kadu_module (mediaplayer
 	MODULE_SOURCES ${SOURCES}
 	MODULE_MOC_SOURCES ${MOC_SOURCES}
 	MODULE_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
 	MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
+	MODULE_LIBRARIES ${DBUS_LIBS}
+	MODULE_BUILDDEF MEDIAPLAYER_BUILD
 )
+
+install (FILES ${DATA_FILES}
+	DESTINATION "share/kadu/modules/data/mediaplayer")

@@ -40,6 +40,7 @@ public:
 	PlayerStatus currentStatus() { return currentStatus_; };
 	TrackInfo    currentTrack()  { return currentTrack_;  };
 	bool         active()        { return active_;        };
+	void         getStatus();
 
 public slots:
 	void statusChanged(PlayerStatus status);

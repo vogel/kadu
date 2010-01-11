@@ -1,19 +1,35 @@
-/***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
+/*
+ * %kadu copyright begin%
+ * Copyright 2009 Bartlomiej Zimon (uzi18@o2.pl)
+ * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
+ * Copyright 2004, 2005, 2006 Marcin Ślusarz (joi@kadu.net)
+ * Copyright 2004 Adrian Smarzewski (adrian@kadu.net)
+ * Copyright 2007, 2008, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2009 Bartłomiej Zimoń (uzi18@go2.pl)
+ * Copyright 2008 Michał Podsiadlik (michal@kadu.net)
+ * Copyright 2004 Roman Krzystyniak (Ron_K@tlen.pl)
+ * Copyright 2009, 2010 Kermit (plaza.maciej@gmail.com)
+ * Copyright 2008, 2009 Tomasz Rostański (rozteck@interia.pl)
+ * Copyright 2008, 2009, 2010 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * Copyright 2005 Paweł Płuciennik (pawel_p@kadu.net)
+ * %kadu copyright end%
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-#include <QtGui/QApplication>
-#include <QtGui/QCheckBox>
-#include <QtGui/QComboBox>
 #include <QtGui/QDesktopWidget>
 #include <QtGui/QLabel>
-#include <QtGui/QPushButton>
-#include <QtGui/QSpinBox>
 
 #include "contacts/contact.h"
 #include "configuration/configuration-file.h"
@@ -21,8 +37,6 @@
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/tool-tip-class-manager.h"
 #include "gui/widgets/chat-widget.h"
-#include "gui/widgets/configuration/configuration-widget.h"
-#include "gui/widgets/configuration/config-group-box.h"
 #include "misc/misc.h"
 #include "notify/chat-notification.h"
 #include "notify/notification-manager.h"
@@ -31,8 +45,8 @@
 #include "activate.h"
 #include "debug.h"
 #include "icons-manager.h"
+#include "hints-configuration-ui-handler.h"
 #include "hints_configuration_widget.h"
-#include "hint-over-user-configuration-window.h"
 
 #include "hint_manager.h"
 
@@ -46,8 +60,8 @@
 
 HintManager::HintManager(QWidget *parent)
 	: Notifier("Hint", "Hints", IconsManager::instance()->loadIcon("OpenChat"), parent), AbstractToolTip(),
-	hint_timer(new QTimer(this)),
-	hints(), tipFrame(0), overUserConfigurationWindow(0)
+	hint_timer(new QTimer(this)), 
+	hints(), tipFrame(0)
 {
 	kdebugf();
 
@@ -61,19 +75,19 @@ HintManager::HintManager(QWidget *parent)
 #endif
 	frame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
-	QString style = QString("QFrame {border-width: %1px; border-style: solid; border-color: %2; border-radius: %3px;}")
+	Style = QString("QFrame {border-width: %1px; border-style: solid; border-color: %2; border-radius: %3px;}")
 			.arg(config_file.readNumEntry("Hints", "AllEvents_borderWidth", FRAME_WIDTH))
 			.arg(config_file.readColorEntry("Hints", "AllEvents_bdcolor").name())
 			.arg(BORDER_RADIUS);
-	frame->setStyleSheet(style);
+	frame->setStyleSheet(Style);
 
 	layout = new QVBoxLayout(frame);
 	layout->setSpacing(0);
 	layout->setMargin(FRAME_WIDTH);
 	layout->setSizeConstraint(QLayout::SetFixedSize);
 
-	opacity = config_file.readNumEntry("Hints", "AllEvents_transparency", 0);
-	opacity = 1 - opacity/100;
+	Opacity = config_file.readNumEntry("Hints", "AllEvents_transparency", 0);
+	Opacity = 1 - Opacity/100;
 
 	connect(hint_timer, SIGNAL(timeout()), this, SLOT(oneSecond()));
 	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetActivated(ChatWidget *)), this, SLOT(chatWidgetActivated(ChatWidget *)));
@@ -86,6 +100,8 @@ HintManager::HintManager(QWidget *parent)
 
 	NotificationManager::instance()->registerNotifier(this);
 	ToolTipClassManager::instance()->registerToolTipClass(QT_TRANSLATE_NOOP("@default", "Hints"), this);
+
+	UiHandler = new HintsConfigurationUiHandler(this, Style);
 
 	kdebugf2();
 }
@@ -115,129 +131,6 @@ HintManager::~HintManager()
 	kdebugf2();
 }
 
-void HintManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
-{
-    	connect(mainConfigurationWindow, SIGNAL(destroyed(QObject *)), this, SLOT(mainConfigurationWindowDestroyed()));
-
-	connect(mainConfigurationWindow->widget()->widgetById("hints/showContent"), SIGNAL(toggled(bool)),
-		mainConfigurationWindow->widget()->widgetById("hints/showContentCount"), SLOT(setEnabled(bool)));
-
-	QWidget *ownPosition = mainConfigurationWindow->widget()->widgetById("hints/ownPosition");
-	connect(ownPosition, SIGNAL(toggled(bool)), mainConfigurationWindow->widget()->widgetById("hints/ownPositionX"), SLOT(setEnabled(bool)));
-	connect(ownPosition, SIGNAL(toggled(bool)), mainConfigurationWindow->widget()->widgetById("hints/ownPositionY"), SLOT(setEnabled(bool)));
-	connect(ownPosition, SIGNAL(toggled(bool)), mainConfigurationWindow->widget()->widgetById("hints/ownPositionCorner"), SLOT(setEnabled(bool)));
-
-	minimumWidth = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("hints/minimumWidth"));
-	maximumWidth = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("hints/maximumWidth"));
-	connect(minimumWidth, SIGNAL(valueChanged(int)), this, SLOT(minimumWidthChanged(int)));
-	connect(maximumWidth, SIGNAL(valueChanged(int)), this, SLOT(maximumWidthChanged(int)));
-
-	QPushButton *previewButton = dynamic_cast<QPushButton *>(mainConfigurationWindow->widget()->widgetById("hints/preview"));
-	connect(previewButton, SIGNAL(clicked()), this, SLOT(showHintsPreview()));
-
-	connect(mainConfigurationWindow->widget()->widgetById("toolTipClasses"), SIGNAL(currentIndexChanged(const QString &)),
-		this, SLOT(toolTipClassesHighlighted(const QString &)));
-
-	ConfigGroupBox *toolTipBox = mainConfigurationWindow->widget()->configGroupBox("Look", "Userbox", "General");
-
-	QWidget *configureHint = new QWidget(toolTipBox->widget());
-	overUserConfigurationPreview = new QFrame(configureHint);
-	QHBoxLayout *lay = new QHBoxLayout(overUserConfigurationPreview);
-	lay->setMargin(10);
-	lay->setSizeConstraint(QLayout::SetFixedSize);
-
-	overUserConfigurationIconLabel = new QLabel(overUserConfigurationPreview);
-	overUserConfigurationIconLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-
-	overUserConfigurationTipLabel = new QLabel(overUserConfigurationPreview);
-	overUserConfigurationTipLabel->setTextFormat(Qt::RichText);
-	overUserConfigurationTipLabel->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
-	overUserConfigurationTipLabel->setContentsMargins(10, 0, 0, 0);
-
-	lay->addWidget(overUserConfigurationIconLabel, Qt::AlignTop);
-	lay->addWidget(overUserConfigurationTipLabel);
-
-    	configureOverUserHint = new QPushButton(tr("Configure"));
-	connect(configureOverUserHint, SIGNAL(clicked()), this, SLOT(showOverUserConfigurationWindow()));
-
-	Buddy example = Buddy::dummy();
-
-	if (!example.isNull())
-		prepareOverUserHint(overUserConfigurationPreview, overUserConfigurationIconLabel,
-				    overUserConfigurationTipLabel, example);
-
-	lay = new QHBoxLayout(configureHint);
-	lay->addWidget(overUserConfigurationPreview);
-	lay->addWidget(configureOverUserHint);
-
-	toolTipBox->addWidgets(new QLabel("Hint over userlist: "), configureHint);
-}
-
-void HintManager::showHintsPreview()
-{
-	Notification *notify = new Notification(QString(), IconsManager::instance()->loadIcon("Message"));
-	notify->setText(qApp->translate("@default", "Hints position preview"));
-	addHint(notify); 
-}
-
-void HintManager::toolTipClassesHighlighted(const QString &value)
-{
-	configureOverUserHint->setEnabled(value == qApp->translate("@default", "Hints"));
-	overUserConfigurationPreview->setEnabled(value == qApp->translate("@default", "Hints"));
-}
-
-NotifierConfigurationWidget *HintManager::createConfigurationWidget(QWidget *parent)
-{
-	configurationWidget = new HintsConfigurationWidget(parent);
-	return configurationWidget;
-}
-
-void HintManager::showOverUserConfigurationWindow()
-{
-	if (overUserConfigurationWindow)
-		_activateWindow(overUserConfigurationWindow);
-	else
-	{
-		overUserConfigurationWindow = new HintOverUserConfigurationWindow(Buddy::dummy());
-		connect(overUserConfigurationWindow, SIGNAL(configurationSaved()), this, SLOT(updateOverUserPreview()));
-		connect(overUserConfigurationWindow, SIGNAL(destroyed()), this, SLOT(hintOverUserConfigurationWindowDestroyed()));
-		overUserConfigurationWindow->show();
-	}
-}
-
-void HintManager::updateOverUserPreview()
-{
-	if (!overUserConfigurationPreview)
-		return;
-
-	Buddy example = Buddy::dummy();
-
-	if (!example.isNull())
-		prepareOverUserHint(overUserConfigurationPreview, overUserConfigurationIconLabel, overUserConfigurationTipLabel, example);
-}
-
-void HintManager::mainConfigurationWindowDestroyed()
-{
-	overUserConfigurationPreview = 0;
-}
-
-void HintManager::hintOverUserConfigurationWindowDestroyed()
-{
-	overUserConfigurationWindow = 0;
-}
-
-void HintManager::minimumWidthChanged(int value)
-{
-	if (value > maximumWidth->value())
-		maximumWidth->setValue(value);
-}
-
-void HintManager::maximumWidthChanged(int value)
-{
-	if (value < minimumWidth->value())
-		minimumWidth->setValue(value);
-}
-
 void HintManager::hintUpdated()
 {
 	setHint();
@@ -245,14 +138,14 @@ void HintManager::hintUpdated()
 
 void HintManager::configurationUpdated()
 {
-    	QString style = QString("QFrame {border-width: %1px; border-style: solid; border-color: %2; border-radius: %3px;}")
+	Style = QString("QFrame {border-width: %1px; border-style: solid; border-color: %2; border-radius: %3px;}")
 			.arg(config_file.readNumEntry("Hints", "AllEvents_borderWidth", FRAME_WIDTH))
 			.arg(config_file.readColorEntry("Hints", "AllEvents_bdcolor").name())
 			.arg(BORDER_RADIUS);
-	frame->setStyleSheet(style);
+	frame->setStyleSheet(Style);
 
-    	opacity = config_file.readNumEntry("Hints", "AllEvents_transparency", 0);
-	opacity = 1 - opacity/100;
+	Opacity = config_file.readNumEntry("Hints", "AllEvents_transparency", 0);
+	Opacity = 1 - Opacity/100;
 
 	setHint();
 }
@@ -332,7 +225,7 @@ void HintManager::setHint()
 
 	frame->setGeometry(newPosition.x(), newPosition.y(), preferredSize.width(), preferredSize.height());
 
-	frame->setWindowOpacity(opacity);
+	frame->setWindowOpacity(Opacity);
 
 	kdebugf2();
 }
@@ -380,6 +273,12 @@ void HintManager::oneSecond(void)
 		setHint();
 
 	kdebugf2();
+}
+
+NotifierConfigurationWidget *HintManager::createConfigurationWidget(QWidget *parent)
+{
+	configurationWidget = new HintsConfigurationWidget(parent);
+	return configurationWidget;
 }
 
 void HintManager::processButtonPress(const QString &buttonName, Hint *hint)

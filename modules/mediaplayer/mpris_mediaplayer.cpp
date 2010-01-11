@@ -1,11 +1,24 @@
-/***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
+/*
+ * %kadu copyright begin%
+ * Copyright 2010 Bartlomiej Zimon (uzi18@o2.pl)
+ * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
+ * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2009 Tomasz Rostański (rozteck@interia.pl)
+ * %kadu copyright end%
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /* Dorr: Amarok2 implements the MPRIS standard so this module should work
  * also with Audacious, BMPx, DragonPLayer, VLC, XMMS2 and maybe others.
@@ -30,6 +43,11 @@ MPRISMediaPlayer::MPRISMediaPlayer(QString n, QString s) : name(n), service(s)
 {
 	kdebugf();
 	controller = new MPRISController(service);
+
+	if (name == "Audacious")
+		mediaplayer->setInterval(5);
+	else
+		mediaplayer->setInterval(0);
 }
 
 MPRISMediaPlayer::~MPRISMediaPlayer()
@@ -39,23 +57,31 @@ MPRISMediaPlayer::~MPRISMediaPlayer()
 	controller = 0;
 }
 
+void MPRISMediaPlayer::setService(QString service)
+{
+	this->service = service;
+}
+
 void MPRISMediaPlayer::send(QString obj, QString func, int val)
 {
-	QDBusInterface amarokApp(service, obj, "org.freedesktop.MediaPlayer");
-	if (val != -1)
-		amarokApp.call(func, val);
-	else
-		amarokApp.call(func);
+	if (!service.isEmpty())
+	{
+		QDBusInterface mprisApp(service, obj, "org.freedesktop.MediaPlayer");
+		if (val != -1)
+			mprisApp.call(func, val);
+		else
+			mprisApp.call(func);
+	}
 }
 
 QString MPRISMediaPlayer::getString(QString obj, QString func)
 {
-	if (!isActive())
+	if (!isActive() || service.isEmpty())
 		return "";
 
-	QDBusInterface amarokApp(service, obj, "org.freedesktop.MediaPlayer");
-	QDBusReply<QString> reply = amarokApp.call(func);
-                               
+	QDBusInterface mprisApp(service, obj, "org.freedesktop.MediaPlayer");
+	QDBusReply<QString> reply = mprisApp.call(func);
+
 	if (reply.isValid())
 	{
 		return reply.value().simplified();
@@ -65,12 +91,12 @@ QString MPRISMediaPlayer::getString(QString obj, QString func)
 
 int MPRISMediaPlayer::getInt(QString obj, QString func)
 {
-	if (!isActive())
+	if (!isActive() || service.isEmpty())
 		return 0;
 
-	QDBusInterface amarokApp(service, obj, "org.freedesktop.MediaPlayer");
-	QDBusReply<int> reply = amarokApp.call(func);
-                               
+	QDBusInterface mprisApp(service, obj, "org.freedesktop.MediaPlayer");
+	QDBusReply<int> reply = mprisApp.call(func);
+
 	if (reply.isValid())
 	{
 		return reply.value();
@@ -80,24 +106,30 @@ int MPRISMediaPlayer::getInt(QString obj, QString func)
 
 QString MPRISMediaPlayer::getStringMapValue(QString obj, QString func, int param, QString field)
 {
-	QDBusInterface amarokApp(service, obj, "org.freedesktop.MediaPlayer");
-	QDBusReply<QVariantMap> reply = amarokApp.call(func, param);
-	if (reply.isValid())
+	if (!service.isEmpty())
 	{
-		QVariantMap map = reply.value();
-		return map.value(field).toString();
+		QDBusInterface mprisApp(service, obj, "org.freedesktop.MediaPlayer");
+		QDBusReply<QVariantMap> reply = mprisApp.call(func, param);
+		if (reply.isValid())
+		{
+			QVariantMap map = reply.value();
+			return map.value(field).toString();
+		}
 	}
 	return "";
 }
 
 int MPRISMediaPlayer::getIntMapValue(QString obj, QString func, int param, QString field)
 {
-	QDBusInterface amarokApp(service, obj, "org.freedesktop.MediaPlayer");
-	QDBusReply<QVariantMap> reply = amarokApp.call(func, param);
-	if (reply.isValid())
+	if (!service.isEmpty())
 	{
-		QVariantMap map = reply.value();
-		return map.value(field).toInt();
+		QDBusInterface mprisApp(service, obj, "org.freedesktop.MediaPlayer");
+		QDBusReply<QVariantMap> reply = mprisApp.call(func, param);
+		if (reply.isValid())
+		{
+			QVariantMap map = reply.value();
+			return map.value(field).toInt();
+		}
 	}
 	return -1;
 }
@@ -167,10 +199,10 @@ QString MPRISMediaPlayer::getTitle(int position)
 	kdebugf();
 	if (!isPlaying()) return "";
 
-	if ((position == -1) && !controller->currentTrack().title.isEmpty())
+	if (position == -1)
 		return controller->currentTrack().title;
-
-	return getStringMapValue("/TrackList", "GetMetadata", position, "title");
+	else
+		return getStringMapValue("/TrackList", "GetMetadata", position, "title");
 	kdebugf2();
 }
 
@@ -333,6 +365,10 @@ void MPRISMediaPlayer::decrVolume()
 bool MPRISMediaPlayer::isPlaying()
 {
 	kdebugf();
+
+	/* refresh the status for audacious */
+	if (name == "Audacious")
+		controller->getStatus();
 
 	return (controller->currentStatus().i1 == 0);
 

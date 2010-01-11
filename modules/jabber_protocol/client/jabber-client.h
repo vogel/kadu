@@ -1,24 +1,48 @@
- /***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
+/*
+ * %kadu copyright begin%
+ * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
+ * Copyright 2009 Juzef (juzefwt@tlen.pl)
+ * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2009 Bartłomiej Zimoń (uzi18@go2.pl)
+ * Copyright 2009 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * %kadu copyright end%
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-/***************************************************************************
-                jabberclient.h - Generic Jabber Client Class
-                             -------------------
-    begin                : Sat May 25 2005
-    copyright            : (C) 2005 by Till Gerken <till@tantalo.net>
-                           (C) 2006 by Michaël Larouche <larouche@kde.org>
-
-    Copyright 2006 by Tommi Rantala <tommi.rantala@cs.helsinki.fi>
-
-			   Kopete (C) 2001-2006 Kopete developers
-			   <kopete-devel@kde.org>.
- ***************************************************************************/
+/*
+ * %kadu copyright begin%
+ * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
+ * Copyright 2009 Juzef (juzefwt@tlen.pl)
+ * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2009 Bartłomiej Zimoń (uzi18@go2.pl)
+ * Copyright 2009 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * %kadu copyright end%
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #ifndef JABBERCLIENT_H
 #define JABBERCLIENT_H

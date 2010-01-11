@@ -95,6 +95,13 @@ Win+ Enter/Backspace/Left/Right/Up/Down.</source>
 Win+Enter/Backspace/Lewo/Prawo/Góra/Dół.</translation>
     </message>
     <message>
+        <source>With this option enabled you&apos;ll be able to control
+your MediaPlayer in chat window by keyboard shortcuts:
+Control+ Enter/Backspace/Left/Right/Up/Down.</source>
+        <translation>Po włączeniu tej opcji staje się możliwa kontrola odtwarzacza w oknie rozmowy za pomocą skrótów klawiaturowych:
+Control+Enter/Backspace/Lewo/Prawo/Góra/Dół.</translation>
+    </message>
+    <message>
         <source>Put statuses switch to dock menu</source>
         <translation>Wstaw włącznik statusów w menu dokowania</translation>
     </message>

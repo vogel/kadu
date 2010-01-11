@@ -1,14 +1,19 @@
+#include "status/status.h"
+
 #include "mp_status_changer.h"
-#include "mediaplayer.h"
 
 MediaPlayerStatusChanger::MediaPlayerStatusChanger()
-	: StatusChanger(900), disabled(true), mediaPlayerStatusPosition(DescriptionReplace) {}
-
-MediaPlayerStatusChanger::~MediaPlayerStatusChanger() {}
-
-void MediaPlayerStatusChanger::changeStatus(UserStatus &status)
+	: StatusChanger(900), disabled(true), mediaPlayerStatusPosition(DescriptionReplace)
 {
-	if (disabled)
+}
+
+MediaPlayerStatusChanger::~MediaPlayerStatusChanger()
+{
+}
+
+void MediaPlayerStatusChanger::changeStatus(StatusContainer *container, Status &status)
+{
+	if (disabled || status.isDisconnected())
 		return;
 
 	QString description = status.description();
@@ -27,7 +32,7 @@ void MediaPlayerStatusChanger::changeStatus(UserStatus &status)
 			break;
 
 		case PlayerTagReplace:
-			if (status.description().find("%player%") > -1)
+			if (status.description().indexOf("%player%") > -1)
 				description.replace("%player%", title);
 			break;
 	}
@@ -42,15 +47,14 @@ void MediaPlayerStatusChanger::setTitle(const QString &newTitle)
 	if (newTitle != title)
 	{
 		title = newTitle;
-		emit statusChanged();
+		emit statusChanged(0);
 	}
 }
 
 void MediaPlayerStatusChanger::setDisable(bool disable)
 {
-printf("MediaPlayerStatusChanger::setDisable(%d)\n", disable);
 	disabled = disable;
-	emit statusChanged();
+	emit statusChanged(0);
 }
 
 void MediaPlayerStatusChanger::changePositionInStatus(ChangeDescriptionTo newSongInfoPlace)
@@ -59,6 +63,6 @@ void MediaPlayerStatusChanger::changePositionInStatus(ChangeDescriptionTo newSon
 	{
 		mediaPlayerStatusPosition = newSongInfoPlace;
 		if (!disabled)
-			emit statusChanged();
+			emit statusChanged(0);
 	}
 }

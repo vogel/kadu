@@ -1,11 +1,25 @@
-/***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
+/*
+ * %kadu copyright begin%
+ * Copyright 2009, 2010 Bartlomiej Zimon (uzi18@o2.pl)
+ * Copyright 2009, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2009 Michał Podsiadlik (michal@kadu.net)
+ * Copyright 2009 Bartłomiej Zimoń (uzi18@go2.pl)
+ * Copyright 2009 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * %kadu copyright end%
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 #include <stdio.h>
 #include <qcheckbox.h>
 #include <qtimer.h>
@@ -126,7 +140,7 @@ void TlenProtocol::fetchAvatars(QString jid, QString type, QString md5)
 {
 	kdebugf();
 
-	Contact contact = ContactManager::instance()->byId(account(), jid, true);
+	Contact contact = ContactManager::instance()->byId(account(), jid, ActionCreateAndAdd);
 	CurrentAvatarService->fetchAvatar(contact);
 
 	kdebugf2();
@@ -333,7 +347,7 @@ void TlenProtocol::chatMsgReceived(QDomNode n)
 
 	//		w->displayMsg(Tlen->decode(body.toUtf8()),timeStamp);
 
-	Contact contact = ContactManager::instance()->byId(account(), TlenClient->decode(from), true);
+	Contact contact = ContactManager::instance()->byId(account(), TlenClient->decode(from), ActionCreateAndAdd);
 	ContactSet contacts = ContactSet(contact);
 
 	time_t msgtime = timeStamp.toTime_t();
@@ -501,8 +515,8 @@ void TlenProtocol::itemReceived(QString jid, QString name, QString subscription,
 	kdebugf();
 	kdebugm(KDEBUG_WARNING, "Tlen contact rcv %s\n", qPrintable(jid));
 
-	Contact contact = ContactManager::instance()->byId(account(), jid, true);
-	Buddy buddy = BuddyManager::instance()->byContact(contact, true);
+	Contact contact = ContactManager::instance()->byId(account(), jid, ActionCreateAndAdd);
+	Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
 
 	if (name.isEmpty())
 	{/*buddy.setDisplay(jid);*/} // BM sets display
@@ -561,8 +575,8 @@ void TlenProtocol::presenceChanged(QString from, QString newstatus, QString desc
 
 	// find id
 	
-	Contact contact = ContactManager::instance()->byId(account(), jid, true);
-	Buddy buddy = BuddyManager::instance()->byContact(contact, true);
+	Contact contact = ContactManager::instance()->byId(account(), jid, ActionCreateAndAdd);
+	Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
 
 	if (buddy.isAnonymous())
 		buddy.setAnonymous(false);
@@ -570,7 +584,7 @@ void TlenProtocol::presenceChanged(QString from, QString newstatus, QString desc
 	// id resource add new contact
 	if (jid != from)
 	{
-		Contact contactRes = ContactManager::instance()->byId(account(), from, true);
+		Contact contactRes = ContactManager::instance()->byId(account(), from, ActionCreateAndAdd);
 		contactRes.setOwnerBuddy(buddy);
 
 		Status oldStatus = contactRes.currentStatus();

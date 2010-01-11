@@ -4,7 +4,7 @@
 
 		<tab name="Hints">
 			<group-box name="Layout">
-				<combo-box caption="New hints go" config-section="Hints" config-item="NewHintUnder">
+				<combo-box caption="New hints go" config-section="Hints" config-item="NewHintUnder" id="hints/newHintUnder">
 					<item value="0" caption="Auto" />
 					<item value="1" caption="On top" />
 					<item value="2" caption="On bottom" />

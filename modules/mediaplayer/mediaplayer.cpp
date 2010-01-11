@@ -1,11 +1,26 @@
-/***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
+/*
+ * %kadu copyright begin%
+ * Copyright 2010 Bartlomiej Zimon (uzi18@o2.pl)
+ * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
+ * Copyright 2008, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2008, 2009 Michał Podsiadlik (michal@kadu.net)
+ * Copyright 2009 Tomasz Rostański (rozteck@interia.pl)
+ * Copyright 2009 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * %kadu copyright end%
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #include <QtCore/QTimer>
 #include <QtGui/QApplication>
@@ -14,14 +29,14 @@
 
 #include "action.h"
 #include "chat_edit_box.h"
-#include "chat_manager-old.h"
+#include "chat_manager.h"
 #include "chat_widget.h"
 #include "config_file.h"
 #include "custom_input.h"
 #include "debug.h"
 #include "gadu.h"
 #include "html_document.h"
-#include "icons-manager.h"
+#include "icons_manager.h"
 #include "kadu.h"
 #include "message_box.h"
 #include "status.h"
@@ -35,8 +50,10 @@
 
 #include "mediaplayer.h"
 
-#define MODULE_MEDIAPLAYER_VERSION 1.2
-#define CHECK_STATUS_INTERVAL 10*1000 /* 10s */
+#define MODULE_MEDIAPLAYER_VERSION 1.3
+#define CHECK_STATUS_INTERVAL 1*1000 /* 1s */
+
+#define SHORTCUT_KEY Qt::Key_Meta
 
 const char *MediaPlayerSyntaxText = QT_TRANSLATE_NOOP
 (
@@ -51,7 +68,11 @@ const char *MediaPlayerChatShortCutsText = QT_TRANSLATE_NOOP
 	"@default",
 	"With this option enabled you'll be able to control\n"
 	"your MediaPlayer in chat window by keyboard shortcuts:\n"
+#ifdef Q_OS_MAC
+	"Control+ Enter/Backspace/Left/Right/Up/Down."
+#else
 	"Win+ Enter/Backspace/Left/Right/Up/Down."
+#endif
 );
 
 // TODO: remove For CP1250->ISO8859-2 converter
@@ -67,7 +88,7 @@ MediaPlayer *mediaplayer;
 const char *mediaPlayerOsdHint = "MediaPlayerOsd";
 
 // Kadu initializing functions
-extern "C" int mediaplayer_init(bool firstLoad)
+extern "C" KADU_EXPORT int mediaplayer_init(bool firstLoad)
 {
 	mediaplayer = new MediaPlayer(firstLoad);
 	notification_manager->registerEvent(mediaPlayerOsdHint, QT_TRANSLATE_NOOP("@default", "Pseudo-OSD for MediaPlayer"), CallbackNotRequired);
@@ -77,7 +98,7 @@ extern "C" int mediaplayer_init(bool firstLoad)
 	return 0;
 }
 
-extern "C" void mediaplayer_close()
+extern "C" KADU_EXPORT void mediaplayer_close()
 {
 	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/mediaplayer.ui"), mediaplayer);
 
@@ -94,6 +115,7 @@ MediaPlayer::MediaPlayer(bool firstLoad)
 	// Initialization
 	playerInfo = 0;
 	playerCommands = 0;
+	statusInterval = CHECK_STATUS_INTERVAL;
 
 	// MediaPlayer menus in chats
 	menu = new QMenu();
@@ -124,9 +146,47 @@ MediaPlayer::MediaPlayer(bool firstLoad)
 		this, SLOT(mediaPlayerMenuActivated(QAction *, bool)),
 		"MediaPlayerButton", tr("MediaPlayer"), false, ""
 	);
+	playAction = new ActionDescription(
+		ActionDescription::TypeChat, "mediaplayer_play",
+		this, SLOT(playPause()),
+		"MediaPlayerPlay", tr("Play"), false, ""
+	);
+	stopAction = new ActionDescription(
+		ActionDescription::TypeChat, "mediaplayer_stop",
+		this, SLOT(stop()),
+		"MediaPlayerStop", tr("Stop"), false, ""
+	);
+	prevAction = new ActionDescription(
+		ActionDescription::TypeChat, "mediaplayer_prev",
+		this, SLOT(prevTrack()),
+		"MediaPlayerPrev", tr("Previous Track"), false, ""
+	);
+	nextAction = new ActionDescription(
+		ActionDescription::TypeChat, "mediaplayer_next",
+		this, SLOT(nextTrack()),
+		"MediaPlayerNext", tr("Next Track"), false, ""
+	);
+	volUpAction = new ActionDescription(
+		ActionDescription::TypeChat, "mediaplayer_vol_up",
+		this, SLOT(incrVolume()),
+		"MediaPlayerVolUp", tr("Volume Up"), false, ""
+	);
+	volDownAction = new ActionDescription(
+		ActionDescription::TypeChat, "mediaplayer_vol_down",
+		this, SLOT(decrVolume()),
+		"MediaPlayerVolDown", tr("Volume Down"), false, ""
+	);
 
 	if (firstLoad)
+	{
 		ChatEditBox::addAction("mediaplayer_button");
+		ChatEditBox::addAction("mediaplayer_prev");
+		ChatEditBox::addAction("mediaplayer_play");
+		ChatEditBox::addAction("mediaplayer_stop");
+		ChatEditBox::addAction("mediaplayer_next");
+		ChatEditBox::addAction("mediaplayer_vol_up");
+		ChatEditBox::addAction("mediaplayer_vol_down");
+	}
 
 	// MediaPlayer statuses menu item
 	bool menuPos = config_file.readBoolEntry("MediaPlayer", "dockMenu", false);
@@ -147,20 +207,21 @@ MediaPlayer::MediaPlayer(bool firstLoad)
 	winKeyPressed = false;
 
 	mediaPlayerStatusChanger = new MediaPlayerStatusChanger();
-	StatusChangerManager::instance()->registerStatusChanger(mediaPlayerStatusChanger);
+	status_changer_manager->registerStatusChanger(mediaPlayerStatusChanger);
 
 	createDefaultConfiguration();
 
 	mediaPlayerStatusChanger->changePositionInStatus((MediaPlayerStatusChanger::ChangeDescriptionTo)config_file.readNumEntry("MediaPlayer", "statusPosition"));
 
 	setControlsEnabled(false);
+	isPaused = true;
 }
 
 MediaPlayer::~MediaPlayer()
 {
 	kdebugf();
 
-	StatusChangerManager::instance()->unregisterStatusChanger(mediaPlayerStatusChanger);
+	status_changer_manager->unregisterStatusChanger(mediaPlayerStatusChanger);
 	delete mediaPlayerStatusChanger;
 	mediaPlayerStatusChanger = 0;
 
@@ -240,13 +301,16 @@ void MediaPlayer::chatKeyPressed(QKeyEvent *e, CustomInput *k, bool &handled)
 {
 	kdebugf();
 
-	if (!config_file.readBoolEntry("MediaPlayer", "chatShortcuts", true) || !isActive())
+	if (!config_file.readBoolEntry("MediaPlayer", "chatShortcuts", true))
 		return;
 
-	if (e->key() == Qt::Key_Super_L)
+	if (e->key() == SHORTCUT_KEY)
 		winKeyPressed = true; // We want to handle LeftWinKey pressed state
 	else if (!winKeyPressed)
 		return; // If LeftWinKey isn't pressed then break function.
+
+	if (!isActive())
+		return;
 
 	handled = true;
 
@@ -287,7 +351,7 @@ void MediaPlayer::chatKeyPressed(QKeyEvent *e, CustomInput *k, bool &handled)
 
 void MediaPlayer::chatKeyReleased(QKeyEvent *e, CustomInput *k, bool &handled)
 {
-	if (e->key() == Qt::Key_Super_L)
+	if (e->key() == SHORTCUT_KEY)
 		winKeyPressed = false; // We want to handle LeftWinKey pressed state
 }
 
@@ -298,7 +362,7 @@ void MediaPlayer::putSongTitle(int ident)
 	if (!isActive())
 	{
 		// TODO: make it a notification
-		MessageDialog::msg(tr("%1 isn't running!").arg(getPlayerName()));
+		MessageBox::msg(tr("%1 isn't running!").arg(getPlayerName()));
 		return;
 	}
 
@@ -374,7 +438,7 @@ void MediaPlayer::putPlayList(int ident)
 
 	if (!isActive())
 	{
-		MessageDialog::msg(tr("%1 isn't running!").arg(getPlayerName()));
+		MessageBox::msg(tr("%1 isn't running!").arg(getPlayerName()));
 		return;
 	}
 
@@ -432,13 +496,13 @@ void MediaPlayer::putPlayList(int ident)
 
 	if (emptyEntries > (lgt / 10))
 	{
-		if (!MessageDialog::ask(tr("More than 1/10 of titles you're trying to send are empty.<br>Perhaps %1 havn't read all titles yet, give its some more time.<br>Do you want to send playlist anyway?").arg(getPlayerName())))
+		if (!MessageBox::ask(tr("More than 1/10 of titles you're trying to send are empty.<br>Perhaps %1 havn't read all titles yet, give its some more time.<br>Do you want to send playlist anyway?").arg(getPlayerName())))
 			return;
 	}
 
 	if (chars >= 2000)
 	{
-		if (!MessageDialog::ask(tr("You're trying to send %1 entries of %2 playlist.<br>It will be splitted and sent in few messages<br>Are you sure to do that?")
+		if (!MessageBox::ask(tr("You're trying to send %1 entries of %2 playlist.<br>It will be splitted and sent in few messages<br>Are you sure to do that?")
 			.arg(QString::number(lgt)).arg(getPlayerName())) )
 			return;
 	}
@@ -580,7 +644,7 @@ ChatWidget *MediaPlayer::getCurrentChat()
 	uint i;
 	for ( i = 0; i < cs.count(); i++ )
 	{
-		//if (_isActiveWindow(cs[i]))
+		//if (cs[i]->isActiveWindow())
 		if (cs[i]->edit() == QApplication::focusWidget() ||
 			cs[i]->hasFocus())
 			break;
@@ -601,13 +665,17 @@ void MediaPlayer::mediaPlayerStatusChangerActivated(QAction *sender, bool toggle
 		foreach (KaduAction *action, enableMediaPlayerStatuses->actions())
 			action->setChecked(false);
 
-		MessageDialog::msg(tr("%1 isn't running!").arg(getPlayerName()));
+		MessageBox::msg(tr("%1 isn't running!").arg(getPlayerName()));
 		return;
 	}
 
 	mediaPlayerStatusChanger->setDisable(!toggled);
 	if (toggled)
-		timer->start(CHECK_STATUS_INTERVAL);
+	{
+		checkTitle();
+		if (statusInterval > 0)
+			timer->start(statusInterval);
+	}
 	else
 		timer->stop();
 }
@@ -616,15 +684,31 @@ void MediaPlayer::toggleStatuses(bool toggled)
 {
 	if (!isActive() && toggled)
 	{
-		MessageDialog::msg(tr("%1 isn't running!").arg(getPlayerName()));
+		MessageBox::msg(tr("%1 isn't running!").arg(getPlayerName()));
 		return;
 	}
 	
 	mediaPlayerStatusChanger->setDisable(!toggled);
-	if (toggled)
-		timer->start(CHECK_STATUS_INTERVAL);
+	if (toggled && statusInterval > 0)
+		timer->start(statusInterval);
 	else
 		timer->stop();
+}
+
+void MediaPlayer::titleChanged()
+{
+	if (!mediaPlayerStatusChanger->isDisabled())
+		checkTitle();
+}
+
+void MediaPlayer::statusChanged()
+{
+	checkTitle();
+}
+
+void MediaPlayer::setInterval(int seconds)
+{
+	statusInterval = seconds * 1000;
 }
 
 void MediaPlayer::checkTitle()
@@ -637,14 +721,12 @@ void MediaPlayer::checkTitle()
 		putTitleHint(title);
 
 	bool checked;
-	int idx = dockMenu->indexOf(popups[5]);
-	if (idx != -1)
-		checked = dockMenu->isItemChecked(popups[5]);
+	if (mediaplayerStatus != NULL)
+		checked = mediaplayerStatus->isChecked();
+	else if (enableMediaPlayerStatuses->action(kadu))
+		checked = enableMediaPlayerStatuses->action(kadu)->isChecked();
 	else
-		if (enableMediaPlayerStatuses->action(kadu))
-			checked = enableMediaPlayerStatuses->action(kadu)->isChecked();
-		else
-			checked = false;
+		checked = false;
 
 	if (!gadu->currentStatus().isOffline() && checked)
 	{
@@ -672,8 +754,7 @@ void MediaPlayer::configurationUpdated()
 	// Statuses switch
 	bool enabled;
 
-	int idx = dockMenu->indexOf(popups[5]);
-	if (idx == -1)
+	if (mediaplayerStatus == NULL)
 	{
 		if (enableMediaPlayerStatuses->action(kadu))
 			enabled = enableMediaPlayerStatuses->action(kadu)->isChecked();
@@ -681,15 +762,16 @@ void MediaPlayer::configurationUpdated()
 	}
 	else
 	{
-		enabled = dockMenu->isItemChecked(popups[5]);
-		dockMenu->removeItem(popups[5]);
+		enabled = mediaplayerStatus->isChecked();
+		dockMenu->removeAction(mediaplayerStatus);
 	}
 
-	bool menuPos = config_file.readBoolEntry("MediaPlayer", "dockMenu", false);
-	if (menuPos)
+	if (config_file.readBoolEntry("MediaPlayer", "dockMenu", false))
 	{
-		popups[5] = dockMenu->insertItem(tr("Enable MediaPlayer statuses"), this, SLOT(toggleStatuses(int)), 0, -1, 10);
-		dockMenu->setItemChecked(popups[5], enabled);
+		mediaplayerStatus = new QAction(tr("Enable MediaPlayer statuses"), this);
+		mediaplayerStatus->setCheckable(true);
+		connect(mediaplayerStatus, SIGNAL(toggled(bool)), this, SLOT(toggleStatuses(bool)));
+		dockMenu->addAction(mediaplayerStatus);
 	}
 	else
 	{
@@ -748,22 +830,55 @@ void MediaPlayer::prevTrack()
 		playerCommands->prevTrack();
 }
 
+void MediaPlayer::playPause()
+{
+	if (!playerCommandsSupported())
+		return;
+
+	if (isPaused)
+	{
+		play();
+		isPaused = false;
+		foreach(KaduAction *action, playAction->actions())
+			action->setIcon(icons_manager->loadIcon("MediaPlayerPause"));
+	}
+	else
+	{
+		pause();
+		isPaused = true;
+		foreach(KaduAction *action, playAction->actions())
+			action->setIcon(icons_manager->loadIcon("MediaPlayerPlay"));
+	}
+}
+
 void MediaPlayer::play()
 {
 	if (playerCommandsSupported())
 		playerCommands->play();
+
+	isPaused = false;
+	foreach(KaduAction *action, playAction->actions())
+			action->setIcon(icons_manager->loadIcon("MediaPlayerPause"));
 }
 
 void MediaPlayer::stop()
 {
 	if (playerCommandsSupported())
 		playerCommands->stop();
+
+	isPaused = true;
+	foreach(KaduAction *action, playAction->actions())
+			action->setIcon(icons_manager->loadIcon("MediaPlayerPlay"));
 }
 
 void MediaPlayer::pause()
 {
 	if (playerCommandsSupported())
 		playerCommands->pause();
+
+	isPaused = true;
+	foreach(KaduAction *action, playAction->actions())
+			action->setIcon(icons_manager->loadIcon("MediaPlayerPlay"));
 }
 
 void MediaPlayer::setVolume(int vol)

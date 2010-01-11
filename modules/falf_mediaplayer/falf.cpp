@@ -1,11 +1,23 @@
-/***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
+/*
+ * %kadu copyright begin%
+ * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
+ * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2009 Tomasz Rostański (rozteck@interia.pl)
+ * %kadu copyright end%
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #include <QtCore/QDir>
 #include <QtCore/QTextStream>
@@ -38,7 +50,7 @@ FalfMediaPlayer::FalfMediaPlayer()
 {
 	kdebugf();
 	
-	infoFile.setName(QDir::homeDirPath() + "/.FALF/track.info");
+	infoFile.setFileName(QDir::homePath() + "/.FALF/track.info");
 }
 
 FalfMediaPlayer::~FalfMediaPlayer()
@@ -52,9 +64,9 @@ QString FalfMediaPlayer::getData(dataType t)
 	if (!isActive())
 		return "";
 
-	infoFile.open(IO_ReadOnly);
+	infoFile.open(QIODevice::ReadOnly);
 	QTextStream sI(&infoFile);
-	sI.setEncoding(QTextStream::Unicode);
+	sI.setCodec("UTF-8");
 
 	QString buffer;
 
@@ -86,7 +98,7 @@ QString FalfMediaPlayer::getData(dataType t)
 
 	infoFile.close();
 
-	return buffer.simplifyWhiteSpace();
+	return buffer.simplified();
 }
 
 // PlayerInfo
@@ -171,7 +183,7 @@ bool FalfMediaPlayer::isPlaying()
 {
 	kdebugf();
 	
-	return (getData(ANY).find("TITLE:") == -1 ? false : true);
+	return (getData(ANY).indexOf("TITLE:") == -1 ? false : true);
 }
 
 bool FalfMediaPlayer::isActive()

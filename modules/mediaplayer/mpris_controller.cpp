@@ -1,11 +1,24 @@
-/***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
+/*
+ * %kadu copyright begin%
+ * Copyright 2010 Bartlomiej Zimon (uzi18@o2.pl)
+ * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
+ * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2009 Tomasz Rostański (rozteck@interia.pl)
+ * %kadu copyright end%
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 /* 
  * MPRIS standard implementation (used in Amarok2, Audacious, BMPx, 
  * Dragon Player, VLC, XMMS2
@@ -109,10 +122,12 @@ void MPRISController::statusChanged(PlayerStatus status)
 		active_ = true;
 
 	currentStatus_ = status;
+	mediaplayer->statusChanged();
 };
 
 void MPRISController::trackChanged(QVariantMap map)
 {
+	active_ = true;
 	QString title = map.value("title").toString();
 	if (title != currentTrack_.title)
 	{
@@ -128,4 +143,19 @@ void MPRISController::trackChanged(QVariantMap map)
 		if (currentTrack_.time == 0) /* for audacious... */
 			currentTrack_.time    = map.value("length").toUInt();
 	}
+	mediaplayer->titleChanged();
 };
+
+void MPRISController::getStatus()
+{
+	if (!service.isEmpty())
+	{
+		QDBusInterface mprisApp(service, "/Player", "org.freedesktop.MediaPlayer");
+		QDBusReply<PlayerStatus> reply = mprisApp.call("GetStatus");
+		if (reply.isValid())
+		{
+			PlayerStatus status = reply.value();
+			currentStatus_ = status;
+		}
+	}
+}

@@ -1,0 +1,8 @@
+[Module]
+Description=WinAMP media player support module
+Description[pl]=Modul obslugi odtwarzacza WinAMP
+Author=Michał Podsiadlik <michal@kadu.net>
+Provides=media_player
+Conflicts=media_player
+Dependencies=mediaplayer
+Version=1.0
