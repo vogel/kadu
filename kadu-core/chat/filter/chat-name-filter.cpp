@@ -38,15 +38,6 @@ bool ChatNameFilter::acceptChat(Chat chat)
 
 	if (chat.name().contains(Name, Qt::CaseInsensitive))
 		return true;
-/*
-	AggregateChat aggregate = dynamic_cast<AggregateChat>(chat);
-	if (aggregate)
-	{
-		foreach (Chat subchat, aggregate->chats())
-			if (acceptChat(subchat))
-				return true;
-		return false;
-	}*/
 
 	foreach (const Buddy &buddy, chat.contacts().toBuddySet())
 		if (Filter->acceptBuddy(buddy))
