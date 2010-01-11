@@ -30,11 +30,27 @@
 class BuddySet;
 class Chat;
 
+/**
+ * @addtogroup Chat
+ * @{
+ */
+
+/**
+ * @class AggregateChatBuilder
+ * @short Makes chat object that aggregates all chats for given buddy set.
+ *
+ * Class containsone static method that makes chat object that
+ * aggregates all chats for given buddy set.
+ */
 class KADUAPI AggregateChatBuilder
 {
 public:
 	static Chat buildAggregateChat(BuddySet buddies);
 
 };
+
+/**
+ * @}
+ */
 
 #endif // AGGREGATE_CHAT_BUILDER_H

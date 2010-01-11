@@ -29,6 +29,14 @@
 #include "chat/chat-manager.h"
 #include "chat-details-aggregate.h"
 
+/**
+ * @param buddies set of buddies
+ * @short Makes chat object that aggregates all chats for given buddy set.
+ * @return chat object that aggregates all chats for given buddy set
+ *
+ * This method will create and return new chat of 'Aggregate' type that
+ * contains all chats (for different accounts) for given set of buddies.
+ */
 Chat AggregateChatBuilder::buildAggregateChat(BuddySet buddies)
 {
 	QList<Chat> chats;
