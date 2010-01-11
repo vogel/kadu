@@ -7,6 +7,9 @@ set LIBGADU_DIR="c:\Qt\libgadu-win32\"
 set LIBSNDFILE_DIR="C:\Qt\libsndfile\"
 set OPENSSL_DIR="C:\Qt\mingw32-openssl-0.9.8j\"
 set ZLIB_DIR="C:\Qt\zlib\"
+set QCA_DIR="C:\Qt\qca2\bin\"
+set QCA_OSSL_DIR="%QT_DIR%..\plugins\crypto\"
+REM set QCA_OSSL_DIR="c:\Qt\qca-ossl\lib\"
 
 ECHO Set proper paths and uncomment this line
 EXIT
@@ -80,6 +83,15 @@ xcopy %QT_DIR%..\plugins\imageformats\qmng4.dll  %DESTINATION%\plugins\imageform
 xcopy %QT_DIR%..\plugins\imageformats\qsvg4.dll  %DESTINATION%\plugins\imageformats\ /C /H /R /Y  >> install.log
 xcopy %QT_DIR%..\plugins\imageformats\qtiff4.dll %DESTINATION%\plugins\imageformats\ /C /H /R /Y  >> install.log
 xcopy %QT_DIR%..\plugins\imageformats\qico4.dll  %DESTINATION%\plugins\imageformats\ /C /H /R /Y  >> install.log
+
+IF EXIST %QCA_DIR%qca2.dll (
+ECHO Copying QCA plugin
+xcopy %QCA_DIR%qca2.dll %DESTINATION%\ /C /H /R /Y  >> install.log
+)
+IF EXIST %QCA_OSSL_DIR%qca-ossl2.dll (
+ECHO Copying QCA-OpenSSL Plugin
+xcopy %QCA_OSSL_DIR%qca-ossl2.dll %DESTINATION%\plugins\crypto\ /C /H /R /Y  >> install.log
+)
 
 ECHO [Paths] > %DESTINATION%\qt.conf
 ECHO Plugins = plugins >> %DESTINATION%\qt.conf
