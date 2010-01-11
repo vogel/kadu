@@ -70,7 +70,9 @@ Core * Core::instance()
 	return Instance;
 }
 
-Core::Core() : Myself(Buddy::create()), Window(0), ShowMainWindowOnStart(true)
+Core::Core() : 
+	Myself(Buddy::create()), Window(0), ShowMainWindowOnStart(true), 
+	IsClosing(false)
 {
 	connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(quit()));
 	createDefaultConfiguration();
@@ -79,6 +81,7 @@ Core::Core() : Myself(Buddy::create()), Window(0), ShowMainWindowOnStart(true)
 
 Core::~Core()
 {
+	IsClosing = true;
 	bool disconnectWithCurrentDescription = config_file.readBoolEntry("General", "DisconnectWithCurrentDescription");
 	QString disconnectDescription = config_file.readEntry("General", "DisconnectDescription");
 	StatusContainerManager::instance()->disconnectAndStoreLastStatus(disconnectWithCurrentDescription, disconnectDescription);

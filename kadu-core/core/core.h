@@ -48,6 +48,7 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 
 	Buddy Myself;
 	KaduWindow *Window;
+	bool IsClosing;
 	bool ShowMainWindowOnStart; // TODO: 0.7.1, it is a hack
 
 	Core();
@@ -77,7 +78,7 @@ public:
 	static Core * instance();
 	
 	QString version() { return QString(VERSION);}
-
+	bool isClosing() { return IsClosing; }
 	Buddy myself() { return Myself; }
 
 	void createGui();
