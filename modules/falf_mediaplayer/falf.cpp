@@ -50,7 +50,7 @@ FalfMediaPlayer::FalfMediaPlayer()
 {
 	kdebugf();
 	
-	infoFile.setName(QDir::homeDirPath() + "/.FALF/track.info");
+	infoFile.setFileName(QDir::homePath() + "/.FALF/track.info");
 }
 
 FalfMediaPlayer::~FalfMediaPlayer()
@@ -64,9 +64,9 @@ QString FalfMediaPlayer::getData(dataType t)
 	if (!isActive())
 		return "";
 
-	infoFile.open(IO_ReadOnly);
+	infoFile.open(QIODevice::ReadOnly);
 	QTextStream sI(&infoFile);
-	sI.setEncoding(QTextStream::Unicode);
+	sI.setCodec("UTF-8");
 
 	QString buffer;
 
@@ -98,7 +98,7 @@ QString FalfMediaPlayer::getData(dataType t)
 
 	infoFile.close();
 
-	return buffer.simplifyWhiteSpace();
+	return buffer.simplified();
 }
 
 // PlayerInfo
@@ -183,7 +183,7 @@ bool FalfMediaPlayer::isPlaying()
 {
 	kdebugf();
 	
-	return (getData(ANY).find("TITLE:") == -1 ? false : true);
+	return (getData(ANY).indexOf("TITLE:") == -1 ? false : true);
 }
 
 bool FalfMediaPlayer::isActive()
