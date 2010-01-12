@@ -7,8 +7,17 @@
 #include "configuration_aware_object.h"
 #include "main_configuration_window.h"
 
+#ifdef HAVE_ASPELL
 class AspellSpeller;
 class AspellConfig;
+typedef QMap<QString, AspellSpeller *> Checkers;
+#else
+namespace enchant 
+{
+	class Dict;
+}
+typedef QMap<QString, enchant::Dict*> Checkers;
+#endif
 class ChatWidget;
 
 class QListWidgetItem;
@@ -17,9 +26,10 @@ class SpellChecker : public ConfigurationUiHandler, ConfigurationAwareObject
 {
     Q_OBJECT
 
-	typedef QMap<QString, AspellSpeller *> Checkers;
-	Checkers checkers;
+#ifdef HAVE_ASPELL
 	AspellConfig *spellConfig;
+#endif
+	Checkers checkers;
 
 	QListWidget *availList;
 	QListWidget *checkList;

@@ -6,8 +6,12 @@
  *  (at your option) any later version.                                    *
  *                                                                         *
  ***************************************************************************/
-#define ASPELL_STATIC
-#include <aspell.h>
+#ifdef HAVE_ENCHANT
+# include <enchant++.h>
+#else
+# define ASPELL_STATIC
+# include <aspell.h>
+#endif
 
 #include <QGridLayout>
 #include <QLabel>
@@ -57,6 +61,7 @@ SpellChecker::SpellChecker()
 	connect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreated(ChatWidget *)));
 
 	// prepare configuration of spellchecker
+#ifdef HAVE_ASPELL
 	spellConfig = new_aspell_config();
 	aspell_config_replace(spellConfig, "encoding", "utf-8");
 
@@ -66,6 +71,7 @@ SpellChecker::SpellChecker()
 	aspell_config_replace(spellConfig, "prefix", qPrintable(ggPath("dicts")));
 #endif
 
+#endif
 	import_0_5_0_Configuration();
 
 	createDefaultConfiguration();
@@ -76,16 +82,41 @@ SpellChecker::SpellChecker()
 SpellChecker::~SpellChecker()
 {
 	disconnect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreated(ChatWidget *)));
-
+#ifdef HAVE_ENCHANT
+	foreach(enchant::Dict *speller, checkers.values())
+		delete speller;
+#else
 	delete_aspell_config(spellConfig);
-
 	foreach(AspellSpeller *speller, checkers.values())
 		delete_aspell_speller(speller);
+#endif
 }
+
+#ifdef HAVE_ENCHANT
+typedef std::pair<Checkers*,QStringList*> descWrapper;
+
+void EnchantDictDescribe(const char * const lang_tag,
+	const char * const /*provider_name*/,
+	const char * const /*provider_desc*/,
+	const char * const /*provider_file*/,
+	void * user_data)
+{
+	descWrapper *pWrapper = (descWrapper*)user_data;
+	const Checkers &checkers = *pWrapper->first;
+	QStringList &result = *(pWrapper->second);
+	if (checkers.find(lang_tag) == checkers.end())
+	    result.push_back(lang_tag);
+
+}
+#endif
 
 QStringList SpellChecker::notCheckedLanguages()
 {
 	QStringList result;
+#ifdef HAVE_ENCHANT
+	descWrapper aWrapper(&checkers,&result);
+	enchant::Broker::instance()->list_dicts(EnchantDictDescribe, &aWrapper);
+#else
 	AspellDictInfoList* dlist;
 	AspellDictInfoEnumeration* dels;
 	const AspellDictInfo* entry;
@@ -100,7 +131,7 @@ QStringList SpellChecker::notCheckedLanguages()
 			result.push_back(entry->name);
 	}
 	delete_aspell_dict_info_enumeration(dels);
-
+#endif
 	return result;
 }
 
@@ -118,6 +149,17 @@ bool SpellChecker::addCheckedLang(QString &name)
 	if (checkers.find(name) != checkers.end())
 		return true;
 
+#ifdef HAVE_ENCHANT
+	try
+	{
+        	checkers[name] = enchant::Broker::instance()->request_dict(name.ascii());
+	}
+	catch (enchant::Exception &e)
+	{
+		MessageBox::msg(e.what());
+		return false;
+	}
+#else
 	aspell_config_replace(spellConfig, "lang", name.ascii());
 
 	// create spell checker using prepared configuration
@@ -129,6 +171,7 @@ bool SpellChecker::addCheckedLang(QString &name)
 	}
 	else
 		checkers[name] = to_aspell_speller(possibleErr);
+#endif
 
 	if (checkers.size() == 1)
 	{
@@ -144,15 +187,24 @@ void SpellChecker::removeCheckedLang(QString& name)
 	Checkers::Iterator checker = checkers.find(name);
 	if (checker != checkers.end())
 	{
+#ifdef HAVE_ENCHANT
+		delete checker.data();
+#else
 		delete_aspell_speller(checker.data());
+#endif
 		checkers.erase(name);
 	}
 }
 
 bool SpellChecker::buildCheckers()
 {
+#ifdef HAVE_ENCHANT
+	foreach(enchant::Dict *speller, checkers.values())
+		delete speller;
+#else
 	foreach(AspellSpeller *speller, checkers.values())
 		delete_aspell_speller(speller);
+#endif
 
 	checkers.clear();
 
@@ -160,6 +212,7 @@ bool SpellChecker::buildCheckers()
 	QString checkedStr = config_file.readEntry("ASpell", "Checked", "pl");
 	QStringList checkedList = QStringList::split(',', checkedStr);
 
+#ifdef HAVE_ASPELL
 	if (config_file.readBoolEntry("ASpell", "Accents", false))
 		aspell_config_replace(spellConfig, "ignore-accents", "true");
 	else
@@ -169,9 +222,10 @@ bool SpellChecker::buildCheckers()
 		aspell_config_replace(spellConfig, "ignore-case", "true");
 	else
 		aspell_config_replace(spellConfig, "ignore-case", "false");
+#endif
 
-	// create aspell checkers for each language
-	for (unsigned int i = 0; i < checkedList.count(); i++)
+	// create spell checkers for each language
+	for (int i = 0; i < checkedList.count(); i++)
 	{
 		addCheckedLang(checkedList[i]);
 		/*
@@ -328,7 +382,11 @@ bool SpellChecker::checkWord(QString word)
 	{
 		for (Checkers::Iterator it = checkers.begin(); it != checkers.end(); it++)
 		{
+#ifdef HAVE_ENCHANT
+			if ((*it)->check(word.toUtf8().constData()))
+#else
 			if (aspell_speller_check(it.data(), word.toUtf8(), -1))
+#endif
 			{
 				isWordValid = true;
 				break;
