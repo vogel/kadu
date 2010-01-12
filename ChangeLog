@@ -19,6 +19,8 @@ Je¶li jest w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * zawijanie zbyt d³ugich s³ów w oknie rozmowy (tomek-k/dorr)
 * drobne usprawnienia kompilacji pod Windows (Darom/dorr, dorr)
 * drobne poprawki zwi±zae z kompatybilno¶ci± z systemem Windows7 (dorr)
+* modu³ spellchecker skorzysta z enchant zamiast aspall'a je¶li znajduje siê on w systemie (Caolan McNamara/dorr)
+* usuniêty zosta³ crash w historii (beevvy/dorr)
 * inne poprawki drobnych b³êdów
 
 +++ wersja 0.6.5.4-rc2
