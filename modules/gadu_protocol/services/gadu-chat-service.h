@@ -47,7 +47,7 @@ class GaduChatService : public ChatService
 	QString getContent(struct gg_event *e);
 	bool ignoreRichText(struct gg_event *e, Contact sender);
 	bool ignoreImages(struct gg_event *e, Contact sender);
-	FormattedMessage createFormattedMessage(struct gg_event *e, Contact sender);
+	FormattedMessage createFormattedMessage(struct gg_event *e, Chat chat, Contact sender);
 
 	void removeTimeoutUndeliveredMessages();
 
@@ -72,7 +72,7 @@ signals:
 		Mo�na te� przerwa� dalsz� obr�bk� wiadomo�ci ustawiaj�c
 		stop na true.
 	**/
-	void rawGaduReceivedMessageFilter(Chat chat, QString &msg, QByteArray &formats, bool &ignore);
+	void receivedGaduRawMessageFilter(Chat chat, Contact sender, QString &msg, bool &ignore);
 
 };
 
