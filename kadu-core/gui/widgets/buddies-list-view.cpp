@@ -36,6 +36,7 @@
 #include "buddies/buddy-set.h"
 #include "buddies/model/buddies-model-proxy.h"
 #include "chat/chat-manager.h"
+#include "contacts/filter/contact-no-unloaded-account-filter.h"
 #include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
 #include "model/roles.h"
@@ -71,6 +72,8 @@ BuddiesListView::BuddiesListView(MainWindow *mainWindow, QWidget *parent) :
 	Delegate = new BuddiesListViewDelegate(this);
 	setItemDelegate(Delegate);
 
+	HideUnloadedFilter = new ContactNoUnloadedAccountFilter(this);
+
 	Delegate->setModel(ProxyModel);
 	QTreeView::setModel(ProxyModel);
 
@@ -104,6 +107,7 @@ void BuddiesListView::setModel(AbstractBuddiesModel *model)
 	}
 
 	ProxyModel->setSourceModel(dynamic_cast<QAbstractItemModel *>(model));
+	ProxyModel->addFilter(HideUnloadedFilter);
 	ProxyModel->sort(1);
 	ProxyModel->sort(0); // something is wrong with sorting in my Qt version
 }

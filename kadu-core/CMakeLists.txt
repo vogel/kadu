@@ -96,6 +96,8 @@ set (kadu_SRCS
 	contacts/contact-set-configuration-helper.cpp
 	contacts/contact-shared.cpp
 
+	contacts/filter/contact-no-unloaded-account-filter.cpp
+
 	contacts/model/buddy-contact-model.cpp
 
 	core/core.cpp
@@ -357,6 +359,7 @@ set (kadu_MOC_SRCS
 	contacts/contact-shared.h
 
 	contacts/filter/abstract-contact-filter.h
+	contacts/filter/contact-no-unloaded-account-filter.h
 
 	contacts/model/buddy-contact-model.h
 

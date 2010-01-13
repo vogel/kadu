@@ -121,9 +121,6 @@ bool BuddiesModelProxy::lessThan(const QModelIndex &left, const QModelIndex &rig
 bool BuddiesModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
 	if (sourceParent.isValid())
-	    return true;
-
-	if (sourceParent.isValid())
 	{
 		Contact contact = SourceBuddyModel->contactAt(sourceModel()->index(sourceRow, 0, sourceParent));
 		foreach (AbstractContactFilter *filter, ContactFilters)

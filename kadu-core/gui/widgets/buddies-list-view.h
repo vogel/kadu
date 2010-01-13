@@ -40,6 +40,7 @@ class Buddy;
 class BuddySet;
 class BuddiesListViewDelegate;
 class BuddiesModelProxy;
+class ContactNoUnloadedAccountFilter;
 class ContactSet;
 class MainWindow;
 
@@ -51,6 +52,8 @@ class BuddiesListView : public QTreeView
 	BuddiesListViewDelegate *Delegate;
 	AbstractBuddiesModel *Model;
 	BuddiesModelProxy *ProxyModel;
+
+	ContactNoUnloadedAccountFilter *HideUnloadedFilter;
 
 	Buddy buddyAt(const QModelIndex &index) const;
 	Contact contactAt(const QModelIndex &index) const;
