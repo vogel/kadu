@@ -91,6 +91,7 @@ xcopy %QCA_DIR%qca2.dll %DESTINATION%\ /C /H /R /Y  >> install.log
 IF EXIST %QCA_OSSL_DIR%qca-ossl2.dll (
 ECHO Copying QCA-OpenSSL Plugin
 xcopy %QCA_OSSL_DIR%qca-ossl2.dll %DESTINATION%\plugins\crypto\ /C /H /R /Y  >> install.log
+xcopy %OPENSSL_DIR%bin\libssl-8.dll %DESTINATION%\ /C /H /R /Y  >> install.log
 )
 
 ECHO [Paths] > %DESTINATION%\qt.conf
