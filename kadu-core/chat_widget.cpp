@@ -844,17 +844,14 @@ void ChatWidget::kaduRestoreGeometry()
 	}
 
 	/* Dorr: if edit box or chat view are to small force to default */
-	if (vertSizes[0] <= 60 || vertSizes[1] <= 60)
+	if (vertSizes.isEmpty() || vertSizes[0] <= 60 || vertSizes[1] <= 60)
 	{
 		vertSizes.clear();
-	}
-
-	if (vertSizes.empty())
-	{
 		int h = height() / 3;
 		vertSizes.append(h * 2);
 		vertSizes.append(h);
 	}
+
 	vertSplit->setSizes(vertSizes);
 
 	if (horizSplit)
