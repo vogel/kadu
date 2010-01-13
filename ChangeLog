@@ -1,6 +1,7 @@
 +++ version 0.6.6-alpha4
 * gadu: exporting contacts list works again (Vogel)
 * protocols: disabling protocol module disconnects all accounts correctly (Vogel)
+* gui: fixed buddies list refreshing (Vogel)
 
 +++ version 0.6.6-alpha3
 * history: chat list cleanup in history window (Vogel)

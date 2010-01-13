@@ -24,6 +24,7 @@
 #include "buddies/buddy.h"
 #include "buddies/buddy-list-mime-data-helper.h"
 #include "buddies/buddy-manager.h"
+#include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 
 #include "protocols/protocol.h"
@@ -41,8 +42,18 @@ BuddiesModel::BuddiesModel(BuddyManager *manager, QObject *parent)
 			this, SLOT(buddyAdded(Buddy &)));
 	connect(Manager, SIGNAL(buddyAboutToBeRemoved(Buddy &)),
 			this, SLOT(buddyAboutToBeRemoved(Buddy &)));
-			connect(Manager, SIGNAL(buddyRemoved(Buddy &)),
+	connect(Manager, SIGNAL(buddyRemoved(Buddy &)),
 			this, SLOT(buddyRemoved(Buddy &)));
+
+	ContactManager *cm = ContactManager::instance();
+	connect(cm, SIGNAL(contactAboutToBeAdded(Contact)),
+			this, SLOT(contactAboutToBeAdded(Contact)));
+	connect(cm, SIGNAL(contactAdded(Contact)),
+			this, SLOT(contactAdded(Contact)));
+	connect(cm, SIGNAL(contactAboutToBeRemoved(Contact)),
+			this, SLOT(contactAboutToBeRemoved(Contact)));
+	connect(cm, SIGNAL(contactRemoved(Contact)),
+			this, SLOT(contactRemoved(Contact)));
 }
 
 BuddiesModel::~BuddiesModel()
@@ -82,6 +93,8 @@ void BuddiesModel::buddyAboutToBeAdded(Buddy &buddy)
 {
 	int count = rowCount();
 	beginInsertRows(QModelIndex(), count, count);
+
+	connect(buddy, SIGNAL(updated()), this, SLOT(buddyUpdated()));
 }
 
 void BuddiesModel::buddyAdded(Buddy &buddy)
@@ -93,9 +106,93 @@ void BuddiesModel::buddyAboutToBeRemoved(Buddy &buddy)
 {
 	int index = buddyIndex(buddy).row();
 	beginRemoveRows(QModelIndex(), index, index);
+
+	disconnect(buddy, SIGNAL(updated()), this, SLOT(buddyUpdated()));
 }
 
 void BuddiesModel::buddyRemoved(Buddy &buddy)
 {
 	endRemoveRows();
+}
+
+void BuddiesModel::buddyUpdated()
+{
+	Buddy buddy(sender());
+	if (!buddy)
+		return;
+
+	QModelIndex index = buddyIndex(buddy);
+	emit dataChanged(index, index);
+}
+
+void BuddiesModel::contactAboutToBeAdded(Contact contact)
+{
+	Buddy buddy = contact.ownerBuddy();
+	if (!buddy)
+		return;
+
+	QModelIndex index = buddyIndex(buddy);
+	if (!index.isValid())
+		return;
+
+	int count = rowCount(index);
+	beginInsertRows(index, count, count);
+
+	connect(contact, SIGNAL(updated()), this, SLOT(contactUpdated()));
+}
+
+void BuddiesModel::contactAdded(Contact contact)
+{
+	Buddy buddy = contact.ownerBuddy();
+	if (!buddy)
+		return;
+
+	QModelIndex index = buddyIndex(buddy);
+	if (!index.isValid())
+		return;
+
+	endInsertRows();
+}
+
+void BuddiesModel::contactAboutToBeRemoved(Contact contact)
+{
+	Buddy buddy = contact.ownerBuddy();
+	if (!buddy)
+		return;
+
+	QModelIndex index = buddyIndex(buddy);
+	if (!index.isValid())
+		return;
+
+	int contactIndex = buddy.contacts().indexOf(contact);
+	beginRemoveRows(index, contactIndex, contactIndex);
+
+	disconnect(contact, SIGNAL(updated()), this, SLOT(contactUpdated()));
+}
+
+void BuddiesModel::contactRemoved(Contact contact)
+{
+	Buddy buddy = contact.ownerBuddy();
+	if (!buddy)
+		return;
+
+	QModelIndex index = buddyIndex(buddy);
+	if (!index.isValid())
+		return;
+
+	endRemoveRows();
+}
+
+void BuddiesModel::contactUpdated()
+{
+	Contact contact(sender());
+	if (!contact)
+		return;
+
+	Buddy buddy = contact.ownerBuddy();
+	if (!buddy)
+		return;
+
+	QModelIndex contactIndex = index(buddy.contacts().indexOf(contact), 0, buddyIndex(buddy));
+	emit dataChanged(contactIndex, contactIndex);
 }
