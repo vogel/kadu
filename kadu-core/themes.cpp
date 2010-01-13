@@ -55,11 +55,18 @@ bool Themes::validateDir(const QString &path) const
 		{
 			f.setName(path + '/' + dir + '/' + ConfigName);
 			if (!f.exists())
+			{
+				kdebugmf(KDEBUG_INFO, "Theme configration file '%s' does not exist\n",
+					qPrintable(f.name()));
 				return false;
+			}
 		}
 
 		return true;
 	}
+
+	kdebugmf(KDEBUG_INFO, "Theme configration file '%s' does not exist\n",
+		qPrintable(f.name()));
 
 	return false;
 }
