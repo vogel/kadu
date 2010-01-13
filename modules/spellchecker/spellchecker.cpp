@@ -90,6 +90,7 @@ SpellChecker::~SpellChecker()
 	foreach(AspellSpeller *speller, checkers.values())
 		delete_aspell_speller(speller);
 #endif
+	Highlighter::removeAll();
 }
 
 #ifdef HAVE_ENCHANT

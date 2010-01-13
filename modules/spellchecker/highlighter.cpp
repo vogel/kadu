@@ -49,3 +49,12 @@ void Highlighter::setHighlightFormat(QTextCharFormat format)
 	highlightFormat = format;
 }
 
+void Highlighter::removeAll()
+{
+	foreach (Highlighter *highlighter, highlighters)
+	{
+		highlighters.remove(highlighter);
+		delete highlighter;
+	}
+}
+
