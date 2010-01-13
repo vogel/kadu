@@ -24,14 +24,17 @@
 #include <QtGui/QSortFilterProxyModel>
 
 #include "abstract-buddies-model.h"
-#include "buddies/filter/abstract-buddy-filter.h"
+
+class AbstractBuddyFilter;
+class AbstractContactFilter;
 
 class BuddiesModelProxy : public QSortFilterProxyModel, public AbstractBuddiesModel
 {
 	Q_OBJECT
 
 	AbstractBuddiesModel *SourceBuddyModel;
-	QList<AbstractBuddyFilter *> Filters;
+	QList<AbstractBuddyFilter *> BuddyFilters;
+	QList<AbstractContactFilter *> ContactFilters;
 
 	bool BrokenStringCompare;
 	bool SortByStatus;
@@ -45,11 +48,16 @@ protected:
 	virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
 
 public:
-	BuddiesModelProxy(QObject *parent = 0);
+	explicit BuddiesModelProxy(QObject *parent = 0);
+	virtual ~BuddiesModelProxy();
 
 	virtual void setSourceModel(QAbstractItemModel *sourceModel);
+
 	void addFilter(AbstractBuddyFilter *filter);
 	void removeFilter(AbstractBuddyFilter *filter);
+
+	void addFilter(AbstractContactFilter *filter);
+	void removeFilter(AbstractContactFilter *filter);
 
 	void setSortByStatus(bool sortByStatus);
 

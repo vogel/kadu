@@ -356,6 +356,8 @@ set (kadu_MOC_SRCS
 	contacts/contact-manager.h
 	contacts/contact-shared.h
 
+	contacts/filter/abstract-contact-filter.h
+
 	contacts/model/buddy-contact-model.h
 
 	configuration/configuration-window-data-manager.h

@@ -18,8 +18,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ABSTRACT_BUDDY_FILTER
-#define ABSTRACT_BUDDY_FILTER
+#ifndef ABSTRACT_BUDDY_FILTER_H
+#define ABSTRACT_BUDDY_FILTER_H
 
 #include <QtCore/QObject>
 
@@ -30,8 +30,9 @@ class AbstractBuddyFilter : public QObject
 	Q_OBJECT
 
 public:
-	AbstractBuddyFilter(QObject *parent = 0)
+	explicit AbstractBuddyFilter(QObject *parent = 0)
 			: QObject(parent) {}
+	virtual ~AbstractBuddyFilter() {}
 
 	virtual bool acceptBuddy(Buddy buddy) = 0;
 
@@ -40,4 +41,4 @@ signals:
 
 };
 
-#endif // ABSTRACT_BUDDY_FILTER
+#endif // ABSTRACT_BUDDY_FILTER_H
