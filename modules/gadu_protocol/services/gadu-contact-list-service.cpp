@@ -35,8 +35,8 @@
 
 #include "gadu-contact-list-service.h"
 
-GaduContactListService::GaduContactListService(GaduProtocol *protocol)
-	: ContactListService(protocol), Protocol(protocol)
+GaduContactListService::GaduContactListService(GaduProtocol *protocol) :
+		ContactListService(protocol), Protocol(protocol)
 {
 }
 

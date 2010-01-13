@@ -1,3 +1,6 @@
++++ version 0.6.6-alpha4
+* gadu: exporting contacts list works again (Vogel)
+
 +++ version 0.6.6-alpha3
 * history: chat list cleanup in history window (Vogel)
 * history: using transaction, import is 10-50x faster, no more freezes (uzi/Vogel)
