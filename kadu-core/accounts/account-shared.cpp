@@ -144,6 +144,15 @@ void AccountShared::useProtocolFactory(ProtocolFactory *factory)
 				   this, SIGNAL(buddyStatusChanged(Contact, Status)));
 		disconnect(ProtocolHandler, SIGNAL(connected(Account)), this, SIGNAL(connected()));
 		disconnect(ProtocolHandler, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
+		
+		bool disconnectWithCurrentDescription = config_file.readBoolEntry("General", "DisconnectWithCurrentDescription");
+		QString disconnectDescription = config_file.readEntry("General", "DisconnectDescription");
+
+		StatusContainer *statusContianer = Account(this).statusContainer();
+		if (statusContianer)
+				statusContianer->disconnectAndStoreLastStatus(disconnectWithCurrentDescription, disconnectDescription);
+
+		ProtocolHandler->deleteLater();
 	}
 
 	if (!factory)
@@ -184,6 +193,8 @@ void AccountShared::protocolRegistered(ProtocolFactory *factory)
 
 void AccountShared::protocolUnregistered(ProtocolFactory* factory)
 {
+	printf("protocol unregistered!!\n");
+
 	ensureLoaded();
 
 	if (!ProtocolHandler)
@@ -192,6 +203,7 @@ void AccountShared::protocolUnregistered(ProtocolFactory* factory)
 	if (factory != ProtocolHandler->protocolFactory())
 		return;
 
+	printf("it is mine!!\n");
 	useProtocolFactory(0);
 }
 
