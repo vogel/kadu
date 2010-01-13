@@ -185,16 +185,8 @@ void HistorySqlStorage::sync()
 {
 	DatabaseMutex.lock();
 
-	QDateTime before = QDateTime::currentDateTime();
 	Database.commit();
 	Database.transaction();
-	QDateTime after = QDateTime::currentDateTime();
-
-	printf("commit took: [%d.%d]-[%d.%d]/%d.%d\n",
-		   before.toTime_t(), before.time().msec(),
-		   after.toTime_t(), after.time().msec(),
-		   after.toTime_t() - before.toTime_t(),
-		   after.time().msec() - before.time().msec());
 
 	DatabaseMutex.unlock();
 }

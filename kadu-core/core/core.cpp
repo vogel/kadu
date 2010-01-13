@@ -85,7 +85,8 @@ Core::~Core()
 	IsClosing = true;
 	bool disconnectWithCurrentDescription = config_file.readBoolEntry("General", "DisconnectWithCurrentDescription");
 	QString disconnectDescription = config_file.readEntry("General", "DisconnectDescription");
-	StatusContainerManager::instance()->disconnectAndStoreLastStatus(disconnectWithCurrentDescription, disconnectDescription);
+	// unloading modules does that
+	/*StatusContainerManager::instance()->disconnectAndStoreLastStatus(disconnectWithCurrentDescription, disconnectDescription);*/
 
 	ConfigurationManager::instance()->store();
 // 	delete Configuration;
