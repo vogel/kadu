@@ -13,6 +13,9 @@
 
 #include "debug.h"
 #include "icons-manager.h"
+#include "notify/notification-manager.h"
+#include "notify/notification.h"
+
 
 #include "server_status.h"
 
@@ -36,11 +39,17 @@ ServerStatus::ServerStatus(QString addr, quint16 watchedPort, QString name, QWid
         port = 8074;
 
     connect(&tcpSocket, SIGNAL( connected() ),
-        this, SLOT( connected() ) );
+        this, SLOT( connected() )
+    );
 
     connect(&tcpSocket, SIGNAL(error ( QAbstractSocket::SocketError)  ),
         this, SLOT(connectionError ( QAbstractSocket::SocketError ) )
      );
+
+    connect( this, SIGNAL(statusChanged(QString,ServerStatus::ServerState)),
+             this, SLOT(notifity(QString,ServerStatus::ServerState))
+    );
+
     statusIcon = IconsManager::instance()->loadPixmap( "Invisible" );
     refreshIcon();
 }
@@ -85,7 +94,42 @@ void ServerStatus::refreshIcon()
 {
     kdebugf();
     qDebug() << tcpSocket.state();
-    if ( tcpSocket.state() == QAbstractSocket::UnconnectedState )
+//    if ( tcpSocket.state() == QAbstractSocket::UnconnectedState )
         tcpSocket.connectToHost( address, port, QIODevice::ReadOnly );
     kdebugf2();
+}
+
+void ServerStatus::notifity ( QString adress , ServerStatus::ServerState)
+{
+    Notification *notification = new Notification("serverMonitorChangeStatus",   QIcon() );
+
+    notification->setDetails( QObject::tr("Server") +QObject::tr(" ")+
+                              adress+QObject::tr(" ")+
+                              QObject::tr("changed status to")+QObject::tr(" ")+
+                              serverStateToString() );
+
+    notification->setText("Server monitor");
+    NotificationManager::instance()->notify( notification );
+}
+
+QString ServerStatus::serverStateToString()
+{
+    switch ( serverStatus )
+    {
+        case Available:
+            return QObject::tr( "Online" );
+        break;
+
+        case Unavailable:
+            return QObject::tr("Unavailable");
+        break;
+
+        case Unknown:
+            return QObject::tr("Unknown");
+        break;
+
+        case Empty:
+            return QObject::tr("Empty");
+        break;
+    }
 }

@@ -32,11 +32,12 @@ Q_OBJECT
     };
 
 public:
-    QPixmap statusIcon;
+    ServerStatus(QString addr, quint16 watchedPort, QString name, QWidget *parent=0);
+    QString serverStateToString();
 
+    QPixmap statusIcon;
     ServerState serverStatus;
     ServerState serverOldStatus;
-    ServerStatus(QString addr, quint16 watchedPort, QString name, QWidget *parent=0);
 
 public slots:
     void refreshIcon();
@@ -55,6 +56,7 @@ private:
 private slots:
     void connected();
     void connectionError ( QAbstractSocket::SocketError socketError );
+    void notifity ( QString, ServerStatus::ServerState );
 
 signals:
     void statusChanged ( ServerStatus::ServerState, ServerStatus::ServerState );

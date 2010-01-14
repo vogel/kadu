@@ -242,6 +242,10 @@ void ServerMonitorWindow::downloadedServersList( bool err )
     kdebugf2();
 }
 
+void ServerMonitorWindow::refreshList()
+{
+    foreach ( ServerStatus* server, servers ) server->refreshIcon();
+}
 
 void ServerMonitorWindow::removeAllServer()
 {

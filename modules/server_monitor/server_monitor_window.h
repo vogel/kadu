@@ -60,6 +60,7 @@ private:
 private slots:
     void downloadedServersList(bool);
     void readServerList();
+    void refreshList();
     void updateStats( ServerStatus::ServerState, ServerStatus::ServerState );
 };
 

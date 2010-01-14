@@ -12,6 +12,7 @@
 
 #include "gui/windows/main-configuration-window.h"
 #include "server_monitor_window.h"
+#include "notify/notify-event.h"
 
 class ActionDescription;
 
@@ -23,6 +24,7 @@ public:
     ServerMonitor(QWidget *parent = 0);
     ~ServerMonitor();
     virtual void mainConfigurationWindowCreated ( MainConfigurationWindow* mainConfigurationWindow );
+
 private:
     ActionDescription *serverMonitorActionDescription;
     ServerMonitorWindow dialog;

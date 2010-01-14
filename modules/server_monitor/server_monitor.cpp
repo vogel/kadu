@@ -19,6 +19,11 @@
 
 #include "server_monitor.h"
 
+#include "notify/notification-manager.h"
+#include "notify/notify-event.h"
+#include "icons-manager.h"
+//
+
 extern "C" KADU_EXPORT int server_monitor_init(bool firstLoad)
 {
     kdebugf();
@@ -35,6 +40,9 @@ extern "C" KADU_EXPORT int server_monitor_init(bool firstLoad)
         config_file_ptr->addVariable( "serverMonitor", "showResetButton", false );
     }
 
+    NotifyEvent* e = new NotifyEvent( "serverMonitorChangeStatus", NotifyEvent::CallbackNotRequired, "Server Monitor" );
+    NotificationManager::instance()->registerNotifyEvent( e );
+
     kdebugf2();
     return 0;
 }
@@ -42,8 +50,20 @@ extern "C" KADU_EXPORT int server_monitor_init(bool firstLoad)
 extern "C" KADU_EXPORT void server_monitor_close()
 {
     kdebugf();
+
     MainConfigurationWindow::instance()->unregisterUiFile(dataPath("kadu/modules/configuration/server_monitor.ui"));
     MainConfigurationWindow::instance()->unregisterUiHandler(serverMonitor);
+
+    QList< NotifyEvent * > ne = NotificationManager::instance()->notifyEvents();
+    foreach ( NotifyEvent *e, NotificationManager::instance()->notifyEvents() )
+    {
+        if ( e->name().compare( "serverMonitorChangeStatus" ) == 0 )
+        {
+            NotificationManager::instance()->unregisterNotifyEvent( e );
+            break;
+        }
+    }
+
     delete serverMonitor;
     serverMonitor = NULL;
     kdebugf2();
