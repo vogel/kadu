@@ -86,10 +86,13 @@ static OSStatus appleEventProcessor(const AppleEvent *ae,
 		if (aeID == kAEReopenApplication)
 		{
 			chat_manager->openPendingMsgs();
-			if (!kadu->isShown())
+			if (!kadu->isVisible())
+			{
 				kadu->show();
-			else
-				kadu->hide();
+				kadu->raise();
+			}
+			//else
+			//	kadu->hide();
 		}
 		return noErr;
 	}

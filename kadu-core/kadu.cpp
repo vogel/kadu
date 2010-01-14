@@ -103,7 +103,11 @@ bool Kadu::Closing = false;
 void Kadu::keyPressEvent(QKeyEvent *e)
 {
 //	kdebugf();
+#ifdef Q_OS_MAC
+	if (e->key() == Qt::Key_H && e->modifiers() & Qt::ControlModifier)
+#else
 	if (e->key() == Qt::Key_Escape)
+#endif
 	{
 		if (Docked)
 		{
@@ -2656,9 +2660,11 @@ void Kadu::createDefaultConfiguration()
 	/* Dorr: for MacOS X define the function keys with 'apple' button
 	 * as it is the default system configuration */
 	config_file.addVariable("ShortCuts", "chat_clear", "Ctrl+F9");
-	config_file.addVariable("ShortCuts", "kadu_configure", "Ctrl+F2");
+	config_file.addVariable("ShortCuts", "chat_close", "Ctrl+W");
+	config_file.addVariable("ShortCuts", "kadu_configure", "Ctrl+-");
 	config_file.addVariable("ShortCuts", "kadu_modulesmanager", "Ctrl+F4");
 	config_file.addVariable("ShortCuts", "kadu_showoffline", "Ctrl+F9");
+	config_file.addVariable("ShortCuts", "kadu_showonlydesc", "Ctrl+F10");
 	config_file.addVariable("ShortCuts", "kadu_showonlydesc", "Ctrl+F10");
 #else
 	config_file.addVariable("ShortCuts", "chat_clear", "F9");
