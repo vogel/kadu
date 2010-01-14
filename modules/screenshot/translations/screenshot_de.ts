@@ -2,6 +2,10 @@
 <context>
     <name>@default</name>
     <message>
+        <source>ScreenShot images size limit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Screenshot</source>
         <translation type="unfinished"></translation>
     </message>

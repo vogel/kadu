@@ -54,7 +54,7 @@ extern "C" KADU_EXPORT int firewall_init()
 {
 	firewall = new Firewall();
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/firewall.ui"), firewall);
-	notification_manager->registerEvent("Firewall", "Firewall notifications", CallbackNotRequired);
+	notification_manager->registerEvent("Firewall", QT_TRANSLATE_NOOP("@default", "Firewall notifications"), CallbackNotRequired);
 
 	return 0;
 }

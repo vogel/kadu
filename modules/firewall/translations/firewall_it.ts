@@ -2,6 +2,10 @@
 <context>
     <name>@default</name>
     <message>
+        <source>Firewall notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Firewall</source>
         <translation type="unfinished"></translation>
     </message>

@@ -34,7 +34,7 @@ extern "C" KADU_EXPORT int antistring_init()
 {
 	antistring = new Antistring();
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/antistring.ui"), antistring);
-	notification_manager->registerEvent("Antistring", "Antistring notifications", CallbackNotRequired);
+	notification_manager->registerEvent("Antistring", QT_TRANSLATE_NOOP("@default", "Antistring notifications"), CallbackNotRequired);
 
 	return 0;
 }

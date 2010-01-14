@@ -56,7 +56,7 @@ extern "C" KADU_EXPORT int screenshot_init(bool firstLoad)
 	kdebugf();
 
 	screenShot = new ScreenShot(firstLoad);
-	notification_manager->registerEvent("ssSizeLimit", "ScreenShot images size limit", CallbackNotRequired);
+	notification_manager->registerEvent("ssSizeLimit", QT_TRANSLATE_NOOP("@default", "ScreenShot images size limit"), CallbackNotRequired);
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/screenshot.ui"), screenShot->configurationUiHandler());
 
 	return 0;

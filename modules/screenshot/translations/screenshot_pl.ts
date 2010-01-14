@@ -4,6 +4,10 @@
 <context>
     <name>@default</name>
     <message>
+        <source>ScreenShot images size limit</source>
+        <translation>Przekroczony limit wielkości katalogu zdjęć Screenshota</translation>
+    </message>
+    <message>
         <source>File format</source>
         <translation>Format pliku</translation>
     </message>

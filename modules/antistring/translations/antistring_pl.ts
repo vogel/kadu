@@ -45,6 +45,10 @@
 <context>
     <name>@default</name>
     <message>
+        <source>Antistring notifications</source>
+        <translation>Powiaomienia antyłańcuszka</translation>
+    </message>
+    <message>
         <source>Conditions</source>
         <translation>Warunki</translation>
     </message>

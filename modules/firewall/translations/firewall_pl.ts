@@ -4,6 +4,10 @@
 <context>
     <name>@default</name>
     <message>
+        <source>Firewall notifications</source>
+        <translation>Powiadomienia firewalla</translation>
+    </message>
+    <message>
         <source>Firewall</source>
         <translation>Firewall</translation>
     </message>

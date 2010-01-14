@@ -27,6 +27,10 @@
 <context>
     <name>@default</name>
     <message>
+        <source>Cenzor notifications</source>
+        <translation>Powiadomienia cenzora</translation>
+    </message>
+    <message>
         <source>Enable cenzor</source>
         <translation>Włącz cenzora</translation>
     </message>

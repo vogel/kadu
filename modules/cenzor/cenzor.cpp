@@ -24,7 +24,7 @@ extern "C" KADU_EXPORT int cenzor_init()
 {
 	cenzor = new Cenzor();
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/cenzor.ui"), cenzor);
-	notification_manager->registerEvent("Cenzor", "Cenzor notifications", CallbackNotRequired);
+	notification_manager->registerEvent("Cenzor", QT_TRANSLATE_NOOP("@default", "Cenzor notifications"), CallbackNotRequired);
 
 	return 0;
 }
