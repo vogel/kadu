@@ -76,7 +76,9 @@ public:
 
 	virtual int messagesCount(Chat chat, QDate date = QDate());
 
-	void appendMessage(const Message &message);
+	virtual void appendMessage(const Message &message);
+	virtual void appendStatus(Contact contact, Status status);
+
 	void sync();
 
 	void clearChatHistory(Chat chat);

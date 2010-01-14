@@ -75,9 +75,10 @@ class HISTORYAPI History : public ConfigurationUiHandler, ConfigurationAwareObje
 	Q_OBJECT
 
 	static History *Instance;
-
+	
+	QMutex UnsavedDataMutex;
 	QQueue<Message> UnsavedMessages;
-	QMutex UnsavedMessagesMutex;
+	QQueue<QPair<Contact, Status> > UnsavedStatusChanges;
 	HistorySaveThread *SaveThread;
 
 	HistoryStorage *CurrentStorage;
@@ -111,6 +112,7 @@ private slots:
 	void accountUnregistered(Account);
 
 	void enqueueMessage(const Message &);
+	void contactStatusChanged(Contact contact, Status status);
 
 	void showHistoryActionActivated(QAction *sender, bool toggled);
 	void showMoreMessages(QAction *action);
@@ -128,6 +130,7 @@ public:
 	static History * instance();
 
 	Message dequeueUnsavedMessage();
+	QPair<Contact, Status> dequeueUnsavedStatusChange();
 
 	HistoryStorage * currentStorage() { return CurrentStorage; }
 	void registerStorage(HistoryStorage *storage);

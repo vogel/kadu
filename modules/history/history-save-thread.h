@@ -41,6 +41,7 @@ class HistorySaveThread : public QThread
 	bool Stopped;
 
 	void storeMessages();
+	void storeStatusChanges();
 	void sync();
 
 public:
@@ -49,7 +50,7 @@ public:
 
 	virtual void run();
 
-	void newMessagesAvailable();
+	void newDataAvailable();
 	void stop();
 
 };

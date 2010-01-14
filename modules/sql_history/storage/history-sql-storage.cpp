@@ -205,10 +205,7 @@ void HistorySqlStorage::appendMessage(const Message &message)
 {
 	kdebugf();
 
-// 	QDateTime before = QDateTime::currentDateTime();
 	DatabaseMutex.lock();
-
-// 	printf("locked\n");
 
 	QString outgoing = (message.messageSender().ownerBuddy() == Core::instance()->myself())
 			? "1"
@@ -223,18 +220,14 @@ void HistorySqlStorage::appendMessage(const Message &message)
 
 	executeQuery(AppendMessageQuery);
 
-// 	printf("unlocked\n");
-	
-// 	QDateTime after = QDateTime::currentDateTime();
-// 	
-// 	printf("lock took: [%d.%d]-[%d.%d]/%d.%d\n",
-// 		   before.toTime_t(), before.time().msec(),
-// 		   after.toTime_t(), after.time().msec(),
-// 		   after.toTime_t() - before.toTime_t(),
-// 		   after.time().msec() - before.time().msec());
 	DatabaseMutex.unlock();
 
 	kdebugf2();
+}
+
+void HistorySqlStorage::appendStatus(Contact contact, Status status)
+{
+	// ...
 }
 
 void HistorySqlStorage::clearChatHistory(Chat chat)

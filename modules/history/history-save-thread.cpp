@@ -35,9 +35,26 @@ HistorySaveThread::~HistorySaveThread()
 
 void HistorySaveThread::storeMessages()
 {
-	if (CurrentHistory->currentStorage())
-		while (Message message = CurrentHistory->dequeueUnsavedMessage())
-			CurrentHistory->currentStorage()->appendMessage(message);
+	if (!CurrentHistory->currentStorage())
+		return;
+
+	while (Message message = CurrentHistory->dequeueUnsavedMessage())
+		CurrentHistory->currentStorage()->appendMessage(message);
+}
+
+void HistorySaveThread::storeStatusChanges()
+{
+	if (!CurrentHistory->currentStorage())
+		return;
+
+	while (true)
+	{
+		QPair<Contact, Status> statusChange = CurrentHistory->dequeueUnsavedStatusChange();
+		if (!statusChange.first)
+			return;
+
+		CurrentHistory->currentStorage()->appendStatus(statusChange.first, statusChange.second);
+	}
 }
 
 void HistorySaveThread::sync()
@@ -58,6 +75,7 @@ void HistorySaveThread::run()
 		SomethingToSave.lock();
 
 		storeMessages();
+		storeStatusChanges();
 		if (QDateTime::currentDateTime().addMSecs(-SYNCHRONIZATION_TIMEOUT) >= LastSyncTime)
 			sync();
 
@@ -66,10 +84,11 @@ void HistorySaveThread::run()
 	}
 
 	storeMessages();
+	storeStatusChanges();
 	sync();
 }
 
-void HistorySaveThread::newMessagesAvailable()
+void HistorySaveThread::newDataAvailable()
 {
 	WaitForSomethingToSave.wakeAll();
 }
