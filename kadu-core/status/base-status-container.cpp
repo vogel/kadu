@@ -27,7 +27,7 @@ BaseStatusContainer::BaseStatusContainer(StorableObject *storableObject) :
 		MyStorableObject(storableObject)
 {
 }
-
+#include <stdio.h>
 void BaseStatusContainer::setDefaultStatus(const QString &startupStatus, bool offlineToInvisible,
 		const QString &startupDescription, bool StartupLastDescription)
 {
@@ -60,7 +60,6 @@ void BaseStatusContainer::setDefaultStatus(const QString &startupStatus, bool of
 	status.setDescription(description);
 
 	setPrivateStatus(config_file.readBoolEntry("General", "PrivateStatus"));
-
 	setStatus(status);
 }
 

@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009 Juzef (juzefwt@tlen.pl)
+ * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2009, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2009 Michał Podsiadlik (michal@kadu.net)
  * %kadu copyright end%

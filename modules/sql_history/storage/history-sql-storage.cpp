@@ -1,8 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
- * Copyright 2009 Juzef (juzefwt@tlen.pl)
- * Copyright 2009 Juzef (juzefwt@gmail.com)
+ * Copyright 2009, 2009, 2009 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2009 Michał Podsiadlik (michal@kadu.net)
  * Copyright 2009 Bartłomiej Zimoń (uzi18@go2.pl)
@@ -187,16 +185,8 @@ void HistorySqlStorage::sync()
 {
 	DatabaseMutex.lock();
 
-	QDateTime before = QDateTime::currentDateTime();
 	Database.commit();
 	Database.transaction();
-	QDateTime after = QDateTime::currentDateTime();
-
-	printf("commit took: [%d.%d]-[%d.%d]/%d.%d\n",
-		   before.toTime_t(), before.time().msec(),
-		   after.toTime_t(), after.time().msec(),
-		   after.toTime_t() - before.toTime_t(),
-		   after.time().msec() - before.time().msec());
 
 	DatabaseMutex.unlock();
 }

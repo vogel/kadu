@@ -1,9 +1,37 @@
+/*
+ * %kadu copyright begin%
+ * Copyright 2007, 2008 Dawid Stawiarski (neeo@kadu.net)
+ * Copyright 2010 Bartosz Brachaczek (b.brachaczek@gmail.com)
+ * Copyright 2004, 2005, 2006, 2007 Marcin Ślusarz (joi@kadu.net)
+ * Copyright 2002, 2003, 2004 Adrian Smarzewski (adrian@kadu.net)
+ * Copyright 2004 Tomasz Chiliński (chilek@chilan.com)
+ * Copyright 2007, 2008, 2009 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2008 Michał Podsiadlik (michal@kadu.net)
+ * Copyright 2009 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * Copyright 2005 Paweł Płuciennik (pawel_p@kadu.net)
+ * %kadu copyright end%
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #ifndef EMOTICONS_H
 #define EMOTICONS_H
 
 #include <QtCore/QList>
 #include <QtCore/QPair>
-#include <QtGui/QToolButton>
+#include <QtGui/QLabel>
+#include <QtGui/QScrollArea>
 
 #include "configuration/configuration-aware-object.h"
 #include "html_document.h"
@@ -15,9 +43,17 @@ class EmotsWalker;
 
 enum EmoticonsStyle
 {
-	EMOTS_NONE,
-	EMOTS_STATIC,
-	EMOTS_ANIMATED
+	EmoticonsStyleNone,
+	EmoticonsStyleStatic,
+	EmoticonsStyleAnimated
+};
+
+enum EmoticonsScaling
+{
+	EmoticonsScalingNone,
+	EmoticonsScalingStatic,
+	EmoticonsScalingAnimated,
+	EmoticonsScalingAll
 };
 
 /**
@@ -107,29 +143,25 @@ public:
 /**
 	Klasa s�u��ca do wyboru emotikonki z zestawu
 **/
-class EmoticonSelectorButton : public QToolButton
+class EmoticonSelectorButton : public QLabel
 {
 	Q_OBJECT
 
 	QString EmoticonString;
 	QString AnimPath;
 	QString StaticPath;
-	QMovie *Movie;
 
 private slots:
 	void buttonClicked();
-	void movieUpdate();
 
 protected:
-	/**
-		Funkcja obs�uguj�ca najechanie kursorem myszki na dan� emotikonk�.
-	**/
-	void enterEvent(QEvent *e);
+	class MovieViewer;
+	friend class MovieViewer;
 
 	/**
-		Funkcja obs�uguj�ca opuszczenie obszaru wy�wietlania emotikonki.
+		Funkcja obs�uguj�ca ruch kursora na obszarze emotikonki.
 	**/
-	void leaveEvent(QEvent *e);
+	void mouseMoveEvent(QMouseEvent *e);
 
 public:
 	/**
@@ -141,7 +173,6 @@ public:
 		\param anim_path �cie�ka do animowanej emotikonki
 	**/
 	EmoticonSelectorButton(const QString &emoticon_string, const QString &static_path, const QString &anim_path, QWidget *parent);
-	~EmoticonSelectorButton();
 	
 signals:
 	/**
@@ -151,33 +182,51 @@ signals:
 	void clicked(const QString &emoticon_string);
 
 };
-/**
-	Klasa wy�wietlaj�ca list� emotikonek z aktualnego zestawu.
-**/
-class EmoticonSelector : public QWidget
+
+// TODO: make it ignoring wheel events so the widget can be scrolled with mouse wheel
+class EmoticonSelectorButton::MovieViewer : public QLabel
 {
 	Q_OBJECT
 
-	ChatEditBox *callingwidget;
+protected:
+	void mouseMoveEvent(QMouseEvent *e);
+	void mouseReleaseEvent(QMouseEvent *e);
+
+public:
+	explicit MovieViewer(EmoticonSelectorButton *parent);
+
+signals:
+	void clicked();
+
+};
+
+/**
+	Klasa wy�wietlaj�ca list� emotikonek z aktualnego zestawu.
+**/
+class EmoticonSelector : public QScrollArea
+{
+	Q_OBJECT
+
+	void addEmoticonButtons(int num_emoticons, QWidget *mainwidget);
+	void calculatePositionAndSize(const QWidget *activatingWidget, const QWidget *mainwidget);
 
 private slots:
 	void iconClicked(const QString &emoticon_string);
 
+protected:
+	bool event(QEvent *e);
+
 public:
 	/**
 		Konstruktor tworz�cy list� emotikonek.
+		\param activatingWidget okno wywo�uj�ce
 		\param parent rodzic na kt�rym ma by� wy�wietlona lista
-		\param name nazwa obiektu
-		\param caller okno chat do ktorego ma by� wpisana wybrana emotikonka
 	**/
-	explicit EmoticonSelector(ChatEditBox *caller, QWidget *parent = 0);
+	EmoticonSelector(const QWidget *activatingWidget, QWidget *parent);
 
-public slots:
-	/**
-		Slot obs�uguj�cy poprawne wy�wietlenie listy emotikonek, wyr�wnanie do
-		okna wywo�uj�cego.
-	**/
-	void alignTo(QWidget *w);
+signals:
+	// TODO: rename
+	void emoticonSelect(const QString &);
 
 };
 
@@ -238,4 +287,4 @@ public:
 
 };
 
-#endif
+#endif // EMOTICONS_H

@@ -1,8 +1,8 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009 Bartlomiej Zimon (uzi18@o2.pl)
  * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2009 Bartłomiej Zimoń (uzi18@o2.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -28,12 +28,14 @@ class QTextStream;
 class Account;
 class Buddy;
 class BuddyList;
+class Contact;
 
 class GaduListHelper
 {
 
 public:
 	static QString buddyListToString(Account account, BuddyList buddies);
+	static QString contactToLine70(Contact contact);
 	static BuddyList stringToBuddyList(Account account, QString &content);
 	static BuddyList streamToBuddyList(Account account, QTextStream &content);
 	static Buddy linePre70ToBuddy(Account account, QStringList &sections);

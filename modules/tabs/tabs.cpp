@@ -1,10 +1,11 @@
 /*
  * %kadu copyright begin%
  * Copyright 2009 Dawid Stawiarski (neeo@kadu.net)
- * Copyright 2009, 2010 Bartlomiej Zimon (uzi18@o2.pl)
  * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
+ * Copyright 2010 Maciej Płaza (plaza.maciej@gmail.com)
  * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2009 Bartłomiej Zimoń (uzi18@go2.pl)
+ * Copyright 2009, 2010 Bartłomiej Zimoń (uzi18@o2.pl)
  * Copyright 2008, 2009 Piotr Galiszewski (piotrgaliszewski@gmail.com)
  * %kadu copyright end%
  *
@@ -203,12 +204,16 @@ TabsManager::~TabsManager()
 		store(); //saveTabs();
 
 	// jesli kadu nie konczy dzialania to znaczy ze modul zostal tylko wyladowany wiec odlaczamy rozmowy z kart
-	//if (!Kadu::closing())
-	//{
+	
+	if (!Core::instance()->isClosing())
+	{
 		for (int i = tabdialog->count() - 1; i >= 0; i--)
 			detachChat(dynamic_cast<ChatWidget *>(tabdialog->widget(i)));
-	//}
-	//else // saveTabs()
+	}
+	else // saveTabs()
+	{
+		store();
+	}
 
 	delete tabdialog;
 	tabdialog = 0;
@@ -225,6 +230,7 @@ void TabsManager::onNewChat(ChatWidget* chat, bool &handled)
 		detachedchats.append(chat);
 		return;
 	}
+	
 	// jesli chat ma zostac bezwzglednie dodany do kart np w wyniku wyboru w menu
 	if (force_tabs)
 	{

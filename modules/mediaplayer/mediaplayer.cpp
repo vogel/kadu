@@ -1,10 +1,10 @@
 /*
  * %kadu copyright begin%
- * Copyright 2010 Bartlomiej Zimon (uzi18@o2.pl)
  * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2008, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2008, 2009 Michał Podsiadlik (michal@kadu.net)
  * Copyright 2009 Tomasz Rostański (rozteck@interia.pl)
+ * Copyright 2010 Bartłomiej Zimoń (uzi18@o2.pl)
  * Copyright 2009 Piotr Galiszewski (piotrgaliszewski@gmail.com)
  * %kadu copyright end%
  *
@@ -24,25 +24,36 @@
 
 #include <QtCore/QTimer>
 #include <QtGui/QApplication>
+#include <QtGui/QKeyEvent>
 #include <QtGui/QMenu>
+#include <QtGui/QTextEdit>
 #include <QtGui/QToolTip>
 
-#include "action.h"
-#include "chat_edit_box.h"
-#include "chat_manager.h"
-#include "chat_widget.h"
-#include "config_file.h"
-#include "custom_input.h"
-#include "debug.h"
-#include "gadu.h"
-#include "html_document.h"
-#include "icons_manager.h"
-#include "kadu.h"
-#include "message_box.h"
-#include "status.h"
-#include "userlist.h"
+#include "core/core.h"
+#include "configuration/configuration-file.h"
 
-#include "../notify/notify.h"
+#include "gui/actions/action.h"
+#include "gui/actions/action-description.h"
+
+#include "gui/widgets/chat-edit-box.h"
+#include "gui/widgets/chat-widget.h"
+#include "gui/widgets/chat-widget-manager.h"
+#include "gui/widgets/custom-input.h"
+#include "gui/widgets/configuration/configuration-widget.h"
+
+#include "gui/windows/kadu-window.h"
+#include "gui/windows/message-dialog.h"
+
+#include "misc/path-conversion.h"
+
+#include "notify/notification-manager.h"
+#include "notify/notification.h"
+#include "notify/notify-event.h"
+
+#include "status/status-changer-manager.h"
+
+#include "debug.h"
+#include "icons-manager.h"
 
 #include "mp_status_changer.h"
 #include "player_commands.h"
@@ -91,19 +102,20 @@ const char *mediaPlayerOsdHint = "MediaPlayerOsd";
 extern "C" KADU_EXPORT int mediaplayer_init(bool firstLoad)
 {
 	mediaplayer = new MediaPlayer(firstLoad);
-	notification_manager->registerEvent(mediaPlayerOsdHint, QT_TRANSLATE_NOOP("@default", "Pseudo-OSD for MediaPlayer"), CallbackNotRequired);
 
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/mediaplayer.ui"), mediaplayer);
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/mediaplayer.ui"));
+	MainConfigurationWindow::registerUiHandler(mediaplayer);
 
 	return 0;
 }
 
 extern "C" KADU_EXPORT void mediaplayer_close()
 {
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/mediaplayer.ui"), mediaplayer);
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/mediaplayer.ui"));
+	MainConfigurationWindow::unregisterUiHandler(mediaplayer);
 
-	notification_manager->unregisterEvent(mediaPlayerOsdHint);
 	delete mediaplayer;
+	mediaplayer = 0;
 }
 
 // Implementation of MediaPlayer class
@@ -119,60 +131,60 @@ MediaPlayer::MediaPlayer(bool firstLoad)
 
 	// MediaPlayer menus in chats
 	menu = new QMenu();
-	popups[0] = menu->insertItem(tr("Put formated string"), this, SLOT(putSongTitle(int)));
-	popups[1] = menu->insertItem(tr("Put song title"), this, SLOT(putSongTitle(int)));
-	popups[2] = menu->insertItem(tr("Put song file name"), this, SLOT(putSongTitle(int)));
-	popups[3] = menu->insertItem(tr("Send all playlist titles"), this, SLOT(putPlayList(int)));
-	popups[4] = menu->insertItem(tr("Send all playlist files"), this, SLOT(putPlayList(int)));
+	popups[0] = menu->addAction(tr("Put formated string"), this, SLOT(putSongTitle(int)));
+	popups[1] = menu->addAction(tr("Put song title"), this, SLOT(putSongTitle(int)));
+	popups[2] = menu->addAction(tr("Put song file name"), this, SLOT(putSongTitle(int)));
+	popups[3] = menu->addAction(tr("Send all playlist titles"), this, SLOT(putPlayList(int)));
+	popups[4] = menu->addAction(tr("Send all playlist files"), this, SLOT(putPlayList(int)));
 
 	// Title checking timer
 	timer = new QTimer();
 	connect(timer, SIGNAL(timeout()), this, SLOT(checkTitle()));
 
 	// Monitor of creating chats
-	connect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatWidgetCreated(ChatWidget *)));
-	connect(chat_manager, SIGNAL(chatWidgetDestroying(ChatWidget *)), this, SLOT(chatWidgetDestroying(ChatWidget *)));
+	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatWidgetCreated(ChatWidget *)));
+	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget *)), this, SLOT(chatWidgetDestroying(ChatWidget *)));
 
-	foreach (ChatWidget *it, chat_manager->chats())
+	foreach (ChatWidget *it, ChatWidgetManager::instance()->chats())
 		chatWidgetCreated(it);
 
 	enableMediaPlayerStatuses = new ActionDescription(
-		ActionDescription::TypeGlobal, "enableMediaPlayerStatusesAction",
+		0, ActionDescription::TypeGlobal, "enableMediaPlayerStatusesAction",
 		this, SLOT(mediaPlayerStatusChangerActivated(QAction *, bool)),
 		"MediaPlayer", tr("Enable MediaPlayer statuses"), true
 	);
 	mediaPlayerMenu = new ActionDescription(
-		ActionDescription::TypeChat, "mediaplayer_button",
+		0, ActionDescription::TypeChat, "mediaplayer_button",
 		this, SLOT(mediaPlayerMenuActivated(QAction *, bool)),
 		"MediaPlayerButton", tr("MediaPlayer"), false, ""
 	);
 	playAction = new ActionDescription(
-		ActionDescription::TypeChat, "mediaplayer_play",
+		0, ActionDescription::TypeChat, "mediaplayer_play",
 		this, SLOT(playPause()),
 		"MediaPlayerPlay", tr("Play"), false, ""
 	);
 	stopAction = new ActionDescription(
-		ActionDescription::TypeChat, "mediaplayer_stop",
+		0, ActionDescription::TypeChat, "mediaplayer_stop",
 		this, SLOT(stop()),
 		"MediaPlayerStop", tr("Stop"), false, ""
 	);
 	prevAction = new ActionDescription(
-		ActionDescription::TypeChat, "mediaplayer_prev",
+		0, ActionDescription::TypeChat, "mediaplayer_prev",
 		this, SLOT(prevTrack()),
 		"MediaPlayerPrev", tr("Previous Track"), false, ""
 	);
 	nextAction = new ActionDescription(
-		ActionDescription::TypeChat, "mediaplayer_next",
+		0, ActionDescription::TypeChat, "mediaplayer_next",
 		this, SLOT(nextTrack()),
 		"MediaPlayerNext", tr("Next Track"), false, ""
 	);
 	volUpAction = new ActionDescription(
-		ActionDescription::TypeChat, "mediaplayer_vol_up",
+		0, ActionDescription::TypeChat, "mediaplayer_vol_up",
 		this, SLOT(incrVolume()),
 		"MediaPlayerVolUp", tr("Volume Up"), false, ""
 	);
 	volDownAction = new ActionDescription(
-		ActionDescription::TypeChat, "mediaplayer_vol_down",
+		0, ActionDescription::TypeChat, "mediaplayer_vol_down",
 		this, SLOT(decrVolume()),
 		"MediaPlayerVolDown", tr("Volume Down"), false, ""
 	);
@@ -195,11 +207,12 @@ MediaPlayer::MediaPlayer(bool firstLoad)
 		mediaplayerStatus = new QAction(tr("Enable MediaPlayer statuses"), this);
 		mediaplayerStatus->setCheckable(true);
 		connect(mediaplayerStatus, SIGNAL(toggled(bool)), this, SLOT(toggleStatuses(bool)));
-		dockMenu->addAction(mediaplayerStatus);
+		// TODO
+		//dockMenu->addAction(mediaplayerStatus);
 	}
 	else
 	{
-		kadu->insertMenuActionDescription(0, enableMediaPlayerStatuses);
+		Core::instance()->kaduWindow()->insertMenuActionDescription(enableMediaPlayerStatuses, KaduWindow::MenuKadu);
 		mediaplayerStatus = NULL;
 	}
 
@@ -207,7 +220,7 @@ MediaPlayer::MediaPlayer(bool firstLoad)
 	winKeyPressed = false;
 
 	mediaPlayerStatusChanger = new MediaPlayerStatusChanger();
-	status_changer_manager->registerStatusChanger(mediaPlayerStatusChanger);
+	StatusChangerManager::instance()->registerStatusChanger(mediaPlayerStatusChanger);
 
 	createDefaultConfiguration();
 
@@ -215,13 +228,21 @@ MediaPlayer::MediaPlayer(bool firstLoad)
 
 	setControlsEnabled(false);
 	isPaused = true;
+	
+	mediaPlayerEvent = new NotifyEvent(QString(mediaPlayerOsdHint), NotifyEvent::CallbackNotRequired, QT_TRANSLATE_NOOP("@default", "Pseudo-OSD for MediaPlayer"));
+	NotificationManager::instance()->registerNotifyEvent(mediaPlayerEvent);
+
 }
 
 MediaPlayer::~MediaPlayer()
 {
 	kdebugf();
 
-	status_changer_manager->unregisterStatusChanger(mediaPlayerStatusChanger);
+	NotificationManager::instance()->unregisterNotifyEvent(mediaPlayerEvent);
+	delete mediaPlayerEvent;
+	mediaPlayerEvent = 0;
+	
+	StatusChangerManager::instance()->unregisterStatusChanger(mediaPlayerStatusChanger);
 	delete mediaPlayerStatusChanger;
 	mediaPlayerStatusChanger = 0;
 
@@ -231,10 +252,10 @@ MediaPlayer::~MediaPlayer()
 	// Disconnect all slots
 	disconnect(timer, SIGNAL(timeout()), this, SLOT(checkTitle()));
 
-	disconnect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatWidgetCreated(ChatWidget *)));
-	disconnect(chat_manager, SIGNAL(chatWidgetDestroying(ChatWidget *)), this, SLOT(chatWidgetDestroying(ChatWidget *)));
+	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatWidgetCreated(ChatWidget *)));
+	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget *)), this, SLOT(chatWidgetDestroying(ChatWidget *)));
 
-	foreach (ChatWidget *it, chat_manager->chats())
+	foreach (ChatWidget *it, ChatWidgetManager::instance()->chats())
 		chatWidgetDestroying(it);
 
 	// Delete own objects
@@ -243,18 +264,18 @@ MediaPlayer::~MediaPlayer()
 
 	// Remove menu item (statuses)
 	if (mediaplayerStatus == NULL)
-		kadu->removeMenuActionDescription(enableMediaPlayerStatuses);
-	else
-		dockMenu->removeAction(mediaplayerStatus);
+		Core::instance()->kaduWindow()->removeMenuActionDescription(enableMediaPlayerStatuses);
+	//else
+	//	dockMenu->removeAction(mediaplayerStatus);
 }
 
 void MediaPlayer::setControlsEnabled(bool enabled)
 {
-	menu->setItemEnabled(popups[0], enabled);
-	menu->setItemEnabled(popups[1], enabled);
-	menu->setItemEnabled(popups[2], enabled);
-	menu->setItemEnabled(popups[3], enabled);
-	menu->setItemEnabled(popups[4], enabled);
+	popups[0]->setEnabled(enabled);
+	popups[1]->setEnabled(enabled);
+	popups[2]->setEnabled(enabled);
+	popups[3]->setEnabled(enabled);
+	popups[4]->setEnabled(enabled);
 }
 
 void MediaPlayer::mediaPlayerMenuActivated(QAction *sender, bool toggled)
@@ -277,10 +298,10 @@ void MediaPlayer::mediaPlayerMenuActivated(QAction *sender, bool toggled)
 
 void MediaPlayer::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	connect(mainConfigurationWindow->widgetById("mediaplayer/signature"), SIGNAL(toggled(bool)),
-		mainConfigurationWindow->widgetById("mediaplayer/signatures"), SLOT(setEnabled(bool)));
-	QToolTip::add(mainConfigurationWindow->widgetById("mediaplayer/syntax"), qApp->translate("@default", MediaPlayerSyntaxText));
-	QToolTip::add(mainConfigurationWindow->widgetById("mediaplayer/chatShortcuts"), qApp->translate("@default", MediaPlayerChatShortCutsText));
+	connect(mainConfigurationWindow->widget()->widgetById("mediaplayer/signature"), SIGNAL(toggled(bool)),
+		mainConfigurationWindow->widget()->widgetById("mediaplayer/signatures"), SLOT(setEnabled(bool)));
+	mainConfigurationWindow->widget()->widgetById("mediaplayer/syntax")->setToolTip(qApp->translate("@default", MediaPlayerSyntaxText));
+	mainConfigurationWindow->widget()->widgetById("mediaplayer/chatShortcuts")->setToolTip(qApp->translate("@default", MediaPlayerChatShortCutsText));
 }
 
 void MediaPlayer::chatWidgetCreated(ChatWidget *chat)
@@ -362,7 +383,7 @@ void MediaPlayer::putSongTitle(int ident)
 	if (!isActive())
 	{
 		// TODO: make it a notification
-		MessageBox::msg(tr("%1 isn't running!").arg(getPlayerName()));
+		MessageDialog::msg(tr("%1 isn't running!").arg(getPlayerName()));
 		return;
 	}
 
@@ -372,14 +393,14 @@ void MediaPlayer::putSongTitle(int ident)
 	// This code tells us which item from MediaPlayer menu button was selected
 	// TODO: sooooooo lame
 	int id = 0;
-	for ( int i = 0; i < 3; i++ )
-	{
-		if (popups[i] == ident)
-		{
-			id = i;
-			break;
-		}
-	}
+// 	for ( int i = 0; i < 3; i++ )
+// 	{
+// 		if (popups[i] == ident)
+// 		{
+// 			id = i;
+// 			break;
+// 		}
+// 	}
 
 	// Sets title variable to proper value
 	switch (id)
@@ -438,7 +459,7 @@ void MediaPlayer::putPlayList(int ident)
 
 	if (!isActive())
 	{
-		MessageBox::msg(tr("%1 isn't running!").arg(getPlayerName()));
+		MessageDialog::msg(tr("%1 isn't running!").arg(getPlayerName()));
 		return;
 	}
 
@@ -447,14 +468,14 @@ void MediaPlayer::putPlayList(int ident)
 	QStringList list;
 
 	// This code tells us which item from MediaPlayer menu button was selected
-	for (int i = 3; i < 5; i++)
-	{
-		if (popups[i] == ident)
-		{
-			id = i;
-			break;
-		}
-	}
+// 	for (int i = 3; i < 5; i++)
+// 	{
+// 		if (popups[i] == ident)
+// 		{
+// 			id = i;
+// 			break;
+// 		}
+// 	}
 
 	uint lgt = getPlayListLength();
 	if (lgt == 0)
@@ -496,29 +517,30 @@ void MediaPlayer::putPlayList(int ident)
 
 	if (emptyEntries > (lgt / 10))
 	{
-		if (!MessageBox::ask(tr("More than 1/10 of titles you're trying to send are empty.<br>Perhaps %1 havn't read all titles yet, give its some more time.<br>Do you want to send playlist anyway?").arg(getPlayerName())))
+		if (!MessageDialog::ask(tr("More than 1/10 of titles you're trying to send are empty.<br>Perhaps %1 havn't read all titles yet, give its some more time.<br>Do you want to send playlist anyway?").arg(getPlayerName())))
 			return;
 	}
 
 	if (chars >= 2000)
 	{
-		if (!MessageBox::ask(tr("You're trying to send %1 entries of %2 playlist.<br>It will be splitted and sent in few messages<br>Are you sure to do that?")
+		if (!MessageDialog::ask(tr("You're trying to send %1 entries of %2 playlist.<br>It will be splitted and sent in few messages<br>Are you sure to do that?")
 			.arg(QString::number(lgt)).arg(getPlayerName())) )
 			return;
 	}
 
 	QString str;
 	// TODO: make spliting in kadu-core
-	chat->edit()->moveCursor(QTextEdit::MoveEnd, false);
+	chat->edit()->moveCursor(QTextCursor::End);
 	for (uint cnt = 0; cnt < lgt; cnt++)
 	{
 		str = QString::number((cnt + 1)) + ". " + list[cnt] + " (" + formatLength(getLength(cnt)) + ")\n";
-		if ((chat->edit()->text().length() + str.length()) >= 2000)
+		// TODO 0.6.6: to remove? - spliting in protocol!!
+		if ((chat->edit()->document()->toPlainText().length() + str.length()) >= 2000)
 			chat->sendMessage();
 
 // 		chat->edit()->getCursorPosition(&y, &x);
 		chat->edit()->insertPlainText(str); // Here we paste MediaPlayer playlist item
-		chat->edit()->moveCursor(QTextEdit::MoveEnd, false);
+		chat->edit()->moveCursor(QTextCursor::End);
 	}
 	chat->sendMessage();
 }
@@ -557,7 +579,7 @@ QString MediaPlayer::parse(const QString &str)
 		if (str[i] == '%')
 		{
 			i++;
-			switch(str[i].latin1())
+			switch(str[i].toLatin1())
 			{
 				case 't':
 					r += getTitle();
@@ -636,24 +658,16 @@ ChatWidget *MediaPlayer::getCurrentChat()
 {
 	kdebugf();
 
-	// Getting all chat windows
-	ChatList cs = chat_manager->chats();
-
 	// Now for each chat window we check,
 	// if it's an active one.
-	uint i;
-	for ( i = 0; i < cs.count(); i++ )
+	foreach (ChatWidget *chat, ChatWidgetManager::instance()->chats())
 	{
-		//if (cs[i]->isActiveWindow())
-		if (cs[i]->edit() == QApplication::focusWidget() ||
-			cs[i]->hasFocus())
-			break;
+		//if (chat->isActiveWindow())
+		if (chat->edit() == QApplication::focusWidget() || chat->hasFocus())
+			return chat;
 	}
 
-	if (i == cs.count())
-		return 0;
-
-	return cs[i];
+	return 0;
 }
 
 void MediaPlayer::mediaPlayerStatusChangerActivated(QAction *sender, bool toggled)
@@ -662,10 +676,10 @@ void MediaPlayer::mediaPlayerStatusChangerActivated(QAction *sender, bool toggle
 
 	if (!isActive() && toggled)
 	{
-		foreach (KaduAction *action, enableMediaPlayerStatuses->actions())
+		foreach (Action *action, enableMediaPlayerStatuses->actions())
 			action->setChecked(false);
 
-		MessageBox::msg(tr("%1 isn't running!").arg(getPlayerName()));
+		MessageDialog::msg(tr("%1 isn't running!").arg(getPlayerName()));
 		return;
 	}
 
@@ -684,7 +698,7 @@ void MediaPlayer::toggleStatuses(bool toggled)
 {
 	if (!isActive() && toggled)
 	{
-		MessageBox::msg(tr("%1 isn't running!").arg(getPlayerName()));
+		MessageDialog::msg(tr("%1 isn't running!").arg(getPlayerName()));
 		return;
 	}
 	
@@ -723,28 +737,28 @@ void MediaPlayer::checkTitle()
 	bool checked;
 	if (mediaplayerStatus != NULL)
 		checked = mediaplayerStatus->isChecked();
-	else if (enableMediaPlayerStatuses->action(kadu))
-		checked = enableMediaPlayerStatuses->action(kadu)->isChecked();
+	else if (enableMediaPlayerStatuses->action(Core::instance()->kaduWindow()))
+		checked = enableMediaPlayerStatuses->action(Core::instance()->kaduWindow())->isChecked();
 	else
 		checked = false;
 
-	if (!gadu->currentStatus().isOffline() && checked)
+/*	if (gadu->currentStatus().isOffline() && checked)
 	{
 		if (title != currentTitle || !gadu->currentStatus().hasDescription())
 		{
 			currentTitle = title;
 			mediaPlayerStatusChanger->setTitle(parse(config_file.readEntry("MediaPlayer", "statusTagString")));
 		}
-	}
+	}*/
 }
 
 void MediaPlayer::putTitleHint(QString title)
 {
 	kdebugf();
 
-	Notification *notification = new Notification(mediaPlayerOsdHint, "MediaPlayer", UserListElements());
+	Notification *notification = new Notification(QString(mediaPlayerOsdHint), IconsManager::instance()->loadIcon("MediaPlayerPlay"));
 	notification->setText(title);
-	notification_manager->notify(notification);
+	NotificationManager::instance()->notify(notification);
 }
 
 void MediaPlayer::configurationUpdated()
@@ -756,14 +770,14 @@ void MediaPlayer::configurationUpdated()
 
 	if (mediaplayerStatus == NULL)
 	{
-		if (enableMediaPlayerStatuses->action(kadu))
-			enabled = enableMediaPlayerStatuses->action(kadu)->isChecked();
-		kadu->removeMenuActionDescription(enableMediaPlayerStatuses);
+		if (enableMediaPlayerStatuses->action(Core::instance()->kaduWindow()))
+			enabled = enableMediaPlayerStatuses->action(Core::instance()->kaduWindow())->isChecked();
+		Core::instance()->kaduWindow()->removeMenuActionDescription(enableMediaPlayerStatuses);
 	}
 	else
 	{
 		enabled = mediaplayerStatus->isChecked();
-		dockMenu->removeAction(mediaplayerStatus);
+		//dockMenu->removeAction(mediaplayerStatus);
 	}
 
 	if (config_file.readBoolEntry("MediaPlayer", "dockMenu", false))
@@ -771,13 +785,13 @@ void MediaPlayer::configurationUpdated()
 		mediaplayerStatus = new QAction(tr("Enable MediaPlayer statuses"), this);
 		mediaplayerStatus->setCheckable(true);
 		connect(mediaplayerStatus, SIGNAL(toggled(bool)), this, SLOT(toggleStatuses(bool)));
-		dockMenu->addAction(mediaplayerStatus);
+		//dockMenu->addAction(mediaplayerStatus);
 	}
 	else
 	{
-		kadu->addMenuActionDescription(enableMediaPlayerStatuses);
-		if (enableMediaPlayerStatuses->action(kadu))
-			enableMediaPlayerStatuses->action(kadu)->setChecked(enabled);
+		Core::instance()->kaduWindow()->insertMenuActionDescription(enableMediaPlayerStatuses, KaduWindow::MenuKadu);
+		if (enableMediaPlayerStatuses->action(Core::instance()->kaduWindow()))
+			enableMediaPlayerStatuses->action(Core::instance()->kaduWindow())->setChecked(enabled);
 	}
 
 	mediaPlayerStatusChanger->changePositionInStatus((MediaPlayerStatusChanger::ChangeDescriptionTo)config_file.readNumEntry("MediaPlayer", "statusPosition"));
@@ -839,15 +853,15 @@ void MediaPlayer::playPause()
 	{
 		play();
 		isPaused = false;
-		foreach(KaduAction *action, playAction->actions())
-			action->setIcon(icons_manager->loadIcon("MediaPlayerPause"));
+		foreach(Action *action, playAction->actions())
+			action->setIcon(IconsManager::instance()->loadIcon("MediaPlayerPause"));
 	}
 	else
 	{
 		pause();
 		isPaused = true;
-		foreach(KaduAction *action, playAction->actions())
-			action->setIcon(icons_manager->loadIcon("MediaPlayerPlay"));
+		foreach(Action *action, playAction->actions())
+			action->setIcon(IconsManager::instance()->loadIcon("MediaPlayerPlay"));
 	}
 }
 
@@ -857,8 +871,8 @@ void MediaPlayer::play()
 		playerCommands->play();
 
 	isPaused = false;
-	foreach(KaduAction *action, playAction->actions())
-			action->setIcon(icons_manager->loadIcon("MediaPlayerPause"));
+	foreach(Action *action, playAction->actions())
+			action->setIcon(IconsManager::instance()->loadIcon("MediaPlayerPause"));
 }
 
 void MediaPlayer::stop()
@@ -867,8 +881,8 @@ void MediaPlayer::stop()
 		playerCommands->stop();
 
 	isPaused = true;
-	foreach(KaduAction *action, playAction->actions())
-			action->setIcon(icons_manager->loadIcon("MediaPlayerPlay"));
+	foreach(Action *action, playAction->actions())
+			action->setIcon(IconsManager::instance()->loadIcon("MediaPlayerPlay"));
 }
 
 void MediaPlayer::pause()
@@ -877,8 +891,8 @@ void MediaPlayer::pause()
 		playerCommands->pause();
 
 	isPaused = true;
-	foreach(KaduAction *action, playAction->actions())
-			action->setIcon(icons_manager->loadIcon("MediaPlayerPlay"));
+	foreach(Action *action, playAction->actions())
+			action->setIcon(IconsManager::instance()->loadIcon("MediaPlayerPlay"));
 }
 
 void MediaPlayer::setVolume(int vol)
@@ -924,7 +938,7 @@ QString MediaPlayer::getTitle(int position)
 		// Lets cut nasty signatures
 		if (config_file.readBoolEntry("MediaPlayer", "signature", true))
 		{
-			QStringList sigList(QStringList::split('\n', config_file.readEntry("MediaPlayer", "signatures", DEFAULT_SIGNATURES)));
+			QStringList sigList(config_file.readEntry("MediaPlayer", "signatures", DEFAULT_SIGNATURES).split('\n'));
 			for (unsigned int i = 0; i < sigList.count(); i++)
 				title.remove(sigList[i]);
 		}

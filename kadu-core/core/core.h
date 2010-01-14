@@ -1,9 +1,10 @@
 /*
  * %kadu copyright begin%
- * Copyright 2010 Bartlomiej Zimon (uzi18@o2.pl)
  * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2009, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2009 Michał Podsiadlik (michal@kadu.net)
+ * Copyright 2010 Kermit (plaza.maciej@gmail.com)
+ * Copyright 2010 Bartłomiej Zimoń (uzi18@o2.pl)
  * Copyright 2009 Piotr Galiszewski (piotrgaliszewski@gmail.com)
  * %kadu copyright end%
  *
@@ -48,6 +49,7 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 
 	Buddy Myself;
 	KaduWindow *Window;
+	bool IsClosing;
 	bool ShowMainWindowOnStart; // TODO: 0.7.1, it is a hack
 
 	Core();
@@ -77,7 +79,7 @@ public:
 	static Core * instance();
 	
 	QString version() { return QString(VERSION);}
-
+	bool isClosing() { return IsClosing; }
 	Buddy myself() { return Myself; }
 
 	void createGui();

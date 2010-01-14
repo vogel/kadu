@@ -1,10 +1,10 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009 Bartlomiej Zimon (uzi18@o2.pl)
  * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2009 Michał Podsiadlik (michal@kadu.net)
  * Copyright 2009 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * Copyright 2009 Bartłomiej Zimoń (uzi18@o2.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -223,14 +223,14 @@ bool GaduChatService::ignoreImages(gg_event *e, Contact sender)
 		);
 }
 
-FormattedMessage GaduChatService::createFormattedMessage(gg_event *e, Contact sender)
+FormattedMessage GaduChatService::createFormattedMessage(gg_event *e, Chat chat, Contact sender)
 {
 	QString content = getContent(e);
 
-// 	bool grab = false;
-// 	emit chatMsgReceived0(this, senders, mesg, time, grab);
-// 	if (grab)
-// 		return;
+	bool ignore = false;
+	emit receivedGaduRawMessageFilter(chat, sender, content, ignore); //TODO: 0.6.6 + xhtml?
+	if (ignore)
+		return FormattedMessage();
 
 	if (ignoreRichText(e, sender))
 		return GaduFormater::createMessage(Protocol->account(), sender.id().toUInt(), content, 0, 0, false);
@@ -257,22 +257,17 @@ void GaduChatService::handleEventMsg(struct gg_event *e)
 	if (IgnoredHelper::isIgnored(conference.toBuddySet()))
 		return;
 
-// 	bool ignore = false;
-// 	emit rawGaduReceivedMessageFilter(Protocol->account(), senders, msg, formats, ignore); TODO: 0.6.6
-// 	if (ignore)
-// 		return;
+	ContactSet chatContacts = conference;
+	chatContacts.remove(Protocol->account().accountContact());
 
-	FormattedMessage message = createFormattedMessage(e, sender);
+	Chat chat = ChatManager::instance()->findChat(chatContacts);
+
+	FormattedMessage message = createFormattedMessage(e, chat, sender);
 	if (message.isEmpty())
 		return;
 
 	kdebugmf(KDEBUG_INFO, "Got message from %d saying \"%s\"\n",
 			sender.id().toUInt(), qPrintable(message.toPlain()));
-
-	ContactSet chatContacts = conference;
-	chatContacts.remove(Protocol->account().accountContact());
-
-	Chat chat = ChatManager::instance()->findChat(chatContacts);
 
 	QDateTime time = QDateTime::fromTime_t(e->event.msg.time);
 

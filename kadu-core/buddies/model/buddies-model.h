@@ -44,6 +44,15 @@ private slots:
 	void buddyAboutToBeRemoved(Buddy &buddy);
 	void buddyRemoved(Buddy &buddy);
 
+	void buddyUpdated();
+
+	void contactAboutToBeAdded(Contact contact);
+	void contactAdded(Contact contact);
+	void contactAboutToBeRemoved(Contact contact);
+	void contactRemoved(Contact contact);
+
+	void contactUpdated();
+
 public:
 	explicit BuddiesModel(BuddyManager *manager, QObject *parent = 0);
 	~BuddiesModel();

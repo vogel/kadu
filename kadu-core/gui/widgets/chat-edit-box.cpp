@@ -1,9 +1,10 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009 Bartlomiej Zimon (uzi18@o2.pl)
+ * Copyright 2010 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2009, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2009 Michał Podsiadlik (michal@kadu.net)
  * Copyright 2009 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * Copyright 2009 Bartłomiej Zimoń (uzi18@o2.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -213,19 +214,17 @@ void ChatEditBox::openEmoticonSelector(const QWidget *activatingWidget)
 {
 	//emoticons_selector zawsze b�dzie NULLem gdy wchodzimy do tej funkcji
 	//bo EmoticonSelector ma ustawione flagi Qt::WDestructiveClose i Qt::WType_Popup
-	//akcj� na opuszczenie okna jest ustawienie zmiennej emoticons_selector w Chacie na NULL
-	EmoticonSelector *emoticonSelector = new EmoticonSelector(this, this);
-	emoticonSelector->alignTo(const_cast<QWidget*>(activatingWidget)); //TODO: do something about const_cast
+	EmoticonSelector *emoticonSelector = new EmoticonSelector(activatingWidget, this);
+	connect(emoticonSelector, SIGNAL(emoticonSelect(const QString &)), this, SLOT(addEmoticon(const QString &)));
 	emoticonSelector->show();
 }
 
 void ChatEditBox::openColorSelector(const QWidget *activatingWidget)
 {
 	//sytuacja podobna jak w przypadku emoticon_selectora
-	ColorSelector *colorSelector = new ColorSelector(InputBox->palette().foreground().color(), this);
-	colorSelector->alignTo(const_cast<QWidget*>(activatingWidget)); //TODO: do something about const_cast
-	colorSelector->show();
+	ColorSelector *colorSelector = new ColorSelector(InputBox->palette().foreground().color(), activatingWidget, this);
 	connect(colorSelector, SIGNAL(colorSelect(const QColor &)), this, SLOT(changeColor(const QColor &)));
+	colorSelector->show();
 }
 
 void ChatEditBox::openInsertImageDialog()

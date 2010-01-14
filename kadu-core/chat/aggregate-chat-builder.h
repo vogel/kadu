@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009 Juzef (juzefwt@tlen.pl)
- * Copyright 2009 Juzef (juzefwt@gmail.com)
+ * Copyright 2009, 2009 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2009 Piotr Galiszewski (piotrgaliszewski@gmail.com)
  * %kadu copyright end%
@@ -30,11 +29,27 @@
 class BuddySet;
 class Chat;
 
+/**
+ * @addtogroup Chat
+ * @{
+ */
+
+/**
+ * @class AggregateChatBuilder
+ * @short Makes chat object that aggregates all chats for given buddy set.
+ *
+ * Class containsone static method that makes chat object that
+ * aggregates all chats for given buddy set.
+ */
 class KADUAPI AggregateChatBuilder
 {
 public:
 	static Chat buildAggregateChat(BuddySet buddies);
 
 };
+
+/**
+ * @}
+ */
 
 #endif // AGGREGATE_CHAT_BUILDER_H

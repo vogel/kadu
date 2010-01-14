@@ -1,9 +1,9 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009 Bartlomiej Zimon (uzi18@o2.pl)
  * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2009 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * Copyright 2009 Bartłomiej Zimoń (uzi18@o2.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -40,48 +40,46 @@
 
 #include "gadu-list-helper.h"
 
+QString GaduListHelper::contactToLine70(Contact contact)
+{
+	QStringList list;
+	Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
+
+	list.append(buddy.firstName());
+	list.append(buddy.lastName());
+	list.append(buddy.nickName());
+	list.append(buddy.display());
+	list.append(buddy.mobile());
+
+	QStringList groups;
+	foreach (Group group, buddy.groups())
+		groups.append(group.name());
+
+	list.append(groups.join(","));
+	list.append(contact.id());
+	list.append(buddy.email());
+	list.append(""); // alive sound
+	list.append(""); // alive sound
+	list.append(""); // message sound
+	list.append(""); // message sound
+	list.append(""); // offlineTo 
+	list.append(buddy.homePhone());
+
+	return list.join(";");
+}
+
 QString GaduListHelper::buddyListToString(Account account, BuddyList buddies)
 {
 	kdebugf();
 
-	QStringList contactsStringList;
+	QStringList result;
+	result.append("GG70ExportString");
 
 	foreach (Buddy buddy, buddies)
-	{
-		QStringList buddyGroups;
-		foreach (Group group, buddy.groups())
-			buddyGroups << group.name();
+		foreach (Contact contact, buddy.contacts(account))
+			result.append(contactToLine70(contact));
 
-		Contact contact = buddy.contacts(account)[0]; // NULL!!!!
-
-		contactsStringList << QString("%1;%2;%3;%4;%5;%6;%7;%8;%9;%10;%11;%12;%13")
-			.arg(buddy.firstName())
-			.arg(buddy.lastName())
-			.arg(buddy.nickName())
-			.arg(buddy.display())
-			.arg(buddy.mobile())
-			.arg(buddyGroups.join(";"))
-			.arg(contact.id())
-			// TODO: 0.6.6
-			.arg("0")
-			.arg("")
-			.arg("0")
-			.arg("")
-			.arg(buddy.isOfflineTo())
-			.arg(buddy.homePhone());
-	}
-
-// 			file = user.aliveSound(type);
-// 			contacts += QString::number(type);				contacts += ';';
-// 			contacts += file;								contacts += ';';
-// 			file = user.messageSound(type);
-// 			contacts += QString::number(type);				contacts += ';';
-// 			contacts += file;								contacts += ';';
-
-	QString contactsString(contactsStringList.join("\r\n"));
-	contactsString.remove("(null)");
-
-	return contactsString;
+	return result.join("\n");
 }
 
 BuddyList GaduListHelper::stringToBuddyList(Account account, QString &content) {

@@ -1,3 +1,8 @@
++++ version 0.6.6-alpha4
+* gadu: exporting contacts list works again (Vogel)
+* protocols: disabling protocol module disconnects all accounts correctly (Vogel)
+* gui: fixed buddies list refreshing (Vogel)
+
 +++ version 0.6.6-alpha3
 * history: chat list cleanup in history window (Vogel)
 * history: using transaction, import is 10-50x faster, no more freezes (uzi/Vogel)
@@ -6,6 +11,14 @@
 * ChangeLog: split into 2 files (old and new) (Vogel)
 * notify: fixed fetching data from parent notification if 'use custom settings' is off (Vogel)
 * gui: OpenChatWith window does not add to contacts list everything that was written (Vogel)
+* gui: new selector window (Bartosz Brachaczek)
+* gui: do not detach tabs when Kadu is closing (Kermit)
+* mediaplayer: initial port of mediaplayer moduled (Uzi)
+* dbus: module added (Uzi)
+* history: filtering in history-window fixed (Vogel)
+* gui: new expand icon in buddy list (White Eagle)
+* .config: converted to UTF8 (Uzi)
+* copyright: new copyright format (based on KDE)
 
 +++ version 0.6.6-alpha2
 * gui: hint position preview added (Kermit)

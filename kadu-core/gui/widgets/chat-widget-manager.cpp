@@ -1,10 +1,11 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009 Bartlomiej Zimon (uzi18@o2.pl)
+ * Copyright 2010 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2009, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2009 Michał Podsiadlik (michal@kadu.net)
  * Copyright 2009 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * Copyright 2009 Bartłomiej Zimoń (uzi18@o2.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -197,7 +198,7 @@ void ChatWidgetManager::insertEmoticonActionEnabled()
 {
  	foreach (Action *action, Actions->insertEmoticon()->actions())
 	{
-		if ((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle") == EMOTS_NONE)
+		if ((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle") == EmoticonsStyleNone)
 		{
 			action->setToolTip(tr("Insert emoticon - enable in configuration"));
 			action->setEnabled(false);

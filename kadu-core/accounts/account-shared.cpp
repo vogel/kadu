@@ -1,8 +1,8 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009 Bartlomiej Zimon (uzi18@o2.pl)
  * Copyright 2009, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2009 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * Copyright 2009 Bartłomiej Zimoń (uzi18@o2.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -144,6 +144,15 @@ void AccountShared::useProtocolFactory(ProtocolFactory *factory)
 				   this, SIGNAL(buddyStatusChanged(Contact, Status)));
 		disconnect(ProtocolHandler, SIGNAL(connected(Account)), this, SIGNAL(connected()));
 		disconnect(ProtocolHandler, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
+		
+		bool disconnectWithCurrentDescription = config_file.readBoolEntry("General", "DisconnectWithCurrentDescription");
+		QString disconnectDescription = config_file.readEntry("General", "DisconnectDescription");
+
+		StatusContainer *statusContianer = Account(this).statusContainer();
+		if (statusContianer)
+				statusContianer->disconnectAndStoreLastStatus(disconnectWithCurrentDescription, disconnectDescription);
+
+		ProtocolHandler->deleteLater();
 	}
 
 	if (!factory)

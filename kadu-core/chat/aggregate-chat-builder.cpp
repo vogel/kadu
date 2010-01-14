@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009 Juzef (juzefwt@tlen.pl)
- * Copyright 2009 Juzef (juzefwt@gmail.com)
+ * Copyright 2009, 2009 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2009 Piotr Galiszewski (piotrgaliszewski@gmail.com)
  * %kadu copyright end%
@@ -29,6 +28,14 @@
 #include "chat/chat-manager.h"
 #include "chat-details-aggregate.h"
 
+/**
+ * @param buddies set of buddies
+ * @short Makes chat object that aggregates all chats for given buddy set.
+ * @return chat object that aggregates all chats for given buddy set
+ *
+ * This method will create and return new chat of 'Aggregate' type that
+ * contains all chats (for different accounts) for given set of buddies.
+ */
 Chat AggregateChatBuilder::buildAggregateChat(BuddySet buddies)
 {
 	QList<Chat> chats;

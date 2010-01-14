@@ -1,11 +1,12 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009 Bartlomiej Zimon (uzi18@o2.pl)
+ * Copyright 2010 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2009, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2009 Michał Podsiadlik (michal@kadu.net)
- * Copyright 2009 Kermit (plaza.maciej@gmail.com)
+ * Copyright 2009, 2010 Kermit (plaza.maciej@gmail.com)
  * Copyright 2009 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * Copyright 2009 Bartłomiej Zimoń (uzi18@o2.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -70,7 +71,9 @@ Core * Core::instance()
 	return Instance;
 }
 
-Core::Core() : Myself(Buddy::create()), Window(0), ShowMainWindowOnStart(true)
+Core::Core() : 
+	Myself(Buddy::create()), Window(0), ShowMainWindowOnStart(true), 
+	IsClosing(false)
 {
 	connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(quit()));
 	createDefaultConfiguration();
@@ -79,9 +82,11 @@ Core::Core() : Myself(Buddy::create()), Window(0), ShowMainWindowOnStart(true)
 
 Core::~Core()
 {
+	IsClosing = true;
 	bool disconnectWithCurrentDescription = config_file.readBoolEntry("General", "DisconnectWithCurrentDescription");
 	QString disconnectDescription = config_file.readEntry("General", "DisconnectDescription");
-	StatusContainerManager::instance()->disconnectAndStoreLastStatus(disconnectWithCurrentDescription, disconnectDescription);
+	// unloading modules does that
+	/*StatusContainerManager::instance()->disconnectAndStoreLastStatus(disconnectWithCurrentDescription, disconnectDescription);*/
 
 	ConfigurationManager::instance()->store();
 // 	delete Configuration;
@@ -122,7 +127,8 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("Chat", "ChatPruneLen", 20);
 	config_file.addVariable("Chat", "ConfirmChatClear", true);
 	config_file.addVariable("Chat", "EmoticonsPaths", "");
-	config_file.addVariable("Chat", "EmoticonsStyle", EMOTS_ANIMATED);
+	config_file.addVariable("Chat", "EmoticonsStyle", EmoticonsStyleAnimated);
+	config_file.addVariable("Chat", "EmoticonsScaling", EmoticonsScalingStatic);
 	config_file.addVariable("Chat", "EmoticonsTheme", "penguins");
 	config_file.addVariable("Chat", "FoldLink", true);
 	config_file.addVariable("Chat", "LinkFoldTreshold", 50);

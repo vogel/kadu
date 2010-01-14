@@ -1,8 +1,8 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009 Bartlomiej Zimon (uzi18@o2.pl)
  * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2009 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * Copyright 2009 Bartłomiej Zimoń (uzi18@o2.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -20,7 +20,9 @@
  */
 
 #include "accounts/account-manager.h"
+#include "buddies/filter/abstract-buddy-filter.h"
 #include "buddies/buddy.h"
+#include "contacts/filter/abstract-contact-filter.h"
 #include "contacts/contact.h"
 #include "status/status.h"
 #include "status/status-type.h"
@@ -38,6 +40,11 @@ BuddiesModelProxy::BuddiesModelProxy(QObject *parent)
 	BrokenStringCompare = (QString("a").localeAwareCompare(QString("B")) > 0);
 	if (BrokenStringCompare)
 		fprintf(stderr, "There's something wrong with native string compare function. Applying workaround (slower).\n");
+}
+
+BuddiesModelProxy::~BuddiesModelProxy()
+{
+
 }
 
 void BuddiesModelProxy::setSourceModel(QAbstractItemModel *sourceModel)
@@ -114,26 +121,47 @@ bool BuddiesModelProxy::lessThan(const QModelIndex &left, const QModelIndex &rig
 bool BuddiesModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
 	if (sourceParent.isValid())
-	    return true;
-
-	Buddy buddy = SourceBuddyModel->buddyAt(sourceModel()->index(sourceRow, 0));
-	foreach (AbstractBuddyFilter *filter, Filters)
-		if (!filter->acceptBuddy(buddy))
-			return false;
+	{
+		Contact contact = SourceBuddyModel->contactAt(sourceModel()->index(sourceRow, 0, sourceParent));
+		foreach (AbstractContactFilter *filter, ContactFilters)
+			if (!filter->acceptContact(contact))
+				return false;
+	}
+	else
+	{
+		Buddy buddy = SourceBuddyModel->buddyAt(sourceModel()->index(sourceRow, 0, sourceParent));
+		foreach (AbstractBuddyFilter *filter, BuddyFilters)
+			if (!filter->acceptBuddy(buddy))
+				return false;
+	}
 
 	return true;
 }
 
 void BuddiesModelProxy::addFilter(AbstractBuddyFilter *filter)
 {
-	Filters.append(filter);
+	BuddyFilters.append(filter);
 	invalidateFilter();
 	connect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
 }
 
 void BuddiesModelProxy::removeFilter(AbstractBuddyFilter *filter)
 {
-	Filters.removeAll(filter);
+	BuddyFilters.removeAll(filter);
+	invalidateFilter();
+	connect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
+}
+
+void BuddiesModelProxy::addFilter(AbstractContactFilter *filter)
+{
+	ContactFilters.append(filter);
+	invalidateFilter();
+	connect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
+}
+
+void BuddiesModelProxy::removeFilter(AbstractContactFilter *filter)
+{
+	ContactFilters.removeAll(filter);
 	invalidateFilter();
 	connect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
 }

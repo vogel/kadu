@@ -1,8 +1,8 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009 Bartlomiej Zimon (uzi18@o2.pl)
  * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2010 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * Copyright 2009 Bartłomiej Zimoń (uzi18@o2.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -40,6 +40,7 @@ class Buddy;
 class BuddySet;
 class BuddiesListViewDelegate;
 class BuddiesModelProxy;
+class ContactNoUnloadedAccountFilter;
 class ContactSet;
 class MainWindow;
 
@@ -51,6 +52,8 @@ class BuddiesListView : public QTreeView
 	BuddiesListViewDelegate *Delegate;
 	AbstractBuddiesModel *Model;
 	BuddiesModelProxy *ProxyModel;
+
+	ContactNoUnloadedAccountFilter *HideUnloadedFilter;
 
 	Buddy buddyAt(const QModelIndex &index) const;
 	Contact contactAt(const QModelIndex &index) const;

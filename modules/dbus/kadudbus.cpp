@@ -1,7 +1,7 @@
 /*
  * %kadu copyright begin%
- * Copyright 2010 Bartlomiej Zimon (uzi18@o2.pl)
  * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2010 Bartłomiej Zimoń (uzi18@o2.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,7 +17,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 
 #include <QtDBus/QDBusArgument>
 #include <QtDBus/QDBusMetaType>
