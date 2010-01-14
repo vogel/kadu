@@ -103,11 +103,7 @@ bool Kadu::Closing = false;
 void Kadu::keyPressEvent(QKeyEvent *e)
 {
 //	kdebugf();
-#ifdef Q_OS_MAC
-	if (e->key() == Qt::Key_H && e->modifiers() & Qt::ControlModifier)
-#else
 	if (e->key() == Qt::Key_Escape)
-#endif
 	{
 		if (Docked)
 		{
