@@ -53,6 +53,8 @@ private:
     virtual void configurationUpdated();
     void setConfiguration();
 
+    void removeAllServer();
+
     void cleanLayout();
 
 private slots:

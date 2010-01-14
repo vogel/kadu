@@ -48,6 +48,11 @@ ServerMonitorWindow::ServerMonitorWindow(QWidget *parent)
     setWindowTitle( tr("Server monitor") );
 }
 
+ServerMonitorWindow::~ServerMonitorWindow()
+{
+    removeAllServer();
+}
+
 void ServerMonitorWindow::updateStats( ServerStatus::ServerState newStatus, ServerStatus::ServerState oldStatus )
 {
     switch ( newStatus )
@@ -101,7 +106,7 @@ void ServerMonitorWindow::readServerList()
 
     avalibleServers = 0;
     unavalibleServers = 0;
-    servers.clear();
+    removeAllServer();
 
     QFile serverFileList(serverFileListName);
 
@@ -238,9 +243,10 @@ void ServerMonitorWindow::downloadedServersList( bool err )
 }
 
 
-
-ServerMonitorWindow::~ServerMonitorWindow()
+void ServerMonitorWindow::removeAllServer()
 {
-
+    foreach ( ServerStatus *s, servers ) delete s;
+    servers.clear();
 }
+
 
