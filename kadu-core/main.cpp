@@ -156,7 +156,7 @@ void printKaduOptions()
 		"  --help                     Print Kadu options\n"
 		"  --help-qt                  Print Qt options\n"
 		"  --help-all                 Print all options\n"
-		"  --safe-mode                Safe mode (no modules loaded)"
+		"  --safe-mode                Safe mode (no modules loaded)\n"
 		"  --version                  Print Kadu and Qt version\n"
 		"\nOptions:\n"
 		"  --debug <mask>             Set debugging mask\n"
