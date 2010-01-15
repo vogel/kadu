@@ -113,6 +113,8 @@ void HistorySqlStorage::initTables()
 {
 	if (!Database.tables().contains("kadu_messages"))
 		initKaduMessagesTable();
+	if (!Database.tables().contains("kadu_statuses"))
+		initKaduStatusesTable();
 }
 
 void HistorySqlStorage::initKaduMessagesTable()
@@ -137,6 +139,26 @@ void HistorySqlStorage::initKaduMessagesTable()
 	executeQuery(query);
 }
 
+void HistorySqlStorage::initKaduStatusesTable()
+{
+	QSqlQuery query(Database);
+
+	query.prepare("PRAGMA encoding = \"UTF-8\";");
+	executeQuery(query);
+
+	query.prepare("PRAGMA synchronous = OFF;");
+	executeQuery(query);
+
+	query.prepare(
+		"CREATE TABLE kadu_statuses ("
+			"contact VARCHAR(255),"
+			"status VARCHAR(255),"
+			"set_time TIMESTAMP,"
+			"description TEXT);"
+	);
+	executeQuery(query);
+}
+
 void HistorySqlStorage::initIndexes()
 {
 	QSqlQuery query(Database);
@@ -149,6 +171,15 @@ void HistorySqlStorage::initIndexes()
 
 	query.prepare("CREATE INDEX IF NOT EXISTS kadu_messages_chat_receive_time_date ON kadu_messages (chat, date(receive_time))");
 	executeQuery(query);
+
+	query.prepare("CREATE INDEX IF NOT EXISTS kadu_statuses_contact ON kadu_statuses (contact)");
+	executeQuery(query);
+
+	query.prepare("CREATE INDEX IF NOT EXISTS kadu_statuses_contact_time ON kadu_statuses (contact, set_time)");
+	executeQuery(query);
+
+	query.prepare("CREATE INDEX IF NOT EXISTS kadu_statuses_contact_time_date ON kadu_statuses (contact, date(set_time))");
+	executeQuery(query);
 }
 
 void HistorySqlStorage::initQueries()
@@ -159,6 +190,10 @@ void HistorySqlStorage::initQueries()
 	AppendMessageQuery = QSqlQuery(Database);
 	AppendMessageQuery.prepare("INSERT INTO kadu_messages (chat, sender, send_time, receive_time, content, attributes) VALUES "
 			"(:chat, :sender, :send_time, :receive_time, :content, :attributes)");
+
+	AppendStatusQuery = QSqlQuery(Database);
+	AppendStatusQuery.prepare("INSERT INTO kadu_statuses (contact, status, set_time, description) VALUES "
+			"(:contact, :status, :set_time, :description)");
 }
 
 QString HistorySqlStorage::chatWhere(Chat chat)
@@ -227,7 +262,20 @@ void HistorySqlStorage::appendMessage(const Message &message)
 
 void HistorySqlStorage::appendStatus(Contact contact, Status status)
 {
-	// ...
+	kdebugf();
+
+	DatabaseMutex.lock();
+
+	AppendStatusQuery.bindValue(":contact", contact.uuid().toString());
+	AppendStatusQuery.bindValue(":status", status.type());
+	AppendStatusQuery.bindValue(":set_time", QDateTime::currentDateTime());
+	AppendStatusQuery.bindValue(":description", status.description());
+
+	executeQuery(AppendStatusQuery);
+
+	DatabaseMutex.unlock();
+
+	kdebugf2();
 }
 
 void HistorySqlStorage::clearChatHistory(Chat chat)

@@ -43,6 +43,7 @@ class HistorySqlStorage : public HistoryStorage, CrashAwareObject
 
 	QSqlQuery ListChatsQuery;
 	QSqlQuery AppendMessageQuery;
+	QSqlQuery AppendStatusQuery;
 
 	QMutex DatabaseMutex;
 
@@ -51,7 +52,8 @@ class HistorySqlStorage : public HistoryStorage, CrashAwareObject
 	void initTables();
 	void initIndexes();
 	void initKaduMessagesTable();
-
+	void initKaduStatusesTable();
+	
 	QString chatWhere(Chat chat);
 
 	void executeQuery(QSqlQuery query);
