@@ -64,6 +64,7 @@ protected:
 
 	virtual void detailsAdded();
 	virtual void detailsAboutToBeRemoved();
+	virtual void detailsRemoved();
 
 public:
 	static ContactShared * loadFromStorage(StoragePoint *contactStoragePoint);
