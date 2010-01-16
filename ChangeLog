@@ -2,8 +2,8 @@ Teksty w nawiasach na koñcu wpisu mówi± o tym, kto dokona³ poprawki lub rozbudow
 Postaæ (x/y) oznacza, ¿e x jest pomys³odawc± lub podes³a³ patcha, a zrobi³ to kto¶ oznaczony przez y.
 Je¶li jest w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 
-+++ wersja 0.6.5.4
-* naprawione zosta³o wykrywanie zestawów ikon w ¶cie¿ce u¿ytkownika (dorr)
++++ wersja 0.6.5.4-rc3
+* naprawione zosta³o wykrywanie zestawów ikon, emotek i d¼wiêków w ¶cie¿ce u¿ytkownika (dorr)
 * pe³nowymiarowy podgl±d emotek w oknie wyboru (beevvy/dorr)
 * zaktualizowana zosta³a lista serwerów GG w programie (dorr)
 * poprawiony zosta³ b³±d w pozycjonowaniu okna rozmowy z now± osob± pod Windows (dorr)
@@ -18,9 +18,10 @@ Je¶li jest w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * zmiana zestawu ikon powoduje tak¿e zmianê ikon w menu statusu  (dorr)
 * zawijanie zbyt d³ugich s³ów w oknie rozmowy (tomek-k/dorr)
 * drobne usprawnienia kompilacji pod Windows (Darom/dorr, dorr)
-* drobne poprawki zwi±zae z kompatybilno¶ci± z systemem Windows7 (dorr)
-* modu³ spellchecker skorzysta z enchant zamiast aspall'a je¶li znajduje siê on w systemie (Caolan McNamara/dorr)
-* usuniêty zosta³ crash w historii (beevvy/dorr)
+* drobne poprawki zwi±zane z kompatybilno¶ci± z systemem Windows7 i Mac OS X (dorr)
+* modu³ spellchecker skorzysta z enchant zamiast aspell'a je¶li znajduje siê on w systemie (Caolan McNamara/dorr)
+* usuniêty zosta³ crash w historii (beevvy/dorr) i module spellchecker (dorr)
+* zestawy ikon zosta³y zaktualizowane (ultr/dorr, dorr)
 * inne poprawki drobnych b³êdów
 
 +++ wersja 0.6.5.4-rc2
@@ -38,7 +39,7 @@ Je¶li jest w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * usuniête zosta³y opó¼nienia przy zmianie statusu przez modu³ audacious_mediaplayer (dorr)
 * historia otwiera siê z powrotem na ostatniej rozmowie z kontaktem (dorr)
 * wyszukiwanie w historii rozpoczyna siê od aktualnie przegl±danego dnia (dorr)
-* zosta³ rozwiazany rzadki problem b³êdnych dat w historii (dorr)
+* zosta³ rozwi±zany rzadki problem b³êdnych dat w historii (beevvy/dorr)
 * zosta³a zwiêkszona czytelno¶æ okna wyboru emotek (beevvy/dorr)
 
 +++ wersja 0.6.5.4-rc1
