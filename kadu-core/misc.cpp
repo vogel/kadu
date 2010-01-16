@@ -58,6 +58,7 @@ QFontInfo *defaultFontInfo;
 
 QTextCodec *codec_cp1250 = QTextCodec::codecForName("CP1250");
 QTextCodec *codec_latin2 = QTextCodec::codecForName("ISO8859-2");
+QTextCodec *codec_utf8   = QTextCodec::codecForName("UTF-8");
 
 long int startTime, beforeExecTime, endingTime, exitingTime;
 bool measureTime = false;

@@ -75,6 +75,7 @@ extern KADUAPI QFontInfo *defaultFontInfo;
 
 extern KADUAPI QTextCodec *codec_cp1250;
 extern KADUAPI QTextCodec *codec_latin2;
+extern KADUAPI QTextCodec *codec_utf8;
 
 class ChooseDescription : public QDialog
 {

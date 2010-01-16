@@ -123,7 +123,7 @@ void PendingMsgs::writeToFile()
 		t = i.msg.length();
 		f.writeBlock((char*)&t,sizeof(int));
 		// message content
-		QString cmsg = codec_latin2->fromUnicode(i.msg);
+		QString cmsg = codec_utf8->fromUnicode(i.msg);
 		f.writeBlock(cmsg, cmsg.length());
 		// message class
 		f.writeBlock((char*)&i.msgclass,sizeof(int));
@@ -188,7 +188,7 @@ bool PendingMsgs::loadFromFile()
 			return false;
 		}
 		buf[msg_size] = 0;
-		e.msg = codec_latin2->toUnicode(buf);
+		e.msg = codec_utf8->toUnicode(buf);
 		delete[] buf;
 
 		// message class
