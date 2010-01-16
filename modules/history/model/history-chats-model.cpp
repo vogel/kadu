@@ -66,13 +66,23 @@ int HistoryChatsModel::columnCount(const QModelIndex &parent) const
 int HistoryChatsModel::rowCount(const QModelIndex &parent) const
 {
 	if (!parent.isValid())
-		return ChatKeys.size() + 2;
+		return ChatKeys.size() + 1;
 
 	if (parent.parent().isValid())
 		return 0;
 
-	if (parent.row() < 0 || parent.row() >= Chats.size())
+	if (parent.row() < 0)
 		return 0;
+
+	if (parent.row() >= Chats.size())
+	{
+		switch (parent.row() - Chats.size())
+		{
+			case 0:
+				return StatusBuddies.size();
+		}
+		return 0;
+	}
 
 	return Chats[parent.row()].size();
 }
@@ -95,11 +105,8 @@ QModelIndex HistoryChatsModel::parent(const QModelIndex &child) const
 
 QVariant HistoryChatsModel::chatTypeData(const QModelIndex &index, int role) const
 {
-	if (index.row() < 0 )
+	if (index.row() < 0 || index.row() >= ChatKeys.count())
 		return QVariant();
-
-	if (index.row() >= ChatKeys.count())
-		return otherData(index.row() - ChatKeys.count(), role);
 
 	ChatType *chatType = ChatKeys.at(index.row());
 	switch (role)
@@ -140,27 +147,49 @@ QVariant HistoryChatsModel::chatData(const QModelIndex &index, int role) const
 	return QVariant();
 }
 
-QVariant HistoryChatsModel::otherData(int index, int role) const
+QVariant HistoryChatsModel::statusData(const QModelIndex &index, int role) const
 {
 	if (role != Qt::DisplayRole)
 		return QVariant();
 
-	switch (index)
-	{
-		case 0: return tr("Statuses");
-		case 1: return tr("SMS");
-	}
+	if (!index.parent().isValid())
+		return tr("Statuses");
+
+	printf("status data: %d %d\n", index.row(), StatusBuddies.size());
+
+	if (index.row() < 0 || index.row() >= StatusBuddies.size())
+		return QVariant();
+
+	return StatusBuddies[index.row()].display();;
 }
 
 QVariant HistoryChatsModel::data(const QModelIndex &index, int role) const
 {
+	if (index.parent().parent().isValid())
+		return QVariant();
+
+	int chatTypeIndex = index.parent().isValid() ? index.internalId() : index.row();
+	if (chatTypeIndex < 0)
+		return QVariant();
+
+	if (chatTypeIndex >= ChatKeys.size())
+	{
+		switch (chatTypeIndex - ChatKeys.size())
+		{
+			case 0: return statusData(index, role);
+			case 1: return QVariant();
+		}
+
+		return QVariant();
+	}
+
 	if (index.parent().isValid())
 		return chatData(index, role);
 	else
 		return chatTypeData(index, role);
 }
 
-void HistoryChatsModel::clear()
+void HistoryChatsModel::clearChats()
 {
 	int count = Chats.size();
 	for (int i = 0; i < count; i++)
@@ -187,10 +216,34 @@ void HistoryChatsModel::addChat(Chat chat)
 	endInsertRows();
 }
 
-void HistoryChatsModel::addChats(QList<Chat> chats)
+void HistoryChatsModel::setChats(QList<Chat> chats)
 {
+	clearChats();
+
 	foreach (Chat chat, chats)
 		addChat(chat);
+}
+
+void HistoryChatsModel::clearStatusBuddies()
+{
+	QModelIndex statusParent = index(Chats.size(), 0);
+
+	beginRemoveRows(statusParent, 0, rowCount(statusParent));
+	StatusBuddies.clear();
+	endRemoveRows();
+}
+
+void HistoryChatsModel::setStatusBuddies(QList<Buddy> buddies)
+{
+	printf("Set status buddies: %d\n", buddies.size());
+
+	clearStatusBuddies();
+
+	QModelIndex statusParent = index(Chats.size(), 0);
+
+	beginInsertRows(statusParent, 0, buddies.size());
+	StatusBuddies = buddies;
+	endInsertRows();
 }
 
 QModelIndex HistoryChatsModel::chatTypeIndex(ChatType *type) const
