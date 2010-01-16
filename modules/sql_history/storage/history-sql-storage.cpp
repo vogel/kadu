@@ -331,6 +331,51 @@ QList<Chat> HistorySqlStorage::chats(HistorySearchParameters search)
 	return chats;
 }
 
+QList<Buddy> HistorySqlStorage::statusBuddies(HistorySearchParameters search)
+{
+	kdebugf();
+
+	DatabaseMutex.lock();
+
+	QSqlQuery query(Database);
+	QString queryString = "SELECT DISTINCT contact FROM kadu_statuses WHERE 1";
+
+	if (!search.query().isEmpty())
+		queryString += " AND description LIKE :description";
+	if (search.fromDate().isValid())
+		queryString += " AND date(set_time) >= date(:fromDate)";
+	if (search.toDate().isValid())
+		queryString += " AND date(set_time) <= date(:toDate)";
+
+	query.prepare(queryString);
+
+	if (!search.query().isEmpty())
+		query.bindValue(":description", QLatin1String("%") + search.query() + "%");
+	if (search.fromDate().isValid())
+		query.bindValue(":fromDate", search.fromDate());
+	if (search.toDate().isValid())
+		query.bindValue(":toDate", search.toDate());
+
+	QList<Buddy> buddies;
+	QSet<Contact> usedContacts;
+
+	executeQuery(query);
+	while (query.next())
+	{
+		Contact contact = ContactManager::instance()->byUuid(query.value(0).toString());
+		if (contact && !usedContacts.contains(contact))
+		{
+			Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
+			buddies.append(buddy);
+			foreach (Contact contact, buddy.contacts())
+				usedContacts.insert(contact);
+		}
+	}
+
+	DatabaseMutex.unlock();
+
+	return buddies;
+}
 
 QList<QDate> HistorySqlStorage::chatDates(Chat chat, HistorySearchParameters search)
 {

@@ -47,7 +47,8 @@ public:
 	virtual ~HistoryStorage() {}
 
 	virtual QList<Chat> chats(HistorySearchParameters search) = 0;
-
+	virtual QList<Buddy> statusBuddies(HistorySearchParameters search) = 0;
+	
 	virtual QList<QDate> chatDates(Chat chat, HistorySearchParameters search) = 0;
 	virtual QList<Message> messages(Chat chat, QDate date = QDate(), int limit = 0) = 0;
 	virtual QList<Message> messagesSince(Chat chat, QDate date) = 0;
