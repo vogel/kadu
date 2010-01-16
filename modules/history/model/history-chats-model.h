@@ -38,6 +38,7 @@ class HistoryChatsModel : public QAbstractItemModel, ChatTypeAwareObject
 
 	QVariant chatTypeData(const QModelIndex &index, int role = Qt::DisplayRole) const;
 	QVariant chatData(const QModelIndex &index, int role = Qt::DisplayRole) const;
+	QVariant otherData(int index, int role = Qt::DisplayRole) const;
 
 protected:
 	virtual void chatTypeRegistered(ChatType *chatType);

@@ -58,7 +58,6 @@ void HistoryChatsModel::chatTypeUnregistered(ChatType *chatType)
 	endRemoveRows();
 }
 
-
 int HistoryChatsModel::columnCount(const QModelIndex &parent) const
 {
 	return 1;
@@ -67,7 +66,7 @@ int HistoryChatsModel::columnCount(const QModelIndex &parent) const
 int HistoryChatsModel::rowCount(const QModelIndex &parent) const
 {
 	if (!parent.isValid())
-		return ChatKeys.size();
+		return ChatKeys.size() + 2;
 
 	if (parent.parent().isValid())
 		return 0;
@@ -96,8 +95,11 @@ QModelIndex HistoryChatsModel::parent(const QModelIndex &child) const
 
 QVariant HistoryChatsModel::chatTypeData(const QModelIndex &index, int role) const
 {
-	if (index.row() < 0 || index.row() >= ChatKeys.count())
+	if (index.row() < 0 )
 		return QVariant();
+
+	if (index.row() >= ChatKeys.count())
+		return otherData(index.row() - ChatKeys.count(), role);
 
 	ChatType *chatType = ChatKeys.at(index.row());
 	switch (role)
@@ -138,6 +140,18 @@ QVariant HistoryChatsModel::chatData(const QModelIndex &index, int role) const
 	return QVariant();
 }
 
+QVariant HistoryChatsModel::otherData(int index, int role) const
+{
+	if (role != Qt::DisplayRole)
+		return QVariant();
+
+	switch (index)
+	{
+		case 0: return tr("Statuses");
+		case 1: return tr("SMS");
+	}
+}
+
 QVariant HistoryChatsModel::data(const QModelIndex &index, int role) const
 {
 	if (index.parent().isValid())
@@ -148,7 +162,7 @@ QVariant HistoryChatsModel::data(const QModelIndex &index, int role) const
 
 void HistoryChatsModel::clear()
 {
-	int count = rowCount();
+	int count = Chats.size();
 	for (int i = 0; i < count; i++)
 	{
 		beginRemoveRows(index(i, 0), 0, rowCount(index(i, 0)));
