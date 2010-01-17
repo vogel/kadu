@@ -103,6 +103,10 @@ static OSStatus appleEventProcessor(const AppleEvent *ae,
 
 void kaduQtMessageHandler(QtMsgType type, const char *msg)
 {
+	// Dorr: skip empty messages
+	if (msg == NULL || strlen(msg) == 0)
+		return;
+
 	switch (type)
 	{
 		case QtDebugMsg:
