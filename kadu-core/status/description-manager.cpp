@@ -69,9 +69,9 @@ DescriptionModel * DescriptionManager::model()
 
 void DescriptionManager::import()
 {
-	clear();
-	append(config_file.readEntry("General", "DefaultDescription").split("<-->"));
-	removeDuplicates();
+	StringList.clear();
+	StringList.append(config_file.readEntry("General", "DefaultDescription").split("<-->"));
+	StringList.removeDuplicates();
 
 	store();
 }
@@ -81,20 +81,20 @@ void DescriptionManager::addDescription(const QString &description)
 	if (description.isEmpty())
 		return;
 
-	if (contains(description))
+	if (StringList.contains(description))
 		removeDescription(description);
 
 	emit descriptionAboutToBeAdded(description);
-	prepend(description);
+	StringList.prepend(description);
 	emit descriptionAdded(description);
 }
 
 void DescriptionManager::removeDescription(const QString& description)
 {
-	if (!contains(description))
+	if (!StringList.contains(description))
 		return;
 
 	emit descriptionAboutToBeRemoved(description);
-	removeAll(description);
+	StringList.removeAll(description);
 	emit descriptionRemoved(description);
 }

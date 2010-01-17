@@ -45,14 +45,14 @@ void StorableStringList::load()
 
 	StorableObject::load();
 
-	clear();
+	StringList.clear();
 
 	XmlConfigFile *storageFile = storage()->storage();
 	QDomElement point = storage()->point();
 
 	QList<QDomElement> elements = storageFile->getNodes(point, storageItemNodeName());
 	foreach (QDomElement element, elements)
-		append(element.text());
+		StringList.append(element.text());
 }
 
 /**
@@ -83,7 +83,7 @@ void StorableStringList::store()
  *
  * Returns content of this string list.
  */
-const QStringList StorableStringList::content() const
+const QStringList & StorableStringList::content() const
 {
-	return *this;
+	return StringList;
 }
