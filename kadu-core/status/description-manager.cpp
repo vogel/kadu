@@ -70,7 +70,7 @@ DescriptionModel * DescriptionManager::model()
 void DescriptionManager::import()
 {
 	StringList.clear();
-	StringList.append(config_file.readEntry("General", "DefaultDescription").split("<-->"));
+	StringList.append(config_file.readEntry("General", "DefaultDescription").split("<-->", QString::SkipEmptyParts));
 	StringList.removeDuplicates();
 
 	store();
