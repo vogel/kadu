@@ -226,11 +226,15 @@ MediaPlayer::~MediaPlayer()
 	delete menu;
 	delete timer;
 
-	// Remove menu item (statuses)
-	if (mediaplayerStatus == NULL)
-		kadu->removeMenuActionDescription(enableMediaPlayerStatuses);
-	else
-		dockMenu->removeAction(mediaplayerStatus);
+	// Delete actions
+	delete playAction;
+	delete stopAction;
+	delete prevAction;
+	delete nextAction;
+	delete volUpAction;
+	delete volDownAction;
+	delete enableMediaPlayerStatuses;
+	delete mediaPlayerMenu;
 }
 
 void MediaPlayer::setControlsEnabled(bool enabled)
