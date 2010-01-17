@@ -37,8 +37,10 @@ DescriptionManager::DescriptionManager()
 {
 	ConfigurationManager::instance()->registerStorableObject(this);
 
-	if (xml_config_file->getNode("Description", XmlConfigFile::ModeFind).isNull())
+	if (xml_config_file->getNode("Descriptions", XmlConfigFile::ModeFind).isNull())
 		import();
+	else
+		load();
 }
 
 DescriptionManager::~DescriptionManager()
