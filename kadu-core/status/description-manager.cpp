@@ -40,7 +40,7 @@ DescriptionManager::DescriptionManager()
 	if (xml_config_file->getNode("Descriptions", XmlConfigFile::ModeFind).isNull())
 		import();
 	else
-		load();
+		setState(StateNotLoaded);
 }
 
 DescriptionManager::~DescriptionManager()
