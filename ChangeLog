@@ -20,7 +20,7 @@ Je¶li jest w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * drobne usprawnienia kompilacji pod Windows (Darom/dorr, dorr)
 * drobne poprawki zwi±zane z kompatybilno¶ci± z systemem Windows7 i Mac OS X (dorr)
 * modu³ spellchecker skorzysta z enchant zamiast aspell'a je¶li znajduje siê on w systemie (Caolan McNamara/dorr)
-* usuniêty zosta³ crash w historii (beevvy/dorr) i module spellchecker (dorr)
+* usuniêty zosta³ crash w historii (beevvy/dorr), module spellchecker i mediaplayer (dorr)
 * zestawy ikon zosta³y zaktualizowane (ultr/dorr, dorr)
 * inne poprawki drobnych b³êdów
 
