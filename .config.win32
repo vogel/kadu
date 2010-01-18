@@ -517,6 +517,11 @@ module_weather=n
 # PL: Nowy modu³ ext_info wprowadzaj¹cy obs³ugê dodatkowych informacji o kontaktach
 module_nextinfo=n
 
+# Desctiption: Pajacyk module
+# PL: Modul klikajacy Pajacyka
+# Platform: Linux, Mac OS X, Windows
+module_pajacyk=n
+
 ############################################# ICONS ###########################################################################
 # PL: ####################################### IKONY ###########################################################################
 
