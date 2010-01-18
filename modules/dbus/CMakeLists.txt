@@ -25,6 +25,10 @@ add_library (dbus ${dbus} ${SOURCES} ${MOC_FILES})
 #add_custom_target (dbus-translations DEPENDS ${TRANSLATION_FILES})
 #add_dependencies (dbus dbus-translations)
 
+if (UNIX AND NOT APPLE)
+	target_link_libraries (dbus ${QT_QTDBUS_LIBRARY})
+endif (UNIX AND NOT APPLE)
+
 if (dbus STREQUAL STATIC)
 	set_target_properties(dbus PROPERTIES COMPILE_FLAGS "-DKADULIB" )
 else (dbus STREQUAL STATIC)
