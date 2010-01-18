@@ -260,6 +260,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		this, SLOT(exitKaduActionActivated(QAction *, bool)),
 		"Exit", tr("&Exit")
 	);
+	ExitKadu->setShortcut("kadu_exit", Qt::ApplicationShortcut);
 
 	AddUser = new ActionDescription(this,
 		ActionDescription::TypeGlobal, "addUserAction",
@@ -275,7 +276,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		"MergeContact", tr("Merge Buddy...")
 	);
 	BuddiesListViewMenuManager::instance()->insertManagementActionDescription(1, MergeContact);
-	
+
 	BuddiesListViewMenuManager::instance()->insertManagementActionDescription(2, 0);
 
 	AddGroup= new ActionDescription(this,
