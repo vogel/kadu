@@ -49,11 +49,11 @@
 					<item value="Evolution" caption="Evolution" />
 					<item value="Mail" caption="Mail" />
                 </combo-box>
-				<line-edit caption="Custom e-mail client" config-section="Chat" config-item="MailClient" id="mailPath" 
+				<line-edit caption="Custom e-mail client" config-section="Chat" config-item="MailClient" id="mailPath"
 					   tool-tip="Write specific path to your email client" />
 			</group-box>
 		</tab>
-		
+
 		<tab name="Advanced">
 			<group-box name="Parser">
 				<check-box caption="Allow executing commands by parser" config-section="General" config-item="AllowExecutingFromParser" />
@@ -68,7 +68,7 @@
 				<line-edit caption="Debugging mask" config-section="General" config-item="DEBUG_MASK" />
 			</group-box>
 		</tab>
-			
+
 	</section>
 
 	<section name="Contacts" icon="ContactsTab" >
@@ -272,6 +272,7 @@ Text is plain black." />
 				<hot-key-edit caption="Add user" config-section="ShortCuts" config-item="kadu_adduser" />
 				<hot-key-edit caption="Manage modules" config-section="ShortCuts" config-item="kadu_modulesmanager" />
 				<hot-key-edit caption="Open chat with..." config-section="ShortCuts" config-item="kadu_openchatwith" />
+				<hot-key-edit caption="Exit" config-section="ShortCuts" config-item="kadu_exit" />
 			</group-box>
 		</tab>
 		<tab name="Userlist">
@@ -329,7 +330,7 @@ Text is plain black." />
 				<spin-box caption="Reduce the number of visible messages in chat window to" config-section="Chat" config-item="ChatPruneLen" min-value="1" max-value="255" id="chatPruneLen"
 					  tool-tip="Number of visible messages" />
 			</group-box>
-			
+
 			<group-box name="Images">
 				<spin-box caption="Max image size" config-section="Chat" config-item="MaxImageSize" min-value="0" max-value="255" suffix=" kB"
 					  tool-tip="Maximum image size that we want to receive" />
