@@ -161,7 +161,7 @@ void ChatWidgetManager::store()
 	if (!isValidStorage())
 		return;
 
-	clear();
+	StringList.clear();
 
 	foreach (Chat chat, Chats.keys())
 	{
@@ -169,7 +169,7 @@ void ChatWidgetManager::store()
 			|| !chat.chatAccount().protocolHandler()->protocolFactory())
 				continue;
 
-		append(chat.uuid().toString());
+		StringList.append(chat.uuid().toString());
 	}
 
 	StorableStringList::store();
