@@ -149,18 +149,23 @@ QVariant HistoryChatsModel::chatData(const QModelIndex &index, int role) const
 
 QVariant HistoryChatsModel::statusData(const QModelIndex &index, int role) const
 {
-	if (role != Qt::DisplayRole)
-		return QVariant();
-
 	if (!index.parent().isValid())
-		return tr("Statuses");
-
-	printf("status data: %d %d\n", index.row(), StatusBuddies.size());
+		return role == Qt::DisplayRole ? tr("Statuses") : QVariant();
 
 	if (index.row() < 0 || index.row() >= StatusBuddies.size())
 		return QVariant();
 
-	return StatusBuddies[index.row()].display();;
+	Buddy buddy = StatusBuddies[index.row()];
+
+	switch (role)
+	{
+		case Qt::DisplayRole:
+			return buddy.display();
+		case BuddyRole:
+			return QVariant::fromValue<Buddy>(buddy);
+	}
+
+	return QVariant();
 }
 
 QVariant HistoryChatsModel::data(const QModelIndex &index, int role) const
