@@ -134,7 +134,7 @@ void AddBuddyWindow::createGui()
 	layout->setRowMinimumHeight(6, 20);
 	layout->setRowMinimumHeight(8, 20);
 	layout->setRowStretch(8, 100);
-	
+
 	ErrorLabel = new QLabel();
 	QFont labelFont = ErrorLabel->font();
 	labelFont.setBold(true);
@@ -156,10 +156,8 @@ void AddBuddyWindow::createGui()
 
 	layout->setColumnMinimumWidth(0, 150);
 	layout->setColumnMinimumWidth(1, 200);
-// 	TODO: NOW, does not work
-// 	setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
-// 	setMaximumHeight(layout->minimumSize().height());
-// 	layout->setSizeConstraint(QLayout::SetMinAndMaxSize);
+	setFixedHeight(layout->minimumSize().height());
+	setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 }
 
 void AddBuddyWindow::displayErrorMessage(const QString &message)
@@ -299,7 +297,7 @@ void AddBuddyWindow::accept()
 
 	Contact contact = ContactManager::instance()->byId(account, UserNameEdit->text(), ActionCreateAndAdd);
 	contact.setOwnerBuddy(buddy);
-	
+
 	buddy.addToGroup(GroupCombo->currentGroup());
 
 	QDialog::accept();
