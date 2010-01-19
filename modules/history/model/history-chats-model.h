@@ -26,6 +26,7 @@
 
 #include "chat/type/chat-type-aware-object.h"
 
+class Buddy;
 class Chat;
 class ChatType;
 
@@ -36,8 +37,17 @@ class HistoryChatsModel : public QAbstractItemModel, ChatTypeAwareObject
 	QList<ChatType *> ChatKeys;
 	QList<QList<Chat> > Chats;
 
+	QList<Buddy> StatusBuddies;
+
+	void clearChats();
+	void addChat(Chat chat);
+
+	void clearStatusBuddies();
+
 	QVariant chatTypeData(const QModelIndex &index, int role = Qt::DisplayRole) const;
 	QVariant chatData(const QModelIndex &index, int role = Qt::DisplayRole) const;
+
+	QVariant statusData(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
 protected:
 	virtual void chatTypeRegistered(ChatType *chatType);
@@ -55,9 +65,8 @@ public:
 
 	virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
-	void clear();
-	void addChat(Chat chat);
-	void addChats(QList<Chat> chats);
+	void setChats(QList<Chat> chats);
+	void setStatusBuddies(QList<Buddy> buddies);
 
 	QModelIndex chatTypeIndex(ChatType *type) const;
 	QModelIndex chatIndex(Chat chat) const;

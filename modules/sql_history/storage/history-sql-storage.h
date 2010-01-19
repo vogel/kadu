@@ -43,6 +43,7 @@ class HistorySqlStorage : public HistoryStorage, CrashAwareObject
 
 	QSqlQuery ListChatsQuery;
 	QSqlQuery AppendMessageQuery;
+	QSqlQuery AppendStatusQuery;
 
 	QMutex DatabaseMutex;
 
@@ -51,7 +52,8 @@ class HistorySqlStorage : public HistoryStorage, CrashAwareObject
 	void initTables();
 	void initIndexes();
 	void initKaduMessagesTable();
-
+	void initKaduStatusesTable();
+	
 	QString chatWhere(Chat chat);
 
 	void executeQuery(QSqlQuery query);
@@ -69,6 +71,8 @@ public:
 	virtual ~HistorySqlStorage();
 
 	virtual QList<Chat> chats(HistorySearchParameters search);
+	virtual QList<Buddy> statusBuddies(HistorySearchParameters search);
+
 	virtual QList<QDate> chatDates(Chat chat, HistorySearchParameters search);
 	virtual QList<Message> messages(Chat chat, QDate date = QDate(), int limit = 0);
 	virtual QList<Message> messagesSince(Chat chat, QDate date);
@@ -76,7 +80,9 @@ public:
 
 	virtual int messagesCount(Chat chat, QDate date = QDate());
 
-	void appendMessage(const Message &message);
+	virtual void appendMessage(const Message &message);
+	virtual void appendStatus(Contact contact, Status status);
+
 	void sync();
 
 	void clearChatHistory(Chat chat);

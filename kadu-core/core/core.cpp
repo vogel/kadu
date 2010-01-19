@@ -71,8 +71,8 @@ Core * Core::instance()
 	return Instance;
 }
 
-Core::Core() : 
-	Myself(Buddy::create()), Window(0), ShowMainWindowOnStart(true), 
+Core::Core() :
+	Myself(Buddy::create()), Window(0), ShowMainWindowOnStart(true),
 	IsClosing(false)
 {
 	connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(quit()));
@@ -260,6 +260,7 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("ShortCuts", "kadu_openchatwith", "Ctrl+L");
 	config_file.addVariable("ShortCuts", "kadu_persinfo", "Ins");
 	config_file.addVariable("ShortCuts", "kadu_searchuser", "Ctrl+F");
+	config_file.addVariable("ShortCuts", "kadu_exit", "Ctrl+Q");
 
 	createAllDefaultToolbars();
 }

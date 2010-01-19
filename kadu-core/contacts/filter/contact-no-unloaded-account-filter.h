@@ -17,42 +17,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef HISTORY_SAVE_THREAD_H
-#define HISTORY_SAVE_THREAD_H
+#ifndef CONTACT_NO_UNLOADED_ACCOUNT_FILTER_H
+#define CONTACT_NO_UNLOADED_ACCOUNT_FILTER_H
 
-#include <QtCore/QDateTime>
-#include <QtCore/QMutex>
-#include <QtCore/QThread>
-#include <QtCore/QWaitCondition>
+#include "contacts/filter/abstract-contact-filter.h"
 
-class History;
-
-class HistorySaveThread : public QThread
+class ContactNoUnloadedAccountFilter : public AbstractContactFilter
 {
 	Q_OBJECT
 
-	History *CurrentHistory;
-
-	QMutex SomethingToSave;
-	QWaitCondition WaitForSomethingToSave;
-
-	QDateTime LastSyncTime;
-
-	bool Stopped;
-
-	void storeMessages();
-	void storeStatusChanges();
-	void sync();
+	bool Enabled;
 
 public:
-	explicit HistorySaveThread(History *history, QObject *parent = 0);
-	virtual ~HistorySaveThread();
+	explicit ContactNoUnloadedAccountFilter(QObject *parent = 0)
+			: AbstractContactFilter(parent), Enabled(true) {}
+	virtual ~ContactNoUnloadedAccountFilter() {}
 
-	virtual void run();
+	virtual bool acceptContact(Contact contact);
 
-	void newDataAvailable();
-	void stop();
+	void setEnabled(bool enabled);
 
 };
 
-#endif // HISTORY_SAVE_THREAD_H
+#endif // CONTACT_NO_UNLOADED_ACCOUNT_FILTER_H

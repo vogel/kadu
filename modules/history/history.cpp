@@ -306,6 +306,9 @@ void History::accountRegistered(Account account)
 	if (!account.protocolHandler())
 		return;
 
+	connect(account, SIGNAL(buddyStatusChanged(Contact, Status)),
+			this, SLOT(contactStatusChanged(Contact, Status)));
+
 	ChatService *service = account.protocolHandler()->chatService();
 	if (service)
 	{
@@ -320,6 +323,9 @@ void History::accountUnregistered(Account account)
 {
 	if (!account.protocolHandler())
 		return;
+
+	disconnect(account, SIGNAL(buddyStatusChanged(Contact, Status)),
+			this, SLOT(contactStatusChanged(Contact, Status)));
 
 	ChatService *service = account.protocolHandler()->chatService();
 	if (service)
@@ -336,24 +342,51 @@ void History::enqueueMessage(const Message &message)
 	if (!CurrentStorage)
 		return;
 
-	UnsavedMessagesMutex.lock();
+	UnsavedDataMutex.lock();
 	UnsavedMessages.enqueue(message);
-	UnsavedMessagesMutex.unlock();
+	UnsavedDataMutex.unlock();
 
-	SaveThread->newMessagesAvailable();
+	SaveThread->newDataAvailable();
+}
+
+void History::contactStatusChanged(Contact contact, Status status)
+{
+	if (!CurrentStorage)
+		return;
+
+	UnsavedDataMutex.lock();
+	UnsavedStatusChanges.enqueue(qMakePair(contact, status));
+	UnsavedDataMutex.unlock();
+
+	SaveThread->newDataAvailable();
 }
 
 Message History::dequeueUnsavedMessage()
 {
-	UnsavedMessagesMutex.lock();
+	UnsavedDataMutex.lock();
 	if (UnsavedMessages.isEmpty())
 	{
-		UnsavedMessagesMutex.unlock();
+		UnsavedDataMutex.unlock();
 		return Message::null;
 	}
 
 	Message result = UnsavedMessages.dequeue();
-	UnsavedMessagesMutex.unlock();
+	UnsavedDataMutex.unlock();
+
+	return result;
+}
+
+QPair<Contact, Status> History::dequeueUnsavedStatusChange()
+{
+	UnsavedDataMutex.lock();
+	if (UnsavedStatusChanges.isEmpty())
+	{
+		UnsavedDataMutex.unlock();
+		return qMakePair(Contact::null, Status("Offline"));
+	}
+
+	QPair<Contact, Status> result = UnsavedStatusChanges.dequeue();
+	UnsavedDataMutex.unlock();
 
 	return result;
 }
@@ -581,6 +614,13 @@ QList<Chat> History::chatsList(HistorySearchParameters search)
 	kdebugf();
 
 	return CurrentStorage->chats(search);
+}
+
+QList<Buddy> History::statusBuddiesList(HistorySearchParameters search)
+{
+	kdebugf();
+	
+	return CurrentStorage->statusBuddies(search);
 }
 
 QList<QDate> History::datesForChat(Chat chat, HistorySearchParameters search)

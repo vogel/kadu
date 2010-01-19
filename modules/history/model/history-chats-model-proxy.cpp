@@ -72,8 +72,13 @@ bool HistoryChatsModelProxy::lessThan(const QModelIndex &left, const QModelIndex
 	ChatType *leftType = left.data(ChatTypeRole).value<ChatType *>();
 	ChatType *rightType = right.data(ChatTypeRole).value<ChatType *>();
 
-	QString leftName = leftType ? leftType->displayName() : "";
-	QString rightName = rightType ? rightType->displayName() : "";
+	QString leftName = leftType ? leftType->displayName() : left.data(Qt::DisplayRole).toString();
+	QString rightName = rightType ? rightType->displayName() : right.data(Qt::DisplayRole).toString();
+
+	if (!leftType && rightType)
+		return false;
+	if (!rightType && leftType)
+		return true;
 
 	return compareNames(leftName, rightName) < 0;
 }

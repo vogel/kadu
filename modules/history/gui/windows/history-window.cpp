@@ -232,7 +232,6 @@ void HistoryWindow::updateData()
 	QModelIndex index = ChatsTree->selectionModel()->currentIndex();
 	Chat chat = index.data(ChatRole).value<Chat>();
 
-	ChatsModel->clear();
 	QList<Chat> usedChats;
 	QList<Chat> chatsList = History::instance()->chatsList(Search);
 	QList<Chat> result;
@@ -259,12 +258,14 @@ void HistoryWindow::updateData()
 		}
 	}
 
-	ChatsModel->addChats(result);
+	ChatsModel->setChats(result);
 
 	if (result.contains(chat))
 		selectChat(chat);
 	else
 		selectChat(Chat::null);
+
+	ChatsModel->setStatusBuddies(History::instance()->statusBuddiesList(Search));
 }
 
 void HistoryWindow::selectChat(Chat chat)

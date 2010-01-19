@@ -57,7 +57,7 @@ void ChooseDescription::showDialog(StatusContainer *statusContainer, const QPoin
 }
 
 ChooseDescription::ChooseDescription(StatusContainer *statusContainer, QWidget *parent)
-	: QDialog(parent, false), MyStatusContainer(statusContainer)
+	: QDialog(parent), MyStatusContainer(statusContainer)
 {
 	kdebugf();
 
@@ -95,7 +95,7 @@ ChooseDescription::ChooseDescription(StatusContainer *statusContainer, QWidget *
 	grid->addWidget(Description, 0, 0, 1, -1);
 	if (MaxDescriptionLength > 0)
 	{
-		AvailableChars = new QLabel(this);	
+		AvailableChars = new QLabel(this);
 		Description->lineEdit()->setMaxLength(MaxDescriptionLength);
 		currentDescriptionChanged(Description->currentText());
 		connect(Description, SIGNAL(textChanged(const QString &)), this, SLOT(currentDescriptionChanged(const QString &)));

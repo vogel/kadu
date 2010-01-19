@@ -38,10 +38,12 @@
  * This class is QStringList extended to have the possibility of loading and storing
  * data from/to XML configuration file.
  */
-class StorableStringList : protected QStringList, public StorableObject
+class StorableStringList : public StorableObject
 {
 
 protected:
+	QStringList StringList;
+
 	virtual void load();
 
 public:
@@ -58,7 +60,7 @@ public:
 	virtual QString storageItemNodeName() = 0;
 	virtual void store();
 
-	const QStringList content() const;
+	const QStringList & content() const;
 
 };
 

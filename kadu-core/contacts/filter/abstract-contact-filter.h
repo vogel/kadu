@@ -17,42 +17,27 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef HISTORY_SAVE_THREAD_H
-#define HISTORY_SAVE_THREAD_H
+#ifndef ABSTRACT_CONTACT_FILTER_H
+#define ABSTRACT_CONTACT_FILTER_H
 
-#include <QtCore/QDateTime>
-#include <QtCore/QMutex>
-#include <QtCore/QThread>
-#include <QtCore/QWaitCondition>
+#include <QtCore/QObject>
 
-class History;
+class Contact;
 
-class HistorySaveThread : public QThread
+class AbstractContactFilter : public QObject
 {
 	Q_OBJECT
 
-	History *CurrentHistory;
-
-	QMutex SomethingToSave;
-	QWaitCondition WaitForSomethingToSave;
-
-	QDateTime LastSyncTime;
-
-	bool Stopped;
-
-	void storeMessages();
-	void storeStatusChanges();
-	void sync();
-
 public:
-	explicit HistorySaveThread(History *history, QObject *parent = 0);
-	virtual ~HistorySaveThread();
+	explicit AbstractContactFilter(QObject *parent = 0)
+			: QObject(parent) {}
+	virtual ~AbstractContactFilter() {}
 
-	virtual void run();
+	virtual bool acceptContact(Contact contact) = 0;
 
-	void newDataAvailable();
-	void stop();
+signals:
+	void filterChanged();
 
 };
 
-#endif // HISTORY_SAVE_THREAD_H
+#endif // ABSTRACT_CONTACT_FILTER_H
