@@ -35,9 +35,11 @@
 #include "buddies/model/buddies-model-base.h"
 #include "chat/filter/chat-name-filter.h"
 #include "chat/message/message.h"
+
 #include "chat/type/chat-type.h"
 #include "chat/type/chat-type-manager.h"
 #include "chat/aggregate-chat-builder.h"
+
 #include "gui/actions/actions.h"
 #include "gui/widgets/buddies-list-view-menu-manager.h"
 #include "gui/widgets/chat-widget-manager.h"

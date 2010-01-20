@@ -265,7 +265,7 @@ void HistorySqlStorage::appendStatus(Contact contact, Status status)
 	kdebugf();
 
 	DatabaseMutex.lock();
-
+	
 	AppendStatusQuery.bindValue(":contact", contact.uuid().toString());
 	AppendStatusQuery.bindValue(":status", status.type());
 	AppendStatusQuery.bindValue(":set_time", QDateTime::currentDateTime());
@@ -406,7 +406,6 @@ QList<QDate> HistorySqlStorage::chatDates(Chat chat, HistorySearchParameters sea
 		query.bindValue(":toDate", search.toDate());
 	
 	QList<QDate> dates;
-
 	executeQuery(query);
 
 	while (query.next())
