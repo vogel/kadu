@@ -59,7 +59,6 @@ class MiniClient : public QObject
 	QString pass;
 	bool auth, force_ssl, error_disconnect;
 	QString TlsOverrideDomain;
-	QByteArray TlsOverrideCert;
 
 public:
 	MiniClient(QObject *parent=0);
@@ -70,9 +69,6 @@ public:
 	void close();
 	XMPP::Client *client();
 	void setErrorOnDisconnect(bool);
-
-	QByteArray tlsOverrideCert() { return TlsOverrideCert; };
-	void setTlsOverrideCert(QByteArray tlsOverrideCert) { TlsOverrideCert = tlsOverrideCert; }
 
 	QString tlsOverrideDomain() { return TlsOverrideDomain; };
 	void setTlsOverrideDomain(QString tlsOverrideDomain) { TlsOverrideDomain = tlsOverrideDomain; }

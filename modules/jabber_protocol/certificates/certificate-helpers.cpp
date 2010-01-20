@@ -40,6 +40,7 @@
 
 #include "certificates/certificate-helpers.h"
 #include "certificates/certificate-error-dialog.h"
+#include "certificates/trusted-certificates-manager.h"
 #include "client/mini-client.h"
 #include "jabber-protocol.h"
 
@@ -183,7 +184,7 @@ QString CertificateHelpers::resultToString(int result, QCA::Validity validity)
 	return s;
 }
 
-bool CertificateHelpers::checkCertificate(QCA::TLS* tls, XMPP::QCATLSHandler *tlsHandler, QString &tlsOverrideDomain, QByteArray &tlsOverrideCert, const QString &title, const QString &host, QObject *parent) {
+bool CertificateHelpers::checkCertificate(QCA::TLS* tls, XMPP::QCATLSHandler *tlsHandler, QString &tlsOverrideDomain, const QString &title, const QString &host, QObject *parent) {
 	QCA::Certificate cert = tls->peerCertificateChain().primary();
 	int result = tls->peerIdentityResult();
 	QString hostnameOverrideable;
@@ -199,17 +200,14 @@ bool CertificateHelpers::checkCertificate(QCA::TLS* tls, XMPP::QCATLSHandler *tl
 	}
 
 	// if this cert equals the user trusted certificate, just trust the user's choice.
-	if (result != QCA::TLS::Valid && !tlsOverrideCert.isEmpty()) {
-		if (cert.toDER() == tlsOverrideCert) {
-			result = QCA::TLS::Valid;
-		}
-	}
+	if (result != QCA::TLS::Valid && TrustedCertificatesManager::instance()->isTrusted(cert.toDER()))
+		result = QCA::TLS::Valid;
 
 	if (result != QCA::TLS::Valid) {
 		CertificateErrorDialog errorDialog(
 				title, host, cert,
 				result, tls->peerCertificateValidity(),
-				hostnameOverrideable, parent, tlsOverrideDomain, tlsOverrideCert);
+				hostnameOverrideable, parent, tlsOverrideDomain);
 
 		QObject::connect(parent, SIGNAL(disconnected()), errorDialog.getMessageBox(), SLOT(reject()), Qt::AutoConnection);
 		if (errorDialog.exec() == QDialog::Accepted) {

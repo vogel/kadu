@@ -31,12 +31,13 @@
 #include "certificates/certificate-helpers.h"
 #include "certificates/certificate-error-dialog.h"
 #include "certificates/certificate-display-dialog.h"
+#include "certificates/trusted-certificates-manager.h"
 #include "client/mini-client.h"
 
 CertificateErrorDialog::CertificateErrorDialog(const QString& title, const QString& host, const QCA::Certificate& cert, 
-	int result, QCA::Validity validity, const QString &domainOverride, QObject *parent, QString &tlsOverrideDomain, QByteArray &tlsOverrideCert) 
+	int result, QCA::Validity validity, const QString &domainOverride, QObject *parent, QString &tlsOverrideDomain) 
 	: certificate_(cert), result_(result), validity_(validity), domainOverride_(domainOverride), host_(host), Parent(parent),
-	tlsOverrideDomain_(tlsOverrideDomain), tlsOverrideCert_(tlsOverrideCert)
+	tlsOverrideDomain_(tlsOverrideDomain)
 {
 	messageBox_ = new QMessageBox(QMessageBox::Warning, title, QObject::tr("The %1 certificate failed the authenticity test.").arg(host));
 	messageBox_->setInformativeText(CertificateHelpers::resultToString(result, validity));
@@ -75,7 +76,7 @@ int CertificateErrorDialog::exec()
 		{
 			messageBox_->setResult(QDialog::Accepted);
 			if (domainOverride_.isEmpty()) {
-				tlsOverrideCert_ = certificate_.toDER();
+				TrustedCertificatesManager::instance()->addTrustedCertificate(certificate_.toDER());
 			} else {
 				tlsOverrideDomain_ = domainOverride_;
 			}

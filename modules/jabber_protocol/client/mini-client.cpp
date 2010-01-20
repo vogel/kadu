@@ -167,11 +167,9 @@ void MiniClient::setErrorOnDisconnect(bool b)
 
 void MiniClient::tls_handshaken()
 {
-	if (CertificateHelpers::checkCertificate(tls, tlsHandler, TlsOverrideDomain, TlsOverrideCert,
-										 tr("Server Authentication"),
-										 j.domain(), this)) {
+	if (CertificateHelpers::checkCertificate(tls, tlsHandler, TlsOverrideDomain, tr("Server Authentication"), j.domain(), this))
 		tlsHandler->continueAfterHandshake();
-	} else {
+	else {
 		close();
 		error();
 	}

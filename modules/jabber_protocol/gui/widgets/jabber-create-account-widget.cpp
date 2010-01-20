@@ -296,7 +296,6 @@ void JabberCreateAccountWidget::registerNewAccountFinished(JabberServerRegisterA
 		jabberAccount.setId(jsra->jid());
 		jabberAccount.setPassword(Password->text());
 		details->setTlsOverrideDomain(jsra->client()->tlsOverrideDomain());
-		details->setTlsOverrideCert(jsra->client()->tlsOverrideCert());
 		jabberAccount.setRememberPassword(RememberPassword->isChecked());
 
 		emit accountCreated(jabberAccount);
