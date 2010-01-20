@@ -22,6 +22,9 @@
 #include "chat/type/chat-type-manager.h"
 #include "model/roles.h"
 
+#include "model/history-type.h"
+#include "history-tree-item.h"
+
 #include "history-chats-model.h"
 
 HistoryChatsModel::HistoryChatsModel(QObject *parent) :
@@ -142,6 +145,9 @@ QVariant HistoryChatsModel::chatData(const QModelIndex &index, int role) const
 
 		case ChatRole:
 			return QVariant::fromValue<Chat>(chat);
+
+		case HistoryItemRole:
+			return QVariant::fromValue<HistoryTreeItem>(HistoryTreeItem(chat));
 	}
 
 	return QVariant();
@@ -161,8 +167,12 @@ QVariant HistoryChatsModel::statusData(const QModelIndex &index, int role) const
 	{
 		case Qt::DisplayRole:
 			return buddy.display();
+
 		case BuddyRole:
 			return QVariant::fromValue<Buddy>(buddy);
+
+		case HistoryItemRole:
+			return QVariant::fromValue<HistoryTreeItem>(HistoryTreeItem(buddy));
 	}
 
 	return QVariant();
@@ -240,8 +250,6 @@ void HistoryChatsModel::clearStatusBuddies()
 
 void HistoryChatsModel::setStatusBuddies(QList<Buddy> buddies)
 {
-	printf("Set status buddies: %d\n", buddies.size());
-
 	clearStatusBuddies();
 
 	QModelIndex statusParent = index(Chats.size(), 0);
@@ -276,4 +284,19 @@ QModelIndex HistoryChatsModel::chatIndex(Chat chat) const
 
 	int row = Chats[typeIndex.row()].indexOf(chat);
 	return index(row, 0, typeIndex);
+}
+
+QModelIndex HistoryChatsModel::statusIndex() const
+{
+	return index(ChatKeys.size(), 0, QModelIndex());
+}
+
+QModelIndex HistoryChatsModel::statusBuddyIndex(Buddy buddy) const
+{
+	QModelIndex parent = statusIndex();
+	if (!parent.isValid())
+		return QModelIndex();
+
+	int row = StatusBuddies.indexOf(buddy);
+	return index(row, 0, parent);
 }

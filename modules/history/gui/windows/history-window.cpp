@@ -57,6 +57,7 @@
 #include "model/history-chats-model.h"
 #include "model/history-chats-model-proxy.h"
 #include "storage/history-storage.h"
+#include "history-tree-item.h"
 
 #include "history-window.h"
 #include <QItemDelegate>
@@ -214,7 +215,7 @@ void HistoryWindow::createFilterBar(QWidget *parent)
 void HistoryWindow::connectGui()
 {
 	connect(ChatsTree, SIGNAL(activated(const QModelIndex &)),
-			this, SLOT(chatActivated(const QModelIndex &)));
+			this, SLOT(treeItemActivated(const QModelIndex &)));
 	connect(DetailsListView, SIGNAL(activated(const QModelIndex &)),
 			this, SLOT(dateActivated(const QModelIndex &)));
 
@@ -232,7 +233,7 @@ void HistoryWindow::updateData()
 	kdebugf();
 
 	QModelIndex index = ChatsTree->selectionModel()->currentIndex();
-	Chat chat = index.data(ChatRole).value<Chat>();
+	HistoryTreeItem treeItem = index.data(HistoryItemRole).value<HistoryTreeItem>();
 
 	QList<Chat> usedChats;
 	QList<Chat> chatsList = History::instance()->chatsList(Search);
@@ -262,10 +263,7 @@ void HistoryWindow::updateData()
 
 	ChatsModel->setChats(result);
 
-	if (result.contains(chat))
-		selectChat(chat);
-	else
-		selectChat(Chat::null);
+	selectHistoryItem(treeItem);
 
 	ChatsModel->setStatusBuddies(History::instance()->statusBuddiesList(Search));
 }
@@ -277,14 +275,14 @@ void HistoryWindow::selectChat(Chat chat)
 
 	if (!type)
 	{
-		chatActivated(QModelIndex());
+		treeItemActivated(QModelIndex());
 		return;
 	}
 
 	QModelIndex chatTypeIndex = ChatsModelProxy->chatTypeIndex(type);
 	if (!chatTypeIndex.isValid())
 	{
-		chatActivated(QModelIndex());
+		treeItemActivated(QModelIndex());
 		return;
 	}
 
@@ -295,6 +293,38 @@ void HistoryWindow::selectChat(Chat chat)
 	ChatsTree->selectionModel()->select(chatIndex, QItemSelectionModel::ClearAndSelect);
 
 	chatActivated(chat);
+}
+
+void HistoryWindow::selectStatusBuddy(Buddy buddy)
+{
+	QModelIndex statusIndex = ChatsModelProxy->statusIndex();
+	if (!statusIndex.isValid())
+	{
+		treeItemActivated(QModelIndex());
+		return;
+	}
+
+	ChatsTree->collapseAll();
+	ChatsTree->expand(statusIndex);
+
+	QModelIndex statusBuddyIndex = ChatsModelProxy->statusBuddyIndex(buddy);
+	ChatsTree->selectionModel()->select(statusBuddyIndex, QItemSelectionModel::ClearAndSelect);
+
+	statusBuddyActivated(buddy);
+}
+
+void HistoryWindow::selectHistoryItem(HistoryTreeItem item)
+{
+	switch (item.type())
+	{
+		case HistoryTypeChat:
+			selectChat(item.chat());
+			break;
+
+		case HistoryTypeStatus:
+			selectStatusBuddy(item.buddy());
+			break;
+	}
 }
 
 void HistoryWindow::chatActivated(Chat chat)
@@ -327,11 +357,30 @@ void HistoryWindow::chatActivated(Chat chat)
 	kdebugf2();
 }
 
-void HistoryWindow::chatActivated(const QModelIndex &index)
+void HistoryWindow::statusBuddyActivated(Buddy buddy)
+{
+
+}
+
+void HistoryWindow::treeItemActivated(HistoryTreeItem item)
+{
+	switch (item.type())
+	{
+		case HistoryTypeChat:
+			chatActivated(item.chat());
+			break;
+
+		case HistoryTypeStatus:
+			statusBuddyActivated(item.buddy());
+			break;
+	}
+}
+
+void HistoryWindow::treeItemActivated(const QModelIndex &index)
 {
 	kdebugf();
 
-	chatActivated(index.data(ChatRole).value<Chat>());
+	treeItemActivated(index.data(HistoryItemRole).value<HistoryTreeItem>());
 
 	kdebugf2();
 }

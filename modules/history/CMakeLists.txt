@@ -9,6 +9,7 @@ set (SOURCES
 	storage/history-storage.cpp
 
 	history.cpp
+	history-tree-item.cpp
 	history-save-thread.cpp
 )
 

@@ -39,6 +39,7 @@
 class ChatNameFilter;
 class HistoryChatsModel;
 class HistoryChatsModelProxy;
+class HistoryTreeItem;
 
 /*!
 \class HistoryDlg
@@ -76,11 +77,15 @@ class HistoryWindow : public MainWindow
 
 	void updateData();
 	void selectChat(Chat chat);
+	void selectStatusBuddy(Buddy buddy);
+	void selectHistoryItem(HistoryTreeItem item);
 
 	void chatActivated(Chat chat);
+	void statusBuddyActivated(Buddy buddy);
+	void treeItemActivated(HistoryTreeItem item);
 
 private slots:
-	void chatActivated(const QModelIndex &index);
+	void treeItemActivated(const QModelIndex &index);
 	void dateActivated(const QModelIndex &index);
 
 	void filterLineChanged(const QString &filterText);

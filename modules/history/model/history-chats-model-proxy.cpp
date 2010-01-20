@@ -124,7 +124,25 @@ QModelIndex HistoryChatsModelProxy::chatIndex(Chat chat) const
 {
 	if (!Model)
 		return QModelIndex();
-	
+
 	QModelIndex index = Model->chatIndex(chat);
+	return mapFromSource(index);
+}
+
+QModelIndex HistoryChatsModelProxy::statusIndex() const
+{
+	if (!Model)
+		return QModelIndex();
+
+	QModelIndex index = Model->statusIndex();
+	return mapFromSource(index);
+}
+
+QModelIndex HistoryChatsModelProxy::statusBuddyIndex(Buddy buddy) const
+{
+	if (!Model)
+		return QModelIndex();
+	
+	QModelIndex index = Model->statusBuddyIndex(buddy);
 	return mapFromSource(index);
 }
