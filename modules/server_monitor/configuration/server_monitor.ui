@@ -2,12 +2,12 @@
 <configuration-ui>
         <section name="Server Monitor" icon="GeneralTab">
                 <tab name="General">
-	                <group-box name="Data source">
-        	              	<check-box caption="Use gadu server list" config-section="serverMonitor" config-item="useListFromServer" id="serverMonitor/useListFromServer" />
-                               	<line-edit caption="Server with servers list" config-section="serverMonitor" config-item="serverListHost"id="serverMonitor/hostNameEdit" />
+                        <group-box name="Server list setting">
+                                <check-box caption="Use remote list" config-section="serverMonitor" config-item="useListFromServer" id="serverMonitor/useListFromServer" />
+                                <line-edit caption="Url to list http://" config-section="serverMonitor" config-item="serverListHost"id="serverMonitor/hostNameEdit" />
 		               	<select-file caption="Server list" config-section="serverMonitor" config-item="fileName" type="all" id="serverMonitor/fileSelect" />
                 	</group-box>
-                        <group-box name="Adjustment">
+                        <group-box name="General setting">
 	                	<check-box caption="Show reset button" config-section="serverMonitor" config-item="showResetButton" />
 				<check-box caption="Autorefresh list" config-section="serverMonitor" config-item="autorefresh" />
 				<spin-box caption="Refresh interval" config-section="serverMonitor" config-item="timerInterval" suffix=" min." min-value="1" max-value="300" />

@@ -2,16 +2,24 @@
 <context>
     <name>@default</name>
     <message>
-        <source>Use servers list form file</source>
-        <translation>Użyj  listy z pliku</translation>
+        <source>Server list setting</source>
+        <translation>Ustawienia listy serwerów</translation>
+    </message>
+    <message>
+        <source>Use remote list</source>
+        <translation>Zdalna lista serwerów</translation>
+    </message>
+    <message>
+        <source>Url to list http://</source>
+        <translation>Url do listy http://</translation>
     </message>
     <message>
         <source>Show reset button</source>
         <translation>Pokaż guzik "Odśwież"</translation>
     </message>
     <message>
-        <source>Server list file</source>
-        <translation>Link do pliku z listą serwerów</translation>
+        <source>File with server list</source>
+        <translation>Plik z listą serwerów</translation>
     </message>
     <message>
         <source>Autorefresh list</source>
@@ -20,6 +28,10 @@
     <message>
         <source>Refresh interval</source>
         <translation>Częstotliwość odświeżania</translation>
+    </message>
+    <message>
+        <source>General setting</source>
+        <translation>Ustawienia ogólne</translation>
     </message>
 </context>
 <context>
@@ -39,6 +51,14 @@
     <message>
         <source>Cannot download servers list!</source>
         <translation>Nie można pobrać listy serverów</translation>
+    </message>
+    <message>
+        <source>Server</source>
+        <translation>Serwer</translation>
+    </message>
+    <message>
+        <source>changed status to</source>
+        <translation>zmienił status</translation>
     </message>
 </context>
 </TS>

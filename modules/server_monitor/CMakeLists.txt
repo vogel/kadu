@@ -10,6 +10,9 @@ set (MOC_SOURCES
         server_monitor_window.h
 )
 
+set (TRANSLATION_SOURCES
+        translations/server_monitor_pl.ts)
+
 set (CONFIGURATION_FILES
         configuration/server_monitor.ui
         configuration/serverslist.txt
@@ -18,5 +21,6 @@ set (CONFIGURATION_FILES
 kadu_module (server_monitor
         MODULE_SOURCES ${SOURCES}
         MODULE_MOC_SOURCES ${MOC_SOURCES}
+        MODULE_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
         MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 )
