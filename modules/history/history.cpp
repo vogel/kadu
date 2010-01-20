@@ -616,13 +616,6 @@ QList<Chat> History::chatsList(HistorySearchParameters search)
 	return CurrentStorage->chats(search);
 }
 
-QList<Buddy> History::statusBuddiesList(HistorySearchParameters search)
-{
-	kdebugf();
-	
-	return CurrentStorage->statusBuddies(search);
-}
-
 QList<QDate> History::datesForChat(Chat chat, HistorySearchParameters search)
 {
 	kdebugf();
@@ -642,4 +635,32 @@ int History::messagesCount(Chat chat, QDate date)
 	kdebugf();
 
 	return CurrentStorage->messagesCount(chat, date);
+}
+
+QList<Buddy> History::statusBuddiesList(HistorySearchParameters search)
+{
+	kdebugf();
+
+	return CurrentStorage->statusBuddiesList(search);
+}
+
+QList< QDate > History::datesForStatusBuddy(Buddy buddy, HistorySearchParameters search)
+{
+	kdebugf();
+
+	return CurrentStorage->datesForStatusBuddy(buddy, search);
+}
+
+QList< Status > History::statuses(Buddy buddy, QDate date, int limit)
+{
+	kdebugf();
+
+	return CurrentStorage->statuses(buddy, date, limit);
+}
+
+int History::statusBuddyCount(Buddy buddy, QDate date)
+{
+	kdebugf();
+
+	return CurrentStorage->statusBuddyCount(buddy, date);
 }

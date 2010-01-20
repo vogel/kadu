@@ -47,13 +47,17 @@ public:
 	virtual ~HistoryStorage() {}
 
 	virtual QList<Chat> chats(HistorySearchParameters search) = 0;
-	virtual QList<Buddy> statusBuddies(HistorySearchParameters search) = 0;
-	
+
 	virtual QList<QDate> chatDates(Chat chat, HistorySearchParameters search) = 0;
 	virtual QList<Message> messages(Chat chat, QDate date = QDate(), int limit = 0) = 0;
 	virtual QList<Message> messagesSince(Chat chat, QDate date) = 0;
 	virtual QList<Message> messagesBackTo(Chat chat, QDateTime datetime, int limit) = 0;
 	virtual int messagesCount(Chat chat, QDate date = QDate()) = 0;
+
+	virtual QList<Buddy> statusBuddiesList(HistorySearchParameters search) = 0;
+	virtual QList<QDate> datesForStatusBuddy(Buddy buddy, HistorySearchParameters search) = 0;
+	virtual QList<Status> statuses(Buddy buddy, QDate date = QDate(), int limit = 0) = 0;
+	virtual int statusBuddyCount(Buddy buddy, QDate date = QDate()) = 0;
 
 	virtual void appendMessage(const Message &message) = 0;
 	virtual void appendStatus(Contact contact, Status status) = 0;

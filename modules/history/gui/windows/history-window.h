@@ -36,6 +36,8 @@
 #include "modules/history/history.h"
 #include "modules/history/history_exports.h"
 
+class BuddyStatusDatesModel;
+class ChatDatesModel;
 class ChatNameFilter;
 class HistoryChatsModel;
 class HistoryChatsModelProxy;
@@ -54,6 +56,9 @@ class HistoryWindow : public MainWindow
 	HistoryChatsModel *ChatsModel;
 	HistoryChatsModelProxy *ChatsModelProxy;
 	ChatNameFilter *NameFilter;
+
+	ChatDatesModel *MyChatDatesModel;
+	BuddyStatusDatesModel *MyBuddyStatusDatesModel;
 
 	QMenu *DetailsPopupMenu;
 	QLabel *FromDateLabel;
