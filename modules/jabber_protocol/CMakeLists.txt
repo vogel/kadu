@@ -261,6 +261,7 @@ set (SOURCES
 	server/jabber-server-register-account.cpp
 	services/jabber-avatar-service.cpp
 	services/jabber-chat-service.cpp
+	services/jabber-chat-state-service.cpp
 	services/jabber-file-transfer-service.cpp
 	transport/jabber-transport.cpp
 	utils/jid-util.cpp
@@ -286,6 +287,7 @@ set (MOC_SOURCES
 	server/jabber-server-register-account.h
 	services/jabber-avatar-service.h
 	services/jabber-chat-service.h
+	services/jabber-chat-state-service.h
 	services/jabber-file-transfer-service.h
 	transport/jabber-transport.h
 	utils/vcard-factory.h
