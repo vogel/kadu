@@ -117,6 +117,8 @@ SingleWindow::SingleWindow()
 	connect(kadu, SIGNAL(shown()), this, SLOT(show()));
 	connect(kadu, SIGNAL(hiding()), this, SLOT(hide()));
 	connect(kadu, SIGNAL(keyPressed(QKeyEvent *)), this, SLOT(onkaduKeyPressed(QKeyEvent *)));
+	connect(kadu, SIGNAL(statusPixmapChanged(const QIcon &, const QString &)),
+		this, SLOT(statusPixmapChanged(const QIcon &, const QString &)));
 
 	/* conquer all already open chats ;) */
 	ChatList chats = chat_manager->chats();
@@ -150,6 +152,8 @@ SingleWindow::~SingleWindow()
 	disconnect(kadu, SIGNAL(shown()), this, SLOT(show()));
 	disconnect(kadu, SIGNAL(hiding()), this, SLOT(hide()));
 	disconnect(kadu, SIGNAL(keyPressed(QKeyEvent *)), this, SLOT(onkaduKeyPressed(QKeyEvent *)));
+	disconnect(kadu, SIGNAL(statusPixmapChanged(const QIcon &, const QString &)),
+		this, SLOT(statusPixmapChanged(const QIcon &, const QString &)));
 
 	if (!Kadu::closing())
 	{
@@ -323,6 +327,11 @@ void SingleWindow::onChatKeyPressed(QKeyEvent* e, ChatWidget* w, bool &handled)
 		kadu->userBox()->setFocus();
 		handled = true;
 	}
+}
+
+void SingleWindow::statusPixmapChanged(const QIcon &icon, const QString &iconName)
+{
+	setWindowIcon(icon);
 }
 
 SingleWindowManager *singleWindowManager = NULL;
