@@ -2,7 +2,7 @@
 
 available_emots_themes=""
 for dir in *; do
-	if [ -f $dir/emots.txt ]; then
+	if [[ $(find ${dir} -name emots.txt) ]]; then
 		available_emots_themes="$available_emots_themes $dir"
 	fi
 done
