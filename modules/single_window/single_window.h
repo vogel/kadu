@@ -2,6 +2,7 @@
 #define SINGLE_WINDOW_H
 
 #include <QtCore/QList>
+#include <QtGui/QIcon>
 #include <QtGui/QSplitter>
 #include <QtGui/QTabWidget>
 #include <QtGui/QMainWindow>
@@ -39,6 +40,7 @@ public slots:
 	void onChatKeyPressed(QKeyEvent *e, ChatWidget* w, bool &handled);
 	void onkaduKeyPressed(QKeyEvent *e);
 	void closeTab(int index);
+	void statusPixmapChanged(const QIcon &icon, const QString &iconName);
 };
 
 class SingleWindowManager : public ConfigurationUiHandler, public ConfigurationAwareObject
