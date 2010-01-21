@@ -89,6 +89,8 @@ class HistoryWindow : public MainWindow
 	void statusBuddyActivated(Buddy buddy);
 	void treeItemActivated(HistoryTreeItem item);
 
+	QList<Message> statusesToMessages(QList<Status> statuses);
+
 private slots:
 	void treeItemActivated(const QModelIndex &index);
 	void dateActivated(const QModelIndex &index);

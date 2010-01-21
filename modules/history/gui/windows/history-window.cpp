@@ -417,18 +417,58 @@ void HistoryWindow::dateActivated(const QModelIndex &index)
 {
 	kdebugf();
 
-	Chat chat = index.data(ChatRole).value<Chat>();
+	HistoryTreeItem treeItem = index.data(HistoryItemRole).value<HistoryTreeItem>();
 	QDate date = index.data(DateRole).value<QDate>();
 
-	QList<Message> messages;
-	if (chat && date.isValid())
-		messages = History::instance()->messages(chat, date);
-
-	ContentBrowser->setChat(chat);
 	ContentBrowser->clearMessages();
-	ContentBrowser->appendMessages(messages);
+
+	switch (treeItem.type())
+	{
+		case HistoryTypeChat:
+		{
+			Chat chat = treeItem.chat();
+			QList<Message> messages;
+			if (chat && date.isValid())
+				messages = History::instance()->messages(chat, date);
+			ContentBrowser->setChat(chat);
+			ContentBrowser->appendMessages(messages);
+
+			break;
+		}
+
+		case HistoryTypeStatus:
+		{
+			Buddy buddy = treeItem.buddy();
+			QList<Status> statuses;
+			if (buddy && date.isValid())
+				statuses = History::instance()->statuses(buddy, date);
+			ContentBrowser->appendMessages(statusesToMessages(statuses));
+			break;
+		}
+	}
 
 	kdebugf2();
+}
+
+QList<Message> HistoryWindow::statusesToMessages(QList<Status> statuses)
+{
+	QList<Message> messages;
+
+	foreach (Status status, statuses)
+	{
+		Message message = Message::create();
+		message.setStatus(Message::StatusReceived);
+		message.setType(Message::TypeReceived);
+
+		if (status.description().isEmpty())
+			message.setContent(status.type());
+		else
+			message.setContent(QString("%1 with description: %2").arg(status.type()).arg(status.description()));
+
+		messages.append(message);
+	}
+
+	return messages;
 }
 
 void HistoryWindow::filterLineChanged(const QString &filterText)

@@ -59,6 +59,7 @@ class HistorySqlStorage : public HistoryStorage, CrashAwareObject
 
 	void executeQuery(QSqlQuery query);
 	QList<Message> messagesFromQuery(Chat chat, QSqlQuery query);
+	QList<Status> statusesFromQuery(QSqlQuery query);
 
 private slots:
 	virtual void messageReceived(const Message &message);

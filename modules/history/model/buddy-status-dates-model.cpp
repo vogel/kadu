@@ -22,6 +22,7 @@
 #include "chat/chat.h"
 #include "model/roles.h"
 
+#include "history-tree-item.h"
 #include "history.h"
 
 #include "buddy-status-dates-model.h"
@@ -111,6 +112,7 @@ QVariant BuddyStatusDatesModel::data(const QModelIndex &index, int role) const
 			return QVariant();
 		}
 
+		case HistoryItemRole: return QVariant::fromValue<HistoryTreeItem>(HistoryTreeItem(MyBuddy));
 		case BuddyRole: return QVariant::fromValue<Buddy>(MyBuddy);
 		case DateRole: return Dates.at(row);
 	}
