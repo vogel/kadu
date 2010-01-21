@@ -94,19 +94,29 @@ BuddyList GaduListHelper::streamToBuddyList(Account account, QTextStream &conten
 	QString line;
 	bool gg70 = false;
 
-	content.setCodec(codec_latin2);
+	content.setAutoDetectUnicode(true);
 
 	while (!content.atEnd())
 	{
 		line = content.readLine();
 		sections = line.split(";", QString::KeepEmptyParts);
+
 		//kdebugm(KDEBUG_DUMP, ">>%s\n", qPrintable(line));
+
 		if (line.startsWith("GG70ExportString"))
 		{
 			gg70 = true;
 			continue;
 		}
-		
+
+		if (!gg70 && (sections.size() > 6))
+		{
+			bool ok = false;
+			sections[6].toULong(&ok);
+			if (ok)
+				gg70 = true;
+		}
+
 		if (sections.count() < 7)
 			continue;
 

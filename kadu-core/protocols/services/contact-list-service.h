@@ -36,6 +36,8 @@ public:
 	virtual void exportContactList() = 0;
 	virtual void exportContactList(BuddyList buddies) = 0;
 
+	virtual QList<Buddy> loadBuddyList(QTextStream &dataStream) = 0;
+
 signals:
 	void contactListImported(bool ok, BuddyList buddies);
 	void contactListExported(bool ok);

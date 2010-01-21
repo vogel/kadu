@@ -48,6 +48,8 @@ public:
 	virtual void exportContactList();
 	virtual void exportContactList(BuddyList buddies);
 
+	virtual QList<Buddy> loadBuddyList(QTextStream &dataStream);
+
 signals:
 	void contactListDownloaded(const QString &contactList);
 
