@@ -41,15 +41,17 @@ class KADUAPI AccountBuddyListWidget : public QWidget
 	QPushButton *ImportButton;
 	bool Clear;
 
-public:
-	AccountBuddyListWidget(Account account, QWidget *parent = 0);
-	virtual ~AccountBuddyListWidget() {}
-
 private slots:
 	void startImportTransfer();
 	void startExportTransfer();
 	void buddiesListImported(bool ok, BuddyList buddies);
 	void buddiesListExported(bool ok);
+
+	void restoreFromFile();
+
+public:
+	AccountBuddyListWidget(Account account, QWidget *parent = 0);
+	virtual ~AccountBuddyListWidget() {}
 
 };
 

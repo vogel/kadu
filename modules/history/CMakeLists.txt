@@ -1,6 +1,7 @@
 set (SOURCES
-# 	gui/windows/history-search-dialog.cpp
 	gui/windows/history-window.cpp
+
+	model/buddy-status-dates-model.cpp
 	model/chat-dates-model.cpp
 	model/history-chats-model.cpp
 	model/history-chats-model-proxy.cpp
@@ -9,15 +10,18 @@ set (SOURCES
 	storage/history-storage.cpp
 
 	history.cpp
+	history-tree-item.cpp
 	history-save-thread.cpp
 )
 
 set (MOC_SOURCES
-# 	gui/windows/history-search-dialog.h
 	gui/windows/history-window.h
+
+	model/buddy-status-dates-model.h
 	model/chat-dates-model.h
 	model/history-chats-model.h
 	model/history-chats-model-proxy.h
+
 	storage/history-storage.h
 
 	history.h

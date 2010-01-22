@@ -21,6 +21,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QFileDialog>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QVBoxLayout>
 
@@ -59,14 +60,16 @@ AccountBuddyListWidget::AccountBuddyListWidget(Account account, QWidget *parent)
 	buttonsLayout->setSpacing(5);
 
 	ImportButton = new QPushButton(tr("Import contacts"), buttons);
-	//importButton->setMinimumWidth(ContactsWidget->minimumWidth());
 	connect(ImportButton, SIGNAL(clicked()), this, SLOT(startImportTransfer()));
 	buttonsLayout->addWidget(ImportButton);	
 
 	ExportButton = new QPushButton(tr("Export contacts"), buttons);
-	//exportButton->setMinimumWidth(ContactsWidget->minimumWidth());
 	connect(ExportButton, SIGNAL(clicked()), this, SLOT(startExportTransfer()));
 	buttonsLayout->addWidget(ExportButton);
+
+	QPushButton *restoreFromFile = new QPushButton(tr("Restore from file"), buttons);
+	connect(restoreFromFile, SIGNAL(clicked()), this, SLOT(restoreFromFile()));
+	buttonsLayout->addWidget(restoreFromFile);
 
 	layout->addWidget(BuddiesWidget);
 	layout->addWidget(buttons);
@@ -148,7 +151,7 @@ void AccountBuddyListWidget::buddiesListImported(bool ok, BuddyList buddies)
 		{
 			foreach (const Contact &contact, oneBuddyContacts)
 			{
-				Contact contactOnList = ContactManager::instance()->byId(CurrentAccount, contact.id());
+				Contact contactOnList = ContactManager::instance()->byId(CurrentAccount, contact.id(), ActionReturnNull);
 				if (contactOnList.isNull()) // not on list add this one as new
 				{
 					buddy = Buddy::create();
@@ -240,4 +243,27 @@ void AccountBuddyListWidget::buddiesListExported(bool ok)
 	ExportButton->setEnabled(true);
 
 	kdebugf2();
+}
+
+void AccountBuddyListWidget::restoreFromFile()
+{
+	ContactListService *service = CurrentAccount.protocolHandler()->contactListService();
+	if (!service)
+		return;
+
+	QString fileName = QFileDialog::getOpenFileName(this, tr("Select file"), "", "Contact list files (*.txt *.xml)", 0);
+	if (fileName.isEmpty())
+		return;
+
+	QFile file(fileName);
+
+	if (file.exists())
+	{
+		file.open(QFile::ReadOnly);
+		QTextStream stream(file.readAll());
+		file.close();
+
+		QList<Buddy> list = service->loadBuddyList(stream);
+		buddiesListImported(!list.isEmpty(), list);
+	}
 }

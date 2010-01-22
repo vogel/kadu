@@ -70,7 +70,9 @@ public:
 
 	QModelIndex chatTypeIndex(ChatType *type) const;
 	QModelIndex chatIndex(Chat chat) const;
-	void instance();
+
+	QModelIndex statusIndex() const;
+	QModelIndex statusBuddyIndex(Buddy buddy) const;
 
 };
 

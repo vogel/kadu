@@ -17,8 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_DATES_MODEL
-#define CHAT_DATES_MODEL
+#ifndef CHAT_DATES_MODEL_H
+#define CHAT_DATES_MODEL_H
 
 #include <QtCore/QAbstractListModel>
 #include <QtCore/QDate>
@@ -61,4 +61,4 @@ public:
 
 };
 
-#endif // CHAT_DATES_MODEL
+#endif // CHAT_DATES_MODEL_H

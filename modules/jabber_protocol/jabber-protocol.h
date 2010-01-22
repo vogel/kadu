@@ -19,6 +19,7 @@
 #include "resource/jabber-resource-pool.h"
 #include "services/jabber-avatar-service.h"
 #include "services/jabber-chat-service.h"
+#include "services/jabber-chat-state-service.h"
 #include "services/jabber-file-transfer-service.h"
 
 class ActionDescription;
@@ -30,6 +31,7 @@ class JabberProtocol : public Protocol
 	Q_OBJECT
 
 		JabberChatService *CurrentChatService;
+		JabberChatStateService *CurrentChatStateService;
 		JabberFileTransferService *CurrentFileTransferService;
 		JabberAvatarService *CurrentAvatarService;
 

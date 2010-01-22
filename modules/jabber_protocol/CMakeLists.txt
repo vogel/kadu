@@ -239,6 +239,7 @@ set (SOURCES
 	certificates/certificate-display-dialog.cpp
 	certificates/certificate-error-dialog.cpp
 	certificates/certificate-helpers.cpp
+	certificates/trusted-certificates-manager.cpp
 	client/jabber-client.cpp
 	client/mini-client.cpp
 	file-transfer/jabber-file-transfer-handler.cpp
@@ -260,6 +261,7 @@ set (SOURCES
 	server/jabber-server-register-account.cpp
 	services/jabber-avatar-service.cpp
 	services/jabber-chat-service.cpp
+	services/jabber-chat-state-service.cpp
 	services/jabber-file-transfer-service.cpp
 	transport/jabber-transport.cpp
 	utils/jid-util.cpp
@@ -268,6 +270,7 @@ set (SOURCES
 
 set (MOC_SOURCES
 	certificates/certificate-display-dialog.h
+	certificates/trusted-certificates-manager.h
 	client/jabber-client.h
 	client/mini-client.h
 	file-transfer/jabber-file-transfer-handler.h
@@ -284,6 +287,7 @@ set (MOC_SOURCES
 	server/jabber-server-register-account.h
 	services/jabber-avatar-service.h
 	services/jabber-chat-service.h
+	services/jabber-chat-state-service.h
 	services/jabber-file-transfer-service.h
 	transport/jabber-transport.h
 	utils/vcard-factory.h

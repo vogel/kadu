@@ -119,3 +119,8 @@ void GaduContactListService::exportContactList(BuddyList buddies)
 	if (-1 == gg_userlist_request(Protocol->gaduSession(), GG_USERLIST_PUT, unicode2cp(contactsString)))
 		emit contactListExported(false);
 }
+
+QList<Buddy> GaduContactListService::loadBuddyList(QTextStream &dataStream)
+{
+	return GaduListHelper::streamToBuddyList(Protocol->account(), dataStream);
+}

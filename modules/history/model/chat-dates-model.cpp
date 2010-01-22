@@ -25,6 +25,7 @@
 #include "chat/message/message.h"
 #include "model/roles.h"
 
+#include "history-tree-item.h"
 #include "history.h"
 
 #include "chat-dates-model.h"
@@ -140,6 +141,7 @@ QVariant ChatDatesModel::data(const QModelIndex &index, int role) const
 			return QVariant();
 		}
 
+		case HistoryItemRole: return QVariant::fromValue<HistoryTreeItem>(HistoryTreeItem(MyChat));
 		case ChatRole: return QVariant::fromValue<Chat>(MyChat);
 		case DateRole: return Dates.at(row);
 	}

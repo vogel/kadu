@@ -742,14 +742,7 @@ void MediaPlayer::checkTitle()
 	else
 		checked = false;
 
-/*	if (gadu->currentStatus().isOffline() && checked)
-	{
-		if (title != currentTitle || !gadu->currentStatus().hasDescription())
-		{
-			currentTitle = title;
-			mediaPlayerStatusChanger->setTitle(parse(config_file.readEntry("MediaPlayer", "statusTagString")));
-		}
-	}*/
+	mediaPlayerStatusChanger->setTitle(parse(config_file.readEntry("MediaPlayer", "statusTagString")));
 }
 
 void MediaPlayer::putTitleHint(QString title)

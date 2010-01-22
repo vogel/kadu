@@ -112,6 +112,7 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	initializeJabberClient();
 
 	CurrentChatService = new JabberChatService(this);
+	CurrentChatStateService = new JabberChatStateService(this);
 	CurrentFileTransferService = new JabberFileTransferService(this);
 	CurrentAvatarService = new JabberAvatarService(this);
 

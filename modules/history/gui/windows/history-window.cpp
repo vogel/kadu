@@ -35,9 +35,11 @@
 #include "buddies/model/buddies-model-base.h"
 #include "chat/filter/chat-name-filter.h"
 #include "chat/message/message.h"
+
 #include "chat/type/chat-type.h"
 #include "chat/type/chat-type-manager.h"
 #include "chat/aggregate-chat-builder.h"
+
 #include "gui/actions/actions.h"
 #include "gui/widgets/buddies-list-view-menu-manager.h"
 #include "gui/widgets/chat-widget-manager.h"
@@ -51,10 +53,12 @@
 #include "debug.h"
 #include "icons-manager.h"
 
+#include "model/buddy-status-dates-model.h"
 #include "model/chat-dates-model.h"
 #include "model/history-chats-model.h"
 #include "model/history-chats-model-proxy.h"
 #include "storage/history-storage.h"
+#include "history-tree-item.h"
 
 #include "history-window.h"
 #include <QItemDelegate>
@@ -117,8 +121,10 @@ void HistoryWindow::createGui()
 	DetailsListView = new QTreeView(rightWidget);
 	rightLayout->addWidget(DetailsListView);
 
+	MyChatDatesModel = new ChatDatesModel(Chat::null, QList<QDate>(), this);
+	MyBuddyStatusDatesModel = new BuddyStatusDatesModel(Buddy::null, QList<QDate>(), this);
+
 	DetailsListView->setRootIsDecorated(false);
-	DetailsListView->setModel(new ChatDatesModel(Chat::null, QList<QDate>(), this));
 	DetailsListView->setUniformRowHeights(true);
 
 	ContentBrowser = new ChatMessagesView(Chat::null, rightSplitter);
@@ -212,7 +218,7 @@ void HistoryWindow::createFilterBar(QWidget *parent)
 void HistoryWindow::connectGui()
 {
 	connect(ChatsTree, SIGNAL(activated(const QModelIndex &)),
-			this, SLOT(chatActivated(const QModelIndex &)));
+			this, SLOT(treeItemActivated(const QModelIndex &)));
 	connect(DetailsListView, SIGNAL(activated(const QModelIndex &)),
 			this, SLOT(dateActivated(const QModelIndex &)));
 
@@ -230,7 +236,7 @@ void HistoryWindow::updateData()
 	kdebugf();
 
 	QModelIndex index = ChatsTree->selectionModel()->currentIndex();
-	Chat chat = index.data(ChatRole).value<Chat>();
+	HistoryTreeItem treeItem = index.data(HistoryItemRole).value<HistoryTreeItem>();
 
 	QList<Chat> usedChats;
 	QList<Chat> chatsList = History::instance()->chatsList(Search);
@@ -260,10 +266,7 @@ void HistoryWindow::updateData()
 
 	ChatsModel->setChats(result);
 
-	if (result.contains(chat))
-		selectChat(chat);
-	else
-		selectChat(Chat::null);
+	selectHistoryItem(treeItem);
 
 	ChatsModel->setStatusBuddies(History::instance()->statusBuddiesList(Search));
 }
@@ -275,14 +278,14 @@ void HistoryWindow::selectChat(Chat chat)
 
 	if (!type)
 	{
-		chatActivated(QModelIndex());
+		treeItemActivated(QModelIndex());
 		return;
 	}
 
 	QModelIndex chatTypeIndex = ChatsModelProxy->chatTypeIndex(type);
 	if (!chatTypeIndex.isValid())
 	{
-		chatActivated(QModelIndex());
+		treeItemActivated(QModelIndex());
 		return;
 	}
 
@@ -295,29 +298,60 @@ void HistoryWindow::selectChat(Chat chat)
 	chatActivated(chat);
 }
 
+void HistoryWindow::selectStatusBuddy(Buddy buddy)
+{
+	QModelIndex statusIndex = ChatsModelProxy->statusIndex();
+	if (!statusIndex.isValid())
+	{
+		treeItemActivated(QModelIndex());
+		return;
+	}
+
+	ChatsTree->collapseAll();
+	ChatsTree->expand(statusIndex);
+
+	QModelIndex statusBuddyIndex = ChatsModelProxy->statusBuddyIndex(buddy);
+	ChatsTree->selectionModel()->select(statusBuddyIndex, QItemSelectionModel::ClearAndSelect);
+
+	statusBuddyActivated(buddy);
+}
+
+void HistoryWindow::selectHistoryItem(HistoryTreeItem item)
+{
+	switch (item.type())
+	{
+		case HistoryTypeChat:
+			selectChat(item.chat());
+			break;
+
+		case HistoryTypeStatus:
+			selectStatusBuddy(item.buddy());
+			break;
+	}
+}
+
 void HistoryWindow::chatActivated(Chat chat)
 {
 	kdebugf();
 
-	ChatDatesModel *model = dynamic_cast<ChatDatesModel *>(DetailsListView->model());
-	if (!model)
-		return;
-
-	QModelIndex selectedIndex = DetailsListView->selectionModel()->currentIndex();
+	QModelIndex selectedIndex = DetailsListView->selectionModel()
+			? DetailsListView->selectionModel()->currentIndex()
+			: QModelIndex();
 	QDate date = selectedIndex.data(DateRole).toDate();
 
 	QList<QDate> chatDates = History::instance()->datesForChat(chat, Search);
-	model->setChat(chat);
-	model->setDates(chatDates);
+	MyChatDatesModel->setChat(chat);
+	MyChatDatesModel->setDates(chatDates);
 
-	QModelIndex select = model->indexForDate(date);
+	QModelIndex select = MyChatDatesModel->indexForDate(date);
 	if (!select.isValid())
 	{
-		int lastRow = model->rowCount(QModelIndex()) - 1;
+		int lastRow = MyChatDatesModel->rowCount(QModelIndex()) - 1;
 		if (lastRow >= 0)
-			select = model->index(lastRow);
+			select = MyChatDatesModel->index(lastRow);
 	}
 
+	DetailsListView->setModel(MyChatDatesModel);
 	DetailsListView->selectionModel()->setCurrentIndex(select, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
 
 	dateActivated(select);
@@ -325,11 +359,56 @@ void HistoryWindow::chatActivated(Chat chat)
 	kdebugf2();
 }
 
-void HistoryWindow::chatActivated(const QModelIndex &index)
+void HistoryWindow::statusBuddyActivated(Buddy buddy)
 {
 	kdebugf();
 
-	chatActivated(index.data(ChatRole).value<Chat>());
+	QModelIndex selectedIndex = DetailsListView->model()
+			? DetailsListView->selectionModel()->currentIndex()
+			: QModelIndex();
+
+	QDate date = selectedIndex.data(DateRole).toDate();
+
+	QList<QDate> chatDates = History::instance()->datesForStatusBuddy(buddy, Search);
+	MyBuddyStatusDatesModel->setBuddy(buddy);
+	MyBuddyStatusDatesModel->setDates(chatDates);
+
+	if (date.isValid())
+		selectedIndex = MyBuddyStatusDatesModel->indexForDate(date);
+	if (!selectedIndex.isValid())
+	{
+		int lastRow = MyBuddyStatusDatesModel->rowCount(QModelIndex()) - 1;
+		if (lastRow >= 0)
+			selectedIndex = MyBuddyStatusDatesModel->index(lastRow);
+	}
+
+	DetailsListView->setModel(MyBuddyStatusDatesModel);
+	DetailsListView->selectionModel()->setCurrentIndex(selectedIndex, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+
+	dateActivated(selectedIndex);
+
+	kdebugf2();
+}
+
+void HistoryWindow::treeItemActivated(HistoryTreeItem item)
+{
+	switch (item.type())
+	{
+		case HistoryTypeChat:
+			chatActivated(item.chat());
+			break;
+
+		case HistoryTypeStatus:
+			statusBuddyActivated(item.buddy());
+			break;
+	}
+}
+
+void HistoryWindow::treeItemActivated(const QModelIndex &index)
+{
+	kdebugf();
+
+	treeItemActivated(index.data(HistoryItemRole).value<HistoryTreeItem>());
 
 	kdebugf2();
 }
@@ -338,18 +417,58 @@ void HistoryWindow::dateActivated(const QModelIndex &index)
 {
 	kdebugf();
 
-	Chat chat = index.data(ChatRole).value<Chat>();
+	HistoryTreeItem treeItem = index.data(HistoryItemRole).value<HistoryTreeItem>();
 	QDate date = index.data(DateRole).value<QDate>();
 
-	QList<Message> messages;
-	if (chat && date.isValid())
-		messages = History::instance()->messages(chat, date);
-
-	ContentBrowser->setChat(chat);
 	ContentBrowser->clearMessages();
-	ContentBrowser->appendMessages(messages);
+
+	switch (treeItem.type())
+	{
+		case HistoryTypeChat:
+		{
+			Chat chat = treeItem.chat();
+			QList<Message> messages;
+			if (chat && date.isValid())
+				messages = History::instance()->messages(chat, date);
+			ContentBrowser->setChat(chat);
+			ContentBrowser->appendMessages(messages);
+
+			break;
+		}
+
+		case HistoryTypeStatus:
+		{
+			Buddy buddy = treeItem.buddy();
+			QList<Status> statuses;
+			if (buddy && date.isValid())
+				statuses = History::instance()->statuses(buddy, date);
+			ContentBrowser->appendMessages(statusesToMessages(statuses));
+			break;
+		}
+	}
 
 	kdebugf2();
+}
+
+QList<Message> HistoryWindow::statusesToMessages(QList<Status> statuses)
+{
+	QList<Message> messages;
+
+	foreach (Status status, statuses)
+	{
+		Message message = Message::create();
+		message.setStatus(Message::StatusReceived);
+		message.setType(Message::TypeReceived);
+
+		if (status.description().isEmpty())
+			message.setContent(status.type());
+		else
+			message.setContent(QString("%1 with description: %2").arg(status.type()).arg(status.description()));
+
+		messages.append(message);
+	}
+
+	return messages;
 }
 
 void HistoryWindow::filterLineChanged(const QString &filterText)

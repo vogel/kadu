@@ -36,9 +36,12 @@
 #include "modules/history/history.h"
 #include "modules/history/history_exports.h"
 
+class BuddyStatusDatesModel;
+class ChatDatesModel;
 class ChatNameFilter;
 class HistoryChatsModel;
 class HistoryChatsModelProxy;
+class HistoryTreeItem;
 
 /*!
 \class HistoryDlg
@@ -53,6 +56,9 @@ class HistoryWindow : public MainWindow
 	HistoryChatsModel *ChatsModel;
 	HistoryChatsModelProxy *ChatsModelProxy;
 	ChatNameFilter *NameFilter;
+
+	ChatDatesModel *MyChatDatesModel;
+	BuddyStatusDatesModel *MyBuddyStatusDatesModel;
 
 	QMenu *DetailsPopupMenu;
 	QLabel *FromDateLabel;
@@ -76,11 +82,17 @@ class HistoryWindow : public MainWindow
 
 	void updateData();
 	void selectChat(Chat chat);
+	void selectStatusBuddy(Buddy buddy);
+	void selectHistoryItem(HistoryTreeItem item);
 
 	void chatActivated(Chat chat);
+	void statusBuddyActivated(Buddy buddy);
+	void treeItemActivated(HistoryTreeItem item);
+
+	QList<Message> statusesToMessages(QList<Status> statuses);
 
 private slots:
-	void chatActivated(const QModelIndex &index);
+	void treeItemActivated(const QModelIndex &index);
 	void dateActivated(const QModelIndex &index);
 
 	void filterLineChanged(const QString &filterText);

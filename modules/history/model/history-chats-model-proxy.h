@@ -22,6 +22,7 @@
 
 #include <QtGui/QSortFilterProxyModel>
 
+class Buddy;
 class Chat;
 class ChatFilter;
 class ChatType;
@@ -51,6 +52,9 @@ public:
 
 	QModelIndex chatTypeIndex(ChatType *type) const;
 	QModelIndex chatIndex(Chat chat) const;
+
+	QModelIndex statusIndex() const;
+	QModelIndex statusBuddyIndex(Buddy buddy) const;
 
 };
 

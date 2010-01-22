@@ -332,6 +332,7 @@ set (kadu_MOC_SRCS
 	chat/chat-details-aggregate.h
 	chat/chat-details-conference.h
 	chat/chat-details-simple.h
+
 	chat/chat-manager.h
 	chat/chat-shared.h
 	chat/chat-styles-manager.h
