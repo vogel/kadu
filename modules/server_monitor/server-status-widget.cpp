@@ -20,18 +20,16 @@
 #include "server-status-widget.h"
 
 ServerStatusWidget::ServerStatusWidget(QString addr, quint16 watchedPort, QString name, QWidget *parent)
-        : QWidget( parent ),
+        : QLabel( parent ),
         serverStatus( Empty ),
         serverOldStatus( Empty ),
         address( addr ),
-        port( watchedPort )
+        port( watchedPort ),
+        hostName(name),
+        labelAddress(this)
 {
-    setMinimumHeight( 17 );
-    setMinimumWidth( 10 );
-    labelAddress.setParent( this );
-  
-    if ( name.trimmed().length() > 0 )
-        labelAddress.setText( name );
+    if ( hostName.trimmed().length() > 0 )
+        labelAddress.setText( hostName );
     else
         labelAddress.setText( addr );
 
@@ -51,6 +49,9 @@ ServerStatusWidget::ServerStatusWidget(QString addr, quint16 watchedPort, QStrin
     );
 
     statusIcon = IconsManager::instance()->loadPixmap( "Invisible" );
+    setPixmap( statusIcon );
+
+    labelAddress.move( x()+statusIcon.width() + 10 , y() );
     refreshIcon();
 }
 
@@ -62,7 +63,7 @@ void ServerStatusWidget::emitNewStatus()
     emit statusChanged ( serverStatus, serverOldStatus );
     emit statusChanged ( address.toString(), serverStatus );
 
-    update();
+    setPixmap( statusIcon );
 }
 
 
@@ -84,12 +85,6 @@ void ServerStatusWidget::connectionError ( QAbstractSocket::SocketError socketEr
     emitNewStatus();
 }
 
-void ServerStatusWidget::paintEvent ( QPaintEvent * )
-{
-    QPainter painter( this );
-    painter.drawPixmap(100,0, statusIcon);
-}
-
 void ServerStatusWidget::refreshIcon()
 {
     kdebugf();
@@ -98,6 +93,7 @@ void ServerStatusWidget::refreshIcon()
         tcpSocket.connectToHost( address, port, QIODevice::ReadOnly );
     kdebugf2();
 }
+
 
 void ServerStatusWidget::notifity ( QString adress , ServerStatusWidget::ServerState)
 {

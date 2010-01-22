@@ -44,6 +44,7 @@ ServerMonitorWindow::ServerMonitorWindow(QWidget *parent)
     stats.setParent( this );
     stats.setGeometry(420, 20, 150, 50 );
     stats.setText( tr("No information avalible"));
+    setFixedWidth( 600 );
 
     setWindowTitle( tr("Server monitor") );
 }
@@ -137,7 +138,7 @@ void ServerMonitorWindow::readServerList()
             if ( lineSpilted.length() > 2 )
                 name = lineSpilted[2];
         }
-        ServerStatusWidget *serverStatusWidget = new ServerStatusWidget (addr,port.toInt(),name);
+        ServerStatusWidget *serverStatusWidget = new ServerStatusWidget (addr,port.toInt(),name, this);
         servers.push_back( serverStatusWidget );
 
         int row = serverCounter;
@@ -157,7 +158,6 @@ void ServerMonitorWindow::readServerList()
     scrollBarLayout->setSizePolicy( QSizePolicy::Maximum, QSizePolicy::Maximum );
     scrollBarLayout->setFixedWidth(500);
     setWidget(scrollBarLayout);
-    setFixedWidth( 600 );
 }
 
 

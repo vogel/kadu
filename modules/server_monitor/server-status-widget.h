@@ -17,7 +17,7 @@
 #include <QtNetwork/QTcpSocket>
 #include <QtNetwork/QHostAddress>
 
-class ServerStatusWidget : public QWidget
+class ServerStatusWidget : public QLabel
 {
 
 Q_OBJECT
@@ -35,7 +35,6 @@ public:
     ServerStatusWidget(QString addr, quint16 watchedPort, QString name, QWidget *parent=0);
     QString serverStateToString();
 
-    QPixmap statusIcon;
     ServerState serverStatus;
     ServerState serverOldStatus;
 
@@ -48,10 +47,10 @@ private:
     quint16 port;
     QAbstractSocket::SocketState prevSocketState;
     QTcpSocket tcpSocket;
+    QString hostName;
+    QPixmap statusIcon;
 
     void emitNewStatus();
-    void paintEvent ( QPaintEvent * event );
-
 
 private slots:
     void connected();
