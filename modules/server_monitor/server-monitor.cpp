@@ -33,6 +33,8 @@
 
 #include "server-monitor.h"
 
+	NotifyEvent* ServerMonitor::notifyEvent=NULL;
+
 extern "C" KADU_EXPORT int server_monitor_init(bool firstLoad)
 {
 	kdebugf();

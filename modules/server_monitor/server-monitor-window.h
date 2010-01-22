@@ -37,11 +37,6 @@ class ServerMonitorWindow : public QScrollArea, ConfigurationAwareObject
 {
 	Q_OBJECT
 
-public:
-	explicit ServerMonitorWindow(QWidget *parent = 0);
-	virtual ~ServerMonitorWindow();
-
-private:
 	QList<ServerStatusWidget*> servers;
 	QString serverFileListName;
 
@@ -60,10 +55,9 @@ private:
 	QWidget *scrollBarLayout;
 
 	virtual void configurationUpdated();
+
 	void setConfiguration();
-
 	void removeAllServer();
-
 	void cleanLayout();
 
 private slots:
@@ -71,6 +65,11 @@ private slots:
 	void readServerList();
 	void refreshList();
 	void updateStats( ServerStatusWidget::ServerState, ServerStatusWidget::ServerState );
+
+public:
+	explicit ServerMonitorWindow(QWidget *parent = 0);
+	virtual ~ServerMonitorWindow();
+
 };
 
 #endif // SERVER_MONITOR_WINDOW_H
