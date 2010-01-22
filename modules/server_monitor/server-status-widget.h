@@ -31,26 +31,6 @@ class ServerStatusWidget : public QLabel
 
 	Q_OBJECT
 
-				public:
-
-	enum ServerState {
-		Available,
-		Unavailable,
-		Unknown,
-		Empty
-	};
-
-public:
-	ServerStatusWidget(QString addr, quint16 watchedPort, QString name, QWidget *parent=0);
-	QString serverStateToString();
-
-	ServerState serverStatus;
-	ServerState serverOldStatus;
-
-public slots:
-	void refreshIcon();
-
-private:
 	QHostAddress address;
 	QLabel labelAddress;
 	quint16 port;
@@ -65,6 +45,24 @@ private slots:
 	void connected();
 	void connectionError ( QAbstractSocket::SocketError socketError );
 	void notifity ( QString, ServerStatusWidget::ServerState );
+
+	public:
+
+	enum ServerState {
+		Available,
+		Unavailable,
+		Unknown,
+		Empty
+	};
+
+	ServerStatusWidget(QString addr, quint16 watchedPort, QString name, QWidget *parent=0);
+	QString serverStateToString();
+
+	ServerState serverStatus;
+	ServerState serverOldStatus;
+
+public slots:
+	void refreshIcon();
 
 signals:
 	void statusChanged ( ServerStatusWidget::ServerState, ServerStatusWidget::ServerState );
