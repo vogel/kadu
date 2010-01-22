@@ -111,7 +111,7 @@ void JabberChatService::clientMessageReceived(const XMPP::Message &msg)
 {
 	kdebugf();
 
-	// TODO support for events
+	// events are now handled directly from JabberClient, so ignore it here
 	if (msg.containsEvents() && msg.body().isEmpty())
 		return;
 
