@@ -21,7 +21,7 @@
 #include "gui/windows/main-configuration-window.h"
 #include "misc/misc.h"
 
-#include "server_monitor_window.h"
+#include "server-monitor-window.h"
 
 ServerMonitorWindow::ServerMonitorWindow(QWidget *parent)
     : QScrollArea(parent),
@@ -53,41 +53,41 @@ ServerMonitorWindow::~ServerMonitorWindow()
     removeAllServer();
 }
 
-void ServerMonitorWindow::updateStats( ServerStatus::ServerState newStatus, ServerStatus::ServerState oldStatus )
+void ServerMonitorWindow::updateStats( ServerStatusWidget::ServerState newStatus, ServerStatusWidget::ServerState oldStatus )
 {
     switch ( newStatus )
     {
-        case ServerStatus::Available:
+        case ServerStatusWidget::Available:
             avalibleServers++;
         break;
 
-        case ServerStatus::Unavailable:
+        case ServerStatusWidget::Unavailable:
             unavalibleServers++;
         break;
 
-        case ServerStatus::Unknown:
+        case ServerStatusWidget::Unknown:
             unknownStatusServers++;
         break;
 
-        case ServerStatus::Empty:
+        case ServerStatusWidget::Empty:
         break;
     }
 
     switch ( oldStatus )
     {
-        case ServerStatus::Available:
+        case ServerStatusWidget::Available:
             avalibleServers--;
         break;
 
-        case ServerStatus::Unavailable:
+        case ServerStatusWidget::Unavailable:
             unavalibleServers--;
         break;
 
-        case ServerStatus::Unknown:
+        case ServerStatusWidget::Unknown:
             unknownStatusServers--;
         break;
 
-        case ServerStatus::Empty:
+        case ServerStatusWidget::Empty:
         break;
     }
         stats.setText( tr("Avalible              ")+QString::number(avalibleServers)+"\n"+
@@ -137,8 +137,8 @@ void ServerMonitorWindow::readServerList()
             if ( lineSpilted.length() > 2 )
                 name = lineSpilted[2];
         }
-        ServerStatus *serverStatus = new ServerStatus (addr,port.toInt(),name);
-        servers.push_back( serverStatus );
+        ServerStatusWidget *serverStatusWidget = new ServerStatusWidget (addr,port.toInt(),name);
+        servers.push_back( serverStatusWidget );
 
         int row = serverCounter;
         if ( serverCounter % 2 )
@@ -146,8 +146,8 @@ void ServerMonitorWindow::readServerList()
 
         layout->addWidget(servers[serverCounter], row, (serverCounter) % 2 );
 
-        connect (servers[serverCounter], SIGNAL( statusChanged (ServerStatus::ServerState, ServerStatus::ServerState)  ),
-                 this, SLOT( updateStats (ServerStatus::ServerState, ServerStatus::ServerState) ));
+        connect (servers[serverCounter], SIGNAL( statusChanged (ServerStatusWidget::ServerState, ServerStatusWidget::ServerState)  ),
+                 this, SLOT( updateStats (ServerStatusWidget::ServerState, ServerStatusWidget::ServerState) ));
 
         serverCounter++;
     }
@@ -244,12 +244,12 @@ void ServerMonitorWindow::downloadedServersList( bool err )
 
 void ServerMonitorWindow::refreshList()
 {
-    foreach ( ServerStatus* server, servers ) server->refreshIcon();
+    foreach ( ServerStatusWidget* server, servers ) server->refreshIcon();
 }
 
 void ServerMonitorWindow::removeAllServer()
 {
-    foreach ( ServerStatus *s, servers ) delete s;
+    foreach ( ServerStatusWidget *s, servers ) delete s;
     servers.clear();
 }
 

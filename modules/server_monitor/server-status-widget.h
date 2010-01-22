@@ -17,7 +17,7 @@
 #include <QtNetwork/QTcpSocket>
 #include <QtNetwork/QHostAddress>
 
-class ServerStatus : public QWidget
+class ServerStatusWidget : public QWidget
 {
 
 Q_OBJECT
@@ -32,7 +32,7 @@ Q_OBJECT
     };
 
 public:
-    ServerStatus(QString addr, quint16 watchedPort, QString name, QWidget *parent=0);
+    ServerStatusWidget(QString addr, quint16 watchedPort, QString name, QWidget *parent=0);
     QString serverStateToString();
 
     QPixmap statusIcon;
@@ -56,11 +56,11 @@ private:
 private slots:
     void connected();
     void connectionError ( QAbstractSocket::SocketError socketError );
-    void notifity ( QString, ServerStatus::ServerState );
+    void notifity ( QString, ServerStatusWidget::ServerState );
 
 signals:
-    void statusChanged ( ServerStatus::ServerState, ServerStatus::ServerState );
-    void statusChanged ( QString, ServerStatus::ServerState );
+    void statusChanged ( ServerStatusWidget::ServerState, ServerStatusWidget::ServerState );
+    void statusChanged ( QString, ServerStatusWidget::ServerState );
 };
 
 #endif // SERVERSTATUS_H

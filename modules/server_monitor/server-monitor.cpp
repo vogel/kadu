@@ -17,7 +17,7 @@
 #include "gui/windows/main-configuration-window.h"
 #include "misc/misc.h"
 
-#include "server_monitor.h"
+#include "server-monitor.h"
 
 #include "notify/notification-manager.h"
 #include "notify/notify-event.h"

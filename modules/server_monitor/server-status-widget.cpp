@@ -17,9 +17,9 @@
 #include "notify/notification.h"
 
 
-#include "server_status.h"
+#include "server-status-widget.h"
 
-ServerStatus::ServerStatus(QString addr, quint16 watchedPort, QString name, QWidget *parent)
+ServerStatusWidget::ServerStatusWidget(QString addr, quint16 watchedPort, QString name, QWidget *parent)
         : QWidget( parent ),
         serverStatus( Empty ),
         serverOldStatus( Empty ),
@@ -54,7 +54,7 @@ ServerStatus::ServerStatus(QString addr, quint16 watchedPort, QString name, QWid
     refreshIcon();
 }
 
-void ServerStatus::emitNewStatus()
+void ServerStatusWidget::emitNewStatus()
 {
     tcpSocket.disconnectFromHost();
     if ( serverOldStatus == serverStatus ) return;
@@ -66,7 +66,7 @@ void ServerStatus::emitNewStatus()
 }
 
 
-void ServerStatus::connected()
+void ServerStatusWidget::connected()
 {
     serverOldStatus = serverStatus;
     serverStatus = Available;
@@ -74,7 +74,7 @@ void ServerStatus::connected()
     emitNewStatus();
 }
 
-void ServerStatus::connectionError ( QAbstractSocket::SocketError socketError )
+void ServerStatusWidget::connectionError ( QAbstractSocket::SocketError socketError )
 {
     serverOldStatus = serverStatus;
     serverStatus = Unavailable;
@@ -84,13 +84,13 @@ void ServerStatus::connectionError ( QAbstractSocket::SocketError socketError )
     emitNewStatus();
 }
 
-void ServerStatus::paintEvent ( QPaintEvent * )
+void ServerStatusWidget::paintEvent ( QPaintEvent * )
 {
     QPainter painter( this );
     painter.drawPixmap(100,0, statusIcon);
 }
 
-void ServerStatus::refreshIcon()
+void ServerStatusWidget::refreshIcon()
 {
     kdebugf();
     qDebug() << tcpSocket.state();
@@ -99,7 +99,7 @@ void ServerStatus::refreshIcon()
     kdebugf2();
 }
 
-void ServerStatus::notifity ( QString adress , ServerStatus::ServerState)
+void ServerStatusWidget::notifity ( QString adress , ServerStatusWidget::ServerState)
 {
     Notification *notification = new Notification("serverMonitorChangeStatus",   QIcon() );
 
@@ -112,7 +112,7 @@ void ServerStatus::notifity ( QString adress , ServerStatus::ServerState)
     NotificationManager::instance()->notify( notification );
 }
 
-QString ServerStatus::serverStateToString()
+QString ServerStatusWidget::serverStateToString()
 {
     switch ( serverStatus )
     {

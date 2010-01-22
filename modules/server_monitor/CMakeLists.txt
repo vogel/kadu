@@ -1,20 +1,20 @@
 set (SOURCES                                                                                                                                                               
-        server_monitor.cpp
-        server_status.cpp
-        server_monitor_window.cpp
+        server-monitor.cpp
+        server-status-widget.cpp
+        server-monitor-window.cpp
 )
 
 set (MOC_SOURCES
-        server_monitor.h
-        server_status.h
-        server_monitor_window.h
+        server-monitor.h
+        server-status-widget.h
+        server-monitor-window.h
 )
 
 set (TRANSLATION_SOURCES
-        translations/server_monitor_pl.ts)
+        translations/server-monitor_pl.ts)
 
 set (CONFIGURATION_FILES
-        configuration/server_monitor.ui
+        configuration/server-monitor.ui
         configuration/serverslist.txt
 )
 

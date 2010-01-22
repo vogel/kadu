@@ -11,7 +11,7 @@
 #define SERVER_MONITOR_H
 
 #include "gui/windows/main-configuration-window.h"
-#include "server_monitor_window.h"
+#include "server-monitor-window.h"
 
 class ActionDescription;
 

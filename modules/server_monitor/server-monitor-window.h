@@ -23,7 +23,7 @@ class QBuffer;
 
 #include "configuration/configuration-aware-object.h"
 
-#include "server_status.h"
+#include "server-status-widget.h"
 
 class ServerMonitorWindow : public QScrollArea, ConfigurationAwareObject
 {
@@ -33,7 +33,7 @@ public:
     ServerMonitorWindow(QWidget *parent = 0);
     ~ServerMonitorWindow();
 private:
-    QList<ServerStatus*> servers;
+    QList<ServerStatusWidget*> servers;
     QString serverFileListName;
 
     QPushButton buttonRefresh;
@@ -61,7 +61,7 @@ private slots:
     void downloadedServersList(bool);
     void readServerList();
     void refreshList();
-    void updateStats( ServerStatus::ServerState, ServerStatus::ServerState );
+    void updateStats( ServerStatusWidget::ServerState, ServerStatusWidget::ServerState );
 };
 
 #endif // SERVER_MONITOR_WINDOW_H
