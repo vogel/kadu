@@ -25,22 +25,25 @@
 #include "server-monitor-window.h"
 
 class ActionDescription;
+class NotifyEvent;
 
 class ServerMonitor : public ConfigurationUiHandler
 {
 	Q_OBJECT
-	
+
+	ActionDescription* serverMonitorActionDescription;
+	ServerMonitorWindow dialog;
+
+private slots:
+	void serverMonitorActionActivated(QAction *, bool);
+
 public:
 	explicit ServerMonitor(QWidget *parent = 0);
 	virtual ~ServerMonitor();
 	virtual void mainConfigurationWindowCreated ( MainConfigurationWindow* mainConfigurationWindow );
-	
-private:
-	ActionDescription *serverMonitorActionDescription;
-	ServerMonitorWindow dialog;
-	
-private slots:
-	void serverMonitorActionActivated(QAction *, bool);
+
+	static NotifyEvent* notifyEvent;
+
 };
 
 extern ServerMonitor* serverMonitor;
