@@ -588,7 +588,12 @@ signals:
 	 * An existing resource has been removed.
 	 */
 	void resourceUnavailable(const XMPP::Jid &jid, const XMPP::Resource &resource);
-
+	
+	/**
+	 * Some way to modify message before send it - i.e. for chat event handling
+	 */
+	void messageAboutToSend(XMPP::Message &message);
+	
 	/**
 	 * A new message has been received.
 	 */

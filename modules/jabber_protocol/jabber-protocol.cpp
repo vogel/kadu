@@ -340,10 +340,11 @@ void JabberProtocol::disconnect(const XMPP::Status &s)
 	kdebugf2();
 }
 
-
+#include <QtCore/QDebug>
 void JabberProtocol::slotClientDebugMessage(const QString &msg)
 {
 	kdebugm(KDEBUG_WARNING, "Jabber Client debug:  %s\n", qPrintable(msg));
+	qDebug() << qPrintable(msg);
 }
 
 void JabberProtocol::setPresence(const XMPP::Status &status)

@@ -26,6 +26,7 @@
 
 #include "protocols/protocol.h"
 
+class ChatWidget;
 class JabberProtocol;
 
 class ChatState : public QObject
@@ -41,8 +42,10 @@ class ChatState : public QObject
 	QString eventId_;
 	XMPP::ChatState contactChatState_;
 	XMPP::ChatState lastChatState_;
+	bool titleChanged;
 	
 	void setContactChatState(XMPP::ChatState state);
+	void updateChatTitle();
 
   public:
 	ChatState(Chat chat);
@@ -54,14 +57,13 @@ class ChatState : public QObject
 	void updateIsComposing(bool b);
 	void setChatState(XMPP::ChatState state);
 	void incomingMessage(const XMPP::Message &m);
+	void messageAboutToSend(XMPP::Message &message);
 	
   signals:
     	/**
 	 * Signals if user (re)started/stopped composing
 	 */
 	void composing(bool);
-public slots:
-    void incomingMess(XMPP::Message);
 };
 
 class JabberChatStateService : public QObject
@@ -74,6 +76,8 @@ class JabberChatStateService : public QObject
   public:
 	JabberChatStateService(JabberProtocol *parent);
 
+public slots:
+    void chatWidgetCreated(ChatWidget *chat);
 };
 
 #endif // JABBER_CHAT_STATE_SERVICE_H

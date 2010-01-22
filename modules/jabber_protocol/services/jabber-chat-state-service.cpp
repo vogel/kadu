@@ -18,13 +18,14 @@
  */
 
 #include "chat/chat-manager.h"
+#include "contacts/contact-set.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/custom-input.h"
+#include "gui/windows/message-dialog.h"
 
 #include "jabber-protocol.h"
 #include "jabber-chat-state-service.h"
-
 
 JabberChatStateService::JabberChatStateService(JabberProtocol *parent) : ParentProtocol(parent)
 {
@@ -39,7 +40,23 @@ JabberChatStateService::JabberChatStateService(JabberProtocol *parent) : ParentP
 			}
 		}
 	}
+	
+	QObject::connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatWidgetCreated(ChatWidget *)));
 }
+
+void JabberChatStateService::chatWidgetCreated(ChatWidget *chatWidget)
+{
+	Chat chat = chatWidget->chat();
+	if (ParentProtocol == dynamic_cast<JabberProtocol *>(chat.chatAccount().protocolHandler()))
+	{
+		ChatWidget *c = ChatWidgetManager::instance()->byChat(chat);
+		if (c)
+		{
+			ChatStateList.append(new ChatState(chat));
+		}
+	}
+}
+
 
 ChatState::ChatState(Chat chat) : ObservedChat(chat)
 {
@@ -54,9 +71,19 @@ ChatState::ChatState(Chat chat) : ObservedChat(chat)
 	if (p)
 	{
 		connect(p->client(), SIGNAL(messageReceived(const XMPP::Message &)),
-			this, SLOT(incomingMesssage(const XMPP::Message &))); 
+			this, SLOT(incomingMessage(const XMPP::Message &)));
+		connect(p->client(), SIGNAL(messageAboutToSend(XMPP::Message &)),
+			this, SLOT(messageAboutToSend(XMPP::Message &))); 
 	}
 	Protocol = p;
+	
+	// Message events
+	contactChatState_ = XMPP::StateNone;
+	lastChatState_ = XMPP::StateNone;
+	sendComposingEvents_ = false;
+	isComposing_ = false;
+	composingTimer_ = 0;
+	titleChanged = false;
 		
 	
 	QObject::connect(this, SIGNAL(composing(bool)), this, SLOT(updateIsComposing(bool)));
@@ -71,9 +98,9 @@ void ChatState::setComposing()
 {
 	if (!composingTimer_) {
 		/* User (re)starts composing */
-		QTimer *composingTimer = new QTimer(this);
-		connect(composingTimer, SIGNAL(timeout()), SLOT(checkComposing()));
-		composingTimer->start(2000); // FIXME: magic number
+		composingTimer_ = new QTimer(this);
+		connect(composingTimer_, SIGNAL(timeout()), SLOT(checkComposing()));
+		composingTimer_->start(2000); // FIXME: magic number
 		emit composing(true);
 	}
 	isComposing_ = true;
@@ -88,7 +115,7 @@ void ChatState::checkComposing()
 		// User stopped composing
 		composingTimer_->deleteLater();
 		composingTimer_ = 0;
-		//emit composing(false);
+		emit composing(false);
 	}
 	isComposing_ = false; // Reset composing
 }
@@ -98,7 +125,7 @@ void ChatState::resetComposing()
 	if (composingTimer_) {
 		delete composingTimer_;
 		composingTimer_ = 0;
-		//isComposing_ = false;
+		isComposing_ = false;
 	}
 }
 
@@ -143,7 +170,7 @@ void ChatState::setChatState(XMPP::ChatState state)
 		}
 
 		// Build event message
-		XMPP::Message m(ObservedChat.chatAccount().id());
+		XMPP::Message m(ObservedChat.contacts().toContact().id());
 		if (sendComposingEvents_) {
 			m.setEventId(eventId_);
 			if (state == XMPP::StateComposing) {
@@ -157,11 +184,11 @@ void ChatState::setChatState(XMPP::ChatState state)
 			if (lastChatState_ != XMPP::StateGone) {
 				if ((state == XMPP::StateInactive && lastChatState_ == XMPP::StateComposing) || (state == XMPP::StateComposing && lastChatState_ == XMPP::StateInactive)) {
 					// First go to the paused state
-					XMPP::Message tm(ObservedChat.chatAccount().id());
+					XMPP::Message tm(ObservedChat.contacts().toContact().id());
 					m.setType("chat");
 					m.setChatState(XMPP::StatePaused);
 					if (Protocol->isConnected()) {
-						Protocol->client()->sendMessage(m);
+						Protocol->client()->client()->sendMessage(m);
 					}
 				}
 				m.setChatState(state);
@@ -172,7 +199,7 @@ void ChatState::setChatState(XMPP::ChatState state)
 		if (m.containsEvents() || m.chatState() != XMPP::StateNone) {
 			m.setType("chat");
 			if (Protocol->isConnected()) {
-				Protocol->client()->sendMessage(m);
+				Protocol->client()->client()->sendMessage(m);
 			}
 		}
 
@@ -225,5 +252,35 @@ void ChatState::setContactChatState(XMPP::ChatState state)
 			setChatState(XMPP::StateActive);
 		}
 	}
-	//invalidateTab();
+
+	updateChatTitle();
+}
+
+void ChatState::messageAboutToSend(XMPP::Message &message)
+{
+	message.addEvent(XMPP::ComposingEvent); 
+	setChatState(XMPP::StateActive);
+}
+
+void ChatState::updateChatTitle()
+{	
+	QString cap = ObservedChat.title();
+
+	if (titleChanged)
+	{
+		titleChanged = false;
+		ObservedChat.refreshTitle();
+	}
+	else if (contactChatState_ == XMPP::StateComposing && !titleChanged)
+	{
+		cap = tr("%1 (Composing ...)").arg(cap);
+		ObservedChat.setTitle(cap);
+		titleChanged = true;
+	}
+	else if (contactChatState_ == XMPP::StateInactive && !titleChanged)
+	{
+		cap = tr("%1 (Inactive)").arg(cap);
+		ObservedChat.setTitle(cap);
+		titleChanged = true;
+	}
 }

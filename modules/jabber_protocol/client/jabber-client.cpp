@@ -523,7 +523,9 @@ void JabberClient::changeGroupChatNick( const QString &host, const QString &room
 
 void JabberClient::sendMessage(const XMPP::Message &message)
 {
-	client()->sendMessage(message);
+	XMPP::Message m = message;
+	emit messageAboutToSend(m);
+	client()->sendMessage(m);
 }
 
 void JabberClient::send(const QString &packet)
