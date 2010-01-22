@@ -254,6 +254,6 @@ void ServerMonitorWindow::refreshList()
 
 void ServerMonitorWindow::removeAllServer()
 {
-	foreach ( ServerStatusWidget *s, servers ) delete s;
+	qDeleteAll(s);
 	servers.clear();
 }
