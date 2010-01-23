@@ -34,21 +34,23 @@ class ChatState : public QObject
 	Q_OBJECT
 	
 	Chat ObservedChat;
+	ChatWidget *Widget;
 	JabberProtocol *Protocol;
 	// Message Events & Chat States
-	QTimer* composingTimer_;
-	bool isComposing_;
-	bool sendComposingEvents_;
-	QString eventId_;
-	XMPP::ChatState contactChatState_;
-	XMPP::ChatState lastChatState_;
-	bool titleChanged;
+	QTimer* ComposingTimer;
+	bool IsComposing;
+	bool SendComposingEvents;
+	QString EventId;
+	XMPP::ChatState ContactChatState;
+	XMPP::ChatState LastChatState;
 	
 	void setContactChatState(XMPP::ChatState state);
 	void updateChatTitle();
 
   public:
 	ChatState(Chat chat);
+	
+	Chat chat() { return ObservedChat; };
 	
   private slots:
   	void setComposing();
@@ -76,8 +78,9 @@ class JabberChatStateService : public QObject
   public:
 	JabberChatStateService(JabberProtocol *parent);
 
-public slots:
-    void chatWidgetCreated(ChatWidget *chat);
+  private slots:
+	void chatWidgetCreated(ChatWidget *chat);
+	void chatWidgetDestroying(ChatWidget *chat);
 };
 
 #endif // JABBER_CHAT_STATE_SERVICE_H

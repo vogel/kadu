@@ -31,63 +31,57 @@ JabberChatStateService::JabberChatStateService(JabberProtocol *parent) : ParentP
 {
 	foreach (Chat chat, ChatManager::instance()->items())
 	{
-		if (ParentProtocol == dynamic_cast<JabberProtocol *>(chat.chatAccount().protocolHandler()))
-		{
-			ChatWidget *c = ChatWidgetManager::instance()->byChat(chat);
-			if (c)
-			{
-			  	ChatStateList.append(new ChatState(chat));
-			}
-		}
+		ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat);
+		if (chatWidget && ParentProtocol == dynamic_cast<JabberProtocol *>(chat.chatAccount().protocolHandler()))
+			  ChatStateList.append(new ChatState(chat));
 	}
 	
 	QObject::connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatWidgetCreated(ChatWidget *)));
+	QObject::connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget *)), this, SLOT(chatWidgetDestroying(ChatWidget *)));
 }
 
 void JabberChatStateService::chatWidgetCreated(ChatWidget *chatWidget)
 {
 	Chat chat = chatWidget->chat();
 	if (ParentProtocol == dynamic_cast<JabberProtocol *>(chat.chatAccount().protocolHandler()))
-	{
-		ChatWidget *c = ChatWidgetManager::instance()->byChat(chat);
-		if (c)
-		{
-			ChatStateList.append(new ChatState(chat));
-		}
-	}
+		ChatStateList.append(new ChatState(chat));
 }
 
+void JabberChatStateService::chatWidgetDestroying(ChatWidget *chatWidget)
+{
+	Chat chat = chatWidget->chat();
+	foreach (ChatState *state, ChatStateList)
+		if (state->chat() == chat)
+			ChatStateList.removeAll(state);
+}
 
 ChatState::ChatState(Chat chat) : ObservedChat(chat)
 {
 	ChatWidget *c = ChatWidgetManager::instance()->byChat(chat);
 	if (c)
 	{
+		Widget = c;
 		CustomInput *input = c->getChatEditBox()->inputBox();
 		QObject::connect(input, SIGNAL(textChanged()), this, SLOT(setComposing()));
 	}
 	
-	JabberProtocol *p = dynamic_cast<JabberProtocol *>(chat.chatAccount().protocolHandler());
-	if (p)
+	Protocol = dynamic_cast<JabberProtocol *>(chat.chatAccount().protocolHandler());
+	if (Protocol)
 	{
-		connect(p->client(), SIGNAL(messageReceived(const XMPP::Message &)),
+		connect(Protocol->client(), SIGNAL(messageReceived(const XMPP::Message &)),
 			this, SLOT(incomingMessage(const XMPP::Message &)));
-		connect(p->client(), SIGNAL(messageAboutToSend(XMPP::Message &)),
+		connect(Protocol->client(), SIGNAL(messageAboutToSend(XMPP::Message &)),
 			this, SLOT(messageAboutToSend(XMPP::Message &))); 
 	}
-	Protocol = p;
 	
 	// Message events
-	contactChatState_ = XMPP::StateNone;
-	lastChatState_ = XMPP::StateNone;
-	sendComposingEvents_ = false;
-	isComposing_ = false;
-	composingTimer_ = 0;
-	titleChanged = false;
+	ContactChatState = XMPP::StateNone;
+	LastChatState = XMPP::StateNone;
+	SendComposingEvents = false;
+	IsComposing = false;
+	ComposingTimer = 0;
 		
-	
 	QObject::connect(this, SIGNAL(composing(bool)), this, SLOT(updateIsComposing(bool)));
-
 }
 			
 
@@ -96,14 +90,15 @@ ChatState::ChatState(Chat chat) : ObservedChat(chat)
  */
 void ChatState::setComposing()
 {
-	if (!composingTimer_) {
+	if (!ComposingTimer) 
+	{
 		/* User (re)starts composing */
-		composingTimer_ = new QTimer(this);
-		connect(composingTimer_, SIGNAL(timeout()), SLOT(checkComposing()));
-		composingTimer_->start(2000); // FIXME: magic number
+		ComposingTimer = new QTimer(this);
+		connect(ComposingTimer, SIGNAL(timeout()), SLOT(checkComposing()));
+		ComposingTimer->start(2000); // FIXME: magic number
 		emit composing(true);
 	}
-	isComposing_ = true;
+	IsComposing = true;
 }
 
 /**
@@ -111,21 +106,23 @@ void ChatState::setComposing()
  */
 void ChatState::checkComposing()
 {
-	if (!isComposing_) {
+	if (!IsComposing) 
+	{
 		// User stopped composing
-		composingTimer_->deleteLater();
-		composingTimer_ = 0;
+		ComposingTimer->deleteLater();
+		ComposingTimer = 0;
 		emit composing(false);
 	}
-	isComposing_ = false; // Reset composing
+	IsComposing = false; // Reset composing
 }
 
 void ChatState::resetComposing()
 {
-	if (composingTimer_) {
-		delete composingTimer_;
-		composingTimer_ = 0;
-		isComposing_ = false;
+	if (ComposingTimer)
+	{
+		delete ComposingTimer;
+		ComposingTimer = 0;
+		IsComposing = false;
 	}
 }
 
@@ -136,58 +133,80 @@ void ChatState::updateIsComposing(bool b)
 
 void ChatState::setChatState(XMPP::ChatState state)
 {
-	if (/*PsiOptions::instance()->getOption("options.messages.send-composing-events").toBool() && */(sendComposingEvents_ || (contactChatState_ != XMPP::StateNone)))
+	//TODO 0.6.6
+	if (/*PsiOptions::instance()->getOption("options.messages.send-composing-events").toBool() && */(SendComposingEvents || (ContactChatState != XMPP::StateNone)))
 	{
 		// Don't send to offline resource
-// 		QList<UserListItem*> ul = account()->findRelevant(jid());
-// 		if (ul.isEmpty()) {
-// 			sendComposingEvents_ = false;
-// 			lastChatState_ = XMPP::StateNone;
-// 			return;
-// 		}
-// 
-// 		UserListItem *u = ul.first();
-// 		if (!u->isAvailable()) {
-// 			sendComposingEvents_ = false;
-// 			lastChatState_ = XMPP::StateNone;
-// 			return;
-// 		}
+		/*QList<UserListItem*> ul = account()->findRelevant(jid());
+		if (ul.isEmpty()) {
+			sendComposingEvents_ = false;
+			lastChatState_ = XMPP::StateNone;
+			return;
+		}
+
+		UserListItem *u = ul.first();
+		if (!u->isAvailable()) {
+			sendComposingEvents_ = false;
+			lastChatState_ = XMPP::StateNone;
+			return;
+		}*/
+		
+		// Don't send to offline resource
+		Contact contact = ObservedChat.contacts().toContact();
+		if (contact.currentStatus().isDisconnected())
+		{
+			SendComposingEvents = false;
+			LastChatState = XMPP::StateNone;
+			return;
+		}
 
 		// Transform to more privacy-enabled chat states if necessary
-		if (/*!PsiOptions::instance()->getOption("options.messages.send-inactivity-events").toBool() && */(state == XMPP::StateGone || state == XMPP::StateInactive)) {
+		if (/*!PsiOptions::instance()->getOption("options.messages.send-inactivity-events").toBool() 
+			&& */(state == XMPP::StateGone || state == XMPP::StateInactive))
+		{
 			state = XMPP::StatePaused;
 		}
 
-		if (lastChatState_ == XMPP::StateNone && (state != XMPP::StateActive && state != XMPP::StateComposing && state != XMPP::StateGone)) {
+		if (LastChatState == XMPP::StateNone && (state != XMPP::StateActive && state != XMPP::StateComposing && state != XMPP::StateGone)) 
+		{
 			//this isn't a valid transition, so don't send it, and don't update laststate
 			return;
 		}
 
 		// Check if we should send a message
-		if (state == lastChatState_ || state == XMPP::StateActive || (lastChatState_ == XMPP::StateActive && state == XMPP::StatePaused)) {
-			lastChatState_ = state;
+		if (state == LastChatState || state == XMPP::StateActive || (LastChatState == XMPP::StateActive && state == XMPP::StatePaused))
+		{
+			LastChatState = state;
 			return;
 		}
 
 		// Build event message
 		XMPP::Message m(ObservedChat.contacts().toContact().id());
-		if (sendComposingEvents_) {
-			m.setEventId(eventId_);
-			if (state == XMPP::StateComposing) {
+		if (SendComposingEvents)
+		{
+			m.setEventId(EventId);
+			if (state == XMPP::StateComposing)
+			{
 				m.addEvent(XMPP::ComposingEvent);
 			}
-			else if (lastChatState_ == XMPP::StateComposing) {
+			else if (LastChatState == XMPP::StateComposing)
+			{
 				m.addEvent(XMPP::CancelEvent);
 			}
 		}
-		if (contactChatState_ != XMPP::StateNone) {
-			if (lastChatState_ != XMPP::StateGone) {
-				if ((state == XMPP::StateInactive && lastChatState_ == XMPP::StateComposing) || (state == XMPP::StateComposing && lastChatState_ == XMPP::StateInactive)) {
+		if (ContactChatState != XMPP::StateNone) 
+		{
+			if (LastChatState != XMPP::StateGone)
+			{
+				if ((state == XMPP::StateInactive && LastChatState == XMPP::StateComposing) 
+					|| (state == XMPP::StateComposing && LastChatState == XMPP::StateInactive))
+				{
 					// First go to the paused state
 					XMPP::Message tm(ObservedChat.contacts().toContact().id());
 					m.setType("chat");
 					m.setChatState(XMPP::StatePaused);
-					if (Protocol->isConnected()) {
+					if (Protocol->isConnected())
+					{
 						Protocol->client()->client()->sendMessage(m);
 					}
 				}
@@ -196,45 +215,55 @@ void ChatState::setChatState(XMPP::ChatState state)
 		}
 
 		// Send event message
-		if (m.containsEvents() || m.chatState() != XMPP::StateNone) {
+		if (m.containsEvents() || m.chatState() != XMPP::StateNone)
+		{
 			m.setType("chat");
-			if (Protocol->isConnected()) {
+			if (Protocol->isConnected())
+			{
 				Protocol->client()->client()->sendMessage(m);
 			}
 		}
 
 		// Save last state
-		if (lastChatState_ != XMPP::StateGone || state == XMPP::StateActive)
-			lastChatState_ = state;
+		if (LastChatState != XMPP::StateGone || state == XMPP::StateActive)
+			LastChatState = state;
 	}
 }
 
 void ChatState::incomingMessage(const XMPP::Message &m)
 {
-	if (m.body().isEmpty()) {
+	if (m.body().isEmpty())
+	{
 		// Event message
-		if (m.containsEvent(XMPP::CancelEvent)) {
+		if (m.containsEvent(XMPP::CancelEvent))
+		{
 			setContactChatState(XMPP::StatePaused);
 		}
-		else if (m.containsEvent(XMPP::ComposingEvent)) {
+		else if (m.containsEvent(XMPP::ComposingEvent))
+		{
 			setContactChatState(XMPP::StateComposing);
 		}
 
-		if (m.chatState() != XMPP::StateNone) {
+		if (m.chatState() != XMPP::StateNone)
+		{
 			setContactChatState(m.chatState());
 		}
 	}
-	else {
+	else
+	{
 		// Normal message
 		// Check if user requests event messages
-		sendComposingEvents_ = m.containsEvent(XMPP::ComposingEvent);
-		if (!m.eventId().isEmpty()) {
-			eventId_ = m.eventId();
+		SendComposingEvents = m.containsEvent(XMPP::ComposingEvent);
+		if (!m.eventId().isEmpty())
+		{
+			EventId = m.eventId();
 		}
-		if (m.containsEvents() || m.chatState() != XMPP::StateNone) {
+		if (m.containsEvents() || m.chatState() != XMPP::StateNone)
+		{
 			setContactChatState(XMPP::StateActive);
 		}
-		else {
+		else
+		{
 			setContactChatState(XMPP::StateNone);
 		}
 	}
@@ -242,13 +271,26 @@ void ChatState::incomingMessage(const XMPP::Message &m)
 
 void ChatState::setContactChatState(XMPP::ChatState state)
 {
-	contactChatState_ = state;
-	if (state == XMPP::StateGone) {
-		///appendSysMsg(tr("%1 ended the conversation").arg(Qt::escape(dispNick_)));
+	ContactChatState = state;
+	if (state == XMPP::StateGone)
+	{
+		Contact contact = ObservedChat.contacts().toContact();
+		QString msg = "[ " + tr("%1 ended the conversation").arg(contact.ownerBuddy().display()) + " ]";
+		Message message = Message::create();
+		message.setMessageChat(ObservedChat);
+		message.setType(Message::TypeReceived);
+		message.setMessageSender(contact);
+		message.setContent(msg);
+		message.setSendDate(QDateTime::currentDateTime());
+		message.setReceiveDate(QDateTime::currentDateTime());
+		
+		Widget->chatMessagesView()->appendMessage(message);
 	}
-	else {
+	else
+	{
 		// Activate ourselves
-		if (lastChatState_ == XMPP::StateGone) {
+		if (LastChatState == XMPP::StateGone)
+		{
 			setChatState(XMPP::StateActive);
 		}
 	}
@@ -266,21 +308,18 @@ void ChatState::updateChatTitle()
 {	
 	QString cap = ObservedChat.title();
 
-	if (titleChanged)
-	{
-		titleChanged = false;
-		ObservedChat.refreshTitle();
-	}
-	else if (contactChatState_ == XMPP::StateComposing && !titleChanged)
+	if (ContactChatState == XMPP::StateComposing)
 	{
 		cap = tr("%1 (Composing ...)").arg(cap);
 		ObservedChat.setTitle(cap);
-		titleChanged = true;
 	}
-	else if (contactChatState_ == XMPP::StateInactive && !titleChanged)
+	else if (ContactChatState == XMPP::StateInactive)
 	{
 		cap = tr("%1 (Inactive)").arg(cap);
 		ObservedChat.setTitle(cap);
-		titleChanged = true;
+	}
+	else
+	{
+		ObservedChat.refreshTitle();
 	}
 }
