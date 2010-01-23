@@ -1096,8 +1096,8 @@ E un rischio per la sicurezza!</translation>
 <context>
     <name>About</name>
     <message>
-        <source>About</source>
-        <translation>Informazioni su</translation>
+        <source>&amp;About</source>
+        <translation>&amp;Informazioni su</translation>
     </message>
     <message>
         <source>&amp;Close</source>

@@ -1091,8 +1091,8 @@ Attention danger!
 <context>
     <name>About</name>
     <message>
-        <source>About</source>
-        <translation>A propos de</translation>
+        <source>&amp;About</source>
+        <translation>&amp;A propos de</translation>
     </message>
     <message>
         <source>&amp;Close</source>

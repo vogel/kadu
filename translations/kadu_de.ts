@@ -1107,8 +1107,8 @@ It&apos;s a high security risk!</source>
 <context>
     <name>About</name>
     <message>
-        <source>About</source>
-        <translation>Über </translation>
+        <source>&amp;About</source>
+        <translation>&amp;Über</translation>
     </message>
     <message>
         <source>&amp;Close</source>

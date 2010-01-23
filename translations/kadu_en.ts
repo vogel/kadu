@@ -1089,7 +1089,7 @@ It&apos;s a high security risk!</source>
 <context>
     <name>About</name>
     <message>
-        <source>About</source>
+        <source>&amp;About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

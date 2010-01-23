@@ -1109,8 +1109,8 @@ Jest to wysoce ryzykowne!</translation>
 <context>
     <name>About</name>
     <message>
-        <source>About</source>
-        <translation>O programie</translation>
+        <source>&amp;About</source>
+        <translation>&amp;O programie</translation>
     </message>
     <message>
         <source>&amp;Close</source>
