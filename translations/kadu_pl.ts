@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="pl">
+<!DOCTYPE TS><TS>
 <context>
     <name>@default</name>
     <message>
@@ -450,28 +448,12 @@ Jest to wysoce ryzykowne!</translation>
         <translation>Dostępny</translation>
     </message>
     <message>
-        <source>Online (d.)</source>
-        <translation>Dostępny z opisem</translation>
-    </message>
-    <message>
         <source>Busy</source>
         <translation>Zajęty</translation>
     </message>
     <message>
-        <source>Busy (d.)</source>
-        <translation>Zajęty z opisem</translation>
-    </message>
-    <message>
         <source>Invisible</source>
         <translation>Ukryty</translation>
-    </message>
-    <message>
-        <source>Invisible (d.)</source>
-        <translation>Ukryty z opisem</translation>
-    </message>
-    <message>
-        <source>Offline (d.)</source>
-        <translation>Niedostępny z opisem</translation>
     </message>
     <message>
         <source>Offline</source>
@@ -482,16 +464,8 @@ Jest to wysoce ryzykowne!</translation>
         <translation>Porozmawiaj ze mną</translation>
     </message>
     <message>
-        <source>Talk With Me (d.)</source>
-        <translation>Porozmawiaj ze mną z opisem</translation>
-    </message>
-    <message>
         <source>Do Not Disturb</source>
         <translation>Nie przeszkadzać</translation>
-    </message>
-    <message>
-        <source>Do Not Disturb (d.)</source>
-        <translation>Nie przeszkadzać z opisem</translation>
     </message>
     <message>
         <source>On startup, set last description</source>
@@ -764,38 +738,6 @@ Jest to wysoce ryzykowne!</translation>
     <message>
         <source>Dislpays multiline descriptions in userbox</source>
         <translation>Wyświetla opisy składające się z wielu linii na liście kontaktów</translation>
-    </message>
-    <message>
-        <source>Use background image</source>
-        <translation>Użyj obrazka jako tło</translation>
-    </message>
-    <message>
-        <source>Background file</source>
-        <translation>Plik tła</translation>
-    </message>
-    <message>
-        <source>Define background file for userbox</source>
-        <translation>Podaj plik, który będzie wyświetlany jako tło dla listy kontaktów</translation>
-    </message>
-    <message>
-        <source>Display style</source>
-        <translation>Styl wyświetlania</translation>
-    </message>
-    <message>
-        <source>Choose userbox background style</source>
-        <translation>Wybierz styl, z jakim będzie wyświetlane tło listy kontaktów</translation>
-    </message>
-    <message>
-        <source>Tiled</source>
-        <translation>Kafelki</translation>
-    </message>
-    <message>
-        <source>Centered</source>
-        <translation>Wycentrowany</translation>
-    </message>
-    <message>
-        <source>Stretched</source>
-        <translation>Rozciągnięty</translation>
     </message>
     <message>
         <source>Show information panel</source>
@@ -1105,12 +1047,32 @@ Jest to wysoce ryzykowne!</translation>
         <source>Display dates is nice format, like Today, Yesterday or Friday</source>
         <translation>Wyświetla daty w eleganckim formacie, na przykład: Dzisiaj, Wczoraj, Piątek</translation>
     </message>
+    <message>
+        <source>Camino</source>
+        <translation>Camino</translation>
+    </message>
+    <message>
+        <source>Internet Explorer</source>
+        <translation>Internet Explorer</translation>
+    </message>
+    <message>
+        <source>Mail</source>
+        <translation>Mail</translation>
+    </message>
+    <message>
+        <source>Outlook Express</source>
+        <translation>Outlook Express</translation>
+    </message>
+    <message>
+        <source>Displays vertical scrollbar in user list</source>
+        <translation>Wyświetla pionowy pasek przewijania na liście kontaktów</translation>
+    </message>
 </context>
 <context>
     <name>About</name>
     <message>
-        <source>&amp;About</source>
-        <translation>&amp;O programie</translation>
+        <source>About</source>
+        <translation>O programie</translation>
     </message>
     <message>
         <source>&amp;Close</source>
@@ -1143,6 +1105,10 @@ Jest to wysoce ryzykowne!</translation>
     <message>
         <source>Support:</source>
         <translation>Wsparcie:</translation>
+    </message>
+    <message>
+        <source>&amp;About</source>
+        <translation>&amp;O programie</translation>
     </message>
 </context>
 <context>
@@ -1515,10 +1481,6 @@ Zbyt wiele prób połączeń z niepoprawnym hasłem</translation>
         <translation>&amp;Zakończ Kadu</translation>
     </message>
     <message>
-        <source>Show Pending Messages</source>
-        <translation>Pokaż otrzymane wiadomości</translation>
-    </message>
-    <message>
         <source>Notify about user</source>
         <translation>Powiadom o kontakcie</translation>
     </message>
@@ -1696,6 +1658,14 @@ Czy na pewno tego chcesz?</translation>
     <message>
         <source>Do Not Disturb (d.)</source>
         <translation>Nie przeszkadzać z opisem</translation>
+    </message>
+    <message>
+        <source>Enable Silent Mode</source>
+        <translation>Uaktywnij Tryb cichy</translation>
+    </message>
+    <message>
+        <source>Disable Silent Mode</source>
+        <translation>Dezaktywuj Tryb cichy</translation>
     </message>
 </context>
 <context>
@@ -2235,6 +2205,13 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
     </message>
 </context>
 <context>
+    <name>Themes</name>
+    <message>
+        <source>&lt;i&gt;%1&lt;/i&gt;&lt;br/&gt;does not contain any theme configuration file</source>
+        <translation>&lt;i&gt;%1&lt;/i&gt;&lt;br/&gt;nie zawiera pliku konfiguracyjnego zestawu</translation>
+    </message>
+</context>
+<context>
     <name>TokenDialog</name>
     <message>
         <source>Read this code ...</source>
@@ -2464,54 +2441,6 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
         <source>Icon:</source>
         <translation>Ikona:</translation>
     </message>
-    <message>
-        <source>Online</source>
-        <translation>Dostępny</translation>
-    </message>
-    <message>
-        <source>Online (d.)</source>
-        <translation>Dostępny z opisem</translation>
-    </message>
-    <message>
-        <source>Busy</source>
-        <translation>Zajęty</translation>
-    </message>
-    <message>
-        <source>Busy (d.)</source>
-        <translation>Zajęty z opisem</translation>
-    </message>
-    <message>
-        <source>Invisible</source>
-        <translation>Ukryty</translation>
-    </message>
-    <message>
-        <source>Invisible (d.)</source>
-        <translation>Ukryty z opisem</translation>
-    </message>
-    <message>
-        <source>Offline</source>
-        <translation>Niedostępny</translation>
-    </message>
-    <message>
-        <source>Offline (d.)</source>
-        <translation>Niedostępny z opisem</translation>
-    </message>
-    <message>
-        <source>Talk With Me</source>
-        <translation>Porozmawiaj ze mną</translation>
-    </message>
-    <message>
-        <source>Talk With Me (d.)</source>
-        <translation>Porozmawiaj ze mną z opisem</translation>
-    </message>
-    <message>
-        <source>Do Not Disturb</source>
-        <translation>Nie przeszkadzać</translation>
-    </message>
-    <message>
-        <source>Do Not Disturb (d.)</source>
-        <translation>Nie przeszkadzać z opisem</translation>
-    </message>
 </context>
 <context>
     <name>UserStatus</name>
@@ -2706,10 +2635,6 @@ Jesteś pewny że tego chcesz?</translation>
     <message>
         <source>Cannot clear user list on server in offline mode</source>
         <translation>Nie można usunąć listy kontaktów z serwera bez połączenia z nim</translation>
-    </message>
-    <message>
-        <source>File exists. Are you sure you want to overwrite it?</source>
-        <translation>Plik już istnieje. Czy na pewno go nadpisać?</translation>
     </message>
 </context>
 </TS>

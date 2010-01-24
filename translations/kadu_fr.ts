@@ -1091,8 +1091,8 @@ Attention danger!
 <context>
     <name>About</name>
     <message>
-        <source>&amp;About</source>
-        <translation>&amp;A propos de</translation>
+        <source>About</source>
+        <translation>A propos de</translation>
     </message>
     <message>
         <source>&amp;Close</source>
@@ -1125,6 +1125,10 @@ Attention danger!
     <message>
         <source>Support:</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;About</source>
+        <translation>&amp;A propos de</translation>
     </message>
 </context>
 <context>

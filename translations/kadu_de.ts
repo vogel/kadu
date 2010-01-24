@@ -1107,8 +1107,8 @@ It&apos;s a high security risk!</source>
 <context>
     <name>About</name>
     <message>
-        <source>&amp;About</source>
-        <translation>&amp;Über</translation>
+        <source>About</source>
+        <translation>Über</translation>
     </message>
     <message>
         <source>&amp;Close</source>
@@ -1141,6 +1141,10 @@ It&apos;s a high security risk!</source>
     <message>
         <source>Support:</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;About</source>
+        <translation>&amp;Über</translation>
     </message>
 </context>
 <context>
