@@ -231,10 +231,6 @@ void JabberProtocol::connectToServer()
 	JabberClient->setUseSSL(jabberAccountDetails->encryptionMode() == JabberAccountDetails::Encryption_Legacy);
 	JabberClient->setOverrideHost(jabberAccountDetails->useCustomHostPort(), jabberAccountDetails->customHost(), jabberAccountDetails->customPort());
 
-	// allow plaintext password authentication or not?
-	///gtalk
-	///JabberClient->setAllowPlainTextPassword(XMPP::ClientStream::AllowPlainOverTLS);
-
 	JabberClient->setFileTransfersEnabled(true); // i haz it
 	rosterRequestDone = false;
 	jabberID = account().id();
@@ -332,11 +328,9 @@ void JabberProtocol::disconnectFromServer(const XMPP::Status &s)
 	kdebugf2();
 }
 
-#include <QtCore/QDebug>
 void JabberProtocol::slotClientDebugMessage(const QString &msg)
 {
 	kdebugm(KDEBUG_WARNING, "Jabber Client debug:  %s\n", qPrintable(msg));
-	qDebug() << qPrintable(msg);
 }
 
 void JabberProtocol::setPresence(const XMPP::Status &status)
@@ -714,8 +708,16 @@ void JabberProtocol::slotContactUpdated(const XMPP::RosterItem &item)
 
 void JabberProtocol::slotContactDeleted(const XMPP::RosterItem &item)
 {
-	kdebug("Deleting contact %s", item.jid().full().toLocal8Bit().data());
-	//TODO: usun�� z listy - tego chyba jeszcze nie ma...
+	kdebug("Deleting contact %s", item.jid().bare().toLocal8Bit().data());
+	Contact contact = ContactManager::instance()->byId(account(), item.jid().bare(), ActionReturnNull);
+	if (contact)
+	{
+	  	Buddy owner = contact.ownerBuddy();
+		contact.setOwnerBuddy(Buddy::null);
+		if (owner.contacts().size() == 0)
+			BuddyManager::instance()->removeItem(owner);
+		
+	}
 }
 
 void JabberProtocol::slotSubscription(const XMPP::Jid & jid, const QString &type)
