@@ -87,7 +87,7 @@ class JabberProtocol : public Protocol
 		void login(const QString &password, bool permanent);
 		void connectedToServer();
 		void disconnectedFromServer();
-		void disconnect(const XMPP::Status &s = XMPP::Status ("", "", 0, false));
+		void disconnectFromServer(const XMPP::Status &s = XMPP::Status ("", "", 0, false));
 		void rosterRequestFinished(bool success);
 		void clientResourceReceived(const XMPP::Jid &j, const XMPP::Resource &r);
 		void slotContactUpdated(const XMPP::RosterItem &ri);
@@ -95,11 +95,9 @@ class JabberProtocol : public Protocol
 		void slotIncomingFileTransfer();
 		void slotSubscription(const XMPP::Jid &jid, const QString &type);
 		void slotClientDebugMessage (const QString &msg);
-
-		void contactAboutToBeAdded(Contact contact);
-		void contactAdded(Contact contact);
-		void contactAboutToBeRemoved(Contact contact);
-		void contactRemoved(Contact contact);
+		
+		void contactDetached(Contact contact);
+		void contactAttached(Contact contact);
 		
 		void contactUpdated(Buddy &buddy);
 
