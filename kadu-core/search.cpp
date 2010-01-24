@@ -470,7 +470,7 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 
 	searchRecord->FromUin = fromUin;
 
-	int items = results->topLevelItemCount(); // number of items already in results
+	int itemsBefore = results->topLevelItemCount(); // number of items already in results
 
 	// ??	if ((status && atoi(status) <= 1 && only_active->isChecked()) || !status)
 
@@ -522,7 +522,8 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 		setActionState(firstSearchAction, true);
 	setActionState(stopSearchAction, false);
 
-	if (searchResults.isEmpty()  || ((int)searchResults.count() == items))
+	int itemsAfter = results->topLevelItemCount(); // number of items with new results
+	if (searchResults.isEmpty() || (itemsBefore == itemsAfter))
 	{
 		kdebugmf(KDEBUG_INFO, "No results. Exit.\n");
 		MessageBox::msg(tr("There were no results of your search"), false, "Information", this);
@@ -533,7 +534,7 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 		if (r_pers->isChecked() && !isPersonalDataEmpty())
 			setActionState(nextResultsAction, true);
 
-		if (results->topLevelItemCount() > 0)
+		if (itemsAfter > 0)
 			setActionState(clearResultsAction, true);
 	}
 
