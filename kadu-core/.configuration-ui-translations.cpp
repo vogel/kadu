@@ -134,6 +134,12 @@
 					
 			QT_TRANSLATE_NOOP("@default", "Safari");
 		
+					
+			QT_TRANSLATE_NOOP("@default", "Camino");
+		
+					
+			QT_TRANSLATE_NOOP("@default", "Internet Explorer");
+		
 				
 				
 			QT_TRANSLATE_NOOP("@default", "Custom browser");
@@ -164,6 +170,12 @@
 		
 					
 			QT_TRANSLATE_NOOP("@default", "Evolution");
+		
+					
+			QT_TRANSLATE_NOOP("@default", "Mail");
+		
+					
+			QT_TRANSLATE_NOOP("@default", "Outlook Express");
 		
                 
 				
@@ -344,6 +356,12 @@
 		
 					
 			QT_TRANSLATE_NOOP("@default", "Offline");
+		
+					
+			QT_TRANSLATE_NOOP("@default", "Talk With Me");
+		
+					
+			QT_TRANSLATE_NOOP("@default", "Do Not Disturb");
 		
 				
 				
@@ -582,6 +600,11 @@
 			QT_TRANSLATE_NOOP("@default", "Displays users that are not offline using a bold font");
 		
 				
+			QT_TRANSLATE_NOOP("@default", "Show vertical scrollbar");
+		
+			QT_TRANSLATE_NOOP("@default", "Displays vertical scrollbar in user list");
+		
+				
 			QT_TRANSLATE_NOOP("@default", "Align contact icon to");
 		
 			QT_TRANSLATE_NOOP("@default", "Align icon next to contact name");
@@ -593,6 +616,7 @@
 			QT_TRANSLATE_NOOP("@default", "Center");
 		
 				
+
 				
 			QT_TRANSLATE_NOOP("@default", "Column count");
 		
@@ -620,33 +644,6 @@
 		
 			
 
-			
-			QT_TRANSLATE_NOOP("@default", "Background");
-		
-				
-			QT_TRANSLATE_NOOP("@default", "Use background image");
-		
-				
-			QT_TRANSLATE_NOOP("@default", "Background file");
-		
-			QT_TRANSLATE_NOOP("@default", "Define background file for userbox");
-		
-				
-			QT_TRANSLATE_NOOP("@default", "Display style");
-		
-			QT_TRANSLATE_NOOP("@default", "Choose userbox background style");
-		
-					
-			QT_TRANSLATE_NOOP("@default", "Tiled");
-		
-					
-			QT_TRANSLATE_NOOP("@default", "Centered");
-		
-					
-			QT_TRANSLATE_NOOP("@default", "Stretched");
-		
-				
-			
 		
 
 		
