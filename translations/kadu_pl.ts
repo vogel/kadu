@@ -448,24 +448,48 @@ Jest to wysoce ryzykowne!</translation>
         <translation>Dostępny</translation>
     </message>
     <message>
+        <source>Online (d.)</source>
+        <translation>Dostępny z opisem</translation>
+    </message>
+    <message>
         <source>Busy</source>
         <translation>Zajęty</translation>
+    </message>
+    <message>
+        <source>Busy (d.)</source>
+        <translation>Zajęty z opisem</translation>
     </message>
     <message>
         <source>Invisible</source>
         <translation>Ukryty</translation>
     </message>
     <message>
+        <source>Invisible (d.)</source>
+        <translation>Ukryty z opisem</translation>
+    </message>
+    <message>
         <source>Offline</source>
         <translation>Niedostępny</translation>
+    </message>
+    <message>
+        <source>Offline (d.)</source>
+        <translation>Niedostępny z opisem</translation>
     </message>
     <message>
         <source>Talk With Me</source>
         <translation>Porozmawiaj ze mną</translation>
     </message>
     <message>
+        <source>Talk With Me (d.)</source>
+        <translation>Porozmawiaj ze mną z opisem</translation>
+    </message>
+    <message>
         <source>Do Not Disturb</source>
         <translation>Nie przeszkadzać</translation>
+    </message>
+    <message>
+        <source>Do Not Disturb (d.)</source>
+        <translation>Nie przeszkadzać z opisem</translation>
     </message>
     <message>
         <source>On startup, set last description</source>

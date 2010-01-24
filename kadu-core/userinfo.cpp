@@ -269,7 +269,7 @@ void UserInfo::setupTab1()
 		else
 			e_ver->setText(tr("(Unknown)"));
 
-		e_status->setText(tr(User.status("Gadu").name()));
+		e_status->setText(UserStatus::tr(User.status("Gadu").name()));
 		e_status->setToolTip(User.status("Gadu").description());
 
 		tw_main->setTabIconSet(generalWidget, User.status("Gadu").pixmap());
