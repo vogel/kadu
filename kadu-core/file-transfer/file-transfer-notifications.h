@@ -55,6 +55,8 @@ public:
 
 	NewFileTransferNotification(const QString &type, FileTransfer ft, Chat chat, StartType startType);
 
+	virtual bool requireCallback() { return true; }
+
 };
 
 #endif // FILE_TRANSFER_NOTIFICATION_H

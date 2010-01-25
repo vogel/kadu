@@ -360,7 +360,7 @@ void NotificationManager::notify(Notification *notification)
 
 	QString notifyType = notification->key();
 	bool foundNotifier = false;
-	bool foundNotifierWithCallbackSupported = notification->getCallbacks().count() == 0;
+	bool foundNotifierWithCallbackSupported = !notification->requireCallback();
 
 	notification->acquire();
 
