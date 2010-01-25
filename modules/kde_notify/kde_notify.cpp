@@ -113,7 +113,6 @@ void KdeNotify::notify(Notification *notification)
 	args.append("Kadu");
 	args.append(0U);
 	args.append("");
-	args.append(notification->icon());
 
 	if (((notification->type() == "NewMessage") || (notification->type() == "NewChat")) &&
 			config_file.readBoolEntry("KDENotify", "ShowContentMessage"))

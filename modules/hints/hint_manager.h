@@ -155,6 +155,7 @@ public:
 	QString style() { return Style; }
 	double opacity() { return Opacity; }
 	HintsConfigurationUiHandler *uiHandler() { return UiHandler; }
+
 };
 
 extern HintManager *hint_manager;
