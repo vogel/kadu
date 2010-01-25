@@ -84,7 +84,30 @@ class KADUAPI Notification : public QObject
 	Q_OBJECT
 
 public:
-	typedef QPair<QString, const char *> Callback;
+	struct Callback
+	{
+		QString Caption;
+		const char *Slot;
+		const char *Signature;
+
+		Callback() : Slot(0), Signature(0) {}
+
+		Callback(const Callback &copy)
+		{
+			Caption = copy.Caption;
+			Slot = copy.Slot;
+			Signature = copy.Signature;
+		}
+
+		Callback & operator = (const Callback &copy)
+		{
+			Caption = copy.Caption;
+			Slot = copy.Slot;
+			Signature = copy.Signature;
+
+			return *this;
+		}
+	};
 
 private:
 
@@ -95,7 +118,7 @@ private:
 	QString Details;
 	QIcon Icon;
 
-	QList<Callback > Callbacks;
+	QList<Callback> Callbacks;
 	QTimer *DefaultCallbackTimer;
 
 	int ReferencesCount;
@@ -141,7 +164,7 @@ public:
 		@arg caption wy�wietlana nazwa akcji
 		@arg slot slot wywo�ywany w przypadku wybrania przez u�ytkownika danej akcji
 	 **/
-	void addCallback(const QString &caption, const char *slot);
+	void addCallback(const QString &caption, const char *slot, const char *signature);
 
 	/**
 		Ustawia akcj� domy�ln�.

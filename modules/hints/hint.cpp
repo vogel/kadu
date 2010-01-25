@@ -76,8 +76,8 @@ Hint::Hint(QWidget *parent, Notification *notification)
 
 		foreach (const Notification::Callback &i, callbacks)
 		{
-			QPushButton *button = new QPushButton(i.first, this);
-			connect(button, SIGNAL(clicked(bool)), notification, i.second);
+			QPushButton *button = new QPushButton(i.Caption, this);
+			connect(button, SIGNAL(clicked(bool)), notification, i.Slot);
 			connect(button, SIGNAL(clicked(bool)), notification, SLOT(clearDefaultCallback()));
 
 			callbacksBox->addWidget(button);

@@ -48,6 +48,8 @@ public:
 	explicit KdeNotify(QObject *parent = 0);
 	virtual ~KdeNotify();
 
+	virtual CallbackCapacity callbackCapacity() { return CallbackSupported; }
+
 	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0) { return 0; }
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 	virtual void notify(Notification *notification);

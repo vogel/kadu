@@ -17,6 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QMetaMethod>
 #include <QtDBus/QDBusInterface>
 
 #include "configuration/configuration-file.h"
@@ -131,13 +132,13 @@ void KdeNotify::notify(Notification *notification)
 	}
 
 	QStringList actions;
-	if ((notification->type() == "NewMessage") || (notification->type() == "NewChat"))
-		actions << "1" << tr("View");
 
-	if ((notification->type() == "StatusChanged/ToOnline") || (notification->type() == "StatusChanged/ToBusy") || (notification->type() == "StatusChanged/ToInvisible"))
-		actions << "2" << tr("Chat");
+	foreach (Notification::Callback callback, notification->getCallbacks())
+	{
+		actions << callback.Signature;
+		actions << callback.Caption;
+	}
 
-	actions << "3" << tr("Ignore");
 	args.append(actions);
 	args.append(QVariantMap());
 	args.append(config_file.readNumEntry("KDENotify", "Timeout", 10) * 1000);
@@ -156,24 +157,35 @@ void KdeNotify::notify(Notification *notification)
 
 void KdeNotify::actionInvoked(unsigned int id, QString action)
 {
-	/* Dorr: do not process noto ours notifications */
 	if (!IdQueue.contains(id))
 		return;
-/*
-	if (action == "1")
+
+	Notification *notification = NotificationMap.value(id);
+	if (!notification)
+		return;
+
+	const QMetaObject *metaObject = notification->metaObject();
+	int slotIndex;
+
+	while (metaObject)
 	{
-		chat_manager->openPendingMsgs(idMap.value(id), true);
-		chat_manager->deletePendingMsgs(idMap.value(id));
-		ChatWidget* window = chat_manager->findChatWidget(idMap.value(id));
+		slotIndex = metaObject->indexOfSlot(action.toAscii().constData());
+		if (slotIndex != -1)
+			break;
+
+		metaObject = metaObject->superClass();
 	}
-	else if (action == "2")
-		chat_manager->openChatWidget(gadu, idMap.value(id), true);*/
+
+	if (-1 == slotIndex)
+		return;
+
+	QMetaMethod slot = notification->metaObject()->method(slotIndex);
+	slot.invoke(notification, Qt::DirectConnection);
 
 	QList<QVariant> args;
 	args.append(id);
 	KNotify->callWithArgumentList(QDBus::Block, "CloseNotification", args);
 }
-
 
 void KdeNotify::deleteMapItem()
 {
