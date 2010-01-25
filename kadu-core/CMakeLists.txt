@@ -466,6 +466,7 @@ set (kadu_MOC_SRCS
 	misc/syntax-list.h
 
 	notify/account-notification.h
+	notify/chat-notification.h
 	notify/new-message-notification.h
 	notify/notification.h
 	notify/notification-manager.h

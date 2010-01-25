@@ -27,6 +27,8 @@
 
 class ChatNotification : public AccountNotification
 {
+	Q_OBJECT
+
 	Chat CurrentChat;
 
 public:
@@ -34,6 +36,10 @@ public:
 	virtual ~ChatNotification() {}
 
 	Chat chat() { return CurrentChat; }
+
+public slots:
+	void openChat();
+
 };
 
 #endif // CHAT_NOTIFICATION_H
