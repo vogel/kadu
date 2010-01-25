@@ -78,21 +78,6 @@ int JabberProtocol::initModule()
 
 	ProtocolsManager::instance()->registerProtocolFactory(JabberProtocolFactory::instance());
 
-// TODO : to idzie do zmiany na nowe api
-/*	if (!xml_config_file->hasNode("Accounts"))
-	{
-		JabberAccountData *jabberAccountData = new JabberAccountData(
-				config_file.readEntry("Jabber", "UID"),
-				pwHash(config_file.readEntry("Jabber", "Password"))
-		);
-
-		Account *defaultJabber = AccountManager::instance()->createAccount(
-				"DefaultJabber", "jabber", jabberAccountData);
-		AccountManager::instance()->registerAccount(defaultJabber);
-	}*/
-
-// 	defaultdescriptions = QStringList::split("<-->", config_file.readEntry("General","DefaultDescription", tr("I am busy.")), true);
-
 	kdebugf2();
 	return 0;
 }
@@ -124,7 +109,7 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 			this, SLOT(contactIdChanged(Contact, const QString &)));
 	
 	connect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy &)),
-			this, SLOT(contactUpdated(Buddy &)));
+			this, SLOT(buddyUpdated(Buddy &)));
 		
 	kdebugf2();
 }
@@ -139,7 +124,7 @@ JabberProtocol::~JabberProtocol()
 			this, SLOT(contactIdChanged(Contact, const QString &)));
 
 	disconnect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy &)),
-			this, SLOT(contactUpdated(Buddy &)));
+			this, SLOT(buddyUpdated(Buddy &)));
 
 	logout();
 }
@@ -534,22 +519,6 @@ void JabberProtocol::clientResourceReceived(const XMPP::Jid &jid, const XMPP::Re
 	Status status(toStatus(resource.status()));
 	Contact contact = ContactManager::instance()->byId(account(), jid.bare(), ActionCreateAndAdd);
 
-	// TODO remove all ?
-	/*if (buddy.isAnonymous())
-		buddy.setAnonymous(false);
-
-	// is this contact realy anonymous? - need deep check
-	{
-		// TODO - ignore! - przynajmniej na razie
-		emit userStatusChangeIgnored(contact);
-		userlist->addUser(contact);
-		return;
-	}
-	*/
-
-	if (contact.isNull())
-		return;
-
 	Status oldStatus = contact.currentStatus();
 	contact.setCurrentStatus(status);
 
@@ -581,7 +550,7 @@ void JabberProtocol::contactDetached(Contact contact)
 	JabberClient->removeContact(contact.id());
 }
 
-void JabberProtocol::contactUpdated(Buddy &buddy)
+void JabberProtocol::buddyUpdated(Buddy &buddy)
 {
 	QList<Contact> contacts = buddy.contacts(account());
 	if (contacts.isEmpty() || buddy.isAnonymous())
@@ -595,9 +564,22 @@ void JabberProtocol::contactUpdated(Buddy &buddy)
 		JabberClient->updateContact(contact.id(), buddy.display(), groupsList);
 }
 
+void JabberProtocol::contactUpdated(Contact &contact)
+{
+	Buddy buddy = contact.ownerBuddy();
+	if (buddy.isAnonymous())
+		return;
+
+	QStringList groupsList;
+	foreach (Group group, buddy.groups())
+		groupsList.append(group.name());
+	
+	JabberClient->updateContact(contact.id(), buddy.display(), groupsList);
+}
+
 void JabberProtocol::contactIdChanged(Contact contact, const QString &oldI)
 {
-/*	contactUpdated(buddy);*/
+	contactUpdated(contact);
 }
 
 void JabberProtocol::slotContactUpdated(const XMPP::RosterItem &item)
@@ -774,12 +756,8 @@ void JabberProtocol::authorizeContact(Contact contact)
 
 bool JabberProtocol::validateUserID(const QString& uid)
 {
-	//TODO: this does not work
-	XMPP::Jid j = uid;
-	if (j.isValid())
-		return true;
-	else
-		return false;
+	XMPP::Jid j = XMPP::Jid(uid);
+	return j.isValid();
 }
 
 JabberResourcePool *JabberProtocol::resourcePool()

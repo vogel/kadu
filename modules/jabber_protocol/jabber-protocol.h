@@ -99,7 +99,8 @@ class JabberProtocol : public Protocol
 		void contactDetached(Contact contact);
 		void contactAttached(Contact contact);
 		
-		void contactUpdated(Buddy &buddy);
+		void buddyUpdated(Buddy &buddy);
+		void contactUpdated(Contact &contact);
 
 		void contactIdChanged(Contact contact, const QString &oldId);
 		void authorizeContact(Contact contact);
