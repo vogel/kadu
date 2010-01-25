@@ -7,6 +7,7 @@
 * mediaplayer: mediaplayer can now set status (Vogel)
 * kde_notify: module from Jacek Jabłoński imported (Vogel)
 * notify: add actions for every notification with chat - Chat and Ignore (Vogel)
+* notify: do not flood with notifications after connection to server (Vogel)
 
 +++ version 0.6.6-alpha3
 * history: chat list cleanup in history window (Vogel)
