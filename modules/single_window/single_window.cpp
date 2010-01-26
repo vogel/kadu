@@ -192,6 +192,8 @@ void SingleWindow::onOpenChat(ChatWidget *w)
 		title.append(", ...");
 
 	tabs->addTab(w, w->icon(), title);
+	tabs->setCurrentIndex(tabs->count()-1);
+	w->edit()->setFocus();
 
 	connect(w, SIGNAL(messageReceived(ChatWidget *)),
 		this, SLOT(onNewMessage(ChatWidget *)));
