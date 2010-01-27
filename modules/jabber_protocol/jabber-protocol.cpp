@@ -116,18 +116,14 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	CurrentFileTransferService = new JabberFileTransferService(this);
 	CurrentAvatarService = new JabberAvatarService(this);
 
-	QObject::connect(ContactManager::instance(), SIGNAL(contactAboutToBeAdded(Contact)),
-			this, SLOT(contactAboutToBeAdded(Contact)));
-	QObject::connect(ContactManager::instance(), SIGNAL(contactAdded(Contact)),
-			this, SLOT(contactAdded(Contact)));
-	QObject::connect(ContactManager::instance(), SIGNAL(contactAboutToBeRemoved(Contact)),
-			this, SLOT(contactAboutToBeRemoved(Contact)));
-	QObject::connect(ContactManager::instance(), SIGNAL(contactRemoved(Contact)),
-			this, SLOT(contactRemoved(Contact)));
-	QObject::connect(ContactManager::instance(), SIGNAL(contactIdChanged(Contact, const QString &)),
+	connect(ContactManager::instance(), SIGNAL(contactDetached(Contact)),
+			this, SLOT(contactDetached(Contact)));
+	connect(ContactManager::instance(), SIGNAL(contactAttached(Contact)),
+			this, SLOT(contactAttached(Contact)));
+	connect(ContactManager::instance(), SIGNAL(contactIdChanged(Contact, const QString &)),
 			this, SLOT(contactIdChanged(Contact, const QString &)));
 	
-	QObject::connect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy &)),
+	connect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy &)),
 			this, SLOT(contactUpdated(Buddy &)));
 		
 	kdebugf2();
@@ -135,18 +131,14 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 
 JabberProtocol::~JabberProtocol()
 {
-	QObject::disconnect(ContactManager::instance(), SIGNAL(contactAboutToBeAdded(Contact)),
-			this, SLOT(contactAboutToBeAdded(Contact)));
-	QObject::disconnect(ContactManager::instance(), SIGNAL(contactAdded(Contact)),
-			this, SLOT(contactAdded(Contact)));
-	QObject::disconnect(ContactManager::instance(), SIGNAL(contactAboutToBeRemoved(Contact)),
-			this, SLOT(contactAboutToBeRemoved(Contact)));
-	QObject::disconnect(ContactManager::instance(), SIGNAL(contactRemoved(Contact)),
-			this, SLOT(contactRemoved(Contact)));
-	QObject::disconnect(ContactManager::instance(), SIGNAL(contactIdChanged(Contact, const QString &)),
+	disconnect(ContactManager::instance(), SIGNAL(contactDetached(Contact)),
+			this, SLOT(contactDetached(Contact)));
+	disconnect(ContactManager::instance(), SIGNAL(contactAttached(Contact)),
+			this, SLOT(contactAttached(Contact)));
+	disconnect(ContactManager::instance(), SIGNAL(contactIdChanged(Contact, const QString &)),
 			this, SLOT(contactIdChanged(Contact, const QString &)));
 
-	QObject::disconnect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy &)),
+	disconnect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy &)),
 			this, SLOT(contactUpdated(Buddy &)));
 
 	logout();
@@ -239,10 +231,6 @@ void JabberProtocol::connectToServer()
 	JabberClient->setUseSSL(jabberAccountDetails->encryptionMode() == JabberAccountDetails::Encryption_Legacy);
 	JabberClient->setOverrideHost(jabberAccountDetails->useCustomHostPort(), jabberAccountDetails->customHost(), jabberAccountDetails->customPort());
 
-	// allow plaintext password authentication or not?
-	///gtalk
-	///JabberClient->setAllowPlainTextPassword(XMPP::ClientStream::AllowPlainOverTLS);
-
 	JabberClient->setFileTransfersEnabled(true); // i haz it
 	rosterRequestDone = false;
 	jabberID = account().id();
@@ -306,13 +294,13 @@ void JabberProtocol::logout()
 		setStatus(newstat);
 	}
 
-	disconnect(toXMPPStatus(newstat));
+	disconnectFromServer(toXMPPStatus(newstat));
 	setAllOffline();
 
 	kdebugf2();
 }
 
-void JabberProtocol::disconnect(const XMPP::Status &s)
+void JabberProtocol::disconnectFromServer(const XMPP::Status &s)
 {
 	kdebugf();
 
@@ -339,7 +327,6 @@ void JabberProtocol::disconnect(const XMPP::Status &s)
 	networkStateChanged(NetworkDisconnected);
 	kdebugf2();
 }
-
 
 void JabberProtocol::slotClientDebugMessage(const QString &msg)
 {
@@ -570,10 +557,10 @@ void JabberProtocol::clientResourceReceived(const XMPP::Jid &jid, const XMPP::Re
 	kdebugf2();
 }
 
-void JabberProtocol::contactAdded(Contact contact)
+void JabberProtocol::contactAttached(Contact contact)
 {
 
-	if (contact.isNull() || contact.contactAccount() != account() || !isConnected()/* ||contact.ownerBuddy().isAnonymous()*/)
+	if (!isConnected() || contact.contactAccount() != account())
 		return;
 
 	Buddy buddy = contact.ownerBuddy();
@@ -586,17 +573,12 @@ void JabberProtocol::contactAdded(Contact contact)
 	JabberClient->addContact(contact.id(), buddy.display(), groupsList, true);
 }
 
-void JabberProtocol::contactRemoved(Contact contact)
+void JabberProtocol::contactDetached(Contact contact)
 {
-	if (contact.isNull() || contact.contactAccount() != account() || !isConnected())
+	if (!isConnected() || contact.contactAccount() != account())
 		return;
 
-	Buddy buddy = contact.ownerBuddy();
-	
 	JabberClient->removeContact(contact.id());
-	
-	if (buddy.contacts().count() == 1)
-		buddy.setAnonymous(true); // TODO: why?
 }
 
 void JabberProtocol::contactUpdated(Buddy &buddy)
@@ -611,20 +593,6 @@ void JabberProtocol::contactUpdated(Buddy &buddy)
 
 	foreach (const Contact &contact, contacts)
 		JabberClient->updateContact(contact.id(), buddy.display(), groupsList);
-}
-
-void JabberProtocol::contactAboutToBeAdded(Contact contact)
-{
-	if (contact.contactAccount() != account())
-		return;
-/*	contactAdded(buddy);*/
-}
-
-void JabberProtocol::contactAboutToBeRemoved(Contact contact)
-{
-	if (contact.contactAccount() != account())
-		return;
-/*	contactRemoved(buddy);*/
 }
 
 void JabberProtocol::contactIdChanged(Contact contact, const QString &oldI)
@@ -740,8 +708,16 @@ void JabberProtocol::slotContactUpdated(const XMPP::RosterItem &item)
 
 void JabberProtocol::slotContactDeleted(const XMPP::RosterItem &item)
 {
-	kdebug("Deleting contact %s", item.jid().full().toLocal8Bit().data());
-	//TODO: usun�� z listy - tego chyba jeszcze nie ma...
+	kdebug("Deleting contact %s", item.jid().bare().toLocal8Bit().data());
+	Contact contact = ContactManager::instance()->byId(account(), item.jid().bare(), ActionReturnNull);
+	if (contact)
+	{
+	  	Buddy owner = contact.ownerBuddy();
+		contact.setOwnerBuddy(Buddy::null);
+		if (owner.contacts().size() == 0)
+			BuddyManager::instance()->removeItem(owner);
+		
+	}
 }
 
 void JabberProtocol::slotSubscription(const XMPP::Jid & jid, const QString &type)

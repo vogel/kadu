@@ -67,7 +67,7 @@ Hint::Hint(QWidget *parent, Notification *notification)
 	updateText();
 
 	const QList<Notification::Callback> callbacks = notification->getCallbacks();
-	if (notification->getCallbacks().count())
+	if (callbacks.count())
 	{
 		QWidget *callbacksWidget = new QWidget(this);
 		callbacksBox = new QHBoxLayout(callbacksWidget);
@@ -76,9 +76,9 @@ Hint::Hint(QWidget *parent, Notification *notification)
 
 		foreach (const Notification::Callback &i, callbacks)
 		{
-			QPushButton *button = new QPushButton(i.first, this);
-			connect(button, SIGNAL(clicked()), notification, i.second);
-			connect(button, SIGNAL(clicked()), notification, SLOT(clearDefaultCallback()));
+			QPushButton *button = new QPushButton(i.Caption, this);
+			connect(button, SIGNAL(clicked(bool)), notification, i.Slot);
+			connect(button, SIGNAL(clicked(bool)), notification, SLOT(clearDefaultCallback()));
 
 			callbacksBox->addWidget(button);
 			callbacksBox->addStretch(1);

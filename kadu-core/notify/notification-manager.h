@@ -81,6 +81,8 @@ private slots:
 	void groupAdded(Group group);
 	void groupUpdated();
 
+	void accountConnected();
+
 protected:
 	virtual void accountRegistered(Account account);
 	virtual void accountUnregistered(Account account);

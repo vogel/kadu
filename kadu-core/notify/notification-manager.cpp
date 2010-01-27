@@ -192,8 +192,9 @@ void NotificationManager::accountRegistered(Account account)
 // 	TODO: 0.6.6
 // 	connect(protocol, SIGNAL(connectionError(Account, const QString &, const QString &)),
 // 			this, SLOT(connectionError(Account, const QString &, const QString &)));
-	connect(account.data(), SIGNAL(buddyStatusChanged(Contact, Status)),
+	connect(account, SIGNAL(buddyStatusChanged(Contact, Status)),
 			this, SLOT(statusChanged(Contact, Status)));
+	connect(account, SIGNAL(connected()), this, SLOT(accountConnected()));
 
 	ChatService *chatService = protocol->chatService();
 	if (chatService)
@@ -212,8 +213,9 @@ void NotificationManager::accountUnregistered(Account account)
 
 // 	disconnect(protocol, SIGNAL(connectionError(Account, const QString &, const QString &)),
 // 			this, SLOT(connectionError(Account, const QString &, const QString &))); // TODO: 0.6.6 fix
-	disconnect(account.data(), SIGNAL(buddyStatusChanged(Contact, Status)),
+	disconnect(account, SIGNAL(buddyStatusChanged(Contact, Status)),
 			this, SLOT(statusChanged(Contact, Status)));
+	disconnect(account, SIGNAL(connected()), this, SLOT(accountConnected()));
 
 	ChatService *chatService = protocol->chatService();
 	if (chatService)
@@ -223,18 +225,33 @@ void NotificationManager::accountUnregistered(Account account)
 	}
 }
 
+void NotificationManager::accountConnected()
+{
+	Account account(sender());
+	if (!account)
+		return;
+
+	if (config_file.readBoolEntry("Notify", "NotifyIgnoreOnConnection"))
+	{
+		QDateTime *dateTime = account.data()->moduleData<QDateTime>("notify-account-connected", true);
+		*dateTime = QDateTime::currentDateTime().addSecs(10);
+	}
+}
+
 void NotificationManager::statusChanged(Contact contact, Status oldStatus)
 {
 	kdebugf();
 
-	// TODO 0.6.6
-	/*if (massively && config_file.readBoolEntry("Notify", "NotifyIgnoreOnConnection"))
-	{
-		kdebugmf(KDEBUG_FUNCTION_END, "end: ignore on connection\n");
+	if (!contact.contactAccount())
 		return;
-	}*/
 
-	// TODO 0.6.6 display -> uuid?
+	if (config_file.readBoolEntry("Notify", "NotifyIgnoreOnConnection"))
+	{
+		QDateTime *dateTime = contact.contactAccount().data()->moduleData<QDateTime>("notify-account-connected");
+		if (dateTime && (*dateTime >= QDateTime::currentDateTime()))
+		  return;
+	}
+
 	bool notify_contact = true;
 	ContactNotifyData *cnd = 0;
 	Buddy buddy = contact.ownerBuddy();
@@ -360,7 +377,7 @@ void NotificationManager::notify(Notification *notification)
 
 	QString notifyType = notification->key();
 	bool foundNotifier = false;
-	bool foundNotifierWithCallbackSupported = notification->getCallbacks().count() == 0;
+	bool foundNotifierWithCallbackSupported = !notification->requireCallback();
 
 	notification->acquire();
 

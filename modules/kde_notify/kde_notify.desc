@@ -1,0 +1,7 @@
+[Module]
+Description=Notification by KNotify
+Description[pl]=Moduł powiadamiania użytkownika o zdarzeniach za pomocą KNotify
+Author=Jacek Jabłoński, Kadu Team
+Dependencies=
+Provides=notify_method
+Version=core

@@ -95,6 +95,11 @@ public:
 	KaduShared_Property(QString, dnsName, DnsName)
 
 signals:
+	void aboutToBeDetached();
+	void detached();
+	void aboutToBeAttached();
+	void attached();
+
 	void updated();
 	void idChanged(const QString &oldId);
 

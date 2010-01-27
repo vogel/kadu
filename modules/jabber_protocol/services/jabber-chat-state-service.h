@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
- * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2010 Wojciech Treter (juzefwt@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -21,18 +20,67 @@
 #ifndef JABBER_CHAT_STATE_SERVICE_H
 #define JABBER_CHAT_STATE_SERVICE_H
 
+#include <QtCore/QTimer>
+
+#include "xmpp_message.h"
+
 #include "protocols/protocol.h"
 
+class ChatWidget;
 class JabberProtocol;
+
+class ChatState : public QObject
+{
+	Q_OBJECT
+	
+	Chat ObservedChat;
+	ChatWidget *Widget;
+	JabberProtocol *Protocol;
+	// Message Events & Chat States
+	QTimer* ComposingTimer;
+	bool IsComposing;
+	bool SendComposingEvents;
+	QString EventId;
+	XMPP::ChatState ContactChatState;
+	XMPP::ChatState LastChatState;
+	
+	void setContactChatState(XMPP::ChatState state);
+	void updateChatTitle();
+
+  public:
+	ChatState(Chat chat);
+	
+	Chat chat() { return ObservedChat; };
+	
+  private slots:
+  	void setComposing();
+  	void resetComposing();
+	void checkComposing();
+	void updateIsComposing(bool b);
+	void setChatState(XMPP::ChatState state);
+	void incomingMessage(const XMPP::Message &m);
+	void messageAboutToSend(XMPP::Message &message);
+	
+  signals:
+    	/**
+	 * Signals if user (re)started/stopped composing
+	 */
+	void composing(bool);
+};
 
 class JabberChatStateService : public QObject
 {
 	Q_OBJECT
 	
 	JabberProtocol *ParentProtocol;
+	QList<ChatState *> ChatStateList;
 
-public:
+  public:
 	JabberChatStateService(JabberProtocol *parent);
+
+  private slots:
+	void chatWidgetCreated(ChatWidget *chat);
+	void chatWidgetDestroying(ChatWidget *chat);
 };
 
 #endif // JABBER_CHAT_STATE_SERVICE_H

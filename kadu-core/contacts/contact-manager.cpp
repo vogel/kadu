@@ -54,6 +54,34 @@ void ContactManager::idChanged(const QString &oldId)
 		emit contactIdChanged(contact, oldId);
 }
 
+void ContactManager::aboutToBeDetached()
+{
+	Contact contact(sender());
+	if (!contact.isNull())
+		emit contactAboutToBeDetached(contact);
+}
+
+void ContactManager::detached()
+{
+	Contact contact(sender());
+	if (!contact.isNull())
+		emit contactDetached(contact);
+}
+
+void ContactManager::aboutToBeAttached()
+{
+	Contact contact(sender());
+	if (!contact.isNull())
+		emit contactAboutToBeAttached(contact);
+}
+
+void ContactManager::attached()
+{
+	Contact contact(sender());
+	if (!contact.isNull())
+		emit contactAttached(contact);
+}
+
 void ContactManager::itemAboutToBeRegistered(Contact item)
 {
 	emit contactAboutToBeAdded(item);
@@ -62,13 +90,17 @@ void ContactManager::itemAboutToBeRegistered(Contact item)
 void ContactManager::itemRegistered(Contact item)
 {
 	emit contactAdded(item);
-	connect(item.data(), SIGNAL(idChanged(const QString &)), this, SLOT(idChanged(const QString &)));
+	connect(item, SIGNAL(idChanged(const QString &)), this, SLOT(idChanged(const QString &)));
+	connect(item, SIGNAL(aboutToBeDetached()), this, SLOT(aboutToBeDetached()));
+	connect(item, SIGNAL(detached()), this, SLOT(detached()));
+	connect(item, SIGNAL(aboutToBeAttached()), this, SLOT(aboutToBeAttached()));
+	connect(item, SIGNAL(attached()), this, SLOT(attached()));
 }
 
 void ContactManager::itemAboutToBeUnregisterd(Contact item)
 {
 	emit contactAboutToBeRemoved(item);
-	disconnect(item.data(), SIGNAL(idChanged(const QString &)), this, SLOT(idChanged(const QString &)));
+	disconnect(item, SIGNAL(idChanged(const QString &)), this, SLOT(idChanged(const QString &)));
 }
 
 void ContactManager::itemUnregistered(Contact item)

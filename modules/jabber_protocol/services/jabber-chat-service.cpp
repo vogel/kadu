@@ -111,8 +111,9 @@ void JabberChatService::clientMessageReceived(const XMPP::Message &msg)
 {
 	kdebugf();
 
-	// TODO support for events
-	if (msg.containsEvents() && msg.body().isEmpty())
+	// skip empty messages, but not if the message contains a data form
+	if(msg.body().isEmpty() && msg.urlList().isEmpty() && msg.invite().isEmpty() && !msg.containsEvents() && msg.chatState() == XMPP::StateNone 
+		&& msg.subject().isEmpty() && msg.rosterExchangeItems().isEmpty() && msg.mucInvites().isEmpty() &&  msg.getForm().fields().empty())
 		return;
 
 	// TODO zapobiega otwieraniu okienka z pusta wiadomoscia
@@ -120,7 +121,7 @@ void JabberChatService::clientMessageReceived(const XMPP::Message &msg)
 		return;
 
 	// dalej obslugujemy juz tylko wiadomosci
-	if (msg.body().isEmpty())
+	if (msg.containsEvents() && msg.body().isEmpty())
 		return;
 
 	Contact contact = ContactManager::instance()->byId(Protocol->account(), msg.from().bare(), ActionCreateAndAdd);

@@ -88,9 +88,14 @@ void Notification::clearCallbacks()
 	Callbacks.clear();
 }
 
-void Notification::addCallback(const QString &caption, const char *slot)
+void Notification::addCallback(const QString &caption, const char *slot, const char *signature)
 {
-	Callbacks.append(qMakePair(caption, slot));
+	Callback callback;
+	callback.Caption = caption;
+	callback.Slot = slot;
+	callback.Signature = signature;
+
+	Callbacks.append(callback);
 }
 
 void Notification::setDefaultCallback(int timeout, const char *defaultSlot)
@@ -170,7 +175,7 @@ QIcon Notification::icon() const
 	return Icon;
 }
 
-const QList<QPair<QString, const char *> > & Notification::getCallbacks()
+const QList<Notification::Callback> & Notification::getCallbacks()
 {
 	return Callbacks;
 }

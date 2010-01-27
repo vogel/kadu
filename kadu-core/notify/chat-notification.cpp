@@ -19,10 +19,18 @@
  */
 
 #include "chat/chat.h"
+#include "gui/widgets/chat-widget-manager.h"
 
 #include "chat-notification.h"
 
 ChatNotification::ChatNotification(Chat chat, const QString &type, const QIcon &icon) :
 		AccountNotification(chat.chatAccount(), type, icon), CurrentChat(chat)
 {
+	addCallback(tr("Chat"), SLOT(openChat()), "openChat()");
+	addCallback(tr("Ignore"), SLOT(callbackDiscard()), "callbackDiscard()");
+}
+
+void ChatNotification::openChat()
+{
+	ChatWidgetManager::instance()->openChatWidget(chat(), true);
 }

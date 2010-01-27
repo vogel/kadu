@@ -3,6 +3,11 @@
 * protocols: disabling protocol module disconnects all accounts correctly (Vogel)
 * gui: fixed buddies list refreshing (Vogel)
 * history: display list of stored statuses (Vogel)
+* jabber: fix removing contacts from roster (Vogel)
+* mediaplayer: mediaplayer can now set status (Vogel)
+* kde_notify: module from Jacek Jabłoński imported (Vogel)
+* notify: add actions for every notification with chat - Chat and Ignore (Vogel)
+* notify: do not flood with notifications after connection to server (Vogel)
 
 +++ version 0.6.6-alpha3
 * history: chat list cleanup in history window (Vogel)

@@ -56,16 +56,16 @@ NewFileTransferNotification::NewFileTransferNotification(const QString &type, Fi
 {
 	if (startType == StartRestore)
 	{
-		addCallback(tr("Continue"), SLOT(callbackAccept()));
-		addCallback(tr("Save file under new name"), SLOT(callbackAcceptAsNew()));
-		addCallback(tr("Ignore transfer"), SLOT(callbackDiscard()));
+		addCallback(tr("Continue"), SLOT(callbackAccept()), "callbackAccept()");
+		addCallback(tr("Save file under new name"), SLOT(callbackAcceptAsNew()), "callbackAcceptAsNew()");
+		addCallback(tr("Ignore transfer"), SLOT(callbackDiscard()), "callbackDiscard()");
 
 		Continue = true;
 	}
 	else
 	{
-		addCallback(tr("Accept"), SLOT(callbackAccept()));
-		addCallback(tr("Reject"), SLOT(callbackReject()));
+		addCallback(tr("Accept"), SLOT(callbackAccept()), "callbackAccept()");
+		addCallback(tr("Reject"), SLOT(callbackReject()), "callbackReject()");
 
 		Continue = false;
 	}
@@ -76,9 +76,9 @@ NewFileTransferNotification::NewFileTransferNotification(const QString &type, Fi
 void NewFileTransferNotification::callbackAcceptAsNew()
 {
 	kdebugf();
-	
+
 	close();
-	
+
 	// let user choose new file name
 	ft.setLocalFileName(QString::null);
 	FileTransferManager::instance()->acceptFileTransfer(ft);

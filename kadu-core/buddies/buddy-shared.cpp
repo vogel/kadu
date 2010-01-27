@@ -215,6 +215,8 @@ void BuddyShared::store()
 
 void BuddyShared::aboutToBeRemoved()
 {
+	setAnonymous(true);
+
 	foreach (Contact contact, Contacts)
 		contact.setOwnerBuddy(Buddy::null);
 
