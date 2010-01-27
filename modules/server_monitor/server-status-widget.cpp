@@ -46,8 +46,8 @@ ServerStatusWidget::ServerStatusWidget(QString addr, quint16 watchedPort, QStrin
 	connect(&tcpSocket, SIGNAL(error ( QAbstractSocket::SocketError)  ),
 			this, SLOT(connectionError ( QAbstractSocket::SocketError ) ));
 
-	connect( this, SIGNAL(statusChanged(QString,ServerStatus::Server)),
-			this, SLOT(notifity(QString,ServerStatus::ServerState)));
+	connect( this, SIGNAL( statusChanged ( QString, ServerStatusWidget::ServerState )),
+			this, SLOT(notifity( QString,ServerStatusWidget::ServerState )));
 
 	statusIcon = IconsManager::instance()->loadPixmap( "Invisible" );
 	setPixmap( statusIcon );
@@ -89,8 +89,6 @@ void ServerStatusWidget::connectionError ( QAbstractSocket::SocketError socketEr
 void ServerStatusWidget::refreshIcon()
 {
 	kdebugf();
-	qDebug() << tcpSocket.state();
-	//    if ( tcpSocket.state() == QAbstractSocket::UnconnectedState )
 	tcpSocket.connectToHost( address, port, QIODevice::ReadOnly );
 	kdebugf2();
 }
