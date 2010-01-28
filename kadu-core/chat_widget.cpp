@@ -54,19 +54,29 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 	index = chat_manager->registerChatWidget(this);
 
 	Edit = new ChatEditBox(this);
+	body = new ChatMessagesView(this);
+
+	QFrame *body_frame = new QFrame(this);
+	body_frame->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
+
+	QGridLayout *body_layout = new QGridLayout(body_frame);
+	body_layout->setMargin(0);
+	body_layout->setSpacing(0);
+	body_layout->addWidget(body);
+	body_frame->setLayout(body_layout);
 
 	if (Users->count() > 1)
 	{
 		horizSplit = new QSplitter(Qt::Horizontal, this, "horizSplit");
 		horizSplit->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
 
-		body = new ChatMessagesView(horizSplit);
+		body_frame->setParent(horizSplit);
 
 		QWidget *userlistContainer = new QWidget(horizSplit);
 		QVBoxLayout *uc_layout = new QVBoxLayout(userlistContainer);
 		uc_layout->setMargin(0);
 		uc_layout->setSpacing(0);
-		
+
 		userbox = new UserBox(Edit, false, Users, userlistContainer, "userbox");
 		userbox->setMinimumSize(QSize(30,30));
 
@@ -90,8 +100,7 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 	}
 	else
 	{
-		body = new ChatMessagesView(this);
-		vertSplit->addWidget(body);
+		vertSplit->addWidget(body_frame);
 	}
 
 	vertSplit->addWidget(Edit);
