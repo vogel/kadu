@@ -74,6 +74,8 @@ void ServerStatusWidget::connected()
 	serverStatus = Available;
 	statusIcon = IconsManager::instance()->loadPixmap( "Online" );
 	emitNewStatus();
+
+	tcpSocket.disconnectFromHost();
 }
 
 void ServerStatusWidget::connectionError ( QAbstractSocket::SocketError socketError )
@@ -96,6 +98,8 @@ void ServerStatusWidget::refreshIcon()
 
 void ServerStatusWidget::notifity ( QString adress , ServerStatusWidget::ServerState)
 {
+	if ( serverOldStatus  == Empty )	return;
+
 	Notification *notification = new Notification("serverMonitorChangeStatus",   QIcon() );
 
 	notification->setDetails( QObject::tr("Server") +QObject::tr(" ")+
