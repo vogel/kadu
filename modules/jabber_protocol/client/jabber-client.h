@@ -212,6 +212,8 @@ public:
 	 * Returns if this instance is connected to a server.
 	 */
 	bool isConnected() const;
+	
+	void setPresence(const XMPP::Status &status);
 
 	/**
 	 * Returns the JID associated with this instance.

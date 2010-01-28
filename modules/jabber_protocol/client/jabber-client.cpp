@@ -766,6 +766,55 @@ void JabberClient::updateContact(const XMPP::Jid &j, const QString &name, const 
 	r->go(true);
 }
 
+void JabberClient::setPresence(const XMPP::Status &status)
+{
+	kdebug("Status: %s, Reason: %s\n", status.show().toLocal8Bit().data(), status.status().toLocal8Bit().data());
+
+	XMPP::Status newStatus = status;
+
+	// TODO: Check if Caps is enabled
+	// Send entity capabilities
+	newStatus.setCapsNode(capsNode());
+	newStatus.setCapsVersion(capsVersion());
+	newStatus.setCapsExt(capsExt());
+	
+	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(Protocol->account().details());
+	if (jabberAccountDetails)
+	{
+		newStatus.setPriority(jabberAccountDetails->priority());
+
+		XMPP::Resource newResource(jabberAccountDetails->resource(), newStatus);
+
+		// update our resource in the resource pool
+		Protocol->resourcePool()->addResource(jid(), newResource);
+
+		// make sure that we only consider our own resource locally
+		Protocol->resourcePool()->lockToResource(jid(), newResource);
+	}
+
+	/*
+	 * Unless we are in the connecting status, send a presence packet to the server
+	 */
+	if (status.show() != QString("connecting"))
+	{
+		/*
+		 * Make sure we are actually connected before sending out a packet.
+		 */
+		if (isConnected())
+		{
+			kdebug("Sending new presence to the server.");
+
+			XMPP::JT_Presence * task = new XMPP::JT_Presence(rootTask());
+			task->pres(newStatus);
+			task->go(true);
+		}
+		else
+			kdebug("We were not connected, presence update aborted.");
+	}
+
+}
+
+
 void JabberClient::requestSubscription(const XMPP::Jid &jid)
 {
 	changeSubscription(jid, "subscribe");
