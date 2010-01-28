@@ -127,6 +127,8 @@ History::History() :
 		this, SLOT(accountUnregistered(Account)));
 
 	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreated(ChatWidget *)));
+
+	configurationUpdated();
 	kdebugf2();
 }
 
@@ -339,7 +341,7 @@ void History::accountUnregistered(Account account)
 
 void History::enqueueMessage(const Message &message)
 {
-	if (!CurrentStorage)
+	if (!CurrentStorage || !SaveChats)
 		return;
 
 	UnsavedDataMutex.lock();
@@ -351,7 +353,10 @@ void History::enqueueMessage(const Message &message)
 
 void History::contactStatusChanged(Contact contact, Status status)
 {
-	if (!CurrentStorage)
+	if (!CurrentStorage || !SaveStatuses)
+		return;
+
+	if (SaveOnlyStatusesWithDescription && status.description().isEmpty())
 		return;
 
 	UnsavedDataMutex.lock();
@@ -560,7 +565,11 @@ void History::configurationWindowApplied()
 void History::configurationUpdated()
 {
 	kdebugf();
-	//?
+
+	SaveChats = config_file.readBoolEntry("History", "SaveChats", true);
+	SaveStatuses = config_file.readBoolEntry("History", "SaveStatusChanges", false);
+	SaveOnlyStatusesWithDescription = config_file.readBoolEntry("History", "SaveOnlyStatusWithDescription", false);
+
 	kdebugf2();
 }
 
