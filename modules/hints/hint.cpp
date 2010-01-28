@@ -46,7 +46,7 @@
  */
 Hint::Hint(QWidget *parent, Notification *notification)
 	: QWidget(parent), vbox(0), callbacksBox(0), icon(0), label(0), bcolor(), notification(notification),
-	  requireCallbacks(requireCallbacks)
+	  requireCallbacks(notification->requireCallback())
 {
 	kdebugf();
 
