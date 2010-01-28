@@ -58,7 +58,7 @@ class JabberProtocol : public Protocol
 		~JabberProtocol();
 		XMPP::JabberClient * client() { return JabberClient; }
 		bool validateUserID(const QString& uid);
-		bool isConnecting() { return whileConnecting/*(State == NetworkConnecting)*/; }
+		bool isConnecting() { return whileConnecting; }
 		XMPP::Status toXMPPStatus(Status status);
 		Status toStatus(XMPP::Status status);
 
@@ -107,7 +107,6 @@ class JabberProtocol : public Protocol
 
 	public slots:
 		void connectToServer();
-		void setPresence(const XMPP::Status &status);
 		void login();
 		void logout();
 

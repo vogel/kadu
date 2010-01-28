@@ -294,7 +294,7 @@ void JabberProtocol::disconnectFromServer(const XMPP::Status &s)
 		kdebug("Still connected, closing connection...\n");
 		// make sure that the connection animation gets stopped if we're still
 		// in the process of connecting
-		setPresence(s);
+		JabberClient->setPresence(s);
 
 		/* Tell backend class to disconnect. */
 		JabberClient->disconnect();
@@ -317,63 +317,6 @@ void JabberProtocol::slotClientDebugMessage(const QString &msg)
 {
 	kdebugm(KDEBUG_WARNING, "Jabber Client debug:  %s\n", qPrintable(msg));
 }
-
-void JabberProtocol::setPresence(const XMPP::Status &status)
-{
-	kdebug("Status: %s, Reason: %s\n", status.show().toLocal8Bit().data(), status.status().toLocal8Bit().data());
-
-	// fetch input status
-	XMPP::Status newStatus = status;
-
-	// TODO: Check if Caps is enabled
-	// Send entity capabilities
-	if (JabberClient)
-	{
-		newStatus.setCapsNode(JabberClient->capsNode());
-		newStatus.setCapsVersion(JabberClient->capsVersion());
-		newStatus.setCapsExt(JabberClient->capsExt());
-	}
-
-	// TODO 0.6.6: CLEAN THIS UP
-	//TODO whatever
-	XMPP::Jid jid(jabberID);
-	
-	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(account().details());
-	if (jabberAccountDetails)
-	{
-		newStatus.setPriority(jabberAccountDetails->priority());
-
-		XMPP::Resource newResource(jabberAccountDetails->resource(), newStatus);
-
-		// update our resource in the resource pool
-		resourcePool()->addResource(jid, newResource);
-
-		// make sure that we only consider our own resource locally
-		resourcePool()->lockToResource(jid, newResource);
-	}
-
-	/*
-	 * Unless we are in the connecting status, send a presence packet to the server
-	 */
-	if (status.show() != QString("connecting"))
-	{
-		/*
-		 * Make sure we are actually connected before sending out a packet.
-		 */
-		if (isConnected())
-		{
-			kdebug("Sending new presence to the server.");
-
-			XMPP::JT_Presence * task = new XMPP::JT_Presence(JabberClient->rootTask());
-			task->pres(newStatus);
-			task->go(true);
-		}
-		else
-			kdebug("We were not connected, presence update aborted.");
-	}
-
-}
-
 
 void JabberProtocol::rosterRequestFinished(bool success)
 {
@@ -474,7 +417,7 @@ Status JabberProtocol::toStatus(XMPP::Status status)
 
 void JabberProtocol::changeStatus(Status status)
 {
-	setPresence(toXMPPStatus(status));
+	JabberClient->setPresence(toXMPPStatus(status));
 
 	if (status.isDisconnected())
 	{
@@ -528,7 +471,6 @@ void JabberProtocol::clientResourceReceived(const XMPP::Jid &jid, const XMPP::Re
 
 void JabberProtocol::contactAttached(Contact contact)
 {
-
 	if (!isConnected() || contact.contactAccount() != account())
 		return;
 
@@ -537,8 +479,8 @@ void JabberProtocol::contactAttached(Contact contact)
 
 	foreach (Group group, buddy.groups())
 		groupsList.append(group.name());
-	//TODO opcja żądania autoryzacji, na razie na sztywno true
-
+	
+	//TODO last parameter: automagic authorization request - make it configurable
 	JabberClient->addContact(contact.id(), buddy.display(), groupsList, true);
 }
 
@@ -577,9 +519,13 @@ void JabberProtocol::contactUpdated(Contact &contact)
 	JabberClient->updateContact(contact.id(), buddy.display(), groupsList);
 }
 
-void JabberProtocol::contactIdChanged(Contact contact, const QString &oldI)
+void JabberProtocol::contactIdChanged(Contact contact, const QString &oldId)
 {
-	contactUpdated(contact);
+  	if (!isConnected() || contact.contactAccount() != account())
+		return;
+	
+	JabberClient->removeContact(oldId);
+	contactAttached(contact);
 }
 
 void JabberProtocol::slotContactUpdated(const XMPP::RosterItem &item)
@@ -722,7 +668,16 @@ void JabberProtocol::slotSubscription(const XMPP::Jid & jid, const QString &type
 			task = new XMPP::JT_Roster(JabberClient->rootTask());
 			task->remove(jid);
 			task->go(true);
-			//TODO: usuwa� kontakt z listy
+
+			Contact contact = ContactManager::instance()->byId(account(), jid.bare(), ActionReturnNull);
+			if (contact)
+			{
+				Buddy owner = contact.ownerBuddy();
+				contact.setOwnerBuddy(Buddy::null);
+				if (owner.contacts().size() == 0)
+					BuddyManager::instance()->removeItem(owner);
+				
+			}
 		}
 		else
 			/*
