@@ -30,6 +30,7 @@
 #include "buddies/model/groups-model.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
+#include "contacts/contact-manager.h"
 #include "icons-manager.h"
 #include "model/actions-proxy-model.h"
 #include "model/roles.h"
@@ -39,7 +40,7 @@
 void SubscriptionWindow::getSubscription(Contact contact, QObject *receiver, const char *slot)
 {
 	SubscriptionWindow *window = new SubscriptionWindow(contact);
-	connect(window, SIGNAL(requestAccepted(Contact)), receiver, slot);
+	connect(window, SIGNAL(requestAccepted(Contact, bool)), receiver, slot);
 
 	window->exec();
 }
@@ -90,7 +91,7 @@ SubscriptionWindow::SubscriptionWindow(Contact contact, QWidget *parent) :
 	buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
 
 	connect(okButton, SIGNAL(clicked(bool)), this, SLOT(accepted()));
-	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(close()));
+	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(rejected()));
 
 	layout->addWidget(messageLabel, 0, 0, 1, 3);
 	layout->addWidget(visibleNameLabel, 1, 0, 1, 1);
@@ -131,16 +132,17 @@ void SubscriptionWindow::groupChanged(int index)
 
 void SubscriptionWindow::accepted()
 {
-	Buddy buddy = CurrentContact.ownerBuddy();
-	if (buddy.isNull())
+	//Giving somebody a status subscription does not force us to add them to our contact list.
+	if (VisibleName->text().isEmpty())
 	{
-		QString id = VisibleName->text().isEmpty() ? CurrentContact.id() : VisibleName->text();
-		buddy = BuddyManager::instance()->byId(CurrentContact.contactAccount(), id, ActionCreateAndAdd);
+		emit requestAccepted(CurrentContact, true);
+		close();
 	}
-
+	
+	ContactManager::instance()->addItem(CurrentContact);
+	Buddy buddy = BuddyManager::instance()->byContact(CurrentContact, ActionCreateAndAdd);
 	buddy.setAnonymous(false);
-	if (!VisibleName->text().isEmpty())
-		buddy.setDisplay(VisibleName->text());
+	buddy.setDisplay(VisibleName->text());
 	
 	QModelIndex modelIndex = GroupCombo->model()->index(GroupCombo->currentIndex(), 0, QModelIndex());
 	QString groupName = modelIndex.data(Qt::DisplayRole).toString();
@@ -148,6 +150,12 @@ void SubscriptionWindow::accepted()
 	if (!groupName.isEmpty())
 		buddy.addToGroup(GroupManager::instance()->byName(groupName));
 	
-	emit requestAccepted(CurrentContact);
+	emit requestAccepted(CurrentContact, true);
+	close();
+}
+
+void SubscriptionWindow::rejected()
+{
+  	emit requestAccepted(CurrentContact, false);
 	close();
 }

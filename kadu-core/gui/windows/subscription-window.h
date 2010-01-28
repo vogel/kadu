@@ -38,6 +38,7 @@ class SubscriptionWindow : public QDialog
 
 private slots:
 	void accepted();
+	void rejected();
 	void groupChanged(int index);
 
 public:
@@ -47,7 +48,7 @@ public:
 	virtual ~SubscriptionWindow();
 
 signals:
-	void requestAccepted(Contact contact);
+	void requestAccepted(Contact contact, bool accepted);
 
 };
 

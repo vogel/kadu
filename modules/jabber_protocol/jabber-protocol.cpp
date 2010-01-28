@@ -691,8 +691,8 @@ void JabberProtocol::slotSubscription(const XMPP::Jid & jid, const QString &type
 
 	if (type == "subscribe")
 	{
-		Contact contact = ContactManager::instance()->byId(account(), jid.bare(), ActionCreateAndAdd);
-		SubscriptionWindow::getSubscription(contact, this, SLOT(authorizeContact(Contact)));
+		Contact contact = ContactManager::instance()->byId(account(), jid.bare(), ActionCreate);
+		SubscriptionWindow::getSubscription(contact, this, SLOT(authorizeContact(Contact, bool)));
 	}
 	else if (type == "subscribed")
 		MessageDialog::msg(QString("You are authorized by %1").arg(jid.bare()), false, "Warning");
@@ -702,11 +702,16 @@ void JabberProtocol::slotSubscription(const XMPP::Jid & jid, const QString &type
 
 }
 
-void JabberProtocol::authorizeContact(Contact contact)
+void JabberProtocol::authorizeContact(Contact contact, bool authorized)
 {
-	XMPP::JT_Presence *task = new XMPP::JT_Presence(JabberClient->rootTask());
-	task->sub(XMPP::Jid(contact.id()), "subscribed");
-	task->go(true);
+	const XMPP::Jid jid = XMPP::Jid(contact.id());
+	
+	if (authorized)
+	{
+		JabberClient->resendSubscription(jid);
+	}
+	else
+		JabberClient->rejectSubscription(jid);
 }
 
 bool JabberProtocol::validateUserID(const QString& uid)
