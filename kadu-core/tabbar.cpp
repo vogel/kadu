@@ -23,11 +23,15 @@ KaduTabBar::KaduTabBar(QWidget *parent)
 	: QTabBar(parent)
 {
 	kdebugf();
-	setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Preferred));
+	setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum));
+#ifdef Q_OS_MAC
+	setDocumentMode(true);
+	setUsesScrollButtons(true);
+#endif
 	setAcceptDrops(true);
 	setIconSize(QSize(16, 16));
 	setContentsMargins(0, 0, 0, 0);
-	setFixedWidth(26); /* Dorr: mantis 0001130 */
+	setMaximumWidth(32); /* Dorr: mantis 0001130 */
 }
 
 void KaduTabBar::dragEnterEvent(QDragEnterEvent *e)
