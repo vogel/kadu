@@ -15,6 +15,7 @@ set (SOURCES
 	helpers/gadu-importer.cpp
 	helpers/gadu-list-helper.cpp
 
+	oauth/oauth-authorization.cpp
 	oauth/oauth-authorization-header.cpp
 	oauth/oauth-consumer.cpp
 	oauth/oauth-manager.cpp
@@ -70,6 +71,7 @@ set (MOC_SOURCES
 
 	helpers/gadu-importer.h
 
+	oauth/oauth-authorization.h
 	oauth/oauth-manager.h
 	oauth/oauth-token-fetcher.h
 	oauth/oauth.h

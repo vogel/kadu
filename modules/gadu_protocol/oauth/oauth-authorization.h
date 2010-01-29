@@ -17,35 +17,40 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "oauth-consumer.h"
+#ifndef OAUTH_AUTHORIZATION_H
+#define OAUTH_AUTHORIZATION_H
 
-OAuthConsumer::OAuthConsumer()
-{
-}
+#include <QtCore/QObject>
 
-OAuthConsumer::OAuthConsumer(const OAuthConsumer &copyMe)
-{
-	ConsumerKey = copyMe.ConsumerKey;
-	ConsumerSecret = copyMe.ConsumerSecret;
-}
+#include "oauth/oauth-consumer.h"
+#include "oauth/oauth-token.h"
 
-OAuthConsumer::OAuthConsumer(const QString &key, const QString &secret) :
-		ConsumerKey(key), ConsumerSecret(secret)
-{
-}
+class QNetworkAccessManager;
+class QNetworkReply;
 
-OAuthConsumer & OAuthConsumer::operator = (const OAuthConsumer &copyMe)
+class OAuthAuthorization : public QObject
 {
-	ConsumerKey = copyMe.ConsumerKey;
-	ConsumerSecret = copyMe.ConsumerSecret;
-}
+	Q_OBJECT
 
-QString OAuthConsumer::consumerKey()
-{
-	return ConsumerKey;
-}
+	QString AuthorizationUrl;
+	QString CallbackUrl;
+	OAuthConsumer Consumer;
+	QNetworkAccessManager *NetworkAccessManager;
+	QNetworkReply *Reply;
 
-QString OAuthConsumer::consumerSecret()
-{
-	return ConsumerSecret;
-}
+private slots:
+	void requestFinished();
+
+public:
+	explicit OAuthAuthorization(const QString &authorizationUrl, const QString &callbackUrl, OAuthConsumer consumer,
+			QNetworkAccessManager *networkAccessManager, QObject *parent = 0);
+	virtual ~OAuthAuthorization();
+
+	void authorize(OAuthToken token);
+
+signals:
+	void authorized(bool ok);
+
+};
+
+#endif // OAUTH_AUTHORIZATION_H

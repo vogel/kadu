@@ -90,13 +90,17 @@ void OAuthTokenFetcher::requestFinished()
 {
 	if (!Reply)
 	{
-		emit tokenFetched(OAuthToken());
+		OAuthToken token;
+		token.setConsumer(Consumer);
+		emit tokenFetched(token);
 		return;
 	}
 
 	if (QNetworkReply::NoError != Reply->error())
 	{
-		emit tokenFetched(OAuthToken());
+		OAuthToken token;
+		token.setConsumer(Consumer);
+		emit tokenFetched(token);
 		return;
 	}
 
@@ -106,7 +110,9 @@ void OAuthTokenFetcher::requestFinished()
 
 	if (document.isNull())
 	{
-		emit tokenFetched(OAuthToken());
+		OAuthToken token;
+		token.setConsumer(Consumer);
+		emit tokenFetched(token);
 		return;
 	}
 
@@ -118,17 +124,23 @@ void OAuthTokenFetcher::requestFinished()
 
 	if (resultElement.isNull() || oauthTokenElement.isNull() || oauthTokenSecretElement.isNull() || oauthTokenExpiresInlement.isNull() || statusElement.isNull())
 	{
-		emit tokenFetched(OAuthToken());
+		OAuthToken token;
+		token.setConsumer(Consumer);
+		emit tokenFetched(token);
 		return;
 	}
 
 	if ("0" != statusElement.text())
 	{
-		emit tokenFetched(OAuthToken());
+		OAuthToken token;
+		token.setConsumer(Consumer);
+		emit tokenFetched(token);
 		return;
 	}
 
-	emit tokenFetched(OAuthToken(oauthTokenElement.text(), oauthTokenSecretElement.text(), oauthTokenExpiresInlement.text().toUInt()));
+	OAuthToken token(oauthTokenElement.text(), oauthTokenSecretElement.text(), oauthTokenExpiresInlement.text().toUInt());
+	token.setConsumer(Consumer);
+	emit tokenFetched(token);
 
 	deleteLater();
 }

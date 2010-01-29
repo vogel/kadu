@@ -22,8 +22,12 @@
 
 #include <QtCore/QString>
 
+#include "oauth/oauth-consumer.h"
+
 class OAuthToken
 {
+	OAuthConsumer Consumer;
+
 	bool Valid;
 	QString Token;
 	QString TokenSecret;
@@ -40,6 +44,9 @@ public:
 	QString token();
 	QString tokenSecret();
 	int tokenExpiresIn();
+
+	void setConsumer(OAuthConsumer consumer);
+	OAuthConsumer consumer();
 
 };
 

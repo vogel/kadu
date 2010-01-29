@@ -21,6 +21,7 @@
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkRequest>
 
+#include "oauth/oauth-authorization.h"
 #include "oauth/oauth-token-fetcher.h"
 
 #include "oauth-manager.h"
@@ -44,5 +45,10 @@ void OAuthManager::fetchToken(QString requestTokenUrl, OAuthConsumer consumer)
 
 void OAuthManager::tokenFetchedSlot(OAuthToken token)
 {
+	if (!token.isValid())
+		return;
 
+	OAuthAuthorization *authorization = new OAuthAuthorization("http://login.gadu-gadu.pl/authorize", "http://www.mojageneracja.pl",
+			token.consumer(), NetworkManager, this);
+	authorization->authorize(token);
 }

@@ -28,7 +28,11 @@ class OAuthConsumer
 	QString ConsumerSecret;
 
 public:
+	OAuthConsumer();
+	OAuthConsumer(const OAuthConsumer &copyMe);
 	OAuthConsumer(const QString &key, const QString &secret);
+
+	OAuthConsumer & operator = (const OAuthConsumer &copyMe);
 
 	QString consumerKey();
 	QString consumerSecret();

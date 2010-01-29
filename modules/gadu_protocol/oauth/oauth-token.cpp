@@ -26,6 +26,7 @@ OAuthToken::OAuthToken() :
 
 OAuthToken::OAuthToken(const OAuthToken &copyMe)
 {
+	Consumer = copyMe.Consumer;
 	Valid = copyMe.Valid;
 	Token = copyMe.Token;
 	TokenSecret = copyMe.TokenSecret;
@@ -39,6 +40,7 @@ OAuthToken::OAuthToken(const QString &token, const QString &tokenSecret, int tok
 
 OAuthToken & OAuthToken::operator = (const OAuthToken &copyMe)
 {
+	Consumer = copyMe.Consumer;
 	Valid = copyMe.Valid;
 	Token = copyMe.Token;
 	TokenSecret = copyMe.TokenSecret;
@@ -63,4 +65,14 @@ QString OAuthToken::tokenSecret()
 int OAuthToken::tokenExpiresIn()
 {
 	return TokenExpiresIn;
+}
+
+void OAuthToken::setConsumer(OAuthConsumer consumer)
+{
+	Consumer = consumer;
+}
+
+OAuthConsumer OAuthToken::consumer()
+{
+	return Consumer;
 }
