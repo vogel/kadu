@@ -66,6 +66,7 @@ private slots:
 	void removeAccount();
 	void importListAsFile();
 	void contactListDownloaded(QString);
+	void uploadAvatar();
 
 public:
 	explicit GaduEditAccountWidget(Account account, QWidget *parent = 0);
