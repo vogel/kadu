@@ -118,7 +118,10 @@ SingleWindow::SingleWindow()
 	connect(kadu, SIGNAL(hiding()), this, SLOT(hide()));
 	connect(kadu, SIGNAL(keyPressed(QKeyEvent *)), this, SLOT(onkaduKeyPressed(QKeyEvent *)));
 	connect(kadu, SIGNAL(statusPixmapChanged(const QIcon &, const QString &)),
-		this, SLOT(statusPixmapChanged(const QIcon &, const QString &)));
+		this, SLOT(onStatusPixmapChanged(const QIcon &, const QString &)));
+
+	connect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
+		this, SLOT(onStatusChanged(UserListElement)));
 
 	/* conquer all already open chats ;) */
 	ChatList chats = chat_manager->chats();
@@ -153,7 +156,9 @@ SingleWindow::~SingleWindow()
 	disconnect(kadu, SIGNAL(hiding()), this, SLOT(hide()));
 	disconnect(kadu, SIGNAL(keyPressed(QKeyEvent *)), this, SLOT(onkaduKeyPressed(QKeyEvent *)));
 	disconnect(kadu, SIGNAL(statusPixmapChanged(const QIcon &, const QString &)),
-		this, SLOT(statusPixmapChanged(const QIcon &, const QString &)));
+		this, SLOT(onStatusPixmapChanged(const QIcon &, const QString &)));
+	disconnect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
+		this, SLOT(onStatusChanged(UserListElement)));
 
 	if (!Kadu::closing())
 	{
@@ -331,9 +336,21 @@ void SingleWindow::onChatKeyPressed(QKeyEvent* e, ChatWidget* w, bool &handled)
 	}
 }
 
-void SingleWindow::statusPixmapChanged(const QIcon &icon, const QString &iconName)
+void SingleWindow::onStatusPixmapChanged(const QIcon &icon, const QString &iconName)
 {
 	setWindowIcon(icon);
 }
+
+void SingleWindow::onStatusChanged(UserListElement ule)
+{
+	ChatWidget *chat = chat_manager->findChatWidget(ule);
+	int index = tabs->indexOf(chat);
+	if (index >= 0)
+	{
+		chat->refreshTitle(); // the icon is not refreshed - refresh it
+		tabs->setTabIcon(index, chat->icon());
+	}
+}
+
 
 SingleWindowManager *singleWindowManager = NULL;
