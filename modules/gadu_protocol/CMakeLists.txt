@@ -20,6 +20,7 @@ set (SOURCES
 	oauth/oauth-manager.cpp
 	oauth/oauth-parameters.cpp
 	oauth/oauth-token.cpp
+	oauth/oauth-token-fetcher.cpp
 	oauth/oauth.cpp
 
 	open-chat-with/gadu-open-chat-with-runner.cpp
@@ -70,6 +71,7 @@ set (MOC_SOURCES
 	helpers/gadu-importer.h
 
 	oauth/oauth-manager.h
+	oauth/oauth-token-fetcher.h
 	oauth/oauth.h
 
 	server/gadu-avatar-fetcher.h

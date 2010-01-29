@@ -19,6 +19,48 @@
 
 #include "oauth-token.h"
 
-OAuthToken::OAuthToken()
+OAuthToken::OAuthToken() :
+		Valid(false), TokenExpiresIn(0)
 {
+}
+
+OAuthToken::OAuthToken(const OAuthToken &copyMe)
+{
+	Valid = copyMe.Valid;
+	Token = copyMe.Token;
+	TokenSecret = copyMe.TokenSecret;
+	TokenExpiresIn = copyMe.TokenExpiresIn;
+}
+
+OAuthToken::OAuthToken(const QString &token, const QString &tokenSecret, int tokenExpiresIn) :
+		Valid(true), Token(token), TokenSecret(tokenSecret), TokenExpiresIn(tokenExpiresIn)
+{
+}
+
+OAuthToken & OAuthToken::operator = (const OAuthToken &copyMe)
+{
+	Valid = copyMe.Valid;
+	Token = copyMe.Token;
+	TokenSecret = copyMe.TokenSecret;
+	TokenExpiresIn = copyMe.TokenExpiresIn;
+}
+
+bool OAuthToken::isValid()
+{
+	return Valid;
+}
+
+QString OAuthToken::token()
+{
+	return Token;
+}
+
+QString OAuthToken::tokenSecret()
+{
+	return TokenSecret;
+}
+
+int OAuthToken::tokenExpiresIn()
+{
+	return TokenExpiresIn;
 }

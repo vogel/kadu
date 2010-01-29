@@ -25,16 +25,20 @@
 #include "oauth/oauth-consumer.h"
 #include "oauth/oauth-token.h"
 
+class QNetworkAccessManager;
+
 class OAuthManager : public QObject
 {
 	Q_OBJECT
 
+	QNetworkAccessManager *NetworkManager;
+
+private slots:
+	void tokenFetchedSlot(OAuthToken);
+
 public:
 	explicit OAuthManager(QObject *parent = 0);
 	virtual ~OAuthManager();
-
-	QString createUniqueNonce();
-	QString createTimestamp();
 
 	void fetchToken(QString requestTokenUrl, OAuthConsumer consumer);
 

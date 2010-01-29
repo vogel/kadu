@@ -17,30 +17,41 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OAUTH_TOKEN_H
-#define OAUTH_TOKEN_H
+#ifndef OAUTH_TOKEN_FETCHER_H
+#define OAUTH_TOKEN_FETCHER_H
 
-#include <QtCore/QString>
+#include <QtCore/QObject>
 
-class OAuthToken
+#include "oauth/oauth-consumer.h"
+#include "oauth/oauth-token.h"
+
+class QNetworkAccessManager;
+class QNetworkReply;
+
+class OAuthTokenFetcher : public QObject
 {
-	bool Valid;
-	QString Token;
-	QString TokenSecret;
-	int TokenExpiresIn;
+	Q_OBJECT
+
+	QString RequestTokenUrl;
+	OAuthConsumer Consumer;
+	QNetworkAccessManager *NetworkAccessManager;
+	QNetworkReply *Reply;
+
+private slots:
+	void requestFinished();
 
 public:
-	OAuthToken();
-	OAuthToken(const OAuthToken &copyMe);
-	OAuthToken(const QString &token, const QString &tokenSecret, int tokenExpiresIn);
+	static QString createUniqueNonce();
+	static QString createTimestamp();
 
-	OAuthToken & operator = (const OAuthToken &copyMe);
+	explicit OAuthTokenFetcher(QString requestTokenUrl, OAuthConsumer consumer, QNetworkAccessManager *networkAccessManager, QObject *parent = 0);
+	virtual ~OAuthTokenFetcher();
 
-	bool isValid();
-	QString token();
-	QString tokenSecret();
-	int tokenExpiresIn();
+	void fetchToken();
+
+signals:
+	void tokenFetched(OAuthToken token);
 
 };
 
-#endif // OAUTH_TOKEN_H
+#endif // OAUTH_TOKEN_FETCHER_H
