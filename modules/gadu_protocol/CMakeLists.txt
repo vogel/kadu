@@ -18,6 +18,7 @@ set (SOURCES
 	oauth/oauth-authorization-header.cpp
 	oauth/oauth-consumer.cpp
 	oauth/oauth-manager.cpp
+	oauth/oauth-parameters.cpp
 	oauth/oauth-token.cpp
 	oauth/oauth.cpp
 

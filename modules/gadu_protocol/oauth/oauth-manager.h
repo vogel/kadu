@@ -33,8 +33,8 @@ public:
 	explicit OAuthManager(QObject *parent = 0);
 	virtual ~OAuthManager();
 
-	QByteArray createUniqueNonce();
-	QByteArray createTimestamp();
+	QString createUniqueNonce();
+	QString createTimestamp();
 
 	void fetchToken(QString requestTokenUrl, OAuthConsumer consumer);
 
