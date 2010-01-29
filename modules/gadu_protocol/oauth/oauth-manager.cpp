@@ -48,7 +48,23 @@ void OAuthManager::tokenFetchedSlot(OAuthToken token)
 	if (!token.isValid())
 		return;
 
-	OAuthAuthorization *authorization = new OAuthAuthorization("http://login.gadu-gadu.pl/authorize", "http://www.mojageneracja.pl",
+	OAuthAuthorization *authorization = new OAuthAuthorization(token, "https://login.gadu-gadu.pl/authorize", "http://www.mojageneracja.pl",
 			token.consumer(), NetworkManager, this);
-	authorization->authorize(token);
+	connect(authorization, SIGNAL(authorized(OAuthToken, bool)), this, SLOT(authorizedSlot(OAuthToken, bool)));
+	authorization->authorize();
+}
+
+void OAuthManager::authorizedSlot(OAuthToken token, bool ok)
+{
+	if (!ok)
+		return;
+
+	OAuthTokenFetcher *tokenFetcher = new OAuthTokenFetcher("http://api.gadu-gadu.pl/access_token", token, NetworkManager, this);
+	connect(tokenFetcher, SIGNAL(tokenFetched(OAuthToken)), this, SLOT(accessTokenFetchedSlot(OAuthToken)));
+	tokenFetcher->fetchToken();
+}
+#include <stdio.h>
+void OAuthManager::accessTokenFetchedSlot(OAuthToken token)
+{
+	printf("access token: %s %s\n", qPrintable(token.token()), qPrintable(token.tokenSecret()));
 }

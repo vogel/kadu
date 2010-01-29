@@ -34,7 +34,9 @@ class OAuthManager : public QObject
 	QNetworkAccessManager *NetworkManager;
 
 private slots:
-	void tokenFetchedSlot(OAuthToken);
+	void tokenFetchedSlot(OAuthToken token);
+	void authorizedSlot(OAuthToken token, bool ok);
+	void accessTokenFetchedSlot(OAuthToken token);
 
 public:
 	explicit OAuthManager(QObject *parent = 0);

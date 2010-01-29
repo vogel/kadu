@@ -95,6 +95,17 @@ QString OAuthParameters::signature()
 	return Signature;
 }
 
+
+void OAuthParameters::setToken(const OAuthToken &token)
+{
+	Token = token;
+}
+
+OAuthToken OAuthParameters::token()
+{
+	return Token;
+}
+
 QByteArray OAuthParameters::toSignatureBase()
 {
 	QStringList result;
@@ -102,6 +113,8 @@ QByteArray OAuthParameters::toSignatureBase()
 	result.append(QString("oauth_nonce=%1").arg(Nonce));
 	result.append(QString("oauth_signature_method=%1").arg(SignatureMethod));
 	result.append(QString("oauth_timestamp=%1").arg(Timestamp));
+	if (!Token.token().isEmpty())
+		result.append(QString("oauth_token=%1").arg(Token.token()));
 	result.append(QString("oauth_version=%1").arg(Version));
 
 	return result.join("&").toLocal8Bit().toPercentEncoding();
@@ -116,6 +129,8 @@ QString OAuthParameters::toAuthorizationHeader()
 	result.append(QString("oauth_consumer_key=\"%1\"").arg(ConsumerKey));
 	result.append(QString("oauth_signature_method=\"%1\"").arg(SignatureMethod));
 	result.append(QString("oauth_version=\"%1\"").arg(Version));
+	if (!Token.token().isEmpty())
+		result.append(QString("oauth_token=\"%1\"").arg(Token.token()));
 	result.append(QString("oauth_signature=\"%1\"").arg(QString(Signature.toLocal8Bit().toPercentEncoding())));
 
 	return QString("OAuth %1").arg(result.join(", "));

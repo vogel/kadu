@@ -33,6 +33,7 @@ class OAuthTokenFetcher : public QObject
 	Q_OBJECT
 
 	QString RequestTokenUrl;
+	OAuthToken Token;
 	OAuthConsumer Consumer;
 	QNetworkAccessManager *NetworkAccessManager;
 	QNetworkReply *Reply;
@@ -44,6 +45,7 @@ public:
 	static QString createUniqueNonce();
 	static QString createTimestamp();
 
+	explicit OAuthTokenFetcher(QString requestTokenUrl, OAuthToken token, QNetworkAccessManager *networkAccessManager, QObject *parent = 0);
 	explicit OAuthTokenFetcher(QString requestTokenUrl, OAuthConsumer consumer, QNetworkAccessManager *networkAccessManager, QObject *parent = 0);
 	virtual ~OAuthTokenFetcher();
 

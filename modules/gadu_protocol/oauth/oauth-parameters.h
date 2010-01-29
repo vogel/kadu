@@ -22,6 +22,8 @@
 
 #include <QtCore/QString>
 
+#include "oauth/oauth-token.h"
+
 class OAuthParameters
 {
 	QString ConsumerKey;
@@ -31,6 +33,7 @@ class OAuthParameters
 	QString Version;
 	QString Realm;
 	QString Signature;
+	OAuthToken Token;
 
 public:
 	OAuthParameters();
@@ -55,6 +58,9 @@ public:
 
 	void setSignature(const QString &signature);
 	QString signature();
+
+	void setToken(const OAuthToken &token);
+	OAuthToken token();
 
 	QByteArray toSignatureBase();
 	QString toAuthorizationHeader();

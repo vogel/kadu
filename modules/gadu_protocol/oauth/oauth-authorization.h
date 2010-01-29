@@ -32,6 +32,7 @@ class OAuthAuthorization : public QObject
 {
 	Q_OBJECT
 
+	OAuthToken Token;
 	QString AuthorizationUrl;
 	QString CallbackUrl;
 	OAuthConsumer Consumer;
@@ -42,14 +43,14 @@ private slots:
 	void requestFinished();
 
 public:
-	explicit OAuthAuthorization(const QString &authorizationUrl, const QString &callbackUrl, OAuthConsumer consumer,
+	explicit OAuthAuthorization(OAuthToken token, const QString &authorizationUrl, const QString &callbackUrl, OAuthConsumer consumer,
 			QNetworkAccessManager *networkAccessManager, QObject *parent = 0);
 	virtual ~OAuthAuthorization();
 
-	void authorize(OAuthToken token);
+	void authorize();
 
 signals:
-	void authorized(bool ok);
+	void authorized(OAuthToken token, bool ok);
 
 };
 

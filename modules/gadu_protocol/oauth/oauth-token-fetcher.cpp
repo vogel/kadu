@@ -36,6 +36,11 @@ QString OAuthTokenFetcher::createTimestamp()
 	return QString::number(QDateTime::currentDateTime().toTime_t());
 }
 
+OAuthTokenFetcher::OAuthTokenFetcher(QString requestTokenUrl, OAuthToken token, QNetworkAccessManager *networkAccessManager, QObject *parent) :
+		QObject(parent), RequestTokenUrl(requestTokenUrl), Token(token), Consumer(token.consumer()), NetworkAccessManager(networkAccessManager), Reply(0)
+{
+}
+
 OAuthTokenFetcher::OAuthTokenFetcher(QString requestTokenUrl, OAuthConsumer consumer, QNetworkAccessManager *networkAccessManager, QObject *parent) :
 		QObject(parent), RequestTokenUrl(requestTokenUrl), Consumer(consumer), NetworkAccessManager(networkAccessManager), Reply(0)
 {
@@ -63,10 +68,11 @@ void OAuthTokenFetcher::fetchToken()
 	parameters.setNonce(createUniqueNonce());
 	parameters.setTimestamp(createTimestamp());
 	parameters.setVerison("1.0");
+	parameters.setToken(Token);
 
 	signatureBaseItems.append(parameters.toSignatureBase());
 
-	QByteArray key(Consumer.consumerSecret().toLocal8Bit() + "&");
+	QByteArray key(Consumer.consumerSecret().toLocal8Bit() + "&" + Token.tokenSecret().toLocal8Bit());
 
 	QCA::MessageAuthenticationCode hmac("hmac(sha1)", QCA::SymmetricKey(key));
 	QCA::SecureArray array(signatureBaseItems.join("&").toLocal8Bit());

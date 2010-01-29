@@ -23,9 +23,10 @@
 
 #include "oauth-authorization.h"
 
-OAuthAuthorization::OAuthAuthorization(const QString &authorizationUrl, const QString &callbackUrl, OAuthConsumer consumer,
+OAuthAuthorization::OAuthAuthorization(OAuthToken token, const QString &authorizationUrl, const QString &callbackUrl, OAuthConsumer consumer,
 		QNetworkAccessManager *networkAccessManager, QObject *parent) :
-		QObject(parent), AuthorizationUrl(authorizationUrl), CallbackUrl(callbackUrl), Consumer(consumer), NetworkAccessManager(networkAccessManager), Reply(0)
+		QObject(parent), Token(token), AuthorizationUrl(authorizationUrl),
+		CallbackUrl(callbackUrl), Consumer(consumer), NetworkAccessManager(networkAccessManager), Reply(0)
 {
 }
 
@@ -33,12 +34,12 @@ OAuthAuthorization::~OAuthAuthorization()
 {
 }
 
-void OAuthAuthorization::authorize(OAuthToken token)
+void OAuthAuthorization::authorize()
 {
 	QByteArray payback = QString("callback_url=http://www.mojageneracja.pl&request_token=%1&uin=%2&password=%3")
-		.arg(token.token())
-		.arg(token.consumer().consumerKey())
-		.arg(token.consumer().consumerSecret()).toAscii();
+		.arg(Token.token())
+		.arg(Token.consumer().consumerKey())
+		.arg(Token.consumer().consumerSecret()).toAscii();
 
 	QNetworkRequest request;
 	request.setUrl(AuthorizationUrl);
@@ -51,5 +52,6 @@ void OAuthAuthorization::authorize(OAuthToken token)
 
 void OAuthAuthorization::requestFinished()
 {
+	emit authorized(Token, QNetworkReply::NoError == Reply->error());
 	deleteLater();
 }
