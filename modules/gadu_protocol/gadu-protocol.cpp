@@ -173,7 +173,7 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 
 	SocketNotifiers = new GaduProtocolSocketNotifiers(account, this);
 
-	CurrentAvatarService = new GaduAvatarService(this);
+	CurrentAvatarService = new GaduAvatarService(account, this);
 	connect(this, SIGNAL(connected(Account)),
 			this, SLOT(fetchAvatars(Account)));
 	CurrentChatImageService = new GaduChatImageService(this);

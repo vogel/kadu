@@ -36,3 +36,7 @@ void GaduAvatarService::fetchAvatar(Contact contact)
 			this, SIGNAL(avatarFetched(Contact, const QByteArray &)));
 	avatarFetcher->fetchAvatar();
 }
+
+void GaduAvatarService::uploadAvatar(QImage avatar)
+{
+}

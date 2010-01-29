@@ -31,9 +31,12 @@ void JabberAvatarService::fetchAvatar(Contact contact)
 	if (contact.id().isEmpty())
 		return;
 
-
 	JabberAvatarFetcher *avatarFetcher = new JabberAvatarFetcher(contact, this);
 	connect(avatarFetcher, SIGNAL(avatarFetched(Contact, const QByteArray &)),
 			this, SIGNAL(avatarFetched(Contact, const QByteArray &)));
 	avatarFetcher->fetchAvatar();
+}
+
+void JabberAvatarService::uploadAvatar(QImage avatar)
+{
 }

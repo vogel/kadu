@@ -29,9 +29,11 @@ class GaduAvatarService : public AvatarService
 	Q_OBJECT
 
 public:
-	GaduAvatarService(QObject *parent = 0) : AvatarService(parent) {}
+	explicit GaduAvatarService(Account account, QObject *parent = 0) : AvatarService(account, parent) {}
+	virtual ~GaduAvatarService() {}
 
-	void fetchAvatar(Contact contact);
+	virtual void fetchAvatar(Contact contact);
+	virtual void uploadAvatar(QImage avatar);
 
 };
 

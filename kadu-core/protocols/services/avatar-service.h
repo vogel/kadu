@@ -25,6 +25,7 @@
 #include <QtCore/QObject>
 #include <QtGui/QPixmap>
 
+#include "accounts/account.h"
 #include "exports.h"
 
 class Contact;
@@ -33,13 +34,18 @@ class KADUAPI AvatarService : public QObject
 {
 	Q_OBJECT
 
+	Account MyAccount;
+
 public:
-	AvatarService(QObject *parent = 0) : QObject(parent) {}
+	explicit AvatarService(Account account, QObject *parent = 0) : QObject(parent), MyAccount(account) {}
+	virtual ~AvatarService() {}
 
 	virtual void fetchAvatar(Contact contact) = 0;
+	virtual void uploadAvatar(QImage avatar) = 0;
 
 signals:
 	void avatarFetched(Contact contact, const QByteArray &avatar);
+	void avatarUploaded(bool ok);
 
 };
 

@@ -30,8 +30,11 @@ class JabberAvatarService : public AvatarService
 	Contact MyContact;
 
 public:
-	JabberAvatarService(QObject *parent = 0) : AvatarService(parent) {}
-	void fetchAvatar(Contact contact);
+	explicit JabberAvatarService(Account account, QObject *parent = 0) : AvatarService(account, parent) {}
+	virtual ~JabberAvatarService() {}
+
+	virtual void fetchAvatar(Contact contact);
+	virtual void uploadAvatar(QImage avatar);
 
 };
 
