@@ -40,6 +40,8 @@ public:
 	explicit AvatarService(Account account, QObject *parent = 0) : QObject(parent), MyAccount(account) {}
 	virtual ~AvatarService() {}
 
+	Account account() { return MyAccount; }
+
 	virtual void fetchAvatar(Contact contact) = 0;
 	virtual void uploadAvatar(QImage avatar) = 0;
 
