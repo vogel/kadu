@@ -2,6 +2,13 @@ Teksty w nawiasach na koñcu wpisu mówi± o tym, kto dokona³ poprawki lub rozbudow
 Postaæ (x/y) oznacza, ¿e x jest pomys³odawc± lub podes³a³ patcha, a zrobi³ to kto¶ oznaczony przez y.
 Je¶li jest w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 
++++ wersja 0.6.5.4
+* zaktualizowane t³umaczenia (beevvy/neeo)
+* drobne poprawki wygl±du okna rozmowy (neeo) oraz zak³adek pod Mac OS X (dorr)
+* poprawione b³êdne dzia³anie wyszkukiwania w katalogu w pewnych okoliczno¶ciach (neeo)
+* drobne poprawki w module single_window i pajacyk (dorr), dbus (Fisiu/dorr)
+* poprawione wykrywanie zestawów ikon przy wy³±czonym autodownloadzie (badboy/dorr)
+
 +++ wersja 0.6.5.4-rc3
 * naprawione zosta³o wykrywanie zestawów ikon, emotek i d¼wiêków w ¶cie¿ce u¿ytkownika (dorr)
 * pe³nowymiarowy podgl±d emotek w oknie wyboru (beevvy/dorr)
