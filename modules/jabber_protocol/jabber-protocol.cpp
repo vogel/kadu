@@ -548,88 +548,35 @@ void JabberProtocol::slotContactUpdated(const XMPP::RosterItem &item)
 
 	kdebug("New roster item: %s (Subscription: %s )\n", item.jid().full().toLocal8Bit().data(), item.subscription().toString().toLocal8Bit().data());
 
-	/*
-	 * See if the contact need to be added, according to the criterias of
-	 *  JEP-0162: Best Practices for Roster and Subscription Management
-	 * http://www.jabber.org/jeps/jep-0162.html#contacts
-	 */
-	bool need_to_add=false;
-	if (item.subscription().type() == XMPP::Subscription::Both || item.subscription().type() == XMPP::Subscription::To)
-		need_to_add = true;
-	else if (!item.ask().isEmpty())
-		need_to_add = true;
-	else if (!item.name().isEmpty() || !item.groups().isEmpty())
-		need_to_add = true;
+	Contact contact = ContactManager::instance()->byId(account(), item.jid().bare(), ActionReturnNull);
+	Buddy buddy = BuddyManager::instance()->byContact(contact, ActionReturnNull);
 
-	if (item.jid().bare() == jabberID.bare())
+	if (!contact || !buddy) // don't create contacts here - it causes loop
+		return;
+	
+	// if contact has name set it to display
+	if (!item.name().isNull())
 	{
-		// don't let remove the gateway contact, eh!
-		need_to_add = true;
+		if (item.name() != buddy.display())
+			buddy.setDisplay(item.name());
 	}
+	else
+		buddy.setDisplay(item.jid().bare());
 
-	if (need_to_add)
+	if (buddy.isAnonymous()) // always false!!
 	{
-		/*
-		 * See if the contact is already on our contact list
-		 * if not add contact to our list
-		 */
-		Contact contact = ContactManager::instance()->byId(account(), item.jid().bare(), ActionCreateAndAdd);
-		Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
+		// TODO: add some logic here?
+		buddy.setAnonymous(false);
 
-		// if contact has name set it to display
-		if (!item.name().isNull())
-		{
-			if (item.name() != buddy.display())
-				buddy.setDisplay(item.name());
-		}
-		else
-			buddy.setDisplay(item.jid().bare());
-
-		if (buddy.isAnonymous()) // always false!!
-		{
-			// TODO: add some logic here?
-			buddy.setAnonymous(false);
-
-			GroupManager *gm = GroupManager::instance();
-			// add this contact to all groups the contact is a member of
-			foreach (QString group, item.groups())
-				buddy.addToGroup(gm->byName(group,true /* create group */));
-		}
-		else
-		{
-			//TODO: synchronize groups
-		}
-
-		/*
-		* Add / update the contact in contact list. In case the contact is already there,
-		* it will be updated. In case the contact is not there yet, it
-		* will be added to it.
-		*/
-		///JabberContact contact = contactPool()->addContact ( item, metaContact, false );
-
-		/*
-		* Set authorization property
-		*/
-		/**if ( !item.ask().isEmpty () )
-// 		{
-// 			contact->setProperty ( protocol()->propAuthorizationStatus, i18n ( "Waiting for authorization" ) );
-// 		}
-// 		else
-// 		{
-// 			contact->removeProperty ( protocol()->propAuthorizationStatus );
-// 		}*/
+		GroupManager *gm = GroupManager::instance();
+		// add this contact to all groups the contact is a member of
+		foreach (QString group, item.groups())
+			buddy.addToGroup(gm->byName(group,true /* create group */));
 	}
-//	else if (!c.isAnonymous())  //we don't need to add it, and it is in the contact list
-//	{
-// 		Kopete::MetaContactmetaContact=c->metaContact();
-// 		if(metaContact->isTemporary())
-// 			return;
-// 		kDebug (JABBER_DEBUG_GLOBAL) << c->contactId() <<
-// 				" is on the contact list while it should not.  we are removing it.  - " << c << endl;
-// 		delete c;
-// 		if(metaContact->contacts().isEmpty())
-// 			Kopete::ContactList::self()->removeMetaContact( metaContact );
-//	}
+	else
+	{
+		//TODO: synchronize groups
+	}
 
 	kdebugf2();
 }
