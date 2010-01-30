@@ -47,6 +47,10 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 	layout->setSpacing(0);
 
 	vertSplit = new QSplitter(Qt::Vertical, this);
+#ifdef Q_OS_MAC
+	/* Dorr: workaround for mac tabs issue */
+	vertSplit->setAutoFillBackground(true);
+#endif
 	layout->addWidget(vertSplit);
 
 	setAcceptDrops(true);
