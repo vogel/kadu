@@ -15,9 +15,20 @@ set (SOURCES
 	helpers/gadu-importer.cpp
 	helpers/gadu-list-helper.cpp
 
+	oauth/oauth-authorization.cpp
+	oauth/oauth-authorization-chain.cpp
+	oauth/oauth-authorization-header.cpp
+	oauth/oauth-consumer.cpp
+	oauth/oauth-manager.cpp
+	oauth/oauth-parameters.cpp
+	oauth/oauth-token.cpp
+	oauth/oauth-token-fetcher.cpp
+	oauth/oauth.cpp
+
 	open-chat-with/gadu-open-chat-with-runner.cpp
 
 	server/gadu-avatar-fetcher.cpp
+	server/gadu-avatar-uploader.cpp
 	server/gadu-server-connector.cpp
 	server/gadu-server-change-password.cpp
 	server/gadu-server-register-account.cpp
@@ -62,7 +73,14 @@ set (MOC_SOURCES
 
 	helpers/gadu-importer.h
 
+	oauth/oauth-authorization.h
+	oauth/oauth-authorization-chain.h
+	oauth/oauth-manager.h
+	oauth/oauth-token-fetcher.h
+	oauth/oauth.h
+
 	server/gadu-avatar-fetcher.h
+	server/gadu-avatar-uploader.h
 	server/gadu-server-connector.h
 	server/gadu-server-change-password.h
 	server/gadu-server-register-account.h
@@ -95,6 +113,10 @@ set (CONFIGURATION_FILES
 	configuration/gadu_contact.ui
 )
 
+pkg_search_module (QCA2 REQUIRED qca2)
+link_directories (${QCA2_LIBRARY_DIRS})
+add_definitions (${QCA2_CFLAGS_OTHER})
+
 pkg_search_module (LIBGADU REQUIRED libgadu>=1.8.0)
 include_directories (${LIBGADU_INCLUDE_DIRS})
 link_directories (${LIBGADU_LIBRARY_DIRS})
@@ -106,5 +128,6 @@ kadu_module (gadu_protocol
 	MODULE_MOC_SOURCES ${MOC_SOURCES}
 #	MODULE_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
 	MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
-	MODULE_LIBRARIES ${LIBGADU_LIBRARIES}
+	MODULE_LIBRARIES ${LIBGADU_LIBRARIES} ${QCA2_LIBRARIES}
+	MODULE_DEPENDENCIES ${QCA2_LIBRARIES}
 )

@@ -25,6 +25,7 @@
 #include "gadu-avatar-service.h"
 #include "misc/path-conversion.h"
 #include "server/gadu-avatar-fetcher.h"
+#include "server/gadu-avatar-uploader.h"
 
 void GaduAvatarService::fetchAvatar(Contact contact)
 {
@@ -35,4 +36,14 @@ void GaduAvatarService::fetchAvatar(Contact contact)
 	connect(avatarFetcher, SIGNAL(avatarFetched(Contact, const QByteArray &)),
 			this, SIGNAL(avatarFetched(Contact, const QByteArray &)));
 	avatarFetcher->fetchAvatar();
+}
+
+void GaduAvatarService::uploadAvatar(QImage avatar)
+{
+	if (account().accountContact().id().isEmpty())
+		return;
+
+	GaduAvatarUploader *avatarUploader = new GaduAvatarUploader(account(), this);
+	connect(avatarUploader, SIGNAL(avatarUploaded(bool)), this, SIGNAL(avatarUploaded(bool)));
+	avatarUploader->uploadAvatar(avatar);
 }

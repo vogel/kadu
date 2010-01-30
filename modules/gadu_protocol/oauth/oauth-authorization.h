@@ -1,6 +1,5 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
@@ -18,38 +17,41 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SUBSCRIPTION_WINDOW_H
-#define SUBSCRIPTION_WINDOW_H
+#ifndef OAUTH_AUTHORIZATION_H
+#define OAUTH_AUTHORIZATION_H
 
-#include <QtGui/QComboBox>
-#include <QtGui/QDialog>
+#include <QtCore/QObject>
 
-#include "contacts/contact.h"
+#include "oauth/oauth-consumer.h"
+#include "oauth/oauth-token.h"
 
-class QLineEdit;
+class QNetworkAccessManager;
+class QNetworkReply;
 
-class SubscriptionWindow : public QDialog
+class OAuthAuthorization : public QObject
 {
 	Q_OBJECT
 
-	Contact CurrentContact;
-	QLineEdit *VisibleName;
-	QComboBox *GroupCombo;
+	OAuthToken Token;
+	QString AuthorizationUrl;
+	QString CallbackUrl;
+	OAuthConsumer Consumer;
+	QNetworkAccessManager *NetworkAccessManager;
+	QNetworkReply *Reply;
 
 private slots:
-	void accepted();
-	void rejected();
-	void groupChanged(int index);
+	void requestFinished();
 
 public:
-	static void getSubscription(Contact contact, QObject* receiver, const char* slot);
-	
-	explicit SubscriptionWindow(Contact contact, QWidget* parent = 0);
-	virtual ~SubscriptionWindow();
+	explicit OAuthAuthorization(OAuthToken token, const QString &authorizationUrl, const QString &callbackUrl, OAuthConsumer consumer,
+			QNetworkAccessManager *networkAccessManager, QObject *parent = 0);
+	virtual ~OAuthAuthorization();
+
+	void authorize();
 
 signals:
-	void requestAccepted(Contact contact, bool accepted);
+	void authorized(bool ok);
 
 };
 
-#endif // SUBSCRIPTION_WINDOW_H
+#endif // OAUTH_AUTHORIZATION_H

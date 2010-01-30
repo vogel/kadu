@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
- * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,24 +17,35 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JABBER_AVATAR_SERVICE_H
-#define JABBER_AVATAR_SERVICE_H
+#include "oauth-consumer.h"
 
-#include "contacts/contact.h"
-#include "protocols/services/avatar-service.h"
-
-class JabberAvatarService : public AvatarService
+OAuthConsumer::OAuthConsumer()
 {
-	Q_OBJECT
-	Contact MyContact;
+}
 
-public:
-	explicit JabberAvatarService(Account account, QObject *parent = 0) : AvatarService(account, parent) {}
-	virtual ~JabberAvatarService() {}
+OAuthConsumer::OAuthConsumer(const OAuthConsumer &copyMe)
+{
+	ConsumerKey = copyMe.ConsumerKey;
+	ConsumerSecret = copyMe.ConsumerSecret;
+}
 
-	virtual void fetchAvatar(Contact contact);
-	virtual void uploadAvatar(QImage avatar);
+OAuthConsumer::OAuthConsumer(const QString &key, const QString &secret) :
+		ConsumerKey(key), ConsumerSecret(secret)
+{
+}
 
-};
+OAuthConsumer & OAuthConsumer::operator = (const OAuthConsumer &copyMe)
+{
+	ConsumerKey = copyMe.ConsumerKey;
+	ConsumerSecret = copyMe.ConsumerSecret;
+}
 
-#endif // JABBER_AVATAR_SERVICE_H
+QString OAuthConsumer::consumerKey()
+{
+	return ConsumerKey;
+}
+
+QString OAuthConsumer::consumerSecret()
+{
+	return ConsumerSecret;
+}

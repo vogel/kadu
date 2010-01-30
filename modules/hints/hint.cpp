@@ -46,12 +46,12 @@
  */
 Hint::Hint(QWidget *parent, Notification *notification)
 	: QWidget(parent), vbox(0), callbacksBox(0), icon(0), label(0), bcolor(), notification(notification),
-	  haveCallbacks(notification->getCallbacks().count() != 0)
+	  requireCallbacks(notification->requireCallback())
 {
 	kdebugf();
 
 	if (notification->type() == "Preview")
-		haveCallbacks = true;
+		requireCallbacks = true;
 
 	notification->acquire();
 
@@ -206,12 +206,12 @@ void Hint::notificationClosed()
 
 bool Hint::requireManualClosing()
 {
-	return haveCallbacks;
+	return requireCallbacks;
 }
 
 void Hint::nextSecond(void)
 {
-	if (!haveCallbacks)
+	if (!requireCallbacks)
 	{
 		if (secs == 0)
 			kdebugm(KDEBUG_ERROR, "ERROR: secs == 0 !\n");
@@ -225,7 +225,7 @@ void Hint::nextSecond(void)
 
 bool Hint::isDeprecated()
 {
-	return (!haveCallbacks) && secs == 0;
+	return (!requireCallbacks) && secs == 0;
 }
 
 void Hint::addDetail(const QString &detail)

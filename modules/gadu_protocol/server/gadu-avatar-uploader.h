@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
- * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,24 +17,41 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JABBER_AVATAR_SERVICE_H
-#define JABBER_AVATAR_SERVICE_H
+#ifndef GADU_AVATAR_UPLOADER_H
+#define GADU_AVATAR_UPLOADER_H
 
-#include "contacts/contact.h"
-#include "protocols/services/avatar-service.h"
+#include <QtGui/QImage>
 
-class JabberAvatarService : public AvatarService
+#include "accounts/account.h"
+
+#include "oauth/oauth-token.h"
+
+class QNetworkAccessManager;
+class QNetworkReply;
+
+class GaduAvatarUploader : public QObject
 {
 	Q_OBJECT
-	Contact MyContact;
+
+	QNetworkAccessManager *NetworkAccessManager;
+	QNetworkReply *Reply;
+
+	Account MyAccount;
+	QImage Avatar;
+
+private slots:
+	void authorized(OAuthToken token);
+	void transferFinished();
 
 public:
-	explicit JabberAvatarService(Account account, QObject *parent = 0) : AvatarService(account, parent) {}
-	virtual ~JabberAvatarService() {}
+	explicit GaduAvatarUploader(Account account, QObject *parent = 0);
+	virtual ~GaduAvatarUploader();
 
-	virtual void fetchAvatar(Contact contact);
-	virtual void uploadAvatar(QImage avatar);
+	void uploadAvatar(QImage avatar);
+
+signals:
+	void avatarUploaded(bool ok);
 
 };
 
-#endif // JABBER_AVATAR_SERVICE_H
+#endif // GADU_AVATAR_UPLOADER_H

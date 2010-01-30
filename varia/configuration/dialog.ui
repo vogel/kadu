@@ -210,9 +210,9 @@ Text is plain black." />
 
 		<tab name="Userbox">
 			<group-box name="General">
-				<check-box caption="Display group tabs" config-section="Look" config-item="DisplayGroupTabs"
+				<check-box caption="Display group tabs" config-section="Look" config-item="DisplayGroupTabs" id="displayGroupTabs"
 					   tool-tip="Displays group tabs on userbox" />
-				<check-box caption="Show group All" config-section="Look" config-item="ShowGroupAll" />
+				<check-box caption="Show group All" config-section="Look" config-item="ShowGroupAll" id="showGroupAll"/>
 				<check-box caption="Show available contacts in bold" config-section="Look" config-item="ShowBold"
 					   tool-tip="Displays users that are not offline using a bold font" />
 				<combo-box caption="Align contact icon to" config-section="Look" config-item="AlignUserboxIconsTop"

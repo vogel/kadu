@@ -1,7 +1,7 @@
 /*
+ * Copyright 2009 Dominik Kapusta (d@ayoy.net)
  * %kadu copyright begin%
- * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
- * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,24 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JABBER_AVATAR_SERVICE_H
-#define JABBER_AVATAR_SERVICE_H
+#ifndef OAUTH_H
+#define OAUTH_H
 
-#include "contacts/contact.h"
-#include "protocols/services/avatar-service.h"
-
-class JabberAvatarService : public AvatarService
-{
-	Q_OBJECT
-	Contact MyContact;
-
-public:
-	explicit JabberAvatarService(Account account, QObject *parent = 0) : AvatarService(account, parent) {}
-	virtual ~JabberAvatarService() {}
-
-	virtual void fetchAvatar(Contact contact);
-	virtual void uploadAvatar(QImage avatar);
-
-};
-
-#endif // JABBER_AVATAR_SERVICE_H
+#endif // OAUTH_H

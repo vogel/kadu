@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
- * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,24 +17,37 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JABBER_AVATAR_SERVICE_H
-#define JABBER_AVATAR_SERVICE_H
+#ifndef OAUTH_TOKEN_H
+#define OAUTH_TOKEN_H
 
-#include "contacts/contact.h"
-#include "protocols/services/avatar-service.h"
+#include <QtCore/QString>
 
-class JabberAvatarService : public AvatarService
+#include "oauth/oauth-consumer.h"
+
+class OAuthToken
 {
-	Q_OBJECT
-	Contact MyContact;
+	OAuthConsumer Consumer;
+
+	bool Valid;
+	QString Token;
+	QString TokenSecret;
+	int TokenExpiresIn;
 
 public:
-	explicit JabberAvatarService(Account account, QObject *parent = 0) : AvatarService(account, parent) {}
-	virtual ~JabberAvatarService() {}
+	OAuthToken();
+	OAuthToken(const OAuthToken &copyMe);
+	OAuthToken(const QString &token, const QString &tokenSecret, int tokenExpiresIn);
 
-	virtual void fetchAvatar(Contact contact);
-	virtual void uploadAvatar(QImage avatar);
+	OAuthToken & operator = (const OAuthToken &copyMe);
+
+	bool isValid();
+	QString token();
+	QString tokenSecret();
+	int tokenExpiresIn();
+
+	void setConsumer(OAuthConsumer consumer);
+	OAuthConsumer consumer();
 
 };
 
-#endif // JABBER_AVATAR_SERVICE_H
+#endif // OAUTH_TOKEN_H

@@ -55,7 +55,7 @@ class Hint : public QWidget, ConfigurationAwareObject
 	Notification *notification;
 	QStringList details;
 
-	bool haveCallbacks;
+	bool requireCallbacks;
 
 	void createLabels(const QPixmap &pixmap);
 	void updateText();

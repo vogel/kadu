@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
- * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,24 +17,31 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JABBER_AVATAR_SERVICE_H
-#define JABBER_AVATAR_SERVICE_H
+#ifndef OAUTH_MANAGER_H
+#define OAUTH_MANAGER_H
 
-#include "contacts/contact.h"
-#include "protocols/services/avatar-service.h"
+#include <QtCore/QObject>
 
-class JabberAvatarService : public AvatarService
+#include "oauth/oauth-consumer.h"
+#include "oauth/oauth-token.h"
+
+class QNetworkAccessManager;
+
+class OAuthManager : public QObject
 {
 	Q_OBJECT
-	Contact MyContact;
+
+	QNetworkAccessManager *NetworkManager;
 
 public:
-	explicit JabberAvatarService(Account account, QObject *parent = 0) : AvatarService(account, parent) {}
-	virtual ~JabberAvatarService() {}
+	explicit OAuthManager(QObject *parent = 0);
+	virtual ~OAuthManager();
 
-	virtual void fetchAvatar(Contact contact);
-	virtual void uploadAvatar(QImage avatar);
+	void authorize(OAuthConsumer consumer);
+
+signals:
+	void authorized(OAuthToken token);
 
 };
 
-#endif // JABBER_AVATAR_SERVICE_H
+#endif // OAUTH_MANAGER_H

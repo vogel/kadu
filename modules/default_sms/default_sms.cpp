@@ -113,7 +113,7 @@ void SmsOrangeGateway::send(const QString& number,const QString& message, const 
 void SmsOrangeGateway::httpFinished()
 {
 	kdebugf();
-	//QDialog* p=(QDialog*)(parent()->parent());
+
 	if (State==SMS_LOADING_PAGE)
 	{
 		QString Page=Http.data();
@@ -194,7 +194,7 @@ void SmsOrangeGateway::onCodeEntered(const QString& code)
 		return;
 	}
 	kdebugm(KDEBUG_INFO, "SMS User entered the code\n");
-	State=SMS_LOADING_RESULTS;
+	State = SMS_LOADING_RESULTS;
 	QString post_data=QString("token=")+Token+"&SENDER="+unicodeUrl2latinUrl(QUrl::toPercentEncoding(Signature))+"&RECIPIENT="+Number+"&SHORT_MESSAGE="+unicodeUrl2latinUrl(QUrl::toPercentEncoding(Message))+"&pass="+code+"&CHK_RESP=FALSE"+"&respInfo=1";
 	Http.post("sendsms.aspx",post_data);
 	kdebugf2();
@@ -233,7 +233,7 @@ void SmsPlusGateway::send(const QString& number, const QString& message, const Q
 void SmsPlusGateway::httpFinished()
 {
 	kdebugf();
-	QWidget* p=(QWidget*)(parent()->parent());
+
 	if (State==SMS_LOADING_PAGE)
 	{
 		QString Page=Http.data();
@@ -242,13 +242,13 @@ void SmsPlusGateway::httpFinished()
 		QRegExp code_regexp2("name=\\\"Kod(\\d+)\\\" value=\\\"(\\d+)\\\"");
 		if (code_regexp.indexIn(Page) < 0)
 		{
-			QMessageBox::critical(p,"SMS",tr("Provider gateway page looks strange. It's probably temporary disabled\nor has beed changed too much to parse it correctly."));
+			QMessageBox::critical(0,"SMS",tr("Provider gateway page looks strange. It's probably temporary disabled\nor has beed changed too much to parse it correctly."));
 			emit finished(false);
 			return;
 		}
 		if (code_regexp2.indexIn(Page) < 0)
 		{
-			QMessageBox::critical(p,"SMS",tr("Provider gateway page looks strange. It's probably temporary disabled\nor has beed changed too much to parse it correctly."));
+			QMessageBox::critical(0,"SMS",tr("Provider gateway page looks strange. It's probably temporary disabled\nor has beed changed too much to parse it correctly."));
 			emit finished(false);
 			return;
 		}
@@ -263,19 +263,19 @@ void SmsPlusGateway::httpFinished()
 	{
 		QString Page=Http.data();
 		kdebugm(KDEBUG_INFO, "SMS Provider Results Page:\n%s\n", qPrintable(Page));
-		if (Page.indexOf("Z powodu przekroczenia limitï¿½w bramki")>=0)
+		if (Page.indexOf("Z powodu przekroczenia limitÃ³w bramki")>=0)
 		{
 			kdebugm(KDEBUG_INFO, "Limit exceeded\n");
-			QMessageBox::critical(p,"SMS",tr("Limits have been exceeded, try again later."));
+			QMessageBox::critical(0,"SMS",tr("Limits have been exceeded, try again later."));
 			emit finished(false);
 		}
-		else if (Page.indexOf("SMS zostaï¿½ wysï¿½any")>=0)
+		else if (Page.indexOf("SMS zostaÅ‚ wysÅ‚any")>=0)
 			emit finished(true);
-		else if (Page.indexOf("wiadomo¶æ zosta³a wys³ana")>=0)
+		else if (Page.indexOf("wiadomoÅ›Ä‡ zostaÅ‚a wysÅ‚ana")>=0)
 			emit finished(true);
 		else
 		{
-			QMessageBox::critical(p,"SMS",tr("Provider gateway results page looks strange. SMS was probably NOT sent."));
+			QMessageBox::critical(0,"SMS",tr("Provider gateway results page looks strange. SMS was probably NOT sent."));
 			emit finished(false);
 		}
 	}
@@ -338,8 +338,6 @@ void SmsEraGateway::httpRedirected(QString link)
 {
 	kdebugmf(KDEBUG_FUNCTION_START, "link: %s\n", qPrintable(link));
 
-	QWidget *p = (QWidget*)(parent()->parent());
-
 	if (link.indexOf("localhost") > 0)
 	{
 		// remove unused parts of link
@@ -353,22 +351,22 @@ void SmsEraGateway::httpRedirected(QString link)
 		if (error == 0)
 		{
 			if (config_file.readEntry("SMS", "EraGateway") == "Sponsored")
-				QMessageBox::information(p, "SMS", tr("Number of SMS' left on Sponsored Era Gateway: ") + counters.back(), QMessageBox::Ok);
+				QMessageBox::information(0, "SMS", tr("Number of SMS' left on Sponsored Era Gateway: ") + counters.back(), QMessageBox::Ok);
 			emit finished(true);
 		}
 		else
 		{
-			QMessageBox::critical(p, "SMS", tr("Error: ") + SmsEraGateway::errorNumber(error));
+			QMessageBox::critical(0, "SMS", tr("Error: ") + SmsEraGateway::errorNumber(error));
 			emit finished(false);
 		}
 	}
 	else
-		QMessageBox::critical(p, "SMS", tr("Provider gateway results page looks strange. SMS was probably NOT sent."));
+		QMessageBox::critical(0, "SMS", tr("Provider gateway results page looks strange. SMS was probably NOT sent."));
 
 	kdebugf2();
 }
 
-// TODO: WTF is that, co za nazwa dla funkcji... kurde... kto to pisaï¿½?
+// TODO: WTF is that, co za nazwa dla funkcji... kurde... kto to pisal?
 QString SmsEraGateway::errorNumber(int nr)
 {
 	switch(nr)
