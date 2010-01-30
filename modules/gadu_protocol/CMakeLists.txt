@@ -17,13 +17,11 @@ set (SOURCES
 
 	oauth/oauth-authorization.cpp
 	oauth/oauth-authorization-chain.cpp
-	oauth/oauth-authorization-header.cpp
 	oauth/oauth-consumer.cpp
 	oauth/oauth-manager.cpp
 	oauth/oauth-parameters.cpp
 	oauth/oauth-token.cpp
 	oauth/oauth-token-fetcher.cpp
-	oauth/oauth.cpp
 
 	open-chat-with/gadu-open-chat-with-runner.cpp
 
@@ -77,7 +75,6 @@ set (MOC_SOURCES
 	oauth/oauth-authorization-chain.h
 	oauth/oauth-manager.h
 	oauth/oauth-token-fetcher.h
-	oauth/oauth.h
 
 	server/gadu-avatar-fetcher.h
 	server/gadu-avatar-uploader.h

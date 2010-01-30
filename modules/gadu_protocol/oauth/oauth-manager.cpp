@@ -17,11 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QUuid>
-#include <QtCrypto/QtCrypto>
 #include <QtNetwork/QNetworkAccessManager>
-#include <QtNetwork/QNetworkReply>
-#include <QtNetwork/QNetworkRequest>
 
 #include "oauth/oauth-authorization.h"
 #include "oauth/oauth-authorization-chain.h"

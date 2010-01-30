@@ -18,7 +18,6 @@
  */
 
 #include <QtCore/QBuffer>
-#include <QtCrypto/QtCrypto>
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>

@@ -17,7 +17,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCrypto/QtCrypto>
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>
 #include <QtXml/QDomDocument>
@@ -42,12 +41,6 @@ OAuthTokenFetcher::~OAuthTokenFetcher()
 
 void OAuthTokenFetcher::fetchToken()
 {
-	if (!QCA::isSupported("hmac(sha1)"))
-	{
-		emit tokenFetched(OAuthToken());
-		return;
-	}
-
 	OAuthParameters parameters(Consumer, Token);
 	parameters.setUrl(RequestTokenUrl);
 	parameters.sign();
