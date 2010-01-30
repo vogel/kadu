@@ -100,6 +100,23 @@ ChatWidgetManager::ChatWidgetManager()
 	kdebugf2();
 }
 
+
+ChatWidgetManager::~ChatWidgetManager()
+{
+	kdebugf();
+
+	MessageRenderInfo::unregisterParserTags();
+
+	disconnect(Core::instance(), SIGNAL(messageReceived(const Message &)),
+			this, SLOT(messageReceived(const Message &)));
+
+	closeAllWindows();
+
+	ConfigurationManager::instance()->unregisterStorableObject(this);
+
+	kdebugf2();
+}
+
 StorableObject * ChatWidgetManager::storageParent()
 {
 	return 0;
@@ -173,20 +190,6 @@ void ChatWidgetManager::store()
 	}
 
 	StorableStringList::store();
-}
-
-ChatWidgetManager::~ChatWidgetManager()
-{
-	kdebugf();
-
-	MessageRenderInfo::unregisterParserTags();
-
-	disconnect(Core::instance(), SIGNAL(messageReceived(const Message &)),
-			this, SLOT(messageReceived(const Message &)));
-
-	closeAllWindows();
-
-	kdebugf2();
 }
 
 void ChatWidgetManager::openChatWith()

@@ -75,6 +75,8 @@ void ConfigurationManager::registerStorableObject(StorableObject *object)
 
 void ConfigurationManager::unregisterStorableObject(StorableObject *object)
 {
+	object->store();
+
 	RegisteredStorableObjects.removeAll(object);
 }
 

@@ -24,18 +24,18 @@
 
 class OAuthConsumer
 {
-	QString ConsumerKey;
-	QString ConsumerSecret;
+	QByteArray ConsumerKey;
+	QByteArray ConsumerSecret;
 
 public:
 	OAuthConsumer();
 	OAuthConsumer(const OAuthConsumer &copyMe);
-	OAuthConsumer(const QString &key, const QString &secret);
+	OAuthConsumer(const QByteArray &key, const QByteArray &secret);
 
 	OAuthConsumer & operator = (const OAuthConsumer &copyMe);
 
-	QString consumerKey();
-	QString consumerSecret();
+	QByteArray consumerKey();
+	QByteArray consumerSecret();
 
 };
 

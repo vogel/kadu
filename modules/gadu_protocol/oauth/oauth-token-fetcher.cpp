@@ -17,7 +17,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCrypto/QtCrypto>
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>
 #include <QtXml/QDomDocument>
@@ -25,16 +24,6 @@
 #include "oauth/oauth-parameters.h"
 
 #include "oauth-token-fetcher.h"
-
-QString OAuthTokenFetcher::createUniqueNonce()
-{
-	return QCA::InitializationVector(16).toByteArray().toHex();
-}
-
-QString OAuthTokenFetcher::createTimestamp()
-{
-	return QString::number(QDateTime::currentDateTime().toTime_t());
-}
 
 OAuthTokenFetcher::OAuthTokenFetcher(QString requestTokenUrl, OAuthToken token, QNetworkAccessManager *networkAccessManager, QObject *parent) :
 		QObject(parent), RequestTokenUrl(requestTokenUrl), Token(token), Consumer(token.consumer()), NetworkAccessManager(networkAccessManager), Reply(0)
@@ -52,41 +41,16 @@ OAuthTokenFetcher::~OAuthTokenFetcher()
 
 void OAuthTokenFetcher::fetchToken()
 {
-	if (!QCA::isSupported("hmac(sha1)"))
-	{
-		emit tokenFetched(OAuthToken());
-		return;
-	}
-
-	QStringList signatureBaseItems;
-	signatureBaseItems.append("POST"); // the only supported method
-	signatureBaseItems.append(RequestTokenUrl.toLocal8Bit().toPercentEncoding());
-
-	OAuthParameters parameters;
-	parameters.setConsumerKey(Consumer.consumerKey());
-	parameters.setSignatureMethod("HMAC-SHA1");
-	parameters.setNonce(createUniqueNonce());
-	parameters.setTimestamp(createTimestamp());
-	parameters.setVerison("1.0");
-	parameters.setToken(Token);
-
-	signatureBaseItems.append(parameters.toSignatureBase());
-
-	QByteArray key(Consumer.consumerSecret().toLocal8Bit() + "&" + Token.tokenSecret().toLocal8Bit());
-
-	QCA::MessageAuthenticationCode hmac("hmac(sha1)", QCA::SymmetricKey(key));
-	QCA::SecureArray array(signatureBaseItems.join("&").toLocal8Bit());
-	hmac.update(array);
-
-	QByteArray digest = hmac.final().toByteArray().toBase64();
-	parameters.setSignature(digest);
+	OAuthParameters parameters(Consumer, Token);
+	parameters.setUrl(RequestTokenUrl);
+	parameters.sign();
 
 	QNetworkRequest request;
 	request.setUrl(RequestTokenUrl);
 	request.setRawHeader("Connection", "close");
 	request.setRawHeader("Content-Length", 0);
 	request.setRawHeader("Accept", "text/xml");
-	request.setRawHeader("Authorization", parameters.toAuthorizationHeader().toLatin1());
+	request.setRawHeader("Authorization", parameters.toAuthorizationHeader());
 
 	Reply = NetworkAccessManager->post(request, QByteArray());
 	connect(Reply, SIGNAL(finished()), this, SLOT(requestFinished()));
@@ -144,7 +108,7 @@ void OAuthTokenFetcher::requestFinished()
 		return;
 	}
 
-	OAuthToken token(oauthTokenElement.text(), oauthTokenSecretElement.text(), oauthTokenExpiresInlement.text().toUInt());
+	OAuthToken token(oauthTokenElement.text().toAscii(), oauthTokenSecretElement.text().toAscii(), oauthTokenExpiresInlement.text().toUInt());
 	token.setConsumer(Consumer);
 	emit tokenFetched(token);
 

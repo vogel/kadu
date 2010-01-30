@@ -42,9 +42,6 @@ private slots:
 	void requestFinished();
 
 public:
-	static QString createUniqueNonce();
-	static QString createTimestamp();
-
 	explicit OAuthTokenFetcher(QString requestTokenUrl, OAuthToken token, QNetworkAccessManager *networkAccessManager, QObject *parent = 0);
 	explicit OAuthTokenFetcher(QString requestTokenUrl, OAuthConsumer consumer, QNetworkAccessManager *networkAccessManager, QObject *parent = 0);
 	virtual ~OAuthTokenFetcher();
