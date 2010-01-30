@@ -48,22 +48,9 @@ void OAuthTokenFetcher::fetchToken()
 		return;
 	}
 
-	QStringList signatureBaseItems;
-	signatureBaseItems.append("POST"); // the only supported method
-	signatureBaseItems.append(RequestTokenUrl.toLocal8Bit().toPercentEncoding());
-
 	OAuthParameters parameters(Consumer, Token);
-
-	signatureBaseItems.append(parameters.toSignatureBase());
-
-	QByteArray key(Consumer.consumerSecret().toLocal8Bit() + "&" + Token.tokenSecret().toLocal8Bit());
-
-	QCA::MessageAuthenticationCode hmac("hmac(sha1)", QCA::SymmetricKey(key));
-	QCA::SecureArray array(signatureBaseItems.join("&").toLocal8Bit());
-	hmac.update(array);
-
-	QByteArray digest = hmac.final().toByteArray().toBase64();
-	parameters.setSignature(digest);
+	parameters.setUrl(RequestTokenUrl);
+	parameters.sign();
 
 	QNetworkRequest request;
 	request.setUrl(RequestTokenUrl);

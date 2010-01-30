@@ -90,22 +90,10 @@ void GaduAvatarUploader::authorized(OAuthToken token)
 	putAvatarRequest.setUrl(url);
 	putAvatarRequest.setHeader(QNetworkRequest::ContentTypeHeader, QString("multipart/form-data; boundary=%1").arg(boundary));
 
-	QStringList signatureBaseItems;
-	signatureBaseItems.append("PUT"); // the only supported method
-	signatureBaseItems.append(url.toLocal8Bit().toPercentEncoding());
-
 	OAuthParameters parameters(token.consumer(), token);
-
-	signatureBaseItems.append(parameters.toSignatureBase());
-
-	QByteArray key(token.consumer().consumerSecret().toLocal8Bit() + "&" + token.tokenSecret().toLocal8Bit());
-
-	QCA::MessageAuthenticationCode hmac("hmac(sha1)", QCA::SymmetricKey(key));
-	QCA::SecureArray array(signatureBaseItems.join("&").toLocal8Bit());
-	hmac.update(array);
-
-	QByteArray digest = hmac.final().toByteArray().toBase64();
-	parameters.setSignature(digest);
+	parameters.setHttpMethod("PUT");
+	parameters.setUrl(url);
+	parameters.sign();
 
 	putAvatarRequest.setRawHeader("Authorization", parameters.toAuthorizationHeader().toLatin1());
 

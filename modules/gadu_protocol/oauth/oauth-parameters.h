@@ -27,6 +27,8 @@
 class OAuthParameters
 {
 	OAuthConsumer Consumer;
+	QString HttpMethod;
+	QString Url;
 	QString SignatureMethod;
 	QString Nonce;
 	QString Timestamp;
@@ -44,6 +46,12 @@ public:
 
 	void setConsumer(OAuthConsumer consumer);
 	OAuthConsumer consumer();
+
+	void setHttpMethod(const QString &httpMethod);
+	QString httpMethod();
+
+	void setUrl(const QString &url);
+	QString url();
 	
 	void setSignatureMethod(const QString &signatureMethod);
 	QString signatureMethod();
@@ -65,6 +73,8 @@ public:
 
 	void setToken(const OAuthToken &token);
 	OAuthToken token();
+
+	void sign();
 
 	QByteArray toSignatureBase();
 	QString toAuthorizationHeader();

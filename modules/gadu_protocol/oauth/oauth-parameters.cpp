@@ -34,6 +34,7 @@ QString OAuthParameters::createTimestamp()
 
 OAuthParameters::OAuthParameters()
 {
+	setHttpMethod("POST");
 	setNonce(createUniqueNonce());
 	setTimestamp(createTimestamp());
 	setSignatureMethod("HMAC-SHA1");
@@ -43,6 +44,7 @@ OAuthParameters::OAuthParameters()
 OAuthParameters::OAuthParameters(OAuthConsumer consumer, OAuthToken token) :
 		Consumer(consumer), Token(token)
 {
+	setHttpMethod("POST");
 	setNonce(createUniqueNonce());
 	setTimestamp(createTimestamp());
 	setSignatureMethod("HMAC-SHA1");
@@ -57,6 +59,26 @@ void OAuthParameters::setConsumer(OAuthConsumer consumer)
 OAuthConsumer OAuthParameters::consumer()
 {
 	return Consumer;
+}
+
+void OAuthParameters::setHttpMethod(const QString &httpMethod)
+{
+	HttpMethod = httpMethod;
+}
+
+QString OAuthParameters::httpMethod()
+{
+	return HttpMethod;
+}
+
+void OAuthParameters::setUrl(const QString &url)
+{
+	Url = url;
+}
+
+QString OAuthParameters::url()
+{
+	return Url;
 }
 
 void OAuthParameters::setSignatureMethod(const QString &signatureMethod)
@@ -128,6 +150,23 @@ void OAuthParameters::setToken(const OAuthToken &token)
 OAuthToken OAuthParameters::token()
 {
 	return Token;
+}
+
+void OAuthParameters::sign()
+{
+	QStringList baseItems;
+	baseItems.append(HttpMethod);
+	baseItems.append(Url.toLocal8Bit().toPercentEncoding());
+	baseItems.append(toSignatureBase());
+
+	QByteArray key(Consumer.consumerSecret().toLocal8Bit() + "&" + Token.tokenSecret().toLocal8Bit());
+
+	QCA::MessageAuthenticationCode hmac("hmac(sha1)", QCA::SymmetricKey(key));
+	QCA::SecureArray array(baseItems.join("&").toLocal8Bit());
+	hmac.update(array);
+
+	QByteArray digest = hmac.final().toByteArray().toBase64();
+	setSignature(digest);
 }
 
 QByteArray OAuthParameters::toSignatureBase()
