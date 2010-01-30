@@ -97,7 +97,7 @@ TlenProtocol::TlenProtocol(Account account, ProtocolFactory *factory): Protocol(
 	kdebugf();
 
 	CurrentChatService = new TlenChatService(this);
-	CurrentAvatarService = new TlenAvatarService(this);
+	CurrentAvatarService = new TlenAvatarService(account, this);
 	CurrentPersonalInfoService = new TlenPersonalInfoService(this);
 
 	connect(ContactManager::instance(), SIGNAL(contactAboutToBeAdded(Contact)),
