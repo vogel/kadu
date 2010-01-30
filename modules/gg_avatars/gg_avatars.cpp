@@ -23,6 +23,7 @@
 #include "userbox.h"
 #include "kadu_parser.h"
 #include "config_file.h"
+#include "icons_manager.h"
 #include "userlistelement.h"
 
 GaduAvatars *gaduAvatars = 0;
@@ -69,8 +70,10 @@ QString get_avatar(const UserListElement &ule)
 #ifdef Q_OS_WIN
 		/* un-escape the spaces in filename */
 		avatar = avatar.replace("\\ ", " ");
-#endif
 		avatar = "<img src=\"" + avatar + "\"/>";
+#else
+		avatar = "<img src=\"file://" + avatar + "\"/>";
+#endif
 	}
 	return avatar;
 }
@@ -91,8 +94,11 @@ QString get_big_avatar(const UserListElement &ule)
 #ifdef Q_OS_WIN
 		/* un-escape the spaces in filename */
 		avatar = avatar.replace("\\ ", " ");
-#endif
 		avatar = "<img src=\"" + avatar + "\"/>";
+#else
+		avatar = "<img src=\"file://" + avatar + "\"/>";
+#endif
+
 	}
 
 	return avatar;
@@ -185,7 +191,7 @@ QString GaduAvatars::getAvatar(int uin, int mode)
 		buffers.insert(id, buffer);
 		uins.insert(id, uin);
 		modes.insert(id, mode);
-		return "";
+		return icons_manager->iconPath("ManageUsersWindowIcon");
 	}
 }
 
