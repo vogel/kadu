@@ -214,6 +214,8 @@ TabsManager::~TabsManager()
 	{
 		store();
 	}
+	
+	ConfigurationManager::instance()->unregisterStorableObject(this);
 
 	delete tabdialog;
 	tabdialog = 0;

@@ -40,6 +40,7 @@ TrustedCertificatesManager::TrustedCertificatesManager()
 
 TrustedCertificatesManager::~TrustedCertificatesManager()
 {
+	ConfigurationManager::instance()->unregisterStorableObject(this);
 }
 
 StorableObject * TrustedCertificatesManager::storageParent()

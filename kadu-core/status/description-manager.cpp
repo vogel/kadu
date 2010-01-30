@@ -45,6 +45,7 @@ DescriptionManager::DescriptionManager()
 
 DescriptionManager::~DescriptionManager()
 {
+	ConfigurationManager::instance()->unregisterStorableObject(this);
 }
 
 StorableObject * DescriptionManager::storageParent()
