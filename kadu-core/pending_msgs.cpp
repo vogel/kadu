@@ -157,7 +157,8 @@ bool PendingMsgs::loadFromFile()
 
 		// reading uins, first number of
 		int uins_size;
-		if (f.readBlock((char*)&uins_size, sizeof(int)) <= 0) {
+		if ((f.readBlock((char*)&uins_size, sizeof(int)) <= 0) || (uins_size <= 0)) {
+			kdebugmf(KDEBUG_WARNING, "File kadu.msgs is corrupted\n");
 			--msgs_size;
 			return false;
 		}
