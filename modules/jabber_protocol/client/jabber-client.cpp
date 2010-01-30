@@ -732,6 +732,8 @@ void JabberClient::removeContact(const XMPP::Jid &j)
 	if (!jabberClient)
 		return;
 
+	AddedContacts.removeAll(j.bare());
+	
 	JT_Roster *r = new JT_Roster(jabberClient->rootTask());
 	r->remove(j);
 	r->go(true);
