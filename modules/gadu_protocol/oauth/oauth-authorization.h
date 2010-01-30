@@ -50,7 +50,7 @@ public:
 	void authorize();
 
 signals:
-	void authorized(OAuthToken token, bool ok);
+	void authorized(bool ok);
 
 };
 

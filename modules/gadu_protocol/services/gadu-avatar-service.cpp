@@ -24,9 +24,8 @@
 
 #include "gadu-avatar-service.h"
 #include "misc/path-conversion.h"
-#include "oauth/oauth-consumer.h"
-#include "oauth/oauth-manager.h"
 #include "server/gadu-avatar-fetcher.h"
+#include "server/gadu-avatar-uploader.h"
 
 void GaduAvatarService::fetchAvatar(Contact contact)
 {
@@ -41,8 +40,10 @@ void GaduAvatarService::fetchAvatar(Contact contact)
 
 void GaduAvatarService::uploadAvatar(QImage avatar)
 {
-	OAuthConsumer oauthConsumer(account().id(), account().password());
-	OAuthManager *manager = new OAuthManager(this);
+	if (account().accountContact().id().isEmpty())
+		return;
 
-	manager->fetchToken("http://api.gadu-gadu.pl/request_token", oauthConsumer);
+	GaduAvatarUploader *avatarUploader = new GaduAvatarUploader(account(), this);
+	connect(avatarUploader, SIGNAL(avatarUploaded(bool)), this, SIGNAL(avatarUploaded(bool)));
+	avatarUploader->uploadAvatar(avatar);
 }

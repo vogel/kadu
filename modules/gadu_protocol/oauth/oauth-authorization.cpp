@@ -52,6 +52,6 @@ void OAuthAuthorization::authorize()
 
 void OAuthAuthorization::requestFinished()
 {
-	emit authorized(Token, QNetworkReply::NoError == Reply->error());
+	emit authorized(QNetworkReply::NoError == Reply->error());
 	deleteLater();
 }

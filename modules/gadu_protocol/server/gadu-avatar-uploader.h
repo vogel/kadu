@@ -17,31 +17,41 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OAUTH_MANAGER_H
-#define OAUTH_MANAGER_H
+#ifndef GADU_AVATAR_UPLOADER_H
+#define GADU_AVATAR_UPLOADER_H
 
-#include <QtCore/QObject>
+#include <QtGui/QImage>
 
-#include "oauth/oauth-consumer.h"
+#include "accounts/account.h"
+
 #include "oauth/oauth-token.h"
 
 class QNetworkAccessManager;
+class QNetworkReply;
 
-class OAuthManager : public QObject
+class GaduAvatarUploader : public QObject
 {
 	Q_OBJECT
 
-	QNetworkAccessManager *NetworkManager;
+	QNetworkAccessManager *NetworkAccessManager;
+	QNetworkReply *Reply;
+
+	Account MyAccount;
+	QImage Avatar;
+
+private slots:
+	void authorized(OAuthToken token);
+	void transferFinished();
 
 public:
-	explicit OAuthManager(QObject *parent = 0);
-	virtual ~OAuthManager();
+	explicit GaduAvatarUploader(Account account, QObject *parent = 0);
+	virtual ~GaduAvatarUploader();
 
-	void authorize(OAuthConsumer consumer);
+	void uploadAvatar(QImage avatar);
 
 signals:
-	void authorized(OAuthToken token);
+	void avatarUploaded(bool ok);
 
 };
 
-#endif // OAUTH_MANAGER_H
+#endif // GADU_AVATAR_UPLOADER_H

@@ -16,6 +16,7 @@ set (SOURCES
 	helpers/gadu-list-helper.cpp
 
 	oauth/oauth-authorization.cpp
+	oauth/oauth-authorization-chain.cpp
 	oauth/oauth-authorization-header.cpp
 	oauth/oauth-consumer.cpp
 	oauth/oauth-manager.cpp
@@ -27,6 +28,7 @@ set (SOURCES
 	open-chat-with/gadu-open-chat-with-runner.cpp
 
 	server/gadu-avatar-fetcher.cpp
+	server/gadu-avatar-uploader.cpp
 	server/gadu-server-connector.cpp
 	server/gadu-server-change-password.cpp
 	server/gadu-server-register-account.cpp
@@ -72,11 +74,13 @@ set (MOC_SOURCES
 	helpers/gadu-importer.h
 
 	oauth/oauth-authorization.h
+	oauth/oauth-authorization-chain.h
 	oauth/oauth-manager.h
 	oauth/oauth-token-fetcher.h
 	oauth/oauth.h
 
 	server/gadu-avatar-fetcher.h
+	server/gadu-avatar-uploader.h
 	server/gadu-server-connector.h
 	server/gadu-server-change-password.h
 	server/gadu-server-register-account.h

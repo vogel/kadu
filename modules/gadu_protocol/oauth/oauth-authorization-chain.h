@@ -17,8 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OAUTH_MANAGER_H
-#define OAUTH_MANAGER_H
+#ifndef OAUTH_AUTHORIZATION_CHAIN_H
+#define OAUTH_AUTHORIZATION_CHAIN_H
 
 #include <QtCore/QObject>
 
@@ -27,21 +27,38 @@
 
 class QNetworkAccessManager;
 
-class OAuthManager : public QObject
+class OAuthAuthorizationChain : public QObject
 {
 	Q_OBJECT
 
-	QNetworkAccessManager *NetworkManager;
+	QNetworkAccessManager *NetworkAccessManager;
+	OAuthConsumer Consumer;
+	OAuthToken Token;
+	OAuthToken AccessToken;
+	QString RequestTokenUrl;
+	QString AuthorizeUrl;
+	QString AuthorizeCallbackUrl;
+	QString AccessTokenUrl;
+
+private slots:
+	void requestTokenFetched(OAuthToken token);
+	void authorized(bool ok);
+	void accessTokenFetched(OAuthToken token);
 
 public:
-	explicit OAuthManager(QObject *parent = 0);
-	virtual ~OAuthManager();
+	explicit OAuthAuthorizationChain(OAuthConsumer consumer, QNetworkAccessManager *networkAccessManager, QObject *parent = 0);
+	virtual ~OAuthAuthorizationChain();
 
-	void authorize(OAuthConsumer consumer);
+	void setRequestTokenUrl(const QString &requestTokenUrl);
+	void setAuthorizeUrl(const QString &authorizeUrl);
+	void setAuthorizeCallbackUrl(const QString &authorizeCallbackUrl);
+	void setAccessTokenUrl(const QString &accessTokenUrl);
+
+	void authorize();
 
 signals:
 	void authorized(OAuthToken token);
 
 };
 
-#endif // OAUTH_MANAGER_H
+#endif // OAUTH_AUTHORIZATION_CHAIN_H

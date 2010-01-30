@@ -24,13 +24,11 @@
 #include <QtNetwork/QNetworkRequest>
 
 #include "oauth/oauth-authorization.h"
+#include "oauth/oauth-authorization-chain.h"
+#include "oauth/oauth-parameters.h"
 #include "oauth/oauth-token-fetcher.h"
 
 #include "oauth-manager.h"
-#include <QImage>
-#include <QMimeData>
-#include "oauth-parameters.h"
-#include <QFile>
 
 OAuthManager::OAuthManager(QObject *parent) :
 		QObject(parent)
@@ -42,89 +40,14 @@ OAuthManager::~OAuthManager()
 {
 }
 
-void OAuthManager::fetchToken(QString requestTokenUrl, OAuthConsumer consumer)
+void OAuthManager::authorize(OAuthConsumer consumer)
 {
-	OAuthTokenFetcher *tokenFetcher = new OAuthTokenFetcher(requestTokenUrl, consumer, NetworkManager, this);
-	connect(tokenFetcher, SIGNAL(tokenFetched(OAuthToken)), this, SLOT(tokenFetchedSlot(OAuthToken)));
-	tokenFetcher->fetchToken();
-}
+	OAuthAuthorizationChain *chain = new OAuthAuthorizationChain(consumer, NetworkManager, this);
+	chain->setRequestTokenUrl("http://api.gadu-gadu.pl/request_token");
+	chain->setAuthorizeUrl("https://login.gadu-gadu.pl/authorize");
+	chain->setAuthorizeCallbackUrl("http://www.mojageneracja.pl");
+	chain->setAccessTokenUrl("http://api.gadu-gadu.pl/access_token");
 
-void OAuthManager::tokenFetchedSlot(OAuthToken token)
-{
-	if (!token.isValid())
-		return;
-
-	OAuthAuthorization *authorization = new OAuthAuthorization(token, "https://login.gadu-gadu.pl/authorize", "http://www.mojageneracja.pl",
-			token.consumer(), NetworkManager, this);
-	connect(authorization, SIGNAL(authorized(OAuthToken, bool)), this, SLOT(authorizedSlot(OAuthToken, bool)));
-	authorization->authorize();
-}
-
-void OAuthManager::authorizedSlot(OAuthToken token, bool ok)
-{
-	if (!ok)
-		return;
-
-	OAuthTokenFetcher *tokenFetcher = new OAuthTokenFetcher("http://api.gadu-gadu.pl/access_token", token, NetworkManager, this);
-	connect(tokenFetcher, SIGNAL(tokenFetched(OAuthToken)), this, SLOT(accessTokenFetchedSlot(OAuthToken)));
-	tokenFetcher->fetchToken();
-}
-
-void OAuthManager::accessTokenFetchedSlot(OAuthToken token)
-{
-	QString boundary = QString("-----------------------------") + QUuid::createUuid().toString().remove("{").remove("}").remove("-");
-	QFile image("/home/vogel/your-accounts-1.png");
-	image.open(QIODevice::ReadOnly);
-
-	QString url = QString("http://api.gadu-gadu.pl/avatars/%1/0.xml").arg(token.consumer().consumerKey());
-
-	QByteArray payload;
-	payload += "--";
-	payload += boundary.toAscii();
-	payload += "\r\n";
-	payload += "Content-Disposition: form-data; name=\"_method\"\r\n";
-	payload += "\r\n";
-	payload += "PUT\r\n";
-	payload += "--";
-	payload += boundary.toAscii();
-	payload += "\r\n";
-	payload += "Content-Disposition: form-data; name=\"avatar\"; filename=\"avatar.png\"\r\n";
-	payload += "Content-Type: image/png\r\n";
-	payload += "\r\n";
-	payload += image.readAll();
-	payload += "\r\n";
-	payload += "--";
-	payload += boundary.toAscii();
-	payload += "--\r\n";
-
-	QNetworkRequest putAvatarRequest;
-	putAvatarRequest.setUrl(url);
-	putAvatarRequest.setHeader(QNetworkRequest::ContentTypeHeader, QString("multipart/form-data; boundary=%1").arg(boundary));
-
-	QStringList signatureBaseItems;
-	signatureBaseItems.append("PUT"); // the only supported method
-	signatureBaseItems.append(url.toLocal8Bit().toPercentEncoding());
-
-	OAuthParameters parameters;
-	parameters.setConsumerKey(token.consumer().consumerKey());
-	parameters.setSignatureMethod("HMAC-SHA1");
-	parameters.setNonce(OAuthTokenFetcher::createUniqueNonce());
-	parameters.setTimestamp(OAuthTokenFetcher::createTimestamp());
-	parameters.setVerison("1.0");
-	parameters.setToken(token);
-
-	signatureBaseItems.append(parameters.toSignatureBase());
-
-	QByteArray key(token.consumer().consumerSecret().toLocal8Bit() + "&" + token.tokenSecret().toLocal8Bit());
-
-	QCA::MessageAuthenticationCode hmac("hmac(sha1)", QCA::SymmetricKey(key));
-	QCA::SecureArray array(signatureBaseItems.join("&").toLocal8Bit());
-	hmac.update(array);
-
-	QByteArray digest = hmac.final().toByteArray().toBase64();
-	parameters.setSignature(digest);
-
-	putAvatarRequest.setRawHeader("Authorization", parameters.toAuthorizationHeader().toLatin1());
-
-	NetworkManager->post(putAvatarRequest, payload);
+	connect(chain, SIGNAL(authorized(OAuthToken)), this, SIGNAL(authorized(OAuthToken)));
+	chain->authorize();
 }
