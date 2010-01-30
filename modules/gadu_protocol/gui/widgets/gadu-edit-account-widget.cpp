@@ -299,7 +299,7 @@ void GaduEditAccountWidget::uploadAvatar()
 		return;
 
 	QString fileName = QFileDialog::getOpenFileName(this, tr("Select avatar file"),
-			config_file.readEntry("Network", "LastDownloadDirectory"), "Imags (*.jpg, *.png)");
+			config_file.readEntry("Network", "LastDownloadDirectory"), "Images (*.jpeg, *.jpg, *.png)");
 	if (fileName.isEmpty())
 		return;
 
