@@ -735,10 +735,15 @@ void JabberClient::slotCSError(int error)
 
 void JabberClient::addContact(const XMPP::Jid &j, const QString &name, const QStringList &groups, bool authReq)
 {
+	if (AddedContacts.contains(j.bare()))
+		return;
+	
 	JT_Roster *r = new JT_Roster(jabberClient->rootTask());
 	r->set(j, name, groups);
 	r->go(true);
 
+	AddedContacts.append(j.bare());
+	
 	if(authReq)
 		requestSubscription(j);
 }

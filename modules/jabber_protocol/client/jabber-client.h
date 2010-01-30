@@ -99,6 +99,7 @@ class JabberClient : public QObject
 	XMPP::QCATLSHandler *JabberTLSHandler;
 	QCA::Initializer QcaInit;
 	//PrivacyManager *privacyManager;
+	QStringList AddedContacts;
 
 	// ignore TLS warnings
 	bool IgnoreTLSWarnings;

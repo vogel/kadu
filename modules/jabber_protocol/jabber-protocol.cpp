@@ -548,12 +548,9 @@ void JabberProtocol::slotContactUpdated(const XMPP::RosterItem &item)
 
 	kdebug("New roster item: %s (Subscription: %s )\n", item.jid().full().toLocal8Bit().data(), item.subscription().toString().toLocal8Bit().data());
 
-	Contact contact = ContactManager::instance()->byId(account(), item.jid().bare(), ActionReturnNull);
-	Buddy buddy = BuddyManager::instance()->byContact(contact, ActionReturnNull);
+	Contact contact = ContactManager::instance()->byId(account(), item.jid().bare(), ActionCreateAndAdd);
+	Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
 
-	if (!contact || !buddy) // don't create contacts here - it causes loop
-		return;
-	
 	// if contact has name set it to display
 	if (!item.name().isNull())
 	{
