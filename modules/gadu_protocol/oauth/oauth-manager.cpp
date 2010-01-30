@@ -88,7 +88,7 @@ void OAuthManager::accessTokenFetchedSlot(OAuthToken token)
 	payload += "--";
 	payload += boundary.toAscii();
 	payload += "\r\n";
-	payload += "Content-Disposition: form-data; name=\"datafile\"; filename=\"avatar.png\"\r\n";
+	payload += "Content-Disposition: form-data; name=\"avatar\"; filename=\"avatar.png\"\r\n";
 	payload += "Content-Type: image/png\r\n";
 	payload += "\r\n";
 	payload += image.readAll();
@@ -102,7 +102,7 @@ void OAuthManager::accessTokenFetchedSlot(OAuthToken token)
 	putAvatarRequest.setHeader(QNetworkRequest::ContentTypeHeader, QString("multipart/form-data; boundary=%1").arg(boundary));
 
 	QStringList signatureBaseItems;
-	signatureBaseItems.append("POST"); // the only supported method
+	signatureBaseItems.append("PUT"); // the only supported method
 	signatureBaseItems.append(url.toLocal8Bit().toPercentEncoding());
 
 	OAuthParameters parameters;
