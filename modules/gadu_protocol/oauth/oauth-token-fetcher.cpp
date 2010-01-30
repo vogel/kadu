@@ -26,16 +26,6 @@
 
 #include "oauth-token-fetcher.h"
 
-QString OAuthTokenFetcher::createUniqueNonce()
-{
-	return QCA::InitializationVector(16).toByteArray().toHex();
-}
-
-QString OAuthTokenFetcher::createTimestamp()
-{
-	return QString::number(QDateTime::currentDateTime().toTime_t());
-}
-
 OAuthTokenFetcher::OAuthTokenFetcher(QString requestTokenUrl, OAuthToken token, QNetworkAccessManager *networkAccessManager, QObject *parent) :
 		QObject(parent), RequestTokenUrl(requestTokenUrl), Token(token), Consumer(token.consumer()), NetworkAccessManager(networkAccessManager), Reply(0)
 {
@@ -62,13 +52,7 @@ void OAuthTokenFetcher::fetchToken()
 	signatureBaseItems.append("POST"); // the only supported method
 	signatureBaseItems.append(RequestTokenUrl.toLocal8Bit().toPercentEncoding());
 
-	OAuthParameters parameters;
-	parameters.setConsumerKey(Consumer.consumerKey());
-	parameters.setSignatureMethod("HMAC-SHA1");
-	parameters.setNonce(createUniqueNonce());
-	parameters.setTimestamp(createTimestamp());
-	parameters.setVerison("1.0");
-	parameters.setToken(Token);
+	OAuthParameters parameters(Consumer, Token);
 
 	signatureBaseItems.append(parameters.toSignatureBase());
 

@@ -26,7 +26,7 @@
 
 class OAuthParameters
 {
-	QString ConsumerKey;
+	OAuthConsumer Consumer;
 	QString SignatureMethod;
 	QString Nonce;
 	QString Timestamp;
@@ -36,10 +36,14 @@ class OAuthParameters
 	OAuthToken Token;
 
 public:
-	OAuthParameters();
+	static QString createUniqueNonce();
+	static QString createTimestamp();
 
-	void setConsumerKey(const QString &consumerKey);
-	QString consumerKey();
+	OAuthParameters();
+	OAuthParameters(OAuthConsumer consumer, OAuthToken token);
+
+	void setConsumer(OAuthConsumer consumer);
+	OAuthConsumer consumer();
 	
 	void setSignatureMethod(const QString &signatureMethod);
 	QString signatureMethod();

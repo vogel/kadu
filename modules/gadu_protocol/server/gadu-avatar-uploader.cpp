@@ -94,13 +94,7 @@ void GaduAvatarUploader::authorized(OAuthToken token)
 	signatureBaseItems.append("PUT"); // the only supported method
 	signatureBaseItems.append(url.toLocal8Bit().toPercentEncoding());
 
-	OAuthParameters parameters;
-	parameters.setConsumerKey(token.consumer().consumerKey());
-	parameters.setSignatureMethod("HMAC-SHA1");
-	parameters.setNonce(OAuthTokenFetcher::createUniqueNonce());
-	parameters.setTimestamp(OAuthTokenFetcher::createTimestamp());
-	parameters.setVerison("1.0");
-	parameters.setToken(token);
+	OAuthParameters parameters(token.consumer(), token);
 
 	signatureBaseItems.append(parameters.toSignatureBase());
 

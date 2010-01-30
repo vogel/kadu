@@ -18,21 +18,45 @@
  */
 
 #include <QtCore/QStringList>
+#include <QtCrypto/QtCrypto>
 
 #include "oauth-parameters.h"
 
+QString OAuthParameters::createUniqueNonce()
+{
+	return QCA::InitializationVector(16).toByteArray().toHex();
+}
+
+QString OAuthParameters::createTimestamp()
+{
+	return QString::number(QDateTime::currentDateTime().toTime_t());
+}
+
 OAuthParameters::OAuthParameters()
 {
+	setNonce(createUniqueNonce());
+	setTimestamp(createTimestamp());
+	setSignatureMethod("HMAC-SHA1");
+	setVerison("1.0");
 }
 
-void OAuthParameters::setConsumerKey(const QString &consumerKey)
+OAuthParameters::OAuthParameters(OAuthConsumer consumer, OAuthToken token) :
+		Consumer(consumer), Token(token)
 {
-	ConsumerKey = consumerKey;
+	setNonce(createUniqueNonce());
+	setTimestamp(createTimestamp());
+	setSignatureMethod("HMAC-SHA1");
+	setVerison("1.0");
 }
 
-QString OAuthParameters::consumerKey()
+void OAuthParameters::setConsumer(OAuthConsumer consumer)
 {
-	return ConsumerKey;
+	Consumer = consumer;
+}
+
+OAuthConsumer OAuthParameters::consumer()
+{
+	return Consumer;
 }
 
 void OAuthParameters::setSignatureMethod(const QString &signatureMethod)
@@ -109,7 +133,7 @@ OAuthToken OAuthParameters::token()
 QByteArray OAuthParameters::toSignatureBase()
 {
 	QStringList result;
-	result.append(QString("oauth_consumer_key=%1").arg(ConsumerKey));
+	result.append(QString("oauth_consumer_key=%1").arg(Consumer.consumerKey()));
 	result.append(QString("oauth_nonce=%1").arg(Nonce));
 	result.append(QString("oauth_signature_method=%1").arg(SignatureMethod));
 	result.append(QString("oauth_timestamp=%1").arg(Timestamp));
@@ -126,7 +150,7 @@ QString OAuthParameters::toAuthorizationHeader()
 	result.append(QString("realm=\"%1\"").arg(Realm));
 	result.append(QString("oauth_nonce=\"%1\"").arg(Nonce));
 	result.append(QString("oauth_timestamp=\"%1\"").arg(Timestamp));
-	result.append(QString("oauth_consumer_key=\"%1\"").arg(ConsumerKey));
+	result.append(QString("oauth_consumer_key=\"%1\"").arg(Consumer.consumerKey()));
 	result.append(QString("oauth_signature_method=\"%1\"").arg(SignatureMethod));
 	result.append(QString("oauth_version=\"%1\"").arg(Version));
 	if (!Token.token().isEmpty())
