@@ -50,7 +50,7 @@ void OAuthTokenFetcher::fetchToken()
 	request.setRawHeader("Connection", "close");
 	request.setRawHeader("Content-Length", 0);
 	request.setRawHeader("Accept", "text/xml");
-	request.setRawHeader("Authorization", parameters.toAuthorizationHeader().toLatin1());
+	request.setRawHeader("Authorization", parameters.toAuthorizationHeader());
 
 	Reply = NetworkAccessManager->post(request, QByteArray());
 	connect(Reply, SIGNAL(finished()), this, SLOT(requestFinished()));
@@ -108,7 +108,7 @@ void OAuthTokenFetcher::requestFinished()
 		return;
 	}
 
-	OAuthToken token(oauthTokenElement.text(), oauthTokenSecretElement.text(), oauthTokenExpiresInlement.text().toUInt());
+	OAuthToken token(oauthTokenElement.text().toAscii(), oauthTokenSecretElement.text().toAscii(), oauthTokenExpiresInlement.text().toUInt());
 	token.setConsumer(Consumer);
 	emit tokenFetched(token);
 

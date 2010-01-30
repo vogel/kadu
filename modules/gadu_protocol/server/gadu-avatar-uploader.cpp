@@ -46,7 +46,7 @@ void GaduAvatarUploader::uploadAvatar(QImage avatar)
 
 	OAuthManager *authManager = new OAuthManager(this);
 	connect(authManager, SIGNAL(authorized(OAuthToken)), this, SLOT(authorized(OAuthToken)));
-	authManager->authorize(OAuthConsumer(MyAccount.id(), MyAccount.password()));
+	authManager->authorize(OAuthConsumer(MyAccount.id().toUtf8(), MyAccount.password().toUtf8()));
 }
 
 void GaduAvatarUploader::authorized(OAuthToken token)
@@ -64,7 +64,10 @@ void GaduAvatarUploader::authorized(OAuthToken token)
 	Avatar.save(&avatarBuffer, "PNG");
 	avatarBuffer.close();
 
-	QString url = QString("http://api.gadu-gadu.pl/avatars/%1/0.xml").arg(token.consumer().consumerKey());
+	QByteArray url;
+	url += "http://api.gadu-gadu.pl/avatars/";
+	url += token.consumer().consumerKey();
+	url += "/0.xml";
 
 	QByteArray payload;
 	payload += "--";
@@ -86,7 +89,7 @@ void GaduAvatarUploader::authorized(OAuthToken token)
 	payload += "--\r\n";
 
 	QNetworkRequest putAvatarRequest;
-	putAvatarRequest.setUrl(url);
+	putAvatarRequest.setUrl(QString(url));
 	putAvatarRequest.setHeader(QNetworkRequest::ContentTypeHeader, QString("multipart/form-data; boundary=%1").arg(boundary));
 
 	OAuthParameters parameters(token.consumer(), token);
@@ -94,7 +97,7 @@ void GaduAvatarUploader::authorized(OAuthToken token)
 	parameters.setUrl(url);
 	parameters.sign();
 
-	putAvatarRequest.setRawHeader("Authorization", parameters.toAuthorizationHeader().toLatin1());
+	putAvatarRequest.setRawHeader("Authorization", parameters.toAuthorizationHeader());
 
 	Reply = NetworkAccessManager->post(putAvatarRequest, payload);
 	connect(Reply, SIGNAL(finished()), SLOT(transferFinished()));

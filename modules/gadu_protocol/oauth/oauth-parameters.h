@@ -34,7 +34,7 @@ class OAuthParameters
 	QString Timestamp;
 	QString Version;
 	QString Realm;
-	QString Signature;
+	QByteArray Signature;
 	OAuthToken Token;
 
 public:
@@ -68,8 +68,8 @@ public:
 	void setRealm(const QString &realm);
 	QString realm();
 
-	void setSignature(const QString &signature);
-	QString signature();
+	void setSignature(const QByteArray &signature);
+	QByteArray signature();
 
 	void setToken(const OAuthToken &token);
 	OAuthToken token();
@@ -77,7 +77,7 @@ public:
 	void sign();
 
 	QByteArray toSignatureBase();
-	QString toAuthorizationHeader();
+	QByteArray toAuthorizationHeader();
 
 };
 

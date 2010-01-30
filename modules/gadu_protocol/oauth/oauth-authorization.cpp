@@ -36,10 +36,13 @@ OAuthAuthorization::~OAuthAuthorization()
 
 void OAuthAuthorization::authorize()
 {
-	QByteArray payback = QString("callback_url=http://www.mojageneracja.pl&request_token=%1&uin=%2&password=%3")
-		.arg(Token.token())
-		.arg(Token.consumer().consumerKey())
-		.arg(Token.consumer().consumerSecret()).toAscii();
+	QByteArray payback;
+	payback += "callback_url=http://www.mojageneracja.pl&request_token=";
+	payback += Token.token();
+	payback += "&uin=";
+	payback += Token.consumer().consumerKey();
+	payback += "&password=";
+	payback += Token.consumer().consumerSecret();
 
 	QNetworkRequest request;
 	request.setUrl(AuthorizationUrl);

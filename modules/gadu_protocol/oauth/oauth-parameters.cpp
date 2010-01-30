@@ -131,12 +131,12 @@ QString OAuthParameters::realm()
 	return Realm;
 }
 
-void OAuthParameters::setSignature(const QString &signature)
+void OAuthParameters::setSignature(const QByteArray &signature)
 {
 	Signature = signature;
 }
 
-QString OAuthParameters::signature()
+QByteArray OAuthParameters::signature()
 {
 	return Signature;
 }
@@ -159,7 +159,10 @@ void OAuthParameters::sign()
 	baseItems.append(Url.toLocal8Bit().toPercentEncoding());
 	baseItems.append(toSignatureBase());
 
-	QByteArray key(Consumer.consumerSecret().toLocal8Bit() + "&" + Token.tokenSecret().toLocal8Bit());
+	QByteArray key;
+	key += Consumer.consumerSecret();
+	key += "&";
+	key += Token.tokenSecret();
 
 	QCA::MessageAuthenticationCode hmac("hmac(sha1)", QCA::SymmetricKey(key));
 	QCA::SecureArray array(baseItems.join("&").toLocal8Bit());
@@ -171,30 +174,66 @@ void OAuthParameters::sign()
 
 QByteArray OAuthParameters::toSignatureBase()
 {
-	QStringList result;
-	result.append(QString("oauth_consumer_key=%1").arg(Consumer.consumerKey()));
-	result.append(QString("oauth_nonce=%1").arg(Nonce));
-	result.append(QString("oauth_signature_method=%1").arg(SignatureMethod));
-	result.append(QString("oauth_timestamp=%1").arg(Timestamp));
-	if (!Token.token().isEmpty())
-		result.append(QString("oauth_token=%1").arg(Token.token()));
-	result.append(QString("oauth_version=%1").arg(Version));
+	QByteArray result;
+	result += "oauth_consumer_key=";
+	result += Consumer.consumerKey();
+	result += "&";
+	result += "oauth_nonce=";
+	result += Nonce;
+	result += "&";
+	result +="oauth_signature_method=";
+	result += SignatureMethod;
+	result += "&";
+	result += "oauth_timestamp=";
+	result += Timestamp;
+	result += "&";
 
-	return result.join("&").toLocal8Bit().toPercentEncoding();
+	if (!Token.token().isEmpty())
+	{
+		result += "oauth_token=";
+		result += Token.token();
+		result += "&";
+	}
+
+	result += "oauth_version=";
+	result += Version;
+
+	return result.toPercentEncoding();
 }
 
-QString OAuthParameters::toAuthorizationHeader()
+QByteArray OAuthParameters::toAuthorizationHeader()
 {
-	QStringList result;
-	result.append(QString("realm=\"%1\"").arg(Realm));
-	result.append(QString("oauth_nonce=\"%1\"").arg(Nonce));
-	result.append(QString("oauth_timestamp=\"%1\"").arg(Timestamp));
-	result.append(QString("oauth_consumer_key=\"%1\"").arg(Consumer.consumerKey()));
-	result.append(QString("oauth_signature_method=\"%1\"").arg(SignatureMethod));
-	result.append(QString("oauth_version=\"%1\"").arg(Version));
-	if (!Token.token().isEmpty())
-		result.append(QString("oauth_token=\"%1\"").arg(Token.token()));
-	result.append(QString("oauth_signature=\"%1\"").arg(QString(Signature.toLocal8Bit().toPercentEncoding())));
+	QByteArray result;
+	result += "OAuth ";
+	result += "realm=\"";
+	result += Realm;
+	result += "\", ";
+	result += "oauth_nonce=\"";
+	result += Nonce;
+	result += "\", ";
+	result += "oauth_timestamp=\"";
+	result += Timestamp;
+	result += "\", ";
+	result += "oauth_consumer_key=\"";
+	result += Consumer.consumerKey();
+	result += "\", ";
+	result += "oauth_signature_method=\"";
+	result += SignatureMethod;
+	result += "\", ";
+	result += "oauth_version=\"";
+	result += Version;
+	result += "\", ";
 
-	return QString("OAuth %1").arg(result.join(", "));
+	if (!Token.token().isEmpty())
+	{
+		result += "oauth_token=\"";
+		result += Token.token();
+		result += "\", ";
+	}
+
+	result += "oauth_signature=\"";
+	result += Signature.toPercentEncoding();
+	result += "\", ";
+
+	return result;
 }

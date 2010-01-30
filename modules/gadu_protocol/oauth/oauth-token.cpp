@@ -33,7 +33,7 @@ OAuthToken::OAuthToken(const OAuthToken &copyMe)
 	TokenExpiresIn = copyMe.TokenExpiresIn;
 }
 
-OAuthToken::OAuthToken(const QString &token, const QString &tokenSecret, int tokenExpiresIn) :
+OAuthToken::OAuthToken(const QByteArray &token, const QByteArray &tokenSecret, int tokenExpiresIn) :
 		Valid(true), Token(token), TokenSecret(tokenSecret), TokenExpiresIn(tokenExpiresIn)
 {
 }
@@ -52,12 +52,12 @@ bool OAuthToken::isValid()
 	return Valid;
 }
 
-QString OAuthToken::token()
+QByteArray OAuthToken::token()
 {
 	return Token;
 }
 
-QString OAuthToken::tokenSecret()
+QByteArray OAuthToken::tokenSecret()
 {
 	return TokenSecret;
 }
