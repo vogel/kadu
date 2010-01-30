@@ -402,6 +402,7 @@ void BuddiesListView::updateBackground()
 	QString style;
 	style.append("QTreeView::branch:has-siblings:!adjoins-item { border-image: none; image: none }");
 	style.append("QTreeView::branch:has-siblings:adjoins-item { border-image: none; image: none }");
+	style.append("QTreeView::branch:has-childres:!has-siblings:adjoins-item { border-image: none; image: none }");
 	style.append("QTreeView::branch:has-children:!has-siblings:closed, QTreeView::branch:closed:has-children:has-siblings "
 		     "{ border-image: none; image: url(" + IconsManager::instance()->iconPath("BranchClosed") + ") }");
 	style.append("QTreeView::branch:open:has-children:!has-siblings, QTreeView::branch:open:has-children:has-siblings "
