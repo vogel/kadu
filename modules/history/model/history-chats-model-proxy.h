@@ -56,6 +56,9 @@ public:
 	QModelIndex statusIndex() const;
 	QModelIndex statusBuddyIndex(Buddy buddy) const;
 
+	QModelIndex smsIndex() const;
+	QModelIndex smsReceipientIndex(const QString &smsReceipient) const;
+
 };
 
 #endif // HISTORY_CHATS_MODEL_PROXY

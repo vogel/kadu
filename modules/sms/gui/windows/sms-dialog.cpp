@@ -294,13 +294,12 @@ void SmsDialog::updateCounter()
 void SmsDialog::onSmsSenderFinished(bool success)
 {
 	kdebugf();
+
 	if (success)
 	{
 		if (c_saveInHistory->isChecked())
-		{
-		//TODO 0.6.6
-		///	history->appendSms(recipient->text(), body->text());
-		}
+			History::instance()->appendSms(recipient->text(), body->toPlainText());
+
 		MobileNumberManager::instance()->registerNumber(recipient->text(), Sender.currentGateway()->name());
 
 		body->clear();
@@ -308,6 +307,7 @@ void SmsDialog::onSmsSenderFinished(bool success)
 		e_signature->clear();
 		recipient->clear();
 	}
+
 	b_send->setEnabled(true);
 	body->setEnabled(true);
 	e_contact->setEnabled(true);
