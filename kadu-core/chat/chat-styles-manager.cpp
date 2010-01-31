@@ -371,6 +371,7 @@ void ChatStylesManager::preparePreview(Preview *preview)
 	Chat chat = Chat::create();
 	chat.setChatAccount(example.prefferedAccount());
 	ChatDetailsSimple *details = new ChatDetailsSimple(chat);
+	details->setState(StorableObject::StateNew);
 	details->setContact(example.prefferedContact());
 	chat.setDetails(details);
 
