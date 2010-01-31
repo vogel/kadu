@@ -161,7 +161,7 @@ void AdiumChatStyleEngine::appendMessage(HtmlMessagesRenderer *renderer, Message
 	renderer->setLastMessage(message);
 }
 
-void AdiumChatStyleEngine::refreshView(HtmlMessagesRenderer *renderer)
+void AdiumChatStyleEngine::refreshView(HtmlMessagesRenderer *renderer, bool useTransparency)
 {
 	QString styleBaseHtml = CurrentStyle.templateHtml();
 	styleBaseHtml.replace(styleBaseHtml.indexOf("%@"), 2, "file://" + CurrentStyle.baseHref());
@@ -175,6 +175,9 @@ void AdiumChatStyleEngine::refreshView(HtmlMessagesRenderer *renderer)
 
 	if (styleBaseHtml.contains("%@"))
 		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, "@import url( \"main.css\" );");
+
+	if (useTransparency && !CurrentStyle.defaultBackgroundIsTransparent())
+		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("==bodyBackground=="), 18, "background-image: none; background: none; background-color: rgba(0, 0, 0, 0)");
 
 	renderer->webPage()->mainFrame()->setHtml(styleBaseHtml);
 	renderer->webPage()->mainFrame()->evaluateJavaScript(jsCode);

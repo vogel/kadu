@@ -65,7 +65,7 @@ void KaduChatStyleEngine::appendMessage(HtmlMessagesRenderer *renderer, MessageR
 	repaintMessages(renderer);
 }
 
-void KaduChatStyleEngine::refreshView(HtmlMessagesRenderer *renderer)
+void KaduChatStyleEngine::refreshView(HtmlMessagesRenderer *renderer, bool useTransparency)
 {
 	repaintMessages(renderer);
 }
