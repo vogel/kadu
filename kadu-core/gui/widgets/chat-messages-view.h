@@ -32,12 +32,12 @@
 
 #include "exports.h"
 
-class Chat;
-class ChatWidget;
-class MessageRenderInfo;
 class QResizeEvent;
 
+class Chat;
+class ChatWidget;
 class HtmlMessagesRenderer;
+class MessageRenderInfo;
 
 class KADUAPI ChatMessagesView : public KaduTextBrowser
 {
@@ -48,6 +48,8 @@ class KADUAPI ChatMessagesView : public KaduTextBrowser
 
 	int LastScrollValue;
 	bool LastLine;
+
+	bool SupportTransparency;
 
 	void connectChat();
 	void disconnectChat();
@@ -67,7 +69,7 @@ private slots:
 	void messageStatusChanged(Message::Status);
 
 public:
-	ChatMessagesView(Chat chat = 0, QWidget *parent = 0);
+	ChatMessagesView(Chat chat = 0, bool supportTransparency = true, QWidget *parent = 0);
 	virtual ~ChatMessagesView();
 
 	HtmlMessagesRenderer * renderer() { return Renderer; }
@@ -89,6 +91,8 @@ public:
 
 	Chat chat() const { return CurrentChat; }
 	void setChat(Chat chat);
+
+	bool supportTransparency() { return SupportTransparency; }
 
 public slots:
 	void clearMessages();

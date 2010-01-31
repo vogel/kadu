@@ -96,13 +96,15 @@ void ChatStylesManager::chatViewCreated(ChatMessagesView *view)
 	if (0 != view)
 	{
 		chatViews.append(view);
-		CurrentEngine->refreshView(view->renderer());
-		if (CompositingEnabled && config_file.readBoolEntry("Chat", "UseTransparency", false))
+
+		bool useTransparency = view->supportTransparency() && CompositingEnabled && config_file.readBoolEntry("Chat", "UseTransparency", false);
+		if (useTransparency)
 		{
 			QPalette palette = view->renderer()->webPage()->palette();
 			palette.setBrush(QPalette::Base, Qt::transparent);
 			view->renderer()->webPage()->setPalette(palette);
 		}
+		CurrentEngine->refreshView(view->renderer(), useTransparency);
 	}
 }
 
@@ -192,12 +194,6 @@ void ChatStylesManager::configurationUpdated()
 		CurrentEngine->configurationUpdated();
 
 	triggerCompositingStateChanged();
-
-	foreach (ChatMessagesView *view, chatViews)
-	{
-		view->updateBackgroundsAndColors();
-		CurrentEngine->refreshView(view->renderer());
-	}
 }
 
 void ChatStylesManager::compositingEnabled()
@@ -205,14 +201,25 @@ void ChatStylesManager::compositingEnabled()
 	CompositingEnabled = true;
 	foreach (ChatMessagesView *view, chatViews)
 	{
+		view->updateBackgroundsAndColors();
+
+		if (!view->supportTransparency())
+		{
+			CurrentEngine->refreshView(view->renderer());
+			continue;
+		}
+
 		QPalette palette = view->renderer()->webPage()->palette();
-		if (config_file.readBoolEntry("Chat", "UseTransparency", false))
+
+		bool useTransparency = config_file.readBoolEntry("Chat", "UseTransparency", false);
+		if (useTransparency)
 			palette.setBrush(QPalette::Base, Qt::transparent);
 		else
 			palette.setBrush(QPalette::Base, config_file.readColorEntry("Look", "ChatBgColor"));
 
 		view->renderer()->webPage()->setPalette(palette);
-		CurrentEngine->refreshView(view->renderer());
+
+		CurrentEngine->refreshView(view->renderer(), useTransparency);
 	}
 
 	if (turnOnTransparency)
@@ -224,6 +231,11 @@ void ChatStylesManager::compositingDisabled()
 	CompositingEnabled = false;
 	foreach (ChatMessagesView *view, chatViews)
 	{
+		view->updateBackgroundsAndColors();
+
+		if (!view->supportTransparency())
+			continue;
+
 		QPalette palette = view->renderer()->webPage()->palette();
 		palette.setBrush(QPalette::Base, config_file.readColorEntry("Look", "ChatBgColor"));
 

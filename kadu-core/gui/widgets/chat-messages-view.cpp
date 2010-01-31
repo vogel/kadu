@@ -40,8 +40,8 @@
 
 #include "chat-messages-view.h"
 
-ChatMessagesView::ChatMessagesView(Chat chat, QWidget *parent) : KaduTextBrowser(parent),
-	LastScrollValue(0), LastLine(false), CurrentChat(chat)
+ChatMessagesView::ChatMessagesView(Chat chat, bool supportTransparency, QWidget *parent) : KaduTextBrowser(parent),
+	LastScrollValue(0), LastLine(false), CurrentChat(chat), SupportTransparency(supportTransparency)
 {
 	Renderer = new HtmlMessagesRenderer(CurrentChat, this);
 

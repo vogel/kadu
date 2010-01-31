@@ -52,7 +52,7 @@ public:
 	virtual void appendMessages(HtmlMessagesRenderer *, QList<MessageRenderInfo *>) = 0;
 	virtual void appendMessage(HtmlMessagesRenderer *, MessageRenderInfo *) = 0;
 	virtual void pruneMessage(HtmlMessagesRenderer *) = 0;
-	virtual void refreshView(HtmlMessagesRenderer *) = 0;
+	virtual void refreshView(HtmlMessagesRenderer *, bool useTransparency = false) = 0;
 	virtual void messageStatusChanged(HtmlMessagesRenderer *, Message, Message::Status) = 0;
 
 	virtual void prepareStylePreview(Preview *, QString, QString) = 0;
