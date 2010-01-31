@@ -27,8 +27,11 @@
 
 #include "storage/shared.h"
 
-class KADUAPI AvatarShared : public Shared
+class KADUAPI AvatarShared : public QObject, public Shared
 {
+	Q_OBJECT
+	Q_DISABLE_COPY(AvatarShared)
+
 	Contact AvatarContact;
 	QDateTime LastUpdated;
 	QDateTime NextUpdate;
@@ -38,6 +41,8 @@ class KADUAPI AvatarShared : public Shared
 
 protected:
 	virtual void load();
+	
+	virtual void emitUpdated();
 
 public:
 	static AvatarShared * loadFromStorage(StoragePoint *avatarStoragePoint);
@@ -62,6 +67,9 @@ public:
 	KaduShared_Property(QDateTime, lastUpdated, LastUpdated)
 	KaduShared_Property(QDateTime, nextUpdate, NextUpdate)
 	KaduShared_PropertyRead(QPixmap, pixmap, Pixmap)
+
+signals:
+	void updated();
 
 };
 

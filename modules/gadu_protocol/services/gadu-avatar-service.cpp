@@ -44,6 +44,6 @@ void GaduAvatarService::uploadAvatar(QImage avatar)
 		return;
 
 	GaduAvatarUploader *avatarUploader = new GaduAvatarUploader(account(), this);
-	connect(avatarUploader, SIGNAL(avatarUploaded(bool)), this, SIGNAL(avatarUploaded(bool)));
+	connect(avatarUploader, SIGNAL(avatarUploaded(bool, QImage)), this, SIGNAL(avatarUploaded(bool, QImage)));
 	avatarUploader->uploadAvatar(avatar);
 }

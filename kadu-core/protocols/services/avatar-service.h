@@ -47,7 +47,7 @@ public:
 
 signals:
 	void avatarFetched(Contact contact, const QByteArray &avatar);
-	void avatarUploaded(bool ok);
+	void avatarUploaded(bool ok, QImage avatar);
 
 };
 
