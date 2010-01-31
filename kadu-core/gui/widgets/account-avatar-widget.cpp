@@ -19,18 +19,24 @@
 
 #include <QtGui/QFileDialog>
 #include <QtGui/QLabel>
+#include <QtGui/QMovie>
 #include <QtGui/QPushButton>
 #include <QtGui/QVBoxLayout>
 
 #include "buddies/avatar.h"
 #include "protocols/services/avatar-service.h"
 #include "protocols/protocol.h"
+#include "icons-manager.h"
 
 #include "account-avatar-widget.h"
 
 AccountAvatarWidget::AccountAvatarWidget(Account account, QWidget *parent) :
-		QWidget(parent), MyAccount(account), Service(0)
+		QWidget(parent), MyAccount(account), Service(0), WaitMovie(0)
 {
+
+	QString pleaseWaithPath = IconsManager::instance()->iconPath("PleaseWait");
+	WaitMovie = new QMovie(pleaseWaithPath);
+
 	createGui();
 
 	triggerAllProtocolsRegistered();
@@ -38,7 +44,8 @@ AccountAvatarWidget::AccountAvatarWidget(Account account, QWidget *parent) :
 
 AccountAvatarWidget::~AccountAvatarWidget()
 {
-
+	if (WaitMovie)
+		delete WaitMovie;
 }
 
 void AccountAvatarWidget::createGui()
@@ -46,8 +53,9 @@ void AccountAvatarWidget::createGui()
 	QVBoxLayout *layout = new QVBoxLayout(this);
 
 	AvatarLabel = new QLabel();
-	AvatarLabel->setScaledContents(true);
+	AvatarLabel->setAlignment(Qt::AlignCenter);
 	AvatarLabel->setMaximumSize(128, 128);
+	AvatarLabel->setScaledContents(true);
 
 	Avatar avatar = MyAccount.accountContact().contactAvatar();
 	if (avatar)
@@ -56,10 +64,10 @@ void AccountAvatarWidget::createGui()
 
 	layout->addWidget(AvatarLabel);
 
-	QPushButton *changeAvatar = new QPushButton(tr("Change avatar..."), this);
-	connect(changeAvatar, SIGNAL(clicked(bool)), this, SLOT(changeAvatar()));
+	ChangeAvatarButton = new QPushButton(tr("Change avatar..."), this);
+	connect(ChangeAvatarButton, SIGNAL(clicked(bool)), this, SLOT(changeAvatar()));
 
-	layout->addWidget(changeAvatar);
+	layout->addWidget(ChangeAvatarButton, 0, Qt::AlignHCenter);
 }
 
 void AccountAvatarWidget::protocolRegistered(ProtocolFactory *protocolFactory)
@@ -85,6 +93,9 @@ void AccountAvatarWidget::protocolUnregistered(ProtocolFactory *protocolFactory)
 
 void AccountAvatarWidget::avatarUpdated()
 {
+	WaitMovie->stop();
+	AvatarLabel->setMovie(0);
+	AvatarLabel->setScaledContents(true);
 	AvatarLabel->setPixmap(MyAccount.accountContact().contactAvatar().pixmap());
 }
 
@@ -98,9 +109,12 @@ void AccountAvatarWidget::changeAvatar()
 	if (avatar.isNull())
 		return;
 
-	AvatarLabel->setPixmap(QPixmap::fromImage(avatar));
+	AvatarLabel->setScaledContents(false);
+	AvatarLabel->setMovie(WaitMovie);
+	WaitMovie->start();
 
 	Service->uploadAvatar(avatar);
+	ChangeAvatarButton->setEnabled(false);
 }
 
 void AccountAvatarWidget::avatarUploaded(bool ok, QImage image)
@@ -109,4 +123,5 @@ void AccountAvatarWidget::avatarUploaded(bool ok, QImage image)
 		MyAccount.accountContact().contactAvatar().setPixmap(QPixmap::fromImage(image));
 
 	avatarUpdated();
+	ChangeAvatarButton->setEnabled(true);
 }

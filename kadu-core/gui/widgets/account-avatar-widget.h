@@ -25,6 +25,7 @@
 #include "accounts/account.h"
 
 class QLabel;
+class QPushButton;
 
 class AvatarService;
 
@@ -36,6 +37,8 @@ class AccountAvatarWidget : public QWidget, ProtocolsAwareObject
 	AvatarService *Service;
 
 	QLabel *AvatarLabel;
+	QMovie *WaitMovie;
+	QPushButton *ChangeAvatarButton;
 
 	void createGui();
 
