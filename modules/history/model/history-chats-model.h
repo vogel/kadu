@@ -38,16 +38,19 @@ class HistoryChatsModel : public QAbstractItemModel, ChatTypeAwareObject
 	QList<QList<Chat> > Chats;
 
 	QList<Buddy> StatusBuddies;
+	QList<QString> SmsReceipients;
 
 	void clearChats();
 	void addChat(Chat chat);
 
 	void clearStatusBuddies();
+	void clearSmsReceipients();
 
 	QVariant chatTypeData(const QModelIndex &index, int role = Qt::DisplayRole) const;
 	QVariant chatData(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
 	QVariant statusData(const QModelIndex &index, int role = Qt::DisplayRole) const;
+	QVariant smsReceipientData(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
 protected:
 	virtual void chatTypeRegistered(ChatType *chatType);
@@ -67,12 +70,16 @@ public:
 
 	void setChats(QList<Chat> chats);
 	void setStatusBuddies(QList<Buddy> buddies);
+	void setSmsReceipients(QList<QString> smsReceipients);
 
 	QModelIndex chatTypeIndex(ChatType *type) const;
 	QModelIndex chatIndex(Chat chat) const;
 
 	QModelIndex statusIndex() const;
 	QModelIndex statusBuddyIndex(Buddy buddy) const;
+
+	QModelIndex smsIndex() const;
+	QModelIndex smsReceipientIndex(const QString &receipient) const;
 
 };
 

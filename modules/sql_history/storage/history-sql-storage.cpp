@@ -591,7 +591,7 @@ QList<QDate> HistorySqlStorage::datesForSmsReceipient(const QString &receipient,
 	DatabaseMutex.lock();
 
 	QSqlQuery query(Database);
-	QString queryString = "SELECT DISTINCT date(send_data) as date FROM kadu_sms WHERE receipient = :receipient";
+	QString queryString = "SELECT DISTINCT date(send_time) as date FROM kadu_sms WHERE receipient = :receipient";
 
 	if (!search.query().isEmpty())
 		queryString += " AND content LIKE :content";
@@ -666,9 +666,9 @@ int HistorySqlStorage::smsCount(const QString &receipient, QDate date)
 	DatabaseMutex.lock();
 
 	QSqlQuery query(Database);
-	QString queryString = "SELECT COUNT(chat) FROM kadu_sms WHERE receipient = :receipient";
+	QString queryString = "SELECT COUNT(receipient) FROM kadu_sms WHERE receipient = :receipient";
 	if (!date.isNull())
-		queryString += " AND date(receive_time) = date(:date)";
+		queryString += " AND date(send_time) = date(:date)";
 	query.prepare(queryString);
 
 	query.bindValue(":receipient", receipient);

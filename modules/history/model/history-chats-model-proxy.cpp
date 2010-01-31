@@ -146,3 +146,21 @@ QModelIndex HistoryChatsModelProxy::statusBuddyIndex(Buddy buddy) const
 	QModelIndex index = Model->statusBuddyIndex(buddy);
 	return mapFromSource(index);
 }
+
+QModelIndex HistoryChatsModelProxy::smsIndex() const
+{
+	if (!Model)
+		return QModelIndex();
+
+	QModelIndex index = Model->smsIndex();
+	return mapFromSource(index);
+}
+
+QModelIndex HistoryChatsModelProxy::smsReceipientIndex(const QString& smsReceipient) const
+{
+	if (!Model)
+		return QModelIndex();
+
+	QModelIndex index = Model->smsReceipientIndex(smsReceipient);
+	return mapFromSource(index);
+}

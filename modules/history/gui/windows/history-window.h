@@ -42,6 +42,7 @@ class ChatNameFilter;
 class HistoryChatsModel;
 class HistoryChatsModelProxy;
 class HistoryTreeItem;
+class SmsDatesModel;
 
 /*!
 \class HistoryDlg
@@ -59,6 +60,7 @@ class HistoryWindow : public MainWindow
 
 	ChatDatesModel *MyChatDatesModel;
 	BuddyStatusDatesModel *MyBuddyStatusDatesModel;
+	SmsDatesModel *MySmsDatesModel;
 
 	QMenu *DetailsPopupMenu;
 	QLabel *FromDateLabel;
@@ -83,13 +85,16 @@ class HistoryWindow : public MainWindow
 	void updateData();
 	void selectChat(Chat chat);
 	void selectStatusBuddy(Buddy buddy);
+	void selectSmsReceipient(const QString &receipient);
 	void selectHistoryItem(HistoryTreeItem item);
 
 	void chatActivated(Chat chat);
 	void statusBuddyActivated(Buddy buddy);
+	void smsReceipientActivated(const QString &receipient);
 	void treeItemActivated(HistoryTreeItem item);
 
 	QList<Message> statusesToMessages(QList<Status> statuses);
+	QList<Message> smsToMessage(QList<QString> sms);
 
 private slots:
 	void treeItemActivated(const QModelIndex &index);

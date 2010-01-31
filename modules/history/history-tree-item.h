@@ -32,6 +32,7 @@ class HistoryTreeItem
 	HistoryType Type;
 	Chat ItemChat;
 	Buddy ItemBuddy;
+	QString ItemSmsReceipient;
 
 public:
 	HistoryTreeItem();
@@ -39,12 +40,14 @@ public:
 
 	explicit HistoryTreeItem(Chat chat);
 	explicit HistoryTreeItem(Buddy buddy);
+	explicit HistoryTreeItem(const QString &smsReceipient);
 
 	HistoryTreeItem operator = (HistoryTreeItem &copyMe);
 
-	HistoryType type();
-	Chat chat();
-	Buddy buddy();
+	HistoryType type() const;
+	Chat chat() const;
+	Buddy buddy() const;
+	QString smsReceipient() const;
 
 };
 

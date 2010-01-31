@@ -25,7 +25,7 @@ enum HistoryType
 	HistoryTypeNone,
 	HistoryTypeChat,
 	HistoryTypeStatus,
-	HistoryTypeSMS
+ HistoryTypeSms
 };
 
 #endif // HISTORY_TYPES_H

@@ -58,6 +58,7 @@
 #include "model/chat-dates-model.h"
 #include "model/history-chats-model.h"
 #include "model/history-chats-model-proxy.h"
+#include "model/sms-dates-model.h"
 #include "storage/history-storage.h"
 #include "history-tree-item.h"
 
@@ -122,6 +123,7 @@ void HistoryWindow::createGui()
 
 	MyChatDatesModel = new ChatDatesModel(Chat::null, QList<QDate>(), this);
 	MyBuddyStatusDatesModel = new BuddyStatusDatesModel(Buddy::null, QList<QDate>(), this);
+	MySmsDatesModel = new SmsDatesModel(QString::null, QList<QDate>(), this);
 
 	DetailsListView->setRootIsDecorated(false);
 	DetailsListView->setUniformRowHeights(true);
@@ -268,6 +270,7 @@ void HistoryWindow::updateData()
 	selectHistoryItem(treeItem);
 
 	ChatsModel->setStatusBuddies(History::instance()->statusBuddiesList(Search));
+	ChatsModel->setSmsReceipients(History::instance()->smsReceipientsList(Search));
 }
 
 void HistoryWindow::selectChat(Chat chat)
@@ -315,6 +318,24 @@ void HistoryWindow::selectStatusBuddy(Buddy buddy)
 	statusBuddyActivated(buddy);
 }
 
+void HistoryWindow::selectSmsReceipient(const QString& receipient)
+{
+	QModelIndex smsIndex = ChatsModelProxy->smsIndex();
+	if (!smsIndex.isValid())
+	{
+		treeItemActivated(QModelIndex());
+		return;
+	}
+
+	ChatsTree->collapseAll();
+	ChatsTree->expand(smsIndex);
+
+	QModelIndex smsReceipientIndex = ChatsModelProxy->smsReceipientIndex(receipient);
+	ChatsTree->selectionModel()->select(smsReceipientIndex, QItemSelectionModel::ClearAndSelect);
+
+	smsReceipientActivated(receipient);
+}
+
 void HistoryWindow::selectHistoryItem(HistoryTreeItem item)
 {
 	switch (item.type())
@@ -325,6 +346,10 @@ void HistoryWindow::selectHistoryItem(HistoryTreeItem item)
 
 		case HistoryTypeStatus:
 			selectStatusBuddy(item.buddy());
+			break;
+
+		case HistoryTypeSms:
+			selectSmsReceipient(item.smsReceipient());
 			break;
 	}
 }
@@ -368,9 +393,9 @@ void HistoryWindow::statusBuddyActivated(Buddy buddy)
 
 	QDate date = selectedIndex.data(DateRole).toDate();
 
-	QList<QDate> chatDates = History::instance()->datesForStatusBuddy(buddy, Search);
+	QList<QDate> statusDates = History::instance()->datesForStatusBuddy(buddy, Search);
 	MyBuddyStatusDatesModel->setBuddy(buddy);
-	MyBuddyStatusDatesModel->setDates(chatDates);
+	MyBuddyStatusDatesModel->setDates(statusDates);
 
 	if (date.isValid())
 		selectedIndex = MyBuddyStatusDatesModel->indexForDate(date);
@@ -389,6 +414,37 @@ void HistoryWindow::statusBuddyActivated(Buddy buddy)
 	kdebugf2();
 }
 
+void HistoryWindow::smsReceipientActivated(const QString& receipient)
+{
+	kdebugf();
+
+	QModelIndex selectedIndex = DetailsListView->model()
+			? DetailsListView->selectionModel()->currentIndex()
+			: QModelIndex();
+
+	QDate date = selectedIndex.data(DateRole).toDate();
+
+	QList<QDate> smsDates = History::instance()->datesForSmsReceipient(receipient, Search);
+	MySmsDatesModel->setReceipient(receipient);
+	MySmsDatesModel->setDates(smsDates);
+
+	if (date.isValid())
+		selectedIndex = MySmsDatesModel->indexForDate(date);
+	if (!selectedIndex.isValid())
+	{
+		int lastRow = MySmsDatesModel->rowCount(QModelIndex()) - 1;
+		if (lastRow >= 0)
+			selectedIndex = MySmsDatesModel->index(lastRow);
+	}
+
+	DetailsListView->setModel(MySmsDatesModel);
+	DetailsListView->selectionModel()->setCurrentIndex(selectedIndex, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+
+	dateActivated(selectedIndex);
+
+	kdebugf2();
+}
+
 void HistoryWindow::treeItemActivated(HistoryTreeItem item)
 {
 	switch (item.type())
@@ -399,6 +455,10 @@ void HistoryWindow::treeItemActivated(HistoryTreeItem item)
 
 		case HistoryTypeStatus:
 			statusBuddyActivated(item.buddy());
+			break;
+
+		case HistoryTypeSms:
+			smsReceipientActivated(item.smsReceipient());
 			break;
 	}
 }
@@ -446,6 +506,16 @@ void HistoryWindow::dateActivated(const QModelIndex &index)
 			ContentBrowser->appendMessages(statusesToMessages(statuses));
 			break;
 		}
+
+		case HistoryTypeSms:
+		{
+			QString receipeint = treeItem.smsReceipient();
+			QList<QString> sms;
+			if (!receipeint.isEmpty() && date.isValid())
+				sms = History::instance()->sms(receipeint, date);
+			ContentBrowser->appendMessages(smsToMessage(sms));
+			break;
+		}
 	}
 
 	kdebugf2();
@@ -465,6 +535,23 @@ QList<Message> HistoryWindow::statusesToMessages(QList<Status> statuses)
 			message.setContent(status.type());
 		else
 			message.setContent(QString("%1 with description: %2").arg(status.type()).arg(status.description()));
+
+		messages.append(message);
+	}
+
+	return messages;
+}
+
+QList<Message> HistoryWindow::smsToMessage(QList<QString> sms)
+{
+	QList<Message> messages;
+
+	foreach (QString oneSms, sms)
+	{
+		Message message = Message::create();
+		message.setStatus(Message::StatusSent);
+		message.setType(Message::TypeReceived);
+		message.setContent(oneSms);
 
 		messages.append(message);
 	}

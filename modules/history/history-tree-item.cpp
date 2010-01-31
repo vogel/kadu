@@ -28,7 +28,7 @@ HistoryTreeItem::HistoryTreeItem() :
 }
 
 HistoryTreeItem::HistoryTreeItem(const HistoryTreeItem &copyMe) :
-		Type(copyMe.Type), ItemChat(copyMe.ItemChat), ItemBuddy(copyMe.ItemBuddy)
+		Type(copyMe.Type), ItemChat(copyMe.ItemChat), ItemBuddy(copyMe.ItemBuddy), ItemSmsReceipient(copyMe.ItemSmsReceipient)
 {
 }
 
@@ -42,26 +42,38 @@ HistoryTreeItem::HistoryTreeItem(Buddy buddy) :
 {
 }
 
+HistoryTreeItem::HistoryTreeItem(const QString &smsReceipient) :
+		Type(HistoryTypeSms), ItemSmsReceipient(smsReceipient)
+{
+
+}
+
 HistoryTreeItem HistoryTreeItem::operator = (HistoryTreeItem &copyMe)
 {
 	Type = copyMe.Type;
 	ItemChat = copyMe.ItemChat;
 	ItemBuddy = copyMe.ItemBuddy;
+	ItemSmsReceipient = copyMe.ItemSmsReceipient;
 
 	return *this;
 }
 
-HistoryType HistoryTreeItem::type()
+HistoryType HistoryTreeItem::type() const
 {
 	return Type;
 }
 
-Chat HistoryTreeItem::chat()
+Chat HistoryTreeItem::chat() const
 {
 	return ItemChat;
 }
 
-Buddy HistoryTreeItem::buddy()
+Buddy HistoryTreeItem::buddy() const
 {
 	return ItemBuddy;
+}
+
+QString HistoryTreeItem::smsReceipient() const
+{
+	return ItemSmsReceipient;
 }
