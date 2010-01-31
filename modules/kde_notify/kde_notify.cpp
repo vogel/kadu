@@ -148,12 +148,31 @@ void KdeNotify::notify(Notification *notification)
 	{
 		notification->acquire(); // do not remove now
 
+		connect(notification, SIGNAL(closed(Notification*)), this, SLOT(notificationClosed(Notification*)));
+
 		NotificationMap.insert(reply.value(), notification);
 		IdQueue.enqueue(reply.value());
 		QTimer::singleShot(config_file.readNumEntry("KDENotify", "Timeout", 10) * 1000 + 2000, this, SLOT(deleteMapItem()));
 	}
 }
 
+void KdeNotify::notificationClosed(Notification *notification)
+{
+	QMap<unsigned int, Notification *>::iterator i = NotificationMap.begin();
+	while (i != NotificationMap.end())
+	{
+		if (i.value() == notification)
+		{
+			NotificationMap[i.key()] = 0;
+
+			QList<QVariant> args;
+			args.append(i.key());
+			KNotify->callWithArgumentList(QDBus::Block, "CloseNotification", args);
+
+			return;
+		}
+	}
+}
 
 void KdeNotify::actionInvoked(unsigned int id, QString action)
 {
@@ -185,14 +204,20 @@ void KdeNotify::actionInvoked(unsigned int id, QString action)
 	QList<QVariant> args;
 	args.append(id);
 	KNotify->callWithArgumentList(QDBus::Block, "CloseNotification", args);
+
+	NotificationMap[id] = 0;
 }
 
 void KdeNotify::deleteMapItem()
 {
 	unsigned int id = IdQueue.dequeue();
 	Notification *notification = NotificationMap.value(id);
-	NotificationMap.remove(id);
-	notification->release();
+
+	if (notification)
+	{
+		NotificationMap.remove(id);
+		notification->release();
+	}
 }
 
 KdeNotify *kde_notify = 0;

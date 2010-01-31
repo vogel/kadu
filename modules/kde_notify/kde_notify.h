@@ -44,6 +44,8 @@ private slots:
 	void actionInvoked(unsigned int id, QString action);
 	void deleteMapItem();
 
+	void notificationClosed(Notification *notification);
+
 public:
 	explicit KdeNotify(QObject *parent = 0);
 	virtual ~KdeNotify();
