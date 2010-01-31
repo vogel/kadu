@@ -333,9 +333,12 @@ void ChatStylesManager::mainConfigurationWindowCreated(MainConfigurationWindow *
 	editorLayout->addWidget(deleteButton);
 //variants
 	variantListCombo = new QComboBox();
-	variantListCombo->addItem("Default");
 	variantListCombo->addItems(CurrentEngine->styleVariants(CurrentEngine->currentStyleName()));
-	variantListCombo->setCurrentIndex(variantListCombo->findText(CurrentEngine->currentStyleVariant().isNull() ? "Default" : CurrentEngine->currentStyleVariant()));
+	QString defaultVariant = CurrentEngine->defaultVariant(CurrentEngine->currentStyleName());
+	if (!defaultVariant.isEmpty() && variantListCombo->findText(defaultVariant) == -1)
+		variantListCombo->insertItem(0, defaultVariant);
+
+	variantListCombo->setCurrentIndex(variantListCombo->findText(CurrentEngine->currentStyleVariant().isNull() ? defaultVariant : CurrentEngine->currentStyleVariant()));
 	variantListCombo->setEnabled(CurrentEngine->supportVariants());
 	connect(variantListCombo, SIGNAL(activated(const QString &)), this, SLOT(variantChangedSlot(const QString &)));
 //preview
@@ -404,8 +407,14 @@ void ChatStylesManager::styleChangedSlot(const QString &styleName)
 	editButton->setEnabled(engine->supportEditing());
 	deleteButton->setEnabled(!availableStyles[styleName].global);
 	variantListCombo->clear();
-	variantListCombo->addItem("Default");
 	variantListCombo->addItems(engine->styleVariants(styleName));
+
+	QString currentVariant = CurrentEngine->defaultVariant(styleName);
+	if (!currentVariant.isEmpty() && variantListCombo->findText(currentVariant) == -1)
+		variantListCombo->insertItem(0, currentVariant);
+
+	variantListCombo->setCurrentIndex(variantListCombo->findText(currentVariant.isNull() ? "Default.css" : currentVariant));
+
 	variantListCombo->setEnabled(engine->supportVariants());
 	engine->prepareStylePreview(preview, styleName, variantListCombo->currentText());
 	turnOnTransparency->setChecked(engine->styleUsesTransparencyByDefault(styleName));

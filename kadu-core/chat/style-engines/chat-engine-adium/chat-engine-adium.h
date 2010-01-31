@@ -49,6 +49,7 @@ public:
 	virtual bool supportEditing() { return false; }
 	virtual QString isStyleValid(QString styleName);
 	virtual QString currentStyleVariant();
+	virtual QString defaultVariant(const QString &styleName);
 
 	virtual QStringList styleVariants(QString styleName);
 	virtual bool styleUsesTransparencyByDefault(QString styleName);

@@ -36,13 +36,15 @@ class AdiumStyle
 
 	QString Name;
 
-	bool StyleViewVersion;
-	QString DisplayNameForNoVariant;
+	int StyleViewVersion;
 	QColor DefaultBackgroundColor;
 	bool DefaultBackgroundIsTransparent;
 
+	bool UsesCustomTemplateHtml;
+
 	QString BaseHref;
 	QString TemplateHref;
+	QString MainHref;
 	QString HeaderHtml;
 	QString FooterHtml;
 	QString IncomingHtml;
@@ -71,6 +73,7 @@ public:
 
 	PROPERTY(QString, name, Name)
 	PROPERTY(QString, baseHref, BaseHref)
+	PROPERTY(QString, mainHref, MainHref)
 	PROPERTY(QString, headerHtml, HeaderHtml)
 	PROPERTY(QString, footerHtml, FooterHtml)
 	PROPERTY(QString, incomingHtml, IncomingHtml)
@@ -79,7 +82,11 @@ public:
 	PROPERTY(QString, nextOutgoingHtml, NextOutgoingHtml)
 	PROPERTY(QString, statusHtml, StatusHtml)
 	PROPERTY(QString, currentVariant, CurrentVariant)
+
+	PROPERTY(QString, defaultVariant, DefaultVariant)
 	PROPERTY(bool, defaultBackgroundIsTransparent, DefaultBackgroundIsTransparent)
+	PROPERTY(bool, usesCustomTemplateHtml, UsesCustomTemplateHtml)
+	PROPERTY(int, styleViewVersion, StyleViewVersion)
 
 	QString	templateHtml();
 

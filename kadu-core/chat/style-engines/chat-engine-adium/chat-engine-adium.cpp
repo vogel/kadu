@@ -75,9 +75,14 @@ QString AdiumChatStyleEngine::isStyleValid(QString stylePath)
 
 bool AdiumChatStyleEngine::styleUsesTransparencyByDefault(QString styleName)
 {
-	//TODO: optimize:
 	AdiumStyle style(styleName);
 	return style.defaultBackgroundIsTransparent();
+}
+
+QString AdiumChatStyleEngine::defaultVariant(const QString &styleName)
+{
+	AdiumStyle style(styleName);
+	return style.defaultVariant();
 }
 
 QString AdiumChatStyleEngine::currentStyleVariant()
@@ -167,14 +172,20 @@ void AdiumChatStyleEngine::refreshView(HtmlMessagesRenderer *renderer, bool useT
 	styleBaseHtml.replace(styleBaseHtml.indexOf("%@"), 2, "file://" + CurrentStyle.baseHref());
 	styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, replaceKeywords(renderer->chat(), CurrentStyle.baseHref(), CurrentStyle.footerHtml()));
 	styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, replaceKeywords(renderer->chat(), CurrentStyle.baseHref(), CurrentStyle.headerHtml()));
-	//TODO: implement style versions:
-	if (CurrentStyle.currentVariant() != "Default")
-		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, "Variants/" + CurrentStyle.currentVariant());
-	else
-		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, "main.css");
 
-	if (styleBaseHtml.contains("%@"))
-		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, "@import url( \"main.css\" );");
+	if (CurrentStyle.usesCustomTemplateHtml() && CurrentStyle.styleViewVersion() < 3)
+	{
+		if (CurrentStyle.currentVariant() != CurrentStyle.defaultVariant())
+			styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, "Variants/" + CurrentStyle.currentVariant());
+		else
+			styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, CurrentStyle.mainHref());
+	}
+	else
+	{
+		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, (CurrentStyle.styleViewVersion() < 3 && CurrentStyle.defaultVariant() == CurrentStyle.currentVariant()) ? CurrentStyle.mainHref() : "Variants/" + CurrentStyle.currentVariant());
+		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, (CurrentStyle.styleViewVersion() < 3) ? "s" : "@import url( \"" + CurrentStyle.mainHref() + "\" );");
+	}
+
 
 	if (useTransparency && !CurrentStyle.defaultBackgroundIsTransparent())
 		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("==bodyBackground=="), 18, "background-image: none; background: none; background-color: rgba(0, 0, 0, 0)");
@@ -228,6 +239,7 @@ bool AdiumChatStyleEngine::removeStyle(const QString &styleName)
 void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleName, QString variantName)
 {
 	AdiumStyle style(styleName);
+
 	style.setCurrentVariant(variantName);
 	if (preview->getObjectsToParse().count() != 2)
 		return;
@@ -241,14 +253,19 @@ void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNa
 	styleBaseHtml.replace(styleBaseHtml.indexOf("%@"), 2, "file://" + style.baseHref());
 	styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, replaceKeywords(msg.messageChat(), style.baseHref(), style.footerHtml()));
 	styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, replaceKeywords(msg.messageChat(), style.baseHref(), style.headerHtml()));
-	//TODO: implement style versions:
-	if (style.currentVariant() != "Default")
-		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, "Variants/" + style.currentVariant());
-	else
-		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, "main.css");
 
-	if (styleBaseHtml.contains("%@"))
-		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, "@import url( \"main.css\" );");
+	if (style.usesCustomTemplateHtml() && style.styleViewVersion() < 3)
+	{
+		if (style.currentVariant() != style.defaultVariant())
+			styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, "Variants/" + style.currentVariant());
+		else
+			styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, style.mainHref());
+	}
+	else
+	{
+		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, (style.styleViewVersion() < 3 && style.defaultVariant() == style.currentVariant()) ? style.mainHref() : "Variants/" + style.currentVariant());
+		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, (style.styleViewVersion() < 3) ? "s" : "@import url( \"" + style.mainHref() + "\" );");
+	}
 
 	preview->page()->mainFrame()->setHtml(styleBaseHtml);
 	preview->page()->mainFrame()->evaluateJavaScript(jsCode);

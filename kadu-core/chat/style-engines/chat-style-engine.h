@@ -40,7 +40,8 @@ public:
 	virtual ~ChatStyleEngine() {}
 	virtual QString engineName() { return EngineName; }
 	virtual QString currentStyleName() { return CurrentStyleName; }
-	virtual QString currentStyleVariant() { return QString::null; }
+	virtual QString currentStyleVariant() { return "Default"; }
+	virtual QString defaultVariant(const QString &) { return "Default"; }
 	virtual QStringList styleVariants(QString) { return QStringList(); }	
 
 	virtual bool supportVariants() = 0;

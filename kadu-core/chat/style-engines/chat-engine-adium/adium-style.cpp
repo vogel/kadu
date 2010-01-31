@@ -114,20 +114,31 @@ void AdiumStyle::readConfiugrationFile()
 
 	StyleViewVersion = styleSettings.value("MessageViewVersion", 4).toInt();
 
-	DisplayNameForNoVariant = styleSettings.value("DisplayNameForNoVariant", "Default").toString();
-	DefaultVariant = styleSettings.value("DefaultVariant ", "Default").toString() + ".css";
+	DefaultVariant = styleSettings.value("DisplayNameForNoVariant", "").toString() + ".css";
+	if (DefaultVariant == ".css")
+		DefaultVariant = styleSettings.value("DefaultVariant", "Default").toString() + ".css";
 }
 
 void AdiumStyle::loadHtmlFiles()
 {
 	IncomingHtml = readStylePart(BaseHref + "Incoming/Content.html");
 
+	// Why the hell themes creators ignore fact that paths are case sensitive? :/
+	UsesCustomTemplateHtml = true;
 	if (QFile::exists(BaseHref + "Template.html"))
 		TemplateHref = BaseHref + "Template.html";
 	else if (QFile::exists(BaseHref + "template.html"))
 		TemplateHref = BaseHref + "template.html";
 	else // TODO 0.6.6: move it to proper place
+	{
 		TemplateHref = dataPath("kadu") + "/syntax/chat/Default/Template.html";
+		UsesCustomTemplateHtml = false;
+	}
+
+	if (QFile::exists(BaseHref + "main.css"))
+		MainHref = BaseHref + "main.css";
+	else if (QFile::exists(BaseHref + "Main.css"))
+		MainHref = BaseHref + "Main.css";
 
 	if (QFile::exists(BaseHref + "Incoming/NextContent.html"))
 		NextIncomingHtml = readStylePart(BaseHref + "Incoming/NextContent.html");
