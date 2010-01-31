@@ -32,5 +32,7 @@ ChatNotification::ChatNotification(Chat chat, const QString &type, const QIcon &
 
 void ChatNotification::openChat()
 {
+	close();
+			
 	ChatWidgetManager::instance()->openChatWidget(chat(), true);
 }

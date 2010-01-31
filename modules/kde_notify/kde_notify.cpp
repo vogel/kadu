@@ -171,6 +171,7 @@ void KdeNotify::notificationClosed(Notification *notification)
 
 			return;
 		}
+		i++;
 	}
 }
 
@@ -212,12 +213,10 @@ void KdeNotify::deleteMapItem()
 {
 	unsigned int id = IdQueue.dequeue();
 	Notification *notification = NotificationMap.value(id);
+	NotificationMap.remove(id);
 
 	if (notification)
-	{
-		NotificationMap.remove(id);
 		notification->release();
-	}
 }
 
 KdeNotify *kde_notify = 0;
