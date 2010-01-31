@@ -673,3 +673,38 @@ int History::statusBuddyCount(Buddy buddy, QDate date)
 
 	return CurrentStorage->statusBuddyCount(buddy, date);
 }
+
+void History::appendSms(const QString &receipient, const QString& content)
+{
+	kdebugf();
+
+	return CurrentStorage->appendSms(receipient, content);
+}
+
+QList< QString > History::smsReceipientsList(HistorySearchParameters search)
+{
+	kdebugf();
+
+	return CurrentStorage->smsReceipientsList(search);
+}
+
+QList< QDate > History::datesForSmsReceipient(const QString &receipient, HistorySearchParameters search)
+{
+	kdebugf();
+
+	return CurrentStorage->datesForSmsReceipient(receipient, search);
+}
+
+QList< QString > History::sms(const QString &receipient, QDate date, int limit)
+{
+	kdebugf();
+
+	return CurrentStorage->sms(receipient, date, limit);
+}
+
+int History::smsCount(const QString &receipient, QDate date)
+{
+	kdebugf();
+
+	return CurrentStorage->smsCount(receipient, date);
+}

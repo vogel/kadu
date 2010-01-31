@@ -115,6 +115,8 @@ void HistorySqlStorage::initTables()
 		initKaduMessagesTable();
 	if (!Database.tables().contains("kadu_statuses"))
 		initKaduStatusesTable();
+	if (!Database.tables().contains("kadu_sms"))
+		initKaduSmsTable();
 }
 
 void HistorySqlStorage::initKaduMessagesTable()
@@ -159,6 +161,25 @@ void HistorySqlStorage::initKaduStatusesTable()
 	executeQuery(query);
 }
 
+void HistorySqlStorage::initKaduSmsTable()
+{
+	QSqlQuery query(Database);
+
+	query.prepare("PRAGMA encoding = \"UTF-8\";");
+	executeQuery(query);
+
+	query.prepare("PRAGMA synchronous = OFF;");
+	executeQuery(query);
+
+	query.prepare(
+		"CREATE TABLE kadu_sms ("
+			"receipient VARCHAR(255),"
+			"send_time TIMESTAMP,"
+			"content TEXT);"
+	);
+	executeQuery(query);
+}
+
 void HistorySqlStorage::initIndexes()
 {
 	QSqlQuery query(Database);
@@ -180,6 +201,15 @@ void HistorySqlStorage::initIndexes()
 
 	query.prepare("CREATE INDEX IF NOT EXISTS kadu_statuses_contact_time_date ON kadu_statuses (contact, date(set_time))");
 	executeQuery(query);
+
+	query.prepare("CREATE INDEX IF NOT EXISTS kadu_sms_receipient ON kadu_sms (receipient)");
+	executeQuery(query);
+
+	query.prepare("CREATE INDEX IF NOT EXISTS kadu_sms_receipient_time ON kadu_sms (receipient, send_time)");
+	executeQuery(query);
+
+	query.prepare("CREATE INDEX IF NOT EXISTS kadu_sms_receipient_time_date ON kadu_sms (receipient, date(send_time))");
+	executeQuery(query);
 }
 
 void HistorySqlStorage::initQueries()
@@ -194,6 +224,10 @@ void HistorySqlStorage::initQueries()
 	AppendStatusQuery = QSqlQuery(Database);
 	AppendStatusQuery.prepare("INSERT INTO kadu_statuses (contact, status, set_time, description) VALUES "
 			"(:contact, :status, :set_time, :description)");
+
+	AppendSmsQuery = QSqlQuery(Database);
+	AppendSmsQuery.prepare("INSERT INTO kadu_sms (receipient, send_time, content) VALUES "
+			"(:receipient, :send_time, :content)");
 }
 
 QString HistorySqlStorage::chatWhere(Chat chat)
@@ -284,6 +318,23 @@ void HistorySqlStorage::appendStatus(Contact contact, Status status)
 	AppendStatusQuery.bindValue(":description", status.description());
 
 	executeQuery(AppendStatusQuery);
+
+	DatabaseMutex.unlock();
+
+	kdebugf2();
+}
+
+void HistorySqlStorage::appendSms(const QString& receipeint, const QString& content)
+{
+	kdebugf();
+
+	DatabaseMutex.lock();
+
+	AppendSmsQuery.bindValue(":contact", receipeint);
+	AppendSmsQuery.bindValue(":send_time", QDateTime::currentDateTime());
+	AppendSmsQuery.bindValue(":content", content);
+
+	executeQuery(AppendSmsQuery);
 
 	DatabaseMutex.unlock();
 
@@ -483,6 +534,144 @@ int HistorySqlStorage::messagesCount(Chat chat, QDate date)
 		queryString += " AND date(receive_time) = date(:date)";
 	query.prepare(queryString);
 
+	if (!date.isNull())
+		query.bindValue(":date", date.toString(Qt::ISODate));
+
+	executeQuery(query);
+	query.next();
+
+	DatabaseMutex.unlock();
+
+	return query.value(0).toInt();
+}
+
+QList<QString> HistorySqlStorage::smsReceipientsList(HistorySearchParameters search)
+{
+	kdebugf();
+
+	DatabaseMutex.lock();
+
+	QSqlQuery query(Database);
+	QString queryString = "SELECT DISTINCT receipient FROM kadu_sms WHERE 1";
+
+	if (!search.query().isEmpty())
+		queryString += " AND content LIKE :content";
+	if (search.fromDate().isValid())
+		queryString += " AND date(send_time) >= date(:fromDate)";
+	if (search.toDate().isValid())
+		queryString += " AND date(send_time) <= date(:toDate)";
+
+	query.prepare(queryString);
+
+	if (!search.query().isEmpty())
+		query.bindValue(":content", QLatin1String("%") + search.query() + "%");
+	if (search.fromDate().isValid())
+		query.bindValue(":fromDate", search.fromDate());
+	if (search.toDate().isValid())
+		query.bindValue(":toDate", search.toDate());
+
+	QList<QString> receipients;
+
+	executeQuery(query);
+	while (query.next())
+		receipients.append(query.value(0).toString());
+
+	DatabaseMutex.unlock();
+
+	return receipients;
+}
+
+QList<QDate> HistorySqlStorage::datesForSmsReceipient(const QString &receipient, HistorySearchParameters search)
+{
+	kdebugf();
+
+	if (receipient.isEmpty())
+		return QList<QDate>();
+
+	DatabaseMutex.lock();
+
+	QSqlQuery query(Database);
+	QString queryString = "SELECT DISTINCT date(send_data) as date FROM kadu_sms WHERE receipient = :receipient";
+
+	if (!search.query().isEmpty())
+		queryString += " AND content LIKE :content";
+	if (search.fromDate().isValid())
+		queryString += " AND date(send_time) >= date(:fromDate)";
+	if (search.toDate().isValid())
+		queryString += " AND date(send_time) <= date(:toDate)";
+
+	query.prepare(queryString);
+
+	query.bindValue(":receipient", receipient);
+	if (!search.query().isEmpty())
+		query.bindValue(":content", QLatin1String("%") + search.query() + "%");
+	if (search.fromDate().isValid())
+		query.bindValue(":fromDate", search.fromDate());
+	if (search.toDate().isValid())
+		query.bindValue(":toDate", search.toDate());
+
+	QList<QDate> dates;
+	executeQuery(query);
+
+	while (query.next())
+	{
+		QDate date = query.value(0).toDate();
+		if (date.isValid())
+			dates.append(date);
+	}
+
+	DatabaseMutex.unlock();
+
+	return dates;
+}
+
+QList<QString> HistorySqlStorage::sms(const QString &receipient, QDate date, int limit)
+{
+	kdebugf();
+
+	DatabaseMutex.lock();
+
+	QSqlQuery query(Database);
+	QString queryString = "SELECT content, send_time FROM kadu_sms WHERE receipient = :receipient";
+	if (!date.isNull())
+		queryString += " AND date(send_time) = date(:date)";
+	queryString += " ORDER BY send_time";
+	if (0 != limit)
+		queryString += " LIMIT :limit";
+
+	QList<Message> messages;
+	query.prepare(queryString);
+
+	query.bindValue(":receipient", receipient);
+	if (!date.isNull())
+		query.bindValue(":date", date.toString(Qt::ISODate));
+	if (limit != 0)
+		query.bindValue(":limit", limit);
+	executeQuery(query);
+
+	QList<QString> result;
+
+	while (query.next())
+		result.append(query.value(0).toString());
+
+	DatabaseMutex.unlock();
+
+	return result;
+}
+
+int HistorySqlStorage::smsCount(const QString &receipient, QDate date)
+{
+	kdebugf();
+
+	DatabaseMutex.lock();
+
+	QSqlQuery query(Database);
+	QString queryString = "SELECT COUNT(chat) FROM kadu_sms WHERE receipient = :receipient";
+	if (!date.isNull())
+		queryString += " AND date(receive_time) = date(:date)";
+	query.prepare(queryString);
+
+	query.bindValue(":receipient", receipient);
 	if (!date.isNull())
 		query.bindValue(":date", date.toString(Qt::ISODate));
 
