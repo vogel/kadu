@@ -272,20 +272,20 @@ void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNa
 	//I don't know why, sometimes 'initStyle' was performed after 'appendMessage'
 	preview->page()->mainFrame()->evaluateJavaScript("initStyle()");
 
-	QString incomingHtml = replaceKeywords(msg.messageChat(), style.baseHref(), style.incomingHtml(), message);
-	incomingHtml.replace("\n", " ");
-	incomingHtml.replace("'", "\\'");
-	incomingHtml.prepend("<span>");
-	incomingHtml.append("</span>");
-	preview->page()->mainFrame()->evaluateJavaScript("appendMessage(\'" + incomingHtml + "\')");
-
-	message = dynamic_cast<MessageRenderInfo *>(preview->getObjectsToParse().at(1));
 	QString outgoingHtml = replaceKeywords(msg.messageChat(), style.baseHref(), style.outgoingHtml(), message);
 	outgoingHtml.replace("\n", " ");
 	outgoingHtml.replace("'", "\\'");
 	outgoingHtml.prepend("<span>");
 	outgoingHtml.append("</span>");
 	preview->page()->mainFrame()->evaluateJavaScript("appendMessage(\'" + outgoingHtml + "\')");
+
+	message = dynamic_cast<MessageRenderInfo *>(preview->getObjectsToParse().at(1));
+	QString incomingHtml = replaceKeywords(msg.messageChat(), style.baseHref(), style.incomingHtml(), message);
+	incomingHtml.replace("\n", " ");
+	incomingHtml.replace("'", "\\'");
+	incomingHtml.prepend("<span>");
+	incomingHtml.append("</span>");
+	preview->page()->mainFrame()->evaluateJavaScript("appendMessage(\'" + incomingHtml + "\')");
 }
 
 // Some parts of the code below are borrowed from Kopete project (http://kopete.kde.org/)
