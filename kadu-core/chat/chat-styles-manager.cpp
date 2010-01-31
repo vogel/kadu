@@ -97,7 +97,7 @@ void ChatStylesManager::chatViewCreated(ChatMessagesView *view)
 	{
 		chatViews.append(view);
 		CurrentEngine->refreshView(view->renderer());
-		if (CompositingEnabled && config_file.readBoolEntry("Chat", "UseTransparency", false))
+		if (view->supportTransparency() && CompositingEnabled && config_file.readBoolEntry("Chat", "UseTransparency", false))
 		{
 			QPalette palette = view->renderer()->webPage()->palette();
 			palette.setBrush(QPalette::Base, Qt::transparent);
@@ -205,6 +205,9 @@ void ChatStylesManager::compositingEnabled()
 	CompositingEnabled = true;
 	foreach (ChatMessagesView *view, chatViews)
 	{
+		if (!view->supportTransparency())
+			continue;
+
 		QPalette palette = view->renderer()->webPage()->palette();
 		if (config_file.readBoolEntry("Chat", "UseTransparency", false))
 			palette.setBrush(QPalette::Base, Qt::transparent);
@@ -224,6 +227,9 @@ void ChatStylesManager::compositingDisabled()
 	CompositingEnabled = false;
 	foreach (ChatMessagesView *view, chatViews)
 	{
+		if (!view->supportTransparency())
+			continue;
+
 		QPalette palette = view->renderer()->webPage()->palette();
 		palette.setBrush(QPalette::Base, config_file.readColorEntry("Look", "ChatBgColor"));
 
