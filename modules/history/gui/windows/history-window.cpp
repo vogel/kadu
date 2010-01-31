@@ -25,6 +25,7 @@
 #include <QtGui/QGridLayout>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QHeaderView>
+#include <QtGui/QItemDelegate>
 #include <QtGui/QLineEdit>
 #include <QtGui/QMenu>
 #include <QtGui/QPushButton>
@@ -33,13 +34,13 @@
 #include <QtGui/QVBoxLayout>
 
 #include "buddies/model/buddies-model-base.h"
+#include "chat/chat-details-aggregate.h"
+#include "chat/chat-manager.h"
 #include "chat/filter/chat-name-filter.h"
 #include "chat/message/message.h"
-
 #include "chat/type/chat-type.h"
 #include "chat/type/chat-type-manager.h"
 #include "chat/aggregate-chat-builder.h"
-
 #include "gui/actions/actions.h"
 #include "gui/widgets/buddies-list-view-menu-manager.h"
 #include "gui/widgets/chat-widget-manager.h"
@@ -61,8 +62,6 @@
 #include "history-tree-item.h"
 
 #include "history-window.h"
-#include <QItemDelegate>
-#include <chat/chat-details-aggregate.h>
 
 HistoryWindow::HistoryWindow(QWidget *parent) :
 		MainWindow(parent)
@@ -442,6 +441,8 @@ void HistoryWindow::dateActivated(const QModelIndex &index)
 			QList<Status> statuses;
 			if (buddy && date.isValid())
 				statuses = History::instance()->statuses(buddy, date);
+			if (buddy.contacts().size() > 0)
+				ContentBrowser->setChat(ChatManager::instance()->findChat(ContactSet(buddy.contacts()[0]), true));
 			ContentBrowser->appendMessages(statusesToMessages(statuses));
 			break;
 		}
