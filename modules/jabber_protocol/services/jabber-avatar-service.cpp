@@ -22,13 +22,15 @@
 
 #include <QtCrypto>
 
+#include "gui/windows/message-dialog.h"
+
 #include "client/jabber-client.h"
-#include "jabber-avatar-service.h"
 #include "jabber-protocol.h"
 #include "server/jabber-avatar-fetcher.h"
-
 #include "utils/vcard-factory.h"
-	#include <QtCore/QDebug>
+
+#include "jabber-avatar-service.h"
+
 void JabberAvatarService::fetchAvatar(Contact contact)
 {
 	if (contact.id().isEmpty())
@@ -46,6 +48,12 @@ void JabberAvatarService::uploadAvatar(QImage avatar)
 	JabberProtocol *p = dynamic_cast<JabberProtocol *>(MyAccount.protocolHandler());
 	if (!p)
 		return;
+	
+	if (!p->isPEPAvailable())
+	{
+		MessageDialog::msg(tr("Cannot upload avatar. Feature not supported by your server."), false, "Warning");
+		return;
+	}
 
 	connect(p->pepManager(),SIGNAL(itemPublished(const XMPP::Jid&, const QString&, const XMPP::PubSubItem&)),
 		this, SLOT(itemPublished(const XMPP::Jid&, const QString&, const XMPP::PubSubItem&)));
@@ -63,7 +71,6 @@ void JabberAvatarService::uploadAvatar(QImage avatar)
 	QImage avatar_image = QImage::fromData(avatar_data);
 	
 	if(!avatar_image.isNull()) {
-	  qDebug() << "image nie null, lecim";
 		// Publish data
 		QDomDocument* doc = p->client()->client()->doc();
 		QString hash = QCA::Hash("sha1").hashToString(avatar_data);
@@ -143,7 +150,7 @@ void JabberAvatarService::publish_success(const QString& n, const XMPP::PubSubIt
 	  	JabberProtocol *p = dynamic_cast<JabberProtocol *>(MyAccount.protocolHandler());
 		if (!p)
 			return;
-		qDebug() << "tera tu sie cos dzieje";
+
 		// Publish metadata
 		QDomDocument* doc = p->client()->client()->doc();
 		QImage avatar_image = QImage::fromData(selfAvatarData_);
@@ -160,44 +167,3 @@ void JabberAvatarService::publish_success(const QString& n, const XMPP::PubSubIt
 	}
 }
 
-/**
-void JabberAvatarService::fetchingVCardFinished()
-{
-  	qDebug() << "vcard jest!";
-  	JabberProtocol *p = dynamic_cast<JabberProtocol *>(MyAccount.protocolHandler());
-	if (!p)
-		return;
-		qDebug() << "lecim na szczecin!";
-	XMPP::Jid jid = XMPP::Jid(MyAccount.id());
-	QByteArray ba;
-        QBuffer buffer(&ba);
-        buffer.open(QIODevice::WriteOnly);
-        AccountAvatar.save(&buffer, "PNG");
-	buffer.close();
-
-	XMPP::VCard v;// = VCardHandler->vcard();
-	v.setFullName("archwimil!");
-	v.setPhoto(ba);
-		qDebug() << "wysylam vcard!";
-			
-	if (!ba.isEmpty())
-	{
-	VCardFactory::instance()->setVCard(p->client()->rootTask(), jid, v, this, SLOT(uploadingVCardFinished()));
-	qDebug() << "taa, wysylam...";
-	}
-	else
-	  qDebug() << "nie wysyłam, puste...";
-}
-
-
-void JabberAvatarService::uploadingVCardFinished()
-{
-  VCardHandler = static_cast<JT_VCard*> (sender());
-if (VCardHandler->success()) {
-	qDebug() << "udalo sie!";
-}
-else
-  qDebug() << "fail!!! reason: " << VCardHandler->statusString().toLocal8Bit().data();
-}
-
-**/

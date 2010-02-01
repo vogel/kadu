@@ -42,9 +42,6 @@ class JabberProtocol : public Protocol
 		JabberResourcePool *ResourcePool;
 		ServerInfoManager *serverInfoManager;
 		PEPManager *PepManager; 
-		/* Initial presence to set after connecting. */
-//		XMPP::Status InitialPresence;
-		//JabberConfig *jconf;
 
 		bool rosterRequestDone;
 		bool usingSSL;
