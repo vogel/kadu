@@ -123,9 +123,10 @@ void AdiumChatStyleEngine::appendMessage(HtmlMessagesRenderer *renderer, Message
 		Message last = lastMessage->message();
 
 		includeHeader =
-			(last.type() != Message::TypeSystem) &&
-			((msg.receiveDate().toTime_t() - last.receiveDate().toTime_t() > (ChatStylesManager::instance()->cfgNoHeaderInterval() * 60)) ||
-			(msg.messageSender() != last.messageSender()));
+			msg.type() == Message::TypeSystem ||
+			last.type() == Message::TypeSystem ||
+			msg.messageSender() != last.messageSender() ||
+			msg.receiveDate().toTime_t() - last.receiveDate().toTime_t() > (ChatStylesManager::instance()->cfgNoHeaderInterval() * 60);
 	}
 	switch (msg.type())
 	{

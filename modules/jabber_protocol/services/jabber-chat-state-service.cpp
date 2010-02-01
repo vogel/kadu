@@ -278,7 +278,7 @@ void ChatState::setContactChatState(XMPP::ChatState state)
 		QString msg = "[ " + tr("%1 ended the conversation").arg(contact.ownerBuddy().display()) + " ]";
 		Message message = Message::create();
 		message.setMessageChat(ObservedChat);
-		message.setType(Message::TypeReceived);
+		message.setType(Message::TypeSystem);
 		message.setMessageSender(contact);
 		message.setContent(msg);
 		message.setSendDate(QDateTime::currentDateTime());
