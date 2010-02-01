@@ -6,7 +6,7 @@ Je¶li jest w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * zaktualizowane t³umaczenia (beevvy/neeo)
 * drobne poprawki wygl±du okna rozmowy (neeo) oraz zak³adek pod Mac OS X (dorr)
 * poprawione b³êdne dzia³anie wyszkukiwania w katalogu w pewnych okoliczno¶ciach (neeo)
-* drobne poprawki w module single_window i pajacyk (dorr), dbus (Fisiu/dorr)
+* drobne poprawki w module single_window, pajacyk i gg_avatars (dorr) oraz dbus (Fisiu/dorr)
 * poprawione wykrywanie zestawów ikon przy wy³±czonym autodownloadzie (badboy/dorr)
 
 +++ wersja 0.6.5.4-rc3
