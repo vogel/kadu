@@ -28,7 +28,7 @@
 #include "server-status-widget.h"
 
 ServerStatusWidget::ServerStatusWidget(QString watchedAddress, quint16 watchedPort, QString hostName, QWidget *parent) :
-		QWidget(parent), ServerStatus(Empty), ServerOldStatus(Empty),
+		QWidget(parent), CurrentState(Empty),
 		WatchedAddress(watchedAddress), WatchedPort(watchedPort ? watchedPort : 8074), WatchedHostName(hostName)
 {
 	QHBoxLayout *layout = new QHBoxLayout(this);
@@ -40,11 +40,8 @@ ServerStatusWidget::ServerStatusWidget(QString watchedAddress, quint16 watchedPo
 	connect(&TcpSocket, SIGNAL(connected()), this, SLOT(connected()));
 	connect(&TcpSocket, SIGNAL(error(QAbstractSocket::SocketError)),
 			this, SLOT(connectionError(QAbstractSocket::SocketError)));
-	connect(this, SIGNAL(statusChanged (QString, ServerStatusWidget::ServerState)),
-			this, SLOT(notify(QString, ServerStatusWidget::ServerState)));
 
-	StatusIcon = IconsManager::instance()->loadPixmap("Invisible");
-	PixmapLabel->setPixmap(StatusIcon);
+	PixmapLabel->setPixmap(IconsManager::instance()->loadPixmap("Offline"));
 
 	layout->addWidget(PixmapLabel, 0);
 	layout->addWidget(textLabel, 100);
@@ -56,38 +53,37 @@ ServerStatusWidget::~ServerStatusWidget()
 {
 }
 
-void ServerStatusWidget::emitNewStatus()
+void ServerStatusWidget::setNewState(ServerState newState)
 {
 	TcpSocket.disconnectFromHost();
-	if (ServerOldStatus == ServerStatus)
+	if (newState == CurrentState)
 		return;
 
-	emit statusChanged(ServerStatus, ServerOldStatus);
-	emit statusChanged(WatchedAddress.toString(), ServerStatus);
+	emit statusChanged(newState, CurrentState);
+	if (Empty != CurrentState)
+		notify(WatchedAddress.toString(), newState);
 
-	PixmapLabel->setPixmap(StatusIcon);
+	CurrentState = newState;
+
+	emit statusChanged(WatchedAddress.toString(), CurrentState);
+
+	if (Available == CurrentState)
+		PixmapLabel->setPixmap(IconsManager::instance()->loadPixmap("Online"));
+	else
+		PixmapLabel->setPixmap(IconsManager::instance()->loadPixmap("Offline"));
 }
 
 
 void ServerStatusWidget::connected()
 {
-	ServerOldStatus = ServerStatus;
-	ServerStatus = Available;
-
-	StatusIcon = IconsManager::instance()->loadPixmap("Online");
-	emitNewStatus();
-
 	TcpSocket.disconnectFromHost();
+	setNewState(Available);
 }
 
 void ServerStatusWidget::connectionError(QAbstractSocket::SocketError socketError)
 {
-	ServerOldStatus = ServerStatus;
-	ServerStatus = Unavailable;
-	StatusIcon = IconsManager::instance()->loadPixmap("Offline");
-
 	TcpSocket.disconnectFromHost();
-	emitNewStatus();
+	setNewState(Unavailable);
 }
 
 void ServerStatusWidget::refreshIcon()
@@ -99,9 +95,6 @@ void ServerStatusWidget::refreshIcon()
 
 void ServerStatusWidget::notify(QString address, ServerStatusWidget::ServerState)
 {
-	if (ServerOldStatus == Empty)
-		return;
-
 	Notification *notification = new Notification("serverMonitorChangeStatus",   QIcon());
 
 	notification->setDetails(tr("Server %1 changed status to %2").arg(address).arg(serverStateToString()));
@@ -112,10 +105,10 @@ void ServerStatusWidget::notify(QString address, ServerStatusWidget::ServerState
 
 QString ServerStatusWidget::serverStateToString()
 {
-	switch (ServerStatus)
+	switch (CurrentState)
 	{
 		case Available:
-			return tr( "Online" );
+			return tr("Online");
 			
 		case Unavailable:
 			return tr("Unavailable");

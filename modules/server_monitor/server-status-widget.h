@@ -46,19 +46,17 @@ private:
 	QHostAddress WatchedAddress;
 	quint16 WatchedPort;
 
-	ServerState ServerStatus;
-	ServerState ServerOldStatus;
+	ServerState CurrentState;
 	QAbstractSocket::SocketState PreviousSocketState;
 	QTcpSocket TcpSocket;
 	QString WatchedHostName;
-	QPixmap StatusIcon;
 
-	void emitNewStatus();
+	void setNewState(ServerState newState);
+	void notify(QString, ServerStatusWidget::ServerState);
 
 private slots:
 	void connected();
 	void connectionError(QAbstractSocket::SocketError socketError);
-	void notify(QString, ServerStatusWidget::ServerState);
 
 public:
 	ServerStatusWidget(QString watchedAddress, quint16 watchedPort, QString hostName, QWidget *parent = 0);
