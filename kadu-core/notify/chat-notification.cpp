@@ -34,5 +34,5 @@ void ChatNotification::openChat()
 {
 	close();
 			
-	ChatWidgetManager::instance()->openChatWidget(chat(), true);
+	ChatWidgetManager::instance()->openPendingMsgs(chat(), true);
 }
