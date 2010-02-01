@@ -17,118 +17,115 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QBuffer>
-#include <QtGui/QPainter>
-#include <QtCore/QString>
-#include <QtNetwork/QTcpSocket>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QLabel>
 
-#include "debug.h"
-#include "icons-manager.h"
 #include "notify/notification-manager.h"
 #include "notify/notification.h"
+#include "debug.h"
+#include "icons-manager.h"
 
 #include "server-status-widget.h"
 
-ServerStatusWidget::ServerStatusWidget(QString addr, quint16 watchedPort, QString name, QWidget *parent):
-		QLabel(parent), serverStatus(Empty), serverOldStatus(Empty),
-		address(addr), port(watchedPort), hostName(name), labelAddress(this)
+ServerStatusWidget::ServerStatusWidget(QString watchedAddress, quint16 watchedPort, QString hostName, QWidget *parent) :
+		QWidget(parent), ServerStatus(Empty), ServerOldStatus(Empty),
+		WatchedAddress(watchedAddress), WatchedPort(watchedPort ? watchedPort : 8074), WatchedHostName(hostName)
 {
-	if ( hostName.trimmed().length() > 0 )
-		labelAddress.setText( hostName );
-	else
-		labelAddress.setText( addr );
+	QHBoxLayout *layout = new QHBoxLayout(this);
+	PixmapLabel = new QLabel(this);
+	QLabel *textLabel = new QLabel(this);
 
-	if ( port == 0 )	port = 8074;
+	textLabel->setText((WatchedHostName.trimmed().length() > 0) ? WatchedHostName : WatchedAddress.toString());
 
-	connect(&tcpSocket, SIGNAL( connected() ),
-			this, SLOT( connected() ));
+	connect(&TcpSocket, SIGNAL(connected()), this, SLOT(connected()));
+	connect(&TcpSocket, SIGNAL(error(QAbstractSocket::SocketError)),
+			this, SLOT(connectionError(QAbstractSocket::SocketError)));
+	connect(this, SIGNAL(statusChanged (QString, ServerStatusWidget::ServerState)),
+			this, SLOT(notify(QString, ServerStatusWidget::ServerState)));
 
-	connect(&tcpSocket, SIGNAL(error ( QAbstractSocket::SocketError)  ),
-			this, SLOT(connectionError ( QAbstractSocket::SocketError ) ));
+	StatusIcon = IconsManager::instance()->loadPixmap("Invisible");
+	PixmapLabel->setPixmap(StatusIcon);
 
-	connect( this, SIGNAL( statusChanged ( QString, ServerStatusWidget::ServerState )),
-			this, SLOT(notifity( QString,ServerStatusWidget::ServerState )));
+	layout->addWidget(PixmapLabel, 0);
+	layout->addWidget(textLabel, 100);
 
-	statusIcon = IconsManager::instance()->loadPixmap( "Invisible" );
-	setPixmap( statusIcon );
-
-	labelAddress.move( x()+statusIcon.width() + 10 , y() );
 	refreshIcon();
+}
+
+ServerStatusWidget::~ServerStatusWidget()
+{
 }
 
 void ServerStatusWidget::emitNewStatus()
 {
-	tcpSocket.disconnectFromHost();
-	if ( serverOldStatus == serverStatus ) return;
+	TcpSocket.disconnectFromHost();
+	if (ServerOldStatus == ServerStatus)
+		return;
 
-	emit statusChanged ( serverStatus, serverOldStatus );
-	emit statusChanged ( address.toString(), serverStatus );
+	emit statusChanged(ServerStatus, ServerOldStatus);
+	emit statusChanged(WatchedAddress.toString(), ServerStatus);
 
-	setPixmap( statusIcon );
+	PixmapLabel->setPixmap(StatusIcon);
 }
 
 
 void ServerStatusWidget::connected()
 {
-	serverOldStatus = serverStatus;
-	serverStatus = Available;
-	statusIcon = IconsManager::instance()->loadPixmap( "Online" );
+	ServerOldStatus = ServerStatus;
+	ServerStatus = Available;
+
+	StatusIcon = IconsManager::instance()->loadPixmap("Online");
 	emitNewStatus();
 
-	tcpSocket.disconnectFromHost();
+	TcpSocket.disconnectFromHost();
 }
 
-void ServerStatusWidget::connectionError ( QAbstractSocket::SocketError socketError )
+void ServerStatusWidget::connectionError(QAbstractSocket::SocketError socketError)
 {
-	serverOldStatus = serverStatus;
-	serverStatus = Unavailable;
-	statusIcon = IconsManager::instance()->loadPixmap( "Offline" );
+	ServerOldStatus = ServerStatus;
+	ServerStatus = Unavailable;
+	StatusIcon = IconsManager::instance()->loadPixmap("Offline");
 
-	tcpSocket.disconnectFromHost();
+	TcpSocket.disconnectFromHost();
 	emitNewStatus();
 }
 
 void ServerStatusWidget::refreshIcon()
 {
 	kdebugf();
-	tcpSocket.connectToHost( address, port, QIODevice::ReadOnly );
+	TcpSocket.connectToHost(WatchedAddress, WatchedPort, QIODevice::ReadOnly);
 	kdebugf2();
 }
 
-
-void ServerStatusWidget::notifity ( QString adress , ServerStatusWidget::ServerState)
+void ServerStatusWidget::notify(QString address, ServerStatusWidget::ServerState)
 {
-	if ( serverOldStatus  == Empty )	return;
+	if (ServerOldStatus == Empty)
+		return;
 
-	Notification *notification = new Notification("serverMonitorChangeStatus",   QIcon() );
+	Notification *notification = new Notification("serverMonitorChangeStatus",   QIcon());
 
-	notification->setDetails( QObject::tr("Server") +QObject::tr(" ")+
-			adress+QObject::tr(" ")+
-			QObject::tr("changed status to")+QObject::tr(" ")+
-			serverStateToString() );
-
+	notification->setDetails(tr("Server %1 changed status to %2").arg(address).arg(serverStateToString()));
 	notification->setText("Server monitor");
-	NotificationManager::instance()->notify( notification );
+
+	NotificationManager::instance()->notify(notification);
 }
 
 QString ServerStatusWidget::serverStateToString()
 {
-	switch ( serverStatus )
+	switch (ServerStatus)
 	{
 		case Available:
-			return QObject::tr( "Online" );
-		break;
-
+			return tr( "Online" );
+			
 		case Unavailable:
-			return QObject::tr("Unavailable");
-		break;
+			return tr("Unavailable");
 
 		case Unknown:
-			return QObject::tr("Unknown");
-		break;
+			return tr("Unknown");
 
 		case Empty:
-			return QObject::tr("Empty");
-		break;
+			return tr("Empty");
 	}
+
+	return "";
 }
