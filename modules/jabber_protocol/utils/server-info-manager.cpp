@@ -1,4 +1,7 @@
 /*
+ * serverinfomanager.cpp
+ * Copyright (C) 2006  Remko Troncon
+ *
  * %kadu copyright begin%
  * Copyright 2009, 2009 Wojciech Treter (juzefwt@gmail.com)
  * %kadu copyright end%
@@ -15,12 +18,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
-
-/*
- * serverinfomanager.cpp
- * Copyright (C) 2006  Remko Troncon
- *
  */
 
 #include "xmpp_tasks.h"
