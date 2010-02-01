@@ -25,6 +25,7 @@
 #include <QtCrypto>
 #include <QtGui/QCheckBox>
 #include <QtGui/QComboBox>
+#include <QtGui/QFileDialog>
 #include <QtGui/QGridLayout>
 #include <QtGui/QGroupBox>
 #include <QtGui/QIntValidator>
@@ -36,10 +37,12 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "configuration/configuration-file.h"
 #include "gui/widgets/account-buddy-list-widget.h"
 #include "gui/widgets/choose-identity-widget.h"
 #include "gui/widgets/proxy-group-box.h"
 #include "gui/windows/message-dialog.h"
+#include "protocols/services/avatar-service.h"
 
 #include "jabber-account-details.h"
 #include "jabber-personal-info-widget.h"
@@ -125,6 +128,7 @@ void JabberEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 
 	QPushButton *photoButton = new QPushButton;
 	photoButton->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+	connect(photoButton, SIGNAL(clicked(bool)), this, SLOT(uploadAvatar()));
 	layout->addWidget(photoButton, row, 4, 4, 1);
 
 	tabWidget->addTab(generalTab, tr("General"));
@@ -409,4 +413,29 @@ void JabberEditAccountWidget::removeAccount()
 	}
 
 	delete messageBox;
+}
+
+void JabberEditAccountWidget::uploadAvatar()
+{
+  #include <QtCore/QDebug>
+	Protocol *protocol = account().protocolHandler();
+	if (!protocol)
+		return;
+
+	AvatarService *service = protocol->avatarService();
+	if (!service)
+		return;
+
+	QString fileName = QFileDialog::getOpenFileName(this, tr("Select avatar file"),
+			config_file.readEntry("Network", "LastDownloadDirectory"), tr("Images (*.png *.xpm *.jpg *.PNG *.XPM *.JPG)"));
+			
+	if (fileName.isEmpty())
+		return;
+
+	QImage avatar(fileName);
+	
+	if (avatar.isNull())
+		return;
+
+	service->uploadAvatar(avatar);
 }

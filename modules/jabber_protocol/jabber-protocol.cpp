@@ -251,6 +251,20 @@ void JabberProtocol::connectToServer()
 	jabberID = jabberID.withResource(jabberAccountDetails->resource());
 	networkStateChanged(NetworkConnecting);
 	JabberClient->connect(jabberID, account().password(), true);
+	
+	// Initialize server info stuff
+	serverInfoManager = new ServerInfoManager(JabberClient->client());
+	connect(serverInfoManager, SIGNAL(featuresChanged()),
+		this, SLOT(serverFeaturesChanged()));
+
+	// Initialize PubSub stuff
+	PepManager = new PEPManager(JabberClient->client(), serverInfoManager);
+	connect(PepManager, SIGNAL(itemPublished(const XMPP::Jid&, const QString&, const XMPP::PubSubItem&)),
+		this, SLOT(itemPublished(const XMPP::Jid&, const QString&, const XMPP::PubSubItem&)));
+	connect(PepManager, SIGNAL(itemRetracted(const XMPP::Jid&, const QString&, const XMPP::PubSubRetraction&)),
+		this, SLOT(itemRetracted(const XMPP::Jid&, const QString&, const XMPP::PubSubRetraction&)));
+	pepAvailable = false;
+	
 	kdebugf2();
 }
 
@@ -309,6 +323,18 @@ void JabberProtocol::disconnectFromServer(const XMPP::Status &s)
 	 * connection attempt.
 	 */
 	kdebug("Disconnected.\n");
+
+	disconnect(serverInfoManager, SIGNAL(featuresChanged()),
+		this, SLOT(serverFeaturesChanged()));
+	serverInfoManager = 0;
+
+	disconnect(PepManager, SIGNAL(itemPublished(const XMPP::Jid&, const QString&, const XMPP::PubSubItem&)),
+		this, SLOT(itemPublished(const XMPP::Jid&, const QString&, const XMPP::PubSubItem&)));
+	disconnect(PepManager, SIGNAL(itemRetracted(const XMPP::Jid&, const QString&, const XMPP::PubSubRetraction&)),
+		this, SLOT(itemRetracted(const XMPP::Jid&, const QString&, const XMPP::PubSubRetraction&)));
+	PepManager = 0;
+	pepAvailable = false;
+	
 	networkStateChanged(NetworkDisconnected);
 	kdebugf2();
 }
@@ -769,3 +795,142 @@ JabberContactDetails * JabberProtocol::jabberContactDetails(Contact contact) con
 		return 0;
 	return dynamic_cast<JabberContactDetails *>(contact.details());
 }
+
+void JabberProtocol::serverFeaturesChanged()
+{
+	setPEPAvailable(serverInfoManager->hasPEP());
+}
+
+void JabberProtocol::setPEPAvailable(bool b)
+{
+	if (pepAvailable == b)
+		return;
+
+	pepAvailable = b;
+
+	// Publish support
+	if (b && JabberClient->client()->extensions().contains("ep"))
+	{
+		QStringList pepNodes;
+// 		pepNodes += "http://jabber.org/protocol/mood";
+// 		pepNodes += "http://jabber.org/protocol/tune";
+// 		pepNodes += "http://jabber.org/protocol/physloc";
+// 		pepNodes += "http://jabber.org/protocol/geoloc";
+		pepNodes += "http://www.xmpp.org/extensions/xep-0084.html#ns-data";
+		pepNodes += "http://www.xmpp.org/extensions/xep-0084.html#ns-metadata";
+		JabberClient->client()->addExtension("ep", XMPP::Features(pepNodes));
+		//setStatusActual(d->loginStatus);
+	}
+	else if (!b && JabberClient->client()->extensions().contains("ep"))
+	{
+		JabberClient->client()->removeExtension("ep");
+		//setStatusActual(d->loginStatus);
+	}
+
+	// Publish current tune information
+// 	if (b && d->psi->tuneController() && d->options->getOption("options.extended-presence.tune.publish").toBool()) {
+// 		Tune current = d->psi->tuneController()->currentTune();
+// 		if (!current.isNull())
+// 			publishTune(current);
+// 	}
+}
+
+void JabberProtocol::itemPublished(const XMPP::Jid& j, const QString& n, const XMPP::PubSubItem& item)
+{
+	/*
+	// User Tune
+	if (n == "http://jabber.org/protocol/tune") {
+		// Parse tune
+		QDomElement element = item.payload();
+		QDomElement e;
+		QString tune;
+		bool found;
+
+		e = findSubTag(element, "artist", &found);
+		if (found)
+			tune += e.text() + " - ";
+
+		e = findSubTag(element, "title", &found);
+		if (found)
+			tune += e.text();
+
+		foreach(UserListItem* u, findRelevant(j)) {
+			// FIXME: try to find the right resource using JEP-33 'replyto'
+			//UserResourceList::Iterator rit = u->userResourceList().find(<resource>);
+			//bool found = (rit == u->userResourceList().end()) ? false: true;
+			//if(found)
+			//	(*rit).setTune(tune);
+			u->setTune(tune);
+			cpUpdate(*u);
+		}
+	}
+	else if (n == "http://jabber.org/protocol/mood") {
+		Mood mood(item.payload());
+		foreach(UserListItem* u, findRelevant(j)) {
+			u->setMood(mood);
+			cpUpdate(*u);
+		}
+	}
+	else if (n == "http://jabber.org/protocol/geoloc") {
+		// FIXME: try to find the right resource using JEP-33 'replyto'
+		// see tune case above
+		GeoLocation geoloc(item.payload());
+		foreach(UserListItem* u, findRelevant(j)) {
+			u->setGeoLocation(geoloc);
+			cpUpdate(*u);
+		}
+	}
+	else if (n == "http://jabber.org/protocol/physloc") {
+		// FIXME: try to find the right resource using JEP-33 'replyto'
+		// see tune case above
+		PhysicalLocation physloc(item.payload());
+		foreach(UserListItem* u, findRelevant(j)) {
+			u->setPhysicalLocation(physloc);
+			cpUpdate(*u);
+		}
+	}
+	*/
+}
+
+void JabberProtocol::itemRetracted(const XMPP::Jid& j, const QString& n, const XMPP::PubSubRetraction& item)
+{
+	Q_UNUSED(item);
+	// User Tune
+	/*if (n == "http://jabber.org/protocol/tune") {
+		// Parse tune
+		foreach(UserListItem* u, findRelevant(j)) {
+			// FIXME: try to find the right resource using JEP-33 'replyto'
+			//UserResourceList::Iterator rit = u->userResourceList().find(<resource>);
+			//bool found = (rit == u->userResourceList().end()) ? false: true;
+			//if(found) 
+			//	(*rit).setTune(tune);
+			u->setTune(QString());
+			cpUpdate(*u);
+		}
+	}
+	else if (n == "http://jabber.org/protocol/mood") {
+		foreach(UserListItem* u, findRelevant(j)) {
+			u->setMood(Mood());
+			cpUpdate(*u);
+		}
+	}
+	else if (n == "http://jabber.org/protocol/geoloc") {
+		// FIXME: try to find the right resource using JEP-33 'replyto'
+		// see tune case above
+		foreach(UserListItem* u, findRelevant(j)) {
+			u->setGeoLocation(GeoLocation());
+			cpUpdate(*u);
+		}
+	}
+	else if (n == "http://jabber.org/protocol/physloc") {
+		// FIXME: try to find the right resource using JEP-33 'replyto'
+		// see tune case above
+		foreach(UserListItem* u, findRelevant(j)) {
+			u->setPhysicalLocation(PhysicalLocation());
+			cpUpdate(*u);
+		}
+	}
+	*/
+}
+
+

@@ -155,15 +155,15 @@ void VCardFactory::setVCard(const Jid &j, const VCard &v)
 /**
  * \brief Updates vCard on specified \a account.
  */
-/*void VCardFactory::setVCard(const PsiAccount* account, const VCard &v, QObject* obj, const char* slot)
+void VCardFactory::setVCard(Task *rootTask, const Jid &jid, const VCard &v, QObject* obj, const char* slot)
 {
-	JT_VCard* jtVCard_ = new JT_VCard(account->client()->rootTask());
+	JT_VCard* jtVCard_ = new JT_VCard(rootTask);
 	if (obj)
 		connect(jtVCard_, SIGNAL(finished()), obj, slot);
 	connect(jtVCard_, SIGNAL(finished()), SLOT(updateVCardFinished()));
-	jtVCard_->set(account->jid(), v);
+	jtVCard_->set(jid, v);
 	jtVCard_->go(true);
-}*/
+}
 
 void VCardFactory::updateVCardFinished()
 {
