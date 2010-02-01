@@ -50,9 +50,13 @@ void JabberChatStateService::chatWidgetCreated(ChatWidget *chatWidget)
 void JabberChatStateService::chatWidgetDestroying(ChatWidget *chatWidget)
 {
 	Chat chat = chatWidget->chat();
-	foreach (ChatState *state, ChatStateList)
-		if (state->chat() == chat)
-			ChatStateList.removeAll(state);
+
+	for (QList<ChatState *>::iterator i = ChatStateList.begin(); i != ChatStateList.end() ; ++i)
+		if ((*i)->chat() == chat)
+		{
+			ChatStateList.removeAll((*i));
+			delete (*i);
+		}
 }
 
 ChatState::ChatState(Chat chat) : ObservedChat(chat)
