@@ -114,7 +114,9 @@ public:
 	 *
 	 * Chat title is used to display in window titles.
 	 */
-	KaduShared_Property(QString, title, Title);
+	KaduShared_PropertyRead(QString, title, Title)
+	void setTitle(QString title);
+
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
