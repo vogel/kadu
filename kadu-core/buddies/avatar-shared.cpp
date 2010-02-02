@@ -114,9 +114,15 @@ void AvatarShared::setPixmap(QPixmap pixmap)
 		avatarsDir.mkpath(ggPath("avatars"));
 
 	Pixmap = pixmap;
+	emitUpdated();
 
 	if (pixmap.isNull())
 		QFile::remove(filePath());
 	else
 		pixmap.save(filePath(), "PNG");
+}
+
+void AvatarShared::emitUpdated()
+{
+	emit updated();
 }

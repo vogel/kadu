@@ -245,11 +245,15 @@ void NotificationManager::statusChanged(Contact contact, Status oldStatus)
 	if (!contact.contactAccount())
 		return;
 
+	Protocol *protocol = contact.contactAccount().protocolHandler();
+	if (!protocol || Protocol::NetworkConnected != protocol->state())
+		return;
+
 	if (config_file.readBoolEntry("Notify", "NotifyIgnoreOnConnection"))
 	{
 		QDateTime *dateTime = contact.contactAccount().data()->moduleData<QDateTime>("notify-account-connected");
 		if (dateTime && (*dateTime >= QDateTime::currentDateTime()))
-		  return;
+			return;
 	}
 
 	bool notify_contact = true;

@@ -115,7 +115,7 @@ link_directories (${QCA2_LIBRARY_DIRS})
 add_definitions (${QCA2_CFLAGS_OTHER})
 
 pkg_search_module (LIBGADU REQUIRED libgadu>=1.8.0)
-include_directories (${LIBGADU_INCLUDE_DIRS})
+include_directories (${LIBGADU_INCLUDE_DIRS} ${QCA2_INCLUDE_DIRS})
 link_directories (${LIBGADU_LIBRARY_DIRS})
 
 message (STATUS " * libgadu found (version ${LIBGADU_VERSION}) in ${LIBGADU_LIBRARY_DIRS}")

@@ -96,13 +96,15 @@ void ChatStylesManager::chatViewCreated(ChatMessagesView *view)
 	if (0 != view)
 	{
 		chatViews.append(view);
-		CurrentEngine->refreshView(view->renderer());
-		if (CompositingEnabled && config_file.readBoolEntry("Chat", "UseTransparency", false))
+
+		bool useTransparency = view->supportTransparency() && CompositingEnabled && config_file.readBoolEntry("Chat", "UseTransparency", false);
+		if (useTransparency)
 		{
 			QPalette palette = view->renderer()->webPage()->palette();
 			palette.setBrush(QPalette::Base, Qt::transparent);
 			view->renderer()->webPage()->setPalette(palette);
 		}
+		CurrentEngine->refreshView(view->renderer(), useTransparency);
 	}
 }
 
@@ -192,12 +194,6 @@ void ChatStylesManager::configurationUpdated()
 		CurrentEngine->configurationUpdated();
 
 	triggerCompositingStateChanged();
-
-	foreach (ChatMessagesView *view, chatViews)
-	{
-		view->updateBackgroundsAndColors();
-		CurrentEngine->refreshView(view->renderer());
-	}
 }
 
 void ChatStylesManager::compositingEnabled()
@@ -205,14 +201,25 @@ void ChatStylesManager::compositingEnabled()
 	CompositingEnabled = true;
 	foreach (ChatMessagesView *view, chatViews)
 	{
+		view->updateBackgroundsAndColors();
+
+		if (!view->supportTransparency())
+		{
+			CurrentEngine->refreshView(view->renderer());
+			continue;
+		}
+
 		QPalette palette = view->renderer()->webPage()->palette();
-		if (config_file.readBoolEntry("Chat", "UseTransparency", false))
+
+		bool useTransparency = config_file.readBoolEntry("Chat", "UseTransparency", false);
+		if (useTransparency)
 			palette.setBrush(QPalette::Base, Qt::transparent);
 		else
 			palette.setBrush(QPalette::Base, config_file.readColorEntry("Look", "ChatBgColor"));
 
 		view->renderer()->webPage()->setPalette(palette);
-		CurrentEngine->refreshView(view->renderer());
+
+		CurrentEngine->refreshView(view->renderer(), useTransparency);
 	}
 
 	if (turnOnTransparency)
@@ -224,6 +231,11 @@ void ChatStylesManager::compositingDisabled()
 	CompositingEnabled = false;
 	foreach (ChatMessagesView *view, chatViews)
 	{
+		view->updateBackgroundsAndColors();
+
+		if (!view->supportTransparency())
+			continue;
+
 		QPalette palette = view->renderer()->webPage()->palette();
 		palette.setBrush(QPalette::Base, config_file.readColorEntry("Look", "ChatBgColor"));
 
@@ -321,9 +333,12 @@ void ChatStylesManager::mainConfigurationWindowCreated(MainConfigurationWindow *
 	editorLayout->addWidget(deleteButton);
 //variants
 	variantListCombo = new QComboBox();
-	variantListCombo->addItem("Default");
 	variantListCombo->addItems(CurrentEngine->styleVariants(CurrentEngine->currentStyleName()));
-	variantListCombo->setCurrentIndex(variantListCombo->findText(CurrentEngine->currentStyleVariant().isNull() ? "Default" : CurrentEngine->currentStyleVariant()));
+	QString defaultVariant = CurrentEngine->defaultVariant(CurrentEngine->currentStyleName());
+	if (!defaultVariant.isEmpty() && variantListCombo->findText(defaultVariant) == -1)
+		variantListCombo->insertItem(0, defaultVariant);
+
+	variantListCombo->setCurrentIndex(variantListCombo->findText(CurrentEngine->currentStyleVariant().isNull() ? defaultVariant : CurrentEngine->currentStyleVariant()));
 	variantListCombo->setEnabled(CurrentEngine->supportVariants());
 	connect(variantListCombo, SIGNAL(activated(const QString &)), this, SLOT(variantChangedSlot(const QString &)));
 //preview
@@ -356,6 +371,7 @@ void ChatStylesManager::preparePreview(Preview *preview)
 	Chat chat = Chat::create();
 	chat.setChatAccount(example.prefferedAccount());
 	ChatDetailsSimple *details = new ChatDetailsSimple(chat);
+	details->setState(StorableObject::StateNew);
 	details->setContact(example.prefferedContact());
 	chat.setDetails(details);
 
@@ -392,8 +408,14 @@ void ChatStylesManager::styleChangedSlot(const QString &styleName)
 	editButton->setEnabled(engine->supportEditing());
 	deleteButton->setEnabled(!availableStyles[styleName].global);
 	variantListCombo->clear();
-	variantListCombo->addItem("Default");
 	variantListCombo->addItems(engine->styleVariants(styleName));
+
+	QString currentVariant = CurrentEngine->defaultVariant(styleName);
+	if (!currentVariant.isEmpty() && variantListCombo->findText(currentVariant) == -1)
+		variantListCombo->insertItem(0, currentVariant);
+
+	variantListCombo->setCurrentIndex(variantListCombo->findText(currentVariant.isNull() ? "Default.css" : currentVariant));
+
 	variantListCombo->setEnabled(engine->supportVariants());
 	engine->prepareStylePreview(preview, styleName, variantListCombo->currentText());
 	turnOnTransparency->setChecked(engine->styleUsesTransparencyByDefault(styleName));

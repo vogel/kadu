@@ -21,6 +21,8 @@
 #include "services/jabber-chat-service.h"
 #include "services/jabber-chat-state-service.h"
 #include "services/jabber-file-transfer-service.h"
+#include "utils/pep-manager.h"
+#include "utils/server-info-manager.h"
 
 class ActionDescription;
 class JabberResourcePool;
@@ -38,9 +40,8 @@ class JabberProtocol : public Protocol
 		XMPP::JabberClient *JabberClient;
 		XMPP::Jid jabberID;
 		JabberResourcePool *ResourcePool;
-		/* Initial presence to set after connecting. */
-//		XMPP::Status InitialPresence;
-		//JabberConfig *jconf;
+		ServerInfoManager *serverInfoManager;
+		PEPManager *PepManager; 
 
 		bool rosterRequestDone;
 		bool usingSSL;
@@ -48,8 +49,10 @@ class JabberProtocol : public Protocol
 		bool doReconnect;
 		bool doAboutRoster;
 		bool whileConnecting;
+		bool pepAvailable;
 
 		void initializeJabberClient();
+		void setPEPAvailable(bool b);
 
 	public:
 		static int initModule();
@@ -61,6 +64,7 @@ class JabberProtocol : public Protocol
 		bool isConnecting() { return whileConnecting; }
 		XMPP::Status toXMPPStatus(Status status);
 		Status toStatus(XMPP::Status status);
+		bool isPEPAvailable() { return pepAvailable; };
 
 		virtual Conference * loadConferenceFromStorage(StoragePoint *storage) { return 0; }
 
@@ -76,6 +80,7 @@ class JabberProtocol : public Protocol
 		virtual PersonalInfoService * personalInfoService() { return 0; }
 		virtual SearchService * searchService() { return 0; }
 		JabberResourcePool *resourcePool();
+		PEPManager *pepManager() { return PepManager; };
 
 		JabberContactDetails * jabberContactDetails(Contact contact) const;
 
@@ -104,6 +109,10 @@ class JabberProtocol : public Protocol
 
 		void contactIdChanged(Contact contact, const QString &oldId);
 		void authorizeContact(Contact contact, bool authorized);
+		
+		void serverFeaturesChanged();
+		void itemPublished(const XMPP::Jid& j, const QString& n, const XMPP::PubSubItem& item);
+		void itemRetracted(const XMPP::Jid& j, const QString& n, const XMPP::PubSubRetraction& item);
 
 	public slots:
 		void connectToServer();

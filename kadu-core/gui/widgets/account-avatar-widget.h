@@ -17,41 +17,44 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GADU_AVATAR_UPLOADER_H
-#define GADU_AVATAR_UPLOADER_H
+#ifndef ACCOUNT_AVATAR_WIDGET_H
+#define ACCOUNT_AVATAR_WIDGET_H
 
-#include <QtGui/QImage>
+#include <QtGui/QWidget>
 
 #include "accounts/account.h"
 
-#include "oauth/oauth-token.h"
+class QLabel;
+class QPushButton;
 
-class QNetworkAccessManager;
-class QNetworkReply;
+class AvatarService;
 
-class GaduAvatarUploader : public QObject
+class AccountAvatarWidget : public QWidget, ProtocolsAwareObject
 {
 	Q_OBJECT
 
-	QNetworkAccessManager *NetworkAccessManager;
-	QNetworkReply *Reply;
-
 	Account MyAccount;
-	QImage Avatar;
+	AvatarService *Service;
+
+	QLabel *AvatarLabel;
+	QMovie *WaitMovie;
+	QPushButton *ChangeAvatarButton;
+
+	void createGui();
 
 private slots:
-	void authorized(OAuthToken token);
-	void transferFinished();
+	void avatarUpdated();
+	void changeAvatar();
+	void avatarUploaded(bool ok, QImage image);
+
+protected:
+	virtual void protocolRegistered(ProtocolFactory *protocolFactory);
+	virtual void protocolUnregistered(ProtocolFactory *protocolFactory);
 
 public:
-	explicit GaduAvatarUploader(Account account, QObject *parent = 0);
-	virtual ~GaduAvatarUploader();
-
-	void uploadAvatar(QImage avatar);
-
-signals:
-	void avatarUploaded(bool ok, QImage image);
+	explicit AccountAvatarWidget(Account account, QWidget *parent = 0);
+	virtual ~AccountAvatarWidget();
 
 };
 
-#endif // GADU_AVATAR_UPLOADER_H
+#endif // ACCOUNT_AVATAR_WIDGET_H

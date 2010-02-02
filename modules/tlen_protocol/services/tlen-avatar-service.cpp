@@ -42,6 +42,10 @@ void TlenAvatarService::fetchAvatar(Contact contact)
 	qDebug() << "Tlen Get Avatar" << contact.id();
 }
 
+void TlenAvatarService::uploadAvatar(QImage avatar)
+{
+}
+
 void TlenAvatarService::avatarReady(Contact contact, const QByteArray &avatar)
 {
 	InProgress.removeAll(contact);

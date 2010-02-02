@@ -50,9 +50,13 @@ void JabberChatStateService::chatWidgetCreated(ChatWidget *chatWidget)
 void JabberChatStateService::chatWidgetDestroying(ChatWidget *chatWidget)
 {
 	Chat chat = chatWidget->chat();
-	foreach (ChatState *state, ChatStateList)
-		if (state->chat() == chat)
-			ChatStateList.removeAll(state);
+
+	for (QList<ChatState *>::iterator i = ChatStateList.begin(); i != ChatStateList.end() ; ++i)
+		if ((*i)->chat() == chat)
+		{
+			ChatStateList.removeAll((*i));
+			delete (*i);
+		}
 }
 
 ChatState::ChatState(Chat chat) : ObservedChat(chat)
@@ -278,7 +282,7 @@ void ChatState::setContactChatState(XMPP::ChatState state)
 		QString msg = "[ " + tr("%1 ended the conversation").arg(contact.ownerBuddy().display()) + " ]";
 		Message message = Message::create();
 		message.setMessageChat(ObservedChat);
-		message.setType(Message::TypeReceived);
+		message.setType(Message::TypeSystem);
 		message.setMessageSender(contact);
 		message.setContent(msg);
 		message.setSendDate(QDateTime::currentDateTime());

@@ -117,6 +117,7 @@ set (kadu_SRCS
 	gui/actions/action-description.cpp
 
 	gui/widgets/account-buddy-list-widget.cpp
+	gui/widgets/account-avatar-widget.cpp
 	gui/widgets/accounts-combo-box.cpp
 	gui/widgets/buddies-list-view.cpp
 	gui/widgets/buddies-list-view-delegate.cpp
@@ -305,6 +306,7 @@ set (kadu_MOC_SRCS
 	accounts/model/accounts-proxy-model.h
 
 	buddies/avatar-manager.h
+	buddies/avatar-shared.h
 	buddies/buddy-shared.h
 	buddies/buddy-manager.h
 	buddies/group-manager.h
@@ -380,6 +382,7 @@ set (kadu_MOC_SRCS
 	gui/actions/action-description.h
 
 	gui/widgets/account-add-widget.h
+	gui/widgets/account-avatar-widget.h
 	gui/widgets/account-buddy-list-widget.h
 	gui/widgets/account-create-widget.h
 	gui/widgets/account-edit-widget.h

@@ -57,7 +57,6 @@
 class JabberProtocol;
 
 namespace XMPP { class AdvancedConnector; }
-//namespace XMPP { class PrivacyManager; }
 
 /**
  * This class provides an interface to the Iris subsystem. The goal is to
@@ -99,6 +98,7 @@ class JabberClient : public QObject
 	XMPP::QCATLSHandler *JabberTLSHandler;
 	QCA::Initializer QcaInit;
 	//PrivacyManager *privacyManager;
+	QStringList AddedContacts;
 
 	// ignore TLS warnings
 	bool IgnoreTLSWarnings;

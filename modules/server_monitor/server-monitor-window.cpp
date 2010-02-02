@@ -17,6 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QBuffer>
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtGui/QGridLayout>

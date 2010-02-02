@@ -5,6 +5,7 @@ set (SOURCES
 	model/chat-dates-model.cpp
 	model/history-chats-model.cpp
 	model/history-chats-model-proxy.cpp
+	model/sms-dates-model.cpp
 
 	search/history-search-parameters.cpp
 	storage/history-storage.cpp
@@ -21,6 +22,7 @@ set (MOC_SOURCES
 	model/chat-dates-model.h
 	model/history-chats-model.h
 	model/history-chats-model-proxy.h
+	model/sms-dates-model.h
 
 	storage/history-storage.h
 

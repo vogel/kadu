@@ -17,22 +17,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SERVERSTATUSWIDGET_H
-#define SERVERSTATUSWIDGET_H
+#ifndef SERVER_STATUS_WIDGET_H
+#define SERVER_STATUS_WIDGET_H
 
-#include <QtCore/QBuffer>
-#include <QtGui/QLabel>
 #include <QtGui/QWidget>
 #include <QtNetwork/QTcpSocket>
 #include <QtNetwork/QHostAddress>
 
-class ServerStatusWidget : public QLabel
+class QLabel;
+
+class ServerStatusWidget : public QWidget
 {
 
 	Q_OBJECT
 
 public:
-	enum ServerState {
+	enum ServerState
+	{
 		Available,
 		Unavailable,
 		Unknown,
@@ -40,34 +41,36 @@ public:
 	};
 
 private:
-	QHostAddress address;
-	QLabel labelAddress;
-	quint16 port;
-	QAbstractSocket::SocketState prevSocketState;
-	QTcpSocket tcpSocket;
-	QString hostName;
-	QPixmap statusIcon;
+	QLabel *PixmapLabel;
 
-	void emitNewStatus();
+	QHostAddress WatchedAddress;
+	quint16 WatchedPort;
+
+	ServerState CurrentState;
+	QAbstractSocket::SocketState PreviousSocketState;
+	QTcpSocket TcpSocket;
+	QString WatchedHostName;
+
+	void setNewState(ServerState newState);
+	void notify(QString, ServerStatusWidget::ServerState);
 
 private slots:
 	void connected();
-	void connectionError ( QAbstractSocket::SocketError socketError );
-	void notifity ( QString, ServerStatusWidget::ServerState );
+	void connectionError(QAbstractSocket::SocketError socketError);
 
 public:
-	ServerStatusWidget(QString addr, quint16 watchedPort, QString name, QWidget *parent=0);
-	QString serverStateToString();
+	ServerStatusWidget(QString watchedAddress, quint16 watchedPort, QString hostName, QWidget *parent = 0);
+	virtual ~ServerStatusWidget();
 
-	ServerState serverStatus;
-	ServerState serverOldStatus;
+	QString serverStateToString();
 
 public slots:
 	void refreshIcon();
 
 signals:
-	void statusChanged ( ServerStatusWidget::ServerState, ServerStatusWidget::ServerState );
-	void statusChanged ( QString, ServerStatusWidget::ServerState );
+	void statusChanged(ServerStatusWidget::ServerState, ServerStatusWidget::ServerState);
+	void statusChanged(QString, ServerStatusWidget::ServerState);
+
 };
 
-#endif // SERVERSTATUSWIDGET_H
+#endif // SERVER_STATUS_WIDGET_H

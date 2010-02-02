@@ -254,6 +254,15 @@ void ChatShared::detailsAboutToBeRemoved()
 	details()->store();
 }
 
+void ChatShared::setTitle(QString title)
+{
+	ensureLoaded();
+	Title = title;
+	dataUpdated();
+
+	emit titleChanged(this, title);
+}
+
 /**
  * @author Rafal 'Vogel' Malinowski
  * @short Updates chat title.
@@ -306,7 +315,6 @@ void ChatShared::refreshTitle()
 	title.replace("&nbsp;", " ");
 
 	setTitle(title);
-	emit titleChanged(this, title);
 
 	kdebugf2();
 }

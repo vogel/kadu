@@ -35,6 +35,7 @@ ToolTipClassManager * ToolTipClassManager::instance()
 ToolTipClassManager::ToolTipClassManager()
 	: CurrentToolTipClass(0)
 {
+	configurationUpdated();
 }
 
 ToolTipClassManager::~ToolTipClassManager()

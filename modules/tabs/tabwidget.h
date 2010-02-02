@@ -33,6 +33,8 @@
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/custom-input.h"
 
+#include "os/generic/compositing-aware-object.h"
+
 #include "debug.h"
 
 class OpenChatWith;
@@ -72,7 +74,7 @@ class TabBar: public QTabBar
 
 };
 
-class TabWidget: public QTabWidget, public ChatContainer
+class TabWidget: public QTabWidget, public ChatContainer, CompositingAwareObject
 {
 	Q_OBJECT
 
@@ -160,6 +162,9 @@ class TabWidget: public QTabWidget, public ChatContainer
 
 		virtual void tabInserted(int index);
 		virtual void tabRemoved(int index);
+
+		virtual void compositingEnabled();
+		virtual void compositingDisabled();
 
 	public:
 		TabWidget();

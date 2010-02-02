@@ -53,7 +53,7 @@ void GaduAvatarUploader::authorized(OAuthToken token)
 {
 	if (!token.isValid())
 	{
-		emit avatarUploaded(false);
+		emit avatarUploaded(false, Avatar);
 		deleteLater();
 	}
 
@@ -105,6 +105,6 @@ void GaduAvatarUploader::authorized(OAuthToken token)
 
 void GaduAvatarUploader::transferFinished()
 {
-	emit avatarUploaded(QNetworkReply::NoError == Reply->error());
+	emit avatarUploaded(QNetworkReply::NoError == Reply->error(), Avatar);
 	deleteLater();
 }

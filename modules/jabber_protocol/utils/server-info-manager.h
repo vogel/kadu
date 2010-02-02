@@ -1,6 +1,9 @@
 /*
+ * serverinfomanager.h
+ * Copyright (C) 2006  Remko Troncon
+ *
  * %kadu copyright begin%
- * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2009, 2009 Wojciech Treter (juzefwt@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,41 +20,38 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GADU_AVATAR_UPLOADER_H
-#define GADU_AVATAR_UPLOADER_H
+#ifndef SERVER_INFO_MANAGER_H
+#define SERVER_INFO_MANAGER_H
 
-#include <QtGui/QImage>
+#include <QObject>
+#include <QString>
 
-#include "accounts/account.h"
+#include "xmpp_tasks.h"
 
-#include "oauth/oauth-token.h"
-
-class QNetworkAccessManager;
-class QNetworkReply;
-
-class GaduAvatarUploader : public QObject
+class ServerInfoManager : public QObject
 {
 	Q_OBJECT
 
-	QNetworkAccessManager *NetworkAccessManager;
-	QNetworkReply *Reply;
-
-	Account MyAccount;
-	QImage Avatar;
-
-private slots:
-	void authorized(OAuthToken token);
-	void transferFinished();
-
 public:
-	explicit GaduAvatarUploader(Account account, QObject *parent = 0);
-	virtual ~GaduAvatarUploader();
+	ServerInfoManager(XMPP::Client* client);
 
-	void uploadAvatar(QImage avatar);
+	const QString& multicastService() const;
+	bool hasPEP() const;
 
 signals:
-	void avatarUploaded(bool ok, QImage image);
+	void featuresChanged();
 
+private slots:
+	void disco_finished();
+	void initialize();
+	void deinitialize();
+	void reset();
+
+private:
+	XMPP::Client* client_;
+	QString multicastService_;
+	bool featuresRequested_;
+	bool hasPEP_;
 };
 
-#endif // GADU_AVATAR_UPLOADER_H
+#endif

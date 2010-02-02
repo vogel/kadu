@@ -266,6 +266,8 @@ set (SOURCES
 	transport/jabber-transport.cpp
 	utils/jid-util.cpp
 	utils/vcard-factory.cpp
+	utils/pep-manager.cpp
+	utils/server-info-manager.cpp
 )
 
 set (MOC_SOURCES
@@ -291,6 +293,8 @@ set (MOC_SOURCES
 	services/jabber-file-transfer-service.h
 	transport/jabber-transport.h
 	utils/vcard-factory.h
+	utils/pep-manager.h
+	utils/server-info-manager.h
 )
 
 set (DATA_FILES

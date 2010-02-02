@@ -32,5 +32,7 @@ ChatNotification::ChatNotification(Chat chat, const QString &type, const QIcon &
 
 void ChatNotification::openChat()
 {
-	ChatWidgetManager::instance()->openChatWidget(chat(), true);
+	close();
+			
+	ChatWidgetManager::instance()->openPendingMsgs(chat(), true);
 }

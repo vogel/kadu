@@ -8,6 +8,8 @@ BEGIN {
 	ALIAS["Wojtek (juzef@slack.(none))"] = "Wojciech Treter (juzefwt@gmail.com)"
 	ALIAS["root (root@slack.(none))"] = "Wojciech Treter (juzefwt@gmail.com)"
 	ALIAS["Bartlomiej Zimon (uzi18@o2.pl)"] = "Bartłomiej Zimoń (uzi18@o2.pl)"
+	ALIAS["Bartłomiej Zimoń (uzi18@go2.pl)"] = "Bartłomiej Zimoń (uzi18@o2.pl)"
+
 }
 
 {

@@ -49,7 +49,7 @@ public:
 	static VCardFactory* instance();
 	const VCard *vcard(const Jid &);
 	void setVCard(const Jid &, const VCard &);
-	//void setVCard(const PsiAccount* account, const VCard &v, QObject* obj = 0, const char* slot = 0);
+	void setVCard(Task *rootTask, const Jid &, const VCard &v, QObject* obj = 0, const char* slot = 0);
 	JT_VCard *getVCard(const Jid &, Task *rootTask, const QObject *, const char *slot, bool cacheVCard = true);
 	
 signals:

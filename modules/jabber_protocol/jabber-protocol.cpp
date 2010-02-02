@@ -251,6 +251,20 @@ void JabberProtocol::connectToServer()
 	jabberID = jabberID.withResource(jabberAccountDetails->resource());
 	networkStateChanged(NetworkConnecting);
 	JabberClient->connect(jabberID, account().password(), true);
+	
+	// Initialize server info stuff
+	serverInfoManager = new ServerInfoManager(JabberClient->client());
+	connect(serverInfoManager, SIGNAL(featuresChanged()),
+		this, SLOT(serverFeaturesChanged()));
+
+	// Initialize PubSub stuff
+	PepManager = new PEPManager(JabberClient->client(), serverInfoManager);
+	connect(PepManager, SIGNAL(itemPublished(const XMPP::Jid&, const QString&, const XMPP::PubSubItem&)),
+		this, SLOT(itemPublished(const XMPP::Jid&, const QString&, const XMPP::PubSubItem&)));
+	connect(PepManager, SIGNAL(itemRetracted(const XMPP::Jid&, const QString&, const XMPP::PubSubRetraction&)),
+		this, SLOT(itemRetracted(const XMPP::Jid&, const QString&, const XMPP::PubSubRetraction&)));
+	pepAvailable = false;
+	
 	kdebugf2();
 }
 
@@ -309,6 +323,18 @@ void JabberProtocol::disconnectFromServer(const XMPP::Status &s)
 	 * connection attempt.
 	 */
 	kdebug("Disconnected.\n");
+
+	disconnect(serverInfoManager, SIGNAL(featuresChanged()),
+		this, SLOT(serverFeaturesChanged()));
+	serverInfoManager = 0;
+
+	disconnect(PepManager, SIGNAL(itemPublished(const XMPP::Jid&, const QString&, const XMPP::PubSubItem&)),
+		this, SLOT(itemPublished(const XMPP::Jid&, const QString&, const XMPP::PubSubItem&)));
+	disconnect(PepManager, SIGNAL(itemRetracted(const XMPP::Jid&, const QString&, const XMPP::PubSubRetraction&)),
+		this, SLOT(itemRetracted(const XMPP::Jid&, const QString&, const XMPP::PubSubRetraction&)));
+	PepManager = 0;
+	pepAvailable = false;
+	
 	networkStateChanged(NetworkDisconnected);
 	kdebugf2();
 }
@@ -548,88 +574,32 @@ void JabberProtocol::slotContactUpdated(const XMPP::RosterItem &item)
 
 	kdebug("New roster item: %s (Subscription: %s )\n", item.jid().full().toLocal8Bit().data(), item.subscription().toString().toLocal8Bit().data());
 
-	/*
-	 * See if the contact need to be added, according to the criterias of
-	 *  JEP-0162: Best Practices for Roster and Subscription Management
-	 * http://www.jabber.org/jeps/jep-0162.html#contacts
-	 */
-	bool need_to_add=false;
-	if (item.subscription().type() == XMPP::Subscription::Both || item.subscription().type() == XMPP::Subscription::To)
-		need_to_add = true;
-	else if (!item.ask().isEmpty())
-		need_to_add = true;
-	else if (!item.name().isEmpty() || !item.groups().isEmpty())
-		need_to_add = true;
+	Contact contact = ContactManager::instance()->byId(account(), item.jid().bare(), ActionCreateAndAdd);
+	Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
 
-	if (item.jid().bare() == jabberID.bare())
+	// if contact has name set it to display
+	if (!item.name().isNull())
 	{
-		// don't let remove the gateway contact, eh!
-		need_to_add = true;
+		if (item.name() != buddy.display())
+			buddy.setDisplay(item.name());
 	}
+	else
+		buddy.setDisplay(item.jid().bare());
 
-	if (need_to_add)
+	if (buddy.isAnonymous()) // always false!!
 	{
-		/*
-		 * See if the contact is already on our contact list
-		 * if not add contact to our list
-		 */
-		Contact contact = ContactManager::instance()->byId(account(), item.jid().bare(), ActionCreateAndAdd);
-		Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
+		// TODO: add some logic here?
+		buddy.setAnonymous(false);
 
-		// if contact has name set it to display
-		if (!item.name().isNull())
-		{
-			if (item.name() != buddy.display())
-				buddy.setDisplay(item.name());
-		}
-		else
-			buddy.setDisplay(item.jid().bare());
-
-		if (buddy.isAnonymous()) // always false!!
-		{
-			// TODO: add some logic here?
-			buddy.setAnonymous(false);
-
-			GroupManager *gm = GroupManager::instance();
-			// add this contact to all groups the contact is a member of
-			foreach (QString group, item.groups())
-				buddy.addToGroup(gm->byName(group,true /* create group */));
-		}
-		else
-		{
-			//TODO: synchronize groups
-		}
-
-		/*
-		* Add / update the contact in contact list. In case the contact is already there,
-		* it will be updated. In case the contact is not there yet, it
-		* will be added to it.
-		*/
-		///JabberContact contact = contactPool()->addContact ( item, metaContact, false );
-
-		/*
-		* Set authorization property
-		*/
-		/**if ( !item.ask().isEmpty () )
-// 		{
-// 			contact->setProperty ( protocol()->propAuthorizationStatus, i18n ( "Waiting for authorization" ) );
-// 		}
-// 		else
-// 		{
-// 			contact->removeProperty ( protocol()->propAuthorizationStatus );
-// 		}*/
+		GroupManager *gm = GroupManager::instance();
+		// add this contact to all groups the contact is a member of
+		foreach (QString group, item.groups())
+			buddy.addToGroup(gm->byName(group,true /* create group */));
 	}
-//	else if (!c.isAnonymous())  //we don't need to add it, and it is in the contact list
-//	{
-// 		Kopete::MetaContactmetaContact=c->metaContact();
-// 		if(metaContact->isTemporary())
-// 			return;
-// 		kDebug (JABBER_DEBUG_GLOBAL) << c->contactId() <<
-// 				" is on the contact list while it should not.  we are removing it.  - " << c << endl;
-// 		delete c;
-// 		if(metaContact->contacts().isEmpty())
-// 			Kopete::ContactList::self()->removeMetaContact( metaContact );
-//	}
+	else
+	{
+		//TODO: synchronize groups
+	}
 
 	kdebugf2();
 }
@@ -825,3 +795,142 @@ JabberContactDetails * JabberProtocol::jabberContactDetails(Contact contact) con
 		return 0;
 	return dynamic_cast<JabberContactDetails *>(contact.details());
 }
+
+void JabberProtocol::serverFeaturesChanged()
+{
+	setPEPAvailable(serverInfoManager->hasPEP());
+}
+
+void JabberProtocol::setPEPAvailable(bool b)
+{
+	if (pepAvailable == b)
+		return;
+
+	pepAvailable = b;
+
+	// Publish support
+	if (b && JabberClient->client()->extensions().contains("ep"))
+	{
+		QStringList pepNodes;
+// 		pepNodes += "http://jabber.org/protocol/mood";
+// 		pepNodes += "http://jabber.org/protocol/tune";
+// 		pepNodes += "http://jabber.org/protocol/physloc";
+// 		pepNodes += "http://jabber.org/protocol/geoloc";
+		pepNodes += "http://www.xmpp.org/extensions/xep-0084.html#ns-data";
+		pepNodes += "http://www.xmpp.org/extensions/xep-0084.html#ns-metadata";
+		JabberClient->client()->addExtension("ep", XMPP::Features(pepNodes));
+		//setStatusActual(d->loginStatus);
+	}
+	else if (!b && JabberClient->client()->extensions().contains("ep"))
+	{
+		JabberClient->client()->removeExtension("ep");
+		//setStatusActual(d->loginStatus);
+	}
+
+	// Publish current tune information
+// 	if (b && d->psi->tuneController() && d->options->getOption("options.extended-presence.tune.publish").toBool()) {
+// 		Tune current = d->psi->tuneController()->currentTune();
+// 		if (!current.isNull())
+// 			publishTune(current);
+// 	}
+}
+
+void JabberProtocol::itemPublished(const XMPP::Jid& j, const QString& n, const XMPP::PubSubItem& item)
+{
+	/*
+	// User Tune
+	if (n == "http://jabber.org/protocol/tune") {
+		// Parse tune
+		QDomElement element = item.payload();
+		QDomElement e;
+		QString tune;
+		bool found;
+
+		e = findSubTag(element, "artist", &found);
+		if (found)
+			tune += e.text() + " - ";
+
+		e = findSubTag(element, "title", &found);
+		if (found)
+			tune += e.text();
+
+		foreach(UserListItem* u, findRelevant(j)) {
+			// FIXME: try to find the right resource using JEP-33 'replyto'
+			//UserResourceList::Iterator rit = u->userResourceList().find(<resource>);
+			//bool found = (rit == u->userResourceList().end()) ? false: true;
+			//if(found)
+			//	(*rit).setTune(tune);
+			u->setTune(tune);
+			cpUpdate(*u);
+		}
+	}
+	else if (n == "http://jabber.org/protocol/mood") {
+		Mood mood(item.payload());
+		foreach(UserListItem* u, findRelevant(j)) {
+			u->setMood(mood);
+			cpUpdate(*u);
+		}
+	}
+	else if (n == "http://jabber.org/protocol/geoloc") {
+		// FIXME: try to find the right resource using JEP-33 'replyto'
+		// see tune case above
+		GeoLocation geoloc(item.payload());
+		foreach(UserListItem* u, findRelevant(j)) {
+			u->setGeoLocation(geoloc);
+			cpUpdate(*u);
+		}
+	}
+	else if (n == "http://jabber.org/protocol/physloc") {
+		// FIXME: try to find the right resource using JEP-33 'replyto'
+		// see tune case above
+		PhysicalLocation physloc(item.payload());
+		foreach(UserListItem* u, findRelevant(j)) {
+			u->setPhysicalLocation(physloc);
+			cpUpdate(*u);
+		}
+	}
+	*/
+}
+
+void JabberProtocol::itemRetracted(const XMPP::Jid& j, const QString& n, const XMPP::PubSubRetraction& item)
+{
+	Q_UNUSED(item);
+	// User Tune
+	/*if (n == "http://jabber.org/protocol/tune") {
+		// Parse tune
+		foreach(UserListItem* u, findRelevant(j)) {
+			// FIXME: try to find the right resource using JEP-33 'replyto'
+			//UserResourceList::Iterator rit = u->userResourceList().find(<resource>);
+			//bool found = (rit == u->userResourceList().end()) ? false: true;
+			//if(found) 
+			//	(*rit).setTune(tune);
+			u->setTune(QString());
+			cpUpdate(*u);
+		}
+	}
+	else if (n == "http://jabber.org/protocol/mood") {
+		foreach(UserListItem* u, findRelevant(j)) {
+			u->setMood(Mood());
+			cpUpdate(*u);
+		}
+	}
+	else if (n == "http://jabber.org/protocol/geoloc") {
+		// FIXME: try to find the right resource using JEP-33 'replyto'
+		// see tune case above
+		foreach(UserListItem* u, findRelevant(j)) {
+			u->setGeoLocation(GeoLocation());
+			cpUpdate(*u);
+		}
+	}
+	else if (n == "http://jabber.org/protocol/physloc") {
+		// FIXME: try to find the right resource using JEP-33 'replyto'
+		// see tune case above
+		foreach(UserListItem* u, findRelevant(j)) {
+			u->setPhysicalLocation(PhysicalLocation());
+			cpUpdate(*u);
+		}
+	}
+	*/
+}
+
+

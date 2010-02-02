@@ -34,9 +34,10 @@ class TlenAvatarService : public AvatarService
 	QList<Contact> InProgress;
 
 public:
-	TlenAvatarService(QObject *parent = 0) : AvatarService(parent) {}
+	TlenAvatarService(Account account, QObject *parent = 0) : AvatarService(account, parent) {}
 
-	void fetchAvatar(Contact contact);
+	virtual void fetchAvatar(Contact contact);
+	virtual void uploadAvatar(QImage avatar);
 
 private slots:
 	void avatarReady(Contact contact, const QByteArray &avatar);

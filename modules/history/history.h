@@ -150,6 +150,13 @@ public:
 	QList<Status> statuses(Buddy buddy, QDate date = QDate(), int limit = 0);
 	int statusBuddyCount(Buddy buddy, QDate date = QDate());
 
+	void appendSms(const QString &receipient, const QString &content);
+
+	QList<QString> smsReceipientsList(HistorySearchParameters search);
+	QList<QDate> datesForSmsReceipient(const QString &receipient, HistorySearchParameters search);
+	QList<QString> sms(const QString &receipient, QDate date = QDate(), int limit = 0);
+	int smsCount(const QString &receipient, QDate date = QDate());
+
 };
 
 void disableNonHistoryContacts(Action *action);

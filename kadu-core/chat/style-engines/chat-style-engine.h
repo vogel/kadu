@@ -40,7 +40,8 @@ public:
 	virtual ~ChatStyleEngine() {}
 	virtual QString engineName() { return EngineName; }
 	virtual QString currentStyleName() { return CurrentStyleName; }
-	virtual QString currentStyleVariant() { return QString::null; }
+	virtual QString currentStyleVariant() { return "Default"; }
+	virtual QString defaultVariant(const QString &) { return "Default"; }
 	virtual QStringList styleVariants(QString) { return QStringList(); }	
 
 	virtual bool supportVariants() = 0;
@@ -52,7 +53,7 @@ public:
 	virtual void appendMessages(HtmlMessagesRenderer *, QList<MessageRenderInfo *>) = 0;
 	virtual void appendMessage(HtmlMessagesRenderer *, MessageRenderInfo *) = 0;
 	virtual void pruneMessage(HtmlMessagesRenderer *) = 0;
-	virtual void refreshView(HtmlMessagesRenderer *) = 0;
+	virtual void refreshView(HtmlMessagesRenderer *, bool useTransparency = false) = 0;
 	virtual void messageStatusChanged(HtmlMessagesRenderer *, Message, Message::Status) = 0;
 
 	virtual void prepareStylePreview(Preview *, QString, QString) = 0;

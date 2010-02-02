@@ -21,6 +21,9 @@
 #ifndef JABBER_AVATAR_SERVICE_H
 #define JABBER_AVATAR_SERVICE_H
 
+#include "xmpp_vcard.h"
+#include "xmpp_tasks.h"
+
 #include "contacts/contact.h"
 #include "protocols/services/avatar-service.h"
 
@@ -28,14 +31,24 @@ class JabberAvatarService : public AvatarService
 {
 	Q_OBJECT
 	Contact MyContact;
+	Account MyAccount;
+	QImage AccountAvatar;
+	XMPP::JT_VCard *VCardHandler;
+	QByteArray selfAvatarData_;
+	QString selfAvatarHash_;
+	
+	QByteArray scaleAvatar(const QByteArray& b);
 
 public:
-	explicit JabberAvatarService(Account account, QObject *parent = 0) : AvatarService(account, parent) {}
+	explicit JabberAvatarService(Account account, QObject *parent = 0) : AvatarService(account, parent), MyAccount(account) {}
 	virtual ~JabberAvatarService() {}
 
 	virtual void fetchAvatar(Contact contact);
 	virtual void uploadAvatar(QImage avatar);
-
+	
+private slots:
+	void itemPublished(const XMPP::Jid& jid, const QString& n, const XMPP::PubSubItem& item);
+	void publish_success(const QString& n, const XMPP::PubSubItem& item);
 };
 
 #endif // JABBER_AVATAR_SERVICE_H

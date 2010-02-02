@@ -21,29 +21,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * %kadu copyright begin%
- * Copyright 2009, 2009, 2009 Wojciech Treter (juzefwt@gmail.com)
- * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2009 Michał Podsiadlik (michal@kadu.net)
- * Copyright 2009 Bartłomiej Zimoń (uzi18@go2.pl)
- * Copyright 2009 Piotr Galiszewski (piotrgaliszewski@gmail.com)
- * %kadu copyright end%
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License as
- * published by the Free Software Foundation; either version 2 of
- * the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
-
 #include <QtGui/QMessageBox>
 #include <QTimer>
 #include <QRegExp>
@@ -92,6 +69,8 @@ JabberClient::~JabberClient()
 	delete JabberClientConnector;
 	delete JabberTLSHandler;
 	delete JabberTLS;
+
+	jabberClient = 0;
 	// privacyManager will be deleted with jabberClient, its parent's parent
 }
 
@@ -735,16 +714,26 @@ void JabberClient::slotCSError(int error)
 
 void JabberClient::addContact(const XMPP::Jid &j, const QString &name, const QStringList &groups, bool authReq)
 {
+	if (AddedContacts.contains(j.bare()))
+		return;
+	
 	JT_Roster *r = new JT_Roster(jabberClient->rootTask());
 	r->set(j, name, groups);
 	r->go(true);
 
+	AddedContacts.append(j.bare());
+	
 	if(authReq)
 		requestSubscription(j);
 }
 
 void JabberClient::removeContact(const XMPP::Jid &j)
 {
+	if (!jabberClient)
+		return;
+
+	AddedContacts.removeAll(j.bare());
+	
 	JT_Roster *r = new JT_Roster(jabberClient->rootTask());
 	r->remove(j);
 	r->go(true);
@@ -761,6 +750,9 @@ void JabberClient::removeContact(const XMPP::Jid &j)
 
 void JabberClient::updateContact(const XMPP::Jid &j, const QString &name, const QStringList &groups)
 {
+	if (!jabberClient)
+		return;
+
 	JT_Roster *r = new JT_Roster(jabberClient->rootTask());
 	r->set(j, name, groups);
 	r->go(true);
