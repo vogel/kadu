@@ -93,19 +93,19 @@ void ServerStatusWidget::refreshIcon()
 	kdebugf2();
 }
 
-void ServerStatusWidget::notify(QString address, ServerStatusWidget::ServerState)
+void ServerStatusWidget::notify(QString address, ServerStatusWidget::ServerState newServerState)
 {
 	Notification *notification = new Notification("serverMonitorChangeStatus",   QIcon());
 
-	notification->setDetails(tr("Server %1 changed status to %2").arg(address).arg(serverStateToString()));
+	notification->setDetails(tr("Server %1 changed status to %2").arg(address).arg(serverStateToString(newServerState)));
 	notification->setText("Server monitor");
 
 	NotificationManager::instance()->notify(notification);
 }
 
-QString ServerStatusWidget::serverStateToString()
+QString ServerStatusWidget::serverStateToString(ServerState serverState)
 {
-	switch (CurrentState)
+	switch (serverState)
 	{
 		case Available:
 			return tr("Online");

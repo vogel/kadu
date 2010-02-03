@@ -62,7 +62,7 @@ public:
 	ServerStatusWidget(QString watchedAddress, quint16 watchedPort, QString hostName, QWidget *parent = 0);
 	virtual ~ServerStatusWidget();
 
-	QString serverStateToString();
+	QString serverStateToString(ServerState serverState);
 
 public slots:
 	void refreshIcon();
