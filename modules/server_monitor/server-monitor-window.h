@@ -21,9 +21,7 @@
 #define SERVER_MONITOR_WINDOW_H
 
 #include <QtCore/QTimer>
-#include <QtGui/QLabel>
 #include <QtGui/QScrollArea>
-#include <QtGui/QPushButton>
 
 #include "configuration/configuration-aware-object.h"
 
@@ -32,6 +30,8 @@
 class QBuffer;
 class QGridLayout;
 class QHttp;
+class QLabel;
+class QPushButton;
 
 class ServerMonitorWindow : public QScrollArea, ConfigurationAwareObject
 {
@@ -40,10 +40,10 @@ class ServerMonitorWindow : public QScrollArea, ConfigurationAwareObject
 	QList<ServerStatusWidget*> ServerStatusWidgetList;
 	QString ServerFileListName;
 
-	QPushButton ButtonRefresh;
+	QPushButton* ButtonRefresh;
 	QTimer RefreshTimer;
 
-	QLabel StatsLabel;
+	QLabel* StatsLabel;
 	quint32 AvalibleServers;
 	quint32 UnavalibleServers;
 	quint32 UnknownStatusServers;
@@ -64,7 +64,7 @@ private slots:
 	void downloadedServersList(bool);
 	void readServerList();
 	void refreshList();
-	void updateStats( ServerStatusWidget::ServerState, ServerStatusWidget::ServerState );
+	void updateStats(ServerStatusWidget::ServerState, ServerStatusWidget::ServerState);
 
 public:
 	explicit ServerMonitorWindow(QWidget *parent = 0);
