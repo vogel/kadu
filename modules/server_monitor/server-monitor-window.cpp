@@ -35,22 +35,22 @@
 #include "server-monitor-window.h"
 
 ServerMonitorWindow::ServerMonitorWindow(QWidget *parent):
-		QScrollArea(parent), avalibleServers(0), unavalibleServers(0),
-		unknownStatusServers(0), layout(0), scrollBarLayout(0)
+		QScrollArea(parent), AvalibleServers(0), UnavalibleServers(0),
+		UnknownStatusServers(0), Layout(0), ScrollBarLayout(0)
 {
-	buttonRefresh.setParent( this );
-	buttonRefresh.setGeometry(420, 75, 60, 25);
-	buttonRefresh.setText( tr("Refresh"));
+	ButtonRefresh.setParent( this );
+	ButtonRefresh.setGeometry(420, 75, 60, 25);
+	ButtonRefresh.setText( tr("Refresh"));
 
-	connect (&buttonRefresh, SIGNAL ( clicked(bool) ), this,       SLOT ( refreshList() ) );
-	connect (&refreshTimer,  SIGNAL ( timeout () ),    this,       SLOT ( refreshList() ) );
-	connect (&refreshTimer,  SIGNAL ( timeout () ), &refreshTimer, SLOT ( start() ) );
+	connect (&ButtonRefresh, SIGNAL ( clicked(bool) ), this,       SLOT ( refreshList() ) );
+	connect (&RefreshTimer,  SIGNAL ( timeout () ),    this,       SLOT ( refreshList() ) );
+	connect (&RefreshTimer,  SIGNAL ( timeout () ), &RefreshTimer, SLOT ( start() ) );
 
 	setConfiguration();
 
-	stats.setParent( this );
-	stats.setGeometry(420, 20, 150, 50 );
-	stats.setText( tr("No information avalible"));
+	StatsLabel.setParent( this );
+	StatsLabel.setGeometry(420, 20, 150, 50 );
+	StatsLabel.setText( tr("No information avalible"));
 	setFixedWidth( 600 );
 
 	setWindowTitle( tr("Server monitor") );
@@ -66,15 +66,15 @@ void ServerMonitorWindow::updateStats( ServerStatusWidget::ServerState newStatus
 	switch ( newStatus )
 	{
 		case ServerStatusWidget::Available:
-			avalibleServers++;
+			AvalibleServers++;
 		break;
 
 		case ServerStatusWidget::Unavailable:
-			unavalibleServers++;
+			UnavalibleServers++;
 		break;
 
 		case ServerStatusWidget::Unknown:
-			unknownStatusServers++;
+			UnknownStatusServers++;
 		break;
 
 		case ServerStatusWidget::Empty:
@@ -84,46 +84,44 @@ void ServerMonitorWindow::updateStats( ServerStatusWidget::ServerState newStatus
 	switch ( oldStatus )
 	{
 		case ServerStatusWidget::Available:
-			avalibleServers--;
+			AvalibleServers--;
 		break;
 
 		case ServerStatusWidget::Unavailable:
-			unavalibleServers--;
+			UnavalibleServers--;
 		break;
 
 		case ServerStatusWidget::Unknown:
-			unknownStatusServers--;
+			UnknownStatusServers--;
 		break;
 
 		case ServerStatusWidget::Empty:
 		break;
 	}
-	stats.setText( tr("Avalible              ")+QString::number(avalibleServers)+"\n"+
-			tr("Unavailable        ")+QString::number(unavalibleServers)+"\n");
-			//                       +tr("Unknown        ")+QString::number(unknownStatusServers));
+	StatsLabel.setText(tr("Avalible\t%1\nUnavailable\t%2").arg(QString::number(AvalibleServers)).arg(QString::number(UnavalibleServers)));
 }
 
 void ServerMonitorWindow::readServerList()
 {
-	if ( layout == 0 ) delete layout;
-	if ( scrollBarLayout == 0 ) delete scrollBarLayout;
+	if ( Layout == 0 ) delete Layout;
+	if ( ScrollBarLayout == 0 ) delete ScrollBarLayout;
 
-	layout = new QGridLayout(this);
-	scrollBarLayout = new QWidget(this);
+	Layout = new QGridLayout(this);
+	ScrollBarLayout = new QWidget(this);
 
-	avalibleServers = 0;
-	unavalibleServers = 0;
+	AvalibleServers = 0;
+	UnavalibleServers = 0;
 	removeAllServer();
 
-	QFile serverFileList(serverFileListName);
+	QFile serverFileList(ServerFileListName);
 
 	serverFileList.open( QIODevice::ReadOnly);
 
 	if ( !serverFileList.isOpen() )
 	{
 		QLabel *labelInfo = new QLabel(tr("Cannot read server list!"));
-		layout->addWidget(labelInfo, 1, 1 );
-		stats.setText( tr("No information avalible"));
+		Layout->addWidget(labelInfo, 1, 1 );
+		StatsLabel.setText( tr("No information avalible"));
 	}
 
 	int serverCounter = 0;
@@ -144,15 +142,15 @@ void ServerMonitorWindow::readServerList()
 				name = lineSpilted[2];
 		}
 		ServerStatusWidget *serverStatusWidget = new ServerStatusWidget (addr,port.toInt(),name, this);
-		servers.push_back( serverStatusWidget );
+		ServerStatusWidgetList.push_back( serverStatusWidget );
 
 		int row = serverCounter;
 		if ( serverCounter % 2 )
 			--row;
 
-		layout->addWidget(servers[serverCounter], row, (serverCounter) % 2 );
+		Layout->addWidget(ServerStatusWidgetList[serverCounter], row, (serverCounter) % 2 );
 
-		connect (servers[serverCounter], SIGNAL( statusChanged (ServerStatusWidget::ServerState, ServerStatusWidget::ServerState)  ),
+		connect (ServerStatusWidgetList[serverCounter], SIGNAL( statusChanged (ServerStatusWidget::ServerState, ServerStatusWidget::ServerState)  ),
 			this, SLOT( updateStats (ServerStatusWidget::ServerState, ServerStatusWidget::ServerState) ));
 
 		serverCounter++;
@@ -160,10 +158,10 @@ void ServerMonitorWindow::readServerList()
 
 	serverFileList.close();
 
-	scrollBarLayout->setLayout( layout );
-	scrollBarLayout->setSizePolicy( QSizePolicy::Maximum, QSizePolicy::Maximum );
-	scrollBarLayout->setFixedWidth(500);
-	setWidget(scrollBarLayout);
+	ScrollBarLayout->setLayout( Layout );
+	ScrollBarLayout->setSizePolicy( QSizePolicy::Maximum, QSizePolicy::Maximum );
+	ScrollBarLayout->setFixedWidth(500);
+	setWidget(ScrollBarLayout);
 }
 
 
@@ -177,19 +175,19 @@ void ServerMonitorWindow::setConfiguration()
 	kdebugf();
 
 	if ( !config_file_ptr->readBoolEntry( "serverMonitor", "showResetButton", false) )
-		buttonRefresh.hide();
+		ButtonRefresh.hide();
 	else
-		buttonRefresh.show();
+		ButtonRefresh.show();
 
 	if ( config_file_ptr->readBoolEntry( "serverMonitor", "autorefresh", true) )
-		refreshTimer.start( 60000 * config_file_ptr->readNumEntry( "serverMonitor", "timerInterval", 5));
+		RefreshTimer.start( 60000 * config_file_ptr->readNumEntry( "serverMonitor", "timerInterval", 5));
 	else
-		refreshTimer.stop();
+		RefreshTimer.stop();
 
 	if ( config_file_ptr->readBoolEntry( "serverMonitor", "useListFromServer", false) )
 	{
 
-		serverListBuffer = new QBuffer();
+		ServerListBuffer = new QBuffer();
 
 		QString url = config_file_ptr->readEntry( "serverMonitor", "serverListHost" );
 		QString hostName;
@@ -207,14 +205,14 @@ void ServerMonitorWindow::setConfiguration()
 			path = "/serverslist.txt";
 		}
 
-		http = new QHttp ( hostName , 80, this );
-		http->get( path, serverListBuffer );
-		connect ( http, SIGNAL ( done (bool) ),
+		Http = new QHttp ( hostName , 80, this );
+		Http->get( path, ServerListBuffer );
+		connect ( Http, SIGNAL ( done (bool) ),
 			this, SLOT( downloadedServersList(bool) ));
 	}
 	else
 	{
-		serverFileListName = config_file_ptr->readEntry( "serverMonitor", "fileName", "kadu/modules/configuration/serverslist.txt");
+		ServerFileListName = config_file_ptr->readEntry( "serverMonitor", "fileName", "kadu/modules/configuration/serverslist.txt");
 		readServerList();
 	}
 
@@ -228,33 +226,33 @@ void ServerMonitorWindow::downloadedServersList( bool err )
 	if ( err )
 	{
 		kdebugm( KDEBUG_WARNING, "Cannont download server's list!" );
-		serverFileListName = config_file_ptr->readEntry( "serverMonitor", "fileName", "kadu/modules/configuration/serverslist.txt");
+		ServerFileListName = config_file_ptr->readEntry( "serverMonitor", "fileName", "kadu/modules/configuration/serverslist.txt");
 		return;
 	}
 
 	QFile fileList(QDir::tempPath()+"/serverslist.txt");
 	fileList.open( QIODevice::WriteOnly);
-	fileList.write( serverListBuffer->buffer() );
+	fileList.write( ServerListBuffer->buffer() );
 	fileList.close();
 
-	serverFileListName = QDir::tempPath()+"/serverslist.txt";
+	ServerFileListName = QDir::tempPath()+"/serverslist.txt";
 	readServerList();
 
 	//    disconnect ( http, SIGNAL ( done (bool) ),
 	//        this, SLOT( downloadedServersList(bool) ));
-	delete http;
-	delete serverListBuffer;
+	delete Http;
+	delete ServerListBuffer;
 
 	kdebugf2();
 }
 
 void ServerMonitorWindow::refreshList()
 {
-	foreach ( ServerStatusWidget* server, servers ) server->refreshIcon();
+	foreach ( ServerStatusWidget* server, ServerStatusWidgetList ) server->refreshIcon();
 }
 
 void ServerMonitorWindow::removeAllServer()
 {
-	qDeleteAll(servers);
-	servers.clear();
+	qDeleteAll(ServerStatusWidgetList);
+	ServerStatusWidgetList.clear();
 }

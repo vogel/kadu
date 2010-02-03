@@ -37,22 +37,22 @@ class ServerMonitorWindow : public QScrollArea, ConfigurationAwareObject
 {
 	Q_OBJECT
 
-	QList<ServerStatusWidget*> servers;
-	QString serverFileListName;
+	QList<ServerStatusWidget*> ServerStatusWidgetList;
+	QString ServerFileListName;
 
-	QPushButton buttonRefresh;
-	QTimer refreshTimer;
+	QPushButton ButtonRefresh;
+	QTimer RefreshTimer;
 
-	QLabel stats;
-	quint32 avalibleServers;
-	quint32 unavalibleServers;
-	quint32 unknownStatusServers;
+	QLabel StatsLabel;
+	quint32 AvalibleServers;
+	quint32 UnavalibleServers;
+	quint32 UnknownStatusServers;
 
-	QHttp   *http;
-	QBuffer *serverListBuffer;
+	QHttp   *Http;
+	QBuffer *ServerListBuffer;
 
-	QGridLayout *layout;
-	QWidget *scrollBarLayout;
+	QGridLayout *Layout;
+	QWidget *ScrollBarLayout;
 
 	virtual void configurationUpdated();
 
