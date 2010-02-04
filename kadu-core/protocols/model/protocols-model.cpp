@@ -55,7 +55,7 @@ QVariant ProtocolsModel::data(const QModelIndex &index, int role) const
 		case Qt::DecorationRole:
 			return IconsManager::instance()->loadIcon(pf->iconName());
 		case ProtocolRole:
-			return pf->name();
+			return QVariant::fromValue<ProtocolFactory *>(pf);
 		default:
 			return QVariant();
 	}
@@ -80,4 +80,9 @@ ProtocolFactory * ProtocolsModel::protocolFactory(const QModelIndex &index) cons
 int ProtocolsModel::protocolFactoryIndex(ProtocolFactory *protocolFactory)
 {
 	return ProtocolsManager::instance()->indexOf(protocolFactory);
+}
+
+QModelIndex ProtocolsModel::protocolFactoryModelIndex(ProtocolFactory *protocolFactory)
+{
+	return index(protocolFactoryIndex(protocolFactory), 0);
 }

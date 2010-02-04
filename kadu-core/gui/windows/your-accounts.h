@@ -30,7 +30,6 @@
 #include "accounts/accounts-aware-object.h"
 #include "exports.h"
 
-class QComboBox;
 class QHBoxLayout;
 class QListView;
 class QStackedWidget;
@@ -41,6 +40,7 @@ class AccountCreateWidget;
 class AccountEditWidget;
 class AccountsModel;
 class ProtocolFactory;
+class ProtocolsComboBox;
 
 KADUAPI class YourAccounts : public QWidget, AccountsAwareObject
 {
@@ -54,8 +54,8 @@ KADUAPI class YourAccounts : public QWidget, AccountsAwareObject
 	QStackedWidget *CreateStack;
 	QStackedWidget *EditStack;
 
-	QComboBox *AddAccountProtocols;
-	QComboBox *NewAccountProtocols;
+	ProtocolsComboBox *AddAccountProtocols;
+	ProtocolsComboBox *NewAccountProtocols;
 	QWidget *NewAccountContainer;
 	QWidget *NewAccountCreatedContainer;
 	QWidget *AddAccountContainer;
@@ -73,8 +73,8 @@ KADUAPI class YourAccounts : public QWidget, AccountsAwareObject
 private slots:
   	void addAccountClicked();
 	void newAccountClicked();
-	void addAccountProtocolChanged(int protocolIndex);
-	void newAccountProtocolChanged(int protocolIndex);
+	void addAccountProtocolChanged(ProtocolFactory *protocolFactory);
+	void newAccountProtocolChanged(ProtocolFactory *protocolFactory);
 	void accountCreated(Account account);
 	void accountSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 

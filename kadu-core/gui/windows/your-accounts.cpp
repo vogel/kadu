@@ -22,6 +22,8 @@
 
 #include <QtGui/QComboBox>
 #include <QtGui/QDialogButtonBox>
+#include <QtGui/QFormLayout>
+#include <QtGui/QGridLayout>
 #include <QtGui/QGroupBox>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QKeyEvent>
@@ -36,10 +38,10 @@
 #include "gui/widgets/account-add-widget.h"
 #include "gui/widgets/account-create-widget.h"
 #include "gui/widgets/account-edit-widget.h"
+#include "gui/widgets/protocols-combo-box.h"
 #include "misc/misc.h"
 #include "model/actions-proxy-model.h"
 #include "model/roles.h"
-#include "protocols/model/protocols-model.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocols-manager.h"
@@ -125,31 +127,25 @@ void YourAccounts::createNewAccountWidget()
 
 	QVBoxLayout *newAccountLayout = new QVBoxLayout(NewAccountContainer);
 	
-	QLabel *createAccountLabel = new QLabel(tr("Create New Account"));
+	QLabel *createAccountLabel = new QLabel(tr("<font size='+2'><b>Create New Account</b></font>"));
 	newAccountLayout->addWidget(createAccountLabel);
 	
-	QGroupBox *selectNetworkGroupbox = new QGroupBox(tr("Choose a network"), NewAccountContainer);
+	QGroupBox *selectNetworkGroupbox = new QGroupBox(tr("Choose a network<"), NewAccountContainer);
+	selectNetworkGroupbox->setFlat(true);
+
 	QGridLayout *selectNetworkLayout = new QGridLayout(selectNetworkGroupbox);
 
 	QLabel *imNetworkLabel = new QLabel(tr("IM Network") + ":", NewAccountContainer);
 	selectNetworkLayout->addWidget(imNetworkLabel, 0, 1, 1, 1);
 
-	NewAccountProtocols = new QComboBox(NewAccountContainer);
-	ProtocolsModel *model = new ProtocolsModel(NewAccountProtocols);
-
-	ActionsProxyModel::ModelActionList beforeActions;
-	beforeActions.append(qMakePair<QString, QString>("", ""));
-	ActionsProxyModel *actionsModel = new ActionsProxyModel(beforeActions, ActionsProxyModel::ModelActionList(), NewAccountProtocols);
-	actionsModel->setSourceModel(model);
-
-	NewAccountProtocols->setModel(actionsModel);
+	NewAccountProtocols = new ProtocolsComboBox(true, NewAccountContainer);
 	selectNetworkLayout->addWidget(NewAccountProtocols, 0, 2, 1, 1);
 	
 	QLabel *protocolComboLabel = new QLabel(tr("The default network has been selected based on your language settings."));
 	selectNetworkLayout->addWidget(protocolComboLabel, 1, 2, 1, 1);
 	
 	newAccountLayout->addWidget(selectNetworkGroupbox);
-	
+
 	QGroupBox *createAccountGroupbox = new QGroupBox(tr("Create a New Account"), NewAccountContainer);
 	QGridLayout *createAccountLayout = new QGridLayout(createAccountGroupbox);
 	
@@ -158,7 +154,7 @@ void YourAccounts::createNewAccountWidget()
 	
 	newAccountLayout->addWidget(createAccountGroupbox, 100, Qt::AlignTop);
 
-	connect(NewAccountProtocols, SIGNAL(activated(int)), this, SLOT(newAccountProtocolChanged(int)));
+	connect(NewAccountProtocols, SIGNAL(protocolChanged(ProtocolFactory*)), this, SLOT(newAccountProtocolChanged(ProtocolFactory*)));
 	newAccountProtocolChanged(0);
 }
 
@@ -198,15 +194,7 @@ void YourAccounts::createAddAccountWidget()
 	QLabel *imNetworkLabel = new QLabel(tr("IM Network") + ":", AddAccountContainer);
 	selectNetworkLayout->addWidget(imNetworkLabel, 0, 1, 1, 1);
 
-	AddAccountProtocols = new QComboBox(AddAccountContainer);
-	ProtocolsModel *model = new ProtocolsModel(AddAccountProtocols);
-
-	ActionsProxyModel::ModelActionList beforeActions;
-	beforeActions.append(qMakePair<QString, QString>("", ""));
-	ActionsProxyModel *actionsModel = new ActionsProxyModel(beforeActions, ActionsProxyModel::ModelActionList(), AddAccountProtocols);
-	actionsModel->setSourceModel(model);
-
-	AddAccountProtocols->setModel(actionsModel);
+	AddAccountProtocols = new ProtocolsComboBox(true, AddAccountContainer);
 	selectNetworkLayout->addWidget(AddAccountProtocols, 0, 2, 1, 1);
 	
 	QLabel *protocolComboLabel = new QLabel(tr("The default network has been selected based on your language settings.\nYou can change IM Network"));
@@ -222,7 +210,7 @@ void YourAccounts::createAddAccountWidget()
 	
 	newAccountLayout->addWidget(createAccountGroupbox, 100, Qt::AlignTop);
 
-	connect(AddAccountProtocols, SIGNAL(activated(int)), this, SLOT(addAccountProtocolChanged(int)));
+	connect(AddAccountProtocols, SIGNAL(protocolChanged(ProtocolFactory*)), this, SLOT(addAccountProtocolChanged(ProtocolFactory*)));
 	addAccountProtocolChanged(0);
 }
 
@@ -245,22 +233,18 @@ void YourAccounts::addAccountClicked()
 	CreateEditStack->setCurrentWidget(AddAccountContainer);
 }
 
-void YourAccounts::newAccountProtocolChanged(int protocolIndex)
+void YourAccounts::newAccountProtocolChanged(ProtocolFactory *protocolFactory)
 {
-	if (protocolIndex < 0 || protocolIndex >= NewAccountProtocols->count())
-		return;
-
-	ProtocolFactory *factory = ProtocolsManager::instance()->byName(NewAccountProtocols->itemData(protocolIndex, ProtocolRole).toString());
 	AccountCreateWidget *createWidget;
 
-	if (!CreateWidgets.contains(factory))
+	if (!CreateWidgets.contains(protocolFactory))
 	{
-		if (factory)
-			createWidget = factory->newCreateAccountWidget(NewAccountContainer);
+		if (protocolFactory)
+			createWidget = protocolFactory->newCreateAccountWidget(NewAccountContainer);
 		else
 			createWidget = 0;
 
-		CreateWidgets[factory] = createWidget;
+		CreateWidgets[protocolFactory] = createWidget;
 		if (createWidget)
 		{
 			connect(createWidget, SIGNAL(accountCreated(Account)), this, SLOT(accountCreated(Account)));
@@ -268,28 +252,24 @@ void YourAccounts::newAccountProtocolChanged(int protocolIndex)
 		}
 	}
 	else
-		createWidget = CreateWidgets[factory];
+		createWidget = CreateWidgets[protocolFactory];
 
 	if (createWidget)
 		CreateStack->setCurrentWidget(createWidget);
 }
 
-void YourAccounts::addAccountProtocolChanged(int protocolIndex)
+void YourAccounts::addAccountProtocolChanged(ProtocolFactory *protocolFactory)
 {
-	if (protocolIndex < 0 || protocolIndex >= AddAccountProtocols->count())
-		return;
-
-	ProtocolFactory *factory = ProtocolsManager::instance()->byName(AddAccountProtocols->itemData(protocolIndex, ProtocolRole).toString());
 	AccountAddWidget *addWidget;
 
-	if (!AddWidgets.contains(factory))
+	if (!AddWidgets.contains(protocolFactory))
 	{
-		if (factory)
-			addWidget = factory->newAddAccountWidget(AddAccountContainer);
+		if (protocolFactory)
+			addWidget = protocolFactory->newAddAccountWidget(AddAccountContainer);
 		else
 			addWidget = 0;
 
-		AddWidgets[factory] = addWidget;
+		AddWidgets[protocolFactory] = addWidget;
 		if (addWidget)
 		{
 			connect(addWidget, SIGNAL(accountCreated(Account)), this, SLOT(accountCreated(Account)));
@@ -297,7 +277,7 @@ void YourAccounts::addAccountProtocolChanged(int protocolIndex)
 		}
 	}
 	else
-		addWidget = AddWidgets[factory];
+		addWidget = AddWidgets[protocolFactory];
 
 	if (addWidget)
 		AddStack->setCurrentWidget(addWidget);

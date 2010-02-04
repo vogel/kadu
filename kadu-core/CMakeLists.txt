@@ -150,6 +150,7 @@ set (kadu_SRCS
 	gui/widgets/image-widget.cpp
 	gui/widgets/kadu-text-browser.cpp
 	gui/widgets/path-list-edit.cpp
+	gui/widgets/protocols-combo-box.cpp
 	gui/widgets/proxy-group-box.cpp
 	gui/widgets/preview.cpp
 	gui/widgets/select-buddy-combobox.cpp
@@ -417,6 +418,7 @@ set (kadu_MOC_SRCS
 	gui/widgets/kadu-text-browser.h
 	gui/widgets/path-list-edit.h
 	gui/widgets/preview.h
+	gui/widgets/protocols-combo-box.h
 	gui/widgets/select-buddy-combobox.h
 	gui/widgets/select-buddy-popup.h
 	gui/widgets/select-file.h

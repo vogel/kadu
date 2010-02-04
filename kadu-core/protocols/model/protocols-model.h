@@ -40,6 +40,7 @@ public:
 
 	ProtocolFactory * protocolFactory(const QModelIndex &index) const;
 	int protocolFactoryIndex(ProtocolFactory *protocolFactory);
+	QModelIndex protocolFactoryModelIndex(ProtocolFactory *protocolFactory);
 
 };
 

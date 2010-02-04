@@ -69,4 +69,6 @@ public:
 
 };
 
+Q_DECLARE_METATYPE(ProtocolFactory *)
+
 #endif // PROTOCOL_FACTORY_H
