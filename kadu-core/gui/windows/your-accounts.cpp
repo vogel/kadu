@@ -130,7 +130,7 @@ void YourAccounts::createNewAccountWidget()
 	QLabel *createAccountLabel = new QLabel(tr("<font size='+2'><b>Create New Account</b></font>"));
 	newAccountLayout->addWidget(createAccountLabel);
 	
-	QGroupBox *selectNetworkGroupbox = new QGroupBox(tr("Choose a network<"), NewAccountContainer);
+	QGroupBox *selectNetworkGroupbox = new QGroupBox(tr("Choose a network"), NewAccountContainer);
 	selectNetworkGroupbox->setFlat(true);
 
 	QGridLayout *selectNetworkLayout = new QGridLayout(selectNetworkGroupbox);
@@ -147,6 +147,8 @@ void YourAccounts::createNewAccountWidget()
 	newAccountLayout->addWidget(selectNetworkGroupbox);
 
 	QGroupBox *createAccountGroupbox = new QGroupBox(tr("Create a New Account"), NewAccountContainer);
+	createAccountGroupbox->setFlat(true);
+
 	QGridLayout *createAccountLayout = new QGridLayout(createAccountGroupbox);
 	
 	CreateStack = new QStackedWidget(createAccountGroupbox);
