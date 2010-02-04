@@ -88,7 +88,6 @@ private slots:
 	void sslActivated(int i);
 	void hostToggled(bool on);
 	void autoResourceToggled(bool on);
-	void uploadAvatar();
 
 public:
 	explicit JabberEditAccountWidget(Account account, QWidget *parent = 0);

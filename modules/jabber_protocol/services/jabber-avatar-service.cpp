@@ -51,8 +51,8 @@ void JabberAvatarService::uploadAvatar(QImage avatar)
 	
 	if (!p->isPEPAvailable())
 	{
-		MessageDialog::msg(tr("Cannot upload avatar. Feature not supported by your server."), false, "Warning");
-		return;
+		emit avatarUploaded(false, AccountAvatar);
+		deleteLater();
 	}
 
 	connect(p->pepManager(),SIGNAL(itemPublished(const XMPP::Jid&, const QString&, const XMPP::PubSubItem&)),
@@ -164,6 +164,8 @@ void JabberAvatarService::publish_success(const QString& n, const XMPP::PubSubIt
 		info_el.setAttribute("type",image2type(selfAvatarData_));
 		meta_el.appendChild(info_el);
 		p->pepManager()->publish("http://www.xmpp.org/extensions/xep-0084.html#ns-metadata",PubSubItem(selfAvatarHash_,meta_el));
+		
+		emit avatarUploaded(true, AccountAvatar);
 	}
 }
 
