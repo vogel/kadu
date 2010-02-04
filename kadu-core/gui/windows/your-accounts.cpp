@@ -133,16 +133,14 @@ void YourAccounts::createNewAccountWidget()
 	QGroupBox *selectNetworkGroupbox = new QGroupBox(tr("Choose a network"), NewAccountContainer);
 	selectNetworkGroupbox->setFlat(true);
 
-	QGridLayout *selectNetworkLayout = new QGridLayout(selectNetworkGroupbox);
+	QFormLayout *selectNetworkLayout = new QFormLayout(selectNetworkGroupbox);
 
 	QLabel *imNetworkLabel = new QLabel(tr("IM Network") + ":", NewAccountContainer);
-	selectNetworkLayout->addWidget(imNetworkLabel, 0, 1, 1, 1);
-
 	NewAccountProtocols = new ProtocolsComboBox(true, NewAccountContainer);
-	selectNetworkLayout->addWidget(NewAccountProtocols, 0, 2, 1, 1);
+	selectNetworkLayout->addRow(imNetworkLabel, NewAccountProtocols);
 	
-	QLabel *protocolComboLabel = new QLabel(tr("The default network has been selected based on your language settings."));
-	selectNetworkLayout->addWidget(protocolComboLabel, 1, 2, 1, 1);
+	QLabel *protocolComboLabel = new QLabel(tr("<font size='-1'><i>The default network has been selected based on your language settings.</i></font>"));
+	selectNetworkLayout->addRow(0, protocolComboLabel);
 	
 	newAccountLayout->addWidget(selectNetworkGroupbox);
 

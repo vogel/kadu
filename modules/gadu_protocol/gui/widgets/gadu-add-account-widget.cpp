@@ -20,7 +20,7 @@
 
 #include <QtGui/QCheckBox>
 #include <QtGui/QComboBox>
-#include <QtGui/QGridLayout>
+#include <QtGui/QFormLayout>
 #include <QtGui/QIntValidator>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
@@ -52,51 +52,34 @@ GaduAddAccountWidget::~GaduAddAccountWidget()
 
 void GaduAddAccountWidget::createGui()
 {
-	QGridLayout *gridLayout = new QGridLayout(this);
-	gridLayout->setSpacing(5);
+	QFormLayout *layout = new QFormLayout(this);
+	layout->setSpacing(5);
 
-	gridLayout->setColumnMinimumWidth(0, 20);
-	gridLayout->setColumnStretch(3, 10);
-
-	int row = 0;
-	
-	QLabel *accountNameLabel = new QLabel(tr("Account Name") + ":", this);
-	gridLayout->addWidget(accountNameLabel, row, 1);
 	AccountName = new QLineEdit(this);
 	connect(AccountName, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
-	gridLayout->addWidget(AccountName, row++, 2);
+	layout->addRow(tr("Account Name") + ":", AccountName);
 
-	QLabel *numberLabel = new QLabel(tr("Gadu-Gadu number") + ":", this);
-	gridLayout->addWidget(numberLabel, row, 1, Qt::AlignRight);
 	AccountId = new QLineEdit(this);
 	AccountId->setValidator(new QIntValidator(1, 999999999, this));
 	connect(AccountId, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
-	gridLayout->addWidget(AccountId, row++, 2);
-	
-	QLabel *passwordLabel = new QLabel(tr("Password") + ":", this);
-	gridLayout->addWidget(passwordLabel, row, 1);
+	layout->addRow(tr("Gadu-Gadu number") + ":", AccountId);
+
 	AccountPassword = new QLineEdit(this);
 	connect(AccountPassword, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 	AccountPassword->setEchoMode(QLineEdit::Password);
-	gridLayout->addWidget(AccountPassword, row++, 2);
+	layout->addRow(tr("Password") + ":", AccountPassword);
 	
 	RememberPassword = new QCheckBox(tr("Remember Password"), this);
 	RememberPassword->setChecked(true);
-	gridLayout->addWidget(RememberPassword, row++, 2);
-	
-	RemindPassword = new QLabel(tr("Forgot Your Password?"), this);
-	gridLayout->addWidget(RemindPassword, row++, 2);
-	
-	QLabel *descriptionLabel = new QLabel(tr("Account Identity") + ":", this);
-	gridLayout->addWidget(descriptionLabel, row, 1);
-	
+	layout->addRow(RememberPassword);
+
+	layout->addRow(tr("Forgot Your Password?"), RemindPassword);
+
 	Identity = new ChooseIdentityWidget(this);
 	connect(Identity, SIGNAL(identityChanged()), this, SLOT(dataChanged()));
-	gridLayout->addWidget(Identity, row++, 2, 1, 2);
-	
-	QLabel *identityHelpLabel = new QLabel(tr("Select or enter the identity that will be associated with this account."), this);
-	gridLayout->addWidget(identityHelpLabel, row, 2);
+	layout->addRow(tr("Account Identity") + ":", Identity);
 
+	layout->addWidget(new QLabel(tr("<font size='-1'><i>Select or enter the identity that will be associated with this account.<i></font>"), this));
 }
 
 void GaduAddAccountWidget::dataChanged()
