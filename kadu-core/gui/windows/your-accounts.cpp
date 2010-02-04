@@ -235,14 +235,12 @@ void YourAccounts::addAccountClicked()
 
 void YourAccounts::newAccountProtocolChanged(ProtocolFactory *protocolFactory)
 {
-	AccountCreateWidget *createWidget;
+	AccountCreateWidget *createWidget = 0;
 
 	if (!CreateWidgets.contains(protocolFactory))
 	{
 		if (protocolFactory)
-			createWidget = protocolFactory->newCreateAccountWidget(NewAccountContainer);
-		else
-			createWidget = 0;
+			createWidget = protocolFactory->newCreateAccountWidget(CreateStack);
 
 		CreateWidgets[protocolFactory] = createWidget;
 		if (createWidget)
@@ -254,20 +252,19 @@ void YourAccounts::newAccountProtocolChanged(ProtocolFactory *protocolFactory)
 	else
 		createWidget = CreateWidgets[protocolFactory];
 
+	CreateStack->setVisible(0 != createWidget);
 	if (createWidget)
 		CreateStack->setCurrentWidget(createWidget);
 }
 
 void YourAccounts::addAccountProtocolChanged(ProtocolFactory *protocolFactory)
 {
-	AccountAddWidget *addWidget;
+	AccountAddWidget *addWidget = 0;
 
 	if (!AddWidgets.contains(protocolFactory))
 	{
 		if (protocolFactory)
-			addWidget = protocolFactory->newAddAccountWidget(AddAccountContainer);
-		else
-			addWidget = 0;
+			addWidget = protocolFactory->newAddAccountWidget(AddStack);
 
 		AddWidgets[protocolFactory] = addWidget;
 		if (addWidget)
@@ -279,6 +276,7 @@ void YourAccounts::addAccountProtocolChanged(ProtocolFactory *protocolFactory)
 	else
 		addWidget = AddWidgets[protocolFactory];
 
+	AddStack->setVisible(0 != addWidget);
 	if (addWidget)
 		AddStack->setCurrentWidget(addWidget);
 }

@@ -53,7 +53,6 @@ GaduAddAccountWidget::~GaduAddAccountWidget()
 void GaduAddAccountWidget::createGui()
 {
 	QFormLayout *layout = new QFormLayout(this);
-	layout->setSpacing(5);
 
 	AccountName = new QLineEdit(this);
 	connect(AccountName, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));

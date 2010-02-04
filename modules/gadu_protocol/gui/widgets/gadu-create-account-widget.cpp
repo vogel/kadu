@@ -23,7 +23,7 @@
 
 #include <QtGui/QCheckBox>
 #include <QtGui/QComboBox>
-#include <QtGui/QGridLayout>
+#include <QtGui/QFormLayout>
 #include <QtGui/QIntValidator>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
@@ -55,63 +55,41 @@ GaduCreateAccountWidget::~GaduCreateAccountWidget()
 
 void GaduCreateAccountWidget::createGui()
 {
-	QGridLayout *gridLayout = new QGridLayout(this);
-	gridLayout->setSpacing(5);
+	QFormLayout *layout = new QFormLayout(this);
 
-	gridLayout->setColumnMinimumWidth(0, 20);
-	gridLayout->setColumnStretch(3, 10);
-
-	int row = 0;
-
-	QLabel *accountNameLabel = new QLabel(tr("Account Name") + ":", this);
-	gridLayout->addWidget(accountNameLabel, row, 1);
 	AccountName = new QLineEdit(this);
 	connect(AccountName, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
-	gridLayout->addWidget(AccountName, row++, 2);
-	
-	QLabel *newPasswordLabel = new QLabel(tr("Password") + ":", this);
-	gridLayout->addWidget(newPasswordLabel, row, 1, Qt::AlignRight);
+	layout->addRow(tr("Account Name") + ":", AccountName);
+
 	NewPassword = new QLineEdit(this);
 	connect(NewPassword, SIGNAL(textChanged(const QString &)), this, SLOT(dataChanged()));
 	NewPassword->setEchoMode(QLineEdit::Password);
-	gridLayout->addWidget(NewPassword, row++, 2, 1, 2);
+	layout->addRow(tr("Password") + ":", NewPassword);
 
-	QLabel *reNewPasswordLabel = new QLabel(tr("Retype Password") + ":", this);
-	gridLayout->addWidget(reNewPasswordLabel, row, 1, Qt::AlignRight);
 	ReNewPassword = new QLineEdit(this);
 	connect(ReNewPassword, SIGNAL(textChanged(const QString &)), this, SLOT(dataChanged()));
 	ReNewPassword->setEchoMode(QLineEdit::Password);
-	gridLayout->addWidget(ReNewPassword, row++, 2, 1, 2);
+	layout->addRow(tr("Retype Password") + ":", ReNewPassword);
 	
 	RememberPassword = new QCheckBox(tr("Remember password"), this);
 	RememberPassword->setChecked(true);
-	gridLayout->addWidget(RememberPassword, row++, 2, 1, 2);
+	layout->addWidget(RememberPassword);
 	
-	QLabel *eMailLabel = new QLabel(tr("E-Mail Address") + ":", this);
-	gridLayout->addWidget(eMailLabel, row, 1, Qt::AlignRight);
 	EMail = new QLineEdit(this);
 	connect(EMail, SIGNAL(textChanged(const QString &)), this, SLOT(dataChanged()));
-	gridLayout->addWidget(EMail, row++, 2, 1, 2);
+	layout->addRow(tr("E-Mail Address") + ":", EMail);
 
-	QLabel *descriptionLabel = new QLabel(tr("Account Identity") + ":", this);
-	gridLayout->addWidget(descriptionLabel, row, 1, Qt::AlignRight);
 	Identity = new ChooseIdentityWidget(this);
 	connect(Identity, SIGNAL(identityChanged()), this, SLOT(dataChanged()));
-	gridLayout->addWidget(Identity, row++, 2, 1, 2);
-	
-	QLabel *identityHelpLabel = new QLabel(tr("Select or enter the identity that will be associated with this account."), this);
-	gridLayout->addWidget(identityHelpLabel, row++, 2);
-	
-	QLabel *tokenLabel = new QLabel(tr("Characters") + ":", this);
-	gridLayout->addWidget(tokenLabel, row, 1, Qt::AlignRight);
+	layout->addRow(tr("Account Identity") + ":", Identity);
+
+	layout->addRow(0, new QLabel(tr("<font size='-1'><i>Select or enter the identity that will be associated with this account.</i></font>"), this));
 
 	tokenWidget = new TokenWidget(this);
 	connect(tokenWidget, SIGNAL(modified()), this, SLOT(dataChanged()));
-	gridLayout->addWidget(tokenWidget, row++, 2, 1, 2);
-	QLabel *tokenHelpLabel = new QLabel(tr("For verification purposes, please type the characters above."), this);
-	gridLayout->addWidget(tokenHelpLabel, row, 2);
+	layout->addRow(tr("Characters") + ":", tokenWidget);
 
-
+	layout->addRow(0, new QLabel(tr("<font size='-1'><i>For verification purposes, please type the characters above.</i></font>"), this));
 }
 
 void GaduCreateAccountWidget::dataChanged()
