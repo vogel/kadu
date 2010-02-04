@@ -22,6 +22,7 @@
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
+#include <QtGui/QMovie>
 #include <QtGui/QPushButton>
 
 #include "server/token-fetcher.h"
@@ -31,9 +32,13 @@
 
 TokenWidget::TokenWidget(QWidget *parent) : QWidget(parent)
 {
+	WaitMovie = new QMovie(IconsManager::instance()->iconPath("PleaseWait"));
+
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
 	TokenImage = new QLabel(this);
+	TokenImage->setFixedHeight(32);
+	TokenImage->setScaledContents(true);
 
 	QPushButton *refreshButton = new QPushButton(IconsManager::instance()->loadIcon("ReloadPersonalInfoButton"), "" ,this);
 	refreshButton->setIconSize(IconsManager::instance()->getIconsSize());
@@ -44,8 +49,8 @@ TokenWidget::TokenWidget(QWidget *parent) : QWidget(parent)
 
 	QHBoxLayout *frameLayout = new QHBoxLayout(tokenFrame);
 	frameLayout->setContentsMargins(0, 0, 0, 0);
-	frameLayout->addWidget(TokenImage);
 	frameLayout->addWidget(refreshButton);
+	frameLayout->addWidget(TokenImage);
 
 	TokenCode = new QLineEdit(this);
 	connect(TokenCode, SIGNAL(textChanged(QString)), this, SIGNAL(modified()));
@@ -62,19 +67,26 @@ TokenWidget::TokenWidget(QWidget *parent) : QWidget(parent)
 
 TokenWidget::~TokenWidget()
 {
+	if (WaitMovie)
+		delete WaitMovie;
 }
 
 void TokenWidget::tokenFetched(const QString &tokenId, QPixmap tokenImage)
 {
+	WaitMovie->stop();
+	TokenImage->setMovie(0);
+
 	TokenImage->setPixmap(tokenImage);
 	TokenId = tokenId;
 }
 
 void TokenWidget::refreshToken()
 {
+	WaitMovie->start();
+	TokenImage->setMovie(WaitMovie);
+
 	Fetcher->fetchToken();
 }
-
 
 QString TokenWidget::tokenId()
 {

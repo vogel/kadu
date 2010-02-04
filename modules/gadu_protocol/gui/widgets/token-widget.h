@@ -34,6 +34,7 @@ class TokenWidget : public QWidget
 
 	QLabel *TokenImage;
 	QLineEdit *TokenCode;
+	QMovie *WaitMovie;
 
 	QString TokenId;
 
