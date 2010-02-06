@@ -54,7 +54,7 @@ void AccountAvatarWidget::createGui()
 
 	AvatarLabel = new QLabel();
 	AvatarLabel->setAlignment(Qt::AlignCenter);
-	AvatarLabel->setMaximumSize(128, 128);
+	AvatarLabel->setFixedWidth(128);
 	AvatarLabel->setScaledContents(true);
 
 	Avatar avatar = MyAccount.accountContact().contactAvatar();

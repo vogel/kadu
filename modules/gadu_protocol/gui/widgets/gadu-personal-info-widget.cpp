@@ -20,7 +20,7 @@
  */
 
 #include <QtGui/QComboBox>
-#include <QtGui/QGridLayout>
+#include <QtGui/QFormLayout>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
 
@@ -54,16 +54,7 @@ GaduPersonalInfoWidget::~GaduPersonalInfoWidget()
 
 void GaduPersonalInfoWidget::createGui()
 {
-	QGridLayout *layout = new QGridLayout(this);
-
-	QLabel *nickNameLabel = new QLabel(tr("Nick"), this);
-	QLabel *firstNameLabel = new QLabel(tr("First name"), this);
-	QLabel *lastNameLabel = new QLabel(tr("Last name"), this);
-	QLabel *sexLabel = new QLabel(tr("Sex"), this);
-	QLabel *familyNameLabel = new QLabel(tr("Family name"), this);
-	QLabel *birthYearLabel = new QLabel(tr("Birth year"), this);
-	QLabel *cityLabel = new QLabel(tr("City"), this);
-	QLabel *familyCityLabel = new QLabel(tr("Family city"), this);
+	QFormLayout *layout = new QFormLayout(this);
 
 	NickName = new QLineEdit(this);
 	FirstName = new QLineEdit(this);
@@ -78,25 +69,14 @@ void GaduPersonalInfoWidget::createGui()
 	City = new QLineEdit(this);
 	FamilyCity = new QLineEdit(this);
 
-	layout->addWidget(nickNameLabel, 0, 0);
-	layout->addWidget(NickName, 1, 0);
-	layout->addWidget(firstNameLabel, 0, 1);
-	layout->addWidget(FirstName, 1, 1);
-	layout->addWidget(lastNameLabel, 0, 2);
-	layout->addWidget(LastName, 1, 2);
-	layout->addWidget(sexLabel, 2, 0);
-	layout->addWidget(Sex, 3, 0);
-	layout->addWidget(familyNameLabel, 2, 1);
-	layout->addWidget(FamilyName, 3, 1);
-	layout->addWidget(birthYearLabel, 4, 0);
-	layout->addWidget(BirthYear, 5, 0);
-	layout->addWidget(cityLabel, 6, 0);
-	layout->addWidget(City, 7, 0);
-	layout->addWidget(familyCityLabel, 6, 1);
-	layout->addWidget(FamilyCity, 7, 1);
-	
-	layout->setRowStretch(8, 100);
-	
+	layout->addRow(tr("Nick"), NickName);
+	layout->addRow(tr("First name"), FirstName);
+	layout->addRow(tr("Last name"), LastName);
+	layout->addRow(tr("Sex"), Sex);
+	layout->addRow(tr("Family name"), FamilyName);
+	layout->addRow(tr("Birth year"), BirthYear);
+	layout->addRow(tr("City"), City);
+	layout->addRow(tr("Family city"), FamilyCity);
 }
 
 void GaduPersonalInfoWidget::personalInfoAvailable(Buddy buddy)

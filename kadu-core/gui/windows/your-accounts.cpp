@@ -272,6 +272,7 @@ void YourAccounts::accountCreated(Account account)
 	account.importProxySettings();
 	AccountManager::instance()->addItem(account);
 
+	ConfigurationManager::instance()->flush();
 	selectAccount(account);
 }
 

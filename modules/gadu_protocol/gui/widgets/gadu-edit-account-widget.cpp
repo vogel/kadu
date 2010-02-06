@@ -22,7 +22,9 @@
 
 #include <QtGui/QCheckBox>
 #include <QtGui/QComboBox>
+#include <QtGui/QDialogButtonBox>
 #include <QtGui/QFileDialog>
+#include <QtGui/QFormLayout>
 #include <QtGui/QGridLayout>
 #include <QtGui/QGroupBox>
 #include <QtGui/QLabel>
@@ -36,11 +38,12 @@
 #include "configuration/configuration-file.h"
 #include "gui/widgets/account-avatar-widget.h"
 #include "gui/widgets/account-buddy-list-widget.h"
-#include "gui/widgets/choose-identity-widget.h"
+#include "gui/widgets/identities-combo-box.h"
 #include "gui/widgets/proxy-group-box.h"
 #include "protocols/services/avatar-service.h"
 #include "protocols/services/contact-list-service.h"
 #include "protocols/protocol.h"
+#include "icons-manager.h"
 
 #include "services/gadu-contact-list-service.h"
 
@@ -79,54 +82,42 @@ void GaduEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 {
 	QWidget *generalTab = new QWidget(this);
 
-	QGridLayout *layout = new QGridLayout(generalTab);
-	layout->setColumnMinimumWidth(0, 20);
-	layout->setColumnMinimumWidth(4, 20);
-	layout->setColumnMinimumWidth(5, 100);
-	layout->setColumnMinimumWidth(6, 20);
-	layout->setColumnStretch(3, 10);
-	layout->setColumnStretch(6, 2);
+	QHBoxLayout *layout = new QHBoxLayout(generalTab);
+	QWidget *form = new QWidget(generalTab);
+	layout->addWidget(form);
 
-	int row = 0;
+	QFormLayout *formLayout = new QFormLayout(form);
+
 	ConnectAtStart = new QCheckBox(tr("Connect at start"), this);
-	layout->addWidget(ConnectAtStart, row++, 0, 1, 3);
+	formLayout->addRow(0, ConnectAtStart);
 
-	QLabel *numberLabel = new QLabel(tr("Gadu-Gadu number") + ":", this);
-	layout->addWidget(numberLabel, row++, 1);
 	AccountId = new QLineEdit(this);
-	layout->addWidget(AccountId, row++, 1, 1, 2);
+	formLayout->addRow(tr("Gadu-Gadu number") + ":", AccountId);
 
-	QLabel *passwordLabel = new QLabel(tr("Password") + ":", this);
-	layout->addWidget(passwordLabel, row++, 1);
 	AccountPassword = new QLineEdit(this);
 	AccountPassword->setEchoMode(QLineEdit::Password);
-	layout->addWidget(AccountPassword, row++, 1, 1, 2);
+	formLayout->addRow(tr("Password") + ":", AccountPassword);
 
 	RememberPassword = new QCheckBox(tr("Remember password"), this);
 	RememberPassword->setChecked(true);
-	layout->addWidget(RememberPassword, row++, 1, 1, 2);
+	formLayout->addRow(0, RememberPassword);
 
-	QLabel *descriptionLabel = new QLabel(tr("Account description") + ":", this);
-	layout->addWidget(descriptionLabel, row++, 1, Qt::AlignRight);
-	ChooseIdentity = new ChooseIdentityWidget(this);
-	layout->addWidget(ChooseIdentity, row++, 1, 1, 2);
-
-	layout->setRowMinimumHeight(row++, 30);
+	Identities = new IdentitiesComboBox(this);
+	formLayout->addRow(tr("Account description") + ":", Identities);
 
 	QPushButton *remindPassword = new QPushButton(tr("Forgot password"), this);
-	layout->addWidget(remindPassword, row, 1, Qt::AlignLeft);
+	formLayout->addRow(0, remindPassword);
 
-	QPushButton *changePassword = new QPushButton(tr("Change password"), this);
-	layout->addWidget(changePassword, row++, 2, Qt::AlignLeft);
+	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 
-	QPushButton *removeAccount = new QPushButton(tr("Remove account"), this);
+	QPushButton *removeAccount = new QPushButton(IconsManager::instance()->loadIcon("CloseWindowButton"), tr("Delete account"), this);
 	connect(removeAccount, SIGNAL(clicked(bool)), this, SLOT(removeAccount()));
-	layout->addWidget(removeAccount, row++, 1, 1, 3);
-	layout->setRowStretch(row, 100);
 
-	row = 0;
+	buttons->addButton(removeAccount, QDialogButtonBox::DestructiveRole);
+	formLayout->addRow(0, buttons);
+
 	AccountAvatarWidget *avatarWidget = new AccountAvatarWidget(account(), this);
-	layout->addWidget(avatarWidget, row++, 5, 5, 1);
+	layout->addWidget(avatarWidget, 0, Qt::AlignTop);
 
 	tabWidget->addTab(generalTab, tr("General"));
 }
@@ -204,6 +195,7 @@ void GaduEditAccountWidget::loadAccountData()
 	AccountId->setText(account().id());
 	RememberPassword->setChecked(account().rememberPassword());
 	AccountPassword->setText(account().password());
+	// Identities->setCurrentIdentity(account().identity());
 }
 
 void GaduEditAccountWidget::loadConnectionData()
