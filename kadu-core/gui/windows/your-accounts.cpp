@@ -222,18 +222,6 @@ void YourAccounts::createEditAccountWidget()
 	CreateEditStack->addWidget(EditStack);
 }
 
-void YourAccounts::newAccountClicked()
-{
-	AccountsView->selectionModel()->clearSelection();
-	CreateEditStack->setCurrentWidget(NewAccountContainer);
-}
-
-void YourAccounts::addAccountClicked()
-{
-	AccountsView->selectionModel()->clearSelection();
-	CreateEditStack->setCurrentWidget(AddAccountContainer);
-}
-
 void YourAccounts::newAccountProtocolChanged(ProtocolFactory *protocolFactory)
 {
 	AccountCreateWidget *createWidget = 0;
@@ -303,13 +291,13 @@ void YourAccounts::accountSelectionChanged(const QItemSelection &selected, const
 	QAction *action = qvariant_cast<QAction *>(current.data(ActionRole));
 	if (action == AddExistingAccountAction)
 	{
-		addAccountClicked();
+		CreateEditStack->setCurrentWidget(AddAccountContainer);
 		return;
 	}
 
 	if (action == CreateNewAccountAction)
 	{
-		newAccountClicked();
+		CreateEditStack->setCurrentWidget(NewAccountContainer);
 		return;
 	}
 

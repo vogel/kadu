@@ -75,8 +75,6 @@ KADUAPI class YourAccounts : public QWidget, AccountsAwareObject
 	void createEditAccountWidget();
 
 private slots:
-  	void addAccountClicked();
-	void newAccountClicked();
 	void addAccountProtocolChanged(ProtocolFactory *protocolFactory);
 	void newAccountProtocolChanged(ProtocolFactory *protocolFactory);
 	void accountCreated(Account account);
