@@ -73,12 +73,9 @@ void YourAccounts::createGui()
 	QHBoxLayout *contentLayout = new QHBoxLayout;
 	mainLayout->addItem(contentLayout);
 
-	QVBoxLayout *sideLayout = new QVBoxLayout;
-	contentLayout->addItem(sideLayout);
-	contentLayout->setStretchFactor(sideLayout, 1);
-
 	AccountsView = new QListView(this);
-	sideLayout->addWidget(AccountsView);
+	contentLayout->addWidget(AccountsView);
+	contentLayout->setStretchFactor(AccountsView, 1);
 	MyAccountsModel = new AccountsModel(AccountsView);
 
 	ActionsProxyModel::ModelActionList beforeActions;
@@ -97,14 +94,6 @@ void YourAccounts::createGui()
 	AccountsView->setIconSize(QSize(32, 32));
 	connect(AccountsView->selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
 			this, SLOT(accountSelectionChanged(const QItemSelection &, const QItemSelection &)));
-			
-	QPushButton *addAccount = new QPushButton(tr("Add Existing Account"), this);
-	sideLayout->addWidget(addAccount);
-	connect(addAccount, SIGNAL(clicked()), this, SLOT(addAccountClicked()));
-	
-	QPushButton *createAccount = new QPushButton(tr("Create New Account"), this);
-	sideLayout->addWidget(createAccount);
-	connect(createAccount, SIGNAL(clicked()), this, SLOT(newAccountClicked()));
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 	mainLayout->addWidget(buttons);
@@ -310,12 +299,22 @@ void YourAccounts::accountSelectionChanged(const QItemSelection &selected, const
 	QModelIndex current = selected.indexes().first();
 
 	CreateEditStack->setCurrentWidget(EditStack);
-	const AccountsModel *accountModel = dynamic_cast<const AccountsModel *>(current.model());
-	if (!accountModel)
-		return;
 
-	Account account = accountModel->account(current);
-	if (account.isNull())
+	QAction *action = qvariant_cast<QAction *>(current.data(ActionRole));
+	if (action == AddExistingAccountAction)
+	{
+		addAccountClicked();
+		return;
+	}
+
+	if (action == CreateNewAccountAction)
+	{
+		newAccountClicked();
+		return;
+	}
+
+	Account account = qvariant_cast<Account>(current.data(AccountRole));
+	if (!account)
 		return;
 
 	AccountEditWidget *editWidget;
