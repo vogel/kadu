@@ -59,10 +59,10 @@ public:
 	Identity identityForAcccount(Account account);
 
 signals:
-	void identityAboutToBeRegistered(Identity);
-	void identityRegistered(Identity);
-	void identityAboutToBeUnregistered(Identity);
-	void identityUnregistered(Identity);
+	void identityAboutToBeAdded(Identity);
+	void identityAdded(Identity);
+	void identityAboutToBeRemoved(Identity);
+	void identityRemoved(Identity);
 
 };
 

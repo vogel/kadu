@@ -29,8 +29,8 @@ class QGridLayout;
 class QLineEdit;
 class QPushButton;
 
-class ChooseIdentityWidget;
 class GaduServerRegisterAccount;
+class IdentitiesComboBox;
 class TokenWidget;
 
 class GaduCreateAccountWidget : public AccountCreateWidget
@@ -42,9 +42,8 @@ class GaduCreateAccountWidget : public AccountCreateWidget
 	QLineEdit *ReNewPassword;
 	QCheckBox *RememberPassword;	
 	QLineEdit *EMail;
-	ChooseIdentityWidget *Identity;
+	IdentitiesComboBox *IdentityCombo;
 	TokenWidget *tokenWidget;
-
 
 	void createGui();
 

@@ -76,20 +76,20 @@ Identity IdentityManager::identityForAcccount(Account account)
 
 void IdentityManager::itemAboutToBeAdded(Identity item)
 {
-	emit identityAboutToBeRegistered(item);
+	emit identityAboutToBeAdded(item);
 }
 
 void IdentityManager::itemAdded(Identity item)
 {
-	emit identityRegistered(item);
+	emit identityAdded(item);
 }
 
 void IdentityManager::itemAboutToBeRemoved(Identity item)
 {
-	emit identityAboutToBeUnregistered(item);
+	emit identityAboutToBeRemoved(item);
 }
 
 void IdentityManager::itemRemoved(Identity item)
 {
-	emit identityUnregistered(item);
+	emit identityRemoved(item);
 }

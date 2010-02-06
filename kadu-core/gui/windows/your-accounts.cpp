@@ -75,7 +75,7 @@ void YourAccounts::createGui()
 
 	AccountsView = new QListView(this);
 	contentLayout->addWidget(AccountsView);
-	contentLayout->setStretchFactor(AccountsView, 1);
+// 	contentLayout->setStretchFactor(AccountsView, 1);
 	MyAccountsModel = new AccountsModel(AccountsView);
 
 	ActionsProxyModel::ModelActionList beforeActions;

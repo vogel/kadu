@@ -147,6 +147,7 @@ set (kadu_SRCS
 	gui/widgets/file-transfer-widget.cpp
 	gui/widgets/group-tab-bar.cpp
 	gui/widgets/groups-combo-box.cpp
+	gui/widgets/identities-combo-box.cpp
 	gui/widgets/image-widget.cpp
 	gui/widgets/kadu-text-browser.cpp
 	gui/widgets/path-list-edit.cpp
@@ -217,6 +218,7 @@ set (kadu_SRCS
 	gui/windows/open-chat-with/open-chat-with-contact-list-runner.cpp
 	gui/windows/open-chat-with/open-chat-with-runner-manager.cpp
 
+	identities/model/identity-model.cpp
 	identities/identity.cpp
 	identities/identity-manager.cpp
 	identities/identity-shared.cpp
@@ -415,6 +417,7 @@ set (kadu_MOC_SRCS
 	gui/widgets/file-transfer-widget.h
 	gui/widgets/group-tab-bar.h
 	gui/widgets/groups-combo-box.h
+	gui/widgets/identities-combo-box.h
 	gui/widgets/kadu-text-browser.h
 	gui/widgets/path-list-edit.h
 	gui/widgets/preview.h
@@ -462,6 +465,7 @@ set (kadu_MOC_SRCS
 
 	gui/windows/open-chat-with/open-chat-with.h
 
+	identities/model/identity-model.h
 	identities/identity.h
 	identities/identity-manager.h
 	identities/identity-shared.h

@@ -30,11 +30,12 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QRadioButton>
 
-#include "gui/widgets/choose-identity-widget.h"
+#include "gui/widgets/identities-combo-box.h"
 #include "gui/windows/message-dialog.h"
 #include "protocols/protocols-manager.h"
-#include "../../server/gadu-server-register-account.h"
 #include "html_document.h"
+
+#include "../../server/gadu-server-register-account.h"
 #include "gadu-account-details.h"
 #include "gadu-protocol-factory.h"
 #include "token-widget.h"
@@ -79,9 +80,9 @@ void GaduCreateAccountWidget::createGui()
 	connect(EMail, SIGNAL(textChanged(const QString &)), this, SLOT(dataChanged()));
 	layout->addRow(tr("E-Mail Address") + ":", EMail);
 
-	Identity = new ChooseIdentityWidget(this);
-	connect(Identity, SIGNAL(identityChanged()), this, SLOT(dataChanged()));
-	layout->addRow(tr("Account Identity") + ":", Identity);
+	IdentityCombo = new IdentitiesComboBox(this);
+	connect(IdentityCombo, SIGNAL(activated(int)), this, SLOT(dataChanged()));
+	layout->addRow(tr("Account Identity") + ":", IdentityCombo);
 
 	layout->addRow(0, new QLabel(tr("<font size='-1'><i>Select or enter the identity that will be associated with this account.</i></font>"), this));
 
@@ -96,7 +97,7 @@ void GaduCreateAccountWidget::dataChanged()
 {
 	bool disable = NewPassword->text().isEmpty() || ReNewPassword->text().isEmpty()
 		      || EMail->text().indexOf(HtmlDocument::mailRegExp()) < 0 || tokenWidget->tokenValue().isEmpty()
-		      || Identity->identityName().isEmpty();
+		      || !IdentityCombo->currentIdentity();
 
 	//registerAccount->setEnabled(!disable);
 }

@@ -56,4 +56,6 @@ public:
 
 };
 
+Q_DECLARE_METATYPE(Identity)
+
 #endif // IDENTITY_H

@@ -26,6 +26,8 @@
 
 #include "identity.h"
 
+KaduSharedBaseClassImpl(Identity)
+
 Identity Identity::null;
 
 Identity Identity::create()

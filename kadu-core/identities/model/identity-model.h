@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,39 +17,39 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GROUPS_MODEL_H
-#define GROUPS_MODEL_H
+#ifndef IDENTITY_MODEL_H
+#define IDENTITY_MODEL_H
 
 #include <QtCore/QAbstractListModel>
 #include <QtCore/QModelIndex>
 
-class Group;
+class Identity;
 
-class GroupsModel : public QAbstractListModel
+class IdentityModel : public QAbstractListModel
 {
 	Q_OBJECT
 
 private slots:
-	void groupAboutToBeAdded(Group group);
-	void groupAdded(Group group);
-	void groupAboutToBeRemoved(Group group);
-	void groupRemoved(Group group);
+	void identityAboutToBeAdded(Identity identity);
+	void identityAdded(Identity identity);
+	void identityAboutToBeRemoved(Identity identity);
+	void identityRemoved(Identity identity);
 
 public:
-	GroupsModel(QObject *parent = 0);
-	virtual ~GroupsModel();
+	IdentityModel(QObject *parent = 0);
+	virtual ~IdentityModel();
 
 	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
 
 	virtual QVariant data(const QModelIndex &index, int role) const;
 	virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 
-	Group group(const QModelIndex &index) const;
-	int groupIndex(Group group);
-	QModelIndex groupModelIndex(Group group);
+	Identity identity(const QModelIndex &index) const;
+	int identityIndex(Identity identity);
+	QModelIndex identityModelIndex(Identity identity);
 
 };
 
-#include "buddies/group.h" // for MOC
+#include "identities/identity.h" // for MOC
 
-#endif // GROUPS_MODEL_H
+#endif // IDENTITY_MODEL_H
