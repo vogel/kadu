@@ -271,9 +271,14 @@ void YourAccounts::accountCreated(Account account)
 {
 	account.importProxySettings();
 	AccountManager::instance()->addItem(account);
+
+	selectAccount(account);
+}
+
+void YourAccounts::selectAccount(Account account)
+{
 	AccountsView->selectionModel()->clearSelection();
 	AccountsView->selectionModel()->select(MyAccountsModel->accountModelIndex(account), QItemSelectionModel::Select);
-	CreateEditStack->setCurrentWidget(NewAccountCreatedContainer);
 }
 
 void YourAccounts::accountSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected)

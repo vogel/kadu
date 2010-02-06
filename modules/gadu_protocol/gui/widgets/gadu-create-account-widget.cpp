@@ -144,7 +144,7 @@ void GaduCreateAccountWidget::cancelButtonClicked()
 
 void GaduCreateAccountWidget::registerNewAccountFinished(GaduServerRegisterAccount *gsra)
 {
-	if (gsra->result())
+	if (gsra && gsra->result())
 	{
 		MessageDialog::msg(tr("Registration was successful. Your new number is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(gsra->uin()), false, "Information", this);
 		
@@ -160,5 +160,6 @@ void GaduCreateAccountWidget::registerNewAccountFinished(GaduServerRegisterAccou
 	else
 		MessageDialog::msg(tr("An error has occured while registration. Please try again later."), false, "Warning", this);
 
-	delete gsra;
+	if (gsra)
+		delete gsra;
 }

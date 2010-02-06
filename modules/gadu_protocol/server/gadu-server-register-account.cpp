@@ -33,19 +33,16 @@ GaduServerRegisterAccount::GaduServerRegisterAccount(const QString &mail, const 
 void GaduServerRegisterAccount::performAction()
 {
 	H = gg_register3(unicode2cp(Mail).data(), unicode2cp(Password).data(),
-			unicode2cp(TokenId).data(), unicode2cp(TokenValue).data(), 0);
+			unicode2cp(TokenId).data(), unicode2cp(TokenValue).data(), false);
 	if (H)
 	{
 		struct gg_pubdir *result = (struct gg_pubdir *)H->data;
 		Result = result->success;
 
 		if (result->success)
-		{
 			Uin = result->uin;
-			emit finished(this);
-		}
-		else
-			emit finished(false);
+
+		emit finished(this);
 	}
 
 	/* TODO: fix for 0.6.6, it should be async
