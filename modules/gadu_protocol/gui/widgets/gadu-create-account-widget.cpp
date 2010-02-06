@@ -23,6 +23,7 @@
 
 #include <QtGui/QCheckBox>
 #include <QtGui/QComboBox>
+#include <QtGui/QDialogButtonBox>
 #include <QtGui/QFormLayout>
 #include <QtGui/QIntValidator>
 #include <QtGui/QLabel>
@@ -34,6 +35,7 @@
 #include "gui/windows/message-dialog.h"
 #include "protocols/protocols-manager.h"
 #include "html_document.h"
+#include "icons-manager.h"
 
 #include "../../server/gadu-server-register-account.h"
 #include "gadu-account-details.h"
@@ -86,23 +88,38 @@ void GaduCreateAccountWidget::createGui()
 
 	layout->addRow(0, new QLabel(tr("<font size='-1'><i>Select or enter the identity that will be associated with this account.</i></font>"), this));
 
-	tokenWidget = new TokenWidget(this);
-	connect(tokenWidget, SIGNAL(modified()), this, SLOT(dataChanged()));
-	layout->addRow(tr("Characters") + ":", tokenWidget);
+	MyTokenWidget = new TokenWidget(this);
+	connect(MyTokenWidget, SIGNAL(modified()), this, SLOT(dataChanged()));
+	layout->addRow(tr("Characters") + ":", MyTokenWidget);
 
 	layout->addRow(0, new QLabel(tr("<font size='-1'><i>For verification purposes, please type the characters above.</i></font>"), this));
+
+	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
+	layout->addRow(0, buttons);
+
+	RegisterAccountButton = new QPushButton(IconsManager::instance()->loadIcon("ApplyWindowButton"), tr("Regster Account"), this);
+	QPushButton *cancelButton = new QPushButton(IconsManager::instance()->loadIcon("CloseWindowButton"), tr("Cancel"), this);
+
+	connect(RegisterAccountButton, SIGNAL(clicked(bool)), this, SLOT(registerAccountButtonClicked()));
+	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(cancelButtonClicked()));
+
+	buttons->addButton(RegisterAccountButton, QDialogButtonBox::ApplyRole);
+	buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
+
+	dataChanged();
 }
 
 void GaduCreateAccountWidget::dataChanged()
 {
 	bool disable = NewPassword->text().isEmpty() || ReNewPassword->text().isEmpty()
-		      || EMail->text().indexOf(HtmlDocument::mailRegExp()) < 0 || tokenWidget->tokenValue().isEmpty()
+		      || EMail->text().indexOf(HtmlDocument::mailRegExp()) < 0 || MyTokenWidget->tokenValue().isEmpty()
+		      || NewPassword->text() != ReNewPassword->text()
 		      || !IdentityCombo->currentIdentity();
 
-	//registerAccount->setEnabled(!disable);
+	RegisterAccountButton->setEnabled(!disable);
 }
 
-void GaduCreateAccountWidget::apply()
+void GaduCreateAccountWidget::registerAccountButtonClicked()
 {
     if (NewPassword->text() != ReNewPassword->text())
 	{
@@ -113,11 +130,16 @@ void GaduCreateAccountWidget::apply()
 	}
 
 	GaduServerRegisterAccount *gsra = new GaduServerRegisterAccount(EMail->text(), NewPassword->text(),
-			tokenWidget->tokenId(), tokenWidget->tokenValue());
+			MyTokenWidget->tokenId(), MyTokenWidget->tokenValue());
 	connect(gsra, SIGNAL(finished(GaduServerRegisterAccount *)),
 			this, SLOT(registerNewAccountFinished(GaduServerRegisterAccount *)));
 
 	gsra->performAction();
+}
+
+void GaduCreateAccountWidget::cancelButtonClicked()
+{
+
 }
 
 void GaduCreateAccountWidget::registerNewAccountFinished(GaduServerRegisterAccount *gsra)

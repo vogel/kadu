@@ -43,19 +43,20 @@ class GaduCreateAccountWidget : public AccountCreateWidget
 	QCheckBox *RememberPassword;	
 	QLineEdit *EMail;
 	IdentitiesComboBox *IdentityCombo;
-	TokenWidget *tokenWidget;
+	TokenWidget *MyTokenWidget;
+	QPushButton *RegisterAccountButton;
 
 	void createGui();
 
 private slots:
+	void registerAccountButtonClicked();
+	void cancelButtonClicked();
 	void dataChanged();
 	void registerNewAccountFinished(GaduServerRegisterAccount *gsra);
 
 public:
 	explicit GaduCreateAccountWidget(QWidget *parent = 0);
 	virtual ~GaduCreateAccountWidget();
-	
-	virtual void apply();
 
 };
 

@@ -35,8 +35,6 @@ class KADUAPI AccountCreateWidget : public QWidget
 public:
 	explicit AccountCreateWidget(QWidget *parent = 0) : QWidget(parent) {}
 	virtual ~AccountCreateWidget() {}
-	
-	virtual void apply() = 0;
 
 signals:
 	void accountCreated(Account account);

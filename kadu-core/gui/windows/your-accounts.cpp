@@ -99,15 +99,12 @@ void YourAccounts::createGui()
 	mainLayout->addWidget(buttons);
 
 	QPushButton *okButton = new QPushButton(IconsManager::instance()->loadIcon("OkWindowButton"), tr("Ok"), this);
-	QPushButton *addAccountButton = new QPushButton(IconsManager::instance()->loadIcon("ApplyWindowButton"), tr("Add Account"), this);
 	QPushButton *cancelButton = new QPushButton(IconsManager::instance()->loadIcon("CloseWindowButton"), tr("Cancel"), this);
 
 	connect(okButton, SIGNAL(clicked(bool)), this, SLOT(okClicked()));
-	connect(addAccountButton, SIGNAL(clicked(bool)), this, SLOT(addAccountButtonClicked()));
 	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(close()));
 
 	buttons->addButton(okButton, QDialogButtonBox::AcceptRole);
-	buttons->addButton(addAccountButton, QDialogButtonBox::ApplyRole);
 	buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
 
 	CreateEditStack = new QStackedWidget(this);
@@ -334,22 +331,6 @@ void YourAccounts::okClicked()
 	foreach (AccountEditWidget *editWidget, EditWidgets)
 		editWidget->apply();
 	close();
-}
-
-void YourAccounts::addAccountButtonClicked()
-{
-	if (CreateEditStack->currentWidget() == NewAccountContainer)
-	{
-		AccountCreateWidget *widget = dynamic_cast<AccountCreateWidget *>(CreateStack->currentWidget());
-		if (widget)
-			widget->apply();
-	}
-	else
-	{
-		AccountAddWidget *widgetAdd = dynamic_cast<AccountAddWidget *>(AddStack->currentWidget());
-		if (widgetAdd)
-			widgetAdd->apply();
-	}
 }
 
 void YourAccounts::keyPressEvent(QKeyEvent *e)

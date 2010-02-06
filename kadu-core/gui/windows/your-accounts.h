@@ -81,7 +81,6 @@ private slots:
 	void accountSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 
 	void okClicked();
-	void addAccountButtonClicked();
 
 protected:
 	virtual void keyPressEvent(QKeyEvent *e);
