@@ -46,9 +46,8 @@ SelectBuddyCombobox::SelectBuddyCombobox(QWidget *parent) :
 	ProxyModel->setSortByStatus(false);
 	ProxyModel->setSourceModel(Model);
 
-	ActionsProxyModel::ModelActionList beforeActions;
-	beforeActions.append(new QAction(tr(" - Select contact - "), this));
-	ActionsModel = new ActionsProxyModel(beforeActions, ActionsProxyModel::ModelActionList(), this);
+	ActionsModel = new ActionsProxyModel(this);
+	ActionsModel->addBeforeAction(new QAction(tr(" - Select contact - "), this));
 	ActionsModel->setSourceModel(ProxyModel);
 
 	setModel(ActionsModel);

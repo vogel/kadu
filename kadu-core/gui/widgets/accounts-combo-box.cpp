@@ -36,11 +36,9 @@ AccountsComboBox::AccountsComboBox(bool includeSelectAccount, QWidget *parent) :
 
 	connect(ProxyModel, SIGNAL(filterChanged()), this, SLOT(resetAccount()));
 
-	ActionsProxyModel::ModelActionList accountsModelBeforeActions;
+	ActionsModel = new ActionsProxyModel(this);
 	if (includeSelectAccount)
-		accountsModelBeforeActions.append(new QAction(tr(" - Select account - "), this));
-	ActionsModel = new ActionsProxyModel(accountsModelBeforeActions,
-			ActionsProxyModel::ModelActionList(), this);
+		ActionsModel->addBeforeAction(new QAction(tr(" - Select account - "), this));
 	ActionsModel->setSourceModel(ProxyModel);
 
 	setModel(ActionsModel);

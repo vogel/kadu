@@ -35,15 +35,12 @@ IdentitiesComboBox::IdentitiesComboBox(QWidget *parent) :
 {
 	Model = new IdentityModel(this);
 
-	ActionsProxyModel::ModelActionList groupsModelBeforeActions;
-	groupsModelBeforeActions.append(new QAction(tr(" - Select identity - "), this));
-	ActionsProxyModel::ModelActionList groupsModelAfterActions;
-
 	CreateNewIdentityAction = new QAction(tr("Create a new identity..."), this);
 	CreateNewIdentityAction->setData("createNewIdentity");
-	groupsModelAfterActions.append(CreateNewIdentityAction);
 
-	ActionsModel = new ActionsProxyModel(groupsModelBeforeActions, groupsModelAfterActions, this);
+	ActionsModel = new ActionsProxyModel(this);
+	ActionsModel->addBeforeAction(new QAction(tr(" - Select identity - "), this));
+	ActionsModel->addAfterAction(CreateNewIdentityAction);
 	ActionsModel->setSourceModel(Model);
 
 	setModel(ActionsModel);

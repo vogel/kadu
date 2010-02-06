@@ -31,12 +31,10 @@ ProtocolsComboBox::ProtocolsComboBox(bool includeSelectAccount, QWidget *parent)
 {
 	Model = new ProtocolsModel(this);
 
-	ActionsProxyModel::ModelActionList protocolsModelBeforeActions;
+	ActionsModel = new ActionsProxyModel(this);
+	ActionsModel->setSourceModel(Model);
 	if (includeSelectAccount)
-		protocolsModelBeforeActions.append(new QAction(tr(" - Select network - "), this));
-	ActionsModel = new ActionsProxyModel(protocolsModelBeforeActions,
-			ActionsProxyModel::ModelActionList(), this);
-			ActionsModel->setSourceModel(Model);
+		ActionsModel->addBeforeAction(new QAction(tr(" - Select network - "), this));
 
 	setModel(ActionsModel);
 

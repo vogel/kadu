@@ -26,13 +26,27 @@
 
 #include "actions-proxy-model.h"
 
-ActionsProxyModel::ActionsProxyModel(ModelActionList beforeActions, ModelActionList afterActions, QObject *parent) :
-		QAbstractProxyModel(parent), BeforeActions(beforeActions), AfterActions(afterActions)
+ActionsProxyModel::ActionsProxyModel(QObject *parent) :
+		QAbstractProxyModel(parent)
 {
 }
 
 ActionsProxyModel::~ActionsProxyModel()
 {
+}
+
+void ActionsProxyModel::addBeforeAction(QAction *action)
+{
+	beginInsertRows(QModelIndex(), BeforeActions.size(), BeforeActions.size());
+	BeforeActions.append(action);
+	endInsertRows();
+}
+
+void ActionsProxyModel::addAfterAction(QAction *action)
+{
+	beginInsertRows(QModelIndex(), rowCount(), rowCount());
+	AfterActions.append(action);
+	endInsertRows();
 }
 
 void ActionsProxyModel::setSourceModel(QAbstractItemModel *newSourceModel)
@@ -181,7 +195,10 @@ int ActionsProxyModel::columnCount(const QModelIndex &parent) const
 
 int ActionsProxyModel::rowCount(const QModelIndex &parent) const
 {
-	return sourceModel()->rowCount(mapToSource(parent)) + BeforeActions.count() + AfterActions.count();
+	if (sourceModel())
+		return sourceModel()->rowCount(mapToSource(parent)) + BeforeActions.count() + AfterActions.count();
+	else
+		return BeforeActions.count() + AfterActions.count();
 }
 
 QModelIndex ActionsProxyModel::index(int row, int column, const QModelIndex &parent) const

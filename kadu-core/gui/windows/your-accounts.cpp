@@ -78,14 +78,12 @@ void YourAccounts::createGui()
 // 	contentLayout->setStretchFactor(AccountsView, 1);
 	MyAccountsModel = new AccountsModel(AccountsView);
 
-	ActionsProxyModel::ModelActionList beforeActions;
-	ActionsProxyModel::ModelActionList afterActions;
 	AddExistingAccountAction = new QAction(tr("Add existing account"), this);
 	CreateNewAccountAction = new QAction(tr("Create new account"), this);
-	afterActions.append(AddExistingAccountAction);
-	afterActions.append(CreateNewAccountAction);
 
-	ActionsModel = new ActionsProxyModel(beforeActions, afterActions, this);
+	ActionsModel = new ActionsProxyModel(this);
+	ActionsModel->addBeforeAction(AddExistingAccountAction);
+	ActionsModel->addAfterAction(CreateNewAccountAction);
 	ActionsModel->setSourceModel(MyAccountsModel);
 
 	AccountsView->setModel(ActionsModel);

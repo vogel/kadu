@@ -41,17 +41,12 @@ GroupsComboBox::GroupsComboBox(bool includeSelectGroups, QWidget *parent) :
 	ProxyModel->sort(1);
 	ProxyModel->sort(0);
 
-	ActionsProxyModel::ModelActionList groupsModelBeforeActions;
-	if (includeSelectGroups)
-		groupsModelBeforeActions.append(new QAction(tr(" - Select group - "), this));
-	ActionsProxyModel::ModelActionList groupsModelAfterActions;
-
 	CreateNewGroupAction = new QAction(tr("Create a new group..."), this);
 	CreateNewGroupAction->setData("createNewGroup");
-	if (includeSelectGroups)
-		groupsModelAfterActions.append(CreateNewGroupAction);
 
-	ActionsModel = new ActionsProxyModel(groupsModelBeforeActions, groupsModelAfterActions, this);
+	ActionsModel = new ActionsProxyModel(this);
+	ActionsModel->addBeforeAction(new QAction(tr(" - Select group - "), this));
+	ActionsModel->addAfterAction(CreateNewGroupAction);
 	ActionsModel->setSourceModel(ProxyModel);
 
 	setModel(ActionsModel);

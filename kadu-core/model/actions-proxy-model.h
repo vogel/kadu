@@ -28,12 +28,8 @@ class ActionsProxyModel : public QAbstractProxyModel
 {
 	Q_OBJECT
 
-public:
-	typedef QList<QAction *> ModelActionList;
-
-private:
-	ModelActionList BeforeActions;
-	ModelActionList AfterActions;
+	QList<QAction *> BeforeActions;
+	QList<QAction *> AfterActions;
 
 private slots:
 	void sourceDataChanged(const QModelIndex &, const QModelIndex &);
@@ -50,8 +46,11 @@ private slots:
 	void sourceLayoutChanged();
 
 public:
-	ActionsProxyModel(ModelActionList beforeActions, ModelActionList afterActions, QObject *parent);
+	ActionsProxyModel(QObject *parent);
 	virtual ~ActionsProxyModel();
+
+	void addBeforeAction(QAction *action);
+	void addAfterAction(QAction *action);
 
 	virtual void setSourceModel(QAbstractItemModel *newSourceModel);
 
