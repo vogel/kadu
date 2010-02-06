@@ -17,6 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QAction>
 #include <QtGui/QListView>
 
 #include "buddies/buddy-manager.h"
@@ -46,7 +47,7 @@ SelectBuddyCombobox::SelectBuddyCombobox(QWidget *parent) :
 	ProxyModel->setSourceModel(Model);
 
 	ActionsProxyModel::ModelActionList beforeActions;
-	beforeActions << ActionsProxyModel::ModelAction(tr(" - Select contact - "), "");
+	beforeActions.append(new QAction(tr(" - Select contact - "), this));
 	ActionsModel = new ActionsProxyModel(beforeActions, ActionsProxyModel::ModelActionList(), this);
 	ActionsModel->setSourceModel(ProxyModel);
 

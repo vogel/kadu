@@ -28,18 +28,19 @@
 
 class QLineEdit;
 
+class GroupsComboBox;
+
 class SubscriptionWindow : public QDialog
 {
 	Q_OBJECT
 
 	Contact CurrentContact;
 	QLineEdit *VisibleName;
-	QComboBox *GroupCombo;
+	GroupsComboBox *GroupCombo;
 
 private slots:
 	void accepted();
 	void rejected();
-	void groupChanged(int index);
 
 public:
 	static void getSubscription(Contact contact, QObject* receiver, const char* slot);

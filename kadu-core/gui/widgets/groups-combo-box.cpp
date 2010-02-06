@@ -18,6 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QAction>
 #include <QtGui/QInputDialog>
 #include <QtGui/QLineEdit>
 #include <QtGui/QSortFilterProxyModel>
@@ -42,12 +43,15 @@ GroupsComboBox::GroupsComboBox(bool includeSelectGroups, QWidget *parent) :
 
 	ActionsProxyModel::ModelActionList groupsModelBeforeActions;
 	if (includeSelectGroups)
-		groupsModelBeforeActions.append(qMakePair<QString, QString>(tr(" - Select group - "), ""));
+		groupsModelBeforeActions.append(new QAction(tr(" - Select group - "), this));
 	ActionsProxyModel::ModelActionList groupsModelAfterActions;
+
+	CreateNewGroupAction = new QAction(tr("Create a new group..."), this);
+	CreateNewGroupAction->setData("createNewGroup");
 	if (includeSelectGroups)
-		groupsModelAfterActions.append(qMakePair<QString, QString>(tr("Create a new group..."), "createNewGroup"));
-	ActionsModel = new ActionsProxyModel(groupsModelBeforeActions,
-			groupsModelAfterActions, this);
+		groupsModelAfterActions.append(CreateNewGroupAction);
+
+	ActionsModel = new ActionsProxyModel(groupsModelBeforeActions, groupsModelAfterActions, this);
 	ActionsModel->setSourceModel(ProxyModel);
 
 	setModel(ActionsModel);
@@ -85,10 +89,11 @@ Group GroupsComboBox::currentGroup()
 void GroupsComboBox::activatedSlot(int index)
 {
 	QModelIndex modelIndex = this->model()->index(index, 0, QModelIndex());
-	QString action = modelIndex.data(ActionRole).toString();
+	QAction *action = modelIndex.data(ActionRole).value<QAction *>();
 
-	if (action.isEmpty())
+	if (action != CreateNewGroupAction)
 		return;
+
 	bool ok;
 
 	QString newGroupName = QInputDialog::getText(this, tr("New Group"),

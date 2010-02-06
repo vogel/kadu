@@ -20,6 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QAction>
 #include <QtGui/QComboBox>
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QFormLayout>
@@ -79,7 +80,18 @@ void YourAccounts::createGui()
 	AccountsView = new QListView(this);
 	sideLayout->addWidget(AccountsView);
 	MyAccountsModel = new AccountsModel(AccountsView);
-	AccountsView->setModel(MyAccountsModel);
+
+	ActionsProxyModel::ModelActionList beforeActions;
+	ActionsProxyModel::ModelActionList afterActions;
+	AddExistingAccountAction = new QAction(tr("Add existing account"), this);
+	CreateNewAccountAction = new QAction(tr("Create new account"), this);
+	afterActions.append(AddExistingAccountAction);
+	afterActions.append(CreateNewAccountAction);
+
+	ActionsModel = new ActionsProxyModel(beforeActions, afterActions, this);
+	ActionsModel->setSourceModel(MyAccountsModel);
+
+	AccountsView->setModel(ActionsModel);
 	AccountsView->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
 	AccountsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	AccountsView->setIconSize(QSize(32, 32));

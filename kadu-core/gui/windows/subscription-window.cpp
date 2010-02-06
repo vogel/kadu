@@ -18,6 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QAction>
 #include <QtGui/QCheckBox>
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QInputDialog>
@@ -31,6 +32,7 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
 #include "contacts/contact-manager.h"
+#include "gui/widgets/groups-combo-box.h"
 #include "icons-manager.h"
 #include "model/actions-proxy-model.h"
 #include "model/roles.h"
@@ -60,27 +62,8 @@ SubscriptionWindow::SubscriptionWindow(Contact contact, QWidget *parent) :
 	VisibleName = new QLineEdit(this);
 	QLabel *groupLabel = new QLabel(tr("Add in Group") + ":", this);
 
-	GroupCombo = new QComboBox(this);
+	GroupCombo = new GroupsComboBox(this);
 	GroupCombo->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
-	connect(GroupCombo, SIGNAL(activated(int)), this, SLOT(groupChanged(int)));
-	GroupsModel *groupComboModel = new GroupsModel(GroupCombo);
-
-	QSortFilterProxyModel *sortModel = new QSortFilterProxyModel(GroupCombo);
-	sortModel->setSourceModel(groupComboModel);
-	sortModel->setDynamicSortFilter(true);
-	sortModel->sort(1);
-	sortModel->sort(0);
-
-	ActionsProxyModel::ModelActionList groupsModelBeforeActions;
-	groupsModelBeforeActions.append(qMakePair<QString, QString>(tr(" - Select group - "), ""));
-	ActionsProxyModel::ModelActionList groupsModelAfterActions;
-	groupsModelAfterActions.append(qMakePair<QString, QString>(tr("Create a new group..."), "createNewGroup"));
-
-	ActionsProxyModel *groupsProxyModel = new ActionsProxyModel(groupsModelBeforeActions,
-			groupsModelAfterActions, GroupCombo);
-	groupsProxyModel->setSourceModel(sortModel);
-
-	GroupCombo->setModel(groupsProxyModel);
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 
@@ -106,30 +89,6 @@ SubscriptionWindow::~SubscriptionWindow()
 {
 }
 
-void SubscriptionWindow::groupChanged(int index)
-{
-	QModelIndex modelIndex = GroupCombo->model()->index(index, 0, QModelIndex());
-	QString action = modelIndex.data(ActionRole).toString();
-
-	if (action.isEmpty())
-		return;
-	bool ok;
-
-	QString newGroupName = QInputDialog::getText(this, tr("New Group"),
-			tr("Please enter the name for the new group:"), QLineEdit::Normal,
-			QString::null, &ok);
-
-	if (!ok || newGroupName.isEmpty() || !GroupManager::instance()->acceptableGroupName(newGroupName))
-	{
-		GroupCombo->setCurrentIndex(0);
-		return;
-	}
-
-	GroupManager::instance()->byName(newGroupName);
-	GroupCombo->setCurrentIndex(GroupCombo->findText(newGroupName));
-}
-
-
 void SubscriptionWindow::accepted()
 {
 	//Giving somebody a status subscription does not force us to add them to our contact list.
@@ -144,11 +103,9 @@ void SubscriptionWindow::accepted()
 	buddy.setAnonymous(false);
 	buddy.setDisplay(VisibleName->text());
 	
-	QModelIndex modelIndex = GroupCombo->model()->index(GroupCombo->currentIndex(), 0, QModelIndex());
-	QString groupName = modelIndex.data(Qt::DisplayRole).toString();
-
-	if (!groupName.isEmpty())
-		buddy.addToGroup(GroupManager::instance()->byName(groupName));
+	Group group= GroupCombo->currentGroup();
+	if (group)
+		buddy.addToGroup(group);
 	
 	emit requestAccepted(CurrentContact, true);
 	close();

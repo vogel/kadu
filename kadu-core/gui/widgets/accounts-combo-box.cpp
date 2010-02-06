@@ -17,6 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QAction>
+
 #include "accounts/filter/abstract-account-filter.h"
 #include "accounts/model/accounts-model.h"
 #include "accounts/model/accounts-proxy-model.h"
@@ -36,7 +38,7 @@ AccountsComboBox::AccountsComboBox(bool includeSelectAccount, QWidget *parent) :
 
 	ActionsProxyModel::ModelActionList accountsModelBeforeActions;
 	if (includeSelectAccount)
-		accountsModelBeforeActions.append(qMakePair<QString, QString>(tr(" - Select account - "), ""));
+		accountsModelBeforeActions.append(new QAction(tr(" - Select account - "), this));
 	ActionsModel = new ActionsProxyModel(accountsModelBeforeActions,
 			ActionsProxyModel::ModelActionList(), this);
 	ActionsModel->setSourceModel(ProxyModel);

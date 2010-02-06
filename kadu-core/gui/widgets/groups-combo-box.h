@@ -38,6 +38,8 @@ class GroupsComboBox : public QComboBox
 	QSortFilterProxyModel *ProxyModel;
 	ActionsProxyModel *ActionsModel;
 
+	QAction *CreateNewGroupAction;
+
 	Group CurrentGroup;
 
 private slots:

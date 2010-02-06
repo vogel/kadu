@@ -19,6 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QAction>
 #include <QtGui/QFont>
 
 #include "model/roles.h"
@@ -204,7 +205,7 @@ Qt::ItemFlags ActionsProxyModel::flags(const QModelIndex &index) const
 
 QVariant ActionsProxyModel::data(const QModelIndex &proxyIndex, int role) const
 {
-	ModelAction action;
+	QAction *action;
 
 	int beforeIndex = proxyIndex.row();
 	int afterIndex = proxyIndex.row() - BeforeActions.count() - sourceModel()->rowCount(QModelIndex());
@@ -219,18 +220,18 @@ QVariant ActionsProxyModel::data(const QModelIndex &proxyIndex, int role) const
 	switch (role)
 	{
 		case Qt::DisplayRole:
-			return action.first;
+			return action->text();
 
 		case Qt::FontRole:
 		{
 			QFont font;
-			if (!action.second.isEmpty())
+			if (!action->data().isNull())
 				font.setItalic(true);
 			return font;
 		}
 
 		case ActionRole:
-			return action.second;
+			return QVariant::fromValue<QAction *>(action);
 	}
 
 	return QVariant();

@@ -39,6 +39,7 @@ class AccountAddWidget;
 class AccountCreateWidget;
 class AccountEditWidget;
 class AccountsModel;
+class ActionsProxyModel;
 class ProtocolFactory;
 class ProtocolsComboBox;
 
@@ -48,6 +49,9 @@ KADUAPI class YourAccounts : public QWidget, AccountsAwareObject
 
 	QListView *AccountsView;
 	AccountsModel *MyAccountsModel;
+	ActionsProxyModel *ActionsModel;
+	QAction *AddExistingAccountAction;
+	QAction *CreateNewAccountAction;
 
 	QStackedWidget *CreateEditStack;
 	QStackedWidget *AddStack;

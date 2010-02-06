@@ -22,13 +22,14 @@
 
 #include <QtGui/QAbstractProxyModel>
 
+class QAction;
+
 class ActionsProxyModel : public QAbstractProxyModel
 {
 	Q_OBJECT
 
 public:
-	typedef QPair<QString, QString> ModelAction;
-	typedef QList<ModelAction> ModelActionList;
+	typedef QList<QAction *> ModelActionList;
 
 private:
 	ModelActionList BeforeActions;
@@ -67,5 +68,7 @@ public:
 	virtual QModelIndex mapToSource(const QModelIndex &proxyIndex) const;
 
 };
+
+Q_DECLARE_METATYPE(QAction *)
 
 #endif // ACTIONS_PROXY_MODEL_H

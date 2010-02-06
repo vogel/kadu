@@ -17,6 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QAction>
+
 #include "model/actions-proxy-model.h"
 #include "model/roles.h"
 #include "protocols/model/protocols-model.h"
@@ -31,7 +33,7 @@ ProtocolsComboBox::ProtocolsComboBox(bool includeSelectAccount, QWidget *parent)
 
 	ActionsProxyModel::ModelActionList protocolsModelBeforeActions;
 	if (includeSelectAccount)
-		protocolsModelBeforeActions.append(qMakePair<QString, QString>(tr(" - Select network - "), ""));
+		protocolsModelBeforeActions.append(new QAction(tr(" - Select network - "), this));
 	ActionsModel = new ActionsProxyModel(protocolsModelBeforeActions,
 			ActionsProxyModel::ModelActionList(), this);
 			ActionsModel->setSourceModel(Model);
