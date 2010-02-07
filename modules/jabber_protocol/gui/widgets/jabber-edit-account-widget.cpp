@@ -25,7 +25,9 @@
 #include <QtCrypto>
 #include <QtGui/QCheckBox>
 #include <QtGui/QComboBox>
+#include <QtGui/QDialogButtonBox>
 #include <QtGui/QFileDialog>
+#include <QtGui/QFormLayout>
 #include <QtGui/QGridLayout>
 #include <QtGui/QGroupBox>
 #include <QtGui/QIntValidator>
@@ -44,6 +46,7 @@
 #include "gui/widgets/proxy-group-box.h"
 #include "gui/windows/message-dialog.h"
 #include "protocols/services/avatar-service.h"
+#include "icons-manager.h"
 
 #include "jabber-account-details.h"
 #include "jabber-personal-info-widget.h"
@@ -64,7 +67,7 @@ JabberEditAccountWidget::~JabberEditAccountWidget()
 
 void JabberEditAccountWidget::createGui()
 {
-	QGridLayout *mainLayout = new QGridLayout(this);
+	QVBoxLayout *mainLayout = new QVBoxLayout(this);
 
 	QTabWidget *tabWidget = new QTabWidget(this);
 	mainLayout->addWidget(tabWidget);
@@ -82,51 +85,46 @@ void JabberEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 	QWidget *generalTab = new QWidget(this);
 
 	QGridLayout *layout = new QGridLayout(generalTab);
-	layout->setColumnMinimumWidth(0, 20);
-	layout->setColumnMinimumWidth(3, 20);
-	layout->setColumnMinimumWidth(4, 100);
-	layout->setColumnMinimumWidth(5, 20);
-	layout->setColumnStretch(3, 10);
-	layout->setColumnStretch(5, 2);
+	QWidget *form = new QWidget(generalTab);
+	layout->addWidget(form, 0, 0);
 
-	int row = 0;
+	QFormLayout *formLayout = new QFormLayout(form);
+
 	ConnectAtStart = new QCheckBox(tr("Connect at start"), this);
-	layout->addWidget(ConnectAtStart, row++, 0, 1, 3);
+	formLayout->addRow(0, ConnectAtStart);
 
-	QLabel *numberLabel = new QLabel(tr("XMPP/Jabber Id") + ":", this);
-	layout->addWidget(numberLabel, row++, 1);
 	AccountId = new QLineEdit(this);
-	layout->addWidget(AccountId, row++, 1, 1, 2);
+	formLayout->addRow(tr("XMPP/Jabber Id") + ":", AccountId);
 
-	QLabel *passwordLabel = new QLabel(tr("Password") + ":", this);
-	layout->addWidget(passwordLabel, row++, 1);
 	AccountPassword = new QLineEdit(this);
 	AccountPassword->setEchoMode(QLineEdit::Password);
-	layout->addWidget(AccountPassword, row++, 1, 1, 2);
+	formLayout->addRow(tr("Password") + ":", AccountPassword);
 
 	RememberPassword = new QCheckBox(tr("Remember password"), this);
 	RememberPassword->setChecked(true);
-	layout->addWidget(RememberPassword, row++, 1, 1, 2);
+	formLayout->addRow(0, RememberPassword);
 
-	QLabel *descriptionLabel = new QLabel(tr("Account description") + ":", this);
-	layout->addWidget(descriptionLabel, row++, 1, Qt::AlignRight);
 	ChooseIdentity = new ChooseIdentityWidget(this);
-	layout->addWidget(ChooseIdentity, row++, 1, 1, 2);
-
-	layout->setRowMinimumHeight(row++, 30);
+	formLayout->addRow(tr("Account description") + ":", ChooseIdentity);
 
 	QPushButton *changePassword = new QPushButton(tr("Change password"), this);
-	layout->addWidget(changePassword, row++, 1, Qt::AlignLeft);
+	formLayout->addRow(0, changePassword);
 
-	QPushButton *removeAccount = new QPushButton(tr("Remove account"), this);
+	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
+
+	QPushButton *applyButton = new QPushButton(IconsManager::instance()->loadIcon("ApplyWindowButton"), tr("Apply"), this);
+	connect(applyButton, SIGNAL(clicked(bool)), this, SLOT(apply()));
+
+	QPushButton *removeAccount = new QPushButton(IconsManager::instance()->loadIcon("CloseWindowButton"), tr("Delete account"), this);
 	connect(removeAccount, SIGNAL(clicked(bool)), this, SLOT(removeAccount()));
-	layout->addWidget(removeAccount, row++, 1);
-	layout->setRowStretch(row, 100);
 
-	row = 0;
+	buttons->addButton(applyButton, QDialogButtonBox::ApplyRole);
+	buttons->addButton(removeAccount, QDialogButtonBox::DestructiveRole);
+	layout->addWidget(buttons, 1, 0, 1, 2);
+
 	AccountAvatarWidget *avatarWidget = new AccountAvatarWidget(account(), this);
-	layout->addWidget(avatarWidget, row++, 5, 5, 1);
-	
+	layout->addWidget(avatarWidget, 0, 1, Qt::AlignTop);
+
 	tabWidget->addTab(generalTab, tr("General"));
 }
 
