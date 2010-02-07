@@ -28,6 +28,7 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QRadioButton>
 
+#include "accounts/account-manager.h"
 #include "gui/widgets/identities-combo-box.h"
 #include "gui/windows/message-dialog.h"
 #include "protocols/protocols-manager.h"
@@ -96,6 +97,8 @@ void GaduAddAccountWidget::createGui()
 
 	connect(AddAccountButton, SIGNAL(clicked(bool)), this, SLOT(addAccountButtonClicked()));
 	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(cancelButtonClicked()));
+
+	dataChanged();
 }
 
 void GaduAddAccountWidget::addAccountButtonClicked()
@@ -123,4 +126,11 @@ void GaduAddAccountWidget::cancelButtonClicked()
 void GaduAddAccountWidget::dataChanged()
 {
 	RemindPassword->setEnabled(!AccountId->text().isEmpty());
+
+	AddAccountButton->setEnabled(
+		!AccountName->text().isEmpty() &&
+		!AccountManager::instance()->byName(AccountName->text()) &&
+		!AccountId->text().isEmpty() &&
+		!AccountPassword->text().isEmpty()
+	);
 }

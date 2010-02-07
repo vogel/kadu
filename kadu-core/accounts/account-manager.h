@@ -69,6 +69,7 @@ public:
 
 	Account defaultAccount();
 
+	Account byName(const QString &name);
 	const QList<Account> byProtocolName(const QString &name);
 
 	Status status();

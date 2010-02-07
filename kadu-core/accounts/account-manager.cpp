@@ -114,6 +114,17 @@ Account AccountManager::defaultAccount()
 	return byIndex(0);
 }
 
+Account AccountManager::byName(const QString &name)
+{
+	ensureLoaded();
+
+	foreach (Account account, allItems())
+		if (account.name() == name)
+			return account;
+
+	return Account::null;
+}
+
 const QList<Account> AccountManager::byProtocolName(const QString &name)
 {
 	ensureLoaded();
