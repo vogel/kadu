@@ -77,14 +77,13 @@ void GaduEditAccountWidget::createGui()
 // 	tabWidget->addTab(new QWidget(), tr("Functions"));
 }
 
-
 void GaduEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 {
 	QWidget *generalTab = new QWidget(this);
 
-	QHBoxLayout *layout = new QHBoxLayout(generalTab);
+	QGridLayout *layout = new QGridLayout(generalTab);
 	QWidget *form = new QWidget(generalTab);
-	layout->addWidget(form);
+	layout->addWidget(form, 0, 0);
 
 	QFormLayout *formLayout = new QFormLayout(form);
 
@@ -110,14 +109,18 @@ void GaduEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 
+	QPushButton *applyButton = new QPushButton(IconsManager::instance()->loadIcon("ApplyWindowButton"), tr("Apply"), this);
+	connect(applyButton, SIGNAL(clicked(bool)), this, SLOT(apply()));
+
 	QPushButton *removeAccount = new QPushButton(IconsManager::instance()->loadIcon("CloseWindowButton"), tr("Delete account"), this);
 	connect(removeAccount, SIGNAL(clicked(bool)), this, SLOT(removeAccount()));
 
+	buttons->addButton(applyButton, QDialogButtonBox::ApplyRole);
 	buttons->addButton(removeAccount, QDialogButtonBox::DestructiveRole);
-	formLayout->addRow(0, buttons);
+	layout->addWidget(buttons, 1, 0, 1, 2);
 
 	AccountAvatarWidget *avatarWidget = new AccountAvatarWidget(account(), this);
-	layout->addWidget(avatarWidget, 0, Qt::AlignTop);
+	layout->addWidget(avatarWidget, 0, 1, Qt::AlignTop);
 
 	tabWidget->addTab(generalTab, tr("General"));
 }
