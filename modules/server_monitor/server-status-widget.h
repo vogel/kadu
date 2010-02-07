@@ -49,7 +49,7 @@ private:
 	ServerState CurrentState;
 	QAbstractSocket::SocketState PreviousSocketState;
 	QTcpSocket TcpSocket;
-	QString WatchedHostName;
+	QString WatchedHostDisplayName;
 
 	void setNewState(ServerState newState);
 	void notify(QString, ServerStatusWidget::ServerState);
@@ -59,7 +59,7 @@ private slots:
 	void connectionError(QAbstractSocket::SocketError socketError);
 
 public:
-	ServerStatusWidget(QString watchedAddress, quint16 watchedPort, QString hostName, QWidget *parent = 0);
+	ServerStatusWidget(QString watchedAddress, quint16 watchedPort = 8074, QString hostName ="", QWidget *parent = 0);
 	virtual ~ServerStatusWidget();
 
 	QString serverStateToString(ServerState serverState);

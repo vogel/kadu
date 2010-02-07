@@ -29,7 +29,6 @@
 
 class QBuffer;
 class QGridLayout;
-class QHttp;
 class QLabel;
 class QPushButton;
 
@@ -48,27 +47,26 @@ class ServerMonitorWindow : public QScrollArea, ConfigurationAwareObject
 	quint32 UnavalibleServers;
 	quint32 UnknownStatusServers;
 
-	QHttp   *Http;
-	QBuffer *ServerListBuffer;
-
 	QGridLayout *Layout;
 	QWidget *ScrollBarLayout;
 
 	virtual void configurationUpdated();
 
+	void cleanLayout();
+	void loadServersListFromGaduManager();
+	void loadServersListFromFile();
 	void setConfiguration();
 	void removeAllServer();
-	void cleanLayout();
 
 private slots:
-	void downloadedServersList(bool);
-	void readServerList();
+	void loadServers();
 	void refreshList();
 	void updateStats(ServerStatusWidget::ServerState, ServerStatusWidget::ServerState);
 
 public:
 	explicit ServerMonitorWindow(QWidget *parent = 0);
 	virtual ~ServerMonitorWindow();
+
 
 };
 

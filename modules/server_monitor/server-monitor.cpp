@@ -16,10 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 #include<QtGui/QCheckBox>
 
-#include "debug.h"
 #include "core/core.h"
 #include "configuration/configuration-file.h"
 #include "gui/actions/action-description.h"
@@ -29,7 +27,9 @@
 #include "misc/misc.h"
 #include "notify/notification-manager.h"
 #include "notify/notify-event.h"
+#include "debug.h"
 #include "icons-manager.h"
+#include "server-monitor-window.h"
 
 #include "server-monitor.h"
 
@@ -39,7 +39,7 @@ extern "C" KADU_EXPORT int server_monitor_init(bool firstLoad)
 {
 	kdebugf();
 	serverMonitor = new ServerMonitor();
-	MainConfigurationWindow::instance()->registerUiFile(dataPath("kadu/modules/configuration/server_monitor.ui"));
+	MainConfigurationWindow::instance()->registerUiFile(dataPath("kadu/modules/configuration/server-monitor.ui"));
 	MainConfigurationWindow::registerUiHandler(serverMonitor);
 	if (firstLoad)
 	{
@@ -66,41 +66,39 @@ extern "C" KADU_EXPORT void server_monitor_close()
 	MainConfigurationWindow::instance()->unregisterUiHandler(serverMonitor);
 
 	NotificationManager::instance()->unregisterNotifyEvent(ServerMonitor::notifyEvent);
-
 	delete serverMonitor;
 	serverMonitor = NULL;
 	kdebugf2();
 }
 
 ServerMonitor::ServerMonitor(QWidget *parent) :
-		QObject(parent)
+		QObject(parent), Dialog(0)
 {
-	serverMonitorActionDescription = new ActionDescription(
+	ServerMonitorActionDescription = new ActionDescription(
 			this,ActionDescription::TypeMainMenu, "serverMonitorAction",
 			this, SLOT(serverMonitorActionActivated(QAction *, bool)),
 			"Online", tr("Server's monitor"));
-	Core::instance()->kaduWindow()->insertMenuActionDescription( serverMonitorActionDescription,KaduWindow::MenuKadu,6);
+	Core::instance()->kaduWindow()->insertMenuActionDescription( ServerMonitorActionDescription,KaduWindow::MenuKadu,6);
+	Dialog = new ServerMonitorWindow();
 }
 
-void ServerMonitor::serverMonitorActionActivated(QAction *, bool)
+void ServerMonitor::serverMonitorActionActivated(QAction* ,bool)
 {
-	dialog.show();
-	dialog.raise();
+	Dialog->show();
+	Dialog->raise();
 }
 
-void ServerMonitor::mainConfigurationWindowCreated ( MainConfigurationWindow* mainConfigurationWindow )
+void ServerMonitor::mainConfigurationWindowCreated (MainConfigurationWindow* mainConfigurationWindow)
 {
 	kdebugf();
-	connect(mainConfigurationWindow->widget()->widgetById("serverMonitor/useListFromServer"), SIGNAL(toggled(bool)),
-			mainConfigurationWindow->widget()->widgetById("serverMonitor/hostNameEdit"), SLOT(setEnabled(bool)));
-
-	connect(mainConfigurationWindow->widget()->widgetById("serverMonitor/useListFromServer"), SIGNAL(toggled(bool)),
+	connect(mainConfigurationWindow->widget()->widgetById("serverMonitor/useGaduServersList"), SIGNAL(toggled(bool)),
 			mainConfigurationWindow->widget()->widgetById("serverMonitor/fileSelect"), SLOT(setDisabled(bool)));
 	kdebugf2();
 }
 
 ServerMonitor::~ServerMonitor()
 {
-	Core::instance()->kaduWindow()->removeMenuActionDescription(serverMonitorActionDescription);
+	Core::instance()->kaduWindow()->removeMenuActionDescription(ServerMonitorActionDescription);
+	delete Dialog;
 }
 ServerMonitor *serverMonitor;

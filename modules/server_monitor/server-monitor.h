@@ -20,22 +20,25 @@
 #ifndef SERVER_MONITOR_H
 #define SERVER_MONITOR_H
 
-#include "gui/windows/main-configuration-window.h"
+#include <QHostAddress>
 
-#include "server-monitor-window.h"
+#include "gui/windows/main-configuration-window.h"
 
 class ActionDescription;
 class NotifyEvent;
+class ServerMonitorWindow;
 
 class ServerMonitor : public ConfigurationUiHandler
 {
 	Q_OBJECT
 
-	ActionDescription* serverMonitorActionDescription;
-	ServerMonitorWindow dialog;
+	ActionDescription* ServerMonitorActionDescription;
+	ServerMonitorWindow* Dialog;
+
+//	void loadServersList();
 
 private slots:
-	void serverMonitorActionActivated(QAction *, bool);
+	void serverMonitorActionActivated(QAction* ,bool);
 
 public:
 	explicit ServerMonitor(QWidget *parent = 0);

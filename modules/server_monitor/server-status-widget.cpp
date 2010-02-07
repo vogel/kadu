@@ -29,13 +29,14 @@
 
 ServerStatusWidget::ServerStatusWidget(QString watchedAddress, quint16 watchedPort, QString hostName, QWidget *parent) :
 		QWidget(parent), CurrentState(Empty),
-		WatchedAddress(watchedAddress), WatchedPort(watchedPort ? watchedPort : 8074), WatchedHostName(hostName)
+		WatchedAddress(watchedAddress), WatchedPort(watchedPort ? watchedPort : 8074), WatchedHostDisplayName(hostName)
 {
 	QHBoxLayout *layout = new QHBoxLayout(this);
 	PixmapLabel = new QLabel(this);
 	QLabel *textLabel = new QLabel(this);
 
-	textLabel->setText((WatchedHostName.trimmed().length() > 0) ? WatchedHostName : WatchedAddress.toString());
+	WatchedHostDisplayName = ( WatchedHostDisplayName.trimmed().length() > 0 ) ? WatchedHostDisplayName : WatchedAddress.toString();
+	textLabel->setText(WatchedHostDisplayName);
 
 	connect(&TcpSocket, SIGNAL(connected()), this, SLOT(connected()));
 	connect(&TcpSocket, SIGNAL(error(QAbstractSocket::SocketError)),
@@ -61,7 +62,7 @@ void ServerStatusWidget::setNewState(ServerState newState)
 
 	emit statusChanged(newState, CurrentState);
 	if (Empty != CurrentState)
-		notify(WatchedAddress.toString(), newState);
+		notify(WatchedHostDisplayName, newState);
 
 	CurrentState = newState;
 

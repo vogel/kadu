@@ -6,12 +6,8 @@
         <translation>Ustawienia listy serwerów</translation>
     </message>
     <message>
-        <source>Use remote list</source>
-        <translation>Zdalna lista serwerów</translation>
-    </message>
-    <message>
-        <source>Url to list http://</source>
-        <translation>Url do listy http://</translation>
+        <source>Watch gadu-gadu servers</source>
+        <translation>Używaj list serwerów gg</translation>
     </message>
     <message>
         <source>Show reset button</source>

@@ -12,28 +12,29 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
+ *gc
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QBuffer>
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtGui/QGridLayout>
 #include <QtGui/QLabel>
 #include <QtGui/QPushButton>
-#include <QtNetwork/QHttp>
 
 
 #include "core/core.h"
 #include "configuration/configuration-file.h"
-#include "debug.h"
 #include "gui/actions/action-description.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/main-configuration-window.h"
+#include "protocols/protocols-manager.h"
+#include "protocols/protocol-factory.h"
 #include "misc/misc.h"
+#include "modules/gadu_protocol/server/gadu-servers-manager.h"
+#include "debug.h"
 
 #include "server-monitor-window.h"
 
@@ -103,7 +104,7 @@ void ServerMonitorWindow::updateStats(ServerStatusWidget::ServerState newStatus,
 	StatsLabel->setText(tr("Avalible\t%1\nUnavailable\t%2").arg(QString::number(AvalibleServers)).arg(QString::number(UnavalibleServers)));
 }
 
-void ServerMonitorWindow::readServerList()
+void ServerMonitorWindow::loadServers()
 {
 	if (Layout == 0) delete Layout;
 	if (ScrollBarLayout == 0) delete ScrollBarLayout;
@@ -115,6 +116,37 @@ void ServerMonitorWindow::readServerList()
 	UnavalibleServers = 0;
 	removeAllServer();
 
+	(ProtocolsManager::instance()->byName("gadu") && config_file_ptr->readBoolEntry("serverMonitor", "useGaduServersList", true))?
+			loadServersListFromGaduManager() : loadServersListFromFile();
+
+	int serverCounter = 0;
+	foreach (ServerStatusWidget* serverStatusWidget, ServerStatusWidgetList)
+	{
+		int row = serverCounter;
+		if (serverCounter % 2)
+			--row;
+		Layout->addWidget(serverStatusWidget, row, (serverCounter) % 2);
+
+		connect (serverStatusWidget, SIGNAL(statusChanged (ServerStatusWidget::ServerState, ServerStatusWidget::ServerState)),
+			this, SLOT(updateStats (ServerStatusWidget::ServerState, ServerStatusWidget::ServerState)));
+
+		serverCounter++;
+	}
+
+	ScrollBarLayout->setLayout(Layout);
+	ScrollBarLayout->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+	ScrollBarLayout->setFixedWidth(500);
+	setWidget(ScrollBarLayout);
+}
+
+void ServerMonitorWindow::loadServersListFromGaduManager()
+{
+	foreach (QHostAddress hostAddress, GaduServersManager::instance()->getServersList())
+		ServerStatusWidgetList.push_back( new ServerStatusWidget(hostAddress.toString()));
+}
+
+void ServerMonitorWindow::loadServersListFromFile()
+{
 	QFile serverFileList(ServerFileListName);
 
 	serverFileList.open( QIODevice::ReadOnly);
@@ -126,7 +158,6 @@ void ServerMonitorWindow::readServerList()
 		StatsLabel->setText(tr("No information avalible"));
 	}
 
-	int serverCounter = 0;
 	while (!serverFileList.atEnd())
 	{
 		QString line = serverFileList.readLine();
@@ -143,29 +174,10 @@ void ServerMonitorWindow::readServerList()
 			if (lineSpilted.length() > 2)
 				name = lineSpilted[2];
 		}
-		ServerStatusWidget *serverStatusWidget = new ServerStatusWidget (addr,port.toInt(),name, this);
-		ServerStatusWidgetList.push_back(serverStatusWidget);
-
-		int row = serverCounter;
-		if (serverCounter % 2)
-			--row;
-
-		Layout->addWidget(ServerStatusWidgetList[serverCounter], row, (serverCounter) % 2);
-
-		connect (ServerStatusWidgetList[serverCounter], SIGNAL(statusChanged (ServerStatusWidget::ServerState, ServerStatusWidget::ServerState)),
-			this, SLOT(updateStats (ServerStatusWidget::ServerState, ServerStatusWidget::ServerState)));
-
-		serverCounter++;
+		ServerStatusWidgetList.push_back(new ServerStatusWidget (addr,port.toInt(),name, this));
 	}
-
 	serverFileList.close();
-
-	ScrollBarLayout->setLayout(Layout);
-	ScrollBarLayout->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
-	ScrollBarLayout->setFixedWidth(500);
-	setWidget(ScrollBarLayout);
 }
-
 
 void ServerMonitorWindow::configurationUpdated()
 {
@@ -181,63 +193,8 @@ void ServerMonitorWindow::setConfiguration()
 	config_file_ptr->readBoolEntry("serverMonitor", "autorefresh", true) ?
 			RefreshTimer.start(60000 * config_file_ptr->readNumEntry("serverMonitor", "timerInterval", 5)) : RefreshTimer.stop();
 
-	if (config_file_ptr->readBoolEntry("serverMonitor", "useListFromServer", false))
-	{
-		ServerListBuffer = new QBuffer();
-
-		QString url = config_file_ptr->readEntry("serverMonitor", "serverListHost");
-		QString hostName;
-		QString path;
-
-		int index = url.indexOf("/");
-		if (index > 0)
-		{
-			hostName = url.left(index);
-			path = "/"+url.section("/",1);
-		}
-		else
-		{
-			hostName = url;
-			path = "/serverslist.txt";
-		}
-
-		Http = new QHttp (hostName, 80, this);
-		Http->get(path, ServerListBuffer);
-		connect (Http, SIGNAL (done(bool)),
-			this, SLOT(downloadedServersList(bool)));
-	}
-	else
-	{
 		ServerFileListName = config_file_ptr->readEntry("serverMonitor", "fileName", "kadu/modules/configuration/serverslist.txt");
-		readServerList();
-	}
-
-	kdebugf2();
-}
-
-void ServerMonitorWindow::downloadedServersList(bool err)
-{
-	kdebugf();
-
-	if (err)
-	{
-		kdebugm( KDEBUG_WARNING, "Cannont download server's list!" );
-		ServerFileListName = config_file_ptr->readEntry( "serverMonitor", "fileName", "kadu/modules/configuration/serverslist.txt");
-		return;
-	}
-
-	QFile fileList(QDir::tempPath()+"/serverslist.txt");
-	fileList.open(QIODevice::WriteOnly);
-	fileList.write(ServerListBuffer->buffer());
-	fileList.close();
-
-	ServerFileListName = QDir::tempPath()+"/serverslist.txt";
-	readServerList();
-
-	//    disconnect ( http, SIGNAL ( done (bool) ),
-	//        this, SLOT( downloadedServersList(bool) ));
-	delete Http;
-	delete ServerListBuffer;
+		loadServers();
 
 	kdebugf2();
 }
