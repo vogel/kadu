@@ -20,6 +20,7 @@
 
 #include <QtGui/QCheckBox>
 #include <QtGui/QComboBox>
+#include <QtGui/QDialogButtonBox>
 #include <QtGui/QFormLayout>
 #include <QtGui/QIntValidator>
 #include <QtGui/QLabel>
@@ -27,11 +28,13 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QRadioButton>
 
-#include "gui/widgets/choose-identity-widget.h"
+#include "gui/widgets/identities-combo-box.h"
 #include "gui/windows/message-dialog.h"
 #include "protocols/protocols-manager.h"
-#include "../../server/gadu-server-register-account.h"
 #include "html_document.h"
+#include "icons-manager.h"
+
+#include "server/gadu-server-register-account.h"
 #include "gadu-account-details.h"
 #include "gadu-protocol-factory.h"
 #include "token-widget.h"
@@ -70,24 +73,32 @@ void GaduAddAccountWidget::createGui()
 	
 	RememberPassword = new QCheckBox(tr("Remember Password"), this);
 	RememberPassword->setChecked(true);
-	layout->addRow(RememberPassword);
+	layout->addRow(0, RememberPassword);
 
 	RemindPassword = new QLabel(QString("<a href='remind'>%1</a>").arg(tr("Remind password")));
+	RemindPassword->setTextInteractionFlags(Qt::TextBrowserInteraction);
 	layout->addRow(tr("Forgot Your Password?"), RemindPassword);
 
-	Identity = new ChooseIdentityWidget(this);
-	connect(Identity, SIGNAL(identityChanged()), this, SLOT(dataChanged()));
+	Identity = new IdentitiesComboBox(this);
+	connect(Identity, SIGNAL( identityChanged()), this, SLOT(dataChanged()));
 	layout->addRow(tr("Account Identity") + ":", Identity);
 
 	layout->addWidget(new QLabel(tr("<font size='-1'><i>Select or enter the identity that will be associated with this account.<i></font>"), this));
+
+	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
+	layout->addRow(0, buttons);
+
+	AddAccountButton = new QPushButton(IconsManager::instance()->loadIcon("ApplyWindowButton"), tr("Add Account"), this);
+	QPushButton *cancelButton = new QPushButton(IconsManager::instance()->loadIcon("CloseWindowButton"), tr("Cancel"), this);
+
+	buttons->addButton(AddAccountButton, QDialogButtonBox::AcceptRole);
+	buttons->addButton(cancelButton, QDialogButtonBox::DestructiveRole);
+
+	connect(AddAccountButton, SIGNAL(clicked(bool)), this, SLOT(addAccountButtonClicked()));
+	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(cancelButtonClicked()));
 }
 
-void GaduAddAccountWidget::dataChanged()
-{
-	RemindPassword->setEnabled(!AccountId->text().isEmpty());
-}
-
-void GaduAddAccountWidget::apply()
+void GaduAddAccountWidget::addAccountButtonClicked()
 {
 	Account gaduAccount = Account::create();
 	// TODO: 0.6.6 set protocol after details because of crash
@@ -103,4 +114,13 @@ void GaduAddAccountWidget::apply()
 	gaduAccount.setRememberPassword(RememberPassword->isChecked());
 
 	emit accountCreated(gaduAccount);
+}
+
+void GaduAddAccountWidget::cancelButtonClicked()
+{
+}
+
+void GaduAddAccountWidget::dataChanged()
+{
+	RemindPassword->setEnabled(!AccountId->text().isEmpty());
 }

@@ -29,7 +29,7 @@ class QLabel;
 class QLineEdit;
 class QPushButton;
 
-class ChooseIdentityWidget;
+class IdentitiesComboBox;
 
 class GaduAddAccountWidget : public AccountAddWidget
 {
@@ -40,19 +40,21 @@ class GaduAddAccountWidget : public AccountAddWidget
 	QLineEdit *AccountPassword;
 	QCheckBox *RememberPassword;
 	QLabel *RemindPassword;
-	ChooseIdentityWidget *Identity;
-	
-	QPushButton *AddThisAccount;
+	IdentitiesComboBox *Identity;
+	QPushButton *AddAccountButton;
 
 	void createGui();
 
 private slots:
+	void addAccountButtonClicked();
+	void cancelButtonClicked();
+
 	void dataChanged();
+
 public:
 	explicit GaduAddAccountWidget(QWidget *parent = 0);
 	virtual ~GaduAddAccountWidget();
 
-	virtual void apply();
 };
 
 #endif // GADU_ADD_ACCOUNT_WIDGET_H
