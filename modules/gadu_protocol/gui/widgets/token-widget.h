@@ -50,6 +50,7 @@ public:
 
 	QString tokenId();
 	QString tokenValue();
+	void setTokenValue(const QString &tokenValue);
 
 signals:
 	void modified();

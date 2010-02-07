@@ -179,6 +179,7 @@ QWidget * YourAccounts::getAccountCreateWidget(ProtocolFactory *protocol)
 		if (widget)
 		{
 			connect(widget, SIGNAL(accountCreated(Account)), this, SLOT(accountCreated(Account)));
+			connect(widget, SIGNAL(cancelled()), this, SLOT(resetProtocol()));
 			CreateAddStack->addWidget(widget);
 		}
 	}
@@ -228,6 +229,11 @@ AccountEditWidget * YourAccounts::getAccountEditWidget(Account account)
 void YourAccounts::protocolChanged(ProtocolFactory *protocolFactory)
 {
 	updateCurrentWidget();
+}
+
+void YourAccounts::resetProtocol()
+{
+	Protocols->setCurrentProtocol(0);
 }
 
 void YourAccounts::updateCurrentWidget()

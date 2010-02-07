@@ -97,3 +97,8 @@ QString TokenWidget::tokenValue()
 {
 	return TokenCode->text();
 }
+
+void TokenWidget::setTokenValue(const QString &tokenValue)
+{
+	TokenCode->setText(tokenValue);
+}

@@ -73,11 +73,11 @@ void GaduCreateAccountWidget::createGui()
 	connect(ReNewPassword, SIGNAL(textChanged(const QString &)), this, SLOT(dataChanged()));
 	ReNewPassword->setEchoMode(QLineEdit::Password);
 	layout->addRow(tr("Retype Password") + ":", ReNewPassword);
-	
+
 	RememberPassword = new QCheckBox(tr("Remember password"), this);
 	RememberPassword->setChecked(true);
 	layout->addWidget(RememberPassword);
-	
+
 	EMail = new QLineEdit(this);
 	connect(EMail, SIGNAL(textChanged(const QString &)), this, SLOT(dataChanged()));
 	layout->addRow(tr("E-Mail Address") + ":", EMail);
@@ -107,6 +107,17 @@ void GaduCreateAccountWidget::createGui()
 	buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
 
 	dataChanged();
+}
+
+void GaduCreateAccountWidget::resetGui()
+{
+	AccountName->setText("");
+	NewPassword->setText("");
+	ReNewPassword->setText("");
+	RememberPassword->setChecked(true);
+	EMail->setText("");
+	IdentityCombo->setCurrentIdentity(Identity::null);
+	MyTokenWidget->setTokenValue("");
 }
 
 void GaduCreateAccountWidget::dataChanged()
@@ -139,7 +150,8 @@ void GaduCreateAccountWidget::registerAccountButtonClicked()
 
 void GaduCreateAccountWidget::cancelButtonClicked()
 {
-
+	resetGui();
+	emit cancelled();
 }
 
 void GaduCreateAccountWidget::registerNewAccountFinished(GaduServerRegisterAccount *gsra)

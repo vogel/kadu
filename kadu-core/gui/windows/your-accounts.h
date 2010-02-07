@@ -85,6 +85,7 @@ KADUAPI class YourAccounts : public QWidget, AccountsAwareObject
 
 private slots:
 	void protocolChanged(ProtocolFactory *protocolFactory);
+	void resetProtocol();
 
 	void accountCreated(Account account);
 	void accountSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);

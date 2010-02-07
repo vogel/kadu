@@ -56,6 +56,7 @@ void ProtocolsComboBox::setCurrentProtocol(ProtocolFactory *protocol)
 		setCurrentIndex(index.row());
 
 	CurrentProtocolFactory = protocol;
+	emit protocolChanged(CurrentProtocolFactory);
 }
 
 ProtocolFactory * ProtocolsComboBox::currentProtocol()

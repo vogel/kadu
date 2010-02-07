@@ -49,6 +49,7 @@ class GaduCreateAccountWidget : public QWidget
 	QPushButton *RegisterAccountButton;
 
 	void createGui();
+	void resetGui();
 
 private slots:
 	void registerAccountButtonClicked();
@@ -62,6 +63,7 @@ public:
 
 signals:
 	void accountCreated(Account account);
+	void cancelled();
 
 };
 
