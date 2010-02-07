@@ -101,6 +101,7 @@ void GaduServersManager::buildServerList()
 {
 	GoodServers.clear();
 	BadServers.clear();
+	AllServers.clear();
 
 	int LastGoodPort = config_file.readNumEntry("Network", "LastServerPort",
 			config_file.readNumEntry("Network", "DefaultPort", 8074));
@@ -126,8 +127,11 @@ void GaduServersManager::buildServerList()
 	{
 		for (int i = 0; i < GG_SERVERS_COUNT; i++)
 			if (ip.setAddress(QString::fromLatin1(Ips[i])))
+			{
 				foreach (int port, AllPorts)
 					GoodServers.append(qMakePair(ip, port));
+					AllServers.push_back(ip);
+			}
 	}
 	else
 	{
@@ -135,8 +139,11 @@ void GaduServersManager::buildServerList()
 
 		foreach (const QString &server, servers)
 			if (ip.setAddress(server))
+			{
 				foreach (int port, AllPorts)
 					GoodServers.append(qMakePair(ip, port));
+					AllServers.push_back(ip);
+			}
 	}
 }
 
@@ -157,6 +164,11 @@ GaduServersManager::GaduServer GaduServersManager::getServer()
 		return qMakePair(QHostAddress(), 0);
 
 	return GoodServers[0];
+}
+
+const QList<QHostAddress>& GaduServersManager::getServersList()
+{
+	return AllServers;
 }
 
 void GaduServersManager::markServerAsGood(GaduServersManager::GaduServer server)

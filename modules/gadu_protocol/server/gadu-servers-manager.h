@@ -52,6 +52,7 @@ protected:
 public:
 	static GaduServersManager * instance();
 
+	const QList<QHostAddress>& getServersList();
 	QPair<QHostAddress, int> getServer();
 	void markServerAsGood(GaduServer server);
 	void markServerAsBad(GaduServer server);
