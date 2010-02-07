@@ -23,7 +23,9 @@
 #ifndef TLEN_CREATE_ACCOUNT_WIDGET_H
 #define TLEN_CREATE_ACCOUNT_WIDGET_H
 
-#include "gui/widgets/account-create-widget.h"
+#include <QtGui/QWidget>
+
+#include "accounts/account.h"
 
 class QCheckBox;
 class QGridLayout;
@@ -32,7 +34,7 @@ class QPushButton;
 
 class ChooseIdentityWidget;
 
-class TlenCreateAccountWidget : public AccountCreateWidget
+class TlenCreateAccountWidget : public QWidget
 {
 	Q_OBJECT
 
@@ -59,6 +61,10 @@ public:
 	virtual ~TlenCreateAccountWidget();
 	
 	virtual void apply();
+
+signals:
+	void accountCreated(Account account);
+
 };
 
 #endif // TLEN_CREATE_ACCOUNT_WIDGET_H

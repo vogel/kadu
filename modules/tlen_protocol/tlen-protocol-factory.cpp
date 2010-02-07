@@ -76,7 +76,7 @@ ContactDetails * TlenProtocolFactory::createContactDetails(ContactShared *contac
 	return new TlenContactDetails(contactShared);
 }
 
-AccountCreateWidget * TlenProtocolFactory::newCreateAccountWidget(QWidget *parent)
+QWidget * TlenProtocolFactory::newCreateAccountWidget(QWidget *parent)
 {
     	return new TlenCreateAccountWidget(parent);
 }

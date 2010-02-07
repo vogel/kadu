@@ -42,7 +42,7 @@
 #include "jabber-create-account-widget.h"
 
 JabberCreateAccountWidget::JabberCreateAccountWidget(QWidget *parent) :
-		AccountCreateWidget(parent), ShowConnectionOptions(false)
+		QWidget(parent), ShowConnectionOptions(false)
 {
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 

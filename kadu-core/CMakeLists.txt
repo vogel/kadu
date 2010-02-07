@@ -387,7 +387,6 @@ set (kadu_MOC_SRCS
 	gui/widgets/account-add-widget.h
 	gui/widgets/account-avatar-widget.h
 	gui/widgets/account-buddy-list-widget.h
-	gui/widgets/account-create-widget.h
 	gui/widgets/account-edit-widget.h
 	gui/widgets/accounts-combo-box.h
 	gui/widgets/buddies-list-view.h

@@ -22,7 +22,9 @@
 #ifndef GADU_CREATE_ACCOUNT_WIDGET_H
 #define GADU_CREATE_ACCOUNT_WIDGET_H
 
-#include "gui/widgets/account-create-widget.h"
+#include <QtGui/QWidget>
+
+#include "accounts/account.h"
 
 class QCheckBox;
 class QGridLayout;
@@ -33,7 +35,7 @@ class GaduServerRegisterAccount;
 class IdentitiesComboBox;
 class TokenWidget;
 
-class GaduCreateAccountWidget : public AccountCreateWidget
+class GaduCreateAccountWidget : public QWidget
 {
 	Q_OBJECT
 
@@ -57,6 +59,9 @@ private slots:
 public:
 	explicit GaduCreateAccountWidget(QWidget *parent = 0);
 	virtual ~GaduCreateAccountWidget();
+
+signals:
+	void accountCreated(Account account);
 
 };
 

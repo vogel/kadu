@@ -38,7 +38,6 @@ class QStackedWidget;
 class QVBoxLayout;
 
 class AccountAddWidget;
-class AccountCreateWidget;
 class AccountEditWidget;
 class AccountsModel;
 class ActionsProxyModel;
@@ -65,7 +64,7 @@ KADUAPI class YourAccounts : public QWidget, AccountsAwareObject
 	ProtocolsComboBox *Protocols;
 	QWidget *CreateAddAccountContainer;
 
-	QMap<ProtocolFactory *, AccountCreateWidget *> CreateWidgets;
+	QMap<ProtocolFactory *, QWidget *> CreateWidgets;
 	QMap<ProtocolFactory *, AccountAddWidget *> AddWidgets;
 	QMap<Account, AccountEditWidget *> EditWidgets;
 
@@ -73,7 +72,7 @@ KADUAPI class YourAccounts : public QWidget, AccountsAwareObject
 	void createAccountWidget();
 	void createEditAccountWidget();
 
-	AccountCreateWidget * getAccountCreateWidget(ProtocolFactory *protocol);
+	QWidget * getAccountCreateWidget(ProtocolFactory *protocol);
 	AccountAddWidget * getAccountAddWidget(ProtocolFactory *protocol);
 	AccountEditWidget * getAccountEditWidget(Account account);
 

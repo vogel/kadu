@@ -78,7 +78,7 @@ AccountAddWidget * GaduProtocolFactory::newAddAccountWidget(QWidget *parent)
 	return new GaduAddAccountWidget(parent);
 }
 
-AccountCreateWidget * GaduProtocolFactory::newCreateAccountWidget(QWidget *parent)
+QWidget * GaduProtocolFactory::newCreateAccountWidget(QWidget *parent)
 {
 	return new GaduCreateAccountWidget(parent);
 }

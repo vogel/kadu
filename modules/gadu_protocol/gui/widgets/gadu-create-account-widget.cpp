@@ -45,7 +45,7 @@
 #include "gadu-create-account-widget.h"
 
 GaduCreateAccountWidget::GaduCreateAccountWidget(QWidget *parent) :
-		AccountCreateWidget(parent)
+		QWidget(parent)
 {
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 

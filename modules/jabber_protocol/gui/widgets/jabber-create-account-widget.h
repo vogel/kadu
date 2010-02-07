@@ -30,7 +30,9 @@
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QHBoxLayout>
 
-#include "gui/widgets/account-create-widget.h"
+#include <QtGui/QWidget>
+
+#include "accounts/account.h"
 
 class QGridLayout;
 class QLineEdit;
@@ -40,7 +42,7 @@ class ChooseIdentityWidget;
 class JabberServerRegisterAccount;
 class TokenWidget;
 
-class JabberCreateAccountWidget : public AccountCreateWidget
+class JabberCreateAccountWidget : public QWidget
 {
 	Q_OBJECT
 	
@@ -86,6 +88,9 @@ public:
 	virtual ~JabberCreateAccountWidget();
 	
 	virtual void apply();
+
+signals:
+	void accountCreated(Account account);
 
 };
 
