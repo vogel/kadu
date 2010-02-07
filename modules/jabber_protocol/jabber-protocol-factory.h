@@ -51,7 +51,9 @@ public:
 
 	virtual QString name() { return "jabber"; }
 	virtual QString displayName() { return "Jabber"; }
-	virtual QString iconName();
+
+	virtual QIcon icon();
+	virtual QString iconPath();
 
 };
 

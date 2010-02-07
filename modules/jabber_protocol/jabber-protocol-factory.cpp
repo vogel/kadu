@@ -59,9 +59,14 @@ JabberProtocolFactory::JabberProtocolFactory()
 	IdRegularExpression.setPattern("[a-zA-Z0-9\\._-]+@[a-zA-Z0-9\\._-]+");
 }
 
-QString JabberProtocolFactory::iconName()
+QIcon JabberProtocolFactory::icon()
 {
-	return dataPath("kadu/modules/data/jabber_protocol/").append("online.png");
+	return IconsManager::instance()->iconByPath("tmp-protocols/xmpp/48x48/online.png");
+}
+
+QString JabberProtocolFactory::iconPath()
+{
+	return IconsManager::instance()->iconPath("tmp-protocols/xmpp/48x48/online.png");
 }
 
 Protocol * JabberProtocolFactory::createProtocolHandler(Account account)
