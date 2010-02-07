@@ -95,13 +95,9 @@ void YourAccounts::createGui()
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 	mainLayout->addWidget(buttons);
 
-	QPushButton *okButton = new QPushButton(IconsManager::instance()->loadIcon("OkWindowButton"), tr("Ok"), this);
-	QPushButton *cancelButton = new QPushButton(IconsManager::instance()->loadIcon("CloseWindowButton"), tr("Cancel"), this);
+	QPushButton *cancelButton = new QPushButton(IconsManager::instance()->loadIcon("CloseWindowButton"), tr("Close"), this);
 
-	connect(okButton, SIGNAL(clicked(bool)), this, SLOT(okClicked()));
 	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(close()));
-
-	buttons->addButton(okButton, QDialogButtonBox::AcceptRole);
 	buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
 
 	MainStack = new QStackedWidget(this);
@@ -254,6 +250,7 @@ void YourAccounts::updateCurrentWidget()
 		return;
 	}
 
+	MainStack->setCurrentWidget(CreateAddAccountContainer);
 	if (action == CreateNewAccountAction)
 	{
 		widget = getAccountCreateWidget(Protocols->currentProtocol());
