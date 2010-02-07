@@ -52,14 +52,14 @@ TabWidget::TabWidget()
 	//przycisk otwarcia nowej karty pokazywany w lewym gornym rogu
 
 	openChatButton = new QToolButton(this);
-   	openChatButton->setIcon(IconsManager::instance()->loadIcon("OpenChat"));
+	openChatButton->setIcon(IconsManager::instance()->iconByName("OpenChat"));
 	setCornerWidget(openChatButton, Qt::TopLeftCorner);
 	connect(openChatButton, SIGNAL(clicked()), SLOT(newChat()));
 	openChatButton->setAutoRaise(true);
 
 	//przycisk zamkniecia aktywnej karty znajdujacy sie w prawym gornym rogu
 	closeChatButton = new QToolButton(this);
-   	closeChatButton->setIcon(IconsManager::instance()->loadIcon("TabsRemove"));
+	closeChatButton->setIcon(IconsManager::instance()->iconByName("TabsRemove"));
 	setCornerWidget(closeChatButton, Qt::TopRightCorner);
 	connect(closeChatButton, SIGNAL(clicked()), SLOT(deleteTab()));
 	closeChatButton->setAutoRaise(true);
@@ -300,8 +300,8 @@ void TabWidget::configurationUpdated()
 	triggerCompositingStateChanged();
 
 	// odswiezenie ikon
-   	openChatButton->setIcon(IconsManager::instance()->loadIcon("OpenChat"));
-   	closeChatButton->setIcon(IconsManager::instance()->loadIcon("TabsRemove"));
+	openChatButton->setIcon(IconsManager::instance()->iconByName("OpenChat"));
+	closeChatButton->setIcon(IconsManager::instance()->iconByName("TabsRemove"));
 
 	tabbar->setTabsClosable(config_file.readBoolEntry("Tabs", "CloseButtonOnTab"));
 

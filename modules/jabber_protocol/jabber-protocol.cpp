@@ -757,7 +757,7 @@ QPixmap JabberProtocol::statusPixmap(Status status)
 
 	pixmapName.append(".png");
 
-	return IconsManager::instance()->loadPixmap(pixmapName);
+	return IconsManager::instance()->pixmapByPath(pixmapName);
 }
 
 QPixmap JabberProtocol::statusPixmap(const QString &statusType)
@@ -786,7 +786,7 @@ QPixmap JabberProtocol::statusPixmap(const QString &statusType)
 
 	pixmapName.append(".png");
 
-	return IconsManager::instance()->loadPixmap(pixmapName);
+	return IconsManager::instance()->pixmapByPath(pixmapName);
 }
 
 JabberContactDetails * JabberProtocol::jabberContactDetails(Contact contact) const

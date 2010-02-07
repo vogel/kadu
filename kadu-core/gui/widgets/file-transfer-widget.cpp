@@ -126,13 +126,13 @@ void FileTransferWidget::createGui()
 
 	if (TypeSend == CurrentTransfer.transferType())
 	{
-		icon->setPixmap(IconsManager::instance()->loadPixmap("FileTransferSend"));
+		icon->setPixmap(IconsManager::instance()->pixmapByName("FileTransferSend"));
 		DescriptionLabel->setText(tr("File <b>%1</b><br /> to <b>%2</b><br />on account <b>%3</b>")
 				.arg(fileName).arg(buddy.display()).arg(account.name()));
 	}
 	else
 	{
-		icon->setPixmap(IconsManager::instance()->loadPixmap("FileTransferReceive"));
+		icon->setPixmap(IconsManager::instance()->pixmapByName("FileTransferReceive"));
 		DescriptionLabel->setText(tr("File <b>%1</b><br /> from <b>%2</b><br />on account <b>%3</b>")
 				.arg(fileName).arg(buddy.display()).arg(account.name()));
 	}

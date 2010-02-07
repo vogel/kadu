@@ -90,6 +90,9 @@ void GaduEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 	ConnectAtStart = new QCheckBox(tr("Connect at start"), this);
 	formLayout->addRow(0, ConnectAtStart);
 
+	AccountName = new QLineEdit(this);
+	formLayout->addRow(tr("Account name") + ":", AccountName);
+
 	AccountId = new QLineEdit(this);
 	formLayout->addRow(tr("Gadu-Gadu number") + ":", AccountId);
 
@@ -109,10 +112,10 @@ void GaduEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 
-	QPushButton *applyButton = new QPushButton(IconsManager::instance()->loadIcon("ApplyWindowButton"), tr("Apply"), this);
+	QPushButton *applyButton = new QPushButton(IconsManager::instance()->iconByName("ApplyWindowButton"), tr("Apply"), this);
 	connect(applyButton, SIGNAL(clicked(bool)), this, SLOT(apply()));
 
-	QPushButton *removeAccount = new QPushButton(IconsManager::instance()->loadIcon("CloseWindowButton"), tr("Delete account"), this);
+	QPushButton *removeAccount = new QPushButton(IconsManager::instance()->iconByName("CloseWindowButton"), tr("Delete account"), this);
 	connect(removeAccount, SIGNAL(clicked(bool)), this, SLOT(removeAccount()));
 
 	buttons->addButton(applyButton, QDialogButtonBox::ApplyRole);
@@ -194,6 +197,7 @@ void GaduEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 
 void GaduEditAccountWidget::loadAccountData()
 {
+	AccountName->setText(account().name());
 	ConnectAtStart->setChecked(account().connectAtStart());
 	AccountId->setText(account().id());
 	RememberPassword->setChecked(account().rememberPassword());
@@ -208,6 +212,7 @@ void GaduEditAccountWidget::loadConnectionData()
 
 void GaduEditAccountWidget::apply()
 {
+	account().setName(AccountName->text());
 	account().setConnectAtStart(ConnectAtStart->isChecked());
 	account().setId(AccountId->text());
 	account().setRememberPassword(RememberPassword->isChecked());

@@ -43,13 +43,13 @@ Action::Action(ActionDescription *description, MainWindow *parent) :
 
 		if (Description->Checkable)
 		{
-			OnIcon = IconsManager::instance()->loadIcon(Description->IconName);
-			OffIcon = IconsManager::instance()->loadIcon(Description->IconName + "_off");
+			OnIcon = IconsManager::instance()->iconByName(Description->IconName);
+			OffIcon = IconsManager::instance()->iconByName(Description->IconName + "_off");
 
 			setIcon(OffIcon);
 		}
 		else
-			setIcon(IconsManager::instance()->loadIcon(Description->IconName));
+			setIcon(IconsManager::instance()->iconByName(Description->IconName));
 	}
 
 	setCheckable(Description->Checkable);
@@ -145,13 +145,13 @@ void Action::updateIcon()
 {
 	if (Description->Checkable)
 	{
-		OnIcon = IconsManager::instance()->loadIcon(Description->IconName);
-		OffIcon = IconsManager::instance()->loadIcon(Description->IconName + "_off");
+		OnIcon = IconsManager::instance()->iconByName(Description->IconName);
+		OffIcon = IconsManager::instance()->iconByName(Description->IconName + "_off");
 
 		toggledSlot(isChecked());
 	}
 	else
-		setIcon(IconsManager::instance()->loadIcon(Description->IconName));
+		setIcon(IconsManager::instance()->iconByName(Description->IconName));
 }
 
 void disableEmptyContacts(Action *action)

@@ -158,7 +158,7 @@ void ConfigSection::iconThemeChanged()
 	bool current = listWidgetItem->isSelected();
 	delete listWidgetItem;
 
-	listWidgetItem = new QListWidgetItem(IconsManager::instance()->loadPixmap(pixmap), name, listWidget);
+	listWidgetItem = new QListWidgetItem(IconsManager::instance()->pixmapByName(pixmap), name, listWidget);
 	if (current)
 		listWidget->setCurrentItem(listWidgetItem);
 }

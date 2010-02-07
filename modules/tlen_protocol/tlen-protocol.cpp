@@ -823,7 +823,7 @@ QPixmap TlenProtocol::statusPixmap(Status status)
 			? ".png"
 			: "i.png");
 
-	return IconsManager::instance()->loadPixmap(pixmapName);
+	return IconsManager::instance()->pixmapByPath(pixmapName);
 }
 
 QPixmap TlenProtocol::statusPixmap(const QString &statusType)
@@ -852,5 +852,5 @@ QPixmap TlenProtocol::statusPixmap(const QString &statusType)
 
 	pixmapName.append(".png");
 
-	return IconsManager::instance()->loadPixmap(pixmapName);
+	return IconsManager::instance()->pixmapByPath(pixmapName);
 }

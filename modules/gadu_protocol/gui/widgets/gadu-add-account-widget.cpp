@@ -89,8 +89,8 @@ void GaduAddAccountWidget::createGui()
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 	layout->addRow(0, buttons);
 
-	AddAccountButton = new QPushButton(IconsManager::instance()->loadIcon("ApplyWindowButton"), tr("Add Account"), this);
-	QPushButton *cancelButton = new QPushButton(IconsManager::instance()->loadIcon("CloseWindowButton"), tr("Cancel"), this);
+	AddAccountButton = new QPushButton(IconsManager::instance()->iconByName("ApplyWindowButton"), tr("Add Account"), this);
+	QPushButton *cancelButton = new QPushButton(IconsManager::instance()->iconByName("CloseWindowButton"), tr("Cancel"), this);
 
 	buttons->addButton(AddAccountButton, QDialogButtonBox::AcceptRole);
 	buttons->addButton(cancelButton, QDialogButtonBox::DestructiveRole);

@@ -70,7 +70,7 @@ HistoryWindow::HistoryWindow(QWidget *parent) :
 	kdebugf();
 
 	setWindowTitle(tr("History"));
-	setWindowIcon(IconsManager::instance()->loadIcon("History"));
+	setWindowIcon(IconsManager::instance()->iconByName("History"));
 
 	createGui();
 	connectGui();
@@ -655,8 +655,8 @@ void HistoryWindow::showMainPopupMenu(const QPoint &pos)
 			continue;
 
 		QMenu *account_menu = menu->addMenu(account.name());
-		if (!protocolFactory->iconName().isEmpty())
-			account_menu->setIcon(IconsManager::instance()->loadIcon(protocolFactory->iconName()));
+		if (!protocolFactory->icon().isNull())
+			account_menu->setIcon(protocolFactory->icon());
 
 		if (protocolFactory->protocolMenuManager()->protocolActions(account, (*chat.contacts().toBuddySet().begin())).size() == 0)
 			continue;
@@ -671,7 +671,7 @@ void HistoryWindow::showMainPopupMenu(const QPoint &pos)
 			else
 				account_menu->addSeparator();
 	}
-	menu->addAction(IconsManager::instance()->loadIcon("ClearHistory"), tr("&Clear history"), this, SLOT(clearHistory()));
+	menu->addAction(IconsManager::instance()->iconByName("ClearHistory"), tr("&Clear history"), this, SLOT(clearHistory()));
 	menu->exec(QCursor::pos());
 }
 

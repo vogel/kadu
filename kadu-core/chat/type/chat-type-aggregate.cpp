@@ -43,7 +43,7 @@ QString ChatTypeAggregate::displayName() const
 
 QIcon ChatTypeAggregate::icon() const
 {
-	return IconsManager::instance()->loadIcon("OpenChat");
+	return IconsManager::instance()->iconByName("OpenChat");
 }
 
 ChatDetails * ChatTypeAggregate::createChatDetails(ChatShared *chatData) const

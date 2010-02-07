@@ -66,14 +66,12 @@ IconsManager::IconsManager()
 
 QString IconsManager::iconPath(const QString &name) const
 {
-	QString fname;
-	QString absoluteName;
-	if (name.contains('/'))
-		fname = name;
-	else
-		fname = themePath() + getThemeEntry(name);
+	if (name.startsWith('/'))
+		return name;
 
-	absoluteName = dataPath() + fname;
+	QString fname = themePath() + name;
+	QString absoluteName = dataPath() + fname;
+
 	if (!QFile::exists(fname) && QFile::exists(absoluteName))
 		fname = absoluteName;
 
@@ -84,7 +82,22 @@ QString IconsManager::iconPath(const QString &name) const
 	return fname;
 }
 
-const QPixmap &IconsManager::loadPixmap(const QString &name)
+QString IconsManager::iconPathFromName(const QString &name) const
+{
+	QString fname = themePath() + getThemeEntry(name);
+	QString absoluteName = dataPath() + fname;
+
+	if (!QFile::exists(fname) && QFile::exists(absoluteName))
+		fname = absoluteName;
+
+	QDir dir(fname);
+	if (dir.exists()) // hmm, icon != dir
+		return QString::null;
+
+	return fname;
+}
+
+const QPixmap &IconsManager::pixmapByPath(const QString &name)
 {
 	QMap<QString, QPixmap>::const_iterator i = pixmaps.find(name);
 	if (i != pixmaps.end())
@@ -99,7 +112,22 @@ const QPixmap &IconsManager::loadPixmap(const QString &name)
 	return pixmaps[name];
 }
 
-const QIcon &IconsManager::loadIcon(const QString &name)
+const QPixmap &IconsManager::pixmapByName(const QString &name)
+{
+	QMap<QString, QPixmap>::const_iterator i = pixmaps.find(name);
+	if (i != pixmaps.end())
+		return *i;
+
+	QPixmap pix;
+	QString path = iconPathFromName(name);
+	if (!path.isEmpty())
+		pix.load(path);
+
+	pixmaps.insert(name, pix);
+	return pixmaps[name];
+}
+
+const QIcon &IconsManager::iconByPath(const QString &name)
 {
 	QMap<QString, QIcon>::const_iterator i = icons.find(name);
 	if (i != icons.end())
@@ -112,7 +140,21 @@ const QIcon &IconsManager::loadIcon(const QString &name)
 
 	icons.insert(name, icon);
 	return icons[name];
+}
 
+const QIcon &IconsManager::iconByName(const QString &name)
+{
+	QMap<QString, QIcon>::const_iterator i = icons.find(name);
+	if (i != icons.end())
+		return *i;
+
+	QIcon icon;
+	QString path = iconPathFromName(name);
+	if (!path.isEmpty())
+		icon.addFile(path);
+
+	icons.insert(name, icon);
+	return icons[name];
 }
 
 void IconsManager::clear()
@@ -148,6 +190,6 @@ void IconsManager::configurationUpdated()
 
 QSize IconsManager::getIconsSize()
 {
-	QPixmap p = loadPixmap("Configuration");
+	QPixmap p = pixmapByName("Configuration");
 	return p.size();
 }

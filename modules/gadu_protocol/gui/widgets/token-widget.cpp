@@ -32,7 +32,7 @@
 
 TokenWidget::TokenWidget(QWidget *parent) : QWidget(parent)
 {
-	WaitMovie = new QMovie(IconsManager::instance()->iconPath("PleaseWait"));
+	WaitMovie = new QMovie(IconsManager::instance()->iconPathFromName("PleaseWait"));
 
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
@@ -40,7 +40,7 @@ TokenWidget::TokenWidget(QWidget *parent) : QWidget(parent)
 	TokenImage->setFixedHeight(32);
 	TokenImage->setScaledContents(true);
 
-	QPushButton *refreshButton = new QPushButton(IconsManager::instance()->loadIcon("ReloadPersonalInfoButton"), "" ,this);
+	QPushButton *refreshButton = new QPushButton(IconsManager::instance()->iconByName("ReloadPersonalInfoButton"), "" ,this);
 	refreshButton->setIconSize(IconsManager::instance()->getIconsSize());
 	connect(refreshButton, SIGNAL(clicked()), this, SLOT(refreshToken()));
 

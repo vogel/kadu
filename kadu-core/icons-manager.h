@@ -24,8 +24,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef KADU_ICONS_MANAGER_H
-#define KADU_ICONS_MANAGER_H
+#ifndef ICONS_MANAGER_H
+#define ICONS_MANAGER_H
 
 #include <QtCore/QMap>
 #include <QtGui/QIcon>
@@ -48,25 +48,15 @@ class KADUAPI IconsManager : public Themes, ConfigurationAwareObject
 	QMap<QString, QPixmap> pixmaps;
 	QMap<QString, QIcon> icons;
 
-public:
-
-	/**
-		Zwraca pe�n� �cie�k� do ikony z aktualnego zestawu
-		lub bezposrednio name je�li jest to pe�na �cie�ka.
-		@param name nazwa ikony z zestawu lub sciezka do pliku
-		(jesli zawiera znak '/' to jest interpretowana jako
-		sciezka).
-	**/
 	QString iconPath(const QString &name) const;
 
-	/**
-		�aduje ikon� z aktualnego zestawu lub z podanego pliku.
-		@param name nazwa ikony z zestawu lub �cie�ka do pliku
-		(je�li zawiera znak '/' to jest interpretowana jako
-		�cie�ka).
-	**/
-	const QPixmap & loadPixmap(const QString &name);
-	const QIcon & loadIcon(const QString &name);
+public:
+	QString iconPathFromName(const QString &name) const;
+	
+	const QPixmap & pixmapByPath(const QString &name);
+	const QPixmap & pixmapByName(const QString &name);
+	const QIcon & iconByPath(const QString &name);
+	const QIcon & iconByName(const QString &name);
 
 	QSize getIconsSize();
 
@@ -83,4 +73,4 @@ signals:
 
 };
 
-#endif //KADU_ICONS_MANAGER_H
+#endif //ICONS_MANAGER_H

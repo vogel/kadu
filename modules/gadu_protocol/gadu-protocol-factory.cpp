@@ -111,3 +111,8 @@ ContactWidget * GaduProtocolFactory::newContactWidget(Contact contact, QWidget *
 			? new GaduContactWidget(contact, parent)
 			: 0;
 }
+
+QIcon GaduProtocolFactory::icon()
+{
+	return IconsManager::instance()->iconByName("BigOnline");
+}

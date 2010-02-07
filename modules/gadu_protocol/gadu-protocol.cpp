@@ -895,13 +895,12 @@ QPixmap GaduProtocol::statusPixmap(Status status)
 	else
 		pixmapName = QString(groupName).append(description);
 
-	return IconsManager::instance()->loadPixmap(pixmapName);
+	return IconsManager::instance()->pixmapByName(pixmapName);
 }
 
 QPixmap GaduProtocol::statusPixmap(const QString &statusType)
 {
-	return IconsManager::instance()->loadPixmap(
-			"Away" == statusType ? "Busy" : statusType);
+	return IconsManager::instance()->pixmapByName("Away" == statusType ? "Busy" : statusType);
 }
 
 void GaduProtocol::contactAdded(Contact contact)

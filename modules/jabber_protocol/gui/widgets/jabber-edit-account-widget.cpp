@@ -112,10 +112,10 @@ void JabberEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 
-	QPushButton *applyButton = new QPushButton(IconsManager::instance()->loadIcon("ApplyWindowButton"), tr("Apply"), this);
+	QPushButton *applyButton = new QPushButton(IconsManager::instance()->iconByName("ApplyWindowButton"), tr("Apply"), this);
 	connect(applyButton, SIGNAL(clicked(bool)), this, SLOT(apply()));
 
-	QPushButton *removeAccount = new QPushButton(IconsManager::instance()->loadIcon("CloseWindowButton"), tr("Delete account"), this);
+	QPushButton *removeAccount = new QPushButton(IconsManager::instance()->iconByName("CloseWindowButton"), tr("Delete account"), this);
 	connect(removeAccount, SIGNAL(clicked(bool)), this, SLOT(removeAccount()));
 
 	buttons->addButton(applyButton, QDialogButtonBox::ApplyRole);

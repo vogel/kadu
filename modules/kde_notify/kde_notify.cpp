@@ -57,7 +57,7 @@ extern "C" KADU_EXPORT void kde_notify_close()
 }
 
 KdeNotify::KdeNotify(QObject *parent) :
-		Notifier("KNotify", tr("KDE4 notifications"), IconsManager::instance()->loadIcon("OpenChat"), parent)
+		Notifier("KNotify", tr("KDE4 notifications"), IconsManager::instance()->iconByName("OpenChat"), parent)
 {
 	kdebugf();
 

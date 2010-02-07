@@ -52,10 +52,10 @@ PasswordWindow::PasswordWindow(const QString &message, QWidget *parent) :
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 
-	QPushButton *okButton = new QPushButton(IconsManager::instance()->loadIcon("OkWindowButton"), tr("Ok"), this);
+	QPushButton *okButton = new QPushButton(IconsManager::instance()->iconByName("OkWindowButton"), tr("Ok"), this);
 	okButton->setDefault(true);
 	buttons->addButton(okButton, QDialogButtonBox::AcceptRole);
-	QPushButton *cancelButton = new QPushButton(IconsManager::instance()->loadIcon("CloseWindowButton"), tr("Cancel"), this);
+	QPushButton *cancelButton = new QPushButton(IconsManager::instance()->iconByName("CloseWindowButton"), tr("Cancel"), this);
 	buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
 
 	connect(okButton, SIGNAL(clicked(bool)), this, SLOT(accepted()));

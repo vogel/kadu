@@ -288,8 +288,8 @@ void BuddiesListView::contextMenuEvent(QContextMenuEvent *event)
 			continue;
 
 		QMenu *account_menu = menu->addMenu(account.name());
-		if (!protocolFactory->iconName().isEmpty())
-			account_menu->setIcon(IconsManager::instance()->loadIcon(protocolFactory->iconName()));
+		if (!protocolFactory->icon().isNull())
+			account_menu->setIcon(protocolFactory->icon());
 
 		if (protocolFactory->protocolMenuManager()->protocolActions(account, con).size() == 0)
 			continue;
@@ -404,9 +404,9 @@ void BuddiesListView::updateBackground()
 	style.append("QTreeView::branch:has-siblings:adjoins-item { border-image: none; image: none }");
 	style.append("QTreeView::branch:has-childres:!has-siblings:adjoins-item { border-image: none; image: none }");
 	style.append("QTreeView::branch:has-children:!has-siblings:closed, QTreeView::branch:closed:has-children:has-siblings "
-		     "{ border-image: none; image: url(" + IconsManager::instance()->iconPath("BranchClosed") + ") }");
+		     "{ border-image: none; image: url(" + IconsManager::instance()->iconPathFromName("BranchClosed") + ") }");
 	style.append("QTreeView::branch:open:has-children:!has-siblings, QTreeView::branch:open:has-children:has-siblings "
-		     "{ border-image: none; image: url(" + IconsManager::instance()->iconPath("BranchOpen") + ") }");
+			"{ border-image: none; image: url(" + IconsManager::instance()->iconPathFromName("BranchOpen") + ") }");
 
 	style.append("QFrame {");
 

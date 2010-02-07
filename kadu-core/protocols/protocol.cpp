@@ -54,10 +54,7 @@ Protocol::~Protocol()
 
 QIcon Protocol::icon()
 {
-	QString iconName = Factory->iconName();
-	return iconName.isEmpty()
-		? QIcon()
-		: IconsManager::instance()->loadIcon(iconName);
+	return Factory->icon();
 }
 
 void Protocol::setAllOffline()

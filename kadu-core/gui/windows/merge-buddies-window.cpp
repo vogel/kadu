@@ -65,12 +65,12 @@ void MergeBuddiesWindow::createGui()
 	QDialogButtonBox *buttons = new QDialogButtonBox(this);
 	layout->addWidget(buttons);
 
-	MergeButton = new QPushButton(IconsManager::instance()->loadIcon("OkWindowButton"), tr("Merge"), this);
+	MergeButton = new QPushButton(IconsManager::instance()->iconByName("OkWindowButton"), tr("Merge"), this);
 	MergeButton->setDefault(true);
 	MergeButton->setEnabled(false);
 	connect(MergeButton, SIGNAL(clicked(bool)), this, SLOT(accept()));
 
-	QPushButton *cancel = new QPushButton(IconsManager::instance()->loadIcon("CloseWindowButton"), tr("Cancel"), this);
+	QPushButton *cancel = new QPushButton(IconsManager::instance()->iconByName("CloseWindowButton"), tr("Cancel"), this);
 	connect(cancel, SIGNAL(clicked(bool)), this, SLOT(reject()));
 
 	buttons->addButton(MergeButton, QDialogButtonBox::AcceptRole);

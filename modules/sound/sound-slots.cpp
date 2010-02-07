@@ -54,7 +54,7 @@
 SoundConfigurationWidget::SoundConfigurationWidget(QWidget *parent)
 	: NotifierConfigurationWidget(parent), currentNotifyEvent("")
 {
-    	QPushButton *testButton = new QPushButton(IconsManager::instance()->loadIcon("MediaPlayerButton"),"", this);
+    	QPushButton *testButton = new QPushButton(IconsManager::instance()->iconByName("MediaPlayerButton"),"", this);
 	connect(testButton, SIGNAL(clicked()), this, SLOT(test()));
 
 	soundFileSelectFile = new SelectFile("audio", this);

@@ -131,7 +131,7 @@ QPixmap StatusContainerManager::statusPixmap()
 {
 	return AccountManager::instance()->defaultAccount().statusContainer()
 			? AccountManager::instance()->defaultAccount().statusContainer()->statusPixmap()
-			: IconsManager::instance()->loadPixmap("Offline");
+			: IconsManager::instance()->pixmapByName("Offline");
 }
 
 QPixmap StatusContainerManager::statusPixmap(Status status)

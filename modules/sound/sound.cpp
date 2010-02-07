@@ -93,7 +93,7 @@ extern "C" KADU_EXPORT void sound_close()
 }
 
 SoundManager::SoundManager(bool firstLoad, const QString& name, const QString& configname) :
-		Notifier("Sound", "Play a sound", IconsManager::instance()->loadIcon("Unmute_off")),
+		Notifier("Sound", "Play a sound", IconsManager::instance()->iconByName("Unmute_off")),
 		Player(0), MyThemes(new Themes(name, configname)),
 		LastSoundTime(), Mute(false), PlayingThreads(), RecordingThreads(),
 		PlayThread(new SoundPlayThread()), SimplePlayerCount(0)

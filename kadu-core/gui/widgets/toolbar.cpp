@@ -546,7 +546,7 @@ QMenu * ToolBar::createContextMenu(QToolButton *button)
 
 			if (!hasAction(actionDescription->name()))
 			{
-				QAction *action = actionsMenu->addAction(IconsManager::instance()->loadIcon(actionDescription->iconName()), actionDescription->text());
+				QAction *action = actionsMenu->addAction(IconsManager::instance()->iconByName(actionDescription->iconName()), actionDescription->text());
 				action->setData(actionDescription->name());
 			}
 		}

@@ -749,7 +749,7 @@ void MediaPlayer::putTitleHint(QString title)
 {
 	kdebugf();
 
-	Notification *notification = new Notification(QString(mediaPlayerOsdHint), IconsManager::instance()->loadIcon("MediaPlayerPlay"));
+	Notification *notification = new Notification(QString(mediaPlayerOsdHint), IconsManager::instance()->iconByName("MediaPlayerPlay"));
 	notification->setText(title);
 	NotificationManager::instance()->notify(notification);
 }
@@ -847,14 +847,14 @@ void MediaPlayer::playPause()
 		play();
 		isPaused = false;
 		foreach(Action *action, playAction->actions())
-			action->setIcon(IconsManager::instance()->loadIcon("MediaPlayerPause"));
+			action->setIcon(IconsManager::instance()->iconByName("MediaPlayerPause"));
 	}
 	else
 	{
 		pause();
 		isPaused = true;
 		foreach(Action *action, playAction->actions())
-			action->setIcon(IconsManager::instance()->loadIcon("MediaPlayerPlay"));
+			action->setIcon(IconsManager::instance()->iconByName("MediaPlayerPlay"));
 	}
 }
 
@@ -865,7 +865,7 @@ void MediaPlayer::play()
 
 	isPaused = false;
 	foreach(Action *action, playAction->actions())
-			action->setIcon(IconsManager::instance()->loadIcon("MediaPlayerPause"));
+		action->setIcon(IconsManager::instance()->iconByName("MediaPlayerPause"));
 }
 
 void MediaPlayer::stop()
@@ -875,7 +875,7 @@ void MediaPlayer::stop()
 
 	isPaused = true;
 	foreach(Action *action, playAction->actions())
-			action->setIcon(IconsManager::instance()->loadIcon("MediaPlayerPlay"));
+		action->setIcon(IconsManager::instance()->iconByName("MediaPlayerPlay"));
 }
 
 void MediaPlayer::pause()
@@ -885,7 +885,7 @@ void MediaPlayer::pause()
 
 	isPaused = true;
 	foreach(Action *action, playAction->actions())
-			action->setIcon(IconsManager::instance()->loadIcon("MediaPlayerPlay"));
+		action->setIcon(IconsManager::instance()->iconByName("MediaPlayerPlay"));
 }
 
 void MediaPlayer::setVolume(int vol)

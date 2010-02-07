@@ -76,7 +76,7 @@ bool ConnectionErrorNotification::activeError(Account account, const QString &er
 }
 
 ConnectionErrorNotification::ConnectionErrorNotification(Account account, const QString &errorServer, const QString &errorMessage) :
-		AccountNotification(account, "ConnectionError", IconsManager::instance()->loadIcon("CriticalSmall")),
+		AccountNotification(account, "ConnectionError", IconsManager::instance()->iconByName("CriticalSmall")),
 		ErrorServer(errorServer), ErrorMessage(errorMessage)
 {
 	setTitle(tr("Connection error"));

@@ -30,7 +30,7 @@
 QString FormattedMessagePart::loadingImageHtml(const QString &imageId)
 {
 	return QString("<img src=\"file:///%1\" id=\"%2\" />")
-			.arg(IconsManager::instance()->iconPath("LoadingImage"))
+			.arg(IconsManager::instance()->iconPathFromName("LoadingImage"))
 			.arg(imageId);
 }
 

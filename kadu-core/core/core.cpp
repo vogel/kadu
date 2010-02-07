@@ -295,9 +295,9 @@ void Core::init()
 	new Updates();
 
 #ifdef Q_OS_MACX
-	setIcon(IconsManager::instance()->loadPixmap("BigOffline"));
+	setIcon(IconsManager::instance()->pixmapByName("BigOffline"));
 #else
-	setIcon(IconsManager::instance()->loadPixmap("Offline"));
+	setIcon(IconsManager::instance()->pixmapByName("Offline"));
 #endif
 	QTimer::singleShot(15000, this, SLOT(deleteOldConfigurationFiles()));
 

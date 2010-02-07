@@ -94,7 +94,7 @@ void YourAccounts::createGui()
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 	mainLayout->addWidget(buttons);
 
-	QPushButton *cancelButton = new QPushButton(IconsManager::instance()->loadIcon("CloseWindowButton"), tr("Close"), this);
+	QPushButton *cancelButton = new QPushButton(IconsManager::instance()->iconByName("CloseWindowButton"), tr("Close"), this);
 
 	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(close()));
 	buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);

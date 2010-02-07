@@ -39,7 +39,7 @@ QString ChatTypeConference::displayName() const
 
 QIcon ChatTypeConference::icon() const
 {
-	return IconsManager::instance()->loadIcon("ManageModules");
+	return IconsManager::instance()->iconByName("ManageModules");
 }
 
 ChatDetails * ChatTypeConference::createChatDetails(ChatShared *chatData) const

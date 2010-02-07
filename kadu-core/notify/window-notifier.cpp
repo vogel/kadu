@@ -34,9 +34,9 @@
  * @{
  */
 
-WindowNotifier::WindowNotifier(QObject *parent)
-	: Notifier("Window", "Show a window with notification",
-	 IconsManager::instance()->loadIcon("Information"), parent)
+WindowNotifier::WindowNotifier(QObject *parent) :
+		Notifier("Window", "Show a window with notification",
+		IconsManager::instance()->iconByName("Information"), parent)
 {
 	kdebugf();
 

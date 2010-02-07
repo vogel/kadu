@@ -25,6 +25,7 @@
 
 #include <QtCore/QString>
 #include <QtGui/QDialog>
+#include <QtGui/QIcon>
 
 #include "contacts/contact-details.h"
 
@@ -61,7 +62,12 @@ public:
 	virtual QString name() = 0;
 	virtual QString displayName() = 0;
 
-	virtual QString iconName()
+	virtual QIcon icon()
+	{
+		return QIcon();
+	}
+
+	virtual QString iconPath()
 	{
 		return QString::null;
 	}

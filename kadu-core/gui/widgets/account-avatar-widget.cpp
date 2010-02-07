@@ -34,7 +34,7 @@ AccountAvatarWidget::AccountAvatarWidget(Account account, QWidget *parent) :
 		QWidget(parent), MyAccount(account), Service(0), WaitMovie(0)
 {
 
-	QString pleaseWaithPath = IconsManager::instance()->iconPath("PleaseWait");
+	QString pleaseWaithPath = IconsManager::instance()->iconPathFromName("PleaseWait");
 	WaitMovie = new QMovie(pleaseWaithPath);
 
 	createGui();

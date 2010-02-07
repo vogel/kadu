@@ -474,7 +474,7 @@ QString Parser::parse(const QString &s, Account account, const Buddy &buddy, con
 					{
 						parseStack.pop_back();
 						pe.type = ParserToken::PT_STRING;
-						pe.content = IconsManager::instance()->iconPath(pe.content);
+						pe.content = IconsManager::instance()->iconPathFromName(pe.content);
 						parseStack.push_back(pe);
 						break;
 					}

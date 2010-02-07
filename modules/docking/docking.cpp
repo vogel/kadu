@@ -102,10 +102,10 @@ DockingManager::DockingManager()
 	DockMenu = new QMenu;
 
 #ifdef Q_OS_MAC
-	OpenChatAction = new QAction(IconsManager::instance()->loadIcon("OpenChat"), tr("Show Pending Messages"));
+	OpenChatAction = new QAction(IconsManager::instance()->iconByName("OpenChat"), tr("Show Pending Messages"));
 	connect(OpenChatAction, SIGNAL(triggered()), chat_manager, SLOT(openPendingMsgs()));
 #endif
-	CloseKaduAction = new QAction(IconsManager::instance()->loadIcon("Exit"), tr("&Exit Kadu"), this);
+	CloseKaduAction = new QAction(IconsManager::instance()->iconByName("Exit"), tr("&Exit Kadu"), this);
 	connect(CloseKaduAction, SIGNAL(triggered()), qApp, SLOT(quit()));
 
 	configurationUpdated();
@@ -143,15 +143,15 @@ void DockingManager::changeIcon()
 		switch (newMessageIcon)
 		{
 			case AnimatedEnvelope:
-				emit trayMovieChanged(IconsManager::instance()->iconPath("MessageAnim"));
+				emit trayMovieChanged(IconsManager::instance()->iconPathFromName("MessageAnim"));
 				break;
 			case StaticEnvelope:
-				emit trayPixmapChanged(IconsManager::instance()->loadIcon("Message"));
+				emit trayPixmapChanged(IconsManager::instance()->iconByName("Message"));
 				break;
 			case BlinkingEnvelope:
 				if (!blink)
 				{
-					emit trayPixmapChanged(IconsManager::instance()->loadIcon("Message"));
+					emit trayPixmapChanged(IconsManager::instance()->iconByName("Message"));
 					icon_timer->setSingleShot(true);
 					icon_timer->start(500);
 					blink = true;

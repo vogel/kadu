@@ -39,7 +39,7 @@ QString ChatTypeSimple::displayName() const
 
 QIcon ChatTypeSimple::icon() const
 {
-	return IconsManager::instance()->loadIcon("OpenChat");
+	return IconsManager::instance()->iconByName("OpenChat");
 }
 
 ChatDetails * ChatTypeSimple::createChatDetails(ChatShared *chatData) const

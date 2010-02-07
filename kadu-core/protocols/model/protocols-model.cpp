@@ -53,7 +53,7 @@ QVariant ProtocolsModel::data(const QModelIndex &index, int role) const
 		case Qt::DisplayRole:
 			return pf->displayName();
 		case Qt::DecorationRole:
-			return IconsManager::instance()->loadIcon(pf->iconName());
+			return pf->icon();
 		case ProtocolRole:
 			return QVariant::fromValue<ProtocolFactory *>(pf);
 		default:
