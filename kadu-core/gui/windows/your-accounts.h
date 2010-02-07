@@ -31,6 +31,8 @@
 #include "exports.h"
 
 class QHBoxLayout;
+class QGroupBox;
+class QLabel;
 class QListView;
 class QStackedWidget;
 class QVBoxLayout;
@@ -53,32 +55,38 @@ KADUAPI class YourAccounts : public QWidget, AccountsAwareObject
 	QAction *AddExistingAccountAction;
 	QAction *CreateNewAccountAction;
 
-	QStackedWidget *CreateEditStack;
-	QStackedWidget *AddStack;
-	QStackedWidget *CreateStack;
+	QLabel *MainAccountLabel;
+	QGroupBox *MainAccountGroupBox;
+
+	QStackedWidget *MainStack;
+	QStackedWidget *CreateAddStack;
 	QStackedWidget *EditStack;
 
-	ProtocolsComboBox *AddAccountProtocols;
-	ProtocolsComboBox *NewAccountProtocols;
-	QWidget *NewAccountContainer;
-	QWidget *NewAccountCreatedContainer;
-	QWidget *AddAccountContainer;
+	ProtocolsComboBox *Protocols;
+	QWidget *CreateAddAccountContainer;
 
 	QMap<ProtocolFactory *, AccountCreateWidget *> CreateWidgets;
 	QMap<ProtocolFactory *, AccountAddWidget *> AddWidgets;
 	QMap<Account, AccountEditWidget *> EditWidgets;
 
 	void createGui();
-	void createNewAccountWidget();
-	void createNewAccountCreatedWidget();
-	void createAddAccountWidget();
+	void createAccountWidget();
 	void createEditAccountWidget();
+
+	AccountCreateWidget * getAccountCreateWidget(ProtocolFactory *protocol);
+	AccountAddWidget * getAccountAddWidget(ProtocolFactory *protocol);
+	AccountEditWidget * getAccountEditWidget(Account account);
+
+	void switchToCreateMode();
+	void switchToAddMode();
 
 	void selectAccount(Account account);
 
+	void updateCurrentWidget();
+
 private slots:
-	void addAccountProtocolChanged(ProtocolFactory *protocolFactory);
-	void newAccountProtocolChanged(ProtocolFactory *protocolFactory);
+	void protocolChanged(ProtocolFactory *protocolFactory);
+
 	void accountCreated(Account account);
 	void accountSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 

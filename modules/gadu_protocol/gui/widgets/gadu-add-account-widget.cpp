@@ -72,6 +72,7 @@ void GaduAddAccountWidget::createGui()
 	RememberPassword->setChecked(true);
 	layout->addRow(RememberPassword);
 
+	RemindPassword = new QLabel(QString("<a href='remind'>%1</a>").arg(tr("Remind password")));
 	layout->addRow(tr("Forgot Your Password?"), RemindPassword);
 
 	Identity = new ChooseIdentityWidget(this);
