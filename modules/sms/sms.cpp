@@ -63,6 +63,8 @@
 
 extern "C" KADU_EXPORT int sms_init(bool firstLoad)
 {
+	Q_UNUSED(firstLoad)
+
 	kdebugf();
 
 	smsConfigurationUiHandler = new SmsConfigurationUiHandler();
@@ -188,6 +190,8 @@ void SmsConfigurationUiHandler::onDownButton()
 
 void SmsConfigurationUiHandler::sendSmsActionActivated(QAction *sender, bool toggled)
 {
+	Q_UNUSED(toggled)
+
 	kdebugf();
 
 	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());

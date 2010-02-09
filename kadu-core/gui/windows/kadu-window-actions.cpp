@@ -548,16 +548,25 @@ void KaduWindowActions::useProxyActionCreated(Action *action)
 
 void KaduWindowActions::configurationActionActivated(QAction *sender, bool toggled)
 {
+	Q_UNUSED(sender)
+	Q_UNUSED(toggled)
+
 	MainConfigurationWindow::instance()->show();
 }
 
 void KaduWindowActions::yourAccountsActionActivated(QAction *sender, bool toggled)
 {
+	Q_UNUSED(sender)
+	Q_UNUSED(toggled)
+
 	(new YourAccounts())->show();
 }
 
 void KaduWindowActions::exitKaduActionActivated(QAction *sender, bool toggled)
 {
+	Q_UNUSED(sender)
+	Q_UNUSED(toggled)
+
 	kdebugf();
 
 	// TODO: 0.6.6
@@ -573,6 +582,8 @@ void KaduWindowActions::exitKaduActionActivated(QAction *sender, bool toggled)
 
 void KaduWindowActions::addUserActionActivated(QAction *sender, bool toggled)
 {
+	Q_UNUSED(toggled)
+
 	kdebugf();
 
 	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
@@ -592,6 +603,8 @@ void KaduWindowActions::addUserActionActivated(QAction *sender, bool toggled)
 
 void KaduWindowActions::mergeContactActionActivated(QAction *sender, bool toggled)
 {
+	Q_UNUSED(toggled)
+
 	kdebugf();
 
 	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
@@ -610,6 +623,8 @@ void KaduWindowActions::mergeContactActionActivated(QAction *sender, bool toggle
 
 void KaduWindowActions::addGroupActionActivated(QAction *sender, bool toggled)
 {
+	Q_UNUSED(toggled)
+
 	bool ok;
 	QString newGroupName = QInputDialog::getText(dynamic_cast<QWidget *>(sender->parent()), tr("New Group"),
 				tr("Please enter the name for the new group:"), QLineEdit::Normal,
@@ -621,16 +636,23 @@ void KaduWindowActions::addGroupActionActivated(QAction *sender, bool toggled)
 
 void KaduWindowActions::openSearchActionActivated(QAction *sender, bool toggled)
 {
+	Q_UNUSED(toggled)
+
 	(new SearchWindow(dynamic_cast<QWidget *>(sender->parent())))->show();
 }
 
 void KaduWindowActions::manageIgnoredActionActivated(QAction *sender, bool toggled)
 {
+	Q_UNUSED(toggled)
+
 	(new Ignored(dynamic_cast<QWidget *>(sender->parent())))->show();
 }
 
 void KaduWindowActions::helpActionActivated(QAction *sender, bool toggled)
 {
+	Q_UNUSED(sender)
+	Q_UNUSED(toggled)
+
 	if (config_file.readEntry("General", "Language", QString(qApp->keyboardInputLocale().name()).mid(0,2)) == "pl")
 		openWebBrowser("http://www.kadu.net/w/Pomoc_online");
 	else
@@ -639,6 +661,9 @@ void KaduWindowActions::helpActionActivated(QAction *sender, bool toggled)
 
 void KaduWindowActions::bugsActionActivated(QAction *sender, bool toggled)
 {
+	Q_UNUSED(sender)
+	Q_UNUSED(toggled)
+
 	if (config_file.readEntry("General", "Language", QString(qApp->keyboardInputLocale().name()).mid(0,2)) == "pl")
 		openWebBrowser("http://www.kadu.net/w/B%C5%82%C4%99dy");
 	else
@@ -647,6 +672,9 @@ void KaduWindowActions::bugsActionActivated(QAction *sender, bool toggled)
 
 void KaduWindowActions::supportActionActivated(QAction *sender, bool toggled)
 {
+	Q_UNUSED(sender)
+	Q_UNUSED(toggled)
+
 	if (config_file.readEntry("General", "Language", QString(qApp->keyboardInputLocale().name()).mid(0,2)) == "pl")
 		openWebBrowser("http://www.kadu.net/w/Kadu:Site_support");
 	else
@@ -655,6 +683,9 @@ void KaduWindowActions::supportActionActivated(QAction *sender, bool toggled)
 
 void KaduWindowActions::getInvolvedActionActivated(QAction *sender, bool toggled)
 {
+	Q_UNUSED(sender)
+	Q_UNUSED(toggled)
+
 	if (config_file.readEntry("General", "Language", QString(qApp->keyboardInputLocale().name()).mid(0,2)) == "pl")
 		openWebBrowser("http://www.kadu.net/w/Do%C5%82%C4%85cz");
 	else
@@ -663,11 +694,16 @@ void KaduWindowActions::getInvolvedActionActivated(QAction *sender, bool toggled
 
 void KaduWindowActions::aboutActionActivated(QAction *sender, bool toggled)
 {
+	Q_UNUSED(sender)
+	Q_UNUSED(toggled)
+
 	(new ::About(Core::instance()->kaduWindow()))->show();
 }
 
 void KaduWindowActions::writeEmailActionActivated(QAction *sender, bool toggled)
 {
+	Q_UNUSED(toggled)
+
 	kdebugf();
 
 	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
@@ -686,6 +722,8 @@ void KaduWindowActions::writeEmailActionActivated(QAction *sender, bool toggled)
 
 void KaduWindowActions::copyDescriptionActionActivated(QAction *sender, bool toggled)
 {
+	Q_UNUSED(toggled)
+
 	kdebugf();
 
 	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
@@ -709,6 +747,8 @@ void KaduWindowActions::copyDescriptionActionActivated(QAction *sender, bool tog
 
 void KaduWindowActions::openDescriptionLinkActionActivated(QAction *sender, bool toggled)
 {
+	Q_UNUSED(toggled)
+
 	kdebugf();
 
 	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
@@ -734,6 +774,8 @@ void KaduWindowActions::openDescriptionLinkActionActivated(QAction *sender, bool
 
 void KaduWindowActions::copyPersonalInfoActionActivated(QAction *sender, bool toggled)
 {
+	Q_UNUSED(toggled)
+
 	kdebugf();
 
 	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
@@ -759,6 +801,8 @@ void KaduWindowActions::copyPersonalInfoActionActivated(QAction *sender, bool to
 
 void KaduWindowActions::lookupInDirectoryActionActivated(QAction *sender, bool toggled)
 {
+	Q_UNUSED(toggled)
+
 	kdebugf();
 
 	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
@@ -857,6 +901,8 @@ void KaduWindowActions::hideDescriptionActionActivated(QAction *sender, bool tog
 
 void KaduWindowActions::deleteUsersActionActivated(QAction *sender, bool toggled)
 {
+	Q_UNUSED(toggled)
+
 	kdebugf();
 
 	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
@@ -924,6 +970,8 @@ void KaduWindowActions::onlineAndDescUsersActionActivated(QAction *sender, bool 
 
 void KaduWindowActions::editUserActionActivated(QAction *sender, bool toggled)
 {
+	Q_UNUSED(toggled)
+
 	kdebugf();
 
 	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
@@ -948,6 +996,8 @@ void KaduWindowActions::editUserActionActivated(QAction *sender, bool toggled)
 
 void KaduWindowActions::showStatusActionActivated(QAction *sender, bool toggled)
 {
+	Q_UNUSED(toggled)
+
 	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
 	if (!window)
 		return;
@@ -965,6 +1015,8 @@ void KaduWindowActions::showStatusActionActivated(QAction *sender, bool toggled)
 
 void KaduWindowActions::useProxyActionActivated(QAction *sender, bool toggled)
 {
+	Q_UNUSED(sender)
+
 	config_file.writeEntry("Network", "UseProxy", toggled);
 
 	foreach (Action *action, UseProxy->actions())

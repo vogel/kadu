@@ -61,11 +61,12 @@ ActionDescription *SearchWindow::clearResultsAction;
 ActionDescription *SearchWindow::addFoundAction;
 ActionDescription *SearchWindow::chatFoundAction;
 
-SearchWindow::SearchWindow(QWidget *parent, Buddy buddy)
-	: MainWindow(parent),
-	only_active(0), e_uin(0), e_name(0), e_nick(0), e_byrFrom(0), e_byrTo(0), e_surname(0),
-	c_gender(0), e_city(0), results(0), progress(0), r_uin(0), r_pers(0), CurrentSearchCriteria(BuddySearchCriteria()),
-	seq(0), selectedUsers(BuddySet()), searchhidden(false), searching(false), workaround(false)
+SearchWindow::SearchWindow(QWidget *parent, Buddy buddy) :
+		MainWindow(parent),
+		only_active(0), e_uin(0), e_name(0), e_nick(0), e_byrFrom(0), e_byrTo(0), e_surname(0),
+		c_gender(0), e_city(0), results(0), progress(0), r_uin(0), r_pers(0),
+		seq(0), selectedUsers(BuddySet()), CurrentSearchCriteria(BuddySearchCriteria()),
+		searchhidden(false), searching(false), workaround(false)
 {
 	kdebugf();
 
@@ -670,6 +671,8 @@ void SearchWindow::selectionChanged()
 
 void SearchActionsSlots::firstSearchActionActivated(QAction *sender, bool toggled)
 {
+	Q_UNUSED(toggled)
+
 	SearchWindow *search = dynamic_cast<SearchWindow *>(sender->parent());
 	if (search)
 		search->firstSearch();
@@ -744,6 +747,8 @@ void SearchActionsSlots::actionsFoundActionCreated(Action *action)
 
 void SearchActionsSlots::nextResultsActionActivated(QAction *sender, bool toggled)
 {
+	Q_UNUSED(toggled)
+
 	SearchWindow *search = dynamic_cast<SearchWindow *>(sender->parent());
 	if (search)
 		search->nextSearch();
@@ -751,6 +756,8 @@ void SearchActionsSlots::nextResultsActionActivated(QAction *sender, bool toggle
 
 void SearchActionsSlots::stopSearchActionActivated(QAction *sender, bool toggled)
 {
+	Q_UNUSED(toggled)
+
 	SearchWindow *search = dynamic_cast<SearchWindow *>(sender->parent());
 	if (search)
 		search->stopSearch();
@@ -758,6 +765,8 @@ void SearchActionsSlots::stopSearchActionActivated(QAction *sender, bool toggled
 
 void SearchActionsSlots::clearResultsActionActivated(QAction *sender, bool toggled)
 {
+	Q_UNUSED(toggled)
+
 	SearchWindow *search = dynamic_cast<SearchWindow *>(sender->parent());
 	if (search)
 		search->clearResults();
@@ -765,6 +774,8 @@ void SearchActionsSlots::clearResultsActionActivated(QAction *sender, bool toggl
 
 void SearchActionsSlots::addFoundActionActivated(QAction *sender, bool toggled)
 {
+	Q_UNUSED(toggled)
+
 	SearchWindow *search = dynamic_cast<SearchWindow *>(sender->parent());
 	if (search)
 		search->addFound();
@@ -772,8 +783,9 @@ void SearchActionsSlots::addFoundActionActivated(QAction *sender, bool toggled)
 
 void SearchActionsSlots::chatFoundActionActivated(QAction *sender, bool toggled)
 {
+	Q_UNUSED(toggled)
+
 	SearchWindow *search = dynamic_cast<SearchWindow *>(sender->parent());
 	if (search)
 		search->chatFound();
 }
-

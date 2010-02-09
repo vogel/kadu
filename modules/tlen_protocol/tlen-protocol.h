@@ -39,7 +39,12 @@ class TlenProtocol : public Protocol
 
 		Buddy nodeToBuddy(QDomNode node);
 
-		virtual Conference * loadConferenceFromStorage(StoragePoint *storage) { return 0; }
+		virtual Conference * loadConferenceFromStorage(StoragePoint *storage)
+		{
+			Q_UNUSED(storage);
+
+			return 0;
+		}
 
 		virtual QPixmap statusPixmap(Status status);
 		virtual QPixmap statusPixmap(const QString &statusType);

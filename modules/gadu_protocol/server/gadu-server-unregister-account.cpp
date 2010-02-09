@@ -47,6 +47,8 @@ void GaduServerUnregisterAccount::performAction(const QString &tokenId, const QS
 
 void GaduServerUnregisterAccount::done(bool ok, struct gg_http *h)
 {
+	Q_UNUSED(h)
+
 	finished(ok);
 
 	if (H)

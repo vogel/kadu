@@ -57,21 +57,30 @@ void KaduChatStyleEngine::clearMessages(HtmlMessagesRenderer *renderer)
 
 void KaduChatStyleEngine::appendMessages(HtmlMessagesRenderer *renderer, QList<MessageRenderInfo *> messages)
 {
+	Q_UNUSED(messages)
+
 	repaintMessages(renderer);
 }
 
 void KaduChatStyleEngine::appendMessage(HtmlMessagesRenderer *renderer, MessageRenderInfo *message)
 {
+	Q_UNUSED(message)
+
 	repaintMessages(renderer);
 }
 
 void KaduChatStyleEngine::refreshView(HtmlMessagesRenderer *renderer, bool useTransparency)
 {
+	Q_UNUSED(useTransparency)
+
 	repaintMessages(renderer);
 }
 
 void KaduChatStyleEngine::messageStatusChanged(HtmlMessagesRenderer *renderer, Message message, Message::Status status)
 {
+	Q_UNUSED(message)
+	Q_UNUSED(status)
+
 	repaintMessages(renderer);
 }
 
@@ -84,6 +93,8 @@ QString KaduChatStyleEngine::isStyleValid(QString stylePath)
 
 void KaduChatStyleEngine::loadStyle(const QString &styleName, const QString &variantName)
 {
+	Q_UNUSED(variantName)
+
 	QString chatSyntax = SyntaxList::readSyntax("chat", styleName,
 		"<p style=\"background-color: #{backgroundColor};\">#{separator}"
 		  "<font color=\"#{fontColor}\"><kadu:header><b><font color=\"#{nickColor}\">%a</font> :: "
@@ -210,6 +221,8 @@ void KaduChatStyleEngine::configurationUpdated()
 
 void KaduChatStyleEngine::prepareStylePreview(Preview *preview, QString styleName, QString variantName)
 {
+	Q_UNUSED(variantName)
+
 	QString content = SyntaxList::readSyntax("chat", styleName, "");
 
 	content.replace(QRegExp("%o"),  " ");

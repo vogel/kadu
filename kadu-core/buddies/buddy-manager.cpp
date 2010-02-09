@@ -80,7 +80,7 @@ void BuddyManager::importConfiguration(XmlConfigFile *configurationStorage)
 	foreach (QDomElement contactElement, contactElements)
 	{
 		Buddy buddy = Buddy::create();
-		buddy.importConfiguration(configurationStorage, contactElement);
+		buddy.importConfiguration(contactElement);
 
 		addItem(buddy);
 	}

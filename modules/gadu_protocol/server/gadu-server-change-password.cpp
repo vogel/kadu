@@ -49,6 +49,8 @@ void GaduServerChangePassword::performAction(const QString &tokenId, const QStri
 
 void GaduServerChangePassword::done(bool ok, struct gg_http *h)
 {
+	Q_UNUSED(h)
+
 	finished(ok);
 
 	if (H)

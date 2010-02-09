@@ -134,7 +134,6 @@ void DccManager::setUpDcc()
 	SocketNotifiers = QList<DccSocketNotifiers *>();
 
 	QHostAddress DCCIP;
-	short int DCCPort;
 
 	if (gaduAccountDetails->dccIpDetect())
 		DCCIP.setAddress("255.255.255.255");
@@ -151,7 +150,7 @@ void DccManager::setUpDcc()
 	gg_dcc_ip = htonl(DCCIP.toIPv4Address());
 	gg_dcc_port = socket->port;
 
-	kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "DCC_IP=%s DCC_PORT=%d\n", qPrintable(DCCIP.toString()), DCCPort);
+	kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "DCC_IP=%s gg_dcc_port=%d\n", qPrintable(DCCIP.toString()), gg_dcc_port);
 
 	DccEnabled = true;
 
@@ -419,16 +418,18 @@ void DccManager::handleEventDcc7Pending(struct gg_event *e)
 
 void DccManager::handleEventDcc7Error(struct gg_event *e)
 {
+	Q_UNUSED(e)
+
 	kdebugf();
 
-	foreach (DccSocketNotifiers *socketNotifiers, SocketNotifiers)
-	{
+// 	foreach (DccSocketNotifiers *socketNotifiers, SocketNotifiers)
+// 	{
 // 		if (socketNotifiers->Socket7 == e->event.dcc7_error)
 // 		{
 // 			socketNotifiers->handleEventDcc7Error(e);
 // 			return;
 // 		}
-	}
+// 	}
 }
 
 void DccManager::fileTransferHandlerDestroyed(QObject *object)
@@ -471,7 +472,7 @@ void DccManager::attachSendFileTransferSocket6(unsigned int uin, Contact contact
 	gg_dcc_request(Protocol->gaduSession(), details->uin());
 }
 
-void DccManager::attachSendFileTransferSocket7(unsigned int uin, Contact contact, GaduFileTransferHandler *handler)
+void DccManager::attachSendFileTransferSocket7(Contact contact, GaduFileTransferHandler *handler)
 {
 	kdebugf();
 
@@ -523,7 +524,11 @@ void DccManager::attachSendFileTransferSocket(GaduFileTransferHandler *handler)
 			break;
 
 		case Dcc7:
-			attachSendFileTransferSocket7(account->uin(), contact, handler);
+			attachSendFileTransferSocket7(contact, handler);
+			break;
+
+		case DccUnknown:
+			// do nothing
 			break;
 	}
 }

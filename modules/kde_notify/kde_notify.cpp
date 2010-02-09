@@ -33,6 +33,8 @@
 
 extern "C" KADU_EXPORT int kde_notify_init(bool firstLoad)
 {
+	Q_UNUSED(firstLoad)
+
 	kdebugf();
 
 	kde_notify = new KdeNotify();

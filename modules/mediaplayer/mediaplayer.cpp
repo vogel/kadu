@@ -280,6 +280,8 @@ void MediaPlayer::setControlsEnabled(bool enabled)
 
 void MediaPlayer::mediaPlayerMenuActivated(QAction *sender, bool toggled)
 {
+	Q_UNUSED(toggled)
+
 	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(sender->parent());
 	if (!chatEditBox)
 		return;
@@ -320,6 +322,8 @@ void MediaPlayer::chatWidgetDestroying(ChatWidget *chat)
 
 void MediaPlayer::chatKeyPressed(QKeyEvent *e, CustomInput *k, bool &handled)
 {
+	Q_UNUSED(k)
+
 	kdebugf();
 
 	if (!config_file.readBoolEntry("MediaPlayer", "chatShortcuts", true))
@@ -372,12 +376,17 @@ void MediaPlayer::chatKeyPressed(QKeyEvent *e, CustomInput *k, bool &handled)
 
 void MediaPlayer::chatKeyReleased(QKeyEvent *e, CustomInput *k, bool &handled)
 {
+	Q_UNUSED(k)
+	Q_UNUSED(handled)
+
 	if (e->key() == SHORTCUT_KEY)
 		winKeyPressed = false; // We want to handle LeftWinKey pressed state
 }
 
 void MediaPlayer::putSongTitle(int ident)
 {
+	Q_UNUSED(ident)
+
 	kdebugf();
 
 	if (!isActive())
@@ -416,7 +425,7 @@ void MediaPlayer::putSongTitle(int ident)
 			break;
 	}
 
-	int x, y;
+// 	int x, y;
 
 	chat->edit()->insertPlainText(title);
 
@@ -455,6 +464,8 @@ void MediaPlayer::putSongTitle(int ident)
 
 void MediaPlayer::putPlayList(int ident)
 {
+	Q_UNUSED(ident)
+
 	kdebugf();
 
 	if (!isActive())
@@ -464,7 +475,8 @@ void MediaPlayer::putPlayList(int ident)
 	}
 
 	ChatWidget* chat = getCurrentChat();
-	int id = 0, x, y;
+ 	int id = 0;
+//	int x, y;
 	QStringList list;
 
 	// This code tells us which item from MediaPlayer menu button was selected
@@ -672,6 +684,8 @@ ChatWidget *MediaPlayer::getCurrentChat()
 
 void MediaPlayer::mediaPlayerStatusChangerActivated(QAction *sender, bool toggled)
 {
+	Q_UNUSED(sender)
+
 	kdebugf();
 
 	if (!isActive() && toggled)
@@ -932,7 +946,7 @@ QString MediaPlayer::getTitle(int position)
 		if (config_file.readBoolEntry("MediaPlayer", "signature", true))
 		{
 			QStringList sigList(config_file.readEntry("MediaPlayer", "signatures", DEFAULT_SIGNATURES).split('\n'));
-			for (unsigned int i = 0; i < sigList.count(); i++)
+			for (int i = 0; i < sigList.count(); i++)
 				title.remove(sigList[i]);
 		}
 		return title;

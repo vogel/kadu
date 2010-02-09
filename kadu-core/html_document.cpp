@@ -195,12 +195,12 @@ void HtmlDocument::splitElement(int &index, int start, int length)
 		Elements.insert(index, pre);
 		++index;
 	}
-	if(uint(start+length)<e.text.length())
+	if(start+length<e.text.length())
 	{
 		Element post;
 		post.tag=e.tag;
 		post.text=e.text.right(e.text.length()-(start+length));
-		if(uint(index+1)<Elements.size())
+		if(index+1<Elements.size())
 			Elements.insert(index+1, post);
 		else
 			Elements.append(post);

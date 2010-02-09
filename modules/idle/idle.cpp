@@ -30,6 +30,8 @@ Idle *idle = 0;
 
 extern "C" KADU_EXPORT int idle_init(bool firstLoad)
 {
+	Q_UNUSED(firstLoad)
+
 	kdebugf();
 
 	idle = new Idle();

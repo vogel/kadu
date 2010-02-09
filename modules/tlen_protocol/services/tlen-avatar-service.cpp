@@ -44,6 +44,7 @@ void TlenAvatarService::fetchAvatar(Contact contact)
 
 void TlenAvatarService::uploadAvatar(QImage avatar)
 {
+	Q_UNUSED(avatar)
 }
 
 void TlenAvatarService::avatarReady(Contact contact, const QByteArray &avatar)

@@ -47,7 +47,7 @@ protected:
 
 public:
 	GaduServerConnector(TokenReader *reader)
-		: Reader(reader), H(0) {}
+			: H(0), Reader(reader) {}
 
 	void perform();
 	bool result() { return Result; }

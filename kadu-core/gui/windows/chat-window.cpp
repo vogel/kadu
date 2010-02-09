@@ -309,5 +309,7 @@ void ChatWindow::setWindowTitle(const QString &title)
 
 void ChatWindow::closeChatWidget(ChatWidget *chatWidget)
 {
+	Q_UNUSED(chatWidget)
+
 	close();
 }

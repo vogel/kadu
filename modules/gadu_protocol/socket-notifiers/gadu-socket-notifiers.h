@@ -26,7 +26,7 @@
 class QSocketNotifier;
 class QTimer;
 
-#ifndef _MSC_VER
+#if false // #ifndef _MSC_VER
 #pragma GCC visibility push(hidden)
 #endif
 
@@ -71,7 +71,7 @@ public:
 
 };
 
-#ifndef _MSC_VER
+#if false // #ifndef _MSC_VER
 #pragma GCC visibility pop
 #endif
 

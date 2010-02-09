@@ -41,7 +41,7 @@ class GaduProtocol;
 
 enum DccVersion
 {
-	DccUnknow,
+	DccUnknown,
 	Dcc6,
 	Dcc7
 };
@@ -91,7 +91,7 @@ class DccManager : public QObject
 // 	void onIpAutotetectToggled(bool toggled);
 
 	void attachSendFileTransferSocket6(unsigned int uin, Contact contact, GaduFileTransferHandler *handler);
-	void attachSendFileTransferSocket7(unsigned int uin, Contact contact, GaduFileTransferHandler *handler);
+	void attachSendFileTransferSocket7(Contact contact, GaduFileTransferHandler *handler);
 
 private slots:
 	void socketNotifiersDestroyed(QObject *socketNotifiers);

@@ -52,12 +52,20 @@ public:
 	virtual bool supportVariants() { return false; }
 	virtual bool supportEditing() { return true; }
 	virtual QString isStyleValid(QString styleName);
-	virtual bool styleUsesTransparencyByDefault(QString styleName) { return false; }
+	virtual bool styleUsesTransparencyByDefault(QString styleName)
+	{
+		Q_UNUSED(styleName)
+		return false;
+	}
 	
 	virtual void clearMessages(HtmlMessagesRenderer *renderer);
 	virtual void appendMessages(HtmlMessagesRenderer *renderer, QList<MessageRenderInfo *> messages);
 	virtual void appendMessage(HtmlMessagesRenderer *renderer, MessageRenderInfo *message);
-	virtual void pruneMessage(HtmlMessagesRenderer *renderer) {}
+	virtual void pruneMessage(HtmlMessagesRenderer *renderer)
+	{
+		Q_UNUSED(renderer)
+	}
+
 	virtual void refreshView(HtmlMessagesRenderer *renderer, bool useTransparency = false);
 	virtual void messageStatusChanged(HtmlMessagesRenderer *renderer, Message message, Message::Status status);
 

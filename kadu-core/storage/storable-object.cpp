@@ -36,8 +36,9 @@ StorableObject::~StorableObject()
 {
 	foreach (StorableObject *moduleData, ModulesStorableData)
 		delete moduleData;
-	foreach (void *moduleData, ModulesData)
-		delete moduleData;
+	// TODO: 0.6.6, memory leak
+// 	foreach (void *moduleData, ModulesData)
+// 		delete moduleData;
 }
 
 /**

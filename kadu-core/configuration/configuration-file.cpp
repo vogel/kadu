@@ -43,12 +43,12 @@
 
 QMutex GlobalMutex;
 
-PlainConfigFile::PlainConfigFile(const QString &filename) : filename(filename), groups(), activeGroupName(), activeGroup(0)
+PlainConfigFile::PlainConfigFile(const QString &filename) : filename(filename), groups(), activeGroupName()
 {
 	read();
 }
 
-PlainConfigFile::PlainConfigFile(const PlainConfigFile &c) : filename(c.filename), groups(c.groups), activeGroupName(), activeGroup(0)
+PlainConfigFile::PlainConfigFile(const PlainConfigFile &c) : filename(c.filename), groups(c.groups), activeGroupName()
 {
 }
 
@@ -57,8 +57,16 @@ PlainConfigFile &PlainConfigFile::operator=(const PlainConfigFile &c)
 	filename = c.filename;
 	groups = c.groups;
 	activeGroupName = QString::null;
-	activeGroup= 0;
 	return *this;
+}
+
+void PlainConfigFile::changeActiveGroup(const QString& newGroup)
+{
+	if (!activeGroupName.isEmpty())
+		groups[activeGroupName] = activeGroup;
+	activeGroupName = newGroup;
+	if (!activeGroupName.isEmpty())
+		activeGroup = groups[activeGroupName];
 }
 
 void PlainConfigFile::read()
@@ -78,10 +86,7 @@ void PlainConfigFile::read()
 			{
 				QString name=line.mid(1, line.length() - 2).trimmed();
 				if (activeGroupName!=name)
-				{
-					activeGroupName=name;
-					activeGroup=&groups[name];
-				}
+					changeActiveGroup(name);
 			}
 			else if (activeGroupName.length())
 			{
@@ -90,7 +95,7 @@ void PlainConfigFile::read()
 				name = name.trimmed();
 
 				if (line.contains('=') && !name.isEmpty() && !value.isEmpty())
-					(*activeGroup)[name]=value;
+					activeGroup[name]=value;
 			}
 		}
 		file.close();
@@ -152,8 +157,11 @@ QStringList PlainConfigFile::getGroupList() const
 	return QStringList(groups.keys());
 }
 
-void PlainConfigFile::sync() const
+void PlainConfigFile::sync()
 {
+	if (!activeGroupName.isEmpty())
+		groups[activeGroupName] = activeGroup;
+
 	write();
 }
 
@@ -167,17 +175,15 @@ bool PlainConfigFile::changeEntry(const QString &group, const QString &name, con
 {
 //	kdebugm(KDEBUG_FUNCTION_START, "PlainConfigFile::changeEntry(%s, %s, %s) %p\n", qPrintable(group), qPrintable(name), qPrintable(value), this);
 	if (activeGroupName!=group)
-	{
-		activeGroupName=group;
-		activeGroup=&(groups[group]);
-	}
-	bool ret=activeGroup->contains(name);
-	(*activeGroup)[name]=value;
+		changeActiveGroup(group);
+
+	bool ret=activeGroup.contains(name);
+	activeGroup[name]=value;
 	//
 	return ret;
 }
 
-QString PlainConfigFile::getEntry(const QString &group, const QString &name, bool *ok) const
+QString PlainConfigFile::getEntry(const QString &group, const QString &name, bool *ok)
 {
 //	kdebugm(KDEBUG_FUNCTION_START, "PlainConfigFile::getEntry(%s, %s) %p\n", qPrintable(group), qPrintable(name), this);
 	if (activeGroupName!=group)
@@ -188,13 +194,13 @@ QString PlainConfigFile::getEntry(const QString &group, const QString &name, boo
 				*ok=false;
 			return QString::null;
 		}
-		activeGroupName=group;
-		activeGroup=&((QMap<QString, QString>)groups[group]);
+
+		changeActiveGroup(group);
 	}
 	if (ok)
-		*ok=activeGroup->contains(name);
-	if (activeGroup->contains(name))
-		return (*activeGroup)[name];
+		*ok=activeGroup.contains(name);
+	if (activeGroup.contains(name))
+		return activeGroup[name];
 	else
 		return QString::null;
 }
@@ -256,7 +262,7 @@ void PlainConfigFile::writeEntry(const QString &group,const QString &name, const
 }
 
 template <class T>
-T PlainConfigFile::readEntry(const QString &group, const QString &name, const T &def ) const
+T PlainConfigFile::readEntry(const QString &group, const QString &name, const T &def )
 {
 	QVariant string = qVariantFromValue( getEntry(group, name));
 	if (string.canConvert<T>())
@@ -264,7 +270,7 @@ T PlainConfigFile::readEntry(const QString &group, const QString &name, const T 
 	return def;
 }
 
-QString PlainConfigFile::readEntry(const QString &group,const QString &name, const QString &def) const
+QString PlainConfigFile::readEntry(const QString &group,const QString &name, const QString &def)
 {
 	QString string = getEntry(group, name);
 	if (string == QString::null)
@@ -272,7 +278,7 @@ QString PlainConfigFile::readEntry(const QString &group,const QString &name, con
 	return string;
 }
 
-unsigned int PlainConfigFile::readUnsignedNumEntry(const QString &group,const QString &name, unsigned int def) const
+unsigned int PlainConfigFile::readUnsignedNumEntry(const QString &group,const QString &name, unsigned int def)
 {
 	bool ok;
 	QString string = getEntry(group, name);
@@ -284,7 +290,7 @@ unsigned int PlainConfigFile::readUnsignedNumEntry(const QString &group,const QS
 	return num;
 }
 
-int PlainConfigFile::readNumEntry(const QString &group,const QString &name, int def) const
+int PlainConfigFile::readNumEntry(const QString &group,const QString &name, int def)
 {
 	bool ok;
 	QString string = getEntry(group, name);
@@ -296,7 +302,7 @@ int PlainConfigFile::readNumEntry(const QString &group,const QString &name, int 
 	return num;
 }
 
-double PlainConfigFile::readDoubleNumEntry(const QString &group,const QString &name, double def) const
+double PlainConfigFile::readDoubleNumEntry(const QString &group,const QString &name, double def)
 {
 	bool ok;
 	QString string = getEntry(group, name);
@@ -308,7 +314,7 @@ double PlainConfigFile::readDoubleNumEntry(const QString &group,const QString &n
 	return num;
 }
 
-bool PlainConfigFile::readBoolEntry(const QString &group,const QString &name, bool def) const
+bool PlainConfigFile::readBoolEntry(const QString &group,const QString &name, bool def)
 {
 	QString string = getEntry(group, name);
 	if (string == QString::null)
@@ -316,7 +322,7 @@ bool PlainConfigFile::readBoolEntry(const QString &group,const QString &name, bo
 	return string=="true";
 }
 
-QRect PlainConfigFile::readRectEntry(const QString &group,const QString &name, const QRect *def) const
+QRect PlainConfigFile::readRectEntry(const QString &group,const QString &name, const QRect *def)
 {
 	QString string = getEntry(group, name);
 
@@ -326,7 +332,7 @@ QRect PlainConfigFile::readRectEntry(const QString &group,const QString &name, c
 	return stringToRect(string, def);
 }
 
-QSize PlainConfigFile::readSizeEntry(const QString &group,const QString &name, const QSize *def) const
+QSize PlainConfigFile::readSizeEntry(const QString &group,const QString &name, const QSize *def)
 {
 	QString string = getEntry(group, name);
 	QStringList stringlist;
@@ -346,7 +352,7 @@ QSize PlainConfigFile::readSizeEntry(const QString &group,const QString &name, c
 	return size;
 }
 
-QColor PlainConfigFile::readColorEntry(const QString &group,const QString &name, const QColor *def) const
+QColor PlainConfigFile::readColorEntry(const QString &group,const QString &name, const QColor *def)
 {
 	QColor col(0,0,0);
 	QString str = getEntry(group, name);
@@ -371,7 +377,7 @@ QColor PlainConfigFile::readColorEntry(const QString &group,const QString &name,
 }
 
 
-QFont PlainConfigFile::readFontEntry(const QString &group,const QString &name, const QFont *def) const
+QFont PlainConfigFile::readFontEntry(const QString &group,const QString &name, const QFont *def)
 {
 	QString string = getEntry(group, name);
 	QStringList stringlist;
@@ -393,16 +399,13 @@ QFont PlainConfigFile::readFontEntry(const QString &group,const QString &name, c
 void PlainConfigFile::removeVariable(const QString &group, const QString &name)
 {
 	if (activeGroupName != group)
-	{
-		activeGroupName = group;
-		activeGroup= &(groups[group]);
-	}
+		changeActiveGroup(group);
 
-	if (activeGroup->contains(name))
-		activeGroup->remove(name);
+	if (activeGroup.contains(name))
+		activeGroup.remove(name);
 }
 
-QPoint PlainConfigFile::readPointEntry(const QString &group,const QString &name, const QPoint *def) const
+QPoint PlainConfigFile::readPointEntry(const QString &group,const QString &name, const QPoint *def)
 {
 	QString string = getEntry(group, name);
 	QStringList stringlist;
@@ -480,7 +483,7 @@ ConfigFile::ConfigFile(const QString &filename) : filename(filename)
 {
 }
 
-void ConfigFile::sync() const
+void ConfigFile::sync()
 {
 	xml_config_file->sync();
 }

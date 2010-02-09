@@ -46,6 +46,8 @@ void GaduServerRemindPassword::performAction(const QString &tokenId, const QStri
 
 void GaduServerRemindPassword::done(bool ok, struct gg_http *h)
 {
+	Q_UNUSED(h)
+
 	finished(ok);
 
 	if (H)

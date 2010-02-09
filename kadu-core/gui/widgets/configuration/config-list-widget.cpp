@@ -32,6 +32,9 @@ ConfigListWidget::ConfigListWidget(const QString &widgetCaption, const QString &
 		const QStringList &itemValues, const QStringList &itemCaptions, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
 	: QListWidget(parentConfigGroupBox->widget()), ConfigWidget(widgetCaption, toolTip, parentConfigGroupBox, dataManager), label(0)
 {
+	Q_UNUSED(itemValues)
+	Q_UNUSED(itemCaptions)
+
 	createWidgets();
 }
 

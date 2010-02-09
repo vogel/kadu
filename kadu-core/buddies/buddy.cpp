@@ -80,10 +80,10 @@ Buddy::~Buddy()
 {
 }
 
-void Buddy::importConfiguration(XmlConfigFile *configurationStorage, QDomElement parent)
+void Buddy::importConfiguration(QDomElement parent)
 {
 	if (data())
-		data()->importConfiguration(configurationStorage, parent);
+		data()->importConfiguration(parent);
 }
 
 void Buddy::store()

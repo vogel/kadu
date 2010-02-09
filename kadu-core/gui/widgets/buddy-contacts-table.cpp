@@ -112,6 +112,8 @@ void BuddyContactsTable::save()
 
 void BuddyContactsTable::viewSelectionChanged(const QModelIndex &current, const QModelIndex &previous)
 {
+	Q_UNUSED(previous)
+
 	if (!current.isValid())
 	{
 		MoveUpButton->setEnabled(false);

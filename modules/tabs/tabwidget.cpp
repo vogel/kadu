@@ -99,6 +99,8 @@ void TabWidget::closeEvent(QCloseEvent *e)
 
 void TabWidget::chatKeyPressed(QKeyEvent *e, CustomInput *k, bool &handled)
 {
+	Q_UNUSED(k)
+
 	handled = true;
 	// obsluga skrotow klawiszowych
 	if (HotKey::shortCut(e, "ShortCuts", "MoveTabLeft"))
@@ -260,11 +262,15 @@ void TabWidget::deleteTab()
 
 void TabWidget::tabInserted(int index)
 {
+	Q_UNUSED(index)
+
 	show();
 }
 
 void TabWidget::tabRemoved(int index)
 {
+	Q_UNUSED(index)
+
 	if (count() == 0)
 		hide();
 }

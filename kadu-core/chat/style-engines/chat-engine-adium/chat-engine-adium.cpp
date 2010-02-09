@@ -151,6 +151,10 @@ void AdiumChatStyleEngine::appendMessage(HtmlMessagesRenderer *renderer, Message
 			formattedMessageHtml = CurrentStyle.statusHtml();
 			break;
 		}
+
+		default:
+			// do nothing
+			break;
 	}
 	
 	formattedMessageHtml = replaceKeywords(renderer->chat(), CurrentStyle.baseHref(), formattedMessageHtml, message);

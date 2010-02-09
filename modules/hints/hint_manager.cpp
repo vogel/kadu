@@ -61,7 +61,7 @@
 HintManager::HintManager(QWidget *parent) :
 		Notifier("Hint", "Hints", IconsManager::instance()->iconByName("OpenChat"), parent), AbstractToolTip(),
 		hint_timer(new QTimer(this)), 
-		hints(), tipFrame(0)
+		tipFrame(0), hints()
 {
 	kdebugf();
 
@@ -586,6 +586,8 @@ void HintManager::notificationClosed(Notification *notification)
 
 void HintManager::copyConfiguration(const QString &fromEvent, const QString &toEvent)
 {
+	Q_UNUSED(fromEvent)
+	Q_UNUSED(toEvent)
 }
 
 void HintManager::realCopyConfiguration(const QString &fromCategory, const QString &fromHint, const QString &toHint)

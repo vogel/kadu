@@ -287,6 +287,7 @@ void KaduWindow::closeEvent(QCloseEvent *e)
 
 void KaduWindow::customEvent(QEvent *e)
 {
+	Q_UNUSED(e)
 // TODO: 0.6.6
 // 	Account defaultAccount = AccountManager::instance()->defaultAccount();
 // 

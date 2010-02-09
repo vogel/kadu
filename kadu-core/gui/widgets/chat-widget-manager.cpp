@@ -241,6 +241,8 @@ void ChatWidgetManager::unregisterChatWidget(ChatWidget *chat)
 
 ChatWidget * ChatWidgetManager::byChat(Chat chat, bool create) const
 {
+	Q_UNUSED(create)
+
 	return Chats.contains(chat)
 		? Chats[chat]
 		: 0;
@@ -248,6 +250,9 @@ ChatWidget * ChatWidgetManager::byChat(Chat chat, bool create) const
 
 void ChatWidgetManager::activateChatWidget(ChatWidget *chatWidget, bool forceActivate)
 {
+	// TODO: 0.6.6
+	Q_UNUSED(forceActivate)
+
 	QWidget *win = chatWidget->window();
 	kdebugm(KDEBUG_INFO, "parent: %p\n", win);
 	chatWidget->makeActive();

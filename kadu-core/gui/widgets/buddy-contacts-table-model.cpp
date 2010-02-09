@@ -209,6 +209,8 @@ bool BuddyContactsTableModel::insertRows(int row, int count, const QModelIndex& 
 	}
 
 	endInsertRows();
+
+	return true;
 }
 
 bool BuddyContactsTableModel::removeRows(int row, int count, const QModelIndex& parent)
@@ -222,6 +224,8 @@ bool BuddyContactsTableModel::removeRows(int row, int count, const QModelIndex& 
 	}
 
 	endRemoveRows();
+
+	return true;
 }
 
 Qt::ItemFlags BuddyContactsTableModel::flags(const QModelIndex &index) const

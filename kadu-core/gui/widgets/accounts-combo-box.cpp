@@ -82,6 +82,8 @@ void AccountsComboBox::removeFilter(AbstractAccountFilter *filter)
 
 void AccountsComboBox::activatedSlot(int index)
 {
+	Q_UNUSED(index)
+
 	currentAccount(); // sets CurrentAccount variable
 }
 

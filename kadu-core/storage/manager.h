@@ -122,6 +122,7 @@ protected:
 	 */
 	virtual void itemAboutToBeAdded(Item item)
 	{
+		Q_UNUSED(item)
 	}
 
 	/**
@@ -132,6 +133,7 @@ protected:
 	 */
 	virtual void itemAdded(Item item)
 	{
+		Q_UNUSED(item)
 	}
 
 	/**
@@ -142,6 +144,7 @@ protected:
 	 */
 	virtual void itemAboutToBeRemoved(Item item)
 	{
+		Q_UNUSED(item)
 	}
 
 	/**
@@ -152,6 +155,7 @@ protected:
 	 */
 	virtual void itemRemoved(Item item)
 	{
+		Q_UNUSED(item)
 	}
 
 	/**
@@ -164,6 +168,7 @@ protected:
 	 */
 	virtual void itemAboutToBeRegistered(Item item)
 	{
+		Q_UNUSED(item)
 	}
 
 	/**
@@ -176,6 +181,7 @@ protected:
 	 */
 	virtual void itemRegistered(Item item)
 	{
+		Q_UNUSED(item)
 	}
 
 	/**
@@ -188,6 +194,7 @@ protected:
 	 */
 	virtual void itemAboutToBeUnregisterd(Item item)
 	{
+		Q_UNUSED(item)
 	}
 
 	/**
@@ -200,6 +207,7 @@ protected:
 	 */
 	virtual void itemUnregistered(Item item)
 	{
+		Q_UNUSED(item)
 	}
 
 	/**
@@ -315,7 +323,7 @@ public:
 	{
 		ensureLoaded();
 
-		if (index < 0 || index >= count())
+		if (index >= count())
 			return Item::null;
 
 		return ItemsWithDetails.at(index);

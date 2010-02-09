@@ -65,6 +65,7 @@ void GaduSearchService::searchNext()
 		QString bufYear = Query.BirthYearFrom + ' ' + Query.BirthYearTo;
 		gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, (const char *)unicode2cp(bufYear).data());
 	}
+
 	switch (Query.SearchBuddy.gender())
 	{
 		case GenderMale:
@@ -72,6 +73,9 @@ void GaduSearchService::searchNext()
 			break;
 		case GenderFemale:
 			gg_pubdir50_add(req, GG_PUBDIR50_GENDER, GG_PUBDIR50_GENDER_FEMALE);
+			break;
+		case GenderUnknown:
+			// do nothing
 			break;
 	}
 

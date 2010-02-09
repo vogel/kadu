@@ -32,6 +32,8 @@
  */
 extern "C" KADU_EXPORT int phonon_sound_init(bool firstLoad)
 {
+	Q_UNUSED(firstLoad)
+
 	kdebugf();
 
 	phonon_player = new PhononPlayer();

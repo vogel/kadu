@@ -29,7 +29,7 @@
 #include "kadudbus.h"
 #include "kadurootobject.h"
 
-extern "C" KADU_EXPORT int dbus_init(bool firstLoad)
+extern "C" KADU_EXPORT int dbus_init(bool)
 {
 	dbus = new KaduDBus();
 	return 0;

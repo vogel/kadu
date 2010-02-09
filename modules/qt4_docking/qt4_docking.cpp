@@ -40,7 +40,9 @@
 
 extern "C" int qt4_docking_init(bool firstLoad)
 {
-	qt4_tray_icon = new Qt4TrayIcon(NULL);
+	Q_UNUSED(firstLoad)
+
+	qt4_tray_icon = new Qt4TrayIcon(0);
 
 	return 0;
 }
@@ -48,11 +50,12 @@ extern "C" int qt4_docking_init(bool firstLoad)
 extern "C" void qt4_docking_close()
 {
 	delete qt4_tray_icon;
-	qt4_tray_icon = NULL;
+	qt4_tray_icon = 0;
 }
 
 
-Qt4TrayIcon::Qt4TrayIcon(QWidget *parent) : Movie(0)
+Qt4TrayIcon::Qt4TrayIcon(QWidget *parent) :
+		QSystemTrayIcon(parent), Movie(0)
 {
 	kdebugf();
 

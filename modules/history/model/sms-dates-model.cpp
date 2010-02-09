@@ -41,6 +41,8 @@ SmsDatesModel::~SmsDatesModel()
 
 int SmsDatesModel::columnCount(const QModelIndex &parent) const
 {
+	Q_UNUSED(parent)
+
     return 2;
 }
 

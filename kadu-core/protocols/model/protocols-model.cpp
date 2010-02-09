@@ -39,6 +39,8 @@ ProtocolsModel::~ProtocolsModel()
 
 int ProtocolsModel::rowCount(const QModelIndex &parent) const
 {
+	Q_UNUSED(parent)
+
 	return ProtocolsManager::instance()->protocolFactories().count();
 }
 
@@ -63,6 +65,10 @@ QVariant ProtocolsModel::data(const QModelIndex &index, int role) const
 
 QVariant ProtocolsModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
+	Q_UNUSED(section)
+	Q_UNUSED(orientation)
+	Q_UNUSED(role)
+
 	return QVariant();
 }
 

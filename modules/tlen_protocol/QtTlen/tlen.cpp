@@ -552,6 +552,9 @@ QDomElement tlen::textNode(const QString &name, const QString &text)
 // TODO!!
 QString tlen::getTextNode(const QDomElement &n, const QString &name)
 {
+	Q_UNUSED(n)
+	Q_UNUSED(name)
+
 	return QString();
 }
 

@@ -33,8 +33,8 @@ ConfigCheckBox::ConfigCheckBox(const QString &section, const QString &item, cons
 	createWidgets();
 }
 
-ConfigCheckBox::ConfigCheckBox(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager, char *name)
-	: QCheckBox(parentConfigGroupBox->widget()), ConfigWidgetValue(parentConfigGroupBox, dataManager)
+ConfigCheckBox::ConfigCheckBox(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager) :
+		QCheckBox(parentConfigGroupBox->widget()), ConfigWidgetValue(parentConfigGroupBox, dataManager)
 {
 }
 

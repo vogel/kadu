@@ -138,6 +138,9 @@ TlenProtocol::~TlenProtocol()
 
 void TlenProtocol::fetchAvatars(QString jid, QString type, QString md5)
 {
+	Q_UNUSED(type)
+	Q_UNUSED(md5)
+
 	kdebugf();
 
 	Contact contact = ContactManager::instance()->byId(account(), jid, ActionCreateAndAdd);
@@ -503,6 +506,8 @@ void TlenProtocol::contactAboutToBeRemoved(Contact contact)
 
 void TlenProtocol::contactIdChanged(Contact contact, const QString &oldId)
 {
+	Q_UNUSED(oldId)
+
 	if (contact.contactAccount() != account() || !isConnected() || !TlenClient)
 		return;
 
@@ -512,6 +517,8 @@ void TlenProtocol::contactIdChanged(Contact contact, const QString &oldId)
 
 void TlenProtocol::itemReceived(QString jid, QString name, QString subscription, QString group)
 {
+	Q_UNUSED(subscription)
+
 	kdebugf();
 	kdebugm(KDEBUG_WARNING, "Tlen contact rcv %s\n", qPrintable(jid));
 
@@ -646,6 +653,8 @@ void TlenProtocol::authorizationAsk(QString to)
 
 void TlenProtocol::removeItem(QString a)
 {
+	Q_UNUSED(a)
+
 	kdebugf();
 }
 
@@ -676,6 +685,8 @@ void TlenProtocol::tlenStatusUpdate()	// FOR TLEN TO WRITE STATUS
 
 void TlenProtocol::eventReceived(QDomNode a)
 {
+	Q_UNUSED(a)
+
 	kdebugf();
 }
 
@@ -719,6 +730,8 @@ void TlenProtocol::chatNotify(QString from, QString type)
 
 bool TlenProtocol::validateUserID(const QString& uid)
 {
+	Q_UNUSED(uid)
+
 	//TODO:
 	return true;
 }

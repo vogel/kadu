@@ -45,6 +45,8 @@ OAuthToken & OAuthToken::operator = (const OAuthToken &copyMe)
 	Token = copyMe.Token;
 	TokenSecret = copyMe.TokenSecret;
 	TokenExpiresIn = copyMe.TokenExpiresIn;
+
+	return *this;
 }
 
 bool OAuthToken::isValid()

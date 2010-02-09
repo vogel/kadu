@@ -44,7 +44,7 @@ class QFile;
 
 class GaduFileTransferHandler;
 
-class GADU_LOCAL DccSocketNotifiers : public GaduSocketNotifiers
+class /*GADU_LOCAL*/ DccSocketNotifiers : public GaduSocketNotifiers
 {
 	Q_OBJECT
 

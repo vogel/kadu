@@ -93,6 +93,8 @@ FileTransferActions::~FileTransferActions()
 
 void FileTransferActions::sendFileActionActivated(QAction *sender, bool toggled)
 {
+	Q_UNUSED(toggled)
+
 	kdebugf();
 
 	MainWindow *kaduMainWindow = dynamic_cast<MainWindow *>(sender->parent());
@@ -108,6 +110,9 @@ void FileTransferActions::sendFileActionActivated(QAction *sender, bool toggled)
 
 void FileTransferActions::toggleFileTransferWindow(QAction *sender, bool toggled)
 {
+	Q_UNUSED(sender)
+	Q_UNUSED(toggled)
+
 	if (FileTransferManager::instance()->isFileTransferWindowVisible())
 		FileTransferManager::instance()->hideFileTransferWindow();
 	else

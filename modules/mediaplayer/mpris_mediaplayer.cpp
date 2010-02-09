@@ -39,7 +39,7 @@
 #include "mpris_mediaplayer.h"
 #include "mpris_controller.h"
 
-MPRISMediaPlayer::MPRISMediaPlayer(QString n, QString s) : name(n), service(s)
+MPRISMediaPlayer::MPRISMediaPlayer(QString n, QString s) : service(s), name(n)
 {
 	kdebugf();
 	controller = new MPRISController(service);
@@ -163,7 +163,6 @@ QStringList MPRISMediaPlayer::getPlayListTitles()
 	}
 
 	return list;
-	kdebugf2();
 }
 
 QStringList MPRISMediaPlayer::getPlayListFiles()
@@ -184,14 +183,12 @@ QStringList MPRISMediaPlayer::getPlayListFiles()
 		list << file;
 	}
 	return list;
-	kdebugf2();
 }
 
 uint MPRISMediaPlayer::getPlayListLength()
 {
 	kdebugf();
 	return getInt("/TrackList", "GetLength");
-	kdebugf2();
 }
 
 QString MPRISMediaPlayer::getTitle(int position)
@@ -244,7 +241,6 @@ QString MPRISMediaPlayer::getFile(int position)
 		file = getStringMapValue("/TrackList", "GetMetadata", position, "URI");
 
 	return file;
-	kdebugf2();
 }
 
 int MPRISMediaPlayer::getLength(int position)

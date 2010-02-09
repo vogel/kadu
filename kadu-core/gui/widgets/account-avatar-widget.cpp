@@ -72,6 +72,8 @@ void AccountAvatarWidget::createGui()
 
 void AccountAvatarWidget::protocolRegistered(ProtocolFactory *protocolFactory)
 {
+	Q_UNUSED(protocolFactory)
+
 	if (Service)
 		disconnect(Service, SIGNAL(avatarUploaded(bool, QImage)), this, SLOT(avatarUploaded(bool, QImage)));
 

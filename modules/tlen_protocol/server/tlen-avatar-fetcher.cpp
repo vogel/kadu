@@ -82,7 +82,7 @@ void TlenAvatarFetcher::avatarDownloaded()
 	QPixmap pixmap;
 
 	// 200 OK and buffer not empty and image can convert
-	if (!MyHttp->data().isEmpty() && MyHttp->status() == 200 || pixmap.loadFromData(MyHttp->data()))
+	if (!MyHttp->data().isEmpty() && MyHttp->status() == 200 && pixmap.loadFromData(MyHttp->data()))
 	{
 		if (MyContact.contactAvatar().isNull())
 			MyContact.setContactAvatar(Avatar());

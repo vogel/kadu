@@ -83,6 +83,7 @@
 
 #include "sha1.h"
 #include <stdlib.h>
+#include <string.h>
 
 /*
  *  Define the SHA1 circular left shift macro
@@ -298,6 +299,7 @@ void SHA1ProcessMessageBlock(SHA1Context *context)
     /*
      *  Initialize the first 16 words in the array W
      */
+
     for(t = 0; t < 16; t++)
     {
         W[t] = context->Message_Block[t * 4] << 24;
@@ -448,16 +450,18 @@ char *TlenSha1(char *str, int len)
 	char *result;
 	int i;
 
-	if (str=="\0")
-		return "\0";
+	if (0 == str)
+		return (char*)"\0";
+	if (0 == strncmp(str, "\0", 1))
+		return (char*)"\0";
 	if (SHA1Reset(&sha))
-		return "\0";
+		return (char*)"\0";
 	if (SHA1Input(&sha, (const uint8_t*)str, len))
-		return "\0";
+		return (char*)"\0";
 	if (SHA1Result(&sha, digest))
-		return "\0";
-	if ((result=(char *)malloc(20)) == "\0")
-		return "\0";
+		return (char*)"\0";
+	if ((result=(char *)malloc(20)) == 0)
+		return (char*)"\0";
 	for (i=0; i<20; i++)
 		result[i]=digest[4*(i>>2)+(3-(i&0x3))];
 	return result;

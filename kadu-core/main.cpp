@@ -119,6 +119,8 @@ class KaduApplication: public QApplication
 #endif
 		void commitData(QSessionManager & manager)
 		{
+			Q_UNUSED(manager)
+
 			qApp->quit();
 		}
 #ifdef Q_OS_MAC

@@ -50,6 +50,9 @@ void GaduAvatarFetcher::fetchAvatar()
 
 void GaduAvatarFetcher::requestFinished(int id, bool error)
 {
+	Q_UNUSED(id)
+	Q_UNUSED(error)
+
 	QString response(MyBuffer.data());
 
 	if (response.isEmpty())
@@ -166,6 +169,9 @@ void GaduAvatarFetcher::requestFinished(int id, bool error)
 
 void GaduAvatarFetcher::avatarDownloaded(int id, bool error)
 {
+	Q_UNUSED(id)
+	Q_UNUSED(error)
+
 	emit avatarFetched(MyContact, AvatarBuffer.buffer());
 
 	deleteLater();

@@ -52,7 +52,7 @@ public:
 
 	virtual CallbackCapacity callbackCapacity() { return CallbackSupported; }
 
-	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0) { return 0; }
+	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0) { Q_UNUSED(parent); return 0; }
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 	virtual void notify(Notification *notification);
 

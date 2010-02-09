@@ -40,13 +40,13 @@ QString FormattedMessagePart::replaceLoadingImages(QString message, const QStrin
 	return message.replace(loadingImageHtml(imageId), img);
 }
 
-FormattedMessagePart::FormattedMessagePart(const QString &content, bool bold, bool italic, bool underline, QColor color)
-	: Image(false), ImageDelayed(false), Content(content), Bold(bold), Italic(italic), Underline(underline), Color(color)
+FormattedMessagePart::FormattedMessagePart(const QString &content, bool bold, bool italic, bool underline, QColor color) :
+		Content(content), Bold(bold), Italic(italic), Underline(underline), Color(color), Image(false), ImageDelayed(false)
 {
 }
 
 FormattedMessagePart::FormattedMessagePart(const QString &image, bool imageDelayed) :
-		Image(true), ImageDelayed(imageDelayed), Content("\n"),
+		Content("\n"), Image(true), ImageDelayed(imageDelayed), 
 		ImagePath(imageDelayed ? QString::null : image),
 		ImageId(imageDelayed ? image : QString::null)
 {

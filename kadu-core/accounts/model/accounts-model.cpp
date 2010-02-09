@@ -52,11 +52,15 @@ AccountsModel::~AccountsModel()
 
 int AccountsModel::columnCount(const QModelIndex &parent) const
 {
+	Q_UNUSED(parent)
+
 	return 2;
 }
 
 int AccountsModel::rowCount(const QModelIndex &parent) const
 {
+	Q_UNUSED(parent)
+
 	return AccountManager::instance()->count();
 }
 
@@ -122,12 +126,16 @@ QModelIndex AccountsModel::accountModelIndex(Account account)
 
 void AccountsModel::accountAboutToBeRegistered(Account account)
 {
+	Q_UNUSED(account)
+
 	int count = rowCount();
 	beginInsertRows(QModelIndex(), count, count);
 }
 
 void AccountsModel::accountRegistered(Account account)
 {
+	Q_UNUSED(account)
+
 	endInsertRows();
 }
 
@@ -139,5 +147,7 @@ void AccountsModel::accountAboutToBeUnregistered(Account account)
 
 void AccountsModel::accountUnregistered(Account account)
 {
+	Q_UNUSED(account)
+
 	endRemoveRows();
 }

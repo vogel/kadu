@@ -149,6 +149,10 @@ void ActionsProxyModel::sourceColumnsAboutToBeInserted(const QModelIndex &source
 
 void ActionsProxyModel::sourceColumnsInserted(const QModelIndex &sourceParent, int start, int end)
 {
+	Q_UNUSED(sourceParent)
+	Q_UNUSED(start)
+	Q_UNUSED(end)
+
 	endInsertColumns();
 }
 
@@ -165,6 +169,10 @@ void ActionsProxyModel::sourceRowsAboutToBeRemoved(const QModelIndex &sourcePare
 
 void ActionsProxyModel::sourceRowsRemoved(const QModelIndex &sourceParent, int start, int end)
 {
+	Q_UNUSED(sourceParent)
+	Q_UNUSED(start)
+	Q_UNUSED(end)
+
 	endRemoveRows();
 }
 
@@ -175,6 +183,10 @@ void ActionsProxyModel::sourceColumnsAboutToBeRemoved(const QModelIndex &sourceP
 
 void ActionsProxyModel::sourceColumnsRemoved(const QModelIndex &sourceParent, int start, int end)
 {
+	Q_UNUSED(sourceParent)
+	Q_UNUSED(start)
+	Q_UNUSED(end)
+
 	endRemoveColumns();
 }
 
@@ -203,11 +215,15 @@ int ActionsProxyModel::rowCount(const QModelIndex &parent) const
 
 QModelIndex ActionsProxyModel::index(int row, int column, const QModelIndex &parent) const
 {
+	Q_UNUSED(parent)
+
 	return createIndex(row, column, 0);
 }
 
 QModelIndex ActionsProxyModel::parent(const QModelIndex &child) const
 {
+	Q_UNUSED(child)
+
 	return QModelIndex(); // no parent, only plain list
 }
 

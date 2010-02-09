@@ -39,7 +39,7 @@ AccountShared * AccountShared::loadFromStorage(StoragePoint *storagePoint)
 }
 
 AccountShared::AccountShared(QUuid uuid) :
-		Shared(uuid), BaseStatusContainer(this),
+		BaseStatusContainer(this), Shared(uuid),
 		ProtocolHandler(0), RememberPassword(false), HasPassword(false),
 		ConnectAtStart(true), UseProxy(false), ProxyPort(0)
 {

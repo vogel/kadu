@@ -44,7 +44,7 @@ void GroupBuddyFilter::setGroup(Group group)
 bool GroupBuddyFilter::acceptBuddy(Buddy buddy)
 {
 	return !CurrentGroup // use AllGroupor UngroupedGroup
-			? (AllGroupShown && buddy.showInAllGroup() || !AllGroupShown && buddy.groups().isEmpty())
+			? ((AllGroupShown && buddy.showInAllGroup()) || (!AllGroupShown && buddy.groups().isEmpty()))
 			: buddy.isInGroup(CurrentGroup);
 }
 

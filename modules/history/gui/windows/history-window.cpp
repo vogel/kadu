@@ -340,6 +340,10 @@ void HistoryWindow::selectHistoryItem(HistoryTreeItem item)
 {
 	switch (item.type())
 	{
+		case HistoryTypeNone:
+			// do nothing
+			break;
+
 		case HistoryTypeChat:
 			selectChat(item.chat());
 			break;
@@ -449,6 +453,10 @@ void HistoryWindow::treeItemActivated(HistoryTreeItem item)
 {
 	switch (item.type())
 	{
+		case HistoryTypeNone:
+			// do nothing
+			break;
+
 		case HistoryTypeChat:
 			chatActivated(item.chat());
 			break;
@@ -483,6 +491,10 @@ void HistoryWindow::dateActivated(const QModelIndex &index)
 
 	switch (treeItem.type())
 	{
+		case HistoryTypeNone:
+			// do nothing
+			break;
+
 		case HistoryTypeChat:
 		{
 			Chat chat = treeItem.chat();

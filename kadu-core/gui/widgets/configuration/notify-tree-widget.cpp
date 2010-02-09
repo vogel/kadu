@@ -162,6 +162,8 @@ int NotifyTreeWidget::eventColumnWidth()
 
 void NotifyTreeWidget::resizeEvent(QResizeEvent *event)
 {
+	Q_UNUSED(event)
+
 	header()->resizeSection(0, eventColumnWidth());
 }
 

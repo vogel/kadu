@@ -294,6 +294,7 @@ void EmoticonsManager::expandEmoticons(HtmlDocument &doc, const QColor &bgcolor,
 			int idx = walker -> checkEmotOccurrence(text[j]);
 			// when some emot from dictionary is ending at current character
 			if (idx >= 0)
+			{
 				// check if there already was some occurence, whose
 				// beginning is before beginning of currently found one
 				if (lastEmot >= 0 && lastBegin < j - Aliases[idx].alias.length() + 1)
@@ -316,6 +317,7 @@ void EmoticonsManager::expandEmoticons(HtmlDocument &doc, const QColor &bgcolor,
 					lastEmot = idx;
 					lastBegin = j - Aliases[lastEmot].alias.length() + 1;
 				}
+			}
 		}
 		// this is the case, when only one emot was found in current text part
 		if (lastEmot >= 0)

@@ -28,8 +28,9 @@
 #include "server-status-widget.h"
 
 ServerStatusWidget::ServerStatusWidget(QString watchedAddress, quint16 watchedPort, QString hostName, QWidget *parent) :
-		QWidget(parent), CurrentState(Empty),
-		WatchedAddress(watchedAddress), WatchedPort(watchedPort ? watchedPort : 8074), WatchedHostName(hostName)
+		QWidget(parent), WatchedAddress(watchedAddress), WatchedPort(watchedPort ? watchedPort : 8074),
+		WatchedHostName(hostName), CurrentState(Empty)
+		
 {
 	QHBoxLayout *layout = new QHBoxLayout(this);
 	PixmapLabel = new QLabel(this);
@@ -82,6 +83,8 @@ void ServerStatusWidget::connected()
 
 void ServerStatusWidget::connectionError(QAbstractSocket::SocketError socketError)
 {
+	Q_UNUSED(socketError)
+
 	TcpSocket.disconnectFromHost();
 	setNewState(Unavailable);
 }

@@ -41,7 +41,9 @@ BuddyStatusDatesModel::~BuddyStatusDatesModel()
 
 int BuddyStatusDatesModel::columnCount(const QModelIndex &parent) const
 {
-    return 2;
+	Q_UNUSED(parent)
+
+	return 2;
 }
 
 int BuddyStatusDatesModel::rowCount(const QModelIndex &parent) const

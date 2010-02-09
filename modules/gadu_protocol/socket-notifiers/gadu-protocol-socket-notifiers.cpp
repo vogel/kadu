@@ -44,9 +44,8 @@
 #include "gadu-protocol-socket-notifiers.h"
 
 GaduProtocolSocketNotifiers::GaduProtocolSocketNotifiers(Account account, GaduProtocol *protocol, QObject *parent) :
-			CurrentAccount(account), CurrentProtocol(protocol),
-			GaduSocketNotifiers(parent), Sess(0),
-			Timeout(config_file.readUnsignedNumEntry("Network", "TimeoutInMs"))
+	GaduSocketNotifiers(parent), CurrentAccount(account), CurrentProtocol(protocol), Sess(0),
+		Timeout(config_file.readUnsignedNumEntry("Network", "TimeoutInMs"))
 {
 }
 
@@ -199,11 +198,15 @@ void GaduProtocolSocketNotifiers::handleEventConnFailed(struct gg_event *e)
 
 void GaduProtocolSocketNotifiers::handleEventConnSuccess(struct gg_event *e)
 {
+	Q_UNUSED(e)
+
 	CurrentProtocol->socketConnSuccess();
 }
 
 void GaduProtocolSocketNotifiers::handleEventDisconnect(struct gg_event *e)
 {
+	Q_UNUSED(e)
+
 	CurrentProtocol->socketDisconnected();
 
 	// close connection

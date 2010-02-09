@@ -122,6 +122,9 @@ else(WIN32)
   LIST(APPEND SOURCES_IRIS libiris/iris/irisnet/corelib/netinterface_unix.cpp)
 endif(WIN32)
 
+set (CMAKE_C_FLAGS "")
+set (CMAKE_CXX_FLAGS "")
+
 set (MOC_SOURCES_IRIS
 	#libiris/iris/xmpp/base/randrandomnumbergenerator.h
 	#libiris/iris/xmpp/base/randomnumbergenerator.h

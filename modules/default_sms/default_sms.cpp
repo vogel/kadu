@@ -47,13 +47,15 @@
  */
 extern "C" KADU_EXPORT int default_sms_init(bool firstLoad)
 {
+	Q_UNUSED(firstLoad)
+
 	kdebugf();
 
 	SmsGatewayManager::instance()->registerGateway(new SmsOrangeGateway());
 	SmsGatewayManager::instance()->registerGateway(new SmsPlusGateway());
 	SmsGatewayManager::instance()->registerGateway(new SmsEraGateway());
 
-	defaultSmsConfigurationUiHandler = new DefaultSmsConfigurationUiHandler(NULL, "sms_gateway_slots");
+	defaultSmsConfigurationUiHandler = new DefaultSmsConfigurationUiHandler();
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/default_sms.ui"));
 	MainConfigurationWindow::registerUiHandler(defaultSmsConfigurationUiHandler);
 
@@ -393,8 +395,8 @@ void SmsEraGateway::createDefaultConfiguration()
 	config_file.addVariable("SMS", "EraGateway", "Sponsored");
 }
 
-DefaultSmsConfigurationUiHandler::DefaultSmsConfigurationUiHandler(QObject *parent, const char *name) :
-	QObject(parent), era_types(), era_values(), actualEraGateway()
+DefaultSmsConfigurationUiHandler::DefaultSmsConfigurationUiHandler(QObject *parent) :
+		QObject(parent), era_types(), era_values(), actualEraGateway()
 {
 	kdebugf();
 

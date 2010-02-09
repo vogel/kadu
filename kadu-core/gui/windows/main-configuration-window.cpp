@@ -298,7 +298,8 @@ void MainConfigurationWindow::setIconThemes()
 	ConfigComboBox *iconThemes = dynamic_cast<ConfigComboBox *>(widget()->widgetById("iconThemes"));
 	IconsManager::instance()->setPaths((dynamic_cast<PathListEdit *>(widget()->widgetById("iconPaths")))->pathList());
 
-	QT_TRANSLATE_NOOP("@default", "default");
+	// TODO: 0.6.6
+//	QT_TRANSLATE_NOOP("@default", "default");
 	QStringList themes = IconsManager::instance()->themes();
 	QStringList captions;
 	themes.sort();
@@ -356,6 +357,8 @@ QString MainConfigurationWindow::findExecutable(const QStringList &paths, const 
 
 void MainConfigurationWindow::onChangeEmoticonsStyle(int index)
 {
+	Q_UNUSED(index)
+
 	emoticonsThemeComboBox->setEnabled(emoticonsStyleComboBox->currentItemValue() != "0");
 }
 

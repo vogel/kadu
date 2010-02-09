@@ -70,6 +70,10 @@ QSettings::SettingsMap parseDict(const QDomNode &rootElement)
 
 bool plistWriteFunction(QIODevice &device, const QSettings::SettingsMap &map)
 {
+	Q_UNUSED(device)
+	Q_UNUSED(map)
+
+	return true;
 }
 
 bool plistReadFunction(QIODevice &device, QSettings::SettingsMap &map)

@@ -54,6 +54,8 @@ GroupsModel::~GroupsModel()
 
 int GroupsModel::rowCount(const QModelIndex &parent) const
 {
+	Q_UNUSED(parent)
+
 	return GroupManager::instance()->count();
 }
 
@@ -111,12 +113,16 @@ QModelIndex GroupsModel::groupModelIndex(Group group)
 
 void GroupsModel::groupAboutToBeAdded(Group group)
 {
+	Q_UNUSED(group)
+
 	int count = rowCount();
 	beginInsertRows(QModelIndex(), count, count);
 }
 
 void GroupsModel::groupAdded(Group group)
 {
+	Q_UNUSED(group)
+
 	endInsertRows();
 }
 
@@ -128,5 +134,7 @@ void GroupsModel::groupAboutToBeRemoved(Group group)
 
 void GroupsModel::groupRemoved(Group group)
 {
+	Q_UNUSED(group)
+
 	endRemoveRows();
 }

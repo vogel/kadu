@@ -58,6 +58,8 @@ void BuddiesModelBase::accountUnregistered(Account account)
 
 void BuddiesModelBase::buddyStatusChanged(Contact contact, Status oldStatus)
 {
+	Q_UNUSED(oldStatus)
+
 	QModelIndex index = buddyIndex(contact.ownerBuddy());
 
 	if (index.isValid())
@@ -71,6 +73,8 @@ QModelIndex BuddiesModelBase::index(int row, int column, const QModelIndex &pare
 
 int BuddiesModelBase::columnCount(const QModelIndex &parent) const
 {
+	Q_UNUSED(parent)
+
 	return 1;
 }
 

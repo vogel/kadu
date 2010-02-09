@@ -75,10 +75,10 @@ void HtmlMessagesRenderer::pruneMessages()
 
 	if (!PruneEnabled || ChatStylesManager::instance()->prune() == 0)
 		return;
-	
+
 	if (MyChatMessages.count() <= ChatStylesManager::instance()->prune())
 		return;
-	
+
 	QList<MessageRenderInfo *>::iterator start = MyChatMessages.begin();
 	QList<MessageRenderInfo *>::iterator stop = MyChatMessages.end() - ChatStylesManager::instance()->prune();
 	for (QList<MessageRenderInfo *>::iterator it = start; it != stop; ++it)
@@ -86,7 +86,7 @@ void HtmlMessagesRenderer::pruneMessages()
 		delete *it;
 		ChatStylesManager::instance()->currentEngine()->pruneMessage(this);
 	}
-	
+
 	MyChatMessages.erase(start, stop);
 }
 
@@ -156,6 +156,10 @@ void HtmlMessagesRenderer::updateBackgroundsAndColors()
 				message->setBackgroundColor(usrBackgroundColor)
 					.setNickColor(usrNickColor)
 					.setFontColor(usrFontColor);
+				break;
+
+			default:
+				// do nothing
 				break;
 		}
 		

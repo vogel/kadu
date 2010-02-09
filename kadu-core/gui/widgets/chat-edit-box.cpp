@@ -256,6 +256,8 @@ void ChatEditBox::openInsertImageDialog()
 
 		foreach (const Contact &contact, CurrentChat.contacts())
 		{
+			Q_UNUSED(contact)
+
 			// TODO: 0.6.6
 // 			if (contact && contact->hasFeature(/*EmbedImageInChatMessage*/))
 // 			{

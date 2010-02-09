@@ -31,8 +31,8 @@
 
 #include "custom-input.h"
 
-CustomInput::CustomInput(QWidget *parent)
-	: QTextEdit(parent), autosend_enabled(true), CopyPossible(false)
+CustomInput::CustomInput(QWidget *parent) :
+		QTextEdit(parent), CopyPossible(false), autosend_enabled(true)
 {
 	kdebugf();
 

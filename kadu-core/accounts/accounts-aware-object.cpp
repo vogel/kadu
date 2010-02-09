@@ -25,10 +25,12 @@ KADU_AWARE_CLASS(AccountsAwareObject)
 
 void AccountsAwareObject::accountAdded(Account account)
 {
+	Q_UNUSED(account)
 }
 
 void AccountsAwareObject::accountRemoved(Account account)
 {
+	Q_UNUSED(account)
 }
 
 void AccountsAwareObject::notifyAccountAdded(Account account)

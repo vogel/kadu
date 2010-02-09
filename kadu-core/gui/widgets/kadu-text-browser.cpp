@@ -157,7 +157,6 @@ void KaduTextBrowser::saveImage()
 	if (image.isEmpty())
 		return;
 
-	int fdResult;
 	QString fileExt = '.' + image.section('.', -1);
 
 	QFileDialog fd(this);
@@ -176,6 +175,7 @@ void KaduTextBrowser::saveImage()
 
 		QString file = fd.selectedFiles()[0];
 		if (QFile::exists(file))
+		{
 			if (MessageDialog::ask(tr("File already exists. Overwrite?")))
 			{
 				QFile removeMe(file);
@@ -187,6 +187,7 @@ void KaduTextBrowser::saveImage()
 			}
 			else
 				continue;
+		}
 
 		QString dst = file;
 		if (!dst.endsWith(fileExt))

@@ -70,6 +70,8 @@ void GaduContactListService::handleEventUserlistGetReply(struct gg_event *e)
 
 void GaduContactListService::handleEventUserlistPutReply(struct gg_event *e)
 {
+	Q_UNUSED(e)
+
 	emit contactListExported(true);
 	return;
 }

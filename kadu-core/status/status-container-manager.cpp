@@ -170,6 +170,10 @@ QString StatusContainerManager::statusNamePrefix()
 
 void StatusContainerManager::disconnectAndStoreLastStatus(bool disconnectWithCurrentDescription, const QString& disconnectDescription)
 {
+	// TODO: 0.6.6
+	Q_UNUSED(disconnectWithCurrentDescription)
+	Q_UNUSED(disconnectDescription)
+
 	foreach (StatusContainer *statusContainer, StatusContainers)
 		statusContainer->disconnectAndStoreLastStatus(DisconnectWithCurrentDescription, DisconnectDescription);
 }

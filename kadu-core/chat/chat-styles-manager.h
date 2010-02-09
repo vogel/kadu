@@ -65,7 +65,7 @@ class ChatStylesManager : public QObject, ConfigurationAwareObject, CompositingA
 	unsigned int CfgNoHeaderInterval; /*!< Time Interval, in which headers will not be repeated*/
 	unsigned int ParagraphSeparator; /*!< Message separator height. */
 
-	unsigned int Prune; /*!< Maximal number of visible messages. */
+	int Prune; /*!< Maximal number of visible messages. */
 
 	bool NoServerTime; /*!< Remove server time */
 	int NoServerTimeDiff; /*!< Maximal time difference between server time and local time, for which server time will be removed */
@@ -124,7 +124,7 @@ public:
 	bool noServerTime() { return NoServerTime; }
 	int noServerTimeDiff() { return NoServerTimeDiff; }
 
-	unsigned int prune() { return Prune; }
+	int prune() { return Prune; }
 
 	QString mainStyle() { return MainStyle; }
 

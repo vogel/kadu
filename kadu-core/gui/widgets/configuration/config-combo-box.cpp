@@ -32,6 +32,9 @@ ConfigComboBox::ConfigComboBox(const QString &section, const QString &item, cons
 	: QComboBox(parentConfigGroupBox->widget()), ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager), label(0),
 	    saveIndexNotCaption(0)
 {
+	Q_UNUSED(itemValues)
+	Q_UNUSED(itemCaptions)
+
 	createWidgets();
 }
 

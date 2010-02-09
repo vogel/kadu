@@ -68,6 +68,8 @@
  */
 extern "C" KADU_EXPORT int docking_init(bool firstLoad)
 {
+	Q_UNUSED(firstLoad)
+
 	docking_manager = new DockingManager();
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/docking.ui"));
 

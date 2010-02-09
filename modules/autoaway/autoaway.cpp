@@ -52,6 +52,8 @@ AutoAway *autoAway = 0;
 
 extern "C" KADU_EXPORT int autoaway_init(bool firstLoad)
 {
+	Q_UNUSED(firstLoad)
+
 	kdebugf();
 
 	autoAway = new AutoAway();

@@ -53,11 +53,15 @@ BuddyContactModel::~BuddyContactModel()
 
 int BuddyContactModel::columnCount(const QModelIndex &parent) const
 {
+	Q_UNUSED(parent)
+
 	return 2;
 }
 
 int BuddyContactModel::rowCount(const QModelIndex &parent) const
 {
+	Q_UNUSED(parent)
+
 	return SourceBuddy.contacts().count();
 }
 
@@ -122,12 +126,16 @@ QModelIndex BuddyContactModel::contactModelIndex(Contact data)
 
 void BuddyContactModel::contactAboutToBeAdded(Contact data)
 {
+	Q_UNUSED(data)
+
 	int count = rowCount();
 	beginInsertRows(QModelIndex(), count, count);
 }
 
 void BuddyContactModel::contactAdded(Contact data)
 {
+	Q_UNUSED(data)
+
 	endInsertRows();
 }
 
@@ -139,5 +147,7 @@ void BuddyContactModel::contactAboutToBeRemoved(Contact data)
 
 void BuddyContactModel::contactRemoved(Contact data)
 {
+	Q_UNUSED(data)
+
 	endRemoveRows();
 }

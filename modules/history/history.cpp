@@ -68,8 +68,9 @@
 
 extern "C" KADU_EXPORT int history_init(bool firstLoad)
 {
+	Q_UNUSED(firstLoad)
+
 	kdebugf();
-	History *h = History::instance();
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/history.ui"));
 	MainConfigurationWindow::registerUiHandler(History::instance());
 	kdebugf2();
@@ -117,7 +118,7 @@ History * History::instance()
 }
 
 History::History() :
-		QObject(0), HistoryDialog(new HistoryWindow()), CurrentStorage(0), SaveThread(0)
+		QObject(0), SaveThread(0), CurrentStorage(0), HistoryDialog(new HistoryWindow())
 {
 	kdebugf();
 	createActionDescriptions();
@@ -181,6 +182,8 @@ void History::deleteActionDescriptions()
 
 void History::showHistoryActionActivated(QAction *sender, bool toggled)
 {
+	Q_UNUSED(toggled)
+
 	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(sender->parent());
 	if (!chatEditBox)
 	{
@@ -263,7 +266,9 @@ void History::showMoreMessages(QAction *action)
 
 void History::clearHistoryActionActivated(QAction *sender, bool toggled)
 {
-    	if (!CurrentStorage)
+	Q_UNUSED(toggled)
+
+	if (!CurrentStorage)
 		return;
 
 	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
@@ -421,7 +426,7 @@ void History::stopSaveThread()
 
 void History::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	ConfigGroupBox *chatsGroupBox = mainConfigurationWindow->widget()->configGroupBox("Chat", "History", "Chats history");
+// 	ConfigGroupBox *chatsGroupBox = mainConfigurationWindow->widget()->configGroupBox("Chat", "History", "Chats history");
 	//TODO 0.6.6:
 /*	QWidget *selectedChatsUsersWidget = new QWidget(chatsGroupBox->widget());
 	QGridLayout *selectedChatsUsersLayout = new QGridLayout(selectedChatsUsersWidget);

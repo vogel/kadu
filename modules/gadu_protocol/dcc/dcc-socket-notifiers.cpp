@@ -112,6 +112,8 @@ bool DccSocketNotifiers::checkWrite()
 
 void DccSocketNotifiers::handleEventDccError(struct gg_event *e)
 {
+	Q_UNUSED(e)
+
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "%d\n", e->event.dcc_error);
 
 	finished(false);
@@ -119,6 +121,8 @@ void DccSocketNotifiers::handleEventDccError(struct gg_event *e)
 
 void DccSocketNotifiers::handleEventDccDone(struct gg_event *e)
 {
+	Q_UNUSED(e)
+
 	kdebugf();
 
 	finished(true);
@@ -126,6 +130,8 @@ void DccSocketNotifiers::handleEventDccDone(struct gg_event *e)
 
 void DccSocketNotifiers::handleEventDccClientAccept(struct gg_event *e)
 {
+	Q_UNUSED(e)
+
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "uin:%d peer_uin:%d\n", Socket->uin, Socket->peer_uin);
 
 	// TODO: make async TODO: 0.6.6
@@ -138,6 +144,8 @@ void DccSocketNotifiers::handleEventDccClientAccept(struct gg_event *e)
 
 void DccSocketNotifiers::handleEventDccCallback(struct gg_event *e)
 {
+	Q_UNUSED(e)
+
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "uin:%d peer_uin:%d\n", Socket->uin, Socket->peer_uin);
 
 	GaduFileTransferHandler *handler = Manager->findFileTransferHandler(this);
@@ -153,6 +161,8 @@ void DccSocketNotifiers::handleEventDccCallback(struct gg_event *e)
 
 void DccSocketNotifiers::handleEventDccNeedFileInfo(struct gg_event *e)
 {
+	Q_UNUSED(e)
+
 	kdebugf();
 
 	if (Version == Dcc6 && FileTransferHandler)
@@ -167,6 +177,8 @@ void DccSocketNotifiers::handleEventDccNeedFileInfo(struct gg_event *e)
 
 void DccSocketNotifiers::handleEventDccNeedFileAck(struct gg_event *e)
 {
+	Q_UNUSED(e)
+
 	kdebugf();
 
 	lock();
@@ -175,16 +187,22 @@ void DccSocketNotifiers::handleEventDccNeedFileAck(struct gg_event *e)
 
 void DccSocketNotifiers::handleEventDccNeedVoiceAck(struct gg_event *e)
 {
+	Q_UNUSED(e)
+
 	kdebugf();
 }
 
 void DccSocketNotifiers::handleEventDccVoiceData(struct gg_event *e)
 {
+	Q_UNUSED(e)
+
 	kdebugf();
 }
 
 void DccSocketNotifiers::handleEventDcc7Accept(struct gg_event *e)
 {
+	Q_UNUSED(e)
+
 	kdebugf();
 
 	accepted();
@@ -192,6 +210,8 @@ void DccSocketNotifiers::handleEventDcc7Accept(struct gg_event *e)
 
 void DccSocketNotifiers::handleEventDcc7Reject(struct gg_event *e)
 {
+	Q_UNUSED(e)
+
 	kdebugf();
 
 	rejected();
@@ -199,6 +219,8 @@ void DccSocketNotifiers::handleEventDcc7Reject(struct gg_event *e)
 
 void DccSocketNotifiers::handleEventDcc7Connected(struct gg_event *e)
 {
+	Q_UNUSED(e)
+
 	kdebugf();
 
 	watchFor(Socket7); // socket may change
@@ -206,6 +228,8 @@ void DccSocketNotifiers::handleEventDcc7Connected(struct gg_event *e)
 
 void DccSocketNotifiers::handleEventDcc7Error(struct gg_event *e)
 {
+	Q_UNUSED(e)
+
 	kdebugf();
 
 	finished(false);
@@ -213,6 +237,8 @@ void DccSocketNotifiers::handleEventDcc7Error(struct gg_event *e)
 
 void DccSocketNotifiers::handleEventDcc7Done(struct gg_event *e)
 {
+	Q_UNUSED(e)
+
 	kdebugf();
 
 	finished(true);
@@ -220,6 +246,8 @@ void DccSocketNotifiers::handleEventDcc7Done(struct gg_event *e)
 
 void DccSocketNotifiers::handleEventDcc7Pending(struct gg_event *e)
 {
+	Q_UNUSED(e)
+
 	kdebugf();
 
 	watchFor(Socket7); // socket may change
@@ -337,6 +365,8 @@ int DccSocketNotifiers::timeout()
 			return Socket7
 				? Socket7->timeout * 1000
 				: 0;
+		case DccUnknown:
+			return 0;
 	}
 
 	return 0;
@@ -396,6 +426,8 @@ UinType DccSocketNotifiers::peerUin()
 			return Socket->peer_uin;
 		case Dcc7:
 			return Socket7->peer_uin;
+		case DccUnknown:
+			return 0;
 	}
 
 	return 0;
@@ -409,6 +441,8 @@ unsigned long DccSocketNotifiers::fileSize()
 			return gg_fix32(Socket->file_info.size);
 		case Dcc7:
 			return gg_fix32(Socket7->size);
+		case DccUnknown:
+			return 0;
 	}
 
 	return 0;
@@ -422,6 +456,8 @@ unsigned long DccSocketNotifiers::transferredFileSize()
 			return gg_fix32(Socket->offset);
 		case Dcc7:
 			return gg_fix32(Socket7->offset);
+		case DccUnknown:
+			return 0;
 	}
 
 	return 0;
@@ -435,6 +471,8 @@ QString DccSocketNotifiers::remoteFileName()
 			return cp2unicode(QByteArray((const char *)Socket->file_info.filename));
 		case Dcc7:
 			return cp2unicode(QByteArray((const char *)Socket7->filename));
+		case DccUnknown:
+			return QString::null;
 	}
 
 	return QString::null;

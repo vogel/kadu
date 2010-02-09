@@ -37,7 +37,7 @@ IdentityShared * IdentityShared::loadFromStorage(StoragePoint *storagePoint)
 }
 
 IdentityShared::IdentityShared(const QUuid &uuid) :
-		Shared(uuid), BaseStatusContainer(this)
+		BaseStatusContainer(this), Shared(uuid)
 {
 }
 

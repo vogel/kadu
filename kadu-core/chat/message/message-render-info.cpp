@@ -143,6 +143,10 @@ MessageRenderInfo::MessageRenderInfo(const Message &msg) :
 			FontColor = config_file.readEntry("Look", "ChatUsrFontColor");
 			NickColor = config_file.readEntry("Look", "ChatUsrNickColor");
 			break;
+
+		default:
+			// do nothing
+			break;
 	}
 
 	HtmlMessageContent = MyMessage.content();

@@ -228,6 +228,8 @@ AccountEditWidget * YourAccounts::getAccountEditWidget(Account account)
 
 void YourAccounts::protocolChanged(ProtocolFactory *protocolFactory)
 {
+	Q_UNUSED(protocolFactory)
+
 	updateCurrentWidget();
 }
 
@@ -289,6 +291,9 @@ void YourAccounts::selectAccount(Account account)
 
 void YourAccounts::accountSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
 {
+	Q_UNUSED(selected)
+	Q_UNUSED(deselected)
+
 	updateCurrentWidget();
 }
 

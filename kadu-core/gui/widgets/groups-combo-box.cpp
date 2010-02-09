@@ -31,7 +31,7 @@
 
 #include "groups-combo-box.h"
 
-GroupsComboBox::GroupsComboBox(bool includeSelectGroups, QWidget *parent) :
+GroupsComboBox::GroupsComboBox(QWidget *parent) :
 		QComboBox(parent)
 {
 	Model = new GroupsModel(this);

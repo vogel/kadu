@@ -249,6 +249,8 @@ void ChatWidgetActions::autoSendActionActivated(QAction *sender, bool toggled)
 
 void ChatWidgetActions::clearActionActivated(QAction *sender, bool toggled)
 {
+	Q_UNUSED(toggled)
+
 	kdebugf();
 
 	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(sender->parent());
@@ -264,6 +266,8 @@ void ChatWidgetActions::clearActionActivated(QAction *sender, bool toggled)
 
 void ChatWidgetActions::insertImageActionActivated(QAction *sender, bool toggled)
 {
+	Q_UNUSED(toggled)
+
 	kdebugf();
 
 	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(sender->parent());
@@ -275,6 +279,8 @@ void ChatWidgetActions::insertImageActionActivated(QAction *sender, bool toggled
 
 void ChatWidgetActions::boldActionActivated(QAction *sender, bool toggled)
 {
+	Q_UNUSED(toggled)
+
 	kdebugf();
 
 	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(sender->parent());
@@ -288,6 +294,8 @@ void ChatWidgetActions::boldActionActivated(QAction *sender, bool toggled)
 
 void ChatWidgetActions::italicActionActivated(QAction *sender, bool toggled)
 {
+	Q_UNUSED(toggled)
+
 	kdebugf();
 
 	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(sender->parent());
@@ -301,6 +309,8 @@ void ChatWidgetActions::italicActionActivated(QAction *sender, bool toggled)
 
 void ChatWidgetActions::underlineActionActivated(QAction *sender, bool toggled)
 {
+	Q_UNUSED(toggled)
+
 	kdebugf();
 
 	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(sender->parent());
@@ -314,6 +324,8 @@ void ChatWidgetActions::underlineActionActivated(QAction *sender, bool toggled)
 
 void ChatWidgetActions::sendActionActivated(QAction *sender, bool toggled)
 {
+	Q_UNUSED(toggled)
+
 	kdebugf();
 
 	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(sender->parent());
@@ -329,6 +341,8 @@ void ChatWidgetActions::sendActionActivated(QAction *sender, bool toggled)
 
 void ChatWidgetActions::whoisActionActivated(QAction *sender, bool toggled)
 {
+	Q_UNUSED(toggled)
+
 	kdebugf();
 
 	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
@@ -351,6 +365,8 @@ void ChatWidgetActions::whoisActionActivated(QAction *sender, bool toggled)
 
 void ChatWidgetActions::ignoreUserActionActivated(QAction *sender, bool toggled)
 {
+	Q_UNUSED(toggled)
+
 	kdebugf();
 	Account account = AccountManager::instance()->defaultAccount();
 	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
@@ -391,6 +407,8 @@ void ChatWidgetActions::ignoreUserActionActivated(QAction *sender, bool toggled)
 
 void ChatWidgetActions::blockUserActionActivated(QAction *sender, bool toggled)
 {
+	Q_UNUSED(toggled)
+
 	kdebugf();
 
 	Account account = AccountManager::instance()->defaultAccount();
@@ -400,7 +418,7 @@ void ChatWidgetActions::blockUserActionActivated(QAction *sender, bool toggled)
 
 	ContactSet contacts = window->contacts();
 	BuddySet buddies = contacts.toBuddySet();
-	if (buddies.isEmpty());
+	if (buddies.isEmpty())
 		return;
 
 	bool on = true;
@@ -414,7 +432,7 @@ void ChatWidgetActions::blockUserActionActivated(QAction *sender, bool toggled)
 		}
 
 	foreach (Buddy buddy, buddies)
-		if (buddy.isAnonymous());
+		if (buddy.isAnonymous())
 			blocked_anonymous = true;
 
 	Chat chat = ChatManager::instance()->findChat(contacts);
@@ -447,6 +465,8 @@ void ChatWidgetActions::blockUserActionActivated(QAction *sender, bool toggled)
 
 void ChatWidgetActions::openChatActionActivated(QAction *sender, bool toggled)
 {
+	Q_UNUSED(toggled)
+
 	kdebugf();
 	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
 	if (!window)
@@ -461,6 +481,8 @@ void ChatWidgetActions::openChatActionActivated(QAction *sender, bool toggled)
 
 void ChatWidgetActions::colorSelectorActionActivated(QAction *sender, bool toggled)
 {
+	Q_UNUSED(toggled)
+
 	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(sender->parent());
 	if (!chatEditBox)
 		return;
@@ -474,6 +496,8 @@ void ChatWidgetActions::colorSelectorActionActivated(QAction *sender, bool toggl
 
 void ChatWidgetActions::insertEmoticonActionActivated(QAction *sender, bool toggled)
 {
+	Q_UNUSED(toggled)
+
 	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(sender->parent());
 	if (!chatEditBox)
 		return;

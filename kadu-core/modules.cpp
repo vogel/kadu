@@ -900,6 +900,9 @@ bool ModulesManager::deactivateModule(const QString& module_name, bool force)
 
 void ModulesManager::showDialog(QAction *sender, bool toggled)
 {
+	Q_UNUSED(sender)
+	Q_UNUSED(toggled)
+
 	kdebugf();
 
 	if (!Dialog)

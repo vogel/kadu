@@ -83,6 +83,8 @@ void BuddiesListViewDelegate::accountUnregistered(Account account)
 
 void BuddiesListViewDelegate::buddyStatusChanged(Contact contact, Status oldStatus)
 {
+	Q_UNUSED(oldStatus)
+
 	if (Model)
 		emit sizeHintChanged(Model->buddyIndex(contact.ownerBuddy()));
 }
@@ -239,7 +241,6 @@ void BuddiesListViewDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 	int displayHeight = fontMetrics.lineSpacing() + 3;
 
 	QPixmap pixmap = qvariant_cast<QPixmap>(index.data(Qt::DecorationRole));
-	int pixmapHeight = pixmap.height();
 
 	QString description = ShowDescription ? index.data(DescriptionRole).toString() : QString::null;
 	bool hasDescription = !description.isEmpty();
@@ -259,7 +260,6 @@ void BuddiesListViewDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 		descriptionHeight = (int)dd->size().height();
 	}
 
-	int height = qMax(pixmapHeight, displayHeight + descriptionHeight);
 	int itemHeight = AlignTop ? displayHeight : rect.height();
 
 	int pixmapMargin = 0;

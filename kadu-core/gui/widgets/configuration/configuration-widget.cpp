@@ -195,6 +195,8 @@ QList<ConfigWidget *> ConfigurationWidget::processUiSectionFromDom(QDomNode sect
 QList<ConfigWidget *> ConfigurationWidget::processUiTabFromDom(QDomNode tabNode, const QString &iconName,
 	const QString &sectionName, bool append)
 {
+	Q_UNUSED(iconName)
+
 	kdebugf();
 
 	QList<ConfigWidget *> result;
@@ -492,7 +494,7 @@ void ConfigurationWidget::removedConfigSection(const QString &sectionName)
 {
 	configSections.remove(sectionName);
 
-	for (unsigned int i = 0; i < sectionsListWidget->count(); i++)
+	for (int i = 0; i < sectionsListWidget->count(); i++)
 		if (sectionsListWidget->item(i)->text() == tr(sectionName.toAscii().data()))
 		{
 			QListWidgetItem *item = sectionsListWidget->takeItem(i);

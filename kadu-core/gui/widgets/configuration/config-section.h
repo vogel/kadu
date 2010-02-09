@@ -46,6 +46,7 @@ class ConfigSection : public QObject
 	QString pixmap;
 
 	QListWidgetItem *listWidgetItem;
+	bool activated;
 	QMap<QString, ConfigTab *> configTabs;
 
 	QWidget *parentConfigGroupBoxWidget;
@@ -53,7 +54,6 @@ class ConfigSection : public QObject
 	QTabWidget *tabWidget;
 
 	ConfigTab *configTab(const QString &name, bool create = true);
-	bool activated;
 
 	void switchTabView(bool tabView);
 

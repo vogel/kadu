@@ -42,6 +42,8 @@ void DelayedLineEdit::setDelay(unsigned int delay)
 
 void DelayedLineEdit::textChangedSlot(const QString &text)
 {
+	Q_UNUSED(text)
+
 	if (Timer.isActive())
 		Timer.stop();
 

@@ -88,7 +88,7 @@ private slots:
 	void onChangeEraGateway();
 
 public:
-	DefaultSmsConfigurationUiHandler(QObject *parent=0, const char *name=0);
+	DefaultSmsConfigurationUiHandler(QObject *parent = 0);
 
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 

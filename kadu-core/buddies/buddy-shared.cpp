@@ -69,7 +69,7 @@ QString BuddyShared::storageNodeName()
 	set##name(CustomData[#old_name]); \
 	CustomData.remove(#old_name);
 
-void BuddyShared::importConfiguration(XmlConfigFile *configurationStorage, QDomElement parent)
+void BuddyShared::importConfiguration(QDomElement parent)
 {
 	QDomNamedNodeMap attributes = parent.attributes();
 	int count = attributes.count();

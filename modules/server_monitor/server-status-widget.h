@@ -45,11 +45,11 @@ private:
 
 	QHostAddress WatchedAddress;
 	quint16 WatchedPort;
+	QString WatchedHostName;
 
 	ServerState CurrentState;
 	QAbstractSocket::SocketState PreviousSocketState;
 	QTcpSocket TcpSocket;
-	QString WatchedHostName;
 
 	void setNewState(ServerState newState);
 	void notify(QString, ServerStatusWidget::ServerState);

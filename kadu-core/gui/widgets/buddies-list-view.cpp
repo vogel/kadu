@@ -54,8 +54,8 @@
 #include "tool-tip-class-manager.h"
 
 BuddiesListView::BuddiesListView(MainWindow *mainWindow, QWidget *parent) :
-		QTreeView(parent), MyMainWindow(mainWindow), ProxyModel(new BuddiesModelProxy(this)),
-		Delegate(0), BackgroundTemporaryFile(0)
+		QTreeView(parent), MyMainWindow(mainWindow), Delegate(0),
+		ProxyModel(new BuddiesModelProxy(this)), BackgroundTemporaryFile(0)
 {
 	setAlternatingRowColors(true);
 	setAnimated(BackgroundImageMode == BackgroundNone);
@@ -379,6 +379,9 @@ void BuddiesListView::currentChanged(const QModelIndex& current, const QModelInd
 
 void BuddiesListView::selectionChanged( const QItemSelection &selected, const QItemSelection &deselected)
 {
+	Q_UNUSED(selected)
+	Q_UNUSED(deselected)
+
 	emit buddySelectionChanged();
 }
 

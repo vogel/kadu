@@ -41,7 +41,7 @@ class MobileNumberManager : public StorableObject
 	static MobileNumberManager *Instance;
 	QMap<MobileNumber *, QString> Numbers;
 	
-	MobileNumberManager(QObject* parent = 0) {};
+	MobileNumberManager() {};
 	virtual ~MobileNumberManager() {};
 	
 public:

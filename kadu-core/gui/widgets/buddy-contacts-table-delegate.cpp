@@ -44,6 +44,8 @@ QWidget * BuddyContactsTableDelegate::createEditor(QWidget *parent, const QStyle
 
 void BuddyContactsTableDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
+	Q_UNUSED(index)
+
 	editor->setGeometry(option.rect); // use full rect, does not allow to display image next to combo-box
 }
 

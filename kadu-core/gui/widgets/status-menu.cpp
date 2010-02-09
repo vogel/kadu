@@ -88,7 +88,6 @@ void StatusMenu::addToMenu(QMenu *menu)
 
 	StatusGroup *currentGroup = statusType->statusGroup();
 	bool setDescriptionAdded = false;
-	bool ignoreSeparator = false;
 
 	foreach (QAction *action, ChangeStatusActionGroup->actions())
 	{

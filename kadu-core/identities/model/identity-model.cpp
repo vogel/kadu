@@ -50,6 +50,8 @@ IdentityModel::~IdentityModel()
 
 int IdentityModel::rowCount(const QModelIndex &parent) const
 {
+	Q_UNUSED(parent)
+
 	return IdentityManager::instance()->count();
 }
 
@@ -105,12 +107,16 @@ QModelIndex IdentityModel::identityModelIndex(Identity identity)
 
 void IdentityModel::identityAboutToBeAdded(Identity identity)
 {
+	Q_UNUSED(identity)
+
 	int count = rowCount();
 	beginInsertRows(QModelIndex(), count, count);
 }
 
 void IdentityModel::identityAdded(Identity identity)
 {
+	Q_UNUSED(identity)
+
 	endInsertRows();
 }
 
@@ -122,5 +128,7 @@ void IdentityModel::identityAboutToBeRemoved(Identity identity)
 
 void IdentityModel::identityRemoved(Identity identity)
 {
+	Q_UNUSED(identity)
+
 	endRemoveRows();
 }

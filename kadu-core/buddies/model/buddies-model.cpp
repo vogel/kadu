@@ -99,6 +99,8 @@ void BuddiesModel::buddyAboutToBeAdded(Buddy &buddy)
 
 void BuddiesModel::buddyAdded(Buddy &buddy)
 {
+	Q_UNUSED(buddy)
+
 	endInsertRows();
 }
 
@@ -112,6 +114,8 @@ void BuddiesModel::buddyAboutToBeRemoved(Buddy &buddy)
 
 void BuddiesModel::buddyRemoved(Buddy &buddy)
 {
+	Q_UNUSED(buddy)
+
 	endRemoveRows();
 }
 

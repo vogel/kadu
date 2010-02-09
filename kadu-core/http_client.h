@@ -46,7 +46,7 @@ class KADUAPI HttpClient : public QObject
 	bool HeaderParsed;
 	bool FollowRedirect;
 
-	unsigned int ContentLength;
+	int ContentLength;
 	bool ContentLengthNotFound;
 
 	QMap<QString, QString> Cookies;

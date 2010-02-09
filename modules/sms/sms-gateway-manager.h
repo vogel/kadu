@@ -14,7 +14,7 @@ class SmsGatewayManager : public QObject
 	static SmsGatewayManager *Instance;
 	QMap<QString, SmsGateway*> Gateways;
 	
-	SmsGatewayManager(QObject* parent = 0) {};
+	SmsGatewayManager(QObject* parent = 0) : QObject(parent) { };
 	virtual ~SmsGatewayManager() {};
 	
 public:

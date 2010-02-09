@@ -63,6 +63,8 @@ void HistoryChatsModel::chatTypeUnregistered(ChatType *chatType)
 
 int HistoryChatsModel::columnCount(const QModelIndex &parent) const
 {
+	Q_UNUSED(parent)
+
 	return 1;
 }
 

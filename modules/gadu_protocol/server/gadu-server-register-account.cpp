@@ -25,8 +25,8 @@
 
 #include "gadu-server-register-account.h"
 
-GaduServerRegisterAccount::GaduServerRegisterAccount(const QString &mail, const QString &password, const QString &tokenId, const QString &tokenValue)
-	: QObject(), H(0), Uin(0), Result(0), Mail(mail), Password(password), TokenId(tokenId), TokenValue(tokenValue)
+GaduServerRegisterAccount::GaduServerRegisterAccount(const QString &mail, const QString &password, const QString &tokenId, const QString &tokenValue) :
+		QObject(), H(0), Result(0), Uin(0), Mail(mail), Password(password), TokenId(tokenId), TokenValue(tokenValue)
 {
 }
 

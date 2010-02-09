@@ -22,8 +22,8 @@
 
 #include "account-buddy-filter.h"
 
-AccountBuddyFilter::AccountBuddyFilter(Account account, QObject *parent)
-	: AbstractBuddyFilter(parent), Enabled(false), CurrentAccount(account)
+AccountBuddyFilter::AccountBuddyFilter(Account account, QObject *parent) :
+		AbstractBuddyFilter(parent), CurrentAccount(account), Enabled(false)
 {
 }
 

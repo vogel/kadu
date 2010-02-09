@@ -46,7 +46,7 @@ ChatDetailsAggregate::~ChatDetailsAggregate()
  */
 bool ChatDetailsAggregate::shouldStore()
 {
-	false;
+	return false;
 }
 
 /**

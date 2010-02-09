@@ -42,7 +42,7 @@
 #include "protocol.h"
 
 Protocol::Protocol(Account account, ProtocolFactory *factory) :
-		State(NetworkDisconnected), Factory(factory), CurrentAccount(account)
+		Factory(factory), CurrentAccount(account), State(NetworkDisconnected)
 {
 	connect(StatusChangerManager::instance(), SIGNAL(statusChanged(StatusContainer*,Status)),
 			this, SLOT(statusChanged(StatusContainer*,Status)));

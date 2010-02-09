@@ -164,9 +164,11 @@ static void kadu_signal_handler(int s)
 #if defined (SIGRTMIN)
 void kadu_realtime_signal(int sig, siginfo_t *info, void *)
 {
+	Q_UNUSED(info)
+
 	if (sig != OPEN_CHAT_SIGNAL)
 		return;
-	int ggnum = info->si_value.sival_int;
+// 	int ggnum = info->si_value.sival_int;
 // 	if (ggnum > 0) TODO: 0.6.6
 // 		qApp->postEvent(kadu, new OpenGGChatEvent(ggnum));
 }

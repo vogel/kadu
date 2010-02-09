@@ -131,6 +131,8 @@ NotificationManager::~NotificationManager()
 
 void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool toggled)
 {
+	Q_UNUSED(toggled)
+
 	kdebugf();
 
 	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());

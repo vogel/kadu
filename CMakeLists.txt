@@ -68,6 +68,11 @@ if(MINGW)
 	set (CMAKE_SHARED_LIBRARY_PREFIX "")
 endif(MINGW)
 
+# warnings
+
+set (CMAKE_C_FLAGS "-W -Wall -Werror")
+set (CMAKE_CXX_FLAGS "-W -Wall -Werror")
+
 if (NOT DATADIR)
 	set (DATADIR ${CMAKE_INSTALL_PREFIX}/share)
 endif (NOT DATADIR)

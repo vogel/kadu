@@ -44,6 +44,8 @@ ChatDatesModel::~ChatDatesModel()
 
 int ChatDatesModel::columnCount(const QModelIndex &parent) const
 {
+	Q_UNUSED(parent)
+
     return 4;
 }
 

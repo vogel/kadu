@@ -33,6 +33,8 @@
  */
 extern "C" KADU_EXPORT int hints_init(bool firstLoad)
 {
+	Q_UNUSED(firstLoad)
+
 	kdebugf();
 
 	hint_manager = new HintManager();

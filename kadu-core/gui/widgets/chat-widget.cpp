@@ -66,8 +66,8 @@
 
 ChatWidget::ChatWidget(Chat chat, QWidget *parent) :
 		QWidget(parent), CurrentChat(chat),
-		BuddiesView(0), horizSplit(0),
-		NewMessagesCount(0), SelectionFromMessagesView(true), InputBox(0)
+		BuddiesView(0), InputBox(0), horizSplit(0),
+		NewMessagesCount(0), SelectionFromMessagesView(true)
 {
 	kdebugf();
 
@@ -574,6 +574,8 @@ void ChatWidget::leaveConference()
 
 void ChatWidget::editBoxKeyPressed(QKeyEvent *e, CustomInput *sender, bool &handled)
 {
+	Q_UNUSED(sender)
+
 	keyPressEvent(e);
 
 	emit keyPressed(e, this, handled);

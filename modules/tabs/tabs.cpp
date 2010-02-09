@@ -292,6 +292,8 @@ void TabsManager::onDestroyingChat(ChatWidget* chat)
 
 void TabsManager::onTitleChanged(Chat chatChanged, const QString &newTitle)
 {
+	Q_UNUSED(newTitle)
+
 	kdebugf();
 
 	ChatWidget *chat = ChatWidgetManager::instance()->byChat(chatChanged);
@@ -371,6 +373,8 @@ void TabsManager::onMessageReceived(Chat chat)
 
 void TabsManager::onNewTab(QAction *sender, bool toggled)
 {
+	Q_UNUSED(toggled)
+
 	kdebugf();
 
 	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
@@ -490,10 +494,12 @@ void TabsManager::onTimer()
 				{	if (msg && config_blinkChatTitle)
 						tabdialog->setWindowTitle(QString().fill(' ', (chat->chat().title().length() + 5)));
 					else if (!msg)
+					{
 						if(config_showNewMessagesNum)
 							tabdialog->setWindowTitle("[" + QString().setNum(chat->newMessagesCount()) + "] " + chat->chat().title());
 						else
 							tabdialog->setWindowTitle(chat->chat().title());
+					}
 				}
 				// jesli nie w zaleznosci od konfiguracji wystepuje "miganie" lub nie
 				else if (config_blinkChatTitle && !msg)
@@ -632,7 +638,6 @@ bool TabsManager::detachChat(ChatWidget* chat)
 	no_tabs = true;
 	ChatWidgetManager::instance()->openPendingMsgs(oldchat, true);
 	return true;
-	kdebugf2();
 }
 
 void TabsManager::load()
@@ -833,6 +838,9 @@ void TabsManager::configurationUpdated()
 
 void TabsManager::openTabWith(QStringList altnicks, int index)
 {
+	Q_UNUSED(altnicks)
+	Q_UNUSED(index)
+
 	/*
 	ContactList contacts;
 	//foreach(QString altnick, altnicks)

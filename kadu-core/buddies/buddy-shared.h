@@ -86,7 +86,7 @@ public:
 	virtual StorableObject * storageParent();
 	virtual QString storageNodeName();
 
-	void importConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
+	void importConfiguration(QDomElement parent);
 
 	virtual void store();
 	virtual void aboutToBeRemoved();

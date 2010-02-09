@@ -38,6 +38,8 @@ OAuthConsumer & OAuthConsumer::operator = (const OAuthConsumer &copyMe)
 {
 	ConsumerKey = copyMe.ConsumerKey;
 	ConsumerSecret = copyMe.ConsumerSecret;
+
+	return *this;
 }
 
 QByteArray OAuthConsumer::consumerKey()

@@ -152,6 +152,8 @@ Ignored::~Ignored()
 
 void Ignored::keyPressEvent(QKeyEvent *ke_event)
 {
+	Q_UNUSED(ke_event)
+
 // 	if (ke_event->key() == Qt::Key_Escape)
 // 		close();
 // 	if ((ke_event->key() == Qt::Key_Return || ke_event->key() == Qt::Key_Enter) && e_uin->hasFocus())

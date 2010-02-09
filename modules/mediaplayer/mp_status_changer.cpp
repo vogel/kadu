@@ -13,6 +13,8 @@ MediaPlayerStatusChanger::~MediaPlayerStatusChanger()
 
 void MediaPlayerStatusChanger::changeStatus(StatusContainer *container, Status &status)
 {
+	Q_UNUSED(container)
+
 	if (disabled || status.isDisconnected())
 		return;
 

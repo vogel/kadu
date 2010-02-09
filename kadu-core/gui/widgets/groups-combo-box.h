@@ -47,7 +47,7 @@ private slots:
 	void resetGroup();
 
 public:
-	explicit GroupsComboBox(bool includeSelectGroup = false, QWidget *parent = 0);
+	explicit GroupsComboBox(QWidget *parent = 0);
 	virtual ~GroupsComboBox();
 
 	void setCurrentGroup(Group group);

@@ -67,6 +67,8 @@ ProtocolFactory * ProtocolsComboBox::currentProtocol()
 
 void ProtocolsComboBox::activatedSlot(int index)
 {
+	Q_UNUSED(index)
+
 	currentProtocol(); // sets CurrentAccount variable
 	emit protocolChanged(CurrentProtocolFactory);
 }

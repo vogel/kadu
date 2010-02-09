@@ -83,11 +83,15 @@ QVariant DescriptionModel::data(const QModelIndex &index, int role) const
 
 void DescriptionModel::descriptionAboutToBeAdded(const QString &description)
 {
+	Q_UNUSED(description)
+
 	beginInsertRows(QModelIndex(), 0, 0);
 }
 
 void DescriptionModel::descriptionAdded(const QString &description)
 {
+	Q_UNUSED(description)
+
 	endInsertRows();
 }
 
@@ -99,5 +103,7 @@ void DescriptionModel::descriptionAboutToBeRemoved(const QString &description)
 
 void DescriptionModel::descriptionRemoved(const QString &description)
 {
+	Q_UNUSED(description)
+
 	endRemoveRows();
 }

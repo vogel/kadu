@@ -184,6 +184,8 @@ QString Updates::stripVersion(const QString stripversion)
 
 void Updates::gotUpdatesInfo(const QHttpResponseHeader &responseHeader)
 {
+	Q_UNUSED(responseHeader)
+
 	kdebugf();
 
 	QByteArray data = HttpClient->readAll();

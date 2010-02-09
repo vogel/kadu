@@ -33,6 +33,8 @@ AutoAwayStatusChanger::~AutoAwayStatusChanger()
 
 void AutoAwayStatusChanger::changeStatus(StatusContainer *container, Status &status)
 {
+	Q_UNUSED(container)
+
 	if (changeStatusTo == NoChangeStatus)
 		return;
 
