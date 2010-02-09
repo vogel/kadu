@@ -298,8 +298,7 @@ void MainConfigurationWindow::setIconThemes()
 	ConfigComboBox *iconThemes = dynamic_cast<ConfigComboBox *>(widget()->widgetById("iconThemes"));
 	IconsManager::instance()->setPaths((dynamic_cast<PathListEdit *>(widget()->widgetById("iconPaths")))->pathList());
 
-	// TODO: 0.6.6
-//	QT_TRANSLATE_NOOP("@default", "default");
+	(void)QT_TRANSLATE_NOOP("@default", "default");
 	QStringList themes = IconsManager::instance()->themes();
 	QStringList captions;
 	themes.sort();
