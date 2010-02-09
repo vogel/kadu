@@ -27,6 +27,8 @@
 #include "contacts/contact.h"
 #include "protocols/services/avatar-service.h"
 
+class JabberProtocol;
+
 class JabberAvatarService : public AvatarService
 {
 	Q_OBJECT
@@ -36,8 +38,11 @@ class JabberAvatarService : public AvatarService
 	XMPP::JT_VCard *VCardHandler;
 	QByteArray selfAvatarData_;
 	QString selfAvatarHash_;
+	JabberProtocol *Protocol;
 	
 	QByteArray scaleAvatar(const QByteArray& b);
+	void uploadAvatarPEP();
+	void uploadAvatarVCard();
 
 public:
 	explicit JabberAvatarService(Account account, QObject *parent = 0) : AvatarService(account, parent), MyAccount(account) {}
@@ -49,6 +54,8 @@ public:
 private slots:
 	void itemPublished(const XMPP::Jid& jid, const QString& n, const XMPP::PubSubItem& item);
 	void publish_success(const QString& n, const XMPP::PubSubItem& item);
+	void fetchingVCardFinished();
+	void uploadingVCardFinished();
 };
 
 #endif // JABBER_AVATAR_SERVICE_H

@@ -22,6 +22,7 @@
 
 #include <QtCrypto>
 
+#include "debug.h"
 #include "gui/windows/message-dialog.h"
 
 #include "client/jabber-client.h"
@@ -35,6 +36,10 @@ void JabberAvatarService::fetchAvatar(Contact contact)
 {
 	if (contact.id().isEmpty())
 		return;
+	
+	Protocol = dynamic_cast<JabberProtocol *>(MyAccount.protocolHandler());
+	if (!Protocol)
+		return;
 
 	JabberAvatarFetcher *avatarFetcher = new JabberAvatarFetcher(contact, this);
 	connect(avatarFetcher, SIGNAL(avatarFetched(Contact, const QByteArray &)),
@@ -45,19 +50,21 @@ void JabberAvatarService::fetchAvatar(Contact contact)
 void JabberAvatarService::uploadAvatar(QImage avatar)
 {
   	AccountAvatar = avatar;
-	JabberProtocol *p = dynamic_cast<JabberProtocol *>(MyAccount.protocolHandler());
-	if (!p)
+	Protocol = dynamic_cast<JabberProtocol *>(MyAccount.protocolHandler());
+	if (!Protocol)
 		return;
 	
-	if (!p->isPEPAvailable())
-	{
-		emit avatarUploaded(false, AccountAvatar);
-		deleteLater();
-	}
+	if (Protocol->isPEPAvailable())
+		uploadAvatarPEP();
+	else
+		uploadAvatarVCard();
+}
 
-	connect(p->pepManager(),SIGNAL(itemPublished(const XMPP::Jid&, const QString&, const XMPP::PubSubItem&)),
+void JabberAvatarService::uploadAvatarPEP()
+{
+	connect(Protocol->pepManager(),SIGNAL(itemPublished(const XMPP::Jid&, const QString&, const XMPP::PubSubItem&)),
 		this, SLOT(itemPublished(const XMPP::Jid&, const QString&, const XMPP::PubSubItem&)));
-	connect(p->pepManager(),SIGNAL(publish_success(const QString&, const XMPP::PubSubItem&)),
+	connect(Protocol->pepManager(),SIGNAL(publish_success(const QString&, const XMPP::PubSubItem&)),
 		this, SLOT(publish_success(const QString&,const XMPP::PubSubItem&)));
 	
 	XMPP::Jid jid = XMPP::Jid(MyAccount.id());
@@ -70,24 +77,59 @@ void JabberAvatarService::uploadAvatar(QImage avatar)
 	QByteArray avatar_data = scaleAvatar(ba);
 	QImage avatar_image = QImage::fromData(avatar_data);
 	
-	if(!avatar_image.isNull()) {
+	if (!avatar_image.isNull())
+	{
 		// Publish data
-		QDomDocument* doc = p->client()->client()->doc();
+		QDomDocument* doc = Protocol->client()->client()->doc();
 		QString hash = QCA::Hash("sha1").hashToString(avatar_data);
 		QDomElement el = doc->createElement("data");
 		el.setAttribute("xmlns","http://www.xmpp.org/extensions/xep-0084.html#ns-data ");
 		el.appendChild(doc->createTextNode(QCA::Base64().arrayToString(avatar_data)));
 		selfAvatarData_ = avatar_data;
 		selfAvatarHash_ = hash;
-		p->pepManager()->publish("http://www.xmpp.org/extensions/xep-0084.html#ns-data", XMPP::PubSubItem(hash, el));
+		Protocol->pepManager()->publish("http://www.xmpp.org/extensions/xep-0084.html#ns-data", XMPP::PubSubItem(hash, el));
 	}
 	else
 	{
-		QDomDocument* doc = p->client()->client()->doc();
+		QDomDocument* doc = Protocol->client()->client()->doc();
 		QDomElement meta_el =  doc->createElement("metadata");
 		meta_el.setAttribute("xmlns","http://www.xmpp.org/extensions/xep-0084.html#ns-metadata");
 		meta_el.appendChild(doc->createElement("stop"));
-		p->pepManager()->publish("http://www.xmpp.org/extensions/xep-0084.html#ns-metadata", XMPP::PubSubItem("current",meta_el));
+		Protocol->pepManager()->publish("http://www.xmpp.org/extensions/xep-0084.html#ns-metadata", XMPP::PubSubItem("current",meta_el));
+	}
+}
+
+void JabberAvatarService::uploadAvatarVCard()
+{
+	VCardFactory::instance()->getVCard(MyAccount.id(), Protocol->client()->rootTask(), this, SLOT(fetchingVCardFinished()));
+}
+
+void JabberAvatarService::fetchingVCardFinished()
+{
+	XMPP::Jid jid = XMPP::Jid(MyAccount.id());
+	
+	QByteArray ba;
+        QBuffer buffer(&ba);
+        buffer.open(QIODevice::WriteOnly);
+        AccountAvatar.save(&buffer, "PNG");
+	buffer.close();
+
+	XMPP::VCard v = VCardHandler->vcard();
+	v.setPhoto(ba);
+	VCardFactory::instance()->setVCard(Protocol->client()->rootTask(), jid, v, this, SLOT(uploadingVCardFinished()));
+}
+
+void JabberAvatarService::uploadingVCardFinished()
+{
+	VCardHandler = static_cast<JT_VCard*> (sender());
+	if (VCardHandler->success())
+	{
+		emit avatarUploaded(true, AccountAvatar);
+	}
+	else
+	{
+		kdebug("VCard upload failed! Reason: %s", VCardHandler->statusString().toLocal8Bit().data());
+		emit avatarUploaded(false, AccountAvatar);
 	}
 }
 
@@ -95,11 +137,13 @@ QByteArray JabberAvatarService::scaleAvatar(const QByteArray& b)
 {
 	int maxSize = 96;
 	QImage i = QImage::fromData(b);
-	if (i.isNull()) {
+	if (i.isNull())
+	{
 		qWarning("AvatarFactory::scaleAvatar(): Null image (unrecognized format?)");
 		return QByteArray();
 	}
-	else if (i.width() > maxSize || i.height() > maxSize) {
+	else if (i.width() > maxSize || i.height() > maxSize)
+	{
 		QImage image = i.scaled(maxSize,maxSize,Qt::KeepAspectRatio,Qt::SmoothTransformation);
 		QByteArray ba;
 		QBuffer buffer(&ba);
@@ -107,24 +151,27 @@ QByteArray JabberAvatarService::scaleAvatar(const QByteArray& b)
 		image.save(&buffer, "PNG");
 		return ba;
 	}
-	else {
+	else
+	{
 		return b;
 	}
 }
 
 void JabberAvatarService::itemPublished(const XMPP::Jid& jid, const QString& n, const XMPP::PubSubItem& item)
 {
-	if (n == "http://www.xmpp.org/extensions/xep-0084.html#ns-data") {
-		if (item.payload().tagName() == "data") {
-// 			if (pep_avatars_.contains(jid.bare())) {
-// 				pep_avatars_[jid.bare()]->setData(item.id(),item.payload().text());
-// 			}
+	if (n == "http://www.xmpp.org/extensions/xep-0084.html#ns-data") 
+	{
+		if (item.payload().tagName() == "data")
+		{
+			emit avatarFetched(MyContact, item.payload().text().toLatin1());
 		}
-		else {
+		else
+		{
 			qWarning("avatars.cpp: Unexpected item payload");
 		}
 	}
-	else if (n == "http://www.xmpp.org/extensions/xep-0084.html#ns-metadata") {
+	else if (n == "http://www.xmpp.org/extensions/xep-0084.html#ns-metadata")
+	{
 		/*
 		if (!pep_avatars_.contains(jid.bare())) {
 			pep_avatars_[jid.bare()] = new PEPAvatar(this, jid.bare());
@@ -147,25 +194,26 @@ void JabberAvatarService::publish_success(const QString& n, const XMPP::PubSubIt
 {
 	if (n == "http://www.xmpp.org/extensions/xep-0084.html#ns-data" && item.id() == selfAvatarHash_)
 	{
-	  	JabberProtocol *p = dynamic_cast<JabberProtocol *>(MyAccount.protocolHandler());
-		if (!p)
-			return;
-
 		// Publish metadata
-		QDomDocument* doc = p->client()->client()->doc();
+		QDomDocument* doc = Protocol->client()->client()->doc();
 		QImage avatar_image = QImage::fromData(selfAvatarData_);
 		QDomElement meta_el = doc->createElement("metadata");
 		meta_el.setAttribute("xmlns","http://www.xmpp.org/extensions/xep-0084.html#ns-metadata");
 		QDomElement info_el = doc->createElement("info");
-		info_el.setAttribute("id",selfAvatarHash_);
-		info_el.setAttribute("bytes",avatar_image.numBytes());
-		info_el.setAttribute("height",avatar_image.height());
-		info_el.setAttribute("width",avatar_image.width());
-		info_el.setAttribute("type",image2type(selfAvatarData_));
+		info_el.setAttribute("id", selfAvatarHash_);
+		info_el.setAttribute("bytes", avatar_image.numBytes());
+		info_el.setAttribute("height", avatar_image.height());
+		info_el.setAttribute("width", avatar_image.width());
+		info_el.setAttribute("type", image2type(selfAvatarData_));
 		meta_el.appendChild(info_el);
-		p->pepManager()->publish("http://www.xmpp.org/extensions/xep-0084.html#ns-metadata",PubSubItem(selfAvatarHash_,meta_el));
+		Protocol->pepManager()->publish("http://www.xmpp.org/extensions/xep-0084.html#ns-metadata", XMPP::PubSubItem(selfAvatarHash_, meta_el));
 		
 		emit avatarUploaded(true, AccountAvatar);
 	}
 }
+
+
+
+
+
 
