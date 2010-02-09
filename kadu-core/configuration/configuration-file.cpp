@@ -98,6 +98,7 @@ void PlainConfigFile::read()
 					activeGroup[name]=value;
 			}
 		}
+		groups[activeGroupName] = activeGroup;
 		file.close();
 	}
 	kdebugf2();

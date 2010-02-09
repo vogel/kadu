@@ -85,7 +85,7 @@ const QStringList & Themes::themes() const
 {
 	return ThemesList;
 }
-
+#include <stdio.h>
 void Themes::setTheme(const QString &theme)
 {
 	kdebugf();
@@ -97,7 +97,9 @@ void Themes::setTheme(const QString &theme)
 		if (theme != "Custom")
 		{
 			PlainConfigFile theme_file(
-				themePath() +  fixFileName(themePath(), ConfigName));
+			themePath() +  fixFileName(themePath(), ConfigName));
+			printf("file: %s, theme: %s\n", qPrintable(themePath() +  fixFileName(themePath(), ConfigName)), qPrintable(Name));
+			theme_file.read();
 			entries = theme_file.getGroupSection(Name);
 		}
 		emit themeChanged(ActualTheme);
