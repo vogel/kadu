@@ -100,7 +100,6 @@ About::About(QWidget *parent)
 	tb_authors->setWordWrapMode(QTextOption::NoWrap);
 	tb_authors->viewport()->setAutoFillBackground(false);
 	tb_authors->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
-	HtmlDocument doc;
 	QString authors = loadFile("AUTHORS");
 	// convert the email addresses
 	authors = authors.replace(" (at) ", "@");
@@ -108,9 +107,10 @@ About::About(QWidget *parent)
 	authors = authors.replace(QRegExp("[<>]"), "");
 	authors = authors.replace("\n   ", "</b><br/>&nbsp;&nbsp;&nbsp;");
 	authors = authors.replace("\n", "</b><br/><b>");
-	doc.parseHtml(authors);
-	doc.convertMailToHtml();
-	tb_authors->setHtml(doc.generateHtml());
+	HtmlDocument authors_html;
+	authors_html.parseHtml(authors);
+	authors_html.convertMailToHtml();
+	tb_authors->setHtml(authors_html.generateHtml());
 
 	// people to thank
 	QTextEdit *tb_thanks = new QTextEdit(tw_about);
@@ -118,7 +118,12 @@ About::About(QWidget *parent)
 	tb_thanks->setFrameStyle(QFrame::NoFrame);
 	tb_thanks->setWordWrapMode(QTextOption::NoWrap);
 	tb_thanks->viewport()->setAutoFillBackground(false);
-	tb_thanks->setText(loadFile("THANKS"));
+	QString thanks = loadFile("THANKS");
+	thanks = thanks.replace("\n   ", "</b><br/>&nbsp;&nbsp;&nbsp;");
+	thanks = thanks.replace("\n", "<br/><b>");
+	HtmlDocument thanks_html;
+	thanks_html.parseHtml(thanks);
+	tb_thanks->setHtml(thanks_html.generateHtml());
 
 	// license
 	QTextEdit *tb_license = new QTextEdit(tw_about);
