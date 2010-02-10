@@ -355,7 +355,15 @@ void YourAccounts::accountSelectionChanged(const QItemSelection &selected, const
 	Q_UNUSED(deselected)
 
 	if (canChangeWidget())
+	{
 		updateCurrentWidget();
+		return;
+	}
+
+	// fix infinite reccursion
+	AccountsView->selectionModel()->blockSignals(true);
+	AccountsView->selectionModel()->select(deselected, QItemSelectionModel::ClearAndSelect);
+	AccountsView->selectionModel()->blockSignals(false);
 }
 
 void YourAccounts::accountUnregistered(Account account)
