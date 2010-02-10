@@ -24,9 +24,10 @@
 #include <QtGui/QWidget>
 
 #include "accounts/account.h"
+#include "gui/widgets/modal-configuration-widget.h"
 #include "exports.h"
 
-class KADUAPI AccountEditWidget : public QWidget
+class KADUAPI AccountEditWidget : public ModalConfigurationWidget
 {
 	Q_OBJECT
 
@@ -37,10 +38,8 @@ protected:
 
 public:
 	explicit AccountEditWidget(Account account, QWidget *parent = 0) :
-			QWidget(parent), MyAccount(account) {}
+			ModalConfigurationWidget(parent), MyAccount(account) {}
 	virtual ~AccountEditWidget() {}
-
-	virtual void apply() = 0;
 
 };
 

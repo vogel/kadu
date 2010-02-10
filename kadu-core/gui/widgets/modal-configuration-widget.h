@@ -28,6 +28,34 @@
  */
 
 /**
+ * @enum ModalConfigurationWidgetState
+ * @author Rafal 'Vogel' Malinowski
+ * @short State of modal configuration widget.
+ *
+ * Modal configuration window can be in one of three states:
+ * <ul>
+ *   <li>no data in widget has been changed</li>
+ *   <li>data in widget has been changed and is valid (can be stored)</li>
+ *   <li>data in widget has been changed and is invalid (can not be stored)</li>
+ * </ul>
+ */
+enum ModalConfigurationWidgetState
+{
+	/**
+	 * No data in widget has been changed.
+	 */
+	StateNotChanged,
+	/**
+	 * Data in widget has been changed and is valid (can be stored).
+	 */
+	StateChangedDataValid,
+	/**
+	 * Data in widget has been changed and is invalid (can not be stored).
+	 */
+	StateChangedDataInvalid
+};
+
+/**
  * @class ModalConfigurationWidget
  * @author Rafal 'Vogel' Malinowski
  * @short Widget that should not be hidden when it contains modified data.
@@ -36,24 +64,24 @@
  * parent widget should not allow to hide it - it should either force saving
  * data or rejecting it (by apply and cancel methods).
  *
- * Current state of widget can be determined by calling needsSave method -
- * when it returns true, widget cannot be hidden or closed.
+ * Current state of widget can be determined by calling state method. If
+ * data has been changed - widget should not be closed or hidden.
  */
 class ModalConfigurationWidget : public QWidget
 {
 	Q_OBJECT
 
-	bool NeedsSave;
+	ModalConfigurationWidgetState State;
 
 protected:
 	/**
 	 * @author Rafal 'Vogel' Malinowski
-	 * @short Sets new value of needsSave.
+	 * @short Updates state of widget.
 	 *
-	 * Sets new value of needsSave. When new value is different from
-	 * old one, needsSaveChanged signal is emited.
+	 * Sets new state value. When new value is different from
+	 * old one, stateChanged signal is emited.
 	 */
-	void setNeedsSave(bool needsSave);
+	void setState(ModalConfigurationWidgetState state);
 
 public:
 	/**
@@ -66,6 +94,16 @@ public:
 	explicit ModalConfigurationWidget(QWidget *parent = 0);
 	virtual ~ModalConfigurationWidget();
 
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Returns state of widget.
+	 * @return state of widget
+	 *
+	 * Returns state of widget.
+	 */
+	ModalConfigurationWidgetState state();
+
+public slots:
 	/**
 	 * @author Rafal 'Vogel' Malinowski
 	 * @short Stores widget data.
@@ -84,15 +122,6 @@ public:
 	 */
 	virtual void cancel() = 0;
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Returns true when data in widget has been modified.
-	 * @return true when data in widget has been modified
-	 *
-	 * Returns true when data in widget has been modified.
-	 */
-	bool needsSave();
-
 signals:
 	/**
 	 * @author Rafal 'Vogel' Malinowski
@@ -101,7 +130,7 @@ signals:
 	 * Emited when state of data modifiecation in widget has been changed. For example:
 	 * first bit of data is changed, data is saved, data is restored from saved state.
 	 */
-	void needsSaveChanged(bool newNeedsSave);
+	void stateChanged(ModalConfigurationWidgetState state);
 
 };
 

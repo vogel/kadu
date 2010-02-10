@@ -20,7 +20,7 @@
 #include "modal-configuration-widget.h"
 
 ModalConfigurationWidget::ModalConfigurationWidget(QWidget *parent) :
-		QWidget(parent), NeedsSave(false)
+		QWidget(parent), State(StateNotChanged)
 {
 }
 
@@ -28,16 +28,17 @@ ModalConfigurationWidget::~ModalConfigurationWidget()
 {
 }
 
-void ModalConfigurationWidget::setNeedsSave(bool needsSave)
+void ModalConfigurationWidget::setState(ModalConfigurationWidgetState state)
 {
-	if (needsSave != NeedsSave)
+	if (State != state)
 	{
-		NeedsSave = needsSave;
-		emit needsSaveChanged(NeedsSave);
+		State = state;
+		emit stateChanged(State);
 	}
 }
 
-bool ModalConfigurationWidget::needsSave()
+
+ModalConfigurationWidgetState ModalConfigurationWidget::state()
 {
-	return NeedsSave;
+	return State;
 }

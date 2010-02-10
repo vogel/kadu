@@ -41,6 +41,7 @@ class AccountAddWidget;
 class AccountEditWidget;
 class AccountsModel;
 class ActionsProxyModel;
+class ModalConfigurationWidget;
 class ProtocolFactory;
 class ProtocolsComboBox;
 
@@ -60,6 +61,7 @@ KADUAPI class YourAccounts : public QWidget, AccountsAwareObject
 	QStackedWidget *MainStack;
 	QStackedWidget *CreateAddStack;
 	QStackedWidget *EditStack;
+	ModalConfigurationWidget *CurrentWidget;
 
 	ProtocolsComboBox *Protocols;
 	QWidget *CreateAddAccountContainer;
@@ -82,6 +84,8 @@ KADUAPI class YourAccounts : public QWidget, AccountsAwareObject
 	void selectAccount(Account account);
 
 	void updateCurrentWidget();
+
+	bool canChangeWidget();
 
 private slots:
 	void protocolChanged(ProtocolFactory *protocolFactory);

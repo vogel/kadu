@@ -177,6 +177,10 @@ void TlenEditAccountWidget::apply()
 	gpiw->applyData();
 }
 
+void TlenEditAccountWidget::cancel()
+{
+}
+
 void TlenEditAccountWidget::removeAccount()
 {
 	QMessageBox *messageBox = new QMessageBox(this);

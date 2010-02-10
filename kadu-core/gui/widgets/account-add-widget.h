@@ -24,15 +24,16 @@
 #include <QtGui/QWidget>
 
 #include "accounts/account.h"
+#include "gui/widgets/modal-configuration-widget.h"
 
 #include "exports.h"
 
-class KADUAPI AccountAddWidget : public QWidget
+class KADUAPI AccountAddWidget : public ModalConfigurationWidget
 {
 	Q_OBJECT
 
 public:
-	explicit AccountAddWidget(QWidget *parent = 0) : QWidget(parent) {}
+	explicit AccountAddWidget(QWidget *parent = 0) : ModalConfigurationWidget(parent) {}
 	virtual ~AccountAddWidget() {}
 
 signals:

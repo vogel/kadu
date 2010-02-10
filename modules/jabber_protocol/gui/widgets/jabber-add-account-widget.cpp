@@ -131,3 +131,7 @@ void JabberAddAccountWidget::apply()
 
 	emit accountCreated(jabberAccount);
 }
+
+void JabberAddAccountWidget::cancel()
+{
+}

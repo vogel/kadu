@@ -93,7 +93,9 @@ public:
 	explicit JabberEditAccountWidget(Account account, QWidget *parent = 0);
 	virtual ~JabberEditAccountWidget();
 
+public slots:
 	virtual void apply();
+	virtual void cancel();
 
 };
 

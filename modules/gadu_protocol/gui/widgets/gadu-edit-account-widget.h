@@ -64,7 +64,7 @@ class GaduEditAccountWidget : public AccountEditWidget
 	void loadConnectionData();
 
 private slots:
-	void apply();
+	void dataChanged();
 	void removeAccount();
 	void importListAsFile();
 	void contactListDownloaded(QString);
@@ -72,6 +72,10 @@ private slots:
 public:
 	explicit GaduEditAccountWidget(Account account, QWidget *parent = 0);
 	virtual ~GaduEditAccountWidget();
+
+public slots:
+	virtual void apply();
+	virtual void cancel();
 
 };
 

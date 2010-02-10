@@ -54,6 +54,14 @@ GaduAddAccountWidget::~GaduAddAccountWidget()
 {
 }
 
+void GaduAddAccountWidget::apply()
+{
+}
+
+void GaduAddAccountWidget::cancel()
+{
+}
+
 void GaduAddAccountWidget::createGui()
 {
 	QFormLayout *layout = new QFormLayout(this);

@@ -88,23 +88,29 @@ void GaduEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 	QFormLayout *formLayout = new QFormLayout(form);
 
 	ConnectAtStart = new QCheckBox(tr("Connect at start"), this);
+	connect(ConnectAtStart, SIGNAL(stateChanged(int)), this, SLOT(dataChanged()));
 	formLayout->addRow(0, ConnectAtStart);
 
 	AccountName = new QLineEdit(this);
+	connect(AccountName, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 	formLayout->addRow(tr("Account name") + ":", AccountName);
 
 	AccountId = new QLineEdit(this);
+	connect(AccountId, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 	formLayout->addRow(tr("Gadu-Gadu number") + ":", AccountId);
 
 	AccountPassword = new QLineEdit(this);
 	AccountPassword->setEchoMode(QLineEdit::Password);
+	connect(AccountPassword, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 	formLayout->addRow(tr("Password") + ":", AccountPassword);
 
 	RememberPassword = new QCheckBox(tr("Remember password"), this);
 	RememberPassword->setChecked(true);
+	connect(RememberPassword, SIGNAL(stateChanged(int)), this, SLOT(dataChanged()));
 	formLayout->addRow(0, RememberPassword);
 
 	Identities = new IdentitiesComboBox(this);
+	connect(Identities, SIGNAL(activated(int)), this, SLOT(dataChanged()));
 	formLayout->addRow(tr("Account description") + ":", Identities);
 
 	QPushButton *remindPassword = new QPushButton(tr("Forgot password"), this);
@@ -195,6 +201,30 @@ void GaduEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	connect(useDefaultServers, SIGNAL(toggled(bool)), port, SLOT(setEnabled(bool)));
 }
 
+void GaduEditAccountWidget::apply()
+{
+	account().setName(AccountName->text());
+	account().setConnectAtStart(ConnectAtStart->isChecked());
+	account().setId(AccountId->text());
+	account().setRememberPassword(RememberPassword->isChecked());
+	account().setPassword(AccountPassword->text());
+	account().setHasPassword(!AccountPassword->text().isEmpty());
+	
+	proxy->applyProxyData();
+	
+	gpiw->applyData();
+}
+
+void GaduEditAccountWidget::cancel()
+{
+
+}
+
+void GaduEditAccountWidget::dataChanged()
+{
+
+}
+
 void GaduEditAccountWidget::loadAccountData()
 {
 	AccountName->setText(account().name());
@@ -208,20 +238,6 @@ void GaduEditAccountWidget::loadAccountData()
 void GaduEditAccountWidget::loadConnectionData()
 {
 	proxy->loadProxyData();
-}
-
-void GaduEditAccountWidget::apply()
-{
-	account().setName(AccountName->text());
-	account().setConnectAtStart(ConnectAtStart->isChecked());
-	account().setId(AccountId->text());
-	account().setRememberPassword(RememberPassword->isChecked());
-	account().setPassword(AccountPassword->text());
-	account().setHasPassword(!AccountPassword->text().isEmpty());
-
-	proxy->applyProxyData();
-
-	gpiw->applyData();
 }
 
 void GaduEditAccountWidget::removeAccount()

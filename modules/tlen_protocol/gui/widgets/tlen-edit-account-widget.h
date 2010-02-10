@@ -65,6 +65,7 @@ public:
 	virtual ~TlenEditAccountWidget();
 
 	virtual void apply();
+	virtual void cancel();
 
 };
 

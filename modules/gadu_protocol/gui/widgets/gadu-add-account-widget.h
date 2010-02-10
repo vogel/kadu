@@ -55,6 +55,10 @@ public:
 	explicit GaduAddAccountWidget(QWidget *parent = 0);
 	virtual ~GaduAddAccountWidget();
 
+public slots:
+	virtual void apply();
+	virtual void cancel();
+
 };
 
 #endif // GADU_ADD_ACCOUNT_WIDGET_H

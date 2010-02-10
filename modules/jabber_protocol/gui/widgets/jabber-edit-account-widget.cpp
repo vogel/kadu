@@ -382,6 +382,10 @@ void JabberEditAccountWidget::apply()
 	jabberAccountDetails->setDataTransferProxy(DataTransferProxy->text());
 }
 
+void JabberEditAccountWidget::cancel()
+{
+}
+
 void JabberEditAccountWidget::removeAccount()
 {
 	QMessageBox *messageBox = new QMessageBox(this);

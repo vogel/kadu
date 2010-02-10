@@ -30,6 +30,7 @@
 #include <QtGui/QKeyEvent>
 #include <QtGui/QLabel>
 #include <QtGui/QListView>
+#include <QtGui/QMessageBox>
 #include <QtGui/QPushButton>
 #include <QtGui/QStackedWidget>
 #include <QtGui/QVBoxLayout>
@@ -38,6 +39,7 @@
 #include "accounts/model/accounts-model.h"
 #include "gui/widgets/account-add-widget.h"
 #include "gui/widgets/account-edit-widget.h"
+#include "gui/widgets/modal-configuration-widget.h"
 #include "gui/widgets/protocols-combo-box.h"
 #include "misc/misc.h"
 #include "model/actions-proxy-model.h"
@@ -48,9 +50,10 @@
 #include "icons-manager.h"
 
 #include "your-accounts.h"
+#include "message-dialog.h"
 
 YourAccounts::YourAccounts(QWidget *parent) :
-		QWidget(parent)
+		QWidget(parent), CurrentWidget(0)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(tr("Your accounts"));
@@ -252,7 +255,10 @@ void YourAccounts::updateCurrentWidget()
 		MainStack->setCurrentWidget(EditStack);
 		Account account = qvariant_cast<Account>(selection[0].data(AccountRole));
 		if (account)
+		{
 			EditStack->setCurrentWidget(getAccountEditWidget(account));
+			CurrentWidget = getAccountEditWidget(account);
+		}
 
 		return;
 	}
@@ -272,6 +278,60 @@ void YourAccounts::updateCurrentWidget()
 	CreateAddStack->setVisible(0 != widget);
 	if (widget)
 		CreateAddStack->setCurrentWidget(widget);
+
+	CurrentWidget = dynamic_cast<ModalConfigurationWidget *>(widget);
+}
+
+bool YourAccounts::canChangeWidget()
+{
+	if (!CurrentWidget)
+		return true;
+
+	if (StateNotChanged == CurrentWidget->state())
+		return true;
+
+	if (StateChangedDataValid == CurrentWidget->state())
+	{
+		QMessageBox::StandardButton result = QMessageBox::question(this,
+				tr("You have unsaved changes in current account.<br />Do you want to save them?"),
+				tr("Account"), QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel, QMessageBox::Yes);
+
+		switch (result)
+		{
+			case QMessageBox::Yes:
+				CurrentWidget->apply();
+				return true;
+
+			case QMessageBox::No:
+				CurrentWidget->cancel();
+				return true;
+
+			default:
+				return false;
+		}
+	}
+
+	if (StateChangedDataInvalid == CurrentWidget->state())
+	{
+		 QMessageBox::StandardButton result = QMessageBox::question(this,
+				tr("You have unsaved changes in current account.<br />This data is invalid, so you will loose all changes.<br />Do you want to go back to edit them?"),
+				tr("Account"), QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+
+		switch (result)
+		{
+			case QMessageBox::Yes:
+				return false;
+
+			case QMessageBox::No:
+				CurrentWidget->cancel();
+				return true;
+
+			default:
+				return false;
+		}
+	}
+
+	return true;
 }
 
 void YourAccounts::accountCreated(Account account)
@@ -294,7 +354,8 @@ void YourAccounts::accountSelectionChanged(const QItemSelection &selected, const
 	Q_UNUSED(selected)
 	Q_UNUSED(deselected)
 
-	updateCurrentWidget();
+	if (canChangeWidget())
+		updateCurrentWidget();
 }
 
 void YourAccounts::accountUnregistered(Account account)
