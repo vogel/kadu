@@ -67,7 +67,7 @@ GaduEditAccountWidget::~GaduEditAccountWidget()
 
 void GaduEditAccountWidget::createGui()
 {
-	QGridLayout *mainLayout = new QGridLayout(this);
+	QVBoxLayout *mainLayout = new QVBoxLayout(this);
 
 	QTabWidget *tabWidget = new QTabWidget(this);
 	mainLayout->addWidget(tabWidget);
@@ -77,6 +77,22 @@ void GaduEditAccountWidget::createGui()
 	createBuddiesTab(tabWidget);
 	createConnectionTab(tabWidget);
 // 	tabWidget->addTab(new QWidget(), tr("Functions"));
+
+	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
+
+	ApplyButton = new QPushButton(IconsManager::instance()->iconByName("ApplyWindowButton"), tr("Apply"), this);
+	connect(ApplyButton, SIGNAL(clicked(bool)), this, SLOT(apply()));
+
+	CancelButton = new QPushButton(IconsManager::instance()->iconByName("CancelWindowButton"), tr("Cancel"), this);
+	connect(CancelButton, SIGNAL(clicked(bool)), this, SLOT(cancel()));
+
+	QPushButton *removeAccount = new QPushButton(IconsManager::instance()->iconByName("CloseWindowButton"), tr("Delete account"), this);
+	connect(removeAccount, SIGNAL(clicked(bool)), this, SLOT(removeAccount()));
+
+	buttons->addButton(ApplyButton, QDialogButtonBox::ApplyRole);
+	buttons->addButton(CancelButton, QDialogButtonBox::RejectRole);
+	buttons->addButton(removeAccount, QDialogButtonBox::DestructiveRole);
+	mainLayout->addWidget(buttons);
 }
 
 void GaduEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
@@ -117,22 +133,6 @@ void GaduEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 
 	QPushButton *remindPassword = new QPushButton(tr("Forgot password"), this);
 	formLayout->addRow(0, remindPassword);
-
-	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
-
-	ApplyButton = new QPushButton(IconsManager::instance()->iconByName("ApplyWindowButton"), tr("Apply"), this);
-	connect(ApplyButton, SIGNAL(clicked(bool)), this, SLOT(apply()));
-
-	CancelButton = new QPushButton(IconsManager::instance()->iconByName("CancelWindowButton"), tr("Cancel"), this);
-	connect(CancelButton, SIGNAL(clicked(bool)), this, SLOT(cancel()));
-
-	QPushButton *removeAccount = new QPushButton(IconsManager::instance()->iconByName("CloseWindowButton"), tr("Delete account"), this);
-	connect(removeAccount, SIGNAL(clicked(bool)), this, SLOT(removeAccount()));
-
-	buttons->addButton(ApplyButton, QDialogButtonBox::ApplyRole);
-	buttons->addButton(CancelButton, QDialogButtonBox::RejectRole);
-	buttons->addButton(removeAccount, QDialogButtonBox::DestructiveRole);
-	layout->addWidget(buttons, 1, 0, 1, 2);
 
 	AccountAvatarWidget *avatarWidget = new AccountAvatarWidget(account(), this);
 	layout->addWidget(avatarWidget, 0, 1, Qt::AlignTop);
