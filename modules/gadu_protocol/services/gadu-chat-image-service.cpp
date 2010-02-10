@@ -95,7 +95,7 @@ void GaduChatImageService::loadImageContent(ImageToSend &image)
 
 void GaduChatImageService::handleEventImageRequest(struct gg_event *e)
 {
-	kdebugm(KDEBUG_INFO, qPrintable(QString("Received image request. sender: %1, size: %2, crc32: %3\n")
+	kdebugm(KDEBUG_INFO, "%s", qPrintable(QString("Received image request. sender: %1, size: %2, crc32: %3\n")
 		.arg(e->event.image_request.sender).arg(e->event.image_request.size).arg(e->event.image_request.crc32)));
 
 	uint32_t size = e->event.image_request.size;
@@ -123,7 +123,7 @@ void GaduChatImageService::handleEventImageRequest(struct gg_event *e)
 
 void GaduChatImageService::handleEventImageReply(struct gg_event *e)
 {
-	kdebugm(KDEBUG_INFO, qPrintable(QString("Received image. sender: %1, size: %2, crc32: %3,filename: %4\n")
+	kdebugm(KDEBUG_INFO, "%s", qPrintable(QString("Received image. sender: %1, size: %2, crc32: %3,filename: %4\n")
 			.arg(e->event.image_reply.sender).arg(e->event.image_reply.size)
 			.arg(e->event.image_reply.crc32).arg(e->event.image_reply.filename)));
 
