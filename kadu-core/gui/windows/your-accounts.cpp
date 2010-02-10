@@ -383,6 +383,14 @@ void YourAccounts::okClicked()
 	close();
 }
 
+void YourAccounts::closeEvent(QCloseEvent *e)
+{
+	if (canChangeWidget())
+		e->accept();
+	else
+		e->ignore();
+}
+
 void YourAccounts::keyPressEvent(QKeyEvent *e)
 {
 	if (e->key() == Qt::Key_Escape)
