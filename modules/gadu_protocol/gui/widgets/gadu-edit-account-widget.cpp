@@ -57,6 +57,8 @@ GaduEditAccountWidget::GaduEditAccountWidget(Account account, QWidget *parent) :
 	createGui();
 	loadAccountData();
 	loadConnectionData();
+
+	dataChanged();
 }
 
 GaduEditAccountWidget::~GaduEditAccountWidget()
@@ -118,13 +120,17 @@ void GaduEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 
-	QPushButton *applyButton = new QPushButton(IconsManager::instance()->iconByName("ApplyWindowButton"), tr("Apply"), this);
-	connect(applyButton, SIGNAL(clicked(bool)), this, SLOT(apply()));
+	ApplyButton = new QPushButton(IconsManager::instance()->iconByName("ApplyWindowButton"), tr("Apply"), this);
+	connect(ApplyButton, SIGNAL(clicked(bool)), this, SLOT(apply()));
+
+	CancelButton = new QPushButton(IconsManager::instance()->iconByName("CancelWindowButton"), tr("Cancel"), this);
+	connect(CancelButton, SIGNAL(clicked(bool)), this, SLOT(cancel()));
 
 	QPushButton *removeAccount = new QPushButton(IconsManager::instance()->iconByName("CloseWindowButton"), tr("Delete account"), this);
 	connect(removeAccount, SIGNAL(clicked(bool)), this, SLOT(removeAccount()));
 
-	buttons->addButton(applyButton, QDialogButtonBox::ApplyRole);
+	buttons->addButton(ApplyButton, QDialogButtonBox::ApplyRole);
+	buttons->addButton(CancelButton, QDialogButtonBox::RejectRole);
 	buttons->addButton(removeAccount, QDialogButtonBox::DestructiveRole);
 	layout->addWidget(buttons, 1, 0, 1, 2);
 
@@ -220,9 +226,41 @@ void GaduEditAccountWidget::cancel()
 
 }
 
+// TODO: 0.6.6 check proxy data too
 void GaduEditAccountWidget::dataChanged()
 {
+	if (account().name() == AccountName->text()
+		&& account().connectAtStart() == ConnectAtStart->isChecked()
+		&& account().id() == AccountId->text()
+		&& account().rememberPassword() == RememberPassword->isChecked()
+		&& account().password() == AccountPassword->text())
+	{
+		setState(StateNotChanged);
+		ApplyButton->setEnabled(false);
+		CancelButton->setEnabled(false);
+		return;
+	}
 
+	bool sameNameExists = AccountManager::instance()->byName(AccountName->text())
+			&& AccountManager::instance()->byName(AccountName->text()) != account();
+	bool sameIdExists = AccountManager::instance()->byId(account().protocolName(), account().id())
+			&& AccountManager::instance()->byId(account().protocolName(), account().id()) != account();
+
+	if (AccountName->text().isEmpty()
+		|| sameNameExists
+		|| AccountId->text().isEmpty()
+		|| sameIdExists)
+	{
+		setState(StateChangedDataInvalid);
+		ApplyButton->setEnabled(false);
+		CancelButton->setEnabled(true);
+	}
+	else
+	{
+		setState(StateChangedDataValid);
+		ApplyButton->setEnabled(true);
+		CancelButton->setEnabled(true);
+	}
 }
 
 void GaduEditAccountWidget::loadAccountData()
@@ -268,7 +306,6 @@ void GaduEditAccountWidget::removeAccount()
 
 	delete messageBox;
 }
-
 
 void GaduEditAccountWidget::importListAsFile()
 {

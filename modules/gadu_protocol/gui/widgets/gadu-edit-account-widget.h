@@ -27,6 +27,7 @@
 class QCheckBox;
 class QComboBox;
 class QLineEdit;
+class QPushButton;
 class QTabWidget;
 class QVBoxLayout;
 
@@ -52,6 +53,9 @@ class GaduEditAccountWidget : public AccountEditWidget
 	QCheckBox *useDefaultServers;
 	QLineEdit *ipAddresses;
 	QComboBox *port;
+
+	QPushButton *ApplyButton;
+	QPushButton *CancelButton;
 
 	void createGui();
 	void createGeneralTab(QTabWidget *);

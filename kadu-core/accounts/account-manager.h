@@ -70,6 +70,7 @@ public:
 	Account defaultAccount();
 
 	Account byName(const QString &name);
+	Account byId(const QString &protocolName, const QString &id);
 	const QList<Account> byProtocolName(const QString &name);
 
 	Status status();

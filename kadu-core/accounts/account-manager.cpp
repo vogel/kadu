@@ -125,6 +125,18 @@ Account AccountManager::byName(const QString &name)
 	return Account::null;
 }
 
+Account AccountManager::byId(const QString& protocolName, const QString& id)
+{
+	ensureLoaded();
+
+	QList<Account> list;
+	foreach (Account account, allItems())
+		if (account.protocolName() == protocolName && account.id() == id)
+			return account;
+
+	return Account::null;
+}
+
 const QList<Account> AccountManager::byProtocolName(const QString &name)
 {
 	ensureLoaded();
