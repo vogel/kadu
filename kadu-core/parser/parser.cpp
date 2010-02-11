@@ -623,7 +623,9 @@ QString Parser::parse(const QString &s, Account account, const Buddy &buddy, con
 			}
 		}
 		else
+		{
 			kdebugm(KDEBUG_ERROR, "shit happens? %d %c %d\n", i, (char)c, (char)c);
+		}
 		index = i;
 	}
 	QString ret;
@@ -631,7 +633,9 @@ QString Parser::parse(const QString &s, Account account, const Buddy &buddy, con
 	foreach(const ParserToken &elem, parseStack)
 	{
 		if (elem.type != ParserToken::PT_STRING)
+		{
 			kdebugm(KDEBUG_WARNING, "Incorrect parse string! %d\n", elem.type);
+		}
 
 		switch (elem.type)
 		{

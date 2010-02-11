@@ -154,7 +154,9 @@ bool GaduChatService::sendMessage(Chat chat, FormattedMessage &message)
 bool GaduChatService::isSystemMessage(gg_event *e)
 {
 	if (0 == e->event.msg.sender)
+	{
 		kdebugmf(KDEBUG_INFO, "Ignored system message.\n");
+	}
 
 	return 0 == e->event.msg.sender;
 }
@@ -175,7 +177,9 @@ bool GaduChatService::ignoreSender(gg_event *e, Buddy sender)
 			);
 
 	if (ignore)
+	{
 		kdebugmf(KDEBUG_INFO, "Ignored anonymous. %d is ignored\n", sender.id(Protocol->account()).toUInt());
+	}
 
 	return ignore;
 }
@@ -208,7 +212,9 @@ bool GaduChatService::ignoreRichText(gg_event *e, Contact sender)
 		config_file.readBoolEntry("Chat","IgnoreAnonymousRichtext");
 
 	if (ignore)
+	{
 		kdebugm(KDEBUG_INFO, "Richtext ignored from anonymous user\n");
+	}
 
 	return ignore;
 }
@@ -300,6 +306,7 @@ void GaduChatService::handleEventAck(struct gg_event *e)
 		return;
 
 	int uin = e->event.ack.recipient;
+	Q_UNUSED(uin) // only in debug mode
 
 	Message::Status status = Message::StatusUnknown;
 	switch (e->event.ack.status)

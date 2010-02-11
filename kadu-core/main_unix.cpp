@@ -242,7 +242,9 @@ bool isRuning(int ggnumber)
 						kill(lock_str->l_pid, SIGUSR1);
 				}
 				else
+				{
 					kdebugm(KDEBUG_WARNING, "cannot get information about lock: %s\n", strerror(errno));
+				}
 			}
 			else
 				gotPID = false;

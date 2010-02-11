@@ -773,7 +773,7 @@ void MediaPlayer::configurationUpdated()
 	kdebugf();
 
 	// Statuses switch
-	bool enabled;
+	bool enabled = false;
 
 	if (mediaplayerStatus == NULL)
 	{

@@ -103,6 +103,8 @@ void HttpClient::onReadyRead()
 {
 	kdebugf();
 	int size = Socket.bytesAvailable();
+	Q_UNUSED(size) // only in debug
+
 	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: Data Block Retreived: %i bytes\n", size);
 	// Dodaj nowe dane do starych
 	Data.append(Socket.readAll());

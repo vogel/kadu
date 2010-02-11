@@ -214,9 +214,13 @@ void Hint::nextSecond(void)
 	if (!requireCallbacks)
 	{
 		if (secs == 0)
+		{
 			kdebugm(KDEBUG_ERROR, "ERROR: secs == 0 !\n");
+		}
 		else if (secs > 2000000000)
+		{
 			kdebugm(KDEBUG_WARNING, "WARNING: secs > 2 000 000 000 !\n");
+		}
 
 		if (secs > 0)
 			--secs;

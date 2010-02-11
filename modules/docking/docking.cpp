@@ -174,7 +174,10 @@ void DockingManager::changeIcon()
 		}
 	}
 	else
+	{
 		kdebugmf(KDEBUG_INFO, "OFF\n");
+	}
+
 	kdebugf2();
 }
 

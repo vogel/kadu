@@ -254,6 +254,8 @@ void ChatWidgetManager::activateChatWidget(ChatWidget *chatWidget, bool forceAct
 	Q_UNUSED(forceActivate)
 
 	QWidget *win = chatWidget->window();
+	Q_UNUSED(win) // only in debug mode
+
 	kdebugm(KDEBUG_INFO, "parent: %p\n", win);
 	chatWidget->makeActive();
 	emit chatWidgetOpen(chatWidget);

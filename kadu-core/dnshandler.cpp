@@ -30,7 +30,9 @@ DNSHandler::DNSHandler(const QString &marker, const QHostAddress &address)
 //	kdebugm(KDEBUG_WARNING, ">>>>>>>>>>%s\n", qPrintable(marker));
 
 	if (address == QHostAddress())
+	{
 		kdebugmf(KDEBUG_WARNING, "NULL ip address!\n");
+	}
 
 	QHostInfo::lookupHost(address.toString(), this, SLOT(resultsReady(QHostInfo)));
 	++counter;

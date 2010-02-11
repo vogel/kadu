@@ -76,9 +76,13 @@ void GaduPubdirSocketNotifiers::socketEvent()
 
 		case GG_STATE_DONE:
 			if (p->success)
+			{
 				kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO,  "success!\n");
+			}
 			else
-			kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "error!\n");
+			{
+				kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "error!\n");
+			}
 			finished(p->success);
 			break;
 	}

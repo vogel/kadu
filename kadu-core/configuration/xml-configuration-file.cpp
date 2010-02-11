@@ -71,7 +71,9 @@ void XmlConfigFile::read()
 			fileOpened = false;
 		}
 		else
+		{
 			kdebugm(KDEBUG_INFO, "config file (%s) not opened, looking for backup\n", qPrintable(file.fileName()));
+		}
 	}
 
 	if (fileOpened)

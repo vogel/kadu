@@ -839,7 +839,10 @@ void ModulesManager::unloadAllModules()
 	saveLoadedModules();
 
 	foreach (const QString &it, Modules.keys())
+	{
+		Q_UNUSED(it) // only in debug mode
 		kdebugm(KDEBUG_INFO, "module: %s, usage: %d\n", qPrintable(it), Modules[it].usage_counter);
+	}
 
 	// unloading all not used modules
 	// as long as any module were unloaded

@@ -392,7 +392,7 @@ void KaduWindow::insertMenuActionDescription(ActionDescription *actionDescriptio
 		return;
 	Action *action = actionDescription->createAction(this);
 
-	QMenu *menu;
+	QMenu *menu = 0;
 
 	switch (type)
 	{
@@ -405,6 +405,9 @@ void KaduWindow::insertMenuActionDescription(ActionDescription *actionDescriptio
 		case MenuHelp:
 			menu = HelpMenu;
 	}
+
+	if (!menu)
+		return;
 
 	QList<QAction *> menuActions = menu->actions();
 	if (pos >= menuActions.count() - 1 || pos == -1)

@@ -384,7 +384,7 @@ void GroupTabBar::configurationUpdated()
 
 	bool show = config_file.readBoolEntry("Look", "ShowGroupAll", true);
 
-	int autoGroupOldPosition;
+	int autoGroupOldPosition = -1;
 
 	for (int i = 0; i < count(); ++i)
 		if (tabData(i).toString() == "AutoTab")

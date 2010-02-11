@@ -187,7 +187,7 @@ void KdeNotify::actionInvoked(unsigned int id, QString action)
 		return;
 
 	const QMetaObject *metaObject = notification->metaObject();
-	int slotIndex;
+	int slotIndex = -1;
 
 	while (metaObject)
 	{

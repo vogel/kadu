@@ -95,6 +95,8 @@ SmsOrangeGateway::~SmsOrangeGateway()
 
 void SmsOrangeGateway::httpRedirected(QString link)
 {
+	Q_UNUSED(link)
+
 	kdebugmf(KDEBUG_FUNCTION_START, "link: %s\n", qPrintable(link));
 }
 
@@ -183,7 +185,10 @@ void SmsOrangeGateway::httpFinished()
 		}
 	}
 	else
+	{
 		kdebugm(KDEBUG_PANIC, "SMS Panic! Unknown state\n");
+	}
+
 	kdebugf2();
 }
 
@@ -217,6 +222,8 @@ SmsPlusGateway::~SmsPlusGateway()
 
 void SmsPlusGateway::httpRedirected(QString link)
 {
+	Q_UNUSED(link)
+
 	kdebugmf(KDEBUG_FUNCTION_START, "link: %s\n", qPrintable(link));
 }
 
@@ -282,7 +289,10 @@ void SmsPlusGateway::httpFinished()
 		}
 	}
 	else
+	{
 		kdebugm(KDEBUG_PANIC, "SMS Panic! Unknown state\n");
+	}
+
 	kdebugf2();
 }
 
