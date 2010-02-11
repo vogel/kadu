@@ -124,11 +124,12 @@ void YourAccounts::switchToAddMode()
 void YourAccounts::createAccountWidget()
 {
 	CreateAddAccountContainer = new QWidget(this);
+	CreateAddAccountContainer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	MainStack->addWidget(CreateAddAccountContainer);
 	MainStack->setCurrentWidget(CreateAddAccountContainer);
 
 	QVBoxLayout *newAccountLayout = new QVBoxLayout(CreateAddAccountContainer);
-	
+
 	MainAccountLabel = new QLabel();
 	newAccountLayout->addWidget(MainAccountLabel);
 
@@ -154,7 +155,7 @@ void YourAccounts::createAccountWidget()
 	CreateAddStack = new QStackedWidget(MainAccountGroupBox);
 	createAccountLayout->addWidget(CreateAddStack, 0, 1, 1, 1);
 
-	newAccountLayout->addWidget(MainAccountGroupBox, 100, Qt::AlignTop);
+	newAccountLayout->addWidget(MainAccountGroupBox, Qt::AlignTop);
 
 	connect(Protocols, SIGNAL(protocolChanged(ProtocolFactory*)), this, SLOT(protocolChanged(ProtocolFactory*)));
 	protocolChanged(0);

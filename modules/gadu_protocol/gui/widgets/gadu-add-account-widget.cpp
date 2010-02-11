@@ -64,7 +64,12 @@ void GaduAddAccountWidget::cancel()
 
 void GaduAddAccountWidget::createGui()
 {
-	QFormLayout *layout = new QFormLayout(this);
+	QVBoxLayout *mainLayout = new QVBoxLayout(this);
+
+	QWidget *formWidget = new QWidget(this);
+	mainLayout->addWidget(formWidget);
+
+	QFormLayout *layout = new QFormLayout(formWidget);
 
 	AccountName = new QLineEdit(this);
 	connect(AccountName, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
@@ -94,8 +99,10 @@ void GaduAddAccountWidget::createGui()
 
 	layout->addWidget(new QLabel(tr("<font size='-1'><i>Select or enter the identity that will be associated with this account.<i></font>"), this));
 
+	mainLayout->addStretch(100);
+
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
-	layout->addRow(0, buttons);
+	mainLayout->addWidget(buttons);
 
 	AddAccountButton = new QPushButton(IconsManager::instance()->iconByName("ApplyWindowButton"), tr("Add Account"), this);
 	QPushButton *cancelButton = new QPushButton(IconsManager::instance()->iconByName("CloseWindowButton"), tr("Cancel"), this);

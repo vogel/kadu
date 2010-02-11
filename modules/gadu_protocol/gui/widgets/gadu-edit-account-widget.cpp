@@ -92,6 +92,7 @@ void GaduEditAccountWidget::createGui()
 	buttons->addButton(ApplyButton, QDialogButtonBox::ApplyRole);
 	buttons->addButton(CancelButton, QDialogButtonBox::RejectRole);
 	buttons->addButton(removeAccount, QDialogButtonBox::DestructiveRole);
+
 	mainLayout->addWidget(buttons);
 }
 
