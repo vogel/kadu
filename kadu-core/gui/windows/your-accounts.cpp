@@ -158,8 +158,9 @@ void YourAccounts::createAccountWidget()
 
 	newAccountLayout->addWidget(MainAccountGroupBox, Qt::AlignTop);
 
-	connect(Protocols, SIGNAL(protocolChanged(ProtocolFactory*)), this, SLOT(protocolChanged(ProtocolFactory*)));
-	protocolChanged(0);
+	connect(Protocols, SIGNAL(protocolChanged(ProtocolFactory*, ProtocolFactory*)),
+			this, SLOT(protocolChanged(ProtocolFactory*, ProtocolFactory*)));
+	protocolChanged(0, 0);
 
 	switchToCreateMode();
 }
@@ -231,11 +232,19 @@ AccountEditWidget * YourAccounts::getAccountEditWidget(Account account)
 	return editWidget;
 }
 
-void YourAccounts::protocolChanged(ProtocolFactory *protocolFactory)
+void YourAccounts::protocolChanged(ProtocolFactory *protocolFactory, ProtocolFactory *lastProtocolFactory)
 {
 	Q_UNUSED(protocolFactory)
 
-	updateCurrentWidget();
+	if (canChangeWidget())
+	{
+		updateCurrentWidget();
+		return;
+	}
+
+	Protocols->blockSignals(true);
+	Protocols->setCurrentProtocol(lastProtocolFactory);
+	Protocols->blockSignals(false);
 }
 
 void YourAccounts::resetProtocol()

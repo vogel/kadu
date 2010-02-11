@@ -88,7 +88,7 @@ KADUAPI class YourAccounts : public QWidget, AccountsAwareObject
 	bool canChangeWidget();
 
 private slots:
-	void protocolChanged(ProtocolFactory *protocolFactory);
+	void protocolChanged(ProtocolFactory *protocolFactory, ProtocolFactory *lastProtocolFactory);
 	void resetProtocol();
 
 	void accountCreated(Account account);

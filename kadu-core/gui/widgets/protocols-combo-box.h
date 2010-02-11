@@ -46,7 +46,7 @@ public:
 	ProtocolFactory * currentProtocol();
 
 signals:
-	void protocolChanged(ProtocolFactory *protocol);
+	void protocolChanged(ProtocolFactory *protocol, ProtocolFactory *lastProtocol);
 
 };
 

@@ -55,8 +55,9 @@ void ProtocolsComboBox::setCurrentProtocol(ProtocolFactory *protocol)
 	else
 		setCurrentIndex(index.row());
 
+	ProtocolFactory *last = CurrentProtocolFactory;
 	CurrentProtocolFactory = protocol;
-	emit protocolChanged(CurrentProtocolFactory);
+	emit protocolChanged(CurrentProtocolFactory, last);
 }
 
 ProtocolFactory * ProtocolsComboBox::currentProtocol()
@@ -69,6 +70,7 @@ void ProtocolsComboBox::activatedSlot(int index)
 {
 	Q_UNUSED(index)
 
-	currentProtocol(); // sets CurrentAccount variable
-	emit protocolChanged(CurrentProtocolFactory);
+	ProtocolFactory *last = CurrentProtocolFactory;
+	currentProtocol(); // sets CurrentProtocol variable
+	emit protocolChanged(CurrentProtocolFactory, last);
 }
