@@ -62,6 +62,7 @@ KADUAPI class YourAccounts : public QWidget, AccountsAwareObject
 	QStackedWidget *CreateAddStack;
 	QStackedWidget *EditStack;
 	ModalConfigurationWidget *CurrentWidget;
+	bool IsCurrentWidgetEditAccount;
 
 	ProtocolsComboBox *Protocols;
 	QWidget *CreateAddAccountContainer;

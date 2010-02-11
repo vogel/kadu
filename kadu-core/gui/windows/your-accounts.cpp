@@ -53,7 +53,7 @@
 #include "message-dialog.h"
 
 YourAccounts::YourAccounts(QWidget *parent) :
-		QWidget(parent), CurrentWidget(0)
+		QWidget(parent), CurrentWidget(0), IsCurrentWidgetEditAccount(false)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(tr("Your accounts"));
@@ -269,10 +269,13 @@ void YourAccounts::updateCurrentWidget()
 		{
 			EditStack->setCurrentWidget(getAccountEditWidget(account));
 			CurrentWidget = getAccountEditWidget(account);
+			IsCurrentWidgetEditAccount = true;
 		}
 
 		return;
 	}
+
+	IsCurrentWidgetEditAccount = false;
 
 	MainStack->setCurrentWidget(CreateAddAccountContainer);
 	if (action == CreateNewAccountAction)
@@ -300,6 +303,26 @@ bool YourAccounts::canChangeWidget()
 
 	if (StateNotChanged == CurrentWidget->state())
 		return true;
+
+	if (!IsCurrentWidgetEditAccount)
+	{
+		QMessageBox::StandardButton result = QMessageBox::question(this, tr("Account"),
+				tr("You have unsaved changes in current account.<br />Do you want to return to editing?"),
+				QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+
+		switch (result)
+		{
+			case QMessageBox::Yes:
+				return false;
+
+			case QMessageBox::No:
+				CurrentWidget->cancel();
+				return true;
+
+			default:
+				return false;
+		}
+	}
 
 	if (StateChangedDataValid == CurrentWidget->state())
 	{
