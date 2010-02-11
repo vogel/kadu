@@ -45,11 +45,12 @@
 #include "gadu-create-account-widget.h"
 
 GaduCreateAccountWidget::GaduCreateAccountWidget(QWidget *parent) :
-		QWidget(parent)
+		ModalConfigurationWidget(parent)
 {
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
 	createGui();
+	dataChanged();
 }
 
 GaduCreateAccountWidget::~GaduCreateAccountWidget()
@@ -107,8 +108,8 @@ void GaduCreateAccountWidget::createGui()
 	RegisterAccountButton = new QPushButton(IconsManager::instance()->iconByName("ApplyWindowButton"), tr("Regster Account"), this);
 	QPushButton *cancelButton = new QPushButton(IconsManager::instance()->iconByName("CloseWindowButton"), tr("Cancel"), this);
 
-	connect(RegisterAccountButton, SIGNAL(clicked(bool)), this, SLOT(registerAccountButtonClicked()));
-	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(cancelButtonClicked()));
+	connect(RegisterAccountButton, SIGNAL(clicked(bool)), this, SLOT(apply()));
+	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(cancel()));
 
 	buttons->addButton(RegisterAccountButton, QDialogButtonBox::ApplyRole);
 	buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
@@ -135,11 +136,22 @@ void GaduCreateAccountWidget::dataChanged()
 		      || !IdentityCombo->currentIdentity();
 
 	RegisterAccountButton->setEnabled(!disable);
+
+	if (AccountName->text().isEmpty()
+			&& NewPassword->text().isEmpty()
+			&& ReNewPassword->text().isEmpty()
+			&& RememberPassword->isChecked()
+			&& EMail->text().isEmpty()
+			&& IdentityCombo->currentIdentity().isNull()
+			&& MyTokenWidget->tokenValue().isEmpty())
+		setState(StateNotChanged);
+	else
+		setState(disable ? StateChangedDataInvalid : StateChangedDataValid);
 }
 
-void GaduCreateAccountWidget::registerAccountButtonClicked()
+void GaduCreateAccountWidget::apply()
 {
-    if (NewPassword->text() != ReNewPassword->text())
+	if (NewPassword->text() != ReNewPassword->text())
 	{
 		MessageDialog::msg(tr("Error data typed in required fields.\n\n"
 			"Passwords typed in both fields (\"Password\" and \"Retype Password\") "
@@ -155,7 +167,7 @@ void GaduCreateAccountWidget::registerAccountButtonClicked()
 	gsra->performAction();
 }
 
-void GaduCreateAccountWidget::cancelButtonClicked()
+void GaduCreateAccountWidget::cancel()
 {
 	resetGui();
 	emit cancelled();
@@ -173,6 +185,8 @@ void GaduCreateAccountWidget::registerNewAccountFinished(GaduServerRegisterAccou
 		gaduAccount.setId(QString::number(gsra->uin()));
 		gaduAccount.setPassword(NewPassword->text());
 		gaduAccount.setRememberPassword(RememberPassword->isChecked());
+
+		resetGui(); // don't need that data anymore
 
 		emit accountCreated(gaduAccount);
 	}

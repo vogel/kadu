@@ -25,6 +25,7 @@
 #include <QtGui/QWidget>
 
 #include "accounts/account.h"
+#include "gui/widgets/modal-configuration-widget.h"
 
 class QCheckBox;
 class QGridLayout;
@@ -35,7 +36,7 @@ class GaduServerRegisterAccount;
 class IdentitiesComboBox;
 class TokenWidget;
 
-class GaduCreateAccountWidget : public QWidget
+class GaduCreateAccountWidget : public ModalConfigurationWidget
 {
 	Q_OBJECT
 
@@ -52,14 +53,17 @@ class GaduCreateAccountWidget : public QWidget
 	void resetGui();
 
 private slots:
-	void registerAccountButtonClicked();
-	void cancelButtonClicked();
 	void dataChanged();
+
 	void registerNewAccountFinished(GaduServerRegisterAccount *gsra);
 
 public:
 	explicit GaduCreateAccountWidget(QWidget *parent = 0);
 	virtual ~GaduCreateAccountWidget();
+
+public slots:
+	virtual void apply();
+	virtual void cancel();
 
 signals:
 	void accountCreated(Account account);
