@@ -58,7 +58,12 @@ GaduCreateAccountWidget::~GaduCreateAccountWidget()
 
 void GaduCreateAccountWidget::createGui()
 {
-	QFormLayout *layout = new QFormLayout(this);
+	QVBoxLayout *mainLayout = new QVBoxLayout(this);
+
+	QWidget *formWidget = new QWidget(this);
+	mainLayout->addWidget(formWidget);
+
+	QFormLayout *layout = new QFormLayout(formWidget);
 
 	AccountName = new QLineEdit(this);
 	connect(AccountName, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
@@ -94,8 +99,10 @@ void GaduCreateAccountWidget::createGui()
 
 	layout->addRow(0, new QLabel(tr("<font size='-1'><i>For verification purposes, please type the characters above.</i></font>"), this));
 
+	mainLayout->addStretch(100);
+
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
-	layout->addRow(0, buttons);
+	mainLayout->addWidget(buttons);
 
 	RegisterAccountButton = new QPushButton(IconsManager::instance()->iconByName("ApplyWindowButton"), tr("Regster Account"), this);
 	QPushButton *cancelButton = new QPushButton(IconsManager::instance()->iconByName("CloseWindowButton"), tr("Cancel"), this);
