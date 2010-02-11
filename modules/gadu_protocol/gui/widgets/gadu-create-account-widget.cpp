@@ -31,6 +31,7 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QRadioButton>
 
+#include "accounts/account-manager.h"
 #include "gui/widgets/identities-combo-box.h"
 #include "gui/windows/message-dialog.h"
 #include "protocols/protocols-manager.h"
@@ -130,10 +131,16 @@ void GaduCreateAccountWidget::resetGui()
 
 void GaduCreateAccountWidget::dataChanged()
 {
-	bool disable = NewPassword->text().isEmpty() || ReNewPassword->text().isEmpty()
-		      || EMail->text().indexOf(HtmlDocument::mailRegExp()) < 0 || MyTokenWidget->tokenValue().isEmpty()
-		      || NewPassword->text() != ReNewPassword->text()
-		      || !IdentityCombo->currentIdentity();
+	bool sameNameExists = AccountManager::instance()->byName(AccountName->text());
+
+	bool disable = sameNameExists
+			|| AccountName->text().isEmpty()
+			|| NewPassword->text().isEmpty()
+			|| ReNewPassword->text().isEmpty()
+			|| EMail->text().indexOf(HtmlDocument::mailRegExp()) < 0
+			|| MyTokenWidget->tokenValue().isEmpty()
+			|| NewPassword->text() != ReNewPassword->text()
+			|| !IdentityCombo->currentIdentity();
 
 	RegisterAccountButton->setEnabled(!disable);
 
