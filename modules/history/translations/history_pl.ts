@@ -19,12 +19,6 @@
         <translation>Ogólne</translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="12"/>
-        <source>Save history</source>
-        <translation>Zapisuj historię</translation>
-    </message>
-    <message>
-        <location filename="../.configuration-ui-translations.cpp" line="14"/>
         <source>Save messages in history</source>
         <translation>Zapisuj wiadomości w historii</translation>
     </message>
@@ -34,24 +28,20 @@
         <translation>Zmiany statusów</translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="21"/>
-        <source>Don&apos;t show status changes</source>
-        <translation>Nie pokazuj zmian statusów</translation>
+        <source>Show status changes</source>
+        <translation>Pokazuj zmiany statusów</translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="23"/>
-        <source>Don&apos;t show status changes in history</source>
-        <translation>Nie pokazuje zmian statusów w historii</translation>
+        <source>Show status changes in history</source>
+        <translation>Pokazuje zmiany statusów w historii</translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="26"/>
-        <source>Don&apos;t save status changes</source>
-        <translation>Nie zapisuj zmian statusów</translation>
+        <source>Save status changes</source>
+        <translation>Zapisuj zmiany statusów</translation>
     </message>
     <message>
-        <location filename="../.configuration-ui-translations.cpp" line="28"/>
-        <source>Don&apos;t save status changes in history</source>
-        <translation>Nie zapisuje zmian statusów w historii</translation>
+        <source>Save status changes in history</source>
+        <translation>Zapisuje zmiany statusów w historii</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="32"/>
