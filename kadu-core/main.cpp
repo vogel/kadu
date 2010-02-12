@@ -216,8 +216,7 @@ void printKaduOptions()
 		"\nOptions:\n"
 		"  --debug <mask>             Set debugging mask\n"
 		"  --config-dir <path>        Set configuration directory\n"
-		"                             (overwrites CONFIG_DIR variable)\n"
-		"  gg://<number>              Open chat with GG number\n");
+		"                             (overwrites CONFIG_DIR variable)\n");
 }
 
 void printQtOptions()
@@ -265,7 +264,9 @@ void printQtOptions()
 
 int main(int argc, char *argv[])
 {
-	int ggnumber(0);
+	QStringList ids;
+	QRegExp idRegExp("^[a-zA-Z]*://.*");
+
 	time_t sec;
 	int msec;
 	int i;
@@ -329,13 +330,8 @@ int main(int argc, char *argv[])
                 else if ((param == "--config-dir") && (argc > i + 1))
                         setenv("CONFIG_DIR", argv[++i], 1);
 #endif
-                else if (param.contains("gg:"))
-                {
-			//todo:
-                        ggnumber = QString(argv[1]).remove("gg:").remove("/").toInt();
-                        if (ggnumber < 0)
-                                ggnumber = 0;
-                }
+		else if (idRegExp.exactMatch(param))
+			ids.append(param);
                 else
                 {
                         fprintf(stderr, "Ignoring unknown parameter '%s'\n", qApp->argv()[i]);
@@ -431,8 +427,9 @@ int main(int argc, char *argv[])
 	QtLocalPeer *peer = new QtLocalPeer(qApp, ggPath());
 	if (peer->isClient())
 	{
-		if (ggnumber)
-			peer->sendMessage("gg://" + QString::number(ggnumber), 1000);
+		if (ids.count())
+			foreach (const QString &id, ids)
+				peer->sendMessage(id, 1000);
 		else
 			peer->sendMessage("activate", 1000);
 
@@ -467,8 +464,9 @@ int main(int argc, char *argv[])
 		MessageDialog::msg(qApp->translate("@default", QT_TR_NOOP("Please do not run Kadu as a root!\nIt's a high security risk!")), false, "Warning");
 #endif
 
-	if (ggnumber)
-		Core::instance()->receivedSignal("gg://" + QString::number(ggnumber));
+	if (ids.count())
+		foreach (const QString &id, ids)
+			Core::instance()->receivedSignal(id);
 
 	/* for testing of startup / close time */
 	char *close_after = getenv("CLOSE_AFTER");
