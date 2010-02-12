@@ -246,6 +246,8 @@ set (kadu_SRCS
 
 	os/generic/compositing-aware-object.cpp
 	os/generic/system-info.cpp
+	os/qtsingleapplication/qtlocalpeer.cpp
+	os/qtsingleapplication/qtlockedfile.cpp
 
 	parser/parser.cpp
 
@@ -485,6 +487,8 @@ set (kadu_MOC_SRCS
 	notify/status-changed-notification.h
 	notify/window-notifier.h
 
+	os/qtsingleapplication/qtlocalpeer.h
+
 	protocols/connection-error-notification.h
 	protocols/protocol.h
 	protocols/protocols-manager.h
@@ -551,8 +555,8 @@ if (WIN32)
 	target_link_libraries (kadu_core ${QT_LIBRARIES})
 	set_property(TARGET kadu_core PROPERTY LINK_INTERFACE_LIBRARIES "")
 
-	add_executable(kadu WIN32 main.cpp main_win32.cpp kadu.rc)
-	add_executable(kadu_c main.cpp main_win32.cpp kadu.rc)
+	add_executable(kadu WIN32 main.cpp main_win32.cpp os/qtsingleapplication/qtlockedfile_win.cpp kadu.rc)
+	add_executable(kadu_c main.cpp main_win32.cpp os/qtsingleapplication/qtlockedfile_win.cpp kadu.rc)
 
 	set_target_properties(kadu_c PROPERTIES COMPILE_FLAGS "-DKADU_CONSOLE" )
 
@@ -563,7 +567,7 @@ if (WIN32)
 	install (TARGETS kadu_c DESTINATION ${KADU_BIN_DIR})
 	install (DIRECTORY "." DESTINATION ${KADU_DATA_DIR}/kadu-sdk/include/kadu-core FILES_MATCHING PATTERN "*.h" PATTERN ".svn" EXCLUDE )
 else (WIN32)
-	add_executable (kadu main.cpp main_unix.cpp ${kadu_SRCS} ${MOC_FILES})
+	add_executable (kadu main.cpp main_unix.cpp os/qtsingleapplication/qtlockedfile_unix.cpp ${kadu_SRCS} ${MOC_FILES})
 	set_target_properties(kadu PROPERTIES ENABLE_EXPORTS ON)
 	set_target_properties(kadu PROPERTIES COMPILE_FLAGS "-DKADULIB" )
 
