@@ -21,6 +21,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#define ASPELL_STATIC
 #include <aspell.h>
 
 #include <QGridLayout>
@@ -42,8 +43,10 @@
 
 SpellChecker* spellcheck;
 
-extern "C" int spellchecker_init(bool firstLoad)
+extern "C" KADU_EXPORT int spellchecker_init(bool firstLoad)
 {
+	Q_UNUSED(firstLoad)
+
 	spellcheck = new SpellChecker();
 
 	// use configuration settings to create spellcheckers for languages
@@ -60,7 +63,7 @@ extern "C" int spellchecker_init(bool firstLoad)
 	}
 }
 
-extern "C" void spellchecker_close()
+extern "C" KADU_EXPORT void spellchecker_close()
 {
 	if (spellcheck)
 	{
@@ -181,7 +184,7 @@ bool SpellChecker::buildCheckers()
 		aspell_config_replace(spellConfig, "ignore-case", "false");
 
 	// create aspell checkers for each language
-	for (unsigned int i = 0; i < checkedList.count(); i++)
+	for (int i = 0; i < checkedList.count(); i++)
 	{
 		addCheckedLang(checkedList[i]);
 		/*
@@ -222,9 +225,7 @@ void SpellChecker::buildMarkTag()
 void SpellChecker::chatCreated(ChatWidget *chat)
 {
 	if (checkers.size() > 0)
-	{
-		Highlighter *highlighter = new Highlighter(chat->edit()->document());
-	}
+		new Highlighter(chat->edit()->document());
 }
 
 void SpellChecker::configForward()
