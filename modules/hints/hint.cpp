@@ -128,8 +128,8 @@ void Hint::createLabels(const QPixmap &pixmap)
 	vbox->setSizeConstraint(QLayout::SetMinimumSize);
 	QWidget *widget = new QWidget(this);
 	labels = new QHBoxLayout(widget);
-	labels->setSpacing(0);
-	labels->setMargin(10);
+	labels->setContentsMargins(5, 5, 5, 5);
+
 	vbox->addWidget(widget);
 	if (!pixmap.isNull())
 	{
