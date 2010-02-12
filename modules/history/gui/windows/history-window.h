@@ -68,7 +68,7 @@ class HistoryWindow : public MainWindow
 	QLabel *ToDateLabel;
 	QDateEdit *ToDate;
 
-	ChatMessagesView* ContentBrowser;
+	ChatMessagesView *ContentBrowser;
 	QLineEdit *quickSearchPhraseEdit;
 
 	ActionDescription *historySearchActionDescription;

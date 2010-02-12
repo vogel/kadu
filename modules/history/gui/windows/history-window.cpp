@@ -753,6 +753,10 @@ void HistoryWindow::keyPressEvent(QKeyEvent *e)
 		e->accept();
 		hide();
 	}
+	else if (e == QKeySequence::Copy)
+	{
+		ContentBrowser->pageAction(QWebPage::Copy)->trigger();
+	}
 	else
 		QWidget::keyPressEvent(e);
 }
