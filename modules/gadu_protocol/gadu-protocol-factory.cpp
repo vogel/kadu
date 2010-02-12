@@ -48,8 +48,10 @@ GaduProtocolFactory * GaduProtocolFactory::instance()
 GaduProtocolFactory::GaduProtocolFactory()
 {
 	StatusTypeManager *statusTypeManager = StatusTypeManager::instance();
+	SupportedStatusTypes.append(statusTypeManager->statusType("FreeForChat"));
 	SupportedStatusTypes.append(statusTypeManager->statusType("Online"));
 	SupportedStatusTypes.append(statusTypeManager->statusType("Away"));
+	SupportedStatusTypes.append(statusTypeManager->statusType("DoNotDisturb"));
 	SupportedStatusTypes.append(statusTypeManager->statusType("Invisible"));
 	SupportedStatusTypes.append(statusTypeManager->statusType("Offline"));
 

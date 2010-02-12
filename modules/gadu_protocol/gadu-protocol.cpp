@@ -59,6 +59,7 @@
 #include "gadu-account-details.h"
 #include "gadu-contact-details.h"
 #include "gadu-protocol-factory.h"
+#include "gadu-resolver.h"
 
 #include "gadu-protocol.h"
 
@@ -78,6 +79,8 @@ extern "C" int gadu_protocol_init(bool firstLoad)
 #ifndef DEBUG_ENABLED
 	gg_debug_level = 1;
 #endif
+
+	gg_global_set_custom_resolver(gadu_resolver_start, gadu_resolver_cleanup);
 
 	ProtocolsManager::instance()->registerProtocolFactory(GaduProtocolFactory::instance());
 
@@ -99,6 +102,10 @@ QString GaduProtocol::statusTypeFromGaduStatus(unsigned int index)
 {
 	switch (index)
 	{
+		case GG_STATUS_FFC_DESCR:
+		case GG_STATUS_FFC:
+			return "FreeForChat";
+
 		case GG_STATUS_AVAIL_DESCR:
 		case GG_STATUS_AVAIL:
 			return "Online";
@@ -106,6 +113,10 @@ QString GaduProtocol::statusTypeFromGaduStatus(unsigned int index)
 		case GG_STATUS_BUSY_DESCR:
 		case GG_STATUS_BUSY:
 			return "Away";
+
+		case GG_STATUS_DND_DESCR:
+		case GG_STATUS_DND:
+			return "DoNotDisturb";
 
 		case GG_STATUS_INVISIBLE_DESCR:
 		case GG_STATUS_INVISIBLE:
@@ -126,11 +137,17 @@ unsigned int GaduProtocol::gaduStatusFromStatus(const Status &status)
 	bool hasDescription = !status.description().isEmpty();
 	const QString &type = status.type();
 
+	if ("FreeForChat" == type)
+		return hasDescription ? GG_STATUS_FFC_DESCR : GG_STATUS_FFC;
+
 	if ("Online" == type)
 		return hasDescription ? GG_STATUS_AVAIL_DESCR : GG_STATUS_AVAIL;
 
 	if ("Away" == type)
 		return hasDescription ? GG_STATUS_BUSY_DESCR : GG_STATUS_BUSY;
+
+	if ("DoNotDisturb" == type)
+		return hasDescription ? GG_STATUS_DND_DESCR : GG_STATUS_DND;
 
 	if ("Invisible" == type)
 		return hasDescription ? GG_STATUS_INVISIBLE_DESCR : GG_STATUS_INVISIBLE;
@@ -232,11 +249,6 @@ bool GaduProtocol::validateUserID(const QString &uid)
 
 int GaduProtocol::maxDescriptionLength()
 {
-#ifdef GG_STATUS_DESCR_MAXSIZE_PRE_8_0
-	if (GaduLoginParams.protocol_version <= 0x2a)
-		return GG_STATUS_DESCR_MAXSIZE_PRE_8_0;
-#endif
-
 	return GG_STATUS_DESCR_MAXSIZE;
 }
 
@@ -591,8 +603,9 @@ void GaduProtocol::setupLoginParams()
 	GaduLoginParams.server_addr = haveServer ? htonl(ActiveServer.first.toIPv4Address()) : 0;
 	GaduLoginParams.server_port = haveServer ? ActiveServer.second : 0;
 
-	GaduLoginParams.protocol_version = 0x2a; // we are gg 7.7 now
-	GaduLoginParams.client_version = (char *)"7, 7, 0, 3351";
+	GaduLoginParams.protocol_version = GG_DEFAULT_PROTOCOL_VERSION;
+	GaduLoginParams.client_version = (char *)GG_DEFAULT_CLIENT_VERSION;
+	GaduLoginParams.protocol_features = 0x00000037; // enable new statuses
 
 	GaduLoginParams.has_audio = gaduAccountDetails->allowDcc();
 	GaduLoginParams.last_sysmsg = config_file.readNumEntry("General", "SystemMsgIndex", 1389);

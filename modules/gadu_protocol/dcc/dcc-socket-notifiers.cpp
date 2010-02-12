@@ -438,9 +438,9 @@ unsigned long DccSocketNotifiers::fileSize()
 	switch (Version)
 	{
 		case Dcc6:
-			return gg_fix32(Socket->file_info.size);
+			return Socket->file_info.size;
 		case Dcc7:
-			return gg_fix32(Socket7->size);
+			return Socket7->size;
 		case DccUnknown:
 			return 0;
 	}
@@ -453,9 +453,9 @@ unsigned long DccSocketNotifiers::transferredFileSize()
 	switch (Version)
 	{
 		case Dcc6:
-			return gg_fix32(Socket->offset);
+			return Socket->offset;
 		case Dcc7:
-			return gg_fix32(Socket7->offset);
+			return Socket7->offset;
 		case DccUnknown:
 			return 0;
 	}

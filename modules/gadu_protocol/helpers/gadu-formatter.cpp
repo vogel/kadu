@@ -20,6 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#define GG_IGNORE_DEPRECATED
 #include <libgadu.h>
 
 #include <QtGui/QApplication>

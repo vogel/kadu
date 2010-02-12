@@ -55,6 +55,7 @@ set (SOURCES
 	gadu-contact-widget.cpp
 	gadu-protocol.cpp
 	gadu-protocol-factory.cpp
+	gadu-resolver.cpp
 )
 
 set (MOC_SOURCES
@@ -101,6 +102,7 @@ set (MOC_SOURCES
 	gadu-account-details.h
 	gadu-contact-widget.h
 	gadu-protocol.h
+	gadu-resolver.h
 )
 
 set (TRANSLATION_SOURCES
@@ -114,7 +116,7 @@ pkg_search_module (QCA2 REQUIRED qca2)
 link_directories (${QCA2_LIBRARY_DIRS})
 add_definitions (${QCA2_CFLAGS_OTHER})
 
-pkg_search_module (LIBGADU REQUIRED libgadu>=1.8.0)
+pkg_search_module (LIBGADU REQUIRED libgadu>=1.9.0)
 include_directories (${LIBGADU_INCLUDE_DIRS} ${QCA2_INCLUDE_DIRS})
 link_directories (${LIBGADU_LIBRARY_DIRS})
 
