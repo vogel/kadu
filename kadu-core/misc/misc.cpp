@@ -47,13 +47,18 @@ bool measureTime = false;
 
 void saveWindowGeometry(const QWidget *w, const QString &section, const QString &name)
 {
+
 #ifdef Q_OS_MACX
-	/* Dorr: on Mac make sure the window will not be greater than desktop */
-	config_file.writeEntry(section, name,
-		QApplication::desktop()->availableGeometry().intersected(w->geometry()));
-#else
-	config_file.writeEntry(section, name,w->geometry());
+	/* Dorr: on Mac OS X make sure the window will not be greater than desktop what
+	 * sometimes happends during widget resizing (because of bug in Qt?)
+	 */
+	if (geometry.height() > QApplication::desktop()->height())
+		geometry.setHeight(QApplication::desktop()->height());
+	if (geometry.width() > QApplication::desktop()->width())
+		geometry.setWidth(QApplication::desktop()->width());
 #endif
+
+	config_file.writeEntry(section, name,w->geometry());
 }
 
 void loadWindowGeometry(QWidget *w, const QString &section, const QString &name, int defaultX, int defaultY, int defaultWidth, int defaultHeight)
