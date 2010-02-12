@@ -38,27 +38,8 @@ typedef BOOL (WINAPI *MiniDumpWriteDump_t)(HANDLE hProcess, DWORD ProcessId, HAN
 		PMINIDUMP_CALLBACK_INFORMATION CallbackParam);
 
 MiniDumpWriteDump_t MiniDumpWriteDump_f;
-HANDLE mutex;
 
 #define WM_OPEN_CHAT WM_USER+1
-
-class KaduMessageWindow : public QWidget
-{
-	virtual bool winEvent (MSG * message, long * result){
-		switch(message->message){
-			case WM_OPEN_CHAT:
-//				qApp->postEvent(kadu, new OpenGGChatEvent(message->wParam));
-				return false;
-				break;
-		}
-		return QWidget::winEvent(message, result);
-	}
-
-	public:
-		KaduMessageWindow() {
-			setWindowTitle("kadu_message_window");
-		}
-};
 
 LONG WINAPI exception_handler(struct _EXCEPTION_POINTERS* e)
 {
@@ -114,32 +95,4 @@ void enableSignalHandling()
 		MiniDumpWriteDump_f=(MiniDumpWriteDump_t)QLibrary::resolve("dbghelp", "MiniDumpWriteDump");
 //		SetUnhandledExceptionFilter(exception_handler);
 	}
-}
-
-bool isRuning(int ggnumber)
-{
-	QString uid=QApplication::applicationFilePath().toLower().replace("/", "_");
-
-	mutex = CreateMutexW(NULL, TRUE, (WCHAR*)uid.utf16());
-	if (mutex && GetLastError()==ERROR_ALREADY_EXISTS){
-		CloseHandle(mutex);
-		if(ggnumber){
-			HWND hwnd=FindWindow("QWidget", "kadu_message_window");
-			if(hwnd)
-				SendMessage(hwnd, WM_OPEN_CHAT, ggnumber, 0);
-			return true;
-		}
-		else if (QMessageBox::warning(NULL, "Kadu",
-		qApp->translate("@default", QT_TR_NOOP("Another Kadu is running on this profile but I cannot get its process ID.")),
-		qApp->translate("@default", QT_TR_NOOP("Force running Kadu (not recommended).")),
-		qApp->translate("@default", QT_TR_NOOP("Quit.")), 0, 1, 1) == 1)
-			return true;
-	}
-	new KaduMessageWindow;
-	return false;
-}
-
-void disableLock()
-{
-	CloseHandle(mutex);
 }

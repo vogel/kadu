@@ -89,6 +89,8 @@ public:
 	void setIcon(const QPixmap &icon);
 
 public slots:
+	void receivedSignal(const QString &signal);
+
 	void quit();
 
 signals:
@@ -106,7 +108,6 @@ signals:
 	void searchingForTrayPosition(QPoint &);
 
 	void mainIconChanged(const QIcon &);
-
 
 };
 

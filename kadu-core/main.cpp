@@ -57,6 +57,7 @@
 #include "configuration/xml-configuration-file.h"
 #include "gui/windows/message-dialog.h"
 #include "os/generic/compositing-aware-object.h"
+#include "os/qtsingleapplication/qtlocalpeer.h"
 #include "protocols/protocols-manager.h"
 
 #include "debug.h"
@@ -191,8 +192,6 @@ extern KADUAPI bool showTimesInDebug;
 extern KADUAPI char* SystemUserName;
 
 void enableSignalHandling();
-void disableLock();
-bool isRuning(int);
 
 void printVersion()
 {
@@ -332,6 +331,7 @@ int main(int argc, char *argv[])
 #endif
                 else if (param.contains("gg:"))
                 {
+			//todo:
                         ggnumber = QString(argv[1]).remove("gg:").remove("/").toInt();
                         if (ggnumber < 0)
                                 ggnumber = 0;
@@ -428,18 +428,25 @@ int main(int argc, char *argv[])
 	// plugins path (win32)
 	qApp->addLibraryPath(libPath("qt"));
 
-	if (isRuning(ggnumber))
+	QtLocalPeer *peer = new QtLocalPeer(qApp, ggPath());
+	if (peer->isClient())
 	{
-		// setClosing? TODO: 0.6.6
+		if (ggnumber)
+			peer->sendMessage("gg://" + QString::number(ggnumber), 1000);
+		else
+			peer->sendMessage("activate", 1000);
+
 		delete config_file_ptr;
 		delete xml_config_file;
-//		delete qApp;
+		qApp->deleteLater();
+
 		return 1;
 	}
 
 	qApp->setApplicationName("Kadu");
 
 	Core::instance()->createGui();
+	QObject::connect(peer, SIGNAL(messageReceived(const QString &)), Core::instance(), SLOT(receivedSignal(const QString &)));
 
 	QString path_ = ggPath(QString::null);
 #ifndef Q_OS_WIN
@@ -460,8 +467,8 @@ int main(int argc, char *argv[])
 		MessageDialog::msg(qApp->translate("@default", QT_TR_NOOP("Please do not run Kadu as a root!\nIt's a high security risk!")), false, "Warning");
 #endif
 
-// 	if (ggnumber)
-// 		qApp->postEvent(kadu, new OpenGGChatEvent(ggnumber));
+	if (ggnumber)
+		Core::instance()->receivedSignal("gg://" + QString::number(ggnumber));
 
 	/* for testing of startup / close time */
 	char *close_after = getenv("CLOSE_AFTER");
@@ -484,9 +491,6 @@ int main(int argc, char *argv[])
 	int ret = qApp->exec();
 	kdebugm(KDEBUG_INFO, "after exec\n");
 
-	// clear lockfile
-	disableLock();
-
 	qApp->removeTranslator(&qt_qm);
 	qApp->removeTranslator(&kadu_qm);
 #ifdef Q_WS_WIN
@@ -502,7 +506,7 @@ int main(int argc, char *argv[])
 
 //	delete qApp; //sometimes leads to segfault
 	qApp->deleteLater();
-//	qApp = 0;
+
 	kdebugm(KDEBUG_INFO, "exiting main\n");
 	return ret;
 }

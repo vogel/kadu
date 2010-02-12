@@ -41,18 +41,12 @@
 #include "misc/misc.h"
 #include "modules.h"
 
-int lockFileHandle;
-QFile *lockFile;
-struct flock *lock_str;
-
 #ifdef SIG_HANDLING_ENABLED
 	#include <QtCore/QDateTime>
 	#include <signal.h>
 #ifdef HAVE_EXECINFO
 	#include <execinfo.h>
 #endif
-
-#define OPEN_CHAT_SIGNAL (SIGRTMIN + 7)
 
 static int sigsegvCount = 0;
 static void kadu_signal_handler(int s)
@@ -74,16 +68,6 @@ static void kadu_signal_handler(int s)
 		QString f = QString("kadu.conf.xml.backup.%1").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss"));
 		QString debug_file = QString("kadu.backtrace.%1").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss"));
 
-		if (lockFile)
-		{
-			// there might be another segmentation fault in this signal handler (because of total mess in memory)
-			lock_str->l_type = F_UNLCK;
-			fcntl(lockFileHandle, F_SETLK, lock_str);
-//			flock(lockFileHandle, LOCK_UN);
-			kdebugm(KDEBUG_WARNING, "lock released\n");
-			lockFile->close();
-			kdebugm(KDEBUG_WARNING, "lockfile closed\n");
-		}
 #ifdef HAVE_EXECINFO
 		void *bt_array[100];
 		char **bt_strings;
@@ -161,19 +145,6 @@ static void kadu_signal_handler(int s)
 		Core::instance()->quit();
 }
 
-#if defined (SIGRTMIN)
-void kadu_realtime_signal(int sig, siginfo_t *info, void *)
-{
-	Q_UNUSED(info)
-
-	if (sig != OPEN_CHAT_SIGNAL)
-		return;
-// 	int ggnum = info->si_value.sival_int;
-// 	if (ggnum > 0) TODO: 0.6.6
-// 		qApp->postEvent(kadu, new OpenGGChatEvent(ggnum));
-}
-#endif
-
 #endif
 
 bool sh_enabled=true;
@@ -191,87 +162,6 @@ void enableSignalHandling()
 		signal(SIGTERM, kadu_signal_handler);
 		signal(SIGUSR1, kadu_signal_handler);
 		signal(SIGPIPE, SIG_IGN);
-#if defined (SIGRTMIN)
-		struct sigaction action;
-		action.sa_sigaction = kadu_realtime_signal;
-		sigemptyset(&action.sa_mask);
-		action.sa_flags = SA_SIGINFO;
-		sigaction(OPEN_CHAT_SIGNAL, &action, 0);
-#endif
 	}
 #endif
 }
-
-bool isRuning(int ggnumber)
-{
-	lockFile = new QFile(ggPath("lock"));
-
-	lock_str = (struct flock *) malloc(sizeof(struct flock));
-	lock_str->l_type = F_WRLCK;
-	lock_str->l_whence = SEEK_SET;
-	lock_str->l_start = 0;
-	lock_str->l_len = 0;
-
-	if (lockFile->open(QIODevice::ReadWrite))
-	{
-		lockFileHandle = lockFile->handle();
-
-		if (fcntl(lockFileHandle, F_SETLK, lock_str) == -1)
-//		if (flock(lockFileHandle, LOCK_EX | LOCK_NB) != 0)
-		{
-			kdebugm(KDEBUG_WARNING, "fcntl: %s\n", strerror(errno));
-#ifdef SIG_HANDLING_ENABLED
-			bool gotPID = fcntl(lockFileHandle, F_GETLK, lock_str) != -1;
-			if (sh_enabled)
-			{
-				if (gotPID)
-				{
-#if defined (SIGRTMIN)
-					kdebugm(KDEBUG_INFO, "l_type: %d, l_pid: %d\n", lock_str->l_type, lock_str->l_pid);
-					if (ggnumber)
-					{
-#if defined (__FreeBSD__) || defined (__sun__)
-						typedef union sigval sigval_t;
-#endif
-						sigval_t v;
-						v.sival_int = ggnumber;
-						sigqueue(lock_str->l_pid, OPEN_CHAT_SIGNAL, v);
-					}
-					else
-#endif
-						kill(lock_str->l_pid, SIGUSR1);
-				}
-				else
-				{
-					kdebugm(KDEBUG_WARNING, "cannot get information about lock: %s\n", strerror(errno));
-				}
-			}
-			else
-				gotPID = false;
-#else
-			bool gotPID(false);
-#endif
-			if (gotPID || QMessageBox::warning(NULL, "Kadu",
-				qApp->translate("@default", QT_TR_NOOP("Another Kadu is running on this profile but I cannot get its process ID.")),
-				qApp->translate("@default", QT_TR_NOOP("Force running Kadu (not recommended).")),
-				qApp->translate("@default", QT_TR_NOOP("Quit.")), 0, 1, 1) == 1)
-			{
-				lockFile->close();
-				delete lockFile;
-				return true;
-			}
-		}
-	}
-	return false;
-}
-
-void disableLock()
-{
-	lock_str->l_type = F_UNLCK;
-	fcntl(lockFileHandle, F_SETLK, lock_str);
-//	flock(lockFileHandle, LOCK_UN);
-	lockFile->close();
-	delete lockFile;
-	lockFile=NULL;
-}
-

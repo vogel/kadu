@@ -50,6 +50,7 @@
 #include "status/status-type.h"
 #include "status/status-type-manager.h"
 
+#include "activate.h"
 #include "debug.h"
 #include "emoticons.h"
 #include "icons-manager.h"
@@ -455,6 +456,13 @@ void Core::setIcon(const QPixmap &pixmap)
 		QApplication::setWindowIcon(icon);
 		emit mainIconChanged(icon);
 	}
+}
+
+void Core::receivedSignal(const QString &signal)
+{
+	qDebug("received signal: %s", qPrintable(signal));
+	if ("activate" == signal)
+		_activateWindow(Window);
 }
 
 void Core::quit()
