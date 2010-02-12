@@ -33,8 +33,12 @@
 
 #include <QtCore/QMap>
 #include <QtCore/QRegExp>
+<<<<<<< HEAD
 #include <QtCore/QProcess>
 #include <QtCore/QTextStream>
+=======
+//#include <QtCore/QProcess>
+>>>>>>> 119c59f... * enable debugging messages on windows
 #include <QtGui/QLabel>
 #include <QtGui/QSpinBox>
 #include <QtGui/QGridLayout>
@@ -43,7 +47,7 @@
 
 Antistring *antistring;
 
-extern "C" int antistring_init()
+extern "C" KADU_EXPORT int antistring_init()
 {
 	antistring = new Antistring();
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/antistring.ui"), antistring);
@@ -52,7 +56,7 @@ extern "C" int antistring_init()
 	return 0;
 }
 
-extern "C" void antistring_close()
+extern "C" KADU_EXPORT void antistring_close()
 {
 	notification_manager->unregisterEvent("Antistring");
 	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/antistring.ui"), antistring);

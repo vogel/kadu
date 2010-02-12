@@ -39,7 +39,7 @@
 
 AutoHide *autoHide;
 
-extern "C" int auto_hide_init()
+extern "C" KADU_EXPORT int auto_hide_init()
 {
 	kdebugf();
 
@@ -52,7 +52,7 @@ extern "C" int auto_hide_init()
 }
 
 
-extern "C" void auto_hide_close()
+extern "C" KADU_EXPORT void auto_hide_close()
 {
 	kdebugf();
 

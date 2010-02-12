@@ -19,7 +19,7 @@
 #include "searchbox_mac.h"
 #endif
 
-extern "C" int filtering_init(bool firstLoad)
+extern "C" KADU_EXPORT int filtering_init(bool firstLoad)
 {
 	kdebugf();
 	
@@ -31,7 +31,7 @@ extern "C" int filtering_init(bool firstLoad)
 	return 0;
 }
 
-extern "C" void filtering_close()
+extern "C" KADU_EXPORT void filtering_close()
 {
 	kdebugf();
 

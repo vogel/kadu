@@ -65,7 +65,7 @@ Nowa funkcjonalnosc - Dorregaray
 
 Firewall *firewall;
 
-extern "C" int firewall_init()
+extern "C" KADU_EXPORT int firewall_init()
 {
 	firewall = new Firewall();
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/firewall.ui"), firewall);
@@ -74,7 +74,7 @@ extern "C" int firewall_init()
 	return 0;
 }
 
-extern "C" void firewall_close()
+extern "C" KADU_EXPORT void firewall_close()
 {
 	notification_manager->unregisterEvent("Firewall");
 	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/firewall.ui"), firewall);	

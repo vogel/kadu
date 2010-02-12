@@ -35,7 +35,7 @@
 QDateTime started;
 ParserExtender *parserExtender;
 
-extern "C" int parser_extender_init()
+extern "C" KADU_EXPORT int parser_extender_init()
 {
 	kdebugf();
 
@@ -47,7 +47,7 @@ extern "C" int parser_extender_init()
 }
 
 
-extern "C" void parser_extender_close()
+extern "C" KADU_EXPORT void parser_extender_close()
 {
 	kdebugf();
 

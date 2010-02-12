@@ -57,6 +57,9 @@ endif (NOT WIN32)
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug" OR WIN32)
 	add_definitions(-DDEBUG_ENABLED)
+
+	set (DEBUG 1)
+	set (DEBUG_ENABLED 1)
 endif (CMAKE_BUILD_TYPE STREQUAL "Debug" OR WIN32)
 
 if (MSVC)
