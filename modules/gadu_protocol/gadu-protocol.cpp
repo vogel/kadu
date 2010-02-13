@@ -44,6 +44,8 @@
 #include "gui/windows/password-window.h"
 #include "protocols/protocols-manager.h"
 #include "status/status.h"
+#include "status/status-type.h"
+#include "status/status-type-manager.h"
 
 #include "debug.h"
 #include "icons-manager.h"
@@ -362,6 +364,7 @@ void GaduProtocol::userDataChanged(UserListElement elem, QString name, QVariant 
 		return;
 #include <status/status-group.h>
 #include <status/status-group.h>
+#include <status/status-type-manager.h>
 
 	if (status().isOffline())
 		return;
@@ -896,24 +899,25 @@ GaduContactDetails * GaduProtocol::gaduContactDetails(Contact contact) const
 
 QPixmap GaduProtocol::statusPixmap(Status status)
 {
+	StatusType *statusType = StatusTypeManager::instance()->statusType(status.type());
+	if (!statusType)
+		return QPixmap();
+
 	QString description = status.description().isEmpty()
 			? ""
-			: "WithDescription";
-	QString pixmapName;
-
-	QString groupName = status.group();
-
-	if ("Away" == groupName)
-		pixmapName = QString("Busy").append(description);
-	else
-		pixmapName = QString(groupName).append(description);
-
-	return IconsManager::instance()->pixmapByName(pixmapName);
+			: "_d";
+	QString pixmapName = "protocols/gadu-gadu/16x16/" + statusType->iconName() + description + ".png";
+	return IconsManager::instance()->pixmapByPath(pixmapName);
 }
 
-QPixmap GaduProtocol::statusPixmap(const QString &statusType)
+QPixmap GaduProtocol::statusPixmap(const QString &status)
 {
-	return IconsManager::instance()->pixmapByName("Away" == statusType ? "Busy" : statusType);
+	StatusType *statusType = StatusTypeManager::instance()->statusType(status);
+	if (!statusType)
+		return QPixmap();
+
+	QString pixmapName = "protocols/gadu-gadu/16x16/" + statusType->iconName() + ".png";
+	return IconsManager::instance()->pixmapByPath(pixmapName);
 }
 
 void GaduProtocol::contactAdded(Contact contact)
