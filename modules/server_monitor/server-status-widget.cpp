@@ -42,7 +42,7 @@ ServerStatusWidget::ServerStatusWidget(QString watchedAddress, quint16 watchedPo
 	connect(&TcpSocket, SIGNAL(error(QAbstractSocket::SocketError)),
 			this, SLOT(connectionError(QAbstractSocket::SocketError)));
 
-	PixmapLabel->setPixmap(IconsManager::instance()->pixmapByName("Offline"));
+	PixmapLabel->setPixmap(IconsManager::instance()->pixmapByPath("protocols/gadu-gadu/16x16/offline.png"));
 
 	layout->addWidget(PixmapLabel, 0);
 	layout->addWidget(textLabel, 100);
@@ -69,9 +69,9 @@ void ServerStatusWidget::setNewState(ServerState newState)
 	emit statusChanged(WatchedAddress.toString(), CurrentState);
 
 	if (Available == CurrentState)
-		PixmapLabel->setPixmap(IconsManager::instance()->pixmapByName("Online"));
+		PixmapLabel->setPixmap(IconsManager::instance()->pixmapByPath("protocols/gadu-gadu/16x16/online.png"));
 	else
-		PixmapLabel->setPixmap(IconsManager::instance()->pixmapByName("Offline"));
+		PixmapLabel->setPixmap(IconsManager::instance()->pixmapByPath("protocols/gadu-gadu/16x16/offline.png"));
 }
 
 
