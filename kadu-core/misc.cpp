@@ -855,22 +855,24 @@ ChooseDescription::ChooseDescription(QWidget *parent)
 	: QDialog(parent, false)
 {
 	kdebugf();
+
 	setWindowTitle(tr("Select description"));
 	setAttribute(Qt::WA_DeleteOnClose);
 
 	while (defaultdescriptions.count() > config_file.readNumEntry("General", "NumberOfDescriptions"))
 		defaultdescriptions.pop_back();
 
-  	Description = new QComboBox(TRUE, this, "description");
+	Description = new QComboBox(TRUE, this, "description");
 	Description->setMaxVisibleItems(30);
 	Description->insertStringList(defaultdescriptions);
+	Description->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLengthWithIcon);
 
 	QLineEdit *ss = new QLineEdit(this, "LineEdit");
 #if 1
 	ss->setMaxLength(gadu->maxDescriptionLength());
 #endif
 	Description->setLineEdit(ss);
-	
+
 	QCompleter *Completer = new QCompleter(defaultdescriptions, this);
 	Completer->setCaseSensitivity(Qt::CaseSensitive);
 	Completer->setCompletionMode(QCompleter::PopupCompletion);
@@ -900,7 +902,7 @@ ChooseDescription::ChooseDescription(QWidget *parent)
 
 ChooseDescription::~ChooseDescription()
 {
-    	Dialog = 0;
+	Dialog = 0;
 }
 
 void ChooseDescription::setStatus(const UserStatus &status)
