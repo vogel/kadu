@@ -131,11 +131,11 @@ MediaPlayer::MediaPlayer(bool firstLoad)
 
 	// MediaPlayer menus in chats
 	menu = new QMenu();
-	popups[0] = menu->addAction(tr("Put formated string"), this, SLOT(putSongTitle(int)));
-	popups[1] = menu->addAction(tr("Put song title"), this, SLOT(putSongTitle(int)));
-	popups[2] = menu->addAction(tr("Put song file name"), this, SLOT(putSongTitle(int)));
-	popups[3] = menu->addAction(tr("Send all playlist titles"), this, SLOT(putPlayList(int)));
-	popups[4] = menu->addAction(tr("Send all playlist files"), this, SLOT(putPlayList(int)));
+	popups[0] = menu->addAction(tr("Put formated string"), this, SLOT(insertFormattedSong()));
+	popups[1] = menu->addAction(tr("Put song title"), this, SLOT(insertSongTitle()));
+	popups[2] = menu->addAction(tr("Put song file name"), this, SLOT(insertSongFilename()));
+	popups[3] = menu->addAction(tr("Send all playlist titles"), this, SLOT(insertPlaylistTitles()));
+	popups[4] = menu->addAction(tr("Send all playlist files"), this, SLOT(insertPlaylistFilenames()));
 
 	// Title checking timer
 	timer = new QTimer();
@@ -401,7 +401,7 @@ void MediaPlayer::putSongTitle(int ident)
 
 	// This code tells us which item from MediaPlayer menu button was selected
 	// TODO: sooooooo lame
-	int id = 0;
+	int id = ident;
 // 	for ( int i = 0; i < 3; i++ )
 // 	{
 // 		if (popups[i] == ident)
@@ -428,7 +428,6 @@ void MediaPlayer::putSongTitle(int ident)
 // 	int x, y;
 
 	chat->edit()->insertPlainText(title);
-
 	// TODO: it is lame in general, we need a better API to do these things
 // 	HtmlDocument doc, doc2, doc3;
 // 	chat->edit()->getCursorPosition(&y, &x);
@@ -475,7 +474,7 @@ void MediaPlayer::putPlayList(int ident)
 	}
 
 	ChatWidget* chat = getCurrentChat();
- 	int id = 0;
+ 	int id = ident;
 //	int x, y;
 	QStringList list;
 
@@ -503,7 +502,6 @@ void MediaPlayer::putPlayList(int ident)
 			list = getPlayListFiles();
 			break;
 	}
-
 
 	// Calculating playlist length as characters
 	uint chars = 0, emptyEntries = 0;
@@ -1045,4 +1043,29 @@ void MediaPlayer::createDefaultConfiguration()
 	config_file.addVariable("MediaPlayer", "chatShortcuts", true);
 	config_file.addVariable("MediaPlayer", "dockMenu", false);
 	config_file.addVariable("MediaPlayer", "statusPosition", 0);
+}
+
+void MediaPlayer::insertFormattedSong()
+{
+    putSongTitle(0);
+}
+
+void MediaPlayer::insertSongTitle()
+{
+    putSongTitle(1);
+}
+
+void MediaPlayer::insertSongFilename()
+{
+    putSongTitle(2);
+}
+
+void MediaPlayer::insertPlaylistTitles()
+{
+	putPlayList(3);
+}
+
+void MediaPlayer::insertPlaylistFilenames()
+{
+    putPlayList(4);
 }

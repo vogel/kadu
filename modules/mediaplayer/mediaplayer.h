@@ -84,13 +84,29 @@ private slots:
 	QString getTitle(int position = -1);
 	QString getAlbum(int position = -1);
 	QString getArtist(int position = -1);
+	/*
+		Returns song's filename
+	*/
 	QString getFile(int position = -1);
+
+	/*
+	    Returns song's length in milliseconds
+	 */
 	int getLength(int position = -1);
+
+	/*
+	    Returns song's current position in milliseconds from the beggining
+	*/
 	int getCurrentPos();
+
 	bool isPlaying();
 	bool isActive();
 	QStringList getPlayListTitles();
 	QStringList getPlayListFiles();
+
+	/*
+	    Returns the number of tracks in playlist
+	*/
 	uint getPlayListLength();
 
 	/*
@@ -165,7 +181,6 @@ public:
 	void statusChanged();
 	void setInterval(int seconds);
 
-public slots:
 	/**
 		Puts song title into current chat edit field.
 	*/
@@ -176,10 +191,20 @@ public slots:
 	*/
 	void putPlayList(int);
 
+public slots:
 	/**
 		Shows currently played title in hint (Pseudo-OSD).
 	*/
 	void putTitleHint(QString title);
+
+	/**
+	    Helper slots
+	*/
+	void insertFormattedSong();
+	void insertSongTitle();
+	void insertSongFilename();
+	void insertPlaylistTitles();
+	void insertPlaylistFilenames();
 
 };
 
