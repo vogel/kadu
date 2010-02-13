@@ -1,0 +1,11 @@
+<configuration-ui>
+	<section name="MediaPlayer">
+		<tab name="General">
+			<group-box name="Media Player Daemon settings">
+				<line-edit caption="Host" config-section="MediaPlayer" config-item="MPDHost" tool-tip="Media Player Daemon server address" />
+				<line-edit caption="Port" config-section="MediaPlayer" config-item="MPDPort" tool-tip="Port number MPD is listening on"/>
+				<line-edit caption="Connection timeout (in seconds)" config-section="MediaPlayer" config-item="MPDTimeout" tool-tip="Number of seconds before the connection is terminated" />
+			</group-box>
+		</tab>
+	</section>
+</configuration-ui>
