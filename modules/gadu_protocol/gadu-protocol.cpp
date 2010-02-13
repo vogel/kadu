@@ -899,25 +899,13 @@ GaduContactDetails * GaduProtocol::gaduContactDetails(Contact contact) const
 
 QPixmap GaduProtocol::statusPixmap(Status status)
 {
-	StatusType *statusType = StatusTypeManager::instance()->statusType(status.type());
-	if (!statusType)
-		return QPixmap();
-
-	QString description = status.description().isEmpty()
-			? ""
-			: "_d";
-	QString pixmapName = "protocols/gadu-gadu/16x16/" + statusType->iconName() + description + ".png";
-	return IconsManager::instance()->pixmapByPath(pixmapName);
+	return StatusTypeManager::instance()->statusPixmap("gadu-gadu", "16x16", status.type(),
+			!status.description().isEmpty(), false);
 }
 
-QPixmap GaduProtocol::statusPixmap(const QString &status)
+QPixmap GaduProtocol::statusPixmap(const QString &statusType)
 {
-	StatusType *statusType = StatusTypeManager::instance()->statusType(status);
-	if (!statusType)
-		return QPixmap();
-
-	QString pixmapName = "protocols/gadu-gadu/16x16/" + statusType->iconName() + ".png";
-	return IconsManager::instance()->pixmapByPath(pixmapName);
+	return StatusTypeManager::instance()->statusPixmap("gadu-gadu", "16x16", statusType, false, false);
 }
 
 void GaduProtocol::contactAdded(Contact contact)

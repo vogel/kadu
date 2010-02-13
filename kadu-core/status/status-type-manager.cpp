@@ -18,8 +18,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QPixmap>
+
 #include "status/status-group-manager.h"
 #include "status/status-type.h"
+#include "icons-manager.h"
 
 #include "status-type-manager.h"
 
@@ -91,4 +94,20 @@ StatusType * StatusTypeManager::statusType(const QString& name)
 			return st;
 
 	return 0;
+}
+
+QPixmap StatusTypeManager::statusPixmap(const QString &protocol, const QString &size, const QString &type,
+		bool description, bool mobile)
+{
+	StatusType *statusType = this->statusType(type);
+	if (!statusType)
+		return QPixmap();
+
+	QString pixmapName = QString("protocols/%1/%2/%3%4%5.png")
+			.arg(protocol)
+			.arg(size)
+			.arg(statusType->iconName())
+			.arg(description ? "_d" : "")
+			.arg(mobile ? "_m" : "");
+	return IconsManager::instance()->pixmapByPath(pixmapName);
 }
