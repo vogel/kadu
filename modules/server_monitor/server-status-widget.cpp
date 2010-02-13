@@ -29,7 +29,7 @@
 
 ServerStatusWidget::ServerStatusWidget(QString watchedAddress, quint16 watchedPort, QString hostName, QWidget *parent) :
 		QWidget(parent), WatchedAddress(watchedAddress), WatchedPort(watchedPort ? watchedPort : 8074),
-		WatchedHostDisplayName(hostName), CurrentState(Empty)
+		CurrentState(Empty), WatchedHostDisplayName(hostName)
 {
 	QHBoxLayout *layout = new QHBoxLayout(this);
 	PixmapLabel = new QLabel(this);
