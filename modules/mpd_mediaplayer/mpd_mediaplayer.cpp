@@ -60,7 +60,7 @@ QString MPDMediaPlayer::getTitle(int position)
 	QString title;
 	mpd_connection *con = mpdConnect();
 
-	if( con != NULL )
+	if( NULL != con )
 	{
 		mpd_status *status;
 
@@ -89,7 +89,7 @@ QString MPDMediaPlayer::getArtist(int position)
 	QString artist;
 	mpd_connection *con = mpdConnect();
 
-	if( con != NULL )
+	if( NULL != con )
 	{
 		mpd_status *status;
 
@@ -118,7 +118,7 @@ QString MPDMediaPlayer::getAlbum(int position)
 	QString album;
 	mpd_connection *con = mpdConnect();
 
-	if( con != NULL )
+	if( NULL != con )
 	{
 		mpd_status *status;
 
@@ -147,7 +147,7 @@ QString MPDMediaPlayer::getFile(int position)
 	QString file;
 	mpd_connection *con = mpdConnect();
 
-	if( con != NULL )
+	if( NULL != con )
 	{
 		mpd_status *status;
 
@@ -177,7 +177,7 @@ int MPDMediaPlayer::getLength(int position)
 	int length;
 	mpd_connection *con = mpdConnect();
 
-	if( con != NULL )
+	if( NULL != con )
 	{
 		mpd_status *status;
 
@@ -206,7 +206,7 @@ int MPDMediaPlayer::getCurrentPos()
 	int pos;
 	mpd_connection *con = mpdConnect();
 
-	if( con != NULL )
+	if( NULL != con )
 	{
 		mpd_status *status;
 
@@ -276,7 +276,7 @@ QStringList MPDMediaPlayer::getPlayListTitles()
 	QStringList playlist;
 	mpd_connection *con = mpdConnect();
 
-	if( con != NULL )
+	if( NULL != con )
 	{
 		mpd_song *song;
 		mpd_send_list_queue_meta(con);
@@ -296,7 +296,7 @@ QStringList MPDMediaPlayer::getPlayListFiles()
 	QString file;
 	mpd_connection *con = mpdConnect();
 
-	if( con != NULL )
+	if( NULL != con )
 	{
 		mpd_song *song;
 		mpd_send_list_queue_meta(con);
@@ -318,7 +318,7 @@ uint MPDMediaPlayer::getPlayListLength()
 	uint playlistLength;
 	mpd_connection *con = mpdConnect();
 
-	if( con != NULL )
+	if( NULL != con )
 	{
 		mpd_status *status;
 		status = mpd_run_status(con);
@@ -342,7 +342,7 @@ QString MPDMediaPlayer::getPlayerVersion()
 	QString version, major, minor, patch;
 	mpd_connection *con = mpdConnect();
 
-	if( con != NULL )
+	if( NULL != con )
 	{
 		const unsigned *ver = mpd_connection_get_server_version(con);
 		if( ver != NULL )
@@ -364,7 +364,7 @@ void MPDMediaPlayer::nextTrack()
 {
 	mpd_connection *con = mpdConnect();
 
-	if( con != NULL )
+	if( NULL != con )
 	{
 		mpd_run_next(con);
 		mpd_connection_free(con);
@@ -375,7 +375,7 @@ void MPDMediaPlayer::prevTrack()
 {
 	mpd_connection *con = mpdConnect();
 
-	if( con != NULL )
+	if( NULL != con )
 	{
 		mpd_run_previous(con);
 		mpd_connection_free(con);
@@ -386,7 +386,7 @@ void MPDMediaPlayer::play()
 {
 	mpd_connection *con = mpdConnect();
 
-	if( con != NULL)
+	if( NULL != con)
 	{
 		mpd_status *status;
 
@@ -408,7 +408,7 @@ void MPDMediaPlayer::stop()
 {
 	mpd_connection *con = mpdConnect();
 
-	if( con != NULL)
+	if( NULL != con)
 	{
 		mpd_status *status;
 
@@ -430,7 +430,7 @@ void MPDMediaPlayer::pause()
 {
 	mpd_connection *con = mpdConnect();
 
-	if( con != NULL)
+	if( NULL != con)
 	{
 		mpd_status *status;
 
@@ -451,7 +451,7 @@ void MPDMediaPlayer::setVolume(int vol)
 {
 	mpd_connection *con = mpdConnect();
 
-	if( con != NULL )
+	if( NULL != con )
 	{
 		mpd_run_set_volume(con, vol);
 		mpd_connection_free(con);
@@ -462,7 +462,7 @@ void MPDMediaPlayer::incrVolume()
 {
 	mpd_connection *con = mpdConnect();
 
-	if( con != NULL )
+	if( NULL != con )
 	{
 		mpd_status *status;
 		status = mpd_run_status(con);
@@ -484,7 +484,7 @@ void MPDMediaPlayer::decrVolume()
 {
 	mpd_connection *con = mpdConnect();
 
-	if( con != NULL )
+	if( NULL != con )
 	{
 		mpd_status *status;
 		status = mpd_run_status(con);
