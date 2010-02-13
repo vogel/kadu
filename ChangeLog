@@ -1,6 +1,7 @@
 +++ version 0.6.6-alpha6
 * gui: rework on YourAccounts window (Vogel)
 * spellchecker: works with new version (Michał)
+* gadu: gg8.0 protocol support (Dorr/Vogel)
 
 +++ version 0.6.6-alpha5
 * gadu: uploading avatars possible (Vogel)

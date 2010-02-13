@@ -80,7 +80,7 @@ void GaduResolver::resolved(const QHostInfo &host)
 	if (host.error() == QHostInfo::NoError)
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Resolved address to: %s\n", qPrintable(host.addresses().first().toString()));
-		addr.s_addr = host.addresses().first().toIPv4Address();
+		addr.s_addr = htonl(host.addresses().first().toIPv4Address());
 	}
 	else
 	{
