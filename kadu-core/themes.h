@@ -76,7 +76,7 @@ public:
 		\param name typ zestawu
 		\param configname plik z konfiguracj� zestawu
 	**/
-	Themes(const QString &name, const QString &configname);
+	Themes(const QString &name, const QString &configname = QString::null);
 
 	/**
 		\fn QStringList defaultKaduPathsWithThemes() const

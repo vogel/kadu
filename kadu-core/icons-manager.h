@@ -49,7 +49,7 @@ class KADUAPI IconsManager : public Themes, ConfigurationAwareObject
 	QMap<QString, QIcon> icons;
 
 public:
-	QString iconPath(const QString &name) const;
+	QString iconPath(const QString &path) const;
 	
 	const QPixmap & pixmapByPath(const QString &name);
 	const QIcon & iconByPath(const QString &name);

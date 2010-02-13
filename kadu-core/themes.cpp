@@ -61,6 +61,9 @@ QStringList Themes::getSubDirs(const QString &path, bool validate) const
 
 bool Themes::validateDir(const QString &path) const
 {
+	if (ConfigName.isEmpty())
+		return true;
+
 	QFile f(path + '/' + ConfigName);
 	if (f.exists())
 		return true;
@@ -85,7 +88,7 @@ const QStringList & Themes::themes() const
 {
 	return ThemesList;
 }
-#include <stdio.h>
+
 void Themes::setTheme(const QString &theme)
 {
 	kdebugf();
@@ -94,11 +97,10 @@ void Themes::setTheme(const QString &theme)
 	{
 		entries.clear();
 		ActualTheme = theme;
-		if (theme != "Custom")
+		if (theme != "Custom" && !ConfigName.isEmpty())
 		{
 			PlainConfigFile theme_file(
 			themePath() +  fixFileName(themePath(), ConfigName));
-			printf("file: %s, theme: %s\n", qPrintable(themePath() +  fixFileName(themePath(), ConfigName)), qPrintable(Name));
 			theme_file.read();
 			entries = theme_file.getGroupSection(Name);
 		}

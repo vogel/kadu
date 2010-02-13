@@ -64,12 +64,12 @@ IconsManager::IconsManager()
 	kdebugf2();
 }
 
-QString IconsManager::iconPath(const QString &name) const
+QString IconsManager::iconPath(const QString &path) const
 {
-	if (name.startsWith('/'))
-		return name;
+	if (path.startsWith('/'))
+		return path;
 
-	QString fname = themePath() + name;
+	QString fname = themePath() + path;
 	QString absoluteName = dataPath() + fname;
 
 	if (!QFile::exists(fname) && QFile::exists(absoluteName))
