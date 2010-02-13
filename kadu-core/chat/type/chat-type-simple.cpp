@@ -39,7 +39,7 @@ QString ChatTypeSimple::displayName() const
 
 QIcon ChatTypeSimple::icon() const
 {
-	return IconsManager::instance()->iconByName("OpenChat");
+	return IconsManager::instance()->iconByPath("kadu/kadu-chat.png");
 }
 
 ChatDetails * ChatTypeSimple::createChatDetails(ChatShared *chatData) const

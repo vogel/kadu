@@ -528,7 +528,7 @@ void KaduWindowActions::editUserActionCreated(Action *action)
 	Buddy buddy = window->contact().ownerBuddy();
 	if (buddy.isAnonymous())
 	{
-		action->setIcon(IconsManager::instance()->iconByName("AddUser"));
+		action->setIcon(IconsManager::instance()->iconByPath("16x16/contact-new.png"));
 		action->setText(tr("Add user"));
 	}
 }

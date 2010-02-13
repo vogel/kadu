@@ -67,10 +67,10 @@ SubscriptionWindow::SubscriptionWindow(Contact contact, QWidget *parent) :
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 
-	QPushButton *okButton = new QPushButton(IconsManager::instance()->iconByName("OkWindowButton"), tr("Allow"), this);
+	QPushButton *okButton = new QPushButton(IconsManager::instance()->iconByPath("kadu/dialog-ok.png"), tr("Allow"), this);
 	okButton->setDefault(true);
 	buttons->addButton(okButton, QDialogButtonBox::AcceptRole);
-	QPushButton *cancelButton = new QPushButton(IconsManager::instance()->iconByName("CloseWindowButton"), tr("Ignore"), this);
+	QPushButton *cancelButton = new QPushButton(IconsManager::instance()->iconByPath("kadu/dialog-cancel.png"), tr("Ignore"), this);
 	buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
 
 	connect(okButton, SIGNAL(clicked(bool)), this, SLOT(accepted()));

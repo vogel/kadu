@@ -86,7 +86,7 @@ GroupTabBar::GroupTabBar(QWidget *parent)
 	if (showAllGroup)
 	{
 		AutoGroupTabPosition = config_file.readNumEntry("Look", "AllGroupTabPosition", 0);
-		insertTab(AutoGroupTabPosition, IconsManager::instance()->iconByName("PersonalInfo"), tr("All"));
+		insertTab(AutoGroupTabPosition, IconsManager::instance()->iconByPath("16x16/x-office-address-book.png"), tr("All"));
 	}
 	else
 	{
@@ -401,7 +401,7 @@ void GroupTabBar::configurationUpdated()
 			config_file.writeEntry("Look", "UngroupedGroupTabPosition", autoGroupOldPosition);
 			AutoGroupTabPosition = 	config_file.readNumEntry("Look", "AllGroupTabPosition", -1);
 			setTabText(autoGroupOldPosition, tr("All"));
-			setTabIcon(autoGroupOldPosition, IconsManager::instance()->iconByName("PersonalInfo"));
+			setTabIcon(autoGroupOldPosition, IconsManager::instance()->iconByPath("16x16/x-office-address-book.png"));
 		}
 		else
 		{

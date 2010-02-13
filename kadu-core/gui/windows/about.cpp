@@ -150,7 +150,7 @@ About::About(QWidget *parent)
 	QWidget *blank2 = new QWidget;
 	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
 
-	QPushButton *pb_close = new QPushButton(IconsManager::instance()->iconByName("CloseWindow"), tr("&Close"));
+	QPushButton *pb_close = new QPushButton(IconsManager::instance()->iconByPath("kadu/dialog-cancel.png"), tr("&Close"));
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
 
 	QHBoxLayout *bottom_layout = new QHBoxLayout(bottom);

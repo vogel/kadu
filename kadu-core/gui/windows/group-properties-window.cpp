@@ -88,7 +88,7 @@ GroupPropertiesWindow::GroupPropertiesWindow(Group editedGroup, QWidget *parent)
 
 	if (iconPath.isEmpty())
 	{
-		icon->setIcon(IconsManager::instance()->iconByName("OpenFile"));
+		icon->setIcon(IconsManager::instance()->iconByPath("16x16/document-open.png"));
 		icon->setText(tr(" Set Icon"));
 	}
 	else
@@ -111,11 +111,11 @@ GroupPropertiesWindow::GroupPropertiesWindow(Group editedGroup, QWidget *parent)
 
 	QDialogButtonBox *buttons_layout = new QDialogButtonBox(Qt::Horizontal, this);
 
-	QPushButton *okButton = new QPushButton(IconsManager::instance()->iconByName("OkWindowButton"), tr("Ok"), this);
+	QPushButton *okButton = new QPushButton(IconsManager::instance()->iconByPath("kadu/dialog-ok.png"), tr("Ok"), this);
 	buttons_layout->addButton(okButton, QDialogButtonBox::AcceptRole);
-	QPushButton *applyButton = new QPushButton(IconsManager::instance()->iconByName("ApplyWindowButton"), tr("Apply"), this);
+	QPushButton *applyButton = new QPushButton(IconsManager::instance()->iconByPath("kadu/dialog-apply.png"), tr("Apply"), this);
 	buttons_layout->addButton(applyButton, QDialogButtonBox::ApplyRole);
-	QPushButton *cancelButton = new QPushButton(IconsManager::instance()->iconByName("CloseWindowButton"), tr("Cancel"), this);
+	QPushButton *cancelButton = new QPushButton(IconsManager::instance()->iconByPath("kadu/dialog-cancel.png"), tr("Cancel"), this);
 	buttons_layout->addButton(cancelButton, QDialogButtonBox::RejectRole);
 
 	connect(okButton, SIGNAL(clicked()), this, SLOT(okClicked()));

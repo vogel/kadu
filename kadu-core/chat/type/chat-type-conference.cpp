@@ -39,7 +39,7 @@ QString ChatTypeConference::displayName() const
 
 QIcon ChatTypeConference::icon() const
 {
-	return IconsManager::instance()->iconByName("ManageModules");
+	return IconsManager::instance()->iconByPath("kadu_icons/kadu-modmanager.png");
 }
 
 ChatDetails * ChatTypeConference::createChatDetails(ChatShared *chatData) const
