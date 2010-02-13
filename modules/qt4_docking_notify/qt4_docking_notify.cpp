@@ -44,6 +44,7 @@
  */
 extern "C" KADU_EXPORT int qt4_docking_notify_init(bool firstLoad)
 {
+	Q_UNUSED(firstLoad)
 	kdebugf();
 
 	if (!QSystemTrayIcon::supportsMessages())
@@ -66,7 +67,7 @@ extern "C" KADU_EXPORT void qt4_docking_notify_close()
 }
 
 Qt4Notify::Qt4Notify()
-	: Notifier("Tray Icon Baloon", "Tray Icon Baloon", IconsManager::instance()->loadIcon("Qt4Notify"))
+	: Notifier("Tray Icon Baloon", "Tray Icon Baloon", IconsManager::instance()->iconByName("Qt4Notify"))
 {
 	kdebugf();
 

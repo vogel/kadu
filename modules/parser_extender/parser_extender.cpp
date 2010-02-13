@@ -139,60 +139,70 @@ QString getUptime(int mode)
 /* Returns current time (without secs) */
 QString parseTime(const Buddy &buddy)
 {
-    return QDateTime::currentDateTime().toString("h:mm");
+	Q_UNUSED(buddy)
+	return QDateTime::currentDateTime().toString("h:mm");
 }
 
 /* Returns current time (with secs) */
 QString parseLongTime(const Buddy &buddy)
 {
-    return QDateTime::currentDateTime().toString("hh:mm:ss");
+	Q_UNUSED(buddy)
+	return QDateTime::currentDateTime().toString("hh:mm:ss");
 }
 
 /* Returns current date (without year) */
 QString parseDate(const Buddy &buddy)
 {
+	Q_UNUSED(buddy)
 	return QDateTime::currentDateTime().toString("dd-MM");
 }
 
 /* Returns current date (with year) */
 QString parseLongDate(const Buddy &buddy)
 {
+	Q_UNUSED(buddy)
 	return QDateTime::currentDateTime().toString("dd-MM-yyyy");
 }
 
 /* Returns time of module start (without seconds) */
 QString parseStartTime(const Buddy &buddy)
 {
+	Q_UNUSED(buddy)
 	return started.toString("hh:mm");
 }
 
 /* Returns time of module start (with seconds) */
 QString parseLongStartTime(const Buddy &buddy)
 {
+	Q_UNUSED(buddy)
 	return  started.toString("dd-MM-yy hh:mm:ss");
 }
 
 /* Returns uptime (seconds) */
 QString parseUptime(const Buddy &buddy)
 {
+	Q_UNUSED(buddy)
 	return getUptime(0);
 }
 
 /* Returns uptime (formatted) */
 QString parseLongUptime(const Buddy &buddy)
 {
+	Q_UNUSED(buddy)
 	return getUptime(1);
 }
 
 /* Returns Kadu uptime */
 QString parseKaduUptime(const Buddy &buddy)
 {
+	Q_UNUSED(buddy)
 	return getKaduUptime(0);
 }
 
 /* Returns Kadu uptime (formatted) */
 QString parseLongKaduUptime(const Buddy &buddy)
 {
+	Q_UNUSED(buddy)
 	return getKaduUptime(1);
 }
 

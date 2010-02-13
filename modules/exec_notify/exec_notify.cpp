@@ -54,6 +54,7 @@
 
 extern "C" KADU_EXPORT int exec_notify_init(bool firstLoad)
 {
+	Q_UNUSED(firstLoad)
 	kdebugf();
 	exec_notify = new ExecNotify();
 	kdebugf2();
@@ -107,7 +108,7 @@ void ExecConfigurationWidget::switchToEvent(const QString &event)
 
 //TODO 0.6.6 icon:
 ExecNotify::ExecNotify(QObject *parent)
-	: Notifier("Exec", "Run command", IconsManager::instance()->loadIcon("MediaPlayer"), parent)
+	: Notifier("Exec", "Run command", IconsManager::instance()->iconByName("MediaPlayer"), parent)
 {
 	kdebugf();
 
