@@ -125,7 +125,7 @@ SoundSlots::SoundSlots(bool firstLoad, QObject *parent)
 	mute_action = new ActionDescription(this,
 		ActionDescription::TypeGlobal, "muteSoundsAction",
 		this, SLOT(muteActionActivated(QAction *, bool)),
-		"Unmute", tr("Mute sounds"), true, tr("Unmute sounds")
+		"16x16/audio-volume-muted.png", "16x16/audio-volume-high.png", tr("Mute sounds"), true, tr("Unmute sounds")
 	);
 	connect(mute_action, SIGNAL(actionCreated(Action *)), this, SLOT(setMuteActionState()));
 

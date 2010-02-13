@@ -137,14 +137,14 @@ TabsManager::TabsManager(bool firstload)
 	openInNewTabActionDescription = new ActionDescription(
 		0, ActionDescription::TypeUser, "openInNewTabAction",
 		this, SLOT(onNewTab(QAction *, bool)),
-		"OpenChat", tr("Open in new tab"), false, QString::null, disableNewTab
+		"kadu/kadu-chat.png", "kadu/kadu-chat.png", tr("Open in new tab"), false, QString::null, disableNewTab
 	);
 	BuddiesListViewMenuManager::instance()->insertActionDescription(1, openInNewTabActionDescription);
 
 	attachToTabsActionDescription = new ActionDescription(
 		0, ActionDescription::TypeChat, "attachToTabsAction",
 		this, SLOT(onTabAttach(QAction *, bool)),
-		"TabsDetached", tr("Attach chat to tabs"), true, tr("Detach chat from tabs")
+		"external_modules/module_tabs-detach.png", "external_modules/module_tabs-detach.png", tr("Attach chat to tabs"), true, tr("Detach chat from tabs")
 	);
 	connect(attachToTabsActionDescription, SIGNAL(actionCreated(Action *)), this, SLOT(attachToTabsActionCreated(Action *)));
 

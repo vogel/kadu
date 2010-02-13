@@ -21,10 +21,10 @@
  */
 
 /*
-	Author: Micha³ ¯ar³ok <mishaaq*delete_this*@gmail.com>
+	Author: Michaï¿½ ï¿½arï¿½ok <mishaaq*delete_this*@gmail.com>
 	Version: 0.4.3
 
-	Based on Kadu plugin "spy" by Przemys³aw Sowa and Wojtek Sulewski
+	Based on Kadu plugin "spy" by Przemysï¿½aw Sowa and Wojtek Sulewski
 */
 
 #include "agent.h"
@@ -66,7 +66,7 @@ Agent::Agent() : QObject(NULL, "agent")
 	agentActionDescription = new ActionDescription(
 		ActionDescription::TypeMainMenu, "agentAction",
 		this, SLOT(resultsRequest()),
-		"Agent", tr("Who has me on list")
+		"external_modules/module_agent.png", "external_modules/module_agent.png", tr("Who has me on list")
 	);
 	kadu->insertMenuActionDescription(0, agentActionDescription);
 

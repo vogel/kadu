@@ -37,19 +37,19 @@ Action::Action(ActionDescription *description, MainWindow *parent) :
 		OffText = Description->Text;
 	}
 
-	if (!Description->IconName.isEmpty())
+	if (!Description->iconPathOn().isEmpty())
 	{
 		connect(IconsManager::instance(), SIGNAL(themeChanged()), this, SLOT(updateIcon()));
 
 		if (Description->Checkable)
 		{
-			OnIcon = IconsManager::instance()->iconByName(Description->IconName);
-			OffIcon = IconsManager::instance()->iconByName(Description->IconName + "_off");
+			OnIcon = IconsManager::instance()->iconByPath(Description->iconPathOn());
+			OffIcon = IconsManager::instance()->iconByPath(Description->iconPathOff());
 
 			setIcon(OffIcon);
 		}
 		else
-			setIcon(IconsManager::instance()->iconByName(Description->IconName));
+			setIcon(IconsManager::instance()->iconByPath(Description->iconPathOn()));
 	}
 
 	setCheckable(Description->Checkable);
@@ -145,13 +145,13 @@ void Action::updateIcon()
 {
 	if (Description->Checkable)
 	{
-		OnIcon = IconsManager::instance()->iconByName(Description->IconName);
-		OffIcon = IconsManager::instance()->iconByName(Description->IconName + "_off");
+		OnIcon = IconsManager::instance()->iconByPath(Description->iconPathOn());
+		OffIcon = IconsManager::instance()->iconByPath(Description->iconPathOff());
 
 		toggledSlot(isChecked());
 	}
 	else
-		setIcon(IconsManager::instance()->iconByName(Description->IconName));
+		setIcon(IconsManager::instance()->iconByPath(Description->iconPathOn()));
 }
 
 void disableEmptyContacts(Action *action)

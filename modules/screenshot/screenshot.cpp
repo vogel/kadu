@@ -130,7 +130,7 @@ ScreenShot::ScreenShot(bool firstLoad)
 	screenShotAction = new ActionDescription(
 		ActionDescription::TypeChat, "ScreenShotAction",
 		this, SLOT(screenshotActionActivated(QAction *, bool)),
-		"ScreenshotShot", tr("ScreenShot"), false, ""
+		"external_modules/module_screenshot-shot.png", "external_modules/module_screenshot-shot.png", tr("ScreenShot"), false, ""
 	);
 
 	if (firstLoad)
@@ -257,7 +257,7 @@ void ScreenShot::mouseReleaseEvent(QMouseEvent *e)
 	releaseMouse();
 	releaseKeyboard();
 
-	// Normalizowanie prostok±ta do zrzutu
+	// Normalizowanie prostokï¿½ta do zrzutu
 	region.setBottomRight(e->pos());
 	region = region.normalize();
 
@@ -268,7 +268,7 @@ void ScreenShot::mouseReleaseEvent(QMouseEvent *e)
 
 	QPixmap shot = QPixmap::grabWindow(winId(), region.x(), region.y(), region.width(), region.height());
 
-	// Chowanie widgeta zrzutu i przywrócenie kursora.
+	// Chowanie widgeta zrzutu i przywrï¿½cenie kursora.
 	hide();
 	QApplication::restoreOverrideCursor();
 
@@ -326,7 +326,7 @@ void ScreenShot::handleShot(QPixmap p)
 	// Wklejanie [IMAGE] do okna Chat
 	if (config_file.readBoolEntry("ScreenShot", "paste_clause", true))
 	{
-		// Sprawdzanie rozmiaru zrzutu wobec rozmówców
+		// Sprawdzanie rozmiaru zrzutu wobec rozmï¿½wcï¿½w
 		UserListElements users = chatWidget->users()->toUserListElements();
 		if (users.count() > 1)
 			checkConferenceImageSizes(size);

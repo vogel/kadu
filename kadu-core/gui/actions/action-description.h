@@ -32,11 +32,6 @@ class KADUAPI ActionDescription : public QObject, ConfigurationAwareObject
 {
 	Q_OBJECT
 
-	friend class Action;
-
-	QMap<MainWindow *, Action *> MappedActions;
-	int deleted;
-
 public:
 
 	// TODO 0.6.7: this sux, but will be better
@@ -54,11 +49,17 @@ public:
 	};
 
 private:
+	friend class Action;
+	
+	QMap<MainWindow *, Action *> MappedActions;
+	int deleted;
+
 	ActionType Type;
 	QString Name;
 	QObject *Object;
 	const char *Slot;
-	QString IconName;
+	QString IconPathOn;
+	QString IconPathOff;
 	QString Text;
 	QString CheckedText;
 	QString ShortcutItem;
@@ -74,7 +75,8 @@ protected:
 
 public:
 	ActionDescription(QObject *parent, ActionType Type, const QString &Name, QObject *Object, const char *Slot,
-		const QString &IconName, const QString &Text, bool Checkable = false, const QString &CheckedText = "", ActionBoolCallback enableCallback = 0);
+		const QString &iconPathOn, const QString &iconPathOff, const QString &Text, bool Checkable = false,
+		const QString &CheckedText = "", ActionBoolCallback enableCallback = 0);
 	virtual ~ActionDescription();
 
 	QString name() { return Name; }
@@ -83,7 +85,8 @@ public:
 	Action * action(MainWindow *kaduMainWindow);
 
 	QString text() { return Text; }
-	QString iconName() { return IconName; }
+	QString iconPathOn() { return IconPathOn; }
+	QString iconPathOff() { return IconPathOff; }
 
 	void setShortcut(QString configItem, Qt::ShortcutContext context = Qt::WindowShortcut);
 

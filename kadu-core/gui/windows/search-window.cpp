@@ -270,42 +270,42 @@ void SearchWindow::initModule()
 	firstSearchAction = new ActionDescription(searchActionsSlot,
 		ActionDescription::TypeSearch, "firstSearchAction",
 		searchActionsSlot, SLOT(firstSearchActionActivated(QAction *, bool)),
-		"LookupUserInfo", tr("&Search")
+		"16x16/edit-find.png", "16x16/edit-find.png", tr("&Search")
 	);
 	QObject::connect(firstSearchAction, SIGNAL(actionCreated(Action *)), searchActionsSlot, SLOT(firstSearchActionCreated(Action *)));
 
 	nextResultsAction = new ActionDescription(searchActionsSlot,
 		ActionDescription::TypeSearch, "nextResultsAction",
 		searchActionsSlot, SLOT(nextResultsActionActivated(QAction *, bool)),
-		"NextSearchResults", tr("&Next results")
+		"16x16/go-next.png", "16x16/go-next.png", tr("&Next results")
 	);
 	QObject::connect(nextResultsAction, SIGNAL(actionCreated(Action *)), searchActionsSlot, SLOT(nextResultsActionCreated(Action *)));
 
 	stopSearchAction = new ActionDescription(searchActionsSlot,
 		ActionDescription::TypeSearch, "stopSearchAction",
 		searchActionsSlot, SLOT(stopSearchActionActivated(QAction *, bool)),
-		"CloseWindow", tr("Stop")
+		"kadu/dialog-cancel.png", "kadu/dialog-cancel.png", tr("Stop")
 	);
 	QObject::connect(stopSearchAction, SIGNAL(actionCreated(Action *)), searchActionsSlot, SLOT(stopSearchActionCreated(Action *)));
 
 	clearResultsAction = new ActionDescription(searchActionsSlot,
 		ActionDescription::TypeSearch, "clearSearchAction",
 		searchActionsSlot, SLOT(clearResultsActionActivated(QAction *, bool)),
-		"ClearSearchResults", tr("Clear results")
+		"16x16/edit-clear.png", "16x16/edit-clear.png", tr("Clear results")
 	);
 	QObject::connect(clearResultsAction, SIGNAL(actionCreated(Action *)), searchActionsSlot, SLOT(clearResultsActionCreated(Action *)));
 
 	addFoundAction = new ActionDescription(searchActionsSlot,
 		ActionDescription::TypeSearch, "addSearchedAction",
 		searchActionsSlot, SLOT(addFoundActionActivated(QAction *, bool)),
-		"AddUser", tr("Add selected user")
+		"16x16/contact-new.png", "16x16/contact-new.png", tr("Add selected user")
 	);
 	QObject::connect(addFoundAction, SIGNAL(actionCreated(Action *)), searchActionsSlot, SLOT(actionsFoundActionCreated(Action *)));
 
 	chatFoundAction = new ActionDescription(searchActionsSlot,
 		ActionDescription::TypeSearch, "chatSearchedAction",
 		searchActionsSlot, SLOT(chatFoundActionActivated(QAction *, bool)),
-		"OpenChat", tr("&Chat")
+		"kadu/kadu-chat.png", "kadu/kadu-chat.png", tr("&Chat")
 	);
 	QObject::connect(chatFoundAction, SIGNAL(actionCreated(Action *)), searchActionsSlot, SLOT(actionsFoundActionCreated(Action *)));
 

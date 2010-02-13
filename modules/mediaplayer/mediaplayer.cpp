@@ -151,42 +151,42 @@ MediaPlayer::MediaPlayer(bool firstLoad)
 	enableMediaPlayerStatuses = new ActionDescription(
 		0, ActionDescription::TypeGlobal, "enableMediaPlayerStatusesAction",
 		this, SLOT(mediaPlayerStatusChangerActivated(QAction *, bool)),
-		"MediaPlayer", tr("Enable MediaPlayer statuses"), true
+		"external_modules/module_mediaplayer.png", "external_modules/module_mediaplayer.png", tr("Enable MediaPlayer statuses"), true
 	);
 	mediaPlayerMenu = new ActionDescription(
 		0, ActionDescription::TypeChat, "mediaplayer_button",
 		this, SLOT(mediaPlayerMenuActivated(QAction *, bool)),
-		"MediaPlayerButton", tr("MediaPlayer"), false, ""
+		"external_modules/module_mediaplayer-button.png", "external_modules/module_mediaplayer-button.png", tr("MediaPlayer"), false, ""
 	);
 	playAction = new ActionDescription(
 		0, ActionDescription::TypeChat, "mediaplayer_play",
 		this, SLOT(playPause()),
-		"MediaPlayerPlay", tr("Play"), false, ""
+		"external_modules/module_mediaplayer-button.png", "external_modules/module_mediaplayer-button.png", tr("Play"), false, ""
 	);
 	stopAction = new ActionDescription(
 		0, ActionDescription::TypeChat, "mediaplayer_stop",
 		this, SLOT(stop()),
-		"MediaPlayerStop", tr("Stop"), false, ""
+		"external_modules/module_mediaplayer-button.png", "external_modules/module_mediaplayer-button.png", tr("Stop"), false, ""
 	);
 	prevAction = new ActionDescription(
 		0, ActionDescription::TypeChat, "mediaplayer_prev",
 		this, SLOT(prevTrack()),
-		"MediaPlayerPrev", tr("Previous Track"), false, ""
+		"external_modules/module_mediaplayer-button.png", "external_modules/module_mediaplayer-button.png", tr("Previous Track"), false, ""
 	);
 	nextAction = new ActionDescription(
 		0, ActionDescription::TypeChat, "mediaplayer_next",
 		this, SLOT(nextTrack()),
-		"MediaPlayerNext", tr("Next Track"), false, ""
+		"external_modules/module_mediaplayer-button.png", "external_modules/module_mediaplayer-button.png", tr("Next Track"), false, ""
 	);
 	volUpAction = new ActionDescription(
 		0, ActionDescription::TypeChat, "mediaplayer_vol_up",
 		this, SLOT(incrVolume()),
-		"MediaPlayerVolUp", tr("Volume Up"), false, ""
+		"external_modules/module_mediaplayer-button.png", "external_modules/module_mediaplayer-button.png", tr("Volume Up"), false, ""
 	);
 	volDownAction = new ActionDescription(
 		0, ActionDescription::TypeChat, "mediaplayer_vol_down",
 		this, SLOT(decrVolume()),
-		"MediaPlayerVolDown", tr("Volume Down"), false, ""
+		"external_modules/module_mediaplayer-button.png", "external_modules/module_mediaplayer-button.png", tr("Volume Down"), false, ""
 	);
 
 	if (firstLoad)

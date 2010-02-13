@@ -64,7 +64,7 @@ WizardStarter::WizardStarter(QObject *parent)
 	configWizardActionDescription = new ActionDescription(
 		ActionDescription::TypeMainMenu, "configWizardAction",
 		this, SLOT(start(QAction *, bool)),
-		"ConfigurationWizard", tr("Configuration Wizard")
+		"kadu/kadu-wizard.png", tr("Configuration Wizard")
 	);
 	kadu->insertMenuActionDescription(0, configWizardActionDescription);
 }

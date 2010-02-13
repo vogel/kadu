@@ -45,14 +45,14 @@ ServerMonitorWindow::ServerMonitorWindow(QWidget *parent):
 	ButtonRefresh = new QPushButton(tr("Refresh"), this);
 	ButtonRefresh->setGeometry(420, 75, 60, 25);
 
-	connect (ButtonRefresh, SIGNAL (clicked(bool) ), this, SLOT (refreshList()));
+	connect (ButtonRefresh, SIGNAL (clicked(bool)), this, SLOT (refreshList()));
 	connect (&RefreshTimer, SIGNAL (timeout()),  this, SLOT (refreshList()));
 	connect (&RefreshTimer, SIGNAL (timeout()), &RefreshTimer, SLOT (start()));
 
-	setConfiguration();
-
 	StatsLabel = new QLabel(tr("No information avalible"), this);
 	StatsLabel->setGeometry(420, 20, 150, 50);
+
+	setConfiguration();
 
 	setFixedWidth(600);
 
@@ -193,8 +193,8 @@ void ServerMonitorWindow::setConfiguration()
 	config_file_ptr->readBoolEntry("serverMonitor", "autorefresh", true) ?
 			RefreshTimer.start(60000 * config_file_ptr->readNumEntry("serverMonitor", "timerInterval", 5)) : RefreshTimer.stop();
 
-		ServerFileListName = config_file_ptr->readEntry("serverMonitor", "fileName", "kadu/modules/configuration/serverslist.txt");
-		loadServers();
+	ServerFileListName = config_file_ptr->readEntry("serverMonitor", "fileName", "kadu/modules/configuration/serverslist.txt");
+	loadServers();
 
 	kdebugf2();
 }

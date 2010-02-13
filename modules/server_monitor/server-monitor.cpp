@@ -77,7 +77,7 @@ ServerMonitor::ServerMonitor(QWidget *parent) :
 	ServerMonitorActionDescription = new ActionDescription(
 			this,ActionDescription::TypeMainMenu, "serverMonitorAction",
 			this, SLOT(serverMonitorActionActivated(QAction *, bool)),
-			"Online", tr("Server's monitor"));
+			"protocols/gadu-gadu/16x16/online", "protocols/gadu-gadu/16x16/online", tr("Server's monitor"));
 	Core::instance()->kaduWindow()->insertMenuActionDescription( ServerMonitorActionDescription,KaduWindow::MenuKadu,6);
 	Dialog = new ServerMonitorWindow();
 }

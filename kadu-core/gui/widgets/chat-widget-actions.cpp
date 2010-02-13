@@ -98,44 +98,44 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 	AutoSend = new ActionDescription(0,
 		ActionDescription::TypeChat, "autoSendAction",
 		this, SLOT(autoSendActionActivated(QAction *, bool)),
-		"AutoSendMessage", tr("%1 sends message").arg(config_file.readEntry("ShortCuts", "chat_newline")), true
+		"kadu_icons/kadu-enter.png", "kadu_icons/kadu-enter.png", tr("%1 sends message").arg(config_file.readEntry("ShortCuts", "chat_newline")), true
 	);
 	connect(AutoSend, SIGNAL(actionCreated(Action *)), this, SLOT(autoSendActionCreated(Action *)));
 
 	ClearChat = new ActionDescription(0,
 		ActionDescription::TypeChat, "clearChatAction",
 		this, SLOT(clearActionActivated(QAction *, bool)),
-		"ClearChat", tr("Clear messages in chat window")
+		"16x16/edit-clear.png", "16x16/edit-clear.png", tr("Clear messages in chat window")
 	);
 
 	InsertImage = new ActionDescription(0,
 		ActionDescription::TypeChat, "insertImageAction",
 		this, SLOT(insertImageActionActivated(QAction *, bool)),
-		"ChooseImage", tr("Insert image")
+		"16x16/insert-image.png", "16x16/insert-image.png", tr("Insert image")
 	);
 
 	Bold = new ActionDescription(0,
 		ActionDescription::TypeChat, "boldAction",
 		this, SLOT(boldActionActivated(QAction *, bool)),
-		"Bold", tr("Bold"), true
+		"16x16/format-text-bold.png", "16x16/format-text-bold.png", tr("Bold"), true
 	);
 
 	Italic = new ActionDescription(0,
 		ActionDescription::TypeChat, "italicAction",
 		this, SLOT(italicActionActivated(QAction *, bool)),
-		"Italic", tr("Italic"), true
+		"16x16/format-text-italic.png", "16x16/format-text-italic.png", tr("Italic"), true
 	);
 
 	Underline = new ActionDescription(0,
 		ActionDescription::TypeChat, "underlineAction",
 		this, SLOT(underlineActionActivated(QAction *, bool)),
-		"Underline", tr("Underline"), true
+		"16x16/format-text-underline.png", "16x16/format-text-underline.png", tr("Underline"), true
 	);
 
 	Send = new ActionDescription(0,
 		ActionDescription::TypeChat, "sendAction",
 		this, SLOT(sendActionActivated(QAction *, bool)),
-		"SendMessage", tr("&Send"), false, QString::null,
+		"16x16/go-next.png", "16x16/go-next.png", tr("&Send"), false, QString::null,
 		disableEmptyTextBox
 	);
 	connect(Send, SIGNAL(actionCreated(Action *)), this, SLOT(sendActionCreated(Action *)));
@@ -143,49 +143,49 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 	Whois = new ActionDescription(0,
 		ActionDescription::TypeChat, "whoisAction",
 		this, SLOT(whoisActionActivated(QAction *, bool)),
-		"LookupUserInfo", tr("Search this user in directory"), false, QString::null,
+		"16x16/edit-find.png", "16x16/edit-find.png", tr("Search this user in directory"), false, QString::null,
 		disableNoGaduUle
 	);
 
 	IgnoreUser = new ActionDescription(0,
 		ActionDescription::TypeUser, "ignoreUserAction",
 		this, SLOT(ignoreUserActionActivated(QAction *, bool)),
-		"Ignore", tr("Ignore user"), true, QString::null,
+		"kadu_icons/kadu-manageignored.png", "kadu_icons/kadu-manageignored.png", tr("Ignore user"), true, QString::null,
 		checkIgnoreUser
 	);
 
 	BlockUser = new ActionDescription(0,
 		ActionDescription::TypeUser, "blockUserAction",
 		this, SLOT(blockUserActionActivated(QAction *, bool)),
-		"Blocking", tr("Block user"), true, QString::null,
+		"kadu_icons/kadu-blocking.png", "kadu_icons/kadu-blocking.png", tr("Block user"), true, QString::null,
 		checkBlocking
 	);
 
 	OpenChat = new ActionDescription(0,
 		ActionDescription::TypeUser, "chatAction",
 		this, SLOT(openChatActionActivated(QAction *, bool)),
-		"OpenChat", tr("&Chat"), false, QString::null,
+		"kadu/kadu-chat.png", "kadu/kadu-chat.png", tr("&Chat"), false, QString::null,
 		disableContainsSelfUles
 	);
 
 	OpenChatWith = new ActionDescription(0,
 		ActionDescription::TypeGlobal, "openChatWithAction",
 		this, SLOT(openChatActionActivated(QAction *, bool)),
-		"OpenChat", tr("Open chat with...")
+		"kadu/kadu-chat.png", "kadu/kadu-chat.png", tr("Open chat with...")
 	);
 	OpenChatWith->setShortcut("kadu_openchatwith", Qt::ApplicationShortcut);
 
 	InsertEmoticon = new ActionDescription(0,
 		ActionDescription::TypeChat, "insertEmoticonAction",
 		this, SLOT(insertEmoticonActionActivated(QAction *, bool)),
-		"ChooseEmoticon", tr("Insert emoticon")
+		"16x16/face-smile.png", "16x16/face-smile.png", tr("Insert emoticon")
 	);
 	connect(InsertEmoticon, SIGNAL(actionCreated(Action *)), this, SLOT(insertEmoticonActionCreated(Action *)));
 
 	ColorSelector = new ActionDescription(0,
 		ActionDescription::TypeChat, "colorAction",
 		this, SLOT(colorSelectorActionActivated(QAction *, bool)),
-		"Black", tr("Change color")
+		"kadu_icons/kadu-colors.png", "kadu_icons/kadu-colors.png", tr("Change color")
 	);
 
 	BuddiesListViewMenuManager::instance()->addActionDescription(OpenChat);
