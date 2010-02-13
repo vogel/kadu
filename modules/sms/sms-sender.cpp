@@ -75,14 +75,14 @@ void SmsSender::send(const QString& number,const QString& message, const QString
 		Number=Number.right(9);
 	if (Number.length() != 9)
 	{
-		MessageDialog::msg(tr("Mobile number is incorrect"), false, "Warning", (QWidget*)parent());
+		MessageDialog::msg(tr("Mobile number is incorrect"), false, "32x32/dialog-warning.png", (QWidget*)parent());
 		emit finished(false);
 		kdebugf2();
 		return;
 	}
 	if (signature.isEmpty())
 	{
-		MessageDialog::msg(tr("Signature can't be empty"), false, "Warning", (QWidget*)parent());
+		MessageDialog::msg(tr("Signature can't be empty"), false, "32x32/dialog-warning.png", (QWidget*)parent());
 		emit finished(false);
 		kdebugf2();
 		return;
@@ -124,7 +124,7 @@ void SmsSender::gatewayQueryDone(bool success, const QString &provider)
 	}
 	else
 	{
-		MessageDialog::msg(tr("Automatic gateway selection is not available. Please select SMS gateway manually."), false, "Warning", (QWidget*)parent());
+		MessageDialog::msg(tr("Automatic gateway selection is not available. Please select SMS gateway manually."), false, "32x32/dialog-warning.png", (QWidget*)parent());
 		emit finished(false);
 		kdebugf2();
 		return;

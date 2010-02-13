@@ -186,7 +186,7 @@ void JabberProtocol::connectToServer()
 
 	if (account().id().isEmpty())
 	{
-		MessageDialog::msg(tr("Jabber ID not set!"), false, "Warning");
+		MessageDialog::msg(tr("Jabber ID not set!"), false, "32x32/dialog-warning.png");
 		setStatus(Status());
 		kdebugmf(KDEBUG_FUNCTION_END, "end: Jabber ID not set\n");
 		return;
@@ -665,9 +665,9 @@ void JabberProtocol::slotSubscription(const XMPP::Jid & jid, const QString &type
 		SubscriptionWindow::getSubscription(contact, this, SLOT(authorizeContact(Contact, bool)));
 	}
 	else if (type == "subscribed")
-		MessageDialog::msg(QString("You are authorized by %1").arg(jid.bare()), false, "Warning");
+		MessageDialog::msg(QString("You are authorized by %1").arg(jid.bare()), false, "32x32/dialog-warning.png");
 	else if (type == "unsubscribe")
-		MessageDialog::msg(QString("Contact %1 has removed authorization for you.").arg(jid.bare()), false, "Warning");
+		MessageDialog::msg(QString("Contact %1 has removed authorization for you.").arg(jid.bare()), false, "32x32/dialog-warning.png");
 		//TODO: usuwa� kontakt z listy... ta, chyba tak
 
 }

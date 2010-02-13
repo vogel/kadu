@@ -220,7 +220,7 @@ void TlenProtocol::connectToServer()
 
 	if (account().id().isEmpty())
 	{
-		MessageDialog::msg(tr("Tlen ID not set!"), false, "Warning");
+		MessageDialog::msg(tr("Tlen ID not set!"), false, "32x32/dialog-warning.png");
 		setStatus(Status());
 		kdebugmf(KDEBUG_FUNCTION_END, "end: Tlen id not set\n");
 		return;

@@ -197,14 +197,14 @@ void SoundSlots::testSamplePlaying()
 	QFile file(chatsound);
 	if (!file.open(IO_ReadOnly))
 	{
-		MessageDialog::msg(tr("Opening test sample file failed."), false, "Warning");
+		MessageDialog::msg(tr("Opening test sample file failed."), false, "32x32/dialog-warning.png");
 		return;
 	}
 	// we are allocating 1 more word just in case of file.size() % sizeof(qint16) != 0
 	SamplePlayingTestSample = new qint16[file.size() / sizeof(qint16) + 1];
 	if (file.readBlock((char*)SamplePlayingTestSample, file.size()) != (unsigned)file.size())
 	{
-		MessageDialog::msg(tr("Reading test sample file failed."), false, "Warning");
+		MessageDialog::msg(tr("Reading test sample file failed."), false, "32x32/dialog-warning.png");
 		file.close();
 		delete[] SamplePlayingTestSample;
 		SamplePlayingTestSample = NULL;
@@ -215,7 +215,7 @@ void SoundSlots::testSamplePlaying()
 	SamplePlayingTestDevice = sound_manager->openDevice(PLAY_ONLY, 11025);
 	if (SamplePlayingTestDevice == NULL)
 	{
-		MessageDialog::msg(tr("Opening sound device failed."), false, "Warning");
+		MessageDialog::msg(tr("Opening sound device failed."), false, "32x32/dialog-warning.png");
 		delete[] SamplePlayingTestSample;
 		SamplePlayingTestSample = NULL;
 		return;
@@ -256,7 +256,7 @@ void SoundSlots::testSampleRecording()
 	SampleRecordingTestDevice = sound_manager->openDevice(SoundDeviceRecordOnly, 8000);
 	if (SampleRecordingTestDevice == NULL)
 	{
-		MessageDialog::msg(tr("Opening sound device failed."), false, "Warning");
+		MessageDialog::msg(tr("Opening sound device failed."), false, "32x32/dialog-warning.png");
 		return;
 	}
 	SampleRecordingTestSample = new qint16[8000 * 3];//3 seconds of 16-bit sound with 8000Hz frequency
@@ -286,7 +286,7 @@ void SoundSlots::sampleRecordingTestSampleRecorded(SoundDevice device)
 		if (device == NULL)
 		{
 			delete[] SampleRecordingTestSample;
-			MessageDialog::msg(tr("Cannot open sound device for playing!"), false, "Warning");
+			MessageDialog::msg(tr("Cannot open sound device for playing!"), false, "32x32/dialog-warning.png");
 			kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "end: cannot open play device\n");
 			return;
 		}
@@ -326,7 +326,7 @@ void SoundSlots::testFullDuplex()
 	FullDuplexTestDevice = sound_manager->openDevice(SoundDevicePlayAndRecord, 8000);
 	if (FullDuplexTestDevice == NULL)
 	{
-		MessageDialog::msg(tr("Opening sound device failed."), false, "Warning");
+		MessageDialog::msg(tr("Opening sound device failed."), false, "32x32/dialog-warning.png");
 		return;
 	}
 	FullDuplexTestSample = new qint16[8000];

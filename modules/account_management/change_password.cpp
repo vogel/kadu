@@ -162,7 +162,7 @@ void ChangePassword::start()
 	if (newpwd->text() != newpwd2->text())
 	{
 		MessageDialog::msg(tr("Error data typed in required fields.\n\nPasswords typed in "
-			"both fields (\"New password\" and \"Retype new password\") should be the same!"), false, "Warning", this);
+				"both fields (\"New password\" and \"Retype new password\") should be the same!"), false, "32x32/dialog-warning.png", this);
 		return;
 	}
 

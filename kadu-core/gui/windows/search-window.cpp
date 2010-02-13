@@ -432,14 +432,14 @@ void SearchWindow::firstSearch()
 
 	if (!CurrentSearchService)
 	{
-		MessageDialog::msg(tr("For this network we dont offer contacts search feature yet"), false, "Critical", this);
+		MessageDialog::msg(tr("For this network we dont offer contacts search feature yet"), false, "32x32/dialog-error_big.png", this);
 		kdebugf2();
 		return;
 	}
 
 	if (!CurrentAccount.protocolHandler()->isConnected())
 	{
-		MessageDialog::msg(tr("Cannot search contacts in offline mode"), false, "Critical", this);
+		MessageDialog::msg(tr("Cannot search contacts in offline mode"), false, "32x32/dialog-error_big.png", this);
 		kdebugf2();
 		return;
 	}
@@ -561,7 +561,7 @@ void SearchWindow::newSearchResults(BuddyList buddies)
 	if (buddies.isEmpty()  || (buddies.count() == items))
 	{
 		kdebugmf(KDEBUG_INFO, "No results. Exit.\n");
-		MessageDialog::msg(tr("There were no results of your search"), false, "Information", this);
+		MessageDialog::msg(tr("There were no results of your search"), false, "32x32/dialog-information.png", this);
 	}
 	else
 	{

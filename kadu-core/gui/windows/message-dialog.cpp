@@ -43,7 +43,7 @@ const int MessageDialog::CANCEL   = 2;  // 00010
 const int MessageDialog::YES      = 4;  // 00100
 const int MessageDialog::NO       = 8;  // 01000
 
-MessageDialog::MessageDialog(const QString &message, int components, bool modal, const QString &iconName, QWidget *parent)
+MessageDialog::MessageDialog(const QString &message, int components, bool modal, const QString &iconPath, QWidget *parent)
 	: QDialog(parent, Qt::Window | Qt::MSWindowsFixedSizeDialogHint | Qt::WindowTitleHint | Qt::WindowSystemMenuHint),
 	message(message)
 {
@@ -62,10 +62,10 @@ MessageDialog::MessageDialog(const QString &message, int components, bool modal,
 	hboxlabels->addStretch(1);
 	vbox->addLayout(hboxlabels);
 
-	if (!iconName.isEmpty())
+	if (!iconPath.isEmpty())
 	{
 		icon = new QLabel(this);
-		icon->setPixmap(IconsManager::instance()->pixmapByName(iconName));
+		icon->setPixmap(IconsManager::instance()->pixmapByPath(iconPath));
 		hboxlabels->addWidget(icon, 0, Qt::AlignCenter);
 	}
 
@@ -151,9 +151,9 @@ void MessageDialog::status(const QString &message)
 	qApp->processEvents();
 }
 
-void MessageDialog::msg(const QString &message, bool modal, const QString &iconName, QWidget *parent)
+void MessageDialog::msg(const QString &message, bool modal, const QString &iconPath, QWidget *parent)
 {
-	MessageDialog *m = new MessageDialog(message, OK, modal, iconName, parent);
+	MessageDialog *m = new MessageDialog(message, OK, modal, iconPath, parent);
 
 	if (modal)
 		m->exec();
@@ -161,9 +161,9 @@ void MessageDialog::msg(const QString &message, bool modal, const QString &iconN
 		m->show();
 }
 
-bool MessageDialog::ask(const QString &message, const QString &iconName, QWidget *parent)
+bool MessageDialog::ask(const QString &message, const QString &iconPath, QWidget *parent)
 {
-	MessageDialog *m = new MessageDialog(message, YES|NO, true, iconName, parent);
+	MessageDialog *m = new MessageDialog(message, YES|NO, true, iconPath, parent);
 	return (m->exec() == Accepted);
 }
 

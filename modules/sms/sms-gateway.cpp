@@ -47,7 +47,7 @@ SmsGateway::SmsGateway()
 void SmsGateway::httpError()
 {
 	kdebugf();
-	MessageDialog::msg(tr("Network error. Provider gateway page is probably unavailable"), false, "Warning", (QDialog*)(parent()->parent()));
+	MessageDialog::msg(tr("Network error. Provider gateway page is probably unavailable"), false, "32x32/dialog-warning.png", (QDialog*)(parent()->parent()));
 	emit finished(false);
 	kdebugf2();
 }

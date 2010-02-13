@@ -155,7 +155,7 @@ EncryptionManager::EncryptionManager(bool firstLoad)
 							   QDir::toNativeSeparators(profilePath("keys/")));
 	if(EncryptionObject == 0)
 	{
-		MessageDialog::msg(factory->errorInfo(), false, "Warning", configurationWindow);
+		MessageDialog::msg(factory->errorInfo(), false, "32x32/dialog-warning.png", configurationWindow);
 	}
 
 	// use mkdir from sys/stat.h - there's no easy way to set permissions through Qt
@@ -207,17 +207,17 @@ void EncryptionManager::generateMyKeys()
 	keyfile_path.append(".pem");
 	QFileInfo keyfile(keyfile_path);
 
-	if (keyfile.permission(QFileInfo::WriteUser) && !MessageDialog::ask(tr("Keys exist. Do you want to overwrite them?"), "Warning", configurationWindow))
+	if (keyfile.permission(QFileInfo::WriteUser) && !MessageDialog::ask(tr("Keys exist. Do you want to overwrite them?"), "32x32/dialog-warning.png", configurationWindow))
 		return;
 
 	if (!EncryptionObject->generateKeys(myUin))
 	{
-		MessageDialog::msg(EncryptionObject->errorDescription(), false, "Error", configurationWindow);
-		MessageDialog::msg(tr("Error generating keys"), false, "Warning", configurationWindow);
+		MessageDialog::msg(EncryptionObject->errorDescription(), false, "32x32/dialog-error_big.png", configurationWindow);
+		MessageDialog::msg(tr("Error generating keys"), false, "32x32/dialog-warning.png", configurationWindow);
 		return;
 	}
 
-	MessageDialog::msg(tr("Keys have been generated and written"), false, "Information", configurationWindow);
+	MessageDialog::msg(tr("Keys have been generated and written"), false, "32x32/dialog-information.png", configurationWindow);
 	kdebugf2();
 }
 
@@ -406,7 +406,7 @@ void EncryptionManager::sendMessageFilter(const UserListElements users, QByteArr
 		{
 			kdebugm(KDEBUG_ERROR, "EncryptionObject->encrypt() failed! error=%d errorDescription=%s\n", EncryptionObject->error(), EncryptionObject->errorDescription());
 			stop = true;
-			MessageDialog::msg(tr("Cannot encrypt message. sim_message_encrypt returned: \"%1\" (error=%2)").arg(EncryptionObject->errorDescription()).arg(EncryptionObject->error()), true, "Warning");
+			MessageDialog::msg(tr("Cannot encrypt message. sim_message_encrypt returned: \"%1\" (error=%2)").arg(EncryptionObject->errorDescription()).arg(EncryptionObject->error()), true, "32x32/dialog-warning.png");
 		}
 	}
 //	kdebugm(KDEBUG_INFO, "length: %d\n", msg.length());
@@ -442,7 +442,7 @@ void EncryptionManager::sendPublicKeyActionActivated(QAction *sender, bool toggl
 		foreach(const UserListElement &user, users)
 			(dynamic_cast<Protocol *>(gadu))->sendMessage(user, mykey);
 
-		MessageDialog::msg(tr("Your public key has been sent"), false, "Information", kadu);
+		MessageDialog::msg(tr("Your public key has been sent"), false, "32x32/dialog-information.png", kadu);
 	}
 	kdebugf2();
 }
@@ -544,7 +544,7 @@ void SavePublicKey::yesClicked()
 
 	if (!(keyfile.open(QIODevice::WriteOnly)))
 	{
-		MessageDialog::msg(tr("Error writting the key"), false, "Warning", this);
+		MessageDialog::msg(tr("Error writting the key"), false, "32x32/dialog-warning.png", this);
 		kdebugmf(KDEBUG_ERROR, "Error opening key file %s\n", qPrintable(keyfile_path));
 		return;
 	}

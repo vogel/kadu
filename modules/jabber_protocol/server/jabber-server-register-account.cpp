@@ -84,7 +84,7 @@ void JabberServerRegisterAccount::sendRegistrationData()
 	else {
 		Result = false;
 		emit finished(this);
-		MessageDialog::msg(tr("This server does not support registration"), false, "Warning");
+		MessageDialog::msg(tr("This server does not support registration"), false, "32x32/dialog-warning.png");
 	}
 	kdebugf2();
 }
@@ -143,7 +143,7 @@ void JabberServerRegisterAccount::actionFinished()
 	}
 	else {
 		Result = false;
-		MessageDialog::msg(tr("There was an error registering the account.\nReason: %1").arg(reg->statusString()), false, "Warning");
+		MessageDialog::msg(tr("There was an error registering the account.\nReason: %1").arg(reg->statusString()), false, "32x32/dialog-warning.png");
 		emit finished(this);
 	}
 	kdebugf2();

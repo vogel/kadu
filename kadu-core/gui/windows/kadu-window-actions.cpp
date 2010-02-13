@@ -916,7 +916,7 @@ void KaduWindowActions::deleteUsersActionActivated(QAction *sender, bool toggled
 	QStringList displays;
 	foreach (Buddy buddy, buddies)
 		displays.append(buddy.display());
-	if (MessageDialog::ask(tr("Selected users:\n%0 will be deleted. Are you sure?").arg(displays.join(", ")), "Warning", Core::instance()->kaduWindow()))
+	if (MessageDialog::ask(tr("Selected users:\n%0 will be deleted. Are you sure?").arg(displays.join(", ")), "32x32/dialog-warning.png", Core::instance()->kaduWindow()))
 	{
 		foreach (Buddy buddy, buddies)
 			BuddyManager::instance()->removeItem(buddy);

@@ -283,7 +283,7 @@ void JabberCreateAccountWidget::registerNewAccountFinished(JabberServerRegisterA
 {
 	if (jsra->result())
 	{
-		MessageDialog::msg(tr("Registration was successful. Your new Jabber ID is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(jsra->jid()), false, "Information", this);
+		MessageDialog::msg(tr("Registration was successful. Your new Jabber ID is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(jsra->jid()), false, "32x32/dialog-information.png", this);
 
 		Account jabberAccount = Account::create();
 		// TODO: 0.6.6 set protocol after details because of crash
@@ -301,7 +301,7 @@ void JabberCreateAccountWidget::registerNewAccountFinished(JabberServerRegisterA
 		emit accountCreated(jabberAccount);
 	}
 	else
-		MessageDialog::msg(tr("An error has occured while registration. Please try again later."), false, "Warning", this);
+		MessageDialog::msg(tr("An error has occured while registration. Please try again later."), false, "32x32/dialog-warning.png", this);
 
 	delete jsra;
 }

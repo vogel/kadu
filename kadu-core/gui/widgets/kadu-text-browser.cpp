@@ -181,7 +181,7 @@ void KaduTextBrowser::saveImage()
 				QFile removeMe(file);
 				if (!removeMe.remove())
 				{
-					MessageDialog::msg(tr("Cannot save image: %1").arg(removeMe.errorString()), false, "Warning");
+					MessageDialog::msg(tr("Cannot save image: %1").arg(removeMe.errorString()), false, "32x32/dialog-warning.png");
 					continue;
 				}
 			}
@@ -196,7 +196,7 @@ void KaduTextBrowser::saveImage()
 		QFile src(image);
 		if (!src.copy(dst))
 		{
-			MessageDialog::msg(tr("Cannot save image: %1").arg(src.errorString()), false, "Warning");
+			MessageDialog::msg(tr("Cannot save image: %1").arg(src.errorString()), false, "32x32/dialog-warning.png");
 			continue;
 		}
 

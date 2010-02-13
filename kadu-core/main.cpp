@@ -461,7 +461,7 @@ int main(int argc, char *argv[])
 	// and disable this feature for win32 ;)
 #ifndef Q_OS_WIN
 	if (geteuid() == 0)
-		MessageDialog::msg(qApp->translate("@default", QT_TR_NOOP("Please do not run Kadu as a root!\nIt's a high security risk!")), false, "Warning");
+		MessageDialog::msg(qApp->translate("@default", QT_TR_NOOP("Please do not run Kadu as a root!\nIt's a high security risk!")), false, "32x32/dialog-warning.png");
 #endif
 
 	if (ids.count())

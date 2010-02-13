@@ -217,13 +217,13 @@ void Wizard::registerGGAccount()
 
 	if (ggNewPassword->text().isEmpty() || ggEMail->text().isEmpty())
 	{
-		MessageDialog::msg(tr("Please fill out all fields"), false, "Warning");
+		MessageDialog::msg(tr("Please fill out all fields"), false, "32x32/dialog-warning.png");
 		return;
 	}
 
 	if (ggEMail->text().find(HtmlDocument::mailRegExp()) == -1)
 	{
-		MessageDialog::msg(tr("Email address you have entered is not valid"), false, "Warning");
+		MessageDialog::msg(tr("Email address you have entered is not valid"), false, "32x32/dialog-warning.png");
 		return;
 	}
 
@@ -265,7 +265,7 @@ void Wizard::registeredGGAccount(bool ok, UinType uin)
 	}
 	else
 	{
-		MessageDialog::msg(tr("An error has occured while registration. Please try again later."), false, "Warning");
+		MessageDialog::msg(tr("An error has occured while registration. Please try again later."), false, "32x32/dialog-warning.png");
 
 		foreach(QWidget *widget, dontHaveNumberWidgets)
 			widget->setEnabled(true);

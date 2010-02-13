@@ -234,7 +234,7 @@ void SmsDialog::sendSms()
 	{
 		if (config_file.readEntry("SMS", "SmsApp").isEmpty())
 		{
-			MessageDialog::msg(tr("Sms application was not specified. Visit the configuration section"), false, "Warning", this);
+			MessageDialog::msg(tr("Sms application was not specified. Visit the configuration section"), false, "32x32/dialog-warning.png", this);
 			kdebugm(KDEBUG_WARNING, "SMS application NOT specified. Exit.\n");
 			return;
 		}
@@ -259,7 +259,7 @@ void SmsDialog::sendSms()
 		}
 
 		if (!smsProcess->waitForStarted())
-			MessageDialog::msg(tr("Could not spawn child process. Check if the program is functional"), false, "Warning", this);
+			MessageDialog::msg(tr("Could not spawn child process. Check if the program is functional"), false, "32x32/dialog-warning.png", this);
 		connect(smsProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(smsSigHandler()));
 	}
 	kdebugf2();
@@ -269,9 +269,9 @@ void SmsDialog::smsSigHandler()
 {
 	kdebugf();
 	if (smsProcess->exitStatus() == QProcess::NormalExit)
-		MessageDialog::msg(tr("The process exited normally. The SMS should be on its way"), false, "Information", this);
+		MessageDialog::msg(tr("The process exited normally. The SMS should be on its way"), false, "32x32/dialog-information.png", this);
 	else
-		MessageDialog::msg(tr("The process exited abnormally. The SMS may not be sent"), false, "Warning", this);
+		MessageDialog::msg(tr("The process exited abnormally. The SMS may not be sent"), false, "32x32/dialog-warning.png", this);
 	delete smsProcess;
 	smsProcess = 0;
 

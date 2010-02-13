@@ -63,7 +63,7 @@ public:
 	static const int YES;
 	static const int NO;
 
-	MessageDialog(const QString &message, int components = 0, bool modal = false, const QString &iconName = QString::null, QWidget *parent = 0);
+	MessageDialog(const QString &message, int components = 0, bool modal = false, const QString &iconPath = QString::null, QWidget *parent = 0);
 	~MessageDialog();
 
 
@@ -85,14 +85,14 @@ public:
 		u�ytkownika. Zwraca true je�li wybra� "Tak"
 		lub false je�li wybra� "Nie".
 	**/
-	static bool ask(const QString &message, const QString &iconName = QString::null, QWidget *parent = 0);
+	static bool ask(const QString &message, const QString &iconPath = QString::null, QWidget *parent = 0);
 
 	/**
 		Przekazuje u�ytkownikowi informacj�. Tworzy
 		dialog z przyciskiem: "OK" zamykaj�cy okno.
 		Nie blokuje wykonywania programu.
 	**/
-	static void msg(const QString &message, bool modal = false, const QString &iconName = QString::null, QWidget *parent = 0);
+	static void msg(const QString &message, bool modal = false, const QString &iconPath = QString::null, QWidget *parent = 0);
 
 	/**
 		Zamyka dialog, kt�ry zosta� stworzony za

@@ -97,7 +97,7 @@ void AccountBuddyListWidget::startImportTransfer()
 
 	if (!CurrentAccount.protocolHandler()->isConnected())
 	{
-		MessageDialog::msg(tr("Cannot import user list from server in offline mode"), false, "Critical", this);
+		MessageDialog::msg(tr("Cannot import user list from server in offline mode"), false, "32x32/dialog-error_big.png", this);
 		return;
 	}
 
@@ -116,7 +116,7 @@ void AccountBuddyListWidget::startExportTransfer()
 
 	if (!CurrentAccount.protocolHandler()->isConnected())
 	{
-		MessageDialog::msg(tr("Cannot export user list to server in offline mode"), false, "Critical", this);
+		MessageDialog::msg(tr("Cannot export user list to server in offline mode"), false, "32x32/dialog-error_big.png", this);
 		kdebugf2();
 		return;
 	}
@@ -231,14 +231,14 @@ void AccountBuddyListWidget::buddiesListExported(bool ok)
 
 	if (Clear)
 		if (ok)
-			MessageDialog::msg(tr("Your contact list has been successfully deleted on server"), false, "Infromation", this);
+			MessageDialog::msg(tr("Your contact list has been successfully deleted on server"), false, "32x32/dialog-information.png", this);
 		else
-			MessageDialog::msg(tr("The application encountered an internal error\nThe delete userlist on server was unsuccessful"), false, "Critical", this);
+			MessageDialog::msg(tr("The application encountered an internal error\nThe delete userlist on server was unsuccessful"), false, "32x32/dialog-error_big.png", this);
 	else
 		if (ok)
-			MessageDialog::msg(tr("Your contact list has been successfully exported to server"), false, "Information", this);
+			MessageDialog::msg(tr("Your contact list has been successfully exported to server"), false, "32x32/dialog-information.png", this);
 		else
-			MessageDialog::msg(tr("The application encountered an internal error\nThe export was unsuccessful"), false, "Critical", this);
+			MessageDialog::msg(tr("The application encountered an internal error\nThe export was unsuccessful"), false, "32x32/dialog-error_big.png", this);
 
 	ExportButton->setEnabled(true);
 

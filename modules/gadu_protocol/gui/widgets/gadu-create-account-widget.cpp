@@ -184,8 +184,8 @@ void GaduCreateAccountWidget::registerNewAccountFinished(GaduServerRegisterAccou
 {
 	if (gsra && gsra->result())
 	{
-		MessageDialog::msg(tr("Registration was successful. Your new number is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(gsra->uin()), false, "Information", this);
-		
+		MessageDialog::msg(tr("Registration was successful. Your new number is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(gsra->uin()), false, "32x32/dialog-information.png", this);
+
 		Account gaduAccount = Account::create();
 		gaduAccount.setProtocolName("gadu");
 		gaduAccount.setName(AccountName->text());
@@ -198,7 +198,7 @@ void GaduCreateAccountWidget::registerNewAccountFinished(GaduServerRegisterAccou
 		emit accountCreated(gaduAccount);
 	}
 	else
-		MessageDialog::msg(tr("An error has occured while registration. Please try again later."), false, "Warning", this);
+		MessageDialog::msg(tr("An error has occured while registration. Please try again later."), false, "32x32/dialog-warning.png", this);
 
 	if (gsra)
 		delete gsra;

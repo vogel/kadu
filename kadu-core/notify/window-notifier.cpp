@@ -36,7 +36,7 @@
 
 WindowNotifier::WindowNotifier(QObject *parent) :
 		Notifier("Window", "Show a window with notification",
-		IconsManager::instance()->iconByName("Information"), parent)
+		IconsManager::instance()->iconByPath("32x32/dialog-information.png"), parent)
 {
 	kdebugf();
 
