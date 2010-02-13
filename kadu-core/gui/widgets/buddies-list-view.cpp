@@ -407,9 +407,9 @@ void BuddiesListView::updateBackground()
 	style.append("QTreeView::branch:has-siblings:adjoins-item { border-image: none; image: none }");
 	style.append("QTreeView::branch:has-childres:!has-siblings:adjoins-item { border-image: none; image: none }");
 	style.append("QTreeView::branch:has-children:!has-siblings:closed, QTreeView::branch:closed:has-children:has-siblings "
-		     "{ border-image: none; image: url(" + IconsManager::instance()->iconPathFromName("BranchClosed") + ") }");
+		     "{ border-image: none; image: url(" + IconsManager::instance()->iconPath("kadu_icons/stylesheet-branch-closed.png") + ") }");
 	style.append("QTreeView::branch:open:has-children:!has-siblings, QTreeView::branch:open:has-children:has-siblings "
-			"{ border-image: none; image: url(" + IconsManager::instance()->iconPathFromName("BranchOpen") + ") }");
+			"{ border-image: none; image: url(" + IconsManager::instance()->iconPath("kadu_icons/stylesheet-branch-open.png") + ") }");
 
 	style.append("QFrame {");
 

@@ -82,21 +82,6 @@ QString IconsManager::iconPath(const QString &name) const
 	return fname;
 }
 
-QString IconsManager::iconPathFromName(const QString &name) const
-{
-	QString fname = themePath() + getThemeEntry(name);
-	QString absoluteName = dataPath() + fname;
-
-	if (!QFile::exists(fname) && QFile::exists(absoluteName))
-		fname = absoluteName;
-
-	QDir dir(fname);
-	if (dir.exists()) // hmm, icon != dir
-		return QString::null;
-
-	return fname;
-}
-
 const QPixmap &IconsManager::pixmapByPath(const QString &name)
 {
 	QMap<QString, QPixmap>::const_iterator i = pixmaps.find(name);

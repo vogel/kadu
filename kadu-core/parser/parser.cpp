@@ -474,7 +474,7 @@ QString Parser::parse(const QString &s, Account account, const Buddy &buddy, con
 					{
 						parseStack.pop_back();
 						pe.type = ParserToken::PT_STRING;
-						pe.content = IconsManager::instance()->iconPathFromName(pe.content);
+						pe.content = IconsManager::instance()->iconPath(pe.content);
 						parseStack.push_back(pe);
 						break;
 					}
@@ -639,16 +639,16 @@ QString Parser::parse(const QString &s, Account account, const Buddy &buddy, con
 
 		switch (elem.type)
 		{
-			case ParserToken::PT_STRING:					p = elem.content;	break;
-			case ParserToken::PT_EXTERNAL_VARIABLE:		p = "#{";		break;
-			case ParserToken::PT_ICONPATH:				p = "@{";		break;
-			case ParserToken::PT_VARIABLE:				p = "${";		break;
-			case ParserToken::PT_CHECK_FILE_EXISTS:		p = '{';		break;
-			case ParserToken::PT_CHECK_FILE_NOT_EXISTS:	p = "{!";		break;
-			case ParserToken::PT_CHECK_ALL_NOT_NULL:		p = '[';		break;
-			case ParserToken::PT_CHECK_ANY_NULL:			p = "[!";		break;
-			case ParserToken::PT_EXECUTE:					p = '`';		break;
-			case ParserToken::PT_EXECUTE2:				p = "`{";		break;
+			case ParserToken::PT_STRING:                p = elem.content; break;
+			case ParserToken::PT_EXTERNAL_VARIABLE:     p = "#{";         break;
+			case ParserToken::PT_ICONPATH:              p = "@{";         break;
+			case ParserToken::PT_VARIABLE:              p = "${";         break;
+			case ParserToken::PT_CHECK_FILE_EXISTS:     p = '{';          break;
+			case ParserToken::PT_CHECK_FILE_NOT_EXISTS: p = "{!";         break;
+			case ParserToken::PT_CHECK_ALL_NOT_NULL:    p = '[';          break;
+			case ParserToken::PT_CHECK_ANY_NULL:        p = "[!";         break;
+			case ParserToken::PT_EXECUTE:               p = '`';          break;
+			case ParserToken::PT_EXECUTE2:              p = "`{";         break;
 		}
 		ret += p;
 	}

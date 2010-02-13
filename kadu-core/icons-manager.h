@@ -50,7 +50,6 @@ class KADUAPI IconsManager : public Themes, ConfigurationAwareObject
 
 public:
 	QString iconPath(const QString &name) const;
-	QString iconPathFromName(const QString &name) const;
 	
 	const QPixmap & pixmapByPath(const QString &name);
 	const QIcon & iconByPath(const QString &name);
