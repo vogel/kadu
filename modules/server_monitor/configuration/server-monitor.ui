@@ -3,8 +3,7 @@
         <section name="Server Monitor" icon="kadu/configure_big.png">
                 <tab name="General">
                         <group-box name="Server list setting">
-                                <check-box caption="Use remote list" config-section="serverMonitor" config-item="useListFromServer" id="serverMonitor/useListFromServer" />
-                                <line-edit caption="Url to list http://" config-section="serverMonitor" config-item="serverListHost"id="serverMonitor/hostNameEdit" />
+                                <check-box caption="Watch gadu-gadu servers" config-section="serverMonitor" config-item="useGaduServersList" id="serverMonitor/useGaduServersList" />
 		               	<select-file caption="Server list" config-section="serverMonitor" config-item="fileName" type="all" id="serverMonitor/fileSelect" />
                 	</group-box>
                         <group-box name="General setting">

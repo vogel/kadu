@@ -21,9 +21,7 @@
 #define SERVER_MONITOR_WINDOW_H
 
 #include <QtCore/QTimer>
-#include <QtGui/QLabel>
 #include <QtGui/QScrollArea>
-#include <QtGui/QPushButton>
 
 #include "configuration/configuration-aware-object.h"
 
@@ -31,44 +29,44 @@
 
 class QBuffer;
 class QGridLayout;
-class QHttp;
+class QLabel;
+class QPushButton;
 
 class ServerMonitorWindow : public QScrollArea, ConfigurationAwareObject
 {
 	Q_OBJECT
 
-	QList<ServerStatusWidget*> servers;
-	QString serverFileListName;
+	QList<ServerStatusWidget*> ServerStatusWidgetList;
+	QString ServerFileListName;
 
-	QPushButton buttonRefresh;
-	QTimer refreshTimer;
+	QPushButton* ButtonRefresh;
+	QTimer RefreshTimer;
 
-	QLabel stats;
-	quint32 avalibleServers;
-	quint32 unavalibleServers;
-	quint32 unknownStatusServers;
+	QLabel* StatsLabel;
+	quint32 AvalibleServers;
+	quint32 UnavalibleServers;
+	quint32 UnknownStatusServers;
 
-	QHttp   *http;
-	QBuffer *serverListBuffer;
-
-	QGridLayout *layout;
-	QWidget *scrollBarLayout;
+	QGridLayout *Layout;
+	QWidget *ScrollBarLayout;
 
 	virtual void configurationUpdated();
 
+	void cleanLayout();
+	void loadServersListFromGaduManager();
+	void loadServersListFromFile();
 	void setConfiguration();
 	void removeAllServer();
-	void cleanLayout();
 
 private slots:
-	void downloadedServersList(bool);
-	void readServerList();
+	void loadServers();
 	void refreshList();
-	void updateStats( ServerStatusWidget::ServerState, ServerStatusWidget::ServerState );
+	void updateStats(ServerStatusWidget::ServerState, ServerStatusWidget::ServerState);
 
 public:
 	explicit ServerMonitorWindow(QWidget *parent = 0);
 	virtual ~ServerMonitorWindow();
+
 
 };
 

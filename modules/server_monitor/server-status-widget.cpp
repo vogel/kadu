@@ -29,14 +29,14 @@
 
 ServerStatusWidget::ServerStatusWidget(QString watchedAddress, quint16 watchedPort, QString hostName, QWidget *parent) :
 		QWidget(parent), WatchedAddress(watchedAddress), WatchedPort(watchedPort ? watchedPort : 8074),
-		WatchedHostName(hostName), CurrentState(Empty)
-		
+		WatchedHostDisplayName(hostName), CurrentState(Empty)
 {
 	QHBoxLayout *layout = new QHBoxLayout(this);
 	PixmapLabel = new QLabel(this);
 	QLabel *textLabel = new QLabel(this);
 
-	textLabel->setText((WatchedHostName.trimmed().length() > 0) ? WatchedHostName : WatchedAddress.toString());
+	WatchedHostDisplayName = ( WatchedHostDisplayName.trimmed().length() > 0 ) ? WatchedHostDisplayName : WatchedAddress.toString();
+	textLabel->setText(WatchedHostDisplayName);
 
 	connect(&TcpSocket, SIGNAL(connected()), this, SLOT(connected()));
 	connect(&TcpSocket, SIGNAL(error(QAbstractSocket::SocketError)),
@@ -62,7 +62,7 @@ void ServerStatusWidget::setNewState(ServerState newState)
 
 	emit statusChanged(newState, CurrentState);
 	if (Empty != CurrentState)
-		notify(WatchedAddress.toString(), newState);
+		notify(WatchedHostDisplayName, newState);
 
 	CurrentState = newState;
 
@@ -96,19 +96,19 @@ void ServerStatusWidget::refreshIcon()
 	kdebugf2();
 }
 
-void ServerStatusWidget::notify(QString address, ServerStatusWidget::ServerState)
+void ServerStatusWidget::notify(QString address, ServerStatusWidget::ServerState newServerState)
 {
 	Notification *notification = new Notification("serverMonitorChangeStatus",   QIcon());
 
-	notification->setDetails(tr("Server %1 changed status to %2").arg(address).arg(serverStateToString()));
+	notification->setDetails(tr("Server %1 changed status to %2").arg(address).arg(serverStateToString(newServerState)));
 	notification->setText("Server monitor");
 
 	NotificationManager::instance()->notify(notification);
 }
 
-QString ServerStatusWidget::serverStateToString()
+QString ServerStatusWidget::serverStateToString(ServerState serverState)
 {
-	switch (CurrentState)
+	switch (serverState)
 	{
 		case Available:
 			return tr("Online");
