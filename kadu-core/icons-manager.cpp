@@ -112,21 +112,6 @@ const QPixmap &IconsManager::pixmapByPath(const QString &name)
 	return pixmaps[name];
 }
 
-const QPixmap &IconsManager::pixmapByName(const QString &name)
-{
-	QMap<QString, QPixmap>::const_iterator i = pixmaps.find(name);
-	if (i != pixmaps.end())
-		return *i;
-
-	QPixmap pix;
-	QString path = iconPathFromName(name);
-	if (!path.isEmpty())
-		pix.load(path);
-
-	pixmaps.insert(name, pix);
-	return pixmaps[name];
-}
-
 const QIcon &IconsManager::iconByPath(const QString &name)
 {
 	QMap<QString, QIcon>::const_iterator i = icons.find(name);

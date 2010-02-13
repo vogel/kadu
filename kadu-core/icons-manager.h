@@ -53,7 +53,6 @@ public:
 	QString iconPathFromName(const QString &name) const;
 	
 	const QPixmap & pixmapByPath(const QString &name);
-	const QPixmap & pixmapByName(const QString &name);
 	const QIcon & iconByPath(const QString &name);
 	const QIcon & iconByName(const QString &name);
 
