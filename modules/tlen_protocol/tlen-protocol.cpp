@@ -47,6 +47,7 @@
 #include "debug.h"
 #include "icons-manager.h"
 #include "status/status.h"
+#include "status/status-type-manager.h"
 #include "misc/misc.h"
 #include "html_document.h"
 
@@ -808,62 +809,11 @@ void TlenProtocol::changePrivateMode()
 
 QPixmap TlenProtocol::statusPixmap(Status status)
 {
-	QString pixmapName(dataPath("kadu/modules/data/tlen_protocol/"));
-
-	QString groupName = status.type();
-
-	if ("Online" == groupName)
-		pixmapName.append("online");
-
-	else if ("FreeForChat" == groupName)
-		pixmapName.append("chat");
-
-	else if ("DoNotDisturb" == groupName)
-		pixmapName.append("dnd");
-
-	else if ("Away" == groupName)
-		pixmapName.append("away");
-
-	else if ("NotAvailable" == groupName)
-		pixmapName.append("unavailable");
-
-	else if ("Invisible" == groupName)
-		pixmapName.append("invisible");
-
-	else	pixmapName.append("offline");
-
-	pixmapName.append(status.description().isNull()
-			? ".png"
-			: "i.png");
-
-	return IconsManager::instance()->pixmapByPath(pixmapName);
+	return StatusTypeManager::instance()->statusPixmap("tlen", "16x16", status.type(),
+			!status.description().isEmpty(), false);
 }
 
 QPixmap TlenProtocol::statusPixmap(const QString &statusType)
 {
-	QString pixmapName(dataPath("kadu/modules/data/tlen_protocol/"));
-
-	if ("Online" == statusType)
-		pixmapName.append("online");
-
-	else if ("FreeForChat" == statusType)
-		pixmapName.append("chat");
-
-	else if ("DoNotDisturb" == statusType)
-		pixmapName.append("dnd");
-
-	else if ("Away" == statusType)
-		pixmapName.append("away");
-
-	else if ("NotAvailable" == statusType)
-		pixmapName.append("unavailable");
-
-	else if ("Invisible" == statusType)
-		pixmapName.append("invisible");
-
-	else	pixmapName.append("offline");
-
-	pixmapName.append(".png");
-
-	return IconsManager::instance()->pixmapByPath(pixmapName);
+	return StatusTypeManager::instance()->statusPixmap("tlen", "16x16", statusType, false, false);
 }
