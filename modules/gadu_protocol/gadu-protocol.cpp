@@ -63,6 +63,8 @@
 
 #include "gadu-protocol.h"
 
+#define GG8_DESCRIPTION_MASK 0x00ff
+
 extern "C" int gadu_protocol_init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
@@ -100,7 +102,7 @@ extern "C" void gadu_protocol_close()
 #define GG_STATUS_INVISIBLE2 0x0009
 QString GaduProtocol::statusTypeFromGaduStatus(unsigned int index)
 {
-	switch (index)
+	switch (index & GG8_DESCRIPTION_MASK)
 	{
 		case GG_STATUS_FFC_DESCR:
 		case GG_STATUS_FFC:
@@ -605,8 +607,7 @@ void GaduProtocol::setupLoginParams()
 
 	GaduLoginParams.protocol_version = GG_DEFAULT_PROTOCOL_VERSION;
 	GaduLoginParams.client_version = (char *)GG_DEFAULT_CLIENT_VERSION;
-	GaduLoginParams.protocol_features = 0x00000037; // enable new statuses
-
+	GaduLoginParams.protocol_features = GG_FEATURE_DND_FFC; // enable new statuses
 	GaduLoginParams.has_audio = gaduAccountDetails->allowDcc();
 	GaduLoginParams.last_sysmsg = config_file.readNumEntry("General", "SystemMsgIndex", 1389);
 
