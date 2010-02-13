@@ -1,0 +1,5 @@
+Sposob tworzenia nazwy to "module_nazwa_modulu-nazwa-ikon-freedesktop" czyli np.:
+
+module_weather_show-weather-few-clouds
+czy
+module_mail-internet-mail

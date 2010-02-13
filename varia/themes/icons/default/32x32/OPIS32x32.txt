@@ -1,0 +1,3 @@
+- internet-group-chat to sekcja chat z konfiguracji.
+- systemusers zamiast dawnego kadu-contacts, user-online to dawne kadu-status itp itd.
+- 

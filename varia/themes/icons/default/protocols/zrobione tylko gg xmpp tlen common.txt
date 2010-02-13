@@ -1,0 +1,3 @@
+Aktualnie zrobione sa tylko sieci gg, xmpp, tlen oraz common (koperta + group chat).
+
+Inne protokoly wymagaja dostosowania, ale to gdy beda juz moduly obslugujace te sieci. 

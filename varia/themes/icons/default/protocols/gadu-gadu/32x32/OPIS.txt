@@ -1,0 +1,6 @@
+32x32 do wykorzystania w Your Accounts oknie. 
+- siec ladowana przy starcie -> online
+- siec wylaczana przy starcie programu -> offline
+
+
+Pyt: Czy ta ikonke/logo dla sieci (48x48) mozna gdzies sprytnie wykorzystac? Mamy takie loga 48x48 dla kazdej sieci. 
