@@ -1674,8 +1674,8 @@ void Kadu::createRecentChatsMenu()
 		else // je�eli jest wi�cej ni� pi�ciu u�ytkownik�w...
 		{
 			for (int i = 0; i < 4; i++) // to i tak dodajemy tylko pierwszych pi�ciu :)
-				chat_users.append(*altnicks.at(i) + ", ");
-			chat_users.append(*altnicks.at(4) + " [...]");
+				chat_users.append(altnicks.at(i) + ", ");
+			chat_users.append(altnicks.at(4) + " [...]");
 		}
 		action = new QAction(icons_manager->loadIcon("OpenChat"), chat_users, this);
 		action->setData(index);
