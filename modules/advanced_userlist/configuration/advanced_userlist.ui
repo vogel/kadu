@@ -1,6 +1,6 @@
 <configuration-ui>
 	
-	<section name="Look" icon="LookTab" >
+	<section name="Look" icon="32x32/preferences-desktop-theme.png">
 
 		<tab name="Userbox">
 			<group-box name="Sorting">

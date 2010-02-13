@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration-ui>
-	<section name="Kadu" icon="KaduTab">
+	<section name="Kadu" icon="kadu_icons/kadu-tab.png">
 		<tab name="Kadu">
 			<group-box name="Language">
 				<combo-box caption="Language" config-section="General" config-item="Language" id="languages"
@@ -71,7 +71,7 @@
 
 	</section>
 
-	<section name="Contacts" icon="ContactsTab" >
+	<section name="Contacts" icon="32x32/system-users.png">
 		<tab name="General">
 			<group-box name="Filters">
 				<check-box caption="Show offline contacts" config-section="General" config-item="ShowOffline" />
@@ -90,7 +90,7 @@ Text is plain black." />
 		</tab>
 	</section>
 
-	<section name="Status" icon="StatusTab" >
+	<section name="Status" icon="32x32/user-online.png">
 		<tab name="General">
 			<group-box name="General">
 				<check-box caption="Private status" config-section="General" config-item="PrivateStatus"
@@ -125,7 +125,7 @@ Text is plain black." />
 		</tab>
 	</section>
 
-	<section name="Look" icon="LookTab" >
+	<section name="Look" icon="32x32/preferences-desktop-theme.png">
 		<tab name="General">
 			<group-box name="General">
 				<combo-box caption="Theme" config-section="Look" config-item="QtStyle" id="qtThemes"
@@ -169,7 +169,7 @@ Text is plain black." />
 				<select-font caption="Userbox" config-section="Look" config-item="UserboxFont" />
 				<select-font caption="Font in panel" config-section="Look" config-item="PanelFont" />
 			</group-box>
-        </tab>
+		</tab>
 
 		<tab name="Chat window">
 			<group-box name="New messages notifications">
@@ -265,7 +265,7 @@ Text is plain black." />
 		</tab>
 	</section>
 
-	<section name="Shortcuts" icon="ShortCutsTab">
+	<section name="Shortcuts" icon="32x32/preferences-desktop-peripherals.png">
 		<tab name="General">
 			<group-box name="Kadu">
 				<hot-key-edit caption="Configuration" config-section="ShortCuts" config-item="kadu_configure" />
@@ -296,7 +296,7 @@ Text is plain black." />
 		</tab>
 	</section>
 
-	<section name="Chat" icon="ChatTab">
+	<section name="Chat" icon="32x32/internet-group-chat.png">
 		<tab name="General">
 			<group-box name="Behaviour">
 				<check-box caption="Remember chat windows positions" config-section="Chat" config-item="RememberPosition" />
@@ -347,7 +347,7 @@ Text is plain black." />
 		</tab>
 	</section>
 
-	<section name="Notifications" icon="NotifyTab">
+	<section name="Notifications" icon="kadu_icons/kadu-notifications.png">
 
 		<tab name="General">
 			<group-box name="Notifications">

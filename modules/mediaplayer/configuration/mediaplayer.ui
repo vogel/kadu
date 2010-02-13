@@ -1,6 +1,6 @@
 <configuration-ui>
 
-	<section name="MediaPlayer" icon="MediaPlayer">
+	<section name="MediaPlayer" icon="external_modules/module_mediaplayer.png">
 
 		<tab name="General">
 

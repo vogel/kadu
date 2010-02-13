@@ -43,7 +43,7 @@ class ConfigSection : public QObject
 
 	QString name;
 	ConfigurationWidget *configurationWidget;
-	QString pixmap;
+	QString iconPath;
 
 	QListWidgetItem *listWidgetItem;
 	bool activated;
@@ -62,7 +62,7 @@ private slots:
 
 public:
 	ConfigSection(const QString &name, ConfigurationWidget *configurationWidget, QListWidgetItem *listWidgetItem, QWidget *parentConfigGroupBoxWidget,
-		const QString &pixmap);
+		const QString &iconPath);
 	~ConfigSection();
 
 	void activate();

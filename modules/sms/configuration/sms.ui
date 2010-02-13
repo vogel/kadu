@@ -1,6 +1,6 @@
 <configuration-ui>
 
-	<section name="SMS" icon="SMSTab">
+	<section name="SMS" icon="32x32/phone.png">
 
 		<tab name="General">
 			<group-box name="Nick">

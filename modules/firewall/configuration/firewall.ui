@@ -1,5 +1,5 @@
 <configuration-ui>
-	<section name="Firewall" icon="ManageKeysWindowIcon">
+	<section name="Firewall" icon="32x32/security-high.png">
 		<tab name="General">
 			<group-box name="Notify">
 				<check-box caption="Enable notification" config-section="Firewall" config-item="notify" id="firewall/notify" />

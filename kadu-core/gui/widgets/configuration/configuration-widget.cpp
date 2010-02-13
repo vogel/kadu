@@ -172,7 +172,7 @@ QList<ConfigWidget *> ConfigurationWidget::processUiSectionFromDom(QDomNode sect
 		return result;
 	}
 
-	const QString &iconName = sectionElement.attribute("icon");
+	const QString &iconPath = sectionElement.attribute("icon");
 
 	const QString &sectionName = sectionElement.attribute("name");
 	if (sectionName.isEmpty())
@@ -181,12 +181,12 @@ QList<ConfigWidget *> ConfigurationWidget::processUiSectionFromDom(QDomNode sect
 		return result;
 	}
 
-	configSection(iconName, qApp->translate("@default", sectionName.toAscii().data()), true);
+	configSection(iconPath, qApp->translate("@default", sectionName.toAscii().data()), true);
 
 	const QDomNodeList children = sectionElement.childNodes();
 	int length = children.length();
 	for (int i = 0; i < length; i++)
-		result += processUiTabFromDom(children.item(i), iconName, sectionName, append);
+		result += processUiTabFromDom(children.item(i), iconPath, sectionName, append);
 
 	kdebugf2();
 	return result;
@@ -401,7 +401,7 @@ ConfigSection *ConfigurationWidget::configSection(const QString &name)
 	return configSections[name];
 }
 
-ConfigSection *ConfigurationWidget::configSection(const QString &pixmap, const QString &name, bool create)
+ConfigSection *ConfigurationWidget::configSection(const QString &iconPath, const QString &name, bool create)
 {
 	if (configSections.contains(name))
 		return configSections[name];
@@ -409,13 +409,13 @@ ConfigSection *ConfigurationWidget::configSection(const QString &pixmap, const Q
 	if (!create)
 		return 0;
 
-	QListWidgetItem *newConfigSectionListWidgetItem = new QListWidgetItem(IconsManager::instance()->pixmapByName(pixmap), name, sectionsListWidget);
+	QListWidgetItem *newConfigSectionListWidgetItem = new QListWidgetItem(IconsManager::instance()->pixmapByPath(iconPath), name, sectionsListWidget);
 
 	QFontMetrics fontMetrics = sectionsListWidget->fontMetrics();
 	// TODO: 48 = margins + scrollbar - get real scrollbar width
-	int width = fontMetrics.width(name) + IconsManager::instance()->pixmapByName(pixmap).width() + 48;
+	int width = fontMetrics.width(name) + IconsManager::instance()->pixmapByPath(iconPath).width() + 48;
 
-	ConfigSection *newConfigSection = new ConfigSection(name, this, newConfigSectionListWidgetItem, container, pixmap);
+	ConfigSection *newConfigSection = new ConfigSection(name, this, newConfigSectionListWidgetItem, container, iconPath);
 	configSections[name] = newConfigSection;
 
 	if (configSections.count() == 1)

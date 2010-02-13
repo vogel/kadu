@@ -107,7 +107,7 @@ class KADUAPI ConfigurationWidget : public QWidget
 	void saveConfiguration(QObject *object);
 
 	ConfigSection *configSection(const QString &name);
-	ConfigSection *configSection(const QString &icon, const QString &name, bool create = true);
+	ConfigSection *configSection(const QString &iconPath, const QString &name, bool create = true);
 
 	QList<ConfigWidget *> processUiFile(const QString &fileName, bool append = true);
 	QList<ConfigWidget *> processUiSectionFromDom(QDomNode sectionNode, bool append = true);

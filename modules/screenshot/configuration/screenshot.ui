@@ -1,6 +1,6 @@
 <configuration-ui>
 
-	<section name="Screenshot" icon="Screenshot">
+	<section name="Screenshot" icon="external_modules/module_screenshot.png">
 
 		<tab name="General">
 

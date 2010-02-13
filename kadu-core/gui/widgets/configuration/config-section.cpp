@@ -33,8 +33,8 @@
 #include "icons-manager.h"
 
 ConfigSection::ConfigSection(const QString &name, ConfigurationWidget *configurationWidget, QListWidgetItem *listWidgetItem, QWidget *parentConfigGroupBoxWidget,
-		const QString &pixmap) :
-		name(name), configurationWidget(configurationWidget), pixmap(pixmap), listWidgetItem(listWidgetItem), activated(false), parentConfigGroupBoxWidget(parentConfigGroupBoxWidget)
+		const QString &iconPath) :
+		name(name), configurationWidget(configurationWidget), iconPath(iconPath), listWidgetItem(listWidgetItem), activated(false), parentConfigGroupBoxWidget(parentConfigGroupBoxWidget)
 {
 	mainWidget = new QWidget(parentConfigGroupBoxWidget);
 	new QHBoxLayout(mainWidget);
@@ -158,7 +158,7 @@ void ConfigSection::iconThemeChanged()
 	bool current = listWidgetItem->isSelected();
 	delete listWidgetItem;
 
-	listWidgetItem = new QListWidgetItem(IconsManager::instance()->pixmapByName(pixmap), name, listWidget);
+	listWidgetItem = new QListWidgetItem(IconsManager::instance()->pixmapByPath(iconPath), name, listWidget);
 	if (current)
 		listWidget->setCurrentItem(listWidgetItem);
 }

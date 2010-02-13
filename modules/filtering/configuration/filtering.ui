@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration-ui>
 
-	<section name="Contacts" icon="ContactsTab">
+	<section name="Contacts" icon="32x32/system-users.png">
 
 		<tab name="Filtering">
 			<group-box name="General">
@@ -19,7 +19,7 @@
 
 	</section>
 
-	<section name="Shortcuts" icon="ShortCutsTab">
+	<section name="Shortcuts" icon="32x32/preferences-desktop-peripherals.png">
 
 		<tab name="Userlist">
 			<group-box name="Userlist">

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration-ui>
-	<section name="Contacts" icon="GeneralTab">
+	<section name="Contacts" icon="kadu/configure_big.png">
 		<tab name="General">
 			<group-box name="Protocol">
 			</group-box>
