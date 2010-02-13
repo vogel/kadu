@@ -67,10 +67,8 @@ public:
 	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0);
 	virtual void notify(Notification *notification);
 
-	void copyConfiguration(const QString &fromEvent, const QString &toEvent) {}
-
 public slots:
-		void run(const QStringList &args, const QString &in);
+	void run(const QStringList &args, const QString &in);
 
 };
 

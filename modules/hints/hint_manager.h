@@ -146,8 +146,6 @@ public:
 	virtual void showToolTip(const QPoint &, Buddy);
 	virtual void hideToolTip();
 
-	virtual void copyConfiguration(const QString &fromEvent, const QString &toEvent);
-
 	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0);
 
 	void prepareOverUserHint(QFrame *tipFrame, QLabel *iconLabel, QLabel *tipLabel, Buddy buddy);

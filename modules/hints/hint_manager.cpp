@@ -584,12 +584,6 @@ void HintManager::notificationClosed(Notification *notification)
 		linkedHints.remove(qMakePair(chatNotification->chat(), notification->type()));
 }
 
-void HintManager::copyConfiguration(const QString &fromEvent, const QString &toEvent)
-{
-	Q_UNUSED(fromEvent)
-	Q_UNUSED(toEvent)
-}
-
 void HintManager::realCopyConfiguration(const QString &fromCategory, const QString &fromHint, const QString &toHint)
 {
 	config_file.writeEntry("Hints", toHint + "_font", config_file.readFontEntry(fromCategory, fromHint + "_font", &qApp->font()));

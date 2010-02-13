@@ -31,8 +31,6 @@ public:
 
 	virtual CallbackCapacity callbackCapacity() { return CallbackNotSupported; }
 
-	void copyConfiguration(const QString &fromEvent, const QString &toEvent) {}
-
 	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0);
 
 public slots:
