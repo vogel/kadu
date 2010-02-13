@@ -48,9 +48,10 @@ void KaduRootObject::Disconnect()
 		if (status.isDisconnected())
 			continue;
 
-		AccountStatus[account] = status;
+		AccountStatus.insert(account, status);
 		status.setType("Offline");
 		account.statusContainer()->setStatus(status);
+
 	}
 }
 
@@ -61,7 +62,7 @@ void KaduRootObject::Reconnect()
 		if (!AccountStatus.contains(account))
 			continue;
 
-		account.statusContainer()->setStatus(AccountStatus[account]);
+		account.statusContainer()->setStatus(AccountStatus.value(account));
 	}
 }
 

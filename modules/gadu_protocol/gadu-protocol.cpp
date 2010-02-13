@@ -241,7 +241,7 @@ GaduProtocol::~GaduProtocol()
 
 bool GaduProtocol::validateUserID(const QString &uid)
 {
-	QIntValidator v(1, 3999999999, this);
+	QIntValidator v(1, 3999999999U, this);
 	int pos = 0;
 
 	QString id = uid; // need non-const copy
