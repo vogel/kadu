@@ -44,14 +44,14 @@
 #include "gui/windows/password-window.h"
 #include "gui/windows/subscription-window.h"
 #include "gui/windows/main-configuration-window.h"
-
+#include "misc/misc.h"
+#include "protocols/protocol-menu-manager.h"
+#include "status/status-type-manager.h"
+#include "status/status.h"
 #include "debug.h"
 #include "exports.h"
 #include "icons-manager.h"
 #include "kadu-config.h"
-#include "misc/misc.h"
-#include "protocols/protocol-menu-manager.h"
-#include "status/status.h"
 
 #include "file-transfer/jabber-file-transfer-handler.h"
 #include "jabber-account-details.h"
@@ -731,62 +731,13 @@ void JabberProtocol::changePrivateMode()
 
 QPixmap JabberProtocol::statusPixmap(Status status)
 {
-	QString pixmapName(dataPath("kadu/modules/data/jabber_protocol/"));
-
-	QString groupName = status.type();
-
-	if ("Online" == groupName)
-		pixmapName.append("online");
-
-	else if ("FreeForChat" == groupName)
-		pixmapName.append("ffc");
-
-	else if ("DoNotDisturb" == groupName)
-		pixmapName.append("dnd");
-
-	else if ("Away" == groupName)
-		pixmapName.append("away");
-
-	else if ("NotAvailable" == groupName)
-		pixmapName.append("xa");
-
-	else if ("Invisible" == groupName)
-		pixmapName.append("invisible");
-
-	else	pixmapName.append("offline");
-
-	pixmapName.append(".png");
-
-	return IconsManager::instance()->pixmapByPath(pixmapName);
+	return StatusTypeManager::instance()->statusPixmap("xmpp", "16x16", status.type(),
+			!status.description().isEmpty(), false);
 }
 
 QPixmap JabberProtocol::statusPixmap(const QString &statusType)
 {
-	QString pixmapName(dataPath("kadu/modules/data/jabber_protocol/"));
-
-	if ("Online" == statusType)
-		pixmapName.append("online");
-
-	else if ("FreeForChat" == statusType)
-		pixmapName.append("ffc");
-
-	else if ("DoNotDisturb" == statusType)
-		pixmapName.append("dnd");
-
-	else if ("Away" == statusType)
-		pixmapName.append("away");
-
-	else if ("NotAvailable" == statusType)
-		pixmapName.append("xa");
-
-	else if ("Invisible" == statusType)
-		pixmapName.append("invisible");
-
-	else	pixmapName.append("offline");
-
-	pixmapName.append(".png");
-
-	return IconsManager::instance()->pixmapByPath(pixmapName);
+	return StatusTypeManager::instance()->statusPixmap("xmpp", "16x16", statusType, false, false);
 }
 
 JabberContactDetails * JabberProtocol::jabberContactDetails(Contact contact) const
