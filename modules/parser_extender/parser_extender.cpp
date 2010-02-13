@@ -23,14 +23,17 @@
 #include <QtCore/QDateTime>
 #include <QtCore/QString>
 
-#include "parser_extender.h"
+#include <stdio.h>
 
-#include "debug.h"
-#include "modules.h"
-#include "parser/parser.h"
 #include "configuration/configuration-file.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/path-conversion.h"
+#include "parser/parser.h"
+
+#include "debug.h"
+#include "modules.h"
+
+#include "parser_extender.h"
 
 QDateTime started;
 ParserExtender *parserExtender;
@@ -105,7 +108,8 @@ QString getKaduUptime(int mode)
 QString getUptime(int mode)
 {	
 	QString uptime = "0";
-	
+
+#ifdef Q_OS_LINUX //TODO 0.6.6: find more portable way to get system uptime
 	time_t upTime = 0;
 	FILE *f;
 	double duptime = 0;
@@ -115,9 +119,8 @@ QString getUptime(int mode)
 	upTime = (time_t)duptime;
 	
 	QString s = "";
-	if (mode == 0) {
+	if (mode == 0)
 	 	uptime = s.setNum(upTime) + "s ";
-	}
 	else 
 	{
 		int days = upTime/(60*60*24);
@@ -133,6 +136,8 @@ QString getUptime(int mode)
 		uptime += s.setNum(mins)+"m ";
 		uptime += s.setNum(secs)+"s ";
 	}
+#endif
+
 	return uptime;
 }
 
