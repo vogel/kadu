@@ -140,7 +140,7 @@ ModulesDialog::ModulesDialog(QWidget *parent)
 	centerLayout->setSpacing(10);
 
 	QLabel *l_info = new QLabel(center);
-	l_icon->setPixmap(IconsManager::instance()->pixmapByName("ManageModulesWindowIcon"));
+	l_icon->setPixmap(IconsManager::instance()->pixmapByPath("kadu_icons/kadu-modmanager_big.png"));
 	l_info->setText(tr("This dialog box allows you to manage installed modules. Modules are responsible "
 			"for numerous vital features like playing sounds or message encryption.\n"
 			"You can load (or unload) them by double-clicking on their names."));

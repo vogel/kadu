@@ -131,7 +131,7 @@ QPixmap StatusContainerManager::statusPixmap()
 {
 	return AccountManager::instance()->defaultAccount().statusContainer()
 			? AccountManager::instance()->defaultAccount().statusContainer()->statusPixmap()
-			: IconsManager::instance()->pixmapByName("Offline");
+			: IconsManager::instance()->pixmapByPath("protocols/gadu-gadu/16x16/offline.png");
 }
 
 QPixmap StatusContainerManager::statusPixmap(Status status)

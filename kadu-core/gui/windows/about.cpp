@@ -77,7 +77,7 @@ About::About(QWidget *parent)
 	QWidget *left = new QWidget;
 
 	QLabel *l_icon = new QLabel;
-	l_icon->setPixmap(IconsManager::instance()->pixmapByName("AboutIcon"));
+	l_icon->setPixmap(IconsManager::instance()->pixmapByPath("kadu_icons/kadu.png"));
 
 	QWidget *blank = new QWidget;
 	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));

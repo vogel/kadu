@@ -52,8 +52,8 @@ BuddiesListViewDelegate::BuddiesListViewDelegate(QObject *parent)
 	triggerAllAccountsRegistered();
 	configurationUpdated();
 
-	DefaultAvatarSize = IconsManager::instance()->pixmapByName("ContactsTab").size();
-	MessagePixmap = IconsManager::instance()->pixmapByName("Message");
+	DefaultAvatarSize = IconsManager::instance()->pixmapByPath("32x32/system-users.png").size();
+	MessagePixmap = IconsManager::instance()->pixmapByPath("kadu/kadu-message.png");
 }
 
 BuddiesListViewDelegate::~BuddiesListViewDelegate()

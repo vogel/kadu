@@ -190,6 +190,6 @@ void IconsManager::configurationUpdated()
 
 QSize IconsManager::getIconsSize()
 {
-	QPixmap p = pixmapByName("Configuration");
+	QPixmap p = pixmapByPath("16x16/preferences-other.png");
 	return p.size();
 }

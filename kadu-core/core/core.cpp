@@ -294,9 +294,9 @@ void Core::init()
 	new Updates();
 
 #ifdef Q_OS_MACX
-	setIcon(IconsManager::instance()->pixmapByName("BigOffline"));
+	setIcon(IconsManager::instance()->pixmapByPath("protocols/gadu-gadu/128x128/offline.png"));
 #else
-	setIcon(IconsManager::instance()->pixmapByName("Offline"));
+	setIcon(IconsManager::instance()->pixmapByPath("protocols/gadu-gadu/16x16/offline.png"));
 #endif
 	QTimer::singleShot(15000, this, SLOT(deleteOldConfigurationFiles()));
 
