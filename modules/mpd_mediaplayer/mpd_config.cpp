@@ -25,8 +25,7 @@
 
 MPDConfig::MPDConfig()
 {
-	MainConfigurationWindow::registerUiFile(
-		dataPath("kadu/modules/configuration/mpd_config.ui"));
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/mpd_config.ui"));
 	createDefaultConfiguration();
 	host = config_file.readEntry("MediaPlayer", "MPDHost");
 	port = config_file.readEntry("MediaPlayer", "MPDPort");
@@ -35,13 +34,7 @@ MPDConfig::MPDConfig()
 
 MPDConfig::~MPDConfig()
 {
-	MainConfigurationWindow::unregisterUiFile(
-		dataPath("kadu/modules/configuration/mpd_config.ui"));
-}
-
-void MPDConfig::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
-{
-	// no idea what to put in this one ;)
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/mpd_config.ui"));
 }
 
 void MPDConfig::createDefaultConfiguration()
