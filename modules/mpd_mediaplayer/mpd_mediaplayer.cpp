@@ -174,7 +174,7 @@ QString MPDMediaPlayer::getFile(int position)
 
 int MPDMediaPlayer::getLength(int position)
 {
-	int length;
+	int length = 0;
 	mpd_connection *con = mpdConnect();
 
 	if( NULL != con )
@@ -203,7 +203,7 @@ int MPDMediaPlayer::getLength(int position)
 
 int MPDMediaPlayer::getCurrentPos()
 {
-	int pos;
+	int pos = 0;
 	mpd_connection *con = mpdConnect();
 
 	if( NULL != con )
@@ -315,7 +315,7 @@ QStringList MPDMediaPlayer::getPlayListFiles()
 
 uint MPDMediaPlayer::getPlayListLength()
 {
-	uint playlistLength;
+	uint playlistLength = 0;
 	mpd_connection *con = mpdConnect();
 
 	if( NULL != con )
