@@ -60,17 +60,20 @@ QString MPDMediaPlayer::getTitle(int position)
 	QString title;
 	mpd_connection *con = mpdConnect();
 
-	if( con != NULL ){
+	if( con != NULL )
+	{
 		mpd_status *status;
 
 		status = mpd_run_status(con);
-		if( status != NULL){
+		if( status != NULL)
+		{
 			if( position == -1 )
 		   		position = mpd_status_get_song_pos(status);
 
 			mpd_song *song;
 			song = mpd_run_get_queue_song_pos(con, position);
-			if( song != NULL ){
+			if( song != NULL )
+			{
 				title = QString::fromUtf8(mpd_song_get_tag(song, MPD_TAG_TITLE, 0));
 				mpd_song_free(song);
 			}
@@ -86,17 +89,20 @@ QString MPDMediaPlayer::getArtist(int position)
 	QString artist;
 	mpd_connection *con = mpdConnect();
 
-	if( con != NULL ){
+	if( con != NULL )
+	{
 		mpd_status *status;
 
 		status = mpd_run_status(con);
-		if( status != NULL){
+		if( status != NULL)
+		{
 			if( position == -1 )
 				position = mpd_status_get_song_pos(status);
 
 			mpd_song *song;
 			song = mpd_run_get_queue_song_pos(con, position);
-			if( song != NULL ){
+			if( song != NULL )
+			{
 				artist = QString::fromUtf8(mpd_song_get_tag(song, MPD_TAG_ARTIST, 0));
 				mpd_song_free(song);
 			}
@@ -112,17 +118,20 @@ QString MPDMediaPlayer::getAlbum(int position)
 	QString album;
 	mpd_connection *con = mpdConnect();
 
-	if( con != NULL ){
+	if( con != NULL )
+	{
 		mpd_status *status;
 
 		status = mpd_run_status(con);
-		if( status != NULL){
+		if( status != NULL)
+		{
 			if( position == -1 )
 				position = mpd_status_get_song_pos(status);
 
 			mpd_song *song;
 			song = mpd_run_get_queue_song_pos(con, position);
-			if( song != NULL ){
+			if( song != NULL )
+			{
 				album = QString::fromUtf8(mpd_song_get_tag(song, MPD_TAG_ALBUM, 0));
 				mpd_song_free(song);
 			}
@@ -138,17 +147,20 @@ QString MPDMediaPlayer::getFile(int position)
 	QString file;
 	mpd_connection *con = mpdConnect();
 
-	if( con != NULL ){
+	if( con != NULL )
+	{
 		mpd_status *status;
 
 		status = mpd_run_status(con);
-		if( status != NULL){
+		if( status != NULL)
+		{
 			if( position == -1 )
 				position = mpd_status_get_song_pos(status);
 
 			mpd_song *song;
 			song = mpd_run_get_queue_song_pos(con, position);
-			if( song != NULL ){
+			if( song != NULL )
+			{
 				file = mpd_song_get_uri(song);
 				file = file.right(file.length()-file.lastIndexOf("/")-1);
 				mpd_song_free(song);
@@ -165,17 +177,20 @@ int MPDMediaPlayer::getLength(int position)
 	int length;
 	mpd_connection *con = mpdConnect();
 
-	if( con != NULL ){
+	if( con != NULL )
+	{
 		mpd_status *status;
 
 		status = mpd_run_status(con);
-		if( status != NULL){
+		if( status != NULL)
+		{
 			if( position == -1 )
 				position = mpd_status_get_song_pos(status);
 
 			mpd_song *song;
 			song = mpd_run_get_queue_song_pos(con, position);
-			if( song != NULL ){
+			if( song != NULL )
+			{
 				length = mpd_song_get_duration(song);
 				mpd_song_free(song);
 			}
@@ -191,11 +206,13 @@ int MPDMediaPlayer::getCurrentPos()
 	int pos;
 	mpd_connection *con = mpdConnect();
 
-	if( con != NULL ){
+	if( con != NULL )
+	{
 		mpd_status *status;
 
 		status = mpd_run_status(con);
-		if( status != NULL){
+		if( status != NULL)
+		{
 			pos = mpd_status_get_elapsed_ms(status);
 			mpd_status_free(status);
 		}
@@ -210,22 +227,25 @@ bool MPDMediaPlayer::isPlaying()
 
 	if( con == NULL)
 		return false;
-	else {
+	else
+	{
 		mpd_status *status;
 
 		status = mpd_run_status(con);
 		if( status == NULL )
 			return false;
 
-		if( mpd_status_get_state(status) != MPD_STATE_PLAY ){
+		if( mpd_status_get_state(status) != MPD_STATE_PLAY )
+		{
 			mpd_status_free(status);
 			mpd_connection_free(con);
 			return false;
 		}
-		else {
+		else
+		{
 			mpd_status_free(status);
 			mpd_connection_free(con);
-		return true;
+			return true;
 		}
 	}
 }
@@ -236,12 +256,15 @@ bool MPDMediaPlayer::isActive()
 
 	if( con == NULL )
 		return false;
-	else {
-		if( mpd_connection_get_error(con) == MPD_ERROR_SUCCESS ){
+	else
+	{
+		if( mpd_connection_get_error(con) == MPD_ERROR_SUCCESS )
+		{
 			mpd_connection_free(con);
 			return true;
 		}
-		else {
+		else
+		{
 			mpd_connection_free(con);
 			return false;
 		}
@@ -253,10 +276,12 @@ QStringList MPDMediaPlayer::getPlayListTitles()
 	QStringList playlist;
 	mpd_connection *con = mpdConnect();
 
-	if( con != NULL ){
+	if( con != NULL )
+	{
 		mpd_song *song;
 		mpd_send_list_queue_meta(con);
-		while ((song = mpd_recv_song(con)) != NULL) {
+		while ((song = mpd_recv_song(con)) != NULL)
+		{
 			playlist << QString::fromUtf8(mpd_song_get_tag(song, MPD_TAG_TITLE, 0));
 			mpd_song_free(song);
 		}
@@ -271,10 +296,12 @@ QStringList MPDMediaPlayer::getPlayListFiles()
 	QString file;
 	mpd_connection *con = mpdConnect();
 
-	if( con != NULL ){
+	if( con != NULL )
+	{
 		mpd_song *song;
 		mpd_send_list_queue_meta(con);
-		while ((song = mpd_recv_song(con)) != NULL) {
+		while ((song = mpd_recv_song(con)) != NULL)
+		{
 			file = QString::fromUtf8(mpd_song_get_uri(song));
 			// get only filename without directories
 			file = file.right(file.length()-file.lastIndexOf("/")-1);
@@ -291,10 +318,12 @@ uint MPDMediaPlayer::getPlayListLength()
 	uint playlistLength;
 	mpd_connection *con = mpdConnect();
 
-	if( con != NULL ){
+	if( con != NULL )
+	{
 		mpd_status *status;
 		status = mpd_run_status(con);
-		if( status != NULL ){
+		if( status != NULL )
+		{
 			playlistLength = mpd_status_get_queue_length(status);
 			mpd_status_free(status);
 		}
@@ -313,9 +342,11 @@ QString MPDMediaPlayer::getPlayerVersion()
 	QString version, major, minor, patch;
 	mpd_connection *con = mpdConnect();
 
-	if( con != NULL ){
+	if( con != NULL )
+	{
 		const unsigned *ver = mpd_connection_get_server_version(con);
-		if( ver != NULL ){
+		if( ver != NULL )
+		{
 			major.setNum(ver[0]);
 			minor.setNum(ver[1]);
 			patch.setNum(ver[2]);
@@ -333,7 +364,8 @@ void MPDMediaPlayer::nextTrack()
 {
 	mpd_connection *con = mpdConnect();
 
-	if( con != NULL ){
+	if( con != NULL )
+	{
 		mpd_run_next(con);
 		mpd_connection_free(con);
 	}
@@ -343,7 +375,8 @@ void MPDMediaPlayer::prevTrack()
 {
 	mpd_connection *con = mpdConnect();
 
-	if( con != NULL ){
+	if( con != NULL )
+	{
 		mpd_run_previous(con);
 		mpd_connection_free(con);
 	}
@@ -353,13 +386,16 @@ void MPDMediaPlayer::play()
 {
 	mpd_connection *con = mpdConnect();
 
-	if( con != NULL){
+	if( con != NULL)
+	{
 		mpd_status *status;
 
 		status = mpd_run_status(con);
-		if( status != NULL ){
-			if( mpd_status_get_state(status) == MPD_STATE_PAUSE ||
-				mpd_status_get_state(status) == MPD_STATE_STOP ){
+		if( status != NULL )
+		{
+			if( mpd_status_get_state(status) == MPD_STATE_PAUSE || 
+				mpd_status_get_state(status) == MPD_STATE_STOP )
+			{
 				mpd_run_play(con);
 				mpd_status_free(status);
 			}
@@ -372,13 +408,16 @@ void MPDMediaPlayer::stop()
 {
 	mpd_connection *con = mpdConnect();
 
-	if( con != NULL){
+	if( con != NULL)
+	{
 		mpd_status *status;
 
 		status = mpd_run_status(con);
-		if( status != NULL ){
+		if( status != NULL )
+		{
 			if( mpd_status_get_state(status) == MPD_STATE_PLAY ||
-				mpd_status_get_state(status) == MPD_STATE_PAUSE ){
+				mpd_status_get_state(status) == MPD_STATE_PAUSE )
+			{
 				mpd_run_stop(con);
 				mpd_status_free(status);
 			}
@@ -391,12 +430,15 @@ void MPDMediaPlayer::pause()
 {
 	mpd_connection *con = mpdConnect();
 
-	if( con != NULL){
+	if( con != NULL)
+	{
 		mpd_status *status;
 
 		status = mpd_run_status(con);
-		if( status != NULL ){
-			if( mpd_status_get_state(status) == MPD_STATE_PLAY ){
+		if( status != NULL )
+		{
+			if( mpd_status_get_state(status) == MPD_STATE_PLAY )
+			{
 				mpd_run_pause(con, true);
 				mpd_status_free(status);
 			}
@@ -409,7 +451,8 @@ void MPDMediaPlayer::setVolume(int vol)
 {
 	mpd_connection *con = mpdConnect();
 
-	if( con != NULL ){
+	if( con != NULL )
+	{
 		mpd_run_set_volume(con, vol);
 		mpd_connection_free(con);
 	}
@@ -419,10 +462,12 @@ void MPDMediaPlayer::incrVolume()
 {
 	mpd_connection *con = mpdConnect();
 
-	if( con != NULL ){
+	if( con != NULL )
+	{
 		mpd_status *status;
 		status = mpd_run_status(con);
-		if( status != NULL){
+		if( status != NULL)
+		{
 			int oldVolume = mpd_status_get_volume(status);
 			int newVolume = oldVolume + 10;
 			mpd_status_free(status);
@@ -439,10 +484,12 @@ void MPDMediaPlayer::decrVolume()
 {
 	mpd_connection *con = mpdConnect();
 
-	if( con != NULL ){
+	if( con != NULL )
+	{
 		mpd_status *status;
 		status = mpd_run_status(con);
-		if( status != NULL){
+		if( status != NULL)
+		{
 			int oldVolume = mpd_status_get_volume(status);
 			int newVolume = oldVolume - 10;
 			mpd_status_free(status);
