@@ -255,7 +255,7 @@ void ChatStylesManager::loadStyles()
 	QFileInfo fi;
 	QStringList files;
 
-	path = ggPath() + "syntax/chat/";
+	path = profilePath() + "syntax/chat/";
 	dir.setPath(path);
 
 	files = dir.entryList();

@@ -90,12 +90,12 @@ void HistorySqlStorage::initDatabase()
 		QSqlDatabase::removeDatabase("kadu-history");
 	}
 
-	QDir historyDir(ggPath("history"));
+	QDir historyDir(profilePath("history"));
 	if (!historyDir.exists())
-		historyDir.mkpath(ggPath("history"));
+		historyDir.mkpath(profilePath("history"));
 
 	Database = QSqlDatabase::addDatabase("QSQLITE", "kadu-history");
-	Database.setDatabaseName(ggPath("history/history.db"));
+	Database.setDatabaseName(profilePath("history/history.db"));
 
 	if (!Database.open())
 	{

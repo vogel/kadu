@@ -73,21 +73,21 @@ void Register::createConfig()
 
 #ifndef Q_OS_WIN32
 	struct stat buf;
-	QString ggpath = ggPath(QString::null);
-	stat(qPrintable(ggpath), &buf);
+	QString profilePath = profilePath(QString::null);
+	stat(qPrintable(profilePath), &buf);
 	if (S_ISDIR(buf.st_mode))
-		kdebugmf(KDEBUG_INFO, "Directory %s exists\n", qPrintable(ggpath));
+		kdebugmf(KDEBUG_INFO, "Directory %s exists\n", qPrintable(profilePath));
 	else
 	{
 		kdebugmf(KDEBUG_INFO, "Creating directory\n");
-		if (mkdir(qPrintable(ggpath), 0700) != 0 )
+		if (mkdir(qPrintable(profilePath), 0700) != 0 )
 		{
 			perror("mkdir");
 			return;
 		}
 	}
 #else
-	QDir().mkdir(ggPath(QString::null));
+	QDir().mkdir(profilePath(QString::null));
 #endif
 
 	kdebugmf(KDEBUG_INFO, "Writing config files...\n");

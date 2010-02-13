@@ -37,7 +37,7 @@ AvatarShared * AvatarShared::loadFromStorage(StoragePoint *storagePoint)
 AvatarShared::AvatarShared(QUuid uuid) :
 		Shared(uuid), AvatarContact(Contact::null)
 {
-	AvatarsDir = ggPath("avatars/");
+	AvatarsDir = profilePath("avatars/");
 }
 
 AvatarShared::~AvatarShared()
@@ -109,9 +109,9 @@ bool AvatarShared::isEmpty()
 
 void AvatarShared::setPixmap(QPixmap pixmap)
 {
-	QDir avatarsDir(ggPath("avatars"));
+	QDir avatarsDir(profilePath("avatars"));
 	if (!avatarsDir.exists())
-		avatarsDir.mkpath(ggPath("avatars"));
+		avatarsDir.mkpath(profilePath("avatars"));
 
 	Pixmap = pixmap;
 	emitUpdated();

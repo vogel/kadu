@@ -162,8 +162,8 @@ QStringList Themes::defaultKaduPathsWithThemes() const
 	foreach(const QString &it, getSubDirs(dataPath("kadu/themes/" + Name)))
 		result << dataPath("kadu/themes/" + Name + '/' + it + '/');
 
-	foreach(const QString &it, getSubDirs(ggPath(Name)))
-		result << ggPath(Name) + '/' + it + '/';
+	foreach(const QString &it, getSubDirs(profilePath(Name)))
+		result << profilePath(Name) + '/' + it + '/';
 
 	return result;
 }

@@ -84,7 +84,7 @@ void disableSendKey(KaduAction *action)
 	}
 
 	QString keyfile_path;
-	keyfile_path.append(ggPath("keys/"));
+	keyfile_path.append(profilePath("keys/"));
 	keyfile_path.append(QString::number(config_file.readNumEntry("General", "UIN")));
 	keyfile_path.append(".pem");
 	QFileInfo keyfile(keyfile_path);
@@ -152,7 +152,7 @@ EncryptionManager::EncryptionManager(bool firstLoad)
 
 	KaduEncryptionFactory *factory = KaduEncryptionFactory::instance();
 	EncryptionObject = factory->createEncryptionObject(KaduEncryptionFactory::SIMLite,
-	                                                   QDir::toNativeSeparators(ggPath("keys/")));
+							   QDir::toNativeSeparators(profilePath("keys/")));
 	if(EncryptionObject == 0)
 	{
 		MessageDialog::msg(factory->errorInfo(), false, "Warning", configurationWindow);
@@ -160,9 +160,9 @@ EncryptionManager::EncryptionManager(bool firstLoad)
 
 	// use mkdir from sys/stat.h - there's no easy way to set permissions through Qt
 #ifdef Q_OS_WIN
-	QDir().mkdir(ggPath("keys"));
+	QDir().mkdir(profilePath("keys"));
 #else
-	mkdir(qPrintable(ggPath("keys")), 0700);
+	mkdir(qPrintable(profilePath("keys")), 0700);
 #endif
 
 	kdebugf2();
@@ -202,7 +202,7 @@ void EncryptionManager::generateMyKeys()
 	kdebugf();
 	QString myUin=QString::number(config_file.readNumEntry("General","UIN"));
 	QString keyfile_path;
-	keyfile_path.append(ggPath("keys/"));
+	keyfile_path.append(profilePath("keys/"));
 	keyfile_path.append(myUin);
 	keyfile_path.append(".pem");
 	QFileInfo keyfile(keyfile_path);
@@ -236,7 +236,7 @@ void EncryptionManager::setupEncrypt(KaduAction *action)
 	const UserGroup group = chatWidget->users();
 
 	QString keyfile_path;
-	keyfile_path.append(ggPath("keys/"));
+	keyfile_path.append(profilePath("keys/"));
 	keyfile_path.append((*(*group).constBegin()).ID("Gadu"));
 	keyfile_path.append(".pem");
 	QFileInfo keyfile(keyfile_path);
@@ -428,7 +428,7 @@ void EncryptionManager::sendPublicKeyActionActivated(QAction *sender, bool toggl
 	if (!users.count())
 		return;
 
-	keyfile_path.append(ggPath("keys/"));
+	keyfile_path.append(profilePath("keys/"));
 	keyfile_path.append(config_file.readEntry("General", "UIN"));
 	keyfile_path.append(".pem");
 
@@ -537,7 +537,7 @@ void SavePublicKey::yesClicked()
 	QFile keyfile;
 	QString keyfile_path;
 
-	keyfile_path.append(ggPath("keys/"));
+	keyfile_path.append(profilePath("keys/"));
 	keyfile_path.append(user.ID("Gadu"));
 	keyfile_path.append(".pem");
 	keyfile.setName(keyfile_path);

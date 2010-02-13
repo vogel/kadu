@@ -93,7 +93,7 @@ QString AdiumChatStyleEngine::currentStyleVariant()
 QStringList AdiumChatStyleEngine::styleVariants(QString styleName)
 {
 	QDir dir;
-	QString styleBaseHref = ggPath() + "/syntax/chat/" + styleName + "/Contents/Resources/Variants/";
+	QString styleBaseHref = profilePath() + "/syntax/chat/" + styleName + "/Contents/Resources/Variants/";
 	if (!dir.exists(styleBaseHref))
 		styleBaseHref = dataPath("kadu") + "/syntax/chat/" + styleName + "/Contents/Resources/Variants/";
 	dir.setPath(styleBaseHref);
@@ -237,7 +237,7 @@ bool AdiumChatStyleEngine::clearDirectory(const QString &directory)
 
 bool AdiumChatStyleEngine::removeStyle(const QString &styleName)
 {
-	QDir dir(QString(ggPath() + "/syntax/chat/" + styleName));
+	QDir dir(QString(profilePath() + "/syntax/chat/" + styleName));
 	return clearDirectory(dir.absolutePath()) && dir.cdUp() && dir.rmdir(styleName);
 }
 

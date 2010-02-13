@@ -343,7 +343,7 @@ int main(int argc, char *argv[])
 #endif
         xml_config_file = new XmlConfigFile();
 
-        config_file_ptr = new ConfigFile(ggPath(QString("kadu.conf")));
+	config_file_ptr = new ConfigFile(profilePath(QString("kadu.conf")));
         if (debug_mask == -2)
         {
                 debug_mask = config_file.readNumEntry("General", "DEBUG_MASK", -1);
@@ -424,7 +424,7 @@ int main(int argc, char *argv[])
 	// plugins path (win32)
 	qApp->addLibraryPath(libPath("qt"));
 
-	QtLocalPeer *peer = new QtLocalPeer(qApp, ggPath());
+	QtLocalPeer *peer = new QtLocalPeer(qApp, profilePath());
 	if (peer->isClient())
 	{
 		if (ids.count())
@@ -445,7 +445,7 @@ int main(int argc, char *argv[])
 	Core::instance()->createGui();
 	QObject::connect(peer, SIGNAL(messageReceived(const QString &)), Core::instance(), SLOT(receivedSignal(const QString &)));
 
-	QString path_ = ggPath(QString::null);
+	QString path_ = profilePath(QString::null);
 #ifndef Q_OS_WIN
 	if (path_.endsWith("/kadu/") || path_.endsWith("/Kadu/")) // for profiles directory
 		mkdir(qPrintable(path_.left(path_.length() - 6)), 0700);

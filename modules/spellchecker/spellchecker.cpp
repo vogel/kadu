@@ -84,7 +84,7 @@ SpellChecker::SpellChecker()
 #ifdef Q_OS_WIN32
 	aspell_config_replace(spellConfig, "dict-dir", qPrintable(dataPath("aspell/dict")));
 	aspell_config_replace(spellConfig, "data-dir", qPrintable(dataPath("aspell/data")));
-	aspell_config_replace(spellConfig, "prefix", qPrintable(ggPath("dicts")));
+	aspell_config_replace(spellConfig, "prefix", qPrintable(profilePath("dicts")));
 #endif
 
 	createDefaultConfiguration();

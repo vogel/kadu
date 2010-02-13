@@ -225,15 +225,15 @@ bool CertificateHelpers::checkCertificate(QCA::TLS* tls, XMPP::QCATLSHandler *tl
 QStringList CertificateHelpers::getCertificateStoreDirs()
 {
 	QStringList l;
-	l += ggPath("certs");
+	l += profilePath("certs");
 	return l;
 }
 
 QString CertificateHelpers::getCertificateStoreSaveDir()
 {
-	QDir certsave(ggPath("certs"));
+	QDir certsave(profilePath("certs"));
 	if(!certsave.exists()) {
-		QDir home(ggPath());
+		QDir home(profilePath());
 		home.mkdir("certs");
 	}
 

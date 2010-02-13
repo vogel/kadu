@@ -147,7 +147,7 @@ void FileDescription::checkTitle()
 
 void FileDescription::createDefaultConfiguration()
 {
-	config_file.addVariable("FileDesc", "file", ggPath("description.txt"));
+	config_file.addVariable("FileDesc", "file", profilePath("description.txt"));
 	config_file.addVariable("FileDesc", "forceDescr", true);
 	config_file.addVariable("FileDesc", "allowOther", true);
 }

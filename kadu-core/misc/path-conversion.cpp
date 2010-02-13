@@ -161,7 +161,7 @@ static char *findMe(const char *argv0, char *path, int len)
 	}
 
 	previous = getenv("PATH"); //szukamy we wszystkich katalogach, kt�re s� w PATH
-	while((current = strchr(previous, ':')))
+	while ((current = strchr(previous, ':')))
 	{
 		l = current - previous;
 		if (l > len - 2)
@@ -256,7 +256,7 @@ void printBacktrace(const QString &header)
 	fflush(stderr);
 }
 
-QString ggPath(const QString &subpath)
+QString profilePath(const QString &subpath)
 {
 	static QString path(QString::null);
 	if (path == QString::null)
@@ -265,18 +265,20 @@ QString ggPath(const QString &subpath)
 #ifdef Q_OS_WIN
 		// on win32 dataPath dont need real argv[0] so it's safe to use this
 		// in such ugly way
-		if(QFile::exists(dataPath("usbinst", ""))){
-			path=dataPath("config/");
+		if (QFile::exists(dataPath("usbinst", "")))
+		{
+			path = dataPath("config/");
 			Parser::globalVariables["KADU_CONFIG"] = path;
 			return (path+subpath);
 		}
 
 		WCHAR *homepath=new WCHAR[MAX_PATH+1];
-		if(!SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_APPDATA, NULL,  0,  homepath))){
+		if (!SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_APPDATA, NULL,  0,  homepath)))
+		{
 			delete homepath;
 			homepath=_wgetenv(L"HOMEPATH");
 		}
-		home=QString::fromUtf16((const ushort*)homepath);
+		home = QString::fromUtf16((const ushort*)homepath);
 
 #else
 		struct passwd *pw;
@@ -316,7 +318,7 @@ QString libPath(const QString &f)
 {
 #ifdef Q_OS_WIN
 	QString fp=f;
-	if(fp.startsWith("kadu")) fp.remove(0, 4);
+	if (fp.startsWith("kadu")) fp.remove(0, 4);
 	return lib_path + fp;
 #else
 	return lib_path + f;
@@ -389,7 +391,8 @@ QString dataPath(const QString &p, const char *argv0)
 
 #ifdef Q_OS_WIN
 	// on windows remove kadu from path
-	if(path.startsWith("kadu")) path.remove(0, 4);
+	if (path.startsWith("kadu"))
+		path.remove(0, 4);
 #endif
 
 	//kdebugm(KDEBUG_INFO, "%s%s\n", qPrintable(data_path), qPrintable(path));

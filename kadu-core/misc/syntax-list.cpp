@@ -45,7 +45,7 @@ QString SyntaxList::readSyntax(const QString &category, const QString &name, con
 	syntaxFile.setFileName(path);
 	if (!syntaxFile.open(QIODevice::ReadOnly))
 	{
-		path = ggPath() + "/syntax/" + category + "/" + name + ".syntax";
+		path = profilePath() + "/syntax/" + category + "/" + name + ".syntax";
 
 		syntaxFile.setFileName(path);
 		if (!syntaxFile.open(QIODevice::ReadOnly))
@@ -74,7 +74,7 @@ void SyntaxList::reload()
 	SyntaxInfo info;
 
 	info.global = false;
-	path = ggPath() + "/syntax/" + category + "/";
+	path = profilePath() + "/syntax/" + category + "/";
 	dir.setPath(path);
 
 	dir.setNameFilters(QStringList("*.syntax"));
@@ -111,13 +111,13 @@ void SyntaxList::reload()
 
 bool SyntaxList::updateSyntax(const QString &name, const QString &syntax)
 {
-	QString path = ggPath() + "/syntax/";
+	QString path = profilePath() + "/syntax/";
 	QDir dir(path);
 	if (!dir.exists())
 		if (!dir.mkdir(path))
 			return false;
 
-	path = ggPath() + "/syntax/" + category + "/";
+	path = profilePath() + "/syntax/" + category + "/";
 	dir.setPath(path);
 	if (!dir.exists())
 		if (!dir.mkdir(path))
@@ -152,7 +152,7 @@ QString SyntaxList::readSyntax(const QString &name)
 	if (info.global)
 		path = dataPath("kadu") + "/syntax/" + category + "/" + name + ".syntax";
 	else
-		path = ggPath() + "/syntax/" + category + "/" + name + ".syntax";
+		path = profilePath() + "/syntax/" + category + "/" + name + ".syntax";
 
 	QFile syntaxFile;
 	syntaxFile.setFileName(path);
@@ -177,7 +177,7 @@ bool SyntaxList::deleteSyntax(const QString &name)
 	if (info.global)
 		return false;
 
-	QString path = ggPath() + "/syntax/" + category + "/" + name + ".syntax";
+	QString path = profilePath() + "/syntax/" + category + "/" + name + ".syntax";
 	QFile file;
 	file.setFileName(path);
 

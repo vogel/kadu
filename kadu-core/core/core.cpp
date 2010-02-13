@@ -318,16 +318,16 @@ void Core::deleteOldConfigurationFiles()
 {
 	kdebugf();
 
-	QDir oldConfigs2(ggPath(), "kadu-0.6.6.conf.xml.backup.*", QDir::Name, QDir::Files);
+	QDir oldConfigs2(profilePath(), "kadu-0.6.6.conf.xml.backup.*", QDir::Name, QDir::Files);
 
 	if (oldConfigs2.count() > 20)
 		for (unsigned int i = 0, max = oldConfigs2.count() - 20; i < max; ++i)
-			QFile::remove(ggPath(oldConfigs2[i]));
+			QFile::remove(profilePath(oldConfigs2[i]));
 
-	QDir oldBacktraces(ggPath(), "kadu.backtrace.*", QDir::Name, QDir::Files);
+	QDir oldBacktraces(profilePath(), "kadu.backtrace.*", QDir::Name, QDir::Files);
 	if (oldBacktraces.count() > 20)
 		for (unsigned int i = 0, max = oldBacktraces.count() - 20; i < max; ++i)
-			QFile::remove(ggPath(oldBacktraces[i]));
+			QFile::remove(profilePath(oldBacktraces[i]));
 
 #ifdef Q_OS_WIN
 	QString tmp(getenv("TEMP") ? getenv("TEMP") : ".");

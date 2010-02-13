@@ -169,7 +169,7 @@ void KeysManager::getKeysList(QStringList &uins)
 {
 	kdebugf();
 	
-	QDir dir(ggPath("keys/"), "*.pem", QDir::Name, QDir::Files);
+	QDir dir(profilePath("keys/"), "*.pem", QDir::Name, QDir::Files);
 	QStringList list = dir.entryList();
 	QFile file;
 	
@@ -178,7 +178,7 @@ void KeysManager::getKeysList(QStringList &uins)
 	
 	foreach(const QString &fileName, list)
 	{
-		file.setName(ggPath("keys/").append(fileName));
+		file.setName(profilePath("keys/").append(fileName));
 		if (fileName != QString("private.pem") && fileName != GGUIN + QString(".pem") && file.open(QIODevice::ReadOnly))
 		{
 			temp = fileName;
@@ -272,7 +272,7 @@ void KeysManager::removeKey()
 	if (MessageDialog::ask(tr("Are you sure you want to delete the selected key?")))
 	{
 		QString id = getSelected()->text(1);
-		QString path = ggPath("keys/")+id+QString(".pem");
+		QString path = profilePath("keys/")+id+QString(".pem");
 		QFile *file = new QFile(path);
 		if (file->remove())
 		{
@@ -308,7 +308,7 @@ void KeysManager::selectionChanged()
 
 void KeysManager::getKeyInfo()
 {
-	QFile *file = new QFile(ggPath("keys/") + (lv_keys->selectedItems()[0]->text(1)) + QString(".pem"));
+	QFile *file = new QFile(profilePath("keys/") + (lv_keys->selectedItems()[0]->text(1)) + QString(".pem"));
 	if (file->open(QIODevice::ReadOnly))
 	{
 		e_key->append(file->readAll());

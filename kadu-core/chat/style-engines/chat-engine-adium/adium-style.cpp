@@ -97,7 +97,7 @@ AdiumStyle::AdiumStyle(const QString &styleName) :
 		Name(styleName)
 {
 	QDir dir;
-	BaseHref = ggPath() + "/syntax/chat/" + styleName + "/Contents/Resources/";
+	BaseHref = profilePath() + "/syntax/chat/" + styleName + "/Contents/Resources/";
 	if (!dir.exists(BaseHref))
 		BaseHref = dataPath("kadu") + "/syntax/chat/" + styleName + "/Contents/Resources/";
 

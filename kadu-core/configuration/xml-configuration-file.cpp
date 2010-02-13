@@ -45,8 +45,8 @@ void XmlConfigFile::read()
 {
 	kdebugf();
 	QFile file;
-	QDir backups(ggPath(), "kadu-0.6.6.conf.xml.backup.*", QDir::Name, QDir::Files);
-	QDir oldbackups(ggPath(), "kadu.conf.xml.backup.*", QDir::Name, QDir::Files);
+	QDir backups(profilePath(), "kadu-0.6.6.conf.xml.backup.*", QDir::Name, QDir::Files);
+	QDir oldbackups(profilePath(), "kadu.conf.xml.backup.*", QDir::Name, QDir::Files);
 	QStringList files("kadu-0.6.6.conf.xml");
 
 	files += backups.entryList();
@@ -55,9 +55,9 @@ void XmlConfigFile::read()
 
 	bool fileOpened(false);
 
-	foreach(const QString &fileName, files)
+	foreach (const QString &fileName, files)
 	{
-		file.setFileName(ggPath(fileName));
+		file.setFileName(profilePath(fileName));
 		fileOpened = file.open(QIODevice::ReadOnly);
 		if (fileOpened && file.size() > 0)
 		{
@@ -111,7 +111,7 @@ void XmlConfigFile::write(const QString& f)
 	QFile file;
 	QString fileName, tmpFileName;
 	if (f.isEmpty())
-		fileName = ggPath("kadu-0.6.6.conf.xml");
+		fileName = profilePath("kadu-0.6.6.conf.xml");
 	else
 		fileName = f;
 	tmpFileName = fileName + ".tmp"; // saving to another file to avoid truncation of output file when segfault occurs :|
@@ -152,7 +152,7 @@ void XmlConfigFile::saveTo(const QString &f)
 void XmlConfigFile::makeBackup()
 {
 	QString f = QString("kadu-0.6.6.conf.xml.backup.%1").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss"));
-	write(ggPath(f));
+	write(profilePath(f));
 }
 
 QDomElement XmlConfigFile::rootElement()

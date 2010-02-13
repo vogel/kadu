@@ -136,7 +136,7 @@ QList<HistoryEntry> HistoryImportThread::historyEntries(QStringList uins, int ma
 	QList<HistoryEntry> entries;
 	QStringList tokens;
 	QFile f, fidx;
-	QString path = ggPath("history/");
+	QString path = profilePath("history/");
 	QString filename, line;
 	int offs;
 

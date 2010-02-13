@@ -115,7 +115,7 @@ void Antistring::writeLog(UserListElements uin, QString msg)
 {
 	kdebugf();
 
-	QFile log_file(config_file.readEntry("PowerKadu", "log file", ggPath("antistring.log")));
+	QFile log_file(config_file.readEntry("PowerKadu", "log file", profilePath("antistring.log")));
 	if (!log_file.exists()) {
 		log_file.open(IO_WriteOnly);
 		QTextStream stream( &log_file );
@@ -326,7 +326,7 @@ void Antistring::addDefaultConfiguration()
 {
 	kdebugf();
 
-	config_file.addVariable("PowerKadu", "log file", ggPath("antistring.log"));
+	config_file.addVariable("PowerKadu", "log file", profilePath("antistring.log"));
 	config_file.addVariable("PowerKadu", "admonish_tresc_config", 
 		tr("http://www.olsztyn.mm.pl/~silentman/lancuszki.htm "));
 

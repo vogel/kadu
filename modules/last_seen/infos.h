@@ -52,7 +52,7 @@ class Infos : public QObject
 		void updateTimes();
 
 		/*!
-		 * It holds the data file name. It's set to <i>ggPath("last_seen.data")</i>
+		 * It holds the data file name. It's set to <i>profilePath("last_seen.data")</i>
 		 * in the constructor.
 		 */
 		QString fileName;

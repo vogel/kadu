@@ -102,11 +102,11 @@ void VCardFactory::saveVCard(const Jid& j, const VCard& _vcard)
 	// save vCard to disk
 
 	// ensure that there's a vcard directory to save into
-	QDir vcardDir(ggPath("vcard"));
+	QDir vcardDir(profilePath("vcard"));
 	if (!vcardDir.exists())
-		vcardDir.mkpath(ggPath("vcard"));
+		vcardDir.mkpath(profilePath("vcard"));
 
-	QFile file ( ggPath("vcard") + '/' + JIDUtil::encode(j.bare()).toLower() + ".xml" );
+	QFile file ( profilePath("vcard") + '/' + JIDUtil::encode(j.bare()).toLower() + ".xml" );
 	file.open ( QIODevice::WriteOnly );
 	QTextStream out ( &file );
 	out.setCodec("UTF8");
@@ -129,7 +129,7 @@ const VCard* VCardFactory::vcard(const Jid &j)
 	}
 	
 	// then try to load from cache on disk
-	QFile file ( ggPath("vcard") + '/' + JIDUtil::encode(j.bare()).toLower() + ".xml" );
+	QFile file ( profilePath("vcard") + '/' + JIDUtil::encode(j.bare()).toLower() + ".xml" );
 	file.open (QIODevice::ReadOnly);
 	QDomDocument doc;
 	VCard *vcard = new VCard;

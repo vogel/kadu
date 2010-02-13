@@ -28,11 +28,11 @@
 KADUAPI void printBacktrace(const QString &header = QString::null);
 
 /**
-	Zmienia ścieżkę relatywną do katalogu z ustawieniami gg
+	Zmienia ścieżkę relatywną do katalogu z ustawieniami programu
 	na ścieżkę bezwzgledną uwzględniając zmienne środowiskowe
 	$HOME i $CONFIG_DIR
 **/
-KADUAPI QString ggPath(const QString &subpath = QString::null);
+KADUAPI QString profilePath(const QString &subpath = QString::null);
 
 /**
 	zwraca ścieżkę do pliku f

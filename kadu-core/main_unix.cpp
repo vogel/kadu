@@ -90,7 +90,7 @@ static void kadu_signal_handler(int s)
 		fprintf(stderr, "======= END OF BACKTRACE  ======\n");
 		fflush(stderr);
 
-		dbgfile = fopen(qPrintable(ggPath(debug_file)), "w");
+		dbgfile = fopen(qPrintable(profilePath(debug_file)), "w");
 		if (dbgfile)
 		{
 			fprintf(dbgfile, "======= BEGIN OF BACKTRACE =====\n");
@@ -133,7 +133,7 @@ static void kadu_signal_handler(int s)
 #else
 		kdebugm(KDEBUG_PANIC, "backtrace not available\n");
 #endif
-		xml_config_file->saveTo(ggPath(f.toLatin1()));
+		xml_config_file->saveTo(profilePath(f.toLatin1()));
 		abort();
 	}
 	else if (s == SIGUSR1)

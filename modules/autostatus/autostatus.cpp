@@ -175,5 +175,5 @@ void Autostatus::configurationUpdated()
 
 void Autostatus::addDefaultConfiguration()
 {
-	config_file.addVariable("PowerKadu", "status_file_path", ggPath("autostatus.list"));
+	config_file.addVariable("PowerKadu", "status_file_path", profilePath("autostatus.list"));
 }

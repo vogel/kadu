@@ -59,7 +59,7 @@ Infos::Infos(QObject *parent, const char *name)
 : QObject(parent, name)
 {
 	kdebugf();
-	fileName = ggPath("last_seen.data");
+	fileName = profilePath("last_seen.data");
 	
 	if(QFile::exists(fileName))
 	{

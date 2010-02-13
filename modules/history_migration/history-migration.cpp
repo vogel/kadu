@@ -46,7 +46,7 @@ extern "C" KADU_EXPORT int history_migration_init(bool firstLoad)
 
 	bool imported = config_file.readBoolEntry("History", "Imported_from_0.6.5", false);
 
-	if (!imported && firstLoad && QFile::exists(ggPath("history")))
+	if (!imported && firstLoad && QFile::exists(profilePath("history")))
 		hi->run();
 
 	return 0;
@@ -167,7 +167,7 @@ QList<QStringList> HistoryImporter::getUinsLists() const
 {
 	kdebugf();
 	QList<QStringList> entries;
-	QDir dir(ggPath("history/"), "*.idx");
+	QDir dir(profilePath("history/"), "*.idx");
 	QStringList struins;
 	QStringList uins;
 
@@ -191,7 +191,7 @@ int HistoryImporter::getHistoryEntriesCountPrivate(const QString &filename) cons
 
 	int lines;
 	QFile f;
-	QString path = ggPath("history/");
+	QString path = profilePath("history/");
 	QByteArray buffer;
 
 	f.setFileName(path + filename + ".idx");

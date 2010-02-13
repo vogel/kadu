@@ -95,7 +95,7 @@ ProfileManager::~ProfileManager()
 }
 
 QString ProfileManager::dirString() {
-	return ggPath()+"kadupro/clones/";
+	return profilePath()+"kadupro/clones/";
 }
 
 void ProfileManager::showMenu()
@@ -139,7 +139,7 @@ void ProfileManager::firstRun()
 	//jak katalog nie istnieje to stworz nowy
 	if (!directory.exists())
 	{
-		directory.mkdir(ggPath()+"kadupro", true);
+		directory.mkdir(profilePath()+"kadupro", true);
 		directory.mkdir(dirnameString, true);
 	}
 	else

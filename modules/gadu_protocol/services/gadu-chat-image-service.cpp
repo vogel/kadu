@@ -43,7 +43,7 @@ QString GaduChatImageService::saveImage(UinType sender, uint32_t size, uint32_t 
 {
 	kdebugf();
 
-	QString path = ggPath("images");
+	QString path = profilePath("images");
 	kdebugm(KDEBUG_INFO, "Creating directory: %s\n", qPrintable(path));
 
 	if (!QDir().mkdir(path))
