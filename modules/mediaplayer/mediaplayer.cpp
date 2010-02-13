@@ -761,7 +761,7 @@ void MediaPlayer::putTitleHint(QString title)
 {
 	kdebugf();
 
-	Notification *notification = new Notification(QString(mediaPlayerOsdHint), IconsManager::instance()->iconByName("MediaPlayerPlay"));
+	Notification *notification = new Notification(QString(mediaPlayerOsdHint), IconsManager::instance()->iconByPath("external_modules/module_mediaplayer_button-media-playback-start.png"));
 	notification->setText(title);
 	NotificationManager::instance()->notify(notification);
 }
@@ -859,14 +859,14 @@ void MediaPlayer::playPause()
 		play();
 		isPaused = false;
 		foreach(Action *action, playAction->actions())
-			action->setIcon(IconsManager::instance()->iconByName("MediaPlayerPause"));
+			action->setIcon(IconsManager::instance()->iconByPath("external_modules/module_mediaplayer-media-playback-start.png"));
 	}
 	else
 	{
 		pause();
 		isPaused = true;
 		foreach(Action *action, playAction->actions())
-			action->setIcon(IconsManager::instance()->iconByName("MediaPlayerPlay"));
+			action->setIcon(IconsManager::instance()->iconByPath("external_modules/module_mediaplayer-media-playback-start.png"));
 	}
 }
 
@@ -877,7 +877,7 @@ void MediaPlayer::play()
 
 	isPaused = false;
 	foreach(Action *action, playAction->actions())
-		action->setIcon(IconsManager::instance()->iconByName("MediaPlayerPause"));
+		action->setIcon(IconsManager::instance()->iconByPath("external_modules/module_mediaplayer-media-playback-start.png"));
 }
 
 void MediaPlayer::stop()
@@ -887,7 +887,7 @@ void MediaPlayer::stop()
 
 	isPaused = true;
 	foreach(Action *action, playAction->actions())
-		action->setIcon(IconsManager::instance()->iconByName("MediaPlayerPlay"));
+		action->setIcon(IconsManager::instance()->iconByPath("external_modules/module_mediaplayer-media-playback-start.png"));
 }
 
 void MediaPlayer::pause()
@@ -897,7 +897,7 @@ void MediaPlayer::pause()
 
 	isPaused = true;
 	foreach(Action *action, playAction->actions())
-		action->setIcon(IconsManager::instance()->iconByName("MediaPlayerPlay"));
+		action->setIcon(IconsManager::instance()->iconByPath("external_modules/module_mediaplayer-media-playback-start.png"));
 }
 
 void MediaPlayer::setVolume(int vol)

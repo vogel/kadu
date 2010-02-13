@@ -128,7 +128,7 @@ SmsDialog::SmsDialog(const QString& altnick, QWidget* parent) : QWidget(parent, 
 	grid->addWidget(c_saveInHistory, 5, 0, 1, 2);
 
 	b_send = new QPushButton(this);
-	b_send->setIcon(IconsManager::instance()->iconByName("SendSMSButton"));
+	b_send->setIcon(IconsManager::instance()->iconByPath("16x16/go-next.png"));
 	b_send->setText(tr("&Send"));
 	b_send->setDefault(true);
 	b_send->setMaximumWidth(200);

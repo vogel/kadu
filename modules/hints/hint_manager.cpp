@@ -59,7 +59,7 @@
 #define BORDER_RADIUS 0
 
 HintManager::HintManager(QWidget *parent) :
-		Notifier("Hint", "Hints", IconsManager::instance()->iconByName("OpenChat"), parent), AbstractToolTip(),
+		Notifier("Hint", "Hints", IconsManager::instance()->iconByPath("kadu/kadu-chat.png"), parent), AbstractToolTip(),
 		hint_timer(new QTimer(this)), 
 		tipFrame(0), hints()
 {

@@ -80,13 +80,13 @@ void GaduEditAccountWidget::createGui()
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 
-	ApplyButton = new QPushButton(IconsManager::instance()->iconByName("ApplyWindowButton"), tr("Apply"), this);
+	ApplyButton = new QPushButton(IconsManager::instance()->iconByPath("kadu/dialog-apply.png"), tr("Apply"), this);
 	connect(ApplyButton, SIGNAL(clicked(bool)), this, SLOT(apply()));
 
-	CancelButton = new QPushButton(IconsManager::instance()->iconByName("CancelWindowButton"), tr("Cancel"), this);
+	CancelButton = new QPushButton(IconsManager::instance()->iconByPath("kadu/dialog-cancel.png"), tr("Cancel"), this);
 	connect(CancelButton, SIGNAL(clicked(bool)), this, SLOT(cancel()));
 
-	QPushButton *removeAccount = new QPushButton(IconsManager::instance()->iconByName("CloseWindowButton"), tr("Delete account"), this);
+	QPushButton *removeAccount = new QPushButton(IconsManager::instance()->iconByPath("kadu/dialog-cancel.png"), tr("Delete account"), this);
 	connect(removeAccount, SIGNAL(clicked(bool)), this, SLOT(removeAccount()));
 
 	buttons->addButton(ApplyButton, QDialogButtonBox::ApplyRole);

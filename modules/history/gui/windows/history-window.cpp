@@ -70,7 +70,7 @@ HistoryWindow::HistoryWindow(QWidget *parent) :
 	kdebugf();
 
 	setWindowTitle(tr("History"));
-	setWindowIcon(IconsManager::instance()->iconByName("History"));
+	setWindowIcon(IconsManager::instance()->iconByPath("kadu_icons/kadu-history.png"));
 
 	createGui();
 	connectGui();
@@ -683,7 +683,7 @@ void HistoryWindow::showMainPopupMenu(const QPoint &pos)
 			else
 				account_menu->addSeparator();
 	}
-	menu->addAction(IconsManager::instance()->iconByName("ClearHistory"), tr("&Clear history"), this, SLOT(clearHistory()));
+	menu->addAction(IconsManager::instance()->iconByPath("kadu_icons/history-clear.png"), tr("&Clear history"), this, SLOT(clearHistory()));
 	menu->exec(QCursor::pos());
 }
 

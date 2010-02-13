@@ -512,7 +512,7 @@ void TabsManager::onTimer()
 			if (currentChat != chat)
 			{
 				if (msg)
-					tabdialog->setTabIcon(i, IconsManager::instance()->iconByName("Message"));
+					tabdialog->setTabIcon(i, IconsManager::instance()->iconByPath("kadu/kadu-message.png"));
 				else
 					tabdialog->setTabIcon(i, chat->icon());
 			}
@@ -578,10 +578,10 @@ void TabsManager::makePopupMenu()
 
 	menu = new QMenu();
 	//menu->setCheckable(true);
-	menu->addAction(IconsManager::instance()->iconByName("TabsDetached"), tr("Detach"), this, SLOT(onMenuActionDetach()));
+	menu->addAction(IconsManager::instance()->iconByPath("external_modules/module_tabs-detach.png"), tr("Detach"), this, SLOT(onMenuActionDetach()));
 	menu->addAction(tr("Detach all"), this, SLOT(onMenuActionDetachAll()));
 	menu->addSeparator();
-	menu->addAction(IconsManager::instance()->iconByName("TabsClose"), tr("Close"), this, SLOT(onMenuActionClose()));
+	menu->addAction(IconsManager::instance()->iconByPath("external_modules/module_tabs-close.png"), tr("Close"), this, SLOT(onMenuActionClose()));
 	menu->addAction(tr("Close all"), this, SLOT(onMenuActionCloseAll()));
 
 	kdebugf2();

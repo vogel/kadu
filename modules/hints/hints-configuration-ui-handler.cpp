@@ -133,7 +133,7 @@ void HintsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurati
 
 void HintsConfigurationUiHandler::addHintsPreview()
 {
-	Notification *previewNotify = new Notification(QString("Preview"), IconsManager::instance()->iconByName("Message"));
+	Notification *previewNotify = new Notification(QString("Preview"), IconsManager::instance()->iconByPath("kadu/kadu-message.png"));
 	previewNotify->setText(qApp->translate("@default", "Hints position preview"));
 
 	Hint *previewHint = new Hint(previewHintsFrame, previewNotify);
