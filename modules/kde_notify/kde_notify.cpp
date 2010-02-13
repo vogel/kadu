@@ -59,7 +59,8 @@ extern "C" KADU_EXPORT void kde_notify_close()
 }
 
 KdeNotify::KdeNotify(QObject *parent) :
-		Notifier("KNotify", tr("KDE4 notifications"), IconsManager::instance()->iconByName("OpenChat"), parent)
+		Notifier("KNotify", tr("KDE4 notifications"), IconsManager::instance()->iconByName("OpenChat"), parent),
+		UseFreedesktopStandard(false)
 {
 	kdebugf();
 
@@ -75,6 +76,8 @@ KdeNotify::KdeNotify(QObject *parent) :
 		delete (KNotify);
 		KNotify = new QDBusInterface("org.freedesktop.Notifications",
 				"/org/freedesktop/Notifications", "org.freedesktop.Notifications");
+
+		UseFreedesktopStandard = true;
 	}
 
 	KNotify->connection().connect(KNotify->service(), KNotify->path(), KNotify->interface(),
@@ -115,7 +118,10 @@ void KdeNotify::notify(Notification *notification)
 	QList<QVariant> args;
 	args.append("Kadu");
 	args.append(0U);
-	args.append("");
+
+	/* the new spec doesn't have this */
+	if (!UseFreedesktopStandard)
+		args.append("");
 
 	if (((notification->type() == "NewMessage") || (notification->type() == "NewChat")) &&
 			config_file.readBoolEntry("KDENotify", "ShowContentMessage"))

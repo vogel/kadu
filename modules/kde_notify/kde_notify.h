@@ -38,6 +38,8 @@ class KdeNotify : public Notifier, public ConfigurationUiHandler
 	QMap<unsigned int, Notification *> NotificationMap;
 	QQueue<unsigned int> IdQueue;
 
+	bool UseFreedesktopStandard;
+
 	void createDefaultConfiguration();
 
 private slots:
