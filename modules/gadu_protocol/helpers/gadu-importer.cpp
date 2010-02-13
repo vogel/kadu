@@ -63,7 +63,7 @@ void GaduImporter::importAccounts()
 
 	defaultGaduGadu.setName("Gadu-Gadu");
 	defaultGaduGadu.setId(config_file.readEntry("General", "UIN"));
-	defaultGaduGadu.setPassword(unicode2cp(pwHash(config_file.readEntry("General", "Password"))));
+	defaultGaduGadu.setPassword(pwHash(config_file.readEntry("General", "Password")).toUtf8().constData());
 	defaultGaduGadu.setRememberPassword(true);
 	defaultGaduGadu.setHasPassword(!defaultGaduGadu.password().isEmpty());
 	accountDetails->setAllowDcc(config_file.readBoolEntry("Network", "AllowDCC"));

@@ -52,7 +52,7 @@ void GaduContactListService::handleEventUserlistGetReply(struct gg_event *e)
 	}
 
 	if (content[0] != 0)
-		ImportReply += cp2unicode(content);
+		ImportReply += QString::fromUtf8(content);
 
 	if (e->event.userlist.type == GG_USERLIST_GET_MORE_REPLY)
 	{
@@ -116,9 +116,9 @@ void GaduContactListService::exportContactList(BuddyList buddies)
 {
 	QString contactsString = GaduListHelper::buddyListToString(Protocol->account(), buddies);
 
-	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "\n%s\n", unicode2cp(contactsString).data());
+	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "\n%s\n", contactsString.toUtf8().constData());
 
-	if (-1 == gg_userlist_request(Protocol->gaduSession(), GG_USERLIST_PUT, unicode2cp(contactsString)))
+	if (-1 == gg_userlist_request(Protocol->gaduSession(), GG_USERLIST_PUT, contactsString.toUtf8().constData()))
 		emit contactListExported(false);
 }
 

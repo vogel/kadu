@@ -33,9 +33,13 @@ GaduServerChangePassword::GaduServerChangePassword(TokenReader *reader, UinType 
 
 void GaduServerChangePassword::performAction(const QString &tokenId, const QString &tokenValue)
 {
-	H = gg_change_passwd4(Uin, unicode2cp(Mail).data(),
-			unicode2cp(Password).data(), unicode2cp(NewPassword).data(),
-			unicode2cp(tokenId).data(), unicode2cp(tokenValue).data(), 1);
+	H = gg_change_passwd4(Uin,
+			Mail.toUtf8().constData(),
+			Password.toUtf8().constData(),
+			NewPassword.toUtf8().constData(),
+			tokenId.toUtf8().constData(),
+			tokenValue.toUtf8().constData(),
+			1);
 	if (H)
 	{
 		GaduPubdirSocketNotifiers *sn = new GaduPubdirSocketNotifiers();

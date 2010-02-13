@@ -168,7 +168,7 @@ void DccSocketNotifiers::handleEventDccNeedFileInfo(struct gg_event *e)
 	if (Version == Dcc6 && FileTransferHandler)
 	{
 		FileTransfer transfer = FileTransferHandler->transfer();
-		gg_dcc_fill_file_info2(Socket, unicode2cp(transfer.localFileName()), qPrintable(transfer.localFileName()));
+		gg_dcc_fill_file_info2(Socket, transfer.localFileName().toUtf8().constData(), qPrintable(transfer.localFileName()));
 		watchFor(Socket);
 	}
 	else
@@ -468,9 +468,9 @@ QString DccSocketNotifiers::remoteFileName()
 	switch (Version)
 	{
 		case Dcc6:
-			return cp2unicode(QByteArray((const char *)Socket->file_info.filename));
+			return QString::fromUtf8((const char *)Socket->file_info.filename);
 		case Dcc7:
-			return cp2unicode(QByteArray((const char *)Socket7->filename));
+			return QString::fromUtf8((const char *)Socket7->filename);
 		case DccUnknown:
 			return QString::null;
 	}

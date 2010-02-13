@@ -174,14 +174,14 @@ Buddy GaduProtocol::searchResultToBuddy(gg_pubdir50_t res, int number)
 		contact.setCurrentStatus(status);
 	}
 
-	result.setFirstName(cp2unicode(gg_pubdir50_get(res, number, GG_PUBDIR50_FIRSTNAME)));
-	result.setLastName(cp2unicode(gg_pubdir50_get(res, number, GG_PUBDIR50_LASTNAME)));
-	result.setNickName(cp2unicode(gg_pubdir50_get(res, number, GG_PUBDIR50_NICKNAME)));
-	result.setBirthYear(QString::fromAscii(gg_pubdir50_get(res, number, GG_PUBDIR50_BIRTHYEAR)).toUShort());
-	result.setCity(cp2unicode(gg_pubdir50_get(res, number, GG_PUBDIR50_CITY)));
-	result.setFamilyName(cp2unicode(gg_pubdir50_get(res, number, GG_PUBDIR50_FAMILYNAME)));
-	result.setFamilyCity(cp2unicode(gg_pubdir50_get(res, number, GG_PUBDIR50_FAMILYCITY)));
-	result.setGender((BuddyGender)QString::fromAscii(gg_pubdir50_get(res, number, GG_PUBDIR50_GENDER)).toUShort());
+	result.setFirstName(QString::fromUtf8(gg_pubdir50_get(res, number, GG_PUBDIR50_FIRSTNAME)));
+	result.setLastName(QString::fromUtf8(gg_pubdir50_get(res, number, GG_PUBDIR50_LASTNAME)));
+	result.setNickName(QString::fromUtf8(gg_pubdir50_get(res, number, GG_PUBDIR50_NICKNAME)));
+	result.setBirthYear(QString::fromUtf8(gg_pubdir50_get(res, number, GG_PUBDIR50_BIRTHYEAR)).toUShort());
+	result.setCity(QString::fromUtf8(gg_pubdir50_get(res, number, GG_PUBDIR50_CITY)));
+	result.setFamilyName(QString::fromUtf8(gg_pubdir50_get(res, number, GG_PUBDIR50_FAMILYNAME)));
+	result.setFamilyCity(QString::fromUtf8(gg_pubdir50_get(res, number, GG_PUBDIR50_FAMILYCITY)));
+	result.setGender((BuddyGender)QString::fromUtf8(gg_pubdir50_get(res, number, GG_PUBDIR50_GENDER)).toUShort());
 
 	return result;
 }
@@ -282,7 +282,7 @@ void GaduProtocol::changeStatus()
 	bool hasDescription = !newStatus.description().isEmpty();
 
 	if (hasDescription)
-		gg_change_status_descr(GaduSession, type | friends, unicode2cp(newStatus.description()));
+		gg_change_status_descr(GaduSession, type | friends, newStatus.description().toUtf8());
 	else
 		gg_change_status(GaduSession, type | friends);
 
@@ -598,7 +598,7 @@ void GaduProtocol::setupLoginParams()
 	GaduLoginParams.async = 1;
 	GaduLoginParams.status = gaduStatusFromStatus(nextStatus()); // TODO: 0.6.6 support is friend only
 	if (!nextStatus().description().isEmpty())
-		GaduLoginParams.status_descr = strdup((const char *)unicode2cp(nextStatus().description()).data());
+		GaduLoginParams.status_descr = strdup(nextStatus().description().toUtf8());
 
 	ActiveServer = GaduServersManager::instance()->getServer();
 	bool haveServer = !ActiveServer.first.isNull();
@@ -608,6 +608,8 @@ void GaduProtocol::setupLoginParams()
 	GaduLoginParams.protocol_version = GG_DEFAULT_PROTOCOL_VERSION;
 	GaduLoginParams.client_version = (char *)GG_DEFAULT_CLIENT_VERSION;
 	GaduLoginParams.protocol_features = GG_FEATURE_DND_FFC; // enable new statuses
+	GaduLoginParams.encoding = GG_ENCODING_UTF8;
+
 	GaduLoginParams.has_audio = gaduAccountDetails->allowDcc();
 	GaduLoginParams.last_sysmsg = config_file.readNumEntry("General", "SystemMsgIndex", 1389);
 

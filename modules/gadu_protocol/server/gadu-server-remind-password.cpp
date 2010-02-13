@@ -32,8 +32,11 @@ GaduServerRemindPassword::GaduServerRemindPassword(TokenReader *reader, UinType 
 
 void GaduServerRemindPassword::performAction(const QString &tokenId, const QString &tokenValue)
 {
-	H = gg_remind_passwd3(Uin, unicode2cp(Mail).data(), unicode2cp(tokenId).data(),
-		unicode2cp(tokenValue).data(), 1);
+	H = gg_remind_passwd3(Uin,
+			Mail.toUtf8().constData(),
+			tokenId.toUtf8().constData(),
+			tokenValue.toUtf8().constData(),
+			1);
 	if (H)
 	{
 		GaduPubdirSocketNotifiers *sn = new GaduPubdirSocketNotifiers();

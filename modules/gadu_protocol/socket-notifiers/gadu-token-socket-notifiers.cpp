@@ -83,7 +83,7 @@ void GaduTokenSocketNotifiers::socketEvent()
 				kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "success\n");
 
 				struct gg_token *t = (struct gg_token *)H->data;
-				QString tokenId = cp2unicode(t->tokenid);
+				QString tokenId = QString::fromUtf8(t->tokenid);
 
 				//nie optymalizowac!!!
 				QByteArray buf(H->body_size, '0');

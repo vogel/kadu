@@ -129,14 +129,14 @@ void GaduProtocolSocketNotifiers::handleEventMsg(struct gg_event *e)
 void GaduProtocolSocketNotifiers::handleEventNotify(struct gg_event *e)
 {
 	struct gg_notify_reply *notify = (GG_EVENT_NOTIFY_DESCR == e->type)
-		? e->event.notify_descr.notify
-		: e->event.notify;
+			? e->event.notify_descr.notify
+			: e->event.notify;
 
 	while (notify->uin)
 	{
 		QString description = (GG_EVENT_NOTIFY_DESCR == e->type)
-			? cp2unicode(e->event.notify_descr.descr)
-			: QString::null;
+				? QString::fromUtf8(e->event.notify_descr.descr)
+				: QString::null;
 
 		CurrentProtocol->socketContactStatusChanged(notify->uin, notify->status, description,
 				QHostAddress((unsigned int)ntohl(notify->remote_ip)), notify->remote_port, 0, notify->version);
@@ -150,7 +150,7 @@ void GaduProtocolSocketNotifiers::handleEventNotify60(struct gg_event *e)
 
 	while (notify->uin)
 	{
-		CurrentProtocol->socketContactStatusChanged(notify->uin, notify->status, cp2unicode(notify->descr),
+		CurrentProtocol->socketContactStatusChanged(notify->uin, notify->status, QString::fromUtf8(notify->descr),
 				QHostAddress((unsigned int)ntohl(notify->remote_ip)), notify->remote_port, notify->image_size, notify->version);
 
 		notify++;
@@ -160,11 +160,11 @@ void GaduProtocolSocketNotifiers::handleEventNotify60(struct gg_event *e)
 void GaduProtocolSocketNotifiers::handleEventStatus(struct gg_event *e)
 {
 	if (GG_EVENT_STATUS60 == e->type)
-		CurrentProtocol->socketContactStatusChanged(e->event.status60.uin, e->event.status60.status, cp2unicode(e->event.status60.descr),
+		CurrentProtocol->socketContactStatusChanged(e->event.status60.uin, e->event.status60.status, QString::fromUtf8(e->event.status60.descr),
 				QHostAddress((unsigned int)ntohl(e->event.status60.remote_ip)), e->event.status60.remote_port,
 				e->event.status60.image_size, e->event.status60.version);
 	else
-		CurrentProtocol->socketContactStatusChanged(e->event.status.uin, e->event.status.status, cp2unicode(e->event.status.descr),
+		CurrentProtocol->socketContactStatusChanged(e->event.status.uin, e->event.status.status, QString::fromUtf8(e->event.status.descr),
 				QHostAddress(), 0, 0, 0);
 }
 

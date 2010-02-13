@@ -484,7 +484,8 @@ void DccManager::attachSendFileTransferSocket7(Contact contact, GaduFileTransfer
 		return;
 
 	gg_dcc7 *dcc = gg_dcc7_send_file(Protocol->gaduSession(), details->uin(),
-			qPrintable(handler->transfer().localFileName()), unicode2cp(handler->transfer().localFileName()).data(), 0);
+			handler->transfer().localFileName().toUtf8().constData(),
+			handler->transfer().localFileName().toUtf8().constData(), 0);
 
 	if (dcc)
 	{

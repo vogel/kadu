@@ -74,22 +74,22 @@ void GaduPersonalInfoService::updatePersonalInfo(Buddy buddy)
 	gg_pubdir50_t req = gg_pubdir50_new(GG_PUBDIR50_WRITE);
 
 	if (!buddy.firstName().isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, (const char *)(unicode2cp(buddy.firstName()).data()));
+		gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, buddy.firstName().toUtf8().constData());
 	if (!buddy.lastName().isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_LASTNAME, (const char *)(unicode2cp(buddy.lastName()).data()));
+		gg_pubdir50_add(req, GG_PUBDIR50_LASTNAME, buddy.lastName().toUtf8().constData());
 	if (!buddy.nickName().isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_NICKNAME, (const char *)(unicode2cp(buddy.nickName()).data()));
+		gg_pubdir50_add(req, GG_PUBDIR50_NICKNAME, buddy.nickName().toUtf8().constData());
 	if (!buddy.city().isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_CITY, (const char *)(unicode2cp(buddy.city()).data()));
+		gg_pubdir50_add(req, GG_PUBDIR50_CITY, buddy.city().toUtf8().constData());
 	if (0 != buddy.birthYear())
-		gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, (const char *)(unicode2cp(QString::number(buddy.birthYear())).data()));
+		gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, QString::number(buddy.birthYear()).toUtf8().constData());
 	// TODO: 0.6.6
 	if (GenderUnknown != buddy.gender())
-		gg_pubdir50_add(req, GG_PUBDIR50_GENDER, (const char *)(unicode2cp(QString::number(buddy.gender())).data()));
+		gg_pubdir50_add(req, GG_PUBDIR50_GENDER, QString::number(buddy.gender()).toUtf8().constData());
 	if (!buddy.familyName().isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_FAMILYNAME, (const char *)(unicode2cp(buddy.familyName()).data()));
+		gg_pubdir50_add(req, GG_PUBDIR50_FAMILYNAME, buddy.familyName().toUtf8().constData());
 	if (!buddy.familyCity().isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_FAMILYCITY, (const char *)(unicode2cp(buddy.familyCity()).data()));
+		gg_pubdir50_add(req, GG_PUBDIR50_FAMILYCITY, buddy.familyCity().toUtf8().constData());
 
 	UpdateSeq = gg_pubdir50(Protocol->gaduSession(), req);
 	gg_pubdir50_free(req);

@@ -32,8 +32,8 @@ GaduServerUnregisterAccount::GaduServerUnregisterAccount(TokenReader *reader, Ui
 
 void GaduServerUnregisterAccount::performAction(const QString &tokenId, const QString &tokenValue)
 {
-	H = gg_unregister3(Uin, unicode2cp(Password).data(), unicode2cp(tokenId).data(),
-		unicode2cp(tokenValue).data(), 1);
+	H = gg_unregister3(Uin, Password.toUtf8().constData(), tokenId.toUtf8().constData(),
+		tokenValue.toUtf8().constData(), 1);
 	if (H)
 	{
 		GaduPubdirSocketNotifiers *sn = new GaduPubdirSocketNotifiers();

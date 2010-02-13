@@ -51,19 +51,19 @@ void GaduSearchService::searchNext()
 	gg_pubdir50_t req = gg_pubdir50_new(GG_PUBDIR50_SEARCH);
 
 	if (Query.SearchBuddy.hasContact(Protocol->account()))
-		gg_pubdir50_add(req, GG_PUBDIR50_UIN, (const char *)unicode2cp(Query.SearchBuddy.id(Protocol->account())).data());
+		gg_pubdir50_add(req, GG_PUBDIR50_UIN, Query.SearchBuddy.id(Protocol->account()).toUtf8().constData());
 	if (!Query.SearchBuddy.firstName().isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, (const char *)unicode2cp(Query.SearchBuddy.firstName()).data());
+		gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, Query.SearchBuddy.firstName().toUtf8().constData());
 	if (!Query.SearchBuddy.lastName().isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_LASTNAME, (const char *)unicode2cp(Query.SearchBuddy.lastName()).data());
+		gg_pubdir50_add(req, GG_PUBDIR50_LASTNAME, Query.SearchBuddy.lastName().toUtf8().constData());
 	if (!Query.SearchBuddy.nickName().isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_NICKNAME, (const char *)unicode2cp(Query.SearchBuddy.nickName()).data());
+		gg_pubdir50_add(req, GG_PUBDIR50_NICKNAME, Query.SearchBuddy.nickName().toUtf8().constData());
 	if (!Query.SearchBuddy.city().isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_CITY, (const char *)unicode2cp(Query.SearchBuddy.city()).data());
+		gg_pubdir50_add(req, GG_PUBDIR50_CITY, Query.SearchBuddy.city().toUtf8().constData());
 	if (!Query.BirthYearFrom.isEmpty())
 	{
 		QString bufYear = Query.BirthYearFrom + ' ' + Query.BirthYearTo;
-		gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, (const char *)unicode2cp(bufYear).data());
+		gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, bufYear.toUtf8().constData());
 	}
 
 	switch (Query.SearchBuddy.gender())

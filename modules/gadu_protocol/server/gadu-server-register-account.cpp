@@ -32,8 +32,12 @@ GaduServerRegisterAccount::GaduServerRegisterAccount(const QString &mail, const 
 
 void GaduServerRegisterAccount::performAction()
 {
-	H = gg_register3(unicode2cp(Mail).data(), unicode2cp(Password).data(),
-			unicode2cp(TokenId).data(), unicode2cp(TokenValue).data(), false);
+	H = gg_register3(
+			Mail.toUtf8().constData(),
+			Password.toUtf8().constData(),
+			TokenId.toUtf8().constData(),
+			TokenValue.toUtf8().constData(),
+			false);
 	if (H)
 	{
 		struct gg_pubdir *result = (struct gg_pubdir *)H->data;

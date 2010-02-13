@@ -71,7 +71,7 @@ bool GaduChatService::sendMessage(Chat chat, FormattedMessage &message)
 
 	kdebugmf(KDEBUG_INFO, "\n%s\n", (const char *)unicode2latin(plain));
 
-	QByteArray data = unicode2cp(plain);
+	QByteArray data = plain.toUtf8();
 
 	emit sendMessageFiltering(chat, data, stop);
 
@@ -195,7 +195,7 @@ ContactSet GaduChatService::getRecipients(gg_event *e)
 
 QString GaduChatService::getContent(gg_event *e)
 {
-	QString content = cp2unicode((const char *)e->event.msg.message);
+	QString content = QString::fromUtf8((const char *)e->event.msg.message);
 
 	content.replace(QLatin1String("\r\n"), QString(QChar::LineSeparator));
 	content.replace(QLatin1String("\n"),   QString(QChar::LineSeparator));
