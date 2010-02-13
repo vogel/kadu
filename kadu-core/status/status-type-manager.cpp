@@ -40,16 +40,17 @@ StatusTypeManager::StatusTypeManager()
 	StatusGroup *offline = StatusGroupManager::instance()->statusGroup("Offline");
 
 	// TODO: 0.6.6 add translation of second strings
-	registerStatusType("FreeForChat", "Free for chat", online, 0);
-	registerStatusType("Online", "Online", online, 20);
-	registerStatusType("Away", "Away", busy, 0);
-	registerStatusType("NotAvailable", "Not available", busy, 20);
-	registerStatusType("DoNotDisturb", "Do not disturb", busy, 40);
-	registerStatusType("Invisible", "Invisible", invisible, 0);
-	registerStatusType("Offline", "Offline", offline, 0);
+	registerStatusType("FreeForChat", "Free for chat", "free_for_chat", online, 0);
+	registerStatusType("Online", "Online", "online", online, 20);
+	registerStatusType("Away", "Away", "away", busy, 0);
+	registerStatusType("NotAvailable", "Not available", "not_available", busy, 20);
+	registerStatusType("DoNotDisturb", "Do not disturb", "do_not_disturb", busy, 40);
+	registerStatusType("Invisible", "Invisible", "invisible", invisible, 0);
+	registerStatusType("Offline", "Offline", "offline", offline, 0);
 }
 
-void StatusTypeManager::registerStatusType(const QString &name, const QString &displayName, StatusGroup *statusGroup, int sortIndex)
+void StatusTypeManager::registerStatusType(const QString &name, const QString &displayName,
+		const QString &iconName, StatusGroup *statusGroup, int sortIndex)
 {
 	foreach (StatusType *st, StatusTypes)
 	{
@@ -60,7 +61,7 @@ void StatusTypeManager::registerStatusType(const QString &name, const QString &d
 		return;
 	}
 
-	StatusType *newType = new StatusType(name, displayName, statusGroup, sortIndex);
+	StatusType *newType = new StatusType(name, displayName, iconName, statusGroup, sortIndex);
 	StatusTypes.append(newType);
 	StatusTypesCounter[newType] = 1;
 }

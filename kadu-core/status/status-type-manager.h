@@ -44,7 +44,8 @@ class KADUAPI StatusTypeManager
 public:
 	static StatusTypeManager * instance();
 
-	void registerStatusType(const QString &name, const QString &displayName, StatusGroup *statusGroup, int sortIndex);
+	void registerStatusType(const QString &name, const QString &displayName, const QString &iconName,
+			StatusGroup *statusGroup, int sortIndex);
 	void unregisterStatusType(const QString &name);
 
 	StatusType * statusType(const QString &name);

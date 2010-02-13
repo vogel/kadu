@@ -26,8 +26,8 @@ bool StatusType::lessThan(const StatusType *left, const StatusType *right)
 	return *left < *right;
 }
 
-StatusType::StatusType(const QString &name, const QString &displayName, StatusGroup *statusGroup, int sortIndex) :
-		Name(name), DisplayName(displayName), MyStatusGroup(statusGroup), SortIndex(sortIndex)
+StatusType::StatusType(const QString &name, const QString &displayName, const QString &iconName, StatusGroup *statusGroup, int sortIndex) :
+		Name(name), DisplayName(displayName), IconName(iconName), MyStatusGroup(statusGroup), SortIndex(sortIndex)
 {
 }
 

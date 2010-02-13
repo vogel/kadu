@@ -32,6 +32,7 @@ class KADUAPI StatusType
 {
 	QString Name;
 	QString DisplayName;
+	QString IconName;
 
 	StatusGroup *MyStatusGroup;
 
@@ -40,10 +41,11 @@ class KADUAPI StatusType
 public:
 	static bool lessThan(const StatusType *left, const StatusType *right);
 
-	StatusType(const QString &name, const QString &displayName, StatusGroup *statusType, int sortIndex);
+	StatusType(const QString &name, const QString &displayName, const QString &iconName, StatusGroup *statusType, int sortIndex);
 
 	QString name() { return Name; }
 	QString displayName() { return DisplayName; }
+	QString iconName() { return IconName; }
 
 	StatusGroup *statusGroup() { return MyStatusGroup; }
 
