@@ -127,21 +127,6 @@ const QIcon &IconsManager::iconByPath(const QString &name)
 	return icons[name];
 }
 
-const QIcon &IconsManager::iconByName(const QString &name)
-{
-	QMap<QString, QIcon>::const_iterator i = icons.find(name);
-	if (i != icons.end())
-		return *i;
-
-	QIcon icon;
-	QString path = iconPathFromName(name);
-	if (!path.isEmpty())
-		icon.addFile(path);
-
-	icons.insert(name, icon);
-	return icons[name];
-}
-
 void IconsManager::clear()
 {
 	kdebugf();

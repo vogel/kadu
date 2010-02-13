@@ -54,7 +54,6 @@ public:
 	
 	const QPixmap & pixmapByPath(const QString &name);
 	const QIcon & iconByPath(const QString &name);
-	const QIcon & iconByName(const QString &name);
 
 	QSize getIconsSize();
 
