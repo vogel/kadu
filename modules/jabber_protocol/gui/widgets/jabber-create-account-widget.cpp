@@ -203,8 +203,8 @@ void JabberCreateAccountWidget::createGui()
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 	mainLayout->addWidget(buttons);
 
-	RegisterAccountButton = new QPushButton(IconsManager::instance()->iconByName("ApplyWindowButton"), tr("Regster Account"), this);
-	QPushButton *cancelButton = new QPushButton(IconsManager::instance()->iconByName("CloseWindowButton"), tr("Cancel"), this);
+	RegisterAccountButton = new QPushButton(IconsManager::instance()->iconByPath("kadu/dialog-apply.png"), tr("Regster Account"), this);
+	QPushButton *cancelButton = new QPushButton(IconsManager::instance()->iconByPath("kadu/dialog-cancel.png"), tr("Cancel"), this);
 
 	connect(RegisterAccountButton, SIGNAL(clicked(bool)), this, SLOT(apply()));
 	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(cancel()));
@@ -217,7 +217,8 @@ void JabberCreateAccountWidget::createGui()
 
 bool JabberCreateAccountWidget::checkSSL()
 {
-	if(!QCA::isSupported("tls")) {
+	if (!QCA::isSupported("tls"))
+	{
 		MessageDialog::msg(tr("Cannot enable SSL/TLS.  Plugin not found."));
 		return false;
 	}
@@ -230,17 +231,16 @@ void JabberCreateAccountWidget::hostToggled(bool on)
 	CustomPort->setEnabled(on);
 	CustomHostLabel->setEnabled(on);
 	CustomPortLabel->setEnabled(on);
-	if (!on && EncryptionMode->currentIndex() == EncryptionMode->findData(2)) {
+	if (!on && EncryptionMode->currentIndex() == EncryptionMode->findData(2))
 		EncryptionMode->setCurrentIndex(1);
-	}
 }
 
 void JabberCreateAccountWidget::sslActivated(int i)
 {
-	if ((EncryptionMode->itemData(i) == 0 || EncryptionMode->itemData(i) == 2) && !checkSSL()) {
+	if ((EncryptionMode->itemData(i) == 0 || EncryptionMode->itemData(i) == 2) && !checkSSL())
 		EncryptionMode->setCurrentIndex(EncryptionMode->findData(1));
-	}
-	else if (EncryptionMode->itemData(i) == 2 && !CustomHostPort->isChecked()) {
+	else if (EncryptionMode->itemData(i) == 2 && !CustomHostPort->isChecked())
+	{
 		MessageDialog::msg(tr("Legacy SSL is only available in combination with manual host/port."));
 		EncryptionMode->setCurrentIndex(EncryptionMode->findData(1));
 	}
