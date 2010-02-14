@@ -20,13 +20,21 @@
 #ifndef GADU_URL_HANDLER_H
 #define GADU_URL_HANDLER_H
 
+#include <QtCore/QObject>
 #include <QtCore/QRegExp>
 
 #include "url-handlers/url-handler.h"
 
-class GaduUrlHandler : public UrlHandler
+class QAction;
+
+class GaduUrlHandler : public QObject, public UrlHandler
 {
+	Q_OBJECT
+
 	QRegExp GaduRegExp;
+
+private slots:
+	void accountSelected(QAction *action);
 
 public:
 	GaduUrlHandler();
@@ -35,7 +43,7 @@ public:
 
 	void convertUrlsToHtml(HtmlDocument &document);
 
-	void openUrl(const QString &url);
+	void openUrl(const QString &url, bool disableMenu);
 };
 
 #endif // GADU_URL_HANDLER_H

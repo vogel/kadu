@@ -31,7 +31,7 @@ public:
 
 	virtual void convertUrlsToHtml(HtmlDocument &document) = 0;
 
-	virtual void openUrl(const QString &url) = 0;
+	virtual void openUrl(const QString &url, bool disableMenu = false) = 0;
 };
 
 #endif // URL_HANDLER_H

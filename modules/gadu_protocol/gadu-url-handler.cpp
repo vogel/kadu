@@ -17,6 +17,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QCursor>
+#include <QtGui/QMenu>
+
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "chat/chat-manager.h"
@@ -58,7 +61,7 @@ void GaduUrlHandler::convertUrlsToHtml(HtmlDocument &document)
 	}
 }
 
-void GaduUrlHandler::openUrl(const QString &url)
+void GaduUrlHandler::openUrl(const QString &url, bool disableMenu)
 {
 	QList<Account> gaduAccounts = AccountManager::instance()->byProtocolName("gadu");
 	if (!gaduAccounts.count())
@@ -71,7 +74,7 @@ void GaduUrlHandler::openUrl(const QString &url)
 		gaduId.remove(QRegExp("/*"));
 	}
 
-	if (gaduAccounts.count() == 1)
+	if (gaduAccounts.count() == 1 || disableMenu)
 	{
 		Contact contact = ContactManager::instance()->byId(gaduAccounts[0], gaduId, ActionCreateAndAdd);
 		Chat chat = ChatManager::instance()->findChat(ContactSet(contact));
@@ -83,5 +86,37 @@ void GaduUrlHandler::openUrl(const QString &url)
 	}
 	else
 	{
+		QMenu *menu = new QMenu;
+
+		QStringList ids;
+		foreach (Account account, gaduAccounts)
+		{
+			ids.clear();
+			ids.append(account.id());
+			ids.append(gaduId);
+
+			menu->addAction(account.statusContainer()->statusPixmap(), account.id())->setData(ids);
+		}
+
+		connect(menu, SIGNAL(triggered(QAction *)), this, SLOT(accountSelected(QAction *)));
+
+		menu->exec(QCursor::pos());
 	}
+}
+
+void GaduUrlHandler::accountSelected(QAction *action)
+{
+	QStringList ids = action->data().toStringList();
+
+	if (ids.count() != 2)
+		return;
+
+	Account account = AccountManager::instance()->byId("gadu", ids[0]);
+	if (!account)
+		return;
+
+	Contact contact = ContactManager::instance()->byId(account, ids[1], ActionCreateAndAdd);
+	Chat chat = ChatManager::instance()->findChat(ContactSet(contact));
+	if (chat)
+		ChatWidgetManager::instance()->openPendingMsgs(chat, true);
 }

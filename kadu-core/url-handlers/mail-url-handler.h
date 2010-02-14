@@ -35,7 +35,7 @@ public:
 
 	void convertUrlsToHtml(HtmlDocument &document);
 
-	void openUrl(const QString &url);
+	void openUrl(const QString &url, bool disableMenu);
 
 	const QRegExp & mailRegExp() { return MailRegExp; }
 };

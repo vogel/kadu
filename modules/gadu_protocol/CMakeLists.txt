@@ -104,6 +104,7 @@ set (MOC_SOURCES
 	gadu-contact-widget.h
 	gadu-protocol.h
 	gadu-resolver.h
+	gadu-url-handler.h
 )
 
 set (TRANSLATION_SOURCES

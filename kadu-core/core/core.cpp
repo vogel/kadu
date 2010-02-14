@@ -464,7 +464,7 @@ void Core::receivedSignal(const QString &signal)
 	if ("activate" == signal)
 		_activateWindow(Window);
 	else
-		UrlHandlerManager::instance()->openUrl(signal);
+		UrlHandlerManager::instance()->openUrl(signal, true);
 }
 
 void Core::quit()

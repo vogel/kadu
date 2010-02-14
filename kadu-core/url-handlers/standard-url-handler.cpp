@@ -67,8 +67,10 @@ void StandardUrlHandler::convertUrlsToHtml(HtmlDocument &document)
 	}
 }
 
-void StandardUrlHandler::openUrl(const QString &url)
+void StandardUrlHandler::openUrl(const QString &url, bool disableMenu)
 {
+	Q_UNUSED(disableMenu)
+
 	if (url.startsWith("www."))
 		openWebBrowser("http://" + url);
 	else

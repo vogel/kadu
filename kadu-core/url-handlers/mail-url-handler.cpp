@@ -51,7 +51,9 @@ void MailUrlHandler::convertUrlsToHtml(HtmlDocument &document)
 	}
 }
 
-void MailUrlHandler::openUrl(const QString &url)
+void MailUrlHandler::openUrl(const QString &url, bool disableMenu)
 {
+	Q_UNUSED(disableMenu)
+
 	openMailClient(url);
 }

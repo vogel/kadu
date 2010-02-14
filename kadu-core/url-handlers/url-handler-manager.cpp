@@ -66,13 +66,13 @@ void UrlHandlerManager::convertAllUrls(HtmlDocument &document)
 		handler->convertUrlsToHtml(document);
 }
 
-void UrlHandlerManager::openUrl(const QString &url)
+void UrlHandlerManager::openUrl(const QString &url, bool disableMenu)
 {
 	foreach (UrlHandler *handler, RegisteredHandlers.values())
 	{
 		if (handler->isUrlValid(url))
 		{
-			handler->openUrl(url);
+			handler->openUrl(url, disableMenu);
 			return;
 		}
 	}

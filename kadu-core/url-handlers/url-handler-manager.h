@@ -49,7 +49,7 @@ public:
 
 	void convertAllUrls(HtmlDocument &document);
 
-	void openUrl(const QString &url);
+	void openUrl(const QString &url, bool disableMenu = false);
 
 	// TODO:
 	//for mail validation:
