@@ -39,8 +39,8 @@ KNOWN ISSUES:
 #include <X11/Xlib.h>
 
 
-#define  X11_ALLDESKTOPS                0xFFFFFFFF  /*long*/
-#define  X11_BADDESKTOP                 0xFFFFFFFE  /*long*/
+#define  X11_ALLDESKTOPS                0xFFFFFFFFL  /*long*/
+#define  X11_BADDESKTOP                 0xFFFFFFFEL  /*long*/
 
 #define  X11_SETACTIVEWINDOW_TIMEOUT     (50*1000)  /*usec*/
 #define  X11_SETACTIVEWINDOW_CHECKTIME    (2*1000)  /*usec*/

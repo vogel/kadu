@@ -73,7 +73,7 @@ endif(MINGW)
 
 # warnings
 
-set (CMAKE_C_FLAGS "-W -Wall -Werror")
+set (CMAKE_C_FLAGS "-W -Wall -Werror -fno-strict-aliasing")
 set (CMAKE_CXX_FLAGS "-W -Wall -Werror")
 
 if (NOT DATADIR)
