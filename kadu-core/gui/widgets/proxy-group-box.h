@@ -36,14 +36,14 @@ class KADUAPI ProxyGroupBox : public QGroupBox
 {
 	Account MyAccount;
 
-	QWidget *proxyAuthWidget;
+	QWidget *ProxyAuthWidget;
 
-	QCheckBox *useProxy;
-	QLineEdit *host;
-	QLineEdit *proxyPort;
-	QCheckBox *proxyAuthentication;
-	QLineEdit *username;
-	QLineEdit *password;
+	QCheckBox *UseProxy;
+	QLineEdit *Host;
+	QLineEdit *ProxyPort;
+	QCheckBox *ProxyAuthentication;
+	QLineEdit *Username;
+	QLineEdit *Password;
 
 public:
 	ProxyGroupBox(Account account, const QString &title, QWidget *parent = 0);

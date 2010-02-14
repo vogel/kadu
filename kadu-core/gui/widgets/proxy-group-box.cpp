@@ -28,100 +28,100 @@
 
 #include "proxy-group-box.h"
 
-ProxyGroupBox::ProxyGroupBox(Account account, const QString &title, QWidget *parent)
-	: QGroupBox(title, parent), MyAccount(account)
+ProxyGroupBox::ProxyGroupBox(Account account, const QString &title, QWidget *parent) :
+		QGroupBox(title, parent), MyAccount(account)
 {
-    	QGridLayout *proxyLayout = new QGridLayout(this);
+	QGridLayout *proxyLayout = new QGridLayout(this);
 	proxyLayout->setColumnMinimumWidth(0, 20);
 
-	useProxy = new QCheckBox(tr("Use the following proxy"));
-	proxyLayout->addWidget(useProxy, 0, 0, 1, 6);
-//
+	UseProxy = new QCheckBox(tr("Use the following proxy"));
+	proxyLayout->addWidget(UseProxy, 0, 0, 1, 6);
+
 	QLabel *hostLabel = new QLabel(tr("Host") + ":");
 	hostLabel->setEnabled(false);
 
-	host = new QLineEdit;
-	host->setInputMask("000.000.000.000;_");
-	host->setEnabled(false);
+	Host = new QLineEdit(this);
+	Host->setInputMask("000.000.000.000;_");
+	Host->setEnabled(false);
 
 	proxyLayout->addWidget(hostLabel, 1, 1);
-	proxyLayout->addWidget(host, 1, 2);
-//
+	proxyLayout->addWidget(Host, 1, 2);
+
 	QLabel *proxyPortLabel = new QLabel(tr("Port") + ":");
 	proxyPortLabel->setEnabled(false);
 
-	proxyPort = new QLineEdit;
-	proxyPort->setValidator(new QIntValidator(0, 9999999, proxyPort));
-	proxyPort->setEnabled(false);
+	ProxyPort = new QLineEdit(this);
+	ProxyPort->setValidator(new QIntValidator(0, 99999, ProxyPort));
+	ProxyPort->setEnabled(false);
 
 	proxyLayout->addWidget(proxyPortLabel, 1, 4);
-	proxyLayout->addWidget(proxyPort, 1, 5);
-////
-	proxyAuthWidget = new QWidget;
-	proxyAuthWidget->setContentsMargins(0, 0, 0, 0);
-	proxyAuthWidget->setEnabled(false);
+	proxyLayout->addWidget(ProxyPort, 1, 5);
 
-	QGridLayout *authlayout = new QGridLayout(proxyAuthWidget);
+	ProxyAuthWidget = new QWidget(this);
+	ProxyAuthWidget->setContentsMargins(0, 0, 0, 0);
+	ProxyAuthWidget->setEnabled(false);
+
+	QGridLayout *authlayout = new QGridLayout(ProxyAuthWidget);
 	authlayout->setContentsMargins(0, 0, 0, 0);
 	authlayout->setColumnMinimumWidth(0, 20);
 	authlayout->setColumnStretch(2, 100);
 
-	proxyAuthentication = new QCheckBox(tr("Proxy requires authentication"));
-	authlayout->addWidget(proxyAuthentication, 0, 0, 1, 3);
-//
+	ProxyAuthentication = new QCheckBox(tr("Proxy requires authentication"));
+	authlayout->addWidget(ProxyAuthentication, 0, 0, 1, 3);
+
 	QLabel *usernameLabel = new QLabel(tr("Username") + ":");
 	usernameLabel->setEnabled(false);
 
-	username = new QLineEdit;
-	username->setEnabled(false);
+	Username = new QLineEdit(this);
+	Username->setEnabled(false);
 
 	authlayout->addWidget(usernameLabel, 1, 1);
-	authlayout->addWidget(username, 1, 2, 1, 2);
-//
+	authlayout->addWidget(Username, 1, 2, 1, 2);
+
 	QLabel *passwordLabel = new QLabel(tr("Password") + ":");
 	passwordLabel->setEnabled(false);
 
-	password = new QLineEdit;
-	password->setEchoMode(QLineEdit::Password);
-	password->setEnabled(false);
+	Password = new QLineEdit(this);
+	Password->setEchoMode(QLineEdit::Password);
+	Password->setEnabled(false);
 
 	authlayout->addWidget(passwordLabel, 2, 1, Qt::AlignLeft);
-	authlayout->addWidget(password, 2, 2, 1, 2);
+	authlayout->addWidget(Password, 2, 2, 1, 2);
 
-	proxyLayout->addWidget(proxyAuthWidget, 2, 0, 1, 6);
-////
-	connect(useProxy, SIGNAL(toggled(bool)), hostLabel, SLOT(setEnabled(bool)));
-	connect(useProxy, SIGNAL(toggled(bool)), host, SLOT(setEnabled(bool)));
-	connect(useProxy, SIGNAL(toggled(bool)), proxyPortLabel, SLOT(setEnabled(bool)));
-	connect(useProxy, SIGNAL(toggled(bool)), proxyPort, SLOT(setEnabled(bool)));
-	connect(useProxy, SIGNAL(toggled(bool)), proxyAuthWidget, SLOT(setEnabled(bool)));
+	proxyLayout->addWidget(ProxyAuthWidget, 2, 0, 1, 6);
 
-	connect(proxyAuthentication, SIGNAL(toggled(bool)), usernameLabel, SLOT(setEnabled(bool)));
-	connect(proxyAuthentication, SIGNAL(toggled(bool)), username, SLOT(setEnabled(bool)));
-	connect(proxyAuthentication, SIGNAL(toggled(bool)), passwordLabel, SLOT(setEnabled(bool)));
-	connect(proxyAuthentication, SIGNAL(toggled(bool)), password, SLOT(setEnabled(bool)));
+	connect(UseProxy, SIGNAL(toggled(bool)), hostLabel, SLOT(setEnabled(bool)));
+	connect(UseProxy, SIGNAL(toggled(bool)), Host, SLOT(setEnabled(bool)));
+	connect(UseProxy, SIGNAL(toggled(bool)), proxyPortLabel, SLOT(setEnabled(bool)));
+	connect(UseProxy, SIGNAL(toggled(bool)), ProxyPort, SLOT(setEnabled(bool)));
+	connect(UseProxy, SIGNAL(toggled(bool)), ProxyAuthWidget, SLOT(setEnabled(bool)));
+
+	connect(ProxyAuthentication, SIGNAL(toggled(bool)), usernameLabel, SLOT(setEnabled(bool)));
+	connect(ProxyAuthentication, SIGNAL(toggled(bool)), Username, SLOT(setEnabled(bool)));
+	connect(ProxyAuthentication, SIGNAL(toggled(bool)), passwordLabel, SLOT(setEnabled(bool)));
+	connect(ProxyAuthentication, SIGNAL(toggled(bool)), Password, SLOT(setEnabled(bool)));
 }
 
 void ProxyGroupBox::loadProxyData()
 {
-	useProxy->setChecked(MyAccount.useProxy());
-	host->setText(MyAccount.proxyHost().toString());
-	proxyPort->setText(QString::number(MyAccount.proxyPort()));
-	proxyAuthentication->setChecked(MyAccount.proxyRequiresAuthentication());
-	username->setText(MyAccount.proxyUser());
-	password->setText(MyAccount.proxyPassword());
+	UseProxy->setChecked(MyAccount.useProxy());
+	Host->setText(MyAccount.proxyHost().toString());
+	ProxyPort->setText(QString::number(MyAccount.proxyPort()));
+	ProxyAuthentication->setChecked(MyAccount.proxyRequiresAuthentication());
+	Username->setText(MyAccount.proxyUser());
+	Password->setText(MyAccount.proxyPassword());
 }
 
 void ProxyGroupBox::applyProxyData()
 {
-	MyAccount.setUseProxy(useProxy->isChecked());
+	MyAccount.setUseProxy(UseProxy->isChecked());
 
 	QHostAddress hostAdrr;
-	if (!hostAdrr.setAddress(host->text()))
+	if (!hostAdrr.setAddress(Host->text()))
 		hostAdrr.setAddress("0.0.0.0");
 	MyAccount.setProxyHost(hostAdrr);
-	MyAccount.setProxyPort(proxyPort->text().toInt());
-	MyAccount.setProxyRequiresAuthentication(proxyAuthentication->isChecked());
-	MyAccount.setProxyUser(username->text());
-	MyAccount.setProxyPassword(password->text());
+	MyAccount.setProxyPort(ProxyPort->text().toInt());
+	MyAccount.setProxyRequiresAuthentication(ProxyAuthentication->isChecked());
+	MyAccount.setProxyUser(Username->text());
+	MyAccount.setProxyPassword(Password->text());
 }
