@@ -17,8 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CRASG_AWARE_OBJECT_H
-#define CRASG_AWARE_OBJECT_H
+#ifndef CRASH_AWARE_OBJECT_H
+#define CRASH_AWARE_OBJECT_H
 
 #include <QtCore/QList>
 
@@ -35,4 +35,4 @@ public:
 
 };
 
-#endif // CRASG_AWARE_OBJECT_H
+#endif // CRASH_AWARE_OBJECT_H
