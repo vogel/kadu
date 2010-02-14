@@ -281,6 +281,10 @@ set (kadu_SRCS
 	storage/storage-point.cpp
 	storage/uuid-storable-object.cpp
 
+	url-handlers/mail-url-handler.cpp
+	url-handlers/standard-url-handler.cpp
+	url-handlers/url-handler-manager.cpp
+
 	activate.cpp
 	debug.cpp
 	dnshandler.cpp
