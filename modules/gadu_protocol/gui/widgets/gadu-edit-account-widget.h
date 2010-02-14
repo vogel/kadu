@@ -48,7 +48,7 @@ class GaduEditAccountWidget : public AccountEditWidget
 	IdentitiesComboBox *Identities;
 
 	GaduPersonalInfoWidget *gpiw;
-	ProxyGroupBox *proxy;
+	ProxyGroupBox *Proxy;
 
 	QCheckBox *useDefaultServers;
 	QLineEdit *ipAddresses;

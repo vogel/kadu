@@ -41,12 +41,14 @@ ProxyGroupBox::ProxyGroupBox(Account account, const QString &title, QWidget *par
 	proxyLayout->setColumnMinimumWidth(0, 20);
 
 	UseProxy = new QCheckBox(tr("Use the following proxy"));
+	connect(UseProxy, SIGNAL(stateChanged(int)), this, SLOT(dataChanged()));
 	proxyLayout->addWidget(UseProxy, 0, 0, 1, 6);
 
 	QLabel *hostLabel = new QLabel(tr("Host") + ":");
 	hostLabel->setEnabled(false);
 
 	Host = new QLineEdit(this);
+	connect(Host, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 	Host->setInputMask("000.000.000.000;_");
 	Host->setEnabled(false);
 
@@ -57,6 +59,7 @@ ProxyGroupBox::ProxyGroupBox(Account account, const QString &title, QWidget *par
 	proxyPortLabel->setEnabled(false);
 
 	ProxyPort = new QLineEdit(this);
+	connect(ProxyPort, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 	ProxyPort->setValidator(new QIntValidator(0, 99999, ProxyPort));
 	ProxyPort->setEnabled(false);
 
@@ -79,6 +82,7 @@ ProxyGroupBox::ProxyGroupBox(Account account, const QString &title, QWidget *par
 	usernameLabel->setEnabled(false);
 
 	Username = new QLineEdit(this);
+	connect(Username, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 	Username->setEnabled(false);
 
 	authlayout->addWidget(usernameLabel, 1, 1);
@@ -88,6 +92,7 @@ ProxyGroupBox::ProxyGroupBox(Account account, const QString &title, QWidget *par
 	passwordLabel->setEnabled(false);
 
 	Password = new QLineEdit(this);
+	connect(Password, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 	Password->setEchoMode(QLineEdit::Password);
 	Password->setEnabled(false);
 
@@ -106,6 +111,19 @@ ProxyGroupBox::ProxyGroupBox(Account account, const QString &title, QWidget *par
 	connect(ProxyAuthentication, SIGNAL(toggled(bool)), Username, SLOT(setEnabled(bool)));
 	connect(ProxyAuthentication, SIGNAL(toggled(bool)), passwordLabel, SLOT(setEnabled(bool)));
 	connect(ProxyAuthentication, SIGNAL(toggled(bool)), Password, SLOT(setEnabled(bool)));
+}
+
+void ProxyGroupBox::dataChanged()
+{
+	if (MyAccount.useProxy() == UseProxy->isChecked()
+			&& MyAccount.proxyHost().toString() == Host->text()
+			&& QString::number(MyAccount.proxyPort()) == ProxyPort->text()
+			&& MyAccount.proxyRequiresAuthentication() == ProxyAuthentication->isChecked()
+			&& MyAccount.proxyUser() == Username->text()
+			&& MyAccount.proxyPassword() == Password->text())
+		setState(StateNotChanged);
+	else
+		setState(StateChangedDataValid);
 }
 
 void ProxyGroupBox::loadProxyData()
@@ -130,6 +148,8 @@ void ProxyGroupBox::apply()
 	MyAccount.setProxyRequiresAuthentication(ProxyAuthentication->isChecked());
 	MyAccount.setProxyUser(Username->text());
 	MyAccount.setProxyPassword(Password->text());
+
+	setState(StateNotChanged);
 }
 
 void ProxyGroupBox::cancel()

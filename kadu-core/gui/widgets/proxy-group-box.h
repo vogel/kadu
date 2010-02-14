@@ -22,10 +22,9 @@
 #ifndef PROXY_GROUP_BOX_H
 #define PROXY_GROUP_BOX_H
 
+#include "accounts/account.h"
 #include "gui/widgets/modal-configuration-widget.h"
 #include "exports.h"
-
-class Account;
 
 class QCheckBox;
 class QGroupBox;
@@ -34,6 +33,8 @@ class QLineEdit;
 
 class KADUAPI ProxyGroupBox : public ModalConfigurationWidget
 {
+	Q_OBJECT
+
 	Account MyAccount;
 
 	QWidget *ProxyAuthWidget;
@@ -44,6 +45,9 @@ class KADUAPI ProxyGroupBox : public ModalConfigurationWidget
 	QCheckBox *ProxyAuthentication;
 	QLineEdit *Username;
 	QLineEdit *Password;
+
+private slots:
+	void dataChanged();
 
 public:
 	ProxyGroupBox(Account account, const QString &title, QWidget *parent = 0);

@@ -425,6 +425,7 @@ set (kadu_MOC_SRCS
 	gui/widgets/path-list-edit.h
 	gui/widgets/preview.h
 	gui/widgets/protocols-combo-box.h
+	gui/widgets/proxy-group-box.h
 	gui/widgets/select-buddy-combobox.h
 	gui/widgets/select-buddy-popup.h
 	gui/widgets/select-file.h

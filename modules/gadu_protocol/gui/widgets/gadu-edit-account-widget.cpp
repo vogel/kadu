@@ -169,8 +169,9 @@ void GaduEditAccountWidget::createConnectionTab(QTabWidget *tabWidget)
 	QVBoxLayout *layout = new QVBoxLayout(conenctionTab);
 	createGeneralGroupBox(layout);
 
-	proxy = new ProxyGroupBox(account(), tr("Proxy"), this);
-	layout->addWidget(proxy);
+	Proxy = new ProxyGroupBox(account(), tr("Proxy"), this);
+	connect(Proxy, SIGNAL(stateChanged(ModalConfigurationWidgetState)), this, SLOT(dataChanged()));
+	layout->addWidget(Proxy);
 
 	layout->addStretch(100);
 }
@@ -215,10 +216,12 @@ void GaduEditAccountWidget::apply()
 	account().setRememberPassword(RememberPassword->isChecked());
 	account().setPassword(AccountPassword->text());
 	account().setHasPassword(!AccountPassword->text().isEmpty());
-	
-	proxy->apply();
-	
+
+	Proxy->apply();
+
 	gpiw->applyData();
+
+	setState(StateNotChanged);
 }
 
 void GaduEditAccountWidget::cancel()
@@ -233,7 +236,8 @@ void GaduEditAccountWidget::dataChanged()
 		&& account().connectAtStart() == ConnectAtStart->isChecked()
 		&& account().id() == AccountId->text()
 		&& account().rememberPassword() == RememberPassword->isChecked()
-		&& account().password() == AccountPassword->text())
+		&& account().password() == AccountPassword->text()
+		&& StateNotChanged == Proxy->state())
 	{
 		setState(StateNotChanged);
 		ApplyButton->setEnabled(false);
@@ -275,7 +279,7 @@ void GaduEditAccountWidget::loadAccountData()
 
 void GaduEditAccountWidget::loadConnectionData()
 {
-	proxy->loadProxyData();
+	Proxy->loadProxyData();
 }
 
 void GaduEditAccountWidget::removeAccount()
