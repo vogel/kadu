@@ -76,7 +76,6 @@ void GaduEditAccountWidget::createGui()
 	createPersonalDataTab(tabWidget);
 	createBuddiesTab(tabWidget);
 	createConnectionTab(tabWidget);
-// 	tabWidget->addTab(new QWidget(), tr("Functions"));
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 
@@ -202,10 +201,10 @@ void GaduEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	generalLayout->addWidget(portLabel, 1, 4);
 	generalLayout->addWidget(port, 1, 5);
 
-	connect(useDefaultServers, SIGNAL(toggled(bool)), ipAddressesLabel, SLOT(setEnabled(bool)));
-	connect(useDefaultServers, SIGNAL(toggled(bool)), ipAddresses, SLOT(setEnabled(bool)));
-	connect(useDefaultServers, SIGNAL(toggled(bool)), portLabel, SLOT(setEnabled(bool)));
-	connect(useDefaultServers, SIGNAL(toggled(bool)), port, SLOT(setEnabled(bool)));
+	connect(useDefaultServers, SIGNAL(toggled(bool)), ipAddressesLabel, SLOT(setDisabled(bool)));
+	connect(useDefaultServers, SIGNAL(toggled(bool)), ipAddresses, SLOT(setDisabled(bool)));
+	connect(useDefaultServers, SIGNAL(toggled(bool)), portLabel, SLOT(setDisabled(bool)));
+	connect(useDefaultServers, SIGNAL(toggled(bool)), port, SLOT(setDisabled(bool)));
 }
 
 void GaduEditAccountWidget::apply()
