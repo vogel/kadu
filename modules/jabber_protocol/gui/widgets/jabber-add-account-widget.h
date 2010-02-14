@@ -29,6 +29,7 @@
 #include <QtGui/QHBoxLayout>
 
 #include "gui/widgets/account-add-widget.h"
+#include "gui/widgets/identities-combo-box.h"
 
 class QGridLayout;
 class QLineEdit;
@@ -43,12 +44,14 @@ class JabberAddAccountWidget : public AccountAddWidget
 	QLineEdit *AccountName;
 	QLineEdit *Username;
 	QComboBox *Domain;
-	QLineEdit *Password;
+	QLineEdit *AccountPassword;
 	QCheckBox *RememberPassword;
 	QLabel *RemindPassword;
-	ChooseIdentityWidget *Identity;
+	IdentitiesComboBox *Identity;
+	QPushButton *AddAccountButton;
 	
 	void createGui();
+	void resetGui();
 
 private slots:
 	void dataChanged();

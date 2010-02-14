@@ -25,6 +25,8 @@
 
 #include <QtGui/QCheckBox>
 #include <QtGui/QComboBox>
+#include <QtGui/QDialogButtonBox>
+#include <QtGui/QFormLayout>
 #include <QtGui/QGridLayout>
 #include <QtGui/QIntValidator>
 #include <QtGui/QLabel>
@@ -32,8 +34,8 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QRadioButton>
 
-#include "gui/widgets/choose-identity-widget.h"
 #include "gui/windows/message-dialog.h"
+#include "icons-manager.h"
 #include "protocols/protocols-manager.h"
 #include "server/jabber-server-register-account.h"
 #include "jabber-account-details.h"
@@ -60,63 +62,56 @@ JabberCreateAccountWidget::~JabberCreateAccountWidget()
 
 void JabberCreateAccountWidget::createGui()
 { 
-	QGridLayout *gridLayout = new QGridLayout(this);
-	gridLayout->setSpacing(5);
+  	QVBoxLayout *mainLayout = new QVBoxLayout(this);
 
-	gridLayout->setColumnMinimumWidth(0, 20);
-	gridLayout->setColumnStretch(2, 3);
-	gridLayout->setColumnStretch(3, 0);
-	gridLayout->setColumnStretch(4, 1);
-	gridLayout->setColumnStretch(5, 1);
+	QWidget *formWidget = new QWidget(this);
+	mainLayout->addWidget(formWidget);
 
-	int row = 0;
-	
-	QLabel *accountNameLabel = new QLabel(tr("Account Name") + ":", this);
-	gridLayout->addWidget(accountNameLabel, row, 1);
+	QFormLayout *layout = new QFormLayout(formWidget);
+
 	AccountName = new QLineEdit(this);
 	connect(AccountName, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
-	gridLayout->addWidget(AccountName, row++, 2);
+	layout->addRow(tr("Account Name") + ":", AccountName);
+	
+	QWidget *jidWidget = new QWidget(this);
+	QHBoxLayout *jidLayout = new QHBoxLayout(jidWidget);
+	jidLayout->setSpacing(0);
+	jidLayout->setMargin(0);
 
-	QLabel *numberLabel = new QLabel(tr("Username") + ":", this);
-	gridLayout->addWidget(numberLabel, row, 1, Qt::AlignRight);
 	Username = new QLineEdit(this);
 	connect(Username, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
-	gridLayout->addWidget(Username, row, 2, 1, 1);
+	jidLayout->addWidget(Username, 20);
 	
 	QLabel *atLabel = new QLabel("@", this);
-	gridLayout->addWidget(atLabel, row, 3, 1, 1);
+	jidLayout->addWidget(atLabel);
 	
 	Domain = new QComboBox();
 	Domain->setEditable(true);
-	gridLayout->addWidget(Domain, row++, 4, 1, 2);
+	jidLayout->addWidget(Domain, 10);
+	jidLayout->addStretch(100);
 	
-	QLabel *passwordLabel = new QLabel(tr("Password") + ":", this);
-	gridLayout->addWidget(passwordLabel, row, 1, Qt::AlignRight);
-	Password = new QLineEdit(this);
-	connect(Password, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
-	Password->setEchoMode(QLineEdit::Password);
-	gridLayout->addWidget(Password, row++, 2, 1, 3);
-	
-	QLabel *retypePasswordLabel = new QLabel(tr("Retype Password") + ":", this);
-	gridLayout->addWidget(retypePasswordLabel, row, 1, Qt::AlignRight);
-	RetypePassword = new QLineEdit(this);
-	connect(RetypePassword, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
-	RetypePassword->setEchoMode(QLineEdit::Password);
-	gridLayout->addWidget(RetypePassword, row++, 2, 1, 3);
-	
-	RememberPassword = new QCheckBox(tr("Remember Password"), this);
+	layout->addRow(tr("Username") + ":", jidWidget);
+
+	NewPassword = new QLineEdit(this);
+	connect(NewPassword, SIGNAL(textChanged(const QString &)), this, SLOT(dataChanged()));
+	NewPassword->setEchoMode(QLineEdit::Password);
+	layout->addRow(tr("Password") + ":", NewPassword);
+
+	ReNewPassword = new QLineEdit(this);
+	connect(ReNewPassword, SIGNAL(textChanged(const QString &)), this, SLOT(dataChanged()));
+	ReNewPassword->setEchoMode(QLineEdit::Password);
+	layout->addRow(tr("Retype Password") + ":", ReNewPassword);
+
+	RememberPassword = new QCheckBox(tr("Remember password"), this);
 	RememberPassword->setChecked(true);
-	gridLayout->addWidget(RememberPassword, row++, 2, 1, 2);
-	
-	QLabel *descriptionLabel = new QLabel(tr("Account Identity") + ":", this);
-	gridLayout->addWidget(descriptionLabel, row, 1, Qt::AlignRight);
-	Identity = new ChooseIdentityWidget(this);
-	connect(Identity, SIGNAL(identityChanged()), this, SLOT(dataChanged()));
-	gridLayout->addWidget(Identity, row++, 2, 1, 3);
-	
-	QLabel *identityHelpLabel = new QLabel(tr("Select or enter the identity that will be associated with this account."), this);
-	gridLayout->addWidget(identityHelpLabel, row++, 2, 1, 3);
-	
+	layout->addWidget(RememberPassword);
+
+	IdentityCombo = new IdentitiesComboBox(this);
+	connect(IdentityCombo, SIGNAL(activated(int)), this, SLOT(dataChanged()));
+	layout->addRow(tr("Account Identity") + ":", IdentityCombo);
+
+	layout->addRow(0, new QLabel(tr("<font size='-1'><i>Select or enter the identity that will be associated with this account.</i></font>"), this));
+
 	QLabel *moreOptionsLabel = new QLabel;
 	moreOptionsLabel->setText(tr("More options:"));
 
@@ -132,9 +127,10 @@ void JabberCreateAccountWidget::createGui()
 	moreOptionsLayout->insertStretch(-1);
 	moreOptions->setLayout(moreOptionsLayout);
 
-	gridLayout->addWidget(moreOptions, row++, 1, 1, 3);
+	layout->addRow(0, moreOptions);
 
-        ConnectionOptions = new QGroupBox(this);
+	QWidget *OptionsWidget = new QWidget(this);
+        ConnectionOptions = new QGroupBox(OptionsWidget);
 	ConnectionOptions->setTitle(tr("Connection settings"));
 	ConnectionOptions->setVisible(false);
 
@@ -200,7 +196,23 @@ void JabberCreateAccountWidget::createGui()
 	LegacySSLProbe->setChecked(legacy_ssl_probe_);
         vboxLayout2->addWidget(LegacySSLProbe);
 
-	gridLayout->addWidget(ConnectionOptions, row++, 1, 1, 4);
+	layout->addRow(0, OptionsWidget);
+
+	mainLayout->addStretch(100);
+
+	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
+	mainLayout->addWidget(buttons);
+
+	RegisterAccountButton = new QPushButton(IconsManager::instance()->iconByName("ApplyWindowButton"), tr("Regster Account"), this);
+	QPushButton *cancelButton = new QPushButton(IconsManager::instance()->iconByName("CloseWindowButton"), tr("Cancel"), this);
+
+	connect(RegisterAccountButton, SIGNAL(clicked(bool)), this, SLOT(apply()));
+	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(cancel()));
+
+	buttons->addButton(RegisterAccountButton, QDialogButtonBox::ApplyRole);
+	buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
+	
+	dataChanged();
 }
 
 bool JabberCreateAccountWidget::checkSSL()
@@ -243,22 +255,15 @@ void JabberCreateAccountWidget::connectionOptionsChanged()
 
 void JabberCreateAccountWidget::dataChanged()
 {
-// 	RemindPassword->setEnabled(!Username->text().isEmpty());
-///	AddThisAccount->setEnabled(!Username->text().isEmpty() && !Password->text().isEmpty()
-///				   && !Identity->identityName().isEmpty());
-}
+	bool disable = Domain->currentText().isEmpty() || Username->text().isEmpty() || NewPassword->text().isEmpty()
+		       || ReNewPassword->text().isEmpty() || IdentityCombo->currentIndex() == -1;
 
-void JabberCreateAccountWidget::registerAccountDataChanged()
-{
-	bool disable = Domain->currentText().isEmpty() || Username->text().isEmpty() || Password->text().isEmpty()
-		       || RetypePassword->text().isEmpty() || Identity->identityName().isEmpty();
-
-///	RegisterAccount->setEnabled(!disable);
+	RegisterAccountButton->setEnabled(!disable);
 }
 
 void JabberCreateAccountWidget::apply()
 {
-    	if (Password->text() != RetypePassword->text())
+    	if (NewPassword->text() != ReNewPassword->text())
 	{
 		MessageDialog::msg(tr("Error data typed in required fields.\n\n"
 			"Passwords typed in both fields (\"New password\" and \"Retype password\") "
@@ -272,11 +277,28 @@ void JabberCreateAccountWidget::apply()
 	host_ = CustomHost->text();
 	port_ = CustomPort->text().toInt();
 
-	JabberServerRegisterAccount *jsra = new JabberServerRegisterAccount(Domain->currentText(), Username->text(), Password->text(), legacy_ssl_probe_, ssl_ == 2, ssl_ == 0, opt_host_ ? host_ : QString(), port_);
+	JabberServerRegisterAccount *jsra = new JabberServerRegisterAccount(Domain->currentText(), Username->text(), NewPassword->text(), legacy_ssl_probe_, ssl_ == 2, ssl_ == 0, opt_host_ ? host_ : QString(), port_);
 	connect(jsra, SIGNAL(finished(JabberServerRegisterAccount *)),
 			this, SLOT(registerNewAccountFinished(JabberServerRegisterAccount *)));
 
 	jsra->performAction();
+}
+
+void JabberCreateAccountWidget::cancel()
+{
+	resetGui();
+	emit cancelled();
+}
+
+void JabberCreateAccountWidget::resetGui()
+{
+	AccountName->setText("");
+	Username->setText("");
+	Domain->setCurrentIndex(-1);
+	NewPassword->setText("");
+	ReNewPassword->setText("");
+	RememberPassword->setChecked(true);
+	IdentityCombo->setCurrentIdentity(Identity::null);
 }
 
 void JabberCreateAccountWidget::registerNewAccountFinished(JabberServerRegisterAccount *jsra)
@@ -294,7 +316,7 @@ void JabberCreateAccountWidget::registerNewAccountFinished(JabberServerRegisterA
 		jabberAccount.setProtocolName("jabber");
 		//jabberAccount.setName(AccountName->text());
 		jabberAccount.setId(jsra->jid());
-		jabberAccount.setPassword(Password->text());
+		jabberAccount.setPassword(NewPassword->text());
 		details->setTlsOverrideDomain(jsra->client()->tlsOverrideDomain());
 		jabberAccount.setRememberPassword(RememberPassword->isChecked());
 

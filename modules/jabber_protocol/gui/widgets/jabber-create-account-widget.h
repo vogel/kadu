@@ -33,6 +33,7 @@
 #include <QtGui/QWidget>
 
 #include "accounts/account.h"
+#include "gui/widgets/identities-combo-box.h"
 
 class QGridLayout;
 class QLineEdit;
@@ -49,11 +50,12 @@ class JabberCreateAccountWidget : public QWidget
 	QLineEdit *AccountName;
 	QLineEdit *Username;
 	QComboBox *Domain;
-	QLineEdit *Password;
-	QLineEdit *RetypePassword;
+	QLineEdit *NewPassword;
+	QLineEdit *ReNewPassword;
 	QCheckBox *RememberPassword;
 	QLabel *RemindPassword;
-	ChooseIdentityWidget *Identity;
+	IdentitiesComboBox *IdentityCombo;
+	QPushButton *RegisterAccountButton;
 
 	QPushButton *ExpandConnectionOptionsButton;
 	QGroupBox *ConnectionOptions;
@@ -75,22 +77,23 @@ class JabberCreateAccountWidget : public QWidget
 	
 	void createGui();
 	bool checkSSL();
+	void resetGui();
 
 private slots:
 	void dataChanged();
-	void registerAccountDataChanged();
 	void registerNewAccountFinished(JabberServerRegisterAccount *jsra);
 	void connectionOptionsChanged();
 	void hostToggled(bool on);
 	void sslActivated(int i);
+	void cancel();
+	virtual void apply();
 public:
 	explicit JabberCreateAccountWidget(QWidget *parent = 0);
 	virtual ~JabberCreateAccountWidget();
-	
-	virtual void apply();
 
 signals:
 	void accountCreated(Account account);
+	void cancelled();
 
 };
 
