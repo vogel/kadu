@@ -172,7 +172,7 @@ void TlenEditAccountWidget::apply()
 	account().setPassword(AccountPassword->text());
 	account().setHasPassword(!AccountPassword->text().isEmpty());
 
-	proxy->applyProxyData();
+	proxy->apply();
 
 	gpiw->applyData();
 }

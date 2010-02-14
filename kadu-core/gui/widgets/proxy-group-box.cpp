@@ -20,6 +20,7 @@
 
 #include <QtGui/QCheckBox>
 #include <QtGui/QGridLayout>
+#include <QtGui/QGroupBox>
 #include <QtGui/QIntValidator>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
@@ -29,9 +30,14 @@
 #include "proxy-group-box.h"
 
 ProxyGroupBox::ProxyGroupBox(Account account, const QString &title, QWidget *parent) :
-		QGroupBox(title, parent), MyAccount(account)
+		ModalConfigurationWidget(parent), MyAccount(account)
 {
-	QGridLayout *proxyLayout = new QGridLayout(this);
+	QHBoxLayout *layout = new QHBoxLayout(this);
+
+	GroupBox = new QGroupBox(title, this);
+	layout->addWidget(GroupBox);
+
+	QGridLayout *proxyLayout = new QGridLayout(GroupBox);
 	proxyLayout->setColumnMinimumWidth(0, 20);
 
 	UseProxy = new QCheckBox(tr("Use the following proxy"));
@@ -112,7 +118,7 @@ void ProxyGroupBox::loadProxyData()
 	Password->setText(MyAccount.proxyPassword());
 }
 
-void ProxyGroupBox::applyProxyData()
+void ProxyGroupBox::apply()
 {
 	MyAccount.setUseProxy(UseProxy->isChecked());
 
@@ -124,4 +130,9 @@ void ProxyGroupBox::applyProxyData()
 	MyAccount.setProxyRequiresAuthentication(ProxyAuthentication->isChecked());
 	MyAccount.setProxyUser(Username->text());
 	MyAccount.setProxyPassword(Password->text());
+}
+
+void ProxyGroupBox::cancel()
+{
+	loadProxyData();
 }

@@ -22,22 +22,22 @@
 #ifndef PROXY_GROUP_BOX_H
 #define PROXY_GROUP_BOX_H
 
-#include <QtGui/QGroupBox>
-
+#include "gui/widgets/modal-configuration-widget.h"
 #include "exports.h"
 
 class Account;
 
 class QCheckBox;
+class QGroupBox;
 class QLabel;
 class QLineEdit;
 
-class KADUAPI ProxyGroupBox : public QGroupBox
+class KADUAPI ProxyGroupBox : public ModalConfigurationWidget
 {
 	Account MyAccount;
 
 	QWidget *ProxyAuthWidget;
-
+	QGroupBox *GroupBox;
 	QCheckBox *UseProxy;
 	QLineEdit *Host;
 	QLineEdit *ProxyPort;
@@ -49,7 +49,11 @@ public:
 	ProxyGroupBox(Account account, const QString &title, QWidget *parent = 0);
 
 	void loadProxyData();
-	void applyProxyData();
+
+public slots:
+	void apply();
+	void cancel();
+
 };
 
 #endif // PROXY_GROUP_BOX_H
