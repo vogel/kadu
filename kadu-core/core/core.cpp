@@ -49,6 +49,7 @@
 #include "status/status-container-manager.h"
 #include "status/status-type.h"
 #include "status/status-type-manager.h"
+#include "url-handlers/url-handler-manager.h"
 
 #include "activate.h"
 #include "debug.h"
@@ -460,9 +461,10 @@ void Core::setIcon(const QPixmap &pixmap)
 
 void Core::receivedSignal(const QString &signal)
 {
-	qDebug("received signal: %s", qPrintable(signal));
 	if ("activate" == signal)
 		_activateWindow(Window);
+	else
+		UrlHandlerManager::instance()->openUrl(signal);
 }
 
 void Core::quit()
