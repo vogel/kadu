@@ -137,12 +137,14 @@ void openWebBrowser(const QString &link)
 	QString webBrowser = config_file.readEntry("Chat", "WebBrowser", QString::null);
 	if (webBrowser.isEmpty())
 	{
-		if(!QDesktopServices::openUrl(QUrl(link))){
+		if (!QDesktopServices::openUrl(QUrl(link)))
+		{
 			MessageDialog::msg(qApp->translate("@default", QT_TR_NOOP("Web browser was not specified. Visit the configuration section")), false, "32x32/dialog-warning.png");
 			kdebugmf(KDEBUG_INFO, "Web browser NOT specified.\n");
 			return;
 		}
-		else {
+		else
+		{
 			kdebugf2();
 			return;
 		}
@@ -169,10 +171,11 @@ void openMailClient(const QString &mail)
 	QString mailClient = config_file.readEntry("Chat", "MailClient", QString::null);
 	if (mailClient.isEmpty())
 	{
-		if(!mail.startsWith("mailto:"))
-			email="mailto:"+mail;
+		if (!mail.startsWith("mailto:"))
+			email = "mailto:" + mail;
 
-		if(!QDesktopServices::openUrl(email)){
+		if (!QDesktopServices::openUrl(email))
+		{
 			MessageDialog::msg(qApp->translate("@default", QT_TR_NOOP("Mail client was not specified. Visit the configuration section")), false, "32x32/dialog-warning.png");
 			kdebugmf(KDEBUG_INFO, "Mail client NOT specified.\n");
 			return;

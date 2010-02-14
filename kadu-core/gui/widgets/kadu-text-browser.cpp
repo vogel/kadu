@@ -34,10 +34,11 @@
 
 #include "configuration/configuration-file.h"
 #include "gui/windows/message-dialog.h"
+#include "misc/misc.h"
+#include "url-handlers/url-handler-manager.h"
 
 #include "debug.h"
 #include "html_document.h"
-#include "misc/misc.h"
 
 #include "kadu-text-browser.h"
 
@@ -121,18 +122,7 @@ void KaduTextBrowser::contextMenuEvent(QContextMenuEvent *event)
 
 void KaduTextBrowser::hyperlinkClicked(const QUrl &anchor) const
 {
-	const QString &link = anchor.toString();
-	if (link.contains(HtmlDocument::urlRegExp()))
-	{
-		if (link.startsWith("www."))
-			openWebBrowser("http://" + link);
-		else
-			openWebBrowser(link);
-	}
-	else if (link.contains(HtmlDocument::mailRegExp()))
-		openMailClient(link);
-	else if (link.contains(HtmlDocument::ggRegExp()))
-		openGGChat(link);
+	UrlHandlerManager::instance()->openUrl(anchor.toString());
 }
 
 void KaduTextBrowser::mouseReleaseEvent(QMouseEvent *e)

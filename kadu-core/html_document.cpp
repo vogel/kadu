@@ -186,99 +186,26 @@ void HtmlDocument::setElementValue(int index, const QString &text, bool tag)
 
 void HtmlDocument::splitElement(int &index, int start, int length)
 {
-	Element& e=Elements[index];
-	if(start>0)
+	Element &e = Elements[index];
+	if (start > 0)
 	{
 		Element pre;
-		pre.tag=e.tag;
-		pre.text=e.text.left(start);
+		pre.tag = e.tag;
+		pre.text = e.text.left(start);
 		Elements.insert(index, pre);
 		++index;
 	}
-	if(start+length<e.text.length())
+	if (start + length < e.text.length())
 	{
 		Element post;
-		post.tag=e.tag;
-		post.text=e.text.right(e.text.length()-(start+length));
-		if(index+1<Elements.size())
-			Elements.insert(index+1, post);
+		post.tag = e.tag;
+		post.text = e.text.right(e.text.length() - (start+length));
+		if (index + 1 < Elements.size())
+			Elements.insert(index + 1, post);
 		else
 			Elements.append(post);
 	}
-	e.text=e.text.mid(start,length);
-}
-
-QRegExp *HtmlDocument::url_regexp = 0;
-
-const QRegExp &HtmlDocument::urlRegExp()
-{
-	if (!url_regexp)
-	// TODO: WTF? fix it!!!!!!!!!!!!!!!!!!!!!!!
-		url_regexp = new QRegExp(latin2unicode("(http://|https://|www\\.|ftp://|ftp\\.|sftp://|smb://|file:/|rsync://|svn://|svn\\+ssh://)[a-zA-Z0-9�󱶳�����ӡ������\\*\\-\\._/~?=&#\\+%\\(\\)\\[\\]:;,!@\\\\]*"));
-	return *url_regexp;
-}
-
-void HtmlDocument::convertUrlsToHtml()
-{
-	QRegExp r = urlRegExp();
-	for(int i = 0; i < countElements(); ++i)
-	{
-		if(isTagElement(i))
-			continue;
-
-		QString text = elementText(i);
-		int p = r.indexIn(text);
-		if (p < 0)
-			continue;
-
-		int l = r.matchedLength();
-		int lft = config_file.readNumEntry("Chat", "LinkFoldTreshold");
-
-		QString link;
-		QString displayLink = text.mid(p, l);
-		QString aLink = displayLink;
-
-		aLink.replace("%20", "%2520"); // Opera's bug workaround - allows opening links with spaces
-		if (!aLink.contains("://"))
-			aLink.prepend("http://");
-
-		if ((l - p > lft) && config_file.readBoolEntry("Chat", "FoldLink"))
-			link = "<a href=\"" + aLink + "\">" + text.mid(p, p+(lft/2)) + "..." + text.mid(l-(lft/2), lft/2) + "</a>";
-		else
-			link = "<a href=\"" + aLink + "\">" + displayLink + "</a>";
-
-		splitElement(i, p, l);
-		setElementValue(i, link, true);
-	}
-}
-
-QRegExp *HtmlDocument::mail_regexp = 0;
-
-const QRegExp &HtmlDocument::mailRegExp()
-{
-	if (!mail_regexp)
-		mail_regexp = new QRegExp(latin2unicode("(mailto:){0,1}[a-zA-Z0-9_\\.\\-]+@[a-zA-Z0-9\\-\\.]+\\.[a-zA-Z]{2,4}"));
-	return *mail_regexp;
-}
-
-void HtmlDocument::convertMailToHtml()
-{
-	QRegExp m = mailRegExp();
-	for (int i = 0; i < countElements(); ++i)
-	{
-		if (isTagElement(i))
-			continue;
-
-		QString text = elementText(i);
-		int p = m.indexIn(text);
-		if (p < 0)
-			continue;
-		unsigned int l = m.matchedLength();
-		QString mail = text.mid(p, l);
-		
-		splitElement(i, p, l);
-		setElementValue(i, "<a href=\"mailto:" + mail + "\">" + mail + "</a>", true);
-	}
+	e.text = e.text.mid(start, length);
 }
 
 QRegExp *HtmlDocument::gg_regexp = 0;

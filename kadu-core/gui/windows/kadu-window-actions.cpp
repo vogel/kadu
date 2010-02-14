@@ -59,10 +59,10 @@
 #include "parser/parser.h"
 #include "status/status-changer-manager.h"
 #include "status/status-container-manager.h"
+#include "url-handlers/url-handler-manager.h"
 
 #include "about.h"
 #include "debug.h"
-#include "html_document.h"
 #include "ignore.h"
 #include "modules.h"
 
@@ -201,7 +201,7 @@ void disableNoGaduDescriptionUrl(Action *action)
 		return;
 	}
 
-	if (status.description().indexOf(HtmlDocument::urlRegExp()) < 0)
+	if (status.description().indexOf(UrlHandlerManager::instance()->urlRegExp()) < 0)
 	{
 		action->setEnabled(false);
 		return;
@@ -223,7 +223,7 @@ void disableNoEMail(Action *action)
 
 	const Buddy buddy = action->contact().ownerBuddy();
 
-	if (buddy.email().isEmpty() || buddy.email().indexOf(HtmlDocument::mailRegExp()) < 0)
+	if (buddy.email().isEmpty() || buddy.email().indexOf(UrlHandlerManager::instance()->mailRegExp()) < 0)
 	{
 		action->setEnabled(false);
 		return;
@@ -764,7 +764,7 @@ void KaduWindowActions::openDescriptionLinkActionActivated(QAction *sender, bool
 	if (description.isEmpty())
 		return;
 
-	QRegExp url = HtmlDocument::urlRegExp();
+	QRegExp url = UrlHandlerManager::instance()->urlRegExp();
 	int idx_start = url.indexIn(description);
 	if (idx_start >= 0)
 		openWebBrowser(description.mid(idx_start, url.matchedLength()));

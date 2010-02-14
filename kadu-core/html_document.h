@@ -48,8 +48,7 @@ class KADUAPI HtmlDocument
 	};
 	QList<Element> Elements;
 	void addElement(Element e);
-	static QRegExp *url_regexp;
-	static QRegExp *mail_regexp;
+
 	static QRegExp *gg_regexp;
 
 public:
@@ -140,34 +139,10 @@ public:
 	void splitElement(int &index, int start, int length);
 
 	/**
-		Skanuje tekst w poszukiwaniu adres�w www,
-		np. "www.kadu.net" i zmienia je w linki html.
-	**/
-	void convertUrlsToHtml();
-
-	/**
-		Skanuje tekst w poszukiwaniu adres�w email
-		i zamienia je w linki html.
-	**/
-	void convertMailToHtml();
-
-	/**
 		Skanuje tekst w poszukiwaniu numer�w gg
 		i zamienia je w linki html.
 	**/
 	void convertGGToHtml();
-
-	/**
-		Wyra�enie regularne przydatne w poszukiwaniu
-		adres�w www (i innych).
-	**/
-	static const QRegExp & urlRegExp();
-
-	/**
-		Wyra�enie regularne przydatne w poszukiwaniu
-		adres�w email.
-	**/
-	static const QRegExp & mailRegExp();
 
 	/**
 		Wyra�enie regularne przydatne w poszukiwaniu

@@ -23,9 +23,9 @@
 
 #include "chat/message/formatted-message-part.h"
 #include "configuration/configuration-file.h"
-#include "parser/parser.h"
-
 #include "misc/misc.h"
+#include "parser/parser.h"
+#include "url-handlers/url-handler-manager.h"
 
 #include "message-render-info.h"
 
@@ -33,8 +33,7 @@ QString formatMessage(const QString &text, const QString &backgroundColor)
 {
 	HtmlDocument htmlDocument;
 	htmlDocument.parseHtml(text);
-	htmlDocument.convertUrlsToHtml();
-	htmlDocument.convertMailToHtml();
+	UrlHandlerManager::instance()->convertAllUrls(htmlDocument);
 	EmoticonsManager::instance()->expandEmoticons(htmlDocument, backgroundColor, (EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle"));
 // 	GaduImagesManager::setBackgroundsForAnimatedImages(htmlDocument, backgroundColor);
 

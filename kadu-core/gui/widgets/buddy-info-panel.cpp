@@ -26,6 +26,7 @@
 #include "configuration/configuration-file.h"
 #include "misc/syntax-list.h"
 #include "parser/parser.h"
+#include "url-handlers/url-handler-manager.h"
 
 #include "debug.h"
 #include "emoticons.h"
@@ -116,8 +117,8 @@ void BuddyInfoPanel::displayBuddy(Buddy buddy)
 
 	HtmlDocument doc;
 	doc.parseHtml(Parser::parse(Syntax, MyBuddy.prefferedAccount(), MyBuddy));
-	doc.convertUrlsToHtml();
-	doc.convertMailToHtml();
+	UrlHandlerManager::instance()->convertAllUrls(doc);
+
 	if (EmoticonsStyleNone != (EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") &&
 			config_file.readBoolEntry("General", "ShowEmotPanel"))
 		EmoticonsManager::instance()->expandEmoticons(doc,

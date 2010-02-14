@@ -35,7 +35,7 @@
 #include "gui/widgets/identities-combo-box.h"
 #include "gui/windows/message-dialog.h"
 #include "protocols/protocols-manager.h"
-#include "html_document.h"
+#include "url-handlers/url-handler-manager.h"
 #include "icons-manager.h"
 
 #include "../../server/gadu-server-register-account.h"
@@ -137,7 +137,7 @@ void GaduCreateAccountWidget::dataChanged()
 			|| AccountName->text().isEmpty()
 			|| NewPassword->text().isEmpty()
 			|| ReNewPassword->text().isEmpty()
-			|| EMail->text().indexOf(HtmlDocument::mailRegExp()) < 0
+			|| EMail->text().indexOf(UrlHandlerManager::instance()->mailRegExp()) < 0
 			|| MyTokenWidget->tokenValue().isEmpty()
 			|| NewPassword->text() != ReNewPassword->text()
 			|| !IdentityCombo->currentIdentity();
