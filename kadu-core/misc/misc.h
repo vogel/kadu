@@ -21,10 +21,11 @@
 #ifndef KADU_MISC_H
 #define KADU_MISC_H
 
+#include <QtGui/QApplication>
+
 #include "coding-conversion.h"
 #include "date-time.h"
 #include "path-conversion.h"
-#include <QtGui/QApplication>
 
 extern KADUAPI QTextCodec *codec_cp1250;
 extern KADUAPI QTextCodec *codec_latin2;
@@ -37,7 +38,6 @@ QString translateLanguage(const QApplication *application, const QString &locale
 
 KADUAPI void openWebBrowser(const QString &link);
 KADUAPI void openMailClient(const QString &mail);
-void openGGChat(const QString &gg);
 
 QString versionToName(const unsigned int version);
 

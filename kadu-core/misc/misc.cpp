@@ -204,25 +204,6 @@ void openMailClient(const QString &mail)
 	kdebugf2();
 }
 
-void openGGChat(const QString &gg)
-{
-	kdebugf();
-
-	QString gadu = gg;
-	if (gadu.startsWith("gg:"))
-	{
-		gadu.remove(0, 3);
-		gadu.remove(QRegExp("/*"));
-	}
-
-	Account account = AccountManager::instance()->defaultAccount();
-	BuddySet contacts(ContactManager::instance()->byId(account, gadu).ownerBuddy());
-// TODO: 0.6.6
-// 	chat_manager->openPendingMsgs(contacts);
-
-	kdebugf2();
-}
-
 QString versionToName(const unsigned int version)
 {
 	kdebugf();

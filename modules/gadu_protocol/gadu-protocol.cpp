@@ -46,6 +46,7 @@
 #include "status/status.h"
 #include "status/status-type.h"
 #include "status/status-type-manager.h"
+#include "url-handlers/url-handler-manager.h"
 
 #include "debug.h"
 #include "icons-manager.h"
@@ -62,6 +63,7 @@
 #include "gadu-contact-details.h"
 #include "gadu-protocol-factory.h"
 #include "gadu-resolver.h"
+#include "gadu-url-handler.h"
 
 #include "gadu-protocol.h"
 
@@ -87,6 +89,7 @@ extern "C" int gadu_protocol_init(bool firstLoad)
 	gg_global_set_custom_resolver(gadu_resolver_start, gadu_resolver_cleanup);
 
 	ProtocolsManager::instance()->registerProtocolFactory(GaduProtocolFactory::instance());
+	UrlHandlerManager::instance()->registerUrlHandler("Gadu", new GaduUrlHandler());
 
 	if (!xml_config_file->hasNode("Accounts"))
 		GaduImporter::instance()->importAccounts();
@@ -98,6 +101,7 @@ extern "C" int gadu_protocol_init(bool firstLoad)
 
 extern "C" void gadu_protocol_close()
 {
+	UrlHandlerManager::instance()->unregisterUrlHandler("Gadu");
 	ProtocolsManager::instance()->unregisterProtocolFactory(GaduProtocolFactory::instance());
 }
 

@@ -17,46 +17,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef URL_HANDLER_MANAGER_H
-#define URL_HANDLER_MANAGER_H
+#ifndef GADU_URL_HANDLER_H
+#define GADU_URL_HANDLER_H
 
-#include <QtCore/QMap>
+#include <QtCore/QRegExp>
 
-#include "html_document.h"
+#include "url-handlers/url-handler.h"
 
-class MailUrlHandler;
-class StandardUrlHandler;
-class UrlHandler;
-
-class UrlHandlerManager
+class GaduUrlHandler : public UrlHandler
 {
-	Q_DISABLE_COPY(UrlHandlerManager)
-
-	static UrlHandlerManager *Instance;
-	UrlHandlerManager();
-
-	QMap<QString, UrlHandler *> RegisteredHandlers;
-
-	MailUrlHandler *mailUrlHandler;
-	StandardUrlHandler *standardUrlHandler;
+	QRegExp GaduRegExp;
 
 public:
-	static UrlHandlerManager * instance();
-	~UrlHandlerManager();
+	GaduUrlHandler();
 
-	void registerUrlHandler(const QString &name, UrlHandler *handler);
-	void unregisterUrlHandler(const QString &name);
+	bool isUrlValid(const QString &url);
 
-	void convertAllUrls(HtmlDocument &document);
+	void convertUrlsToHtml(HtmlDocument &document);
 
 	void openUrl(const QString &url);
-
-	// TODO:
-	//for mail validation:
-	const QRegExp & mailRegExp();
-
-	//for link validation
-	const QRegExp & urlRegExp();
 };
 
-#endif // URL_HANDLER_MANAGER_H
+#endif // GADU_URL_HANDLER_H

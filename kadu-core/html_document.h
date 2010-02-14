@@ -29,8 +29,6 @@
 
 #include "exports.h"
 
-class QRegExp;
-
 /**
 	TODO: replace, refactor, remove or something
 
@@ -48,8 +46,6 @@ class KADUAPI HtmlDocument
 	};
 	QList<Element> Elements;
 	void addElement(Element e);
-
-	static QRegExp *gg_regexp;
 
 public:
 	static void escapeText(QString &text);
@@ -137,18 +133,6 @@ public:
 		indeks wydzielonego elementu by� aktualny.
 	**/
 	void splitElement(int &index, int start, int length);
-
-	/**
-		Skanuje tekst w poszukiwaniu numer�w gg
-		i zamienia je w linki html.
-	**/
-	void convertGGToHtml();
-
-	/**
-		Wyra�enie regularne przydatne w poszukiwaniu
-		numer�w gg.
-	**/
-	static const QRegExp & ggRegExp();
 
 };
 

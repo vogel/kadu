@@ -56,6 +56,7 @@ set (SOURCES
 	gadu-protocol.cpp
 	gadu-protocol-factory.cpp
 	gadu-resolver.cpp
+	gadu-url-handler.cpp
 )
 
 set (MOC_SOURCES

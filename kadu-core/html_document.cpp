@@ -207,32 +207,3 @@ void HtmlDocument::splitElement(int &index, int start, int length)
 	}
 	e.text = e.text.mid(start, length);
 }
-
-QRegExp *HtmlDocument::gg_regexp = 0;
-
-const QRegExp &HtmlDocument::ggRegExp()
-{
-	if (!gg_regexp)
-		gg_regexp = new QRegExp(latin2unicode("gg:(/){0,3}[0-9]{1,8}"));
-	return *gg_regexp;
-}
-
-void HtmlDocument::convertGGToHtml()
-{
-	QRegExp g = ggRegExp();
-	for (int i = 0; i < countElements(); ++i)
-	{
-		if (isTagElement(i))
-			continue;
-
-		QString text = elementText(i);
-		int p = g.indexIn(text);
-		if (p < 0)
-			continue;
-		unsigned int l = g.matchedLength();
-		QString gg = text.mid(p, l);
-
-		splitElement(i, p, l);
-		setElementValue(i, "<a href=\"" + gg + "\">" + gg + "</a>", true);
-	}
-}
