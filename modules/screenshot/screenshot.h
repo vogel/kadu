@@ -21,11 +21,10 @@
 #ifndef SCREENSHOT_H
 #define SCREENSHOT_H
 
-#include <QtGui/QWidget>
+#include <QtGui/QLabel>
 
 #include <X11/extensions/shape.h>
 
-class QLabel;
 class QMenu;
 
 class ActionDescription;
@@ -51,7 +50,7 @@ public:
 
 };
 
-class ScreenShot : public QWidget
+class ScreenShot : public QLabel
 {
 	Q_OBJECT
 

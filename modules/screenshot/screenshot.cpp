@@ -23,8 +23,10 @@
 #include <vector>
 
 #include <QtCore/QBuffer>
+#include <QtCore/QDateTime>
 #include <QtCore/QDir>
 #include <QtCore/QRect>
+#include <QtCore/QTimer>
 #include <QtGui/QApplication>
 #include <QtGui/QBitmap>
 #include <QtGui/QDesktopWidget>
@@ -36,28 +38,35 @@
 #include <QtGui/QPainter>
 #include <QtGui/QX11Info>
 
-#include "configuration/configuration-window-widgets.h"
-#include "action.h"
-#include "chat_edit_box.h"
-#include "chat_widget.h"
-#include "config_file.h"
-#include "custom_input.h"
+#include "configuration/configuration-file.h"
+#include "gui/widgets/configuration/config-combo-box.h"
+#include "gui/widgets/configuration/configuration-widget.h"
+#include "gui/widgets/chat-edit-box.h"
+#include "gui/widgets/chat-widget.h"
+#include "gui/widgets/custom-input.h"
+#include "gui/windows/main-configuration-window.h"
+#include "gui/windows/message-dialog.h"
+#include "misc/path-conversion.h"
+#include "notify/notification.h"
+#include "notify/notification-manager.h"
+#include "notify/notify-event.h"
 #include "debug.h"
-#include "message_box.h"
-
-#include "../notify/notify.h"
 
 #include "screenshot.h"
 
-ScreenShot* screenShot;
+ScreenShot *screenShot;
+NotifyEvent *ScreenShotImageSizeLimit = 0;
 
 extern "C" int screenshot_init(bool firstLoad)
 {
 	kdebugf();
 
+	ScreenShotImageSizeLimit = new NotifyEvent("ssSizeLimit", NotifyEvent::CallbackNotRequired, "ScreenShot images size limit");
+
 	screenShot = new ScreenShot(firstLoad);
-	notification_manager->registerEvent("ssSizeLimit", "ScreenShot images size limit", CallbackNotRequired);
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/screenshot.ui"), screenShot->configurationUiHandler());
+	NotificationManager::instance()->registerNotifyEvent(ScreenShotImageSizeLimit);
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/screenshot.ui"));
+	MainConfigurationWindow::registerUiHandler(screenShot->configurationUiHandler());
 
 	return 0;
 }
@@ -66,8 +75,12 @@ extern "C" void screenshot_close()
 {
 	kdebugf();
 
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/screenshot.ui"), screenShot->configurationUiHandler());
-	notification_manager->unregisterEvent("ssSizeLimit");
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/screenshot.ui"));
+	MainConfigurationWindow::unregisterUiHandler(screenShot->configurationUiHandler());
+	NotificationManager::instance()->unregisterNotifyEvent(ScreenShotImageSizeLimit);
+
+	delete ScreenShotImageSizeLimit;
+	ScreenShotImageSizeLimit = 0;
 
 	delete screenShot;
 	screenShot = 0;
@@ -78,9 +91,11 @@ extern "C" void screenshot_close()
 ShotSizeHint::ShotSizeHint()
 	: QWidget(0, Qt::Tool | Qt::CustomizeWindowHint | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint)
 {
-	QGridLayout *g = new QGridLayout(this, 1, 1);
-	geom = new QLabel(this, "");
-	fileSize = new QLabel(this, "0 KB");
+	QGridLayout *g = new QGridLayout(this);
+	g->setMargin(1);
+	g->setSpacing(1);
+	geom = new QLabel(this);
+	fileSize = new QLabel(tr("0 KB"), this);
 	g->addWidget(geom, 0, 0);
 	g->addWidget(fileSize, 1, 0);
 }
@@ -92,15 +107,15 @@ class ScreenShotConfigurationUiHandler : public ConfigurationUiHandler
 public:
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 	{
-		connect(mainConfigurationWindow->widgetById("screenshot/enableSizeLimit"), SIGNAL(toggled(bool)),
-			mainConfigurationWindow->widgetById("screenshot/sizeLimit"), SLOT(setEnabled(bool)));
+		connect(mainConfigurationWindow->widget()->widgetById("screenshot/enableSizeLimit"), SIGNAL(toggled(bool)),
+				mainConfigurationWindow->widget()->widgetById("screenshot/sizeLimit"), SLOT(setEnabled(bool)));
 
 		QStringList opts;
 		QList<QByteArray> byteArrayOpts = QImageWriter::supportedImageFormats();
 		foreach (const QByteArray &opt, byteArrayOpts)
 			opts.append(QString(opt));
 
-		ConfigComboBox *formats = dynamic_cast<ConfigComboBox *>(mainConfigurationWindow->widgetById("screenshot/formats"));
+		ConfigComboBox *formats = dynamic_cast<ConfigComboBox *>(mainConfigurationWindow->widget()->widgetById("screenshot/formats"));
 		if (formats)
 			formats->setItems(opts, opts);
 	}
@@ -108,8 +123,8 @@ public:
 
 //-----------------------------------------------------------------------------------
 
-ScreenShot::ScreenShot(bool firstLoad)
- : QWidget(0, Qt::Tool | Qt::CustomizeWindowHint | Qt::FramelessWindowHint)
+ScreenShot::ScreenShot(bool firstLoad) :
+		QLabel(0, Qt::Tool | Qt::CustomizeWindowHint | Qt::FramelessWindowHint)
 {
 	kdebugf();
 	minSize = 8;
@@ -127,7 +142,7 @@ ScreenShot::ScreenShot(bool firstLoad)
 	UiHandler = new ScreenShotConfigurationUiHandler();
 
 	// Chat toolbar button
-	screenShotAction = new ActionDescription(
+	screenShotAction = new ActionDescription(this,
 		ActionDescription::TypeChat, "ScreenShotAction",
 		this, SLOT(screenshotActionActivated(QAction *, bool)),
 		"external_modules/module_screenshot-shot.png", "external_modules/module_screenshot-shot.png", tr("ScreenShot"), false, ""
@@ -158,6 +173,8 @@ ScreenShot::~ScreenShot()
 
 void ScreenShot::screenshotActionActivated(QAction *sender, bool toggled)
 {
+	Q_UNUSED(toggled)
+
 	kdebugf();
 
 	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(sender->parent());
@@ -219,6 +236,8 @@ void ScreenShot::mousePressEvent(QMouseEvent *e)
 
 void ScreenShot::paintEvent(QPaintEvent *e)
 {
+	Q_UNUSED(e)
+
 	if (!ShowPaintRect)
 		return;
 
@@ -259,7 +278,7 @@ void ScreenShot::mouseReleaseEvent(QMouseEvent *e)
 
 	// Normalizowanie prostok�ta do zrzutu
 	region.setBottomRight(e->pos());
-	region = region.normalize();
+	region = region.normalized();
 
 	// Zrzut
 	ShowPaintRect = false;
@@ -281,7 +300,7 @@ void ScreenShot::handleShot(QPixmap p)
 		return;
 
 	// Plik do zapisu:
-	QString dirPath = config_file.readEntry("ScreenShot", "path", ggPath("images/"));
+	QString dirPath = config_file.readEntry("ScreenShot", "path", profilePath("images/"));
 
 	QDir dir(dirPath);
 	if (!dir.exists() && !dir.mkpath(dirPath))
@@ -292,18 +311,18 @@ void ScreenShot::handleShot(QPixmap p)
 
 	bool useShortJpg = config_file.readBoolEntry("ScreenShot", "use_short_jpg", false);
 
-	QString ext = config_file.readEntry("ScreenShot", "fileFormat", "PNG").lower();
+	QString ext = config_file.readEntry("ScreenShot", "fileFormat", "PNG").toLower();
 	if (useShortJpg && ext == "jpeg")
 		ext = "jpg";
 
-	QString path = QDir::cleanDirPath(
+	QString path = QDir::cleanPath(
 		dir.absolutePath() + "/" +
 		config_file.readEntry("ScreenShot", "filenamePrefix", "shot") +
 		QString::number(QDateTime::currentDateTime().toTime_t()) + "." +
 		ext
 	);
 
-	const char *format = config_file.readEntry("ScreenShot", "fileFormat", "PNG").ascii();
+	const char *format = config_file.readEntry("ScreenShot", "fileFormat", "PNG").toAscii();
 	int quality = config_file.readNumEntry("ScreenShot", "quality", -1);
 	if (!p.save(path, format, quality))
 	{
@@ -327,12 +346,13 @@ void ScreenShot::handleShot(QPixmap p)
 	if (config_file.readBoolEntry("ScreenShot", "paste_clause", true))
 	{
 		// Sprawdzanie rozmiaru zrzutu wobec rozm�wc�w
-		UserListElements users = chatWidget->users()->toUserListElements();
-		if (users.count() > 1)
-			checkConferenceImageSizes(size);
-		else
-			if (!checkSingleUserImageSize(size))
-				return;
+		// TODO: 0.6.6
+// 		UserListElements users = chatWidget->users()->toUserListElements();
+// 		if (users.count() > 1)
+// 			checkConferenceImageSizes(size);
+// 		else
+// 			if (!checkSingleUserImageSize(size))
+// 				return;
 
 		pasteImageClause(path);
 	}
@@ -348,6 +368,9 @@ void ScreenShot::pasteImageClause(const QString &path)
 
 void ScreenShot::checkConferenceImageSizes(int size)
 {
+	Q_UNUSED(size)
+	//TODO: 0.6.6, for now, assume it is ok
+	/*
 	UserListElements users = chatWidget->users()->toUserListElements();
 	QStringList list;
 
@@ -361,17 +384,22 @@ void ScreenShot::checkConferenceImageSizes(int size)
 	if (list.count() == users.count())
 		MessageDialog::msg(tr("Image size is bigger than maximal image size\nset by all of conference contacts."), true);
 	else
-		MessageDialog::msg(tr("Image size is bigger than maximal image size\nset by some of conference contacts:\n%1.").arg(list.join(", ")), true);
+		MessageDialog::msg(tr("Image size is bigger than maximal image size\nset by some of conference contacts:\n%1.").arg(list.join(", ")), true);*/
 }
 
 bool ScreenShot::checkSingleUserImageSize(int size)
 {
-	UserListElements users = chatWidget->users()->toUserListElements();
+	Q_UNUSED(size)
+	//TODO: 0.6.6, for now, assume it is ok
+	return true;
+	/*
+	contacts = chatWidget->chat().contacts();
 
 	if (users[0].protocolData("Gadu", "MaxImageSize").toInt() * 1024 >= size)
 		return true;
 
 	return MessageDialog::ask(tr("Image size is bigger than maximal image size set by %1. Send it anyway?").arg(users[0].altNick()));
+	*/
 }
 
 void ScreenShot::keyPressEvent(QKeyEvent* e)
@@ -420,7 +448,7 @@ void ScreenShot::takeShot_Step2()
 {
 	pixmap = QPixmap::grabWindow(QApplication::desktop()->winId());
 	resize(pixmap.size());
-	setPaletteBackgroundPixmap(pixmap);
+	setPixmap(pixmap);
 	showFullScreen();
 	show();
 	setCursor(Qt::CrossCursor);
@@ -445,7 +473,7 @@ void ScreenShot::mouseMoveEvent(QMouseEvent *e)
 	region.setBottomRight(e->pos());
 
 	QRect reg = region;
-	reg = reg.normalize();
+	reg = reg.normalized();
 
 	sizeHint->geom->setText(
 		QString("%1x%2")
@@ -462,12 +490,12 @@ void ScreenShot::updateHint()
 	QBuffer buffer;
 
 	QRect reg = region;
-	reg = reg.normalize();
+	reg = reg.normalized();
 
 	QPixmap shot = QPixmap::grabWindow(winId(), reg.x(), reg.y(), reg.width(), reg.height());
 
 	// TODO: cache + use configurationUpdated
-	const char *format = config_file.readEntry("ScreenShot", "fileFormat", "PNG").ascii();
+	const char *format = config_file.readEntry("ScreenShot", "fileFormat", "PNG").toAscii();
 	int quality = config_file.readNumEntry("ScreenShot", "quality", -1);
 	bool ret = shot.save(&buffer, format, quality);
 
@@ -484,20 +512,22 @@ void ScreenShot::checkShotsSize()
 	int size = 0;
 
 	int limit = config_file.readNumEntry("ScreenShot", "dir_size_limit", 10000);
-	QDir dir(config_file.readEntry("ScreenShot", "path", ggPath("images")));
+	QDir dir(config_file.readEntry("ScreenShot", "path", profilePath("images")));
 
 	QString prefix = config_file.readEntry("ScreenShot", "filenamePrefix", "shot");
-	QFileInfoList list = dir.entryInfoList(prefix+"*", QDir::Files);
+	QStringList filters;
+	filters << prefix + "*";
+	QFileInfoList list = dir.entryInfoList(filters, QDir::Files);
 
 	foreach (const QFileInfo &f, list)
 		size += f.size();
 
 	if (size/1024 >= limit)
 	{
-		Notification *notification = new Notification("ssSizeLimit", "Blocking", UserListElements());
+		Notification *notification = new Notification("ssSizeLimit", IconsManager::instance()->iconByPath("kadu_icons/kadu-blocking.png"));
 		notification->setTitle(tr("ScreenShot size limit"));
 		notification->setText(tr("Images size limit exceed: %1 KB").arg(size/1024));
-		notification_manager->notify(notification);
+		NotificationManager::instance()->notify(notification);
 	}
 }
 
@@ -543,7 +573,7 @@ void ScreenShot::createDefaultConfiguration()
 	config_file.addVariable("ScreenShot", "fileFormat", "PNG");
 	config_file.addVariable("ScreenShot", "use_short_jpg", true);
 	config_file.addVariable("ScreenShot", "quality", -1);
-	config_file.addVariable("ScreenShot", "path", ggPath("images/"));
+	config_file.addVariable("ScreenShot", "path", profilePath("images/"));
 	config_file.addVariable("ScreenShot", "filenamePrefix", "shot");
 	config_file.addVariable("ScreenShot", "paste_clause", true);
 	config_file.addVariable("ScreenShot", "dir_size_warns", true);
