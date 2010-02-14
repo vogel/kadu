@@ -265,7 +265,7 @@ void printQtOptions()
 int main(int argc, char *argv[])
 {
 	QStringList ids;
-	QRegExp idRegExp("^[a-zA-Z]*://.*");
+	QRegExp idRegExp("^[a-zA-Z]*:(/){0,3}.*");
 
 	time_t sec;
 	int msec;
