@@ -25,18 +25,28 @@
 
 #include "gadu-server-remind-password.h"
 
-GaduServerRemindPassword::GaduServerRemindPassword(TokenReader *reader, UinType uin, const QString &mail)
-	: GaduServerConnector(reader), Uin(uin), Mail(mail)
+GaduServerRemindPassword::GaduServerRemindPassword(UinType uin, const QString &mail, const QString &tokenId, const QString &tokenValue) :
+		QObject(), H(0), Result(0), Uin(uin), Mail(mail), TokenId(tokenId), TokenValue(tokenValue)
 {
 }
 
-void GaduServerRemindPassword::performAction(const QString &tokenId, const QString &tokenValue)
+void GaduServerRemindPassword::performAction()
 {
 	H = gg_remind_passwd3(Uin,
 			Mail.toUtf8().constData(),
-			tokenId.toUtf8().constData(),
-			tokenValue.toUtf8().constData(),
-			1);
+			TokenId.toUtf8().constData(),
+			TokenValue.toUtf8().constData(),
+			false);
+
+	if (H)
+	{
+		struct gg_pubdir *result = (struct gg_pubdir *)H->data;
+		Result = result->success;
+
+		emit finished(this);
+	}
+
+/*
 	if (H)
 	{
 		GaduPubdirSocketNotifiers *sn = new GaduPubdirSocketNotifiers();
@@ -45,13 +55,16 @@ void GaduServerRemindPassword::performAction(const QString &tokenId, const QStri
 	}
 	else
 		finished(false);
+*/
 }
 
 void GaduServerRemindPassword::done(bool ok, struct gg_http *h)
 {
 	Q_UNUSED(h)
 
-	finished(ok);
+	Result = ok;
+
+	emit finished(this);
 
 	if (H)
 	{

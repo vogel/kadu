@@ -22,32 +22,36 @@
 #ifndef GADU_SERVER_REMIND_PASSWORD_H
 #define GADU_SERVER_REMIND_PASSWORD_H
 
+#include <QtCore/QObject>
 #include <libgadu.h>
 
 #include "protocols/protocol.h"
 
-#include "gadu-server-connector.h"
-
-class GaduServerRemindPassword : public GaduServerConnector
+class GaduServerRemindPassword : public QObject
 {
 	Q_OBJECT
 
 	struct gg_http *H;
 
+	bool Result;
+
 	UinType Uin;
 	QString Mail;
+	QString TokenId;
+	QString TokenValue;
 
 private slots:
 	void done(bool ok, struct gg_http *h);
 
-protected:
-	virtual void performAction(const QString &tokenId, const QString &tokenValue);
-
 public:
-	GaduServerRemindPassword(TokenReader *reader, UinType uin, const QString &mail);
+	GaduServerRemindPassword(UinType uin, const QString &mail, const QString &tokenId, const QString &tokenValue);
 
-	UinType uin() { return Uin; }
+	bool result() { return Result; }
 
+	virtual void performAction();
+
+signals:
+	void finished(GaduServerRemindPassword *);
 };
 
 #endif // GADU_SERVER_REMIND_PASSWORD_H
