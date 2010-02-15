@@ -98,6 +98,12 @@ void ChatWidget::createGui()
 	mainLayout->setSpacing(0);
 
 	vertSplit = new QSplitter(Qt::Vertical, this);
+	
+	#ifdef Q_OS_MAC
+	/* Dorr: workaround for mac tabs issue */
+	vertSplit->setAutoFillBackground(true);
+	#endif
+
 	mainLayout->addWidget(vertSplit);
 
 	horizSplit = new QSplitter(Qt::Horizontal, this);
