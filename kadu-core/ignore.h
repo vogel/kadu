@@ -6,7 +6,7 @@
  * Copyright 2002, 2003 Tomasz Chiliński (chilek@chilan.com)
  * Copyright 2007, 2008, 2009 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2004, 2008 Michał Podsiadlik (michal@kadu.net)
- * Copyright 2008 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * Copyright 2008, 2010 Piotr Galiszewski (piotrgaliszewski@gmail.com)
  * Copyright 2005 Paweł Płuciennik (pawel_p@kadu.net)
  * Copyright 2002 Dariusz Jagodzik (mast3r@kadu.net)
  * %kadu copyright end%

@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2010 Jan Ziemkiewicz (jziemkiewicz@gmail.com)
+ * Copyright 2009, 2010 Ziemniak (jziemkiewicz@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or

@@ -3,7 +3,7 @@
  * Copyright (C) 2006  Remko Troncon
  *
  * %kadu copyright begin%
- * Copyright 2009, 2009 Wojciech Treter (juzefwt@gmail.com)
+ * Copyright 2010 Wojciech Treter (juzefwt@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or

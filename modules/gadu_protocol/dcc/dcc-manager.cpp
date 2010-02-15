@@ -8,7 +8,7 @@
  * Copyright 2008, 2009 Michał Podsiadlik (michal@kadu.net)
  * Copyright 2005 Roman Krzystyniak (Ron_K@tlen.pl)
  * Copyright 2009 Bartłomiej Zimoń (uzi18@o2.pl)
- * Copyright 2008 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * Copyright 2008, 2010 Piotr Galiszewski (piotrgaliszewski@gmail.com)
  * Copyright 2005 Paweł Płuciennik (pawel_p@kadu.net)
  * %kadu copyright end%
  *

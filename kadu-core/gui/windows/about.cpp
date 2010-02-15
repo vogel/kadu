@@ -10,7 +10,7 @@
  * Copyright 2004, 2008, 2009 Michał Podsiadlik (michal@kadu.net)
  * Copyright 2002 Roman Krzystyniak (Ron_K@tlen.pl)
  * Copyright 2008 Tomasz Rostański (rozteck@interia.pl)
- * Copyright 2008 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * Copyright 2008, 2010 Piotr Galiszewski (piotrgaliszewski@gmail.com)
  * Copyright 2005 Paweł Płuciennik (pawel_p@kadu.net)
  * Copyright 2002, 2003 Dariusz Jagodzik (mast3r@kadu.net)
  * %kadu copyright end%

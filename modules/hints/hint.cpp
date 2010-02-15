@@ -6,7 +6,7 @@
  * Copyright 2010 Kermit (plaza.maciej@gmail.com)
  * Copyright 2008, 2009 Tomasz Rostański (rozteck@interia.pl)
  * Copyright 2009 Bartłomiej Zimoń (uzi18@o2.pl)
- * Copyright 2008, 2009 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * Copyright 2008, 2009, 2010 Piotr Galiszewski (piotrgaliszewski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or

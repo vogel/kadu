@@ -1,5 +1,6 @@
 /*
  * %kadu copyright begin%
+ * Copyright 2010 Maciej Płaza (plaza.maciej@gmail.com)
  * Copyright 2009, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *

@@ -1,6 +1,5 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009 Tomasz Rostański (rozteck@interia.pl)
  * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
