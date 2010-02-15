@@ -99,10 +99,10 @@ void ChatWidget::createGui()
 
 	vertSplit = new QSplitter(Qt::Vertical, this);
 	
-	#ifdef Q_OS_MAC
+#ifdef Q_OS_MAC
 	/* Dorr: workaround for mac tabs issue */
 	vertSplit->setAutoFillBackground(true);
-	#endif
+#endif
 
 	mainLayout->addWidget(vertSplit);
 

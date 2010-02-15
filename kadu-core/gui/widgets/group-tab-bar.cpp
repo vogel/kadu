@@ -60,6 +60,12 @@ GroupTabBar::GroupTabBar(QWidget *parent)
 	Filter = new GroupBuddyFilter(this);
 
 	setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
+	
+#ifdef Q_OS_MAC
+	setDocumentMode(true);
+	setUsesScrollButtons(true);
+#endif
+
  	setAcceptDrops(true);
 	setDrawBase(false);
 	setMovable(true);
