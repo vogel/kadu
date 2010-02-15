@@ -32,6 +32,7 @@ public:
 	enum ChangeStatusTo {
 		NoChangeStatus,
 		ChangeStatusToBusy,
+		ChangeStatusToExtendedAway,
 		ChangeStatusToInvisible,
 		ChangeStatusToOffline
 	};

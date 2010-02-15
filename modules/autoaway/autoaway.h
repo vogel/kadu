@@ -54,10 +54,12 @@ class AutoAway : public ConfigurationUiHandler, ConfigurationAwareObject
 	unsigned int checkInterval;
 
 	unsigned int autoAwayTime;
+	unsigned int autoExtendedAwayTime;
 	unsigned int autoDisconnectTime;
 	unsigned int autoInvisibleTime;
 
 	bool autoAwayEnabled;
+	bool autoExtendedAwayEnabled;
 	bool autoInvisibleEnabled;
 	bool autoDisconnectEnabled;
 	bool parseAutoStatus;
@@ -69,6 +71,7 @@ class AutoAway : public ConfigurationUiHandler, ConfigurationAwareObject
 	unsigned int refreshStatusInterval;
 
 	QSpinBox *autoAwaySpinBox;
+	QSpinBox *autoExtendedAwaySpinBox;
 	QSpinBox *autoInvisibleSpinBox;
 	QSpinBox *autoOfflineSpinBox;
 	QSpinBox *autoRefreshSpinBox;
@@ -89,6 +92,7 @@ private slots:
 	void checkIdleTime();
 
 	void autoAwaySpinBoxValueChanged(int value);
+	void autoExtendedAwaySpinBoxValueChanged(int value);
 	void autoInvisibleSpinBoxValueChanged(int value);
 	void autoOfflineSpinBoxValueChanged(int value);
 

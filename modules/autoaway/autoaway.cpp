@@ -136,6 +136,8 @@ void AutoAway::checkIdleTime()
 		autoAwayStatusChanger->setChangeStatusTo(AutoAwayStatusChanger::ChangeStatusToOffline);
 	else if (idleTime >= autoInvisibleTime && autoInvisibleEnabled)
 		autoAwayStatusChanger->setChangeStatusTo(AutoAwayStatusChanger::ChangeStatusToInvisible);
+	else if (idleTime >= autoExtendedAwayTime && autoExtendedAwayEnabled)
+		autoAwayStatusChanger->setChangeStatusTo(AutoAwayStatusChanger::ChangeStatusToExtendedAway);
 	else if (idleTime >= autoAwayTime && autoAwayEnabled)
 		autoAwayStatusChanger->setChangeStatusTo(AutoAwayStatusChanger::ChangeStatusToBusy);
 	else
@@ -160,6 +162,7 @@ void AutoAway::checkIdleTime()
 void AutoAway::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
 	autoAwaySpinBox = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("autoaway/autoAway"));
+	autoExtendedAwaySpinBox = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("autoaway/autoExtendedAway"));
 	autoInvisibleSpinBox = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("autoaway/autoInvisible"));
 	autoOfflineSpinBox = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("autoaway/autoOffline"));
 	autoRefreshSpinBox = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("autoaway/autoRefresh"));
@@ -169,10 +172,12 @@ void AutoAway::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfi
 	parseStatusCheckBox = dynamic_cast<QCheckBox *>(mainConfigurationWindow->widget()->widgetById("autoaway/enableParseStatus"));
 
 	connect(mainConfigurationWindow->widget()->widgetById("autoaway/enableAutoAway"), SIGNAL(toggled(bool)), autoAwaySpinBox, SLOT(setEnabled(bool)));
+	connect(mainConfigurationWindow->widget()->widgetById("autoaway/enableAutoExtendedAway"), SIGNAL(toggled(bool)), autoExtendedAwaySpinBox, SLOT(setEnabled(bool)));
 	connect(mainConfigurationWindow->widget()->widgetById("autoaway/enableAutoInvisible"), SIGNAL(toggled(bool)), autoInvisibleSpinBox, SLOT(setEnabled(bool)));
 	connect(mainConfigurationWindow->widget()->widgetById("autoaway/enableAutoOffline"), SIGNAL(toggled(bool)), autoOfflineSpinBox, SLOT(setEnabled(bool)));
 
 	connect(autoAwaySpinBox, SIGNAL(valueChanged(int)), this, SLOT(autoAwaySpinBoxValueChanged(int)));
+	connect(autoExtendedAwaySpinBox, SIGNAL(valueChanged(int)), this, SLOT(autoExtendedAwaySpinBoxValueChanged(int)));
 	connect(autoInvisibleSpinBox, SIGNAL(valueChanged(int)), this, SLOT(autoInvisibleSpinBoxValueChanged(int)));
 	connect(autoOfflineSpinBox, SIGNAL(valueChanged(int)), this, SLOT(autoOfflineSpinBoxValueChanged(int)));
 
@@ -186,10 +191,12 @@ void AutoAway::configurationUpdated()
 	checkInterval = config_file.readUnsignedNumEntry("General","AutoAwayCheckTime");
 
 	autoAwayTime = config_file.readUnsignedNumEntry("General","AutoAwayTime");
+	autoExtendedAwayTime = config_file.readUnsignedNumEntry("General","AutoExtendedAwayTime");
 	autoDisconnectTime = config_file.readUnsignedNumEntry("General","AutoDisconnectTime");
 	autoInvisibleTime = config_file.readUnsignedNumEntry("General","AutoInvisibleTime");
 
 	autoAwayEnabled = config_file.readBoolEntry("General","AutoAway");
+	autoExtendedAwayEnabled = config_file.readBoolEntry("General","AutoExtendedAway");
 	autoInvisibleEnabled = config_file.readBoolEntry("General","AutoInvisible");
 	autoDisconnectEnabled = config_file.readBoolEntry("General","AutoDisconnect");
 	parseAutoStatus = config_file.readBoolEntry("General", "AutoParseStatus");
@@ -209,12 +216,24 @@ void AutoAway::autoAwaySpinBoxValueChanged(int value)
 {
 	if (autoInvisibleSpinBox->value() < value)
 		autoInvisibleSpinBox->setValue(value);
+	if (autoExtendedAwaySpinBox->value() < value)
+		autoExtendedAwaySpinBox->setValue(value);
+}
+
+void AutoAway::autoExtendedAwaySpinBoxValueChanged(int value)
+{
+	if (autoInvisibleSpinBox->value() < value)
+		autoInvisibleSpinBox->setValue(value);
+	if (autoAwaySpinBox->value() > value)
+		autoAwaySpinBox->setValue(value);
 }
 
 void AutoAway::autoInvisibleSpinBoxValueChanged(int value)
 {
 	if (autoAwaySpinBox->value() > value)
 		autoAwaySpinBox->setValue(value);
+	if (autoExtendedAwaySpinBox->value() > value)
+		autoExtendedAwaySpinBox->setValue(value);
 	if (autoOfflineSpinBox->value() < value)
 		autoOfflineSpinBox->setValue(value);
 }
@@ -244,7 +263,9 @@ void AutoAway::createDefaultConfiguration()
 {
 	config_file.addVariable("General", "AutoAway", true);
 	config_file.addVariable("General", "AutoAwayCheckTime", 10);
-	config_file.addVariable("General", "AutoAwayTime", 120);
+	config_file.addVariable("General", "AutoAwayTime", 300);
+	config_file.addVariable("General", "AutoExtendedAway", true);
+	config_file.addVariable("General", "AutoExtendedAwayTime", 900);
 	config_file.addVariable("General", "AutoChangeDescription", false);
 	config_file.addVariable("General", "AutoDisconnect", false);
 	config_file.addVariable("General", "AutoDisconnectTime", 3600);

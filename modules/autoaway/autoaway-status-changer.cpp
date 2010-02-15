@@ -86,6 +86,13 @@ void AutoAwayStatusChanger::changeStatus(StatusContainer *container, Status &sta
 		status.setDescription(description);
 		return;
 	}
+
+	if (changeStatusTo == ChangeStatusToExtendedAway)
+	{
+		status.setType("NotAvailable");
+		status.setDescription(description);
+		return;
+	}
 }
 
 void AutoAwayStatusChanger::setChangeStatusTo(ChangeStatusTo newChangeStatusTo)
