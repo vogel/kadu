@@ -72,6 +72,7 @@ private slots:
 	void removeAccount();
 	void importListAsFile();
 	void contactListDownloaded(QString);
+	void remindPasssword();
 
 public:
 	explicit GaduEditAccountWidget(Account account, QWidget *parent = 0);

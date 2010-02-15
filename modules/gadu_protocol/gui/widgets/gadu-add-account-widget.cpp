@@ -35,6 +35,7 @@
 #include "html_document.h"
 #include "icons-manager.h"
 
+#include "gui/windows/gadu-remind-password-window.h"
 #include "server/gadu-server-register-account.h"
 #include "gadu-account-details.h"
 #include "gadu-protocol-factory.h"
@@ -89,9 +90,10 @@ void GaduAddAccountWidget::createGui()
 	RememberPassword->setChecked(true);
 	layout->addRow(0, RememberPassword);
 
-	RemindPassword = new QLabel(QString("<a href='remind'>%1</a>").arg(tr("Remind password")));
-	RemindPassword->setTextInteractionFlags(Qt::TextBrowserInteraction);
-	layout->addRow(tr("Forgot Your Password?"), RemindPassword);
+	RemindPassword = new QLabel(QString("<a href='remind'>%1</a>").arg(tr("Forgot Your Password?")));
+	RemindPassword->setTextInteractionFlags(Qt::LinksAccessibleByKeyboard | Qt::LinksAccessibleByMouse);
+	layout->addRow(0, RemindPassword);
+	connect(RemindPassword, SIGNAL(linkActivated(QString)), this, SLOT(remindPasssword()));
 
 	Identity = new IdentitiesComboBox(this);
 	connect(Identity, SIGNAL( identityChanged()), this, SLOT(dataChanged()));
@@ -148,4 +150,13 @@ void GaduAddAccountWidget::dataChanged()
 		!AccountId->text().isEmpty() &&
 		!AccountPassword->text().isEmpty()
 	);
+}
+
+void GaduAddAccountWidget::remindPasssword()
+{
+	QVariant variant(AccountId->text());
+	bool ok;
+	int uin = variant.toInt(&ok);
+	if (ok)
+		(new GaduRemindPasswordWindow(uin))->show();
 }

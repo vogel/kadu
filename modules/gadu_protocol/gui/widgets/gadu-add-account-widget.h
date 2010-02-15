@@ -59,6 +59,7 @@ public slots:
 	virtual void apply();
 	virtual void cancel();
 
+	void remindPasssword();
 };
 
 #endif // GADU_ADD_ACCOUNT_WIDGET_H

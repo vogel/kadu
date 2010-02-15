@@ -24,12 +24,13 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QVBoxLayout>
 
-#include "gui/widgets/token-widget.h"
 #include "gui/windows/message-dialog.h"
 #include "misc/misc.h"
-#include "server/gadu-server-remind-password.h"
 #include "url-handlers/url-handler-manager.h"
 #include "icons-manager.h"
+
+#include "gui/widgets/token-widget.h"
+#include "server/gadu-server-remind-password.h"
 
 #include "gadu-remind-password-window.h"
 

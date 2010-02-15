@@ -45,6 +45,7 @@
 #include "protocols/protocol.h"
 #include "icons-manager.h"
 
+#include "gui/windows/gadu-remind-password-window.h"
 #include "services/gadu-contact-list-service.h"
 
 #include "gadu-personal-info-widget.h"
@@ -127,12 +128,14 @@ void GaduEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 	connect(RememberPassword, SIGNAL(stateChanged(int)), this, SLOT(dataChanged()));
 	formLayout->addRow(0, RememberPassword);
 
+	QLabel *remindPasswordButton = new QLabel(QString("<a href='remind'>%1</a>").arg(tr("Forgot Your Password?")));
+	remindPasswordButton->setTextInteractionFlags(Qt::LinksAccessibleByKeyboard | Qt::LinksAccessibleByMouse);
+	formLayout->addRow(0, remindPasswordButton);
+	connect(remindPasswordButton, SIGNAL(linkActivated(QString)), this, SLOT(remindPasssword()));
+
 	Identities = new IdentitiesComboBox(this);
 	connect(Identities, SIGNAL(activated(int)), this, SLOT(dataChanged()));
 	formLayout->addRow(tr("Account description") + ":", Identities);
-
-	QPushButton *remindPassword = new QPushButton(tr("Forgot password"), this);
-	formLayout->addRow(0, remindPassword);
 
 	AccountAvatarWidget *avatarWidget = new AccountAvatarWidget(account(), this);
 	layout->addWidget(avatarWidget, 0, 1, Qt::AlignTop);
@@ -339,4 +342,14 @@ void GaduEditAccountWidget::contactListDownloaded(QString content)
 	file.open(QIODevice::WriteOnly);
 	file.write(content.toLocal8Bit());
 	file.close();
+}
+
+
+void GaduEditAccountWidget::remindPasssword()
+{
+	QVariant variant(AccountId->text());
+	bool ok;
+	int uin = variant.toInt(&ok);
+	if (ok)
+		(new GaduRemindPasswordWindow(uin))->show();
 }
