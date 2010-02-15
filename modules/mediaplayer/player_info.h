@@ -7,8 +7,8 @@ class PlayerInfo
 {
 
 public:
-	PlayerInfo() {};
-	virtual ~PlayerInfo() {};
+	PlayerInfo() {}
+	virtual ~PlayerInfo() {}
 
 	/**
 		Returns name of player that this class is implemented for. For example:

@@ -7,7 +7,6 @@ set (MOC_SOURCES
 	mediaplayer.h
 	mp_status_changer.h
 	player_commands.h
-	player_info.h
 )
 	
 if (UNIX AND NOT APPLE)

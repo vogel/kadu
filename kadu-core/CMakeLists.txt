@@ -474,9 +474,7 @@ set (kadu_MOC_SRCS
 	gui/windows/open-chat-with/open-chat-with.h
 
 	identities/model/identity-model.h
-	identities/identity.h
 	identities/identity-manager.h
-	identities/identity-shared.h
 
 	model/actions-proxy-model.h
 

@@ -104,7 +104,9 @@ void JabberEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 	formLayout->addRow(0, RememberPassword);
 
 	ChooseIdentity = new ChooseIdentityWidget(this);
-	formLayout->addRow(tr("Account description") + ":", ChooseIdentity);
+	formLayout->addRow(tr("Account Identity") + ":", ChooseIdentity);
+
+	formLayout->addRow(0, new QLabel(tr("<font size='-1'><i>Select or enter the identity that will be associated with this account.</i></font>"), this));
 
 	QPushButton *changePassword = new QPushButton(tr("Change password"), this);
 	formLayout->addRow(0, changePassword);

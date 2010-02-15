@@ -135,7 +135,9 @@ void GaduEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 
 	Identities = new IdentitiesComboBox(this);
 	connect(Identities, SIGNAL(activated(int)), this, SLOT(dataChanged()));
-	formLayout->addRow(tr("Account description") + ":", Identities);
+	formLayout->addRow(tr("Account Identity") + ":", Identities);
+
+	formLayout->addRow(0, new QLabel(tr("<font size='-1'><i>Select or enter the identity that will be associated with this account.</i></font>"), this));
 
 	AccountAvatarWidget *avatarWidget = new AccountAvatarWidget(account(), this);
 	layout->addWidget(avatarWidget, 0, 1, Qt::AlignTop);

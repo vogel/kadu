@@ -3,7 +3,6 @@ set (SOURCES
 )
 
 set (MOC_SOURCES
-	amarok2.h
 )
 
 kadu_module (amarok2_mediaplayer
