@@ -267,6 +267,7 @@ void ExecNotify::notify(Notification *notification)
 
 void ExecNotify::run(const QStringList &args, const QString &in)
 {
+	Q_UNUSED(in)
 #ifdef DEBUG_ENABLED
 	foreach(QString arg, args)
 		kdebugm(KDEBUG_INFO, "arg: '%s'\n", qPrintable(arg));
