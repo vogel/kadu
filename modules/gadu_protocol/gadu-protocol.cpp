@@ -151,7 +151,7 @@ unsigned int GaduProtocol::gaduStatusFromStatus(const Status &status)
 	if ("Online" == type)
 		return hasDescription ? GG_STATUS_AVAIL_DESCR : GG_STATUS_AVAIL;
 
-	if ("Away" == type)
+	if ("Away" == type || "NotAvailable" == type)
 		return hasDescription ? GG_STATUS_BUSY_DESCR : GG_STATUS_BUSY;
 
 	if ("DoNotDisturb" == type)
@@ -281,6 +281,10 @@ void GaduProtocol::changeStatus()
 		login();
 		return;
 	}
+
+// TODO 0.6.6: workaround. Find general solution
+	if (newStatus.type() == "NotAvailable" && status().type() == "Away")
+		return;
 
 // TODO: 0.6.6
 	int friends (!newStatus.isDisconnected() && privateMode() ? GG_STATUS_FRIENDS_MASK : 0);
