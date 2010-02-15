@@ -18,7 +18,7 @@
 	{
 		// desktop
 		long desktopofwindow = X11_getDesktopOfWindow( QX11Info::display(), window->winId() );
-		if( ( desktopofwindow != X11_getCurrentDesktop( QX11Info::display() ) ) && ( desktopofwindow != X11_ALLDESKTOPS ) )
+		if( ( desktopofwindow != X11_getCurrentDesktop( QX11Info::display() ) ) && ( desktopofwindow != (long)X11_ALLDESKTOPS ) )
 			return false;
 		// standard isActiveWindow() method
 		return window->isActiveWindow();
@@ -36,7 +36,7 @@
 		{
 			long desktopofwindow = X11_getDesktopOfWindow( QX11Info::display(), window->winId() );
 			long currentdesktop = X11_getCurrentDesktop( QX11Info::display() );
-			if( ( desktopofwindow != currentdesktop ) && ( desktopofwindow != X11_ALLDESKTOPS ) )
+			if( ( desktopofwindow != currentdesktop ) && ( desktopofwindow != (long)X11_ALLDESKTOPS ) )
 			{
 				if( action==0 )
 				{
