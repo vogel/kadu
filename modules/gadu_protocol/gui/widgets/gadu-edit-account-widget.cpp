@@ -296,22 +296,21 @@ void GaduEditAccountWidget::removeAccount()
 			.arg(account().name())
 			.arg(account().id()));
 
-	messageBox->addButton(tr("Remove account"), QMessageBox::AcceptRole);
-	messageBox->addButton(tr("Remove account and unregister from server"), QMessageBox::DestructiveRole);
+	QPushButton *removeButton = messageBox->addButton(tr("Remove account"), QMessageBox::AcceptRole);
+	QPushButton *removeAndUnregisterButton = messageBox->addButton(tr("Remove account and unregister from server"), QMessageBox::DestructiveRole);
 	messageBox->addButton(QMessageBox::Cancel);
 
-	switch (messageBox->exec())
-	{
-		case QMessageBox::AcceptRole:
-			AccountManager::instance()->removeItem(account());
-			deleteLater();
-			break;
+	messageBox->exec();
 
-		case QMessageBox::DestructiveRole:
-			// TODO: 0.6.6, implement unregister here
-			AccountManager::instance()->removeItem(account());
-			deleteLater();
-			break;
+	if (messageBox->clickedButton() == removeButton)
+	{
+		AccountManager::instance()->removeItem(account());
+		deleteLater();
+	}
+	else if (messageBox->clickedButton() == removeAndUnregisterButton)
+	{
+		AccountManager::instance()->removeItem(account());
+		deleteLater();
 	}
 
 	delete messageBox;
