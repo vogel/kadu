@@ -114,7 +114,9 @@ QString getUptime(int mode)
 	FILE *f;
 	double duptime = 0;
 	f = fopen("/proc/uptime", "r");
-	fscanf(f, "%lf", &duptime);
+	if (!fscanf(f, "%lf", &duptime))
+		return QString::null;
+
 	fclose(f);
 	upTime = (time_t)duptime;
 	
