@@ -114,9 +114,17 @@ void JabberAvatarService::fetchingVCardFinished()
         AccountAvatar.save(&buffer, "PNG");
 	buffer.close();
 
-	XMPP::VCard v = VCardHandler->vcard();
-	v.setPhoto(ba);
-	VCardFactory::instance()->setVCard(Protocol->client()->rootTask(), jid, v, this, SLOT(uploadingVCardFinished()));
+	XMPP::VCard vcard;
+	JT_VCard *task = (JT_VCard *)sender();
+	
+	if (task && task->success())
+	{
+		vcard = task->vcard();
+		vcard.setPhoto(ba);
+		VCardFactory::instance()->setVCard(Protocol->client()->rootTask(), jid, vcard, this, SLOT(uploadingVCardFinished()));
+	}
+	else
+		emit avatarUploaded(false, AccountAvatar);
 }
 
 void JabberAvatarService::uploadingVCardFinished()
