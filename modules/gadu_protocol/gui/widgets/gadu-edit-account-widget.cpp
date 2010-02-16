@@ -46,6 +46,7 @@
 #include "icons-manager.h"
 
 #include "gui/windows/gadu-remind-password-window.h"
+#include "gui/windows/gadu-unregister-account-window.h"
 #include "services/gadu-contact-list-service.h"
 
 #include "gadu-personal-info-widget.h"
@@ -309,6 +310,8 @@ void GaduEditAccountWidget::removeAccount()
 	}
 	else if (messageBox->clickedButton() == removeAndUnregisterButton)
 	{
+		(new GaduUnregisterAccountWindow())->show();
+
 		AccountManager::instance()->removeItem(account());
 		deleteLater();
 	}

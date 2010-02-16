@@ -11,6 +11,7 @@ set (SOURCES
 	gui/widgets/gadu-personal-info-widget.cpp
 	gui/widgets/token-widget.cpp
 	gui/windows/gadu-remind-password-window.cpp
+	gui/windows/gadu-unregister-account-window.cpp
 
 	helpers/gadu-formatter.cpp
 	helpers/gadu-importer.cpp
@@ -72,6 +73,7 @@ set (MOC_SOURCES
 	gui/widgets/gadu-personal-info-widget.h
 	gui/widgets/token-widget.h
 	gui/windows/gadu-remind-password-window.h
+	gui/windows/gadu-unregister-account-window.h
 
 	helpers/gadu-importer.h
 

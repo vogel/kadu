@@ -25,31 +25,43 @@
 
 #include "gadu-server-unregister-account.h"
 
-GaduServerUnregisterAccount::GaduServerUnregisterAccount(TokenReader *reader, UinType uin, const QString &password)
-	: GaduServerConnector(reader), Uin(uin), Password(password)
+GaduServerUnregisterAccount::GaduServerUnregisterAccount(UinType uin, const QString &password, const QString &tokenId, const QString &tokenValue) :
+		QObject(), H(0), Result(0), Uin(uin), Password(password), TokenId(tokenId), TokenValue(tokenValue)
 {
 }
 
-void GaduServerUnregisterAccount::performAction(const QString &tokenId, const QString &tokenValue)
+void GaduServerUnregisterAccount::performAction()
 {
-	H = gg_unregister3(Uin, Password.toUtf8().constData(), tokenId.toUtf8().constData(),
-		tokenValue.toUtf8().constData(), 1);
+	H = gg_unregister3(Uin, Password.toUtf8().constData(), TokenId.toUtf8().constData(),
+		TokenValue.toUtf8().constData(), 1);
+
+	if (H)
+	{
+		struct gg_pubdir *result = (struct gg_pubdir *)H->data;
+		Result = result->success;
+
+		emit finished(this);
+	}
+
+/*
 	if (H)
 	{
 		GaduPubdirSocketNotifiers *sn = new GaduPubdirSocketNotifiers();
-		connect(sn, SIGNAL(done(bool, struct gg_http *)),
-			this, SLOT(done(bool, struct gg_http *)));
+		connect(sn, SIGNAL(done(bool, struct gg_http *)), this, SLOT(done(bool, struct gg_http *)));
 		sn->watchFor(H);
 	}
 	else
 		finished(false);
+*/
 }
 
 void GaduServerUnregisterAccount::done(bool ok, struct gg_http *h)
 {
 	Q_UNUSED(h)
 
-	finished(ok);
+	Result = ok;
+
+	emit finished(this);
 
 	if (H)
 	{

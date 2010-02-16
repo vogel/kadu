@@ -22,32 +22,37 @@
 #ifndef GADU_SERVER_UNREGISTER_ACCOUNT_H
 #define GADU_SERVER_UNREGISTER_ACCOUNT_H
 
+#include <QtCore/QObject>
+
 #include <libgadu.h>
 
 #include "protocols/protocol.h"
 
-#include "gadu-server-connector.h"
-
-class GaduServerUnregisterAccount : public GaduServerConnector
+class GaduServerUnregisterAccount : public QObject
 {
 	Q_OBJECT
 
 	struct gg_http *H;
 
+	bool Result;
+
 	UinType Uin;
 	QString Password;
+	QString TokenId;
+	QString TokenValue;
 
 private slots:
 	void done(bool ok, struct gg_http *h);
 
-protected:
-	virtual void performAction(const QString &tokenId, const QString &tokenValue);
-
 public:
-	GaduServerUnregisterAccount(TokenReader *reader, UinType uin, const QString &password);
+	GaduServerUnregisterAccount(UinType uin, const QString &password, const QString &tokenId, const QString &tokenValue);
 
-	UinType uin() { return Uin; }
+	bool result() { return Result; }
 
+	virtual void performAction();
+
+signals:
+	void finished(GaduServerUnregisterAccount *);
 };
 
 #endif // GADU_SERVER_UNREGISTER_ACCOUNT_H
