@@ -85,8 +85,8 @@ void GaduRemindPasswordWindow::createGui()
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 	mainLayout->addWidget(buttons);
 
-	SendPasswordButton = new QPushButton(IconsManager::instance()->iconByPath("kadu/dialog-apply.png"), tr("Send Password"), this);
-	QPushButton *cancelButton = new QPushButton(IconsManager::instance()->iconByPath("kadu/dialog-cancel.png"), tr("Cancel"), this);
+	SendPasswordButton = new QPushButton(IconsManager::instance()->iconByPath("16x16/dialog-apply.png"), tr("Send Password"), this);
+	QPushButton *cancelButton = new QPushButton(IconsManager::instance()->iconByPath("16x16/dialog-cancel.png"), tr("Cancel"), this);
 
 	connect(SendPasswordButton, SIGNAL(clicked(bool)), this, SLOT(sendPassword()));
 	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(close()));

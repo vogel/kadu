@@ -93,8 +93,8 @@ void GaduUnregisterAccountWindow::createGui()
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 	mainLayout->addWidget(buttons);
 
-	RemoveAccountButton = new QPushButton(IconsManager::instance()->iconByPath("kadu/dialog-apply.png"), tr("Send Password"), this);
-	QPushButton *cancelButton = new QPushButton(IconsManager::instance()->iconByPath("kadu/dialog-cancel.png"), tr("Cancel"), this);
+	RemoveAccountButton = new QPushButton(IconsManager::instance()->iconByPath("16x16/dialog-apply.png"), tr("Send Password"), this);
+	QPushButton *cancelButton = new QPushButton(IconsManager::instance()->iconByPath("16x16/dialog-cancel.png"), tr("Cancel"), this);
 
 	connect(RemoveAccountButton, SIGNAL(clicked(bool)), this, SLOT(removeAccount()));
 	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(close()));

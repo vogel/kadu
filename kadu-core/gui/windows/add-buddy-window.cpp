@@ -145,11 +145,11 @@ void AddBuddyWindow::createGui()
 	QDialogButtonBox *buttons = new QDialogButtonBox(this);
 	layout->addWidget(buttons, 10, 0, 1, 4);
 
-	AddContactButton = new QPushButton(IconsManager::instance()->iconByPath("kadu/dialog-ok.png"), tr("Add contact"), this);
+	AddContactButton = new QPushButton(IconsManager::instance()->iconByPath("16x16/dialog-ok.png"), tr("Add contact"), this);
 	AddContactButton->setDefault(true);
 	connect(AddContactButton, SIGNAL(clicked(bool)), this, SLOT(accept()));
 
-	QPushButton *cancel = new QPushButton(IconsManager::instance()->iconByPath("kadu/dialog-cancel.png"), tr("Cancel"), this);
+	QPushButton *cancel = new QPushButton(IconsManager::instance()->iconByPath("16x16/dialog-cancel.png"), tr("Cancel"), this);
 	connect(cancel, SIGNAL(clicked(bool)), this, SLOT(reject()));
 
 	buttons->addButton(AddContactButton, QDialogButtonBox::AcceptRole);

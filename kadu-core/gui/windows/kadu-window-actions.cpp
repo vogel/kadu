@@ -332,7 +332,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	CopyDescription = new ActionDescription(this,
 		ActionDescription::TypeUser, "copyDescriptionAction",
 		this, SLOT(copyDescriptionActionActivated(QAction *, bool)),
-		"kadu/edit-copy.png", "kadu/edit-copy.png", tr("Copy description"), false, "",
+		"16x16/edit-copy.png", "16x16/edit-copy.png", tr("Copy description"), false, "",
 		disableNoGaduDescription
 	);
 	BuddiesListViewMenuManager::instance()->addListActionDescription(CopyDescription);
@@ -340,14 +340,14 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	CopyPersonalInfo = new ActionDescription(this,
 		ActionDescription::TypeUser, "copyPersonalInfoAction",
 		this, SLOT(copyPersonalInfoActionActivated(QAction *, bool)),
-		"kadu/kadu-copypersonal.png", "kadu/kadu-copypersonal.png", tr("Copy personal info")
+		"kadu_icons/kadu-copypersonal.png", "kadu_icons/kadu-copypersonal.png", tr("Copy personal info")
 	);
 	BuddiesListViewMenuManager::instance()->addListActionDescription(CopyPersonalInfo);
 
 	OpenDescriptionLink = new ActionDescription(this,
 		ActionDescription::TypeUser, "openDescriptionLinkAction",
 		this, SLOT(openDescriptionLinkActionActivated(QAction *, bool)),
-		"kadu/go-jump.png", "kadu/go-jump.png", tr("Open description link in browser"), false, "",
+		"16x16/go-jump.png", "16x16/go-jump.png", tr("Open description link in browser"), false, "",
 		disableNoGaduDescriptionUrl
 	);
 	BuddiesListViewMenuManager::instance()->addListActionDescription(OpenDescriptionLink);
@@ -398,7 +398,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	InactiveUsers = new ActionDescription(this,
 		ActionDescription::TypeUserList, "inactiveUsersAction",
 		this, SLOT(inactiveUsersActionActivated(QAction *, bool)),
-		"kadu/kadu-showoffliners_off.png", "kadu/kadu-showoffliners.png", tr("Hide offline users"),
+		"protocols/gadu-gadu/16x16/offline.png", "protocols/gadu-gadu/16x16/offline.png", tr("Hide offline users"),
 		true, tr("Show offline users")
 	);
 	connect(InactiveUsers, SIGNAL(actionCreated(Action *)), this, SLOT(inactiveUsersActionCreated(Action *)));
@@ -427,7 +427,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	EditUser = new ActionDescription(this,
 		ActionDescription::TypeUser, "editUserAction",
 		this, SLOT(editUserActionActivated(QAction *, bool)),
-		"kadu/edit.png", "kadu/edit.png", tr("Buddy Properties"), false, QString::null,
+		"16x16/x-office-address-book", "16x16/x-office-address-book", tr("Buddy Properties"), false, QString::null,
 		disableNotOneUles
 	);
 	connect(EditUser, SIGNAL(actionCreated(Action *)), this, SLOT(editUserActionCreated(Action *)));

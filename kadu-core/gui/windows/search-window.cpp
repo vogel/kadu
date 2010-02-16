@@ -285,7 +285,7 @@ void SearchWindow::initModule()
 	stopSearchAction = new ActionDescription(searchActionsSlot,
 		ActionDescription::TypeSearch, "stopSearchAction",
 		searchActionsSlot, SLOT(stopSearchActionActivated(QAction *, bool)),
-		"kadu/dialog-cancel.png", "kadu/dialog-cancel.png", tr("Stop")
+		"16x16/dialog-cancel.png", "16x16/dialog-cancel.png", tr("Stop")
 	);
 	QObject::connect(stopSearchAction, SIGNAL(actionCreated(Action *)), searchActionsSlot, SLOT(stopSearchActionCreated(Action *)));
 
@@ -306,7 +306,7 @@ void SearchWindow::initModule()
 	chatFoundAction = new ActionDescription(searchActionsSlot,
 		ActionDescription::TypeSearch, "chatSearchedAction",
 		searchActionsSlot, SLOT(chatFoundActionActivated(QAction *, bool)),
-		"kadu/kadu-chat.png", "kadu/kadu-chat.png", tr("&Chat")
+		"16x16/internet-group-chat.png", "16x16/internet-group-chat.png", tr("&Chat")
 	);
 	QObject::connect(chatFoundAction, SIGNAL(actionCreated(Action *)), searchActionsSlot, SLOT(actionsFoundActionCreated(Action *)));
 

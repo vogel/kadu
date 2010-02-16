@@ -164,14 +164,14 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 	OpenChat = new ActionDescription(0,
 		ActionDescription::TypeUser, "chatAction",
 		this, SLOT(openChatActionActivated(QAction *, bool)),
-		"kadu/kadu-chat.png", "kadu/kadu-chat.png", tr("&Chat"), false, QString::null,
+		"16x16/internet-group-chat.png", "16x16/internet-group-chat.png", tr("&Chat"), false, QString::null,
 		disableContainsSelfUles
 	);
 
 	OpenChatWith = new ActionDescription(0,
 		ActionDescription::TypeGlobal, "openChatWithAction",
 		this, SLOT(openChatActionActivated(QAction *, bool)),
-		"kadu/kadu-chat.png", "kadu/kadu-chat.png", tr("Open chat with...")
+		"16x16/internet-group-chat.png", "16x16/internet-group-chat.png", tr("Open chat with...")
 	);
 	OpenChatWith->setShortcut("kadu_openchatwith", Qt::ApplicationShortcut);
 
