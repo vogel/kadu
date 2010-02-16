@@ -74,7 +74,7 @@ endif(MINGW)
 # warnings
 
 set (CMAKE_C_FLAGS "-W -Wall -Werror -fno-strict-aliasing")
-set (CMAKE_CXX_FLAGS "-W -Wall -Werror")
+set (CMAKE_CXX_FLAGS "-W -Wall -Werror -fno-strict-aliasing")
 
 if (NOT DATADIR)
 	set (DATADIR ${CMAKE_INSTALL_PREFIX}/share)
