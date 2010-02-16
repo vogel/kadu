@@ -130,6 +130,4 @@ void GaduRemindPasswordWindow::remindPasswordFinished(GaduServerRemindPassword *
 	}
 	else
 		MessageDialog::msg(tr("Error during remind password"), false, "Critical", parentWidget());
-
-
 }

@@ -78,7 +78,7 @@ void GaduAddAccountWidget::createGui()
 	layout->addRow(tr("Account Name") + ":", AccountName);
 
 	AccountId = new QLineEdit(this);
-	AccountId->setValidator(new QIntValidator(1, 999999999, this));
+	AccountId->setValidator(new QIntValidator(1, 3999999999U, this));
 	connect(AccountId, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 	layout->addRow(tr("Gadu-Gadu number") + ":", AccountId);
 

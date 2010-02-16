@@ -115,6 +115,7 @@ void GaduEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 	formLayout->addRow(tr("Account name") + ":", AccountName);
 
 	AccountId = new QLineEdit(this);
+	AccountId->setValidator(new QIntValidator(1, 3999999999U, this));
 	connect(AccountId, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 	formLayout->addRow(tr("Gadu-Gadu number") + ":", AccountId);
 
