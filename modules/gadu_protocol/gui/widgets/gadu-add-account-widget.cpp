@@ -155,9 +155,8 @@ void GaduAddAccountWidget::dataChanged()
 
 void GaduAddAccountWidget::remindPasssword()
 {
-	QVariant variant(AccountId->text());
 	bool ok;
-	int uin = variant.toInt(&ok);
+	int uin = AccountId->text().toInt(&ok);
 	if (ok)
 		(new GaduRemindPasswordWindow(uin))->show();
 }
