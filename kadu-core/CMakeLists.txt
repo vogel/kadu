@@ -363,7 +363,7 @@ set (kadu_MOC_SRCS
 
 	chat/type/chat-type.h
 	chat/type/chat-type-aggregate.h
-	chat/type/chat-type-aware-object.h
+	#chat/type/chat-type-aware-object.h
 	chat/type/chat-type-conference.h
 	chat/type/chat-type-manager.h
 	chat/type/chat-type-simple.h

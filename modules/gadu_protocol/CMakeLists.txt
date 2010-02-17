@@ -104,7 +104,7 @@ set (MOC_SOURCES
 	socket-notifiers/gadu-socket-notifiers.h
 	socket-notifiers/gadu-token-socket-notifiers.h
 
-	gadu-account-details.h
+	#gadu-account-details.h
 	gadu-contact-widget.h
 	gadu-protocol.h
 	gadu-resolver.h
