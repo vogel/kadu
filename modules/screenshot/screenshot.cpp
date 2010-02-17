@@ -52,6 +52,8 @@
 #include "notify/notify-event.h"
 #include "debug.h"
 
+#include "gui/widgets/crop-image-widget.h"
+
 #include "screenshot.h"
 
 ScreenShot *screenShot;
@@ -124,10 +126,15 @@ public:
 //-----------------------------------------------------------------------------------
 
 ScreenShot::ScreenShot(bool firstLoad) :
-		QLabel(0, Qt::Tool | Qt::CustomizeWindowHint | Qt::FramelessWindowHint)
+		QWidget(0, Qt::Tool | Qt::CustomizeWindowHint | Qt::FramelessWindowHint)
 {
 	kdebugf();
 	minSize = 8;
+
+	QHBoxLayout *layout = new QHBoxLayout(this);
+
+	CropWidget = new CropImageWidget(this);
+	layout->addWidget(CropWidget);
 
 	sizeHint = new ShotSizeHint();
 	hintTimer = new QTimer();
@@ -236,6 +243,9 @@ void ScreenShot::mousePressEvent(QMouseEvent *e)
 
 void ScreenShot::paintEvent(QPaintEvent *e)
 {
+	QWidget::paintEvent(e);
+
+	/*
 	Q_UNUSED(e)
 
 	if (!ShowPaintRect)
@@ -248,7 +258,7 @@ void ScreenShot::paintEvent(QPaintEvent *e)
 	painter.setBrush(Qt::NoBrush);
 
 	painter.drawRect(region);
-
+*/
 // TODO: make it work again
 /*
 	QStyleOptionFocusRect styleOption;
@@ -447,8 +457,9 @@ void ScreenShot::takeWindowShot()
 void ScreenShot::takeShot_Step2()
 {
 	pixmap = QPixmap::grabWindow(QApplication::desktop()->winId());
+	CropWidget->setPixmap(pixmap);
 	resize(pixmap.size());
-	setPixmap(pixmap);
+	// setPixmap(pixmap);
 	showFullScreen();
 	show();
 	setCursor(Qt::CrossCursor);

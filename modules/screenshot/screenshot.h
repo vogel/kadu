@@ -21,15 +21,17 @@
 #ifndef SCREENSHOT_H
 #define SCREENSHOT_H
 
-#include <QtGui/QLabel>
+#include <QtGui/QWidget>
 
 #include <X11/extensions/shape.h>
 
+class QLabel;
 class QMenu;
 
 class ActionDescription;
 class ChatWidget;
 class ConfigurationUiHandler;
+class CropImageWidget;
 
 enum ScreenShotMode
 {
@@ -50,9 +52,11 @@ public:
 
 };
 
-class ScreenShot : public QLabel
+class ScreenShot : public QWidget
 {
 	Q_OBJECT
+
+	CropImageWidget *CropWidget;
 
 	ConfigurationUiHandler *UiHandler;
 	ActionDescription *screenShotAction;
