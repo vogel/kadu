@@ -46,195 +46,203 @@ pkg_search_module (QCA2 REQUIRED qca2 )
 pkg_search_module (IDN REQUIRED libidn )
 
 set(SOURCES_IRIS
-	libiris/iris/xmpp/base/randomnumbergenerator.cpp
-	libiris/iris/xmpp/jid/jid.cpp
-	libiris/iris/xmpp/cutestuff/httppoll.cpp
-	libiris/iris/xmpp/cutestuff/socks.cpp
-	libiris/iris/xmpp/cutestuff/bytestream.cpp
-	libiris/iris/xmpp/cutestuff/bsocket.cpp
-	libiris/iris/xmpp/cutestuff/httpconnect.cpp
-	libiris/iris/xmpp/xmpp-im/xmpp_discoitem.cpp
-	libiris/iris/xmpp/xmpp-im/client.cpp
-	libiris/iris/xmpp/xmpp-im/types.cpp
-	libiris/iris/xmpp/xmpp-im/xmpp_vcard.cpp
-	libiris/iris/xmpp/xmpp-im/xmpp_xmlcommon.cpp
-	libiris/iris/xmpp/xmpp-im/xmpp_ibb.cpp
-	libiris/iris/xmpp/xmpp-im/xmpp_xdata.cpp
-	libiris/iris/xmpp/xmpp-im/xmpp_task.cpp
-	libiris/iris/xmpp/xmpp-im/xmpp_features.cpp
-	libiris/iris/xmpp/xmpp-im/xmpp_discoinfotask.cpp
-	libiris/iris/xmpp/xmpp-im/s5b.cpp
-	libiris/iris/xmpp/xmpp-im/xmpp_tasks.cpp
-	libiris/iris/xmpp/xmpp-im/filetransfer.cpp
-	libiris/iris/xmpp/sasl/digestmd5proplist.cpp
-	libiris/iris/xmpp/sasl/digestmd5response.cpp
-	libiris/iris/xmpp/sasl/plainmessage.cpp
-	libiris/iris/xmpp/zlib/zlibcompressor.cpp
-	libiris/iris/xmpp/zlib/zlibdecompressor.cpp
-	libiris/iris/xmpp/base64/base64.cpp
-	libiris/iris/xmpp/xmpp-core/tlshandler.cpp
-	libiris/iris/xmpp/xmpp-core/xmpp_stanza.cpp
-	libiris/iris/xmpp/xmpp-core/stream.cpp
-	libiris/iris/xmpp/xmpp-core/securestream.cpp
-	libiris/iris/xmpp/xmpp-core/simplesasl.cpp
-	libiris/iris/xmpp/xmpp-core/xmlprotocol.cpp
-	libiris/iris/xmpp/xmpp-core/protocol.cpp
-	libiris/iris/xmpp/xmpp-core/compressionhandler.cpp
-	libiris/iris/xmpp/xmpp-core/parser.cpp
-	libiris/iris/xmpp/xmpp-core/connector.cpp
-	libiris/iris/jdns/qjdns.cpp
-	libiris/iris/jdns/qjdns_sock.cpp
-	libiris/iris/irisnet/noncore/ice176.cpp
-	libiris/iris/irisnet/noncore/stunallocate.cpp
-	libiris/iris/irisnet/noncore/legacy/ndns.cpp
-	libiris/iris/irisnet/noncore/legacy/srvresolver.cpp
-	libiris/iris/irisnet/noncore/legacy/safedelete.cpp
-	libiris/iris/irisnet/noncore/legacy/servsock.cpp
-	libiris/iris/irisnet/noncore/icelocaltransport.cpp
-	libiris/iris/irisnet/noncore/stunmessage.cpp
-	libiris/iris/irisnet/noncore/stunbinding.cpp
-	libiris/iris/irisnet/noncore/stuntransaction.cpp
-	libiris/iris/irisnet/noncore/processquit.cpp
-	libiris/iris/irisnet/corelib/netavailability.cpp
-	libiris/iris/irisnet/corelib/netnames_jdns.cpp
-	libiris/iris/irisnet/corelib/netnames.cpp
-	libiris/iris/irisnet/corelib/irisnetplugin.cpp
-	libiris/iris/irisnet/corelib/netinterface.cpp
-	libiris/iris/irisnet/corelib/jdnsshared.cpp
-	libiris/iris/irisnet/corelib/objectsession.cpp
-	libiris/iris/irisnet/corelib/irisnetglobal.cpp
+	libiris/src/xmpp/base/randomnumbergenerator.cpp
+	libiris/src/xmpp/jid/jid.cpp
+	libiris/src/irisnet/noncore/cutestuff/httppoll.cpp
+	libiris/src/irisnet/noncore/cutestuff/socks.cpp
+	libiris/src/irisnet/noncore/cutestuff/bytestream.cpp
+	libiris/src/irisnet/noncore/cutestuff/bsocket.cpp
+	libiris/src/irisnet/noncore/cutestuff/httpconnect.cpp
+	libiris/src/xmpp/xmpp-im/xmpp_discoitem.cpp
+	libiris/src/xmpp/xmpp-im/client.cpp
+	libiris/src/xmpp/xmpp-im/types.cpp
+	libiris/src/xmpp/xmpp-im/xmpp_vcard.cpp
+	libiris/src/xmpp/xmpp-im/xmpp_xmlcommon.cpp
+	libiris/src/xmpp/xmpp-im/xmpp_ibb.cpp
+	libiris/src/xmpp/xmpp-im/xmpp_xdata.cpp
+	libiris/src/xmpp/xmpp-im/xmpp_task.cpp
+	libiris/src/xmpp/xmpp-im/xmpp_features.cpp
+	libiris/src/xmpp/xmpp-im/xmpp_discoinfotask.cpp
+	libiris/src/xmpp/xmpp-im/s5b.cpp
+	libiris/src/xmpp/xmpp-im/xmpp_tasks.cpp
+	libiris/src/xmpp/xmpp-im/filetransfer.cpp
+	libiris/src/xmpp/sasl/digestmd5proplist.cpp
+	libiris/src/xmpp/sasl/digestmd5response.cpp
+	libiris/src/xmpp/sasl/plainmessage.cpp
+	libiris/src/xmpp/zlib/zlibcompressor.cpp
+	libiris/src/xmpp/zlib/zlibdecompressor.cpp
+	libiris/src/xmpp/base64/base64.cpp
+	libiris/src/xmpp/xmpp-core/tlshandler.cpp
+	libiris/src/xmpp/xmpp-core/xmpp_stanza.cpp
+	libiris/src/xmpp/xmpp-core/stream.cpp
+	libiris/src/xmpp/xmpp-core/securestream.cpp
+	libiris/src/xmpp/xmpp-core/simplesasl.cpp
+	libiris/src/xmpp/xmpp-core/xmlprotocol.cpp
+	libiris/src/xmpp/xmpp-core/protocol.cpp
+	libiris/src/xmpp/xmpp-core/compressionhandler.cpp
+	libiris/src/xmpp/xmpp-core/parser.cpp
+	libiris/src/xmpp/xmpp-core/connector.cpp
+	libiris/src/jdns/qjdns.cpp
+	libiris/src/jdns/qjdns_sock.cpp
+	libiris/src/irisnet/noncore/ice176.cpp
+	libiris/src/irisnet/noncore/stunallocate.cpp
+	libiris/src/irisnet/noncore/legacy/ndns.cpp
+	libiris/src/irisnet/noncore/legacy/srvresolver.cpp
+	libiris/src/irisnet/noncore/legacy/safedelete.cpp
+	libiris/src/irisnet/noncore/legacy/servsock.cpp
+	libiris/src/irisnet/noncore/icecomponent.cpp
+	libiris/src/irisnet/noncore/icetransport.cpp
+	libiris/src/irisnet/noncore/iceturntransport.cpp
+	libiris/src/irisnet/noncore/icelocaltransport.cpp
+	libiris/src/irisnet/noncore/stunmessage.cpp
+	libiris/src/irisnet/noncore/stunbinding.cpp
+	libiris/src/irisnet/noncore/stuntransaction.cpp
+	libiris/src/irisnet/noncore/stuntypes.cpp
+	libiris/src/irisnet/noncore/stunutil.cpp
+	libiris/src/irisnet/noncore/processquit.cpp
+	libiris/src/irisnet/noncore/turnclient.cpp
+	libiris/src/irisnet/noncore/udpportreserver.cpp
+	libiris/src/irisnet/corelib/netavailability.cpp
+	libiris/src/irisnet/corelib/netnames_jdns.cpp
+	libiris/src/irisnet/corelib/netnames.cpp
+	libiris/src/irisnet/corelib/irisnetplugin.cpp
+	libiris/src/irisnet/corelib/netinterface.cpp
+	libiris/src/irisnet/corelib/jdnsshared.cpp
+	libiris/src/irisnet/corelib/objectsession.cpp
+	libiris/src/irisnet/corelib/irisnetglobal.cpp
 
-	libiris/iris/jdns/jdns.c
-	libiris/iris/jdns/jdns_util.c
-	libiris/iris/jdns/jdns_sys.c
-	libiris/iris/jdns/jdns_mdnsd.c
-	libiris/iris/jdns/jdns_packet.c
-
-	libiris/iris/xmpp/jingle/jinglecontent.cpp
-	libiris/iris/xmpp/jingle/jinglesession.cpp
-	libiris/iris/xmpp/jingle/jinglesessionmanager.cpp
-	libiris/iris/xmpp/jingle/jingletasks.cpp
+	libiris/src/jdns/jdns.c
+	libiris/src/jdns/jdns_util.c
+	libiris/src/jdns/jdns_sys.c
+	libiris/src/jdns/jdns_mdnsd.c
+	libiris/src/jdns/jdns_packet.c
 )
 
 if(WIN32)
-  LIST(APPEND SOURCES_IRIS libiris/iris/irisnet/corelib/netinterface_win.cpp)
+  LIST(APPEND SOURCES_IRIS libiris/src/irisnet/corelib/netinterface_win.cpp)
 else(WIN32)
-  LIST(APPEND SOURCES_IRIS libiris/iris/irisnet/corelib/netinterface_unix.cpp)
+  LIST(APPEND SOURCES_IRIS libiris/src/irisnet/corelib/netinterface_unix.cpp)
 endif(WIN32)
 
 set (CMAKE_C_FLAGS "")
 set (CMAKE_CXX_FLAGS "")
 
 set (MOC_SOURCES_IRIS
-	#libiris/iris/xmpp/base/randrandomnumbergenerator.h
-	#libiris/iris/xmpp/base/randomnumbergenerator.h
-	#libiris/iris/xmpp/jid/jid.h
-	libiris/iris/xmpp/cutestuff/bytestream.h
-	libiris/iris/xmpp/cutestuff/socks.h
-	libiris/iris/xmpp/cutestuff/httpconnect.h
-	libiris/iris/xmpp/cutestuff/bsocket.h
-	libiris/iris/xmpp/cutestuff/httppoll.h
-	#libiris/iris/xmpp/xmpp-im/xmpp_xdata.h
-	#libiris/iris/xmpp/xmpp-im/xmpp_rosterx.h
-	libiris/iris/xmpp/xmpp-im/xmpp_tasks.h
-	#libiris/iris/xmpp/xmpp-im/xmpp_discoitem.h
-	#libiris/iris/xmpp/xmpp-im/xmpp_pubsubretraction.h
-	#libiris/iris/xmpp/xmpp-im/xmpp_xmlcommon.h
-	#libiris/iris/xmpp/xmpp-im/xmpp_roster.h
-	#libiris/iris/xmpp/xmpp-im/xmpp_muc.h
-	#libiris/iris/xmpp/xmpp-im/xmpp_htmlelement.h
-	#libiris/iris/xmpp/xmpp-im/xmpp_receipts.h
-	#libiris/iris/xmpp/xmpp-im/xmpp_message.h
-	libiris/iris/xmpp/xmpp-im/xmpp_discoinfotask.h
-	libiris/iris/xmpp/xmpp-im/xmpp_ibb.h
-	#libiris/iris/xmpp/xmpp-im/xmpp_liverosteritem.h
-	#libiris/iris/xmpp/xmpp-im/xmpp_httpauthrequest.h
-	#libiris/iris/xmpp/xmpp-im/xmpp_pubsubitem.h
-	#libiris/iris/xmpp/xmpp-im/xmpp_vcard.h
-	libiris/iris/xmpp/xmpp-im/xmpp_client.h
-	libiris/iris/xmpp/xmpp-im/s5b.h
-	#libiris/iris/xmpp/xmpp-im/xmpp_url.h
-	#libiris/iris/xmpp/xmpp-im/xmpp_chatstate.h
-	libiris/iris/xmpp/xmpp-im/xmpp_task.h
-	#libiris/iris/xmpp/xmpp-im/xmpp_address.h
-	#libiris/iris/xmpp/xmpp-im/xmpp_agentitem.h
-	libiris/iris/xmpp/xmpp-im/filetransfer.h
-	#libiris/iris/xmpp/xmpp-im/xmpp_status.h
-	#libiris/iris/xmpp/xmpp-im/xmpp_resourcelist.h
-	#libiris/iris/xmpp/xmpp-im/xmpp_liveroster.h
-	#libiris/iris/xmpp/xmpp-im/xmpp_resource.h
-	#libiris/iris/xmpp/xmpp-im/xmpp_rosteritem.h
-	#libiris/iris/xmpp/xmpp-im/xmpp_features.h
-	#libiris/iris/xmpp/xmpp-im/im.h
-	#libiris/iris/xmpp/sasl/digestmd5response.h
-	#libiris/iris/xmpp/sasl/digestmd5proplist.h
-	#libiris/iris/xmpp/sasl/plainmessage.h
-	#libiris/iris/xmpp/zlib/common.h
-	libiris/iris/xmpp/zlib/zlibdecompressor.h
-	libiris/iris/xmpp/zlib/zlibcompressor.h
-	#libiris/iris/xmpp/base64/base64.h
-	#libiris/iris/xmpp/xmpp-core/xmpp_stanza.h
-	#libiris/iris/xmpp/xmpp-core/simplesasl.h
-	libiris/iris/xmpp/xmpp-core/securestream.h
-	#libiris/iris/xmpp/xmpp-core/protocol.h
-	libiris/iris/xmpp/xmpp-core/compressionhandler.h
-	#libiris/iris/xmpp/xmpp-core/xmlprotocol.h
-	libiris/iris/xmpp/xmpp-core/xmpp.h
-	libiris/iris/xmpp/xmpp-core/xmpp_clientstream.h
-	libiris/iris/xmpp/xmpp-core/xmpp_stream.h
-	#libiris/iris/xmpp/xmpp-core/td.h
-	#libiris/iris/xmpp/xmpp-core/parser.h
+	#libiris/src/xmpp/base/randrandomnumbergenerator.h
+	#libiris/src/xmpp/base/randomnumbergenerator.h
+	#libiris/src/xmpp/jid/jid.h
+	libiris/src/irisnet/noncore/cutestuff/bytestream.h
+	libiris/src/irisnet/noncore/cutestuff/socks.h
+	libiris/src/irisnet/noncore/cutestuff/httpconnect.h
+	libiris/src/irisnet/noncore/cutestuff/bsocket.h
+	libiris/src/irisnet/noncore/cutestuff/httppoll.h
+	#libiris/src/xmpp/xmpp-im/xmpp_xdata.h
+	#libiris/src/xmpp/xmpp-im/xmpp_rosterx.h
+	libiris/src/xmpp/xmpp-im/xmpp_tasks.h
+	#libiris/src/xmpp/xmpp-im/xmpp_discoitem.h
+	#libiris/src/xmpp/xmpp-im/xmpp_pubsubretraction.h
+	#libiris/src/xmpp/xmpp-im/xmpp_xmlcommon.h
+	#libiris/src/xmpp/xmpp-im/xmpp_roster.h
+	#libiris/src/xmpp/xmpp-im/xmpp_muc.h
+	#libiris/src/xmpp/xmpp-im/xmpp_htmlelement.h
+	#libiris/src/xmpp/xmpp-im/xmpp_receipts.h
+	#libiris/src/xmpp/xmpp-im/xmpp_message.h
+	libiris/src/xmpp/xmpp-im/xmpp_discoinfotask.h
+	libiris/src/xmpp/xmpp-im/xmpp_ibb.h
+	#libiris/src/xmpp/xmpp-im/xmpp_liverosteritem.h
+	#libiris/src/xmpp/xmpp-im/xmpp_httpauthrequest.h
+	#libiris/src/xmpp/xmpp-im/xmpp_pubsubitem.h
+	#libiris/src/xmpp/xmpp-im/xmpp_vcard.h
+	libiris/src/xmpp/xmpp-im/xmpp_client.h
+	libiris/src/xmpp/xmpp-im/s5b.h
+	#libiris/src/xmpp/xmpp-im/xmpp_url.h
+	#libiris/src/xmpp/xmpp-im/xmpp_chatstate.h
+	libiris/src/xmpp/xmpp-im/xmpp_task.h
+	#libiris/src/xmpp/xmpp-im/xmpp_address.h
+	#libiris/src/xmpp/xmpp-im/xmpp_agentitem.h
+	libiris/src/xmpp/xmpp-im/filetransfer.h
+	#libiris/src/xmpp/xmpp-im/xmpp_status.h
+	#libiris/src/xmpp/xmpp-im/xmpp_resourcelist.h
+	#libiris/src/xmpp/xmpp-im/xmpp_liveroster.h
+	#libiris/src/xmpp/xmpp-im/xmpp_resource.h
+	#libiris/src/xmpp/xmpp-im/xmpp_rosteritem.h
+	#libiris/src/xmpp/xmpp-im/xmpp_features.h
+	#libiris/src/xmpp/xmpp-im/im.h
+	#libiris/src/xmpp/sasl/digestmd5response.h
+	#libiris/src/xmpp/sasl/digestmd5proplist.h
+	#libiris/src/xmpp/sasl/plainmessage.h
+	#libiris/src/xmpp/zlib/common.h
+	libiris/src/xmpp/zlib/zlibdecompressor.h
+	libiris/src/xmpp/zlib/zlibcompressor.h
+	#libiris/src/xmpp/base64/base64.h
+	#libiris/src/xmpp/xmpp-core/xmpp_stanza.h
+	#libiris/src/xmpp/xmpp-core/simplesasl.h
+	libiris/src/xmpp/xmpp-core/securestream.h
+	#libiris/src/xmpp/xmpp-core/protocol.h
+	libiris/src/xmpp/xmpp-core/compressionhandler.h
+	#libiris/src/xmpp/xmpp-core/xmlprotocol.h
+	libiris/src/xmpp/xmpp-core/xmpp.h
+	libiris/src/xmpp/xmpp-core/xmpp_clientstream.h
+	libiris/src/xmpp/xmpp-core/xmpp_stream.h
+	#libiris/src/xmpp/xmpp-core/td.h
+	#libiris/src/xmpp/xmpp-core/parser.h
 
-	libiris/iris/jdns/qjdns.h
+	libiris/src/jdns/qjdns.h
 
-	libiris/iris/irisnet/noncore/stuntransaction.h
-	libiris/iris/irisnet/noncore/stunbinding.h
-	libiris/iris/irisnet/noncore/legacy/ndns.h
-	libiris/iris/irisnet/noncore/legacy/safedelete.h
-	libiris/iris/irisnet/noncore/legacy/servsock.h
-	libiris/iris/irisnet/noncore/legacy/srvresolver.h
-	libiris/iris/irisnet/noncore/stunallocate.h
-	libiris/iris/irisnet/noncore/ice176.h
-	libiris/iris/irisnet/noncore/processquit.h
-	libiris/iris/irisnet/noncore/icelocaltransport.h
-	#libiris/iris/irisnet/corelib/irisnetglobal.h
-	libiris/iris/irisnet/corelib/objectsession.h
-	libiris/iris/irisnet/corelib/netavailability.h
-	libiris/iris/irisnet/corelib/netnames.h
-	libiris/iris/irisnet/corelib/irisnetplugin.h
-	libiris/iris/irisnet/corelib/netinterface.h
-	libiris/iris/irisnet/corelib/jdnsshared.h
-
-	libiris/iris/xmpp/jingle/jinglecontent.h
-	libiris/iris/xmpp/jingle/jinglesession.h
-	libiris/iris/xmpp/jingle/jinglesessionmanager.h
-	libiris/iris/xmpp/jingle/jingletasks.h
+	libiris/src/irisnet/noncore/stuntransaction.h
+	libiris/src/irisnet/noncore/stunbinding.h
+	libiris/src/irisnet/noncore/legacy/ndns.h
+	libiris/src/irisnet/noncore/legacy/safedelete.h
+	libiris/src/irisnet/noncore/legacy/servsock.h
+	libiris/src/irisnet/noncore/legacy/srvresolver.h
+	libiris/src/irisnet/noncore/stunallocate.h
+	libiris/src/irisnet/noncore/ice176.h
+	libiris/src/irisnet/noncore/icecomponent.h
+	libiris/src/irisnet/noncore/processquit.h
+	libiris/src/irisnet/noncore/icetransport.h
+	libiris/src/irisnet/noncore/iceturntransport.h
+	libiris/src/irisnet/noncore/icelocaltransport.h
+	libiris/src/irisnet/noncore/turnclient.h
+	libiris/src/irisnet/noncore/udpportreserver.h
+	#libiris/src/irisnet/corelib/irisnetglobal.h
+	libiris/src/irisnet/corelib/objectsession.h
+	libiris/src/irisnet/corelib/netavailability.h
+	libiris/src/irisnet/corelib/netnames.h
+	libiris/src/irisnet/corelib/irisnetplugin.h
+	libiris/src/irisnet/corelib/netinterface.h
+	libiris/src/irisnet/corelib/jdnsshared.h
 )
 
 set (MOC_SOURCES2_IRIS
-	libiris/iris/jdns/qjdns.cpp
-	libiris/iris/irisnet/corelib/netavailability.cpp
-	libiris/iris/irisnet/corelib/jdnsshared.cpp
-	libiris/iris/irisnet/corelib/netinterface.cpp
-	libiris/iris/irisnet/corelib/netnames.cpp
-	libiris/iris/irisnet/corelib/netnames_jdns.cpp
-	libiris/iris/irisnet/corelib/objectsession.cpp
-	libiris/iris/irisnet/noncore/ice176.cpp
-	libiris/iris/irisnet/noncore/icelocaltransport.cpp
-	libiris/iris/irisnet/noncore/processquit.cpp
-	libiris/iris/irisnet/noncore/stunallocate.cpp
-	libiris/iris/irisnet/noncore/stunbinding.cpp
-	libiris/iris/irisnet/noncore/stuntransaction.cpp
-	libiris/iris/xmpp/cutestuff/bsocket.cpp
-	libiris/iris/xmpp/xmpp-core/securestream.cpp
-	libiris/iris/xmpp/xmpp-im/s5b.cpp
-	libiris/iris/xmpp/xmpp-im/xmpp_features.cpp
+	libiris/src/jdns/qjdns.cpp
+	libiris/src/irisnet/corelib/netavailability.cpp
+	libiris/src/irisnet/corelib/jdnsshared.cpp
+	libiris/src/irisnet/corelib/netinterface.cpp
+	libiris/src/irisnet/corelib/netnames.cpp
+	libiris/src/irisnet/corelib/netnames_jdns.cpp
+	libiris/src/irisnet/corelib/objectsession.cpp
+	libiris/src/irisnet/noncore/ice176.cpp
+	libiris/src/irisnet/noncore/icecomponent.cpp
+	libiris/src/irisnet/noncore/icelocaltransport.cpp
+	libiris/src/irisnet/noncore/icetransport.cpp
+	libiris/src/irisnet/noncore/iceturntransport.cpp
+	libiris/src/irisnet/noncore/processquit.cpp
+	libiris/src/irisnet/noncore/stunallocate.cpp
+	libiris/src/irisnet/noncore/stunbinding.cpp
+	libiris/src/irisnet/noncore/stuntransaction.cpp
+	libiris/src/irisnet/noncore/stuntypes.cpp
+	libiris/src/irisnet/noncore/turnclient.cpp
+	libiris/src/irisnet/noncore/udpportreserver.cpp
+	libiris/src/irisnet/noncore/cutestuff/bsocket.cpp
+	libiris/src/xmpp/xmpp-core/securestream.cpp
+	libiris/src/xmpp/xmpp-im/s5b.cpp
+	libiris/src/xmpp/xmpp-im/xmpp_features.cpp
 )
 
 if(WIN32)
-  LIST(APPEND MOC_SOURCES2_IRIS libiris/iris/irisnet/corelib/netinterface_win.cpp)
+  LIST(APPEND MOC_SOURCES2_IRIS libiris/src/irisnet/corelib/netinterface_win.cpp)
 else(WIN32)
-  LIST(APPEND MOC_SOURCES2_IRIS libiris/iris/irisnet/corelib/netinterface_unix.cpp)
+  LIST(APPEND MOC_SOURCES2_IRIS libiris/src/irisnet/corelib/netinterface_unix.cpp)
 endif(WIN32)
 
 
@@ -339,22 +347,22 @@ include_directories(
 	${IDN_INCLUDE_DIRS}
 	${CMAKE_CURRENT_SOURCE_DIR}/libiris
 	${CMAKE_CURRENT_SOURCE_DIR}/libiris/include
-	${CMAKE_CURRENT_SOURCE_DIR}/libiris/iris
-	${CMAKE_CURRENT_SOURCE_DIR}/libiris/iris/xmpp/base
-	${CMAKE_CURRENT_SOURCE_DIR}/libiris/iris/xmpp/base
-	${CMAKE_CURRENT_SOURCE_DIR}/libiris/iris/xmpp/jid
-	${CMAKE_CURRENT_SOURCE_DIR}/libiris/iris/xmpp/cutestuff
-	${CMAKE_CURRENT_SOURCE_DIR}/libiris/iris/xmpp/xmpp-im
-	${CMAKE_CURRENT_SOURCE_DIR}/libiris/iris/xmpp/sasl
-	${CMAKE_CURRENT_SOURCE_DIR}/libiris/iris/xmpp/zlib
-	${CMAKE_CURRENT_SOURCE_DIR}/libiris/iris/xmpp/base64
-	${CMAKE_CURRENT_SOURCE_DIR}/libiris/iris/xmpp/xmpp-core
-	${CMAKE_CURRENT_SOURCE_DIR}/libiris/iris/xmpp/jingle
-	${CMAKE_CURRENT_SOURCE_DIR}/libiris/iris/jdns
-	${CMAKE_CURRENT_SOURCE_DIR}/libiris/iris/irisnet/noncore
-	${CMAKE_CURRENT_SOURCE_DIR}/libiris/iris/irisnet/noncore/legacy
-	${CMAKE_CURRENT_SOURCE_DIR}/libiris/iris/irisnet/corelib
-	${CMAKE_CURRENT_SOURCE_DIR}/libiris/iris/irisnet/appledns
+	${CMAKE_CURRENT_SOURCE_DIR}/libiris/src
+	${CMAKE_CURRENT_SOURCE_DIR}/libiris/src/xmpp/base
+	${CMAKE_CURRENT_SOURCE_DIR}/libiris/src/xmpp/base
+	${CMAKE_CURRENT_SOURCE_DIR}/libiris/src/xmpp/jid
+	${CMAKE_CURRENT_SOURCE_DIR}/libiris/src/irisnet/noncore/cutestuff/
+	${CMAKE_CURRENT_SOURCE_DIR}/libiris/src/xmpp/xmpp-im
+	${CMAKE_CURRENT_SOURCE_DIR}/libiris/src/xmpp/sasl
+	${CMAKE_CURRENT_SOURCE_DIR}/libiris/src/xmpp/zlib
+	${CMAKE_CURRENT_SOURCE_DIR}/libiris/src/xmpp/base64
+	${CMAKE_CURRENT_SOURCE_DIR}/libiris/src/xmpp/xmpp-core
+	${CMAKE_CURRENT_SOURCE_DIR}/libiris/src/xmpp/jingle
+	${CMAKE_CURRENT_SOURCE_DIR}/libiris/src/jdns
+	${CMAKE_CURRENT_SOURCE_DIR}/libiris/src/irisnet/noncore
+	${CMAKE_CURRENT_SOURCE_DIR}/libiris/src/irisnet/noncore/legacy
+	${CMAKE_CURRENT_SOURCE_DIR}/libiris/src/irisnet/corelib
+	${CMAKE_CURRENT_SOURCE_DIR}/libiris/src/irisnet/appledns
 )
 
 target_link_libraries(jabber_protocol ${QCA2_LIBRARIES} ${IDN_LIBRARIES} ${QT_LIBRARIES} )

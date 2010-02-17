@@ -32,7 +32,7 @@
 #include <QtCrypto>
 #include <QString>
 
-#include "xmpp_jid.h"
+#include "jid.h"
 
 
 namespace XMPP {

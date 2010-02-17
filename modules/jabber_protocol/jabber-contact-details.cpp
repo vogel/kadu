@@ -22,7 +22,7 @@
 
 #include "contacts/contact-shared.h"
 
-#include "libiris/include/xmpp.h"
+#include "libiris/include/iris/xmpp.h"
 #include "utils/jid-util.h"
 
 #include "jabber-contact-details.h"

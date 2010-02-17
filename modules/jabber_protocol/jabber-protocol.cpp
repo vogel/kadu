@@ -25,7 +25,7 @@
 #include <QtGui/QMessageBox>
 #include <QtCrypto>
 
-#include "libiris/include/filetransfer.h"
+#include "libiris/include/iris/filetransfer.h"
 #include <xmpp.h>
 #include <xmpp_tasks.h>
 

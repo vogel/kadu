@@ -27,7 +27,6 @@
 #include <QtCrypto>
 #include <bsocket.h>
 #include <filetransfer.h>
-#include <jinglesessionmanager.h>
 #include <xmpp_tasks.h>
 
 #include "accounts/account.h"
@@ -356,22 +355,6 @@ void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool a
 					   this, SLOT(slotIncomingFileTransfer()));
 		}
 	}
-
-	/*if (jingleEnabled())
-	{*/
-
-#ifdef JINGLE_SUPPORT
-		jabberClient->setJingleEnabled(true);
-
-		{
-			using namespace XMPP;
-			QObject::connect ( jabberClient->jingleSessionManager(), SIGNAL ( incomingSession() ),
-					   this, SLOT ( slotIncomingJingleSession () ) );
-		}
-#else
-		jabberClient->setJingleEnabled(false);
-#endif
-	/*}*/
 
 	/* This should only be done here to connect the signals, otherwise it is a
 	 * bad idea.
