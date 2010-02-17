@@ -144,15 +144,15 @@ void DockingManager::changeIcon()
 		switch (newMessageIcon)
 		{
 			case AnimatedEnvelope:
-				emit trayMovieChanged("protocols/commmon/16x16/message_anim.gif");
+				emit trayMovieChanged("protocols/common/16x16/message_anim.gif");
 				break;
 			case StaticEnvelope:
-				emit trayPixmapChanged(IconsManager::instance()->iconByPath("protocols/commmon/16x16/message.png"));
+				emit trayPixmapChanged(IconsManager::instance()->iconByPath("protocols/common/16x16/message.png"));
 				break;
 			case BlinkingEnvelope:
 				if (!blink)
 				{
-					emit trayPixmapChanged(IconsManager::instance()->iconByPath("protocols/commmon/16x16/message.png"));
+					emit trayPixmapChanged(IconsManager::instance()->iconByPath("protocols/common/16x16/message.png"));
 					icon_timer->setSingleShot(true);
 					icon_timer->start(500);
 					blink = true;

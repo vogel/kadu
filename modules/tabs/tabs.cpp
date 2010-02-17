@@ -511,7 +511,7 @@ void TabsManager::onTimer()
 			if (currentChat != chat)
 			{
 				if (msg)
-					tabdialog->setTabIcon(i, IconsManager::instance()->iconByPath("protocols/commmon/16x16/message.png"));
+					tabdialog->setTabIcon(i, IconsManager::instance()->iconByPath("protocols/common/16x16/message.png"));
 				else
 					tabdialog->setTabIcon(i, chat->icon());
 			}

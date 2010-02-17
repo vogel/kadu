@@ -53,7 +53,7 @@ BuddiesListViewDelegate::BuddiesListViewDelegate(QObject *parent)
 	configurationUpdated();
 
 	DefaultAvatarSize = IconsManager::instance()->pixmapByPath("32x32/system-users.png").size();
-	MessagePixmap = IconsManager::instance()->pixmapByPath("protocols/commmon/16x16/message.png");
+	MessagePixmap = IconsManager::instance()->pixmapByPath("protocols/common/16x16/message.png");
 }
 
 BuddiesListViewDelegate::~BuddiesListViewDelegate()

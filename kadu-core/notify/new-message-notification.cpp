@@ -60,7 +60,7 @@ void MessageNotification::unregisterEvents()
 
 MessageNotification::MessageNotification(MessageType messageType, const Message &message) :
 		ChatNotification(message.messageChat(), messageType == NewChat ? "NewChat" : "NewMessage",
-		IconsManager::instance()->iconByPath("protocols/commmon/16x16/message.png"))
+		IconsManager::instance()->iconByPath("protocols/common/16x16/message.png"))
 {
 	QString syntax;
 
