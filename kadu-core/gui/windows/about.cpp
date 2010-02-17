@@ -83,9 +83,10 @@ About::About(QWidget *parent)
 	QLabel *l_info = new QLabel;
 	l_info->setBackgroundRole(texts->backgroundRole());
 
-	l_info->setText(tr("<font size=\"5\">Kadu</font><br /><b>Version %1 %2</b><br />"
-			"Using Qt %3 (Qt%4)</html>").arg(QString(VERSION))
-			.arg(DETAILED_VERSION  != 0 ? "(" + QString(DETAILED_VERSION) + ")" : QString::null).arg(qVersion()).arg(QT_VERSION_STR));
+	l_info->setText("<font size=\"5\">Kadu</font><br /><b>"
+		+ tr("Version %1 %2").arg(QString(VERSION)).arg(DETAILED_VERSION > 0 ? "(" + QString(DETAILED_VERSION) + ")" : QString::null)
+		+ "</b><br />"
+		+ QString("Qt %3 (Qt %4)").arg(qVersion()).arg(QT_VERSION_STR));
 
 	l_info->setWordWrap(true);
 	l_info->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
@@ -103,8 +104,8 @@ About::About(QWidget *parent)
 	QWidget *wb_about = new QWidget(tw_about);
 	QVBoxLayout *about_layout = new QVBoxLayout(wb_about);
 	about_layout->addWidget(new QLabel(tr("Instant Messenger")));
-	about_layout->addWidget(new QLabel(tr("Support:<br>http://www.kadu.net/forum/")));
-	about_layout->addWidget(new QLabel(tr("(C) %1-%2 Kadu Team").arg("2001").arg("2010")));
+	about_layout->addWidget(new QLabel(tr("Support:<br>%1").arg("<a href=\"http://www.kadu.net/forum\">http://www.kadu.net/forum</a>")));
+	about_layout->addWidget(new QLabel("(C) 2001-2009 Kadu Team"));
 	about_layout->addWidget(new KaduLink());
 	about_layout->addStretch(100);
 
