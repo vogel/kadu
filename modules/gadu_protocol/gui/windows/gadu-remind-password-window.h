@@ -48,8 +48,8 @@ private slots:
 	void remindPasswordFinished(GaduServerRemindPassword *gsrp);
 
 public:
-	GaduRemindPasswordWindow(UinType uin, QWidget *parent = 0);
-	~GaduRemindPasswordWindow();
+	explicit GaduRemindPasswordWindow(UinType uin, QWidget *parent = 0);
+	virtual ~GaduRemindPasswordWindow();
 };
 
 #endif // GADU_REMIND_PASSWORD_WINDOW_H

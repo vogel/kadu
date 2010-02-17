@@ -45,6 +45,7 @@
 #include "protocols/protocol.h"
 #include "icons-manager.h"
 
+#include "gui/windows/gadu-change-password-window.h"
 #include "gui/windows/gadu-remind-password-window.h"
 #include "gui/windows/gadu-unregister-account-window.h"
 #include "services/gadu-contact-list-service.h"
@@ -130,10 +131,15 @@ void GaduEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 	connect(RememberPassword, SIGNAL(stateChanged(int)), this, SLOT(dataChanged()));
 	formLayout->addRow(0, RememberPassword);
 
-	QLabel *remindPasswordButton = new QLabel(QString("<a href='remind'>%1</a>").arg(tr("Forgot Your Password?")));
-	remindPasswordButton->setTextInteractionFlags(Qt::LinksAccessibleByKeyboard | Qt::LinksAccessibleByMouse);
-	formLayout->addRow(0, remindPasswordButton);
-	connect(remindPasswordButton, SIGNAL(linkActivated(QString)), this, SLOT(remindPasssword()));
+	QLabel *remindPasswordLabel = new QLabel(QString("<a href='remind'>%1</a>").arg(tr("Forgot Your Password?")));
+	remindPasswordLabel->setTextInteractionFlags(Qt::LinksAccessibleByKeyboard | Qt::LinksAccessibleByMouse);
+	formLayout->addRow(0, remindPasswordLabel);
+	connect(remindPasswordLabel, SIGNAL(linkActivated(QString)), this, SLOT(remindPasssword()));
+
+	QLabel *changePasswordLabel = new QLabel(QString("<a href='change'>%1</a>").arg(tr("Change Your Password")));
+	changePasswordLabel->setTextInteractionFlags(Qt::LinksAccessibleByKeyboard | Qt::LinksAccessibleByMouse);
+	formLayout->addRow(0, changePasswordLabel);
+	connect(changePasswordLabel, SIGNAL(linkActivated(QString)), this, SLOT(changePasssword()));
 
 	Identities = new IdentitiesComboBox(this);
 	connect(Identities, SIGNAL(activated(int)), this, SLOT(dataChanged()));
@@ -349,11 +355,27 @@ void GaduEditAccountWidget::contactListDownloaded(QString content)
 	file.close();
 }
 
-
 void GaduEditAccountWidget::remindPasssword()
 {
 	bool ok;
 	int uin = AccountId->text().toInt(&ok);
 	if (ok)
 		(new GaduRemindPasswordWindow(uin))->show();
+}
+
+void GaduEditAccountWidget::changePasssword()
+{
+	bool ok;
+	int uin = AccountId->text().toInt(&ok);
+	if (ok)
+	{
+		GaduChangePasswordWindow *changePasswordWindow = new GaduChangePasswordWindow(uin, account());
+		connect(changePasswordWindow, SIGNAL(passwordChanged(const QString &)), this, SLOT(passwordChanged(const QString &)));
+		changePasswordWindow->show();
+	}
+}
+
+void GaduEditAccountWidget::passwordChanged(const QString &newPassword)
+{
+	AccountPassword->setText(newPassword);
 }

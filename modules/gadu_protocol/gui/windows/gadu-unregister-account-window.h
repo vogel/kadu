@@ -45,8 +45,8 @@ private slots:
 	void unregisteringFinished(GaduServerUnregisterAccount *gsua);
 
 public:
-	GaduUnregisterAccountWindow(QWidget *parent = 0);
-	~GaduUnregisterAccountWindow();
+	explicit GaduUnregisterAccountWindow(QWidget *parent = 0);
+	virtual ~GaduUnregisterAccountWindow();
 };
 
 #endif // GADU_UNREGISTER_ACCOUNT_WINDOW_H
