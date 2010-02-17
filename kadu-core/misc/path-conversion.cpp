@@ -36,6 +36,7 @@
 #include "path-conversion.h"
 
 #ifndef Q_OS_WIN
+#include <cstdio>
 #include <pwd.h>
 #include <stdlib.h>
 #endif
