@@ -119,6 +119,8 @@ ScreenShot::ScreenShot(bool firstLoad) :
 	minSize = 8;
 
 	QHBoxLayout *layout = new QHBoxLayout(this);
+	layout->setMargin(0);
+	layout->setContentsMargins(0, 0, 0, 0);
 
 	CropWidget = new CropImageWidget(this);
 	layout->addWidget(CropWidget);
