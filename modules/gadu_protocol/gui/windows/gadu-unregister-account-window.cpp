@@ -77,6 +77,7 @@ void GaduUnregisterAccountWindow::createGui()
 	layout->addRow(tr("Gadu-Gadu number") + ":", AccountId);
 
 	Password = new QLineEdit(this);
+	Password->setEchoMode(QLineEdit::Password);
 	connect(Password, SIGNAL(textChanged(const QString &)), this, SLOT(dataChanged()));
 	layout->addRow(tr("Password") + ":", Password);
 
