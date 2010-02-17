@@ -22,34 +22,40 @@
 #ifndef GADU_SERVER_CHANGE_PASSWORD_H
 #define GADU_SERVER_CHANGE_PASSWORD_H
 
+#include <QtCore/QObject>
+
 #include <libgadu.h>
 
 #include "misc/token-reader.h"
 #include "protocols/protocol.h"
 
-#include "gadu-server-connector.h"
-
-class GaduServerChangePassword : public GaduServerConnector
+class GaduServerChangePassword : public QObject
 {
 	Q_OBJECT
 
 	struct gg_http *H;
 
+	bool Result;
+
 	UinType Uin;
 	QString Mail;
 	QString Password;
 	QString NewPassword;
+	QString TokenId;
+	QString TokenValue;
 
 private slots:
 	void done(bool ok, struct gg_http *h);
 
-protected:
-	virtual void performAction(const QString &tokenId, const QString &tokenValue);
-
 public:
-	GaduServerChangePassword(TokenReader *reader, UinType uin, const QString &mail, const QString &password, const QString &newPassword);
+	GaduServerChangePassword(UinType uin, const QString &mail, const QString &password, const QString &newPassword, const QString &tokenId, const QString &tokenValue);
 
-	UinType uin() { return Uin; }
+	virtual void performAction();
+
+	bool result() { return Result; }
+
+signals:
+	void finished(GaduServerChangePassword *);
 
 };
 
