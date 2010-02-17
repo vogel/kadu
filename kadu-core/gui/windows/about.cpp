@@ -221,7 +221,6 @@ QString About::loadFile(const QString &name)
 	}
 
 	QTextStream str(&file);
-	str.setCodec(codec_latin2);
 	QString data = str.readAll();
 	file.close();
 
