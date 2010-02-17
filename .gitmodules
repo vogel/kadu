@@ -1,1 +1,4 @@
 
+[submodule "modules/jabber_protocol/libiris"]
+	path = modules/jabber_protocol/libiris
+	url = git://gitorious.org/psi/iris.git
