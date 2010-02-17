@@ -32,24 +32,13 @@ class ActionDescription;
 class ChatWidget;
 class ConfigurationUiHandler;
 class CropImageWidget;
+class ScreenshotToolBox;
 
 enum ScreenShotMode
 {
 	Standard = 0,
 	WithChatWindowHidden = 1,
 	SingleWindow = 2
-};
-
-class ShotSizeHint : public QWidget
-{
-	friend class ScreenShot;
-
-	QLabel *geom;
-	QLabel *fileSize;
-
-public:
-	ShotSizeHint();
-
 };
 
 class ScreenShot : public QWidget
@@ -68,7 +57,7 @@ class ScreenShot : public QWidget
 	bool buttonPressed;
 	QRect region;
 	QPixmap pixmap;
-	ShotSizeHint *sizeHint;
+	ScreenshotToolBox *ToolBox;
 	QTimer *hintTimer;
 	QMenu *menu;
 	bool wasMaximized;

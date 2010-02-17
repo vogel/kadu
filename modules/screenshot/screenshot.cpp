@@ -53,6 +53,7 @@
 #include "debug.h"
 
 #include "gui/widgets/crop-image-widget.h"
+#include "gui/widgets/screenshot-tool-box.h"
 
 #include "screenshot.h"
 
@@ -90,20 +91,6 @@ extern "C" void screenshot_close()
 
 //-----------------------------------------------------------------------------------
 
-ShotSizeHint::ShotSizeHint()
-	: QWidget(0, Qt::Tool | Qt::CustomizeWindowHint | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint)
-{
-	QGridLayout *g = new QGridLayout(this);
-	g->setMargin(1);
-	g->setSpacing(1);
-	geom = new QLabel(this);
-	fileSize = new QLabel(tr("0 KB"), this);
-	g->addWidget(geom, 0, 0);
-	g->addWidget(fileSize, 1, 0);
-}
-
-//-----------------------------------------------------------------------------------
-
 class ScreenShotConfigurationUiHandler : public ConfigurationUiHandler
 {
 public:
@@ -136,7 +123,7 @@ ScreenShot::ScreenShot(bool firstLoad) :
 	CropWidget = new CropImageWidget(this);
 	layout->addWidget(CropWidget);
 
-	sizeHint = new ShotSizeHint();
+	ToolBox = new ScreenshotToolBox(this);
 	hintTimer = new QTimer();
 	connect(hintTimer, SIGNAL(timeout()), this, SLOT(updateHint()));
 
@@ -174,7 +161,7 @@ ScreenShot::~ScreenShot()
 
 	hintTimer->stop();
 	delete hintTimer;
-	delete sizeHint;
+	delete ToolBox;
 	delete menu;
 }
 
@@ -232,11 +219,11 @@ void ScreenShot::mousePressEvent(QMouseEvent *e)
 		if (y + 100 > screen.height())
 			y -= 100;
 
-		sizeHint->move(x, y);
+		ToolBox->move(x, y);
 
-		sizeHint->geom->setText("0x0");
-		sizeHint->fileSize->setText("0 KB");
-		sizeHint->show();
+		ToolBox->setGeometry("0x0");
+		ToolBox->setFileSize("0 KB");
+		ToolBox->show();
 		hintTimer->start(1000);
 	}
 }
@@ -279,7 +266,7 @@ void ScreenShot::mouseReleaseEvent(QMouseEvent *e)
 		return;
 
 	hintTimer->stop();
-	sizeHint->hide();
+	ToolBox->hide();
 
 	// Uwalnianie myszki, klawiatury
 	buttonPressed = false;
@@ -486,7 +473,7 @@ void ScreenShot::mouseMoveEvent(QMouseEvent *e)
 	QRect reg = region;
 	reg = reg.normalized();
 
-	sizeHint->geom->setText(
+	ToolBox->setGeometry(
 		QString("%1x%2")
 			.arg(QString::number(reg.width()))
 			.arg(QString::number(reg.height()))
@@ -511,7 +498,7 @@ void ScreenShot::updateHint()
 	bool ret = shot.save(&buffer, format, quality);
 
 	if (ret)
-		sizeHint->fileSize->setText(QString::number(buffer.size()/1024) + " KB");
+		ToolBox->setFileSize(QString::number(buffer.size()/1024) + " KB");
 }
 
 void ScreenShot::checkShotsSize()
