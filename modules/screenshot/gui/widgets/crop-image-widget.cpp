@@ -81,6 +81,8 @@ void CropImageWidget::resizeEvent(QResizeEvent *event)
 {
 	SelectionFrame->setSize(event->size());
     QGraphicsView::resizeEvent(event);
+
+	scene()->setSceneRect(QRectF(0, 0, event->size().width(), event->size().height()));
 }
 
 void CropImageWidget::setPixmap(QPixmap pixmap)
