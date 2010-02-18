@@ -1,4 +1,5 @@
 set (SOURCES
+	gui/graphics-items/handler-rect-item.cpp
 	gui/graphics-items/selection-frame-item.cpp
 	gui/widgets/crop-image-widget.cpp
 	gui/widgets/screenshot-tool-box.cpp
@@ -10,6 +11,7 @@ set (SOURCES
 )
 
 set (MOC_SOURCES
+	gui/graphics-items/handler-rect-item.h
 	gui/widgets/crop-image-widget.h
 	gui/widgets/screenshot-tool-box.h
 	gui/widgets/screenshot-widget.h

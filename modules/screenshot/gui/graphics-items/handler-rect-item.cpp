@@ -17,28 +17,34 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SELECTION_FRAME_ITEM_H
-#define SELECTION_FRAME_ITEM_H
+#include <QtGui/QPainter>
 
-#include <QtGui/QGraphicsItem>
+#include "handler-rect-item.h"
 
-class SelectionFrameItem : public QGraphicsItem
+#define SIZE 32
+#define HALF_SIZE 16
+
+HandlerRectItem::HandlerRectItem(QGraphicsItem *parent) :
+		QGraphicsObject(parent)
 {
-	QColor Shadow;
-	QSize Size;
-	QRect Selection;
+}
 
-protected:
-	virtual QRectF boundingRect() const;
-	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+HandlerRectItem::~HandlerRectItem()
+{
+}
 
-public:
-	explicit SelectionFrameItem(QGraphicsItem *parent = 0);
-	virtual ~SelectionFrameItem();
+QRectF HandlerRectItem::boundingRect() const
+{
+	return QRectF(-HALF_SIZE, -HALF_SIZE, SIZE, SIZE);
+}
 
-	void setSize(QSize size);
-	void setSelection(QRect selection);
+void HandlerRectItem::paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+	Q_UNUSED(option)
+	Q_UNUSED(widget)
 
-};
+	painter->fillRect(QRect(-HALF_SIZE, -HALF_SIZE, SIZE, SIZE), Qt::white);
 
-#endif // SELECTION_FRAME_H
+	painter->setBrush(Qt::black);
+	painter->drawRect(QRect(-HALF_SIZE, -HALF_SIZE, SIZE, SIZE));
+}

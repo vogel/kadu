@@ -17,28 +17,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SELECTION_FRAME_ITEM_H
-#define SELECTION_FRAME_ITEM_H
+#ifndef HANDLER_RECT_ITEM_H
+#define HANDLER_RECT_ITEM_H
 
-#include <QtGui/QGraphicsItem>
+#include <QtGui/QGraphicsObject>
 
-class SelectionFrameItem : public QGraphicsItem
+class HandlerRectItem : public QGraphicsObject
 {
-	QColor Shadow;
-	QSize Size;
-	QRect Selection;
+	Q_OBJECT
 
 protected:
 	virtual QRectF boundingRect() const;
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 
 public:
-	explicit SelectionFrameItem(QGraphicsItem *parent = 0);
-	virtual ~SelectionFrameItem();
-
-	void setSize(QSize size);
-	void setSelection(QRect selection);
+	explicit HandlerRectItem(QGraphicsItem *parent = 0);
+	virtual ~HandlerRectItem();
 
 };
 
-#endif // SELECTION_FRAME_H
+#endif // HANDLER_RECT_ITEM_H
