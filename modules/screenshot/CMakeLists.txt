@@ -1,4 +1,5 @@
 set (SOURCES
+	gui/graphics-items/selection-frame-item.cpp
 	gui/widgets/crop-image-widget.cpp
 	gui/widgets/screenshot-tool-box.cpp
 	gui/widgets/screenshot-widget.cpp

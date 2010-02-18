@@ -17,31 +17,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CROP_IMAGE_WIDGET_H
-#define CROP_IMAGE_WIDGET_H
+#ifndef SELECTION_FRAME_H
+#define SELECTION_FRAME_H
 
-#include <QtGui/QGraphicsView>
+#include <QtGui/QGraphicsItem>
 
-class QGraphicsPixmapItem;
-
-class SelectionFrameItem;
-
-class CropImageWidget : public QGraphicsView
+class SelectionFrameItem : public QGraphicsItem
 {
-	Q_OBJECT
-
-	QGraphicsPixmapItem *PixmapItem;
-	SelectionFrameItem *SelectionFrame;
+	QSize Size;
 
 protected:
-	virtual void resizeEvent(QResizeEvent *event);
+	virtual QRectF boundingRect() const;
+	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 
 public:
-	explicit CropImageWidget(QWidget *parent = 0);
-	virtual ~CropImageWidget();
+	explicit SelectionFrameItem(QGraphicsItem *parent = 0);
+	virtual ~SelectionFrameItem();
 
-	void setPixmap(QPixmap pixmap);
+	void setSize(QSize size);
 
 };
 
-#endif // CROP_IMAGE_WIDGET_H
+#endif // SELECTION_FRAME_H

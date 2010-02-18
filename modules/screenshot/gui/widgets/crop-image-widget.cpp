@@ -18,6 +18,9 @@
  */
 
 #include <QtGui/QGraphicsPixmapItem>
+#include <QtGui/QResizeEvent>
+
+#include "gui/graphics-items/selection-frame-item.h"
 
 #include "crop-image-widget.h"
 
@@ -33,14 +36,26 @@ CropImageWidget::CropImageWidget(QWidget *parent) :
 	setScene(graphicsScene);
 
 	PixmapItem = new QGraphicsPixmapItem();
-	scene()->addItem(PixmapItem);
-
 	PixmapItem->setX(0);
 	PixmapItem->setY(0);
+
+	scene()->addItem(PixmapItem);
+
+	SelectionFrame = new SelectionFrameItem();
+	SelectionFrame->setPos(0, 0);
+	SelectionFrame->setSize(size());
+
+	scene()->addItem(SelectionFrame);
 }
 
 CropImageWidget::~CropImageWidget()
 {
+}
+
+void CropImageWidget::resizeEvent(QResizeEvent *event)
+{
+	SelectionFrame->setSize(event->size());
+    QGraphicsView::resizeEvent(event);
 }
 
 void CropImageWidget::setPixmap(QPixmap pixmap)
