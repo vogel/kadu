@@ -62,3 +62,9 @@ void CropImageWidget::setPixmap(QPixmap pixmap)
 {
 	PixmapItem->setPixmap(pixmap);
 }
+
+void CropImageWidget::setCropRect(QRect cropRect)
+{
+	SelectionFrame->setSelection(cropRect);
+	scene()->update(scene()->sceneRect());
+}

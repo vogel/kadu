@@ -24,7 +24,9 @@
 
 class SelectionFrameItem : public QGraphicsItem
 {
+	QColor Shadow;
 	QSize Size;
+	QRect Selection;
 
 protected:
 	virtual QRectF boundingRect() const;
@@ -35,6 +37,7 @@ public:
 	virtual ~SelectionFrameItem();
 
 	void setSize(QSize size);
+	void setSelection(QRect selection);
 
 };
 

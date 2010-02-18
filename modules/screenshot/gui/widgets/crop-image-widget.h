@@ -41,6 +41,7 @@ public:
 	virtual ~CropImageWidget();
 
 	void setPixmap(QPixmap pixmap);
+	void setCropRect(QRect cropRect);
 
 };
 

@@ -24,7 +24,7 @@
 #include "selection-frame-item.h"
 
 SelectionFrameItem::SelectionFrameItem(QGraphicsItem *parent) :
-		QGraphicsItem(parent)
+		QGraphicsItem(parent), Shadow(0, 0, 0, 127)
 {
 }
 
@@ -37,6 +37,11 @@ void SelectionFrameItem::setSize(QSize size)
 	Size = size;
 }
 
+void SelectionFrameItem::setSelection(QRect selection)
+{
+	Selection = selection;
+}
+
 QRectF SelectionFrameItem::boundingRect() const
 {
 	return QRect(0, 0, Size.width(), Size.height());
@@ -47,35 +52,31 @@ void SelectionFrameItem::paint(QPainter *painter, const QStyleOptionGraphicsItem
 	Q_UNUSED(option)
 	Q_UNUSED(widget)
 
-	QRect selectedRect(40, 40, 80, 80);
-
-	QColor shadow(0, 0, 0, 127);
-
 	QRect left;
 	left.setLeft(0);
 	left.setTop(0);
-	left.setRight(selectedRect.left() - 1);
+	left.setRight(Selection.left() - 1);
 	left.setBottom(boundingRect().height());
-	painter->fillRect(left, shadow);
+	painter->fillRect(left, Shadow);
 
 	QRect right;
-	right.setLeft(selectedRect.right() + 1);
+	right.setLeft(Selection.right() + 1);
 	right.setTop(0);
 	right.setRight(boundingRect().right());
 	right.setBottom(boundingRect().height());
-	painter->fillRect(right, shadow);
+	painter->fillRect(right, Shadow);
 
 	QRect top;
-	top.setLeft(selectedRect.left());
+	top.setLeft(Selection.left());
 	top.setTop(0);
-	top.setRight(selectedRect.right());
-	top.setBottom(selectedRect.top() - 1);
-	painter->fillRect(top, shadow);
+	top.setRight(Selection.right());
+	top.setBottom(Selection.top() - 1);
+	painter->fillRect(top, Shadow);
 
 	QRect bottom;
-	bottom.setLeft(selectedRect.left());
-	bottom.setTop(selectedRect.bottom() + 1);
-	bottom.setRight(selectedRect.right());
+	bottom.setLeft(Selection.left());
+	bottom.setTop(Selection.bottom() + 1);
+	bottom.setRight(Selection.right());
 	bottom.setBottom(boundingRect().bottom());
-	painter->fillRect(bottom, shadow);
+	painter->fillRect(bottom, Shadow);
 }

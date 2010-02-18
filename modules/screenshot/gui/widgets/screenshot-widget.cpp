@@ -170,6 +170,8 @@ void ScreenshotWidget::mouseMoveEvent(QMouseEvent *e)
 	QRect reg = ShotRegion;
 	reg = reg.normalized();
 
+	CropWidget->setCropRect(ShotRegion);
+
 	ToolBox->setGeometry(
 		QString("%1x%2")
 			.arg(QString::number(reg.width()))
