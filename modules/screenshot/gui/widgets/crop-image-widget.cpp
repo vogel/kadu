@@ -24,6 +24,11 @@
 CropImageWidget::CropImageWidget(QWidget *parent) :
 		QGraphicsView(parent)
 {
+	setContentsMargins(0, 0, 0, 0);
+	setFrameShape(NoFrame);
+	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
 	QGraphicsScene *graphicsScene = new QGraphicsScene(this);
 	setScene(graphicsScene);
 
