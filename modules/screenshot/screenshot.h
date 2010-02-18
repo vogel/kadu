@@ -35,6 +35,7 @@ class ActionDescription;
 class ChatWidget;
 class ConfigurationUiHandler;
 class CropImageWidget;
+class ScreenshotTaker;
 class ScreenshotToolBox;
 class ScreenshotWidget;
 
@@ -46,11 +47,14 @@ class ScreenShot : public QObject
 	ActionDescription *screenShotAction;
 	ChatWidget *chatWidget;
 
+	ScreenshotTaker *CurrentScreenshotTaker;
 	ScreenshotWidget *CurrentScreenshotWidget;
 
 	QMenu *menu;
 	bool wasMaximized;
 	bool warnedAboutSize;
+
+	void createMenu();
 
 	void checkShotsSize();
 
@@ -58,20 +62,15 @@ class ScreenShot : public QObject
 	void checkConferenceImageSizes(int size);
 	bool checkSingleUserImageSize(int size);
 
-	// TABS module fixing methods
-	void minimize(QWidget *w);
-	void restore(QWidget *w);
-	bool isMaximized(QWidget *w);
-
 	void createDefaultConfiguration();
 
 private slots:
-	void takeShot();
+    void screenshotTaken(QPixmap screenshot);
+
+	void takeSimpleShot();
 	void takeShotWithChatWindowHidden();
 	void takeWindowShot();
 
-
-	void takeShot_Step2();
 	void takeWindowShot_Step2();
 
 	void grabMouseSlot();

@@ -57,6 +57,7 @@
 #include "gui/widgets/screenshot-widget.h"
 #include "pixmap-grabber.h"
 #include "screenshot-configuration-ui-handler.h"
+#include "screenshot-taker.h"
 
 #include "screenshot.h"
 
@@ -97,13 +98,12 @@ ScreenShot::ScreenShot(bool firstLoad) :
 {
 	kdebugf();
 
+	CurrentScreenshotTaker = new ScreenshotTaker(this);
+	connect(CurrentScreenshotTaker, SIGNAL(screenshotTaken(QPixmap)), this, SLOT(screenshotTaken(QPixmap)));
+
 	CurrentScreenshotWidget = new ScreenshotWidget(0);
 
-	// Chat windows menu
-	menu = new QMenu();
-	menu->addAction(tr("Simple shot"), this, SLOT(takeShot()));
-	menu->addAction(tr("With chat window hidden"), this, SLOT(takeShotWithChatWindowHidden()));
-	menu->addAction(tr("Window shot"), this, SLOT(takeWindowShot()));
+	createMenu();
 
 	UiHandler = new ScreenShotConfigurationUiHandler();
 
@@ -132,6 +132,15 @@ ScreenShot::~ScreenShot()
 
 	delete menu;
 	delete CurrentScreenshotWidget;
+}
+
+void ScreenShot::createMenu()
+{
+	// Chat windows menu
+	menu = new QMenu();
+	menu->addAction(tr("Simple shot"), CurrentScreenshotTaker, SLOT(takeStandardShot()));
+	menu->addAction(tr("With chat window hidden"), CurrentScreenshotTaker, SLOT(takeShotWithChatWindowHidden()));
+	menu->addAction(tr("Window shot"), CurrentScreenshotTaker, SLOT(takeWindowShot()));
 }
 
 void ScreenShot::screenshotActionActivated(QAction *sender, bool toggled)
@@ -265,13 +274,13 @@ bool ScreenShot::checkSingleUserImageSize(int size)
 	*/
 }
 
-void ScreenShot::takeShot()
+void ScreenShot::takeSimpleShot()
 {
 	kdebugf();
 
 	CurrentScreenshotWidget->setShotMode(ShotModeStandard);
 
-	QTimer::singleShot(100, this, SLOT(takeShot_Step2()));
+	QTimer::singleShot(1000, this, SLOT(takeShot_Step2()));
 	chatWidget->update();
 	qApp->processEvents();
 }
@@ -280,25 +289,24 @@ void ScreenShot::takeShotWithChatWindowHidden()
 {
 	CurrentScreenshotWidget->setShotMode(ShotModeWithChatWindowHidden);
 
-	wasMaximized = isMaximized(chatWidget);
-	minimize(chatWidget);
-	QTimer::singleShot(600, this, SLOT(takeShot_Step2()));
+// 	wasMaximized = isMaximized(chatWidget);
+// 	minimize(chatWidget);
+// 	QTimer::singleShot(600, this, SLOT(takeShot_Step2()));
 }
 
 void ScreenShot::takeWindowShot()
 {
 	CurrentScreenshotWidget->setShotMode(ShotModeSingleWindow);
 
-	wasMaximized = isMaximized(chatWidget);
-	minimize(chatWidget);
+// 	wasMaximized = isMaximized(chatWidget);
+// 	minimize(chatWidget);
 
-	takeShot_Step2();
+// 	takeShot_Step2();
 }
 
-void ScreenShot::takeShot_Step2()
+void ScreenShot::screenshotTaken(QPixmap screenshot)
 {
-	QPixmap pixmap = QPixmap::grabWindow(QApplication::desktop()->winId());
-	CurrentScreenshotWidget->setPixmap(pixmap);
+	CurrentScreenshotWidget->setPixmap(screenshot);
 
 	CurrentScreenshotWidget->showFullScreen();
 	CurrentScreenshotWidget->show();
@@ -348,36 +356,6 @@ void ScreenShot::takeWindowShot_Step2()
 	kdebugf();
 	QPixmap winPixmap = PixmapGrabber::grabCurrent();
 	handleShot(winPixmap);
-}
-
-void ScreenShot::restore(QWidget *w)
-{
-	// For tabs module
-	while (w->parent())
-		w = static_cast<QWidget *>(w->parent());
-
-	if (wasMaximized)
-		w->showMaximized();
-	else
-		w->showNormal();
-}
-
-void ScreenShot::minimize(QWidget* w)
-{
-	// For tabs module
-	while (w->parent())
-		w = static_cast<QWidget *>(w->parent());
-
-	w->showMinimized();
-}
-
-bool ScreenShot::isMaximized(QWidget* w)
-{
-	// For tabs module
-	while (w->parent())
-		w = static_cast<QWidget *>(w->parent());
-
-	return w->isMaximized();
 }
 
 void ScreenShot::createDefaultConfiguration()
