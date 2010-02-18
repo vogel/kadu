@@ -21,10 +21,15 @@
 #ifndef SCREENSHOT_H
 #define SCREENSHOT_H
 
-#include <QtGui/QWidget>
+#include <vector>
+
+#include <QtCore/QObject>
+#include <QtCore/QRect>
+#include <QtGui/QPixmap>
 
 #include <X11/extensions/shape.h>
 
+class QAction;
 class QLabel;
 class QMenu;
 
@@ -33,39 +38,25 @@ class ChatWidget;
 class ConfigurationUiHandler;
 class CropImageWidget;
 class ScreenshotToolBox;
+class ScreenshotWidget;
 
-enum ScreenShotMode
-{
-	Standard = 0,
-	WithChatWindowHidden = 1,
-	SingleWindow = 2
-};
-
-class ScreenShot : public QWidget
+class ScreenShot : public QObject
 {
 	Q_OBJECT
-
-	CropImageWidget *CropWidget;
 
 	ConfigurationUiHandler *UiHandler;
 	ActionDescription *screenShotAction;
 	ChatWidget *chatWidget;
 
-	ScreenShotMode shotMode;
-	bool ShowPaintRect;
+	ScreenshotWidget *CurrentScreenshotWidget;
 
-	bool buttonPressed;
-	QRect region;
-	QPixmap pixmap;
-	ScreenshotToolBox *ToolBox;
-	QTimer *hintTimer;
+
 	QMenu *menu;
 	bool wasMaximized;
 	bool warnedAboutSize;
 	int minSize;
 
 	void checkShotsSize();
-	void handleShot(QPixmap p);
 
 	void pasteImageClause(const QString &path);
 	void checkConferenceImageSizes(int size);
@@ -85,9 +76,6 @@ class ScreenShot : public QWidget
 
 	void createDefaultConfiguration();
 
-protected:
-	virtual void paintEvent(QPaintEvent *e);
-
 private slots:
 	void takeShot();
 	void takeShotWithChatWindowHidden();
@@ -98,20 +86,16 @@ private slots:
 	void takeWindowShot_Step2();
 
 	void grabMouseSlot();
-	void updateHint();
 
 	void screenshotActionActivated(QAction *sender, bool toggled);
+
+	void handleShot(QPixmap pixmap);
 
 public:
 	ScreenShot(bool firstLoad);
 	virtual ~ScreenShot();
 
 	ConfigurationUiHandler * configurationUiHandler() { return UiHandler; }
-
-	void mousePressEvent(QMouseEvent *e);
-	void mouseReleaseEvent(QMouseEvent *e);
-	void mouseMoveEvent(QMouseEvent *e);
-	void keyPressEvent(QKeyEvent *e);
 
 };
 

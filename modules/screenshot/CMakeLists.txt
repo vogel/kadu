@@ -1,12 +1,14 @@
 set (SOURCES
 	gui/widgets/crop-image-widget.cpp
 	gui/widgets/screenshot-tool-box.cpp
+	gui/widgets/screenshot-widget.cpp
 	screenshot.cpp
 )
 
 set (MOC_SOURCES
 	gui/widgets/crop-image-widget.h
 	gui/widgets/screenshot-tool-box.h
+	gui/widgets/screenshot-widget.h
 	screenshot.h
 )
 

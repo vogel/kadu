@@ -54,6 +54,7 @@
 
 #include "gui/widgets/crop-image-widget.h"
 #include "gui/widgets/screenshot-tool-box.h"
+#include "gui/widgets/screenshot-widget.h"
 
 #include "screenshot.h"
 
@@ -113,21 +114,12 @@ public:
 //-----------------------------------------------------------------------------------
 
 ScreenShot::ScreenShot(bool firstLoad) :
-		QWidget(0, Qt::Tool | Qt::CustomizeWindowHint | Qt::FramelessWindowHint)
+		CurrentScreenshotWidget(0)
 {
 	kdebugf();
 	minSize = 8;
 
-	QHBoxLayout *layout = new QHBoxLayout(this);
-	layout->setMargin(0);
-	layout->setContentsMargins(0, 0, 0, 0);
-
-	CropWidget = new CropImageWidget(this);
-	layout->addWidget(CropWidget);
-
-	ToolBox = new ScreenshotToolBox(this);
-	hintTimer = new QTimer();
-	connect(hintTimer, SIGNAL(timeout()), this, SLOT(updateHint()));
+	CurrentScreenshotWidget = new ScreenshotWidget(0);
 
 	// Chat windows menu
 	menu = new QMenu();
@@ -148,7 +140,6 @@ ScreenShot::ScreenShot(bool firstLoad) :
 		ChatEditBox::addAction("ScreenShotAction");
 
 	// Rest stuff
-	buttonPressed = false;
 	warnedAboutSize = false;
 
 	createDefaultConfiguration();
@@ -161,10 +152,8 @@ ScreenShot::~ScreenShot()
 	delete UiHandler;
 	delete screenShotAction;
 
-	hintTimer->stop();
-	delete hintTimer;
-	delete ToolBox;
 	delete menu;
+	delete CurrentScreenshotWidget;
 }
 
 void ScreenShot::screenshotActionActivated(QAction *sender, bool toggled)
@@ -187,110 +176,6 @@ void ScreenShot::screenshotActionActivated(QAction *sender, bool toggled)
 		QWidget *widget = widgets[widgets.size() - 1];
 		menu->popup(widget->mapToGlobal(QPoint(0, widget->height())));
 	}
-}
-
-void ScreenShot::mousePressEvent(QMouseEvent *e)
-{
-	kdebugf();
-
-	if (e->button() != Qt::LeftButton)
-		return;
-
-	if (shotMode == SingleWindow)
-	{
-		releaseMouse();
-		releaseKeyboard();
-
-		hide();
-		update();
-
-		QTimer::singleShot(100, this, SLOT(takeWindowShot_Step2()));
-	}
-	else
-	{
-		region = QRect(e->pos(), e->pos());
-		buttonPressed = true;
-
-		int x = e->pos().x() + 50;
-		int y = e->pos().y() + 50;
-
-		QRect screen = QApplication::desktop()->screenGeometry();
-		if (x + 150 > screen.width())
-			x -= 150;
-
-		if (y + 100 > screen.height())
-			y -= 100;
-
-		ToolBox->move(x, y);
-
-		ToolBox->setGeometry("0x0");
-		ToolBox->setFileSize("0 KB");
-		ToolBox->show();
-		hintTimer->start(1000);
-	}
-}
-
-void ScreenShot::paintEvent(QPaintEvent *e)
-{
-	QWidget::paintEvent(e);
-
-	/*
-	Q_UNUSED(e)
-
-	if (!ShowPaintRect)
-		return;
-
-	QPainter painter(this);
-
-	painter.setCompositionMode(QPainter::CompositionMode_DestinationIn);
-	painter.setPen(QPen(QBrush(Qt::black), 1, Qt::DashLine));
-	painter.setBrush(Qt::NoBrush);
-
-	painter.drawRect(region);
-*/
-// TODO: make it work again
-/*
-	QStyleOptionFocusRect styleOption;
-	styleOption.initFrom(this);
-	styleOption.rect = region;
-	styleOption.state = QStyle::State_HasFocus | QStyle::State_KeyboardFocusChange;
-	styleOption.palette = colorGroup();
-	styleOption.backgroundColor = palette().color(QPalette::Background);*/
-
-// 	style()->drawPrimitive(QStyle::PE_FrameFocusRect, &styleOption, &painter);
-}
-
-void ScreenShot::mouseReleaseEvent(QMouseEvent *e)
-{
-	kdebugf();
-
-	if (!buttonPressed)
-		return;
-
-	hintTimer->stop();
-	ToolBox->hide();
-
-	// Uwalnianie myszki, klawiatury
-	buttonPressed = false;
-	releaseMouse();
-	releaseKeyboard();
-
-	// Normalizowanie prostok�ta do zrzutu
-	region.setBottomRight(e->pos());
-	region = region.normalized();
-
-	// Zrzut
-	ShowPaintRect = false;
-	repaint();
-	qApp->processEvents();
-
-	QPixmap shot = QPixmap::grabWindow(winId(), region.x(), region.y(), region.width(), region.height());
-
-	// Chowanie widgeta zrzutu i przywr�cenie kursora.
-	hide();
-	QApplication::restoreOverrideCursor();
-
-	handleShot(shot);
 }
 
 void ScreenShot::handleShot(QPixmap p)
@@ -338,8 +223,9 @@ void ScreenShot::handleShot(QPixmap p)
 		return;
 	}
 
-	if (shotMode == WithChatWindowHidden || shotMode == SingleWindow)
-		restore(chatWidget);
+	// TODO: 0.6.6
+//	if (shotMode == WithChatWindowHidden || shotMode == SingleWindow)
+	//	restore(chatWidget);
 
 	// Wklejanie [IMAGE] do okna Chat
 	if (config_file.readBoolEntry("ScreenShot", "paste_clause", true))
@@ -401,23 +287,11 @@ bool ScreenShot::checkSingleUserImageSize(int size)
 	*/
 }
 
-void ScreenShot::keyPressEvent(QKeyEvent* e)
-{
-	kdebugf();
-
-	if (e->key() == Qt::Key_Escape)
-	{
-		releaseMouse();
-		releaseKeyboard();
-		hide();
-	}
-}
-
 void ScreenShot::takeShot()
 {
 	kdebugf();
 
-	shotMode = Standard;
+	CurrentScreenshotWidget->setShotMode(ShotModeStandard);
 
 	QTimer::singleShot(100, this, SLOT(takeShot_Step2()));
 	chatWidget->update();
@@ -426,7 +300,7 @@ void ScreenShot::takeShot()
 
 void ScreenShot::takeShotWithChatWindowHidden()
 {
-	shotMode = WithChatWindowHidden;
+	CurrentScreenshotWidget->setShotMode(ShotModeWithChatWindowHidden);
 
 	wasMaximized = isMaximized(chatWidget);
 	minimize(chatWidget);
@@ -435,7 +309,7 @@ void ScreenShot::takeShotWithChatWindowHidden()
 
 void ScreenShot::takeWindowShot()
 {
-	shotMode = SingleWindow;
+	CurrentScreenshotWidget->setShotMode(ShotModeSingleWindow);
 
 	wasMaximized = isMaximized(chatWidget);
 	minimize(chatWidget);
@@ -445,13 +319,12 @@ void ScreenShot::takeWindowShot()
 
 void ScreenShot::takeShot_Step2()
 {
-	pixmap = QPixmap::grabWindow(QApplication::desktop()->winId());
-	CropWidget->setPixmap(pixmap);
-	resize(pixmap.size());
-	// setPixmap(pixmap);
-	showFullScreen();
-	show();
-	setCursor(Qt::CrossCursor);
+	QPixmap pixmap = QPixmap::grabWindow(QApplication::desktop()->winId());
+	CurrentScreenshotWidget->setPixmap(pixmap);
+
+	CurrentScreenshotWidget->showFullScreen();
+	CurrentScreenshotWidget->show();
+	CurrentScreenshotWidget->setCursor(Qt::CrossCursor);
 
 	QTimer::singleShot(100, this, SLOT(grabMouseSlot()));
 }
@@ -460,47 +333,8 @@ void ScreenShot::grabMouseSlot()
 {
 	kdebugf();
 
-	grabMouse();
-	grabKeyboard();
-}
-
-void ScreenShot::mouseMoveEvent(QMouseEvent *e)
-{
-	kdebugf();
-	if (!buttonPressed)
-		return;
-
-	region.setBottomRight(e->pos());
-
-	QRect reg = region;
-	reg = reg.normalized();
-
-	ToolBox->setGeometry(
-		QString("%1x%2")
-			.arg(QString::number(reg.width()))
-			.arg(QString::number(reg.height()))
-		);
-
-	ShowPaintRect = true;
-	repaint();
-}
-
-void ScreenShot::updateHint()
-{
-	QBuffer buffer;
-
-	QRect reg = region;
-	reg = reg.normalized();
-
-	QPixmap shot = QPixmap::grabWindow(winId(), reg.x(), reg.y(), reg.width(), reg.height());
-
-	// TODO: cache + use configurationUpdated
-	const char *format = config_file.readEntry("ScreenShot", "fileFormat", "PNG").toAscii();
-	int quality = config_file.readNumEntry("ScreenShot", "quality", -1);
-	bool ret = shot.save(&buffer, format, quality);
-
-	if (ret)
-		ToolBox->setFileSize(QString::number(buffer.size()/1024) + " KB");
+	CurrentScreenshotWidget->grabMouse();
+	CurrentScreenshotWidget->grabKeyboard();
 }
 
 void ScreenShot::checkShotsSize()
