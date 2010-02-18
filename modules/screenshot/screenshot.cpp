@@ -56,6 +56,7 @@
 #include "gui/widgets/screenshot-tool-box.h"
 #include "gui/widgets/screenshot-widget.h"
 #include "pixmap-grabber.h"
+#include "screenshot-configuration-ui-handler.h"
 
 #include "screenshot.h"
 
@@ -90,29 +91,6 @@ extern "C" void screenshot_close()
 	delete screenShot;
 	screenShot = 0;
 }
-
-//-----------------------------------------------------------------------------------
-
-class ScreenShotConfigurationUiHandler : public ConfigurationUiHandler
-{
-public:
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
-	{
-		connect(mainConfigurationWindow->widget()->widgetById("screenshot/enableSizeLimit"), SIGNAL(toggled(bool)),
-				mainConfigurationWindow->widget()->widgetById("screenshot/sizeLimit"), SLOT(setEnabled(bool)));
-
-		QStringList opts;
-		QList<QByteArray> byteArrayOpts = QImageWriter::supportedImageFormats();
-		foreach (const QByteArray &opt, byteArrayOpts)
-			opts.append(QString(opt));
-
-		ConfigComboBox *formats = dynamic_cast<ConfigComboBox *>(mainConfigurationWindow->widget()->widgetById("screenshot/formats"));
-		if (formats)
-			formats->setItems(opts, opts);
-	}
-};
-
-//-----------------------------------------------------------------------------------
 
 ScreenShot::ScreenShot(bool firstLoad) :
 		CurrentScreenshotWidget(0)
