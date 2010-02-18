@@ -27,8 +27,6 @@
 #include <QtCore/QRect>
 #include <QtGui/QPixmap>
 
-#include <X11/extensions/shape.h>
-
 class QAction;
 class QLabel;
 class QMenu;
@@ -50,11 +48,9 @@ class ScreenShot : public QObject
 
 	ScreenshotWidget *CurrentScreenshotWidget;
 
-
 	QMenu *menu;
 	bool wasMaximized;
 	bool warnedAboutSize;
-	int minSize;
 
 	void checkShotsSize();
 
@@ -66,13 +62,6 @@ class ScreenShot : public QObject
 	void minimize(QWidget *w);
 	void restore(QWidget *w);
 	bool isMaximized(QWidget *w);
-
-	// Methods from KSnapShot
-	QPixmap grabCurrent();
-	Window findRealWindow(Window w, int depth = 0);
-	void getWindowsRecursive(std::vector<QRect> &windows, Window w, int rx = 0, int ry = 0, int depth = 0);
-	QPixmap grabWindow(Window child, int x, int y, uint w, uint h, uint border);
-	Window windowUnderCursor(bool includeDecorations);
 
 	void createDefaultConfiguration();
 

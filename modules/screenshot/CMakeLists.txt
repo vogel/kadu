@@ -2,6 +2,7 @@ set (SOURCES
 	gui/widgets/crop-image-widget.cpp
 	gui/widgets/screenshot-tool-box.cpp
 	gui/widgets/screenshot-widget.cpp
+	pixmap-grabber.cpp
 	screenshot.cpp
 )
 
