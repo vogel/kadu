@@ -20,6 +20,7 @@
 #include <QtGui/QGraphicsPixmapItem>
 #include <QtGui/QResizeEvent>
 
+#include "gui/graphics-items/handler-rect-item.h"
 #include "gui/graphics-items/selection-frame-item.h"
 
 #include "crop-image-widget.h"
@@ -46,6 +47,30 @@ CropImageWidget::CropImageWidget(QWidget *parent) :
 	SelectionFrame->setSize(size());
 
 	scene()->addItem(SelectionFrame);
+
+	TopLeftHandler = new HandlerRectItem();
+	scene()->addItem(TopLeftHandler);
+
+	TopHandler = new HandlerRectItem();
+	scene()->addItem(TopHandler);
+
+	TopRightHandler = new HandlerRectItem();
+	scene()->addItem(TopRightHandler);
+
+	LeftHandler = new HandlerRectItem();
+	scene()->addItem(LeftHandler);
+
+	RightHandler = new HandlerRectItem();
+	scene()->addItem(RightHandler);
+
+	BottomLeftHandler = new HandlerRectItem();
+	scene()->addItem(BottomLeftHandler);
+
+	BottomHandler = new HandlerRectItem();
+	scene()->addItem(BottomHandler);
+
+	BottomRightHandler = new HandlerRectItem();
+	scene()->addItem(BottomRightHandler);
 }
 
 CropImageWidget::~CropImageWidget()
@@ -65,6 +90,20 @@ void CropImageWidget::setPixmap(QPixmap pixmap)
 
 void CropImageWidget::setCropRect(QRect cropRect)
 {
-	SelectionFrame->setSelection(cropRect.normalized());
+	QRect normalized = cropRect.normalized();
+	SelectionFrame->setSelection(normalized);
+
+	int xMiddle = (normalized.left() + normalized.right()) / 2;
+	int yMiddle = (normalized.top() + normalized.bottom()) / 2;
+
+	TopLeftHandler->setPos(cropRect.left(), cropRect.top());
+	TopHandler->setPos(xMiddle, cropRect.top());
+	TopRightHandler->setPos(cropRect.right(), cropRect.top());
+	LeftHandler->setPos(cropRect.left(), yMiddle);
+	RightHandler->setPos(cropRect.right(), yMiddle);
+	BottomLeftHandler->setPos(cropRect.left(), cropRect.bottom());
+	BottomHandler->setPos(xMiddle, cropRect.bottom());
+	BottomRightHandler->setPos(cropRect.right(), cropRect.bottom());
+
 	scene()->update(scene()->sceneRect());
 }

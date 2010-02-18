@@ -21,8 +21,8 @@
 
 #include "handler-rect-item.h"
 
-#define SIZE 32
-#define HALF_SIZE 16
+#define SIZE 16
+#define HALF_SIZE 8
 
 HandlerRectItem::HandlerRectItem(QGraphicsItem *parent) :
 		QGraphicsObject(parent)
@@ -38,13 +38,13 @@ QRectF HandlerRectItem::boundingRect() const
 	return QRectF(-HALF_SIZE, -HALF_SIZE, SIZE, SIZE);
 }
 
-void HandlerRectItem::paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void HandlerRectItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
 	Q_UNUSED(option)
 	Q_UNUSED(widget)
 
 	painter->fillRect(QRect(-HALF_SIZE, -HALF_SIZE, SIZE, SIZE), Qt::white);
 
-	painter->setBrush(Qt::black);
+	painter->setPen(Qt::black);
 	painter->drawRect(QRect(-HALF_SIZE, -HALF_SIZE, SIZE, SIZE));
 }

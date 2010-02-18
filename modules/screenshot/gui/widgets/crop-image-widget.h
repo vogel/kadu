@@ -24,6 +24,7 @@
 
 class QGraphicsPixmapItem;
 
+class HandlerRectItem;
 class SelectionFrameItem;
 
 class CropImageWidget : public QGraphicsView
@@ -32,6 +33,14 @@ class CropImageWidget : public QGraphicsView
 
 	QGraphicsPixmapItem *PixmapItem;
 	SelectionFrameItem *SelectionFrame;
+	HandlerRectItem *TopLeftHandler;
+	HandlerRectItem *TopHandler;
+	HandlerRectItem *TopRightHandler;
+	HandlerRectItem *LeftHandler;
+	HandlerRectItem *RightHandler;
+	HandlerRectItem *BottomLeftHandler;
+	HandlerRectItem *BottomHandler;
+	HandlerRectItem *BottomRightHandler;
 
 protected:
 	virtual void resizeEvent(QResizeEvent *event);
