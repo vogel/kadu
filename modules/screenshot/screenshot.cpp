@@ -127,7 +127,8 @@ ScreenShot::~ScreenShot()
 {
 	kdebugf();
 
-	delete UiHandler;
+	// TODO: 0.6.6
+// 	delete UiHandler;
 	delete screenShotAction;
 
 	delete menu;
