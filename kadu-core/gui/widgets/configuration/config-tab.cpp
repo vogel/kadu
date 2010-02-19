@@ -49,6 +49,7 @@ ConfigTab::ConfigTab(const QString &name, ConfigSection *configSection, QWidget 
 ConfigTab::~ConfigTab()
 {
 	delete MyScrollArea;
+	MyScrollArea = 0;
 }
 
 void ConfigTab::removedConfigGroupBox(const QString &groupBoxName)
