@@ -65,6 +65,7 @@ KaduWindow::KaduWindow(QWidget *parent) :
 		MainWindow(parent), Docked(false)
 {
 	setAttribute(Qt::WA_DeleteOnClose, true);
+	setWindowTitle(QLatin1String("Kadu"));
 
 	Actions = new KaduWindowActions(this);
 
