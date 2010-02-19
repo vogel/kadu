@@ -120,6 +120,7 @@ void KdeNotify::notify(Notification *notification)
 	QList<QVariant> args;
 	args.append("Kadu");
 	args.append(0U);
+	args.append("");
 
 	/* the new spec doesn't have this */
 	if (!UseFreedesktopStandard)
