@@ -80,20 +80,20 @@ CropImageWidget::~CropImageWidget()
 
 void CropImageWidget::updateCropRectDisplay()
 {
-	SelectionFrame->setSelection(CropRect);
 	QRect normalized = CropRect.normalized();
+	SelectionFrame->setSelection(normalized);
 
 	int xMiddle = (normalized.left() + normalized.right()) / 2;
 	int yMiddle = (normalized.top() + normalized.bottom()) / 2;
 
-	TopLeftHandler->setPos(CropRect.left(), CropRect.top());
-	TopHandler->setPos(xMiddle, CropRect.top());
-	TopRightHandler->setPos(CropRect.right(), CropRect.top());
-	LeftHandler->setPos(CropRect.left(), yMiddle);
-	RightHandler->setPos(CropRect.right(), yMiddle);
-	BottomLeftHandler->setPos(CropRect.left(), CropRect.bottom());
-	BottomHandler->setPos(xMiddle, CropRect.bottom());
-	BottomRightHandler->setPos(CropRect.right(), CropRect.bottom());
+	TopLeftHandler->setPos(normalized.left(), normalized.top());
+	TopHandler->setPos(xMiddle, normalized.top());
+	TopRightHandler->setPos(normalized.right(), normalized.top());
+	LeftHandler->setPos(normalized.left(), yMiddle);
+	RightHandler->setPos(normalized.right(), yMiddle);
+	BottomLeftHandler->setPos(normalized.left(), normalized.bottom());
+	BottomHandler->setPos(xMiddle, normalized.bottom());
+	BottomRightHandler->setPos(normalized.right(), normalized.bottom());
 
 	scene()->update(scene()->sceneRect());
 }
