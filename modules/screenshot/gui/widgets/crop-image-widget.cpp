@@ -17,6 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QCursor>
 #include <QtGui/QGraphicsPixmapItem>
 #include <QtGui/QResizeEvent>
 
@@ -29,7 +30,6 @@ CropImageWidget::CropImageWidget(QWidget *parent) :
 		QGraphicsView(parent), IsMouseButtonPressed(false)
 {
 	setContentsMargins(0, 0, 0, 0);
-	setDragMode(NoDrag);
 	setFrameShape(NoFrame);
 	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -38,6 +38,7 @@ CropImageWidget::CropImageWidget(QWidget *parent) :
 	setScene(graphicsScene);
 
 	PixmapItem = new QGraphicsPixmapItem();
+	PixmapItem->setCursor(Qt::CrossCursor);
 	PixmapItem->setX(0);
 	PixmapItem->setY(0);
 
@@ -46,31 +47,40 @@ CropImageWidget::CropImageWidget(QWidget *parent) :
 	SelectionFrame = new SelectionFrameItem();
 	SelectionFrame->setPos(0, 0);
 	SelectionFrame->setSize(size());
+	SelectionFrame->setCursor(Qt::SizeFDiagCursor);
 
 	scene()->addItem(SelectionFrame);
 
 	TopLeftHandler = new HandlerRectItem();
+	TopLeftHandler->setCursor(Qt::SizeBDiagCursor);
 	scene()->addItem(TopLeftHandler);
 
 	TopHandler = new HandlerRectItem();
+	TopHandler->setCursor(Qt::SizeVerCursor);
 	scene()->addItem(TopHandler);
 
 	TopRightHandler = new HandlerRectItem();
+	TopRightHandler->setCursor(Qt::SizeFDiagCursor);
 	scene()->addItem(TopRightHandler);
 
 	LeftHandler = new HandlerRectItem();
+	LeftHandler->setCursor(Qt::SizeHorCursor);
 	scene()->addItem(LeftHandler);
 
 	RightHandler = new HandlerRectItem();
+	RightHandler->setCursor(Qt::SizeHorCursor);
 	scene()->addItem(RightHandler);
 
 	BottomLeftHandler = new HandlerRectItem();
+	BottomLeftHandler->setCursor(Qt::SizeFDiagCursor);
 	scene()->addItem(BottomLeftHandler);
 
 	BottomHandler = new HandlerRectItem();
+	BottomHandler->setCursor(Qt::SizeVerCursor);
 	scene()->addItem(BottomHandler);
 
 	BottomRightHandler = new HandlerRectItem();
+	BottomRightHandler->setCursor(Qt::SizeBDiagCursor);
 	scene()->addItem(BottomRightHandler);
 }
 

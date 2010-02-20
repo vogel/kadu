@@ -21,8 +21,8 @@
 
 #include "handler-rect-item.h"
 
-#define SIZE 16
-#define HALF_SIZE 8
+#define SIZE 10
+#define HALF_SIZE 5
 
 HandlerRectItem::HandlerRectItem(QGraphicsItem *parent) :
 		QGraphicsWidget(parent)
