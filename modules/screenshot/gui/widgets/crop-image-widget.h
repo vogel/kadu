@@ -22,9 +22,10 @@
 
 #include <QtGui/QGraphicsView>
 
+#include "gui/graphics-items/handler-rect-item.h"
+
 class QGraphicsPixmapItem;
 
-class HandlerRectItem;
 class SelectionFrameItem;
 
 class CropImageWidget : public QGraphicsView
@@ -45,10 +46,11 @@ class CropImageWidget : public QGraphicsView
 	QRect CropRect;
 	bool IsMouseButtonPressed;
 
+	void normalizeCropRect();
 	void updateCropRectDisplay();
 
 private slots:
-	void handlerMovedTo(int x, int y);
+	void handlerMovedTo(HandlerType type, int x, int y);
 
 protected:
 	virtual void mousePressEvent(QMouseEvent *event);

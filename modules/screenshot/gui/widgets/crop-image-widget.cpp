@@ -21,7 +21,6 @@
 #include <QtGui/QGraphicsPixmapItem>
 #include <QtGui/QResizeEvent>
 
-#include "gui/graphics-items/handler-rect-item.h"
 #include "gui/graphics-items/selection-frame-item.h"
 
 #include "crop-image-widget.h"
@@ -51,44 +50,44 @@ CropImageWidget::CropImageWidget(QWidget *parent) :
 
 	scene()->addItem(SelectionFrame);
 
-	TopLeftHandler = new HandlerRectItem();
+	TopLeftHandler = new HandlerRectItem(HandlerTopLeft);
 	TopLeftHandler->setCursor(Qt::SizeFDiagCursor);
-	connect(TopLeftHandler, SIGNAL(movedTo(int,int)), this, SLOT(handlerMovedTo(int,int)));
+	connect(TopLeftHandler, SIGNAL(movedTo(HandlerType,int,int)), this, SLOT(handlerMovedTo(HandlerType,int,int)));
 	scene()->addItem(TopLeftHandler);
 
-	TopHandler = new HandlerRectItem();
+	TopHandler = new HandlerRectItem(HandlerTop);
 	TopHandler->setCursor(Qt::SizeVerCursor);
-	connect(TopHandler, SIGNAL(movedTo(int,int)), this, SLOT(handlerMovedTo(int,int)));
+	connect(TopHandler, SIGNAL(movedTo(HandlerType,int,int)), this, SLOT(handlerMovedTo(HandlerType,int,int)));
 	scene()->addItem(TopHandler);
 
-	TopRightHandler = new HandlerRectItem();
+	TopRightHandler = new HandlerRectItem(HandlerTopRight);
 	TopRightHandler->setCursor(Qt::SizeBDiagCursor);
-	connect(TopRightHandler, SIGNAL(movedTo(int,int)), this, SLOT(handlerMovedTo(int,int)));
+	connect(TopRightHandler, SIGNAL(movedTo(HandlerType,int,int)), this, SLOT(handlerMovedTo(HandlerType,int,int)));
 	scene()->addItem(TopRightHandler);
 
-	LeftHandler = new HandlerRectItem();
+	LeftHandler = new HandlerRectItem(HandlerLeft);
 	LeftHandler->setCursor(Qt::SizeHorCursor);
-	connect(LeftHandler, SIGNAL(movedTo(int,int)), this, SLOT(handlerMovedTo(int,int)));
+	connect(LeftHandler, SIGNAL(movedTo(HandlerType,int,int)), this, SLOT(handlerMovedTo(HandlerType,int,int)));
 	scene()->addItem(LeftHandler);
 
-	RightHandler = new HandlerRectItem();
+	RightHandler = new HandlerRectItem(HandlerRight);
 	RightHandler->setCursor(Qt::SizeHorCursor);
-	connect(RightHandler, SIGNAL(movedTo(int,int)), this, SLOT(handlerMovedTo(int,int)));
+	connect(RightHandler, SIGNAL(movedTo(HandlerType,int,int)), this, SLOT(handlerMovedTo(HandlerType,int,int)));
 	scene()->addItem(RightHandler);
 
-	BottomLeftHandler = new HandlerRectItem();
+	BottomLeftHandler = new HandlerRectItem(HandlerBottomLeft);
 	BottomLeftHandler->setCursor(Qt::SizeBDiagCursor);
-	connect(BottomLeftHandler, SIGNAL(movedTo(int,int)), this, SLOT(handlerMovedTo(int,int)));
+	connect(BottomLeftHandler, SIGNAL(movedTo(HandlerType,int,int)), this, SLOT(handlerMovedTo(HandlerType,int,int)));
 	scene()->addItem(BottomLeftHandler);
 
-	BottomHandler = new HandlerRectItem();
+	BottomHandler = new HandlerRectItem(HandlerBottom);
 	BottomHandler->setCursor(Qt::SizeVerCursor);
-	connect(BottomHandler, SIGNAL(movedTo(int,int)), this, SLOT(handlerMovedTo(int,int)));
+	connect(BottomHandler, SIGNAL(movedTo(HandlerType,int,int)), this, SLOT(handlerMovedTo(HandlerType,int,int)));
 	scene()->addItem(BottomHandler);
 
-	BottomRightHandler = new HandlerRectItem();
+	BottomRightHandler = new HandlerRectItem(HandlerBottomRight);
 	BottomRightHandler->setCursor(Qt::SizeFDiagCursor);
-	connect(BottomRightHandler, SIGNAL(movedTo(int,int)), this, SLOT(handlerMovedTo(int,int)));
+	connect(BottomRightHandler, SIGNAL(movedTo(HandlerType,int,int)), this, SLOT(handlerMovedTo(HandlerType,int,int)));
 	scene()->addItem(BottomRightHandler);
 
 	CropRect.setTopLeft(QPoint(0, 0));
@@ -98,6 +97,12 @@ CropImageWidget::CropImageWidget(QWidget *parent) :
 
 CropImageWidget::~CropImageWidget()
 {
+}
+
+void CropImageWidget::normalizeCropRect()
+{
+	CropRect = CropRect.normalized();
+	updateCropRectDisplay();
 }
 
 void CropImageWidget::updateCropRectDisplay()
@@ -120,10 +125,17 @@ void CropImageWidget::updateCropRectDisplay()
 	scene()->update(scene()->sceneRect());
 }
 
-void CropImageWidget::handlerMovedTo(int x, int y)
+void CropImageWidget::handlerMovedTo(HandlerType type, int x, int y)
 {
-	CropRect.setRight(x);
-	CropRect.setBottom(y);
+	if (type == HandlerTopLeft || type == HandlerTop || type == HandlerTopRight)
+		CropRect.setTop(y);
+	else if (type == HandlerBottomLeft || type == HandlerBottom || type == HandlerBottomRight)
+		CropRect.setBottom(y);
+
+	if (type == HandlerTopLeft || type == HandlerLeft || type == HandlerBottomLeft)
+		CropRect.setLeft(x);
+	else if (type == HandlerTopRight || type == HandlerRight || type == HandlerBottomRight)
+		CropRect.setRight(x);
 
 	updateCropRectDisplay();
 }
@@ -146,6 +158,7 @@ void CropImageWidget::mousePressEvent(QMouseEvent *event)
 void CropImageWidget::mouseReleaseEvent(QMouseEvent *event)
 {
 	QGraphicsView::mouseReleaseEvent(event);
+	normalizeCropRect();
 // 	if (event->isAccepted())
 // 		return;
 // 

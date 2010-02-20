@@ -25,8 +25,8 @@
 #define SIZE 10
 #define HALF_SIZE 5
 
-HandlerRectItem::HandlerRectItem(QGraphicsItem *parent) :
-		QGraphicsWidget(parent), IsMouseButtonPressed(false)
+HandlerRectItem::HandlerRectItem(HandlerType type, QGraphicsItem *parent) :
+		QGraphicsWidget(parent), Type(type), IsMouseButtonPressed(false)
 {
 }
 
@@ -70,7 +70,7 @@ void HandlerRectItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		return;
 	}
 
-	emit movedTo(event->scenePos().x(), event->scenePos().y());
+	emit movedTo(Type, event->scenePos().x(), event->scenePos().y());
 }
 
 QRectF HandlerRectItem::boundingRect() const

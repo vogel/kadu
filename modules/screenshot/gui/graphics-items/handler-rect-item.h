@@ -22,9 +22,23 @@
 
 #include <QtGui/QGraphicsWidget>
 
+enum HandlerType
+{
+	HandlerTopLeft,
+	HandlerTop,
+	HandlerTopRight,
+	HandlerLeft,
+	HandlerRight,
+	HandlerBottomLeft,
+	HandlerBottom,
+	HandlerBottomRight
+};
+
 class HandlerRectItem : public QGraphicsWidget
 {
 	Q_OBJECT
+
+	HandlerType Type;
 
 	bool IsMouseButtonPressed;
 	QPointF LastMousePosition;
@@ -38,11 +52,11 @@ protected:
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 
 public:
-	explicit HandlerRectItem(QGraphicsItem *parent = 0);
+	explicit HandlerRectItem(HandlerType type, QGraphicsItem *parent = 0);
 	virtual ~HandlerRectItem();
 
 signals:
-	void movedTo(int x, int y);
+	void movedTo(HandlerType type, int x, int y);
 
 };
 
