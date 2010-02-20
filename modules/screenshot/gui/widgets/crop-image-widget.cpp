@@ -26,9 +26,10 @@
 #include "crop-image-widget.h"
 
 CropImageWidget::CropImageWidget(QWidget *parent) :
-		QGraphicsView(parent)
+		QGraphicsView(parent), IsMouseButtonPressed(false)
 {
 	setContentsMargins(0, 0, 0, 0);
+	setDragMode(NoDrag);
 	setFrameShape(NoFrame);
 	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -77,6 +78,57 @@ CropImageWidget::~CropImageWidget()
 {
 }
 
+void CropImageWidget::updateCropRectDisplay()
+{
+	SelectionFrame->setSelection(CropRect);
+	QRect normalized = CropRect.normalized();
+
+	int xMiddle = (normalized.left() + normalized.right()) / 2;
+	int yMiddle = (normalized.top() + normalized.bottom()) / 2;
+
+	TopLeftHandler->setPos(CropRect.left(), CropRect.top());
+	TopHandler->setPos(xMiddle, CropRect.top());
+	TopRightHandler->setPos(CropRect.right(), CropRect.top());
+	LeftHandler->setPos(CropRect.left(), yMiddle);
+	RightHandler->setPos(CropRect.right(), yMiddle);
+	BottomLeftHandler->setPos(CropRect.left(), CropRect.bottom());
+	BottomHandler->setPos(xMiddle, CropRect.bottom());
+	BottomRightHandler->setPos(CropRect.right(), CropRect.bottom());
+
+	scene()->update(scene()->sceneRect());
+}
+
+void CropImageWidget::mousePressEvent(QMouseEvent *event)
+{
+	if (event->button() != Qt::LeftButton)
+		return;
+
+	IsMouseButtonPressed = true;
+
+	CropRect.setTopLeft(event->pos());
+	CropRect.setBottomRight(event->pos());
+}
+
+void CropImageWidget::mouseReleaseEvent(QMouseEvent *event)
+{
+	if (event->button() != Qt::LeftButton)
+		return;
+
+	IsMouseButtonPressed = false;
+
+	CropRect.setBottomRight(event->pos());
+	updateCropRectDisplay();
+}
+
+void CropImageWidget::mouseMoveEvent(QMouseEvent *event)
+{
+	if (!IsMouseButtonPressed)
+		return;
+
+	CropRect.setBottomRight(event->pos());
+	updateCropRectDisplay();
+}
+
 void CropImageWidget::resizeEvent(QResizeEvent *event)
 {
 	SelectionFrame->setSize(event->size());
@@ -92,20 +144,6 @@ void CropImageWidget::setPixmap(QPixmap pixmap)
 
 void CropImageWidget::setCropRect(QRect cropRect)
 {
-	QRect normalized = cropRect.normalized();
-	SelectionFrame->setSelection(normalized);
-
-	int xMiddle = (normalized.left() + normalized.right()) / 2;
-	int yMiddle = (normalized.top() + normalized.bottom()) / 2;
-
-	TopLeftHandler->setPos(cropRect.left(), cropRect.top());
-	TopHandler->setPos(xMiddle, cropRect.top());
-	TopRightHandler->setPos(cropRect.right(), cropRect.top());
-	LeftHandler->setPos(cropRect.left(), yMiddle);
-	RightHandler->setPos(cropRect.right(), yMiddle);
-	BottomLeftHandler->setPos(cropRect.left(), cropRect.bottom());
-	BottomHandler->setPos(xMiddle, cropRect.bottom());
-	BottomRightHandler->setPos(cropRect.right(), cropRect.bottom());
-
-	scene()->update(scene()->sceneRect());
+	CropRect = cropRect.normalized();
+	updateCropRectDisplay();
 }

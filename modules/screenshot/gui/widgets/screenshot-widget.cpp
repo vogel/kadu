@@ -86,8 +86,9 @@ void ScreenshotWidget::updateToolBoxHint()
 
 void ScreenshotWidget::mousePressEvent(QMouseEvent *e)
 {
+	QWidget::mousePressEvent(e);
 	kdebugf();
-
+/*
 	if (e->button() != Qt::LeftButton)
 		return;
 
@@ -122,13 +123,14 @@ void ScreenshotWidget::mousePressEvent(QMouseEvent *e)
 		ToolBox->setFileSize("0 KB");
 		ToolBox->show();
 		ToolBoxTimer->start(1000);
-	}
+	}*/
 }
 
 void ScreenshotWidget::mouseReleaseEvent(QMouseEvent *e)
 {
+	QWidget::mouseReleaseEvent(e);
 	kdebugf();
-
+/*
 	if (!ButtonPressed)
 		return;
 
@@ -150,36 +152,37 @@ void ScreenshotWidget::mouseReleaseEvent(QMouseEvent *e)
 	qApp->processEvents();
 
 	// TODO: rotfl... we have pixmap variable
-	QPixmap shot = QPixmap::grabWindow(winId(), ShotRegion.x(), ShotRegion.y(), ShotRegion.width(), ShotRegion.height());
+	QPixmap shot = QPixmap::grabWindow(winId(), ShotRegion.x(), ShotRegion.y(), ShotRegion.width(), ShotRegion.height());*/
 
 	// Chowanie widgeta zrzutu i przywr�cenie kursora.
-	hide();
-	QApplication::restoreOverrideCursor();
+// 	hide();
+// 	QApplication::restoreOverrideCursor();
 
-	emit pixmapCaptured(shot);
+// 	emit pixmapCaptured(shot);
 }
 
 void ScreenshotWidget::mouseMoveEvent(QMouseEvent *e)
 {
-	kdebugf();
-	if (!ButtonPressed)
-		return;
-
-	ShotRegion.setBottomRight(e->pos());
-
-	QRect reg = ShotRegion;
-	reg = reg.normalized();
-
-	CropWidget->setCropRect(ShotRegion);
-
-	ToolBox->setGeometry(
-		QString("%1x%2")
-			.arg(QString::number(reg.width()))
-			.arg(QString::number(reg.height()))
-		);
-
-	ShowPaintRect = true;
-	repaint();
+	QWidget::mouseMoveEvent(e);
+// 	kdebugf();
+// 	if (!ButtonPressed)
+// 		return;
+// 
+// 	ShotRegion.setBottomRight(e->pos());
+// 
+// 	QRect reg = ShotRegion;
+// 	reg = reg.normalized();
+// 
+// 	CropWidget->setCropRect(ShotRegion);
+// 
+// 	ToolBox->setGeometry(
+// 		QString("%1x%2")
+// 			.arg(QString::number(reg.width()))
+// 			.arg(QString::number(reg.height()))
+// 		);
+// 
+// 	ShowPaintRect = true;
+// 	repaint();
 }
 
 void ScreenshotWidget::keyPressEvent(QKeyEvent* e)
@@ -188,6 +191,7 @@ void ScreenshotWidget::keyPressEvent(QKeyEvent* e)
 
 	if (e->key() == Qt::Key_Escape)
 	{
+		QApplication::restoreOverrideCursor();
 		releaseMouse();
 		releaseKeyboard();
 		hide();

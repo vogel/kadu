@@ -320,8 +320,8 @@ void ScreenShot::grabMouseSlot()
 {
 	kdebugf();
 
-	CurrentScreenshotWidget->grabMouse();
-	CurrentScreenshotWidget->grabKeyboard();
+// 	CurrentScreenshotWidget->grabMouse();
+// 	CurrentScreenshotWidget->grabKeyboard();
 }
 
 void ScreenShot::checkShotsSize()
