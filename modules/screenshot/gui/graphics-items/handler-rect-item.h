@@ -20,9 +20,9 @@
 #ifndef HANDLER_RECT_ITEM_H
 #define HANDLER_RECT_ITEM_H
 
-#include <QtGui/QGraphicsObject>
+#include <QtGui/QGraphicsWidget>
 
-class HandlerRectItem : public QGraphicsObject
+class HandlerRectItem : public QGraphicsWidget
 {
 	Q_OBJECT
 

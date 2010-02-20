@@ -25,7 +25,7 @@
 #define HALF_SIZE 8
 
 HandlerRectItem::HandlerRectItem(QGraphicsItem *parent) :
-		QGraphicsObject(parent)
+		QGraphicsWidget(parent)
 {
 }
 
