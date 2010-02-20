@@ -17,6 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QGraphicsSceneMouseEvent>
 #include <QtGui/QPainter>
 
 #include "handler-rect-item.h"
@@ -25,12 +26,51 @@
 #define HALF_SIZE 5
 
 HandlerRectItem::HandlerRectItem(QGraphicsItem *parent) :
-		QGraphicsWidget(parent)
+		QGraphicsWidget(parent), IsMouseButtonPressed(false)
 {
 }
 
 HandlerRectItem::~HandlerRectItem()
 {
+}
+
+void HandlerRectItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    if (Qt::LeftButton != event->button())
+	{
+		QGraphicsWidget::mousePressEvent(event);
+		return;
+	}
+
+	grabMouse();
+
+	IsMouseButtonPressed = true;
+	event->accept();
+}
+
+void HandlerRectItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+	if (Qt::LeftButton != event->button())
+	{
+		QGraphicsWidget::mouseReleaseEvent(event);
+		return;
+	}
+
+	ungrabMouse();
+
+	IsMouseButtonPressed = false;
+	event->accept();
+}
+
+void HandlerRectItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+    if (!IsMouseButtonPressed)
+	{
+		QGraphicsWidget::mouseMoveEvent(event);
+		return;
+	}
+
+	emit movedTo(event->scenePos().x(), event->scenePos().y());
 }
 
 QRectF HandlerRectItem::boundingRect() const

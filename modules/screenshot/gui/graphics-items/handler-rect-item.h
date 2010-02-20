@@ -26,13 +26,23 @@ class HandlerRectItem : public QGraphicsWidget
 {
 	Q_OBJECT
 
+	bool IsMouseButtonPressed;
+	QPointF LastMousePosition;
+
 protected:
+	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
+	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+
 	virtual QRectF boundingRect() const;
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 
 public:
 	explicit HandlerRectItem(QGraphicsItem *parent = 0);
 	virtual ~HandlerRectItem();
+
+signals:
+	void movedTo(int x, int y);
 
 };
 

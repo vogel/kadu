@@ -47,6 +47,9 @@ class CropImageWidget : public QGraphicsView
 
 	void updateCropRectDisplay();
 
+private slots:
+	void handlerMovedTo(int x, int y);
+
 protected:
 	virtual void mousePressEvent(QMouseEvent *event);
 	virtual void mouseReleaseEvent(QMouseEvent *event);

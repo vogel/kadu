@@ -32,6 +32,7 @@ CropImageWidget::CropImageWidget(QWidget *parent) :
 	setContentsMargins(0, 0, 0, 0);
 	setFrameShape(NoFrame);
 	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	setInteractive(true);
 	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
 	QGraphicsScene *graphicsScene = new QGraphicsScene(this);
@@ -47,41 +48,52 @@ CropImageWidget::CropImageWidget(QWidget *parent) :
 	SelectionFrame = new SelectionFrameItem();
 	SelectionFrame->setPos(0, 0);
 	SelectionFrame->setSize(size());
-	SelectionFrame->setCursor(Qt::SizeFDiagCursor);
 
 	scene()->addItem(SelectionFrame);
 
 	TopLeftHandler = new HandlerRectItem();
-	TopLeftHandler->setCursor(Qt::SizeBDiagCursor);
+	TopLeftHandler->setCursor(Qt::SizeFDiagCursor);
+	connect(TopLeftHandler, SIGNAL(movedTo(int,int)), this, SLOT(handlerMovedTo(int,int)));
 	scene()->addItem(TopLeftHandler);
 
 	TopHandler = new HandlerRectItem();
 	TopHandler->setCursor(Qt::SizeVerCursor);
+	connect(TopHandler, SIGNAL(movedTo(int,int)), this, SLOT(handlerMovedTo(int,int)));
 	scene()->addItem(TopHandler);
 
 	TopRightHandler = new HandlerRectItem();
-	TopRightHandler->setCursor(Qt::SizeFDiagCursor);
+	TopRightHandler->setCursor(Qt::SizeBDiagCursor);
+	connect(TopRightHandler, SIGNAL(movedTo(int,int)), this, SLOT(handlerMovedTo(int,int)));
 	scene()->addItem(TopRightHandler);
 
 	LeftHandler = new HandlerRectItem();
 	LeftHandler->setCursor(Qt::SizeHorCursor);
+	connect(LeftHandler, SIGNAL(movedTo(int,int)), this, SLOT(handlerMovedTo(int,int)));
 	scene()->addItem(LeftHandler);
 
 	RightHandler = new HandlerRectItem();
 	RightHandler->setCursor(Qt::SizeHorCursor);
+	connect(RightHandler, SIGNAL(movedTo(int,int)), this, SLOT(handlerMovedTo(int,int)));
 	scene()->addItem(RightHandler);
 
 	BottomLeftHandler = new HandlerRectItem();
-	BottomLeftHandler->setCursor(Qt::SizeFDiagCursor);
+	BottomLeftHandler->setCursor(Qt::SizeBDiagCursor);
+	connect(BottomLeftHandler, SIGNAL(movedTo(int,int)), this, SLOT(handlerMovedTo(int,int)));
 	scene()->addItem(BottomLeftHandler);
 
 	BottomHandler = new HandlerRectItem();
 	BottomHandler->setCursor(Qt::SizeVerCursor);
+	connect(BottomHandler, SIGNAL(movedTo(int,int)), this, SLOT(handlerMovedTo(int,int)));
 	scene()->addItem(BottomHandler);
 
 	BottomRightHandler = new HandlerRectItem();
-	BottomRightHandler->setCursor(Qt::SizeBDiagCursor);
+	BottomRightHandler->setCursor(Qt::SizeFDiagCursor);
+	connect(BottomRightHandler, SIGNAL(movedTo(int,int)), this, SLOT(handlerMovedTo(int,int)));
 	scene()->addItem(BottomRightHandler);
+
+	CropRect.setTopLeft(QPoint(0, 0));
+	CropRect.setSize(size());
+	updateCropRectDisplay();
 }
 
 CropImageWidget::~CropImageWidget()
@@ -96,47 +108,67 @@ void CropImageWidget::updateCropRectDisplay()
 	int xMiddle = (normalized.left() + normalized.right()) / 2;
 	int yMiddle = (normalized.top() + normalized.bottom()) / 2;
 
-	TopLeftHandler->setPos(normalized.left(), normalized.top());
-	TopHandler->setPos(xMiddle, normalized.top());
-	TopRightHandler->setPos(normalized.right(), normalized.top());
-	LeftHandler->setPos(normalized.left(), yMiddle);
-	RightHandler->setPos(normalized.right(), yMiddle);
-	BottomLeftHandler->setPos(normalized.left(), normalized.bottom());
-	BottomHandler->setPos(xMiddle, normalized.bottom());
-	BottomRightHandler->setPos(normalized.right(), normalized.bottom());
+	TopLeftHandler->setPos(CropRect.left(), CropRect.top());
+	TopHandler->setPos(xMiddle, CropRect.top());
+	TopRightHandler->setPos(CropRect.right(), CropRect.top());
+	LeftHandler->setPos(CropRect.left(), yMiddle);
+	RightHandler->setPos(CropRect.right(), yMiddle);
+	BottomLeftHandler->setPos(CropRect.left(), CropRect.bottom());
+	BottomHandler->setPos(xMiddle, CropRect.bottom());
+	BottomRightHandler->setPos(CropRect.right(), CropRect.bottom());
 
 	scene()->update(scene()->sceneRect());
 }
 
+void CropImageWidget::handlerMovedTo(int x, int y)
+{
+	CropRect.setRight(x);
+	CropRect.setBottom(y);
+
+	updateCropRectDisplay();
+}
+
 void CropImageWidget::mousePressEvent(QMouseEvent *event)
 {
-	if (event->button() != Qt::LeftButton)
-		return;
-
-	IsMouseButtonPressed = true;
-
-	CropRect.setTopLeft(event->pos());
-	CropRect.setBottomRight(event->pos());
+	QGraphicsView::mousePressEvent(event);
+// 	if (event->isAccepted())
+// 		return;
+// 
+// 	if (event->button() != Qt::LeftButton)
+// 		return;
+// 
+// 	IsMouseButtonPressed = true;
+// 
+// 	CropRect.setTopLeft(event->pos());
+// 	CropRect.setBottomRight(event->pos());
 }
 
 void CropImageWidget::mouseReleaseEvent(QMouseEvent *event)
 {
-	if (event->button() != Qt::LeftButton)
-		return;
-
-	IsMouseButtonPressed = false;
-
-	CropRect.setBottomRight(event->pos());
-	updateCropRectDisplay();
+	QGraphicsView::mouseReleaseEvent(event);
+// 	if (event->isAccepted())
+// 		return;
+// 
+// 	if (event->button() != Qt::LeftButton)
+// 		return;
+// 
+// 	IsMouseButtonPressed = false;
+// 
+// 	CropRect.setBottomRight(event->pos());
+// 	updateCropRectDisplay();
 }
 
 void CropImageWidget::mouseMoveEvent(QMouseEvent *event)
 {
-	if (!IsMouseButtonPressed)
-		return;
-
-	CropRect.setBottomRight(event->pos());
-	updateCropRectDisplay();
+	QGraphicsView::mouseMoveEvent(event);
+// 	if (event->isAccepted())
+// 		return;
+// 
+// 	if (!IsMouseButtonPressed)
+// 		return;
+// 
+// 	CropRect.setBottomRight(event->pos());
+// 	updateCropRectDisplay();
 }
 
 void CropImageWidget::resizeEvent(QResizeEvent *event)
