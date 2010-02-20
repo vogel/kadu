@@ -46,3 +46,18 @@ QValidator::State LongValidator::validate(QString &input, int &) const
 
 	return Acceptable;
 }
+
+void LongValidator::fixup(QString &input) const
+{
+	QString result;
+
+	int length = input.length();
+	for (int i = 0; i < length; i++)
+	{
+		QChar c = input.at(i);
+		if (c.isDigit())
+			result += c;
+	}
+
+	input = result;
+}

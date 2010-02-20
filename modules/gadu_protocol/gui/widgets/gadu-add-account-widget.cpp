@@ -23,7 +23,6 @@
 #include <QtGui/QComboBox>
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QFormLayout>
-#include <QtGui/QIntValidator>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
@@ -33,6 +32,7 @@
 #include "gui/widgets/identities-combo-box.h"
 #include "gui/windows/message-dialog.h"
 #include "protocols/protocols-manager.h"
+#include "qt/long-validator.h"
 #include "html_document.h"
 #include "icons-manager.h"
 
@@ -78,7 +78,7 @@ void GaduAddAccountWidget::createGui()
 	layout->addRow(tr("Account Name") + ":", AccountName);
 
 	AccountId = new QLineEdit(this);
-	AccountId->setValidator(new QIntValidator(1, 3999999999U, this));
+	AccountId->setValidator(new LongValidator(1, 3999999999U, this));
 	connect(AccountId, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 	layout->addRow(tr("Gadu-Gadu number") + ":", AccountId);
 

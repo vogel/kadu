@@ -17,7 +17,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QIntValidator>
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QFormLayout>
 #include <QtGui/QLabel>
@@ -27,6 +26,7 @@
 
 #include "gui/windows/message-dialog.h"
 #include "misc/misc.h"
+#include "qt/long-validator.h"
 #include "icons-manager.h"
 
 #include "gui/widgets/token-widget.h"
@@ -72,7 +72,7 @@ void GaduUnregisterAccountWindow::createGui()
 	QFormLayout *layout = new QFormLayout(formWidget);
 
 	AccountId = new QLineEdit(this);
-	AccountId->setValidator(new QIntValidator(1, 3999999999U, this));
+	AccountId->setValidator(new LongValidator(1, 3999999999U, this));
 	connect(AccountId, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 	layout->addRow(tr("Gadu-Gadu number") + ":", AccountId);
 

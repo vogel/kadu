@@ -43,6 +43,7 @@
 #include "protocols/services/avatar-service.h"
 #include "protocols/services/contact-list-service.h"
 #include "protocols/protocol.h"
+#include "qt/long-validator.h"
 #include "icons-manager.h"
 
 #include "gui/windows/gadu-change-password-window.h"
@@ -117,7 +118,7 @@ void GaduEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 	formLayout->addRow(tr("Account name") + ":", AccountName);
 
 	AccountId = new QLineEdit(this);
-	AccountId->setValidator(new QIntValidator(1, 3999999999U, this));
+	AccountId->setValidator(new LongValidator(1, 3999999999U, this));
 	connect(AccountId, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 	formLayout->addRow(tr("Gadu-Gadu number") + ":", AccountId);
 

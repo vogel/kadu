@@ -23,7 +23,6 @@
  */
 
 #include <QtCore/QTimer>
-#include <QtGui/QIntValidator>
 
 #ifdef Q_OS_WIN
 #include <winsock2.h>
@@ -42,6 +41,7 @@
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/password-window.h"
 #include "protocols/protocols-manager.h"
+#include "qt/long-validator.h"
 #include "status/status.h"
 #include "status/status-type.h"
 #include "status/status-type-manager.h"
@@ -244,7 +244,7 @@ GaduProtocol::~GaduProtocol()
 
 bool GaduProtocol::validateUserID(const QString &uid)
 {
-	QIntValidator v(1, 3999999999U, this);
+	LongValidator v(1, 3999999999U, this);
 	int pos = 0;
 
 	QString id = uid; // need non-const copy

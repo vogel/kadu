@@ -40,6 +40,7 @@ public:
 	virtual ~LongValidator();
 
 	virtual QValidator::State validate(QString &input, int &) const;
+	virtual void fixup(QString &input) const;
 
 };
 
