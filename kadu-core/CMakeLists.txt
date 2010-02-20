@@ -259,6 +259,8 @@ set (kadu_SRCS
 	protocols/model/protocols-model.cpp
 	protocols/services/chat-service.cpp
 
+	qt/long-validator.cpp
+
 	status/base-status-container.cpp
 	status/description-manager.cpp
 	status/description-model.cpp
@@ -503,6 +505,8 @@ set (kadu_MOC_SRCS
 	protocols/services/file-transfer-service.h
 	protocols/services/personal-info-service.h
 	protocols/services/search-service.h
+
+	qt/long-validator.h
 
 	status/description-manager.h
 	status/description-model.h
