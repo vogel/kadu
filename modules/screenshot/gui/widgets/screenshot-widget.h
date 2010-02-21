@@ -41,6 +41,9 @@ class ScreenshotWidget : public QWidget
 	QRect ShotRegion;
 	bool ShowPaintRect;
 
+private slots:
+	void pixmapCapturedSlot(QPixmap pixmap);
+	
 protected:
 	void keyPressEvent(QKeyEvent *e);
 

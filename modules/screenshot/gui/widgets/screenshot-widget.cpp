@@ -45,7 +45,7 @@ ScreenshotWidget::ScreenshotWidget(QWidget *parent) :
 	layout->setContentsMargins(0, 0, 0, 0);
 
 	CropWidget = new CropImageWidget(this);
-	connect(CropWidget, SIGNAL(pixmapCropped(QPixmap)), this, SIGNAL(pixmapCaptured(QPixmap)));
+	connect(CropWidget, SIGNAL(pixmapCropped(QPixmap)), this, SLOT(pixmapCapturedSlot(QPixmap)));
 	layout->addWidget(CropWidget);
 }
 
@@ -65,15 +65,21 @@ void ScreenshotWidget::setPixmap(QPixmap pixmap)
 	resize(pixmap.size());
 }
 
-void ScreenshotWidget::keyPressEvent(QKeyEvent* e)
+void ScreenshotWidget::keyPressEvent(QKeyEvent *e)
 {
 	kdebugf();
 
 	if (e->key() == Qt::Key_Escape)
 	{
-// 		QApplication::restoreOverrideCursor();
-// 		releaseMouse();
-// 		releaseKeyboard();
-		hide();
+		deleteLater();
+		e->accept();
 	}
+	else
+		QWidget::keyPressEvent(e);
+}
+
+void ScreenshotWidget::pixmapCapturedSlot(QPixmap pixmap)
+{
+	emit pixmapCaptured(pixmap);
+	deleteLater();
 }
