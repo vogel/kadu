@@ -102,6 +102,7 @@ ScreenShot::ScreenShot(bool firstLoad) :
 	connect(CurrentScreenshotTaker, SIGNAL(screenshotTaken(QPixmap)), this, SLOT(screenshotTaken(QPixmap)));
 
 	CurrentScreenshotWidget = new ScreenshotWidget(0);
+	connect(CurrentScreenshotWidget, SIGNAL(pixmapCaptured(QPixmap)), this, SLOT(pixmapCropped(QPixmap)));
 
 	createMenu();
 
@@ -313,6 +314,12 @@ void ScreenShot::screenshotTaken(QPixmap screenshot)
 	CurrentScreenshotWidget->show();
 
 	QTimer::singleShot(100, this, SLOT(grabMouseSlot()));
+}
+
+void ScreenShot::pixmapCropped(QPixmap pixmap)
+{
+	handleShot(pixmap);
+	CurrentScreenshotWidget->hide();
 }
 
 void ScreenShot::grabMouseSlot()

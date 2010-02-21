@@ -55,6 +55,7 @@ CropImageWidget::CropImageWidget(QWidget *parent) :
 	scene()->addItem(SelectionFrame);
 
 	ToolBox = new ScreenshotToolBox();
+	connect(ToolBox, SIGNAL(crop()), this, SLOT(crop()));
 
 	ToolBoxProxy = new QGraphicsProxyWidget();
 	ToolBoxProxy->setWidget(ToolBox);
@@ -152,6 +153,11 @@ void CropImageWidget::handlerMovedTo(HandlerType type, int x, int y)
 		CropRect.setRight(x);
 
 	updateCropRectDisplay();
+}
+
+void CropImageWidget::crop()
+{
+	emit pixmapCropped(PixmapItem->pixmap().copy(CropRect.normalized()));
 }
 
 void CropImageWidget::mousePressEvent(QMouseEvent *event)

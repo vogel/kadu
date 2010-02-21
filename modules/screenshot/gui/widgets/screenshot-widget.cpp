@@ -43,6 +43,7 @@ ScreenshotWidget::ScreenshotWidget(QWidget *parent) :
 	layout->setContentsMargins(0, 0, 0, 0);
 
 	CropWidget = new CropImageWidget(this);
+	connect(CropWidget, SIGNAL(pixmapCropped(QPixmap)), this, SIGNAL(pixmapCaptured(QPixmap)));
 	layout->addWidget(CropWidget);
 
 	ToolBox = new ScreenshotToolBox(this);

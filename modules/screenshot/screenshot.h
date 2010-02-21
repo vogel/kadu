@@ -66,6 +66,7 @@ class ScreenShot : public QObject
 
 private slots:
     void screenshotTaken(QPixmap screenshot);
+	void pixmapCropped(QPixmap pixmap);
 
 	void takeSimpleShot();
 	void takeShotWithChatWindowHidden();
