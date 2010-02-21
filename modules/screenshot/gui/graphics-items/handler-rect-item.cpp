@@ -22,11 +22,8 @@
 
 #include "handler-rect-item.h"
 
-#define SIZE 10
-#define HALF_SIZE 5
-
-HandlerRectItem::HandlerRectItem(HandlerType type, QGraphicsItem *parent) :
-		QGraphicsWidget(parent), Type(type), IsMouseButtonPressed(false)
+HandlerRectItem::HandlerRectItem(HandlerType type, int size, QGraphicsItem *parent) :
+		QGraphicsWidget(parent), Type(type), Size(size), IsMouseButtonPressed(false)
 {
 }
 
@@ -75,7 +72,7 @@ void HandlerRectItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 QRectF HandlerRectItem::boundingRect() const
 {
-	return QRectF(-HALF_SIZE, -HALF_SIZE, SIZE, SIZE);
+	return QRectF(0, 0, Size, Size);
 }
 
 void HandlerRectItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -83,8 +80,8 @@ void HandlerRectItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
 	Q_UNUSED(option)
 	Q_UNUSED(widget)
 
-	painter->fillRect(QRect(-HALF_SIZE, -HALF_SIZE, SIZE, SIZE), Qt::white);
+	painter->fillRect(QRect(0, 0, Size, Size), Qt::white);
 
 	painter->setPen(Qt::black);
-	painter->drawRect(QRect(-HALF_SIZE, -HALF_SIZE, SIZE, SIZE));
+	painter->drawRect(QRect(0, 0, Size, Size));
 }

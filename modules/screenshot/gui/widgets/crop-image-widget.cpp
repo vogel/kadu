@@ -25,6 +25,9 @@
 
 #include "crop-image-widget.h"
 
+#define HANDLER_SIZE 10
+#define HANDLER_HALF_SIZE (HANDLER_SIZE/2)
+
 CropImageWidget::CropImageWidget(QWidget *parent) :
 		QGraphicsView(parent), IsMouseButtonPressed(false)
 {
@@ -39,8 +42,7 @@ CropImageWidget::CropImageWidget(QWidget *parent) :
 
 	PixmapItem = new QGraphicsPixmapItem();
 	PixmapItem->setCursor(Qt::CrossCursor);
-	PixmapItem->setX(0);
-	PixmapItem->setY(0);
+	PixmapItem->setPos(0, 0);
 
 	scene()->addItem(PixmapItem);
 
@@ -50,42 +52,42 @@ CropImageWidget::CropImageWidget(QWidget *parent) :
 
 	scene()->addItem(SelectionFrame);
 
-	TopLeftHandler = new HandlerRectItem(HandlerTopLeft);
+	TopLeftHandler = new HandlerRectItem(HandlerTopLeft, HANDLER_SIZE);
 	TopLeftHandler->setCursor(Qt::SizeFDiagCursor);
 	connect(TopLeftHandler, SIGNAL(movedTo(HandlerType,int,int)), this, SLOT(handlerMovedTo(HandlerType,int,int)));
 	scene()->addItem(TopLeftHandler);
 
-	TopHandler = new HandlerRectItem(HandlerTop);
+	TopHandler = new HandlerRectItem(HandlerTop, HANDLER_SIZE);
 	TopHandler->setCursor(Qt::SizeVerCursor);
 	connect(TopHandler, SIGNAL(movedTo(HandlerType,int,int)), this, SLOT(handlerMovedTo(HandlerType,int,int)));
 	scene()->addItem(TopHandler);
 
-	TopRightHandler = new HandlerRectItem(HandlerTopRight);
+	TopRightHandler = new HandlerRectItem(HandlerTopRight, HANDLER_SIZE);
 	TopRightHandler->setCursor(Qt::SizeBDiagCursor);
 	connect(TopRightHandler, SIGNAL(movedTo(HandlerType,int,int)), this, SLOT(handlerMovedTo(HandlerType,int,int)));
 	scene()->addItem(TopRightHandler);
 
-	LeftHandler = new HandlerRectItem(HandlerLeft);
+	LeftHandler = new HandlerRectItem(HandlerLeft, HANDLER_SIZE);
 	LeftHandler->setCursor(Qt::SizeHorCursor);
 	connect(LeftHandler, SIGNAL(movedTo(HandlerType,int,int)), this, SLOT(handlerMovedTo(HandlerType,int,int)));
 	scene()->addItem(LeftHandler);
 
-	RightHandler = new HandlerRectItem(HandlerRight);
+	RightHandler = new HandlerRectItem(HandlerRight, HANDLER_SIZE);
 	RightHandler->setCursor(Qt::SizeHorCursor);
 	connect(RightHandler, SIGNAL(movedTo(HandlerType,int,int)), this, SLOT(handlerMovedTo(HandlerType,int,int)));
 	scene()->addItem(RightHandler);
 
-	BottomLeftHandler = new HandlerRectItem(HandlerBottomLeft);
+	BottomLeftHandler = new HandlerRectItem(HandlerBottomLeft, HANDLER_SIZE);
 	BottomLeftHandler->setCursor(Qt::SizeBDiagCursor);
 	connect(BottomLeftHandler, SIGNAL(movedTo(HandlerType,int,int)), this, SLOT(handlerMovedTo(HandlerType,int,int)));
 	scene()->addItem(BottomLeftHandler);
 
-	BottomHandler = new HandlerRectItem(HandlerBottom);
+	BottomHandler = new HandlerRectItem(HandlerBottom, HANDLER_SIZE);
 	BottomHandler->setCursor(Qt::SizeVerCursor);
 	connect(BottomHandler, SIGNAL(movedTo(HandlerType,int,int)), this, SLOT(handlerMovedTo(HandlerType,int,int)));
 	scene()->addItem(BottomHandler);
 
-	BottomRightHandler = new HandlerRectItem(HandlerBottomRight);
+	BottomRightHandler = new HandlerRectItem(HandlerBottomRight, HANDLER_SIZE);
 	BottomRightHandler->setCursor(Qt::SizeFDiagCursor);
 	connect(BottomRightHandler, SIGNAL(movedTo(HandlerType,int,int)), this, SLOT(handlerMovedTo(HandlerType,int,int)));
 	scene()->addItem(BottomRightHandler);
@@ -113,14 +115,15 @@ void CropImageWidget::updateCropRectDisplay()
 	int xMiddle = (normalized.left() + normalized.right()) / 2;
 	int yMiddle = (normalized.top() + normalized.bottom()) / 2;
 
-	TopLeftHandler->setPos(CropRect.left(), CropRect.top());
-	TopHandler->setPos(xMiddle, CropRect.top());
-	TopRightHandler->setPos(CropRect.right(), CropRect.top());
-	LeftHandler->setPos(CropRect.left(), yMiddle);
-	RightHandler->setPos(CropRect.right(), yMiddle);
-	BottomLeftHandler->setPos(CropRect.left(), CropRect.bottom());
-	BottomHandler->setPos(xMiddle, CropRect.bottom());
-	BottomRightHandler->setPos(CropRect.right(), CropRect.bottom());
+	// workaround for wrong cursor on negative coordinates
+	TopLeftHandler->setPos(CropRect.left() - HANDLER_HALF_SIZE, CropRect.top() - HANDLER_HALF_SIZE);
+	TopHandler->setPos(xMiddle - HANDLER_HALF_SIZE, CropRect.top() - HANDLER_HALF_SIZE);
+	TopRightHandler->setPos(CropRect.right() - HANDLER_HALF_SIZE, CropRect.top() - HANDLER_HALF_SIZE);
+	LeftHandler->setPos(CropRect.left() - HANDLER_HALF_SIZE, yMiddle - HANDLER_HALF_SIZE);
+	RightHandler->setPos(CropRect.right() - HANDLER_HALF_SIZE, yMiddle - HANDLER_HALF_SIZE);
+	BottomLeftHandler->setPos(CropRect.left() - HANDLER_HALF_SIZE, CropRect.bottom() - HANDLER_HALF_SIZE);
+	BottomHandler->setPos(xMiddle - HANDLER_HALF_SIZE, CropRect.bottom() - HANDLER_HALF_SIZE);
+	BottomRightHandler->setPos(CropRect.right() - HANDLER_HALF_SIZE, CropRect.bottom() - HANDLER_HALF_SIZE);
 
 	scene()->update(scene()->sceneRect());
 }

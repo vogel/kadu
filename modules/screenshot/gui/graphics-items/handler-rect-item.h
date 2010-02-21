@@ -39,6 +39,7 @@ class HandlerRectItem : public QGraphicsWidget
 	Q_OBJECT
 
 	HandlerType Type;
+	int Size;
 
 	bool IsMouseButtonPressed;
 	QPointF LastMousePosition;
@@ -52,7 +53,7 @@ protected:
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 
 public:
-	explicit HandlerRectItem(HandlerType type, QGraphicsItem *parent = 0);
+	explicit HandlerRectItem(HandlerType type, int size = 10, QGraphicsItem *parent = 0);
 	virtual ~HandlerRectItem();
 
 signals:
