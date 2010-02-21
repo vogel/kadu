@@ -35,7 +35,7 @@ void HandlerRectItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     if (Qt::LeftButton != event->button())
 	{
-		QGraphicsWidget::mousePressEvent(event);
+		event->ignore();
 		return;
 	}
 
@@ -47,9 +47,9 @@ void HandlerRectItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void HandlerRectItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-	if (Qt::LeftButton != event->button())
+	if ((Qt::LeftButton != event->button()) || !IsMouseButtonPressed)
 	{
-		QGraphicsWidget::mouseReleaseEvent(event);
+		event->ignore();
 		return;
 	}
 
@@ -63,7 +63,7 @@ void HandlerRectItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     if (!IsMouseButtonPressed)
 	{
-		QGraphicsWidget::mouseMoveEvent(event);
+		event->ignore();
 		return;
 	}
 

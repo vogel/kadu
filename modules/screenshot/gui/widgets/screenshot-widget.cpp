@@ -84,107 +84,6 @@ void ScreenshotWidget::updateToolBoxHint()
 		ToolBox->setFileSize(QString::number(buffer.size()/1024) + " KB");
 }
 
-void ScreenshotWidget::mousePressEvent(QMouseEvent *e)
-{
-	QWidget::mousePressEvent(e);
-	kdebugf();
-/*
-	if (e->button() != Qt::LeftButton)
-		return;
-
-	if (ShotMode == ShotModeSingleWindow)
-	{
-		releaseMouse();
-		releaseKeyboard();
-
-		hide();
-		update();
-
-		QTimer::singleShot(100, this, SLOT(takeWindowShot_Step2()));
-	}
-	else
-	{
-		ShotRegion = QRect(e->pos(), e->pos());
-		ButtonPressed = true;
-
-		int x = e->pos().x() + 50;
-		int y = e->pos().y() + 50;
-
-		QRect screen = QApplication::desktop()->screenGeometry();
-		if (x + 150 > screen.width())
-			x -= 150;
-
-		if (y + 100 > screen.height())
-			y -= 100;
-
-		ToolBox->move(x, y);
-
-		ToolBox->setGeometry("0x0");
-		ToolBox->setFileSize("0 KB");
-		ToolBox->show();
-		ToolBoxTimer->start(1000);
-	}*/
-}
-
-void ScreenshotWidget::mouseReleaseEvent(QMouseEvent *e)
-{
-	QWidget::mouseReleaseEvent(e);
-	kdebugf();
-/*
-	if (!ButtonPressed)
-		return;
-
-	ToolBoxTimer->stop();
-	ToolBox->hide();
-
-	// Uwalnianie myszki, klawiatury
-	ButtonPressed = false;
-	releaseMouse();
-	releaseKeyboard();
-
-	// Normalizowanie prostok�ta do zrzutu
-	ShotRegion.setBottomRight(e->pos());
-	ShotRegion = ShotRegion.normalized();
-
-	// Zrzut
-	ShowPaintRect = false;
-	repaint();
-	qApp->processEvents();
-
-	// TODO: rotfl... we have pixmap variable
-	QPixmap shot = QPixmap::grabWindow(winId(), ShotRegion.x(), ShotRegion.y(), ShotRegion.width(), ShotRegion.height());*/
-
-	// Chowanie widgeta zrzutu i przywr�cenie kursora.
-// 	hide();
-// 	QApplication::restoreOverrideCursor();
-
-// 	emit pixmapCaptured(shot);
-}
-
-void ScreenshotWidget::mouseMoveEvent(QMouseEvent *e)
-{
-	QWidget::mouseMoveEvent(e);
-// 	kdebugf();
-// 	if (!ButtonPressed)
-// 		return;
-// 
-// 	ShotRegion.setBottomRight(e->pos());
-// 
-// 	QRect reg = ShotRegion;
-// 	reg = reg.normalized();
-// 
-// 	CropWidget->setCropRect(ShotRegion);
-// 
-// 	ToolBox->setGeometry(
-// 		QString("%1x%2")
-// 			.arg(QString::number(reg.width()))
-// 			.arg(QString::number(reg.height()))
-// 		);
-// 
-// 	ShowPaintRect = true;
-// 	repaint();
-}
-
 void ScreenshotWidget::keyPressEvent(QKeyEvent* e)
 {
 	kdebugf();
@@ -192,8 +91,8 @@ void ScreenshotWidget::keyPressEvent(QKeyEvent* e)
 	if (e->key() == Qt::Key_Escape)
 	{
 // 		QApplication::restoreOverrideCursor();
-		releaseMouse();
-		releaseKeyboard();
+// 		releaseMouse();
+// 		releaseKeyboard();
 		hide();
 	}
 }

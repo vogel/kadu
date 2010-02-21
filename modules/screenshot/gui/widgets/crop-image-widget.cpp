@@ -146,45 +146,48 @@ void CropImageWidget::handlerMovedTo(HandlerType type, int x, int y)
 void CropImageWidget::mousePressEvent(QMouseEvent *event)
 {
 	QGraphicsView::mousePressEvent(event);
-// 	if (event->isAccepted())
-// 		return;
-// 
-// 	if (event->button() != Qt::LeftButton)
-// 		return;
-// 
-// 	IsMouseButtonPressed = true;
-// 
-// 	CropRect.setTopLeft(event->pos());
-// 	CropRect.setBottomRight(event->pos());
+	if (event->isAccepted())
+		return;
+
+	if (event->button() != Qt::LeftButton)
+		return;
+
+	IsMouseButtonPressed = true;
+
+	CropRect.setTopLeft(event->pos());
+	CropRect.setBottomRight(event->pos());
+
+	updateCropRectDisplay();
+
 }
 
 void CropImageWidget::mouseReleaseEvent(QMouseEvent *event)
 {
 	QGraphicsView::mouseReleaseEvent(event);
 	normalizeCropRect();
-// 	if (event->isAccepted())
-// 		return;
-// 
-// 	if (event->button() != Qt::LeftButton)
-// 		return;
-// 
-// 	IsMouseButtonPressed = false;
-// 
-// 	CropRect.setBottomRight(event->pos());
-// 	updateCropRectDisplay();
+
+	if (!IsMouseButtonPressed)
+		return;
+
+	if (event->button() != Qt::LeftButton)
+		return;
+
+	IsMouseButtonPressed = false;
+
+	CropRect.setBottomRight(event->pos());
+	normalizeCropRect();
+	updateCropRectDisplay();
 }
 
 void CropImageWidget::mouseMoveEvent(QMouseEvent *event)
 {
 	QGraphicsView::mouseMoveEvent(event);
-// 	if (event->isAccepted())
-// 		return;
-// 
-// 	if (!IsMouseButtonPressed)
-// 		return;
-// 
-// 	CropRect.setBottomRight(event->pos());
-// 	updateCropRectDisplay();
+
+	if (!IsMouseButtonPressed)
+		return;
+
+	CropRect.setBottomRight(event->pos());
+	updateCropRectDisplay();
 }
 
 void CropImageWidget::resizeEvent(QResizeEvent *event)
