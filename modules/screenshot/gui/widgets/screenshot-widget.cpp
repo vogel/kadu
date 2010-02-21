@@ -36,7 +36,9 @@
 ScreenshotWidget::ScreenshotWidget(QWidget *parent) :
 		QWidget(parent), ButtonPressed(false), ShotMode(ShotModeStandard)
 {
-	setWindowFlags(Qt::Tool | Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
+	setWindowFlags(Qt::Tool | Qt::CustomizeWindowHint
+			| Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint
+			| Qt::X11BypassWindowManagerHint);
 
 	QHBoxLayout *layout = new QHBoxLayout(this);
 	layout->setMargin(0);
