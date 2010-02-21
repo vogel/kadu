@@ -1,4 +1,5 @@
 set (SOURCES
+	configuration/gui/screenshot-configuration-ui-handler.cpp
 	gui/graphics-items/handler-rect-item.cpp
 	gui/graphics-items/selection-frame-item.cpp
 	gui/widgets/crop-image-widget.cpp
@@ -6,17 +7,16 @@ set (SOURCES
 	gui/widgets/screenshot-widget.cpp
 	pixmap-grabber.cpp
 	screenshot.cpp
-	screenshot-configuration-ui-handler.cpp
 	screenshot-taker.cpp
 )
 
 set (MOC_SOURCES
+	configuration/gui/screenshot-configuration-ui-handler.h
 	gui/graphics-items/handler-rect-item.h
 	gui/widgets/crop-image-widget.h
 	gui/widgets/screenshot-tool-box.h
 	gui/widgets/screenshot-widget.h
 	screenshot.h
-	screenshot-configuration-ui-handler.h
 	screenshot-taker.h
 )
 

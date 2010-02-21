@@ -52,11 +52,11 @@
 #include "notify/notify-event.h"
 #include "debug.h"
 
+#include "configuration/gui/screenshot-configuration-ui-handler.h"
 #include "gui/widgets/crop-image-widget.h"
 #include "gui/widgets/screenshot-tool-box.h"
 #include "gui/widgets/screenshot-widget.h"
 #include "pixmap-grabber.h"
-#include "screenshot-configuration-ui-handler.h"
 #include "screenshot-taker.h"
 
 #include "screenshot.h"
