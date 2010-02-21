@@ -21,11 +21,11 @@
 #ifndef SCREENSHOT_TOOL_BOX_H
 #define SCREENSHOT_TOOL_BOX_H
 
-#include <QtGui/QWidget>
+#include <QtGui/QFrame>
 
 class QLabel;
 
-class ScreenshotToolBox : public QWidget
+class ScreenshotToolBox : public QFrame
 {
 	Q_OBJECT
 
@@ -38,6 +38,9 @@ public:
 
 	void setGeometry(const QString &geometry);
 	void setFileSize(const QString &fileSize);
+
+signals:
+	void crop();
 
 };
 

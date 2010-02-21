@@ -19,24 +19,28 @@
  */
 
 #include <QtGui/QLabel>
+#include <QtGui/QPushButton>
 #include <QtGui/QVBoxLayout>
 
 #include "screenshot-tool-box.h"
 
 ScreenshotToolBox::ScreenshotToolBox(QWidget *parent) :
-		QWidget(parent)
+		QFrame(parent)
 {
-	setWindowFlags(Qt::Tool | Qt::CustomizeWindowHint | Qt::FramelessWindowHint
-			| Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint);
+	setFrameShape(Box);
 
-	QGridLayout *layout = new QGridLayout(this);
-	layout->setMargin(1);
+	QVBoxLayout *layout = new QVBoxLayout(this);
+	layout->setSpacing(5);
 
 	GeometryLabel = new QLabel(this);
 	FileSizeLabel = new QLabel(tr("0 KB"), this);
 
+	QPushButton *cropButton = new QPushButton(tr("Crop"), this);
+	connect(cropButton, SIGNAL(clicked(bool)), this, SIGNAL(crop()));
+
 	layout->addWidget(GeometryLabel);
 	layout->addWidget(FileSizeLabel);
+	layout->addWidget(cropButton);
 }
 
 ScreenshotToolBox::~ScreenshotToolBox()
