@@ -87,8 +87,7 @@ extern "C" void screenshot_close()
 	screenShot = 0;
 }
 
-ScreenShot::ScreenShot(bool firstLoad) :
-		CurrentScreenshotWidget(0)
+ScreenShot::ScreenShot(bool firstLoad)
 {
 	kdebugf();
 
@@ -105,9 +104,6 @@ ScreenShot::ScreenShot(bool firstLoad) :
 
 	CurrentScreenshotTaker = new ScreenshotTaker(this);
 	connect(CurrentScreenshotTaker, SIGNAL(screenshotTaken(QPixmap)), this, SLOT(screenshotTaken(QPixmap)));
-
-	CurrentScreenshotWidget = new ScreenshotWidget(0);
-	connect(CurrentScreenshotWidget, SIGNAL(pixmapCaptured(QPixmap)), this, SLOT(pixmapCropped(QPixmap)));
 
 	if (firstLoad)
 		ChatEditBox::addAction("ScreenShotAction");
@@ -127,7 +123,6 @@ ScreenShot::~ScreenShot()
 	NotificationManager::instance()->unregisterNotifyEvent(ScreenShotImageSizeLimit);
 
 	delete menu;
-	delete CurrentScreenshotWidget;
 }
 
 void ScreenShot::handleShot(QPixmap p)
@@ -241,16 +236,11 @@ bool ScreenShot::checkSingleUserImageSize(int size)
 	*/
 }
 
-#include <stdio.h>
-
 void ScreenShot::takeSimpleShot(ChatWidget *chatWidget)
 {
-	printf("take simple shot\n");
-
 	kdebugf();
 
-	CurrentScreenshotWidget->setShotMode(ShotModeStandard);
-	CurrentScreenshotWidget->showFullScreen();
+	Mode = ShotModeStandard;
 
 	chatWidget->update();
 	qApp->processEvents();
@@ -262,7 +252,7 @@ void ScreenShot::takeShotWithChatWindowHidden(ChatWidget *chatWidget)
 {
 	Q_UNUSED(chatWidget)
 
-	CurrentScreenshotWidget->setShotMode(ShotModeWithChatWindowHidden);
+// 	CurrentScreenshotWidget->setShotMode(ShotModeWithChatWindowHidden);
 
 // 	wasMaximized = isMaximized(chatWidget);
 // 	minimize(chatWidget);
@@ -273,7 +263,7 @@ void ScreenShot::takeWindowShot(ChatWidget *chatWidget)
 {
 	Q_UNUSED(chatWidget)
 
-	CurrentScreenshotWidget->setShotMode(ShotModeSingleWindow);
+// 	CurrentScreenshotWidget->setShotMode(ShotModeSingleWindow);
 
 // 	wasMaximized = isMaximized(chatWidget);
 // 	minimize(chatWidget);
@@ -288,26 +278,13 @@ void ScreenShot::grabScreenShot()
 
 void ScreenShot::screenshotTaken(QPixmap screenshot)
 {
-	CurrentScreenshotWidget->setPixmap(screenshot);
+	ScreenshotWidget *screenshotWidget = new ScreenshotWidget(0);
+	connect(screenshotWidget, SIGNAL(pixmapCaptured(QPixmap)), this, SLOT(handleShot(QPixmap)));
 
-	CurrentScreenshotWidget->showFullScreen();
-	CurrentScreenshotWidget->show();
-
-	QTimer::singleShot(100, this, SLOT(grabMouseSlot()));
-}
-
-void ScreenShot::pixmapCropped(QPixmap pixmap)
-{
-	handleShot(pixmap);
-	CurrentScreenshotWidget->hide();
-}
-
-void ScreenShot::grabMouseSlot()
-{
-	kdebugf();
-
-// 	CurrentScreenshotWidget->grabMouse();
-// 	CurrentScreenshotWidget->grabKeyboard();
+	screenshotWidget->setShotMode(Mode);
+	screenshotWidget->setPixmap(screenshot);
+	screenshotWidget->showFullScreen();
+	screenshotWidget->show();
 }
 
 void ScreenShot::checkShotsSize()

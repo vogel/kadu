@@ -27,6 +27,8 @@
 #include <QtCore/QRect>
 #include <QtGui/QPixmap>
 
+#include "screenshot-mode.h"
+
 class QAction;
 class QLabel;
 class QMenu;
@@ -43,8 +45,8 @@ class ScreenShot : public QObject
 {
 	Q_OBJECT
 
+	ScreenShotMode Mode;
 	ScreenshotTaker *CurrentScreenshotTaker;
-	ScreenshotWidget *CurrentScreenshotWidget;
 
 	QMenu *menu;
 	bool wasMaximized;
@@ -60,7 +62,6 @@ class ScreenShot : public QObject
 
 private slots:
     void screenshotTaken(QPixmap screenshot);
-	void pixmapCropped(QPixmap pixmap);
 
 	void grabScreenShot();
 
@@ -69,8 +70,6 @@ private slots:
 	void takeWindowShot(ChatWidget *chatWidget);
 
 	void takeWindowShot_Step2();
-
-	void grabMouseSlot();
 
 	void handleShot(QPixmap pixmap);
 

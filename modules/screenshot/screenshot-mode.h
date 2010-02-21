@@ -18,42 +18,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SCREENSHOT_WIDGET_H
-#define SCREENSHOT_WIDGET_H
+#ifndef SCREENSHOT_MODE_H
+#define SCREENSHOT_MODE_H
 
-#include <QtGui/QPixmap>
-#include <QtGui/QWidget>
-
-#include "screenshot-mode.h"
-
-class CropImageWidget;
-
-class ScreenshotWidget : public QWidget
+enum ScreenShotMode
 {
-	Q_OBJECT
-
-	CropImageWidget *CropWidget;
-
-	bool ButtonPressed;
-	QTimer *ToolBoxTimer;
-
-	ScreenShotMode ShotMode;
-	QRect ShotRegion;
-	bool ShowPaintRect;
-
-protected:
-	void keyPressEvent(QKeyEvent *e);
-
-public:
-	explicit ScreenshotWidget(QWidget *parent = 0);
-	virtual ~ScreenshotWidget();
-
-	void setShotMode(ScreenShotMode shotMode);
-	void setPixmap(QPixmap pixmap);
-
-signals:
-	void pixmapCaptured(QPixmap pixmap);
-
+	ShotModeStandard,
+	ShotModeWithChatWindowHidden,
+	ShotModeSingleWindow
 };
 
-#endif // SCREENSHOT_WIDGET_H
+#endif // SCREENSHOT_MODE_H
