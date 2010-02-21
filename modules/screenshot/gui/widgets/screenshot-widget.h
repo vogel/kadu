@@ -25,7 +25,6 @@
 #include <QtGui/QWidget>
 
 class CropImageWidget;
-class ScreenshotToolBox;
 
 enum ScreenShotMode
 {
@@ -39,7 +38,6 @@ class ScreenshotWidget : public QWidget
 	Q_OBJECT
 
 	CropImageWidget *CropWidget;
-	ScreenshotToolBox *ToolBox;
 
 	bool ButtonPressed;
 	QTimer *ToolBoxTimer;
@@ -47,9 +45,6 @@ class ScreenshotWidget : public QWidget
 	ScreenShotMode ShotMode;
 	QRect ShotRegion;
 	bool ShowPaintRect;
-
-private slots:
-	void updateToolBoxHint();
 
 protected:
 	void keyPressEvent(QKeyEvent *e);

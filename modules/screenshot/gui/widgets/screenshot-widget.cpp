@@ -45,10 +45,6 @@ ScreenshotWidget::ScreenshotWidget(QWidget *parent) :
 	CropWidget = new CropImageWidget(this);
 	connect(CropWidget, SIGNAL(pixmapCropped(QPixmap)), this, SIGNAL(pixmapCaptured(QPixmap)));
 	layout->addWidget(CropWidget);
-
-	ToolBox = new ScreenshotToolBox(this);
-	ToolBoxTimer = new QTimer(this);
-	connect(ToolBox, SIGNAL(timeout()), this, SLOT(updateToolBoxHint()));
 }
 
 ScreenshotWidget::~ScreenshotWidget()
@@ -65,24 +61,6 @@ void ScreenshotWidget::setPixmap(QPixmap pixmap)
 	CropWidget->setPixmap(pixmap);
 
 	resize(pixmap.size());
-}
-
-void ScreenshotWidget::updateToolBoxHint()
-{
-	QBuffer buffer;
-
-	QRect reg = ShotRegion;
-	reg = reg.normalized();
-
-	QPixmap shot = QPixmap::grabWindow(winId(), reg.x(), reg.y(), reg.width(), reg.height());
-
-	// TODO: cache + use configurationUpdated
-	const char *format = config_file.readEntry("ScreenShot", "fileFormat", "PNG").toAscii();
-	int quality = config_file.readNumEntry("ScreenShot", "quality", -1);
-	bool ret = shot.save(&buffer, format, quality);
-
-	if (ret)
-		ToolBox->setFileSize(QString::number(buffer.size()/1024) + " KB");
 }
 
 void ScreenshotWidget::keyPressEvent(QKeyEvent* e)

@@ -17,6 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QBuffer>
+#include <QtCore/QTimer>
 #include <QtGui/QCursor>
 #include <QtGui/QGraphicsPixmapItem>
 #include <QtGui/QGraphicsProxyWidget>
@@ -56,6 +58,10 @@ CropImageWidget::CropImageWidget(QWidget *parent) :
 
 	ToolBox = new ScreenshotToolBox();
 	connect(ToolBox, SIGNAL(crop()), this, SLOT(crop()));
+
+	ToolBoxTimer = new QTimer(this);
+	connect(ToolBoxTimer, SIGNAL(timeout()), this, SLOT(updateToolBoxFileSizeHint()));
+	ToolBoxTimer->start(1000);
 
 	ToolBoxProxy = new QGraphicsProxyWidget();
 	ToolBoxProxy->setWidget(ToolBox);
@@ -140,6 +146,11 @@ void CropImageWidget::updateCropRectDisplay()
 	scene()->update(scene()->sceneRect());
 }
 
+QPixmap CropImageWidget::croppedPixmap()
+{
+	return PixmapItem->pixmap().copy(CropRect.normalized());
+}
+
 void CropImageWidget::handlerMovedTo(HandlerType type, int x, int y)
 {
 	if (type == HandlerTopLeft || type == HandlerTop || type == HandlerTopRight)
@@ -157,7 +168,18 @@ void CropImageWidget::handlerMovedTo(HandlerType type, int x, int y)
 
 void CropImageWidget::crop()
 {
-	emit pixmapCropped(PixmapItem->pixmap().copy(CropRect.normalized()));
+	emit pixmapCropped(croppedPixmap());
+}
+
+void CropImageWidget::updateToolBoxFileSizeHint()
+{
+	QBuffer buffer;
+	QPixmap pixmap = croppedPixmap();
+
+	bool ret = pixmap.save(&buffer, "png");
+
+	if (ret)
+		ToolBox->setFileSize(QString::number(buffer.size()/1024) + " KB");
 }
 
 void CropImageWidget::mousePressEvent(QMouseEvent *event)
@@ -193,6 +215,7 @@ void CropImageWidget::mouseReleaseEvent(QMouseEvent *event)
 	CropRect.setBottomRight(event->pos());
 	normalizeCropRect();
 	updateCropRectDisplay();
+	updateToolBoxFileSizeHint();
 }
 
 void CropImageWidget::mouseMoveEvent(QMouseEvent *event)

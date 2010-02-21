@@ -87,4 +87,4 @@ public:
 
 extern ScreenShot* screenShot;
 
-#endif
+#endif // SCREENSHOT_H

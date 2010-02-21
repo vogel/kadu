@@ -46,6 +46,8 @@ class CropImageWidget : public QGraphicsView
 	QGraphicsProxyWidget *ToolBoxProxy;
 	ScreenshotToolBox *ToolBox;
 
+	QTimer *ToolBoxTimer;
+
 	QPoint NewTopLeft;
 	QRect CropRect;
 	bool IsMouseButtonPressed;
@@ -54,10 +56,12 @@ class CropImageWidget : public QGraphicsView
 	void normalizeCropRect();
 	void updateCropRectDisplay();
 
-private slots:
-	void handlerMovedTo(HandlerType type, int x, int y);
+	QPixmap croppedPixmap();
 
+private slots:
 	void crop();
+	void updateToolBoxFileSizeHint();
+	void handlerMovedTo(HandlerType type, int x, int y);
 
 protected:
 	virtual void mousePressEvent(QMouseEvent *event);
