@@ -124,30 +124,40 @@ ScreenShot::~ScreenShot()
 	NotificationManager::instance()->unregisterNotifyEvent(ScreenShotImageSizeLimit);
 }
 
-void ScreenShot::handleShot(QPixmap p)
+QString ScreenShot::getScreenshotFileNameExtension()
 {
-	// Plik do zapisu:
+	bool useShortJpg = config_file.readBoolEntry("ScreenShot", "use_short_jpg", false);
+	QString extension = config_file.readEntry("ScreenShot", "fileFormat", "PNG").toLower();
+	if (useShortJpg && extension == "jpeg")
+		return QLatin1String("jpg");
+
+	return extension;
+}
+
+QString ScreenShot::createScreenshotPath()
+{
 	QString dirPath = config_file.readEntry("ScreenShot", "path", profilePath("images/"));
 
 	QDir dir(dirPath);
 	if (!dir.exists() && !dir.mkpath(dirPath))
 	{
 		MessageDialog::msg(tr("Unable to create direcotry %1 for storing screenshots!").arg(dirPath));
-		return;
+		return QString::null;
 	}
 
-	bool useShortJpg = config_file.readBoolEntry("ScreenShot", "use_short_jpg", false);
-
-	QString ext = config_file.readEntry("ScreenShot", "fileFormat", "PNG").toLower();
-	if (useShortJpg && ext == "jpeg")
-		ext = "jpg";
-
-	QString path = QDir::cleanPath(
+	return QDir::cleanPath(
 		dir.absolutePath() + "/" +
 		config_file.readEntry("ScreenShot", "filenamePrefix", "shot") +
 		QString::number(QDateTime::currentDateTime().toTime_t()) + "." +
-		ext
+		getScreenshotFileNameExtension()
 	);
+}
+
+void ScreenShot::handleShot(QPixmap p)
+{
+	QString path = createScreenshotPath();
+	if (path.isEmpty())
+		return;
 
 	// TODO: 0.6.6, fix
 	const char *format = config_file.readEntry("ScreenShot", "fileFormat", "PNG").toAscii();

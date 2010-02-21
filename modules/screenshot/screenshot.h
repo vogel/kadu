@@ -60,6 +60,9 @@ class ScreenShot : public QObject
 
 	void createDefaultConfiguration();
 
+	QString getScreenshotFileNameExtension();
+	QString createScreenshotPath();
+
 private slots:
     void screenshotTaken(QPixmap screenshot);
 
