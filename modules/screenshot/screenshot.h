@@ -43,17 +43,12 @@ class ScreenShot : public QObject
 {
 	Q_OBJECT
 
-	ActionDescription *screenShotAction;
-	ChatWidget *chatWidget;
-
 	ScreenshotTaker *CurrentScreenshotTaker;
 	ScreenshotWidget *CurrentScreenshotWidget;
 
 	QMenu *menu;
 	bool wasMaximized;
 	bool warnedAboutSize;
-
-	void createMenu();
 
 	void checkShotsSize();
 
@@ -67,15 +62,15 @@ private slots:
     void screenshotTaken(QPixmap screenshot);
 	void pixmapCropped(QPixmap pixmap);
 
-	void takeSimpleShot();
-	void takeShotWithChatWindowHidden();
-	void takeWindowShot();
+	void grabScreenShot();
+
+	void takeSimpleShot(ChatWidget *chatWidget);
+	void takeShotWithChatWindowHidden(ChatWidget *chatWidget);
+	void takeWindowShot(ChatWidget *chatWidget);
 
 	void takeWindowShot_Step2();
 
 	void grabMouseSlot();
-
-	void screenshotActionActivated(QAction *sender, bool toggled);
 
 	void handleShot(QPixmap pixmap);
 

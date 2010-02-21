@@ -41,7 +41,9 @@ void ScreenShotConfigurationUiHandler::registerConfigurationUi()
 void ScreenShotConfigurationUiHandler::unregisterConfigurationUi()
 {
 	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/screenshot.ui"));
-	MainConfigurationWindow::unregisterUiHandler(Instance);
+
+	if (Instance)
+		MainConfigurationWindow::unregisterUiHandler(Instance);
 
 	delete Instance;
 	Instance = 0;

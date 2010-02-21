@@ -57,6 +57,7 @@
 #include "gui/widgets/screenshot-tool-box.h"
 #include "gui/widgets/screenshot-widget.h"
 #include "pixmap-grabber.h"
+#include "screenshot-actions.h"
 #include "screenshot-taker.h"
 
 #include "screenshot.h"
@@ -72,19 +73,12 @@ extern "C" int screenshot_init(bool firstLoad)
 
 	screenShot = new ScreenShot(firstLoad);
 
-	ScreenShotConfigurationUiHandler::registerConfigurationUi();
-	NotificationManager::instance()->registerNotifyEvent(ScreenShotImageSizeLimit);
-
 	return 0;
 }
 
 extern "C" void screenshot_close()
 {
 	kdebugf();
-
-	ScreenShotConfigurationUiHandler::unregisterConfigurationUi();
-
-	NotificationManager::instance()->unregisterNotifyEvent(ScreenShotImageSizeLimit);
 
 	delete ScreenShotImageSizeLimit;
 	ScreenShotImageSizeLimit = 0;
@@ -98,21 +92,22 @@ ScreenShot::ScreenShot(bool firstLoad) :
 {
 	kdebugf();
 
+	ScreenshotActions::registerActions();
+	connect(ScreenshotActions::instance(), SIGNAL(takeStandardShot(ChatWidget*)),
+			this, SLOT(takeSimpleShot(ChatWidget*)));
+	connect(ScreenshotActions::instance(), SIGNAL(takeShotWithChatWindowHidden(ChatWidget*)),
+			this, SLOT(takeShotWithChatWindowHidden(ChatWidget*)));
+	connect(ScreenshotActions::instance(), SIGNAL(takeWindowShot(ChatWidget*)),
+			this, SLOT(takeWindowShot(ChatWidget*)));
+
+	ScreenShotConfigurationUiHandler::registerConfigurationUi();
+	NotificationManager::instance()->registerNotifyEvent(ScreenShotImageSizeLimit);
+
 	CurrentScreenshotTaker = new ScreenshotTaker(this);
 	connect(CurrentScreenshotTaker, SIGNAL(screenshotTaken(QPixmap)), this, SLOT(screenshotTaken(QPixmap)));
 
 	CurrentScreenshotWidget = new ScreenshotWidget(0);
 	connect(CurrentScreenshotWidget, SIGNAL(pixmapCaptured(QPixmap)), this, SLOT(pixmapCropped(QPixmap)));
-
-	createMenu();
-
-
-	// Chat toolbar button
-	screenShotAction = new ActionDescription(this,
-		ActionDescription::TypeChat, "ScreenShotAction",
-		this, SLOT(screenshotActionActivated(QAction *, bool)),
-		"external_modules/module_screenshot_shot-camera-photo.png", "external_modules/module_screenshot_shot-camera-photo.png", tr("ScreenShot"), false, ""
-	);
 
 	if (firstLoad)
 		ChatEditBox::addAction("ScreenShotAction");
@@ -127,50 +122,16 @@ ScreenShot::~ScreenShot()
 {
 	kdebugf();
 
-	// TODO: 0.6.6
-// 	delete UiHandler;
-	delete screenShotAction;
+	ScreenshotActions::unregisterActions();
+	ScreenShotConfigurationUiHandler::unregisterConfigurationUi();
+	NotificationManager::instance()->unregisterNotifyEvent(ScreenShotImageSizeLimit);
 
 	delete menu;
 	delete CurrentScreenshotWidget;
 }
 
-void ScreenShot::createMenu()
-{
-	// Chat windows menu
-	menu = new QMenu();
-	menu->addAction(tr("Simple shot"), CurrentScreenshotTaker, SLOT(takeStandardShot()));
-	menu->addAction(tr("With chat window hidden"), CurrentScreenshotTaker, SLOT(takeShotWithChatWindowHidden()));
-	menu->addAction(tr("Window shot"), CurrentScreenshotTaker, SLOT(takeWindowShot()));
-}
-
-void ScreenShot::screenshotActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(toggled)
-
-	kdebugf();
-
-	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(sender->parent());
-	if (!chatEditBox)
-		return;
-
-	chatWidget = chatEditBox->chatWidget();
-	if (chatWidget)
-	{
-		QList<QWidget *> widgets = sender->associatedWidgets();
-		if (widgets.size() == 0)
-			return;
-
-		QWidget *widget = widgets[widgets.size() - 1];
-		menu->popup(widget->mapToGlobal(QPoint(0, widget->height())));
-	}
-}
-
 void ScreenShot::handleShot(QPixmap p)
 {
-	if (!chatWidget)
-		return;
-
 	// Plik do zapisu:
 	QString dirPath = config_file.readEntry("ScreenShot", "path", profilePath("images/"));
 
@@ -234,13 +195,14 @@ void ScreenShot::handleShot(QPixmap p)
 		pasteImageClause(path);
 	}
 
-	chatWidget = 0;
+// 	chatWidget = 0;
 	checkShotsSize();
 }
 
 void ScreenShot::pasteImageClause(const QString &path)
 {
-	chatWidget->edit()->insertPlainText(QString("[IMAGE ") + path + "]");
+	Q_UNUSED(path)
+// 	chatWidget->edit()->insertPlainText(QString("[IMAGE ") + path + "]");
 }
 
 void ScreenShot::checkConferenceImageSizes(int size)
@@ -279,19 +241,27 @@ bool ScreenShot::checkSingleUserImageSize(int size)
 	*/
 }
 
-void ScreenShot::takeSimpleShot()
+#include <stdio.h>
+
+void ScreenShot::takeSimpleShot(ChatWidget *chatWidget)
 {
+	printf("take simple shot\n");
+
 	kdebugf();
 
 	CurrentScreenshotWidget->setShotMode(ShotModeStandard);
+	CurrentScreenshotWidget->showFullScreen();
 
-	QTimer::singleShot(1000, this, SLOT(takeShot_Step2()));
 	chatWidget->update();
 	qApp->processEvents();
+
+	QTimer::singleShot(1000, this, SLOT(grabScreenShot()));
 }
 
-void ScreenShot::takeShotWithChatWindowHidden()
+void ScreenShot::takeShotWithChatWindowHidden(ChatWidget *chatWidget)
 {
+	Q_UNUSED(chatWidget)
+
 	CurrentScreenshotWidget->setShotMode(ShotModeWithChatWindowHidden);
 
 // 	wasMaximized = isMaximized(chatWidget);
@@ -299,14 +269,21 @@ void ScreenShot::takeShotWithChatWindowHidden()
 // 	QTimer::singleShot(600, this, SLOT(takeShot_Step2()));
 }
 
-void ScreenShot::takeWindowShot()
+void ScreenShot::takeWindowShot(ChatWidget *chatWidget)
 {
+	Q_UNUSED(chatWidget)
+
 	CurrentScreenshotWidget->setShotMode(ShotModeSingleWindow);
 
 // 	wasMaximized = isMaximized(chatWidget);
 // 	minimize(chatWidget);
 
 // 	takeShot_Step2();
+}
+
+void ScreenShot::grabScreenShot()
+{
+	CurrentScreenshotTaker->takeStandardShot();
 }
 
 void ScreenShot::screenshotTaken(QPixmap screenshot)

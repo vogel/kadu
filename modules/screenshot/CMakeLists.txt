@@ -7,6 +7,7 @@ set (SOURCES
 	gui/widgets/screenshot-widget.cpp
 	pixmap-grabber.cpp
 	screenshot.cpp
+	screenshot-actions.cpp
 	screenshot-taker.cpp
 )
 
@@ -17,6 +18,7 @@ set (MOC_SOURCES
 	gui/widgets/screenshot-tool-box.h
 	gui/widgets/screenshot-widget.h
 	screenshot.h
+	screenshot-actions.h
 	screenshot-taker.h
 )
 
