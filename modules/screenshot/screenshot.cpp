@@ -87,7 +87,8 @@ extern "C" void screenshot_close()
 	screenShot = 0;
 }
 
-ScreenShot::ScreenShot(bool firstLoad)
+ScreenShot::ScreenShot(bool firstLoad) :
+		MyChatWidget(0)
 {
 	kdebugf();
 
@@ -102,8 +103,8 @@ ScreenShot::ScreenShot(bool firstLoad)
 	ScreenShotConfigurationUiHandler::registerConfigurationUi();
 	NotificationManager::instance()->registerNotifyEvent(ScreenShotImageSizeLimit);
 
-	CurrentScreenshotTaker = new ScreenshotTaker(this);
-	connect(CurrentScreenshotTaker, SIGNAL(screenshotTaken(QPixmap)), this, SLOT(screenshotTaken(QPixmap)));
+	MyScreenshotTaker = new ScreenshotTaker(this);
+	connect(MyScreenshotTaker, SIGNAL(screenshotTaken(QPixmap)), this, SLOT(screenshotTaken(QPixmap)));
 
 	if (firstLoad)
 		ChatEditBox::addAction("ScreenShotAction");
@@ -121,8 +122,6 @@ ScreenShot::~ScreenShot()
 	ScreenshotActions::unregisterActions();
 	ScreenShotConfigurationUiHandler::unregisterConfigurationUi();
 	NotificationManager::instance()->unregisterNotifyEvent(ScreenShotImageSizeLimit);
-
-	delete menu;
 }
 
 void ScreenShot::handleShot(QPixmap p)
@@ -190,14 +189,13 @@ void ScreenShot::handleShot(QPixmap p)
 		pasteImageClause(path);
 	}
 
-// 	chatWidget = 0;
+	MyChatWidget = 0;
 	checkShotsSize();
 }
 
 void ScreenShot::pasteImageClause(const QString &path)
 {
-	Q_UNUSED(path)
-// 	chatWidget->edit()->insertPlainText(QString("[IMAGE ") + path + "]");
+	MyChatWidget->edit()->insertPlainText(QString("[IMAGE ") + path + "]");
 }
 
 void ScreenShot::checkConferenceImageSizes(int size)
@@ -240,6 +238,7 @@ void ScreenShot::takeSimpleShot(ChatWidget *chatWidget)
 {
 	kdebugf();
 
+	MyChatWidget = chatWidget;
 	Mode = ShotModeStandard;
 
 	chatWidget->update();
@@ -250,7 +249,7 @@ void ScreenShot::takeSimpleShot(ChatWidget *chatWidget)
 
 void ScreenShot::takeShotWithChatWindowHidden(ChatWidget *chatWidget)
 {
-	Q_UNUSED(chatWidget)
+	MyChatWidget = chatWidget;
 
 // 	CurrentScreenshotWidget->setShotMode(ShotModeWithChatWindowHidden);
 
@@ -261,7 +260,7 @@ void ScreenShot::takeShotWithChatWindowHidden(ChatWidget *chatWidget)
 
 void ScreenShot::takeWindowShot(ChatWidget *chatWidget)
 {
-	Q_UNUSED(chatWidget)
+	MyChatWidget = chatWidget;
 
 // 	CurrentScreenshotWidget->setShotMode(ShotModeSingleWindow);
 
@@ -273,7 +272,7 @@ void ScreenShot::takeWindowShot(ChatWidget *chatWidget)
 
 void ScreenShot::grabScreenShot()
 {
-	CurrentScreenshotTaker->takeStandardShot();
+	MyScreenshotTaker->takeStandardShot();
 }
 
 void ScreenShot::screenshotTaken(QPixmap screenshot)
@@ -281,8 +280,8 @@ void ScreenShot::screenshotTaken(QPixmap screenshot)
 	ScreenshotWidget *screenshotWidget = new ScreenshotWidget(0);
 	connect(screenshotWidget, SIGNAL(pixmapCaptured(QPixmap)), this, SLOT(handleShot(QPixmap)));
 
-	screenshotWidget->setShotMode(Mode);
 	screenshotWidget->setPixmap(screenshot);
+	screenshotWidget->setShotMode(Mode);
 	screenshotWidget->showFullScreen();
 	screenshotWidget->show();
 }

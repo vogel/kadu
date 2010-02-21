@@ -46,9 +46,9 @@ class ScreenShot : public QObject
 	Q_OBJECT
 
 	ScreenShotMode Mode;
-	ScreenshotTaker *CurrentScreenshotTaker;
+	ScreenshotTaker *MyScreenshotTaker;
+	ChatWidget *MyChatWidget;
 
-	QMenu *menu;
 	bool wasMaximized;
 	bool warnedAboutSize;
 
