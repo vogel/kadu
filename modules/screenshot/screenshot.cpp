@@ -311,7 +311,6 @@ void ScreenShot::screenshotTaken(QPixmap screenshot)
 
 	CurrentScreenshotWidget->showFullScreen();
 	CurrentScreenshotWidget->show();
-// 	CurrentScreenshotWidget->setCursor(Qt::CrossCursor);
 
 	QTimer::singleShot(100, this, SLOT(grabMouseSlot()));
 }

@@ -26,6 +26,7 @@
 
 class QGraphicsPixmapItem;
 
+class ScreenshotToolBox;
 class SelectionFrameItem;
 
 class CropImageWidget : public QGraphicsView
@@ -42,9 +43,13 @@ class CropImageWidget : public QGraphicsView
 	HandlerRectItem *BottomLeftHandler;
 	HandlerRectItem *BottomHandler;
 	HandlerRectItem *BottomRightHandler;
+	QGraphicsProxyWidget *ToolBoxProxy;
+	ScreenshotToolBox *ToolBox;
 
+	QPoint NewTopLeft;
 	QRect CropRect;
 	bool IsMouseButtonPressed;
+	bool WasDoubleClick;
 
 	void normalizeCropRect();
 	void updateCropRectDisplay();
@@ -65,6 +70,9 @@ public:
 
 	void setPixmap(QPixmap pixmap);
 	void setCropRect(QRect cropRect);
+
+signals:
+	void pixmapCropped(QPixmap pixmap);
 
 };
 

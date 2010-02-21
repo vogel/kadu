@@ -19,9 +19,11 @@
 
 #include <QtGui/QCursor>
 #include <QtGui/QGraphicsPixmapItem>
+#include <QtGui/QGraphicsProxyWidget>
 #include <QtGui/QResizeEvent>
 
 #include "gui/graphics-items/selection-frame-item.h"
+#include "gui/widgets/screenshot-tool-box.h"
 
 #include "crop-image-widget.h"
 
@@ -51,6 +53,12 @@ CropImageWidget::CropImageWidget(QWidget *parent) :
 	SelectionFrame->setSize(size());
 
 	scene()->addItem(SelectionFrame);
+
+	ToolBox = new ScreenshotToolBox();
+
+	ToolBoxProxy = new QGraphicsProxyWidget();
+	ToolBoxProxy->setWidget(ToolBox);
+	scene()->addItem(ToolBoxProxy);
 
 	TopLeftHandler = new HandlerRectItem(HandlerTopLeft, HANDLER_SIZE);
 	TopLeftHandler->setCursor(Qt::SizeFDiagCursor);
@@ -125,6 +133,9 @@ void CropImageWidget::updateCropRectDisplay()
 	BottomHandler->setPos(xMiddle - HANDLER_HALF_SIZE, CropRect.bottom() - HANDLER_HALF_SIZE);
 	BottomRightHandler->setPos(CropRect.right() - HANDLER_HALF_SIZE, CropRect.bottom() - HANDLER_HALF_SIZE);
 
+	ToolBox->setGeometry(QString("%1x%2").arg(CropRect.width()).arg(CropRect.height()));
+	ToolBoxProxy->setPos(xMiddle - ToolBox->width() / 2, yMiddle - ToolBox->height() / 2);
+
 	scene()->update(scene()->sceneRect());
 }
 
@@ -153,12 +164,11 @@ void CropImageWidget::mousePressEvent(QMouseEvent *event)
 		return;
 
 	IsMouseButtonPressed = true;
+	WasDoubleClick = false;
 
-	CropRect.setTopLeft(event->pos());
-	CropRect.setBottomRight(event->pos());
+	NewTopLeft = event->pos();
 
 	updateCropRectDisplay();
-
 }
 
 void CropImageWidget::mouseReleaseEvent(QMouseEvent *event)
@@ -186,6 +196,7 @@ void CropImageWidget::mouseMoveEvent(QMouseEvent *event)
 	if (!IsMouseButtonPressed)
 		return;
 
+	CropRect.setTopLeft(NewTopLeft);
 	CropRect.setBottomRight(event->pos());
 	updateCropRectDisplay();
 }
