@@ -112,7 +112,7 @@ ScreenShot::ScreenShot(bool firstLoad) :
 	screenShotAction = new ActionDescription(this,
 		ActionDescription::TypeChat, "ScreenShotAction",
 		this, SLOT(screenshotActionActivated(QAction *, bool)),
-		"external_modules/module_screenshot-shot.png", "external_modules/module_screenshot-shot.png", tr("ScreenShot"), false, ""
+		"external_modules/module_screenshot_shot-camera-photo.png", "external_modules/module_screenshot_shot-camera-photo.png", tr("ScreenShot"), false, ""
 	);
 
 	if (firstLoad)
