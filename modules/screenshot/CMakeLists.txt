@@ -25,7 +25,7 @@ set (TRANSLATION_SOURCES
 )
 
 set (CONFIGURATION_FILES
-	configuration/screenshot.ui
+	data/configuration/screenshot.ui
 )
 
 kadu_module (screenshot

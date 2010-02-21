@@ -195,6 +195,7 @@ void ScreenShot::handleShot(QPixmap p)
 		ext
 	);
 
+	// TODO: 0.6.6, fix
 	const char *format = config_file.readEntry("ScreenShot", "fileFormat", "PNG").toAscii();
 	int quality = config_file.readNumEntry("ScreenShot", "quality", -1);
 	Q_UNUSED(format)
