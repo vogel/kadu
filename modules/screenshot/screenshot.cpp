@@ -71,9 +71,9 @@ extern "C" int screenshot_init(bool firstLoad)
 	ScreenShotImageSizeLimit = new NotifyEvent("ssSizeLimit", NotifyEvent::CallbackNotRequired, "ScreenShot images size limit");
 
 	screenShot = new ScreenShot(firstLoad);
+
+	ScreenShotConfigurationUiHandler::registerConfigurationUi();
 	NotificationManager::instance()->registerNotifyEvent(ScreenShotImageSizeLimit);
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/screenshot.ui"));
-	MainConfigurationWindow::registerUiHandler(screenShot->configurationUiHandler());
 
 	return 0;
 }
@@ -82,8 +82,8 @@ extern "C" void screenshot_close()
 {
 	kdebugf();
 
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/screenshot.ui"));
-	MainConfigurationWindow::unregisterUiHandler(screenShot->configurationUiHandler());
+	ScreenShotConfigurationUiHandler::unregisterConfigurationUi();
+
 	NotificationManager::instance()->unregisterNotifyEvent(ScreenShotImageSizeLimit);
 
 	delete ScreenShotImageSizeLimit;
@@ -106,7 +106,6 @@ ScreenShot::ScreenShot(bool firstLoad) :
 
 	createMenu();
 
-	UiHandler = new ScreenShotConfigurationUiHandler();
 
 	// Chat toolbar button
 	screenShotAction = new ActionDescription(this,

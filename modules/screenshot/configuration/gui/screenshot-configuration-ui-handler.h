@@ -27,10 +27,16 @@
 class ScreenShotConfigurationUiHandler : public ConfigurationUiHandler
 {
 	Q_OBJECT
+	Q_DISABLE_COPY(ScreenShotConfigurationUiHandler)
 
-public:
+	static ScreenShotConfigurationUiHandler *Instance;
+
 	explicit ScreenShotConfigurationUiHandler(QObject *parent = 0);
 	virtual ~ScreenShotConfigurationUiHandler();
+
+public:
+	static void registerConfigurationUi();
+	static void unregisterConfigurationUi();
 
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 

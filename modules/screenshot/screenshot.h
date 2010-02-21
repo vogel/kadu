@@ -43,7 +43,6 @@ class ScreenShot : public QObject
 {
 	Q_OBJECT
 
-	ConfigurationUiHandler *UiHandler;
 	ActionDescription *screenShotAction;
 	ChatWidget *chatWidget;
 
@@ -83,8 +82,6 @@ private slots:
 public:
 	ScreenShot(bool firstLoad);
 	virtual ~ScreenShot();
-
-	ConfigurationUiHandler * configurationUiHandler() { return UiHandler; }
 
 };
 

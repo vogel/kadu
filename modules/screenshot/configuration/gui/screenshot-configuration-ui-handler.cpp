@@ -21,10 +21,31 @@
 
 #include <QtGui/QImageWriter>
 
+#include "misc/path-conversion.h"
+
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/configuration/config-combo-box.h"
 
 #include "screenshot-configuration-ui-handler.h"
+
+ScreenShotConfigurationUiHandler *ScreenShotConfigurationUiHandler::Instance = 0;
+
+void ScreenShotConfigurationUiHandler::registerConfigurationUi()
+{
+	Instance = new ScreenShotConfigurationUiHandler();
+
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/screenshot.ui"));
+	MainConfigurationWindow::registerUiHandler(Instance);
+}
+
+void ScreenShotConfigurationUiHandler::unregisterConfigurationUi()
+{
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/screenshot.ui"));
+	MainConfigurationWindow::unregisterUiHandler(Instance);
+
+	delete Instance;
+	Instance = 0;
+}
 
 ScreenShotConfigurationUiHandler::ScreenShotConfigurationUiHandler(QObject *parent) :
 		ConfigurationUiHandler()
