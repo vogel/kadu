@@ -197,7 +197,10 @@ void ScreenShot::handleShot(QPixmap p)
 
 	const char *format = config_file.readEntry("ScreenShot", "fileFormat", "PNG").toAscii();
 	int quality = config_file.readNumEntry("ScreenShot", "quality", -1);
-	if (!p.save(path, format, quality))
+	Q_UNUSED(format)
+	Q_UNUSED(quality)
+
+	if (!p.save(path, "PNG"))
 	{
 		MessageDialog::msg(tr("Can't write file %1.\nAccess denied or other problem!").arg(path));
 		return;
