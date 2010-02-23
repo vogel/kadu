@@ -19,46 +19,20 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <algorithm>
-#include <vector>
-
-#include <QtCore/QBuffer>
 #include <QtCore/QDateTime>
 #include <QtCore/QDir>
-#include <QtCore/QRect>
 #include <QtCore/QTimer>
 #include <QtGui/QApplication>
-#include <QtGui/QBitmap>
-#include <QtGui/QDesktopWidget>
-#include <QtGui/QGridLayout>
-#include <QtGui/QImageWriter>
-#include <QtGui/QKeyEvent>
-#include <QtGui/QLabel>
-#include <QtGui/QMenu>
-#include <QtGui/QPainter>
-#include <QtGui/QX11Info>
 
-#include "gui/widgets/configuration/config-combo-box.h"
-#include "gui/widgets/configuration/configuration-widget.h"
-#include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/custom-input.h"
-#include "gui/windows/main-configuration-window.h"
 #include "gui/windows/message-dialog.h"
-#include "misc/path-conversion.h"
-#include "notify/notification.h"
-#include "notify/notification-manager.h"
-#include "notify/notify-event.h"
 #include "debug.h"
 
-#include "configuration/gui/screenshot-configuration-ui-handler.h"
 #include "configuration/screen-shot-configuration.h"
-#include "gui/widgets/crop-image-widget.h"
-#include "gui/widgets/screenshot-tool-box.h"
 #include "gui/widgets/screenshot-widget.h"
 #include "notify/screenshot-notification.h"
 #include "pixmap-grabber.h"
-#include "screenshot-actions.h"
 #include "screenshot-taker.h"
 
 #include "screenshot.h"
