@@ -26,13 +26,18 @@
 #include "gui/widgets/chat-widget.h"
 #include "debug.h"
 
+#include "screenshot.h"
+
 #include "screenshot-actions.h"
 
 ScreenshotActions *ScreenshotActions::Instance = 0;
 
-void ScreenshotActions::registerActions()
+void ScreenshotActions::registerActions(bool firstLoad)
 {
 	Instance = new ScreenshotActions();
+
+	if (firstLoad)
+		ChatEditBox::addAction("ScreenShotAction");
 }
 
 void ScreenshotActions::unregisterActions()
@@ -98,17 +103,17 @@ void ScreenshotActions::screenshotActionActivated(QAction *sender, bool toggled)
 void ScreenshotActions::takeStandardShotSlot()
 {
 	if (CurrentChatWidget)
-		emit takeStandardShot(CurrentChatWidget);
+		(new ScreenShot(CurrentChatWidget))->takeStandardShot();
 }
 
 void ScreenshotActions::takeShotWithChatWindowHiddenSlot()
 {
 	if (CurrentChatWidget)
-		emit takeShotWithChatWindowHidden(CurrentChatWidget);
+		(new ScreenShot(CurrentChatWidget))->takeShotWithChatWindowHidden();
 }
 
 void ScreenshotActions::takeWindowShotSlot()
 {
 	if (CurrentChatWidget)
-		emit takeWindowShot(CurrentChatWidget);
+		(new ScreenShot(CurrentChatWidget))->takeWindowShot();
 }

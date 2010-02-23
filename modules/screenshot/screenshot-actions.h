@@ -54,15 +54,10 @@ private slots:
 	void takeWindowShotSlot();
 
 public:
-	static void registerActions();
+	static void registerActions(bool firstLoad);
 	static void unregisterActions();
 
 	static ScreenshotActions * instance();
-
-signals:
-	void takeStandardShot(ChatWidget *chatWidget);
-	void takeShotWithChatWindowHidden(ChatWidget *chatWidget);
-	void takeWindowShot(ChatWidget *chatWidget);
 
 };
 

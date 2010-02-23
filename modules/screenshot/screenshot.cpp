@@ -62,12 +62,11 @@
 
 #include "screenshot.h"
 
-ScreenShot::ScreenShot(bool firstLoad) :
-		MyChatWidget(0)
+ScreenShot::ScreenShot(ChatWidget *chatWidget) :
+		MyChatWidget(chatWidget)
 {
 	kdebugf();
 
-	ScreenshotActions::registerActions();
 	connect(ScreenshotActions::instance(), SIGNAL(takeStandardShot(ChatWidget*)),
 			this, SLOT(takeSimpleShot(ChatWidget*)));
 	connect(ScreenshotActions::instance(), SIGNAL(takeShotWithChatWindowHidden(ChatWidget*)),
@@ -77,9 +76,6 @@ ScreenShot::ScreenShot(bool firstLoad) :
 
 	MyScreenshotTaker = new ScreenshotTaker(this);
 	connect(MyScreenshotTaker, SIGNAL(screenshotTaken(QPixmap)), this, SLOT(screenshotTaken(QPixmap)));
-
-	if (firstLoad)
-		ChatEditBox::addAction("ScreenShotAction");
 
 	// Rest stuff
 	warnedAboutSize = false;
@@ -212,23 +208,20 @@ bool ScreenShot::checkSingleUserImageSize(int size)
 	*/
 }
 
-void ScreenShot::takeSimpleShot(ChatWidget *chatWidget)
+void ScreenShot::takeStandardShot()
 {
 	kdebugf();
 
-	MyChatWidget = chatWidget;
 	Mode = ShotModeStandard;
 
-	chatWidget->update();
+	MyChatWidget->update();
 	qApp->processEvents();
 
 	QTimer::singleShot(1000, this, SLOT(grabScreenShot()));
 }
 
-void ScreenShot::takeShotWithChatWindowHidden(ChatWidget *chatWidget)
+void ScreenShot::takeShotWithChatWindowHidden()
 {
-	MyChatWidget = chatWidget;
-
 // 	CurrentScreenshotWidget->setShotMode(ShotModeWithChatWindowHidden);
 
 // 	wasMaximized = isMaximized(chatWidget);
@@ -236,10 +229,8 @@ void ScreenShot::takeShotWithChatWindowHidden(ChatWidget *chatWidget)
 // 	QTimer::singleShot(600, this, SLOT(takeShot_Step2()));
 }
 
-void ScreenShot::takeWindowShot(ChatWidget *chatWidget)
+void ScreenShot::takeWindowShot()
 {
-	MyChatWidget = chatWidget;
-
 // 	CurrentScreenshotWidget->setShotMode(ShotModeSingleWindow);
 
 // 	wasMaximized = isMaximized(chatWidget);

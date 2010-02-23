@@ -27,16 +27,13 @@
 
 #include "screenshot.h"
 
-ScreenShot *screenShot;
-
 extern "C" int screenshot_init(bool firstLoad)
 {
 	kdebugf();
 
+	ScreenshotActions::registerActions(firstLoad);
 	ScreenShotConfigurationUiHandler::registerConfigurationUi();
 	ScreenshotNotification::registerNotifications();
-
-	screenShot = new ScreenShot(firstLoad);
 
 	return 0;
 }
@@ -46,9 +43,6 @@ extern "C" void screenshot_close()
 	kdebugf();
 
 	ScreenshotActions::unregisterActions();
-	ScreenshotNotification::unregisterNotifiactions();
 	ScreenShotConfigurationUiHandler::unregisterConfigurationUi();
-
-	delete screenShot;
-	screenShot = 0;
+	ScreenshotNotification::unregisterNotifiactions();
 }

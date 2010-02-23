@@ -68,20 +68,18 @@ private slots:
 
 	void grabScreenShot();
 
-	void takeSimpleShot(ChatWidget *chatWidget);
-	void takeShotWithChatWindowHidden(ChatWidget *chatWidget);
-	void takeWindowShot(ChatWidget *chatWidget);
-
 	void takeWindowShot_Step2();
 
 	void handleShot(QPixmap pixmap);
 
 public:
-	ScreenShot(bool firstLoad);
+	explicit ScreenShot(ChatWidget *chatWidget);
 	virtual ~ScreenShot();
 
-};
+	void takeStandardShot();
+	void takeShotWithChatWindowHidden();
+	void takeWindowShot();
 
-extern ScreenShot* screenShot;
+};
 
 #endif // SCREENSHOT_H
