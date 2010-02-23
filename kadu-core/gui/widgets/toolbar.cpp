@@ -501,10 +501,11 @@ void ToolBar::loadFromConfig(QDomElement toolbar_element)
 QMenu * ToolBar::createContextMenu(QToolButton *button)
 {
 	QMenu *menu = new QMenu(this);
-	connect(menu, SIGNAL(aboutToShow()), this, SLOT(slotContextAboutToShow()));
 
 	if (isMovable())
 	{
+		connect(menu, SIGNAL(aboutToShow()), this, SLOT(slotContextAboutToShow()));
+
 		currentButton = button;
 		if (button)
 		{
