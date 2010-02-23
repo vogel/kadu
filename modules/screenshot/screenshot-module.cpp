@@ -22,6 +22,7 @@
 #include "debug.h"
 
 #include "configuration/gui/screenshot-configuration-ui-handler.h"
+#include "configuration/screen-shot-configuration.h"
 #include "notify/screenshot-notification.h"
 #include "screenshot-actions.h"
 
@@ -32,6 +33,7 @@ extern "C" int screenshot_init(bool firstLoad)
 	kdebugf();
 
 	ScreenshotActions::registerActions(firstLoad);
+	ScreenShotConfiguration::createInstance();
 	ScreenShotConfigurationUiHandler::registerConfigurationUi();
 	ScreenshotNotification::registerNotifications();
 
@@ -43,6 +45,7 @@ extern "C" void screenshot_close()
 	kdebugf();
 
 	ScreenshotActions::unregisterActions();
+	ScreenShotConfiguration::destroyInstance();
 	ScreenShotConfigurationUiHandler::unregisterConfigurationUi();
 	ScreenshotNotification::unregisterNotifiactions();
 }

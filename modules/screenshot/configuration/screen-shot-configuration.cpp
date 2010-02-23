@@ -24,6 +24,11 @@
 
 ScreenShotConfiguration * ScreenShotConfiguration::Instance = 0;
 
+ScreenShotConfiguration * ScreenShotConfiguration::instance()
+{
+	return Instance;
+}
+
 void ScreenShotConfiguration::createInstance()
 {
 	Instance = new ScreenShotConfiguration();

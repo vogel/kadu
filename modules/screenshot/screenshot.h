@@ -58,8 +58,6 @@ class ScreenShot : public QObject
 	void checkConferenceImageSizes(int size);
 	bool checkSingleUserImageSize(int size);
 
-	void createDefaultConfiguration();
-
 	QString getScreenshotFileNameExtension();
 	QString createScreenshotPath();
 

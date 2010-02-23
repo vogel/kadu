@@ -38,7 +38,6 @@
 #include <QtGui/QPainter>
 #include <QtGui/QX11Info>
 
-#include "configuration/configuration-file.h"
 #include "gui/widgets/configuration/config-combo-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/chat-edit-box.h"
@@ -53,6 +52,7 @@
 #include "debug.h"
 
 #include "configuration/gui/screenshot-configuration-ui-handler.h"
+#include "configuration/screen-shot-configuration.h"
 #include "gui/widgets/crop-image-widget.h"
 #include "gui/widgets/screenshot-tool-box.h"
 #include "gui/widgets/screenshot-widget.h"
@@ -73,8 +73,6 @@ ScreenShot::ScreenShot(ChatWidget *chatWidget) :
 
 	// Rest stuff
 	warnedAboutSize = false;
-
-	createDefaultConfiguration();
 }
 
 ScreenShot::~ScreenShot()
@@ -84,8 +82,8 @@ ScreenShot::~ScreenShot()
 
 QString ScreenShot::getScreenshotFileNameExtension()
 {
-	bool useShortJpg = config_file.readBoolEntry("ScreenShot", "use_short_jpg", false);
-	QString extension = config_file.readEntry("ScreenShot", "fileFormat", "PNG").toLower();
+	bool useShortJpg = ScreenShotConfiguration::instance()->useShortJpgExtension();
+	QString extension = ScreenShotConfiguration::instance()->instance()->fileFormat();
 	if (useShortJpg && extension == "jpeg")
 		return QLatin1String("jpg");
 
@@ -94,7 +92,7 @@ QString ScreenShot::getScreenshotFileNameExtension()
 
 QString ScreenShot::createScreenshotPath()
 {
-	QString dirPath = config_file.readEntry("ScreenShot", "path", profilePath("images/"));
+	QString dirPath = ScreenShotConfiguration::instance()->imagePath();
 
 	QDir dir(dirPath);
 	if (!dir.exists() && !dir.mkpath(dirPath))
@@ -104,8 +102,7 @@ QString ScreenShot::createScreenshotPath()
 	}
 
 	return QDir::cleanPath(
-		dir.absolutePath() + "/" +
-		config_file.readEntry("ScreenShot", "filenamePrefix", "shot") +
+		dir.absolutePath() + "/" + ScreenShotConfiguration::instance()->fileNamePrefix() +
 		QString::number(QDateTime::currentDateTime().toTime_t()) + "." +
 		getScreenshotFileNameExtension()
 	);
@@ -118,8 +115,8 @@ void ScreenShot::handleShot(QPixmap p)
 		return;
 
 	// TODO: 0.6.6, fix
-	const char *format = config_file.readEntry("ScreenShot", "fileFormat", "PNG").toAscii();
-	int quality = config_file.readNumEntry("ScreenShot", "quality", -1);
+	const char *format = ScreenShotConfiguration::instance()->fileFormat().toAscii();
+	int quality = ScreenShotConfiguration::instance()->quality();
 	Q_UNUSED(format)
 	Q_UNUSED(quality)
 
@@ -143,7 +140,7 @@ void ScreenShot::handleShot(QPixmap p)
 	//	restore(chatWidget);
 
 	// Wklejanie [IMAGE] do okna Chat
-	if (config_file.readBoolEntry("ScreenShot", "paste_clause", true))
+	if (ScreenShotConfiguration::instance()->pasteImageClauseIntoChatWidget())
 	{
 		// Sprawdzanie rozmiaru zrzutu wobec rozm�wc�w
 		// TODO: 0.6.6
@@ -252,15 +249,15 @@ void ScreenShot::screenshotTaken(QPixmap screenshot)
 void ScreenShot::checkShotsSize()
 {
 	kdebugf();
-	if (!config_file.readBoolEntry("ScreenShot", "dir_size_warns", true))
+	if (!ScreenShotConfiguration::instance()->warnAboutDirectorySize())
 		return;
 
 	int size = 0;
 
-	int limit = config_file.readNumEntry("ScreenShot", "dir_size_limit", 10000);
-	QDir dir(config_file.readEntry("ScreenShot", "path", profilePath("images")));
+	int limit = ScreenShotConfiguration::instance()->directorySizeLimit();
+	QDir dir(ScreenShotConfiguration::instance()->imagePath());
 
-	QString prefix = config_file.readEntry("ScreenShot", "filenamePrefix", "shot");
+	QString prefix = ScreenShotConfiguration::instance()->fileNamePrefix();
 	QStringList filters;
 	filters << prefix + "*";
 	QFileInfoList list = dir.entryInfoList(filters, QDir::Files);
@@ -277,16 +274,4 @@ void ScreenShot::takeWindowShot_Step2()
 	kdebugf();
 	QPixmap winPixmap = PixmapGrabber::grabCurrent();
 	handleShot(winPixmap);
-}
-
-void ScreenShot::createDefaultConfiguration()
-{
-	config_file.addVariable("ScreenShot", "fileFormat", "PNG");
-	config_file.addVariable("ScreenShot", "use_short_jpg", true);
-	config_file.addVariable("ScreenShot", "quality", -1);
-	config_file.addVariable("ScreenShot", "path", profilePath("images/"));
-	config_file.addVariable("ScreenShot", "filenamePrefix", "shot");
-	config_file.addVariable("ScreenShot", "paste_clause", true);
-	config_file.addVariable("ScreenShot", "dir_size_warns", true);
-	config_file.addVariable("ScreenShot", "dir_size_limit", 10000);
 }
