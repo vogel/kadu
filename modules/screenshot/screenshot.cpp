@@ -62,27 +62,7 @@
 
 #include "screenshot.h"
 
-ScreenShot *screenShot;
-NotifyEvent *ScreenShotImageSizeLimit = 0;
-
-extern "C" int screenshot_init(bool firstLoad)
-{
-	kdebugf();
-
-	ScreenShotImageSizeLimit = new NotifyEvent("ssSizeLimit", NotifyEvent::CallbackNotRequired, "ScreenShot images size limit");
-
-	screenShot = new ScreenShot(firstLoad);
-
-	return 0;
-}
-
-extern "C" void screenshot_close()
-{
-	kdebugf();
-
-	delete screenShot;
-	screenShot = 0;
-}
+extern NotifyEvent *ScreenShotImageSizeLimit;
 
 ScreenShot::ScreenShot(bool firstLoad) :
 		MyChatWidget(0)
@@ -98,7 +78,6 @@ ScreenShot::ScreenShot(bool firstLoad) :
 			this, SLOT(takeWindowShot(ChatWidget*)));
 
 	ScreenShotConfigurationUiHandler::registerConfigurationUi();
-	NotificationManager::instance()->registerNotifyEvent(ScreenShotImageSizeLimit);
 
 	MyScreenshotTaker = new ScreenshotTaker(this);
 	connect(MyScreenshotTaker, SIGNAL(screenshotTaken(QPixmap)), this, SLOT(screenshotTaken(QPixmap)));
@@ -118,10 +97,6 @@ ScreenShot::~ScreenShot()
 
 	ScreenshotActions::unregisterActions();
 	ScreenShotConfigurationUiHandler::unregisterConfigurationUi();
-	NotificationManager::instance()->unregisterNotifyEvent(ScreenShotImageSizeLimit);
-
-	delete ScreenShotImageSizeLimit;
-	ScreenShotImageSizeLimit = 0;
 }
 
 QString ScreenShot::getScreenshotFileNameExtension()

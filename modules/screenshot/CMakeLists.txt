@@ -8,6 +8,7 @@ set (SOURCES
 	pixmap-grabber.cpp
 	screenshot.cpp
 	screenshot-actions.cpp
+	screenshot-module.cpp
 	screenshot-taker.cpp
 )
 
