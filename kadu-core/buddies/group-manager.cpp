@@ -91,6 +91,13 @@ void GroupManager::load()
 	SimpleManager<Group>::load();
 }
 
+void GroupManager::store()
+{
+	emit saveGroupData();
+
+	SimpleManager<Group>::store();
+}
+
 Group GroupManager::byName(const QString &name, bool create)
 {
 	if (name.isEmpty())

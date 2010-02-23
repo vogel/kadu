@@ -45,6 +45,7 @@ class KADUAPI GroupManager : public QObject, public SimpleManager<Group>
 
 protected:
 	virtual void load();
+	virtual void store();
 
 	virtual void itemAboutToBeAdded(Group item);
 	virtual void itemAdded(Group item);
