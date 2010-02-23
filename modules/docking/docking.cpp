@@ -144,7 +144,7 @@ void DockingManager::changeIcon()
 		switch (newMessageIcon)
 		{
 			case AnimatedEnvelope:
-				emit trayMovieChanged("protocols/common/16x16/message_anim.gif");
+				emit trayMovieChanged(IconsManager::instance()->iconPath("protocols/common/16x16/message_anim.gif"));
 				break;
 			case StaticEnvelope:
 				emit trayPixmapChanged(IconsManager::instance()->iconByPath("protocols/common/16x16/message.png"));
