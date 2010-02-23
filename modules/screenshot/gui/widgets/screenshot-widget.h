@@ -56,6 +56,7 @@ public:
 
 signals:
 	void pixmapCaptured(QPixmap pixmap);
+	void closed();
 
 };
 

@@ -36,6 +36,7 @@
 #include "screenshot-taker.h"
 
 #include "screenshot.h"
+#include "screen-shot-saver.h"
 
 ScreenShot::ScreenShot(ChatWidget *chatWidget) :
 		MyChatWidget(chatWidget)
@@ -54,60 +55,10 @@ ScreenShot::~ScreenShot()
 	kdebugf();
 }
 
-QString ScreenShot::getScreenshotFileNameExtension()
-{
-	bool useShortJpg = ScreenShotConfiguration::instance()->useShortJpgExtension();
-	QString extension = ScreenShotConfiguration::instance()->instance()->fileFormat();
-	if (useShortJpg && extension == "jpeg")
-		return QLatin1String("jpg");
-
-	return extension;
-}
-
-QString ScreenShot::createScreenshotPath()
-{
-	QString dirPath = ScreenShotConfiguration::instance()->imagePath();
-
-	QDir dir(dirPath);
-	if (!dir.exists() && !dir.mkpath(dirPath))
-	{
-		MessageDialog::msg(tr("Unable to create direcotry %1 for storing screenshots!").arg(dirPath));
-		return QString::null;
-	}
-
-	return QDir::cleanPath(
-		dir.absolutePath() + "/" + ScreenShotConfiguration::instance()->fileNamePrefix() +
-		QString::number(QDateTime::currentDateTime().toTime_t()) + "." +
-		getScreenshotFileNameExtension()
-	);
-}
-
 void ScreenShot::handleShot(QPixmap p)
 {
-	QString path = createScreenshotPath();
-	if (path.isEmpty())
-		return;
-
-	// TODO: 0.6.6, fix
-	const char *format = ScreenShotConfiguration::instance()->fileFormat().toAscii();
-	int quality = ScreenShotConfiguration::instance()->quality();
-	Q_UNUSED(format)
-	Q_UNUSED(quality)
-
-	if (!p.save(path, "PNG"))
-	{
-		MessageDialog::msg(tr("Can't write file %1.\nAccess denied or other problem!").arg(path));
-		return;
-	}
-
-	QFileInfo f(path);
-	int size = f.size();
-
-	if (size == 0)
-	{
-		MessageDialog::msg(tr("Screenshot %1 has 0 size!\nIt should be bigger.").arg(path));
-		return;
-	}
+	ScreenShotSaver *saver = new ScreenShotSaver(this);
+	QString screenShotPath = saver->saveScreenShot(p);
 
 	// TODO: 0.6.6
 //	if (shotMode == WithChatWindowHidden || shotMode == SingleWindow)
@@ -116,7 +67,7 @@ void ScreenShot::handleShot(QPixmap p)
 	// Wklejanie [IMAGE] do okna Chat
 	if (ScreenShotConfiguration::instance()->pasteImageClauseIntoChatWidget())
 	{
-		// Sprawdzanie rozmiaru zrzutu wobec rozm�wc�w
+// 		// Sprawdzanie rozmiaru zrzutu wobec rozm�wc�w
 		// TODO: 0.6.6
 // 		UserListElements users = chatWidget->users()->toUserListElements();
 // 		if (users.count() > 1)
@@ -125,11 +76,15 @@ void ScreenShot::handleShot(QPixmap p)
 // 			if (!checkSingleUserImageSize(size))
 // 				return;
 
-		pasteImageClause(path);
+		pasteImageClause(screenShotPath);
 	}
 
-	MyChatWidget = 0;
-	checkShotsSize();
+	deleteLater();
+}
+
+void ScreenShot::shotNotCaptured()
+{
+	deleteLater();
 }
 
 void ScreenShot::pasteImageClause(const QString &path)
@@ -175,44 +130,24 @@ bool ScreenShot::checkSingleUserImageSize(int size)
 
 void ScreenShot::takeStandardShot()
 {
-	kdebugf();
-
-	Mode = ShotModeStandard;
-
-	MyChatWidget->update();
-	qApp->processEvents();
-
-	QTimer::singleShot(1000, this, SLOT(grabScreenShot()));
+	MyScreenshotTaker->takeStandardShot();
 }
 
 void ScreenShot::takeShotWithChatWindowHidden()
 {
-// 	CurrentScreenshotWidget->setShotMode(ShotModeWithChatWindowHidden);
-
-// 	wasMaximized = isMaximized(chatWidget);
-// 	minimize(chatWidget);
-// 	QTimer::singleShot(600, this, SLOT(takeShot_Step2()));
+	MyScreenshotTaker->takeShotWithChatWindowHidden();
 }
 
 void ScreenShot::takeWindowShot()
 {
-// 	CurrentScreenshotWidget->setShotMode(ShotModeSingleWindow);
-
-// 	wasMaximized = isMaximized(chatWidget);
-// 	minimize(chatWidget);
-
-// 	takeShot_Step2();
-}
-
-void ScreenShot::grabScreenShot()
-{
-	MyScreenshotTaker->takeStandardShot();
+	MyScreenshotTaker->takeWindowShot();
 }
 
 void ScreenShot::screenshotTaken(QPixmap screenshot)
 {
 	ScreenshotWidget *screenshotWidget = new ScreenshotWidget(0);
 	connect(screenshotWidget, SIGNAL(pixmapCaptured(QPixmap)), this, SLOT(handleShot(QPixmap)));
+	connect(screenshotWidget, SIGNAL(closed()), this, SLOT(shotNotCaptured()));
 
 	screenshotWidget->setPixmap(screenshot);
 	screenshotWidget->setShotMode(Mode);

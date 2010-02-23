@@ -71,6 +71,7 @@ void ScreenshotWidget::keyPressEvent(QKeyEvent *e)
 
 	if (e->key() == Qt::Key_Escape)
 	{
+		emit closed();
 		deleteLater();
 		e->accept();
 	}

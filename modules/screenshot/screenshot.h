@@ -58,17 +58,13 @@ class ScreenShot : public QObject
 	void checkConferenceImageSizes(int size);
 	bool checkSingleUserImageSize(int size);
 
-	QString getScreenshotFileNameExtension();
-	QString createScreenshotPath();
-
 private slots:
 	void screenshotTaken(QPixmap screenshot);
-
-	void grabScreenShot();
 
 	void takeWindowShot_Step2();
 
 	void handleShot(QPixmap pixmap);
+	void shotNotCaptured();
 
 public:
 	explicit ScreenShot(ChatWidget *chatWidget);

@@ -62,6 +62,8 @@ public:
 	bool warnAboutDirectorySize() { return WarnAboutDirectorySize; }
 	long directorySizeLimit() { return DirectorySizeLimit; }
 
+	QString screenshotFileNameExtension();
+
 };
 
 #endif // SCREEN_SHOT_CONFIGURATION_H

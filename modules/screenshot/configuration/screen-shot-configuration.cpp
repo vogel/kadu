@@ -79,3 +79,13 @@ void ScreenShotConfiguration::configurationUpdated()
 	WarnAboutDirectorySize = config_file.readBoolEntry("ScreenShot", "dir_size_warns", true);
 	DirectorySizeLimit = config_file.readNumEntry("ScreenShot", "dir_size_limit", 10000);
 }
+
+QString ScreenShotConfiguration::screenshotFileNameExtension()
+{
+	bool useShortJpg = useShortJpgExtension();
+	QString extension = fileFormat();
+	if (useShortJpg && extension == "jpeg")
+		return QLatin1String("jpg");
+
+	return extension;
+}

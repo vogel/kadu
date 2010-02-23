@@ -101,10 +101,10 @@ void ScreenshotTaker::takeShotWithChatWindowHidden()
 void ScreenshotTaker::takeWindowShot()
 {
 	// TODO: fix, this works stupid ;P
-	WasCurentChatWidgetMaximized = isMaximized(CurrentChatWidget);
-	minimize(CurrentChatWidget);
-
-	takeShot();
+// 	WasCurentChatWidgetMaximized = isMaximized(CurrentChatWidget);
+// 	minimize(CurrentChatWidget);
+// 
+// 	takeShot();
 }
 
 void ScreenshotTaker::takeShot()

@@ -11,6 +11,7 @@ set (SOURCES
 	screenshot.cpp
 	screenshot-actions.cpp
 	screenshot-module.cpp
+	screen-shot-saver.cpp
 	screenshot-taker.cpp
 )
 
@@ -23,6 +24,7 @@ set (MOC_SOURCES
 	notify/screenshot-notification.h
 	screenshot.h
 	screenshot-actions.h
+	screen-shot-saver.h
 	screenshot-taker.h
 )
 
