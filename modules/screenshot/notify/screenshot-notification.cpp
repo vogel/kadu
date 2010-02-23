@@ -19,6 +19,7 @@
 
 #include "notify/notification-manager.h"
 #include "notify/notify-event.h"
+#include "icons-manager.h"
 
 #include "screenshot-notification.h"
 
@@ -37,15 +38,17 @@ void ScreenshotNotification::unregisterNotifiactions()
 	SizeLimitNotification = 0;
 }
 
-void ScreenshotNotification::notifySizeLimit()
+void ScreenshotNotification::notifySizeLimit(int size)
 {
-
+	ScreenshotNotification *notification = new ScreenshotNotification();
+	notification->setTitle(tr("ScreenShot size limit"));
+	notification->setText(tr("Images size limit exceed: %1 KB").arg(size/1024));
+	NotificationManager::instance()->notify(notification);
 }
 
-ScreenshotNotification::ScreenshotNotification(const QString &type, const QString &text) :
-		Notification(type, QIcon())
+ScreenshotNotification::ScreenshotNotification() :
+		Notification("ssSizeLimit", IconsManager::instance()->iconByPath("kadu_icons/kadu-blocking.png"))
 {
-	setText(text);
 }
 
 ScreenshotNotification::~ScreenshotNotification()

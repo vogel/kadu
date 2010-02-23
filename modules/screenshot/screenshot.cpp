@@ -56,6 +56,7 @@
 #include "gui/widgets/crop-image-widget.h"
 #include "gui/widgets/screenshot-tool-box.h"
 #include "gui/widgets/screenshot-widget.h"
+#include "notify/screenshot-notification.h"
 #include "pixmap-grabber.h"
 #include "screenshot-actions.h"
 #include "screenshot-taker.h"
@@ -66,13 +67,6 @@ ScreenShot::ScreenShot(ChatWidget *chatWidget) :
 		MyChatWidget(chatWidget)
 {
 	kdebugf();
-
-	connect(ScreenshotActions::instance(), SIGNAL(takeStandardShot(ChatWidget*)),
-			this, SLOT(takeSimpleShot(ChatWidget*)));
-	connect(ScreenshotActions::instance(), SIGNAL(takeShotWithChatWindowHidden(ChatWidget*)),
-			this, SLOT(takeShotWithChatWindowHidden(ChatWidget*)));
-	connect(ScreenshotActions::instance(), SIGNAL(takeWindowShot(ChatWidget*)),
-			this, SLOT(takeWindowShot(ChatWidget*)));
 
 	MyScreenshotTaker = new ScreenshotTaker(this);
 	connect(MyScreenshotTaker, SIGNAL(screenshotTaken(QPixmap)), this, SLOT(screenshotTaken(QPixmap)));
@@ -275,12 +269,7 @@ void ScreenShot::checkShotsSize()
 		size += f.size();
 
 	if (size/1024 >= limit)
-	{
-		Notification *notification = new Notification("ssSizeLimit", IconsManager::instance()->iconByPath("kadu_icons/kadu-blocking.png"));
-		notification->setTitle(tr("ScreenShot size limit"));
-		notification->setText(tr("Images size limit exceed: %1 KB").arg(size/1024));
-		NotificationManager::instance()->notify(notification);
-	}
+		ScreenshotNotification::notifySizeLimit(size);
 }
 
 void ScreenShot::takeWindowShot_Step2()

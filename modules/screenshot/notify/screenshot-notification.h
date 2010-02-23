@@ -34,9 +34,9 @@ public:
 	static void registerNotifications();
 	static void unregisterNotifiactions();
 
-	static void notifySizeLimit();
+	static void notifySizeLimit(int size);
 
-	explicit ScreenshotNotification(const QString &type, const QString &text);
+	explicit ScreenshotNotification();
 	virtual ~ScreenshotNotification();
 
 };
