@@ -19,21 +19,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "notify/notification-manager.h"
-#include "notify/notify-event.h"
 #include "debug.h"
+
+#include "configuration/gui/screenshot-configuration-ui-handler.h"
+#include "notify/screenshot-notification.h"
+#include "screenshot-actions.h"
 
 #include "screenshot.h"
 
-NotifyEvent *ScreenShotImageSizeLimit = 0;
 ScreenShot *screenShot;
 
 extern "C" int screenshot_init(bool firstLoad)
 {
 	kdebugf();
 
-	ScreenShotImageSizeLimit = new NotifyEvent("ssSizeLimit", NotifyEvent::CallbackNotRequired, "ScreenShot images size limit");
-	NotificationManager::instance()->registerNotifyEvent(ScreenShotImageSizeLimit);
+	ScreenShotConfigurationUiHandler::registerConfigurationUi();
+	ScreenshotNotification::registerNotifications();
 
 	screenShot = new ScreenShot(firstLoad);
 
@@ -44,11 +45,9 @@ extern "C" void screenshot_close()
 {
 	kdebugf();
 
-	if (ScreenShotImageSizeLimit)
-		NotificationManager::instance()->unregisterNotifyEvent(ScreenShotImageSizeLimit);
-
-	delete ScreenShotImageSizeLimit;
-	ScreenShotImageSizeLimit = 0;
+	ScreenshotActions::unregisterActions();
+	ScreenshotNotification::unregisterNotifiactions();
+	ScreenShotConfigurationUiHandler::unregisterConfigurationUi();
 
 	delete screenShot;
 	screenShot = 0;

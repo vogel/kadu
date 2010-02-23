@@ -62,8 +62,6 @@
 
 #include "screenshot.h"
 
-extern NotifyEvent *ScreenShotImageSizeLimit;
-
 ScreenShot::ScreenShot(bool firstLoad) :
 		MyChatWidget(0)
 {
@@ -76,8 +74,6 @@ ScreenShot::ScreenShot(bool firstLoad) :
 			this, SLOT(takeShotWithChatWindowHidden(ChatWidget*)));
 	connect(ScreenshotActions::instance(), SIGNAL(takeWindowShot(ChatWidget*)),
 			this, SLOT(takeWindowShot(ChatWidget*)));
-
-	ScreenShotConfigurationUiHandler::registerConfigurationUi();
 
 	MyScreenshotTaker = new ScreenshotTaker(this);
 	connect(MyScreenshotTaker, SIGNAL(screenshotTaken(QPixmap)), this, SLOT(screenshotTaken(QPixmap)));
@@ -94,9 +90,6 @@ ScreenShot::ScreenShot(bool firstLoad) :
 ScreenShot::~ScreenShot()
 {
 	kdebugf();
-
-	ScreenshotActions::unregisterActions();
-	ScreenShotConfigurationUiHandler::unregisterConfigurationUi();
 }
 
 QString ScreenShot::getScreenshotFileNameExtension()
