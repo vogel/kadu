@@ -237,6 +237,9 @@ void ChatState::setChatState(XMPP::ChatState state)
 
 void ChatState::incomingMessage(const XMPP::Message &m)
 {
+	if (m.from().bare() != (*ObservedChat.contacts().begin()).id())
+		return;
+
 	if (m.body().isEmpty())
 	{
 		// Event message
