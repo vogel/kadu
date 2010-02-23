@@ -150,7 +150,7 @@ Contact ContactManager::byId(Account account, const QString &id, NotFoundAction 
 		return contact;
 
 	ContactDetails *details = factory->createContactDetails(contact);
-	details->setState(StateNotLoaded);
+	details->setState(StateNew);
 	contact.setDetails(details);
 
 	return contact;
