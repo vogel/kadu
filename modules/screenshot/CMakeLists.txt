@@ -1,5 +1,6 @@
 set (SOURCES
 	configuration/gui/screenshot-configuration-ui-handler.cpp
+	configuration/screen-shot-configuration.cpp
 	gui/graphics-items/handler-rect-item.cpp
 	gui/graphics-items/selection-frame-item.cpp
 	gui/widgets/crop-image-widget.cpp
