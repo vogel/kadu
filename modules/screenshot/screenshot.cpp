@@ -80,9 +80,6 @@ extern "C" void screenshot_close()
 {
 	kdebugf();
 
-	delete ScreenShotImageSizeLimit;
-	ScreenShotImageSizeLimit = 0;
-
 	delete screenShot;
 	screenShot = 0;
 }
@@ -122,6 +119,9 @@ ScreenShot::~ScreenShot()
 	ScreenshotActions::unregisterActions();
 	ScreenShotConfigurationUiHandler::unregisterConfigurationUi();
 	NotificationManager::instance()->unregisterNotifyEvent(ScreenShotImageSizeLimit);
+
+	delete ScreenShotImageSizeLimit;
+	ScreenShotImageSizeLimit = 0;
 }
 
 QString ScreenShot::getScreenshotFileNameExtension()

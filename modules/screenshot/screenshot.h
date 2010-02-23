@@ -64,7 +64,7 @@ class ScreenShot : public QObject
 	QString createScreenshotPath();
 
 private slots:
-    void screenshotTaken(QPixmap screenshot);
+	void screenshotTaken(QPixmap screenshot);
 
 	void grabScreenShot();
 
