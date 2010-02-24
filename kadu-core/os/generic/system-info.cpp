@@ -206,24 +206,11 @@ SystemInfo::SystemInfo()
 	strftime(str, 256, fmt, localtime(&x));
 	if (strcmp(fmt, str))
 	{
-		int offset;
 		QString s = str;
 		if(s.at(0) == '+')
-		{
 			s.remove(0,1);
-			offset = 1;
-		}
-		else if(s.at(0) == '-')
-		{
-			s.remove(0,1);
-			offset = -1;
-		}
-		else
-			offset = 1;
-
-		int tmp = s.toInt();
-		offset *= (tmp/100)*60 + tmp%100;
-		TimezoneOffset = offset;
+		s.truncate(s.length() - 2);
+		TimezoneOffset = s.toInt();
 	}
 	strcpy(fmt, "%Z");
 	strftime(str, 256, fmt, localtime(&x));
