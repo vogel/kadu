@@ -33,7 +33,6 @@
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
 #include <QtGui/QMessageBox>
-#include <QtGui/QPushButton>
 #include <QtGui/QTabWidget>
 
 #include "accounts/account.h"
@@ -41,7 +40,6 @@
 #include "configuration/configuration-file.h"
 #include "gui/widgets/account-avatar-widget.h"
 #include "gui/widgets/account-buddy-list-widget.h"
-#include "gui/widgets/choose-identity-widget.h"
 #include "gui/widgets/proxy-group-box.h"
 #include "gui/windows/message-dialog.h"
 #include "protocols/services/avatar-service.h"
@@ -58,6 +56,8 @@ JabberEditAccountWidget::JabberEditAccountWidget(Account account, QWidget *paren
 	createGui();
 	loadAccountData();
 	loadConnectionData();
+	
+	dataChanged();
 }
 
 JabberEditAccountWidget::~JabberEditAccountWidget()
@@ -76,6 +76,23 @@ void JabberEditAccountWidget::createGui()
 	createBuddiesTab(tabWidget);
 	createConnectionTab(tabWidget);
 	createOptionsTab(tabWidget);
+	
+	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
+
+	ApplyButton = new QPushButton(IconsManager::instance()->iconByPath("16x16/dialog-apply.png"), tr("Apply"), this);
+	connect(ApplyButton, SIGNAL(clicked(bool)), this, SLOT(apply()));
+
+	CancelButton = new QPushButton(IconsManager::instance()->iconByPath("16x16/dialog-cancel.png"), tr("Cancel"), this);
+	connect(CancelButton, SIGNAL(clicked(bool)), this, SLOT(cancel()));
+
+	QPushButton *removeAccount = new QPushButton(IconsManager::instance()->iconByPath("16x16/dialog-cancel.png"), tr("Delete account"), this);
+	connect(removeAccount, SIGNAL(clicked(bool)), this, SLOT(removeAccount()));
+
+	buttons->addButton(ApplyButton, QDialogButtonBox::ApplyRole);
+	buttons->addButton(CancelButton, QDialogButtonBox::RejectRole);
+	buttons->addButton(removeAccount, QDialogButtonBox::DestructiveRole);
+
+	mainLayout->addWidget(buttons);
 }
 
 
@@ -90,38 +107,31 @@ void JabberEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 	QFormLayout *formLayout = new QFormLayout(form);
 
 	ConnectAtStart = new QCheckBox(tr("Connect at start"), this);
+	connect(ConnectAtStart, SIGNAL(stateChanged(int)), this, SLOT(dataChanged()));
 	formLayout->addRow(0, ConnectAtStart);
 
 	AccountId = new QLineEdit(this);
+	connect(AccountId, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 	formLayout->addRow(tr("XMPP/Jabber Id") + ":", AccountId);
 
 	AccountPassword = new QLineEdit(this);
 	AccountPassword->setEchoMode(QLineEdit::Password);
+	connect(AccountPassword, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 	formLayout->addRow(tr("Password") + ":", AccountPassword);
 
 	RememberPassword = new QCheckBox(tr("Remember password"), this);
 	RememberPassword->setChecked(true);
+	connect(RememberPassword, SIGNAL(stateChanged(int)), this, SLOT(dataChanged()));
 	formLayout->addRow(0, RememberPassword);
 
-	ChooseIdentity = new ChooseIdentityWidget(this);
-	formLayout->addRow(tr("Account Identity") + ":", ChooseIdentity);
+	Identities = new IdentitiesComboBox(this);
+	connect(Identities, SIGNAL(activated(int)), this, SLOT(dataChanged()));
+	formLayout->addRow(tr("Account Identity") + ":", Identities);
 
 	formLayout->addRow(0, new QLabel(tr("<font size='-1'><i>Select or enter the identity that will be associated with this account.</i></font>"), this));
 
 	QPushButton *changePassword = new QPushButton(tr("Change password"), this);
 	formLayout->addRow(0, changePassword);
-
-	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
-
-	QPushButton *applyButton = new QPushButton(IconsManager::instance()->iconByPath("16x16/dialog-apply.png"), tr("Apply"), this);
-	connect(applyButton, SIGNAL(clicked(bool)), this, SLOT(apply()));
-
-	QPushButton *removeAccount = new QPushButton(IconsManager::instance()->iconByPath("16x16/dialog-cancel.png"), tr("Delete account"), this);
-	connect(removeAccount, SIGNAL(clicked(bool)), this, SLOT(removeAccount()));
-
-	buttons->addButton(applyButton, QDialogButtonBox::ApplyRole);
-	buttons->addButton(removeAccount, QDialogButtonBox::DestructiveRole);
-	layout->addWidget(buttons, 1, 0, 1, 2);
 
 	AccountAvatarWidget *avatarWidget = new AccountAvatarWidget(account(), this);
 	layout->addWidget(avatarWidget, 0, 1, Qt::AlignTop);
@@ -331,6 +341,43 @@ void JabberEditAccountWidget::sslActivated(int i)
 	else if (EncryptionMode->itemData(i) == 2 && !CustomHostPort->isChecked()) {
 		MessageDialog::msg(tr("Legacy SSL is only available in combination with manual host/port."));
 		EncryptionMode->setCurrentIndex(EncryptionMode->findData(1));
+	}
+}
+
+void JabberEditAccountWidget::dataChanged()
+{
+	if (/*account().name() == AccountName->text()
+		&&*/ account().connectAtStart() == ConnectAtStart->isChecked()
+		&& account().id() == AccountId->text()
+		&& account().rememberPassword() == RememberPassword->isChecked()
+		&& account().password() == AccountPassword->text()
+		/*&& StateNotChanged == Proxy->state()*/)
+	{
+		setState(StateNotChanged);
+		ApplyButton->setEnabled(false);
+		CancelButton->setEnabled(false);
+		return;
+	}
+
+// 	bool sameNameExists = AccountManager::instance()->byName(AccountName->text())
+// 			&& AccountManager::instance()->byName(AccountName->text()) != account();
+	bool sameIdExists = AccountManager::instance()->byId(account().protocolName(), account().id())
+			&& AccountManager::instance()->byId(account().protocolName(), account().id()) != account();
+
+	if (/*AccountName->text().isEmpty()
+		|| sameNameExists
+		|| */AccountId->text().isEmpty()
+		|| sameIdExists)
+	{
+		setState(StateChangedDataInvalid);
+		ApplyButton->setEnabled(false);
+		CancelButton->setEnabled(true);
+	}
+	else
+	{
+		setState(StateChangedDataValid);
+		ApplyButton->setEnabled(true);
+		CancelButton->setEnabled(true);
 	}
 }
 

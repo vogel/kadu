@@ -26,8 +26,10 @@
 #include <QtGui/QComboBox>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QLabel>
+#include <QtGui/QPushButton>
 
 #include "gui/widgets/account-edit-widget.h"
+#include "gui/widgets/identities-combo-box.h"
 
 class QCheckBox;
 class QLineEdit;
@@ -57,7 +59,7 @@ class JabberEditAccountWidget : public AccountEditWidget
 	QCheckBox *LegacySSLProbe;
 	QComboBox *PlainTextAuth;
 
-	ChooseIdentityWidget *ChooseIdentity;
+	IdentitiesComboBox *Identities;
 	ProxyGroupBox *proxy;
 
 	QCheckBox *AutoResource;
@@ -70,6 +72,9 @@ class JabberEditAccountWidget : public AccountEditWidget
 	QLabel *DataTransferProxyLabel;
 	QLineEdit *DataTransferProxy;
 	QHBoxLayout *DataTransferProxyLayout;
+	
+	QPushButton *ApplyButton;
+	QPushButton *CancelButton;
 
 	void createGui();
 	void createGeneralTab(QTabWidget *);
@@ -88,6 +93,7 @@ private slots:
 	void sslActivated(int i);
 	void hostToggled(bool on);
 	void autoResourceToggled(bool on);
+	void dataChanged();
 
 public:
 	explicit JabberEditAccountWidget(Account account, QWidget *parent = 0);
