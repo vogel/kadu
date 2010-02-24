@@ -74,7 +74,7 @@ class JabberChatStateService : public QObject
 	Q_OBJECT
 	
 	JabberProtocol *ParentProtocol;
-	QList<ChatState *> ChatStateList;
+	QMap<ChatWidget *, ChatState *> ChatStateMap;
 
   public:
 	JabberChatStateService(JabberProtocol *parent);

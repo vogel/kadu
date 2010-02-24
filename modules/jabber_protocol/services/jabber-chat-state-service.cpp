@@ -34,7 +34,7 @@ JabberChatStateService::JabberChatStateService(JabberProtocol *parent) : ParentP
 	{
 		ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat);
 		if (chatWidget && ParentProtocol == dynamic_cast<JabberProtocol *>(chat.chatAccount().protocolHandler()))
-			  ChatStateList.append(new ChatState(chat));
+			  ChatStateMap.insert(chatWidget, new ChatState(chat));
 	}
 	
 	QObject::connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatWidgetCreated(ChatWidget *)));
@@ -45,19 +45,17 @@ void JabberChatStateService::chatWidgetCreated(ChatWidget *chatWidget)
 {
 	Chat chat = chatWidget->chat();
 	if (ParentProtocol == dynamic_cast<JabberProtocol *>(chat.chatAccount().protocolHandler()))
-		ChatStateList.append(new ChatState(chat));
+		ChatStateMap.insert(chatWidget, new ChatState(chat));
 }
 
 void JabberChatStateService::chatWidgetDestroying(ChatWidget *chatWidget)
 {
-	Chat chat = chatWidget->chat();
-
-	for (QList<ChatState *>::iterator i = ChatStateList.begin(); i != ChatStateList.end() ; ++i)
-		if ((*i)->chat() == chat)
-		{
-			ChatStateList.removeAll((*i));
-			delete (*i);
-		}
+	if (ChatStateMap.contains(chatWidget))
+	{
+		ChatState *state = ChatStateMap.value(chatWidget);
+		ChatStateMap.remove(chatWidget);
+		state->deleteLater();
+	}
 }
 
 ChatState::ChatState(Chat chat) : ObservedChat(chat)
