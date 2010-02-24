@@ -25,7 +25,7 @@
 #include "buddy-search-criteria.h"
 
 BuddySearchCriteria::BuddySearchCriteria() :
-		SearchBuddy(Buddy()), BirthYearTo(), Active(false), IgnoreResults(false)
+		SearchBuddy(Buddy::create()), BirthYearTo(), Active(false), IgnoreResults(false)
 {
 }
 
@@ -85,7 +85,7 @@ void BuddySearchCriteria::reqActive()
 
 void BuddySearchCriteria::clearData()
 {
-	SearchBuddy = Buddy();
+	SearchBuddy = Buddy::create();
 	BirthYearFrom.truncate(0);
 	BirthYearTo.truncate(0);
 	Active = false;
