@@ -45,6 +45,7 @@ ScreenShot::ScreenShot(ChatWidget *chatWidget) :
 
 	MyScreenshotTaker = new ScreenshotTaker(MyChatWidget);
 	connect(MyScreenshotTaker, SIGNAL(screenshotTaken(QPixmap, bool)), this, SLOT(screenshotTaken(QPixmap, bool)));
+	connect(MyScreenshotTaker, SIGNAL(screenshotNotTaken()), this, SLOT(screenshotNotTaken()));
 
 	// Rest stuff
 	warnedAboutSize = false;
@@ -83,7 +84,7 @@ void ScreenShot::handleShot(QPixmap p)
 	deleteLater();
 }
 
-void ScreenShot::shotNotCaptured()
+void ScreenShot::screenshotNotTaken()
 {
 	deleteLater();
 }
@@ -154,7 +155,7 @@ void ScreenShot::screenshotTaken(QPixmap screenshot, bool needsCrop)
 
 	ScreenshotWidget *screenshotWidget = new ScreenshotWidget(0);
 	connect(screenshotWidget, SIGNAL(pixmapCaptured(QPixmap)), this, SLOT(handleShot(QPixmap)));
-	connect(screenshotWidget, SIGNAL(closed()), this, SLOT(shotNotCaptured()));
+	connect(screenshotWidget, SIGNAL(closed()), this, SLOT(screenshotNotTaken()));
 
 	screenshotWidget->setPixmap(screenshot);
 	screenshotWidget->setShotMode(Mode);

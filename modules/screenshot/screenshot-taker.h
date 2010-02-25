@@ -36,6 +36,8 @@ private slots:
 	void takeShot();
 
 protected:
+	virtual void closeEvent(QCloseEvent *e);
+	virtual void keyPressEvent(QKeyEvent *e);
 	virtual void mousePressEvent(QMouseEvent *e);
 	virtual void mouseReleaseEvent(QMouseEvent *e);
 
@@ -50,6 +52,7 @@ public slots:
 
 signals:
 	void screenshotTaken(QPixmap screenshot, bool needsCrop);
+	void screenshotNotTaken();
 
 };
 

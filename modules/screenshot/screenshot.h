@@ -61,7 +61,7 @@ class ScreenShot : public QObject
 private slots:
 	void screenshotTaken(QPixmap screenshot, bool needsCrop);
 	void handleShot(QPixmap pixmap);
-	void shotNotCaptured();
+	void screenshotNotTaken();
 
 public:
 	explicit ScreenShot(ChatWidget *chatWidget);

@@ -31,6 +31,7 @@
 #include "pixmap-grabber.h"
 
 #include "screenshot-taker.h"
+#include <QKeyEvent>
 
 ScreenshotTaker::ScreenshotTaker(ChatWidget *chatWidget, QWidget *parent) :
 		QWidget(parent), CurrentChatWidget(chatWidget)
@@ -41,6 +42,7 @@ ScreenshotTaker::ScreenshotTaker(ChatWidget *chatWidget, QWidget *parent) :
 	layout->addWidget(new QLabel(tr("Drag icon to some window"), this));
 
 	QLabel *crossLabel = new QLabel(this);
+	crossLabel->setAlignment(Qt::AlignCenter);
 	crossLabel->setPixmap(IconsManager::instance()->pixmapByPath("external_modules/module_screenshot_shot-camera-photo.png"));
 
 	layout->addWidget(crossLabel, Qt::AlignCenter);
@@ -69,6 +71,26 @@ void ScreenshotTaker::takeWindowShot()
 	CurrentChatWidget->window()->hide();
 
 	show();
+}
+
+void ScreenshotTaker::closeEvent(QCloseEvent *e)
+{
+	emit screenshotNotTaken();
+
+	CurrentChatWidget->window()->show();
+
+	QWidget::closeEvent(e);
+}
+
+void ScreenshotTaker::keyPressEvent(QKeyEvent *e)
+{
+	if (e->modifiers() != Qt::NoModifier || e->key() != Qt::Key_Escape)
+	{
+		QWidget::keyPressEvent(e);
+		return;
+	}
+
+	close();
 }
 
 void ScreenshotTaker::mousePressEvent(QMouseEvent *e)
