@@ -56,7 +56,7 @@ JabberProtocolFactory::JabberProtocolFactory()
 
 	qSort(SupportedStatusTypes.begin(), SupportedStatusTypes.end(), StatusType::lessThan);
 
-	IdRegularExpression.setPattern("[a-zA-Z0-9\\._-]+@[a-zA-Z0-9\\._-]+");
+	IdRegularExpression.setPattern("[a-zA-Z0-9\\._\\+\\-]+@[a-zA-Z0-9\\._-]+");
 }
 
 QIcon JabberProtocolFactory::icon()
