@@ -49,7 +49,6 @@ class ScreenShot : public QObject
 	ScreenshotTaker *MyScreenshotTaker;
 	ChatWidget *MyChatWidget;
 
-	bool wasMaximized;
 	bool warnedAboutSize;
 
 	void checkShotsSize();
@@ -60,8 +59,9 @@ class ScreenShot : public QObject
 
 private slots:
 	void screenshotTaken(QPixmap screenshot, bool needsCrop);
-	void handleShot(QPixmap pixmap);
 	void screenshotNotTaken();
+
+	void screenshotReady(QPixmap pixmap);
 
 public:
 	explicit ScreenShot(ChatWidget *chatWidget);

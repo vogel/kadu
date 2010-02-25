@@ -54,9 +54,7 @@ ScreenshotTaker::~ScreenshotTaker()
 
 void ScreenshotTaker::takeStandardShot()
 {
-	if (CurrentChatWidget)
-		CurrentChatWidget->update();
-
+	CurrentChatWidget->update();
 	QTimer::singleShot(1000, this, SLOT(takeShot()));
 }
 
@@ -69,7 +67,6 @@ void ScreenshotTaker::takeShotWithChatWindowHidden()
 void ScreenshotTaker::takeWindowShot()
 {
 	CurrentChatWidget->window()->hide();
-
 	show();
 }
 

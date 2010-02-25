@@ -56,9 +56,11 @@ ScreenshotActions::ScreenshotActions() :
 {
 	// Chat toolbar button
 	ScreenShotActionDescription = new ActionDescription(this,
-		ActionDescription::TypeChat, "ScreenShotAction",
-		this, SLOT(screenshotActionActivated(QAction *, bool)),
-		"external_modules/module_screenshot_shot-camera-photo.png", "external_modules/module_screenshot_shot-camera-photo.png", tr("ScreenShot"), false, ""
+			ActionDescription::TypeChat, "ScreenShotAction",
+			this, SLOT(screenshotActionActivated(QAction *, bool)),
+			"external_modules/module_screenshot_shot-camera-photo.png",
+			"external_modules/module_screenshot_shot-camera-photo.png",
+			tr("ScreenShot"), false, ""
 	);
 
 	createMenu();
@@ -66,12 +68,12 @@ ScreenshotActions::ScreenshotActions() :
 
 ScreenshotActions::~ScreenshotActions()
 {
-
+	delete Menu;
+	Menu = 0;
 }
 
 void ScreenshotActions::createMenu()
 {
-	// Chat windows menu
 	Menu = new QMenu();
 	Menu->addAction(tr("Simple shot"), this, SLOT(takeStandardShotSlot()));
 	Menu->addAction(tr("With chat window hidden"), this, SLOT(takeShotWithChatWindowHiddenSlot()));

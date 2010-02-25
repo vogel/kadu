@@ -57,16 +57,50 @@ ScreenShot::~ScreenShot()
 	MyScreenshotTaker = 0;
 }
 
-void ScreenShot::handleShot(QPixmap p)
+void ScreenShot::takeStandardShot()
+{
+	MyScreenshotTaker->takeStandardShot();
+}
+
+void ScreenShot::takeShotWithChatWindowHidden()
+{
+	MyScreenshotTaker->takeShotWithChatWindowHidden();
+}
+
+void ScreenShot::takeWindowShot()
+{
+	MyScreenshotTaker->takeWindowShot();
+}
+
+void ScreenShot::screenshotTaken(QPixmap screenshot, bool needsCrop)
+{
+	if (!needsCrop)
+	{
+		screenshotReady(screenshot);
+		return;
+	}
+
+	ScreenshotWidget *screenshotWidget = new ScreenshotWidget(0);
+	connect(screenshotWidget, SIGNAL(pixmapCaptured(QPixmap)), this, SLOT(screenshotReady(QPixmap)));
+	connect(screenshotWidget, SIGNAL(closed()), this, SLOT(screenshotNotTaken()));
+
+	screenshotWidget->setPixmap(screenshot);
+	screenshotWidget->setShotMode(Mode);
+	screenshotWidget->showFullScreen();
+	screenshotWidget->show();
+}
+
+void ScreenShot::screenshotNotTaken()
+{
+	deleteLater();
+}
+
+void ScreenShot::screenshotReady(QPixmap p)
 {
 	ScreenShotSaver *saver = new ScreenShotSaver(this);
 	QString screenShotPath = saver->saveScreenShot(p);
 
 	// TODO: 0.6.6
-//	if (shotMode == WithChatWindowHidden || shotMode == SingleWindow)
-	//	restore(chatWidget);
-
-	// Wklejanie [IMAGE] do okna Chat
 	if (ScreenShotConfiguration::instance()->pasteImageClauseIntoChatWidget())
 	{
 // 		// Sprawdzanie rozmiaru zrzutu wobec rozm�wc�w
@@ -81,11 +115,6 @@ void ScreenShot::handleShot(QPixmap p)
 		pasteImageClause(screenShotPath);
 	}
 
-	deleteLater();
-}
-
-void ScreenShot::screenshotNotTaken()
-{
 	deleteLater();
 }
 
@@ -128,39 +157,6 @@ bool ScreenShot::checkSingleUserImageSize(int size)
 
 	return MessageDialog::ask(tr("Image size is bigger than maximal image size set by %1. Send it anyway?").arg(users[0].altNick()));
 	*/
-}
-
-void ScreenShot::takeStandardShot()
-{
-	MyScreenshotTaker->takeStandardShot();
-}
-
-void ScreenShot::takeShotWithChatWindowHidden()
-{
-	MyScreenshotTaker->takeShotWithChatWindowHidden();
-}
-
-void ScreenShot::takeWindowShot()
-{
-	MyScreenshotTaker->takeWindowShot();
-}
-
-void ScreenShot::screenshotTaken(QPixmap screenshot, bool needsCrop)
-{
-	if (!needsCrop)
-	{
-		handleShot(screenshot);
-		return;
-	}
-
-	ScreenshotWidget *screenshotWidget = new ScreenshotWidget(0);
-	connect(screenshotWidget, SIGNAL(pixmapCaptured(QPixmap)), this, SLOT(handleShot(QPixmap)));
-	connect(screenshotWidget, SIGNAL(closed()), this, SLOT(screenshotNotTaken()));
-
-	screenshotWidget->setPixmap(screenshot);
-	screenshotWidget->setShotMode(Mode);
-	screenshotWidget->showFullScreen();
-	screenshotWidget->show();
 }
 
 void ScreenShot::checkShotsSize()
