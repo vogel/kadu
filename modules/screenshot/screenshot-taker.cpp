@@ -30,9 +30,10 @@
 #include "screenshot-taker.h"
 
 ScreenshotTaker::ScreenshotTaker(ChatWidget *chatWidget, QWidget *parent) :
-		QWidget(parent), CurrentChatWidget(chatWidget)
+		QLabel(parent), CurrentChatWidget(chatWidget)
 {
 	setMouseTracking(true);
+	setText(tr("Drag this to some window"));
 }
 
 ScreenshotTaker::~ScreenshotTaker()
@@ -60,9 +61,18 @@ void ScreenshotTaker::takeWindowShot()
 	show();
 }
 
+void ScreenshotTaker::mousePressEvent(QMouseEvent *e)
+{
+	Q_UNUSED(e)
+
+	setCursor(Qt::CrossCursor);
+}
+
 void ScreenshotTaker::mouseReleaseEvent(QMouseEvent *e)
 {
 	Q_UNUSED(e)
+
+	setCursor(Qt::ArrowCursor);
 
 	QPixmap pixmap = PixmapGrabber::grabCurrent();
 	emit screenshotTaken(pixmap, false);

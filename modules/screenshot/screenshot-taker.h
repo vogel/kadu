@@ -21,12 +21,12 @@
 #ifndef SCREENSHOT_TAKER_H
 #define SCREENSHOT_TAKER_H
 
+#include <QtGui/QLabel>
 #include <QtGui/QPixmap>
-#include <QtGui/QWidget>
 
 class ChatWidget;
 
-class ScreenshotTaker : public QWidget
+class ScreenshotTaker : public QLabel
 {
 	Q_OBJECT
 
@@ -36,6 +36,7 @@ private slots:
 	void takeShot();
 
 protected:
+	virtual void mousePressEvent(QMouseEvent *e);
 	virtual void mouseReleaseEvent(QMouseEvent *e);
 
 public:
