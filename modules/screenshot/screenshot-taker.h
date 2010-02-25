@@ -21,12 +21,12 @@
 #ifndef SCREENSHOT_TAKER_H
 #define SCREENSHOT_TAKER_H
 
-#include <QtCore/QObject>
 #include <QtGui/QPixmap>
+#include <QtGui/QWidget>
 
 class ChatWidget;
 
-class ScreenshotTaker : public QObject
+class ScreenshotTaker : public QWidget
 {
 	Q_OBJECT
 
@@ -35,8 +35,11 @@ class ScreenshotTaker : public QObject
 private slots:
 	void takeShot();
 
+protected:
+	virtual void mouseReleaseEvent(QMouseEvent *e);
+
 public:
-	explicit ScreenshotTaker(ChatWidget *chatWidget, QObject *parent);
+	explicit ScreenshotTaker(ChatWidget *chatWidget, QWidget *parent = 0);
 	virtual ~ScreenshotTaker();
 
 public slots:

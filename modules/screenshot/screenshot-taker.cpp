@@ -25,12 +25,14 @@
 #include <QtGui/QWidget>
 
 #include "gui/widgets/chat-widget.h"
+#include "pixmap-grabber.h"
 
 #include "screenshot-taker.h"
 
-ScreenshotTaker::ScreenshotTaker(ChatWidget *chatWidget, QObject *parent) :
-		QObject(parent), CurrentChatWidget(chatWidget)
+ScreenshotTaker::ScreenshotTaker(ChatWidget *chatWidget, QWidget *parent) :
+		QWidget(parent), CurrentChatWidget(chatWidget)
 {
+	setMouseTracking(true);
 }
 
 ScreenshotTaker::~ScreenshotTaker()
@@ -41,7 +43,6 @@ void ScreenshotTaker::takeStandardShot()
 {
 	if (CurrentChatWidget)
 		CurrentChatWidget->update();
-	qApp->processEvents();
 
 	QTimer::singleShot(1000, this, SLOT(takeShot()));
 }
@@ -54,11 +55,19 @@ void ScreenshotTaker::takeShotWithChatWindowHidden()
 
 void ScreenshotTaker::takeWindowShot()
 {
-	// TODO: fix, this works stupid ;P
-// 	WasCurentChatWidgetMaximized = isMaximized(CurrentChatWidget);
-// 	minimize(CurrentChatWidget);
-// 
-// 	takeShot();
+	CurrentChatWidget->window()->hide();
+
+	show();
+}
+
+void ScreenshotTaker::mouseReleaseEvent(QMouseEvent *e)
+{
+	Q_UNUSED(e)
+
+	QPixmap pixmap = PixmapGrabber::grabCurrent();
+	emit screenshotTaken(pixmap);
+
+	CurrentChatWidget->window()->show();
 }
 
 void ScreenshotTaker::takeShot()

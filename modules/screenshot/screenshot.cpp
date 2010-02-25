@@ -43,7 +43,7 @@ ScreenShot::ScreenShot(ChatWidget *chatWidget) :
 {
 	kdebugf();
 
-	MyScreenshotTaker = new ScreenshotTaker(MyChatWidget, this);
+	MyScreenshotTaker = new ScreenshotTaker(MyChatWidget);
 	connect(MyScreenshotTaker, SIGNAL(screenshotTaken(QPixmap)), this, SLOT(screenshotTaken(QPixmap)));
 
 	// Rest stuff
@@ -52,7 +52,8 @@ ScreenShot::ScreenShot(ChatWidget *chatWidget) :
 
 ScreenShot::~ScreenShot()
 {
-	kdebugf();
+	delete MyScreenshotTaker;
+	MyScreenshotTaker = 0;
 }
 
 void ScreenShot::handleShot(QPixmap p)
