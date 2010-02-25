@@ -184,10 +184,3 @@ void ScreenShot::checkShotsSize()
 	if (size/1024 >= limit)
 		ScreenshotNotification::notifySizeLimit(size);
 }
-
-void ScreenShot::takeWindowShot_Step2()
-{
-	kdebugf();
-	QPixmap winPixmap = PixmapGrabber::grabCurrent();
-	handleShot(winPixmap);
-}

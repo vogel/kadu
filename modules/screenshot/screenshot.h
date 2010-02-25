@@ -60,9 +60,6 @@ class ScreenShot : public QObject
 
 private slots:
 	void screenshotTaken(QPixmap screenshot, bool needsCrop);
-
-	void takeWindowShot_Step2();
-
 	void handleShot(QPixmap pixmap);
 	void shotNotCaptured();
 
