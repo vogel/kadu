@@ -59,7 +59,7 @@ class ScreenShot : public QObject
 	bool checkSingleUserImageSize(int size);
 
 private slots:
-	void screenshotTaken(QPixmap screenshot);
+	void screenshotTaken(QPixmap screenshot, bool needsCrop);
 
 	void takeWindowShot_Step2();
 

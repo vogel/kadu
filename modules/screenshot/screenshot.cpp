@@ -44,7 +44,7 @@ ScreenShot::ScreenShot(ChatWidget *chatWidget) :
 	kdebugf();
 
 	MyScreenshotTaker = new ScreenshotTaker(MyChatWidget);
-	connect(MyScreenshotTaker, SIGNAL(screenshotTaken(QPixmap)), this, SLOT(screenshotTaken(QPixmap)));
+	connect(MyScreenshotTaker, SIGNAL(screenshotTaken(QPixmap, bool)), this, SLOT(screenshotTaken(QPixmap, bool)));
 
 	// Rest stuff
 	warnedAboutSize = false;
@@ -144,8 +144,14 @@ void ScreenShot::takeWindowShot()
 	MyScreenshotTaker->takeWindowShot();
 }
 
-void ScreenShot::screenshotTaken(QPixmap screenshot)
+void ScreenShot::screenshotTaken(QPixmap screenshot, bool needsCrop)
 {
+	if (!needsCrop)
+	{
+		handleShot(screenshot);
+		return;
+	}
+
 	ScreenshotWidget *screenshotWidget = new ScreenshotWidget(0);
 	connect(screenshotWidget, SIGNAL(pixmapCaptured(QPixmap)), this, SLOT(handleShot(QPixmap)));
 	connect(screenshotWidget, SIGNAL(closed()), this, SLOT(shotNotCaptured()));

@@ -48,7 +48,7 @@ public slots:
 	void takeWindowShot();
 
 signals:
-	void screenshotTaken(QPixmap screenshot);
+	void screenshotTaken(QPixmap screenshot, bool needsCrop);
 
 };
 
