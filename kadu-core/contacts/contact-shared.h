@@ -99,6 +99,7 @@ signals:
 	void detached();
 	void aboutToBeAttached();
 	void attached();
+	void reattached();
 
 	void updated();
 	void idChanged(const QString &oldId);

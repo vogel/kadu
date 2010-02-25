@@ -54,6 +54,36 @@ class JabberProtocol : public Protocol
 		void initializeJabberClient();
 		void setPEPAvailable(bool b);
 
+	private slots:
+		void login(const QString &password, bool permanent);
+		void connectedToServer();
+		void disconnectedFromServer();
+		void disconnectFromServer(const XMPP::Status &s = XMPP::Status ("", "", 0, false));
+		void rosterRequestFinished(bool success);
+		void clientResourceReceived(const XMPP::Jid &j, const XMPP::Resource &r);
+		void slotContactUpdated(const XMPP::RosterItem &ri);
+		void slotContactDeleted(const XMPP::RosterItem &ri);
+		void slotIncomingFileTransfer();
+		void slotSubscription(const XMPP::Jid &jid, const QString &type);
+		void slotClientDebugMessage (const QString &msg);
+
+		void contactDetached(Contact contact);
+		void contactAttached(Contact contact);
+		void contactUpdated(Contact contact);
+
+		void buddyUpdated(Buddy &buddy);
+
+		void contactIdChanged(Contact contact, const QString &oldId);
+		void authorizeContact(Contact contact, bool authorized);
+
+		void serverFeaturesChanged();
+		void itemPublished(const XMPP::Jid& j, const QString& n, const XMPP::PubSubItem& item);
+		void itemRetracted(const XMPP::Jid& j, const QString& n, const XMPP::PubSubRetraction& item);
+
+	protected:
+		virtual void changeStatus();
+		virtual void changePrivateMode();
+
 	public:
 		static int initModule();
 		static void closeModule();
@@ -64,7 +94,7 @@ class JabberProtocol : public Protocol
 		bool isConnecting() { return whileConnecting; }
 		XMPP::Status toXMPPStatus(Status status);
 		Status toStatus(XMPP::Status status);
-		bool isPEPAvailable() { return pepAvailable; };
+		bool isPEPAvailable() { return pepAvailable; }
 
 		virtual Conference * loadConferenceFromStorage(StoragePoint *storage) { return 0; }
 
@@ -80,39 +110,9 @@ class JabberProtocol : public Protocol
 		virtual PersonalInfoService * personalInfoService() { return 0; }
 		virtual SearchService * searchService() { return 0; }
 		JabberResourcePool *resourcePool();
-		PEPManager *pepManager() { return PepManager; };
+		PEPManager *pepManager() { return PepManager; }
 
 		JabberContactDetails * jabberContactDetails(Contact contact) const;
-
-	protected:
-		virtual void changeStatus();
-		virtual void changePrivateMode();
-
-	private slots:
-		void login(const QString &password, bool permanent);
-		void connectedToServer();
-		void disconnectedFromServer();
-		void disconnectFromServer(const XMPP::Status &s = XMPP::Status ("", "", 0, false));
-		void rosterRequestFinished(bool success);
-		void clientResourceReceived(const XMPP::Jid &j, const XMPP::Resource &r);
-		void slotContactUpdated(const XMPP::RosterItem &ri);
-		void slotContactDeleted(const XMPP::RosterItem &ri);
-		void slotIncomingFileTransfer();
-		void slotSubscription(const XMPP::Jid &jid, const QString &type);
-		void slotClientDebugMessage (const QString &msg);
-		
-		void contactDetached(Contact contact);
-		void contactAttached(Contact contact);
-		
-		void buddyUpdated(Buddy &buddy);
-		void contactUpdated(Contact &contact);
-
-		void contactIdChanged(Contact contact, const QString &oldId);
-		void authorizeContact(Contact contact, bool authorized);
-		
-		void serverFeaturesChanged();
-		void itemPublished(const XMPP::Jid& j, const QString& n, const XMPP::PubSubItem& item);
-		void itemRetracted(const XMPP::Jid& j, const QString& n, const XMPP::PubSubRetraction& item);
 
 	public slots:
 		void connectToServer();

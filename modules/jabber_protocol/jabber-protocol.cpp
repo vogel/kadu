@@ -106,6 +106,8 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 			this, SLOT(contactAttached(Contact)));
 	connect(ContactManager::instance(), SIGNAL(contactIdChanged(Contact, const QString &)),
 			this, SLOT(contactIdChanged(Contact, const QString &)));
+	connect(ContactManager::instance(), SIGNAL(contactReattached(Contact)),
+			this, SLOT(contactUpdated(Contact)));
 	
 	connect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy &)),
 			this, SLOT(buddyUpdated(Buddy &)));
@@ -519,6 +521,9 @@ void JabberProtocol::contactDetached(Contact contact)
 
 void JabberProtocol::buddyUpdated(Buddy &buddy)
 {
+	if (!isConnected())
+		return;
+
 	QList<Contact> contacts = buddy.contacts(account());
 	if (contacts.isEmpty() || buddy.isAnonymous())
 		return;
@@ -531,8 +536,11 @@ void JabberProtocol::buddyUpdated(Buddy &buddy)
 		JabberClient->updateContact(contact.id(), buddy.display(), groupsList);
 }
 
-void JabberProtocol::contactUpdated(Contact &contact)
+void JabberProtocol::contactUpdated(Contact contact)
 {
+	if (!isConnected() || contact.contactAccount() != account())
+		return;
+
 	Buddy buddy = contact.ownerBuddy();
 	if (buddy.isAnonymous())
 		return;

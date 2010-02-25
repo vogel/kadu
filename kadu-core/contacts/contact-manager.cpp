@@ -82,6 +82,13 @@ void ContactManager::attached()
 		emit contactAttached(contact);
 }
 
+void ContactManager::reattached()
+{
+	Contact contact(sender());
+	if (!contact.isNull())
+		emit contactReattached(contact);
+}
+
 void ContactManager::itemAboutToBeRegistered(Contact item)
 {
 	emit contactAboutToBeAdded(item);
@@ -95,6 +102,7 @@ void ContactManager::itemRegistered(Contact item)
 	connect(item, SIGNAL(detached()), this, SLOT(detached()));
 	connect(item, SIGNAL(aboutToBeAttached()), this, SLOT(aboutToBeAttached()));
 	connect(item, SIGNAL(attached()), this, SLOT(attached()));
+	connect(item, SIGNAL(reattached()), this, SLOT(reattached()));
 }
 
 void ContactManager::itemAboutToBeUnregisterd(Contact item)

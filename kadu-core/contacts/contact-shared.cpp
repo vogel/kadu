@@ -140,20 +140,31 @@ void ContactShared::setOwnerBuddy(Buddy buddy)
 	if (OwnerBuddy == buddy)
 		return;
 
+	bool hadBuddy = !OwnerBuddy.isNull();
 	if (!OwnerBuddy.isNull())
 	{
-		emit aboutToBeDetached();
+		if (buddy.isNull())
+			emit aboutToBeDetached();
+
 		OwnerBuddy.removeContact(this);
-		emit detached();
+
+		if (buddy.isNull())
+			emit detached();
 	}
 
 	OwnerBuddy = buddy;
 
 	if (!OwnerBuddy.isNull())
 	{
-		emit aboutToBeAttached();
+		if (!hadBuddy)
+			emit aboutToBeAttached();
+
 		OwnerBuddy.addContact(this);
-		emit attached();
+
+		if (!hadBuddy)
+			emit attached();
+		else
+			emit reattached();
 	}
 
 	dataUpdated();
