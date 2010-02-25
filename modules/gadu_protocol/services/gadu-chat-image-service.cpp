@@ -39,15 +39,15 @@ GaduChatImageService::GaduChatImageService(GaduProtocol *protocol)
 {
 }
 
-
 QString GaduChatImageService::saveImage(UinType sender, uint32_t size, uint32_t crc32, const QString &fileName, const char *data)
 {
 	kdebugf();
 
 	QString path = profilePath("images");
+	QDir dir;
 	kdebugm(KDEBUG_INFO, "Creating directory: %s\n", qPrintable(path));
 
-	if (!QDir().mkdir(path))
+	if (!dir.exists(path) && !dir.mkdir(path))
 	{
 		kdebugm(KDEBUG_INFO, "Failed creating directory: %s\n", qPrintable(path));
 		return QString::null;
@@ -131,6 +131,7 @@ void GaduChatImageService::handleEventImageReply(struct gg_event *e)
 	QString fullPath = saveImage(e->event.image_reply.sender,
 			e->event.image_reply.size, e->event.image_reply.crc32,
 			e->event.image_reply.filename, e->event.image_reply.image);
+
 	if (fullPath.isNull())
 		return;
 
