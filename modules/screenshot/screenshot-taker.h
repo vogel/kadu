@@ -31,22 +31,13 @@ class ScreenshotTaker : public QObject
 	Q_OBJECT
 
 	ChatWidget *CurrentChatWidget;
-	bool WasCurentChatWidgetMaximized;
-
-	// TODO: extract to another class
-	// TABS module fixing methods
-	void minimize(QWidget *widget);
-	void restore(QWidget *widget);
-	bool isMaximized(QWidget *widget);
 
 private slots:
 	void takeShot();
 
 public:
-	explicit ScreenshotTaker(QObject *parent);
+	explicit ScreenshotTaker(ChatWidget *chatWidget, QObject *parent);
 	virtual ~ScreenshotTaker();
-
-	void setChatWidget(ChatWidget *chatWidget);
 
 public slots:
 	void takeStandardShot();

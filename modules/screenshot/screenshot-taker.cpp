@@ -28,57 +28,13 @@
 
 #include "screenshot-taker.h"
 
-ScreenshotTaker::ScreenshotTaker(QObject *parent) :
-		QObject(parent), CurrentChatWidget(0), WasCurentChatWidgetMaximized(false)
+ScreenshotTaker::ScreenshotTaker(ChatWidget *chatWidget, QObject *parent) :
+		QObject(parent), CurrentChatWidget(chatWidget)
 {
 }
 
 ScreenshotTaker::~ScreenshotTaker()
 {
-}
-
-void ScreenshotTaker::setChatWidget(ChatWidget *chatWidget)
-{
-	CurrentChatWidget = chatWidget;
-}
-
-void ScreenshotTaker::minimize(QWidget *widget)
-{
-	if (!widget)
-		return;
-
-	// For tabs module
-	while (widget->parent())
-		widget = static_cast<QWidget *>(widget->parent());
-
-	widget->showMinimized();
-}
-
-void ScreenshotTaker::restore(QWidget *widget)
-{
-	if (!widget)
-		return;
-
-	// For tabs module
-	while (widget->parent())
-		widget = static_cast<QWidget *>(widget->parent());
-
-	if (WasCurentChatWidgetMaximized)
-		widget->showMaximized();
-	else
-		widget->showNormal();
-}
-
-bool ScreenshotTaker::isMaximized(QWidget *widget)
-{
-	if (!widget)
-		return false;
-
-	// For tabs module
-	while (widget->parent())
-		widget = static_cast<QWidget *>(widget->parent());
-
-	return widget->isMaximized();
 }
 
 void ScreenshotTaker::takeStandardShot()
@@ -92,9 +48,7 @@ void ScreenshotTaker::takeStandardShot()
 
 void ScreenshotTaker::takeShotWithChatWindowHidden()
 {
-	WasCurentChatWidgetMaximized = isMaximized(CurrentChatWidget);
-	minimize(CurrentChatWidget);
-
+	CurrentChatWidget->window()->hide();
 	QTimer::singleShot(1000, this, SLOT(takeShot()));
 }
 
@@ -111,4 +65,6 @@ void ScreenshotTaker::takeShot()
 {
 	QPixmap pixmap = QPixmap::grabWindow(QApplication::desktop()->winId());
 	emit screenshotTaken(pixmap);
+
+	CurrentChatWidget->window()->show();
 }
