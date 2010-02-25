@@ -129,6 +129,7 @@ History::History() :
 
 	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreated(ChatWidget *)));
 
+	createDefaultConfiguration();
 	configurationUpdated();
 	kdebugf2();
 }
@@ -712,4 +713,24 @@ int History::smsCount(const QString &receipient, QDate date)
 	kdebugf();
 
 	return CurrentStorage->smsCount(receipient, date);
+}
+
+void History::createDefaultConfiguration()
+{
+	config_file.addVariable("History", "SaveChats", config_file.readBoolEntry("History", "Logging", true));
+	config_file.removeVariable("History", "Logging");
+	config_file.addVariable("ShortCuts", "kadu_viewhistory", "Ctrl+H");
+
+	config_file.addVariable("History", "SaveStatusChanges", true);
+	config_file.addVariable("History", "ShowStatusChanges", true);
+
+	config_file.addVariable("History", "SaveChatsWithAnonymous", true);
+	config_file.addVariable("History", "SaveChatsForAll", true);
+
+	config_file.addVariable("History", "IgnoreSomeStatusChanges", false);
+	config_file.addVariable("History", "SaveOnlyStatusWithDescription", true);
+	config_file.addVariable("History", "SaveStatusChangesForAll", true);
+
+	config_file.addVariable("History", "ChatHistoryCitation", 10);
+	config_file.addVariable("History", "ChatHistoryQuotationTime", -24);
 }

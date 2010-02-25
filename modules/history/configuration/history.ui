@@ -2,7 +2,7 @@
 	<section name="Chat">
 		<tab name="History">
 			<group-box name="General">
-				<check-box caption="Save messages in history" config-section="History" config-item="Logging" id="history/save"
+				<check-box caption="Save messages in history" config-section="History" config-item="SaveChats" id="history/save"
 					   tool-tip="Save messages in history" />
 			</group-box>
 			<group-box name="Status changes" id="history/statusChanges">
@@ -30,7 +30,7 @@
 	<section name="Shortcuts">
 		<tab name="General">
 			<group-box name="Chat" id="history/shortCuts">
-				<hot-key-edit caption="View history" config-section="ShortCuts" config-item="kadu_viewsqlhistory" />
+				<hot-key-edit caption="View history" config-section="ShortCuts" config-item="kadu_viewhistory" />
 			</group-box>
 		</tab>
 	</section>

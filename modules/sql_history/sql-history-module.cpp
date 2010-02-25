@@ -50,6 +50,7 @@ SqlHistoryModule::SqlHistoryModule(bool firstLoad)
 {
 	if (firstLoad)
 		createDefaultConfiguration();
+
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/sql-history.ui"));
 	MainConfigurationWindow::registerUiHandler(this);
 	Storage = new HistorySqlStorage();

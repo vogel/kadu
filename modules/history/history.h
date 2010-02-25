@@ -105,6 +105,8 @@ class HISTORYAPI History : public ConfigurationUiHandler, ConfigurationAwareObje
 	void startSaveThread();
 	void stopSaveThread();
 
+	void createDefaultConfiguration();
+
 	void createActionDescriptions();
 	void deleteActionDescriptions();
 	virtual void configurationUpdated();
