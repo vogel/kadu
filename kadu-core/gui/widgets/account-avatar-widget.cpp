@@ -55,7 +55,6 @@ void AccountAvatarWidget::createGui()
 	AvatarLabel = new QLabel();
 	AvatarLabel->setAlignment(Qt::AlignCenter);
 	AvatarLabel->setFixedWidth(128);
-	AvatarLabel->setScaledContents(true);
 
 	Avatar avatar = MyAccount.accountContact().contactAvatar();
 	if (avatar)
@@ -97,8 +96,10 @@ void AccountAvatarWidget::avatarUpdated()
 {
 	WaitMovie->stop();
 	AvatarLabel->setMovie(0);
-	AvatarLabel->setScaledContents(true);
-	AvatarLabel->setPixmap(MyAccount.accountContact().contactAvatar().pixmap());
+	QPixmap avatar = MyAccount.accountContact().contactAvatar().pixmap();
+	if (avatar.width() > 128 || avatar.height() > 128)
+		avatar = avatar.scaled(QSize(128, 128), Qt::KeepAspectRatio);
+	AvatarLabel->setPixmap(avatar);
 }
 
 void AccountAvatarWidget::changeAvatar()
