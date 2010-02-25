@@ -21,12 +21,12 @@
 #ifndef SCREENSHOT_TAKER_H
 #define SCREENSHOT_TAKER_H
 
-#include <QtGui/QLabel>
 #include <QtGui/QPixmap>
+#include <QtGui/QWidget>
 
 class ChatWidget;
 
-class ScreenshotTaker : public QLabel
+class ScreenshotTaker : public QWidget
 {
 	Q_OBJECT
 

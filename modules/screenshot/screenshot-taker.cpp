@@ -21,8 +21,11 @@
 #include <QtCore/QTimer>
 #include <QtGui/QApplication>
 #include <QtGui/QDesktopWidget>
+#include <QtGui/QLabel>
 #include <QtGui/QPixmap>
-#include <QtGui/QWidget>
+#include <QtGui/QVBoxLayout>
+
+#include "icons-manager.h"
 
 #include "gui/widgets/chat-widget.h"
 #include "pixmap-grabber.h"
@@ -30,10 +33,17 @@
 #include "screenshot-taker.h"
 
 ScreenshotTaker::ScreenshotTaker(ChatWidget *chatWidget, QWidget *parent) :
-		QLabel(parent), CurrentChatWidget(chatWidget)
+		QWidget(parent), CurrentChatWidget(chatWidget)
 {
 	setMouseTracking(true);
-	setText(tr("Drag this to some window"));
+
+	QVBoxLayout *layout = new QVBoxLayout(this);
+	layout->addWidget(new QLabel(tr("Drag icon to some window"), this));
+
+	QLabel *crossLabel = new QLabel(this);
+	crossLabel->setPixmap(IconsManager::instance()->pixmapByPath("external_modules/module_screenshot_shot-camera-photo.png"));
+
+	layout->addWidget(crossLabel, Qt::AlignCenter);
 }
 
 ScreenshotTaker::~ScreenshotTaker()
@@ -65,7 +75,7 @@ void ScreenshotTaker::mousePressEvent(QMouseEvent *e)
 {
 	Q_UNUSED(e)
 
-	setCursor(Qt::CrossCursor);
+	setCursor(IconsManager::instance()->pixmapByPath("external_modules/module_screenshot_shot-camera-photo.png"));
 }
 
 void ScreenshotTaker::mouseReleaseEvent(QMouseEvent *e)
