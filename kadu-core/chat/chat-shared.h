@@ -126,7 +126,7 @@ public:
 	 * Chat icon is used to display in window titles. For 'simple' chats it is icon of status
 	 * of peer, for 'conference' chats it is generic icon.
 	 */
-	KaduShared_Property(QIcon, icon, Icon);
+	KaduShared_PropertyRead(QIcon, icon, Icon)
 
 public slots:
 	void refreshTitle();
