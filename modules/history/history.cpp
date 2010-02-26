@@ -301,7 +301,7 @@ void History::chatCreated(ChatWidget *chatWidget)
 	// TODO: NOW do it other way
 					    // + PendingMessagesManager::instance()->pendingMsgsCount(chatWidget->chat());
 
-	QDateTime backTo = QDateTime::currentDateTime().addDays(config_file.readNumEntry("History", "ChatHistoryQuotationTime", -744)/24);
+	QDateTime backTo = QDateTime::currentDateTime().addSecs(config_file.readNumEntry("History", "ChatHistoryQuotationTime", -744)*3600);
 	messages = CurrentStorage->messagesBackTo(chatWidget->chat(), backTo, chatHistoryQuotation);
 
 	chatMessagesView->appendMessages(messages);
