@@ -66,6 +66,8 @@ private:
 	QString ProxyUser;
 	QString ProxyPassword;
 
+	short int MaximumImageSize;
+
 	void useProtocolFactory(ProtocolFactory *factory);
 
 protected:

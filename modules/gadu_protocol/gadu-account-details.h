@@ -39,6 +39,7 @@ class GaduAccountDetails : public AccountDetails
 	PROPERTY_DEC(short int, DccLocalPort)
 	PROPERTY_DEC(bool, RemoveCompletedTransfers)
 	PROPERTY_DEC(bool, DccForwarding)
+	PROPERTY_DEC(short int, MaximumImageSize)
 
 	GaduOpenChatWithRunner *OpenChatRunner;
 
@@ -62,6 +63,7 @@ public:
 	PROPERTY_DEF(short int, dccLocalPort, setDccLocalPort, DccLocalPort)
 	PROPERTY_DEF(bool, removeCompletedTransfers, setRemoveCompletedTransfers, RemoveCompletedTransfers)
 	PROPERTY_DEF(bool, dccForwarding, setDccForwarding, DccForwarding)
+	PROPERTY_DEF(short int, maximumImageSize, setMaximumImageSize, MaximumImageSize)
 
 	void import_0_6_5_LastStatus();
 

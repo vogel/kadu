@@ -627,7 +627,7 @@ void GaduProtocol::setupLoginParams()
 		Dcc->setUpExternalAddress(GaduLoginParams);
 
 	GaduLoginParams.tls = 0;
-	GaduLoginParams.image_size = config_file.readUnsignedNumEntry("Chat", "MaxImageSize", 0);
+	GaduLoginParams.image_size = gaduAccountDetails->maximumImageSize();
 }
 
 void GaduProtocol::cleanUpLoginParams()
