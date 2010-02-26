@@ -35,6 +35,7 @@ set (kadu_SRCS
 	buddies/filter/buddy-name-filter.cpp
 	buddies/filter/group-buddy-filter.cpp
 	buddies/filter/has-description-buddy-filter.cpp
+	buddies/filter/ignored-buddy-filter.cpp
 	buddies/filter/non-account-buddy-filter.cpp
 	buddies/filter/non-buddy-filter.cpp
 	buddies/filter/offline-buddy-filter.cpp
@@ -329,6 +330,7 @@ set (kadu_MOC_SRCS
 	buddies/filter/anonymous-without-messages-buddy-filter.h
 	buddies/filter/group-buddy-filter.h
 	buddies/filter/has-description-buddy-filter.h
+	buddies/filter/ignored-buddy-filter.h
 	buddies/filter/non-account-buddy-filter.h
 	buddies/filter/non-buddy-filter.h
 	buddies/filter/offline-buddy-filter.h
