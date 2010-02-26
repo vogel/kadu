@@ -25,7 +25,6 @@
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
 
-#include "gui/windows/image-dialog.h"
 #include "misc/misc.h"
 #include "icons-manager.h"
 
@@ -69,12 +68,11 @@ void SelectFile::selectFileClicked()
 {
 	if (Type == "image")
 	{
-		ImageDialog imageDialog(this);
-		imageDialog.setDirectory(LineEdit->text());
-		imageDialog.setWindowTitle(tr("Insert image"));
-		if (imageDialog.exec() == QDialog::Accepted && 1 == imageDialog.selectedFiles().count())
+		QString s(QFileDialog::getOpenFileName(this, tr("Insert image"), LineEdit->text(),
+					tr("Images") + " (*.png *.PNG *.jpg *.JPG *.jpeg *.JPEG *.gif *.GIF *.bmp *.BMP)"));
+		if (!s.isEmpty())
 		{
-			LineEdit->setText(imageDialog.selectedFiles()[0]);
+			LineEdit->setText(s);
 			emit fileChanged();
 		}
 	}

@@ -21,6 +21,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QFileDialog>
 #include <QtXml/QDomElement>
 
 #include "buddies/buddy-set.h"
@@ -34,7 +35,6 @@
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/color-selector.h"
 #include "gui/windows/message-dialog.h"
-#include "gui/windows/image-dialog.h"
 
 #include "chat-widget.h"
 #include "custom-input.h"
@@ -229,27 +229,24 @@ void ChatEditBox::openColorSelector(const QWidget *activatingWidget)
 
 void ChatEditBox::openInsertImageDialog()
 {
-	ImageDialog *id = new ImageDialog(this);
-	id->setDirectory(config_file.readEntry("Chat", "LastImagePath"));
-	id->setWindowTitle(tr("Insert image"));
-
-	while (id->exec() == QDialog::Accepted && 0 < id->selectedFiles().count())
+	QString selectedFile = QFileDialog::getOpenFileName(this, tr("Insert image"), config_file.readEntry("Chat", "LastImagePath"),
+					tr("Images") + " (*.png *.PNG *.jpg *.JPG *.jpeg *.JPEG *.gif *.GIF *.bmp *.BMP)");
+	if (!selectedFile.isEmpty())
 	{
-		config_file.writeEntry("Chat", "LastImagePath", id->directory().absolutePath());
-
-		QString selectedFile = id->selectedFiles()[0];
 		QFileInfo f(selectedFile);
+
+		config_file.writeEntry("Chat", "LastImagePath", f.absolutePath());
 
 		if (!f.isReadable())
 		{
 			MessageDialog::msg(tr("This file is not readable"), true, "32x32/dialog-warning.png", this);
-			continue;
+			return;
 		}
 
 		if (f.size() >= (1 << 18)) // 256kB
 		{
 			MessageDialog::msg(tr("This file is too big (%1 >= %2)").arg(f.size()).arg(1<<18), true, "32x32/dialog-warning.png", this);
-			continue;
+			return;
 		}
 
 		int counter = 0;
@@ -272,17 +269,14 @@ void ChatEditBox::openInsertImageDialog()
 		if (counter == 1 && CurrentChat.contacts().count() == 1)
 		{
 			if (!MessageDialog::ask(tr("This file is too big for %1.\nDo you really want to send this image?\n").arg((*CurrentChat.contacts().begin()).ownerBuddy().display())))
-				continue;
+				return;
 		}
 		else if (counter > 0 &&
 			!MessageDialog::ask(tr("This file is too big for %1 of %2 contacts.\nDo you really want to send this image?\nSome of them probably will not get it.").arg(counter).arg(CurrentChat.contacts().count())))
-			continue;
+			return;
 
 		InputBox->insertPlainText(QString("[IMAGE %1]").arg(selectedFile));
-		break;
 	}
-
-	id = 0;
 }
 
 void ChatEditBox::addEmoticon(const QString &emot)

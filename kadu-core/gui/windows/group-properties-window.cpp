@@ -21,6 +21,7 @@
 
 #include <QtGui/QCheckBox>
 #include <QtGui/QDialogButtonBox>
+#include <QtGui/QFileDialog>
 #include <QtGui/QGroupBox>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QKeyEvent>
@@ -30,7 +31,6 @@
 
 #include "configuration/configuration-file.h"
 #include "buddies/group.h"
-#include "gui/windows/image-dialog.h"
 
 #include "icons-manager.h"
 #include "misc/misc.h"
@@ -130,18 +130,15 @@ GroupPropertiesWindow::GroupPropertiesWindow(Group editedGroup, QWidget *parent)
 
 void GroupPropertiesWindow::selectIcon()
 {
-	ImageDialog* iDialog = new ImageDialog(this);
-	iDialog->setDirectory(config_file.readEntry("GroupIcon", "recentPath", "~/"));
-	iDialog->setWindowTitle(tr("Choose an icon"));
-	iDialog->setFilter(tr("Icons (*.png *.xpm *.jpg)"));
-	if (iDialog->exec() == QDialog::Accepted && 1 == iDialog->selectedFiles().count())
+	QString file = QFileDialog::getOpenFileName(this, tr("Choose an icon"), config_file.readEntry("GroupIcon", "recentPath", "~/"),
+					tr("Icons (*.png *.xpm *.jpg)"));
+	if (!file.isEmpty())
 	{
-		iconPath = iDialog->selectedFiles()[0];
-		config_file.writeEntry("GroupIcon", "recentPath", iDialog->directory().absolutePath());
+		QFileInfo fileInfo(file);
+		config_file.writeEntry("GroupIcon", "recentPath", fileInfo.absolutePath());
 		icon->setText("");
-		icon->setIcon(QIcon(iconPath));
+		icon->setIcon(QIcon(file));
 	}
-	delete iDialog;
 }
 
 

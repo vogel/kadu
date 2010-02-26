@@ -201,7 +201,6 @@ set (kadu_SRCS
 	gui/windows/configuration-window.cpp
 	gui/windows/file-transfer-window.cpp
 	gui/windows/group-properties-window.cpp
-	gui/windows/image-dialog.cpp
 	gui/windows/kadu-window.cpp
 	gui/windows/kadu-window-actions.cpp
 	gui/windows/main-configuration-window.cpp
