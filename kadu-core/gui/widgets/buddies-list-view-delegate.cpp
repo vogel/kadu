@@ -349,7 +349,7 @@ void BuddiesListViewDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 	if (!displayAvatar.isNull())
 	{
 		if (DefaultAvatarSize.isValid() && displayAvatar.size() != DefaultAvatarSize)
-			displayAvatar = displayAvatar.scaled(DefaultAvatarSize, Qt::KeepAspectRatio);
+			displayAvatar = displayAvatar.scaled(DefaultAvatarSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
 		int avatarWidth = displayAvatar.width();
 		int width = widget->viewport()->width() - opt.rect.left() - (avatarWidth + (avatarSize - avatarWidth)/2);
