@@ -75,7 +75,7 @@
 		<tab name="General">
 			<group-box name="Filters">
 				<check-box caption="Show offline contacts" config-section="General" config-item="ShowOffline" />
-				<check-box caption="Show contacts that are blocked" config-section="General" config-item="ShowBlocked" />
+				<check-box caption="Show contacts that are ignored" config-section="General" config-item="ShowBlocked" />
 				<check-box caption="Show contacts which are blocking me" config-section="General" config-item="ShowBlocking" />
 			</group-box>
 

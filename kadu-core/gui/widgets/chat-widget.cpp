@@ -443,7 +443,7 @@ bool ChatWidget::decodeLocalFiles(QDropEvent *event, QStringList &files)
 
 	QList<QUrl> urls = event->mimeData()->urls();
 
-	foreach(const QUrl &url, urls)
+	foreach (const QUrl &url, urls)
 	{
 		QString file = url.toLocalFile();
 		if (!file.isEmpty())
