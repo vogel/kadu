@@ -94,6 +94,8 @@ private slots:
 	void hostToggled(bool on);
 	void autoResourceToggled(bool on);
 	void dataChanged();
+	void changePasssword();
+	void passwordChanged(const QString &newPassword);
 
 public:
 	explicit JabberEditAccountWidget(Account account, QWidget *parent = 0);

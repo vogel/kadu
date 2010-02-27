@@ -259,6 +259,7 @@ set (SOURCES
 	gui/widgets/jabber-create-account-widget.cpp
 	gui/widgets/jabber-edit-account-widget.cpp
 	gui/widgets/jabber-personal-info-widget.cpp
+	gui/windows/jabber-change-password-window.cpp
 	open-chat-with/jabber-open-chat-with-runner.cpp
 	jabber-account-data-manager.cpp
 	jabber-account-details.cpp
@@ -269,6 +270,7 @@ set (SOURCES
 	resource/jabber-resource.cpp
 	resource/jabber-resource-pool.cpp
 	server/jabber-avatar-fetcher.cpp
+	server/jabber-server-change-password.cpp
 	server/jabber-server-register-account.cpp
 	services/jabber-avatar-service.cpp
 	services/jabber-chat-service.cpp
@@ -292,11 +294,12 @@ set (MOC_SOURCES
 	gui/widgets/jabber-create-account-widget.h
 	gui/widgets/jabber-edit-account-widget.h
 	gui/widgets/jabber-personal-info-widget.h
-	#jabber-account-details.h
+	gui/windows/jabber-change-password-window.h
 	jabber-protocol.h
 	resource/jabber-resource.h
 	resource/jabber-resource-pool.h
 	server/jabber-avatar-fetcher.h
+	server/jabber-server-change-password.h
 	server/jabber-server-register-account.h
 	services/jabber-avatar-service.h
 	services/jabber-chat-service.h

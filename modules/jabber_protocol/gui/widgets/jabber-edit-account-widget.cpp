@@ -45,6 +45,7 @@
 #include "protocols/services/avatar-service.h"
 #include "icons-manager.h"
 
+#include "gui/windows/jabber-change-password-window.h"
 #include "jabber-account-details.h"
 #include "jabber-personal-info-widget.h"
 
@@ -123,6 +124,11 @@ void JabberEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 	RememberPassword->setChecked(true);
 	connect(RememberPassword, SIGNAL(stateChanged(int)), this, SLOT(dataChanged()));
 	formLayout->addRow(0, RememberPassword);
+	
+	QLabel *changePasswordLabel = new QLabel(QString("<a href='change'>%1</a>").arg(tr("Change Your Password")));
+	changePasswordLabel->setTextInteractionFlags(Qt::LinksAccessibleByKeyboard | Qt::LinksAccessibleByMouse);
+	formLayout->addRow(0, changePasswordLabel);
+	connect(changePasswordLabel, SIGNAL(linkActivated(QString)), this, SLOT(changePasssword()));
 
 	Identities = new IdentitiesComboBox(this);
 	connect(Identities, SIGNAL(activated(int)), this, SLOT(dataChanged()));
@@ -461,4 +467,17 @@ void JabberEditAccountWidget::removeAccount()
 
 	delete messageBox;
 }
+
+void JabberEditAccountWidget::changePasssword()
+{
+	JabberChangePasswordWindow *changePasswordWindow = new JabberChangePasswordWindow(account());
+	connect(changePasswordWindow, SIGNAL(passwordChanged(const QString &)), this, SLOT(passwordChanged(const QString &)));
+	changePasswordWindow->show();
+}
+
+void JabberEditAccountWidget::passwordChanged(const QString &newPassword)
+{
+	AccountPassword->setText(newPassword);
+}
+
 
