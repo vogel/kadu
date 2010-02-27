@@ -42,5 +42,5 @@ bool IgnoredBuddyFilter::acceptBuddy(Buddy buddy)
 	if (!Enabled)
 		return true;
 
-	return IgnoredHelper::isIgnored(BuddySet(buddy));
+	return !IgnoredHelper::isIgnored(BuddySet(buddy));
 }
