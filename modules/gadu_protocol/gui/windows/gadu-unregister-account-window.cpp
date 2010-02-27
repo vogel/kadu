@@ -22,6 +22,7 @@
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
+#include <QtGui/QStyle>
 #include <QtGui/QVBoxLayout>
 
 #include "gui/windows/message-dialog.h"
@@ -94,8 +95,8 @@ void GaduUnregisterAccountWindow::createGui()
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 	mainLayout->addWidget(buttons);
 
-	RemoveAccountButton = new QPushButton(IconsManager::instance()->iconByPath("16x16/dialog-apply.png"), tr("Send Password"), this);
-	QPushButton *cancelButton = new QPushButton(IconsManager::instance()->iconByPath("16x16/dialog-cancel.png"), tr("Cancel"), this);
+	RemoveAccountButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogApplyButton), tr("Send Password"), this);
+	QPushButton *cancelButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Cancel"), this);
 
 	connect(RemoveAccountButton, SIGNAL(clicked(bool)), this, SLOT(removeAccount()));
 	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(close()));

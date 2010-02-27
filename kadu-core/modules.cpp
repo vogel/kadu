@@ -186,7 +186,7 @@ ModulesDialog::ModulesDialog(QWidget *parent)
 	hideBaseModules = new QCheckBox(tr("Hide base modules"), bottom);
 	hideBaseModules->setChecked(config_file.readBoolEntry("General", "HideBaseModules"));
 	connect(hideBaseModules, SIGNAL(clicked()), this, SLOT(refreshList()));
-	QPushButton *pb_close = new QPushButton(IconsManager::instance()->iconByPath("16x16/dialog-cancel.png"), tr("&Close"), bottom);
+	QPushButton *pb_close = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("&Close"), bottom);
 
 	bottomLayout->addWidget(hideBaseModules);
 	bottomLayout->addStretch();

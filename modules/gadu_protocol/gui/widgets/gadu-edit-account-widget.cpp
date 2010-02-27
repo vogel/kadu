@@ -20,6 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QApplication>
 #include <QtGui/QCheckBox>
 #include <QtGui/QComboBox>
 #include <QtGui/QDialogButtonBox>
@@ -83,13 +84,13 @@ void GaduEditAccountWidget::createGui()
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 
-	ApplyButton = new QPushButton(IconsManager::instance()->iconByPath("16x16/dialog-apply.png"), tr("Apply"), this);
+	ApplyButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogApplyButton), tr("Apply"), this);
 	connect(ApplyButton, SIGNAL(clicked(bool)), this, SLOT(apply()));
 
-	CancelButton = new QPushButton(IconsManager::instance()->iconByPath("16x16/dialog-cancel.png"), tr("Cancel"), this);
+	CancelButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Cancel"), this);
 	connect(CancelButton, SIGNAL(clicked(bool)), this, SLOT(cancel()));
 
-	QPushButton *removeAccount = new QPushButton(IconsManager::instance()->iconByPath("16x16/dialog-cancel.png"), tr("Delete account"), this);
+	QPushButton *removeAccount = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Delete account"), this);
 	connect(removeAccount, SIGNAL(clicked(bool)), this, SLOT(removeAccount()));
 
 	buttons->addButton(ApplyButton, QDialogButtonBox::ApplyRole);

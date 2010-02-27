@@ -140,12 +140,12 @@ void BuddyDataWindow::createButtons(QLayout *layout)
 {
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 
-	OkButton = new QPushButton(IconsManager::instance()->iconByPath("16x16/dialog-ok.png"), tr("OK"), this);
+	OkButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("OK"), this);
 	buttons->addButton(OkButton, QDialogButtonBox::AcceptRole);
-	ApplyButton = new QPushButton(IconsManager::instance()->iconByPath("16x16/dialog-apply.png"), tr("Apply"), this);
+	ApplyButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogApplyButton), tr("Apply"), this);
 	buttons->addButton(ApplyButton, QDialogButtonBox::ApplyRole);
 
-	QPushButton *cancelButton = new QPushButton(IconsManager::instance()->iconByPath("16x16/dialog-cancel.png"), tr("Cancel"), this);
+	QPushButton *cancelButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Cancel"), this);
 	buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
 
 	connect(OkButton, SIGNAL(clicked(bool)), this, SLOT(updateBuddyAndClose()));

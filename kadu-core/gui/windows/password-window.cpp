@@ -17,11 +17,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QApplication>
 #include <QtGui/QCheckBox>
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
+#include <QtGui/QStyle>
 #include <QtGui/QVBoxLayout>
 
 #include "icons-manager.h"
@@ -52,10 +54,10 @@ PasswordWindow::PasswordWindow(const QString &message, QWidget *parent) :
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 
-	QPushButton *okButton = new QPushButton(IconsManager::instance()->iconByPath("16x16/dialog-ok.png"), tr("Ok"), this);
+	QPushButton *okButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("Ok"), this);
 	okButton->setDefault(true);
 	buttons->addButton(okButton, QDialogButtonBox::AcceptRole);
-	QPushButton *cancelButton = new QPushButton(IconsManager::instance()->iconByPath("16x16/dialog-cancel.png"), tr("Cancel"), this);
+	QPushButton *cancelButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Cancel"), this);
 	buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
 
 	connect(okButton, SIGNAL(clicked(bool)), this, SLOT(accepted()));

@@ -69,11 +69,11 @@ ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &cap
 
 	QDialogButtonBox *buttons_layout = new QDialogButtonBox(Qt::Horizontal, this);
 
-	QPushButton *okButton = new QPushButton(IconsManager::instance()->iconByPath("16x16/dialog-ok.png"), tr("Ok"), this);
+	QPushButton *okButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("Ok"), this);
 	buttons_layout->addButton(okButton, QDialogButtonBox::AcceptRole);
-	QPushButton *applyButton = new QPushButton(IconsManager::instance()->iconByPath("16x16/dialog-apply.png"), tr("Apply"), this);
+	QPushButton *applyButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogApplyButton), tr("Apply"), this);
 	buttons_layout->addButton(applyButton, QDialogButtonBox::ApplyRole);
-	QPushButton *cancelButton = new QPushButton(IconsManager::instance()->iconByPath("16x16/dialog-cancel.png"), tr("Cancel"), this);
+	QPushButton *cancelButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Cancel"), this);
 	buttons_layout->addButton(cancelButton, QDialogButtonBox::RejectRole);
 
 	connect(okButton, SIGNAL(clicked(bool)), this, SLOT(updateAndCloseConfig()));

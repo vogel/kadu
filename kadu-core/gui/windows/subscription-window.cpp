@@ -20,6 +20,7 @@
  */
 
 #include <QtGui/QAction>
+#include <QtGui/QApplication>
 #include <QtGui/QCheckBox>
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QInputDialog>
@@ -68,10 +69,10 @@ SubscriptionWindow::SubscriptionWindow(Contact contact, QWidget *parent) :
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 
-	QPushButton *okButton = new QPushButton(IconsManager::instance()->iconByPath("16x16/dialog-ok.png"), tr("Allow"), this);
+	QPushButton *okButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("Allow"), this);
 	okButton->setDefault(true);
 	buttons->addButton(okButton, QDialogButtonBox::AcceptRole);
-	QPushButton *cancelButton = new QPushButton(IconsManager::instance()->iconByPath("16x16/dialog-cancel.png"), tr("Ignore"), this);
+	QPushButton *cancelButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Ignore"), this);
 	buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
 
 	connect(okButton, SIGNAL(clicked(bool)), this, SLOT(accepted()));

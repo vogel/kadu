@@ -17,6 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QApplication>
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QLabel>
@@ -65,12 +66,12 @@ void MergeBuddiesWindow::createGui()
 	QDialogButtonBox *buttons = new QDialogButtonBox(this);
 	layout->addWidget(buttons);
 
-	MergeButton = new QPushButton(IconsManager::instance()->iconByPath("16x16/dialog-ok.png"), tr("Merge"), this);
+	MergeButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("Merge"), this);
 	MergeButton->setDefault(true);
 	MergeButton->setEnabled(false);
 	connect(MergeButton, SIGNAL(clicked(bool)), this, SLOT(accept()));
 
-	QPushButton *cancel = new QPushButton(IconsManager::instance()->iconByPath("16x16/dialog-cancel.png"), tr("Cancel"), this);
+	QPushButton *cancel = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Cancel"), this);
 	connect(cancel, SIGNAL(clicked(bool)), this, SLOT(reject()));
 
 	buttons->addButton(MergeButton, QDialogButtonBox::AcceptRole);

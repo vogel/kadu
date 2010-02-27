@@ -35,6 +35,7 @@
 #include <QtGui/QKeyEvent>
 #include <QtGui/QLabel>
 #include <QtGui/QPushButton>
+#include <QtGui/QStyle>
 #include <QtGui/QTabWidget>
 #include <QtGui/QTextEdit>
 
@@ -175,7 +176,7 @@ About::About(QWidget *parent)
 	QWidget *blank2 = new QWidget;
 	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
 
-	QPushButton *pb_close = new QPushButton(IconsManager::instance()->iconByPath("16x16/dialog-cancel.png"), tr("&Close"));
+	QPushButton *pb_close = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("&Close"));
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
 
 	QHBoxLayout *bottom_layout = new QHBoxLayout(bottom);

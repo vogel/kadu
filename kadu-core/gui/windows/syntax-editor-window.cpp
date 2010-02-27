@@ -23,6 +23,7 @@
 #include <QtGui/QInputDialog>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QPushButton>
+#include <QtGui/QStyle>
 #include <QtGui/QTextEdit>
 
 #include "configuration/configuration-file.h"
@@ -72,9 +73,9 @@ SyntaxEditorWindow::SyntaxEditorWindow(SyntaxList *syntaxList, const QString &sy
 #ifndef Q_OS_MAC
 	(new QWidget(buttons))->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
 #endif
-	QPushButton *saveSyntax = new QPushButton(IconsManager::instance()->iconByPath("16x16/dialog-ok.png"), tr("Save"), 0);
-	QPushButton *saveAsSyntax = new QPushButton(IconsManager::instance()->iconByPath("16x16/dialog-ok.png"), tr("Save as..."), 0);
-	QPushButton *cancel = new QPushButton(IconsManager::instance()->iconByPath("16x16/dialog-cancel.png"), tr("Cancel"), 0);
+	QPushButton *saveSyntax = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("Save"), 0);
+	QPushButton *saveAsSyntax = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("Save as..."), 0);
+	QPushButton *cancel = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Cancel"), 0);
 
 	buttons_layout->addWidget(saveSyntax);
 	buttons_layout->addWidget(saveAsSyntax);

@@ -106,8 +106,8 @@ PathListEditWindow::PathListEditWindow(const QStringList &pathList, QWidget *par
 
 	QWidget *hm = new QWidget;
 	hm->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
-	QPushButton *ok = new QPushButton(IconsManager::instance()->iconByPath("16x16/dialog-ok.png"), tr("OK"), this);
-	QPushButton *cancel = new QPushButton(IconsManager::instance()->iconByPath("dialog-cancel.png"), tr("&Cancel"), this);
+	QPushButton *ok = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("OK"), this);
+	QPushButton *cancel = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton, tr("&Cancel"), this);
 	bottom_layout->addWidget(hm);
 	bottom_layout->addWidget(ok);
 	bottom_layout->addWidget(cancel);
