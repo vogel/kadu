@@ -105,7 +105,7 @@ void GaduChangePasswordWindow::createGui()
 	ChangePasswordButton = new QPushButton(IconsManager::instance()->iconByPath("16x16/dialog-apply.png"), tr("Change Password"), this);
 	QPushButton *cancelButton = new QPushButton(IconsManager::instance()->iconByPath("16x16/dialog-cancel.png"), tr("Cancel"), this);
 
-	connect(ChangePasswordButton, SIGNAL(clicked(bool)), this, SLOT(ChangePassword()));
+	connect(ChangePasswordButton, SIGNAL(clicked(bool)), this, SLOT(changePassword()));
 	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(close()));
 
 	buttons->addButton(ChangePasswordButton, QDialogButtonBox::ApplyRole);
@@ -137,7 +137,7 @@ void GaduChangePasswordWindow::changePassword()
 	GaduServerChangePassword *gscp = new GaduServerChangePassword(Uin, EMail->text(), OldPassword->text(), NewPassword->text(),
 			MyTokenWidget->tokenId(), MyTokenWidget->tokenValue());
 	connect(gscp, SIGNAL(finished(GaduServerChangePassword *)),
-			this, SLOT(remindPasswordFinished(GaduServerChangePassword *)));
+			this, SLOT(changingFinished(GaduServerChangePassword *)));
 
 	gscp->performAction();
 }
