@@ -88,8 +88,6 @@ KaduWindow::~KaduWindow()
 
 void KaduWindow::createGui()
 {
-	createMenu();
-
 	MainWidget = new QWidget();
 	MainLayout = new QVBoxLayout(MainWidget);
 	MainLayout->setMargin(0);
@@ -146,6 +144,8 @@ void KaduWindow::createGui()
 #ifdef Q_OS_MAC
 	qt_mac_set_dock_menu(dockMenu);
 #endif
+	createMenu();
+
 }
 
 void KaduWindow::createMenu()
@@ -162,7 +162,7 @@ void KaduWindow::createKaduMenu()
 
 	RecentChatsMenu = new QMenu();
 	RecentChatsMenu->setIcon(IconsManager::instance()->iconByPath("16x16/internet-group-chat.png"));
-	RecentChatsMenu->setTitle(tr("Recent chats..."));
+	RecentChatsMenu->setTitle(tr("Recent chats"));
 	connect(KaduMenu, SIGNAL(aboutToShow()), this, SLOT(createRecentChatsMenu()));
 	connect(RecentChatsMenu, SIGNAL(triggered(QAction *)), this, SLOT(openRecentChats(QAction *)));
 
@@ -193,7 +193,11 @@ void KaduWindow::createContactsMenu()
 	ContactsMenu->addSeparator();
 
 	insertMenuActionDescription(Actions->ManageIgnored, MenuContacts);
-//	insertMenuActionDescription(Actions->ImportExportContacts, MenuContacts);
+
+	ContactsMenu->addSeparator();
+	insertMenuActionDescription(Actions->InactiveUsers, MenuContacts);
+	insertMenuActionDescription(Actions->ShowIgnoredBuddies, MenuContacts);
+	insertMenuActionDescription(Actions->ShowInfoPanel, MenuContacts);
 
 	menuBar()->addMenu(ContactsMenu);
 }
@@ -204,10 +208,11 @@ void KaduWindow::createHelpMenu()
 	HelpMenu->setTitle(tr("&Help"));
 
 	insertMenuActionDescription(Actions->Help, MenuHelp);
-	HelpMenu->addSeparator();
 	insertMenuActionDescription(Actions->Bugs, MenuHelp);
-	insertMenuActionDescription(Actions->Support, MenuHelp);
+	HelpMenu->addSeparator();
 	insertMenuActionDescription(Actions->GetInvolved, MenuHelp);
+	insertMenuActionDescription(Actions->Support, MenuHelp);
+	insertMenuActionDescription(Actions->Translate, MenuHelp);
 	HelpMenu->addSeparator();
 	insertMenuActionDescription(Actions->About, MenuHelp);
 
@@ -291,29 +296,6 @@ void KaduWindow::closeEvent(QCloseEvent *e)
 		qApp->quit();
 }
 
-void KaduWindow::customEvent(QEvent *e)
-{
-	Q_UNUSED(e)
-// TODO: 0.6.6
-// 	Account defaultAccount = AccountManager::instance()->defaultAccount();
-// 
-// 	if (int(e->type()) == 4321)
-// 		show();
-// 	else if (int(e->type()) == 5432)
-// 	{
-// 		OpenGGChatEvent *ev = static_cast<OpenGGChatEvent *>(e);
-// 		if (ev->number() > 0)
-// 		{
-// 			Contact contact = userlist->byID("Gadu", QString::number(ev->number())).toContact(defaultAccount);
-// 			ContactList contacts;
-// 			contacts << contact;
-// 			chat_manager->openChatWidget(defaultAccount, contacts, true);
-// 		}
-// 	}
-// 	else
-// 		KaduMainWIndow::customEvent(e);
-}
-
 void KaduWindow::keyPressEvent(QKeyEvent *e)
 {
 	if (e->key() == Qt::Key_Escape)
@@ -371,7 +353,6 @@ void KaduWindow::configurationUpdated()
 	QFont userboxFont = QFont(config_file.readFontEntry("Look", "UserboxFont"));
 	GroupBar->setFont(QFont(userboxFont.family(), userboxFont.pointSize(), 75));
 
-	InfoPanel->setVisible(config_file.readBoolEntry("Look", "ShowInfoPanel"));
 	setDocked(Docked);
 
 	if (config_file.readBoolEntry("Look", "UseUserboxBackground", true))

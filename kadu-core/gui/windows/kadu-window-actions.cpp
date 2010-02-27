@@ -331,6 +331,26 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		"16x16/help-about.png", "16x16/help-about.png", tr("A&bout Kadu")
 	);
 
+	Translate = new ActionDescription(this,
+		ActionDescription::TypeMainMenu, "translateAction",
+		this, SLOT(translateActionActivated(QAction *, bool)),
+		"", "", tr("Translate Kadu...")
+	);
+// TODO 0.6.6: icon
+	ShowInfoPanel = new ActionDescription(this,
+		ActionDescription::TypeMainMenu, "showInfoPanelAction",
+		this, SLOT(showInfoPanelActionActivated(QAction *, bool)),
+		"", "", tr("Show Information Panel"), true
+	);
+	connect(ShowInfoPanel, SIGNAL(actionCreated(Action *)), this, SLOT(showInfoPanelActionCreated(Action *)));
+// TODO 0.6.6: icon
+	ShowIgnoredBuddies = new ActionDescription(this,
+		ActionDescription::TypeMainMenu, "showIgnoredAction",
+		this, SLOT(showIgnoredActionActivated(QAction *, bool)),
+		"", "", tr("Show Ignored Buddies"), true
+	);
+	connect(ShowIgnoredBuddies, SIGNAL(actionCreated(Action *)), this, SLOT(showIgnoredActionCreated(Action *)));
+
 
 	CopyDescription = new ActionDescription(this,
 		ActionDescription::TypeUser, "copyDescriptionAction",
@@ -550,6 +570,29 @@ void KaduWindowActions::useProxyActionCreated(Action *action)
 	action->setChecked(config_file.readBoolEntry("Network", "UseProxy", false));
 }
 
+void KaduWindowActions::showInfoPanelActionCreated(Action *action)
+{
+	action->setChecked(config_file.readBoolEntry("Look", "ShowInfoPanel"));
+}
+
+void KaduWindowActions::showIgnoredActionCreated(Action *action)
+{
+	MainWindow *window = qobject_cast<MainWindow *>(action->parent());
+	if (!window)
+		return;
+	if (!window->contactsListView())
+		return;
+
+	bool enabled = config_file.readBoolEntry("General", "ShowBlocked");
+	IgnoredBuddyFilter *ibf = new IgnoredBuddyFilter(action);
+	ibf->setEnabled(!enabled);
+
+	action->setData(QVariant::fromValue(ibf));
+	action->setChecked(enabled);
+
+	window->contactsListView()->addFilter(ibf);
+}
+
 void KaduWindowActions::configurationActionActivated(QAction *sender, bool toggled)
 {
 	Q_UNUSED(sender)
@@ -702,6 +745,40 @@ void KaduWindowActions::aboutActionActivated(QAction *sender, bool toggled)
 	Q_UNUSED(toggled)
 
 	(new ::About(Core::instance()->kaduWindow()))->show();
+}
+
+void KaduWindowActions::translateActionActivated(QAction *sender, bool toggled)
+{
+	Q_UNUSED(sender)
+	Q_UNUSED(toggled)
+
+	openWebBrowser("http://www.kadu.net/forum/viewforum.php?f=19");
+}
+
+void KaduWindowActions::showInfoPanelActionActivated(QAction *sender, bool toggled)
+{
+	Q_UNUSED(sender)
+	Q_UNUSED(toggled)
+
+	Core::instance()->kaduWindow()->infoPanel()->setVisible(toggled);
+
+	config_file.writeEntry("Look", "ShowInfoPanel", toggled);
+}
+
+void KaduWindowActions::showIgnoredActionActivated(QAction *sender, bool toggled)
+{
+	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
+	if (!window)
+		return;
+
+	QVariant v = sender->data();
+	if (v.canConvert<IgnoredBuddyFilter *>())
+	{
+		IgnoredBuddyFilter *ibf = v.value<IgnoredBuddyFilter *>();
+		ibf->setEnabled(!toggled);
+		config_file.writeEntry("General", "ShowBlocked", toggled);
+	}
+
 }
 
 void KaduWindowActions::writeEmailActionActivated(QAction *sender, bool toggled)
@@ -1026,6 +1103,19 @@ void KaduWindowActions::useProxyActionActivated(QAction *sender, bool toggled)
 
 	foreach (Action *action, UseProxy->actions())
 		action->setChecked(toggled);
+}
+
+void KaduWindowActions::configurationUpdated()
+{
+	if (ShowInfoPanel->action(Core::instance()->kaduWindow())->isChecked() != config_file.readBoolEntry("Look", "ShowInfoPanel"))
+		ShowInfoPanel->action(Core::instance()->kaduWindow())->trigger();
+
+	if (InactiveUsers->action(Core::instance()->kaduWindow())->isChecked() != config_file.readBoolEntry("General", "ShowOffline"))
+		InactiveUsers->action(Core::instance()->kaduWindow())->trigger();
+
+	if (ShowIgnoredBuddies->action(Core::instance()->kaduWindow())->isChecked() != config_file.readBoolEntry("General", "ShowBlocked"))
+		ShowIgnoredBuddies->action(Core::instance()->kaduWindow())->trigger();
+
 }
 
 // void Kadu::setProxyActionsStatus() TODO: 0.6.6

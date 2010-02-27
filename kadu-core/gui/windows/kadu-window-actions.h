@@ -23,6 +23,8 @@
 
 #include <QtCore/QObject>
 
+#include "configuration/configuration-aware-object.h"
+
 #include "status/status.h"
 
 class QAction;
@@ -31,7 +33,7 @@ class Action;
 class ActionDescription;
 class StatusContainer;
 
-class KaduWindowActions : QObject
+class KaduWindowActions : QObject, ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -50,6 +52,9 @@ class KaduWindowActions : QObject
 	ActionDescription *Support;
 	ActionDescription *GetInvolved;
 	ActionDescription *About;
+	ActionDescription *Translate;
+	ActionDescription *ShowInfoPanel;
+	ActionDescription *ShowIgnoredBuddies;
 
 	ActionDescription *WriteEmail;
 	ActionDescription *CopyDescription;
@@ -76,6 +81,9 @@ private slots:
 	void editUserActionCreated(Action *action);
 	void showStatusActionCreated(Action *action);
 	void useProxyActionCreated(Action *action);
+	void showInfoPanelActionCreated(Action *action);
+	void showIgnoredActionCreated(Action *action);
+
 
 	void configurationActionActivated(QAction *sender, bool toggled);
 	void yourAccountsActionActivated(QAction *sender, bool toggled);
@@ -90,6 +98,9 @@ private slots:
 	void supportActionActivated(QAction *sender, bool toggled);
 	void getInvolvedActionActivated(QAction *sender, bool toggled);
 	void aboutActionActivated(QAction *sender, bool toggled);
+	void translateActionActivated(QAction *sender, bool toggled);
+	void showInfoPanelActionActivated(QAction *sender, bool toggled);
+	void showIgnoredActionActivated(QAction *sender, bool toggled);
 
 	void writeEmailActionActivated(QAction *sender, bool toggled);
 	void copyDescriptionActionActivated(QAction *sender, bool toggled);
@@ -106,6 +117,9 @@ private slots:
 	void editUserActionActivated(QAction *sender, bool toggled);
 	void showStatusActionActivated(QAction *sender, bool toggled);
 	void useProxyActionActivated(QAction *sender, bool toggled);
+
+protected:
+	virtual void configurationUpdated();
 
 public:
 	explicit KaduWindowActions(QObject *parent);
