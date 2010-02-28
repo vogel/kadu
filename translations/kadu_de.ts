@@ -82,19 +82,19 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source>%1 weeks and day ago at </source>
-        <translation type="unfinished"></translation>
+        <translation>Vor %1Wochen und Tagen um </translation>
     </message>
     <message>
         <source>week ago at </source>
-        <translation type="unfinished"></translation>
+        <translation>Vor einer Woche um</translation>
     </message>
     <message>
         <source>week and day ago at </source>
-        <translation type="unfinished"></translation>
+        <translation>Vor einer Woche und einem Tag um </translation>
     </message>
     <message>
         <source>week and %2 days ago at </source>
-        <translation type="unfinished"></translation>
+        <translation>Vor einer Woche und %2 Tagen um </translation>
     </message>
     <message>
         <source>d MMMM yyyy at </source>
@@ -158,11 +158,11 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source>Conference window title prefix</source>
-        <translation>Prefix für Konferrenz-Fenstertitel</translation>
+        <translation>Prefix für Konferenz-Fenstertitel</translation>
     </message>
     <message>
         <source>Conference window title syntax</source>
-        <translation>Syntax für den Fenstertitel einer Konferrenz</translation>
+        <translation>Syntax für den Fenstertitel einer Konferenz</translation>
     </message>
     <message>
         <source>Kadu</source>
@@ -290,19 +290,19 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source>Window activation method</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktivieren des Fensters</translation>
     </message>
     <message>
         <source>Select method</source>
-        <translation type="unfinished"></translation>
+        <translation>Methode auswählen</translation>
     </message>
     <message>
         <source>Move the window to an active desktop</source>
-        <translation type="unfinished"></translation>
+        <translation>Fenster auf die aktive Oberfläche verschieben</translation>
     </message>
     <message>
         <source>Switch desktop to make the window visible</source>
-        <translation type="unfinished"></translation>
+        <translation>Oberfläche umschalten, um das Fenster anzuzeigen</translation>
     </message>
     <message>
         <source>Debugging</source>
@@ -423,7 +423,7 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source>Ignore messages from anonymous users also in conferences</source>
-        <translation>Ignoriere Nachrichten von anonymen Absendern auch in Konferrenzen</translation>
+        <translation>Ignoriere Nachrichten von anonymen Absendern auch in Konferenzen</translation>
     </message>
     <message>
         <source>Ignore richtext from anonymous users</source>
@@ -691,23 +691,23 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source>Selector behavior</source>
-        <translation type="unfinished"></translation>
+        <translation>Auswahl-Verhalten</translation>
     </message>
     <message>
         <source>Choose the way emoticons are scaled in the selector</source>
-        <translation type="unfinished"></translation>
+        <translation>Wählen Sie die Art und Weise der Größenanpassung von Smilies in der Auswahl</translation>
     </message>
     <message>
         <source>Scale all emoticons</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle Smilies skallieren</translation>
     </message>
     <message>
         <source>Scale only static emoticons</source>
-        <translation type="unfinished"></translation>
+        <translation>Nur statische Smilies skallieren</translation>
     </message>
     <message>
-        <source>Don't scale emoticons</source>
-        <translation type="unfinished"></translation>
+        <source>Don&apos;t scale emoticons</source>
+        <translation>Keine Smilies skallieren</translation>
     </message>
     <message>
         <source>Advanced...</source>
@@ -835,7 +835,7 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source>Show emoticons in information panel</source>
-        <translation>Zeige Simlies im Informationspannel&lt;</translation>
+        <translation>Zeige Simlies im Informationspannel</translation>
     </message>
     <message>
         <source>Choose information panel style</source>
@@ -959,7 +959,7 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source>Remember recent chats for</source>
-        <translation type="unfinished"></translation>
+        <translation>Chats speichern für die Dauer von </translation>
     </message>
     <message>
         <source>Closing</source>
@@ -1107,23 +1107,23 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source>Startup</source>
-        <translation type="unfinished"></translation>
+        <translation>Programmstart</translation>
     </message>
     <message>
         <source>Start on startup</source>
-        <translation type="unfinished"></translation>
+        <translation>Starten beim Programmstart</translation>
     </message>
     <message>
         <source>Automatically start on system startup</source>
-        <translation type="unfinished"></translation>
+        <translation>Automatisch starten beim Systemstart</translation>
     </message>
     <message>
         <source>Displays messages from anonymous users without formatting (colors, images, font weight...) Text is plain black.</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Nachrichten von Unbekannten unformatiert (keine Farben, Fettschrift, Bilder...) Text ist unformatiert und schwarz.</translation>
     </message>
     <message>
         <source>Display dates is nice format, like Today, Yesterday or Friday</source>
-        <translation type="unfinished"></translation>
+        <translation>Datumsangaben menschenfreundlich darstellen, wie: Heute, Gestern, am Freitag</translation>
     </message>
     <message>
         <source>Connection error</source>
@@ -1243,15 +1243,15 @@ kurz nachdem Sie sich mit dem Server verbunden haben</translation>
     </message>
     <message>
         <source>Version %1 %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Version %1 %2</translation>
     </message>
     <message>
         <source>Instant Messenger</source>
-        <translation type="unfinished"></translation>
+        <translation>Chat-Programm</translation>
     </message>
     <message>
         <source>Support:</source>
-        <translation type="unfinished"></translation>
+        <translation>Support:</translation>
     </message>
 </context>
 <context>
@@ -1382,7 +1382,7 @@ Einige von ihnen bekommen sie wahrscheinlich nicht.</translation>
         <source>All messages received in this conference will be ignored
 from now on. Are you sure you want to leave this conference?</source>
         <translation>Alle Nachrichten, die in dieser Konferrenz empfangen werden, werden 
-von nun an ignoriert. Wollen Sie diese Konferrenz wirklich verlassen?</translation>
+von nun an ignoriert. Wollen Sie diese Konferenz wirklich verlassen?</translation>
     </message>
 </context>
 <context>
@@ -1426,31 +1426,31 @@ von nun an ignoriert. Wollen Sie diese Konferrenz wirklich verlassen?</translati
     <name>CustomInput</name>
     <message>
         <source>Undo</source>
-        <translation type="unfinished"></translation>
+        <translation>Zurück</translation>
     </message>
     <message>
         <source>Redo</source>
-        <translation type="unfinished"></translation>
+        <translation>Wiederherstellen</translation>
     </message>
     <message>
         <source>Cut</source>
-        <translation type="unfinished"></translation>
+        <translation>Ausschneiden</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopieren</translation>
     </message>
     <message>
         <source>Paste</source>
-        <translation type="unfinished"></translation>
+        <translation>Einfügen</translation>
     </message>
     <message>
         <source>Clear</source>
-        <translation type="unfinished"></translation>
+        <translation>Leeren</translation>
     </message>
     <message>
         <source>Select All</source>
-        <translation type="unfinished"></translation>
+        <translation>Alles auswählen</translation>
     </message>
 </context>
 <context>
@@ -1740,7 +1740,7 @@ Zu viel Versuche mit falschem Passwort</translation>
     </message>
     <message>
         <source>Change status</source>
-        <translation type="unfinished"></translation>
+        <translation>Zustand ändern</translation>
     </message>
     <message>
         <source>Selected users:
@@ -1750,42 +1750,42 @@ Zu viel Versuche mit falschem Passwort</translation>
     </message>
     <message>
         <source>Menu</source>
-        <translation type="unfinished"></translation>
+        <translation>Menü</translation>
     </message>
     <message>
         <source>Online</source>
-        <translation type="unfinished">Erreichbar</translation>
+        <translation>Erreichbar</translation>
     </message>
     <message>
         <source>Online (d.)</source>
-        <translation type="unfinished">Erreichbar (Beschr.)</translation>
+        <translation>Erreichbar (Beschr.)</translation>
     </message>
     <message>
         <source>Busy</source>
-        <translation type="unfinished">Beschäftigt</translation>
+        <translation>Beschäftigt</translation>
     </message>
     <message>
         <source>Busy (d.)</source>
-        <translation type="unfinished">Beschäftigt (Beschr.)</translation>
+        <translation>Beschäftigt (Beschr.)</translation>
     </message>
     <message>
         <source>Invisible</source>
-        <translation type="unfinished">Versteckt</translation>
+        <translation>Versteckt</translation>
     </message>
     <message>
         <source>Invisible (d.)</source>
-        <translation type="unfinished">Versteckt (Beschr.)</translation>
+        <translation>Versteckt (Beschr.)</translation>
     </message>
     <message>
         <source>Offline (d.)</source>
-        <translation type="unfinished">Offline (Beschr.)</translation>
+        <translation>Offline (Beschr.)</translation>
     </message>
 </context>
 <context>
     <name>KaduMainWindow</name>
     <message>
         <source>Create new toolbar</source>
-        <translation type="unfinished">Neue Werkzeugleiste erstellen</translation>
+        <translation>Neue Werkzeugleiste erstellen</translation>
     </message>
 </context>
 <context>
@@ -1823,19 +1823,19 @@ Zu viel Versuche mit falschem Passwort</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopieren</translation>
     </message>
     <message>
         <source>Copy Link</source>
-        <translation type="unfinished"></translation>
+        <translation>Link kopieren#</translation>
     </message>
     <message>
         <source>Copy Image</source>
-        <translation type="unfinished"></translation>
+        <translation>Bild kopieren</translation>
     </message>
     <message>
         <source>Save Image</source>
-        <translation type="unfinished"></translation>
+        <translation>Bild speichern</translation>
     </message>
 </context>
 <context>
@@ -1941,12 +1941,13 @@ mit:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Bringt mit:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Autor
     </message>
     <message>
         <source>&lt;b&gt;Module: &lt;/b&gt;%1&lt;br/&gt;&lt;b&gt;Depends on: &lt;/b&gt;%2&lt;br/&gt;&lt;b&gt;Conflicts with: &lt;/b&gt;%3&lt;br/&gt;&lt;b&gt;Provides: &lt;/b&gt;%4&lt;br/&gt;&lt;b&gt;Author: &lt;/b&gt;%5&lt;br/&gt;&lt;b&gt;Version: &lt;/b&gt;%6&lt;br/&gt;&lt;b&gt;Description: &lt;/b&gt;%7</source>
-        <translation>&lt;b&gt;Das Modul: &lt;/b&gt;%1&lt;br/&gt;&lt;b&gt;Hängt ab von: &lt;/b&gt;%2&lt;br/&gt;&lt;b&gt;Im Konflikt mit: &lt;/b&gt;%3&lt;br/&gt;&lt;b&gt;Frührt mit: &lt;/b&gt;&lt;br/&gt;&lt;b&gt;Autor: &lt;/b&gt;%5&lt;br/&gt;&lt;b&gt;Version: &lt;/b&gt;%6&lt;br/&gt;&lt;b&gt;Beschreibung: &lt;/b&gt;%7</translation>
+        <translation>&lt;b&gt;Das Modul: &lt;/b&gt;%1&lt;br/&gt;&lt;b&gt;Hängt ab von: &lt;/b&gt;%2&lt;br/&gt;&lt;b&gt;Im Konflikt mit: &lt;/b&gt;%3&lt;br/&gt;&lt;b&gt;Frührt mit: &lt;/b&gt;%4&lt;br/&gt;&lt;b&gt;Autor: &lt;/b&gt;%5&lt;br/&gt;&lt;b&gt;Version: &lt;/b&gt;%6&lt;br/&gt;&lt;b&gt;Beschreibung: &lt;/b&gt;%7</translation>
     </message>
     <message>
         <source>This dialog box allows you to manage installed modules. Modules are responsible for numerous vital features like playing sounds or message encryption.
 You can load (or unload) them by double-clicking on their names.</source>
-        <translation type="unfinished"></translation>
+        <translation>Hier können Sie die installierten Module verwalten. Module sind dafür zuständig, das Programm um zusätzliche Funktionen wie das abspielen von Klängen oder die Verschlüßelung.
+Sie können diese aktivieren oder deaktivieren, indem Sie auf deren Namen doppelklicken.</translation>
     </message>
 </context>
 <context>
@@ -2247,11 +2248,11 @@ Vielleicht ist es kein Kadu-Modul.</translation>
     </message>
     <message>
         <source>Select File</source>
-        <translation type="unfinished"></translation>
+        <translation>Datei einfügen</translation>
     </message>
     <message>
         <source>Select audio File</source>
-        <translation type="unfinished"></translation>
+        <translation>Audio-Datei auswählen</translation>
     </message>
 </context>
 <context>
@@ -2354,19 +2355,19 @@ Vielleicht ist es kein Kadu-Modul.</translation>
     </message>
     <message>
         <source>Show text label</source>
-        <translation type="unfinished">Textfläche zeigen</translation>
+        <translation>Textfläche anzeigen</translation>
     </message>
     <message>
         <source>Delete button</source>
-        <translation type="unfinished">Schaltfläche entfernen</translation>
+        <translation>Schaltfläche entfernen</translation>
     </message>
     <message>
         <source>Create new toolbar</source>
-        <translation type="unfinished">Neue Werkzeugleiste erstellen</translation>
+        <translation>Neue Werkzeugleiste erstellen</translation>
     </message>
     <message>
         <source>Block toolbars</source>
-        <translation type="unfinished">Werkzeugleisten blockieren</translation>
+        <translation>Werkzeugleisten blockieren</translation>
     </message>
 </context>
 <context>
@@ -2400,7 +2401,7 @@ Vielleicht ist es kein Kadu-Modul.</translation>
     </message>
     <message>
         <source>User management</source>
-        <translation type="unfinished">Benutzerverwaltung</translation>
+        <translation>Benutzerverwaltung</translation>
     </message>
 </context>
 <context>
