@@ -53,7 +53,7 @@
 #include "search-window.h"
 #include <protocols/protocol-factory.h>
 
-SearchActionsSlots *SearchWindow::searchActionsSlot;
+SearchActionsSlots *SearchWindow::searchActionsSlot = 0;
 
 ActionDescription *SearchWindow::firstSearchAction;
 ActionDescription *SearchWindow::nextResultsAction;
@@ -316,6 +316,7 @@ void SearchWindow::initModule()
 void SearchWindow::closeModule()
 {
 	delete searchActionsSlot;
+	searchActionsSlot = 0;
 }
 
 QTreeWidgetItem * SearchWindow::selectedItem()
