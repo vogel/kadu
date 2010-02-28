@@ -23,8 +23,7 @@
 #include "gadu-contact-details.h"
 
 GaduContactDetails::GaduContactDetails(ContactShared *contactShared) :
-		ContactDetails(contactShared),
-		MaxImageSize(0), GaduProtocolVersion(0)
+		ContactDetails(contactShared), GaduProtocolVersion(0)
 {
 }
 

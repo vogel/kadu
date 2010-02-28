@@ -137,7 +137,6 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("Chat", "IgnoreAnonymousUsersInConferences", false);
 	config_file.addVariable("Chat", "LastImagePath", QString(getenv("HOME")) + '/');
 	config_file.addVariable("Chat", "MaxImageRequests", 5);
-	config_file.addVariable("Chat", "MaxImageSize", 255);
 	config_file.addVariable("Chat", "MessageAcks", false);
 	config_file.addVariable("Chat", "NewMessagesInChatTitle", false);
 	config_file.addVariable("Chat", "OpenChatOnMessage", true);

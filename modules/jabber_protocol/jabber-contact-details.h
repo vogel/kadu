@@ -28,7 +28,6 @@
 
 class JabberContactDetails : public ContactDetails
 {
-	PROPERTY_DEC(unsigned long, MaxImageSize)
 
 public:
 	explicit JabberContactDetails(ContactShared *contactShared);
@@ -36,8 +35,6 @@ public:
 
 	virtual bool validateId();
 	virtual void store();
-
-	PROPERTY_DEF(unsigned long, maxImageSize, setMaxImageSize, MaxImageSize)
 
 };
 

@@ -32,6 +32,7 @@
 #include "configuration/configuration-file.h"
 #include "buddies/buddy-manager.h"
 
+#include "gadu-account-details.h"
 #include "gadu-protocol.h"
 
 #include "gadu-formatter.h"
@@ -156,8 +157,8 @@ void GaduFormater::appendToMessage(Account account, FormattedMessage &result, Ui
 
 	if (format.font & GG_FONT_IMAGE)
 	{
-		uint32_t size = gg_fix32(image.size);
-		uint32_t crc32 = gg_fix32(image.crc32);
+		int32_t size = gg_fix32(image.size);
+		int32_t crc32 = gg_fix32(image.crc32);
 
 		if (size == 20 && (crc32 == 4567 || crc32 == 99)) // fake spy images
 			return;
@@ -177,8 +178,11 @@ void GaduFormater::appendToMessage(Account account, FormattedMessage &result, Ui
 			return;
 		}
 
-		unsigned int maxSize = config_file.readUnsignedNumEntry("Chat", "MaxImageSize");
-		if (size > maxSize * 1024)
+		GaduAccountDetails *details = dynamic_cast<GaduAccountDetails *>(account.details());
+		if (!details)
+			return;
+
+		if (size > details->maximumImageSize() * 1024)
 		{
 			result << FormattedMessagePart(qApp->translate("@default", QT_TR_NOOP("###IMAGE TOO BIG###")), false, false, false, textColor);
 			return;

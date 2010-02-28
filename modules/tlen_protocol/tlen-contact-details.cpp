@@ -26,7 +26,7 @@
 class ContactShared;
 
 TlenContactDetails::TlenContactDetails(ContactShared *contactShared) :
-		ContactDetails(contactShared), MaxImageSize(0), TlenProtocolVersion(0),
+		ContactDetails(contactShared), TlenProtocolVersion(0),
 		LookingFor(0), Job(0), TodayPlans(0),
 		ShowStatus(false), HaveMic(false), HaveCam(false)
 {
@@ -48,7 +48,6 @@ void TlenContactDetails::load()
 
 	ContactDetails::load();
 
-	//MaxImageSize = loadValue<unsigned long>("MaxImageSize");
 	TlenProtocolVersion = loadValue<unsigned int>("TlenProtocolVersion");
 	LookingFor = loadValue<unsigned int>("LookingFor");
 	Job = loadValue<unsigned int>("Job");
@@ -63,7 +62,6 @@ void TlenContactDetails::store()
 	if (!isValidStorage())
 		return;
 
-	//storeValue("MaxImageSize", MaxImageSize);
 	storeValue("TlenProtocolVersion", TlenProtocolVersion);
 	storeValue("LookingFor", LookingFor);
 	storeValue("Job", Job);

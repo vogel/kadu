@@ -30,7 +30,6 @@
 
 class GaduContactDetails : public ContactDetails
 {
-	PROPERTY_DEC(unsigned long, MaxImageSize)
 	PROPERTY_DEC(unsigned int, GaduProtocolVersion)
 
 public:
@@ -42,7 +41,6 @@ public:
 
 	GaduProtocol::UinType uin();
 
-	PROPERTY_DEF(unsigned long, maxImageSize, setMaxImageSize, MaxImageSize)
 	PROPERTY_DEF(unsigned int, gaduProtocolVersion, setGaduProtocolVersion, GaduProtocolVersion)
 
 };
