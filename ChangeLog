@@ -2,6 +2,7 @@
 * screenshot: module rewritten, now based on QGraphicsView (Vogel)
 * gadu: image sending fixed (Vogel)
 * core: #331 fixed: save description after change (Vogel)
+* search: #1249 fixed: crash + invalid 'no results' message (Vogel)
 
 +++ version 0.6.6-alpha6
 * gui: rework on YourAccounts window (Vogel)
