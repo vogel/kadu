@@ -196,7 +196,8 @@ int BuddyContactsTableModel::rowCount(const QModelIndex &parent) const
 
 bool BuddyContactsTableModel::insertRows(int row, int count, const QModelIndex& parent)
 {
-	beginInsertRows(parent, row, row + count - 1);
+	Q_UNUSED(row)
+	Q_UNUSED(parent)
 
 	for (int i = 0; i < count; i++)
 	{
@@ -207,8 +208,6 @@ bool BuddyContactsTableModel::insertRows(int row, int count, const QModelIndex& 
 		item->setItemContactPriority(CurrentMaxPriority);
 		addItem(item);
 	}
-
-	endInsertRows();
 
 	return true;
 }

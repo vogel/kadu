@@ -43,7 +43,7 @@ bool BuddyContactsTableModelProxy::filterAcceptsRow(int sourceRow, const QModelI
 		return false;
 
 	BuddyContactsTableItem *item = model->item(sourceRow);
-	return item->itemAccount().details() &&
+	return (!item->itemAccount() || item->itemAccount().details()) &&
 			(item->action() == BuddyContactsTableItem::ItemAdd || item->action() == BuddyContactsTableItem::ItemEdit);
 }
 
