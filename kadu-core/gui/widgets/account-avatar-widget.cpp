@@ -98,7 +98,7 @@ void AccountAvatarWidget::avatarUpdated()
 	AvatarLabel->setMovie(0);
 	QPixmap avatar = MyAccount.accountContact().contactAvatar().pixmap();
 	if (avatar.width() > 128 || avatar.height() > 128)
-		avatar = avatar.scaled(QSize(128, 128), Qt::KeepAspectRatio);
+		avatar = avatar.scaled(QSize(128, 128), Qt::KeepAspectRatio, Qt::SmoothTransformation);
 	AvatarLabel->setPixmap(avatar);
 }
 
