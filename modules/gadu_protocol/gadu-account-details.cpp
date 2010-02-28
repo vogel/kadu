@@ -58,7 +58,7 @@ void GaduAccountDetails::load()
 	DccLocalPort = loadValue<int>("DccLocalPort");
 	RemoveCompletedTransfers = loadValue<bool>("RemoveCompletedTransfers");
 	DccForwarding = loadValue<bool>("DccForwarding");
-	MaximumImageSize = loadValue<short int>("MaximumImageSize");
+	MaximumImageSize = loadValue<short int>("MaximumImageSize", 255);
 
 	QHostAddress host;
 	if (!host.setAddress(loadValue<QString>("DccExternalIp")))
