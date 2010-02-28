@@ -218,6 +218,8 @@ void GaduEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 
 	ReceiveImagesDuringInvisibility = new QCheckBox(tr("Receive images during invisibility"), optionsTab);
 	ReceiveImagesDuringInvisibility->setToolTip(tr("Receiving images during invisibility is allowed"));
+	connect(ReceiveImagesDuringInvisibility, SIGNAL(stateChanged(int)), this, SLOT(dataChanged()));
+
 	imagesLayout->addRow(ReceiveImagesDuringInvisibility);
 
 	MaximumImageRequests = new QSpinBox(optionsTab);
@@ -275,7 +277,11 @@ void GaduEditAccountWidget::apply()
 	account().setHasPassword(!AccountPassword->text().isEmpty());
 
 	if (Details)
+	{
 		Details->setMaximumImageSize(MaximumImageSize->value());
+		Details->setReceiveImagesDuringInvisibility(ReceiveImagesDuringInvisibility->isChecked());
+		Details->setMaximumImageRequests(MaximumImageRequests->value());
+	}
 
 	Proxy->apply();
 
@@ -299,6 +305,8 @@ void GaduEditAccountWidget::dataChanged()
 		&& account().rememberPassword() == RememberPassword->isChecked()
 		&& account().password() == AccountPassword->text()
 		&& Details->maximumImageSize() == MaximumImageSize->value()
+		&& Details->receiveImagesDuringInvisibility() == ReceiveImagesDuringInvisibility->isChecked()
+		&& Details->maximumImageRequests() == MaximumImageRequests->value()
 		&& StateNotChanged == Proxy->state())
 	{
 		setState(StateNotChanged);
@@ -340,7 +348,11 @@ void GaduEditAccountWidget::loadAccountData()
 
 	GaduAccountDetails *details = dynamic_cast<GaduAccountDetails *>(account().details());
 	if (details)
+	{
 		MaximumImageSize->setValue(details->maximumImageSize());
+		ReceiveImagesDuringInvisibility->setChecked(details->receiveImagesDuringInvisibility());
+		MaximumImageRequests->setValue(details->maximumImageRequests());
+	}
 }
 
 void GaduEditAccountWidget::loadConnectionData()
