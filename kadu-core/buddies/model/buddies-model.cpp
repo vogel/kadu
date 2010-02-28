@@ -31,8 +31,8 @@
 
 #include "buddies-model.h"
 
-BuddiesModel::BuddiesModel(BuddyManager *manager, QObject *parent)
-	: BuddiesModelBase(parent), Manager(manager)
+BuddiesModel::BuddiesModel(BuddyManager *manager, QObject *parent) :
+		BuddiesModelBase(parent), Manager(manager)
 {
 	triggerAllAccountsRegistered();
 
@@ -46,14 +46,14 @@ BuddiesModel::BuddiesModel(BuddyManager *manager, QObject *parent)
 			this, SLOT(buddyRemoved(Buddy &)));
 
 	ContactManager *cm = ContactManager::instance();
-	connect(cm, SIGNAL(contactAboutToBeAdded(Contact)),
-			this, SLOT(contactAboutToBeAdded(Contact)));
-	connect(cm, SIGNAL(contactAdded(Contact)),
-			this, SLOT(contactAdded(Contact)));
-	connect(cm, SIGNAL(contactAboutToBeRemoved(Contact)),
-			this, SLOT(contactAboutToBeRemoved(Contact)));
-	connect(cm, SIGNAL(contactRemoved(Contact)),
-			this, SLOT(contactRemoved(Contact)));
+	connect(cm, SIGNAL(contactAboutToBeAttached(Contact)),
+			this, SLOT(contactAboutToBeAttached(Contact)));
+	connect(cm, SIGNAL(contactAttached(Contact)),
+			this, SLOT(contactAttached(Contact)));
+	connect(cm, SIGNAL(contactAboutToBeDetached(Contact)),
+			this, SLOT(contactAboutToBeDetached(Contact)));
+	connect(cm, SIGNAL(contactDetached(Contact)),
+			this, SLOT(contactDetached(Contact)));
 }
 
 BuddiesModel::~BuddiesModel()
@@ -68,6 +68,16 @@ BuddiesModel::~BuddiesModel()
 			this, SLOT(buddyAboutToBeRemoved(Buddy &)));
 	disconnect(Manager, SIGNAL(buddyRemoved(Buddy &)),
 			this, SLOT(buddyRemoved(Buddy &)));
+
+	ContactManager *cm = ContactManager::instance();
+	disconnect(cm, SIGNAL(contactAboutToBeAttached(Contact)),
+			this, SLOT(contactAboutToBeAttached(Contact)));
+	disconnect(cm, SIGNAL(contactAttached(Contact)),
+			this, SLOT(contactAttached(Contact)));
+	disconnect(cm, SIGNAL(contactAboutToBeDetached(Contact)),
+			this, SLOT(contactAboutToBeDetached(Contact)));
+	disconnect(cm, SIGNAL(contactDetached(Contact)),
+			this, SLOT(contactDetached(Contact)));
 }
 
 int BuddiesModel::rowCount(const QModelIndex &parent) const
@@ -129,7 +139,7 @@ void BuddiesModel::buddyUpdated()
 	emit dataChanged(index, index);
 }
 
-void BuddiesModel::contactAboutToBeAdded(Contact contact)
+void BuddiesModel::contactAboutToBeAttached(Contact contact)
 {
 	Buddy buddy = contact.ownerBuddy();
 	if (!buddy)
@@ -145,7 +155,7 @@ void BuddiesModel::contactAboutToBeAdded(Contact contact)
 	connect(contact, SIGNAL(updated()), this, SLOT(contactUpdated()));
 }
 
-void BuddiesModel::contactAdded(Contact contact)
+void BuddiesModel::contactAttached(Contact contact)
 {
 	Buddy buddy = contact.ownerBuddy();
 	if (!buddy)
@@ -158,7 +168,7 @@ void BuddiesModel::contactAdded(Contact contact)
 	endInsertRows();
 }
 
-void BuddiesModel::contactAboutToBeRemoved(Contact contact)
+void BuddiesModel::contactAboutToBeDetached(Contact contact)
 {
 	Buddy buddy = contact.ownerBuddy();
 	if (!buddy)
@@ -174,7 +184,7 @@ void BuddiesModel::contactAboutToBeRemoved(Contact contact)
 	disconnect(contact, SIGNAL(updated()), this, SLOT(contactUpdated()));
 }
 
-void BuddiesModel::contactRemoved(Contact contact)
+void BuddiesModel::contactDetached(Contact contact)
 {
 	Buddy buddy = contact.ownerBuddy();
 	if (!buddy)

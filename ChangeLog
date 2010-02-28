@@ -3,6 +3,7 @@
 * gadu: image sending fixed (Vogel)
 * core: #331 fixed: save description after change (Vogel)
 * search: #1249 fixed: crash + invalid 'no results' message (Vogel)
+* core: #1255 fixed: added contacts are not visible on userlist (Vogel)
 
 +++ version 0.6.6-alpha6
 * gui: rework on YourAccounts window (Vogel)

@@ -46,10 +46,10 @@ private slots:
 
 	void buddyUpdated();
 
-	void contactAboutToBeAdded(Contact contact);
-	void contactAdded(Contact contact);
-	void contactAboutToBeRemoved(Contact contact);
-	void contactRemoved(Contact contact);
+	void contactAboutToBeAttached(Contact contact);
+	void contactAttached(Contact contact);
+	void contactAboutToBeDetached(Contact contact);
+	void contactDetached(Contact contact);
 
 	void contactUpdated();
 
