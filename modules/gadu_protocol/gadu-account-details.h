@@ -41,6 +41,7 @@ class GaduAccountDetails : public AccountDetails
 	PROPERTY_DEC(bool, DccForwarding)
 	PROPERTY_DEC(short int, MaximumImageSize)
 	PROPERTY_DEC(bool, ReceiveImagesDuringInvisibility)
+	PROPERTY_DEC(short int, MaximumImageRequests)
 
 	GaduOpenChatWithRunner *OpenChatRunner;
 
@@ -66,6 +67,7 @@ public:
 	PROPERTY_DEF(bool, dccForwarding, setDccForwarding, DccForwarding)
 	PROPERTY_DEF(short int, maximumImageSize, setMaximumImageSize, MaximumImageSize)
 	PROPERTY_DEF(bool, receiveImagesDuringInvisibility, setReceiveImagesDuringInvisibility, ReceiveImagesDuringInvisibility)
+	PROPERTY_DEF(short int, maximumImageRequests, setMaximumImageRequests, MaximumImageRequests)
 
 	void import_0_6_5_LastStatus();
 

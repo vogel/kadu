@@ -331,11 +331,6 @@ Text is plain black." />
 					  tool-tip="Number of visible messages" />
 			</group-box>
 
-			<group-box name="Images">
-				<spin-box caption="Limit numbers of image recevied per minute" config-section="Chat" config-item="MaxImageRequests" min-value="1" max-value="30"
-					  tool-tip="Define limit of images received per minute" />
-			</group-box>
-
 			<group-box name="Link folding">
 				<check-box caption="Automatically fold links" config-section="Chat" config-item="FoldLink" id="foldLink" />
 				<spin-box caption="Fold links longer than" config-section="Chat" config-item="LinkFoldTreshold" min-value="1" max-value="500" id="linkFoldTreshold" />

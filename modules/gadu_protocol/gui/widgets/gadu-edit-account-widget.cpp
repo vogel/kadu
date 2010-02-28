@@ -220,6 +220,15 @@ void GaduEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 	ReceiveImagesDuringInvisibility->setToolTip(tr("Receiving images during invisibility is allowed"));
 	imagesLayout->addRow(ReceiveImagesDuringInvisibility);
 
+	MaximumImageRequests = new QSpinBox(optionsTab);
+	MaximumImageRequests->setMinimum(1);
+	MaximumImageRequests->setMaximum(30);
+	MaximumImageRequests->setSingleStep(1);
+	MaximumImageRequests->setToolTip(tr("Define limit of images received per minute"));
+	connect(MaximumImageRequests, SIGNAL(valueChanged(int)), this, SLOT(dataChanged()));
+
+	imagesLayout->addRow(tr("Limit numbers of image recevied per minute") + ":", MaximumImageRequests);
+
 	layout->addWidget(images);
 
 }

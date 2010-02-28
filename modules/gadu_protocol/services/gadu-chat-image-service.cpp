@@ -30,6 +30,7 @@
 #include "helpers/gadu-formatter.h"
 #include "socket-notifiers/gadu-protocol-socket-notifiers.h"
 
+#include "gadu-account-details.h"
 #include "gadu-protocol.h"
 
 #include "gadu-chat-image-service.h"
@@ -126,9 +127,10 @@ void GaduChatImageService::handleEventImageReply(struct gg_event *e)
 bool GaduChatImageService::sendImageRequest(Contact contact, int size, uint32_t crc32)
 {
 	kdebugf();
+	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(Protocol->account().details());
 
 	if (contact.isNull() ||
-			(CurrentMinuteSendImageRequests > config_file.readUnsignedNumEntry("Chat", "MaxImageRequests")))
+			(CurrentMinuteSendImageRequests > (unsigned int)gaduAccountDetails->maximumImageRequests()))
 		return false;
 
 	CurrentMinuteSendImageRequests++;
