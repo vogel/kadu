@@ -164,7 +164,6 @@ int StatusContainerManager::maxDescriptionLength()
 			: -1;
 }
 
-
 QString StatusContainerManager::statusNamePrefix()
 {
 	return QString(tr("All")) + " ";
@@ -172,7 +171,6 @@ QString StatusContainerManager::statusNamePrefix()
 
 void StatusContainerManager::storeStatus()
 {
-
 	foreach (StatusContainer *statusContainer, StatusContainers)
 		statusContainer->storeStatus();
 }

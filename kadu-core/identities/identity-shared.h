@@ -36,6 +36,8 @@ class KADUAPI IdentityShared : public BaseStatusContainer, public Shared
 protected:
 	virtual void load();
 
+	virtual void doSetStatus(Status newStatus);
+
 public:
 	static IdentityShared * loadFromStorage(StoragePoint *accountStoragePoint);
 
@@ -59,7 +61,6 @@ public:
 
 	virtual QString statusContainerName()  { return name(); };
 
-	virtual void setStatus(Status newStatus);
 	virtual Status status();
 	virtual int maxDescriptionLength();
 

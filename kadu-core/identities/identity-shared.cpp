@@ -125,7 +125,7 @@ bool IdentityShared::hasAccount(Account account)
 	return Accounts.contains(account);
 }
 
-void IdentityShared::setStatus(Status status)
+void IdentityShared::doSetStatus(Status status)
 {
 	foreach (Account account, Accounts)
 		if (account.statusContainer())

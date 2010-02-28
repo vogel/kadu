@@ -123,8 +123,6 @@ void AccountShared::store()
 	storeValue("ProxyUser", ProxyUser);
 	storeValue("ProxyPassword", ProxyPassword);
 	storeValue("ProxyHost", ProxyHost.toString());
-
-	storeStatus();
 }
 
 void AccountShared::aboutToBeRemoved()
@@ -260,12 +258,10 @@ QString AccountShared::statusContainerName()
 	return name();
 }
 
-void AccountShared::setStatus(Status status)
+void AccountShared::doSetStatus(Status status)
 {
 	if (ProtocolHandler)
 		ProtocolHandler->setStatus(status);
-
-	ConfigurationManager::instance()->flush();
 }
 
 Status AccountShared::status()

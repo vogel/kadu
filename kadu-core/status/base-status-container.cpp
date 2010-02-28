@@ -19,6 +19,7 @@
  */
 
 #include "configuration/configuration-file.h"
+#include "configuration/configuration-manager.h"
 #include "storage/storable-object.h"
 
 #include "base-status-container.h"
@@ -26,6 +27,18 @@
 BaseStatusContainer::BaseStatusContainer(StorableObject *storableObject) :
 		MyStorableObject(storableObject)
 {
+}
+
+BaseStatusContainer::~BaseStatusContainer()
+{
+}
+
+void BaseStatusContainer::setStatus(Status status)
+{
+	doSetStatus(status);
+
+	storeStatus();
+	ConfigurationManager::instance()->flush();
 }
 
 void BaseStatusContainer::setDefaultStatus(const QString &startupStatus, bool offlineToInvisible,
@@ -87,5 +100,5 @@ void BaseStatusContainer::disconnectStatus(bool disconnectWithCurrentDescription
 		description = disconnectDescription;
 
 	disconnectStatus.setDescription(description);
-	setStatus(disconnectStatus);
+	doSetStatus(disconnectStatus); // this does not stores status to configuration
 }

@@ -78,6 +78,8 @@ protected:
 	virtual void detailsAboutToBeRemoved();
 	virtual void protocolUnregistered(ProtocolFactory *protocolHandler);
 
+	virtual void doSetStatus(Status newStatus);
+
 public: //TODO 0.6.6: it is needed in Buddy::dummy()
 	virtual void protocolRegistered(ProtocolFactory *protocolHandler);
 
@@ -116,7 +118,6 @@ public: //TODO 0.6.6: it is needed in Buddy::dummy()
 
 	virtual QString statusContainerName();
 
-	virtual void setStatus(Status newStatus);
 	virtual Status status();
 	virtual int maxDescriptionLength();
 
