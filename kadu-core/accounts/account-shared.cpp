@@ -123,6 +123,8 @@ void AccountShared::store()
 	storeValue("ProxyUser", ProxyUser);
 	storeValue("ProxyPassword", ProxyPassword);
 	storeValue("ProxyHost", ProxyHost.toString());
+
+	storeStatus();
 }
 
 void AccountShared::aboutToBeRemoved()
@@ -150,7 +152,10 @@ void AccountShared::useProtocolFactory(ProtocolFactory *factory)
 
 		StatusContainer *statusContianer = Account(this).statusContainer();
 		if (statusContianer)
-				statusContianer->disconnectAndStoreLastStatus(disconnectWithCurrentDescription, disconnectDescription);
+		{
+			statusContianer->storeStatus();
+			statusContianer->disconnectStatus(disconnectWithCurrentDescription, disconnectDescription);
+		}
 
 		ProtocolHandler->deleteLater();
 	}
@@ -259,6 +264,8 @@ void AccountShared::setStatus(Status status)
 {
 	if (ProtocolHandler)
 		ProtocolHandler->setStatus(status);
+
+	ConfigurationManager::instance()->flush();
 }
 
 Status AccountShared::status()

@@ -92,7 +92,8 @@ public:
 		Q_UNUSED(startupLastDescription)
 	}
 
-	virtual void disconnectAndStoreLastStatus(bool disconnectWithCurrentDescription,
+	virtual void storeStatus();
+	virtual void disconnectStatus(bool disconnectWithCurrentDescription,
 						  const QString &disconnectDescription);
 
 	virtual void setPrivateStatus(bool isPrivate);

@@ -168,14 +168,21 @@ QString StatusContainerManager::statusNamePrefix()
 	return QString(tr("All")) + " ";
 }
 
-void StatusContainerManager::disconnectAndStoreLastStatus(bool disconnectWithCurrentDescription, const QString& disconnectDescription)
+void StatusContainerManager::storeStatus()
+{
+
+	foreach (StatusContainer *statusContainer, StatusContainers)
+		statusContainer->storeStatus();
+}
+
+void StatusContainerManager::disconnectStatus(bool disconnectWithCurrentDescription, const QString& disconnectDescription)
 {
 	// TODO: 0.6.6
 	Q_UNUSED(disconnectWithCurrentDescription)
 	Q_UNUSED(disconnectDescription)
 
 	foreach (StatusContainer *statusContainer, StatusContainers)
-		statusContainer->disconnectAndStoreLastStatus(DisconnectWithCurrentDescription, DisconnectDescription);
+		statusContainer->disconnectStatus(DisconnectWithCurrentDescription, DisconnectDescription);
 }
 
 void StatusContainerManager::setPrivateStatus(bool isPrivate)

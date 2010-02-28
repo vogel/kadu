@@ -1,6 +1,7 @@
 +++ version 0.6.6-alpha7
 * screenshot: module rewritten, now based on QGraphicsView (Vogel)
-* gadu: image sending fixed
+* gadu: image sending fixed (Vogel)
+* core: #331 fixed: save description after change (Vogel)
 
 +++ version 0.6.6-alpha6
 * gui: rework on YourAccounts window (Vogel)

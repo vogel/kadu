@@ -54,8 +54,8 @@ public:
 
 	virtual void setDefaultStatus(const QString &startupStatus, bool offlineToInvisible,
 				      const QString &startupDescription, bool StartupLastDescription) = 0;
-	virtual void disconnectAndStoreLastStatus(bool disconnectWithCurrentDescription,
-						  const QString &disconnectDescription) = 0;
+	virtual void storeStatus() = 0;
+	virtual void disconnectStatus(bool disconnectWithCurrentDescription, const QString &disconnectDescription) = 0;
 
 	virtual void setPrivateStatus(bool isPrivate) = 0;
 
