@@ -54,8 +54,7 @@ class ScreenShot : public QObject
 	void checkShotsSize();
 
 	void pasteImageClause(const QString &path);
-	void checkConferenceImageSizes(int size);
-	bool checkSingleUserImageSize(int size);
+	bool checkImageSize(long int size);
 
 private slots:
 	void screenshotTaken(QPixmap screenshot, bool needsCrop);

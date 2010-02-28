@@ -71,9 +71,9 @@ QString ScreenShotSaver::saveScreenShot(QPixmap pixmap)
 	}
 
 	QFileInfo f(path);
-	int size = f.size();
+	Size = f.size();
 
-	if (size == 0)
+	if (Size == 0)
 	{
 		MessageDialog::msg(tr("Screenshot %1 has 0 size!\nIt should be bigger.").arg(path));
 		return QString::null;

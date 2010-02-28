@@ -28,6 +28,8 @@ class ScreenShotSaver : public QObject
 {
 	Q_OBJECT
 
+	long int Size;
+
 	QString createScreenshotPath();
 
 public:
@@ -35,6 +37,8 @@ public:
 	virtual ~ScreenShotSaver();
 
 	QString saveScreenShot(QPixmap pixmap);
+
+	long int size() { return Size; }
 
 };
 
