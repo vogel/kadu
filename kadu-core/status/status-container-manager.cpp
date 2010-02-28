@@ -52,12 +52,14 @@ StatusContainerManager::~StatusContainerManager()
 
 void StatusContainerManager::accountRegistered(Account account)
 {
-	registerStatusContainer(account.statusContainer());
+	if (!StatusContainers.contains(account.statusContainer()))
+		registerStatusContainer(account.statusContainer());
 }
 
 void StatusContainerManager::accountUnregistered(Account account)
 {
-	unregisterStatusContainer(account.statusContainer());
+	if (StatusContainers.contains(account.statusContainer()))
+		unregisterStatusContainer(account.statusContainer());
 }
 
 void StatusContainerManager::configurationUpdated()
