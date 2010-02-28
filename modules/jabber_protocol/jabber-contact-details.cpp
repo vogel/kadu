@@ -28,7 +28,7 @@
 #include "jabber-contact-details.h"
 
 JabberContactDetails::JabberContactDetails(ContactShared *contactShared) :
-		ContactDetails(contactShared), MaxImageSize(0)
+		ContactDetails(contactShared)
 {
 }
 

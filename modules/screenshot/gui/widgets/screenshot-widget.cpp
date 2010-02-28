@@ -81,6 +81,8 @@ void ScreenshotWidget::keyPressEvent(QKeyEvent *e)
 
 void ScreenshotWidget::pixmapCapturedSlot(QPixmap pixmap)
 {
+	hide();
+
 	emit pixmapCaptured(pixmap);
 	deleteLater();
 }

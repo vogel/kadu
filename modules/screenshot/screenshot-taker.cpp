@@ -104,15 +104,19 @@ void ScreenshotTaker::mouseReleaseEvent(QMouseEvent *e)
 	setCursor(Qt::ArrowCursor);
 
 	QPixmap pixmap = PixmapGrabber::grabCurrent();
-	emit screenshotTaken(pixmap, false);
 
+	hide();
 	CurrentChatWidget->window()->show();
+
+	emit screenshotTaken(pixmap, false);
 }
 
 void ScreenshotTaker::takeShot()
 {
 	QPixmap pixmap = QPixmap::grabWindow(QApplication::desktop()->winId());
-	emit screenshotTaken(pixmap, true);
 
+	hide();
 	CurrentChatWidget->window()->show();
+
+	emit screenshotTaken(pixmap, true);
 }

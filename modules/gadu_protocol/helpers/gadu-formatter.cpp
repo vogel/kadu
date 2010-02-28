@@ -23,6 +23,7 @@
 #define GG_IGNORE_DEPRECATED
 #include <libgadu.h>
 
+#include <QtCore/QFile>
 #include <QtGui/QApplication>
 
 #include "accounts/account.h"
@@ -32,6 +33,7 @@
 #include "configuration/configuration-file.h"
 #include "buddies/buddy-manager.h"
 
+#include "gadu-account-details.h"
 #include "gadu-protocol.h"
 
 #include "gadu-formatter.h"
@@ -156,20 +158,14 @@ void GaduFormater::appendToMessage(Account account, FormattedMessage &result, Ui
 
 	if (format.font & GG_FONT_IMAGE)
 	{
-		uint32_t size = gg_fix32(image.size);
-		uint32_t crc32 = gg_fix32(image.crc32);
+		int32_t size = gg_fix32(image.size);
+		int32_t crc32 = gg_fix32(image.crc32);
 
 		if (size == 20 && (crc32 == 4567 || crc32 == 99)) // fake spy images
 			return;
 
-		GaduChatImageService *gcis = dynamic_cast<GaduChatImageService *>(account.protocolHandler()->chatImageService());
-
-		QString file_name = gcis->getSavedImageFileName(size, crc32);
-		if (!file_name.isEmpty())
-		{
-			result << FormattedMessagePart(file_name, false);
-			return;
-		}
+		QString file_name = GaduChatImageService::imageFileName(sender, size, crc32);
+		QFile file(file_name);
 
 		if (!receiveImages)
 		{
@@ -177,8 +173,11 @@ void GaduFormater::appendToMessage(Account account, FormattedMessage &result, Ui
 			return;
 		}
 
-		unsigned int maxSize = config_file.readUnsignedNumEntry("Chat", "MaxImageSize");
-		if (size > maxSize * 1024)
+		GaduAccountDetails *details = dynamic_cast<GaduAccountDetails *>(account.details());
+		if (!details)
+			return;
+
+		if (size > details->maximumImageSize() * 1024)
 		{
 			result << FormattedMessagePart(qApp->translate("@default", QT_TR_NOOP("###IMAGE TOO BIG###")), false, false, false, textColor);
 			return;
@@ -190,7 +189,7 @@ void GaduFormater::appendToMessage(Account account, FormattedMessage &result, Ui
 		{
 			dynamic_cast<GaduChatImageService *>(gadu->chatImageService())->
 					sendImageRequest(ContactManager::instance()->byId(account, QString::number(sender)), size, crc32);
-			result << FormattedMessagePart(createImageId(sender, size, crc32), true);
+			result << FormattedMessagePart(file_name, !file.exists());
 		}
 	}
 	else

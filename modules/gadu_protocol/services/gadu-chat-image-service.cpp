@@ -39,36 +39,20 @@ GaduChatImageService::GaduChatImageService(GaduProtocol *protocol)
 {
 }
 
-QString GaduChatImageService::saveImage(UinType sender, uint32_t size, uint32_t crc32, const QString &fileName, const char *data)
+QString GaduChatImageService::saveImage(UinType sender, uint32_t size, uint32_t crc32, const char *data)
 {
 	kdebugf();
 
-	QString path = profilePath("images");
-	QDir dir;
-	kdebugm(KDEBUG_INFO, "Creating directory: %s\n", qPrintable(path));
-
-	if (!dir.exists(path) && !dir.mkdir(path))
+	QString fileName = imageFileName(sender, size, crc32);
+	if (!fileName.isEmpty())
 	{
-		kdebugm(KDEBUG_INFO, "Failed creating directory: %s\n", qPrintable(path));
-		return QString::null;
+		QFile file(fileName);
+		file.open(QIODevice::WriteOnly);
+		file.write(data, size);
+		file.close();
 	}
 
-	QString file_name = QString("%1-%2-%3-%4").arg(sender).arg(size).arg(crc32).arg(fileName);
-	kdebugm(KDEBUG_INFO, "Saving image as file: %s\n", qPrintable(fileName));
-
-	SavedImage img;
-	img.size = size;
-	img.crc32 = crc32;
-	img.fileName = path + '/' + fileName;
-
-	QFile file(img.fileName);
-	file.open(QIODevice::WriteOnly);
-	file.write(data, size);
-	file.close();
-
-	SavedImages.append(img);
-
-	return img.fileName;
+	return fileName;
 }
 
 void GaduChatImageService::loadImageContent(ImageToSend &image)
@@ -130,7 +114,7 @@ void GaduChatImageService::handleEventImageReply(struct gg_event *e)
 
 	QString fullPath = saveImage(e->event.image_reply.sender,
 			e->event.image_reply.size, e->event.image_reply.crc32,
-			e->event.image_reply.filename, e->event.image_reply.image);
+			/*e->event.image_reply.filename, */e->event.image_reply.image);
 
 	if (fullPath.isNull())
 		return;
@@ -170,15 +154,17 @@ void GaduChatImageService::prepareImageToSend(const QString &imageFileName, uint
 	ImagesToSend[qMakePair(size, crc32)] = imageToSend;
 }
 
-QString GaduChatImageService::getSavedImageFileName(uint32_t size, uint32_t crc32)
+QString GaduChatImageService::imageFileName(UinType sender, uint32_t size, uint32_t crc32)
 {
-	kdebugf();
-	kdebugm(KDEBUG_INFO, "Searching saved images: size=%u, crc32=%u\n", size, crc32);
+	QString path = profilePath("images");
+	QDir dir;
+	kdebugm(KDEBUG_INFO, "Creating directory: %s\n", qPrintable(path));
 
-	foreach (const SavedImage &image, SavedImages)
-		if (image.size == size && image.crc32 == crc32)
-			return image.fileName;
+	if (!dir.exists(path) && !dir.mkdir(path))
+	{
+		kdebugm(KDEBUG_INFO, "Failed creating directory: %s\n", qPrintable(path));
+		return QString::null;
+	}
 
-	kdebugm(KDEBUG_WARNING, "Image data not found\n");
-	return QString::null;
+	return QString("%1/%2-%3-%4").arg(path).arg(sender).arg(size).arg(crc32);
 }

@@ -59,7 +59,6 @@ class FormattedMessagePart
 	bool Image;
 	bool ImageDelayed;
 	QString ImagePath;
-	QString ImageId;
 
 public:
 	static QString loadingImageHtml(const QString &imageId);
@@ -79,7 +78,7 @@ public:
 	 * Creates image message part (ready or to-be-received).
 	 * @arg imagePath local image path
 	 */
-	FormattedMessagePart(const QString &image, bool delayed);
+	FormattedMessagePart(const QString &imagePath, bool delayed);
 	virtual ~FormattedMessagePart();
 
 	bool isImage() const { return Image; }

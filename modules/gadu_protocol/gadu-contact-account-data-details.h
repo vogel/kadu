@@ -28,7 +28,6 @@ class Account;
 
 class GaduContactDetails : public ContactDetails
 {
-	unsigned long MaxImageSize;
 	unsigned int GaduProtocolVersion;
 
 public:
@@ -37,9 +36,6 @@ public:
 	virtual bool validateId();
 
 	GaduProtocol::UinType uin();
-
-	unsigned long maxImageSize() { return MaxImageSize; }
-	void setMaxImageSize(unsigned long maxImageSize) { MaxImageSize = maxImageSize; }
 
 	unsigned int gaduProtocolVersion() { return GaduProtocolVersion; }
 	void setGaduProtocolVersion(unsigned int gaduProtocolVersion) { GaduProtocolVersion = gaduProtocolVersion; }

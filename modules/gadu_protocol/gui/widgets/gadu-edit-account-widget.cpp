@@ -32,6 +32,7 @@
 #include <QtGui/QLineEdit>
 #include <QtGui/QMessageBox>
 #include <QtGui/QPushButton>
+#include <QtGui/QSpinBox>
 #include <QtGui/QTabWidget>
 
 #include "accounts/account.h"
@@ -51,6 +52,7 @@
 #include "gui/windows/gadu-remind-password-window.h"
 #include "gui/windows/gadu-unregister-account-window.h"
 #include "services/gadu-contact-list-service.h"
+#include "gadu-account-details.h"
 
 #include "gadu-personal-info-widget.h"
 
@@ -59,6 +61,8 @@
 GaduEditAccountWidget::GaduEditAccountWidget(Account account, QWidget *parent) :
 		AccountEditWidget(account, parent)
 {
+	Details = dynamic_cast<GaduAccountDetails *>(account.details());
+
 	createGui();
 	loadAccountData();
 	loadConnectionData();
@@ -78,9 +82,10 @@ void GaduEditAccountWidget::createGui()
 	mainLayout->addWidget(tabWidget);
 
 	createGeneralTab(tabWidget);
-	createPersonalDataTab(tabWidget);
+	createPersonalInfoTab(tabWidget);
 	createBuddiesTab(tabWidget);
 	createConnectionTab(tabWidget);
+	createOptionsTab(tabWidget);
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 
@@ -155,7 +160,7 @@ void GaduEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 	tabWidget->addTab(generalTab, tr("General"));
 }
 
-void GaduEditAccountWidget::createPersonalDataTab(QTabWidget *tabWidget)
+void GaduEditAccountWidget::createPersonalInfoTab(QTabWidget *tabWidget)
 {
 	gpiw = new GaduPersonalInfoWidget(account(), tabWidget);
 	tabWidget->addTab(gpiw, tr("Personal info"));
@@ -189,6 +194,23 @@ void GaduEditAccountWidget::createConnectionTab(QTabWidget *tabWidget)
 	layout->addWidget(Proxy);
 
 	layout->addStretch(100);
+}
+
+void GaduEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
+{
+	QWidget *optionsTab = new QWidget(this);
+	tabWidget->addTab(optionsTab, tr("Options"));
+
+	QFormLayout *layout = new QFormLayout(optionsTab);
+
+	MaximumImageSize = new QSpinBox(optionsTab);
+	MaximumImageSize->setMinimum(0);
+	MaximumImageSize->setMaximum(255);
+	MaximumImageSize->setSingleStep(10);
+	MaximumImageSize->setSuffix(" kB");
+	connect(MaximumImageSize, SIGNAL(valueChanged(int)), this, SLOT(dataChanged()));
+
+	layout->addRow(tr("Maximum image size for chat") + ":", MaximumImageSize);
 }
 
 void GaduEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
@@ -232,6 +254,9 @@ void GaduEditAccountWidget::apply()
 	account().setPassword(AccountPassword->text());
 	account().setHasPassword(!AccountPassword->text().isEmpty());
 
+	if (Details)
+		Details->setMaximumImageSize(MaximumImageSize->value());
+
 	Proxy->apply();
 
 	gpiw->applyData();
@@ -247,11 +272,13 @@ void GaduEditAccountWidget::cancel()
 // TODO: 0.6.6 check proxy data too
 void GaduEditAccountWidget::dataChanged()
 {
+	
 	if (account().name() == AccountName->text()
 		&& account().connectAtStart() == ConnectAtStart->isChecked()
 		&& account().id() == AccountId->text()
 		&& account().rememberPassword() == RememberPassword->isChecked()
 		&& account().password() == AccountPassword->text()
+		&& Details->maximumImageSize() == MaximumImageSize->value()
 		&& StateNotChanged == Proxy->state())
 	{
 		setState(StateNotChanged);
@@ -290,6 +317,10 @@ void GaduEditAccountWidget::loadAccountData()
 	RememberPassword->setChecked(account().rememberPassword());
 	AccountPassword->setText(account().password());
 	// Identities->setCurrentIdentity(account().identity());
+
+	GaduAccountDetails *details = dynamic_cast<GaduAccountDetails *>(account().details());
+	if (details)
+		MaximumImageSize->setValue(details->maximumImageSize());
 }
 
 void GaduEditAccountWidget::loadConnectionData()

@@ -102,3 +102,4 @@ KaduSharedBase_PropertyDef(Contact, QString, protocolVersion, ProtocolVersion, Q
 KaduSharedBase_PropertyDef(Contact, QHostAddress, address, Address, QHostAddress())
 KaduSharedBase_PropertyDef(Contact, unsigned int, port, Port, 0)
 KaduSharedBase_PropertyDef(Contact, QString, dnsName, DnsName, QString::null)
+KaduSharedBase_PropertyDef(Contact, short int, maximumImageSize, MaximumImageSize, 0)

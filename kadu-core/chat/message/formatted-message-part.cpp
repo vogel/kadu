@@ -30,7 +30,7 @@
 QString FormattedMessagePart::loadingImageHtml(const QString &imageId)
 {
 	return QString("<img src=\"file:///%1\" id=\"%2\" />")
-			.arg(IconsManager::instance()->iconPath("32x32/image-loading.png"))
+			.arg(IconsManager::instance()->iconPath("kadu_icons/please-wait.gif"))
 			.arg(imageId);
 }
 
@@ -45,10 +45,9 @@ FormattedMessagePart::FormattedMessagePart(const QString &content, bool bold, bo
 {
 }
 
-FormattedMessagePart::FormattedMessagePart(const QString &image, bool imageDelayed) :
+FormattedMessagePart::FormattedMessagePart(const QString &imagePath, bool imageDelayed) :
 		Content("\n"), Image(true), ImageDelayed(imageDelayed), 
-		ImagePath(imageDelayed ? QString::null : image),
-		ImageId(imageDelayed ? image : QString::null)
+		ImagePath(imagePath)
 {
 }
 
@@ -58,36 +57,28 @@ FormattedMessagePart::~FormattedMessagePart()
 
 QString FormattedMessagePart::toHtml() const
 {
-	if (Image && ImageDelayed)
-	{
-		return FormattedMessagePart::loadingImageHtml(ImageId);;
-	}
-	else if (Image)
-	{
+	if (Image)
 		return QString("<img src=\"file:///%1\" />").arg(ImagePath);
-	}
-	else
-	{
-		QString result = Qt::escape(Content);
-		result.replace("\r\n", "<br/>");
-		result.replace("\n",   "<br/>");
-		result.replace("\r",   "<br/>");
-		result.replace(QChar::LineSeparator, "<br />");
 
-		if (!Bold && !Italic && !Underline && !Color.isValid())
-			return result;
+	QString result = Qt::escape(Content);
+	result.replace("\r\n", "<br/>");
+	result.replace("\n",   "<br/>");
+	result.replace("\r",   "<br/>");
+	result.replace(QChar::LineSeparator, "<br />");
 
-		QString span = "<span style='";
-		if (Bold)
-			span += "font-weight:600;";
-		if (Italic)
-			span += "font-style:italic;";
-		if (Underline)
-			span += "text-decoration:underline;";
-		if (Color.isValid())
-			span += QString("color:%1;").arg(Color.name());
-		span += "'>";
+	if (!Bold && !Italic && !Underline && !Color.isValid())
+		return result;
 
-		return span + result + "</span>";
-	}
+	QString span = "<span style='";
+	if (Bold)
+		span += "font-weight:600;";
+	if (Italic)
+		span += "font-style:italic;";
+	if (Underline)
+		span += "text-decoration:underline;";
+	if (Color.isValid())
+		span += QString("color:%1;").arg(Color.name());
+	span += "'>";
+
+	return span + result + "</span>";
 }

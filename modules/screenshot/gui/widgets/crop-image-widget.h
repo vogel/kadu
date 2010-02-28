@@ -69,6 +69,7 @@ protected:
 	virtual void mouseMoveEvent(QMouseEvent *event);
 
 	virtual void resizeEvent(QResizeEvent *event);
+	virtual void showEvent(QShowEvent *event);
 
 public:
 	explicit CropImageWidget(QWidget *parent = 0);

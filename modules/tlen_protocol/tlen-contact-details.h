@@ -29,7 +29,6 @@ class Contact;
 
 class TlenContactDetails : public ContactDetails
 {
-	PROPERTY_DEC(unsigned long, MaxImageSize)
 	PROPERTY_DEC(unsigned int, TlenProtocolVersion)
 
 	PROPERTY_DEC(unsigned int, LookingFor)
@@ -50,7 +49,6 @@ public:
 
 	virtual void store();
 
-	PROPERTY_DEF(unsigned long, maxImageSize, setMaxImageSize, MaxImageSize)
 	PROPERTY_DEF(unsigned int, tlenProtocolVersion, setTlenProtocolVersion, TlenProtocolVersion)
 
 	PROPERTY_DEF(unsigned int, lookingFor, setLookingFor, LookingFor)

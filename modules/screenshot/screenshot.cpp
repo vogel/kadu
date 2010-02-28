@@ -100,19 +100,12 @@ void ScreenShot::screenshotReady(QPixmap p)
 	ScreenShotSaver *saver = new ScreenShotSaver(this);
 	QString screenShotPath = saver->saveScreenShot(p);
 
-	// TODO: 0.6.6
 	if (ScreenShotConfiguration::instance()->pasteImageClauseIntoChatWidget())
 	{
-// 		// Sprawdzanie rozmiaru zrzutu wobec rozm�wc�w
-		// TODO: 0.6.6
-// 		UserListElements users = chatWidget->users()->toUserListElements();
-// 		if (users.count() > 1)
-// 			checkConferenceImageSizes(size);
-// 		else
-// 			if (!checkSingleUserImageSize(size))
-// 				return;
-
-		pasteImageClause(screenShotPath);
+		if (checkImageSize(saver->size()))
+			pasteImageClause(screenShotPath);
+		else
+			MessageDialog::msg(tr("Image size is bigger than maximal image size for this chat."), true);
 	}
 
 	deleteLater();
@@ -123,40 +116,16 @@ void ScreenShot::pasteImageClause(const QString &path)
 	MyChatWidget->edit()->insertPlainText(QString("[IMAGE ") + path + "]");
 }
 
-void ScreenShot::checkConferenceImageSizes(int size)
+bool ScreenShot::checkImageSize(long int size)
 {
 	Q_UNUSED(size)
-	//TODO: 0.6.6, for now, assume it is ok
-	/*
-	UserListElements users = chatWidget->users()->toUserListElements();
-	QStringList list;
 
-	foreach (const UserListElement &user, users)
-		if (user.protocolData("Gadu", "MaxImageSize").toInt() * 1024 < size)
-			list.append(user.altNick());
+	ContactSet contacts = MyChatWidget->chat().contacts();
+	foreach (Contact contact, contacts)
+		if (contact.maximumImageSize() * 1024 < size)
+			return false;
 
-	if (list.count() == 0)
-		return;
-
-	if (list.count() == users.count())
-		MessageDialog::msg(tr("Image size is bigger than maximal image size\nset by all of conference contacts."), true);
-	else
-		MessageDialog::msg(tr("Image size is bigger than maximal image size\nset by some of conference contacts:\n%1.").arg(list.join(", ")), true);*/
-}
-
-bool ScreenShot::checkSingleUserImageSize(int size)
-{
-	Q_UNUSED(size)
-	//TODO: 0.6.6, for now, assume it is ok
 	return true;
-	/*
-	contacts = chatWidget->chat().contacts();
-
-	if (users[0].protocolData("Gadu", "MaxImageSize").toInt() * 1024 >= size)
-		return true;
-
-	return MessageDialog::ask(tr("Image size is bigger than maximal image size set by %1. Send it anyway?").arg(users[0].altNick()));
-	*/
 }
 
 void ScreenShot::checkShotsSize()

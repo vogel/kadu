@@ -68,6 +68,7 @@ public:
 	KaduSharedBase_Property(QHostAddress, address, Address)
 	KaduSharedBase_Property(unsigned int, port, Port)
 	KaduSharedBase_Property(QString, dnsName, DnsName)
+	KaduSharedBase_Property(short int, maximumImageSize, MaximumImageSize)
 
 };
 

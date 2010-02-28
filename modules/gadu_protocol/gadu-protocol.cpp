@@ -746,15 +746,13 @@ void GaduProtocol::socketContactStatusChanged(unsigned int uin, unsigned int sta
 	}
 
 	contact.setAddress(ip);
+	contact.setMaximumImageSize(maxImageSize);
 	contact.setPort(port);
 	contact.setProtocolVersion(QString::number(version));
 
 	GaduContactDetails *details = gaduContactDetails(contact);
 	if (details)
-	{
-		details->setMaxImageSize(maxImageSize);
 		details->setGaduProtocolVersion(version);
-	}
 
 	Status oldStatus = contact.currentStatus();
 	Status newStatus;

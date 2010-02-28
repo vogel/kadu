@@ -45,6 +45,7 @@ class KADUAPI ContactShared : public QObject, public Shared, public DetailsHolde
 	Buddy OwnerBuddy;
 	QString Id;
 	int Priority;
+	short int MaximumImageSize;
 
 	Status CurrentStatus;
 
@@ -93,6 +94,7 @@ public:
 	KaduShared_Property(QHostAddress, address, Address)
 	KaduShared_Property(unsigned int, port, Port)
 	KaduShared_Property(QString, dnsName, DnsName)
+	KaduShared_Property(short int, maximumImageSize, MaximumImageSize)
 
 signals:
 	void aboutToBeDetached();
