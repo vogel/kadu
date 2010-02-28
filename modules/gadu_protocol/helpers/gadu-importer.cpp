@@ -82,6 +82,7 @@ void GaduImporter::importAccounts()
 	accountDetails->setDccLocalPort(config_file.readNumEntry("Network", "LocalPort"));
 	accountDetails->setDccForwarding(config_file.readBoolEntry("Network", "DccForwarding"));
 	accountDetails->setMaximumImageSize(config_file.readNumEntry("Chat", "MaxImageSize", 255));
+	accountDetails->setReceiveImagesDuringInvisibility(config_file.readBoolEntry("Chat", "ReceiveImagesDuringInvisibility"));
 	accountDetails->setRemoveCompletedTransfers(config_file.readBoolEntry("Network", "RemoveCompletedTransfers"));
 
 	defaultGaduGadu.setUseProxy(config_file.readBoolEntry("Network", "UseProxy"));

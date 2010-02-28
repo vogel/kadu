@@ -50,6 +50,7 @@ class GaduEditAccountWidget : public AccountEditWidget
 	QCheckBox *RememberPassword;
 
 	QSpinBox *MaximumImageSize;
+	QCheckBox *ReceiveImagesDuringInvisibility;
 
 	IdentitiesComboBox *Identities;
 

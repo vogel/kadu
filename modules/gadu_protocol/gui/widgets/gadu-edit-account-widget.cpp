@@ -201,16 +201,27 @@ void GaduEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 	QWidget *optionsTab = new QWidget(this);
 	tabWidget->addTab(optionsTab, tr("Options"));
 
-	QFormLayout *layout = new QFormLayout(optionsTab);
+	QVBoxLayout *layout = new QVBoxLayout(optionsTab);
+
+	QGroupBox *images = new QGroupBox(tr("Images"), this);
+	QFormLayout *imagesLayout = new QFormLayout(images);
 
 	MaximumImageSize = new QSpinBox(optionsTab);
 	MaximumImageSize->setMinimum(0);
 	MaximumImageSize->setMaximum(255);
 	MaximumImageSize->setSingleStep(10);
 	MaximumImageSize->setSuffix(" kB");
+	MaximumImageSize->setToolTip(tr("Maximum image size that we want to receive"));
 	connect(MaximumImageSize, SIGNAL(valueChanged(int)), this, SLOT(dataChanged()));
 
-	layout->addRow(tr("Maximum image size for chat") + ":", MaximumImageSize);
+	imagesLayout->addRow(tr("Maximum image size for chat") + ":", MaximumImageSize);
+
+	ReceiveImagesDuringInvisibility = new QCheckBox(tr("Receive images during invisibility"), optionsTab);
+	ReceiveImagesDuringInvisibility->setToolTip(tr("Receiving images during invisibility is allowed"));
+	imagesLayout->addRow(ReceiveImagesDuringInvisibility);
+
+	layout->addWidget(images);
+
 }
 
 void GaduEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)

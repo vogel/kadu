@@ -41,6 +41,7 @@
 #include "helpers/gadu-formatter.h"
 #include "socket-notifiers/gadu-protocol-socket-notifiers.h"
 
+#include "gadu-account-details.h"
 #include "gadu-protocol.h"
 
 #include "gadu-chat-service.h"
@@ -223,12 +224,14 @@ bool GaduChatService::ignoreImages(gg_event *e, Contact sender)
 {
 	Q_UNUSED(e)
 
+	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(Protocol->account().details());
+
 	return sender.ownerBuddy().isAnonymous() ||
 		(
 			"Offline" == Protocol->status().group() ||
 			(
 				("Invisible" == Protocol->status().group()) &&
-				!config_file.readBoolEntry("Chat", "ReceiveImagesDuringInvisibility")
+				!gaduAccountDetails->receiveImagesDuringInvisibility()
 			)
 		);
 }

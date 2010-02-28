@@ -59,6 +59,7 @@ void GaduAccountDetails::load()
 	RemoveCompletedTransfers = loadValue<bool>("RemoveCompletedTransfers");
 	DccForwarding = loadValue<bool>("DccForwarding");
 	MaximumImageSize = loadValue<short int>("MaximumImageSize", 255);
+	ReceiveImagesDuringInvisibility = loadValue<bool>("ReceiveImagesDuringInvisibility", true);
 
 	QHostAddress host;
 	if (!host.setAddress(loadValue<QString>("DccExternalIp")))
@@ -84,6 +85,7 @@ void GaduAccountDetails::store()
 	storeValue("RemoveCompletedTransfers", RemoveCompletedTransfers);
 	storeValue("DccForwarding", DccForwarding);
 	storeValue("MaximumImageSize", MaximumImageSize);
+	storeValue("ReceiveImagesDuringInvisibility", ReceiveImagesDuringInvisibility);
 }
 
 void GaduAccountDetails::import_0_6_5_LastStatus()
