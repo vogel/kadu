@@ -525,8 +525,6 @@ void SearchWindow::newSearchResults(BuddyList buddies)
 	QTreeWidgetItem *qlv = 0;
 	QPixmap pix;
 
-	int items = results->topLevelItemCount(); // number of items already in results
-
 	foreach(Buddy buddy, buddies)
 	{
 		QList<Contact> contactslist = buddy.contacts(CurrentAccount);
@@ -560,7 +558,7 @@ void SearchWindow::newSearchResults(BuddyList buddies)
 		setActionState(firstSearchAction, true);
 	setActionState(stopSearchAction, false);
 
-	if (buddies.isEmpty()  || (buddies.count() == items))
+	if (buddies.isEmpty())
 	{
 		kdebugmf(KDEBUG_INFO, "No results. Exit.\n");
 		MessageDialog::msg(tr("There were no results of your search"), false, "32x32/dialog-information.png", this);
