@@ -43,7 +43,7 @@ JabberChangePasswordWindow::JabberChangePasswordWindow(Account account, QWidget 
 
 	dataChanged();
 
-	loadWindowGeometry(this, "General", "JabberChangePasswordGeometry", 50, 50, 370, 230);
+	loadWindowGeometry(this, "General", "JabberChangePasswordGeometry", 50, 50, 550, 400);
 }
 
 JabberChangePasswordWindow::~JabberChangePasswordWindow()
