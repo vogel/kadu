@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="de_DE">
 <context>
     <name>@default</name>
     <message>
@@ -89,10 +91,10 @@
         <source>Set for all</source>
         <translation>Für alle setzen</translation>
     </message>
-	<message>
-		<source>Hints position preview</source>
-		<translation type="unfinished"></translation>
-	</message>
+    <message>
+        <source>Hints position preview</source>
+        <translation>Vorschau der Hinweis-Position</translation>
+    </message>
     <message>
         <source>&lt;b&gt;Text&lt;/b&gt; preview</source>
         <translation>&lt;b&gt;Text&lt;/b&gt; Vorschau</translation>
