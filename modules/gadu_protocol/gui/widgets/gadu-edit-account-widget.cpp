@@ -61,6 +61,8 @@
 GaduEditAccountWidget::GaduEditAccountWidget(Account account, QWidget *parent) :
 		AccountEditWidget(account, parent)
 {
+	Details = dynamic_cast<GaduAccountDetails *>(account.details());
+
 	createGui();
 	loadAccountData();
 	loadConnectionData();
@@ -204,6 +206,7 @@ void GaduEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 	MaximumImageSize = new QSpinBox(optionsTab);
 	MaximumImageSize->setMinimum(0);
 	MaximumImageSize->setMaximum(255);
+	MaximumImageSize->setSingleStep(10);
 	MaximumImageSize->setSuffix(" kB");
 	connect(MaximumImageSize, SIGNAL(valueChanged(int)), this, SLOT(dataChanged()));
 
@@ -251,9 +254,8 @@ void GaduEditAccountWidget::apply()
 	account().setPassword(AccountPassword->text());
 	account().setHasPassword(!AccountPassword->text().isEmpty());
 
-	GaduAccountDetails *details = dynamic_cast<GaduAccountDetails *>(account().details());
-	if (details)
-		details->setMaximumImageSize(MaximumImageSize->value());
+	if (Details)
+		Details->setMaximumImageSize(MaximumImageSize->value());
 
 	Proxy->apply();
 
@@ -270,11 +272,13 @@ void GaduEditAccountWidget::cancel()
 // TODO: 0.6.6 check proxy data too
 void GaduEditAccountWidget::dataChanged()
 {
+	
 	if (account().name() == AccountName->text()
 		&& account().connectAtStart() == ConnectAtStart->isChecked()
 		&& account().id() == AccountId->text()
 		&& account().rememberPassword() == RememberPassword->isChecked()
 		&& account().password() == AccountPassword->text()
+		&& Details->maximumImageSize() == MaximumImageSize->value()
 		&& StateNotChanged == Proxy->state())
 	{
 		setState(StateNotChanged);

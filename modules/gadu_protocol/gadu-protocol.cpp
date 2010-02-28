@@ -745,8 +745,6 @@ void GaduProtocol::socketContactStatusChanged(unsigned int uin, unsigned int sta
 		return;
 	}
 
-	printf("contact with id: %d will get max image size of: %d\n", uin, maxImageSize);
-
 	contact.setAddress(ip);
 	contact.setMaximumImageSize(maxImageSize);
 	contact.setPort(port);

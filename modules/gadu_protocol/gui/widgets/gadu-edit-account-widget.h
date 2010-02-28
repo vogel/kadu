@@ -32,6 +32,7 @@ class QSpinBox;
 class QTabWidget;
 class QVBoxLayout;
 
+class GaduAccountDetails;
 class GaduPersonalInfoWidget;
 class IdentitiesComboBox;
 class ProxyGroupBox;
@@ -39,6 +40,8 @@ class ProxyGroupBox;
 class GaduEditAccountWidget : public AccountEditWidget
 {
 	Q_OBJECT
+
+	GaduAccountDetails *Details;
 
 	QLineEdit *AccountName;
 	QCheckBox *ConnectAtStart;
