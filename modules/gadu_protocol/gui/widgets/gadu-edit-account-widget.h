@@ -28,6 +28,7 @@ class QCheckBox;
 class QComboBox;
 class QLineEdit;
 class QPushButton;
+class QSpinBox;
 class QTabWidget;
 class QVBoxLayout;
 
@@ -45,6 +46,8 @@ class GaduEditAccountWidget : public AccountEditWidget
 	QLineEdit *AccountPassword;
 	QCheckBox *RememberPassword;
 
+	QSpinBox *MaximumImageSize;
+
 	IdentitiesComboBox *Identities;
 
 	GaduPersonalInfoWidget *gpiw;
@@ -59,10 +62,11 @@ class GaduEditAccountWidget : public AccountEditWidget
 
 	void createGui();
 	void createGeneralTab(QTabWidget *);
-	void createPersonalDataTab(QTabWidget *);
+	void createGeneralGroupBox(QVBoxLayout *layout);
+	void createPersonalInfoTab(QTabWidget *);
 	void createBuddiesTab(QTabWidget *);
 	void createConnectionTab(QTabWidget *);
-	void createGeneralGroupBox(QVBoxLayout *layout);
+	void createOptionsTab(QTabWidget *);
 
 	void loadAccountData();
 	void loadConnectionData();
