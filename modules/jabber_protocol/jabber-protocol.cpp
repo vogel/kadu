@@ -100,6 +100,19 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	CurrentFileTransferService = new JabberFileTransferService(this);
 	CurrentAvatarService = new JabberAvatarService(account, this);
 
+	connectContactManagerSignals();
+		
+	kdebugf2();
+}
+
+JabberProtocol::~JabberProtocol()
+{
+	disconnectContactManagerSignals();
+	logout();
+}
+
+void JabberProtocol::connectContactManagerSignals()
+{
 	connect(ContactManager::instance(), SIGNAL(contactDetached(Contact)),
 			this, SLOT(contactDetached(Contact)));
 	connect(ContactManager::instance(), SIGNAL(contactAttached(Contact)),
@@ -110,12 +123,10 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 			this, SLOT(contactUpdated(Contact)));
 	
 	connect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy &)),
-			this, SLOT(buddyUpdated(Buddy &)));
-		
-	kdebugf2();
+			this, SLOT(buddyUpdated(Buddy &))); 
 }
 
-JabberProtocol::~JabberProtocol()
+void JabberProtocol::disconnectContactManagerSignals()
 {
 	disconnect(ContactManager::instance(), SIGNAL(contactDetached(Contact)),
 			this, SLOT(contactDetached(Contact)));
@@ -126,8 +137,6 @@ JabberProtocol::~JabberProtocol()
 
 	disconnect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy &)),
 			this, SLOT(buddyUpdated(Buddy &)));
-
-	logout();
 }
 
 void JabberProtocol::initializeJabberClient()
@@ -358,8 +367,13 @@ void JabberProtocol::rosterRequestFinished(bool success)
 	{
 		// the roster was imported successfully, clear
 		// all "dirty" items from the contact list
-		foreach (Contact c, ContactsForDelete)
-			ContactManager::instance()->removeItem(c);
+		foreach (Contact contact, ContactsForDelete)
+		{
+			Buddy owner = contact.ownerBuddy();
+			contact.setOwnerBuddy(Buddy::null);
+			if (owner.contacts().size() == 0)
+				BuddyManager::instance()->removeItem(owner);	
+		}
 		
 	}
 	rosterRequestDone = true;
@@ -495,12 +509,15 @@ void JabberProtocol::clientResourceReceived(const XMPP::Jid &jid, const XMPP::Re
 	resourcePool()->addResource(jid, resource);
 
 	Status status(toStatus(resource.status()));
-	Contact contact = ContactManager::instance()->byId(account(), jid.bare(), ActionCreateAndAdd);
+	Contact contact = ContactManager::instance()->byId(account(), jid.bare(), ActionReturnNull);
 
-	Status oldStatus = contact.currentStatus();
-	contact.setCurrentStatus(status);
+	if (contact)
+	{
+		Status oldStatus = contact.currentStatus();
+		contact.setCurrentStatus(status);
 
-	emit contactStatusChanged(contact, oldStatus);
+		emit contactStatusChanged(contact, oldStatus);
+	}
 	kdebugf2();
 }
 
@@ -516,7 +533,8 @@ void JabberProtocol::contactAttached(Contact contact)
 		groupsList.append(group.name());
 	
 	//TODO last parameter: automagic authorization request - make it configurable
-	JabberClient->addContact(contact.id(), buddy.display(), groupsList, true);
+	// setting last parameter to false prevents for now weird adding contact loop
+	JabberClient->addContact(contact.id(), buddy.display(), groupsList, false);
 }
 
 void JabberProtocol::contactDetached(Contact contact)
@@ -586,6 +604,8 @@ void JabberProtocol::slotContactUpdated(const XMPP::RosterItem &item)
 	 * Regardless of the subscription type, we have to add
 	 * a roster item here.
 	 */
+	
+	disconnectContactManagerSignals();
 
 	kdebug("New roster item: %s (Subscription: %s )\n", item.jid().full().toLocal8Bit().data(), item.subscription().toString().toLocal8Bit().data());
 
@@ -622,6 +642,8 @@ void JabberProtocol::slotContactUpdated(const XMPP::RosterItem &item)
 	{
 		//TODO: synchronize groups
 	}
+	
+	connectContactManagerSignals();
 
 	kdebugf2();
 }

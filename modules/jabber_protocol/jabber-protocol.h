@@ -54,6 +54,8 @@ class JabberProtocol : public Protocol
 
 		void initializeJabberClient();
 		void setPEPAvailable(bool b);
+		void connectContactManagerSignals();
+		void disconnectContactManagerSignals();
 
 	private slots:
 		void login(const QString &password, bool permanent);
