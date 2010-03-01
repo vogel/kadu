@@ -312,6 +312,7 @@ void ChatState::messageAboutToSend(XMPP::Message &message)
 
 void ChatState::updateChatTitle()
 {	
+	ObservedChat.refreshTitle();
 	QString cap = ObservedChat.title();
 
 	if (ContactChatState == XMPP::StateComposing)
