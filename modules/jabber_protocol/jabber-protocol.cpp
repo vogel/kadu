@@ -278,7 +278,7 @@ void JabberProtocol::connectedToServer()
 	networkStateChanged(NetworkConnected);
 	
 	// flag roster for delete
-	QList<Contact> ContactsForDelete = ContactManager::instance()->contacts(account());
+	ContactsForDelete = ContactManager::instance()->contacts(account());
 
 	// ask for roster
 	JabberClient->requestRoster();
