@@ -66,13 +66,6 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Sto
 		QMenu *menu;
 		Action *action;
 
-		/**
-		* Przywraca stan kart w momencie uruchomienia kadu.
-		*/
-		void loadTabs();
-
-		void saveTabs();
-
 		void repaintTabs();
 
 		QString formatTabName(ChatWidget * chatWidget);
