@@ -23,8 +23,6 @@
  */
 
 // TODO 0.6.6 : load,save options
-// TODO 0.6.6 : load,save chats - remove old metods
-// TODO 0.6.6 : import 0.6.5 chats
 
 /*
  * autor
@@ -698,90 +696,6 @@ void TabsManager::store()
 		else if (detachedchats.indexOf(chatWidget) != -1)
 			window_elem.setAttribute("type", "detachedChat");
 	}
-}
-
-void TabsManager::loadTabs()
-{
-	kdebugf();
-/*
-	QDomElement root_elem = xml_config_file->rootElement();
-	QDomElement chats_elem = xml_config_file->findElement(root_elem, "TabsChats");
-	if (!chats_elem.isNull())
-	{
-		ChatWidget* chat;
-		for (QDomNode win = chats_elem.firstChild(); !win.isNull(); win = win.nextSibling())
-		{
-			const QDomElement &window_elem = win.toElement();
-			if (window_elem.isNull() || window_elem.tagName() != "Tab")
-				continue;
-			QString account_id = window_elem.attribute("account");
-			ContactList users;
-			for (QDomNode contact = window_elem.firstChild(); !contact.isNull(); contact = contact.nextSibling())
-			{
-				const QDomElement &contact_elem = contact.toElement();
-				if (contact_elem.isNull() || contact_elem.tagName() != "Contact")
-					continue;
-				QString contact_uuid = contact_elem.attribute("id");
-				users.append(ContactManager::instance()->getContactByUuid(contact_uuid));
-			}
-			chat=ChatManager::instance()->findChatWidget(users);
-			// jeśli nie istnieje to tworzymy
-			if (!chat)
-			{
-				if (window_elem.attribute("type")=="tab")
-					force_tabs=true;
-				else if (window_elem.attribute("type")=="detachedChat")
-					no_tabs=true;
-				ChatManager::instance()->openChatWidget(AccountManager::instance()->account(account_id),users, false);
-			}
-			else if (window_elem.attribute("type")=="tab")
-				insertTab(chat);
-			if (window_elem.attribute("type")=="detachedChat")
-				detachedchats.append(chat);
-		}
-		// usuwamy z konfiguracji przywrocone rozmowy
-		xml_config_file->removeChildren(chats_elem);
-	}
-*/
-	kdebugf2();
-}
-
-void TabsManager::saveTabs()
-{
-	kdebugf();
-/*
-	ChatWidget* chat;
-	QDomElement root_elem = xml_config_file->rootElement();
-	QDomElement chats_elem = xml_config_file->accessElement(root_elem, "TabsChats");
-	xml_config_file->removeChildren(chats_elem);
-
-	ChatList chList = ChatManager::instance()->chats();
-	for (uint i = 0; i < chList.count(); i++)
-	{
-		chat=chList[i];
-		if (!(tabdialog->indexOf(chList[i])!=-1) && !(detachedchats.findIndex(chList[i])!=-1))
-			continue;
-		QDomElement window_elem = xml_config_file->createElement(chats_elem, "Tab");
-
-		Account *account = chat->account();
-		window_elem.setAttribute("account", account->uuid() );
-		if (tabdialog->indexOf(chList[i])!=-1)
-			window_elem.setAttribute("type", "tab");
-		else if (detachedchats.findIndex(chList[i])!=-1)
-			window_elem.setAttribute("type", "detachedChat");
-
-		//QDomElement contactListNode = configurationStorage->getNode(pendingMessageNode, "ContactList", XmlConfigFile::ModeCreate);
-		//QDomElement contact_list_elem = xml_config_file->createElement(window_elem, "ContactList");
-		// TODO: 0.6.6 extract class - ContactListHelper
-		foreach(Contact c, chat->contacts())
-		{
-			//contact_list_elem->createTextNode(contact_list_elem, "Contact", c.uuid());
-			QDomElement user_elem = xml_config_file->createElement(window_elem, "Contact");
-			user_elem.setAttribute("id", c.uuid());
-		}
-	}
-*/
-	kdebugf2();
 }
 
 void TabsManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
