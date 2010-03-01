@@ -274,10 +274,13 @@ void JabberProtocol::connectedToServer()
 	kdebugf();
 
 	whileConnecting = false;
-	//crash by�... gdzie indziej status ustawia�
-	///setStatus(Status::Online);
+
 	networkStateChanged(NetworkConnected);
-	//po zalogowaniu pobierz roster
+	
+	// flag roster for delete
+	QList<Contact> ContactsForDelete = ContactManager::instance()->contacts(account());
+
+	// ask for roster
 	JabberClient->requestRoster();
 	kdebugf2();
 }
@@ -355,7 +358,9 @@ void JabberProtocol::rosterRequestFinished(bool success)
 	{
 		// the roster was imported successfully, clear
 		// all "dirty" items from the contact list
-		///contactPool()->cleanUp ();
+		foreach (Contact c, ContactsForDelete)
+			ContactManager::instance()->removeItem(c);
+		
 	}
 	rosterRequestDone = true;
 
@@ -584,7 +589,14 @@ void JabberProtocol::slotContactUpdated(const XMPP::RosterItem &item)
 
 	kdebug("New roster item: %s (Subscription: %s )\n", item.jid().full().toLocal8Bit().data(), item.subscription().toString().toLocal8Bit().data());
 
-	Contact contact = ContactManager::instance()->byId(account(), item.jid().bare(), ActionCreateAndAdd);
+	Contact contact = ContactManager::instance()->byId(account(), item.jid().bare(), ActionReturnNull);
+	if (contact)
+	{
+		ContactsForDelete.removeAll(contact);
+	}
+	else
+		Contact contact = ContactManager::instance()->byId(account(), item.jid().bare(), ActionCreateAndAdd);
+	
 	Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
 
 	// if contact has name set it to display

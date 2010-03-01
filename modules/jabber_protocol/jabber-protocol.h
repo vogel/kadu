@@ -42,7 +42,8 @@ class JabberProtocol : public Protocol
 		JabberResourcePool *ResourcePool;
 		ServerInfoManager *serverInfoManager;
 		PEPManager *PepManager; 
-
+		QList<Contact> ContactsForDelete;
+		
 		bool rosterRequestDone;
 		bool usingSSL;
 		bool confUseSSL;
