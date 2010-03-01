@@ -49,7 +49,6 @@ public:
 	void setMargin(int width);
 	void setPage(QWebPage * page);
 
-
 signals:
 	/**
 		Dowolny przycisk myszy zosta� zwolniony

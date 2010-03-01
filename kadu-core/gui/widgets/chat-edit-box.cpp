@@ -53,7 +53,6 @@ ChatEditBox::ChatEditBox(Chat chat, QWidget *parent) :
 
 	InputBox = new CustomInput(this);
 	InputBox->setWordWrapMode(QTextOption::WordWrap);
-	InputBox->setAcceptRichText(true);
 
 	setCentralWidget(InputBox);
 
