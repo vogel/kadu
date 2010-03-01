@@ -100,6 +100,9 @@ void TabWidget::chatKeyPressed(QKeyEvent *e, CustomInput *k, bool &handled)
 {
 	Q_UNUSED(k)
 
+	if (handled)
+		return;
+
 	handled = true;
 	// obsluga skrotow klawiszowych
 	if (HotKey::shortCut(e, "ShortCuts", "MoveTabLeft"))

@@ -203,7 +203,7 @@ void SingleWindow::onOpenChat(ChatWidget *w)
 	connect(w, SIGNAL(messageReceived(ChatWidget *)),
 		this, SLOT(onNewMessage(ChatWidget *)));
 
-	connect(w, SIGNAL(keyPressed(QKeyEvent*, ChatWidget*, bool&)),
+	connect(w->edit(), SIGNAL(keyPressed(QKeyEvent*, ChatWidget*, bool&)),
 		this, SLOT(onChatKeyPressed(QKeyEvent*, ChatWidget*, bool&)));
 }
 

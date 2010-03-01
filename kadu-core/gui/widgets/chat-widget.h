@@ -77,8 +77,6 @@ private slots:
 	void connectAcknowledgeSlots();
 	void disconnectAcknowledgeSlots();
 
-	void editBoxKeyPressed(QKeyEvent *e, CustomInput *sender, bool &handled);
-
 	void messagesViewSelectionChanged();
 	void editBoxSelectionChanged();
 
@@ -131,8 +129,6 @@ public:
 	virtual void dragEnterEvent(QDragEnterEvent *e);
 	virtual void dropEvent(QDropEvent *e);
 	virtual void dragMoveEvent(QDragMoveEvent *e);
-
-	virtual bool eventFilter(QObject *watched, QEvent *e);
 
 	Protocol *currentProtocol();
 
@@ -230,9 +226,6 @@ signals:
 
 	void captionUpdated();
 	void closed();
-
-	void keyPressed(QKeyEvent *e, ChatWidget *sender, bool &handled);
-
 };
 
 /**

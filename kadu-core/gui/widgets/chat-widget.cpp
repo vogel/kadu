@@ -130,10 +130,7 @@ void ChatWidget::createGui()
 	InputBox = new ChatEditBox(CurrentChat, this);
 	vertSplit->addWidget(InputBox);
 
-	connect(InputBox, SIGNAL(keyPressed(QKeyEvent *, CustomInput *, bool &)),
-			this, SLOT(editBoxKeyPressed(QKeyEvent *, CustomInput *, bool &)));
 	connect(InputBox->inputBox(), SIGNAL(sendMessage()), this, SLOT(sendMessage()));
-	InputBox->installEventFilter(this);
 
 	setFocusProxy(InputBox);
 }
@@ -231,25 +228,11 @@ QIcon ChatWidget::icon()
 void ChatWidget::keyPressEvent(QKeyEvent *e)
 {
 	kdebugf();
- 	if (keyPressEventHandled(e))
- 		e->accept();
- 	else
- 		QWidget::keyPressEvent(e);
+	if (keyPressEventHandled(e))
+		e->accept();
+	else
+		QWidget::keyPressEvent(e);
 	kdebugf2();
-}
-
-// TODO: remove
-bool ChatWidget::eventFilter(QObject *watched, QEvent *ev)
-{
-//	kdebugmf(KDEBUG_INFO|KDEBUG_FUNCTION_START, "watched: %p, Edit: %p, ev->type():%d, KeyPress:%d\n", watched, Edit, ev->type(), QEvent::KeyPress);
-
- 	if (watched != InputBox || ev->type() != QEvent::KeyPress)
- 		return QWidget::eventFilter(watched, ev);
- 	kdebugf();
- 	QKeyEvent *e = static_cast<QKeyEvent *>(ev);
- 	if (keyPressEventHandled(e))
- 		return true;
- 	return QWidget::eventFilter(watched, ev);
 }
 
 QDateTime ChatWidget::lastMessageTime()
@@ -576,15 +559,6 @@ void ChatWidget::leaveConference()
 // 		IgnoredHelper::insert(Contacts);
 
 	emit closed();
-}
-
-void ChatWidget::editBoxKeyPressed(QKeyEvent *e, CustomInput *sender, bool &handled)
-{
-	Q_UNUSED(sender)
-
-	keyPressEvent(e);
-
-	emit keyPressed(e, this, handled);
 }
 
 void ChatWidget::messagesViewSelectionChanged()

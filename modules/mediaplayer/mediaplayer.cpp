@@ -327,6 +327,9 @@ void MediaPlayer::chatKeyPressed(QKeyEvent *e, CustomInput *k, bool &handled)
 
 	kdebugf();
 
+	if (handled)
+		return;
+
 	if (!config_file.readBoolEntry("MediaPlayer", "chatShortcuts", true))
 		return;
 
