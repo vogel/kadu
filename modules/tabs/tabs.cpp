@@ -131,8 +131,6 @@ TabsManager::TabsManager(bool firstload)
 	connect(&timer, SIGNAL(timeout()),
 			this, SLOT(onTimer()));
 
-	ConfigurationManager::instance()->registerStorableObject(this);
-
 	openInNewTabActionDescription = new ActionDescription(
 		0, ActionDescription::TypeUser, "openInNewTabAction",
 		this, SLOT(onNewTab(QAction *, bool)),
@@ -199,9 +197,6 @@ TabsManager::~TabsManager()
 
 	saveWindowGeometry(tabdialog, "Chat", "TabWindowsGeometry");
 
-	if (config_file.readBoolEntry("Chat", "SaveOpenedWindows", true))
-		store(); //saveTabs();
-
 	// jesli kadu nie konczy dzialania to znaczy ze modul zostal tylko wyladowany wiec odlaczamy rozmowy z kart
 	
 	if (!Core::instance()->isClosing())
@@ -209,12 +204,9 @@ TabsManager::~TabsManager()
 		for (int i = tabdialog->count() - 1; i >= 0; i--)
 			detachChat(dynamic_cast<ChatWidget *>(tabdialog->widget(i)));
 	}
-	else // saveTabs()
-	{
+	else if (config_file.readBoolEntry("Chat", "SaveOpenedWindows", true))// saveTabs()
 		store();
-	}
 	
-	ConfigurationManager::instance()->unregisterStorableObject(this);
 
 	delete tabdialog;
 	tabdialog = 0;
@@ -643,11 +635,12 @@ void TabsManager::load()
 
 	StorableObject::load();
 
-	XmlConfigFile *storageFile = storage()->storage();
-	QDomElement point = storage()->point();
+	QDomElement itemsNode = storage()->point();
+	if (itemsNode.isNull())
+			return;
 
-	QList<QDomElement> nodes = storageFile->getNodes(point, "Tab");
-	foreach (QDomElement element, nodes)
+	QList<QDomElement> itemElements = storage()->storage()->getNodes(itemsNode, "Tab");
+	foreach (QDomElement element, itemElements)
 	{
 		QUuid chatId(element.attribute("chat"));
 
@@ -660,9 +653,14 @@ void TabsManager::load()
 
 		ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat);
 		if (!chatWidget)
-			continue;
-
-		if (element.attribute("type") == "tab")
+		{
+			if (element.attribute("type") == "tab")
+				force_tabs = true;
+			else if (element.attribute("type") == "detachedChat")
+				no_tabs = true;
+			ChatWidgetManager::instance()->openPendingMsgs(chat);
+		}
+		else if (element.attribute("type") == "tab")
 			insertTab(chatWidget);
 		else if (element.attribute("type") == "detachedChat")
 			detachedchats.append(chatWidget);
