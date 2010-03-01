@@ -393,14 +393,13 @@ void TabsManager::onNewTab(QAction *sender, bool toggled)
 
 	Chat chat = ChatManager::instance()->findChat(contacts);
 
-	// exists - bring to front
-	if (chat)
-	{
-		ChatWidgetManager::instance()->openPendingMsgs(chat, true);
-		ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat);
-		if (!chatWidget)
-			return;
+	if (!chat)
+		return;
 
+	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat);
+	// exists - bring to front
+	if (chatWidget)
+	{
 		if (tabdialog->indexOf(chatWidget) != -1)
 		{
 			tabdialog->setWindowState(tabdialog->windowState() & ~Qt::WindowMinimized);
@@ -408,9 +407,7 @@ void TabsManager::onNewTab(QAction *sender, bool toggled)
 		}
 		_activateWindow(chatWidget);
 	}
-
-	// TODO : is it possible?
-/*	else
+	else
 	{
 		if (config_defaultTabs)
 			no_tabs = true;
@@ -420,7 +417,7 @@ void TabsManager::onNewTab(QAction *sender, bool toggled)
 		// but here chat = 0
 		ChatWidgetManager::instance()->openPendingMsgs(chat, true);
 	}
-*/
+
 	kdebugf2();
 }
 
