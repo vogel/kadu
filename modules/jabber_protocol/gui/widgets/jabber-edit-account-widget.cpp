@@ -47,7 +47,6 @@
 #include "icons-manager.h"
 
 #include "gui/windows/jabber-change-password-window.h"
-#include "jabber-account-details.h"
 #include "jabber-personal-info-widget.h"
 
 #include "jabber-edit-account-widget.h"
@@ -195,6 +194,7 @@ void JabberEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	HostPortLayout->addWidget(CustomHostLabel);
 
 	CustomHost = new QLineEdit(general);
+	connect(CustomHost, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 	HostPortLayout->addWidget(CustomHost);
 
 	CustomPortLabel = new QLabel(general);
@@ -205,6 +205,7 @@ void JabberEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	CustomPort->setMinimumSize(QSize(56, 0));
 	CustomPort->setMaximumSize(QSize(56, 32767));
 	CustomPort->setValidator(new QIntValidator(0, 9999999, CustomPort));
+	connect(CustomPort, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 	HostPortLayout->addWidget(CustomPort);
 
 	// Manual Host/Port
@@ -213,6 +214,7 @@ void JabberEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	CustomPort->setEnabled(false);
 	CustomPortLabel->setEnabled(false);
 	connect(CustomHostPort, SIGNAL(toggled(bool)), SLOT(hostToggled(bool)));
+	connect(CustomHostPort, SIGNAL(stateChanged(int)), this, SLOT(dataChanged()));
 
 	vboxLayout2->addLayout(HostPortLayout);
 
@@ -229,6 +231,7 @@ void JabberEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	EncryptionMode->addItem(tr("When available"), JabberAccountDetails::Encryption_Auto);
 	EncryptionMode->addItem(tr("Legacy SSL"), JabberAccountDetails::Encryption_Legacy);
 	connect(EncryptionMode, SIGNAL(activated(int)), SLOT(sslActivated(int)));
+	connect(EncryptionMode, SIGNAL(activated(int)), this, SLOT(dataChanged()));
 	EncryptionLayout->addWidget(EncryptionMode);
 
 	QSpacerItem *spacerItem = new QSpacerItem(151, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
@@ -237,6 +240,7 @@ void JabberEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 
 	LegacySSLProbe = new QCheckBox(general);
 	LegacySSLProbe->setText(tr("Probe legacy SSL port"));
+	connect(LegacySSLProbe, SIGNAL(stateChanged(int)), this, SLOT(dataChanged()));
 	vboxLayout2->addWidget(LegacySSLProbe);
 
 	QHBoxLayout *plainAuthLayout = new QHBoxLayout();
@@ -252,6 +256,7 @@ void JabberEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	PlainTextAuth->addItem(tr("Always"), JabberAccountDetails::Encryption_Yes);
 	PlainTextAuth->addItem(tr("When available"), JabberAccountDetails::Encryption_Auto);
 	PlainTextAuth->addItem(tr("Legacy SSL"), JabberAccountDetails::Encryption_Legacy);
+	connect(PlainTextAuth, SIGNAL(activated(int)), this, SLOT(dataChanged()));
 	plainAuthLayout->addWidget(PlainTextAuth);
 	vboxLayout2->addLayout(plainAuthLayout);
 
@@ -268,6 +273,8 @@ void JabberEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 
 	AutoResource = new QCheckBox;
 	AutoResource->setText(tr("Use hostname as a resource"));
+	connect(AutoResource, SIGNAL(stateChanged(int)), this, SLOT(dataChanged()));
+	connect(AutoResource, SIGNAL(toggled(bool)), SLOT(autoResourceToggled(bool)));
 	layout->addWidget(AutoResource);
 
 	ResourceLayout = new QHBoxLayout();
@@ -279,6 +286,7 @@ void JabberEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 	ResourceLayout->addWidget(ResourceLabel);
 
 	ResourceName = new QLineEdit;
+	connect(ResourceName, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 	ResourceLayout->addWidget(ResourceName);
 
 	PriorityLabel = new QLabel;
@@ -286,6 +294,7 @@ void JabberEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 	ResourceLayout->addWidget(PriorityLabel);
 
 	Priority = new QLineEdit;
+	connect(Priority, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 //	 Priority->setMinimumSize(QSize(56, 0));
 //	 Priority->setMaximumSize(QSize(56, 32767));
 	Priority->setValidator(new QIntValidator(Priority));
@@ -296,8 +305,6 @@ void JabberEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 	Priority->setEnabled(false);
 	PriorityLabel->setEnabled(false);
 */
-	connect(AutoResource, SIGNAL(toggled(bool)), SLOT(autoResourceToggled(bool)));
-
 	layout->addLayout(ResourceLayout);
 	
 	DataTransferProxyLayout = new QHBoxLayout();
@@ -353,11 +360,23 @@ void JabberEditAccountWidget::sslActivated(int i)
 
 void JabberEditAccountWidget::dataChanged()
 {
+  	AccountDetails = dynamic_cast<JabberAccountDetails *>(account().details());
+	if (!AccountDetails)
+		return;
+
 	if (/*account().name() == AccountName->text()
 		&&*/ account().connectAtStart() == ConnectAtStart->isChecked()
 		&& account().id() == AccountId->text()
 		&& account().rememberPassword() == RememberPassword->isChecked()
 		&& account().password() == AccountPassword->text()
+		&& AccountDetails->useCustomHostPort() == CustomHostPort->isChecked()
+		&& AccountDetails->customHost() == CustomHost->displayText()
+		&& AccountDetails->customPort() == CustomPort->displayText().toInt()
+		&& AccountDetails->encryptionMode() == (JabberAccountDetails::EncryptionFlag)EncryptionMode->itemData(EncryptionMode->currentIndex()).toInt()
+		&& AccountDetails->legacySSLProbe() == LegacySSLProbe->isChecked()
+		&& AccountDetails->autoResource() == AutoResource->isChecked()
+		&& AccountDetails->resource() == ResourceName->text()
+		&& AccountDetails->priority() == Priority->text().toInt()
 		/*&& StateNotChanged == Proxy->state()*/)
 	{
 		setState(StateNotChanged);
@@ -398,27 +417,27 @@ void JabberEditAccountWidget::loadAccountData()
 
 void JabberEditAccountWidget::loadConnectionData()
 {
-	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(account().details());
-	if (!jabberAccountDetails)
+	AccountDetails = dynamic_cast<JabberAccountDetails *>(account().details());
+	if (!AccountDetails)
 		return;
 
-	CustomHostPort->setChecked(jabberAccountDetails->useCustomHostPort());
-	CustomHost->setText(jabberAccountDetails->customHost());
-	CustomPort->setText(jabberAccountDetails->customPort() ? QString::number(jabberAccountDetails->customPort()) : QString::number(5222));
-	EncryptionMode->setCurrentIndex(EncryptionMode->findData(jabberAccountDetails->encryptionMode()));
-	LegacySSLProbe->setChecked(jabberAccountDetails->legacySSLProbe());
+	CustomHostPort->setChecked(AccountDetails->useCustomHostPort());
+	CustomHost->setText(AccountDetails->customHost());
+	CustomPort->setText(AccountDetails->customPort() ? QString::number(AccountDetails->customPort()) : QString::number(5222));
+	EncryptionMode->setCurrentIndex(EncryptionMode->findData(AccountDetails->encryptionMode()));
+	LegacySSLProbe->setChecked(AccountDetails->legacySSLProbe());
 	proxy->loadProxyData();
 
-	AutoResource->setChecked(jabberAccountDetails->autoResource());
-	ResourceName->setText(jabberAccountDetails->resource());
-	Priority->setText(QString::number(jabberAccountDetails->priority()));
-	DataTransferProxy->setText(jabberAccountDetails->dataTransferProxy());
+	AutoResource->setChecked(AccountDetails->autoResource());
+	ResourceName->setText(AccountDetails->resource());
+	Priority->setText(QString::number(AccountDetails->priority()));
+	DataTransferProxy->setText(AccountDetails->dataTransferProxy());
 }
 
 void JabberEditAccountWidget::apply()
 {
-	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(account().details());
-	if (!jabberAccountDetails)
+	AccountDetails = dynamic_cast<JabberAccountDetails *>(account().details());
+	if (!AccountDetails)
 		return;
 
 	account().setConnectAtStart(ConnectAtStart->isChecked());
@@ -426,15 +445,19 @@ void JabberEditAccountWidget::apply()
 	account().setRememberPassword(RememberPassword->isChecked());
 	account().setPassword(AccountPassword->text());
 	account().setHasPassword(!AccountPassword->text().isEmpty());
-	jabberAccountDetails->setUseCustomHostPort(CustomHostPort->isChecked());
-	jabberAccountDetails->setCustomHost(CustomHost->text());
-	jabberAccountDetails->setCustomPort(CustomPort->text().toInt());
-	jabberAccountDetails->setEncryptionMode((JabberAccountDetails::EncryptionFlag)EncryptionMode->itemData(EncryptionMode->currentIndex()).toInt());
-	jabberAccountDetails->setLegacySSLProbe(LegacySSLProbe->isChecked());
-	jabberAccountDetails->setAutoResource(AutoResource->isChecked());
-	jabberAccountDetails->setResource(ResourceName->text());
-	jabberAccountDetails->setPriority(Priority->text().toInt());
-	jabberAccountDetails->setDataTransferProxy(DataTransferProxy->text());
+	AccountDetails->setUseCustomHostPort(CustomHostPort->isChecked());
+	AccountDetails->setCustomHost(CustomHost->text());
+	AccountDetails->setCustomPort(CustomPort->text().toInt());
+	AccountDetails->setEncryptionMode((JabberAccountDetails::EncryptionFlag)EncryptionMode->itemData(EncryptionMode->currentIndex()).toInt());
+	AccountDetails->setLegacySSLProbe(LegacySSLProbe->isChecked());
+	AccountDetails->setAutoResource(AutoResource->isChecked());
+	AccountDetails->setResource(ResourceName->text());
+	AccountDetails->setPriority(Priority->text().toInt());
+	AccountDetails->setDataTransferProxy(DataTransferProxy->text());
+	
+	setState(StateNotChanged);
+	
+	dataChanged();
 }
 
 void JabberEditAccountWidget::cancel()

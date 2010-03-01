@@ -31,6 +31,8 @@
 #include "gui/widgets/account-edit-widget.h"
 #include "gui/widgets/identities-combo-box.h"
 
+#include "jabber-account-details.h"
+
 class QCheckBox;
 class QLineEdit;
 class QTabWidget;
@@ -42,6 +44,8 @@ class ProxyGroupBox;
 class JabberEditAccountWidget : public AccountEditWidget
 {
 	Q_OBJECT
+
+	JabberAccountDetails *AccountDetails;
 
 	QCheckBox *ConnectAtStart;
 	QLineEdit *AccountId;
