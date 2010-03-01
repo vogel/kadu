@@ -84,7 +84,6 @@ private slots:
 	void showInfoPanelActionCreated(Action *action);
 	void showIgnoredActionCreated(Action *action);
 
-
 	void configurationActionActivated(QAction *sender, bool toggled);
 	void yourAccountsActionActivated(QAction *sender, bool toggled);
 	void exitKaduActionActivated(QAction *sender, bool toggled);

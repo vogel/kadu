@@ -349,6 +349,9 @@ Text is plain black." />
 			<group-box name="New messages">
 				<check-box caption="Notify about new messages only when window is inactive" config-section="Notify" config-item="NewMessageOnlyIfInactive" />
 			</group-box>
+			<group-box name="Silent Mode">
+				<check-box caption="Enable Silent Mode when Away" config-section="Notify" config-item="AwaySilentMode" id="notify/awaySilentMode" />
+			</group-box>
 			<group-box name="Status change">
 				<check-box caption="Ignore status changes from available / busy to busy / available" config-section="Notify" config-item="IgnoreOnlineToOnline" />
 				<check-box caption="Ignore changes right after connection to the server" config-section="Notify" config-item="NotifyIgnoreOnConnection"

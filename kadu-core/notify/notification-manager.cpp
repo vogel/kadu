@@ -49,6 +49,7 @@
 #include "notify/notifier.h"
 #include "notify/notify-configuration-ui-handler.h"
 #include "notify/window-notifier.h"
+#include "status/status-container-manager.h"
 
 #include "debug.h"
 #include "misc/misc.h"
@@ -94,6 +95,13 @@ void NotificationManager::init()
 		"kadu_icons/kadu-notifyaboutuser.png", "kadu_icons/kadu-notifyaboutuser.png", tr("Notify about user"), true, "",
 		checkNotify
 	);
+
+	SilentModeActionDescription = new ActionDescription(this,
+		ActionDescription::TypeGlobal, "silentModeAction",
+		this, SLOT(silentModeActionActivated(QAction *, bool)),
+		"kadu_icons/silent-mode-on.png", "kadu_icons/silent-mode-off.png", tr("Enable Silent Mode"), true, tr("Disable Silent Mode")
+	);
+	connect(SilentModeActionDescription, SIGNAL(actionCreated(Action *)), this, SLOT(silentModeActionCreated(Action *)));
 
 	BuddiesListViewMenuManager::instance()->addManagementActionDescription(notifyAboutUserActionDescription);
 
@@ -183,6 +191,22 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 			action->setChecked(!on);
 
 	kdebugf2();
+}
+
+void NotificationManager::silentModeActionCreated(Action *action)
+{
+	action->setChecked(SilentMode);
+}
+
+void NotificationManager::silentModeActionActivated(QAction *sender, bool toggled)
+{
+	Q_UNUSED(sender)
+
+	SilentMode = toggled;
+	foreach (Action *action, SilentModeActionDescription->actions())
+		action->setChecked(toggled);
+
+	config_file.writeEntry("Notify", "SilentMode", toggled);
 }
 
 void NotificationManager::accountRegistered(Account account)
@@ -376,6 +400,17 @@ QList<NotifyEvent *> NotificationManager::notifyEvents()
 	return NotifyEvents;
 }
 
+bool NotificationManager::ignoreNotifications()
+{
+	if (SilentMode)
+		return true;
+
+	if (!SilentModeWhenAway)
+		return false;
+
+	return StatusContainerManager::instance()->status().group() == "Away";
+}
+
 void NotificationManager::notify(Notification *notification)
 {
 	kdebugf();
@@ -383,6 +418,12 @@ void NotificationManager::notify(Notification *notification)
 	QString notifyType = notification->key();
 	bool foundNotifier = false;
 	bool foundNotifierWithCallbackSupported = !notification->requireCallback();
+
+	if (ignoreNotifications())
+	{
+		notification->callbackDiscard();
+		return;
+	}
 
 	notification->acquire();
 
@@ -458,6 +499,8 @@ void NotificationManager::groupUpdated()
 void NotificationManager::configurationUpdated()
 {
 	NotifyAboutAll = config_file.readBoolEntry("Notify", "NotifyAboutAll");
+	SilentMode = config_file.readBoolEntry("Notify", "SilentMode", false);
+	SilentModeWhenAway = config_file.readBoolEntry("Notify", "AwaySilentMode", false);
 }
 
 void NotificationManager::createDefaultConfiguration()

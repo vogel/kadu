@@ -59,8 +59,12 @@ class KADUAPI NotificationManager : public QObject, AccountsAwareObject, Configu
 	void init();
 
 	bool NotifyAboutAll;
+	bool SilentMode;
+	bool SilentModeWhenAway;
 
 	ActionDescription *notifyAboutUserActionDescription;
+	ActionDescription *SilentModeActionDescription;
+
 	NotifyConfigurationUiHandler *UiHandler;
 
 	QList<Notifier *> Notifiers;
@@ -71,12 +75,16 @@ class KADUAPI NotificationManager : public QObject, AccountsAwareObject, Configu
 
 	void createDefaultConfiguration();
 
+	bool ignoreNotifications();
+
 private slots:
 	void messageReceived(const Message &message);
 
 	void statusChanged(Contact contact, Status oldStatus);
 
 	void notifyAboutUserActionActivated(QAction *sender, bool toggled);
+	void silentModeActionCreated(Action *action);
+	void silentModeActionActivated(QAction *sender, bool toggled);
 
 	void groupAdded(Group group);
 	void groupUpdated();
@@ -104,6 +112,9 @@ public:
 	QList<NotifyEvent *> notifyEvents();
 
 	bool notifyAboutAll() { return NotifyAboutAll; }
+
+	void setSilentMode(bool silentMode) { SilentMode = silentMode; }
+	bool silentMode() { return SilentMode; }
 
 	QString notifyConfigurationKey(const QString &eventType);
 
