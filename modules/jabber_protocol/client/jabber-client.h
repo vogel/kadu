@@ -624,7 +624,7 @@ signals:
 	/**
 	 * New subscription request.
 	 */
-	void subscription(const XMPP::Jid &jid, const QString &type);
+	void subscription(const XMPP::Jid &jid, const QString &type, const QString &nick);
 
 	/**
 	 * Dispatches a debug message. Debug messages
@@ -698,7 +698,7 @@ private slots:
 	void slotGroupChatError(const Jid &jid, int error, const QString &reason);
 
 	/* Incoming subscription request. */
-	void slotSubscription(const Jid &jid, const QString &type);
+	void slotSubscription(const Jid &jid, const QString &type, const QString &nick);
 
 	void sessionStart_finished();
 

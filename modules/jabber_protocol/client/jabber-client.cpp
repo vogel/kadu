@@ -362,7 +362,7 @@ void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool a
 	{
 		using namespace XMPP;
 		QObject::connect(jabberClient, SIGNAL(subscription(const Jid &, const QString &, const QString &)),
-				   this, SLOT(slotSubscription(const Jid &, const QString &)));
+				   this, SLOT(slotSubscription(const Jid &, const QString &, const QString &)));
 		QObject::connect(jabberClient, SIGNAL(rosterRequestFinished(bool, int, const QString &)),
 				   this, SLOT(slotRosterRequestFinished(bool, int, const QString &)));
 		QObject::connect(jabberClient, SIGNAL(rosterItemAdded(const RosterItem &)),
@@ -873,9 +873,9 @@ void JabberClient::slotGroupChatError(const XMPP::Jid &jid, int error, const QSt
 	emit groupChatError(jid, error, reason);
 }
 
-void JabberClient::slotSubscription(const XMPP::Jid &jid, const QString &type)
+void JabberClient::slotSubscription(const XMPP::Jid &jid, const QString &type, const QString &nick)
 {
-	emit subscription(jid, type);
+	emit subscription(jid, type, nick);
 }
 
 void JabberClient::getErrorInfo(int err, AdvancedConnector *conn, Stream *stream, QCATLSHandler *tlsHandler, QString *_str, bool *_reconn)

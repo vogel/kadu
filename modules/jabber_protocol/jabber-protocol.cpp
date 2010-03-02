@@ -134,9 +134,11 @@ void JabberProtocol::disconnectContactManagerSignals()
 			this, SLOT(contactAttached(Contact)));
 	disconnect(ContactManager::instance(), SIGNAL(contactIdChanged(Contact, const QString &)),
 			this, SLOT(contactIdChanged(Contact, const QString &)));
-
+	disconnect(ContactManager::instance(), SIGNAL(contactReattached(Contact)),
+			this, SLOT(contactUpdated(Contact)));
+	
 	disconnect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy &)),
-			this, SLOT(buddyUpdated(Buddy &)));
+			this, SLOT(buddyUpdated(Buddy &))); 
 }
 
 void JabberProtocol::initializeJabberClient()
@@ -145,8 +147,8 @@ void JabberProtocol::initializeJabberClient()
 	connect(JabberClient, SIGNAL(csDisconnected()), this, SLOT(disconnectedFromServer()));
 	connect(JabberClient, SIGNAL(connected()), this, SLOT(connectedToServer()));
 
-	connect(JabberClient, SIGNAL(subscription(const XMPP::Jid &, const QString &)),
-		   this, SLOT(slotSubscription(const XMPP::Jid &, const QString &)));
+	connect(JabberClient, SIGNAL(subscription(const XMPP::Jid &, const QString &, const QString &)),
+		   this, SLOT(slotSubscription(const XMPP::Jid &, const QString &, const QString &)));
 	connect(JabberClient, SIGNAL(newContact(const XMPP::RosterItem &)),
 		   this, SLOT(slotContactUpdated(const XMPP::RosterItem &)));
 	connect(JabberClient, SIGNAL(contactUpdated(const XMPP::RosterItem &)),
@@ -533,8 +535,7 @@ void JabberProtocol::contactAttached(Contact contact)
 		groupsList.append(group.name());
 	
 	//TODO last parameter: automagic authorization request - make it configurable
-	// setting last parameter to false prevents for now weird adding contact loop
-	JabberClient->addContact(contact.id(), buddy.display(), groupsList, false);
+	JabberClient->addContact(contact.id(), buddy.display(), groupsList, true);
 }
 
 void JabberProtocol::contactDetached(Contact contact)
@@ -662,7 +663,7 @@ void JabberProtocol::slotContactDeleted(const XMPP::RosterItem &item)
 	}
 }
 
-void JabberProtocol::slotSubscription(const XMPP::Jid & jid, const QString &type)
+void JabberProtocol::slotSubscription(const XMPP::Jid & jid, const QString &type, const QString &nick)
 {
 	if (type == "unsubscribed")
 	{
@@ -673,8 +674,8 @@ void JabberProtocol::slotSubscription(const XMPP::Jid & jid, const QString &type
 
 		XMPP::JT_Roster *task;
 		if (MessageDialog::ask(tr("The user %1 removed subscription to you. "
-								   "You will no longer be able to view his/her online/offline status. "
-								   "Do you want to delete the contact?").arg(jid.full())))
+					   "You will no longer be able to view his/her online/offline status. "
+					   "Do you want to delete the contact?").arg(jid.full())))
 		{
 			/*
 			 * Delete this contact from our roster.
@@ -694,26 +695,62 @@ void JabberProtocol::slotSubscription(const XMPP::Jid & jid, const QString &type
 			}
 		}
 		else
+		{
 			/*
 				 * We want to leave the contact in our contact list.
 				 * In this case, we need to delete all the resources
 				 * we have for it, as the Jabber server won't signal us
 				 * that the contact is offline now.
 			*/
-		resourcePool()->removeAllResources(jid);
+			Status offlineStatus;
+			offlineStatus.setType("Offline");
+			Contact contact = ContactManager::instance()->byId(account(), jid.bare(), ActionReturnNull);
+
+			if (contact)
+			{
+				Status oldStatus = contact.currentStatus();
+				contact.setCurrentStatus(offlineStatus);
+
+				emit contactStatusChanged(contact, oldStatus);
+			}
+			
+			resourcePool()->removeAllResources(jid);
+		}
 	}
 
 	if (type == "subscribe")
 	{
-		Contact contact = ContactManager::instance()->byId(account(), jid.bare(), ActionCreate);
-		SubscriptionWindow::getSubscription(contact, this, SLOT(authorizeContact(Contact, bool)));
+		if ( 0 /*("options.subscriptions.automatically-allow-authorization").toBool()*/) 
+		{
+			// Check if we want to request auth as well
+// 			Contact contact = ContactManager::instance()->byId(account(), jid.bare(), ActionReturnNull);
+// 			if (!contact || (u->subscription().type() != Subscription::Both && u->subscription().type() != Subscription::To))
+// 			{
+// 				contactAttached(contact);
+// 				JabberClient->resendSubscription();
+// 			}
+// 			else
+// 			{
+// 				JabberClient->resendSubscription();
+// 			}
+		}
+		else
+		{
+			Contact contact = ContactManager::instance()->byId(account(), jid.bare(), ActionCreate);
+			SubscriptionWindow::getSubscription(contact, this, SLOT(authorizeContact(Contact, bool)));
+		}
 	}
 	else if (type == "subscribed")
-		MessageDialog::msg(QString("You are authorized by %1").arg(jid.bare()), false, "32x32/dialog-warning.png");
-	else if (type == "unsubscribe")
-		MessageDialog::msg(QString("Contact %1 has removed authorization for you.").arg(jid.bare()), false, "32x32/dialog-warning.png");
-		//TODO: usuwa� kontakt z listy... ta, chyba tak
-
+	{
+		//TODO some option in GUI
+		/*if (!getOption("options.ui.notifications.successful-subscription").toBool())
+			MessageDialog::msg(QString("You are authorized by %1").arg(jid.bare()), false, "32x32/dialog-warning.png");
+		*/
+	}
+	/*else if (type == "unsubscribe")
+	{
+		//in Psi it's ignored
+	}*/
 }
 
 void JabberProtocol::authorizeContact(Contact contact, bool authorized)
@@ -807,10 +844,10 @@ void JabberProtocol::setPEPAvailable(bool b)
 	if (b && JabberClient->client()->extensions().contains("ep"))
 	{
 		QStringList pepNodes;
-// 		pepNodes += "http://jabber.org/protocol/mood";
-// 		pepNodes += "http://jabber.org/protocol/tune";
-// 		pepNodes += "http://jabber.org/protocol/physloc";
-// 		pepNodes += "http://jabber.org/protocol/geoloc";
+		/*pepNodes += "http://jabber.org/protocol/mood";
+		pepNodes += "http://jabber.org/protocol/tune";
+		pepNodes += "http://jabber.org/protocol/physloc";
+		pepNodes += "http://jabber.org/protocol/geoloc";*/
 		pepNodes += "http://www.xmpp.org/extensions/xep-0084.html#ns-data";
 		pepNodes += "http://www.xmpp.org/extensions/xep-0084.html#ns-metadata";
 		JabberClient->client()->addExtension("ep", XMPP::Features(pepNodes));

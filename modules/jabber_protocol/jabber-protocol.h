@@ -67,7 +67,7 @@ class JabberProtocol : public Protocol
 		void slotContactUpdated(const XMPP::RosterItem &ri);
 		void slotContactDeleted(const XMPP::RosterItem &ri);
 		void slotIncomingFileTransfer();
-		void slotSubscription(const XMPP::Jid &jid, const QString &type);
+		void slotSubscription(const XMPP::Jid &jid, const QString &type, const QString &nick);
 		void slotClientDebugMessage (const QString &msg);
 
 		void contactDetached(Contact contact);
