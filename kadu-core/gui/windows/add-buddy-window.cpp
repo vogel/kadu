@@ -282,7 +282,12 @@ void AddBuddyWindow::accept()
 	if (!MergeContact->isChecked())
 	{
 		if (MyBuddy.isNull())
-			buddy = BuddyManager::instance()->byId(account, UserNameEdit->text(), ActionCreateAndAdd);
+		{
+			buddy = Buddy::create();
+			buddy.data()->setState(StorableObject::StateNew);
+
+			BuddyManager::instance()->addItem(buddy);
+		}
 		else
 			buddy = MyBuddy;
 
