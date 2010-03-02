@@ -606,6 +606,9 @@ void JabberProtocol::slotContactUpdated(const XMPP::RosterItem &item)
 	 * a roster item here.
 	 */
 	
+	if (item.subscription().toString() == "none")
+		return;
+
 	disconnectContactManagerSignals();
 
 	kdebug("New roster item: %s (Subscription: %s )\n", item.jid().full().toLocal8Bit().data(), item.subscription().toString().toLocal8Bit().data());
