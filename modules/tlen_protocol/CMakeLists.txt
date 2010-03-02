@@ -2,6 +2,7 @@
 #pkg_search_module (IDN REQUIRED libidn )
 
 set (SOURCES
+	gui/widgets/tlen-add-account-widget.cpp
 	gui/widgets/tlen-contact-widget.cpp
 	gui/widgets/tlen-create-account-widget.cpp
 	gui/widgets/tlen-edit-account-widget.cpp
@@ -25,6 +26,7 @@ set (SOURCES
 )
 
 set (MOC_SOURCES
+	gui/widgets/tlen-add-account-widget.h
 	gui/widgets/tlen-contact-widget.h
 	gui/widgets/tlen-create-account-widget.h
 	gui/widgets/tlen-edit-account-widget.h

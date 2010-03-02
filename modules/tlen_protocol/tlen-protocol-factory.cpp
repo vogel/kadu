@@ -24,6 +24,7 @@
 #include "status/status-type.h"
 #include "status/status-type-manager.h"
 
+#include "gui/widgets/tlen-add-account-widget.h"
 #include "gui/widgets/tlen-contact-widget.h"
 #include "gui/widgets/tlen-create-account-widget.h"
 #include "gui/widgets/tlen-edit-account-widget.h"
@@ -73,6 +74,11 @@ AccountDetails * TlenProtocolFactory::createAccountDetails(AccountShared *accoun
 ContactDetails * TlenProtocolFactory::createContactDetails(ContactShared *contactShared)
 {
 	return new TlenContactDetails(contactShared);
+}
+
+AccountAddWidget * TlenProtocolFactory::newAddAccountWidget(QWidget *parent)
+{
+	return new TlenAddAccountWidget(parent);
 }
 
 QWidget * TlenProtocolFactory::newCreateAccountWidget(QWidget *parent)
