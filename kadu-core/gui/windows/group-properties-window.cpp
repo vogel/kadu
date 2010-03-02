@@ -139,6 +139,7 @@ void GroupPropertiesWindow::selectIcon()
 		config_file.writeEntry("GroupIcon", "recentPath", fileInfo.absolutePath());
 		icon->setText("");
 		icon->setIcon(QIcon(file));
+		iconPath = file;
 	}
 }
 
