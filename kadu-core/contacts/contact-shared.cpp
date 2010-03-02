@@ -140,7 +140,7 @@ void ContactShared::setOwnerBuddy(Buddy buddy)
 	if (OwnerBuddy == buddy)
 		return;
 
-	bool hadBuddy = !OwnerBuddy.isNull();
+	bool hadBuddy = !OwnerBuddy.isNull() && !OwnerBuddy.isAnonymous();
 	if (!OwnerBuddy.isNull())
 	{
 		if (buddy.isNull())
