@@ -203,7 +203,7 @@ void TlenEditAccountWidget::removeAccount()
 			.arg(account().id()));
 
 	QPushButton *removeButton = messageBox->addButton(tr("Remove account"), QMessageBox::AcceptRole);
-	QPushButton *removeAndUnregisterButton = messageBox->addButton(tr("Remove account and unregister from server"), QMessageBox::DestructiveRole);
+	//QPushButton *removeAndUnregisterButton = messageBox->addButton(tr("Remove account and unregister from server"), QMessageBox::DestructiveRole);
 	messageBox->addButton(QMessageBox::Cancel);
 
 	messageBox->exec();
@@ -213,11 +213,11 @@ void TlenEditAccountWidget::removeAccount()
 		AccountManager::instance()->removeItem(account());
 		deleteLater();
 	}
-	else if (messageBox->clickedButton() == removeAndUnregisterButton)
-	{
-		AccountManager::instance()->removeItem(account());
-		deleteLater();
-	}
+// 	else if (messageBox->clickedButton() == removeAndUnregisterButton)
+// 	{
+// 		AccountManager::instance()->removeItem(account());
+// 		deleteLater();
+// 	}
 
 	delete messageBox;
 }
