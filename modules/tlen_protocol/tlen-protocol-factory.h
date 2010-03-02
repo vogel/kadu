@@ -42,7 +42,7 @@ public:
 	virtual ContactDetails * createContactDetails(ContactShared *contactShared);
 	virtual AccountAddWidget * newAddAccountWidget(QWidget *parent = 0) { Q_UNUSED(parent); return 0; }
 	virtual QWidget * newCreateAccountWidget(QWidget *parent);
-	virtual AccountEditWidget* newEditAccountWidget(Account, QWidget*);
+	virtual AccountEditWidget * newEditAccountWidget(Account, QWidget*);
 	virtual ContactWidget * newContactWidget(Contact contact, QWidget *parent = 0);
 
 	virtual QList<StatusType *> supportedStatusTypes();
