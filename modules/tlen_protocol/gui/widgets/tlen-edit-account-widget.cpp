@@ -19,8 +19,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QApplication>
 #include <QtGui/QCheckBox>
 #include <QtGui/QComboBox>
+#include <QtGui/QDialogButtonBox>
 #include <QtGui/QGridLayout>
 #include <QtGui/QGroupBox>
 #include <QtGui/QLabel>
@@ -65,6 +67,23 @@ void TlenEditAccountWidget::createGui()
 	createBuddiesTab(tabWidget);
 	createConnectionTab(tabWidget);
 // 	tabWidget->addTab(new QWidget(), tr("Functions"));
+
+	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
+
+	ApplyButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogApplyButton), tr("Apply"), this);
+	connect(ApplyButton, SIGNAL(clicked(bool)), this, SLOT(apply()));
+
+	CancelButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Cancel"), this);
+	connect(CancelButton, SIGNAL(clicked(bool)), this, SLOT(cancel()));
+
+	QPushButton *removeAccount = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Delete account"), this);
+	connect(removeAccount, SIGNAL(clicked(bool)), this, SLOT(removeAccount()));
+
+	buttons->addButton(ApplyButton, QDialogButtonBox::ApplyRole);
+	buttons->addButton(CancelButton, QDialogButtonBox::RejectRole);
+	buttons->addButton(removeAccount, QDialogButtonBox::DestructiveRole);
+
+	mainLayout->addWidget(buttons);
 }
 
 
@@ -108,11 +127,6 @@ void TlenEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 
 	//QPushButton *changePassword = new QPushButton(tr("Change password"), this);
 	//layout->addWidget(changePassword, row++, 1, Qt::AlignLeft);
-
-	QPushButton *removeAccount = new QPushButton(tr("Remove account"), this);
-	connect(removeAccount, SIGNAL(clicked(bool)), this, SLOT(removeAccount()));
-	layout->addWidget(removeAccount, row++, 1);
-	layout->setRowStretch(row, 100);
 
 	row = 0;
 	QLabel *photoLabel = new QLabel(tr("Your photo") + ":", this);

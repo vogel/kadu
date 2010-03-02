@@ -26,6 +26,7 @@
 
 class QCheckBox;
 class QLineEdit;
+class QPushButton;
 class QTabWidget;
 class QVBoxLayout;
 
@@ -41,6 +42,9 @@ class TlenEditAccountWidget : public AccountEditWidget
 	QLineEdit *AccountId;
 	QLineEdit *AccountPassword;
 	QCheckBox *RememberPassword;
+
+	QPushButton *ApplyButton;
+	QPushButton *CancelButton;
 
 	ChooseIdentityWidget *ChooseIdentity;
 	ProxyGroupBox *proxy;
