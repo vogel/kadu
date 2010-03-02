@@ -93,3 +93,20 @@ void IdentityManager::itemRemoved(Identity item)
 {
 	emit identityRemoved(item);
 }
+
+void IdentityManager::addDefaultIdentity()
+{
+	Identity defaultIdentity = Identity::create();
+	defaultIdentity.data()->setState(StateNew);
+	defaultIdentity.setName(tr("Default"));
+
+	addItem(defaultIdentity);
+}
+
+void IdentityManager::load()
+{
+	SimpleManager<Identity>::load();
+
+	if (items().isEmpty())
+		addDefaultIdentity();
+}
