@@ -41,7 +41,7 @@ public:
 	virtual AccountDetails * createAccountDetails(AccountShared *accountShared);
 	virtual ContactDetails * createContactDetails(ContactShared *contactShared);
 	virtual AccountAddWidget * newAddAccountWidget(QWidget *parent = 0) { Q_UNUSED(parent); return 0; }
-	virtual QWidget * newCreateAccountWidget(QWidget *parent);
+	virtual QWidget * newCreateAccountWidget(QWidget *parent = 0);
 	virtual AccountEditWidget * newEditAccountWidget(Account, QWidget*);
 	virtual ContactWidget * newContactWidget(Contact contact, QWidget *parent = 0);
 
