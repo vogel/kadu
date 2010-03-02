@@ -525,7 +525,7 @@ void JabberProtocol::clientResourceReceived(const XMPP::Jid &jid, const XMPP::Re
 
 void JabberProtocol::contactAttached(Contact contact)
 {
-	if (!isConnected() || contact.contactAccount() != account())
+	if (!isConnected() || contact.contactAccount() != account() || contact.ownerBuddy().isAnonymous())
 		return;
 
 	Buddy buddy = contact.ownerBuddy();
@@ -565,7 +565,7 @@ void JabberProtocol::buddyUpdated(Buddy &buddy)
 
 void JabberProtocol::contactUpdated(Contact contact)
 {
-	if (!isConnected() || contact.contactAccount() != account())
+	if (!isConnected() || contact.contactAccount() != account() || contact.ownerBuddy().isAnonymous())
 		return;
 
 	Buddy buddy = contact.ownerBuddy();
