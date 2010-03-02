@@ -109,7 +109,7 @@ ContactWidget * TlenProtocolFactory::newContactWidget(Contact contact, QWidget *
 		: 0;
 }
 
-QString TlenProtocolFactory::iconName()
+QIcon TlenProtocolFactory::icon()
 {
-	return dataPath("kadu/modules/data/tlen_protocol/").append("online.png");
+	return IconsManager::instance()->iconByPath("protocols/tlen/32x32/online.png");
 }

@@ -51,7 +51,7 @@ public:
 
 	virtual QString name() { return "tlen"; }
 	virtual QString displayName() { return "Tlen"; }
-	virtual QString iconName();
+	virtual QIcon icon();
 };
 
 #endif // TLEN_PROTOCOL_FACTORY_H
