@@ -39,6 +39,7 @@ class TlenEditAccountWidget : public AccountEditWidget
 	Q_OBJECT
 
 	QCheckBox *ConnectAtStart;
+	QLineEdit *AccountName;
 	QLineEdit *AccountId;
 	QLineEdit *AccountPassword;
 	QCheckBox *RememberPassword;

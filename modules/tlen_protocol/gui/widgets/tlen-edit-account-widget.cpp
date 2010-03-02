@@ -103,15 +103,23 @@ void TlenEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 	ConnectAtStart = new QCheckBox(tr("Connect at start"), this);
 	layout->addWidget(ConnectAtStart, row++, 0, 1, 3);
 
+	QLabel *nameLabel = new QLabel(tr("Account name") + ":", this);
+	layout->addWidget(nameLabel, row++, 1);
+	AccountName = new QLineEdit(this);
+	connect(AccountName, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
+	layout->addWidget(AccountName, row++, 1, 1, 2);
+
 	QLabel *numberLabel = new QLabel(tr("Tlen.pl Login") + ":", this);
 	layout->addWidget(numberLabel, row++, 1);
 	AccountId = new QLineEdit(this);
+	connect(AccountId, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 	layout->addWidget(AccountId, row++, 1, 1, 2);
 
 	QLabel *passwordLabel = new QLabel(tr("Password") + ":", this);
 	layout->addWidget(passwordLabel, row++, 1);
 	AccountPassword = new QLineEdit(this);
 	AccountPassword->setEchoMode(QLineEdit::Password);
+	connect(AccountPassword, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 	layout->addWidget(AccountPassword, row++, 1, 1, 2);
 
 	RememberPassword = new QCheckBox(tr("Remember password"), this);
@@ -167,6 +175,7 @@ void TlenEditAccountWidget::createConnectionTab(QTabWidget *tabWidget)
 void TlenEditAccountWidget::loadAccountData()
 {
 	ConnectAtStart->setChecked(account().connectAtStart());
+	AccountName->setText(account().name());
 	AccountId->setText(account().id());
 	RememberPassword->setChecked(account().rememberPassword());
 	AccountPassword->setText(account().password());
@@ -179,6 +188,7 @@ void TlenEditAccountWidget::loadConnectionData()
 
 void TlenEditAccountWidget::apply()
 {
+	account().setName(AccountName->text());
 	account().setConnectAtStart(ConnectAtStart->isChecked());
 	account().setId(AccountId->text());
 	account().setRememberPassword(RememberPassword->isChecked());
