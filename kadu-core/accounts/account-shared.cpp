@@ -76,6 +76,8 @@ void AccountShared::load()
 
 	ConnectAtStart = loadValue<bool>("ConnectAtStart", true);
 	AccountIdentity = IdentityManager::instance()->byUuid(loadValue<QString>("Identity"));
+	if (AccountIdentity.isNull() && !IdentityManager::instance()->items().isEmpty())
+		AccountIdentity = IdentityManager::instance()->items()[0];
 
 	Name = loadValue<QString>("Name");
 	ProtocolName = loadValue<QString>("Protocol");
