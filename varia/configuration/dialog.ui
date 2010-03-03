@@ -7,6 +7,11 @@
 					   tool-tip="Choose your language" />
 			</group-box>
 
+			<group-box name="Contacts list mode">
+				<check-box caption="Use simple mode" config-section="General" config-item="SimpleMode" id="simpleMode"
+					   tool-tip="If enabled, contact networks will be hidden in contacts list and status buttons" />
+			</group-box>
+
 			<group-box name="Updates">
 				<check-box caption="Check for updates" config-section="General" config-item="CheckUpdates"
 					   tool-tip="Automatically checks whether a new version is available" />
