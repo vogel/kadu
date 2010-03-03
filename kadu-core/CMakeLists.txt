@@ -87,6 +87,7 @@ set (kadu_SRCS
 	configuration/configuration-contact-data-manager.cpp
 	configuration/configuration-file.cpp
 	configuration/configuration-manager.cpp
+	configuration/main-configuration.cpp
 	configuration/notifier-configuration-data-manager.cpp
 	configuration/xml-configuration-file.cpp
 
