@@ -47,6 +47,7 @@
 #include "icons-manager.h"
 
 #include "gui/windows/jabber-change-password-window.h"
+#include "gui/windows/xml-console.h"
 #include "jabber-personal-info-widget.h"
 
 #include "jabber-edit-account-widget.h"
@@ -319,6 +320,12 @@ void JabberEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 	DataTransferProxyLayout->addWidget(DataTransferProxy);
 
 	layout->addLayout(DataTransferProxyLayout);
+
+#ifdef DEBUG_ENABLED
+	QPushButton *consoleButton = new QPushButton(tr("Show XML console for this account"), this);
+	connect(consoleButton, SIGNAL(clicked()), this, SLOT(showXmlConsole()));
+	layout->addWidget(consoleButton);
+#endif
 }
 
 void JabberEditAccountWidget::hostToggled(bool on)
@@ -504,4 +511,7 @@ void JabberEditAccountWidget::passwordChanged(const QString &newPassword)
 	AccountPassword->setText(newPassword);
 }
 
-
+void JabberEditAccountWidget::showXmlConsole()
+{
+	(new XmlConsole(account()))->show();
+}

@@ -260,6 +260,7 @@ set (SOURCES
 	gui/widgets/jabber-edit-account-widget.cpp
 	gui/widgets/jabber-personal-info-widget.cpp
 	gui/windows/jabber-change-password-window.cpp
+	gui/windows/xml-console.cpp
 	open-chat-with/jabber-open-chat-with-runner.cpp
 	jabber-account-data-manager.cpp
 	jabber-account-details.cpp
@@ -295,6 +296,7 @@ set (MOC_SOURCES
 	gui/widgets/jabber-edit-account-widget.h
 	gui/widgets/jabber-personal-info-widget.h
 	gui/windows/jabber-change-password-window.h
+	gui/windows/xml-console.h
 	jabber-protocol.h
 	resource/jabber-resource.h
 	resource/jabber-resource-pool.h
