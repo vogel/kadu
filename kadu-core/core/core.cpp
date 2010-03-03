@@ -35,6 +35,7 @@
 #include "chat/message/pending-messages-manager.h"
 #include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
+#include "configuration/main-configuration.h"
 #include "contacts/contact-manager.h"
 #include "file-transfer/file-transfer-manager.h"
 #include "gui/widgets/chat-edit-box.h"
@@ -77,8 +78,11 @@ Core::Core() :
 		Myself(Buddy::create()), Window(0), IsClosing(false), ShowMainWindowOnStart(true)
 {
 	connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(quit()));
+
 	createDefaultConfiguration();
 	configurationUpdated();
+
+	MainConfiguration::createInstance();
 }
 
 Core::~Core()
@@ -99,6 +103,8 @@ Core::~Core()
 #ifdef Q_OS_MACX
 	setIcon(QPixmap(dataPath("kadu.png")));
 #endif // Q_OS_MACX
+
+	MainConfiguration::destroyInstance();
 
 	delete Window;
 	Window = 0;
