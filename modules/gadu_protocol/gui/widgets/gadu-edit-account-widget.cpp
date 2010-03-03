@@ -269,6 +269,7 @@ void GaduEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 
 void GaduEditAccountWidget::apply()
 {
+	account().setAccountIdentity(Identities->currentIdentity());
 	account().setName(AccountName->text());
 	account().setConnectAtStart(ConnectAtStart->isChecked());
 	account().setId(AccountId->text());
@@ -299,7 +300,8 @@ void GaduEditAccountWidget::cancel()
 void GaduEditAccountWidget::dataChanged()
 {
 	
-	if (account().name() == AccountName->text()
+	if (account().accountIdentity() == Identities->currentIdentity()
+		&& account().name() == AccountName->text()
 		&& account().connectAtStart() == ConnectAtStart->isChecked()
 		&& account().id() == AccountId->text()
 		&& account().rememberPassword() == RememberPassword->isChecked()
@@ -339,6 +341,7 @@ void GaduEditAccountWidget::dataChanged()
 
 void GaduEditAccountWidget::loadAccountData()
 {
+	Identities->setCurrentIdentity(account().accountIdentity());
 	AccountName->setText(account().name());
 	ConnectAtStart->setChecked(account().connectAtStart());
 	AccountId->setText(account().id());

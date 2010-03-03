@@ -59,15 +59,12 @@ QString IdentityShared::storageNodeName()
 
 void IdentityShared::load()
 {
-	printf("loading identity\n");
-
 	if (!isValidStorage())
 		return;
 
 	Shared::load();
 
 	Name = loadValue<QString>("Name");
-	printf("loaded name: %s\n", qPrintable(Name));
 }
 
 void IdentityShared::store()
@@ -77,7 +74,6 @@ void IdentityShared::store()
 
 	Shared::store();
 
-	printf("storing name: %s\n", qPrintable(Name));
 	storeValue("Name", Name);
 }
 
