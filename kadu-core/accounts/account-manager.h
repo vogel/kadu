@@ -69,7 +69,7 @@ public:
 
 	Account defaultAccount();
 
-	Account byName(const QString &name);
+	const QList<Account> byIdentity(Identity identity);
 	Account byId(const QString &protocolName, const QString &id);
 	const QList<Account> byProtocolName(const QString &name);
 

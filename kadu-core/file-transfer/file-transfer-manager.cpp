@@ -273,14 +273,14 @@ void FileTransferManager::incomingFileTransfer(FileTransfer fileTransfer)
 				.arg(chat.name())
 				.arg(fileTransfer.remoteFileName())
 				.arg(textFileSize.arg(size, 0, 'f', 2))
-				.arg(chat.chatAccount().name()));
+				.arg(chat.chatAccount().accountIdentity().name()));
 	else
 		notification->setText(tr("User <b>%1</b> wants to send you a file <b/>%2</b>\nof size <b>%3</b> using account <b>%4</b>.\n"
 				"This is probably a next part of <b>%5</b>\n What should I do?")
 				.arg(chat.name())
 				.arg(fileTransfer.remoteFileName())
 				.arg(textFileSize.arg(size, 0, 'f', 2))
-				.arg(chat.chatAccount().name())
+				.arg(chat.chatAccount().accountIdentity().name())
 				.arg(fileTransfer.localFileName()));
 
 	NotificationManager::instance()->notify(notification);

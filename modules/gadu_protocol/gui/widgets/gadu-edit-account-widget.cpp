@@ -119,10 +119,6 @@ void GaduEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 	connect(ConnectAtStart, SIGNAL(stateChanged(int)), this, SLOT(dataChanged()));
 	formLayout->addRow(0, ConnectAtStart);
 
-	AccountName = new QLineEdit(this);
-	connect(AccountName, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
-	formLayout->addRow(tr("Account name") + ":", AccountName);
-
 	AccountId = new QLineEdit(this);
 	AccountId->setValidator(new LongValidator(1, 3999999999U, this));
 	connect(AccountId, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
@@ -270,7 +266,6 @@ void GaduEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 void GaduEditAccountWidget::apply()
 {
 	account().setAccountIdentity(Identities->currentIdentity());
-	account().setName(AccountName->text());
 	account().setConnectAtStart(ConnectAtStart->isChecked());
 	account().setId(AccountId->text());
 	account().setRememberPassword(RememberPassword->isChecked());
@@ -301,7 +296,6 @@ void GaduEditAccountWidget::dataChanged()
 {
 	
 	if (account().accountIdentity() == Identities->currentIdentity()
-		&& account().name() == AccountName->text()
 		&& account().connectAtStart() == ConnectAtStart->isChecked()
 		&& account().id() == AccountId->text()
 		&& account().rememberPassword() == RememberPassword->isChecked()
@@ -317,15 +311,10 @@ void GaduEditAccountWidget::dataChanged()
 		return;
 	}
 
-	bool sameNameExists = AccountManager::instance()->byName(AccountName->text())
-			&& AccountManager::instance()->byName(AccountName->text()) != account();
 	bool sameIdExists = AccountManager::instance()->byId(account().protocolName(), account().id())
 			&& AccountManager::instance()->byId(account().protocolName(), account().id()) != account();
 
-	if (AccountName->text().isEmpty()
-		|| sameNameExists
-		|| AccountId->text().isEmpty()
-		|| sameIdExists)
+	if (AccountId->text().isEmpty() || sameIdExists)
 	{
 		setState(StateChangedDataInvalid);
 		ApplyButton->setEnabled(false);
@@ -342,7 +331,6 @@ void GaduEditAccountWidget::dataChanged()
 void GaduEditAccountWidget::loadAccountData()
 {
 	Identities->setCurrentIdentity(account().accountIdentity());
-	AccountName->setText(account().name());
 	ConnectAtStart->setChecked(account().connectAtStart());
 	AccountId->setText(account().id());
 	RememberPassword->setChecked(account().rememberPassword());
@@ -368,7 +356,7 @@ void GaduEditAccountWidget::removeAccount()
 	QMessageBox *messageBox = new QMessageBox(this);
 	messageBox->setWindowTitle(tr("Confirm account removal"));
 	messageBox->setText(tr("Are you sure do you want to remove account %1 (%2)")
-			.arg(account().name())
+			.arg(account().accountIdentity().name())
 			.arg(account().id()));
 
 	QPushButton *removeButton = messageBox->addButton(tr("Remove account"), QMessageBox::AcceptRole);

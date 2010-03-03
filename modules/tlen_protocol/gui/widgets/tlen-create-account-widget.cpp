@@ -125,7 +125,6 @@ void TlenCreateAccountWidget::addThisAccount()
 	details->setState(StorableObject::StateNew);
 	tlenAccount.setDetails(details);
 	tlenAccount.setProtocolName("tlen");
-	tlenAccount.setName(AccountName->text());
 	tlenAccount.setId(AccountId->text());
 	tlenAccount.setPassword(AccountPassword->text());
 	tlenAccount.setHasPassword(!AccountPassword->text().isEmpty());

@@ -98,7 +98,6 @@ KaduSharedBase_PropertyDef(Account, QString, protocolName, ProtocolName, QString
 KaduSharedBase_PropertyDef(Account, Protocol *, protocolHandler, ProtocolHandler, 0)
 KaduSharedBase_PropertyDef(Account, AccountDetails *, details, Details, 0)
 KaduSharedBase_PropertyReadDef(Account, Contact, accountContact, AccountContact, Contact::null)
-KaduSharedBase_PropertyDef(Account, QString, name, Name, QString::null)
 KaduSharedBase_PropertyDef(Account, QString, id, Id, QString::null)
 KaduSharedBase_PropertyDef(Account, bool, rememberPassword, RememberPassword, true)
 KaduSharedBase_PropertyDef(Account, bool, hasPassword, HasPassword, false)

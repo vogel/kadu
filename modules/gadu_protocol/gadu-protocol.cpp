@@ -513,8 +513,10 @@ void GaduProtocol::login()
 
 	if (!account().hasPassword())
 	{
-		PasswordWindow::getPassword(tr("Please provide password for %1 account").arg(account().name()),
-				this, SLOT(login(const QString &, bool)));
+		QString message = tr("Please provide password for %1 (%2) account")
+				.arg(account().accountIdentity().name())
+				.arg(account().id());
+		PasswordWindow::getPassword(message, this, SLOT(login(const QString &, bool)));
 		return;
 	}
 

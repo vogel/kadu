@@ -309,7 +309,7 @@ void BuddiesListViewDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 	Account account = qvariant_cast<Account>(index.data(AccountRole));
 	QString accountDisplay;
 	if (account)
-		accountDisplay = account.name();
+		accountDisplay = account.accountIdentity().name();
 
 	// only display account name when in contact-mode, not buddy-mode
 	if ((option.state & QStyle::State_MouseOver && ShowAccountName) || index.parent().isValid())

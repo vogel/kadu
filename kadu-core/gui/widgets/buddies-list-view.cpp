@@ -287,7 +287,7 @@ void BuddiesListView::contextMenuEvent(QContextMenuEvent *event)
 		if (!account.protocolHandler()->protocolFactory() || !protocolFactory->protocolMenuManager())
 			continue;
 
-		QMenu *account_menu = menu->addMenu(account.name());
+		QMenu *account_menu = menu->addMenu(account.accountIdentity().name());
 		if (!protocolFactory->icon().isNull())
 			account_menu->setIcon(protocolFactory->icon());
 

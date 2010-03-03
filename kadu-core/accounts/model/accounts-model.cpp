@@ -76,9 +76,9 @@ QVariant AccountsModel::data(const QModelIndex &index, int role) const
 		// TODO: 0.6.6 make it pretty
 		case Qt::DisplayRole:
 			if (index.column() == 0) // long or shor name?
-				return acc.name();
+				return acc.accountIdentity().name();
 			else
-				return QString("%1 (%2)").arg(acc.name(), acc.id());
+				return QString("%1 (%2)").arg(acc.accountIdentity().name(), acc.id());
 
 		case Qt::DecorationRole:
 			return acc.protocolHandler() 

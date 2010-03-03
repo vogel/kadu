@@ -31,7 +31,6 @@ class TlenAddAccountWidget : public AccountAddWidget
 {
 	Q_OBJECT
 
-	QLineEdit *AccountName;
 	QLineEdit *AccountId;
 	QLineEdit *AccountPassword;
 	IdentitiesComboBox *Identity;

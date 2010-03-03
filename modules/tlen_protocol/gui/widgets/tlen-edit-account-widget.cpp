@@ -175,7 +175,6 @@ void TlenEditAccountWidget::createConnectionTab(QTabWidget *tabWidget)
 void TlenEditAccountWidget::loadAccountData()
 {
 	ConnectAtStart->setChecked(account().connectAtStart());
-	AccountName->setText(account().name());
 	AccountId->setText(account().id());
 	RememberPassword->setChecked(account().rememberPassword());
 	AccountPassword->setText(account().password());
@@ -188,7 +187,6 @@ void TlenEditAccountWidget::loadConnectionData()
 
 void TlenEditAccountWidget::apply()
 {
-	account().setName(AccountName->text());
 	account().setConnectAtStart(ConnectAtStart->isChecked());
 	account().setId(AccountId->text());
 	account().setRememberPassword(RememberPassword->isChecked());
@@ -209,7 +207,7 @@ void TlenEditAccountWidget::removeAccount()
 	QMessageBox *messageBox = new QMessageBox(this);
 	messageBox->setWindowTitle(tr("Confirm account removal"));
 	messageBox->setText(tr("Are you sure do you want to remove account %1 (%2)")
-			.arg(account().name())
+			.arg(account().accountIdentity().name())
 			.arg(account().id()));
 
 	QPushButton *removeButton = messageBox->addButton(tr("Remove account"), QMessageBox::AcceptRole);

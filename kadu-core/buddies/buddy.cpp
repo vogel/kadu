@@ -201,7 +201,7 @@ QString Buddy::display() const
 	return isNull()
 			? QString::null
 			: isAnonymous() && !prefferedAccount().isNull()
-					? (prefferedAccount().name() + ":" + id(prefferedAccount()))
+					? (prefferedAccount().accountIdentity().name() + ":" + id(prefferedAccount()))
 					: data()->display().isEmpty()
 							? data()->nickName().isEmpty()
 									? data()->firstName()

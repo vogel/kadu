@@ -666,7 +666,7 @@ void HistoryWindow::showMainPopupMenu(const QPoint &pos)
 		if (!protocolFactory || !protocolFactory->protocolMenuManager())
 			continue;
 
-		QMenu *account_menu = menu->addMenu(account.name());
+		QMenu *account_menu = menu->addMenu(QString("%1 (%2)").arg(account.accountIdentity().name()).arg(account.id()));
 		if (!protocolFactory->icon().isNull())
 			account_menu->setIcon(protocolFactory->icon());
 

@@ -53,7 +53,6 @@ private:
 	Identity AccountIdentity;
 	Contact AccountContact;
 
-	QString Name;
 	QString Id;
 
 	bool RememberPassword;
@@ -105,7 +104,6 @@ public: //TODO 0.6.6: it is needed in Buddy::dummy()
 	KaduShared_Property(Identity, accountIdentity, AccountIdentity)
 	KaduShared_PropertyRead(QString, protocolName, ProtocolName)
 	KaduShared_Property(Protocol *, protocolHandler, ProtocolHandler)
-	KaduShared_Property(QString, name, Name)
 	KaduShared_PropertyRead(QString, id, Id)
 	KaduShared_Property(bool, rememberPassword, RememberPassword)
 	KaduShared_Property(bool, hasPassword, HasPassword)

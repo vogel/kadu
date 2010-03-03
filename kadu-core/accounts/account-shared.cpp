@@ -79,7 +79,6 @@ void AccountShared::load()
 	if (AccountIdentity.isNull() && !IdentityManager::instance()->items().isEmpty())
 		AccountIdentity = IdentityManager::instance()->items()[0];
 
-	Name = loadValue<QString>("Name");
 	ProtocolName = loadValue<QString>("Protocol");
 	setId(loadValue<QString>("Id"));
 
@@ -113,7 +112,6 @@ void AccountShared::store()
 	storeValue("Identity", AccountIdentity.uuid().toString());
 
 	storeValue("Protocol", ProtocolName);
-	storeValue("Name", Name);
 	storeValue("Id", id());
 
 	storeValue("RememberPassword", RememberPassword);
@@ -260,7 +258,7 @@ Contact AccountShared::accountContact()
 
 QString AccountShared::statusContainerName()
 {
-	return name();
+	return accountIdentity().name();
 }
 
 void AccountShared::doSetStatus(Status status)
