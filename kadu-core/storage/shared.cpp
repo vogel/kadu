@@ -70,6 +70,8 @@ void Shared::store()
 	if (!isValidStorage())
 		return;
 
+	UuidStorableObject::store();
+
 	storeAttribute("uuid", Uuid.toString());
 }
 

@@ -59,6 +59,7 @@ public:
 
 	StatusContainer * statusContainer() { return data(); }
 
+	KaduSharedBase_Property(Identity, accountIdentity, AccountIdentity)
 	KaduSharedBase_PropertyRead(StoragePoint *, storage, Storage)
 	KaduSharedBase_Property(QString, protocolName, ProtocolName)
 	KaduSharedBase_Property(Protocol *, protocolHandler, ProtocolHandler)

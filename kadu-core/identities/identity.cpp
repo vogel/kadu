@@ -86,4 +86,3 @@ bool Identity::hasAccount(Account account)
 }
 
 KaduSharedBase_PropertyDef(Identity, QString, name, Name, QString::null)
-KaduSharedBase_PropertyDef(Identity, QList<Account>, accounts, Accounts, QList<Account>())

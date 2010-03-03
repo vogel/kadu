@@ -130,6 +130,8 @@ StoragePoint * StorableObject::storage()
  */
 void StorableObject::store()
 {
+	ensureLoaded();
+
 	foreach (StorableObject *moduleData, ModulesStorableData.values())
 		moduleData->store();
 }

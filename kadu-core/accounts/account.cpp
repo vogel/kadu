@@ -92,6 +92,7 @@ void Account::importProxySettings()
 	}
 }
 
+KaduSharedBase_PropertyDef(Account, Identity, accountIdentity, AccountIdentity, Identity::null)
 KaduSharedBase_PropertyReadDef(Account, StoragePoint *, storage, Storage, 0)
 KaduSharedBase_PropertyDef(Account, QString, protocolName, ProtocolName, QString::null)
 KaduSharedBase_PropertyDef(Account, Protocol *, protocolHandler, ProtocolHandler, 0)

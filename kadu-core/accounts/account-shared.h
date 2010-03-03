@@ -28,6 +28,7 @@
 #include <QtNetwork/QHostAddress>
 
 #include "contacts/contact.h"
+#include "identities/identity.h"
 #include "protocols/protocols-aware-object.h"
 #include "status/base-status-container.h"
 #include "storage/details-holder.h"
@@ -48,6 +49,8 @@ class KADUAPI AccountShared : public BaseStatusContainer, public Shared, public 
 private:
 	QString ProtocolName;
 	Protocol *ProtocolHandler;
+
+	Identity AccountIdentity;
 	Contact AccountContact;
 
 	QString Name;
@@ -99,6 +102,7 @@ public: //TODO 0.6.6: it is needed in Buddy::dummy()
 
 	Contact accountContact();
 
+	KaduShared_Property(Identity, accountIdentity, AccountIdentity)
 	KaduShared_PropertyRead(QString, protocolName, ProtocolName)
 	KaduShared_Property(Protocol *, protocolHandler, ProtocolHandler)
 	KaduShared_Property(QString, name, Name)
