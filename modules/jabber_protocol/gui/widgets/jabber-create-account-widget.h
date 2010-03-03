@@ -58,7 +58,7 @@ class JabberCreateAccountWidget : public QWidget
 	QPushButton *RegisterAccountButton;
 
 	QPushButton *ExpandConnectionOptionsButton;
-	QGroupBox *ConnectionOptions;
+	QWidget *OptionsWidget;
 	QCheckBox *CustomHostPort;
 	QHBoxLayout *HostPortLayout;
 	QLabel *CustomHostLabel;

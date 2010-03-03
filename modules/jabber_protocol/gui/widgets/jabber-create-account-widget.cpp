@@ -74,21 +74,22 @@ void JabberCreateAccountWidget::createGui()
 	layout->addRow(tr("Account Name") + ":", AccountName);
 	
 	QWidget *jidWidget = new QWidget(this);
-	QHBoxLayout *jidLayout = new QHBoxLayout(jidWidget);
+	QGridLayout *jidLayout = new QGridLayout(jidWidget);
 	jidLayout->setSpacing(0);
 	jidLayout->setMargin(0);
+	jidLayout->setColumnStretch(0, 2);
+	jidLayout->setColumnStretch(2, 2);
 
 	Username = new QLineEdit(this);
 	connect(Username, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
-	jidLayout->addWidget(Username, 20);
+	jidLayout->addWidget(Username);
 	
 	QLabel *atLabel = new QLabel("@", this);
-	jidLayout->addWidget(atLabel);
+	jidLayout->addWidget(atLabel, 0, 1);
 	
 	Domain = new QComboBox();
 	Domain->setEditable(true);
-	jidLayout->addWidget(Domain, 10);
-	jidLayout->addStretch(100);
+	jidLayout->addWidget(Domain, 0, 2);
 	
 	layout->addRow(tr("Username") + ":", jidWidget);
 
@@ -120,7 +121,7 @@ void JabberCreateAccountWidget::createGui()
 	connect(ExpandConnectionOptionsButton, SIGNAL(clicked()), this, SLOT(connectionOptionsChanged()));
 
 	QWidget *moreOptions = new QWidget;
-	QHBoxLayout *moreOptionsLayout = new QHBoxLayout;
+	QHBoxLayout *moreOptionsLayout = new QHBoxLayout(moreOptions);
 	moreOptionsLayout->addWidget(moreOptionsLabel);
 	moreOptionsLayout->addWidget(ExpandConnectionOptionsButton);
 	moreOptionsLayout->setAlignment(ExpandConnectionOptionsButton, Qt::AlignLeft);
@@ -129,10 +130,10 @@ void JabberCreateAccountWidget::createGui()
 
 	layout->addRow(0, moreOptions);
 
-	QWidget *OptionsWidget = new QWidget(this);
-        ConnectionOptions = new QGroupBox(OptionsWidget);
+	OptionsWidget = new QWidget(this);
+        QGroupBox *ConnectionOptions = new QGroupBox(OptionsWidget);
 	ConnectionOptions->setTitle(tr("Connection settings"));
-	ConnectionOptions->setVisible(false);
+	OptionsWidget->setVisible(false);
 
         QVBoxLayout *vboxLayout2 = new QVBoxLayout(ConnectionOptions);
         vboxLayout2->setSpacing(6);
@@ -250,7 +251,7 @@ void JabberCreateAccountWidget::connectionOptionsChanged()
 {
 	ShowConnectionOptions = !ShowConnectionOptions;
 	ExpandConnectionOptionsButton->setText(ShowConnectionOptions ? "v" : ">");
-	ConnectionOptions->setVisible(ShowConnectionOptions);
+	OptionsWidget->setVisible(ShowConnectionOptions);
 }
 
 void JabberCreateAccountWidget::dataChanged()
