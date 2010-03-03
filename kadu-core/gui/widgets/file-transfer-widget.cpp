@@ -129,13 +129,13 @@ void FileTransferWidget::createGui()
 	{
 		icon->setPixmap(IconsManager::instance()->pixmapByPath("kadu_icons/kadu-transfer_send.png"));
 		DescriptionLabel->setText(tr("File <b>%1</b><br /> to <b>%2</b><br />on account <b>%3</b>")
-				.arg(fileName).arg(buddy.display()).arg(account.name()));
+				.arg(fileName).arg(buddy.display()).arg(account.accountIdentity().name()));
 	}
 	else
 	{
 		icon->setPixmap(IconsManager::instance()->pixmapByPath("kadu_icons/kadu-transfer_receive.png"));
 		DescriptionLabel->setText(tr("File <b>%1</b><br /> from <b>%2</b><br />on account <b>%3</b>")
-				.arg(fileName).arg(buddy.display()).arg(account.name()));
+				.arg(fileName).arg(buddy.display()).arg(account.accountIdentity().name()));
 	}
 }
 

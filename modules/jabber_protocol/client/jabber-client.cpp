@@ -544,7 +544,7 @@ void JabberClient::slotTLSHandshaken()
 	QString domain = jabberAccountDetails->tlsOverrideDomain();
 	QByteArray cert = jabberAccountDetails->tlsOverrideCert();
 	if (CertificateHelpers::checkCertificate(JabberTLS, JabberTLSHandler, domain,
-		QString("%1: ").arg(Protocol->account().name()) + tr("Server Authentication"), XMPP::Jid(Protocol->account().id()).domain(), Protocol->account()))
+		QString("%1: ").arg(Protocol->account().accountIdentity().name()) + tr("Server Authentication"), XMPP::Jid(Protocol->account().id()).domain(), Protocol->account()))
 		JabberTLSHandler->continueAfterHandshake();
 	else
 		disconnect();
@@ -685,7 +685,7 @@ void JabberClient::slotCSError(int error)
 			if (reconn)
 				Protocol->connectToServer();
 			else
-				MessageDialog::msg(Protocol->account().name() + ": " +  tr("There was an error communicating with the server.\nDetails: %1").arg(errorText), false, "32x32/dialog-warning.png");
+				MessageDialog::msg(Protocol->account().accountIdentity().name() + ": " +  tr("There was an error communicating with the server.\nDetails: %1").arg(errorText), false, "32x32/dialog-warning.png");
 		}
 		if (Protocol->isConnected() || Protocol->isConnecting())
 			Protocol->logout(/* errorClass */);

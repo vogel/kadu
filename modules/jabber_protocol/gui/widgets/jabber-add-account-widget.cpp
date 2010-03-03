@@ -62,10 +62,6 @@ void JabberAddAccountWidget::createGui()
 
 	QFormLayout *layout = new QFormLayout(formWidget);
 
-	AccountName = new QLineEdit(this);
-	connect(AccountName, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
-	layout->addRow(tr("Account Name") + ":", AccountName);
-
 	QWidget *jidWidget = new QWidget(this);
 	QGridLayout *jidLayout = new QGridLayout(jidWidget);
 	jidLayout->setSpacing(0);
@@ -140,7 +136,6 @@ void JabberAddAccountWidget::apply()
 	details->setPriority(5);
 	jabberAccount.setDetails(details);
 	jabberAccount.setProtocolName("jabber");
-	jabberAccount.setName(AccountName->text());
 	jabberAccount.setId(Username->text() + "@" + Domain->currentText());
 	jabberAccount.setPassword(AccountPassword->text());
 	jabberAccount.setHasPassword(!AccountPassword->text().isEmpty());
@@ -156,7 +151,6 @@ void JabberAddAccountWidget::cancel()
 
 void JabberAddAccountWidget::resetGui()
 {
-	AccountName->setText("");
 	AccountPassword->setText("");
 	Username->setText("");
 	Domain->setCurrentIndex(-1);

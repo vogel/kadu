@@ -27,7 +27,7 @@ static QString getAccountName(const QObject * const object)
 {
 	const AccountNotification * const notification = dynamic_cast<const AccountNotification * const>(object);
 	return notification && !notification->account().isNull()
-			? notification->account().name()
+			? notification->account().accountIdentity().name()
 			: QString::null;
 }
 

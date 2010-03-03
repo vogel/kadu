@@ -36,7 +36,6 @@ class GaduAddAccountWidget : public AccountAddWidget
 {
 	Q_OBJECT
 
-	QLineEdit *AccountName;
 	QLineEdit *AccountId;
 	QLineEdit *AccountPassword;
 	QCheckBox *RememberPassword;

@@ -63,7 +63,7 @@ bool AccountsProxyModel::lessThan(const QModelIndex &left, const QModelIndex &ri
 	if (rightAccount.isNull())
 		return true;
 
-	int displayCompare = compareNames(leftAccount.name(), rightAccount.name());
+	int displayCompare = compareNames(leftAccount.accountIdentity().name(), rightAccount.accountIdentity().name());
 	return displayCompare < 0;
 }
 

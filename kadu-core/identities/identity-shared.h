@@ -22,9 +22,10 @@
 #ifndef IDENTITY_SHARED_H
 #define IDENTITY_SHARED_H
 
-#include "accounts/account.h"
 #include "status/base-status-container.h"
 #include "storage/shared.h"
+
+class Account;
 
 class KADUAPI IdentityShared : public BaseStatusContainer, public Shared
 {
@@ -55,7 +56,6 @@ public:
 	bool hasAccount(Account account);
 
 	KaduShared_Property(QString, name, Name)
-	KaduShared_Property(QList<Account>, accounts, Accounts)
 
 	// StatusContainer implementation
 

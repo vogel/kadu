@@ -305,7 +305,7 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, const QString &styleHre
 	//Replace %chatName% //TODO. Find way to dynamic update this tag (add id ?)
 	result.replace(QString("%chatName%"), chat.name());
 	// Replace %sourceName%
-	result.replace(QString("%sourceName%"), chat.chatAccount().name());
+	result.replace(QString("%sourceName%"), chat.chatAccount().accountIdentity().name());
 	// Replace %destinationName%
 	result.replace(QString("%destinationName%"), chat.name());
 	// For %timeOpened%, display the date and time. TODO: get real time 

@@ -24,6 +24,7 @@
 #include "configuration/configuration-file.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
+#include "identities/identity-manager.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
 #include "protocols/protocols-manager.h"
@@ -74,8 +75,10 @@ void AccountShared::load()
 	Shared::load();
 
 	ConnectAtStart = loadValue<bool>("ConnectAtStart", true);
-	
-	Name = loadValue<QString>("Name");
+	AccountIdentity = IdentityManager::instance()->byUuid(loadValue<QString>("Identity"));
+	if (AccountIdentity.isNull() && !IdentityManager::instance()->items().isEmpty())
+		AccountIdentity = IdentityManager::instance()->items()[0];
+
 	ProtocolName = loadValue<QString>("Protocol");
 	setId(loadValue<QString>("Id"));
 
@@ -106,9 +109,9 @@ void AccountShared::store()
 	Shared::store();
 
 	storeValue("ConnectAtStart", ConnectAtStart);
+	storeValue("Identity", AccountIdentity.uuid().toString());
 
 	storeValue("Protocol", ProtocolName);
-	storeValue("Name", Name);
 	storeValue("Id", id());
 
 	storeValue("RememberPassword", RememberPassword);
@@ -255,7 +258,7 @@ Contact AccountShared::accountContact()
 
 QString AccountShared::statusContainerName()
 {
-	return name();
+	return accountIdentity().name();
 }
 
 void AccountShared::doSetStatus(Status status)

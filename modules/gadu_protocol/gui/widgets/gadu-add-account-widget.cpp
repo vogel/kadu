@@ -74,10 +74,6 @@ void GaduAddAccountWidget::createGui()
 
 	QFormLayout *layout = new QFormLayout(formWidget);
 
-	AccountName = new QLineEdit(this);
-	connect(AccountName, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
-	layout->addRow(tr("Account Name") + ":", AccountName);
-
 	AccountId = new QLineEdit(this);
 	AccountId->setValidator(new LongValidator(1, 3999999999U, this));
 	connect(AccountId, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
@@ -129,7 +125,6 @@ void GaduAddAccountWidget::addAccountButtonClicked()
 	gad->setState(StorableObject::StateNew);
 	gaduAccount.setDetails(gad);
 	gaduAccount.setProtocolName("gadu");
-	gaduAccount.setName(AccountName->text());
 	gaduAccount.setId(AccountId->text());
 	gaduAccount.setPassword(AccountPassword->text());
 	gaduAccount.setHasPassword(!AccountPassword->text().isEmpty());
@@ -147,8 +142,6 @@ void GaduAddAccountWidget::dataChanged()
 	RemindPassword->setEnabled(!AccountId->text().isEmpty());
 
 	AddAccountButton->setEnabled(
-		!AccountName->text().isEmpty() &&
-		!AccountManager::instance()->byName(AccountName->text()) &&
 		!AccountId->text().isEmpty() &&
 		!AccountPassword->text().isEmpty()
 	);

@@ -31,9 +31,6 @@ void AccountDataManager::writeEntry(const QString &section, const QString &name,
 	if (section != "Account")
 		return;
 
-	if (name == "Name")
-		Data.setName(value.value<QString>());
-
 	if (name == "Id")
 		Data.setId(value.value<QString>());
 
@@ -45,9 +42,6 @@ QVariant AccountDataManager::readEntry(const QString &section, const QString &na
 {
 	if (section != "Account")
 		return QVariant(QString::null);
-
-	if (name == "Name")
-		return Data.name();
 
 	if (name == "Id")
 		return Data.id();

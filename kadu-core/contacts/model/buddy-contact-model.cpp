@@ -78,7 +78,7 @@ QVariant BuddyContactModel::data(const QModelIndex &index, int role) const
 			if (index.column() == 0) // long or shor name?
 				return data.id();
 			else
-				return QString("%1 (%2)").arg(data.id(), data.contactAccount().name());
+				return QString("%1 (%2)").arg(data.id(), data.contactAccount().accountIdentity());
 
 		case Qt::DecorationRole:
 			return data.contactAccount().protocolHandler()

@@ -278,7 +278,7 @@ QVariant BuddyContactsTableModel::data(const QModelIndex &index, int role) const
 			{
 				case Qt::DisplayRole:
 				case Qt::EditRole:
-					return item->itemAccount().name();
+					return item->itemAccount().accountIdentity().name();
 				case Qt::DecorationRole:
 					return item->itemAccount().protocolHandler()
 							? item->itemAccount().protocolHandler()->icon()

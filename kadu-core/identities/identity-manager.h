@@ -43,11 +43,15 @@ class KADUAPI IdentityManager : public QObject, public SimpleManager<Identity>
 	IdentityManager();
 	virtual ~IdentityManager();
 
+	void addDefaultIdentity();
+
 protected:
 	virtual void itemAboutToBeAdded(Identity item);
 	virtual void itemAdded(Identity item);
 	virtual void itemAboutToBeRemoved(Identity item);
 	virtual void itemRemoved(Identity item);
+
+	virtual void load();
 
 public:
 	static IdentityManager * instance();

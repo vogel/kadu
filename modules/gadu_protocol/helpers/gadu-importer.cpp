@@ -32,6 +32,7 @@
 #include "buddies/ignored-helper.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-shared.h"
+#include "identities/identity-manager.h"
 #include "protocols/protocols-manager.h"
 #include "misc/misc.h"
 #include "gadu-account-details.h"
@@ -61,7 +62,9 @@ void GaduImporter::importAccounts()
 	GaduAccountDetails *accountDetails = dynamic_cast<GaduAccountDetails *>(defaultGaduGadu.details());
 	accountDetails->setState(StorableObject::StateNew);
 
-	defaultGaduGadu.setName("Gadu-Gadu");
+	if (!IdentityManager::instance()->items().isEmpty())
+		defaultGaduGadu.setAccountIdentity(IdentityManager::instance()->items()[0]);
+
 	defaultGaduGadu.setId(config_file.readEntry("General", "UIN"));
 	defaultGaduGadu.setPassword(pwHash(config_file.readEntry("General", "Password")).toUtf8().constData());
 	defaultGaduGadu.setRememberPassword(true);

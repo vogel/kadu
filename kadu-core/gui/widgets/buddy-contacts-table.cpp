@@ -186,7 +186,7 @@ void BuddyContactsTable::detachClicked()
 	if (!item)
 		return;
 
-	QString display = QString("%1 (%2)").arg(item->id()).arg(item->itemAccount().name());
+	QString display = QString("%1 (%2)").arg(item->id()).arg(item->itemAccount().accountIdentity().name());
 	display = QInputDialog::getText(this, tr("New buddy display name"),
 			tr("Give name for new buddy for this contact"), QLineEdit::Normal, display);
 

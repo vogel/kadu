@@ -49,7 +49,7 @@ BuddyList TlenOpenChatWithRunner::matchingContacts(const QString &query)
 	if (buddy.isNull())
 	{
 		Buddy buddy = Buddy::create();
-		buddy.setDisplay(QString("%1: %2").arg(ParentAccount.name()).arg(query));
+		buddy.setDisplay(QString("%1: %2").arg(ParentAccount.accountIdentity().name()).arg(query));
 		contact.setOwnerBuddy(buddy);
 	}
 	matchedContacts.append(buddy);

@@ -40,6 +40,7 @@ IdentityShared * IdentityShared::loadFromStorage(StoragePoint *storagePoint)
 IdentityShared::IdentityShared(const QUuid &uuid) :
 		BaseStatusContainer(this), Shared(uuid)
 {
+	setState(StateNotLoaded);
 }
 
 IdentityShared::~IdentityShared()
@@ -64,26 +65,6 @@ void IdentityShared::load()
 	Shared::load();
 
 	Name = loadValue<QString>("Name");
-
-	XmlConfigFile *configurationStorage = storage()->storage();
-
-	QDomElement accountsNode = configurationStorage->getNode(storage()->point(), "Accounts", XmlConfigFile::ModeFind);
-	if (!accountsNode.isNull())
-	{
-		QDomNodeList accountsList = accountsNode.elementsByTagName("Account");
-
-		int count = accountsList.count();
-		for (int i = 0; i < count; i++)
-		{
-			QDomElement accountElement = accountsList.at(i).toElement();
-			if (!accountElement.isNull())
-			{
-				Account account = AccountManager::instance()->byUuid(accountElement.text());
-				if (!account.isNull())
-					Accounts << account;
-			}
-		}
-	}
 }
 
 void IdentityShared::store()
@@ -91,18 +72,9 @@ void IdentityShared::store()
 	if (!isValidStorage())
 		return;
 
+	Shared::store();
+
 	storeValue("Name", Name);
-
-	XmlConfigFile *configurationStorage = storage()->storage();
-
-	if (Accounts.count())
-	{
-		QDomElement accountsNode = configurationStorage->getNode(storage()->point(), "Accounts", XmlConfigFile::ModeCreate);
-		foreach (const Account account, Accounts)
-			configurationStorage->appendTextNode(accountsNode, "Account", account.uuid().toString());
-	}
-	else
-		configurationStorage->removeNode(storage()->point(), "Accounts");
 }
 
 void IdentityShared::aboutToBeRemoved()

@@ -181,7 +181,7 @@ Buddy BuddyManager::byContact(Contact contact, NotFoundAction action)
 		return contact.ownerBuddy();
 
 	Buddy buddy = Buddy::create();
-	buddy.setDisplay(QString("%1: %2").arg(contact.contactAccount().name()).arg(contact.id()));
+	buddy.setDisplay(QString("%1: %2").arg(contact.contactAccount().accountIdentity().name()).arg(contact.id()));
 	contact.setOwnerBuddy(buddy);
 
 	if (ActionCreateAndAdd == action)

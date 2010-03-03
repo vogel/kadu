@@ -114,15 +114,16 @@ Account AccountManager::defaultAccount()
 	return byIndex(0);
 }
 
-Account AccountManager::byName(const QString &name)
+const QList<Account> AccountManager::byIdentity(Identity identity)
 {
 	ensureLoaded();
 
+	QList<Account> list;
 	foreach (Account account, allItems())
-		if (account.name() == name)
-			return account;
+		if (account.accountIdentity() == identity)
+			list.append(account);
 
-	return Account::null;
+	return list;
 }
 
 Account AccountManager::byId(const QString& protocolName, const QString& id)

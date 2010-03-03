@@ -63,10 +63,6 @@ void TlenAddAccountWidget::createGui()
 
 	QFormLayout *layout = new QFormLayout(formWidget);
 
-	AccountName = new QLineEdit(this);
-	connect(AccountName, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
-	layout->addRow(tr("Account Name") + ":", AccountName);
-
 	AccountId = new QLineEdit(this);
 	//AccountId->setValidator(new LongValidator(1, 3999999999U, this));
 	connect(AccountId, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
@@ -118,7 +114,6 @@ void TlenAddAccountWidget::addAccountButtonClicked()
 	details->setState(StorableObject::StateNew);
 	tlenAccount.setDetails(details);
 	tlenAccount.setProtocolName("tlen");
-	tlenAccount.setName(AccountName->text());
 	tlenAccount.setId(AccountId->text());
 	tlenAccount.setPassword(AccountPassword->text());
 	tlenAccount.setHasPassword(!AccountPassword->text().isEmpty());
@@ -136,8 +131,6 @@ void TlenAddAccountWidget::dataChanged()
 	//RemindPassword->setEnabled(!AccountId->text().isEmpty());
 
 	AddAccountButton->setEnabled(
-		!AccountName->text().isEmpty() &&
-		!AccountManager::instance()->byName(AccountName->text()) &&
 		!AccountId->text().isEmpty() &&
 		!AccountPassword->text().isEmpty()
 	);

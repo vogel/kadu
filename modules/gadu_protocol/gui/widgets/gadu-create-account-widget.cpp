@@ -68,10 +68,6 @@ void GaduCreateAccountWidget::createGui()
 
 	QFormLayout *layout = new QFormLayout(formWidget);
 
-	AccountName = new QLineEdit(this);
-	connect(AccountName, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
-	layout->addRow(tr("Account Name") + ":", AccountName);
-
 	NewPassword = new QLineEdit(this);
 	connect(NewPassword, SIGNAL(textChanged(const QString &)), this, SLOT(dataChanged()));
 	NewPassword->setEchoMode(QLineEdit::Password);
@@ -121,7 +117,6 @@ void GaduCreateAccountWidget::createGui()
 
 void GaduCreateAccountWidget::resetGui()
 {
-	AccountName->setText("");
 	NewPassword->setText("");
 	ReNewPassword->setText("");
 	RememberPassword->setChecked(true);
@@ -132,11 +127,7 @@ void GaduCreateAccountWidget::resetGui()
 
 void GaduCreateAccountWidget::dataChanged()
 {
-	bool sameNameExists = AccountManager::instance()->byName(AccountName->text());
-
-	bool disable = sameNameExists
-			|| AccountName->text().isEmpty()
-			|| NewPassword->text().isEmpty()
+	bool disable = NewPassword->text().isEmpty()
 			|| ReNewPassword->text().isEmpty()
 			|| EMail->text().indexOf(UrlHandlerManager::instance()->mailRegExp()) < 0
 			|| MyTokenWidget->tokenValue().isEmpty()
@@ -145,8 +136,7 @@ void GaduCreateAccountWidget::dataChanged()
 
 	RegisterAccountButton->setEnabled(!disable);
 
-	if (AccountName->text().isEmpty()
-			&& NewPassword->text().isEmpty()
+	if (NewPassword->text().isEmpty()
 			&& ReNewPassword->text().isEmpty()
 			&& RememberPassword->isChecked()
 			&& EMail->text().isEmpty()
@@ -189,7 +179,6 @@ void GaduCreateAccountWidget::registerNewAccountFinished(GaduServerRegisterAccou
 
 		Account gaduAccount = Account::create();
 		gaduAccount.setProtocolName("gadu");
-		gaduAccount.setName(AccountName->text());
 		gaduAccount.setId(QString::number(gsra->uin()));
 		gaduAccount.setPassword(NewPassword->text());
 		gaduAccount.setRememberPassword(RememberPassword->isChecked());

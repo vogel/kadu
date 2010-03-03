@@ -42,7 +42,6 @@ class JabberAddAccountWidget : public AccountAddWidget
 {
 	Q_OBJECT
 
-	QLineEdit *AccountName;
 	QLineEdit *Username;
 	QComboBox *Domain;
 	QLineEdit *AccountPassword;
@@ -50,7 +49,7 @@ class JabberAddAccountWidget : public AccountAddWidget
 	QLabel *RemindPassword;
 	IdentitiesComboBox *Identity;
 	QPushButton *AddAccountButton;
-	
+
 	void createGui();
 	void resetGui();
 

@@ -40,7 +40,6 @@ class GaduCreateAccountWidget : public ModalConfigurationWidget
 {
 	Q_OBJECT
 
-	QLineEdit *AccountName;
 	QLineEdit *NewPassword;
 	QLineEdit *ReNewPassword;
 	QCheckBox *RememberPassword;	
