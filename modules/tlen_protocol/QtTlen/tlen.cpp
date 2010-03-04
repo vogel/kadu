@@ -95,7 +95,7 @@ tlen::~tlen()
 void tlen::openConn() {
 	kdebugf();
 
-	if (isConnecting())
+	if (isConnecting() || User.isEmpty() || Password.isEmpty())
 		return;
 
 	state=tlen::ConnectingToHub;
