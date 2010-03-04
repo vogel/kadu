@@ -186,22 +186,22 @@ void StatusContainerManager::setStatus(Status newStatus)
 
 Status StatusContainerManager::status()
 {
-	return AccountManager::instance()->defaultAccount().statusContainer()
-			? AccountManager::instance()->defaultAccount().statusContainer()->status()
+	return DefaultStatusContainer && this != DefaultStatusContainer
+			? DefaultStatusContainer->status()
 			: Status::null;
 }
 
 QString StatusContainerManager::statusName()
 {
-	return AccountManager::instance()->defaultAccount().statusContainer()
-			? AccountManager::instance()->defaultAccount().statusContainer()->statusName()
+	return DefaultStatusContainer && this != DefaultStatusContainer
+			? DefaultStatusContainer->statusName()
 			: tr("Offline");
 }
 
 QPixmap StatusContainerManager::statusPixmap()
 {
-	return AccountManager::instance()->defaultAccount().statusContainer()
-			? AccountManager::instance()->defaultAccount().statusContainer()->statusPixmap()
+	return DefaultStatusContainer && this != DefaultStatusContainer
+			? DefaultStatusContainer->statusPixmap()
 			: IconsManager::instance()->pixmapByPath("protocols/gadu-gadu/16x16/offline.png");
 }
 
@@ -212,24 +212,24 @@ QPixmap StatusContainerManager::statusPixmap(Status status)
 
 QPixmap StatusContainerManager::statusPixmap(const QString &statusType)
 {
-	return AccountManager::instance()->defaultAccount().statusContainer()
-			? AccountManager::instance()->defaultAccount().statusContainer()->statusPixmap(statusType)
+	return DefaultStatusContainer && this != DefaultStatusContainer
+			? DefaultStatusContainer->statusPixmap(statusType)
 			: QPixmap();
 // 			: IconsManager::instance()->loadPixmap(statusType);
 }
 
 QList<StatusType *> StatusContainerManager::supportedStatusTypes()
 {
-	return AccountManager::instance()->defaultAccount().statusContainer()
-			? AccountManager::instance()->defaultAccount().statusContainer()->supportedStatusTypes()
+	return DefaultStatusContainer && this != DefaultStatusContainer
+			? DefaultStatusContainer->supportedStatusTypes()
 			: QList<StatusType *>();
 // 			: StatusTypeManager::instance()->statusTypes();
 }
 
 int StatusContainerManager::maxDescriptionLength()
 {
-	return AccountManager::instance()->defaultAccount().statusContainer()
-			? AccountManager::instance()->defaultAccount().statusContainer()->maxDescriptionLength()
+	return DefaultStatusContainer && this != DefaultStatusContainer
+			? DefaultStatusContainer->maxDescriptionLength()
 			: -1;
 }
 
