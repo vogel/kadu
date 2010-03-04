@@ -42,6 +42,7 @@ class KADUAPI StatusContainerManager : public StatusContainer, public Configurat
 	void init();
 
 	QList<StatusContainer *> StatusContainers;
+	bool SelfInList;
 
 	QString StartupStatus;
 	QString StartupDescription;
@@ -55,6 +56,9 @@ class KADUAPI StatusContainerManager : public StatusContainer, public Configurat
 	void cleanStatusContainers();
 	void addAllAccounts();
 	void addAllIdentities();
+
+	void addSelfToList();
+	void removeSelfFromList();
 
 	void registerStatusContainer(StatusContainer *statusContainer);
 	void unregisterStatusContainer(StatusContainer *statusContainer);

@@ -41,7 +41,7 @@ KADUAPI StatusContainerManager * StatusContainerManager::instance()
 }
 
 StatusContainerManager::StatusContainerManager() :
-		StatusContainer(0)
+		StatusContainer(0), SelfInList(false)
 {
 	configurationUpdated();
 	triggerAllAccountsRegistered();
@@ -104,6 +104,24 @@ void StatusContainerManager::addAllIdentities()
 		registerStatusContainer(identity);
 }
 
+void StatusContainerManager::addSelfToList()
+{
+	if (SelfInList || !StatusContainers.isEmpty())
+		return;
+
+	registerStatusContainer(this);
+	SelfInList = true;
+}
+
+void StatusContainerManager::removeSelfFromList()
+{
+	if (!SelfInList)
+		return;
+
+	unregisterStatusContainer(this);
+	SelfInList = false;
+}
+
 void StatusContainerManager::simpleModeChanged()
 {
 	cleanStatusContainers();
@@ -115,11 +133,13 @@ void StatusContainerManager::simpleModeChanged()
 
 void StatusContainerManager::registerStatusContainer(StatusContainer *statusContainer)
 {
-	if (statusContainer == AccountManager::instance()->defaultAccount().statusContainer())
+	removeSelfFromList();
+
+	if (StatusContainers.isEmpty())
 		connect(statusContainer, SIGNAL(statusChanged()), this, SIGNAL(statusChanged()));
 
 	emit statusContainerAboutToBeRegistered(statusContainer);
-	StatusContainers << statusContainer;
+	StatusContainers.append(statusContainer);
 	emit statusContainerRegistered(statusContainer);
 	StatusContainerAwareObject::notifyStatusContainerRegistered(statusContainer);
 
@@ -135,6 +155,8 @@ void StatusContainerManager::unregisterStatusContainer(StatusContainer *statusCo
 	StatusContainers.removeAll(statusContainer);
 	emit statusContainerUnregistered(statusContainer);
 	StatusContainerAwareObject::notifyStatusContainerUnregistered(statusContainer);
+
+	addSelfToList();
 }
 
 QString StatusContainerManager::statusContainerName()
