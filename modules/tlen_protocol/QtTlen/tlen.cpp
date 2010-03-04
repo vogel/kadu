@@ -415,7 +415,7 @@ bool tlen::tlenLogin() {
 	query.setAttribute( "xmlns", "jabber:iq:auth" );
 	iq.appendChild( query );
 
-	query.appendChild(textNode("username", User));
+	query.appendChild(textNode("username", User.split("@")[0]));
 	query.appendChild(textNode("digest", tlen_hash( Password.toAscii().data(), sid.toAscii().data() )));
 	query.appendChild(textNode("resource", "w")); // t
 	// w iq jeszcze  : <host>tlen.pl</host>
