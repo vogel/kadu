@@ -24,8 +24,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtNetwork/QHttp>
+#include <QtCore/QFile>
 #include <QtCore/QSysInfo>
+#include <QtNetwork/QHttp>
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
@@ -69,8 +70,18 @@ void Updates::buildQuery()
 	{
 		QString platform("&system=");
 #if defined(Q_OS_LINUX)
-		/* TODO: obtain the distribution name and version */
-		platform.append("Linux");
+                platform.append("Linux-");
+ 
+                QFile issue("/etc/issue");
+                if (issue.open(QIODevice::ReadOnly | QIODevice::Text))
+                {
+                        QString tmp = issue.readLine();
+                        tmp.truncate(tmp.indexOf(" "));
+                        platform.append(tmp);
+                        issue.close();
+                }
+                else
+                        platform.append("Unknown");
 #elif defined(Q_OS_FREEBSD)
 		platform.append("FreeBSD");
 #elif defined(Q_OS_NETBSD)
