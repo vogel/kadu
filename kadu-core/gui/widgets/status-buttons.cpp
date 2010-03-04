@@ -64,10 +64,10 @@ void StatusButtons::statusContainerUnregistered(StatusContainer *statusContainer
 {
 	if (Buttons.contains(statusContainer))
 	{
-		delete Buttons[statusContainer];
+		// cannot delete now, because this will modify ConfigurationAwareObject::objects list
+		Buttons[statusContainer]->deleteLater();
 		Buttons.remove(statusContainer);
 	}
 	if (0 == StatusContainerManager::instance()->count())
 		statusContainerRegistered(StatusContainerManager::instance());
-
 }

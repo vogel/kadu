@@ -381,6 +381,7 @@ set (kadu_MOC_SRCS
 	contacts/model/buddy-contact-model.h
 
 	configuration/configuration-window-data-manager.h
+	configuration/main-configuration.h
 	configuration/notifier-configuration-data-manager.h
 
 	core/core.h

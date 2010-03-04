@@ -40,7 +40,8 @@ void MainConfiguration::destroyInstance()
 	Instance = 0;
 }
 
-MainConfiguration::MainConfiguration()
+MainConfiguration::MainConfiguration() :
+		SimpleMode(false)
 {
 	configurationUpdated();
 }
@@ -51,5 +52,10 @@ MainConfiguration::~MainConfiguration()
 
 void MainConfiguration::configurationUpdated()
 {
-	SimpleMode = config_file.readBoolEntry("ScreenShot", "fileFormat", "");
+	bool simpleMode = config_file.readBoolEntry("General", "SimpleMode", false);
+	if (SimpleMode != simpleMode)
+	{
+		SimpleMode = simpleMode;
+		emit simpleModeChanged();
+	}
 }

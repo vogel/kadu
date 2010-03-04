@@ -52,6 +52,16 @@ class KADUAPI StatusContainerManager : public StatusContainer, public Configurat
 	bool DisconnectWithCurrentDescription;
 	QString DisconnectDescription;
 
+	void cleanStatusContainers();
+	void addAllAccounts();
+	void addAllIdentities();
+
+	void registerStatusContainer(StatusContainer *statusContainer);
+	void unregisterStatusContainer(StatusContainer *statusContainer);
+
+private slots:
+	void simpleModeChanged();
+
 protected:
 	virtual void accountRegistered(Account account);
 	virtual void accountUnregistered(Account account);
@@ -62,10 +72,6 @@ public:
 
 	unsigned int count() const { return StatusContainers.count(); }
 	const QList<StatusContainer *> statusContainers() const { return StatusContainers; }
-
-	void registerStatusContainer(StatusContainer *statusContainer);
-	void unregisterStatusContainer(StatusContainer *statusContainer);
-
 	//StatusContainer Implementation
 	virtual QString statusContainerName();
 

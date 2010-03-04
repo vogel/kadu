@@ -22,7 +22,9 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "configuration/configuration-file.h"
+#include "configuration/main-configuration.h"
 #include "core/core.h"
+#include "identities/identity-manager.h"
 #include "status/status-container-aware-object.h"
 #include "status/status-type-manager.h"
 #include "icons-manager.h"
@@ -43,10 +45,14 @@ StatusContainerManager::StatusContainerManager() :
 {
 	configurationUpdated();
 	triggerAllAccountsRegistered();
+
+	connect(MainConfiguration::instance(), SIGNAL(simpleModeChanged()), this, SLOT(simpleModeChanged()));
 }
 
 StatusContainerManager::~StatusContainerManager()
 {
+	disconnect(MainConfiguration::instance(), SIGNAL(simpleModeChanged()), this, SLOT(simpleModeChanged()));
+
 	triggerAllAccountsUnregistered();
 }
 
@@ -78,6 +84,33 @@ void StatusContainerManager::configurationUpdated()
 
 	DisconnectWithCurrentDescription = config_file.readBoolEntry("General", "DisconnectWithCurrentDescription");
 	DisconnectDescription = config_file.readEntry("General", "DisconnectDescription");
+}
+
+void StatusContainerManager::cleanStatusContainers()
+{
+	while (!StatusContainers.isEmpty())
+		unregisterStatusContainer(StatusContainers.first());
+}
+
+void StatusContainerManager::addAllAccounts()
+{
+	foreach (Account account, AccountManager::instance()->items())
+		registerStatusContainer(account);
+}
+
+void StatusContainerManager::addAllIdentities()
+{
+	foreach (Identity identity, IdentityManager::instance()->items())
+		registerStatusContainer(identity);
+}
+
+void StatusContainerManager::simpleModeChanged()
+{
+	cleanStatusContainers();
+	if (MainConfiguration::instance()->simpleMode())
+		addAllIdentities();
+	else
+		addAllAccounts();
 }
 
 void StatusContainerManager::registerStatusContainer(StatusContainer *statusContainer)

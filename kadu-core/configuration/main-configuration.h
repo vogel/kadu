@@ -20,12 +20,13 @@
 #ifndef MAIN_CONFIGURATION_H
 #define MAIN_CONFIGURATION_H
 
-#include <QtCore/QString>
+#include <QtCore/QObject>
 
 #include "configuration/configuration-aware-object.h"
 
-class MainConfiguration : private ConfigurationAwareObject
+class MainConfiguration : public QObject, private ConfigurationAwareObject
 {
+	Q_OBJECT
 	Q_DISABLE_COPY(MainConfiguration)
 
 	static MainConfiguration * Instance;
@@ -45,6 +46,9 @@ public:
 	static void destroyInstance();
 
 	bool simpleMode() { return SimpleMode; }
+
+signals:
+	void simpleModeChanged();
 
 };
 

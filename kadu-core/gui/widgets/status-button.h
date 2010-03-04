@@ -45,6 +45,7 @@ protected:
 
 public:
 	explicit StatusButton(StatusContainer *statusContainer, QWidget *parent = 0);
+	virtual ~StatusButton();
 
 };
 

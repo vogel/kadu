@@ -37,6 +37,10 @@ StatusButton::StatusButton(StatusContainer *statusContainer, QWidget *parent) :
 	connect(MyStatusContainer, SIGNAL(statusChanged()), this, SLOT(statusChanged()));
 }
 
+StatusButton::~StatusButton()
+{
+	printf("StatusButton::~StatusButton\n");
+}
 
 void StatusButton::createGui()
 {
