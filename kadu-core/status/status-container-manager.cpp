@@ -41,7 +41,7 @@ KADUAPI StatusContainerManager * StatusContainerManager::instance()
 }
 
 StatusContainerManager::StatusContainerManager() :
-		StatusContainer(0), SelfInList(false)
+		StatusContainer(0), SelfInList(false), DefaultStatusContainer(0)
 {
 	configurationUpdated();
 	triggerAllAccountsRegistered();
@@ -122,6 +122,20 @@ void StatusContainerManager::removeSelfFromList()
 	SelfInList = false;
 }
 
+void StatusContainerManager::setDefaultStatusContainer(StatusContainer *defaultStatusContainer)
+{
+	if (defaultStatusContainer == DefaultStatusContainer)
+		return;
+
+	if (DefaultStatusContainer)
+		disconnect(DefaultStatusContainer, SIGNAL(statusChanged()), this, SIGNAL(statusChanged()));
+
+	DefaultStatusContainer = defaultStatusContainer;
+
+	if (DefaultStatusContainer)
+		connect(DefaultStatusContainer, SIGNAL(statusChanged()), this, SIGNAL(statusChanged()));
+}
+
 void StatusContainerManager::simpleModeChanged()
 {
 	cleanStatusContainers();
@@ -136,7 +150,7 @@ void StatusContainerManager::registerStatusContainer(StatusContainer *statusCont
 	removeSelfFromList();
 
 	if (StatusContainers.isEmpty())
-		connect(statusContainer, SIGNAL(statusChanged()), this, SIGNAL(statusChanged()));
+		setDefaultStatusContainer(statusContainer);
 
 	emit statusContainerAboutToBeRegistered(statusContainer);
 	StatusContainers.append(statusContainer);
@@ -148,15 +162,15 @@ void StatusContainerManager::registerStatusContainer(StatusContainer *statusCont
 
 void StatusContainerManager::unregisterStatusContainer(StatusContainer *statusContainer)
 {
-	if (statusContainer == AccountManager::instance()->defaultAccount().statusContainer() && !AccountManager::instance()->byIndex(1).isNull())
-		connect(AccountManager::instance()->byIndex(1).data(), SIGNAL(statusChanged()), this, SIGNAL(statusChanged()));
-
 	emit statusContainerAboutToBeUnregistered(statusContainer);
 	StatusContainers.removeAll(statusContainer);
 	emit statusContainerUnregistered(statusContainer);
 	StatusContainerAwareObject::notifyStatusContainerUnregistered(statusContainer);
 
 	addSelfToList();
+
+	if (statusContainer == DefaultStatusContainer)
+		setDefaultStatusContainer(StatusContainers[0]); // we always have at least 1 here
 }
 
 QString StatusContainerManager::statusContainerName()
