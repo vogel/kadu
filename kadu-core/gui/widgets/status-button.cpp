@@ -39,7 +39,6 @@ StatusButton::StatusButton(StatusContainer *statusContainer, QWidget *parent) :
 
 StatusButton::~StatusButton()
 {
-	printf("StatusButton::~StatusButton\n");
 }
 
 void StatusButton::createGui()

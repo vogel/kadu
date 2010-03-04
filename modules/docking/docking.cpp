@@ -372,20 +372,19 @@ void DockingManager::statusContainerRegistered(StatusContainer *statusContainer)
 
 void DockingManager::statusContainerUnregistered(StatusContainer *statusContainer)
 {
-	Q_UNUSED(statusContainer)
-// 	if (StatusContainerManager::instance()->statusContainers().count() < 2)
-// 		updateContextMenu();
-// 	else
-// 	{
-// 		QAction *menuAction = StatusContainerMenus[statusContainer];
-// 		if (!menuAction)
-// 			    return;
-// 
-// 		menuAction->menu()->clear();
-// 		StatusContainerMenus.remove(statusContainer);
-// 		DockMenu->removeAction(menuAction);
-// 		delete menuAction;
-// 	}
+	if (StatusContainerManager::instance()->statusContainers().count() < 2)
+		updateContextMenu();
+	else
+	{
+		QAction *menuAction = StatusContainerMenus[statusContainer];
+		if (!menuAction)
+			    return;
+
+		menuAction->menu()->clear();
+		StatusContainerMenus.remove(statusContainer);
+		DockMenu->removeAction(menuAction);
+		delete menuAction;
+	}
 }
 
 void DockingManager::configurationUpdated()
@@ -413,4 +412,3 @@ void DockingManager::createDefaultConfiguration()
 DockingManager *docking_manager = NULL;
 
 /** @} */
-
