@@ -28,6 +28,7 @@
 #include <QtCore/QMap>
 #include <QtGui/QApplication>
 #include <QtGui/QCloseEvent>
+#include <QtGui/QDesktopWidget>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QLabel>
 #include <QtGui/QPushButton>
@@ -97,6 +98,11 @@ MessageDialog::MessageDialog(const QString &message, int components, bool modal,
 
 	hboxbuttons->addWidget(buttons, 0, Qt::AlignCenter);
  	buttons->setMaximumSize(buttons_layout->sizeHint());
+	
+	/* center on screen */
+        resize(sizeHint());
+	move(QApplication::desktop()->screenGeometry().center() - geometry().center());
+	
 	kdebugf2();
 }
 
