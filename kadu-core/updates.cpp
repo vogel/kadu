@@ -139,6 +139,8 @@ void Updates::buildQuery()
 				platform.append("Windows-Unknown");
 				break;
 		}
+#elif defined(Q_OS_HAIKU)
+                platform.append("Haiku OS");
 #else
 		platform.append("Unknown");
 #endif
