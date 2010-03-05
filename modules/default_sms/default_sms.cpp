@@ -182,7 +182,7 @@ void SmsOrangeGateway::httpFinished()
 			kdebugm(KDEBUG_INFO, "SMS was sent succesfully\n");
 			emit finished(true);
 		}
-		else if (Page.find("Wiadomość została pomyślnie wysłana")>=0)
+		else if (Page.indexOf("Wiadomość została pomyślnie wysłana")>=0)
 		{
 			kdebugm(KDEBUG_INFO, "SMS was sent succesfully\n");
 			emit finished(true);

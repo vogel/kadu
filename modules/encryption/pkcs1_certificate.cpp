@@ -547,10 +547,10 @@ uint64_t PKCS1Certificate::readDefiniteLength()
 		}
 
 		//construct the length value
-		uint64_t length = 0;
-		for(uint8_t i = lengthOctetsCount; i > 0; i--)
-			length |= readNextOctet() << (i-1);
-		
+		quint64 length = 0;
+                for (quint8 i = lengthOctetsCount; i > 0; i--)
+                        length |= ((quint64)readNextOctet()) << ((i-1)*8);
+
 		//the SecureArray stores it's size in an int variable, so we must check
 		//if the read length is not greater than the maximum value that int can
 		//store
