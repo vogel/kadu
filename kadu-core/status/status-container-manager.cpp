@@ -44,7 +44,11 @@ StatusContainerManager::StatusContainerManager() :
 		StatusContainer(0), SelfInList(false), DefaultStatusContainer(0)
 {
 	configurationUpdated();
-	triggerAllAccountsRegistered();
+
+	if (MainConfiguration::instance()->simpleMode())
+	{} //
+	else
+		triggerAllAccountsRegistered();
 
 	connect(MainConfiguration::instance(), SIGNAL(simpleModeChanged()), this, SLOT(simpleModeChanged()));
 }
@@ -58,13 +62,13 @@ StatusContainerManager::~StatusContainerManager()
 
 void StatusContainerManager::accountRegistered(Account account)
 {
-	if (!StatusContainers.contains(account.statusContainer()))
+	if (!MainConfiguration::instance()->simpleMode() && !StatusContainers.contains(account.statusContainer()))
 		registerStatusContainer(account.statusContainer());
 }
 
 void StatusContainerManager::accountUnregistered(Account account)
 {
-	if (StatusContainers.contains(account.statusContainer()))
+	if (!MainConfiguration::instance()->simpleMode() && StatusContainers.contains(account.statusContainer()))
 		unregisterStatusContainer(account.statusContainer());
 }
 
