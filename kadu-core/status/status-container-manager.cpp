@@ -170,7 +170,12 @@ void StatusContainerManager::unregisterStatusContainer(StatusContainer *statusCo
 	addSelfToList();
 
 	if (statusContainer == DefaultStatusContainer)
-		setDefaultStatusContainer(StatusContainers[0]); // we always have at least 1 here
+	{
+		if (StatusContainers.isEmpty())
+			DefaultStatusContainer = 0;
+		else
+			setDefaultStatusContainer(StatusContainers.first());
+	}
 }
 
 QString StatusContainerManager::statusContainerName()
