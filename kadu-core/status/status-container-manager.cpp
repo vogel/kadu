@@ -46,7 +46,7 @@ StatusContainerManager::StatusContainerManager() :
 	configurationUpdated();
 
 	if (MainConfiguration::instance()->simpleMode())
-	{} //
+		triggerAllIdentitiesAdded();
 	else
 		triggerAllAccountsRegistered();
 
@@ -57,7 +57,10 @@ StatusContainerManager::~StatusContainerManager()
 {
 	disconnect(MainConfiguration::instance(), SIGNAL(simpleModeChanged()), this, SLOT(simpleModeChanged()));
 
-	triggerAllAccountsUnregistered();
+	if (MainConfiguration::instance()->simpleMode())
+		triggerAllIdentitiesRemoved();
+	else
+		triggerAllAccountsUnregistered();
 }
 
 void StatusContainerManager::accountRegistered(Account account)
@@ -70,6 +73,18 @@ void StatusContainerManager::accountUnregistered(Account account)
 {
 	if (!MainConfiguration::instance()->simpleMode() && StatusContainers.contains(account.statusContainer()))
 		unregisterStatusContainer(account.statusContainer());
+}
+
+void StatusContainerManager::identityAdded(Identity identity)
+{
+	if (MainConfiguration::instance()->simpleMode() && !StatusContainers.contains(identity))
+		registerStatusContainer(identity);
+}
+
+void StatusContainerManager::identityRemoved(Identity identity)
+{
+	if (MainConfiguration::instance()->simpleMode() && StatusContainers.contains(identity))
+		unregisterStatusContainer(identity);
 }
 
 void StatusContainerManager::configurationUpdated()

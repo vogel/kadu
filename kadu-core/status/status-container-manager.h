@@ -25,11 +25,13 @@
 
 #include "accounts/accounts-aware-object.h"
 #include "configuration/configuration-aware-object.h"
+#include "identities/identities-aware-object.h"
 #include "status/status-container.h"
 
 #include <stdio.h>
 
-class KADUAPI StatusContainerManager : public StatusContainer, public ConfigurationAwareObject, private AccountsAwareObject
+class KADUAPI StatusContainerManager : public StatusContainer,
+		public ConfigurationAwareObject, private AccountsAwareObject, private IdentitiesAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(StatusContainerManager)
@@ -72,6 +74,10 @@ private slots:
 protected:
 	virtual void accountRegistered(Account account);
 	virtual void accountUnregistered(Account account);
+
+	virtual void identityAdded(Identity identity);
+	virtual void identityRemoved(Identity identity);
+
 	virtual void configurationUpdated();
 
 public:
