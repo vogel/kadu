@@ -526,8 +526,8 @@ void TabsManager::onTimer()
 
 			if (chat->newMessagesCount() > 0)
 			{
-				tabdialog->setTabText(i, chat->chat().name() + " [" + QString().setNum(chat->newMessagesCount()) + "]");
-				tabdialog->setTabToolTip(i, chat->chat().title() + "\n" + QString().setNum(chat->newMessagesCount()) + " new message(s)");
+				tabdialog->setTabText(i, QString("%1 [%2]").arg(chat->chat().name()).arg(chat->newMessagesCount()));
+				tabdialog->setTabToolTip(i, QString("%1\n%2 new message(s)").arg(chat->chat().title()).arg(chat->newMessagesCount()));
 			}
 			else
 			{
