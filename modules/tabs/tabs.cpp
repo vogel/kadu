@@ -330,8 +330,12 @@ void TabsManager::onOpenChat(ChatWidget *chat)
 	if (chat && tabdialog->indexOf(chat)!=-1)
 	{
 		tabdialog->setWindowState(tabdialog->windowState() & ~Qt::WindowMinimized);
-		tabdialog->setCurrentWidget(chat);
-		tabdialog->raise();
+		// open new tabs with new messages in the background
+		if (!config_file.readBoolEntry("Chat", "OpenChatOnMessage"))
+		{
+			tabdialog->setCurrentWidget(chat);
+			tabdialog->raise();
+		}
 	}
 	else if ((config_autoTabChange && !(chatsWithNewMessages.contains(chat))) ||
 		((!_isActiveWindow(tabdialog)) && !(chatsWithNewMessages.contains(chat))) ||
@@ -519,6 +523,7 @@ void TabsManager::onTimer()
 				else if (chatsWithNewMessages.count() == 1 && !wasactive && config_autoTabChange)
 					tabdialog->setCurrentWidget(chat);
 			}
+
 			if (chat->newMessagesCount() > 0)
 				tabdialog->setTabText(i, chat->chat().name() + " [" + QString().setNum(chat->newMessagesCount()) + "]");
 			else
