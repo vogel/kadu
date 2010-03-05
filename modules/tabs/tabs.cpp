@@ -311,7 +311,7 @@ void TabsManager::onTabChange(int index)
 	ChatWidget *chat = dynamic_cast<ChatWidget *>(tabdialog->widget(index));
 
 	// czy jest na liscie chatow z nowymi wiadomosciami
-	if (chatsWithNewMessages.contains(chat))
+	if (chat == tabdialog->currentWidget() && chatsWithNewMessages.contains(chat))
 		chatsWithNewMessages.removeOne(chat);
 
 	refreshTab(index, chat);
@@ -525,9 +525,15 @@ void TabsManager::onTimer()
 			}
 
 			if (chat->newMessagesCount() > 0)
+			{
 				tabdialog->setTabText(i, chat->chat().name() + " [" + QString().setNum(chat->newMessagesCount()) + "]");
+				tabdialog->setTabToolTip(i, chat->chat().title() + "\n" + QString().setNum(chat->newMessagesCount()) + " new message(s)");
+			}
 			else
+			{
 				tabdialog->setTabText(i, chat->chat().name());
+				tabdialog->setTabToolTip(i, chat->chat().title());
+			}
 		}
 	}
 
