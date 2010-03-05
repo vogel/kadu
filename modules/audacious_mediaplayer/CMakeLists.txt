@@ -12,20 +12,3 @@ kadu_module (audacious_mediaplayer
 	MODULE_LIBRARIES ${QT_QTDBUS_LIBRARY}
 )
 
-kadu_module_desc (audacious_mediaplayer.desc)
-qt_wrap_cpp (audacious_mediaplayer MOC_FILES ${MOC_SOURCES})
-
-if (COMMAND cmake_policy)
-	cmake_policy(SET CMP0003 NEW)
-endif (COMMAND cmake_policy)
-
-add_library (audacious_mediaplayer ${audacious_mediaplayer} ${SOURCES} ${MOC_FILES})
-
-#target_link_libraries (audacious_mediaplayer -lQtDbus)
-
-if (audacious_mediaplayer STREQUAL STATIC)
-	set_target_properties(audacious_mediaplayer PROPERTIES COMPILE_FLAGS "-DKADULIB" )
-else (audacious_mediaplayer STREQUAL STATIC)
-	install (TARGETS audacious_mediaplayer DESTINATION lib/kadu/modules)
-endif (audacious_mediaplayer STREQUAL STATIC)
-

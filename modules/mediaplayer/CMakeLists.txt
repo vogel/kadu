@@ -48,26 +48,5 @@ kadu_module (mediaplayer
 	MODULE_BUILDDEF MEDIAPLAYER_BUILD
 )
 
-if (WIN32)
-	include_directories (${CMAKE_CURRENT_SOURCE_DIR})
-	set (SOURCES ${SOURCES} ../module.rc)
-endif (WIN32)
-
-kadu_module_desc (mediaplayer.desc)
-kadu_module_configuration (${CONFIGURATION_FILES})
-qt_wrap_cpp (mediaplayer MOC_FILES ${MOC_SOURCES})
-
-qt4_add_translation (TRANSLATION_FILES ${TRANSLATION_SOURCES})
-
-install (FILES ${TRANSLATION_FILES}
-	DESTINATION "share/kadu/modules/translations")
-
-install (FILES ${DATA_FILES}
-	DESTINATION "share/kadu/modules/data/mediaplayer")
-
-if (COMMAND cmake_policy)
-	cmake_policy(SET CMP0003 NEW)
-endif (COMMAND cmake_policy)
-
 install (FILES ${DATA_FILES}
 	DESTINATION "share/kadu/modules/data/mediaplayer")
