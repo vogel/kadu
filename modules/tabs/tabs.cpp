@@ -492,6 +492,7 @@ void TabsManager::onTimer()
 					tabdialog->setWindowTitle(tr("NEW MESSAGE(S)"));
 				else
 					tabdialog->setWindowTitle(chat->chat().title());
+
 			}
 
 			// tab aktualnie nieaktywny to ustaw ikonke
@@ -518,6 +519,10 @@ void TabsManager::onTimer()
 				else if (chatsWithNewMessages.count() == 1 && !wasactive && config_autoTabChange)
 					tabdialog->setCurrentWidget(chat);
 			}
+			if (chat->newMessagesCount() > 0)
+				tabdialog->setTabText(i, chat->chat().name() + " [" + QString().setNum(chat->newMessagesCount()) + "]");
+			else
+				tabdialog->setTabText(i, chat->chat().name());
 		}
 	}
 
