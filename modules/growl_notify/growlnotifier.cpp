@@ -220,26 +220,36 @@ GrowlNotifier::GrowlNotifier(
 	const QStringList& notifications, const QStringList& default_notifications,
 	const QString& app)
 {
+	CFStringRef notification;
+	
 	// Initialize signaler
 	signaler_ = new GrowlNotifierSignaler();
 
 	// All Notifications
 	QStringList::ConstIterator it;
-	CFMutableArrayRef allNotifications = CFArrayCreateMutable(
-		kCFAllocatorDefault, 0, &kCFTypeArrayCallBacks);
-	for ( it = notifications.begin(); it != notifications.end(); ++it ) 
-		CFArrayAppendValue(allNotifications, qString2CFString(*it));
+	CFMutableArrayRef allNotifications = CFArrayCreateMutable(kCFAllocatorDefault, 0, &kCFTypeArrayCallBacks);
+	for (it = notifications.begin(); it != notifications.end(); ++it)
+	{
+		notification = qString2CFString(*it);
+		CFArrayAppendValue(allNotifications, notification);
+		CFRelease(notification);
+	}
 
 	// Default Notifications
-	CFMutableArrayRef defaultNotifications = CFArrayCreateMutable(
-		kCFAllocatorDefault, 0, &kCFTypeArrayCallBacks);
-	for ( it = default_notifications.begin(); it != default_notifications.end(); ++it ) 
-		CFArrayAppendValue(defaultNotifications, qString2CFString(*it));
+	CFMutableArrayRef defaultNotifications = CFArrayCreateMutable(kCFAllocatorDefault, 0, &kCFTypeArrayCallBacks);
+	for (it = default_notifications.begin(); it != default_notifications.end(); ++it)
+	{
+		notification = qString2CFString(*it);
+		CFArrayAppendValue(defaultNotifications, notification);
+		CFRelease(notification);
+	}
 	
 	// Initialize delegate
 	InitGrowlDelegate(&delegate_);
+
 	if (!app.isEmpty())
 		delegate_.applicationName = qString2CFString(app);
+
 	CFTypeRef keys[] = { GROWL_NOTIFICATIONS_ALL, GROWL_NOTIFICATIONS_DEFAULT };
 	CFTypeRef values[] = { allNotifications, defaultNotifications };
 	delegate_.registrationDictionary = CFDictionaryCreate(
@@ -250,8 +260,20 @@ GrowlNotifier::GrowlNotifier(
 
 	// Register with Growl
 	Growl_SetDelegate(&delegate_);
-	CFRelease(delegate_.registrationDictionary);
 
+	CFRelease(delegate_.registrationDictionary);
+}
+
+GrowlNotifier::~GrowlNotifier()
+{
+	delete signaler_;
+
+	// Release delegate
+	delegate_.release(&delegate_);
+
+	// Release registration dictionary
+	CFRelease(delegate_.registrationDictionary);
+	CFRelease(&delegate_);
 }
 	
 
