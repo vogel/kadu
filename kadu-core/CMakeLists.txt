@@ -221,6 +221,7 @@ set (kadu_SRCS
 	gui/windows/open-chat-with/open-chat-with-runner-manager.cpp
 
 	identities/model/identity-model.cpp
+	identities/identities-aware-object.cpp
 	identities/identity.cpp
 	identities/identity-manager.cpp
 	identities/identity-shared.cpp
