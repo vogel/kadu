@@ -35,8 +35,8 @@
 
 #include "status-menu.h"
 
-StatusMenu::StatusMenu(StatusContainer *statusContainer, QWidget *parent) :
-		QObject(parent), MyStatusContainer(statusContainer)
+StatusMenu::StatusMenu(StatusContainer *statusContainer, QMenu *menu) :
+		QObject(menu), Menu(menu), MyStatusContainer(statusContainer)
 {
 	ChangeStatusActionGroup = new QActionGroup(this);
 	ChangeStatusActionGroup->setExclusive(true); // HACK
@@ -70,6 +70,10 @@ StatusMenu::StatusMenu(StatusContainer *statusContainer, QWidget *parent) :
 
 	statusChanged();
 	connect(MyStatusContainer, SIGNAL(statusChanged()), this, SLOT(statusChanged()));
+	connect(MyStatusContainer, SIGNAL(updated()), this, SLOT(statusContainerUpdated()));
+
+	createActions();
+	connect(Menu, SIGNAL(aboutToHide()), this, SLOT(aboutToHide()));
 }
 
 StatusMenu::~StatusMenu()
@@ -77,7 +81,18 @@ StatusMenu::~StatusMenu()
 	disconnect(MyStatusContainer, SIGNAL(statusChanged()), this, SLOT(statusChanged()));
 }
 
-void StatusMenu::addToMenu(QMenu *menu)
+void StatusMenu::clearActions()
+{
+	qDeleteAll(MenuActions);
+
+	Menu->removeAction(ChangeDescription);
+	Menu->removeAction(ChangePrivateStatus);
+
+	foreach (QAction *action, ChangeStatusActionGroup->actions())
+		Menu->removeAction(action);
+}
+
+void StatusMenu::createActions()
 {
 	if (0 == ChangeStatusActionGroup->actions().count())
 		return;
@@ -98,30 +113,27 @@ void StatusMenu::addToMenu(QMenu *menu)
 		if (!setDescriptionAdded && statusType->statusGroup() &&
 				statusType->statusGroup()->sortIndex() >= StatusGroup::StatusGroupSortIndexAfterSetDescription)
 		{
-			menu->addSeparator();
-			menu->addAction(ChangeDescription);
+			MenuActions.append(Menu->addSeparator());
+			Menu->addAction(ChangeDescription);
 		}
 
 		if (statusType->statusGroup() != currentGroup)
 		{
-			menu->addSeparator();
+			MenuActions.append(Menu->addSeparator());
 			currentGroup = statusType->statusGroup();
 		}
 
-		menu->addAction(action);
+		MenuActions.append(action);
+		Menu->addAction(action);
 	}
 
-	menu->addSeparator();
-	menu->addAction(ChangePrivateStatus);
-
-	connect(menu, SIGNAL(aboutToHide()), this, SLOT(aboutToHide()));
+	MenuActions.append(Menu->addSeparator());
+	Menu->addAction(ChangePrivateStatus);
 }
 
 void StatusMenu::aboutToHide()
 {
-	QMenu *menu = dynamic_cast<QMenu *>(sender());
-	if (menu)
-		MousePositionBeforeMenuHide = menu->pos();
+	MousePositionBeforeMenuHide = Menu->pos();
 }
 
 void StatusMenu::changeStatus(QAction *action)
@@ -171,4 +183,10 @@ void StatusMenu::statusChanged()
 
 // 	ChangeStatusToOfflineDesc->setEnabled(index != 6);
 // 	ChangeStatusToOffline->setEnabled(index != 7);
+}
+
+void StatusMenu::statusContainerUpdated()
+{
+	clearActions();
+	createActions();
 }

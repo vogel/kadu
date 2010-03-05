@@ -61,6 +61,7 @@ public:
 
 signals:
 	void statusChanged();
+	void updated();
 
 };
 

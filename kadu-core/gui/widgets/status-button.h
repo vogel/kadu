@@ -33,7 +33,6 @@ class StatusButton : public QPushButton, private ConfigurationAwareObject
 	Q_OBJECT
 
 	StatusContainer *MyStatusContainer;
-	StatusMenu *MyStatusMenu;
 
 	void createGui();
 

@@ -1089,8 +1089,7 @@ void KaduWindowActions::showStatusActionActivated(QAction *sender, bool toggled)
 		container = StatusContainerManager::instance();
 
 	QMenu *menu = new QMenu();
-	StatusMenu *status = new StatusMenu(container, menu);
-	status->addToMenu(menu);
+	new StatusMenu(container, menu);
 	menu->exec(QCursor::pos());
 	delete menu;
 }
