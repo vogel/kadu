@@ -311,7 +311,7 @@ void TabsManager::onTabChange(int index)
 	ChatWidget *chat = dynamic_cast<ChatWidget *>(tabdialog->widget(index));
 
 	// czy jest na liscie chatow z nowymi wiadomosciami
-	if (chatsWithNewMessages.contains(chat))
+	if (chat == tabdialog->currentWidget())
 		chatsWithNewMessages.removeOne(chat);
 
 	refreshTab(index, chat);
@@ -330,8 +330,12 @@ void TabsManager::onOpenChat(ChatWidget *chat)
 	if (chat && tabdialog->indexOf(chat)!=-1)
 	{
 		tabdialog->setWindowState(tabdialog->windowState() & ~Qt::WindowMinimized);
-		tabdialog->setCurrentWidget(chat);
-		tabdialog->raise();
+		// open new tabs with new messages in the background
+		if (!config_file.readBoolEntry("Chat", "OpenChatOnMessage"))
+		{
+			tabdialog->setCurrentWidget(chat);
+			tabdialog->raise();
+		}
 	}
 	else if ((config_autoTabChange && !(chatsWithNewMessages.contains(chat))) ||
 		((!_isActiveWindow(tabdialog)) && !(chatsWithNewMessages.contains(chat))) ||
@@ -492,6 +496,7 @@ void TabsManager::onTimer()
 					tabdialog->setWindowTitle(tr("NEW MESSAGE(S)"));
 				else
 					tabdialog->setWindowTitle(chat->chat().title());
+
 			}
 
 			// tab aktualnie nieaktywny to ustaw ikonke
@@ -517,6 +522,17 @@ void TabsManager::onTimer()
 				}
 				else if (chatsWithNewMessages.count() == 1 && !wasactive && config_autoTabChange)
 					tabdialog->setCurrentWidget(chat);
+			}
+
+			if (chat->newMessagesCount() > 0)
+			{
+				tabdialog->setTabText(i, QString("%1 [%2]").arg(chat->chat().name()).arg(chat->newMessagesCount()));
+				tabdialog->setTabToolTip(i, QString("%1\n%2 new message(s)").arg(chat->chat().title()).arg(chat->newMessagesCount()));
+			}
+			else
+			{
+				tabdialog->setTabText(i, chat->chat().name());
+				tabdialog->setTabToolTip(i, chat->chat().title());
 			}
 		}
 	}
