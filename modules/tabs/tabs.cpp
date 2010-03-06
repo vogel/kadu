@@ -310,10 +310,6 @@ void TabsManager::onTabChange(int index)
 
 	ChatWidget *chat = dynamic_cast<ChatWidget *>(tabdialog->widget(index));
 
-	// czy jest na liscie chatow z nowymi wiadomosciami
-	if (chat == tabdialog->currentWidget())
-		chatsWithNewMessages.removeOne(chat);
-
 	refreshTab(index, chat);
 
 	tabdialog->setWindowTitle(chat->chat().title());
@@ -499,17 +495,10 @@ void TabsManager::onTimer()
 
 			}
 
-			// tab aktualnie nieaktywny to ustaw ikonke
-			if (currentChat != chat)
-			{
-				if (msg)
-					tabdialog->setTabIcon(i, IconsManager::instance()->iconByPath("protocols/common/16x16/message.png"));
-				else
-					tabdialog->setTabIcon(i, chat->icon());
-			}
-			else if (currentChat == chat && tabsActive)
-				// wywal go z listy chatow z nowymi wiadomosciami
-				chatsWithNewMessages.removeOne(chat);
+			if (msg)
+				tabdialog->setTabIcon(i, IconsManager::instance()->iconByPath("protocols/common/16x16/message.png"));
+			else
+				tabdialog->setTabIcon(i, chat->icon());
 
 			if (tabsActive)
 			{
@@ -519,6 +508,8 @@ void TabsManager::onTimer()
 					chat->markAllMessagesRead();
 					// a tutaj przywroc tytul�
 					tabdialog->setWindowTitle(chat->chat().title());
+					// wywal go z listy chatow z nowymi wiadomosciami
+					chatsWithNewMessages.removeOne(chat);
 				}
 				else if (chatsWithNewMessages.count() == 1 && !wasactive && config_autoTabChange)
 					tabdialog->setCurrentWidget(chat);
