@@ -178,6 +178,7 @@ void GaduCreateAccountWidget::registerNewAccountFinished(GaduServerRegisterAccou
 		MessageDialog::msg(tr("Registration was successful. Your new number is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(gsra->uin()), false, "32x32/dialog-information.png", this);
 
 		Account gaduAccount = Account::create();
+		gaduAccount.setAccountIdentity(IdentityCombo->currentIdentity());
 		gaduAccount.setProtocolName("gadu");
 		gaduAccount.setId(QString::number(gsra->uin()));
 		gaduAccount.setPassword(NewPassword->text());
