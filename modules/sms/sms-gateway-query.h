@@ -15,7 +15,7 @@ class SmsGatewayQuery : public QObject
 		void queryFinished(bool error);
 
 	public:
-		SmsGatewayQuery() {};
+		SmsGatewayQuery();
 		~SmsGatewayQuery();
 	public slots:
 		void process(const QString& number);

@@ -34,8 +34,17 @@
 #include "modules.h"
 #include "misc/path-conversion.h"
 
+#include "scripts/sms-script-manager.h"
+
 #include "sms-gateway-query.h"
 
+SmsGatewayQuery::SmsGatewayQuery()
+{
+	SmsScriptsManager::instance()->loadScript(dataPath("kadu/modules/data/scripts/gateway.js"));
+	QString gateway = SmsScriptsManager::instance()->executeFunction("getGateway", "123456789");
+
+	printf("gateway: %s\n", qPrintable(gateway));
+}
 
 SmsGatewayQuery::~SmsGatewayQuery()
 {

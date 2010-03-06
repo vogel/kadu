@@ -20,6 +20,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QFile>
+#include <QtCore/QTextStream>
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtScript/QScriptEngine>
 
@@ -39,8 +41,40 @@ SmsScriptsManager::SmsScriptsManager()
 {
 	Network = new QNetworkAccessManager(this);
 	Engine = new QScriptEngine(this);
+
+	QScriptValue scriptNetwork = Engine->newQObject(Network);
+
+	Engine->globalObject().setProperty("network", scriptNetwork);
 }
 
 SmsScriptsManager::~SmsScriptsManager()
 {
+}
+
+void SmsScriptsManager::loadScript(const QString &fileName)
+{
+	QFile file(fileName);
+	if (!file.exists())
+		return;
+
+	if (LoadedFiles.contains(fileName))
+		return;
+	LoadedFiles.append(fileName);
+
+	if (!file.open(QFile::ReadOnly))
+		return;
+
+	QTextStream reader(&file);
+	QString content = reader.readAll();
+	file.close();
+
+	if (content.isEmpty())
+		return;
+
+	Engine->evaluate(content);
+}
+
+QString SmsScriptsManager::executeFunction(const QString &name, const QString &arg)
+{
+	return Engine->evaluate(QString("%1('%2')").arg(name).arg(arg)).toString();
 }

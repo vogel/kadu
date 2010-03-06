@@ -35,11 +35,16 @@ class SmsScriptsManager : public QObject
 	QScriptEngine *Engine;
 	QNetworkAccessManager *Network;
 
+	QList<QString> LoadedFiles;
+
 	SmsScriptsManager();
 	virtual ~SmsScriptsManager();
 
 public:
 	static SmsScriptsManager * instance();
+
+	void loadScript(const QString &fileName);
+	QString executeFunction(const QString &name, const QString &arg);
 
 };
 
