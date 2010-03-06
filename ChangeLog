@@ -1,5 +1,6 @@
 +++ version 0.6.6-alpha8
 * core: simple-mode introduced (Vogel)
+* gadu: better account registration (Vogel)
 
 +++ version 0.6.6-alpha7
 * screenshot: module rewritten, now based on QGraphicsView (Vogel)

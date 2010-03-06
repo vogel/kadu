@@ -13,6 +13,7 @@ set (SOURCES
 	gui/windows/gadu-change-password-window.cpp
 	gui/windows/gadu-remind-password-window.cpp
 	gui/windows/gadu-unregister-account-window.cpp
+	gui/windows/gadu-wait-for-account-register-window.cpp
 
 	helpers/gadu-formatter.cpp
 	helpers/gadu-importer.cpp
@@ -76,6 +77,7 @@ set (MOC_SOURCES
 	gui/windows/gadu-change-password-window.h
 	gui/windows/gadu-remind-password-window.h
 	gui/windows/gadu-unregister-account-window.h
+	gui/windows/gadu-wait-for-account-register-window.h
 
 	helpers/gadu-importer.h
 
