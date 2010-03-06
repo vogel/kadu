@@ -39,21 +39,21 @@
 
 #include "server-monitor-window.h"
 
-ServerMonitorWindow::ServerMonitorWindow(QWidget *parent):
+ServerMonitorWindow::ServerMonitorWindow(QWidget *parent) :
 		QScrollArea(parent), AvalibleServers(0), UnavalibleServers(0),
 		UnknownStatusServers(0), Layout(0), ScrollBarLayout(0)
 {
 	ButtonRefresh = new QPushButton(tr("Refresh"), this);
 	ButtonRefresh->setGeometry(420, 75, 60, 25);
 
-	connect (ButtonRefresh, SIGNAL (clicked(bool)), this, SLOT (refreshList()));
-	connect (&RefreshTimer, SIGNAL (timeout()),  this, SLOT (refreshList()));
-	connect (&RefreshTimer, SIGNAL (timeout()), &RefreshTimer, SLOT (start()));
+	connect(ButtonRefresh, SIGNAL (clicked(bool)), this, SLOT (refreshList()));
+	connect(&RefreshTimer, SIGNAL (timeout()),  this, SLOT (refreshList()));
+	connect(&RefreshTimer, SIGNAL (timeout()), &RefreshTimer, SLOT (start()));
 
 	StatsLabel = new QLabel(tr("No information avalible"), this);
 	StatsLabel->setGeometry(420, 20, 150, 50);
 
-	setConfiguration();
+	configurationUpdated();
 
 	setFixedWidth(600);
 
@@ -117,7 +117,7 @@ void ServerMonitorWindow::loadServers()
 	UnavalibleServers = 0;
 	removeAllServer();
 
-	(ProtocolsManager::instance()->byName("gadu") && config_file_ptr->readBoolEntry("serverMonitor", "useGaduServersList", true))?
+	(ProtocolsManager::instance()->byName("gadu") && config_file.readBoolEntry("serverMonitor", "useGaduServersList", true))?
 			loadServersListFromGaduManager() : loadServersListFromFile();
 
 	int serverCounter = 0;
@@ -175,26 +175,19 @@ void ServerMonitorWindow::loadServersListFromFile()
 			if (lineSpilted.length() > 2)
 				name = lineSpilted[2];
 		}
-		ServerStatusWidgetList.push_back(new ServerStatusWidget (addr,port.toInt(),name, this));
+		ServerStatusWidgetList.push_back(new ServerStatusWidget(addr,port.toInt(),name, this));
 	}
 	serverFileList.close();
 }
 
 void ServerMonitorWindow::configurationUpdated()
 {
-	setConfiguration();
-}
+	config_file.readBoolEntry("serverMonitor", "showResetButton", false) ? ButtonRefresh->show() : ButtonRefresh->hide();
 
-void ServerMonitorWindow::setConfiguration()
-{
-	kdebugf();
+	config_file.readBoolEntry("serverMonitor", "autorefresh", true) ?
+			RefreshTimer.start(60000 * config_file.readNumEntry("serverMonitor", "timerInterval", 5)) : RefreshTimer.stop();
 
-	config_file_ptr->readBoolEntry("serverMonitor", "showResetButton", false) ? ButtonRefresh->show() : ButtonRefresh->hide();
-
-	config_file_ptr->readBoolEntry("serverMonitor", "autorefresh", true) ?
-			RefreshTimer.start(60000 * config_file_ptr->readNumEntry("serverMonitor", "timerInterval", 5)) : RefreshTimer.stop();
-
-	ServerFileListName = config_file_ptr->readEntry("serverMonitor", "fileName", "kadu/modules/configuration/serverslist.txt");
+	ServerFileListName = config_file.readEntry("serverMonitor", "fileName", "kadu/modules/configuration/serverslist.txt");
 	loadServers();
 
 	kdebugf2();
@@ -202,7 +195,8 @@ void ServerMonitorWindow::setConfiguration()
 
 void ServerMonitorWindow::refreshList()
 {
-	foreach (ServerStatusWidget* server, ServerStatusWidgetList ) server->refreshIcon();
+	foreach (ServerStatusWidget* server, ServerStatusWidgetList)
+		server->refreshIcon();
 }
 
 void ServerMonitorWindow::removeAllServer()

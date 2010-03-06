@@ -40,16 +40,16 @@ extern "C" KADU_EXPORT int server_monitor_init(bool firstLoad)
 {
 	kdebugf();
 	serverMonitor = new ServerMonitor();
-	MainConfigurationWindow::instance()->registerUiFile(dataPath("kadu/modules/configuration/server-monitor.ui"));
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/server-monitor.ui"));
 	MainConfigurationWindow::registerUiHandler(serverMonitor);
+
 	if (firstLoad)
 	{
-		config_file_ptr->addVariable("serverMonitor", "autorefresh", true);
-		config_file_ptr->addVariable("serverMonitor", "fileName", "kadu/modules/configuration/serverslist.txt");
-		config_file_ptr->addVariable("serverMonitor", "serverListHost", "sifaka.pl");
-		config_file_ptr->addVariable("serverMonitor", "useListFromServer", true);
-		config_file_ptr->addVariable("serverMonitor", "timerInterval", 5);
-		config_file_ptr->addVariable("serverMonitor", "showResetButton", false);
+		config_file.addVariable("serverMonitor", "autorefresh", true);
+		config_file.addVariable("serverMonitor", "fileName", "kadu/modules/configuration/serverslist.txt");
+		config_file.addVariable("serverMonitor", "useListFromServer", true);
+		config_file.addVariable("serverMonitor", "timerInterval", 5);
+		config_file.addVariable("serverMonitor", "showResetButton", false);
 	}
 
 	ServerMonitor::notifyEvent = new NotifyEvent("serverMonitorChangeStatus", NotifyEvent::CallbackNotRequired, "Server Monitor");
@@ -63,8 +63,8 @@ extern "C" KADU_EXPORT void server_monitor_close()
 {
 	kdebugf();
 
-	MainConfigurationWindow::instance()->unregisterUiFile(dataPath("kadu/modules/configuration/server_monitor.ui"));
-	MainConfigurationWindow::instance()->unregisterUiHandler(serverMonitor);
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/server_monitor.ui"));
+	MainConfigurationWindow::unregisterUiHandler(serverMonitor);
 
 	NotificationManager::instance()->unregisterNotifyEvent(ServerMonitor::notifyEvent);
 	delete serverMonitor;
@@ -79,7 +79,8 @@ ServerMonitor::ServerMonitor(QWidget *parent) :
 			this,ActionDescription::TypeMainMenu, "serverMonitorAction",
 			this, SLOT(serverMonitorActionActivated(QAction *, bool)),
 			"protocols/gadu-gadu/16x16/online", "protocols/gadu-gadu/16x16/online", tr("Server's monitor"));
-	Core::instance()->kaduWindow()->insertMenuActionDescription( ServerMonitorActionDescription,KaduWindow::MenuKadu,6);
+	Core::instance()->kaduWindow()->insertMenuActionDescription(ServerMonitorActionDescription, KaduWindow::MenuKadu, 6);
+
 	Dialog = new ServerMonitorWindow();
 }
 
@@ -89,7 +90,7 @@ void ServerMonitor::serverMonitorActionActivated(QAction* ,bool)
 	Dialog->raise();
 }
 
-void ServerMonitor::mainConfigurationWindowCreated (MainConfigurationWindow* mainConfigurationWindow)
+void ServerMonitor::mainConfigurationWindowCreated(MainConfigurationWindow* mainConfigurationWindow)
 {
 	kdebugf();
 	connect(mainConfigurationWindow->widget()->widgetById("serverMonitor/useGaduServersList"), SIGNAL(toggled(bool)),
@@ -102,4 +103,5 @@ ServerMonitor::~ServerMonitor()
 	Core::instance()->kaduWindow()->removeMenuActionDescription(ServerMonitorActionDescription);
 	delete Dialog;
 }
+
 ServerMonitor *serverMonitor;
