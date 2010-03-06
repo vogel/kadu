@@ -1,5 +1,10 @@
 project (kadu)
 
+# minimal required versions
+set (QT_MIN_VERSION "4.4.0")
+set (CMAKE_MIN_VERSION "2.6.0")
+set (LIBGADU_MIN_VERSION "1.9.0")
+
 # configuration
 
 option (ENABLE_AUTODOWNLOAD "Use automatic download of modules/icons/emoticons" ON)
@@ -14,7 +19,7 @@ if (NOT CMAKE_BUILD_TYPE)
 	set (CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build, options are: Debug Release RelWithDebInfo." FORCE)
 endif (NOT CMAKE_BUILD_TYPE)
 
-cmake_minimum_required (VERSION 2.6.0 FATAL_ERROR)
+cmake_minimum_required (VERSION ${CMAKE_MIN_VERSION} FATAL_ERROR)
 
 include (FindPkgConfig)
 include (CheckIncludeFiles)
@@ -104,7 +109,6 @@ endmacro (kadu_module_desc)
 
 # libraries
 
-set (QT_MIN_VERSION "4.4.0")
 find_package (Qt4 REQUIRED)
 set(QT_USE_QTXML 1)
 set(QT_USE_QTNETWORK 1)
@@ -134,15 +138,15 @@ set (CMAKE_CXX_FLAGS "-O3 -ffast-math -funroll-loops")
 	set (SNDFILE_LIBRARY_DIRS ${MINGW_LIBSNDFILE_DIR})
 else (MINGW)
 
-pkg_search_module (LIBGADU REQUIRED libgadu>=1.9.0)
+pkg_search_module (LIBGADU REQUIRED libgadu>=${LIBGADU_MIN_VERSION})
 
 execute_process (
-	COMMAND grep "1.9.0-rc1" ${LIBGADU_INCLUDEDIR}/libgadu.h
+	COMMAND grep "${LIBGADU_MIN_VERSION}-rc1" "${LIBGADU_INCLUDEDIR}/libgadu.h"
 	RESULT_VARIABLE LIBGADU_VERSION_RC1
 )
 
 if (NOT ${LIBGADU_VERSION_RC1} GREATER 0)
-	message (FATAL_ERROR "Kadu require at least libgadu 1.9.0-rc2")
+	message (FATAL_ERROR "Kadu require at least libgadu ${LIBGADU_MIN_VERSION}-rc2")
 endif (NOT ${LIBGADU_VERSION_RC1} GREATER 0)
 
 endif (MINGW)
@@ -165,8 +169,15 @@ add_subdirectory (varia)
 add_subdirectory (translations)
 add_subdirectory (kthxbye)
 
+# status messages
 message (STATUS "Kadu (version: ${KADU_VERSION}) will be build:")
-message (STATUS " * libgadu (version ${LIBGADU_VERSION}) in ${LIBGADU_LIBRARY_DIRS}")
+
+if (NOT LIBGADU_FOUND)
+	message (STATUS " * libgadu (version ${LIBGADU_MIN_VERSION}) was NOT FOUND")
+else (NOT LIBGADU_FOUND)
+	message (STATUS " * libgadu (version ${LIBGADU_VERSION}) in ${LIBGADU_LIBDIR}")
+endif (NOT LIBGADU_FOUND)
+
 message (STATUS " * install prefix: ${CMAKE_INSTALL_PREFIX}")
 message (STATUS " * build type: ${CMAKE_BUILD_TYPE}")
 
