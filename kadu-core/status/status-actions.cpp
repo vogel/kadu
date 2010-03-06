@@ -19,6 +19,9 @@
 
 #include <QtGui/QAction>
 
+#include "accounts/account-manager.h"
+#include "configuration/configuration-file.h"
+#include "protocols/protocol.h"
 #include "status/status-container.h"
 #include "status/status-group.h"
 #include "status/status-type.h"
@@ -30,8 +33,12 @@ StatusActions::StatusActions(StatusContainer *statusContainer, QObject *parent) 
 {
 	ChangeStatusActionGroup = new QActionGroup(this);
 	ChangeStatusActionGroup->setExclusive(true); // HACK
+	connect(ChangeStatusActionGroup, SIGNAL(triggered(QAction*)), this, SIGNAL(statusActionTriggered(QAction*)));
 
 	createActions();
+
+	statusChanged();
+	connect(MyStatusContainer, SIGNAL(statusChanged()), this, SLOT(statusChanged()));
 }
 
 StatusActions::~StatusActions()
@@ -82,8 +89,14 @@ void StatusActions::createActions()
 void StatusActions::createBasicActions()
 {
 	ChangeDescription = new QAction(tr("Change status message..."), this);
+	connect(ChangeDescription, SIGNAL(triggered(bool)), this, SIGNAL(changeDescriptionActionTriggered(QAction*)));
+
 	ChangePrivateStatus = new QAction(tr("Private"), this);
 	ChangePrivateStatus->setCheckable(true);
+	connect(ChangePrivateStatus, SIGNAL(triggered(bool)), this, SIGNAL(changePrivateStatusActionTriggered(QAction*)));
+
+	bool privateStatus = config_file.readBoolEntry("General", "PrivateStatus");
+	ChangePrivateStatus->setChecked(privateStatus);
 }
 
 void StatusActions::createStatusActions()
@@ -113,4 +126,29 @@ QAction * StatusActions::createStatusAction(StatusType *statusType)
 	statusAction->setData(QVariant::fromValue(statusType));
 
 	return statusAction;
+}
+
+void StatusActions::statusChanged()
+{
+	const QString &statusTypeName = MyStatusContainer->status().type();
+
+	foreach (QAction *action, ChangeStatusActionGroup->actions())
+	{
+		StatusType *statusType = action->data().value<StatusType *>();
+		if (!statusType)
+			continue;
+
+		action->setChecked(statusTypeName == statusType->name());
+	}
+
+	if (!AccountManager::instance()->defaultAccount().isNull())
+	{
+		Protocol *protocol = AccountManager::instance()->defaultAccount().protocolHandler();
+		if (!protocol)
+			return;
+		ChangePrivateStatus->setChecked(protocol->privateMode());
+	}
+
+// 	ChangeStatusToOfflineDesc->setEnabled(index != 6);
+// 	ChangeStatusToOffline->setEnabled(index != 7);
 }

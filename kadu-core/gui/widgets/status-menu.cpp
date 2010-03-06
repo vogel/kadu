@@ -29,6 +29,7 @@
 #include "core/core.h"
 #include "gui/windows/choose-description.h"
 #include "protocols/protocol.h"
+#include "status/status-actions.h"
 #include "status/status-group.h"
 #include "status/status-type.h"
 #include "status/status-type-manager.h"
@@ -38,111 +39,23 @@
 StatusMenu::StatusMenu(StatusContainer *statusContainer, QMenu *menu) :
 		QObject(menu), Menu(menu), MyStatusContainer(statusContainer)
 {
-	ChangeStatusActionGroup = new QActionGroup(this);
-	ChangeStatusActionGroup->setExclusive(true); // HACK
+	Actions = new StatusActions(MyStatusContainer, this);
 
-	connect(ChangeStatusActionGroup, SIGNAL(triggered(QAction *)), this, SLOT(changeStatus(QAction *)));
+	connect(Actions, SIGNAL(statusActionTriggered(QAction *)), this, SLOT(changeStatus(QAction *)));
+	connect(Actions, SIGNAL(changeDescriptionActionTriggered(QAction*)), this, SLOT(changeDescription()));
+	connect(Actions, SIGNAL(changePrivateStatusActionTriggered(QAction*)), this, SLOT(changeStatusPrivate(bool)));
 
-	ChangeDescription = new QAction(tr("Change status message..."), this);
-	connect(ChangeDescription, SIGNAL(triggered(bool)), this, SLOT(changeDescription()));
+// 	connect(MyStatusContainer, SIGNAL(updated()), this, SLOT(statusContainerUpdated()));
 
-	ChangePrivateStatus = new QAction(tr("Private"), this);
-	ChangePrivateStatus->setCheckable(true);
-	connect(ChangePrivateStatus, SIGNAL(toggled(bool)), this, SLOT(changeStatusPrivate(bool)));
-
-	bool privateStatus = config_file.readBoolEntry("General", "PrivateStatus");
-	ChangePrivateStatus->setChecked(privateStatus);
-
-	statusChanged();
-	connect(MyStatusContainer, SIGNAL(statusChanged()), this, SLOT(statusChanged()));
-	connect(MyStatusContainer, SIGNAL(updated()), this, SLOT(statusContainerUpdated()));
-
-	createActions();
 	connect(Menu, SIGNAL(aboutToHide()), this, SLOT(aboutToHide()));
+
+	foreach (QAction *action, Actions->actions())
+		Menu->addAction(action);
 }
 
 StatusMenu::~StatusMenu()
 {
 	disconnect(MyStatusContainer, SIGNAL(statusChanged()), this, SLOT(statusChanged()));
-}
-
-void StatusMenu::clearActions()
-{
-	while (!ChangeStatusActionGroup->actions().isEmpty())
-	{
-		QAction *action = ChangeStatusActionGroup->actions().first();
-		ChangeStatusActionGroup->removeAction(action);
-		Menu->removeAction(action);
-		action->deleteLater();
-	}
-
-	while (!MenuActions.isEmpty())
-	{
-		QAction *action = MenuActions.first();
-		Menu->removeAction(action);
-		action->deleteLater();
-	}
-
-	Menu->removeAction(ChangeDescription);
-	Menu->removeAction(ChangePrivateStatus);
-}
-
-void StatusMenu::createStatusActions()
-{
-	const QString &statusTypeName = MyStatusContainer->status().type();
-
-	QList<StatusType *> statusTypes = MyStatusContainer->supportedStatusTypes();
-	foreach (StatusType *statusType, statusTypes)
-	{
-		QAction *statusAction = ChangeStatusActionGroup->addAction(
-				MyStatusContainer->statusPixmap(statusType->name()),
-				MyStatusContainer->statusNamePrefix() + statusType->displayName());
-		statusAction->setCheckable(true);
-		statusAction->setData(QVariant::fromValue(statusType));
-
-		if (statusTypeName == statusType->name())
-			statusAction->setChecked(true);
-	}
-}
-
-void StatusMenu::createActions()
-{
-	createStatusActions();
-
-	if (0 == ChangeStatusActionGroup->actions().count())
-		return;
-
-	StatusType *statusType = ChangeStatusActionGroup->actions()[0]->data().value<StatusType *>();
-	if (0 == statusType)
-		return;
-
-	StatusGroup *currentGroup = statusType->statusGroup();
-	bool setDescriptionAdded = false;
-
-	foreach (QAction *action, ChangeStatusActionGroup->actions())
-	{
-		StatusType *statusType = action->data().value<StatusType *>();
-		if (0 == statusType)
-			return;
-
-		if (!setDescriptionAdded && statusType->statusGroup() &&
-				statusType->statusGroup()->sortIndex() >= StatusGroup::StatusGroupSortIndexAfterSetDescription)
-		{
-			MenuActions.append(Menu->addSeparator());
-			Menu->addAction(ChangeDescription);
-		}
-
-		if (statusType->statusGroup() != currentGroup)
-		{
-			MenuActions.append(Menu->addSeparator());
-			currentGroup = statusType->statusGroup();
-		}
-
-		Menu->addAction(action);
-	}
-
-	MenuActions.append(Menu->addSeparator());
-	Menu->addAction(ChangePrivateStatus);
 }
 
 void StatusMenu::aboutToHide()
@@ -172,37 +85,4 @@ void StatusMenu::changeStatusPrivate(bool toggled)
 		AccountManager::instance()->defaultAccount().protocolHandler()->setPrivateMode(toggled);
 
 	config_file.writeEntry("General", "PrivateStatus", toggled);
-}
-
-void StatusMenu::statusChanged()
-{
-	const QString &statusTypeName = MyStatusContainer->status().type();
-
-	foreach (QAction *action, ChangeStatusActionGroup->actions())
-	{
-		StatusType *statusType = action->data().value<StatusType *>();
-		if (!statusType)
-			continue;
-
-		action->setChecked(statusTypeName == statusType->name());
-	}
-
-	if (!AccountManager::instance()->defaultAccount().isNull())
-	{
-		Protocol *protocol = AccountManager::instance()->defaultAccount().protocolHandler();
-		if (!protocol)
-			return;
-		ChangePrivateStatus->setChecked(protocol->privateMode());
-	}
-
-// 	ChangeStatusToOfflineDesc->setEnabled(index != 6);
-// 	ChangeStatusToOffline->setEnabled(index != 7);
-}
-
-void StatusMenu::statusContainerUpdated()
-{
-	printf("scu called\n");
-
-	clearActions();
-	createActions();
 }

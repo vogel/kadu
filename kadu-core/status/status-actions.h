@@ -47,9 +47,19 @@ class StatusActions : public QObject
 	QAction * createSeparator();
 	QAction * createStatusAction(StatusType *statusType);
 
+private slots:
+	void statusChanged();
+
 public:
 	explicit StatusActions(StatusContainer *statusContainer, QObject *parent);
 	virtual ~StatusActions();
+
+	QList<QAction *> actions() { return Actions; }
+
+signals:
+	void statusActionTriggered(QAction *);
+	void changeDescriptionActionTriggered(QAction *);
+	void changePrivateStatusActionTriggered(QAction *);
 
 };
 

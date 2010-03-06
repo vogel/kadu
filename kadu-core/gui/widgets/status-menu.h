@@ -32,6 +32,7 @@ class QAction;
 class QActionGroup;
 class QMenu;
 
+class StatusActions;
 class StatusContainer;
 
 class KADUAPI StatusMenu : public QObject
@@ -39,19 +40,11 @@ class KADUAPI StatusMenu : public QObject
 	Q_OBJECT
 
 	QMenu *Menu;
-	QList<QAction *> MenuActions;
-
-	QActionGroup *ChangeStatusActionGroup;
-	QAction *ChangeDescription;
-	QAction *ChangePrivateStatus;
+	StatusActions *Actions;
 
 	QPoint MousePositionBeforeMenuHide;
 
 	StatusContainer *MyStatusContainer;
-
-	void clearActions();
-	void createStatusActions();
-	void createActions();
 
 private slots:
 	void aboutToHide();
@@ -59,9 +52,6 @@ private slots:
 	void changeDescription();
 
 	void changeStatusPrivate(bool toggled);
-
-	void statusChanged();
-	void statusContainerUpdated();
 
 public:
 	explicit StatusMenu(StatusContainer *statusContainer, QMenu *menu);
