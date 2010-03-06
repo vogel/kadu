@@ -55,7 +55,6 @@ StatusMenu::StatusMenu(StatusContainer *statusContainer, QMenu *menu) :
 
 StatusMenu::~StatusMenu()
 {
-	disconnect(MyStatusContainer, SIGNAL(statusChanged()), this, SLOT(statusChanged()));
 }
 
 void StatusMenu::aboutToHide()
