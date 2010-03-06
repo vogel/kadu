@@ -123,6 +123,7 @@ void GaduAddAccountWidget::addAccountButtonClicked()
 	//gaduAccount.setProtocolName("gadu");
 	GaduAccountDetails *gad = new GaduAccountDetails(gaduAccount);
 	gad->setState(StorableObject::StateNew);
+	gaduAccount.setAccountIdentity(Identity->currentIdentity());
 	gaduAccount.setDetails(gad);
 	gaduAccount.setProtocolName("gadu");
 	gaduAccount.setId(AccountId->text());
