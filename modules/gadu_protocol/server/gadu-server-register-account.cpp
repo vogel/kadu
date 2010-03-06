@@ -37,19 +37,8 @@ void GaduServerRegisterAccount::performAction()
 			Password.toUtf8().constData(),
 			TokenId.toUtf8().constData(),
 			TokenValue.toUtf8().constData(),
-			false);
-	if (H)
-	{
-		struct gg_pubdir *result = (struct gg_pubdir *)H->data;
-		Result = result->success;
+			true);
 
-		if (result->success)
-			Uin = result->uin;
-
-		emit finished(this);
-	}
-
-	/* TODO: fix for 0.6.6, it should be async
 	if (H && H->fd > 0)
 	{
 		GaduPubdirSocketNotifiers *sn = new GaduPubdirSocketNotifiers();
@@ -57,7 +46,7 @@ void GaduServerRegisterAccount::performAction()
 		sn->watchFor(H);
 	}
 	else
-		emit finished(this);*/
+		emit finished(this);
 }
 
 void GaduServerRegisterAccount::done(bool ok, struct gg_http *h)
@@ -67,11 +56,11 @@ void GaduServerRegisterAccount::done(bool ok, struct gg_http *h)
 
 	Result = ok;
 
-	emit finished(this);
-
 	if (H)
 	{
 		delete H;
 		H = 0;
 	}
+
+	emit finished(this);
 }
