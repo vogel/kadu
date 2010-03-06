@@ -481,6 +481,7 @@ set (kadu_MOC_SRCS
 
 	identities/model/identity-model.h
 	identities/identity-manager.h
+	identities/identity-shared.h
 
 	model/actions-proxy-model.h
 
@@ -512,6 +513,7 @@ set (kadu_MOC_SRCS
 
 	qt/long-validator.h
 
+	status/base-status-container.h
 	status/description-manager.h
 	status/description-model.h
 	status/status-changer.h
