@@ -82,6 +82,7 @@ private:
 	QTemporaryFile *BackgroundTemporaryFile;
 
 private slots:
+	void simpleModeChanged();
 	void doubleClickedSlot(const QModelIndex &index);
 
 	// Tool tips

@@ -36,6 +36,7 @@
 #include "buddies/buddy-set.h"
 #include "buddies/model/buddies-model-proxy.h"
 #include "chat/chat-manager.h"
+#include "configuration/main-configuration.h"
 #include "contacts/filter/contact-no-unloaded-account-filter.h"
 #include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
@@ -77,8 +78,11 @@ BuddiesListView::BuddiesListView(MainWindow *mainWindow, QWidget *parent) :
 	Delegate->setModel(ProxyModel);
 	QTreeView::setModel(ProxyModel);
 
+	connect(MainConfiguration::instance(), SIGNAL(simpleModeChanged()), this, SLOT(simpleModeChanged()));
 	connect(&ToolTipTimeoutTimer, SIGNAL(timeout()), this, SLOT(toolTipTimeout()));
 	connect(this, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(doubleClickedSlot(const QModelIndex &)));
+
+	simpleModeChanged();
 }
 
 BuddiesListView::~BuddiesListView()
@@ -377,12 +381,27 @@ void BuddiesListView::currentChanged(const QModelIndex& current, const QModelInd
 		emit currentBuddyChanged(con);
 }
 
-void BuddiesListView::selectionChanged( const QItemSelection &selected, const QItemSelection &deselected)
+void BuddiesListView::selectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
 {
 	Q_UNUSED(selected)
 	Q_UNUSED(deselected)
 
 	emit buddySelectionChanged();
+}
+
+void BuddiesListView::simpleModeChanged()
+{
+	if (MainConfiguration::instance()->simpleMode())
+	{
+		collapseAll();
+		setItemsExpandable(false);
+		setRootIsDecorated(false);
+	}
+	else
+	{
+		setItemsExpandable(true);
+		setRootIsDecorated(true);
+	}
 }
 
 void BuddiesListView::doubleClickedSlot(const QModelIndex &index)
