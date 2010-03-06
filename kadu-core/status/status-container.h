@@ -32,6 +32,9 @@ class StatusContainer : public QObject
 	// all status changes must be performed by Core
 	friend class Core;
 
+protected:
+	void emitStatusContainerUpdated() { emit updated(); }
+
 public:
 	explicit StatusContainer(QObject *parent = 0) : QObject(parent) {}
 	virtual ~StatusContainer() {}

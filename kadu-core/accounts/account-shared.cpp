@@ -75,9 +75,11 @@ void AccountShared::load()
 	Shared::load();
 
 	ConnectAtStart = loadValue<bool>("ConnectAtStart", true);
-	AccountIdentity = IdentityManager::instance()->byUuid(loadValue<QString>("Identity"));
-	if (AccountIdentity.isNull() && !IdentityManager::instance()->items().isEmpty())
-		AccountIdentity = IdentityManager::instance()->items()[0];
+	Identity identity = IdentityManager::instance()->byUuid(loadValue<QString>("Identity"));
+	if (identity.isNull() && !IdentityManager::instance()->items().isEmpty())
+		identity = IdentityManager::instance()->items()[0];
+
+	setAccountIdentity(identity);
 
 	ProtocolName = loadValue<QString>("Protocol");
 	setId(loadValue<QString>("Id"));
@@ -218,6 +220,16 @@ void AccountShared::detailsAdded()
 void AccountShared::detailsAboutToBeRemoved()
 {
 	details()->store();
+}
+
+void AccountShared::setAccountIdentity(Identity accountIdentity)
+{
+	if (AccountIdentity == accountIdentity)
+		return;
+
+	AccountIdentity.removeAccount(this);
+	AccountIdentity = accountIdentity;
+	AccountIdentity.addAccount(this);
 }
 
 void AccountShared::setProtocolName(QString protocolName)

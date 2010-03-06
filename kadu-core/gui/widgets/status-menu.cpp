@@ -41,21 +41,6 @@ StatusMenu::StatusMenu(StatusContainer *statusContainer, QMenu *menu) :
 	ChangeStatusActionGroup = new QActionGroup(this);
 	ChangeStatusActionGroup->setExclusive(true); // HACK
 
-	const QString &statusTypeName = MyStatusContainer->status().type();
-
-	QList<StatusType *> statusTypes = MyStatusContainer->supportedStatusTypes();
-	foreach (StatusType *statusType, statusTypes)
-	{
-		QAction *statusAction = ChangeStatusActionGroup->addAction(
-				MyStatusContainer->statusPixmap(statusType->name()),
-				MyStatusContainer->statusNamePrefix() + statusType->displayName());
-		statusAction->setCheckable(true);
-		statusAction->setData(QVariant::fromValue(statusType));
-
-		if (statusTypeName == statusType->name())
-			statusAction->setChecked(true);
-	}
-
 	connect(ChangeStatusActionGroup, SIGNAL(triggered(QAction *)), this, SLOT(changeStatus(QAction *)));
 
 	ChangeDescription = new QAction(tr("Change status message..."), this);
@@ -87,13 +72,30 @@ void StatusMenu::clearActions()
 
 	Menu->removeAction(ChangeDescription);
 	Menu->removeAction(ChangePrivateStatus);
+}
 
-	foreach (QAction *action, ChangeStatusActionGroup->actions())
-		Menu->removeAction(action);
+void StatusMenu::createStatusActions()
+{
+	const QString &statusTypeName = MyStatusContainer->status().type();
+
+	QList<StatusType *> statusTypes = MyStatusContainer->supportedStatusTypes();
+	foreach (StatusType *statusType, statusTypes)
+	{
+		QAction *statusAction = ChangeStatusActionGroup->addAction(
+				MyStatusContainer->statusPixmap(statusType->name()),
+				MyStatusContainer->statusNamePrefix() + statusType->displayName());
+		statusAction->setCheckable(true);
+		statusAction->setData(QVariant::fromValue(statusType));
+
+		if (statusTypeName == statusType->name())
+			statusAction->setChecked(true);
+	}
 }
 
 void StatusMenu::createActions()
 {
+	createStatusActions();
+
 	if (0 == ChangeStatusActionGroup->actions().count())
 		return;
 
@@ -187,6 +189,8 @@ void StatusMenu::statusChanged()
 
 void StatusMenu::statusContainerUpdated()
 {
+	printf("scu called\n");
+
 	clearActions();
 	createActions();
 }

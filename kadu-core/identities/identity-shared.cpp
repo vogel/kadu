@@ -86,14 +86,14 @@ void IdentityShared::addAccount(Account account)
 {
 	Accounts.append(account);
 
-	emit updated();
+	emitStatusContainerUpdated();
 }
 
 void IdentityShared::removeAccount(Account account)
 {
 	Accounts.removeAll(account);
 
-	emit updated();
+	emitStatusContainerUpdated();
 }
 
 bool IdentityShared::hasAccount(Account account)

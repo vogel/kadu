@@ -50,6 +50,7 @@ class KADUAPI StatusMenu : public QObject
 	StatusContainer *MyStatusContainer;
 
 	void clearActions();
+	void createStatusActions();
 	void createActions();
 
 private slots:
