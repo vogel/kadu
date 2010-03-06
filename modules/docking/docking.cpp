@@ -322,7 +322,7 @@ void DockingManager::updateContextMenu()
 
 	if (statusContainersCount == 1)
 	{
-		StatusMenu(StatusContainerManager::instance()->statusContainers()[0], DockMenu);
+		new StatusMenu(StatusContainerManager::instance()->statusContainers()[0], DockMenu);
 	}
 	else
 	{
@@ -330,7 +330,7 @@ void DockingManager::updateContextMenu()
 		{
 			QMenu *menu = new QMenu(container->statusContainerName());
 			menu->setIcon(container->statusPixmap());
-			StatusMenu(container, menu);
+			new StatusMenu(container, menu);
 			StatusContainerMenus[container] = DockMenu->addMenu(menu);
 			connect(container, SIGNAL(statusChanged()), this, SLOT(containerStatusChanged()));
 
@@ -338,7 +338,7 @@ void DockingManager::updateContextMenu()
 		if (statusContainersCount > 1)
 			containersSeparator = DockMenu->addSeparator();
 
-		StatusMenu(StatusContainerManager::instance(), DockMenu);
+		new StatusMenu(StatusContainerManager::instance(), DockMenu);
 	}
 
 	DockMenu->addAction(CloseKaduAction);

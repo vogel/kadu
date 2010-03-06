@@ -177,6 +177,8 @@ void StatusContainerManager::registerStatusContainer(StatusContainer *statusCont
 	StatusContainerAwareObject::notifyStatusContainerRegistered(statusContainer);
 
 	statusContainer->setDefaultStatus(StartupStatus, OfflineToInvisible, StartupDescription, StartupLastDescription);
+
+	emitStatusContainerUpdated();
 }
 
 void StatusContainerManager::unregisterStatusContainer(StatusContainer *statusContainer)
@@ -195,6 +197,8 @@ void StatusContainerManager::unregisterStatusContainer(StatusContainer *statusCo
 		else
 			setDefaultStatusContainer(StatusContainers.first());
 	}
+
+	emitStatusContainerUpdated();
 }
 
 QString StatusContainerManager::statusContainerName()
