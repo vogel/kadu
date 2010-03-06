@@ -42,8 +42,8 @@ StatusMenu::StatusMenu(StatusContainer *statusContainer, QMenu *menu) :
 	Actions = new StatusActions(MyStatusContainer, this);
 
 	connect(Actions, SIGNAL(statusActionTriggered(QAction *)), this, SLOT(changeStatus(QAction *)));
-	connect(Actions, SIGNAL(changeDescriptionActionTriggered(QAction*)), this, SLOT(changeDescription()));
-	connect(Actions, SIGNAL(changePrivateStatusActionTriggered(QAction*)), this, SLOT(changeStatusPrivate(bool)));
+	connect(Actions, SIGNAL(changeDescriptionActionTriggered(bool)), this, SLOT(changeDescription()));
+	connect(Actions, SIGNAL(changePrivateStatusActionTriggered(bool)), this, SLOT(changeStatusPrivate(bool)));
 
 // 	connect(MyStatusContainer, SIGNAL(updated()), this, SLOT(statusContainerUpdated()));
 

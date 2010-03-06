@@ -89,11 +89,11 @@ void StatusActions::createActions()
 void StatusActions::createBasicActions()
 {
 	ChangeDescription = new QAction(tr("Change status message..."), this);
-	connect(ChangeDescription, SIGNAL(triggered(bool)), this, SIGNAL(changeDescriptionActionTriggered(QAction*)));
+	connect(ChangeDescription, SIGNAL(triggered(bool)), this, SIGNAL(changeDescriptionActionTriggered(bool)));
 
 	ChangePrivateStatus = new QAction(tr("Private"), this);
 	ChangePrivateStatus->setCheckable(true);
-	connect(ChangePrivateStatus, SIGNAL(triggered(bool)), this, SIGNAL(changePrivateStatusActionTriggered(QAction*)));
+	connect(ChangePrivateStatus, SIGNAL(triggered(bool)), this, SIGNAL(changePrivateStatusActionTriggered(bool)));
 
 	bool privateStatus = config_file.readBoolEntry("General", "PrivateStatus");
 	ChangePrivateStatus->setChecked(privateStatus);
