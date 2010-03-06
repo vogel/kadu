@@ -144,7 +144,8 @@ void GaduAddAccountWidget::dataChanged()
 
 	AddAccountButton->setEnabled(
 		!AccountId->text().isEmpty() &&
-		!AccountPassword->text().isEmpty()
+		!AccountPassword->text().isEmpty() &&
+		Identity->currentIdentity()
 	);
 }
 
