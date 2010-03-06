@@ -39,7 +39,8 @@
 #include "url-handlers/url-handler-manager.h"
 #include "icons-manager.h"
 
-#include "../../server/gadu-server-register-account.h"
+#include "gui/windows/gadu-wait-for-account-register-window.h"
+#include "server/gadu-server-register-account.h"
 #include "gadu-account-details.h"
 #include "gadu-protocol-factory.h"
 #include "token-widget.h"
@@ -159,10 +160,10 @@ void GaduCreateAccountWidget::apply()
 
 	GaduServerRegisterAccount *gsra = new GaduServerRegisterAccount(EMail->text(), NewPassword->text(),
 			MyTokenWidget->tokenId(), MyTokenWidget->tokenValue());
-	connect(gsra, SIGNAL(finished(GaduServerRegisterAccount *)),
-			this, SLOT(registerNewAccountFinished(GaduServerRegisterAccount *)));
 
-	gsra->performAction();
+	GaduWaitForAccountRegisterWindow *window = new GaduWaitForAccountRegisterWindow(gsra);
+	connect(window, SIGNAL(uinRegistered(UinType)), this, SLOT(uinRegistered(UinType)));
+	window->exec();
 }
 
 void GaduCreateAccountWidget::cancel()
@@ -171,26 +172,19 @@ void GaduCreateAccountWidget::cancel()
 	emit cancelled();
 }
 
-void GaduCreateAccountWidget::registerNewAccountFinished(GaduServerRegisterAccount *gsra)
+void GaduCreateAccountWidget::uinRegistered(UinType uin)
 {
-	if (gsra && gsra->result())
-	{
-		MessageDialog::msg(tr("Registration was successful. Your new number is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(gsra->uin()), false, "32x32/dialog-information.png", this);
+	if (!uin)
+		return;
 
-		Account gaduAccount = Account::create();
-		gaduAccount.setAccountIdentity(IdentityCombo->currentIdentity());
-		gaduAccount.setProtocolName("gadu");
-		gaduAccount.setId(QString::number(gsra->uin()));
-		gaduAccount.setPassword(NewPassword->text());
-		gaduAccount.setRememberPassword(RememberPassword->isChecked());
+	Account gaduAccount = Account::create();
+	gaduAccount.setAccountIdentity(IdentityCombo->currentIdentity());
+	gaduAccount.setProtocolName("gadu");
+	gaduAccount.setId(QString::number(uin));
+	gaduAccount.setPassword(NewPassword->text());
+	gaduAccount.setRememberPassword(RememberPassword->isChecked());
 
-		resetGui(); // don't need that data anymore
+	resetGui(); // don't need that data anymore
 
-		emit accountCreated(gaduAccount);
-	}
-	else
-		MessageDialog::msg(tr("An error has occured while registration. Please try again later."), false, "32x32/dialog-warning.png", this);
-
-	if (gsra)
-		delete gsra;
+	emit accountCreated(gaduAccount);
 }

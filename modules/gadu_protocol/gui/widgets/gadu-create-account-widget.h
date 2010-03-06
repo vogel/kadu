@@ -26,6 +26,7 @@
 
 #include "accounts/account.h"
 #include "gui/widgets/modal-configuration-widget.h"
+#include "protocols/protocol.h"
 
 class QCheckBox;
 class QGridLayout;
@@ -54,7 +55,7 @@ class GaduCreateAccountWidget : public ModalConfigurationWidget
 private slots:
 	void dataChanged();
 
-	void registerNewAccountFinished(GaduServerRegisterAccount *gsra);
+	void uinRegistered(UinType uin);
 
 public:
 	explicit GaduCreateAccountWidget(QWidget *parent = 0);
