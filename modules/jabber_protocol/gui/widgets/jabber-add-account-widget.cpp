@@ -96,7 +96,7 @@ void JabberAddAccountWidget::createGui()
 	layout->addRow(tr("Forgot Your Password?"), RemindPassword);
 
 	Identity = new IdentitiesComboBox(this);
-	connect(Identity, SIGNAL( identityChanged()), this, SLOT(dataChanged()));
+	connect(Identity, SIGNAL(identityChanged()), this, SLOT(dataChanged()));
 	layout->addRow(tr("Account Identity") + ":", Identity);
 
 	layout->addWidget(new QLabel(tr("<font size='-1'><i>Select or enter the identity that will be associated with this account.<i></font>"), this));
@@ -121,8 +121,10 @@ void JabberAddAccountWidget::createGui()
 void JabberAddAccountWidget::dataChanged()
 {
 	RemindPassword->setEnabled(!Username->text().isEmpty());
-	AddAccountButton->setEnabled(!Username->text().isEmpty() && !AccountPassword->text().isEmpty()
-				   && !Domain->currentText().isEmpty() && !Identity->currentIndex() != -1);
+	AddAccountButton->setEnabled(!Username->text().isEmpty()
+				     && !AccountPassword->text().isEmpty()
+				     && !Domain->currentText().isEmpty()
+				     && Identity->currentIdentity());
 }
 
 void JabberAddAccountWidget::apply()
@@ -134,6 +136,7 @@ void JabberAddAccountWidget::apply()
 	details->setState(StorableObject::StateNew);
 	details->setResource("Kadu");
 	details->setPriority(5);
+	jabberAccount.setAccountIdentity(Identity->currentIdentity());
 	jabberAccount.setDetails(details);
 	jabberAccount.setProtocolName("jabber");
 	jabberAccount.setId(Username->text() + "@" + Domain->currentText());
