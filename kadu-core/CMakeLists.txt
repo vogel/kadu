@@ -267,6 +267,7 @@ set (kadu_SRCS
 	status/description-manager.cpp
 	status/description-model.cpp
 	status/status.cpp
+	status/status-actions.cpp
 	status/status-changer.cpp
 	status/status-changer-manager.cpp
 	status/status-container-aware-object.cpp
@@ -516,6 +517,7 @@ set (kadu_MOC_SRCS
 	status/base-status-container.h
 	status/description-manager.h
 	status/description-model.h
+	status/status-actions.h
 	status/status-changer.h
 	status/status-changer-manager.h
 	status/status-container.h

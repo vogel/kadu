@@ -68,7 +68,20 @@ StatusMenu::~StatusMenu()
 
 void StatusMenu::clearActions()
 {
-	qDeleteAll(MenuActions);
+	while (!ChangeStatusActionGroup->actions().isEmpty())
+	{
+		QAction *action = ChangeStatusActionGroup->actions().first();
+		ChangeStatusActionGroup->removeAction(action);
+		Menu->removeAction(action);
+		action->deleteLater();
+	}
+
+	while (!MenuActions.isEmpty())
+	{
+		QAction *action = MenuActions.first();
+		Menu->removeAction(action);
+		action->deleteLater();
+	}
 
 	Menu->removeAction(ChangeDescription);
 	Menu->removeAction(ChangePrivateStatus);
@@ -125,7 +138,6 @@ void StatusMenu::createActions()
 			currentGroup = statusType->statusGroup();
 		}
 
-		MenuActions.append(action);
 		Menu->addAction(action);
 	}
 
