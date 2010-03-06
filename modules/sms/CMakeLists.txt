@@ -29,6 +29,14 @@ set (TRANSLATION_SOURCES
 set (CONFIGURATION_FILES
 	configuration/sms.ui)
 
+set (QT_MIN_VERSION "4.5.0")
+find_package (Qt4 REQUIRED)
+set(QT_USE_QTXML 1)
+set(QT_USE_QTNETWORK 1)
+set(QT_USE_QTWEBKIT 1)
+set(QT_USE_QTSCRIPT 1)
+include(${QT_USE_FILE})
+
 kadu_module (sms
 	MODULE_SOURCES ${SOURCES}
 	MODULE_MOC_SOURCES ${MOC_SOURCES}
@@ -37,3 +45,5 @@ kadu_module (sms
 	MODULE_BUILDDEF SMS_BUILD
 	MODULE_DEPENDENCIES history	
 )
+
+target_link_libraries (sms ${QT_LIBRARIES})
