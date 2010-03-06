@@ -96,12 +96,13 @@ public: //TODO 0.6.6: it is needed in Buddy::dummy()
 	virtual void store();
 	virtual void aboutToBeRemoved();
 
+	void setAccountIdentity(Identity accountIdentity);
 	void setProtocolName(QString protocolName);
 	void setId(const QString &id);
 
 	Contact accountContact();
 
-	KaduShared_Property(Identity, accountIdentity, AccountIdentity)
+	KaduShared_PropertyRead(Identity, accountIdentity, AccountIdentity)
 	KaduShared_PropertyRead(QString, protocolName, ProtocolName)
 	KaduShared_Property(Protocol *, protocolHandler, ProtocolHandler)
 	KaduShared_PropertyRead(QString, id, Id)

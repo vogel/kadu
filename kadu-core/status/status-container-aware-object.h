@@ -37,6 +37,9 @@ public:
 	static void notifyStatusContainerRegistered(StatusContainer *statusContainer);
 	static void notifyStatusContainerUnregistered(StatusContainer *statusContainer);
 
+	StatusContainerAwareObject() {}
+	virtual ~StatusContainerAwareObject() {}
+
 	void triggerAllStatusContainerRegistered();
 	void triggerAllStatusContainerUnregistered();
 

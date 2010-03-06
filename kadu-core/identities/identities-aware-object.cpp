@@ -17,35 +17,32 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef STATUS_BUTTON_H
-#define STATUS_BUTTON_H
+#include "identity-manager.h"
 
-#include <QtGui/QPushButton>
+#include "identities-aware-object.h"
 
-#include "configuration/configuration-aware-object.h"
-#include "status/status.h"
+KADU_AWARE_CLASS(IdentitiesAwareObject)
 
-class StatusContainer;
-class StatusMenu;
-
-class StatusButton : public QPushButton, private ConfigurationAwareObject
+void IdentitiesAwareObject::notifyIdentityAdded(Identity identity)
 {
-	Q_OBJECT
+	foreach (IdentitiesAwareObject *object, Objects)
+		object->identityAdded(identity);
+}
 
-	StatusContainer *MyStatusContainer;
+void IdentitiesAwareObject::notifyIdentityRemoved(Identity identity)
+{
+	foreach (IdentitiesAwareObject *object, Objects)
+		object->identityRemoved(identity);
+}
 
-	void createGui();
+void IdentitiesAwareObject::triggerAllIdentitiesAdded()
+{
+	foreach (Identity identity, IdentityManager::instance()->items())
+		identityAdded(identity);
+}
 
-private slots:
-	void statusChanged();
-
-protected:
-	virtual void configurationUpdated();
-
-public:
-	explicit StatusButton(StatusContainer *statusContainer, QWidget *parent = 0);
-	virtual ~StatusButton();
-
-};
-
-#endif // STATUS_BUTTON_H
+void IdentitiesAwareObject::triggerAllIdentitiesRemoved()
+{
+	foreach (Identity identity, IdentityManager::instance()->items())
+		identityRemoved(identity);
+}

@@ -30,6 +30,8 @@ class StorableObject;
 
 class KADUAPI BaseStatusContainer : public StatusContainer
 {
+	Q_OBJECT
+
 	StorableObject *MyStorableObject;
 
 protected:

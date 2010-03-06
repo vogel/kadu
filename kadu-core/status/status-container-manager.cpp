@@ -22,7 +22,9 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "configuration/configuration-file.h"
+#include "configuration/main-configuration.h"
 #include "core/core.h"
+#include "identities/identity-manager.h"
 #include "status/status-container-aware-object.h"
 #include "status/status-type-manager.h"
 #include "icons-manager.h"
@@ -39,27 +41,50 @@ KADUAPI StatusContainerManager * StatusContainerManager::instance()
 }
 
 StatusContainerManager::StatusContainerManager() :
-		StatusContainer(0)
+		StatusContainer(0), SelfInList(false), DefaultStatusContainer(0)
 {
 	configurationUpdated();
-	triggerAllAccountsRegistered();
+
+	if (MainConfiguration::instance()->simpleMode())
+		triggerAllIdentitiesAdded();
+	else
+		triggerAllAccountsRegistered();
+
+	connect(MainConfiguration::instance(), SIGNAL(simpleModeChanged()), this, SLOT(simpleModeChanged()));
 }
 
 StatusContainerManager::~StatusContainerManager()
 {
-	triggerAllAccountsUnregistered();
+	disconnect(MainConfiguration::instance(), SIGNAL(simpleModeChanged()), this, SLOT(simpleModeChanged()));
+
+	if (MainConfiguration::instance()->simpleMode())
+		triggerAllIdentitiesRemoved();
+	else
+		triggerAllAccountsUnregistered();
 }
 
 void StatusContainerManager::accountRegistered(Account account)
 {
-	if (!StatusContainers.contains(account.statusContainer()))
+	if (!MainConfiguration::instance()->simpleMode() && !StatusContainers.contains(account.statusContainer()))
 		registerStatusContainer(account.statusContainer());
 }
 
 void StatusContainerManager::accountUnregistered(Account account)
 {
-	if (StatusContainers.contains(account.statusContainer()))
+	if (!MainConfiguration::instance()->simpleMode() && StatusContainers.contains(account.statusContainer()))
 		unregisterStatusContainer(account.statusContainer());
+}
+
+void StatusContainerManager::identityAdded(Identity identity)
+{
+	if (MainConfiguration::instance()->simpleMode() && !StatusContainers.contains(identity))
+		registerStatusContainer(identity);
+}
+
+void StatusContainerManager::identityRemoved(Identity identity)
+{
+	if (MainConfiguration::instance()->simpleMode() && StatusContainers.contains(identity))
+		unregisterStatusContainer(identity);
 }
 
 void StatusContainerManager::configurationUpdated()
@@ -80,28 +105,100 @@ void StatusContainerManager::configurationUpdated()
 	DisconnectDescription = config_file.readEntry("General", "DisconnectDescription");
 }
 
+void StatusContainerManager::cleanStatusContainers()
+{
+	while (!StatusContainers.isEmpty())
+		unregisterStatusContainer(StatusContainers.first());
+}
+
+void StatusContainerManager::addAllAccounts()
+{
+	foreach (Account account, AccountManager::instance()->items())
+		registerStatusContainer(account);
+}
+
+void StatusContainerManager::addAllIdentities()
+{
+	foreach (Identity identity, IdentityManager::instance()->items())
+		registerStatusContainer(identity);
+}
+
+void StatusContainerManager::addSelfToList()
+{
+	if (SelfInList || !StatusContainers.isEmpty())
+		return;
+
+	registerStatusContainer(this);
+	SelfInList = true;
+}
+
+void StatusContainerManager::removeSelfFromList()
+{
+	if (!SelfInList)
+		return;
+
+	unregisterStatusContainer(this);
+	SelfInList = false;
+}
+
+void StatusContainerManager::setDefaultStatusContainer(StatusContainer *defaultStatusContainer)
+{
+	if (defaultStatusContainer == DefaultStatusContainer)
+		return;
+
+	if (DefaultStatusContainer)
+		disconnect(DefaultStatusContainer, SIGNAL(statusChanged()), this, SIGNAL(statusChanged()));
+
+	DefaultStatusContainer = defaultStatusContainer;
+
+	if (DefaultStatusContainer)
+		connect(DefaultStatusContainer, SIGNAL(statusChanged()), this, SIGNAL(statusChanged()));
+}
+
+void StatusContainerManager::simpleModeChanged()
+{
+	cleanStatusContainers();
+	if (MainConfiguration::instance()->simpleMode())
+		addAllIdentities();
+	else
+		addAllAccounts();
+}
+
 void StatusContainerManager::registerStatusContainer(StatusContainer *statusContainer)
 {
-	if (statusContainer == AccountManager::instance()->defaultAccount().statusContainer())
-		connect(statusContainer, SIGNAL(statusChanged()), this, SIGNAL(statusChanged()));
+	removeSelfFromList();
+
+	if (StatusContainers.isEmpty())
+		setDefaultStatusContainer(statusContainer);
 
 	emit statusContainerAboutToBeRegistered(statusContainer);
-	StatusContainers << statusContainer;
+	StatusContainers.append(statusContainer);
 	emit statusContainerRegistered(statusContainer);
 	StatusContainerAwareObject::notifyStatusContainerRegistered(statusContainer);
 
 	statusContainer->setDefaultStatus(StartupStatus, OfflineToInvisible, StartupDescription, StartupLastDescription);
+
+	emitStatusContainerUpdated();
 }
 
 void StatusContainerManager::unregisterStatusContainer(StatusContainer *statusContainer)
 {
-	if (statusContainer == AccountManager::instance()->defaultAccount().statusContainer() && !AccountManager::instance()->byIndex(1).isNull())
-		connect(AccountManager::instance()->byIndex(1).data(), SIGNAL(statusChanged()), this, SIGNAL(statusChanged()));
-
 	emit statusContainerAboutToBeUnregistered(statusContainer);
 	StatusContainers.removeAll(statusContainer);
 	emit statusContainerUnregistered(statusContainer);
 	StatusContainerAwareObject::notifyStatusContainerUnregistered(statusContainer);
+
+	addSelfToList();
+
+	if (statusContainer == DefaultStatusContainer)
+	{
+		if (StatusContainers.isEmpty())
+			DefaultStatusContainer = 0;
+		else
+			setDefaultStatusContainer(StatusContainers.first());
+	}
+
+	emitStatusContainerUpdated();
 }
 
 QString StatusContainerManager::statusContainerName()
@@ -117,22 +214,22 @@ void StatusContainerManager::setStatus(Status newStatus)
 
 Status StatusContainerManager::status()
 {
-	return AccountManager::instance()->defaultAccount().statusContainer()
-			? AccountManager::instance()->defaultAccount().statusContainer()->status()
+	return DefaultStatusContainer && this != DefaultStatusContainer
+			? DefaultStatusContainer->status()
 			: Status::null;
 }
 
 QString StatusContainerManager::statusName()
 {
-	return AccountManager::instance()->defaultAccount().statusContainer()
-			? AccountManager::instance()->defaultAccount().statusContainer()->statusName()
+	return DefaultStatusContainer && this != DefaultStatusContainer
+			? DefaultStatusContainer->statusName()
 			: tr("Offline");
 }
 
 QPixmap StatusContainerManager::statusPixmap()
 {
-	return AccountManager::instance()->defaultAccount().statusContainer()
-			? AccountManager::instance()->defaultAccount().statusContainer()->statusPixmap()
+	return DefaultStatusContainer && this != DefaultStatusContainer
+			? DefaultStatusContainer->statusPixmap()
 			: IconsManager::instance()->pixmapByPath("protocols/gadu-gadu/16x16/offline.png");
 }
 
@@ -143,24 +240,24 @@ QPixmap StatusContainerManager::statusPixmap(Status status)
 
 QPixmap StatusContainerManager::statusPixmap(const QString &statusType)
 {
-	return AccountManager::instance()->defaultAccount().statusContainer()
-			? AccountManager::instance()->defaultAccount().statusContainer()->statusPixmap(statusType)
+	return DefaultStatusContainer && this != DefaultStatusContainer
+			? DefaultStatusContainer->statusPixmap(statusType)
 			: QPixmap();
 // 			: IconsManager::instance()->loadPixmap(statusType);
 }
 
 QList<StatusType *> StatusContainerManager::supportedStatusTypes()
 {
-	return AccountManager::instance()->defaultAccount().statusContainer()
-			? AccountManager::instance()->defaultAccount().statusContainer()->supportedStatusTypes()
+	return DefaultStatusContainer && this != DefaultStatusContainer
+			? DefaultStatusContainer->supportedStatusTypes()
 			: QList<StatusType *>();
 // 			: StatusTypeManager::instance()->statusTypes();
 }
 
 int StatusContainerManager::maxDescriptionLength()
 {
-	return AccountManager::instance()->defaultAccount().statusContainer()
-			? AccountManager::instance()->defaultAccount().statusContainer()->maxDescriptionLength()
+	return DefaultStatusContainer && this != DefaultStatusContainer
+			? DefaultStatusContainer->maxDescriptionLength()
 			: -1;
 }
 

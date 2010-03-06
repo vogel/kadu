@@ -29,3 +29,11 @@ void ConfigurationAwareObject::notifyAll()
 	foreach (ConfigurationAwareObject *object, Objects)
 		object->configurationUpdated();
 }
+
+ConfigurationAwareObject::ConfigurationAwareObject()
+{
+}
+
+ConfigurationAwareObject::~ConfigurationAwareObject()
+{
+}

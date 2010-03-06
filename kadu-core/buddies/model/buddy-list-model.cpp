@@ -28,8 +28,8 @@
 
 #include "buddy-list-model.h"
 
-BuddyListModel::BuddyListModel(BuddyList list, QObject *parent)
-	: BuddiesModelBase(parent), List(list)
+BuddyListModel::BuddyListModel(BuddyList list, QObject *parent) :
+		BuddiesModelBase(parent), List(list)
 {
 	triggerAllAccountsRegistered();
 }

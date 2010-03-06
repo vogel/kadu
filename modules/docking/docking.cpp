@@ -319,21 +319,18 @@ void DockingManager::updateContextMenu()
     #endif
 
 	int statusContainersCount = StatusContainerManager::instance()->statusContainers().count();
-	StatusMenu *statusMenu;
 
 	if (statusContainersCount == 1)
 	{
-		statusMenu = new StatusMenu(StatusContainerManager::instance()->statusContainers()[0], DockMenu);
-		statusMenu->addToMenu(DockMenu);
+		new StatusMenu(StatusContainerManager::instance()->statusContainers()[0], DockMenu);
 	}
 	else
 	{
 		foreach (StatusContainer *container, StatusContainerManager::instance()->statusContainers())
 		{
-			statusMenu = new StatusMenu(container, DockMenu);
 			QMenu *menu = new QMenu(container->statusContainerName());
 			menu->setIcon(container->statusPixmap());
-			statusMenu->addToMenu(menu);
+			new StatusMenu(container, menu);
 			StatusContainerMenus[container] = DockMenu->addMenu(menu);
 			connect(container, SIGNAL(statusChanged()), this, SLOT(containerStatusChanged()));
 
@@ -341,8 +338,7 @@ void DockingManager::updateContextMenu()
 		if (statusContainersCount > 1)
 			containersSeparator = DockMenu->addSeparator();
 
-		statusMenu = new StatusMenu(StatusContainerManager::instance(), DockMenu);
-		statusMenu->addToMenu(DockMenu);
+		new StatusMenu(StatusContainerManager::instance(), DockMenu);
 	}
 
 	DockMenu->addAction(CloseKaduAction);
@@ -361,10 +357,9 @@ void DockingManager::statusContainerRegistered(StatusContainer *statusContainer)
 		updateContextMenu();
 	else
 	{
-		StatusMenu *statusMenu = new StatusMenu(statusContainer, DockMenu);
 		QMenu *menu = new QMenu(statusContainer->statusContainerName());
 		menu->setIcon(statusContainer->statusPixmap());
-		statusMenu->addToMenu(menu);
+		new StatusMenu(statusContainer, menu);
 		StatusContainerMenus[statusContainer] = DockMenu->insertMenu(containersSeparator, menu);
 		connect(statusContainer, SIGNAL(statusChanged()), this, SLOT(containerStatusChanged()));
 	}
@@ -412,4 +407,3 @@ void DockingManager::createDefaultConfiguration()
 DockingManager *docking_manager = NULL;
 
 /** @} */
-

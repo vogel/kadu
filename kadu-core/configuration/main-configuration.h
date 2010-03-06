@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,35 +17,39 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef STATUS_BUTTON_H
-#define STATUS_BUTTON_H
+#ifndef MAIN_CONFIGURATION_H
+#define MAIN_CONFIGURATION_H
 
-#include <QtGui/QPushButton>
+#include <QtCore/QObject>
 
 #include "configuration/configuration-aware-object.h"
-#include "status/status.h"
 
-class StatusContainer;
-class StatusMenu;
-
-class StatusButton : public QPushButton, private ConfigurationAwareObject
+class MainConfiguration : public QObject, private ConfigurationAwareObject
 {
 	Q_OBJECT
+	Q_DISABLE_COPY(MainConfiguration)
 
-	StatusContainer *MyStatusContainer;
+	static MainConfiguration * Instance;
 
-	void createGui();
+	bool SimpleMode;
 
-private slots:
-	void statusChanged();
+	MainConfiguration();
+	virtual ~MainConfiguration();
 
 protected:
 	virtual void configurationUpdated();
 
 public:
-	explicit StatusButton(StatusContainer *statusContainer, QWidget *parent = 0);
-	virtual ~StatusButton();
+	static MainConfiguration * instance();
+
+	static void createInstance();
+	static void destroyInstance();
+
+	bool simpleMode() { return SimpleMode; }
+
+signals:
+	void simpleModeChanged();
 
 };
 
-#endif // STATUS_BUTTON_H
+#endif // MAIN_CONFIGURATION_H

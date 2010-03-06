@@ -37,12 +37,14 @@ StatusButton::StatusButton(StatusContainer *statusContainer, QWidget *parent) :
 	connect(MyStatusContainer, SIGNAL(statusChanged()), this, SLOT(statusChanged()));
 }
 
+StatusButton::~StatusButton()
+{
+}
 
 void StatusButton::createGui()
 {
-	MyStatusMenu = new StatusMenu(MyStatusContainer, this);
 	QMenu *menu = new QMenu(this);
-	MyStatusMenu->addToMenu(menu);
+	new StatusMenu(MyStatusContainer, menu);
 
 	setMenu(menu);
 }

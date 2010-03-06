@@ -29,6 +29,7 @@ class Account;
 
 class KADUAPI IdentityShared : public BaseStatusContainer, public Shared
 {
+	Q_OBJECT
 	Q_DISABLE_COPY(IdentityShared)
 
 	QString Name;

@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,35 +17,29 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef STATUS_BUTTON_H
-#define STATUS_BUTTON_H
+#ifndef IDENTITIES_AWARE_OBJECT_H
+#define IDENTITIES_AWARE_OBJECT_H
 
-#include <QtGui/QPushButton>
+#include <QtCore/QList>
 
-#include "configuration/configuration-aware-object.h"
-#include "status/status.h"
+#include "aware-object.h"
 
-class StatusContainer;
-class StatusMenu;
+class Identity;
 
-class StatusButton : public QPushButton, private ConfigurationAwareObject
+class KADUAPI IdentitiesAwareObject : public AwareObject<IdentitiesAwareObject>
 {
-	Q_OBJECT
-
-	StatusContainer *MyStatusContainer;
-
-	void createGui();
-
-private slots:
-	void statusChanged();
 
 protected:
-	virtual void configurationUpdated();
+	virtual void identityAdded(Identity identity) = 0;
+	virtual void identityRemoved(Identity identity) = 0;
 
 public:
-	explicit StatusButton(StatusContainer *statusContainer, QWidget *parent = 0);
-	virtual ~StatusButton();
+	static void notifyIdentityAdded(Identity identity);
+	static void notifyIdentityRemoved(Identity identity);
+	
+	void triggerAllIdentitiesAdded();
+	void triggerAllIdentitiesRemoved();
 
 };
 
-#endif // STATUS_BUTTON_H
+#endif // IDENTITIES_AWARE_OBJECT_H

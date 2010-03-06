@@ -87,6 +87,7 @@ set (kadu_SRCS
 	configuration/configuration-contact-data-manager.cpp
 	configuration/configuration-file.cpp
 	configuration/configuration-manager.cpp
+	configuration/main-configuration.cpp
 	configuration/notifier-configuration-data-manager.cpp
 	configuration/xml-configuration-file.cpp
 
@@ -220,6 +221,7 @@ set (kadu_SRCS
 	gui/windows/open-chat-with/open-chat-with-runner-manager.cpp
 
 	identities/model/identity-model.cpp
+	identities/identities-aware-object.cpp
 	identities/identity.cpp
 	identities/identity-manager.cpp
 	identities/identity-shared.cpp
@@ -265,6 +267,7 @@ set (kadu_SRCS
 	status/description-manager.cpp
 	status/description-model.cpp
 	status/status.cpp
+	status/status-actions.cpp
 	status/status-changer.cpp
 	status/status-changer-manager.cpp
 	status/status-container-aware-object.cpp
@@ -380,6 +383,7 @@ set (kadu_MOC_SRCS
 	contacts/model/buddy-contact-model.h
 
 	configuration/configuration-window-data-manager.h
+	configuration/main-configuration.h
 	configuration/notifier-configuration-data-manager.h
 
 	core/core.h
@@ -478,6 +482,7 @@ set (kadu_MOC_SRCS
 
 	identities/model/identity-model.h
 	identities/identity-manager.h
+	identities/identity-shared.h
 
 	model/actions-proxy-model.h
 
@@ -509,8 +514,10 @@ set (kadu_MOC_SRCS
 
 	qt/long-validator.h
 
+	status/base-status-container.h
 	status/description-manager.h
 	status/description-model.h
+	status/status-actions.h
 	status/status-changer.h
 	status/status-changer-manager.h
 	status/status-container.h

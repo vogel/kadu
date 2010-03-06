@@ -85,11 +85,17 @@ void IdentityShared::aboutToBeRemoved()
 void IdentityShared::addAccount(Account account)
 {
 	Accounts.append(account);
+	connect(account, SIGNAL(statusChanged()), this, SIGNAL(statusChanged()));
+
+	emitStatusContainerUpdated();
 }
 
 void IdentityShared::removeAccount(Account account)
 {
 	Accounts.removeAll(account);
+	disconnect(account, SIGNAL(statusChanged()), this, SIGNAL(statusChanged()));
+
+	emitStatusContainerUpdated();
 }
 
 bool IdentityShared::hasAccount(Account account)
