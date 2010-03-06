@@ -310,10 +310,6 @@ void TabsManager::onTabChange(int index)
 
 	ChatWidget *chat = dynamic_cast<ChatWidget *>(tabdialog->widget(index));
 
-	// czy jest na liscie chatow z nowymi wiadomosciami
-	if (chat == tabdialog->currentWidget())
-		chatsWithNewMessages.removeOne(chat);
-
 	refreshTab(index, chat);
 
 	tabdialog->setWindowTitle(chat->chat().title());
