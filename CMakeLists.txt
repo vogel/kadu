@@ -149,6 +149,8 @@ if (NOT ${LIBGADU_VERSION_RC1} GREATER 0)
 	message (FATAL_ERROR "Kadu require at least libgadu ${LIBGADU_MIN_VERSION}-rc2")
 endif (NOT ${LIBGADU_VERSION_RC1} GREATER 0)
 
+add_definitions (-DGG_IGNORE_DEPRECATED)
+
 endif (MINGW)
 
 include_directories (${LIBGADU_INCLUDE_DIRS})
