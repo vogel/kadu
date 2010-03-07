@@ -508,6 +508,7 @@ void TabsManager::onTimer()
 					chat->markAllMessagesRead();
 					// a tutaj przywroc tytul�
 					tabdialog->setWindowTitle(chat->chat().title());
+					tabdialog->setTabIcon(i, chat->icon());
 					// wywal go z listy chatow z nowymi wiadomosciami
 					chatsWithNewMessages.removeOne(chat);
 				}
