@@ -17,37 +17,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SMS_SCRIPTS_MANAGER_H
-#define SMS_SCRIPTS_MANAGER_H
+#include <QtNetwork/QNetworkReply>
 
-#include <QtCore/QObject>
+#include "network-reply-wrapper.h"
 
-class QScriptEngine;
-
-class NetworkAccessManagerWrapper;
-
-class SmsScriptsManager : public QObject
+NetworkReplyWrapper::NetworkReplyWrapper(QNetworkReply *reply) :
+		QObject(reply), Reply(reply)
 {
-	Q_OBJECT
-	Q_DISABLE_COPY(SmsScriptsManager)
+	connect(Reply, SIGNAL(finished()), this, SIGNAL(finished()));
+}
 
-	static SmsScriptsManager *Instance;
+NetworkReplyWrapper::~NetworkReplyWrapper()
+{
+}
 
-	QScriptEngine *Engine;
-	NetworkAccessManagerWrapper *Network;
+bool NetworkReplyWrapper::ok()
+{
+	return Reply->error() == QNetworkReply::NoError;
+}
 
-	QList<QString> LoadedFiles;
-
-	SmsScriptsManager();
-	virtual ~SmsScriptsManager();
-
-public:
-	static SmsScriptsManager * instance();
-
-	void loadScript(const QString &fileName);
-
-	QScriptEngine * engine() { return Engine; }
-
-};
-
-#endif // SMS_SCRIPTS_MANAGER_H
+QString NetworkReplyWrapper::content()
+{
+	return QString::fromUtf8(Reply->readAll());
+}

@@ -15,6 +15,7 @@
 #include <QtCore/QProcess>
 #include <QtGui/QPushButton>
 #include <QtGui/QTextEdit>
+#include <QtScript/QScriptEngine>
 
 #include "configuration/configuration-file.h"
 #include "buddies/buddy-manager.h"
@@ -41,9 +42,15 @@
 SmsGatewayQuery::SmsGatewayQuery()
 {
 	SmsScriptsManager::instance()->loadScript(dataPath("kadu/modules/data/scripts/gateway.js"));
-	QString gateway = SmsScriptsManager::instance()->executeFunction("getGateway", "123456789");
+	QScriptEngine* engine = SmsScriptsManager::instance()->engine();
+	QScriptValue jsGatewayQueryObject = engine->evaluate("new GatewayQuery()");
+	QScriptValue jsGetGateway = jsGatewayQueryObject.property("getGateway");
 
-	printf("gateway: %s\n", qPrintable(gateway));
+	QScriptValueList arguments;
+	arguments.append("790001002");
+	arguments.append(engine->newQObject(this));
+
+	jsGetGateway.call(jsGatewayQueryObject, arguments);
 }
 
 SmsGatewayQuery::~SmsGatewayQuery()
@@ -81,6 +88,11 @@ void SmsGatewayQuery::queryFinished(bool error)
 	{
 		emit finished(false, "");
 	}
+}
+
+void SmsGatewayQuery::query2Finished(const QString &content)
+{
+	printf("content is: %s\n", qPrintable(content));
 }
 
 void SmsGatewayQuery::process(const QString& number)

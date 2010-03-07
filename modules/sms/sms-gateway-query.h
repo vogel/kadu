@@ -19,6 +19,7 @@ class SmsGatewayQuery : public QObject
 		~SmsGatewayQuery();
 	public slots:
 		void process(const QString& number);
+		void query2Finished(const QString &content);
 
 	signals:
 		void finished(bool success, const QString &provider);

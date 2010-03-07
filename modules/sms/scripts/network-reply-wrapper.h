@@ -17,37 +17,30 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SMS_SCRIPTS_MANAGER_H
-#define SMS_SCRIPTS_MANAGER_H
+#ifndef NETWORK_REPLY_WRAPPER_H
+#define NETWORK_REPLY_WRAPPER_H
 
 #include <QtCore/QObject>
 
-class QScriptEngine;
+class QNetworkReply;
 
-class NetworkAccessManagerWrapper;
-
-class SmsScriptsManager : public QObject
+class NetworkReplyWrapper : public QObject
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(SmsScriptsManager)
 
-	static SmsScriptsManager *Instance;
-
-	QScriptEngine *Engine;
-	NetworkAccessManagerWrapper *Network;
-
-	QList<QString> LoadedFiles;
-
-	SmsScriptsManager();
-	virtual ~SmsScriptsManager();
+	QNetworkReply *Reply;
 
 public:
-	static SmsScriptsManager * instance();
+	explicit NetworkReplyWrapper(QNetworkReply *reply);
+	virtual ~NetworkReplyWrapper();
 
-	void loadScript(const QString &fileName);
+public slots:
+	bool ok();
+	QString content();
 
-	QScriptEngine * engine() { return Engine; }
+signals:
+	void finished();
 
 };
 
-#endif // SMS_SCRIPTS_MANAGER_H
+#endif // NETWORK_REPLY_WRAPPER_H

@@ -17,37 +17,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SMS_SCRIPTS_MANAGER_H
-#define SMS_SCRIPTS_MANAGER_H
+#include <QtCore/QUrl>
+#include <QtNetwork/QNetworkReply>
+#include <QtNetwork/QNetworkRequest>
+#include <QtScript/QScriptEngine>
 
-#include <QtCore/QObject>
+#include "scripts/network-reply-wrapper.h"
 
-class QScriptEngine;
+#include "network-access-manager-wrapper.h"
 
-class NetworkAccessManagerWrapper;
-
-class SmsScriptsManager : public QObject
+NetworkAccessManagerWrapper::NetworkAccessManagerWrapper(QScriptEngine *engine, QObject *parent) :
+	QNetworkAccessManager(parent), Engine(engine)
 {
-	Q_OBJECT
-	Q_DISABLE_COPY(SmsScriptsManager)
+}
 
-	static SmsScriptsManager *Instance;
+NetworkAccessManagerWrapper::~NetworkAccessManagerWrapper()
+{
+}
 
-	QScriptEngine *Engine;
-	NetworkAccessManagerWrapper *Network;
-
-	QList<QString> LoadedFiles;
-
-	SmsScriptsManager();
-	virtual ~SmsScriptsManager();
-
-public:
-	static SmsScriptsManager * instance();
-
-	void loadScript(const QString &fileName);
-
-	QScriptEngine * engine() { return Engine; }
-
-};
-
-#endif // SMS_SCRIPTS_MANAGER_H
+QScriptValue NetworkAccessManagerWrapper::get(const QString& url)
+{
+	return Engine->newQObject(new NetworkReplyWrapper(QNetworkAccessManager::get(QNetworkRequest(url))));
+}

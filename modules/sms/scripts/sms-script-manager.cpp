@@ -22,8 +22,9 @@
 
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
-#include <QtNetwork/QNetworkAccessManager>
 #include <QtScript/QScriptEngine>
+
+#include "scripts/network-access-manager-wrapper.h"
 
 #include "sms-script-manager.h"
 
@@ -39,8 +40,8 @@ SmsScriptsManager * SmsScriptsManager::instance()
 
 SmsScriptsManager::SmsScriptsManager()
 {
-	Network = new QNetworkAccessManager(this);
 	Engine = new QScriptEngine(this);
+	Network = new NetworkAccessManagerWrapper(Engine, this);
 
 	QScriptValue scriptNetwork = Engine->newQObject(Network);
 
@@ -72,9 +73,4 @@ void SmsScriptsManager::loadScript(const QString &fileName)
 		return;
 
 	Engine->evaluate(content);
-}
-
-QString SmsScriptsManager::executeFunction(const QString &name, const QString &arg)
-{
-	return Engine->evaluate(QString("%1('%2')").arg(name).arg(arg)).toString();
 }

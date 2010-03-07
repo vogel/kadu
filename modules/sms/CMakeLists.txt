@@ -1,6 +1,8 @@
 set (SOURCES
 	gui/windows/sms-image-dialog.cpp
 	gui/windows/sms-dialog.cpp
+	scripts/network-access-manager-wrapper.cpp
+	scripts/network-reply-wrapper.cpp
 	scripts/sms-script-manager.cpp
 
 	mobile-number-manager.cpp
@@ -14,6 +16,8 @@ set (SOURCES
 set (MOC_SOURCES
 	gui/windows/sms-image-dialog.h
 	gui/windows/sms-dialog.h
+	scripts/network-access-manager-wrapper.h
+	scripts/network-reply-wrapper.h
 	scripts/sms-script-manager.h
 
 	sms.h

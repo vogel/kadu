@@ -54,6 +54,7 @@ SmsSender::~SmsSender()
 	{
 		disconnect(CurrentGateway, SIGNAL(finished(bool)), this, SLOT(onFinished(bool)));
 		delete CurrentGateway;
+		CurrentGateway = 0;
 	}
 	kdebugf2();
 }
@@ -133,6 +134,9 @@ void SmsSender::gatewayQueryDone(bool success, const QString &provider)
 
 void SmsSender::gatewaySelected()
 {
-	connect(CurrentGateway, SIGNAL(finished(bool)), this, SLOT(onFinished(bool)));
-	CurrentGateway->send(Number, Message, Contact, Signature); 
+	if (CurrentGateway)
+	{
+		connect(CurrentGateway, SIGNAL(finished(bool)), this, SLOT(onFinished(bool)));
+		CurrentGateway->send(Number, Message, Contact, Signature);
+	}
 }
