@@ -7,7 +7,6 @@ GatewayQuery.prototype = {
 			return;
 		}
 
-		var internationalPhoneNumber = "48" + phoneNumber;
 		var gatewayCheckerUrl = "http://is.eranet.pl/updir/check.cgi?t=" + phoneNumber;
 
 		this.reply = network.get(gatewayCheckerUrl);
@@ -22,17 +21,26 @@ GatewayQuery.prototype = {
 		}
 
 		var content = this.reply.content();
-		var pattern = new RegExp("260 ([0-9]{3})");
-		this.callbackObject.query2Finished(pattern);
-		var match = patter.exec(content);
-		this.callbackObject.query2Finished(match);
+		var pattern = new RegExp("260 ([0-9]{2})");
+		var match = pattern.exec(content);
 
 		if (null == match) {
 			this.callbackObject.query2Finished("");
 			return;
 		}
 
-		this.callbackObject.query2Finished(match[1]);
+		this.callbackObject.query2Finished(this.gatewayFromNumber(match[1]));
+	},
+
+	gatewayFromNumber: function(number) {
+		switch (number) {
+			case "01": return "plus";
+			case "02": return "era";
+			case "03": return "oragne";
+			case "04": return "play";
+		}
+
+		return "";
 	}
 };
 
