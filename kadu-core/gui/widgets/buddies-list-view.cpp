@@ -36,6 +36,7 @@
 #include "buddies/buddy-set.h"
 #include "buddies/model/buddies-model-proxy.h"
 #include "chat/chat-manager.h"
+#include "configuration/configuration-file.h"
 #include "configuration/main-configuration.h"
 #include "contacts/filter/contact-no-unloaded-account-filter.h"
 #include "gui/actions/action.h"
@@ -391,7 +392,7 @@ void BuddiesListView::selectionChanged(const QItemSelection &selected, const QIt
 
 void BuddiesListView::simpleModeChanged()
 {
-	if (MainConfiguration::instance()->simpleMode())
+	if (MainConfiguration::instance()->simpleMode() && !config_file.readBoolEntry("General", "ExpandingInSimpleMode", false))
 	{
 		collapseAll();
 		setItemsExpandable(false);
