@@ -146,6 +146,8 @@ signals:
 	**/
 	void serverDisconnected();
 
+	void serverDisconnectedAck();
+
 	void error(GaduError);
 	void imageReceived(UinType, quint32, quint32, const QString &filename, const char *data);
 	void imageRequestReceived(UinType, quint32, quint32);

@@ -534,6 +534,10 @@ void GaduSocketNotifiers::socketEvent()
 			emit serverDisconnected();
 			break;
 
+		case GG_EVENT_DISCONNECT_ACK:
+			emit serverDisconnectedAck();
+			break;
+
 		case GG_EVENT_NONE:
 			kdebugm(KDEBUG_NETWORK, "GG_EVENT_NONE\n");
 			break;

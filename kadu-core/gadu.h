@@ -466,6 +466,8 @@ private slots:
 	**/
 	void disconnectedSlot();
 
+	void disconnectAckedSlot();
+
 	/**
 		Slot wywo�ywany po zerwaniu po��czenia przez serwer. Wywo�uje disconnectedSlot(),
 		oraz dodatkowo zmienia NextStatus.

@@ -450,6 +450,7 @@ GaduProtocol::GaduProtocol(const QString &id, QObject *parent)
 	connect(SocketNotifiers, SIGNAL(dccConnectionReceived(const UserListElement&)),
 		this, SIGNAL(dccConnectionReceived(const UserListElement&)));
 	connect(SocketNotifiers, SIGNAL(serverDisconnected()), this, SLOT(socketDisconnectedSlot()));
+	connect(SocketNotifiers, SIGNAL(serverDisconnectedAck()), this, SLOT(disconnectAckedSlot()));
 	connect(SocketNotifiers, SIGNAL(error(GaduError)), this, SLOT(errorSlot(GaduError)));
 	connect(SocketNotifiers, SIGNAL(imageReceived(UinType, quint32 , quint32 , const QString &, const char *)),
 		this, SLOT(imageReceived(UinType, quint32 , quint32 , const QString &, const char *)));
@@ -627,9 +628,6 @@ void GaduProtocol::iWantGoOffline(const QString &desc)
 		gg_change_status_descr(Sess, GG_STATUS_NOT_AVAIL_DESCR, desc.toUtf8());
 	else
 		gg_change_status(Sess, GG_STATUS_NOT_AVAIL);
-
-	CurrentStatus->setStatus(*NextStatus);
-	disconnectedSlot();
 
 	kdebugf2();
 }
@@ -880,6 +878,15 @@ void GaduProtocol::connectedSlot()
 	*/
 
 	kdebugf2();
+}
+
+void GaduProtocol::disconnectAckedSlot()
+{
+	// change internal status
+	CurrentStatus->setStatus(*NextStatus);
+
+	// go to usual disconnect slot
+	disconnectedSlot();
 }
 
 void GaduProtocol::disconnectedSlot()
