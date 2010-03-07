@@ -39,7 +39,23 @@
 
 #include "sms-gateway-query.h"
 
-SmsGatewayQuery::SmsGatewayQuery()
+SmsGatewayQuery::SmsGatewayQuery(QObject *parent) :
+		QObject(parent)
+{
+}
+
+SmsGatewayQuery::~SmsGatewayQuery()
+{
+}
+
+void SmsGatewayQuery::queryFinished(const QString &provider)
+{
+	emit finished(provider);
+
+	deleteLater();
+}
+
+void SmsGatewayQuery::process(const QString &number)
 {
 	SmsScriptsManager::instance()->loadScript(dataPath("kadu/modules/data/scripts/gateway.js"));
 	QScriptEngine* engine = SmsScriptsManager::instance()->engine();
@@ -47,63 +63,9 @@ SmsGatewayQuery::SmsGatewayQuery()
 	QScriptValue jsGetGateway = jsGatewayQueryObject.property("getGateway");
 
 	QScriptValueList arguments;
-	arguments.append("790001002");
+	arguments.append(number);
 	arguments.append(engine->newQObject(this));
 
 	jsGetGateway.call(jsGatewayQueryObject, arguments);
-}
-
-SmsGatewayQuery::~SmsGatewayQuery()
-{
-	kdebugf();
-	emit finished(false, "");
-	if (Query)
-	{
-		disconnect(Query, SIGNAL(done(bool)), this, SLOT(queryFinished(bool)));
-		delete Query;
-	}
-	delete QueryBuffer;
-	kdebugf2();
-}
-
-void SmsGatewayQuery::queryFinished(bool error)
-{
-	QString data = QueryBuffer->data();
-	if(!error)
-	{
-		QString provider;
-		
-		if(data.contains("260 01", Qt::CaseInsensitive))
-			provider = "plus";
-		else if(data.contains("260 02", Qt::CaseInsensitive))
-			provider = "era";
-		else if(data.contains("260 03", Qt::CaseInsensitive))
-			provider = "orange";
-		else if(data.contains("260 06", Qt::CaseInsensitive))
-			provider = "play";
-		
-		emit finished(true, provider);
-	}
-	else
-	{
-		emit finished(false, "");
-	}
-}
-
-void SmsGatewayQuery::query2Finished(const QString &content)
-{
-	printf("content is: %s\n", qPrintable(content));
-}
-
-void SmsGatewayQuery::process(const QString& number)
-{
-	kdebugf();
-	
-	Query = new QHttp("is.eranet.pl", 80, this);
-	QueryBuffer = new QBuffer(this);
-	connect(Query, SIGNAL(done(bool)), this, SLOT(queryFinished(bool)));
-	Query->get("/updir/check.cgi?t=48" + number, QueryBuffer);
-	
-	kdebugf2();
 }
 

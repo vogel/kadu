@@ -43,7 +43,7 @@ class SmsSender : public QObject
 
 	public slots:
 		void send(const QString& number, const QString& message, const QString& contact, const QString& signature, bool autoSelectProvider = true, QString provider = QString::null);
-		void gatewayQueryDone(bool success, const QString &provider);
+		void gatewayQueryDone(const QString &provider);
 	
 	signals:
 		void finished(bool success);

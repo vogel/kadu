@@ -3,7 +3,7 @@ GatewayQuery.prototype = {
 		this.callbackObject = callbackObject;
 
 		if (!network) {
-			this.callbackObject.query2Finished("");
+			this.result("");
 			return;
 		}
 
@@ -14,9 +14,8 @@ GatewayQuery.prototype = {
 	},
 
 	replyFinished: function() {
-		this.callbackObject.query2Finished("reply finished");
 		if (!this.reply.ok()) {
-			this.callbackObject.query2Finished("");
+			this.result("");
 			return;
 		}
 
@@ -25,11 +24,15 @@ GatewayQuery.prototype = {
 		var match = pattern.exec(content);
 
 		if (null == match) {
-			this.callbackObject.query2Finished("");
+			this.result("");
 			return;
 		}
 
-		this.callbackObject.query2Finished(this.gatewayFromNumber(match[1]));
+		this.result(this.gatewayFromNumber(match[1]));
+	},
+
+	result: function(gateway) {
+		this.callbackObject.queryFinished(gateway);
 	},
 
 	gatewayFromNumber: function(number) {
@@ -37,7 +40,7 @@ GatewayQuery.prototype = {
 			case "01": return "plus";
 			case "02": return "era";
 			case "03": return "oragne";
-			case "04": return "play";
+			case "06": return "play";
 		}
 
 		return "";

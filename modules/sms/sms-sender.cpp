@@ -112,13 +112,13 @@ void SmsSender::send(const QString& number,const QString& message, const QString
 void SmsSender::findGatewayForNumber(const QString& number)
 {
 	SmsGatewayQuery *query = new SmsGatewayQuery();
-	connect(query, SIGNAL(finished(bool, const QString &)), this, SLOT(gatewayQueryDone(bool, const QString &)));
+	connect(query, SIGNAL(finished(const QString &)), this, SLOT(gatewayQueryDone(const QString &)));
 	query->process(number);
 }
 
-void SmsSender::gatewayQueryDone(bool success, const QString &provider)
+void SmsSender::gatewayQueryDone(const QString &provider)
 {
-	if (success)
+	if (!provider.isEmpty())
 	{
 		CurrentGateway = SmsGatewayManager::instance()->gateways().take(provider);
 		gatewaySelected();
