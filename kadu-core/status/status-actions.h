@@ -58,8 +58,8 @@ public:
 
 signals:
 	void statusActionTriggered(QAction *);
-	void changeDescriptionActionTriggered(QAction *);
-	void changePrivateStatusActionTriggered(QAction *);
+	void changeDescriptionActionTriggered(bool);
+	void changePrivateStatusActionTriggered(bool);
 
 };
 
