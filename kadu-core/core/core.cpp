@@ -409,8 +409,6 @@ void Core::accountUnregistered(Account account)
 
 void Core::configurationUpdated()
 {
-	QApplication::setStyle(config_file.readEntry("Look", "QtStyle"));
-
 #ifdef Q_OS_WIN
 	QSettings settings("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run",
 		       QSettings::NativeFormat);
