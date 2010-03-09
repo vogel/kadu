@@ -47,6 +47,7 @@ set(QT_USE_QTXML 1)
 set(QT_USE_QTNETWORK 1)
 set(QT_USE_QTWEBKIT 1)
 set(QT_USE_QTSCRIPT 1)
+set(QT_USE_QTSCRIPTTOOLS 1)
 include(${QT_USE_FILE})
 
 kadu_module (sms
@@ -59,4 +60,4 @@ kadu_module (sms
 	MODULE_DEPENDENCIES history	
 )
 
-target_link_libraries (sms ${QT_LIBRARIES})
+target_link_libraries (sms ${QT_LIBRARIES} ${QT_QTSCRIPTTOOLS_LIBRARY})

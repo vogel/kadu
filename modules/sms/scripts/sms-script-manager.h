@@ -41,6 +41,8 @@ class SmsScriptsManager : public QObject
 	SmsScriptsManager();
 	virtual ~SmsScriptsManager();
 
+	void init();
+
 public:
 	static SmsScriptsManager * instance();
 

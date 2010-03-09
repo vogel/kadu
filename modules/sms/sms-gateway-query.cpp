@@ -57,7 +57,6 @@ void SmsGatewayQuery::queryFinished(const QString &provider)
 
 void SmsGatewayQuery::process(const QString &number)
 {
-	SmsScriptsManager::instance()->loadScript(dataPath("kadu/modules/data/scripts/gateway.js"));
 	QScriptEngine* engine = SmsScriptsManager::instance()->engine();
 	QScriptValue jsGatewayQueryObject = engine->evaluate("new GatewayQuery()");
 	QScriptValue jsGetGateway = jsGatewayQueryObject.property("getGateway");

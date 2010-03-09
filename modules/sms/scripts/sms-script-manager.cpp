@@ -20,10 +20,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
+#include <QtGui/QMainWindow>
 #include <QtScript/QScriptEngine>
+#include <QtScriptTools/QScriptEngineDebugger>
 
+#include "misc/path-conversion.h"
+		 
 #include "scripts/network-access-manager-wrapper.h"
 
 #include "sms-script-manager.h"
@@ -33,7 +38,10 @@ SmsScriptsManager * SmsScriptsManager::Instance = 0;
 SmsScriptsManager * SmsScriptsManager::instance()
 {
 	if (!Instance)
+	{
 		Instance = new SmsScriptsManager();
+		Instance->init();
+	}
 
 	return Instance;
 }
@@ -50,6 +58,30 @@ SmsScriptsManager::SmsScriptsManager()
 
 SmsScriptsManager::~SmsScriptsManager()
 {
+}
+
+void SmsScriptsManager::init()
+{
+	loadScript(dataPath("kadu/modules/data/scripts/gateway.js"));
+
+	QScriptEngineDebugger* debuger = new QScriptEngineDebugger(this);
+	debuger->attachTo(Engine);
+	debuger->standardWindow()->show();
+
+	QDir scriptDirectory(dataPath("kadu/modules/data/scripts/"));
+	if (scriptDirectory.exists())
+	{
+		printf("sd exists\n");
+		QStringList filters;
+		filters.append("gateway-*.js");
+
+		QFileInfoList gateways = scriptDirectory.entryInfoList(filters);
+		foreach (QFileInfo gatewayFile, gateways)
+		{
+			printf("found file: %s\n", qPrintable(gatewayFile.filePath()));
+			loadScript(gatewayFile.filePath());
+		}
+	}
 }
 
 void SmsScriptsManager::loadScript(const QString &fileName)

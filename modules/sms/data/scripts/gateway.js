@@ -1,3 +1,20 @@
+GatewayManager.prototype = {
+	addItem: function(gateway) {
+		this.items[gateway.id()] = gateway;
+	},
+
+	byId: function(gatewayId) {
+		return this.items[gatewayId];
+	}
+};
+
+function GatewayManager() {
+	this.items = new Object();
+	return this;
+}
+
+gatewayManager = new GatewayManager();
+
 GatewayQuery.prototype = {
 	getGateway: function(phoneNumber, callbackObject) {
 		this.callbackObject = callbackObject;
@@ -28,22 +45,20 @@ GatewayQuery.prototype = {
 			return;
 		}
 
-		this.result(this.gatewayFromNumber(match[1]));
+		this.result(this.gatewayFromId(match[1]));
 	},
 
 	result: function(gateway) {
 		this.callbackObject.queryFinished(gateway);
 	},
 
-	gatewayFromNumber: function(number) {
-		switch (number) {
-			case "01": return "plus";
-			case "02": return "era";
-			case "03": return "oragne";
-			case "06": return "play";
+	gatewayFromId: function(id) {
+		var gateway = gatewayManager.byId(id);
+		if (gateway) {
+			return gateway.name();
+		} else {
+			return "";
 		}
-
-		return "";
 	}
 };
 
