@@ -40,6 +40,8 @@
 #include "mobile-number-manager.h"
 #include "sms-gateway-manager.h"
 #include "sms-gateway-query.h"
+#include <QScriptEngine>
+#include "scripts/sms-script-manager.h"
 
 SmsSender::SmsSender(QObject* parent)
 	: QObject(parent), CurrentGateway(0)
@@ -120,6 +122,8 @@ void SmsSender::gatewayQueryDone(const QString &provider)
 {
 	if (!provider.isEmpty())
 	{
+		sendJavaScriptSms(provider);
+
 		CurrentGateway = SmsGatewayManager::instance()->gateways().take(provider);
 		gatewaySelected();
 	}
@@ -139,4 +143,32 @@ void SmsSender::gatewaySelected()
 		connect(CurrentGateway, SIGNAL(finished(bool)), this, SLOT(onFinished(bool)));
 		CurrentGateway->send(Number, Message, Contact, Signature);
 	}
+}
+
+void SmsSender::sendJavaScriptSms(const QString& gatewayId)
+{
+	QScriptEngine* engine = SmsScriptsManager::instance()->engine();
+
+	QScriptValue jsGatewayManagerObject = engine->evaluate("gatewayManager");
+	QScriptValue jsSendSms = jsGatewayManagerObject.property("sendSms");
+
+	QScriptValueList arguments;
+	arguments.append(gatewayId);
+	arguments.append(Number);
+	arguments.append(Contact);
+	arguments.append(Signature);
+	arguments.append(Message);
+	arguments.append(engine->newQObject(this));
+
+	jsSendSms.call(jsGatewayManagerObject, arguments);
+}
+
+void SmsSender::result(const QString &result)
+{
+	printf("result is: %s\n", qPrintable(result));
+}
+
+void SmsSender::failure()
+{
+	printf("failure...\n");
 }

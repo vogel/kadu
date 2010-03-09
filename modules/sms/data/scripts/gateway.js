@@ -5,7 +5,15 @@ GatewayManager.prototype = {
 
 	byId: function(gatewayId) {
 		return this.items[gatewayId];
-	}
+	},
+
+	sendSms: function(gatewayId, receipient, sender, signature, content, callbackObject) {
+		if (this.items[gatewayId]) {
+			this.items[gatewayId].sendSms(receipient, sender, signature, content, callbackObject);
+		} else {
+			callbackObject.failure();
+		}
+	},
 };
 
 function GatewayManager() {
@@ -45,7 +53,7 @@ GatewayQuery.prototype = {
 			return;
 		}
 
-		this.result(this.gatewayFromId(match[1]));
+		this.result(match[1]);
 	},
 
 	result: function(gateway) {

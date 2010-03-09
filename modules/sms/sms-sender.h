@@ -30,6 +30,8 @@ class SmsSender : public QObject
 		
 		void gatewaySelected();
 
+		void sendJavaScriptSms(const QString &gatewayId);
+
 	private slots:
 		void onFinished(bool success);
 
@@ -44,6 +46,9 @@ class SmsSender : public QObject
 	public slots:
 		void send(const QString& number, const QString& message, const QString& contact, const QString& signature, bool autoSelectProvider = true, QString provider = QString::null);
 		void gatewayQueryDone(const QString &provider);
+
+		void result(const QString &result);
+		void failure();
 	
 	signals:
 		void finished(bool success);
