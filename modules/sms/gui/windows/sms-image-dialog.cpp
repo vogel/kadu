@@ -15,14 +15,16 @@
 #include <QtCore/QProcess>
 #include <QtGui/QPushButton>
 
-#include "gui/widgets/image-widget.h"
-
 #include "sms-image-dialog.h"
 
 SmsImageDialog::SmsImageDialog(QWidget* parent, const QByteArray& image)
 	: QDialog(parent), code_edit(0)
 {
-	ImageWidget *image_widget = new ImageWidget(image, this);
+	QLabel *image_widget = new QLabel(this);
+	QPixmap pixmap;
+	pixmap.loadFromData(image);
+	image_widget->setPixmap(pixmap);
+
 	QLabel* label = new QLabel(tr("Enter text from the picture:"), this);
 	code_edit = new QLineEdit(this);
 

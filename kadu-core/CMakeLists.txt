@@ -150,7 +150,6 @@ set (kadu_SRCS
 	gui/widgets/group-tab-bar.cpp
 	gui/widgets/groups-combo-box.cpp
 	gui/widgets/identities-combo-box.cpp
-	gui/widgets/image-widget.cpp
 	gui/widgets/kadu-text-browser.cpp
 	gui/widgets/modal-configuration-widget.cpp
 	gui/widgets/path-list-edit.cpp
