@@ -299,7 +299,7 @@ void SmsDialog::onSmsSenderFinished(bool success)
 		if (c_saveInHistory->isChecked())
 			History::instance()->appendSms(recipient->text(), body->toPlainText());
 
-		MobileNumberManager::instance()->registerNumber(recipient->text(), Sender.currentGateway()->name());
+// 		MobileNumberManager::instance()->registerNumber(recipient->text(), Sender.currentGateway()->name());
 
 		body->clear();
 		e_contact->clear();

@@ -7,12 +7,13 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtCore/QProcess>
 #include <QtGui/QCheckBox>
 #include <QtGui/QComboBox>
 #include <QtGui/QGridLayout>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QListWidget>
-#include <QtCore/QProcess>
+#include <QtGui/QMessageBox>
 #include <QtGui/QPushButton>
 #include <QtGui/QTextEdit>
 
@@ -162,12 +163,13 @@ void SmsSender::sendJavaScriptSms(const QString& gatewayId)
 	jsSendSms.call(jsGatewayManagerObject, arguments);
 }
 
-void SmsSender::result(const QString &result)
+void SmsSender::result()
 {
-	printf("result is: %s\n", qPrintable(result));
+	emit finished(true);
 }
 
-void SmsSender::failure()
+void SmsSender::failure(const QString &errorMessage)
 {
-	printf("failure...\n");
+	QMessageBox::critical(0, "SMS", errorMessage);
+	emit finished(false);
 }

@@ -75,16 +75,12 @@ void SmsScriptsManager::init()
 	QDir scriptDirectory(dataPath("kadu/modules/data/scripts/"));
 	if (scriptDirectory.exists())
 	{
-		printf("sd exists\n");
 		QStringList filters;
 		filters.append("gateway-*.js");
 
 		QFileInfoList gateways = scriptDirectory.entryInfoList(filters);
 		foreach (QFileInfo gatewayFile, gateways)
-		{
-			printf("found file: %s\n", qPrintable(gatewayFile.filePath()));
 			loadScript(gatewayFile.filePath());
-		}
 	}
 }
 

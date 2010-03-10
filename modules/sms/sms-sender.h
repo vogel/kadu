@@ -47,8 +47,8 @@ class SmsSender : public QObject
 		void send(const QString& number, const QString& message, const QString& contact, const QString& signature, bool autoSelectProvider = true, QString provider = QString::null);
 		void gatewayQueryDone(const QString &provider);
 
-		void result(const QString &result);
-		void failure();
+		void result();
+		void failure(const QString &errorMessage);
 	
 	signals:
 		void finished(bool success);

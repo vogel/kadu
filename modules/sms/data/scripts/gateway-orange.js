@@ -21,12 +21,12 @@ gatewayManager.addItem(new GatewayOrange());
 
 GatewaySmsSender.prototype = {
 
-	failure: function() {
-		this.callbackObject.failure();
+	failure: function(errorMessage) {
+		this.callbackObject.failure(errorMessage);
 	},
 
-	result: function(result) {
-		this.callbackObject.result(result);
+	finished: function() {
+		this.callbackObject.result();
 	},
 
 	sendSms: function(recipient, sender, signature, content, callbackObject) {
@@ -37,7 +37,7 @@ GatewaySmsSender.prototype = {
 		this.callbackObject = callbackObject;
 
 		if (!network) {
-			this.failure();
+			this.failure("Network not available");
 			return;
 		}
 
@@ -49,7 +49,7 @@ GatewaySmsSender.prototype = {
 
 	formReceived: function() {
 		if (!this.reply.ok()) {
-			this.failure();
+			this.failure("Cannot fetch token image");
 			return;
 		}
 
@@ -58,7 +58,7 @@ GatewaySmsSender.prototype = {
 		var match = tokenPattern.exec(content);
 
 		if (null == match) {
-			this.failure();
+			this.failure("Cannot fetch token image");
 			return;
 		}
 
@@ -86,7 +86,30 @@ GatewaySmsSender.prototype = {
 		postData += "&respInfo=";
 		postData += "1";
 
-		network.post(url, postData);
+		this.reply = network.post(url, postData);
+		this.reply.finished.connect(this, this.smsSent);
+	},
+
+	smsSent: function() {
+		if (!this.reply.ok()) {
+			this.failure("Network error");
+			return;
+		}
+
+		var content = this.reply.content();
+		if (content.indexOf("wyczerpany") >= 0) {
+			this.failure("You exceeded your daily limit");
+		} else if (content.indexOf("Podano błędne hasło") >= 0) {
+			this.failure("Text from the picture is incorrect");
+		} else if (content.indexOf("Użytkownik nie ma aktywnej usługi") >= 0) {
+			this.failure("The receiver has to enable SMS STANDARD service");
+		} else if (content.indexOf("Twój SMS został wysłany") >= 0) {
+			this.finished();
+		} else if (content.indexOf("Wiadomość została pomyślnie wysłana") >= 0) {
+			this.finished();
+		} else {
+			this.failure("Provider gateway results page looks strange. SMS was probably NOT sent.");
+		}
 	}
 
 };

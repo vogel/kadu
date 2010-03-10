@@ -20,7 +20,7 @@
 #include "gui/windows/sms-image-dialog.h"
 
 #include "sms-token-reader.h"
-#include <stdio.h>
+
 SmsTokenReader::SmsTokenReader(QObject *parent) :
 		QObject(parent)
 {
@@ -32,7 +32,6 @@ SmsTokenReader::~SmsTokenReader()
 
 void SmsTokenReader::readToken(const QString &tokenImageUrl, QScriptValue callbackObject, QScriptValue callbackMethod)
 {
-	printf("Read token: %s\n", qPrintable(tokenImageUrl));
 	SmsImageDialog *smsImageDialog = new SmsImageDialog(tokenImageUrl, callbackObject, callbackMethod, 0);
 	smsImageDialog->exec();
 }
