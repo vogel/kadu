@@ -426,10 +426,20 @@ void BuddiesListView::updateBackground()
 	style.append("QTreeView::branch:has-siblings:!adjoins-item { border-image: none; image: none }");
 	style.append("QTreeView::branch:has-siblings:adjoins-item { border-image: none; image: none }");
 	style.append("QTreeView::branch:has-childres:!has-siblings:adjoins-item { border-image: none; image: none }");
-	style.append("QTreeView::branch:has-children:!has-siblings:closed, QTreeView::branch:closed:has-children:has-siblings "
+	if (config_file.readBoolEntry("Look", "AlignUserboxIconsTop"))
+	{
+		style.append("QTreeView::branch:has-children:!has-siblings:closed, QTreeView::branch:closed:has-children:has-siblings "
+		     "{ border-image: none; image: url(" + IconsManager::instance()->iconPath("kadu_icons/stylesheet-branch-closed.png") + "); margin-top: 4px; image-position: top }");
+		style.append("QTreeView::branch:open:has-children:!has-siblings, QTreeView::branch:open:has-children:has-siblings "
+			"{ border-image: none; image: url(" + IconsManager::instance()->iconPath("kadu_icons/stylesheet-branch-open.png") + "); image-position: top; margin-top: 8px }");
+	}
+	else
+	{
+ 		style.append("QTreeView::branch:has-children:!has-siblings:closed, QTreeView::branch:closed:has-children:has-siblings "
 		     "{ border-image: none; image: url(" + IconsManager::instance()->iconPath("kadu_icons/stylesheet-branch-closed.png") + ") }");
-	style.append("QTreeView::branch:open:has-children:!has-siblings, QTreeView::branch:open:has-children:has-siblings "
+		style.append("QTreeView::branch:open:has-children:!has-siblings, QTreeView::branch:open:has-children:has-siblings "
 			"{ border-image: none; image: url(" + IconsManager::instance()->iconPath("kadu_icons/stylesheet-branch-open.png") + ") }");
+	}
 
 	style.append("QFrame {");
 
