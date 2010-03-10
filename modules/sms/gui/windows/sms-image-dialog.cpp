@@ -81,7 +81,7 @@ void SmsImageDialog::result(const QString &value)
 {
 	QScriptValueList arguments;
 	arguments.append(value);
-	CallbackObject.call(CallbackObject, arguments);
+	CallbackMethod.call(CallbackObject, arguments);
 }
 
 void SmsImageDialog::tokenImageDownloaded()

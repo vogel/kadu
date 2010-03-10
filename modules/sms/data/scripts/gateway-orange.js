@@ -29,11 +29,11 @@ GatewaySmsSender.prototype = {
 		this.callbackObject.result(result);
 	},
 
-	sendSms: function(receipient, sender, signature, content, callbackObject) {
-		this.receipient = receipient;
+	sendSms: function(recipient, sender, signature, content, callbackObject) {
+		this.recipient = recipient;
 		this.sender = sender;
 		this.signature = signature;
-		this.contetn = content;
+		this.content = content;
 		this.callbackObject = callbackObject;
 
 		if (!network) {
@@ -62,13 +62,33 @@ GatewaySmsSender.prototype = {
 			return;
 		}
 
+		this.token = match[1];
 		var imageUrl = "http://sms.orange.pl/" + match[0];
 		tokenReader.readToken(imageUrl, this, this.tokenRead);
 	},
 
-	tokenRead: function(tokenContent) {
-		this.result(tokenContent);
+	tokenRead: function(tokenValue) {
+		var url = "http://sms.orange.pl/sendsms.aspx";
+		var postData = "";
+
+		postData += "token=";
+		postData += escape(this.token);
+		postData += "&SENDER=";
+		postData += escape(this.signature);
+		postData += "&RECIPIENT=";
+		postData += escape(this.recipient);
+		postData += "&SHORT_MESSAGE=";
+		postData += escape(this.content);
+		postData += "&pass=";
+		postData += escape(tokenValue);
+		postData += "&CHK_RESP=";
+		postData += "FALSE";
+		postData += "&respInfo=";
+		postData += "1";
+
+		network.post(url, postData);
 	}
+
 };
 
 function GatewaySmsSender() {

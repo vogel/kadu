@@ -7,9 +7,9 @@ GatewayManager.prototype = {
 		return this.items[gatewayId];
 	},
 
-	sendSms: function(gatewayId, receipient, sender, signature, content, callbackObject) {
+	sendSms: function(gatewayId, recipient, sender, signature, content, callbackObject) {
 		if (this.items[gatewayId]) {
-			this.items[gatewayId].sendSms(receipient, sender, signature, content, callbackObject);
+			this.items[gatewayId].sendSms(recipient, sender, signature, content, callbackObject);
 		} else {
 			callbackObject.failure();
 		}

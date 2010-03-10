@@ -16,8 +16,8 @@ class SmsImageDialog : public QDialog
 	QLabel *PixmapLabel;
 	QNetworkReply *TokenNetworkReply;
 
-	QScriptValue &CallbackObject;
-	QScriptValue &CallbackMethod;
+	QScriptValue CallbackObject;
+	QScriptValue CallbackMethod;
 
 	void createGui();
 	void loadTokenImage(const QString &tokenImageUrl);

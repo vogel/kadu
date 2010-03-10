@@ -35,6 +35,7 @@ public:
 
 public slots:
 	QScriptValue get(const QString &url);
+	QScriptValue post(const QString &url, const QString &data);
 
 };
 

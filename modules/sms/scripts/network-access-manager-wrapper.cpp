@@ -35,7 +35,12 @@ NetworkAccessManagerWrapper::~NetworkAccessManagerWrapper()
 {
 }
 
-QScriptValue NetworkAccessManagerWrapper::get(const QString& url)
+QScriptValue NetworkAccessManagerWrapper::get(const QString &url)
 {
 	return Engine->newQObject(new NetworkReplyWrapper(QNetworkAccessManager::get(QNetworkRequest(url))));
+}
+
+QScriptValue NetworkAccessManagerWrapper::post(const QString &url, const QString &data)
+{
+	return Engine->newQObject(new NetworkReplyWrapper(QNetworkAccessManager::post(QNetworkRequest(url), data.toUtf8())));
 }
