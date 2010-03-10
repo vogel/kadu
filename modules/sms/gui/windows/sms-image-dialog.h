@@ -6,6 +6,7 @@
 
 class QLabel;
 class QLineEdit;
+class QNetworkReply;
 
 class SmsImageDialog : public QDialog
 {
@@ -13,12 +14,17 @@ class SmsImageDialog : public QDialog
 
 	QLineEdit *TokenEdit;
 	QLabel *PixmapLabel;
+	QNetworkReply *TokenNetworkReply;
 
 	QScriptValue &CallbackObject;
 	QScriptValue &CallbackMethod;
 
 	void createGui();
+	void loadTokenImage(const QString &tokenImageUrl);
 	void result(const QString &value);
+
+private slots:
+	void tokenImageDownloaded();
 
 public:
 	SmsImageDialog(const QString &tokenImageUrl, QScriptValue callbackObject, QScriptValue callbackMethod, QWidget *parent = 0);

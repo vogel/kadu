@@ -15,6 +15,9 @@
 #include <QtGui/QMovie>
 #include <QtGui/QPushButton>
 #include <QtGui/QStyle>
+#include <QtNetwork/QNetworkAccessManager>
+#include <QtNetwork/QNetworkReply>
+#include <QtNetwork/QNetworkRequest>
 
 #include "icons-manager.h"
 
@@ -25,10 +28,18 @@
 SmsImageDialog::SmsImageDialog(const QString &tokenImageUrl, QScriptValue callbackObject, QScriptValue callbackMethod, QWidget *parent) :
 		QDialog(parent), CallbackObject(callbackObject), CallbackMethod(callbackMethod)
 {
-	printf("token image url is: %s\n", qPrintable(tokenImageUrl));
-
 	setAttribute(Qt::WA_DeleteOnClose);
 
+	createGui();
+	loadTokenImage(tokenImageUrl);
+}
+
+SmsImageDialog::~SmsImageDialog()
+{
+}
+
+void SmsImageDialog::createGui()
+{
 	QMovie *pleaseWaitMovie = new QMovie(IconsManager::instance()->iconPath("kadu_icons/please-wait.gif"));
 	pleaseWaitMovie->start();
 
@@ -39,10 +50,10 @@ SmsImageDialog::SmsImageDialog(const QString &tokenImageUrl, QScriptValue callba
 	TokenEdit = new QLineEdit(this);
 
 	QGridLayout *grid = new QGridLayout(this);
-	grid->addWidget(PixmapLabel, 0, 0, 1, 2);
+	grid->addWidget(PixmapLabel, 0, 0, 1, 2, Qt::AlignCenter);
 	grid->addWidget(label, 1, 0, 1, 1);
 	grid->addWidget(TokenEdit, 1, 1, 1, 1);
-	
+
 	QDialogButtonBox *buttons = new QDialogButtonBox(this);
 
 	QPushButton *okButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("Ok"), buttons);
@@ -58,8 +69,12 @@ SmsImageDialog::SmsImageDialog(const QString &tokenImageUrl, QScriptValue callba
 	connect(cancelButton, SIGNAL(clicked()), this, SLOT(reject()));
 }
 
-SmsImageDialog::~SmsImageDialog()
+void SmsImageDialog::loadTokenImage(const QString& tokenImageUrl)
 {
+	QNetworkAccessManager *network = new QNetworkAccessManager(this);
+	TokenNetworkReply = network->get(QNetworkRequest(tokenImageUrl));
+
+	connect(TokenNetworkReply, SIGNAL(finished()), this, SLOT(tokenImageDownloaded()));
 }
 
 void SmsImageDialog::result(const QString &value)
@@ -67,6 +82,24 @@ void SmsImageDialog::result(const QString &value)
 	QScriptValueList arguments;
 	arguments.append(value);
 	CallbackObject.call(CallbackObject, arguments);
+}
+
+void SmsImageDialog::tokenImageDownloaded()
+{
+	if (QNetworkReply::NoError != TokenNetworkReply->error())
+	{
+		reject(); // TODO: 0.6.6 display some message here
+		return;
+	}
+
+	QPixmap tokenPixmap;
+	if (!tokenPixmap.loadFromData(TokenNetworkReply->readAll()))
+	{
+		reject();
+		return;
+	}
+
+	PixmapLabel->setPixmap(tokenPixmap);
 }
 
 void SmsImageDialog::accept()
