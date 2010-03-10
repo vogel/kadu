@@ -22,6 +22,7 @@
 #include <QtGui/QCheckBox>
 #include <QtGui/QVBoxLayout>
 
+#include "buddies/buddy-kadu-data.h"
 #include "buddies/buddy-shared.h"
 #include "notify/contact-notify-data.h"
 
@@ -60,6 +61,16 @@ void BuddyOptionsConfigurationWidget::createGui()
 		NotifyCheckBox->setChecked(cnd->notify());
 
 	layout->addWidget(NotifyCheckBox);
+
+	HideDescriptionCheckBox = new QCheckBox(tr("Hide Description"), this);
+	BuddyKaduData *ckd = 0;
+	if (MyBuddy.data())
+		ckd = MyBuddy.data()->moduleStorableData<BuddyKaduData>("kadu", false);
+	if (ckd)
+		HideDescriptionCheckBox->setChecked(ckd->hideDescription());
+
+	layout->addWidget(HideDescriptionCheckBox);
+
 	layout->addStretch(100);
 }
 
@@ -69,11 +80,20 @@ void BuddyOptionsConfigurationWidget::save()
 	MyBuddy.setOfflineTo(!OfflineToCheckBox->isChecked());
 
 	ContactNotifyData *cnd = 0;
+	BuddyKaduData *ckd = 0;
 	if (MyBuddy.data())
+	{
 		cnd = MyBuddy.data()->moduleStorableData<ContactNotifyData>("notify", true);;
+		ckd = MyBuddy.data()->moduleStorableData<BuddyKaduData>("kadu", false);
+	}
 	if (cnd)
 	{
 		cnd->setNotify(NotifyCheckBox->isChecked());
 		cnd->store();
+	}
+	if (ckd)
+	{
+		ckd->setHideDescription(HideDescriptionCheckBox->isChecked());
+		ckd->store();
 	}
 }
