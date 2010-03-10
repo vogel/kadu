@@ -165,7 +165,6 @@ void History::createActionDescriptions()
 		"kadu_icons/history-clear.png", "kadu_icons/history-clear.png", tr("Clear history"), false, "",
 		disableNonHistoryContacts
 	);
-	BuddiesListViewMenuManager::instance()->addManagementActionDescription(ClearHistoryActionDescription);
 
 }
 

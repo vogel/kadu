@@ -271,9 +271,6 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		"16x16/contact-new.png", "16x16/contact-new.png", tr("Add New Buddy...")
 	);
 	AddUser->setShortcut("kadu_adduser", Qt::ApplicationShortcut);
-	BuddiesListViewMenuManager::instance()->insertManagementActionDescription(0, AddUser);
-
-	BuddiesListViewMenuManager::instance()->insertManagementActionDescription(2, 0);
 
 	AddGroup= new ActionDescription(this,
 		ActionDescription::TypeGlobal, "addGroupAction",
@@ -389,7 +386,6 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		"protocols/gadu-gadu/16x16/offline.png", "protocols/gadu-gadu/16x16/offline.png", tr("Offline to User"), true, "",
 		checkOfflineTo
 	);
-	BuddiesListViewMenuManager::instance()->addManagementActionDescription(OfflineToUser);
 
 	HideDescription = new ActionDescription(this,
 		ActionDescription::TypeUser, "hideDescriptionAction",
@@ -397,8 +393,6 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		"kadu_icons/kadu-descriptions_on.png", "kadu_icons/kadu-descriptions_off.png", tr("Hide Description"), true, "",
 		checkHideDescription
 	);
-	BuddiesListViewMenuManager::instance()->addManagementActionDescription(HideDescription);
-	BuddiesListViewMenuManager::instance()->addManagementSeparator();
 
 	InactiveUsers = new ActionDescription(this,
 		ActionDescription::TypeUserList, "inactiveUsersAction",

@@ -103,8 +103,6 @@ void NotificationManager::init()
 	);
 	connect(SilentModeActionDescription, SIGNAL(actionCreated(Action *)), this, SLOT(silentModeActionCreated(Action *)));
 
-	BuddiesListViewMenuManager::instance()->addManagementActionDescription(notifyAboutUserActionDescription);
-
 	foreach (Group group, GroupManager::instance()->items())
 		groupAdded(group);
 
@@ -118,7 +116,6 @@ NotificationManager::~NotificationManager()
 
 	MainConfigurationWindow::unregisterUiHandler(UiHandler);
 
-	BuddiesListViewMenuManager::instance()->removeManagementActionDescription(notifyAboutUserActionDescription);
 	delete notifyAboutUserActionDescription;
 	notifyAboutUserActionDescription = 0;
 

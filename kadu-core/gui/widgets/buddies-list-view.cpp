@@ -269,18 +269,6 @@ void BuddiesListView::contextMenuEvent(QContextMenuEvent *event)
 		}
 	}
 
-	QMenu *management = menu->addMenu(tr("Buddy Options"));
-
-	foreach (ActionDescription *actionDescription, BuddiesListViewMenuManager::instance()->managementActions())
-		if (actionDescription)
-		{
-			Action *action = actionDescription->createAction(MyMainWindow);
-			management->addAction(action);
-			action->checkState();
-		}
-		else
-			management->addSeparator();
-
 	foreach (Contact contact, con.contacts())
 	{
 		if (!contact.contactAccount() || !contact.contactAccount().protocolHandler())
