@@ -1,6 +1,7 @@
 set (SOURCES
-	gui/windows/sms-image-dialog.cpp
 	gui/windows/sms-dialog.cpp
+	gui/windows/sms-image-dialog.cpp
+	gui/windows/sms-token-reader.cpp
 	scripts/network-access-manager-wrapper.cpp
 	scripts/network-reply-wrapper.cpp
 	scripts/sms-script-manager.cpp
@@ -14,8 +15,9 @@ set (SOURCES
 )
 
 set (MOC_SOURCES
-	gui/windows/sms-image-dialog.h
 	gui/windows/sms-dialog.h
+	gui/windows/sms-image-dialog.h
+	gui/windows/sms-token-reader.h
 	scripts/network-access-manager-wrapper.h
 	scripts/network-reply-wrapper.h
 	scripts/sms-script-manager.h

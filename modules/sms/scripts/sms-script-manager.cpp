@@ -28,7 +28,8 @@
 #include <QtScriptTools/QScriptEngineDebugger>
 
 #include "misc/path-conversion.h"
-		 
+
+#include "gui/windows/sms-token-reader.h"
 #include "scripts/network-access-manager-wrapper.h"
 
 #include "sms-script-manager.h"
@@ -50,10 +51,13 @@ SmsScriptsManager::SmsScriptsManager()
 {
 	Engine = new QScriptEngine(this);
 	Network = new NetworkAccessManagerWrapper(Engine, this);
+	TokenReader = new SmsTokenReader(this);
 
 	QScriptValue scriptNetwork = Engine->newQObject(Network);
+	QScriptValue tokenReader = Engine->newQObject(TokenReader);
 
 	Engine->globalObject().setProperty("network", scriptNetwork);
+	Engine->globalObject().setProperty("tokenReader", tokenReader);
 }
 
 SmsScriptsManager::~SmsScriptsManager()

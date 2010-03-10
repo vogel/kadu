@@ -62,7 +62,12 @@ GatewaySmsSender.prototype = {
 			return;
 		}
 
-		this.result(match[0]);
+		var imageUrl = "http://sms.orange.pl/" + match[0];
+		tokenReader.readToken(imageUrl, this, this.tokenRead);
+	},
+
+	tokenRead: function(tokenContent) {
+		this.result(tokenContent);
 	}
 };
 

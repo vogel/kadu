@@ -17,41 +17,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SMS_SCRIPTS_MANAGER_H
-#define SMS_SCRIPTS_MANAGER_H
+#include "gui/windows/sms-image-dialog.h"
 
-#include <QtCore/QObject>
-
-class QScriptEngine;
-
-class NetworkAccessManagerWrapper;
-class SmsTokenReader;
-
-class SmsScriptsManager : public QObject
+#include "sms-token-reader.h"
+#include <stdio.h>
+SmsTokenReader::SmsTokenReader(QObject *parent) :
+		QObject(parent)
 {
-	Q_OBJECT
-	Q_DISABLE_COPY(SmsScriptsManager)
+}
 
-	static SmsScriptsManager *Instance;
+SmsTokenReader::~SmsTokenReader()
+{
+}
 
-	QScriptEngine *Engine;
-	NetworkAccessManagerWrapper *Network;
-	SmsTokenReader *TokenReader;
-
-	QList<QString> LoadedFiles;
-
-	SmsScriptsManager();
-	virtual ~SmsScriptsManager();
-
-	void init();
-
-public:
-	static SmsScriptsManager * instance();
-
-	void loadScript(const QString &fileName);
-
-	QScriptEngine * engine() { return Engine; }
-
-};
-
-#endif // SMS_SCRIPTS_MANAGER_H
+void SmsTokenReader::readToken(const QString &tokenImageUrl, QScriptValue callbackObject, QScriptValue callbackMethod)
+{
+	printf("Read token: %s\n", qPrintable(tokenImageUrl));
+	SmsImageDialog *smsImageDialog = new SmsImageDialog(tokenImageUrl, callbackObject, callbackMethod, 0);
+	smsImageDialog->exec();
+}

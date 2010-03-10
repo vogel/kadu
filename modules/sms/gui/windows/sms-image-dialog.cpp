@@ -7,57 +7,76 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QtGui/QCheckBox>
-#include <QtGui/QComboBox>
+#include <QtGui/QApplication>
+#include <QtGui/QDialogButtonBox>
 #include <QtGui/QGridLayout>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QListWidget>
-#include <QtCore/QProcess>
+#include <QtGui/QLabel>
+#include <QtGui/QLineEdit>
+#include <QtGui/QMovie>
 #include <QtGui/QPushButton>
+#include <QtGui/QStyle>
+
+#include "icons-manager.h"
 
 #include "sms-image-dialog.h"
 
-SmsImageDialog::SmsImageDialog(QWidget* parent, const QByteArray& image)
-	: QDialog(parent), code_edit(0)
+#include <stdio.h>
+
+SmsImageDialog::SmsImageDialog(const QString &tokenImageUrl, QScriptValue callbackObject, QScriptValue callbackMethod, QWidget *parent) :
+		QDialog(parent), CallbackObject(callbackObject), CallbackMethod(callbackMethod)
 {
-	QLabel *image_widget = new QLabel(this);
-	QPixmap pixmap;
-	pixmap.loadFromData(image);
-	image_widget->setPixmap(pixmap);
+	printf("token image url is: %s\n", qPrintable(tokenImageUrl));
+
+	setAttribute(Qt::WA_DeleteOnClose);
+
+	QMovie *pleaseWaitMovie = new QMovie(IconsManager::instance()->iconPath("kadu_icons/please-wait.gif"));
+	pleaseWaitMovie->start();
+
+	PixmapLabel = new QLabel(this);
+	PixmapLabel->setMovie(pleaseWaitMovie);
 
 	QLabel* label = new QLabel(tr("Enter text from the picture:"), this);
-	code_edit = new QLineEdit(this);
+	TokenEdit = new QLineEdit(this);
 
 	QGridLayout *grid = new QGridLayout(this);
-	grid->addWidget(image_widget, 0, 0, 1, 2);
+	grid->addWidget(PixmapLabel, 0, 0, 1, 2);
 	grid->addWidget(label, 1, 0, 1, 1);
-	grid->addWidget(code_edit, 1, 1, 1, 1);
+	grid->addWidget(TokenEdit, 1, 1, 1, 1);
 	
-	QWidget *buttonsWidget = new QWidget(this);
-	QHBoxLayout *buttonsLayout = new QHBoxLayout(buttonsWidget);
+	QDialogButtonBox *buttons = new QDialogButtonBox(this);
 
-	QPushButton *okButton = new QPushButton(tr("Ok"), buttonsWidget);
-	QPushButton *cancelButton = new QPushButton(tr("Cancel"), buttonsWidget);
+	QPushButton *okButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("Ok"), buttons);
+	QPushButton *cancelButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Cancel"), buttons);
 
-	buttonsLayout->setSpacing(10);
-	buttonsLayout->addWidget(okButton);
-	buttonsLayout->addWidget(cancelButton);
+	buttons->addButton(okButton, QDialogButtonBox::AcceptRole);
+	buttons->addButton(cancelButton, QDialogButtonBox::DestructiveRole);
 
-	grid->addWidget(buttonsWidget, 2, 0, 1, 2);
+	grid->addWidget(buttons, 2, 0, 1, 2);
 
-	connect(code_edit, SIGNAL(returnPressed()), this, SLOT(onReturnPressed()));
-	connect(okButton, SIGNAL(clicked()), this, SLOT(onReturnPressed()));
+	connect(TokenEdit, SIGNAL(returnPressed()), this, SLOT(accept()));
+	connect(okButton, SIGNAL(clicked()), this, SLOT(accept()));
 	connect(cancelButton, SIGNAL(clicked()), this, SLOT(reject()));
+}
+
+SmsImageDialog::~SmsImageDialog()
+{
+}
+
+void SmsImageDialog::result(const QString &value)
+{
+	QScriptValueList arguments;
+	arguments.append(value);
+	CallbackObject.call(CallbackObject, arguments);
+}
+
+void SmsImageDialog::accept()
+{
+	result(TokenEdit->text());
+	QDialog::accept();
 }
 
 void SmsImageDialog::reject()
 {
-	emit codeEntered(QString::null);
+	result("");
 	QDialog::reject();
-}
-
-void SmsImageDialog::onReturnPressed()
-{
-	accept();
-	emit codeEntered(code_edit->text());
 }

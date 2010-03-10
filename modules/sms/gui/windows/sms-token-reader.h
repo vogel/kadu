@@ -17,41 +17,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SMS_SCRIPTS_MANAGER_H
-#define SMS_SCRIPTS_MANAGER_H
+#ifndef SMS_TOKEN_READER_H
+#define SMS_TOKEN_READER_H
 
 #include <QtCore/QObject>
+#include <QtScript/QScriptValue>
 
-class QScriptEngine;
-
-class NetworkAccessManagerWrapper;
-class SmsTokenReader;
-
-class SmsScriptsManager : public QObject
+class SmsTokenReader : public QObject
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(SmsScriptsManager)
-
-	static SmsScriptsManager *Instance;
-
-	QScriptEngine *Engine;
-	NetworkAccessManagerWrapper *Network;
-	SmsTokenReader *TokenReader;
-
-	QList<QString> LoadedFiles;
-
-	SmsScriptsManager();
-	virtual ~SmsScriptsManager();
-
-	void init();
 
 public:
-	static SmsScriptsManager * instance();
+	explicit SmsTokenReader(QObject *parent = 0);
+	virtual ~SmsTokenReader();
 
-	void loadScript(const QString &fileName);
-
-	QScriptEngine * engine() { return Engine; }
+public slots:
+	void readToken(const QString &tokenImageUrl, QScriptValue callbackObject, QScriptValue callbackMethod);
 
 };
 
-#endif // SMS_SCRIPTS_MANAGER_H
+#endif // SMS_TOKEN_READER_H
