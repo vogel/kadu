@@ -333,7 +333,7 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, const QString &styleHre
 	}
 
 	Avatar avatar = chat.chatAccount().accountContact().contactAvatar();
-	if (avatar)
+	if (!avatar.isEmpty())
 		photoOutgoing = QString("file://") + avatar.filePath();
 	else
 		photoOutgoing = QString("file://") + styleHref + QString("Outgoing/buddy_icon.png");
@@ -404,7 +404,7 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, const QString &styleHre
 	{
    		result.replace(QString("%messageClasses%"), "message outgoing");
 		Avatar avatar = chat.chatAccount().accountContact().contactAvatar();
-		if (avatar)
+		if (!avatar.isEmpty())
 			photoPath = QString("file://") + avatar.filePath();
 		else
 			photoPath = QString("file://") + styleHref + QString("Outgoing/buddy_icon.png");
