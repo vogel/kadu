@@ -33,7 +33,7 @@ GaduServerUnregisterAccount::GaduServerUnregisterAccount(UinType uin, const QStr
 void GaduServerUnregisterAccount::performAction()
 {
 	H = gg_unregister3(Uin, Password.toUtf8().constData(), TokenId.toUtf8().constData(),
-		TokenValue.toUtf8().constData(), 1);
+		TokenValue.toUtf8().constData(), false);
 
 	if (H)
 	{

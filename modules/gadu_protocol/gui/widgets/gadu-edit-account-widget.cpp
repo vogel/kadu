@@ -371,12 +371,7 @@ void GaduEditAccountWidget::removeAccount()
 		deleteLater();
 	}
 	else if (messageBox->clickedButton() == removeAndUnregisterButton)
-	{
-		(new GaduUnregisterAccountWindow())->show();
-
-		AccountManager::instance()->removeItem(account());
-		deleteLater();
-	}
+		(new GaduUnregisterAccountWindow(account()))->show();
 
 	delete messageBox;
 }
