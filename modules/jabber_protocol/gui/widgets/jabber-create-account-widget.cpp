@@ -68,10 +68,6 @@ void JabberCreateAccountWidget::createGui()
 
 	QFormLayout *layout = new QFormLayout(formWidget);
 
-	AccountName = new QLineEdit(this);
-	connect(AccountName, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
-	layout->addRow(tr("Account Name") + ":", AccountName);
-	
 	QWidget *jidWidget = new QWidget(this);
 	QGridLayout *jidLayout = new QGridLayout(jidWidget);
 	jidLayout->setSpacing(0);
@@ -295,7 +291,6 @@ void JabberCreateAccountWidget::cancel()
 
 void JabberCreateAccountWidget::resetGui()
 {
-	AccountName->setText("");
 	Username->setText("");
 	Domain->setCurrentIndex(-1);
 	NewPassword->setText("");
