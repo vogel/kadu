@@ -273,13 +273,6 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	AddUser->setShortcut("kadu_adduser", Qt::ApplicationShortcut);
 	BuddiesListViewMenuManager::instance()->insertManagementActionDescription(0, AddUser);
 
-	MergeContact = new ActionDescription(this,
-		ActionDescription::TypeUser, "mergeContactAction",
-		this, SLOT(mergeContactActionActivated(QAction *, bool)),
-		"", "", tr("Merge Buddies...")
-	);
-	BuddiesListViewMenuManager::instance()->insertManagementActionDescription(1, MergeContact);
-
 	BuddiesListViewMenuManager::instance()->insertManagementActionDescription(2, 0);
 
 	AddGroup= new ActionDescription(this,
@@ -381,7 +374,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		"16x16/mail-message-new.png", "16x16/mail-message-new.png", tr("Send E-Mail"), false, "",
 		disableNoEMail
 	);
-	BuddiesListViewMenuManager::instance()->addListActionDescription(WriteEmail);
+	BuddiesListViewMenuManager::instance()->addActionDescription(WriteEmail);
 
 	LookupUserInfo = new ActionDescription(this,
 		ActionDescription::TypeUser, "lookupUserInfoAction",
@@ -389,9 +382,6 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		"16x16/edit-find.png", "16x16/edit-find.png", tr("Search in Directory"), false, "",
 		disableNoGaduUle
 	);
-
-	BuddiesListViewMenuManager::instance()->insertManagementActionDescription(3, ChatWidgetManager::instance()->actions()->ignoreUser());
-	BuddiesListViewMenuManager::instance()->insertManagementActionDescription(4, ChatWidgetManager::instance()->actions()->blockUser());
 
 	OfflineToUser = new ActionDescription(this,
 		ActionDescription::TypeUser, "offlineToUserAction",
@@ -409,14 +399,6 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	);
 	BuddiesListViewMenuManager::instance()->addManagementActionDescription(HideDescription);
 	BuddiesListViewMenuManager::instance()->addManagementSeparator();
-
-	DeleteUsers = new ActionDescription(this,
-		ActionDescription::TypeUser, "deleteUsersAction",
-		this, SLOT(deleteUsersActionActivated(QAction *, bool)),
-		"16x16/edit-delete.png", "16x16/edit-delete.png", tr("Delete Buddy")
-	);
-	DeleteUsers->setShortcut("kadu_deleteuser");
-	BuddiesListViewMenuManager::instance()->addManagementActionDescription(DeleteUsers);
 
 	InactiveUsers = new ActionDescription(this,
 		ActionDescription::TypeUserList, "inactiveUsersAction",
@@ -445,17 +427,36 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	connect(OnlineAndDescriptionUsers, SIGNAL(actionCreated(Action *)), this, SLOT(onlineAndDescUsersActionCreated(Action *)));
 
 	BuddiesListViewMenuManager::instance()->addSeparator();
-	BuddiesListViewMenuManager::instance()->addSeparator();
 
 	EditUser = new ActionDescription(this,
 		ActionDescription::TypeUser, "editUserAction",
 		this, SLOT(editUserActionActivated(QAction *, bool)),
-		"16x16/x-office-address-book", "16x16/x-office-address-book", tr("Buddy Properties"), false, QString::null,
+		"16x16/x-office-address-book", "16x16/x-office-address-book", tr("View Buddy Properties"), false, QString::null,
 		disableNotOneUles
 	);
 	connect(EditUser, SIGNAL(actionCreated(Action *)), this, SLOT(editUserActionCreated(Action *)));
 	EditUser->setShortcut("kadu_persinfo");
 	BuddiesListViewMenuManager::instance()->addActionDescription(EditUser);
+
+	BuddiesListViewMenuManager::instance()->addSeparator();
+
+	MergeContact = new ActionDescription(this,
+		ActionDescription::TypeUser, "mergeContactAction",
+		this, SLOT(mergeContactActionActivated(QAction *, bool)),
+		"", "", tr("Merge Buddies...")
+	);
+	BuddiesListViewMenuManager::instance()->addActionDescription(MergeContact);
+
+	BuddiesListViewMenuManager::instance()->addActionDescription(ChatWidgetManager::instance()->actions()->ignoreUser());
+	BuddiesListViewMenuManager::instance()->addActionDescription(ChatWidgetManager::instance()->actions()->blockUser());
+
+	DeleteUsers = new ActionDescription(this,
+		ActionDescription::TypeUser, "deleteUsersAction",
+		this, SLOT(deleteUsersActionActivated(QAction *, bool)),
+		"16x16/edit-delete.png", "16x16/edit-delete.png", tr("Delete Buddy...")
+	);
+	DeleteUsers->setShortcut("kadu_deleteuser");
+	BuddiesListViewMenuManager::instance()->addActionDescription(DeleteUsers);
 
 	ShowStatus = new ActionDescription(this,
 		ActionDescription::TypeGlobal, "openStatusAction",

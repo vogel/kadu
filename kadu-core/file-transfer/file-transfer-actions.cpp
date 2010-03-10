@@ -66,11 +66,11 @@ FileTransferActions::FileTransferActions(QObject *parent)
 	SendFileActionDescription = new ActionDescription(0,
 		ActionDescription::TypeUser, "sendFileAction",
 		this, SLOT(sendFileActionActivated(QAction *, bool)),
-		"16x16/document-send.png", "16x16/document-send.png", tr("Send File"), false, QString::null,
+		"16x16/document-send.png", "16x16/document-send.png", tr("Send File..."), false, QString::null,
 		disableNonFileTransferContacts
 	);
 	SendFileActionDescription->setShortcut("kadu_sendfile");
-	BuddiesListViewMenuManager::instance()->insertActionDescription(1, SendFileActionDescription);
+	BuddiesListViewMenuManager::instance()->insertActionDescription(2, SendFileActionDescription);
 
 	FileTransferWindowActionDescription = new ActionDescription(0,
 		ActionDescription::TypeMainMenu, "sendFileWindowAction",

@@ -147,10 +147,10 @@ void History::createActionDescriptions()
 	ShowHistoryActionDescription = new ActionDescription(0,
 		ActionDescription::TypeUser, "showHistoryAction",
 		this, SLOT(showHistoryActionActivated(QAction *, bool)),
-		"kadu_icons/kadu-history.png", "kadu_icons/kadu-history.png", tr("Show Chat History"), false, QString::null
+		"kadu_icons/kadu-history.png", "kadu_icons/kadu-history.png", tr("View Chat History"), false, QString::null
 	);
 	ShowHistoryActionDescription->setShortcut("kadu_showhistory");
-	BuddiesListViewMenuManager::instance()->insertActionDescription(3, ShowHistoryActionDescription);
+	BuddiesListViewMenuManager::instance()->insertActionDescription(5, ShowHistoryActionDescription);
 
 	ChatsHistoryActionDescription = new ActionDescription(0,
 		ActionDescription::TypeMainMenu, "chatsHistoryAction",

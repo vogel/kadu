@@ -235,10 +235,11 @@ void BuddiesListView::contextMenuEvent(QContextMenuEvent *event)
 	if (con.isNull())
 		return;
 
-	bool first = true;
+	//TODO 0.8 :
+	int separatorsCount = 0;
 	QMenu *menu = new QMenu(this);
 
-	QMenu *actions = new QMenu(tr("Actions"));
+	QMenu *actions = new QMenu(tr("More Actions..."));
 	foreach (ActionDescription *actionDescription, BuddiesListViewMenuManager::instance()->buddyListActions())
 		if (actionDescription)
 		{
@@ -260,12 +261,11 @@ void BuddiesListView::contextMenuEvent(QContextMenuEvent *event)
 		}
 		else
 		{
-			menu->addSeparator();
-			if (first)
-			{
+			++separatorsCount;
+			if (separatorsCount == 2)
 				menu->addMenu(actions);
-				first = false;
-			}
+
+			menu->addSeparator();
 		}
 	}
 

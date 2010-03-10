@@ -90,9 +90,9 @@ void disableNewTab(Action *action)
 		action->setEnabled(false);
 
 	if (config_defaultTabs)
-		action->setText(qApp->translate("TabsManager", "Open in new window"));
+		action->setText(qApp->translate("TabsManager", "Chat in New Window"));
 	else
-		action->setText(qApp->translate("TabsManager", "Open in new tab"));
+		action->setText(qApp->translate("TabsManager", "Chat in new Tab"));
 
 	// TODO 0.6.6 dla siebie samego deaktywujemy opcje w menu, a konfernecje?
 	foreach (const Contact &contact, contacts)
@@ -132,14 +132,14 @@ TabsManager::TabsManager(bool firstload)
 	openInNewTabActionDescription = new ActionDescription(
 		0, ActionDescription::TypeUser, "openInNewTabAction",
 		this, SLOT(onNewTab(QAction *, bool)),
-		"16x16/internet-group-chat.png", "16x16/internet-group-chat.png", tr("Open in new tab"), false, QString::null, disableNewTab
+		"16x16/internet-group-chat.png", "16x16/internet-group-chat.png", tr("Chat in New Tab"), false, QString::null, disableNewTab
 	);
 	BuddiesListViewMenuManager::instance()->insertActionDescription(1, openInNewTabActionDescription);
 
 	attachToTabsActionDescription = new ActionDescription(
 		0, ActionDescription::TypeChat, "attachToTabsAction",
 		this, SLOT(onTabAttach(QAction *, bool)),
-		"kadu_icons/module_tabs-detach.png", "kadu_icons/module_tabs-detach.png", tr("Attach chat to tabs"), true, tr("Detach chat from tabs")
+		"kadu_icons/module_tabs-detach.png", "kadu_icons/module_tabs-detach.png", tr("Attach Chat to Tabs"), true, tr("Detach chat from tabs")
 	);
 	connect(attachToTabsActionDescription, SIGNAL(actionCreated(Action *)), this, SLOT(attachToTabsActionCreated(Action *)));
 
