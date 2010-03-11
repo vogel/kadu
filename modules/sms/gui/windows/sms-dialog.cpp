@@ -39,7 +39,7 @@
 
 SmsDialog::SmsDialog(const QString& altnick, QWidget* parent) : QWidget(parent, Qt::Window),
 	body(0), recipient(0), list(0), smslen(0), l_contact(0), e_contact(0), l_signature(0),
-	e_signature(0), b_send(0), c_saveInHistory(0), smsProcess(0), Sender()
+	e_signature(0), b_send(0), c_saveInHistory(0), smsProcess(0)
 {
 	kdebugf();
 
@@ -136,8 +136,6 @@ SmsDialog::SmsDialog(const QString& altnick, QWidget* parent) : QWidget(parent, 
 
 	resize(400, 250);
 
-	connect(&Sender, SIGNAL(finished(bool)), this, SLOT(onSmsSenderFinished(bool)));
-
 	configurationUpdated();
 	
 	loadWindowGeometry(this, "Sms", "SmsDialogGeometry", 200, 200, 400, 250);
@@ -226,8 +224,10 @@ void SmsDialog::sendSms()
 
 	if (config_file.readBoolEntry("SMS", "BuiltInApp"))
 	{
-		Sender.send(recipient->text(), body->toPlainText(), e_contact->text(), e_signature->text(), 
-			    AutoSelectProvider->isChecked(), ProvidersList->itemData(ProvidersList->currentIndex()).toString());
+		SmsSender *sender = new SmsSender(recipient->text(), QString::null, this);
+		sender->setContact(e_contact->text());
+		sender->setSignature(e_signature->text());
+		sender->sendMessage(body->toPlainText());
 	}
 	else
 	{

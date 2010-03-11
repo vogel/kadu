@@ -22,36 +22,40 @@ class SmsSender : public QObject
 {
 	Q_OBJECT
 
-		SmsGateway* CurrentGateway;
-		QString Number;
-		QString Message;
-		QString Contact; 
-		QString Signature;
-		
-		void gatewaySelected();
+	QString GatewayId;
+	QString Number;
+	QString Message;
+	QString Contact;
+	QString Signature;
 
-		void sendJavaScriptSms(const QString &gatewayId);
+	void fixNumber();
+	bool validateNumber();
+	bool validateSignature();
 
-	private slots:
-		void onFinished(bool success);
+	void queryForGateway();
+	void gatewaySelected();
 
-	public:
-		SmsSender(QObject* parent = 0);
-		~SmsSender();
-		
-		void findGatewayForNumber(const QString& number);
-		
-		SmsGateway * currentGateway() { return CurrentGateway; };
+	void sendSms();
 
-	public slots:
-		void send(const QString& number, const QString& message, const QString& contact, const QString& signature, bool autoSelectProvider = true, QString provider = QString::null);
-		void gatewayQueryDone(const QString &provider);
+public:
+	explicit SmsSender(const QString &number, const QString &gatewayId = QString::null, QObject *parent = 0);
+	virtual ~SmsSender();
 
-		void result();
-		void failure(const QString &errorMessage);
-	
-	signals:
-		void finished(bool success);
+	void setContact(const QString& contact);
+	void setSignature(const QString& signature);
+	void sendMessage(const QString& message);
+
+	void findGatewayForNumber(const QString &number);
+
+public slots:
+	void gatewayQueryDone(const QString &gatewayId);
+
+	void result();
+	void failure(const QString &errorMessage);
+
+signals:
+	void finished(bool success);
+
 };
 
 #endif // SMS_SENDER_H

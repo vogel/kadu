@@ -41,7 +41,6 @@ class SmsDialog : public QWidget, ConfigurationAwareObject
 		QPushButton *b_send;
 		QCheckBox *c_saveInHistory;
 		QProcess *smsProcess;
-		SmsSender Sender;
 		QCheckBox *AutoSelectProvider;
 		QComboBox *ProvidersList;
 

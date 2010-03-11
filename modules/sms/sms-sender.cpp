@@ -7,83 +7,66 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QtCore/QProcess>
-#include <QtGui/QCheckBox>
-#include <QtGui/QComboBox>
-#include <QtGui/QGridLayout>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QListWidget>
 #include <QtGui/QMessageBox>
-#include <QtGui/QPushButton>
-#include <QtGui/QTextEdit>
+#include <QtScript/QScriptEngine>
 
-#include "configuration/configuration-file.h"
-#include "buddies/buddy-manager.h"
-#include "core/core.h"
-#include "debug.h"
-#include "gui/widgets/buddies-list-view.h"
-#include "gui/widgets/buddies-list-widget.h"
-#include "gui/widgets/buddies-list-view-menu-manager.h"
-#include "gui/widgets/configuration/configuration-widget.h"
-#include "gui/widgets/configuration/config-group-box.h"
-#include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
-#include "gui/hot-key.h"
-#include "icons-manager.h"
+#include "debug.h"
 
-#include "modules.h"
-#include "misc/path-conversion.h"
-
-#include "../history/history.h"
+#include "scripts/sms-script-manager.h"
+#include "sms-gateway-query.h"
 
 #include "sms-sender.h"
-#include "mobile-number-manager.h"
-#include "sms-gateway-manager.h"
-#include "sms-gateway-query.h"
-#include <QScriptEngine>
-#include "scripts/sms-script-manager.h"
 
-SmsSender::SmsSender(QObject* parent)
-	: QObject(parent), CurrentGateway(0)
+SmsSender::SmsSender(const QString &number, const QString &gatewayId, QObject *parent) :
+		QObject(parent), GatewayId(gatewayId), Number(number)
 {
+	fixNumber();
 }
 
 SmsSender::~SmsSender()
 {
-	kdebugf();
-	emit finished(false);
-	if (CurrentGateway)
-	{
-		disconnect(CurrentGateway, SIGNAL(finished(bool)), this, SLOT(onFinished(bool)));
-		delete CurrentGateway;
-		CurrentGateway = 0;
-	}
-	kdebugf2();
 }
 
-void SmsSender::onFinished(bool success)
+void SmsSender::fixNumber()
 {
-	emit finished(success);
-}
-
-void SmsSender::send(const QString& number,const QString& message, const QString& contact, const QString& signature, bool autoSelectProvider, QString provider)
-{
-	kdebugf();
-	Number = number;
-	Message = message;
-	Contact = contact;
-	Signature = signature;
-	
 	if (Number.length() == 12 && Number.left(3) == "+48")
-		Number=Number.right(9);
-	if (Number.length() != 9)
+		Number = Number.right(9);
+}
+
+bool SmsSender::validateNumber()
+{
+	return 9 == Number.length();
+}
+
+bool SmsSender::validateSignature()
+{
+	return !Signature.isEmpty();
+}
+
+void SmsSender::setContact(const QString &contact)
+{
+	Contact = contact;
+}
+
+void SmsSender::setSignature(const QString &signature)
+{
+	Signature = signature;
+}
+
+void SmsSender::sendMessage(const QString &message)
+{
+	Message = message;
+	
+	if (!validateNumber())
 	{
 		MessageDialog::msg(tr("Mobile number is incorrect"), false, "32x32/dialog-warning.png", (QWidget*)parent());
 		emit finished(false);
 		kdebugf2();
 		return;
 	}
-	if (signature.isEmpty())
+
+	if (!validateSignature())
 	{
 		MessageDialog::msg(tr("Signature can't be empty"), false, "32x32/dialog-warning.png", (QWidget*)parent());
 		emit finished(false);
@@ -91,61 +74,35 @@ void SmsSender::send(const QString& number,const QString& message, const QString
 		return;
 	}
 
-	SmsGateway * gateway = MobileNumberManager::instance()->gateway(number);
-	if (gateway)
-	{
-		CurrentGateway = gateway;
-		gatewaySelected();
-	}
-	else if (autoSelectProvider)
-	{
-		findGatewayForNumber(Number);
-	}
+	if (GatewayId.isEmpty())
+		queryForGateway();
 	else
-	{
-	  	CurrentGateway = SmsGatewayManager::instance()->gateways().take(provider);
-		gatewaySelected();
-	}
-	
-
-	kdebugf2();
+		sendSms();
 }
 
-void SmsSender::findGatewayForNumber(const QString& number)
+void SmsSender::queryForGateway()
 {
-	SmsGatewayQuery *query = new SmsGatewayQuery();
+	SmsGatewayQuery *query = new SmsGatewayQuery(this);
 	connect(query, SIGNAL(finished(const QString &)), this, SLOT(gatewayQueryDone(const QString &)));
-	query->process(number);
+	query->process(Number);
 }
 
-void SmsSender::gatewayQueryDone(const QString &provider)
+void SmsSender::gatewayQueryDone(const QString &gatewayId)
 {
-	if (!provider.isEmpty())
-	{
-		sendJavaScriptSms(provider);
-
-		CurrentGateway = SmsGatewayManager::instance()->gateways().take(provider);
-		gatewaySelected();
-	}
-	else
+	if (gatewayId.isEmpty())
 	{
 		MessageDialog::msg(tr("Automatic gateway selection is not available. Please select SMS gateway manually."), false, "32x32/dialog-warning.png", (QWidget*)parent());
 		emit finished(false);
 		kdebugf2();
 		return;
 	}
+
+	GatewayId = gatewayId;
+
+	sendSms();
 }
 
-void SmsSender::gatewaySelected()
-{
-	if (CurrentGateway)
-	{
-		connect(CurrentGateway, SIGNAL(finished(bool)), this, SLOT(onFinished(bool)));
-		CurrentGateway->send(Number, Message, Contact, Signature);
-	}
-}
-
-void SmsSender::sendJavaScriptSms(const QString& gatewayId)
+void SmsSender::sendSms()
 {
 	QScriptEngine* engine = SmsScriptsManager::instance()->engine();
 
@@ -153,7 +110,7 @@ void SmsSender::sendJavaScriptSms(const QString& gatewayId)
 	QScriptValue jsSendSms = jsGatewayManagerObject.property("sendSms");
 
 	QScriptValueList arguments;
-	arguments.append(gatewayId);
+	arguments.append(GatewayId);
 	arguments.append(Number);
 	arguments.append(Contact);
 	arguments.append(Signature);

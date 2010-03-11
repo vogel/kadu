@@ -11,7 +11,7 @@ GatewayManager.prototype = {
 		if (this.items[gatewayId]) {
 			this.items[gatewayId].sendSms(recipient, sender, signature, content, callbackObject);
 		} else {
-			callbackObject.failure();
+			callbackObject.failure("No valid gateway found");
 		}
 	},
 };
