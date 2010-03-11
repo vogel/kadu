@@ -332,7 +332,11 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, const QString &styleHre
 			photoIncoming = QString("file://") + styleHref + QString("Incoming/buddy_icon.png");
 	}
 
-	photoOutgoing = QString("file://") + styleHref + QString("Outgoing/buddy_icon.png");
+	Avatar avatar = chat.chatAccount().accountContact().contactAvatar();
+	if (!avatar.isEmpty())
+		photoOutgoing = QString("file://") + avatar.filePath();
+	else
+		photoOutgoing = QString("file://") + styleHref + QString("Outgoing/buddy_icon.png");
 
 	result.replace(QString("%incomingIconPath%"), photoIncoming);
 	result.replace(QString("%outgoingIconPath%"), photoOutgoing);
@@ -399,7 +403,11 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, const QString &styleHre
 	else
 	{
    		result.replace(QString("%messageClasses%"), "message outgoing");
-		photoPath = QString("file://") + styleHref + QString("Outgoing/buddy_icon.png");
+		Avatar avatar = chat.chatAccount().accountContact().contactAvatar();
+		if (!avatar.isEmpty())
+			photoPath = QString("file://") + avatar.filePath();
+		else
+			photoPath = QString("file://") + styleHref + QString("Outgoing/buddy_icon.png");
 	}
 	result.replace(QString("%userIconPath%"), photoPath);
 

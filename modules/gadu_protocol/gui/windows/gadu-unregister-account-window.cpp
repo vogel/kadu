@@ -25,6 +25,7 @@
 #include <QtGui/QStyle>
 #include <QtGui/QVBoxLayout>
 
+#include "accounts/account-manager.h"
 #include "gui/windows/message-dialog.h"
 #include "misc/misc.h"
 #include "qt/long-validator.h"
@@ -35,8 +36,8 @@
 
 #include "gadu-unregister-account-window.h"
 
-GaduUnregisterAccountWindow::GaduUnregisterAccountWindow(QWidget *parent) :
-		QWidget(parent, Qt::Window)
+GaduUnregisterAccountWindow::GaduUnregisterAccountWindow(Account account, QWidget *parent) :
+		QWidget(parent, Qt::Window), MyAccount(account)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(tr("Unregister account"));
@@ -95,7 +96,7 @@ void GaduUnregisterAccountWindow::createGui()
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 	mainLayout->addWidget(buttons);
 
-	RemoveAccountButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogApplyButton), tr("Send Password"), this);
+	RemoveAccountButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogApplyButton), tr("Unregister Account"), this);
 	QPushButton *cancelButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Cancel"), this);
 
 	connect(RemoveAccountButton, SIGNAL(clicked(bool)), this, SLOT(removeAccount()));
@@ -119,7 +120,7 @@ void GaduUnregisterAccountWindow::removeAccount()
 	GaduServerUnregisterAccount *gsua = new GaduServerUnregisterAccount(AccountId->text().toInt(), Password->text(),
 			MyTokenWidget->tokenId(), MyTokenWidget->tokenValue());
 	connect(gsua, SIGNAL(finished(GaduServerUnregisterAccount *)),
-			this, SLOT(remindPasswordFinished(GaduServerUnregisterAccount *)));
+			this, SLOT(unregisteringFinished(GaduServerUnregisterAccount *)));
 
 	gsua->performAction();
 }
@@ -137,6 +138,9 @@ void GaduUnregisterAccountWindow::unregisteringFinished(GaduServerUnregisterAcco
 	if (result)
 	{
 		MessageDialog::msg(tr("Unregistation was successful. Now you don't have any GG number :("), false, "Information", parentWidget());
+
+		AccountManager::instance()->removeItem(MyAccount);
+
 		close();
 	}
 	else

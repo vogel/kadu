@@ -47,7 +47,6 @@ class JabberCreateAccountWidget : public QWidget
 {
 	Q_OBJECT
 	
-	QLineEdit *AccountName;
 	QLineEdit *Username;
 	QComboBox *Domain;
 	QLineEdit *NewPassword;

@@ -39,6 +39,7 @@ class KADUAPI BuddyOptionsConfigurationWidget : public QWidget
 	QCheckBox *BlockCheckBox;
 	QCheckBox *OfflineToCheckBox;
 	QCheckBox *NotifyCheckBox;
+	QCheckBox *HideDescriptionCheckBox;
 
 	void createGui();
 

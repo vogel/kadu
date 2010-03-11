@@ -640,18 +640,6 @@ void HistoryWindow::showMainPopupMenu(const QPoint &pos)
 		}
 	}
 
-	QMenu *management = menu->addMenu(tr("Buddy Options"));
-
-	foreach (ActionDescription *actionDescription, BuddiesListViewMenuManager::instance()->managementActions())
-		if (actionDescription)
-		{
-			Action *action = actionDescription->createAction(this);
-			management->addAction(action);
-			action->checkState();
-		}
-		else
-			management->addSeparator();
-		
 	QList<Account> accounts;
 	foreach (Contact con, chat.contacts())
 		accounts.append(con.contactAccount());

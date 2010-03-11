@@ -22,6 +22,8 @@
 
 #include <QtGui/QWidget>
 
+#include "accounts/account.h"
+
 class QLineEdit;
 class QPushButton;
 
@@ -31,6 +33,8 @@ class TokenWidget;
 class GaduUnregisterAccountWindow : public QWidget
 {
 	Q_OBJECT
+
+	Account MyAccount;
 
 	QLineEdit *AccountId;
 	QLineEdit *Password;
@@ -45,7 +49,7 @@ private slots:
 	void unregisteringFinished(GaduServerUnregisterAccount *gsua);
 
 public:
-	explicit GaduUnregisterAccountWindow(QWidget *parent = 0);
+	explicit GaduUnregisterAccountWindow(Account account, QWidget *parent = 0);
 	virtual ~GaduUnregisterAccountWindow();
 };
 

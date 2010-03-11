@@ -36,6 +36,7 @@
 #include "buddies/buddy-set.h"
 #include "buddies/model/buddies-model-proxy.h"
 #include "chat/chat-manager.h"
+#include "configuration/configuration-file.h"
 #include "configuration/main-configuration.h"
 #include "contacts/filter/contact-no-unloaded-account-filter.h"
 #include "gui/actions/action.h"
@@ -234,10 +235,11 @@ void BuddiesListView::contextMenuEvent(QContextMenuEvent *event)
 	if (con.isNull())
 		return;
 
-	bool first = true;
+	//TODO 0.8 :
+	int separatorsCount = 0;
 	QMenu *menu = new QMenu(this);
 
-	QMenu *actions = new QMenu(tr("Actions"));
+	QMenu *actions = new QMenu(tr("More Actions..."));
 	foreach (ActionDescription *actionDescription, BuddiesListViewMenuManager::instance()->buddyListActions())
 		if (actionDescription)
 		{
@@ -259,26 +261,13 @@ void BuddiesListView::contextMenuEvent(QContextMenuEvent *event)
 		}
 		else
 		{
-			menu->addSeparator();
-			if (first)
-			{
+			++separatorsCount;
+			if (separatorsCount == 2)
 				menu->addMenu(actions);
-				first = false;
-			}
+
+			menu->addSeparator();
 		}
 	}
-
-	QMenu *management = menu->addMenu(tr("Buddy Options"));
-
-	foreach (ActionDescription *actionDescription, BuddiesListViewMenuManager::instance()->managementActions())
-		if (actionDescription)
-		{
-			Action *action = actionDescription->createAction(MyMainWindow);
-			management->addAction(action);
-			action->checkState();
-		}
-		else
-			management->addSeparator();
 
 	foreach (Contact contact, con.contacts())
 	{
@@ -391,7 +380,7 @@ void BuddiesListView::selectionChanged(const QItemSelection &selected, const QIt
 
 void BuddiesListView::simpleModeChanged()
 {
-	if (MainConfiguration::instance()->simpleMode())
+	if (MainConfiguration::instance()->simpleMode() && !config_file.readBoolEntry("General", "ExpandingInSimpleMode", false))
 	{
 		collapseAll();
 		setItemsExpandable(false);
@@ -425,10 +414,20 @@ void BuddiesListView::updateBackground()
 	style.append("QTreeView::branch:has-siblings:!adjoins-item { border-image: none; image: none }");
 	style.append("QTreeView::branch:has-siblings:adjoins-item { border-image: none; image: none }");
 	style.append("QTreeView::branch:has-childres:!has-siblings:adjoins-item { border-image: none; image: none }");
-	style.append("QTreeView::branch:has-children:!has-siblings:closed, QTreeView::branch:closed:has-children:has-siblings "
+	if (config_file.readBoolEntry("Look", "AlignUserboxIconsTop"))
+	{
+		style.append("QTreeView::branch:has-children:!has-siblings:closed, QTreeView::branch:closed:has-children:has-siblings "
+		     "{ border-image: none; image: url(" + IconsManager::instance()->iconPath("kadu_icons/stylesheet-branch-closed.png") + "); margin-top: 4px; image-position: top }");
+		style.append("QTreeView::branch:open:has-children:!has-siblings, QTreeView::branch:open:has-children:has-siblings "
+			"{ border-image: none; image: url(" + IconsManager::instance()->iconPath("kadu_icons/stylesheet-branch-open.png") + "); image-position: top; margin-top: 8px }");
+	}
+	else
+	{
+ 		style.append("QTreeView::branch:has-children:!has-siblings:closed, QTreeView::branch:closed:has-children:has-siblings "
 		     "{ border-image: none; image: url(" + IconsManager::instance()->iconPath("kadu_icons/stylesheet-branch-closed.png") + ") }");
-	style.append("QTreeView::branch:open:has-children:!has-siblings, QTreeView::branch:open:has-children:has-siblings "
+		style.append("QTreeView::branch:open:has-children:!has-siblings, QTreeView::branch:open:has-children:has-siblings "
 			"{ border-image: none; image: url(" + IconsManager::instance()->iconPath("kadu_icons/stylesheet-branch-open.png") + ") }");
+	}
 
 	style.append("QFrame {");
 

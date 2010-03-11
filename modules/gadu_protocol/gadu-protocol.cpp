@@ -503,6 +503,9 @@ void GaduProtocol::login()
 
 	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
 
+	if (!gaduAccountDetails)
+		return;
+
 	if (0 == gaduAccountDetails->uin())
 	{
 		MessageDialog::msg(tr("UIN not set!"), false, "32x32/dialog-warning.png");

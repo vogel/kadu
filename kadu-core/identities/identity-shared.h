@@ -60,7 +60,7 @@ public:
 
 	// StatusContainer implementation
 
-	virtual QString statusContainerName()  { return name(); };
+	virtual QString statusContainerName()  { return name(); }
 
 	virtual Status status();
 	virtual int maxDescriptionLength();

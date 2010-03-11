@@ -70,6 +70,7 @@ GroupTabBar::GroupTabBar(QWidget *parent)
  	setAcceptDrops(true);
 	setDrawBase(false);
 	setMovable(true);
+	setFixedWidth(26); /* Dorr: mantis 0001130 */
 
 	setShape(QTabBar::RoundedWest);
 

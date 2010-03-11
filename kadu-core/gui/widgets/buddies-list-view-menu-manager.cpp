@@ -77,23 +77,3 @@ void BuddiesListViewMenuManager::addListSeparator()
 {
 	BuddyListActions.append(0);
 }
-
-void BuddiesListViewMenuManager::addManagementActionDescription(ActionDescription *actionDescription)
-{
-	ManagementActions.append(actionDescription);
-}
-
-void BuddiesListViewMenuManager::insertManagementActionDescription(int pos, ActionDescription *actionDescription)
-{
-	ManagementActions.insert(pos, actionDescription);
-}
-
-void BuddiesListViewMenuManager::removeManagementActionDescription(ActionDescription *actionDescription)
-{
-	ManagementActions.removeAll(actionDescription);
-}
-
-void BuddiesListViewMenuManager::addManagementSeparator()
-{
-	ManagementActions.append(0);
-}

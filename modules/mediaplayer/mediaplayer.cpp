@@ -152,7 +152,7 @@ MediaPlayer::MediaPlayer(bool firstLoad)
 	enableMediaPlayerStatuses = new ActionDescription(
 		0, ActionDescription::TypeGlobal, "enableMediaPlayerStatusesAction",
 		this, SLOT(mediaPlayerStatusChangerActivated(QAction *, bool)),
-		"external_modules/module_mediaplayer.png", "external_modules/module_mediaplayer.png", tr("Enable MediaPlayer statuses"), true
+		"external_modules/module_mediaplayer.png", "external_modules/module_mediaplayer.png", tr("Enable MediaPlayer Statuses"), true
 	);
 	mediaPlayerMenu = new ActionDescription(
 		0, ActionDescription::TypeChat, "mediaplayer_button",
@@ -201,21 +201,23 @@ MediaPlayer::MediaPlayer(bool firstLoad)
 		ChatEditBox::addAction("mediaplayer_vol_down");
 	}
 
+	//TODO 0.6.6: remove this?
+
 	// MediaPlayer statuses menu item
-	bool menuPos = config_file.readBoolEntry("MediaPlayer", "dockMenu", false);
-	if (menuPos)
-	{
-		mediaplayerStatus = new QAction(tr("Enable MediaPlayer statuses"), this);
-		mediaplayerStatus->setCheckable(true);
-		connect(mediaplayerStatus, SIGNAL(toggled(bool)), this, SLOT(toggleStatuses(bool)));
+//	bool menuPos = config_file.readBoolEntry("MediaPlayer", "dockMenu", false);
+//	if (menuPos)
+//	{
+//		mediaplayerStatus = new QAction(tr("Enable MediaPlayer statuses"), this);
+//		mediaplayerStatus->setCheckable(true);
+//		connect(mediaplayerStatus, SIGNAL(toggled(bool)), this, SLOT(toggleStatuses(bool)));
 		// TODO
 		//dockMenu->addAction(mediaplayerStatus);
-	}
-	else
-	{
-		Core::instance()->kaduWindow()->insertMenuActionDescription(enableMediaPlayerStatuses, KaduWindow::MenuKadu);
-		mediaplayerStatus = NULL;
-	}
+//	}
+//	else
+//	{
+	Core::instance()->kaduWindow()->insertMenuActionDescription(enableMediaPlayerStatuses, KaduWindow::MenuKadu, 8);
+	mediaplayerStatus = NULL;
+//	}
 
 	// Initial values of some object variables
 	winKeyPressed = false;
@@ -264,10 +266,10 @@ MediaPlayer::~MediaPlayer()
 	delete timer;
 
 	// Remove menu item (statuses)
-	if (mediaplayerStatus == NULL)
-		Core::instance()->kaduWindow()->removeMenuActionDescription(enableMediaPlayerStatuses);
-	//else
-	//	dockMenu->removeAction(mediaplayerStatus);
+//	if (mediaplayerStatus == NULL)
+	Core::instance()->kaduWindow()->removeMenuActionDescription(enableMediaPlayerStatuses);
+//	else
+//		dockMenu->removeAction(mediaplayerStatus);
 }
 
 void MediaPlayer::setControlsEnabled(bool enabled)

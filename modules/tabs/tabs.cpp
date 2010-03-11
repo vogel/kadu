@@ -90,9 +90,9 @@ void disableNewTab(Action *action)
 		action->setEnabled(false);
 
 	if (config_defaultTabs)
-		action->setText(qApp->translate("TabsManager", "Open in new window"));
+		action->setText(qApp->translate("TabsManager", "Chat in New Window"));
 	else
-		action->setText(qApp->translate("TabsManager", "Open in new tab"));
+		action->setText(qApp->translate("TabsManager", "Chat in new Tab"));
 
 	// TODO 0.6.6 dla siebie samego deaktywujemy opcje w menu, a konfernecje?
 	foreach (const Contact &contact, contacts)
@@ -132,14 +132,14 @@ TabsManager::TabsManager(bool firstload)
 	openInNewTabActionDescription = new ActionDescription(
 		0, ActionDescription::TypeUser, "openInNewTabAction",
 		this, SLOT(onNewTab(QAction *, bool)),
-		"16x16/internet-group-chat.png", "16x16/internet-group-chat.png", tr("Open in new tab"), false, QString::null, disableNewTab
+		"16x16/internet-group-chat.png", "16x16/internet-group-chat.png", tr("Chat in New Tab"), false, QString::null, disableNewTab
 	);
 	BuddiesListViewMenuManager::instance()->insertActionDescription(1, openInNewTabActionDescription);
 
 	attachToTabsActionDescription = new ActionDescription(
 		0, ActionDescription::TypeChat, "attachToTabsAction",
 		this, SLOT(onTabAttach(QAction *, bool)),
-		"kadu_icons/module_tabs-detach.png", "kadu_icons/module_tabs-detach.png", tr("Attach chat to tabs"), true, tr("Detach chat from tabs")
+		"kadu_icons/module_tabs-detach.png", "kadu_icons/module_tabs-detach.png", tr("Attach Chat to Tabs"), true, tr("Detach chat from tabs")
 	);
 	connect(attachToTabsActionDescription, SIGNAL(actionCreated(Action *)), this, SLOT(attachToTabsActionCreated(Action *)));
 
@@ -309,10 +309,6 @@ void TabsManager::onTabChange(int index)
 		return;
 
 	ChatWidget *chat = dynamic_cast<ChatWidget *>(tabdialog->widget(index));
-
-	// czy jest na liscie chatow z nowymi wiadomosciami
-	if (chat == tabdialog->currentWidget())
-		chatsWithNewMessages.removeOne(chat);
 
 	refreshTab(index, chat);
 
@@ -499,17 +495,10 @@ void TabsManager::onTimer()
 
 			}
 
-			// tab aktualnie nieaktywny to ustaw ikonke
-			if (currentChat != chat)
-			{
-				if (msg)
-					tabdialog->setTabIcon(i, IconsManager::instance()->iconByPath("protocols/common/16x16/message.png"));
-				else
-					tabdialog->setTabIcon(i, chat->icon());
-			}
-			else if (currentChat == chat && tabsActive)
-				// wywal go z listy chatow z nowymi wiadomosciami
-				chatsWithNewMessages.removeOne(chat);
+			if (msg)
+				tabdialog->setTabIcon(i, IconsManager::instance()->iconByPath("protocols/common/16x16/message.png"));
+			else
+				tabdialog->setTabIcon(i, chat->icon());
 
 			if (tabsActive)
 			{
@@ -519,6 +508,9 @@ void TabsManager::onTimer()
 					chat->markAllMessagesRead();
 					// a tutaj przywroc tytul�
 					tabdialog->setWindowTitle(chat->chat().title());
+					tabdialog->setTabIcon(i, chat->icon());
+					// wywal go z listy chatow z nowymi wiadomosciami
+					chatsWithNewMessages.removeOne(chat);
 				}
 				else if (chatsWithNewMessages.count() == 1 && !wasactive && config_autoTabChange)
 					tabdialog->setCurrentWidget(chat);

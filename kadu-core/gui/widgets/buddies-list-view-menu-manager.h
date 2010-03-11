@@ -36,7 +36,6 @@ class KADUAPI BuddiesListViewMenuManager
 
 	QList<ActionDescription *> BuddiesContexMenu;
 	QList<ActionDescription *> BuddyListActions;
-	QList<ActionDescription *> ManagementActions;
 
 	BuddiesListViewMenuManager();
 
@@ -46,7 +45,6 @@ public:
 
 	QList<ActionDescription *> buddiesContexMenu() { return BuddiesContexMenu; }
 	QList<ActionDescription *> buddyListActions() { return BuddyListActions; }
-	QList<ActionDescription *> managementActions() { return ManagementActions; }
 
 	void addActionDescription(ActionDescription *actionDescription);
 	void insertActionDescription(int pos, ActionDescription *actionDescription);
@@ -57,11 +55,6 @@ public:
 	void insertListActionDescription(int pos, ActionDescription *actionDescription);
 	void removeListActionDescription(ActionDescription *actionDescription);
 	void addListSeparator();
-	void addManagementActionDescription(ActionDescription *actionDescription);
-	void insertManagementActionDescription(int pos, ActionDescription *actionDescription);
-	void removeManagementActionDescription(ActionDescription *actionDescription);
-	void addManagementSeparator();
-
 };
 
 #endif // BUDDIES_LIST_VIEW_MENU_MANAGER_H

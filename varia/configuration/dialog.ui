@@ -133,8 +133,6 @@ Text is plain black." />
 	<section name="Look" icon="32x32/preferences-desktop-theme.png">
 		<tab name="General">
 			<group-box name="General">
-				<combo-box caption="Theme" config-section="Look" config-item="QtStyle" id="qtThemes"
-					   tool-tip="Choose Qt style"/>
 				<combo-box caption="Icon theme" config-section="Look" config-item="IconTheme" id="iconThemes"
 					   tool-tip="Choose icon theme" />
 				<path-list-edit caption="Icon paths" config-section="Look" config-item="IconsPaths" id="iconPaths"
@@ -355,7 +353,7 @@ Text is plain black." />
 				<check-box caption="Notify about new messages only when window is inactive" config-section="Notify" config-item="NewMessageOnlyIfInactive" />
 			</group-box>
 			<group-box name="Silent Mode">
-				<check-box caption="Enable Silent Mode when Away" config-section="Notify" config-item="AwaySilentMode" id="notify/awaySilentMode" />
+				<check-box caption="Enable Silent Mode when Do not Disturb" config-section="Notify" config-item="AwaySilentMode" id="notify/awaySilentMode" />
 			</group-box>
 			<group-box name="Status change">
 				<check-box caption="Ignore status changes from available / busy to busy / available" config-section="Notify" config-item="IgnoreOnlineToOnline" />

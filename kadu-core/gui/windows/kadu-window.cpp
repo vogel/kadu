@@ -54,6 +54,7 @@
 #include "gui/windows/kadu-window-actions.h"
 #include "gui/widgets/status-buttons.h"
 #include "gui/widgets/status-menu.h"
+#include "notify/notification-manager.h"
 
 #include "misc/misc.h"
 #include "debug.h"
@@ -172,6 +173,9 @@ void KaduWindow::createKaduMenu()
 
 	KaduMenu->addSeparator();
 	RecentChatsMenuAction = KaduMenu->addMenu(RecentChatsMenu);
+	KaduMenu->addSeparator();
+
+	insertMenuActionDescription(NotificationManager::instance()->silentModeActionDescription(), MenuKadu);
 	KaduMenu->addSeparator();
 
 	insertMenuActionDescription(Actions->ExitKadu, MenuKadu);

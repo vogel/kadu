@@ -36,13 +36,13 @@ class ServerMonitorWindow : public QScrollArea, ConfigurationAwareObject
 {
 	Q_OBJECT
 
-	QList<ServerStatusWidget*> ServerStatusWidgetList;
+	QList<ServerStatusWidget *> ServerStatusWidgetList;
 	QString ServerFileListName;
 
-	QPushButton* ButtonRefresh;
+	QPushButton *ButtonRefresh;
 	QTimer RefreshTimer;
 
-	QLabel* StatsLabel;
+	QLabel *StatsLabel;
 	quint32 AvalibleServers;
 	quint32 UnavalibleServers;
 	quint32 UnknownStatusServers;
@@ -55,7 +55,6 @@ class ServerMonitorWindow : public QScrollArea, ConfigurationAwareObject
 	void cleanLayout();
 	void loadServersListFromGaduManager();
 	void loadServersListFromFile();
-	void setConfiguration();
 	void removeAllServer();
 
 private slots:
@@ -66,8 +65,6 @@ private slots:
 public:
 	explicit ServerMonitorWindow(QWidget *parent = 0);
 	virtual ~ServerMonitorWindow();
-
-
 };
 
 #endif // SERVER_MONITOR_WINDOW_H

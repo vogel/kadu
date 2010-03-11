@@ -401,16 +401,20 @@ void WordFix::configurationApplied()
 
 	wordsList.clear();
 	QTreeWidgetItem* item = list->itemAt(0, 0);
-	QString wordStr = item->text(0),
-			valueStr = item->text(1);
 
-	wordsList[wordStr] = valueStr;
-
-	while ((item = list->itemBelow(item)))
+	if (item)
 	{
-		wordStr = item->text(0);
-		valueStr = item->text(1);
+		QString wordStr = item->text(0),
+				valueStr = item->text(1);
+
 		wordsList[wordStr] = valueStr;
+
+		while ((item = list->itemBelow(item)))
+		{
+			wordStr = item->text(0);
+			valueStr = item->text(1);
+			wordsList[wordStr] = valueStr;
+		}
 	}
 
 	saveList();

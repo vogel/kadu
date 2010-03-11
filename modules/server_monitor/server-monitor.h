@@ -32,23 +32,21 @@ class ServerMonitor : public ConfigurationUiHandler
 {
 	Q_OBJECT
 
-	ActionDescription* ServerMonitorActionDescription;
-	ServerMonitorWindow* Dialog;
-
-//	void loadServersList();
+	ActionDescription *ServerMonitorActionDescription;
+	ServerMonitorWindow *Dialog;
 
 private slots:
-	void serverMonitorActionActivated(QAction* ,bool);
+	void serverMonitorActionActivated(QAction * ,bool);
 
 public:
 	explicit ServerMonitor(QWidget *parent = 0);
 	virtual ~ServerMonitor();
-	virtual void mainConfigurationWindowCreated ( MainConfigurationWindow* mainConfigurationWindow );
+	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
-	static NotifyEvent* notifyEvent;
+	static NotifyEvent *notifyEvent;
 
 };
 
-extern ServerMonitor* serverMonitor;
+extern ServerMonitor *serverMonitor;
 
 #endif // SERVER_MONITOR_H

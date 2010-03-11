@@ -137,9 +137,6 @@ void JabberEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 
 	formLayout->addRow(0, new QLabel(tr("<font size='-1'><i>Select or enter the identity that will be associated with this account.</i></font>"), this));
 
-	QPushButton *changePassword = new QPushButton(tr("Change password"), this);
-	formLayout->addRow(0, changePassword);
-
 	AccountAvatarWidget *avatarWidget = new AccountAvatarWidget(account(), this);
 	layout->addWidget(avatarWidget, 0, 1, Qt::AlignTop);
 
@@ -371,8 +368,8 @@ void JabberEditAccountWidget::dataChanged()
 	if (!AccountDetails)
 		return;
 
-	if (/*account().name() == AccountName->text()
-		&&*/ account().connectAtStart() == ConnectAtStart->isChecked()
+	if (account().accountIdentity() == Identities->currentIdentity()
+		&& account().connectAtStart() == ConnectAtStart->isChecked()
 		&& account().id() == AccountId->text()
 		&& account().rememberPassword() == RememberPassword->isChecked()
 		&& account().password() == AccountPassword->text()
@@ -392,8 +389,6 @@ void JabberEditAccountWidget::dataChanged()
 		return;
 	}
 
-// 	bool sameNameExists = AccountManager::instance()->byName(AccountName->text())
-// 			&& AccountManager::instance()->byName(AccountName->text()) != account();
 	bool sameIdExists = AccountManager::instance()->byId(account().protocolName(), account().id())
 			&& AccountManager::instance()->byId(account().protocolName(), account().id()) != account();
 
@@ -416,6 +411,7 @@ void JabberEditAccountWidget::dataChanged()
 
 void JabberEditAccountWidget::loadAccountData()
 {
+	Identities->setCurrentIdentity(account().accountIdentity());
 	ConnectAtStart->setChecked(account().connectAtStart());
 	AccountId->setText(account().id());
 	RememberPassword->setChecked(account().rememberPassword());
@@ -447,6 +443,7 @@ void JabberEditAccountWidget::apply()
 	if (!AccountDetails)
 		return;
 
+	account().setAccountIdentity(Identities->currentIdentity());
 	account().setConnectAtStart(ConnectAtStart->isChecked());
 	account().setId(AccountId->text());
 	account().setRememberPassword(RememberPassword->isChecked());

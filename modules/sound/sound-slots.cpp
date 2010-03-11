@@ -35,6 +35,7 @@
 #include <QtGui/QVBoxLayout>
 
 #include "configuration/configuration-file.h"
+#include "core/core.h"
 #include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
 #include "gui/widgets/configuration/notify-group-box.h"
@@ -125,9 +126,11 @@ SoundSlots::SoundSlots(bool firstLoad, QObject *parent)
 	mute_action = new ActionDescription(this,
 		ActionDescription::TypeGlobal, "muteSoundsAction",
 		this, SLOT(muteActionActivated(QAction *, bool)),
-		"16x16/audio-volume-muted.png", "16x16/audio-volume-high.png", tr("Mute sounds"), true, tr("Unmute sounds")
+		"16x16/audio-volume-high.png", "16x16/audio-volume-muted.png", tr("Play sounds"), true//, tr("Unmute sounds")
 	);
 	connect(mute_action, SIGNAL(actionCreated(Action *)), this, SLOT(setMuteActionState()));
+
+	Core::instance()->kaduWindow()->insertMenuActionDescription(mute_action, KaduWindow::MenuKadu, 7);
 
 	if (firstLoad)
 		KaduWindow::addAction("muteSoundsAction");
@@ -154,29 +157,29 @@ void SoundSlots::muteActionActivated(QAction  *action, bool is_on)
 {
 	Q_UNUSED(action)
 	kdebugf();
-	sound_manager->setMute(is_on);
+	sound_manager->setMute(!is_on);
 	foreach (Action *action, mute_action->actions())
 		action->setChecked(is_on);
-	config_file.writeEntry("Sounds", "PlaySound", !is_on);
+	config_file.writeEntry("Sounds", "PlaySound", is_on);
 	kdebugf2();
 }
 
 void SoundSlots::setMuteActionState()
 {
 	foreach (Action *action, mute_action->actions())
-		action->setChecked(sound_manager->isMuted());
+		action->setChecked(!sound_manager->isMuted());
 }
 
 void SoundSlots::muteUnmuteSounds()
 {
 	kdebugf();
-	muteActionActivated(NULL, !sound_manager->isMuted());
+	muteActionActivated(0, !sound_manager->isMuted());
 	kdebugf2();
 }
 
 void SoundSlots::configurationUpdated()
 {
-	muteActionActivated(0, !config_file.readBoolEntry("Sounds", "PlaySound"));
+	muteActionActivated(0, config_file.readBoolEntry("Sounds", "PlaySound"));
 }
 
 void SoundSlots::testSamplePlaying()

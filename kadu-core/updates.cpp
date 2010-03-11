@@ -104,6 +104,9 @@ void Updates::buildQuery()
 			case QSysInfo::MV_LEOPARD:
 				platform.append("MacOSX-Leopard");
 				break;
+			case QSysInfo::MV_SNOWLEOPARD:
+				platform.append("MacOSX-SnowLeopard");
+				break;
 			default:
 				platform.append("MacOSX-Unknown");
 				break;
@@ -134,6 +137,9 @@ void Updates::buildQuery()
 				break;
 			case QSysInfo::WV_VISTA:
 				platform.append("WindowsVista");
+				break;
+			case QSysInfo::WV_WINDOWS7:
+				platform.append("Windows7");
 				break;
 	    		default:
 				platform.append("Windows-Unknown");

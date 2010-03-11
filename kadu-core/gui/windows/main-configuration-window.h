@@ -72,7 +72,6 @@ class KADUAPI MainConfigurationWindow : public ConfigurationWindow
 
 	void setLanguages();
 
-	void setQtThemes();
 	void setToolTipClasses();
 
 	static QString findExecutable(const QStringList &paths, const QStringList &executableNames);

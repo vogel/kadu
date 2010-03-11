@@ -1,4 +1,3 @@
-
 /*
  * %kadu copyright begin%
  * Copyright 2009, 2009, 2010 Wojciech Treter (juzefwt@gmail.com)
@@ -69,10 +68,6 @@ void JabberCreateAccountWidget::createGui()
 
 	QFormLayout *layout = new QFormLayout(formWidget);
 
-	AccountName = new QLineEdit(this);
-	connect(AccountName, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
-	layout->addRow(tr("Account Name") + ":", AccountName);
-	
 	QWidget *jidWidget = new QWidget(this);
 	QGridLayout *jidLayout = new QGridLayout(jidWidget);
 	jidLayout->setSpacing(0);
@@ -256,8 +251,11 @@ void JabberCreateAccountWidget::connectionOptionsChanged()
 
 void JabberCreateAccountWidget::dataChanged()
 {
-	bool disable = Domain->currentText().isEmpty() || Username->text().isEmpty() || NewPassword->text().isEmpty()
-		       || ReNewPassword->text().isEmpty() || IdentityCombo->currentIndex() == -1;
+	bool disable = Domain->currentText().isEmpty()
+			|| Username->text().isEmpty()
+			|| NewPassword->text().isEmpty()
+			|| ReNewPassword->text().isEmpty()
+			|| !IdentityCombo->currentIdentity();
 
 	RegisterAccountButton->setEnabled(!disable);
 }
@@ -293,7 +291,6 @@ void JabberCreateAccountWidget::cancel()
 
 void JabberCreateAccountWidget::resetGui()
 {
-	AccountName->setText("");
 	Username->setText("");
 	Domain->setCurrentIndex(-1);
 	NewPassword->setText("");
@@ -315,7 +312,7 @@ void JabberCreateAccountWidget::registerNewAccountFinished(JabberServerRegisterA
 		details->setState(StorableObject::StateNew);
 		jabberAccount.setDetails(details);
 		jabberAccount.setProtocolName("jabber");
-		//jabberAccount.setName(AccountName->text());
+		jabberAccount.setAccountIdentity(IdentityCombo->currentIdentity());
 		jabberAccount.setId(jsra->jid());
 		jabberAccount.setPassword(NewPassword->text());
 		details->setTlsOverrideDomain(jsra->client()->tlsOverrideDomain());

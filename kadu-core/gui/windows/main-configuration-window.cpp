@@ -230,7 +230,6 @@ void MainConfigurationWindow::show()
 	if (!isVisible())
 	{
 		setLanguages();
-		setQtThemes();
 		setIconThemes();
 		setEmoticonThemes();
 		setToolTipClasses();
@@ -269,28 +268,6 @@ void MainConfigurationWindow::setLanguages()
 	}
 
 	languages->setItems(itemValues, itemCaptions);
-}
-
-void MainConfigurationWindow::setQtThemes()
-{
-	ConfigComboBox *qtThemes = dynamic_cast<ConfigComboBox *>(widget()->widgetById("qtThemes"));
-
-	QStringList themes = QStyleFactory::keys();
-	QString currentStyle = QApplication::style()->objectName();
-
-	foreach (const QString& it, themes)
-		if (it.toLower() == currentStyle.toLower())
-		{
-			currentStyle = it;
-			break;
-		}
-
-	if (!themes.contains(currentStyle))
-		themes.append(currentStyle);
-
-	qtThemes->setItems(themes, themes);
-	// hack, this setting will by used in ConfigComboBox::loadConfiguration()
-	config_file.writeEntry("Look", "QtStyle", currentStyle);
 }
 
 void MainConfigurationWindow::setIconThemes()
