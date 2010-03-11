@@ -33,6 +33,8 @@
 #include "modules.h"
 #include "misc/path-conversion.h"
 
+#include "gui/windows/sms-progress-window.h"
+
 #include "../history/history.h"
 
 #include "sms-dialog.h"
@@ -227,6 +229,10 @@ void SmsDialog::sendSms()
 		SmsSender *sender = new SmsSender(recipient->text(), QString::null, this);
 		sender->setContact(e_contact->text());
 		sender->setSignature(e_signature->text());
+
+		SmsProgressWindow *window = new SmsProgressWindow(sender);
+		window->show();
+
 		sender->sendMessage(body->toPlainText());
 	}
 	else
