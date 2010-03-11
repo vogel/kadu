@@ -8,9 +8,12 @@
  ***************************************************************************/
 
 #include <QtGui/QMessageBox>
+#include <QtNetwork/QNetworkAccessManager>
+#include <QtNetwork/QNetworkReply>
 #include <QtScript/QScriptEngine>
 
 #include "gui/windows/message-dialog.h"
+#include "misc/token-reader.h"
 #include "debug.h"
 
 #include "scripts/sms-script-manager.h"
@@ -19,7 +22,7 @@
 #include "sms-sender.h"
 
 SmsSender::SmsSender(const QString &number, const QString &gatewayId, QObject *parent) :
-		QObject(parent), GatewayId(gatewayId), Number(number)
+		QObject(parent), GatewayId(gatewayId), Number(number), MyTokenReader(0)
 {
 	fixNumber();
 }
@@ -80,6 +83,11 @@ void SmsSender::sendMessage(const QString &message)
 		sendSms();
 }
 
+void SmsSender::setTokenReader(TokenReader *tokenReader)
+{
+	MyTokenReader = tokenReader;
+}
+
 void SmsSender::queryForGateway()
 {
 	SmsGatewayQuery *query = new SmsGatewayQuery(this);
@@ -100,6 +108,47 @@ void SmsSender::gatewayQueryDone(const QString &gatewayId)
 	GatewayId = gatewayId;
 
 	sendSms();
+}
+
+void SmsSender::readToken(const QString &tokenImageUrl, QScriptValue callbackObject, QScriptValue callbackMethod)
+{
+	if (!MyTokenReader)
+	{
+		failure("Cannot read token value");
+		return;
+	}
+
+	TokenCallbackObject = callbackObject;
+	TokenCallbackMethod = callbackMethod;
+
+	QNetworkAccessManager *network = new QNetworkAccessManager(this);
+	TokenReply = network->get(QNetworkRequest(tokenImageUrl));
+	connect(TokenReply, SIGNAL(finished()), this, SLOT(tokenImageDownloaded()));
+}
+
+void SmsSender::tokenImageDownloaded()
+{
+	if (QNetworkReply::NoError != TokenReply->error())
+	{
+		failure("Cannot download token image");
+		return;
+	}
+
+	QPixmap image;
+	if (!image.loadFromData(TokenReply->readAll()))
+	{
+		failure("Cannot display token image");
+		return;
+	}
+
+	MyTokenReader->readTokenAsync(image, this);
+}
+
+void SmsSender::tokenRead(const QString &tokenValue)
+{
+	QScriptValueList arguments;
+	arguments.append(tokenValue);
+	TokenCallbackMethod.call(TokenCallbackObject, arguments);
 }
 
 void SmsSender::sendSms()

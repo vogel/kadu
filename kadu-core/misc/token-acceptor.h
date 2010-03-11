@@ -17,20 +17,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TOKEN_READER_H
-#define TOKEN_READER_H
+#ifndef TOKEN_ACCEPTOR_H
+#define TOKEN_ACCEPTOR_H
 
-class QPixmap;
 class QString;
 
-class TokenAcceptor;
-
-class TokenReader
+class TokenAcceptor
 {
 public:
-	virtual QString readToken(const QPixmap &tokenPixmap) = 0;
-	virtual void readTokenAsync(const QPixmap &tokenPixmap, TokenAcceptor *acceptor) = 0;
+	virtual void tokenRead(const QString &tokenValue) = 0;
 
 };
 
-#endif // TOKEN_READER_H
+#endif // TOKEN_ACCEPTOR_H
