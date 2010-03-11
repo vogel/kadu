@@ -22,13 +22,17 @@
 
 #include <QtGui/QWidget>
 
+#include "misc/token-reader.h"
+
 class QLabel;
+class QLineEdit;
 class QMovie;
 class QPushButton;
+class QVBoxLayout;
 
 class SmsSender;
 
-class SmsProgressWindow : public QWidget
+class SmsProgressWindow : public QWidget, public TokenReader
 {
 	Q_OBJECT
 
@@ -36,14 +40,25 @@ class SmsProgressWindow : public QWidget
 	QMovie *WaitMovie;
 	QLabel *MessageLabel;
 	QPushButton *CloseButton;
+	QVBoxLayout *Layout;
+
+	QLabel *TokenLabel;
+	QLineEdit *TokenEdit;
+	QPushButton *TokenAcceptButton;
 
 	SmsSender *Sender;
 
 	void createGui();
 
+private slots:
+    void tokenValueEntered();
+
 public:
 	explicit SmsProgressWindow(SmsSender *sender, QWidget *parent = 0);
 	virtual ~SmsProgressWindow();
+
+	virtual QString readToken(const QPixmap &tokenPixmap);
+	virtual void readTokenAsync(const QPixmap &tokenPixmap, TokenAcceptor *acceptor);
 
 };
 

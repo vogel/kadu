@@ -31,11 +31,12 @@
 #include "sms-progress-window.h"
 
 SmsProgressWindow::SmsProgressWindow(SmsSender *sender, QWidget *parent) :
-		QWidget(parent), Sender(sender)
+		QWidget(parent), TokenLabel(0), TokenEdit(0), TokenAcceptButton(0), Sender(sender)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 
 	Sender->setParent(this);
+	Sender->setTokenReader(this);
 
 	createGui();
 }
@@ -61,7 +62,12 @@ void SmsProgressWindow::createGui()
 	topWidgetLayout->addWidget(IconLabel);
 
 	MessageLabel = new QLabel(tr("Sending SMS in progress."), topWidget);
-	topWidgetLayout->addWidget(MessageLabel, 0, Qt::AlignTop);
+
+	QWidget *rightWidget = new QWidget(this);
+	Layout = new QVBoxLayout(rightWidget);
+	Layout->addWidget(MessageLabel);
+
+	topWidgetLayout->addWidget(rightWidget, 0, Qt::AlignTop);
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(this);
 	CloseButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCloseButton), tr("Close"));
@@ -71,4 +77,46 @@ void SmsProgressWindow::createGui()
 	buttons->addButton(CloseButton, QDialogButtonBox::DestructiveRole);
 
 	mainLayout->addWidget(buttons);
+}
+
+QString SmsProgressWindow::readToken(const QPixmap& tokenPixmap)
+{
+	Q_UNUSED(tokenPixmap);
+
+	// ignore
+	return QString::null;
+}
+
+void SmsProgressWindow::readTokenAsync(const QPixmap &tokenPixmap, TokenAcceptor *acceptor)
+{
+	Q_UNUSED(acceptor);
+
+	MessageLabel->setText(tr("Enter text from the picture:"));
+
+	TokenLabel = new QLabel(this);
+	TokenLabel->setPixmap(tokenPixmap);
+
+	Layout->addWidget(TokenLabel);
+
+	TokenEdit = new QLineEdit(this);
+	connect(TokenEdit, SIGNAL(returnPressed()), this, SLOT(tokenValueEntered()));
+
+	Layout->addWidget(TokenEdit);
+
+	TokenAcceptButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("Ok"), this);
+	connect(TokenAcceptButton, SIGNAL(clicked(bool)), this, SLOT(tokenValueEntered()));
+
+	Layout->addWidget(TokenAcceptButton);
+}
+
+void SmsProgressWindow::tokenValueEntered()
+{
+	Sender->tokenRead(TokenEdit->text());
+
+	delete TokenLabel;
+	TokenLabel = 0;
+	delete TokenEdit;
+	TokenEdit = 0;
+	delete TokenAcceptButton;
+	TokenAcceptButton = 0;
 }
