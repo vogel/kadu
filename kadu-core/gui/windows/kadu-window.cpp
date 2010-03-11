@@ -176,6 +176,7 @@ void KaduWindow::createKaduMenu()
 	KaduMenu->addSeparator();
 
 	insertMenuActionDescription(NotificationManager::instance()->silentModeActionDescription(), MenuKadu);
+	KaduMenu->addSeparator();
 
 	insertMenuActionDescription(Actions->ExitKadu, MenuKadu);
 
