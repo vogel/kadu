@@ -456,11 +456,6 @@ void HintManager::prepareOverUserHint(QFrame *tipFrame, QLabel *iconLabel, QLabe
 	 * so we have to remove it here */
 	text = text.replace("file://", "");
 
-	/* Dorr: the file:// in img tag doesn't generate the image on hint.
-	 * for compatibility with other syntaxes we're allowing to put the file://
-	 * so we have to remove it here */
-	text = text.replace("file://", "");
-
 	while (text.endsWith("<br/>"))
 		text.resize(text.length() - 5 /* 5 == QString("<br/>").length()*/);
 	while (text.startsWith("<br/>"))
