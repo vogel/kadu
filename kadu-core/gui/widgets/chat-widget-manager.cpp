@@ -258,7 +258,7 @@ void ChatWidgetManager::activateChatWidget(ChatWidget *chatWidget, bool forceAct
 
 	kdebugm(KDEBUG_INFO, "parent: %p\n", win);
 	chatWidget->makeActive();
-	emit chatWidgetOpen(chatWidget);
+	emit chatWidgetOpen(chatWidget, true);
 }
 
 ChatWidget * ChatWidgetManager::openChatWidget(Chat chat, bool forceActivate)
@@ -296,7 +296,7 @@ ChatWidget * ChatWidgetManager::openChatWidget(Chat chat, bool forceActivate)
 	emit chatWidgetCreated(chatWidget);
 // TODO: remove, it is so stupid ...
 	emit chatWidgetCreated(chatWidget, time(0));
-	emit chatWidgetOpen(chatWidget);
+	emit chatWidgetOpen(chatWidget, forceActivate);
 
 	kdebugf2();
 

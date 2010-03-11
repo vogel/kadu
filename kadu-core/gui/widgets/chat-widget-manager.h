@@ -178,7 +178,7 @@ signals:
 		otwarcia nowego okna chat nawet je�li ju� taki istnieje
 		\param chat otwarte okno
 	**/
-	void chatWidgetOpen(ChatWidget *chat);
+	void chatWidgetOpen(ChatWidget *chat, bool activate);
 
 	void chatWidgetTitlesUpdated();
 

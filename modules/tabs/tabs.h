@@ -56,7 +56,7 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Sto
 		TabWidget *tabdialog;
 		QTimer timer;
 		QList<ChatWidget *> chatsWithNewMessages, newchats, detachedchats;
-		bool no_tabs, autoswith, force_tabs;
+		bool no_tabs, force_tabs;
 
 		int target_tabs;
 		void insertTab(ChatWidget *chat);
@@ -114,7 +114,7 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Sto
 		void onNewChat(ChatWidget *chat, bool &handled);
 		void onDestroyingChat(ChatWidget *chat);
 
-		void onOpenChat(ChatWidget *chat);
+		void onOpenChat(ChatWidget *chat, bool activate);
 		void onTitleChanged(Chat chatChanged, const QString &newTitle);
 
 		void onTabChange(int index);

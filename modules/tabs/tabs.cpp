@@ -123,8 +123,8 @@ TabsManager::TabsManager(bool firstload)
 	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget *)),
 			this, SLOT(onDestroyingChat(ChatWidget *)));
 
-	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetOpen(ChatWidget *)),
-			this, SLOT(onOpenChat(ChatWidget *)));
+	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetOpen(ChatWidget *, bool)),
+			this, SLOT(onOpenChat(ChatWidget *, bool)));
 
 	connect(&timer, SIGNAL(timeout()),
 			this, SLOT(onTimer()));
@@ -170,7 +170,6 @@ TabsManager::TabsManager(bool firstload)
 
 	no_tabs = false;
 	force_tabs = false;
-	autoswith = false;
 	target_tabs = -1;
 
 	// przywracamy karty z poprzedniej sesji
@@ -320,23 +319,15 @@ void TabsManager::onTabChange(int index)
 	chat->edit()->setFocus();
 }
 
-void TabsManager::onOpenChat(ChatWidget *chat)
+void TabsManager::onOpenChat(ChatWidget *chat, bool activate)
 {
 	kdebugf();
-	if (chat && tabdialog->indexOf(chat)!=-1)
+	if (activate && chat && tabdialog->indexOf(chat)!=-1)
 	{
 		tabdialog->setWindowState(tabdialog->windowState() & ~Qt::WindowMinimized);
-		// open new tabs with new messages in the background
-		if (!config_file.readBoolEntry("Chat", "OpenChatOnMessage"))
-		{
-			tabdialog->setCurrentWidget(chat);
-			tabdialog->raise();
-		}
+
+		tabdialog->setCurrentWidget(chat);
 	}
-	else if ((config_autoTabChange && !(chatsWithNewMessages.contains(chat))) ||
-		((!_isActiveWindow(tabdialog)) && !(chatsWithNewMessages.contains(chat))) ||
-		((chatsWithNewMessages.contains(chat)) && !(config_file.readBoolEntry("Chat","OpenChatOnMessage"))))
-			autoswith = true;
 	kdebugf2();
 }
 
@@ -436,13 +427,9 @@ void TabsManager::insertTab(ChatWidget* chat)
 
 	tabdialog->setTabToolTip(target_tabs, chat->chat().title());
 
-	if ((config_autoTabChange && !chatsWithNewMessages.contains(chat)) || autoswith)
-		tabdialog->setCurrentWidget(chat);
-
 	tabdialog->setWindowState(tabdialog->windowState() & ~Qt::WindowMinimized);
 	_activateWindow(tabdialog);
 
-	autoswith = false;
 	target_tabs = -1;
 
 	connect(chat->edit(), SIGNAL(keyPressed(QKeyEvent*, CustomInput*, bool&)), tabdialog, SLOT(chatKeyPressed(QKeyEvent*, CustomInput*, bool&)));
