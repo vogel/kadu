@@ -38,10 +38,12 @@
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"
 #include "contacts/contact-manager.h"
+#include "core/core.h"
 #include "gui/actions/action.h"
 #include "gui/widgets/buddies-list-view-menu-manager.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/custom-input.h"
+#include "gui/windows/kadu-window.h"
 #include "gui/windows/main-configuration-window.h"
 #include "gui/windows/main-window.h"
 #include "gui/windows/message-dialog.h"
@@ -86,6 +88,7 @@ void NotificationManager::init()
 
 	createDefaultConfiguration();
 	configurationUpdated();
+	AutoSilentMode = false;
 	//TODO 0.6.6:
 	//triggerAllAccountsRegistered();
 
@@ -99,9 +102,11 @@ void NotificationManager::init()
 	SilentModeActionDescription = new ActionDescription(this,
 		ActionDescription::TypeGlobal, "silentModeAction",
 		this, SLOT(silentModeActionActivated(QAction *, bool)),
-		"kadu_icons/silent-mode-on.png", "kadu_icons/silent-mode-off.png", tr("Enable Silent Mode"), true, tr("Disable Silent Mode")
+		"kadu_icons/silent-mode-off.png", "kadu_icons/silent-mode-off.png", tr("Show Notifications"), true, tr("Show Notifications")
 	);
 	connect(SilentModeActionDescription, SIGNAL(actionCreated(Action *)), this, SLOT(silentModeActionCreated(Action *)));
+
+	connect(StatusContainerManager::instance(), SIGNAL(statusChanged()), this, SLOT(statusChanged()));
 
 	foreach (Group group, GroupManager::instance()->items())
 		groupAdded(group);
@@ -192,18 +197,36 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 
 void NotificationManager::silentModeActionCreated(Action *action)
 {
-	action->setChecked(SilentMode);
+	action->setChecked(!SilentMode);
 }
 
 void NotificationManager::silentModeActionActivated(QAction *sender, bool toggled)
 {
 	Q_UNUSED(sender)
 
-	SilentMode = toggled;
+	SilentMode = !toggled;
 	foreach (Action *action, SilentModeActionDescription->actions())
 		action->setChecked(toggled);
 
-	config_file.writeEntry("Notify", "SilentMode", toggled);
+	config_file.writeEntry("Notify", "SilentMode", SilentMode);
+}
+
+void NotificationManager::statusChanged()
+{
+	if (SilentModeWhenDnD && !SilentMode && StatusContainerManager::instance()->status().type() == "DoNotDisturb")
+	{
+		foreach (Action *action, SilentModeActionDescription->actions())
+			action->setChecked(false);
+
+		AutoSilentMode = true;
+	}
+	else if (!SilentMode && AutoSilentMode)
+	{
+		foreach (Action *action, SilentModeActionDescription->actions())
+			action->setChecked(true);
+
+		AutoSilentMode = false;
+	}
 }
 
 void NotificationManager::accountRegistered(Account account)
@@ -215,7 +238,7 @@ void NotificationManager::accountRegistered(Account account)
 // 	connect(protocol, SIGNAL(connectionError(Account, const QString &, const QString &)),
 // 			this, SLOT(connectionError(Account, const QString &, const QString &)));
 	connect(account, SIGNAL(buddyStatusChanged(Contact, Status)),
-			this, SLOT(statusChanged(Contact, Status)));
+			this, SLOT(contactStatusChanged(Contact, Status)));
 	connect(account, SIGNAL(connected()), this, SLOT(accountConnected()));
 
 	ChatService *chatService = protocol->chatService();
@@ -236,7 +259,7 @@ void NotificationManager::accountUnregistered(Account account)
 // 	disconnect(protocol, SIGNAL(connectionError(Account, const QString &, const QString &)),
 // 			this, SLOT(connectionError(Account, const QString &, const QString &))); // TODO: 0.6.6 fix
 	disconnect(account, SIGNAL(buddyStatusChanged(Contact, Status)),
-			this, SLOT(statusChanged(Contact, Status)));
+			this, SLOT(contactStatusChanged(Contact, Status)));
 	disconnect(account, SIGNAL(connected()), this, SLOT(accountConnected()));
 
 	ChatService *chatService = protocol->chatService();
@@ -260,7 +283,7 @@ void NotificationManager::accountConnected()
 	}
 }
 
-void NotificationManager::statusChanged(Contact contact, Status oldStatus)
+void NotificationManager::contactStatusChanged(Contact contact, Status oldStatus)
 {
 	kdebugf();
 
@@ -402,10 +425,10 @@ bool NotificationManager::ignoreNotifications()
 	if (SilentMode)
 		return true;
 
-	if (!SilentModeWhenAway)
-		return false;
+	if (AutoSilentMode)
+		return true;
 
-	return StatusContainerManager::instance()->status().group() == "Away";
+	return false;
 }
 
 void NotificationManager::notify(Notification *notification)
@@ -497,7 +520,7 @@ void NotificationManager::configurationUpdated()
 {
 	NotifyAboutAll = config_file.readBoolEntry("Notify", "NotifyAboutAll");
 	SilentMode = config_file.readBoolEntry("Notify", "SilentMode", false);
-	SilentModeWhenAway = config_file.readBoolEntry("Notify", "AwaySilentMode", false);
+	SilentModeWhenDnD = config_file.readBoolEntry("Notify", "AwaySilentMode", false);
 }
 
 void NotificationManager::createDefaultConfiguration()
