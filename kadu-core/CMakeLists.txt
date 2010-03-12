@@ -153,6 +153,7 @@ set (kadu_SRCS
 	gui/widgets/kadu-text-browser.cpp
 	gui/widgets/modal-configuration-widget.cpp
 	gui/widgets/path-list-edit.cpp
+	gui/widgets/progress-icon.cpp
 	gui/widgets/protocols-combo-box.cpp
 	gui/widgets/proxy-group-box.cpp
 	gui/widgets/preview.cpp
@@ -434,6 +435,7 @@ set (kadu_MOC_SRCS
 	gui/widgets/modal-configuration-widget.h
 	gui/widgets/path-list-edit.h
 	gui/widgets/preview.h
+	gui/widgets/progress-icon.h
 	gui/widgets/protocols-combo-box.h
 	gui/widgets/proxy-group-box.h
 	gui/widgets/select-buddy-combobox.h
