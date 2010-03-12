@@ -28,7 +28,7 @@ ProgressLabel::ProgressLabel(const QString &text, QWidget *parent) :
 {
 	createGui();
 
-	Label->setText(text);
+	setText(text);
 }
 
 ProgressLabel::~ProgressLabel()
@@ -42,12 +42,17 @@ void ProgressLabel::createGui()
 	Icon = new ProgressIcon(this);
 	Label = new QLabel(this);
 
-	layout->addWidget(Icon);
-	layout->addWidget(Label);
+	layout->addWidget(Icon, 0, Qt::AlignTop);
+	layout->addWidget(Label, 0, Qt::AlignTop | Qt::AlignLeft);
 }
 
 void ProgressLabel::setState(ProgressIcon::ProgressState state, const QString &text)
 {
 	Icon->setState(state);
+	setText(text);
+}
+
+void ProgressLabel::setText(const QString &text)
+{
 	Label->setText(text);
 }

@@ -27,7 +27,7 @@
 #include <QtGui/QStyle>
 #include <QtGui/QVBoxLayout>
 
-#include "gui/widgets/progress-icon.h"
+#include "gui/widgets/progress-label.h"
 #include "icons-manager.h"
 
 #include "server/gadu-server-register-account.h"
@@ -53,17 +53,8 @@ void GaduWaitForAccountRegisterWindow::createGui()
 {
 	QVBoxLayout *mainLayout = new QVBoxLayout(this);
 
-	QWidget *topWidget = new QWidget(this);
-	mainLayout->addWidget(topWidget);
-
-	QHBoxLayout *topWidgetLayout = new QHBoxLayout(topWidget);
-
-	Progress = new ProgressIcon(topWidget);
-
-	topWidgetLayout->addWidget(Progress);
-
-	MessageLabel = new QLabel(tr("Plase wait. New Gadu-Gadu account is being registered."), topWidget);
-	topWidgetLayout->addWidget(MessageLabel, 0, Qt::AlignTop);
+	Progress = new ProgressLabel(tr("Plase wait. New Gadu-Gadu account is being registered."), this);
+	mainLayout->addWidget(Progress);
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(this);
 	CloseButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCloseButton), tr("Close"));
@@ -85,17 +76,15 @@ void GaduWaitForAccountRegisterWindow::registerNewAccountFinished(GaduServerRegi
 {
 	if (gsra && gsra->result())
 	{
-		Progress->setState(ProgressIcon::StateFinished);
 		QString message(tr("Registration was successful. Your new number is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist."));
-		MessageLabel->setText(message.arg(gsra->uin()));
+		Progress->setState(ProgressIcon::StateFinished, message.arg(gsra->uin()));
 
 		emit uinRegistered(gsra->uin());
 	}
 	else
 	{
-		Progress->setState(ProgressIcon::StateFailed);
 		QString message(tr("An error has occured while registration. Please try again later."));
-		MessageLabel->setText(message);
+		Progress->setState(ProgressIcon::StateFailed, message);
 
 		emit uinRegistered(0);
 	}

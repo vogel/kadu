@@ -38,6 +38,7 @@ public:
 	virtual ~ProgressLabel();
 
 	void setState(ProgressIcon::ProgressState state, const QString &text);
+	void setText(const QString &text);
 
 };
 

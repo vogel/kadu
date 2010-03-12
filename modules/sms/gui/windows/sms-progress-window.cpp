@@ -26,7 +26,7 @@
 #include <QtGui/QStyle>
 #include <QtGui/QVBoxLayout>
 
-#include "gui/widgets/progress-icon.h"
+#include "gui/widgets/progress-label.h"
 
 #include "sms-sender.h"
 
@@ -49,24 +49,11 @@ SmsProgressWindow::~SmsProgressWindow()
 
 void SmsProgressWindow::createGui()
 {
-	QVBoxLayout *mainLayout = new QVBoxLayout(this);
+	Layout = new QVBoxLayout(this);
 
-	QWidget *topWidget = new QWidget(this);
-	mainLayout->addWidget(topWidget);
+	Progress = new ProgressLabel(tr("Sending SMS in progress."), this);
+	Layout->addWidget(Progress);
 
-	QHBoxLayout *topWidgetLayout = new QHBoxLayout(topWidget);
-
-	Progress = new ProgressIcon(topWidget);
-
-	topWidgetLayout->addWidget(Progress, 0, Qt::AlignTop);
-
-	MessageLabel = new QLabel(tr("Sending SMS in progress."), topWidget);
-
-	QWidget *rightWidget = new QWidget(this);
-	Layout = new QVBoxLayout(rightWidget);
-	Layout->addWidget(MessageLabel, 0, Qt::AlignLeft);
-
-	topWidgetLayout->addWidget(rightWidget, 0, Qt::AlignTop);
 /*
 	QDialogButtonBox *buttons = new QDialogButtonBox(this);
 	CloseButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCloseButton), tr("Close"));
@@ -90,7 +77,7 @@ void SmsProgressWindow::readTokenAsync(const QPixmap &tokenPixmap, TokenAcceptor
 {
 	Q_UNUSED(acceptor);
 
-	MessageLabel->setText(tr("Enter text from the picture:"));
+	Progress->setText(tr("Enter text from the picture:"));
 
 	TokenLabel = new QLabel(this);
 	TokenLabel->setPixmap(tokenPixmap);
