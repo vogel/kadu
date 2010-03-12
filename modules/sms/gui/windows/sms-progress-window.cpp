@@ -26,6 +26,8 @@
 #include <QtGui/QStyle>
 #include <QtGui/QVBoxLayout>
 
+#include "gui/widgets/progress-icon.h"
+
 #include "sms-sender.h"
 
 #include "sms-progress-window.h"
@@ -54,12 +56,9 @@ void SmsProgressWindow::createGui()
 
 	QHBoxLayout *topWidgetLayout = new QHBoxLayout(topWidget);
 
-	IconLabel = new QLabel(topWidget);
-	WaitMovie = new QMovie(IconsManager::instance()->iconPath("kadu_icons/please-wait-small.gif"));
-	WaitMovie->start();
-	IconLabel->setMovie(WaitMovie);
+	Progress = new ProgressIcon(topWidget);
 
-	topWidgetLayout->addWidget(IconLabel, 0, Qt::AlignTop);
+	topWidgetLayout->addWidget(Progress, 0, Qt::AlignTop);
 
 	MessageLabel = new QLabel(tr("Sending SMS in progress."), topWidget);
 

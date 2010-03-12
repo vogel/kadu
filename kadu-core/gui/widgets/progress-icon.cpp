@@ -33,6 +33,8 @@ ProgressIcon::ProgressIcon(QWidget *parent) :
 
 ProgressIcon::~ProgressIcon()
 {
+	delete ProgressMovie;
+	ProgressMovie = 0;
 }
 
 void ProgressIcon::setState(ProgressIcon::ProgressState state)

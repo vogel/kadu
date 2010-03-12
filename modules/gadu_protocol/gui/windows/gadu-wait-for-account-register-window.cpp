@@ -27,6 +27,7 @@
 #include <QtGui/QStyle>
 #include <QtGui/QVBoxLayout>
 
+#include "gui/widgets/progress-icon.h"
 #include "icons-manager.h"
 
 #include "server/gadu-server-register-account.h"
@@ -57,12 +58,9 @@ void GaduWaitForAccountRegisterWindow::createGui()
 
 	QHBoxLayout *topWidgetLayout = new QHBoxLayout(topWidget);
 
-	WaitLabel = new QLabel(topWidget);
-	QMovie *waitMovie = new QMovie(IconsManager::instance()->iconPath("kadu_icons/please-wait.gif"));
-	waitMovie->start();
-	WaitLabel->setMovie(waitMovie);
+	Progress = new ProgressIcon(topWidget);
 
-	topWidgetLayout->addWidget(WaitLabel);
+	topWidgetLayout->addWidget(Progress);
 
 	MessageLabel = new QLabel(tr("Plase wait. New Gadu-Gadu account is being registered."), topWidget);
 	topWidgetLayout->addWidget(MessageLabel, 0, Qt::AlignTop);
@@ -87,7 +85,7 @@ void GaduWaitForAccountRegisterWindow::registerNewAccountFinished(GaduServerRegi
 {
 	if (gsra && gsra->result())
 	{
-		WaitLabel->setPixmap(IconsManager::instance()->pixmapByPath("32x32/dialog-information.png"));
+		Progress->setState(ProgressIcon::StateFinished);
 		QString message(tr("Registration was successful. Your new number is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist."));
 		MessageLabel->setText(message.arg(gsra->uin()));
 
@@ -95,7 +93,7 @@ void GaduWaitForAccountRegisterWindow::registerNewAccountFinished(GaduServerRegi
 	}
 	else
 	{
-		WaitLabel->setPixmap(IconsManager::instance()->pixmapByPath("32x32/dialog-warning.png"));
+		Progress->setState(ProgressIcon::StateFailed);
 		QString message(tr("An error has occured while registration. Please try again later."));
 		MessageLabel->setText(message);
 

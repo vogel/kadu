@@ -30,14 +30,14 @@ class QMovie;
 class QPushButton;
 class QVBoxLayout;
 
+class ProgressIcon;
 class SmsSender;
 
 class SmsProgressWindow : public QWidget, public TokenReader
 {
 	Q_OBJECT
 
-	QLabel *IconLabel;
-	QMovie *WaitMovie;
+	ProgressIcon *Progress;
 	QLabel *MessageLabel;
 	QPushButton *CloseButton;
 	QVBoxLayout *Layout;

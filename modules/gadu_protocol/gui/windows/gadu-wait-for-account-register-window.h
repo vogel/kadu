@@ -27,6 +27,7 @@
 class QLabel;
 
 class GaduServerRegisterAccount;
+class ProgressIcon;
 
 class GaduWaitForAccountRegisterWindow : public QDialog
 {
@@ -34,7 +35,7 @@ class GaduWaitForAccountRegisterWindow : public QDialog
 
 	bool CanClose;
 
-	QLabel *WaitLabel;
+	ProgressIcon *Progress;
 	QLabel *MessageLabel;
 	QPushButton *CloseButton;
 
