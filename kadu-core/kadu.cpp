@@ -641,8 +641,6 @@ Kadu::Kadu(QWidget *parent)
 	if (config_file.readBoolEntry("Chat", "SaveOpenedWindows", true))
 		chat_manager->loadOpenedWindows();
 
-	//setSilentMode(config_file.readBoolEntry("Notify", "SilentMode", false));
-
 	configurationUpdated();
 
 	kdebugf2();
@@ -904,17 +902,18 @@ void Kadu::silentActionActivated(QAction  *sender, bool toggled)
 {
 	Q_UNUSED(sender)
 	kdebugf();
-	kadu->setSilentMode(toggled);
+	setSilentMode(toggled);
 	foreach (KaduAction *action, silentActionDescription->actions())
 		action->setChecked(toggled);
-	//config_file.writeEntry("Notify", "SilentMode", toggled);
+	config_file.writeEntry("Notify", "SilentMode", toggled);
 	kdebugf2();
 }
 
 void Kadu::SilentActionCreated()
 {
+	setSilentMode(config_file.readBoolEntry("Notify", "SilentMode"));
 	foreach (KaduAction *action, silentActionDescription->actions())
-		action->setChecked(kadu->silentMode());
+		action->setChecked(SilentMode);
 }
 
 void Kadu::openRecentChats(QAction *action)

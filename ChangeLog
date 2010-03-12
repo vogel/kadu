@@ -9,6 +9,7 @@ Je¶li jest w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawka kompilacji na FreeBSD (wisnia/neeo)
 * przy roz³±czaniu program oczekuje potwierdzenia od serwera (neeo)
 * poprawiony rzadki b³±d z wielko¶ci± okien (dorr)
+* stan Trybu cichego jest pamiêtany po restarcie kadu (dorr)
 
 +++ wersja 0.6.5.4 (08.02.2010)
 * zaktualizowane t³umaczenia (beevvy/neeo)
