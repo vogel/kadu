@@ -55,28 +55,28 @@ void SmsProgressWindow::createGui()
 	QHBoxLayout *topWidgetLayout = new QHBoxLayout(topWidget);
 
 	IconLabel = new QLabel(topWidget);
-	WaitMovie = new QMovie(IconsManager::instance()->iconPath("kadu_icons/please-wait.gif"));
+	WaitMovie = new QMovie(IconsManager::instance()->iconPath("kadu_icons/please-wait-small.gif"));
 	WaitMovie->start();
 	IconLabel->setMovie(WaitMovie);
 
-	topWidgetLayout->addWidget(IconLabel);
+	topWidgetLayout->addWidget(IconLabel, 0, Qt::AlignTop);
 
 	MessageLabel = new QLabel(tr("Sending SMS in progress."), topWidget);
 
 	QWidget *rightWidget = new QWidget(this);
 	Layout = new QVBoxLayout(rightWidget);
-	Layout->addWidget(MessageLabel);
+	Layout->addWidget(MessageLabel, 0, Qt::AlignLeft);
 
 	topWidgetLayout->addWidget(rightWidget, 0, Qt::AlignTop);
-
+/*
 	QDialogButtonBox *buttons = new QDialogButtonBox(this);
 	CloseButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCloseButton), tr("Close"));
 	CloseButton->setEnabled(false);
 	connect(CloseButton, SIGNAL(clicked(bool)), this, SLOT(close()));
 
-	buttons->addButton(CloseButton, QDialogButtonBox::DestructiveRole);
+	buttons->addButton(CloseButton, QDialogButtonBox::DestructiveRole);*/
 
-	mainLayout->addWidget(buttons);
+// 	mainLayout->addWidget(buttons);
 }
 
 QString SmsProgressWindow::readToken(const QPixmap& tokenPixmap)
@@ -98,15 +98,20 @@ void SmsProgressWindow::readTokenAsync(const QPixmap &tokenPixmap, TokenAcceptor
 
 	Layout->addWidget(TokenLabel);
 
+	QWidget *editWidget = new QWidget(this);
+	QHBoxLayout *editLayout = new QHBoxLayout(editWidget);
+
+	Layout->addWidget(editWidget);
+
 	TokenEdit = new QLineEdit(this);
 	connect(TokenEdit, SIGNAL(returnPressed()), this, SLOT(tokenValueEntered()));
 
-	Layout->addWidget(TokenEdit);
+	editLayout->addWidget(TokenEdit);
 
 	TokenAcceptButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("Ok"), this);
 	connect(TokenAcceptButton, SIGNAL(clicked(bool)), this, SLOT(tokenValueEntered()));
 
-	Layout->addWidget(TokenAcceptButton);
+	editLayout->addWidget(TokenAcceptButton);
 }
 
 void SmsProgressWindow::tokenValueEntered()
