@@ -84,7 +84,14 @@ void DesktopDockWindow::configurationUpdated()
 void DesktopDockWindow::mousePressEvent(QMouseEvent *ev)
 {
 	if (!isMoving)
-		docking_manager->trayMousePressEvent(ev);
+	{
+		/* Dorr: due to changes in docking module we need to handle
+		 * context menu here */
+		if (ev->button() == Qt::RightButton)
+			dockMenu->exec(ev->globalPos());
+		else
+			docking_manager->trayMousePressEvent(ev);
+	}
 	else
 	{
 		emit dropped(QPoint(ev->globalPos().x() - width() / 2, ev->globalPos().y() - height() / 2));
@@ -256,8 +263,16 @@ void DesktopDock::droppedOnDesktop(const QPoint& pos) 	/* nacisniecie przycisku 
 	else
 		posY = pos.y();
 
-	xSpinBox->setValue(posX);
-	ySpinBox->setValue(posY);
+	if (MainConfigurationWindow::instance()->isShown())
+	{
+		xSpinBox->setValue(posX);
+		ySpinBox->setValue(posY);
+	}
+	else
+	{
+		config_file.writeEntry("Desktop Dock", "PositionX", posX);
+		config_file.writeEntry("Desktop Dock", "PositionY", posY);
+	}
 }
 
 void DesktopDock::updateMenu(bool b)
@@ -281,8 +296,8 @@ void DesktopDock::createDefaultConfiguration()
 	config_file.addVariable("Desktop Dock", "DockingColor", w.paletteBackgroundColor());
 	config_file.addVariable("Desktop Dock", "DockingTransparency", true);
 	config_file.addVariable("Desktop Dock", "MoveInMenu", true);
-	config_file.addVariable("Desktop Dock", "PositionX", 0);
-	config_file.addVariable("Desktop Dock", "PositionY", 0);
+	config_file.addVariable("Desktop Dock", "PositionX", 8);
+	config_file.addVariable("Desktop Dock", "PositionY", 8);
 }
 
 DesktopDock *desktop_dock;
