@@ -106,7 +106,12 @@ void ChatWindow::kaduRestoreGeometry()
 
 	QDesktopWidget *desktop = qApp->desktop();
 	QRect desktopRect = desktop->availableGeometry(desktop->screenNumber(this));
-	geom = desktopRect.intersected(geom);
+	/* Dorr: there's some problem with intersection (bug in Qt?) */
+	//rect = desktopRect.intersected(rect);
+	if (geom.width() > desktopRect.width())
+		geom.setWidth(desktopRect.width());
+	if (geom.height() > desktopRect.height())
+		geom.setHeight(desktopRect.height());
 #ifdef Q_OS_WIN
 	/* Dorr: Workaround for window positioning on Windows (bug in Qt 4.5.3?) */ 
 	if (geom.y() < 30)
