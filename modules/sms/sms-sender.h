@@ -74,7 +74,7 @@ public slots:
 	void failure(const QString &errorMessage);
 
 signals:
-	void finished(bool success);
+	void finished(const QString &errorMessage);
 
 };
 

@@ -21,6 +21,7 @@
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QLabel>
+#include <QtGui/QLayout>
 #include <QtGui/QMovie>
 #include <QtGui/QPushButton>
 #include <QtGui/QStyle>
@@ -35,6 +36,8 @@
 SmsProgressWindow::SmsProgressWindow(SmsSender *sender, QWidget *parent) :
 		ProgressWindow(parent), TokenLabel(0), TokenEdit(0), TokenAcceptButton(0), Sender(sender)
 {
+	connect(Sender, SIGNAL(finished(QString)), this, SLOT(senderFinished(QString)));
+
 	Sender->setParent(this);
 	Sender->setTokenReader(this);
 
@@ -90,4 +93,14 @@ void SmsProgressWindow::tokenValueEntered()
 	TokenEdit = 0;
 	delete TokenAcceptButton;
 	TokenAcceptButton = 0;
+
+	container()->layout()->invalidate();
+}
+
+void SmsProgressWindow::senderFinished(const QString &errorMessage)
+{
+	if (errorMessage.isEmpty())
+		setState(ProgressIcon::StateFinished, tr("Sms sent successfully"));
+	else
+		setState(ProgressIcon::StateFailed, errorMessage);
 }

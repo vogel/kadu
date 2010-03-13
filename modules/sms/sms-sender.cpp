@@ -171,11 +171,10 @@ void SmsSender::sendSms()
 
 void SmsSender::result()
 {
-	emit finished(true);
+	emit finished(QString::null);
 }
 
 void SmsSender::failure(const QString &errorMessage)
 {
-	QMessageBox::critical(0, "SMS", errorMessage);
-	emit finished(false);
+	emit finished(errorMessage);
 }
