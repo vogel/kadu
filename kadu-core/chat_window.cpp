@@ -112,10 +112,10 @@ void ChatWindow::kaduRestoreGeometry()
 		geom.setWidth(desktopRect.width());
 	if (geom.height() > desktopRect.height())
 		geom.setHeight(desktopRect.height());
-#ifdef Q_OS_WIN
-	/* Dorr: Workaround for window positioning on Windows (bug in Qt 4.5.3?) */ 
-	if (geom.y() < 30)
-		geom.moveTop(30);
+#if defined(Q_OS_WIN) || defined(Q_OS_MAC) 
+	/* Dorr: Workaround for window positioning on Windows/Mac (bug in Qt?) */ 
+	if (geom.y() < 40)
+		geom.moveTop(40);
 #endif
 	setGeometry(geom);
 	currentChatWidget->setGeometry(geom);
