@@ -69,15 +69,18 @@ void SmsProgressWindow::readTokenAsync(const QPixmap &tokenPixmap, TokenAcceptor
 
 	QWidget *editWidget = new QWidget(container());
 	QHBoxLayout *editLayout = new QHBoxLayout(editWidget);
+	editLayout->setContentsMargins(0, 0, 0, 0);
 
 	container()->layout()->addWidget(editWidget);
 
 	TokenEdit = new QLineEdit(container());
+	TokenEdit->setFocus();
 	connect(TokenEdit, SIGNAL(returnPressed()), this, SLOT(tokenValueEntered()));
 
 	editLayout->addWidget(TokenEdit);
 
 	TokenAcceptButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("Ok"), this);
+	TokenAcceptButton->setDefault(true);
 	connect(TokenAcceptButton, SIGNAL(clicked(bool)), this, SLOT(tokenValueEntered()));
 
 	editLayout->addWidget(TokenAcceptButton);

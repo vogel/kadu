@@ -86,9 +86,8 @@ GatewaySmsSender.prototype = {
 		postData += "&respInfo=";
 		postData += "1";
 
-		//this.reply = network.post(url, postData);
-		//this.reply.finished.connect(this, this.smsSent);
-		this.smsSent();
+		this.reply = network.post(url, postData);
+		this.reply.finished.connect(this, this.smsSent);
 	},
 
 	smsSent: function() {

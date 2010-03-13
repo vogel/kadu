@@ -65,6 +65,12 @@ void ProgressWindow::enableClosing(bool enable)
 {
 	CanClose = enable;
 	CloseButton->setEnabled(enable);
+
+	if (enable)
+	{
+		CloseButton->setDefault(true);
+		CloseButton->setFocus();
+	}
 }
 
 void ProgressWindow::closeEvent(QCloseEvent *e)
