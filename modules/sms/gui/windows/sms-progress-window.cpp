@@ -29,11 +29,11 @@
 
 #include "gui/widgets/progress-label.h"
 
-#include "sms-sender.h"
+#include "sms-internal-sender.h"
 
 #include "sms-progress-window.h"
 
-SmsProgressWindow::SmsProgressWindow(SmsSender *sender, QWidget *parent) :
+SmsProgressWindow::SmsProgressWindow(SmsInternalSender *sender, QWidget *parent) :
 		ProgressWindow(parent), TokenLabel(0), TokenEdit(0), TokenAcceptButton(0), Sender(sender)
 {
 	connect(Sender, SIGNAL(finished(QString)), this, SLOT(senderFinished(QString)));

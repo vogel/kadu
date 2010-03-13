@@ -13,7 +13,7 @@ set (SOURCES
 	sms-gateway-manager.cpp
 	sms-gateway-query.cpp
 	sms-external-sender.cpp
-	sms-sender.cpp
+	sms-internal-sender.cpp
 )
 
 set (MOC_SOURCES
@@ -30,7 +30,7 @@ set (MOC_SOURCES
 	sms-gateway-manager.h
 	sms-gateway-query.h
 	sms-external-sender.cpp
-	sms-sender.h
+	sms-internal-sender.cpp
 )
 
 set (SCRIPT_DIRECTORY

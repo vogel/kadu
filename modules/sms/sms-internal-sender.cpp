@@ -30,45 +30,45 @@
 #include "scripts/sms-script-manager.h"
 #include "sms-gateway-query.h"
 
-#include "sms-sender.h"
+#include "sms-internal-sender.h"
 
-SmsSender::SmsSender(const QString &number, const QString &gatewayId, QObject *parent) :
+SmsInternalSender::SmsInternalSender(const QString &number, const QString &gatewayId, QObject *parent) :
 		QObject(parent), GatewayId(gatewayId), Number(number), MyTokenReader(0)
 {
 	fixNumber();
 }
 
-SmsSender::~SmsSender()
+SmsInternalSender::~SmsInternalSender()
 {
 }
 
-void SmsSender::fixNumber()
+void SmsInternalSender::fixNumber()
 {
 	if (Number.length() == 12 && Number.left(3) == "+48")
 		Number = Number.right(9);
 }
 
-bool SmsSender::validateNumber()
+bool SmsInternalSender::validateNumber()
 {
 	return 9 == Number.length();
 }
 
-bool SmsSender::validateSignature()
+bool SmsInternalSender::validateSignature()
 {
 	return !Signature.isEmpty();
 }
 
-void SmsSender::setContact(const QString &contact)
+void SmsInternalSender::setContact(const QString &contact)
 {
 	Contact = contact;
 }
 
-void SmsSender::setSignature(const QString &signature)
+void SmsInternalSender::setSignature(const QString &signature)
 {
 	Signature = signature;
 }
 
-void SmsSender::sendMessage(const QString &message)
+void SmsInternalSender::sendMessage(const QString &message)
 {
 	Message = message;
 	
@@ -94,19 +94,19 @@ void SmsSender::sendMessage(const QString &message)
 		sendSms();
 }
 
-void SmsSender::setTokenReader(TokenReader *tokenReader)
+void SmsInternalSender::setTokenReader(TokenReader *tokenReader)
 {
 	MyTokenReader = tokenReader;
 }
 
-void SmsSender::queryForGateway()
+void SmsInternalSender::queryForGateway()
 {
 	SmsGatewayQuery *query = new SmsGatewayQuery(this);
 	connect(query, SIGNAL(finished(const QString &)), this, SLOT(gatewayQueryDone(const QString &)));
 	query->process(Number);
 }
 
-void SmsSender::gatewayQueryDone(const QString &gatewayId)
+void SmsInternalSender::gatewayQueryDone(const QString &gatewayId)
 {
 	if (gatewayId.isEmpty())
 	{
@@ -121,7 +121,7 @@ void SmsSender::gatewayQueryDone(const QString &gatewayId)
 	sendSms();
 }
 
-void SmsSender::readToken(const QString &tokenImageUrl, QScriptValue callbackObject, QScriptValue callbackMethod)
+void SmsInternalSender::readToken(const QString &tokenImageUrl, QScriptValue callbackObject, QScriptValue callbackMethod)
 {
 	if (!MyTokenReader)
 	{
@@ -137,7 +137,7 @@ void SmsSender::readToken(const QString &tokenImageUrl, QScriptValue callbackObj
 	connect(TokenReply, SIGNAL(finished()), this, SLOT(tokenImageDownloaded()));
 }
 
-void SmsSender::tokenImageDownloaded()
+void SmsInternalSender::tokenImageDownloaded()
 {
 	if (QNetworkReply::NoError != TokenReply->error())
 	{
@@ -155,14 +155,14 @@ void SmsSender::tokenImageDownloaded()
 	MyTokenReader->readTokenAsync(image, this);
 }
 
-void SmsSender::tokenRead(const QString &tokenValue)
+void SmsInternalSender::tokenRead(const QString &tokenValue)
 {
 	QScriptValueList arguments;
 	arguments.append(tokenValue);
 	TokenCallbackMethod.call(TokenCallbackObject, arguments);
 }
 
-void SmsSender::sendSms()
+void SmsInternalSender::sendSms()
 {
 	QScriptEngine* engine = SmsScriptsManager::instance()->engine();
 
@@ -180,12 +180,12 @@ void SmsSender::sendSms()
 	jsSendSms.call(jsGatewayManagerObject, arguments);
 }
 
-void SmsSender::result()
+void SmsInternalSender::result()
 {
 	emit finished(QString::null);
 }
 
-void SmsSender::failure(const QString &errorMessage)
+void SmsInternalSender::failure(const QString &errorMessage)
 {
 	emit finished(errorMessage);
 }

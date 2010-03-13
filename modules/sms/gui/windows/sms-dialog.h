@@ -36,7 +36,7 @@
 #include "gui/windows/main-configuration-window.h"
 
 #include "sms_exports.h"
-#include "sms-sender.h"
+#include "sms-internal-sender.h"
 #include "sms-gateway-manager.h"
 #include "mobile-number-manager.h"
 

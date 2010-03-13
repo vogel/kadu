@@ -87,7 +87,12 @@ void SmsExternalSender::sendMessage(const QString &message)
 	Process->start(smsAppPath, buildProgramArguments(message));
 
 	if (!Process->waitForStarted())
+	{
 		emit finished(tr("Could not spawn child process. Check if the program is functional"));
+		delete Process;
+		Process = 0;
+		return;
+	}
 
 	connect(Process, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(processFinished()));
 }

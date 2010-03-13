@@ -18,8 +18,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SMS_SENDER_H
-#define SMS_SENDER_H
+#ifndef SMS_INTERNAL_SENDER_H
+#define SMS_INTERNAL_SENDER_H
 
 #include <QtCore/QBuffer>
 #include <QtCore/QMap>
@@ -44,7 +44,7 @@ class QNetworkReply;
 
 class TokenReader;
 
-class SmsSender : public QObject, public TokenAcceptor
+class SmsInternalSender : public QObject, public TokenAcceptor
 {
 	Q_OBJECT
 
@@ -73,8 +73,8 @@ private slots:
     void tokenImageDownloaded();
 
 public:
-	explicit SmsSender(const QString &number, const QString &gatewayId = QString::null, QObject *parent = 0);
-	virtual ~SmsSender();
+	explicit SmsInternalSender(const QString &number, const QString &gatewayId = QString::null, QObject *parent = 0);
+	virtual ~SmsInternalSender();
 
 	void setContact(const QString& contact);
 	void setSignature(const QString& signature);
@@ -98,4 +98,4 @@ signals:
 
 };
 
-#endif // SMS_SENDER_H
+#endif // SMS_INTERNAL_SENDER_H

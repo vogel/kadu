@@ -248,7 +248,7 @@ void SmsDialog::sendSms()
 
 	if (config_file.readBoolEntry("SMS", "BuiltInApp"))
 	{
-		SmsSender *sender = new SmsSender(RecipientEdit->text(), QString::null, this);
+		SmsInternalSender *sender = new SmsInternalSender(RecipientEdit->text(), QString::null, this);
 		sender->setContact(ContactEdit->text());
 		sender->setSignature(SignatureEdit->text());
 
