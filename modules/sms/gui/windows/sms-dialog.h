@@ -64,6 +64,7 @@ class SmsDialog : public QWidget, ConfigurationAwareObject
 	QCheckBox *AutoSelectProvider;
 	QComboBox *ProvidersList;
 
+	void createGui();
 
 private slots:
 	void updateRecipient(const QString &);

@@ -59,27 +59,57 @@ SmsDialog::SmsDialog(const QString& altnick, QWidget* parent) : QWidget(parent, 
 	setWindowTitle(tr("Send SMS"));
 	setAttribute(Qt::WA_DeleteOnClose);
 
+	createGui();
+
+	if (altnick.isEmpty())
+		recipient->setFocus();
+	else
+	{
+		recipient->setText(BuddyManager::instance()->byDisplay(altnick, ActionReturnNull).mobile());
+		SmsGateway * gateway = MobileNumberManager::instance()->gateway(recipient->text());
+		if (gateway)
+			ProvidersList->setCurrentIndex(ProvidersList->findData(gateway->name()));
+	}
+
+	list->setCurrentIndex(list->findText(altnick));
+
+	configurationUpdated();
+
+	ModulesManager::instance()->moduleIncUsageCount("sms");
+	kdebugf2();
+}
+
+SmsDialog::~SmsDialog()
+{
+	saveWindowGeometry(this, "Sms", "SmsDialogGeometry");
+
+	ModulesManager::instance()->moduleDecUsageCount("sms");
+}
+
+void SmsDialog::createGui()
+{
+
 	QGridLayout *grid = new QGridLayout(this);
 	grid->setColumnStretch(1, 5);
-	
+
 	QWidget *providerWidget = new QWidget(this);
 	QGridLayout *widgetGrid = new QGridLayout(providerWidget);
-	
+
 	QLabel *providersListLabel = new QLabel(tr("Select GSM provider") + ":", this);
 	widgetGrid->addWidget(providersListLabel, 0, 0, 1, 1);
-	
+
 	ProvidersList = new QComboBox(this);
 	foreach (SmsGateway* gateway, SmsGatewayManager::instance()->gateways())
 		ProvidersList->addItem(gateway->displayName(), gateway->name());
 	widgetGrid->addWidget(ProvidersList, 0, 1, 1, 1);
-	
+
 	AutoSelectProvider = new QCheckBox(tr("Automatically select provider"), this);
 	AutoSelectProvider->setChecked(false);
 	widgetGrid->addWidget(AutoSelectProvider, 0, 2, 1, 1);
-	
+
 	connect(AutoSelectProvider, SIGNAL(toggled(bool)), ProvidersList, SLOT(setDisabled(bool)));
 	connect(AutoSelectProvider, SIGNAL(toggled(bool)), providersListLabel, SLOT(setDisabled(bool)));
-	
+
 	grid->addWidget(providerWidget, 1, 0, 1, 3);
 
 	body = new QTextEdit(this);
@@ -90,15 +120,7 @@ SmsDialog::SmsDialog(const QString& altnick, QWidget* parent) : QWidget(parent, 
 
 	recipient = new QLineEdit(this);
 	recipient->setMinimumWidth(140);
-	if (altnick.isEmpty())
-		recipient->setFocus();
-	else
-	{
-		recipient->setText(BuddyManager::instance()->byDisplay(altnick, ActionReturnNull).mobile());
-		SmsGateway * gateway = MobileNumberManager::instance()->gateway(recipient->text());
-		if (gateway)
-			ProvidersList->setCurrentIndex(ProvidersList->findData(gateway->name()));
-	}
+
 	connect(recipient, SIGNAL(textChanged(const QString&)), this, SLOT(updateList(const QString&)));
 	connect(recipient, SIGNAL(returnPressed()), this, SLOT(editReturnPressed()));
 	grid->addWidget(recipient, 0, 1, 1, 1);
@@ -113,7 +135,7 @@ SmsDialog::SmsDialog(const QString& altnick, QWidget* parent) : QWidget(parent, 
 
 	list = new QComboBox(this);
 	list->addItems(strlist);
-	list->setCurrentIndex(list->findText(altnick));
+
 	connect(list, SIGNAL(activated(const QString&)), this, SLOT(updateRecipient(const QString &)));
 	grid->addWidget(list, 0, 2, 1, 1);
 
@@ -149,19 +171,7 @@ SmsDialog::SmsDialog(const QString& altnick, QWidget* parent) : QWidget(parent, 
 
 	resize(400, 250);
 
-	configurationUpdated();
-	
 	loadWindowGeometry(this, "Sms", "SmsDialogGeometry", 200, 200, 400, 250);
-
-	ModulesManager::instance()->moduleIncUsageCount("sms");
-	kdebugf2();
-}
-
-SmsDialog::~SmsDialog()
-{
-	saveWindowGeometry(this, "Sms", "SmsDialogGeometry");
-
-	ModulesManager::instance()->moduleDecUsageCount("sms");
 }
 
 void SmsDialog::configurationUpdated()
