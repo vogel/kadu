@@ -51,9 +51,8 @@
 
 #include "sms-dialog.h"
 
-SmsDialog::SmsDialog(const QString& altnick, QWidget* parent) : QWidget(parent, Qt::Window),
-	body(0), recipient(0), list(0), smslen(0), e_contact(0),
-	e_signature(0), b_send(0), c_saveInHistory(0), smsProcess(0)
+SmsDialog::SmsDialog(const QString& altnick, QWidget* parent) :
+		QWidget(parent, Qt::Window)
 {
 	kdebugf();
 
@@ -183,15 +182,17 @@ void SmsDialog::createGui()
 
 void SmsDialog::configurationUpdated()
 {
-	body->setFont(config_file.readFontEntry("Look","ChatFont"));
+	body->setFont(config_file.readFontEntry("Look", "ChatFont"));
 }
 
 void SmsDialog::setRecipient(const QString &phone)
 {
-    	kdebugf();
-  	recipient->setText(phone);
-  	body->setFocus();
-  	kdebugf2();
+	kdebugf();
+
+	recipient->setText(phone);
+	body->setFocus();
+
+	kdebugf2();
 }
 
 void SmsDialog::updateRecipient(const QString &newtext)
@@ -301,11 +302,6 @@ void SmsDialog::smsSigHandler()
 	delete smsProcess;
 	smsProcess = 0;
 
-	c_saveInHistory->setEnabled(true);
-	e_contact->setEnabled(true);
-	e_signature->setEnabled(true);
-	b_send->setEnabled(true);
-	body->setEnabled(true);
 	body->clear();
 	kdebugf2();
 }
@@ -332,11 +328,6 @@ void SmsDialog::onSmsSenderFinished(bool success)
 		recipient->clear();
 	}
 
-	b_send->setEnabled(true);
-	body->setEnabled(true);
-	e_contact->setEnabled(true);
-	e_signature->setEnabled(true);
-	c_saveInHistory->setEnabled(true);
 	kdebugf2();
 }
 
