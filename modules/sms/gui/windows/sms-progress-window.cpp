@@ -33,39 +33,19 @@
 #include "sms-progress-window.h"
 
 SmsProgressWindow::SmsProgressWindow(SmsSender *sender, QWidget *parent) :
-		QWidget(parent), TokenLabel(0), TokenEdit(0), TokenAcceptButton(0), Sender(sender)
+		ProgressWindow(parent), TokenLabel(0), TokenEdit(0), TokenAcceptButton(0), Sender(sender)
 {
-	setAttribute(Qt::WA_DeleteOnClose);
-
 	Sender->setParent(this);
 	Sender->setTokenReader(this);
 
-	createGui();
+	setState(ProgressIcon::StateInProgress, tr("Sending SMS in progress."));
 }
 
 SmsProgressWindow::~SmsProgressWindow()
 {
 }
 
-void SmsProgressWindow::createGui()
-{
-	Layout = new QVBoxLayout(this);
-
-	Progress = new ProgressLabel(tr("Sending SMS in progress."), this);
-	Layout->addWidget(Progress);
-
-/*
-	QDialogButtonBox *buttons = new QDialogButtonBox(this);
-	CloseButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCloseButton), tr("Close"));
-	CloseButton->setEnabled(false);
-	connect(CloseButton, SIGNAL(clicked(bool)), this, SLOT(close()));
-
-	buttons->addButton(CloseButton, QDialogButtonBox::DestructiveRole);*/
-
-// 	mainLayout->addWidget(buttons);
-}
-
-QString SmsProgressWindow::readToken(const QPixmap& tokenPixmap)
+QString SmsProgressWindow::readToken(const QPixmap &tokenPixmap)
 {
 	Q_UNUSED(tokenPixmap);
 
@@ -77,19 +57,19 @@ void SmsProgressWindow::readTokenAsync(const QPixmap &tokenPixmap, TokenAcceptor
 {
 	Q_UNUSED(acceptor);
 
-	Progress->setText(tr("Enter text from the picture:"));
+	setState(ProgressIcon::StateInProgress, tr("Enter text from the picture:"));
 
-	TokenLabel = new QLabel(this);
+	TokenLabel = new QLabel(container());
 	TokenLabel->setPixmap(tokenPixmap);
 
-	Layout->addWidget(TokenLabel);
+	container()->layout()->addWidget(TokenLabel);
 
-	QWidget *editWidget = new QWidget(this);
+	QWidget *editWidget = new QWidget(container());
 	QHBoxLayout *editLayout = new QHBoxLayout(editWidget);
 
-	Layout->addWidget(editWidget);
+	container()->layout()->addWidget(editWidget);
 
-	TokenEdit = new QLineEdit(this);
+	TokenEdit = new QLineEdit(container());
 	connect(TokenEdit, SIGNAL(returnPressed()), this, SLOT(tokenValueEntered()));
 
 	editLayout->addWidget(TokenEdit);

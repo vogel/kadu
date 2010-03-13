@@ -20,7 +20,7 @@
 #ifndef SMS_PROGRESS_WINDOW_H
 #define SMS_PROGRESS_WINDOW_H
 
-#include <QtGui/QWidget>
+#include "gui/windows/progress-window.h"
 
 #include "misc/token-reader.h"
 
@@ -33,13 +33,9 @@ class QVBoxLayout;
 class ProgressLabel;
 class SmsSender;
 
-class SmsProgressWindow : public QWidget, public TokenReader
+class SmsProgressWindow : public ProgressWindow, public TokenReader
 {
 	Q_OBJECT
-
-	ProgressLabel *Progress;
-	QPushButton *CloseButton;
-	QVBoxLayout *Layout;
 
 	QLabel *TokenLabel;
 	QLineEdit *TokenEdit;

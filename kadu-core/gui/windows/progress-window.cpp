@@ -31,6 +31,8 @@
 ProgressWindow::ProgressWindow(QWidget *parent) :
 		QDialog(parent), CanClose(false)
 {
+	setAttribute(Qt::WA_DeleteOnClose);
+
 	createGui();
 }
 
@@ -44,6 +46,10 @@ void ProgressWindow::createGui()
 
 	Progress = new ProgressLabel(tr("Plase wait. New Gadu-Gadu account is being registered."), this);
 	mainLayout->addWidget(Progress);
+
+	Container = new QWidget(this);
+	new QVBoxLayout(Container);
+	mainLayout->addWidget(Container);
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(this);
 	CloseButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCloseButton), tr("Close"));

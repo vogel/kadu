@@ -33,6 +33,7 @@ class ProgressWindow : public QDialog
 	bool CanClose;
 
 	ProgressLabel *Progress;
+	QWidget *Container;
 	QPushButton *CloseButton;
 
 	void createGui();
@@ -40,6 +41,8 @@ class ProgressWindow : public QDialog
 
 protected:
 	virtual void closeEvent(QCloseEvent *);
+
+	QWidget * container() { return Container; }
 
 	void setState(ProgressIcon::ProgressState state, const QString &text);
 	void setText(const QString &text);
