@@ -50,38 +50,39 @@ class SmsDialog : public QWidget, ConfigurationAwareObject
 {
 	Q_OBJECT
 
-		QTextEdit *body;
-		QLineEdit *recipient;
-		QComboBox *list;
-		QLabel *smslen;
-		QLabel *l_contact;
-		QLineEdit *e_contact;
-		QLabel *l_signature;
-		QLineEdit *e_signature;
-		QPushButton *b_send;
-		QCheckBox *c_saveInHistory;
-		QProcess *smsProcess;
-		QCheckBox *AutoSelectProvider;
-		QComboBox *ProvidersList;
+	QTextEdit *body;
+	QLineEdit *recipient;
+	QComboBox *list;
+	QLabel *smslen;
+	QLabel *l_contact;
+	QLineEdit *e_contact;
+	QLabel *l_signature;
+	QLineEdit *e_signature;
+	QPushButton *b_send;
+	QCheckBox *c_saveInHistory;
+	QProcess *smsProcess;
+	QCheckBox *AutoSelectProvider;
+	QComboBox *ProvidersList;
 
 
-	private slots:
-		void updateRecipient(const QString &);
-		void updateList(const QString& newnumber);
-		void editReturnPressed();
-		void sendSms();
-		void updateCounter();
-		void smsSigHandler();
-		void onSmsSenderFinished(bool success);
+private slots:
+	void updateRecipient(const QString &);
+	void updateList(const QString &newnumber);
+	void editReturnPressed();
+	void sendSms();
+	void updateCounter();
+	void smsSigHandler();
+	void onSmsSenderFinished(bool success);
 
-	protected:
-		virtual void configurationUpdated();
-		virtual void keyPressEvent(QKeyEvent *e);
+protected:
+	virtual void configurationUpdated();
+	virtual void keyPressEvent(QKeyEvent *e);
 
-	public:
-		SmsDialog(const QString& altnick, QWidget* parent = 0);
-		~SmsDialog();
-		void setRecipient(const QString& phone);
+public:
+	explicit SmsDialog(const QString &altnick, QWidget *parent = 0);
+	virtual ~SmsDialog();
+	void setRecipient(const QString &phone);
+
 };
 
 /** @} */
