@@ -20,6 +20,12 @@
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QVBoxLayout>
 
+#ifdef Q_WS_WIN
+#include <windows.h>
+#include <shlobj.h>
+#undef MessageBox
+#endif
+
 #include <stdlib.h>
 
 #include "profiles.h" 
@@ -301,9 +307,14 @@ static inline void startThread(QString profilePath)
 	MyThread *thread = new MyThread();
 	//thread_list.append(thread);
 	thread->path = profilePath;
+#ifdef Q_OS_WIN
+	WCHAR epath[MAX_PATH + 1];
+	GetModuleFileNameW(NULL, epath, MAX_PATH);
+	thread->command = "\"" + QString::fromUtf16((const ushort*)epath) + "\"";
+#else
 	thread->command = qApp->argv()[0];
-	kdebugm(KDEBUG_INFO, "Starting profile - path: '%s', executable: '%s'\n", qPrintable(thread->path), qPrintable(thread->command));
-	thread->start();	
+#endif
+	thread->start();
 }
 
 int ProfileManager::runKadu(QString profilePath, QString protectPassword)
@@ -781,11 +792,14 @@ void ProfileConfigurationWindow::removeProfile(QString name)
 void MyThread::run()
 {
 #ifdef Q_OS_WIN
-	QString s = command + " --config-dir \"" + path + "\"";
+	QString params = " --config-dir \"" + path + "\"";
+	ShellExecute(GetDesktopWindow(), "open", command, params, NULL, SW_SHOWNORMAL);
+	kdebugm(KDEBUG_INFO, "Command: '%s%s'\n", qPrintable(command), qPrintable(params));
 #else
 	QString s = "bash -c \"export CONFIG_DIR=" + path + " ; " + command + "\"";
-#endif
 	system(qPrintable(s));
+	kdebugm(KDEBUG_INFO, "Command: '%s'\n", qPrintable(s));
+#endif
 }
 
 
