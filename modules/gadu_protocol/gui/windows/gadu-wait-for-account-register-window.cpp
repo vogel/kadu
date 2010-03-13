@@ -35,13 +35,12 @@
 #include "gadu-wait-for-account-register-window.h"
 
 GaduWaitForAccountRegisterWindow::GaduWaitForAccountRegisterWindow(GaduServerRegisterAccount *gsra, QWidget *parent) :
-		QDialog(parent), CanClose(false)
+		ProgressWindow(parent)
 {
-	createGui();
-
 	connect(gsra, SIGNAL(finished(GaduServerRegisterAccount *)),
 			this, SLOT(registerNewAccountFinished(GaduServerRegisterAccount *)));
 
+	setState(ProgressIcon::StateInProgress, tr("Plase wait. New Gadu-Gadu account is being registered."));
 	gsra->performAction();
 }
 
@@ -49,56 +48,23 @@ GaduWaitForAccountRegisterWindow::~GaduWaitForAccountRegisterWindow()
 {
 }
 
-void GaduWaitForAccountRegisterWindow::createGui()
-{
-	QVBoxLayout *mainLayout = new QVBoxLayout(this);
-
-	Progress = new ProgressLabel(tr("Plase wait. New Gadu-Gadu account is being registered."), this);
-	mainLayout->addWidget(Progress);
-
-	QDialogButtonBox *buttons = new QDialogButtonBox(this);
-	CloseButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCloseButton), tr("Close"));
-	CloseButton->setEnabled(false);
-	connect(CloseButton, SIGNAL(clicked(bool)), this, SLOT(close()));
-
-	buttons->addButton(CloseButton, QDialogButtonBox::DestructiveRole);
-
-	mainLayout->addWidget(buttons);
-}
-
-void GaduWaitForAccountRegisterWindow::enableClosing()
-{
-	CanClose = true;
-	CloseButton->setEnabled(true);
-}
-
 void GaduWaitForAccountRegisterWindow::registerNewAccountFinished(GaduServerRegisterAccount* gsra)
 {
 	if (gsra && gsra->result())
 	{
 		QString message(tr("Registration was successful. Your new number is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist."));
-		Progress->setState(ProgressIcon::StateFinished, message.arg(gsra->uin()));
+		setState(ProgressIcon::StateFinished, message.arg(gsra->uin()));
 
 		emit uinRegistered(gsra->uin());
 	}
 	else
 	{
 		QString message(tr("An error has occured while registration. Please try again later."));
-		Progress->setState(ProgressIcon::StateFailed, message);
+		setState(ProgressIcon::StateFailed, message);
 
 		emit uinRegistered(0);
 	}
 
 	if (gsra)
 		delete gsra;
-
-	enableClosing();
-}
-
-void GaduWaitForAccountRegisterWindow::closeEvent(QCloseEvent *e)
-{
-	if (!CanClose)
-		e->ignore();
-	else
-		QDialog::closeEvent(e);
 }

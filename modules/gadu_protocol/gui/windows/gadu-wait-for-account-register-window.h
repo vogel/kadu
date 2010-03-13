@@ -20,32 +20,18 @@
 #ifndef GADU_WAIT_FOR_ACCOUNT_REGISTER_WINDOW_H
 #define GADU_WAIT_FOR_ACCOUNT_REGISTER_WINDOW_H
 
-#include <QtGui/QDialog>
+#include "gui/windows/progress-window.h"
 
 #include "protocols/protocol.h"
 
-class QLabel;
-
 class GaduServerRegisterAccount;
-class ProgressLabel;
 
-class GaduWaitForAccountRegisterWindow : public QDialog
+class GaduWaitForAccountRegisterWindow : public ProgressWindow
 {
 	Q_OBJECT
 
-	bool CanClose;
-
-	ProgressLabel *Progress;
-	QPushButton *CloseButton;
-
-	void createGui();
-	void enableClosing();
-
 private slots:
 	void registerNewAccountFinished(GaduServerRegisterAccount *gsra);
-
-protected:
-	virtual void closeEvent(QCloseEvent *);
 
 public:
 	explicit GaduWaitForAccountRegisterWindow(GaduServerRegisterAccount *gsra, QWidget *parent = 0);
