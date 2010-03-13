@@ -8,7 +8,7 @@
  * Copyright 2007, 2008, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2004, 2008, 2009 Michał Podsiadlik (michal@kadu.net)
  * Copyright 2009 Longer (longer89@gmail.com)
- * Copyright 2008, 2009 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * Copyright 2008, 2009, 2010 Piotr Galiszewski (piotrgaliszewski@gmail.com)
  * Copyright 2005 Paweł Płuciennik (pawel_p@kadu.net)
  * %kadu copyright end%
  *
