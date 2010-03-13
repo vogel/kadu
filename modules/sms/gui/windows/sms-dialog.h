@@ -50,16 +50,15 @@ class SmsDialog : public QWidget, ConfigurationAwareObject
 {
 	Q_OBJECT
 
-	QTextEdit *body;
-	QLineEdit *recipient;
-	QComboBox *list;
-	QLabel *smslen;
-	QLineEdit *e_contact;
-	QLineEdit *e_signature;
-	QPushButton *b_send;
-	QCheckBox *c_saveInHistory;
-	QProcess *smsProcess;
-	QComboBox *ProvidersList;
+	QLineEdit *RecipientEdit;
+	QComboBox *RecipientComboBox;
+	QComboBox *ProviderComboBox;
+	QTextEdit *ContentEdit;
+	QLabel *LengthLabel;
+	QLineEdit *ContactEdit;
+	QLineEdit *SignatureEdit;
+	QPushButton *SendButton;
+	QCheckBox *SaveInHistoryCheckBox;
 
 	void createGui();
 
@@ -71,6 +70,8 @@ private slots:
 	void updateCounter();
 	void smsSigHandler();
 	void onSmsSenderFinished(bool success);
+
+	void clear();
 
 protected:
 	virtual void configurationUpdated();

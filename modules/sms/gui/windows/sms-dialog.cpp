@@ -62,16 +62,16 @@ SmsDialog::SmsDialog(const QString& altnick, QWidget* parent) :
 	createGui();
 
 	if (altnick.isEmpty())
-		recipient->setFocus();
+		RecipientEdit->setFocus();
 	else
 	{
-		recipient->setText(BuddyManager::instance()->byDisplay(altnick, ActionReturnNull).mobile());
-		SmsGateway * gateway = MobileNumberManager::instance()->gateway(recipient->text());
+		RecipientEdit->setText(BuddyManager::instance()->byDisplay(altnick, ActionReturnNull).mobile());
+		SmsGateway * gateway = MobileNumberManager::instance()->gateway(RecipientEdit->text());
 		if (gateway)
-			ProvidersList->setCurrentIndex(ProvidersList->findData(gateway->name()));
+			ProviderComboBox->setCurrentIndex(ProviderComboBox->findData(gateway->name()));
 	}
 
-	list->setCurrentIndex(list->findText(altnick));
+	RecipientComboBox->setCurrentIndex(RecipientComboBox->findText(altnick));
 
 	configurationUpdated();
 
@@ -99,13 +99,13 @@ void SmsDialog::createGui()
 	QHBoxLayout *recipientLayout = new QHBoxLayout(recipientWidget);
 	recipientLayout->setContentsMargins(0, 0, 0, 0);
 
-	recipient = new QLineEdit(this);
-	recipient->setMinimumWidth(140);
+	RecipientEdit = new QLineEdit(this);
+	RecipientEdit->setMinimumWidth(140);
 
-	connect(recipient, SIGNAL(textChanged(const QString&)), this, SLOT(updateList(const QString&)));
-	connect(recipient, SIGNAL(returnPressed()), this, SLOT(editReturnPressed()));
+	connect(RecipientEdit, SIGNAL(textChanged(const QString&)), this, SLOT(updateList(const QString&)));
+	connect(RecipientEdit, SIGNAL(returnPressed()), this, SLOT(editReturnPressed()));
 
-	recipientLayout->addWidget(recipient);
+	recipientLayout->addWidget(RecipientEdit);
 
 	QStringList strlist; // lista kontaktow z przypisanym numerem telefonu
 
@@ -115,55 +115,55 @@ void SmsDialog::createGui()
 	strlist.sort();
 	strlist.prepend(QString::null);
 
-	list = new QComboBox(this);
-	list->addItems(strlist);
+	RecipientComboBox = new QComboBox(this);
+	RecipientComboBox->addItems(strlist);
 
-	connect(list, SIGNAL(activated(const QString&)), this, SLOT(updateRecipient(const QString &)));
-	recipientLayout->addWidget(list);
+	connect(RecipientComboBox, SIGNAL(activated(const QString&)), this, SLOT(updateRecipient(const QString &)));
+	recipientLayout->addWidget(RecipientComboBox);
 
 	formLayout->addRow(tr("Recipient") + ":", recipientWidget);
 
-	ProvidersList = new QComboBox(this);
-	ProvidersList->addItem(tr("Automatically select provider"), "");
+	ProviderComboBox = new QComboBox(this);
+	ProviderComboBox->addItem(tr("Automatically select provider"), "");
 	foreach (SmsGateway* gateway, SmsGatewayManager::instance()->gateways())
-		ProvidersList->addItem(gateway->displayName(), gateway->name());
+		ProviderComboBox->addItem(gateway->displayName(), gateway->name());
 
-	formLayout->addRow(tr("Select GSM provider") + ":", ProvidersList);
+	formLayout->addRow(tr("Select GSM provider") + ":", ProviderComboBox);
 
-	body = new QTextEdit(this);
-	body->setLineWrapMode(QTextEdit::WidgetWidth);
-	body->setTabChangesFocus(true);
-	connect(body, SIGNAL(textChanged()), this, SLOT(updateCounter()));
+	ContentEdit = new QTextEdit(this);
+	ContentEdit->setLineWrapMode(QTextEdit::WidgetWidth);
+	ContentEdit->setTabChangesFocus(true);
+	connect(ContentEdit, SIGNAL(textChanged()), this, SLOT(updateCounter()));
 
-	formLayout->addRow(tr("Content") + ":", body);
+	formLayout->addRow(tr("Content") + ":", ContentEdit);
 
-	smslen = new QLabel("0", this);
-	formLayout->addRow(0, smslen);
+	LengthLabel = new QLabel("0", this);
+	formLayout->addRow(0, LengthLabel);
 
-	e_contact = new QLineEdit(this);
-	connect(e_contact, SIGNAL(returnPressed()), this, SLOT(editReturnPressed()));
+	ContactEdit = new QLineEdit(this);
+	connect(ContactEdit, SIGNAL(returnPressed()), this, SLOT(editReturnPressed()));
 
-	formLayout->addRow(tr("Contact") + ":", e_contact);
+	formLayout->addRow(tr("Contact") + ":", ContactEdit);
 
-	e_signature = new QLineEdit(config_file.readEntry("SMS", "SmsNick"), this);
-	connect(e_signature, SIGNAL(returnPressed()), this, SLOT(editReturnPressed()));
+	SignatureEdit = new QLineEdit(config_file.readEntry("SMS", "SmsNick"), this);
+	connect(SignatureEdit, SIGNAL(returnPressed()), this, SLOT(editReturnPressed()));
 
-	formLayout->addRow(tr("Signature") + ":", e_signature);
+	formLayout->addRow(tr("Signature") + ":", SignatureEdit);
 
-	c_saveInHistory = new QCheckBox(tr("Save SMS in history"), this);
-	c_saveInHistory->setChecked(true);
+	SaveInHistoryCheckBox = new QCheckBox(tr("Save SMS in history"), this);
+	SaveInHistoryCheckBox->setChecked(true);
 
-	formLayout->addRow(0, c_saveInHistory);
+	formLayout->addRow(0, SaveInHistoryCheckBox);
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(this);
 	mainLayout->addWidget(buttons);
 
-	b_send = new QPushButton(this);
-	b_send->setIcon(IconsManager::instance()->iconByPath("16x16/go-next.png"));
-	b_send->setText(tr("&Send"));
-	b_send->setDefault(true);
-	b_send->setMaximumWidth(200);
-	connect(b_send, SIGNAL(clicked()), this, SLOT(editReturnPressed()));
+	SendButton = new QPushButton(this);
+	SendButton->setIcon(IconsManager::instance()->iconByPath("16x16/go-next.png"));
+	SendButton->setText(tr("&Send"));
+	SendButton->setDefault(true);
+	SendButton->setMaximumWidth(200);
+	connect(SendButton, SIGNAL(clicked()), this, SLOT(editReturnPressed()));
 
 	QPushButton *closeButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCloseButton), tr("Close"));
 	connect(closeButton, SIGNAL(clicked(bool)), this, SLOT(close()));
@@ -171,7 +171,7 @@ void SmsDialog::createGui()
 	QPushButton *clearButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogDiscardButton), tr("Clear"));
 	connect(clearButton, SIGNAL(clicked(bool)), this, SLOT(clear()));
 
-	buttons->addButton(b_send, QDialogButtonBox::ApplyRole);
+	buttons->addButton(SendButton, QDialogButtonBox::ApplyRole);
 	buttons->addButton(clearButton, QDialogButtonBox::ResetRole);
 	buttons->addButton(closeButton, QDialogButtonBox::DestructiveRole);
 
@@ -182,15 +182,15 @@ void SmsDialog::createGui()
 
 void SmsDialog::configurationUpdated()
 {
-	body->setFont(config_file.readFontEntry("Look", "ChatFont"));
+	ContentEdit->setFont(config_file.readFontEntry("Look", "ChatFont"));
 }
 
 void SmsDialog::setRecipient(const QString &phone)
 {
 	kdebugf();
 
-	recipient->setText(phone);
-	body->setFocus();
+	RecipientEdit->setText(phone);
+	ContentEdit->setFocus();
 
 	kdebugf2();
 }
@@ -201,13 +201,13 @@ void SmsDialog::updateRecipient(const QString &newtext)
 //	kdebugmf(KDEBUG_FUNCTION_START | KDEBUG_INFO, "'%s' %d %d\n", qPrintable(newtext), newtext.isEmpty(), userlist->containsAltNick(newtext));
 	if (newtext.isEmpty())
 	{
-		recipient->clear();
+		RecipientEdit->clear();
 		kdebugf2();
 		return;
 	}
 	Buddy c = BuddyManager::instance()->byDisplay(newtext, ActionReturnNull);
 	if (!c.isNull())
-		recipient->setText(c.mobile());
+		RecipientEdit->setText(c.mobile());
 	kdebugf2();
 }
 
@@ -222,11 +222,11 @@ void SmsDialog::updateList(const QString &newnumber)
 	foreach(Buddy c, BuddyManager::instance()->items())
 		if (c.mobile() == newnumber)
 		{
-			list->setCurrentIndex(list->findText(c.display()));
+			RecipientComboBox->setCurrentIndex(RecipientComboBox->findText(c.display()));
 			kdebugf2();
 			return;
 		}
-	list->setCurrentIndex(-1);
+	RecipientComboBox->setCurrentIndex(-1);
 	kdebugf2();
 }
 
@@ -234,8 +234,8 @@ void SmsDialog::editReturnPressed()
 {
 	kdebugf();
 
-	if (body->toPlainText().isEmpty())
-		body->setFocus();
+	if (ContentEdit->toPlainText().isEmpty())
+		ContentEdit->setFocus();
 	else
 		sendSms();
 
@@ -248,46 +248,46 @@ void SmsDialog::sendSms()
 
 	if (config_file.readBoolEntry("SMS", "BuiltInApp"))
 	{
-		SmsSender *sender = new SmsSender(recipient->text(), QString::null, this);
-		sender->setContact(e_contact->text());
-		sender->setSignature(e_signature->text());
+		SmsSender *sender = new SmsSender(RecipientEdit->text(), QString::null, this);
+		sender->setContact(ContactEdit->text());
+		sender->setSignature(SignatureEdit->text());
 
 		SmsProgressWindow *window = new SmsProgressWindow(sender);
 		window->show();
 
-		sender->sendMessage(body->toPlainText());
+		sender->sendMessage(ContentEdit->toPlainText());
 	}
 	else
 	{
-		if (config_file.readEntry("SMS", "SmsApp").isEmpty())
-		{
-			MessageDialog::msg(tr("Sms application was not specified. Visit the configuration section"), false, "32x32/dialog-warning.png", this);
-			kdebugm(KDEBUG_WARNING, "SMS application NOT specified. Exit.\n");
-			return;
-		}
-		QString SmsAppPath = config_file.readEntry("SMS", "SmsApp");
-
-		smsProcess = new QProcess(this);
-		if (config_file.readBoolEntry("SMS", "UseCustomString")&&
-			(!config_file.readBoolEntry("SMS", "BuiltInApp")))
-		{
-			QStringList args = config_file.readEntry("SMS", "SmsString").split(' ');
-
-			args.replaceInStrings("%n", recipient->text());
-			args.replaceInStrings("%n", body->toPlainText());
-			
-			smsProcess->start(SmsAppPath, args);
-		}
-		else
-		{
-			QStringList args(recipient->text());
-			args.append(body->toPlainText());
-			smsProcess->start(SmsAppPath, args);
-		}
-
-		if (!smsProcess->waitForStarted())
-			MessageDialog::msg(tr("Could not spawn child process. Check if the program is functional"), false, "32x32/dialog-warning.png", this);
-		connect(smsProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(smsSigHandler()));
+// 		if (config_file.readEntry("SMS", "SmsApp").isEmpty())
+// 		{
+// 			MessageDialog::msg(tr("Sms application was not specified. Visit the configuration section"), false, "32x32/dialog-warning.png", this);
+// 			kdebugm(KDEBUG_WARNING, "SMS application NOT specified. Exit.\n");
+// 			return;
+// 		}
+// 		QString SmsAppPath = config_file.readEntry("SMS", "SmsApp");
+// 
+// 		smsProcess = new QProcess(this);
+// 		if (config_file.readBoolEntry("SMS", "UseCustomString")&&
+// 			(!config_file.readBoolEntry("SMS", "BuiltInApp")))
+// 		{
+// 			QStringList args = config_file.readEntry("SMS", "SmsString").split(' ');
+// 
+// 			args.replaceInStrings("%n", RecipientEdit->text());
+// 			args.replaceInStrings("%n", ContentEdit->toPlainText());
+// 			
+// 			smsProcess->start(SmsAppPath, args);
+// 		}
+// 		else
+// 		{
+// 			QStringList args(RecipientEdit->text());
+// 			args.append(ContentEdit->toPlainText());
+// 			smsProcess->start(SmsAppPath, args);
+// 		}
+// 
+// 		if (!smsProcess->waitForStarted())
+// 			MessageDialog::msg(tr("Could not spawn child process. Check if the program is functional"), false, "32x32/dialog-warning.png", this);
+// 		connect(smsProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(smsSigHandler()));
 	}
 	kdebugf2();
 }
@@ -295,20 +295,20 @@ void SmsDialog::sendSms()
 void SmsDialog::smsSigHandler()
 {
 	kdebugf();
-	if (smsProcess->exitStatus() == QProcess::NormalExit)
-		MessageDialog::msg(tr("The process exited normally. The SMS should be on its way"), false, "32x32/dialog-information.png", this);
-	else
-		MessageDialog::msg(tr("The process exited abnormally. The SMS may not be sent"), false, "32x32/dialog-warning.png", this);
-	delete smsProcess;
-	smsProcess = 0;
+// 	if (smsProcess->exitStatus() == QProcess::NormalExit)
+// 		MessageDialog::msg(tr("The process exited normally. The SMS should be on its way"), false, "32x32/dialog-information.png", this);
+// 	else
+// 		MessageDialog::msg(tr("The process exited abnormally. The SMS may not be sent"), false, "32x32/dialog-warning.png", this);
+// 	delete smsProcess;
+// 	smsProcess = 0;
 
-	body->clear();
+	ContentEdit->clear();
 	kdebugf2();
 }
 
 void SmsDialog::updateCounter()
 {
-	smslen->setText(QString::number(body->toPlainText().length()));
+	LengthLabel->setText(QString::number(ContentEdit->toPlainText().length()));
 }
 
 void SmsDialog::onSmsSenderFinished(bool success)
@@ -317,18 +317,28 @@ void SmsDialog::onSmsSenderFinished(bool success)
 
 	if (success)
 	{
-		if (c_saveInHistory->isChecked())
-			History::instance()->appendSms(recipient->text(), body->toPlainText());
+		if (SaveInHistoryCheckBox->isChecked())
+			History::instance()->appendSms(RecipientEdit->text(), ContentEdit->toPlainText());
 
 // 		MobileNumberManager::instance()->registerNumber(recipient->text(), Sender.currentGateway()->name());
 
-		body->clear();
-		e_contact->clear();
-		e_signature->clear();
-		recipient->clear();
+		ContentEdit->clear();
+		ContactEdit->clear();
+		SignatureEdit->clear();
+		RecipientEdit->clear();
 	}
 
 	kdebugf2();
+}
+
+void SmsDialog::clear()
+{
+	RecipientEdit->clear();
+	RecipientComboBox->clear();
+	ProviderComboBox->clear();
+	ContentEdit->clear();
+	ContactEdit->clear();
+	SignatureEdit->clear();
 }
 
 void SmsDialog::keyPressEvent(QKeyEvent *e)
