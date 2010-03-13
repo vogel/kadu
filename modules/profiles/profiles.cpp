@@ -302,6 +302,7 @@ static inline void startThread(QString profilePath)
 	//thread_list.append(thread);
 	thread->path = profilePath;
 	thread->command = qApp->argv()[0];
+	kdebugm(KDEBUG_INFO, "Starting profile - path: '%s', executable: '%s'\n", qPrintable(thread->path), qPrintable(thread->command));
 	thread->start();	
 }
 
