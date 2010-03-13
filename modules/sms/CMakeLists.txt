@@ -14,6 +14,7 @@ set (SOURCES
 	sms-gateway-query.cpp
 	sms-external-sender.cpp
 	sms-internal-sender.cpp
+	sms-sender.cpp
 )
 
 set (MOC_SOURCES
@@ -29,8 +30,9 @@ set (MOC_SOURCES
 	sms-gateway.h
 	sms-gateway-manager.h
 	sms-gateway-query.h
-	sms-external-sender.cpp
-	sms-internal-sender.cpp
+	sms-external-sender.h
+	sms-internal-sender.h
+	sms-sender.h
 )
 
 set (SCRIPT_DIRECTORY
