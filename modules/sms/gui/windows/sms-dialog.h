@@ -54,14 +54,11 @@ class SmsDialog : public QWidget, ConfigurationAwareObject
 	QLineEdit *recipient;
 	QComboBox *list;
 	QLabel *smslen;
-	QLabel *l_contact;
 	QLineEdit *e_contact;
-	QLabel *l_signature;
 	QLineEdit *e_signature;
 	QPushButton *b_send;
 	QCheckBox *c_saveInHistory;
 	QProcess *smsProcess;
-	QCheckBox *AutoSelectProvider;
 	QComboBox *ProvidersList;
 
 	void createGui();

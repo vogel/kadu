@@ -20,7 +20,8 @@
 
 #include <QtGui/QCheckBox>
 #include <QtGui/QComboBox>
-#include <QtGui/QGridLayout>
+#include <QtGui/QDialogButtonBox>
+#include <QtGui/QFormLayout>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QListWidget>
 #include <QtCore/QProcess>
@@ -51,7 +52,7 @@
 #include "sms-dialog.h"
 
 SmsDialog::SmsDialog(const QString& altnick, QWidget* parent) : QWidget(parent, Qt::Window),
-	body(0), recipient(0), list(0), smslen(0), l_contact(0), e_contact(0), l_signature(0),
+	body(0), recipient(0), list(0), smslen(0), e_contact(0),
 	e_signature(0), b_send(0), c_saveInHistory(0), smsProcess(0)
 {
 	kdebugf();
@@ -88,42 +89,24 @@ SmsDialog::~SmsDialog()
 
 void SmsDialog::createGui()
 {
+	QVBoxLayout *mainLayout = new QVBoxLayout(this);
 
-	QGridLayout *grid = new QGridLayout(this);
-	grid->setColumnStretch(1, 5);
+	QWidget *formWidget = new QWidget(this);
+	mainLayout->addWidget(formWidget);
 
-	QWidget *providerWidget = new QWidget(this);
-	QGridLayout *widgetGrid = new QGridLayout(providerWidget);
+	QFormLayout *formLayout = new QFormLayout(formWidget);
 
-	QLabel *providersListLabel = new QLabel(tr("Select GSM provider") + ":", this);
-	widgetGrid->addWidget(providersListLabel, 0, 0, 1, 1);
-
-	ProvidersList = new QComboBox(this);
-	foreach (SmsGateway* gateway, SmsGatewayManager::instance()->gateways())
-		ProvidersList->addItem(gateway->displayName(), gateway->name());
-	widgetGrid->addWidget(ProvidersList, 0, 1, 1, 1);
-
-	AutoSelectProvider = new QCheckBox(tr("Automatically select provider"), this);
-	AutoSelectProvider->setChecked(false);
-	widgetGrid->addWidget(AutoSelectProvider, 0, 2, 1, 1);
-
-	connect(AutoSelectProvider, SIGNAL(toggled(bool)), ProvidersList, SLOT(setDisabled(bool)));
-	connect(AutoSelectProvider, SIGNAL(toggled(bool)), providersListLabel, SLOT(setDisabled(bool)));
-
-	grid->addWidget(providerWidget, 1, 0, 1, 3);
-
-	body = new QTextEdit(this);
-	grid->addWidget(body, 2, 0, 1, 3);
-	body->setLineWrapMode(QTextEdit::WidgetWidth);
-	body->setTabChangesFocus(true);
-	connect(body, SIGNAL(textChanged()), this, SLOT(updateCounter()));
+	QWidget *recipientWidget = new QWidget(this);
+	QHBoxLayout *recipientLayout = new QHBoxLayout(recipientWidget);
+	recipientLayout->setContentsMargins(0, 0, 0, 0);
 
 	recipient = new QLineEdit(this);
 	recipient->setMinimumWidth(140);
 
 	connect(recipient, SIGNAL(textChanged(const QString&)), this, SLOT(updateList(const QString&)));
 	connect(recipient, SIGNAL(returnPressed()), this, SLOT(editReturnPressed()));
-	grid->addWidget(recipient, 0, 1, 1, 1);
+
+	recipientLayout->addWidget(recipient);
 
 	QStringList strlist; // lista kontaktow z przypisanym numerem telefonu
 
@@ -137,29 +120,44 @@ void SmsDialog::createGui()
 	list->addItems(strlist);
 
 	connect(list, SIGNAL(activated(const QString&)), this, SLOT(updateRecipient(const QString &)));
-	grid->addWidget(list, 0, 2, 1, 1);
+	recipientLayout->addWidget(list);
 
-	QLabel *recilabel = new QLabel(tr("Recipient"), this);
-	grid->addWidget(recilabel, 0, 0, 1, 1);
+	formLayout->addRow(tr("Recipient") + ":", recipientWidget);
 
-	l_contact = new QLabel(tr("Contact"), this);
-	grid->addWidget(l_contact, 3, 0, 1, 1);
-	e_contact = new QLineEdit(this);
-	connect(e_contact, SIGNAL(returnPressed()), this, SLOT(editReturnPressed()));
-	grid->addWidget(e_contact, 3, 1, 1, 1);
+	ProvidersList = new QComboBox(this);
+	ProvidersList->addItem(tr("Automatically select provider"), "");
+	foreach (SmsGateway* gateway, SmsGatewayManager::instance()->gateways())
+		ProvidersList->addItem(gateway->displayName(), gateway->name());
+
+	formLayout->addRow(tr("Select GSM provider") + ":", ProvidersList);
+
+	body = new QTextEdit(this);
+	body->setLineWrapMode(QTextEdit::WidgetWidth);
+	body->setTabChangesFocus(true);
+	connect(body, SIGNAL(textChanged()), this, SLOT(updateCounter()));
+
+	formLayout->addRow(tr("Content") + ":", body);
 
 	smslen = new QLabel("0", this);
-	grid->addWidget(smslen, 3, 2, 1, 1, Qt::AlignRight);
+	formLayout->addRow(0, smslen);
 
-	l_signature = new QLabel(tr("Signature"), this);
-	grid->addWidget(l_signature, 4, 0, 1, 1);
+	e_contact = new QLineEdit(this);
+	connect(e_contact, SIGNAL(returnPressed()), this, SLOT(editReturnPressed()));
+
+	formLayout->addRow(tr("Contact") + ":", e_contact);
+
 	e_signature = new QLineEdit(config_file.readEntry("SMS", "SmsNick"), this);
 	connect(e_signature, SIGNAL(returnPressed()), this, SLOT(editReturnPressed()));
-	grid->addWidget(e_signature, 4, 1, 1, 1);
+
+	formLayout->addRow(tr("Signature") + ":", e_signature);
 
 	c_saveInHistory = new QCheckBox(tr("Save SMS in history"), this);
 	c_saveInHistory->setChecked(true);
-	grid->addWidget(c_saveInHistory, 5, 0, 1, 2);
+
+	formLayout->addRow(0, c_saveInHistory);
+
+	QDialogButtonBox *buttons = new QDialogButtonBox(this);
+	mainLayout->addWidget(buttons);
 
 	b_send = new QPushButton(this);
 	b_send->setIcon(IconsManager::instance()->iconByPath("16x16/go-next.png"));
@@ -167,7 +165,16 @@ void SmsDialog::createGui()
 	b_send->setDefault(true);
 	b_send->setMaximumWidth(200);
 	connect(b_send, SIGNAL(clicked()), this, SLOT(editReturnPressed()));
-	grid->addWidget(b_send, 5, 2, 1, 1, Qt::AlignRight);
+
+	QPushButton *closeButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCloseButton), tr("Close"));
+	connect(closeButton, SIGNAL(clicked(bool)), this, SLOT(close()));
+
+	QPushButton *clearButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogDiscardButton), tr("Clear"));
+	connect(clearButton, SIGNAL(clicked(bool)), this, SLOT(clear()));
+
+	buttons->addButton(b_send, QDialogButtonBox::ApplyRole);
+	buttons->addButton(clearButton, QDialogButtonBox::ResetRole);
+	buttons->addButton(closeButton, QDialogButtonBox::DestructiveRole);
 
 	resize(400, 250);
 
@@ -237,13 +244,6 @@ void SmsDialog::editReturnPressed()
 void SmsDialog::sendSms()
 {
 	kdebugf();
-	b_send->setEnabled(false);
-	body->setEnabled(false);
-	e_contact->setEnabled(false);
-	l_contact->setEnabled(false);
-	e_signature->setEnabled(false);
-	l_signature->setEnabled(false);
-	c_saveInHistory->setEnabled(false);
 
 	if (config_file.readBoolEntry("SMS", "BuiltInApp"))
 	{
@@ -303,9 +303,7 @@ void SmsDialog::smsSigHandler()
 
 	c_saveInHistory->setEnabled(true);
 	e_contact->setEnabled(true);
-	l_contact->setEnabled(true);
 	e_signature->setEnabled(true);
-	l_signature->setEnabled(true);
 	b_send->setEnabled(true);
 	body->setEnabled(true);
 	body->clear();
@@ -337,9 +335,7 @@ void SmsDialog::onSmsSenderFinished(bool success)
 	b_send->setEnabled(true);
 	body->setEnabled(true);
 	e_contact->setEnabled(true);
-	l_contact->setEnabled(true);
 	e_signature->setEnabled(true);
-	l_signature->setEnabled(true);
 	c_saveInHistory->setEnabled(true);
 	kdebugf2();
 }
