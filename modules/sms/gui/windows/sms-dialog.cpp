@@ -292,20 +292,6 @@ void SmsDialog::sendSms()
 	kdebugf2();
 }
 
-void SmsDialog::smsSigHandler()
-{
-	kdebugf();
-// 	if (smsProcess->exitStatus() == QProcess::NormalExit)
-// 		MessageDialog::msg(tr("The process exited normally. The SMS should be on its way"), false, "32x32/dialog-information.png", this);
-// 	else
-// 		MessageDialog::msg(tr("The process exited abnormally. The SMS may not be sent"), false, "32x32/dialog-warning.png", this);
-// 	delete smsProcess;
-// 	smsProcess = 0;
-
-	ContentEdit->clear();
-	kdebugf2();
-}
-
 void SmsDialog::updateCounter()
 {
 	LengthLabel->setText(QString::number(ContentEdit->toPlainText().length()));

@@ -68,7 +68,6 @@ private slots:
 	void editReturnPressed();
 	void sendSms();
 	void updateCounter();
-	void smsSigHandler();
 	void onSmsSenderFinished(bool success);
 
 	void clear();
