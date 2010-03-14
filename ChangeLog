@@ -2,6 +2,8 @@
 * core: simple-mode introduced (Vogel)
 * gadu: better account registration (Vogel)
 * sms: gateway selection moved to javaScript (Vogel)
+* sms: sending sms moved to javaScript, only Orange is supported now (Vogel)
+* sms: rework of SmsDialog window and behaviour (Vogel)
 
 +++ version 0.6.6-alpha7
 * screenshot: module rewritten, now based on QGraphicsView (Vogel)
