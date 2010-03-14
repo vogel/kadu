@@ -39,30 +39,24 @@
 
 #include "sms_exports.h"
 #include "sms-gateway.h"
+#include "sms-sender.h"
 
 class QNetworkReply;
 
 class TokenReader;
 
-class SmsInternalSender : public QObject, public TokenAcceptor
+class SmsInternalSender : public SmsSender, public TokenAcceptor
 {
 	Q_OBJECT
 
 	QString GatewayId;
-	QString Number;
 	QString Message;
-	QString Contact;
-	QString Signature;
 
 	TokenReader *MyTokenReader;
 	QNetworkReply *TokenReply;
 
 	QScriptValue TokenCallbackObject;
 	QScriptValue TokenCallbackMethod;
-
-	void fixNumber();
-	bool validateNumber();
-	bool validateSignature();
 
 	void queryForGateway();
 	void gatewaySelected();
@@ -76,8 +70,6 @@ public:
 	explicit SmsInternalSender(const QString &number, const QString &gatewayId = QString::null, QObject *parent = 0);
 	virtual ~SmsInternalSender();
 
-	void setContact(const QString& contact);
-	void setSignature(const QString& signature);
 	void sendMessage(const QString& message);
 
 	void setTokenReader(TokenReader *tokenReader);
@@ -92,9 +84,6 @@ public slots:
 
 	void result();
 	void failure(const QString &errorMessage);
-
-signals:
-	void finished(const QString &errorMessage);
 
 };
 

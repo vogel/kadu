@@ -33,39 +33,12 @@
 #include "sms-internal-sender.h"
 
 SmsInternalSender::SmsInternalSender(const QString &number, const QString &gatewayId, QObject *parent) :
-		QObject(parent), GatewayId(gatewayId), Number(number), MyTokenReader(0)
+		SmsSender(number, parent), GatewayId(gatewayId), MyTokenReader(0)
 {
-	fixNumber();
 }
 
 SmsInternalSender::~SmsInternalSender()
 {
-}
-
-void SmsInternalSender::fixNumber()
-{
-	if (Number.length() == 12 && Number.left(3) == "+48")
-		Number = Number.right(9);
-}
-
-bool SmsInternalSender::validateNumber()
-{
-	return 9 == Number.length();
-}
-
-bool SmsInternalSender::validateSignature()
-{
-	return !Signature.isEmpty();
-}
-
-void SmsInternalSender::setContact(const QString &contact)
-{
-	Contact = contact;
-}
-
-void SmsInternalSender::setSignature(const QString &signature)
-{
-	Signature = signature;
 }
 
 void SmsInternalSender::sendMessage(const QString &message)
@@ -103,7 +76,7 @@ void SmsInternalSender::queryForGateway()
 {
 	SmsGatewayQuery *query = new SmsGatewayQuery(this);
 	connect(query, SIGNAL(finished(const QString &)), this, SLOT(gatewayQueryDone(const QString &)));
-	query->process(Number);
+	query->process(number());
 }
 
 void SmsInternalSender::gatewayQueryDone(const QString &gatewayId)
@@ -171,9 +144,9 @@ void SmsInternalSender::sendSms()
 
 	QScriptValueList arguments;
 	arguments.append(GatewayId);
-	arguments.append(Number);
-	arguments.append(Contact);
-	arguments.append(Signature);
+	arguments.append(number());
+	arguments.append(contact());
+	arguments.append(signature());
 	arguments.append(Message);
 	arguments.append(engine->newQObject(this));
 

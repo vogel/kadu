@@ -41,6 +41,10 @@ public:
 	explicit SmsSender(const QString &number, QObject *parent = 0);
 	virtual ~SmsSender();
 
+	QString number() { return Number; }
+	QString contact() { return Contact; }
+	QString signature() { return Signature; }
+
 	void setContact(const QString &contact);
 	void setSignature(const QString &signature);
 	void sendMessage(const QString &message);
