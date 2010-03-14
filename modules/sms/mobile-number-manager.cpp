@@ -18,6 +18,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "configuration/configuration-manager.h"
+
 #include "mobile-number.h"
 
 #include "mobile-number-manager.h"
@@ -32,8 +34,27 @@ MobileNumberManager * MobileNumberManager::instance()
 	return Instance;
 }
 
+MobileNumberManager::MobileNumberManager()
+{
+	setState(StateNotLoaded);
+
+	ConfigurationManager::instance()->registerStorableObject(this);
+}
+
+MobileNumberManager::~MobileNumberManager()
+{
+	ConfigurationManager::instance()->unregisterStorableObject(this);
+}
+
 void MobileNumberManager::registerNumber(QString number, QString gatewayId)
 {
+	foreach (MobileNumber *n, Numbers)
+		if (n->number() == number)
+		{
+			n->setGatewayId(gatewayId);
+			return;
+		}
+
 	Numbers.append(new MobileNumber(number, gatewayId));
 }
 
@@ -56,7 +77,7 @@ StorableObject * MobileNumberManager::storageParent()
 
 void MobileNumberManager::load()
 {
-  	if (!isValidStorage())
+	if (!isValidStorage())
 		return;
 
 	StorableObject::load();
@@ -75,6 +96,7 @@ void MobileNumberManager::load()
 		StoragePoint *numberStoragePoint = new StoragePoint(configurationStorage, mobileNumberElement);
 		MobileNumber *number = new MobileNumber();
 		number->setStorage(numberStoragePoint);
+		number->setState(StateNotLoaded);
 		number->ensureLoaded();
 
 		Numbers.append(number);
@@ -94,6 +116,8 @@ void MobileNumberManager::store()
 
 QString MobileNumberManager::gatewayId(const QString &mobileNumber)
 {
+	ensureLoaded();
+
 	foreach (MobileNumber *number, Numbers)
 		if (number->number() == mobileNumber)
 			return number->gatewayId();

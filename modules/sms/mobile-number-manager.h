@@ -33,8 +33,8 @@ class MobileNumberManager : public StorableObject
 
 	QList<MobileNumber *> Numbers;
 
-	MobileNumberManager() {};
-	virtual ~MobileNumberManager() {};
+	MobileNumberManager();
+	virtual ~MobileNumberManager();
 
 protected:
 	virtual StoragePoint * createStoragePoint();

@@ -58,6 +58,7 @@ private slots:
 	void editReturnPressed();
 	void updateCounter();
 
+	void gatewayAssigned(const QString &number, const QString &gatewayId);
 	void sendSms();
 
 	void clear();

@@ -132,6 +132,8 @@ void SmsInternalSender::tokenRead(const QString &tokenValue)
 
 void SmsInternalSender::sendSms()
 {
+	emit gatewayAssigned(number(), GatewayId);
+
 	QScriptEngine* engine = SmsScriptsManager::instance()->engine();
 
 	QScriptValue jsGatewayManagerObject = engine->evaluate("gatewayManager");

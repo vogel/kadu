@@ -21,21 +21,24 @@
 #ifndef MOBILE_NUMBER_H
 #define MOBILE_NUMBER_H
 
-#include "storage/storable-object.h"
+#include "storage/uuid-storable-object.h"
 
-class MobileNumber : public StorableObject
+class MobileNumber : public UuidStorableObject
 {
+	QUuid Uuid;
+
 	QString Number;
 	QString GatewayId;
 
 protected:
-	virtual StoragePoint * createStoragePoint();
 	virtual void load();
 
 public:
-	MobileNumber() {};
+	MobileNumber();
 	MobileNumber(QString number, QString gatewayId);
-	virtual ~MobileNumber() {};
+	virtual ~MobileNumber();
+
+	virtual QUuid uuid() const { return Uuid; }
 
 	virtual StorableObject * storageParent();
 	virtual QString storageNodeName() { return QLatin1String("MobileNumber"); }

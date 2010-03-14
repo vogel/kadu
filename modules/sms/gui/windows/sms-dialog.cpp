@@ -174,10 +174,6 @@ void SmsDialog::setRecipient(const QString &phone)
 	RecipientEdit->setText(phone);
 	ContentEdit->setFocus();
 
-	QString gatewayId = MobileNumberManager::instance()->gatewayId(RecipientEdit->text());
-
-	ProviderComboBox->setCurrentIndex(ProviderComboBox->findData(gatewayId));
-
 	kdebugf2();
 }
 
@@ -188,6 +184,9 @@ void SmsDialog::recipientBuddyChanged(Buddy buddy)
 
 void SmsDialog::recipientNumberChanged(const QString &number)
 {
+	QString gatewayId = MobileNumberManager::instance()->gatewayId(RecipientEdit->text());
+	ProviderComboBox->setCurrentIndex(ProviderComboBox->findData(gatewayId));
+
 	if (number.isEmpty())
 	{
 		RecipientComboBox->setBuddy(Buddy::null);
@@ -200,7 +199,6 @@ void SmsDialog::recipientNumberChanged(const QString &number)
 			RecipientComboBox->setBuddy(buddy);
 			return;
 		}
-
 }
 
 void SmsDialog::editReturnPressed()
@@ -213,6 +211,11 @@ void SmsDialog::editReturnPressed()
 		sendSms();
 
 	kdebugf2();
+}
+
+void SmsDialog::gatewayAssigned(const QString &number, const QString &gatewayId)
+{
+	MobileNumberManager::instance()->registerNumber(number, gatewayId);
 }
 
 void SmsDialog::sendSms()
@@ -238,6 +241,7 @@ void SmsDialog::sendSms()
 		sender = new SmsExternalSender(RecipientEdit->text(), this);
 	}
 
+	connect(sender, SIGNAL(gatewayAssigned(QString,QString)), this, SLOT(gatewayAssigned(QString,QString)));
 	sender->setContact(ContactEdit->text());
 	sender->setSignature(SignatureEdit->text());
 

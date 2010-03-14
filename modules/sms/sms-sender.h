@@ -62,6 +62,7 @@ public:
 	virtual void tokenRead(const QString& tokenValue);
 
 signals:
+	void gatewayAssigned(const QString &number, const QString &gatewayId);
 	void finished(const QString &errorMessage);
 
 };

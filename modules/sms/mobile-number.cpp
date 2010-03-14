@@ -22,14 +22,19 @@
 
 #include "mobile-number.h"
 
+MobileNumber::MobileNumber() :
+		Uuid(QUuid::createUuid())
+{
+
+}
+
 MobileNumber::MobileNumber(QString number, QString gatewayId) :
-		Number(number), GatewayId(gatewayId)
+		Uuid(QUuid::createUuid()), Number(number), GatewayId(gatewayId)
 {
 }
 
-StoragePoint * MobileNumber::createStoragePoint()
+MobileNumber::~MobileNumber()
 {
-	return new StoragePoint(xml_config_file, xml_config_file->getNode("MobileNumber"));
 }
 
 void MobileNumber::load()
@@ -37,8 +42,9 @@ void MobileNumber::load()
 	if (!isValidStorage())
 		return;
 
-	StorableObject::load();
+	UuidStorableObject::load();
 
+	Uuid = loadAttribute<QString>("uuid");
 	Number = loadValue<QString>("Number");
 	GatewayId = loadValue<QString>("Gateway");
 }
@@ -50,8 +56,9 @@ void MobileNumber::store()
 
 	ensureLoaded();
 
-	StorableObject::store();
+	UuidStorableObject::store();
 
+	storeAttribute("uuid", Uuid.toString());
 	storeValue("Number", Number);
 	storeValue("Gateway", GatewayId);
 }
