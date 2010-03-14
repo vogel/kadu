@@ -26,6 +26,11 @@
 
 ChatTypeManager * ChatTypeManager::Instance = 0;
 
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Returns singleton instance of ChatTypeManager.
+ * @return singleton instance of ChatTypeManager
+ */
 ChatTypeManager * ChatTypeManager::instance()
 {
 	if (0 == Instance)
@@ -45,8 +50,14 @@ ChatTypeManager::~ChatTypeManager()
 {
 }
 
-#include <stdio.h>
-
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Adds new chat type to manager.
+ * @param chatType chat type to add.
+ *
+ * Adds new chat type to manager. After that all @link ChatTypeAwareObject @endlink
+ * gets their chatTypeRegistered methods called.
+ */
 void ChatTypeManager::addChatType(ChatType *chatType)
 {
 	if (ChatTypes.contains(chatType))
@@ -60,6 +71,14 @@ void ChatTypeManager::addChatType(ChatType *chatType)
 	ChatTypeAwareObject::notifyChatTypeRegistered(chatType);
 }
 
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Removes chat type from manager.
+ * @param chatType chat type to removed.
+ *
+ * Removes chat type from manager. After that all @link ChatTypeAwareObject @endlink
+ * gets their chatTypeUnregistered methods called.
+ */
 void ChatTypeManager::removeChatType(ChatType *chatType)
 {
 	if (!ChatTypes.contains(chatType))
@@ -73,6 +92,38 @@ void ChatTypeManager::removeChatType(ChatType *chatType)
 	ChatTypeAwareObject::notifyChatTypeUnregistered(chatType);
 }
 
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Returns list of all registered chat types.
+ * @return list of all registered chat types
+ *
+ * Returns list of all registered chat types.
+ */
+const QList<ChatType *> & ChatTypeManager::chatTypes() const
+{
+	return ChatTypes;
+}
+
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Returns list of all registered chat types.
+ * @return list of all registered chat types
+ *
+ * Returns list of all registered chat types.
+ */
+QList<ChatType *> ChatTypeManager::chatTypes()
+{
+	return ChatTypes;
+}
+
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Returns chat type with given internal name.
+ * @param name internal name of chat type to return.
+ * @return chat type with given internal name
+ *
+ * Returns chat type with given internal name or null, if not found.
+ */
 ChatType * ChatTypeManager::chatType(const QString &name)
 {
 	return ChatTypesMap.value(name);

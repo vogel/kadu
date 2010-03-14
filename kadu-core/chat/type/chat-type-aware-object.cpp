@@ -23,24 +23,54 @@
 
 KADU_AWARE_CLASS(ChatTypeAwareObject)
 
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Call this method to call chatTypeRegistered in each ChatTypeAwareObject object.
+ * @param chatType ChatType object that will get passed to chatTypeRegistered methods
+ *
+ * Calling this method results in calling chatTypeRegistered in each ChatTypeAwareObject
+ * in system.
+ */
 void ChatTypeAwareObject::notifyChatTypeRegistered(ChatType *chatType)
 {
 	foreach (ChatTypeAwareObject *object, Objects)
 		object->chatTypeRegistered(chatType);
 }
 
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Call this method to call chatTypeUnregistered in each ChatTypeAwareObject object.
+ * @param chatType ChatType object that will get passed to chatTypeUnregistered methods
+ *
+ * Calling this method results in calling chatTypeUnregistered in each ChatTypeAwareObject
+ * in system.
+ */
 void ChatTypeAwareObject::notifyChatTypeUnregistered(ChatType *chatType)
 {
 	foreach (ChatTypeAwareObject *object, Objects)
 		object->chatTypeUnregistered(chatType);
 }
 
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Call this method to call chatTypeRegistered for each registered ChatType object.
+ *
+ * Calling this method results in calling chatTypeRegistered for each registered ChatType
+ * on current object.
+ */
 void ChatTypeAwareObject::triggerAllChatTypesRegistered()
 {
 	foreach (ChatType *chatType, ChatTypeManager::instance()->chatTypes())
 		chatTypeRegistered(chatType);
 }
 
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Call this method to call chatTypeUnregistered for each registered ChatType object.
+ *
+ * Calling this method results in calling chatTypeUnregistered for each registered ChatType
+ * on current object.
+ */
 void ChatTypeAwareObject::triggerAllChatTypesUnregistered()
 {
 	foreach (ChatType *chatType, ChatTypeManager::instance()->chatTypes())

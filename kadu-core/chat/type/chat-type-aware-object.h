@@ -26,11 +26,42 @@
 
 class ChatType;
 
+/**
+ * @addtogroup Chat
+ * @{
+ */
+
+/**
+ * @class ChatTypeAwareObject
+ * @author Rafal 'Vogel' Malinowski
+ * @short Class that gets informed about chat type adding/removal from ChatTypeManager.
+ *
+ * Each class that inherits from ChatTypeAwareObject has to implement two methods:
+ * chatTypeRegistered and chatTypeUnregistered that are called automatically when new ChatType
+ * is added to ChatTypeManager or removed from it.
+ */
 class KADUAPI ChatTypeAwareObject : public AwareObject<ChatTypeAwareObject>
 {
 
 protected:
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Method is called after new ChatType is added to ChatTypeManager.
+	 * @param chatType just added ChatType object
+	 *
+	 * Method is called after new ChatType is added to ChatTypeManager.
+	 * This method must be overriden.
+	 */
 	virtual void chatTypeRegistered(ChatType *chatType) = 0;
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Method is called after ChatType is removed from ChatTypeManager.
+	 * @param chatType removed ChatType object
+	 *
+	 * Method is called after ChatType is removed from ChatTypeManager.
+	 * This method must be overriden.
+	 */
 	virtual void chatTypeUnregistered(ChatType *chatType) = 0;
 
 public:
@@ -41,5 +72,9 @@ public:
 	void triggerAllChatTypesUnregistered();
 
 };
+
+/**
+ * @}
+ */
 
 #endif // CHAT_TYPE_AWARE_OBJECT

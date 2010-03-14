@@ -27,6 +27,19 @@
 #include "chat/type/chat-type.h"
 #include "exports.h"
 
+/**
+ * @addtogroup Chat
+ * @{
+ */
+
+/**
+ * @class ChatTypeManager
+ * @author Rafal 'Vogel' Malinowski
+ * @short Manager of registered chat types.
+ *
+ * This class holds information about all @link ChatType @endlink objects registered in
+ * system. All changes in this manager are propagated to @link ChatTypeAwareObject @endlink.
+ */
 class KADUAPI ChatTypeManager : public QObject
 {
 	Q_OBJECT
@@ -46,16 +59,51 @@ public:
 	void addChatType(ChatType *chatType);
 	void removeChatType(ChatType *chatType);
 
-	const QList<ChatType *> & chatTypes() const { return ChatTypes; }
-	QList<ChatType *> chatTypes() { return ChatTypes; }
+	const QList<ChatType *> & chatTypes() const;
+	QList<ChatType *> chatTypes();
 	ChatType * chatType(const QString &name);
 
 signals:
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Emited just before chat type is added to manager.
+	 * @param chatType added chat type
+	 *
+	 * Signal is emited just before chat type is added to manager.
+	 */
 	void chatTypeAboutToBeAdded(ChatType *chatType);
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Emited just after chat type is added to manager.
+	 * @param chat added chat type
+	 *
+	 * Signal is emited just after chat typeis added to manager.
+	 */
 	void chatTypeAdded(ChatType *chatType);
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Emited just before chat type is removed from manager.
+	 * @param chat removed chat type
+	 *
+	 * Signal is emited just before chat type is removed from manager.
+	 */
 	void chatTypeAboutToBeRemoved(ChatType *chatType);
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Emited just after chat type is removed from manager.
+	 * @param chat removed chat type
+	 *
+	 * Signal is emited just after chat type is removed from manager.
+	 */
 	void chatTypeRemoved(ChatType *chatType);
 
 };
+
+/**
+ * @}
+ */
 
 #endif // CHAT_TYPE_MANAGER
