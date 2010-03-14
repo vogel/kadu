@@ -1,6 +1,6 @@
 GatewayOrange.prototype = {
 	name: function() {
-		return "orange";
+		return "Orange";
 	},
 
 	id: function() {

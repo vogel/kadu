@@ -9,6 +9,7 @@ set (SOURCES
 
 	mobile-number-manager.cpp
 	sms.cpp
+	sms-gateway-manager.cpp
 	sms-gateway-query.cpp
 	sms-external-sender.cpp
 	sms-internal-sender.cpp

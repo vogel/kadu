@@ -1,6 +1,6 @@
 GatewayPlus.prototype = {
 	name: function() {
-		return "plus";
+		return "Plus";
 	},
 
 	id: function() {

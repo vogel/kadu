@@ -1,6 +1,6 @@
 GatewayEra.prototype = {
 	name: function() {
-		return "era";
+		return "Era";
 	},
 
 	id: function() {

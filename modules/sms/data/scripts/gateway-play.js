@@ -1,6 +1,6 @@
 GatewayPlay.prototype = {
 	name: function() {
-		return "play";
+		return "Play";
 	},
 
 	id: function() {

@@ -42,6 +42,7 @@
 
 #include "gui/windows/sms-progress-window.h"
 #include "sms-external-sender.h"
+#include "sms-gateway-manager.h"
 #include "sms-internal-sender.h"
 
 #include "sms-dialog.h"
@@ -115,9 +116,10 @@ void SmsDialog::createGui()
 	formLayout->addRow(tr("Recipient") + ":", recipientWidget);
 
 	ProviderComboBox = new QComboBox(this);
-	ProviderComboBox->addItem(tr("Automatically select provider"), "");
-// 	foreach (SmsGateway* gateway, SmsGatewayManager::instance()->gateways())
-// 		ProviderComboBox->addItem(gateway->displayName(), gateway->name());
+	ProviderComboBox->addItem(tr("Select automatically"), "");
+
+	foreach (SmsGateway gateway, SmsGatewayManager::instance()->items())
+		ProviderComboBox->addItem(gateway.second, gateway.first);
 
 	formLayout->addRow(tr("GSM provider") + ":", ProviderComboBox);
 
