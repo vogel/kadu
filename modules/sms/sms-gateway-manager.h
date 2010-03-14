@@ -1,31 +1,48 @@
+/*
+ * %kadu copyright begin%
+ * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * %kadu copyright end%
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #ifndef SMS_GATEWAY_MANAGER_H
 #define SMS_GATEWAY_MANAGER_H
 
-#include <QtCore/QMap>
+#include <QtCore/QPair>
+#include <QtCore/QStringList>
 
-#include "sms.h"
-#include "sms-gateway.h"
+typedef QPair<QString, QString> SmsGateway;
 
-class SmsGatewayManager : public QObject
+class SmsGatewayManager
 {
-	Q_OBJECT
 	Q_DISABLE_COPY(SmsGatewayManager)
 
 	static SmsGatewayManager *Instance;
-	QMap<QString, SmsGateway*> Gateways;
-	
-	SmsGatewayManager(QObject* parent = 0) : QObject(parent) { };
-	virtual ~SmsGatewayManager() {};
-	
-public:
-	static SmsGatewayManager * instance();    
-	
-	void registerGateway(SmsGateway *gateway);
-	void unregisterGateway(QString);
-	SmsGateway * byId(QString gatewayId);
 
-	QMap<QString, SmsGateway *> gateways() { return Gateways; };
-	
+	QList<SmsGateway> Items;
+
+	SmsGatewayManager();
+	~SmsGatewayManager();
+
+	void load();
+
+public:
+	static SmsGatewayManager * instance();
+
+	QList<SmsGateway> items() { return Items; }
+
 };
 
 #endif // SMS_GATEWAY_MANAGER_H

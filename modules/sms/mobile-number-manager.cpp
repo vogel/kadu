@@ -1,55 +1,68 @@
-/***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
+/*
+ * %kadu copyright begin%
+ * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
+ * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * %kadu copyright end%
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-#include <QtGui/QCheckBox>
-#include <QtGui/QComboBox>
-#include <QtGui/QGridLayout>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QListWidget>
-#include <QtCore/QProcess>
-#include <QtGui/QPushButton>
-#include <QtGui/QTextEdit>
+#include "configuration/configuration-manager.h"
 
-#include "configuration/configuration-file.h"
+#include "mobile-number.h"
 
 #include "mobile-number-manager.h"
-#include "sms-gateway-manager.h"
 
 MobileNumberManager * MobileNumberManager::Instance = 0;
 
 MobileNumberManager * MobileNumberManager::instance()
 {
 	if (0 == Instance)
-	{
 		Instance = new MobileNumberManager();
-	}
+
 	return Instance;
+}
+
+MobileNumberManager::MobileNumberManager()
+{
+	setState(StateNotLoaded);
+
+	ConfigurationManager::instance()->registerStorableObject(this);
+}
+
+MobileNumberManager::~MobileNumberManager()
+{
+	ConfigurationManager::instance()->unregisterStorableObject(this);
 }
 
 void MobileNumberManager::registerNumber(QString number, QString gatewayId)
 {
-	Numbers.insert(new MobileNumber(number, gatewayId), gatewayId);
+	foreach (MobileNumber *n, Numbers)
+		if (n->number() == number)
+		{
+			n->setGatewayId(gatewayId);
+			return;
+		}
+
+	Numbers.append(new MobileNumber(number, gatewayId));
 }
 
 void MobileNumberManager::unregisterNumber(QString number)
 {
-	foreach (MobileNumber *n, Numbers.keys())
+	foreach (MobileNumber *n, Numbers)
 		if (n->number() == number)
-			Numbers.remove(n);
-}
-
-SmsGateway * MobileNumberManager::gateway(QString number)
-{
-	foreach (MobileNumber *n, Numbers.keys())
-		if (n->number() == number)
-			return SmsGatewayManager::instance()->byId(Numbers.value(n));
-	return 0;
+			Numbers.removeAll(n);
 }
 
 StoragePoint * MobileNumberManager::createStoragePoint()
@@ -64,8 +77,10 @@ StorableObject * MobileNumberManager::storageParent()
 
 void MobileNumberManager::load()
 {
-  	if (!isValidStorage())
+	if (!isValidStorage())
 		return;
+
+	StorableObject::load();
 
 	XmlConfigFile *configurationStorage = storage()->storage();
 	QDomElement mobileNumbersNode = storage()->point();
@@ -81,8 +96,10 @@ void MobileNumberManager::load()
 		StoragePoint *numberStoragePoint = new StoragePoint(configurationStorage, mobileNumberElement);
 		MobileNumber *number = new MobileNumber();
 		number->setStorage(numberStoragePoint);
-		number->load();
-		Numbers.insert(number, number->gatewayId());
+		number->setState(StateNotLoaded);
+		number->ensureLoaded();
+
+		Numbers.append(number);
 	}
 }
 
@@ -91,44 +108,19 @@ void MobileNumberManager::store()
 	if (!isValidStorage())
 		return;
 
-	QDomElement mobileNumbersNode = storage()->point();
+	StorableObject::store();
 
-	foreach (MobileNumber *number, Numbers.keys())
+	foreach (MobileNumber *number, Numbers)
 		number->store();
 }
 
-MobileNumber::MobileNumber(QString number, QString gatewayId) : Number(number), GatewayId(gatewayId)
+QString MobileNumberManager::gatewayId(const QString &mobileNumber)
 {
-}
-
-StoragePoint * MobileNumber::createStoragePoint()
-{
-	return new StoragePoint(xml_config_file, xml_config_file->getNode("MobileNumber"));
-}
-
-void MobileNumber::load()
-{
-	StorableObject::load();
-
-	if (!isValidStorage())
-		return;
-
-	Number = loadValue<QString>("Number");
-	GatewayId = loadValue<QString>("Gateway");
-}
-
-void MobileNumber::store()
-{
-	if (!isValidStorage())
-		return;
-
 	ensureLoaded();
 
-	storeValue("Number", Number);
-	storeValue("Gateway", GatewayId);
-}
+	foreach (MobileNumber *number, Numbers)
+		if (number->number() == mobileNumber)
+			return number->gatewayId();
 
-StorableObject * MobileNumber::storageParent()
-{
-	return MobileNumberManager::instance();
+	return QString::null;
 }

@@ -1,6 +1,5 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
@@ -18,50 +17,43 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "sms-sender.h"
+#include <QtGui/QHBoxLayout>
 
-SmsSender::SmsSender(const QString &number, QObject *parent) :
-		QObject(parent), Number(number), MyTokenReader(0)
+#include "icons-manager.h"
+
+#include "progress-label.h"
+
+ProgressLabel::ProgressLabel(const QString &text, QWidget *parent) :
+		QWidget(parent)
 {
-	fixNumber();
+	createGui();
+
+	setText(text);
 }
 
-SmsSender::~SmsSender()
+ProgressLabel::~ProgressLabel()
 {
 }
 
-void SmsSender::fixNumber()
+void ProgressLabel::createGui()
 {
-	if (Number.length() == 12 && Number.left(3) == "+48")
-		Number = Number.right(9);
+	QHBoxLayout *layout = new QHBoxLayout(this);
+
+	Icon = new ProgressIcon(this);
+	Label = new QLabel(this);
+	Label->setWordWrap(true);
+
+	layout->addWidget(Icon, 0, Qt::AlignTop);
+	layout->addWidget(Label, 100, Qt::AlignTop | Qt::AlignLeft);
 }
 
-bool SmsSender::validateNumber()
+void ProgressLabel::setState(ProgressIcon::ProgressState state, const QString &text)
 {
-	return 9 == Number.length();
+	Icon->setState(state);
+	setText(text);
 }
 
-bool SmsSender::validateSignature()
+void ProgressLabel::setText(const QString &text)
 {
-	return !Signature.isEmpty();
-}
-
-void SmsSender::setContact(const QString &contact)
-{
-	Contact = contact;
-}
-
-void SmsSender::setSignature(const QString &signature)
-{
-	Signature = signature;
-}
-
-void SmsSender::setTokenReader(TokenReader *tokenReader)
-{
-	MyTokenReader = tokenReader;
-}
-
-void SmsSender::tokenRead(const QString& tokenValue)
-{
-	Q_UNUSED(tokenValue)
+	Label->setText(text);
 }

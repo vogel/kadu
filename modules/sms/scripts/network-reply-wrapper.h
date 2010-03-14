@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,20 +17,30 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TOKEN_READER_H
-#define TOKEN_READER_H
+#ifndef NETWORK_REPLY_WRAPPER_H
+#define NETWORK_REPLY_WRAPPER_H
 
-class QPixmap;
-class QString;
+#include <QtCore/QObject>
 
-class TokenAcceptor;
+class QNetworkReply;
 
-class TokenReader
+class NetworkReplyWrapper : public QObject
 {
+	Q_OBJECT
+
+	QNetworkReply *Reply;
+
 public:
-	virtual QString readToken(const QPixmap &tokenPixmap) = 0;
-	virtual void readTokenAsync(const QPixmap &tokenPixmap, TokenAcceptor *acceptor) = 0;
+	explicit NetworkReplyWrapper(QNetworkReply *reply);
+	virtual ~NetworkReplyWrapper();
+
+public slots:
+	bool ok();
+	QString content();
+
+signals:
+	void finished();
 
 };
 
-#endif // TOKEN_READER_H
+#endif // NETWORK_REPLY_WRAPPER_H

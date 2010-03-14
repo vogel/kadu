@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,20 +17,30 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TOKEN_READER_H
-#define TOKEN_READER_H
+#include "buddies/buddy.h"
+#include "buddies/buddy-set.h"
+#include "buddies/ignored-helper.h"
 
-class QPixmap;
-class QString;
+#include "mobile-buddy-filter.h"
 
-class TokenAcceptor;
-
-class TokenReader
+MobileBuddyFilter::MobileBuddyFilter(QObject *parent) :
+		AbstractBuddyFilter(parent), Enabled(false)
 {
-public:
-	virtual QString readToken(const QPixmap &tokenPixmap) = 0;
-	virtual void readTokenAsync(const QPixmap &tokenPixmap, TokenAcceptor *acceptor) = 0;
+}
 
-};
+void MobileBuddyFilter::setEnabled(bool enabled)
+{
+	if (enabled == Enabled)
+		return;
 
-#endif // TOKEN_READER_H
+	Enabled = enabled;
+	emit filterChanged();
+}
+
+bool MobileBuddyFilter::acceptBuddy(Buddy buddy)
+{
+	if (!Enabled)
+		return true;
+
+	return !buddy.mobile().isEmpty();
+}

@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,20 +17,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TOKEN_READER_H
-#define TOKEN_READER_H
+GatewayPlus.prototype = {
+	name: function() {
+		return "Plus";
+	},
 
-class QPixmap;
-class QString;
+	id: function() {
+		return "01";
+	},
 
-class TokenAcceptor;
-
-class TokenReader
-{
-public:
-	virtual QString readToken(const QPixmap &tokenPixmap) = 0;
-	virtual void readTokenAsync(const QPixmap &tokenPixmap, TokenAcceptor *acceptor) = 0;
-
+	sendSms: function(receipient, sender, signature, content, callbackObject) {
+		callbackObject.failure("Not implemented");
+	}
 };
 
-#endif // TOKEN_READER_H
+function GatewayPlus() {
+	return this;
+}
+
+gatewayManager.addItem(new GatewayPlus());

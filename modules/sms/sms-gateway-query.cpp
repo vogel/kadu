@@ -15,6 +15,7 @@
 #include <QtCore/QProcess>
 #include <QtGui/QPushButton>
 #include <QtGui/QTextEdit>
+#include <QtScript/QScriptEngine>
 
 #include "configuration/configuration-file.h"
 #include "buddies/buddy-manager.h"
@@ -25,7 +26,6 @@
 #include "gui/widgets/buddies-list-view-menu-manager.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/configuration/config-group-box.h"
-#include "gui/widgets/image-widget.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
 #include "gui/hot-key.h"
@@ -34,55 +34,36 @@
 #include "modules.h"
 #include "misc/path-conversion.h"
 
+#include "scripts/sms-script-manager.h"
+
 #include "sms-gateway-query.h"
 
+SmsGatewayQuery::SmsGatewayQuery(QObject *parent) :
+		QObject(parent)
+{
+}
 
 SmsGatewayQuery::~SmsGatewayQuery()
 {
-	kdebugf();
-	emit finished(false, "");
-	if (Query)
-	{
-		disconnect(Query, SIGNAL(done(bool)), this, SLOT(queryFinished(bool)));
-		delete Query;
-	}
-	delete QueryBuffer;
-	kdebugf2();
 }
 
-void SmsGatewayQuery::queryFinished(bool error)
+void SmsGatewayQuery::queryFinished(const QString &provider)
 {
-	QString data = QueryBuffer->data();
-	if(!error)
-	{
-		QString provider;
-		
-		if(data.contains("260 01", Qt::CaseInsensitive))
-			provider = "plus";
-		else if(data.contains("260 02", Qt::CaseInsensitive))
-			provider = "era";
-		else if(data.contains("260 03", Qt::CaseInsensitive))
-			provider = "orange";
-		else if(data.contains("260 06", Qt::CaseInsensitive))
-			provider = "play";
-		
-		emit finished(true, provider);
-	}
-	else
-	{
-		emit finished(false, "");
-	}
+	emit finished(provider);
+
+	deleteLater();
 }
 
-void SmsGatewayQuery::process(const QString& number)
+void SmsGatewayQuery::process(const QString &number)
 {
-	kdebugf();
-	
-	Query = new QHttp("is.eranet.pl", 80, this);
-	QueryBuffer = new QBuffer(this);
-	connect(Query, SIGNAL(done(bool)), this, SLOT(queryFinished(bool)));
-	Query->get("/updir/check.cgi?t=48" + number, QueryBuffer);
-	
-	kdebugf2();
+	QScriptEngine* engine = SmsScriptsManager::instance()->engine();
+	QScriptValue jsGatewayQueryObject = engine->evaluate("new GatewayQuery()");
+	QScriptValue jsGetGateway = jsGatewayQueryObject.property("getGateway");
+
+	QScriptValueList arguments;
+	arguments.append(number);
+	arguments.append(engine->newQObject(this));
+
+	jsGetGateway.call(jsGatewayQueryObject, arguments);
 }
 

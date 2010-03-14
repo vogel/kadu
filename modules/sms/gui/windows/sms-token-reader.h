@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,20 +17,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TOKEN_READER_H
-#define TOKEN_READER_H
+#ifndef SMS_TOKEN_READER_H
+#define SMS_TOKEN_READER_H
 
-class QPixmap;
-class QString;
+#include <QtCore/QObject>
+#include <QtScript/QScriptValue>
 
-class TokenAcceptor;
-
-class TokenReader
+class SmsTokenReader : public QObject
 {
+	Q_OBJECT
+
 public:
-	virtual QString readToken(const QPixmap &tokenPixmap) = 0;
-	virtual void readTokenAsync(const QPixmap &tokenPixmap, TokenAcceptor *acceptor) = 0;
+	explicit SmsTokenReader(QObject *parent = 0);
+	virtual ~SmsTokenReader();
+
+public slots:
+	void readToken(const QString &tokenImageUrl, QScriptValue callbackObject, QScriptValue callbackMethod);
 
 };
 
-#endif // TOKEN_READER_H
+#endif // SMS_TOKEN_READER_H

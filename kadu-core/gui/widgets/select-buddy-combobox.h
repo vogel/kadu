@@ -41,7 +41,6 @@ class SelectBuddyCombobox : public QComboBox
 
 private slots:
 	void activatedSlot();
-	void buddySelected(Buddy);
 
 protected:
 	virtual void showPopup();
@@ -55,6 +54,9 @@ public:
 	void removeFilter(AbstractBuddyFilter *filter);
 
 	Buddy buddy();
+
+public slots:
+	void setBuddy(Buddy buddy);
 
 signals:
 	void buddyChanged(Buddy buddy);

@@ -1,6 +1,7 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
+ * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,20 +18,30 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TOKEN_READER_H
-#define TOKEN_READER_H
+#ifndef SMS_EXTERNAL_SENDER_H
+#define SMS_EXTERNAL_SENDER_H
 
-class QPixmap;
-class QString;
+#include "sms-sender.h"
 
-class TokenAcceptor;
+class QProcess;
 
-class TokenReader
+class SmsExternalSender : public SmsSender
 {
+	Q_OBJECT
+
+	QProcess *Process;
+
+	QStringList buildProgramArguments(const QString &message);
+
+private slots:
+	void processFinished();
+
 public:
-	virtual QString readToken(const QPixmap &tokenPixmap) = 0;
-	virtual void readTokenAsync(const QPixmap &tokenPixmap, TokenAcceptor *acceptor) = 0;
+	explicit SmsExternalSender(const QString &number, QObject *parent = 0);
+	virtual ~SmsExternalSender();
+
+	virtual void sendMessage(const QString& message);
 
 };
 
-#endif // TOKEN_READER_H
+#endif // SMS_EXTERNAL_SENDER_H

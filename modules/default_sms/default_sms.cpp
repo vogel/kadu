@@ -141,9 +141,9 @@ void SmsOrangeGateway::httpFinished()
 	{
 		//TODO 0.6.6 Orange token does not appear in SmsImageDialog
 		kdebugm(KDEBUG_INFO, "SMS Orange Picture Loaded: %i bytes\n",Http.data().size());
-		SmsImageDialog* d=new SmsImageDialog(NULL,Http.data());
-		connect(d,SIGNAL(codeEntered(const QString&)),this,SLOT(onCodeEntered(const QString&)));
-		d->show();
+// 		SmsImageDialog* d=new SmsImageDialog(NULL,Http.data());
+// 		connect(d,SIGNAL(codeEntered(const QString&)),this,SLOT(onCodeEntered(const QString&)));
+// 		d->show();
 	}
 	else if (State==SMS_LOADING_RESULTS)
 	{

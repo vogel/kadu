@@ -36,6 +36,7 @@ set (kadu_SRCS
 	buddies/filter/group-buddy-filter.cpp
 	buddies/filter/has-description-buddy-filter.cpp
 	buddies/filter/ignored-buddy-filter.cpp
+	buddies/filter/mobile-buddy-filter.cpp
 	buddies/filter/non-account-buddy-filter.cpp
 	buddies/filter/non-buddy-filter.cpp
 	buddies/filter/offline-buddy-filter.cpp
@@ -150,10 +151,11 @@ set (kadu_SRCS
 	gui/widgets/group-tab-bar.cpp
 	gui/widgets/groups-combo-box.cpp
 	gui/widgets/identities-combo-box.cpp
-	gui/widgets/image-widget.cpp
 	gui/widgets/kadu-text-browser.cpp
 	gui/widgets/modal-configuration-widget.cpp
 	gui/widgets/path-list-edit.cpp
+	gui/widgets/progress-icon.cpp
+	gui/widgets/progress-label.cpp
 	gui/widgets/protocols-combo-box.cpp
 	gui/widgets/proxy-group-box.cpp
 	gui/widgets/preview.cpp
@@ -210,6 +212,7 @@ set (kadu_SRCS
 	gui/windows/merge-buddies-window.cpp
 	gui/windows/message-dialog.cpp
 	gui/windows/password-window.cpp
+	gui/windows/progress-window.cpp
 	gui/windows/search-window.cpp
 	gui/windows/subscription-window.cpp
 	gui/windows/syntax-editor-window.cpp
@@ -334,6 +337,7 @@ set (kadu_MOC_SRCS
 	buddies/filter/group-buddy-filter.h
 	buddies/filter/has-description-buddy-filter.h
 	buddies/filter/ignored-buddy-filter.h
+	buddies/filter/mobile-buddy-filter.h
 	buddies/filter/non-account-buddy-filter.h
 	buddies/filter/non-buddy-filter.h
 	buddies/filter/offline-buddy-filter.h
@@ -435,6 +439,8 @@ set (kadu_MOC_SRCS
 	gui/widgets/modal-configuration-widget.h
 	gui/widgets/path-list-edit.h
 	gui/widgets/preview.h
+	gui/widgets/progress-icon.h
+	gui/widgets/progress-label.h
 	gui/widgets/protocols-combo-box.h
 	gui/widgets/proxy-group-box.h
 	gui/widgets/select-buddy-combobox.h
@@ -473,6 +479,7 @@ set (kadu_MOC_SRCS
 	gui/windows/merge-buddies-window.h
 	gui/windows/message-dialog.h
 	gui/windows/password-window.h
+	gui/windows/progress-window.h
 	gui/windows/search-window.h
 	gui/windows/subscription-window.h
 	gui/windows/syntax-editor-window.h

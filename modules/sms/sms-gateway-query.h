@@ -7,21 +7,21 @@
 class SmsGatewayQuery : public QObject
 {
 	Q_OBJECT
-	
+
 	QHttp *Query;
 	QBuffer *QueryBuffer;
 
-	private slots:
-		void queryFinished(bool error);
+public:
+	explicit SmsGatewayQuery(QObject *parent = 0);
+	virtual ~SmsGatewayQuery();
 
-	public:
-		SmsGatewayQuery() {};
-		~SmsGatewayQuery();
-	public slots:
-		void process(const QString& number);
+public slots:
+	void process(const QString& number);
+	void queryFinished(const QString &provider);
 
-	signals:
-		void finished(bool success, const QString &provider);
+signals:
+	void finished(const QString &provider);
+
 };
 
 #endif // SMS_GATEWAY_QUERY_H

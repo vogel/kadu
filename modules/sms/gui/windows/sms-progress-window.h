@@ -17,29 +17,45 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GADU_WAIT_FOR_ACCOUNT_REGISTER_WINDOW_H
-#define GADU_WAIT_FOR_ACCOUNT_REGISTER_WINDOW_H
+#ifndef SMS_PROGRESS_WINDOW_H
+#define SMS_PROGRESS_WINDOW_H
 
 #include "gui/windows/progress-window.h"
 
-#include "protocols/protocol.h"
+#include "misc/token-reader.h"
 
-class GaduServerRegisterAccount;
+class QLabel;
+class QLineEdit;
+class QMovie;
+class QPushButton;
+class QVBoxLayout;
 
-class GaduWaitForAccountRegisterWindow : public ProgressWindow
+class ProgressLabel;
+class SmsSender;
+
+class SmsProgressWindow : public ProgressWindow, public TokenReader
 {
 	Q_OBJECT
 
+	QLabel *TokenLabel;
+	QLineEdit *TokenEdit;
+	QPushButton *TokenAcceptButton;
+
+	SmsSender *Sender;
+
+	void createGui();
+
 private slots:
-	void registerNewAccountFinished(GaduServerRegisterAccount *gsra);
+    void tokenValueEntered();
+    void senderFinished(const QString &errorMessage);
 
 public:
-	explicit GaduWaitForAccountRegisterWindow(GaduServerRegisterAccount *gsra, QWidget *parent = 0);
-	virtual ~GaduWaitForAccountRegisterWindow();
+	explicit SmsProgressWindow(SmsSender *sender, QWidget *parent = 0);
+	virtual ~SmsProgressWindow();
 
-signals:
-	void uinRegistered(UinType);
+	virtual QString readToken(const QPixmap &tokenPixmap);
+	virtual void readTokenAsync(const QPixmap &tokenPixmap, TokenAcceptor *acceptor);
 
 };
 
-#endif // GADU_WAIT_FOR_ACCOUNT_REGISTER_WINDOW_H
+#endif // SMS_PROGRESS_WINDOW_H

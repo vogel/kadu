@@ -17,38 +17,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QPainter>
+#ifndef TOKEN_ACCEPTOR_H
+#define TOKEN_ACCEPTOR_H
 
-#include "image-widget.h"
+class QString;
 
-ImageWidget::ImageWidget(QWidget *parent)
-	: QWidget(parent), Image()
+class TokenAcceptor
 {
-}
+public:
+	virtual void tokenRead(const QString &tokenValue) = 0;
 
-ImageWidget::ImageWidget(const QByteArray &image, QWidget *parent)
-	: QWidget(parent), Image(image.data())
-{
-	setMinimumSize(Image.width(), Image.height());
-}
+};
 
-void ImageWidget::setImage(const QByteArray &image)
-{
-	Image.loadFromData(image);
-	setMinimumSize(Image.width(), Image.height());
-}
-
-void ImageWidget::setImage(const QPixmap &image)
-{
-	Image = image.toImage();
-	setMinimumSize(Image.width(), Image.height());
-}
-
-void ImageWidget::paintEvent(QPaintEvent *)
-{
-	if (!Image.isNull())
-	{
-		QPainter p(this);
-		p.drawImage(0,0,Image);
-	}
-}
+#endif // TOKEN_ACCEPTOR_H

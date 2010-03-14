@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,20 +17,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TOKEN_READER_H
-#define TOKEN_READER_H
+#ifndef NETWORK_ACCESS_MANAGER_WRAPPER_H
+#define NETWORK_ACCESS_MANAGER_WRAPPER_H
 
-class QPixmap;
-class QString;
+#include <QtNetwork/QNetworkAccessManager>
+#include <QtScript/QScriptValue>
 
-class TokenAcceptor;
-
-class TokenReader
+class NetworkAccessManagerWrapper : public QNetworkAccessManager
 {
+	Q_OBJECT
+
+	QScriptEngine *Engine;
+
 public:
-	virtual QString readToken(const QPixmap &tokenPixmap) = 0;
-	virtual void readTokenAsync(const QPixmap &tokenPixmap, TokenAcceptor *acceptor) = 0;
+	explicit NetworkAccessManagerWrapper(QScriptEngine *engine, QObject *parent = 0);
+	virtual ~NetworkAccessManagerWrapper();
+
+public slots:
+	QScriptValue get(const QString &url);
+	QScriptValue post(const QString &url, const QString &data);
 
 };
 
-#endif // TOKEN_READER_H
+#endif // NETWORK_ACCESS_MANAGER_WRAPPER_H

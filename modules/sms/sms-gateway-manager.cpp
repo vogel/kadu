@@ -1,53 +1,62 @@
-/***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
+/*
+ * %kadu copyright begin%
+ * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * %kadu copyright end%
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-#include <QtGui/QCheckBox>
-#include <QtGui/QComboBox>
-#include <QtGui/QGridLayout>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QListWidget>
-#include <QtCore/QProcess>
-#include <QtGui/QPushButton>
-#include <QtGui/QTextEdit>
+#include <QtScript/QScriptEngine>
+#include <QtScript/QScriptValueIterator>
 
-#include "configuration/configuration-file.h"
+#include "scripts/sms-script-manager.h"
 
 #include "sms-gateway-manager.h"
 
-SmsGatewayManager * SmsGatewayManager::Instance = 0;
+SmsGatewayManager *SmsGatewayManager::Instance = 0;
 
 SmsGatewayManager * SmsGatewayManager::instance()
 {
-	if (0 == Instance)
+	if (!Instance)
 	{
 		Instance = new SmsGatewayManager();
+		Instance->load();
 	}
+
 	return Instance;
 }
 
-void SmsGatewayManager::registerGateway(SmsGateway *gateway)
+SmsGatewayManager::SmsGatewayManager()
 {
-	QStringList priority = config_file.readEntry("SMS", "Priority").split(";");
-	if (!priority.contains(gateway->name()))
+}
+
+SmsGatewayManager::~SmsGatewayManager()
+{
+}
+
+void SmsGatewayManager::load()
+{
+	QScriptEngine *engine = SmsScriptsManager::instance()->engine();
+	QScriptValue gateways = engine->evaluate("gatewayManager.items");
+	QScriptValueIterator gatewayIterator(gateways);
+
+	while (gatewayIterator.hasNext())
 	{
-		priority += gateway->name();
-		config_file.writeEntry("SMS", "Priority", priority.join(";"));
+		gatewayIterator.next();
+		QScriptValue gatewayName = engine->evaluate(QString("gatewayManager.byId('%1').name()").arg(gatewayIterator.name()));
+		SmsGateway gateway = qMakePair(gatewayIterator.name(), gatewayName.toString());
+
+		Items.append(gateway);
 	}
-	Gateways.insert(gateway->name(), gateway);
-}
-
-void SmsGatewayManager::unregisterGateway(QString name)
-{
-	Gateways.remove(name);
-}
-
-SmsGateway * SmsGatewayManager::byId(QString gatewayId)
-{
-	return Gateways.contains(gatewayId) ? Gateways.value(gatewayId) : 0;
 }

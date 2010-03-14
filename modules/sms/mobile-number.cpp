@@ -18,50 +18,52 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "sms-sender.h"
+#include "mobile-number-manager.h"
 
-SmsSender::SmsSender(const QString &number, QObject *parent) :
-		QObject(parent), Number(number), MyTokenReader(0)
+#include "mobile-number.h"
+
+MobileNumber::MobileNumber() :
+		Uuid(QUuid::createUuid())
 {
-	fixNumber();
+
 }
 
-SmsSender::~SmsSender()
+MobileNumber::MobileNumber(QString number, QString gatewayId) :
+		Uuid(QUuid::createUuid()), Number(number), GatewayId(gatewayId)
 {
 }
 
-void SmsSender::fixNumber()
+MobileNumber::~MobileNumber()
 {
-	if (Number.length() == 12 && Number.left(3) == "+48")
-		Number = Number.right(9);
 }
 
-bool SmsSender::validateNumber()
+void MobileNumber::load()
 {
-	return 9 == Number.length();
+	if (!isValidStorage())
+		return;
+
+	UuidStorableObject::load();
+
+	Uuid = loadAttribute<QString>("uuid");
+	Number = loadValue<QString>("Number");
+	GatewayId = loadValue<QString>("Gateway");
 }
 
-bool SmsSender::validateSignature()
+void MobileNumber::store()
 {
-	return !Signature.isEmpty();
+	if (!isValidStorage())
+		return;
+
+	ensureLoaded();
+
+	UuidStorableObject::store();
+
+	storeAttribute("uuid", Uuid.toString());
+	storeValue("Number", Number);
+	storeValue("Gateway", GatewayId);
 }
 
-void SmsSender::setContact(const QString &contact)
+StorableObject * MobileNumber::storageParent()
 {
-	Contact = contact;
-}
-
-void SmsSender::setSignature(const QString &signature)
-{
-	Signature = signature;
-}
-
-void SmsSender::setTokenReader(TokenReader *tokenReader)
-{
-	MyTokenReader = tokenReader;
-}
-
-void SmsSender::tokenRead(const QString& tokenValue)
-{
-	Q_UNUSED(tokenValue)
+	return MobileNumberManager::instance();
 }

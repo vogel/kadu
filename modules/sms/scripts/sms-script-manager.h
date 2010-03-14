@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,20 +17,41 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TOKEN_READER_H
-#define TOKEN_READER_H
+#ifndef SMS_SCRIPTS_MANAGER_H
+#define SMS_SCRIPTS_MANAGER_H
 
-class QPixmap;
-class QString;
+#include <QtCore/QObject>
 
-class TokenAcceptor;
+class QScriptEngine;
 
-class TokenReader
+class NetworkAccessManagerWrapper;
+class SmsTokenReader;
+
+class SmsScriptsManager : public QObject
 {
+	Q_OBJECT
+	Q_DISABLE_COPY(SmsScriptsManager)
+
+	static SmsScriptsManager *Instance;
+
+	QScriptEngine *Engine;
+	NetworkAccessManagerWrapper *Network;
+	SmsTokenReader *TokenReader;
+
+	QList<QString> LoadedFiles;
+
+	SmsScriptsManager();
+	virtual ~SmsScriptsManager();
+
+	void init();
+
 public:
-	virtual QString readToken(const QPixmap &tokenPixmap) = 0;
-	virtual void readTokenAsync(const QPixmap &tokenPixmap, TokenAcceptor *acceptor) = 0;
+	static SmsScriptsManager * instance();
+
+	void loadScript(const QString &fileName);
+
+	QScriptEngine * engine() { return Engine; }
 
 };
 
-#endif // TOKEN_READER_H
+#endif // SMS_SCRIPTS_MANAGER_H

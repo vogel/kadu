@@ -8,7 +8,7 @@
  * Copyright 2007, 2008, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2004, 2008, 2009 Michał Podsiadlik (michal@kadu.net)
  * Copyright 2009 Longer (longer89@gmail.com)
- * Copyright 2008, 2009 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * Copyright 2008, 2009, 2010 Piotr Galiszewski (piotrgaliszewski@gmail.com)
  * Copyright 2005 Paweł Płuciennik (pawel_p@kadu.net)
  * %kadu copyright end%
  *
@@ -44,7 +44,6 @@
 #include "gui/widgets/buddies-list-view-menu-manager.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/configuration/config-group-box.h"
-#include "gui/widgets/image-widget.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
 #include "gui/hot-key.h"
@@ -57,7 +56,6 @@
 
 #include "gui/windows/sms-image-dialog.h"
 #include "gui/windows/sms-dialog.h"
-#include "sms-gateway-manager.h"
 
 #include "sms.h"
 
@@ -152,7 +150,9 @@ void SmsConfigurationUiHandler::configurationUpdated()
 
 void SmsConfigurationUiHandler::newSms(QString nick)
 {
-	(new SmsDialog(nick/*, Core::instance()->kaduWindow()*/))->show();
+	SmsDialog *smsDialog = new SmsDialog();
+	smsDialog->setRecipient(nick);
+	smsDialog->show();
 }
 
 void SmsConfigurationUiHandler::onUserDblClicked(Chat *chat)
@@ -253,13 +253,13 @@ void SmsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfiguration
 // TODO: fix it, should be ':' not ';'
 	QStringList priority = config_file.readEntry("SMS", "Priority").split(";");
 
-	foreach(const QString &gate, priority)
-		if (SmsGatewayManager::instance()->gateways().contains(gate))
-			gatewayListWidget->addItem(gate);
+// 	foreach(const QString &gate, priority)
+// 		if (SmsGatewayManager::instance()->gateways().contains(gate))
+// 			gatewayListWidget->addItem(gate);
 
-	foreach(const QString &key, SmsGatewayManager::instance()->gateways().keys())
-		if (gatewayListWidget->findItems(key, 0).isEmpty())
-			gatewayListWidget->addItem(key);
+// 	foreach(const QString &key, SmsGatewayManager::instance()->gateways().keys())
+// 		if (gatewayListWidget->findItems(key, 0).isEmpty())
+// 			gatewayListWidget->addItem(key);
 }
 
 void SmsConfigurationUiHandler::mainConfigurationWindowDestroyed()

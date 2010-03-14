@@ -27,6 +27,7 @@
 #include <QtGui/QStyle>
 #include <QtGui/QVBoxLayout>
 
+#include "gui/widgets/progress-label.h"
 #include "icons-manager.h"
 
 #include "server/gadu-server-register-account.h"
@@ -34,13 +35,12 @@
 #include "gadu-wait-for-account-register-window.h"
 
 GaduWaitForAccountRegisterWindow::GaduWaitForAccountRegisterWindow(GaduServerRegisterAccount *gsra, QWidget *parent) :
-		QDialog(parent), CanClose(false)
+		ProgressWindow(parent)
 {
-	createGui();
-
 	connect(gsra, SIGNAL(finished(GaduServerRegisterAccount *)),
 			this, SLOT(registerNewAccountFinished(GaduServerRegisterAccount *)));
 
+	setState(ProgressIcon::StateInProgress, tr("Plase wait. New Gadu-Gadu account is being registered."));
 	gsra->performAction();
 }
 
@@ -48,70 +48,23 @@ GaduWaitForAccountRegisterWindow::~GaduWaitForAccountRegisterWindow()
 {
 }
 
-void GaduWaitForAccountRegisterWindow::createGui()
-{
-	QVBoxLayout *mainLayout = new QVBoxLayout(this);
-
-	QWidget *topWidget = new QWidget(this);
-	mainLayout->addWidget(topWidget);
-
-	QHBoxLayout *topWidgetLayout = new QHBoxLayout(topWidget);
-
-	WaitLabel = new QLabel(topWidget);
-	QMovie *waitMovie = new QMovie(IconsManager::instance()->iconPath("kadu_icons/please-wait.gif"));
-	waitMovie->start();
-	WaitLabel->setMovie(waitMovie);
-
-	topWidgetLayout->addWidget(WaitLabel);
-
-	MessageLabel = new QLabel(tr("Plase wait. New Gadu-Gadu account is being registered."), topWidget);
-	topWidgetLayout->addWidget(MessageLabel, 0, Qt::AlignTop);
-
-	QDialogButtonBox *buttons = new QDialogButtonBox(this);
-	CloseButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCloseButton), tr("Close"));
-	CloseButton->setEnabled(false);
-	connect(CloseButton, SIGNAL(clicked(bool)), this, SLOT(close()));
-
-	buttons->addButton(CloseButton, QDialogButtonBox::DestructiveRole);
-
-	mainLayout->addWidget(buttons);
-}
-
-void GaduWaitForAccountRegisterWindow::enableClosing()
-{
-	CanClose = true;
-	CloseButton->setEnabled(true);
-}
-
 void GaduWaitForAccountRegisterWindow::registerNewAccountFinished(GaduServerRegisterAccount* gsra)
 {
 	if (gsra && gsra->result())
 	{
-		WaitLabel->setPixmap(IconsManager::instance()->pixmapByPath("32x32/dialog-information.png"));
 		QString message(tr("Registration was successful. Your new number is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist."));
-		MessageLabel->setText(message.arg(gsra->uin()));
+		setState(ProgressIcon::StateFinished, message.arg(gsra->uin()));
 
 		emit uinRegistered(gsra->uin());
 	}
 	else
 	{
-		WaitLabel->setPixmap(IconsManager::instance()->pixmapByPath("32x32/dialog-warning.png"));
 		QString message(tr("An error has occured while registration. Please try again later."));
-		MessageLabel->setText(message);
+		setState(ProgressIcon::StateFailed, message);
 
 		emit uinRegistered(0);
 	}
 
 	if (gsra)
 		delete gsra;
-
-	enableClosing();
-}
-
-void GaduWaitForAccountRegisterWindow::closeEvent(QCloseEvent *e)
-{
-	if (!CanClose)
-		e->ignore();
-	else
-		QDialog::closeEvent(e);
 }

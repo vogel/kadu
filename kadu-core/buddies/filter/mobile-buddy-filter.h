@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,20 +17,27 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TOKEN_READER_H
-#define TOKEN_READER_H
+#ifndef MOBILE_BUDDY_FILTER_H
+#define MOBILE_BUDDY_FILTER_H
 
-class QPixmap;
-class QString;
+#include <QtCore/QMetaType>
 
-class TokenAcceptor;
+#include "abstract-buddy-filter.h"
 
-class TokenReader
+class MobileBuddyFilter : public AbstractBuddyFilter
 {
+	Q_OBJECT
+
+	bool Enabled;
+
 public:
-	virtual QString readToken(const QPixmap &tokenPixmap) = 0;
-	virtual void readTokenAsync(const QPixmap &tokenPixmap, TokenAcceptor *acceptor) = 0;
+	MobileBuddyFilter(QObject *parent = 0);
+
+	void setEnabled(bool enabled);
+	virtual bool acceptBuddy(Buddy buddy);
 
 };
 
-#endif // TOKEN_READER_H
+Q_DECLARE_METATYPE(MobileBuddyFilter *)
+
+#endif // MOBILE_BUDDY_FILTER_H

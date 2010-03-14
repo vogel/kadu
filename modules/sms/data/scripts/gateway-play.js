@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2009 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,27 +17,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef IMAGE_WIDGET_H
-#define IMAGE_WIDGET_H
+GatewayPlay.prototype = {
+	name: function() {
+		return "Play";
+	},
 
-#include <QtGui/QImage>
-#include <QtGui/QWidget>
+	id: function() {
+		return "06";
+	},
 
-#include "exports.h"
-
-class KADUAPI ImageWidget : public QWidget
-{
-	QImage Image;
-
-protected:
-	virtual void paintEvent(QPaintEvent *e);
-
-public:
-	ImageWidget(QWidget *parent);
-	ImageWidget(const QByteArray &image, QWidget *parent);
-	void setImage(const QByteArray &image);
-	void setImage(const QPixmap &image);
-
+	sendSms: function(receipient, sender, signature, content, callbackObject) {
+		callbackObject.failure("Not implemented");
+	}
 };
 
-#endif // IMAGE_WIDGET_H
+function GatewayPlay() {
+	return this;
+}
+
+gatewayManager.addItem(new GatewayPlay());

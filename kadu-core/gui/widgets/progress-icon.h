@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,20 +17,34 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TOKEN_READER_H
-#define TOKEN_READER_H
+#ifndef PROGRESS_ICON_H
+#define PROGRESS_ICON_H
 
-class QPixmap;
-class QString;
+#include <QtGui/QLabel>
 
-class TokenAcceptor;
+class QMovie;
 
-class TokenReader
+class ProgressIcon : public QLabel
 {
+	Q_OBJECT
+
 public:
-	virtual QString readToken(const QPixmap &tokenPixmap) = 0;
-	virtual void readTokenAsync(const QPixmap &tokenPixmap, TokenAcceptor *acceptor) = 0;
+	enum ProgressState {
+		StateInProgress,
+		StateFinished,
+		StateFailed
+	};
+
+private:
+	QMovie *ProgressMovie;
+	ProgressState State;
+
+public:
+	explicit ProgressIcon(QWidget *parent = 0);
+	virtual ~ProgressIcon();
+
+	void setState(ProgressState state);
 
 };
 
-#endif // TOKEN_READER_H
+#endif // PROGRESS_ICON_H
