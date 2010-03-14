@@ -230,7 +230,11 @@ void SmsDialog::sendSms()
 	SmsSender *sender;
 
 	if (config_file.readBoolEntry("SMS", "BuiltInApp"))
-		sender = new SmsInternalSender(RecipientEdit->text(), QString::null, this);
+	{
+		int gatewayIndex = ProviderComboBox->currentIndex();
+		QString gatewayId = ProviderComboBox->itemData(gatewayIndex, Qt::UserRole).toString();
+		sender = new SmsInternalSender(RecipientEdit->text(), gatewayId, this);
+	}
 	else
 	{
 		if (config_file.readEntry("SMS", "SmsApp").isEmpty())
