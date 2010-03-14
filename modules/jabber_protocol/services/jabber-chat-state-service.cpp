@@ -51,8 +51,9 @@ void JabberChatStateService::chatWidgetCreated(ChatWidget *chatWidget)
 void JabberChatStateService::chatWidgetDestroying(ChatWidget *chatWidget)
 {
 	if (ChatStateMap.contains(chatWidget))
-	{
+	{ 
 		ChatState *state = ChatStateMap.value(chatWidget);
+		state->chatClosed();
 		ChatStateMap.remove(chatWidget);
 		state->deleteLater();
 	}
@@ -165,7 +166,7 @@ void ChatState::setChatState(XMPP::ChatState state)
 
 		// Transform to more privacy-enabled chat states if necessary
 		if (/*!PsiOptions::instance()->getOption("options.messages.send-inactivity-events").toBool() 
-			&& */(state == XMPP::StateGone || state == XMPP::StateInactive))
+			*/false && (state == XMPP::StateGone || state == XMPP::StateInactive))
 		{
 			state = XMPP::StatePaused;
 		}
@@ -330,3 +331,15 @@ void ChatState::updateChatTitle()
 		ObservedChat.refreshTitle();
 	}
 }
+
+void ChatState::chatClosed()
+{
+	// Reset 'contact is composing' & cancel own composing event
+	resetComposing();
+	setChatState(XMPP::StateGone);
+	if (ContactChatState == XMPP::StateComposing || ContactChatState == XMPP::StateInactive)
+	{
+		setContactChatState(XMPP::StatePaused);
+	}
+}
+

@@ -52,6 +52,7 @@ class ChatState : public QObject
 	ChatState(Chat chat);
 	
 	Chat chat() { return ObservedChat; }
+	void chatClosed();
 	
   private slots:
   	void setComposing();
