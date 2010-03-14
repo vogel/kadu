@@ -68,9 +68,9 @@ SmsDialog::SmsDialog(const QString& altnick, QWidget* parent) :
 	else
 	{
 		RecipientEdit->setText(BuddyManager::instance()->byDisplay(altnick, ActionReturnNull).mobile());
-		SmsGateway * gateway = MobileNumberManager::instance()->gateway(RecipientEdit->text());
-		if (gateway)
-			ProviderComboBox->setCurrentIndex(ProviderComboBox->findData(gateway->name()));
+// 		SmsGateway * gateway = MobileNumberManager::instance()->gateway(RecipientEdit->text());
+// 		if (gateway)
+// 			ProviderComboBox->setCurrentIndex(ProviderComboBox->findData(gateway->name()));
 	}
 
 	RecipientComboBox->setCurrentIndex(RecipientComboBox->findText(altnick));
@@ -127,8 +127,8 @@ void SmsDialog::createGui()
 
 	ProviderComboBox = new QComboBox(this);
 	ProviderComboBox->addItem(tr("Automatically select provider"), "");
-	foreach (SmsGateway* gateway, SmsGatewayManager::instance()->gateways())
-		ProviderComboBox->addItem(gateway->displayName(), gateway->name());
+// 	foreach (SmsGateway* gateway, SmsGatewayManager::instance()->gateways())
+// 		ProviderComboBox->addItem(gateway->displayName(), gateway->name());
 
 	formLayout->addRow(tr("Select GSM provider") + ":", ProviderComboBox);
 

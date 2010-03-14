@@ -21,23 +21,8 @@
 #ifndef SMS_INTERNAL_SENDER_H
 #define SMS_INTERNAL_SENDER_H
 
-#include <QtCore/QBuffer>
-#include <QtCore/QMap>
-#include <QtGui/QDialog>
-#include <QtGui/QLabel>
-#include <QtGui/QLineEdit>
-#include <QtGui/QWidget>
-#include <QtNetwork/QHttp>
 #include <QtScript/QScriptValue>
 
-#include "chat/chat.h"
-#include "configuration/configuration-aware-object.h"
-#include "http_client.h"
-#include "gui/actions/action.h"
-#include "gui/windows/main-configuration-window.h"
-
-#include "sms_exports.h"
-#include "sms-gateway.h"
 #include "sms-sender.h"
 
 class QNetworkReply;

@@ -56,7 +56,6 @@
 
 #include "gui/windows/sms-image-dialog.h"
 #include "gui/windows/sms-dialog.h"
-#include "sms-gateway-manager.h"
 
 #include "sms.h"
 
@@ -252,13 +251,13 @@ void SmsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfiguration
 // TODO: fix it, should be ':' not ';'
 	QStringList priority = config_file.readEntry("SMS", "Priority").split(";");
 
-	foreach(const QString &gate, priority)
-		if (SmsGatewayManager::instance()->gateways().contains(gate))
-			gatewayListWidget->addItem(gate);
+// 	foreach(const QString &gate, priority)
+// 		if (SmsGatewayManager::instance()->gateways().contains(gate))
+// 			gatewayListWidget->addItem(gate);
 
-	foreach(const QString &key, SmsGatewayManager::instance()->gateways().keys())
-		if (gatewayListWidget->findItems(key, 0).isEmpty())
-			gatewayListWidget->addItem(key);
+// 	foreach(const QString &key, SmsGatewayManager::instance()->gateways().keys())
+// 		if (gatewayListWidget->findItems(key, 0).isEmpty())
+// 			gatewayListWidget->addItem(key);
 }
 
 void SmsConfigurationUiHandler::mainConfigurationWindowDestroyed()

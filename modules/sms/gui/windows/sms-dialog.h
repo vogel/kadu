@@ -37,7 +37,6 @@
 
 #include "sms_exports.h"
 #include "sms-internal-sender.h"
-#include "sms-gateway-manager.h"
 #include "mobile-number-manager.h"
 
 class QCheckBox;

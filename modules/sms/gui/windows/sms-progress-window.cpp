@@ -22,6 +22,7 @@
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QLabel>
 #include <QtGui/QLayout>
+#include <QtGui/QLineEdit>
 #include <QtGui/QMovie>
 #include <QtGui/QPushButton>
 #include <QtGui/QStyle>

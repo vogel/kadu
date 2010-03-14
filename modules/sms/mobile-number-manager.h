@@ -6,8 +6,6 @@
 #include "storage/simple-manager.h"
 #include "storage/storable-object.h"
 
-class SmsGateway;
-
 class MobileNumber : public StorableObject
 {
 	QString Number;
@@ -52,7 +50,6 @@ public:
 	
 	void registerNumber(QString number, QString gatewayId);
 	void unregisterNumber(QString number);
-	SmsGateway * gateway(QString number);
 	
 	virtual QString storageNodeName() { return QLatin1String("MobileNumbers"); }
 	virtual QString storageNodeItemName() { return QLatin1String("MobileNumber"); }
