@@ -19,39 +19,30 @@
  */
 
 #include <QtGui/QCheckBox>
-#include <QtGui/QComboBox>
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QFormLayout>
 #include <QtGui/QHBoxLayout>
-#include <QtGui/QListWidget>
-#include <QtCore/QProcess>
+#include <QtGui/QKeyEvent>
+#include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
 #include <QtGui/QTextEdit>
+#include <QtGui/QVBoxLayout>
 
-#include "configuration/configuration-file.h"
-#include "buddies/buddy-manager.h"
 #include "buddies/filter/mobile-buddy-filter.h"
-#include "core/core.h"
-#include "debug.h"
-#include "gui/widgets/buddies-list-view.h"
-#include "gui/widgets/buddies-list-widget.h"
-#include "gui/widgets/buddies-list-view-menu-manager.h"
+#include "buddies/buddy-manager.h"
+#include "configuration/configuration-file.h"
 #include "gui/widgets/select-buddy-combobox.h"
-#include "gui/widgets/configuration/configuration-widget.h"
-#include "gui/widgets/configuration/config-group-box.h"
-#include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
-#include "gui/hot-key.h"
+#include "misc/misc.h"
+#include "debug.h"
 #include "icons-manager.h"
-
 #include "modules.h"
-#include "misc/path-conversion.h"
+
+#include "modules/history/history.h"
 
 #include "gui/windows/sms-progress-window.h"
 #include "sms-external-sender.h"
 #include "sms-internal-sender.h"
-
-#include "../history/history.h"
 
 #include "sms-dialog.h"
 

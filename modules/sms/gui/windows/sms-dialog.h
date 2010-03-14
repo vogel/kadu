@@ -21,28 +21,16 @@
 #ifndef SMS_DIALOG_H
 #define SMS_DIALOG_H
 
-#include <QtCore/QBuffer>
-#include <QtCore/QMap>
-#include <QtGui/QDialog>
-#include <QtGui/QLabel>
-#include <QtGui/QLineEdit>
 #include <QtGui/QWidget>
-#include <QtNetwork/QHttp>
 
-#include "chat/chat.h"
+#include "buddies/buddy.h"
 #include "configuration/configuration-aware-object.h"
-#include "http_client.h"
-#include "gui/actions/action.h"
-#include "gui/windows/main-configuration-window.h"
-
-#include "sms_exports.h"
-#include "sms-internal-sender.h"
-#include "mobile-number-manager.h"
 
 class QCheckBox;
 class QComboBox;
-class QListWidget;
-class QProcess;
+class QLabel;
+class QLineEdit;
+class QPushButton;
 class QTextEdit;
 
 class SelectBuddyCombobox;
@@ -80,6 +68,7 @@ protected:
 public:
 	explicit SmsDialog(const QString &altnick, QWidget *parent = 0);
 	virtual ~SmsDialog();
+
 	void setRecipient(const QString &phone);
 
 };
