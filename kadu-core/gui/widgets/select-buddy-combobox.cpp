@@ -39,7 +39,7 @@ SelectBuddyCombobox::SelectBuddyCombobox(QWidget *parent) :
 
 	Popup = new SelectBuddyPopup();
 	Popup->view()->proxyModel()->setSortByStatus(false);
-	connect(Popup, SIGNAL(buddySelected(Buddy)), this, SLOT(buddySelected(Buddy)));
+	connect(Popup, SIGNAL(buddySelected(Buddy)), this, SLOT(setBuddy(Buddy)));
 
 	Model = new BuddiesModel(BuddyManager::instance(), this);
 	ProxyModel = new BuddiesModelProxy(this);
@@ -101,7 +101,7 @@ void SelectBuddyCombobox::activatedSlot()
 	emit buddyChanged(buddy());
 }
 
-void SelectBuddyCombobox::buddySelected(Buddy buddy)
+void SelectBuddyCombobox::setBuddy(Buddy buddy)
 {
 	QModelIndex index = Model->buddyIndex(buddy);
 	index = ProxyModel->mapFromSource(index);

@@ -97,7 +97,7 @@ void SmsDialog::createGui()
 	RecipientEdit = new QLineEdit(this);
 	RecipientEdit->setMinimumWidth(140);
 
-	connect(RecipientEdit, SIGNAL(textChanged(const QString&)), this, SLOT(updateList(const QString&)));
+	connect(RecipientEdit, SIGNAL(textChanged(QString)), this, SLOT(recipientNumberChanged(QString)));
 	connect(RecipientEdit, SIGNAL(returnPressed()), this, SLOT(editReturnPressed()));
 
 	recipientLayout->addWidget(RecipientEdit);
@@ -109,7 +109,7 @@ void SmsDialog::createGui()
 	mobileFilter->setEnabled(true);
 	RecipientComboBox->addFilter(mobileFilter);
 
-	connect(RecipientComboBox, SIGNAL(buddyChanged(Buddy)), this, SLOT(recipientChanged(Buddy)));
+	connect(RecipientComboBox, SIGNAL(buddyChanged(Buddy)), this, SLOT(recipientBuddyChanged(Buddy)));
 	recipientLayout->addWidget(RecipientComboBox);
 
 	formLayout->addRow(tr("Recipient") + ":", recipientWidget);
@@ -186,28 +186,26 @@ void SmsDialog::setRecipient(const QString &phone)
 	kdebugf2();
 }
 
-void SmsDialog::recipientChanged(Buddy buddy)
+void SmsDialog::recipientBuddyChanged(Buddy buddy)
 {
 	RecipientEdit->setText(buddy.mobile());
 }
 
-void SmsDialog::updateList(const QString &newnumber)
+void SmsDialog::recipientNumberChanged(const QString &number)
 {
-	kdebugf();
-	if (newnumber.isEmpty())
+	if (number.isEmpty())
 	{
-		kdebugmf(KDEBUG_FUNCTION_END, "end: new number is empty\n");
+		RecipientComboBox->setBuddy(Buddy::null);
 		return;
 	}
-	foreach(Buddy c, BuddyManager::instance()->items())
-		if (c.mobile() == newnumber)
+
+	foreach (Buddy buddy, BuddyManager::instance()->items())
+		if (buddy.mobile() == number)
 		{
-			RecipientComboBox->setCurrentIndex(RecipientComboBox->findText(c.display()));
-			kdebugf2();
+			RecipientComboBox->setBuddy(buddy);
 			return;
 		}
-	RecipientComboBox->setCurrentIndex(-1);
-	kdebugf2();
+
 }
 
 void SmsDialog::editReturnPressed()
