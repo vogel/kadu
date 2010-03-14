@@ -21,24 +21,15 @@
 #ifndef SMS_EXTERNAL_SENDER_H
 #define SMS_EXTERNAL_SENDER_H
 
-#include <QtCore/QObject>
+#include "sms-sender.h"
 
 class QProcess;
 
-class SmsExternalSender : public QObject
+class SmsExternalSender : public SmsSender
 {
 	Q_OBJECT
 
-	QString GatewayId;
-	QString Number;
-	QString Contact;
-	QString Signature;
-
 	QProcess *Process;
-
-	void fixNumber();
-	bool validateNumber();
-	bool validateSignature();
 
 	QStringList buildProgramArguments(const QString &message);
 
@@ -46,15 +37,10 @@ private slots:
 	void processFinished();
 
 public:
-	explicit SmsExternalSender(const QString &number, const QString &gatewayId = QString::null, QObject *parent = 0);
+	explicit SmsExternalSender(const QString &number, QObject *parent = 0);
 	virtual ~SmsExternalSender();
 
-	void setContact(const QString& contact);
-	void setSignature(const QString& signature);
 	void sendMessage(const QString& message);
-
-signals:
-	void finished(const QString &errorMessage);
 
 };
 

@@ -24,40 +24,13 @@
 
 #include "sms-external-sender.h"
 
-SmsExternalSender::SmsExternalSender(const QString &number, const QString &gatewayId, QObject *parent) :
-		QObject(parent), GatewayId(gatewayId), Number(number)
+SmsExternalSender::SmsExternalSender(const QString &number, QObject *parent) :
+		SmsSender(number, parent)
 {
-	fixNumber();
 }
 
 SmsExternalSender::~SmsExternalSender()
 {
-}
-
-void SmsExternalSender::fixNumber()
-{
-	if (Number.length() == 12 && Number.left(3) == "+48")
-		Number = Number.right(9);
-}
-
-bool SmsExternalSender::validateNumber()
-{
-	return 9 == Number.length();
-}
-
-bool SmsExternalSender::validateSignature()
-{
-	return !Signature.isEmpty();
-}
-
-void SmsExternalSender::setContact(const QString &contact)
-{
-	Contact = contact;
-}
-
-void SmsExternalSender::setSignature(const QString &signature)
-{
-	Signature = signature;
 }
 
 QStringList SmsExternalSender::buildProgramArguments(const QString &message)
@@ -67,12 +40,12 @@ QStringList SmsExternalSender::buildProgramArguments(const QString &message)
 	if (config_file.readBoolEntry("SMS", "UseCustomString"))
 	{
 		programArguments = config_file.readEntry("SMS", "SmsString").split(' ');
-		programArguments.replaceInStrings("%n", Number);
+		programArguments.replaceInStrings("%n", number());
 		programArguments.replaceInStrings("%n", message);
 	}
 	else
 	{
-		programArguments.append(Number);
+		programArguments.append(number());
 		programArguments.append(message);
 	}
 
