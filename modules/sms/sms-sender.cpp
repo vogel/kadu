@@ -21,7 +21,7 @@
 #include "sms-sender.h"
 
 SmsSender::SmsSender(const QString &number, QObject *parent) :
-		QObject(parent), Number(number)
+		QObject(parent), Number(number), MyTokenReader(0)
 {
 	fixNumber();
 }
@@ -54,4 +54,14 @@ void SmsSender::setContact(const QString &contact)
 void SmsSender::setSignature(const QString &signature)
 {
 	Signature = signature;
+}
+
+void SmsSender::setTokenReader(TokenReader *tokenReader)
+{
+	MyTokenReader = tokenReader;
+}
+
+void SmsSender::tokenRead(const QString& tokenValue)
+{
+	Q_UNUSED(tokenValue)
 }

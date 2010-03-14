@@ -33,7 +33,7 @@
 #include "sms-internal-sender.h"
 
 SmsInternalSender::SmsInternalSender(const QString &number, const QString &gatewayId, QObject *parent) :
-		SmsSender(number, parent), GatewayId(gatewayId), MyTokenReader(0)
+		SmsSender(number, parent), GatewayId(gatewayId)
 {
 }
 
@@ -67,11 +67,6 @@ void SmsInternalSender::sendMessage(const QString &message)
 		sendSms();
 }
 
-void SmsInternalSender::setTokenReader(TokenReader *tokenReader)
-{
-	MyTokenReader = tokenReader;
-}
-
 void SmsInternalSender::queryForGateway()
 {
 	SmsGatewayQuery *query = new SmsGatewayQuery(this);
@@ -96,7 +91,7 @@ void SmsInternalSender::gatewayQueryDone(const QString &gatewayId)
 
 void SmsInternalSender::readToken(const QString &tokenImageUrl, QScriptValue callbackObject, QScriptValue callbackMethod)
 {
-	if (!MyTokenReader)
+	if (!tokenReader())
 	{
 		failure("Cannot read token value");
 		return;
@@ -125,7 +120,7 @@ void SmsInternalSender::tokenImageDownloaded()
 		return;
 	}
 
-	MyTokenReader->readTokenAsync(image, this);
+	tokenReader()->readTokenAsync(image, this);
 }
 
 void SmsInternalSender::tokenRead(const QString &tokenValue)

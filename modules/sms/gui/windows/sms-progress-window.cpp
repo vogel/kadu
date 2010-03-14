@@ -33,7 +33,7 @@
 
 #include "sms-progress-window.h"
 
-SmsProgressWindow::SmsProgressWindow(SmsInternalSender *sender, QWidget *parent) :
+SmsProgressWindow::SmsProgressWindow(SmsSender *sender, QWidget *parent) :
 		ProgressWindow(parent), TokenLabel(0), TokenEdit(0), TokenAcceptButton(0), Sender(sender)
 {
 	connect(Sender, SIGNAL(finished(QString)), this, SLOT(senderFinished(QString)));

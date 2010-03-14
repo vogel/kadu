@@ -46,6 +46,8 @@
 #include "misc/path-conversion.h"
 
 #include "gui/windows/sms-progress-window.h"
+#include "sms-external-sender.h"
+#include "sms-internal-sender.h"
 
 #include "../history/history.h"
 
@@ -246,49 +248,29 @@ void SmsDialog::sendSms()
 {
 	kdebugf();
 
+	SmsSender *sender;
+
 	if (config_file.readBoolEntry("SMS", "BuiltInApp"))
-	{
-		SmsInternalSender *sender = new SmsInternalSender(RecipientEdit->text(), QString::null, this);
-		sender->setContact(ContactEdit->text());
-		sender->setSignature(SignatureEdit->text());
-
-		SmsProgressWindow *window = new SmsProgressWindow(sender);
-		window->show();
-
-		sender->sendMessage(ContentEdit->toPlainText());
-	}
+		sender = new SmsInternalSender(RecipientEdit->text(), QString::null, this);
 	else
 	{
-// 		if (config_file.readEntry("SMS", "SmsApp").isEmpty())
-// 		{
-// 			MessageDialog::msg(tr("Sms application was not specified. Visit the configuration section"), false, "32x32/dialog-warning.png", this);
-// 			kdebugm(KDEBUG_WARNING, "SMS application NOT specified. Exit.\n");
-// 			return;
-// 		}
-// 		QString SmsAppPath = config_file.readEntry("SMS", "SmsApp");
-// 
-// 		smsProcess = new QProcess(this);
-// 		if (config_file.readBoolEntry("SMS", "UseCustomString")&&
-// 			(!config_file.readBoolEntry("SMS", "BuiltInApp")))
-// 		{
-// 			QStringList args = config_file.readEntry("SMS", "SmsString").split(' ');
-// 
-// 			args.replaceInStrings("%n", RecipientEdit->text());
-// 			args.replaceInStrings("%n", ContentEdit->toPlainText());
-// 			
-// 			smsProcess->start(SmsAppPath, args);
-// 		}
-// 		else
-// 		{
-// 			QStringList args(RecipientEdit->text());
-// 			args.append(ContentEdit->toPlainText());
-// 			smsProcess->start(SmsAppPath, args);
-// 		}
-// 
-// 		if (!smsProcess->waitForStarted())
-// 			MessageDialog::msg(tr("Could not spawn child process. Check if the program is functional"), false, "32x32/dialog-warning.png", this);
-// 		connect(smsProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(smsSigHandler()));
+		if (config_file.readEntry("SMS", "SmsApp").isEmpty())
+		{
+			MessageDialog::msg(tr("Sms application was not specified. Visit the configuration section"), false, "32x32/dialog-warning.png", this);
+			kdebugm(KDEBUG_WARNING, "SMS application NOT specified. Exit.\n");
+			return;
+		}
+		sender = new SmsExternalSender(RecipientEdit->text(), this);
 	}
+
+	sender->setContact(ContactEdit->text());
+	sender->setSignature(SignatureEdit->text());
+
+	SmsProgressWindow *window = new SmsProgressWindow(sender);
+	window->show();
+
+	sender->sendMessage(ContentEdit->toPlainText());
+
 	kdebugf2();
 }
 

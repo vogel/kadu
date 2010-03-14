@@ -40,7 +40,7 @@ public:
 	explicit SmsExternalSender(const QString &number, QObject *parent = 0);
 	virtual ~SmsExternalSender();
 
-	void sendMessage(const QString& message);
+	virtual void sendMessage(const QString& message);
 
 };
 

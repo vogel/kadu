@@ -23,13 +23,19 @@
 
 #include <QtCore/QObject>
 
-class SmsSender : public QObject
+#include "misc/token-acceptor.h"
+
+class TokenReader;
+
+class SmsSender : public QObject, public TokenAcceptor
 {
 	Q_OBJECT
 
 	QString Number;
 	QString Contact;
 	QString Signature;
+
+	TokenReader *MyTokenReader;
 
 	void fixNumber();
 
@@ -44,10 +50,16 @@ public:
 	QString number() { return Number; }
 	QString contact() { return Contact; }
 	QString signature() { return Signature; }
+	TokenReader * tokenReader() { return MyTokenReader; }
 
 	void setContact(const QString &contact);
 	void setSignature(const QString &signature);
-	void sendMessage(const QString &message);
+
+	virtual void sendMessage(const QString &message) = 0;
+
+	void setTokenReader(TokenReader *tokenReader);
+
+	virtual void tokenRead(const QString& tokenValue);
 
 signals:
 	void finished(const QString &errorMessage);

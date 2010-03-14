@@ -35,7 +35,6 @@
 #include "http_client.h"
 #include "gui/actions/action.h"
 #include "gui/windows/main-configuration-window.h"
-#include "misc/token-acceptor.h"
 
 #include "sms_exports.h"
 #include "sms-gateway.h"
@@ -43,16 +42,13 @@
 
 class QNetworkReply;
 
-class TokenReader;
-
-class SmsInternalSender : public SmsSender, public TokenAcceptor
+class SmsInternalSender : public SmsSender
 {
 	Q_OBJECT
 
 	QString GatewayId;
 	QString Message;
 
-	TokenReader *MyTokenReader;
 	QNetworkReply *TokenReply;
 
 	QScriptValue TokenCallbackObject;
@@ -70,9 +66,7 @@ public:
 	explicit SmsInternalSender(const QString &number, const QString &gatewayId = QString::null, QObject *parent = 0);
 	virtual ~SmsInternalSender();
 
-	void sendMessage(const QString& message);
-
-	void setTokenReader(TokenReader *tokenReader);
+	virtual void sendMessage(const QString& message);
 
 	void findGatewayForNumber(const QString &number);
 

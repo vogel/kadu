@@ -31,7 +31,7 @@ class QPushButton;
 class QVBoxLayout;
 
 class ProgressLabel;
-class SmsInternalSender;
+class SmsSender;
 
 class SmsProgressWindow : public ProgressWindow, public TokenReader
 {
@@ -41,7 +41,7 @@ class SmsProgressWindow : public ProgressWindow, public TokenReader
 	QLineEdit *TokenEdit;
 	QPushButton *TokenAcceptButton;
 
-	SmsInternalSender *Sender;
+	SmsSender *Sender;
 
 	void createGui();
 
@@ -50,7 +50,7 @@ private slots:
     void senderFinished(const QString &errorMessage);
 
 public:
-	explicit SmsProgressWindow(SmsInternalSender *sender, QWidget *parent = 0);
+	explicit SmsProgressWindow(SmsSender *sender, QWidget *parent = 0);
 	virtual ~SmsProgressWindow();
 
 	virtual QString readToken(const QPixmap &tokenPixmap);

@@ -41,7 +41,7 @@ QStringList SmsExternalSender::buildProgramArguments(const QString &message)
 	{
 		programArguments = config_file.readEntry("SMS", "SmsString").split(' ');
 		programArguments.replaceInStrings("%n", number());
-		programArguments.replaceInStrings("%n", message);
+		programArguments.replaceInStrings("%m", message);
 	}
 	else
 	{
