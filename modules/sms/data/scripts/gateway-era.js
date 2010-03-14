@@ -24,6 +24,10 @@ GatewayEra.prototype = {
 
 	id: function() {
 		return "02";
+	},
+
+	sendSms: function(receipient, sender, signature, content, callbackObject) {
+		callbackObject.failure("Not implemented");
 	}
 };
 
