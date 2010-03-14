@@ -56,9 +56,9 @@ private slots:
 	void recipientNumberChanged(const QString &number);
 
 	void editReturnPressed();
-	void sendSms();
 	void updateCounter();
-	void onSmsSenderFinished(bool success);
+
+	void sendSms();
 
 	void clear();
 

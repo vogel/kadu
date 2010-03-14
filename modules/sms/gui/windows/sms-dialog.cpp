@@ -122,6 +122,7 @@ void SmsDialog::createGui()
 	formLayout->addRow(tr("GSM provider") + ":", ProviderComboBox);
 
 	ContentEdit = new QTextEdit(this);
+	ContentEdit->setAcceptRichText(false);
 	ContentEdit->setLineWrapMode(QTextEdit::WidgetWidth);
 	ContentEdit->setTabChangesFocus(true);
 	connect(ContentEdit, SIGNAL(textChanged()), this, SLOT(updateCounter()));
@@ -253,26 +254,6 @@ void SmsDialog::sendSms()
 void SmsDialog::updateCounter()
 {
 	LengthLabel->setText(QString::number(ContentEdit->toPlainText().length()));
-}
-
-void SmsDialog::onSmsSenderFinished(bool success)
-{
-	kdebugf();
-
-	if (success)
-	{
-		if (SaveInHistoryCheckBox->isChecked())
-			History::instance()->appendSms(RecipientEdit->text(), ContentEdit->toPlainText());
-
-// 		MobileNumberManager::instance()->registerNumber(recipient->text(), Sender.currentGateway()->name());
-
-		ContentEdit->clear();
-		ContactEdit->clear();
-		SignatureEdit->clear();
-		RecipientEdit->clear();
-	}
-
-	kdebugf2();
 }
 
 void SmsDialog::clear()
