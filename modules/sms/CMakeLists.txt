@@ -7,6 +7,7 @@ set (SOURCES
 	scripts/network-reply-wrapper.cpp
 	scripts/sms-script-manager.cpp
 
+	mobile-number.cpp
 	mobile-number-manager.cpp
 	sms.cpp
 	sms-gateway-manager.cpp

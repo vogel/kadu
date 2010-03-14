@@ -18,45 +18,36 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MOBILE_NUMBER_MANAGER_H
-#define MOBILE_NUMBER_MANAGER_H
-
-#include <QtCore/QMap>
+#ifndef MOBILE_NUMBER_H
+#define MOBILE_NUMBER_H
 
 #include "storage/storable-object.h"
 
-class MobileNumber;
-
-class MobileNumberManager : public StorableObject
+class MobileNumber : public StorableObject
 {
-	Q_DISABLE_COPY(MobileNumberManager)
-
-	static MobileNumberManager *Instance;
-
-	QMap<MobileNumber *, QString> Numbers;
-
-	MobileNumberManager() {};
-	virtual ~MobileNumberManager() {};
+	QString Number;
+	QString GatewayId;
 
 protected:
 	virtual StoragePoint * createStoragePoint();
-
 	virtual void load();
 
 public:
-	static MobileNumberManager * instance();  
+	MobileNumber() {};
+	MobileNumber(QString number, QString gatewayId);
+	virtual ~MobileNumber() {};
+
+	virtual StorableObject * storageParent();
+	virtual QString storageNodeName() { return QLatin1String("MobileNumber"); }
 
 	virtual void store();
-	
-	void registerNumber(QString number, QString gatewayId);
-	void unregisterNumber(QString number);
-	
-	virtual QString storageNodeName() { return QLatin1String("MobileNumbers"); }
-	virtual QString storageNodeItemName() { return QLatin1String("MobileNumber"); }
-	virtual StorableObject * storageParent();
 
-	QMap<MobileNumber *, QString> numbers() { return Numbers; };
+	QString number() { return Number; };
+	void setNumber(QString number) { Number = number; };
+
+	QString gatewayId() { return GatewayId; };
+	void setGatewayId(QString gatewayId) { GatewayId = gatewayId; };
 
 };
 
-#endif // MOBILE_NUMBER_MANAGER_H
+#endif // MOBILE_NUMBER_H

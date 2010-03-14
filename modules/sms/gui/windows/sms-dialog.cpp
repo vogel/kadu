@@ -103,8 +103,6 @@ void SmsDialog::createGui()
 
 	recipientLayout->addWidget(RecipientEdit);
 
-	QStringList strlist; // lista kontaktow z przypisanym numerem telefonu
-
 	RecipientComboBox = new SelectBuddyCombobox(this);
 	MobileBuddyFilter *mobileFilter = new MobileBuddyFilter(RecipientComboBox);
 	mobileFilter->setEnabled(true);
