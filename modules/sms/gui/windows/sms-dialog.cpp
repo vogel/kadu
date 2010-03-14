@@ -130,7 +130,7 @@ void SmsDialog::createGui()
 // 	foreach (SmsGateway* gateway, SmsGatewayManager::instance()->gateways())
 // 		ProviderComboBox->addItem(gateway->displayName(), gateway->name());
 
-	formLayout->addRow(tr("Select GSM provider") + ":", ProviderComboBox);
+	formLayout->addRow(tr("GSM provider") + ":", ProviderComboBox);
 
 	ContentEdit = new QTextEdit(this);
 	ContentEdit->setLineWrapMode(QTextEdit::WidgetWidth);
