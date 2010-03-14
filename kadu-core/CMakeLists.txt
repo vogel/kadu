@@ -76,7 +76,6 @@ set (kadu_SRCS
 	chat/style-engines/chat-engine-kadu/chat-engine-kadu.cpp
 
 	chat/type/chat-type.cpp
-	chat/type/chat-type-aggregate.cpp
 	chat/type/chat-type-aware-object.cpp
 	chat/type/chat-type-conference.cpp
 	chat/type/chat-type-manager.cpp
@@ -362,7 +361,6 @@ set (kadu_MOC_SRCS
 	chat/recent-chat-manager.h
 
 	chat/filter/chat-filter.h
-	#chat/filter/chat-name-filter.h
 
 	chat/message/message-render-info.h
 	chat/message/pending-messages-manager.h
@@ -372,8 +370,6 @@ set (kadu_MOC_SRCS
 	chat/style-engines/chat-engine-kadu/chat-engine-kadu.h
 
 	chat/type/chat-type.h
-	chat/type/chat-type-aggregate.h
-	#chat/type/chat-type-aware-object.h
 	chat/type/chat-type-conference.h
 	chat/type/chat-type-manager.h
 	chat/type/chat-type-simple.h

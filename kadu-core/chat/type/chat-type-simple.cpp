@@ -22,7 +22,7 @@
 
 #include "chat-type-simple.h"
 
-ChatTypeSimple(QObject *parent) :
+ChatTypeSimple::ChatTypeSimple(QObject *parent) :
 		ChatType(parent)
 {
 }
