@@ -150,7 +150,9 @@ void SmsConfigurationUiHandler::configurationUpdated()
 
 void SmsConfigurationUiHandler::newSms(QString nick)
 {
-	(new SmsDialog(nick/*, Core::instance()->kaduWindow()*/))->show();
+	SmsDialog *smsDialog = new SmsDialog();
+	smsDialog->setRecipient(nick);
+	smsDialog->show();
 }
 
 void SmsConfigurationUiHandler::onUserDblClicked(Chat *chat)

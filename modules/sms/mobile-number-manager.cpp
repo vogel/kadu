@@ -34,14 +34,14 @@ MobileNumberManager * MobileNumberManager::instance()
 
 void MobileNumberManager::registerNumber(QString number, QString gatewayId)
 {
-	Numbers.insert(new MobileNumber(number, gatewayId), gatewayId);
+	Numbers.append(new MobileNumber(number, gatewayId));
 }
 
 void MobileNumberManager::unregisterNumber(QString number)
 {
-	foreach (MobileNumber *n, Numbers.keys())
+	foreach (MobileNumber *n, Numbers)
 		if (n->number() == number)
-			Numbers.remove(n);
+			Numbers.removeAll(n);
 }
 
 StoragePoint * MobileNumberManager::createStoragePoint()
@@ -77,7 +77,7 @@ void MobileNumberManager::load()
 		number->setStorage(numberStoragePoint);
 		number->ensureLoaded();
 
-		Numbers.insert(number, number->gatewayId());
+		Numbers.append(number);
 	}
 }
 
@@ -88,6 +88,15 @@ void MobileNumberManager::store()
 
 	StorableObject::store();
 
-	foreach (MobileNumber *number, Numbers.keys())
+	foreach (MobileNumber *number, Numbers)
 		number->store();
+}
+
+QString MobileNumberManager::gatewayId(const QString &mobileNumber)
+{
+	foreach (MobileNumber *number, Numbers)
+		if (number->number() == mobileNumber)
+			return number->gatewayId();
+
+	return QString::null;
 }

@@ -49,7 +49,7 @@ public:
 	SmsConfigurationUiHandler();
 	virtual ~SmsConfigurationUiHandler();
 
-	void newSms(QString nick);
+	void newSms(QString mobile);
 
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 

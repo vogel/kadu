@@ -67,7 +67,7 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *e);
 
 public:
-	explicit SmsDialog(const QString &altnick, QWidget *parent = 0);
+	explicit SmsDialog(QWidget *parent = 0);
 	virtual ~SmsDialog();
 
 	void setRecipient(const QString &phone);

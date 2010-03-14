@@ -21,8 +21,6 @@
 #ifndef MOBILE_NUMBER_MANAGER_H
 #define MOBILE_NUMBER_MANAGER_H
 
-#include <QtCore/QMap>
-
 #include "storage/storable-object.h"
 
 class MobileNumber;
@@ -33,7 +31,7 @@ class MobileNumberManager : public StorableObject
 
 	static MobileNumberManager *Instance;
 
-	QMap<MobileNumber *, QString> Numbers;
+	QList<MobileNumber *> Numbers;
 
 	MobileNumberManager() {};
 	virtual ~MobileNumberManager() {};
@@ -55,7 +53,7 @@ public:
 	virtual QString storageNodeItemName() { return QLatin1String("MobileNumber"); }
 	virtual StorableObject * storageParent();
 
-	QMap<MobileNumber *, QString> numbers() { return Numbers; };
+	QString gatewayId(const QString &mobileNumber);
 
 };
 

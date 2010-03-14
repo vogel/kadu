@@ -41,13 +41,14 @@
 #include "modules/history/history.h"
 
 #include "gui/windows/sms-progress-window.h"
+#include "mobile-number-manager.h"
 #include "sms-external-sender.h"
 #include "sms-gateway-manager.h"
 #include "sms-internal-sender.h"
 
 #include "sms-dialog.h"
 
-SmsDialog::SmsDialog(const QString& altnick, QWidget* parent) :
+SmsDialog::SmsDialog(QWidget* parent) :
 		QWidget(parent, Qt::Window)
 {
 	kdebugf();
@@ -56,20 +57,9 @@ SmsDialog::SmsDialog(const QString& altnick, QWidget* parent) :
 	setAttribute(Qt::WA_DeleteOnClose);
 
 	createGui();
-
-	if (altnick.isEmpty())
-		RecipientEdit->setFocus();
-	else
-	{
-		RecipientEdit->setText(BuddyManager::instance()->byDisplay(altnick, ActionReturnNull).mobile());
-// 		SmsGateway * gateway = MobileNumberManager::instance()->gateway(RecipientEdit->text());
-// 		if (gateway)
-// 			ProviderComboBox->setCurrentIndex(ProviderComboBox->findData(gateway->name()));
-	}
-
-	RecipientComboBox->setCurrentIndex(RecipientComboBox->findText(altnick));
-
 	configurationUpdated();
+
+	RecipientEdit->setFocus();
 
 	ModulesManager::instance()->moduleIncUsageCount("sms");
 	kdebugf2();
@@ -183,6 +173,10 @@ void SmsDialog::setRecipient(const QString &phone)
 
 	RecipientEdit->setText(phone);
 	ContentEdit->setFocus();
+
+	QString gatewayId = MobileNumberManager::instance()->gatewayId(RecipientEdit->text());
+
+	ProviderComboBox->setCurrentIndex(ProviderComboBox->findData(gatewayId));
 
 	kdebugf2();
 }
