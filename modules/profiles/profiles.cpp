@@ -791,12 +791,12 @@ void ProfileConfigurationWindow::removeProfile(QString name)
 
 void MyThread::run()
 {
-#ifdef Q_OS_WIN
 	QString params = " --config-dir \"" + path + "\"";
+#ifdef Q_OS_WIN
 	ShellExecute(GetDesktopWindow(), "open", command, params, NULL, SW_SHOWNORMAL);
 	kdebugm(KDEBUG_INFO, "Command: '%s%s'\n", qPrintable(command), qPrintable(params));
 #else
-	QString s = "bash -c \"export CONFIG_DIR=" + path + " ; " + command + "\"";
+	QString s = command + params;
 	system(qPrintable(s));
 	kdebugm(KDEBUG_INFO, "Command: '%s'\n", qPrintable(s));
 #endif
