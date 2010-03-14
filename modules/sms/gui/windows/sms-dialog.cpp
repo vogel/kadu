@@ -30,11 +30,13 @@
 
 #include "configuration/configuration-file.h"
 #include "buddies/buddy-manager.h"
+#include "buddies/filter/mobile-buddy-filter.h"
 #include "core/core.h"
 #include "debug.h"
 #include "gui/widgets/buddies-list-view.h"
 #include "gui/widgets/buddies-list-widget.h"
 #include "gui/widgets/buddies-list-view-menu-manager.h"
+#include "gui/widgets/select-buddy-combobox.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/windows/kadu-window.h"
@@ -111,14 +113,10 @@ void SmsDialog::createGui()
 
 	QStringList strlist; // lista kontaktow z przypisanym numerem telefonu
 
-	foreach(Buddy c, BuddyManager::instance()->items())
-		if (!c.mobile().isEmpty())
-		 	strlist.append(c.display());
-	strlist.sort();
-	strlist.prepend(QString::null);
-
-	RecipientComboBox = new QComboBox(this);
-	RecipientComboBox->addItems(strlist);
+	RecipientComboBox = new SelectBuddyCombobox(this);
+	MobileBuddyFilter *mobileFilter = new MobileBuddyFilter(RecipientComboBox);
+	mobileFilter->setEnabled(true);
+	RecipientComboBox->addFilter(mobileFilter);
 
 	connect(RecipientComboBox, SIGNAL(activated(const QString&)), this, SLOT(updateRecipient(const QString &)));
 	recipientLayout->addWidget(RecipientComboBox);
