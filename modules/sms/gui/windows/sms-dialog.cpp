@@ -118,7 +118,7 @@ void SmsDialog::createGui()
 	mobileFilter->setEnabled(true);
 	RecipientComboBox->addFilter(mobileFilter);
 
-	connect(RecipientComboBox, SIGNAL(activated(const QString&)), this, SLOT(updateRecipient(const QString &)));
+	connect(RecipientComboBox, SIGNAL(buddyChanged(Buddy)), this, SLOT(recipientChanged(Buddy)));
 	recipientLayout->addWidget(RecipientComboBox);
 
 	formLayout->addRow(tr("Recipient") + ":", recipientWidget);
@@ -195,20 +195,9 @@ void SmsDialog::setRecipient(const QString &phone)
 	kdebugf2();
 }
 
-void SmsDialog::updateRecipient(const QString &newtext)
+void SmsDialog::recipientChanged(Buddy buddy)
 {
-	kdebugf();
-//	kdebugmf(KDEBUG_FUNCTION_START | KDEBUG_INFO, "'%s' %d %d\n", qPrintable(newtext), newtext.isEmpty(), userlist->containsAltNick(newtext));
-	if (newtext.isEmpty())
-	{
-		RecipientEdit->clear();
-		kdebugf2();
-		return;
-	}
-	Buddy c = BuddyManager::instance()->byDisplay(newtext, ActionReturnNull);
-	if (!c.isNull())
-		RecipientEdit->setText(c.mobile());
-	kdebugf2();
+	RecipientEdit->setText(buddy.mobile());
 }
 
 void SmsDialog::updateList(const QString &newnumber)
