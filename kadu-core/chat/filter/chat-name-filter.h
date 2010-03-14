@@ -44,34 +44,10 @@ class KADUAPI ChatNameFilter : public ChatFilter
 	BuddyNameFilter *Filter;
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Contructs empty ChatNameFilter object that accepts all chats.
-	 * @param parent parent QObject
-	 *
-	 * Contructs empty ChatNameFilter object that accepts all chats.
-	 */
 	ChatNameFilter(QObject *parent = 0);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Return true if chat name (or its buddies names) matches filter's name.
-	 * @param chat Chat object that will be checked
-	 * @return true if chat name (or its buddies names) matches filter's name
-	 *
-	 * Return true if chat name (or its buddies names) matches filter's name.
-	 * For checking buddies name BuddyNameFilter object is used on every
-	 * buddy in this chat.
-	 */
 	virtual bool acceptChat(Chat chat);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Changes name of this filter.
-	 *
-	 * Sets new name to filter chats. If new name is different that old one
-	 * filterChanged signal is emited and models can be invalidated.
-	 */
 	void setName(const QString &name);
 
 };

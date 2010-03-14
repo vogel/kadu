@@ -26,12 +26,29 @@
 
 #include "chat-name-filter.h"
 
+/**
+ * @author Rafał 'Vogel' Malinowski
+ * @short Contructs empty ChatNameFilter object that accepts all chats.
+ * @param parent parent QObject
+ *
+ * Contructs empty ChatNameFilter object that accepts all chats.
+ */
 ChatNameFilter::ChatNameFilter(QObject *parent) :
 		ChatFilter(parent)
 {
 	Filter = new BuddyNameFilter(this);
 }
 
+/**
+ * @author Rafał 'Vogel' Malinowski
+ * @short Return true if chat name (or its buddies names) matches filter's name.
+ * @param chat Chat object that will be checked
+ * @return true if chat name (or its buddies names) matches filter's name
+ *
+ * Return true if chat name (or its buddies names) matches filter's name.
+ * For checking buddies name BuddyNameFilter object is used on every
+ * buddy in this chat.
+ */
 bool ChatNameFilter::acceptChat(Chat chat)
 {
 	if (Name.isEmpty())
@@ -47,6 +64,13 @@ bool ChatNameFilter::acceptChat(Chat chat)
 	return false;
 }
 
+/**
+ * @author Rafał 'Vogel' Malinowski
+ * @short Changes name of this filter.
+ *
+ * Sets new name to filter chats. If new name is different that old one
+ * filterChanged signal is emited and models can be invalidated.
+ */
 void ChatNameFilter::setName(const QString& name)
 {
 	if (name != Name)

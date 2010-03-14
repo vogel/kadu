@@ -28,14 +28,26 @@
 
 #include "exports.h"
 
+/**
+ * @addtogroup Chat
+ * @{
+ */
+
+/**
+ * @class ChatTypeConference
+ * @author Rafal 'Vogel' Malinowski
+ * @short Representation of chat type with many buddies.
+ *
+ * Representation of chat type with many buddies.
+ */
 class KADUAPI ChatTypeConference : public ChatType
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(ChatTypeConference)
 
 public:
-	ChatTypeConference() {}
-	virtual ~ChatTypeConference() {}
+	explicit ChatTypeConference(QObject *parent = 0);
+	virtual ~ChatTypeConference();
 
 	virtual int sortIndex() const;
 	virtual QString name() const;
@@ -47,5 +59,9 @@ public:
 };
 
 Q_DECLARE_METATYPE(ChatTypeConference *)
+
+/**
+ * @}
+ */
 
 #endif // CHAT_TYPE_CONFERENCE_H

@@ -19,11 +19,41 @@
 
 #include "chat-type.h"
 
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Creates empty ChatType object.
+ * @param parent parent QObject
+ *
+ * Creates empty ChatType.
+ */
+ChatType::ChatType(QObject *parent) :
+		QObject(parent)
+{
+}
+
+ChatType::~ChatType()
+{
+}
+
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Checks if two ChatType objects are identical.
+ * @param compare object to compare with
+ *
+ * Returns true only if these two object have identical names.
+ */
 bool ChatType::operator == (const ChatType &compare) const
 {
 	return name() == compare.name();
 }
 
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Compares two ChatType object for sorting.
+ * @param compare object to compare with
+ *
+ * Returns true only if this object has smaller sortIndex that compare object.
+ */
 bool ChatType::operator < (const ChatType &compare) const
 {
 	return sortIndex() < compare.sortIndex();

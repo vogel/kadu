@@ -22,26 +22,82 @@
 
 #include "chat-type-conference.h"
 
+ChatTypeConference::ChatTypeConference(QObject *parent) :
+		ChatType(parent)
+{
+}
+
+ChatTypeConference::~ChatTypeConference()
+{
+}
+
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Sort index for this object.
+ * @return sort index for this object
+ *
+ * Sort index is used for sorting chat types in history window.
+ * Chats with smaller sort indexes are displayed first.
+ *
+ * Sort index for ChatTypeConference is 1.
+ */
 int ChatTypeConference::sortIndex() const
 {
 	return 1;
 }
 
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Internal name of chat type.
+ * @return internal name of chat type
+ *
+ * Chat type internal name. Internal name is used in @link ChatTypeManager @endlink
+ * and also it is stored with @link Chat @endlink data.
+ *
+ * Internal name for ChatTypeConference is 'Conference'.
+ */
 QString ChatTypeConference::name() const
 {
 	return "Conference";
 }
 
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Display name of chat type.
+ * @return display name of chat type
+ *
+ * Chat type display name. Display name is used in history window. This name
+ * is translated into national languaes.
+ *
+ * Display name for ChatTypeConference is 'Conference'.
+ */
 QString ChatTypeConference::displayName() const
 {
 	return tr("Conference");
 }
 
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Icon of chat type.
+ * @return icon of chat type
+ *
+ * Chat type icon. Icon is used in history window and as icon of chat windows.
+ *
+ * Icon for ChatTypeConference is 'kadu_icons/kadu-modmanager.png'.
+ */
 QIcon ChatTypeConference::icon() const
 {
 	return IconsManager::instance()->iconByPath("kadu_icons/kadu-modmanager.png");
 }
 
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Creates new ChatDetailsConference object for given chat type.
+ * @return new ChatDetailsConference object for given chat type
+ *
+ * Creates new @link ChatDetailsConference @endlink object for
+ * given @link Chat @endlink (@link ChatShared @endlink).
+ */
 ChatDetails * ChatTypeConference::createChatDetails(ChatShared *chatData) const
 {
 	return new ChatDetailsConference(chatData);

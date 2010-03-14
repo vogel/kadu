@@ -30,20 +30,77 @@
 class ChatDetails;
 class ChatShared;
 
+/**
+ * @addtogroup Chat
+ * @{
+ */
+
+/**
+ * @class ChatType
+ * @author Rafal 'Vogel' Malinowski
+ * @short Representation of logical chat type.
+ *
+ * Abstract representation of logical chat type (single chat, conference chat, irc room chat...).
+ * It consists of internal name, display name, icon and sort index (priority).
+ *
+ * Concrete chat types are implemented by sublasses of this class.
+ */
 class KADUAPI ChatType : public QObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(ChatType)
 
 public:
-	ChatType() {}
-	virtual ~ChatType() {}
+	explicit ChatType(QObject *parent = 0);
+	virtual ~ChatType();
 
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Sort index for this object.
+	 * @return sort index for this object
+	 *
+	 * Sort index is used for sorting chat types in history window.
+	 * Chats with smaller sort indexes are displayed first.
+	 */
 	virtual int sortIndex() const = 0;
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Internal name of chat type.
+	 * @return internal name of chat type
+	 *
+	 * Chat type internal name. Internal name is used in @link ChatTypeManager @endlink
+	 * and also it is stored with @link Chat @endlink data.
+	 */
 	virtual QString name() const = 0;
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Display name of chat type.
+	 * @return display name of chat type
+	 *
+	 * Chat type display name. Display name is used in history window. This name
+	 * is translated into national languaes.
+	 */
 	virtual QString displayName() const = 0;
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Icon of chat type.
+	 * @return icon of chat type
+	 *
+	 * Chat type icon. Icon is used in history window and as icon of chat windows.
+	 */
 	virtual QIcon icon() const = 0;
 
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Creates new ChatDetails object for given chat type.
+	 * @return new ChatDetails object for given chat type
+	 *
+	 * Creates new @link ChatDetails @endlink object for given chat type and for
+	 * given @link Chat @endlink (@link ChatShared @endlink).
+	 */
 	virtual ChatDetails * createChatDetails(ChatShared *chatData) const = 0;
 
 	bool operator == (const ChatType &compare) const;
@@ -52,5 +109,9 @@ public:
 };
 
 Q_DECLARE_METATYPE(ChatType *)
+
+/**
+ * @}
+ */
 
 #endif // CHAT_TYPE_H

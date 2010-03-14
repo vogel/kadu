@@ -38,7 +38,7 @@ class Chat;
  * @class AggregateChatBuilder
  * @short Makes chat object that aggregates all chats for given buddy set.
  *
- * Class containsone static method that makes chat object that
+ * Class contains one static method that makes chat object that
  * aggregates all chats for given buddy set.
  */
 class KADUAPI AggregateChatBuilder

@@ -28,14 +28,26 @@
 
 #include "exports.h"
 
+/**
+ * @addtogroup Chat
+ * @{
+ */
+
+/**
+ * @class ChatTypeSimple
+ * @author Rafal 'Vogel' Malinowski
+ * @short Representation of chat type with one buddy.
+ *
+ * Representation of chat type with one buddy.
+ */
 class KADUAPI ChatTypeSimple : public ChatType
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(ChatTypeSimple)
 
 public:
-	ChatTypeSimple() {}
-	virtual ~ChatTypeSimple() {}
+	explicit ChatTypeSimple(QObject *parent = 0);
+	virtual ~ChatTypeSimple();
 
 	virtual int sortIndex() const;
 	virtual QString name() const;
@@ -47,5 +59,9 @@ public:
 };
 
 Q_DECLARE_METATYPE(ChatTypeSimple *)
+
+/**
+ * @}
+ */
 
 #endif // CHAT_TYPE_SIMPLE_H
