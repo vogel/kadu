@@ -4,6 +4,14 @@
 * sms: gateway selection moved to javaScript (Vogel)
 * sms: sending sms moved to javaScript, only Orange is supported now (Vogel)
 * sms: rework of SmsDialog window and behaviour (Vogel)
+* jabber: simple xml-console added (WhE)
+* tlen: allow login@tlen.pl as Tlen Id (uzi)
+* misc: many fixes ports from 0.6.5 branch (Juzef)
+* chat: message count in chat windows (badboy)
+* gui: menu layout rework (WhE)
+* chat: use account avatar in adium styles (WhE)
+* storage: fixed very stupid bug in whole Storage layer (WhE)
+* jabber: fixed StateGone in XMPP (Juzef)
 
 +++ version 0.6.6-alpha7
 * screenshot: module rewritten, now based on QGraphicsView (Vogel)
