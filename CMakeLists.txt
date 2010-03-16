@@ -1,5 +1,10 @@
 project (kadu)
 
+# minimal required versions
+
+set (QT_MIN_VERSION "4.5.0")
+set (CMAKE_MIN_VERSION "2.6.0")
+
 # configuration
 
 option (ENABLE_AUTODOWNLOAD "Use automatic download of modules/icons/emoticons" ON)
@@ -13,7 +18,7 @@ if (NOT CMAKE_BUILD_TYPE)
 	set (CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build, options are: Debug Release RelWithDebInfo." FORCE)
 endif (NOT CMAKE_BUILD_TYPE)
 
-cmake_minimum_required (VERSION 2.6.0 FATAL_ERROR)
+cmake_minimum_required (VERSION ${CMAKE_MIN_VERSION} FATAL_ERROR)
 
 include (FindPkgConfig)
 include (CheckIncludeFiles)
@@ -39,7 +44,7 @@ if (WIN32)
 
 	# package
 	set (CPACK_GENERATOR "ZIP")
-	set (CPACK_PACKAGE_VERSION ${PACKAGE_VERSION})	
+	set (CPACK_PACKAGE_VERSION ${PACKAGE_VERSION})
 	include (CPack)
 endif (WIN32)
 
@@ -89,8 +94,8 @@ endif (NOT BINDIR)
 # macros
 
 if(WIN32)
-	set(KADU_DATA_DIR ".")	
-	set(KADU_MODULES_LIBDIR "modules")	
+	set(KADU_DATA_DIR ".")
+	set(KADU_MODULES_LIBDIR "modules")
 	set(KADU_BIN_DIR ".")
 else(WIN32)
 	set(KADU_DATA_DIR "share/kadu")
@@ -149,7 +154,7 @@ macro (kadu_module)
 		include_directories (${CMAKE_SOURCE_DIR}/modules)
 		# wygeneruj plik z wersja modulu
 		if (${${MODULE_NAME}} STREQUAL SHARED)
-			set (MODULE_SOURCES ${MODULE_SOURCES} ${MODULE_NAME}.rc)		
+			set (MODULE_SOURCES ${MODULE_SOURCES} ${MODULE_NAME}.rc)
 			add_custom_command(OUTPUT ${MODULE_NAME}.rc
 				COMMAND ${CMAKE_SOURCE_DIR}/modules/modver.bat ARGS ${CMAKE_CURRENT_SOURCE_DIR}/${MODULE_NAME}.desc ${MODULE_NAME}.rc
 				WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
@@ -214,7 +219,6 @@ endmacro (kadu_module)
 
 # libraries
 
-set (QT_MIN_VERSION "4.5.0")
 find_package (Qt4 REQUIRED)
 set(QT_USE_QTXML 1)
 set(QT_USE_QTNETWORK 1)
