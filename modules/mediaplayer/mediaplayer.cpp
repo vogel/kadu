@@ -162,32 +162,32 @@ MediaPlayer::MediaPlayer(bool firstLoad)
 	playAction = new ActionDescription(
 		0, ActionDescription::TypeChat, "mediaplayer_play",
 		this, SLOT(playPause()),
-		"external_modules/module_mediaplayer-button.png", "external_modules/module_mediaplayer-button.png", tr("Play"), false, ""
+		"external_modules/module_mediaplayer-media-playback-start.png", "external_modules/module_mediaplayer-media-playback-start.png", tr("Play"), false, ""
 	);
 	stopAction = new ActionDescription(
 		0, ActionDescription::TypeChat, "mediaplayer_stop",
 		this, SLOT(stop()),
-		"external_modules/module_mediaplayer-button.png", "external_modules/module_mediaplayer-button.png", tr("Stop"), false, ""
+		"external_modules/module_mediaplayer-media-playback-stop.png", "external_modules/module_mediaplayer-media-playback-stop.png", tr("Stop"), false, ""
 	);
 	prevAction = new ActionDescription(
 		0, ActionDescription::TypeChat, "mediaplayer_prev",
 		this, SLOT(prevTrack()),
-		"external_modules/module_mediaplayer-button.png", "external_modules/module_mediaplayer-button.png", tr("Previous Track"), false, ""
+		"external_modules/module_mediaplayer-media-skip-backward.png", "external_modules/module_mediaplayer-media-skip-backward.png", tr("Previous Track"), false, ""
 	);
 	nextAction = new ActionDescription(
 		0, ActionDescription::TypeChat, "mediaplayer_next",
 		this, SLOT(nextTrack()),
-		"external_modules/module_mediaplayer-button.png", "external_modules/module_mediaplayer-button.png", tr("Next Track"), false, ""
+		"external_modules/module_mediaplayer-media-skip-forward.png", "external_modules/module_mediaplayer-media-skip-forward", tr("Next Track"), false, ""
 	);
 	volUpAction = new ActionDescription(
 		0, ActionDescription::TypeChat, "mediaplayer_vol_up",
 		this, SLOT(incrVolume()),
-		"external_modules/module_mediaplayer-button.png", "external_modules/module_mediaplayer-button.png", tr("Volume Up"), false, ""
+		"16x16/audio-volume-high.png", "16x16/audio-volume-high.png", tr("Volume Up"), false, ""
 	);
 	volDownAction = new ActionDescription(
 		0, ActionDescription::TypeChat, "mediaplayer_vol_down",
 		this, SLOT(decrVolume()),
-		"external_modules/module_mediaplayer-button.png", "external_modules/module_mediaplayer-button.png", tr("Volume Down"), false, ""
+		"16x16/audio-volume-low.png", "16x16/audio-volume-low.png", tr("Volume Down"), false, ""
 	);
 
 	if (firstLoad)
@@ -865,14 +865,21 @@ void MediaPlayer::playPause()
 		play();
 		isPaused = false;
 		foreach(Action *action, playAction->actions())
-			action->setIcon(IconsManager::instance()->iconByPath("external_modules/module_mediaplayer-media-playback-start.png"));
+		{
+			action->setIcon(IconsManager::instance()->iconByPath("external_modules/module_mediaplayer-media-playback-pause.png"));
+			action->setText(tr("Pause"));
+
+		}
 	}
 	else
 	{
 		pause();
 		isPaused = true;
 		foreach(Action *action, playAction->actions())
+		{
 			action->setIcon(IconsManager::instance()->iconByPath("external_modules/module_mediaplayer-media-playback-start.png"));
+			action->setText(tr("Play"));
+		}
 	}
 }
 
