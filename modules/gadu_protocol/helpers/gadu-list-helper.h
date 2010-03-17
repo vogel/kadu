@@ -23,6 +23,7 @@
 #ifndef GADU_LIST_HELPER_H
 #define GADU_LIST_HELPER_H
 
+class QByteArray;
 class QString;
 class QTextStream;
 
@@ -35,7 +36,7 @@ class GaduListHelper
 {
 
 public:
-	static QString buddyListToString(Account account, BuddyList buddies);
+	static QByteArray buddyListToString(Account account, BuddyList buddies);
 	static QString contactToLine70(Contact contact);
 	static BuddyList stringToBuddyList(Account account, QString &content);
 	static BuddyList streamToBuddyList(Account account, QTextStream &content);

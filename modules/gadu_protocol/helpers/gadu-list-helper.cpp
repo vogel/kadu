@@ -21,6 +21,7 @@
  */
 
 #include <QtCore/QStringList>
+#include <QtCore/QTextCodec>
 #include <QtCore/QTextStream>
 
 #include "buddies/buddy-list.h"
@@ -68,7 +69,7 @@ QString GaduListHelper::contactToLine70(Contact contact)
 	return list.join(";");
 }
 
-QString GaduListHelper::buddyListToString(Account account, BuddyList buddies)
+QByteArray GaduListHelper::buddyListToString(Account account, BuddyList buddies)
 {
 	kdebugf();
 
@@ -79,7 +80,7 @@ QString GaduListHelper::buddyListToString(Account account, BuddyList buddies)
 		foreach (Contact contact, buddy.contacts(account))
 			result.append(contactToLine70(contact));
 
-	return result.join("\n");
+	return codec_cp1250->fromUnicode(result.join("\n"));
 }
 
 BuddyList GaduListHelper::stringToBuddyList(Account account, QString &content) {
@@ -94,6 +95,7 @@ BuddyList GaduListHelper::streamToBuddyList(Account account, QTextStream &conten
 	QString line;
 	bool gg70 = false;
 
+	content.setCodec(codec_cp1250);
 	content.setAutoDetectUnicode(true);
 
 	while (!content.atEnd())
