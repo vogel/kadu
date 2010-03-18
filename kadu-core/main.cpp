@@ -15,6 +15,7 @@
 #include <errno.h>
 #ifndef Q_WS_WIN
 #include <sys/file.h>
+#include <sys/stat.h>
 #include <pwd.h>
 #else
 #include <winsock2.h>

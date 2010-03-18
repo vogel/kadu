@@ -12,6 +12,7 @@ Je¶li jest w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * stan Trybu cichego jest pamiêtany po restarcie kadu (dorr)
 * przywrócone menu kontekstowe ikony kadu w module desktop_docking (dorr)
 * poprawki w module profiles dla Windows (dorr)
+* poprawiona kompilacja na najnowszej Fedorze (tomek-k/dorr)
 
 +++ wersja 0.6.5.4 (08.02.2010)
 * zaktualizowane t³umaczenia (beevvy/neeo)
