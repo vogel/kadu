@@ -46,6 +46,8 @@ struct ALSADevice
 
 extern "C" int alsa_sound_init(bool firstLoad)
 {
+	Q_UNUSED(firstLoad
+		 )
 	kdebugf();
 
 	alsa_player_slots = new ALSAPlayerSlots;
@@ -71,7 +73,7 @@ snd_pcm_t *ALSAPlayerSlots::alsa_open (const char *device, int channels, int sam
 	kdebugf();
 	snd_pcm_t *alsa_dev;
 	snd_pcm_hw_params_t *hw_params;
-	snd_pcm_uframes_t buffer_size, xfer_align, start_threshold;
+	snd_pcm_uframes_t buffer_size, start_threshold;
 	snd_pcm_uframes_t alsa_period_size, alsa_buffer_frames;
 	snd_pcm_sw_params_t *sw_params;
 
@@ -206,21 +208,8 @@ snd_pcm_t *ALSAPlayerSlots::alsa_open (const char *device, int channels, int sam
 	}
 	kdebugm(KDEBUG_INFO, "params got\n");
 
-	/* note: set start threshold to delay start until the ring buffer is full */
-	snd_pcm_sw_params_current (alsa_dev, sw_params);
-	if ((err = snd_pcm_sw_params_get_xfer_align (sw_params, &xfer_align)) < 0)
-	{
-		fprintf(stderr, "cannot get xfer align (%s)\n", snd_strerror (err));
-		fflush(stderr);
-		snd_pcm_close (alsa_dev);
-		return NULL;
-	}
-	kdebugm(KDEBUG_INFO, "xfer align got\n");
-
 	/* round up to closest transfer boundary */
-	start_threshold = (buffer_size / xfer_align) * xfer_align;
-	if (start_threshold < 1)
-		start_threshold = 1;
+	start_threshold = 1;
 	if ((err = snd_pcm_sw_params_set_start_threshold (alsa_dev, sw_params, start_threshold)) < 0)
 	{
 		fprintf(stderr, "cannot set start threshold (%s)\n", snd_strerror (err));
@@ -254,36 +243,12 @@ ALSAPlayerSlots::ALSAPlayerSlots(QObject *parent) : QObject(parent)
 
 	createDefaultConfiguration();
 
-	connect(sound_manager, SIGNAL(openDeviceImpl(SoundDeviceType, int, int, SoundDevice*)),
-			this, SLOT(openDevice(SoundDeviceType, int, int, SoundDevice*)), Qt::DirectConnection);
-	connect(sound_manager, SIGNAL(closeDeviceImpl(SoundDevice)),
-			this, SLOT(closeDevice(SoundDevice)));
-	connect(sound_manager, SIGNAL(playSampleImpl(SoundDevice, const int16_t*, int, bool*)),
-			this, SLOT(playSample(SoundDevice, const int16_t*, int, bool*)),
-			Qt::DirectConnection);
-	connect(sound_manager, SIGNAL(recordSampleImpl(SoundDevice, int16_t*, int, bool*)),
-			this, SLOT(recordSample(SoundDevice, int16_t*, int, bool*)),
-			Qt::DirectConnection);
-	connect(sound_manager, SIGNAL(setFlushingEnabledImpl(SoundDevice, bool)),
-		this, SLOT(setFlushingEnabled(SoundDevice, bool)));
-
 	kdebugf2();
 }
 
 ALSAPlayerSlots::~ALSAPlayerSlots()
 {
 	kdebugf();
-
-	disconnect(sound_manager, SIGNAL(openDeviceImpl(SoundDeviceType, int, int, SoundDevice*)),
-			this, SLOT(openDevice(SoundDeviceType, int, int, SoundDevice*)));
-	disconnect(sound_manager, SIGNAL(closeDeviceImpl(SoundDevice)),
-			this, SLOT(closeDevice(SoundDevice)));
-	disconnect(sound_manager, SIGNAL(playSampleImpl(SoundDevice, const int16_t*, int, bool*)),
-			this, SLOT(playSample(SoundDevice, const int16_t*, int, bool*)));
-	disconnect(sound_manager, SIGNAL(recordSampleImpl(SoundDevice, int16_t*, int, bool*)),
-			this, SLOT(recordSample(SoundDevice, int16_t*, int, bool*)));
-	disconnect(sound_manager, SIGNAL(setFlushingEnabledImpl(SoundDevice, bool)),
-		this, SLOT(setFlushingEnabled(SoundDevice, bool)));
 
 	kdebugf2();
 }

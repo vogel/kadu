@@ -105,4 +105,42 @@ void AOPlayer::playSound(const QString &path, bool volCntrl, double vol)
 	kdebugf2();
 }
 
+SoundDevice AOPlayer::openDevice(SoundDeviceType type, int sampleRate, int channels)
+{
+	Q_UNUSED(type)
+	Q_UNUSED(sampleRate)
+	Q_UNUSED(channels)
+
+	return 0;
+}
+
+void AOPlayer::closeDevice(SoundDevice device)
+{
+	Q_UNUSED(device)
+}
+
+bool AOPlayer::playSample(SoundDevice device, const qint16 *data, int length)
+{
+	Q_UNUSED(device)
+	Q_UNUSED(data)
+	Q_UNUSED(length)
+
+	return false;
+}
+
+bool AOPlayer::recordSample(SoundDevice device, qint16 *data, int length)
+{
+	Q_UNUSED(device)
+	Q_UNUSED(data)
+	Q_UNUSED(length)
+
+	return false;
+}
+
+void AOPlayer::setFlushingEnabled(SoundDevice device, bool enabled)
+{
+	Q_UNUSED(device)
+	Q_UNUSED(enabled)
+}
+
 AOPlayer *ao_player;

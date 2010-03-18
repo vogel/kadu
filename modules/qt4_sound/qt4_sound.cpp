@@ -37,6 +37,8 @@
  */
 extern "C" KADU_EXPORT int qt4_sound_init(bool firstLoad)
 {
+	Q_UNUSED(firstLoad)
+
 	kdebugf();
 
 	if (!QSound::isAvailable ())
@@ -82,6 +84,9 @@ Qt4Player::~Qt4Player()
 
 void Qt4Player::playSound(const QString &s, bool volCntrl, double vol)
 {
+	Q_UNUSED(volCntrl)
+	Q_UNUSED(vol)
+
 	kdebugf();
 
 	QSound::play(s);
