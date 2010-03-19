@@ -221,7 +221,7 @@ void DockingManager::trayMousePressEvent(QMouseEvent * e)
 	if (e->button() == Qt::MidButton)
 	{
 		emit mousePressMidButton();
-		ChatWidgetManager::instance()->openPendingMsgs();
+		ChatWidgetManager::instance()->openPendingMsgs(true);
 		return;
 	}
 
@@ -234,7 +234,7 @@ void DockingManager::trayMousePressEvent(QMouseEvent * e)
 
 		if (PendingMessagesManager::instance()->hasPendingMessages() && (e->modifiers() != Qt::ControlModifier))
 		{
-			ChatWidgetManager::instance()->openPendingMsgs();
+			ChatWidgetManager::instance()->openPendingMsgs(true);
 			return;
 		}
 
