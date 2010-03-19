@@ -144,72 +144,72 @@ QString getUptime(int mode)
 }
 
 /* Returns current time (without secs) */
-QString parseTime(const Buddy &buddy)
+QString parseTime(Contact contact)
 {
-	Q_UNUSED(buddy)
+	Q_UNUSED(contact)
 	return QDateTime::currentDateTime().toString("h:mm");
 }
 
 /* Returns current time (with secs) */
-QString parseLongTime(const Buddy &buddy)
+QString parseLongTime(Contact contact)
 {
-	Q_UNUSED(buddy)
+	Q_UNUSED(contact)
 	return QDateTime::currentDateTime().toString("hh:mm:ss");
 }
 
 /* Returns current date (without year) */
-QString parseDate(const Buddy &buddy)
+QString parseDate(Contact contact)
 {
-	Q_UNUSED(buddy)
+	Q_UNUSED(contact)
 	return QDateTime::currentDateTime().toString("dd-MM");
 }
 
 /* Returns current date (with year) */
-QString parseLongDate(const Buddy &buddy)
+QString parseLongDate(Contact contact)
 {
-	Q_UNUSED(buddy)
+	Q_UNUSED(contact)
 	return QDateTime::currentDateTime().toString("dd-MM-yyyy");
 }
 
 /* Returns time of module start (without seconds) */
-QString parseStartTime(const Buddy &buddy)
+QString parseStartTime(Contact contact)
 {
-	Q_UNUSED(buddy)
+	Q_UNUSED(contact)
 	return started.toString("hh:mm");
 }
 
 /* Returns time of module start (with seconds) */
-QString parseLongStartTime(const Buddy &buddy)
+QString parseLongStartTime(Contact contact)
 {
-	Q_UNUSED(buddy)
+	Q_UNUSED(contact)
 	return  started.toString("dd-MM-yy hh:mm:ss");
 }
 
 /* Returns uptime (seconds) */
-QString parseUptime(const Buddy &buddy)
+QString parseUptime(Contact contact)
 {
-	Q_UNUSED(buddy)
+	Q_UNUSED(contact)
 	return getUptime(0);
 }
 
 /* Returns uptime (formatted) */
-QString parseLongUptime(const Buddy &buddy)
+QString parseLongUptime(Contact contact)
 {
-	Q_UNUSED(buddy)
+	Q_UNUSED(contact)
 	return getUptime(1);
 }
 
 /* Returns Kadu uptime */
-QString parseKaduUptime(const Buddy &buddy)
+QString parseKaduUptime(Contact contact)
 {
-	Q_UNUSED(buddy)
+	Q_UNUSED(contact)
 	return getKaduUptime(0);
 }
 
 /* Returns Kadu uptime (formatted) */
-QString parseLongKaduUptime(const Buddy &buddy)
+QString parseLongKaduUptime(Contact contact)
 {
-	Q_UNUSED(buddy)
+	Q_UNUSED(contact)
 	return getKaduUptime(1);
 }
 

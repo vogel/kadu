@@ -44,10 +44,10 @@
 #include "parser.h"
 
 QMap<QString, QString> Parser::globalVariables;
-QMap<QString, QString (*)(const Buddy &)> Parser::registeredTags;
+QMap<QString, QString (*)(Contact)> Parser::registeredTags;
 QMap<QString, QString (*)(const QObject * const)> Parser::registeredObjectTags;
 
-bool Parser::registerTag(const QString &name, QString (*func)(const Buddy &))
+bool Parser::registerTag(const QString &name, QString (*func)(Contact contact))
 {
 	kdebugf();
 	if (registeredTags.contains(name))
@@ -63,7 +63,7 @@ bool Parser::registerTag(const QString &name, QString (*func)(const Buddy &))
 	}
 }
 
-bool Parser::unregisterTag(const QString &name, QString (* /*func*/)(const Buddy &))
+bool Parser::unregisterTag(const QString &name, QString (* /*func*/)(Contact contact))
 {
 	kdebugf();
 	if (!registeredTags.contains(name))
@@ -129,15 +129,15 @@ QString Parser::executeCmd(const QString &cmd)
 
 QString Parser::parse(const QString &s, const QObject * const object, bool escape)
 {
-    	return parse(s, Account::null, Buddy::null, object, escape);
+	return parse(s, Contact::null, object, escape);
 }
 
-QString Parser::parse(const QString &s, Account account, const Buddy &buddy, bool escape)
+QString Parser::parse(const QString &s, Contact contact, bool escape)
 {
-	return parse(s, account, buddy, 0, escape);
+	return parse(s, contact, 0, escape);
 }
 
-QString Parser::parse(const QString &s, Account account, const Buddy &buddy, const QObject * const object, bool escape)
+QString Parser::parse(const QString &s, Contact contact, const QObject * const object, bool escape)
 {
 	kdebugmf(KDEBUG_DUMP, "%s escape=%i\n", qPrintable(s), escape);
 	int index = 0, i, len = s.length();
@@ -191,29 +191,26 @@ QString Parser::parse(const QString &s, Account account, const Buddy &buddy, con
 				break;
 			pe.type = ParserToken::PT_STRING;
 
-			QList<Contact> contactslist = buddy.contacts(account);
-			Contact data = contactslist.isEmpty() ? Contact::null : contactslist[0];
-
 			switch (s[i].toAscii())
 			{
 				case 's':
 					++i;
-					if (!data.isNull())
+					if (contact)
 					{
-						StatusType *type = StatusTypeManager::instance()->statusType(data.currentStatus().type());
+						StatusType *type = StatusTypeManager::instance()->statusType(contact.currentStatus().type());
 						if (type)
 							pe.content = type->displayName();
 					}
 					break; // TODO: 't' removed
 				case 'q':
 					++i;
-					if (!data.isNull())
+					if (contact)
 						pe.content = "" ; // ule.status("Gadu").pixmapName(); TODO: 0.6.6
 					break;
 				case 'd':
 					++i;
-					if (!data.isNull())
-						pe.content = data.currentStatus().description();
+					if (contact)
+						pe.content = contact.currentStatus().description();
 
 				 	if (escape)
 			 			HtmlDocument::escapeText(pe.content);
@@ -225,69 +222,74 @@ QString Parser::parse(const QString &s, Account account, const Buddy &buddy, con
 					break;
 				case 'i':
 					++i;
-					if (!data.isNull())
-						pe.content = data.address().toString();
+					if (contact)
+						pe.content = contact.address().toString();
 					break;
 				case 'v':
 					++i;
-					if (!data.isNull())
-						pe.content = data.dnsName();
+					if (contact)
+						pe.content = contact.dnsName();
 					break;
 				case 'o':
 					++i;
-					if (!data.isNull() && data.port() == 2)
+					if (contact && contact.port() == 2)
 						pe.content = " ";
 					break;
 				case 'p':
 					++i;
-					if (!data.isNull() && data.port())
-						pe.content = QString::number(data.port());
+					if (contact && contact.port())
+						pe.content = QString::number(contact.port());
 					break;
 				case 'u':
 					++i;
-					if (!data.isNull())
-						pe.content = data.id();
+					if (contact)
+						pe.content = contact.id();
 					break;
 				case 'h':
 					++i;
-					if (!data.isNull() && !data.currentStatus().isDisconnected())
-						pe.content = data.protocolVersion();
+					if (contact && !contact.currentStatus().isDisconnected())
+						pe.content = contact.protocolVersion();
 					break;
 				case 'n':
 					++i;
-					pe.content = buddy.nickName();
+					pe.content = contact.ownerBuddy().nickName();
 					if (escape)
 						HtmlDocument::escapeText(pe.content);
 					break;
 				case 'a':
 					++i;
-					pe.content = buddy.display();
+					pe.content = contact.ownerBuddy().display();
 					if (escape)
 						HtmlDocument::escapeText(pe.content);
 					break;
 				case 'f':
 					++i;
-					pe.content = buddy.firstName();
+					pe.content = contact.ownerBuddy().nickName();
 					if (escape)
 						HtmlDocument::escapeText(pe.content);
 					break;
 				case 'r':
 					++i;
-					pe.content = buddy.lastName();
+					pe.content = contact.ownerBuddy().nickName();
 					if (escape)
 						HtmlDocument::escapeText(pe.content);
 					break;
 				case 'm':
 					++i;
-					pe.content = buddy.mobile();
+					pe.content = contact.ownerBuddy().nickName();
 					break;
 				case 'g':
-					++i;
-					pe.content = ""; // TODO 0.6.6 contact.data("Groups").toStringList().join(",");
-					break;
+					{
+						++i;
+						QStringList groups;
+						foreach (Group group, contact.ownerBuddy().groups())
+							groups << group.name();
+						pe.content = groups.join(",");
+						break;
+					}
 				case 'e':
 					++i;
-					pe.content = buddy.email();
+					pe.content = contact.ownerBuddy().email();
 					break;
 				case 'x':
 					++i;
@@ -483,7 +485,7 @@ QString Parser::parse(const QString &s, Account account, const Buddy &buddy, con
 						parseStack.pop_back();
 						pe.type = ParserToken::PT_STRING;
 						if (registeredTags.contains(pe.content))
-							pe.content = registeredTags[pe.content](buddy);
+							pe.content = registeredTags[pe.content](contact);
 						else if (object && registeredObjectTags.contains(pe.content))
 							pe.content = registeredObjectTags[pe.content](object);
 						else

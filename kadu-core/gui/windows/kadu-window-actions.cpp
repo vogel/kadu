@@ -858,12 +858,12 @@ void KaduWindowActions::copyPersonalInfoActionActivated(QAction *sender, bool to
 	if (!window)
 		return;
 
-	BuddySet buddies = window->buddies();
+	ContactSet contacts = window->contacts();
 
 	QStringList infoList;
 	QString copyPersonalDataSyntax = config_file.readEntry("General", "CopyPersonalDataSyntax", tr("Contact: %a[ (%u)]\n[First name: %f\n][Last name: %r\n][Mobile: %m\n]"));
-	foreach (Buddy buddy, buddies)
-		infoList.append(Parser::parse(copyPersonalDataSyntax, buddy.prefferedAccount(), buddy, false));
+	foreach (Contact contact, contacts)
+		infoList.append(Parser::parse(copyPersonalDataSyntax, contact, false));
 
 	QString info = infoList.join("\n");
 	if (info.isEmpty())

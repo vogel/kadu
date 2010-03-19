@@ -24,7 +24,6 @@
 
 #include "accounts/account-manager.h"
 #include "configuration/configuration-file.h"
-#include "contacts/contact.h"
 #include "parser/parser.h"
 #include "status/status.h"
 #include "status/status-type-manager.h"
@@ -34,12 +33,10 @@
 #include "preview.h"
 
 Preview::Preview(QWidget *parent)
-	: KaduTextBrowser(parent), buddy(Buddy::null)
+	: KaduTextBrowser(parent), contact(Contact::null)
 {
 	setFixedHeight(170);
 	setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-
-	buddy = Buddy::dummy();
 }
 
 Preview::~Preview()
@@ -61,9 +58,9 @@ void Preview::syntaxChanged(const QString &content)
 
 	if (count)
 		for (int i = 0; i < count; i++)
-			text += Parser::parse(syntax, buddies[i].prefferedAccount(), buddies[i], objectsToParse.at(i));
+			text += Parser::parse(syntax, contacts.toContactList()[i], objectsToParse.at(i));
 	else
-		text = Parser::parse(syntax, buddy.prefferedAccount(), buddy);
+		text = Parser::parse(syntax, contact);
 
 	emit needFixup(text);
 

@@ -254,7 +254,7 @@ void ExecNotify::notify(Notification *notification)
 		QString sendersString = sendersList.join(",");
 
 		foreach (QString it, s)
-			result.append(Parser::parse(it.replace("%ids", sendersString), chatNotification->account(), *contacts.toBuddySet().begin(), notification));
+			result.append(Parser::parse(it.replace("%ids", sendersString), *contacts.begin(), notification));
 	}
 	else
 		foreach (QString it, s)

@@ -36,13 +36,6 @@
 
 BuddyInfoPanel::BuddyInfoPanel(QWidget *parent) : KaduTextBrowser(parent), MyBuddy(Buddy::null)
 {
-// TODO: 0.6.5
-// 	InfoPanel->setFrameStyle(QFrame::NoFrame);
-// 	InfoPanel->setMinimumHeight(int(1.5 * QFontMetrics(InfoPanel->QTextEdit::font()).height()));
-//	InfoPanel->resize(InfoPanel->size().width(), int(1.5 * QFontMetrics(InfoPanel->font()).height()));
-// 	InfoPanel->setTextFormat(Qt::RichText);
-// 	InfoPanel->setAlignment(Qt::AlignVCenter/** | Qt::WordBreak | Qt::DontClip*/);
-
 	configurationUpdated();
 }
 
@@ -113,10 +106,8 @@ void BuddyInfoPanel::displayBuddy(Buddy buddy)
 	if (Buddy::null == MyBuddy || !isVisible())
 		return;
 
-	kdebugmf(KDEBUG_INFO, "%s\n", qPrintable(MyBuddy.display()));
-
 	HtmlDocument doc;
-	doc.parseHtml(Parser::parse(Syntax, MyBuddy.prefferedAccount(), MyBuddy));
+	doc.parseHtml(Parser::parse(Syntax, MyBuddy.prefferedContact()));
 	UrlHandlerManager::instance()->convertAllUrls(doc);
 
 	if (EmoticonsStyleNone != (EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") &&

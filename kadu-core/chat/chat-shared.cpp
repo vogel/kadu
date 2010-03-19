@@ -285,8 +285,8 @@ void ChatShared::refreshTitle()
 
 		QString conferenceContents = config_file.readEntry("Look", "ConferenceContents");
 		QStringList contactslist;
-		foreach (const Buddy &buddy, contacts().toBuddySet())
-			contactslist.append(Parser::parse(conferenceContents.isEmpty() ? "%a" : conferenceContents, ChatAccount, buddy, false));
+		foreach (Contact contact, contacts())
+			contactslist.append(Parser::parse(conferenceContents.isEmpty() ? "%a" : conferenceContents, contact, false));
 	
 		title.append(contactslist.join(", "));
 
@@ -295,17 +295,16 @@ void ChatShared::refreshTitle()
 	else if (contactsSize > 0)
 	{
 		Contact contact = contacts().toContact();
-		Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
 
 		if (config_file.readEntry("Look", "ChatContents").isEmpty())
 		{
-			if (buddy.isAnonymous())
-				title = Parser::parse(tr("Chat with ")+"%a", ChatAccount, buddy, false);
+			if (contact.ownerBuddy().isAnonymous())
+				title = Parser::parse(tr("Chat with ")+"%a", contact, false);
 			else
-				title = Parser::parse(tr("Chat with ")+"%a (%s[: %d])", ChatAccount, buddy, false);
+				title = Parser::parse(tr("Chat with ")+"%a (%s[: %d])", contact, false);
 		}
 		else
-			title = Parser::parse(config_file.readEntry("Look","ChatContents"), ChatAccount, buddy, false);
+			title = Parser::parse(config_file.readEntry("Look","ChatContents"), contact, false);
 
 		if (!contact.isNull() && ChatAccount.statusContainer())
 			Icon = ChatAccount.statusContainer()->statusPixmap(contact.currentStatus());

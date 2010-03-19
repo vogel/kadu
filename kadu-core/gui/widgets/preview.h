@@ -22,8 +22,9 @@
 #ifndef PREVIEW_H
 #define PREVIEW_H
 
-#include "buddies/buddy.h"
-#include "buddies/buddy-list.h"
+#include "contacts/contact.h"
+#include "contacts/contact-shared.h"
+#include "contacts/contact-set.h"
 
 #include "kadu-text-browser.h"
 
@@ -31,9 +32,9 @@ class Preview : public KaduTextBrowser
 {
 	Q_OBJECT
 
-	Buddy buddy;
+	Contact contact;
 	QObjectList objectsToParse;
-	BuddyList buddies;
+	ContactSet contacts;
 	QString resetBackgroundColor;
 
 public:
@@ -41,10 +42,10 @@ public:
 	~Preview();
 
 	void setResetBackgroundColor(const QString &resetBackgroundColor) { this->resetBackgroundColor = resetBackgroundColor; }
-	void addObjectToParse(Buddy buddy, QObject *object) { buddies.append(buddy); objectsToParse.append(object); }
+	void addObjectToParse(Contact contact, QObject *object) { contacts.insert(contact); objectsToParse.append(object); }
 
 	const QObjectList getObjectsToParse() const { return objectsToParse; }
-	const BuddyList getContactList() const { return buddies; }
+	const ContactSet getContactList() const { return contacts; }
 
 
 public slots:
