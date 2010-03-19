@@ -48,117 +48,14 @@ extern "C" KADU_EXPORT void sql_history_close()
 
 SqlHistoryModule::SqlHistoryModule(bool firstLoad)
 {
-	if (firstLoad)
-		createDefaultConfiguration();
+	Q_UNUSED(firstLoad)
 
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/sql-history.ui"));
-	MainConfigurationWindow::registerUiHandler(this);
 	Storage = new HistorySqlStorage();
 	History::instance()->registerStorage(Storage);
 }
 
 SqlHistoryModule::~SqlHistoryModule()
 {
-	MainConfigurationWindow::unregisterUiHandler(this);
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/sql-history.ui"));
-}
-
-void SqlHistoryModule::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
-{
-	//TODO 0.6.6
-	QPushButton *clickMe = dynamic_cast<QPushButton *>(mainConfigurationWindow->widget()->widgetById("sql_history/import"));
-	connect(clickMe, SIGNAL(clicked(bool)), this, SLOT(doSomeImport()));
-
-	portSpinBox = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("sql_history/databasehostport"));
-	connect(portSpinBox, SIGNAL(valueChanged(int)), this, SLOT(portSpinBoxValueChanged(int)));
-
-	driverComboBox = dynamic_cast<QComboBox *>(mainConfigurationWindow->widget()->widgetById("sql_history/dbdriver"));
-	connect(driverComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(driverComboBoxValueChanged(int)));
-	hostLineEdit = dynamic_cast<QLineEdit *>(mainConfigurationWindow->widget()->widgetById("sql_history/databasehost"));
-	nameLineEdit = dynamic_cast<QLineEdit *>(mainConfigurationWindow->widget()->widgetById("sql_history/databasename"));
-	userLineEdit = dynamic_cast<QLineEdit *>(mainConfigurationWindow->widget()->widgetById("sql_history/databaseuser"));
-	passLineEdit = dynamic_cast<QLineEdit *>(mainConfigurationWindow->widget()->widgetById("sql_history/databasepass"));
-	prefixLineEdit = dynamic_cast<QLineEdit *>(mainConfigurationWindow->widget()->widgetById("sql_history/databaseprefix"));
-	if(config_file.readEntry("History", "DatabaseDriver") == "QSQLITE")
-	{
-		portSpinBox->setEnabled(false);
-		hostLineEdit->setEnabled(false); 
-		userLineEdit->setEnabled(false); 
-		nameLineEdit->setEnabled(false); 
-		passLineEdit->setEnabled(false);
-		prefixLineEdit->setEnabled(false);
-	}
-
-}
-
-void SqlHistoryModule::configurationWindowApplied()
-{
-
-}
-
-void SqlHistoryModule::driverComboBoxValueChanged(int index)
-{
-
-	if(driverComboBox->itemText(index) == "SQLite")
-	{
-		portSpinBox->setEnabled(false);
-		hostLineEdit->setEnabled(false); 
-		userLineEdit->setEnabled(false); 
-		nameLineEdit->setEnabled(false); 
-		passLineEdit->setEnabled(false);
-		prefixLineEdit->setEnabled(false);
-	}
-	else if(driverComboBox->itemText(index) == "MySQL")
-	{
-		portSpinBox->setEnabled(true);
-		portSpinBox->setValue(3306);
-		hostLineEdit->setEnabled(true);
-		userLineEdit->setEnabled(true); 
-		nameLineEdit->setEnabled(true); 
-		passLineEdit->setEnabled(true);
-		prefixLineEdit->setEnabled(true);
-	}
-	else if(driverComboBox->itemText(index) == "PostrgeSQL")
-	{
-		portSpinBox->setEnabled(true);
-		portSpinBox->setValue(5432);
-		hostLineEdit->setEnabled(true);
-		userLineEdit->setEnabled(true); 
-		nameLineEdit->setEnabled(true); 
-		passLineEdit->setEnabled(true);
-		prefixLineEdit->setEnabled(true);
-	}
-
-}
-
-void SqlHistoryModule::portSpinBoxValueChanged(int value)
-{
-	if (portSpinBox->value() < value)
-		portSpinBox->setValue(value);
-}
-
-void SqlHistoryModule::configurationUpdated()
-{
-	kdebugf();
-	//Storage->initializeDatabase();
-	kdebugf2();
-}
-
-//TODO 0.6.6
-void SqlHistoryModule::doSomeImport()
-{
-	kdebugf();
-	
-	Storage->convertSenderToContact();
-	
-	kdebugf2();
-}
-
-void SqlHistoryModule::createDefaultConfiguration()
-{
-	config_file.addVariable("History", "DatabaseDriver", "QSQLITE");
-	config_file.addVariable("History", "DatabaseFilePath", profilePath("/history/history.db"));
-	config_file.addVariable("History", "DatabaseTableNamePrefix", "kadu_");
 }
 
 SqlHistoryModule *sqlHistoryModule = 0;

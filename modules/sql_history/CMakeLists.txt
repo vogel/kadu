@@ -5,7 +5,6 @@ set (SOURCES
 
 set (MOC_SOURCES
 	storage/history-sql-storage.h
-	sql-history-module.h
 )
 
 set (TRANSLATION_SOURCES
@@ -13,7 +12,6 @@ set (TRANSLATION_SOURCES
 )
 
 set (CONFIGURATION_FILES
-	configuration/sql-history.ui
 )
 
 kadu_module (sql_history
