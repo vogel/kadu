@@ -9,6 +9,7 @@
 #include <QtGui/QWidget>
 #include <QtNetwork/QHttp>
 
+#include "buddies/buddy-manager.h"
 #include "chat/chat.h"
 #include "configuration/configuration-aware-object.h"
 #include "http_client.h"
@@ -26,10 +27,6 @@ class QTextEdit;
 class SMSAPI SmsConfigurationUiHandler : public ConfigurationUiHandler, ConfigurationAwareObject
 {
 	Q_OBJECT
-
-	ActionDescription *sendSmsActionDescription;
-
-	int menuid;
 
 	QCheckBox *useBuiltIn;
 	QLineEdit *customApp;
@@ -49,17 +46,12 @@ public:
 	SmsConfigurationUiHandler();
 	virtual ~SmsConfigurationUiHandler();
 
-	void newSms(QString mobile);
-
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
 public slots:
 	void onSmsBuildInCheckToggle(bool);
-	void onUserDblClicked(Chat *chat);
 	void onUpButton();
 	void onDownButton();
-	void sendSmsActionActivated(QAction *sender, bool toggled);
-
 };
 
 extern SMSAPI SmsConfigurationUiHandler *smsConfigurationUiHandler;

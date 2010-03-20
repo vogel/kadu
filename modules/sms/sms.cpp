@@ -41,7 +41,6 @@
 #include "debug.h"
 #include "gui/widgets/buddies-list-view.h"
 #include "gui/widgets/buddies-list-widget.h"
-#include "gui/widgets/buddies-list-view-menu-manager.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/windows/kadu-window.h"
@@ -57,66 +56,35 @@
 #include "gui/windows/sms-image-dialog.h"
 #include "gui/windows/sms-dialog.h"
 
+#include "sms-actions.h"
 #include "sms.h"
 
 extern "C" KADU_EXPORT int sms_init(bool firstLoad)
 {
-	Q_UNUSED(firstLoad)
-
-	kdebugf();
-
+	SmsActions::registerActions(firstLoad);
 	smsConfigurationUiHandler = new SmsConfigurationUiHandler();
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/sms.ui"));
 	MainConfigurationWindow::registerUiHandler(smsConfigurationUiHandler);
-
-	//TODO 0.6.6
-	///QObject::connect(Core::instance()->kaduWindow()->contactsListView(), SIGNAL(chatActivated(Chat *)), smsConfigurationUiHandler, SLOT(onUserDblClicked(Chat *)));
-	
-	kdebugf2();
 	return 0;
 }
 
 extern "C" KADU_EXPORT void sms_close()
 {
-	kdebugf();
-
-	///QObject::disconnect(Core::instance()->kaduWindow()->contactsListView(), SIGNAL(chatActivated(Chat *)), smsConfigurationUiHandler, SLOT(onUserDblClicked(Chat *)));
-	
+  	SmsActions::unregisterActions();
 	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/sms.ui"));
 	MainConfigurationWindow::unregisterUiHandler(smsConfigurationUiHandler);
 	delete smsConfigurationUiHandler;
 	smsConfigurationUiHandler = 0;
-
-	kdebugf2();
 }
 
 SmsConfigurationUiHandler::SmsConfigurationUiHandler()
-	: menuid(0), gatewayListWidget(0)
+	: gatewayListWidget(0)
 {
-	kdebugf();
-
 	createDefaultConfiguration();
-
-	sendSmsActionDescription = new ActionDescription(this,
-		ActionDescription::TypeGlobal, "sendSmsAction",
-		this, SLOT(sendSmsActionActivated(QAction *, bool)),
-		"16x16/phone.png", "16x16/phone.png", tr("Send SMS..."), false
-	);
-	sendSmsActionDescription->setShortcut("kadu_sendsms");
-	BuddiesListViewMenuManager::instance()->insertActionDescription(2, sendSmsActionDescription);
-	Core::instance()->kaduWindow()->insertMenuActionDescription(sendSmsActionDescription, KaduWindow::MenuContacts, 4);
-	kdebugf2();
 }
 
-SmsConfigurationUiHandler::~SmsConfigurationUiHandler()
-{
-	kdebugf();
-	BuddiesListViewMenuManager::instance()->removeActionDescription(sendSmsActionDescription);
-	Core::instance()->kaduWindow()->removeMenuActionDescription(sendSmsActionDescription);
-	delete sendSmsActionDescription;
-	sendSmsActionDescription = 0;
-	kdebugf2();
-}
+SmsConfigurationUiHandler::~SmsConfigurationUiHandler() 
+{}
 
 
 void SmsConfigurationUiHandler::onSmsBuildInCheckToggle(bool value)
@@ -148,22 +116,6 @@ void SmsConfigurationUiHandler::configurationUpdated()
 	config_file.writeEntry("SMS", "Priority", priority.join(";"));
 }
 
-void SmsConfigurationUiHandler::newSms(QString nick)
-{
-	SmsDialog *smsDialog = new SmsDialog();
-	smsDialog->setRecipient(nick);
-	smsDialog->show();
-}
-
-void SmsConfigurationUiHandler::onUserDblClicked(Chat *chat)
-{
-	kdebugf();
-	Buddy buddy = chat->contacts().toContactList().at(0).ownerBuddy();
-	if (buddy.contacts().isEmpty() && !buddy.mobile().isEmpty())
-		newSms(buddy.mobile());
-	kdebugf2();
-}
-
 void SmsConfigurationUiHandler::onUpButton()
 {
 	int index = gatewayListWidget->currentRow();
@@ -186,28 +138,6 @@ void SmsConfigurationUiHandler::onDownButton()
 	gatewayListWidget->insertItem(++index, item);
 	item->setSelected(true);
 	gatewayListWidget->setCurrentItem(item);
-}
-
-void SmsConfigurationUiHandler::sendSmsActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(toggled)
-
-	kdebugf();
-
-	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
-	if (window)
-	{
-		BuddySet users = window->buddies();
-
-		if (users.count() == 1 && !users.toList()[0].mobile().isEmpty())
-		{
-			newSms(users.toList()[0].mobile());
-			return;
-		}
-	}
-	newSms(QString::null);
-
-	kdebugf2();
 }
 
 void SmsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
