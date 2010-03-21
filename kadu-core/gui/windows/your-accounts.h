@@ -49,6 +49,8 @@ KADUAPI class YourAccounts : public QWidget, AccountsAwareObject
 {
 	Q_OBJECT
 
+	static YourAccounts *Instance;
+
 	QListView *AccountsView;
 	AccountsModel *MyAccountsModel;
 	ActionsProxyModel *ActionsModel;
@@ -70,6 +72,8 @@ KADUAPI class YourAccounts : public QWidget, AccountsAwareObject
 	QMap<ProtocolFactory *, QWidget *> CreateWidgets;
 	QMap<ProtocolFactory *, AccountAddWidget *> AddWidgets;
 	QMap<Account, AccountEditWidget *> EditWidgets;
+
+	explicit YourAccounts(QWidget *parent = 0);
 
 	void createGui();
 	void createAccountWidget();
@@ -104,9 +108,10 @@ protected:
 	virtual void accountUnregistered(Account account);
 
 public:
-	explicit YourAccounts(QWidget *parent = 0);
-	virtual ~YourAccounts();
+	static YourAccounts * instance();
 
+	virtual ~YourAccounts();
+	virtual void show();
 };
 
 #endif // YOUR_ACCOUNT

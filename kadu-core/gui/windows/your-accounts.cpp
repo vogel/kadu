@@ -41,16 +41,20 @@
 #include "gui/widgets/account-edit-widget.h"
 #include "gui/widgets/modal-configuration-widget.h"
 #include "gui/widgets/protocols-combo-box.h"
+#include "gui/windows/message-dialog.h"
 #include "misc/misc.h"
 #include "model/actions-proxy-model.h"
 #include "model/roles.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocols-manager.h"
+
+#include "activate.h"
 #include "icons-manager.h"
 
 #include "your-accounts.h"
-#include "message-dialog.h"
+
+YourAccounts *YourAccounts::Instance = 0;
 
 YourAccounts::YourAccounts(QWidget *parent) :
 		QWidget(parent), CurrentWidget(0), IsCurrentWidgetEditAccount(false)
@@ -67,6 +71,23 @@ YourAccounts::YourAccounts(QWidget *parent) :
 YourAccounts::~YourAccounts()
 {
 	saveWindowGeometry(this, "General", "YourAccountsWindowGeometry");
+
+	Instance = 0;
+}
+
+YourAccounts * YourAccounts::instance()
+{
+	if (!Instance)
+		Instance = new YourAccounts();
+
+	return Instance;
+}
+
+void YourAccounts::show()
+{
+	QWidget::show();
+
+	_activateWindow(this);
 }
 
 void YourAccounts::createGui()

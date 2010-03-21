@@ -601,7 +601,7 @@ void KaduWindowActions::yourAccountsActionActivated(QAction *sender, bool toggle
 	Q_UNUSED(sender)
 	Q_UNUSED(toggled)
 
-	(new YourAccounts())->show();
+	YourAccounts::instance()->show();
 }
 
 void KaduWindowActions::exitKaduActionActivated(QAction *sender, bool toggled)
