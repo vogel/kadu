@@ -20,6 +20,7 @@
 #include <QtGui/QIntValidator>
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QFormLayout>
+#include <QtGui/QKeyEvent>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
@@ -182,4 +183,15 @@ void GaduChangePasswordWindow::changingFinished(GaduServerChangePassword *gscp)
 	}
 	else
 		MessageDialog::msg(tr("An error has occured. Please try again later."), false, "Critical", parentWidget());
+}
+
+void GaduChangePasswordWindow::keyPressEvent(QKeyEvent *e)
+{
+	if (e->key() == Qt::Key_Escape)
+	{
+		e->accept();
+		close();
+	}
+	else
+		QWidget::keyPressEvent(e);
 }

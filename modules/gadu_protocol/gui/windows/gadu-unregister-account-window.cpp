@@ -21,6 +21,7 @@
 #include <QtGui/QFormLayout>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
+#include <QtGui/QKeyEvent>
 #include <QtGui/QPushButton>
 #include <QtGui/QStyle>
 #include <QtGui/QVBoxLayout>
@@ -157,4 +158,15 @@ void GaduUnregisterAccountWindow::unregisteringFinished(GaduServerUnregisterAcco
 	}
 	else
 		MessageDialog::msg(tr("An error has occured while unregistration. Please try again later."), false, "Critical", parentWidget());
+}
+
+void GaduUnregisterAccountWindow::keyPressEvent(QKeyEvent *e)
+{
+	if (e->key() == Qt::Key_Escape)
+	{
+		e->accept();
+		close();
+	}
+	else
+		QWidget::keyPressEvent(e);
 }

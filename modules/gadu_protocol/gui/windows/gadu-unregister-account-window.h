@@ -48,6 +48,9 @@ private slots:
 	void removeAccount();
 	void unregisteringFinished(GaduServerUnregisterAccount *gsua);
 
+protected:
+	virtual void keyPressEvent(QKeyEvent *e);
+
 public:
 	explicit GaduUnregisterAccountWindow(Account account, QWidget *parent = 0);
 	virtual ~GaduUnregisterAccountWindow();

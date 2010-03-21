@@ -53,6 +53,9 @@ private slots:
 	void changePassword();
 	void changingFinished(GaduServerChangePassword *gscp);
 
+protected:
+	virtual void keyPressEvent(QKeyEvent *e);
+
 public:
 	explicit GaduChangePasswordWindow(UinType uin, Account account, QWidget *parent = 0);
 	virtual ~GaduChangePasswordWindow();

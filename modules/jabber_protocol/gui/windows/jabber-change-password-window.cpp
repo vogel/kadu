@@ -21,6 +21,7 @@
 #include <QtGui/QFormLayout>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
+#include <QtGui/QKeyEvent>
 #include <QtGui/QPushButton>
 #include <QtGui/QStyle>
 #include <QtGui/QVBoxLayout>
@@ -156,4 +157,15 @@ void JabberChangePasswordWindow::changingFinished(JabberServerChangePassword *gs
 	}
 	else
 		MessageDialog::msg(tr("An error has occured. Please try again later."), false, "Critical", parentWidget());
+}
+
+void JabberChangePasswordWindow::keyPressEvent(QKeyEvent *e)
+{
+	if (e->key() == Qt::Key_Escape)
+	{
+		e->accept();
+		close();
+	}
+	else
+		QWidget::keyPressEvent(e);
 }

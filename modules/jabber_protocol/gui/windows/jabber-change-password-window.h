@@ -47,6 +47,9 @@ private slots:
 	void changePassword();
 	void changingFinished(JabberServerChangePassword *gscp);
 
+protected:
+	virtual void keyPressEvent(QKeyEvent *e);
+
 public:
 	explicit JabberChangePasswordWindow(Account account, QWidget *parent = 0);
 	virtual ~JabberChangePasswordWindow();

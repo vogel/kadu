@@ -47,6 +47,9 @@ private slots:
 	void sendPassword();
 	void remindPasswordFinished(GaduServerRemindPassword *gsrp);
 
+protected:
+	virtual void keyPressEvent(QKeyEvent *e);
+
 public:
 	explicit GaduRemindPasswordWindow(UinType uin, QWidget *parent = 0);
 	virtual ~GaduRemindPasswordWindow();
