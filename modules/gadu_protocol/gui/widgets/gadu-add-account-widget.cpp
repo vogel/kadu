@@ -97,7 +97,11 @@ void GaduAddAccountWidget::createGui()
 	connect(Identity, SIGNAL(activated(int)), this, SLOT(dataChanged()));
 	layout->addRow(tr("Account Identity") + ":", Identity);
 
-	layout->addWidget(new QLabel(tr("<font size='-1'><i>Select or enter the identity that will be associated with this account.<i></font>"), this));
+	QLabel *infoLabel = new QLabel(tr("<font size='-1'><i>Select or enter the identity that will be associated with this account.</i></font>"), this);
+	infoLabel->setWordWrap(true);
+	infoLabel->setAlignment(Qt::AlignTop | Qt::AlignLeft);
+	infoLabel->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
+	layout->addRow(0, infoLabel);
 
 	mainLayout->addStretch(100);
 

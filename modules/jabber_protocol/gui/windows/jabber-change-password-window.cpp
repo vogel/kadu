@@ -57,6 +57,8 @@ void JabberChangePasswordWindow::createGui()
 
 	QLabel *infoLabel = new QLabel(tr("This dialog box allows you to change your current password.\n"));
 	infoLabel->setWordWrap(true);
+	infoLabel->setAlignment(Qt::AlignTop | Qt::AlignLeft);
+	infoLabel->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
 	mainLayout->addWidget(infoLabel);
 
 	QWidget *formWidget = new QWidget(this);
@@ -69,14 +71,22 @@ void JabberChangePasswordWindow::createGui()
 	connect(OldPassword, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 	layout->addRow(tr("Old Password") + ":", OldPassword);
 
-	layout->addRow(0, new QLabel(tr("<font size='-1'><i>Enter current password for your XMPP/Jabber account.</i></font>"), this));
+	infoLabel = new QLabel(tr("<font size='-1'><i>Enter current password for your XMPP/Jabber account.</i></font>"), this);
+	infoLabel->setWordWrap(true);
+	infoLabel->setAlignment(Qt::AlignTop | Qt::AlignLeft);
+	infoLabel->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
+	layout->addRow(0, infoLabel);
 
 	NewPassword = new QLineEdit(this);
 	NewPassword->setEchoMode(QLineEdit::Password);
 	connect(NewPassword, SIGNAL(textChanged(const QString &)), this, SLOT(dataChanged()));
 	layout->addRow(tr("New Password") + ":", NewPassword);
 
-	layout->addRow(0, new QLabel(tr("<font size='-1'><i>Enter new password for your XMPP/Jabber account.</i></font>"), this));
+	infoLabel = new QLabel(tr("<font size='-1'><i>Enter new password for your XMPP/Jabber account.</i></font>"), this);
+	infoLabel->setWordWrap(true);
+	infoLabel->setAlignment(Qt::AlignTop | Qt::AlignLeft);
+	infoLabel->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
+	layout->addRow(0, infoLabel);
 
 	ReNewPassword = new QLineEdit(this);
 	ReNewPassword->setEchoMode(QLineEdit::Password);

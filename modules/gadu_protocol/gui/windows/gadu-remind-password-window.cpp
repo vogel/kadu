@@ -60,6 +60,7 @@ void GaduRemindPasswordWindow::createGui()
 	QLabel *infoLabel = new QLabel;
 	infoLabel->setText(tr("This dialog box allows you to ask server to remind your current password."));
 	infoLabel->setWordWrap(true);
+	infoLabel->setAlignment(Qt::AlignTop | Qt::AlignLeft);
 	infoLabel->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
 
 	mainLayout->addWidget(infoLabel);
@@ -73,13 +74,21 @@ void GaduRemindPasswordWindow::createGui()
 	connect(EMail, SIGNAL(textChanged(const QString &)), this, SLOT(dataChanged()));
 	layout->addRow(tr("E-Mail Address") + ":", EMail);
 
-	layout->addRow(0, new QLabel(tr("<font size='-1'><i>Type E-Mail Address used during registration.</i></font>"), this));
+	infoLabel = new QLabel(tr("<font size='-1'><i>Type E-Mail Address used during registration.</i></font>"), this);
+	infoLabel->setWordWrap(true);
+	infoLabel->setAlignment(Qt::AlignTop | Qt::AlignLeft);
+	infoLabel->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed));
+	layout->addRow(0, infoLabel);
 
 	MyTokenWidget = new TokenWidget(this);
 	connect(MyTokenWidget, SIGNAL(modified()), this, SLOT(dataChanged()));
 	layout->addRow(tr("Characters") + ":", MyTokenWidget);
 
-	layout->addRow(0, new QLabel(tr("<font size='-1'><i>For verification purposes, please type the characters above.</i></font>"), this));
+	infoLabel = new QLabel(tr("<font size='-1'><i>For verification purposes, please type the characters above.</i></font>"), this);
+	infoLabel->setWordWrap(true);
+	infoLabel->setAlignment(Qt::AlignTop | Qt::AlignLeft);
+	infoLabel->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed));
+	layout->addRow(0, infoLabel);
 
 	mainLayout->addStretch(100);
 

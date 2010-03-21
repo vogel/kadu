@@ -61,11 +61,15 @@ void GaduUnregisterAccountWindow::createGui()
 	QLabel *infoLabel = new QLabel(tr("This dialog box allows you to unregister your account. Be aware of using this "
 				"option."));
 	infoLabel->setWordWrap(true);
+	infoLabel->setAlignment(Qt::AlignTop | Qt::AlignLeft);
+	infoLabel->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
 	mainLayout->addWidget(infoLabel);
 
 	infoLabel = new QLabel(tr("<font size=\"+1\"><b>It will permanently delete your account and you will not be able to use "
 				"it later!</b></font>"));
 	infoLabel->setWordWrap(true);
+	infoLabel->setAlignment(Qt::AlignTop | Qt::AlignLeft);
+	infoLabel->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
 	mainLayout->addWidget(infoLabel);
 
 	QWidget *formWidget = new QWidget(this);
@@ -83,13 +87,21 @@ void GaduUnregisterAccountWindow::createGui()
 	connect(Password, SIGNAL(textChanged(const QString &)), this, SLOT(dataChanged()));
 	layout->addRow(tr("Password") + ":", Password);
 
-	layout->addRow(0, new QLabel(tr("<font size='-1'><i>Enter password for your Gadu-Gadu account.</i></font>"), this));
+	infoLabel = new QLabel(tr("<font size='-1'><i>Enter password for your Gadu-Gadu account.</i></font>"), this);
+	infoLabel->setWordWrap(true);
+	infoLabel->setAlignment(Qt::AlignTop | Qt::AlignLeft);
+	infoLabel->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
+	layout->addRow(0, infoLabel);
 
 	MyTokenWidget = new TokenWidget(this);
 	connect(MyTokenWidget, SIGNAL(modified()), this, SLOT(dataChanged()));
 	layout->addRow(tr("Characters") + ":", MyTokenWidget);
 
-	layout->addRow(0, new QLabel(tr("<font size='-1'><i>For verification purposes, please type the characters above.</i></font>"), this));
+	infoLabel = new QLabel(tr("<font size='-1'><i>For verification purposes, please type the characters above.</i></font>"), this);
+	infoLabel->setWordWrap(true);
+	infoLabel->setAlignment(Qt::AlignTop | Qt::AlignLeft);
+	infoLabel->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
+	layout->addRow(0, infoLabel);
 
 	mainLayout->addStretch(100);
 
