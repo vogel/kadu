@@ -45,11 +45,12 @@ CertificateErrorDialog::CertificateErrorDialog(const QString& title, const QStri
 
 	detailsButton_ = messageBox_->addButton(QObject::tr("&Details..."), QMessageBox::ActionRole);
 	continueButton_ = messageBox_->addButton(QObject::tr("&Connect anyway"), QMessageBox::AcceptRole);
-	if (domainOverride.isEmpty()) {
+
+	if (domainOverride.isEmpty())
 		saveButton_ = messageBox_->addButton(QObject::tr("&Trust this certificate"), QMessageBox::AcceptRole);
-	} else {
+	else
 		saveButton_ = messageBox_->addButton(QObject::tr("&Trust this domain"), QMessageBox::AcceptRole);
-	}
+
 	cancelButton_ = messageBox_->addButton(QMessageBox::Cancel);
 
 	messageBox_->setDefaultButton(detailsButton_);
@@ -57,14 +58,17 @@ CertificateErrorDialog::CertificateErrorDialog(const QString& title, const QStri
 
 int CertificateErrorDialog::exec()
 {
-	while (true) {
+	while (true)
+	{
 		messageBox_->exec();
-		if (messageBox_->clickedButton() == detailsButton_) {
+		if (messageBox_->clickedButton() == detailsButton_)
+		{
 			messageBox_->setResult(QDialog::Accepted);
 			CertificateDisplayDialog dlg(certificate_, result_, validity_);
 			dlg.exec();
 		}
-		else if (messageBox_->clickedButton() == continueButton_) {
+		else if (messageBox_->clickedButton() == continueButton_)
+		{
 			messageBox_->setResult(QDialog::Accepted);
 			break;
 		}
@@ -76,11 +80,8 @@ int CertificateErrorDialog::exec()
 		else if (messageBox_->clickedButton() == saveButton_)
 		{
 			messageBox_->setResult(QDialog::Accepted);
-			if (domainOverride_.isEmpty()) {
-				TrustedCertificatesManager::instance()->addTrustedCertificate(certificate_.toDER());
-			} else {
-				tlsOverrideDomain_ = domainOverride_;
-			}
+
+			TrustedCertificatesManager::instance()->addTrustedCertificate(certificate_.toDER());
 			break;
 		}
 	}

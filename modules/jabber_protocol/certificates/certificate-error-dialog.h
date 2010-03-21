@@ -52,9 +52,7 @@ class CertificateErrorDialog
 	public:
 		CertificateErrorDialog(const QString& title, const QString& host, const QCA::Certificate& cert, int result, QCA::Validity validity, const QString &domainOverride, QObject *parent, QString &tlsOverrideDomain_);
 
-		QMessageBox* getMessageBox() {
-			return messageBox_;
-		}
+		QMessageBox * getMessageBox() { return messageBox_; }
 
 		int exec();
 };

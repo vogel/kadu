@@ -32,10 +32,13 @@
 
 class JabberAccountDetails;
 class QString;
-namespace QCA {
+namespace QCA
+{
 	class CertificateCollection;
 }
-namespace XMPP {
+
+namespace XMPP
+{
 	class QCATLSHandler;
 }
 
