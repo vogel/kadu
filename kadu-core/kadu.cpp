@@ -1426,7 +1426,7 @@ void Kadu::messageReceived(Protocol *protocol, UserListElements senders, const Q
 		chat->newMessage(protocol->protocolID(), senders, msg, time);
 	else
 	{
-		if (config_file.readBoolEntry("General","AutoRaise"))
+		if (config_file.readBoolEntry("General", "AutoRaise"))
 		{
 			kadu->showNormal();
 			kadu->setFocus();

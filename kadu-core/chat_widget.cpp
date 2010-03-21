@@ -490,7 +490,7 @@ void ChatWidget::newMessage(const QString &/*protocolName*/, UserListElements se
 	lastMsgTime = QDateTime::currentDateTime();
 	NewMessagesCount++;
 
- 	emit messageReceived(this);
+	emit messageReceived(this);
 }
 
 void ChatWidget::writeMyMessage()
