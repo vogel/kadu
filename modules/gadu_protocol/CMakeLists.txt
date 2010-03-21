@@ -1,5 +1,6 @@
-set (SOURCES
+set (LIBGADU_MIN_VERSION "1.9.0")
 
+set (SOURCES
 	dcc/dcc-manager.cpp
 	dcc/dcc-socket-notifiers.cpp
 
@@ -126,11 +127,15 @@ pkg_search_module (QCA2 REQUIRED qca2)
 link_directories (${QCA2_LIBRARY_DIRS})
 add_definitions (${QCA2_CFLAGS_OTHER})
 
-pkg_search_module (LIBGADU REQUIRED libgadu>=1.9.0)
+pkg_search_module (LIBGADU REQUIRED libgadu>=${LIBGADU_MIN_VERSION})
 include_directories (${LIBGADU_INCLUDE_DIRS} ${QCA2_INCLUDE_DIRS})
 link_directories (${LIBGADU_LIBRARY_DIRS})
 
-message (STATUS " * libgadu found (version ${LIBGADU_VERSION}) in ${LIBGADU_LIBRARY_DIRS}")
+if (NOT LIBGADU_FOUND)
+	message (STATUS " * libgadu (version ${LIBGADU_MIN_VERSION}) was NOT FOUND")
+else (NOT LIBGADU_FOUND)
+	message (STATUS " * libgadu (version ${LIBGADU_VERSION}) was found in ${LIBGADU_LIBDIR}")
+endif (NOT LIBGADU_FOUND)
 
 kadu_module (gadu_protocol
 	MODULE_SOURCES ${SOURCES}

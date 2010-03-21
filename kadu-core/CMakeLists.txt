@@ -565,6 +565,10 @@ if (COMMAND cmake_policy)
 	cmake_policy (SET CMP0003 NEW)
 endif (COMMAND cmake_policy)
 
+if (COMMAND cmake_policy)
+	cmake_policy (SET CMP0015 NEW)
+endif (COMMAND cmake_policy)
+
 link_directories (modules)
 
 if (WIN32)
