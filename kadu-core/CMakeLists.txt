@@ -565,9 +565,9 @@ if (COMMAND cmake_policy)
 	cmake_policy (SET CMP0003 NEW)
 endif (COMMAND cmake_policy)
 
-if (COMMAND cmake_policy)
+if (${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}.${CMAKE_PATCH_VERSION} GREATER 2.8.0 AND COMMAND cmake_policy)
 	cmake_policy (SET CMP0015 NEW)
-endif (COMMAND cmake_policy)
+endif (${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}.${CMAKE_PATCH_VERSION} GREATER 2.8.0 AND COMMAND cmake_policy)
 
 link_directories (modules)
 
