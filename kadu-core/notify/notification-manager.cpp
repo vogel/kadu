@@ -486,6 +486,7 @@ void NotificationManager::groupAdded(Group group)
 	connect(group, SIGNAL(updated()), this, SLOT(groupUpdated()));
 }
 
+// TODO 0.6.6:
 void NotificationManager::groupUpdated()
 {
 	Group group = sender();
@@ -494,7 +495,7 @@ void NotificationManager::groupUpdated()
 
 	bool notify = group.notifyAboutStatusChanges();
 
-	if (NotifyAboutAll)
+	if (NotifyAboutAll && !notify)
 	{
 		NotifyAboutAll = false;
 		config_file.writeEntry("Notify", "NotifyAboutAll", false);
