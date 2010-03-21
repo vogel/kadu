@@ -70,6 +70,8 @@ class KADUAPI MainConfigurationWindow : public ConfigurationWindow
 	ConfigComboBox *mailComboBox;
 	ConfigLineEdit *mailCommandLineEdit;
 
+	explicit MainConfigurationWindow();
+
 	void setLanguages();
 
 	void setToolTipClasses();
@@ -113,7 +115,6 @@ public:
 	static const char *SyntaxText;
 	static const char *SyntaxTextNotify;
 
-	MainConfigurationWindow();
 	virtual ~MainConfigurationWindow();
 
 	virtual void show();
