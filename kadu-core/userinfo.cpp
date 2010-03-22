@@ -281,20 +281,33 @@ void UserInfo::setupTab1()
 void UserInfo::updateAltNick()
 {
 	QStringList list;
+
 	if (!e_altnick->currentText().isEmpty())
 		list << e_altnick->currentText();
+
 	if (!e_nickname->text().isEmpty() && !list.contains(e_nickname->text()))
 		list << e_nickname->text();
+
 	if (!e_firstname->text().isEmpty())
 	{
 		if (!list.contains(e_firstname->text()))
 			list << e_firstname->text();
+
 		if (!e_lastname->text().isEmpty())
 		{
-			list << e_firstname->text() + " " + e_lastname->text();
-			list << e_lastname->text() + " " + e_firstname->text();
+			list << QString("%1 %2").arg(e_firstname->text(), e_lastname->text());
+			list << QString("%2 %1").arg(e_firstname->text(), e_lastname->text());
+
+			if (!e_nickname->text().isEmpty())
+			{
+				list << QString("%1 \"%2\" %3").arg(e_firstname->text(), e_nickname->text(), e_lastname->text());
+				list << QString("%3 \"%2\" %1").arg(e_firstname->text(), e_nickname->text(), e_lastname->text());
+				list << QString("%1 %2 (%3)").arg(e_lastname->text(), e_firstname->text(), e_nickname->text());
+				list << QString("%2 %1 (%3)").arg(e_lastname->text(), e_firstname->text(), e_nickname->text());
+			}
 		}
 	}
+
 	e_altnick->clear();
 	e_altnick->addItems(list);
 }
