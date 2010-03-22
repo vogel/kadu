@@ -80,15 +80,15 @@ if (LIB_SUFFIX_64)
 #	endif (UNIX AND NOT APPLE)
 endif (LIB_SUFFIX_64)
 
-set (DATADIR ${CMAKE_INSTALL_PREFIX}/share)
-set (LIBDIR ${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX})
-set (BINDIR ${CMAKE_INSTALL_PREFIX}/bin)
+set (KADU_DATADIR ${CMAKE_INSTALL_PREFIX}/share)
+set (KADU_LIBDIR ${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX})
+set (KADU_BINDIR ${CMAKE_INSTALL_PREFIX}/bin)
 set (MODULEDIR lib${LIB_SUFFIX}/kadu/modules)
 
 message (STATUS "Installation Paths:")
-message (STATUS "Data:    ${DATADIR}")
-message (STATUS "Library: ${LIBDIR}")
-message (STATUS "Binary:  ${BINDIR}")
+message (STATUS "Data:    ${KADU_DATADIR}")
+message (STATUS "Library: ${KADU_LIBDIR}")
+message (STATUS "Binary:  ${KADU_BINDIR}")
 
 # macros
 

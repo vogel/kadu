@@ -393,12 +393,12 @@ QString dataPath(const QString &p, const char *argv0)
 		data_path.resize(data_path.lastIndexOf('\\')+1);
 		lib_path=data_path;
 #else
-		QString datadir(DATADIR);
-		QString bindir(BINDIR);
-		QString libdir(LIBDIR);
+		QString datadir(KADU_DATADIR);
+		QString bindir(KADU_BINDIR);
+		QString libdir(KADU_LIBDIR);
 
 		//je�eli �cie�ki nie ko�cz� si� na /share i /bin oraz gdy bez tych ko�c�wek
-		//�cie�ki si� nie pokrywaj�, to znaczy �e kto� ustawi� r�cznie DATADIR lub BINDIR
+		//�cie�ki si� nie pokrywaj�, to znaczy �e kto� ustawi� r�cznie KADU_DATADIR lub KADU_BINDIR
 		if (!datadir.endsWith("/share") || !bindir.endsWith("/bin") || !libdir.endsWith("/lib") || !libdir.endsWith("/lib64") ||
 			datadir.left(datadir.length() - 6) != bindir.left(bindir.length() - 4) ||
 			(bindir.left(bindir.length() - 4) != libdir.left(libdir.length() - 4) && 
