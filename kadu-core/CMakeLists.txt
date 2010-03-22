@@ -135,9 +135,15 @@ endif (UNIX AND NOT APPLE)
 
 qt_wrap_cpp (kadu MOC_FILES ${kadu_MOC_SRCS})
 
+# more info: cmake --help-policy CMP0003
 if (COMMAND cmake_policy)
 	cmake_policy(SET CMP0003 NEW)
 endif (COMMAND cmake_policy)
+
+# more info: cmake --help-policy CMP0015
+if (COMMAND cmake_policy AND ${CMAKE_VERSION} VERSION_GREATER 2.8.0)
+	cmake_policy (SET CMP0015 NEW)
+endif (COMMAND cmake_policy AND ${CMAKE_VERSION} VERSION_GREATER 2.8.0)
 
 link_directories (modules)
 

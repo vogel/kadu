@@ -1,3 +1,8 @@
+# more info: cmake --help-policy CMP0015
+if (COMMAND cmake_policy AND ${CMAKE_VERSION} VERSION_GREATER 2.8.0)
+	cmake_policy (SET CMP0015 NEW)
+endif (COMMAND cmake_policy AND ${CMAKE_VERSION} VERSION_GREATER 2.8.0)
+
 If (WIN32)
 	exec_program (${CMAKE_CURRENT_SOURCE_DIR}/get-all.bat ${CMAKE_CURRENT_SOURCE_DIR}
 		ARGS OFF
