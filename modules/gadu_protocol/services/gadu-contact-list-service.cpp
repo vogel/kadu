@@ -115,11 +115,11 @@ void GaduContactListService::exportContactList()
 
 void GaduContactListService::exportContactList(BuddyList buddies)
 {
-	QString contactsString = GaduListHelper::buddyListToString(Protocol->account(), buddies);
+	QByteArray contacts = GaduListHelper::buddyListToByteArray(Protocol->account(), buddies);
 
-	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "\n%s\n", contactsString.toUtf8().constData());
+	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "\n%s\n", contacts.constData());
 
-	if (-1 == gg_userlist_request(Protocol->gaduSession(), GG_USERLIST_PUT, contactsString.toUtf8().constData()))
+	if (-1 == gg_userlist_request(Protocol->gaduSession(), GG_USERLIST_PUT, contacts.constData()))
 		emit contactListExported(false);
 }
 
