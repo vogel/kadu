@@ -200,6 +200,8 @@ void AdiumChatStyleEngine::refreshView(HtmlMessagesRenderer *renderer, bool useT
 	//I don't know why, sometimes 'initStyle' was performed after 'appendMessage'
 	renderer->webPage()->mainFrame()->evaluateJavaScript("initStyle()");
 
+	renderer->setLastMessage(0);
+
 	foreach (MessageRenderInfo *message, renderer->messages())
 		appendMessage(renderer, message);
 }
