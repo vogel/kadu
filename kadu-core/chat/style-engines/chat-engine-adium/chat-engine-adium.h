@@ -41,6 +41,8 @@ class AdiumChatStyleEngine : public ChatStyleEngine
 
 	bool clearDirectory(const QString &directory);
 
+	void appendChatMessage(HtmlMessagesRenderer *renderer, MessageRenderInfo *message);
+
 public:
 	AdiumChatStyleEngine();
 	~AdiumChatStyleEngine();
