@@ -34,6 +34,8 @@ class KaduChatStyleEngine : public QObject, public ChatStyleEngine
 
 	SyntaxList *syntaxList;
 
+	QString jsCode;
+
 	QString ChatSyntaxWithHeader; /*!< Chat syntax with header */
 	QString ChatSyntaxWithoutHeader; /*!< Chat syntax without header */
 
@@ -47,7 +49,7 @@ private slots:
 	void syntaxAdded(const QString &syntaxName);
 
 public:
-	KaduChatStyleEngine();
+	explicit KaduChatStyleEngine();
 	~KaduChatStyleEngine();
 	virtual bool supportVariants() { return false; }
 	virtual bool supportEditing() { return true; }
@@ -61,11 +63,7 @@ public:
 	virtual void clearMessages(HtmlMessagesRenderer *renderer);
 	virtual void appendMessages(HtmlMessagesRenderer *renderer, QList<MessageRenderInfo *> messages);
 	virtual void appendMessage(HtmlMessagesRenderer *renderer, MessageRenderInfo *message);
-	virtual void pruneMessage(HtmlMessagesRenderer *renderer)
-	{
-		Q_UNUSED(renderer)
-	}
-
+	virtual void pruneMessage(HtmlMessagesRenderer *renderer);
 	virtual void refreshView(HtmlMessagesRenderer *renderer, bool useTransparency = false);
 	virtual void messageStatusChanged(HtmlMessagesRenderer *renderer, Message message, Message::Status status);
 

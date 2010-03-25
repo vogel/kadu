@@ -47,7 +47,7 @@ AdiumChatStyleEngine::AdiumChatStyleEngine()
 {
 	timeFormatter = new AdiumTimeFormatter;
 	// Load required javascript funtions
-	QFile file(dataPath("kadu") + "/scripts/adium-style-scripts.js");
+	QFile file(dataPath("kadu") + "/scripts/chat-scripts.js");
 	if (file.open(QIODevice::ReadOnly | QIODevice::Text))
 		jsCode = file.readAll();
 }
@@ -60,12 +60,12 @@ AdiumChatStyleEngine::~AdiumChatStyleEngine()
 void AdiumChatStyleEngine::pruneMessage(HtmlMessagesRenderer *renderer)
 {
 	if (!ChatStylesManager::instance()->cfgNoHeaderRepeat())
-		renderer->webPage()->mainFrame()->evaluateJavaScript("kadu_removeFirstMessage()");
+		renderer->webPage()->mainFrame()->evaluateJavaScript("adium_removeFirstMessage()");
 }
 
 void AdiumChatStyleEngine::clearMessages(HtmlMessagesRenderer *renderer)
 {
-	renderer->webPage()->mainFrame()->evaluateJavaScript("kadu_clearMessages()");
+	renderer->webPage()->mainFrame()->evaluateJavaScript("adium_clearMessages()");
 }
 
 QString AdiumChatStyleEngine::isStyleValid(QString stylePath)

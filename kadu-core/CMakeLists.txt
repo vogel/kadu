@@ -621,7 +621,7 @@ if (UNIX AND NOT APPLE)
 	#install (FILES hi256-app-kadu.png DESTINATION "share/icons/hicolor/256x256/apps" RENAME kadu.png)
 endif(UNIX AND NOT APPLE)
 
-install (FILES "chat/style-engines/chat-engine-adium/adium-style-scripts.js" DESTINATION ${KADU_DATA_DIR}/scripts)
+install (FILES "chat/style-engines/chat-scripts.js" DESTINATION ${KADU_DATA_DIR}/scripts)
 
 if (APPLE)
 	pkg_search_module (SNDFILE REQUIRED sndfile>=1.0)

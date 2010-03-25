@@ -44,8 +44,8 @@ class AdiumChatStyleEngine : public ChatStyleEngine
 	void appendChatMessage(HtmlMessagesRenderer *renderer, MessageRenderInfo *message);
 
 public:
-	AdiumChatStyleEngine();
-	~AdiumChatStyleEngine();
+	explicit AdiumChatStyleEngine();
+	virtual ~AdiumChatStyleEngine();
 
 	virtual bool supportVariants() { return true; }
 	virtual bool supportEditing() { return false; }
