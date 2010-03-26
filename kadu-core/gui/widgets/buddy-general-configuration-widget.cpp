@@ -39,6 +39,8 @@
 #include "contacts/contact.h"
 #include "contacts/contact-manager.h"
 #include "configuration/configuration-contact-data-manager.h"
+#include "gui/widgets/buddy-avatar-widget.h"
+#include "gui/widgets/buddy-contacts-table.h"
 #include "gui/windows/message-dialog.h"
 #include "icons-manager.h"
 #include "misc/misc.h"
@@ -48,7 +50,6 @@
 #include "protocols/protocol-factory.h"
 
 #include "buddy-general-configuration-widget.h"
-#include "buddy-contacts-table.h"
 
 BuddyGeneralConfigurationWidget::BuddyGeneralConfigurationWidget(Buddy &buddy, QWidget *parent)
 		: QWidget(parent), MyBuddy(buddy)
@@ -79,22 +80,8 @@ void BuddyGeneralConfigurationWidget::createGui()
 	DisplayEdit->setText(MyBuddy.display());
 	nameLayout->addWidget(DisplayEdit);
 
-	QWidget *photoWidget = new QWidget(nameWidget);
-	QVBoxLayout *photoLayout = new QVBoxLayout(photoWidget);
-	photoLayout->setSpacing(2);
-
-	AvatarLabel = new QLabel(photoWidget);
-	AvatarLabel->setScaledContents(true);
-	if (!MyBuddy.buddyAvatar().pixmap().isNull())
-		AvatarLabel->setPixmap(MyBuddy.buddyAvatar().pixmap());
-	AvatarLabel->setFixedSize(QSize(70, 70));
-	photoLayout->addWidget(AvatarLabel, 0, Qt::AlignCenter);
-
-	QPushButton *changePhotoButton = new QPushButton(tr("Change Icon..."));
-	connect(changePhotoButton, SIGNAL(clicked(bool)), this, SLOT(changeAvatar()));
-	photoLayout->addWidget(changePhotoButton);
-
-	nameLayout->addWidget(photoWidget);
+	AvatarWidget = new BuddyAvatarWidget(MyBuddy, nameWidget);
+	nameLayout->addWidget(AvatarWidget);
 
 	QGroupBox *contactsBox = new QGroupBox(tr("Buddy contacts"));
 	QVBoxLayout *contactsLayout = new QVBoxLayout(contactsBox);
@@ -148,8 +135,8 @@ void BuddyGeneralConfigurationWidget::save()
 	MyBuddy.setEmail(EmailEdit->text());
 	MyBuddy.setWebsite(WebsiteEdit->text());
 
-	const QPixmap *avatar = AvatarLabel->pixmap();
-	if (!avatar || avatar->isNull())
+	QPixmap avatar = AvatarWidget->avatarPixmap();
+	if (avatar.isNull())
 		MyBuddy.setBuddyAvatar(Avatar::null);
 	else
 	{
@@ -160,20 +147,9 @@ void BuddyGeneralConfigurationWidget::save()
 			MyBuddy.setBuddyAvatar(buddyAvatar);
 		}
 
-		buddyAvatar.setPixmap(*avatar);
+		buddyAvatar.setPixmap(avatar);
 		MyBuddy.setBuddyAvatar(buddyAvatar);
 	}
 
 	ContactsTable->save();
-}
-
-void BuddyGeneralConfigurationWidget::changeAvatar()
-{
-	QString newAvatar = QFileDialog::getOpenFileName(this, tr("Select new avatar"), "", "Image Files (*.png *.jpg *.bmp)", 0);
-	if (newAvatar.isEmpty())
-		return;
-
-	QPixmap pixmap;
-	if (pixmap.load(newAvatar))
-		AvatarLabel->setPixmap(pixmap);
 }
