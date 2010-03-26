@@ -1849,7 +1849,7 @@ Too many attempts with bad password</source>
     </message>
 </context>
 <context>
-    <name>ModulesDialog</name>
+    <name>ModulesWindow</name>
     <message>
         <source>Manage Modules</source>
         <translation>Administres les modules</translation>

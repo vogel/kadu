@@ -210,6 +210,7 @@ set (kadu_SRCS
 	gui/windows/main-window.cpp
 	gui/windows/merge-buddies-window.cpp
 	gui/windows/message-dialog.cpp
+	gui/windows/modules-window.cpp
 	gui/windows/password-window.cpp
 	gui/windows/progress-window.cpp
 	gui/windows/search-window.cpp
@@ -474,6 +475,7 @@ set (kadu_MOC_SRCS
 	gui/windows/main-window.h
 	gui/windows/merge-buddies-window.h
 	gui/windows/message-dialog.h
+	gui/windows/modules-window.h
 	gui/windows/password-window.h
 	gui/windows/progress-window.h
 	gui/windows/search-window.h

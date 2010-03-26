@@ -253,7 +253,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 
 	ManageModules = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "manageModulesAction",
-		ModulesManager::instance(), SLOT(showDialog(QAction *, bool)),
+		ModulesManager::instance(), SLOT(showWindow(QAction *, bool)),
 		"kadu_icons/kadu-modmanager.png", "kadu_icons/kadu-modmanager.png", tr("Plugins...")
 	);
 	ManageModules->setShortcut("kadu_modulesmanager", Qt::ApplicationShortcut);
