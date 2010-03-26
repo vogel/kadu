@@ -90,7 +90,7 @@ const QPixmap BuddyAvatarWidget::avatarPixmap()
 
 	const QPixmap *avatar = AvatarLabel->pixmap();
 
-	if (!avatar || avatar->isNull())
+	if (avatar && !avatar->isNull())
 		return *avatar;
 
 	return QPixmap();
