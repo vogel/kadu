@@ -351,7 +351,9 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, const QString &styleHre
 	else if (contactsSize == 1)
 	{
 		Contact contact = chat.contacts().toContact();
-		if (!contact.isNull() && !contact.contactAvatar().pixmap().isNull())
+		if (!contact.isNull() && !contact.ownerBuddy().buddyAvatar().pixmap().isNull())
+			photoIncoming = QString("file://") + contact.ownerBuddy().buddyAvatar().filePath();
+		else if (!contact.isNull() && !contact.contactAvatar().pixmap().isNull())
 			photoIncoming = QString("file://") + contact.contactAvatar().filePath();
 		else
 			photoIncoming = QString("file://") + styleHref + QString("Incoming/buddy_icon.png");
@@ -420,7 +422,9 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, const QString &styleHre
 	{
 		result.replace(QString("%messageClasses%"), "message incoming");
 
-		if (!msg.messageSender().contactAvatar().pixmap().isNull())
+		if (!msg.messageSender().ownerBuddy().buddyAvatar().pixmap().isNull())
+			photoPath = QString("file://") + msg.messageSender().ownerBuddy().buddyAvatar().filePath();
+		else if (!msg.messageSender().contactAvatar().pixmap().isNull())
 			photoPath = QString("file://") + msg.messageSender().contactAvatar().filePath();
 		else
 			photoPath = QString("file://") + styleHref + QString("Incoming/buddy_icon.png");
