@@ -5,12 +5,10 @@
 #include <QtGui/QGridLayout>
 #include <QtGui/QWizard>
 
-#include "../account_management/register.h"
-
-#include "chat_widget.h"
 #include "misc/misc.h"
 
 class ActionDescription;
+class QCheckBox;
 class QComboBox;
 class QLineEdit;
 class QPushButton;
@@ -70,7 +68,7 @@ class Wizard : public QWizard
 private slots:
 	void haveNumberChanged(bool haveNumber);
 	void registerGGAccount();
-	void registeredGGAccount(bool ok, UinType uin);
+// 	void registeredGGAccount(bool ok, UinType uin);
 
 	void acceptedSlot();
 	void rejectedSlot();
@@ -107,7 +105,7 @@ public:
 public slots:
 	void start(QAction *sender, bool toggled);
 
-	void userListImported(bool ok, QList<UserListElement> list);
+// 	void userListImported(bool ok, QList<UserListElement> list);
 	void connected();
 
 };

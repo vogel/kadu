@@ -13,6 +13,7 @@
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
 #include <QtGui/QRadioButton>
+#include <QtGui/QTextBrowser>
 
 #include <stdlib.h>
 
@@ -20,12 +21,13 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "config_file.h"
+#include "configuration/configuration-file.h"
+#include "core/core.h"
+#include "gui/actions/action-description.h"
+#include "gui/windows/kadu-window.h"
 #include "debug.h"
 #include "html_document.h"
 #include "icons-manager.h"
-#include "kadu.h"
-#include "main_configuration_window.h"
 #include "modules.h"
 #include "wizard.h"
 
@@ -36,6 +38,8 @@
 
 extern "C" KADU_EXPORT int config_wizard_init(bool firstLoad)
 {
+	Q_UNUSED(firstLoad)
+
 	kdebugf();
 	wizardStarter = new WizardStarter();
 
@@ -61,18 +65,19 @@ extern "C" KADU_EXPORT void config_wizard_close()
 WizardStarter::WizardStarter(QObject *parent)
 	: QObject(parent)
 {
-	configWizardActionDescription = new ActionDescription(
+	configWizardActionDescription = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "configWizardAction",
 		this, SLOT(start(QAction *, bool)),
-		"kadu/kadu-wizard.png", tr("Configuration Wizard")
+		"kadu/kadu-wizard.png", "kadu/kadu-wizard.png", tr("Configuration Wizard")
 	);
-	kadu->insertMenuActionDescription(0, configWizardActionDescription);
+	Core::instance()->kaduWindow()->insertMenuActionDescription(configWizardActionDescription, KaduWindow::MenuKadu, 0);
 }
 
 WizardStarter::~WizardStarter()
 {
-	kadu->removeMenuActionDescription(configWizardActionDescription);
+	Core::instance()->kaduWindow()->removeMenuActionDescription(configWizardActionDescription);
 	delete configWizardActionDescription;
+	configWizardActionDescription = 0;
 
 	if (startWizardObj)
 	{
@@ -83,6 +88,9 @@ WizardStarter::~WizardStarter()
 
 void WizardStarter::start(QAction *sender, bool toggled)
 {
+	Q_UNUSED(sender)
+	Q_UNUSED(toggled)
+
 	kdebugf();
 	if (!startWizardObj)
 	{
@@ -167,37 +175,37 @@ void Wizard::wizardStart()
 /**
 	po zaimportowaniu listy kontakt�w si� wywo�uje
 **/
-void WizardStarter::userListImported(bool ok, QList<UserListElement> list)
-{
-	kdebugf();
-
-	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocolHandler();
-	disconnect(gadu, SIGNAL(userListImported(bool, QList<UserListElement>)), this, SLOT(userListImported(bool, QList<UserListElement>)));
-
-	if (!ok)
-	{
-		kdebugf2();
-		return;
-	}
-
-	userlist->merge(list);
-	userlist->writeToConfig();
-	kdebugf2();
-}
+// void WizardStarter::userListImported(bool ok, QList<UserListElement> list)
+// {
+// 	kdebugf();
+// 
+// 	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocolHandler();
+// 	disconnect(gadu, SIGNAL(userListImported(bool, QList<UserListElement>)), this, SLOT(userListImported(bool, QList<UserListElement>)));
+// 
+// 	if (!ok)
+// 	{
+// 		kdebugf2();
+// 		return;
+// 	}
+// 
+// 	userlist->merge(list);
+// 	userlist->writeToConfig();
+// 	kdebugf2();
+// }
 
 /**
 	po polaczeniu sie z siecia robi import - podpinane tylko gdy kadu nie jest polaczone w momencie nacisniecia Finish
 **/
 void WizardStarter::connected()
 {
-	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocolHandler());
-	if (!gadu->doImportUserList())
-	{
-		MessageDialog::msg(tr("User list couldn't be imported"));
-		disconnect(gadu, SIGNAL(userListImported(bool, QList<UserListElement>)), this, SLOT(userListImported(bool, QList<UserListElement>)));
-	}
+// 	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocolHandler());
+// 	if (!gadu->doImportUserList())
+// 	{
+// 		MessageDialog::msg(tr("User list couldn't be imported"));
+// 		disconnect(gadu, SIGNAL(userListImported(bool, QList<UserListElement>)), this, SLOT(userListImported(bool, QList<UserListElement>)));
+// 	}
 
-	disconnect(gadu, SIGNAL(connected()), this, SLOT(connected()));
+// 	disconnect(gadu, SIGNAL(connected()), this, SLOT(connected()));
 }
 
 /**
@@ -206,7 +214,7 @@ void WizardStarter::connected()
 void Wizard::registerGGAccount()
 {
 	kdebugf();
-
+/*
 	if (ggNewPassword->text() != ggReNewPassword->text())
 	{
 		MessageDialog::msg(tr("Error data typed in required fields.\n\n"
@@ -235,14 +243,14 @@ void Wizard::registerGGAccount()
 
 	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
 	connect(gadu, SIGNAL(registered(bool, UinType)), this, SLOT(registeredGGAccount(bool, UinType)));
-	gadu->registerAccount(ggEMail->text(), ggNewPassword->text());
+	gadu->registerAccount(ggEMail->text(), ggNewPassword->text());*/
 
 	kdebugf2();
 }
 
 /**
 	Zapisanie parametr�w nowego konta
-**/
+**//*
 void Wizard::registeredGGAccount(bool ok, UinType uin)
 {
 	kdebugf();
@@ -278,7 +286,7 @@ void Wizard::registeredGGAccount(bool ok, UinType uin)
 	registeringAccount = false;
 
 	kdebugf2();
-}
+}*/
 
 
 /**
@@ -287,23 +295,23 @@ void Wizard::registeredGGAccount(bool ok, UinType uin)
 
 void Wizard::tryImport()
 {
-	if (!ggImportContacts->isChecked())
-		return;
-
-	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
-	connect(gadu, SIGNAL(userListImported(bool, QList<UserListElement>)),
-			wizardStarter, SLOT(userListImported(bool, QList<UserListElement>)));
-
-	if (gadu->currentStatus().isOffline())
-	{
-		connect(gadu, SIGNAL(connected()), wizardStarter, SLOT(connected()));
-		kadu->setOnline(); //kaze sie polaczyc i podpina sie pod sygnal polaczenia sie z siecia
-	} //jak polaczony to bez cyrkow robi import
-	else if (!gadu->doImportUserList())
-	{
-		MessageDialog::msg(tr("User list wasn't imported because of some error"));
-		disconnect(gadu, SIGNAL(userListImported(bool, QList<UserListElement>)), wizardStarter, SLOT(userListImported(bool, QList<UserListElement>)));
-	}
+// 	if (!ggImportContacts->isChecked())
+// 		return;
+// 
+// 	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
+// 	connect(gadu, SIGNAL(userListImported(bool, QList<UserListElement>)),
+// 			wizardStarter, SLOT(userListImported(bool, QList<UserListElement>)));
+// 
+// 	if (gadu->currentStatus().isOffline())
+// 	{
+// 		connect(gadu, SIGNAL(connected()), wizardStarter, SLOT(connected()));
+// 		kadu->setOnline(); //kaze sie polaczyc i podpina sie pod sygnal polaczenia sie z siecia
+// 	} //jak polaczony to bez cyrkow robi import
+// 	else if (!gadu->doImportUserList())
+// 	{
+// 		MessageDialog::msg(tr("User list wasn't imported because of some error"));
+// 		disconnect(gadu, SIGNAL(userListImported(bool, QList<UserListElement>)), wizardStarter, SLOT(userListImported(bool, QList<UserListElement>)));
+// 	}
 }
 
 void Wizard::createGGAccountPage()
@@ -328,7 +336,7 @@ void Wizard::createGGAccountPage()
 		"If you are experienced Kadu user you may omit the wizard by clicking Cancel.</p>"
 		"<p>Please enter your account data. If you don't have one, you can create new here.</p>"
 		"<p>E-mail address is needed when you want to recover lost password to account</p>"));
-
+/*
 	descriptionPane->setFixedWidth(200);
 	gridLayout->addMultiCellWidget(descriptionPane, 0, 8, 0, 0);
 
@@ -352,7 +360,7 @@ void Wizard::createGGAccountPage()
 	gridLayout->addMultiCellWidget(ggImportContacts, 3, 3, 2, 3);
 
 	dontHaveNumber = new QRadioButton(tr("I don't have a number"), ggPage);
-	gridLayout->addMultiCellWidget(dontHaveNumber, 4, 4, 2, 3);
+	gridLayout->addMultiCellWidget(dontHaveNumber, 4, 4, 2, 3);*/
 
 	QLabel *ggNewPasswordLabel = new QLabel(tr("New password") + ":", ggPage);
 	gridLayout->addWidget(ggNewPasswordLabel, 5, 2, Qt::AlignRight);
@@ -370,20 +378,20 @@ void Wizard::createGGAccountPage()
 	gridLayout->addWidget(ggEMailLabel, 7, 2, Qt::AlignRight);
 	ggEMail = new QLineEdit(ggPage);
 	gridLayout->addWidget(ggEMail, 7, 3);
-
+/*
 	ggRegisterAccount = new QPushButton(tr("Register"), ggPage);
 	connect(ggRegisterAccount, SIGNAL(clicked()), this, SLOT(registerGGAccount()));
 	gridLayout->addMultiCellWidget(ggRegisterAccount, 8, 8, 2, 3);
 
-	QButtonGrouphaveNumberGroup= new QButtonGroup();
+	QButtonGroup haveNumberGroup= new QButtonGroup();
 	haveNumberGroup->insert(haveNumber);
-	haveNumberGroup->insert(dontHaveNumber);
+	haveNumberGroup->insert(dontHaveNumber);*/
 
 	ggPage->setLayout(gridLayout);
  
-	haveNumberWidgets.append(ggNumberLabel);
+// 	haveNumberWidgets.append(ggNumberLabel);
 	haveNumberWidgets.append(ggNumber);
-	haveNumberWidgets.append(ggPasswordLabel);
+// 	haveNumberWidgets.append(ggPasswordLabel);
 	haveNumberWidgets.append(ggPassword);
 	haveNumberWidgets.append(ggImportContacts);
 	dontHaveNumberWidgets.append(ggNewPasswordLabel);
@@ -429,7 +437,7 @@ void Wizard::saveGGAccountOptions()
 	config_file.writeEntry("General", "UIN", ggNumber->text());
 	config_file.writeEntry("General", "Password", pwHash(ggPassword->text()));
 
-	kadu->configurationUpdated();
+// 	kadu->configurationUpdated();
 
 	if (!ggNumber->text().isEmpty())
 		tryImport();
@@ -461,21 +469,21 @@ void Wizard::createApplicationsPage()
 
 	descriptionPane->setFixedWidth(200);
 
-	gridLayout->addMultiCellWidget(descriptionPane, 0, 4, 0, 0);
+// 	gridLayout->addMultiCellWidget(descriptionPane, 0, 4, 0, 0);
 
 	gridLayout->addWidget(new QLabel(tr("Choose your browser") + ":", applicationsPage), 0, 2, Qt::AlignRight);
 	browserCombo = new QComboBox(applicationsPage);
-	browserCombo->insertItem(tr("Specify path"));
-	browserCombo->insertItem(tr("Konqueror"));
-	browserCombo->insertItem(tr("Opera"));
-	browserCombo->insertItem(tr("Opera (new tab)"));
-	browserCombo->insertItem(tr("SeaMonkey"));
-	browserCombo->insertItem(tr("Mozilla"));
-	browserCombo->insertItem(tr("Mozilla Firefox"));
-	browserCombo->insertItem(tr("Dillo"));
-	browserCombo->insertItem(tr("Galeon"));
-	browserCombo->insertItem(tr("Safari"));
-	browserCombo->insertItem(tr("Camino"));
+	browserCombo->addItem(tr("Specify path"));
+	browserCombo->addItem(tr("Konqueror"));
+	browserCombo->addItem(tr("Opera"));
+	browserCombo->addItem(tr("Opera (new tab)"));
+	browserCombo->addItem(tr("SeaMonkey"));
+	browserCombo->addItem(tr("Mozilla"));
+	browserCombo->addItem(tr("Mozilla Firefox"));
+	browserCombo->addItem(tr("Dillo"));
+	browserCombo->addItem(tr("Galeon"));
+	browserCombo->addItem(tr("Safari"));
+	browserCombo->addItem(tr("Camino"));
 	connect(browserCombo, SIGNAL(activated(int)), this, SLOT(browserChanged(int)));
 	gridLayout->addWidget(browserCombo, 0, 3);
 
@@ -485,12 +493,12 @@ void Wizard::createApplicationsPage()
  
 	gridLayout->addWidget(new QLabel(tr("Choose your e-mail client") + ":", applicationsPage), 2, 2, Qt::AlignRight);
 	mailCombo = new QComboBox(applicationsPage);
-	mailCombo->insertItem(tr("Specify path"));
-	mailCombo->insertItem(tr("KMail"));
-	mailCombo->insertItem(tr("Thunderbird"));
-	mailCombo->insertItem(tr("SeaMonkey"));
-	mailCombo->insertItem(tr("Evolution"));
-	mailCombo->insertItem("Mail");
+	mailCombo->addItem(tr("Specify path"));
+	mailCombo->addItem(tr("KMail"));
+	mailCombo->addItem(tr("Thunderbird"));
+	mailCombo->addItem(tr("SeaMonkey"));
+	mailCombo->addItem(tr("Evolution"));
+	mailCombo->addItem("Mail");
 	connect(mailCombo, SIGNAL(activated(int)), this, SLOT(emailChanged(int)));
 	gridLayout->addWidget(mailCombo, 2, 3);
 
@@ -512,10 +520,10 @@ void Wizard::browserChanged(int index)
 	QString browser = MainConfigurationWindow::getBrowserExecutable(index);
 	browserCommandLineEdit->setEnabled(index == 0);
 	browserCommandLineEdit->setText(browser);
-
+/*
 	if (index != 0 && browser.isEmpty())
 		if (!browserCombo->currentText().contains(tr("Not found")))
-			browserCombo->changeItem(browserCombo->currentText() + " (" + tr("Not found") + ")", index);
+			browserCombo->changeItem(browserCombo->currentText() + " (" + tr("Not found") + ")", index);*/
 }
 
 void Wizard::emailChanged(int index)
@@ -524,10 +532,10 @@ void Wizard::emailChanged(int index)
 
 	mailCommandLineEdit->setEnabled(index == 0);
 	mailCommandLineEdit->setText(mail);
-
+/*
 	if (index != 0 && mail.isEmpty())
 		if (!mailCombo->currentText().contains(tr("Not found")))
-			mailCombo->changeItem(mailCombo->currentText() + " (" + tr("Not found") + ")", index);
+			mailCombo->changeItem(mailCombo->currentText() + " (" + tr("Not found") + ")", index);*/
 }
 
 // don't care for performance here
@@ -547,7 +555,7 @@ void Wizard::loadApplicationsOptions()
 		else
 			browserIndex++;
 
-	browserCombo->setCurrentItem(foundBrowserIndex);
+// 	browserCombo->setCurrentItem(foundBrowserIndex);
 	browserChanged(foundBrowserIndex);
 
 	QString mailIndexName = config_file.readEntry("Chat", "EmailClientNo");
@@ -564,15 +572,15 @@ void Wizard::loadApplicationsOptions()
 		else
 			mailIndex++;
 
-	mailCombo->setCurrentItem(foundMailIndex);
+// 	mailCombo->setCurrentItem(foundMailIndex);
 	emailChanged(foundMailIndex);
 }
 
 void Wizard::saveApplicationsOptions()
 {
-	config_file.writeEntry("Chat", "WebBrowserNo", MainConfigurationWindow::browserIndexToString(browserCombo->currentItem()));
+	config_file.writeEntry("Chat", "WebBrowserNo", MainConfigurationWindow::browserIndexToString(browserCombo->currentIndex()));
 	config_file.writeEntry("Chat", "WebBrowser", browserCommandLineEdit->text());
-	config_file.writeEntry("Chat", "EmailClientNo", MainConfigurationWindow::emailIndexToString(mailCombo->currentItem()));
+	config_file.writeEntry("Chat", "EmailClientNo", MainConfigurationWindow::emailIndexToString(mailCombo->currentIndex()));
 	config_file.writeEntry("Chat", "MailClient", mailCommandLineEdit->text());
 }
 
@@ -601,14 +609,14 @@ void Wizard::createSoundPage()
 
 	descriptionPane->setFixedWidth(200);
 
-	gridLayout->addMultiCellWidget(descriptionPane, 0, 2, 0, 0);
+// 	gridLayout->addMultiCellWidget(descriptionPane, 0, 2, 0, 0);
 
 	gridLayout->addWidget(new QLabel(tr("Sound system") + ":", soundPage), 0, 2, Qt::AlignRight);
 	soundModuleCombo = new QComboBox(soundPage);
 	gridLayout->addWidget(soundModuleCombo, 0, 3);
 
 	soundTest = new QPushButton(tr("Test sound"), soundPage);
-	gridLayout->addMultiCellWidget(soundTest, 1, 1, 2, 3);
+// 	gridLayout->addMultiCellWidget(soundTest, 1, 1, 2, 3);
 	connect(soundTest, SIGNAL(clicked()), this, SLOT(testSound()));
 
 	QStringList soundModules;
@@ -635,26 +643,26 @@ void Wizard::createSoundPage()
 
 	if (soundModules.contains("arts_sound"))
 	{
-		soundModules.remove("arts_sound");
+// 		soundModules.remove("arts_sound");
 		soundModules.prepend("arts_sound");
 	}
 	if (soundModules.contains("ext_sound"))
 	{
-		soundModules.remove("ext_sound");
+// 		soundModules.remove("ext_sound");
 		soundModules.prepend("ext_sound");
 	}
 	if (soundModules.contains("alsa_sound"))
 	{
-		soundModules.remove("alsa_sound");
+// 		soundModules.remove("alsa_sound");
 		soundModules.prepend("alsa_sound");
 	}
 	if (soundModules.contains("dshow_sound"))
 	{
-		soundModules.remove("dshow_sound");
+// 		soundModules.remove("dshow_sound");
 		soundModules.prepend("dshow_sound");
 	}
 	soundModules.prepend("None");
-	soundModuleCombo->insertStringList(soundModules);
+// 	soundModuleCombo->insertStringList(soundModules);
 
 	soundPage->setLayout(gridLayout);
 	
@@ -680,11 +688,11 @@ void Wizard::testSound()
 void Wizard::loadSoundOptions()
 {
 	backupSoundModule = ModulesManager::instance()->moduleProvides("sound_driver");
-
+/*
 	if (!backupSoundModule.isEmpty())
 		soundModuleCombo->setCurrentText(backupSoundModule);
 	else
-		soundModuleCombo->setCurrentItem(1); // just exclude "none"
+		soundModuleCombo->setCurrentItem(1); // just exclude "none"*/
 }
 
 void Wizard::saveSoundOptions()
