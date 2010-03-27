@@ -84,7 +84,6 @@ public:
 
 	void updateBackgroundsAndColors();
 
-	void setPruneEnabled(bool enable);
 	void setForcePruneDisabled(bool disable);
 
 	void rememberScrollBarPosition();

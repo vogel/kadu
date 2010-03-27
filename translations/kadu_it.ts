@@ -1860,7 +1860,7 @@ Di più conessioni con il password incorretto</translation>
     </message>
 </context>
 <context>
-    <name>ModulesDialog</name>
+    <name>ModulesWindow</name>
     <message>
         <source>Manage Modules</source>
         <translation>Gestione Moduli</translation>

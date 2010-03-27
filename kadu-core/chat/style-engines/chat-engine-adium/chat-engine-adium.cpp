@@ -47,7 +47,7 @@ AdiumChatStyleEngine::AdiumChatStyleEngine()
 {
 	timeFormatter = new AdiumTimeFormatter;
 	// Load required javascript funtions
-	QFile file(dataPath("kadu") + "/scripts/adium-style-scripts.js");
+	QFile file(dataPath("kadu") + "/scripts/chat-scripts.js");
 	if (file.open(QIODevice::ReadOnly | QIODevice::Text))
 		jsCode = file.readAll();
 }
@@ -60,12 +60,12 @@ AdiumChatStyleEngine::~AdiumChatStyleEngine()
 void AdiumChatStyleEngine::pruneMessage(HtmlMessagesRenderer *renderer)
 {
 	if (!ChatStylesManager::instance()->cfgNoHeaderRepeat())
-		renderer->webPage()->mainFrame()->evaluateJavaScript("kadu_removeFirstMessage()");
+		renderer->webPage()->mainFrame()->evaluateJavaScript("adium_removeFirstMessage()");
 }
 
 void AdiumChatStyleEngine::clearMessages(HtmlMessagesRenderer *renderer)
 {
-	renderer->webPage()->mainFrame()->evaluateJavaScript("kadu_clearMessages()");
+	renderer->webPage()->mainFrame()->evaluateJavaScript("adium_clearMessages()");
 }
 
 QString AdiumChatStyleEngine::isStyleValid(QString stylePath)
@@ -103,11 +103,34 @@ QStringList AdiumChatStyleEngine::styleVariants(QString styleName)
 
 void AdiumChatStyleEngine::appendMessages(HtmlMessagesRenderer *renderer, QList<MessageRenderInfo *> messages)
 {
+	if (ChatStylesManager::instance()->cfgNoHeaderRepeat() && renderer->pruneEnabled())
+	{
+		clearMessages(renderer);
+
+		foreach (MessageRenderInfo *message, renderer->messages())
+			appendChatMessage(renderer, message);
+		return;
+	}
+
 	foreach (MessageRenderInfo *message, messages)
-		appendMessage(renderer, message);
+		appendChatMessage(renderer, message);
 }
 
 void AdiumChatStyleEngine::appendMessage(HtmlMessagesRenderer *renderer, MessageRenderInfo *message)
+{
+	if (ChatStylesManager::instance()->cfgNoHeaderRepeat() && renderer->pruneEnabled())
+	{
+		clearMessages(renderer);
+
+		foreach (MessageRenderInfo *message, renderer->messages())
+			appendChatMessage(renderer, message);
+		return;
+	}
+
+	appendChatMessage(renderer, message);
+}
+
+void AdiumChatStyleEngine::appendChatMessage(HtmlMessagesRenderer *renderer, MessageRenderInfo *message)
 {
 	QString formattedMessageHtml;
 	bool includeHeader = true;
@@ -115,7 +138,7 @@ void AdiumChatStyleEngine::appendMessage(HtmlMessagesRenderer *renderer, Message
 	MessageRenderInfo *lastMessage = ChatStylesManager::instance()->cfgNoHeaderRepeat()
 			? renderer->lastMessage()
 			: 0;
-			
+
 	Message msg = message->message();
 
 	if (lastMessage)
@@ -156,7 +179,7 @@ void AdiumChatStyleEngine::appendMessage(HtmlMessagesRenderer *renderer, Message
 			// do nothing
 			break;
 	}
-	
+
 	formattedMessageHtml = replaceKeywords(renderer->chat(), CurrentStyle.baseHref(), formattedMessageHtml, message);
 	formattedMessageHtml.replace("\n", " ");
 	formattedMessageHtml.replace("'", "\\'");
@@ -200,8 +223,10 @@ void AdiumChatStyleEngine::refreshView(HtmlMessagesRenderer *renderer, bool useT
 	//I don't know why, sometimes 'initStyle' was performed after 'appendMessage'
 	renderer->webPage()->mainFrame()->evaluateJavaScript("initStyle()");
 
+	renderer->setLastMessage(0);
+
 	foreach (MessageRenderInfo *message, renderer->messages())
-		appendMessage(renderer, message);
+		appendChatMessage(renderer, message);
 }
 
 void AdiumChatStyleEngine::loadStyle(const QString &styleName, const QString &variantName)
@@ -326,7 +351,9 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, const QString &styleHre
 	else if (contactsSize == 1)
 	{
 		Contact contact = chat.contacts().toContact();
-		if (!contact.isNull() && !contact.contactAvatar().pixmap().isNull())
+		if (!contact.isNull() && !contact.ownerBuddy().buddyAvatar().pixmap().isNull())
+			photoIncoming = QString("file://") + contact.ownerBuddy().buddyAvatar().filePath();
+		else if (!contact.isNull() && !contact.contactAvatar().pixmap().isNull())
 			photoIncoming = QString("file://") + contact.contactAvatar().filePath();
 		else
 			photoIncoming = QString("file://") + styleHref + QString("Incoming/buddy_icon.png");
@@ -395,7 +422,9 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, const QString &styleHre
 	{
 		result.replace(QString("%messageClasses%"), "message incoming");
 
-		if (!msg.messageSender().contactAvatar().pixmap().isNull())
+		if (!msg.messageSender().ownerBuddy().buddyAvatar().pixmap().isNull())
+			photoPath = QString("file://") + msg.messageSender().ownerBuddy().buddyAvatar().filePath();
+		else if (!msg.messageSender().contactAvatar().pixmap().isNull())
 			photoPath = QString("file://") + msg.messageSender().contactAvatar().filePath();
 		else
 			photoPath = QString("file://") + styleHref + QString("Incoming/buddy_icon.png");

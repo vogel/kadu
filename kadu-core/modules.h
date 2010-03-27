@@ -38,6 +38,8 @@ class QTranslator;
 class QTreeWidget;
 class QTreeWidgetItem;
 
+class ModulesWindow;
+
 #ifndef Q_OS_WIN
 /**
 	Zast�puje klas� QLibrary na specyficzne potrzeby Kadu.
@@ -100,44 +102,6 @@ struct KADUAPI ModuleInfo
 	bool load_by_def; /*!< Czy modu� jest domy�lnie �adowany, czy nie? */
 	bool base; /*!< Czy modu� nale�y do modu��w podstawowych? */
 	ModuleInfo();
-};
-
-/**
-	Klasa reprezentuj�ca okno dialogowe, s�u��ce do �adowanie i wy�adowywania modu��w.
-	�adowanie/wy�adowywanie, oraz inne operacje na modu�ach z poziomu C++ dokonywane
-	s� za pomoc� klasy ModulesManager. Ta klasa tworzy jedynie okno dialogowe, b�d�ce
-	interfejsem do ww. klasy dla u�ytkownika Kadu.
-	\class ModulesDialog
-	\brief "Zarz�dca modu��w"
-**/
-class ModulesDialog : public QWidget
-{
-	Q_OBJECT
-
-	QTreeWidget *lv_modules;
-	QLabel *l_moduleinfo;
-	QCheckBox *hideBaseModules;
-
-	QTreeWidgetItem * getSelected();
-
-	void loadItem(const QString &item);
-	void unloadItem(const QString &item);
-
-private slots:
-	void moduleAction(QTreeWidgetItem *);
-	void itemsChanging();
-	void getInfo();
-	void refreshList();
-	void keyPressEvent(QKeyEvent *);
-
-public:
-	/**
-		\fn ModulesDialog()
-		Konstruktor standardowy.
-	**/
-	ModulesDialog(QWidget *parent = 0);
-	~ModulesDialog();
-
 };
 
 /**
@@ -206,7 +170,7 @@ class KADUAPI ModulesManager : public QObject
 	QStringList loaded_list;
 	QStringList unloaded_list;
 
-	ModulesDialog *Dialog;
+	ModulesWindow *Window;
 
 	/**
 		�aduje plik z t�umaczeniem. Zwraca NULL je�li wyst�pi�
@@ -378,10 +342,10 @@ public slots:
 	bool deactivateModule(const QString &module_name, bool force = false);
 
 	/**
-		\fn void showDialog(QAction *sender, bool toggled)
+		\fn void showWindow(QAction *sender, bool toggled)
 		Wy�wietla okno dialogowe "Zarz�dcy modu��w", czyli tworzy i pokazuje klas� ModulesDialog.
 	**/
-	void showDialog(QAction *sender, bool toggled);
+	void showWindow(QAction *sender, bool toggled);
 
 	/**
 		\fn void moduleIncUsageCount(const QString &module_name)

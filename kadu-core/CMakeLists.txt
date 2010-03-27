@@ -125,6 +125,7 @@ set (kadu_SRCS
 	gui/widgets/buddies-list-view-delegate.cpp
 	gui/widgets/buddies-list-view-menu-manager.cpp
 	gui/widgets/buddies-list-widget.cpp
+	gui/widgets/buddy-avatar-widget.cpp
 	gui/widgets/buddy-contacts-table-delegate.cpp
 	gui/widgets/buddy-contacts-table-item.cpp
 	gui/widgets/buddy-contacts-table-model.cpp
@@ -210,6 +211,7 @@ set (kadu_SRCS
 	gui/windows/main-window.cpp
 	gui/windows/merge-buddies-window.cpp
 	gui/windows/message-dialog.cpp
+	gui/windows/modules-window.cpp
 	gui/windows/password-window.cpp
 	gui/windows/progress-window.cpp
 	gui/windows/search-window.cpp
@@ -406,6 +408,7 @@ set (kadu_MOC_SRCS
 	gui/widgets/buddies-list-view.h
 	gui/widgets/buddies-list-view-delegate.h
 	gui/widgets/buddies-list-widget.h
+	gui/widgets/buddy-avatar-widget.h
 	gui/widgets/buddy-contacts-table-delegate.h
 	gui/widgets/buddy-contacts-table-item.h
 	gui/widgets/buddy-contacts-table-model.h
@@ -474,6 +477,7 @@ set (kadu_MOC_SRCS
 	gui/windows/main-window.h
 	gui/windows/merge-buddies-window.h
 	gui/windows/message-dialog.h
+	gui/windows/modules-window.h
 	gui/windows/password-window.h
 	gui/windows/progress-window.h
 	gui/windows/search-window.h
@@ -621,7 +625,7 @@ if (UNIX AND NOT APPLE)
 	#install (FILES hi256-app-kadu.png DESTINATION "share/icons/hicolor/256x256/apps" RENAME kadu.png)
 endif(UNIX AND NOT APPLE)
 
-install (FILES "chat/style-engines/chat-engine-adium/adium-style-scripts.js" DESTINATION ${KADU_DATA_DIR}/scripts)
+install (FILES "chat/style-engines/chat-scripts.js" DESTINATION ${KADU_DATA_DIR}/scripts)
 
 if (APPLE)
 	pkg_search_module (SNDFILE REQUIRED sndfile>=1.0)

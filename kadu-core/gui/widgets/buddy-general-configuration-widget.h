@@ -31,10 +31,9 @@
 
 #include "exports.h"
 
-class QDialog;
-class QLabel;
 class QLineEdit;
 
+class BuddyAvatarWidget;
 class BuddyContactsTable;
 class Contact;
 class ContactManager;
@@ -48,17 +47,14 @@ class KADUAPI BuddyGeneralConfigurationWidget : public QWidget
 	QLineEdit *MobileEdit;
 	QLineEdit *EmailEdit;
 	QLineEdit *WebsiteEdit;
-	QLabel *AvatarLabel;
 
+	BuddyAvatarWidget *AvatarWidget;
 	BuddyContactsTable *ContactsTable;
 
 	Buddy MyBuddy;
 	BuddyContactModel *AccountDataModel;
 
 	void createGui();
-
-private slots:
-	void changeAvatar();
 
 public:
 	explicit BuddyGeneralConfigurationWidget(Buddy &buddy, QWidget *parent = 0);

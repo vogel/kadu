@@ -53,8 +53,7 @@ public:
 
 	QWebPage * webPage() { return MyWebPage; }
 
-	bool pruneEnabled() { return !ForcePruneDisabled && PruneEnabled; }
-	void setPruneEnabled(bool pruneEnabled);
+	bool pruneEnabled();
 
 	bool forcePruneDisabled() { return ForcePruneDisabled; }
 	void setForcePruneDisabled(bool forcePruneDisabled);

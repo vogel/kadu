@@ -51,12 +51,6 @@ void HtmlMessagesRenderer::setChat(Chat chat)
 	refresh();
 }
 
-void HtmlMessagesRenderer::setPruneEnabled(bool pruneEnabled)
-{
-	PruneEnabled = pruneEnabled;
-	pruneMessages();
-}
-
 void HtmlMessagesRenderer::setForcePruneDisabled(bool forcePruneDisabled)
 {
 	ForcePruneDisabled = forcePruneDisabled;
@@ -66,6 +60,11 @@ void HtmlMessagesRenderer::setForcePruneDisabled(bool forcePruneDisabled)
 QString HtmlMessagesRenderer::content()
 {
 	return MyWebPage->mainFrame()->toHtml();
+}
+
+bool HtmlMessagesRenderer::pruneEnabled()
+{
+	return !ForcePruneDisabled && ChatStylesManager::instance()->prune() > 0;
 }
 
 void HtmlMessagesRenderer::pruneMessages()

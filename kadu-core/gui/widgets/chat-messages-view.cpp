@@ -98,11 +98,6 @@ void ChatMessagesView::setChat(Chat chat)
 	Renderer->setChat(CurrentChat);
 }
 
-void ChatMessagesView::setPruneEnabled(bool enable)
-{
-	Renderer->setPruneEnabled(enable);
-}
-
 void ChatMessagesView::setForcePruneDisabled(bool disable)
 {
 	Renderer->setForcePruneDisabled(disable);

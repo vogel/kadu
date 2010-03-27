@@ -1885,7 +1885,7 @@ Zu viel Versuche mit falschem Passwort</translation>
     </message>
 </context>
 <context>
-    <name>ModulesDialog</name>
+    <name>ModulesWindow</name>
     <message>
         <source>Manage Modules</source>
         <translation>Verwalte Module</translation>

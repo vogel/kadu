@@ -129,7 +129,7 @@ void HistoryWindow::createGui()
 	DetailsListView->setUniformRowHeights(true);
 
 	ContentBrowser = new ChatMessagesView(Chat::null, false, rightSplitter);
-	ContentBrowser->setPruneEnabled(false);
+	ContentBrowser->setForcePruneDisabled(true);
 
 	QList<int> sizes;
 	sizes.append(100);
