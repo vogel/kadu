@@ -396,14 +396,15 @@ void Wizard::loadGGAccountOptions()
 	// TODO: 0.6.6
 	QString uin = config_file.readEntry("General", "UIN");
 
-	haveNumber->setChecked(true);
-	haveNumberChanged(true);
-
+// 	haveNumber->setChecked(true);
+// 	haveNumberChanged(true);
+/*
 	if (!uin.isEmpty())
 	{		
 		ggNumber->setText(uin);
 		ggPassword->setText(pwHash(config_file.readEntry("General", "Password")));
 	}
+*/
 }
 
 void Wizard::saveGGAccountOptions()
