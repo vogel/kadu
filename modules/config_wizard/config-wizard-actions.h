@@ -2,7 +2,6 @@
  * %kadu copyright begin%
  * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2008, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2009 Michał Podsiadlik (michal@kadu.net)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -19,25 +18,38 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "config-wizard-actions.h"
+#ifndef CONFIG_WIZARD_ACTIONS_H
+#define CONFIG_WIZARD_ACTIONS_H
 
-#include "debug.h"
+#include <QtCore/QObject>
 
-extern "C" int config_wizard_init(bool firstLoad)
+class QAction;
+
+class ActionDescription;
+
+class ConfigWizardActions : public QObject
 {
-	kdebugf();
+	Q_OBJECT
+	Q_DISABLE_COPY(ConfigWizardActions)
 
-	ConfigWizardActions::registerActions(firstLoad);
+	static ConfigWizardActions *Instance;
 
-	if (firstLoad)
-		ConfigWizardActions::instance()->showConfigWizard();
+	ActionDescription *ShowConfigWizardActionDescription;
 
-	return 0;
-}
+	ConfigWizardActions();
+	virtual ~ConfigWizardActions();
 
-extern "C" void config_wizard_close()
-{
-	kdebugf();
+private slots:
+	void showConfigWizardActionActivated(QAction *sender, bool toggled);
 
-	ConfigWizardActions::unregisterActions();
-}
+public:
+	static void registerActions(bool firstLoad);
+	static void unregisterActions();
+
+	static ConfigWizardActions * instance();
+
+	void showConfigWizard();
+
+};
+
+#endif // CONFIG_WIZARD_ACTIONS_H

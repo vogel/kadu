@@ -1,9 +1,11 @@
 set (SOURCES
+	config-wizard-actions.cpp
 	config-wizard-module.cpp
 	wizard.cpp
 )
 
 set (MOC_SOURCES
+	config-wizard-actions.h
 	wizard.h
 )
 

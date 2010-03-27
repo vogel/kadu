@@ -92,25 +92,6 @@ public slots:
 
 };
 
-class WizardStarter : public QObject
-{
-	Q_OBJECT
-
-	ActionDescription *configWizardActionDescription;
-
-public:
-	WizardStarter(QObject *parent = 0);
-	~WizardStarter();
-
-public slots:
-	void start(QAction *sender, bool toggled);
-
-// 	void userListImported(bool ok, QList<UserListElement> list);
-	void connected();
-
-};
-
-extern WizardStarter *wizardStarter;
 extern Wizard *startWizardObj;
 
 /** @} */

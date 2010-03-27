@@ -36,44 +36,6 @@
  * @{
  */
 
-WizardStarter::WizardStarter(QObject *parent)
-	: QObject(parent)
-{
-	configWizardActionDescription = new ActionDescription(this,
-		ActionDescription::TypeMainMenu, "configWizardAction",
-		this, SLOT(start(QAction *, bool)),
-		"kadu/kadu-wizard.png", "kadu/kadu-wizard.png", tr("Configuration Wizard")
-	);
-	Core::instance()->kaduWindow()->insertMenuActionDescription(configWizardActionDescription, KaduWindow::MenuKadu, 0);
-}
-
-WizardStarter::~WizardStarter()
-{
-	Core::instance()->kaduWindow()->removeMenuActionDescription(configWizardActionDescription);
-	delete configWizardActionDescription;
-	configWizardActionDescription = 0;
-
-	if (startWizardObj)
-	{
-		delete startWizardObj;
-		startWizardObj = 0;
-	}
-}
-
-void WizardStarter::start(QAction *sender, bool toggled)
-{
-	Q_UNUSED(sender)
-	Q_UNUSED(toggled)
-
-	kdebugf();
-	if (!startWizardObj)
-	{
-		startWizardObj = new Wizard();
-		startWizardObj->wizardStart();
-	}
-	kdebugf2();
-}
-
 Wizard::Wizard(QWidget *parent)
 	: QWizard(parent), registeringAccount(false), testingSound(false)
 {
@@ -170,8 +132,8 @@ void Wizard::wizardStart()
 /**
 	po polaczeniu sie z siecia robi import - podpinane tylko gdy kadu nie jest polaczone w momencie nacisniecia Finish
 **/
-void WizardStarter::connected()
-{
+// void WizardStarter::connected()
+// {
 // 	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocolHandler());
 // 	if (!gadu->doImportUserList())
 // 	{
@@ -180,7 +142,7 @@ void WizardStarter::connected()
 // 	}
 
 // 	disconnect(gadu, SIGNAL(connected()), this, SLOT(connected()));
-}
+// }
 
 /**
 	Ustawienie konta GG
@@ -692,6 +654,5 @@ void Wizard::changeSoundModule(const QString &newModule)
 }
 
 Wizard *startWizardObj = NULL;
-WizardStarter *wizardStarter = NULL;
 
 /** @} */
