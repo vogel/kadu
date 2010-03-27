@@ -36,32 +36,6 @@
  * @{
  */
 
-extern "C" KADU_EXPORT int config_wizard_init(bool firstLoad)
-{
-	Q_UNUSED(firstLoad)
-
-	kdebugf();
-	wizardStarter = new WizardStarter();
-
-	// TODO: 0.6.6
-	if (config_file.readNumEntry("General", "UIN", 0) == 0 || config_file.readEntry("General", "Password").isEmpty())
-		wizardStarter->start(0, false);
-
-	kdebugf2();
-	return 0;
-}
-
-extern "C" KADU_EXPORT void config_wizard_close()
-{
-	kdebugf();
-	if (wizardStarter)
-	{
-		delete wizardStarter;
-		wizardStarter = 0;
-	}
-	kdebugf2();
-}
-
 WizardStarter::WizardStarter(QObject *parent)
 	: QObject(parent)
 {

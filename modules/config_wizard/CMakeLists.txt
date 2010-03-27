@@ -1,4 +1,5 @@
 set (SOURCES
+	config-wizard-module.cpp
 	wizard.cpp
 )
 
