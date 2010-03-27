@@ -25,7 +25,7 @@
 #include "gui/windows/kadu-window.h"
 #include "debug.h"
 
-#include "wizard.h"
+#include "gui/windows/config-wizard-window.h"
 
 #include "config-wizard-actions.h"
 

@@ -1,12 +1,14 @@
 set (SOURCES
+	gui/windows/config-wizard-window.cpp
+
 	config-wizard-actions.cpp
 	config-wizard-module.cpp
-	wizard.cpp
 )
 
 set (MOC_SOURCES
+	gui/windows/config-wizard-window.h
+
 	config-wizard-actions.h
-	wizard.h
 )
 
 set (TRANSLATION_SOURCES

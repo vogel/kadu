@@ -29,7 +29,8 @@
 #include "html_document.h"
 #include "icons-manager.h"
 #include "modules.h"
-#include "wizard.h"
+
+#include "config-wizard-window.h"
 
 /**
  * @ingroup config_wizard
