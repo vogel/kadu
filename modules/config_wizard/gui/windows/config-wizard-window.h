@@ -18,7 +18,7 @@ class QRadioButton;
  * @defgroup config_wizard Config wizard
  * @{
  */
-class Wizard : public QWizard
+class ConfigWizardWindow : public QWizard
 {
     Q_OBJECT
 
@@ -82,8 +82,8 @@ protected:
 	void closeEvent(QCloseEvent *e);
 
 public:
-	Wizard(QWidget *parent = 0);
-	~Wizard();
+	explicit ConfigWizardWindow(QWidget *parent = 0);
+	virtual ~ConfigWizardWindow();
 
 	virtual bool validateCurrentPage();
 

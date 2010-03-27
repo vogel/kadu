@@ -70,7 +70,7 @@ void ConfigWizardActions::showConfigWizard()
 {
 	kdebugf();
 
-	Wizard *wizard = new Wizard();
+	ConfigWizardWindow *wizard = new ConfigWizardWindow();
 	wizard->wizardStart();
 }
 

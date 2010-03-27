@@ -37,7 +37,7 @@
  * @{
  */
 
-Wizard::Wizard(QWidget *parent)
+ConfigWizardWindow::ConfigWizardWindow(QWidget *parent)
 	: QWizard(parent), registeringAccount(false), testingSound(false)
 {
 	kdebugf();
@@ -61,13 +61,13 @@ Wizard::Wizard(QWidget *parent)
 	kdebugf2();
 }
 
-Wizard::~Wizard()
+ConfigWizardWindow::~ConfigWizardWindow()
 {
 	kdebugf();
 	kdebugf2();
 }
 
-bool Wizard::validateCurrentPage()
+bool ConfigWizardWindow::validateCurrentPage()
 {
 	return !(registeringAccount || testingSound);
 }
@@ -75,7 +75,7 @@ bool Wizard::validateCurrentPage()
 /**
 	naci�ni�cie zako�cz i zapisanie konfiguracji (o ile nie nast�pi�o wcze�niej)
 **/
-void Wizard::acceptedSlot()
+void ConfigWizardWindow::acceptedSlot()
 {
 	saveGGAccountOptions();
 	saveApplicationsOptions();
@@ -84,14 +84,14 @@ void Wizard::acceptedSlot()
 	deleteLater();
 }
 
-void Wizard::rejectedSlot()
+void ConfigWizardWindow::rejectedSlot()
 {
 	changeSoundModule(backupSoundModule);
 
 	deleteLater();
 }
 
-void Wizard::closeEvent(QCloseEvent *e)
+void ConfigWizardWindow::closeEvent(QCloseEvent *e)
 {
 	QDialog::closeEvent(e);
 
@@ -101,7 +101,7 @@ void Wizard::closeEvent(QCloseEvent *e)
 /**
 	wywo�anie wizarda z menu
 **/
-void Wizard::wizardStart()
+void ConfigWizardWindow::wizardStart()
 {
 	show();
 }
@@ -109,7 +109,7 @@ void Wizard::wizardStart()
 /**
 	po zaimportowaniu listy kontakt�w si� wywo�uje
 **/
-// void WizardStarter::userListImported(bool ok, QList<UserListElement> list)
+// void ConfigWizardWindowStarter::userListImported(bool ok, QList<UserListElement> list)
 // {
 // 	kdebugf();
 // 
@@ -130,7 +130,7 @@ void Wizard::wizardStart()
 /**
 	po polaczeniu sie z siecia robi import - podpinane tylko gdy kadu nie jest polaczone w momencie nacisniecia Finish
 **/
-// void WizardStarter::connected()
+// void ConfigWizardWindowStarter::connected()
 // {
 // 	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocolHandler());
 // 	if (!gadu->doImportUserList())
@@ -145,7 +145,7 @@ void Wizard::wizardStart()
 /**
 	Ustawienie konta GG
 **/
-void Wizard::registerGGAccount()
+void ConfigWizardWindow::registerGGAccount()
 {
 	kdebugf();
 /*
@@ -185,7 +185,7 @@ void Wizard::registerGGAccount()
 /**
 	Zapisanie parametr�w nowego konta
 **//*
-void Wizard::registeredGGAccount(bool ok, UinType uin)
+void ConfigWizardWindow::registeredGGAccount(bool ok, UinType uin)
 {
 	kdebugf();
 
@@ -227,7 +227,7 @@ void Wizard::registeredGGAccount(bool ok, UinType uin)
 	sprawdzenie czy trzeba importowa� list� kontakt�w czy nie i ew. import
 **/
 
-void Wizard::tryImport()
+void ConfigWizardWindow::tryImport()
 {
 // 	if (!ggImportContacts->isChecked())
 // 		return;
@@ -248,7 +248,7 @@ void Wizard::tryImport()
 // 	}
 }
 
-void Wizard::createGGAccountPage()
+void ConfigWizardWindow::createGGAccountPage()
 {
 	kdebugf();
 
@@ -343,7 +343,7 @@ void Wizard::createGGAccountPage()
 	kdebugf2();
 }
 
-void Wizard::haveNumberChanged(bool haveNumber)
+void ConfigWizardWindow::haveNumberChanged(bool haveNumber)
 {
 	foreach(QWidget *widget, haveNumberWidgets)
 		widget->setEnabled(haveNumber);
@@ -351,7 +351,7 @@ void Wizard::haveNumberChanged(bool haveNumber)
 		widget->setEnabled(!haveNumber);
 }
 
-void Wizard::loadGGAccountOptions()
+void ConfigWizardWindow::loadGGAccountOptions()
 {
 	// TODO: 0.6.6
 	QString uin = config_file.readEntry("General", "UIN");
@@ -367,7 +367,7 @@ void Wizard::loadGGAccountOptions()
 */
 }
 
-void Wizard::saveGGAccountOptions()
+void ConfigWizardWindow::saveGGAccountOptions()
 {
 	config_file.writeEntry("General", "UIN", ggNumber->text());
 	config_file.writeEntry("General", "Password", pwHash(ggPassword->text()));
@@ -381,7 +381,7 @@ void Wizard::saveGGAccountOptions()
 /**
 	opcje przegladarki www
 **/
-void Wizard::createApplicationsPage()
+void ConfigWizardWindow::createApplicationsPage()
 {
 	kdebugf();
 
@@ -450,7 +450,7 @@ void Wizard::createApplicationsPage()
 	kdebugf2();
 }
 
-void Wizard::browserChanged(int index)
+void ConfigWizardWindow::browserChanged(int index)
 {
 	QString browser = MainConfigurationWindow::getBrowserExecutable(index);
 	browserCommandLineEdit->setEnabled(index == 0);
@@ -461,7 +461,7 @@ void Wizard::browserChanged(int index)
 			browserCombo->changeItem(browserCombo->currentText() + " (" + tr("Not found") + ")", index);*/
 }
 
-void Wizard::emailChanged(int index)
+void ConfigWizardWindow::emailChanged(int index)
 {
 	QString mail = MainConfigurationWindow::getEMailExecutable(index);
 
@@ -474,7 +474,7 @@ void Wizard::emailChanged(int index)
 }
 
 // don't care for performance here
-void Wizard::loadApplicationsOptions()
+void ConfigWizardWindow::loadApplicationsOptions()
 {
 	QString browserIndexName = config_file.readEntry("Chat", "WebBrowserNo");
 	QString browserName;
@@ -511,7 +511,7 @@ void Wizard::loadApplicationsOptions()
 	emailChanged(foundMailIndex);
 }
 
-void Wizard::saveApplicationsOptions()
+void ConfigWizardWindow::saveApplicationsOptions()
 {
 	config_file.writeEntry("Chat", "WebBrowserNo", MainConfigurationWindow::browserIndexToString(browserCombo->currentIndex()));
 	config_file.writeEntry("Chat", "WebBrowser", browserCommandLineEdit->text());
@@ -519,7 +519,7 @@ void Wizard::saveApplicationsOptions()
 	config_file.writeEntry("Chat", "MailClient", mailCommandLineEdit->text());
 }
 
-void Wizard::createSoundPage()
+void ConfigWizardWindow::createSoundPage()
 {
 	kdebugf();
 
@@ -608,7 +608,7 @@ void Wizard::createSoundPage()
 	kdebugf2();
 }
 
-void Wizard::testSound()
+void ConfigWizardWindow::testSound()
 {
 #ifndef Q_OS_MAC
 	sound_manager->stop();
@@ -620,7 +620,7 @@ void Wizard::testSound()
 	testingSound = false;
 }
 
-void Wizard::loadSoundOptions()
+void ConfigWizardWindow::loadSoundOptions()
 {
 	backupSoundModule = ModulesManager::instance()->moduleProvides("sound_driver");
 /*
@@ -630,13 +630,13 @@ void Wizard::loadSoundOptions()
 		soundModuleCombo->setCurrentItem(1); // just exclude "none"*/
 }
 
-void Wizard::saveSoundOptions()
+void ConfigWizardWindow::saveSoundOptions()
 {
 	changeSoundModule(soundModuleCombo->currentText());
 	ModulesManager::instance()->saveLoadedModules();
 }
 
-void Wizard::changeSoundModule(const QString &newModule)
+void ConfigWizardWindow::changeSoundModule(const QString &newModule)
 {
 	QString currentSoundModule = ModulesManager::instance()->moduleProvides("sound_driver");
 	if (currentSoundModule != newModule)
