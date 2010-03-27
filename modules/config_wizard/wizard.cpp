@@ -80,7 +80,6 @@ void Wizard::acceptedSlot()
 	saveApplicationsOptions();
 	saveSoundOptions();
 
-	startWizardObj = 0;
 	deleteLater();
 }
 
@@ -88,7 +87,6 @@ void Wizard::rejectedSlot()
 {
 	changeSoundModule(backupSoundModule);
 
-	startWizardObj = 0;
 	deleteLater();
 }
 
@@ -96,7 +94,6 @@ void Wizard::closeEvent(QCloseEvent *e)
 {
 	QDialog::closeEvent(e);
 
-	startWizardObj = 0;
 	deleteLater();
 }
 
@@ -652,7 +649,5 @@ void Wizard::changeSoundModule(const QString &newModule)
 			ModulesManager::instance()->activateModule(currentSoundModule);
 	}
 }
-
-Wizard *startWizardObj = NULL;
 
 /** @} */

@@ -92,8 +92,6 @@ public slots:
 
 };
 
-extern Wizard *startWizardObj;
-
 /** @} */
 
 #endif
