@@ -74,7 +74,7 @@ KaduWindow::KaduWindow(QWidget *parent) :
 	loadToolBarsFromConfig("");
 	configurationUpdated();
 
-	loadWindowGeometry(this, "General", "Geometry", 0, 50, 205, 465);
+	loadWindowGeometry(this, "General", "Geometry", 0, 50, 255, 565);
 
 #ifdef Q_OS_MAC
 	/* Dorr: On Mac OS X the saved height of the main window is reduced by 48px (toolbar size?) */
