@@ -171,3 +171,8 @@ void ConfigWizardApplicationsAndSoundPage::testSound()
 	sound_manager->play(dataPath("kadu/themes/sounds/default/msg.wav"), true);
 	IsTestingSound = false;
 }
+
+bool ConfigWizardApplicationsAndSoundPage::validatePage()
+{
+    return !IsTestingSound;
+}

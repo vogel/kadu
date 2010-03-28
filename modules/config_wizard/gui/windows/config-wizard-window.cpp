@@ -47,8 +47,10 @@ ConfigWizardWindow::ConfigWizardWindow(QWidget *parent) :
 	kdebugf();
 
 	setAttribute(Qt::WA_DeleteOnClose);
-
 	setWindowTitle(tr("Kadu Wizard"));
+
+	setOption(IndependentPages, true);
+
 #ifdef Q_OS_MAC
 	/* MacOSX has it's own QWizard style which requires much more space
 	 * than the other ones so we're forcing the ClassicStyle to unify
@@ -88,13 +90,13 @@ void ConfigWizardWindow::addPage(ConfigWizardPage *page)
 void ConfigWizardWindow::acceptedSlot()
 {
 	foreach (ConfigWizardPage *page, ConfigWizardPages)
-		page->accept();
+		page->acceptPage();
 }
 
 void ConfigWizardWindow::rejectedSlot()
 {
 	foreach (ConfigWizardPage *page, ConfigWizardPages)
-		page->reject();
+		page->rejectPage();
 }
 
 /**

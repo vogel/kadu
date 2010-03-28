@@ -23,6 +23,7 @@
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
 
+#include "configuration/configuration-file.h"
 #include "languages-manager.h"
 
 #include "config-wizard-profile-page.h"
@@ -51,7 +52,6 @@ void ConfigWizardProfilePage::createGui()
 	formLayout()->addRow(tr("Language") + ":", LanguagesCombo);
 
 	NickNameEdit = new QLineEdit(this);
-	NickNameEdit->setText(tr("Me"));
 	NickNameEdit->setMaximumWidth(300);
 
 	formLayout()->addRow(tr("Nickname") + ":", NickNameEdit);
@@ -69,4 +69,19 @@ void ConfigWizardProfilePage::setLanguages()
 
 	for (int i = 0; i < languageValues.size(); i++)
 		LanguagesCombo->addItem(languageNames.at(i), languageValues.at(i));
+}
+
+void ConfigWizardProfilePage::initializePage()
+{
+	int languageIndex = LanguagesCombo->findData(config_file.readEntry("General", "Language"));
+	if (languageIndex > -1)
+		LanguagesCombo->setCurrentIndex(languageIndex);
+
+	NickNameEdit->setText(config_file.readEntry("General", "Nick", "Me"));
+}
+
+void ConfigWizardProfilePage::acceptPage()
+{
+    config_file.writeEntry("General", "Language", LanguagesCombo->itemData(LanguagesCombo->currentIndex()).toString());
+	config_file.writeEntry("General", "Nick", NickNameEdit->text());
 }

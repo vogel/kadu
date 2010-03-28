@@ -47,7 +47,8 @@ private slots:
 public:
 	explicit ConfigWizardApplicationsAndSoundPage(QWidget *parent = 0);
 	virtual ~ConfigWizardApplicationsAndSoundPage();
-    void soundModuleCombo();
+
+    virtual bool validatePage();
 
 };
 

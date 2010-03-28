@@ -39,6 +39,9 @@ public:
 	explicit ConfigWizardProfilePage(QWidget *parent = 0);
 	virtual ~ConfigWizardProfilePage();
 
+    virtual void initializePage();
+    virtual void acceptPage();
+
 };
 
 #endif // CONFIG_WIZARD_PROFILE_PAGE_H

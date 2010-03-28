@@ -49,11 +49,11 @@ void ConfigWizardPage::createGui()
 	mainLayout->addWidget(formWidget, 5);
 }
 
-void ConfigWizardPage::accept()
+void ConfigWizardPage::acceptPage()
 {
 }
 
-void ConfigWizardPage::reject()
+void ConfigWizardPage::rejectPage()
 {
 }
 
