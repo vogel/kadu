@@ -26,21 +26,11 @@ set (TRANSLATION_SOURCES
 	translations/config_wizard_pl.ts
 )
 
-set (DATA_DIRECTORIES
-	data/joi
-	data/ronk2
-)
-
 kadu_module (config_wizard
 	MODULE_SOURCES ${SOURCES}
 	MODULE_MOC_SOURCES ${MOC_SOURCES}
 	MODULE_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
 	MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
-)
-
-install (DIRECTORY ${DATA_DIRECTORIES}
-	DESTINATION share/kadu/modules/data/config_wizard
-	PATTERN ".svn" EXCLUDE
 )
 
 # XXX
