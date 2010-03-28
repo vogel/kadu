@@ -74,7 +74,7 @@ enum SoundDeviceType
 };
 
 
-class SOUNDAPI SoundManager : public Notifier
+class SOUNDAPI SoundManager : public QObject
 {
     Q_OBJECT
 	
@@ -94,8 +94,6 @@ class SOUNDAPI SoundManager : public Notifier
 	void connectNotify(const char *signal);
 	void disconnectNotify(const char *signal);
 
-	void playSound(const QString &soundName);
-
 	void import_0_6_5_configuration();
 	void createDefaultConfiguration();
 
@@ -108,11 +106,9 @@ public:
 	SoundManager(bool firstLoad);
 	virtual ~SoundManager();
 
-	virtual NotifierConfigurationWidget * createConfigurationWidget(QWidget *parent = 0);
-
-	virtual void notify(Notification *notification);
-
 	void setPlayer(SoundPlayer *player);
+
+	void playSound(const QString &soundName);
 
 	bool isMuted() const;
 	int timeAfterLastSound() const;

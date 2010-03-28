@@ -17,9 +17,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "notify/notification-manager.h"
 #include "debug.h"
 
 #include "configuration/gui/sound-configuration-ui-handler.h"
+#include "notify/sound-notifier.h"
 
 #include "sound-theme-manager.h"
 #include "sound.h"
@@ -29,6 +31,8 @@ extern "C" KADU_EXPORT int sound_init(bool firstLoad)
 	kdebugf();
 
 	SoundThemeManager::createInstance();
+	SoundNotifier::createInstance();
+	NotificationManager::instance()->registerNotifier(SoundNotifier::instance());
 
 	new SoundManager(firstLoad);
 
@@ -50,6 +54,8 @@ extern "C" KADU_EXPORT void sound_close()
 	delete sound_manager;
 	sound_manager = 0;
 
+	NotificationManager::instance()->unregisterNotifier(SoundNotifier::instance());
+	SoundNotifier::destroyInstance();
 	SoundThemeManager::destroyInstance();
 
 	kdebugf2();

@@ -60,7 +60,6 @@
 
 #include "sound.h"
 
-
 /**
  * @ingroup sound
  * @{
@@ -69,7 +68,6 @@ SOUNDAPI SoundManager *sound_manager = NULL;
 SoundSlots *sound_slots;
 
 SoundManager::SoundManager(bool firstLoad) :
-		Notifier("Sound", "Play a sound", IconsManager::instance()->iconByPath("16x16/audio-volume-high.png")),
 		Player(0),
 		LastSoundTime(), Mute(false),
 		PlayThread(new SoundPlayThread()), SimplePlayerCount(0)
@@ -99,8 +97,6 @@ SoundManager::SoundManager(bool firstLoad) :
 	if (soundTheme != "custom")
 		SoundThemeManager::instance()->applyTheme(soundTheme);
 
-	NotificationManager::instance()->registerNotifier(this);
-
 	kdebugf2();
 }
 
@@ -108,7 +104,6 @@ SoundManager::~SoundManager()
 {
 	kdebugf();
 	PlayThread->end();
-	NotificationManager::instance()->unregisterNotifier(this);
 
 	PlayThread->wait(2000);
 	if (PlayThread->isRunning())
@@ -121,11 +116,6 @@ SoundManager::~SoundManager()
 	sound_slots = 0;
 
 	kdebugf2();
-}
-
-NotifierConfigurationWidget * SoundManager::createConfigurationWidget(QWidget *parent)
-{
-	return SoundConfigurationUiHandler::instance()->createConfigurationWidget(parent);
 }
 
 void SoundManager::import_0_6_5_configuration()
@@ -183,15 +173,6 @@ void SoundManager::playSound(const QString &soundName)
 	}
 	else
 		fprintf(stderr, "file (%s) not found\n", qPrintable(sound));
-}
-
-void SoundManager::notify(Notification *notification)
-{
-	kdebugf();
-
-	playSound(notification->key());
-
-	kdebugf2();
 }
 
 void SoundManager::setPlayer(SoundPlayer *player)

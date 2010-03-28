@@ -25,10 +25,10 @@
 #include "debug.h"
 
 #include "sound-slots.h"
+#include "sound-theme-manager.h"
 #include "sound.h"
 
 #include "sound-configuration-ui-handler.h"
-#include <sound-theme-manager.h>
 
 SoundConfigurationUiHandler *SoundConfigurationUiHandler::Instance = 0;
 
