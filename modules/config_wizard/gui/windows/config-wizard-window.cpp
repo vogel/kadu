@@ -45,6 +45,9 @@ ConfigWizardWindow::ConfigWizardWindow(QWidget *parent) :
 		QWizard(parent)
 {
 	kdebugf();
+
+	setAttribute(Qt::WA_DeleteOnClose);
+
 	setWindowTitle(tr("Kadu Wizard"));
 #ifdef Q_OS_MAC
 	/* MacOSX has it's own QWizard style which requires much more space
@@ -59,9 +62,9 @@ ConfigWizardWindow::ConfigWizardWindow(QWidget *parent) :
 	addPage(new ConfigWizardProfilePage(this));
 	addPage(new ConfigWizardApplicationsAndSoundPage(this));
 	addPage(new ConfigWizardCompletedPage(this));
-
+/*
 	createApplicationsPage();
-	createSoundPage();
+	createSoundPage();*/
 
 	connect(this, SIGNAL(accepted()), this, SLOT(acceptedSlot()));
 	connect(this, SIGNAL(rejected()), this, SLOT(rejectedSlot()));
@@ -75,34 +78,23 @@ ConfigWizardWindow::~ConfigWizardWindow()
 	kdebugf2();
 }
 
-bool ConfigWizardWindow::validateCurrentPage()
+void ConfigWizardWindow::addPage(ConfigWizardPage *page)
 {
-	return true;
+	ConfigWizardPages.append(page);
+
+	QWizard::addPage(page);
 }
 
-/**
-	naci�ni�cie zako�cz i zapisanie konfiguracji (o ile nie nast�pi�o wcze�niej)
-**/
 void ConfigWizardWindow::acceptedSlot()
 {
-	saveApplicationsOptions();
-	saveSoundOptions();
-
-	deleteLater();
+	foreach (ConfigWizardPage *page, ConfigWizardPages)
+		page->accept();
 }
 
 void ConfigWizardWindow::rejectedSlot()
 {
-// 	changeSoundModule(backupSoundModule);
-
-	deleteLater();
-}
-
-void ConfigWizardWindow::closeEvent(QCloseEvent *e)
-{
-	QDialog::closeEvent(e);
-
-	deleteLater();
+	foreach (ConfigWizardPage *page, ConfigWizardPages)
+		page->reject();
 }
 
 /**
@@ -177,8 +169,6 @@ void ConfigWizardWindow::createApplicationsPage()
 	gridLayout->addWidget(mailCommandLineEdit, 3, 3);
 
 	applicationsPage->setLayout(gridLayout);
-
-	addPage(applicationsPage);
 
 	loadApplicationsOptions();
 
@@ -337,8 +327,6 @@ void ConfigWizardWindow::createSoundPage()
 	soundPage->setLayout(gridLayout);
 	
 	loadSoundOptions();
-
-	addPage(soundPage);
 
 	kdebugf2();
 }

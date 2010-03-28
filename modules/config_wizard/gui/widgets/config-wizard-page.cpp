@@ -49,6 +49,14 @@ void ConfigWizardPage::createGui()
 	mainLayout->addWidget(formWidget, 5);
 }
 
+void ConfigWizardPage::accept()
+{
+}
+
+void ConfigWizardPage::reject()
+{
+}
+
 void ConfigWizardPage::setDescription(const QString &description)
 {
 	DescriptionPane->setText(description);

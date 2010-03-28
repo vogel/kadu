@@ -41,6 +41,9 @@ public:
 	explicit ConfigWizardPage(QWidget *parent = 0);
 	virtual ~ConfigWizardPage();
 
+	virtual void accept();
+	virtual void reject();
+
 	void setDescription(const QString &description);
 
 };

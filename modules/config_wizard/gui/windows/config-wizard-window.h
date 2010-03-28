@@ -14,6 +14,8 @@ class QLineEdit;
 class QPushButton;
 class QRadioButton;
 
+class ConfigWizardPage;
+
 /**
  * @defgroup config_wizard Config wizard
  * @{
@@ -21,6 +23,8 @@ class QRadioButton;
 class ConfigWizardWindow : public QWizard
 {
 	Q_OBJECT
+
+	QList<ConfigWizardPage *> ConfigWizardPages;
 
 	QComboBox *browserCombo;
 	QLineEdit *browserCommandLineEdit;
@@ -48,14 +52,11 @@ private slots:
 	void browserChanged(int index);
 	void emailChanged(int index);
 
-protected:
-	void closeEvent(QCloseEvent *e);
-
 public:
 	explicit ConfigWizardWindow(QWidget *parent = 0);
 	virtual ~ConfigWizardWindow();
 
-	virtual bool validateCurrentPage();
+	void addPage(ConfigWizardPage *page);
 
 public slots:
 	void wizardStart();
