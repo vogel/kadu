@@ -24,7 +24,6 @@
 #include "debug.h"
 
 #include "../sound/sound-file.h"
-#include "../sound/sound-params.h"
 
 #include "ao-play-thread.h"
 

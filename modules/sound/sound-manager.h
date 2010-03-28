@@ -29,70 +29,31 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SOUND_H
-#define SOUND_H
+#ifndef SOUND_MANAGER_H
+#define SOUND_MANAGER_H
 
-#include <QtCore/QObject>
-#include <QtCore/QEvent>
-#include <QtCore/QString>
-#include <QtCore/QDateTime>
-#include <QtCore/QStringList>
-#include <QtCore/QMap>
-#include <QtCore/QThread>
-#include <QtCore/QMutex>
-#include <QtCore/QSemaphore>
-
-#include "gui/windows/main-configuration-window.h"
-#include "misc/misc.h"
-#include "notify/notifier.h"
-#include "modules.h"
-#include "themes.h"
+#include <QtCore/QTime>
 
 #include "sound-exports.h"
 
-class Notification;
-class PathListEdit;
-class SamplePlayThread;
-class SampleRecordThread;
-class SoundConfigurationWidget;
 class SoundPlayer;
 class SoundPlayThread;
 
-/**
- * @defgroup sound Sound
- * The sound module.
- * @{
- */
-
-typedef void *SoundDevice;
-
-/**
-**/
-enum SoundDeviceType
-{
-	SoundDevicePlayOnly
-};
-
-
 class SOUNDAPI SoundManager : public QObject
 {
-    Q_OBJECT
-	
-	friend class SamplePlayThread;
+	Q_OBJECT
+
+	static SoundManager *Instance;
 
 	SoundPlayer *Player;
-
-	SoundConfigurationWidget *ConfigurationWidget;
 
 	QTime LastSoundTime;
 	bool Mute;
 
 	SoundPlayThread *PlayThread;
 
-	int SimplePlayerCount;
-
-	void connectNotify(const char *signal);
-	void disconnectNotify(const char *signal);
+	SoundManager();
+	virtual ~SoundManager();
 
 	void import_0_6_5_configuration();
 	void createDefaultConfiguration();
@@ -103,11 +64,11 @@ public slots:
 	void setMute(const bool& enable);
 
 public:
-	SoundManager(bool firstLoad);
-	virtual ~SoundManager();
+	static void createInstance();
+	static void destroyInstance();
+	static SoundManager * instance();
 
 	void setPlayer(SoundPlayer *player);
-
 	void playSound(const QString &soundName);
 
 	bool isMuted() const;
@@ -115,8 +76,4 @@ public:
 
 };
 
-extern SOUNDAPI SoundManager *sound_manager;
-
-/** @} */
-
-#endif
+#endif // SOUND_MANAGER_H

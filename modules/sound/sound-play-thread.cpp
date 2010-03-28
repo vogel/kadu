@@ -22,7 +22,6 @@
 #include "debug.h"
 
 #include "sound-player.h"
-#include "sound.h"
 
 #include "sound-play-thread.h"
 

@@ -26,8 +26,8 @@
 
 #include "gui/widgets/configuration/sound-configuration-widget.h"
 #include "sound-actions.h"
+#include "sound-manager.h"
 #include "sound-theme-manager.h"
-#include "sound.h"
 
 #include "sound-configuration-ui-handler.h"
 
@@ -105,7 +105,7 @@ void SoundConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurati
 	ConfigurationWidget->themeChanged(ThemesComboBox->currentIndex());
 
 	ThemesPaths = dynamic_cast<PathListEdit *>(mainConfigurationWindow->widget()->widgetById("soundPaths"));
-	connect(ThemesPaths, SIGNAL(changed()), sound_manager, SLOT(setSoundThemes()));
+	connect(ThemesPaths, SIGNAL(changed()), SoundManager::instance(), SLOT(setSoundThemes()));
 
 	connect(ConfigurationWidget, SIGNAL(soundFileEdited()), this, SLOT(soundFileEdited()));
 

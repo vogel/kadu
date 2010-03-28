@@ -29,49 +29,37 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QCoreApplication>
 #include <QtCore/QFile>
-#include <QtCore/QMetaType>
-#include <QtGui/QGridLayout>
-#include <QtGui/QPushButton>
 
 #include "configuration/configuration-file.h"
-#include "gui/windows/configuration-window.h"
-#include "gui/widgets/configuration/configuration-widget.h"
-#include "gui/widgets/configuration/config-combo-box.h"
-#include "gui/widgets/path-list-edit.h"
-#include "gui/widgets/chat-widget.h"
-#include "gui/widgets/chat-widget-manager.h"
-#include "misc/misc.h"
-#include "notify/notification.h"
-#include "notify/notification-manager.h"
-#include "parser/parser.h"
 #include "debug.h"
 
-#include "configuration/gui/sound-configuration-ui-handler.h"
-
-#include "sample-play-thread.h"
-#include "sound-exports.h"
-#include "sound-file.h"
 #include "sound-play-thread.h"
-#include "sound-player.h"
-#include "sound-theme-manager.h"
 
-#include "sound.h"
+#include "sound-manager.h"
 
-/**
- * @ingroup sound
- * @{
- */
-SOUNDAPI SoundManager *sound_manager = NULL;
+SoundManager * SoundManager::Instance = 0;
 
-SoundManager::SoundManager(bool firstLoad) :
-		Player(0),
-		LastSoundTime(), Mute(false),
-		PlayThread(new SoundPlayThread()), SimplePlayerCount(0)
+void SoundManager::createInstance()
 {
-	Q_UNUSED(firstLoad)
+	if (!Instance)
+		Instance = new SoundManager();
+}
 
+void SoundManager::destroyInstance()
+{
+	delete Instance;
+	Instance = 0;
+}
+
+SoundManager * SoundManager::instance()
+{
+	return Instance;
+}
+
+SoundManager::SoundManager() :
+		Player(0), Mute(false)
+{
 	kdebugf();
 
 	import_0_6_5_configuration();
@@ -81,22 +69,8 @@ SoundManager::SoundManager(bool firstLoad) :
 
 	LastSoundTime.start();
 
+	PlayThread = new SoundPlayThread(this);
 	PlayThread->start();
-
-	sound_manager = this;
-
-	SoundThemeManager::instance()->themes()->setPaths(config_file.readEntry("Sounds", "SoundPaths").split(QRegExp("(;|:)"), QString::SkipEmptyParts));
-
-	QStringList soundThemes = SoundThemeManager::instance()->themes()->themes();
-	QString soundTheme = config_file.readEntry("Sounds", "SoundTheme");
-	if (!soundThemes.isEmpty() && (soundTheme != "Custom") && !soundThemes.contains(soundTheme))
-	{
-		soundTheme = "default";
-		config_file.writeEntry("Sounds", "SoundTheme", "default");
-	}
-
-	if (soundTheme != "custom")
-		SoundThemeManager::instance()->applyTheme(soundTheme);
 
 	kdebugf2();
 }
@@ -104,8 +78,8 @@ SoundManager::SoundManager(bool firstLoad) :
 SoundManager::~SoundManager()
 {
 	kdebugf();
-	PlayThread->end();
 
+	PlayThread->end();
 	PlayThread->wait(2000);
 	if (PlayThread->isRunning())
 	{
@@ -113,6 +87,7 @@ SoundManager::~SoundManager()
 		PlayThread->terminate();
 	}
 	delete PlayThread;
+	PlayThread = 0;
 
 	kdebugf2();
 }
@@ -157,7 +132,7 @@ void SoundManager::playSound(const QString &soundName)
 		return;
 	}
 
-	if (timeAfterLastSound() < 500)
+	if (LastSoundTime.elapsed() < 500)
 	{
 		kdebugmf(KDEBUG_FUNCTION_END, "end: too often, exiting\n");
 		return;
@@ -167,11 +142,9 @@ void SoundManager::playSound(const QString &soundName)
 
 	if (QFile::exists(sound))
 	{
-		play(sound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0 * config_file.readDoubleNumEntry("Sounds", "SoundVolume") / 100);
+		play(sound, config_file.readBoolEntry("Sounds", "VolumeControl"), 1.0 * config_file.readDoubleNumEntry("Sounds", "SoundVolume") / 100);
 		LastSoundTime.restart();
 	}
-	else
-		fprintf(stderr, "file (%s) not found\n", qPrintable(sound));
 }
 
 void SoundManager::setPlayer(SoundPlayer *player)
@@ -181,8 +154,6 @@ void SoundManager::setPlayer(SoundPlayer *player)
 
 void SoundManager::play(const QString &path, bool force)
 {
-	kdebugf();
-
 	if (isMuted() && !force)
 	{
 		kdebugmf(KDEBUG_FUNCTION_END, "end: muted\n");
@@ -190,45 +161,11 @@ void SoundManager::play(const QString &path, bool force)
 	}
 
 	if (QFile::exists(path))
-		play(path, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0 * config_file.readDoubleNumEntry("Sounds", "SoundVolume") / 100);
-	else
-		fprintf(stderr, "file (%s) not found\n", qPrintable(path));
-
-	kdebugf2();
-}
-
-int SoundManager::timeAfterLastSound() const
-{
-	return LastSoundTime.elapsed();
-}
-
-// stupid Qt, yes this code work
-void SoundManager::connectNotify(const char *signal)
-{
-//	kdebugm(KDEBUG_INFO, ">>> %s %s\n", signal, SIGNAL(playSound(QString&,bool,double)) );
-	if (strcmp(signal, SIGNAL(playSound(QString, bool, double))) == 0)
-		++SimplePlayerCount;
-}
-
-void SoundManager::disconnectNotify(const char *signal)
-{
-//	kdebugm(KDEBUG_INFO, ">>> %s %s\n", signal, SIGNAL(playSound(QString&,bool,double)) );
-	if (strcmp(signal, SIGNAL(playSound(QString, bool, double))) == 0)
-		--SimplePlayerCount;
+		play(path, config_file.readBoolEntry("Sounds", "VolumeControl"), 1.0 * config_file.readDoubleNumEntry("Sounds", "SoundVolume") / 100);
 }
 
 void SoundManager::play(const QString &path, bool volumeControl, double volume)
 {
-	kdebugf();
-
-	if (!Player)
-		return;
-
-	if (Player->isSimplePlayer())
+	if (Player)
 		PlayThread->play(Player, path, volumeControl, volume);
-
-	kdebugf2();
 }
-
-/** @} */
-

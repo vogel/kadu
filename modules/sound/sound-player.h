@@ -23,7 +23,6 @@
 
 #include <QtCore/QObject>
 
-#include "sound.h"
 #include "sound-exports.h"
 
 class SOUNDAPI SoundPlayer : public QObject
@@ -34,39 +33,8 @@ public:
 	SoundPlayer(QObject *parent = 0) : QObject(parent) {}
 	virtual ~SoundPlayer() {}
 
-	virtual bool isSimplePlayer() = 0;
-
 public slots:
 	virtual void playSound(const QString &sound, bool volumeControl, double vol) = 0;
-
-	virtual SoundDevice openDevice(SoundDeviceType type, int sampleRate, int channels)
-	{
-		Q_UNUSED(type)
-		Q_UNUSED(sampleRate)
-		Q_UNUSED(channels)
-
-		return 0;
-	};
-
-	virtual void closeDevice(SoundDevice device)
-	{
-		Q_UNUSED(device)
-	};
-
-	virtual bool playSample(SoundDevice device, const qint16 *data, int length)
-	{
-		Q_UNUSED(device)
-		Q_UNUSED(data)
-		Q_UNUSED(length)
-
-		return false;
-	};
-
-	virtual void setFlushingEnabled(SoundDevice device, bool enabled)
-	{
-		Q_UNUSED(device)
-		Q_UNUSED(enabled)
-	};
 
 };
 

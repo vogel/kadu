@@ -20,7 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../sound/sound.h"
+#include "modules/sound/sound-manager.h"
 
 #include "debug.h"
 
@@ -37,7 +37,7 @@ extern "C" KADU_EXPORT int phonon_sound_init(bool firstLoad)
 	kdebugf();
 
 	phonon_player = new PhononPlayer();
-	sound_manager->setPlayer(phonon_player);
+	SoundManager::instance()->setPlayer(phonon_player);
 
 	kdebugf2();
 	return 0;
@@ -47,7 +47,7 @@ extern "C" KADU_EXPORT void phonon_sound_close()
 {
 	kdebugf();
 
-	sound_manager->setPlayer(0);
+	SoundManager::instance()->setPlayer(0);
 	delete phonon_player;
 	phonon_player = 0;
 

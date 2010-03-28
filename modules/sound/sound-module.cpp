@@ -24,8 +24,8 @@
 #include "notify/sound-notifier.h"
 
 #include "sound-actions.h"
+#include "sound-manager.h"
 #include "sound-theme-manager.h"
-#include "sound.h"
 
 extern "C" KADU_EXPORT int sound_init(bool firstLoad)
 {
@@ -34,12 +34,10 @@ extern "C" KADU_EXPORT int sound_init(bool firstLoad)
 	SoundThemeManager::createInstance();
 	SoundNotifier::createInstance();
 	NotificationManager::instance()->registerNotifier(SoundNotifier::instance());
-	new SoundManager(firstLoad);
+	SoundManager::createInstance();
 	SoundActions::registerActions(firstLoad);
-
 	SoundConfigurationUiHandler::registerConfigurationUi();
 
-	kdebugf2();
 	return 0;
 }
 
@@ -48,15 +46,9 @@ extern "C" KADU_EXPORT void sound_close()
 	kdebugf();
 
 	SoundConfigurationUiHandler::unregisterConfigurationUi();
-
 	SoundActions::unregisterActions();
-
-	delete sound_manager;
-	sound_manager = 0;
-
+	SoundManager::destroyInstance();
 	NotificationManager::instance()->unregisterNotifier(SoundNotifier::instance());
 	SoundNotifier::destroyInstance();
 	SoundThemeManager::destroyInstance();
-
-	kdebugf2();
 }

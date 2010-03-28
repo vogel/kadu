@@ -20,7 +20,7 @@
 #include "notify/notification.h"
 
 #include "configuration/gui/sound-configuration-ui-handler.h"
-#include "sound.h"
+#include "sound-manager.h"
 
 #include "sound-notifier.h"
 
@@ -54,7 +54,7 @@ SoundNotifier::~SoundNotifier()
 
 void SoundNotifier::notify(Notification *notification)
 {
-	sound_manager->playSound(notification->key());
+	SoundManager::instance()->playSound(notification->key());
 }
 
 NotifierConfigurationWidget * SoundNotifier::createConfigurationWidget(QWidget* parent)

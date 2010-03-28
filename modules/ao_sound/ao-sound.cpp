@@ -22,8 +22,8 @@
 
 #include "debug.h"
 
-#include "../sound/sound.h"
-#include "../sound/sound-params.h"
+#include "modules/sound/sound-manager.h"
+#include "modules/sound/sound-params.h"
 
 #include "ao-play-thread.h"
 
@@ -40,7 +40,7 @@ extern "C" int ao_sound_init()
 		delete ao_player;
 		return -1;
 	}
-	sound_manager->setPlayer(ao_player);
+	SoundManager::instance()->setPlayer(ao_player);
 
 	kdebugf2();
 	return 0;
@@ -49,6 +49,9 @@ extern "C" int ao_sound_init()
 extern "C" void ao_sound_close()
 {
 	kdebugf();
+
+	SoundManager::instance()->setPlayer(0);
+
 	delete ao_player;
 	ao_player = 0;
 	kdebugf2();

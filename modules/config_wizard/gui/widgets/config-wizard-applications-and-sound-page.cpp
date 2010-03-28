@@ -24,7 +24,9 @@
 #include <QtGui/QPushButton>
 
 #include "configuration/configuration-file.h"
-#include "modules/sound/sound.h"
+#include "gui/windows/main-configuration-window.h"
+#include "misc/path-conversion.h"
+#include "modules/sound/sound-manager.h"
 
 #include "modules.h"
 #include "languages-manager.h"
@@ -198,7 +200,7 @@ void ConfigWizardApplicationsAndSoundPage::testSound()
 	changeSoundModule(SoundModulesCombo->currentText());
 
 	IsTestingSound = true;
-	sound_manager->play(dataPath("kadu/themes/sounds/default/msg.wav"), true);
+	SoundManager::instance()->play(dataPath("kadu/themes/sounds/default/msg.wav"), true);
 	IsTestingSound = false;
 }
 

@@ -22,7 +22,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "gui/windows/main-configuration-window.h"
+#include "misc/path-conversion.h"
 #include "debug.h"
+
+#include "modules/sound/sound-manager.h"
 
 #include "alsa-player.h"
 
@@ -35,7 +39,7 @@ extern "C" int alsa_sound_init(bool firstLoad)
 	AlsaPlayer::createInstance();
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/alsa_sound.ui"));
 
-	sound_manager->setPlayer(AlsaPlayer::instance());
+	SoundManager::instance()->setPlayer(AlsaPlayer::instance());
 
 	kdebugf2();
 	return 0;
@@ -48,7 +52,7 @@ extern "C" void alsa_sound_close()
 	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/alsa_sound.ui"));
 	AlsaPlayer::destroyInstance();
 
-	sound_manager->setPlayer(0);
+	SoundManager::instance()->setPlayer(0);
 
 	kdebugf2();
 }

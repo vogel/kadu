@@ -2,26 +2,22 @@ set (SOURCES
 	configuration/gui/sound-configuration-ui-handler.cpp
 	gui/widgets/configuration/sound-configuration-widget.cpp
 	notify/sound-notifier.cpp
-	sample-play-thread.cpp
 	sound-actions.cpp
-	sound-event.cpp
 	sound-file.cpp
+	sound-manager.cpp
 	sound-module.cpp
-	sound-params.cpp
 	sound-play-thread.cpp
 	sound-theme-manager.cpp
-	sound.cpp
 )
 
 set (MOC_SOURCES
 	configuration/gui/sound-configuration-ui-handler.h
 	gui/widgets/configuration/sound-configuration-widget.h
 	notify/sound-notifier.h
-	sample-play-thread.h
 	sound-actions.h
+	sound-manager.h
 	sound-play-thread.h
 	sound-player.h
-	sound.h
 )
 
 set (TRANSLATION_SOURCES

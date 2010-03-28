@@ -41,11 +41,21 @@ SoundThemeManager * SoundThemeManager::instance()
 	return Instance;
 }
 
-
 SoundThemeManager::SoundThemeManager() :
 		MyThemes(new Themes("sounds", "sound.conf"))
 {
+	MyThemes->setPaths(config_file.readEntry("Sounds", "SoundPaths").split(QRegExp("(;|:)"), QString::SkipEmptyParts));
 
+	QStringList soundThemes = themes()->themes();
+	QString soundTheme = config_file.readEntry("Sounds", "SoundTheme");
+	if (!soundThemes.isEmpty() && (soundTheme != "Custom") && !soundThemes.contains(soundTheme))
+	{
+		soundTheme = "default";
+		config_file.writeEntry("Sounds", "SoundTheme", "default");
+	}
+
+	if (soundTheme != "custom")
+		applyTheme(soundTheme);
 }
 
 SoundThemeManager::~SoundThemeManager()

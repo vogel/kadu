@@ -27,10 +27,12 @@
 #include <stdlib.h>
 #include <QtGui/QFileDialog>
 
-#include "../sound/sound.h"
-
 #include "configuration/configuration-file.h"
+#include "gui/windows/main-configuration-window.h"
+#include "misc/path-conversion.h"
 #include "debug.h"
+
+#include "modules/sound/sound-manager.h"
 
 #include "player_external.h"
 

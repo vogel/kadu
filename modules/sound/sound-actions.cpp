@@ -30,9 +30,10 @@
 #include "gui/actions/action.h"
 #include "gui/windows/kadu-window.h"
 #include "debug.h"
+#include "themes.h"
 
+#include "sound-manager.h"
 #include "sound-theme-manager.h"
-#include "sound.h"
 
 #include "sound-actions.h"
 
@@ -83,14 +84,14 @@ SoundActions::~SoundActions()
 void SoundActions::setMuteActionState()
 {
 	foreach (Action *action, MuteActionDescription->actions())
-		action->setChecked(!sound_manager->isMuted());
+		action->setChecked(!SoundManager::instance()->isMuted());
 }
 
 void SoundActions::muteActionActivated(QAction  *action, bool toggled)
 {
 	Q_UNUSED(action)
 
-	sound_manager->setMute(!toggled);
+	SoundManager::instance()->setMute(!toggled);
 	setMuteActionState();
 
 	config_file.writeEntry("Sounds", "PlaySound", toggled);
@@ -98,7 +99,7 @@ void SoundActions::muteActionActivated(QAction  *action, bool toggled)
 
 void SoundActions::configurationUpdated()
 {
-	sound_manager->setMute(!config_file.readBoolEntry("Sounds", "PlaySound"));
+	SoundManager::instance()->setMute(!config_file.readBoolEntry("Sounds", "PlaySound"));
 	setMuteActionState();
 }
 
@@ -107,7 +108,7 @@ void SoundActions::testSoundPlaying()
 	kdebugf();
 
 	QString soundFile = SoundThemeManager::instance()->themes()->themePath() + SoundThemeManager::instance()->themes()->getThemeEntry("NewChat");
-	sound_manager->play(soundFile, true);
+	SoundManager::instance()->play(soundFile, true);
 
 	kdebugf2();
 }

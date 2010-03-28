@@ -25,7 +25,7 @@
 #include "gui/widgets/select-file.h"
 #include "icons-manager.h"
 
-#include "sound.h"
+#include "sound-manager.h"
 
 #include "sound-configuration-widget.h"
 
@@ -52,7 +52,7 @@ SoundConfigurationWidget::~SoundConfigurationWidget()
 
 void SoundConfigurationWidget::test()
 {
-	sound_manager->play(SoundFileSelectFile->file(), true);
+	SoundManager::instance()->play(SoundFileSelectFile->file(), true);
 }
 
 void SoundConfigurationWidget::saveNotifyConfigurations()
