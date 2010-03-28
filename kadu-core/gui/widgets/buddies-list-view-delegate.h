@@ -63,6 +63,8 @@ class BuddiesListViewDelegate : public QItemDelegate, public ConfigurationAwareO
 	bool useMessagePixmap(const QModelIndex &index) const;
 	int iconsWidth(const QModelIndex &index, int margin) const;
 
+	void drawDebugRect(QPainter *painter, QRect rect, QColor color) const;
+
 private slots:
 	void buddyStatusChanged(Contact contact, Status oldStatus);
 	void modelDestroyed();

@@ -42,12 +42,13 @@
 #include "contacts/contact.h"
 #include "configuration/configuration-file.h"
 #include "model/roles.h"
+#include "debug.h"
 #include "icons-manager.h"
 
 #include "buddies-list-view-delegate.h"
 
-BuddiesListViewDelegate::BuddiesListViewDelegate(QObject *parent)
-	: QItemDelegate(parent), Model(0), ShowAccountName(true)
+BuddiesListViewDelegate::BuddiesListViewDelegate(QObject *parent) :
+		QItemDelegate(parent), Model(0), ShowAccountName(true)
 {
 	triggerAllAccountsRegistered();
 	configurationUpdated();
@@ -146,6 +147,16 @@ int BuddiesListViewDelegate::iconsWidth(const QModelIndex &index, int margin) co
 	return result;
 }
 
+void BuddiesListViewDelegate::drawDebugRect(QPainter *painter, QRect rect, QColor color) const
+{
+	Q_UNUSED(rect)
+
+	painter->save();
+	painter->setPen(color);
+	painter->drawRect(rect);
+	painter->restore();
+}
+
 QSize BuddiesListViewDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
 	QSize size(0, 0);
@@ -227,8 +238,8 @@ void BuddiesListViewDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 	painter->translate(rect.topLeft());
 
 	QColor textcolor = option.palette.color(QPalette::Normal, option.state & QStyle::State_Selected
-		? QPalette::HighlightedText
-		: QPalette::Text);
+			? QPalette::HighlightedText
+			: QPalette::Text);
 
 	painter->setFont(Font);
 	painter->setPen(textcolor);
@@ -236,7 +247,6 @@ void BuddiesListViewDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 	bool bold = isBold(index);
 	QFontMetrics fontMetrics(bold ? BoldFont : Font);
 	QFontMetrics descriptionFontMetrics(DescriptionFont);
-
 
 	int displayHeight = fontMetrics.lineSpacing() + 3;
 
@@ -254,8 +264,8 @@ void BuddiesListViewDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 	{
 		dd = descriptionDocument(description, textWidth,
 			option.state & QStyle::State_Selected
-			? textcolor
-			: DescriptionColor);
+					? textcolor
+					: DescriptionColor);
 
 		descriptionHeight = (int)dd->size().height();
 	}
@@ -340,6 +350,11 @@ void BuddiesListViewDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 		painter->drawText(textLeft, 0, displayWidth, displayHeight, Qt::AlignLeft | Qt::AlignTop, display);
 	}
 
+#ifdef DEBUG_ENABLED
+	if (debug_mask & KDEBUG_VISUAL)
+		drawDebugRect(painter, QRect(textLeft, 0, textWidth, displayHeight), QColor(255, 0, 0));
+#endif
+
 	painter->setPen(pen);
 
 	if (isBold(index))
@@ -354,7 +369,14 @@ void BuddiesListViewDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 		int avatarWidth = displayAvatar.width();
 		int width = widget->viewport()->width() - opt.rect.left() - (avatarWidth + (avatarSize - avatarWidth)/2);
 		if (!displayAvatar.isNull())
+		{
 			painter->drawPixmap(width - 2, 2, displayAvatar);
+
+#ifdef DEBUG_ENABLED
+			if (debug_mask & KDEBUG_VISUAL)
+				drawDebugRect(painter, QRect(width - 2, 2, displayAvatar.width(), displayAvatar.height()), QColor(0, 255, 0));
+#endif
+		}
 	}
 
 	if (!hasDescription)
@@ -368,6 +390,11 @@ void BuddiesListViewDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 
 	painter->setFont(DescriptionFont);
 	painter->translate(textLeft, top);
+
+#ifdef DEBUG_ENABLED
+	if (debug_mask & KDEBUG_VISUAL)
+		drawDebugRect(painter, QRect(0, 0, dd->textWidth(), rect.height()), QColor(0, 0, 255));
+#endif
 
 	dd->drawContents(painter);
 	delete dd;

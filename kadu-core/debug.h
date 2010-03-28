@@ -47,6 +47,8 @@
 /* informacja dotyczaca obslugi sieci */
 #define KDEBUG_NETWORK        (1<<15)
 
+#define KDEBUG_VISUAL         (1<<16)
+
 /* 2^31-1 - wszystkie komunikaty */
 #define KDEBUG_ALL 2147483647
 
