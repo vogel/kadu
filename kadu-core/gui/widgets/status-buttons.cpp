@@ -45,6 +45,7 @@ StatusButtons::~StatusButtons()
 void StatusButtons::createGui()
 {
 	Layout = new QHBoxLayout(this);
+	Layout->addStretch(200);
 }
 
 void StatusButtons::statusContainerRegistered(StatusContainer *statusContainer)
@@ -56,7 +57,7 @@ void StatusButtons::statusContainerRegistered(StatusContainer *statusContainer)
 		statusContainerUnregistered(StatusContainerManager::instance());
 
 	StatusButton *button = new StatusButton(statusContainer);
-	Layout->addWidget(button);
+	Layout->insertWidget(Layout->count() - 1, button);
 	Buttons[statusContainer] = button;
 }
 
