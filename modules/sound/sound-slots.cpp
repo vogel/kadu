@@ -47,16 +47,11 @@
 
 #include "sound-slots.h"
 
-/**
- * @ingroup sound
- * @{
- */
 #include "sound-theme-manager.h"
 
 SoundSlots::SoundSlots(bool firstLoad, QObject *parent)
 	: QObject(parent),
-	soundfiles(), soundNames(), soundTexts(), SamplePlayingTestMsgBox(0), SamplePlayingTestDevice(0),
-	SamplePlayingTestSample(0), FullDuplexTestMsgBox(0), FullDuplexTestDevice(0), FullDuplexTestSample(0)
+	soundfiles(), soundNames(), soundTexts()
 {
 	kdebugf();
 
@@ -121,18 +116,12 @@ void SoundSlots::configurationUpdated()
 	muteActionActivated(0, config_file.readBoolEntry("Sounds", "PlaySound"));
 }
 
-void SoundSlots::testSamplePlaying()
+void SoundSlots::testSoundPlaying()
 {
 	kdebugf();
-	if (SamplePlayingTestMsgBox != NULL)
-		return;
 
-	QString chatsound = SoundThemeManager::instance()->themes()->themePath() + SoundThemeManager::instance()->themes()->getThemeEntry("NewChat");
-
-	sound_manager->play(chatsound, true);
+	QString soundFIle = SoundThemeManager::instance()->themes()->themePath() + SoundThemeManager::instance()->themes()->getThemeEntry("NewChat");
+	sound_manager->play(soundFIle, true);
 
 	kdebugf2();
 }
-
-/** @} */
-

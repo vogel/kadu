@@ -97,9 +97,7 @@ void SoundConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurati
 	connect(mainConfigurationWindow->widget()->widgetById("sound/enableVolumeControl"), SIGNAL(toggled(bool)),
 		mainConfigurationWindow->widget()->widgetById("sound/volumeControl"), SLOT(setEnabled(bool)));
 
-	connect(mainConfigurationWindow->widget()->widgetById("sound/testPlay"), SIGNAL(clicked()), sound_slots, SLOT(testSamplePlaying()));
-	connect(mainConfigurationWindow->widget()->widgetById("sound/testRecord"), SIGNAL(clicked()), sound_slots, SLOT(testSampleRecording()));
-	connect(mainConfigurationWindow->widget()->widgetById("sound/testDuplex"), SIGNAL(clicked()), sound_slots, SLOT(testFullDuplex()));
+	connect(mainConfigurationWindow->widget()->widgetById("sound/testPlay"), SIGNAL(clicked()), sound_slots, SLOT(testSoundPlaying()));
 
 	ThemesComboBox = dynamic_cast<ConfigComboBox *>(mainConfigurationWindow->widget()->widgetById("sound/themes"));
 	connect(ThemesComboBox, SIGNAL(activated(int)), ConfigurationWidget, SLOT(themeChanged(int)));

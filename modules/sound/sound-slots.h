@@ -41,10 +41,6 @@ class SelectFile;
 
 class ActionDescription;
 
-/** @ingroup sound
- * @{
- */
-
 class SoundSlots : public QObject, public ConfigurationAwareObject
 {
 	Q_OBJECT
@@ -54,28 +50,22 @@ class SoundSlots : public QObject, public ConfigurationAwareObject
 	QStringList soundNames;
 	QStringList soundTexts;
 
-	MessageDialog* SamplePlayingTestMsgBox;
-	SoundDevice SamplePlayingTestDevice;
-	qint16*    SamplePlayingTestSample;
-
-	MessageDialog* FullDuplexTestMsgBox;
-	SoundDevice FullDuplexTestDevice;
-	qint16*    FullDuplexTestSample;
-
 private slots:
 	void muteActionActivated(QAction *action, bool is_on);
 	void setMuteActionState();
 	void muteUnmuteSounds();
-	void testSamplePlaying();
 
 protected:
 	void configurationUpdated();
+
 public:
 	SoundSlots(bool firstLoad, QObject *parent = 0);
 	~SoundSlots();
+
 public slots:
 	void themeChanged(const QString &theme);
+	void testSoundPlaying();
+
 };
 
-/** @} */
 #endif // KADU_SOUND_SLOTS
