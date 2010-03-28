@@ -1,7 +1,7 @@
 /*
  * %kadu copyright begin%
  * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2009 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * Copyright 2009, 2010 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,30 +18,29 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef KADU_AO_PLAY_THREAD_H
-#define KADU_AO_PLAY_THREAD_H
+#ifndef AO_PLAYER_H
+#define AO_PLAYER_H
 
-#include <QtCore/QThread>
-#include <QtCore/QMutex>
-#include <QtCore/QSemaphore>
-#include <QtCore/QList>
+#include "modules/sound/sound-player.h"
 
-class SoundParams;
+class AOPlayThread;
 
-class AOPlayThread : public QThread
+class AOPlayer : public SoundPlayer
 {
-	static bool play(const char *path, bool &checkAgain, bool volCntrl = false, float vol = 1);
+	Q_OBJECT
 
+	static AOPlayer *Instance;
+
+	AOPlayer();
+	virtual ~AOPlayer();
 public:
-	QMutex mutex;
-	QSemaphore *semaphore; //sluzy do powiadamiania o dzwieku w kolejce
-	bool end;
-	QList<SoundParams> list;
-		
-	AOPlayThread();
-	~AOPlayThread();
-	void run();
+	static void createInstance();
+	static void destroyInstance();
+
+	static AOPlayer * instance();
+
+	virtual void playSound(const QString &path, bool volumeControl, double volume);
 
 };
 
-#endif //AO_PLAY_THREAD
+#endif // AO_PLAYER_H

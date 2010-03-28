@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2009 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * Copyright 2010 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,33 +17,33 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef KADU_AO_SOUND_H
-#define KADU_AO_SOUND_H
+#include "debug.h"
 
-#include "modules/sound/sound-player.h"
+#include "modules/sound/sound-manager.h"
 
-class AOPlayThread;
+#include "ao-player.h"
 
-class AOPlayer : public SoundPlayer
+extern "C" int ao_sound_init(bool firstLoad)
 {
-	Q_OBJECT
+	Q_UNUSED(firstLoad)
 
-	AOPlayThread *thread;
+	kdebugf();
 
-public:
-	explicit AOPlayer(QObject *parent = 0);
-	virtual ~AOPlayer();
+	AOPlayer::createInstance();
+	SoundManager::instance()->setPlayer(AOPlayer::instance());
 
-	bool isOk();
+	kdebugf2();
+	return 0;
+}
 
-	virtual bool isSimplePlayer() { return true; }
+extern "C" void ao_sound_close()
+{
+	kdebugf();
 
-public slots:
-	virtual void playSound(const QString &path, bool volumeControl, double volume);
+	AOPlayer::destroyInstance();
 
-};
+	SoundManager::instance()->setPlayer(0);
 
-extern AOPlayer *ao_player;
-
-#endif
+	kdebugf2();
+}
 

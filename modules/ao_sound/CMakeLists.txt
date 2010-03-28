@@ -1,10 +1,10 @@
 set (SOURCES
-	ao-play-thread.cpp
-	ao-sound.cpp
+	ao-module.cpp
+	ao-player.cpp
 )
 
 set (MOC_SOURCES
-	ao-sound.h
+	ao-player.h
 )
 
 if(WIN32)
