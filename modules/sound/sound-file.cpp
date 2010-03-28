@@ -84,10 +84,6 @@ SoundFile::SoundFile(const char *path):length(0),data(NULL),channels(-1),speed(0
 		sf_read_short (f, data, length);
 	}
 
-	printf("size of quint16: %ld\n", sizeof(qint16));
-	printf("size of short int: %ld\n", sizeof(short int));
-	printf("length is: %d\n", length);
-
 	sf_close(f);
 #endif
 }

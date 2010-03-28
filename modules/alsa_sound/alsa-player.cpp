@@ -22,35 +22,45 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <sys/time.h>
-
-#include "alsa-player.h"
 #include "configuration/configuration-file.h"
 #include "debug.h"
-#include "../sound/sound.h"
-#include "../sound/sound-file.h"
+
+#include "modules/sound/sound-file.h"
 
 #include "alsa-device.h"
 
-/**
- * @ingroup alsa_sound
- * @{
- */
+#include "alsa-player.h"
 
-AlsaPlayer::AlsaPlayer(QObject *parent) : SoundPlayer(parent)
+AlsaPlayer * AlsaPlayer::Instance = 0;
+
+void AlsaPlayer::createInstance()
 {
-	kdebugf();
+	if (!Instance)
+		Instance = new AlsaPlayer();
+}
 
+void AlsaPlayer::destroyInstance()
+{
+	if (Instance)
+	{
+		delete Instance;
+		Instance = 0;
+	}
+}
+
+AlsaPlayer * AlsaPlayer::instance()
+{
+	return Instance;
+}
+
+AlsaPlayer::AlsaPlayer(QObject *parent) :
+		SoundPlayer(parent)
+{
 	createDefaultConfiguration();
-
-	kdebugf2();
 }
 
 AlsaPlayer::~AlsaPlayer()
 {
-	kdebugf();
-
-	kdebugf2();
 }
 
 void AlsaPlayer::createDefaultConfiguration()
@@ -76,11 +86,3 @@ void AlsaPlayer::playSound(const QString &path, bool volumeControl, double volum
 	device.playSample(sound.data, sound.length);
 	device.close();
 }
-
-/*	if (dev->player)
-		snd_pcm_nonblock (dev->player, !enabled);*/
-
-AlsaPlayer *alsa_player_slots;
-
-/** @} */
-

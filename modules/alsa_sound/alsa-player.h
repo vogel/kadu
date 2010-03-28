@@ -36,9 +36,16 @@ class AlsaPlayer : public SoundPlayer
 {
 	Q_OBJECT
 
+	static AlsaPlayer *Instance;
+
 	void createDefaultConfiguration();
 
 public:
+	static void createInstance();
+	static void destroyInstance();
+
+	static AlsaPlayer * instance();
+
 	explicit AlsaPlayer(QObject *parent = 0);
 	virtual ~AlsaPlayer();
 
@@ -48,7 +55,5 @@ public slots:
 	virtual void playSound(const QString &path, bool volumeControl, double volume);
 
 };
-
-extern AlsaPlayer *alsa_player_slots;
 
 #endif // ALSA_PLAYER_H

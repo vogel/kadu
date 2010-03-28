@@ -20,6 +20,8 @@
 #ifndef ALSA_DEVICE_H
 #define ALSA_DEVICE_H
 
+#include <alsa/asoundlib.h>
+
 #include <QtCore/QString>
 
 class AlsaDevice

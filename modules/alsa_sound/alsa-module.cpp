@@ -32,10 +32,10 @@ extern "C" int alsa_sound_init(bool firstLoad)
 
 	kdebugf();
 
-	alsa_player_slots = new AlsaPlayer;
+	AlsaPlayer::createInstance();
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/alsa_sound.ui"));
 
-	sound_manager->setPlayer(alsa_player_slots);
+	sound_manager->setPlayer(AlsaPlayer::instance());
 
 	kdebugf2();
 	return 0;
@@ -46,8 +46,7 @@ extern "C" void alsa_sound_close()
 	kdebugf();
 
 	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/alsa_sound.ui"));
-	delete alsa_player_slots;
-	alsa_player_slots = 0;
+	AlsaPlayer::destroyInstance();
 
 	sound_manager->setPlayer(0);
 

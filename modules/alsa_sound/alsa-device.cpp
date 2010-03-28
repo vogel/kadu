@@ -17,7 +17,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <alsa/asoundlib.h>
 #include <errno.h>
 #include <stdio.h>
 
@@ -55,7 +54,6 @@ snd_pcm_t * AlsaDevice::openDevice()
 	if ((err = snd_pcm_open(&alsa_dev, qPrintable(DeviceName), play ? SND_PCM_STREAM_PLAYBACK : SND_PCM_STREAM_CAPTURE, SND_PCM_NONBLOCK)) < 0)
 	{
 
-		printf("device is: %s\n", qPrintable(DeviceName));
 		fprintf(stderr, "cannot open audio device \"%s\" (%s)\n", qPrintable(DeviceName), snd_strerror(err));
 		fflush(stderr);
 		return NULL;
@@ -263,8 +261,6 @@ bool AlsaDevice::playSample(short int *sampleData, int length)
 
 	int res, written = 0;
 	int availErrorsCount = 0;
-
-	printf("length: %d\n", length);
 
 	while (written < length)
 	{
