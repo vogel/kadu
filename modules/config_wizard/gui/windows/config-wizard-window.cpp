@@ -41,8 +41,8 @@
  * @{
  */
 
-ConfigWizardWindow::ConfigWizardWindow(QWidget *parent)
-	: QWizard(parent), registeringAccount(false), testingSound(false)
+ConfigWizardWindow::ConfigWizardWindow(QWidget *parent) :
+		QWizard(parent), testingSound(false)
 {
 	kdebugf();
 	setWindowTitle(tr("Kadu Wizard"));
@@ -60,7 +60,6 @@ ConfigWizardWindow::ConfigWizardWindow(QWidget *parent)
 	addPage(new ConfigWizardApplicationsAndSoundPage(this));
 	addPage(new ConfigWizardCompletedPage(this));
 
-	createGGAccountPage();
 	createApplicationsPage();
 	createSoundPage();
 
@@ -78,7 +77,7 @@ ConfigWizardWindow::~ConfigWizardWindow()
 
 bool ConfigWizardWindow::validateCurrentPage()
 {
-	return !(registeringAccount || testingSound);
+	return !testingSound;
 }
 
 /**
@@ -86,7 +85,6 @@ bool ConfigWizardWindow::validateCurrentPage()
 **/
 void ConfigWizardWindow::acceptedSlot()
 {
-	saveGGAccountOptions();
 	saveApplicationsOptions();
 	saveSoundOptions();
 
@@ -113,278 +111,6 @@ void ConfigWizardWindow::closeEvent(QCloseEvent *e)
 void ConfigWizardWindow::wizardStart()
 {
 	show();
-}
-
-/**
-	po zaimportowaniu listy kontakt�w si� wywo�uje
-**/
-// void ConfigWizardWindowStarter::userListImported(bool ok, QList<UserListElement> list)
-// {
-// 	kdebugf();
-// 
-// 	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocolHandler();
-// 	disconnect(gadu, SIGNAL(userListImported(bool, QList<UserListElement>)), this, SLOT(userListImported(bool, QList<UserListElement>)));
-// 
-// 	if (!ok)
-// 	{
-// 		kdebugf2();
-// 		return;
-// 	}
-// 
-// 	userlist->merge(list);
-// 	userlist->writeToConfig();
-// 	kdebugf2();
-// }
-
-/**
-	po polaczeniu sie z siecia robi import - podpinane tylko gdy kadu nie jest polaczone w momencie nacisniecia Finish
-**/
-// void ConfigWizardWindowStarter::connected()
-// {
-// 	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocolHandler());
-// 	if (!gadu->doImportUserList())
-// 	{
-// 		MessageDialog::msg(tr("User list couldn't be imported"));
-// 		disconnect(gadu, SIGNAL(userListImported(bool, QList<UserListElement>)), this, SLOT(userListImported(bool, QList<UserListElement>)));
-// 	}
-
-// 	disconnect(gadu, SIGNAL(connected()), this, SLOT(connected()));
-// }
-
-/**
-	Ustawienie konta GG
-**/
-void ConfigWizardWindow::registerGGAccount()
-{
-	kdebugf();
-/*
-	if (ggNewPassword->text() != ggReNewPassword->text())
-	{
-		MessageDialog::msg(tr("Error data typed in required fields.\n\n"
-			"Passwords typed in both fields (\"New password\" and \"Retype new password\") "
-			"should be the same!"));
-		return;
-	}
-
-	if (ggNewPassword->text().isEmpty() || ggEMail->text().isEmpty())
-	{
-		MessageDialog::msg(tr("Please fill out all fields"), false, "32x32/dialog-warning.png");
-		return;
-	}
-
-	if (ggEMail->text().find(HtmlDocument::mailRegExp()) == -1)
-	{
-		MessageDialog::msg(tr("Email address you have entered is not valid"), false, "32x32/dialog-warning.png");
-		return;
-	}
-
-	registeringAccount = true;
-	foreach(QWidget *widget, dontHaveNumberWidgets)
-		widget->setEnabled(false);
-
-	haveNumber->setEnabled(false);
-
-	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
-	connect(gadu, SIGNAL(registered(bool, UinType)), this, SLOT(registeredGGAccount(bool, UinType)));
-	gadu->registerAccount(ggEMail->text(), ggNewPassword->text());*/
-
-	kdebugf2();
-}
-
-/**
-	Zapisanie parametr�w nowego konta
-**//*
-void ConfigWizardWindow::registeredGGAccount(bool ok, UinType uin)
-{
-	kdebugf();
-
-	if (ok)
-	{
-		// TODO: 0.6.6
-		config_file.writeEntry("General", "UIN", (int)uin);
-		config_file.writeEntry("General", "Password", pwHash(ggNewPassword->text()));
-
-		Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
-		// gadu->changeID(QString::number(uin));
-		kadu->setOnline();	//jak zarejestrowal to od razu sie laczy
-
-		MessageDialog::msg(tr("Registration was successful.\nYou UIN is: ") + QString::number(int(uin))+tr("\nAccount configuration was saved.\nPress Ok to continue"));
-
-		haveNumber->setChecked(true);
-		ggNumber->setText(QString::number((int)uin));
-		ggPassword->setText(ggNewPassword->text());
-	}
-	else
-	{
-		MessageDialog::msg(tr("An error has occured while registration. Please try again later."), false, "32x32/dialog-warning.png");
-
-		foreach(QWidget *widget, dontHaveNumberWidgets)
-			widget->setEnabled(true);
-	}
-
-	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
-	disconnect(gadu, SIGNAL(registered(bool, UinType)), this, SLOT(registeredGGAccount(bool, UinType)));
-
-	haveNumber->setEnabled(true);
-	registeringAccount = false;
-
-	kdebugf2();
-}*/
-
-
-/**
-	sprawdzenie czy trzeba importowa� list� kontakt�w czy nie i ew. import
-**/
-
-void ConfigWizardWindow::tryImport()
-{
-// 	if (!ggImportContacts->isChecked())
-// 		return;
-// 
-// 	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
-// 	connect(gadu, SIGNAL(userListImported(bool, QList<UserListElement>)),
-// 			wizardStarter, SLOT(userListImported(bool, QList<UserListElement>)));
-// 
-// 	if (gadu->currentStatus().isOffline())
-// 	{
-// 		connect(gadu, SIGNAL(connected()), wizardStarter, SLOT(connected()));
-// 		kadu->setOnline(); //kaze sie polaczyc i podpina sie pod sygnal polaczenia sie z siecia
-// 	} //jak polaczony to bez cyrkow robi import
-// 	else if (!gadu->doImportUserList())
-// 	{
-// 		MessageDialog::msg(tr("User list wasn't imported because of some error"));
-// 		disconnect(gadu, SIGNAL(userListImported(bool, QList<UserListElement>)), wizardStarter, SLOT(userListImported(bool, QList<UserListElement>)));
-// 	}
-}
-
-void ConfigWizardWindow::createGGAccountPage()
-{
-	kdebugf();
-
-	QWizardPage *ggPage = new QWizardPage(this);
-	ggPage->setTitle(tr("Gadu-gadu account"));
-
-	QGridLayout *gridLayout = new QGridLayout(ggPage);
-	gridLayout->setSpacing(5);
-
-	gridLayout->setColumnStretch(0, 7);
-	gridLayout->setColumnStretch(1, 1);
-	gridLayout->setColumnStretch(2, 7);
-	gridLayout->setColumnStretch(3, 7);
-
-	QTextBrowser *descriptionPane = new QTextBrowser(ggPage);
-	descriptionPane->setText(tr("<h3>Welcome in Kadu</h3><h4>the Gadu-gadu network client for *nix and MacOS X.</h4>"
-		"<p>This is first time you launch Kadu. "
-		"This wizard will help you to configure the basic settings of Kadu. "
-		"If you are experienced Kadu user you may omit the wizard by clicking Cancel.</p>"
-		"<p>Please enter your account data. If you don't have one, you can create new here.</p>"
-		"<p>E-mail address is needed when you want to recover lost password to account</p>"));
-/*
-	descriptionPane->setFixedWidth(200);
-	gridLayout->addMultiCellWidget(descriptionPane, 0, 8, 0, 0);
-
-	haveNumber = new QRadioButton(tr("I have a number"), ggPage);
-	connect(haveNumber, SIGNAL(toggled(bool)), this, SLOT(haveNumberChanged(bool)));
-	gridLayout->addMultiCellWidget(haveNumber, 0, 0, 2, 3);
-
-	QLabel *ggNumberLabel = new QLabel(tr("Gadu-gadu number") + ":", ggPage);
-	gridLayout->addWidget(ggNumberLabel, 1, 2, Qt::AlignRight);
-	ggNumber = new QLineEdit(ggPage);
-	gridLayout->addWidget(ggNumber, 1, 3);
-
-	QLabel *ggPasswordLabel = new QLabel(tr("Gadu-gadu password") + ":", ggPage);
-	gridLayout->addWidget(ggPasswordLabel, 2, 2, Qt::AlignRight);
-	ggPassword = new QLineEdit(ggPage);
-	ggPassword->setEchoMode(QLineEdit::Password);
-	gridLayout->addWidget(ggPassword, 2, 3);
-
-	ggImportContacts = new QCheckBox(tr("Import contacts"), ggPage);
-	ggImportContacts->setChecked(true);
-	gridLayout->addMultiCellWidget(ggImportContacts, 3, 3, 2, 3);
-
-	dontHaveNumber = new QRadioButton(tr("I don't have a number"), ggPage);
-	gridLayout->addMultiCellWidget(dontHaveNumber, 4, 4, 2, 3);*/
-
-	QLabel *ggNewPasswordLabel = new QLabel(tr("New password") + ":", ggPage);
-	gridLayout->addWidget(ggNewPasswordLabel, 5, 2, Qt::AlignRight);
-	ggNewPassword = new QLineEdit(ggPage);
-	ggNewPassword->setEchoMode(QLineEdit::Password);
-	gridLayout->addWidget(ggNewPassword, 5, 3);
-
-	QLabel *ggReNewPasswordLabel = new QLabel(tr("Retype password") + ":", ggPage);
-	gridLayout->addWidget(ggReNewPasswordLabel, 6, 2, Qt::AlignRight);
-	ggReNewPassword = new QLineEdit(ggPage);
-	ggReNewPassword->setEchoMode(QLineEdit::Password);
-	gridLayout->addWidget(ggReNewPassword, 6, 3);
-
-	QLabel *ggEMailLabel = new QLabel(tr("Your e-mail address") + ":", ggPage);
-	gridLayout->addWidget(ggEMailLabel, 7, 2, Qt::AlignRight);
-	ggEMail = new QLineEdit(ggPage);
-	gridLayout->addWidget(ggEMail, 7, 3);
-/*
-	ggRegisterAccount = new QPushButton(tr("Register"), ggPage);
-	connect(ggRegisterAccount, SIGNAL(clicked()), this, SLOT(registerGGAccount()));
-	gridLayout->addMultiCellWidget(ggRegisterAccount, 8, 8, 2, 3);
-
-	QButtonGroup haveNumberGroup= new QButtonGroup();
-	haveNumberGroup->insert(haveNumber);
-	haveNumberGroup->insert(dontHaveNumber);*/
-
-	ggPage->setLayout(gridLayout);
- 
-// 	haveNumberWidgets.append(ggNumberLabel);
-	haveNumberWidgets.append(ggNumber);
-// 	haveNumberWidgets.append(ggPasswordLabel);
-	haveNumberWidgets.append(ggPassword);
-	haveNumberWidgets.append(ggImportContacts);
-	dontHaveNumberWidgets.append(ggNewPasswordLabel);
-	dontHaveNumberWidgets.append(ggNewPassword);
-	dontHaveNumberWidgets.append(ggReNewPasswordLabel);
-	dontHaveNumberWidgets.append(ggReNewPassword);
-	dontHaveNumberWidgets.append(ggEMailLabel);
-	dontHaveNumberWidgets.append(ggEMail);
-	dontHaveNumberWidgets.append(ggRegisterAccount);
-
-	loadGGAccountOptions();
-
-	addPage(ggPage);
-
-	kdebugf2();
-}
-
-void ConfigWizardWindow::haveNumberChanged(bool haveNumber)
-{
-	foreach(QWidget *widget, haveNumberWidgets)
-		widget->setEnabled(haveNumber);
-	foreach(QWidget *widget, dontHaveNumberWidgets)
-		widget->setEnabled(!haveNumber);
-}
-
-void ConfigWizardWindow::loadGGAccountOptions()
-{
-	// TODO: 0.6.6
-	QString uin = config_file.readEntry("General", "UIN");
-
-// 	haveNumber->setChecked(true);
-// 	haveNumberChanged(true);
-/*
-	if (!uin.isEmpty())
-	{		
-		ggNumber->setText(uin);
-		ggPassword->setText(pwHash(config_file.readEntry("General", "Password")));
-	}
-*/
-}
-
-void ConfigWizardWindow::saveGGAccountOptions()
-{
-	config_file.writeEntry("General", "UIN", ggNumber->text());
-	config_file.writeEntry("General", "Password", pwHash(ggPassword->text()));
-
-// 	kadu->configurationUpdated();
-
-	if (!ggNumber->text().isEmpty())
-		tryImport();
 }
 
 /**
