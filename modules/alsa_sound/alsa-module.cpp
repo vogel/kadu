@@ -22,67 +22,34 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <sys/time.h>
+#include "debug.h"
 
 #include "alsa_sound.h"
-#include "configuration/configuration-file.h"
-#include "debug.h"
-#include "../sound/sound.h"
-#include "../sound/sound-file.h"
 
-#include "alsa-device.h"
+extern "C" int alsa_sound_init(bool firstLoad)
+{
+	Q_UNUSED(firstLoad)
 
-/**
- * @ingroup alsa_sound
- * @{
- */
+	kdebugf();
 
-ALSAPlayerSlots::ALSAPlayerSlots(QObject *parent) : SoundPlayer(parent)
+	alsa_player_slots = new ALSAPlayerSlots;
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/alsa_sound.ui"));
+
+	sound_manager->setPlayer(alsa_player_slots);
+
+	kdebugf2();
+	return 0;
+}
+
+extern "C" void alsa_sound_close()
 {
 	kdebugf();
 
-	createDefaultConfiguration();
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/alsa_sound.ui"));
+	delete alsa_player_slots;
+	alsa_player_slots = 0;
+
+	sound_manager->setPlayer(0);
 
 	kdebugf2();
 }
-
-ALSAPlayerSlots::~ALSAPlayerSlots()
-{
-	kdebugf();
-
-	kdebugf2();
-}
-
-void ALSAPlayerSlots::createDefaultConfiguration()
-{
-	config_file.addVariable("Sounds", "ALSAOutputDevice", "default");
-}
-
-void ALSAPlayerSlots::playSound(const QString &path, bool volumeControl, double volume)
-{
-	printf("play sound from alsa...\n");
-
-	SoundFile sound(qPrintable(path));
-
-	if (!sound.isOk())
-	{
-		kdebugm(KDEBUG_INFO, "broken sound file?\n");
-		return;
-	}
-
-	if (volumeControl)
-		sound.setVolume(volume);
-
-	AlsaDevice device(config_file.readEntry("Sounds", "ALSAOutputDevice"), sound.speed, sound.channels);
-	device.open();
-	device.playSample(sound.data, sound.length);
-	device.close();
-}
-
-/*	if (dev->player)
-		snd_pcm_nonblock (dev->player, !enabled);*/
-
-ALSAPlayerSlots *alsa_player_slots;
-
-/** @} */
-
