@@ -438,8 +438,6 @@ void SoundManager::play(const QString &path, bool volumeControl, double volume)
 
 	if (Player->isSimplePlayer())
 		Player->playSound(path, volumeControl, volume);
-	else
-		PlayThread->tryPlay(qPrintable(path), volumeControl, volume);
 
 	kdebugf2();
 }
