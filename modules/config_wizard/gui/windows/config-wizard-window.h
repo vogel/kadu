@@ -49,9 +49,6 @@ private slots:
 	void acceptedSlot();
 	void rejectedSlot();
 
-	void browserChanged(int index);
-	void emailChanged(int index);
-
 public:
 	explicit ConfigWizardWindow(QWidget *parent = 0);
 	virtual ~ConfigWizardWindow();

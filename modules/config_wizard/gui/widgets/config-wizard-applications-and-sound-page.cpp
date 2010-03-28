@@ -20,6 +20,7 @@
 #include <QtGui/QComboBox>
 #include <QtGui/QFormLayout>
 #include <QtGui/QLabel>
+#include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
 
 #include "modules/sound/sound.h"
@@ -50,14 +51,22 @@ void ConfigWizardApplicationsAndSoundPage::createGui()
 	formLayout()->addRow(new QLabel(tr("<b>Web and E-Mail</b>"), this));
 
 	BrowserCombo = new QComboBox(this);
+	connect(BrowserCombo, SIGNAL(activated(int)), this, SLOT(browserChanged(int)));
 	setBrowsers();
 
+	BrowserLineEdit = new QLineEdit(this);
+
 	formLayout()->addRow(tr("Web Browser") + ":", BrowserCombo);
+	formLayout()->addRow(tr("Web Browser Executable") + ":", BrowserLineEdit);
 
 	EMailCombo = new QComboBox(this);
+	connect(EMailCombo, SIGNAL(activated(int)), this, SLOT(emailChanged(int)));
 	setEMails();
 
+	EMailLineEdit = new QLineEdit(this);
+
 	formLayout()->addRow(tr("E-Mail Application") + ":", EMailCombo);
+	formLayout()->addRow(tr("E-Mail Application Executable") + ":", EMailLineEdit);
 
 	formLayout()->addRow(new QLabel(tr("<b>Sound</b>"), this));
 
@@ -142,6 +151,30 @@ void ConfigWizardApplicationsAndSoundPage::setSoundDrivers()
 	soundModules.prepend("- Select Sound Configuration -");
 
 	SoundModulesCombo->addItems(soundModules);
+}
+
+void ConfigWizardApplicationsAndSoundPage::browserChanged(int index)
+{
+	QString browser = MainConfigurationWindow::getBrowserExecutable(index);
+
+	BrowserLineEdit->setEnabled(index == 0);
+	BrowserLineEdit->setText(browser);
+
+	if (index != 0 && browser.isEmpty())
+		if (!BrowserCombo->currentText().contains(tr("Not found")))
+			BrowserCombo->setItemText(index, BrowserCombo->currentText() + " (" + tr("Not found") + ")");
+}
+
+void ConfigWizardApplicationsAndSoundPage::emailChanged(int index)
+{
+	QString mail = MainConfigurationWindow::getEMailExecutable(index);
+
+	EMailLineEdit->setEnabled(index == 0);
+	EMailLineEdit->setText(mail);
+
+	if (index != 0 && mail.isEmpty())
+		if (!EMailCombo->currentText().contains(tr("Not found")))
+			EMailCombo->setItemText(index, EMailCombo->currentText() + " (" + tr("Not found") + ")");
 }
 
 void ConfigWizardApplicationsAndSoundPage::changeSoundModule(const QString &newSoundModule)

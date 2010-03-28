@@ -23,13 +23,16 @@
 #include "gui/widgets/config-wizard-page.h"
 
 class QComboBox;
+class QLineEdit;
 
 class ConfigWizardApplicationsAndSoundPage : public ConfigWizardPage
 {
 	Q_OBJECT
 
 	QComboBox *BrowserCombo;
+	QLineEdit *BrowserLineEdit;
 	QComboBox *EMailCombo;
+	QLineEdit *EMailLineEdit;
 	QComboBox *SoundModulesCombo;
 
 	bool IsTestingSound;
@@ -42,6 +45,8 @@ class ConfigWizardApplicationsAndSoundPage : public ConfigWizardPage
 	void changeSoundModule(const QString &newSoundModule);
 
 private slots:
+	void browserChanged(int index);
+	void emailChanged(int index);
 	void testSound();
 
 public:

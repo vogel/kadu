@@ -177,29 +177,6 @@ void ConfigWizardWindow::createApplicationsPage()
 	kdebugf2();
 }
 
-void ConfigWizardWindow::browserChanged(int index)
-{
-	QString browser = MainConfigurationWindow::getBrowserExecutable(index);
-	browserCommandLineEdit->setEnabled(index == 0);
-	browserCommandLineEdit->setText(browser);
-/*
-	if (index != 0 && browser.isEmpty())
-		if (!browserCombo->currentText().contains(tr("Not found")))
-			browserCombo->changeItem(browserCombo->currentText() + " (" + tr("Not found") + ")", index);*/
-}
-
-void ConfigWizardWindow::emailChanged(int index)
-{
-	QString mail = MainConfigurationWindow::getEMailExecutable(index);
-
-	mailCommandLineEdit->setEnabled(index == 0);
-	mailCommandLineEdit->setText(mail);
-/*
-	if (index != 0 && mail.isEmpty())
-		if (!mailCombo->currentText().contains(tr("Not found")))
-			mailCombo->changeItem(mailCombo->currentText() + " (" + tr("Not found") + ")", index);*/
-}
-
 // don't care for performance here
 void ConfigWizardWindow::loadApplicationsOptions()
 {
@@ -218,7 +195,7 @@ void ConfigWizardWindow::loadApplicationsOptions()
 			browserIndex++;
 
 // 	browserCombo->setCurrentItem(foundBrowserIndex);
-	browserChanged(foundBrowserIndex);
+// 	browserChanged(foundBrowserIndex);
 
 	QString mailIndexName = config_file.readEntry("Chat", "EmailClientNo");
 	QString mailName;
@@ -235,7 +212,7 @@ void ConfigWizardWindow::loadApplicationsOptions()
 			mailIndex++;
 
 // 	mailCombo->setCurrentItem(foundMailIndex);
-	emailChanged(foundMailIndex);
+// 	emailChanged(foundMailIndex);
 }
 
 void ConfigWizardWindow::saveApplicationsOptions()
