@@ -22,6 +22,7 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "configuration/main-configuration.h"
 #include "gui/widgets/status-menu.h"
 #include "protocols/protocol.h"
 #include "status/status-container.h"
@@ -52,10 +53,19 @@ void StatusButton::createGui()
 void StatusButton::statusChanged()
 {
 	setIcon(MyStatusContainer->statusPixmap());
-	setToolTip(MyStatusContainer->statusContainerName());
+
+	if (MainConfiguration::instance()->simpleMode())
+		setText(MyStatusContainer->statusContainerName());
+	else
+		setToolTip(MyStatusContainer->statusContainerName());
 }
 
 void StatusButton::configurationUpdated()
 {
 	setIcon(MyStatusContainer->statusPixmap());
+
+	if (MainConfiguration::instance()->simpleMode())
+		setText(MyStatusContainer->statusContainerName());
+	else
+		setToolTip(MyStatusContainer->statusContainerName());
 }
