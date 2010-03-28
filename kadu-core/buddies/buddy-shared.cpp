@@ -131,6 +131,8 @@ void BuddyShared::load()
 			CustomData[name] = customDataElement.text();
 	}
 
+	GroupManager::instance()->ensureLoaded();
+
 	Groups.clear();
 	QDomElement groupsNode = configurationStorage->getNode(parent, "ContactGroups", XmlConfigFile::ModeFind);
 	if (!groupsNode.isNull())
