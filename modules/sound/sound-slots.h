@@ -44,34 +44,6 @@ class ActionDescription;
 /** @ingroup sound
  * @{
  */
-class SoundConfigurationWidget : public NotifierConfigurationWidget
-{
-	Q_OBJECT
-
-	QMap<QString, QString> soundFiles;
-	QString currentNotifyEvent;
-
-	SelectFile *soundFileSelectFile;
-	QLabel *warning;
-
-private slots:
-	void test();
-
-public:
-	SoundConfigurationWidget(QWidget *parent = 0);
-	virtual ~SoundConfigurationWidget();
-
-	virtual void loadNotifyConfigurations() {}
-	virtual void saveNotifyConfigurations();
-	virtual void switchToEvent(const QString &event);
-
-public slots:
-	void themeChanged(int index);
-
-signals:
-	void soundFileEdited();
-
-};
 
 class SoundSlots : public QObject, public ConfigurationAwareObject
 {

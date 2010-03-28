@@ -53,67 +53,6 @@
  */
 #include "sound-theme-manager.h"
 
-SoundConfigurationWidget::SoundConfigurationWidget(QWidget *parent) :
-		NotifierConfigurationWidget(parent), currentNotifyEvent("")
-{
-	QPushButton *testButton = new QPushButton(IconsManager::instance()->iconByPath("external_modules/module_mediaplayer_button-media-playback-start.png"),"", this);
-	connect(testButton, SIGNAL(clicked()), this, SLOT(test()));
-
-	soundFileSelectFile = new SelectFile("audio", this);
-	connect(soundFileSelectFile, SIGNAL(fileChanged()), this, SIGNAL(soundFileEdited()));
-
-	QHBoxLayout *layout = new QHBoxLayout(this);
-	layout->insertSpacing(0, 20);
-	layout->addWidget(testButton);
-	layout->addWidget(soundFileSelectFile);
-
-	dynamic_cast<NotifyGroupBox *>(parent)->addWidget(this);
-}
-
-SoundConfigurationWidget::~SoundConfigurationWidget()
-{
-}
-
-void SoundConfigurationWidget::test()
-{
-	sound_manager->play(soundFileSelectFile->file(), true);
-}
-
-void SoundConfigurationWidget::saveNotifyConfigurations()
-{
-	if (currentNotifyEvent != "")
-		soundFiles[currentNotifyEvent] = soundFileSelectFile->file();
-
-	foreach (const QString &key, soundFiles.keys())
-		config_file.writeEntry("Sounds", key + "_sound", soundFiles[key]);
-}
-
-void SoundConfigurationWidget::switchToEvent(const QString &event)
-{
-	if (currentNotifyEvent != "")
-		soundFiles[currentNotifyEvent] = soundFileSelectFile->file();
-	currentNotifyEvent = event;
-
-	if (soundFiles.contains(event))
-		soundFileSelectFile->setFile(soundFiles[event]);
-	else
-		soundFileSelectFile->setFile(config_file.readEntry("Sounds", event + "_sound"));
-}
-
-void SoundConfigurationWidget::themeChanged(int index)
-{
-	if (index == 0)
-		return;
-
-	//refresh soundFiles
-	foreach (const QString &key, soundFiles.keys())
-	{
-		soundFiles[key] = config_file.readEntry("Sounds", key + "_sound");
-		if (key == currentNotifyEvent)
-			soundFileSelectFile->setFile(soundFiles[key]);
-	}
-}
-
 SoundSlots::SoundSlots(bool firstLoad, QObject *parent)
 	: QObject(parent),
 	soundfiles(), soundNames(), soundTexts(), SamplePlayingTestMsgBox(0), SamplePlayingTestDevice(0),

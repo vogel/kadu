@@ -24,6 +24,7 @@
 #include "misc/path-conversion.h"
 #include "debug.h"
 
+#include "gui/widgets/configuration/sound-configuration-widget.h"
 #include "sound-slots.h"
 #include "sound-theme-manager.h"
 #include "sound.h"

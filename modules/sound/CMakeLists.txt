@@ -1,5 +1,6 @@
 set (SOURCES
 	configuration/gui/sound-configuration-ui-handler.cpp
+	gui/widgets/configuration/sound-configuration-widget.cpp
 	notify/sound-notifier.cpp
 	sample-play-thread.cpp
 	sound.cpp
@@ -14,6 +15,7 @@ set (SOURCES
 
 set (MOC_SOURCES
 	configuration/gui/sound-configuration-ui-handler.h
+	gui/widgets/configuration/sound-configuration-widget.h
 	notify/sound-notifier.h
 	sample-play-thread.h
 	sound.h
