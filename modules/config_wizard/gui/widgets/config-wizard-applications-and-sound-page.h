@@ -20,11 +20,11 @@
 #ifndef CONFIG_WIZARD_APPLICATIONS_AND_SOUND_PAGE_H
 #define CONFIG_WIZARD_APPLICATIONS_AND_SOUND_PAGE_H
 
-#include <QtGui/QWizardPage>
+#include "gui/widgets/config-wizard-page.h"
 
 class QComboBox;
 
-class ConfigWizardApplicationsAndSoundPage : public QWizardPage
+class ConfigWizardApplicationsAndSoundPage : public ConfigWizardPage
 {
 	Q_OBJECT
 

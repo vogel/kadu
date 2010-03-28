@@ -1,6 +1,7 @@
 set (SOURCES
 	gui/widgets/config-wizard-applications-and-sound-page.cpp
 	gui/widgets/config-wizard-completed-page.cpp
+	gui/widgets/config-wizard-page.cpp
 	gui/widgets/config-wizard-profile-page.cpp
 	gui/windows/config-wizard-window.cpp
 
@@ -11,6 +12,7 @@ set (SOURCES
 set (MOC_SOURCES
 	gui/widgets/config-wizard-applications-and-sound-page.h
 	gui/widgets/config-wizard-completed-page.h
+	gui/widgets/config-wizard-page.h
 	gui/widgets/config-wizard-profile-page.h
 	gui/windows/config-wizard-window.h
 

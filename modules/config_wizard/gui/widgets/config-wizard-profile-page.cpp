@@ -21,17 +21,19 @@
 #include <QtGui/QFormLayout>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
-#include <QtGui/QHBoxLayout>
 #include <QtGui/QPushButton>
-#include <QtGui/QTextBrowser>
 
 #include "languages-manager.h"
 
 #include "config-wizard-profile-page.h"
 
 ConfigWizardProfilePage::ConfigWizardProfilePage(QWidget *parent) :
-		QWizardPage(parent)
+		ConfigWizardPage(parent)
 {
+	setDescription(tr("<h3>Welcome to Kadu Instant Messenger</h3>"
+		"<p>This wizard will help you to configure the basic settings of Kadu.</p>"
+		"<p>Please choose a preffered language and create a nickname</p>"));
+
 	createGui();
 }
 
@@ -41,38 +43,23 @@ ConfigWizardProfilePage::~ConfigWizardProfilePage()
 
 void ConfigWizardProfilePage::createGui()
 {
-	QHBoxLayout *mainLayout = new QHBoxLayout(this);
-	mainLayout->setSpacing(5);
-
-	QTextBrowser *descriptionPane = new QTextBrowser(this);
-	descriptionPane->setText(tr("<h3>Welcome to Kadu Instant Messenger</h3>"
-		"<p>This wizard will help you to configure the basic settings of Kadu.</p>"
-		"<p>Please choose a preffered language and create a nickname</p>"));
-
-	mainLayout->addWidget(descriptionPane, 2);
-
-	QWidget *formWidget = new QWidget(this);
-	QFormLayout *formLayout = new QFormLayout(formWidget);
-
-	mainLayout->addWidget(formWidget, 5);
-
-	formLayout->addRow(new QLabel(tr("<h3>Profile setup</h3>"), this));
+	formLayout()->addRow(new QLabel(tr("<h3>Profile setup</h3>"), this));
 
 	LanguagesCombo = new QComboBox(this);
 	setLanguages();
 
-	formLayout->addRow(tr("Language") + ":", LanguagesCombo);
+	formLayout()->addRow(tr("Language") + ":", LanguagesCombo);
 
 	NickNameEdit = new QLineEdit(this);
 	NickNameEdit->setText(tr("Me"));
 	NickNameEdit->setMaximumWidth(300);
 
-	formLayout->addRow(tr("Nickname") + ":", NickNameEdit);
+	formLayout()->addRow(tr("Nickname") + ":", NickNameEdit);
 
 	QPushButton *proxyConnectionButton = new QPushButton(tr("Configure..."));
 
-	formLayout->addRow(tr("Proxy connection settings") + ":", proxyConnectionButton);
-	formLayout->addRow("", new QLabel(tr("<font size='-1'><i>for advanced users only</i></font>"), this));
+	formLayout()->addRow(tr("Proxy connection settings") + ":", proxyConnectionButton);
+	formLayout()->addRow("", new QLabel(tr("<font size='-1'><i>for advanced users only</i></font>"), this));
 }
 
 void ConfigWizardProfilePage::setLanguages()

@@ -20,12 +20,12 @@
 #ifndef CONFIG_WIZARD_PROFILE_PAGE_H
 #define CONFIG_WIZARD_PROFILE_PAGE_H
 
-#include <QtGui/QWizardPage>
+#include "gui/widgets/config-wizard-page.h"
 
 class QComboBox;
 class QLineEdit;
 
-class ConfigWizardProfilePage : public QWizardPage
+class ConfigWizardProfilePage : public ConfigWizardPage
 {
 	Q_OBJECT
 

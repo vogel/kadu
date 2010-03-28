@@ -20,9 +20,7 @@
 #include <QtGui/QComboBox>
 #include <QtGui/QFormLayout>
 #include <QtGui/QLabel>
-#include <QtGui/QHBoxLayout>
 #include <QtGui/QPushButton>
-#include <QtGui/QTextBrowser>
 
 #include "modules.h"
 #include "languages-manager.h"
@@ -30,8 +28,12 @@
 #include "config-wizard-applications-and-sound-page.h"
 
 ConfigWizardApplicationsAndSoundPage::ConfigWizardApplicationsAndSoundPage(QWidget *parent) :
-		QWizardPage(parent)
+		ConfigWizardPage(parent)
 {
+	setDescription(tr("<p>Please specify the default browser and e-mail program to be used with Kadu.</p>"
+		"<p>Kadu will use these programs to open links from chat messages and user descriptions.</p>"
+		"<p>Also, please select your sound driver for sound notifications.</p>"));
+
 	createGui();
 }
 
@@ -41,45 +43,30 @@ ConfigWizardApplicationsAndSoundPage::~ConfigWizardApplicationsAndSoundPage()
 
 void ConfigWizardApplicationsAndSoundPage::createGui()
 {
-	QHBoxLayout *mainLayout = new QHBoxLayout(this);
-	mainLayout->setSpacing(5);
+	formLayout()->addRow(new QLabel(tr("<h3>Applications and sound</h3>"), this));
 
-	QTextBrowser *descriptionPane = new QTextBrowser(this);
-	descriptionPane->setText(tr("<p>Please specify the default browser and e-mail program to be used with Kadu.</p>"
-		"<p>Kadu will use these programs to open links from chat messages and user descriptions.</p>"
-		"<p>Also, please select your sound driver for sound notifications.</p>"));
-
-	mainLayout->addWidget(descriptionPane, 2);
-
-	QWidget *formWidget = new QWidget(this);
-	QFormLayout *formLayout = new QFormLayout(formWidget);
-
-	mainLayout->addWidget(formWidget, 5);
-
-	formLayout->addRow(new QLabel(tr("<h3>Applications and sound</h3>"), this));
-
-	formLayout->addRow(new QLabel(tr("<b>Web and E-Mail</b>"), this));
+	formLayout()->addRow(new QLabel(tr("<b>Web and E-Mail</b>"), this));
 
 	BrowserCombo = new QComboBox(this);
 	setBrowsers();
 
-	formLayout->addRow(tr("Web Browser") + ":", BrowserCombo);
+	formLayout()->addRow(tr("Web Browser") + ":", BrowserCombo);
 
 	EMailCombo = new QComboBox(this);
 	setEMails();
 
-	formLayout->addRow(tr("E-Mail Application") + ":", EMailCombo);
+	formLayout()->addRow(tr("E-Mail Application") + ":", EMailCombo);
 
-	formLayout->addRow(new QLabel(tr("<b>Sound</b>"), this));
+	formLayout()->addRow(new QLabel(tr("<b>Sound</b>"), this));
 
 	SoundModulesCombo = new QComboBox(this);
 	setSoundDrivers();
 
-	formLayout->addRow(tr("Sound driver") + ":", SoundModulesCombo);
+	formLayout()->addRow(tr("Sound driver") + ":", SoundModulesCombo);
 
 	QPushButton *soundTestButton = new QPushButton(tr("Test ..."));
 
-	formLayout->addRow("", soundTestButton);
+	formLayout()->addRow("", soundTestButton);
 }
 
 void ConfigWizardApplicationsAndSoundPage::setBrowsers()

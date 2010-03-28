@@ -17,25 +17,39 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CONFIG_WIZARD_COMPLETED_PAGE_H
-#define CONFIG_WIZARD_COMPLETED_PAGE_H
+#include <QtGui/QFormLayout>
+#include <QtGui/QHBoxLayout>
 
-#include "gui/widgets/config-wizard-page.h"
+#include <QtGui/QTextBrowser>
 
-class QCheckBox;
+#include "config-wizard-page.h"
 
-class ConfigWizardCompletedPage : public ConfigWizardPage
+ConfigWizardPage::ConfigWizardPage(QWidget *parent) :
+		QWizardPage(parent)
 {
-	Q_OBJECT
+	createGui();
+}
 
-	QCheckBox *ConfigureAccouuntsCheckBox;
+ConfigWizardPage::~ConfigWizardPage()
+{
+}
 
-	void createGui();
+void ConfigWizardPage::createGui()
+{
+	QHBoxLayout *mainLayout = new QHBoxLayout(this);
+	mainLayout->setSpacing(5);
 
-public:
-	explicit ConfigWizardCompletedPage(QWidget *parent = 0);
-	virtual ~ConfigWizardCompletedPage();
+	DescriptionPane = new QTextBrowser(this);
 
-};
+	mainLayout->addWidget(DescriptionPane, 2);
 
-#endif // CONFIG_WIZARD_COMPLETED_PAGE_H
+	QWidget *formWidget = new QWidget(this);
+	FormLayout = new QFormLayout(formWidget);
+
+	mainLayout->addWidget(formWidget, 5);
+}
+
+void ConfigWizardPage::setDescription(const QString &description)
+{
+	DescriptionPane->setText(description);
+}

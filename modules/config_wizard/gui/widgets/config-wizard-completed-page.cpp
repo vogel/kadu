@@ -20,8 +20,6 @@
 #include <QtGui/QCheckBox>
 #include <QtGui/QFormLayout>
 #include <QtGui/QLabel>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QTextBrowser>
 
 #include "modules.h"
 #include "languages-manager.h"
@@ -29,8 +27,10 @@
 #include "config-wizard-completed-page.h"
 
 ConfigWizardCompletedPage::ConfigWizardCompletedPage(QWidget *parent) :
-		QWizardPage(parent)
+		ConfigWizardPage(parent)
 {
+	setDescription("<p>Confirm your wizard setting to start using Kadu.</p>");
+
 	createGui();
 }
 
@@ -40,24 +40,10 @@ ConfigWizardCompletedPage::~ConfigWizardCompletedPage()
 
 void ConfigWizardCompletedPage::createGui()
 {
-	QHBoxLayout *mainLayout = new QHBoxLayout(this);
-	mainLayout->setSpacing(5);
-
-	QTextBrowser *descriptionPane = new QTextBrowser(this);
-	descriptionPane->setText(tr("<p>Confirm your wizard setting to start using Kadu.</p>"));
-
-	mainLayout->addWidget(descriptionPane, 2);
-
-	QWidget *formWidget = new QWidget(this);
-	QFormLayout *formLayout = new QFormLayout(formWidget);
-
-	mainLayout->addWidget(formWidget, 5);
-
-	formLayout->addRow(new QLabel(tr("<h3>Configuration Wizard Completed/h3>"), this));
-
-	formLayout->addRow(new QLabel(tr("You are now done setting up Kadu! Click Finish to begin."), this));
+	formLayout()->addRow(new QLabel(tr("<h3>Configuration Wizard Completed/h3>"), this));
+	formLayout()->addRow(new QLabel(tr("You are now done setting up Kadu! Click Finish to begin."), this));
 
 	ConfigureAccouuntsCheckBox = new QCheckBox(tr("Go to Accounts Setting after closing this window"), this);
 
-	formLayout->addRow("", ConfigureAccouuntsCheckBox);
+	formLayout()->addRow("", ConfigureAccouuntsCheckBox);
 }
