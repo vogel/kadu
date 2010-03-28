@@ -2,9 +2,10 @@
 <configuration-ui>
 	<section name="Kadu" icon="kadu_icons/kadu-tab.png">
 		<tab name="Kadu">
-			<group-box name="Language">
+			<group-box name="General">
 				<combo-box caption="Language" config-section="General" config-item="Language" id="languages"
 					   tool-tip="Choose your language" />
+				<line-edit caption="Nickaname" config-section="General" config-item="Nick" />
 			</group-box>
 
 			<group-box name="Contacts list mode">
