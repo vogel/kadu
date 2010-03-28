@@ -173,6 +173,7 @@ void UserInfo::setupTab1()
 	// IP and DNS
 	e_addr = new QLineEdit(generalWidget);
 	e_addr->setBackgroundMode(Qt::PaletteButton);
+	e_addr->setName("user_ip_address_lineedit");
 
 	e_dnsname = new QLineEdit(generalWidget);
 	e_dnsname->setBackgroundMode(Qt::PaletteButton);
