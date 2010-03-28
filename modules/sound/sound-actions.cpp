@@ -102,13 +102,3 @@ void SoundActions::configurationUpdated()
 	SoundManager::instance()->setMute(!config_file.readBoolEntry("Sounds", "PlaySound"));
 	setMuteActionState();
 }
-
-void SoundActions::testSoundPlaying()
-{
-	kdebugf();
-
-	QString soundFile = SoundThemeManager::instance()->themes()->themePath() + SoundThemeManager::instance()->themes()->getThemeEntry("NewChat");
-	SoundManager::instance()->play(soundFile, true);
-
-	kdebugf2();
-}

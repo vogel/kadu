@@ -74,6 +74,9 @@ public:
 	bool isMuted() const;
 	int timeAfterLastSound() const;
 
+public slots:
+	void testSoundPlaying();
+
 };
 
 #endif // SOUND_MANAGER_H

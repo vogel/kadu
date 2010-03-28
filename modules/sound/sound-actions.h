@@ -61,9 +61,6 @@ public:
 
 	static SoundActions * instance();
 
-public slots:
-	void testSoundPlaying();
-
 };
 
 #endif // SOUND_ACTIONS_H

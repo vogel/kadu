@@ -33,8 +33,10 @@
 
 #include "configuration/configuration-file.h"
 #include "debug.h"
+#include "themes.h"
 
 #include "sound-play-thread.h"
+#include "sound-theme-manager.h"
 
 #include "sound-manager.h"
 
@@ -168,4 +170,14 @@ void SoundManager::play(const QString &path, bool volumeControl, double volume)
 {
 	if (Player)
 		PlayThread->play(Player, path, volumeControl, volume);
+}
+
+void SoundManager::testSoundPlaying()
+{
+	kdebugf();
+
+	QString soundFile = SoundThemeManager::instance()->themes()->themePath() + SoundThemeManager::instance()->themes()->getThemeEntry("NewChat");
+	play(soundFile, true);
+
+	kdebugf2();
 }
