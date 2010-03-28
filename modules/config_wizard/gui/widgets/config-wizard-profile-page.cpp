@@ -69,7 +69,7 @@ void ConfigWizardProfilePage::createGui()
 
 	formLayout->addRow(tr("Nickname") + ":", NickNameEdit);
 
-	QPushButton *proxyConnectionButton = new QPushButton(tr("Configure"));
+	QPushButton *proxyConnectionButton = new QPushButton(tr("Configure..."));
 
 	formLayout->addRow(tr("Proxy connection settings") + ":", proxyConnectionButton);
 	formLayout->addRow("", new QLabel(tr("<font size='-1'><i>for advanced users only</i></font>"), this));

@@ -20,7 +20,6 @@
 #include <QtGui/QComboBox>
 #include <QtGui/QFormLayout>
 #include <QtGui/QLabel>
-#include <QtGui/QLineEdit>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QPushButton>
 #include <QtGui/QTextBrowser>
