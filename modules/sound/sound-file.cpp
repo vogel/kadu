@@ -62,7 +62,7 @@ SoundFile::SoundFile(const char *path):length(0),data(NULL),channels(-1),speed(0
 	if (format == SF_FORMAT_FLOAT || format == SF_FORMAT_DOUBLE)
 	{
 		length *= channels;
-		data = new qint16[length];
+		data = new short int[length];
 		float *buffer = new float [length];
 		double scale;
 
@@ -74,15 +74,19 @@ SoundFile::SoundFile(const char *path):length(0),data(NULL),channels(-1),speed(0
 
 		int readcount = sf_read_float (f, buffer, length);
 		for (int m = 0; m < readcount; ++m)
-			data [m] = qint16(scale * buffer [m]);
+			data [m] = (short int)(scale * buffer [m]);
 		delete buffer;
 	}
 	else
 	{
 		length *= channels;
-		data = new qint16[length];
+		data = new short int[length];
 		sf_read_short (f, data, length);
 	}
+
+	printf("size of quint16: %ld\n", sizeof(qint16));
+	printf("size of short int: %ld\n", sizeof(short int));
+	printf("length is: %d\n", length);
 
 	sf_close(f);
 #endif

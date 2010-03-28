@@ -1,4 +1,5 @@
 set (SOURCES
+	alsa-device.cpp
 	alsa_sound.cpp
 )
 

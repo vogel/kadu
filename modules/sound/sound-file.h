@@ -34,7 +34,7 @@ class SoundFile
 	//klasa automagicznie przy pomocy libsndfile konwertuje wszystko na dzwiek 16 bitowy
 	public:
 	int length;
-	qint16 *data;
+	short int *data;
 	int channels;
 	int speed;
 	
@@ -42,7 +42,7 @@ class SoundFile
 	~SoundFile();
 	bool isOk();
 	void setVolume(float vol);
-	static void setVolume(qint16 *data, int length, float vol);
+	static void setVolume(short int *data, int length, float vol);
 };
 /** @} */
 #endif // KADU_SOUNDFILE_H

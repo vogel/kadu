@@ -7,28 +7,25 @@
 
 #define ALSA_PCM_NEW_HW_PARAMS_API
 #define ALSA_PCM_NEW_SW_PARAMS_API
+
 #include <alsa/asoundlib.h>
 
-#include "../sound/sound.h"
+#include "modules/sound/sound-player.h"
 
-class ALSAPlayerSlots : public QObject
+class ALSAPlayerSlots : public SoundPlayer
 {
 	Q_OBJECT
 
 	void createDefaultConfiguration();
 
 public:
-	ALSAPlayerSlots(QObject *parent = 0);
-	~ALSAPlayerSlots();
-	bool isOk();
+	explicit ALSAPlayerSlots(QObject *parent = 0);
+	virtual ~ALSAPlayerSlots();
 
-	static snd_pcm_t *alsa_open (const char *dev, int channels, int samplerate, bool play = true);
+	virtual bool isSimplePlayer() { return true; }
 
 public slots:
-	void openDevice(SoundDeviceType type, int sample_rate, int channels, SoundDevice* device);
-	void closeDevice(SoundDevice device);
-	void playSample(SoundDevice device, const int16_t* data, int length, bool* result);
-	void setFlushingEnabled(SoundDevice device, bool enabled);
+	virtual void playSound(const QString &path, bool volumeControl, double volume);
 
 };
 

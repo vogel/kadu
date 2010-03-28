@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
  * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2009 Piotr Galiszewski (piotrgaliszewski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,33 +17,31 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef KADU_AO_SOUND_H
-#define KADU_AO_SOUND_H
+#ifndef ALSA_DEVICE_H
+#define ALSA_DEVICE_H
 
-#include "modules/sound/sound-player.h"
+#include <QtCore/QString>
 
-class AOPlayThread;
-
-class AOPlayer : public SoundPlayer
+class AlsaDevice
 {
-	Q_OBJECT
+	snd_pcm_t *Device;
 
-	AOPlayThread *thread;
+	QString DeviceName;
+	int SampleRate;
+	int Channels;
+
+	snd_pcm_t * openDevice();
+	int xrunRecovery(int err);
 
 public:
-	explicit AOPlayer(QObject *parent = 0);
-	virtual ~AOPlayer();
+	AlsaDevice(const QString &deviceName, int sampleRate, int channels);
+	~AlsaDevice();
 
-	bool isOk();
+	bool open();
+	bool close();
 
-	virtual bool isSimplePlayer() { return true; }
-
-public slots:
-	virtual void playSound(const QString &path, bool volumeControl, double volume);
+	bool playSample(short int *sampleData, int length);
 
 };
 
-extern AOPlayer *ao_player;
-
-#endif
-
+#endif // ALSA_DEVICE_H
