@@ -52,11 +52,12 @@
 #include "gui/widgets/tool-tip-class-manager.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/syntax-editor-window.h"
+#include "misc/misc.h"
 #include "status/status.h"
 
 #include "debug.h"
 #include "icons-manager.h"
-#include "misc/misc.h"
+#include "languages-manager.h"
 
 #include "main-configuration-window.h"
 
@@ -249,25 +250,7 @@ void MainConfigurationWindow::setLanguages()
 {
 	ConfigComboBox *languages = dynamic_cast<ConfigComboBox *>(widget()->widgetById("languages"));
 
-	QStringList files;
-	files.append("kadu_pl.qm");
-	files.append("kadu_en.qm");
-	files.append("kadu_de.qm");
-	files.append("kadu_it.qm");
-
-	QStringList itemValues;
-	QStringList itemCaptions;
-
-	foreach(const QString &file, files)
-	{
-		QString itemValue = file.mid(5, file.length() - 8);
-		QString itemCaption = translateLanguage(qApp, itemValue, true);
-
-		itemValues.append(itemValue);
-		itemCaptions.append(itemCaption);
-	}
-
-	languages->setItems(itemValues, itemCaptions);
+	languages->setItems(LanguagesManager::languageValues(), LanguagesManager::languageNames());
 }
 
 void MainConfigurationWindow::setIconThemes()

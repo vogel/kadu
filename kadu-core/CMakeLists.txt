@@ -302,6 +302,7 @@ set (kadu_SRCS
 	http_client.cpp
 	icons-manager.cpp
 	ignore.cpp
+	languages-manager.cpp
 	modules.cpp
 	themes.cpp
 	updates.cpp
