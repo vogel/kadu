@@ -24,7 +24,7 @@
 
 #include "debug.h"
 
-#include "alsa_sound.h"
+#include "alsa-player.h"
 
 extern "C" int alsa_sound_init(bool firstLoad)
 {

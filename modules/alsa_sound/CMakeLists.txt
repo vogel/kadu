@@ -1,11 +1,11 @@
 set (SOURCES
 	alsa-device.cpp
 	alsa-module.cpp
-	alsa_sound.cpp
+	alsa-player.cpp
 )
 
 set (MOC_SOURCES
-	alsa_sound.h
+	alsa-player.h
 )
 
 set (TRANSLATION_SOURCES

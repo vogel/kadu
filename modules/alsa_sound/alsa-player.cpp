@@ -24,7 +24,7 @@
 
 #include <sys/time.h>
 
-#include "alsa_sound.h"
+#include "alsa-player.h"
 #include "configuration/configuration-file.h"
 #include "debug.h"
 #include "../sound/sound.h"
