@@ -69,8 +69,6 @@ SoundManager::SoundManager() :
 
 	setMute(!config_file.readBoolEntry("Sounds", "PlaySound"));
 
-	LastSoundTime.start();
-
 	PlayThread = new SoundPlayThread(this);
 	PlayThread->start();
 
@@ -121,32 +119,33 @@ bool SoundManager::isMuted() const
 	return Mute;
 }
 
-void SoundManager::setMute(const bool &enable)
+void SoundManager::setMute(bool enable)
 {
 	Mute = enable;
 }
 
-void SoundManager::playSound(const QString &soundName)
+void SoundManager::playFile(const QString &path, bool force)
+{
+	if (isMuted() && !force)
+		return;
+
+	if (QFile::exists(path))
+		playFile(path, config_file.readBoolEntry("Sounds", "VolumeControl"), 1.0 * config_file.readDoubleNumEntry("Sounds", "SoundVolume") / 100);
+}
+
+void SoundManager::playFile(const QString &path, bool volumeControl, double volume)
+{
+	if (Player)
+		PlayThread->play(Player, path, volumeControl, volume);
+}
+
+void SoundManager::playSoundByName(const QString &soundName)
 {
 	if (isMuted())
-	{
-		kdebugmf(KDEBUG_FUNCTION_END, "end: muted\n");
 		return;
-	}
 
-	if (LastSoundTime.elapsed() < 500)
-	{
-		kdebugmf(KDEBUG_FUNCTION_END, "end: too often, exiting\n");
-		return;
-	}
-
-	QString sound = config_file.readEntry("Sounds", soundName + "_sound");
-
-	if (QFile::exists(sound))
-	{
-		play(sound, config_file.readBoolEntry("Sounds", "VolumeControl"), 1.0 * config_file.readDoubleNumEntry("Sounds", "SoundVolume") / 100);
-		LastSoundTime.restart();
-	}
+	QString file = config_file.readEntry("Sounds", soundName + "_sound");
+	playFile(file);
 }
 
 void SoundManager::setPlayer(SoundPlayer *player)
@@ -154,30 +153,8 @@ void SoundManager::setPlayer(SoundPlayer *player)
 	Player = player;
 }
 
-void SoundManager::play(const QString &path, bool force)
-{
-	if (isMuted() && !force)
-	{
-		kdebugmf(KDEBUG_FUNCTION_END, "end: muted\n");
-		return;
-	}
-
-	if (QFile::exists(path))
-		play(path, config_file.readBoolEntry("Sounds", "VolumeControl"), 1.0 * config_file.readDoubleNumEntry("Sounds", "SoundVolume") / 100);
-}
-
-void SoundManager::play(const QString &path, bool volumeControl, double volume)
-{
-	if (Player)
-		PlayThread->play(Player, path, volumeControl, volume);
-}
-
 void SoundManager::testSoundPlaying()
 {
-	kdebugf();
-
 	QString soundFile = SoundThemeManager::instance()->themes()->themePath() + SoundThemeManager::instance()->themes()->getThemeEntry("NewChat");
-	play(soundFile, true);
-
-	kdebugf2();
+	playFile(soundFile, true);
 }

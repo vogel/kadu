@@ -200,7 +200,7 @@ void ConfigWizardApplicationsAndSoundPage::testSound()
 	changeSoundModule(SoundModulesCombo->currentText());
 
 	IsTestingSound = true;
-	SoundManager::instance()->play(dataPath("kadu/themes/sounds/default/msg.wav"), true);
+	SoundManager::instance()->playFile(dataPath("kadu/themes/sounds/default/msg.wav"), true);
 	IsTestingSound = false;
 }
 

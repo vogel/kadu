@@ -52,7 +52,7 @@ SoundConfigurationWidget::~SoundConfigurationWidget()
 
 void SoundConfigurationWidget::test()
 {
-	SoundManager::instance()->play(SoundFileSelectFile->file(), true);
+	SoundManager::instance()->playFile(SoundFileSelectFile->file(), true);
 }
 
 void SoundConfigurationWidget::saveNotifyConfigurations()

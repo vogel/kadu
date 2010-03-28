@@ -54,7 +54,7 @@ SoundNotifier::~SoundNotifier()
 
 void SoundNotifier::notify(Notification *notification)
 {
-	SoundManager::instance()->playSound(notification->key());
+	SoundManager::instance()->playSoundByName(notification->key());
 }
 
 NotifierConfigurationWidget * SoundNotifier::createConfigurationWidget(QWidget* parent)

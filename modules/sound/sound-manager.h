@@ -47,7 +47,6 @@ class SOUNDAPI SoundManager : public QObject
 
 	SoundPlayer *Player;
 
-	QTime LastSoundTime;
 	bool Mute;
 
 	SoundPlayThread *PlayThread;
@@ -59,9 +58,11 @@ class SOUNDAPI SoundManager : public QObject
 	void createDefaultConfiguration();
 
 public slots:
-	void play(const QString &path, bool force = false);
-	void play(const QString &path, bool volumeControl, double volume);
-	void setMute(const bool& enable);
+	void playFile(const QString &path, bool force = false);
+	void playFile(const QString &path, bool volumeControl, double volume);
+	void playSoundByName(const QString &soundName);
+
+	void setMute(bool enable);
 
 public:
 	static void createInstance();
@@ -69,10 +70,8 @@ public:
 	static SoundManager * instance();
 
 	void setPlayer(SoundPlayer *player);
-	void playSound(const QString &soundName);
 
 	bool isMuted() const;
-	int timeAfterLastSound() const;
 
 public slots:
 	void testSoundPlaying();
