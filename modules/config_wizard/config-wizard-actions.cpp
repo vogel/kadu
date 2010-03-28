@@ -71,7 +71,7 @@ void ConfigWizardActions::showConfigWizard()
 	kdebugf();
 
 	ConfigWizardWindow *wizard = new ConfigWizardWindow();
-	wizard->wizardStart();
+	wizard->show();
 }
 
 void ConfigWizardActions::showConfigWizardActionActivated(QAction *sender, bool toggled)

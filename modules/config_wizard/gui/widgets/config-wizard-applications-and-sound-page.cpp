@@ -181,16 +181,16 @@ void ConfigWizardApplicationsAndSoundPage::emailChanged(int index)
 void ConfigWizardApplicationsAndSoundPage::changeSoundModule(const QString &newSoundModule)
 {
 	QString currentSoundModule = ModulesManager::instance()->moduleProvides("sound_driver");
-	if (currentSoundModule != newSoundModule)
-	{
-		if (ModulesManager::instance()->moduleIsLoaded(currentSoundModule))
-			ModulesManager::instance()->deactivateModule(currentSoundModule);
+	if (currentSoundModule == newSoundModule)
+		return;
 
-		currentSoundModule = newSoundModule;
+	if (ModulesManager::instance()->moduleIsLoaded(currentSoundModule))
+		ModulesManager::instance()->deactivateModule(currentSoundModule);
 
-		if (!currentSoundModule.isEmpty() &&  ModulesManager::instance()->moduleIsInstalled(currentSoundModule))
-			ModulesManager::instance()->activateModule(currentSoundModule);
-	}
+	currentSoundModule = newSoundModule;
+
+	if (!currentSoundModule.isEmpty() &&  ModulesManager::instance()->moduleIsInstalled(currentSoundModule))
+		ModulesManager::instance()->activateModule(currentSoundModule);
 }
 
 void ConfigWizardApplicationsAndSoundPage::testSound()
@@ -211,7 +211,7 @@ bool ConfigWizardApplicationsAndSoundPage::validatePage()
     return !IsTestingSound;
 }
 
-void ConfigWizardApplicationsAndSoundPage::initializePage()
+void ConfigWizardApplicationsAndSoundPage::initializeApplications()
 {
 	QString browserIndexName = config_file.readEntry("Chat", "WebBrowserNo");
 	QString browserName;
@@ -248,10 +248,43 @@ void ConfigWizardApplicationsAndSoundPage::initializePage()
 	emailChanged(foundMailIndex);
 }
 
-void ConfigWizardApplicationsAndSoundPage::acceptPage()
+void ConfigWizardApplicationsAndSoundPage::initializeSound()
+{
+	OldSoundModule = ModulesManager::instance()->moduleProvides("sound_driver");
+
+	if (!OldSoundModule.isEmpty())
+		SoundModulesCombo->setCurrentIndex(SoundModulesCombo->findText(OldSoundModule));
+	else
+		SoundModulesCombo->setCurrentIndex(1); // just exclude "none"*/
+}
+
+void ConfigWizardApplicationsAndSoundPage::initializePage()
+{
+	initializeApplications();
+	initializeSound();
+}
+
+void ConfigWizardApplicationsAndSoundPage::acceptApplications()
 {
 	config_file.writeEntry("Chat", "WebBrowserNo", MainConfigurationWindow::browserIndexToString(BrowserCombo->currentIndex()));
 	config_file.writeEntry("Chat", "WebBrowser", BrowserLineEdit->text());
 	config_file.writeEntry("Chat", "EmailClientNo", MainConfigurationWindow::emailIndexToString(EMailCombo->currentIndex()));
 	config_file.writeEntry("Chat", "MailClient", EMailLineEdit->text());
+}
+
+void ConfigWizardApplicationsAndSoundPage::acceptSound()
+{
+	changeSoundModule(SoundModulesCombo->currentText());
+	ModulesManager::instance()->saveLoadedModules();
+}
+
+void ConfigWizardApplicationsAndSoundPage::acceptPage()
+{
+	acceptApplications();
+	acceptSound();
+}
+
+void ConfigWizardApplicationsAndSoundPage::rejectPage()
+{
+    changeSoundModule(OldSoundModule);
 }

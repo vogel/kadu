@@ -1,18 +1,26 @@
-#ifndef KADU_CONFIG_WIZARD_H
-#define KADU_CONFIG_WIZARD_H
+/*
+ * %kadu copyright begin%
+ * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * %kadu copyright end%
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-#include <QtCore/QList>
-#include <QtGui/QGridLayout>
+#ifndef CONFIG_WIZARD_WINDOW_H
+#define CONFIG_WIZARD_WINDOW_H
+
 #include <QtGui/QWizard>
-
-#include "misc/misc.h"
-
-class ActionDescription;
-class QCheckBox;
-class QComboBox;
-class QLineEdit;
-class QPushButton;
-class QRadioButton;
 
 class ConfigWizardPage;
 
@@ -26,22 +34,6 @@ class ConfigWizardWindow : public QWizard
 
 	QList<ConfigWizardPage *> ConfigWizardPages;
 
-	QComboBox *browserCombo;
-	QLineEdit *browserCommandLineEdit;
-	QComboBox *mailCombo;
-	QLineEdit *mailCommandLineEdit;
-
-	QComboBox *soundModuleCombo;
-	QPushButton *soundTest;
-
-	QString backupSoundModule;
-
-	void createSoundPage();
-
-	void loadSoundOptions();
-
-	void saveSoundOptions();
-
 private slots:
 	void acceptedSlot();
 	void rejectedSlot();
@@ -52,11 +44,8 @@ public:
 
 	void addPage(ConfigWizardPage *page);
 
-public slots:
-	void wizardStart();
-
 };
 
 /** @} */
 
-#endif
+#endif // CONFIG_WIZARD_WINDOW_H

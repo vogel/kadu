@@ -21,8 +21,8 @@
 #include <QtGui/QFormLayout>
 #include <QtGui/QLabel>
 
-#include "modules.h"
-#include "languages-manager.h"
+#include "accounts/account-manager.h"
+#include "gui/windows/your-accounts.h"
 
 #include "config-wizard-completed-page.h"
 
@@ -40,10 +40,20 @@ ConfigWizardCompletedPage::~ConfigWizardCompletedPage()
 
 void ConfigWizardCompletedPage::createGui()
 {
-	formLayout()->addRow(new QLabel(tr("<h3>Configuration Wizard Completed/h3>"), this));
-	formLayout()->addRow(new QLabel(tr("You are now done setting up Kadu! Click Finish to begin."), this));
+	formLayout()->addRow(new QLabel(tr("<h3>Configuration Wizard Completed</h3>"), this));
 
 	ConfigureAccouuntsCheckBox = new QCheckBox(tr("Go to Accounts Setting after closing this window"), this);
 
 	formLayout()->addRow("", ConfigureAccouuntsCheckBox);
+}
+
+void ConfigWizardCompletedPage::initializePage()
+{
+	ConfigureAccouuntsCheckBox->setChecked(AccountManager::instance()->items().isEmpty());
+}
+
+void ConfigWizardCompletedPage::acceptPage()
+{
+    if (ConfigureAccouuntsCheckBox)
+		YourAccounts::instance()->show();
 }

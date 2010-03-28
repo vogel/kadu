@@ -36,6 +36,7 @@ class ConfigWizardApplicationsAndSoundPage : public ConfigWizardPage
 	QComboBox *SoundModulesCombo;
 
 	bool IsTestingSound;
+	QString OldSoundModule;
 
 	void createGui();
 	void setBrowsers();
@@ -43,6 +44,12 @@ class ConfigWizardApplicationsAndSoundPage : public ConfigWizardPage
 	void setSoundDrivers();
 
 	void changeSoundModule(const QString &newSoundModule);
+
+	void initializeApplications();
+	void initializeSound();
+
+	void acceptApplications();
+	void acceptSound();
 
 private slots:
 	void browserChanged(int index);
@@ -56,6 +63,7 @@ public:
     virtual bool validatePage();
     virtual void initializePage();
     virtual void acceptPage();
+    virtual void rejectPage();
 
 };
 

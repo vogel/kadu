@@ -36,6 +36,9 @@ public:
 	explicit ConfigWizardCompletedPage(QWidget *parent = 0);
 	virtual ~ConfigWizardCompletedPage();
 
+    virtual void initializePage();
+	virtual void acceptPage();
+
 };
 
 #endif // CONFIG_WIZARD_COMPLETED_PAGE_H
