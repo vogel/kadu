@@ -30,6 +30,7 @@
 #include "icons-manager.h"
 #include "modules.h"
 
+#include "gui/widgets/config-wizard-applications-and-sound-page.h"
 #include "gui/widgets/config-wizard-profile-page.h"
 
 #include "config-wizard-window.h"
@@ -55,6 +56,7 @@ ConfigWizardWindow::ConfigWizardWindow(QWidget *parent)
 #endif
 
 	addPage(new ConfigWizardProfilePage(this));
+	addPage(new ConfigWizardApplicationsAndSoundPage(this));
 
 	createGGAccountPage();
 	createApplicationsPage();
