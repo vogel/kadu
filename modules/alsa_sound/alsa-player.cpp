@@ -37,7 +37,7 @@
  * @{
  */
 
-ALSAPlayerSlots::ALSAPlayerSlots(QObject *parent) : SoundPlayer(parent)
+AlsaPlayer::AlsaPlayer(QObject *parent) : SoundPlayer(parent)
 {
 	kdebugf();
 
@@ -46,22 +46,20 @@ ALSAPlayerSlots::ALSAPlayerSlots(QObject *parent) : SoundPlayer(parent)
 	kdebugf2();
 }
 
-ALSAPlayerSlots::~ALSAPlayerSlots()
+AlsaPlayer::~AlsaPlayer()
 {
 	kdebugf();
 
 	kdebugf2();
 }
 
-void ALSAPlayerSlots::createDefaultConfiguration()
+void AlsaPlayer::createDefaultConfiguration()
 {
 	config_file.addVariable("Sounds", "ALSAOutputDevice", "default");
 }
 
-void ALSAPlayerSlots::playSound(const QString &path, bool volumeControl, double volume)
+void AlsaPlayer::playSound(const QString &path, bool volumeControl, double volume)
 {
-	printf("play sound from alsa...\n");
-
 	SoundFile sound(qPrintable(path));
 
 	if (!sound.isOk())
@@ -82,7 +80,7 @@ void ALSAPlayerSlots::playSound(const QString &path, bool volumeControl, double 
 /*	if (dev->player)
 		snd_pcm_nonblock (dev->player, !enabled);*/
 
-ALSAPlayerSlots *alsa_player_slots;
+AlsaPlayer *alsa_player_slots;
 
 /** @} */
 
