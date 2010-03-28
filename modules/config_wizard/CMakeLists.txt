@@ -1,4 +1,5 @@
 set (SOURCES
+	gui/widgets/config-wizard-profile-page.cpp
 	gui/windows/config-wizard-window.cpp
 
 	config-wizard-actions.cpp
@@ -6,6 +7,7 @@ set (SOURCES
 )
 
 set (MOC_SOURCES
+	gui/widgets/config-wizard-profile-page.h
 	gui/windows/config-wizard-window.h
 
 	config-wizard-actions.h
