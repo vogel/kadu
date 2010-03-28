@@ -84,7 +84,7 @@ bool SoundPlayThread::play(const char *path, bool volumeControl, float volume)
 	bool ret = false;
 	SoundFile *sound = new SoundFile(path);
 	
-	if (!sound->isOk())
+	if (!sound->valid())
 	{
 		kdebugm(KDEBUG_INFO, "broken sound file?\n");
 		delete sound;
@@ -92,17 +92,17 @@ bool SoundPlayThread::play(const char *path, bool volumeControl, float volume)
 	}
 	
 	kdebugm(KDEBUG_INFO, "\n");
-	kdebugm(KDEBUG_INFO, "length:   %d\n", sound->length);
-	kdebugm(KDEBUG_INFO, "speed:    %d\n", sound->speed);
-	kdebugm(KDEBUG_INFO, "channels: %d\n", sound->channels);
+	kdebugm(KDEBUG_INFO, "length:   %d\n", sound->length());
+	kdebugm(KDEBUG_INFO, "speed:    %d\n", sound->sampleRate());
+	kdebugm(KDEBUG_INFO, "channels: %d\n", sound->channels());
 	
 	if (volumeControl)
 		sound->setVolume(volume);
 
 	SoundDevice dev;
-	dev = sound_manager->openDevice(SoundDevicePlayOnly, sound->speed, sound->channels);
+	dev = sound_manager->openDevice(SoundDevicePlayOnly, sound->sampleRate(), sound->channels());
 	sound_manager->setFlushingEnabled(dev, true);
-	ret = sound_manager->playSample(dev, sound->data, sound->length*sizeof(sound->data[0]));
+	ret = sound_manager->playSample(dev, sound->data(), sound->length() * sizeof(sound->data()[0]));
 	sound_manager->closeDevice(dev);
 
 	delete sound;

@@ -71,7 +71,7 @@ bool AOPlayThread::play(const char *path, bool &checkAgain, bool volumeControl, 
 	kdebugf();
 	SoundFile *sound = new SoundFile(path);
 
-	if (!sound->isOk())
+	if (!sound->valid())
 	{
 		kdebugmf(KDEBUG_ERROR, "sound is not ok?\n");
 		delete sound;
@@ -79,9 +79,9 @@ bool AOPlayThread::play(const char *path, bool &checkAgain, bool volumeControl, 
 		return false;
 	}
 	kdebugm(KDEBUG_INFO, "\n");
-	kdebugm(KDEBUG_INFO, "length:   %d\n", sound->length);
-	kdebugm(KDEBUG_INFO, "speed:    %d\n", sound->speed);
-	kdebugm(KDEBUG_INFO, "channels: %d\n", sound->channels);
+	kdebugm(KDEBUG_INFO, "length:   %d\n", sound->length());
+	kdebugm(KDEBUG_INFO, "speed:    %d\n", sound->sampleRate());
+	kdebugm(KDEBUG_INFO, "channels: %d\n", sound->channels());
 
 	if (volumeControl)
 		sound->setVolume(volume);
@@ -100,8 +100,8 @@ bool AOPlayThread::play(const char *path, bool &checkAgain, bool volumeControl, 
 
 	ao_sample_format format;
 	format.bits = 16;
-	format.channels = sound->channels;
-	format.rate = sound->speed;
+	format.channels = sound->channels();
+	format.rate = sound->sampleRate();
 	format.byte_format = AO_FMT_LITTLE;
 
 	ao_device *device = ao_open_live(driver_id, &format, NULL);
@@ -114,7 +114,7 @@ bool AOPlayThread::play(const char *path, bool &checkAgain, bool volumeControl, 
 		return false;
 	}
 
-	int ret = ao_play(device, (char *)sound->data, sound->length * sizeof(short));
+	int ret = ao_play(device, (char *)sound->data(), sound->length() * sizeof(short));
 	if (0 == ret)
 	{
 		checkAgain = true;

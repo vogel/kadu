@@ -72,7 +72,7 @@ void AlsaPlayer::playSound(const QString &path, bool volumeControl, double volum
 {
 	SoundFile sound(qPrintable(path));
 
-	if (!sound.isOk())
+	if (!sound.valid())
 	{
 		kdebugm(KDEBUG_INFO, "broken sound file?\n");
 		return;
@@ -81,8 +81,8 @@ void AlsaPlayer::playSound(const QString &path, bool volumeControl, double volum
 	if (volumeControl)
 		sound.setVolume(volume);
 
-	AlsaDevice device(config_file.readEntry("Sounds", "ALSAOutputDevice"), sound.speed, sound.channels);
+	AlsaDevice device(config_file.readEntry("Sounds", "ALSAOutputDevice"), sound.sampleRate(), sound.channels());
 	device.open();
-	device.playSample(sound.data, sound.length);
+	device.playSample(sound.data(), sound.length());
 	device.close();
 }

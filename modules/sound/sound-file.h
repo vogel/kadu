@@ -21,28 +21,40 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef KADU_SOUNDFILE_H
-#define KADU_SOUNDFILE_H
+#ifndef SOUND_FILE_H
+#define SOUND_FILE_H
 
-#include <QtGlobal>
+#ifndef Q_OS_WIN
+	#include <sndfile.h>
+#endif
 
-/** @ingroup sound
- * @{
- */
+#include <QtCore/QString>
+
 class SoundFile
 {
-	//klasa automagicznie przy pomocy libsndfile konwertuje wszystko na dzwiek 16 bitowy
-	public:
-	int length;
-	short int *data;
-	int channels;
-	int speed;
-	
-	SoundFile(const char *path);
+	int Length;
+	short int *Data;
+	int Channels;
+	int SampleRate;
+
+	void loadData(const QString &path);
+	void loadFloatSamples(SNDFILE *f);
+	void loadIntSamples(SNDFILE *f);
+
+public:
+	static void setVolume(short int *data, int length, float volume);
+
+	SoundFile(const QString &path);
 	~SoundFile();
-	bool isOk();
-	void setVolume(float vol);
-	static void setVolume(short int *data, int length, float vol);
+
+	bool valid();
+	void setVolume(float volume);
+
+	int length() { return Length; }
+	short int * data() { return Data; }
+	int channels() { return Channels; }
+	int sampleRate() { return SampleRate; }
+
 };
-/** @} */
-#endif // KADU_SOUNDFILE_H
+
+#endif // SOUND_FILE_H

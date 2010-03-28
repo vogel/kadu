@@ -21,72 +21,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGlobal>
-
-#ifndef Q_OS_WIN
-#include <sndfile.h>
-#endif
-#include <string.h>
-
-#include "sound-file.h"
 #include "debug.h"
 
-/**
- * @ingroup sound
- * @{
- */
-SoundFile::SoundFile(const char *path):length(0),data(NULL),channels(-1),speed(0)
-{
-#ifndef Q_OS_WIN
-	SF_INFO info;
-	memset(&info, 0, sizeof(info));
-	SNDFILE *f = sf_open(path, SFM_READ, &info);
-	if (!f)
-	{
-		fprintf(stderr, "cannot open file '%s'\n", path);
-		return;
-	}
-	kdebugm(KDEBUG_INFO, "frames:\t\t%llu\n", (long long unsigned)info.frames);
-	kdebugm(KDEBUG_INFO, "samplerate:\t%d\n", info.samplerate);
-	kdebugm(KDEBUG_INFO, "channels:\t%d\n", info.channels);
-	kdebugm(KDEBUG_INFO, "format:\t\t0x%x\n", info.format);
-	kdebugm(KDEBUG_INFO, "sections:\t%d\n", info.sections);
-	kdebugm(KDEBUG_INFO, "seekable:\t%d\n", info.seekable);
-	
-	length = info.frames;
-	channels = info.channels;
-	speed = info.samplerate;
-	
-	long format = info.format & SF_FORMAT_SUBMASK;
-
-	if (format == SF_FORMAT_FLOAT || format == SF_FORMAT_DOUBLE)
-	{
-		length *= channels;
-		data = new short int[length];
-		float *buffer = new float [length];
-		double scale;
-
-		sf_command (f, SFC_CALC_SIGNAL_MAX, &scale, sizeof (scale)) ;
-		if (scale < 1e-10)
-			scale = 1.0 ;
-		else
-			scale = 32700.0 / scale;
-
-		int readcount = sf_read_float (f, buffer, length);
-		for (int m = 0; m < readcount; ++m)
-			data [m] = (short int)(scale * buffer [m]);
-		delete buffer;
-	}
-	else
-	{
-		length *= channels;
-		data = new short int[length];
-		sf_read_short (f, data, length);
-	}
-
-	sf_close(f);
-#endif
-}
+#include "sound-file.h"
 
 #define SAMPLE_MAX 0x7fff
 #define SAMPLE_MIN -0x7ffe
@@ -105,24 +42,86 @@ void SoundFile::setVolume(qint16 *data, int length, float vol)
 	}
 }
 
-void SoundFile::setVolume(float vol)
+SoundFile::SoundFile(const QString &file) :
+		Length(0), Data(0), Channels(0), SampleRate(0)
 {
-	setVolume(data, length, vol);
+	loadData(file);
 }
+
 
 SoundFile::~SoundFile()
 {
-	if (data != 0)
+	if (Data)
 	{
-		delete [] data;
-		data = NULL;
+		delete []Data;
+		Data = 0;
 	}
 }
 
-bool SoundFile::isOk()
+void SoundFile::loadData(const QString &path)
 {
-	return (length!=0);
+#ifndef Q_OS_WIN
+	SF_INFO info;
+	memset(&info, 0, sizeof(info));
+	SNDFILE *f = sf_open(path.toUtf8().constData(), SFM_READ, &info);
+	if (!f)
+	{
+		fprintf(stderr, "cannot open file '%s'\n", qPrintable(path));
+		return;
+	}
+
+	kdebugm(KDEBUG_INFO, "frames:\t\t%llu\n", (long long unsigned)info.frames);
+	kdebugm(KDEBUG_INFO, "samplerate:\t%d\n", info.samplerate);
+	kdebugm(KDEBUG_INFO, "channels:\t%d\n", info.channels);
+	kdebugm(KDEBUG_INFO, "format:\t\t0x%x\n", info.format);
+	kdebugm(KDEBUG_INFO, "sections:\t%d\n", info.sections);
+	kdebugm(KDEBUG_INFO, "seekable:\t%d\n", info.seekable);
+
+	Length = info.frames * info.channels;
+	Channels = info.channels;
+	SampleRate = info.samplerate;
+
+	Data = new short int[Length];
+
+	long format = info.format & SF_FORMAT_SUBMASK;
+
+	if (format == SF_FORMAT_FLOAT || format == SF_FORMAT_DOUBLE)
+		loadFloatSamples(f);
+	else
+		loadIntSamples(f);
+
+	sf_close(f);
+#endif
 }
 
-/** @} */
+void SoundFile::loadFloatSamples(SNDFILE *f)
+{
+	float *buffer = new float[Length];
+	double scale;
 
+	sf_command(f, SFC_CALC_SIGNAL_MAX, &scale, sizeof(scale)) ;
+	if (scale < 1e-10)
+		scale = 1.0 ;
+	else
+		scale = 32700.0 / scale;
+
+	int readcount = sf_read_float(f, buffer, Length);
+	for (int m = 0; m < readcount; ++m)
+		Data[m] = (short int)(scale * buffer[m]);
+	delete buffer;
+}
+
+void SoundFile::loadIntSamples(SNDFILE *f)
+{
+	sf_read_short(f, Data, Length);
+}
+
+bool SoundFile::valid()
+{
+	return 0 != Length;
+}
+
+void SoundFile::setVolume(float vol)
+{
+	setVolume(Data, Length, vol);
+}
