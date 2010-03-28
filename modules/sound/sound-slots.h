@@ -86,10 +86,6 @@ class SoundSlots : public QObject, public ConfigurationAwareObject
 	SoundDevice SamplePlayingTestDevice;
 	qint16*    SamplePlayingTestSample;
 
-	MessageDialog* SampleRecordingTestMsgBox;
-	SoundDevice SampleRecordingTestDevice;
-	qint16*    SampleRecordingTestSample;
-
 	MessageDialog* FullDuplexTestMsgBox;
 	SoundDevice FullDuplexTestDevice;
 	qint16*    FullDuplexTestSample;
@@ -100,12 +96,7 @@ private slots:
 	void muteUnmuteSounds();
 	void testSamplePlaying();
 	void samplePlayingTestSamplePlayed(SoundDevice device);
-	void testSampleRecording();
-	void sampleRecordingTestSampleRecorded(SoundDevice device);
-	void sampleRecordingTestSamplePlayed(SoundDevice device);
-	void testFullDuplex();
-	void fullDuplexTestSampleRecorded(SoundDevice device);
-	void closeFullDuplexTest();
+
 protected:
 	void configurationUpdated();
 public:

@@ -1,6 +1,5 @@
 set (SOURCES
 	sample-play-thread.cpp
-	sample-record-thread.cpp
 	sound.cpp
 	sound-event.cpp
 	sound-file.cpp
@@ -11,7 +10,6 @@ set (SOURCES
 
 set (MOC_SOURCES
 	sample-play-thread.h
-	sample-record-thread.h
 	sound.h
 	sound-play-thread.h
 	sound-player.h

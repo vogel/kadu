@@ -116,8 +116,7 @@ void SoundConfigurationWidget::themeChanged(int index)
 SoundSlots::SoundSlots(bool firstLoad, QObject *parent)
 	: QObject(parent),
 	soundfiles(), soundNames(), soundTexts(), SamplePlayingTestMsgBox(0), SamplePlayingTestDevice(0),
-	SamplePlayingTestSample(0), SampleRecordingTestMsgBox(0), SampleRecordingTestDevice(0),
-	SampleRecordingTestSample(0), FullDuplexTestMsgBox(0), FullDuplexTestDevice(0), FullDuplexTestSample(0)
+	SamplePlayingTestSample(0), FullDuplexTestMsgBox(0), FullDuplexTestDevice(0), FullDuplexTestSample(0)
 {
 	kdebugf();
 
@@ -248,123 +247,6 @@ void SoundSlots::samplePlayingTestSamplePlayed(SoundDevice device)
 		SamplePlayingTestMsgBox->deleteLater();
 		SamplePlayingTestMsgBox = NULL;
 	}
-	kdebugf2();
-}
-
-void SoundSlots::testSampleRecording()
-{
-	kdebugf();
-	if (SampleRecordingTestMsgBox != NULL)
-		return;
-	SampleRecordingTestDevice = sound_manager->openDevice(SoundDeviceRecordOnly, 8000);
-	if (SampleRecordingTestDevice == NULL)
-	{
-		MessageDialog::msg(tr("Opening sound device failed."), false, "32x32/dialog-warning.png");
-		return;
-	}
-	SampleRecordingTestSample = new qint16[8000 * 3];//3 seconds of 16-bit sound with 8000Hz frequency
-
-	sound_manager->enableThreading(SampleRecordingTestDevice);
-	sound_manager->setFlushingEnabled(SampleRecordingTestDevice, true);
-	connect(sound_manager, SIGNAL(sampleRecorded(SoundDevice)), this, SLOT(sampleRecordingTestSampleRecorded(SoundDevice)));
-
-	SampleRecordingTestMsgBox = new MessageDialog(tr("Testing sample recording. Please talk now (3 seconds)."));
-	SampleRecordingTestMsgBox->show();
-
-	sound_manager->recordSample(SampleRecordingTestDevice, SampleRecordingTestSample, sizeof(qint16) * 8000 * 3);
-	kdebugf2();
-}
-
-void SoundSlots::sampleRecordingTestSampleRecorded(SoundDevice device)
-{
-	kdebugf();
-	if (device == SampleRecordingTestDevice)
-	{
-		delete SampleRecordingTestMsgBox;
-		SampleRecordingTestMsgBox = NULL;
-		disconnect(sound_manager, SIGNAL(sampleRecorded(SoundDevice)), this, SLOT(sampleRecordingTestSampleRecorded(SoundDevice)));
-
-		sound_manager->closeDevice(device);
-		SampleRecordingTestDevice = device = sound_manager->openDevice(SoundDevicePlayOnly, 8000);
-		if (device == NULL)
-		{
-			delete[] SampleRecordingTestSample;
-			MessageDialog::msg(tr("Cannot open sound device for playing!"), false, "32x32/dialog-warning.png");
-			kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "end: cannot open play device\n");
-			return;
-		}
-
-		sound_manager->enableThreading(SampleRecordingTestDevice);
-		sound_manager->setFlushingEnabled(SampleRecordingTestDevice, true);
-		SampleRecordingTestMsgBox = new MessageDialog(tr("You should hear your recorded sample now."));
-		SampleRecordingTestMsgBox->show();
-
-		connect(sound_manager, SIGNAL(samplePlayed(SoundDevice)), this, SLOT(sampleRecordingTestSamplePlayed(SoundDevice)));
-
-		sound_manager->playSample(device, SampleRecordingTestSample, sizeof(qint16) * 8000 * 3);
-	}
-	kdebugf2();
-}
-
-void SoundSlots::sampleRecordingTestSamplePlayed(SoundDevice device)
-{
-	kdebugf();
-	if (device == SampleRecordingTestDevice)
-	{
-		disconnect(sound_manager, SIGNAL(samplePlayed(SoundDevice)), this, SLOT(sampleRecordingTestSamplePlayed(SoundDevice)));
-		sound_manager->closeDevice(device);
-		delete[] SampleRecordingTestSample;
-		SampleRecordingTestSample = NULL;
-		SampleRecordingTestMsgBox->deleteLater();
-		SampleRecordingTestMsgBox = NULL;
-	}
-	kdebugf2();
-}
-
-void SoundSlots::testFullDuplex()
-{
-	kdebugf();
-	if (FullDuplexTestMsgBox != NULL)
-		return;
-	FullDuplexTestDevice = sound_manager->openDevice(SoundDevicePlayAndRecord, 8000);
-	if (FullDuplexTestDevice == NULL)
-	{
-		MessageDialog::msg(tr("Opening sound device failed."), false, "32x32/dialog-warning.png");
-		return;
-	}
-	FullDuplexTestSample = new qint16[8000];
-
-	sound_manager->enableThreading(FullDuplexTestDevice);
-	connect(sound_manager, SIGNAL(sampleRecorded(SoundDevice)), this, SLOT(fullDuplexTestSampleRecorded(SoundDevice)));
-
-	FullDuplexTestMsgBox = new MessageDialog(tr("Testing fullduplex. Please talk now.\nYou should hear it with one second delay."), MessageDialog::OK);
-	connect(FullDuplexTestMsgBox, SIGNAL(okPressed()), this, SLOT(closeFullDuplexTest()));
-	FullDuplexTestMsgBox->show();
-
-	sound_manager->recordSample(FullDuplexTestDevice, FullDuplexTestSample, sizeof(qint16) * 8000);
-	kdebugf2();
-}
-
-void SoundSlots::fullDuplexTestSampleRecorded(SoundDevice device)
-{
-	kdebugf();
-	if (device == FullDuplexTestDevice)
-	{
-		sound_manager->playSample(device, FullDuplexTestSample, sizeof(qint16) * 8000);
-		sound_manager->recordSample(device, FullDuplexTestSample, sizeof(qint16) * 8000);
-	}
-	kdebugf2();
-}
-
-void SoundSlots::closeFullDuplexTest()
-{
-	kdebugf();
-	disconnect(sound_manager, SIGNAL(sampleRecorded(SoundDevice)), this, SLOT(fullDuplexTestSampleRecorded(SoundDevice)));
-	sound_manager->closeDevice(FullDuplexTestDevice);
-	delete[] FullDuplexTestSample;
-	FullDuplexTestSample = NULL;
-	FullDuplexTestMsgBox->deleteLater();
-	FullDuplexTestMsgBox = NULL;
 	kdebugf2();
 }
 

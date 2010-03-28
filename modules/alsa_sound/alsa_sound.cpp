@@ -36,10 +36,10 @@
 struct ALSADevice
 {
 	snd_pcm_t *player;
-	snd_pcm_t *recorder;
+
 	int channels;
-	bool recorderStarted;
-	ALSADevice() : player(NULL), recorder(NULL), channels(-1), recorderStarted(false)
+
+	ALSADevice() : player(NULL), channels(-1)
 	{
 	}
 };
@@ -277,7 +277,7 @@ void ALSAPlayerSlots::openDevice(SoundDeviceType type, int sample_rate, int chan
 	if (!dev)
 		return;
 
-	if (type == SoundDevicePlayOnly || type == SoundDevicePlayAndRecord)
+	if (type == SoundDevicePlayOnly)
 	{
 		dev->player = alsa_open (qPrintable(config_file.readEntry("Sounds", "ALSAOutputDevice")), channels, sample_rate, true);
 		if (!dev->player)
@@ -288,19 +288,7 @@ void ALSAPlayerSlots::openDevice(SoundDeviceType type, int sample_rate, int chan
 			return;
 		}
 	}
-	if (type == SoundDeviceRecordOnly || type == SoundDevicePlayAndRecord)
-	{
-		dev->recorder = alsa_open (qPrintable(config_file.readEntry("Sounds", "ALSAOutputDevice")), channels, sample_rate, false);
-		if (!dev->recorder)
-		{
-			if (dev->player)
-				snd_pcm_close(dev->player);
-			delete dev;
-			device = 0;
-			kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_WARNING,"end: cannot open record device\n");
-			return;
-		}
-	}
+
 	dev->channels = channels;
 	*device = (SoundDevice)dev;
 	kdebugf2();
@@ -314,8 +302,6 @@ void ALSAPlayerSlots::closeDevice(SoundDevice device)
 		return;
 	if (dev->player)
 		snd_pcm_close (dev->player);
-	if (dev->recorder)
-		snd_pcm_close (dev->recorder);
 	delete dev;
 	kdebugf2();
 }
@@ -415,81 +401,6 @@ void ALSAPlayerSlots::playSample(SoundDevice device, const int16_t* data, int le
 		kdebugmf(KDEBUG_ERROR, "device closed!\n");
 }
 
-void ALSAPlayerSlots::recordSample(SoundDevice device, int16_t* data, int length, bool* result)
-{
-//	kdebugf();
-	ALSADevice *dev = (ALSADevice*)device;
-	*result = (dev!=NULL && dev->recorder!=NULL);
-	char *cdata = (char *)data;
-	if (*result)
-	{
-		if (!dev->recorderStarted)
-		{
-			kdebugm(KDEBUG_INFO, "starting recording\n");
-			// explicitly start recording, because on newer alsa (1.0.12 or 1.0.13)
-			// snd_pcm_avail_update() returns 0 if device is not started
-			if (snd_pcm_start(dev->recorder) == 0)
-				dev->recorderStarted = true;
-		}
-		int res, reed = 0;
-		int availErrorsCount = 0;
-		while (reed < length)
-		{
-			if ((res = snd_pcm_wait(dev->recorder, 100)) < 0)
-				xrun_recovery(dev->recorder, res);
-			kdebugm(KDEBUG_DUMP, "snd_pcm_wait(recorder): %d\n", res);
-			int toread = (length - reed) / (2 * dev->channels);
-			int avail = snd_pcm_avail_update(dev->recorder);
-			kdebugm(KDEBUG_DUMP, "snd_pcm_avail_update(recorder): %d\n", avail);
-			if (avail < 0)
-			{
-				xrun_recovery(dev->recorder, avail);
-				avail = snd_pcm_avail_update(dev->recorder);
-				kdebugm(KDEBUG_DUMP, "snd_pcm_avail_update(recorder): %d\n", avail);
-			}
-
-			if (avail <= 0)
-			{
-				kdebugm(KDEBUG_WARNING, "recorder avail error: %d\n", avail);
-				++availErrorsCount;
-				avail = 0;
-			}
-			else
-				availErrorsCount = 0;
-
-			if (availErrorsCount > 10)
-			{
-				*result = false;
-				break;
-			}
-
-			if (avail < toread)
-				toread = avail;
-
-			kdebugm(KDEBUG_DUMP, "recording %d frames, bytes already recorded: %d\n", toread, reed);
-			res = snd_pcm_readi(dev->recorder, cdata + reed, toread);
-			kdebugm(KDEBUG_DUMP, "recorded: %d\n", res);
-			if (res == -EAGAIN || res == -EINVAL)
-				// don't know why it is needed when we get EINVAL, but it works...
-				continue;
-			if (res < 0)
-			{
-				if (xrun_recovery(dev->recorder, res) < 0)
-				{
-					fprintf(stderr, "alsa read error: %s\n", snd_strerror(res));
-					fflush(stderr);
-					*result = false;
-					break;
-				}
-			}
-			else
-				reed += res * 2 * dev->channels;
-		}
-	}
-	else
-		kdebugmf(KDEBUG_ERROR, "device closed!\n");
-}
-
 void ALSAPlayerSlots::setFlushingEnabled(SoundDevice device, bool /*enabled*/)
 {
 	kdebugf();
@@ -497,9 +408,7 @@ void ALSAPlayerSlots::setFlushingEnabled(SoundDevice device, bool /*enabled*/)
 	if (!dev)
 		return;
 /*	if (dev->player)
-		snd_pcm_nonblock (dev->player, !enabled);
-	if (dev->recorder)
-		snd_pcm_nonblock (dev->recorder, !enabled);*/
+		snd_pcm_nonblock (dev->player, !enabled);*/
 }
 
 ALSAPlayerSlots *alsa_player_slots;

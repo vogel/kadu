@@ -49,7 +49,6 @@
 #include "debug.h"
 
 #include "sample-play-thread.h"
-#include "sample-record-thread.h"
 #include "sound-exports.h"
 #include "sound-file.h"
 #include "sound-play-thread.h"
@@ -95,7 +94,7 @@ extern "C" KADU_EXPORT void sound_close()
 SoundManager::SoundManager(bool firstLoad, const QString& name, const QString& configname) :
 		Notifier("Sound", "Play a sound", IconsManager::instance()->iconByPath("16x16/audio-volume-high.png")),
 		Player(0), MyThemes(new Themes(name, configname)),
-		LastSoundTime(), Mute(false), PlayingThreads(), RecordingThreads(),
+		LastSoundTime(), Mute(false),
 		PlayThread(new SoundPlayThread()), SimplePlayerCount(0)
 {
 	kdebugf();
@@ -352,14 +351,6 @@ void SoundManager::closeDevice(SoundDevice device)
 		PlayingThreads.remove(device);
 		playing_thread->deleteLater();
 	}
-	if (RecordingThreads.contains(device))
-	{
-		SampleRecordThread* recording_thread = RecordingThreads[device];
-		disconnect(recording_thread, SIGNAL(sampleRecorded(SoundDevice)), this, SIGNAL(sampleRecorded(SoundDevice)));
-		recording_thread->stop();
-		RecordingThreads.remove(device);
-		recording_thread->deleteLater();
-	}
 
 	if (!Player)
 		return;
@@ -379,14 +370,6 @@ void SoundManager::enableThreading(SoundDevice device)
 		connect(playing_thread, SIGNAL(playSample(SoundDevice, const qint16, int)), this, SLOT(playSampleSlot(SoundDevice, const qint16, int)));
 		playing_thread->start();
 		PlayingThreads.insert(device, playing_thread);
-	}
-	if (!RecordingThreads.contains(device))
-	{
-		SampleRecordThread* recording_thread = new SampleRecordThread(device);
-		connect(recording_thread, SIGNAL(sampleRecorded(SoundDevice)), this, SIGNAL(sampleRecorded(SoundDevice)));
-		connect(recording_thread, SIGNAL(recordSample(SoundDevice, qint16, int)), this, SLOT(recordSampleSlot(SoundDevice, qint16, int)));
-		recording_thread->start();
-		RecordingThreads.insert(device, recording_thread);
 	}
 	kdebugf2();
 }
@@ -427,35 +410,6 @@ bool SoundManager::playSampleSlot(SoundDevice device, const qint16 *data, int le
 
 	if (Player)
 		return Player->playSample(device, data, length);
-	else
-		return false;
-}
-
-bool SoundManager::recordSample(SoundDevice device, qint16 *data, int length)
-{
-	kdebugf();
-
-	bool result;
-	if (RecordingThreads.contains(device))
-	{
-		RecordingThreads[device]->recordSample(data, length);
-		result = true;
-	}
-	else if (Player)
-		result = Player->recordSample(device, data, length);
-	else
-		result = false;
-
-	kdebugf2();
-	return result;
-}
-
-bool SoundManager::recordSampleSlot(SoundDevice device, qint16 *data, int length)
-{
-	kdebugf();
-
-	if (Player)
-		return Player->recordSample(device, data, length);
 	else
 		return false;
 }

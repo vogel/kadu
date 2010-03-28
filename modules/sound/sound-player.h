@@ -62,15 +62,6 @@ public slots:
 		return false;
 	};
 
-	virtual bool recordSample(SoundDevice device, qint16 *data, int length)
-	{
-		Q_UNUSED(device)
-		Q_UNUSED(data)
-		Q_UNUSED(length)
-
-		return false;
-	};
-
 	virtual void setFlushingEnabled(SoundDevice device, bool enabled)
 	{
 		Q_UNUSED(device)

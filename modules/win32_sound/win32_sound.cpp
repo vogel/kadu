@@ -78,9 +78,6 @@ WIN32PlayerSlots::WIN32PlayerSlots()
 	connect(sound_manager, SIGNAL(playSampleImpl(SoundDevice, const qint16*, int, bool*)),
 		this, SLOT(playSample(SoundDevice, const qint16*, int, bool*)),
 		Qt::DirectConnection);
-	connect(sound_manager, SIGNAL(recordSampleImpl(SoundDevice, qint16*, int, bool*)),
-		this, SLOT(recordSample(SoundDevice, qint16*, int, bool*)),
-		Qt::DirectConnection);
 
   inNames.clear();
   inValues.clear();
@@ -232,34 +229,6 @@ void WIN32PlayerSlots::playSample(SoundDevice device, const qint16* data, int le
 	}
 	while(!(hdr.dwFlags&WHDR_DONE)) {};
 	waveOutUnprepareHeader(dev->out, &hdr, sizeof(WAVEHDR));
-	kdebugf2();
-}
-
-void WIN32PlayerSlots::recordSample(SoundDevice device, qint16* data, int length, bool* result)
-{
-	kdebugf();
-	WAVEHDR hdr;
-	WIN32SoundDevice *dev=(WIN32SoundDevice*)device;
-
-	if(!dev){
-		kdebugm(KDEBUG_ERROR, "device not openend\n");
-		*result=false;
-		return;
-	}
-
-	hdr.lpData=(LPSTR)data;
-	hdr.dwBufferLength=length;
-	hdr.dwBytesRecorded=0;
-	hdr.dwFlags=0;
-	hdr.dwLoops=0;
-	waveInPrepareHeader(dev->in, &hdr, sizeof(WAVEHDR));
-	MMRESULT res=waveInAddBuffer(dev->in, &hdr, sizeof(WAVEHDR));
-	if(res!=MMSYSERR_NOERROR){
-		char buff[256];
-		waveInGetErrorText(res, buff, 255);
-		kdebugm(KDEBUG_ERROR, "Unable to play waveform data: %s\n", buff);
-	}
-	while (waveInUnprepareHeader(dev->in, &hdr, sizeof(WAVEHDR))==WAVERR_STILLPLAYING) {};
 	kdebugf2();
 }
 
