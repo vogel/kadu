@@ -12,6 +12,7 @@
 * chat: use account avatar in adium styles (WhE)
 * storage: fixed very stupid bug in whole Storage layer (WhE)
 * jabber: fixed StateGone in XMPP (Juzef)
+* sound: cleanup (Vogel)
 
 +++ version 0.6.6-alpha7
 * screenshot: module rewritten, now based on QGraphicsView (Vogel)
