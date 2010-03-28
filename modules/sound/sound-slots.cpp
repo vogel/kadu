@@ -51,6 +51,7 @@
  * @ingroup sound
  * @{
  */
+#include "sound-theme-manager.h"
 
 SoundConfigurationWidget::SoundConfigurationWidget(QWidget *parent) :
 		NotifierConfigurationWidget(parent), currentNotifyEvent("")
@@ -149,7 +150,7 @@ SoundSlots::~SoundSlots()
 
 void SoundSlots::themeChanged(const QString &theme)
 {
-	sound_manager->theme()->setTheme(theme);
+	SoundThemeManager::instance()->applyTheme(theme);
 }
 
 void SoundSlots::muteActionActivated(QAction  *action, bool is_on)
@@ -187,51 +188,10 @@ void SoundSlots::testSamplePlaying()
 	if (SamplePlayingTestMsgBox != NULL)
 		return;
 
-	QString chatsound = sound_manager->theme()->themePath() + sound_manager->theme()->getThemeEntry("NewChat");
+	QString chatsound = SoundThemeManager::instance()->themes()->themePath() + SoundThemeManager::instance()->themes()->getThemeEntry("NewChat");
 
-	/* Dorr: I know that this brokes the test sample idea but
-	   at least there are no noises when playing sample songs
-	   from sound themes.
-	*/
-#if 1
 	sound_manager->play(chatsound, true);
-#else
-	QFile file(chatsound);
-	if (!file.open(IO_ReadOnly))
-	{
-		MessageDialog::msg(tr("Opening test sample file failed."), false, "32x32/dialog-warning.png");
-		return;
-	}
-	// we are allocating 1 more word just in case of file.size() % sizeof(qint16) != 0
-	SamplePlayingTestSample = new qint16[file.size() / sizeof(qint16) + 1];
-	if (file.readBlock((char*)SamplePlayingTestSample, file.size()) != (unsigned)file.size())
-	{
-		MessageDialog::msg(tr("Reading test sample file failed."), false, "32x32/dialog-warning.png");
-		file.close();
-		delete[] SamplePlayingTestSample;
-		SamplePlayingTestSample = NULL;
-		return;
-	}
-	file.close();
 
-	SamplePlayingTestDevice = sound_manager->openDevice(PLAY_ONLY, 11025);
-	if (SamplePlayingTestDevice == NULL)
-	{
-		MessageDialog::msg(tr("Opening sound device failed."), false, "32x32/dialog-warning.png");
-		delete[] SamplePlayingTestSample;
-		SamplePlayingTestSample = NULL;
-		return;
-	}
-
-	sound_manager->enableThreading(SamplePlayingTestDevice);
-	sound_manager->setFlushingEnabled(SamplePlayingTestDevice, true);
-	connect(sound_manager, SIGNAL(samplePlayed(SoundDevice)), this, SLOT(samplePlayingTestSamplePlayed(SoundDevice)));
-
-	SamplePlayingTestMsgBox = new MessageDialog(tr("Testing sample playing. You should hear some sound now."));
-	SamplePlayingTestMsgBox->show();
-
-	sound_manager->playSample(SamplePlayingTestDevice, SamplePlayingTestSample, file.size());
-#endif
 	kdebugf2();
 }
 

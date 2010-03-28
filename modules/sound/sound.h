@@ -74,7 +74,7 @@ enum SoundDeviceType
 };
 
 
-class SOUNDAPI SoundManager : public Notifier, public ConfigurationUiHandler
+class SOUNDAPI SoundManager : public Notifier
 {
     Q_OBJECT
 	
@@ -82,9 +82,6 @@ class SOUNDAPI SoundManager : public Notifier, public ConfigurationUiHandler
 
 	SoundPlayer *Player;
 
-	Themes *MyThemes;
-	ConfigComboBox *ThemesComboBox;
-	PathListEdit *ThemesPaths;
 	SoundConfigurationWidget *ConfigurationWidget;
 
 	QTime LastSoundTime;
@@ -97,16 +94,10 @@ class SOUNDAPI SoundManager : public Notifier, public ConfigurationUiHandler
 	void connectNotify(const char *signal);
 	void disconnectNotify(const char *signal);
 
-	void applyTheme(const QString &themeName);
 	void playSound(const QString &soundName);
 
 	void import_0_6_5_configuration();
 	void createDefaultConfiguration();
-
-private slots:
-	void setSoundThemes();
-	void configurationWindowApplied();
-	void soundFileEdited();
 
 public slots:
 	void play(const QString &path, bool force = false);
@@ -114,17 +105,14 @@ public slots:
 	void setMute(const bool& enable);
 
 public:
-	SoundManager(bool firstLoad, const QString &name, const QString &configname);
+	SoundManager(bool firstLoad);
 	virtual ~SoundManager();
 
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 	virtual NotifierConfigurationWidget * createConfigurationWidget(QWidget *parent = 0);
 
 	virtual void notify(Notification *notification);
 
 	void setPlayer(SoundPlayer *player);
-
-	Themes * theme();
 
 	bool isMuted() const;
 	int timeAfterLastSound() const;
@@ -132,6 +120,9 @@ public:
 };
 
 extern SOUNDAPI SoundManager *sound_manager;
+
+class SoundSlots;
+extern SOUNDAPI SoundSlots *sound_slots;
 /** @} */
 
 #endif

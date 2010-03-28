@@ -17,40 +17,31 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "debug.h"
+#ifndef SOUND_THEME_MANAGER_H
+#define SOUND_THEME_MANAGER_H
 
-#include "configuration/gui/sound-configuration-ui-handler.h"
+#include <QtCore/QString>
 
-#include "sound-theme-manager.h"
-#include "sound.h"
+class Themes;
 
-extern "C" KADU_EXPORT int sound_init(bool firstLoad)
+class SoundThemeManager
 {
-	kdebugf();
+	static SoundThemeManager * Instance;
 
-	SoundThemeManager::createInstance();
+	Themes *MyThemes;
 
-	new SoundManager(firstLoad);
+	SoundThemeManager();
+	~SoundThemeManager();
 
-	SoundConfigurationUiHandler::registerConfigurationUi();
+public:
+	static void createInstance();
+	static void destroyInstance();
+	static SoundThemeManager * instance();
 
-	qRegisterMetaType<SoundDevice>("SoundDevice");
-	qRegisterMetaType<SoundDeviceType>("SoundDeviceType");
+	void applyTheme(const QString &themeName);
 
-	kdebugf2();
-	return 0;
-}
+	Themes * themes() { return MyThemes; }
 
-extern "C" KADU_EXPORT void sound_close()
-{
-	kdebugf();
+};
 
-	SoundConfigurationUiHandler::unregisterConfigurationUi();
-
-	delete sound_manager;
-	sound_manager = 0;
-
-	SoundThemeManager::destroyInstance();
-
-	kdebugf2();
-}
+#endif // SOUND_THEME_MANAGER_H

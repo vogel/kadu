@@ -48,12 +48,15 @@
 #include "parser/parser.h"
 #include "debug.h"
 
+#include "configuration/gui/sound-configuration-ui-handler.h"
+
 #include "sample-play-thread.h"
 #include "sound-exports.h"
 #include "sound-file.h"
 #include "sound-play-thread.h"
 #include "sound-player.h"
 #include "sound-slots.h"
+#include "sound-theme-manager.h"
 
 #include "sound.h"
 
@@ -65,9 +68,9 @@
 SOUNDAPI SoundManager *sound_manager = NULL;
 SoundSlots *sound_slots;
 
-SoundManager::SoundManager(bool firstLoad, const QString& name, const QString& configname) :
+SoundManager::SoundManager(bool firstLoad) :
 		Notifier("Sound", "Play a sound", IconsManager::instance()->iconByPath("16x16/audio-volume-high.png")),
-		Player(0), MyThemes(new Themes(name, configname)),
+		Player(0),
 		LastSoundTime(), Mute(false),
 		PlayThread(new SoundPlayThread()), SimplePlayerCount(0)
 {
@@ -83,9 +86,9 @@ SoundManager::SoundManager(bool firstLoad, const QString& name, const QString& c
 	sound_manager = this;
 	sound_slots = new SoundSlots(firstLoad, this);
 
-	MyThemes->setPaths(config_file.readEntry("Sounds", "SoundPaths").split(QRegExp("(;|:)"), QString::SkipEmptyParts));
+	SoundThemeManager::instance()->themes()->setPaths(config_file.readEntry("Sounds", "SoundPaths").split(QRegExp("(;|:)"), QString::SkipEmptyParts));
 
-	QStringList soundThemes = MyThemes->themes();
+	QStringList soundThemes = SoundThemeManager::instance()->themes()->themes();
 	QString soundTheme = config_file.readEntry("Sounds", "SoundTheme");
 	if (!soundThemes.isEmpty() && (soundTheme != "Custom") && !soundThemes.contains(soundTheme))
 	{
@@ -94,7 +97,7 @@ SoundManager::SoundManager(bool firstLoad, const QString& name, const QString& c
 	}
 
 	if (soundTheme != "custom")
-		applyTheme(soundTheme);
+		SoundThemeManager::instance()->applyTheme(soundTheme);
 
 	NotificationManager::instance()->registerNotifier(this);
 
@@ -116,78 +119,13 @@ SoundManager::~SoundManager()
 	delete PlayThread;
 	delete sound_slots;
 	sound_slots = 0;
-	delete MyThemes;
 
 	kdebugf2();
 }
 
-void SoundManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
-{
-	connect(mainConfigurationWindow, SIGNAL(configurationWindowApplied()), this, SLOT(configurationWindowApplied()));
-
-	connect(mainConfigurationWindow->widget()->widgetById("sound/use"), SIGNAL(toggled(bool)),
-		mainConfigurationWindow->widget()->widgetById("sound/theme"), SLOT(setEnabled(bool)));
-	connect(mainConfigurationWindow->widget()->widgetById("sound/use"), SIGNAL(toggled(bool)),
-		mainConfigurationWindow->widget()->widgetById("sound/volume"), SLOT(setEnabled(bool)));
-	connect(mainConfigurationWindow->widget()->widgetById("sound/use"), SIGNAL(toggled(bool)),
-		mainConfigurationWindow->widget()->widgetById("sound/samples"), SLOT(setEnabled(bool)));
-
-	connect(mainConfigurationWindow->widget()->widgetById("sound/enableVolumeControl"), SIGNAL(toggled(bool)),
-		mainConfigurationWindow->widget()->widgetById("sound/volumeControl"), SLOT(setEnabled(bool)));
-
-	connect(mainConfigurationWindow->widget()->widgetById("sound/testPlay"), SIGNAL(clicked()), sound_slots, SLOT(testSamplePlaying()));
-	connect(mainConfigurationWindow->widget()->widgetById("sound/testRecord"), SIGNAL(clicked()), sound_slots, SLOT(testSampleRecording()));
-	connect(mainConfigurationWindow->widget()->widgetById("sound/testDuplex"), SIGNAL(clicked()), sound_slots, SLOT(testFullDuplex()));
-
-	ThemesComboBox = dynamic_cast<ConfigComboBox *>(mainConfigurationWindow->widget()->widgetById("sound/themes"));
-	connect(ThemesComboBox, SIGNAL(activated(int)), ConfigurationWidget, SLOT(themeChanged(int)));
-	connect(ThemesComboBox, SIGNAL(activated(const QString &)), sound_slots, SLOT(themeChanged(const QString &)));
-	ConfigurationWidget->themeChanged(ThemesComboBox->currentIndex());
-
-	ThemesPaths = dynamic_cast<PathListEdit *>(mainConfigurationWindow->widget()->widgetById("soundPaths"));
-	connect(ThemesPaths, SIGNAL(changed()), sound_manager, SLOT(setSoundThemes()));
-
-	connect(ConfigurationWidget, SIGNAL(soundFileEdited()), this, SLOT(soundFileEdited()));
-
-	setSoundThemes();
-}
-
 NotifierConfigurationWidget * SoundManager::createConfigurationWidget(QWidget *parent)
 {
-	ConfigurationWidget = new SoundConfigurationWidget(parent);
-	return ConfigurationWidget;
-}
-
-void SoundManager::setSoundThemes()
-{
-	MyThemes->setPaths(ThemesPaths->pathList());
-
-	QStringList soundThemeNames = MyThemes->themes();
-	soundThemeNames.sort();
-
-	QStringList soundThemeValues = soundThemeNames;
-
-	soundThemeNames.prepend(tr("Custom"));
-	soundThemeValues.prepend("Custom");
-
-	ThemesComboBox->setItems(soundThemeValues, soundThemeNames);
-	ThemesComboBox->setCurrentIndex(ThemesComboBox->findText(MyThemes->theme()));
-}
-
-void SoundManager::soundFileEdited()
-{
-	if (ThemesComboBox->currentIndex() != 0)
-		ThemesComboBox->setCurrentIndex(0);
-}
-
-void SoundManager::configurationWindowApplied()
-{
-	kdebugf();
-
-	if (ThemesComboBox->currentIndex() != 0)
-		applyTheme(ThemesComboBox->currentText());
-
-	ConfigurationWidget->themeChanged(ThemesComboBox->currentIndex());
+	return SoundConfigurationUiHandler::instance()->createConfigurationWidget(parent);
 }
 
 void SoundManager::import_0_6_5_configuration()
@@ -210,24 +148,6 @@ void SoundManager::createDefaultConfiguration()
 	config_file.addVariable("Sounds", "SoundTheme", "default");
 	config_file.addVariable("Sounds", "SoundVolume", 100);
 	config_file.addVariable("Sounds", "VolumeControl", false);
-}
-
-void SoundManager::applyTheme(const QString &themeName)
-{
-	MyThemes->setTheme(themeName);
-	QMap<QString, QString> entries = MyThemes->getEntries();
-	QMap<QString, QString>::const_iterator i = entries.constBegin();
-
-	while (i != entries.constEnd())
-	{
-		config_file.writeEntry("Sounds", i.key() + "_sound", MyThemes->themePath() + i.value());
-		++i;
-	}
-}
-
-Themes *SoundManager::theme()
-{
-	return MyThemes;
 }
 
 bool SoundManager::isMuted() const

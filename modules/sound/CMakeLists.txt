@@ -1,4 +1,5 @@
 set (SOURCES
+	configuration/gui/sound-configuration-ui-handler.cpp
 	sample-play-thread.cpp
 	sound.cpp
 	sound-event.cpp
@@ -7,9 +8,11 @@ set (SOURCES
 	sound-params.cpp
 	sound-play-thread.cpp
 	sound-slots.cpp
+	sound-theme-manager.cpp
 )
 
 set (MOC_SOURCES
+	configuration/gui/sound-configuration-ui-handler.h
 	sample-play-thread.h
 	sound.h
 	sound-play-thread.h
