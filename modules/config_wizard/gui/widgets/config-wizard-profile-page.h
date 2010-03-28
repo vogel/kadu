@@ -22,11 +22,18 @@
 
 #include <QtGui/QWizardPage>
 
+class QComboBox;
+class QLineEdit;
+
 class ConfigWizardProfilePage : public QWizardPage
 {
 	Q_OBJECT
 
+	QComboBox *LanguagesCombo;
+	QLineEdit *NickNameEdit;
+
 	void createGui();
+	void setLanguages();
 
 public:
 	explicit ConfigWizardProfilePage(QWidget *parent = 0);
