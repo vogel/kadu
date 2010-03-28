@@ -65,32 +65,6 @@
 SOUNDAPI SoundManager *sound_manager = NULL;
 SoundSlots *sound_slots;
 
-extern "C" KADU_EXPORT int sound_init(bool firstLoad)
-{
-	kdebugf();
-
-	new SoundManager(firstLoad, "sounds", "sound.conf");
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/sound.ui"));
-	MainConfigurationWindow::registerUiHandler(sound_manager);
-
-	qRegisterMetaType<SoundDevice>("SoundDevice");
-	qRegisterMetaType<SoundDeviceType>("SoundDeviceType");
-
-	kdebugf2();
-	return 0;
-}
-
-extern "C" KADU_EXPORT void sound_close()
-{
-	kdebugf();
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/sound.ui"));
-	MainConfigurationWindow::unregisterUiHandler(sound_manager);
-
-	delete sound_manager;
-	sound_manager = 0;
-	kdebugf2();
-}
-
 SoundManager::SoundManager(bool firstLoad, const QString& name, const QString& configname) :
 		Notifier("Sound", "Play a sound", IconsManager::instance()->iconByPath("16x16/audio-volume-high.png")),
 		Player(0), MyThemes(new Themes(name, configname)),
@@ -104,7 +78,6 @@ SoundManager::SoundManager(bool firstLoad, const QString& name, const QString& c
 
 	LastSoundTime.start();
 
-	printf("Starting play thread...\n");
 	PlayThread->start();
 
 	sound_manager = this;

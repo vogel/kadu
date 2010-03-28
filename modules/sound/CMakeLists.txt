@@ -3,6 +3,7 @@ set (SOURCES
 	sound.cpp
 	sound-event.cpp
 	sound-file.cpp
+	sound-module.cpp
 	sound-params.cpp
 	sound-play-thread.cpp
 	sound-slots.cpp
