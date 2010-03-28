@@ -36,7 +36,6 @@ namespace Phonon
 
 class PhononPlayer : public SoundPlayer
 {
-	Q_OBJECT
 	Q_DISABLE_COPY(PhononPlayer);
 
 	static PhononPlayer * Instance;
@@ -52,7 +51,6 @@ public:
 	static void destroyInstance();
 	static PhononPlayer * instance();
 
-public slots:
 	virtual void playSound(const QString &path, bool volumeControl, double volume);
 
 };

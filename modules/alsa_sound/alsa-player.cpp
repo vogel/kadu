@@ -53,8 +53,7 @@ AlsaPlayer * AlsaPlayer::instance()
 	return Instance;
 }
 
-AlsaPlayer::AlsaPlayer(QObject *parent) :
-		SoundPlayer(parent)
+AlsaPlayer::AlsaPlayer()
 {
 	createDefaultConfiguration();
 }

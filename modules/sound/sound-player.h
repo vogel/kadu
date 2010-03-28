@@ -30,10 +30,9 @@ class SOUNDAPI SoundPlayer : public QObject
 	Q_OBJECT
 
 public:
-	SoundPlayer(QObject *parent = 0) : QObject(parent) {}
+	SoundPlayer() {}
 	virtual ~SoundPlayer() {}
 
-public slots:
 	virtual void playSound(const QString &sound, bool volumeControl, double vol) = 0;
 
 };

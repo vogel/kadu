@@ -40,18 +40,15 @@ class AlsaPlayer : public SoundPlayer
 
 	void createDefaultConfiguration();
 
+	AlsaPlayer();
+	virtual ~AlsaPlayer();
+
 public:
 	static void createInstance();
 	static void destroyInstance();
 
 	static AlsaPlayer * instance();
 
-	explicit AlsaPlayer(QObject *parent = 0);
-	virtual ~AlsaPlayer();
-
-	virtual bool isSimplePlayer() { return true; }
-
-public slots:
 	virtual void playSound(const QString &path, bool volumeControl, double volume);
 
 };

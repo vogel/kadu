@@ -72,8 +72,6 @@ void PhononPlayer::playSound(const QString &path, bool volumeControl, double vol
 	if (volumeControl)
 		Output->setVolume(volumes);
 
-	printf("playing by phonon, file: %s\n", qPrintable(path));
-
 	Media->setCurrentSource(Phonon::MediaSource(path));
 	Media->play();
 
