@@ -20,9 +20,7 @@ class QRadioButton;
  */
 class ConfigWizardWindow : public QWizard
 {
-    Q_OBJECT
-
-	bool testingSound;
+	Q_OBJECT
 
 	QComboBox *browserCombo;
 	QLineEdit *browserCommandLineEdit;
@@ -43,16 +41,12 @@ class ConfigWizardWindow : public QWizard
 	void saveApplicationsOptions();
 	void saveSoundOptions();
 
-	void changeSoundModule(const QString &newModule);
-
 private slots:
 	void acceptedSlot();
 	void rejectedSlot();
 
 	void browserChanged(int index);
 	void emailChanged(int index);
-
-	void testSound();
 
 protected:
 	void closeEvent(QCloseEvent *e);

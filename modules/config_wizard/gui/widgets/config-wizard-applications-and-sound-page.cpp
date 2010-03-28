@@ -22,13 +22,15 @@
 #include <QtGui/QLabel>
 #include <QtGui/QPushButton>
 
+#include "modules/sound/sound.h"
+
 #include "modules.h"
 #include "languages-manager.h"
 
 #include "config-wizard-applications-and-sound-page.h"
 
 ConfigWizardApplicationsAndSoundPage::ConfigWizardApplicationsAndSoundPage(QWidget *parent) :
-		ConfigWizardPage(parent)
+		ConfigWizardPage(parent), IsTestingSound(false)
 {
 	setDescription(tr("<p>Please specify the default browser and e-mail program to be used with Kadu.</p>"
 		"<p>Kadu will use these programs to open links from chat messages and user descriptions.</p>"
@@ -65,6 +67,7 @@ void ConfigWizardApplicationsAndSoundPage::createGui()
 	formLayout()->addRow(tr("Sound driver") + ":", SoundModulesCombo);
 
 	QPushButton *soundTestButton = new QPushButton(tr("Test ..."));
+	connect(soundTestButton, SIGNAL(clicked(bool)), this, SLOT(testSound()));
 
 	formLayout()->addRow("", soundTestButton);
 }
@@ -139,4 +142,32 @@ void ConfigWizardApplicationsAndSoundPage::setSoundDrivers()
 	soundModules.prepend("- Select Sound Configuration -");
 
 	SoundModulesCombo->addItems(soundModules);
+}
+
+void ConfigWizardApplicationsAndSoundPage::changeSoundModule(const QString &newSoundModule)
+{
+	QString currentSoundModule = ModulesManager::instance()->moduleProvides("sound_driver");
+	if (currentSoundModule != newSoundModule)
+	{
+		if (ModulesManager::instance()->moduleIsLoaded(currentSoundModule))
+			ModulesManager::instance()->deactivateModule(currentSoundModule);
+
+		currentSoundModule = newSoundModule;
+
+		if (!currentSoundModule.isEmpty() &&  ModulesManager::instance()->moduleIsInstalled(currentSoundModule))
+			ModulesManager::instance()->activateModule(currentSoundModule);
+	}
+}
+
+void ConfigWizardApplicationsAndSoundPage::testSound()
+{
+#ifndef Q_OS_MAC
+	sound_manager->stop();
+#endif
+
+	changeSoundModule(SoundModulesCombo->currentText());
+
+	IsTestingSound = true;
+	sound_manager->play(dataPath("kadu/themes/sounds/default/msg.wav"), true);
+	IsTestingSound = false;
 }

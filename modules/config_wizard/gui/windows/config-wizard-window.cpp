@@ -42,7 +42,7 @@
  */
 
 ConfigWizardWindow::ConfigWizardWindow(QWidget *parent) :
-		QWizard(parent), testingSound(false)
+		QWizard(parent)
 {
 	kdebugf();
 	setWindowTitle(tr("Kadu Wizard"));
@@ -77,7 +77,7 @@ ConfigWizardWindow::~ConfigWizardWindow()
 
 bool ConfigWizardWindow::validateCurrentPage()
 {
-	return !testingSound;
+	return true;
 }
 
 /**
@@ -93,7 +93,7 @@ void ConfigWizardWindow::acceptedSlot()
 
 void ConfigWizardWindow::rejectedSlot()
 {
-	changeSoundModule(backupSoundModule);
+// 	changeSoundModule(backupSoundModule);
 
 	deleteLater();
 }
@@ -343,18 +343,6 @@ void ConfigWizardWindow::createSoundPage()
 	kdebugf2();
 }
 
-void ConfigWizardWindow::testSound()
-{
-#ifndef Q_OS_MAC
-	sound_manager->stop();
-#endif
-	changeSoundModule(soundModuleCombo->currentText());
-
-	testingSound = true;
-	sound_manager->play(dataPath("kadu/themes/sounds/default/msg.wav"), true);
-	testingSound = false;
-}
-
 void ConfigWizardWindow::loadSoundOptions()
 {
 	backupSoundModule = ModulesManager::instance()->moduleProvides("sound_driver");
@@ -367,23 +355,8 @@ void ConfigWizardWindow::loadSoundOptions()
 
 void ConfigWizardWindow::saveSoundOptions()
 {
-	changeSoundModule(soundModuleCombo->currentText());
+// 	changeSoundModule(soundModuleCombo->currentText());
 	ModulesManager::instance()->saveLoadedModules();
-}
-
-void ConfigWizardWindow::changeSoundModule(const QString &newModule)
-{
-	QString currentSoundModule = ModulesManager::instance()->moduleProvides("sound_driver");
-	if (currentSoundModule != newModule)
-	{
-		if (ModulesManager::instance()->moduleIsLoaded(currentSoundModule))
-			ModulesManager::instance()->deactivateModule(currentSoundModule);
-
-		currentSoundModule = newModule;
-
-		if (!currentSoundModule.isEmpty() && (currentSoundModule != "None"))
-			ModulesManager::instance()->activateModule(currentSoundModule);
-	}
 }
 
 /** @} */

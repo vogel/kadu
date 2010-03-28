@@ -32,14 +32,22 @@ class ConfigWizardApplicationsAndSoundPage : public ConfigWizardPage
 	QComboBox *EMailCombo;
 	QComboBox *SoundModulesCombo;
 
+	bool IsTestingSound;
+
 	void createGui();
 	void setBrowsers();
 	void setEMails();
 	void setSoundDrivers();
 
+	void changeSoundModule(const QString &newSoundModule);
+
+private slots:
+	void testSound();
+
 public:
 	explicit ConfigWizardApplicationsAndSoundPage(QWidget *parent = 0);
 	virtual ~ConfigWizardApplicationsAndSoundPage();
+    void soundModuleCombo();
 
 };
 
