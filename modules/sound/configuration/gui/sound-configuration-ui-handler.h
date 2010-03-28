@@ -44,6 +44,7 @@ class SoundConfigurationUiHandler : public ConfigurationUiHandler
 	void setSoundThemes();
 
 private slots:
+	void themeChanged(const QString &theme);
 	void soundFileEdited();
 
 	void configurationWindowApplied();

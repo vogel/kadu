@@ -25,7 +25,7 @@
 #include "debug.h"
 
 #include "gui/widgets/configuration/sound-configuration-widget.h"
-#include "sound-slots.h"
+#include "sound-actions.h"
 #include "sound-theme-manager.h"
 #include "sound.h"
 
@@ -97,11 +97,11 @@ void SoundConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurati
 	connect(mainConfigurationWindow->widget()->widgetById("sound/enableVolumeControl"), SIGNAL(toggled(bool)),
 		mainConfigurationWindow->widget()->widgetById("sound/volumeControl"), SLOT(setEnabled(bool)));
 
-	connect(mainConfigurationWindow->widget()->widgetById("sound/testPlay"), SIGNAL(clicked()), sound_slots, SLOT(testSoundPlaying()));
+	connect(mainConfigurationWindow->widget()->widgetById("sound/testPlay"), SIGNAL(clicked()), SoundActions::instance(), SLOT(testSoundPlaying()));
 
 	ThemesComboBox = dynamic_cast<ConfigComboBox *>(mainConfigurationWindow->widget()->widgetById("sound/themes"));
 	connect(ThemesComboBox, SIGNAL(activated(int)), ConfigurationWidget, SLOT(themeChanged(int)));
-	connect(ThemesComboBox, SIGNAL(activated(const QString &)), sound_slots, SLOT(themeChanged(const QString &)));
+		connect(ThemesComboBox, SIGNAL(activated(const QString &)), this, SLOT(themeChanged(const QString &)));
 	ConfigurationWidget->themeChanged(ThemesComboBox->currentIndex());
 
 	ThemesPaths = dynamic_cast<PathListEdit *>(mainConfigurationWindow->widget()->widgetById("soundPaths"));
@@ -116,6 +116,11 @@ NotifierConfigurationWidget * SoundConfigurationUiHandler::createConfigurationWi
 {
 	ConfigurationWidget = new SoundConfigurationWidget(parent);
 	return ConfigurationWidget;
+}
+
+void SoundConfigurationUiHandler::themeChanged(const QString &theme)
+{
+	SoundThemeManager::instance()->applyTheme(theme);
 }
 
 void SoundConfigurationUiHandler::soundFileEdited()

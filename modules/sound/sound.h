@@ -117,8 +117,6 @@ public:
 
 extern SOUNDAPI SoundManager *sound_manager;
 
-class SoundSlots;
-extern SOUNDAPI SoundSlots *sound_slots;
 /** @} */
 
 #endif

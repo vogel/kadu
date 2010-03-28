@@ -25,47 +25,45 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef KADU_SOUND_SLOTS
-#define KADU_SOUND_SLOTS
+#ifndef SOUND_ACTIONS_H
+#define SOUND_ACTIONS_H
 
-#include <QtCore/QMap>
-#include <QtCore/QStringList>
+#include <QtCore/QObject>
 
-#include "gui/windows/message-dialog.h"
+#include "configuration/configuration-aware-object.h"
 
-#include "gui/widgets/configuration/notifier-configuration-widget.h"
-
-#include "sound.h"
-
-class SelectFile;
+class QAction;
 
 class ActionDescription;
 
-class SoundSlots : public QObject, public ConfigurationAwareObject
+class SoundActions : public QObject, public ConfigurationAwareObject
 {
 	Q_OBJECT
+	Q_DISABLE_COPY(SoundActions)
 
-	ActionDescription* mute_action;
-	QMap<QString, QString> soundfiles;
-	QStringList soundNames;
-	QStringList soundTexts;
+	static SoundActions *Instance;
+
+	ActionDescription *MuteActionDescription;
+
+	SoundActions();
+	virtual ~SoundActions();
 
 private slots:
-	void muteActionActivated(QAction *action, bool is_on);
 	void setMuteActionState();
-	void muteUnmuteSounds();
+	void muteActionActivated(QAction *action, bool is_on);
 
 protected:
-	void configurationUpdated();
+	virtual void configurationUpdated();
 
 public:
-	SoundSlots(bool firstLoad, QObject *parent = 0);
-	~SoundSlots();
+	static void registerActions(bool firstLoad);
+	static void unregisterActions();
+
+	static SoundActions * instance();
 
 public slots:
-	void themeChanged(const QString &theme);
 	void testSoundPlaying();
 
 };
 
-#endif // KADU_SOUND_SLOTS
+#endif // SOUND_ACTIONS_H

@@ -55,7 +55,6 @@
 #include "sound-file.h"
 #include "sound-play-thread.h"
 #include "sound-player.h"
-#include "sound-slots.h"
 #include "sound-theme-manager.h"
 
 #include "sound.h"
@@ -65,24 +64,26 @@
  * @{
  */
 SOUNDAPI SoundManager *sound_manager = NULL;
-SoundSlots *sound_slots;
 
 SoundManager::SoundManager(bool firstLoad) :
 		Player(0),
 		LastSoundTime(), Mute(false),
 		PlayThread(new SoundPlayThread()), SimplePlayerCount(0)
 {
+	Q_UNUSED(firstLoad)
+
 	kdebugf();
 
 	import_0_6_5_configuration();
 	createDefaultConfiguration();
+
+	setMute(!config_file.readBoolEntry("Sounds", "PlaySound"));
 
 	LastSoundTime.start();
 
 	PlayThread->start();
 
 	sound_manager = this;
-	sound_slots = new SoundSlots(firstLoad, this);
 
 	SoundThemeManager::instance()->themes()->setPaths(config_file.readEntry("Sounds", "SoundPaths").split(QRegExp("(;|:)"), QString::SkipEmptyParts));
 
@@ -112,8 +113,6 @@ SoundManager::~SoundManager()
 		PlayThread->terminate();
 	}
 	delete PlayThread;
-	delete sound_slots;
-	sound_slots = 0;
 
 	kdebugf2();
 }

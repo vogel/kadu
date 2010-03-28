@@ -3,14 +3,14 @@ set (SOURCES
 	gui/widgets/configuration/sound-configuration-widget.cpp
 	notify/sound-notifier.cpp
 	sample-play-thread.cpp
-	sound.cpp
+	sound-actions.cpp
 	sound-event.cpp
 	sound-file.cpp
 	sound-module.cpp
 	sound-params.cpp
 	sound-play-thread.cpp
-	sound-slots.cpp
 	sound-theme-manager.cpp
+	sound.cpp
 )
 
 set (MOC_SOURCES
@@ -18,10 +18,10 @@ set (MOC_SOURCES
 	gui/widgets/configuration/sound-configuration-widget.h
 	notify/sound-notifier.h
 	sample-play-thread.h
-	sound.h
+	sound-actions.h
 	sound-play-thread.h
 	sound-player.h
-	sound-slots.h
+	sound.h
 )
 
 set (TRANSLATION_SOURCES
