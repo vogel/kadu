@@ -90,7 +90,6 @@ class SOUNDAPI SoundManager : public Notifier, public ConfigurationUiHandler
 	QTime LastSoundTime;
 	bool Mute;
 
-	QMap<SoundDevice, SamplePlayThread *> PlayingThreads;
 	SoundPlayThread *PlayThread;
 
 	int SimplePlayerCount;

@@ -21,30 +21,33 @@
 #define SOUND_PLAY_THREAD_H
 
 #include <QtCore/QMutex>
-#include <QtCore/QSemaphore>
 #include <QtCore/QThread>
 
-class SoundParams;
+class SoundPlayer;
 
 class SoundPlayThread : public QThread
 {
 	Q_OBJECT
 
-	QMutex Mutex;
-	QSemaphore Semaphore;
 	bool End;
-	QList<SoundParams> List;
+	QMutex PlayingMutex;
+	QMutex NewSoundMutex;
 
-	static bool play(const char *path, bool volumeControl = false, float volume = 1.0);
+	bool Play;
+
+	SoundPlayer *Player;
+	QString Path;
+	bool VolumeControl;
+	float Volume;
 
 public:
-	SoundPlayThread();
+	explicit SoundPlayThread(QObject *parent = 0);
 	virtual ~SoundPlayThread();
 
 	void run();
+	void end();
 
-	void tryPlay(const char *path, bool volumeControl = false, float volume = 1.0);
-	void endThread();
+	void play(SoundPlayer *player, const QString &path, bool volumeControl = false, float volume = 1.0);
 
 };
 

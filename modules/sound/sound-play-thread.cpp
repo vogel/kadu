@@ -21,98 +21,71 @@
 
 #include "debug.h"
 
+#include "sound-player.h"
 #include "sound.h"
-#include "sound-file.h"
-#include "sound-params.h"
 
 #include "sound-play-thread.h"
 
-SoundPlayThread::SoundPlayThread() :
-		QThread(), Mutex(), Semaphore(100), End(false)
+SoundPlayThread::SoundPlayThread(QObject *parent) :
+		QThread(parent = 0), End(false), Play(false), Player(0)
 {
 	setTerminationEnabled(true);
-	Semaphore.acquire(100);
 }
 
 SoundPlayThread::~SoundPlayThread()
 {
 }
 
-void SoundPlayThread::tryPlay(const char *path, bool volumeControl, float volume)
-{
-	kdebugf();
-
-	if (Mutex.tryLock())
-	{
-		List.push_back(SoundParams(path, volumeControl, volume));
-		Mutex.unlock();
-		Semaphore.release();
-	}
-
-	kdebugf2();
-}
-
 void SoundPlayThread::run()
 {
 	kdebugf();
 
+	NewSoundMutex.lock();
+
 	while (!End)
 	{
-		Semaphore.acquire();
-		Mutex.lock();
-		kdebugmf(KDEBUG_INFO, "locked\n");
+		NewSoundMutex.lock();
 
 		if (End)
 		{
-			Mutex.unlock();
+			NewSoundMutex.unlock();
 			break;
 		}
 
-		SoundParams params = List.first();
-		List.pop_front();
-		
-		play(qPrintable(params.fileName()), params.volumeControl(), params.volume());
-		Mutex.unlock();
-		kdebugmf(KDEBUG_INFO, "unlocked\n");
+		if (!Play)
+		{
+			NewSoundMutex.unlock();
+			continue;
+		}
+
+		PlayingMutex.lock();
+		if (Player)
+			Player->playSound(Path, VolumeControl, Volume);
+		PlayingMutex.unlock();
 	}
 
 	kdebugf2();
 }
 
-bool SoundPlayThread::play(const char *path, bool volumeControl, float volume)
+void SoundPlayThread::end()
 {
-	bool ret = false;
-	SoundFile *sound = new SoundFile(path);
-	
-	if (!sound->valid())
-	{
-		kdebugm(KDEBUG_INFO, "broken sound file?\n");
-		delete sound;
-		return false;
-	}
-	
-	kdebugm(KDEBUG_INFO, "\n");
-	kdebugm(KDEBUG_INFO, "length:   %d\n", sound->length());
-	kdebugm(KDEBUG_INFO, "speed:    %d\n", sound->sampleRate());
-	kdebugm(KDEBUG_INFO, "channels: %d\n", sound->channels());
-	
-	if (volumeControl)
-		sound->setVolume(volume);
-
-	SoundDevice dev;
-	dev = sound_manager->openDevice(SoundDevicePlayOnly, sound->sampleRate(), sound->channels());
-	sound_manager->setFlushingEnabled(dev, true);
-	ret = sound_manager->playSample(dev, sound->data(), sound->length() * sizeof(sound->data()[0]));
-	sound_manager->closeDevice(dev);
-
-	delete sound;
-	return ret;
+	PlayingMutex.unlock();
+	NewSoundMutex.unlock();
+	End = true;
 }
 
-void SoundPlayThread::endThread()
+void SoundPlayThread::play(SoundPlayer *player, const QString &path, bool volumeControl, float volume)
 {
-	Mutex.lock();
-	End = true;
-	Mutex.unlock();
-	Semaphore.release();
+	if (!PlayingMutex.tryLock())
+		return; // one sound is played, we ignore next one
+
+	Player = player;
+	Path = path;
+	VolumeControl = volumeControl;
+	Volume = volume;
+
+	Play = true;
+
+	PlayingMutex.unlock();
+	NewSoundMutex.unlock();
 }

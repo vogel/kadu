@@ -104,6 +104,7 @@ SoundManager::SoundManager(bool firstLoad, const QString& name, const QString& c
 
 	LastSoundTime.start();
 
+	printf("Starting play thread...\n");
 	PlayThread->start();
 
 	sound_manager = this;
@@ -130,7 +131,7 @@ SoundManager::SoundManager(bool firstLoad, const QString& name, const QString& c
 SoundManager::~SoundManager()
 {
 	kdebugf();
-	PlayThread->endThread();
+	PlayThread->end();
 	NotificationManager::instance()->unregisterNotifier(this);
 
 	PlayThread->wait(2000);
@@ -343,14 +344,6 @@ SoundDevice SoundManager::openDevice(SoundDeviceType type, int sampleRate, int c
 void SoundManager::closeDevice(SoundDevice device)
 {
 	kdebugf();
-	if (PlayingThreads.contains(device))
-	{
-		SamplePlayThread* playing_thread = PlayingThreads[device];
-		disconnect(playing_thread, SIGNAL(samplePlayed(SoundDevice)), this, SIGNAL(samplePlayed(SoundDevice)));
-		playing_thread->stop();
-		PlayingThreads.remove(device);
-		playing_thread->deleteLater();
-	}
 
 	if (!Player)
 		return;
@@ -362,15 +355,10 @@ void SoundManager::closeDevice(SoundDevice device)
 
 void SoundManager::enableThreading(SoundDevice device)
 {
+	Q_UNUSED(device);
+
 	kdebugf();
-	if (!PlayingThreads.contains(device))
-	{
-		SamplePlayThread* playing_thread = new SamplePlayThread(device);
-		connect(playing_thread, SIGNAL(samplePlayed(SoundDevice)), this, SIGNAL(samplePlayed(SoundDevice)));
-		connect(playing_thread, SIGNAL(playSample(SoundDevice, const qint16, int)), this, SLOT(playSampleSlot(SoundDevice, const qint16, int)));
-		playing_thread->start();
-		PlayingThreads.insert(device, playing_thread);
-	}
+
 	kdebugf2();
 }
 
@@ -389,12 +377,7 @@ bool SoundManager::playSample(SoundDevice device, const qint16 *data, int length
 	kdebugf();
 
 	bool result;
-	if (PlayingThreads.contains(device))
-	{
-		PlayingThreads[device]->playSample(data, length);
-		result = true;
-	}
-	else if (Player)
+	if (Player)
 		result = Player->playSample(device, data, length);
 	else
 		result = false;
@@ -437,27 +420,27 @@ void SoundManager::play(const QString &path, bool volumeControl, double volume)
 		return;
 
 	if (Player->isSimplePlayer())
-		Player->playSound(path, volumeControl, volume);
+		PlayThread->play(Player, path, volumeControl, volume);
 
 	kdebugf2();
 }
 
 void SoundManager::stop()
 {
-	kdebugf();
+// 	kdebugf();
 // 	if (simple_player_count>0)
 // 		emit playStop();
 // 	else
-	{
-		PlayThread->terminate();
-		PlayThread->wait();
-
-		// TODO: fix it, let play_thread exists only if needed
-		delete PlayThread;
-		PlayThread = new SoundPlayThread();
-		PlayThread->start();
-	}
-	kdebugf2();
+// 	{
+// 		PlayThread->terminate();
+// 		PlayThread->wait();
+// 
+// 		// TODO: fix it, let play_thread exists only if needed
+// 		delete PlayThread;
+// 		PlayThread = new SoundPlayThread();
+// 		PlayThread->start();
+// 	}
+// 	kdebugf2();
 }
 
 /** @} */
