@@ -28,13 +28,14 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <errno.h>
+#include <stdio.h>
 
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/soundcard.h>
 #include <sys/ioctl.h>
 
-#include "../sound/sound_file.h"
+#include "../sound/sound-file.h"
 #include "configuration/configuration-file.h"
 #include "debug.h"
 
@@ -46,6 +47,8 @@
  */
 extern "C" int dsp_sound_init(bool firstLoad)
 {
+	Q_UNUSED(firstLoad)
+
 	kdebugf();
 
 	oss_player_slots = new OSSPlayerSlots;
@@ -146,9 +149,9 @@ void OSSPlayerSlots::openDevice(SoundDeviceType type, int sample_rate, int chann
 	kdebugm(KDEBUG_INFO, "Opening %s\n", qPrintable(sdev));
 
 	int flags;
-	if (type == PLAY_ONLY)
+	if (type == SoundDevicePlayOnly)
 		flags = O_WRONLY;
-	else if (type == RECORD_ONLY)
+	else if (type == SoundDeviceRecordOnly)
 		flags = O_RDONLY;
 	else
 		flags = O_RDWR;

@@ -40,6 +40,8 @@
  */
 extern "C" KADU_EXPORT int ext_sound_init(bool firstLoad)
 {
+	Q_UNUSED(firstLoad)
+
 	kdebugf();
 
 	external_player = new ExternalPlayer();
