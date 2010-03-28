@@ -95,7 +95,6 @@ private slots:
 	void setMuteActionState();
 	void muteUnmuteSounds();
 	void testSamplePlaying();
-	void samplePlayingTestSamplePlayed(SoundDevice device);
 
 protected:
 	void configurationUpdated();

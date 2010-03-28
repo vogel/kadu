@@ -235,20 +235,5 @@ void SoundSlots::testSamplePlaying()
 	kdebugf2();
 }
 
-void SoundSlots::samplePlayingTestSamplePlayed(SoundDevice device)
-{
-	kdebugf();
-	if (device == SamplePlayingTestDevice)
-	{
-		disconnect(sound_manager, SIGNAL(samplePlayed(SoundDevice)), this, SLOT(samplePlayingTestSamplePlayed(SoundDevice)));
-		sound_manager->closeDevice(device);
-		delete[] SamplePlayingTestSample;
-		SamplePlayingTestSample = NULL;
-		SamplePlayingTestMsgBox->deleteLater();
-		SamplePlayingTestMsgBox = NULL;
-	}
-	kdebugf2();
-}
-
 /** @} */
 

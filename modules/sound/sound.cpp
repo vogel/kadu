@@ -329,74 +329,6 @@ int SoundManager::timeAfterLastSound() const
 	return LastSoundTime.elapsed();
 }
 
-SoundDevice SoundManager::openDevice(SoundDeviceType type, int sampleRate, int channels)
-{
-	kdebugf();
-
-	if (!Player)
-		return 0;
-
-	kdebugf2();
-
-	return Player->openDevice(type, sampleRate, channels);
-}
-
-void SoundManager::closeDevice(SoundDevice device)
-{
-	kdebugf();
-
-	if (!Player)
-		return;
-
-	Player->closeDevice(device);
-
-	kdebugf2();
-}
-
-void SoundManager::enableThreading(SoundDevice device)
-{
-	Q_UNUSED(device);
-
-	kdebugf();
-
-	kdebugf2();
-}
-
-void SoundManager::setFlushingEnabled(SoundDevice device, bool enabled)
-{
-	kdebugf();
-
-	if (Player)
-		Player->setFlushingEnabled(device, enabled);
-
-	kdebugf2();
-}
-
-bool SoundManager::playSample(SoundDevice device, const qint16 *data, int length)
-{
-	kdebugf();
-
-	bool result;
-	if (Player)
-		result = Player->playSample(device, data, length);
-	else
-		result = false;
-
-	kdebugf2();
-
-	return result;
-}
-
-bool SoundManager::playSampleSlot(SoundDevice device, const qint16 *data, int length)
-{
-	kdebugf();
-
-	if (Player)
-		return Player->playSample(device, data, length);
-	else
-		return false;
-}
-
 // stupid Qt, yes this code work
 void SoundManager::connectNotify(const char *signal)
 {
@@ -423,24 +355,6 @@ void SoundManager::play(const QString &path, bool volumeControl, double volume)
 		PlayThread->play(Player, path, volumeControl, volume);
 
 	kdebugf2();
-}
-
-void SoundManager::stop()
-{
-// 	kdebugf();
-// 	if (simple_player_count>0)
-// 		emit playStop();
-// 	else
-// 	{
-// 		PlayThread->terminate();
-// 		PlayThread->wait();
-// 
-// 		// TODO: fix it, let play_thread exists only if needed
-// 		delete PlayThread;
-// 		PlayThread = new SoundPlayThread();
-// 		PlayThread->start();
-// 	}
-// 	kdebugf2();
 }
 
 /** @} */

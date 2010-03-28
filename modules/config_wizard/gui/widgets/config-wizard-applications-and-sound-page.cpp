@@ -195,10 +195,6 @@ void ConfigWizardApplicationsAndSoundPage::changeSoundModule(const QString &newS
 
 void ConfigWizardApplicationsAndSoundPage::testSound()
 {
-#ifndef Q_OS_MAC
-	sound_manager->stop();
-#endif
-
 	changeSoundModule(SoundModulesCombo->currentText());
 
 	IsTestingSound = true;

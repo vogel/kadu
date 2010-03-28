@@ -111,9 +111,7 @@ private slots:
 public slots:
 	void play(const QString &path, bool force = false);
 	void play(const QString &path, bool volumeControl, double volume);
-	bool playSampleSlot(SoundDevice device, const qint16 *data, int length);
 	void setMute(const bool& enable);
-	void stop();
 
 public:
 	SoundManager(bool firstLoad, const QString &name, const QString &configname);
@@ -130,15 +128,6 @@ public:
 
 	bool isMuted() const;
 	int timeAfterLastSound() const;
-
-	SoundDevice openDevice(SoundDeviceType type, int sampleRate, int channels = 1);
-	void closeDevice(SoundDevice device);
-	void enableThreading(SoundDevice device);
-	void setFlushingEnabled(SoundDevice device, bool enabled);
-	bool playSample(SoundDevice device, const qint16 *data, int length);
-
-signals:
-	void samplePlayed(SoundDevice device);
 
 };
 
