@@ -52,7 +52,7 @@ void StatusButton::createGui()
 void StatusButton::statusChanged()
 {
 	setIcon(MyStatusContainer->statusPixmap());
-	setText(MyStatusContainer->statusContainerName());
+	setToolTip(MyStatusContainer->statusContainerName());
 }
 
 void StatusButton::configurationUpdated()
