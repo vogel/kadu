@@ -20,48 +20,43 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <phonon/mediaobject.h>
+#include <phonon/audiooutput.h>
+#include <phonon/phononnamespace.h>
+
 #include "modules/sound/sound-manager.h"
 
 #include "debug.h"
 
-#include "phonon-sound.h"
+#include "phonon-player.h"
 
-/**
- * @ingroup phonon_sound
- * @{
- */
-extern "C" KADU_EXPORT int phonon_sound_init(bool firstLoad)
+PhononPlayer * PhononPlayer::Instance = 0;
+
+void PhononPlayer::createInstance()
 {
-	Q_UNUSED(firstLoad)
-
-	kdebugf();
-
-	phonon_player = new PhononPlayer();
-	SoundManager::instance()->setPlayer(phonon_player);
-
-	kdebugf2();
-	return 0;
+	if (!Instance)
+		Instance = new PhononPlayer();
 }
 
-extern "C" KADU_EXPORT void phonon_sound_close()
+void PhononPlayer::destroyInstance()
 {
-	kdebugf();
-
-	SoundManager::instance()->setPlayer(0);
-	delete phonon_player;
-	phonon_player = 0;
-
-	kdebugf2();
+	delete Instance;
+	Instance = 0;
 }
 
-PhononPlayer::PhononPlayer(QObject *parent) :
-		SoundPlayer(parent)
+PhononPlayer * PhononPlayer::instance()
+{
+	return Instance;
+}
+
+
+PhononPlayer::PhononPlayer()
 {
 	kdebugf();
 
-	music  = new Phonon::MediaObject(this);
-	output = new Phonon::AudioOutput(Phonon::NotificationCategory, this);
-	Phonon::createPath(music, output);
+	Media = new Phonon::MediaObject(this);
+	Output = new Phonon::AudioOutput(Phonon::NotificationCategory, this);
+	Phonon::createPath(Media, Output);
 
 	kdebugf2();
 }
@@ -75,14 +70,12 @@ void PhononPlayer::playSound(const QString &path, bool volumeControl, double vol
 	kdebugf();
 
 	if (volumeControl)
-		output->setVolume(volumes);
+		Output->setVolume(volumes);
 
-	music->setCurrentSource(Phonon::MediaSource(path));
-	music->play();
+	printf("playing by phonon, file: %s\n", qPrintable(path));
+
+	Media->setCurrentSource(Phonon::MediaSource(path));
+	Media->play();
 
 	kdebugf2();
 }
-
-PhononPlayer *phonon_player;
-
-/** @} */

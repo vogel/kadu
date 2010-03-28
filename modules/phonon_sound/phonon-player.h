@@ -26,36 +26,35 @@
 #include <QtCore/QObject>
 #include <QtCore/QString>
 
-#include <phonon/mediaobject.h>
-#include <phonon/audiooutput.h>
-#include <phonon/phononnamespace.h>
-
 #include "modules/sound/sound-player.h"
 
-/**
- * @defgroup phonon_sound Phonon sound
- * @{
- */
+namespace Phonon
+{
+	class AudioOutput;
+	class MediaObject;
+}
+
 class PhononPlayer : public SoundPlayer
 {
 	Q_OBJECT
+	Q_DISABLE_COPY(PhononPlayer);
 
-	Phonon::MediaObject *music;
-	Phonon::AudioOutput *output;
+	static PhononPlayer * Instance;
 
-public:
-	PhononPlayer(QObject *parent = 0);
+	Phonon::MediaObject *Media;
+	Phonon::AudioOutput *Output;
+
+	PhononPlayer();
 	virtual ~PhononPlayer();
 
-	virtual bool isSimplePlayer() { return true; }
+public:
+	static void createInstance();
+	static void destroyInstance();
+	static PhononPlayer * instance();
 
 public slots:
 	virtual void playSound(const QString &path, bool volumeControl, double volume);
 
 };
-
-extern PhononPlayer *phonon_player;
-
-/** @} */
 
 #endif // PHONON_SOUND_H
