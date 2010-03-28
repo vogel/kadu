@@ -54,6 +54,8 @@ public:
 	virtual ~ConfigWizardApplicationsAndSoundPage();
 
     virtual bool validatePage();
+    virtual void initializePage();
+    virtual void acceptPage();
 
 };
 

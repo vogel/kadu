@@ -36,13 +36,10 @@ class ConfigWizardWindow : public QWizard
 
 	QString backupSoundModule;
 
-	void createApplicationsPage();
 	void createSoundPage();
 
-	void loadApplicationsOptions();
 	void loadSoundOptions();
 
-	void saveApplicationsOptions();
 	void saveSoundOptions();
 
 private slots:

@@ -23,6 +23,7 @@
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
 
+#include "configuration/configuration-file.h"
 #include "modules/sound/sound.h"
 
 #include "modules.h"
@@ -208,4 +209,49 @@ void ConfigWizardApplicationsAndSoundPage::testSound()
 bool ConfigWizardApplicationsAndSoundPage::validatePage()
 {
     return !IsTestingSound;
+}
+
+void ConfigWizardApplicationsAndSoundPage::initializePage()
+{
+	QString browserIndexName = config_file.readEntry("Chat", "WebBrowserNo");
+	QString browserName;
+
+	int browserIndex = 0;
+	int foundBrowserIndex = 0;
+	while (!(browserName = MainConfigurationWindow::browserIndexToString(browserIndex)).isEmpty())
+		if (browserName == browserIndexName)
+		{
+			foundBrowserIndex = browserIndex;
+			break;
+		}
+		else
+			browserIndex++;
+
+	BrowserCombo->setCurrentIndex(foundBrowserIndex);
+	browserChanged(foundBrowserIndex);
+
+	QString mailIndexName = config_file.readEntry("Chat", "EmailClientNo");
+	QString mailName;
+
+	int mailIndex = 0;
+	int foundMailIndex = 0;
+	while (!(mailName = MainConfigurationWindow::emailIndexToString(mailIndex)).isEmpty())
+		if (mailName == mailIndexName)
+		{
+			foundMailIndex = mailIndex;
+			break;
+		}
+		else
+			mailIndex++;
+
+	EMailCombo->setCurrentIndex(foundMailIndex);
+	emailChanged(foundMailIndex);
+}
+
+void ConfigWizardApplicationsAndSoundPage::acceptPage()
+{
+	config_file.writeEntry("Chat", "WebBrowserNo", MainConfigurationWindow::browserIndexToString(BrowserCombo->currentIndex()));
+	config_file.writeEntry("Chat", "WebBrowser", BrowserLineEdit->text());
+	config_file.writeEntry("Chat", "EmailClientNo", MainConfigurationWindow::emailIndexToString(EMailCombo->currentIndex()));
+	config_file.writeEntry("Chat", "MailClient", EMailLineEdit->text());
 }
