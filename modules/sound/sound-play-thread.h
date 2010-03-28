@@ -40,6 +40,9 @@ class SoundPlayThread : public QThread
 	bool VolumeControl;
 	float Volume;
 
+private slots:
+	void playerDestroyed(QObject *player);
+
 public:
 	explicit SoundPlayThread(QObject *parent = 0);
 	virtual ~SoundPlayThread();
