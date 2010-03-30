@@ -83,7 +83,7 @@ QByteArray GaduListHelper::buddyListToByteArray(Account account, BuddyList buddi
 	return codec_cp1250->fromUnicode(result.join("\n"));
 }
 
-BuddyList GaduListHelper::stringToBuddyList(Account account, QString &content) {
+BuddyList GaduListHelper::byteArrayToBuddyList(Account account, QByteArray &content) {
 	QTextStream stream(&content, QIODevice::ReadOnly);
 	return streamToBuddyList(account, stream);
 }
@@ -96,7 +96,6 @@ BuddyList GaduListHelper::streamToBuddyList(Account account, QTextStream &conten
 	bool gg70 = false;
 
 	content.setCodec(codec_cp1250);
-	content.setAutoDetectUnicode(true);
 
 	while (!content.atEnd())
 	{

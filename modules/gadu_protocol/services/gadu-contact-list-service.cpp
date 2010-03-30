@@ -53,7 +53,7 @@ void GaduContactListService::handleEventUserlistGetReply(struct gg_event *e)
 	}
 
 	if (content[0] != 0)
-		ImportReply += QString::fromUtf8(content);
+		ImportReply.append(content);
 
 	if (e->event.userlist.type == GG_USERLIST_GET_MORE_REPLY)
 	{
@@ -61,12 +61,12 @@ void GaduContactListService::handleEventUserlistGetReply(struct gg_event *e)
 		return;
 	}
 
-	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "\n%s\n", unicode2latin(ImportReply).data());
+	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "\n%s\n", ImportReply.data());
 
 	if (AsFile)
 		emit contactListDownloaded(ImportReply);
 	else
-		emit contactListImported(true, GaduListHelper::stringToBuddyList(Protocol->account(), ImportReply));
+		emit contactListImported(true, GaduListHelper::byteArrayToBuddyList(Protocol->account(), ImportReply));
 }
 
 void GaduContactListService::handleEventUserlistPutReply(struct gg_event *e)

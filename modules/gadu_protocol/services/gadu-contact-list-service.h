@@ -33,7 +33,7 @@ class GaduContactListService : public ContactListService
 	bool AsFile;
 
 	GaduProtocol *Protocol;
-	QString ImportReply;
+	QByteArray ImportReply;
 
 	friend class GaduProtocolSocketNotifiers;
 	void handleEventUserlistGetReply(struct gg_event *e);
