@@ -2641,6 +2641,10 @@ Vielleicht ist es kein Kadu-Modul.</translation>
         <translation>%1 Einträge werden exportiert</translation>
     </message>
     <message>
+        <source>%1 entries has been imported</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Se&amp;nd userlist</source>
         <translation>Kontaktliste &amp;senden</translation>
     </message>

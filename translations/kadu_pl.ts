@@ -2592,6 +2592,10 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
         <translation>Wyeksportuję %1 wpisów</translation>
     </message>
     <message>
+        <source>%1 entries has been imported</source>
+        <translation>%1 wpisów zostało zaimportowane</translation>
+    </message>
+    <message>
         <source>Se&amp;nd userlist</source>
         <translation>&amp;Wyślij listę</translation>
     </message>

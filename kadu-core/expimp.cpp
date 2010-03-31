@@ -29,7 +29,7 @@
 #include "expimp.h"
 
 UserlistImportExport::UserlistImportExport(QWidget *parent)
-	: QWidget(parent, Qt::Window), pb_fetch(0), importedUserlist(), pb_send(0), pb_delete(0), pb_tofile(0), l_itemscount(0), lv_userlist(0)
+	: QWidget(parent, Qt::Window), pb_fetch(0), importedUserlist(), pb_send(0), pb_delete(0), pb_tofile(0), l_itemscount(0), l_importcount(0), lv_userlist(0)
 {
 	kdebugf();
 
@@ -56,6 +56,7 @@ UserlistImportExport::UserlistImportExport(QWidget *parent)
 	QWidget *center = new QWidget;
 	QVBoxLayout *center_layout = new QVBoxLayout;
 	center_layout->setSpacing(5);
+#ifndef Q_WS_HILDON
 	QLabel *l_info = new QLabel;
 	l_info->setText(tr("This dialog box allows you to import and export your buddy list to a server or a file."));
 	l_info->setWordWrap(true);
@@ -63,7 +64,7 @@ UserlistImportExport::UserlistImportExport(QWidget *parent)
 	l_info->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
 #endif
 	// end create main QLabel widgets (icon and app info)
-
+#endif /* Q_WS_HILDON */
 	// our QListView
 	// our QGroupBox
 	QGroupBox *gb_import = new QGroupBox;
@@ -71,6 +72,7 @@ UserlistImportExport::UserlistImportExport(QWidget *parent)
 	import_layout->setSpacing(5);
 	gb_import->setTitle(tr("Import userlist"));
 	// end our QGroupBox
+#ifndef Q_WS_HILDON
 	lv_userlist = new QTreeWidget(this);
 
 	QStringList headers;
@@ -79,6 +81,9 @@ UserlistImportExport::UserlistImportExport(QWidget *parent)
 	lv_userlist->setAllColumnsShowFocus(true);
 	lv_userlist->setIndentation(false);
 	// end our QListView
+#endif /* Q_WS_HILDON */
+	l_importcount = new QLabel;
+	l_importcount->setText("");
 
 	// buttons
 	QWidget *importbuttons = new QWidget(this);
@@ -97,8 +102,10 @@ UserlistImportExport::UserlistImportExport(QWidget *parent)
 	importbuttons_layout->addWidget(pb_save);
 	importbuttons_layout->addWidget(pb_merge);
 	importbuttons->setLayout(importbuttons_layout);
-	
+#ifndef Q_WS_HILDON
 	import_layout->addWidget(lv_userlist);
+#endif /* Q_WS_HILDON */
+	import_layout->addWidget(l_importcount);
 	import_layout->addWidget(importbuttons);
 	gb_import->setLayout(import_layout);
 
@@ -129,7 +136,7 @@ UserlistImportExport::UserlistImportExport(QWidget *parent)
 	exportbuttons_layout->addWidget(pb_delete);
 	exportbuttons_layout->addWidget(pb_tofile);
 	exportbuttons->setLayout(exportbuttons_layout);
-	
+
 	export_layout->addWidget(l_itemscount);
 	export_layout->addWidget(exportbuttons);
 	gb_export->setLayout(export_layout);
@@ -162,7 +169,9 @@ UserlistImportExport::UserlistImportExport(QWidget *parent)
 	connect(gadu, SIGNAL(userListImported(bool, QList<UserListElement>)), this, SLOT(userListImported(bool, QList<UserListElement>)));
 	// end connect
 
+#ifndef Q_WS_HILDON
 	center_layout->addWidget(l_info);
+#endif /* Q_WS_HILDON */
 	center_layout->addWidget(gb_import);
 	center_layout->addWidget(gb_export);
 	center_layout->addWidget(bottom);
@@ -218,7 +227,7 @@ void UserlistImportExport::fromfile()
 			QTextStream stream(&file);
 			importedUserlist = gadu->streamToUserList(stream);
 			file.close();
-
+#ifndef Q_WS_HILDON
 			foreach(const UserListElement &user, importedUserlist)
 			{
 				QString id;
@@ -230,6 +239,7 @@ void UserlistImportExport::fromfile()
 					user.data("Groups").toStringList().join(",") << user.email();
 				new QTreeWidgetItem(lv_userlist, values);
 			}
+#endif /* Q_WS_HILDON */
 		}
 		else
 			MessageBox::msg(tr("The application encountered an internal error\nThe import userlist from file was unsuccessful"), false, "Critical", this);
@@ -240,6 +250,7 @@ void UserlistImportExport::fromfile()
 void UserlistImportExport::startImportTransfer()
 {
 	kdebugf();
+	l_importcount->setText("");
 	if (gadu->currentStatus().isOffline())
 	{
 		MessageBox::msg(tr("Cannot import user list from server in offline mode"), false, "Critical", this);
@@ -281,10 +292,11 @@ void UserlistImportExport::userListImported(bool ok, QList<UserListElement> user
 	kdebugf();
 
 	importedUserlist = userList;
+#ifndef Q_WS_HILDON
 	lv_userlist->clear();
-
+#endif /* Q_WS_HILDON */
 	pb_fetch->setEnabled(true);
-
+#ifndef Q_WS_HILDON
 	if (ok)
 		foreach(const UserListElement &user, userList)
 		{
@@ -297,6 +309,8 @@ void UserlistImportExport::userListImported(bool ok, QList<UserListElement> user
 				user.data("Groups").toStringList().join(",") << user.email();
 			new QTreeWidgetItem(lv_userlist, values);
 		}
+#endif /* Q_WS_HILDON */
+	l_importcount->setText(tr("%1 entries has been imported").arg(userList.count()));
 	kdebugf2();
 }
 

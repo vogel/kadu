@@ -2600,6 +2600,10 @@ Peut être module incompatible avec Kadu.</translation>
         <translation> %1 Exportation des entrées</translation>
     </message>
     <message>
+        <source>%1 entries has been imported</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Se&amp;nd userlist</source>
         <translation>En&amp;voie la liste des utilisateurs</translation>
     </message>

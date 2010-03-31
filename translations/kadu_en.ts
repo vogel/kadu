@@ -2606,6 +2606,10 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>%1 entries has been imported</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Se&amp;nd userlist</source>
         <translation type="unfinished"></translation>
     </message>

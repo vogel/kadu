@@ -2643,6 +2643,10 @@ Possibile incompatibilità con Kadu.</translation>
         <translation>%1 contatti sarnno esportati</translation>
     </message>
     <message>
+        <source>%1 entries has been imported</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Se&amp;nd userlist</source>
         <translation>Ma&amp;nda la lista</translation>
     </message>

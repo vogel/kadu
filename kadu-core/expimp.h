@@ -24,6 +24,7 @@ class UserlistImportExport : public QWidget {
 	QPushButton *pb_delete; /*!< przycisk kasuj�cy list� */
 	QPushButton *pb_tofile;
 	QLabel *l_itemscount;
+	QLabel *l_importcount;
 	QTreeWidget *lv_userlist;
 
 private slots:
