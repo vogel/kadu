@@ -231,7 +231,9 @@ int AlsaDevice::xrunRecovery(int err)
 	{
 		err = snd_pcm_prepare(Device);
 		if (err < 0)
+		{
 			kdebugm(KDEBUG_WARNING, "can't recovery from underrun, prepare failed: %s\n", snd_strerror(err));
+		}
 		kdebugf2();
 		return 0;
 	}
@@ -243,7 +245,10 @@ int AlsaDevice::xrunRecovery(int err)
 		{
 			err = snd_pcm_prepare(Device);
 			if (err < 0)
+			{
 				kdebugm(KDEBUG_WARNING, "can't recovery from suspend, prepare failed: %s\n", snd_strerror(err));
+
+			}
 		}
 		kdebugf2();
 		return 0;
