@@ -75,5 +75,6 @@ signals:
 };
 
 void disableEmptyContacts(Action *action);
+void disableNoChatContacts(Action *action);
 
 #endif // ACTION_H

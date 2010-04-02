@@ -165,7 +165,7 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 		ActionDescription::TypeUser, "chatAction",
 		this, SLOT(openChatActionActivated(QAction *, bool)),
 		"16x16/internet-group-chat.png", "16x16/internet-group-chat.png", tr("&Chat with Contact"), false, QString::null,
-		disableContainsSelfUles
+		disableNoChatContacts
 	);
 
 	OpenChatWith = new ActionDescription(0,

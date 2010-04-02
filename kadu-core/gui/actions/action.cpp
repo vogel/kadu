@@ -23,6 +23,7 @@
 #include "gui/hot-key.h"
 #include "gui/windows/main-window.h"
 #include "icons-manager.h"
+#include "protocols/services/chat-service.h"
 
 #include "action.h"
 
@@ -157,4 +158,17 @@ void Action::updateIcon()
 void disableEmptyContacts(Action *action)
 {
 	action->setEnabled(!action->contacts().isEmpty());
+}
+
+void disableNoChatContacts(Action *action)
+{
+	bool enabled = false;
+	
+	foreach (Contact contact, action->contacts())
+	{
+		ChatService *cs = contact.contactAccount().protocolHandler()->chatService();
+		enabled = cs != 0;
+	}
+	  
+	action->setEnabled(enabled);
 }
