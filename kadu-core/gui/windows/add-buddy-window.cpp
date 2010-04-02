@@ -225,13 +225,6 @@ void AddBuddyWindow::setAddContactEnabled()
 	}
 	else
 	{
-		if (DisplayNameEdit->text().isEmpty())
-		{
-			AddContactButton->setEnabled(false);
-			displayErrorMessage(tr("Visible name can not be empty"));
-			return;
-		}
-
 		if (BuddyManager::instance()->byDisplay(DisplayNameEdit->text(), ActionReturnNull))
 		{
 			AddContactButton->setEnabled(false);
@@ -292,7 +285,8 @@ void AddBuddyWindow::accept()
 			buddy = MyBuddy;
 
 		buddy.setAnonymous(false);
-		buddy.setDisplay(DisplayNameEdit->text());
+		QString display = DisplayNameEdit->text().isEmpty() ? UserNameEdit->text() : DisplayNameEdit->text();
+		buddy.setDisplay(display);
 	}
 	else
 	{
