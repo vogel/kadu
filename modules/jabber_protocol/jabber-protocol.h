@@ -52,6 +52,8 @@ class JabberProtocol : public Protocol
 		bool whileConnecting;
 		bool pepAvailable;
 
+		static bool ModuleUnloading;
+
 		void initializeJabberClient();
 		void setPEPAvailable(bool b);
 		void connectContactManagerSignals();

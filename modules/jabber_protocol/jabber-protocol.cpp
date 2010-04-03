@@ -68,6 +68,8 @@ extern "C" KADU_EXPORT void jabber_protocol_close()
 	JabberProtocol::closeModule();
 }
 
+bool JabberProtocol::ModuleUnloading = false;
+
 int JabberProtocol::initModule()
 {
 	kdebugf();
@@ -84,6 +86,9 @@ int JabberProtocol::initModule()
 void JabberProtocol::closeModule()
 {
 	kdebugf();
+
+	ModuleUnloading = true;
+
 	ProtocolsManager::instance()->unregisterProtocolFactory(JabberProtocolFactory::instance());
 	kdebugf2();
 }
@@ -348,17 +353,11 @@ void JabberProtocol::disconnectFromServer(const XMPP::Status &s)
 	}
 	serverInfoManager = 0;
 
-	if (PepManager)
+	if (!ModuleUnloading && PepManager)
 	{
-		disconnect(PepManager, SIGNAL(itemPublished(const XMPP::Jid&, const QString&, const XMPP::PubSubItem&)),
-			this, SLOT(itemPublished(const XMPP::Jid&, const QString&, const XMPP::PubSubItem&)));
-		disconnect(PepManager, SIGNAL(itemRetracted(const XMPP::Jid&, const QString&, const XMPP::PubSubRetraction&)),
-			this, SLOT(itemRetracted(const XMPP::Jid&, const QString&, const XMPP::PubSubRetraction&)));
 		delete PepManager;
+		pepAvailable = false;
 	}
-
-	PepManager = 0;
-	pepAvailable = false;
 	
 	networkStateChanged(NetworkDisconnected);
 	kdebugf2();
