@@ -264,19 +264,19 @@ QString Parser::parse(const QString &s, Contact contact, const QObject * const o
 					break;
 				case 'f':
 					++i;
-					pe.content = contact.ownerBuddy().nickName();
+					pe.content = contact.ownerBuddy().firstName();
 					if (escape)
 						HtmlDocument::escapeText(pe.content);
 					break;
 				case 'r':
 					++i;
-					pe.content = contact.ownerBuddy().nickName();
+					pe.content = contact.ownerBuddy().lastName();
 					if (escape)
 						HtmlDocument::escapeText(pe.content);
 					break;
 				case 'm':
 					++i;
-					pe.content = contact.ownerBuddy().nickName();
+					pe.content = contact.ownerBuddy().mobile();
 					break;
 				case 'g':
 					{
@@ -293,8 +293,8 @@ QString Parser::parse(const QString &s, Contact contact, const QObject * const o
 					break;
 				case 'x':
 					++i;
-					//if (ule.usesProtocol("Gadu"))
-						pe.content = ""; // TODO 0.6.6 QString::number(ule.protocolData("Gadu", "MaxImageSize").toUInt());
+					if (contact)
+						pe.content = contact.maximumImageSize();
 					break;
 				case '%':
 					++i;
