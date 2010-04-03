@@ -1,3 +1,12 @@
++++ version 0.6.6-beta1
+* sound: cleanup (Vogel)
+* alsa-sound: cleanup (Vogel)
+* core: #1201 fixed: del on contacts list does not remove contacts (Vogel)
+* core: #1301 fixed: allow not to set Visible name on adding buddy (Juzef)
+* core: #877 fixed: disable chat actions when there's no contact having chat feature (Juzef)
+* gadu: #1232 fixed: use cp1250 when importing/exporting Gadu user list (Vogel)
+* gui: rearranged status buttons (Vogel/WhE)
+
 +++ version 0.6.6-alpha8
 * core: simple-mode introduced (Vogel)
 * gadu: better account registration (Vogel)
@@ -12,7 +21,6 @@
 * chat: use account avatar in adium styles (WhE)
 * storage: fixed very stupid bug in whole Storage layer (WhE)
 * jabber: fixed StateGone in XMPP (Juzef)
-* sound: cleanup (Vogel)
 
 +++ version 0.6.6-alpha7
 * screenshot: module rewritten, now based on QGraphicsView (Vogel)
