@@ -9,6 +9,7 @@
 * hints: #1200 fixed: enable removing chat/ignore buttons from hints (Vogel)
 * jabber: #1263 fixed: jabber ID displayed instead of "Me" in every chat window (Vogel)
 * core: #1286 fixed: infinite loop and crash after changing "Simple Mode" (Vogel)
+* gui: #1268 fixed: invalid contacts name in Personal Properties tab (Vogel)
 
 +++ version 0.6.6-alpha8
 * core: simple-mode introduced (Vogel)

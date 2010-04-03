@@ -78,12 +78,12 @@ QVariant BuddyContactModel::data(const QModelIndex &index, int role) const
 			if (index.column() == 0) // long or shor name?
 				return data.id();
 			else
-				return QString("%1 (%2)").arg(data.id(), data.contactAccount().accountIdentity());
+				return QString("%1 (%2)").arg(data.id()).arg(data.contactAccount().accountIdentity().name());
 
 		case Qt::DecorationRole:
 			return data.contactAccount().protocolHandler()
-				? data.contactAccount().protocolHandler()->icon()
-				: QIcon();
+					? data.contactAccount().protocolHandler()->icon()
+					: QIcon();
 
 		case ContactRole:
 			return QVariant::fromValue<Contact>(data);
