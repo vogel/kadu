@@ -89,7 +89,7 @@ void JabberProtocol::closeModule()
 }
 
 JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
-		Protocol(account, factory), JabberClient(NULL), ResourcePool(0), serverInfoManager(0)
+		Protocol(account, factory), JabberClient(NULL), ResourcePool(0), serverInfoManager(0), PepManager(0)
 {
 	kdebugf();
 
@@ -354,7 +354,9 @@ void JabberProtocol::disconnectFromServer(const XMPP::Status &s)
 			this, SLOT(itemPublished(const XMPP::Jid&, const QString&, const XMPP::PubSubItem&)));
 		disconnect(PepManager, SIGNAL(itemRetracted(const XMPP::Jid&, const QString&, const XMPP::PubSubRetraction&)),
 			this, SLOT(itemRetracted(const XMPP::Jid&, const QString&, const XMPP::PubSubRetraction&)));
+		delete PepManager;
 	}
+
 	PepManager = 0;
 	pepAvailable = false;
 	
