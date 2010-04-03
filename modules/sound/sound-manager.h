@@ -32,6 +32,7 @@
 #ifndef SOUND_MANAGER_H
 #define SOUND_MANAGER_H
 
+#include <QtCore/QObject>
 #include <QtCore/QTime>
 
 #include "sound-exports.h"
