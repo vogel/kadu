@@ -214,6 +214,11 @@ void BuddyShared::store()
 	configurationStorage->createTextNode(parent, "Ignored", QVariant(Ignored).toString());
 }
 
+bool BuddyShared::shouldStore()
+{
+    return UuidStorableObject::shouldStore() && !isAnonymous();
+}
+
 void BuddyShared::aboutToBeRemoved()
 {
 	setAnonymous(true);

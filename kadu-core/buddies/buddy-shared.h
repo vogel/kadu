@@ -88,6 +88,7 @@ public:
 	void importConfiguration(QDomElement parent);
 
 	virtual void store();
+    virtual bool shouldStore();
 	virtual void aboutToBeRemoved();
 
 	QString id(Account account);
