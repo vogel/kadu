@@ -130,6 +130,12 @@ void AccountShared::store()
 	storeValue("ProxyHost", ProxyHost.toString());
 }
 
+bool AccountShared::shouldStore()
+{
+	return UuidStorableObject::shouldStore() &&
+			!Id.isEmpty();
+}
+
 void AccountShared::aboutToBeRemoved()
 {
 	setDetails(0);

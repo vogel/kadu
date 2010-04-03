@@ -94,6 +94,7 @@ public: //TODO 0.6.6: it is needed in Buddy::dummy()
 	virtual QString storageNodeName();
 
 	virtual void store();
+    virtual bool shouldStore();
 	virtual void aboutToBeRemoved();
 
 	void setAccountIdentity(Identity accountIdentity);

@@ -626,7 +626,7 @@ void JabberProtocol::slotContactUpdated(const XMPP::RosterItem &item)
 	}
 	else
 		Contact contact = ContactManager::instance()->byId(account(), item.jid().bare(), ActionCreateAndAdd);
-	
+
 	Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
 
 	// if contact has name set it to display
