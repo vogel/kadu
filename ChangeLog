@@ -7,6 +7,7 @@
 * gadu: #1232 fixed: use cp1250 when importing/exporting Gadu user list (Vogel)
 * gui: rearranged status buttons (Vogel/WhE)
 * hints: #1200 fixed: enable removing chat/ignore buttons from hints (Vogel)
+* jabber: #1263 fixed: jabber ID displayed instead of "Me" in every chat window (Vogel)
 
 +++ version 0.6.6-alpha8
 * core: simple-mode introduced (Vogel)

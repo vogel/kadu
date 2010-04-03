@@ -297,6 +297,7 @@ void JabberProtocol::connectedToServer()
 	
 	// flag roster for delete
 	ContactsForDelete = ContactManager::instance()->contacts(account());
+	ContactsForDelete.removeAll(account().accountContact());
 
 	// ask for roster
 	JabberClient->requestRoster();
