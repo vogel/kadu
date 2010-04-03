@@ -151,7 +151,7 @@ void StatusContainerManager::setDefaultStatusContainer(StatusContainer *defaultS
 
 	DefaultStatusContainer = defaultStatusContainer;
 
-	if (DefaultStatusContainer)
+	if (DefaultStatusContainer && this != DefaultStatusContainer)
 		connect(DefaultStatusContainer, SIGNAL(statusChanged()), this, SIGNAL(statusChanged()));
 }
 
