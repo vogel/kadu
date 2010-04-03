@@ -63,6 +63,8 @@ protected:
 	void contextMenuEvent(QContextMenuEvent *event);
 
 public:
+	static MainWindow * findMainWindow(QWidget *widget);
+
 	MainWindow(QWidget *parent);
 	virtual ~MainWindow();
 

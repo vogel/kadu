@@ -41,6 +41,8 @@
 #include "contacts/filter/contact-no-unloaded-account-filter.h"
 #include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
+#include "gui/windows/kadu-window-actions.h"
+#include "gui/windows/main-window.h"
 #include "model/roles.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
@@ -308,6 +310,9 @@ void BuddiesListView::keyPressEvent(QKeyEvent *event)
 		case Qt::Key_Return:
 		case Qt::Key_Enter:
 			triggerActivate(currentIndex());
+			break;
+		case Qt::Key_Delete:
+			KaduWindowActions::deleteUserActionActivated(MainWindow::findMainWindow(this));
 			break;
 		default:
 			QTreeView::keyPressEvent(event);

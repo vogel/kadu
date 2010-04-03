@@ -31,6 +31,7 @@ class QAction;
 
 class Action;
 class ActionDescription;
+class MainWindow;
 class StatusContainer;
 
 class KaduWindowActions : QObject, ConfigurationAwareObject
@@ -121,6 +122,8 @@ protected:
 	virtual void configurationUpdated();
 
 public:
+	static void deleteUserActionActivated(MainWindow *window, bool toggled = true);
+
 	explicit KaduWindowActions(QObject *parent);
 	virtual ~KaduWindowActions();
 

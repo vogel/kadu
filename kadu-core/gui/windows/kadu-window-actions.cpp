@@ -977,13 +977,25 @@ void KaduWindowActions::hideDescriptionActionActivated(QAction *sender, bool tog
 
 void KaduWindowActions::deleteUsersActionActivated(QAction *sender, bool toggled)
 {
+	kdebugf();
+
+	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
+	deleteUserActionActivated(window, toggled);
+}
+
+void KaduWindowActions::deleteUserActionActivated(MainWindow* window, bool toggled)
+{
 	Q_UNUSED(toggled)
 
 	kdebugf();
 
-	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
+	printf("Delete user action\n");
+
 	if (!window)
+	{
+		printf("on empty window..\n");
 		return;
+	}
 
 	BuddySet buddies = window->buddies();
 	if (buddies.isEmpty())
@@ -998,9 +1010,8 @@ void KaduWindowActions::deleteUsersActionActivated(QAction *sender, bool toggled
 			BuddyManager::instance()->removeItem(buddy);
 		BuddyManager::instance()->store();
 	}
-
-	kdebugf2();
 }
+
 
 void KaduWindowActions::inactiveUsersActionActivated(QAction *sender, bool toggled)
 {

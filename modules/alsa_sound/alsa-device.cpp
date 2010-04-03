@@ -247,7 +247,6 @@ int AlsaDevice::xrunRecovery(int err)
 			if (err < 0)
 			{
 				kdebugm(KDEBUG_WARNING, "can't recovery from suspend, prepare failed: %s\n", snd_strerror(err));
-
 			}
 		}
 		kdebugf2();
@@ -271,9 +270,9 @@ bool AlsaDevice::playSample(short int *sampleData, int length)
 	{
 		if ((res = snd_pcm_wait(Device, 100)) < 0)
 			xrunRecovery(res);
-	
+
 		kdebugm(KDEBUG_DUMP, "snd_pcm_wait(player): %d\n", res);
-	
+
 		int towrite = (length - written) / ((sizeof(short int)) * Channels);
 		int avail = snd_pcm_avail_update(Device);
 		kdebugm(KDEBUG_DUMP, "snd_pcm_avail_update(player): %d\n", avail);

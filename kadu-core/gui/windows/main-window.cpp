@@ -34,8 +34,21 @@
 
 #include "main-window.h"
 
-MainWindow::MainWindow(QWidget *parent)
-	: QMainWindow(parent)
+MainWindow * MainWindow::findMainWindow(QWidget *widget)
+{
+	while (widget)
+	{
+		MainWindow *window = qobject_cast<MainWindow *>(widget);
+		if (window)
+			return window;
+		widget = widget->parentWidget();
+	}
+
+	return 0;
+}
+
+MainWindow::MainWindow(QWidget *parent) :
+		QMainWindow(parent)
 {
 }
 
