@@ -339,7 +339,6 @@ void GaduEditAccountWidget::loadAccountData()
 	AccountId->setText(account().id());
 	RememberPassword->setChecked(account().rememberPassword());
 	AccountPassword->setText(account().password());
-	// Identities->setCurrentIdentity(account().identity());
 
 	GaduAccountDetails *details = dynamic_cast<GaduAccountDetails *>(account().details());
 	if (details)

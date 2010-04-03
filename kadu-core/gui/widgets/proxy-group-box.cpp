@@ -76,6 +76,7 @@ ProxyGroupBox::ProxyGroupBox(Account account, const QString &title, QWidget *par
 	authlayout->setColumnStretch(2, 100);
 
 	ProxyAuthentication = new QCheckBox(tr("Proxy requires authentication"));
+	connect(ProxyAuthentication, SIGNAL(stateChanged(int)), this, SLOT(dataChanged()));
 	authlayout->addWidget(ProxyAuthentication, 0, 0, 1, 3);
 
 	QLabel *usernameLabel = new QLabel(tr("Username") + ":");

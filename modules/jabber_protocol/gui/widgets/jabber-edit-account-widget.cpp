@@ -168,6 +168,7 @@ void JabberEditAccountWidget::createConnectionTab(QTabWidget *tabWidget)
 	createGeneralGroupBox(layout);
 
 	proxy = new ProxyGroupBox(account(), tr("Proxy"), this);
+	connect(proxy, SIGNAL(stateChanged(ModalConfigurationWidgetState)), this, SLOT(dataChanged()));
 	layout->addWidget(proxy);
 
 	layout->addStretch(100);
@@ -327,6 +328,7 @@ void JabberEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 	connect(consoleButton, SIGNAL(clicked()), this, SLOT(showXmlConsole()));
 	layout->addWidget(consoleButton);
 #endif
+	layout->addStretch(100);
 }
 
 void JabberEditAccountWidget::hostToggled(bool on)
@@ -348,7 +350,8 @@ void JabberEditAccountWidget::autoResourceToggled(bool on)
 
 bool JabberEditAccountWidget::checkSSL()
 {
-	if(!QCA::isSupported("tls")) {
+	if (!QCA::isSupported("tls"))
+	{
 		MessageDialog::msg(tr("Cannot enable SSL/TLS. Plugin not found."));
 		return false;
 	}
@@ -357,10 +360,10 @@ bool JabberEditAccountWidget::checkSSL()
 
 void JabberEditAccountWidget::sslActivated(int i)
 {
-	if ((EncryptionMode->itemData(i) == 0 || EncryptionMode->itemData(i) == 2) && !checkSSL()) {
+	if ((EncryptionMode->itemData(i) == 0 || EncryptionMode->itemData(i) == 2) && !checkSSL())
 		EncryptionMode->setCurrentIndex(EncryptionMode->findData(1));
-	}
-	else if (EncryptionMode->itemData(i) == 2 && !CustomHostPort->isChecked()) {
+	else if (EncryptionMode->itemData(i) == 2 && !CustomHostPort->isChecked())
+	{
 		MessageDialog::msg(tr("Legacy SSL is only available in combination with manual host/port."));
 		EncryptionMode->setCurrentIndex(EncryptionMode->findData(1));
 	}
@@ -385,7 +388,7 @@ void JabberEditAccountWidget::dataChanged()
 		&& AccountDetails->autoResource() == AutoResource->isChecked()
 		&& AccountDetails->resource() == ResourceName->text()
 		&& AccountDetails->priority() == Priority->text().toInt()
-		/*&& StateNotChanged == Proxy->state()*/)
+		&& StateNotChanged == proxy->state())
 	{
 		setState(StateNotChanged);
 		ApplyButton->setEnabled(false);
@@ -462,6 +465,7 @@ void JabberEditAccountWidget::apply()
 	AccountDetails->setResource(ResourceName->text());
 	AccountDetails->setPriority(Priority->text().toInt());
 	AccountDetails->setDataTransferProxy(DataTransferProxy->text());
+	proxy->apply();
 	
 	setState(StateNotChanged);
 	
