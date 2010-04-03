@@ -46,6 +46,7 @@ BuddyShared * BuddyShared::loadFromStorage(StoragePoint *buddyStoragePoint)
 
 BuddyShared::BuddyShared(QUuid uuid) :
 		QObject(BuddyManager::instance()), Shared(uuid),
+		BirthYear(0), Gender(GenderUnknown),
 		Anonymous(true), Ignored(false), Blocked(false), OfflineTo(false)
 {
 }

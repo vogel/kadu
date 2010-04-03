@@ -125,14 +125,30 @@ void BuddyPersonalInfoConfigurationWidget::accountSelectionChanged(int index)
 	}
 	else
 	{
-		//TODO 0.6.6 proper values
 		FirstNameText->setText(MyBuddy.firstName());
 		LastNameText->setText(MyBuddy.lastName());
 		NicknameText->setText(MyBuddy.nickName());
-		GenderText->setText(MyBuddy.firstName());
-		BirthdateText->setText(MyBuddy.firstName());
+
+		switch (MyBuddy.gender())
+		{
+			case GenderFemale:
+				GenderText->setText(tr("Female"));
+				break;
+			case GenderMale:
+				GenderText->setText(tr("Male"));
+				break;
+			case GenderUnknown:
+				GenderText->setText("");
+				break;
+		}
+
+		if (0 != MyBuddy.birthYear())
+			BirthdateText->setText(QString::number(MyBuddy.birthYear()));
+		else
+			BirthdateText->setText("");
+
 		CityText->setText(MyBuddy.city());
-		StateProvinceText->setText(MyBuddy.firstName());
+		StateProvinceText->setText(""); // do not have any info, do we need this control anyway?
 		IpText->setText(contact.address().toString());
 		PortText->setText(QString::number(contact.port()));
 		DnsNameText->setText(contact.dnsName());
