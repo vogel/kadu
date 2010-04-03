@@ -67,7 +67,12 @@ Hint::Hint(QWidget *parent, Notification *notification)
 	updateText();
 
 	const QList<Notification::Callback> callbacks = notification->getCallbacks();
-	if (callbacks.count())
+	bool showButtons = !callbacks.isEmpty();
+	if (showButtons)
+		if (config_file.readBoolEntry("Hints", "ShowOnlyNeccessaryButtons") && !notification->requireCallback())
+			showButtons = false;
+
+	if (showButtons)
 	{
 		QWidget *callbacksWidget = new QWidget(this);
 		callbacksBox = new QHBoxLayout(callbacksWidget);

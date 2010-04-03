@@ -32,6 +32,7 @@
 				</combo-box>
 				<spin-box caption="Transparency" config-section="Hints" config-item="AllEvents_transparency"
 						min-value="0" max-value="100" step="1" suffix=" %" />
+				<check-box caption="Show buttons only when neccessary" config-section="Hints" config-item="ShowOnlyNeccessaryButtons" />
 			</group-box>
 			<group-box name="Mouse buttons">
 				<combo-box caption="Left button" config-section="Hints" config-item="LeftButton">

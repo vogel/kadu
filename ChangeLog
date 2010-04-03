@@ -6,6 +6,7 @@
 * core: #877 fixed: disable chat actions when there's no contact having chat feature (Juzef)
 * gadu: #1232 fixed: use cp1250 when importing/exporting Gadu user list (Vogel)
 * gui: rearranged status buttons (Vogel/WhE)
+* hints: #1200 fixed: enable removing chat/ignore buttons from hints (Vogel)
 
 +++ version 0.6.6-alpha8
 * core: simple-mode introduced (Vogel)
