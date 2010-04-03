@@ -44,9 +44,9 @@
 
 #include "hint-over-user-configuration-window.h"
 
-HintOverUserConfigurationWindow::HintOverUserConfigurationWindow(Buddy exampleContact) :
+HintOverUserConfigurationWindow::HintOverUserConfigurationWindow(Buddy exampleBuddy) :
 	ConfigurationWindow("HintOverUser", tr("Hint over user configuration"), "Hints", MainConfigurationWindow::instanceDataManager()),
-	ExampleContact(exampleContact)
+	ExampleBuddy(exampleBuddy)
 {
 	connect(this, SIGNAL(configurationWindowApplied()), this, SLOT(configurationWindowApplied()));
 	widget()->appendUiFile(dataPath("kadu/modules/configuration/hint-over-user.ui"));
@@ -96,7 +96,7 @@ HintOverUserConfigurationWindow::HintOverUserConfigurationWindow(Buddy exampleCo
 	lay->addWidget(syntaxChangedButton);
 	groupBox->addWidget(syntaxWidget, true);
 
-	hint_manager->prepareOverUserHint(previewFrame, previewIconLabel, previewTipLabel, ExampleContact);
+	hint_manager->prepareOverUserHint(previewFrame, previewIconLabel, previewTipLabel, ExampleBuddy.prefferedContact());
 
 	bgcolor = config_file.readColorEntry("Hints", "HintOverUser_bgcolor").name();
 	fgcolor = config_file.readColorEntry("Hints", "HintOverUser_fgcolor").name();
@@ -153,7 +153,7 @@ void HintOverUserConfigurationWindow::iconSizeChanged(int index)
 {
 	Q_UNUSED(index)
 
-	Contact contact = ExampleContact.prefferedContact();
+	Contact contact = ExampleBuddy.prefferedContact();
 	previewIconLabel->setPixmap(contact.contactAccount().statusContainer()->statusPixmap(contact.currentStatus()));
 }
 
@@ -162,7 +162,7 @@ void HintOverUserConfigurationWindow::syntaxChanged()
 	if (!hintSyntax->document()->isModified())
 		return;
 
-	QString text = Parser::parse(hintSyntax->toPlainText(), ExampleContact.prefferedAccount(), ExampleContact);
+	QString text = Parser::parse(hintSyntax->toPlainText(), ExampleBuddy.prefferedContact());
 
 	/* Dorr: the file:// in img tag doesn't generate the image on hint.
 	 * for compatibility with other syntaxes we're allowing to put the file://

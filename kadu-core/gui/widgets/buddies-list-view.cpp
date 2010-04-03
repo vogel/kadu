@@ -493,7 +493,7 @@ void BuddiesListView::toolTipTimeout()
 
 void BuddiesListView::toolTipRestart()
 {
-	Buddy con = buddyAt(indexAt(mapFromGlobal(QCursor::pos())));
+	Contact con = contactAt(indexAt(mapFromGlobal(QCursor::pos())));
 
 	if (!con.isNull())
 	{
@@ -504,7 +504,7 @@ void BuddiesListView::toolTipRestart()
 	else
 	{
 		toolTipHide();
-		ToolTipContact = Buddy::null;
+		ToolTipContact = Contact::null;
 	}
 
 	ToolTipTimeoutTimer.start(TOOL_TIP_TIMEOUT);

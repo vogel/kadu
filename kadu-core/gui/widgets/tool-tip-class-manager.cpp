@@ -19,7 +19,7 @@
  */
 
 #include "configuration/configuration-file.h"
-#include "buddies/buddy.h"
+#include "contacts/contact.h"
 
 #include "tool-tip-class-manager.h"
 
@@ -83,11 +83,11 @@ void ToolTipClassManager::useToolTipClass(const QString &toolTipClassName)
 		CurrentToolTipClass = 0;
 }
 
-bool ToolTipClassManager::showToolTip(const QPoint &where, Buddy buddy)
+bool ToolTipClassManager::showToolTip(const QPoint &where, Contact contact)
 {
 	if (CurrentToolTipClass)
 	{
-		CurrentToolTipClass->showToolTip(where, buddy);
+		CurrentToolTipClass->showToolTip(where, contact);
 		return true;
 	}
 

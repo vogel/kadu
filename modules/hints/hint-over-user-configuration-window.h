@@ -32,7 +32,7 @@ class HintOverUserConfigurationWindow : public ConfigurationWindow
 {
 	Q_OBJECT
 
-	Buddy ExampleContact;
+	Buddy ExampleBuddy;
 
 	QFrame *previewFrame;
 	QLabel *previewIconLabel;

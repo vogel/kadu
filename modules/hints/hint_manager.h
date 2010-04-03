@@ -143,12 +143,12 @@ public:
 	virtual CallbackCapacity callbackCapacity() { return CallbackSupported; }
 	virtual void notify(Notification *notification);
 
-	virtual void showToolTip(const QPoint &, Buddy);
+	virtual void showToolTip(const QPoint &, Contact);
 	virtual void hideToolTip();
 
 	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0);
 
-	void prepareOverUserHint(QFrame *tipFrame, QLabel *iconLabel, QLabel *tipLabel, Buddy buddy);
+	void prepareOverUserHint(QFrame *tipFrame, QLabel *iconLabel, QLabel *tipLabel, Contact contact);
 
 	QString style() { return Style; }
 	double opacity() { return Opacity; }

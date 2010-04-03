@@ -62,7 +62,7 @@ class BuddiesListView : public QTreeView
 	Chat  chatForIndex(const QModelIndex &index) const;
 
 	// Tool tips
-	Buddy ToolTipContact;
+	Contact ToolTipContact;
 	QTimer ToolTipTimeoutTimer;
 
 public:
