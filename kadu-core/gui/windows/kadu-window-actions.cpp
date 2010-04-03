@@ -268,7 +268,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	AddUser = new ActionDescription(this,
 		ActionDescription::TypeGlobal, "addUserAction",
 		this, SLOT(addUserActionActivated(QAction *, bool)),
-		"16x16/contact-new.png", "16x16/contact-new.png", tr("Add New Buddy...")
+		"16x16/contact-new.png", "16x16/contact-new.png", tr("Add Buddy...")
 	);
 	AddUser->setShortcut("kadu_adduser", Qt::ApplicationShortcut);
 
@@ -276,7 +276,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		ActionDescription::TypeGlobal, "addGroupAction",
 		this, SLOT(addGroupActionActivated(QAction *, bool)),
 		//TODO 0.6.6 proper icon
-		"16x16/contact-new.png", "16x16/contact-new.png", tr("Add New Group...")
+		"16x16/contact-new.png", "16x16/contact-new.png", tr("Add Group...")
 	);
 
 	OpenSearch = new ActionDescription(this,
