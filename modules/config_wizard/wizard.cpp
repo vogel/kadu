@@ -13,6 +13,7 @@
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
 #include <QtGui/QRadioButton>
+#include <QtGui/QScrollArea>
 
 #include <stdlib.h>
 
@@ -100,9 +101,10 @@ Wizard::Wizard(QWidget *parent)
 	 * the window sizes and look. Mac users will love us for that.
 	 */
 	setWizardStyle(QWizard::ClassicStyle);
-#else
+#elif !defined(Q_WS_HILDON)
 	setMinimumSize(710, 300);
 #endif
+
 	createGGAccountPage();
 	createApplicationsPage();
 	createSoundPage();
@@ -301,11 +303,15 @@ void Wizard::createGGAccountPage()
 	kdebugf();
 
 	QWizardPage *ggPage = new QWizardPage(this);
+
+#ifndef Q_WS_HILDON
 	ggPage->setTitle(tr("Gadu-gadu account"));
+#endif /* Q_WS_HILDON */
 
 	QGridLayout *gridLayout = new QGridLayout(ggPage);
-	gridLayout->setSpacing(5);
 
+#ifndef Q_WS_HILDON
+	gridLayout->setSpacing(5);
 	gridLayout->setColumnStretch(0, 7);
 	gridLayout->setColumnStretch(1, 1);
 	gridLayout->setColumnStretch(2, 7);
@@ -321,6 +327,7 @@ void Wizard::createGGAccountPage()
 
 	descriptionPane->setFixedWidth(200);
 	gridLayout->addMultiCellWidget(descriptionPane, 0, 8, 0, 0);
+#endif /* Q_WS_HILDON */
 
 	haveNumber = new QRadioButton(tr("I have a number"), ggPage);
 	connect(haveNumber, SIGNAL(toggled(bool)), this, SLOT(haveNumberChanged(bool)));
@@ -432,11 +439,15 @@ void Wizard::createApplicationsPage()
 	kdebugf();
 
 	QWizardPage *applicationsPage = new QWizardPage(this);
+
+#ifndef Q_WS_HILDON
 	applicationsPage->setTitle(tr("Applications"));
+#endif /* Q_WS_HILDON */
 
 	QGridLayout *gridLayout = new QGridLayout(applicationsPage);
-	gridLayout->setSpacing(5);
 
+#ifndef Q_WS_HILDON
+	gridLayout->setSpacing(5);
 	gridLayout->setColumnStretch(0, 7);
 	gridLayout->setColumnStretch(1, 1);
 	gridLayout->setColumnStretch(2, 7);
@@ -449,8 +460,8 @@ void Wizard::createApplicationsPage()
 		"<p>Kadu will use these for opening various links from messages and user's descriptions</p>"));
 
 	descriptionPane->setFixedWidth(200);
-
 	gridLayout->addMultiCellWidget(descriptionPane, 0, 4, 0, 0);
+#endif /* Q_WS_HILDON */
 
 	gridLayout->addWidget(new QLabel(tr("Choose your browser") + ":", applicationsPage), 0, 2, Qt::AlignRight);
 	browserCombo = new QComboBox(applicationsPage);
@@ -572,11 +583,15 @@ void Wizard::createSoundPage()
 	kdebugf();
 
 	QWizardPage *soundPage = new QWizardPage(this);
+
+#ifndef Q_WS_HILDON
 	soundPage->setTitle(tr("Sound"));
+#endif /* Q_WS_HILDON */
 
 	QGridLayout *gridLayout = new QGridLayout(soundPage);
-	gridLayout->setSpacing(5);
 
+#ifndef Q_WS_HILDON
+	gridLayout->setSpacing(5);
 	gridLayout->setColumnStretch(0, 7);
 	gridLayout->setColumnStretch(1, 1);
 	gridLayout->setColumnStretch(2, 7);
@@ -591,8 +606,8 @@ void Wizard::createSoundPage()
 		"Don't forget to unmute your system before!</p>"));
 
 	descriptionPane->setFixedWidth(200);
-
 	gridLayout->addMultiCellWidget(descriptionPane, 0, 2, 0, 0);
+#endif /* Q_WS_HILDON */
 
 	gridLayout->addWidget(new QLabel(tr("Sound system") + ":", soundPage), 0, 2, Qt::AlignRight);
 	soundModuleCombo = new QComboBox(soundPage);
