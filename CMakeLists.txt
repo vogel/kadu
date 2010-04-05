@@ -19,6 +19,11 @@ if (NOT CMAKE_BUILD_TYPE)
 	set (CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build, options are: Debug Release RelWithDebInfo." FORCE)
 endif (NOT CMAKE_BUILD_TYPE)
 
+# build version string if cmake < 2.6.3
+if (NOT DEFINED CMAKE_VERSION)
+	set (CMAKE_VERSION "${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}.${CMAKE_PATCH_VERSION}")
+endif (NOT DEFINED CMAKE_VERSION)
+
 cmake_minimum_required (VERSION ${CMAKE_MIN_VERSION} FATAL_ERROR)
 
 include (FindPkgConfig)
