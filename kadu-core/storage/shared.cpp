@@ -28,8 +28,9 @@
  * new uuid is created and assigned to object.
  */
 Shared::Shared(QUuid uuid) :
-		Uuid(uuid.isNull() ? QUuid::createUuid() : uuid), BlockUpdatedSignalCount(0)
+		BlockUpdatedSignalCount(0)
 {
+	setUuid(uuid.isNull() ? QUuid::createUuid() : uuid);
 }
 
 /**
@@ -55,7 +56,7 @@ void Shared::load()
 		return;
 
 	UuidStorableObject::load();
-	Uuid = QUuid(loadAttribute<QString>("uuid"));
+	setUuid(QUuid(loadAttribute<QString>("uuid")));
 }
 
 /**
@@ -72,7 +73,7 @@ void Shared::store()
 
 	UuidStorableObject::store();
 
-	storeAttribute("uuid", Uuid.toString());
+	storeAttribute("uuid", uuid().toString());
 }
 
 /**
