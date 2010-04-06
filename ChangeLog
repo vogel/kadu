@@ -11,6 +11,7 @@
 * core: #1286 fixed: infinite loop and crash after changing "Simple Mode" (Vogel)
 * gui: #1268 fixed: invalid contacts name in Personal Properties tab (Vogel)
 * gui: #1284 fixed: invalid info displayed at Personal Properties tab (Vogel)
+* jabber: invisible status removed (not in XMPP standard) (Juzef)
 
 +++ version 0.6.6-alpha8
 * core: simple-mode introduced (Vogel)
