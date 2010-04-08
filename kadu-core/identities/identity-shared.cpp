@@ -28,11 +28,18 @@
 
 #include "identity-shared.h"
 
+IdentityShared * IdentityShared::loadStubFromStorage(StoragePoint *storagePoint)
+{
+	IdentityShared *identityShared = loadFromStorage(storagePoint);
+	identityShared->loadStub();
+
+	return identityShared;
+}
+
 IdentityShared * IdentityShared::loadFromStorage(StoragePoint *storagePoint)
 {
 	IdentityShared *identityShared = new IdentityShared();
 	identityShared->setStorage(storagePoint);
-	identityShared->load();
 
 	return identityShared;
 }

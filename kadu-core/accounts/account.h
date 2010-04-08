@@ -46,7 +46,8 @@ class KADUAPI Account : public SharedBase<AccountShared>
 
 public:
 	static Account create();
-	static Account loadFromStorage(StoragePoint *storage);
+	static Account loadStubFromStorage(StoragePoint *accountStoragePoint);
+	static Account loadFromStorage(StoragePoint *accountStoragePoint);
 	static Account null;
 
 	Account();

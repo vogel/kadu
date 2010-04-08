@@ -85,6 +85,7 @@ protected:
 public: //TODO 0.6.6: it is needed in Buddy::dummy()
 	virtual void protocolRegistered(ProtocolFactory *protocolHandler);
 
+	static AccountShared * loadStubFromStorage(StoragePoint *storagePoint);
 	static AccountShared * loadFromStorage(StoragePoint *storagePoint);
 
 	explicit AccountShared(QUuid uuid = QUuid());

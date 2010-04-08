@@ -22,15 +22,15 @@
 
 #include "mobile-number.h"
 
-MobileNumber::MobileNumber() :
-		Uuid(QUuid::createUuid())
+MobileNumber::MobileNumber()
 {
-
+	setUuid(QUuid::createUuid());
 }
 
 MobileNumber::MobileNumber(QString number, QString gatewayId) :
-		Uuid(QUuid::createUuid()), Number(number), GatewayId(gatewayId)
+		Number(number), GatewayId(gatewayId)
 {
+	setUuid(QUuid::createUuid());
 }
 
 MobileNumber::~MobileNumber()
@@ -44,7 +44,7 @@ void MobileNumber::load()
 
 	UuidStorableObject::load();
 
-	Uuid = loadAttribute<QString>("uuid");
+	setUuid(loadAttribute<QString>("uuid"));
 	Number = loadValue<QString>("Number");
 	GatewayId = loadValue<QString>("Gateway");
 }
@@ -58,7 +58,7 @@ void MobileNumber::store()
 
 	UuidStorableObject::store();
 
-	storeAttribute("uuid", Uuid.toString());
+	storeAttribute("uuid", uuid().toString());
 	storeValue("Number", Number);
 	storeValue("Gateway", GatewayId);
 }

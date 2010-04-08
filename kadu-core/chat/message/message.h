@@ -55,6 +55,7 @@ public:
 
 public:
 	static Message create();
+	static Message loadStubFromStorage(StoragePoint *messageStoragePoint);
 	static Message loadFromStorage(StoragePoint *messageStoragePoint);
 	static Message null;
 

@@ -50,6 +50,7 @@ protected:
 	virtual void emitUpdated();
 
 public:
+	static GroupShared * loadStubFromStorage(StoragePoint *groupStoragePoint);
 	static GroupShared * loadFromStorage(StoragePoint *groupStoragePoint);
 
 	explicit GroupShared(QUuid uuid = QUuid());

@@ -40,6 +40,11 @@ Contact Contact::create()
 	return new ContactShared();
 }
 
+Contact Contact::loadStubFromStorage(StoragePoint *contactStoragePoint)
+{
+	return ContactShared::loadStubFromStorage(contactStoragePoint);
+}
+
 Contact Contact::loadFromStorage(StoragePoint *contactStoragePoint)
 {
 	return ContactShared::loadFromStorage(contactStoragePoint);

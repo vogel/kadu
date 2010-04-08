@@ -26,11 +26,18 @@
 
 #include "avatar-shared.h"
 
+AvatarShared * AvatarShared::loadStubFromStorage(StoragePoint *storagePoint)
+{
+	AvatarShared *result = loadFromStorage(storagePoint);
+	result->loadStub();
+
+	return result;
+}
+
 AvatarShared * AvatarShared::loadFromStorage(StoragePoint *storagePoint)
 {
 	AvatarShared *result = new AvatarShared();
 	result->setStorage(storagePoint);
-	result->load();
 
 	return result;
 }

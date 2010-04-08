@@ -43,6 +43,11 @@ FileTransfer FileTransfer::create()
 	return new FileTransferShared();
 }
 
+FileTransfer FileTransfer::loadStubFromStorage(StoragePoint* fileTransferStoragePoint)
+{
+	return FileTransferShared::loadStubFromStorage(fileTransferStoragePoint);
+}
+
 FileTransfer FileTransfer::loadFromStorage(StoragePoint *fileTransferStoragePoint)
 {
 	return FileTransferShared::loadFromStorage(fileTransferStoragePoint);

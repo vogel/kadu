@@ -87,7 +87,7 @@ void RecentChatManager::load()
 			continue;
 
 		QString uuid = element.text();
-		Chat chat = ChatManager::instance()->byUuid(uuid, false);
+		Chat chat = ChatManager::instance()->byUuid(uuid);
 		if (chat)
 			addRecentChat(chat);
 	}

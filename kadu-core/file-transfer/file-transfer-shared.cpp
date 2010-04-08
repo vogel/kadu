@@ -26,6 +26,13 @@
 
 #include "file-transfer-shared.h"
 
+FileTransferShared * FileTransferShared::loadStubFromStorage(StoragePoint *fileTransferStoragePoint)
+{
+	FileTransferShared *result = loadFromStorage(fileTransferStoragePoint);
+	result->loadStub();
+	return result;
+}
+
 FileTransferShared * FileTransferShared::loadFromStorage(StoragePoint *fileTransferStoragePoint)
 {
 	FileTransferShared *result = new FileTransferShared();
@@ -62,7 +69,7 @@ void FileTransferShared::load()
 
 	StorableObject::load();
 
-	Peer = ContactManager::instance()->byUuid(loadValue<QString>("Peer"), true);
+	Peer = ContactManager::instance()->byUuid(loadValue<QString>("Peer"));
 	LocalFileName = loadValue<QString>("LocalFileName");
 	RemoteFileName = loadValue<QString>("RemoteFileName");
 	TransferType = ("Send" == loadValue<QString>("TransferType")) ? TypeSend : TypeReceive;

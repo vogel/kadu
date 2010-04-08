@@ -42,6 +42,7 @@
  */
 class KADUAPI UuidStorableObject : public StorableObject
 {
+	QUuid Uuid;
 
 protected:
 	virtual StoragePoint * createStoragePoint();
@@ -57,7 +58,17 @@ public:
 	 * This method returns object of type QUuid that represens unique ID for this object.
 	 * Each derivered class should ovveride that method to return really unique ID.
 	 */
-	virtual QUuid uuid() const = 0;
+	QUuid uuid() const { return Uuid; }
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Updates value of unique identifier of this object.
+	 * @return unique identifier of this object
+	 *
+	 * This method sets new unique ID for this object. Unique ID is
+	 * represented by object of type QUuid.
+	 */
+	void setUuid(const QUuid uuid) { Uuid = uuid; }
 
 	virtual bool shouldStore();
 

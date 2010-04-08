@@ -32,6 +32,7 @@ class Group : public SharedBase<GroupShared>
 
 public:
 	static Group create();
+	static Group loadStubFromStorage(StoragePoint *storage);
 	static Group loadFromStorage(StoragePoint *storage);
 	static Group null;
 

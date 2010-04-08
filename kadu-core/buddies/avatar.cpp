@@ -35,9 +35,14 @@ Avatar Avatar::create()
 	return new AvatarShared();
 }
 
-Avatar Avatar::loadFromStorage(StoragePoint *contactStoragePoint)
+Avatar Avatar::loadStubFromStorage(StoragePoint *avatarStoragePoint)
 {
-	return Avatar(AvatarShared::loadFromStorage(contactStoragePoint));
+	return AvatarShared::loadStubFromStorage(avatarStoragePoint);
+}
+
+Avatar Avatar::loadFromStorage(StoragePoint *avatarStoragePoint)
+{
+	return AvatarShared::loadFromStorage(avatarStoragePoint);
 }
 
 Avatar::Avatar()

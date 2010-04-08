@@ -39,6 +39,7 @@ class KADUAPI Avatar : public SharedBase<AvatarShared>
 
 public:
 	static Avatar create();
+	static Avatar loadStubFromStorage(StoragePoint *storage);
 	static Avatar loadFromStorage(StoragePoint *storage);
 	static Avatar null;
 

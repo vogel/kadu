@@ -22,7 +22,6 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QSharedData>
-#include <QtCore/QUuid>
 
 #include "status/status.h"
 
@@ -137,8 +136,6 @@
  */
 class Shared : public UuidStorableObject, public QSharedData
 {
-	QUuid Uuid;
-
 	int BlockUpdatedSignalCount;
 	bool Updated;
 
@@ -146,6 +143,7 @@ class Shared : public UuidStorableObject, public QSharedData
 
 protected:
 	virtual void load();
+	void loadStub();
 
 	void dataUpdated();
 	virtual void emitUpdated();
@@ -156,9 +154,6 @@ public:
 
 	virtual void store();
 	virtual void aboutToBeRemoved();
-
-	virtual QUuid uuid() const { return Uuid; }
-	void setUuid(const QUuid uuid) { Uuid = uuid; }
 
 	void blockUpdatedSignal();
 	void unblockUpdatedSignal();

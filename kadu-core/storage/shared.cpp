@@ -28,8 +28,9 @@
  * new uuid is created and assigned to object.
  */
 Shared::Shared(QUuid uuid) :
-		Uuid(uuid.isNull() ? QUuid::createUuid() : uuid), BlockUpdatedSignalCount(0)
+		BlockUpdatedSignalCount(0)
 {
+	setUuid(uuid.isNull() ? QUuid::createUuid() : uuid);
 }
 
 /**
@@ -55,7 +56,24 @@ void Shared::load()
 		return;
 
 	UuidStorableObject::load();
-	Uuid = QUuid(loadAttribute<QString>("uuid"));
+	setUuid(QUuid(loadAttribute<QString>("uuid")));
+}
+
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Loads object from storage.
+ *
+ * Loads obejct from storage. Loads only uuid from uuid attribute. Superclass method
+ * is not called (storage status remaing unchanged - access to each other property will
+ * fire load method). You must call this method in loadStub methods of derivered class.
+ */
+void Shared::loadStub()
+{
+	if (!isValidStorage())
+		return;
+
+	setUuid(QUuid(loadAttribute<QString>("uuid")));
+	setState(StateNotLoaded);
 }
 
 /**
@@ -72,7 +90,7 @@ void Shared::store()
 
 	UuidStorableObject::store();
 
-	storeAttribute("uuid", Uuid.toString());
+	storeAttribute("uuid", uuid().toString());
 }
 
 /**

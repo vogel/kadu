@@ -22,11 +22,18 @@
 
 #include "group-shared.h"
 
+GroupShared * GroupShared::loadStubFromStorage(StoragePoint *storagePoint)
+{
+	GroupShared *result = loadFromStorage(storagePoint);
+	result->loadStub();
+
+	return result;
+}
+
 GroupShared * GroupShared::loadFromStorage(StoragePoint *storagePoint)
 {
 	GroupShared *result = new GroupShared();
 	result->setStorage(storagePoint);
-	result->load();
 
 	return result;
 }

@@ -54,6 +54,7 @@ class KADUAPI Buddy : public SharedBase<BuddyShared>
 
 public:
 	static Buddy create();
+	static Buddy loadStubFromStorage(StoragePoint *buddyStoragePoint);
 	static Buddy loadFromStorage(StoragePoint *buddyStoragePoint);
 	static Buddy null;
 

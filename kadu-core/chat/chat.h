@@ -54,6 +54,7 @@ class KADUAPI Chat : public SharedBase<ChatShared>
 
 public:
 	static Chat create();
+	static Chat loadStubFromStorage(StoragePoint *chatStoragePoint);
 	static Chat loadFromStorage(StoragePoint *chatStoragePoint);
 	static Chat null;
 	

@@ -43,6 +43,7 @@ class KADUAPI Contact : public SharedBase<ContactShared>
 
 public:
 	static Contact create();
+	static Contact loadStubFromStorage(StoragePoint *storage);
 	static Contact loadFromStorage(StoragePoint *storage);
 	static Contact null;
 	

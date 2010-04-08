@@ -856,7 +856,7 @@ QList<Message> HistorySqlStorage::messagesFromQuery(Chat chat, QSqlQuery query)
 		Message::Type type = outgoing ? Message::TypeSent : Message::TypeReceived;
 
 		// ignore non-existing contacts
-		Contact sender = ContactManager::instance()->byUuid(query.value(0).toString(), false);
+		Contact sender = ContactManager::instance()->byUuid(query.value(0).toString());
 		if (sender.isNull())
 			continue;
 
@@ -882,7 +882,7 @@ QList<Status> HistorySqlStorage::statusesFromQuery(QSqlQuery query)
 	while (query.next())
 	{
 		// ignore non-existing contacts
-		Contact sender = ContactManager::instance()->byUuid(query.value(0).toString(), false);
+		Contact sender = ContactManager::instance()->byUuid(query.value(0).toString());
 		if (sender.isNull())
 			continue;
 

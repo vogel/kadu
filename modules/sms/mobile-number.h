@@ -25,8 +25,6 @@
 
 class MobileNumber : public UuidStorableObject
 {
-	QUuid Uuid;
-
 	QString Number;
 	QString GatewayId;
 
@@ -37,8 +35,6 @@ public:
 	MobileNumber();
 	MobileNumber(QString number, QString gatewayId);
 	virtual ~MobileNumber();
-
-	virtual QUuid uuid() const { return Uuid; }
 
 	virtual StorableObject * storageParent();
 	virtual QString storageNodeName() { return QLatin1String("MobileNumber"); }

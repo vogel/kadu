@@ -41,6 +41,7 @@ protected:
 	virtual void doSetStatus(Status newStatus);
 
 public:
+	static IdentityShared * loadStubFromStorage(StoragePoint *accountStoragePoint);
 	static IdentityShared * loadFromStorage(StoragePoint *accountStoragePoint);
 
 	explicit IdentityShared(const QUuid &uuid = QUuid());

@@ -52,6 +52,7 @@ protected:
 	virtual void emitUpdated();
 
 public:
+	static FileTransferShared * loadStubFromStorage(StoragePoint *fileTransferStoragePoint);
 	static FileTransferShared * loadFromStorage(StoragePoint *fileTransferStoragePoint);
 
 	explicit FileTransferShared(QUuid uuid = QUuid());

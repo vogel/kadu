@@ -45,6 +45,7 @@ protected:
 	virtual void emitUpdated();
 
 public:
+	static AvatarShared * loadStubFromStorage(StoragePoint *avatarStoragePoint);
 	static AvatarShared * loadFromStorage(StoragePoint *avatarStoragePoint);
 
 	explicit AvatarShared(QUuid uuid = QUuid());
