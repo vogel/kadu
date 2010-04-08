@@ -35,6 +35,11 @@ Group Group::create()
 	return new GroupShared();
 }
 
+Group Group::loadStubFromStorage(StoragePoint *contactStoragePoint)
+{
+	return GroupShared::loadStubFromStorage(contactStoragePoint);
+}
+
 Group Group::loadFromStorage(StoragePoint *contactStoragePoint)
 {
 	return GroupShared::loadFromStorage(contactStoragePoint);

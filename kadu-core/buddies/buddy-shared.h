@@ -77,6 +77,7 @@ protected:
 	virtual void emitUpdated();
 
 public:
+	static BuddyShared * loadStubFromStorage(StoragePoint *buddyStoragePoint);
 	static BuddyShared * loadFromStorage(StoragePoint *buddyStoragePoint);
 
 	explicit BuddyShared(QUuid uuid = QUuid());

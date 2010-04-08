@@ -68,6 +68,7 @@ protected:
 	virtual void detailsRemoved();
 
 public:
+	static ContactShared * loadStubFromStorage(StoragePoint *contactStoragePoint);
 	static ContactShared * loadFromStorage(StoragePoint *contactStoragePoint);
 
 	explicit ContactShared(QUuid uuid = QUuid());

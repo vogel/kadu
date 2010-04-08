@@ -48,6 +48,11 @@ Buddy Buddy::create()
 	return new BuddyShared();
 }
 
+Buddy Buddy::loadStubFromStorage(StoragePoint *contactStoragePoint)
+{
+	return BuddyShared::loadStubFromStorage(contactStoragePoint);
+}
+
 Buddy Buddy::loadFromStorage(StoragePoint *contactStoragePoint)
 {
 	return BuddyShared::loadFromStorage(contactStoragePoint);

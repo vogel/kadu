@@ -34,6 +34,14 @@
 
 #include "chat-shared.h"
 
+ChatShared * ChatShared::loadStubFromStorage(StoragePoint *storagePoint)
+{
+	ChatShared *result = loadFromStorage(storagePoint);
+	result->loadStub();
+
+	return result;
+}
+
 /**
  * @author Rafal 'Vogel' Malinowski
  * @short Loads chat data from given storage point.

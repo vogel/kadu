@@ -50,6 +50,11 @@ Chat Chat::create()
 	return new ChatShared();
 }
 
+Chat Chat::loadStubFromStorage(StoragePoint *chatStoragePoint)
+{
+	return ChatShared::loadStubFromStorage(chatStoragePoint);
+}
+
 /**
  * @author Rafal 'Vogel' Malinowski
  * @short Loads Chat object from storage.

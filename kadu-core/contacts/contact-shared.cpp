@@ -32,6 +32,14 @@
 
 #include "contact-shared.h"
 
+ContactShared * ContactShared::loadStubFromStorage(StoragePoint *storagePoint)
+{
+	ContactShared *result = loadFromStorage(storagePoint);
+	result->loadStub();
+
+	return result;
+}
+
 ContactShared * ContactShared::loadFromStorage(StoragePoint *storagePoint)
 {
 	ContactShared *result = new ContactShared();

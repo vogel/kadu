@@ -48,7 +48,7 @@ ContactSet ContactSetConfigurationHelper::loadFromConfiguration(XmlConfigFile *c
 	QList<QDomElement> contactElements = configurationStorage->getNodes(contactSetNode, "Contact");
 	foreach (QDomElement contactElement, contactElements)
 	{
-		Contact contact = ContactManager::instance()->byUuid(contactElement.text(), false);
+		Contact contact = ContactManager::instance()->byUuid(contactElement.text());
 		// TODO: 0.6.6 this only for compatibility with previous builds of 0.6.6
 		if (contact.isNull())
 		{

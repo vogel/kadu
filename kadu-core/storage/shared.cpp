@@ -61,6 +61,23 @@ void Shared::load()
 
 /**
  * @author Rafal 'Vogel' Malinowski
+ * @short Loads object from storage.
+ *
+ * Loads obejct from storage. Loads only uuid from uuid attribute. Superclass method
+ * is not called (storage status remaing unchanged - access to each other property will
+ * fire load method). You must call this method in loadStub methods of derivered class.
+ */
+void Shared::loadStub()
+{
+	if (!isValidStorage())
+		return;
+
+	setUuid(QUuid(loadAttribute<QString>("uuid")));
+	setState(StateNotLoaded);
+}
+
+/**
+ * @author Rafal 'Vogel' Malinowski
  * @short Stores object to storage.
  *
  * Storeas obejct to storage. Stored uuid to uuid attribute.

@@ -73,6 +73,7 @@ protected:
 	virtual void detailsAboutToBeRemoved();
 
 public:
+	static ChatShared * loadStubFromStorage(StoragePoint *storagePoint);
 	static ChatShared * loadFromStorage(StoragePoint *storagePoint);
 
 	explicit ChatShared(QUuid uuid = QUuid::createUuid());

@@ -32,6 +32,11 @@ Message Message::create()
 	return new MessageShared();
 }
 
+Message Message::loadStubFromStorage(StoragePoint *messageStoragePoint)
+{
+	return MessageShared::loadStubFromStorage(messageStoragePoint);
+}
+
 Message Message::loadFromStorage(StoragePoint *messageStoragePoint)
 {
 	return MessageShared::loadFromStorage(messageStoragePoint);

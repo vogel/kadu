@@ -35,6 +35,11 @@ Identity Identity::create()
 	return new IdentityShared();
 }
 
+Identity Identity::loadStubFromStorage(StoragePoint *accountStoragePoint)
+{
+	return IdentityShared::loadStubFromStorage(accountStoragePoint);
+}
+
 Identity Identity::loadFromStorage(StoragePoint *accountStoragePoint)
 {
 	return IdentityShared::loadFromStorage(accountStoragePoint);

@@ -31,6 +31,14 @@
 
 #include "account-shared.h"
 
+AccountShared * AccountShared::loadStubFromStorage(StoragePoint *storagePoint)
+{
+	AccountShared *result = loadFromStorage(storagePoint);
+	result->loadStub();
+
+	return result;
+}
+
 AccountShared * AccountShared::loadFromStorage(StoragePoint *storagePoint)
 {
 	AccountShared *result = new AccountShared();

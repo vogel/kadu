@@ -184,8 +184,8 @@ protected:
 			QUuid uuid = storagePoint->point().attribute("uuid");
 			if (!uuid.isNull())
 			{
-				Item item = byUuid(uuid); // this method loads
-				item.data()->setStorage(storagePoint);
+				Item item = Item::loadStubFromStorage(storagePoint);
+				addItem(item);
 			}
 		}
 	}
@@ -233,17 +233,15 @@ public:
 	 * @author Rafal 'Vogel' Malinowski
 	 * @short Returns item by uuid.
 	 * @param uuid uuid of item to return
-	 * @param create when true, new item can be created
 	 * @return item with given uuid
 	 *
 	 * Returns item with given uuid. Uuid are arbitrary but can not
 	 * change (even between application restarts).
-	 *
-	 * When no item with given uuid is found and create is true, new item is created
-	 * and added to manager.
 	 */
-	Item byUuid(const QUuid &uuid, bool create = true)
+	Item byUuid(const QUuid &uuid)
 	{
+		ensureLoaded();
+
 		if (uuid.isNull())
 			return Item::null;
 
@@ -251,16 +249,7 @@ public:
 			if (item.uuid() == uuid)
 				return item;
 
-		if (!create)
-			return Item::null;
-
-		Item item = Item::create();
-		item.setUuid(uuid);
-		item.data()->setState(StateNotLoaded);
-
-		addItem(item);
-
-		return item;
+		return Item::null;
 	}
 
 	/**

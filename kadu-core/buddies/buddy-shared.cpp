@@ -37,6 +37,13 @@
 
 #include "buddy-shared.h"
 
+BuddyShared * BuddyShared::loadStubFromStorage(StoragePoint *buddyStoragePoint)
+{
+	BuddyShared *result = loadFromStorage(buddyStoragePoint);
+	result->loadStub();
+	return result;
+}
+
 BuddyShared * BuddyShared::loadFromStorage(StoragePoint *buddyStoragePoint)
 {
 	BuddyShared *result = new BuddyShared();

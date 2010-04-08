@@ -44,6 +44,11 @@ Account Account::create()
 	return new AccountShared();
 }
 
+Account Account::loadStubFromStorage(StoragePoint *accountStoragePoint)
+{
+	return AccountShared::loadStubFromStorage(accountStoragePoint);
+}
+
 Account Account::loadFromStorage(StoragePoint *accountStoragePoint)
 {
 	return AccountShared::loadFromStorage(accountStoragePoint);

@@ -143,6 +143,7 @@ class Shared : public UuidStorableObject, public QSharedData
 
 protected:
 	virtual void load();
+	void loadStub();
 
 	void dataUpdated();
 	virtual void emitUpdated();

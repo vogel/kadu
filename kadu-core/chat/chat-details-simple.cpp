@@ -69,10 +69,10 @@ void ChatDetailsSimple::load()
 	}
 	else
 	{
-		CurrentContact = ContactManager::instance()->byUuid(cadUuid, false);
+		CurrentContact = ContactManager::instance()->byUuid(cadUuid);
 		if (CurrentContact.isNull())
 		{
-			// TODO 0.6.6 how it work?
+			// TODO 0.6.6 how it works?
 			Buddy buddy = BuddyManager::instance()->byUuid(cadUuid);
 			QList<Contact> contactList = buddy.contacts(mainData()->chatAccount());
 			if (!contactList.isEmpty())

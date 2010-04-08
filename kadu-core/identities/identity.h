@@ -38,6 +38,7 @@ class KADUAPI Identity : public SharedBase<IdentityShared>
 
 public:
 	static Identity create();
+	static Identity loadStubFromStorage(StoragePoint *identityStoragePoint);
 	static Identity loadFromStorage(StoragePoint *identityStoragePoint);
 	static Identity null;
 
