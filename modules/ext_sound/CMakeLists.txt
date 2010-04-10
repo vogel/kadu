@@ -1,9 +1,10 @@
 set (SOURCES
-	player_external.cpp
+	external-player.cpp
+	ext-sound-module.cpp
 )
 
 set (MOC_SOURCES
-	player_external.h
+	external-player.h
 )
 
 set (TRANSLATION_SOURCES

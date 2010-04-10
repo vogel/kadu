@@ -1,9 +1,13 @@
 /*
  * %kadu copyright begin%
  * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
- * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2009 Tomasz Rostański (rozteck@interia.pl)
- * Copyright 2010 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * Copyright 2004, 2005, 2006 Marcin Ślusarz (joi@kadu.net)
+ * Copyright 2004 Adrian Smarzewski (adrian@kadu.net)
+ * Copyright 2007, 2008, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2004 Roman Krzystyniak (Ron_K@tlen.pl)
+ * Copyright 2004, 2008 Michał Podsiadlik (michal@kadu.net)
+ * Copyright 2008 Tomasz Rostański (rozteck@interia.pl)
+ * Copyright 2009 Piotr Galiszewski (piotrgaliszewski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -20,40 +24,30 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PHONON_SOUND_H
-#define PHONON_SOUND_H
-
-#include <QtCore/QObject>
-#include <QtCore/QString>
+#ifndef EXTERNAL_PLAYER_H
+#define EXTERNAL_PLAYER_H
 
 #include "modules/sound/sound-player.h"
 
-namespace Phonon
-{
-	class AudioOutput;
-	class MediaObject;
-}
-
-class PhononPlayer : public SoundPlayer
+class ExternalPlayer : public SoundPlayer
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(PhononPlayer);
+	Q_DISABLE_COPY(ExternalPlayer);
 
-	static PhononPlayer * Instance;
+	static ExternalPlayer * Instance;
 
-	Phonon::MediaObject *Media;
-	Phonon::AudioOutput *Output;
+	ExternalPlayer();
+	virtual ~ExternalPlayer();
 
-	PhononPlayer();
-	virtual ~PhononPlayer();
+	void createDefaultConfiguration();
 
 public:
 	static void createInstance();
 	static void destroyInstance();
-	static PhononPlayer * instance();
+	static ExternalPlayer * instance();
 
 	virtual void playSound(const QString &path, bool volumeControl, double volume);
 
 };
 
-#endif // PHONON_SOUND_H
+#endif // EXTERNAL_PLAYER_H

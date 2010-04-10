@@ -24,96 +24,67 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stdlib.h>
-#include <QtGui/QFileDialog>
+#include <QtCore/QProcess>
 
 #include "configuration/configuration-file.h"
-#include "gui/windows/main-configuration-window.h"
-#include "misc/path-conversion.h"
 #include "debug.h"
 
-#include "modules/sound/sound-manager.h"
+#include "external-player.h"
 
-#include "player_external.h"
+ExternalPlayer * ExternalPlayer::Instance = 0;
 
-/**
- * @ingroup ext_sound
- * @{
- */
-extern "C" KADU_EXPORT int ext_sound_init(bool firstLoad)
+void ExternalPlayer::createInstance()
 {
-	Q_UNUSED(firstLoad)
-
-	kdebugf();
-
-	external_player = new ExternalPlayer();
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/ext_sound.ui"));
-
-	kdebugf2();
-	return 0;
+	if (!Instance)
+		Instance = new ExternalPlayer();
 }
-extern "C" KADU_EXPORT void ext_sound_close()
+
+void ExternalPlayer::destroyInstance()
 {
-	kdebugf();
+	delete Instance;
+	Instance = 0;
+}
 
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/ext_sound.ui"));
-	delete external_player;
-	external_player = 0;
-
-	kdebugf2();
+ExternalPlayer * ExternalPlayer::instance()
+{
+	return Instance;
 }
 
 ExternalPlayer::ExternalPlayer()
 {
-	kdebugf();
-
 	createDefaultConfiguration();
-
-	connect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
-			this, SLOT(playSound(const QString &, bool, double)));
-
-	kdebugf2();
 }
 
 ExternalPlayer::~ExternalPlayer()
 {
-	kdebugf();
-
-	disconnect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
-			this, SLOT(playSound(const QString &, bool, double)));
-
-	kdebugf2();
 }
 
-void ExternalPlayer::play(const QString &s, bool volCntrl, double vol, QString player)
+void ExternalPlayer::playSound(const QString &path, bool volumeControl, double volume)
 {
 	kdebugf();
-	QString t;
 
-	if (player.isEmpty())
-		t = config_file.readEntry("Sounds", "SoundPlayer");
-	else
-		t = player;
+	QString playerCommand = config_file.readEntry("Sounds", "SoundPlayer");
+	QString volumeArguments;
 
-	if (t.isEmpty())
+	if (playerCommand.isEmpty())
 	{
 		kdebugmf(KDEBUG_FUNCTION_END, "end: player path is empty\n");
 		return;
 	}
 
-	if (volCntrl)
-		t.append(" -v "+QString::number(vol, 'g', 2));
-	t.append(" "+s+" >/dev/null &");
-	kdebugm(KDEBUG_INFO, "%s\n", t.toAscii().data());
-	system(t.toAscii());
-	kdebugf2();
-}
+	QStringList argumentList;
 
-void ExternalPlayer::playSound(const QString &s, bool volCntrl, double vol)
-{
-	kdebugf();
-	QString player = QString::null;
-	play(s, volCntrl, vol, player);
+	if (volumeControl)
+	{
+		argumentList.append("-v");
+		argumentList.append(QString::number(volume, 'g', 2));
+	}
+
+	argumentList.append(path);
+
+	QProcess process;
+	process.start(playerCommand, argumentList);
+	process.waitForFinished();
 }
 
 void ExternalPlayer::createDefaultConfiguration()
@@ -124,8 +95,3 @@ void ExternalPlayer::createDefaultConfiguration()
 	config_file.addVariable("Sounds", "SoundPlayer", "/usr/bin/play");
 #endif
 }
-
-ExternalPlayer *external_player;
-
-/** @} */
-

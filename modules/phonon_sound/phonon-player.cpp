@@ -49,7 +49,6 @@ PhononPlayer * PhononPlayer::instance()
 	return Instance;
 }
 
-
 PhononPlayer::PhononPlayer()
 {
 	kdebugf();
