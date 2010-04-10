@@ -438,7 +438,7 @@ XMPP::Status JabberProtocol::toXMPPStatus(Status status)
 	else if ("Away" == type)
 		s.setType(XMPP::Status::Away);
 	else if ("Invisible" == type)
-		s.setType(XMPP::Status::Invisible);
+		s.setType(XMPP::Status::DND);
 	else
 		s.setType(XMPP::Status::Offline);
 
@@ -452,7 +452,7 @@ Status JabberProtocol::toStatus(XMPP::Status status)
 	if (status.isAvailable())
 		newstatus.setType("Online");
 	else if (status.isInvisible())
-		newstatus.setType("Invisible");
+		newstatus.setType("DoNotDisturb");
 	else
 		newstatus.setType("Offline");
 
@@ -475,7 +475,8 @@ Status JabberProtocol::toStatus(XMPP::Status status)
 
 void JabberProtocol::changeStatus(Status status)
 {
-	JabberClient->setPresence(toXMPPStatus(status));
+	XMPP::Status xmppStatus = toXMPPStatus(status);
+	JabberClient->setPresence(xmppStatus);
 
 	if (status.isDisconnected())
 	{
@@ -487,7 +488,7 @@ void JabberProtocol::changeStatus(Status status)
 			setStatus(Status());
 	}
 
-	statusChanged(status);
+	statusChanged(toStatus(xmppStatus));
 }
 
 void JabberProtocol::slotIncomingFileTransfer()
