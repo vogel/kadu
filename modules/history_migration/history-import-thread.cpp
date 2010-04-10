@@ -161,7 +161,7 @@ QList<HistoryEntry> HistoryImportThread::historyEntries(QStringList uins, int ma
 		return entries;
 
 	QTextStream stream(&f);
-	stream.setCodec("CP1250");
+	stream.setCodec(codec_latin2);
 
 	int linenr = 0;
 
