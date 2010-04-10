@@ -21,42 +21,27 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QCheckBox>
-#include <QtGui/QMessageBox>
-#include <QtCrypto>
-
-#include "libiris/include/iris/filetransfer.h"
-#include <xmpp.h>
-#include <xmpp_tasks.h>
-
-#include "accounts/account-manager.h"
 #include "buddies/buddy-manager.h"
-#include "buddies/group.h"
 #include "buddies/group-manager.h"
-#include "configuration/configuration-file.h"
 #include "contacts/contact-manager.h"
 #include "core/core.h"
-#include "file-transfer/file-transfer-manager.h"
-#include "gui/widgets/chat-widget-manager.h"
-#include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/password-window.h"
-#include "gui/windows/subscription-window.h"
-#include "gui/windows/main-configuration-window.h"
-#include "misc/misc.h"
-#include "protocols/protocol-menu-manager.h"
-#include "status/status-type-manager.h"
-#include "status/status.h"
-#include "debug.h"
-#include "exports.h"
-#include "icons-manager.h"
-#include "kadu-config.h"
-
-#include "file-transfer/jabber-file-transfer-handler.h"
-#include "jabber-account-details.h"
-#include "jabber-protocol.h"
-#include "jabber-protocol-factory.h"
 #include "os/generic/system-info.h"
+#include "protocols/protocols-manager.h"
+#include "status/status-type-manager.h"
+#include "debug.h"
+
+#include "gui/windows/subscription-window.h"
+#include "resource/jabber-resource-pool.h"
+#include "utils/pep-manager.h"
+#include "utils/server-info-manager.h"
+#include "iris/filetransfer.h"
+#include "jabber-account-details.h"
+#include "jabber-contact-details.h"
+#include "jabber-protocol-factory.h"
+
+#include "jabber-protocol.h"
 
 extern "C" KADU_EXPORT int jabber_protocol_init()
 {
@@ -94,7 +79,7 @@ void JabberProtocol::closeModule()
 }
 
 JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
-		Protocol(account, factory), JabberClient(NULL), ResourcePool(0), serverInfoManager(0), PepManager(0)
+		Protocol(account, factory), JabberClient(0), ResourcePool(0), serverInfoManager(0), PepManager(0)
 {
 	kdebugf();
 
@@ -223,7 +208,7 @@ void JabberProtocol::connectToServer()
 	JabberClient->setOSName(SystemInfo::instance()->osFullName());
 	JabberClient->setTimeZone(SystemInfo::instance()->timezone(), SystemInfo::instance()->timezoneOffset());
 	JabberClient->setClientName("Kadu");
-	JabberClient->setClientVersion(VERSION);
+	JabberClient->setClientVersion(Core::instance()->version());
 
 	// Set caps node information
 	JabberClient->setCapsNode("http://psi-im.org/caps");
