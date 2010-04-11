@@ -266,6 +266,7 @@ set (SOURCES
 	jabber-account-details.cpp
 	jabber-contact-data-manager.cpp
 	jabber-contact-details.cpp
+	jabber-module.cpp
 	jabber-protocol.cpp
 	jabber-protocol-factory.cpp
 	resource/jabber-resource.cpp

@@ -43,16 +43,6 @@
 
 #include "jabber-protocol.h"
 
-extern "C" KADU_EXPORT int jabber_protocol_init()
-{
-	return JabberProtocol::initModule();
-}
-
-extern "C" KADU_EXPORT void jabber_protocol_close()
-{
-	JabberProtocol::closeModule();
-}
-
 bool JabberProtocol::ModuleUnloading = false;
 
 int JabberProtocol::initModule()
