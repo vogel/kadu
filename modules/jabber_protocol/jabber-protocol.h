@@ -60,7 +60,6 @@ class JabberProtocol : public Protocol
 	bool confUseSSL;
 	bool doReconnect;
 	bool doAboutRoster;
-	bool whileConnecting;
 	bool pepAvailable;
 
 	static bool ModuleUnloading;
@@ -109,7 +108,6 @@ public:
 
 	XMPP::JabberClient * client() { return JabberClient; }
 	bool validateUserID(const QString& uid);
-	bool isConnecting() { return whileConnecting; }
 	XMPP::Status toXMPPStatus(Status status);
 	Status toStatus(XMPP::Status status);
 	bool isPEPAvailable() { return pepAvailable; }

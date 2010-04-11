@@ -112,6 +112,7 @@ public:
 
 	NetworkState state() { return State; }
 	bool isConnected() { return (State == NetworkConnected); }
+	bool isConnecting() { return (State == NetworkConnecting); }
 
 	void setStatus(Status status);
 	Status status() const;

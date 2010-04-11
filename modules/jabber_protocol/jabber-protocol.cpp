@@ -250,10 +250,9 @@ void JabberProtocol::connectToServer()
 	stream->setAllowPlain(XMPP::ClientStream::AllowPlainOverTLS);
 
 */
-	whileConnecting = true;
+
 	networkStateChanged(NetworkConnecting);
 	jabberID = jabberID.withResource(jabberAccountDetails->resource());
-	networkStateChanged(NetworkConnecting);
 	JabberClient->connect(jabberID, account().password(), true);
 	
 	// Initialize server info stuff
@@ -275,8 +274,6 @@ void JabberProtocol::connectToServer()
 void JabberProtocol::connectedToServer()
 {
 	kdebugf();
-
-	whileConnecting = false;
 
 	networkStateChanged(NetworkConnected);
 	
