@@ -36,6 +36,7 @@
 class Conference;
 class JabberContactDetails;
 class JabberResourcePool;
+class JabberSubscriptionService;
 class PEPManager;
 class ServerInfoManager;
 
@@ -43,10 +44,11 @@ class JabberProtocol : public Protocol
 {
 	Q_OBJECT
 
+	JabberAvatarService *CurrentAvatarService;
 	JabberChatService *CurrentChatService;
 	JabberChatStateService *CurrentChatStateService;
 	JabberFileTransferService *CurrentFileTransferService;
-	JabberAvatarService *CurrentAvatarService;
+	JabberSubscriptionService *CurrentSubscriptionService;
 
 	XMPP::JabberClient *JabberClient;
 	XMPP::Jid jabberID;
@@ -79,7 +81,6 @@ private slots:
 	void slotContactUpdated(const XMPP::RosterItem &ri);
 	void slotContactDeleted(const XMPP::RosterItem &ri);
 	void slotIncomingFileTransfer();
-	void slotSubscription(const XMPP::Jid &jid, const QString &type, const QString &nick);
 	void slotClientDebugMessage (const QString &msg);
 
 	void contactDetached(Contact contact);

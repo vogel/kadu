@@ -128,6 +128,12 @@ public:
 
 	QIcon icon();
 
+	// TODO: workaround
+	void emitContactStatusChanged(Contact contact, Status oldStatus)
+	{
+		emit contactStatusChanged(contact, oldStatus);
+	}
+
 signals:
 	void connecting(Account account);
 	void connected(Account account);

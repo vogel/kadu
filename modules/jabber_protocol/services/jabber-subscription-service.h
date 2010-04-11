@@ -1,9 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
- * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2009 Piotr Galiszewski (piotrgaliszewski@gmail.com)
- * Copyright 2009 Bartłomiej Zimoń (uzi18@o2.pl)
+ * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -20,32 +17,27 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JABBER_CHAT_SERVICE_H
-#define JABBER_CHAT_SERVICE_H
+#ifndef JABBER_SUBSCRIPTION_SERVICE_H
+#define JABBER_SUBSCRIPTION_SERVICE_H
 
-#include <im.h>
-#include <xmpp.h>
+#include <QtCore/QObject>
 
-#include "protocols/services/chat-service.h"
+#include "iris/xmpp_jid.h"
 
-class Chat;
 class JabberProtocol;
 
-class JabberChatService : public ChatService
+class JabberSubscriptionService : public QObject
 {
 	Q_OBJECT
 
 	JabberProtocol *Protocol;
 
 private slots:
-	void clientMessageReceived(const XMPP::Message &msg);
+	void subscription(const XMPP::Jid &jid, const QString &type, const QString &nick);
 
 public:
-	JabberChatService(JabberProtocol *protocol);
-
-public slots:
-	virtual bool sendMessage(Chat chat, FormattedMessage &formattedMessage);
+	explicit JabberSubscriptionService(JabberProtocol *protocol);
 
 };
 
-#endif // JABBER_CHAT_SERVICE_H
+#endif // JABBER_SUBSCRIPTION_SERVICE_H

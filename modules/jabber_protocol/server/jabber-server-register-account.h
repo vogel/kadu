@@ -77,6 +77,7 @@ private slots:
 
 signals:
 	void finished(JabberServerRegisterAccount *);
+
 };
 
 #endif // JABBER_SERVER_REGISTER_ACCOUNT_H
