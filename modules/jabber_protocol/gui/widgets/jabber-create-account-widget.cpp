@@ -310,17 +310,18 @@ void JabberCreateAccountWidget::registerNewAccountFinished(JabberServerRegisterA
 		MessageDialog::msg(tr("Registration was successful. Your new Jabber ID is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(jsra->jid()), false, "32x32/dialog-information.png", this);
 
 		Account jabberAccount = Account::create();
-		// TODO: 0.6.6 set protocol after details because of crash
-		//jabberAccount.setProtocolName("jabber");
-		JabberAccountDetails *details = new JabberAccountDetails(jabberAccount);
-		details->setState(StorableObject::StateNew);
-		jabberAccount.setDetails(details);
 		jabberAccount.setProtocolName("jabber");
 		jabberAccount.setAccountIdentity(IdentityCombo->currentIdentity());
 		jabberAccount.setId(jsra->jid());
 		jabberAccount.setPassword(NewPassword->text());
-		details->setTlsOverrideDomain(jsra->client()->tlsOverrideDomain());
 		jabberAccount.setRememberPassword(RememberPassword->isChecked());
+
+		JabberAccountDetails *details = dynamic_cast<JabberAccountDetails *>(jabberAccount.details());
+		if (details)
+		{
+			details->setState(StorableObject::StateNew);
+			details->setTlsOverrideDomain(jsra->client()->tlsOverrideDomain());
+		}
 
 		emit accountCreated(jabberAccount);
 	}
