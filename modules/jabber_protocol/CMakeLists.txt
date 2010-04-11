@@ -262,6 +262,7 @@ set (SOURCES
 	gui/windows/jabber-change-password-window.cpp
 	gui/windows/xml-console.cpp
 	open-chat-with/jabber-open-chat-with-runner.cpp
+	iris-status-adapter.cpp
 	jabber-account-data-manager.cpp
 	jabber-account-details.cpp
 	jabber-contact-data-manager.cpp

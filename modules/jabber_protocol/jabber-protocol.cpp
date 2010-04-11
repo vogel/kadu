@@ -37,6 +37,7 @@
 #include "utils/pep-manager.h"
 #include "utils/server-info-manager.h"
 #include "iris/filetransfer.h"
+#include "iris-status-adapter.h"
 #include "jabber-account-details.h"
 #include "jabber-contact-details.h"
 #include "jabber-protocol-factory.h"
@@ -288,7 +289,7 @@ void JabberProtocol::logout()
 		setStatus(newstat);
 	}
 
-	disconnectFromServer(toXMPPStatus(newstat));
+	disconnectFromServer(IrisStatusAdapter::toIrisStatus(newstat));
 	setAllOffline();
 
 	kdebugf2();
@@ -394,60 +395,9 @@ void JabberProtocol::login()
 	connectToServer();
 }
 
-XMPP::Status JabberProtocol::toXMPPStatus(Status status)
-{
-	XMPP::Status s = XMPP::Status();
-	const QString &type = status.type();
-
-	if ("Online" == type)
-		s.setType(XMPP::Status::Online);
-	else if ("FreeForChat" == type)
-		s.setType(XMPP::Status::FFC);
-	else if ("DoNotDisturb" == type)
-		s.setType(XMPP::Status::DND);
-	else if ("NotAvailable" == type)
-		s.setType(XMPP::Status::XA);
-	else if ("Away" == type)
-		s.setType(XMPP::Status::Away);
-	else if ("Invisible" == type)
-		s.setType(XMPP::Status::DND);
-	else
-		s.setType(XMPP::Status::Offline);
-
-	s.setStatus(status.description());
-	return s;
-}
-
-Status JabberProtocol::toStatus(XMPP::Status status)
-{
-	Status newstatus;
-	if (status.isAvailable())
-		newstatus.setType("Online");
-	else if (status.isInvisible())
-		newstatus.setType("DoNotDisturb");
-	else
-		newstatus.setType("Offline");
-
-	if (status.show() == "away")
-		newstatus.setType("Away");
-	else if (status.show() == "xa")
-		newstatus.setType("NotAvailable");
-	else if (status.show() == "dnd")
-		newstatus.setType("DoNotDisturb");
-	else if (status.show() == "chat")
-		newstatus.setType("FreeForChat");
-
-	QString description = status.status();
-	description.replace("\r\n", "\n");
-	description.replace("\r", "\n");
-	newstatus.setDescription(description);
-
-	return newstatus;
-}
-
 void JabberProtocol::changeStatus(Status status)
 {
-	XMPP::Status xmppStatus = toXMPPStatus(status);
+	XMPP::Status xmppStatus = IrisStatusAdapter::toIrisStatus(status);
 	JabberClient->setPresence(xmppStatus);
 
 	if (status.isDisconnected())
@@ -460,7 +410,7 @@ void JabberProtocol::changeStatus(Status status)
 			setStatus(Status());
 	}
 
-	statusChanged(toStatus(xmppStatus));
+	statusChanged(IrisStatusAdapter::fromIrisStatus(xmppStatus));
 }
 
 void JabberProtocol::slotIncomingFileTransfer()
@@ -490,7 +440,7 @@ void JabberProtocol::clientResourceReceived(const XMPP::Jid &jid, const XMPP::Re
 	kdebug("New resource available for %s\n", jid.full().toLocal8Bit().data());
 	resourcePool()->addResource(jid, resource);
 
-	Status status(toStatus(resource.status()));
+	Status status(IrisStatusAdapter::fromIrisStatus(resource.status()));
 	Contact contact = ContactManager::instance()->byId(account(), jid.bare(), ActionReturnNull);
 
 	if (contact)

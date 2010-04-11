@@ -108,8 +108,6 @@ public:
 
 	XMPP::JabberClient * client() { return JabberClient; }
 	bool validateUserID(const QString& uid);
-	XMPP::Status toXMPPStatus(Status status);
-	Status toStatus(XMPP::Status status);
 	bool isPEPAvailable() { return pepAvailable; }
 
 	virtual Conference * loadConferenceFromStorage(StoragePoint *storage) { return 0; }
