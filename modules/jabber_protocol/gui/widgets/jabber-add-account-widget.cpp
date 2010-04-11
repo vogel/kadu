@@ -136,17 +136,20 @@ void JabberAddAccountWidget::apply()
 	Account jabberAccount = Account::create();
 	// TODO: 0.6.6 set protocol after details because of crash
 	//jabberAccount.setProtocolName("jabber");
-	JabberAccountDetails *details = new JabberAccountDetails(jabberAccount);
-	details->setState(StorableObject::StateNew);
-	details->setResource("Kadu");
-	details->setPriority(5);
 	jabberAccount.setAccountIdentity(Identity->currentIdentity());
-	jabberAccount.setDetails(details);
 	jabberAccount.setProtocolName("jabber");
 	jabberAccount.setId(Username->text() + "@" + Domain->currentText());
 	jabberAccount.setPassword(AccountPassword->text());
 	jabberAccount.setHasPassword(!AccountPassword->text().isEmpty());
 	jabberAccount.setRememberPassword(RememberPassword->isChecked());
+
+	JabberAccountDetails *details = dynamic_cast<JabberAccountDetails *>(jabberAccount.details());
+	if (details)
+	{
+		details->setState(StorableObject::StateNew);
+		details->setResource("Kadu");
+		details->setPriority(5);
+	}
 
 	emit accountCreated(jabberAccount);
 }

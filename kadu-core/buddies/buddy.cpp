@@ -234,11 +234,8 @@ Buddy Buddy::dummy()
 	{
 		account = Account::create();
 		ProtocolFactory *firstProto = ProtocolsManager::instance()->protocolFactories().first() ;
-		AccountDetails *accDetails = firstProto->createAccountDetails(account);
-		accDetails->setState(StorableObject::StateNew);
-		account.setDetails(accDetails);
-		// TODO 0.6.6: set proto name after setting details becouse of crash
 		account.setProtocolName(firstProto->name());
+		account.details()->setState(StorableObject::StateNew);
 	}
 
 	if (!account.isNull())
