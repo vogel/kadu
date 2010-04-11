@@ -21,11 +21,14 @@
 #define OAUTH_PARAMETERS_H
 
 #include <QtCore/QString>
+#include <QtCrypto>
 
 #include "oauth/oauth-token.h"
 
 class OAuthParameters
 {
+	QCA::Initializer QCAInit;
+
 	OAuthConsumer Consumer;
 	QString HttpMethod;
 	QString Url;

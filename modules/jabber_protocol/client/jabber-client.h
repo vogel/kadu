@@ -96,7 +96,7 @@ class JabberClient : public QObject
 	XMPP::AdvancedConnector *JabberClientConnector;
 	QCA::TLS *JabberTLS;
 	XMPP::QCATLSHandler *JabberTLSHandler;
-	QCA::Initializer QcaInit;
+	QCA::Initializer QCAInit;
 	//PrivacyManager *privacyManager;
 	QStringList AddedContacts;
 

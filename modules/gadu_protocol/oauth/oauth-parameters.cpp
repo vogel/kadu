@@ -19,7 +19,6 @@
  */
 
 #include <QtCore/QStringList>
-#include <QtCrypto>
 
 #include "oauth-parameters.h"
 
