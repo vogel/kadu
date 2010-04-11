@@ -34,6 +34,7 @@
 #include "debug.h"
 
 #include "certificates/certificate-helpers.h"
+#include "resource/jabber-resource-pool.h"
 #include "jabber-account-details.h"
 #include "jabber-client.h"
 #include "jabber-protocol.h"

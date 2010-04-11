@@ -262,10 +262,12 @@ set (SOURCES
 	gui/windows/jabber-change-password-window.cpp
 	gui/windows/xml-console.cpp
 	open-chat-with/jabber-open-chat-with-runner.cpp
+	iris-status-adapter.cpp
 	jabber-account-data-manager.cpp
 	jabber-account-details.cpp
 	jabber-contact-data-manager.cpp
 	jabber-contact-details.cpp
+	jabber-module.cpp
 	jabber-protocol.cpp
 	jabber-protocol-factory.cpp
 	resource/jabber-resource.cpp
@@ -277,6 +279,7 @@ set (SOURCES
 	services/jabber-chat-service.cpp
 	services/jabber-chat-state-service.cpp
 	services/jabber-file-transfer-service.cpp
+	services/jabber-subscription-service.cpp
 	transport/jabber-transport.cpp
 	utils/jid-util.cpp
 	utils/vcard-factory.cpp
@@ -307,6 +310,7 @@ set (MOC_SOURCES
 	services/jabber-chat-service.h
 	services/jabber-chat-state-service.h
 	services/jabber-file-transfer-service.h
+	services/jabber-subscription-service.h
 	transport/jabber-transport.h
 	utils/vcard-factory.h
 	utils/pep-manager.h

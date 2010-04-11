@@ -112,6 +112,7 @@ public:
 
 	NetworkState state() { return State; }
 	bool isConnected() { return (State == NetworkConnected); }
+	bool isConnecting() { return (State == NetworkConnecting); }
 
 	void setStatus(Status status);
 	Status status() const;
@@ -126,6 +127,12 @@ public:
 	QPixmap statusPixmap() { return statusPixmap(CurrentStatus); }
 
 	QIcon icon();
+
+	// TODO: workaround
+	void emitContactStatusChanged(Contact contact, Status oldStatus)
+	{
+		emit contactStatusChanged(contact, oldStatus);
+	}
 
 signals:
 	void connecting(Account account);

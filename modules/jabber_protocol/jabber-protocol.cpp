@@ -21,52 +21,29 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QCheckBox>
-#include <QtGui/QMessageBox>
-#include <QtCrypto>
-
-#include "libiris/include/iris/filetransfer.h"
-#include <xmpp.h>
-#include <xmpp_tasks.h>
-
-#include "accounts/account-manager.h"
 #include "buddies/buddy-manager.h"
-#include "buddies/group.h"
 #include "buddies/group-manager.h"
-#include "configuration/configuration-file.h"
 #include "contacts/contact-manager.h"
 #include "core/core.h"
-#include "file-transfer/file-transfer-manager.h"
-#include "gui/widgets/chat-widget-manager.h"
-#include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/password-window.h"
-#include "gui/windows/subscription-window.h"
-#include "gui/windows/main-configuration-window.h"
-#include "misc/misc.h"
-#include "protocols/protocol-menu-manager.h"
-#include "status/status-type-manager.h"
-#include "status/status.h"
-#include "debug.h"
-#include "exports.h"
-#include "icons-manager.h"
-#include "kadu-config.h"
-
-#include "file-transfer/jabber-file-transfer-handler.h"
-#include "jabber-account-details.h"
-#include "jabber-protocol.h"
-#include "jabber-protocol-factory.h"
 #include "os/generic/system-info.h"
+#include "protocols/protocols-manager.h"
+#include "status/status-type-manager.h"
+#include "debug.h"
 
-extern "C" KADU_EXPORT int jabber_protocol_init()
-{
-	return JabberProtocol::initModule();
-}
+#include "gui/windows/subscription-window.h"
+#include "resource/jabber-resource-pool.h"
+#include "utils/pep-manager.h"
+#include "utils/server-info-manager.h"
+#include "iris/filetransfer.h"
+#include "services/jabber-subscription-service.h"
+#include "iris-status-adapter.h"
+#include "jabber-account-details.h"
+#include "jabber-contact-details.h"
+#include "jabber-protocol-factory.h"
 
-extern "C" KADU_EXPORT void jabber_protocol_close()
-{
-	JabberProtocol::closeModule();
-}
+#include "jabber-protocol.h"
 
 bool JabberProtocol::ModuleUnloading = false;
 
@@ -94,16 +71,17 @@ void JabberProtocol::closeModule()
 }
 
 JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
-		Protocol(account, factory), JabberClient(NULL), ResourcePool(0), serverInfoManager(0), PepManager(0)
+		Protocol(account, factory), JabberClient(0), ResourcePool(0), serverInfoManager(0), PepManager(0)
 {
 	kdebugf();
 
 	initializeJabberClient();
 
+	CurrentAvatarService = new JabberAvatarService(account, this);
 	CurrentChatService = new JabberChatService(this);
 	CurrentChatStateService = new JabberChatStateService(this);
 	CurrentFileTransferService = new JabberFileTransferService(this);
-	CurrentAvatarService = new JabberAvatarService(account, this);
+	CurrentSubscriptionService = new JabberSubscriptionService(this);
 
 	connectContactManagerSignals();
 		
@@ -152,8 +130,6 @@ void JabberProtocol::initializeJabberClient()
 	connect(JabberClient, SIGNAL(csDisconnected()), this, SLOT(disconnectedFromServer()));
 	connect(JabberClient, SIGNAL(connected()), this, SLOT(connectedToServer()));
 
-	connect(JabberClient, SIGNAL(subscription(const XMPP::Jid &, const QString &, const QString &)),
-		   this, SLOT(slotSubscription(const XMPP::Jid &, const QString &, const QString &)));
 	connect(JabberClient, SIGNAL(newContact(const XMPP::RosterItem &)),
 		   this, SLOT(slotContactUpdated(const XMPP::RosterItem &)));
 	connect(JabberClient, SIGNAL(contactUpdated(const XMPP::RosterItem &)),
@@ -223,7 +199,7 @@ void JabberProtocol::connectToServer()
 	JabberClient->setOSName(SystemInfo::instance()->osFullName());
 	JabberClient->setTimeZone(SystemInfo::instance()->timezone(), SystemInfo::instance()->timezoneOffset());
 	JabberClient->setClientName("Kadu");
-	JabberClient->setClientVersion(VERSION);
+	JabberClient->setClientVersion(Core::instance()->version());
 
 	// Set caps node information
 	JabberClient->setCapsNode("http://psi-im.org/caps");
@@ -265,10 +241,9 @@ void JabberProtocol::connectToServer()
 	stream->setAllowPlain(XMPP::ClientStream::AllowPlainOverTLS);
 
 */
-	whileConnecting = true;
+
 	networkStateChanged(NetworkConnecting);
 	jabberID = jabberID.withResource(jabberAccountDetails->resource());
-	networkStateChanged(NetworkConnecting);
 	JabberClient->connect(jabberID, account().password(), true);
 	
 	// Initialize server info stuff
@@ -290,8 +265,6 @@ void JabberProtocol::connectToServer()
 void JabberProtocol::connectedToServer()
 {
 	kdebugf();
-
-	whileConnecting = false;
 
 	networkStateChanged(NetworkConnected);
 	
@@ -316,7 +289,7 @@ void JabberProtocol::logout()
 		setStatus(newstat);
 	}
 
-	disconnectFromServer(toXMPPStatus(newstat));
+	disconnectFromServer(IrisStatusAdapter::toIrisStatus(newstat));
 	setAllOffline();
 
 	kdebugf2();
@@ -422,60 +395,9 @@ void JabberProtocol::login()
 	connectToServer();
 }
 
-XMPP::Status JabberProtocol::toXMPPStatus(Status status)
-{
-	XMPP::Status s = XMPP::Status();
-	const QString &type = status.type();
-
-	if ("Online" == type)
-		s.setType(XMPP::Status::Online);
-	else if ("FreeForChat" == type)
-		s.setType(XMPP::Status::FFC);
-	else if ("DoNotDisturb" == type)
-		s.setType(XMPP::Status::DND);
-	else if ("NotAvailable" == type)
-		s.setType(XMPP::Status::XA);
-	else if ("Away" == type)
-		s.setType(XMPP::Status::Away);
-	else if ("Invisible" == type)
-		s.setType(XMPP::Status::DND);
-	else
-		s.setType(XMPP::Status::Offline);
-
-	s.setStatus(status.description());
-	return s;
-}
-
-Status JabberProtocol::toStatus(XMPP::Status status)
-{
-	Status newstatus;
-	if (status.isAvailable())
-		newstatus.setType("Online");
-	else if (status.isInvisible())
-		newstatus.setType("DoNotDisturb");
-	else
-		newstatus.setType("Offline");
-
-	if (status.show() == "away")
-		newstatus.setType("Away");
-	else if (status.show() == "xa")
-		newstatus.setType("NotAvailable");
-	else if (status.show() == "dnd")
-		newstatus.setType("DoNotDisturb");
-	else if (status.show() == "chat")
-		newstatus.setType("FreeForChat");
-
-	QString description = status.status();
-	description.replace("\r\n", "\n");
-	description.replace("\r", "\n");
-	newstatus.setDescription(description);
-
-	return newstatus;
-}
-
 void JabberProtocol::changeStatus(Status status)
 {
-	XMPP::Status xmppStatus = toXMPPStatus(status);
+	XMPP::Status xmppStatus = IrisStatusAdapter::toIrisStatus(status);
 	JabberClient->setPresence(xmppStatus);
 
 	if (status.isDisconnected())
@@ -488,7 +410,7 @@ void JabberProtocol::changeStatus(Status status)
 			setStatus(Status());
 	}
 
-	statusChanged(toStatus(xmppStatus));
+	statusChanged(IrisStatusAdapter::fromIrisStatus(xmppStatus));
 }
 
 void JabberProtocol::slotIncomingFileTransfer()
@@ -518,7 +440,7 @@ void JabberProtocol::clientResourceReceived(const XMPP::Jid &jid, const XMPP::Re
 	kdebug("New resource available for %s\n", jid.full().toLocal8Bit().data());
 	resourcePool()->addResource(jid, resource);
 
-	Status status(toStatus(resource.status()));
+	Status status(IrisStatusAdapter::fromIrisStatus(resource.status()));
 	Contact contact = ContactManager::instance()->byId(account(), jid.bare(), ActionReturnNull);
 
 	if (contact)
@@ -674,96 +596,6 @@ void JabberProtocol::slotContactDeleted(const XMPP::RosterItem &item)
 	}
 }
 
-void JabberProtocol::slotSubscription(const XMPP::Jid & jid, const QString &type, const QString &nick)
-{
-	if (type == "unsubscribed")
-	{
-		/*
-		 * Someone else removed our authorization to see them.
-		 */
-		kdebug("%s revoked our presence authorization", jid.full().toLocal8Bit().data());
-
-		XMPP::JT_Roster *task;
-		if (MessageDialog::ask(tr("The user %1 removed subscription to you. "
-					   "You will no longer be able to view his/her online/offline status. "
-					   "Do you want to delete the contact?").arg(jid.full())))
-		{
-			/*
-			 * Delete this contact from our roster.
-			 */
-			task = new XMPP::JT_Roster(JabberClient->rootTask());
-			task->remove(jid);
-			task->go(true);
-
-			Contact contact = ContactManager::instance()->byId(account(), jid.bare(), ActionReturnNull);
-			if (contact)
-			{
-				Buddy owner = contact.ownerBuddy();
-				contact.setOwnerBuddy(Buddy::null);
-				if (owner.contacts().size() == 0)
-					BuddyManager::instance()->removeItem(owner);
-				
-			}
-		}
-		else
-		{
-			/*
-				 * We want to leave the contact in our contact list.
-				 * In this case, we need to delete all the resources
-				 * we have for it, as the Jabber server won't signal us
-				 * that the contact is offline now.
-			*/
-			Status offlineStatus;
-			offlineStatus.setType("Offline");
-			Contact contact = ContactManager::instance()->byId(account(), jid.bare(), ActionReturnNull);
-
-			if (contact)
-			{
-				Status oldStatus = contact.currentStatus();
-				contact.setCurrentStatus(offlineStatus);
-
-				emit contactStatusChanged(contact, oldStatus);
-			}
-			
-			resourcePool()->removeAllResources(jid);
-		}
-	}
-
-	if (type == "subscribe")
-	{
-		if ( 0 /*("options.subscriptions.automatically-allow-authorization").toBool()*/) 
-		{
-			// Check if we want to request auth as well
-// 			Contact contact = ContactManager::instance()->byId(account(), jid.bare(), ActionReturnNull);
-// 			if (!contact || (u->subscription().type() != Subscription::Both && u->subscription().type() != Subscription::To))
-// 			{
-// 				contactAttached(contact);
-// 				JabberClient->resendSubscription();
-// 			}
-// 			else
-// 			{
-// 				JabberClient->resendSubscription();
-// 			}
-		}
-		else
-		{
-			Contact contact = ContactManager::instance()->byId(account(), jid.bare(), ActionCreate);
-			SubscriptionWindow::getSubscription(contact, this, SLOT(authorizeContact(Contact, bool)));
-		}
-	}
-	else if (type == "subscribed")
-	{
-		//TODO some option in GUI
-		/*if (!getOption("options.ui.notifications.successful-subscription").toBool())
-			MessageDialog::msg(QString("You are authorized by %1").arg(jid.bare()), false, "32x32/dialog-warning.png");
-		*/
-	}
-	/*else if (type == "unsubscribe")
-	{
-		//in Psi it's ignored
-	}*/
-}
-
 void JabberProtocol::authorizeContact(Contact contact, bool authorized)
 {
 	const XMPP::Jid jid = XMPP::Jid(contact.id());
@@ -804,7 +636,7 @@ void JabberProtocol::changeStatus()
 		return;
 	}
 
-	if (NetworkConnecting == state())
+	if (isConnecting())
 		return;
 
 	if (status().isDisconnected())

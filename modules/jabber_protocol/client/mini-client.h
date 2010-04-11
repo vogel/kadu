@@ -57,6 +57,7 @@ class MiniClient : public QObject
 	XMPP::QCATLSHandler *tlsHandler;
 	XMPP::Client *_client;
 	XMPP::Jid j;
+	QCA::Initializer QcaInit;
 	QString pass;
 	bool auth, force_ssl, error_disconnect;
 	QString TlsOverrideDomain;

@@ -47,6 +47,9 @@
 
 #include "buddies-list-view-delegate.h"
 
+#undef KDEBUG_VISUAL
+#define KDEBUG_VISUAL 0
+
 BuddiesListViewDelegate::BuddiesListViewDelegate(QObject *parent) :
 		QItemDelegate(parent), Model(0), ShowAccountName(true)
 {

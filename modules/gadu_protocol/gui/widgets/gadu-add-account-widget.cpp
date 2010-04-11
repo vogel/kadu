@@ -125,15 +125,16 @@ void GaduAddAccountWidget::addAccountButtonClicked()
 	Account gaduAccount = Account::create();
 	// TODO: 0.6.6 set protocol after details because of crash
 	//gaduAccount.setProtocolName("gadu");
-	GaduAccountDetails *gad = new GaduAccountDetails(gaduAccount);
-	gad->setState(StorableObject::StateNew);
 	gaduAccount.setAccountIdentity(Identity->currentIdentity());
-	gaduAccount.setDetails(gad);
 	gaduAccount.setProtocolName("gadu");
 	gaduAccount.setId(AccountId->text());
 	gaduAccount.setPassword(AccountPassword->text());
 	gaduAccount.setHasPassword(!AccountPassword->text().isEmpty());
 	gaduAccount.setRememberPassword(RememberPassword->isChecked());
+
+	GaduAccountDetails *details = dynamic_cast<GaduAccountDetails *>(gaduAccount.details());
+	if (details)
+		details->setState(StorableObject::StateNew);
 
 	emit accountCreated(gaduAccount);
 }

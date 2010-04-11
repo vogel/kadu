@@ -28,6 +28,7 @@
 #include "client/jabber-client.h"
 #include "jabber-protocol.h"
 #include "server/jabber-avatar-fetcher.h"
+#include "utils/pep-manager.h"
 #include "utils/vcard-factory.h"
 
 #include "jabber-avatar-service.h"

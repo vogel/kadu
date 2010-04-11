@@ -30,6 +30,7 @@
 #include "jabber-contact-details.h"
 #include "../jabber-protocol.h"
 
+#include "resource/jabber-resource-pool.h"
 #include "libiris/include/iris/filetransfer.h"
 
 #include "jabber-file-transfer-handler.h"
