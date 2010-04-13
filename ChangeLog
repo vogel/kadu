@@ -1,12 +1,12 @@
 +++ version 0.6.6-beta2
 * core: removed Instaluj.sh (Vogel)
-
+* desktop_docking: ported to 0.6.6 (Vogel)
 
 +++ version 0.6.6-beta1
 * config_wizard: reworked (Vogel)
 * gui: use avatars in adium styles (WhE)
 * sound: cleanup (Vogel)
-* alsa-sound: cleanup (Vogel)
+* alsa_sound: cleanup (Vogel)
 * core: #1201 fixed: del on contacts list does not remove contacts (Vogel)
 * core: #1301 fixed: allow not to set Visible name on adding buddy (Juzef)
 * core: #877 fixed: disable chat actions when there's no contact having chat feature (Juzef)
@@ -19,7 +19,7 @@
 * gui: #1268 fixed: invalid contacts name in Personal Properties tab (Vogel)
 * gui: #1284 fixed: invalid info displayed at Personal Properties tab (Vogel)
 * jabber: invisible status removed (not in XMPP standard) (Juzef)
-* ext-sound: port to 0.6.6 (Vogel)
+* ext_sound: port to 0.6.6 (Vogel)
 * history_migration: #1280 fixed: invalid characters after history import (Vogel)
 * jabber: fixed crashes on account registration (Vogel)
 * store: no more garbage in kadu-0.6.6.conf.xml file (Vogel)
