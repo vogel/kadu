@@ -15,31 +15,6 @@ class QSpinBox;
  * @{
  */
 
-class DesktopDockWindow : public QLabel, ConfigurationAwareObject
-{
-	Q_OBJECT
-
-	bool isMoving;
-
-protected:
-	void mousePressEvent(QMouseEvent *);
-	void mouseMoveEvent(QMouseEvent *);
-	void updateMask();
-
-	virtual void configurationUpdated();
-
-public:
-	DesktopDockWindow(QWidget *parent, char *name);
-	virtual ~DesktopDockWindow();
-
-public slots:
-	void startMoving();
-
-signals:
-	void dropped(const QPoint &);
-
-};
-
 class DesktopDock : public ConfigurationUiHandler, ConfigurationAwareObject
 {
 	Q_OBJECT

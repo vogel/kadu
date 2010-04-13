@@ -1,9 +1,11 @@
 set (SOURCES
+	gui/windows/desktop-dock-window.cpp
 	desktop-docking-module.cpp
 	desktopdock.cpp
 )
 
 set (MOC_SOURCES
+	gui/windows/desktop-dock-window.h
 	desktopdock.h
 )
 
