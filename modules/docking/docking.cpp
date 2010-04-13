@@ -65,24 +65,6 @@
  * @ingroup docking
  * @{
  */
-extern "C" KADU_EXPORT int docking_init(bool firstLoad)
-{
-	Q_UNUSED(firstLoad)
-
-	docking_manager = new DockingManager();
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/docking.ui"));
-
-	return 0;
-}
-
-extern "C" KADU_EXPORT void docking_close()
-{
-	kdebugf();
-
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/docking.ui"));
-	delete docking_manager;
-	docking_manager = 0;
-}
 
 DockingManager::DockingManager()
 	: newMessageIcon(StaticEnvelope), icon_timer(new QTimer()), blink(false)

@@ -1,4 +1,5 @@
 set (SOURCES
+	docking-module.cpp
 	docking.cpp
 )
 
