@@ -1,12 +1,12 @@
 set (SOURCES
 	gui/windows/desktop-dock-window.cpp
 	desktop-docking-module.cpp
-	desktopdock.cpp
+	desktop-dock.cpp
 )
 
 set (MOC_SOURCES
 	gui/windows/desktop-dock-window.h
-	desktopdock.h
+	desktop-dock.h
 )
 
 set (TRANSLATION_SOURCES

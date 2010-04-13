@@ -17,28 +17,28 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "docking/docking.h"
+#include <QtGui/QBitmap>
+
+#include "configuration/configuration-file.h"
+
+#include "modules/docking/docking.h"
 
 #include "desktop-dock-window.h"
+#include <QMouseEvent>
 
 DesktopDockWindow::DesktopDockWindow(QWidget *parent) :
-		QLabel(parent, Qt::Window | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint),
-		isMoving(false)
+		QLabel(parent), IsMoving(false)
 {
 	setAttribute(Qt::WA_NoBackground);
 	setAttribute(Qt::WA_MouseNoMask);
+	setMouseTracking(true);
+	setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint);
 
 	QIcon desktopDockIcon = docking_manager->defaultPixmap();
-	configurationUpdated();
-	setMouseTracking(true);
-
 	setPixmap(desktopDockIcon.pixmap(128, 128));
 	resize(pixmap()->size());
 
-	if (config_file.readBoolEntry("Desktop Dock", "DockingTransparency"))
-		setPaletteBackgroundColor(Qt::transparent);
-	else
-		setPaletteBackgroundColor(config_file.readColorEntry("Desktop Dock", "DockingColor"));
+	configurationUpdated();
 
 	update();
 	show();
@@ -51,35 +51,43 @@ DesktopDockWindow::~DesktopDockWindow()
 void DesktopDockWindow::configurationUpdated()
 {
 	QPoint pos(config_file.readNumEntry("Desktop Dock", "PositionX"), config_file.readNumEntry("Desktop Dock", "PositionY"));
-	if (!config_file.readBoolEntry("Desktop Dock", "DockingTransparency"))
-		setPaletteBackgroundColor(config_file.readColorEntry("Desktop Dock", "DockingColor"));
    	move(pos);
+
+// 	if (config_file.readBoolEntry("Desktop Dock", "DockingTransparency"))
+// 		setPaletteBackgroundColor(Qt::transparent);
+// 	else
+// 		setPaletteBackgroundColor(config_file.readColorEntry("Desktop Dock", "DockingColor"));
+}
+
+QPoint DesktopDockWindow::getCenterFromEvent(QMouseEvent* ev)
+{
+	return QPoint(ev->globalPos().x() - width() / 2, ev->globalPos().y() - height() / 2);
 }
 
 void DesktopDockWindow::mousePressEvent(QMouseEvent *ev)
 {
-	if (!isMoving)
-		docking_manager->trayMousePressEvent(ev);
-	else
+	if (IsMoving)
 	{
-		emit dropped(QPoint(ev->globalPos().x() - width() / 2, ev->globalPos().y() - height() / 2));
-		isMoving = false;
+		emit dropped(getCenterFromEvent(ev));
+		IsMoving = false;
 	}
+	else
+		docking_manager->trayMousePressEvent(ev);
 }
 
 void DesktopDockWindow::mouseMoveEvent(QMouseEvent *ev)
 {
-	if (isMoving)
-		move(QPoint(ev->globalPos().x() - width() / 2, ev->globalPos().y() - height() / 2));
+	if (IsMoving)
+		move(getCenterFromEvent(ev));
 }
 
-void DesktopDockWindow::updateMask()		/* to zalatwia automatyczne odswiezenie ikony - jak to dziala nie pytac (wazne ze dziala) */
+void DesktopDockWindow::updateMask() // refreshing icon
 {
 	if (pixmap())
 		setMask(pixmap()->createHeuristicMask(false));
 }
 
-void DesktopDockWindow::startMoving()	/* rozpoczynamy wojaze po ekranie */
+void DesktopDockWindow::startMoving()
 {
-	isMoving = true;
+	IsMoving = true;
 }

@@ -28,7 +28,9 @@ class DesktopDockWindow : public QLabel, ConfigurationAwareObject
 {
 	Q_OBJECT
 
-	bool isMoving;
+	bool IsMoving;
+
+	QPoint getCenterFromEvent(QMouseEvent *ev);
 
 protected:
 	virtual void mousePressEvent(QMouseEvent *);

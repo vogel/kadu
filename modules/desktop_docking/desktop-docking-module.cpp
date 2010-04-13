@@ -21,14 +21,17 @@
 #include "misc/path-conversion.h"
 #include "debug.h"
 
-#include "desktopdock.h"
+#include "desktop-dock.h"
 
 extern "C" KADU_EXPORT int desktop_docking_init(bool firstLoad)
 {
+	Q_UNUSED(firstLoad)
+
 	kdebugf();
 
-	desktop_dock = new DesktopDock();
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/desktop_docking.ui"), desktop_dock);
+	DesktopDock::createInstance();
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/desktop_docking.ui"));
+	MainConfigurationWindow::registerUiHandler(DesktopDock::instance());
 
 	kdebugf2();
 	return 0;
@@ -38,9 +41,9 @@ extern "C" KADU_EXPORT void desktop_docking_close()
 {
 	kdebugf();
 
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/desktop_docking.ui"), desktop_dock);
-	delete desktop_dock;
-	desktop_dock = 0;
+	MainConfigurationWindow::unregisterUiHandler(DesktopDock::instance());
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/desktop_docking.ui"));
+	DesktopDock::destroyInstance();
 
 	kdebugf2();
 }
