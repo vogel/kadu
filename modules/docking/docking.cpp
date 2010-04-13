@@ -145,19 +145,16 @@ void DockingManager::changeIcon()
 		case AnimatedEnvelope:
 			if (CurrentDocker)
 				CurrentDocker->changeTrayMovie(IconsManager::instance()->iconPath("protocols/common/16x16/message_anim.gif"));
-			emit trayMovieChanged(IconsManager::instance()->iconPath("protocols/common/16x16/message_anim.gif"));
 			break;
 		case StaticEnvelope:
 			if (CurrentDocker)
 				CurrentDocker->changeTrayIcon(IconsManager::instance()->iconByPath("protocols/common/16x16/message.png"));
-			emit trayPixmapChanged(IconsManager::instance()->iconByPath("protocols/common/16x16/message.png"));
 			break;
 		case BlinkingEnvelope:
 			if (!blink)
 			{
 				if (CurrentDocker)
 					CurrentDocker->changeTrayIcon(IconsManager::instance()->iconByPath("protocols/common/16x16/message.png"));
-				emit trayPixmapChanged(IconsManager::instance()->iconByPath("protocols/common/16x16/message.png"));
 				icon_timer->setSingleShot(true);
 				icon_timer->start(500);
 				blink = true;
@@ -173,7 +170,6 @@ void DockingManager::changeIcon()
 				if (CurrentDocker)
 					CurrentDocker->changeTrayIcon(QIcon(account.protocolHandler()->statusPixmap(stat)));
 
-				emit trayPixmapChanged(QIcon(account.protocolHandler()->statusPixmap(stat)));
 				icon_timer->setSingleShot(true);
 				icon_timer->start(500);
 				blink = false;
@@ -198,7 +194,6 @@ void DockingManager::pendingMessageDeleted()
 		const Status &stat = account.protocolHandler()->status();
 		if (CurrentDocker)
 			CurrentDocker->changeTrayIcon(QIcon(account.protocolHandler()->statusPixmap(stat)));
-		emit trayPixmapChanged(QIcon(account.protocolHandler()->statusPixmap(stat)));
 	}
 }
 
@@ -217,7 +212,6 @@ void DockingManager::defaultToolTip()
 
 		if (CurrentDocker)
 			CurrentDocker->changeTrayTooltip(tiptext);
-		emit trayTooltipChanged(tiptext);
 	}
 }
 
@@ -283,7 +277,6 @@ void DockingManager::statusPixmapChanged(const QIcon &icon)
 	if (CurrentDocker)
 		CurrentDocker->changeTrayIcon(icon);
 
-	emit trayPixmapChanged(icon);
 	defaultToolTip();
 	changeIcon();
 }
@@ -400,7 +393,6 @@ void DockingManager::configurationUpdated()
 	{
 		if (CurrentDocker)
 			CurrentDocker->changeTrayTooltip(QString::null);
-		emit trayTooltipChanged(QString::null);
 	}
 
 	IconType it = (IconType)config_file.readNumEntry("Look", "NewMessageIcon");

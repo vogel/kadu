@@ -106,10 +106,6 @@ public slots:
 	void setDocked(bool docked);
 
  signals:
-	void trayPixmapChanged(const QIcon& icon);
-	void trayMovieChanged(const QString& movie);
-	void trayTooltipChanged(const QString& tooltip);
-	void searchingForTrayPosition(QPoint& pos);
 	void mousePressMidButton();
 	void mousePressLeftButton();
 	void mousePressRightButton();
