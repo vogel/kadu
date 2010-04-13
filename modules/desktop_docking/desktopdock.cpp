@@ -23,27 +23,6 @@
  * @ingroup desktop_docking
  * @{
  */
-extern "C" KADU_EXPORT int desktop_docking_init(bool firstLoad)
-{
-	kdebugf();
-
-	desktop_dock = new DesktopDock();
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/desktop_docking.ui"), desktop_dock);
-
-	kdebugf2();
-	return 0;
-}
-
-extern "C" KADU_EXPORT void desktop_docking_close()
-{
-	kdebugf();
-
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/desktop_docking.ui"), desktop_dock);
-	delete desktop_dock;
-	desktop_dock = 0;
-
-	kdebugf2();
-}
 
 DesktopDockWindow::DesktopDockWindow(QWidget *parent, char *name)
 	: QLabel(parent, name, Qt::Window | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint),

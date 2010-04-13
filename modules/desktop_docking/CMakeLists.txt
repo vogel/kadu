@@ -1,4 +1,5 @@
 set (SOURCES
+	desktop-docking-module.cpp
 	desktopdock.cpp
 )
 
