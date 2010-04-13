@@ -43,12 +43,14 @@ extern "C" int qt4_docking_init(bool firstLoad)
 	Q_UNUSED(firstLoad)
 
 	qt4_tray_icon = new Qt4TrayIcon(0);
+	DockingManager::instance()->setDocker(qt4_tray_icon);
 
 	return 0;
 }
 
 extern "C" void qt4_docking_close()
 {
+	DockingManager::instance()->setDocker(0);
 	delete qt4_tray_icon;
 	qt4_tray_icon = 0;
 }
@@ -60,11 +62,6 @@ Qt4TrayIcon::Qt4TrayIcon(QWidget *parent) :
 	kdebugf();
 
 	setIcon(QIcon(DockingManager::instance()->defaultPixmap()));
-
-	connect(DockingManager::instance(), SIGNAL(trayPixmapChanged(const QIcon&)), this, SLOT(setTrayPixmap(const QIcon&)));
-	connect(DockingManager::instance(), SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setTrayTooltip(const QString&)));
-	connect(DockingManager::instance(), SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
-	connect(DockingManager::instance(), SIGNAL(trayMovieChanged(const QString &)), this, SLOT(setTrayMovie(const QString &)));
 
 	connect(this, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayActivated(QSystemTrayIcon::ActivationReason)));
 
@@ -87,11 +84,6 @@ Qt4TrayIcon::~Qt4TrayIcon()
 		Movie = 0;
 	}
 
-	disconnect(DockingManager::instance(), SIGNAL(trayMovieChanged(const QString &)), this, SLOT(setTrayMovie(const QString &)));
-	disconnect(DockingManager::instance(), SIGNAL(trayPixmapChanged(const QIcon&)), this, SLOT(setTrayPixmap(const QIcon&)));
-	disconnect(DockingManager::instance(), SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setTrayTooltip(const QString&)));
-	disconnect(DockingManager::instance(), SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
-
 	disconnect(this, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayActivated(QSystemTrayIcon::ActivationReason)));
 
 	DockingManager::instance()->setDocked(false);
@@ -99,19 +91,7 @@ Qt4TrayIcon::~Qt4TrayIcon()
 	kdebugf2();
 }
 
-void Qt4TrayIcon::findTrayPosition(QPoint& pos)
-{
-	QRect rect = geometry();
-	if (rect.isValid()){
-		pos = QPoint(rect.x(), rect.y());
-		lastPosition = pos;
-	}
-	else
-		pos = lastPosition;
-		
-}
-
-void Qt4TrayIcon::setTrayPixmap(const QIcon& pixmap)
+void Qt4TrayIcon::changeTrayIcon(const QIcon &icon)
 {
 	if (Movie)
 	{
@@ -119,10 +99,10 @@ void Qt4TrayIcon::setTrayPixmap(const QIcon& pixmap)
 		Movie->deleteLater();
 		Movie = 0;
 	}
-	setIcon(pixmap);
+	setIcon(icon);
 }
 
-void Qt4TrayIcon::setTrayMovie(const QString &movie)
+void Qt4TrayIcon::changeTrayMovie(const QString &moviePath)
 {
 	if (Movie)
 	{
@@ -132,19 +112,28 @@ void Qt4TrayIcon::setTrayMovie(const QString &movie)
 	else
 		setIcon(QIcon(""));
 
-	Movie = new QMovie(movie);
+	Movie = new QMovie(moviePath);
 	Movie->start();
 	connect(Movie, SIGNAL(updated(const QRect &)), this, SLOT(movieUpdate()));
+}
+
+void Qt4TrayIcon::changeTrayTooltip(const QString &tooltip)
+{
+	setToolTip(tooltip);
+}
+
+QPoint Qt4TrayIcon::trayPosition()
+{
+	QRect rect = geometry();
+	if (rect.isValid())
+		lastPosition = QPoint(rect.x(), rect.y());
+
+	return lastPosition;
 }
 
 void Qt4TrayIcon::movieUpdate()
 {
 	setIcon(Movie->currentPixmap());
-}
-
-void Qt4TrayIcon::setTrayTooltip(const QString& tooltip)
-{
-	setToolTip(tooltip);
 }
 
 void Qt4TrayIcon::trayActivated(QSystemTrayIcon::ActivationReason reason)

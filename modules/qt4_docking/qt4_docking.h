@@ -28,9 +28,11 @@
 #include <QtGui/QIcon>
 #include <QtGui/QSystemTrayIcon>
 
+#include "modules/docking/docker.h"
+
 class QPoint;
 
-class Qt4TrayIcon : public QSystemTrayIcon
+class Qt4TrayIcon : public QSystemTrayIcon, public Docker
 {
 	Q_OBJECT
 
@@ -38,10 +40,6 @@ class Qt4TrayIcon : public QSystemTrayIcon
 	QPoint lastPosition;
 
 private slots:
-	void setTrayPixmap(const QIcon &pixmap);
-	void setTrayMovie(const QString &movie);
-	void setTrayTooltip(const QString &tooltip);
-	void findTrayPosition(QPoint &pos);
 	void trayActivated(QSystemTrayIcon::ActivationReason reason);
 
 	void movieUpdate();
@@ -49,6 +47,11 @@ private slots:
 public:
 	explicit Qt4TrayIcon(QWidget *parent = 0);
 	virtual ~Qt4TrayIcon();
+
+    virtual void changeTrayIcon(const QIcon& icon);
+    virtual void changeTrayMovie(const QString& moviePath);
+    virtual void changeTrayTooltip(const QString& tooltip);
+    virtual QPoint trayPosition();
 		
 };
 
