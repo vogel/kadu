@@ -40,6 +40,7 @@
 class QAction;
 class QMenu;
 
+class Docker;
 class StatusContainer;
 
 class DOCKINGAPI DockingManager : public QObject, ConfigurationAwareObject, StatusContainerAwareObject
@@ -48,6 +49,8 @@ class DOCKINGAPI DockingManager : public QObject, ConfigurationAwareObject, Stat
 	Q_DISABLE_COPY(DockingManager)
 
 	static DockingManager *Instance;
+
+	Docker *CurrentDocker;
 
 	QMenu *DockMenu;
 	QAction *CloseKaduAction;
@@ -91,6 +94,8 @@ public:
 	void trayMousePressEvent(QMouseEvent * e);
 	QIcon defaultPixmap();
 	QMenu * dockMenu() { return DockMenu; }
+
+	void setDocker(Docker *docker) { CurrentDocker = docker; }
 
 public slots:
 	/**

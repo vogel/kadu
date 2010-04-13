@@ -59,6 +59,8 @@
 #include "status/status-container-manager.h"
 #include "debug.h"
 
+#include "docker.h"
+
 #include "docking.h"
 
 DockingManager * DockingManager::Instance = 0;
@@ -75,13 +77,13 @@ void DockingManager::destroyInstance()
 	Instance = 0;
 }
 
-DockingManager* DockingManager::instance()
+DockingManager * DockingManager::instance()
 {
 	return Instance;
 }
 
 DockingManager::DockingManager() :
-		newMessageIcon(StaticEnvelope), icon_timer(new QTimer()), blink(false)
+		CurrentDocker(0), newMessageIcon(StaticEnvelope), icon_timer(new QTimer()), blink(false)
 {
 	kdebugf();
 
@@ -135,45 +137,49 @@ DockingManager::~DockingManager()
 void DockingManager::changeIcon()
 {
 	kdebugf();
-	if (PendingMessagesManager::instance()->hasPendingMessages() && !icon_timer->isActive())
+	if (!PendingMessagesManager::instance()->hasPendingMessages() && !icon_timer->isActive())
+		return;
+
+	switch (newMessageIcon)
 	{
-		switch (newMessageIcon)
-		{
-			case AnimatedEnvelope:
-				emit trayMovieChanged(IconsManager::instance()->iconPath("protocols/common/16x16/message_anim.gif"));
-				break;
-			case StaticEnvelope:
+		case AnimatedEnvelope:
+			if (CurrentDocker)
+				CurrentDocker->changeTrayMovie(IconsManager::instance()->iconPath("protocols/common/16x16/message_anim.gif"));
+			emit trayMovieChanged(IconsManager::instance()->iconPath("protocols/common/16x16/message_anim.gif"));
+			break;
+		case StaticEnvelope:
+			if (CurrentDocker)
+				CurrentDocker->changeTrayIcon(IconsManager::instance()->iconByPath("protocols/common/16x16/message.png"));
+			emit trayPixmapChanged(IconsManager::instance()->iconByPath("protocols/common/16x16/message.png"));
+			break;
+		case BlinkingEnvelope:
+			if (!blink)
+			{
+				if (CurrentDocker)
+					CurrentDocker->changeTrayIcon(IconsManager::instance()->iconByPath("protocols/common/16x16/message.png"));
 				emit trayPixmapChanged(IconsManager::instance()->iconByPath("protocols/common/16x16/message.png"));
-				break;
-			case BlinkingEnvelope:
-				if (!blink)
-				{
-					emit trayPixmapChanged(IconsManager::instance()->iconByPath("protocols/common/16x16/message.png"));
-					icon_timer->setSingleShot(true);
-					icon_timer->start(500);
-					blink = true;
-				}
-				else
-				{
-					Account account = AccountManager::instance()->defaultAccount();
-					if (account.isNull() || !account.protocolHandler())
-						return;
+				icon_timer->setSingleShot(true);
+				icon_timer->start(500);
+				blink = true;
+			}
+			else
+			{
+				Account account = AccountManager::instance()->defaultAccount();
+				if (account.isNull() || !account.protocolHandler())
+					return;
 
-					const Status &stat = account.protocolHandler()->status();
-					emit trayPixmapChanged(QIcon(account.protocolHandler()->statusPixmap(stat)));
-					icon_timer->setSingleShot(true);
-					icon_timer->start(500);
-					blink = false;
-				}
-				break;
-		}
-	}
-	else
-	{
-		kdebugmf(KDEBUG_INFO, "OFF\n");
-	}
+				const Status &stat = account.protocolHandler()->status();
 
-	kdebugf2();
+				if (CurrentDocker)
+					CurrentDocker->changeTrayIcon(QIcon(account.protocolHandler()->statusPixmap(stat)));
+
+				emit trayPixmapChanged(QIcon(account.protocolHandler()->statusPixmap(stat)));
+				icon_timer->setSingleShot(true);
+				icon_timer->start(500);
+				blink = false;
+			}
+			break;
+	}
 }
 
 void DockingManager::pendingMessageAdded()
@@ -190,6 +196,8 @@ void DockingManager::pendingMessageDeleted()
 			return;
 
 		const Status &stat = account.protocolHandler()->status();
+		if (CurrentDocker)
+			CurrentDocker->changeTrayIcon(QIcon(account.protocolHandler()->statusPixmap(stat)));
 		emit trayPixmapChanged(QIcon(account.protocolHandler()->statusPixmap(stat)));
 	}
 }
@@ -207,6 +215,8 @@ void DockingManager::defaultToolTip()
 		if (!status.description().isEmpty())
 			tiptext.append(tr("\n\nDescription:\n%2").arg(status.description()));
 
+		if (CurrentDocker)
+			CurrentDocker->changeTrayTooltip(tiptext);
 		emit trayTooltipChanged(tiptext);
 	}
 }
@@ -268,7 +278,11 @@ void DockingManager::trayMousePressEvent(QMouseEvent * e)
 
 void DockingManager::statusPixmapChanged(const QIcon &icon)
 {
- 	kdebugf();
+	kdebugf();
+
+	if (CurrentDocker)
+		CurrentDocker->changeTrayIcon(icon);
+
 	emit trayPixmapChanged(icon);
 	defaultToolTip();
 	changeIcon();
@@ -383,7 +397,11 @@ void DockingManager::configurationUpdated()
 	if (config_file.readBoolEntry("General", "ShowTooltipInTray"))
 		defaultToolTip();
 	else
+	{
+		if (CurrentDocker)
+			CurrentDocker->changeTrayTooltip(QString::null);
 		emit trayTooltipChanged(QString::null);
+	}
 
 	IconType it = (IconType)config_file.readNumEntry("Look", "NewMessageIcon");
 	if (newMessageIcon != it)
