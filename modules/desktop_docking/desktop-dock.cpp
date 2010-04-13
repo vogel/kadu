@@ -62,11 +62,6 @@ DesktopDock::DesktopDock(QObject *parent) :
 
 	DockWindow = new DesktopDockWindow();
 
-	connect(DockingManager::instance(), SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setToolTip(const QString&)));
-	connect(DockingManager::instance(), SIGNAL(trayPixmapChanged(const QIcon&)), this,  SLOT(setPixmap(const QIcon&)));
-	connect(DockingManager::instance(), SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
-	connect(DockingManager::instance(), SIGNAL(trayMovieChanged(QString)), this, SLOT(setTrayMovie(QString)));
-
 	DockingManager::instance()->setDocked(true);
 
 	if (config_file.readBoolEntry("Desktop Dock", "MoveInMenu"))
@@ -78,11 +73,6 @@ DesktopDock::DesktopDock(QObject *parent) :
 DesktopDock::~DesktopDock()
 {
 	kdebugf();
-
-	disconnect(DockingManager::instance(), SIGNAL(trayMovieChanged(const QString &)), this, SLOT(setTrayMovie(const QString &)));
-	disconnect(DockingManager::instance(), SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setToolTip(const QString&)));
-	disconnect(DockingManager::instance(), SIGNAL(trayPixmapChanged(const QIcon&)), this, SLOT(setPixmap(const QIcon&)));
-	disconnect(DockingManager::instance(), SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
 
 	DockingManager::instance()->setDocked(false);
 
@@ -120,30 +110,30 @@ void DesktopDock::destroyMenu()
 	}
 }
 
-void DesktopDock::setToolTip(const QString& statusText)
+void DesktopDock::changeTrayIcon(const QIcon &icon)
 {
-	DockWindow->setToolTip(statusText);
-}
-
-void DesktopDock::setPixmap(const QIcon& DockIcon)
-{
-	DockWindow->setPixmap(DockIcon.pixmap(128,128));
+	DockWindow->setPixmap(icon.pixmap(128,128));
 	DockWindow->repaint();
 	DockWindow->setMask(DockWindow->pixmap()->createHeuristicMask(false));
 }
 
-void DesktopDock::setTrayMovie(const QString &movie)
+void DesktopDock::changeTrayMovie(const QString &moviePath)
 {
-	Q_UNUSED(movie)
+	Q_UNUSED(moviePath)
 
 //	hmm
 // 	desktopDock->setMovie((QMovie *)&movie);
 	DockWindow->repaint();
 }
 
-void DesktopDock::findTrayPosition(QPoint& DockPoint)	/* zwrocenie krawedzi ikony */
+void DesktopDock::changeTrayTooltip(const QString &tooltip)
 {
-	DockPoint = DockWindow->mapToGlobal(QPoint(0,0));
+	DockWindow->setToolTip(tooltip);
+}
+
+QPoint DesktopDock::trayPosition()
+{
+	return DockWindow->mapToGlobal(QPoint(0,0));
 }
 
 void DesktopDock::updateMenu(bool b)

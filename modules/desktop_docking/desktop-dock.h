@@ -24,11 +24,13 @@
 #include <QtGui/QIcon>
 #include <QtGui/QMovie>
 
+#include "modules/docking/docker.h"
+
 class QAction;
 
 class DesktopDockWindow;
 
-class DesktopDock : public QObject
+class DesktopDock : public QObject, public Docker
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(DesktopDock)
@@ -49,10 +51,6 @@ class DesktopDock : public QObject
 	void destroyMenu();
 
 private slots:
-	void setToolTip(const QString &statusText);
-	void setPixmap(const QIcon &DockIcon);
-	void setTrayMovie(const QString &movie);
-	void findTrayPosition(QPoint &DockPoint);
 	void updateMenu(bool);
 
 public:
@@ -61,6 +59,11 @@ public:
 	static DesktopDock * instance();
 
 	DesktopDockWindow * dockWindow() { return DockWindow; }
+
+    virtual void changeTrayIcon(const QIcon &icon);
+    virtual void changeTrayMovie(const QString &moviePath);
+    virtual void changeTrayTooltip(const QString &tooltip);
+    virtual QPoint trayPosition();
 
 };
 
