@@ -17,39 +17,36 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DESKTOP_DOCK_WINDOW_H
-#define DESKTOP_DOCK_WINDOW_H
+#ifndef DESKTOP_DOCK_CONFIGURATION_UI_HANDLER_H
+#define DESKTOP_DOCK_CONFIGURATION_UI_HANDLER_H
 
-#include <QtGui/QLabel>
+#include "gui/windows/main-configuration-window.h"
 
-#include "configuration/configuration-aware-object.h"
+class QSpinBox;
 
-class DesktopDockWindow : public QLabel, ConfigurationAwareObject
+class DesktopDockConfigurationUiHandler : public ConfigurationUiHandler
 {
 	Q_OBJECT
+	Q_DISABLE_COPY(DesktopDockConfigurationUiHandler)
 
-	bool IsMoving;
+	static DesktopDockConfigurationUiHandler * Instance;
 
-	QPoint getCenterFromEvent(QMouseEvent *ev);
+	QSpinBox *XSpinBox;
+	QSpinBox *YSpinBox;
 
-protected:
-    virtual void contextMenuEvent(QContextMenuEvent *ev);
-	virtual void mousePressEvent(QMouseEvent *);
-	virtual void mouseMoveEvent(QMouseEvent *);
+	DesktopDockConfigurationUiHandler();
+	virtual ~DesktopDockConfigurationUiHandler();
 
-	virtual void configurationUpdated();
+private slots:
+	void dockWindowDropped(const QPoint &pos);
 
 public:
-	explicit DesktopDockWindow(QWidget *parent = 0);
-	virtual ~DesktopDockWindow();
+	static void createInstance();
+	static void destroyInstance();
+	static DesktopDockConfigurationUiHandler * instance();
 
-public slots:
-	void startMoving();
-
-signals:
-	void dropped(const QPoint &);
+	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
 };
 
-
-#endif // DESKTOP_DOCK_WINDOW_H
+#endif // DESKTOP_DOCK_CONFIGURATION_UI_HANDLER_H

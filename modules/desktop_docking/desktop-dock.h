@@ -20,12 +20,15 @@
 #ifndef DESKTOP_DOCK_H
 #define DESKTOP_DOCK_H
 
-#include "gui/windows/main-configuration-window.h"
+#include <QtCore/QObject>
+#include <QtGui/QIcon>
+#include <QtGui/QMovie>
 
-class QSpinBox;
+class QAction;
+
 class DesktopDockWindow;
 
-class DesktopDock : public ConfigurationUiHandler, ConfigurationAwareObject
+class DesktopDock : public QObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(DesktopDock)
@@ -33,23 +36,20 @@ class DesktopDock : public ConfigurationUiHandler, ConfigurationAwareObject
 	static DesktopDock *Instance;
 
 	DesktopDockWindow *desktopDock;
-	QSpinBox *xSpinBox;
-	QSpinBox *ySpinBox;
 
 	QAction *menuPos;
 	QAction *separatorPos;
 
 	void createDefaultConfiguration();
 
-protected:
-	virtual void configurationUpdated();
+	explicit DesktopDock(QObject *parent = 0);
+	virtual ~DesktopDock();
 
 private slots:
 	void setToolTip(const QString &statusText);
-	void setPixmap(const QIcon &DockIcon, const QString &iconName);
-	void setTrayMovie(const QMovie &movie);
+	void setPixmap(const QIcon &DockIcon);
+	void setTrayMovie(const QString &movie);
 	void findTrayPosition(QPoint &DockPoint);
-	void droppedOnDesktop(const QPoint &);
 	void updateMenu(bool);
 
 public:
@@ -57,10 +57,7 @@ public:
 	static void destroyInstance();
 	static DesktopDock * instance();
 
-	explicit DesktopDock(QObject *parent = 0);
-	virtual ~DesktopDock();
-
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
+	DesktopDockWindow * dockWindow() { return desktopDock; }
 
 };
 

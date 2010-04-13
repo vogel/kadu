@@ -18,19 +18,21 @@
  */
 
 #include <QtGui/QBitmap>
+#include <QtGui/QMenu>
+#include <QtGui/QMouseEvent>
 
 #include "configuration/configuration-file.h"
 
 #include "modules/docking/docking.h"
 
 #include "desktop-dock-window.h"
-#include <QMouseEvent>
 
 DesktopDockWindow::DesktopDockWindow(QWidget *parent) :
 		QLabel(parent), IsMoving(false)
 {
 	setAttribute(Qt::WA_NoBackground);
 	setAttribute(Qt::WA_MouseNoMask);
+	setAutoFillBackground(true);
 	setMouseTracking(true);
 	setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint);
 
@@ -51,17 +53,36 @@ DesktopDockWindow::~DesktopDockWindow()
 void DesktopDockWindow::configurationUpdated()
 {
 	QPoint pos(config_file.readNumEntry("Desktop Dock", "PositionX"), config_file.readNumEntry("Desktop Dock", "PositionY"));
-   	move(pos);
+	move(pos);
 
-// 	if (config_file.readBoolEntry("Desktop Dock", "DockingTransparency"))
-// 		setPaletteBackgroundColor(Qt::transparent);
-// 	else
-// 		setPaletteBackgroundColor(config_file.readColorEntry("Desktop Dock", "DockingColor"));
+	QPalette newPalette = palette();
+	if (config_file.readBoolEntry("Desktop Dock", "DockingTransparency"))
+	{
+		newPalette.setColor(QPalette::Active, QPalette::Window, Qt::transparent);
+		newPalette.setColor(QPalette::Inactive, QPalette::Window, Qt::transparent);
+		if (pixmap())
+			setMask(pixmap()->mask());
+	}
+	else
+	{
+		QColor color = config_file.readColorEntry("Desktop Dock", "DockingColor");
+		newPalette.setColor(QPalette::Active, QPalette::Window, color);
+		newPalette.setColor(QPalette::Inactive, QPalette::Window, color);
+		clearMask();
+	}
+
+	setPalette(newPalette);
+	update();
 }
 
 QPoint DesktopDockWindow::getCenterFromEvent(QMouseEvent* ev)
 {
 	return QPoint(ev->globalPos().x() - width() / 2, ev->globalPos().y() - height() / 2);
+}
+
+void DesktopDockWindow::contextMenuEvent(QContextMenuEvent* ev)
+{
+	docking_manager->dockMenu()->popup(ev->globalPos());
 }
 
 void DesktopDockWindow::mousePressEvent(QMouseEvent *ev)
@@ -79,12 +100,6 @@ void DesktopDockWindow::mouseMoveEvent(QMouseEvent *ev)
 {
 	if (IsMoving)
 		move(getCenterFromEvent(ev));
-}
-
-void DesktopDockWindow::updateMask() // refreshing icon
-{
-	if (pixmap())
-		setMask(pixmap()->createHeuristicMask(false));
 }
 
 void DesktopDockWindow::startMoving()
