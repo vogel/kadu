@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="de_DE">
 <context>
     <name>Wizard</name>
     <message>
@@ -169,19 +171,19 @@ Klicken Sie bitte auf &quot;Weiter&quot;</translation>
     </message>
     <message>
         <source>Gadu-gadu account</source>
-        <translation type="unfinished"></translation>
+        <translation>Konto Gadu-gadu</translation>
     </message>
     <message>
         <source>Sound system</source>
-        <translation type="unfinished"></translation>
+        <translation>System für Klangausgabe</translation>
     </message>
     <message>
         <source>Opera (new tab)</source>
-        <translation type="unfinished"></translation>
+        <translation>Opera (neuer Reiter)</translation>
     </message>
     <message>
         <source>Not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Nicht gefunden</translation>
     </message>
 </context>
 <context>

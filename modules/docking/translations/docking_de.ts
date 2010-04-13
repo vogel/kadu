@@ -1,41 +1,43 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="de_DE">
 <context>
     <name>@default</name>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"></translation>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>Tray</source>
-        <translation type="unfinished"></translation>
+        <translation>Systemabschnitt der Kontrolleiste</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>Allgemein</translation>
     </message>
     <message>
         <source>Start docked</source>
-        <translation type="unfinished"></translation>
+        <translation>Eingedockt starten</translation>
     </message>
     <message>
         <source>Show tooltip in tray</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Sprechblasen am Dock</translation>
     </message>
     <message>
         <source>New message tray icon</source>
-        <translation type="unfinished"></translation>
+        <translation>Dock-Symbol für neue Nachrichten</translation>
     </message>
     <message>
         <source>Blinking envelope</source>
-        <translation type="unfinished"></translation>
+        <translation>Blinkender Briefumschlag</translation>
     </message>
     <message>
         <source>Static envelope</source>
-        <translation type="unfinished"></translation>
+        <translation>Statischer Briefumschlag</translation>
     </message>
     <message>
         <source>Animated envelope</source>
-        <translation type="unfinished"></translation>
+        <translation>Animierter Briefumschlag</translation>
     </message>
 </context>
 <context>
@@ -53,7 +55,8 @@ Beschreibung:
     <message>
         <source>Current status:
 %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Gegenwärtiger Zustand:
+%1</translation>
     </message>
 </context>
 </TS>

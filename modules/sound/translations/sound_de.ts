@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="de_DE">
 <context>
     <name>@default</name>
     <message>
@@ -58,7 +60,7 @@
     <name>SoundConfigurationWidget</name>
     <message>
         <source>Choose &apos;Custom&apos; theme in &apos;Sound&apos; page to change sound file</source>
-        <translation type="unfinished"></translation>
+        <translation>Wähle &apos;Eigene Einstellungen&apos;-Thema in den Klangeinstellungen</translation>
     </message>
     <message>
         <source>Test</source>

@@ -1,41 +1,43 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="de_DE">
 <context>
     <name>@default</name>
     <message>
         <source>Look</source>
-        <translation type="unfinished"></translation>
+        <translation>Aussehen</translation>
     </message>
     <message>
         <source>Colors</source>
-        <translation type="unfinished"></translation>
+        <translation>Farben</translation>
     </message>
     <message>
         <source>Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Chat</translation>
     </message>
     <message>
         <source>Encypted message</source>
-        <translation type="unfinished"></translation>
+        <translation>Verschlüsselte Nachricht</translation>
     </message>
     <message>
         <source>Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Verschlüßelung</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>Allgemein</translation>
     </message>
     <message>
         <source>Encrypt by default</source>
-        <translation type="unfinished"></translation>
+        <translation>Immer verschlüsseln</translation>
     </message>
     <message>
         <source>Encrypt after receive encrypted message</source>
-        <translation type="unfinished"></translation>
+        <translation>Verschlüsseln nach dem Empfang einer Verschlüsselten Nachricht</translation>
     </message>
     <message>
         <source>Generate keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Schlüssel generieren</translation>
     </message>
 </context>
 <context>

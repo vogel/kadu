@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="de_DE">
 <context>
     <name>@default</name>
     <message>
@@ -79,7 +81,7 @@
     </message>
     <message>
         <source>Please select events you want to be notified on using Notify tab in Configuration window.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wählen Sie bitte Ereignisse, über die Sie informiert werden möchten, im Reiter &quot;Notify&quot; in der Konfiguration.</translation>
     </message>
     <message>
         <source>PC Speaker</source>

@@ -1,45 +1,47 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="de_DE">
 <context>
     <name>@default</name>
     <message>
         <source>Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Chat</translation>
     </message>
     <message>
         <source>Autoresponder</source>
-        <translation type="unfinished"></translation>
+        <translation>Auto-Antwort</translation>
     </message>
     <message>
         <source>Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Einstallungen</translation>
     </message>
     <message>
         <source>Autoanswer text</source>
-        <translation type="unfinished"></translation>
+        <translation>Text der automatischen Antwort</translation>
     </message>
     <message>
         <source>Only for the first time</source>
-        <translation type="unfinished"></translation>
+        <translation>Nur das erste mal</translation>
     </message>
     <message>
         <source>Respond to conferences</source>
-        <translation type="unfinished"></translation>
+        <translation>Antworte auf Konferenzen</translation>
     </message>
     <message>
         <source>Choose status</source>
-        <translation type="unfinished"></translation>
+        <translation>Zustand auswählen</translation>
     </message>
     <message>
         <source>Status invisible</source>
-        <translation type="unfinished"></translation>
+        <translation>Unsichtbar</translation>
     </message>
     <message>
         <source>Status busy</source>
-        <translation type="unfinished"></translation>
+        <translation>Beschäftigt</translation>
     </message>
     <message>
         <source>Status available</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreichbar</translation>
     </message>
 </context>
 <context>
@@ -50,7 +52,7 @@
     </message>
     <message>
         <source>I am busy.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ich bin beschäftigt.</translation>
     </message>
 </context>
 </TS>

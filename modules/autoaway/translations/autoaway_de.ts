@@ -1,80 +1,82 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="de_DE">
 <context>
     <name>@default</name>
     <message>
         <source>Status</source>
-        <translation type="unfinished"></translation>
+        <translation>Zustand</translation>
     </message>
     <message>
         <source>Autoaway</source>
-        <translation type="unfinished"></translation>
+        <translation>Auto-Abwesenheit</translation>
     </message>
     <message>
         <source>Check idle every</source>
-        <translation type="unfinished"></translation>
+        <translation>Prüfe auf Inaktivität alle</translation>
     </message>
     <message>
         <source>Enable autoaway</source>
-        <translation type="unfinished"></translation>
+        <translation>Auto-Zustand einschalten</translation>
     </message>
     <message>
         <source>Set status to away after</source>
-        <translation type="unfinished"></translation>
+        <translation>Setze &quot;Abwesend&quot; nach</translation>
     </message>
     <message>
         <source>Enable autoinvisible</source>
-        <translation type="unfinished"></translation>
+        <translation>Automatische Abwesenseit einschalten</translation>
     </message>
     <message>
         <source>Set status to invisible after</source>
-        <translation type="unfinished"></translation>
+        <translation>Setzte Zustand &quot;Unsichtbar&quot; nach</translation>
     </message>
     <message>
         <source>Enable autodisconnect</source>
-        <translation type="unfinished"></translation>
+        <translation>Automatische Trennunf einschalten</translation>
     </message>
     <message>
         <source>Disconnect after</source>
-        <translation type="unfinished"></translation>
+        <translation>Trennen nach</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>Beschreibung</translation>
     </message>
     <message>
         <source>Don&apos;t change</source>
-        <translation type="unfinished"></translation>
+        <translation>Nicht ändern</translation>
     </message>
     <message>
         <source>Replace</source>
-        <translation type="unfinished"></translation>
+        <translation>Ersetzen</translation>
     </message>
     <message>
         <source>Add in front</source>
-        <translation type="unfinished"></translation>
+        <translation>Vorne anfügen</translation>
     </message>
     <message>
         <source>Add at the back</source>
-        <translation type="unfinished"></translation>
+        <translation>Hinten anfügen</translation>
     </message>
     <message>
         <source>New description</source>
-        <translation type="unfinished"></translation>
+        <translation>Neue Beschreibung</translation>
     </message>
     <message>
         <source>Autorefresh status</source>
-        <translation type="unfinished"></translation>
+        <translation>Zustand erneuern</translation>
     </message>
     <message>
         <source>Parse AutoStatus</source>
-        <translation type="unfinished"></translation>
+        <translation>Parse Auto-Zustand</translation>
     </message>
 </context>
 <context>
     <name>AutoAway</name>
     <message>
         <source>Don&apos;t refresh</source>
-        <translation type="unfinished"></translation>
+        <translation>Nicht erneuern</translation>
     </message>
 </context>
 </TS>
