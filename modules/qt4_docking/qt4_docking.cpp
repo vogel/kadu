@@ -59,19 +59,19 @@ Qt4TrayIcon::Qt4TrayIcon(QWidget *parent) :
 {
 	kdebugf();
 
-	setIcon(QIcon(docking_manager->defaultPixmap()));
+	setIcon(QIcon(DockingManager::instance()->defaultPixmap()));
 
-	connect(docking_manager, SIGNAL(trayPixmapChanged(const QIcon&)), this, SLOT(setTrayPixmap(const QIcon&)));
-	connect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setTrayTooltip(const QString&)));
-	connect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
-	connect(docking_manager, SIGNAL(trayMovieChanged(const QString &)), this, SLOT(setTrayMovie(const QString &)));
+	connect(DockingManager::instance(), SIGNAL(trayPixmapChanged(const QIcon&)), this, SLOT(setTrayPixmap(const QIcon&)));
+	connect(DockingManager::instance(), SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setTrayTooltip(const QString&)));
+	connect(DockingManager::instance(), SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
+	connect(DockingManager::instance(), SIGNAL(trayMovieChanged(const QString &)), this, SLOT(setTrayMovie(const QString &)));
 
 	connect(this, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayActivated(QSystemTrayIcon::ActivationReason)));
 
 	show();
-	setContextMenu(docking_manager->dockMenu());
+	setContextMenu(DockingManager::instance()->dockMenu());
 	
-	docking_manager->setDocked(true);
+	DockingManager::instance()->setDocked(true);
 
 	kdebugf2();
 }
@@ -87,14 +87,14 @@ Qt4TrayIcon::~Qt4TrayIcon()
 		Movie = 0;
 	}
 
-	disconnect(docking_manager, SIGNAL(trayMovieChanged(const QString &)), this, SLOT(setTrayMovie(const QString &)));
-	disconnect(docking_manager, SIGNAL(trayPixmapChanged(const QIcon&)), this, SLOT(setTrayPixmap(const QIcon&)));
-	disconnect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setTrayTooltip(const QString&)));
-	disconnect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
+	disconnect(DockingManager::instance(), SIGNAL(trayMovieChanged(const QString &)), this, SLOT(setTrayMovie(const QString &)));
+	disconnect(DockingManager::instance(), SIGNAL(trayPixmapChanged(const QIcon&)), this, SLOT(setTrayPixmap(const QIcon&)));
+	disconnect(DockingManager::instance(), SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setTrayTooltip(const QString&)));
+	disconnect(DockingManager::instance(), SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
 
 	disconnect(this, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayActivated(QSystemTrayIcon::ActivationReason)));
 
-	docking_manager->setDocked(false);
+	DockingManager::instance()->setDocked(false);
 
 	kdebugf2();
 }
@@ -157,7 +157,7 @@ void Qt4TrayIcon::trayActivated(QSystemTrayIcon::ActivationReason reason)
 	else if (reason == QSystemTrayIcon::MiddleClick)
 		ev = new QMouseEvent(QEvent::MouseButtonPress, QPoint(0,0), Qt::MidButton, Qt::MidButton, Qt::NoModifier);
 	if (ev)
-		docking_manager->trayMousePressEvent(ev);
+		DockingManager::instance()->trayMousePressEvent(ev);
 }
 
 

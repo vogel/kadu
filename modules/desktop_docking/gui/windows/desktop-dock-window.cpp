@@ -36,7 +36,7 @@ DesktopDockWindow::DesktopDockWindow(QWidget *parent) :
 	setMouseTracking(true);
 	setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint);
 
-	QIcon desktopDockIcon = docking_manager->defaultPixmap();
+	QIcon desktopDockIcon = DockingManager::instance()->defaultPixmap();
 	setPixmap(desktopDockIcon.pixmap(128, 128));
 	resize(pixmap()->size());
 
@@ -82,7 +82,7 @@ QPoint DesktopDockWindow::getCenterFromEvent(QMouseEvent* ev)
 
 void DesktopDockWindow::contextMenuEvent(QContextMenuEvent* ev)
 {
-	docking_manager->dockMenu()->popup(ev->globalPos());
+	DockingManager::instance()->dockMenu()->popup(ev->globalPos());
 }
 
 void DesktopDockWindow::mousePressEvent(QMouseEvent *ev)
@@ -93,7 +93,7 @@ void DesktopDockWindow::mousePressEvent(QMouseEvent *ev)
 		IsMoving = false;
 	}
 	else
-		docking_manager->trayMousePressEvent(ev);
+		DockingManager::instance()->trayMousePressEvent(ev);
 }
 
 void DesktopDockWindow::mouseMoveEvent(QMouseEvent *ev)

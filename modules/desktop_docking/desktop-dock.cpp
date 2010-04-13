@@ -62,12 +62,12 @@ DesktopDock::DesktopDock(QObject *parent) :
 
 	DockWindow = new DesktopDockWindow();
 
-	connect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setToolTip(const QString&)));
-	connect(docking_manager, SIGNAL(trayPixmapChanged(const QIcon&)), this,  SLOT(setPixmap(const QIcon&)));
-	connect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
-	connect(docking_manager, SIGNAL(trayMovieChanged(QString)), this, SLOT(setTrayMovie(QString)));
+	connect(DockingManager::instance(), SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setToolTip(const QString&)));
+	connect(DockingManager::instance(), SIGNAL(trayPixmapChanged(const QIcon&)), this,  SLOT(setPixmap(const QIcon&)));
+	connect(DockingManager::instance(), SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
+	connect(DockingManager::instance(), SIGNAL(trayMovieChanged(QString)), this, SLOT(setTrayMovie(QString)));
 
-	docking_manager->setDocked(true);
+	DockingManager::instance()->setDocked(true);
 
 	if (config_file.readBoolEntry("Desktop Dock", "MoveInMenu"))
 		createMenu();
@@ -79,12 +79,12 @@ DesktopDock::~DesktopDock()
 {
 	kdebugf();
 
-	disconnect(docking_manager, SIGNAL(trayMovieChanged(const QString &)), this, SLOT(setTrayMovie(const QString &)));
-	disconnect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setToolTip(const QString&)));
-	disconnect(docking_manager, SIGNAL(trayPixmapChanged(const QIcon&)), this, SLOT(setPixmap(const QIcon&)));
-	disconnect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
+	disconnect(DockingManager::instance(), SIGNAL(trayMovieChanged(const QString &)), this, SLOT(setTrayMovie(const QString &)));
+	disconnect(DockingManager::instance(), SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setToolTip(const QString&)));
+	disconnect(DockingManager::instance(), SIGNAL(trayPixmapChanged(const QIcon&)), this, SLOT(setPixmap(const QIcon&)));
+	disconnect(DockingManager::instance(), SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
 
-	docking_manager->setDocked(false);
+	DockingManager::instance()->setDocked(false);
 
 	destroyMenu();
 
@@ -98,8 +98,8 @@ void DesktopDock::createMenu()
 {
 	if (!SeparatorAction && !MoveMenuAction)
 	{
-		SeparatorAction = docking_manager->dockMenu()->addSeparator();
-		MoveMenuAction = docking_manager->dockMenu()->addAction(tr("Move"), DockWindow, SLOT(startMoving()));
+		SeparatorAction = DockingManager::instance()->dockMenu()->addSeparator();
+		MoveMenuAction = DockingManager::instance()->dockMenu()->addAction(tr("Move"), DockWindow, SLOT(startMoving()));
 	}
 }
 
@@ -107,14 +107,14 @@ void DesktopDock::destroyMenu()
 {
 	if (MoveMenuAction)
 	{
-		docking_manager->dockMenu()->removeAction(MoveMenuAction);
+		DockingManager::instance()->dockMenu()->removeAction(MoveMenuAction);
 		delete MoveMenuAction;
 		MoveMenuAction = 0;
 	}
 
 	if (SeparatorAction)
 	{
-		docking_manager->dockMenu()->removeAction(SeparatorAction);
+		DockingManager::instance()->dockMenu()->removeAction(SeparatorAction);
 		delete SeparatorAction;
 		SeparatorAction = 0;
 	}

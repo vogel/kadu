@@ -61,13 +61,27 @@
 
 #include "docking.h"
 
-/**
- * @ingroup docking
- * @{
- */
+DockingManager * DockingManager::Instance = 0;
 
-DockingManager::DockingManager()
-	: newMessageIcon(StaticEnvelope), icon_timer(new QTimer()), blink(false)
+void DockingManager::createInstance()
+{
+	if (!Instance)
+		Instance = new DockingManager();
+}
+
+void DockingManager::destroyInstance()
+{
+	delete Instance;
+	Instance = 0;
+}
+
+DockingManager* DockingManager::instance()
+{
+	return Instance;
+}
+
+DockingManager::DockingManager() :
+		newMessageIcon(StaticEnvelope), icon_timer(new QTimer()), blink(false)
 {
 	kdebugf();
 
@@ -385,7 +399,3 @@ void DockingManager::createDefaultConfiguration()
 	config_file.addVariable("General", "ShowTooltipInTray", true);
 	config_file.addVariable("Look", "NewMessageIcon", 0);
 }
-
-DockingManager *docking_manager = NULL;
-
-/** @} */

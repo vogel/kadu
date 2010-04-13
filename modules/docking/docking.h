@@ -42,13 +42,12 @@ class QMenu;
 
 class StatusContainer;
 
-/**
- * @defgroup docking Docking
- * @{
- */
 class DOCKINGAPI DockingManager : public QObject, ConfigurationAwareObject, StatusContainerAwareObject
 {
 	Q_OBJECT
+	Q_DISABLE_COPY(DockingManager)
+
+	static DockingManager *Instance;
 
 	QMenu *DockMenu;
 	QAction *CloseKaduAction;
@@ -68,6 +67,9 @@ class DOCKINGAPI DockingManager : public QObject, ConfigurationAwareObject, Stat
 
 	void createDefaultConfiguration();
 
+	DockingManager();
+	virtual ~DockingManager();
+
 protected:
 	virtual void configurationUpdated();
 	virtual void statusContainerRegistered(StatusContainer *statusContainer);
@@ -82,8 +84,9 @@ private slots:
 	void containerStatusChanged();
 
 public:
-	DockingManager();
-	virtual ~DockingManager();
+	static void createInstance();
+	static void destroyInstance();
+	static DockingManager * instance();
 
 	void trayMousePressEvent(QMouseEvent * e);
 	QIcon defaultPixmap();
@@ -106,9 +109,5 @@ public slots:
 	void mousePressLeftButton();
 	void mousePressRightButton();
 };
-
-extern DOCKINGAPI DockingManager* docking_manager;
-
-/** @} */
 
 #endif // DOCKING_H
