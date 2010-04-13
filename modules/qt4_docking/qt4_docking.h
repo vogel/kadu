@@ -28,38 +28,30 @@
 #include <QtGui/QIcon>
 #include <QtGui/QSystemTrayIcon>
 
-/**
- * @defgroup qt4_docking Qt4 docking
- * @{
- */
-
 class QPoint;
 
 class Qt4TrayIcon : public QSystemTrayIcon
 {
 	Q_OBJECT
 
-		QMovie *Movie;
-		QPoint lastPosition;
-	
+	QMovie *Movie;
+	QPoint lastPosition;
 
-	private slots:
-		void setTrayPixmap(const QIcon &pixmap);
-		void setTrayMovie(const QString &movie);
-		void setTrayTooltip(const QString &tooltip);
-		void findTrayPosition(QPoint &pos);
-		void trayActivated(QSystemTrayIcon::ActivationReason reason);
+private slots:
+	void setTrayPixmap(const QIcon &pixmap);
+	void setTrayMovie(const QString &movie);
+	void setTrayTooltip(const QString &tooltip);
+	void findTrayPosition(QPoint &pos);
+	void trayActivated(QSystemTrayIcon::ActivationReason reason);
 
-		void movieUpdate();
-	public:
-		Qt4TrayIcon(QWidget *parent = 0);
-		~Qt4TrayIcon();
+	void movieUpdate();
+
+public:
+	explicit Qt4TrayIcon(QWidget *parent = 0);
+	virtual ~Qt4TrayIcon();
 		
 };
 
 extern Qt4TrayIcon* qt4_tray_icon;
-
-
-/** @} */
 
 #endif // QT4_DOCKING_H
