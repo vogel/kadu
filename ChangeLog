@@ -1,3 +1,7 @@
++++ version 0.6.6-beta2
+* core: removed Instaluj.sh (Vogel)
+
+
 +++ version 0.6.6-beta1
 * config_wizard: reworked (Vogel)
 * gui: use avatars in adium styles (WhE)
