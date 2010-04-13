@@ -35,15 +35,18 @@ class DesktopDock : public QObject
 
 	static DesktopDock *Instance;
 
-	DesktopDockWindow *desktopDock;
+	DesktopDockWindow *DockWindow;
 
-	QAction *menuPos;
-	QAction *separatorPos;
-
-	void createDefaultConfiguration();
+	QAction *MoveMenuAction;
+	QAction *SeparatorAction;
 
 	explicit DesktopDock(QObject *parent = 0);
 	virtual ~DesktopDock();
+
+	void createDefaultConfiguration();
+
+	void createMenu();
+	void destroyMenu();
 
 private slots:
 	void setToolTip(const QString &statusText);
@@ -57,7 +60,7 @@ public:
 	static void destroyInstance();
 	static DesktopDock * instance();
 
-	DesktopDockWindow * dockWindow() { return desktopDock; }
+	DesktopDockWindow * dockWindow() { return DockWindow; }
 
 };
 

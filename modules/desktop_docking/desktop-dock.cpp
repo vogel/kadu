@@ -54,13 +54,13 @@ DesktopDock * DesktopDock::instance()
 
 
 DesktopDock::DesktopDock(QObject *parent) :
-		QObject(parent), menuPos(0), separatorPos(0)
+		QObject(parent), MoveMenuAction(0), SeparatorAction(0)
 {
 	kdebugf();
 
 	createDefaultConfiguration();
 
-	desktopDock = new DesktopDockWindow();
+	DockWindow = new DesktopDockWindow();
 
 	connect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setToolTip(const QString&)));
 	connect(docking_manager, SIGNAL(trayPixmapChanged(const QIcon&)), this,  SLOT(setPixmap(const QIcon&)));
@@ -70,10 +70,7 @@ DesktopDock::DesktopDock(QObject *parent) :
 	docking_manager->setDocked(true);
 
 	if (config_file.readBoolEntry("Desktop Dock", "MoveInMenu"))
-	{
-		separatorPos = docking_manager->dockMenu()->addSeparator();
-		menuPos = docking_manager->dockMenu()->addAction(tr("Move"), desktopDock, SLOT(startMoving()));
-	}
+		createMenu();
 
 	kdebugf2();
 }
@@ -89,33 +86,50 @@ DesktopDock::~DesktopDock()
 
 	docking_manager->setDocked(false);
 
-	if (config_file.readBoolEntry("Desktop Dock", "MoveInMenu"))
-	{
-		docking_manager->dockMenu()->removeAction(menuPos);
-		docking_manager->dockMenu()->removeAction(separatorPos);
-	}
+	destroyMenu();
 
-	delete menuPos;
-	menuPos = 0;
-	delete separatorPos;
-	separatorPos = 0;
-
-	delete desktopDock;
-	desktopDock = 0;
+	delete DockWindow;
+	DockWindow = 0;
 
 	kdebugf2();
 }
 
+void DesktopDock::createMenu()
+{
+	if (!SeparatorAction && !MoveMenuAction)
+	{
+		SeparatorAction = docking_manager->dockMenu()->addSeparator();
+		MoveMenuAction = docking_manager->dockMenu()->addAction(tr("Move"), DockWindow, SLOT(startMoving()));
+	}
+}
+
+void DesktopDock::destroyMenu()
+{
+	if (MoveMenuAction)
+	{
+		docking_manager->dockMenu()->removeAction(MoveMenuAction);
+		delete MoveMenuAction;
+		MoveMenuAction = 0;
+	}
+
+	if (SeparatorAction)
+	{
+		docking_manager->dockMenu()->removeAction(SeparatorAction);
+		delete SeparatorAction;
+		SeparatorAction = 0;
+	}
+}
+
 void DesktopDock::setToolTip(const QString& statusText)
 {
-	desktopDock->setToolTip(statusText);
+	DockWindow->setToolTip(statusText);
 }
 
 void DesktopDock::setPixmap(const QIcon& DockIcon)
 {
-	desktopDock->setPixmap(DockIcon.pixmap(128,128));
-	desktopDock->repaint();
-	desktopDock->setMask(desktopDock->pixmap()->createHeuristicMask(false));
+	DockWindow->setPixmap(DockIcon.pixmap(128,128));
+	DockWindow->repaint();
+	DockWindow->setMask(DockWindow->pixmap()->createHeuristicMask(false));
 }
 
 void DesktopDock::setTrayMovie(const QString &movie)
@@ -124,31 +138,20 @@ void DesktopDock::setTrayMovie(const QString &movie)
 
 //	hmm
 // 	desktopDock->setMovie((QMovie *)&movie);
-	desktopDock->repaint();
+	DockWindow->repaint();
 }
 
 void DesktopDock::findTrayPosition(QPoint& DockPoint)	/* zwrocenie krawedzi ikony */
 {
-	DockPoint = desktopDock->mapToGlobal(QPoint(0,0));
+	DockPoint = DockWindow->mapToGlobal(QPoint(0,0));
 }
 
 void DesktopDock::updateMenu(bool b)
 {
 	if (b)
-	{
-		separatorPos = docking_manager->dockMenu()->addSeparator();
-		menuPos = docking_manager->dockMenu()->addAction(tr("Move"), desktopDock, SLOT(startMoving()));
-	}
+		createMenu();
 	else
-	{
-		docking_manager->dockMenu()->removeAction(menuPos);
-		docking_manager->dockMenu()->removeAction(separatorPos);
-
-		delete menuPos;
-		menuPos = 0;
-		delete separatorPos;
-		separatorPos = 0;
-	}
+		destroyMenu();
 }
 
 void DesktopDock::createDefaultConfiguration()
