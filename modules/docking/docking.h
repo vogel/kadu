@@ -95,20 +95,13 @@ public:
 	QIcon defaultPixmap();
 	QMenu * dockMenu() { return DockMenu; }
 
-	void setDocker(Docker *docker) { CurrentDocker = docker; }
+	void setDocker(Docker *docker);
 
-public slots:
-	/**
-		Modu� implementuj�cy dokowanie powinien to ustawic
-		na true przy starcie i false przy zamknieciu, aby
-		kadu wiedzialo, ze jest zadokowane.
-	**/
-	void setDocked(bool docked);
-
- signals:
+signals:
 	void mousePressMidButton();
 	void mousePressLeftButton();
 	void mousePressRightButton();
+
 };
 
 #endif // DOCKING_H

@@ -62,8 +62,6 @@ DesktopDock::DesktopDock(QObject *parent) :
 
 	DockWindow = new DesktopDockWindow();
 
-	DockingManager::instance()->setDocked(true);
-
 	if (config_file.readBoolEntry("Desktop Dock", "MoveInMenu"))
 		createMenu();
 
@@ -73,8 +71,6 @@ DesktopDock::DesktopDock(QObject *parent) :
 DesktopDock::~DesktopDock()
 {
 	kdebugf();
-
-	DockingManager::instance()->setDocked(false);
 
 	destroyMenu();
 

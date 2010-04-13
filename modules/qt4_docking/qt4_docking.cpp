@@ -67,8 +67,6 @@ Qt4TrayIcon::Qt4TrayIcon(QWidget *parent) :
 
 	show();
 	setContextMenu(DockingManager::instance()->dockMenu());
-	
-	DockingManager::instance()->setDocked(true);
 
 	kdebugf2();
 }
@@ -85,8 +83,6 @@ Qt4TrayIcon::~Qt4TrayIcon()
 	}
 
 	disconnect(this, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayActivated(QSystemTrayIcon::ActivationReason)));
-
-	DockingManager::instance()->setDocked(false);
 
 	kdebugf2();
 }

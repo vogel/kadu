@@ -290,24 +290,24 @@ QIcon DockingManager::defaultPixmap()
 	return QIcon(account.protocolHandler()->statusPixmap(account.protocolHandler()->status()));
 }
 
-void DockingManager::setDocked(bool docked)
+void DockingManager::setDocker(Docker *docker)
 {
-	kdebugf();
-	if (docked)
+	CurrentDocker = docker;
+
+	if (CurrentDocker)
 	{
 		changeIcon();
 		defaultToolTip();
 		if (config_file.readBoolEntry("General", "RunDocked"))
 			Core::instance()->setShowMainWindowOnStart(false);
+		Core::instance()->kaduWindow()->setDocked(true);
 	}
 	else
 	{
- 		kdebugm(KDEBUG_INFO, "closing: %d\n", Core::instance()->isClosing());
  		if (!Core::instance()->isClosing())
-			Core::instance()->kaduWindow()->show(); // isClosing? TODO: 0.6.6 -> done?
+			Core::instance()->kaduWindow()->show();
+		Core::instance()->kaduWindow()->setDocked(false);
 	}
-	Core::instance()->kaduWindow()->setDocked(docked);
-	kdebugf2();
 }
 
 void DockingManager::updateContextMenu()
