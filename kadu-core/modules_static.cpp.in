@@ -1,7 +1,0 @@
-
-@STATIC_MODULES_DECLS@
-
-void ModulesManager::registerStaticModules()
-{
-@STATIC_MODULES_REGRS@
-}

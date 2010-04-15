@@ -300,7 +300,7 @@ void ModulesManager::incDependenciesUsageCount(const ModuleInfo &module_info)
 }
 
 void ModulesManager::registerStaticModule(const QString& module_name,
-	InitModuleFunc* init,CloseModuleFunc* close)
+	InitModuleFunc* init, CloseModuleFunc* close)
 {
 	StaticModule m;
 	m.init = init;
@@ -521,8 +521,8 @@ bool ModulesManager::activateModule(const QString& module_name)
 			kdebugf2();
 			return false;
 		}
-		init = (InitModuleFunc *)m.lib->resolve(qPrintable(module_name+"_init"));
-		m.close = (CloseModuleFunc *)m.lib->resolve(qPrintable(module_name+"_close"));
+		init = (InitModuleFunc *)m.lib->resolve(qPrintable(module_name + "_init"));
+		m.close = (CloseModuleFunc *)m.lib->resolve(qPrintable(module_name + "_close"));
 		if (init == NULL || m.close == NULL)
 		{
 			MessageDialog::msg(tr("Cannot find required functions in module %1.\nMaybe it's not Kadu-compatible Module.").arg(module_name));
