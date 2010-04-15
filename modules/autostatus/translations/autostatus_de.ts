@@ -5,7 +5,7 @@
     <name>Autostatus</name>
     <message>
         <source>&amp;Autostatus</source>
-        <translation>Auto-Zustand</translation>
+        <translation>&amp;Auto-Zustand</translation>
     </message>
 </context>
 </TS>

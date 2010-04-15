@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="de_DE">
 <context>
     <name>@default</name>
     <message>
@@ -1807,7 +1809,7 @@ nach
     </message>
     <message>
         <source>The protocol `%1&apos; does not support listing directories</source>
-        <translation>Das Protokoll &quot;%1&quot; wird nicht unterstüzt oder es &quot;%2&quot; unterstüzt nicht die Auflistung von Verzeichnissen</translation>
+        <translation>Das Protokoll &quot;%1&quot; unterstüzt nicht die Auflistung von Verzeichnissen</translation>
     </message>
     <message>
         <source>The protocol `%1&apos; does not support creating new directories</source>
