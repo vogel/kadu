@@ -41,16 +41,11 @@ KADUAPI void openMailClient(const QString &mail);
 
 QString versionToName(const unsigned int version);
 
-QStringList toStringList(const QString &e1, const QString &e2=QString(), const QString &e3=QString(), const QString &e4=QString(), const QString &e5=QString());
-
 void KADUAPI saveWindowGeometry(const QWidget *w, const QString &section, const QString &name);
 void KADUAPI loadWindowGeometry(QWidget *w, const QString &section, const QString &name, int defaultX, int defaultY, int defaultWidth, int defaultHeight);
 
 QRect stringToRect(const QString &value, const QRect *def = NULL);
 QString rectToString(const QRect& rect);
-
-//usuwa znaki nowego wiersza, tagi htmla (wszystko co da si� dopasowa� jako <.*>)
-QString toPlainText(const QString &text);
 
 QList<int> toIntList(const QList<QVariant> &in);
 QList<QVariant> toVariantList(const QList<int> &in);

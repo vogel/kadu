@@ -85,36 +85,6 @@ QString printDateTime(const QDateTime &datetime)
 	return ret;
 }
 
-QString timestamp(time_t customtime)
-{
-	QString buf;
-	QDateTime date;
-	time_t t;
-
-	t = time(NULL);
-
-	date.setTime_t(t);
-	buf.append(printDateTime(date));
-
-	if (customtime)
-	{
-		date.setTime_t(customtime);
-		buf.append(QString(" / S ") + printDateTime(date));
-	}
-
-	return buf;
-}
-
-QDateTime currentDateTime(void)
-{
-	time_t t;
-	QDateTime date;
-
-	t = time(NULL);
-	date.setTime_t(t);
-	return date;
-}
-
 void getTime(time_t *sec, int *msec)
 {
 #ifdef Q_OS_WIN

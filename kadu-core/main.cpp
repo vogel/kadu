@@ -297,7 +297,7 @@ int main(int argc, char *argv[])
 	new KaduApplication(argc, argv);
 	kdebugm(KDEBUG_INFO, "after creation of new KaduApplication\n");
 
-        for (i = 1; i < qApp->argc(); ++i)
+	for (i = 1; i < qApp->argc(); ++i)
 	{
                 param = qApp->argv()[i];
                 if (param == "--version")

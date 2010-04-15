@@ -75,20 +75,6 @@ void loadWindowGeometry(QWidget *w, const QString &section, const QString &name,
 	w->setGeometry(rect);
 }
 
-QStringList toStringList(const QString &e1, const QString &e2, const QString &e3, const QString &e4, const QString &e5)
-{
-	QStringList list(e1);
-	if (e2!=QString::null)
-		list<<e2;
-	if (e3!=QString::null)
-		list<<e3;
-	if (e4!=QString::null)
-		list<<e4;
-	if (e5!=QString::null)
-		list<<e5;
-	return list;
-}
-
 QString pwHash(const QString &text)
 {
 	QString newText = text;
@@ -287,32 +273,6 @@ void stringHeapSort(QStringList &c)
 	stringHeapSortHelper(c.begin(), c.end(), *(c.begin()), (uint)c.count());
 }
 
-// -----------------------
-//      TokenDialog
-// -----------------------
-
-// PixmapPreview::PixmapPreview() : QLabel(NULL)
-// {
-// }
-/*
-void PixmapPreview::previewUrl(const Q3Url& url)
-{
-	QString path = url.path();
-	QPixmap pix( path );
-	if (pix.isNull())
-		setText(qApp->translate("PixmapPreview", "This is not an image"));
-	else
-	{
-		QMatrix mx;
-		mx.scale(
-			double(width())/double(pix.width()),
-			double(height())/double(pix.height()));
-		pix = pix.xForm(mx);
-		setPixmap(pix);
-	}
-}*/
-
-
 QList<int> toIntList(const QList<QVariant> &in)
 {
 	QList<int> out;
@@ -327,25 +287,6 @@ QList<QVariant> toVariantList(const QList<int> &in)
 	foreach(const int &it, in)
 		out.append(QVariant(it));
 	return out;
-}
-
-QRegExp clean_regexp;
-QString toPlainText(const QString &text)
-{
-	kdebugm(KDEBUG_INFO, "rich: %s\n", qPrintable(text));
-	if (clean_regexp.isEmpty())
-	{
-		clean_regexp = QRegExp("<.*>");
-		clean_regexp.setMinimal(true);
-	}
-	QString copy=text;
-	copy.replace("\r\n", " ");
-	copy.replace("\n",   " ");
-	copy.replace("\r",   " ");
-	copy.remove(clean_regexp);
-	HtmlDocument::unescapeText(copy);
-	kdebugm(KDEBUG_INFO, "plain: %s\n", qPrintable(copy));
-	return copy;
 }
 
 QRect stringToRect(const QString &value, const QRect *def)
