@@ -83,6 +83,7 @@ private slots:
 	void changeIcon();
 	void pendingMessageAdded();
 	void pendingMessageDeleted();
+	void searchingForTrayPosition(QPoint &point);
 
 	void containerStatusChanged();
 

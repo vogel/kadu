@@ -96,7 +96,7 @@ DockingManager::DockingManager() :
 	connect(PendingMessagesManager::instance(), SIGNAL(messageAdded(Message)), this, SLOT(pendingMessageAdded()));
 	connect(PendingMessagesManager::instance(), SIGNAL(messageRemoved(Message)), this, SLOT(pendingMessageDeleted()));
 
-	connect(Core::instance(), SIGNAL(searchingForTrayPosition(QPoint&)), this, SIGNAL(searchingForTrayPosition(QPoint&)));
+	connect(Core::instance(), SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(searchingForTrayPosition(QPoint&)));
 
 	DockMenu = new QMenu;
 
@@ -279,6 +279,13 @@ void DockingManager::statusPixmapChanged(const QIcon &icon)
 
 	defaultToolTip();
 	changeIcon();
+}
+
+void DockingManager::searchingForTrayPosition(QPoint &point)
+{
+	if (CurrentDocker)
+		point = CurrentDocker->trayPosition();
+
 }
 
 QIcon DockingManager::defaultPixmap()
