@@ -227,9 +227,11 @@ void ChatWindow::alertNewMessage()
 		}
 		else if (showNewMessagesNum) // ... so we check this condition as 'else'
 			showNewMessagesNumInTitle();
-#ifndef Q_OS_MAC
-		qApp->alert(this);
+#ifdef Q_OS_MAC
+		if (config_file.readBoolEntry("MacOSX Dock", "BounceIcon", true))
 #endif
+		qApp->alert(this);
+
 	}
 	else
 		currentChatWidget->markAllMessagesRead();
