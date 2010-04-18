@@ -264,6 +264,7 @@ set (kadu_SRCS
 	protocols/protocols-manager.cpp
 	protocols/model/protocols-model.cpp
 	protocols/services/chat-service.cpp
+	protocols/services/contact-list-service.cpp
 
 	qt/long-validator.cpp
 

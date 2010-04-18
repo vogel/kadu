@@ -140,89 +140,11 @@ void AccountBuddyListWidget::buddiesListImported(bool ok, BuddyList buddies)
 	if (!ok)
 		return;
 
-	QList<Contact> unImportedContacts;// = ContactManager::instance()->contacts(CurrentAccount);
+	ContactListService *service = CurrentAccount.protocolHandler()->contactListService();
+	if (!service)
+		return;
 
-	foreach (const Buddy &onebuddy, buddies)
-	{
-		Buddy buddy;
-		QList<Contact> oneBuddyContacts = onebuddy.contacts(CurrentAccount);
-
-		if (oneBuddyContacts.count() > 0)
-		{
-			foreach (const Contact &contact, oneBuddyContacts)
-			{
-				Contact contactOnList = ContactManager::instance()->byId(CurrentAccount, contact.id(), ActionReturnNull);
-				if (contactOnList.isNull()) // not on list add this one as new
-				{
-					buddy = Buddy::create();
-					// move contact to buddy
-					ContactManager::instance()->addItem(contact);
-					kdebugmf(KDEBUG_FUNCTION_START, "\nuuid add: '%s' %s\n",
-						 qPrintable(contactOnList.uuid().toString()), qPrintable(buddy.display()));
-					contact.setOwnerBuddy(buddy);
-				}
-				else // already on list
-				{
-					// found contact so use his buddy
-					//kdebugmf(KDEBUG_FUNCTION_START, "\nuuid before: '%s'\n", qPrintable(contactOnList.ownerBuddy().uuid().toString()));
-					buddy = contactOnList.ownerBuddy();
-					kdebugmf(KDEBUG_FUNCTION_START, "\nuuid owner: '%s' %s\n",
-						 qPrintable(contactOnList.uuid().toString()), qPrintable(buddy.display()));
-					//unImportedContacts.removeOne(contactOnList);
-				}
-			}
-		}
-		else
-		{
-			// THIS WORKS NICE
-			// find one by display, but what if display().isEmpty()?
-			buddy = BuddyManager::instance()->byDisplay(onebuddy.display(), ActionCreateAndAdd);
-			if (buddy.isNull())
-			{
-				// not found so add new one
-				buddy = Buddy::create();
-				// TODO: 0.6.6
-				buddy.setDisplay(buddy.uuid().toString());
-			}
-		}
-
-		// TODO 0.6.6: update rest data, consider to add some logic here
-		// TODO 0.6.6: consider to find contact by some data if no contacts inside buddy
-		buddy.setFirstName(onebuddy.firstName());
-		buddy.setLastName(onebuddy.lastName());
-		buddy.setNickName(onebuddy.nickName());
-		buddy.setMobile(onebuddy.mobile());
-		buddy.setGroups(onebuddy.groups());
-		buddy.setEmail(onebuddy.email());
-		buddy.setDisplay(onebuddy.display());
-		buddy.setHomePhone(onebuddy.homePhone());
-		buddy.setAnonymous(false);
-
-		BuddyManager::instance()->addItem(buddy);
-	}
-
-	if (!unImportedContacts.isEmpty())
-	{
-		// create names list
-		QStringList contactsList;
-		foreach (const Contact &c, unImportedContacts)
-		{
-			QString display = c.ownerBuddy().display();
-			if (!contactsList.contains(display))
-				contactsList.append(display);
-		}
-
-		if (MessageDialog::ask(tr("Following contacts from your list were not found on server: %0.\nDo you want to remove them from contacts list?").arg(contactsList.join(", "))))
-			foreach (const Contact &c, unImportedContacts)
-				ContactManager::instance()->removeItem(c);
-	}
-
-	MessageDialog::msg(tr("Your contact list has been successfully imported from server"), false, "Infromation", this);
-
-	// flush configuration to save all changes
-	ConfigurationManager::instance()->flush();
-
-	kdebugf2();
+	service->setBuddiesList(buddies);
 }
 
 void AccountBuddyListWidget::buddiesListExported(bool ok)

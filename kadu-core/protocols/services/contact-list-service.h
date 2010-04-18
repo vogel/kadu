@@ -24,19 +24,28 @@
 
 #include "buddies/buddy-list.h"
 
+class Protocol;
+
 class ContactListService : public QObject
 {
 	Q_OBJECT
 
+	Protocol *CurrentProtocol;
+
+	// TODO: rename
+	Buddy mergeBuddy(Buddy buddy);
+
 public:
-	ContactListService(QObject *parent = 0)
-		: QObject(parent) {}
+	explicit ContactListService(Protocol *protocol = 0);
+	virtual ~ContactListService();
 
 	virtual void importContactList() = 0;
 	virtual void exportContactList() = 0;
 	virtual void exportContactList(BuddyList buddies) = 0;
 
 	virtual QList<Buddy> loadBuddyList(QTextStream &dataStream) = 0;
+
+	void setBuddiesList(BuddyList buddies);
 
 signals:
 	void contactListImported(bool ok, BuddyList buddies);
