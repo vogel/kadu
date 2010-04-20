@@ -279,6 +279,7 @@ set (SOURCES
 	services/jabber-chat-service.cpp
 	services/jabber-chat-state-service.cpp
 	services/jabber-file-transfer-service.cpp
+	services/jabber-roster-service.cpp
 	services/jabber-subscription-service.cpp
 	transport/jabber-transport.cpp
 	utils/jid-util.cpp
@@ -310,6 +311,7 @@ set (MOC_SOURCES
 	services/jabber-chat-service.h
 	services/jabber-chat-state-service.h
 	services/jabber-file-transfer-service.h
+	services/jabber-roster-service.h
 	services/jabber-subscription-service.h
 	transport/jabber-transport.h
 	utils/vcard-factory.h
