@@ -34,13 +34,14 @@ class JabberFileTransferService : public FileTransferService
 
 	JabberProtocol *Protocol;
 
+private slots:
+	void irisIncomingFileTransfer();
+
 public:
-	JabberFileTransferService(JabberProtocol *protocol);
+	explicit JabberFileTransferService(JabberProtocol *protocol);
+	virtual ~JabberFileTransferService();
 
 	virtual FileTransferHandler * createFileTransferHandler(FileTransfer fileTransfer);
-
-public slots:
-	void incomingFile(FileTransfer transfer);
 
 };
 
