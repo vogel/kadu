@@ -124,3 +124,13 @@ void JabberSubscriptionService::subscription(const XMPP::Jid &jid, const QString
 		//in Psi it's ignored
 	}*/
 }
+
+void JabberSubscriptionService::authorizeContact(Contact contact, bool authorized)
+{
+	const XMPP::Jid jid = XMPP::Jid(contact.id());
+
+	if (authorized)
+		Protocol->client()->resendSubscription(jid);
+	else
+		Protocol->client()->rejectSubscription(jid);
+}

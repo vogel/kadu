@@ -22,7 +22,9 @@
 
 #include <QtCore/QObject>
 
-#include "iris/xmpp_jid.h"
+#include <iris/xmpp_jid.h>
+
+#include "contacts/contact.h"
 
 class JabberProtocol;
 
@@ -37,6 +39,9 @@ private slots:
 
 public:
 	explicit JabberSubscriptionService(JabberProtocol *protocol);
+
+public slots:
+	void authorizeContact(Contact contact, bool authorized);
 
 };
 

@@ -90,7 +90,6 @@ private slots:
 	void buddyUpdated(Buddy &buddy);
 
 	void contactIdChanged(Contact contact, const QString &oldId);
-	void authorizeContact(Contact contact, bool authorized);
 
 	void serverFeaturesChanged();
 	void itemPublished(const XMPP::Jid& j, const QString& n, const XMPP::PubSubItem& item);

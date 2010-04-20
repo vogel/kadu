@@ -467,16 +467,6 @@ void JabberProtocol::contactIdChanged(Contact contact, const QString &oldId)
 	contactAttached(contact);
 }
 
-void JabberProtocol::authorizeContact(Contact contact, bool authorized)
-{
-	const XMPP::Jid jid = XMPP::Jid(contact.id());
-	
-	if (authorized)
-		JabberClient->resendSubscription(jid);
-	else
-		JabberClient->rejectSubscription(jid);
-}
-
 bool JabberProtocol::validateUserID(const QString& uid)
 {
 	XMPP::Jid j = XMPP::Jid(uid);
