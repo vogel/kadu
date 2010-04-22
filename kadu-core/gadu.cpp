@@ -430,7 +430,7 @@ GaduProtocol::GaduProtocol(const QString &id, QObject *parent)
 	: Protocol("Gadu", id, parent),
 		Mode(Register), DataUin(0), DataEmail(), DataPassword(), DataNewPassword(), TokenId(), TokenValue(),
 		ServerNr(0), ActiveServer(), LoginParams(), Sess(0), sendImageRequests(0), seqNumber(0), whileConnecting(false),
-		DccExternalIP(), SocketNotifiers(new GaduSocketNotifiers(this)), PingTimer(0),
+		DccExternalIP(), SocketNotifiers(new GaduSocketNotifiers(this)), PingTimer(0), DisconnectAckTimer(0),
 		SendUserListTimer(new QTimer(this, "SendUserListTimer")), UserListClear(false), ImportReply()
 {
 	kdebugf();
@@ -628,6 +628,11 @@ void GaduProtocol::iWantGoOffline(const QString &desc)
 		gg_change_status_descr(Sess, GG_STATUS_NOT_AVAIL_DESCR, desc.toUtf8());
 	else
 		gg_change_status(Sess, GG_STATUS_NOT_AVAIL);
+
+	DisconnectAckTimer = new QTimer(NULL, "DisconnectAckTimer");
+	connect(DisconnectAckTimer, SIGNAL(timeout()), this, SLOT(socketDisconnectedSlot()));
+	DisconnectAckTimer->setSingleShot(true);
+	DisconnectAckTimer->start(15000);
 
 	kdebugf2();
 }
@@ -882,6 +887,9 @@ void GaduProtocol::connectedSlot()
 
 void GaduProtocol::disconnectAckedSlot()
 {
+	// stop ack-waiting timer
+	DisconnectAckTimer->stop();
+
 	// change internal status
 	CurrentStatus->setStatus(*NextStatus);
 
@@ -899,6 +907,13 @@ void GaduProtocol::disconnectedSlot()
 		PingTimer->stop();
 		delete PingTimer;
 		PingTimer = 0;
+	}
+
+	if (DisconnectAckTimer)
+	{
+		DisconnectAckTimer->stop();
+		delete DisconnectAckTimer;
+		DisconnectAckTimer = 0;
 	}
 
 	SocketNotifiers->stop();

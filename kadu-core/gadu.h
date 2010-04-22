@@ -279,6 +279,8 @@ class KADUAPI GaduProtocol : public Protocol
 	**/
 	QTimer *PingTimer;
 
+	QTimer *DisconnectAckTimer;
+
 	QTimer *SendUserListTimer;
 
 	/**
