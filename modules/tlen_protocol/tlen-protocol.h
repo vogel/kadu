@@ -8,7 +8,6 @@
 #include <qpointer.h>
 
 #include "chat/chat.h"
-#include "conference/conference.h"
 #include "configuration/configuration-aware-object.h"
 #include "gui/windows/main-configuration-window.h"
 #include "protocols/protocol.h"

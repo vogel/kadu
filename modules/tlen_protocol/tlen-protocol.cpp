@@ -100,14 +100,14 @@ TlenProtocol::TlenProtocol(Account account, ProtocolFactory *factory): Protocol(
 	CurrentAvatarService = new TlenAvatarService(account, this);
 	CurrentPersonalInfoService = new TlenPersonalInfoService(this);
 
-	connect(ContactManager::instance(), SIGNAL(contactAboutToBeAdded(Contact)),
-			this, SLOT(contactAboutToBeAdded(Contact)));
+// 	connect(ContactManager::instance(), SIGNAL(contactAboutToBeAdded(Contact)),
+// 			this, SLOT(contactAboutToBeAdded(Contact)));
 	connect(ContactManager::instance(), SIGNAL(contactAdded(Contact)),
 			this, SLOT(contactAdded(Contact)));
 	connect(ContactManager::instance(), SIGNAL(contactAboutToBeRemoved(Contact)),
 			this, SLOT(contactAboutToBeRemoved(Contact)));
-	connect(ContactManager::instance(), SIGNAL(contactRemoved(Contact)),
-			this, SLOT(contactRemoved(Contact)));
+// 	connect(ContactManager::instance(), SIGNAL(contactRemoved(Contact)),
+// 			this, SLOT(contactRemoved(Contact)));
 	connect(ContactManager::instance(), SIGNAL(contactIdChanged(Contact, const QString &)),
 			this, SLOT(contactIdChanged(Contact, const QString &)));
 
@@ -119,14 +119,14 @@ TlenProtocol::TlenProtocol(Account account, ProtocolFactory *factory): Protocol(
 
 TlenProtocol::~TlenProtocol()
 {
-	disconnect(ContactManager::instance(), SIGNAL(contactAboutToBeAdded(Contact)),
-			this, SLOT(contactAboutToBeAdded(Contact)));
+// 	disconnect(ContactManager::instance(), SIGNAL(contactAboutToBeAdded(Contact)),
+// 			this, SLOT(contactAboutToBeAdded(Contact)));
 	disconnect(ContactManager::instance(), SIGNAL(contactAdded(Contact)),
 			this, SLOT(contactAdded(Contact)));
 	disconnect(ContactManager::instance(), SIGNAL(contactAboutToBeRemoved(Contact)),
 			this, SLOT(contactAboutToBeRemoved(Contact)));
-	disconnect(ContactManager::instance(), SIGNAL(contactRemoved(Contact)),
-			this, SLOT(contactRemoved(Contact)));
+// 	disconnect(ContactManager::instance(), SIGNAL(contactRemoved(Contact)),
+// 			this, SLOT(contactRemoved(Contact)));
 	disconnect(ContactManager::instance(), SIGNAL(contactIdChanged(Contact, const QString &)),
 			this, SLOT(contactIdChanged(Contact, const QString &)));
 

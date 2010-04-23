@@ -111,12 +111,13 @@ void TlenAddAccountWidget::createGui()
 void TlenAddAccountWidget::addAccountButtonClicked()
 {
 	Account tlenAccount = Account::create();
-	// TODO: 0.6.6 set protocol after details because of crash
-	//tlenAccount.setProtocolName("tlen");
 	
-// 	TlenAccountDetails *details = new TlenAccountDetails(tlenAccount);
-// 	details->setState(StorableObject::StateNew);
-// 	tlenAccount.setDetails(details);
+	TlenAccountDetails *details = dynamic_cast<TlenAccountDetails *>(tlenAccount.details());
+	if (details)
+	{
+		details->setState(StorableObject::StateNew);
+	}
+
 	tlenAccount.setProtocolName("tlen");
 	tlenAccount.setId(AccountId->text());
 	tlenAccount.setPassword(AccountPassword->text());
