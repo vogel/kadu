@@ -19,6 +19,10 @@ set (MOC_SOURCES
 	config-wizard-actions.h
 )
 
+set (CONFIGURATION_FILES
+	configuration/config-wizard.ui
+)
+
 set (TRANSLATION_SOURCES
 	translations/config_wizard_de.ts
 	translations/config_wizard_fr.ts
@@ -29,6 +33,7 @@ set (TRANSLATION_SOURCES
 kadu_module (config_wizard
 	MODULE_SOURCES ${SOURCES}
 	MODULE_MOC_SOURCES ${MOC_SOURCES}
+	MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	MODULE_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
 	MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 )

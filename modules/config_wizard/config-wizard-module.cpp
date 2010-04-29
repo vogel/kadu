@@ -26,7 +26,7 @@
 extern "C" int config_wizard_init(bool firstLoad)
 {
 	kdebugf();
-
+	
 	ConfigWizardActions::registerActions(firstLoad);
 
 	if (firstLoad)

@@ -21,13 +21,13 @@
 #ifndef CONFIG_WIZARD_ACTIONS_H
 #define CONFIG_WIZARD_ACTIONS_H
 
-#include <QtCore/QObject>
+#include "gui/windows/main-configuration-window.h"
 
 class QAction;
 
 class ActionDescription;
 
-class ConfigWizardActions : public QObject
+class ConfigWizardActions : public ConfigurationUiHandler
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(ConfigWizardActions)
@@ -35,21 +35,27 @@ class ConfigWizardActions : public QObject
 	static ConfigWizardActions *Instance;
 
 	ActionDescription *ShowConfigWizardActionDescription;
+	MainConfigurationWindow *ConfigurationWindow;
 
 	ConfigWizardActions();
 	virtual ~ConfigWizardActions();
+	
+	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
 private slots:
 	void showConfigWizardActionActivated(QAction *sender, bool toggled);
+	void configurationWindowDestroyed();
+	
+public slots:
+    	void showConfigWizardSlot();
 
 public:
 	static void registerActions(bool firstLoad);
 	static void unregisterActions();
 
 	static ConfigWizardActions * instance();
-
+	
 	void showConfigWizard();
-
 };
 
 #endif // CONFIG_WIZARD_ACTIONS_H
