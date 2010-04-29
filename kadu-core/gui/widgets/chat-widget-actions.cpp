@@ -164,7 +164,7 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 	OpenChat = new ActionDescription(0,
 		ActionDescription::TypeUser, "chatAction",
 		this, SLOT(openChatActionActivated(QAction *, bool)),
-		"16x16/internet-group-chat.png", "16x16/internet-group-chat.png", tr("&Chat with Contact"), false, QString::null,
+		"16x16/internet-group-chat.png", "16x16/internet-group-chat.png", tr("&Chat"), false, QString::null,
 		disableNoChatContacts
 	);
 
@@ -188,7 +188,7 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 		"kadu_icons/kadu-colors.png", "kadu_icons/kadu-colors.png", tr("Change Color")
 	);
 
-	BuddiesListViewMenuManager::instance()->addActionDescription(OpenChat);
+	BuddiesListViewMenuManager::instance()->insertActionDescription(0, OpenChat);
 	BuddiesListViewMenuManager::instance()->addSeparator();
 }
 
