@@ -138,7 +138,12 @@ void AccountBuddyListWidget::buddiesListImported(bool ok, BuddyList buddies)
 
 	ImportButton->setEnabled(true);
 	if (!ok)
+	{
+	  	MessageDialog *m = new MessageDialog(tr("Contacts list couldn't be downloaded. Please check that account %0 is connected.").arg(CurrentAccount.id()), MessageDialog::RETRY|MessageDialog::CANCEL, true, "32x32/dialog-error_big.png", this);
+		if (m->exec() == QDialog::Accepted)
+			startImportTransfer();
 		return;
+	}
 
 	QList<Contact> unImportedContacts;// = ContactManager::instance()->contacts(CurrentAccount);
 
@@ -216,8 +221,6 @@ void AccountBuddyListWidget::buddiesListImported(bool ok, BuddyList buddies)
 			foreach (const Contact &c, unImportedContacts)
 				ContactManager::instance()->removeItem(c);
 	}
-
-	MessageDialog::msg(tr("Your contact list has been successfully imported from server"), false, "Infromation", this);
 
 	// flush configuration to save all changes
 	ConfigurationManager::instance()->flush();

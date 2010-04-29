@@ -43,6 +43,7 @@ const int MessageDialog::OK       = 1;  // 00001
 const int MessageDialog::CANCEL   = 2;  // 00010
 const int MessageDialog::YES      = 4;  // 00100
 const int MessageDialog::NO       = 8;  // 01000
+const int MessageDialog::RETRY    = 16; // 10000
 
 MessageDialog::MessageDialog(const QString &message, int components, bool modal, const QString &iconPath, QWidget *parent)
 	: QDialog(parent, Qt::Window | Qt::MSWindowsFixedSizeDialogHint | Qt::WindowTitleHint | Qt::WindowSystemMenuHint),
@@ -95,6 +96,9 @@ MessageDialog::MessageDialog(const QString &message, int components, bool modal,
 
 	if (components & CANCEL)
 		addButton(buttons_layout, tr("&Cancel"), SLOT(cancelClicked()));
+		
+	if (components & RETRY)
+		addButton(buttons_layout, tr("&Try Again"), SLOT(okClicked()));
 
 	hboxbuttons->addWidget(buttons, 0, Qt::AlignCenter);
  	buttons->setMaximumSize(buttons_layout->sizeHint());

@@ -62,6 +62,7 @@ public:
 	static const int CANCEL;
 	static const int YES;
 	static const int NO;
+	static const int RETRY;
 
 	MessageDialog(const QString &message, int components = 0, bool modal = false, const QString &iconPath = QString::null, QWidget *parent = 0);
 	~MessageDialog();
