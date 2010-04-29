@@ -432,6 +432,8 @@ void BuddiesListViewDelegate::configurationUpdated()
 	Font = config_file.readFontEntry("Look", "UserboxFont");
 	BoldFont = Font;
 	BoldFont.setBold(true);
+	
+	ShowAccountName = !config_file.readBoolEntry("General", "SimpleMode", false);
 
 	DescriptionFont = Font;
 	DescriptionFont.setPointSize(Font.pointSize() - 2);
