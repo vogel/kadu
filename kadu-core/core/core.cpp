@@ -212,7 +212,7 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("Look", "ShowGroupAll", true);
 	config_file.addVariable("Look", "ShowBold", true);
 	config_file.addVariable("Look", "ShowDesc", true);
-	config_file.addVariable("Look", "ShowInfoPanel", true);
+	config_file.addVariable("Look", "ShowInfoPanel", false);
 	config_file.addVariable("Look", "ShowMultilineDesc", true);
 	config_file.addVariable("Look", "ShowStatusButton", true);
 	config_file.addVariable("Look", "Style", "kadu");
