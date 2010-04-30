@@ -25,6 +25,8 @@
 
 #include <QtGui/QWidget>
 
+#include "gui/widgets/filter-line-edit.h"
+
 class QLineEdit;
 
 class BuddyNameFilter;

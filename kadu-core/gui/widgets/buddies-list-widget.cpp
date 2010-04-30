@@ -31,6 +31,7 @@
 
 #include "buddies/filter/buddy-name-filter.h"
 #include "gui/widgets/buddies-list-view.h"
+#include "icons-manager.h"
 
 #include "buddies-list-widget.h"
 
@@ -46,7 +47,7 @@ BuddiesListWidget::BuddiesListWidget(FilterPosition filterPosition, MainWindow *
 	topLayout->addWidget(new QLabel(tr("Filter") + ":", this));
 	topLayout->setMargin(0);
 
-	NameFilterEdit = new QLineEdit(this);
+	NameFilterEdit = new FilterLineEdit(this);
 	NameFilterEdit->installEventFilter(this);
 
 	topLayout->addWidget(NameFilterEdit);
@@ -103,3 +104,4 @@ void BuddiesListWidget::nameFilterChanged(const QString &filter)
 {
 	NameFilter->setName(filter);
 }
+
