@@ -745,6 +745,9 @@ void MediaPlayer::setInterval(int seconds)
 
 void MediaPlayer::checkTitle()
 {
+	if (mediaPlayerStatusChanger->isDisabled())
+		return;
+	
 	QString title = getTitle();
 	int pos = getCurrentPos();
 
