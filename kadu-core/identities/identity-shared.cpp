@@ -110,6 +110,11 @@ bool IdentityShared::hasAccount(Account account)
 	return Accounts.contains(account);
 }
 
+bool IdentityShared::hasAnyAccount()
+{
+	return !Accounts.count().isEmpty();
+}
+
 void IdentityShared::doSetStatus(Status status)
 {
 	foreach (Account account, Accounts)

@@ -67,6 +67,9 @@ void StatusContainerManager::accountRegistered(Account account)
 {
 	if (!MainConfiguration::instance()->simpleMode() && !StatusContainers.contains(account.statusContainer()))
 		registerStatusContainer(account.statusContainer());
+	
+	if (MainConfiguration::instance()->simpleMode() && !StatusContainers.contains(account.accountIdentity()))
+		registerStatusContainer(account.accountIdentity());
 }
 
 void StatusContainerManager::accountUnregistered(Account account)
@@ -77,7 +80,7 @@ void StatusContainerManager::accountUnregistered(Account account)
 
 void StatusContainerManager::identityAdded(Identity identity)
 {
-	if (MainConfiguration::instance()->simpleMode() && !StatusContainers.contains(identity))
+	if (MainConfiguration::instance()->simpleMode() && !StatusContainers.contains(identity) && identity.hasAnyAccount())
 		registerStatusContainer(identity);
 }
 
@@ -120,7 +123,8 @@ void StatusContainerManager::addAllAccounts()
 void StatusContainerManager::addAllIdentities()
 {
 	foreach (Identity identity, IdentityManager::instance()->items())
-		registerStatusContainer(identity);
+		if (MainConfiguration::instance()->simpleMode() && !StatusContainers.contains(identity) && identity.hasAnyAccount())
+			registerStatusContainer(identity);
 }
 
 void StatusContainerManager::addSelfToList()

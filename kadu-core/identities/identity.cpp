@@ -90,4 +90,11 @@ bool Identity::hasAccount(Account account)
 			: false;
 }
 
+bool Identity::hasAnyAccount()
+{
+	return !isNull()
+			? data()->hasAnyAccount()
+			: false;
+}
+
 KaduSharedBase_PropertyDef(Identity, QString, name, Name, QString::null)
