@@ -166,7 +166,10 @@ void disableNoChatContacts(Action *action)
 	
 	foreach (Contact contact, action->contacts())
 	{
-		ChatService *cs = contact.contactAccount().protocolHandler()->chatService();
+		ChatService *cs = 0;
+		Protocol *p = contact.contactAccount().protocolHandler();
+		if (p)
+			cs = p->chatService();
 		enabled = cs != 0;
 	}
 	  
