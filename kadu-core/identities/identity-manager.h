@@ -43,7 +43,7 @@ class KADUAPI IdentityManager : public QObject, public SimpleManager<Identity>
 	IdentityManager();
 	virtual ~IdentityManager();
 
-	void addDefaultIdentity();
+	void addDefaultIdentities();
 
 protected:
 	virtual void itemAboutToBeAdded(Identity item);

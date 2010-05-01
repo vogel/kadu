@@ -94,13 +94,22 @@ void IdentityManager::itemRemoved(Identity item)
 	emit identityRemoved(item);
 }
 
-void IdentityManager::addDefaultIdentity()
+void IdentityManager::addDefaultIdentities()
 {
-	Identity defaultIdentity = Identity::create();
-	defaultIdentity.data()->setState(StateNew);
-	defaultIdentity.setName(tr("Default"));
-
-	addItem(defaultIdentity);
+	Identity friendsIdentity = Identity::create();
+	friendsIdentity.data()->setState(StateNew);
+	friendsIdentity.setName(tr("Friends"));
+	addItem(friendsIdentity);
+	
+	Identity workIdentity = Identity::create();
+	workIdentity.data()->setState(StateNew);
+	workIdentity.setName(tr("Work"));
+	addItem(workIdentity);
+	
+	Identity schoolIdentity = Identity::create();
+	schoolIdentity.data()->setState(StateNew);
+	schoolIdentity.setName(tr("School"));
+	addItem(schoolIdentity);
 }
 
 void IdentityManager::load()
@@ -108,5 +117,5 @@ void IdentityManager::load()
 	SimpleManager<Identity>::load();
 
 	if (items().isEmpty())
-		addDefaultIdentity();
+		addDefaultIdentities();
 }
