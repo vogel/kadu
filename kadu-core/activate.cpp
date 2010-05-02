@@ -17,8 +17,8 @@
 	bool _isActiveWindow( QWidget *window )
 	{
 		// desktop
-		long desktopofwindow = X11_getDesktopOfWindow( QX11Info::display(), window->winId() );
-		if( ( desktopofwindow != X11_getCurrentDesktop( QX11Info::display() ) ) && ( desktopofwindow != (long)X11_ALLDESKTOPS ) )
+		unsigned long desktopofwindow = X11_getDesktopOfWindow( QX11Info::display(), window->winId() );
+		if( ( desktopofwindow != X11_ALLDESKTOPS ) && ( desktopofwindow != X11_NODESKTOP ) && ( desktopofwindow != X11_getCurrentDesktop( QX11Info::display() ) ) )
 			return false;
 		// standard isActiveWindow() method
 		return window->isActiveWindow();
@@ -26,19 +26,21 @@
 
 	void _activateWindow( QWidget *window )
 	{
-		// unshade the window (important)
-		X11_windowSendXEvent( QX11Info::display(), window->winId(), "_NET_WM_STATE", "_NET_WM_STATE_SHADED", false );
-		XFlush( QX11Info::display() );
+		// unshade the window if needed (important!)
+		if( X11_isWindowShaded( QX11Info::display(), window->winId() ) )
+		{
+			X11_shadeWindow( QX11Info::display(), window->winId(), false );
+		}
 		// read user settings
 		int action = config_file.readNumEntry( "General", "WindowActivationMethod" );
 		// window & desktop
 		if( X11_getDesktopsCount( QX11Info::display() ) > 1 )
 		{
-			long desktopofwindow = X11_getDesktopOfWindow( QX11Info::display(), window->winId() );
-			long currentdesktop = X11_getCurrentDesktop( QX11Info::display() );
-			if( ( desktopofwindow != currentdesktop ) && ( desktopofwindow != (long)X11_ALLDESKTOPS ) )
+			unsigned long desktopofwindow = X11_getDesktopOfWindow( QX11Info::display(), window->winId() );
+			unsigned long currentdesktop = X11_getCurrentDesktop( QX11Info::display() );
+			if( ( desktopofwindow != currentdesktop ) && ( desktopofwindow != X11_ALLDESKTOPS ) && ( desktopofwindow != X11_NODESKTOP ) )
 			{
-				if( action==0 )
+				if( action == 0 )
 				{
 					if( X11_isWholeWindowOnOneDesktop( QX11Info::display(), window->winId() ) )
 					{
@@ -49,18 +51,26 @@
 						X11_centerWindow( QX11Info::display(), window->winId(), currentdesktop );
 					}
 				}
-				if( action==1 )
+				if( action == 1 )
 				{
 					X11_setCurrentDesktop( QX11Info::display(), desktopofwindow );
 				}
 			}
 		}
 		// activate
-		if( window->isMinimized() ) window->showNormal(); // unminimize
-		window->raise();                                  // raise
-		window->activateWindow();                         // activate
-		X11_setActiveWindow( QX11Info::display(), window->winId() );
-		XFlush( QX11Info::display() );
+		if( window->isMinimized() )
+		{
+			window->showNormal();     // unminimize
+			window->activateWindow(); // activate
+			window->raise();          // raise
+			X11_setActiveWindowCheck( QX11Info::display(), window->winId() );
+		}
+		else
+		{
+			window->activateWindow(); // activate
+			window->raise();          // raise
+			X11_setActiveWindow( QX11Info::display(), window->winId() );
+		}
 	}
 
 #elif defined(Q_OS_WIN)

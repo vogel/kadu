@@ -17,7 +17,7 @@
 ****************************************************************************/
 
 
-// VERSION: 1.01.00
+// VERSION: 1.02.00
 
 
 /*
@@ -39,13 +39,13 @@ KNOWN ISSUES:
 #include <X11/Xlib.h>
 
 
-#define  X11_ALLDESKTOPS                0xFFFFFFFFL  /*long*/
-#define  X11_BADDESKTOP                 0xFFFFFFFEL  /*long*/
+#define  X11_ALLDESKTOPS                0xFFFFFFFFL  /*unsigned long*/
+#define  X11_NODESKTOP                  0xFFFFFFFEL  /*unsigned long*/
 
-#define  X11_SETACTIVEWINDOW_TIMEOUT     (50*1000)  /*usec*/
-#define  X11_SETACTIVEWINDOW_CHECKTIME    (2*1000)  /*usec*/
+#define  X11_SETACTIVEWINDOW_TIMEOUT      (50*1000)  /*usec*/
+#define  X11_SETACTIVEWINDOW_CHECKTIME     (2*1000)  /*usec*/
 
-#define  MWM_HINTS_DECORATIONS           (1L << 1)
+#define  MWM_HINTS_DECORATIONS            (1L << 1)
 
 
 typedef struct
@@ -58,8 +58,9 @@ typedef struct
 } MotifWMHints;
 
 
-bool X11_getCardinalProperty( Display *display, Window window, const char *propertyName, long *value, int offset = 0 );
-bool X11_getAtomProperty( Display *display, Window window, const char *propertyName, Atom *value );
+bool X11_getCardinalProperty( Display *display, Window window, const char *propertyName, unsigned long *value, unsigned long offset = 0L );
+bool X11_getFirstPropertyAtom( Display *display, Window window, const char *propertyName, Atom *value );
+bool X11_isPropertyAtomSet( Display *display, Window window, const char *propertyName, const char *atomName );
 
 std::pair<int,int> X11_getResolution( Display *display );
 std::pair<int,int> X11_getDesktopSize( Display *display );
@@ -68,24 +69,27 @@ std::pair<int,int> X11_getMousePos( Display *display );
 
 bool X11_isFreeDesktopCompatible( Display *display );
 
-long X11_getDesktopsCount( Display *display, bool forceFreeDesktop = false );
-long X11_getCurrentDesktop( Display *display, bool forceFreeDesktop = false );
-void X11_setCurrentDesktop( Display *display, long desktop, bool forceFreeDesktop = false );
-long X11_getDesktopOfWindow( Display *display, Window window, bool forceFreeDesktop = false, bool windowareadecides = true );
-void X11_moveWindowToDesktop( Display *display, Window window, long desktop, bool forceFreeDesktop = false, bool position = false, int x = 0, int y = 0 );
-bool X11_isWindowVisibleOnDesktop( Display *display, Window window, long desktop, bool forceFreeDesktop = false );
+unsigned long X11_getDesktopsCount( Display *display, bool forceFreeDesktop = false );
+unsigned long X11_getCurrentDesktop( Display *display, bool forceFreeDesktop = false );
+void X11_setCurrentDesktop( Display *display, unsigned long desktop, bool forceFreeDesktop = false );
+unsigned long X11_getDesktopOfWindow( Display *display, Window window, bool forceFreeDesktop = false, bool windowareadecides = true );
+void X11_moveWindowToDesktop( Display *display, Window window, unsigned long desktop, bool forceFreeDesktop = false, bool position = false, int x = 0, int y = 0 );
+bool X11_isWindowVisibleOnDesktop( Display *display, Window window, unsigned long desktop, bool forceFreeDesktop = false );
 bool X11_isWholeWindowOnOneDesktop( Display *display, Window window );
 bool X11_isWindowFullyVisible( Display *display, Window window );
+bool X11_isWindowShaded( Display *display, Window window );
+void X11_shadeWindow( Display *display, Window window, bool shade );
 
 std::pair<int,int> X11_getWindowPos( Display *display, Window window );
 std::pair<int,int> X11_getWindowSize( Display *display, Window window );
 std::pair<int,int> X11_getWindowFramelessSize( Display *display, Window window );
 void X11_moveWindow( Display *display, Window window, int x, int y );
-void X11_centerWindow( Display *display, Window window, long desktop = X11_BADDESKTOP, bool forceFreeDesktop = false );
+void X11_centerWindow( Display *display, Window window, unsigned long desktop = X11_NODESKTOP, bool forceFreeDesktop = false );
 void X11_resizeWindow( Display *display, Window window, int width, int height );
 
 Window X11_getActiveWindow( Display *display );
-void X11_setActiveWindow( Display *display, Window window, bool forceFreeDesktop = false );
+void X11_setActiveWindow( Display *display, Window window );
+void X11_setActiveWindowCheck( Display *display, Window window, bool forceFreeDesktop = false );
 
 Window X11_getWindowUnderCursor( Display *display, int *rootx = NULL, int *rooty = NULL, int *windowx = NULL, int *windowy = NULL );
 Window X11_getInnerMostWindowUnderCursor( Display *display, int *rootx = NULL, int *rooty = NULL, int *windowx = NULL, int *windowy = NULL );
