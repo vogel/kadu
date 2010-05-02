@@ -747,7 +747,12 @@ void tlen::setStatusDescr(TlenStatus status, QString description) {
 
 void tlen::authorize( QString to, bool subscribe ) {
 	kdebugf();
-	QString encodedTo = QString(encode(to));
+	
+	/*
+	   encode() powodowalo wysylanie jid'a postaci user%20tlen.pl 
+	   przez co autoryzacja nie dochodzi³a nigdy do skutku. - Juzef
+	*/
+	QString encodedTo = to;//QString(encode(to));
 	QDomDocument doc;
 	QDomElement p=doc.createElement("presence");
 	p.setAttribute("to", encodedTo);
