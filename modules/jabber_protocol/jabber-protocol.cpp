@@ -92,6 +92,16 @@ JabberProtocol::~JabberProtocol()
 {
 	disconnectContactManagerSignals();
 	logout();
+	
+	delete JabberClient;
+	JabberClient = 0;
+	
+	delete serverInfoManager;
+	serverInfoManager = 0;
+	
+	delete PepManager;
+	PepManager = 0;
+	pepAvailable = false;
 }
 
 void JabberProtocol::connectContactManagerSignals()
@@ -325,11 +335,14 @@ void JabberProtocol::disconnectFromServer(const XMPP::Status &s)
 		disconnect(serverInfoManager, SIGNAL(featuresChanged()),
 			this, SLOT(serverFeaturesChanged()));
 	}
+	
+	delete serverInfoManager;
 	serverInfoManager = 0;
 
 	if (!ModuleUnloading && PepManager)
 	{
 		delete PepManager;
+		PepManager = 0;
 		pepAvailable = false;
 	}
 	
