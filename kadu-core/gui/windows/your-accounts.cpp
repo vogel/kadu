@@ -101,8 +101,8 @@ void YourAccounts::createGui()
 	contentLayout->addWidget(AccountsView);
 	MyAccountsModel = new AccountsModel(AccountsView);
 
-	AddExistingAccountAction = new QAction(tr("Add existing account"), this);
-	CreateNewAccountAction = new QAction(tr("Create new account"), this);
+	AddExistingAccountAction = new QAction(IconsManager::instance()->iconByPath("32x32/contact-new.png"), tr("Add existing account"), this);
+	CreateNewAccountAction = new QAction(IconsManager::instance()->iconByPath("32x32/system-users.png"), tr("Create new account"), this);
 
 	ActionsModel = new ActionsProxyModel(this);
 	ActionsModel->addAfterAction(AddExistingAccountAction);

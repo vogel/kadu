@@ -255,6 +255,9 @@ QVariant ActionsProxyModel::data(const QModelIndex &proxyIndex, int role) const
 		case Qt::DisplayRole:
 			return action->text();
 
+		case Qt::DecorationRole:
+			return action->icon();
+			
 		case Qt::FontRole:
 		{
 			QFont font;
