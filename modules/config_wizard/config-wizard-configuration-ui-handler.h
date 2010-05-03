@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
+ * Copyright 2009, 2010 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2008, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
@@ -18,8 +18,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CONFIG_WIZARD_ACTIONS_H
-#define CONFIG_WIZARD_ACTIONS_H
+#ifndef CONFIG_WIZARD_CONFIGURATION_UI_HANDLER
+#define CONFIG_WIZARD_CONFIGURATION_UI_HANDLER
 
 #include "gui/windows/main-configuration-window.h"
 
@@ -27,23 +27,22 @@ class QAction;
 
 class ActionDescription;
 
-class ConfigWizardActions : public ConfigurationUiHandler
+class ConfigWizardConfigurationUiHandler : public ConfigurationUiHandler
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(ConfigWizardActions)
+	Q_DISABLE_COPY(ConfigWizardConfigurationUiHandler)
 
-	static ConfigWizardActions *Instance;
+	static ConfigWizardConfigurationUiHandler *Instance;
 
 	ActionDescription *ShowConfigWizardActionDescription;
 	MainConfigurationWindow *ConfigurationWindow;
 
-	ConfigWizardActions();
-	virtual ~ConfigWizardActions();
+	ConfigWizardConfigurationUiHandler();
+	virtual ~ConfigWizardConfigurationUiHandler();
 	
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
 private slots:
-	void showConfigWizardActionActivated(QAction *sender, bool toggled);
 	void configurationWindowDestroyed();
 	
 public slots:
@@ -53,9 +52,9 @@ public:
 	static void registerActions(bool firstLoad);
 	static void unregisterActions();
 
-	static ConfigWizardActions * instance();
+	static ConfigWizardConfigurationUiHandler * instance();
 	
 	void showConfigWizard();
 };
 
-#endif // CONFIG_WIZARD_ACTIONS_H
+#endif // CONFIG_WIZARD_CONFIGURATION_UI_HANDLER

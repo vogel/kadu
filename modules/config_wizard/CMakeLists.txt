@@ -5,7 +5,7 @@ set (SOURCES
 	gui/widgets/config-wizard-profile-page.cpp
 	gui/windows/config-wizard-window.cpp
 
-	config-wizard-actions.cpp
+	config-wizard-configuration-ui-handler.cpp
 	config-wizard-module.cpp
 )
 
@@ -16,7 +16,7 @@ set (MOC_SOURCES
 	gui/widgets/config-wizard-profile-page.h
 	gui/windows/config-wizard-window.h
 
-	config-wizard-actions.h
+	config-wizard-configuration-ui-handler.h
 )
 
 set (CONFIGURATION_FILES

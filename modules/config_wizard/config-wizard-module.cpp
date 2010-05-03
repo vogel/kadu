@@ -19,7 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "config-wizard-actions.h"
+#include "config-wizard-configuration-ui-handler.h"
 
 #include "debug.h"
 
@@ -27,10 +27,10 @@ extern "C" int config_wizard_init(bool firstLoad)
 {
 	kdebugf();
 	
-	ConfigWizardActions::registerActions(firstLoad);
+	ConfigWizardConfigurationUiHandler::registerActions(firstLoad);
 
 	if (firstLoad)
-		ConfigWizardActions::instance()->showConfigWizard();
+		ConfigWizardConfigurationUiHandler::instance()->showConfigWizard();
 
 	return 0;
 }
@@ -39,5 +39,5 @@ extern "C" void config_wizard_close()
 {
 	kdebugf();
 
-	ConfigWizardActions::unregisterActions();
+	ConfigWizardConfigurationUiHandler::unregisterActions();
 }

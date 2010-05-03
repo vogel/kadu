@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
+ * Copyright 2009, 2010 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2008, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
@@ -30,50 +30,43 @@
 
 #include "gui/windows/config-wizard-window.h"
 
-#include "config-wizard-actions.h"
+#include "config-wizard-configuration-ui-handler.h"
 
-ConfigWizardActions *ConfigWizardActions::Instance = 0;
+ConfigWizardConfigurationUiHandler *ConfigWizardConfigurationUiHandler::Instance = 0;
 
-void ConfigWizardActions::registerActions(bool firstLoad)
+void ConfigWizardConfigurationUiHandler::registerActions(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 	
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/config-wizard.ui"));
 
-	Instance = new ConfigWizardActions();
+	Instance = new ConfigWizardConfigurationUiHandler();
 }
 
-void ConfigWizardActions::unregisterActions()
+void ConfigWizardConfigurationUiHandler::unregisterActions()
 {
   	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/config-wizard.ui"));
 	delete Instance;
 	Instance = 0;
 }
 
-ConfigWizardActions * ConfigWizardActions::instance()
+ConfigWizardConfigurationUiHandler * ConfigWizardConfigurationUiHandler::instance()
 {
 	return Instance;
 }
 
-ConfigWizardActions::ConfigWizardActions() :
+ConfigWizardConfigurationUiHandler::ConfigWizardConfigurationUiHandler() :
 		ConfigurationWindow(0)
 {
-	/*ShowConfigWizardActionDescription = new ActionDescription(this,
-			ActionDescription::TypeMainMenu, "configWizardAction",
-			this, SLOT(showConfigWizardActionActivated(QAction *, bool)),
-			"kadu/kadu-wizard.png",
-			"kadu/kadu-wizard.png",
-			tr("Configuration Wizard"), false, ""
-	);
-	Core::instance()->kaduWindow()->insertMenuActionDescription(ShowConfigWizardActionDescription, KaduWindow::MenuKadu, 0);*/
+	MainConfigurationWindow::registerUiHandler(this);
 }
 
-ConfigWizardActions::~ConfigWizardActions()
+ConfigWizardConfigurationUiHandler::~ConfigWizardConfigurationUiHandler()
 {
-	//Core::instance()->kaduWindow()->removeMenuActionDescription(ShowConfigWizardActionDescription);
+	MainConfigurationWindow::unregisterUiHandler(this);
 }
 
-void ConfigWizardActions::showConfigWizard()
+void ConfigWizardConfigurationUiHandler::showConfigWizard()
 {
 	kdebugf();
 
@@ -81,30 +74,21 @@ void ConfigWizardActions::showConfigWizard()
 	wizard->show();
 }
 
-void ConfigWizardActions::showConfigWizardActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(sender)
-	Q_UNUSED(toggled)
-
-	showConfigWizard();
-}
-
-void ConfigWizardActions::showConfigWizardSlot()
+void ConfigWizardConfigurationUiHandler::showConfigWizardSlot()
 {
 	showConfigWizard();
 }
 
-void ConfigWizardActions::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
+void ConfigWizardConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
 	ConfigurationWindow = mainConfigurationWindow;
 	connect(ConfigurationWindow, SIGNAL(destroyed()), this, SLOT(configurationWindowDestroyed()));
 
 	QWidget *startButton = mainConfigurationWindow->widget()->widgetById("config-wizard/start");
-
 	connect(startButton, SIGNAL(clicked()), this, SLOT(showConfigWizardSlot()));
 }
 
-void ConfigWizardActions::configurationWindowDestroyed()
+void ConfigWizardConfigurationUiHandler::configurationWindowDestroyed()
 {
 	ConfigurationWindow = 0;
 }
