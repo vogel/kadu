@@ -373,8 +373,13 @@ void BuddiesListViewDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 		int width = widget->viewport()->width() - opt.rect.left() - (avatarWidth + (avatarSize - avatarWidth)/2);
 		if (!displayAvatar.isNull())
 		{
-			painter->drawPixmap(width - 2, 2, displayAvatar);
-
+			// grey out offline contacts' avatar
+			if (qvariant_cast<Contact>(index.data(ContactRole)).currentStatus().isDisconnected())
+				painter->drawPixmap(width - 2, 2, QIcon::QIcon(displayAvatar).pixmap(displayAvatar.size(), QIcon::Disabled));
+			else
+				painter->drawPixmap(width - 2, 2, displayAvatar);
+			// draw avatar border
+			painter->drawRect(QRect(width - 2, 2, displayAvatar.width(), displayAvatar.height()));
 #ifdef DEBUG_ENABLED
 			if (debug_mask & KDEBUG_VISUAL)
 				drawDebugRect(painter, QRect(width - 2, 2, displayAvatar.width(), displayAvatar.height()), QColor(0, 255, 0));
