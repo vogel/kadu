@@ -92,11 +92,15 @@
     <name>PCSpeakerConfigurationWidget</name>
     <message>
         <source>On notify play</source>
-        <translation>Suono</translation>
+        <translation type="obsolete">Suono</translation>
     </message>
     <message>
         <source>Test</source>
-        <translation>Test</translation>
+        <translation type="obsolete">Test</translation>
+    </message>
+    <message>
+        <source>Put the played sounds separate by space, _ for pause, eg. D2 C1# G0</source>
+        <translation>Scriva i toni separato con suoi lungo, per pausa scrivo _ . Per esempio: D2/1 C1#/4 _/2 H0#/3</translation>
     </message>
 </context>
 </TS>

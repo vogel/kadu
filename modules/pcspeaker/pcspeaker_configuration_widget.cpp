@@ -32,15 +32,14 @@
 PCSpeakerConfigurationWidget::PCSpeakerConfigurationWidget(QWidget *parent)
 	: NotifierConfigurationWidget(parent)
 {
-	QLabel *description = new QLabel(tr("On notify play"), this);
 	soundEdit = new QLineEdit(this);
-	testButton = new QPushButton(tr("Test"), this);
+	soundEdit->setToolTip(tr("Put the played sounds separate by space, _ for pause, eg. D2 C1# G0"));
+	testButton = new QPushButton(IconsManager::instance()->iconByPath("external_modules/module_mediaplayer_button-media-playback-start.png"),"", this);
 	connect(testButton, SIGNAL(clicked()), this, SLOT(test()));
 
 	QHBoxLayout *layout = new QHBoxLayout(this);
-	layout->addWidget(description);
-	layout->addWidget(soundEdit);
 	layout->addWidget(testButton);
+	layout->addWidget(soundEdit);
 
 	dynamic_cast<NotifyGroupBox *>(parent)->addWidget(this);
 }

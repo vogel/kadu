@@ -92,11 +92,16 @@
     <name>PCSpeakerConfigurationWidget</name>
     <message>
         <source>On notify play</source>
-        <translation>Przy powiadomieniu odegraj</translation>
+        <translation type="obsolete">Przy powiadomieniu odegraj</translation>
     </message>
     <message>
         <source>Test</source>
-        <translation>Test</translation>
+        <translation type="obsolete">Test</translation>
+    </message>
+    <message>
+        <source>Put the played sounds separate by space, _ for pause, eg. D2 C1# G0</source>
+        <translatorcomment>Wpisz dźwięki oddzielone spacją, dla pauzy użyj znaku _ (twarda spacja), np. D2/2 C1#/1 _/4 H0#/8. Po ukośniku wstawiasz odwrotność długości dźwięku (1, 2, 4, 8, dla 16-F)</translatorcomment>
+        <translation>Wpisz dźwięki oddzielone spacją, dla pauzy użyj znaku _ (twarda spacja), np. D2/2 C1#/1 _/4 H0#/8. Po ukośniku wstawiasz odwrotność długości dźwięku (1, 2, 4, 8, dla 16-F)</translation>
     </message>
 </context>
 </TS>
