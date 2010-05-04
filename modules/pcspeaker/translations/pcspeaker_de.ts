@@ -5,35 +5,35 @@
     <name>@default</name>
     <message>
         <source>On message play</source>
-        <translation>Nach Nachricht spiel</translation>
+        <translation type="obsolete">Nach Nachricht spiel</translation>
     </message>
     <message>
         <source>On chat play</source>
-        <translation>Nach Gesprach spiel</translation>
+        <translation type="obsolete">Nach Gesprach spiel</translation>
     </message>
     <message>
         <source>On nofify play</source>
-        <translation>Nach mitteilung spiel</translation>
+        <translation type="obsolete">Nach mitteilung spiel</translation>
     </message>
     <message>
         <source>Put the played sounds separate by space, _ for pause, eg. D2 C1# G0</source>
-        <translation>Schreiben Sie Tonen isolieren durch Sperrung, zb. D2 C1# H0#</translation>
+        <translation type="obsolete">Schreiben Sie Tonen isolieren durch Sperrung, zb. D2 C1# H0#</translation>
     </message>
     <message>
         <source>Speaker volume</source>
-        <translation>Lautstärke</translation>
+        <translation type="obsolete">Lautstärke</translation>
     </message>
     <message>
         <source>Test1</source>
-        <translation>Test</translation>
+        <translation type="obsolete">Test</translation>
     </message>
     <message>
         <source>Test2</source>
-        <translation>Test</translation>
+        <translation type="obsolete">Test</translation>
     </message>
     <message>
         <source>Test3</source>
-        <translation>Test</translation>
+        <translation type="obsolete">Test</translation>
     </message>
     <message>
         <source>Play sounds on</source>
@@ -61,31 +61,42 @@
     </message>
     <message>
         <source>Sounds</source>
-        <translation>Klange</translation>
+        <translation type="obsolete">Klange</translation>
     </message>
     <message>
         <source>On connection error play</source>
-        <translation>Nach Verbindungsfehler spiel</translation>
+        <translation type="obsolete">Nach Verbindungsfehler spiel</translation>
     </message>
     <message>
         <source>Test4</source>
-        <translation>Test</translation>
+        <translation type="obsolete">Test</translation>
     </message>
     <message>
         <source>On other messages play</source>
-        <translation>Nach Andere Nachricht spiel</translation>
+        <translation type="obsolete">Nach Andere Nachricht spiel</translation>
     </message>
     <message>
         <source>Test5</source>
-        <translation>Test</translation>
+        <translation type="obsolete">Test</translation>
     </message>
     <message>
         <source>Please select events you want to be notified on using Notify tab in Configuration window.</source>
-        <translation>Wählen Sie bitte Ereignisse, über die Sie informiert werden möchten, im Reiter &quot;Notify&quot; in der Konfiguration.</translation>
+        <translation type="obsolete">Wählen Sie bitte Ereignisse, über die Sie informiert werden möchten, im Reiter &quot;Notify&quot; in der Konfiguration.</translation>
     </message>
     <message>
         <source>PC Speaker</source>
-        <translation>PC Speaker</translation>
+        <translation type="obsolete">PC Speaker</translation>
+    </message>
+</context>
+<context>
+    <name>PCSpeakerConfigurationWidget</name>
+    <message>
+        <source>On notify play</source>
+        <translation>Nach mitteilung spiel</translation>
+    </message>
+    <message>
+        <source>Test</source>
+        <translation>Test</translation>
     </message>
 </context>
 </TS>

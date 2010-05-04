@@ -4,17 +4,27 @@
 #include <QtCore/QObject>
 #include <QtCore/QString>
 #include <QtGui/QWidget>
-#include "../notify/notify.h"
+#include <QtCore/QMap>
+
+#include "gui/widgets/configuration/notifier-configuration-widget.h"
+
+class QLineEdit;
+class QPushButton;
 
 class PCSpeakerConfigurationWidget : public NotifierConfigurationWidget
 {
 	Q_OBJECT
-	
+
+	QLineEdit *soundEdit;
+	QPushButton *testButton;
+	QMap<QString, QString> Sounds;
+	QString CurrentNotifyEvent;
+
 private slots:
 	void test();
 
 public:
-	PCSpeakerConfigurationWidget(QWidget *parent = 0, char *name = 0);
+	PCSpeakerConfigurationWidget(QWidget *parent = 0);
 	virtual ~PCSpeakerConfigurationWidget();
 
 	virtual void loadNotifyConfigurations() {};

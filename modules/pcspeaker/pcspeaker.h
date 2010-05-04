@@ -4,9 +4,13 @@
 #include <QtCore/QObject>
 #include <QtCore/QString>
 #include <QtGui/QWidget>
-#include "../notify/notify.h"
 
-class PCSpeaker : public Notifier, public ConfigurationUiHandler
+#include "notify/notifier.h"
+#include "gui/windows/main-configuration-window.h"
+
+class PCSpeakerConfigurationWidget;
+
+class PCSpeaker : public Notifier
 {	
 	Q_OBJECT
 	public:
@@ -16,22 +20,17 @@ class PCSpeaker : public Notifier, public ConfigurationUiHandler
 		virtual void notify(Notification *notification);
 		virtual CallbackCapacity callbackCapacity() { return CallbackSupported; }
 		virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
-		virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0, char *name = 0);
+		virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0);
 		void createDefaultConfiguration();
+		void parseAndPlay(QString linia);
 
 	private:
 		Display *xdisplay;
+		PCSpeakerConfigurationWidget *configWidget;
 		int volume;
 		void ParseStringToSound(QString linia, int tablica[21], int tablica2[20]);
 		void beep(int pitch, int duration);
-		void parseAndPlay(QString linia);
 		void play(int sound[21], int soundlength[20]);
-	private slots:
-		void test1();
-		void test2();
-		void test3();
-		void test4();
-		void test5();
 };
 
 extern PCSpeaker *pcspeaker;

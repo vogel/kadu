@@ -18,26 +18,60 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
- /*
- * autor:
- * Tomasz "Dorr(egaray)" Rostanski
- * rozteck (at) interia.pl
- */
+#include <QtGui/QLineEdit>
+#include <QtGui/QPushButton>
+#include <QtGui/QLabel>
+#include <QtGui/QHBoxLayout>
+
+#include "gui/widgets/configuration/notify-group-box.h"
+#include "configuration/configuration-file.h"
 
 #include "pcspeaker_configuration_widget.h"
+#include "pcspeaker.h"
 
-PCSpeakerConfigurationWidget::PCSpeakerConfigurationWidget(QWidget *parent, char *name) {
+PCSpeakerConfigurationWidget::PCSpeakerConfigurationWidget(QWidget *parent)
+	: NotifierConfigurationWidget(parent)
+{
+	QLabel *description = new QLabel(tr("On notify play"), this);
+	soundEdit = new QLineEdit(this);
+	testButton = new QPushButton(tr("Test"), this);
+	connect(testButton, SIGNAL(clicked()), this, SLOT(test()));
+
+	QHBoxLayout *layout = new QHBoxLayout(this);
+	layout->addWidget(description);
+	layout->addWidget(soundEdit);
+	layout->addWidget(testButton);
+
+	dynamic_cast<NotifyGroupBox *>(parent)->addWidget(this);
 }
 
-PCSpeakerConfigurationWidget::~PCSpeakerConfigurationWidget() {
+PCSpeakerConfigurationWidget::~PCSpeakerConfigurationWidget()
+{
 }
 
-void PCSpeakerConfigurationWidget::saveNotifyConfigurations() {
+void PCSpeakerConfigurationWidget::saveNotifyConfigurations()
+{
+	if (CurrentNotifyEvent != "")
+		Sounds[CurrentNotifyEvent] = soundEdit->text();
+
+	foreach (const QString &key, Sounds.keys())
+		config_file.writeEntry("PC Speaker", key + "_Sound", Sounds[key]);
 }
 
-void PCSpeakerConfigurationWidget::switchToEvent(const QString &event) {
+void PCSpeakerConfigurationWidget::switchToEvent(const QString &event)
+{
+	if (CurrentNotifyEvent != "")
+		Sounds[CurrentNotifyEvent] = soundEdit->text();
+
+	CurrentNotifyEvent = event;
+
+	if (Sounds.contains(event))
+		soundEdit->setText(Sounds[event]);
+	else
+		soundEdit->setText(config_file.readEntry("PC Speaker", event + "_Sound"));
 }
 
-void PCSpeakerConfigurationWidget::test() {
+void PCSpeakerConfigurationWidget::test()
+{
+	pcspeaker->parseAndPlay(soundEdit->text());
 }
-

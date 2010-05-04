@@ -2,7 +2,7 @@
  * %kadu copyright begin%
  * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2008 Tomasz Rostański (rozteck@interia.pl)
+ * Copyright 2008, 2010 Tomasz Rostański (rozteck@interia.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,19 +18,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
- /*
- * autor:
- * Tomasz "Dorr(egaray)" Rostanski
- * rozteck (at) interia.pl
- *
- */
- 
+
 #include "pcspeaker.h"
 #include "pcspeaker_configuration_widget.h"
 #include "debug.h"
-#include "config_file.h"
+
+#include "configuration/configuration-file.h"
+#include "gui/widgets/configuration/configuration-widget.h"
+#include "notify/notification-manager.h"
+#include "notify/notification.h"
 #include "misc/misc.h"
-#include <modules.h>
 
 #include <QtGui/QLineEdit>
 #include <QtGui/QSlider>
@@ -39,10 +36,10 @@
 #include <X11/keysym.h>
 #include <unistd.h>
 
-//czestotliwosci dzwiekow
-//wiersze - dzwieki: C, C#, D, D#, E, F, F#, G, G#, A, A#, B
-//kolumny to oktawy - od 0 do 7
-int dzwieki[96] = {
+//Sound Frequencies
+//Rows - sounds: C, C#, D, D#, E, F, F#, G, G#, A, A#, B
+//Cols - octaves (0 to 7)
+int sounds[96] = {
 	16,33, 65,131,262,523,1046,2093,
 	17,35, 69,139,277,554,1109,2217,
 	18,37, 73,147,294,587,1175,2349,
@@ -58,219 +55,177 @@ int dzwieki[96] = {
 
 PCSpeaker *pcspeaker;
 
-void PCSpeaker::beep(int pitch, int duration) {
+void PCSpeaker::beep(int pitch, int duration)
+{
 	if (pitch == 0)
 		usleep(duration * 200);
 	else {
-		XKeyboardState s;			//zachowuje stare parametry dzwieku
+		XKeyboardState s;			//save previous sound config
 		XGetKeyboardControl(xdisplay, &s);
-		XKeyboardControl v;			//dla 0 nie wysyla zadnego dzwieku tylko odczekuje podany czas
-		v.bell_pitch = pitch;			//dzwiek w Hz
-		v.bell_duration = duration;		//czas trwania w ms
-		v.bell_percent = 100;			//ustawiamy glosnosc na maks
-		XChangeKeyboardControl(xdisplay, (KBBellPitch | KBBellDuration | KBBellPercent), &v); //ustawia parametry dzwieku
-		XBell(xdisplay, volume);  		//robimy pik skalujac glosnosc wzgledem maksa
-		XFlush(xdisplay);			//czysci bufor wywalajac na display i powodujac de facto pik
-		usleep(pitch * 100);			//poczeka az skonczy pipac
-		v.bell_pitch = s.bell_pitch;		//odzyskuje stare parametry
+		XKeyboardControl v;			//pause when set to 0
+		v.bell_pitch = pitch;			//sound frequency in Hz
+		v.bell_duration = duration;		//sound duration
+		v.bell_percent = 100;			//set volume to max
+		XChangeKeyboardControl(xdisplay, (KBBellPitch | KBBellDuration | KBBellPercent), &v); //set sound config
+		XBell(xdisplay, volume);  		//put sound to buffer
+		XFlush(xdisplay);			//flush buffer (beep)
+		usleep(pitch * 100);			//wait until sound is played
+		v.bell_pitch = s.bell_pitch;		//restore previous sound config
 		v.bell_duration = s.bell_duration;
 		v.bell_percent = s.bell_percent;
-		XChangeKeyboardControl(xdisplay, (KBBellPitch | KBBellDuration | KBBellPercent), &v); //ustawia poprzednie parametry dzwieku
+		XChangeKeyboardControl(xdisplay, (KBBellPitch | KBBellDuration | KBBellPercent), &v); //set restored sound config
     }
 }
 
-extern "C" int pcspeaker_init() {
+extern "C" int pcspeaker_init()
+{
 	kdebugf();
-
 	pcspeaker = new PCSpeaker();
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/pcspeaker.ui"), pcspeaker);
-
 	kdebugf2();
 	return 0;
 }
 
 
-extern "C" void pcspeaker_close() {
+extern "C" void pcspeaker_close()
+{
 	kdebugf();
-
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/pcspeaker.ui"), pcspeaker);
 	delete(pcspeaker);
-
 	kdebugf2();
 } 
 
 
-PCSpeaker::PCSpeaker() {
-	notification_manager->registerNotifier(QT_TRANSLATE_NOOP("@default", "PC Speaker"), this);
+PCSpeaker::PCSpeaker() : Notifier("PC Speaker", "PC Speaker", IconsManager::instance()->iconByPath("16x16/audio-volume-low.png"), NULL)
+{
+	NotificationManager::instance()->registerNotifier(this);
 	createDefaultConfiguration();
 }
 
 
-PCSpeaker::~PCSpeaker() {
-	notification_manager->unregisterNotifier("PC Speaker");
+PCSpeaker::~PCSpeaker()
+{
+	NotificationManager::instance()->unregisterNotifier(this);
+	delete configWidget;
 }
 
-void PCSpeaker::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) {
-	connect(mainConfigurationWindow->widgetById("pcspeaker/test1"), SIGNAL(clicked()),
-		this, SLOT(test1()));
-	connect(mainConfigurationWindow->widgetById("pcspeaker/test2"), SIGNAL(clicked()),
-		this, SLOT(test2()));
-	connect(mainConfigurationWindow->widgetById("pcspeaker/test3"), SIGNAL(clicked()),
-		this, SLOT(test3()));
-	connect(mainConfigurationWindow->widgetById("pcspeaker/test4"), SIGNAL(clicked()),
-		this, SLOT(test4()));
-	connect(mainConfigurationWindow->widgetById("pcspeaker/test5"), SIGNAL(clicked()),
-		this, SLOT(test5()));
+void PCSpeaker::mainConfigurationWindowCreated(MainConfigurationWindow */*mainConfigurationWindow*/)
+{
 }
 
-NotifierConfigurationWidget *PCSpeaker::createConfigurationWidget(QWidget *parent, char *name) {
-    return NULL;
+NotifierConfigurationWidget *PCSpeaker::createConfigurationWidget(QWidget *parent)
+{
+	configWidget = new PCSpeakerConfigurationWidget(parent);
+	return configWidget;
 }
 
-void PCSpeaker::notify(Notification *notification) {
+void PCSpeaker::notify(Notification *notification)
+{
 	kdebugf();
 	notification->acquire();
-	
-	QString linia;
-	if (notification->type().compare("NewChat") == 0) {
-		linia = config_file.readEntry("PC Speaker", "OnChatPlayString");
-	}
-	else if (notification->type().compare("NewMessage") == 0) {
-		linia = config_file.readEntry("PC Speaker", "OnMessagePlayString");
-	}
-	else if (notification->type().compare("ConnectionError") == 0) {
-		linia = config_file.readEntry("PC Speaker", "OnConnectionErrorPlayString");
-	}
-	else if (notification->type().contains("StatusChanged", true)) {
-		linia = config_file.readEntry("PC Speaker", "OnNotifyPlayString");
-	}
-	else {
-		linia = config_file.readEntry("PC Speaker", "OnOtherMessagePlayString");
-	}
-
-	if (linia.length() > 0)
-		parseAndPlay(linia);
-	else
-	    kdebugmf(KDEBUG_ERROR, "\n\nMelody String is empty!\n");
-
+	parseAndPlay(config_file.readEntry("PC Speaker", notification->type() + "_Sound"));
 	notification->release();
 	kdebugf2();
 }
 
-void PCSpeaker::ParseStringToSound(QString linia, int tablica[21], int tablica2[21]) {
-	unsigned int dlugosc = linia.length();
-	linia = linia.upper();							//zamienia na wielkie litery
-	int pom, k = 0;								//k - indeksuje tablice dzwiekow a pom przechowuje indeks dzwieku w tabl.
-	char znak, pom3;							//aktualny znak przetwazanego Qstringa
+void PCSpeaker::ParseStringToSound(QString line, int tab[21], int tab2[21])
+{
+	unsigned int length = line.length();
+	line = line.toUpper();
+	int tmp, k = 0;
+	char znak, tmp3;
 	unsigned int i;
-	if (dlugosc > 0) {
-		for (i=0; i<dlugosc; ++i) {					//dla kazdego dzwieku
+	if (length > 0)
+	{
+		for (i=0; i<length; ++i)					//for each sound
+		{
 			if (k == 20) break;
-			znak=linia[i].latin1();
-			switch (znak) {						//oblicz przesuniecie w tabl. dzwiekow
-				case 'C':  pom=0;	break;
-				case 'D':  pom=2;	break;
-				case 'E':  pom=4;	break;
-				case 'F':  pom=5;	break;
-				case 'G':  pom=7;	break;
-				case 'A':  pom=9;	break;
-				case 'B':  pom=11;	break;
-				case '_':  {	tablica[k]=0; 			//jak _ to zrob pauze
-						pom=-1;
-						if (linia[i+1]=='/')	{	//to jest ustawienie dlugosci pauzy
-							if (linia[i+2]=='F') pom3=16;
-							else if ((linia[i+2]>='1') && (linia[i+2]<='8'))
-								pom3=linia[i+2].latin1()-48;
-							else pom3=1;
-								tablica2[k]=(1000/pom3);
+			znak=line[i].toLatin1();
+			switch (znak) {						//calculate offset in sound table
+				case 'C':  tmp=0;	break;
+				case 'D':  tmp=2;	break;
+				case 'E':  tmp=4;	break;
+				case 'F':  tmp=5;	break;
+				case 'G':  tmp=7;	break;
+				case 'A':  tmp=9;	break;
+				case 'B':  tmp=11;	break;
+				case '_':
+					{
+						tab[k] = 0; 			//play pause
+						tmp=-1;
+						if (line[i+1]=='/')		//set pause length
+						{
+							if (line[i+2]=='F') tmp3=16;
+							else if ((line[i+2]>='1') && (line[i+2]<='8'))
+								tmp3=line[i+2].toLatin1()-48;
+							else tmp3=1;
+								tab2[k]=(1000/tmp3);
 							i+=2;
 						}
-						else tablica2[k]=1000;		//jak nie podana to 1000
+						else tab2[k]=1000;		//if not given use 1000
 							++k;
-					} break;
-					default: pom=-1;					
+					}
+					break;
+					default: tmp=-1;
 			}
-			if (pom>=0) {
-				pom*=8;
-				if (linia[i+1]=='#')	{			//jak byl polton
-					pom+=8;					//ustaw przesuniecie
-					++i;					//przeskocz dalej
+			if (tmp>=0) {
+				tmp*=8;
+				if (line[i+1]=='#')
+				{						//for halftone
+					tmp+=8;					//set offset
+					++i;					//go forward
 				}
-				if ((linia[i+1]>='0') && (linia[i+1]<='7')) {
-					pom+=linia[i+1].latin1()-48;		//ustaw przesuniecie o podana oktawe
-					++i;					//przeskocz dalej
+				if ((line[i+1]>='0') && (line[i+1]<='7'))
+				{
+					tmp+=line[i+1].toLatin1()-48;		//calculate offset basing on octave
+					++i;					//go forward
 				}
-				if (linia[i+1]=='#')	{			//jak byl polton
-					pom+=8;					//ustaw przesuniecie
-					++i;					//przeskocz dalej
+				if (line[i+1]=='#')
+				{						//for halftone
+					tmp+=8;					//set offset
+					++i;					//go forward
 				}
-				tablica[k]=dzwieki[pom];			//wpisz do tablicy czestotliwosc dzwieku
-				if (linia[i+1]=='/') {
-						pom3=0;				//ustaw dlugosc dzwieku
-						if (linia[i+2]=='F') pom3=16;
-						else if ((linia[i+2]>='1') && (linia[i+2]<='8')) pom3=linia[i+2].latin1()-48;
-						else pom3=1;
-						tablica2[k]=(1000/pom3);
+				tab[k]=sounds[tmp];				//store sound frequency
+				if (line[i+1]=='/')
+				{
+						tmp3=0;				//set duration
+						if (line[i+2]=='F') tmp3=16;
+						else if ((line[i+2]>='1') && (line[i+2]<='8')) tmp3=line[i+2].toLatin1()-48;
+						else tmp3=1;
+						tab2[k]=(1000/tmp3);
 						i+=2;
 				}
-				else tablica2[k]=1000;				//jak nie podana to walnij 1000
-				++k;						//przeskocz dalej w tablicy dzwiekow
+				else tab2[k]=1000;				//if not given use 1000
+				++k;						//move to the next sound
 			}
 		}
 	}
-	tablica[k]=-1;								//na koncu zawsze musi byc -1
+	tab[k]=-1;								//set sound end condition (-1)
 }
 
-void PCSpeaker::test1() {
-	QString linia = dynamic_cast<QLineEdit *>(MainConfigurationWindow::instance()->widgetById("pcspeaker/OnMessagePlayString"))->text();
-	if (linia.length()>0)
-		parseAndPlay(linia);
-}
-
-void PCSpeaker::test2() {
-	QString linia = dynamic_cast<QLineEdit *>(MainConfigurationWindow::instance()->widgetById("pcspeaker/OnChatPlayString"))->text();
-	if (linia.length()>0)
-		parseAndPlay(linia);
-}
-
-void PCSpeaker::test3() {
-	QString linia = dynamic_cast<QLineEdit *>(MainConfigurationWindow::instance()->widgetById("pcspeaker/OnNotifyPlayString"))->text();
-	if (linia.length()>0)
-		parseAndPlay(linia);
-}
-
-void PCSpeaker::test4() {
-	QString linia = dynamic_cast<QLineEdit *>(MainConfigurationWindow::instance()->widgetById("pcspeaker/OnConnectionErrorPlayString"))->text();
-	if (linia.length()>0)
-		parseAndPlay(linia);
-}
-
-void PCSpeaker::test5() {
-	QString linia = dynamic_cast<QLineEdit *>(MainConfigurationWindow::instance()->widgetById("pcspeaker/OnOtherMessagePlayString"))->text();
-	if (linia.length()>0)
-		parseAndPlay(linia);
-}
-
-void PCSpeaker::play(int sound[21], int soundlength[20]) {
+void PCSpeaker::play(int sound[21], int soundlength[20])
+{
 	xdisplay = XOpenDisplay(NULL);
-	for (int i=0; i<20; ++i) {
-		if (sound[i] == -1) break;	
-			beep(sound[i], soundlength[i]);
+	for (int i=0; i<20; ++i)
+	{
+		if (sound[i] == -1) break;
+		beep(sound[i], soundlength[i]);
 	}
 	XCloseDisplay(pcspeaker->xdisplay);	
 }
 
-void PCSpeaker::parseAndPlay(QString linia) {
+void PCSpeaker::parseAndPlay(QString line)
+{
 	volume = config_file.readNumEntry("PC Speaker", "SpeakerVolume");	
 	int sound[21], soundLength[20];
-	ParseStringToSound(linia, sound, soundLength);
+	ParseStringToSound(line, sound, soundLength);
 	play(sound, soundLength);	
 }
 
-void PCSpeaker::createDefaultConfiguration() {
-	config_file.addVariable("PC Speaker", "OnChatPlayString", "C4/2");
-	config_file.addVariable("PC Speaker", "OnMessagePlayString", "F2/2");
-	config_file.addVariable("PC Speaker", "OnConnectionErrorPlayString", "D3/4");
-	config_file.addVariable("PC Speaker", "OnNotifyPlayString", "A3/2");
-	config_file.addVariable("PC Speaker", "OnOtherMessagePlayString", "E4/4");
+void PCSpeaker::createDefaultConfiguration()
+{
+	config_file.addVariable("PC Speaker", "SpeakerVolume", 100);
+	config_file.addVariable("PC Speaker", "NewChat_Sound", "C4/2");
+	config_file.addVariable("PC Speaker", "NewMessage_Sound", "F2/2");
+	config_file.addVariable("PC Speaker", "ConnectionError_Sound", "D3/4");
+	config_file.addVariable("PC Speaker", "StatusChanged_Sound", "A3/2");
+	config_file.addVariable("PC Speaker", "FileTransfer_Sound", "E4/4");
 }

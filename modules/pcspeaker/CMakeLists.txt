@@ -14,8 +14,8 @@ set (TRANSLATION_SOURCES
 	translations/pcspeaker_it.ts
 )
 
-set (CONFIGURATION_FILES
-	configuration/pcspeaker.ui)
+#set (CONFIGURATION_FILES
+#	configuration/pcspeaker.ui)
 
 kadu_module (pcspeaker
 	MODULE_SOURCES ${SOURCES}
