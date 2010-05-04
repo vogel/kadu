@@ -367,14 +367,26 @@ void BuddiesListViewDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 	if (!displayAvatar.isNull())
 	{
 		if (DefaultAvatarSize.isValid() && displayAvatar.size() != DefaultAvatarSize)
-			displayAvatar = displayAvatar.scaled(DefaultAvatarSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+		{
+			if (displayAvatar.width() > displayAvatar.height())
+				displayAvatar = displayAvatar.scaledToWidth(DefaultAvatarSize.width(), Qt::SmoothTransformation);
+			else if (displayAvatar.width() < displayAvatar.height())
+				displayAvatar = displayAvatar.scaledToHeight(DefaultAvatarSize.height(), Qt::SmoothTransformation);
+			else if (displayAvatar.width() == displayAvatar.height())
+				displayAvatar = displayAvatar.scaled(DefaultAvatarSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+		}
 
 		int avatarWidth = displayAvatar.width();
 		int width = widget->viewport()->width() - opt.rect.left() - (avatarWidth + (avatarSize - avatarWidth)/2);
 		if (!displayAvatar.isNull())
 		{
-			painter->drawPixmap(width - 2, 2, displayAvatar);
-
+			// grey out offline contacts' avatar
+			if (qvariant_cast<Contact>(index.data(ContactRole)).currentStatus().isDisconnected())
+				painter->drawPixmap(width - 2, 2, QIcon::QIcon(displayAvatar).pixmap(displayAvatar.size(), QIcon::Disabled));
+			else
+				painter->drawPixmap(width - 2, 2, displayAvatar);
+			// draw avatar border
+			painter->drawRect(QRect(width - 2, 2, displayAvatar.width(), displayAvatar.height()));
 #ifdef DEBUG_ENABLED
 			if (debug_mask & KDEBUG_VISUAL)
 				drawDebugRect(painter, QRect(width - 2, 2, displayAvatar.width(), displayAvatar.height()), QColor(0, 255, 0));
