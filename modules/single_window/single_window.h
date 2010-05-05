@@ -7,9 +7,11 @@
 #include <QtGui/QTabWidget>
 #include <QtGui/QMainWindow>
 
-#include "chat_manager.h"
-#include "main_configuration_window.h"
-#include "configuration_aware_object.h"
+#include "chat/chat-manager.h"
+#include "gui/windows/main-configuration-window.h"
+#include "configuration/configuration-aware-object.h"
+#include "gui/widgets/chat-widget.h"
+#include "os/generic/compositing-aware-object.h"
 
 class SingleWindow : public QMainWindow, public ChatContainer
 
@@ -35,13 +37,14 @@ public:
 public slots:
 	void onOpenChat(ChatWidget *w);
 	void onNewChat(ChatWidget *w, bool &handled);
-	void onNewMessage(ChatWidget *w);
+	void onNewMessage(Chat chat);
 	void onTabChange(int index);
-	void onChatKeyPressed(QKeyEvent *e, ChatWidget* w, bool &handled);
+	void onChatKeyPressed(QKeyEvent *e, CustomInput *w, bool &handled);
 	void onkaduKeyPressed(QKeyEvent *e);
 	void closeTab(int index);
-	void onStatusChanged(UserListElement ule);
-	void onStatusPixmapChanged(const QIcon &icon, const QString &iconName);
+	void onTitleChanged(Chat chatChanged, const QString &newTitle);
+	void onStatusPixmapChanged(const QIcon &icon);
+	void showHide();
 };
 
 class SingleWindowManager : public ConfigurationUiHandler, public ConfigurationAwareObject
@@ -57,7 +60,7 @@ class SingleWindowManager : public ConfigurationUiHandler, public ConfigurationA
 		SingleWindowManager();
 		~SingleWindowManager();
 
-		virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) {};
+		virtual void mainConfigurationWindowCreated(MainConfigurationWindow */*mainConfigurationWindow*/) {};
 };
 
 extern SingleWindowManager *singleWindowManager;

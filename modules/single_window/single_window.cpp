@@ -11,24 +11,29 @@
 # include <QtGui/QMenu>
 # include <QtGui/QMenuBar>
 #endif
+#include <QtGui/QCloseEvent>
 #include <QtCore/QStringList>
 
-#include "kadu.h"
-#include "misc.h"
+#include "configuration/configuration-file.h"
+#include "gui/widgets/chat-widget-manager.h"
+#include "gui/widgets/custom-input.h"
+#include "gui/windows/kadu-window.h"
+#include "icons-manager.h"
+#include "gui/hot-key.h"
+#include "core/core.h"
+#include "misc/misc.h"
 #include "debug.h"
-#include "hot_key.h"
-#include "config_file.h"
-#include "custom_input.h"
-#include "icons_manager.h"
+#include "../docking/docking.h"
+
 #include "single_window.h"
 
 extern "C" KADU_EXPORT int single_window_init(bool firstLoad)
 {
 	kdebugf();
 
+	Q_UNUSED(firstLoad)
 	singleWindowManager = new SingleWindowManager();
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/single_window.ui"),
-		singleWindowManager);
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/single_window.ui"));
 	kdebugf2();
 
 	return 0;
@@ -37,8 +42,7 @@ extern "C" KADU_EXPORT void single_window_close()
 {
 	kdebugf();
 
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/single_window.ui"),
-		singleWindowManager);
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/single_window.ui"));
 	delete singleWindowManager;
 	singleWindowManager = NULL;
 
@@ -66,6 +70,7 @@ void SingleWindowManager::configurationUpdated()
 
 SingleWindow::SingleWindow()
 {
+	KaduWindow *kadu = Core::instance()->kaduWindow();
 	split = new QSplitter(Qt::Horizontal, this);
 
 	tabs = new QTabWidget(this);
@@ -84,7 +89,7 @@ SingleWindow::SingleWindow()
 	}
 
 #ifdef Q_WS_HILDON
-	menuBar()->addMenu(kadu->mainMenu());
+//	menuBar()->addMenu(kadu->mainMenu());//TODO: fixme
 
 	if (kadu->width() >= 250)
 		kadu->resize(250, kadu->height());
@@ -109,22 +114,31 @@ SingleWindow::SingleWindow()
 	connect(tabs, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
 	connect(tabs, SIGNAL(currentChanged(int)), this, SLOT(onTabChange(int)));
 
-	connect(chat_manager, SIGNAL(handleNewChatWidget(ChatWidget *,bool &)),
+	connect(ChatWidgetManager::instance(), SIGNAL(handleNewChatWidget(ChatWidget *,bool &)),
 			this, SLOT(onNewChat(ChatWidget *,bool &)));
-	connect(chat_manager, SIGNAL(chatWidgetOpen(ChatWidget *)),
+	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetOpen(ChatWidget *, bool)),
 			this, SLOT(onOpenChat(ChatWidget *)));
+	connect(Core::instance(), SIGNAL(mainIconChanged(const QIcon &)),
+		this, SLOT(onStatusPixmapChanged(const QIcon &)));
+	connect(DockingManager::instance(), SIGNAL(mousePressLeftButton()), this, SLOT(showHide()));
 
-	connect(kadu, SIGNAL(shown()), this, SLOT(show()));
-	connect(kadu, SIGNAL(hiding()), this, SLOT(hide()));
 	connect(kadu, SIGNAL(keyPressed(QKeyEvent *)), this, SLOT(onkaduKeyPressed(QKeyEvent *)));
-	connect(kadu, SIGNAL(statusPixmapChanged(const QIcon &, const QString &)),
-		this, SLOT(onStatusPixmapChanged(const QIcon &, const QString &)));
-
-	connect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
-		this, SLOT(onStatusChanged(UserListElement)));
 
 	/* conquer all already open chats ;) */
-	ChatList chats = chat_manager->chats();
+	foreach (const Chat &c, ChatManager::instance()->allItems())
+	{
+		ChatWidget *chat = ChatWidgetManager::instance()->byChat(c, true);
+		if (chat)
+		{
+			if (chat->parent())
+				chat->parent()->deleteLater();
+			else
+				chat->kaduRestoreGeometry();
+			onOpenChat(chat);
+		}
+	}
+
+	/*ChatList chats = chat_manager->chats();//TODO: fixme
 	for (uint i = 0; i < chats.count(); i++)
 	{
 		ChatWidget* chat = chats[i];
@@ -133,54 +147,54 @@ SingleWindow::SingleWindow()
 		else
 			chat->kaduRestoreGeometry();
 		onOpenChat(chat);
-	}
+	}*/
+
 
 	show();
 }
 
 SingleWindow::~SingleWindow()
 {
+	KaduWindow *kadu = Core::instance()->kaduWindow();
 	split->setSizes(splitSizes);
 
 	saveWindowGeometry(this, "SingleWindow", "WindowGeometry");
 
-	disconnect(chat_manager, SIGNAL(handleNewChatWidget(ChatWidget *,bool &)),
+	disconnect(ChatWidgetManager::instance(), SIGNAL(handleNewChatWidget(ChatWidget *,bool &)),
 			this, SLOT(onNewChat(ChatWidget *,bool &)));
-	disconnect(chat_manager, SIGNAL(chatWidgetOpen(ChatWidget *)),
+	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetOpen(ChatWidget *, bool)),
 			this, SLOT(onOpenChat(ChatWidget *)));
+	disconnect(Core::instance(), SIGNAL(mainIconChanged(const QIcon &)),
+			this, SLOT(onStatusPixmapChanged(const QIcon &)));
+	disconnect(DockingManager::instance(), SIGNAL(mousePressLeftButton()), this, SLOT(showHide()));
 
 	disconnect(tabs, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
 	disconnect(tabs, SIGNAL(currentChanged(int)), this, SLOT(onTabChange(int)));
 
-	disconnect(kadu, SIGNAL(shown()), this, SLOT(show()));
-	disconnect(kadu, SIGNAL(hiding()), this, SLOT(hide()));
 	disconnect(kadu, SIGNAL(keyPressed(QKeyEvent *)), this, SLOT(onkaduKeyPressed(QKeyEvent *)));
-	disconnect(kadu, SIGNAL(statusPixmapChanged(const QIcon &, const QString &)),
-		this, SLOT(onStatusPixmapChanged(const QIcon &, const QString &)));
-	disconnect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
-		this, SLOT(onStatusChanged(UserListElement)));
 
-	if (!Kadu::closing())
+	if (!Core::instance()->isClosing())
 	{
 		for (int i = tabs->count()-1; i >= 0; --i)
 		{
 			ChatWidget* chat = dynamic_cast<ChatWidget *>(tabs->widget(i));
-			UserListElements users = chat->users()->toUserListElements();
+			Chat oldchat = chat->chat();
 			tabs->removeTab(i);
 			delete chat;
-			chat_manager->openPendingMsgs(users);
+			ChatWidgetManager::instance()->openPendingMsgs(oldchat, true);
 		}
 	}
 
 	// reparent kadu
 	kadu->setParent(NULL);
 	loadWindowGeometry(kadu, "General", "Geometry", 0, 50, 205, 465);
+	kadu->showNormal();
 }
 
 void SingleWindow::changeRosterPos(int newRosterPos)
 {
 	rosterPos = newRosterPos;
-	split->insertWidget(rosterPos, kadu);
+	split->insertWidget(rosterPos, Core::instance()->kaduWindow());
 }
 
 void SingleWindow::onNewChat(ChatWidget *w, bool &handled)
@@ -191,24 +205,29 @@ void SingleWindow::onNewChat(ChatWidget *w, bool &handled)
 
 void SingleWindow::onOpenChat(ChatWidget *w)
 {
-	QStringList nicks = w->users()->altNicks();
-	QString title = nicks[0];
-	if (nicks.count() > 1)
-		title.append(", ...");
+	QString title = w->chat().name();
 
 	tabs->addTab(w, w->icon(), title);
 	tabs->setCurrentIndex(tabs->count()-1);
 	w->edit()->setFocus();
 
-	connect(w, SIGNAL(messageReceived(ChatWidget *)),
-		this, SLOT(onNewMessage(ChatWidget *)));
-
-	connect(w->edit(), SIGNAL(keyPressed(QKeyEvent*, ChatWidget*, bool&)),
-		this, SLOT(onChatKeyPressed(QKeyEvent*, ChatWidget*, bool&)));
+	connect(w, SIGNAL(messageReceived(Chat)), this, SLOT(onNewMessage(Chat)));
+	connect(w->edit(), SIGNAL(keyPressed(QKeyEvent *, CustomInput *, bool &)),
+		this, SLOT(onChatKeyPressed(QKeyEvent *, CustomInput *, bool &)));
+	connect(w->chat(), SIGNAL(titleChanged(Chat , const QString &)),
+		this, SLOT(onTitleChanged(Chat , const QString &)));
 }
 
 void SingleWindow::closeTab(int index)
 {
+	ChatWidget* w = dynamic_cast<ChatWidget *>(tabs->widget(index));
+
+	disconnect(w, SIGNAL(messageReceived(Chat)), this, SLOT(onNewMessage(Chat)));
+	disconnect(w->edit(), SIGNAL(keyPressed(QKeyEvent *, CustomInput *, bool &)),
+		this, SLOT(onChatKeyPressed(QKeyEvent *, CustomInput *, bool &)));
+	disconnect(w->chat(), SIGNAL(titleChanged(Chat , const QString &)),
+		this, SLOT(onTitleChanged(Chat , const QString &)));
+
 	tabs->widget(index)->deleteLater();
 	tabs->removeTab(index);
 }
@@ -225,6 +244,14 @@ void SingleWindow::resizeEvent(QResizeEvent *event)
 	split->resize(newSize);
 }
 
+void SingleWindow::showHide()
+{
+	if (isHidden())
+		showNormal();
+	else
+		hide();
+}
+
 void SingleWindow::closeChatWidget(ChatWidget *w)
 {
 	if (w)
@@ -235,12 +262,13 @@ void SingleWindow::closeChatWidget(ChatWidget *w)
 	}
 }
 
-void SingleWindow::onNewMessage(ChatWidget *w)
+void SingleWindow::onNewMessage(Chat chat)
 {
+	ChatWidget *w = ChatWidgetManager::instance()->byChat(chat);
 	if (w != tabs->currentWidget())
 	{
 		int index = tabs->indexOf(w);
-		tabs->setTabIcon(index, icons_manager->loadIcon("Message"));
+		tabs->setTabIcon(index, IconsManager::instance()->iconByPath("protocols/common/16x16/message.png"));
 
 		if (config_file.readBoolEntry("SingleWindow", "NumMessagesInTab", false))
 		{
@@ -288,8 +316,10 @@ void SingleWindow::onkaduKeyPressed(QKeyEvent *e)
 	}
 }
 
-void SingleWindow::onChatKeyPressed(QKeyEvent* e, ChatWidget* w, bool &handled)
+void SingleWindow::onChatKeyPressed(QKeyEvent *e, CustomInput *w, bool &handled)
 {
+	Q_UNUSED(w)
+
 	/* workaround: we're receiving the same key event twice so ignore the duplicate */
 	static int duplicate = 0;
 	if (duplicate++)
@@ -331,24 +361,26 @@ void SingleWindow::onChatKeyPressed(QKeyEvent* e, ChatWidget* w, bool &handled)
 	}
 	else if (HotKey::shortCut(e, "ShortCuts", "FocusOnRosterTab"))
 	{
-		kadu->userBox()->setFocus();
+		//kadu->userBox()->setFocus();//TODO: fixme
 		handled = true;
 	}
 }
 
-void SingleWindow::onStatusPixmapChanged(const QIcon &icon, const QString &iconName)
+void SingleWindow::onStatusPixmapChanged(const QIcon &icon)
 {
 	setWindowIcon(icon);
 }
 
-void SingleWindow::onStatusChanged(UserListElement ule)
+void SingleWindow::onTitleChanged(Chat chatChanged, const QString &newTitle)
 {
-	ChatWidget *chat = chat_manager->findChatWidget(ule);
+	Q_UNUSED(newTitle)
+
+	ChatWidget *chat = ChatWidgetManager::instance()->byChat(chatChanged);
 	int index = tabs->indexOf(chat);
 	if (index >= 0)
 	{
-		chat->refreshTitle(); // the icon is not refreshed - refresh it
-		tabs->setTabIcon(index, chat->icon());
+		chat->chat().refreshTitle(); // the icon is not refreshed - refresh it
+		tabs->setTabIcon(index, chatChanged.icon());
 	}
 }
 
