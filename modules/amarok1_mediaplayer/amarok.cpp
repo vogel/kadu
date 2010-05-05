@@ -186,6 +186,8 @@ uint AmarokMediaPlayer::getPlayListLength()
 
 QString AmarokMediaPlayer::getTitle(int position)
 {
+	Q_UNUSED(position)
+
 	kdebugf();
 	return getString("player", "title");
 	kdebugf2();
@@ -193,6 +195,8 @@ QString AmarokMediaPlayer::getTitle(int position)
 
 QString AmarokMediaPlayer::getAlbum(int position)
 {
+	Q_UNUSED(position)
+
 	kdebugf();
 	return getString("player", "album");
 	kdebugf2();
@@ -200,6 +204,8 @@ QString AmarokMediaPlayer::getAlbum(int position)
 
 QString AmarokMediaPlayer::getArtist(int position)
 {
+	Q_UNUSED(position)
+
 	kdebugf();
 	return getString("player", "artist");
 	kdebugf2();
@@ -207,6 +213,8 @@ QString AmarokMediaPlayer::getArtist(int position)
 
 QString AmarokMediaPlayer::getFile(int position)
 {
+	Q_UNUSED(position)
+
 	kdebugf();
 	return getString("player", "path");
 	kdebugf2();
@@ -214,6 +222,8 @@ QString AmarokMediaPlayer::getFile(int position)
 
 int AmarokMediaPlayer::getLength(int position)
 {
+	Q_UNUSED(position)
+
 	kdebugf();
 	return getInt("player", "trackTotalTime") * 1000;
 	kdebugf2();

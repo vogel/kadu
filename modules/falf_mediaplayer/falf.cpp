@@ -141,6 +141,7 @@ uint FalfMediaPlayer::getPlayListLength()
 
 QString FalfMediaPlayer::getTitle(int position)
 {
+	Q_UNUSED(position)
 	kdebugf();
 
 	return getData(TITLE);
@@ -148,6 +149,7 @@ QString FalfMediaPlayer::getTitle(int position)
 
 QString FalfMediaPlayer::getAlbum(int position)
 {
+	Q_UNUSED(position)
 	kdebugf();
 
 	return getData(ALBUM);
@@ -155,6 +157,7 @@ QString FalfMediaPlayer::getAlbum(int position)
 
 QString FalfMediaPlayer::getArtist(int position)
 {
+	Q_UNUSED(position)
 	kdebugf();
 
 	return getData(ARTIST);
@@ -162,6 +165,7 @@ QString FalfMediaPlayer::getArtist(int position)
 
 QString FalfMediaPlayer::getFile(int position)
 {
+	Q_UNUSED(position)
 	kdebugf();
 
 	return "";
@@ -169,6 +173,7 @@ QString FalfMediaPlayer::getFile(int position)
 
 int FalfMediaPlayer::getLength(int position)
 {
+	Q_UNUSED(position)
 	kdebugf();
 
 	return 0;
