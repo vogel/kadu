@@ -2,7 +2,7 @@
 #define WORD_FIX_H
 
 #include <QtCore/QObject>
-#include "main_configuration_window.h"
+#include "gui/windows/main-configuration-window.h"
 
 class ChatWidget;
 class UserGroup;
@@ -10,6 +10,7 @@ class QTreeWidgetItem;
 class QTreeWidget;
 class QListBox;
 class QPushButton;
+class QLineEdit;
 
 /*!
  * This class is responsible for fixing small mistakes (and not only)

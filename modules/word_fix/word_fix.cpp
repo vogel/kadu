@@ -3,6 +3,7 @@
  * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2008, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2008 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * Copyright 2010 Tomasz Rostański (rozteck@interia.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -28,16 +29,21 @@
 #include <QtGui/QGridLayout>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QLabel>
+#include <QtGui/QPushButton>
+#include <QtGui/QLineEdit>
+#include <QtGui/QGroupBox>
+#include <QtGui/QScrollBar>
+
+#include "chat/chat-manager.h"
+#include "gui/widgets/configuration/configuration-widget.h"
+#include "gui/widgets/chat-widget-manager.h"
+#include "gui/widgets/custom-input.h"
+#include "configuration/configuration-file.h"
+#include "misc/misc.h"
+#include "html_document.h"
+#include "debug.h"
 
 #include "word_fix.h"
-
-#include "chat_manager-old.h"
-#include "custom_input.h"
-#include "debug.h"
-#include "html_document.h"
-#include "usergroup.h"
-#include "misc/misc.h"
-#include "config_file.h"
 
 WordFix *wordFix;
 
@@ -45,7 +51,7 @@ extern "C" KADU_EXPORT int word_fix_init()
 {
 	kdebugf();
 	wordFix = new WordFix();
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/word_fix.ui"), wordFix);
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/word_fix.ui"));
 	kdebugf2();
 	return 0;
 }
@@ -54,7 +60,7 @@ extern "C" KADU_EXPORT int word_fix_init()
 extern "C" KADU_EXPORT void word_fix_close()
 {
 	kdebugf();
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/word_fix.ui"), wordFix);
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/word_fix.ui"));
 	delete wordFix;
 	wordFix = NULL;
 	kdebugf2();
@@ -65,25 +71,33 @@ WordFix::WordFix()
 {
 	kdebugf();
 
-	connect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *, time_t)), this, SLOT(chatCreated(ChatWidget *, time_t)));
-	connect(chat_manager, SIGNAL(chatWidgetDestroying(ChatWidget *)), this, SLOT(chatDestroying(ChatWidget *)));
+	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget *, time_t)),
+		this, SLOT(chatCreated(ChatWidget *, time_t)));
+	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget *)),
+		this, SLOT(chatDestroying(ChatWidget *)));
 
-	for (uint i = 0; i < chat_manager->chats().count(); i++)
-		connectToChat(chat_manager->chats()[i]);
+	foreach (const Chat &c, ChatManager::instance()->allItems())
+	{
+		ChatWidget *chat = ChatWidgetManager::instance()->byChat(c, true);
+		if (chat)
+		{
+			connectToChat(chat);
+		}
+	}
 
 	// Loading list
 	QString data = config_file.readEntry("word_fix", "WordFix_list", "");
-	QStringList list = QStringList::split("\t\t", data);
+	QStringList list = data.split("\t\t");
 	if (!list.count())
 	{
 		QFile defList(dataPath("kadu/modules/data/word_fix/wf_default_list.data"));
-		if (defList.open(IO_ReadOnly))
+		if (defList.open(QIODevice::ReadOnly))
 		{
 			QTextStream s(&defList);
 			QStringList pair;
 			while (!s.atEnd())
 			{
-				pair = QStringList::split('|', s.readLine());
+				pair = s.readLine().split('|');
 				if (pair.count() <= 0)
 					continue;
 
@@ -98,9 +112,9 @@ WordFix::WordFix()
 	}
 	else
 	{
-		for ( uint i = 0; i < list.count(); i++ )
+		for (int i = 0; i < list.count(); i++)
 		{
-			QStringList sp = QStringList::split('\t', list[i]);
+			QStringList sp = list[i].split('\t');
 			wordsList[sp[0]] = sp[1];
 		}
 	}
@@ -111,17 +125,27 @@ WordFix::WordFix()
 WordFix::~WordFix()
 {
 	kdebugf();
-	disconnect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *, time_t)), this, SLOT(chatCreated(ChatWidget *, time_t)));
-	disconnect(chat_manager, SIGNAL(chatWidgetDestroying(ChatWidget *)), this, SLOT(chatDestroying(ChatWidget *)));
+	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget *, time_t)),
+		this, SLOT(chatCreated(ChatWidget *, time_t)));
+	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget *)),
+		this, SLOT(chatDestroying(ChatWidget *)));
 
-	for ( uint i = 0; i < chat_manager->chats().count(); i++ )
-		disconnectFromChat(chat_manager->chats()[i]);
+	foreach (const Chat &c, ChatManager::instance()->allItems())
+	{
+		ChatWidget *chat = ChatWidgetManager::instance()->byChat(c, true);
+		if (chat)
+		{
+			disconnectFromChat(chat);
+		}
+	}
 
 	kdebugf2();
 }
 
 void WordFix::chatCreated(ChatWidget *chat, time_t time)
 {
+	Q_UNUSED(time)
+
 	kdebugf();
 	connectToChat(chat);
 	kdebugf2();
@@ -157,7 +181,7 @@ void WordFix::sendRequest(ChatWidget* chat)
 
 	// Reading chat input to html document.
 	HtmlDocument doc;
-	doc.parseHtml(chat->edit()->text());
+	doc.parseHtml(chat->edit()->toPlainText());
 
 	// Parsing and replacing.
 	for (int i = 0; i < doc.countElements(); i++)
@@ -182,7 +206,7 @@ void WordFix::doReplace(QString &text)
 
 	// Replacing
 	QString key;
-	for (uint i = 0; i < wordsList.keys().count(); i++)
+	for (int i = 0; i < wordsList.keys().count(); i++)
 	{
 		key = wordsList.keys()[i];
 		txt.replace(
@@ -325,27 +349,25 @@ void WordFix::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfig
 {
 	kdebugf();
 
-	ConfigGroupBox *groupBox = mainConfigurationWindow->configGroupBox("Chat", "Words fix", "Words fix");
+	QGroupBox *groupBox = dynamic_cast<QGroupBox *>(mainConfigurationWindow->widget()->widgetById("word_fix/group_box"));
 
-	QWidget *w = new QWidget(groupBox->widget());
-	
-	QGridLayout *layout = new QGridLayout(w);
+	QGridLayout *layout = new QGridLayout;
 	layout->setSpacing(5);
 	layout->setMargin(5);
 
-	list = new QTreeWidget(w);
+	list = new QTreeWidget;
 	layout->addWidget(list, 0, 1);
-	layout->addMultiCellWidget(list, 0, 0, 0, 1);
+	layout->addWidget(list, 0, 1, 1, 2);
 
-	wordEdit = new QLineEdit(w);
-	layout->addWidget(new QLabel(tr("A word to be replaced"), w), 1, 0);
+	wordEdit = new QLineEdit;
+	layout->addWidget(new QLabel(tr("A word to be replaced")), 1, 0);
 	layout->addWidget(wordEdit, 1, 1);
 	
-	valueEdit = new QLineEdit(w);
-	layout->addWidget(new QLabel(tr("Value to replace with"), w), 2, 0);
+	valueEdit = new QLineEdit;
+	layout->addWidget(new QLabel(tr("Value to replace with")), 2, 0);
 	layout->addWidget(valueEdit, 2, 1);
 
-	QWidget *hbox = new QWidget(w);
+	QWidget *hbox = new QWidget;
 	addButton = new QPushButton(tr("Add"), hbox);
 	changeButton = new QPushButton(tr("Change"), hbox);
 	deleteButton = new QPushButton(tr("Delete"), hbox);
@@ -356,7 +378,7 @@ void WordFix::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfig
 	hbox->setLayout(hlayout);
 	layout->addWidget(hbox, 3, 1);
 
-	groupBox->addWidgets(0, w);
+	groupBox->setLayout(layout);
 
 	connect(list, SIGNAL(itemSelectionChanged()), this, SLOT(wordSelected()));
 	connect(changeButton, SIGNAL(clicked()), this, SLOT(changeSelected()));
@@ -380,7 +402,8 @@ void WordFix::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfig
 
 	QTreeWidgetItem* item;
 	QList<QTreeWidgetItem *> items;
-	for (uint i = 0; i < wordsList.keys().count(); i++)
+
+	for (int i = 0; i < wordsList.keys().count(); i++)
 	{
 		QString wordStr = wordsList.keys()[i];
 		item = new QTreeWidgetItem( list );
@@ -427,7 +450,7 @@ void WordFix::saveList()
 	kdebugf();
 	
 	QStringList list;
-	for ( uint i = 0; i < wordsList.keys().count(); i++ )
+	for (int i = 0; i < wordsList.keys().count(); i++)
 	{
 		QString word = wordsList.keys()[i];
 		list.append(word+"\t"+wordsList[word]);
