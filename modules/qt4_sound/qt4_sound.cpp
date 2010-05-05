@@ -3,7 +3,7 @@
  * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2009 Michał Podsiadlik (michal@kadu.net)
- * Copyright 2008 Tomasz Rostański (rozteck@interia.pl)
+ * Copyright 2008,2010 Tomasz Rostański (rozteck@interia.pl)
  * Copyright 2009 Piotr Galiszewski (piotrgaliszewski@gmail.com)
  * %kadu copyright end%
  *
@@ -24,12 +24,13 @@
 #include <QtGui/QSound>
 #include <QtGui/QApplication>
 
-#include "../sound/sound.h"
-
-#include "debug.h"
 #include "gui/windows/message-dialog.h"
+#include "modules/sound/sound-manager.h"
+#include "debug.h"
 
 #include "qt4_sound.h"
+
+QtSound4Player *QtSound4Player::Instance = 0;
 
 /**
  * @ingroup qt4_sound
@@ -41,13 +42,14 @@ extern "C" KADU_EXPORT int qt4_sound_init(bool firstLoad)
 
 	kdebugf();
 
-	if (!QSound::isAvailable ())
+	/*if (!QSound::isAvailable ())
 	{
 		MessageDialog::msg("QSound API is not available on this platform");
 		return 1;
-	}
+	}*/
 
-	qt4_player = new Qt4Player();
+	QtSound4Player::createInstance();
+	SoundManager::instance()->setPlayer(QtSound4Player::instance());
 
 	kdebugf2();
 	return 0;
@@ -56,45 +58,52 @@ extern "C" KADU_EXPORT void qt4_sound_close()
 {
 	kdebugf();
 
-	delete qt4_player;
-	qt4_player = 0;
+	SoundManager::instance()->setPlayer(0);
+	QtSound4Player::destroyInstance();
 
 	kdebugf2();
 }
 
-Qt4Player::Qt4Player()
+void QtSound4Player::createInstance()
+{
+	if (!Instance)
+		Instance = new QtSound4Player();
+}
+
+void QtSound4Player::destroyInstance()
+{
+	delete Instance;
+	Instance = 0;
+}
+
+QtSound4Player *QtSound4Player::instance()
+{
+	return Instance;
+}
+
+QtSound4Player::QtSound4Player()
 {
 	kdebugf();
-
-	connect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
-			this, SLOT(playSound(const QString &, bool, double)));
-
 	kdebugf2();
 }
 
-Qt4Player::~Qt4Player()
+QtSound4Player::~QtSound4Player()
 {
 	kdebugf();
-
-	disconnect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
-			this, SLOT(playSound(const QString &, bool, double)));
-
 	kdebugf2();
 }
 
-void Qt4Player::playSound(const QString &s, bool volCntrl, double vol)
+void QtSound4Player::playSound(const QString &path, bool volCntrl, double vol)
 {
 	Q_UNUSED(volCntrl)
 	Q_UNUSED(vol)
 
 	kdebugf();
-
-	QSound::play(s);
-
+	QSound::play(path);
 	kdebugf2();
 }
 
-Qt4Player *qt4_player;
+QtSound4Player *qt4_player;
 
 /** @} */
 
