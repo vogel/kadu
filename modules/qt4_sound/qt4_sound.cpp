@@ -42,11 +42,11 @@ extern "C" KADU_EXPORT int qt4_sound_init(bool firstLoad)
 
 	kdebugf();
 
-	/*if (!QSound::isAvailable ())
+	if (!QSound::isAvailable ())
 	{
 		MessageDialog::msg("QSound API is not available on this platform");
 		return 1;
-	}*/
+	}
 
 	QtSound4Player::createInstance();
 	SoundManager::instance()->setPlayer(QtSound4Player::instance());
