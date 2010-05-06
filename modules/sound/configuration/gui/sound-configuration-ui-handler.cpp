@@ -91,8 +91,8 @@ void SoundConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurati
 		mainConfigurationWindow->widget()->widgetById("sound/theme"), SLOT(setEnabled(bool)));
 	connect(mainConfigurationWindow->widget()->widgetById("sound/use"), SIGNAL(toggled(bool)),
 		mainConfigurationWindow->widget()->widgetById("sound/volume"), SLOT(setEnabled(bool)));
-	connect(mainConfigurationWindow->widget()->widgetById("sound/use"), SIGNAL(toggled(bool)),
-		mainConfigurationWindow->widget()->widgetById("sound/samples"), SLOT(setEnabled(bool)));
+	//connect(mainConfigurationWindow->widget()->widgetById("sound/use"), SIGNAL(toggled(bool)),
+	//	mainConfigurationWindow->widget()->widgetById("sound/samples"), SLOT(setEnabled(bool)));
 
 	connect(mainConfigurationWindow->widget()->widgetById("sound/enableVolumeControl"), SIGNAL(toggled(bool)),
 		mainConfigurationWindow->widget()->widgetById("sound/volumeControl"), SLOT(setEnabled(bool)));
@@ -105,7 +105,7 @@ void SoundConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurati
 	ConfigurationWidget->themeChanged(ThemesComboBox->currentIndex());
 
 	ThemesPaths = dynamic_cast<PathListEdit *>(mainConfigurationWindow->widget()->widgetById("soundPaths"));
-	connect(ThemesPaths, SIGNAL(changed()), SoundManager::instance(), SLOT(setSoundThemes()));
+	//connect(ThemesPaths, SIGNAL(changed()), SoundManager::instance(), SLOT(setSoundThemes()));
 
 	connect(ConfigurationWidget, SIGNAL(soundFileEdited()), this, SLOT(soundFileEdited()));
 

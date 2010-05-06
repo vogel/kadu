@@ -9,7 +9,7 @@
 				<check-box caption="Show status changes" config-section="History" config-item="ShowStatusChanges"
 					   tool-tip="Show status changes in history" />
 				<check-box caption="Save status changes" config-section="History" config-item="SaveStatusChanges"
-					   tool-tip="Save status changes in history" />
+					   tool-tip="Save status changes in history" id="history/savestatuschanges"/>
 			</group-box>
 			<group-box name="Citation" id="history/citation">
 				<spin-box caption="Message citation in chat window" config-section="History" config-item="ChatHistoryCitation" min-value="0" max-value="200" />

@@ -175,7 +175,7 @@ MainConfigurationWindow::MainConfigurationWindow()
 	connect(widget()->widgetById("chatCloseTimer"), SIGNAL(toggled(bool)), widget()->widgetById("chatCloseTimerPeriod"), SLOT(setEnabled(bool)));
 	connect(widget()->widgetById("startupStatus"), SIGNAL(activated(int)), this, SLOT(onChangeStartupStatus(int)));
 	connect(widget()->widgetById("showDescription"), SIGNAL(toggled(bool)), widget()->widgetById("multilineDescription"), SLOT(setEnabled(bool)));
-	connect(widget()->widgetById("useDefaultServers"), SIGNAL(toggled(bool)), widget()->widgetById("serverList"), SLOT(setDisabled(bool)));
+//	connect(widget()->widgetById("useDefaultServers"), SIGNAL(toggled(bool)), widget()->widgetById("serverList"), SLOT(setDisabled(bool)));
 	connect(widget()->widgetById("openChatOnMessage"), SIGNAL(toggled(bool)), widget()->widgetById("openChatOnMessageWhenOnline"), SLOT(setEnabled(bool)));
 
 	connect(widget()->widgetById("displayGroupTabs"), SIGNAL(toggled(bool)), widget()->widgetById("showGroupAll"), SLOT(setEnabled(bool)));
