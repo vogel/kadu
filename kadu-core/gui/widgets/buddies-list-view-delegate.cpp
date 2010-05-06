@@ -364,7 +364,7 @@ void BuddiesListViewDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 		painter->setFont(Font);
 
 	QPixmap displayAvatar = avatar(index);
-	if (!displayAvatar.isNull())
+	if (!displayAvatar.isNull() && ShowAvatars)
 	{
 		if (DefaultAvatarSize.isValid() && displayAvatar.size() != DefaultAvatarSize)
 			displayAvatar = displayAvatar.scaled(DefaultAvatarSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
@@ -373,8 +373,14 @@ void BuddiesListViewDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 		int width = widget->viewport()->width() - opt.rect.left() - (avatarWidth + (avatarSize - avatarWidth)/2);
 		if (!displayAvatar.isNull())
 		{
-			painter->drawPixmap(width - 2, 2, displayAvatar);
-
+			// grey out offline contacts' avatar
+			if (AvatarGreyOut && qvariant_cast<Contact>(index.data(ContactRole)).currentStatus().isDisconnected())
+				painter->drawPixmap(width - 2, 2, QIcon::QIcon(displayAvatar).pixmap(displayAvatar.size(), QIcon::Disabled));
+			else
+				painter->drawPixmap(width - 2, 2, displayAvatar);
+			// draw avatar border
+			if (AvatarBorder)
+				painter->drawRect(QRect(width - 2, 2, displayAvatar.width(), displayAvatar.height()));
 #ifdef DEBUG_ENABLED
 			if (debug_mask & KDEBUG_VISUAL)
 				drawDebugRect(painter, QRect(width - 2, 2, displayAvatar.width(), displayAvatar.height()), QColor(0, 255, 0));
@@ -438,6 +444,9 @@ void BuddiesListViewDelegate::configurationUpdated()
 	DescriptionFont = Font;
 	DescriptionFont.setPointSize(Font.pointSize() - 2);
 
+	ShowAvatars = config_file.readBoolEntry("Look", "ShowAvatars");
+	AvatarBorder = config_file.readBoolEntry("Look", "AvatarBorder");
+	AvatarGreyOut = config_file.readBoolEntry("Look", "AvatarGreyOut");
 	AlignTop = config_file.readBoolEntry("Look", "AlignUserboxIconsTop");
 	ShowBold = config_file.readBoolEntry("Look", "ShowBold");
 	ShowDescription = config_file.readBoolEntry("Look", "ShowDesc");

@@ -50,6 +50,9 @@ class BuddiesListViewDelegate : public QItemDelegate, public ConfigurationAwareO
 	bool ShowBold;
 	bool ShowDescription;
 	bool ShowMultiLineDescription;
+	bool ShowAvatars;
+	bool AvatarBorder;
+	bool AvatarGreyOut;
 	QColor DescriptionColor;
 
 	QSize DefaultAvatarSize;

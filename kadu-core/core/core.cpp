@@ -181,6 +181,8 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("General", "LookChatAdvanced_Geometry", "50, 50, 620, 540");
 
 	config_file.addVariable("Look", "AlignUserboxIconsTop", true);
+	config_file.addVariable("Look", "AvatarBorder", true);
+	config_file.addVariable("Look", "AvatarGreyOut", true);
 	config_file.addVariable("Look", "ChatContents", "");
 	config_file.addVariable("Look", "ChatFont", qApp->font());
 	config_file.addVariable("Look", "ChatBgColor", QColor("#ffffff"));
@@ -209,6 +211,7 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("Look", "PanelFont", qApp->font());
 	config_file.addVariable("Look", "PanelVerticalScrollBar", false);
 	config_file.addVariable("Look", "ParagraphSeparator", 4);
+	config_file.addVariable("Look", "ShowAvatars", true);
 	config_file.addVariable("Look", "ShowGroupAll", true);
 	config_file.addVariable("Look", "ShowBold", true);
 	config_file.addVariable("Look", "ShowDesc", true);

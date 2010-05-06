@@ -230,6 +230,12 @@ Text is plain black." />
 					   tool-tip="Choose userbox tool-tip style" />
 			</group-box>
 
+			<group-box name="Avatars">
+				<check-box caption="Show avatars" config-section="Look" config-item="ShowAvatars" id="showAvatars" />
+				<check-box caption="Add avatar border" config-section="Look" config-item="AvatarBorder" id="avatarBorder" />
+				<check-box caption="Grey out offline contacts' avatars" config-section="Look" config-item="AvatarGreyOut" id="avatarGreyOut" tool-tip="Contacts who are offline will have their avatars greyed out" />
+			</group-box>
+
 			<group-box name="Descriptions">
 				<check-box caption="Show descriptions" config-section="Look" config-item="ShowDesc" id="showDescription"
 					   tool-tip="Displays descriptions in userbox" />
