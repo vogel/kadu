@@ -28,6 +28,7 @@
 #include "notify/notification-manager.h"
 #include "notify/notification.h"
 #include "misc/misc.h"
+#include "core/core.h"
 
 #include <QtGui/QLineEdit>
 #include <QtGui/QSlider>
@@ -89,7 +90,7 @@ extern "C" int pcspeaker_init()
 extern "C" void pcspeaker_close()
 {
 	kdebugf();
-	delete(pcspeaker);
+	delete pcspeaker;
 	kdebugf2();
 } 
 
@@ -103,8 +104,8 @@ PCSpeaker::PCSpeaker() : Notifier("PC Speaker", "PC Speaker", IconsManager::inst
 
 PCSpeaker::~PCSpeaker()
 {
-	NotificationManager::instance()->unregisterNotifier(this);
-	delete configWidget;
+	if (!Core::instance()->isClosing())
+		NotificationManager::instance()->unregisterNotifier(this);
 }
 
 void PCSpeaker::mainConfigurationWindowCreated(MainConfigurationWindow */*mainConfigurationWindow*/)

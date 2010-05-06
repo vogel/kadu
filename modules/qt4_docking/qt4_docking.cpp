@@ -29,6 +29,7 @@
 #include "../docking/docking.h"
 
 #include "configuration/configuration-file.h"
+#include "core/core.h"
 #include "debug.h"
 
 #include "qt4_docking.h"
@@ -50,7 +51,8 @@ extern "C" int qt4_docking_init(bool firstLoad)
 
 extern "C" void qt4_docking_close()
 {
-	DockingManager::instance()->setDocker(0);
+	if (!Core::instance()->isClosing())
+		DockingManager::instance()->setDocker(0);
 	delete qt4_tray_icon;
 	qt4_tray_icon = 0;
 }
