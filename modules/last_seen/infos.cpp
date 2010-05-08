@@ -25,7 +25,8 @@
 #include <QFile>
 #include <QTextStream>
 
-#include "kadu.h"
+#include "core/core.h"
+#include "gui/windows/kadu-window.h"
 #include "misc/misc.h"
 #include "debug.h"
 
@@ -56,24 +57,32 @@ extern "C" KADU_EXPORT void last_seen_close()
 }
 
 
-Infos::Infos(QObject *parent, const char *name)
-: QObject(parent, name)
+Infos::Infos(QObject *parent)
+: QObject(parent)
 {
 	kdebugf();
 	fileName = profilePath("last_seen.data");
-	
+
+	QList<Account> allGaduAccounts = AccountManager::instance()->byProtocolName("gadu");
+	QList<Account>::iterator accountIt;
+
 	if(QFile::exists(fileName))
 	{
 		QFile dataFile(fileName);
-		if(dataFile.open(IO_ReadOnly))
+		if(dataFile.open(QIODevice::ReadOnly | QIODevice::Text))
 		{
 			while(!dataFile.atEnd())
 			{
 				QTextStream dataStream(&dataFile);
 				QString uin = dataStream.readLine();
 				QString dateTime = dataStream.readLine();
-				if(!userlist->byID("Gadu", uin).isAnonymous())
-					lastSeen[uin] = dateTime;
+				for (accountIt = allGaduAccounts.begin(); accountIt != allGaduAccounts.end(); ++accountIt) {
+					Contact contact = ContactManager::instance()->byId((*accountIt), uin);
+					if (contact.isNull())
+						continue;
+					if (!contact.ownerBuddy().isAnonymous())
+						lastSeen[uin] = dateTime;
+				}
 				uin = dataStream.readLine();
 			}
 			dataFile.close();
@@ -82,14 +91,16 @@ Infos::Infos(QObject *parent, const char *name)
 
 	// Main menu entry
 	lastSeenActionDescription = new ActionDescription(
-		ActionDescription::TypeMainMenu, "lastSeenAction",
+		this, ActionDescription::TypeMainMenu, "lastSeenAction",
 		this, SLOT(onShowInfos()),
-		"LastSeen", tr("&Show infos about contacts...")
+		"", "", tr("&Show infos about contacts...")
 	);
-	kadu->insertMenuActionDescription(0, lastSeenActionDescription);
+	Core::instance()->kaduWindow()->insertMenuActionDescription(lastSeenActionDescription, KaduWindow::MenuKadu, 0);
 	
-	connect(userlist, SIGNAL(protocolUserDataChanged(QString, UserListElement, QString, QVariant, QVariant, bool, bool) ),
-		this, SLOT( onUserStatusChangedSlot(QString, UserListElement, QString, QVariant, QVariant, bool, bool) ));
+	for (accountIt = allGaduAccounts.begin(); accountIt	!= allGaduAccounts.end(); ++accountIt) {
+		connect((*accountIt), SIGNAL(buddyStatusChanged(Contact, Status)),
+				this, SLOT(contactStatusChanged(Contact, Status)));
+	}
 }
 
 Infos::~Infos()
@@ -98,17 +109,17 @@ Infos::~Infos()
 
 	updateTimes();
 	QFile dataFile(fileName);
-	if(dataFile.open(IO_WriteOnly))
+	if(dataFile.open(QIODevice::WriteOnly | QIODevice::Text))
 	{
 		QTextStream dataStream(&dataFile);
 		for(LastSeen::ConstIterator it = lastSeen.begin(); it != lastSeen.end(); ++it)
 		{
-			dataStream << it.key() << "\n" << it.data() << "\n\n";
+			dataStream << it.key() << "\n" << it.value() << "\n\n";
 		}
 	}
 	dataFile.close();
 
-	kadu->removeMenuActionDescription(lastSeenActionDescription);
+	Core::instance()->kaduWindow()->removeMenuActionDescription(lastSeenActionDescription);
 	delete lastSeenActionDescription;
 
 	kdebugf2();
@@ -118,32 +129,35 @@ void Infos::onShowInfos()
 {
 	kdebugf();
 	updateTimes();
-	InfosDialog *infosDialog = new InfosDialog(lastSeen, NULL, "infos dialog", false, Qt::WDestructiveClose);
+	InfosDialog *infosDialog = new InfosDialog(lastSeen);
 	infosDialog->show();
 	kdebugf2();
 }
 
-void Infos::onUserStatusChangedSlot(QString protocolName, UserListElement elem, QString name, QVariant oldValue,
-		QVariant currentValue, bool massively, bool last)
+void Infos::contactStatusChanged(Contact contact, Status status)
 {
 	kdebugf();
-	if (protocolName.compare("Gadu") == 0)
-		if(elem.status(protocolName).isOnline() || elem.status(protocolName).isBusy())
-			lastSeen[elem.ID(protocolName)] = QDateTime::currentDateTime().toString("dd-MM-yyyy hh:mm");
+	if (contact.contactAccount().protocolName().compare("Gadu") == 0)
+		if(!status.isDisconnected())
+			lastSeen[contact.id()] = QDateTime::currentDateTime().toString("dd-MM-yyyy hh:mm");
 	kdebugf2();
 }
 
-void Infos::updateTimes()
-{
+void Infos::updateTimes() {
 	kdebugf();
-	for(LastSeen::Iterator it = lastSeen.begin(); it != lastSeen.end(); ++it)
-		if( userlist->byID("Gadu", it.key()).status("Gadu").isOnline() || 
-		    userlist->byID("Gadu", it.key()).status("Gadu").isBusy() )
-		{
-			kdebugm(KDEBUG_INFO, "Updating %s's time\n", it.key().latin1());
-			kdebugm(KDEBUG_INFO, "Previous one: %s\n", it.data().latin1());
-			kdebugm(KDEBUG_INFO, "New one: %s\n\n", QDateTime::currentDateTime().toString("dd-MM-yyyy hh:mm").latin1());
-			it.data() = QDateTime::currentDateTime().toString("dd-MM-yyyy hh:mm");
+	QList<Account> allGaduAccounts = AccountManager::instance()->byProtocolName("gadu");
+	QList<Account>::iterator accountIt;
+	for (LastSeen::Iterator it = lastSeen.begin(); it != lastSeen.end(); ++it)
+		for (accountIt = allGaduAccounts.begin(); accountIt != allGaduAccounts.end(); ++accountIt) {
+			Contact contact = ContactManager::instance()->byId((*accountIt), it.key());
+			if (contact.isNull())
+				continue;
+			if (!contact.currentStatus().isDisconnected()) {
+				kdebugm(KDEBUG_INFO, "Updating %s's time\n", qPrintable(it.key()));
+				kdebugm(KDEBUG_INFO, "Previous one: %s\n", qPrintable(it.value()));
+				kdebugm(KDEBUG_INFO, "New one: %s\n\n", qPrintable(QDateTime::currentDateTime().toString("dd-MM-yyyy hh:mm")));
+				it.value() = QDateTime::currentDateTime().toString("dd-MM-yyyy hh:mm");
+			}
 		}
 	kdebugf2();
 }

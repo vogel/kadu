@@ -15,7 +15,7 @@ class InfosDialog : public QDialog
 	Q_OBJECT
 	public:
 		/*! Default constructor. */
-		InfosDialog(const LastSeen &lastSeen, QWidget *parent = 0, const char *name = 0, bool modal = false, Qt::WindowFlags f = 0 );
+		InfosDialog(const LastSeen &lastSeen, QWidget *parent = 0, Qt::WindowFlags f = 0 );
 
 		/*! Default destructor. */
 		~InfosDialog();
