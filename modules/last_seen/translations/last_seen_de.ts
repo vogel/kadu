@@ -23,6 +23,11 @@
     </message>
     <message>
         <location filename="../infos_dialog.cpp" line="39"/>
+        <source>Protocol</source>
+        <translation>Protokoll</translation>
+    </message>
+    <message>
+        <location filename="../infos_dialog.cpp" line="39"/>
         <source>UIN</source>
         <translation>GG-Nummer</translation>
     </message>
@@ -45,6 +50,11 @@
         <location filename="../infos_dialog.cpp" line="39"/>
         <source>Description</source>
         <translation>Beschreibung</translation>
+    </message>
+    <message>
+        <location filename="../infos_dialog.cpp" line="39"/>
+        <source>State</source>
+        <translation>Zustand</translation>
     </message>
     <message>
         <location filename="../infos_dialog.cpp" line="39"/>

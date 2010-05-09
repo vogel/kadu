@@ -13,7 +13,7 @@
 #include "gui/actions/action-description.h"
 
 //! A "dictionary oriented" list type, holding uins and "Last seen" times.
-typedef QMap<QString, QString> LastSeen;
+typedef QMap<std::pair<QString, QString>, QString> LastSeen;
 
 /*!
  * This class handles the "Last seen" time for InfosDialog class.
@@ -38,6 +38,9 @@ class Infos : public QObject
 		void onShowInfos();
 
 	private slots:
+		void accountRegistered(Account);
+		void accountUnregistered(Account);
+
 		void contactStatusChanged(Contact contact, Status status);
 
 	protected:

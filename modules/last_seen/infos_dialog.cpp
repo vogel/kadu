@@ -3,6 +3,7 @@
  * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2008, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2008 Tomasz Rostański (rozteck@interia.pl)
+ * Copyright 2010 Dariusz Markowicz (darom@alari.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -46,30 +47,43 @@ InfosDialog::InfosDialog(const LastSeen &lastSeen, QWidget *parent, Qt::WindowFl
 	layout->setSpacing(5);
 
 	QTreeWidget *listView = new QTreeWidget(this);
-	listView->setColumnCount(7);
+	listView->setColumnCount(9);
 	listView->setSelectionMode(QAbstractItemView::NoSelection);
 	listView->setAllColumnsShowFocus(true);
 
 	QStringList labels;
-	labels << tr("Contact") << tr("UIN") << tr("Nick") << tr("IP") << tr("Domain name") << tr("Description") << tr("Last time seen on");
+	labels << tr("Contact")
+			<< tr("Protocol")
+			<< tr("UIN")
+			<< tr("Nick")
+			<< tr("IP")
+			<< tr("Domain name")
+			<< tr("Description")
+			<< tr("State")
+			<< tr("Last time seen on");
 	listView->setHeaderLabels(labels);
 
-	foreach (Contact contact, ContactManager::instance()->items()) {
-		if (contact.contactAccount().protocolName().compare("gadu") == 0)
-		{
-			QString desc, ip;
-			if(!contact.currentStatus().description().isEmpty())
-				desc = contact.currentStatus().description();
-			desc.replace('\n', ' ');
-			if(contact.address() != QHostAddress())
-				ip = contact.address().toString();
+	foreach(Contact contact, ContactManager::instance()->items())
+	{
+		QString desc, ip;
+		if(!contact.currentStatus().description().isEmpty())
+			desc = contact.currentStatus().description();
+		desc.replace('\n', ' ');
+		if(contact.address() != QHostAddress())
+			ip = contact.address().toString();
 
-			QStringList labels;
-			labels << contact.ownerBuddy().display() << contact.id() << contact.ownerBuddy().nickName() << ip <<
-					contact.dnsName() << desc << lastSeen[contact.id()];
+		QStringList labels;
+		labels << contact.ownerBuddy().display()
+				<< contact.contactAccount().protocolName()
+				<< contact.id()
+				<< contact.ownerBuddy().nickName()
+				<< ip
+				<< contact.dnsName()
+				<< desc
+				<< contact.currentStatus().type()
+				<< lastSeen[std::make_pair(contact.contactAccount().protocolName(), contact.id())];
 
-			listView->addTopLevelItem(new QTreeWidgetItem(labels));
-		}
+		listView->addTopLevelItem(new QTreeWidgetItem(labels));
 	}
 	listView->sortItems(0, Qt::AscendingOrder);
 

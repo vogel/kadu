@@ -3,6 +3,7 @@
  * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2008, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2010 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * Copyright 2010 Dariusz Markowicz (darom@alari.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -61,31 +62,52 @@ Infos::Infos(QObject *parent)
 : QObject(parent)
 {
 	kdebugf();
-	fileName = profilePath("last_seen.data");
+	connect(AccountManager::instance(), SIGNAL(accountRegistered(Account)),
+		this, SLOT(accountRegistered(Account)));
+	connect(AccountManager::instance(), SIGNAL(accountUnregistered(Account)),
+		this, SLOT(accountUnregistered(Account)));
 
-	QList<Account> allGaduAccounts = AccountManager::instance()->byProtocolName("gadu");
-	QList<Account>::iterator accountIt;
+	fileName = profilePath("last_seen.data");
 
 	if(QFile::exists(fileName))
 	{
-		QFile dataFile(fileName);
-		if(dataFile.open(QIODevice::ReadOnly | QIODevice::Text))
+		QFile file(fileName);
+		if(file.open(QIODevice::ReadOnly))
 		{
-			while(!dataFile.atEnd())
+			kdebugm(KDEBUG_INFO, "file opened '%s'\n", qPrintable(file.fileName()));
+			QTextStream stream(&file);
+			while(!stream.atEnd())
 			{
-				QTextStream dataStream(&dataFile);
-				QString uin = dataStream.readLine();
-				QString dateTime = dataStream.readLine();
-				for (accountIt = allGaduAccounts.begin(); accountIt != allGaduAccounts.end(); ++accountIt) {
-					Contact contact = ContactManager::instance()->byId((*accountIt), uin);
-					if (contact.isNull())
+				QStringList fullId = stream.readLine().split(":", QString::SkipEmptyParts);
+				if(fullId.count() != 2)
+					continue;
+				QString protocol = fullId[0];
+				QString uin = fullId[1];
+				QString dateTime = stream.readLine();
+				//kdebugm(KDEBUG_INFO, "Last seen %s %s %s\n", qPrintable(protocol), qPrintable(uin), qPrintable(dateTime));
+
+				Contact contact = Contact::null;
+				// wstawiamy tylko konta, które są na liście kontaktów
+				foreach(Account account, AccountManager::instance()->byProtocolName(protocol))
+				{
+					Contact contact = ContactManager::instance()->byId(account, uin);
+					if(contact.isNull())
 						continue;
-					if (!contact.ownerBuddy().isAnonymous())
-						lastSeen[uin] = dateTime;
+					if(!contact.ownerBuddy().isAnonymous())
+					{
+						lastSeen[std::make_pair(protocol, uin)] = dateTime;
+						// wystarczy, że kontakt jest na jednym koncie, omijamy resztę
+						continue;
+					}
 				}
-				uin = dataStream.readLine();
+				QString tmp = stream.readLine(); // skip empty line
 			}
-			dataFile.close();
+			file.close();
+		}
+		else
+		{
+			fprintf(stderr, "cannot open '%s': %s\n", qPrintable(file.fileName()), qPrintable(file.errorString()));
+			fflush(stderr);
 		}
 	}
 
@@ -96,11 +118,8 @@ Infos::Infos(QObject *parent)
 		"", "", tr("&Show infos about contacts...")
 	);
 	Core::instance()->kaduWindow()->insertMenuActionDescription(lastSeenActionDescription, KaduWindow::MenuKadu, 0);
-	
-	for (accountIt = allGaduAccounts.begin(); accountIt	!= allGaduAccounts.end(); ++accountIt) {
-		connect((*accountIt), SIGNAL(buddyStatusChanged(Contact, Status)),
-				this, SLOT(contactStatusChanged(Contact, Status)));
-	}
+
+	kdebugf2();
 }
 
 Infos::~Infos()
@@ -108,16 +127,24 @@ Infos::~Infos()
 	kdebugf();
 
 	updateTimes();
-	QFile dataFile(fileName);
-	if(dataFile.open(QIODevice::WriteOnly | QIODevice::Text))
+	QFile file(fileName);
+	if(file.open(QIODevice::WriteOnly | QIODevice::Truncate))
 	{
-		QTextStream dataStream(&dataFile);
-		for(LastSeen::ConstIterator it = lastSeen.begin(); it != lastSeen.end(); ++it)
+		kdebugm(KDEBUG_INFO, "file opened '%s'\n", qPrintable(file.fileName()));
+		QTextStream stream(&file);
+		for(LastSeen::Iterator it = lastSeen.begin(); it != lastSeen.end(); ++it)
 		{
-			dataStream << it.key() << "\n" << it.value() << "\n\n";
+			std::pair<QString, QString> lastSeenKey = it.key();
+			//kdebugm(KDEBUG_INFO, "Last seen %s %s %s\n", qPrintable(lastSeenKey.first), qPrintable(lastSeenKey.second), qPrintable(it.value()));
+			stream << lastSeenKey.first << ":" << lastSeenKey.second << "\n" << it.value() << "\n\n";
 		}
+		file.close();
 	}
-	dataFile.close();
+	else
+	{
+		fprintf(stderr, "cannot open '%s': %s\n", qPrintable(file.fileName()), qPrintable(file.errorString()));
+		fflush(stderr);
+	}
 
 	Core::instance()->kaduWindow()->removeMenuActionDescription(lastSeenActionDescription);
 	delete lastSeenActionDescription;
@@ -134,31 +161,48 @@ void Infos::onShowInfos()
 	kdebugf2();
 }
 
+void Infos::accountRegistered(Account account)
+{
+	if(!account.protocolHandler())
+		return;
+
+	connect(account, SIGNAL(buddyStatusChanged(Contact, Status)),
+			this, SLOT(contactStatusChanged(Contact, Status)));
+}
+
+void Infos::accountUnregistered(Account account)
+{
+	if(!account.protocolHandler())
+		return;
+
+	disconnect(account, SIGNAL(buddyStatusChanged(Contact, Status)),
+			this, SLOT(contactStatusChanged(Contact, Status)));
+}
+
 void Infos::contactStatusChanged(Contact contact, Status status)
 {
+	Q_UNUSED(status)
 	kdebugf();
-	if (contact.contactAccount().protocolName().compare("Gadu") == 0)
-		if(!status.isDisconnected())
-			lastSeen[contact.id()] = QDateTime::currentDateTime().toString("dd-MM-yyyy hh:mm");
+	if(!contact.currentStatus().isDisconnected())
+		lastSeen[std::make_pair(contact.contactAccount().protocolName(), contact.id())]
+		         = QDateTime::currentDateTime().toString("dd-MM-yyyy hh:mm");
 	kdebugf2();
 }
 
-void Infos::updateTimes() {
+void Infos::updateTimes()
+{
 	kdebugf();
-	QList<Account> allGaduAccounts = AccountManager::instance()->byProtocolName("gadu");
-	QList<Account>::iterator accountIt;
-	for (LastSeen::Iterator it = lastSeen.begin(); it != lastSeen.end(); ++it)
-		for (accountIt = allGaduAccounts.begin(); accountIt != allGaduAccounts.end(); ++accountIt) {
-			Contact contact = ContactManager::instance()->byId((*accountIt), it.key());
-			if (contact.isNull())
-				continue;
-			if (!contact.currentStatus().isDisconnected()) {
-				kdebugm(KDEBUG_INFO, "Updating %s's time\n", qPrintable(it.key()));
-				kdebugm(KDEBUG_INFO, "Previous one: %s\n", qPrintable(it.value()));
-				kdebugm(KDEBUG_INFO, "New one: %s\n\n", qPrintable(QDateTime::currentDateTime().toString("dd-MM-yyyy hh:mm")));
-				it.value() = QDateTime::currentDateTime().toString("dd-MM-yyyy hh:mm");
-			}
+	foreach(Contact contact, ContactManager::instance()->items())
+	{
+		if(!contact.currentStatus().isDisconnected())
+		{
+			kdebugm(KDEBUG_INFO, "Updating %s:%s time\n", qPrintable(contact.contactAccount().protocolName()), qPrintable(contact.id()));
+			kdebugm(KDEBUG_INFO, "Previous one: %s\n", qPrintable(lastSeen[std::make_pair(contact.contactAccount().protocolName(), contact.id())]));
+			kdebugm(KDEBUG_INFO, "New one: %s\n\n", qPrintable(QDateTime::currentDateTime().toString("dd-MM-yyyy hh:mm")));
+			lastSeen[std::make_pair(contact.contactAccount().protocolName(), contact.id())]
+			         = QDateTime::currentDateTime().toString("dd-MM-yyyy hh:mm");
 		}
+	}
 	kdebugf2();
 }
 
