@@ -28,7 +28,7 @@
 
 #include "core/core.h"
 #include "gui/windows/kadu-window.h"
-#include "misc/misc.h"
+#include "misc/path-conversion.h"
 #include "debug.h"
 
 #include "infos.h"
@@ -95,7 +95,7 @@ Infos::Infos(QObject *parent)
 						continue;
 					if(!contact.ownerBuddy().isAnonymous())
 					{
-						lastSeen[std::make_pair(protocol, uin)] = dateTime;
+						lastSeen[qMakePair(protocol, uin)] = dateTime;
 						// wystarczy, że kontakt jest na jednym koncie, omijamy resztę
 						continue;
 					}
@@ -134,7 +134,7 @@ Infos::~Infos()
 		QTextStream stream(&file);
 		for(LastSeen::Iterator it = lastSeen.begin(); it != lastSeen.end(); ++it)
 		{
-			std::pair<QString, QString> lastSeenKey = it.key();
+			QPair<QString, QString> lastSeenKey = it.key();
 			//kdebugm(KDEBUG_INFO, "Last seen %s %s %s\n", qPrintable(lastSeenKey.first), qPrintable(lastSeenKey.second), qPrintable(it.value()));
 			stream << lastSeenKey.first << ":" << lastSeenKey.second << "\n" << it.value() << "\n\n";
 		}
@@ -184,7 +184,7 @@ void Infos::contactStatusChanged(Contact contact, Status status)
 	Q_UNUSED(status)
 	kdebugf();
 	if(!contact.currentStatus().isDisconnected())
-		lastSeen[std::make_pair(contact.contactAccount().protocolName(), contact.id())]
+		lastSeen[qMakePair(contact.contactAccount().protocolName(), contact.id())]
 		         = QDateTime::currentDateTime().toString("dd-MM-yyyy hh:mm");
 	kdebugf2();
 }
@@ -197,9 +197,9 @@ void Infos::updateTimes()
 		if(!contact.currentStatus().isDisconnected())
 		{
 			kdebugm(KDEBUG_INFO, "Updating %s:%s time\n", qPrintable(contact.contactAccount().protocolName()), qPrintable(contact.id()));
-			kdebugm(KDEBUG_INFO, "Previous one: %s\n", qPrintable(lastSeen[std::make_pair(contact.contactAccount().protocolName(), contact.id())]));
+			kdebugm(KDEBUG_INFO, "Previous one: %s\n", qPrintable(lastSeen[qMakePair(contact.contactAccount().protocolName(), contact.id())]));
 			kdebugm(KDEBUG_INFO, "New one: %s\n\n", qPrintable(QDateTime::currentDateTime().toString("dd-MM-yyyy hh:mm")));
-			lastSeen[std::make_pair(contact.contactAccount().protocolName(), contact.id())]
+			lastSeen[qMakePair(contact.contactAccount().protocolName(), contact.id())]
 			         = QDateTime::currentDateTime().toString("dd-MM-yyyy hh:mm");
 		}
 	}

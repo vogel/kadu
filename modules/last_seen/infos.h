@@ -13,7 +13,7 @@
 #include "gui/actions/action-description.h"
 
 //! A "dictionary oriented" list type, holding uins and "Last seen" times.
-typedef QMap<std::pair<QString, QString>, QString> LastSeen;
+typedef QMap<QPair<QString, QString>, QString> LastSeen;
 
 /*!
  * This class handles the "Last seen" time for InfosDialog class.

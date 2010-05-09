@@ -81,7 +81,7 @@ InfosDialog::InfosDialog(const LastSeen &lastSeen, QWidget *parent, Qt::WindowFl
 				<< contact.dnsName()
 				<< desc
 				<< contact.currentStatus().type()
-				<< lastSeen[std::make_pair(contact.contactAccount().protocolName(), contact.id())];
+				<< lastSeen[qMakePair(contact.contactAccount().protocolName(), contact.id())];
 
 		listView->addTopLevelItem(new QTreeWidgetItem(labels));
 	}
