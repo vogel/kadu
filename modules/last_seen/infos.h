@@ -6,6 +6,7 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "accounts/accounts-aware-object.h"
 #include "contacts/contact.h"
 #include "contacts/contact-manager.h"
 #include "status/status.h"
@@ -19,7 +20,7 @@ typedef QMap<QPair<QString, QString>, QString> LastSeen;
  * This class handles the "Last seen" time for InfosDialog class.
  * \brief "Last seen, IP, DNS" main class.
  */
-class Infos : public QObject
+class Infos : public QObject, AccountsAwareObject
 {
 	Q_OBJECT
 	public:
@@ -38,12 +39,12 @@ class Infos : public QObject
 		void onShowInfos();
 
 	private slots:
-		void accountRegistered(Account);
-		void accountUnregistered(Account);
-
 		void contactStatusChanged(Contact contact, Status status);
 
 	protected:
+		virtual void accountRegistered(Account account);
+		virtual void accountUnregistered(Account account);
+
 		//! updates Last Seen times in lastSeen.
 		void updateTimes();
 

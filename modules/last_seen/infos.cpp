@@ -62,10 +62,6 @@ Infos::Infos(QObject *parent)
 : QObject(parent)
 {
 	kdebugf();
-	connect(AccountManager::instance(), SIGNAL(accountRegistered(Account)),
-		this, SLOT(accountRegistered(Account)));
-	connect(AccountManager::instance(), SIGNAL(accountUnregistered(Account)),
-		this, SLOT(accountUnregistered(Account)));
 
 	fileName = profilePath("last_seen.data");
 
@@ -86,11 +82,11 @@ Infos::Infos(QObject *parent)
 				QString dateTime = stream.readLine();
 				//kdebugm(KDEBUG_INFO, "Last seen %s %s %s\n", qPrintable(protocol), qPrintable(uin), qPrintable(dateTime));
 
-				Contact contact = Contact::null;
+				Contact contact;
 				// wstawiamy tylko konta, które są na liście kontaktów
 				foreach(Account account, AccountManager::instance()->byProtocolName(protocol))
 				{
-					Contact contact = ContactManager::instance()->byId(account, uin);
+					contact = ContactManager::instance()->byId(account, uin, ActionReturnNull);
 					if(contact.isNull())
 						continue;
 					if(!contact.ownerBuddy().isAnonymous())
@@ -163,20 +159,24 @@ void Infos::onShowInfos()
 
 void Infos::accountRegistered(Account account)
 {
+	kdebugf();
 	if(!account.protocolHandler())
 		return;
 
 	connect(account, SIGNAL(buddyStatusChanged(Contact, Status)),
 			this, SLOT(contactStatusChanged(Contact, Status)));
+	kdebugf2();
 }
 
 void Infos::accountUnregistered(Account account)
 {
+	kdebugf();
 	if(!account.protocolHandler())
 		return;
 
 	disconnect(account, SIGNAL(buddyStatusChanged(Contact, Status)),
 			this, SLOT(contactStatusChanged(Contact, Status)));
+	kdebugf2();
 }
 
 void Infos::contactStatusChanged(Contact contact, Status status)
