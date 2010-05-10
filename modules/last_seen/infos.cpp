@@ -63,6 +63,8 @@ Infos::Infos(QObject *parent)
 {
 	kdebugf();
 
+	triggerAllAccountsRegistered();
+
 	fileName = profilePath("last_seen.data");
 
 	if(QFile::exists(fileName))
@@ -183,9 +185,14 @@ void Infos::contactStatusChanged(Contact contact, Status status)
 {
 	Q_UNUSED(status)
 	kdebugf();
-	if(!contact.currentStatus().isDisconnected())
+	// interesuje nas tylko zmiana na offline, lastSeen dla ludzi online
+	// zostanie zapisany przy wyjściu z programu
+	if(contact.currentStatus().isDisconnected())
+	{
 		lastSeen[qMakePair(contact.contactAccount().protocolName(), contact.id())]
 		         = QDateTime::currentDateTime().toString("dd-MM-yyyy hh:mm");
+		//kdebugm(KDEBUG_INFO, "Last seen %s %s %s\n", qPrintable(contact.contactAccount().protocolName()), qPrintable(contact.id()), qPrintable(QDateTime::currentDateTime().toString("dd-MM-yyyy hh:mm")));
+	}
 	kdebugf2();
 }
 
