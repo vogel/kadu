@@ -2,76 +2,72 @@
 #define AUTORESPONDER_H
 
 #include <QtCore/QObject>
-#include <QtCore/QList>
+#include <QtCore/QSet>
 
-#include "config_file.h"
-#include "configuration_aware_object.h"
-#include "main_configuration_window.h"
-#include "misc/misc.h"
+#include "accounts/accounts-aware-object.h"
+#include "configuration/configuration-aware-object.h"
+#include "gui/windows/main-configuration-window.h"
 #include "protocols/protocol.h"
-#include "usergroup.h"
+#include "contacts/contact.h"
+
 /**
  * @defgroup autoresponder Autoresponder
  * @{
  */
 
+class QLineEdit;
 class ChatWidget;
 
-class AutoResponder : public ConfigurationUiHandler, ConfigurationAwareObject
+class AutoResponder : public ConfigurationUiHandler, ConfigurationAwareObject, AccountsAwareObject
 {
 	Q_OBJECT
 
 	private:
-		QList<UserListElements> repliedUsers; /*!< uiny os�b, kt�rym ju� odpowiedziano */
+		QSet<QString> repliedUsers; /*!< uiny osób, którym już odpowiedziano */
 
-		QString autotext; /*!< tre�� automatycznej odpowiedzi */
+		QString autoRespondText; /*!< treść automatycznej odpowiedzi */
 
-		bool respondConferences; /*!< czy odpowiada� na konkerencje */
-		bool respondOnlyFirst; /*!< czy odpowiada� tylko na pierwsz� wiadomo�� */
+		QLineEdit *autoRespondTextLineEdit;
 
-		bool statusAvailable; /*!< czy odpowiadamy, gdy jeste�my dost�pni */
-		bool statusBusy; /*!< czy odpowiadamy, gdy jeste�my zaj�ci */
-		bool statusInvisible; /*!< czy odpowiadamy, gdy jeste�my niewidoczni */
+		bool respondConferences; /*!< czy odpowiadać na konkerencje */
+		bool respondOnlyFirst; /*!< czy odpowiadać tylko na pierwszą wiadomość */
+
+		bool statusAvailable; /*!< czy odpowiadamy, gdy jesteśmy dostępni */
+		bool statusBusy; /*!< czy odpowiadamy, gdy jesteśmy zajęci */
+		bool statusInvisible; /*!< czy odpowiadamy, gdy jesteśmy niewidoczni */
 
 		void createDefaultConfiguration();
 
 	protected:
+		virtual void accountRegistered(Account account);
+		virtual void accountUnregistered(Account account);
+
 		/**
 			\fn void configurationUpdated()
-			Metoda jest wywo�ywana po zmianie w oknie konfiguracyjnym.
+			Metoda jest wywoływana po zmianie w oknie konfiguracyjnym.
 		**/
 		virtual void configurationUpdated();
 
 	public:
 		/**
-			\fn AutoResponder(QObject *parent=0, const char *name=0)
+			\fn AutoResponder(QObject *parent=0)
 			Standardowy konstruktor
-			\param parent rodzic - domy�lnie 0
-			\param name nazwa - domy�lnie 0
+			\param parent rodzic - domyślnie 0
 		**/
-		AutoResponder(QObject *parent=0, const char *name=0);
+		AutoResponder(QObject *parent=0);
 		virtual ~AutoResponder();
 		virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
 	public slots:
-
-		/**
-			\fn void messageReceived(Protocol *protocol, UserListElements senders, const QString& msg, time_t time)
-			Slot jest wywo�ywany po odebraniu wiadomo�ci.
-			\param protocol protok�� po kt�rym nadesz�a wiadomo��
-			\param senders lista nadawc�w wiadomo�ci
-			\param msg tre�� wiadomo�ci
-			\param time czas
-		**/
-		void messageReceived(Protocol *protocol, UserListElements senders, const QString& msg, time_t time);
+		void receivedMessageFilter(Chat chat, Contact sender, const QString &message, time_t time, bool &ignore);
 
 		/**
 			\fn void chatOpenedClosed(ChatWidget *chat)
-			Slot jest wywo�ywany przy otwieraniu lub po zamkni�ciu
+			Slot jest wywoływany przy otwieraniu lub po zamknięciu
 			okna chat.
-			\param chat okno wiadomo�ci
+			\param chat okno wiadomości
 		**/
-		void chatOpenedClosed(ChatWidget *chat);
+		void chatOpenedClosed(ChatWidget *chat, bool activate = false);
 };
 
 extern AutoResponder* autoresponder;
