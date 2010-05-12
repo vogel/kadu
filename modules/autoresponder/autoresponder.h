@@ -6,9 +6,10 @@
 
 #include "accounts/accounts-aware-object.h"
 #include "configuration/configuration-aware-object.h"
+#include "contacts/contact.h"
+#include "contacts/contact-set.h"
 #include "gui/windows/main-configuration-window.h"
 #include "protocols/protocol.h"
-#include "contacts/contact.h"
 
 /**
  * @defgroup autoresponder Autoresponder
@@ -23,7 +24,7 @@ class AutoResponder : public ConfigurationUiHandler, ConfigurationAwareObject, A
 	Q_OBJECT
 
 	private:
-		QSet<QString> repliedUsers; /*!< uiny osób, którym już odpowiedziano */
+		ContactSet repliedUsers; /*!< kontakty, którym już odpowiedziano */
 
 		QString autoRespondText; /*!< treść automatycznej odpowiedzi */
 

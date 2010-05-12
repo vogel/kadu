@@ -33,13 +33,12 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "configuration/configuration-file.h"
-#include "gui/widgets/configuration/configuration-widget.h"
-#include "gui/windows/main-configuration-window.h"
+#include "debug.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
-#include "contacts/contact-set.h"
+#include "gui/widgets/configuration/configuration-widget.h"
+#include "gui/windows/main-configuration-window.h"
 #include "misc/path-conversion.h"
-#include "debug.h"
 #include "parser/parser.h"
 
 #include "autoresponder.h"
@@ -155,7 +154,7 @@ void AutoResponder::receivedMessageFilter(Chat chat, Contact sender, const QStri
 		return;
 	}
 
-	if (respondOnlyFirst && repliedUsers.contains(sender.uuid().toString()))
+	if (respondOnlyFirst && repliedUsers.contains(sender))
 	{
 		kdebugf2();
 		return;
@@ -182,12 +181,13 @@ void AutoResponder::receivedMessageFilter(Chat chat, Contact sender, const QStri
 			return;
 		}
 
-		// FIXME: Nie wysyłać autoodpowiedzi do siebie
+		// FIXME: Tekst autoodpowiedzi pojawia się zarówno w czacie rozmówcy
+		// jak i wysyłającego. W 0.6.5 pojawiał się tylko u romówcy.
 		chatService->sendMessage(chat, tr("KADU AUTORESPONDER:") + "\n"
 				+ Parser::parse(autoRespondText, sender));
 		// dołączamy użytkowników, którym odpowiedziano
 		foreach(Contact contact, chat.contacts())
-			repliedUsers.insert(contact.uuid().toString());
+			repliedUsers.insert(contact);
 	}
 
 	kdebugf2();
@@ -198,7 +198,7 @@ void AutoResponder::chatOpenedClosed(ChatWidget *chatWidget, bool activate)
 	Q_UNUSED(activate)
 	Chat chat = chatWidget->chat();
 	foreach(Contact contact, chat.contacts())
-		repliedUsers.remove(contact.uuid().toString());
+		repliedUsers.remove(contact);
 }
 
 void AutoResponder::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) 
