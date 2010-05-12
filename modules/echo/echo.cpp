@@ -23,12 +23,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "echo.h"
-
-//#include "gui/windows/message-dialog.h"
-#include "gui/widgets/chat-widget.h"
 #include "debug.h"
+#include "gui/widgets/chat-widget.h"
+//#include "gui/windows/message-dialog.h"
 #include "misc/misc.h"
+
+#include "echo.h"
 
 Echo *echo = 0;
 

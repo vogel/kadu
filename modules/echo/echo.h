@@ -4,8 +4,8 @@
 #include <QtCore/QObject>
 
 #include "accounts/accounts-aware-object.h"
-#include "protocols/protocol.h"
 #include "contacts/contact.h"
+#include "protocols/protocol.h"
 
 class Echo : public QObject, AccountsAwareObject
 {
