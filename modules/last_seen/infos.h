@@ -1,17 +1,17 @@
 #ifndef INFOS_H
 #define INFOS_H
 
-#include <QObject>
-#include <QMap>
+#include <QtCore/QMap>
+#include <QtCore/QObject>
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "accounts/accounts-aware-object.h"
 #include "contacts/contact.h"
 #include "contacts/contact-manager.h"
-#include "status/status.h"
-#include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
+#include "gui/actions/action.h"
+#include "status/status.h"
 
 //! A "dictionary oriented" list type, holding uins and "Last seen" times.
 typedef QMap<QPair<QString, QString>, QString> LastSeen;

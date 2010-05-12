@@ -1,8 +1,9 @@
 #ifndef INFOS_DIALOG_H
 #define INFOS_DIALOG_H
 
-#include "infos.h"
 #include <QtGui/QDialog>
+
+#include "infos.h"
 
 class InfosDataFile;
 

@@ -21,15 +21,15 @@
  */
 
 
-#include <QMenu>
-#include <QDateTime>
-#include <QFile>
-#include <QTextStream>
+#include <QtCore/QDateTime>
+#include <QtCore/QFile>
+#include <QtCore/QTextStream>
+#include <QtGui/QMenu>
 
 #include "core/core.h"
+#include "debug.h"
 #include "gui/windows/kadu-window.h"
 #include "misc/path-conversion.h"
-#include "debug.h"
 
 #include "infos.h"
 #include "infos_dialog.h"
@@ -67,17 +67,17 @@ Infos::Infos(QObject *parent)
 
 	fileName = profilePath("last_seen.data");
 
-	if(QFile::exists(fileName))
+	if (QFile::exists(fileName))
 	{
 		QFile file(fileName);
-		if(file.open(QIODevice::ReadOnly))
+		if (file.open(QIODevice::ReadOnly))
 		{
 			kdebugm(KDEBUG_INFO, "file opened '%s'\n", qPrintable(file.fileName()));
 			QTextStream stream(&file);
-			while(!stream.atEnd())
+			while (!stream.atEnd())
 			{
 				QStringList fullId = stream.readLine().split(":", QString::SkipEmptyParts);
-				if(fullId.count() != 2)
+				if (fullId.count() != 2)
 					continue;
 				QString protocol = fullId[0];
 				QString uin = fullId[1];
@@ -89,9 +89,9 @@ Infos::Infos(QObject *parent)
 				foreach(Account account, AccountManager::instance()->byProtocolName(protocol))
 				{
 					contact = ContactManager::instance()->byId(account, uin, ActionReturnNull);
-					if(contact.isNull())
+					if (contact.isNull())
 						continue;
-					if(!contact.ownerBuddy().isAnonymous())
+					if (!contact.ownerBuddy().isAnonymous())
 					{
 						lastSeen[qMakePair(protocol, uin)] = dateTime;
 						// wystarczy, że kontakt jest na jednym koncie, omijamy resztę
@@ -126,11 +126,11 @@ Infos::~Infos()
 
 	updateTimes();
 	QFile file(fileName);
-	if(file.open(QIODevice::WriteOnly | QIODevice::Truncate))
+	if (file.open(QIODevice::WriteOnly | QIODevice::Truncate))
 	{
 		kdebugm(KDEBUG_INFO, "file opened '%s'\n", qPrintable(file.fileName()));
 		QTextStream stream(&file);
-		for(LastSeen::Iterator it = lastSeen.begin(); it != lastSeen.end(); ++it)
+		for (LastSeen::Iterator it = lastSeen.begin(); it != lastSeen.end(); ++it)
 		{
 			QPair<QString, QString> lastSeenKey = it.key();
 			//kdebugm(KDEBUG_INFO, "Last seen %s %s %s\n", qPrintable(lastSeenKey.first), qPrintable(lastSeenKey.second), qPrintable(it.value()));
@@ -162,8 +162,11 @@ void Infos::onShowInfos()
 void Infos::accountRegistered(Account account)
 {
 	kdebugf();
-	if(!account.protocolHandler())
+	if (!account.protocolHandler())
+	{
+		kdebugf2();
 		return;
+	}
 
 	connect(account, SIGNAL(buddyStatusChanged(Contact, Status)),
 			this, SLOT(contactStatusChanged(Contact, Status)));
@@ -173,8 +176,11 @@ void Infos::accountRegistered(Account account)
 void Infos::accountUnregistered(Account account)
 {
 	kdebugf();
-	if(!account.protocolHandler())
+	if (!account.protocolHandler())
+	{
+		kdebugf2();
 		return;
+	}
 
 	disconnect(account, SIGNAL(buddyStatusChanged(Contact, Status)),
 			this, SLOT(contactStatusChanged(Contact, Status)));
@@ -187,7 +193,7 @@ void Infos::contactStatusChanged(Contact contact, Status status)
 	kdebugf();
 	// interesuje nas tylko zmiana na offline, lastSeen dla ludzi online
 	// zostanie zapisany przy wyjściu z programu
-	if(contact.currentStatus().isDisconnected())
+	if (contact.currentStatus().isDisconnected())
 	{
 		lastSeen[qMakePair(contact.contactAccount().protocolName(), contact.id())]
 		         = QDateTime::currentDateTime().toString("dd-MM-yyyy hh:mm");
@@ -201,7 +207,7 @@ void Infos::updateTimes()
 	kdebugf();
 	foreach(Contact contact, ContactManager::instance()->items())
 	{
-		if(!contact.currentStatus().isDisconnected())
+		if (!contact.currentStatus().isDisconnected())
 		{
 			kdebugm(KDEBUG_INFO, "Updating %s:%s time\n", qPrintable(contact.contactAccount().protocolName()), qPrintable(contact.id()));
 			kdebugm(KDEBUG_INFO, "Previous one: %s\n", qPrintable(lastSeen[qMakePair(contact.contactAccount().protocolName(), contact.id())]));
