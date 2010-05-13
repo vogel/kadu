@@ -47,6 +47,10 @@ class TlenProtocol : public Protocol
 
 		virtual QPixmap statusPixmap(Status status);
 		virtual QPixmap statusPixmap(const QString &statusType);
+		
+		virtual QIcon statusIcon(Status status);
+		virtual QIcon statusIcon(const QString &statusType);
+		
 		virtual void changeStatus(Status status);
 
 		virtual AvatarService *avatarService() { return CurrentAvatarService; }

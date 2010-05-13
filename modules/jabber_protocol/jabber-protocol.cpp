@@ -677,6 +677,17 @@ QPixmap JabberProtocol::statusPixmap(const QString &statusType)
 	return StatusTypeManager::instance()->statusPixmap("xmpp", "16x16", statusType, false, false);
 }
 
+QIcon JabberProtocol::statusIcon(Status status)
+{
+	return StatusTypeManager::instance()->statusIcon("xmpp", status.type(),
+			!status.description().isEmpty(), false);
+}
+
+QIcon JabberProtocol::statusIcon(const QString &statusType)
+{
+	return StatusTypeManager::instance()->statusIcon("xmpp", statusType, false, false);
+}
+
 JabberContactDetails * JabberProtocol::jabberContactDetails(Contact contact) const
 {
 	if (contact.isNull())

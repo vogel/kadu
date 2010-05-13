@@ -145,6 +145,9 @@ public:
 	virtual bool validateUserID(const QString &uid);
 	virtual QPixmap statusPixmap(Status status);
 	virtual QPixmap statusPixmap(const QString &statusType);
+	
+	virtual QIcon statusIcon(Status status);
+	virtual QIcon statusIcon(const QString &statusType);
 
 	UinType uin(Contact contact) const;
 	GaduContactDetails * gaduContactDetails(Contact contact) const;

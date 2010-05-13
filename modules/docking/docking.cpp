@@ -168,7 +168,7 @@ void DockingManager::changeIcon()
 				const Status &stat = account.protocolHandler()->status();
 
 				if (CurrentDocker)
-					CurrentDocker->changeTrayIcon(QIcon(account.protocolHandler()->statusPixmap(stat)));
+					CurrentDocker->changeTrayIcon(account.protocolHandler()->statusIcon(stat));
 
 				icon_timer->setSingleShot(true);
 				icon_timer->start(500);
@@ -193,7 +193,7 @@ void DockingManager::pendingMessageDeleted()
 
 		const Status &stat = account.protocolHandler()->status();
 		if (CurrentDocker)
-			CurrentDocker->changeTrayIcon(QIcon(account.protocolHandler()->statusPixmap(stat)));
+			CurrentDocker->changeTrayIcon(account.protocolHandler()->statusIcon(stat));
 	}
 }
 
@@ -292,9 +292,9 @@ QIcon DockingManager::defaultPixmap()
 {
 	Account account = AccountManager::instance()->defaultAccount();
 	if (account.isNull() || !account.protocolHandler())
-		return QIcon(StatusContainerManager::instance()->statusPixmap());
+		return StatusContainerManager::instance()->statusPixmap();
 
-	return QIcon(account.protocolHandler()->statusPixmap(account.protocolHandler()->status()));
+	return account.protocolHandler()->statusIcon(account.protocolHandler()->status());
 }
 
 void DockingManager::setDocker(Docker *docker)

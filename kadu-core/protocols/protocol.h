@@ -125,6 +125,10 @@ public:
 	virtual QPixmap statusPixmap(Status status) = 0;
 	virtual QPixmap statusPixmap(const QString &statusType) = 0;
 	QPixmap statusPixmap() { return statusPixmap(CurrentStatus); }
+	
+	virtual QIcon statusIcon(Status status) = 0;
+	virtual QIcon statusIcon(const QString &statusType) = 0;
+	QIcon statusIcon() { return statusIcon(CurrentStatus); }
 
 	QIcon icon();
 

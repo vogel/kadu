@@ -918,6 +918,17 @@ QPixmap GaduProtocol::statusPixmap(const QString &statusType)
 	return StatusTypeManager::instance()->statusPixmap("gadu-gadu", "16x16", statusType, false, false);
 }
 
+QIcon GaduProtocol::statusIcon(Status status)
+{
+	return StatusTypeManager::instance()->statusIcon("gadu-gadu", status.type(),
+			!status.description().isEmpty(), false);
+}
+
+QIcon GaduProtocol::statusIcon(const QString &statusType)
+{
+	return StatusTypeManager::instance()->statusIcon("gadu-gadu", statusType, false, false);
+}
+
 void GaduProtocol::contactAdded(Contact contact)
 {
 	if (contact.contactAccount() != account())

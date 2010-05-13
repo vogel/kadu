@@ -818,3 +818,15 @@ QPixmap TlenProtocol::statusPixmap(const QString &statusType)
 {
 	return StatusTypeManager::instance()->statusPixmap("tlen", "16x16", statusType, false, false);
 }
+
+QIcon TlenProtocol::statusIcon(Status status)
+{
+	return StatusTypeManager::instance()->statusIcon("tlen", status.type(),
+			!status.description().isEmpty(), false);
+}
+
+QIcon TlenProtocol::statusIcon(const QString &statusType)
+{
+	return StatusTypeManager::instance()->statusIcon("tlen", statusType, false, false);
+}
+

@@ -53,6 +53,8 @@ public:
 	StatusType * statusType(const QString &name);
 	QPixmap statusPixmap(const QString &protocol, const QString &size, const QString &type,
 			bool description, bool mobile);
+	QIcon statusIcon(const QString &protocol, const QString &type,
+			bool description, bool mobile);
 
 	QList<StatusType *> statusTypes() { return StatusTypes; }
 
