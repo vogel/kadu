@@ -356,7 +356,7 @@ void Core::statusChanged()
 {
 	kdebugf();
 
-	setIcon(StatusContainerManager::instance()->statusPixmap());
+	setIcon(StatusContainerManager::instance()->statusIcon());
 }
 
 void Core::kaduWindowDestroyed()
@@ -448,14 +448,13 @@ KaduWindow * Core::kaduWindow()
 	return Window;
 }
 
-void Core::setIcon(const QPixmap &pixmap)
+void Core::setIcon(const QIcon &icon)
 {
 	bool blocked = false;
 	emit settingMainIconBlocked(blocked);
 
 	if (!blocked)
 	{
-		QIcon icon(pixmap);
 		if (Window)
 			Window->setWindowIcon(icon);
 		QApplication::setWindowIcon(icon);

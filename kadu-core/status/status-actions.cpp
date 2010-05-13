@@ -120,7 +120,7 @@ QAction * StatusActions::createSeparator()
 QAction * StatusActions::createStatusAction(StatusType *statusType)
 {
 	QAction *statusAction = ChangeStatusActionGroup->addAction(
-			MyStatusContainer->statusPixmap(statusType->name()),
+			MyStatusContainer->statusIcon(statusType->name()).pixmap(16, 16),
 			MyStatusContainer->statusNamePrefix() + statusType->displayName());
 	statusAction->setCheckable(true);
 	statusAction->setData(QVariant::fromValue(statusType));

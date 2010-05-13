@@ -167,7 +167,7 @@ QVariant BuddiesModelBase::data(Contact contact, int role, bool useBuddyData) co
 				return QVariant();
 			// TODO generic icon
 			return !contact.contactAccount().isNull()
-					? contact.contactAccount().statusContainer()->statusPixmap(contact.currentStatus())
+					? contact.contactAccount().statusContainer()->statusIcon(contact.currentStatus()).pixmap(16, 16)
 					: QVariant();
 		case BuddyRole:
 			return QVariant::fromValue(contact.ownerBuddy());

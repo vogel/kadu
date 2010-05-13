@@ -479,7 +479,7 @@ void KaduWindowActions::statusChanged(StatusContainer *container, Status status)
 		return;
 
 	// TODO: 0.6.6, this really SUXX
-	QIcon icon = container->statusPixmap(status);
+	QIcon icon = container->statusIcon(status).pixmap(16, 16);
 	foreach (Action *action, ShowStatus->actions())
 		action->setIcon(icon);
 }
@@ -557,7 +557,7 @@ void KaduWindowActions::showStatusActionCreated(Action *action)
 	Account account = AccountManager::instance()->defaultAccount();
 
 	if (account.protocolHandler())
-		action->setIcon(account.protocolHandler()->statusPixmap());
+		action->setIcon(account.protocolHandler()->statusIcon().pixmap(16,16));
 }
 
 void KaduWindowActions::useProxyActionCreated(Action *action)

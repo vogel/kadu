@@ -523,7 +523,7 @@ void SearchWindow::newSearchResults(BuddyList buddies)
 	kdebugf();
 
 	QTreeWidgetItem *qlv = 0;
-	QPixmap pix;
+	QIcon pix;
 
 	foreach(Buddy buddy, buddies)
 	{
@@ -532,7 +532,7 @@ void SearchWindow::newSearchResults(BuddyList buddies)
 		QList <QTreeWidgetItem *> items = results->findItems(contact.id(), Qt::MatchExactly, 1);
 		if (items.count())
 			qlv = items[0];		
-		pix = contact.contactAccount().statusContainer()->statusPixmap(contact.currentStatus());
+		pix = contact.contactAccount().statusContainer()->statusIcon(contact.currentStatus()).pixmap(16, 16);
 
 		if (qlv)
 		{
@@ -547,7 +547,7 @@ void SearchWindow::newSearchResults(BuddyList buddies)
 			QStringList strings;
 			strings << QString::null << contact.id() << buddy.firstName() << buddy.city() << buddy.nickName() << QString::number(buddy.birthYear());
 			qlv = new QTreeWidgetItem(results, strings);
-			qlv->setIcon(0, QIcon(pix));
+			qlv->setIcon(0, pix);
 			qlv = 0;
 		}
 	}

@@ -230,23 +230,23 @@ QString StatusContainerManager::statusName()
 			: tr("Offline");
 }
 
-QPixmap StatusContainerManager::statusPixmap()
+QIcon StatusContainerManager::statusIcon()
 {
 	return DefaultStatusContainer && this != DefaultStatusContainer
-			? DefaultStatusContainer->statusPixmap()
-			: IconsManager::instance()->pixmapByPath("protocols/gadu-gadu/16x16/offline.png");
+			? DefaultStatusContainer->statusIcon()
+			: IconsManager::instance()->iconByPath("protocols/gadu-gadu/16x16/offline.png");
 }
 
-QPixmap StatusContainerManager::statusPixmap(Status status)
+QIcon StatusContainerManager::statusIcon(Status status)
 {
-	return statusPixmap(status.type());
+	return statusIcon(status.type());
 }
 
-QPixmap StatusContainerManager::statusPixmap(const QString &statusType)
+QIcon StatusContainerManager::statusIcon(const QString &statusType)
 {
 	return DefaultStatusContainer && this != DefaultStatusContainer
-			? DefaultStatusContainer->statusPixmap(statusType)
-			: QPixmap();
+			? DefaultStatusContainer->statusIcon(statusType)
+			: QIcon();
 // 			: IconsManager::instance()->loadPixmap(statusType);
 }
 

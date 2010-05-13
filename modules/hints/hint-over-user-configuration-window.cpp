@@ -154,7 +154,7 @@ void HintOverUserConfigurationWindow::iconSizeChanged(int index)
 	Q_UNUSED(index)
 
 	Contact contact = ExampleBuddy.prefferedContact();
-	previewIconLabel->setPixmap(contact.contactAccount().statusContainer()->statusPixmap(contact.currentStatus()));
+	previewIconLabel->setPixmap(contact.contactAccount().statusContainer()->statusIcon(contact.currentStatus()).pixmap(16, 16));
 }
 
 void HintOverUserConfigurationWindow::syntaxChanged()

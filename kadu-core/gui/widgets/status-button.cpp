@@ -52,7 +52,7 @@ void StatusButton::createGui()
 
 void StatusButton::statusChanged()
 {
-	setIcon(MyStatusContainer->statusPixmap());
+	setIcon(MyStatusContainer->statusIcon());
 
 	if (MainConfiguration::instance()->simpleMode())
 		setText(MyStatusContainer->statusContainerName());
@@ -62,7 +62,7 @@ void StatusButton::statusChanged()
 
 void StatusButton::configurationUpdated()
 {
-	setIcon(MyStatusContainer->statusPixmap());
+	setIcon(MyStatusContainer->statusIcon());
 
 	if (MainConfiguration::instance()->simpleMode())
 		setText(MyStatusContainer->statusContainerName());

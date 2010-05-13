@@ -462,7 +462,7 @@ void HintManager::prepareOverUserHint(QFrame *tipFrame, QLabel *iconLabel, QLabe
 		text = text.right(text.length() - 5 /* 5 == QString("<br/>").length()*/);
 
 	if (contact.contactAccount() && contact.contactAccount().statusContainer())
-		iconLabel->setPixmap(contact.contactAccount().statusContainer()->statusPixmap(contact.currentStatus()));
+		iconLabel->setPixmap(contact.contactAccount().statusContainer()->statusIcon(contact.currentStatus()).pixmap(16, 16));
 
 	tipLabel->setFont(config_file.readFontEntry("Hints", "HintOverUser_font"));
 	tipLabel->setText(text);

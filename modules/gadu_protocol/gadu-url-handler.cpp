@@ -95,7 +95,7 @@ void GaduUrlHandler::openUrl(const QString &url, bool disableMenu)
 			ids.append(account.id());
 			ids.append(gaduId);
 
-			menu->addAction(account.statusContainer()->statusPixmap(), account.id())->setData(ids);
+			menu->addAction(account.statusContainer()->statusIcon(), account.id())->setData(ids);
 		}
 
 		connect(menu, SIGNAL(triggered(QAction *)), this, SLOT(accountSelected(QAction *)));

@@ -118,10 +118,20 @@ QIcon StatusTypeManager::statusIcon(const QString &protocol, const QString &type
 	if (!statusType)
 		return QPixmap();
 
-	QString iconName = QString("protocols/%1/22x22/%2%3%4.png")
+	QString iconName = QString("protocols/%1/16x16/%2%3%4.png")
 			.arg(protocol)
 			.arg(statusType->iconName())
 			.arg(description ? "_d" : "")
 			.arg(mobile ? "_m" : "");
-	return IconsManager::instance()->iconByPath(iconName);
+			
+	QIcon icon = IconsManager::instance()->iconByPath(iconName);
+	
+	QString iconPath = QString("protocols/%1/22x22/%2%3%4.png")
+			.arg(protocol)
+			.arg(statusType->iconName())
+			.arg(description ? "_d" : "")
+			.arg(mobile ? "_m" : "");
+	icon.addFile(IconsManager::instance()->iconPath(iconPath), QSize(22, 22));
+	
+	return icon;
 }

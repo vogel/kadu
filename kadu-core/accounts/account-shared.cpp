@@ -314,25 +314,25 @@ QString AccountShared::statusName()
 	return Status::name(status(), false);
 }
 
-QPixmap AccountShared::statusPixmap()
+QIcon AccountShared::statusIcon()
 {
-	return statusPixmap(status());
+	return statusIcon(status());
 }
 
-QPixmap AccountShared::statusPixmap(const QString &statusType)
+QIcon AccountShared::statusIcon(const QString &statusType)
 {
 	if (ProtocolHandler)
-		return ProtocolHandler->statusPixmap(statusType);
+		return ProtocolHandler->statusIcon(statusType);
 	else
-		return QPixmap();
+		return QIcon();
 }
 
-QPixmap AccountShared::statusPixmap(Status status)
+QIcon AccountShared::statusIcon(Status status)
 {
 	if (ProtocolHandler)
-		return ProtocolHandler->statusPixmap(status);
+		return ProtocolHandler->statusIcon(status);
 	else
-		return QPixmap();
+		return QIcon();
 }
 
 void AccountShared::setPrivateStatus(bool isPrivate)

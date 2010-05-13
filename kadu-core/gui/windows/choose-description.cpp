@@ -84,7 +84,7 @@ ChooseDescription::ChooseDescription(StatusContainer *statusContainer, QWidget *
 	connect(Description, SIGNAL(activated(int)), this, SLOT(activated(int)));
 
 	OkButton = new QPushButton(tr("&OK"), this);
-	OkButton->setIcon(statusContainer->statusPixmap());
+	OkButton->setIcon(statusContainer->statusIcon());
 	OkButton->setDefault(true);
 	connect(OkButton, SIGNAL(clicked(bool)), this, SLOT(accept()));
 
@@ -168,5 +168,5 @@ void ChooseDescription::currentDescriptionChanged(const QString &text)
 
 void ChooseDescription::statusChanged()
 {
-	OkButton->setIcon(MyStatusContainer->statusPixmap());
+	OkButton->setIcon(MyStatusContainer->statusIcon());
 }

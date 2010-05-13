@@ -315,7 +315,7 @@ void ChatShared::refreshTitle()
 			title = Parser::parse(config_file.readEntry("Look","ChatContents"), contact, false);
 
 		if (!contact.isNull() && ChatAccount.statusContainer())
-			Icon = ChatAccount.statusContainer()->statusPixmap(contact.currentStatus());
+			Icon = ChatAccount.statusContainer()->statusIcon(contact.currentStatus());
 	}
 
 	title.replace("<br/>", " ");

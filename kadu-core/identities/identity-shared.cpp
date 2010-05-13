@@ -135,22 +135,22 @@ QString IdentityShared::statusName()
 	return Status::name(status(), false);
 }
 
-QPixmap IdentityShared::statusPixmap()
+QIcon IdentityShared::statusIcon()
 {
-	return statusPixmap(status().type());
+	return statusIcon(status().type());
 }
 
-QPixmap IdentityShared::statusPixmap(Status status)
+QIcon IdentityShared::statusIcon(Status status)
 {
-	return statusPixmap(status.type());
+	return statusIcon(status.type());
 }
 
-QPixmap IdentityShared::statusPixmap(const QString &statusType)
+QIcon IdentityShared::statusIcon(const QString &statusType)
 {
 	foreach (Account account, Accounts)
 		if (account.statusContainer())
-			return account.statusContainer()->statusPixmap(statusType);
-	return QPixmap();
+			return account.statusContainer()->statusIcon(statusType);
+	return QIcon();
 }
 
 QList<StatusType *> IdentityShared::supportedStatusTypes()

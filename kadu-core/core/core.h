@@ -86,7 +86,7 @@ public:
 	void setShowMainWindowOnStart(bool show);
 	KaduWindow * kaduWindow();
 
-	void setIcon(const QPixmap &icon);
+	void setIcon(const QIcon &icon);
 
 public slots:
 	void receivedSignal(const QString &signal);

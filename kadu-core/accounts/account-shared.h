@@ -127,12 +127,12 @@ public: //TODO 0.6.6: it is needed in Buddy::dummy()
 	virtual int maxDescriptionLength();
 
 	virtual QString statusName();
-	virtual QPixmap statusPixmap();
-	virtual QPixmap statusPixmap(const QString &statusType);
+	virtual QIcon statusIcon();
+	virtual QIcon statusIcon(const QString &statusType);
 
 	virtual QList<StatusType *> supportedStatusTypes();
 
-	QPixmap statusPixmap(Status status);
+	QIcon statusIcon(Status status);
 
 	virtual void setPrivateStatus(bool isPrivate);
 

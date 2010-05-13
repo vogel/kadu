@@ -292,7 +292,7 @@ QIcon DockingManager::defaultPixmap()
 {
 	Account account = AccountManager::instance()->defaultAccount();
 	if (account.isNull() || !account.protocolHandler())
-		return StatusContainerManager::instance()->statusPixmap();
+		return StatusContainerManager::instance()->statusIcon();
 
 	return account.protocolHandler()->statusIcon(account.protocolHandler()->status());
 }
@@ -339,7 +339,7 @@ void DockingManager::updateContextMenu()
 		foreach (StatusContainer *container, StatusContainerManager::instance()->statusContainers())
 		{
 			QMenu *menu = new QMenu(container->statusContainerName());
-			menu->setIcon(container->statusPixmap());
+			menu->setIcon(container->statusIcon());
 			new StatusMenu(container, menu);
 			StatusContainerMenus[container] = DockMenu->addMenu(menu);
 			connect(container, SIGNAL(statusChanged()), this, SLOT(containerStatusChanged()));
@@ -358,7 +358,7 @@ void DockingManager::containerStatusChanged()
 {
 	StatusContainer *container;
 	if (sender() && (container = dynamic_cast<StatusContainer *>(sender())) && StatusContainerMenus[container])
-		StatusContainerMenus[container]->setIcon(container->statusPixmap());
+		StatusContainerMenus[container]->setIcon(container->statusIcon());
 }
 
 void DockingManager::statusContainerRegistered(StatusContainer *statusContainer)
@@ -368,7 +368,7 @@ void DockingManager::statusContainerRegistered(StatusContainer *statusContainer)
 	else
 	{
 		QMenu *menu = new QMenu(statusContainer->statusContainerName());
-		menu->setIcon(statusContainer->statusPixmap());
+		menu->setIcon(statusContainer->statusIcon());
 		new StatusMenu(statusContainer, menu);
 		StatusContainerMenus[statusContainer] = DockMenu->insertMenu(containersSeparator, menu);
 		connect(statusContainer, SIGNAL(statusChanged()), this, SLOT(containerStatusChanged()));

@@ -92,9 +92,9 @@ public:
 	virtual Status status();
 
 	virtual QString statusName();
-	virtual QPixmap statusPixmap();
-	virtual QPixmap statusPixmap(Status status);
-	virtual QPixmap statusPixmap(const QString &statusType);
+	virtual QIcon statusIcon();
+	virtual QIcon statusIcon(Status status);
+	virtual QIcon statusIcon(const QString &statusType);
 
 	virtual QList<StatusType *> supportedStatusTypes();
 
