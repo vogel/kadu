@@ -1,7 +1,7 @@
 <configuration-ui>
 	<section name="Kadu">
-		<tab name="Kadu">
-			<group-box name="General">
+		<tab name="General">
+			<group-box name="Config wizard">
 				<action-button caption="Start Configuration Wizard..." id="config-wizard/start" />
 			</group-box>
 		</tab>

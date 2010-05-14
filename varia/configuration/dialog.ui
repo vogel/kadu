@@ -1,33 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration-ui>
 	<section name="Kadu" icon="kadu_icons/kadu-tab.png">
-		<tab name="Kadu">
-			<group-box name="General">
+		<tab name="General">
+		
+			<group-box name="Nickname">
+				<line-edit caption="Nickname" config-section="General" config-item="Nick" />
+				<label caption="Enter a nickname for your account." />
+			</group-box>
+			
+			<group-box name="Contact List Mode">
+				<check-box caption="Hide messaging networks for each contact (Simple Mode)" config-section="General" config-item="SimpleMode" id="simpleMode"
+					   tool-tip="If enabled, contact networks will be hidden in contacts list and status buttons" />
+				<label caption="With this setting, each of your contact's messaging networks will be removed from view on your contact list." />
+				<check-box caption="Differentiate the messaging networks for each contact (Advanced Mode)" config-section="General" config-item="AdvancedMode" />
+				<label caption="With this setting, your contact list will display the associated messaging networks for each of your contacts (e.g. 'Anna uses Gadu-Gadu and Google Talk') ." />
+				
+				<check-box caption="Show network icons with each contact" config-section="General" config-item="ShowContactsWithIcons" />
+			</group-box>
+			
+			<group-box name="Default Language">
 				<combo-box caption="Language" config-section="General" config-item="Language" id="languages"
 					   tool-tip="Choose your language" />
-				<line-edit caption="Nickaname" config-section="General" config-item="Nick" />
-			</group-box>
+				<label caption="Kadu will use [regional application] as the default network in this configuration." />
+				<action-button caption="Change..." id="change-network" />
 
-			<group-box name="Contacts list mode">
-				<check-box caption="Use simple mode" config-section="General" config-item="SimpleMode" id="simpleMode"
-					   tool-tip="If enabled, contact networks will be hidden in contacts list and status buttons" />
 			</group-box>
-
-			<group-box name="Updates">
-				<check-box caption="Check for updates" config-section="General" config-item="CheckUpdates"
-					   tool-tip="Automatically checks whether a new version is available" />
-			</group-box>
-
-			<group-box name="Startup" id="startup">
-				<check-box caption="Start on startup" config-section="General" config-item="RunOnStartup"
-					   tool-tip="Automatically start on system startup" id="startupcb"/>
-			</group-box>
-
+			
 		</tab>
 
 		<tab name="Applications">
-			<group-box name="WWW browser">
-				<combo-box caption="Choose your browser" config-section="Chat" config-item="WebBrowserNo" id="browser"
+			<group-box name="Web and E-Mail">
+				<label caption="Kadu will use default applications to open links from chat messages and user descriptions." />
+				
+				<combo-box caption="Default Web Browser" config-section="Chat" config-item="WebBrowserNo" id="browser"
 					   tool-tip="Choose your browser">
 					<item value="Specify path" caption="Specify path" />
 					<item value="Konqueror" caption="Konqueror" />
@@ -43,10 +48,8 @@
 				</combo-box>
 				<line-edit caption="Custom browser" config-section="Chat" config-item="WebBrowser" id="browserPath"
 					   tool-tip="Write specific path to your browser" />
-			</group-box>
-
-			<group-box name="e-mail client">
-				<combo-box caption="Choose your e-mail client" config-section="Chat" config-item="EmailClientNo" id="mail"
+					   
+				<combo-box caption="Default E-Mail Client" config-section="Chat" config-item="EmailClientNo" id="mail"
 					   tool-tip="Choose your email client">
 					<item value="Specify path" caption="Specify path" />
 					<item value="KMail" caption="KMail" />
@@ -54,9 +57,16 @@
 					<item value="SeaMonkey" caption="SeaMonkey" />
 					<item value="Evolution" caption="Evolution" />
 					<item value="Mail" caption="Mail" />
-                </combo-box>
+				</combo-box>
 				<line-edit caption="Custom e-mail client" config-section="Chat" config-item="MailClient" id="mailPath"
 					   tool-tip="Write specific path to your email client" />
+			</group-box>
+			
+			<group-box name="Updates and Startup">
+				<check-box caption="Check for updates when Kadu is opened" config-section="General" config-item="CheckUpdates"
+					   tool-tip="Check for updates when Kadu is opened" />
+				<check-box caption="Automatically open Kadu at startup" config-section="General" config-item="RunOnStartup"
+					   tool-tip="Automatically open Kadu at startup" id="startup" />
 			</group-box>
 		</tab>
 

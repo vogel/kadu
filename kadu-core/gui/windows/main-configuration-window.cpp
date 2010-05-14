@@ -154,7 +154,7 @@ MainConfigurationWindow::MainConfigurationWindow()
 #endif
 
 #ifndef Q_OS_WIN
-	((QWidget *)(widget()->widgetById("startup")->parent()))->hide();
+	((QWidget *)(widget()->widgetById("startup")))->hide();
 #endif
 
 	onStartupSetLastDescription = dynamic_cast<QCheckBox *>(widget()->widgetById("onStartupSetLastDescription"));
