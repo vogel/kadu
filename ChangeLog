@@ -1,4 +1,13 @@
 +++ version 0.6.6-beta2
+* jabber: added URL handler for jabber:// protocol (Juzef)
+* gui: #1332 fixed: dock icon now in 22x22 size (Juzef)
+* gui: fix avatar scaling, configurable avatars: add border and gray out offline contacts' avatars (badboy)
+* gui: minimized windows activation fixed (ultr)
+* core: #1321 fixed: crash when clicking on contacts without protocol (Juzef)
+* mediaplayer: #1319 fixed: force mediaplayer to work only when enabled (Juzef)
+* core: #1325 fixed: hide identities without accounts in simple mode (Juzef)
+* gui: #1328 fixed: infopanel turned off by default (Juzef)
+* tlen: module restored, authorization fixed (Juzef)
 * core: removed Instaluj.sh (Vogel)
 * desktop_docking: ported to 0.6.6 (Vogel)
 
