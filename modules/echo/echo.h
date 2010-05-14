@@ -3,11 +3,11 @@
 
 #include <QtCore/QObject>
 
-#include "../modules/gadu_protocol/gadu.h"
+#include "accounts/accounts-aware-object.h"
+#include "contacts/contact.h"
 #include "protocols/protocol.h"
-#include "usergroup.h"
 
-class Echo : public QObject
+class Echo : public QObject, AccountsAwareObject
 {
 	Q_OBJECT
 
@@ -15,8 +15,12 @@ class Echo : public QObject
 		Echo();
 		~Echo();
 
+	protected:
+		virtual void accountRegistered(Account account);
+		virtual void accountUnregistered(Account account);
+
 	public slots:
-		void messageReceived(Protocol *protocol, UserListElements senders, const QString& msg, time_t time);
+		void receivedMessageFilter(Chat chat, Contact sender, const QString &message, time_t time, bool &ignore);
 };
 
 extern Echo* echo;

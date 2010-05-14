@@ -10,6 +10,7 @@
  * Copyright 2004 Roman Krzystyniak (Ron_K@tlen.pl)
  * Copyright 2008 Tomasz Rostański (rozteck@interia.pl)
  * Copyright 2008 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * Copyright 2010 Dariusz Markowicz (darom@alari.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -27,14 +28,18 @@
  */
 
 #include <QtGui/QApplication>
+#include <QtGui/QLineEdit>
 
 #include "accounts/account.h"
-#include "accounts/account_manager.h"
-#include "chat_widget.h"
-#include "chat_manager-old.h"
+#include "accounts/account-manager.h"
+#include "configuration/configuration-file.h"
 #include "debug.h"
-#include "kadu.h"
-#include "kadu_parser.h"
+#include "gui/widgets/chat-widget.h"
+#include "gui/widgets/chat-widget-manager.h"
+#include "gui/widgets/configuration/configuration-widget.h"
+#include "gui/windows/main-configuration-window.h"
+#include "misc/path-conversion.h"
+#include "parser/parser.h"
 
 #include "autoresponder.h"
 
@@ -42,29 +47,47 @@
  * @ingroup autoresponder
  * @{
  */
+AutoResponder *autoResponder = 0;
+
 extern "C" KADU_EXPORT int autoresponder_init(bool firstLoad)
 {
-	autoresponder = new AutoResponder();
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/autoresponder.ui"), autoresponder);
+	Q_UNUSED(firstLoad)
+
+	kdebugf();
+
+	autoResponder = new AutoResponder();
+
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/autoresponder.ui"));
+	MainConfigurationWindow::registerUiHandler(autoResponder);
+
+	kdebugf2();
 	return 0;
 }
 
 extern "C" KADU_EXPORT void autoresponder_close()
 {
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/autoresponder.ui"), autoresponder);
-	delete autoresponder;
-	autoresponder = 0;
+	kdebugf();
+
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/autoresponder.ui"));
+	MainConfigurationWindow::unregisterUiHandler(autoResponder);
+
+	delete autoResponder;
+	autoResponder = 0;
+
+	kdebugf2();
 }
 
-AutoResponder::AutoResponder(QObject *parent, const char *name) : QObject(parent, name), repliedUsers()
+AutoResponder::AutoResponder(QObject *parent) :
+	QObject(parent)
 {
 	kdebugf();
 
-	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
-	connect(gadu, SIGNAL(messageReceived(Protocol *, UserListElements, const QString &, time_t )),
-		this, SLOT(messageReceived(Protocol *, UserListElements, const QString&, time_t)));
-	connect(chat_manager, SIGNAL(chatWidgetOpen(ChatWidget *)), this, SLOT(chatOpenedClosed(ChatWidget *)));
-	connect(chat_manager, SIGNAL(chatWidgetDestroying(ChatWidget *)), this, SLOT(chatOpenedClosed(ChatWidget *)));
+	triggerAllAccountsRegistered();
+
+	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetOpen(ChatWidget *, bool)),
+			this, SLOT(chatOpenedClosed(ChatWidget *, bool)));
+	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget *)),
+			this, SLOT(chatOpenedClosed(ChatWidget *)));
 
 	createDefaultConfiguration();
 	configurationUpdated();
@@ -76,60 +99,119 @@ AutoResponder::~AutoResponder()
 {
 	kdebugf();
 
-	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
-	disconnect(gadu, SIGNAL(messageReceived(Protocol *, UserListElements, const QString&, time_t)),
-		this, SLOT(messageReceived(Protocol *, UserListElements, const QString&, time_t)));
-	disconnect(chat_manager, SIGNAL(chatWidgetOpen(ChatWidget *)), this, SLOT(chatOpenedClosed(ChatWidget *)));
-	disconnect(chat_manager, SIGNAL(chatWidgetDestroying(ChatWidget *)), this, SLOT(chatOpenedClosed(ChatWidget *)));
+	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetOpen(ChatWidget *, bool)),
+			this, SLOT(chatOpenedClosed(ChatWidget *, bool)));
+	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget *)),
+			this, SLOT(chatOpenedClosed(ChatWidget *)));
 
 	kdebugf2();
 }
 
-void AutoResponder::messageReceived(Protocol *protocol, UserListElements senders, const QString& msg, time_t /*time*/)
+void AutoResponder::accountRegistered(Account account)
 {
+	Protocol *protocol = account.protocolHandler();
+	if (!protocol)
+		return;
+
+	ChatService *chatService = protocol->chatService();
+	if (chatService)
+	{
+		connect(chatService, SIGNAL(receivedMessageFilter(Chat, Contact, const QString &, time_t, bool &)),
+				this, SLOT(receivedMessageFilter(Chat, Contact, const QString &, time_t, bool &)));
+	}
+}
+
+void AutoResponder::accountUnregistered(Account account)
+{
+	Protocol *protocol = account.protocolHandler();
+	if (!protocol)
+		return;
+
+	ChatService *chatService = protocol->chatService();
+	if (chatService)
+	{
+		disconnect(chatService, SIGNAL(receivedMessageFilter(Chat, Contact, const QString &, time_t, bool &)),
+				this, SLOT(receivedMessageFilter(Chat, Contact, const QString &, time_t, bool &)));
+	}
+}
+
+void AutoResponder::receivedMessageFilter(Chat chat, Contact sender, const QString &message, time_t time, bool &ignore)
+{
+	Q_UNUSED(time)
+	Q_UNUSED(ignore)
+
 	kdebugf();
-	if (msg.left(5) == "KADU ")
+	//kdebugm(KDEBUG_INFO, "Autoresponder received: [%s]\n", qPrintable(message));
+	if (message.left(5) == "KADU ")
 	{
 		kdebugf2();
 		return;
 	}
 
-	if (!respondConferences && (senders.count() > 1))
+	if (!respondConferences && (chat.contacts().count() > 1))
 	{
 		kdebugf2();
 		return;
 	}
 
-	if (respondOnlyFirst && repliedUsers.contains(senders))
+	if (respondOnlyFirst && repliedUsers.contains(sender))
 	{
 		kdebugf2();
 		return;
 	}
 
-	if ((statusAvailable && protocol->currentStatus().isOnline()) || (statusBusy && protocol->currentStatus().isBusy()) || (statusInvisible && protocol->currentStatus().isInvisible()))
+	Protocol *protocol = chat.chatAccount().protocolHandler();
+	if (!protocol)
 	{
-		protocol->sendMessage(senders, tr("KADU AUTORESPONDER:") + "\n" + KaduParser::parse(autotext, senders[0]));
-		repliedUsers.append(senders); // dolaczamy uzytkownikow, ktorym odpowiedziano
+		kdebugf2();
+		return;
+	}
+
+	// Na chwilę obecną busy == away gdyż:
+	// status-type-manager.cpp:
+	//   StatusGroup *busy = StatusGroupManager::instance()->statusGroup("Away");
+	if ((statusAvailable && protocol->status().group() == "Online")
+			|| (statusBusy && protocol->status().group() == "Away")
+			|| (statusInvisible && protocol->status().group() == "Invisible"))
+	{
+		ChatService *chatService = protocol->chatService();
+		if (!chatService)
+		{
+			kdebugf2();
+			return;
+		}
+
+		// FIXME: Tekst autoodpowiedzi pojawia się zarówno w czacie rozmówcy
+		// jak i wysyłającego. W 0.6.5 pojawiał się tylko u romówcy.
+		chatService->sendMessage(chat, tr("KADU AUTORESPONDER:") + "\n"
+				+ Parser::parse(autoRespondText, sender));
+		// dołączamy użytkowników, którym odpowiedziano
+		foreach(Contact contact, chat.contacts())
+			repliedUsers.insert(contact);
 	}
 
 	kdebugf2();
 }
 
-void AutoResponder::chatOpenedClosed(ChatWidget *chat)
+void AutoResponder::chatOpenedClosed(ChatWidget *chatWidget, bool activate)
 {
-	repliedUsers.remove(chat->users()->toUserListElements());
+	Q_UNUSED(activate)
+	Chat chat = chatWidget->chat();
+	foreach(Contact contact, chat.contacts())
+		repliedUsers.remove(contact);
 }
 
 void AutoResponder::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) 
 {
-	mainConfigurationWindow->widgetById("autoresponder/AutoText")->setToolTip(qApp->translate("@default", Kadu::SyntaxText));
+	autoRespondTextLineEdit = dynamic_cast<QLineEdit *>(mainConfigurationWindow->widget()->widgetById("autoresponder/autoRespondText"));
+	autoRespondTextLineEdit->setToolTip(qApp->translate("@default", MainConfigurationWindow::SyntaxText));
 }
 
 void AutoResponder::configurationUpdated()
 {
 	kdebugf();
 
-	autotext = config_file.readEntry("Autoresponder", "Autotext");
+	autoRespondText = config_file.readEntry("Autoresponder", "Autotext");
 
 	respondConferences = config_file.readBoolEntry("Autoresponder", "RespondConf");
 	respondOnlyFirst = config_file.readBoolEntry("Autoresponder", "OnlyFirstTime");
@@ -150,7 +232,5 @@ void AutoResponder::createDefaultConfiguration()
 	config_file.addVariable("Autoresponder", "StatusBusy", true);
 	config_file.addVariable("Autoresponder", "StatusInvisible", false);
 }
-
-AutoResponder* autoresponder;
 
 /** @} */

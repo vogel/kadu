@@ -2,7 +2,7 @@
 	<section name="Chat">
 		<tab name="Autoresponder">
 			<group-box name="Options">
-				<line-edit caption="Autoanswer text" config-section="Autoresponder" config-item="Autotext" id="autoresponder/AutoText" />
+				<line-edit caption="Autoanswer text" config-section="Autoresponder" config-item="Autotext" id="autoresponder/autoRespondText" />
 				<check-box caption="Only for the first time" config-section="Autoresponder" config-item="OnlyFirstTime" />
 				<check-box caption="Respond to conferences" config-section="Autoresponder" config-item="RespondConf" />
 			</group-box>

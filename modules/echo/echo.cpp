@@ -6,6 +6,7 @@
  * Copyright 2007, 2008, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2004 Roman Krzystyniak (Ron_K@tlen.pl)
  * Copyright 2004, 2008, 2009 Michał Podsiadlik (michal@kadu.net)
+ * Copyright 2010 Dariusz Markowicz (darom@alari.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -22,46 +23,120 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "debug.h"
+#include "gui/widgets/chat-widget.h"
+//#include "gui/windows/message-dialog.h"
+#include "misc/misc.h"
+
 #include "echo.h"
 
-//#include "message_box.h"
-#include "debug.h"
-#include "misc/misc.h"
+Echo *echo = 0;
 
 extern "C" KADU_EXPORT int echo_init(bool firstLoad)
 {
+	Q_UNUSED(firstLoad)
+
+	kdebugf();
+
 	echo = new Echo();
+
+	kdebugf2();
 	return 0;
 }
 
 extern "C" KADU_EXPORT void echo_close()
 {
+	kdebugf();
+
 	delete echo;
-	echo = NULL;
+	echo = 0;
+
+	kdebugf2();
 }
 
-Echo::Echo() : QObject(NULL, "echo")
+Echo::Echo() :
+	QObject(0)
 {
-//	MessageDialog::msg(tr("Echo started"));
-	connect(gadu, SIGNAL(messageReceived(Account *, UserListElements, const QString &, time_t)),
-			this, SLOT(messageReceived(Account *, UserListElements, const QString &, time_t)));
+	kdebugf();
+	//	MessageDialog::msg(tr("Echo started"));
+
+	triggerAllAccountsRegistered();
+	kdebugf2();
 }
 
 Echo::~Echo()
 {
-	disconnect(gadu, SIGNAL(messageReceived(Account *, UserListElements, const QString &, time_t)),
-			this, SLOT(messageReceived(Account *, UserListElements, const QString &, time_t)));
-//	MessageDialog::msg(tr("Echo stopped"));
+	kdebugf();
+	//	MessageDialog::msg(tr("Echo stopped"));
+	kdebugf2();
 }
 
-void Echo::messageReceived(Account *protocol, UserListElements senders, const QString& msg, time_t time)
+void Echo::accountRegistered(Account account)
 {
 	kdebugf();
-	if (msg.left(5) != "KADU ")
+	Protocol *protocol = account.protocolHandler();
+	if (!protocol)
 	{
-		protocol->sendMessage(senders, QString("KADU ECHO: ") + msg);
+		kdebugf2();
+		return;
+	}
+
+	ChatService *chatService = protocol->chatService();
+	if (chatService)
+	{
+		connect(chatService, SIGNAL(receivedMessageFilter(Chat, Contact, const QString &, time_t, bool &)),
+				this, SLOT(receivedMessageFilter(Chat, Contact, const QString &, time_t, bool &)));
 	}
 	kdebugf2();
 }
 
-Echo* echo;
+void Echo::accountUnregistered(Account account)
+{
+	kdebugf();
+	Protocol *protocol = account.protocolHandler();
+	if (!protocol)
+	{
+		kdebugf2();
+		return;
+	}
+
+	ChatService *chatService = protocol->chatService();
+	if (chatService)
+	{
+		disconnect(chatService, SIGNAL(receivedMessageFilter(Chat, Contact, const QString &, time_t, bool &)),
+				this, SLOT(receivedMessageFilter(Chat, Contact, const QString &, time_t, bool &)));
+	}
+	kdebugf2();
+}
+
+void Echo::receivedMessageFilter(Chat chat, Contact sender, const QString &message, time_t time, bool &ignore)
+{
+	Q_UNUSED(time)
+	Q_UNUSED(ignore)
+	Q_UNUSED(sender)
+
+	kdebugf();
+	if (message.left(5) == "KADU ")
+	{
+		kdebugf2();
+		return;
+	}
+
+	Protocol *protocol = chat.chatAccount().protocolHandler();
+	if (!protocol)
+	{
+		kdebugf2();
+		return;
+	}
+
+	ChatService *chatService = protocol->chatService();
+	if (!chatService)
+	{
+		kdebugf2();
+		return;
+	}
+
+	chatService->sendMessage(chat, QString("KADU ECHO: ") + message);
+
+	kdebugf2();
+}
