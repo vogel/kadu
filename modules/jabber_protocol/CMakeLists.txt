@@ -270,6 +270,7 @@ set (SOURCES
 	jabber-module.cpp
 	jabber-protocol.cpp
 	jabber-protocol-factory.cpp
+	jabber-url-handler.cpp
 	resource/jabber-resource.cpp
 	resource/jabber-resource-pool.cpp
 	server/jabber-avatar-fetcher.cpp
@@ -301,6 +302,7 @@ set (MOC_SOURCES
 	gui/windows/jabber-change-password-window.h
 	gui/windows/xml-console.h
 	jabber-protocol.h
+	jabber-url-handler.h
 	resource/jabber-resource.h
 	resource/jabber-resource-pool.h
 	server/jabber-avatar-fetcher.h

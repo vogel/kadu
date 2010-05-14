@@ -25,12 +25,13 @@
 #include "buddies/group-manager.h"
 #include "contacts/contact-manager.h"
 #include "core/core.h"
+#include "debug.h"
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/password-window.h"
 #include "os/generic/system-info.h"
 #include "protocols/protocols-manager.h"
 #include "status/status-type-manager.h"
-#include "debug.h"
+#include "url-handlers/url-handler-manager.h"
 
 #include "gui/windows/subscription-window.h"
 #include "resource/jabber-resource-pool.h"
@@ -42,6 +43,7 @@
 #include "jabber-account-details.h"
 #include "jabber-contact-details.h"
 #include "jabber-protocol-factory.h"
+#include "jabber-url-handler.h"
 
 #include "jabber-protocol.h"
 
@@ -55,6 +57,7 @@ int JabberProtocol::initModule()
 		return 0;
 
 	ProtocolsManager::instance()->registerProtocolFactory(JabberProtocolFactory::instance());
+	UrlHandlerManager::instance()->registerUrlHandler("Jabber", new JabberUrlHandler());
 
 	kdebugf2();
 	return 0;
@@ -66,6 +69,7 @@ void JabberProtocol::closeModule()
 
 	ModuleUnloading = true;
 
+	UrlHandlerManager::instance()->unregisterUrlHandler("Jabber");
 	ProtocolsManager::instance()->unregisterProtocolFactory(JabberProtocolFactory::instance());
 	kdebugf2();
 }
