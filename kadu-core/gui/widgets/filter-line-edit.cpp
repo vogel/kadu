@@ -121,13 +121,11 @@ FilterLineEdit::FilterLineEdit(QWidget *parent) :
 	WideEnoughForClear = true;
 	Overlap = 0;
 	ClickInClear = false;
-	
-	
+
 	ClearFilterButton = new LineEditClearButton(this);
 	ClearFilterButton->setCursor(Qt::ArrowCursor);
 	ClearFilterButton->setToolTip(tr("Clear current text in the line edit."));
 	updateClearButtonIcon(text());
-	updateClearButton();
 	connect(this, SIGNAL(textChanged(const QString &)),
 			this, SLOT(updateClearButtonIcon(const QString &)));
 }
@@ -171,6 +169,13 @@ void FilterLineEdit::updateClearButton()
 		WideEnoughForClear = wideEnough;
 		updateClearButtonIcon(text());
 	}
+}
+
+void FilterLineEdit::resizeEvent(QResizeEvent *e)
+{
+	QLineEdit::resizeEvent(e);
+	updateClearButton();
+
 }
 
 void FilterLineEdit::updateClearButtonIcon(const QString& text)

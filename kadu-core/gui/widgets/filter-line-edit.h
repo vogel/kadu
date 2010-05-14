@@ -74,6 +74,7 @@ private slots:
 protected:
 	virtual void mousePressEvent( QMouseEvent* e );
 	virtual void mouseReleaseEvent( QMouseEvent* e );
+	virtual void resizeEvent(QResizeEvent* e);
 };
 
 
