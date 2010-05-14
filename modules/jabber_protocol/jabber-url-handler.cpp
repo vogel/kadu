@@ -34,7 +34,7 @@
 
 JabberUrlHandler::JabberUrlHandler()
 {
-	JabberRegExp = QRegExp("^(jabber:([^@/<>'\"]+)@)?([^@/<>'\"]+)(?:/([^<>'\"]*))?$");
+	JabberRegExp = QRegExp("jabber:(/){0,3}(?:([^@/<>'\"]+)@)?([^@/<>'\"]+)(?:/([^<>'\"]*))?$");
 }
 
 bool JabberUrlHandler::isUrlValid(const QString &url)
