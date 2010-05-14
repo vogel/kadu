@@ -470,8 +470,8 @@ void JabberProtocol::clientResourceReceived(const XMPP::Jid &jid, const XMPP::Re
 	kdebugf2();
 }
 
-void JabberProtocol::contactAttached(Contact contact)
-{
+void JabberProtocol::addContactToRoster(Contact contact, bool requestAuth)
+{	
 	if (!isConnected() || contact.contactAccount() != account() || contact.ownerBuddy().isAnonymous())
 		return;
 
@@ -482,7 +482,12 @@ void JabberProtocol::contactAttached(Contact contact)
 		groupsList.append(group.name());
 	
 	//TODO last parameter: automagic authorization request - make it configurable
-	JabberClient->addContact(contact.id(), buddy.display(), groupsList, true);
+	JabberClient->addContact(contact.id(), buddy.display(), groupsList, requestAuth);
+}
+
+void JabberProtocol::contactAttached(Contact contact)
+{
+	return addContactToRoster(contact, true);
 }
 
 void JabberProtocol::contactDetached(Contact contact)
@@ -567,6 +572,10 @@ void JabberProtocol::slotContactUpdated(const XMPP::RosterItem &item)
 	}
 	else
 		Contact contact = ContactManager::instance()->byId(account(), item.jid().bare(), ActionCreateAndAdd);
+	
+	JabberContactDetails *data = jabberContactDetails(contact);	
+	data->setSubscription(item.subscription());
+
 
 	Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
 
@@ -602,6 +611,7 @@ void JabberProtocol::slotContactUpdated(const XMPP::RosterItem &item)
 void JabberProtocol::slotContactDeleted(const XMPP::RosterItem &item)
 {
 	kdebug("Deleting contact %s", item.jid().bare().toLocal8Bit().data());
+	
 	Contact contact = ContactManager::instance()->byId(account(), item.jid().bare(), ActionReturnNull);
 	if (contact)
 	{
@@ -619,6 +629,7 @@ void JabberProtocol::authorizeContact(Contact contact, bool authorized)
 	
 	if (authorized)
 	{
+		addContactToRoster(contact, false);
 		JabberClient->resendSubscription(jid);
 	}
 	else

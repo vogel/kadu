@@ -23,11 +23,16 @@
 #ifndef JABBER_CONTACT_DETAILS_H
 #define JABBER_CONTACT_DETAILS_H
 
+#include <xmpp_rosteritem.h>
+
 #include "contacts/contact.h"
 #include "contacts/contact-details.h"
+#include "contacts/contact-shared.h"
 
 class JabberContactDetails : public ContactDetails
 {
+  
+	PROPERTY_DEC(XMPP::Subscription, ContactSubscription)
 
 public:
 	explicit JabberContactDetails(ContactShared *contactShared);
@@ -35,6 +40,8 @@ public:
 
 	virtual bool validateId();
 	virtual void store();
+	
+	PROPERTY_DEF(XMPP::Subscription, subscription, setSubscription, ContactSubscription)
 
 };
 

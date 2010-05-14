@@ -24,6 +24,7 @@
 
 #include "gui/windows/subscription-window.h"
 #include "resource/jabber-resource-pool.h"
+#include "jabber-contact-details.h"
 #include "jabber-protocol.h"
 
 #include "jabber-subscription-service.h"
@@ -95,21 +96,21 @@ void JabberSubscriptionService::subscription(const XMPP::Jid &jid, const QString
 		if ( 0 /*("options.subscriptions.automatically-allow-authorization").toBool()*/)
 		{
 			// Check if we want to request auth as well
-// 			Contact contact = ContactManager::instance()->byId(account(), jid.bare(), ActionReturnNull);
-// 			if (!contact || (u->subscription().type() != Subscription::Both && u->subscription().type() != Subscription::To))
-// 			{
-// 				contactAttached(contact);
-// 				JabberClient->resendSubscription();
-// 			}
-// 			else
-// 			{
-// 				JabberClient->resendSubscription();
-// 			}
+			Contact contact = ContactManager::instance()->byId(Protocol->account(), jid.bare(), ActionReturnNull);
+			
+			JabberContactDetails *data = Protocol->jabberContactDetails(contact);
+			
+			if (!contact || !data || (data->subscription().type() != XMPP::Subscription::Both && data->subscription().type() != XMPP::Subscription::To))
+			{
+				Protocol->addContactToRoster(contact);
+			}
+			
+			Protocol->client()->resendSubscription(jid);
 		}
 		else
 		{
 			Contact contact = ContactManager::instance()->byId(Protocol->account(), jid.bare(), ActionCreate);
-			SubscriptionWindow::getSubscription(contact, this, SLOT(authorizeContact(Contact, bool)));
+			SubscriptionWindow::getSubscription(contact, Protocol, SLOT(authorizeContact(Contact, bool)));
 		}
 	}
 	else if (type == "subscribed")

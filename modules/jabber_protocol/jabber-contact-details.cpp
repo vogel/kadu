@@ -30,6 +30,7 @@
 JabberContactDetails::JabberContactDetails(ContactShared *contactShared) :
 		ContactDetails(contactShared)
 {
+	ContactSubscription = XMPP::Subscription();
 }
 
 JabberContactDetails::~JabberContactDetails()

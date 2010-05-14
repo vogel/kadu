@@ -132,6 +132,8 @@ public:
 	PEPManager *pepManager() { return PepManager; }
 
 	JabberContactDetails * jabberContactDetails(Contact contact) const;
+	
+	void addContactToRoster(Contact contact, bool requestAuth = false);
 
 public slots:
 	void connectToServer();
