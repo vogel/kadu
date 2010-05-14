@@ -9,6 +9,10 @@ set (MOC_SOURCES
 
 set (QT_USE_PHONON 1)
 
+if (NOT QT_PHONON_FOUND)
+       message (FATAL_ERROR "Could not find libphonon!")
+endif (NOT QT_PHONON_FOUND)
+
 kadu_module (phonon_sound
 	MODULE_SOURCES ${SOURCES}
 	MODULE_MOC_SOURCES ${MOC_SOURCES}
