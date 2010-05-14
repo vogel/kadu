@@ -44,6 +44,7 @@ ENDMACRO(KADU_JABBER_AUTOMOC)
 
 pkg_search_module (QCA2 REQUIRED qca2 )
 pkg_search_module (IDN REQUIRED libidn )
+pkg_search_module (ZLIB REQUIRED zlib )
 
 set(SOURCES_IRIS
 	libiris/src/xmpp/base/randomnumbergenerator.cpp
