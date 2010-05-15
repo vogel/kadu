@@ -59,7 +59,7 @@ void BuddyAvatarWidget::createGui()
 	AvatarLabel->setFixedSize(QSize(128, 128));
 	photoLayout->addWidget(AvatarLabel, 0, Qt::AlignCenter);
 
-	QPushButton *changePhotoButton = new QPushButton(tr("Change Icon..."));
+	QPushButton *changePhotoButton = new QPushButton(tr("Change Photo..."));
 	connect(changePhotoButton, SIGNAL(clicked(bool)), this, SLOT(changeAvatar()));
 	photoLayout->addWidget(changePhotoButton);
 
@@ -67,7 +67,7 @@ void BuddyAvatarWidget::createGui()
 
 void BuddyAvatarWidget::changeAvatar()
 {
-	QString newAvatar = QFileDialog::getOpenFileName(this, tr("Select new avatar"), "", "Image Files (*.png *.jpg *.bmp)", 0);
+	QString newAvatar = QFileDialog::getOpenFileName(this, tr("Select new photo"), "", "Image Files (*.png *.jpg *.bmp)", 0);
 	if (newAvatar.isEmpty())
 		return;
 
