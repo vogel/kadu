@@ -56,7 +56,7 @@ void BuddyAvatarWidget::createGui()
 		AvatarLabel->setPixmap(pixmap);
 	}
 
-	AvatarLabel->setFixedSize(QSize(128, 128));
+//	AvatarLabel->setFixedSize(QSize(128, 128));
 	photoLayout->addWidget(AvatarLabel, 0, Qt::AlignCenter);
 
 	QPushButton *changePhotoButton = new QPushButton(tr("Change Photo..."));
