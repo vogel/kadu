@@ -164,7 +164,7 @@ Text is plain black." />
 				<color-button caption="User nick" config-section="Look" config-item="ChatUsrNickColor" />
 			</group-box>
 
-			<group-box name="Userbox">
+			<group-box name="Buddy list">
 				<color-button caption="Background" config-section="Look" config-item="UserboxBgColor" />
 				<color-button caption="Font" config-section="Look" config-item="UserboxFgColor" />
 				<color-button caption="Descriptions font" config-section="Look" config-item="DescriptionColor" />
@@ -180,7 +180,7 @@ Text is plain black." />
 		<tab name="Fonts">
 			<group-box name="Fonts">
 				<select-font caption="Chat window" config-section="Look" config-item="ChatFont" />
-				<select-font caption="Userbox" config-section="Look" config-item="UserboxFont" />
+				<select-font caption="Buddy list" config-section="Look" config-item="UserboxFont" />
 				<select-font caption="Font in panel" config-section="Look" config-item="PanelFont" />
 			</group-box>
 		</tab>
@@ -225,7 +225,7 @@ Text is plain black." />
 		<tab name="Buddy list">
 			<group-box name="General">
 				<check-box caption="Display group tabs" config-section="Look" config-item="DisplayGroupTabs" id="displayGroupTabs"
-					   tool-tip="Displays group tabs on userbox" />
+					   tool-tip="Displays group tabs on the buddy list" />
 				<check-box caption="Show group All" config-section="Look" config-item="ShowGroupAll" id="showGroupAll"/>
 				<check-box caption="Show available contacts in bold" config-section="Look" config-item="ShowBold"
 					   tool-tip="Displays users that are not offline using a bold font" />
@@ -235,9 +235,9 @@ Text is plain black." />
 					<item value="false" caption="Center" />
 				</combo-box>
 				<spin-box caption="Column count" config-section="Look" config-item="UserBoxColumnCount" min-value="1" max-value="10"
-					  tool-tip="Number of columns displays in userbox" />
+					  tool-tip="Number of columns displays in the buddy list" />
 				<combo-box caption="Tool tip style" config-section="Look" config-item="UserboxToolTipStyle" id="toolTipClasses"
-					   tool-tip="Choose userbox tool-tip style" />
+					   tool-tip="Choose buddy list tool-tip style" />
 			</group-box>
 
 			<group-box name="Buddy photos">
@@ -248,17 +248,17 @@ Text is plain black." />
 
 			<group-box name="Descriptions">
 				<check-box caption="Show descriptions" config-section="Look" config-item="ShowDesc" id="showDescription"
-					   tool-tip="Displays descriptions in userbox" />
+					   tool-tip="Displays descriptions i the buddy list" />
 				<check-box caption="Allow multiline descriptions" config-section="Look" config-item="ShowMultilineDesc" id="multilineDescription"
-					   tool-tip="Dislpays multiline descriptions in userbox" />
+					   tool-tip="Dislpays multiline descriptions in the buddy list" />
 			</group-box>
 
 			<group-box name="Background">
 				<check-box caption="Use background image" config-section="Look" config-item="UseUserboxBackground" id="useUserboxBackground" />
 				<select-file caption="Background file" config-section="Look" config-item="UserboxBackground" type="image"
-					     tool-tip="Define background file for userbox" id="userboxBackground" />
+					     tool-tip="Define background file for the buddy list" id="userboxBackground" />
 				<combo-box caption="Display style" config-section="Look" config-item="UserboxBackgroundDisplayStyle"
-					   tool-tip="Choose userbox background style" id="userboxBackgroundDisplayStyle" >
+					   tool-tip="Choose buddy list background style" id="userboxBackgroundDisplayStyle" >
 					<item value="Tiled" caption="Tiled" />
 					<item value="TiledAndCentered" caption="Tiled and centered" />
 					<item value="Centered" caption="Centered" />
@@ -270,7 +270,7 @@ Text is plain black." />
 		<tab name="Information Panel">
 			<group-box name="General">
 				<check-box caption="Show information panel" config-section="Look" config-item="ShowInfoPanel" id="showInformationPanel"
-					   tool-tip="Displays information panel below userbox" />
+					   tool-tip="Displays information panel below the buddy list" />
 				<check-box caption="Show vertical scrollbar" config-section="Look" config-item="PanelVerticalScrollbar" id="showVerticalScrollbar"
 					   tool-tip="Show vertical scrollbar in information panel" />
 				<check-box caption="Show emoticons in panel" config-section="General" config-item="ShowEmotPanel" id="showEmoticonsInPanel"
