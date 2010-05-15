@@ -113,7 +113,7 @@ Infos::Infos(QObject *parent)
 	lastSeenActionDescription = new ActionDescription(
 		this, ActionDescription::TypeMainMenu, "lastSeenAction",
 		this, SLOT(onShowInfos()),
-		"", "", tr("&Show infos about contacts...")
+		"", "", tr("&Show infos about buddies...")
 	);
 	Core::instance()->kaduWindow()->insertMenuActionDescription(lastSeenActionDescription, KaduWindow::MenuKadu, 0);
 

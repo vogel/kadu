@@ -1,10 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <configuration-ui>
 	<section name="Chat">
 		<tab name="History">
 			<group-box name="General">
 				<action-button caption="Click Me !1!" id="sql_history/import" />
 			</group-box>
-			<group-box name="Database connection settings">
+			<group-box name="Database Connection Settings">
 				<combo-box caption="Choose database type" config-section="History" config-item="DatabaseDriver" id="sql_history/dbdriver" tool-tip="Choose type of databse, in which data should be stored">
 					<item value="QSQLITE" caption="SQLite" />
 					<item value="QMYSQL" caption="MySQL" />

@@ -219,7 +219,7 @@ bool JabberCreateAccountWidget::checkSSL()
 {
 	if (!QCA::isSupported("tls"))
 	{
-		MessageDialog::msg(tr("Cannot enable SSL/TLS.  Plugin not found."));
+		MessageDialog::msg(tr("Cannot enable SSL/TLS. Plugin not found."));
 		return false;
 	}
 	return true;
@@ -268,8 +268,8 @@ void JabberCreateAccountWidget::apply()
 {
     	if (NewPassword->text() != ReNewPassword->text())
 	{
-		MessageDialog::msg(tr("Error data typed in required fields.\n\n"
-			"Passwords typed in both fields (\"New password\" and \"Retype password\") "
+		MessageDialog::msg(tr("Invalid data entered in required fields.\n\n"
+			"Password entered in both fields (\"New password\" and \"Retype password\") "
 			"should be the same!"));
 		return;
 	}
@@ -307,7 +307,7 @@ void JabberCreateAccountWidget::registerNewAccountFinished(JabberServerRegisterA
 {
 	if (jsra->result())
 	{
-		MessageDialog::msg(tr("Registration was successful. Your new Jabber ID is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(jsra->jid()), false, "32x32/dialog-information.png", this);
+		MessageDialog::msg(tr("Registration was successful. Your new Jabber ID is %1.\nStore it in a safe place along with the password.\nNow add your friends to the buddy list.").arg(jsra->jid()), false, "32x32/dialog-information.png", this);
 
 		Account jabberAccount = Account::create();
 		jabberAccount.setProtocolName("jabber");
@@ -326,7 +326,7 @@ void JabberCreateAccountWidget::registerNewAccountFinished(JabberServerRegisterA
 		emit accountCreated(jabberAccount);
 	}
 	else
-		MessageDialog::msg(tr("An error has occured while registration. Please try again later."), false, "32x32/dialog-warning.png", this);
+		MessageDialog::msg(tr("An error has occured during registration. Please try again later."), false, "32x32/dialog-warning.png", this);
 
 	delete jsra;
 }

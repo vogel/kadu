@@ -81,7 +81,7 @@ void JabberChangePasswordWindow::createGui()
 	NewPassword = new QLineEdit(this);
 	NewPassword->setEchoMode(QLineEdit::Password);
 	connect(NewPassword, SIGNAL(textChanged(const QString &)), this, SLOT(dataChanged()));
-	layout->addRow(tr("New Password") + ":", NewPassword);
+	layout->addRow(tr("New password") + ":", NewPassword);
 
 	infoLabel = new QLabel(tr("<font size='-1'><i>Enter new password for your XMPP/Jabber account.</i></font>"), this);
 	infoLabel->setWordWrap(true);
@@ -92,7 +92,7 @@ void JabberChangePasswordWindow::createGui()
 	ReNewPassword = new QLineEdit(this);
 	ReNewPassword->setEchoMode(QLineEdit::Password);
 	connect(ReNewPassword, SIGNAL(textChanged(const QString &)), this, SLOT(dataChanged()));
-	layout->addRow(tr("Retype New Password") + ":", ReNewPassword);
+	layout->addRow(tr("Retype new password") + ":", ReNewPassword);
 
 	mainLayout->addStretch(100);
 
@@ -123,8 +123,8 @@ void JabberChangePasswordWindow::changePassword()
 {
 	if (NewPassword->text() != ReNewPassword->text())
 	{
-		MessageDialog::msg(tr("Error data typed in required fields.\n\n"
-			"Passwords typed in both fields (\"Password\" and \"Retype Password\") "
+		MessageDialog::msg(tr("Invalid data entered in required fields.\n\n"
+			"Password entered in both fields (\"Password\" and \"Retype password\") "
 			"should be the same!"));
 		return;
 	}

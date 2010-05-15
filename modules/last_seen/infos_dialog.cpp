@@ -39,7 +39,7 @@ InfosDialog::InfosDialog(const LastSeen &lastSeen, QWidget *parent, Qt::WindowFl
 	kdebugf();
 	setAttribute(Qt::WA_DeleteOnClose);
 //	this->resize(800, this->height());
-	this->setWindowTitle(tr("Information about contacts"));
+	this->setWindowTitle(tr("Buddies Information"));
 
 	QVBoxLayout *layout = new QVBoxLayout(this);
 	layout->setContentsMargins(0, 0, 0, 0);
@@ -51,7 +51,7 @@ InfosDialog::InfosDialog(const LastSeen &lastSeen, QWidget *parent, Qt::WindowFl
 	listView->setAllColumnsShowFocus(true);
 
 	QStringList labels;
-	labels << tr("Contact")
+	labels << tr("Buddy")
 			<< tr("Protocol")
 			<< tr("UIN")
 			<< tr("Nick")

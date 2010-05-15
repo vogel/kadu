@@ -1,10 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <configuration-ui>
 	<section name="Notify">
 		<tab name="Notification">
 			<group-box name="Tray Icon Baloon">
 				<spin-box caption="Timeout" config-section="Qt4DockingNotify" config-item="_timeout" min-value="1" max-value="100" suffix=" s." />
-				<combo-box caption="Notification Icon" config-section="Qt4DockingNotify" config-item="_icon" save-index="true">
-					<item value="0" caption="No Icon" />
+				<combo-box caption="Notification icon" config-section="Qt4DockingNotify" config-item="_icon" save-index="true">
+					<item value="0" caption="No icon" />
 					<item value="1" caption="Information" />
 					<item value="2" caption="Warning" />
 					<item value="3" caption="Critical" />

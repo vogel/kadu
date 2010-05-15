@@ -1,7 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <configuration-ui>
-
 	<section name="Notifications">
-
 		<tab name="Hints">
 			<group-box name="Layout">
 				<combo-box caption="New hints go" config-section="Hints" config-item="NewHintUnder" id="hints/newHintUnder">
@@ -34,7 +33,7 @@
 						min-value="0" max-value="100" step="1" suffix=" %" />
 				<check-box caption="Show buttons only when neccessary" config-section="Hints" config-item="ShowOnlyNeccessaryButtons" />
 			</group-box>
-			<group-box name="Mouse buttons">
+			<group-box name="Mouse Buttons">
 				<combo-box caption="Left button" config-section="Hints" config-item="LeftButton">
 					<item value="0" caption="Nothing" />
 					<item value="1" caption="Open chat" />
@@ -55,13 +54,11 @@
 				</combo-box>
 				<check-box caption="'Open chat' works on all events" config-section="Hints" config-item="OpenChatOnEveryNotification" />
 			</group-box>
-			<group-box name="New chat/message">
+			<group-box name="New Chat/Message">
 				<check-box caption="Show message content in hint" config-section="Hints" config-item="ShowContentMessage" id="hints/showContent" />
 				<spin-box caption="Number of quoted characters" config-section="Hints" config-item="CiteSign" min-value="1" max-value="2000" id="hints/showContentCount" />
 				<check-box caption="Delete pending message when user deletes hint" config-section="Hints" config-item="DeletePendingMsgWhenHintDeleted" />
 			</group-box>
 		</tab>
-
 	</section>
-
 </configuration-ui>

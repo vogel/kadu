@@ -1,10 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <configuration-ui>
-
 	<section name="Screenshot" icon="external_modules/module_screenshot-camera-photo.png">
-
 		<tab name="General">
-
-			<group-box name="General settings">
+			<group-box name="General Settings">
 				<combo-box caption="File format" config-section="ScreenShot" config-item="fileFormat" id="screenshot/formats"
 						   tool-tip="Select image format, which screenshots will be stored and sent in." />
 				<check-box caption="Force .jpg extension for JPEG format" config-section="ScreenShot" config-item="use_short_jpg"
@@ -14,7 +12,6 @@
 				<check-box caption="Paste [IMAGE] clause automatically" config-section="ScreenShot" config-item="paste_clause"
 						   tool-tip="When enabled, module will automatically paste ready to send [IMAGE] clause in chat window." />
 			</group-box>
-			
 			<group-box name="Directory">
 				<line-edit caption="Screenshots directory path" config-section="ScreenShot" config-item="path" />
 				<line-edit caption="Screenshots filename prefix" config-section="ScreenShot" config-item="filenamePrefix" />
@@ -23,9 +20,6 @@
 				<spin-box caption="Maximum directory size" config-section="ScreenShot" config-item="dir_size_limit" min-value="10" max-value="500000" step="50" suffix="kB" id="screenshot/sizeLimit"
 						  tool-tip="Define, how many kbytes can shots take in the directory before module will warn you." />
 			</group-box>
-
 		</tab>
-
 	</section>
-
 </configuration-ui>

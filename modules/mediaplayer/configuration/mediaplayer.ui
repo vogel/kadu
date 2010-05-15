@@ -1,10 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <configuration-ui>
-
 	<section name="MediaPlayer" icon="external_modules/module_mediaplayer.png">
-
 		<tab name="General">
-
-			<group-box name="General settings">
+			<group-box name="General Settings">
 				<line-edit caption="MediaPlayer message format for chat windows" config-section="MediaPlayer" config-item="chatString"
 						   id="mediaplayer/syntax" />
 				<combo-box caption="MediaPlayer statuses in description" config-section="MediaPlayer" config-item="statusPosition" >
@@ -16,15 +14,13 @@
 				<line-edit caption="MediaPlayer description format" config-section="MediaPlayer" config-item="statusTagString"
 						   tool-tip="Here specify format which will replace '#{player}' tag when you will use it in description while setting status." />
 			</group-box>
-
-			<group-box name="Signatures cutting">
+			<group-box name="Signature Cutting">
 				<check-box caption="Enable" config-section="MediaPlayer" config-item="signature" id="mediaplayer/signature"
-						   tool-tip="Shall I cut thise crap?" />
+						   tool-tip="Shall I cut this crap?" />
 				<line-edit caption="Signatures to cut" config-section="MediaPlayer" config-item="signatures" id="mediaplayer/signatures"
 						   tool-tip="Crap to cut" />
 			</group-box>
-
-			<group-box name="Other settings">
+			<group-box name="Other Settings">
 				<check-box caption="Enable pseudo-OSD" config-section="MediaPlayer" config-item="osd"
 						   tool-tip="Enables pseudo-OSD done by Kadu hints. Shows currently played title in hint." />
 				<check-box caption="Enable MediaPlayer keyboard shortcuts in chat window" config-section="MediaPlayer"
@@ -32,9 +28,6 @@
 				<check-box caption="Put statuses switch to dock menu" config-section="MediaPlayer" config-item="dockMenu"
 						   tool-tip="Enable this to put MediaPlayer statuses switch into docked icon menu." />
 			</group-box>
-
 		</tab>
-
 	</section>
-
 </configuration-ui>

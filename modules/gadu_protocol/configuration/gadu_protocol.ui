@@ -9,17 +9,17 @@
 				<line-edit caption="UIN" config-section="Account" config-item="Id" id="gaduId" />
 				<line-edit caption="Password" config-section="Account" config-item="Password" id="gaduPassword" />
 			</group-box>
-			<group-box name="New account">
+			<group-box name="New Account">
 				<line-edit caption="E-mail" id="gaduEmail" />
 				<line-edit caption="New password" id="gaduNewPassword" />
 				<action-button caption="Register new account..." id="gaduRegisterNewAccount" />
 			</group-box>
 		</tab>
-		<tab name="File transfers">
+		<tab name="File Transfers">
 			<group-box name="General">
 				<check-box caption="Allow file transfers" config-section="Account" config-item="AllowDcc" id="dcc/AllowDCC" />
 			</group-box>
-			<group-box name="File transfers" id="dcc/fileTransfers">
+			<group-box name="File Transfers" id="dcc/fileTransfers">
 				<check-box caption="Remove completed transfers from transfers list" config-section="Account" config-item="RemoveCompletedTransfers" />
 			</group-box>
 			<group-box name="IP" id="dcc/ip">

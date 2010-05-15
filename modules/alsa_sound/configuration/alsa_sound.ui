@@ -3,7 +3,7 @@
 	<section name="Notifications">
 
 		<tab name="Sound">
-			<group-box name="Output device">
+			<group-box name="Output Device">
 				<line-edit caption="ALSA device" config-section="Sounds" config-item="ALSAOutputDevice" />
 			</group-box>
 		</tab>

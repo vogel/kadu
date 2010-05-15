@@ -108,7 +108,7 @@ void JabberEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 
 	QFormLayout *formLayout = new QFormLayout(form);
 
-	ConnectAtStart = new QCheckBox(tr("Connect at start"), this);
+	ConnectAtStart = new QCheckBox(tr("Connect on startup"), this);
 	connect(ConnectAtStart, SIGNAL(stateChanged(int)), this, SLOT(dataChanged()));
 	formLayout->addRow(0, ConnectAtStart);
 
@@ -126,7 +126,7 @@ void JabberEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 	connect(RememberPassword, SIGNAL(stateChanged(int)), this, SLOT(dataChanged()));
 	formLayout->addRow(0, RememberPassword);
 	
-	QLabel *changePasswordLabel = new QLabel(QString("<a href='change'>%1</a>").arg(tr("Change Your Password")));
+	QLabel *changePasswordLabel = new QLabel(QString("<a href='change'>%1</a>").arg(tr("Change your password")));
 	changePasswordLabel->setTextInteractionFlags(Qt::LinksAccessibleByKeyboard | Qt::LinksAccessibleByMouse);
 	formLayout->addRow(0, changePasswordLabel);
 	connect(changePasswordLabel, SIGNAL(linkActivated(QString)), this, SLOT(changePasssword()));
@@ -150,7 +150,7 @@ void JabberEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 void JabberEditAccountWidget::createPersonalDataTab(QTabWidget *tabWidget)
 {
 	JabberPersonalInfoWidget *gpiw = new JabberPersonalInfoWidget(account(), tabWidget);
-	tabWidget->addTab(gpiw, tr("Personal info"));
+	tabWidget->addTab(gpiw, tr("Personal Information"));
 }
 
 void JabberEditAccountWidget::createBuddiesTab(QTabWidget *tabWidget)
@@ -185,7 +185,7 @@ void JabberEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	vboxLayout2->setMargin(9);
 
 	CustomHostPort = new QCheckBox(general);
-	CustomHostPort->setText(tr("Manually Specify Server Host/Port")+":");
+	CustomHostPort->setText(tr("Manually specify server host/port")+":");
 	vboxLayout2->addWidget(CustomHostPort);
 
 	HostPortLayout = new QHBoxLayout();
@@ -485,7 +485,7 @@ void JabberEditAccountWidget::removeAccount()
 			.arg(account().id()));
 
 	QPushButton *removeButton = messageBox->addButton(tr("Remove account"), QMessageBox::AcceptRole);
-	QPushButton *removeAndUnregisterButton = messageBox->addButton(tr("Remove account and unregister from server"), QMessageBox::DestructiveRole);
+	QPushButton *removeAndUnregisterButton = messageBox->addButton(tr("Remove account and unregister on server"), QMessageBox::DestructiveRole);
 	messageBox->addButton(QMessageBox::Cancel);
 
 	messageBox->exec();

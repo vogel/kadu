@@ -30,7 +30,7 @@ XmlConsole::XmlConsole(Account account) :
 		WatchedAccount(account)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
-	setWindowTitle(tr("Xml Console"));
+	setWindowTitle(tr("XML Console"));
 
 	JabberProtocol *protocol = dynamic_cast<JabberProtocol *>(account.protocolHandler());
 	if (protocol)

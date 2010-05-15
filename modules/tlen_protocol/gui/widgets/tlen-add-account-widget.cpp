@@ -73,7 +73,7 @@ void TlenAddAccountWidget::createGui()
 	AccountPassword->setEchoMode(QLineEdit::Password);
 	layout->addRow(tr("Password") + ":", AccountPassword);
 	
-	RememberPassword = new QCheckBox(tr("Remember Password"), this);
+	RememberPassword = new QCheckBox(tr("Remember password"), this);
 	RememberPassword->setChecked(true);
 	layout->addRow(0, RememberPassword);
 
@@ -84,7 +84,7 @@ void TlenAddAccountWidget::createGui()
 
 	Identity = new IdentitiesComboBox(this);
 	connect(Identity, SIGNAL( identityChanged()), this, SLOT(dataChanged()));
-	layout->addRow(tr("Account Identity") + ":", Identity);
+	layout->addRow(tr("Account identity") + ":", Identity);
 
 	QLabel *infoLabel = new QLabel(tr("<font size='-1'><i>Select or enter the identity that will be associated with this account.</i></font>"), this);
 	infoLabel->setWordWrap(true);

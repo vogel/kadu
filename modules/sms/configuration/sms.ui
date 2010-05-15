@@ -1,12 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <configuration-ui>
-
 	<section name="SMS" icon="32x32/phone.png">
-
 		<tab name="General">
 			<group-box name="Nick">
 				<line-edit caption="SMS Nick" config-section="SMS" config-item="SmsNick" />
 			</group-box>
-
 			<group-box name="Application">
 				<check-box caption="Use built-in SMS application" config-section="SMS" config-item="BuiltInApp" id="sms/useBuildInApp" />
 				<line-edit caption="Custom SMS application" config-section="SMS" config-item="SmsApp" id="sms/customApp" />
@@ -14,13 +12,10 @@
 					tool-tip="Check this box if your sms application doesn't understand arguments: number &amp;message&amp;\nArguments should be separated with spaces. %n argument is converted to number, %m to message" />
 				<line-edit caption="SMS custom string" config-section="SMS" config-item="SmsString" id="sms/customString" />
 			</group-box>
-
 			<group-box name="Gateways">
 			</group-box>
 		</tab>
-
 	</section>
-
 	<section name="Shortcuts">
 		<tab name="General">
 			<group-box name="SMS">
@@ -28,5 +23,4 @@
 			</group-box>
 		</tab>
 	</section>
-
 </configuration-ui>

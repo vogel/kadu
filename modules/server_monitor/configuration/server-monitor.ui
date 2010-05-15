@@ -2,13 +2,13 @@
 <configuration-ui>
         <section name="Server Monitor" icon="kadu/configure_big.png">
                 <tab name="General">
-                        <group-box name="Server list setting">
+                        <group-box name="Server List Settings">
                                 <check-box caption="Watch gadu-gadu servers" config-section="serverMonitor" config-item="useGaduServersList" id="serverMonitor/useGaduServersList" />
 		               	<select-file caption="Server list" config-section="serverMonitor" config-item="fileName" type="all" id="serverMonitor/fileSelect" />
                 	</group-box>
-                        <group-box name="General setting">
+                        <group-box name="General Settings">
 	                	<check-box caption="Show reset button" config-section="serverMonitor" config-item="showResetButton" />
-				<check-box caption="Autorefresh list" config-section="serverMonitor" config-item="autorefresh" />
+				<check-box caption="Auto refresh list" config-section="serverMonitor" config-item="autorefresh" />
 				<spin-box caption="Refresh interval" config-section="serverMonitor" config-item="timerInterval" suffix=" min." min-value="1" max-value="300" />
 			</group-box>
                 </tab>

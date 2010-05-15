@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration-ui>
-	<section name="Contact" icon="GeneralTab">
-		<tab name="Contact">
-			<group-box name="Contact">
+	<section name="Buddy" icon="GeneralTab">
+		<tab name="Buddy">
+			<group-box name="Buddy">
 				<line-edit caption="Display" config-section="Contact" config-item="display" />
 				<line-edit caption="First name" config-section="Contact" config-item="firstName" />
 				<line-edit caption="Last name" config-section="Contact" config-item="lastName" />

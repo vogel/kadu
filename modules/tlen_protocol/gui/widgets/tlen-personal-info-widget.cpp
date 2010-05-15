@@ -77,7 +77,7 @@ void TlenPersonalInfoWidget::createGui()
 	FirstName = new QLineEdit(this);
 	LastName = new QLineEdit(this);
 	Sex = new QComboBox(this);
-	Sex->addItem(tr("Unknown Gender"));
+	Sex->addItem(tr("Unknown gender"));
 	Sex->addItem(tr("Male"));
 	Sex->addItem(tr("Female"));
 	BirthYear = new QLineEdit(this);

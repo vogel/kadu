@@ -1,11 +1,11 @@
 <configuration-ui>
 
 	<section name="Account">
-		<tab name="File transfers and voice chats">
+		<tab name="File Transfers and Voice Chats">
 			<group-box name="General">
 				<check-box caption="Allow file transfers and voice chats" config-section="Network" config-item="AllowDCC" id="dcc/AllowDCC" />
 			</group-box>
-			<group-box name="File transfers" id="dcc/fileTransfers">
+			<group-box name="File Transfers" id="dcc/fileTransfers">
 				<check-box caption="Remove completed transfers from transfers list" config-section="Network" config-item="RemoveCompletedTransfers" />
 			</group-box>
 			<group-box name="IP" id="dcc/ip">
@@ -20,7 +20,7 @@
 	</section>
 	<section name="Shortcuts">
 		<tab name="General">
-			<group-box name="Sending filed and voice chats">
+			<group-box name="Sending Files and Voice Chats">
 				<hot-key-edit caption="Send file" config-section="ShortCuts" config-item="kadu_sendfile" />
 			</group-box>
 		</tab>

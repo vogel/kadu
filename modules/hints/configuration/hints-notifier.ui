@@ -1,8 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <configuration-ui>
 	<section name="Notifications">
-
 		<tab name="Hints">
-
 			<group-box name="Look">
 				<label caption="&lt;b&gt;Text&lt;/b&gt; preview" id="preview" />
 				<select-font caption="Font" config-section="Hints" config-item="_font" id="font" />
@@ -10,11 +9,7 @@
 				<color-button caption="Background color" config-section="Hints" config-item="_bgcolor" id="bgcolor" />
 				<spin-box caption="Timeout" config-section="Hints" config-item="_timeout" id="timeout" min-value="0" max-value="3600" suffix=" s"/>
 				<line-edit caption="Syntax" config-section="Hints" config-item="_syntax" id="syntax"/>
-			
 			</group-box>
-
 		</tab>
-
 	</section>
-
 </configuration-ui>

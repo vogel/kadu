@@ -150,7 +150,7 @@ void TlenEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 void TlenEditAccountWidget::createPersonalDataTab(QTabWidget *tabWidget)
 {
 	gpiw = new TlenPersonalInfoWidget(account(), tabWidget);
-	tabWidget->addTab(gpiw, tr("Personal info"));
+	tabWidget->addTab(gpiw, tr("Personal Information"));
 }
 
 void TlenEditAccountWidget::createBuddiesTab(QTabWidget *tabWidget)
@@ -210,7 +210,7 @@ void TlenEditAccountWidget::removeAccount()
 			.arg(account().accountIdentity().name())
 			.arg(account().id()));
 
-	QPushButton *removeButton = messageBox->addButton(tr("Remove account"), QMessageBox::AcceptRole);
+	QPushButton *removeButton = messageBox->addButton(tr("Remove Account"), QMessageBox::AcceptRole);
 	//QPushButton *removeAndUnregisterButton = messageBox->addButton(tr("Remove account and unregister from server"), QMessageBox::DestructiveRole);
 	messageBox->addButton(QMessageBox::Cancel);
 
