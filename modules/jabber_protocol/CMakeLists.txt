@@ -44,7 +44,11 @@ ENDMACRO(KADU_JABBER_AUTOMOC)
 
 pkg_search_module (QCA2 REQUIRED qca2 )
 pkg_search_module (IDN REQUIRED libidn )
-pkg_search_module (ZLIB REQUIRED zlib )
+
+include (FindZLIB)
+if(NOT ZLIB_FOUND)
+	message(FATAL_ERROR "zlib not found!")
+endif(NOT ZLIB_FOUND)
 
 set(SOURCES_IRIS
 	libiris/src/xmpp/base/randomnumbergenerator.cpp
