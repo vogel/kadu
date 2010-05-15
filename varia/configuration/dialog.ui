@@ -222,7 +222,7 @@ Text is plain black." />
 			</group-box>
 		</tab>
 
-		<tab name="Userbox">
+		<tab name="Buddy list">
 			<group-box name="General">
 				<check-box caption="Display group tabs" config-section="Look" config-item="DisplayGroupTabs" id="displayGroupTabs"
 					   tool-tip="Displays group tabs on userbox" />
@@ -240,10 +240,10 @@ Text is plain black." />
 					   tool-tip="Choose userbox tool-tip style" />
 			</group-box>
 
-			<group-box name="Avatars">
-				<check-box caption="Show avatars" config-section="Look" config-item="ShowAvatars" id="showAvatars" />
-				<check-box caption="Add avatar border" config-section="Look" config-item="AvatarBorder" id="avatarBorder" />
-				<check-box caption="Grey out offline contacts' avatars" config-section="Look" config-item="AvatarGreyOut" id="avatarGreyOut" tool-tip="Contacts who are offline will have their avatars greyed out" />
+			<group-box name="Buddy photos">
+				<check-box caption="Show photos" config-section="Look" config-item="ShowAvatars" id="showAvatars" />
+				<check-box caption="Add border" config-section="Look" config-item="AvatarBorder" id="avatarBorder" />
+				<check-box caption="Grey out offline contacts' photos" config-section="Look" config-item="AvatarGreyOut" id="avatarGreyOut" tool-tip="Contacts who are offline will have their photos greyed out" />
 			</group-box>
 
 			<group-box name="Descriptions">
