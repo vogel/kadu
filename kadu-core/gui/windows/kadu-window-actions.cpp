@@ -96,6 +96,25 @@ void disableContainsSelfUles(Action *action)
 	action->setEnabled(true);
 }
 
+void checkBuddyProperties(Action *action)
+{
+	kdebugf();
+
+	if (!action->contact().isNull() && action->contact().ownerBuddy().isAnonymous())
+	{
+		action->setIcon(IconsManager::instance()->iconByPath("16x16/contact-new.png"));
+		action->setText(qApp->translate("KaduWindowActions", "Add Buddy"));
+	}
+	else
+	{
+		action->setText(qApp->translate("KaduWindowActions", "View Buddy Properties"));
+		action->setIcon(IconsManager::instance()->iconByPath("16x16/x-office-address-book.png"));
+	}
+
+	action->setEnabled(!action->contact().isNull());
+	kdebugf2();
+}
+
 void checkOfflineTo(Action *action)
 {
 	kdebugf();
@@ -544,11 +563,17 @@ void KaduWindowActions::editUserActionCreated(Action *action)
 	if (!window)
 		return;
 
+	if (!window->contact())
+	{
+		action->setEnabled(false);
+		return;
+	}
+
 	Buddy buddy = window->contact().ownerBuddy();
 	if (buddy.isAnonymous())
 	{
 		action->setIcon(IconsManager::instance()->iconByPath("16x16/contact-new.png"));
-		action->setText(tr("Add user"));
+		action->setText(tr("Add Buddy"));
 	}
 }
 
