@@ -61,12 +61,12 @@
 #include "gui/widgets/contact-widget.h"
 #include "gui/windows/buddy-data-manager.h"
 #include "gui/windows/message-dialog.h"
+#include "misc/misc.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 
 #include "debug.h"
 #include "icons-manager.h"
-#include "misc/misc.h"
 
 #include "buddy-data-window.h"
 
@@ -76,7 +76,7 @@ BuddyDataWindow::BuddyDataWindow(Buddy buddy, QWidget *parent) :
 	kdebugf();
 
 	setAttribute(Qt::WA_DeleteOnClose);
-	setWindowTitle(tr("Merged Contact Properties - %1").arg(MyBuddy.display()));
+	setWindowTitle(tr("Buddy Properties - %1").arg(MyBuddy.display()));
 
 	createGui();
 	updateButtons();

@@ -45,7 +45,7 @@
 #include "hint-over-user-configuration-window.h"
 
 HintOverUserConfigurationWindow::HintOverUserConfigurationWindow(Buddy exampleBuddy) :
-	ConfigurationWindow("HintOverUser", tr("Hint over user configuration"), "Hints", MainConfigurationWindow::instanceDataManager()),
+	ConfigurationWindow("HintOverUser", tr("Hint Over Buddy Configuration"), "Hints", MainConfigurationWindow::instanceDataManager()),
 	ExampleBuddy(exampleBuddy)
 {
 	connect(this, SIGNAL(configurationWindowApplied()), this, SLOT(configurationWindowApplied()));
@@ -59,7 +59,7 @@ HintOverUserConfigurationWindow::HintOverUserConfigurationWindow(Buddy exampleBu
 	connect(dynamic_cast<ConfigSpinBox *>(widget()->widgetById("bdwidth")), SIGNAL(valueChanged(int)), this, SLOT(borderWidthChanged(int)));
 	connect(dynamic_cast<ConfigComboBox *>(widget()->widgetById("iconsize")), SIGNAL(currentIndexChanged(int)), this, SLOT(iconSizeChanged(int)));
 
-	ConfigGroupBox *groupBox = widget()->configGroupBox("Look", "Userbox", "Hint over user");
+	ConfigGroupBox *groupBox = widget()->configGroupBox("Look", "Userbox", "Hint Over Buddy");
 
 	previewFrame = new QFrame;
 	previewFrame->setObjectName("tip_frame");

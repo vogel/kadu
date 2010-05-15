@@ -45,15 +45,15 @@ void BuddyOptionsConfigurationWidget::createGui()
 {
 	QVBoxLayout *layout = new QVBoxLayout(this);
 	
-	OfflineToCheckBox = new QCheckBox(tr("Allow contact to see when I'm available"), this);
+	OfflineToCheckBox = new QCheckBox(tr("Allow buddy to see when I'm available"), this);
 	OfflineToCheckBox->setChecked(!MyBuddy.isOfflineTo());
 	layout->addWidget(OfflineToCheckBox);
 
-	BlockCheckBox = new QCheckBox(tr("Ignore contact"), this);
+	BlockCheckBox = new QCheckBox(tr("Ignore buddy"), this);
 	BlockCheckBox->setChecked(MyBuddy.isBlocked());
 	layout->addWidget(BlockCheckBox);
 
-	NotifyCheckBox = new QCheckBox(tr("Notify when contact's status changes"), this);
+	NotifyCheckBox = new QCheckBox(tr("Notify when buddy's status changes"), this);
 	ContactNotifyData *cnd = 0;
 	if (MyBuddy.data())
 		cnd = MyBuddy.data()->moduleStorableData<ContactNotifyData>("notify", false);
@@ -62,7 +62,7 @@ void BuddyOptionsConfigurationWidget::createGui()
 
 	layout->addWidget(NotifyCheckBox);
 
-	HideDescriptionCheckBox = new QCheckBox(tr("Hide Description"), this);
+	HideDescriptionCheckBox = new QCheckBox(tr("Hide description"), this);
 	BuddyKaduData *ckd = 0;
 	if (MyBuddy.data())
 		ckd = MyBuddy.data()->moduleStorableData<BuddyKaduData>("kadu", false);

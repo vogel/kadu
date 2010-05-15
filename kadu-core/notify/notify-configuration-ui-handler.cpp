@@ -140,16 +140,16 @@ void NotifyConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurat
 	notifyUsersLayout->setMargin(5);
 
 	allUsers = new QListWidget(notifyUsers);
-	QPushButton *moveToNotifyList = new QPushButton(tr("Move to 'Notify list'"), notifyUsers);
+	QPushButton *moveToNotifyList = new QPushButton(tr("Move to 'Notify List'"), notifyUsers);
 
-	notifyUsersLayout->addWidget(new QLabel(tr("User list"), notifyUsers), 0, 0);
+	notifyUsersLayout->addWidget(new QLabel(tr("Buddy List"), notifyUsers), 0, 0);
 	notifyUsersLayout->addWidget(allUsers, 1, 0);
 	notifyUsersLayout->addWidget(moveToNotifyList, 2, 0);
 
 	notifiedUsers = new QListWidget(notifyUsers);
-	QPushButton *moveToAllList = new QPushButton(tr("Move to 'User list'"), notifyUsers);
+	QPushButton *moveToAllList = new QPushButton(tr("Move to 'Buddy List'"), notifyUsers);
 
-	notifyUsersLayout->addWidget(new QLabel(tr("Notify list"), notifyUsers), 0, 1);
+	notifyUsersLayout->addWidget(new QLabel(tr("Notify List"), notifyUsers), 0, 1);
 	notifyUsersLayout->addWidget(notifiedUsers, 1, 1);
 	notifyUsersLayout->addWidget(moveToAllList, 2, 1);
 

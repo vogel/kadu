@@ -97,7 +97,7 @@ void HintsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurati
 	connect(mainConfigurationWindow->widget()->widgetById("toolTipClasses"), SIGNAL(currentIndexChanged(const QString &)),
 		this, SLOT(toolTipClassesHighlighted(const QString &)));
 
-	ConfigGroupBox *toolTipBox = mainConfigurationWindow->widget()->configGroupBox("Look", "Userbox", "General");
+	ConfigGroupBox *toolTipBox = mainConfigurationWindow->widget()->configGroupBox("Look", "Buddy List", "General");
 
 	QWidget *configureHint = new QWidget(toolTipBox->widget());
 	overUserConfigurationPreview = new QFrame(configureHint);
@@ -129,7 +129,7 @@ void HintsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurati
 	lay->addWidget(overUserConfigurationPreview);
 	lay->addWidget(configureOverUserHint);
 
-	toolTipBox->addWidgets(new QLabel("Hint over userlist: "), configureHint);
+	toolTipBox->addWidgets(new QLabel("Hint over buddy list: "), configureHint);
 }
 
 void HintsConfigurationUiHandler::addHintsPreview()
