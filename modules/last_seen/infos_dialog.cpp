@@ -20,19 +20,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QStringList>
 #include <QtCore/QAbstractItemModel>
-#include <QtGui/QTreeWidget>
+#include <QtCore/QStringList>
 #include <QtGui/QLayout>
 #include <QtGui/QPushButton>
+#include <QtGui/QTreeWidget>
 #include <QtNetwork/QHostAddress>
 
-#include "infos_dialog.h"
-
+#include "debug.h"
 #include "misc/misc.h"
 #include "modules.h"
-#include "debug.h"
 
+#include "infos_dialog.h"
 
 InfosDialog::InfosDialog(const LastSeen &lastSeen, QWidget *parent, Qt::WindowFlags f)
 :QDialog(parent, f)
@@ -66,10 +65,10 @@ InfosDialog::InfosDialog(const LastSeen &lastSeen, QWidget *parent, Qt::WindowFl
 	foreach(Contact contact, ContactManager::instance()->items())
 	{
 		QString desc, ip;
-		if(!contact.currentStatus().description().isEmpty())
+		if (!contact.currentStatus().description().isEmpty())
 			desc = contact.currentStatus().description();
 		desc.replace('\n', ' ');
-		if(contact.address() != QHostAddress())
+		if (contact.address() != QHostAddress())
 			ip = contact.address().toString();
 
 		QStringList labels;
