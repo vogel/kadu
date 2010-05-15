@@ -100,7 +100,7 @@ void BuddiesListViewDelegate::modelDestroyed()
 
 QTextDocument * BuddiesListViewDelegate::descriptionDocument(const QString &text, int width, QColor color) const
 {
-	QString description = text;
+	QString description = Qt::escape(text);
 	description.replace("\n", ShowMultiLineDescription ? "<br/>" : " " );
 
 	QTextDocument *doc = new QTextDocument();
