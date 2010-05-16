@@ -1,7 +1,7 @@
 /*
  * %kadu copyright begin%
  * Copyright 2008, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2009 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * Copyright 2009, 2010 Piotr Galiszewski (piotrgaliszewski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -40,7 +40,7 @@ void ConfigLabel::createWidgets()
 {
 	kdebugf();
 
-	setText((qApp->translate("@default", widgetCaption.toAscii().data())));
+	setText("<font size='-1'><i>" + (qApp->translate("@default", widgetCaption.toAscii().data())) + "</i></font>");
 	parentConfigGroupBox->addWidget(this);
 
 	if (!ConfigWidget::toolTip.isEmpty())
