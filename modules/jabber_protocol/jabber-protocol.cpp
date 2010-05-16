@@ -712,7 +712,8 @@ JabberContactDetails * JabberProtocol::jabberContactDetails(Contact contact) con
 
 void JabberProtocol::serverFeaturesChanged()
 {
-	setPEPAvailable(serverInfoManager->hasPEP());
+	if (serverInfoManager)
+		setPEPAvailable(serverInfoManager->hasPEP());
 }
 
 void JabberProtocol::setPEPAvailable(bool b)
