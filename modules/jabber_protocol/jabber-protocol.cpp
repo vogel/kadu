@@ -571,7 +571,7 @@ void JabberProtocol::slotContactUpdated(const XMPP::RosterItem &item)
 		ContactsForDelete.removeAll(contact);
 	}
 	else
-		Contact contact = ContactManager::instance()->byId(account(), item.jid().bare(), ActionCreateAndAdd);
+		contact = ContactManager::instance()->byId(account(), item.jid().bare(), ActionCreateAndAdd);
 	
 	JabberContactDetails *data = jabberContactDetails(contact);	
 	data->setSubscription(item.subscription());
@@ -707,6 +707,7 @@ JabberContactDetails * JabberProtocol::jabberContactDetails(Contact contact) con
 {
 	if (contact.isNull())
 		return 0;
+
 	return dynamic_cast<JabberContactDetails *>(contact.details());
 }
 
