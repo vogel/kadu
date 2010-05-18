@@ -2,7 +2,7 @@
  * %kadu copyright begin%
  * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2008 Tomasz Rostański (rozteck@interia.pl)
+ * Copyright 2008,2010 Tomasz Rostański (rozteck@interia.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -22,7 +22,7 @@
 #ifndef GROWL_NOTIFY_CONFIGURATION_WIDGET_H
 #define GROWL_NOTIFY_CONFIGURATION_WIDGET_H
 
-#include "../notify/notify.h"
+#include "gui/widgets/configuration/notifier-configuration-widget.h"
 
 class QLabel;
 class QLineEdit;
@@ -52,7 +52,7 @@ private slots:
 	void titleChanged(const QString &title);
 
 public:
-	GrowlNotifyConfigurationWidget(QWidget *parent = 0, char *name = 0);
+	GrowlNotifyConfigurationWidget(QWidget *parent = 0);
 
 	virtual void loadNotifyConfigurations() {}
 	virtual void saveNotifyConfigurations();

@@ -2,7 +2,7 @@
  * %kadu copyright begin%
  * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2008 Tomasz Rostański (rozteck@interia.pl)
+ * Copyright 2008,2010 Tomasz Rostański (rozteck@interia.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -22,20 +22,19 @@
 #include <QtGui/QLabel>
 #include <QtGui/QSpinBox>
 #include <QtGui/QComboBox>
+#include <QtGui/QLineEdit>
 #include <QtGui/QGridLayout>
 #include <QtGui/QApplication>
 
-#include "kadu.h"
-#include "config_file.h"
 #include "debug.h"
+#include "configuration/configuration-file.h"
 
 #include "growl_notify_configuration_widget.h"
 
-GrowlNotifyConfigurationWidget::GrowlNotifyConfigurationWidget(QWidget *parent, char *name)
-	: NotifierConfigurationWidget(parent, name), currentNotifyEvent("")
+GrowlNotifyConfigurationWidget::GrowlNotifyConfigurationWidget(QWidget *parent)
+	: NotifierConfigurationWidget(parent), currentNotifyEvent("")
 {
-	QString tooltip = qApp->translate("@default", Kadu::SyntaxTextNotify) + 
-		tr("\n%&t - title (eg. New message) %&m - notification text (eg. Message from Jim), %&d - details (eg. message quotation),\n%&i - notification icon");
+	QString tooltip = tr("\n%&t - title (eg. New message) %&m - notification text (eg. Message from Jim), %&d - details (eg. message quotation),\n%&i - notification icon");
 
 	title = new QLineEdit(this);
 	title->setToolTip(tooltip);
@@ -46,7 +45,7 @@ GrowlNotifyConfigurationWidget::GrowlNotifyConfigurationWidget(QWidget *parent, 
 	connect(syntax, SIGNAL(textChanged(const QString &)), this, SLOT(syntaxChanged(const QString &)));
 	connect(title, SIGNAL(textChanged(const QString &)), this, SLOT(titleChanged(const QString &)));
 
-	QGridLayout *gridLayout = new QGridLayout(this, 0, 0, 0, 5);
+	QGridLayout *gridLayout = new QGridLayout(this);
 	gridLayout->addWidget(new QLabel(tr("Title") + ":", this), 0, 0, Qt::AlignRight);
 	gridLayout->addWidget(title, 0, 1);
 	gridLayout->addWidget(new QLabel(tr("Syntax") + ":", this), 1, 0, Qt::AlignRight);

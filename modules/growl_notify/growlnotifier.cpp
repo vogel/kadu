@@ -24,7 +24,6 @@
  *
  */
 
-
 /**
  * \class GrowlNotifier
  * \todo Write a destructor, which CFReleases all datastructures
@@ -324,4 +323,3 @@ void GrowlNotifier::notify(const QString& name, const QString& title,
 }
 
 //----------------------------------------------------------------------------- 
-

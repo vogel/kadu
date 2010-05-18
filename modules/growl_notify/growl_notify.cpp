@@ -2,7 +2,7 @@
  * %kadu copyright begin%
  * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2008 Tomasz Rostański (rozteck@interia.pl)
+ * Copyright 2008,2010 Tomasz Rostański (rozteck@interia.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -23,18 +23,15 @@
  * growlnotifier.cpp file, which are the part of PSI Jabber Client.
  */
 
-#include "../notify/notify.h"
-#include "../notify/notification.h"
-
 #include <QtGui/QTextDocument>
 
-#include "config_file.h"
-#include "debug.h"
+#include "configuration/configuration-file.h"
+#include "gui/windows/message-dialog.h"
+#include "notify/notification-manager.h"
+#include "notify/notification.h"
+#include "parser/parser.h"
 #include "icons-manager.h"
-#include "message_box.h"
-#include "userlist.h"
-#include "chat_manager-old.h"
-#include "kadu_parser.h"
+#include "debug.h"
 
 #include "growl_notify.h"
 #include "growlnotifier.h"
@@ -46,11 +43,13 @@
  */
 extern "C" KADU_EXPORT int growl_notify_init(bool firstLoad)
 {
+	Q_UNUSED(firstLoad)
+
 #ifndef Q_OS_MAC
 	/* growl is only supported on MacOSX */
 	return 1;
 #endif
-	growl_notify = new GrowlNotify(0, "growl_notify");
+	growl_notify = new GrowlNotify(NULL);
 	return 0;
 }
 
@@ -60,12 +59,12 @@ extern "C" KADU_EXPORT void growl_notify_close()
 	growl_notify = 0;
 }
 
-GrowlNotify::GrowlNotify(QObject *parent, const char *name) : Notifier(parent, name)
+GrowlNotify::GrowlNotify(QObject *parent) : Notifier("Growl", "Growl", IconsManager::instance()->iconByPath("16x16/internet-group-chat.png"), parent)
 {
 	kdebugf();
 
 	createDefaultConfiguration();
-	notification_manager->registerNotifier(QT_TRANSLATE_NOOP("@default", "Growl"), this);
+	NotificationManager::instance()->registerNotifier(this);
 
 	// Initialize GrowlNotifier
 	QStringList notifications;
@@ -78,7 +77,7 @@ GrowlNotify::GrowlNotify(QObject *parent, const char *name) : Notifier(parent, n
 GrowlNotify::~GrowlNotify()
 {
 	kdebugf();
-	notification_manager->unregisterNotifier("Growl");
+	NotificationManager::instance()->unregisterNotifier(this);
 	kdebugf2();
 }
 
@@ -91,15 +90,10 @@ QString GrowlNotify::toPlainText(const QString &text)
 
 QString GrowlNotify::parseText(const QString &text, Notification *notification, const QString &def)
 {
-	UserListElement ule;
 	QString ret;
-
-	if (notification->userListElements().count())
-		ule = notification->userListElements()[0];
-
 	if (!text.isEmpty())
 	{
-		ret = KaduParser::parse(text, ule, notification);
+		ret = Parser::parse(text, notification);
 		ret = ret.replace("%&m", notification->text());
 		ret = ret.replace("%&t", notification->title());
 		ret = ret.replace("%&d", notification->details());
@@ -117,35 +111,25 @@ void GrowlNotify::notify(Notification *notification)
 
 	QString title = config_file.readEntry("GrowlNotify", QString("Event_") + notification->type() + "_title");
 	QString syntax = config_file.readEntry("GrowlNotify", QString("Event_") + notification->type() + "_syntax");
-	QPixmap pixmap = IconsManager::instance()->loadPixmap("Big" + notification->icon());
-	if (pixmap.isNull())
-		pixmap = IconsManager::instance()->loadPixmap(notification->icon());
 
 	notification->acquire();
-	senders = UserListElements(notification->userListElements());
 
-	growlNotifier->notify("Kadu Notification", 
+	growlNotifier->notify("Kadu Notification",
 		parseText(title, notification, notification->text()),
 		parseText(syntax, notification, notification->details()),
-		pixmap,
-		false, this, SLOT(notification_clicked()));
+		notification->icon().pixmap(),
+		false, notification, SLOT(callbackAccept()));
 
 	notification->release();
 
 	kdebugf2();
 }
 
-void GrowlNotify::notification_clicked()
-{
-	if (!senders.isEmpty())
-		chat_manager->openPendingMsgs(senders, true);
-}
-
 void GrowlNotify::createDefaultConfiguration()
 {
 	config_file.addVariable("GrowlNotify", "Event_ConnectionError_syntax", "%&m");
 	config_file.addVariable("GrowlNotify", "Event_ConnectionError_title", "%&t");
-    
+
 	config_file.addVariable("GrowlNotify", "Event_NewChat_syntax", "%&d");
 	config_file.addVariable("GrowlNotify", "Event_NewChat_title", "%&m");
 	
@@ -158,22 +142,22 @@ void GrowlNotify::createDefaultConfiguration()
 	config_file.addVariable("GrowlNotify", "Event_StatusChanged/ToBusy_syntax", "%&d");
 	config_file.addVariable("GrowlNotify", "Event_StatusChanged/ToBusy_title", "%&m");
 
-    config_file.addVariable("GrowlNotify", "Event_StatusChanged/ToOffline_syntax", "%&d");
-    config_file.addVariable("GrowlNotify", "Event_StatusChanged/ToOffline_title", "%&m");
+	config_file.addVariable("GrowlNotify", "Event_StatusChanged/ToOffline_syntax", "%&d");
+	config_file.addVariable("GrowlNotify", "Event_StatusChanged/ToOffline_title", "%&m");
 
-    config_file.addVariable("GrowlNotify", "Event_StatusChanged/ToInvisible_syntax", "%&d");
-    config_file.addVariable("GrowlNotify", "Event_StatusChanged/ToInvisible_title", "%&m");
+	config_file.addVariable("GrowlNotify", "Event_StatusChanged/ToInvisible_syntax", "%&d");
+	config_file.addVariable("GrowlNotify", "Event_StatusChanged/ToInvisible_title", "%&m");
 	
 	config_file.addVariable("GrowlNotify", "Event_FileTransfer/Finished_syntax", "%&m");
-    config_file.addVariable("GrowlNotify", "Event_FileTransfer/Finished_title", "%&t");
+	config_file.addVariable("GrowlNotify", "Event_FileTransfer/Finished_title", "%&t");
 	
-    config_file.addVariable("GrowlNotify", "Event_FileTransfer/IncomingFile_syntax", "%&m");
+	config_file.addVariable("GrowlNotify", "Event_FileTransfer/IncomingFile_syntax", "%&m");
 	config_file.addVariable("GrowlNotify", "Event_FileTransfer/IncomingFile_title", "%&t");
 }
 
-NotifierConfigurationWidget *GrowlNotify::createConfigurationWidget(QWidget *parent, char *name)
+NotifierConfigurationWidget *GrowlNotify::createConfigurationWidget(QWidget *parent)
 {
-	configurationWidget = new GrowlNotifyConfigurationWidget(parent, name);
+	configurationWidget = new GrowlNotifyConfigurationWidget(parent);
 	return configurationWidget;
 }
 
