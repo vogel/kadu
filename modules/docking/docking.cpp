@@ -59,6 +59,10 @@
 #include "status/status-container-manager.h"
 #include "debug.h"
 
+#ifdef Q_OS_MAC
+#include "mac_docking_helper.h"
+#endif
+
 #include "docker.h"
 
 #include "docking.h"
@@ -101,8 +105,10 @@ DockingManager::DockingManager() :
 	DockMenu = new QMenu;
 
 #ifdef Q_OS_MAC
-	OpenChatAction = new QAction(IconsManager::instance()->iconByPath("16x16/internet-group-chat.png"), tr("Show Pending Messages"));
-	connect(OpenChatAction, SIGNAL(triggered()), chat_manager, SLOT(openPendingMsgs()));
+	OpenChatAction = new QAction(IconsManager::instance()->iconByPath("16x16/internet-group-chat.png"),
+		tr("Show Pending Messages"), this);
+	connect(OpenChatAction, SIGNAL(triggered()), ChatWidgetManager::instance(),
+		SLOT(openPendingMsgs()));
 #endif
 	CloseKaduAction = new QAction(IconsManager::instance()->iconByPath("16x16/application-exit.png"), tr("&Exit Kadu"), this);
 	connect(CloseKaduAction, SIGNAL(triggered()), qApp, SLOT(quit()));
@@ -181,6 +187,10 @@ void DockingManager::changeIcon()
 void DockingManager::pendingMessageAdded()
 {
 	changeIcon();
+#ifdef Q_OS_MAC
+	MacDockingHelper::instance()->overlay(QString::number(PendingMessagesManager::instance()->pendingMessages().count()));
+	MacDockingHelper::instance()->startBounce();
+#endif
 }
 
 void DockingManager::pendingMessageDeleted()
@@ -195,6 +205,10 @@ void DockingManager::pendingMessageDeleted()
 		if (CurrentDocker)
 			CurrentDocker->changeTrayIcon(account.protocolHandler()->statusIcon(stat));
 	}
+#ifdef Q_OS_MAC
+	MacDockingHelper::instance()->removeOverlay();
+	MacDockingHelper::instance()->stopBounce();
+#endif
 }
 
 void DockingManager::defaultToolTip()
@@ -279,6 +293,9 @@ void DockingManager::statusPixmapChanged(const QIcon &icon)
 
 	defaultToolTip();
 	changeIcon();
+#ifdef Q_OS_MAC
+	qApp->setWindowIcon(icon.pixmap(128,128));
+#endif
 }
 
 void DockingManager::searchingForTrayPosition(QPoint &point)
@@ -323,10 +340,9 @@ void DockingManager::updateContextMenu()
 	qDeleteAll(StatusContainerMenus.values());
 	StatusContainerMenus.clear();
 
-    #ifdef Q_OS_MAC
+#ifdef Q_OS_MAC
 	DockMenu->addAction(OpenChatAction);
-	DockMenu->insertSeparator();
-    #endif
+#endif
 
 	int statusContainersCount = StatusContainerManager::instance()->statusContainers().count();
 

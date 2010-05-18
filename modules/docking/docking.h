@@ -55,9 +55,9 @@ class DOCKINGAPI DockingManager : public QObject, ConfigurationAwareObject, Stat
 	QMenu *DockMenu;
 	QAction *CloseKaduAction;
 	QAction *containersSeparator;
-    #ifdef Q_OS_MAC
+#ifdef Q_OS_MAC
 	QAction *OpenChatAction;
-    #endif
+#endif
 
 	QMap<StatusContainer *, QAction *> StatusContainerMenus;
 

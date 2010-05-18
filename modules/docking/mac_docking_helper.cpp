@@ -1,0 +1,150 @@
+/*
+ * %kadu copyright begin%
+ * Copyright 2007 Dawid Stawiarski (neeo@kadu.net)
+ * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
+ * Copyright 2004, 2005, 2006, 2007 Marcin Ślusarz (joi@kadu.net)
+ * Copyright 2002, 2003, 2004 Adrian Smarzewski (adrian@kadu.net)
+ * Copyright 2002, 2003 Tomasz Chiliński (chilek@chilan.com)
+ * Copyright 2010 Maciej Płaza (plaza.maciej@gmail.com)
+ * Copyright 2007, 2008, 2009, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2004 Roman Krzystyniak (Ron_K@tlen.pl)
+ * Copyright 2004, 2008 Michał Podsiadlik (michal@kadu.net)
+ * Copyright 2009, 2009 Bartłomiej Zimoń (uzi18@o2.pl)
+ * Copyright 2008, 2009, 2010 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * Copyright 2004, 2005 Paweł Płuciennik (pawel_p@kadu.net)
+ * Copyright 2002, 2003 Dariusz Jagodzik (mast3r@kadu.net)
+ * %kadu copyright end%
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#ifdef Q_OS_MAC
+
+#include "ApplicationServices/ApplicationServices.h"
+#include "Carbon/Carbon.h"
+
+#define DOCK_FONT_NAME "LucidaGrande-Bold"
+#define DOCK_FONT_SIZE 24
+
+MacDockingHelper *MacDockingHelper::Instance = 0;
+
+static MacDockingHelper *MacDockingHelper::instance()
+{
+	if (!Instance)
+		Instance = new MacDockingHelper();
+	return Instance;
+}
+
+MacDockingHelper::MacDockingHelper(QObject *parent) : QObject(parent)
+{
+	isBouncing = false;
+	isOverlayed = false;
+}
+MacDockingHelper()::~MacDockingHelper()
+{
+	stopBounce();
+	removeOverlay();
+}
+
+void MacDockingHelper::startBounce()
+{
+	/* The following code is taken from PSI mac_dock sources */
+	if (!isBouncing)
+	{
+		bounceRec.qType = nmType;
+		bounceRec.nmMark = 1;
+		bounceRec.nmIcon = NULL;
+		bounceRec.nmSound = NULL;
+		bounceRec.nmStr = NULL;
+		bounceRec.nmResp = NULL;
+		bounceRec.nmRefCon = 0;
+		NMInstall(&bounceRec);
+		isBouncing = true;
+	}
+}
+
+void MacDockingHelper::stopBounce()
+{
+	/* The following code is taken from PSI mac_dock sources */
+	if (isBouncing)
+	{
+		NMRemove(&bounceRec);
+		isBouncing = false;
+	}
+}
+
+void MacDockingHelper::removeOverlay()
+{
+	if (isOverlayed)
+	{
+		isOverlayed = false;
+
+		CGContextRef context = BeginCGContextForApplicationDockTile();
+		CGContextRestoreGState(context);
+		CGContextFlush(context);
+		EndCGContextForApplicationDockTile(context);
+
+		qApp->setWindowIcon(pixmap);
+		//RestoreApplicationDockTileImage();
+	}
+}
+
+void MacDockingHelper::overlay(const QString& text)
+{
+	/* The following code is taken from PSI mac_dock sources */
+
+	CGContextRef context = BeginCGContextForApplicationDockTile();
+
+	if (!isOverlayed)
+	{
+		CGContextSaveGState(context);
+		isOverlayed = true;
+
+		// Add some subtle drop down shadow
+		CGSize s = { 2.0, -4.0 };
+		CGContextSetShadow(context, s, 5.0);
+	}
+
+	// Draw a circle
+	CGContextBeginPath(context);
+	CGContextAddArc(context, 95.0, 95.0, 25.0, 0.0, 2 * M_PI, true);
+	CGContextClosePath(context);
+	CGContextSetRGBFillColor(context, 1, 0.0, 0.0, 1);
+	CGContextFillPath(context);
+
+	// Set the clipping path to the same circle
+	CGContextBeginPath(context);
+	CGContextAddArc(context, 95.0, 95.0, 25.0, 0.0, 2 * M_PI, true);
+	CGContextClip(context);
+
+	// Select the appropriate font
+	CGContextSelectFont(context,DOCK_FONT_NAME, DOCK_FONT_SIZE, kCGEncodingMacRoman);
+	CGContextSetRGBFillColor(context, 1, 1, 1, 1);
+
+	// Draw the text invisible
+	CGPoint begin = CGContextGetTextPosition(context);
+	CGContextSetTextDrawingMode(context, kCGTextInvisible);
+	CGContextShowTextAtPoint(context, begin.x, begin.y, text.toStdString().c_str(), text.length());
+	CGPoint end = CGContextGetTextPosition(context);
+
+	// Draw the text
+	CGContextSetTextDrawingMode(context, kCGTextFill);
+	CGContextShowTextAtPoint(context, 95 - (end.x - begin.x)/2, 95 - 8, text.toStdString().c_str(), text.length());
+
+	// Cleanup
+	CGContextFlush(context);
+	EndCGContextForApplicationDockTile(context);
+}
+
+#endif

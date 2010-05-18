@@ -1,10 +1,12 @@
 set (SOURCES
 	docking-module.cpp
 	docking.cpp
+	mac_docking_helper.cpp
 )
 
 set (MOC_SOURCES
 	docking.h
+	mac_docking_helper.h
 )
 
 set (TRANSLATION_SOURCES
