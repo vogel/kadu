@@ -53,11 +53,13 @@ AvatarManager::AvatarManager()
 	UpdateTimer = new QTimer(this);
 	UpdateTimer->setInterval(5 * 60 * 1000); // 5 minutes
 	connect(UpdateTimer, SIGNAL(timeout()), this, SLOT(updateAvatars()));
+	connect(ContactManager::instance(), SIGNAL(contactAdded(Contact)), this, SLOT(contactAdded(Contact)));
 }
 
 AvatarManager::~AvatarManager()
 {
 	triggerAllAccountsUnregistered();
+	disconnect(ContactManager::instance(), SIGNAL(contactAdded(Contact)), this, SLOT(contactAdded(Contact)));
 }
 
 void AvatarManager::itemAboutToBeAdded(Avatar item)
@@ -120,6 +122,11 @@ void AvatarManager::accountUnregistered(Account account)
 
 	disconnect(service, SIGNAL(avatarFetched(Contact, const QByteArray &)),
 			   this, SLOT(avatarFetched(Contact, const QByteArray &)));
+}
+
+void AvatarManager::contactAdded(Contact contact)
+{
+	updateAvatar(contact, true);
 }
 
 bool AvatarManager::needUpdate(Contact contact)

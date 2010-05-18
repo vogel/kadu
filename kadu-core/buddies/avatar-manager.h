@@ -53,6 +53,7 @@ private slots:
 	void avatarFetched(Contact contact, const QByteArray &data);
 	void updateAvatars();
 	void updateAccountAvatars();
+	void contactAdded(Contact contact);
 
 protected:
 	virtual void accountRegistered(Account account);
