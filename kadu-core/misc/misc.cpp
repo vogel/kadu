@@ -25,6 +25,7 @@
 #include <QtCore/QUrl>
 #include <QtGui/QApplication>
 #include <QtGui/QDesktopServices>
+#include <QtGui/QDesktopWidget>
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
@@ -52,13 +53,16 @@ void saveWindowGeometry(const QWidget *w, const QString &section, const QString 
 	/* Dorr: on Mac OS X make sure the window will not be greater than desktop what
 	 * sometimes happends during widget resizing (because of bug in Qt?)
 	 */
-	if (geometry.height() > QApplication::desktop()->height())
-		geometry.setHeight(QApplication::desktop()->height());
-	if (geometry.width() > QApplication::desktop()->width())
-		geometry.setWidth(QApplication::desktop()->width());
-#endif
-
+	QRect screen = QApplication::desktop()->geometry();
+	QRect geometry(w->geometry());
+	if (geometry.height() > screen.height())
+		geometry.setHeight(screen.height());
+	if (geometry.width() > screen.width())
+		geometry.setWidth(screen.width());
+	config_file.writeEntry(section, name, geometry);
+#else
 	config_file.writeEntry(section, name,w->geometry());
+#endif
 }
 
 void loadWindowGeometry(QWidget *w, const QString &section, const QString &name, int defaultX, int defaultY, int defaultWidth, int defaultHeight)

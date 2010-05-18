@@ -61,6 +61,7 @@ public:
 		const QStringList& notifications, 
 		const QStringList& default_notifications,
 		const QString& app_name = "");
+	~GrowlNotifier();
 	
 	void notify(const QString& name, const QString& title, 
 		const QString& description, const QPixmap& icon = QPixmap(), 

@@ -22,6 +22,8 @@
 #ifndef GROWL_NOTIFY_CONFIGURATION_WIDGET_H
 #define GROWL_NOTIFY_CONFIGURATION_WIDGET_H
 
+#include <QtCore/QMap>
+
 #include "gui/widgets/configuration/notifier-configuration-widget.h"
 
 class QLabel;

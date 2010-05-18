@@ -82,6 +82,8 @@ static OSStatus LoadFrameworkBundle(CFStringRef framework, CFBundleRef *bundlePt
 
 static pascal void IdleTimerAction(EventLoopTimerRef, EventLoopIdleTimerMessage inState, void* inUserData)
 {
+	Q_UNUSED(inUserData)
+
 	switch (inState)
 	{
 		case kEventLoopIdleTimerStarted:

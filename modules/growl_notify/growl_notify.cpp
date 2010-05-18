@@ -117,7 +117,7 @@ void GrowlNotify::notify(Notification *notification)
 	growlNotifier->notify("Kadu Notification",
 		parseText(title, notification, notification->text()),
 		parseText(syntax, notification, notification->details()),
-		notification->icon().pixmap(),
+		notification->icon().pixmap(128,128),
 		false, notification, SLOT(callbackAccept()));
 
 	notification->release();

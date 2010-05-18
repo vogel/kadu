@@ -23,6 +23,7 @@
 #ifdef Q_OS_MAC
 
 #include <QtCore/QObject>
+#include "Carbon/Carbon.h"
 
 class MacDockingHelper : public QObject
 {

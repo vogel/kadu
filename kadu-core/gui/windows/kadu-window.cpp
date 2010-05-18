@@ -142,9 +142,6 @@ void KaduWindow::createGui()
 	setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 	setCentralWidget(MainWidget);
 
-#ifdef Q_OS_MAC
-	qt_mac_set_dock_menu(dockMenu);
-#endif
 	createMenu();
 
 }

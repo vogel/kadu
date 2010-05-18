@@ -131,10 +131,12 @@ class KaduApplication: public QApplication
 };
 
 #ifdef Q_WS_MAC
+#include "kadu-core/gui/windows/kadu-window.h"
 static OSStatus appleEventProcessor(const AppleEvent *ae,
 				AppleEvent *event, long handlerRefCon)
 {
-	KaduApplication *app = (KaduApplication *) handlerRefCon;
+	Q_UNUSED(event)
+	Q_UNUSED(handlerRefCon)
 
 	OSType aeID = typeWildCard;
 	OSType aeClass = typeWildCard;
@@ -148,7 +150,7 @@ static OSStatus appleEventProcessor(const AppleEvent *ae,
 	{
 		if (aeID == kAEReopenApplication)
 		{
-			kadu->show();
+			Core::instance()->kaduWindow()->show();
 		}
 		return noErr;
 	}

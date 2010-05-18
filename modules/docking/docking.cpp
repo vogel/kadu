@@ -61,6 +61,7 @@
 
 #ifdef Q_OS_MAC
 #include "mac_docking_helper.h"
+extern void qt_mac_set_dock_menu(QMenu *);
 #endif
 
 #include "docker.h"
@@ -109,6 +110,7 @@ DockingManager::DockingManager() :
 		tr("Show Pending Messages"), this);
 	connect(OpenChatAction, SIGNAL(triggered()), ChatWidgetManager::instance(),
 		SLOT(openPendingMsgs()));
+	qt_mac_set_dock_menu(DockMenu);
 #endif
 	CloseKaduAction = new QAction(IconsManager::instance()->iconByPath("16x16/application-exit.png"), tr("&Exit Kadu"), this);
 	connect(CloseKaduAction, SIGNAL(triggered()), qApp, SLOT(quit()));

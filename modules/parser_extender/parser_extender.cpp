@@ -138,6 +138,8 @@ QString getUptime(int mode)
 		uptime += s.setNum(mins)+"m ";
 		uptime += s.setNum(secs)+"s ";
 	}
+#else
+	Q_UNUSED(mode)
 #endif
 
 	return uptime;
