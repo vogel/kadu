@@ -325,11 +325,11 @@ set (MOC_SOURCES
 )
 
 set (DATA_FILES
-        data/status/away.png
-        data/status/ffc.png
-        data/status/dnd.png
-        data/status/invisible.png
-        data/status/offline.png
+	data/status/away.png
+	data/status/ffc.png
+	data/status/dnd.png
+	data/status/invisible.png
+	data/status/offline.png
         data/status/online.png
         data/status/xa.png
 )

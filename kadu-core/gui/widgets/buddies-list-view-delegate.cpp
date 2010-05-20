@@ -375,7 +375,7 @@ void BuddiesListViewDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 		{
 			// grey out offline contacts' avatar
 			if (AvatarGreyOut && qvariant_cast<Contact>(index.data(ContactRole)).currentStatus().isDisconnected())
-				painter->drawPixmap(width - 2, 2, QIcon::QIcon(displayAvatar).pixmap(displayAvatar.size(), QIcon::Disabled));
+				painter->drawPixmap(width - 2, 2, QIcon(displayAvatar).pixmap(displayAvatar.size(), QIcon::Disabled));
 			else
 				painter->drawPixmap(width - 2, 2, displayAvatar);
 			// draw avatar border
