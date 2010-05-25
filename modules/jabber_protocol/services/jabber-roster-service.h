@@ -17,32 +17,42 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JABBER_SUBSCRIPTION_SERVICE_H
-#define JABBER_SUBSCRIPTION_SERVICE_H
+#ifndef JABBER_ROSTER_SERVICE_H
+#define JABBER_ROSTER_SERVICE_H
 
 #include <QtCore/QObject>
 
-#include <iris/xmpp_jid.h>
+namespace XMPP
+{
+	class RosterItem;
+};
 
-#include "contacts/contact.h"
-
+class Contact;
 class JabberProtocol;
 
-class JabberSubscriptionService : public QObject
+class JabberRosterService : public QObject
 {
 	Q_OBJECT
 
 	JabberProtocol *Protocol;
 
+	QList<Contact> ContactsForDelete;
+	bool InRequest;
+
 private slots:
-	void subscription(const XMPP::Jid &jid, const QString &type, const QString &nick);
+    void contactUpdated(XMPP::RosterItem &item);
+    void contactDeleted(XMPP::RosterItem &item);
+    void rosterRequestFinished(bool success);
 
 public:
-	explicit JabberSubscriptionService(JabberProtocol *protocol);
+	explicit JabberRosterService(JabberProtocol *protocol);
+	virtual ~JabberRosterService();
 
-public slots:
-	void authorizeContact(Contact contact, bool authorized);
+	void downloadRoster();
+
+signals:
+	void rosterDownloaded(bool success);
 
 };
 
-#endif // JABBER_SUBSCRIPTION_SERVICE_H
+#endif // JABBER_ROSTER_SERVICE_H

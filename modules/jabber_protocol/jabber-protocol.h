@@ -36,6 +36,7 @@
 class Conference;
 class JabberContactDetails;
 class JabberResourcePool;
+class JabberRosterService;
 class JabberSubscriptionService;
 class PEPManager;
 class ServerInfoManager;
@@ -48,6 +49,7 @@ class JabberProtocol : public Protocol
 	JabberChatService *CurrentChatService;
 	JabberChatStateService *CurrentChatStateService;
 	JabberFileTransferService *CurrentFileTransferService;
+	JabberRosterService *CurrentRosterService;
 	JabberSubscriptionService *CurrentSubscriptionService;
 
 	XMPP::JabberClient *JabberClient;
@@ -55,9 +57,7 @@ class JabberProtocol : public Protocol
 	JabberResourcePool *ResourcePool;
 	ServerInfoManager *serverInfoManager;
 	PEPManager *PepManager;
-	QList<Contact> ContactsForDelete;
-		
-	bool rosterRequestDone;
+
 	bool usingSSL;
 	bool confUseSSL;
 	bool doReconnect;
@@ -68,6 +68,8 @@ class JabberProtocol : public Protocol
 
 	void initializeJabberClient();
 	void setPEPAvailable(bool b);
+
+	friend class JabberRosterService;
 	void connectContactManagerSignals();
 	void disconnectContactManagerSignals();
 
@@ -76,10 +78,8 @@ private slots:
 	void connectedToServer();
 	void disconnectedFromServer();
 	void disconnectFromServer(const XMPP::Status &s = XMPP::Status ("", "", 0, false));
-	void rosterRequestFinished(bool success);
+	void rosterDownloaded(bool success);
 	void clientResourceReceived(const XMPP::Jid &j, const XMPP::Resource &r);
-	void slotContactUpdated(const XMPP::RosterItem &ri);
-	void slotContactDeleted(const XMPP::RosterItem &ri);
 	void slotIncomingFileTransfer();
 	void slotClientDebugMessage (const QString &msg);
 
@@ -90,7 +90,6 @@ private slots:
 	void buddyUpdated(Buddy &buddy);
 
 	void contactIdChanged(Contact contact, const QString &oldId);
-	void authorizeContact(Contact contact, bool authorized);
 
 	void serverFeaturesChanged();
 	void itemPublished(const XMPP::Jid& j, const QString& n, const XMPP::PubSubItem& item);

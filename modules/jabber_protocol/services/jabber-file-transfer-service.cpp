@@ -20,7 +20,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "misc/misc.h"
+#include <iris/filetransfer.h>
+
+#include "contacts/contact-manager.h"
 
 #include "file-transfer/jabber-file-transfer-handler.h"
 #include "jabber-protocol.h"
@@ -29,6 +31,12 @@
 
 JabberFileTransferService::JabberFileTransferService(JabberProtocol *protocol) :
 		FileTransferService(protocol), Protocol(protocol)
+{
+	connect(Protocol->client(), SIGNAL(incomingFileTransfer()),
+			this, SLOT(irisIncomingFileTransfer()));
+}
+
+JabberFileTransferService::~JabberFileTransferService()
 {
 }
 
@@ -40,7 +48,23 @@ FileTransferHandler * JabberFileTransferService::createFileTransferHandler(FileT
 	return handler;
 }
 
-void JabberFileTransferService::incomingFile(FileTransfer transfer)
+void JabberFileTransferService::irisIncomingFileTransfer()
 {
+	XMPP::FileTransfer *jTransfer = Protocol->client()->fileTransferManager()->takeIncoming();
+	if (!jTransfer)
+		return;
+
+	Contact peer = ContactManager::instance()->byId(Protocol->account(), jTransfer->peer().bare(), ActionCreateAndAdd);
+	FileTransfer transfer = FileTransfer::create();
+	transfer.setPeer(peer);
+	transfer.setTransferType(TypeReceive);
+	transfer.setRemoteFileName(jTransfer->fileName());
+
+	transfer.createHandler();
+
+	JabberFileTransferHandler *handler = dynamic_cast<JabberFileTransferHandler *>(transfer.handler());
+	if (handler)
+		handler->setJTransfer(jTransfer);
+
 	emit incomingFileTransfer(transfer);
 }

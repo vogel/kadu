@@ -38,6 +38,7 @@
 #include "utils/pep-manager.h"
 #include "utils/server-info-manager.h"
 #include "iris/filetransfer.h"
+#include "services/jabber-roster-service.h"
 #include "services/jabber-subscription-service.h"
 #include "iris-status-adapter.h"
 #include "jabber-account-details.h"
@@ -85,6 +86,9 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	CurrentChatService = new JabberChatService(this);
 	CurrentChatStateService = new JabberChatStateService(this);
 	CurrentFileTransferService = new JabberFileTransferService(this);
+	CurrentRosterService = new JabberRosterService(this);
+	connect(CurrentRosterService, SIGNAL(rosterDownloaded(bool)),
+			this, SLOT(rosterDownloaded(bool)));
 	CurrentSubscriptionService = new JabberSubscriptionService(this);
 
 	connectContactManagerSignals();
@@ -144,21 +148,10 @@ void JabberProtocol::initializeJabberClient()
 	connect(JabberClient, SIGNAL(csDisconnected()), this, SLOT(disconnectedFromServer()));
 	connect(JabberClient, SIGNAL(connected()), this, SLOT(connectedToServer()));
 
-	connect(JabberClient, SIGNAL(newContact(const XMPP::RosterItem &)),
-		   this, SLOT(slotContactUpdated(const XMPP::RosterItem &)));
-	connect(JabberClient, SIGNAL(contactUpdated(const XMPP::RosterItem &)),
-		   this, SLOT(slotContactUpdated(const XMPP::RosterItem &)));
-	connect(JabberClient, SIGNAL(contactDeleted(const XMPP::RosterItem &)),
-		   this, SLOT(slotContactDeleted(const XMPP::RosterItem &)));
-	connect(JabberClient, SIGNAL(rosterRequestFinished(bool)),
-		   this, SLOT(rosterRequestFinished(bool)));
-
 	connect(JabberClient, SIGNAL(resourceAvailable(const XMPP::Jid &, const XMPP::Resource &)),
 		   this, SLOT(clientResourceReceived(const XMPP::Jid &, const XMPP::Resource &)));
 	connect(JabberClient, SIGNAL(resourceUnavailable(const XMPP::Jid &, const XMPP::Resource &)),
 		   this, SLOT(clientResourceReceived(const XMPP::Jid &, const XMPP::Resource &)));
-
-	connect(JabberClient, SIGNAL(incomingFileTransfer()), this, SLOT(slotIncomingFileTransfer()));
 
 		/*//TODO: implement in the future
 		connect( JabberClient, SIGNAL ( groupChatJoined ( const XMPP::Jid & ) ),
@@ -226,7 +219,6 @@ void JabberProtocol::connectToServer()
 	JabberClient->setOverrideHost(jabberAccountDetails->useCustomHostPort(), jabberAccountDetails->customHost(), jabberAccountDetails->customPort());
 
 	JabberClient->setFileTransfersEnabled(true); // i haz it
-	rosterRequestDone = false;
 	jabberID = account().id();
 
 /*
@@ -281,14 +273,22 @@ void JabberProtocol::connectedToServer()
 	kdebugf();
 
 	networkStateChanged(NetworkConnected);
-	
-	// flag roster for delete
-	ContactsForDelete = ContactManager::instance()->contacts(account());
-	ContactsForDelete.removeAll(account().accountContact());
 
 	// ask for roster
-	JabberClient->requestRoster();
+	CurrentRosterService->downloadRoster();
 	kdebugf2();
+}
+
+void JabberProtocol::rosterDownloaded(bool success)
+{
+	/* Since we are online now, set initial presence. Don't do this
+	* before the roster request or we will receive presence
+	* information before we have updated our roster with actual
+	* contacts from the server! (Iris won't forward presence
+	* information in that case either). */
+	kdebug("Setting initial presence...\n");
+
+	changeStatus(nextStatus());
 }
 
 // disconnect or stop reconnecting
@@ -359,36 +359,6 @@ void JabberProtocol::slotClientDebugMessage(const QString &msg)
 	kdebugm(KDEBUG_WARNING, "Jabber Client debug:  %s\n", qPrintable(msg));
 }
 
-void JabberProtocol::rosterRequestFinished(bool success)
-{
-	kdebugf();
-	if (success)
-	{
-		// the roster was imported successfully, clear
-		// all "dirty" items from the contact list
-		foreach (Contact contact, ContactsForDelete)
-		{
-			Buddy owner = contact.ownerBuddy();
-			contact.setOwnerBuddy(Buddy::null);
-			if (owner.contacts().size() == 0)
-				BuddyManager::instance()->removeItem(owner);	
-		}
-		
-	}
-	rosterRequestDone = true;
-
-	/* Since we are online now, set initial presence. Don't do this
-	* before the roster request or we will receive presence
-	* information before we have updated our roster with actual
-	* contacts from the server! (Iris won't forward presence
-	* information in that case either). */
-	kdebug("Setting initial presence...\n");
-
-	changeStatus(nextStatus());
-
-	kdebugf2();
-}
-
 void JabberProtocol::disconnectedFromServer()
 {
 	kdebugf();
@@ -428,27 +398,6 @@ void JabberProtocol::changeStatus(Status status)
 	}
 
 	statusChanged(IrisStatusAdapter::fromIrisStatus(xmppStatus));
-}
-
-void JabberProtocol::slotIncomingFileTransfer()
-{
-	XMPP::FileTransfer *jTransfer = client()->fileTransferManager()->takeIncoming();
-	if (!jTransfer)
-		return;
-
-	Contact peer = ContactManager::instance()->byId(account(), jTransfer->peer().bare(), ActionCreateAndAdd);
-	FileTransfer transfer = FileTransfer::create();
-	transfer.setPeer(peer);
-	transfer.setTransferType(TypeReceive);
-	transfer.setRemoteFileName(jTransfer->fileName());
-
-	transfer.createHandler();
-
-	JabberFileTransferHandler *handler = dynamic_cast<JabberFileTransferHandler *>(transfer.handler());
-	if (handler)
-		handler->setJTransfer(jTransfer);
-
-	CurrentFileTransferService->incomingFile(transfer);
 }
 
 void JabberProtocol::clientResourceReceived(const XMPP::Jid &jid, const XMPP::Resource &resource)
@@ -517,7 +466,7 @@ void JabberProtocol::buddyUpdated(Buddy &buddy)
 
 void JabberProtocol::contactUpdated(Contact contact)
 {
-	if (!isConnected() || contact.contactAccount() != account() || contact.ownerBuddy().isAnonymous())
+	if (!isConnected() || contact.contactAccount() != account())
 		return;
 
 	Buddy buddy = contact.ownerBuddy();
@@ -538,102 +487,6 @@ void JabberProtocol::contactIdChanged(Contact contact, const QString &oldId)
 	
 	JabberClient->removeContact(oldId);
 	contactAttached(contact);
-}
-
-void JabberProtocol::slotContactUpdated(const XMPP::RosterItem &item)
-{
-	kdebugf();
-	/**
-	 * Subscription types are: Both, From, To, Remove, None.
-	 * Both:   Both sides have authed each other, each side
-	 *         can see each other's presence
-	 * From:   The other side can see us.
-	 * To:     We can see the other side. (implies we are
-	 *         authed)
-	 * Remove: Other side revoked our subscription request.
-	 *         Not to be handled here.
-	 * None:   No subscription.
-	 *
-	 * Regardless of the subscription type, we have to add
-	 * a roster item here.
-	 */
-	
-	if (item.subscription().toString() == "none")
-		return;
-
-	disconnectContactManagerSignals();
-
-	kdebug("New roster item: %s (Subscription: %s )\n", item.jid().full().toLocal8Bit().data(), item.subscription().toString().toLocal8Bit().data());
-
-	Contact contact = ContactManager::instance()->byId(account(), item.jid().bare(), ActionReturnNull);
-	if (contact)
-	{
-		ContactsForDelete.removeAll(contact);
-	}
-	else
-		contact = ContactManager::instance()->byId(account(), item.jid().bare(), ActionCreateAndAdd);
-	
-	JabberContactDetails *data = jabberContactDetails(contact);	
-	data->setSubscription(item.subscription());
-
-
-	Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
-
-	// if contact has name set it to display
-	if (!item.name().isNull())
-	{
-		if (item.name() != buddy.display())
-			buddy.setDisplay(item.name());
-	}
-	else
-		buddy.setDisplay(item.jid().bare());
-
-	if (buddy.isAnonymous()) // always false!!
-	{
-		// TODO: add some logic here?
-		buddy.setAnonymous(false);
-
-		GroupManager *gm = GroupManager::instance();
-		// add this contact to all groups the contact is a member of
-		foreach (QString group, item.groups())
-			buddy.addToGroup(gm->byName(group,true /* create group */));
-	}
-	else
-	{
-		//TODO: synchronize groups
-	}
-	
-	connectContactManagerSignals();
-
-	kdebugf2();
-}
-
-void JabberProtocol::slotContactDeleted(const XMPP::RosterItem &item)
-{
-	kdebug("Deleting contact %s", item.jid().bare().toLocal8Bit().data());
-	
-	Contact contact = ContactManager::instance()->byId(account(), item.jid().bare(), ActionReturnNull);
-	if (contact)
-	{
-	  	Buddy owner = contact.ownerBuddy();
-		contact.setOwnerBuddy(Buddy::null);
-		if (owner.contacts().size() == 0)
-			BuddyManager::instance()->removeItem(owner);
-		
-	}
-}
-
-void JabberProtocol::authorizeContact(Contact contact, bool authorized)
-{
-	const XMPP::Jid jid = XMPP::Jid(contact.id());
-	
-	if (authorized)
-	{
-		addContactToRoster(contact, false);
-		JabberClient->resendSubscription(jid);
-	}
-	else
-		JabberClient->rejectSubscription(jid);
 }
 
 bool JabberProtocol::validateUserID(const QString& uid)
