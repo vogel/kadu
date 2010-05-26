@@ -114,7 +114,10 @@ bool WeatherParser::getData( const QString& page, const PlainConfigFile* wConfig
 		return false;
 	
 	Data = "";
-	for(int i=0; i<num_vals; i++)
+	num_vals = T * num_names; /* Dorr: fix for index out of bounds when parsing data from
+					Onet (num vals 31, num names 5, crash at i = 30 ->
+					nextDaysNamesList[5] which is having 5 elements) */
+	for(int i = 0; i < num_vals; i++)
 	{
 		WDataValue& val = nextDaysValsList[i];
 	
