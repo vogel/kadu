@@ -1,5 +1,7 @@
 /****************************************************************************
-*   Copyright (C) 2008-2009  Piotr Dabrowski                                *
+*                                                                           *
+*   X11tools                                                                *
+*   Copyright (C) 2008-2010  Piotr Dąbrowski ultr@ultr.pl                   *
 *                                                                           *
 *   This program is free software: you can redistribute it and/or modify    *
 *   it under the terms of the GNU General Public License as published by    *
@@ -15,6 +17,8 @@
 *   along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
 *                                                                           *
 ****************************************************************************/
+
+
 
 
 #include <unistd.h>
@@ -659,7 +663,23 @@ Window X11_getActiveWindow( Display *display )
 
 void X11_setActiveWindow( Display *display, Window window )
 {
+	// raise
 	XRaiseWindow( display, window );
+	// NET
+	Atom net_active_window = XInternAtom( display, "_NET_ACTIVE_WINDOW", False );
+	XEvent e;
+	e.xclient.type = ClientMessage;
+	e.xclient.message_type = net_active_window;
+	e.xclient.display = display;
+	e.xclient.window = window;
+	e.xclient.format = 32;
+	e.xclient.data.l[0] = 2l;
+	e.xclient.data.l[1] = CurrentTime;
+	e.xclient.data.l[2] = None;
+	e.xclient.data.l[3] = 0l;
+	e.xclient.data.l[4] = 0l;
+	XSendEvent( display, DefaultRootWindow( display ), False, SubstructureRedirectMask|SubstructureNotifyMask, &e );
+	// XSetInputFocus()
 	XSetInputFocus( display, window, RevertToNone, CurrentTime );
 }
 
