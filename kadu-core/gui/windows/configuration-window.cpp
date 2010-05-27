@@ -51,6 +51,7 @@
 #include "gui/widgets/configuration/config-slider.h"
 #include "gui/widgets/configuration/config-label.h"
 #include "gui/widgets/configuration/config-list-widget.h"
+#include "gui/widgets/configuration/config-line-separator.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/windows/configuration-window.h"
 #include "gui/windows/kadu-window.h"

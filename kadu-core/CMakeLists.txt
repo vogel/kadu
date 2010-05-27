@@ -178,6 +178,7 @@ set (kadu_SRCS
 	gui/widgets/configuration/config-gg-password-edit.cpp
 	gui/widgets/configuration/config-hot-key-edit.cpp
 	gui/widgets/configuration/config-label.cpp
+	gui/widgets/configuration/config-line-separator.cpp
 	gui/widgets/configuration/config-line-edit.cpp
 	gui/widgets/configuration/config-list-widget.cpp
 	gui/widgets/configuration/config-path-list-edit.cpp
