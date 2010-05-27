@@ -63,6 +63,16 @@ set (ICON_FILES
 	data/icons/ss02.gif
 	data/icons/ss03.gif
 	data/icons/ss04.gif
+	data/icons/t01.gif
+	data/icons/t02.gif
+	data/icons/t03.gif
+	data/icons/t04.gif
+	data/icons/t05.gif
+	data/icons/t06.gif
+	data/icons/t07.gif
+	data/icons/t08.gif
+	data/icons/t09.gif
+	data/icons/t10.gif
 )
 
 if(WIN32)
