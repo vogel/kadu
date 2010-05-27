@@ -175,3 +175,4 @@ void disableNoChatContacts(Action *action)
 	  
 	action->setEnabled(enabled);
 }
+
