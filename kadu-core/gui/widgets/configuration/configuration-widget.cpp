@@ -47,6 +47,7 @@
 #include "gui/widgets/configuration/config-select-font.h"
 #include "gui/widgets/configuration/config-syntax-editor.h"
 #include "gui/widgets/configuration/config-action-button.h"
+#include "gui/widgets/configuration/config-radio-button.h"
 #include "gui/widgets/configuration/config-select-file.h"
 #include "gui/widgets/configuration/config-preview.h"
 #include "gui/widgets/configuration/config-slider.h"
@@ -298,6 +299,8 @@ ConfigWidget * ConfigurationWidget::appendUiElementFromDom(QDomNode uiElementNod
 		widget = new ConfigGGPasswordEdit(configGroupBox, dataManager);
 	else if (tagName == "check-box")
 		widget = new ConfigCheckBox(configGroupBox, dataManager);
+	else if (tagName == "radio-button")
+		widget = new ConfigRadioButton(configGroupBox, dataManager);
 	else if (tagName == "spin-box")
 		widget = new ConfigSpinBox(configGroupBox, dataManager);
 	else if (tagName == "combo-box")

@@ -9,13 +9,13 @@
 			</group-box>
 			
 			<group-box name="Buddy List Mode">
-				<check-box caption="Hide messaging networks for each buddy (Simple Mode)" config-section="General" config-item="SimpleMode" id="simpleMode"
+				<radio-button caption="Hide messaging networks for each buddy (Simple Mode)" config-section="General" config-item="SimpleMode" id="simpleMode"
 					   tool-tip="If enabled, buddies networks will be hidden in buddy list and status buttons" />
 				<label caption="With this setting, each of your buddy's messaging networks will be removed from view on your buddy list." />
-				<check-box caption="Differentiate the messaging networks for each buddy (Advanced Mode)" config-section="General" config-item="AdvancedMode" />
+				<radio-button caption="Differentiate the messaging networks for each buddy (Advanced Mode)" config-section="General" config-item="AdvancedMode" id="advancedMode" />
 				<label caption="With this setting, your buddy list will display the associated messaging networks for each of your buddies (e.g. 'Anna uses Gadu-Gadu and Google Talk') ." />
 				
-				<check-box caption="Show network icons with each buddy" config-section="General" config-item="ShowContactsWithIcons" />
+				<check-box caption="Show network icons with each buddy" config-section="General" config-item="ShowContactsWithIcons" id="contactsWithIcons" />
 			</group-box>
 			
 			<group-box name="Default Language">
