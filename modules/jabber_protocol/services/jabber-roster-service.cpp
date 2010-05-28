@@ -29,12 +29,12 @@
 JabberRosterService::JabberRosterService(JabberProtocol *protocol) :
 		QObject(protocol), Protocol(protocol), InRequest(false)
 {
-	connect(Protocol->client(), SIGNAL(newContact(XMPP::RosterItem)),
-			this, SLOT(contactUpdated(XMPP::RosterItem)));
-	connect(Protocol->client(), SIGNAL(contactUpdated(XMPP::RosterItem)),
-			this, SLOT(contactUpdated(XMPP::RosterItem)));
-	connect(Protocol->client(), SIGNAL(contactDeleted(XMPP::RosterItem)),
-			this, SLOT(contactDeleted(XMPP::RosterItem)));
+	connect(Protocol->client(), SIGNAL(newContact(const XMPP::RosterItem &)),
+			this, SLOT(contactUpdated(const XMPP::RosterItem &)));
+	connect(Protocol->client(), SIGNAL(contactUpdated(const XMPP::RosterItem &)),
+			this, SLOT(contactUpdated(const XMPP::RosterItem &)));
+	connect(Protocol->client(), SIGNAL(contactDeleted(const XMPP::RosterItem &)),
+			this, SLOT(contactDeleted(const XMPP::RosterItem &)));
 	connect(Protocol->client(), SIGNAL(rosterRequestFinished(bool)),
 			this, SLOT(rosterRequestFinished(bool)));
 }
@@ -43,7 +43,7 @@ JabberRosterService::~JabberRosterService()
 {
 }
 
-void JabberRosterService::contactUpdated(XMPP::RosterItem &item)
+void JabberRosterService::contactUpdated(const XMPP::RosterItem &item)
 {
 	kdebugf();
 
@@ -73,14 +73,13 @@ void JabberRosterService::contactUpdated(XMPP::RosterItem &item)
 	ContactsForDelete.removeAll(contact);
 
 	Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
+	buddy.setAnonymous(false);
 
 	// if contact has name set it to display
 	if (!item.name().isNull())
 		buddy.setDisplay(item.name());
 	else
 		buddy.setDisplay(item.jid().bare());
-
-	Q_ASSERT(buddy.isAnonymous());
 
 	GroupManager *gm = GroupManager::instance();
 	// add this contact to all groups the contact is a member of
@@ -92,7 +91,7 @@ void JabberRosterService::contactUpdated(XMPP::RosterItem &item)
 	kdebugf2();
 }
 
-void JabberRosterService::contactDeleted(XMPP::RosterItem &item)
+void JabberRosterService::contactDeleted(const XMPP::RosterItem &item)
 {
 	kdebug("Deleting contact %s", qPrintable(item.jid().bare()));
 
