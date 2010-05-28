@@ -40,9 +40,9 @@ class JabberRosterService : public QObject
 	bool InRequest;
 
 private slots:
-    void contactUpdated(XMPP::RosterItem &item);
-    void contactDeleted(XMPP::RosterItem &item);
-    void rosterRequestFinished(bool success);
+	void contactUpdated(const XMPP::RosterItem &item);
+	void contactDeleted(const XMPP::RosterItem &item);
+	void rosterRequestFinished(bool success);
 
 public:
 	explicit JabberRosterService(JabberProtocol *protocol);
