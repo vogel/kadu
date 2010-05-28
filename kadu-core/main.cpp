@@ -37,13 +37,13 @@
 #include <errno.h>
 #ifndef Q_WS_WIN
 #include <sys/file.h>
+#include <sys/stat.h>
 #include <pwd.h>
 #else
 #include <winsock2.h>
 #endif
 #ifdef Q_OS_BSD4
 #include <sys/types.h>
-#include <sys/stat.h>
 #endif
 #if defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)
 #include <QtGui/QX11Info>
