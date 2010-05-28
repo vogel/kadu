@@ -110,7 +110,7 @@ void JabberSubscriptionService::subscription(const XMPP::Jid &jid, const QString
 		else
 		{
 			Contact contact = ContactManager::instance()->byId(Protocol->account(), jid.bare(), ActionCreate);
-			SubscriptionWindow::getSubscription(contact, Protocol, SLOT(authorizeContact(Contact, bool)));
+			SubscriptionWindow::getSubscription(contact, this, SLOT(authorizeContact(Contact, bool)));
 		}
 	}
 	else if (type == "subscribed")
