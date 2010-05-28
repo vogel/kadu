@@ -80,7 +80,6 @@ private slots:
 	void disconnectFromServer(const XMPP::Status &s = XMPP::Status ("", "", 0, false));
 	void rosterDownloaded(bool success);
 	void clientResourceReceived(const XMPP::Jid &j, const XMPP::Resource &r);
-	void slotIncomingFileTransfer();
 	void slotClientDebugMessage (const QString &msg);
 
 	void contactDetached(Contact contact);
@@ -114,10 +113,10 @@ public:
 
 	virtual QPixmap statusPixmap(Status status);
 	virtual QPixmap statusPixmap(const QString &statusType);
-	
+
 	virtual QIcon statusIcon(Status status);
 	virtual QIcon statusIcon(const QString &statusType);
-	
+
 	virtual void changeStatus(Status status);
 
 	virtual AvatarService * avatarService() { return CurrentAvatarService; }
@@ -131,7 +130,7 @@ public:
 	PEPManager *pepManager() { return PepManager; }
 
 	JabberContactDetails * jabberContactDetails(Contact contact) const;
-	
+
 	void addContactToRoster(Contact contact, bool requestAuth = false);
 
 public slots:
