@@ -61,17 +61,15 @@ void ConfigSyntaxEditor::createWidgets()
 
 void ConfigSyntaxEditor::loadConfiguration()
 {
-	if (section.isEmpty())
+	if (!dataManager)
 		return;
-
 	setCurrentSyntax(dataManager->readEntry(section, item).toString());
 }
 
 void ConfigSyntaxEditor::saveConfiguration()
 {
-	if (section.isEmpty())
+	if (!dataManager)
 		return;
-
 	dataManager->writeEntry(section, item, currentSyntax());
 }
 

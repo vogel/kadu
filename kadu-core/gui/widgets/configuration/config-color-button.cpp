@@ -60,17 +60,15 @@ void ConfigColorButton::createWidgets()
 
 void ConfigColorButton::loadConfiguration()
 {
-	if (section.isEmpty())
+	if (!dataManager)
 		return;
-
 	setColor(dataManager->readEntry(section, item).value<QColor>());
 }
 
 void ConfigColorButton::saveConfiguration()
 {
-	if (section.isEmpty())
+	if (!dataManager)
 		return;
-
 	dataManager->writeEntry(section, item, QVariant(color().name()));
 }
 
