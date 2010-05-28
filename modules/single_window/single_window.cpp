@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifdef Q_WS_HILDON
+#ifdef Q_WS_MAEMO_5
 # include <QtGui/QMenu>
 # include <QtGui/QMenuBar>
 #endif
@@ -88,7 +88,7 @@ SingleWindow::SingleWindow()
 		split->addWidget(kadu);
 	}
 
-#ifdef Q_WS_HILDON
+#ifdef Q_WS_MAEMO_5
 //	menuBar()->addMenu(kadu->mainMenu());//TODO: fixme
 
 	if (kadu->width() >= 250)

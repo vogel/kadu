@@ -45,7 +45,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #endif
-#ifdef Q_WS_X11
+#if defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)
 #include <QtGui/QX11Info>
 #include <X11/Xatom.h>
 #include <X11/extensions/Xfixes.h>
@@ -76,7 +76,7 @@ static OSStatus appleEventProcessor(const AppleEvent *ae,
 
 class KaduApplication: public QApplication
 {
-#ifdef Q_WS_X11
+#if defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)
 		Atom net_wm_state;
 		int xfixes_event_base;
 #endif
@@ -90,7 +90,7 @@ class KaduApplication: public QApplication
 				m_appleEventProcessorUPP, (long) this, true);
 #endif
 
-#ifdef Q_WS_X11
+#if defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)
 			xfixes_event_base = -1;
 			int dummy;
 			if (XFixesQueryExtension(QX11Info::display(), &xfixes_event_base, &dummy))
@@ -106,7 +106,7 @@ class KaduApplication: public QApplication
 #endif
 		}
 
-#ifdef Q_WS_X11
+#if defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)
 		bool x11EventFilter(XEvent *event)
 		{
 			if (xfixes_event_base != -1 && event->type == xfixes_event_base + XFixesSelectionNotify)

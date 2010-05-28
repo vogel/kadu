@@ -182,6 +182,7 @@ set (kadu_SRCS
 	gui/widgets/configuration/config-list-widget.cpp
 	gui/widgets/configuration/config-path-list-edit.cpp
 	gui/widgets/configuration/config-preview.cpp
+	gui/widgets/configuration/config-radio-button.cpp
 	gui/widgets/configuration/config-select-file.cpp
 	gui/widgets/configuration/config-select-font.cpp
 	gui/widgets/configuration/config-slider.cpp
@@ -461,6 +462,7 @@ set (kadu_MOC_SRCS
 	#gui/widgets/configuration/config-widget-value.h
 	gui/widgets/configuration/configuration-widget.h
 	#gui/widgets/configuration/kadu-scroll-area.h
+	gui/widgets/configuration/config-radio-button.h
 	gui/widgets/configuration/config-section.h
 	#gui/widgets/configuration/config-tab.h
 	gui/widgets/configuration/notifier-configuration-widget.h
