@@ -59,11 +59,15 @@ void ConfigLineEdit::createWidgets()
 
 void ConfigLineEdit::loadConfiguration()
 {
+	if (!dataManager)
+		return;
 	setText(dataManager->readEntry(section, item).toString());
 }
 
 void ConfigLineEdit::saveConfiguration()
 {
+	if (!dataManager)
+		return;
 	dataManager->writeEntry(section, item, QVariant(text()));
 }
 

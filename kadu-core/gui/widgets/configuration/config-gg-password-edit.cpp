@@ -40,16 +40,14 @@ ConfigGGPasswordEdit::ConfigGGPasswordEdit(ConfigGroupBox *parentConfigGroupBox,
 
 void ConfigGGPasswordEdit::loadConfiguration()
 {
-	if (section.isEmpty())
+	if (!dataManager)
 		return;
-
 	setText(pwHash(dataManager->readEntry(section, item).toString()));
 }
 
 void ConfigGGPasswordEdit::saveConfiguration()
 {
-	if (section.isEmpty())
+	if (!dataManager)
 		return;
-
 	dataManager->writeEntry(section, item, QVariant(pwHash(text())));
 }

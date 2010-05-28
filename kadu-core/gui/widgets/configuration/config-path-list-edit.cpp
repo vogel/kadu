@@ -61,17 +61,15 @@ void ConfigPathListEdit::createWidgets()
 
 void ConfigPathListEdit::loadConfiguration()
 {
-	if (section.isEmpty())
+	if (!dataManager)
 		return;
-
 	setPathList(dataManager->readEntry(section, item).toString().split(QRegExp("&"), QString::SkipEmptyParts));
 }
 
 void ConfigPathListEdit::saveConfiguration()
 {
-	if (section.isEmpty())
+	if (!dataManager)
 		return;
-
 	dataManager->writeEntry(section, item, QVariant(pathList().join("&")));
 }
 

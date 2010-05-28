@@ -59,17 +59,15 @@ void ConfigHotKeyEdit::createWidgets()
 
 void ConfigHotKeyEdit::loadConfiguration()
 {
-	if (section.isEmpty())
+	if (!dataManager)
 		return;
-
 	setShortCut(dataManager->readEntry(section, item).toString());
 }
 
 void ConfigHotKeyEdit::saveConfiguration()
 {
-	if (section.isEmpty())
+	if (!dataManager)
 		return;
-
 	dataManager->writeEntry(section, item, QVariant(shortCutString()));
 }
 

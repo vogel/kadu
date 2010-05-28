@@ -87,7 +87,7 @@ void ConfigComboBox::createWidgets()
 
 void ConfigComboBox::loadConfiguration()
 {
-	if (section.isEmpty())
+	if (!dataManager)
 		return;
 
 	if (saveIndexNotCaption)
@@ -100,7 +100,7 @@ void ConfigComboBox::loadConfiguration()
 
 void ConfigComboBox::saveConfiguration()
 {
-	if (section.isEmpty())
+	if (!dataManager)
 		return;
 
 	int index = currentIndex();

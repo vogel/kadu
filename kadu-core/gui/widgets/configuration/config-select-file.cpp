@@ -61,17 +61,15 @@ void ConfigSelectFile::createWidgets()
 
 void ConfigSelectFile::loadConfiguration()
 {
-	if (section.isEmpty())
+	if (!dataManager)
 		return;
-
 	setFile(dataManager->readEntry(section, item).toString());
 }
 
 void ConfigSelectFile::saveConfiguration()
 {
-	if (section.isEmpty())
+	if (!dataManager)
 		return;
-
 	dataManager->writeEntry(section, item, file());
 }
 

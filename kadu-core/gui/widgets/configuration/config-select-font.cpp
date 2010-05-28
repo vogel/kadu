@@ -60,7 +60,7 @@ void ConfigSelectFont::createWidgets()
 
 void ConfigSelectFont::loadConfiguration()
 {
-	if (section.isEmpty())
+	if (!dataManager)
 		return;
 	QFont font;
 	font.fromString(dataManager->readEntry(section, item).toString());
@@ -69,9 +69,8 @@ void ConfigSelectFont::loadConfiguration()
 
 void ConfigSelectFont::saveConfiguration()
 {
-	if (section.isEmpty())
+	if (!dataManager)
 		return;
-
 	dataManager->writeEntry(section, item, QVariant(font().toString()));
 }
 
