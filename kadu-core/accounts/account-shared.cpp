@@ -284,7 +284,7 @@ Contact AccountShared::accountContact()
 
 QString AccountShared::statusContainerName()
 {
-	return accountIdentity().name();
+	return Id;
 }
 
 void AccountShared::doSetStatus(Status status)
