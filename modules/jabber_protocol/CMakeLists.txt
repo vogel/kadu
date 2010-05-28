@@ -44,11 +44,7 @@ ENDMACRO(KADU_JABBER_AUTOMOC)
 
 pkg_search_module (QCA2 REQUIRED qca2 )
 pkg_search_module (IDN REQUIRED libidn )
-
-include (FindZLIB)
-if(NOT ZLIB_FOUND)
-	message(FATAL_ERROR "zlib not found!")
-endif(NOT ZLIB_FOUND)
+pkg_search_module (ZLIB REQUIRED zlib )
 
 set(SOURCES_IRIS
 	libiris/src/xmpp/base/randomnumbergenerator.cpp
@@ -346,19 +342,19 @@ set (CONFIGURATION_FILES
 
 KADU_JABBER_AUTOMOC ( ${MOC_SOURCES2_IRIS} )
 
-link_directories( ${QCA2_LIBRARY_DIRS} ${IDN_LIBRARY_DIRS} )
-add_definitions( ${QCA2_CFLAGS_OTHER} ${IDN_CFLAGS_OTHER} -DIRISNET_STATIC )
+link_directories( ${QCA2_LIBRARY_DIRS} ${IDN_LIBRARY_DIRS} ${ZLIB_LIBRARY_DIRS} )
+add_definitions( ${QCA2_CFLAGS_OTHER} ${IDN_CFLAGS_OTHER} ${ZLIB_CFLAGS_OTHER} -DIRISNET_STATIC )
 
 kadu_module (jabber_protocol
 	MODULE_SOURCES ${SOURCES_IRIS}  ${SOURCES}
 	MODULE_MOC_SOURCES  ${MOC_SOURCES_IRIS} ${MOC_SOURCES}
-	MODULE_DEPENDENCIES ${QCA2_LIBRARIES} ${IDN_LIBRARIES}
+	MODULE_DEPENDENCIES ${QCA2_LIBRARIES} ${IDN_LIBRARIES} ${ZLIB_LIBRARIES}
 #	MODULE_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
 	MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 )
 
 #set_target_properties(jabber_protocol PROPERTIES
-#	link_flags "${QCA2_LDFLAGS_OTHER} ${IDN_LDFLAGS_OTHER}" )
+#	link_flags "${QCA2_LDFLAGS_OTHER} ${IDN_LDFLAGS_OTHER} ${ZLIB_LDFLAGS_OTHER}" )
 
 include_directories(
 	${QCA2_INCLUDE_DIRS}
@@ -383,7 +379,7 @@ include_directories(
 	${CMAKE_CURRENT_SOURCE_DIR}/libiris/src/irisnet/appledns
 )
 
-target_link_libraries(jabber_protocol ${QCA2_LIBRARIES} ${IDN_LIBRARIES} ${QT_LIBRARIES} )
+target_link_libraries(jabber_protocol ${QCA2_LIBRARIES} ${IDN_LIBRARIES} ${ZLIB_LIBRARIES} ${QT_LIBRARIES} )
 
 install (FILES ${DATA_FILES}
         DESTINATION ${KADU_MODULES_DIR}/data/jabber_protocol)
