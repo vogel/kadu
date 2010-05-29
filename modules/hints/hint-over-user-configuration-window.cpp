@@ -59,7 +59,7 @@ HintOverUserConfigurationWindow::HintOverUserConfigurationWindow(Buddy exampleBu
 	connect(dynamic_cast<ConfigSpinBox *>(widget()->widgetById("bdwidth")), SIGNAL(valueChanged(int)), this, SLOT(borderWidthChanged(int)));
 	connect(dynamic_cast<ConfigComboBox *>(widget()->widgetById("iconsize")), SIGNAL(currentIndexChanged(int)), this, SLOT(iconSizeChanged(int)));
 
-	ConfigGroupBox *groupBox = widget()->configGroupBox("Look", "Userbox", "Hint Over Buddy");
+	ConfigGroupBox *groupBox = widget()->configGroupBox("Look", "Buddy List", "Hint Over Buddy");
 
 	previewFrame = new QFrame;
 	previewFrame->setObjectName("tip_frame");
