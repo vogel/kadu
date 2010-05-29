@@ -62,10 +62,10 @@ public:
 	};
 	
 	enum TlenStatus {
-		available,
 		chat,
-		xa,
+		available,
 		away,
+		xa,
 		dnd,
 		invisible,
 		unavailable
