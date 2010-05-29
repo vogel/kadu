@@ -59,18 +59,10 @@
 		}
 		// activate
 		if( window->isMinimized() )
-		{
-			window->showNormal();     // unminimize
-			window->activateWindow(); // activate
-			window->raise();          // raise
-			X11_setActiveWindowCheck( QX11Info::display(), window->winId() );
-		}
-		else
-		{
-			window->activateWindow(); // activate
-			window->raise();          // raise
-			X11_setActiveWindow( QX11Info::display(), window->winId() );
-		}
+			window->showNormal(); // unminimize
+		X11_setActiveWindow( QX11Info::display(), window->winId() );
+		window->activateWindow();
+		window->raise();
 	}
 
 #elif defined(Q_OS_WIN)

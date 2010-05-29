@@ -1,5 +1,7 @@
 /****************************************************************************
-*   Copyright (C) 2008-2009  Piotr Dabrowski                                *
+*                                                                           *
+*   X11tools                                                                *
+*   Copyright (C) 2008-2010  Piotr Dąbrowski ultr@ultr.pl                   *
 *                                                                           *
 *   This program is free software: you can redistribute it and/or modify    *
 *   it under the terms of the GNU General Public License as published by    *
@@ -17,7 +19,7 @@
 ****************************************************************************/
 
 
-// VERSION: 1.02.00
+// VERSION: 1.03.00
 
 
 /*
@@ -42,7 +44,7 @@ KNOWN ISSUES:
 #define  X11_ALLDESKTOPS                0xFFFFFFFFL  /*unsigned long*/
 #define  X11_NODESKTOP                  0xFFFFFFFEL  /*unsigned long*/
 
-#define  X11_SETACTIVEWINDOW_TIMEOUT      (50*1000)  /*usec*/
+#define  X11_SETACTIVEWINDOW_TIMEOUT     (100*1000)  /*usec*/
 #define  X11_SETACTIVEWINDOW_CHECKTIME     (2*1000)  /*usec*/
 
 #define  MWM_HINTS_DECORATIONS            (1L << 1)
