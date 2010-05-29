@@ -63,8 +63,8 @@ void ConfigSelectFont::loadConfiguration()
 	if (!dataManager)
 		return;
 	QFont font;
-	font.fromString(dataManager->readEntry(section, item).toString());
-	setFont(font);
+	if (font.fromString(dataManager->readEntry(section, item).toString()))
+		setFont(font);
 }
 
 void ConfigSelectFont::saveConfiguration()
