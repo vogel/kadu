@@ -51,18 +51,16 @@ void ConfigCheckBox::createWidgets()
 
 void ConfigCheckBox::loadConfiguration()
 {
-	if (section.isEmpty())
+	if (!dataManager)
 		return;
-
 	setChecked(dataManager->readEntry(section, item).toBool());
 	emit toggled(isChecked());
 }
 
 void ConfigCheckBox::saveConfiguration()
 {
-	if (section.isEmpty())
+	if (!dataManager)
 		return;
-
 	dataManager->writeEntry(section, item, QVariant(isChecked() ? "true" : "false"));
 }
 

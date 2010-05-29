@@ -64,18 +64,16 @@ void ConfigSlider::createWidgets()
 
 void ConfigSlider::loadConfiguration()
 {
-	if (section.isEmpty())
+	if (!dataManager)
 		return;
-
 	setValue(dataManager->readEntry(section, item).toInt());
 	emit valueChanged(value());
 }
 
 void ConfigSlider::saveConfiguration()
 {
-	if (section.isEmpty())
+	if (!dataManager)
 		return;
-
 	dataManager->writeEntry(section, item, QString::number(value()));
 }
 
