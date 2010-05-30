@@ -373,7 +373,11 @@ void BuddiesListViewDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 		{
 			bool doGreyOut = AvatarGreyOut && qvariant_cast<Contact>(index.data(ContactRole)).currentStatus().isDisconnected();
 #if QT_VERSION >= QT_VERSION_CHECK(4,6,0)
-			QString key = QString("msi-%1-%2,%3").arg(displayAvatar.cacheKey()).arg(doGreyOut).arg(AvatarBorder);
+			QString key = QString("msi-%1-%2,%3,%4")
+					.arg(displayAvatar.cacheKey())
+					.arg(doGreyOut)
+					.arg(AvatarBorder)
+					.arg(option.state & QStyle::State_Selected ? 1 : 0);
 			QPixmap cached;
 			if (QPixmapCache::find(key, &cached))
 			{
