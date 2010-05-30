@@ -28,6 +28,9 @@
 #include <QtGui/QLayout>
 #include <QtGui/QListView>
 #include <QtGui/QPainter>
+#if QT_VERSION >= QT_VERSION_CHECK(4,6,0)
+#include <QtGui/QPixmapCache>
+#endif
 #include <QtGui/QStyleOption>
 #include <QtGui/QTextDocument>
 #include <QtGui/QTextFrame>
@@ -363,27 +366,72 @@ void BuddiesListViewDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 	if (isBold(index))
 		painter->setFont(Font);
 
-	QPixmap displayAvatar = avatar(index);
-	if (!displayAvatar.isNull() && ShowAvatars)
+	if (ShowAvatars && DefaultAvatarSize.isValid())
 	{
-		if (DefaultAvatarSize.isValid() && displayAvatar.size() != DefaultAvatarSize)
-			displayAvatar = displayAvatar.scaled(DefaultAvatarSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-
-		int avatarWidth = displayAvatar.width();
-		int width = widget->viewport()->width() - opt.rect.left() - (avatarWidth + (avatarSize - avatarWidth)/2);
+		QPixmap displayAvatar = avatar(index);
 		if (!displayAvatar.isNull())
 		{
+			bool doGreyOut = AvatarGreyOut && qvariant_cast<Contact>(index.data(ContactRole)).currentStatus().isDisconnected();
+#if QT_VERSION >= QT_VERSION_CHECK(4,6,0)
+			QString key = QString("msi-%1-%2,%3").arg(displayAvatar.cacheKey()).arg(doGreyOut).arg(AvatarBorder);
+			QPixmap cached;
+			if (QPixmapCache::find(key, &cached))
+			{
+				//kdebugm(KDEBUG_INFO, "Found key (%s)\n", qPrintable(key));
+				//cached! draw and we're done
+				int width = widget->viewport()->width() - opt.rect.left()
+						- (cached.width() + (avatarSize - cached.width()) / 2);
+				painter->drawPixmap(width - 2, 2, cached);
+			}
+			else
+			{
+				if (displayAvatar.size() != DefaultAvatarSize)
+					displayAvatar = displayAvatar.scaled(DefaultAvatarSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+
+				int width = widget->viewport()->width() - opt.rect.left()
+						- (displayAvatar.width() + (avatarSize - displayAvatar.width()) / 2);
+
+				// draw into cache
+				QPainter p;
+				p.begin(&displayAvatar);
+
+				// grey out offline contacts' avatar
+				if (doGreyOut)
+					p.drawPixmap(0, 0, QIcon(displayAvatar).pixmap(displayAvatar.size(), QIcon::Disabled));
+
+				// draw avatar border
+				if (AvatarBorder)
+					p.drawRect(QRect(0, 0, displayAvatar.width() - 1, displayAvatar.height() - 1));
+#ifdef DEBUG_ENABLED
+				if (debug_mask & KDEBUG_VISUAL)
+					drawDebugRect(&p, QRect(0, 0, displayAvatar.width() - 1, displayAvatar.height() - 1), QColor(0, 255, 0));
+#endif
+				p.end();
+
+				// draw to screen
+				painter->drawPixmap(width - 2, 2, displayAvatar);
+				QPixmapCache::insert(key, displayAvatar);
+			}
+#else
+			if (displayAvatar.size() != DefaultAvatarSize)
+				displayAvatar = displayAvatar.scaled(DefaultAvatarSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+
+			int width = widget->viewport()->width() - opt.rect.left()
+					- (displayAvatar.width() + (avatarSize - displayAvatar.width()) / 2);
+
 			// grey out offline contacts' avatar
-			if (AvatarGreyOut && qvariant_cast<Contact>(index.data(ContactRole)).currentStatus().isDisconnected())
+			if (doGreyOut)
 				painter->drawPixmap(width - 2, 2, QIcon(displayAvatar).pixmap(displayAvatar.size(), QIcon::Disabled));
 			else
 				painter->drawPixmap(width - 2, 2, displayAvatar);
+
 			// draw avatar border
 			if (AvatarBorder)
 				painter->drawRect(QRect(width - 2, 2, displayAvatar.width(), displayAvatar.height()));
 #ifdef DEBUG_ENABLED
 			if (debug_mask & KDEBUG_VISUAL)
 				drawDebugRect(painter, QRect(width - 2, 2, displayAvatar.width(), displayAvatar.height()), QColor(0, 255, 0));
+#endif
 #endif
 		}
 	}
