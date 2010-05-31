@@ -36,6 +36,7 @@
 * macos_docking: moved functionality to docking module (Dorr)
 * gui: #1302 fixed: introduced ConfigRadioButton (Juzef)
 * jabber: some QA work (Vogel)
+* history: #354 fixed: marking search text in history (Darom)
 
 +++ version 0.6.6-beta1
 * config_wizard: reworked (Vogel)

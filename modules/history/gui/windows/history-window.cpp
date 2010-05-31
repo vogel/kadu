@@ -503,6 +503,7 @@ void HistoryWindow::dateActivated(const QModelIndex &index)
 				messages = History::instance()->messages(chat, date);
 			ContentBrowser->setChat(chat);
 			ContentBrowser->appendMessages(messages);
+			ContentBrowser->findText(Search.query(), QWebPage::HighlightAllOccurrences);
 
 			break;
 		}
@@ -516,6 +517,7 @@ void HistoryWindow::dateActivated(const QModelIndex &index)
 			if (buddy.contacts().size() > 0)
 				ContentBrowser->setChat(ChatManager::instance()->findChat(ContactSet(buddy.contacts()[0]), true));
 			ContentBrowser->appendMessages(statusesToMessages(statuses));
+			ContentBrowser->findText(Search.query(), QWebPage::HighlightAllOccurrences);
 			break;
 		}
 
@@ -526,6 +528,7 @@ void HistoryWindow::dateActivated(const QModelIndex &index)
 			if (!receipeint.isEmpty() && date.isValid())
 				sms = History::instance()->sms(receipeint, date);
 			ContentBrowser->appendMessages(smsToMessage(sms));
+			ContentBrowser->findText(Search.query(), QWebPage::HighlightAllOccurrences);
 			break;
 		}
 	}
