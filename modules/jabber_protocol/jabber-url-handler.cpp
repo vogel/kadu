@@ -34,11 +34,23 @@
 
 JabberUrlHandler::JabberUrlHandler()
 {
-	JabberRegExp = QRegExp("jabber:(/){0,3}(?:([^@/<>'\"]+)@)?([^@/<>'\"]+)(?:/([^<>'\"]*))?$");
+	// Based on: http://mail.jabber.org/pipermail/xmppwg/2005-February/002261.html
+	// (RFC5122 - 3.3, XEP-0147)
+	JabberRegExp = QRegExp("xmpp:"
+	                       "(?://([^@ ]+)@([^/?# ]+)/?)?"                 // auth-xmpp
+	                       "(?:(?:([^@ ]+)@)?([^/?# ]+)(?:/([^?# ]+))?)?" // path-xmpp
+	                       "(?:\\?([^&# ]+)"                              // querytype
+	                       "(&[^# ]+)?)?"                                 // pair, will need to be reparsed, later
+	                       "(?:#(\\S*))?"                                 // fragment
+	);
+	// Reparse pair with: "&([^=]+)=([^&]+)"
 }
 
 bool JabberUrlHandler::isUrlValid(const QString &url)
 {
+	if (url == "xmpp:" || url.length() == 5)
+		return false;
+	
 	return JabberRegExp.exactMatch(url);
 }
 
