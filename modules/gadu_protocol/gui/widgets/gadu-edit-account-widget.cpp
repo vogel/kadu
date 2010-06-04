@@ -244,27 +244,20 @@ void GaduEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	layout->addWidget(general);
 
 	useDefaultServers = new QCheckBox(tr("Use default servers"), this);
-	generalLayout->addWidget(useDefaultServers, 0, 0, 1, 6);
+	generalLayout->addWidget(useDefaultServers, 0, 0, 1, 4);
 
 	QLabel *ipAddressesLabel = new QLabel(tr("IP addresses"), this);
 	ipAddresses = new QLineEdit(this);
-	ipAddresses->setToolTip("You can specify which GG servers to use. Separate every server using semicolon\n"
-				"(for example: 91.197.13.26;91.197.13.24;91.197.13.29;91.197.13.6)");
+	ipAddresses->setToolTip("You can specify which GG servers and ports to use. Separate every server using semicolon\n"
+							"(for example: 91.197.13.26:8074;91.197.13.24;91.197.13.29;91.197.13.6)");
 	generalLayout->addWidget(ipAddressesLabel, 1, 1);
 	generalLayout->addWidget(ipAddresses, 1, 2);
 
-	QLabel *portLabel = new QLabel(tr("Port"), this);
-	port = new QComboBox(this);
-	port->addItem("Automatic");
-	port->addItem("8074");
-	port->addItem("443");
-	generalLayout->addWidget(portLabel, 1, 4);
-	generalLayout->addWidget(port, 1, 5);
-
 	connect(useDefaultServers, SIGNAL(toggled(bool)), ipAddressesLabel, SLOT(setDisabled(bool)));
 	connect(useDefaultServers, SIGNAL(toggled(bool)), ipAddresses, SLOT(setDisabled(bool)));
-	connect(useDefaultServers, SIGNAL(toggled(bool)), portLabel, SLOT(setDisabled(bool)));
-	connect(useDefaultServers, SIGNAL(toggled(bool)), port, SLOT(setDisabled(bool)));
+
+	connect(useDefaultServers, SIGNAL(toggled(bool)), this, SLOT(dataChanged()));
+	connect(ipAddresses, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 }
 
 void GaduEditAccountWidget::apply()
@@ -285,6 +278,10 @@ void GaduEditAccountWidget::apply()
 
 	Proxy->apply();
 
+	config_file.writeEntry("Network", "isDefServers", useDefaultServers->isChecked());
+	config_file.writeEntry("Network", "Server", ipAddresses->text());
+	GaduServersManager::instance()->buildServerList();
+
 	gpiw->applyData();
 
 	setState(StateNotChanged);
@@ -295,10 +292,9 @@ void GaduEditAccountWidget::cancel()
 
 }
 
-// TODO: 0.6.6 check proxy data too
 void GaduEditAccountWidget::dataChanged()
 {
-	
+
 	if (account().accountIdentity() == Identities->currentIdentity()
 		&& account().connectAtStart() == ConnectAtStart->isChecked()
 		&& account().id() == AccountId->text()
@@ -307,6 +303,8 @@ void GaduEditAccountWidget::dataChanged()
 		&& Details->maximumImageSize() == MaximumImageSize->value()
 		&& Details->receiveImagesDuringInvisibility() == ReceiveImagesDuringInvisibility->isChecked()
 		&& Details->maximumImageRequests() == MaximumImageRequests->value()
+		&& config_file.readBoolEntry("Network", "isDefServers", true) == useDefaultServers->isChecked()
+		&& config_file.readEntry("Network", "Server") == ipAddresses->text()
 		&& StateNotChanged == Proxy->state())
 	{
 		setState(StateNotChanged);
@@ -347,6 +345,9 @@ void GaduEditAccountWidget::loadAccountData()
 		ReceiveImagesDuringInvisibility->setChecked(details->receiveImagesDuringInvisibility());
 		MaximumImageRequests->setValue(details->maximumImageRequests());
 	}
+
+	useDefaultServers->setChecked(config_file.readBoolEntry("Network", "isDefServers", true));
+	ipAddresses->setText(config_file.readEntry("Network", "Server"));
 }
 
 void GaduEditAccountWidget::loadConnectionData()
