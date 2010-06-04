@@ -248,8 +248,8 @@ void GaduEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 
 	QLabel *ipAddressesLabel = new QLabel(tr("IP addresses"), this);
 	ipAddresses = new QLineEdit(this);
-	ipAddresses->setToolTip("You can specify which GG servers to use. Separate every server using semicolon\n"
-				"(for example: 91.197.13.26;91.197.13.24;91.197.13.29;91.197.13.6)");
+	ipAddresses->setToolTip("You can specify which GG servers and ports to use. Separate every server using semicolon\n"
+							"(for example: 91.197.13.26:8074;91.197.13.24;91.197.13.29;91.197.13.6)");
 	generalLayout->addWidget(ipAddressesLabel, 1, 1);
 	generalLayout->addWidget(ipAddresses, 1, 2);
 
