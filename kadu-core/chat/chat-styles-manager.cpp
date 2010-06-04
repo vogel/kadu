@@ -148,6 +148,7 @@ void ChatStylesManager::configurationUpdated()
 		"html {"
 		"	font: %1 %2 %3 %4;"
 		"	text-decoration: %5;"
+		"	word-wrap: break-word;"
 		"}"
 		"a {"
 		"	text-decoration: underline;"
