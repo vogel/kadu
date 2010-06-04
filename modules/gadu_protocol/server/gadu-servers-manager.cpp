@@ -151,32 +151,17 @@ void GaduServersManager::buildServerList()
 	// for GG hub
 	ip.setAddress((quint32)0);
 	GoodServers.append(qMakePair(ip, 0));
-
-	if (ip.setAddress(config_file.readEntry("Network", "LastServerIP")))
-		foreach (int port, AllPorts)
-			GoodServers.append(qMakePair(ip, port));
+	GoodServers << gaduServersFromString(config_file.readEntry("Network", "LastServerIP"));
 
 	if (config_file.readBoolEntry("Network", "isDefServers", true))
-	{
 		for (int i = 0; i < GG_SERVERS_COUNT; i++)
-			if (ip.setAddress(QString::fromLatin1(Ips[i])))
-			{
-				foreach (int port, AllPorts)
-					GoodServers.append(qMakePair(ip, port));
-					AllServers.push_back(ip);
-			}
-	}
+			GoodServers << gaduServersFromString(QString::fromLatin1(Ips[i]));
 	else
 	{
 		QStringList servers = config_file.readEntry("Network", "Server").split(";", QString::SkipEmptyParts);
 
 		foreach (const QString &server, servers)
-			if (ip.setAddress(server))
-			{
-				foreach (int port, AllPorts)
-					GoodServers.append(qMakePair(ip, port));
-					AllServers.push_back(ip);
-			}
+			GoodServers << gaduServersFromString(server);
 	}
 }
 
