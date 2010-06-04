@@ -255,6 +255,9 @@ void GaduEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 
 	connect(useDefaultServers, SIGNAL(toggled(bool)), ipAddressesLabel, SLOT(setDisabled(bool)));
 	connect(useDefaultServers, SIGNAL(toggled(bool)), ipAddresses, SLOT(setDisabled(bool)));
+
+	connect(useDefaultServers, SIGNAL(toggled(bool)), this, SLOT(dataChanged()));
+	connect(ipAddresses, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 }
 
 void GaduEditAccountWidget::apply()
@@ -275,6 +278,10 @@ void GaduEditAccountWidget::apply()
 
 	Proxy->apply();
 
+	config_file.writeEntry("Network", "isDefServers", useDefaultServers->isChecked());
+	config_file.writeEntry("Network", "Server", ipAddresses->text());
+	GaduServersManager::instance()->buildServerList();
+
 	gpiw->applyData();
 
 	setState(StateNotChanged);
@@ -285,7 +292,6 @@ void GaduEditAccountWidget::cancel()
 
 }
 
-// TODO: 0.6.6 check proxy data too
 void GaduEditAccountWidget::dataChanged()
 {
 
@@ -297,6 +303,8 @@ void GaduEditAccountWidget::dataChanged()
 		&& Details->maximumImageSize() == MaximumImageSize->value()
 		&& Details->receiveImagesDuringInvisibility() == ReceiveImagesDuringInvisibility->isChecked()
 		&& Details->maximumImageRequests() == MaximumImageRequests->value()
+		&& config_file.readBoolEntry("Network", "isDefServers", true) == useDefaultServers->isChecked()
+		&& config_file.readEntry("Network", "Server") == ipAddresses->text()
 		&& StateNotChanged == Proxy->state())
 	{
 		setState(StateNotChanged);
@@ -337,6 +345,9 @@ void GaduEditAccountWidget::loadAccountData()
 		ReceiveImagesDuringInvisibility->setChecked(details->receiveImagesDuringInvisibility());
 		MaximumImageRequests->setValue(details->maximumImageRequests());
 	}
+
+	useDefaultServers->setChecked(config_file.readBoolEntry("Network", "isDefServers", true));
+	ipAddresses->setText(config_file.readEntry("Network", "Server"));
 }
 
 void GaduEditAccountWidget::loadConnectionData()

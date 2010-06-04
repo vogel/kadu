@@ -59,7 +59,6 @@ class GaduEditAccountWidget : public AccountEditWidget
 
 	QCheckBox *useDefaultServers;
 	QLineEdit *ipAddresses;
-	QComboBox *port;
 
 	QPushButton *ApplyButton;
 	QPushButton *CancelButton;

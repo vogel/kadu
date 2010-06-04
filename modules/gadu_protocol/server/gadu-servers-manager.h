@@ -46,7 +46,6 @@ private:
 	GaduServersManager();
 
 	QList<GaduServer> gaduServersFromString(const QString &serverAddress);
-	void buildServerList();
 
 protected:
 	virtual void configurationUpdated();
@@ -58,6 +57,8 @@ public:
 	QPair<QHostAddress, int> getServer();
 	void markServerAsGood(GaduServer server);
 	void markServerAsBad(GaduServer server);
+
+	void buildServerList();
 
 };
 

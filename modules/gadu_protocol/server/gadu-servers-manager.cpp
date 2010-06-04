@@ -135,6 +135,7 @@ void GaduServersManager::buildServerList()
 	GoodServers.clear();
 	BadServers.clear();
 	AllServers.clear();
+	AllPorts.clear();
 
 	int LastGoodPort = config_file.readNumEntry("Network", "LastServerPort",
 			config_file.readNumEntry("Network", "DefaultPort", 8074));
