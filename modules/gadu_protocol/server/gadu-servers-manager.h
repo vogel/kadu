@@ -45,6 +45,7 @@ private:
 
 	GaduServersManager();
 
+	QList<GaduServer> gaduServersFromString(const QString &serverAddress);
 	void buildServerList();
 
 protected:

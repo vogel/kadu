@@ -1,3 +1,6 @@
++++ version 0.6.6-beta3
+* jabber: proper URL handler for xmpp:// (Juzef)
+
 +++ version 0.6.6-beta2
 * jabber: added URL handler for jabber:// protocol (Juzef)
 * gui: #1332 fixed: dock icon now in 22x22 size (Juzef)

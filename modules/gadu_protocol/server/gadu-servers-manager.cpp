@@ -104,6 +104,32 @@ GaduServersManager::GaduServersManager()
 	buildServerList();
 }
 
+QList<GaduServersManager::GaduServer> GaduServersManager::gaduServersFromString(const QString &serverAddress)
+{
+	QList<GaduServer> result;
+
+	if (serverAddress.isEmpty())
+		return result;
+
+	QHostAddress ip;
+
+	int colon = serverAddress.indexOf(":");
+	if (colon > 0) {
+		QString ipAddress = serverAddress.mid(0, colon);
+		QString port = serverAddress.mid(colon + 1);
+
+		if (ip.setAddress(ipAddress))
+			result.append(qMakePair(ip, port.toInt()));
+		return result;
+	}
+
+	if (ip.setAddress(serverAddress))
+		foreach (int port, AllPorts)
+			result.append(qMakePair(ip, port));
+
+	return result;
+}
+
 void GaduServersManager::buildServerList()
 {
 	GoodServers.clear();
