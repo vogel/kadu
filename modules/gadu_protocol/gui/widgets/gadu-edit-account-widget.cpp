@@ -244,7 +244,7 @@ void GaduEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	layout->addWidget(general);
 
 	useDefaultServers = new QCheckBox(tr("Use default servers"), this);
-	generalLayout->addWidget(useDefaultServers, 0, 0, 1, 6);
+	generalLayout->addWidget(useDefaultServers, 0, 0, 1, 4);
 
 	QLabel *ipAddressesLabel = new QLabel(tr("IP addresses"), this);
 	ipAddresses = new QLineEdit(this);
@@ -253,18 +253,8 @@ void GaduEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	generalLayout->addWidget(ipAddressesLabel, 1, 1);
 	generalLayout->addWidget(ipAddresses, 1, 2);
 
-	QLabel *portLabel = new QLabel(tr("Port"), this);
-	port = new QComboBox(this);
-	port->addItem("Automatic");
-	port->addItem("8074");
-	port->addItem("443");
-	generalLayout->addWidget(portLabel, 1, 4);
-	generalLayout->addWidget(port, 1, 5);
-
 	connect(useDefaultServers, SIGNAL(toggled(bool)), ipAddressesLabel, SLOT(setDisabled(bool)));
 	connect(useDefaultServers, SIGNAL(toggled(bool)), ipAddresses, SLOT(setDisabled(bool)));
-	connect(useDefaultServers, SIGNAL(toggled(bool)), portLabel, SLOT(setDisabled(bool)));
-	connect(useDefaultServers, SIGNAL(toggled(bool)), port, SLOT(setDisabled(bool)));
 }
 
 void GaduEditAccountWidget::apply()
@@ -298,7 +288,7 @@ void GaduEditAccountWidget::cancel()
 // TODO: 0.6.6 check proxy data too
 void GaduEditAccountWidget::dataChanged()
 {
-	
+
 	if (account().accountIdentity() == Identities->currentIdentity()
 		&& account().connectAtStart() == ConnectAtStart->isChecked()
 		&& account().id() == AccountId->text()
