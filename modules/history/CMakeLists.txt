@@ -10,6 +10,7 @@ set (SOURCES
 	search/history-search-parameters.cpp
 	storage/history-storage.cpp
 
+	buddy-history-delete-handler.cpp
 	history.cpp
 	history-tree-item.cpp
 	history-save-thread.cpp

@@ -15,6 +15,8 @@ set (kadu_SRCS
 	buddies/avatar-shared.cpp
 	buddies/buddies-aware-object.cpp
 	buddies/buddy.cpp
+	buddies/buddy-additional-data-delete-handler.cpp
+	buddies/buddy-additional-data-delete-handler-manager.cpp
 	buddies/buddy-kadu-data.cpp
 	buddies/buddy-list.cpp
 	buddies/buddy-list-configuration-helper.cpp
@@ -331,6 +333,7 @@ set (kadu_MOC_SRCS
 
 	buddies/avatar-manager.h
 	buddies/avatar-shared.h
+	buddies/buddy-additional-data-delete-handler-manager.h
 	buddies/buddy-shared.h
 	buddies/buddy-manager.h
 	buddies/group-manager.h

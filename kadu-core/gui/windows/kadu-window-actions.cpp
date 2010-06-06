@@ -1014,13 +1014,8 @@ void KaduWindowActions::deleteUserActionActivated(MainWindow* window, bool toggl
 
 	kdebugf();
 
-	printf("Delete user action\n");
-
 	if (!window)
-	{
-		printf("on empty window..\n");
 		return;
-	}
 
 	BuddySet buddies = window->buddies();
 	if (buddies.isEmpty())
