@@ -129,6 +129,8 @@ void BuddyContactsTable::viewSelectionChanged(const QModelIndex &current, const 
 		DetachContactButton->setEnabled(true);
 		RemoveContactButton->setEnabled(true);
 	}
+	
+	DetachContactButton->setEnabled(MyBuddy.contacts().count() > 1);
 }
 
 void BuddyContactsTable::moveUpClicked()
