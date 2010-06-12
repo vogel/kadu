@@ -32,6 +32,10 @@ public:
 	explicit BuddyDeleteWindow(QWidget *parent = 0);
 	virtual ~BuddyDeleteWindow();
 
+public slots:
+	virtual void accept();
+	virtual void reject();
+
 };
 
 #endif // BUDDY_DELETE_WINDOW_H
