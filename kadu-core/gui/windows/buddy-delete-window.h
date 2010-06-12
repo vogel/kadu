@@ -22,11 +22,16 @@
 
 #include <QtGui/QDialog>
 
+class QListWidget;
+
 class BuddyDeleteWindow : public QDialog
 {
 	Q_OBJECT
 
+	QListWidget *AdditionalDataListView;
+
 	void createGui();
+	void fillAdditionalDataListView();
 
 public:
 	explicit BuddyDeleteWindow(QWidget *parent = 0);

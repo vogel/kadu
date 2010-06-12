@@ -42,12 +42,12 @@ BuddyAdditionalDataDeleteHandlerManager::~BuddyAdditionalDataDeleteHandlerManage
 
 void BuddyAdditionalDataDeleteHandlerManager::registerAdditionalDataDeleteHandler(BuddyAdditionalDataDeleteHandler *handler)
 {
-	Handlers.append(handler);
+	Items.append(handler);
 	emit additionalDataDeleteHandlerRegistered(handler);
 }
 
 void BuddyAdditionalDataDeleteHandlerManager::unregisterAdditionalDataDeleteHandler(BuddyAdditionalDataDeleteHandler *handler)
 {
-	Handlers.removeAll(handler);
+	Items.removeAll(handler);
 	emit additionalDataDeleteHandlerUnregistered(handler);
 }

@@ -25,6 +25,8 @@
 #include <QtGui/QStyle>
 #include <QtGui/QVBoxLayout>
 
+#include "buddies/buddy-additional-data-delete-handler.h"
+#include "buddies/buddy-additional-data-delete-handler-manager.h"
 #include "icons-manager.h"
 
 #include "buddy-delete-window.h"
@@ -67,10 +69,10 @@ void BuddyDeleteWindow::createGui()
 	QLabel *additionalDataLabel = new QLabel(tr("Select additional data that should be removed:"), contentWidget);
 	contentLayout->addWidget(additionalDataLabel);
 
-	QListWidget *additionalDataListView = new QListWidget(contentWidget);
-	additionalDataListView->addItem("History");
-	additionalDataListView->item(0)->setCheckState(Qt::Checked);
-	contentLayout->addWidget(additionalDataListView);
+	AdditionalDataListView = new QListWidget(contentWidget);
+	contentLayout->addWidget(AdditionalDataListView);
+
+	fillAdditionalDataListView();
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(this);
 	mainLayout->addWidget(buttons);
@@ -83,6 +85,15 @@ void BuddyDeleteWindow::createGui()
 
 	buttons->addButton(deleteButton, QDialogButtonBox::DestructiveRole);
 	buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
+}
+
+void BuddyDeleteWindow::fillAdditionalDataListView()
+{
+	foreach (BuddyAdditionalDataDeleteHandler *handler, BuddyAdditionalDataDeleteHandlerManager::instance()->items())
+	{
+		AdditionalDataListView->addItem(handler->displayName());
+		AdditionalDataListView->item(AdditionalDataListView->count() - 1)->setCheckState(Qt::Checked);
+	}
 }
 
 void BuddyDeleteWindow::accept()

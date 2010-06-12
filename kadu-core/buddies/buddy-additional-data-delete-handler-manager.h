@@ -31,13 +31,15 @@ class BuddyAdditionalDataDeleteHandlerManager : public QObject
 
 	static BuddyAdditionalDataDeleteHandlerManager * Instance;
 
-	QList<BuddyAdditionalDataDeleteHandler *> Handlers;
+	QList<BuddyAdditionalDataDeleteHandler *> Items;
 
 	explicit BuddyAdditionalDataDeleteHandlerManager(QObject *parent = 0);
 	virtual ~BuddyAdditionalDataDeleteHandlerManager();
 
 public:
 	static BuddyAdditionalDataDeleteHandlerManager * instance();
+
+	QList<BuddyAdditionalDataDeleteHandler *> items() { return Items; }
 
 	void registerAdditionalDataDeleteHandler(BuddyAdditionalDataDeleteHandler *handler);
 	void unregisterAdditionalDataDeleteHandler(BuddyAdditionalDataDeleteHandler *handler);
