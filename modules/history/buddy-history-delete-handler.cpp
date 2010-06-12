@@ -23,6 +23,25 @@
 
 #include "buddy-history-delete-handler.h"
 
+BuddyHistoryDeleteHandler * BuddyHistoryDeleteHandler::Instance = 0;
+
+void BuddyHistoryDeleteHandler::createInstance()
+{
+	if (!Instance)
+		Instance = new BuddyHistoryDeleteHandler();
+}
+
+void BuddyHistoryDeleteHandler::destroyInstance()
+{
+	delete Instance;
+	Instance = 0;
+}
+
+BuddyHistoryDeleteHandler * BuddyHistoryDeleteHandler::instance()
+{
+	return Instance;
+}
+
 BuddyHistoryDeleteHandler::BuddyHistoryDeleteHandler()
 {
 }

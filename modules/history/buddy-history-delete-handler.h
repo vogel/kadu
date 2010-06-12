@@ -24,10 +24,17 @@
 
 class BuddyHistoryDeleteHandler : public BuddyAdditionalDataDeleteHandler
 {
+	Q_DISABLE_COPY(BuddyHistoryDeleteHandler)
 
-public:
+	static BuddyHistoryDeleteHandler *Instance;
+
 	BuddyHistoryDeleteHandler();
 	virtual ~BuddyHistoryDeleteHandler();
+
+public:
+	static void createInstance();
+	static void destroyInstance();
+	static BuddyHistoryDeleteHandler *instance();
 
 	virtual QString name();
 	virtual QString displayName();

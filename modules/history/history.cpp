@@ -40,6 +40,7 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "buddies/buddy-additional-data-delete-handler-manager.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-shared.h"
 #include "chat/chat.h"
@@ -62,6 +63,7 @@
 
 #include "debug.h"
 
+#include "buddy-history-delete-handler.h"
 #include "history-save-thread.h"
 
 #include "history.h"
@@ -73,6 +75,10 @@ extern "C" KADU_EXPORT int history_init(bool firstLoad)
 	kdebugf();
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/history.ui"));
 	MainConfigurationWindow::registerUiHandler(History::instance());
+
+	BuddyHistoryDeleteHandler::createInstance();
+	BuddyAdditionalDataDeleteHandlerManager::instance()->registerAdditionalDataDeleteHandler(BuddyHistoryDeleteHandler::instance());
+
 	kdebugf2();
 	return 0;
 }
@@ -80,6 +86,10 @@ extern "C" KADU_EXPORT int history_init(bool firstLoad)
 extern "C" KADU_EXPORT void history_close()
 {
 	kdebugf();
+
+	BuddyAdditionalDataDeleteHandlerManager::instance()->unregisterAdditionalDataDeleteHandler(BuddyHistoryDeleteHandler::instance());
+	BuddyHistoryDeleteHandler::destroyInstance();
+
 	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/history.ui"));
 	MainConfigurationWindow::unregisterUiHandler(History::instance());
 	kdebugf2();
