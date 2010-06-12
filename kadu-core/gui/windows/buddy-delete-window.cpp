@@ -27,12 +27,13 @@
 
 #include "buddies/buddy-additional-data-delete-handler.h"
 #include "buddies/buddy-additional-data-delete-handler-manager.h"
+#include "buddies/buddy-manager.h"
 #include "icons-manager.h"
 
 #include "buddy-delete-window.h"
 
-BuddyDeleteWindow::BuddyDeleteWindow(QWidget *parent) :
-		QDialog(parent)
+BuddyDeleteWindow::BuddyDeleteWindow(BuddySet buddiesToDelete, QWidget *parent) :
+		QDialog(parent), BuddiesToDelete(buddiesToDelete)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	setModal(false);
@@ -63,7 +64,9 @@ void BuddyDeleteWindow::createGui()
 
 	QVBoxLayout *contentLayout = new QVBoxLayout(contentWidget);
 
-	QLabel *messageLabel = new QLabel(tr("Selected users:\n%0 will be deleted. Are you sure?"), contentWidget);
+	QLabel *messageLabel = new QLabel(tr("Selected users:\n%0 will be deleted. Are you sure?").arg(getBuddiesNames()), contentWidget);
+	messageLabel->setTextFormat(Qt::RichText);
+	messageLabel->setWordWrap(true);
 	contentLayout->addWidget(messageLabel);
 
 	QLabel *additionalDataLabel = new QLabel(tr("Select additional data that should be removed:"), contentWidget);
@@ -78,6 +81,9 @@ void BuddyDeleteWindow::createGui()
 	mainLayout->addWidget(buttons);
 
 	QPushButton *deleteButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogDiscardButton), tr("Delete"));
+	deleteButton->setAutoDefault(true);
+	deleteButton->setDefault(true);
+
 	QPushButton *cancelButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Cancel"));
 
 	connect(deleteButton, SIGNAL(clicked(bool)), this, SLOT(accept()));
@@ -96,9 +102,22 @@ void BuddyDeleteWindow::fillAdditionalDataListView()
 	}
 }
 
+QString BuddyDeleteWindow::getBuddiesNames()
+{
+	QStringList displays;
+	foreach (Buddy buddy, BuddiesToDelete)
+		displays.append(QString("<b>%0</b>").arg(buddy.display()));
+
+	return displays.join(", ");
+}
+
 void BuddyDeleteWindow::accept()
 {
     QDialog::accept();
+
+	foreach (Buddy buddy, BuddiesToDelete)
+		BuddyManager::instance()->removeItem(buddy);
+	BuddyManager::instance()->store();
 }
 
 void BuddyDeleteWindow::reject()

@@ -22,19 +22,25 @@
 
 #include <QtGui/QDialog>
 
+#include "buddies/buddy-set.h"
+
 class QListWidget;
 
 class BuddyDeleteWindow : public QDialog
 {
 	Q_OBJECT
 
+	BuddySet BuddiesToDelete;
+
 	QListWidget *AdditionalDataListView;
 
 	void createGui();
 	void fillAdditionalDataListView();
 
+	QString getBuddiesNames();
+
 public:
-	explicit BuddyDeleteWindow(QWidget *parent = 0);
+	explicit BuddyDeleteWindow(BuddySet buddiesToDelete, QWidget *parent = 0);
 	virtual ~BuddyDeleteWindow();
 
 public slots:

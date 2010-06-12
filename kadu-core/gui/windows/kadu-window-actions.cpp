@@ -1022,19 +1022,8 @@ void KaduWindowActions::deleteUserActionActivated(MainWindow* window, bool toggl
 	if (buddies.isEmpty())
 		return;
 
-	QStringList displays;
-	foreach (Buddy buddy, buddies)
-		displays.append(buddy.display());
-
-	BuddyDeleteWindow *deleteWindow = new BuddyDeleteWindow();
+	BuddyDeleteWindow *deleteWindow = new BuddyDeleteWindow(buddies);
 	deleteWindow->show();
-/*
-	if (MessageDialog::ask(tr("Selected users:\n%0 will be deleted. Are you sure?").arg(displays.join(", ")), "32x32/dialog-warning.png", Core::instance()->kaduWindow()))
-	{
-		foreach (Buddy buddy, buddies)
-			BuddyManager::instance()->removeItem(buddy);
-		BuddyManager::instance()->store();
-	}*/
 }
 
 
