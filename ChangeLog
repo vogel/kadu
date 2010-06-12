@@ -1,6 +1,7 @@
 +++ version 0.6.6-beta3
 * jabber: proper URL handler for xmpp:// (Juzef)
 * gadu: #1356 fixed: setting gadu servers manually works now (Vogel)
+* history: #1068 fixed: removing buddy and history in single window (Vogel)
 
 +++ version 0.6.6-beta2
 * jabber: added URL handler for jabber:// protocol (Juzef)

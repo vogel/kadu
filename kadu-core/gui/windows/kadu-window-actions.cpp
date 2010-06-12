@@ -52,6 +52,7 @@
 #include "gui/widgets/status-menu.h"
 #include "gui/windows/add-buddy-window.h"
 #include "gui/windows/buddy-data-window.h"
+#include "gui/windows/buddy-delete-window.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/main-configuration-window.h"
 #include "gui/windows/merge-buddies-window.h"
@@ -1014,27 +1015,15 @@ void KaduWindowActions::deleteUserActionActivated(MainWindow* window, bool toggl
 
 	kdebugf();
 
-	printf("Delete user action\n");
-
 	if (!window)
-	{
-		printf("on empty window..\n");
 		return;
-	}
 
 	BuddySet buddies = window->buddies();
 	if (buddies.isEmpty())
 		return;
 
-	QStringList displays;
-	foreach (Buddy buddy, buddies)
-		displays.append(buddy.display());
-	if (MessageDialog::ask(tr("Selected users:\n%0 will be deleted. Are you sure?").arg(displays.join(", ")), "32x32/dialog-warning.png", Core::instance()->kaduWindow()))
-	{
-		foreach (Buddy buddy, buddies)
-			BuddyManager::instance()->removeItem(buddy);
-		BuddyManager::instance()->store();
-	}
+	BuddyDeleteWindow *deleteWindow = new BuddyDeleteWindow(buddies);
+	deleteWindow->show();
 }
 
 

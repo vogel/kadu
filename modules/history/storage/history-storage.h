@@ -71,6 +71,8 @@ public:
 
 	virtual void clearChatHistory(Chat chat) = 0;
 
+	virtual void deleteHistory(Buddy buddy) = 0;
+
 };
 
 #endif // HISTORY_STORAGE_H
