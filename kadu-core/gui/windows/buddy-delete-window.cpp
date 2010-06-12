@@ -20,6 +20,7 @@
 #include <QtGui/QApplication>
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QLabel>
+#include <QtGui/QListWidget>
 #include <QtGui/QPushButton>
 #include <QtGui/QStyle>
 #include <QtGui/QVBoxLayout>
@@ -46,17 +47,30 @@ void BuddyDeleteWindow::createGui()
 {
 	QVBoxLayout *mainLayout = new QVBoxLayout(this);
 
-	QWidget *labels = new QWidget(this);
-	mainLayout->addWidget(labels);
+	QWidget *topWidget = new QWidget(this);
+	mainLayout->addWidget(topWidget);
 
-	QHBoxLayout *labelsLayout = new QHBoxLayout(labels);
+	QHBoxLayout *topLayout = new QHBoxLayout(topWidget);
 
-	QLabel *iconLabel = new QLabel(labels);
+	QLabel *iconLabel = new QLabel(topWidget);
 	iconLabel->setPixmap(IconsManager::instance()->pixmapByPath("32x32/dialog-warning.png"));
-	labelsLayout->addWidget(iconLabel);
+	topLayout->addWidget(iconLabel, 0, Qt::AlignTop);
 
-	QLabel *messageLabel = new QLabel(tr("Selected users:\n%0 will be deleted. Are you sure?"), labels);
-	labelsLayout->addWidget(messageLabel);
+	QWidget *contentWidget = new QWidget(topWidget);
+	topLayout->addWidget(contentWidget);
+
+	QVBoxLayout *contentLayout = new QVBoxLayout(contentWidget);
+
+	QLabel *messageLabel = new QLabel(tr("Selected users:\n%0 will be deleted. Are you sure?"), contentWidget);
+	contentLayout->addWidget(messageLabel);
+
+	QLabel *additionalDataLabel = new QLabel(tr("Select additional data that should be removed:"), contentWidget);
+	contentLayout->addWidget(additionalDataLabel);
+
+	QListWidget *additionalDataListView = new QListWidget(contentWidget);
+	additionalDataListView->addItem("History");
+	additionalDataListView->item(0)->setCheckState(Qt::Checked);
+	contentLayout->addWidget(additionalDataListView);
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(this);
 	mainLayout->addWidget(buttons);
