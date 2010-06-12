@@ -27,12 +27,17 @@ class BuddyAdditionalDataDeleteHandler;
 class BuddyAdditionalDataDeleteHandlerManager : public QObject
 {
 	Q_OBJECT
+	Q_DISABLE_COPY(BuddyAdditionalDataDeleteHandlerManager)
+
+	static BuddyAdditionalDataDeleteHandlerManager * Instance;
 
 	QList<BuddyAdditionalDataDeleteHandler *> Handlers;
 
-public:
 	explicit BuddyAdditionalDataDeleteHandlerManager(QObject *parent = 0);
 	virtual ~BuddyAdditionalDataDeleteHandlerManager();
+
+public:
+	static BuddyAdditionalDataDeleteHandlerManager * instance();
 
 	void registerAdditionalDataDeleteHandler(BuddyAdditionalDataDeleteHandler *handler);
 	void unregisterAdditionalDataDeleteHandler(BuddyAdditionalDataDeleteHandler *handler);

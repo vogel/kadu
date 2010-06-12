@@ -19,6 +19,16 @@
 
 #include "buddy-additional-data-delete-handler-manager.h"
 
+BuddyAdditionalDataDeleteHandlerManager *BuddyAdditionalDataDeleteHandlerManager::Instance = 0;
+
+BuddyAdditionalDataDeleteHandlerManager * BuddyAdditionalDataDeleteHandlerManager::instance()
+{
+	if (!Instance)
+		Instance = new BuddyAdditionalDataDeleteHandlerManager();
+
+	return Instance;
+}
+
 BuddyAdditionalDataDeleteHandlerManager::BuddyAdditionalDataDeleteHandlerManager(QObject *parent) :
 		QObject(parent)
 {
@@ -32,10 +42,12 @@ BuddyAdditionalDataDeleteHandlerManager::~BuddyAdditionalDataDeleteHandlerManage
 
 void BuddyAdditionalDataDeleteHandlerManager::registerAdditionalDataDeleteHandler(BuddyAdditionalDataDeleteHandler *handler)
 {
-	Q_UNUSED(handler)
+	Handlers.append(handler);
+	emit additionalDataDeleteHandlerRegistered(handler);
 }
 
 void BuddyAdditionalDataDeleteHandlerManager::unregisterAdditionalDataDeleteHandler(BuddyAdditionalDataDeleteHandler *handler)
 {
-	Q_UNUSED(handler)
+	Handlers.removeAll(handler);
+	emit additionalDataDeleteHandlerUnregistered(handler);
 }
