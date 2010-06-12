@@ -38,6 +38,7 @@ class BuddyDeleteWindow : public QDialog
 	void fillAdditionalDataListView();
 
 	QString getBuddiesNames();
+	void deleteBuddy(Buddy buddy);
 
 public:
 	explicit BuddyDeleteWindow(BuddySet buddiesToDelete, QWidget *parent = 0);

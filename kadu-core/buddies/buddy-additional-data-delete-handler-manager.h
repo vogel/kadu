@@ -40,6 +40,7 @@ public:
 	static BuddyAdditionalDataDeleteHandlerManager * instance();
 
 	QList<BuddyAdditionalDataDeleteHandler *> items() { return Items; }
+	BuddyAdditionalDataDeleteHandler *byName(const QString &name);
 
 	void registerAdditionalDataDeleteHandler(BuddyAdditionalDataDeleteHandler *handler);
 	void unregisterAdditionalDataDeleteHandler(BuddyAdditionalDataDeleteHandler *handler);

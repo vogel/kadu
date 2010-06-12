@@ -97,8 +97,12 @@ void BuddyDeleteWindow::fillAdditionalDataListView()
 {
 	foreach (BuddyAdditionalDataDeleteHandler *handler, BuddyAdditionalDataDeleteHandlerManager::instance()->items())
 	{
-		AdditionalDataListView->addItem(handler->displayName());
-		AdditionalDataListView->item(AdditionalDataListView->count() - 1)->setCheckState(Qt::Checked);
+		QListWidgetItem *item = new QListWidgetItem(AdditionalDataListView);
+		item->setText(handler->displayName());
+		item->setCheckState(Qt::Checked);
+		item->setData(Qt::UserRole, handler->name());
+
+		AdditionalDataListView->addItem(item);
 	}
 }
 
@@ -111,12 +115,29 @@ QString BuddyDeleteWindow::getBuddiesNames()
 	return displays.join(", ");
 }
 
+void BuddyDeleteWindow::deleteBuddy(Buddy buddy)
+{
+	for (int i = 0; i < AdditionalDataListView->count(); i++)
+	{
+		QListWidgetItem *item = AdditionalDataListView->item(i);
+		if (Qt::Checked == item->checkState())
+		{
+			QString deleteHandlerName = item->data(Qt::UserRole).toString();
+			BuddyAdditionalDataDeleteHandler *handler = BuddyAdditionalDataDeleteHandlerManager::instance()->byName(deleteHandlerName);
+			if (handler)
+				handler->deleteBuddyAdditionalData(buddy);
+		}
+	}
+
+	BuddyManager::instance()->removeItem(buddy);
+}
+
 void BuddyDeleteWindow::accept()
 {
     QDialog::accept();
 
 	foreach (Buddy buddy, BuddiesToDelete)
-		BuddyManager::instance()->removeItem(buddy);
+		deleteBuddy(buddy);
 	BuddyManager::instance()->store();
 }
 

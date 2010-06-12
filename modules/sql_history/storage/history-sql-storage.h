@@ -99,7 +99,8 @@ public:
 
 	void sync();
 
-	void clearChatHistory(Chat chat);
+	virtual void clearChatHistory(Chat chat);
+    virtual void deleteHistory(Buddy buddy);
 	
 	//TODO 0.6.6
 	void convertSenderToContact();

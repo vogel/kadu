@@ -33,6 +33,7 @@
 #include "chat/message/message.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-manager.h"
+#include "contacts/contact-set.h"
 #include "core/core.h"
 #include "debug.h"
 #include "gui/windows/message-dialog.h"
@@ -349,6 +350,30 @@ void HistorySqlStorage::clearChatHistory(Chat chat)
 	QString queryString = "DELETE FROM kadu_messages WHERE " + chatWhere(chat);
 	query.prepare(queryString);
 
+	executeQuery(query);
+
+	DatabaseMutex.unlock();
+}
+
+void HistorySqlStorage::deleteHistory(Buddy buddy)
+{
+	DatabaseMutex.lock();
+
+	QSqlQuery query(Database);
+
+	foreach (Contact contact, buddy.contacts())
+	{
+		Chat chat = ChatManager::instance()->findChat(ContactSet(contact), false);
+		if (chat)
+		{
+			QString queryString = "DELETE FROM kadu_messages WHERE " + chatWhere(chat);
+			query.prepare(queryString);
+			executeQuery(query);
+		}
+	}
+
+	QString queryString = "DELETE FROM kadu_statuses WHERE " + buddyContactsWhere(buddy);
+	query.prepare(queryString);
 	executeQuery(query);
 
 	DatabaseMutex.unlock();

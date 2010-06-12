@@ -17,6 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "buddies/buddy-additional-data-delete-handler.h"
+
 #include "buddy-additional-data-delete-handler-manager.h"
 
 BuddyAdditionalDataDeleteHandlerManager *BuddyAdditionalDataDeleteHandlerManager::Instance = 0;
@@ -38,6 +40,15 @@ BuddyAdditionalDataDeleteHandlerManager::BuddyAdditionalDataDeleteHandlerManager
 BuddyAdditionalDataDeleteHandlerManager::~BuddyAdditionalDataDeleteHandlerManager()
 {
 
+}
+
+BuddyAdditionalDataDeleteHandler * BuddyAdditionalDataDeleteHandlerManager::byName(const QString &name)
+{
+	foreach (BuddyAdditionalDataDeleteHandler *handler, Items)
+		if (name == handler->name())
+			return handler;
+
+	return 0;
 }
 
 void BuddyAdditionalDataDeleteHandlerManager::registerAdditionalDataDeleteHandler(BuddyAdditionalDataDeleteHandler *handler)

@@ -20,6 +20,9 @@
 #include <QtGui/QApplication>
 
 #include "buddies/buddy.h"
+#include "buddies/buddy-shared.h"
+
+#include "history.h"
 
 #include "buddy-history-delete-handler.h"
 
@@ -62,5 +65,5 @@ QString BuddyHistoryDeleteHandler::displayName()
 
 void BuddyHistoryDeleteHandler::deleteBuddyAdditionalData(Buddy buddy)
 {
-	Q_UNUSED(buddy)
+	History::instance()->deleteHistory(buddy);
 }

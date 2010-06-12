@@ -724,6 +724,12 @@ int History::smsCount(const QString &receipient, QDate date)
 	return CurrentStorage->smsCount(receipient, date);
 }
 
+void History::deleteHistory(Buddy buddy)
+{
+	if (CurrentStorage)
+		CurrentStorage->deleteHistory(buddy);
+}
+
 void History::createDefaultConfiguration()
 {
 	config_file.addVariable("History", "SaveChats", config_file.readBoolEntry("History", "Logging", true));
