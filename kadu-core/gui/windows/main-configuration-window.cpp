@@ -94,9 +94,14 @@ MainConfigurationWindow * MainConfigurationWindow::instance()
 	return Instance;
 }
 
+bool MainConfigurationWindow::hasInstance()
+{
+	return Instance;
+}
+
 ConfigFileDataManager * MainConfigurationWindow::instanceDataManager()
 {
-    	return InstanceDataManager;
+	return InstanceDataManager;
 }
 
 void MainConfigurationWindow::registerUiFile(const QString &uiFile)

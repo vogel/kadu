@@ -95,6 +95,7 @@ private slots:
 
 public:
 	static MainConfigurationWindow * instance();
+	static bool hasInstance();
 	static ConfigFileDataManager * instanceDataManager();
 
 	/**
