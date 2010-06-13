@@ -89,6 +89,7 @@ void KaduChatStyleEngine::appendMessage(HtmlMessagesRenderer *renderer, MessageR
 
 	html.replace("\n", " ");
 	html.replace("'", "\\'");
+	html.replace("\\", "\\\\");
 	html.prepend("<span>");
 	html.append("</span>");
 
