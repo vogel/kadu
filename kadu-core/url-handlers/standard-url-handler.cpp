@@ -25,7 +25,7 @@
 StandardUrlHandler::StandardUrlHandler()
 {
 	// TODO: WTF? fix it!!!!!!!!!!!!!!!!!!!!!!!
-	UrlRegExp = QRegExp("(http://|https://|www\\.|ftp://|ftp\\.|sftp://|smb://|file:/|rsync://|svn://|svn\\+ssh://)[a-zA-Z0-9ąśężźćółń\\*\\-\\._/~?=&#\\+%\\(\\)\\[\\]:;,!@\\\\]*");
+	UrlRegExp = QRegExp("(http://|https://|www\\.|ftp://|ftp\\.|sftp://|smb://|file:/|rsync://|svn://|svn\\+ssh://)(\\w|[a-zA-Z0-9ąśężźćółń\\*\\-\\._/~?=&#\\+%\\(\\)\\[\\]:;,!@\\\\])*");
 
 	configurationUpdated();
 }

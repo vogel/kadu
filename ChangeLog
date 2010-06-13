@@ -4,6 +4,7 @@
 * history: #1068 fixed: removing buddy and history in single window (Vogel)
 * sound: #1360 fixed: crash during loading module (Vogel)
 * gui: #1354 fixed: chat window does not display \ (Vogel)
+* chat: #1311 fixed: unicode characters in URLs (Vogel)
 
 +++ version 0.6.6-beta2
 * jabber: added URL handler for jabber:// protocol (Juzef)
