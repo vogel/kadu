@@ -58,7 +58,7 @@ SoundConfigurationUiHandler * SoundConfigurationUiHandler::instance()
 }
 
 SoundConfigurationUiHandler::SoundConfigurationUiHandler(QObject *parent) :
-		ConfigurationUiHandler()
+		ConfigurationUiHandler(), ConfigurationWidget(0), ThemesComboBox(0)
 {
 	Q_UNUSED(parent)
 }
@@ -83,8 +83,20 @@ void SoundConfigurationUiHandler::setSoundThemes()
 	ThemesComboBox->setCurrentIndex(ThemesComboBox->findText(SoundThemeManager::instance()->themes()->theme()));
 }
 
+void SoundConfigurationUiHandler::connectWidgets()
+{
+	if (ThemesComboBox && ConfigurationWidget)
+	{
+		connect(ThemesComboBox, SIGNAL(activated(int)), ConfigurationWidget, SLOT(themeChanged(int)));
+		connect(ThemesComboBox, SIGNAL(activated(const QString &)), this, SLOT(themeChanged(const QString &)));
+		ConfigurationWidget->themeChanged(ThemesComboBox->currentIndex());
+	}
+}
+
 void SoundConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
+	connect(mainConfigurationWindow, SIGNAL(destroyed(QObject*)), this, SLOT(configurationWindowDestroyed()));
+
 	connect(mainConfigurationWindow, SIGNAL(configurationWindowApplied()), this, SLOT(configurationWindowApplied()));
 
 	connect(mainConfigurationWindow->widget()->widgetById("sound/use"), SIGNAL(toggled(bool)),
@@ -100,21 +112,21 @@ void SoundConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurati
 	connect(mainConfigurationWindow->widget()->widgetById("sound/testPlay"), SIGNAL(clicked()), SoundManager::instance(), SLOT(testSoundPlaying()));
 
 	ThemesComboBox = dynamic_cast<ConfigComboBox *>(mainConfigurationWindow->widget()->widgetById("sound/themes"));
-	connect(ThemesComboBox, SIGNAL(activated(int)), ConfigurationWidget, SLOT(themeChanged(int)));
-		connect(ThemesComboBox, SIGNAL(activated(const QString &)), this, SLOT(themeChanged(const QString &)));
-	ConfigurationWidget->themeChanged(ThemesComboBox->currentIndex());
-
 	ThemesPaths = dynamic_cast<PathListEdit *>(mainConfigurationWindow->widget()->widgetById("soundPaths"));
 	//connect(ThemesPaths, SIGNAL(changed()), SoundManager::instance(), SLOT(setSoundThemes()));
 
-	connect(ConfigurationWidget, SIGNAL(soundFileEdited()), this, SLOT(soundFileEdited()));
-
 	setSoundThemes();
+
+	connectWidgets();
 }
 
 NotifierConfigurationWidget * SoundConfigurationUiHandler::createConfigurationWidget(QWidget *parent)
 {
 	ConfigurationWidget = new SoundConfigurationWidget(parent);
+	connect(ConfigurationWidget, SIGNAL(soundFileEdited()), this, SLOT(soundFileEdited()));
+
+	connectWidgets();
+
 	return ConfigurationWidget;
 }
 
@@ -137,4 +149,10 @@ void SoundConfigurationUiHandler::configurationWindowApplied()
 		SoundThemeManager::instance()->applyTheme(ThemesComboBox->currentText());
 
 	ConfigurationWidget->themeChanged(ThemesComboBox->currentIndex());
+}
+
+void SoundConfigurationUiHandler::configurationWindowDestroyed()
+{
+	ThemesComboBox = 0;
+	ConfigurationWidget = 0;
 }

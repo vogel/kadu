@@ -41,6 +41,7 @@ class SoundConfigurationUiHandler : public ConfigurationUiHandler
 	explicit SoundConfigurationUiHandler(QObject *parent = 0);
 	virtual ~SoundConfigurationUiHandler();
 
+	void connectWidgets();
 	void setSoundThemes();
 
 private slots:
@@ -48,6 +49,7 @@ private slots:
 	void soundFileEdited();
 
 	void configurationWindowApplied();
+    void configurationWindowDestroyed();
 
 public:
 	static void registerConfigurationUi();

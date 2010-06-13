@@ -85,7 +85,6 @@ void NotifyConfigurationUiHandler::addConfigurationWidget(Notifier *notifier)
 	}
 
 	notificationsGroupBox->addWidget(configurationGroupBox, true);
-	configurationGroupBox->setVisible(false);
 }
 
 void NotifyConfigurationUiHandler::removeConfigurationWidget(Notifier *notifier)

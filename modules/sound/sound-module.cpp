@@ -33,10 +33,10 @@ extern "C" KADU_EXPORT int sound_init(bool firstLoad)
 
 	SoundThemeManager::createInstance();
 	SoundNotifier::createInstance();
+	SoundConfigurationUiHandler::registerConfigurationUi();
 	NotificationManager::instance()->registerNotifier(SoundNotifier::instance());
 	SoundManager::createInstance();
 	SoundActions::registerActions(firstLoad);
-	SoundConfigurationUiHandler::registerConfigurationUi();
 
 	return 0;
 }
@@ -45,10 +45,10 @@ extern "C" KADU_EXPORT void sound_close()
 {
 	kdebugf();
 
+	NotificationManager::instance()->unregisterNotifier(SoundNotifier::instance());
 	SoundConfigurationUiHandler::unregisterConfigurationUi();
 	SoundActions::unregisterActions();
 	SoundManager::destroyInstance();
-	NotificationManager::instance()->unregisterNotifier(SoundNotifier::instance());
 	SoundNotifier::destroyInstance();
 	SoundThemeManager::destroyInstance();
 }
