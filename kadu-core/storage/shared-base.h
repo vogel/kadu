@@ -399,7 +399,7 @@ public:
 	 * @short Check if object contains any data.
 	 * @return true if object is not null, false, if object is null
 	 *
-	 * Returns true if object is not null (contains data) and false, if object is null
+	 * Returns false if object is not null (contains data) and true, if object is null
 	 * (does not contains an data).
 	 */
 	bool isNull() const
