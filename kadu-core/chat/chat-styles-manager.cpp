@@ -306,7 +306,7 @@ void ChatStylesManager::mainConfigurationWindowCreated(MainConfigurationWindow *
 	connect(window, SIGNAL(destroyed()), this, SLOT(configurationWindowDestroyed()));
 	connect(window, SIGNAL(configurationWindowApplied()), this, SLOT(configurationApplied()));
 
-	ConfigGroupBox *groupBox = window->widget()->configGroupBox("Look", "Chat window", "Style");
+	ConfigGroupBox *groupBox = window->widget()->configGroupBox("Look", "Chat Window", "Style");
 //editor
 	QLabel *editorLabel = new QLabel(qApp->translate("@default", "Style") + ":");
 	editorLabel->setToolTip(qApp->translate("@default", "Choose style of chat window"));
