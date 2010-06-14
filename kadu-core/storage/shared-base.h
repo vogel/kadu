@@ -397,7 +397,7 @@ public:
 	/**
 	 * @author Rafal 'Vogel' Malinowski
 	 * @short Check if object contains any data.
-	 * @return true if object is not null, false, if object is null
+	 * @return true if object is null, false, if object is not null
 	 *
 	 * Returns false if object is not null (contains data) and true, if object is null
 	 * (does not contains an data).
