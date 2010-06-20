@@ -29,29 +29,28 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QApplication>
+#include <QtGui/QIcon>
+
 #ifdef Q_OS_MAC
 
 #include "ApplicationServices/ApplicationServices.h"
 #include "Carbon/Carbon.h"
+
+#include "mac_docking_helper.h"
 
 #define DOCK_FONT_NAME "LucidaGrande-Bold"
 #define DOCK_FONT_SIZE 24
 
 MacDockingHelper *MacDockingHelper::Instance = 0;
 
-static MacDockingHelper *MacDockingHelper::instance()
-{
-	if (!Instance)
-		Instance = new MacDockingHelper();
-	return Instance;
-}
-
 MacDockingHelper::MacDockingHelper(QObject *parent) : QObject(parent)
 {
 	isBouncing = false;
 	isOverlayed = false;
 }
-MacDockingHelper()::~MacDockingHelper()
+
+MacDockingHelper::~MacDockingHelper()
 {
 	stopBounce();
 	removeOverlay();
@@ -95,7 +94,7 @@ void MacDockingHelper::removeOverlay()
 		CGContextFlush(context);
 		EndCGContextForApplicationDockTile(context);
 
-		qApp->setWindowIcon(pixmap);
+		qApp->setWindowIcon(qApp->windowIcon());
 		//RestoreApplicationDockTileImage();
 	}
 }

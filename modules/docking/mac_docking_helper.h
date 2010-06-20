@@ -20,9 +20,10 @@
 #ifndef MAC_DOCKING_HELPER_H
 #define MAC_DOCKING_HELPER_H
 
+#include <QtCore/QObject>
+
 #ifdef Q_OS_MAC
 
-#include <QtCore/QObject>
 #include "Carbon/Carbon.h"
 
 class MacDockingHelper : public QObject
@@ -33,12 +34,18 @@ private:
 	bool isBouncing;
 	bool isOverlayed;
 	NMRec bounceRec;
+	static MacDockingHelper *Instance;
 
 	MacDockingHelper(QObject *parent = 0);
 	~MacDockingHelper();
 
 public:
-	static MacDockingHelper *instance();
+	static MacDockingHelper *instance()
+		{
+			if (!Instance)
+				Instance = new MacDockingHelper();
+			return Instance; 
+		};
 	void startBounce();
 	void stopBounce();
 	void removeOverlay();
