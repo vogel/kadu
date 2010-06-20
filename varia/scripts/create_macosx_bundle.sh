@@ -3,35 +3,25 @@
 # katalog docelowy, w nim zostanie utworzony katalog Kadu.app
 DEST=~/Desktop/kadu
 
-QTDIR=/usr/local/Trolltech/Qt-4.4.1
-LQTDIR=~/Desktop/kadu/qt
+QTDIR=/Users/tomek/Desktop/kadu/qt
 
 # prefix of compiled libsndfile and openssl
 # prefiks skompilowanych bibliotek libsndfile i libgadu
-SNDFILEPATH=~/Desktop/kadu/libsndfile
-LIBGADU=~/Desktop/kadu/libgadu
+SNDFILEPATH=/Users/tomek/Desktop/kadu/libsndfile
+LIBGADU=/Users/tomek/Desktop/kadu/libgadu
 
-#OPENSSLPATH=~/Desktop/root/openssl
+#OPENSSLPATH=/Users/tomek/Desktop/kadu/openssl
 OPENSSLPATH=/usr
 # version of openssl, without letters
 # wersja openssla, bez liter
-SSLVER=0.9.8
-
-#libao nie radzi sobie z mackiem jak trzeba
-#AOPATH=~/Desktop/root/libao
-#AOVER=2.1.3
+SSLVER=0.9.7
 
 INSTALLED_DIR=/usr/local/
-
-ICONS_PKG=ng_big_icons.tar.bz2
-ICONS_LINK=http://www.kadu.net/~neeo/kadu/macosx/$ICONS_PKG
-
-#PLAYSOUND_LINK=http://f.steike.com/playsound
 
 echo "Set paths in this file and remove this lines (including exit)"
 echo "Ustaw sciezki w tym pliku i usun te linie (lacznie z exit)"
 echo
-exit
+#exit
 
 if [ ! -f VERSION ]; then
 	echo "run this script from main Kadu directory"
@@ -39,11 +29,11 @@ if [ ! -f VERSION ]; then
 	exit
 fi
 
-#if [ ! -f ./kadu-core/kadu ]; then
-#	echo "compile Kadu first!"
-#	echo "wpierw skompiluj Kadu!"
-#	exit
-#fi
+if [ ! -f ./kadu-core/kadu ]; then
+	echo "compile Kadu first!"
+	echo "wpierw skompiluj Kadu!"
+	exit
+fi
 
 if [ ! -f ${INSTALLED_DIR}/bin/kadu ]; then
 	echo "do make install first!"
@@ -51,25 +41,11 @@ if [ ! -f ${INSTALLED_DIR}/bin/kadu ]; then
 	exit
 fi
 
-if [ ! -f ${QTDIR}/include/Qt/qwidget.h ]; then
+if [ ! -f ${QTDIR}/bin/qmake ]; then
 	echo "wrong QTDIR"
 	echo "QTDIR zle ustawione"
 	exit
 fi
-
-if [ ! -f ./varia/themes/icons/default/kadu/big_message.png ]; then
-	curl -O ${ICONS_LINK}
-	tar xjf ${ICONS_PKG}
-	patch -p0 < icons.diff
-	cd varia
-	make install
-	cd ..
-fi
-
-#if [ ! -f ./playsound ]; then
-#	curl -O ${PLAYSOUND_LINK}
-#	chmod a+x playsound
-#fi
 
 KADUVERSION=`cat VERSION`
 echo "log: removing old Kadu.app"
@@ -119,20 +95,21 @@ echo "<?xml version='1.0' encoding='UTF-8'?>
 </dict>
 </plist>" >> ${CNT_DIR}/Info.plist
 
-
 MACOS_DIR=${CNT_DIR}/MacOS;
 mkdir ${MACOS_DIR}
 echo "log: copying kadu binary"
-#cp ${INSTALLED_DIR}/bin/kadu ${MACOS_DIR}/kadu
-#if [ -f ./playsound ]; then
-##	echo "log: copying playsound binary"
-#	cp playsound ${MACOS_DIR}/
-#fi
 
 RSC_DIR=${CNT_DIR}/Resources
 mkdir ${RSC_DIR}
 cp kadu-core/kadu.icns $RSC_DIR/
 cp kadu-core/hi48-app-kadu.png ${DEST}/Kadu.app/kadu/kadu.png
+cp ${INSTALLED_DIR}/bin/kadu ${MACOS_DIR}
+
+echo "[Paths]
+Plugins = plugins" > ${RSC_DIR}/qt.conf
+
+mkdir -p ${CNT_DIR}/plugins/imageformats
+mkdir -p ${CNT_DIR}/plugins/crypto/
 
 FM_DIR=${CNT_DIR}/Frameworks
 mkdir ${FM_DIR}
@@ -145,12 +122,6 @@ if [ -f ${OPENSSLPATH}/lib/libcrypto.${SSLVER}.dylib ]; then
 	install_name_tool -change ${OPENSSLPATH}/lib/libcrypto.${SSLVER}.dylib @executable_path/../Frameworks/libcrypto.${SSLVER}.dylib ${FM_DIR}/libssl.${SSLVER}.dylib
 	install_name_tool -id @executable_path/../Frameworks/libcrypto.${SSLVER}.dylib ${FM_DIR}/libcrypto.${SSLVER}.dylib
 fi
-
-#if [ -f ${QTDIR}/lib/libQtCLucene.4.4.1.dylib ]; then
-#	echo "log: copying qt library"
-#	cp ${QTDIR}/lib/libQtCLucene.4.4.1.dylib ${FM_DIR}
-#	install_name_tool -id @executable_path/../Frameworks/libQtCLucene.4.4.1.dylib ${FM_DIR}/libQtCLucene.4.4.1.dylib
-#fi
 
 if [ -f ${QTDIR}/lib/Qt3Support.framework/versions/4/Qt3Support ]; then
 	echo "log: copying Qt3Support library"
@@ -168,6 +139,12 @@ if [ -f ${QTDIR}/lib/QtWebKit.framework/versions/4/QtWebKit ]; then
 	echo "log: copying QtWebKit library"
 	cp ${QTDIR}/lib/QtWebKit.framework/versions/4/QtWebKit ${FM_DIR}
 	install_name_tool -id @executable_path/../Frameworks/QtWebKit ${FM_DIR}/QtWebKit
+fi
+
+if [ -f ${QTDIR}/lib/QtXmlPatterns.framework/versions/4/QtXmlPatterns ]; then
+	echo "log: copying QtXmlPatterns library"
+	cp ${QTDIR}/lib/QtXmlPatterns.framework/versions/4/QtXmlPatterns ${FM_DIR}
+	install_name_tool -id @executable_path/../Frameworks/QtXmlPatterns ${FM_DIR}/QtXmlPatterns
 fi
 
 if [ -f ${QTDIR}/lib/QtXml.framework/versions/4/QtXml ]; then
@@ -194,6 +171,39 @@ if [ -f ${QTDIR}/lib/QtCore.framework/versions/4/QtCore ]; then
 	install_name_tool -id @executable_path/../Frameworks/QtCore ${FM_DIR}/QtCore
 fi
 
+if [ -f ${QTDIR}/lib/QtDBus.framework/versions/4/QtDBus ]; then
+	echo "log: copying QtDBus library"
+	cp ${QTDIR}/lib/QtDBus.framework/versions/4/QtDBus ${FM_DIR}
+	install_name_tool -id @executable_path/../Frameworks/QtDBus ${FM_DIR}/QtDBus
+fi
+
+if [ -f ${QTDIR}/lib/phonon.framework/versions/4/phonon ]; then
+	echo "log: copying phonon library"
+	cp ${QTDIR}/lib/phonon.framework/versions/4/phonon ${FM_DIR}
+	install_name_tool -id @executable_path/../Frameworks/phonon.framework ${FM_DIR}/phonon
+fi
+
+if [ -f ${QTDIR}/lib/qca.framework/versions/2/qca ]; then
+	echo "log: copying qca2 library"
+	cp -f ${QTDIR}/lib/qca.framework/versions/2/qca ${FM_DIR}/qca
+	install_name_tool -id @executable_path/../Frameworks/qca.framework ${FM_DIR}/qca
+fi
+
+if [ -f ${QTDIR}/plugins/crypto/libqca-ossl.dylib ]; then
+	echo "log: copying qca2-ossl library"
+	cp -f  ${QTDIR}/plugins/crypto/libqca-ossl.dylib  ${CNT_DIR}/plugins/crypto/libqca-ossl.dylib
+fi
+
+if [ -f ${QTDIR}/plugins/imageformats/libqjpeg.dylib ]; then
+	echo "log: copying Qt image plugins"
+	cp -f  ${QTDIR}/plugins/imageformats/libqjpeg.dylib ${CNT_DIR}/plugins/imageformats/libqjpeg.dylib
+	cp -f  ${QTDIR}/plugins/imageformats/libqgif.dylib ${CNT_DIR}/plugins/imageformats/libqgif.dylib
+	cp -f  ${QTDIR}/plugins/imageformats/libqmng.dylib ${CNT_DIR}/plugins/imageformats/libqmng.dylib
+	cp -f  ${QTDIR}/plugins/imageformats/libqsvg.dylib ${CNT_DIR}/plugins/imageformats/libqsvg.dylib
+	cp -f  ${QTDIR}/plugins/imageformats/libqtiff.dylib ${CNT_DIR}/plugins/imageformats/libqtiff.dylib
+	cp -f  ${QTDIR}/plugins/imageformats/libqico.dylib ${CNT_DIR}/plugins/imageformats/libqico.dylib
+fi
+
 if [ -f ${SNDFILEPATH}/lib/libsndfile.1.dylib ]; then
 	echo "log: copying sndfile library"
 	cp ${SNDFILEPATH}/lib/libsndfile.1.dylib ${FM_DIR}
@@ -206,7 +216,14 @@ if [ -f ${LIBGADU}/lib/libgadu.3.dylib ]; then
 	install_name_tool -id @executable_path/../Frameworks/libgadu.3.dylib ${FM_DIR}/libgadu.3.dylib
 fi
 
+if [ -f  /Library/Frameworks/Growl.framework/Versions/A/Growl ]; then
+	echo "log: copying growl framework"
+	cp /Library/Frameworks/Growl.framework/Versions/A/Growl ${FM_DIR}
+	install_name_tool -change @executable_path/../Frameworks/Growl.framework/Versions/A/Growl @executable_path/../Frameworks/Growl ${FM_DIR}/Growl
+fi
+
 cd ${FM_DIR}
+echo "log: changing framework bindings"
 install_name_tool -change ${QTDIR}/lib/QtSql.framework/Versions/4/QtSql @executable_path/../Frameworks/QtSql ./QtCore
 install_name_tool -change ${QTDIR}/lib/QtSql.framework/Versions/4/QtSql @executable_path/../Frameworks/QtSql ./Qt3Support
 install_name_tool -change ${QTDIR}/lib/QtXml.framework/Versions/4/QtXml @executable_path/../Frameworks/QtXml ./Qt3Support
@@ -220,7 +237,41 @@ install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @execu
 install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./QtWebKit
 install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./QtNetwork
 install_name_tool -change ${QTDIR}/lib/QtGui.framework/Versions/4/QtGui @executable_path/../Frameworks/QtGui ./QtWebKit
+install_name_tool -change ${QTDIR}/lib/QtXmlPatterns.framework/Versions/4/QtXmlPatterns @executable_path/../Frameworks/QtXmlPatterns ./QtWebKit
 install_name_tool -change ${QTDIR}/lib/QtNetwork.framework/Versions/4/QtNetwork @executable_path/../Frameworks/QtNetwork ./QtWebKit
+install_name_tool -change ${QTDIR}/lib/phonon.framework/Versions/4/phonon @executable_path/../Frameworks/phonon ./QtWebKit
+install_name_tool -change ${QTDIR}/lib/QtDBus.framework/Versions/4/QtDBus @executable_path/../Frameworks/QtDBus ./QtWebKit
+install_name_tool -change ${QTDIR}/lib/QtXml.framework/Versions/4/QtXml @executable_path/../Frameworks/QtXml ./QtWebKit
+install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./phonon
+install_name_tool -change ${QTDIR}/lib/QtGui.framework/Versions/4/QtGui @executable_path/../Frameworks/QtGui ./phonon
+install_name_tool -change ${QTDIR}/lib/QtNetwork.framework/Versions/4/QtNetwork @executable_path/../Frameworks/QtNetwork ./QtXmlPatterns
+install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./QtXmlPatterns
+
+install_name_tool -change ${QTDIR}/lib/qca.framework/versions/2/qca @executable_path/../Frameworks/qca ./qca
+install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./qca
+
+install_name_tool -change ${OPENSSLPATH}/lib/libssl.${SSLVER}.dylib @executable_path/../Frameworks/libssl.${SSLVER}.dylib ./libgadu.3.dylib
+install_name_tool -change ${OPENSSLPATH}/lib/libcrypto.${SSLVER}.dylib @executable_path/../Frameworks/libcrypto.${SSLVER}.dylib ./libgadu.3.dylib
+
+cd  ${CNT_DIR}/plugins/crypto/
+install_name_tool -change ${QTDIR}/lib/qca.framework/versions/2/qca @executable_path/../Frameworks/qca ./libqca-ossl.dylib
+install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./libqca-ossl.dylib
+
+cd  ${CNT_DIR}/plugins/imageformats/
+install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./libqjpeg.dylib
+install_name_tool -change ${QTDIR}/lib/QtGui.framework/Versions/4/QtGui   @executable_path/../Frameworks/QtGui  ./libqjpeg.dylib
+install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./libqgif.dylib
+install_name_tool -change ${QTDIR}/lib/QtGui.framework/Versions/4/QtGui   @executable_path/../Frameworks/QtGui  ./libqgif.dylib
+install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./libqico.dylib
+install_name_tool -change ${QTDIR}/lib/QtGui.framework/Versions/4/QtGui   @executable_path/../Frameworks/QtGui  ./libqico.dylib
+install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./libqmng.dylib
+install_name_tool -change ${QTDIR}/lib/QtGui.framework/Versions/4/QtGui   @executable_path/../Frameworks/QtGui  ./libqmng.dylib
+install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./libqsvg.dylib
+install_name_tool -change ${QTDIR}/lib/QtGui.framework/Versions/4/QtGui   @executable_path/../Frameworks/QtGui  ./libqsvg.dylib
+install_name_tool -change ${QTDIR}/lib/QtSvg.framework/Versions/4/QtSvg   @executable_path/../Frameworks/QtSvg  ./libqsvg.dylib
+install_name_tool -change ${QTDIR}/lib/QtXml.framework/Versions/4/QtXml   @executable_path/../Frameworks/QtXml  ./libqsvg.dylib
+install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./libqtiff.dylib
+install_name_tool -change ${QTDIR}/lib/QtGui.framework/Versions/4/QtGui   @executable_path/../Frameworks/QtGui  ./libqtiff.dylib
 
 cd ${MACOS_DIR}
 echo "log: changing library bindings"
@@ -230,34 +281,36 @@ install_name_tool -change ${QTDIR}/lib/QtNetwork.framework/Versions/4/QtNetwork 
 install_name_tool -change ${QTDIR}/lib/QtGui.framework/Versions/4/QtGui @executable_path/../Frameworks/QtGui ./kadu
 install_name_tool -change ${QTDIR}/lib/QtXml.framework/Versions/4/QtXml @executable_path/../Frameworks/QtXml ./kadu
 install_name_tool -change ${QTDIR}/lib/Qt3Support.framework/Versions/4/Qt3Support @executable_path/../Frameworks/Qt3Support ./kadu
+install_name_tool -change ${QTDIR}/lib/Qt3Support.framework/Versions/4/Qt3Support @executable_path/../Frameworks/Qt3Support ./kadu
 install_name_tool -change ${QTDIR}/lib/QtWebKit.framework/Versions/4/QtWebKit @executable_path/../Frameworks/QtWebKit ./kadu
 install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./kadu
+install_name_tool -change ${QTDIR}/lib/phonon.framework/Versions/4/phonon @executable_path/../Frameworks/phonon ./kadu
+install_name_tool -change ${QTDIR}/lib/QtDBus.framework/Versions/4/QtDBus @executable_path/../Frameworks/QtDBus ./kadu
 
-#install_name_tool -change libQtCLucene.4.4.1.dylib @executable_path/../Frameworks/libQtCLucene.4.4.1.dylib ./kadu
 install_name_tool -change ${LIBGADU}/lib/libgadu.3.dylib @executable_path/../Frameworks/libgadu.3.dylib ./kadu
 install_name_tool -change ${SNDFILEPATH}/lib/libsndfile.1.dylib @executable_path/../Frameworks/libsndfile.1.dylib ./kadu
 install_name_tool -change ${OPENSSLPATH}/lib/libssl.${SSLVER}.dylib @executable_path/../Frameworks/libssl.${SSLVER}.dylib ./kadu
 install_name_tool -change ${OPENSSLPATH}/lib/libcrypto.${SSLVER}.dylib @executable_path/../Frameworks/libcrypto.${SSLVER}.dylib ./kadu
 
-if [ -f ${DEST}/Kadu.app/kadu/modules/sound.dylib ]; then
-	install_name_tool -change ${SNDFILEPATH}/lib/libsndfile.1.dylib @executable_path/../Frameworks/libsndfile.1.dylib ${DEST}/Kadu.app/kadu/modules/sound.dylib
-fi
-if [ -f ${DEST}/Kadu.app/kadu/modules/encryption.dylib ]; then
-	install_name_tool -change ${OPENSSLPATH}/lib/libssl.${SSLVER}.dylib @executable_path/../Frameworks/libssl.${SSLVER}.dylib ${DEST}/Kadu.app/kadu/modules/encryption.dylib
-	install_name_tool -change ${OPENSSLPATH}/lib/libcrypto.${SSLVER}.dylib @executable_path/../Frameworks/libcrypto.${SSLVER}.dylib ${DEST}/Kadu.app/kadu/modules/encryption.dylib
+if [ -f ${DEST}/Kadu.app/kadu/modules/libsound.so ]; then
+	install_name_tool -change ${SNDFILEPATH}/lib/libsndfile.1.dylib @executable_path/../Frameworks/libsndfile.1.dylib ${DEST}/Kadu.app/kadu/modules/libsound.so 
+	install_name_tool -change ${SNDFILEPATH}//lib/libsndfile.1.dylib @executable_path/../Frameworks/libsndfile.1.dylib ${DEST}/Kadu.app/kadu/modules/libsound.so 
 fi
 
-#if [ -f ${AOPATH}/lib/libao.2.dylib ]; then
-#	cp ${AOPATH}/lib/libao.2.dylib ${FM_DIR}
-#	cp ${AOPATH}/lib/libao.${AOVER}.dylib ${FM_DIR}
-#	mkdir -p ${FM_DIR}/ao/plugins-2
-#	cp ${AOPATH}/lib/ao/plugins-2/libmacosx.so ${FM_DIR}/ao/plugins-2/libmacosx.dylib
-#fi
-#if [ -f ${DEST}/Kadu.app/kadu/modules/ao_sound.dylib ]; then
-#	install_name_tool -id @executable_path/../Frameworks/libao.2.dylib ${FM_DIR}/libao.2.dylib
-#fi
-#if [ -f ${DEST}/Kadu.app/kadu/modules/ao_sound.dylib ]; then
-#	install_name_tool -change ${AOPATH}/lib/libao.2.dylib @executable_path/../Frameworks/libao.2.dylib ${DEST}/Kadu.app/kadu/modules/ao_sound.dylib
-#fi
+if [ -f ${DEST}//Kadu.app/kadu/modules/libencryption_old.so ]; then
+	install_name_tool -change ${OPENSSLPATH}/lib/libssl.${SSLVER}.dylib @executable_path/../Frameworks/libssl.${SSLVER}.dylib ${DEST}/Kadu.app/kadu/modules/libencryption_old.so
+	install_name_tool -change ${OPENSSLPATH}/lib/libcrypto.${SSLVER}.dylib @executable_path/../Frameworks/libcrypto.${SSLVER}.dylib ${DEST}/Kadu.app/kadu/modules/libencryption_old.so
+fi
 
-echo "everything done"
+if [ -f ${DEST}//Kadu.app/kadu/modules/libgrowl_notify.so ]; then
+	install_name_tool -change @executable_path/../Frameworks/Growl.framework/Versions/A/Growl @executable_path/../Frameworks/Growl ${DEST}//Kadu.app/kadu/modules/libgrowl_notify.so
+fi
+
+echo "LoadByDefault=true" >> ${DEST}/Kadu.app/kadu/modules/qt4_sound.desc
+
+echo "log: stripping binaries"
+strip -x ${FM_DIR}/Qt*  ${CNT_DIR}/plugins/imageformats/* ${MACOS_DIR}/kadu
+#Qt3Support QtCore QtGui QtNetwork QtSql QtWebKit QtXml phonon
+
+
+echo "log: everything done"
