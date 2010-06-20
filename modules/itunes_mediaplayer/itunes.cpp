@@ -20,6 +20,7 @@
  */
 
 #include <QtCore/QProcess>
+#include <QtCore/QDateTime>
 
 #include "debug.h"
 #include "../mediaplayer/mediaplayer.h"
