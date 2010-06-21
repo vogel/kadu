@@ -22,8 +22,6 @@
 
 #include <QtCore/QObject>
 
-#ifdef Q_OS_MAC
-
 #include "Carbon/Carbon.h"
 
 class MacDockingHelper : public QObject
@@ -51,7 +49,5 @@ public:
 	void removeOverlay();
 	void overlay(const QString& text);
 };
-
-#endif
 
 #endif // MAC_DOCKING_HELPER_H

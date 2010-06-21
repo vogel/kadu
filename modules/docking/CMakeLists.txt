@@ -1,3 +1,5 @@
+if (APPLE)
+
 set (SOURCES
 	docking-module.cpp
 	docking.cpp
@@ -8,6 +10,19 @@ set (MOC_SOURCES
 	docking.h
 	mac_docking_helper.h
 )
+
+else (APPLE)
+
+set (SOURCES
+	docking-module.cpp
+	docking.cpp
+)
+
+set (MOC_SOURCES
+	docking.h
+)
+
+endif (APPLE)
 
 set (TRANSLATION_SOURCES
 	translations/docking_de.ts

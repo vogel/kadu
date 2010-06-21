@@ -32,8 +32,6 @@
 #include <QtGui/QApplication>
 #include <QtGui/QIcon>
 
-#ifdef Q_OS_MAC
-
 #include "ApplicationServices/ApplicationServices.h"
 #include "Carbon/Carbon.h"
 
@@ -146,4 +144,3 @@ void MacDockingHelper::overlay(const QString& text)
 	EndCGContextForApplicationDockTile(context);
 }
 
-#endif

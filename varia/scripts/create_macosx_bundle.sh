@@ -4,10 +4,12 @@
 DEST=~/Desktop/kadu
 
 QTDIR=/Users/tomek/Desktop/kadu/qt
+QCADIR=/Users/tomek/Desktop/kadu/qca2/
 
 # prefix of compiled libsndfile and openssl
 # prefiks skompilowanych bibliotek libsndfile i libgadu
-SNDFILEPATH=/Users/tomek/Desktop/kadu/libsndfile
+#SNDFILEPATH=/Users/tomek/Desktop/kadu/libsndfile
+SNDFILEPATH=/Users/tomek/Compilation/libsndfile
 LIBGADU=/Users/tomek/Desktop/kadu/libgadu
 
 #OPENSSLPATH=/Users/tomek/Desktop/kadu/openssl
@@ -183,10 +185,10 @@ if [ -f ${QTDIR}/lib/phonon.framework/versions/4/phonon ]; then
 	install_name_tool -id @executable_path/../Frameworks/phonon.framework ${FM_DIR}/phonon
 fi
 
-if [ -f ${QTDIR}/lib/qca.framework/versions/2/qca ]; then
+if [ -f ${QCADIR}/lib/libqca.2.dylib ]; then
 	echo "log: copying qca2 library"
-	cp -f ${QTDIR}/lib/qca.framework/versions/2/qca ${FM_DIR}/qca
-	install_name_tool -id @executable_path/../Frameworks/qca.framework ${FM_DIR}/qca
+	cp -f ${QCADIR}/lib/libqca.2.dylib ${FM_DIR}/
+	install_name_tool -id @executable_path/../libqca.2.dylib ${FM_DIR}/libqca.2.dylib
 fi
 
 if [ -f ${QTDIR}/plugins/crypto/libqca-ossl.dylib ]; then
@@ -247,8 +249,8 @@ install_name_tool -change ${QTDIR}/lib/QtGui.framework/Versions/4/QtGui @executa
 install_name_tool -change ${QTDIR}/lib/QtNetwork.framework/Versions/4/QtNetwork @executable_path/../Frameworks/QtNetwork ./QtXmlPatterns
 install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./QtXmlPatterns
 
-install_name_tool -change ${QTDIR}/lib/qca.framework/versions/2/qca @executable_path/../Frameworks/qca ./qca
-install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./qca
+install_name_tool -change ${QCADIR}/lib/libqca.2.dylib @executable_path/../Frameworks/libqca.2.dylib ./libqca.2.dylib
+install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./libqca.2.dylib
 
 install_name_tool -change ${OPENSSLPATH}/lib/libssl.${SSLVER}.dylib @executable_path/../Frameworks/libssl.${SSLVER}.dylib ./libgadu.3.dylib
 install_name_tool -change ${OPENSSLPATH}/lib/libcrypto.${SSLVER}.dylib @executable_path/../Frameworks/libcrypto.${SSLVER}.dylib ./libgadu.3.dylib
@@ -295,6 +297,20 @@ install_name_tool -change ${OPENSSLPATH}/lib/libcrypto.${SSLVER}.dylib @executab
 if [ -f ${DEST}/Kadu.app/kadu/modules/libsound.so ]; then
 	install_name_tool -change ${SNDFILEPATH}/lib/libsndfile.1.dylib @executable_path/../Frameworks/libsndfile.1.dylib ${DEST}/Kadu.app/kadu/modules/libsound.so 
 	install_name_tool -change ${SNDFILEPATH}//lib/libsndfile.1.dylib @executable_path/../Frameworks/libsndfile.1.dylib ${DEST}/Kadu.app/kadu/modules/libsound.so 
+fi
+
+if [ -f ${DEST}/Kadu.app/kadu/modules/libgadu_protocol.so ]; then
+	install_name_tool -change ${LIBGADU}/lib/libgadu.3.dylib @executable_path/../Frameworks/libgadu.3.dylib ${DEST}/Kadu.app/kadu/modules/libgadu_protocol.so
+	install_name_tool -change ${QCADIR}/lib/libqca.2.dylib @executable_path/../Frameworks/libqca.2.dylib ${DEST}/Kadu.app/kadu/modules/libgadu_protocol.so
+fi
+
+if [ -f  ${DEST}/Kadu.app/kadu/modules/libjabber_protocol.so ]; then
+	install_name_tool -change ${QTDIR}/lib/QtWebKit.framework/Versions/4/QtWebKit @executable_path/../Frameworks/QtWebKit  ${DEST}/Kadu.app/kadu/modules/libjabber_protocol.so
+	install_name_tool -change ${QTDIR}/lib/QtGui.framework/Versions/4/QtGui @executable_path/../Frameworks/QtGui ${DEST}/Kadu.app/kadu/modules/libjabber_protocol.so
+	install_name_tool -change ${QTDIR}/lib/QtNetwork.framework/Versions/4/QtNetwork @executable_path/../Frameworks/QtNetwork ${DEST}/Kadu.app/kadu/modules/libjabber_protocol.so
+	install_name_tool -change ${QTDIR}/lib/QtXml.framework/Versions/4/QtXml @executable_path/../Frameworks/QtXml ${DEST}/Kadu.app/kadu/modules/libjabber_protocol.so
+	install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ${DEST}/Kadu.app/kadu/modules/libjabber_protocol.so
+	install_name_tool -change ${QCADIR}/lib/libqca.2.dylib @executable_path/../Frameworks/libqca.2.dylib ${DEST}/Kadu.app/kadu/modules/libjabber_protocol.so
 fi
 
 if [ -f ${DEST}//Kadu.app/kadu/modules/libencryption_old.so ]; then
