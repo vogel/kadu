@@ -11,6 +11,7 @@ QCADIR=/Users/tomek/Desktop/kadu/qca2/
 #SNDFILEPATH=/Users/tomek/Desktop/kadu/libsndfile
 SNDFILEPATH=/Users/tomek/Compilation/libsndfile
 LIBGADU=/Users/tomek/Desktop/kadu/libgadu
+LIBIDN=/Users/tomek/Desktop/kadu/libidn
 
 #OPENSSLPATH=/Users/tomek/Desktop/kadu/openssl
 OPENSSLPATH=/usr
@@ -196,6 +197,12 @@ if [ -f ${QTDIR}/plugins/crypto/libqca-ossl.dylib ]; then
 	cp -f  ${QTDIR}/plugins/crypto/libqca-ossl.dylib  ${CNT_DIR}/plugins/crypto/libqca-ossl.dylib
 fi
 
+if [ -f ${LIBIDN}/lib/libidn.11.dylib ]; then
+	echo "log: copying libidn library"
+	cp -f  ${LIBIDN}/lib/libidn.11.dylib ${FM_DIR}/
+	install_name_tool -id @executable_path/../libidn.11.dylib ${FM_DIR}/libidn.11.dylib
+fi
+
 if [ -f ${QTDIR}/plugins/imageformats/libqjpeg.dylib ]; then
 	echo "log: copying Qt image plugins"
 	cp -f  ${QTDIR}/plugins/imageformats/libqjpeg.dylib ${CNT_DIR}/plugins/imageformats/libqjpeg.dylib
@@ -251,6 +258,8 @@ install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @execu
 
 install_name_tool -change ${QCADIR}/lib/libqca.2.dylib @executable_path/../Frameworks/libqca.2.dylib ./libqca.2.dylib
 install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./libqca.2.dylib
+
+install_name_tool -change ${LIBIDN}/lib/libidn.11.dylib @executable_path/../Frameworks/libidn.11.dylib ./libidn.11.dylib
 
 install_name_tool -change ${OPENSSLPATH}/lib/libssl.${SSLVER}.dylib @executable_path/../Frameworks/libssl.${SSLVER}.dylib ./libgadu.3.dylib
 install_name_tool -change ${OPENSSLPATH}/lib/libcrypto.${SSLVER}.dylib @executable_path/../Frameworks/libcrypto.${SSLVER}.dylib ./libgadu.3.dylib
@@ -311,6 +320,7 @@ if [ -f  ${DEST}/Kadu.app/kadu/modules/libjabber_protocol.so ]; then
 	install_name_tool -change ${QTDIR}/lib/QtXml.framework/Versions/4/QtXml @executable_path/../Frameworks/QtXml ${DEST}/Kadu.app/kadu/modules/libjabber_protocol.so
 	install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ${DEST}/Kadu.app/kadu/modules/libjabber_protocol.so
 	install_name_tool -change ${QCADIR}/lib/libqca.2.dylib @executable_path/../Frameworks/libqca.2.dylib ${DEST}/Kadu.app/kadu/modules/libjabber_protocol.so
+	install_name_tool -change ${LIBIDN}/lib/libidn.11.dylib @executable_path/../Frameworks/libidn.11.dylib ${DEST}/Kadu.app/kadu/modules/libjabber_protocol.so
 fi
 
 if [ -f ${DEST}//Kadu.app/kadu/modules/libencryption_old.so ]; then
