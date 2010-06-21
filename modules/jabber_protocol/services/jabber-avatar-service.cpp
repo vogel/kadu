@@ -67,6 +67,8 @@ void JabberAvatarService::uploadAvatarPEP()
 		this, SLOT(itemPublished(const XMPP::Jid&, const QString&, const XMPP::PubSubItem&)));
 	connect(Protocol->pepManager(),SIGNAL(publish_success(const QString&, const XMPP::PubSubItem&)),
 		this, SLOT(publish_success(const QString&,const XMPP::PubSubItem&)));
+	connect(Protocol->pepManager(),SIGNAL(publish_error(const QString&, const XMPP::PubSubItem&)),
+		this, SLOT(publish_error(const QString&,const XMPP::PubSubItem&)));
 	
 	XMPP::Jid jid = XMPP::Jid(MyAccount.id());
 	QByteArray ba;
@@ -221,7 +223,17 @@ void JabberAvatarService::publish_success(const QString& n, const XMPP::PubSubIt
 	}
 }
 
-
+void JabberAvatarService::publish_error(const QString& n, const XMPP::PubSubItem& item)
+{
+	if (n == "http://www.xmpp.org/extensions/xep-0084.html#ns-data" && item.id() == selfAvatarHash_)
+	{
+		/* 
+		  Some servers (at least jid.pl were reported) seems to hadle PEP, but each attempt to publish avatar this way
+		  ends up with 'PEP not supported' error. In this case we can still try to put avatar into VCard.
+		*/
+		uploadAvatarVCard();
+	}
+}
 
 
 

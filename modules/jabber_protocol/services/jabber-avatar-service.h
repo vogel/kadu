@@ -54,6 +54,7 @@ public:
 private slots:
 	void itemPublished(const XMPP::Jid& jid, const QString& n, const XMPP::PubSubItem& item);
 	void publish_success(const QString& n, const XMPP::PubSubItem& item);
+	void publish_error(const QString& n, const XMPP::PubSubItem& item);
 	void fetchingVCardFinished();
 	void uploadingVCardFinished();
 };
