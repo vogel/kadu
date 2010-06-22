@@ -53,10 +53,6 @@ ProtocolsManager::~ProtocolsManager()
 
 void ProtocolsManager::registerProtocolFactory(ProtocolFactory *factory)
 {
-	printf("this: %p\n", this);
-	printf("rpf, cound: %p %d\n", factory, Factories.count());
-	printf("name: %s\n", qPrintable(factory->name()));
-
 	if (!factory || Factories.contains(factory))
 		return;
 
@@ -79,15 +75,9 @@ void ProtocolsManager::unregisterProtocolFactory(ProtocolFactory *factory)
 
 bool ProtocolsManager::hasProtocolFactory(const QString &name)
 {
-	printf("search for: %s\n", qPrintable(name));
-
 	foreach (ProtocolFactory *factory, Factories)
-	{
-		printf("found: %p\n", factory);
-		printf("this is: %s\n", qPrintable(factory->name()));
 		if (factory->name() == name)
 			return true;
-	}
 
 	return false;
 }

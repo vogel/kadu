@@ -129,6 +129,9 @@ void BuddyDeleteWindow::deleteBuddy(Buddy buddy)
 		}
 	}
 
+	foreach (Contact contact, buddy.contacts())
+		contact.setOwnerBuddy(Buddy::null);
+
 	BuddyManager::instance()->removeItem(buddy);
 }
 

@@ -20,6 +20,7 @@
 #include "buddies/buddy-manager.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
+#include "core/core.h"
 #include "gui/windows/message-dialog.h"
 #include "protocols/protocol.h"
 #include "debug.h"
@@ -99,7 +100,11 @@ Buddy ContactListService::mergeBuddy(Buddy oneBuddy)
 
 void ContactListService::setBuddiesList(BuddyList buddies)
 {
+	printf("merging user lists\n");
+
 	QList<Contact> unImportedContacts = ContactManager::instance()->contacts(CurrentProtocol->account());
+	foreach (Contact c, Core::instance()->myself().contacts(CurrentProtocol->account()))
+		unImportedContacts.removeAll(c);
 
 	foreach (const Buddy &oneBuddy, buddies)
 	{
@@ -120,8 +125,10 @@ void ContactListService::setBuddiesList(BuddyList buddies)
 		}
 
 		if (MessageDialog::ask(tr("Following contacts from your list were not found on server: %0.\nDo you want to remove them from contacts list?").arg(contactsList.join(", "))))
+		{
 			foreach (const Contact &c, unImportedContacts)
 				ContactManager::instance()->removeItem(c);
+		}
 	}
 
 	MessageDialog::msg(tr("Your contact list has been successfully imported from server"), false, "Infromation");

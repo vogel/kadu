@@ -125,7 +125,12 @@ void ContactShared::store()
 	storeValue("Id", Id);
 	storeValue("Priority", Priority);
 	storeValue("Account", ContactAccount.uuid().toString());
-	storeValue("Buddy", OwnerBuddy.uuid().toString());
+
+	if (OwnerBuddy.isAnonymous())
+		storeValue("Buddy", "");
+	else
+		storeValue("Buddy", OwnerBuddy.uuid().toString());
+
 	if (!ContactAvatar.isNull())
 		storeValue("Avatar", ContactAvatar.uuid().toString());
 	removeValue("Contact");
