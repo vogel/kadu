@@ -88,6 +88,9 @@ SingleWindow::SingleWindow()
 		split->addWidget(kadu);
 	}
 
+	kadu->setMinimumSize(170, kadu->height());
+	tabs->setMinimumSize(200, kadu->height());
+
 #ifdef Q_WS_MAEMO_5
 //	menuBar()->addMenu(kadu->mainMenu());//TODO: fixme
 
