@@ -199,7 +199,6 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("Look", "DisplayGroupTabs", true);
 	config_file.addVariable("Look", "HeaderSeparatorHeight", 1);
 	config_file.addVariable("Look", "IconsPaths", "");
-	config_file.addVariable("Look", "IconTheme", "default");
 	config_file.addVariable("Look", "InfoPanelBgColor", w.palette().background().color());
 	config_file.addVariable("Look", "InfoPanelFgColor", w.palette().foreground().color());
 	config_file.addVariable("Look", "InfoPanelSyntaxFile", "default");
@@ -211,7 +210,13 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("Look", "PanelFont", qApp->font());
 	config_file.addVariable("Look", "PanelVerticalScrollBar", false);
 	config_file.addVariable("Look", "ParagraphSeparator", 4);
+#ifdef Q_WS_MAEMO_5
+	config_file.addVariable("Look", "ShowAvatars", false);
+	config_file.addVariable("Look", "IconTheme", "glass22");
+#else
 	config_file.addVariable("Look", "ShowAvatars", true);
+	config_file.addVariable("Look", "IconTheme", "default");
+#endif
 	config_file.addVariable("Look", "ShowGroupAll", true);
 	config_file.addVariable("Look", "ShowBold", true);
 	config_file.addVariable("Look", "ShowDesc", true);
