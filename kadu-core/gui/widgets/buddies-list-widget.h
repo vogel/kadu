@@ -62,7 +62,9 @@ public:
 	virtual ~BuddiesListWidget();
 
 	BuddiesListView * view() { return View; }
+#ifndef Q_WS_MAEMO_5
 	QLineEdit * nameFilterEdit() { return NameFilterEdit; }
+#endif
 	BuddyNameFilter * nameFilter() { return NameFilter; }
 
 };
