@@ -7,10 +7,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifdef Q_WS_MAEMO_5
-# include <QtGui/QMenu>
-# include <QtGui/QMenuBar>
-#endif
 #include <QtGui/QCloseEvent>
 #include <QtCore/QStringList>
 
@@ -91,14 +87,13 @@ SingleWindow::SingleWindow()
 	kadu->setMinimumSize(170, kadu->height());
 	tabs->setMinimumSize(200, kadu->height());
 
-#ifdef Q_WS_MAEMO_5
-//	menuBar()->addMenu(kadu->mainMenu());//TODO: fixme
+	loadWindowGeometry(this, "SingleWindow", "WindowGeometry", 0, 0, 600, 600);
 
+#ifdef Q_WS_MAEMO_5
 	if (kadu->width() >= 250)
 		kadu->resize(250, kadu->height());
+	resize(800, 480);
 #endif
-
-	loadWindowGeometry(this, "SingleWindow", "WindowGeometry", 0, 0, 600, 600);
 
 	if (rosterPos == 0)
 	{
@@ -140,18 +135,6 @@ SingleWindow::SingleWindow()
 			onOpenChat(chat);
 		}
 	}
-
-	/*ChatList chats = chat_manager->chats();//TODO: fixme
-	for (uint i = 0; i < chats.count(); i++)
-	{
-		ChatWidget* chat = chats[i];
-		if (chat->parent())
-			chat->parent()->deleteLater();
-		else
-			chat->kaduRestoreGeometry();
-		onOpenChat(chat);
-	}*/
-
 
 	show();
 }
