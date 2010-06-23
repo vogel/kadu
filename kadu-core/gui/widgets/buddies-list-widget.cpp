@@ -43,6 +43,7 @@ BuddiesListWidget::BuddiesListWidget(FilterPosition filterPosition, MainWindow *
 
 	QWidget *topWidget = new QWidget(this);
 
+#ifndef Q_WS_MAEMO_5
 	QHBoxLayout *topLayout = new QHBoxLayout(topWidget);
 	topLayout->addWidget(new QLabel(tr("Filter") + ":", this));
 	topLayout->setMargin(0);
@@ -53,6 +54,7 @@ BuddiesListWidget::BuddiesListWidget(FilterPosition filterPosition, MainWindow *
 	topLayout->addWidget(NameFilterEdit);
 	connect(NameFilterEdit, SIGNAL(textChanged(const QString &)),
 			this, SLOT(nameFilterChanged(const QString &)));
+#endif
 
 	View = new BuddiesListView(mainWindow, this);
 

@@ -45,7 +45,9 @@ public:
 	};
 
 private:
+#ifndef Q_WS_MAEMO_5
 	QLineEdit *NameFilterEdit;
+#endif
 	BuddiesListView *View;
 	BuddyNameFilter *NameFilter;
 
