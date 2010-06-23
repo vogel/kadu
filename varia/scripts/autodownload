@@ -1,11 +1,9 @@
-#!/usr/bin/env bash
-
-exit 0
+#!/bin/bash
 
 if test $# -lt 2; then
 	echo
 	echo "Downloads and unpacks Kadu module, icon theme, sound theme or other."
-	echo "Usage: autodownload <item_type> <item_names>"
+	echo "Usage: $0 <item_type> <item_names>"
 	echo
 	exit 1
 fi
@@ -27,6 +25,21 @@ KADU_VERSION=`echo $KADU_VERSION | sed s/-.*//`
 type=$1
 shift
 
+KADU_VERSIONS="$3 $4 $5 $6 $7 $8"
+# calculate the list of previous kadu versions
+# will be used to try downloading modules for older releases
+# when href for current release does not exist
+if [ ${#KADU_VERSIONS} -ne 0 ]; then
+	if [ ${#KADU_VERSION} == 7 ]; then
+		MINOR=${KADU_VERSION:6:1}
+		MAJOR=${KADU_VERSION:0:5}
+		while [ $MINOR -gt 1 ]; do
+			MINOR=`expr $MINOR - 1`
+			KADU_VERSIONS+=" $MAJOR.$MINOR"
+		done
+	fi
+fi
+
 function autodownload()
 {
 	if [ ! -f $1.web ]; then
@@ -44,19 +57,17 @@ function autodownload()
 	for ITEM_WEBSITE in $ITEM_WEBSITES; do
 		if wget -q -T 20 -t 2 -N $ITEM_WEBSITE/kadu-$KADU_VERSION-$1.href; then
 			ITEM_HREFS=`cat kadu-$KADU_VERSION-$1.href`
-			break
+			break		
 		fi
 	done
 
 	if test -z "$ITEM_HREFS"; then
-	
 		#downloading packages for other versions of Kadu
-		#currently not used
-		if test -z "$3"; then
-			for VER in $3 $4 $5 $6 $7 $8; do
+		if [ ${#KADU_VERSIONS} -ne 0 ]; then
+			for VER in $KADU_VERSIONS; do
 				for ITEM_WEBSITE in $ITEM_WEBSITES; do
 					if wget -q -T 20 -t 2 -N $ITEM_WEBSITE/kadu-$VER-$1.href; then
-						ITEM_HREFS=`cat kadu-$KADU_VERSION-$1.href`
+						ITEM_HREFS=`cat kadu-$VER-$1.href`
 						break
 					fi
 				done
