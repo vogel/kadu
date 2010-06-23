@@ -363,7 +363,7 @@ void SingleWindow::onTitleChanged(Chat chatChanged, const QString &newTitle)
 
 	ChatWidget *chat = ChatWidgetManager::instance()->byChat(chatChanged);
 	int index = tabs->indexOf(chat);
-	if (index >= 0)
+	if (index >= 0 && chat)
 	{
 		chat->chat().refreshTitle(); // the icon is not refreshed - refresh it
 		tabs->setTabIcon(index, chatChanged.icon());
