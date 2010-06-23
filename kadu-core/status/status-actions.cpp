@@ -131,13 +131,19 @@ QAction * StatusActions::createStatusAction(StatusType *statusType)
 
 void StatusActions::statusChanged()
 {
+	const QString &statusTypeName = MyStatusContainer->status().type();
+
 	foreach (QAction *action, ChangeStatusActionGroup->actions())
 	{
 		StatusType *statusType = action->data().value<StatusType *>();
 		if (!statusType)
 			continue;
 
-		action->setChecked(StatusContainerManager::instance()->allStatusEqual(statusType));
+		// For 'All xxx' status menu items - check only if all accounts have the same status
+		if(StatusContainerManager::instance() == MyStatusContainer)
+			action->setChecked(StatusContainerManager::instance()->allStatusEqual(statusType));
+		else
+			action->setChecked(statusTypeName == statusType->name());
 	}
 
 	if (!AccountManager::instance()->defaultAccount().isNull())
