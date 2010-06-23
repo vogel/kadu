@@ -90,6 +90,7 @@ public:
 
 	virtual void setStatus(Status newStatus);
 	virtual Status status();
+	bool allStatusEqual(StatusType *type);
 
 	virtual QString statusName();
 	virtual QIcon statusIcon();

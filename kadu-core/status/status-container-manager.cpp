@@ -26,7 +26,7 @@
 #include "core/core.h"
 #include "identities/identity-manager.h"
 #include "status/status-container-aware-object.h"
-#include "status/status-type-manager.h"
+#include "status/status-type.h"
 #include "icons-manager.h"
 
 #include "status-container-manager.h"
@@ -179,6 +179,8 @@ void StatusContainerManager::registerStatusContainer(StatusContainer *statusCont
 	StatusContainers.append(statusContainer);
 	emit statusContainerRegistered(statusContainer);
 	StatusContainerAwareObject::notifyStatusContainerRegistered(statusContainer);
+	
+	connect(statusContainer, SIGNAL(statusChanged()), this, SIGNAL(statusChanged()));
 
 	statusContainer->setDefaultStatus(StartupStatus, OfflineToInvisible, StartupDescription, StartupLastDescription);
 
@@ -201,8 +203,18 @@ void StatusContainerManager::unregisterStatusContainer(StatusContainer *statusCo
 		else
 			setDefaultStatusContainer(StatusContainers.first());
 	}
+	
+	disconnect(statusContainer, SIGNAL(statusChanged()), this, SIGNAL(statusChanged()));
 
 	emitStatusContainerUpdated();
+}
+
+bool StatusContainerManager::allStatusEqual(StatusType *type)
+{
+	foreach (StatusContainer *container, StatusContainers)
+		if (container->status().type() != type->name())
+			return false;
+	return true;
 }
 
 QString StatusContainerManager::statusContainerName()

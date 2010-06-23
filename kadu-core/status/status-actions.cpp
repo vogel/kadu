@@ -23,6 +23,7 @@
 #include "configuration/configuration-file.h"
 #include "protocols/protocol.h"
 #include "status/status-container.h"
+#include "status/status-container-manager.h"
 #include "status/status-group.h"
 #include "status/status-type.h"
 
@@ -130,15 +131,13 @@ QAction * StatusActions::createStatusAction(StatusType *statusType)
 
 void StatusActions::statusChanged()
 {
-	const QString &statusTypeName = MyStatusContainer->status().type();
-
 	foreach (QAction *action, ChangeStatusActionGroup->actions())
 	{
 		StatusType *statusType = action->data().value<StatusType *>();
 		if (!statusType)
 			continue;
 
-		action->setChecked(statusTypeName == statusType->name());
+		action->setChecked(StatusContainerManager::instance()->allStatusEqual(statusType));
 	}
 
 	if (!AccountManager::instance()->defaultAccount().isNull())
