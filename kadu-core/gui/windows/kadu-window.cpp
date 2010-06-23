@@ -433,9 +433,15 @@ void KaduWindow::createDefaultToolbars(QDomElement parentConfig)
 	QDomElement dockAreaConfig = getDockAreaConfigElement(parentConfig, "topDockArea");
 	QDomElement toolbarConfig = xml_config_file->createElement(dockAreaConfig, "ToolBar");
 
+#ifdef Q_WS_MAEMO_5
+	addToolButton(toolbarConfig, "addUserAction", Qt::ToolButtonIconOnly);
+	addToolButton(toolbarConfig, "addGroupAction", Qt::ToolButtonIconOnly);
+	addToolButton(toolbarConfig, "muteSoundsAction", Qt::ToolButtonIconOnly);
+#else
 	addToolButton(toolbarConfig, "addUserAction", Qt::ToolButtonTextUnderIcon);
 	addToolButton(toolbarConfig, "addGroupAction", Qt::ToolButtonTextUnderIcon);
 	addToolButton(toolbarConfig, "muteSoundsAction", Qt::ToolButtonTextUnderIcon);
+#endif
 }
 
 void KaduWindow::addAction(const QString &actionName, Qt::ToolButtonStyle style)
