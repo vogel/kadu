@@ -44,14 +44,25 @@ public:
 	FilterWidget(QWidget *parent);
 	~FilterWidget();
 
+signals:
+	void textChanged(const QString& text);
+
 #ifdef Q_OS_MAC
-	QString text(void);
-	void setText(const QString &text);
-	void emitTextChanged();
+
+public slots:
 	void clear(void);
+	void setText(const QString &text);
+	void emitTextChanged(void);
+
+public:
 	void activate(void);
 	QSize sizeHint (void) const;
+	QString text(void) const;
+
 #endif
+
+private slots:
+	void emitTextChanged(const QString &);
 };
 
 #endif // FILTERWIDGET_H

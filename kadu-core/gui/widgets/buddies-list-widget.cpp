@@ -42,6 +42,8 @@ BuddiesListWidget::BuddiesListWidget(FilterPosition filterPosition, MainWindow *
 	layout->setMargin(0);
 
 	NameFilterWidget = new FilterWidget(this);
+	connect(NameFilterWidget, SIGNAL(textChanged(const QString &)),
+		this, SLOT(nameFilterChanged(const QString &)));
 
 	View = new BuddiesListView(mainWindow, this);
 

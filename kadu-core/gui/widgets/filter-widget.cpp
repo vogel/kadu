@@ -49,46 +49,15 @@ static OSStatus FilterFieldEventHandler(EventHandlerCallRef handlerCallRef,
 					EventRef event, void *userData)
 {
 	FilterWidget *filter = (FilterWidget *) userData;
-	OSType eventClass = GetEventClass(event);
 	UInt32 eventKind = GetEventKind(event);
-
-	/*if (eventClass == kEventClassSearchField)
-	{
-		switch (eventKind)
-		{
-			case kEventSearchFieldCancelClicked:
-				filter->clear();
-				break;
-			case kEventSearchFieldSearchClicked:
-				filter->raiseFindNext();
-				break;
-			default:
-				break;
-		}
-	}
-	else if (eventClass == kEventClassTextField)
-	{
-		switch (eventKind)
-		{
-			case kEventTextDidChange:
-				filter->raiseTextChanged();
-				break;
-			case kEventTextAccepted:
-				filter->raiseFindNext();
-				break;
-			default:
-				break;
-		}
-	}*/
 	if (eventKind == kEventSearchFieldCancelClicked)
 		filter->clear();
 	else if (eventKind == kEventTextDidChange)
 		filter->emitTextChanged();
-
-	return(eventNotHandledErr);
+	return (eventNotHandledErr);
 }
 
-void FilterWidget::emitTextChanged()
+void FilterWidget::emitTextChanged(void)
 {
 	emit textChanged(text());
 }
@@ -136,9 +105,14 @@ QSize FilterWidget::sizeHint (void) const
 	GetEventParameter(event, kEventParamControlOptimalBounds, typeHIRect,
 		0, sizeof(HIRect), 0, &optimalBounds);
 	ReleaseEvent(event);
-	return QSize(optimalBounds.size.width + 200, optimalBounds.size.height);
+	return QSize(optimalBounds.size.width + 200, optimalBounds.size.height/2);
 }
 #endif
+
+void FilterWidget::emitTextChanged(const QString &s)
+{
+	emit textChanged(s);
+}
 
 FilterWidget::FilterWidget(QWidget *parent) : QWidget(parent)
 {
@@ -155,7 +129,7 @@ FilterWidget::FilterWidget(QWidget *parent) : QWidget(parent)
 		{ kEventClassTextField, kEventTextDidChange },
 		{ kEventClassTextField, kEventTextAccepted }
 	};
-	HIViewInstallEventHandler(searchField, SearchFieldEventHandler,
+	HIViewInstallEventHandler(searchField, FilterFieldEventHandler,
 		GetEventTypeCount(mySFieldEvents), mySFieldEvents,
 		(void *) this, NULL);
 
@@ -169,9 +143,9 @@ FilterWidget::FilterWidget(QWidget *parent) : QWidget(parent)
 
 	layout->addWidget(new QLabel(tr("Filter") + ":", this));
 	layout->addWidget(NameFilterEdit);
-	connect(NameFilterEdit, SIGNAL(textChanged(const QString &)),
-		parent, SLOT(nameFilterChanged(const QString &)));
 
+	connect(NameFilterEdit, SIGNAL(textChanged(const QString &)),
+		this, SLOT(emitTextChanged(const QString &)));
 #endif
 }
 
@@ -185,5 +159,7 @@ FilterWidget::~FilterWidget()
 
 void FilterWidget::setFocus()
 {
+#ifndef Q_OS_MAC
 	NameFilterEdit->setFocus();
+#endif
 }
