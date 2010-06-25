@@ -41,20 +41,7 @@ BuddiesListWidget::BuddiesListWidget(FilterPosition filterPosition, MainWindow *
 	QVBoxLayout *layout = new QVBoxLayout(this);
 	layout->setMargin(0);
 
-	QWidget *topWidget = new QWidget(this);
-
-#ifndef Q_WS_MAEMO_5
-	QHBoxLayout *topLayout = new QHBoxLayout(topWidget);
-	topLayout->addWidget(new QLabel(tr("Filter") + ":", this));
-	topLayout->setMargin(0);
-
-	NameFilterEdit = new FilterLineEdit(this);
-	NameFilterEdit->installEventFilter(this);
-
-	topLayout->addWidget(NameFilterEdit);
-	connect(NameFilterEdit, SIGNAL(textChanged(const QString &)),
-			this, SLOT(nameFilterChanged(const QString &)));
-#endif
+	NameFilterWidget = new FilterWidget(this);
 
 	View = new BuddiesListView(mainWindow, this);
 
@@ -63,17 +50,17 @@ BuddiesListWidget::BuddiesListWidget(FilterPosition filterPosition, MainWindow *
 
 	if (FilterAtTop == filterPosition)
 	{
-		layout->addWidget(topWidget);
+		layout->addWidget(NameFilterWidget);
 		layout->addWidget(View);
 	}
 	else
 	{
 		layout->addWidget(View);
-		layout->addWidget(topWidget);
+		layout->addWidget(NameFilterWidget);
 	}
 
 /*
-	setFocusProxy(NameFilterEdit);
+	setFocusProxy(NameFilterWidget);
 	View->setFocusPolicy(Qt::NoFocus);*/
 }
 

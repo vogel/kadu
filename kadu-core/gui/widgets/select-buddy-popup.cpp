@@ -51,7 +51,7 @@ SelectBuddyPopup::~SelectBuddyPopup()
 void SelectBuddyPopup::show(Buddy buddy)
 {
 #ifndef Q_WS_MAEMO_5
-	nameFilterEdit()->setFocus();
+	nameFilterWidget()->setFocus();
 #endif
 
 	view()->selectBuddy(buddy);

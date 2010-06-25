@@ -26,8 +26,7 @@
 #include <QtGui/QWidget>
 
 #include "gui/widgets/filter-line-edit.h"
-
-class QLineEdit;
+#include "gui/widgets/filter-widget.h"
 
 class BuddyNameFilter;
 class BuddiesListView;
@@ -45,9 +44,8 @@ public:
 	};
 
 private:
-#ifndef Q_WS_MAEMO_5
-	QLineEdit *NameFilterEdit;
-#endif
+	FilterWidget *NameFilterWidget;
+
 	BuddiesListView *View;
 	BuddyNameFilter *NameFilter;
 
@@ -62,9 +60,7 @@ public:
 	virtual ~BuddiesListWidget();
 
 	BuddiesListView * view() { return View; }
-#ifndef Q_WS_MAEMO_5
-	QLineEdit * nameFilterEdit() { return NameFilterEdit; }
-#endif
+	QWidget * nameFilterWidget() { return NameFilterWidget; }
 	BuddyNameFilter * nameFilter() { return NameFilter; }
 
 };

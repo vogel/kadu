@@ -151,6 +151,7 @@ set (kadu_SRCS
 	gui/widgets/delayed-line-edit.cpp
 	gui/widgets/file-transfer-widget.cpp
 	gui/widgets/filter-line-edit.cpp
+	gui/widgets/filter-widget.cpp
 	gui/widgets/group-tab-bar.cpp
 	gui/widgets/groups-combo-box.cpp
 	gui/widgets/identities-combo-box.cpp
@@ -441,6 +442,7 @@ set (kadu_MOC_SRCS
 	gui/widgets/delayed-line-edit.h
 	gui/widgets/file-transfer-widget.h
 	gui/widgets/filter-line-edit.h
+	gui/widgets/filter-widget.h
 	gui/widgets/group-tab-bar.h
 	gui/widgets/groups-combo-box.h
 	gui/widgets/identities-combo-box.h

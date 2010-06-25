@@ -47,7 +47,7 @@ public:
 protected:
 	void paintEvent(QPaintEvent *event);
 	virtual bool event(QEvent* event );
-    
+
 protected slots:
 	void animationFinished();
 };
@@ -56,21 +56,21 @@ protected slots:
 class FilterLineEdit : public QLineEdit
 {
 	Q_OBJECT
-    
-    	LineEditClearButton *ClearFilterButton;
+
+	LineEditClearButton *ClearFilterButton;
 	
 	bool WideEnoughForClear;
 	int Overlap;
 	bool ClickInClear;
-	
+
 	void updateClearButton();
 
 public:
 	FilterLineEdit(QWidget *parent);
-	
+
 private slots:
 	void updateClearButtonIcon(const QString& text);
-	
+
 protected:
 	virtual void mousePressEvent( QMouseEvent* e );
 	virtual void mouseReleaseEvent( QMouseEvent* e );
