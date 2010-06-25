@@ -83,8 +83,13 @@ endif(MINGW)
 
 # warnings
 
+if (APPLE)
+set (CMAKE_C_FLAGS "-W -Wall -fno-strict-aliasing")
+set (CMAKE_CXX_FLAGS "-W -Wall -fno-strict-aliasing")
+else (APPLE)
 set (CMAKE_C_FLAGS "-W -Wall -Werror -fno-strict-aliasing")
 set (CMAKE_CXX_FLAGS "-W -Wall -Werror -fno-strict-aliasing")
+endif (APPLE)
 
 if (NOT DATADIR)
 	set (DATADIR ${CMAKE_INSTALL_PREFIX}/share)
