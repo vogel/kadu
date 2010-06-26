@@ -288,6 +288,7 @@ void History::clearHistoryActionActivated(QAction *sender, bool toggled)
 
 void History::chatCreated(ChatWidget *chatWidget)
 {
+
 	kdebugf();
 
 	if (!chatWidget)
@@ -306,9 +307,8 @@ void History::chatCreated(ChatWidget *chatWidget)
 
 	QList<Message> messages;
 
-	unsigned int chatHistoryQuotation = config_file.readUnsignedNumEntry("History", "ChatHistoryCitation");
-	// TODO: NOW do it other way
-					    // + PendingMessagesManager::instance()->pendingMsgsCount(chatWidget->chat());
+	unsigned int chatHistoryQuotation = qMax(config_file.readNumEntry("History", "ChatHistoryCitation"),
+			PendingMessagesManager::instance()->pendingMessagesForChat(chatWidget->chat()).size());
 
 	QDateTime backTo = QDateTime::currentDateTime().addSecs(config_file.readNumEntry("History", "ChatHistoryQuotationTime", -744)*3600);
 	messages = CurrentStorage->messagesBackTo(chatWidget->chat(), backTo, chatHistoryQuotation);
@@ -329,7 +329,7 @@ void History::accountRegistered(Account account)
 	ChatService *service = account.protocolHandler()->chatService();
 	if (service)
 	{
-		connect(service, SIGNAL(messageReceived(const Message &)),
+		connect(service, SIGNAL((const Message &)),
 				this, SLOT(enqueueMessage(const Message &)));
 		connect(service, SIGNAL(messageSent(const Message &)),
 				this, SLOT(enqueueMessage(const Message &)));
