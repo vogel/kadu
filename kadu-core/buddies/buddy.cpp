@@ -203,15 +203,19 @@ void Buddy::removeFromGroup(Group group)
 
 QString Buddy::display() const
 {
-	return isNull()
-			? QString::null
-			: isAnonymous() && !prefferedAccount().isNull()
-					? (prefferedAccount().accountIdentity().name() + ":" + id(prefferedAccount()))
-					: data()->display().isEmpty()
-							? data()->nickName().isEmpty()
-									? data()->firstName()
-									: data()->nickName()
-							: data()->display();
+	if (isNull())
+		return QString::null;
+
+	QString result = data()->display().isEmpty()
+			? data()->nickName().isEmpty()
+					? data()->firstName()
+					: data()->nickName()
+			: data()->display();
+
+	if (result.isEmpty() && !prefferedAccount().isNull())
+		result = prefferedAccount().accountIdentity().name() + ":" + id(prefferedAccount());
+
+	return result;
 }
 
 Buddy Buddy::dummy()
