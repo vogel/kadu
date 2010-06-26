@@ -14,24 +14,25 @@ exec_program (${CMAKE_CURRENT_SOURCE_DIR}/get-all.sh ${CMAKE_CURRENT_SOURCE_DIR}
 exec_program (${CMAKE_CURRENT_SOURCE_DIR}/get-list.sh ${CMAKE_CURRENT_SOURCE_DIR}
 	ARGS "y" ${EMOTICON_THEMES}
 	OUTPUT_VARIABLE INSTALL_EMOTICON_THEMES)
-endif(WIN32)
+endif (WIN32)
 
 if (INSTALL_EMOTICON_THEMES)
-	add_custom_target (emoticons_themes)
+	add_custom_target (emoticons_themes
+		DEPENDS ${INSTALL_EMOTICON_THEMES})
 
 	foreach (INSTALL_EMOTICON_THEME ${INSTALL_EMOTICON_THEMES})
 		message (STATUS "Emoticon theme: " ${INSTALL_EMOTICON_THEME})
-		add_custom_command (OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/${INSTALL_EMOTICON_THEME}
-			COMMAND  ../../scripts/autodownload emoticon ${INSTALL_EMOTICON_THEME}
-			COMMENT "Downloading emoticons theme ${INSTALL_EMOTICON_THEME}"
-			WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+if (ENABLE_AUTODOWNLOAD AND NOT WIN32)
+		exec_program (${CMAKE_SOURCE_DIR}/varia/scripts/autodownload ${CMAKE_CURRENT_SOURCE_DIR}
+			ARGS theme ${INSTALL_EMOTICON_THEME}
 		)
+endif (ENABLE_AUTODOWNLOAD AND NOT WIN32)
 	endforeach (INSTALL_EMOTICON_THEME)
 
 	add_dependencies (kadu emoticons_themes)
 
 	install (DIRECTORY ${INSTALL_EMOTICON_THEMES}
-		DESTINATION ${KADU_DATA_DIR}/themes/emoticons
+		DESTINATION share/kadu/themes/emoticons
 		PATTERN ".autodownloaded" EXCLUDE
 		PATTERN ".svn" EXCLUDE
 		PATTERN "readme.txt"

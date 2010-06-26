@@ -14,24 +14,25 @@ exec_program (${CMAKE_CURRENT_SOURCE_DIR}/get-all.sh ${CMAKE_CURRENT_SOURCE_DIR}
 exec_program (${CMAKE_CURRENT_SOURCE_DIR}/get-list.sh ${CMAKE_CURRENT_SOURCE_DIR}
 	ARGS "y" ${SOUND_THEMES}
 	OUTPUT_VARIABLE INSTALL_SOUND_THEMES)
-endif(WIN32)
+endif (WIN32)
 
 if (INSTALL_SOUND_THEMES)
-	add_custom_target (sound_themes)
+	add_custom_target (sound_themes
+		DEPENDS ${INSTALL_SOUND_THEMES})
 
 	foreach (INSTALL_SOUND_THEME ${INSTALL_SOUND_THEMES})
 		message (STATUS "Sound theme: " ${INSTALL_SOUND_THEME})
-		add_custom_command (OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/${INSTALL_SOUND_THEME}
-			COMMAND  ../../scripts/autodownload sound ${INSTALL_SOUND_THEME}
-			COMMENT "Downloading sound theme ${INSTALL_SOUND_THEMES}"
-			WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+if (ENABLE_AUTODOWNLOAD AND NOT WIN32)
+		exec_program (${CMAKE_SOURCE_DIR}/varia/scripts/autodownload ${CMAKE_CURRENT_SOURCE_DIR}
+			ARGS theme ${INSTALL_SOUND_THEME}
 		)
+endif (ENABLE_AUTODOWNLOAD AND NOT WIN32)
 	endforeach (INSTALL_SOUND_THEME)
 
 	add_dependencies (kadu sound_themes)
 
 	install (DIRECTORY ${INSTALL_SOUND_THEMES}
-		DESTINATION ${KADU_DATA_DIR}/themes/sounds
+		DESTINATION share/kadu/themes/sounds
 		PATTERN ".autodownloaded" EXCLUDE
 		PATTERN ".svn" EXCLUDE
 		PATTERN "*.wav"
