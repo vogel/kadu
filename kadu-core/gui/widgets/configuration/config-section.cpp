@@ -72,7 +72,7 @@ void ConfigSection::switchTabView(bool tabView)
 		foreach (ConfigTab *configTab, configTabs)
 			tabWidget->addTab(configTab->tabWidget(), configTab->name());
 
-		delete mainWidget;
+		mainWidget->deleteLater();
 		mainWidget = tabWidget;
 	}
 	else
@@ -85,7 +85,7 @@ void ConfigSection::switchTabView(bool tabView)
 		foreach (ConfigTab *configTab, configTabs)
 			configTab->tabWidget()->setParent(mainWidget);
 	
-		delete tabWidget;
+		tabWidget->deleteLater();
 		tabWidget = 0;
 	}
 

@@ -5,6 +5,8 @@
 * sound: #1360 fixed: crash during loading module (Vogel)
 * gui: #1354 fixed: chat window does not display \ (Vogel)
 * chat: #1311 fixed: unicode characters in URLs (Vogel)
+* autoaway: #1344 fixed: crash when closing kadu with configuration opened (Vogel)
+* macos: #1368 fixed: crash when opening configuration window (Vogel)
 
 +++ version 0.6.6-beta2
 * jabber: added URL handler for jabber:// protocol (Juzef)

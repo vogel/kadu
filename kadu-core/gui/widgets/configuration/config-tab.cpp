@@ -48,7 +48,7 @@ ConfigTab::ConfigTab(const QString &name, ConfigSection *configSection, QWidget 
 
 ConfigTab::~ConfigTab()
 {
-	delete MyScrollArea;
+	MyScrollArea->deleteLater();
 	MyScrollArea = 0;
 }
 
