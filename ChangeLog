@@ -7,6 +7,7 @@
 * chat: #1311 fixed: unicode characters in URLs (Vogel)
 * autoaway: #1344 fixed: crash when closing kadu with configuration opened (Vogel)
 * macos: #1368 fixed: crash when opening configuration window (Vogel)
+* gadu: #1320 fixed: unable to clear "new account gg number" field (Vogel)
 
 +++ version 0.6.6-beta2
 * jabber: added URL handler for jabber:// protocol (Juzef)

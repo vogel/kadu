@@ -35,6 +35,9 @@ LongValidator::~LongValidator()
 
 QValidator::State LongValidator::validate(QString &input, int &) const
 {
+	if (input.isEmpty())
+		return Intermediate;
+
 	bool ok;
 	qlonglong result = input.toLongLong(&ok);
 
