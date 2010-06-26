@@ -49,8 +49,15 @@ extern "C" KADU_EXPORT int growl_notify_init(bool firstLoad)
 	/* growl is only supported on MacOSX */
 	return 1;
 #endif
-	growl_notify = new GrowlNotify(NULL);
+	/*if (!grow_is_installed())
+	{
+		MessageBox::msg("Growl is not installed in your system");
+		return 1;
+	}*/
+
+	growl_notify = new GrowlNotify();
 	return 0;
+
 }
 
 extern "C" KADU_EXPORT void growl_notify_close()
@@ -78,6 +85,7 @@ GrowlNotify::~GrowlNotify()
 {
 	kdebugf();
 	NotificationManager::instance()->unregisterNotifier(this);
+	growlNotifier->cleanupAfterGrowl();
 	kdebugf2();
 }
 
