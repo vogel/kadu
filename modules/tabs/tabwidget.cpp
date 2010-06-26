@@ -63,6 +63,12 @@ TabWidget::TabWidget()
 	connect(closeChatButton, SIGNAL(clicked()), SLOT(deleteTab()));
 	closeChatButton->setAutoRaise(true);
 	openChatWithWindow = NULL;
+#ifdef Q_OS_MAC
+	/* Dorr: on Mac make the tabs look like the ones from terminal or safari */
+	tabbar->setDocumentMode(true);
+	setAttribute(Qt::WA_MacBrushedMetal);
+	setStyleSheet("QToolButton { background: transparent; }");
+#endif
 }
 
 void TabWidget::closeChatWidget(ChatWidget *chat)
