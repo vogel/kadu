@@ -221,7 +221,7 @@ void NotifyConfigurationUiHandler::notifierUnregistered(Notifier *notifier)
 
 void NotifyConfigurationUiHandler::notifyEventRegistered(NotifyEvent *notifyEvent)
 {
-    	if (notificationsGroupBox)
+	if (notificationsGroupBox)
 	{
 		QString eventName = notifyEvent->name();
 		NotifyEventConfigurationItem item;

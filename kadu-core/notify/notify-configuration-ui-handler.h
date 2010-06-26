@@ -37,6 +37,8 @@ struct NotifierConfigurationGuiItem
 	NotifierConfigurationWidget *ConfigurationWidget;
 	NotifyGroupBox *ConfigurationGroupBox;
 	QMap<QString, bool> Events;
+
+	NotifierConfigurationGuiItem() : ConfigurationWidget(0), ConfigurationGroupBox(0) {}
 };
 
 struct NotifyEventConfigurationItem
