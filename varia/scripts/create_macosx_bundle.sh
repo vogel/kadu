@@ -3,11 +3,13 @@
 # katalog docelowy, w nim zostanie utworzony katalog Kadu.app
 DEST=~/Desktop/kadu
 
+# prefix of copiled Qt and QCA libraries
+# prefiks skompilowanego Qt i QCA
 QTDIR=/Users/tomek/Desktop/kadu/qt
 QCADIR=/Users/tomek/Desktop/kadu/qca2/
 
-# prefix of compiled libsndfile and openssl
-# prefiks skompilowanych bibliotek libsndfile i libgadu
+# prefix of compiled libraries
+# prefiks skompilowanych bibliotek
 #SNDFILEPATH=/Users/tomek/Desktop/kadu/libsndfile
 SNDFILEPATH=/Users/tomek/Compilation/libsndfile
 LIBGADU=/Users/tomek/Desktop/kadu/libgadu
@@ -24,7 +26,7 @@ INSTALLED_DIR=/usr/local/
 echo "Set paths in this file and remove this lines (including exit)"
 echo "Ustaw sciezki w tym pliku i usun te linie (lacznie z exit)"
 echo
-#exit
+exit
 
 if [ ! -f VERSION ]; then
 	echo "run this script from main Kadu directory"
@@ -126,11 +128,11 @@ if [ -f ${OPENSSLPATH}/lib/libcrypto.${SSLVER}.dylib ]; then
 	install_name_tool -id @executable_path/../Frameworks/libcrypto.${SSLVER}.dylib ${FM_DIR}/libcrypto.${SSLVER}.dylib
 fi
 
-if [ -f ${QTDIR}/lib/Qt3Support.framework/versions/4/Qt3Support ]; then
-	echo "log: copying Qt3Support library"
-	cp ${QTDIR}/lib/Qt3Support.framework/versions/4/Qt3Support ${FM_DIR}
-	install_name_tool -id @executable_path/../Frameworks/Qt3Support ${FM_DIR}/Qt3Support
-fi
+#if [ -f ${QTDIR}/lib/Qt3Support.framework/versions/4/Qt3Support ]; then
+#	echo "log: copying Qt3Support library"
+#	cp ${QTDIR}/lib/Qt3Support.framework/versions/4/Qt3Support ${FM_DIR}
+#	install_name_tool -id @executable_path/../Frameworks/Qt3Support ${FM_DIR}/Qt3Support
+#fi
 
 if [ -f ${QTDIR}/lib/QtGui.framework/versions/4/QtGui ]; then
 	echo "log: copying QtGui library"
@@ -234,11 +236,11 @@ fi
 cd ${FM_DIR}
 echo "log: changing framework bindings"
 install_name_tool -change ${QTDIR}/lib/QtSql.framework/Versions/4/QtSql @executable_path/../Frameworks/QtSql ./QtCore
-install_name_tool -change ${QTDIR}/lib/QtSql.framework/Versions/4/QtSql @executable_path/../Frameworks/QtSql ./Qt3Support
-install_name_tool -change ${QTDIR}/lib/QtXml.framework/Versions/4/QtXml @executable_path/../Frameworks/QtXml ./Qt3Support
-install_name_tool -change ${QTDIR}/lib/QtGui.framework/Versions/4/QtGui @executable_path/../Frameworks/QtGui ./Qt3Support
-install_name_tool -change ${QTDIR}/lib/QtNetwork.framework/Versions/4/QtNetwork @executable_path/../Frameworks/QtNetwork ./Qt3Support
-install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./Qt3Support
+#install_name_tool -change ${QTDIR}/lib/QtSql.framework/Versions/4/QtSql @executable_path/../Frameworks/QtSql ./Qt3Support
+#install_name_tool -change ${QTDIR}/lib/QtXml.framework/Versions/4/QtXml @executable_path/../Frameworks/QtXml ./Qt3Support
+#install_name_tool -change ${QTDIR}/lib/QtGui.framework/Versions/4/QtGui @executable_path/../Frameworks/QtGui ./Qt3Support
+#install_name_tool -change ${QTDIR}/lib/QtNetwork.framework/Versions/4/QtNetwork @executable_path/../Frameworks/QtNetwork ./Qt3Support
+#install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./Qt3Support
 install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./QtSql
 install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./QtXml
 install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./QtGui
@@ -291,8 +293,8 @@ install_name_tool -change ${QTDIR}/lib/QtSql.framework/Versions/4/QtSql @executa
 install_name_tool -change ${QTDIR}/lib/QtNetwork.framework/Versions/4/QtNetwork @executable_path/../Frameworks/QtNetwork ./kadu
 install_name_tool -change ${QTDIR}/lib/QtGui.framework/Versions/4/QtGui @executable_path/../Frameworks/QtGui ./kadu
 install_name_tool -change ${QTDIR}/lib/QtXml.framework/Versions/4/QtXml @executable_path/../Frameworks/QtXml ./kadu
-install_name_tool -change ${QTDIR}/lib/Qt3Support.framework/Versions/4/Qt3Support @executable_path/../Frameworks/Qt3Support ./kadu
-install_name_tool -change ${QTDIR}/lib/Qt3Support.framework/Versions/4/Qt3Support @executable_path/../Frameworks/Qt3Support ./kadu
+#install_name_tool -change ${QTDIR}/lib/Qt3Support.framework/Versions/4/Qt3Support @executable_path/../Frameworks/Qt3Support ./kadu
+#install_name_tool -change ${QTDIR}/lib/Qt3Support.framework/Versions/4/Qt3Support @executable_path/../Frameworks/Qt3Support ./kadu
 install_name_tool -change ${QTDIR}/lib/QtWebKit.framework/Versions/4/QtWebKit @executable_path/../Frameworks/QtWebKit ./kadu
 install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./kadu
 install_name_tool -change ${QTDIR}/lib/phonon.framework/Versions/4/phonon @executable_path/../Frameworks/phonon ./kadu
@@ -336,7 +338,6 @@ echo "LoadByDefault=true" >> ${DEST}/Kadu.app/kadu/modules/qt4_sound.desc
 
 echo "log: stripping binaries"
 strip -x ${FM_DIR}/Qt*  ${CNT_DIR}/plugins/imageformats/* ${MACOS_DIR}/kadu
-#Qt3Support QtCore QtGui QtNetwork QtSql QtWebKit QtXml phonon
 
 
 echo "log: everything done"
