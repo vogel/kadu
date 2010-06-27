@@ -65,6 +65,10 @@
 KaduWindow::KaduWindow(QWidget *parent) :
 		MainWindow(parent), Docked(false)
 {
+#ifdef Q_OS_MAC
+	setUnifiedTitleAndToolBarOnMac(true);
+#endif
+
 	setAttribute(Qt::WA_DeleteOnClose, true);
 	setWindowTitle(QLatin1String("Kadu"));
 
@@ -156,8 +160,11 @@ void KaduWindow::createMenu()
 void KaduWindow::createKaduMenu()
 {
 	KaduMenu = new QMenu();
+#ifdef Q_OS_MAC
+	KaduMenu->setTitle("General");
+#else
 	KaduMenu->setTitle("&Kadu");
-
+#endif
 	RecentChatsMenu = new QMenu();
 	RecentChatsMenu->setIcon(IconsManager::instance()->iconByPath("16x16/internet-group-chat.png"));
 	RecentChatsMenu->setTitle(tr("Recent chats"));
