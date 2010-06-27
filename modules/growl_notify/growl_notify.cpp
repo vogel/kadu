@@ -117,6 +117,9 @@ void GrowlNotify::notify(Notification *notification)
 {
 	kdebugf();
 
+	if (growlNotifier->isNotifying())
+		return;
+
 	QString title = config_file.readEntry("GrowlNotify", QString("Event_") + notification->type() + "_title");
 	QString syntax = config_file.readEntry("GrowlNotify", QString("Event_") + notification->type() + "_syntax");
 
@@ -128,7 +131,7 @@ void GrowlNotify::notify(Notification *notification)
 		notification->icon().pixmap(128,128),
 		false, notification, SLOT(callbackAccept()));
 
-	notification->release();
+	//notification->release(); //released withing notification_timeout/notification_clicked
 
 	kdebugf2();
 }

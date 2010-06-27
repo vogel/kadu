@@ -39,10 +39,11 @@ extern "C" {
 #include <QtCore/QDir>
 #include <QtGui/QPixmap>
 
-//#include <sys/types.h>
-//#include <unistd.h>
+#include "notify/notification.h"
 
 #include "growlnotifier.h"
+
+static bool IsNotifying;
 
 /**
  * \brief Converts a QString to a CoreFoundation string, preserving Unicode.
@@ -163,6 +164,10 @@ void notification_clicked(CFPropertyListRef context)
 	QObject::connect(signaler, SIGNAL(notificationClicked(void*)), receiver, slot);
 	signaler->emitNotificationClicked(qcontext);
 	QObject::disconnect(signaler, SIGNAL(notificationClicked(void*)), receiver, slot);
+
+	Notification *notification = (Notification *)receiver;
+	notification->release();
+	IsNotifying = false;
 }
 
 
@@ -180,10 +185,14 @@ void notification_timeout(CFPropertyListRef context)
 
 	getContext(context, &signaler, &receiver, 0, &slot, &qcontext /*, &pid*/);
 	if (slot != NULL)
+	{
 		QObject::connect(signaler, SIGNAL(notificationTimedOut(void*)), receiver, slot);
-	signaler->emitNotificationTimeout(qcontext);
-	if (slot != NULL)
+		signaler->emitNotificationTimeout(qcontext);
 		QObject::disconnect(signaler, SIGNAL(notificationTimedOut(void*)), receiver, slot);
+	}
+	Notification *notification = (Notification *)receiver;
+	notification->release();
+	IsNotifying = false;
 }
 
 
@@ -300,6 +309,7 @@ void GrowlNotifier::notify(const QString& name, const QString& title,
 	CFPropertyListRef context = createContext(signaler_, receiver, clicked_slot, timeout_slot, qcontext/*, getpid()*/);
 	Growl_NotifyWithTitleDescriptionNameIconPriorityStickyClickContext(
 		cf_title, cf_description, cf_name, icon, 0, sticky, context);
+	IsNotifying = true;
 	
 	// Release intermediary datastructures
 	CFRelease(context);
@@ -312,6 +322,11 @@ void GrowlNotifier::notify(const QString& name, const QString& title,
 	if (cf_name) 
 		CFRelease(cf_name);
 }
+
+bool GrowlNotifier::isNotifying()
+{
+	return IsNotifying;
+};
 
 static void removeTemps(const QString &path)
 {
