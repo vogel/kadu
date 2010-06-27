@@ -49,10 +49,12 @@ static OSStatus FilterFieldEventHandler(EventHandlerCallRef handlerCallRef,
 					EventRef event, void *userData)
 {
 	FilterWidget *filter = (FilterWidget *) userData;
+	OSType eventClass = GetEventClass(event);
 	UInt32 eventKind = GetEventKind(event);
-	if (eventKind == kEventSearchFieldCancelClicked)
+
+	if (eventClass == kEventClassSearchField && eventKind == kEventSearchFieldCancelClicked)
 		filter->clear();
-	else if (eventKind == kEventTextDidChange)
+	else if (eventClass == kEventClassTextField && eventKind == kEventTextDidChange)
 		filter->emitTextChanged();
 	return (eventNotHandledErr);
 }
