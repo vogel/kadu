@@ -296,7 +296,7 @@ void DockingManager::statusPixmapChanged(const QIcon &icon)
 	defaultToolTip();
 	changeIcon();
 #ifdef Q_OS_MAC
-	qApp->setWindowIcon(icon.pixmap(128,128));
+	qApp->setWindowIcon(icon);
 #endif
 }
 

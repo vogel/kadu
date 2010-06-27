@@ -132,6 +132,12 @@ QIcon StatusTypeManager::statusIcon(const QString &protocol, const QString &type
 			.arg(description ? "_d" : "")
 			.arg(mobile ? "_m" : "");
 	icon.addFile(IconsManager::instance()->iconPath(iconPath), QSize(22, 22));
-	
+
+#ifdef Q_OS_MAC
+	iconPath = QString("protocols/%1/128x128/%2.png")
+			.arg(protocol)
+			.arg(statusType->iconName());
+	icon.addFile(IconsManager::instance()->iconPath(iconPath), QSize(128, 128));
+#endif
 	return icon;
 }
