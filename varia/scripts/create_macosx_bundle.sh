@@ -294,7 +294,7 @@ install_name_tool -change ${QTDIR}/lib/QtGui.framework/Versions/4/QtGui   @execu
 
 cd  ${CNT_DIR}/plugins/sqldrivers
 install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./libqsqlite.dylib
-install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtSql @executable_path/../Frameworks/QtSql ./libqsqlite.dylib
+install_name_tool -change ${QTDIR}/lib/QtSql.framework/Versions/4/QtSql @executable_path/../Frameworks/QtSql ./libqsqlite.dylib
 
 cd ${MACOS_DIR}
 echo "log: changing library bindings"
