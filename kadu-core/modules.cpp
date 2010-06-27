@@ -62,7 +62,7 @@
 
 #include "modules/static_modules.cpp"
 
-#ifdef Q_OS_MACX
+#ifdef Q_OS_MAC
 	#define SO_EXT "so"
 	#define SO_EXT_LEN 2
 	#define SO_PREFIX "lib"

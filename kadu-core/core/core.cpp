@@ -100,9 +100,9 @@ Core::~Core()
 
 	ModulesManager::instance()->unloadAllModules();
 
-#ifdef Q_OS_MACX
+#ifdef Q_OS_MAC
 	setIcon(QPixmap(dataPath("kadu.png")));
-#endif // Q_OS_MACX
+#endif // Q_OS_MAC
 
 	MainConfiguration::destroyInstance();
 
@@ -305,7 +305,7 @@ void Core::init()
 
 	new Updates();
 
-#ifdef Q_OS_MACX
+#ifdef Q_OS_MAC
 	setIcon(IconsManager::instance()->pixmapByPath("protocols/gadu-gadu/128x128/offline.png"));
 #else
 	setIcon(IconsManager::instance()->pixmapByPath("protocols/gadu-gadu/16x16/offline.png"));

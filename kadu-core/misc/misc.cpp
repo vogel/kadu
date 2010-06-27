@@ -49,11 +49,11 @@ bool measureTime = false;
 void saveWindowGeometry(const QWidget *w, const QString &section, const QString &name)
 {
 
-#ifdef Q_OS_MACX
+#ifdef Q_OS_MAC
 	/* Dorr: on Mac OS X make sure the window will not be greater than desktop what
 	 * sometimes happends during widget resizing (because of bug in Qt?)
 	 */
-	QRect screen = QApplication::desktop()->geometry();
+	QRect screen = QApplication::desktop()->availableGeometry(w);
 	QRect geometry(w->geometry());
 	if (geometry.height() > screen.height())
 		geometry.setHeight(screen.height());
@@ -61,7 +61,7 @@ void saveWindowGeometry(const QWidget *w, const QString &section, const QString 
 		geometry.setWidth(screen.width());
 	config_file.writeEntry(section, name, geometry);
 #else
-	config_file.writeEntry(section, name,w->geometry());
+	config_file.writeEntry(section, name, w->geometry());
 #endif
 }
 

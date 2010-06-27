@@ -89,7 +89,7 @@ void ExternalPlayer::playSound(const QString &path, bool volumeControl, double v
 
 void ExternalPlayer::createDefaultConfiguration()
 {
-#ifdef Q_OS_MACX
+#ifdef Q_OS_MAC
 	config_file.addVariable("Sounds", "SoundPlayer", "/Applications/Kadu.app/Contents/MacOS/playsound");
 #else
 	config_file.addVariable("Sounds", "SoundPlayer", "/usr/bin/play");
