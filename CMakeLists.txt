@@ -9,6 +9,7 @@ set (CMAKE_MIN_VERSION "2.6.0")
 
 option (ENABLE_AUTODOWNLOAD "Use automatic download of modules/icons/emoticons" ON)
 option (SIG_HANDLING_ENABLED "Define if you want system signals handling" ON)
+option (USE_X11_XFIXES "Use X11 Xfixes extension (Desktop Linux)" ON)
 
 if (NOT BUILD_DESCRIPTION)
 	set (BUILD_DESCRIPTION "Compilied sources" CACHE STRING "Build description" FORCE)

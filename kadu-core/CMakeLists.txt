@@ -555,13 +555,14 @@ set (kadu_MOC_SRCS
 )
 
 if (UNIX AND NOT APPLE)
+if (USE_X11_XFIXES)
 	include (FindX11)
 	if (X11_Xfixes_FOUND)
 		MESSAGE(STATUS "Found X11 Xfixes extension: ${X11_Xfixes_LIB}")
 	else (X11_Xfixes_FOUND)
 		MESSAGE(FATAL_ERROR "Could not find X11 Xfixes extension")
 	endif (X11_Xfixes_FOUND)
-
+endif (USE_X11_XFIXES)
 	if (NOT DESKTOP_ENTRY)
 		set (DESKTOP_ENTRY ${CMAKE_CURRENT_BINARY_DIR}/kadu.desktop)
 	endif (NOT DESKTOP_ENTRY)
@@ -615,9 +616,9 @@ else (WIN32)
 
 	target_link_libraries (kadu ${STATIC_MODULES} ${QT_LIBRARIES})
 
-	if (NOT APPLE)
+	if (NOT APPLE AND USE_X11_XFIXES)
 		target_link_libraries (kadu ${X11_Xfixes_LIB})
-	endif (NOT APPLE)
+	endif (NOT APPLE AND USE_X11_XFIXES)
 endif (WIN32)
 
 
