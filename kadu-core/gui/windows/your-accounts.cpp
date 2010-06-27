@@ -175,7 +175,9 @@ void YourAccounts::createAccountWidget()
 
 	QGroupBox *selectNetworkGroupbox = new QGroupBox(tr("Choose a network"), CreateAddAccountContainer);
 	selectNetworkGroupbox->setFlat(true);
-
+#ifdef Q_WS_MAEMO_5
+	selectNetworkGroupbox->setTitle("");
+#endif
 	QFormLayout *selectNetworkLayout = new QFormLayout(selectNetworkGroupbox);
 
 	QLabel *imNetworkLabel = new QLabel(tr("IM Network") + ":", CreateAddAccountContainer);

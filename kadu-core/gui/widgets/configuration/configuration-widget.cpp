@@ -30,6 +30,9 @@
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QDialogButtonBox>
+#ifdef Q_WS_MAEMO_5
+#include <QtGui/QScrollArea>
+#endif
 
 #include "configuration/configuration-file.h"
 #include "gui/widgets/configuration/configuration-widget.h"
@@ -83,7 +86,18 @@ ConfigurationWidget::ConfigurationWidget(ConfigurationWindowDataManager *dataMan
 	left_layout->addWidget(sectionsListWidget);
 
 	center_layout->addWidget(left);
+
+#ifdef Q_WS_MAEMO_5
+	QScrollArea *scrollArea = new QScrollArea(this);
+	scrollArea->setFrameStyle(QFrame::NoFrame);
+	scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+	scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+	scrollArea->setWidget(container);
+	scrollArea->setWidgetResizable(true);
+	center_layout->addWidget(scrollArea, 100);
+#else
 	center_layout->addWidget(container);
+#endif
 }
 
 ConfigurationWidget::~ConfigurationWidget()

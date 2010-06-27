@@ -68,6 +68,7 @@ ModulesWindow::ModulesWindow(QWidget *parent)
 	centerLayout->setMargin(10);
 	centerLayout->setSpacing(10);
 
+#ifndef Q_WS_MAEMO_5
 	QLabel *l_info = new QLabel(center);
 	l_icon->setPixmap(IconsManager::instance()->pixmapByPath("kadu_icons/kadu-modmanager_big.png"));
 	l_info->setText(tr("This dialog box allows you to manage installed modules. Modules are responsible "
@@ -76,7 +77,8 @@ ModulesWindow::ModulesWindow(QWidget *parent)
 	l_info->setWordWrap(true);
 #ifndef	Q_OS_MAC
 	l_info->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
-#endif
+#endif /* Q_OS_MAC */
+#endif /* Q_WS_MAEMO_5 */
 	// end create main QLabel widgets (icon and app info)
 
 	// our QListView
@@ -92,6 +94,7 @@ ModulesWindow::ModulesWindow(QWidget *parent)
 	
 	// end our QListView
 
+#ifndef Q_WS_MAEMO_5
 	//our QVGroupBox
 	QGroupBox *vgb_info = new QGroupBox(center);
 	QVBoxLayout *infoLayout = new QVBoxLayout(vgb_info);
@@ -106,6 +109,7 @@ ModulesWindow::ModulesWindow(QWidget *parent)
 	l_moduleinfo->setWordWrap(true);
 
 	infoLayout->addWidget(l_moduleinfo);
+#endif
 
 	// buttons
 	QWidget *bottom = new QWidget(center);
@@ -125,10 +129,14 @@ ModulesWindow::ModulesWindow(QWidget *parent)
 #endif
 	// end buttons
 
+#ifndef Q_WS_MAEMO_5
 	centerLayout->addWidget(l_info);
+#endif
 	centerLayout->addWidget(lv_modules);
 	centerLayout->setStretchFactor(lv_modules, 1);
+#ifndef Q_WS_MAEMO_5
 	centerLayout->addWidget(vgb_info);
+#endif
 	centerLayout->addWidget(bottom);
 
 	QHBoxLayout *layout = new QHBoxLayout(this);
