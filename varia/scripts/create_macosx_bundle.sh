@@ -114,7 +114,8 @@ echo "[Paths]
 Plugins = plugins" > ${RSC_DIR}/qt.conf
 
 mkdir -p ${CNT_DIR}/plugins/imageformats
-mkdir -p ${CNT_DIR}/plugins/crypto/
+mkdir -p ${CNT_DIR}/plugins/sqldrivers
+mkdir -p ${CNT_DIR}/plugins/crypto
 
 FM_DIR=${CNT_DIR}/Frameworks
 mkdir ${FM_DIR}
@@ -215,6 +216,11 @@ if [ -f ${QTDIR}/plugins/imageformats/libqjpeg.dylib ]; then
 	cp -f  ${QTDIR}/plugins/imageformats/libqico.dylib ${CNT_DIR}/plugins/imageformats/libqico.dylib
 fi
 
+if [ -f ${QTDIR}/plugins/sqldrivers/libqsqlite.dylib ]; then
+	echo "log: copying Qt sql plugins"
+	cp -f  ${QTDIR}/plugins/sqldrivers/libqsqlite.dylib ${CNT_DIR}/plugins/sqldrivers/libqsqlite.dylib
+fi
+
 if [ -f ${SNDFILEPATH}/lib/libsndfile.1.dylib ]; then
 	echo "log: copying sndfile library"
 	cp ${SNDFILEPATH}/lib/libsndfile.1.dylib ${FM_DIR}
@@ -286,9 +292,12 @@ install_name_tool -change ${QTDIR}/lib/QtXml.framework/Versions/4/QtXml   @execu
 install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./libqtiff.dylib
 install_name_tool -change ${QTDIR}/lib/QtGui.framework/Versions/4/QtGui   @executable_path/../Frameworks/QtGui  ./libqtiff.dylib
 
+cd  ${CNT_DIR}/plugins/sqldrivers
+install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./libqsqlite.dylib
+install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtSql @executable_path/../Frameworks/QtSql ./libqsqlite.dylib
+
 cd ${MACOS_DIR}
 echo "log: changing library bindings"
-install_name_tool -change ${QTDIR}/lib/QtSql.framework/Versions/4/QtSql @executable_path/../Frameworks/QtSql ./kadu
 install_name_tool -change ${QTDIR}/lib/QtSql.framework/Versions/4/QtSql @executable_path/../Frameworks/QtSql ./kadu
 install_name_tool -change ${QTDIR}/lib/QtNetwork.framework/Versions/4/QtNetwork @executable_path/../Frameworks/QtNetwork ./kadu
 install_name_tool -change ${QTDIR}/lib/QtGui.framework/Versions/4/QtGui @executable_path/../Frameworks/QtGui ./kadu
