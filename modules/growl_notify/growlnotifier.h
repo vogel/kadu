@@ -68,11 +68,14 @@ public:
 		bool sticky = false, const QObject* receiver = 0, 
 		const char* clicked_slot = 0, const char* timeout_slot = 0,
 		void* context = 0);
+	void cleanupAfterGrowl();
 
 private:
 	struct Growl_Delegate delegate_;
 	
 	GrowlNotifierSignaler* signaler_;
 };
+
+bool grow_is_installed();
 
 #endif

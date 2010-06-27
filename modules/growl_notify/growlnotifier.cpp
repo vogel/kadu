@@ -34,16 +34,15 @@ extern "C" {
 #include <Growl/Growl.h>
 }
 
-#include <QStringList>
-#include <QPixmap>
-#include <QBuffer>
+#include <QtCore/QStringList>
+#include <QtCore/QBuffer>
+#include <QtCore/QDir>
+#include <QtGui/QPixmap>
 
 //#include <sys/types.h>
 //#include <unistd.h>
 
 #include "growlnotifier.h"
-
-//------------------------------------------------------------------------------ 
 
 /**
  * \brief Converts a QString to a CoreFoundation string, preserving Unicode.
@@ -51,7 +50,7 @@ extern "C" {
  * \param s the string to be converted.
  * \return a reference to a CoreFoundation string.
  */
-static CFStringRef qString2CFString(const QString& s)
+static CFStringRef QString2CFString(const QString& s)
 {
 	if (s.isNull())
 		return 0;
@@ -59,16 +58,15 @@ static CFStringRef qString2CFString(const QString& s)
 	ushort* buffer = new ushort[s.length()];
 	for (int i = 0; i < s.length(); ++i)
 		buffer[i] = s[i].unicode();
-	CFStringRef result = CFStringCreateWithBytes ( NULL, 
-		(UInt8*) buffer, 
-		s.length()*sizeof(ushort),
+
+	CFStringRef result = CFStringCreateWithBytes( NULL, 
+		(UInt8*) buffer, s.length() * sizeof(ushort),
 		kCFStringEncodingUnicode, false);
 
 	delete buffer;
 	return result;
 }
 
-//------------------------------------------------------------------------------ 
 
 /**
  * \brief Retrieves the values from the context.
@@ -90,7 +88,7 @@ void getContext( CFPropertyListRef context, GrowlNotifierSignaler** signaler, co
 		CFDataGetBytes(data, CFRangeMake(0,CFDataGetLength(data)), (UInt8*) signaler);
 	}
 
-	if (receiver){
+	if (receiver) {
 		data = (CFDataRef) CFArrayGetValueAtIndex((CFArrayRef) context, 1);
 		CFDataGetBytes(data, CFRangeMake(0,CFDataGetLength(data)), (UInt8*) receiver);
 	}
@@ -109,14 +107,8 @@ void getContext( CFPropertyListRef context, GrowlNotifierSignaler** signaler, co
 		data = (CFDataRef) CFArrayGetValueAtIndex((CFArrayRef) context, 4);
 		CFDataGetBytes(data, CFRangeMake(0,CFDataGetLength(data)), (UInt8*) qcontext);
 	}
-
-	//if (pid) {
-	//	data = (CFDataRef) CFArrayGetValueAtIndex((CFArrayRef) context, 5);
-	//	CFDataGetBytes(data, CFRangeMake(0,CFDataGetLength(data)), (UInt8*) pid);
-	//}
 }
 
-//------------------------------------------------------------------------------ 
 
 /**
  * Creates a context for a notification, which will be sent back by Growl
@@ -139,7 +131,6 @@ CFPropertyListRef createContext( GrowlNotifierSignaler* signaler, const QObject*
 	context[2] = CFDataCreate(kCFAllocatorDefault, (const UInt8*) &clicked_slot, sizeof(const char*));
 	context[3] = CFDataCreate(kCFAllocatorDefault, (const UInt8*) &timeout_slot, sizeof(const char*));
 	context[4] = CFDataCreate(kCFAllocatorDefault, (const UInt8*) &qcontext, sizeof(void*));
-	//context[5] = CFDataCreate(kCFAllocatorDefault, (const UInt8*) &pid, sizeof(pid_t));
 
 	CFArrayRef array = CFArrayCreate( kCFAllocatorDefault, 
                 (const void **)context, 5, &kCFTypeArrayCallBacks );
@@ -150,12 +141,10 @@ CFPropertyListRef createContext( GrowlNotifierSignaler* signaler, const QObject*
 	CFRelease(context[2]);
 	CFRelease(context[3]);
 	CFRelease(context[4]);
-	//CFRelease(context[5]);
 
 	return array;
 }
 
-//------------------------------------------------------------------------------ 
 
 /**
  * The callback function, used by Growl to notify that a notification was
@@ -168,18 +157,14 @@ void notification_clicked(CFPropertyListRef context)
 	const QObject* receiver;
 	const char* slot;
 	void* qcontext;
-	//pid_t pid;
 
 	getContext(context, &signaler, &receiver, &slot, 0, &qcontext/*, &pid*/);
-	
-	//if (pid == getpid()) {
-	QObject::connect(signaler,SIGNAL(notificationClicked(void*)),receiver,slot);
+
+	QObject::connect(signaler, SIGNAL(notificationClicked(void*)), receiver, slot);
 	signaler->emitNotificationClicked(qcontext);
-	QObject::disconnect(signaler,SIGNAL(notificationClicked(void*)),receiver,slot);
-	//}
+	QObject::disconnect(signaler, SIGNAL(notificationClicked(void*)), receiver, slot);
 }
 
-//------------------------------------------------------------------------------ 
 
 /**
  * The callback function, used by Growl to notify that a notification has
@@ -194,16 +179,22 @@ void notification_timeout(CFPropertyListRef context)
 	void* qcontext;
 
 	getContext(context, &signaler, &receiver, 0, &slot, &qcontext /*, &pid*/);
-	
 	if (slot != NULL)
-	{
-		QObject::connect(signaler,SIGNAL(notificationTimedOut(void*)),receiver,slot);
-		signaler->emitNotificationTimeout(qcontext);
-		QObject::disconnect(signaler,SIGNAL(notificationTimedOut(void*)),receiver,slot);
-	}
+		QObject::connect(signaler, SIGNAL(notificationTimedOut(void*)), receiver, slot);
+	signaler->emitNotificationTimeout(qcontext);
+	if (slot != NULL)
+		QObject::disconnect(signaler, SIGNAL(notificationTimedOut(void*)), receiver, slot);
 }
 
-//------------------------------------------------------------------------------ 
+
+/**
+ * Returns whether growl is installed or not.
+ * Used in growl_notify_init
+ */
+bool grow_is_installed()
+{
+	return Growl_IsInstalled();
+}
 
 /**
  * Constructs a GrowlNotifier.
@@ -229,7 +220,7 @@ GrowlNotifier::GrowlNotifier(
 	CFMutableArrayRef allNotifications = CFArrayCreateMutable(kCFAllocatorDefault, 0, &kCFTypeArrayCallBacks);
 	for (it = notifications.begin(); it != notifications.end(); ++it)
 	{
-		notification = qString2CFString(*it);
+		notification = QString2CFString(*it);
 		CFArrayAppendValue(allNotifications, notification);
 		CFRelease(notification);
 	}
@@ -238,36 +229,36 @@ GrowlNotifier::GrowlNotifier(
 	CFMutableArrayRef defaultNotifications = CFArrayCreateMutable(kCFAllocatorDefault, 0, &kCFTypeArrayCallBacks);
 	for (it = default_notifications.begin(); it != default_notifications.end(); ++it)
 	{
-		notification = qString2CFString(*it);
+		notification = QString2CFString(*it);
 		CFArrayAppendValue(defaultNotifications, notification);
 		CFRelease(notification);
 	}
 	
 	// Initialize delegate
 	InitGrowlDelegate(&delegate_);
-
-	if (!app.isEmpty())
-		delegate_.applicationName = qString2CFString(app);
+	delegate_.applicationName = QString2CFString(app);
 
 	CFTypeRef keys[] = { GROWL_NOTIFICATIONS_ALL, GROWL_NOTIFICATIONS_DEFAULT };
 	CFTypeRef values[] = { allNotifications, defaultNotifications };
+
 	delegate_.registrationDictionary = CFDictionaryCreate(
 		kCFAllocatorDefault, keys, values, 2, 
 		&kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
+
 	delegate_.growlNotificationWasClicked = &notification_clicked;
 	delegate_.growlNotificationTimedOut = &notification_timeout;
 
+	CFRelease(allNotifications);
+	CFRelease(defaultNotifications);
+
 	// Register with Growl
 	Growl_SetDelegate(&delegate_);
-
-	CFRelease(delegate_.registrationDictionary);
 }
 
 GrowlNotifier::~GrowlNotifier()
-{
+{	
 	delete signaler_;
 }
-	
 
 /**
  * \brief Sends a notification to Growl.
@@ -301,9 +292,9 @@ void GrowlNotifier::notify(const QString& name, const QString& title,
 	}
 
 	// Convert strings
-	CFStringRef cf_title = qString2CFString(title);
-	CFStringRef cf_description = qString2CFString(description);
-	CFStringRef cf_name = qString2CFString(name);
+	CFStringRef cf_title = QString2CFString(title);
+	CFStringRef cf_description = QString2CFString(description);
+	CFStringRef cf_name = QString2CFString(name);
 
 	// Do notification
 	CFPropertyListRef context = createContext(signaler_, receiver, clicked_slot, timeout_slot, qcontext/*, getpid()*/);
@@ -322,4 +313,35 @@ void GrowlNotifier::notify(const QString& name, const QString& title,
 		CFRelease(cf_name);
 }
 
-//----------------------------------------------------------------------------- 
+static void removeTemps(const QString &path)
+{
+	QDir d = QDir(path);
+	QStringList filter;
+	filter << "*.growlRegDict";
+	QStringList files = d.entryList(filter, QDir::Files, QDir::NoSort);
+	foreach (const QString &file, files)
+		d.remove(file);
+}
+
+static void checkDirectory(const QString &path)
+{
+	QDir d = QDir(path);
+	QStringList filter;
+	filter << "TemporaryItems";
+	QStringList subdirs = d.entryList(filter, QDir::Dirs, QDir::NoSort);
+	foreach (const QString &subdir, subdirs)
+		removeTemps(path + "/" + subdir);
+}
+
+void GrowlNotifier::cleanupAfterGrowl()
+{
+	/* As Growl is not doing this for us (as it should) we have to do it ourself
+	 * This is ugly but I see no other way to do that. Hope it will work for
+	 * everyone */
+	QDir d = QDir("/private/var/folders/VM");
+	QStringList filter;
+	filter << "VM*";
+	QStringList subdirs = d.entryList(filter, QDir::Dirs, QDir::NoSort);
+	foreach (const QString &subdir, subdirs)
+		checkDirectory(d.absolutePath() + "/" + subdir);
+}

@@ -68,6 +68,7 @@
 #include "modules.h"
 
 #ifdef Q_OS_MAC
+#include "gui/widgets/chat-widget-manager.h"
 #include <Carbon/Carbon.h>
 
 static OSStatus appleEventProcessor(const AppleEvent *ae,
@@ -150,6 +151,7 @@ static OSStatus appleEventProcessor(const AppleEvent *ae,
 	{
 		if (aeID == kAEReopenApplication)
 		{
+			ChatWidgetManager::instance()->openPendingMsgs(true);
 			Core::instance()->kaduWindow()->show();
 		}
 		return noErr;
