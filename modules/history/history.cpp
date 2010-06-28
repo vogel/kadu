@@ -329,7 +329,7 @@ void History::accountRegistered(Account account)
 	ChatService *service = account.protocolHandler()->chatService();
 	if (service)
 	{
-		connect(service, SIGNAL((const Message &)),
+		connect(service, SIGNAL(messageReceived(const Message &)),
 				this, SLOT(enqueueMessage(const Message &)));
 		connect(service, SIGNAL(messageSent(const Message &)),
 				this, SLOT(enqueueMessage(const Message &)));
