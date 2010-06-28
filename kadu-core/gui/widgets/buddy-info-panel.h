@@ -43,6 +43,7 @@ public:
 
 public slots:
 	void displayBuddy(Buddy buddy);
+	void update();
 	void styleFixup(QString &syntax);
 
 };

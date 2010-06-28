@@ -44,6 +44,7 @@ class KADUAPI ContactManager : public QObject, public Manager<Contact>
 	virtual ~ContactManager();
 
 private slots:
+	void contactDataUpdated();
 	void idChanged(const QString &oldId);
 
 	void aboutToBeAttached();
@@ -84,6 +85,8 @@ signals:
 	void contactReattached(Contact contact);
 
 	void contactIdChanged(Contact contact, const QString &oldId);
+
+	void contactUpdated(Contact &contact);
 
 };
 

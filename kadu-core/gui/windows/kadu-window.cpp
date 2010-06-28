@@ -40,6 +40,7 @@
 #include "chat/recent-chat-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"
+#include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
 #include "gui/hot-key.h"
@@ -130,6 +131,7 @@ void KaduWindow::createGui()
 	hboxLayout->setAlignment(GroupBar, Qt::AlignTop);
 
 	InfoPanel = new BuddyInfoPanel(split);
+	connect(ContactManager::instance(), SIGNAL(contactUpdated(Contact &)), InfoPanel, SLOT(update()));
 	connect(ContactsWidget->view(), SIGNAL(currentBuddyChanged(Buddy)), InfoPanel, SLOT(displayBuddy(Buddy)));
 
 	if (!config_file.readBoolEntry("Look", "ShowInfoPanel"))

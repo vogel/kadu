@@ -45,6 +45,11 @@ BuddyInfoPanel::~BuddyInfoPanel()
 
 void BuddyInfoPanel::configurationUpdated()
 {
+	update();
+}
+
+void BuddyInfoPanel::update()
+{
 	QFont font = config_file.readFontEntry("Look", "PanelFont");
 	QString fontFamily = font.family();
 	QString fontSize;

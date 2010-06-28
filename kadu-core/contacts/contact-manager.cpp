@@ -91,6 +91,7 @@ void ContactManager::reattached()
 
 void ContactManager::itemAboutToBeRegistered(Contact item)
 {
+	connect(item, SIGNAL(updated()), this, SLOT(contactDataUpdated()));
 	emit contactAboutToBeAdded(item);
 }
 
@@ -107,6 +108,7 @@ void ContactManager::itemRegistered(Contact item)
 
 void ContactManager::itemAboutToBeUnregisterd(Contact item)
 {
+	disconnect(item, SIGNAL(updated()), this, SLOT(contactDataUpdated()));
 	emit contactAboutToBeRemoved(item);
 	disconnect(item, SIGNAL(idChanged(const QString &)), this, SLOT(idChanged(const QString &)));
 }
@@ -178,4 +180,11 @@ QList<Contact> ContactManager::contacts(Account account)
 			contacts.append(contact);
 
 	return contacts;
+}
+
+void ContactManager::contactDataUpdated()
+{
+	Contact contact(sender());
+	if (!contact.isNull())
+		emit contactUpdated(contact);
 }

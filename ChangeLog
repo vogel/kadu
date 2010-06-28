@@ -9,6 +9,7 @@
 * macos: #1368 fixed: crash when opening configuration window (Vogel)
 * gadu: #1320 fixed: unable to clear "new account gg number" field (Vogel)
 * history: #1317 fixed: some offline messages would not be displayed in chat window, only in history (Vogel)
+* gui: #1365 fixed: contact changes not reflected in info view (Vogel)
 
 +++ version 0.6.6-beta2
 * jabber: added URL handler for jabber:// protocol (Juzef)
