@@ -49,9 +49,10 @@ bool measureTime = false;
 void saveWindowGeometry(const QWidget *w, const QString &section, const QString &name)
 {
 
-#ifdef Q_OS_MAC
+#if defined(Q_OS_MAC) || defined(Q_WS_MAEMO_5)
 	/* Dorr: on Mac OS X make sure the window will not be greater than desktop what
-	 * sometimes happends during widget resizing (because of bug in Qt?)
+	 * sometimes happends during widget resizing (because of bug in Qt?),
+	 * on Maemo prevent from widgets greater than screen.
 	 */
 	QRect screen = QApplication::desktop()->availableGeometry(w);
 	QRect geometry(w->geometry());
