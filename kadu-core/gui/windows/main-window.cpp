@@ -274,10 +274,12 @@ void MainWindow::refreshToolBars(const QString &prefix)
 
 void MainWindow::contextMenuEvent(QContextMenuEvent *event)
 {
-	QMenu *menu = new QMenu(this);
-	menu->addAction(tr("Create new toolbar"), this, SLOT(addTopToolbar()));
-
-	menu->exec(event->globalPos());
+	if (!ToolBar::isBlockToolbars())
+	{
+		QMenu *menu = new QMenu(this);
+		menu->addAction(tr("Create new toolbar"), this, SLOT(addTopToolbar()));
+		menu->exec(event->globalPos());
+	}
 }
 
 void MainWindow::addTopToolbar()

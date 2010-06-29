@@ -598,13 +598,22 @@ void ToolBar::deleteToolbar()
 	kdebugf2();
 }
 
+bool ToolBar::isBlockToolbars()
+{
+	QDomElement toolbarsConfig = xml_config_file->findElement(xml_config_file->rootElement(), "Toolbars");
+	if (toolbarsConfig.isNull())
+		toolbarsConfig = xml_config_file->createElement(xml_config_file->rootElement(), "Toolbars");
+
+	return toolbarsConfig.attribute("blocked") == "1";
+}
+
 void ToolBar::setBlockToolbars(bool checked)
 {
 	QDomElement toolbarsConfig = xml_config_file->findElement(xml_config_file->rootElement(), "Toolbars");
 	if (toolbarsConfig.isNull())
 		toolbarsConfig = xml_config_file->createElement(xml_config_file->rootElement(), "Toolbars");
 
-	toolbarsConfig.setAttribute("blocked", checked);
+	toolbarsConfig.setAttribute("blocked", checked ? "1" : "0");
 	ConfigurationAwareObject::notifyAll();
 }
 

@@ -133,6 +133,8 @@ protected:
 	virtual void configurationUpdated();
 
 public:
+	static bool isBlockToolbars();
+
 	/**
 		Konstruktor paska narz?dzi
 		\fn ToolBar(QWidget* parent, const char *name)

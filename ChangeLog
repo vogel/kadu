@@ -11,6 +11,7 @@
 * history: #1317 fixed: some offline messages would not be displayed in chat window, only in history (Vogel)
 * gui: #1365 fixed: contact changes not reflected in info view (Vogel)
 * gui: #1364 fixed: disappeaing link tool tips (Vogel)
+* gui: #1307 fixed: context menu with "Create new Toolbar" hidden when toolbars locked (Vogel)
 
 +++ version 0.6.6-beta2
 * jabber: added URL handler for jabber:// protocol (Juzef)
