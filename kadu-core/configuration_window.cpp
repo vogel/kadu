@@ -254,12 +254,7 @@ void ConfigSection::iconThemeChanged()
 ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &caption)
 	: QWidget(kadu, Qt::Window), Name(name), currentSection(0)
 {
-
-#ifdef Q_OS_WIN
-	/* Workaround for Windows7 minimalization bug */
-	setParent(NULL);
-#endif
-
+	setWindowParent(this);
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(caption);
 

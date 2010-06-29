@@ -61,6 +61,7 @@ QStringList toStringList(const QString &e1, const QString &e2=QString(), const Q
 
 void KADUAPI saveWindowGeometry(const QWidget *w, const QString &section, const QString &name);
 void KADUAPI loadWindowGeometry(QWidget *w, const QString &section, const QString &name, int defaultX, int defaultY, int defaultWidth, int defaultHeight);
+void setWindowParent(QWidget *w);
 
 QRect stringToRect(const QString &value, const QRect *def = NULL);
 QString rectToString(const QRect& rect);

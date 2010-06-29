@@ -17,7 +17,6 @@
 
 #include "about_dialog.h"
 #include "powerkadu.h"
-//#include "powerkadu_link.h"
 #include "config_file.h"
 #include "icons_manager.h"
 #include "misc.h"
@@ -28,6 +27,7 @@ AboutDialog::AboutDialog(const char *name, bool modal, Qt::WindowFlags f)
 	: QDialog(0, name, modal, Qt::WDestructiveClose)
 {
 	kdebugf();
+	setWindowParent(this);
 	QVBoxLayout *mainLayout = new QVBoxLayout(this, 10, -1, "about_dialog_main_layout");
 	QHBoxLayout *topLayout = new QHBoxLayout(mainLayout, -1, "about_dialog_top_layout");
 	// Icon

@@ -48,11 +48,7 @@ SearchDialog::SearchDialog(QWidget *parent, UinType whoisSearchUin)
 {
 	kdebugf();
 
-#ifdef Q_OS_WIN
-	/* Workaround for Windows7 minimalization bug */
-	setParent(NULL);
-#endif
-
+	setWindowParent(this);
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(tr("Search user in directory"));
 

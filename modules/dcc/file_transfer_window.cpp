@@ -30,6 +30,7 @@ FileTransferWidget::FileTransferWidget(QWidget *parent, FileTransfer *ft)
 
 	ft->addListener(this, true);
 
+	setWindowParent(this);
 	setBackgroundMode(Qt::PaletteBase, Qt::PaletteBase);
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
 

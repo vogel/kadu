@@ -17,6 +17,7 @@
 
 #include "debug.h"
 #include "gadu.h"
+#include "misc.h"
 #include "icons_manager.h"
 
 #include "personal_info.h"
@@ -28,11 +29,7 @@ PersonalInfoDialog::PersonalInfoDialog(QWidget *parent)
 {
 	kdebugf();
 
-#ifdef Q_OS_WIN
-	/* Workaround for Windows7 minimalization bug */
-	setParent(NULL);
-#endif
-
+	setWindowParent(this);
 	setWindowTitle(tr("Personal Information"));
 	setAttribute(Qt::WA_DeleteOnClose);
 

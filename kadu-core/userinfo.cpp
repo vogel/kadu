@@ -42,11 +42,7 @@ UserInfo::UserInfo(UserListElement user, QWidget *parent)
 {
 	kdebugf();
 
-#ifdef Q_OS_WIN
-	/* Workaround for Windows7 minimalization bug */
-	setParent(NULL);
-#endif
-
+	setWindowParent(this);
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowModality(Qt::WindowModal);
 

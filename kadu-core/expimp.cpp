@@ -33,11 +33,7 @@ UserlistImportExport::UserlistImportExport(QWidget *parent)
 {
 	kdebugf();
 
-#ifdef Q_OS_WIN
-	/* Workaround for Windows7 minimalization bug */
-	setParent(NULL);
-#endif
-
+	setWindowParent(this);
 	setWindowTitle(tr("Import / export userlist"));
 	setAttribute(Qt::WA_DeleteOnClose);
 
