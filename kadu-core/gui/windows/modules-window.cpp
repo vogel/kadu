@@ -52,6 +52,7 @@ ModulesWindow::ModulesWindow(QWidget *parent)
 	setWindowTitle(tr("Manage Modules"));
 	setAttribute(Qt::WA_DeleteOnClose);
 
+#ifndef Q_WS_MAEMO_5
 	// create main QLabel widgets (icon and app info)
 	QWidget *left = new QWidget(this);
 	QVBoxLayout *leftLayout = new QVBoxLayout(left);
@@ -59,9 +60,9 @@ ModulesWindow::ModulesWindow(QWidget *parent)
 	leftLayout->setSpacing(10);
 
 	QLabel *l_icon = new QLabel(left);
-
 	leftLayout->addWidget(l_icon);
 	leftLayout->addStretch();
+#endif
 
 	QWidget *center = new QWidget(this);
 	QVBoxLayout *centerLayout = new QVBoxLayout(center);
@@ -140,7 +141,9 @@ ModulesWindow::ModulesWindow(QWidget *parent)
 	centerLayout->addWidget(bottom);
 
 	QHBoxLayout *layout = new QHBoxLayout(this);
+#ifndef Q_WS_MAEMO_5
 	layout->addWidget(left);
+#endif
 	layout->addWidget(center);
 
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
@@ -302,6 +305,7 @@ void ModulesWindow::getInfo()
 		return;
 	}
 
+#ifndef Q_WS_MAEMO_5
 	l_moduleinfo->setText(
 		tr("<b>Module: </b>%1"
 			"<br/><b>Depends on: </b>%2"
@@ -317,6 +321,8 @@ void ModulesWindow::getInfo()
 			.arg(info.author)
 			.arg(info.version)
 			.arg(info.description));
+#endif
+
 	kdebugf2();
 }
 
