@@ -64,18 +64,12 @@ void KaduTextBrowser::setPage(QWebPage * page)
 	page->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
 
 	connect(page, SIGNAL(linkClicked(const QUrl &)), this, SLOT(hyperlinkClicked(const QUrl &)));
-	connect(page, SIGNAL(linkHovered(const QString&,  const QString&, const QString&)), this, SLOT(linkHighlighted(const QString &)));
 }
 
 void KaduTextBrowser::refreshLater()
 {
 	refreshTimer.setSingleShot(true);
 	refreshTimer.start(10);
-}
-
-void KaduTextBrowser::linkHighlighted(const QString & link)
-{
-	QToolTip::showText(QCursor::pos(), link);
 }
 
 void KaduTextBrowser::setSource(const QString &/*name*/)

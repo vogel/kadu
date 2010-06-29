@@ -35,7 +35,6 @@ private slots:
 		@param anchor Odno�nik do otwarcia.
 	**/
 	void hyperlinkClicked(const QUrl &anchor) const;
-	void linkHighlighted(const QString &);
 	void saveImage();
 
 protected:

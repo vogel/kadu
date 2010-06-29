@@ -10,6 +10,7 @@
 * gadu: #1320 fixed: unable to clear "new account gg number" field (Vogel)
 * history: #1317 fixed: some offline messages would not be displayed in chat window, only in history (Vogel)
 * gui: #1365 fixed: contact changes not reflected in info view (Vogel)
+* gui: #1364 fixed: disappeaing link tool tips (Vogel)
 
 +++ version 0.6.6-beta2
 * jabber: added URL handler for jabber:// protocol (Juzef)

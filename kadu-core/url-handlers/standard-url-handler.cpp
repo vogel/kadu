@@ -58,9 +58,9 @@ void StandardUrlHandler::convertUrlsToHtml(HtmlDocument &document)
 			aLink.prepend("http://");
 
 		if ((length - index > LinkForTreshold) && FoldLink)
-			link = "<a href=\"" + aLink + "\">" + text.mid(index, index + (LinkForTreshold / 2)) + "..." + text.mid(length - (LinkForTreshold / 2), LinkForTreshold / 2) + "</a>";
+			link = "<a href=\"" + aLink + "\" title=\"" + aLink + "\">" + text.mid(index, index + (LinkForTreshold / 2)) + "..." + text.mid(length - (LinkForTreshold / 2), LinkForTreshold / 2) + "</a>";
 		else
-			link = "<a href=\"" + aLink + "\">" + displayLink + "</a>";
+			link = "<a href=\"" + aLink + "\" title=\"" + aLink + "\">" + displayLink + "</a>";
 
 		document.splitElement(i, index, length);
 		document.setElementValue(i, link, true);
