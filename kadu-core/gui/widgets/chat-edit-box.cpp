@@ -53,7 +53,9 @@ ChatEditBox::ChatEditBox(Chat chat, QWidget *parent) :
 
 	InputBox = new CustomInput(this);
 	InputBox->setWordWrapMode(QTextOption::WordWrap);
-
+#ifdef Q_WS_MAEMO_5
+	InputBox->setMinimumHeight(64);
+#endif
 	setCentralWidget(InputBox);
 
 	bool old_top = loadToolBarsFromConfig("chatTopDockArea", Qt::TopToolBarArea, true);
