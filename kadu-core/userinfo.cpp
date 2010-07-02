@@ -35,7 +35,7 @@
 CreateNotifier UserInfo::createNotifier;
 
 UserInfo::UserInfo(UserListElement user, QWidget *parent)
-	: QWidget(parent, Qt::Dialog), User(user),
+	: QWidget(0, Qt::Dialog), User(user),
 	e_firstname(0), e_lastname(0), e_nickname(0), e_altnick(0), e_mobile(0), e_uin(0),
 	e_addr(0), e_ver(0), e_email(0), e_dnsname(0), c_blocking(0), c_offtouser(0),
 	c_notify(0), pb_addapply(0), tw_main(0), groups(), newGroup(0), groupsWidget(0), groupsLayout(0)

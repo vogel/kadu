@@ -116,6 +116,10 @@ class KADUAPI Kadu : public KaduMainWindow, ConfigurationAwareObject
 	void createDefaultConfiguration();
 	void createAllDefaultToolbars();
 
+#ifdef Q_OS_MAC
+	QMenuBar* menuBar() const;
+#endif
+
 private slots:
 	void inactiveUsersActionActivated(QAction *sender, bool toggled);
 	void descriptionUsersActionActivated(QAction *sender, bool toggled);

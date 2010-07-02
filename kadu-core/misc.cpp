@@ -101,15 +101,10 @@ void setWindowParent(QWidget *w)
 	/* Dorr:
 	 * - on Windows 7 if the parent is not null the window will not
 	 *   be minimized properly to tray,
-	 * - on Mac OS X parent must be kadu unless the kadu menu will
-	 *   disappear when the windows will be active.
 	 */
 #ifdef Q_OS_WIN32
 	if (QSysInfo::WindowsVersion == QSysInfo::WV_WINDOWS7)
 		w->setParent(NULL);
-#endif
-#ifdef Q_OS_MAC
-	w->setParent(kadu);
 #endif
 }
 

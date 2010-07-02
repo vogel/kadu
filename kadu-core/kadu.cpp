@@ -351,6 +351,7 @@ Kadu::Kadu(QWidget *parent)
 
 #ifdef Q_OS_MAC
 	setUnifiedTitleAndToolBarOnMac(true);
+	MenuBar = new QMenuBar(0);
 #endif
 
 	MainWidget = new QWidget;
@@ -2022,10 +2023,12 @@ void Kadu::infoPanelSyntaxFixup(QString &syntax)
 	syntax = QString("<html><head><style type='text/css'>%1</style></head><body>%2</body>").arg(infoPanelStyle, syntax);
 }
 
-// QMenuBar* Kadu::menuBar() const
-// {
-// 	return MenuBar;
-// }
+#ifdef Q_OS_MAC
+QMenuBar* Kadu::menuBar() const
+{
+	return MenuBar;
+}
+#endif
 
 #ifdef Q_WS_HILDON
 QMenu* Kadu::mainMenu() const
