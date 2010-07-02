@@ -21,7 +21,7 @@ INSTALLED_DIR=/usr/local/
 echo "Set paths in this file and remove this lines (including exit)"
 echo "Ustaw sciezki w tym pliku i usun te linie (lacznie z exit)"
 echo
-#exit
+exit
 
 if [ ! -f VERSION ]; then
 	echo "run this script from main Kadu directory"
