@@ -17,7 +17,9 @@ Je¶li jest w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * dodatkowe warto¶ci domy¶lne dla pola 'Wy¶wietl' w oknie Danych kontaktu (uzi18/neeo)
 * modu³ geoip_lookup dodany do autodownloadu (neeo)
 * zaktualizowana lista serwerów GG (dorr)
-* poprawiony crash w module weather (dorr)
+* poprawiony crash w module weather oraz uzupe³nione ikony (dorr)
+* poprawiony bug z nie przywracaniem poprzedniego statusu przez autoaway po zmianie na niedostêpny (dorr)
+* odpowiednie ustawianie rodzica okien programu dla Mac OS X i Windows 7 (dorr)
 
 +++ wersja 0.6.5.4 (08.02.2010)
 * zaktualizowane t³umaczenia (beevvy/neeo)
