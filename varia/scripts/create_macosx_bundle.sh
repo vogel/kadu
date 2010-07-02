@@ -141,6 +141,12 @@ if [ -f ${QTDIR}/lib/QtWebKit.framework/versions/4/QtWebKit ]; then
 	install_name_tool -id @executable_path/../Frameworks/QtWebKit ${FM_DIR}/QtWebKit
 fi
 
+if [ -f ${QTDIR}/lib/QtXmlPatterns.framework/versions/4/QtXmlPatterns ]; then
+	echo "log: copying QtXmlPatterns library"
+	cp ${QTDIR}/lib/QtXmlPatterns.framework/versions/4/QtXmlPatterns ${FM_DIR}
+	install_name_tool -id @executable_path/../Frameworks/QtXmlPatterns ${FM_DIR}/QtXmlPatterns
+fi
+
 if [ -f ${QTDIR}/lib/QtXml.framework/versions/4/QtXml ]; then
 	echo "log: copying QtXml library"
 	cp ${QTDIR}/lib/QtXml.framework/versions/4/QtXml ${FM_DIR}
@@ -220,12 +226,16 @@ install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @execu
 install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./QtWebKit
 install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./QtNetwork
 install_name_tool -change ${QTDIR}/lib/QtGui.framework/Versions/4/QtGui @executable_path/../Frameworks/QtGui ./QtWebKit
+install_name_tool -change ${QTDIR}/lib/QtXmlPatterns.framework/Versions/4/QtXmlPatterns @executable_path/../Frameworks/QtXmlPatterns ./QtWebKit
 install_name_tool -change ${QTDIR}/lib/QtNetwork.framework/Versions/4/QtNetwork @executable_path/../Frameworks/QtNetwork ./QtWebKit
 install_name_tool -change ${QTDIR}/lib/phonon.framework/Versions/4/phonon @executable_path/../Frameworks/phonon ./QtWebKit
 install_name_tool -change ${QTDIR}/lib/QtDBus.framework/Versions/4/QtDBus @executable_path/../Frameworks/QtDBus ./QtWebKit
 install_name_tool -change ${QTDIR}/lib/QtXml.framework/Versions/4/QtXml @executable_path/../Frameworks/QtXml ./QtWebKit
 install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./phonon
 install_name_tool -change ${QTDIR}/lib/QtGui.framework/Versions/4/QtGui @executable_path/../Frameworks/QtGui ./phonon
+install_name_tool -change ${QTDIR}/lib/QtNetwork.framework/Versions/4/QtNetwork @executable_path/../Frameworks/QtNetwork ./QtXmlPatterns
+install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./QtXmlPatterns
+
 install_name_tool -change ${OPENSSLPATH}/lib/libssl.${SSLVER}.dylib @executable_path/../Frameworks/libssl.${SSLVER}.dylib ./libgadu.3.dylib
 install_name_tool -change ${OPENSSLPATH}/lib/libcrypto.${SSLVER}.dylib @executable_path/../Frameworks/libcrypto.${SSLVER}.dylib ./libgadu.3.dylib
 
