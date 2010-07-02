@@ -132,7 +132,7 @@ void AutoAwayStatusChanger::setChangeDescriptionTo(ChangeDescriptionTo newChange
 }
 
 AutoAway::AutoAway()
-	: autoAwayStatusChanger(0), timer(0), updateDescripion(true)
+	: autoAwayStatusChanger(0), timer(0), updateDescripion(true), setToOffline(false)
 {
 	connect(gadu, SIGNAL(connected()), this, SLOT(on()));
 	connect(gadu, SIGNAL(disconnected()), this, SLOT(off()));
@@ -184,14 +184,17 @@ void AutoAway::on()
 
 void AutoAway::off()
 {
-	if (timer)
+	if (!setToOffline)
 	{
-		timer->stop();
-		delete timer;
-		timer = 0;
-	}
+		if (timer)
+		{
+			timer->stop();
+			delete timer;
+			timer = 0;
+		}
 
-	qApp->removeEventFilter(this);
+		qApp->removeEventFilter(this);
+	}
 }
 
 // jesli wciskamy klawisze lub poruszamy myszk± w obrêbie okna programu to zerujemy czas nieaktywno¶ci
@@ -230,13 +233,16 @@ void AutoAway::checkIdleTime()
 		refreshStatusTime = idleTime + refreshStatusInterval;
 	}
  	else if (updateDescripion)
-        {
+	{
 		autoAwayStatusChanger->setChangeDescriptionTo(changeTo, parseDescription(autoStatusText));
 		updateDescripion = false;
 	}
 
 	if (idleTime >= autoDisconnectTime && autoDisconnectEnabled)
+	{
+		setToOffline = true;
 		autoAwayStatusChanger->setChangeStatusTo(AutoAwayStatusChanger::ChangeStatusToOffline);
+	}
 	else if (idleTime >= autoInvisibleTime && autoInvisibleEnabled)
 		autoAwayStatusChanger->setChangeStatusTo(AutoAwayStatusChanger::ChangeStatusToInvisible);
 	else if (idleTime >= autoDNDTime && autoDNDEnabled)
@@ -247,6 +253,7 @@ void AutoAway::checkIdleTime()
 	{
 		autoAwayStatusChanger->setChangeStatusTo(AutoAwayStatusChanger::NoChangeStatus);
 		updateDescripion = true;
+		setToOffline = false;
 	}
 
 	if (idleTime < refreshStatusTime)
