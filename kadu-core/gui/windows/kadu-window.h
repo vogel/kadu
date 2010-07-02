@@ -66,7 +66,9 @@ private:
 	KaduWindowActions *Actions;
 
 	BuddyInfoPanel *InfoPanel;
+#ifdef Q_OS_MAC
 	QMenuBar *MenuBar;
+#endif
 	QMenu *KaduMenu;
 	QMenu *ContactsMenu;
 	QMenu *HelpMenu;
@@ -93,6 +95,10 @@ private:
 
 	void updateInformationPanel();
 	void updateInformationPanel(Buddy buddy);
+
+#ifdef Q_OS_MAC
+	QMenuBar* menuBar() const;
+#endif
 
 private slots:
 	void openChatWindow(Chat chat);

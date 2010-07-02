@@ -68,6 +68,7 @@ KaduWindow::KaduWindow(QWidget *parent) :
 {
 #ifdef Q_OS_MAC
 	setUnifiedTitleAndToolBarOnMac(true);
+	MenuBar = new QMenuBar(0);
 #endif
 
 	setAttribute(Qt::WA_DeleteOnClose, true);
@@ -233,6 +234,13 @@ void KaduWindow::createHelpMenu()
 
 	menuBar()->addMenu(HelpMenu);
 }
+
+#ifdef Q_OS_MAC
+QMenuBar* KaduWindow::menuBar() const
+{
+	return MenuBar;
+}
+#endif
 
 void KaduWindow::openChatWindow(Chat chat)
 {
