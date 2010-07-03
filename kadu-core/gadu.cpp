@@ -29,7 +29,9 @@
 #include "misc.h"
 
 #include "gadu.h"
+#ifndef Q_WS_WIN
 #include "gadu_resolver.h"
+#endif
 
 #include <time.h>
 
@@ -407,7 +409,10 @@ void GaduProtocol::initModule()
 		if (ip2.setAddress(server))
 			ConfigServers.append(ip2);
 
+#ifndef Q_WS_WIN
+	/* On Windows use the default windows resolver from libgadu */
 	gg_global_set_custom_resolver(gadu_resolver_start, gadu_resolver_cleanup);
+#endif
 
 	kdebugf2();
 }

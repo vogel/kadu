@@ -7,6 +7,9 @@
  *                                                                         *
  ***************************************************************************/
 
+#ifndef Q_WS_WIN
+/* Dorr: do not use this resolver on Windows platform */
+
 #include <QtCore/QTimer>
 #include <QtCore/QString>
 #include <QtNetwork/QHostAddress>
@@ -173,3 +176,4 @@ int gadu_resolver_start(int *fd, void **priv_data, const char *hostname)
 
 	return 0;
 }
+#endif
