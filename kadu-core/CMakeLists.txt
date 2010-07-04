@@ -322,6 +322,12 @@ if (UNIX AND NOT APPLE)
 		x11tools.cpp
 	)
 endif (UNIX AND NOT APPLE)
+if (WIN32)
+set (kadu_SRCS
+		${kadu_SRCS}
+		os/qtsingleapplication/qtlockedfile_win.cpp
+)
+endif (WIN32)
 
 set (kadu_MOC_SRCS
 	accounts/account-manager.h
@@ -598,8 +604,8 @@ if (WIN32)
 	target_link_libraries (kadu_core ${STATIC_MODULES} ${QT_LIBRARIES})
 	set_property(TARGET kadu_core PROPERTY LINK_INTERFACE_LIBRARIES "")
 
-	add_executable(kadu WIN32 main.cpp main_win32.cpp os/qtsingleapplication/qtlockedfile_win.cpp kadu.rc)
-	add_executable(kadu_c main.cpp main_win32.cpp os/qtsingleapplication/qtlockedfile_win.cpp kadu.rc)
+	add_executable(kadu WIN32 main.cpp main_win32.cpp kadu.rc)
+	add_executable(kadu_c main.cpp main_win32.cpp kadu.rc)
 
 	set_target_properties(kadu_c PROPERTIES COMPILE_FLAGS "-DKADU_CONSOLE" )
 
