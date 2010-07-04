@@ -22,12 +22,13 @@
 #define PROTOCOL_MENU_MANAGER_H
 
 #include <QtCore/QList>
+#include "exports.h"
 
 class Account;
 class ActionDescription;
 class Buddy;
 
-class ProtocolMenuManager
+class KADUAPI ProtocolMenuManager
 {
 	// TODO : remove or use it somewhere or extend to kadu menu
 	QList<ActionDescription *> ContactsListActions;

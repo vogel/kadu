@@ -28,7 +28,7 @@
 
 #include "exports.h"
 
-class AccountDetails : public Details<AccountShared>
+class KADUAPI AccountDetails : public Details<AccountShared>
 {
 
 public:

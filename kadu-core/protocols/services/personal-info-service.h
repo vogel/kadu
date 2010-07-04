@@ -23,8 +23,9 @@
 #include <QtCore/QObject>
 
 #include "buddies/buddy.h"
+#include "exports.h"
 
-class PersonalInfoService : public QObject
+class KADUAPI PersonalInfoService : public QObject
 {
 	Q_OBJECT
 

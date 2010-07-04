@@ -27,6 +27,7 @@
 #include "configuration/configuration-aware-object.h"
 #include "gui/windows/main-configuration-window.h"
 #include "os/generic/compositing-aware-object.h"
+#include "exports.h"
 
 class QCheckBox;
 class QComboBox;
@@ -45,7 +46,7 @@ struct StyleInfo
 	ChatStyleEngine *engine;
 };
 
-class ChatStylesManager : public QObject, ConfigurationAwareObject, CompositingAwareObject
+class KADUAPI ChatStylesManager : public QObject, ConfigurationAwareObject, CompositingAwareObject
 {
 	Q_OBJECT
 

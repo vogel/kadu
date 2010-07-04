@@ -22,6 +22,9 @@
 #include <QtNetwork/QHostAddress>
 #include <QtNetwork/QHostInfo>
 
+/* Does not work on Windows */
+#ifndef Q_OS_WIN
+
 #include <sys/wait.h>
 #include <netdb.h>
 #include <errno.h>
@@ -162,3 +165,5 @@ int gadu_resolver_start(int *fd, void **priv_data, const char *hostname)
 
 	return 0;
 }
+
+#endif /* Q_OS_WIN32 */

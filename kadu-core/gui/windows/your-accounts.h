@@ -108,7 +108,7 @@ protected:
 	virtual void accountUnregistered(Account account);
 
 public:
-	static YourAccounts * instance();
+	static KADUAPI YourAccounts * instance();
 
 	virtual ~YourAccounts();
 	virtual void show();

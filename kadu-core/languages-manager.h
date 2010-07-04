@@ -21,8 +21,9 @@
 #define LANGUAGES_MANAGER_H
 
 #include <QtCore/QStringList>
+#include "exports.h"
 
-class LanguagesManager
+class KADUAPI LanguagesManager
 {
 	LanguagesManager() {};
 

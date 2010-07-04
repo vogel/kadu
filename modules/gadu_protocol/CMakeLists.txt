@@ -123,11 +123,38 @@ set (CONFIGURATION_FILES
 	configuration/gadu_contact.ui
 )
 
+if (MINGW)
+
+set (CMAKE_CXX_FLAGS "-O3 -ffast-math -funroll-loops")
+	if (NOT MINGW_LIBGADU_DIR)
+		MESSAGE(SEND_ERROR " Pass path to libgadu -DMINGW_LIBGADU_DIR=path")
+		set (MINGW_LIBGADU_DIR "")
+	else (NOT MINGW_LIBGADU_DIR)
+		set (LIBGADU_FOUND true)
+    set (LIBGADU_INCLUDE_DIRS ${MINGW_LIBGADU_DIR})
+	  set (LIBGADU_LIBRARY_DIRS ${MINGW_LIBGADU_DIR})
+	  set (LIBGADU_LIBRARIES -lgadu -lws2_32)
+	endif (NOT MINGW_LIBGADU_DIR)
+
+	if (NOT MINGW_QCA_DIR)
+		MESSAGE(SEND_ERROR " Pass path to libsndfile -DMINGW_QCA_DIR=path")
+		set (MINGW_LIBSNDFILE_DIR "")
+	else (NOT MINGW_QCA_DIR)
+	  set (QCA2_INCLUDE_DIRS ${MINGW_QCA_DIR}/include/QtCrypto)
+	  set (QCA2_LIBRARY_DIRS ${MINGW_QCA_DIR}/bin)
+	  set (QCA2_LIBRARIES -lqca2)
+	endif (NOT MINGW_QCA_DIR)
+
+else (MINGW)
+
 pkg_search_module (QCA2 REQUIRED qca2)
+pkg_search_module (LIBGADU REQUIRED libgadu>=${LIBGADU_MIN_VERSION})
+
+endif (MINGW)
+
 link_directories (${QCA2_LIBRARY_DIRS})
 add_definitions (${QCA2_CFLAGS_OTHER})
 
-pkg_search_module (LIBGADU REQUIRED libgadu>=${LIBGADU_MIN_VERSION})
 include_directories (${LIBGADU_INCLUDE_DIRS} ${QCA2_INCLUDE_DIRS})
 link_directories (${LIBGADU_LIBRARY_DIRS})
 
