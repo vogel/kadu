@@ -24,6 +24,8 @@
 
 #include <QtCore/QObject>
 
+#include "idle_exports.h"
+
 class Idle : public QObject
 {
 	Q_OBJECT
@@ -36,6 +38,7 @@ public:
 	int secondsIdle();
 };
 
-extern Idle *idle;
+extern IDLEAPI Idle *idle;
 
 #endif // IDLE_H
+
