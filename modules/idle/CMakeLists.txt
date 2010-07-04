@@ -34,6 +34,10 @@ kadu_module (idle
 	MODULE_MOC_SOURCES ${MOC_SOURCES}
 )
 
+if (WIN32)
+set_target_properties(idle PROPERTIES COMPILE_FLAGS "-DIDLE_BUILD" )
+endif (WIN32)
+
 if (UNIX AND NOT APPLE)
 set_target_properties(idle PROPERTIES LINK_FLAGS "-lXss")
 endif (UNIX AND NOT APPLE)

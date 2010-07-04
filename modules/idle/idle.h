@@ -26,7 +26,9 @@
 
 #include "idle_exports.h"
 
-class Idle : public QObject
+#include "idle_exports.h"
+
+class IDLEAPI Idle : public QObject
 {
 	Q_OBJECT
 

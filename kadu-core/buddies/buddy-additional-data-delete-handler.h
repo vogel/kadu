@@ -21,10 +21,11 @@
 #define BUDDY_ADDITIONAL_DATA_DELETE_HANDLER_H
 
 #include <QtCore/QString>
+#include "exports.h"
 
 class Buddy;
 
-class BuddyAdditionalDataDeleteHandler
+class KADUAPI BuddyAdditionalDataDeleteHandler
 {
 
 public:

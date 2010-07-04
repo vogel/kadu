@@ -2,13 +2,13 @@
 #define KADU_CHAT_WINDOW_H
 
 #include "gui/widgets/chat-widget.h"
-
 #include "configuration/configuration-aware-object.h"
 #include "os/generic/compositing-aware-object.h"
+#include "exports.h"
 
 class QTimer;
 
-class ChatWindow : public QWidget, public ChatContainer, ConfigurationAwareObject, CompositingAwareObject
+class KADUAPI ChatWindow : public QWidget, public ChatContainer, ConfigurationAwareObject, CompositingAwareObject
 {
 	Q_OBJECT
 

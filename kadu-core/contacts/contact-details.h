@@ -27,8 +27,9 @@
 
 #include "contacts/contact-shared.h"
 #include "storage/details.h"
+#include "exports.h"
 
-class ContactDetails : public Details<ContactShared>
+class KADUAPI ContactDetails : public Details<ContactShared>
 {
 
 public:

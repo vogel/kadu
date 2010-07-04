@@ -23,10 +23,10 @@
 #define GROUP_H
 
 #include "buddies/group-shared.h"
-
 #include "storage/shared-base.h"
+#include "exports.h"
 
-class Group : public SharedBase<GroupShared>
+class KADUAPI Group : public SharedBase<GroupShared>
 {
 	KaduSharedBaseClass(Group)
 

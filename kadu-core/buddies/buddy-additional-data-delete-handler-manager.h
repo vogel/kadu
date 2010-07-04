@@ -21,10 +21,11 @@
 #define BUDDY_ADDITIONAL_DATA_DELETE_HANDLER_MANAGER_H
 
 #include <QtCore/QObject>
+#include "exports.h"
 
 class BuddyAdditionalDataDeleteHandler;
 
-class BuddyAdditionalDataDeleteHandlerManager : public QObject
+class KADUAPI BuddyAdditionalDataDeleteHandlerManager : public QObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(BuddyAdditionalDataDeleteHandlerManager)

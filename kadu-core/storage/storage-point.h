@@ -21,6 +21,7 @@
 #define STORAGE_POINT_H
 
 #include <QtXml/QDomElement>
+#include "exports.h"
 
 /**
  * @defgroup Storage Kadu Storage API
@@ -57,7 +58,7 @@ class XmlConfigFile;
  * @link<createStoragePoint> createStoragePoint @endlink method. You generally should not
  * create instances of StoragePoint outside these classes. Consider derivering from them instead.
  */
-class StoragePoint
+class KADUAPI StoragePoint
 {
 	XmlConfigFile *Storage;
 	QDomElement Point;

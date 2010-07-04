@@ -21,11 +21,12 @@
 #define PASSWORD_WINDOW_H
 
 #include <QtGui/QDialog>
+#include "exports.h"
 
 class QCheckBox;
 class QLineEdit;
 
-class PasswordWindow : public QDialog
+class KADUAPI PasswordWindow : public QDialog
 {
 	Q_OBJECT
 

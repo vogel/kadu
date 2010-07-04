@@ -24,8 +24,8 @@
 #define CHAT_DETAILS_AGGREGATE_H
 
 #include "contacts/contact.h"
-
 #include "chat/chat-details.h"
+#include "exports.h"
 
 /**
  * @addtogroup Chat
@@ -39,7 +39,7 @@
  * Class contains list of chat objects. It joins these chats into one chat.
  * This is usable to join all chats for contacts of one buddy into one chat.
  */
-class ChatDetailsAggregate : public ChatDetails
+class KADUAPI ChatDetailsAggregate : public ChatDetails
 {
 	Q_OBJECT
 

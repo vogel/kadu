@@ -21,6 +21,7 @@
 #define MODAL_CONFIGURATION_WIDGET_H
 
 #include <QtGui/QWidget>
+#include "exports.h"
 
 /**
  * @addtogroup Gui
@@ -67,7 +68,7 @@ enum ModalConfigurationWidgetState
  * Current state of widget can be determined by calling state method. If
  * data has been changed - widget should not be closed or hidden.
  */
-class ModalConfigurationWidget : public QWidget
+class KADUAPI ModalConfigurationWidget : public QWidget
 {
 	Q_OBJECT
 

@@ -23,12 +23,13 @@
 #include <QtGui/QComboBox>
 
 #include "identities/identity.h"
+#include "exports.h"
 
 class IdentityModel;
 class QSortFilterProxyModel;
 class ActionsProxyModel;
 
-class IdentitiesComboBox : public QComboBox
+class KADUAPI IdentitiesComboBox : public QComboBox
 {
 	Q_OBJECT
 
