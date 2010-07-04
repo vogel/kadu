@@ -22,16 +22,19 @@
 #include <QtNetwork/QHostAddress>
 #include <QtNetwork/QHostInfo>
 
-/* Does not work on Windows */
-#ifndef Q_OS_WIN
-
+#ifdef Q_OS_WIN
+#include <winsock2.h>
+#include <io.h>
+#else
 #include <sys/wait.h>
+#include <netinet/in.h>
 #include <netdb.h>
+#include <arpa/inet.h>
+#endif
 #include <errno.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <signal.h>
-#include <arpa/inet.h>
 #include <libgadu.h>
 
 #include "debug.h"
@@ -140,7 +143,11 @@ int gadu_resolver_start(int *fd, void **priv_data, const char *hostname)
 	int pipes[2];
 	struct gadu_resolver_data *data = 0;
 
+#ifdef Q_OS_WIN
+	if (_pipe (pipes, 256, 0) == -1)
+#else
 	if (pipe(pipes) == -1)
+#endif
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Unable to create pipes\n");
 		return -1;
@@ -165,5 +172,3 @@ int gadu_resolver_start(int *fd, void **priv_data, const char *hostname)
 
 	return 0;
 }
-
-#endif /* Q_OS_WIN32 */

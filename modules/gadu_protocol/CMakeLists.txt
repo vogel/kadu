@@ -172,3 +172,7 @@ kadu_module (gadu_protocol
 	MODULE_LIBRARIES ${LIBGADU_LIBRARIES} ${QCA2_LIBRARIES}
 	MODULE_DEPENDENCIES ${QCA2_LIBRARIES}
 )
+
+if (WIN32)
+set_target_properties(gadu_protocol PROPERTIES COMPILE_FLAGS "-DGADU_BUILD")
+endif (WIN32)
