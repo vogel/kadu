@@ -27,11 +27,12 @@
 #include "accounts/accounts-aware-object.h"
 #include "buddies/avatar.h"
 #include "storage/simple-manager.h"
+#include "exports.h"
 
 class AvatarService;
 class Contact;
 
-class AvatarManager : public QObject, public SimpleManager<Avatar>, AccountsAwareObject
+class KADUAPI AvatarManager : public QObject, public SimpleManager<Avatar>, AccountsAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(AvatarManager)
@@ -65,7 +66,7 @@ protected:
 	virtual void itemRemoved(Avatar item);
 
 public:
-	static AvatarManager * instance();
+	static KADUAPI AvatarManager * instance();
 
 	virtual QString storageNodeName() { return QLatin1String("Avatars"); }
 	virtual QString storageNodeItemName() { return QLatin1String("Avatar"); }

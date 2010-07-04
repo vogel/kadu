@@ -27,13 +27,13 @@
 
 class KADUAPI CompositingAwareObject : public AwareObject<CompositingAwareObject>
 {
-	static bool CompositingEnabled;
+	static KADUAPI bool CompositingEnabled;
 protected:
 	virtual void compositingEnabled() = 0;
 	virtual void compositingDisabled() = 0;
 
 public:
-	static void compositingStateChanged();
+	static KADUAPI void compositingStateChanged();
 
 	void triggerCompositingStateChanged();
 

@@ -26,8 +26,9 @@
 #define LONG_VALIDATOR_H
 
 #include <QtGui/QValidator>
+#include "exports.h"
 
-class LongValidator : public QValidator
+class KADUAPI LongValidator : public QValidator
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(LongValidator)

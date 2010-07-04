@@ -22,8 +22,9 @@
 #define NOTIFY_EVENT_H
 
 #include <QtCore/QString>
+#include "exports.h"
 
-class NotifyEvent
+class KADUAPI NotifyEvent
 {
 public:
 	/**

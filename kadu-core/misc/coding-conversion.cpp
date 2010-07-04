@@ -21,9 +21,10 @@
 #include <QtCore/QTextCodec>
 
 #include "coding-conversion.h"
+#include "exports.h"
 
-QTextCodec *codec_cp1250 = QTextCodec::codecForName("CP1250");
-QTextCodec *codec_latin2 = QTextCodec::codecForName("ISO8859-2");
+KADUAPI QTextCodec *codec_cp1250 = QTextCodec::codecForName("CP1250");
+KADUAPI QTextCodec *codec_latin2 = QTextCodec::codecForName("ISO8859-2");
 
 QString cp2unicode(const QByteArray &buf)
 {

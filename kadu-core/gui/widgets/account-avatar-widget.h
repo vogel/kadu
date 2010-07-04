@@ -23,13 +23,14 @@
 #include <QtGui/QWidget>
 
 #include "accounts/account.h"
+#include "exports.h"
 
 class QLabel;
 class QPushButton;
 
 class AvatarService;
 
-class AccountAvatarWidget : public QWidget, ProtocolsAwareObject
+class KADUAPI AccountAvatarWidget : public QWidget, ProtocolsAwareObject
 {
 	Q_OBJECT
 

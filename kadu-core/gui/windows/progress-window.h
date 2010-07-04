@@ -23,10 +23,11 @@
 #include <QtGui/QDialog>
 
 #include "gui/widgets/progress-icon.h"
+#include "exports.h"
 
 class ProgressLabel;
 
-class ProgressWindow : public QDialog
+class KADUAPI ProgressWindow : public QDialog
 {
 	Q_OBJECT
 

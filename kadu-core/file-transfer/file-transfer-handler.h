@@ -23,8 +23,9 @@
 #include <QtCore/QObject>
 
 #include "file-transfer/file-transfer.h"
+#include "exports.h"
 
-class FileTransferHandler : public QObject
+class KADUAPI FileTransferHandler : public QObject
 {
 	Q_OBJECT;
 

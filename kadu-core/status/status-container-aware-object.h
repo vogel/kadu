@@ -34,8 +34,8 @@ protected:
 	virtual void statusContainerUnregistered(StatusContainer *statusContainer) = 0;
 
 public:
-	static void notifyStatusContainerRegistered(StatusContainer *statusContainer);
-	static void notifyStatusContainerUnregistered(StatusContainer *statusContainer);
+	static KADUAPI void notifyStatusContainerRegistered(StatusContainer *statusContainer);
+	static KADUAPI void notifyStatusContainerUnregistered(StatusContainer *statusContainer);
 
 	StatusContainerAwareObject() {}
 	virtual ~StatusContainerAwareObject() {}

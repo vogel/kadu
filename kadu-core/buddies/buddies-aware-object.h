@@ -34,8 +34,8 @@ protected:
 	virtual void contactRemoved(Buddy buddy) = 0;
 
 public:
-	static void notifyBuddyAdded(Buddy buddy);
-	static void notifyBuddyRemoved(Buddy buddy);
+	static KADUAPI void notifyBuddyAdded(Buddy buddy);
+	static KADUAPI void notifyBuddyRemoved(Buddy buddy);
 
 	void triggerAllBuddiesAdded();
 	void triggerAllBuddiesRemoved();

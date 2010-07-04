@@ -23,10 +23,11 @@
 #include <QtCore/QObject>
 
 #include "buddies/buddy-list.h"
+#include "exports.h"
 
 class Protocol;
 
-class ContactListService : public QObject
+class KADUAPI ContactListService : public QObject
 {
 	Q_OBJECT
 

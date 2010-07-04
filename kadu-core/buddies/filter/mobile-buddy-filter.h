@@ -23,8 +23,9 @@
 #include <QtCore/QMetaType>
 
 #include "abstract-buddy-filter.h"
+#include "exports.h"
 
-class MobileBuddyFilter : public AbstractBuddyFilter
+class KADUAPI MobileBuddyFilter : public AbstractBuddyFilter
 {
 	Q_OBJECT
 

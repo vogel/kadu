@@ -32,7 +32,7 @@ class KADUAPI PredicateObject
 {
 
 protected:
-	static QList<T *> Objects;
+	static KADUAPI QList<T *> Objects;
 
 public:
 	PredicateObject() { Objects.append(reinterpret_cast<T *>(this)); }

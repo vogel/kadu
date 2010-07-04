@@ -23,12 +23,13 @@
 #include <QtCore/QMap>
 
 #include "html_document.h"
+#include "exports.h"
 
 class MailUrlHandler;
 class StandardUrlHandler;
 class UrlHandler;
 
-class UrlHandlerManager
+class KADUAPI UrlHandlerManager
 {
 	Q_DISABLE_COPY(UrlHandlerManager)
 
@@ -41,7 +42,7 @@ class UrlHandlerManager
 	StandardUrlHandler *standardUrlHandler;
 
 public:
-	static UrlHandlerManager * instance();
+	static KADUAPI UrlHandlerManager * instance();
 	~UrlHandlerManager();
 
 	void registerUrlHandler(const QString &name, UrlHandler *handler);

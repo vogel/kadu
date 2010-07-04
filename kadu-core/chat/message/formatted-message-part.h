@@ -48,7 +48,7 @@ class QTextDocument;
  * </ul>
  * @TODO: refactor
  */
-class FormattedMessagePart
+class KADUAPI FormattedMessagePart
 {
 	QString Content;
 	bool Bold;
@@ -61,8 +61,8 @@ class FormattedMessagePart
 	QString ImagePath;
 
 public:
-	static QString loadingImageHtml(const QString &imageId);
-	static QString replaceLoadingImages(QString message, const QString &imageId, const QString &imagePath);
+	static KADUAPI QString loadingImageHtml(const QString &imageId);
+	static KADUAPI QString replaceLoadingImages(QString message, const QString &imageId, const QString &imagePath);
 
 	/**
 	 * Creates text message part with formatting.

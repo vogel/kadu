@@ -23,6 +23,7 @@
 #include <QtGui/QComboBox>
 
 #include "buddies/buddy.h"
+#include "exports.h"
 
 class AbstractBuddyFilter;
 class ActionsProxyModel;
@@ -30,7 +31,7 @@ class BuddiesModel;
 class BuddiesModelProxy;
 class SelectBuddyPopup;
 
-class SelectBuddyCombobox : public QComboBox
+class KADUAPI SelectBuddyCombobox : public QComboBox
 {
 	Q_OBJECT
 

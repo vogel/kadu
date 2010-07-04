@@ -127,8 +127,8 @@ protected:
 	virtual void changePrivateMode();
 
 public:
-	static QString statusTypeFromGaduStatus(unsigned int index);
-	static unsigned int gaduStatusFromStatus(const Status &status);
+	static GADUAPI QString statusTypeFromGaduStatus(unsigned int index);
+	static GADUAPI unsigned int gaduStatusFromStatus(const Status &status);
 	Buddy searchResultToBuddy(gg_pubdir50_t res, int number);
 
 	GaduProtocol(Account account, ProtocolFactory *factory);

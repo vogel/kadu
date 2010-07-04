@@ -31,7 +31,7 @@ class KADUAPI ConfigurationAwareObject : public AwareObject<ConfigurationAwareOb
 {
 
 public:
-	static void notifyAll();
+	static KADUAPI void notifyAll();
 
 	ConfigurationAwareObject();
 	virtual ~ConfigurationAwareObject();

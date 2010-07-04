@@ -32,7 +32,7 @@ protected:
 	virtual bool removeContactFromStorage(Buddy buddy) = 0;
 
 public:
-	static bool inquireAll(Buddy buddy);
+	static KADUAPI bool inquireAll(Buddy buddy);
 
 };
 

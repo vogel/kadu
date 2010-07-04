@@ -32,7 +32,7 @@ class KADUAPI AwareObject
 {
 
 protected:
-	static QList<T *> Objects;
+	static KADUAPI QList<T *> Objects;
 
 public:
 	AwareObject() { Objects.append(reinterpret_cast<T *>(this)); }

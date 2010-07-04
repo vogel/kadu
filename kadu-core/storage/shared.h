@@ -26,6 +26,7 @@
 #include "status/status.h"
 
 #include "storage/uuid-storable-object.h"
+#include "exports.h"
 
 /**
  * @addtogroup Storage
@@ -134,7 +135,7 @@
  * @link unblockUpdatedSignal @endlink (multiple calls of blockUpdatedSignal requires as much calls
  * of unblockUpdatedSignal to call doEmitUpdated).
  */
-class Shared : public UuidStorableObject, public QSharedData
+class KADUAPI Shared : public UuidStorableObject, public QSharedData
 {
 	int BlockUpdatedSignalCount;
 	bool Updated;
