@@ -53,7 +53,9 @@ ChatEditBox::ChatEditBox(Chat chat, QWidget *parent) :
 
 	InputBox = new CustomInput(this);
 	InputBox->setWordWrapMode(QTextOption::WordWrap);
-
+#ifdef Q_WS_MAEMO_5
+	InputBox->setMinimumHeight(64);
+#endif
 	setCentralWidget(InputBox);
 
 	bool old_top = loadToolBarsFromConfig("chatTopDockArea", Qt::TopToolBarArea, true);
@@ -181,6 +183,7 @@ void ChatEditBox::createDefaultToolbars(QDomElement toolbarsConfig)
 	addToolButton(toolbarConfig, "autoSendAction");
 	addToolButton(toolbarConfig, "clearChatAction");
 	addToolButton(toolbarConfig, "insertEmoticonAction");
+#ifndef Q_WS_MAEMO_5
 	addToolButton(toolbarConfig, "whoisAction");
 	addToolButton(toolbarConfig, "insertImageAction");
 	addToolButton(toolbarConfig, "editUserAction");
@@ -188,16 +191,16 @@ void ChatEditBox::createDefaultToolbars(QDomElement toolbarsConfig)
 	dockAreaConfig = getDockAreaConfigElement(toolbarsConfig, "chat_bottomDockArea");
 	toolbarConfig = xml_config_file->createElement(dockAreaConfig, "ToolBar");
 	toolbarConfig.setAttribute("x_offset", 0);
-
+#endif
 	addToolButton(toolbarConfig, "boldAction");
 	addToolButton(toolbarConfig, "italicAction");
 	addToolButton(toolbarConfig, "underlineAction");
 	addToolButton(toolbarConfig, "colorAction");
-
+#ifndef Q_WS_MAEMO_5
 	toolbarConfig = xml_config_file->createElement(dockAreaConfig, "ToolBar");
 	toolbarConfig.setAttribute("x_offset", 200);
 	toolbarConfig.setAttribute("align", "right");
-
+#endif
 	addToolButton(toolbarConfig, "sendAction", Qt::ToolButtonTextBesideIcon);
 }
 

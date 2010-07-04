@@ -75,7 +75,7 @@ HistoryWindow::HistoryWindow(QWidget *parent) :
 	createGui();
 	connectGui();
 
-	loadWindowGeometry(this, "History", "HistoryWindowGeometry", 200, 200, 700, 500);
+	loadWindowGeometry(this, "History", "HistoryWindowGeometry", 200, 200, 750, 500);
 //TODO 0.6.6:
 	DetailsPopupMenu = new QMenu(this);
 //	DetailsPopupMenu->addAction(IconsManager::instance()->loadIcon("ClearHistory"), tr("&Remove entries"), this, SLOT(removeHistoryEntriesPerDate()));
@@ -132,7 +132,7 @@ void HistoryWindow::createGui()
 	ContentBrowser->setForcePruneDisabled(true);
 
 	QList<int> sizes;
-	sizes.append(100);
+	sizes.append(150);
 	sizes.append(300);
 	splitter->setSizes(sizes);
 
@@ -142,6 +142,7 @@ void HistoryWindow::createGui()
 void HistoryWindow::createChatTree(QWidget *parent)
 {
 	QWidget *chatsWidget = new QWidget(parent);
+	chatsWidget->setMinimumWidth(150);
 	QVBoxLayout *layout = new QVBoxLayout(chatsWidget);
 
 	QLineEdit *filterLineEdit = new QLineEdit(chatsWidget);
@@ -172,38 +173,35 @@ void HistoryWindow::createFilterBar(QWidget *parent)
 	layout->setSpacing(0);
 	layout->setMargin(0);
 
-	layout->setColumnStretch(1, 2);
-	layout->setColumnStretch(2, 1);
-
 	QLabel *filterLabel = new QLabel(tr("Filter") + ": ", parent);
 	layout->addWidget(filterLabel, 0, 0, 1, 1);
 	
 	DelayedLineEdit *searchLineEdit = new DelayedLineEdit(parent);
-	layout->addWidget(searchLineEdit, 0, 1, 1, 1);
+	layout->addWidget(searchLineEdit, 0, 1, 1, 4);
 
 	QCheckBox *filterByDate = new QCheckBox(tr("by date"), parent);
 	filterByDate->setChecked(false);
-	layout->addWidget(filterByDate, 0, 2, 1, 1);
+	layout->addWidget(filterByDate, 1, 0, 1, 1);
 	
 	FromDateLabel = new QLabel(tr("From") + ": ", parent);
 	FromDateLabel->setEnabled(false);
-	layout->addWidget(FromDateLabel, 0, 3, 1, 1);
+	layout->addWidget(FromDateLabel, 1, 1, 1, 1, Qt::AlignRight);
 	
 	FromDate = new QDateEdit(parent);
 	FromDate->setEnabled(false);
 	FromDate->setCalendarPopup(true);
 	FromDate->setDate(QDateTime::currentDateTime().addDays(-7).date());
-	layout->addWidget(FromDate, 0, 4, 1, 1);
+	layout->addWidget(FromDate, 1, 2, 1, 1);
 
 	ToDateLabel = new QLabel(tr("To") + ": ", parent);
 	ToDateLabel->setEnabled(false);
-	layout->addWidget(ToDateLabel, 0, 5, 1, 1);
+	layout->addWidget(ToDateLabel, 1, 3, 1, 1, Qt::AlignRight);
 	
 	ToDate = new QDateEdit(parent);
 	ToDate->setEnabled(false);
 	ToDate->setCalendarPopup(true);
 	ToDate->setDate(QDateTime::currentDateTime().date());
-	layout->addWidget(ToDate, 0, 6, 1, 1);
+	layout->addWidget(ToDate, 1, 4, 1, 1);
 	
 	connect(filterByDate, SIGNAL(stateChanged(int)),
 			this, SLOT(dateFilteringEnabled(int)));
