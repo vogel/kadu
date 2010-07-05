@@ -23,4 +23,9 @@ kadu_module (server_monitor
         MODULE_MOC_SOURCES ${MOC_SOURCES}
         MODULE_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
         MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
+        MODULE_DEPENDENCIES gadu_protocol sql_history
 )
+
+if (MINGW)
+        target_link_libraries (server_monitor -L${MINGW_LIBGADU_DIR} -L${MINGW_QCA_DIR}/bin)
+endif (MINGW)

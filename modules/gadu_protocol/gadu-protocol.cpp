@@ -70,7 +70,7 @@
 
 #define GG8_DESCRIPTION_MASK 0x00ff
 
-extern "C" int gadu_protocol_init(bool firstLoad)
+extern "C" KADU_EXPORT int gadu_protocol_init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
@@ -100,7 +100,7 @@ extern "C" int gadu_protocol_init(bool firstLoad)
 	return 0;
 }
 
-extern "C" void gadu_protocol_close()
+extern "C" KADU_EXPORT void gadu_protocol_close()
 {
 	UrlHandlerManager::instance()->unregisterUrlHandler("Gadu");
 	ProtocolsManager::instance()->unregisterProtocolFactory(GaduProtocolFactory::instance());

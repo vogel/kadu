@@ -68,7 +68,7 @@ namespace QtLP_Private {
 #endif
 }
 
-const char* QtLocalPeer::ack = "ack";
+KADUAPI const char* QtLocalPeer::ack = "ack";
 
 QtLocalPeer::QtLocalPeer(QObject* parent, const QString &appId)
     : QObject(parent), id(appId)

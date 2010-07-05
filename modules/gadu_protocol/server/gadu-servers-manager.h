@@ -25,9 +25,11 @@
 #include <QtCore/QList>
 #include <QtNetwork/QHostAddress>
 
+#include "../gadu-exports.h"
+
 #include "configuration/configuration-aware-object.h"
 
-class GaduServersManager : public ConfigurationAwareObject
+class GADUAPI GaduServersManager : public ConfigurationAwareObject
 {
 	Q_DISABLE_COPY(GaduServersManager);
 
@@ -51,7 +53,7 @@ protected:
 	virtual void configurationUpdated();
 
 public:
-	static GaduServersManager * instance();
+	static GADUAPI GaduServersManager * instance();
 
 	const QList<QHostAddress>& getServersList();
 	QPair<QHostAddress, int> getServer();

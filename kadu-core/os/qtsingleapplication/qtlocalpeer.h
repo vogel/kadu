@@ -48,12 +48,13 @@
 #include <QtNetwork/QLocalServer>
 #include <QtNetwork/QLocalSocket>
 #include <QtCore/QDir>
+#include "exports.h"
 
 namespace QtLP_Private {
 #include "qtlockedfile.h"
 }
 
-class QtLocalPeer : public QObject
+class KADUAPI QtLocalPeer : public QObject
 {
     Q_OBJECT
 
@@ -77,5 +78,5 @@ protected:
     QtLP_Private::QtLockedFile lockFile;
 
 private:
-    static const char* ack;
+    static KADUAPI const char* ack;
 };

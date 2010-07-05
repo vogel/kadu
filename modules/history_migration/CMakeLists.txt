@@ -24,3 +24,7 @@ kadu_module (history_migration
 	MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	MODULE_DEPENDENCIES gadu_protocol sql_history
 )
+
+if (MINGW)
+	target_link_libraries (history_migration -L${MINGW_LIBGADU_DIR} -L${MINGW_QCA_DIR}/bin)
+endif (MINGW)

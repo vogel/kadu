@@ -604,8 +604,16 @@ if (WIN32)
 	target_link_libraries (kadu_core ${STATIC_MODULES} ${QT_LIBRARIES})
 	set_property(TARGET kadu_core PROPERTY LINK_INTERFACE_LIBRARIES "")
 
+if (MINGW)
+  exec_program (windres ${CMAKE_CURRENT_SOURCE_DIR}
+		ARGS "kadu_mingw.rc kadu_rc.o"
+		OUTPUT_VARIABLE NULL_VAR)
+  add_executable(kadu WIN32 main.cpp main_win32.cpp kadu_rc.o)
+	add_executable(kadu_c main.cpp main_win32.cpp)
+else (MINGW)
 	add_executable(kadu WIN32 main.cpp main_win32.cpp kadu.rc)
 	add_executable(kadu_c main.cpp main_win32.cpp kadu.rc)
+endif (MINGW)
 
 	set_target_properties(kadu_c PROPERTIES COMPILE_FLAGS "-DKADU_CONSOLE" )
 

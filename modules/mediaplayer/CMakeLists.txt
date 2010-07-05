@@ -50,3 +50,7 @@ kadu_module (mediaplayer
 
 install (FILES ${DATA_FILES}
 	DESTINATION "share/kadu/modules/data/mediaplayer")
+
+if (WIN32)
+set_target_properties(mediaplayer PROPERTIES COMPILE_FLAGS "-DMEDIAPLAYER_BUILD")
+endif (WIN32)
