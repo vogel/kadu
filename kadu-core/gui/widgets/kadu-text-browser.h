@@ -2,6 +2,7 @@
 #define KADU_TEXT_BROWSER_H
 
 #include <QtCore/QTimer>
+#include <QtGui/QClipboard>
 #include <QtGui/QTextBrowser>
 #include <QtWebKit/QWebView>
 
@@ -19,7 +20,9 @@ class KADUAPI KaduTextBrowser : public QWebView //, private QToolTip
 
 	QPoint contextMenuPos;
 	QTimer refreshTimer; /*!< Timer od�wie�ania widgetu. */
-	
+
+	void convertClipboardHtmlImages(QClipboard::Mode mode);
+
 private slots:
 
 	/**
@@ -36,6 +39,7 @@ private slots:
 	**/
 	void hyperlinkClicked(const QUrl &anchor) const;
 	void saveImage();
+	void textCopied();
 
 protected:
 	virtual void contextMenuEvent(QContextMenuEvent * event);

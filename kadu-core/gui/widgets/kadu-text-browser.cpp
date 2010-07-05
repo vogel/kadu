@@ -42,6 +42,104 @@
 
 #include "kadu-text-browser.h"
 
+// taken from Psi+'s webkit patch, SVN rev. 2638
+static QString img2title(const QString &in)
+{
+	QString ret = in;
+	ret.replace(QRegExp("<img[^>]+title\\s*=\\s*'([^']+)'[^>]*>"), "\\1");
+	ret.replace(QRegExp("<img[^>]+title\\s*=\\s*\"([^\"]+)\"[^>]*>"), "\\1");
+	return ret;
+}
+
+// taken from Psi, Git e95eb3dc81b092d1c1177b1b330e3f3a72e59b9d
+static QString rich2plain(const QString &in)
+{
+	QString out;
+
+	for (int i = 0; i < in.length(); ++i)
+	{
+		// tag?
+		if (in[i] == '<')
+		{
+			// find end of tag
+			++i;
+			int n = in.indexOf('>', i);
+			if (n == -1)
+				break;
+			QString str = in.mid(i, (n-i));
+			i = n;
+
+			QString tagName;
+			n = str.indexOf(' ');
+			if (n != -1)
+				tagName = str.mid(0, n);
+			else
+				tagName = str;
+
+			if (tagName == "br")
+				out += '\n';
+
+			// handle output of Qt::convertFromPlainText() correctly
+			if ((tagName == "p" || tagName == "/p") && out.length() > 0 && !out.endsWith("\n"))
+				out += '\n';
+		}
+		// entity?
+		else if (in[i] == '&')
+		{
+			// find a semicolon
+			++i;
+			int n = in.indexOf(';', i);
+			if (n == -1)
+				break;
+			QString type = in.mid(i, (n-i));
+			i = n; // should be n+1, but we'll let the loop increment do it
+
+			if (type == "amp")
+				out += '&';
+			else if (type == "lt")
+				out += '<';
+			else if (type == "gt")
+				out += '>';
+			else if (type == "quot")
+				out += '\"';
+			else if (type == "apos")
+				out += '\'';
+		}
+		else if (in[i].isSpace())
+		{
+			if (in[i] == QChar::Nbsp)
+			{
+				out += ' ';
+			}
+			else if (in[i] != '\n')
+			{
+				if (i == 0 || out.length() == 0)
+				{
+					out += ' ';
+				}
+				else
+				{
+					QChar last = out.at(out.length()-1);
+					bool ok = true;
+					if (last.isSpace() && last != '\n')
+						ok = false;
+					if (ok)
+						out += ' ';
+				}
+			}
+		}
+		else
+		{
+			out += in[i];
+		}
+	}
+
+	if (out.endsWith("\n"))
+		out.remove(-1, 1);
+
+	return out;
+}
+
 KaduTextBrowser::KaduTextBrowser(QWidget *parent)
 	: QWebView(parent), refreshTimer()
 {
@@ -63,6 +161,7 @@ void KaduTextBrowser::setPage(QWebPage * page)
 	page->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
 
 	connect(page, SIGNAL(linkClicked(const QUrl &)), this, SLOT(hyperlinkClicked(const QUrl &)));
+	connect(page->action(QWebPage::Copy), SIGNAL(triggered()), this, SLOT(textCopied()));
 	connect(page->action(QWebPage::DownloadImageToDisk), SIGNAL(triggered()), this, SLOT(saveImage()));
 }
 
@@ -124,6 +223,10 @@ void KaduTextBrowser::mouseReleaseEvent(QMouseEvent *e)
 	kdebugf();
 	emit mouseReleased(e);
 	QWebView::mouseReleaseEvent(e);
+#ifdef Q_WS_X11
+	if (!page()->selectedText().isEmpty())
+		convertClipboardHtmlImages(QClipboard::Selection);
+#endif
 }
 
 void KaduTextBrowser::wheelEvent(QWheelEvent *e)
@@ -188,4 +291,20 @@ void KaduTextBrowser::saveImage()
 		config_file.writeEntry("Chat", "LastImagePath", fd.directory().absolutePath());
 		break;
 	}
+}
+
+// taken from Psi+'s webkit patch, SVN rev. 2638
+void KaduTextBrowser::convertClipboardHtmlImages(QClipboard::Mode mode)
+{
+	QClipboard *cb = QApplication::clipboard();
+	QString html = img2title(cb->mimeData(mode)->html());
+	QMimeData *data = new QMimeData;
+	data->setHtml(html);
+	data->setText(rich2plain(html));
+	cb->setMimeData(data, mode);
+}
+
+void KaduTextBrowser::textCopied()
+{
+	convertClipboardHtmlImages(QClipboard::Clipboard);
 }
