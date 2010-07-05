@@ -52,7 +52,6 @@ KaduTextBrowser::KaduTextBrowser(QWidget *parent)
 
 	setPage(page());
 
-	connect(pageAction(QWebPage::DownloadImageToDisk), SIGNAL(triggered()), this, SLOT(saveImage()));
 	connect(&refreshTimer, SIGNAL(timeout()), this, SLOT(reload()));
 
 	kdebugf2();
@@ -64,6 +63,7 @@ void KaduTextBrowser::setPage(QWebPage * page)
 	page->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
 
 	connect(page, SIGNAL(linkClicked(const QUrl &)), this, SLOT(hyperlinkClicked(const QUrl &)));
+	connect(page->action(QWebPage::DownloadImageToDisk), SIGNAL(triggered()), this, SLOT(saveImage()));
 }
 
 void KaduTextBrowser::refreshLater()
