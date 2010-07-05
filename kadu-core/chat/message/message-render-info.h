@@ -84,6 +84,6 @@ public:
 
 };
 
-QString formatMessage(const QString &text, const QString &backgroundColor);
+QString formatMessage(const QString &text);
 
 #endif // MESSAGE_RENDER_INFO

@@ -98,7 +98,7 @@ QStringList AdiumChatStyleEngine::styleVariants(QString styleName)
 		styleBaseHref = dataPath("kadu") + "/syntax/chat/" + styleName + "/Contents/Resources/Variants/";
 	dir.setPath(styleBaseHref);
 	dir.setNameFilters(QStringList("*.css"));
-	return dir.entryList(); 
+	return dir.entryList();
 }
 
 void AdiumChatStyleEngine::appendMessages(HtmlMessagesRenderer *renderer, QList<MessageRenderInfo *> messages)
@@ -255,8 +255,8 @@ bool AdiumChatStyleEngine::clearDirectory(const QString &directory)
 		{
 			if (!clearDirectory(QString(directory + "/" + fileName)) || !dir.rmdir(fileName))
 				return false;
-				
-		}	
+
+		}
 	}
 	return dir.entryList(QDir::AllEntries | QDir::NoDotAndDotDot | QDir::Hidden).isEmpty();
 }
@@ -334,7 +334,7 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, const QString &styleHre
 	result.replace(QString("%sourceName%"), chat.chatAccount().accountIdentity().name());
 	// Replace %destinationName%
 	result.replace(QString("%destinationName%"), chat.name());
-	// For %timeOpened%, display the date and time. TODO: get real time 
+	// For %timeOpened%, display the date and time. TODO: get real time
 	result.replace(QString("%timeOpened%"), printDateTime(QDateTime::currentDateTime()));
 
 	//TODO 0.6.6: get real time!!!
@@ -463,7 +463,7 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, const QString &styleHre
 	}
 
 	// Replace message TODO: do sth with formatMessage
-	QString messageText = QString("<span>") + formatMessage(message->htmlMessageContent(), message->backgroundColor()) + QString("</span>");
+	QString messageText = QString("<span>") + formatMessage(message->htmlMessageContent()) + QString("</span>");
 	result.replace(QString("%message%"), messageText);
 
 	return result;

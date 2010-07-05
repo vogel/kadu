@@ -29,12 +29,12 @@
 
 #include "message-render-info.h"
 
-QString formatMessage(const QString &text, const QString &backgroundColor)
+QString formatMessage(const QString& text)
 {
 	HtmlDocument htmlDocument;
 	htmlDocument.parseHtml(text);
 	UrlHandlerManager::instance()->convertAllUrls(htmlDocument);
-	EmoticonsManager::instance()->expandEmoticons(htmlDocument, backgroundColor, (EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle"));
+	EmoticonsManager::instance()->expandEmoticons(htmlDocument, (EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle"));
 // 	GaduImagesManager::setBackgroundsForAnimatedImages(htmlDocument, backgroundColor);
 
 	return htmlDocument.generateHtml();
@@ -44,7 +44,7 @@ static QString getMessage(const QObject * const object)
 {
 	const MessageRenderInfo * const messageRenderInfo = dynamic_cast<const MessageRenderInfo * const>(object);
 	if (messageRenderInfo)
-		return formatMessage(messageRenderInfo->htmlMessageContent(), messageRenderInfo->backgroundColor());
+		return formatMessage(messageRenderInfo->htmlMessageContent());
 	else
 		return "";
 }

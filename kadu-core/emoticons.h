@@ -104,11 +104,10 @@ public:
 	/**
 		Funkcja wstawia w text zamiast tag�w emotikonek odpowiednie emotikonki
 		\param text dokument w kt�rym maj� by� zamienione tagi
-		\param bgcolor kolor t�a emotikonki
 		\param style styl emotikonki jaki ma by� wstawiony - domy�lnie jest do
 		 aktualny zestaw
 	**/
-	void expandEmoticons(HtmlDocument &text, const QColor &bgcolor, EmoticonsStyle style);
+	void expandEmoticons(HtmlDocument &text, EmoticonsStyle style);
 
 	/**
 		Funkcja zwraca ilo�� emotikonek w zestawie
@@ -173,7 +172,7 @@ public:
 		\param anim_path �cie�ka do animowanej emotikonki
 	**/
 	EmoticonSelectorButton(const QString &emoticon_string, const QString &static_path, const QString &anim_path, QWidget *parent);
-	
+
 signals:
 	/**
 		Sygna� emitowany po naci�ni�ciu przycisku z emotikonk�

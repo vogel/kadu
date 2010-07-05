@@ -243,7 +243,7 @@ bool EmoticonsManager::loadGGEmoticonTheme()
 	return something_loaded;
 }
 
-void EmoticonsManager::expandEmoticons(HtmlDocument &doc, const QColor &bgcolor, EmoticonsStyle style)
+void EmoticonsManager::expandEmoticons(HtmlDocument &doc, EmoticonsStyle style)
 {
 	kdebugf();
 
@@ -251,7 +251,7 @@ void EmoticonsManager::expandEmoticons(HtmlDocument &doc, const QColor &bgcolor,
 		return;
 
 	static bool emotsFound = false;
-	const static QString emotTemplate("<img emoticon=\"1\" title=\"%1\" src=\"file:///%2\" bgcolor=\"%3\"/>");
+	const static QString emotTemplate("<img emoticon=\"1\" title=\"%1\" src=\"file:///%2\"/>");
 
 	if (!walker)
 	{
@@ -302,7 +302,7 @@ void EmoticonsManager::expandEmoticons(HtmlDocument &doc, const QColor &bgcolor,
 					// if so, then replace that previous occurrence
 					// with html tag
 					QString new_text;
-					new_text = narg(emotTemplate, Aliases[lastEmot].doubleEscapedAlias, animated ? Aliases[lastEmot].anim : Aliases[lastEmot].stat, bgcolor.name());
+					new_text = narg(emotTemplate, Aliases[lastEmot].doubleEscapedAlias, animated ? Aliases[lastEmot].anim : Aliases[lastEmot].stat);
 
 					doc.splitElement(e_i, lastBegin, Aliases[lastEmot].alias.length());
 					doc.setElementValue(e_i, new_text, true);
@@ -323,7 +323,7 @@ void EmoticonsManager::expandEmoticons(HtmlDocument &doc, const QColor &bgcolor,
 		if (lastEmot >= 0)
 		{
 			QString new_text;
-			new_text = narg(emotTemplate, Aliases[lastEmot].doubleEscapedAlias, animated ? Aliases[lastEmot].anim : Aliases[lastEmot].stat, bgcolor.name());
+			new_text = narg(emotTemplate, Aliases[lastEmot].doubleEscapedAlias, animated ? Aliases[lastEmot].anim : Aliases[lastEmot].stat);
 
 			doc.splitElement(e_i, lastBegin, Aliases[lastEmot].alias.length());
 			doc.setElementValue(e_i, new_text, true);

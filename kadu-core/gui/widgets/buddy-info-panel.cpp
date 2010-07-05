@@ -118,7 +118,6 @@ void BuddyInfoPanel::displayBuddy(Buddy buddy)
 	if (EmoticonsStyleNone != (EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") &&
 			config_file.readBoolEntry("General", "ShowEmotPanel"))
 		EmoticonsManager::instance()->expandEmoticons(doc,
-				config_file.readColorEntry("Look", "InfoPanelBgColor"),
 				(EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle"));
 
 	setHtml(Template.arg(doc.generateHtml()));
