@@ -250,7 +250,7 @@ void EmoticonsManager::expandEmoticons(HtmlDocument &doc, EmoticonsStyle style)
 		return;
 
 	static bool emotsFound = false;
-	const static QString emotTemplate("<img emoticon=\"1\" title=\"%1\" src=\"file:///%2\"/>");
+	const static QString emotTemplate("<img emoticon=\"1\" alt=\"%1\" title=\"%1\" src=\"file:///%2\" />");
 
 	if (!walker)
 	{
