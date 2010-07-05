@@ -28,6 +28,8 @@ xcopy HISTORY   %DESTINATION%\ /R /Y >> install.log
 xcopy README    %DESTINATION%\ /R /Y >> install.log
 xcopy THANKS    %DESTINATION%\ /R /Y >> install.log
 
+xcopy  kadu-core\chat\style-engines\chat-scripts.js %DESTINATION%\scripts\ /C /H /R /Y  >> install.log
+
 xcopy varia\configuration\*.ui        %DESTINATION%\configuration\ /C /H /R /Y  >> install.log
 xcopy varia\syntax\chat\*.syntax      %DESTINATION%\syntax\chat\ /C /H /R /Y  >> install.log
 xcopy varia\syntax\infopanel\*.syntax %DESTINATION%\syntax\infopanel\ /C /H /R /Y  >> install.log
@@ -47,6 +49,9 @@ for /D %%F in (*) do (
 		xcopy %%F\*.desc %DESTINATION%\modules\ /C /H /R /Y  >> install.log
 		IF EXIST %%F\configuration\*.ui (
 		  xcopy %%F\configuration\*.ui %DESTINATION%\modules\configuration\ /C /H /R /Y  >> install.log
+		)
+		IF EXIST %%F\data\configuration\*.ui (
+		  xcopy %%F\data\configuration\*.ui %DESTINATION%\modules\configuration\ /C /H /R /Y  >> install.log
 		)
 		IF EXIST %%F\*.qm (
 		  xcopy %%F\*.qm   %DESTINATION%\modules\translations\ /C /H /R /Y  >> install.log
