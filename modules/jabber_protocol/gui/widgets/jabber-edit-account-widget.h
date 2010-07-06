@@ -83,7 +83,6 @@ class JabberEditAccountWidget : public AccountEditWidget
 	void createGui();
 	void createGeneralTab(QTabWidget *);
 	void createPersonalDataTab(QTabWidget *);
-	void createBuddiesTab(QTabWidget *);
 	void createConnectionTab(QTabWidget *);
 	void createOptionsTab(QTabWidget *);
 	void createGeneralGroupBox(QVBoxLayout *layout);

@@ -75,7 +75,6 @@ void JabberEditAccountWidget::createGui()
 
 	createGeneralTab(tabWidget);
 	createPersonalDataTab(tabWidget);
-	createBuddiesTab(tabWidget);
 	createConnectionTab(tabWidget);
 	createOptionsTab(tabWidget);
 	
@@ -151,12 +150,6 @@ void JabberEditAccountWidget::createPersonalDataTab(QTabWidget *tabWidget)
 {
 	JabberPersonalInfoWidget *gpiw = new JabberPersonalInfoWidget(account(), tabWidget);
 	tabWidget->addTab(gpiw, tr("Personal Information"));
-}
-
-void JabberEditAccountWidget::createBuddiesTab(QTabWidget *tabWidget)
-{
-	AccountBuddyListWidget *widget = new AccountBuddyListWidget(account(), this);
-	tabWidget->addTab(widget, tr("Buddies"));
 }
 
 void JabberEditAccountWidget::createConnectionTab(QTabWidget *tabWidget)
