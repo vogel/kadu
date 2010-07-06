@@ -26,6 +26,7 @@
 #include <QtCore/QStringList>
 
 #include "storage/storable-object.h"
+#include "../exports.h"
 
 /**
  * @addtogroup Storage
@@ -40,7 +41,7 @@
  * This class is QStringList extended to have the possibility of loading and storing
  * data from/to XML configuration file.
  */
-class StorableStringList : public StorableObject
+class KADUAPI StorableStringList : public StorableObject
 {
 
 protected:
