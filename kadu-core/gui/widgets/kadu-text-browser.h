@@ -41,6 +41,9 @@ protected:
 	virtual void contextMenuEvent(QContextMenuEvent * event);
 	virtual void mouseReleaseEvent(QMouseEvent *e);
 	virtual void wheelEvent(QWheelEvent *e);
+#ifdef Q_WS_MAEMO_5
+	bool eventFilter(QObject *, QEvent *e);
+#endif
 
 public:
 	KaduTextBrowser(QWidget *parent = 0);

@@ -63,14 +63,19 @@ BuddiesListView::BuddiesListView(MainWindow *mainWindow, QWidget *parent) :
 {
 	setAlternatingRowColors(true);
 	setAnimated(BackgroundImageMode == BackgroundNone);
+#ifndef Q_WS_MAEMO_5
+	/* Disable as we use kinetic scrolling by default */
 	setDragEnabled(true);
+#endif
 	setExpandsOnDoubleClick(false);
 	setHeaderHidden(true);
 	setItemsExpandable(true);
 	setMouseTracking(true);
 	setRootIsDecorated(true);
 	setSelectionMode(QAbstractItemView::ExtendedSelection);
+#ifndef Q_WS_MAEMO_5
 	setUniformRowHeights(false);
+#endif
 	setWordWrap(true);
 
 	Delegate = new BuddiesListViewDelegate(this);
