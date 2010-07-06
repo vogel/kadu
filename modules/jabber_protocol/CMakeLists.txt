@@ -42,13 +42,41 @@ MACRO(KADU_JABBER_AUTOMOC)
   ENDFOREACH (_current_FILE)
 ENDMACRO(KADU_JABBER_AUTOMOC)
 
+if (MINGW)
+
+	if (NOT MINGW_LIBGADU_DIR)
+		MESSAGE(SEND_ERROR " Pass path to libgadu -DMINGW_LIBGADU_DIR=path")
+	else (NOT MINGW_LIBGADU_DIR)
+		set (LIBGADU_INCLUDE_DIRS ${MINGW_LIBGADU_DIR})
+		set (LIBGADU_LIBRARY_DIRS ${MINGW_LIBGADU_DIR})
+		set (LIBGADU_LIBRARIES -lgadu -lws2_32)
+	endif (NOT MINGW_LIBGADU_DIR)
+	if (NOT MINGW_QCA_DIR)
+		MESSAGE(SEND_ERROR " Pass path to libsndfile -DMINGW_QCA_DIR=path")
+	else (NOT MINGW_QCA_DIR)
+		set (QCA2_INCLUDE_DIRS ${MINGW_QCA_DIR}/include/QtCrypto)
+		set (QCA2_LIBRARY_DIRS ${MINGW_QCA_DIR}/bin)
+		set (QCA2_LIBRARIES -lqca2)
+	endif (NOT MINGW_QCA_DIR)
+	if (NOT MINGW_ZLIB_DIR)
+		MESSAGE(SEND_ERROR " Pass path to libgadu -DMINGW_ZLIB_DIR=path")
+	else (NOT MINGW_ZLIB_DIR)
+		set (ZLIB_INCLUDE_DIRS ${MINGW_ZLIB_DIR})
+		set (ZLIB_LIBRARY_DIRS ${MINGW_ZLIB_DIR})
+		set (ZLIB_LIBRARIES -lz)
+	endif (NOT MINGW_ZLIB_DIR)
+
+else (MINGW)
+
 pkg_search_module (QCA2 REQUIRED qca2 )
 pkg_search_module (IDN REQUIRED libidn )
 
 include (FindZLIB)
-if(NOT ZLIB_FOUND)
+if (NOT ZLIB_FOUND)
     pkg_search_module (ZLIB REQUIRED zlib)
 endif(NOT ZLIB_FOUND)
+
+endif (MINGW)
 
 set(SOURCES_IRIS
 	libiris/src/xmpp/base/randomnumbergenerator.cpp
