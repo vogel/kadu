@@ -3,7 +3,6 @@
 
 #include <QtCore/QTimer>
 #include <QtGui/QClipboard>
-#include <QtGui/QTextBrowser>
 #include <QtWebKit/QWebView>
 
 #include "exports.h"
