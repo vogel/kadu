@@ -22,7 +22,7 @@
 
 #include "storage/storable-string-list.h"
 
-class KADUAPI TrustedCertificatesManager : public QObject, public StorableStringList
+class TrustedCertificatesManager : public QObject, public StorableStringList
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(TrustedCertificatesManager)

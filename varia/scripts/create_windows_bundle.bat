@@ -7,9 +7,10 @@ set LIBGADU_DIR="c:\Qt\libgadu-win32\"
 set LIBSNDFILE_DIR="C:\Qt\libsndfile\"
 set OPENSSL_DIR="C:\Qt\mingw32-openssl-0.9.8j\"
 set ZLIB_DIR="C:\Qt\zlib\"
+set IDN_DIR="C:\Qt\libidn\"
 set QCA_DIR="C:\Qt\qca-2.0.1-mingw\bin\"
-REM set QCA_OSSL_DIR="%QT_DIR%..\plugins\crypto\"
-set QCA_OSSL_DIR="c:\Qt\qca-ossl-2.0.0-beta3\lib\"
+set QCA_OSSL_DIR="%QT_DIR%..\plugins\crypto\"
+REM set QCA_OSSL_DIR="c:\Qt\qca-ossl-2.0.0-beta3\lib\"
 
 ECHO Set proper paths and uncomment this line
 REM EXIT
@@ -99,10 +100,13 @@ ECHO Copying libsndfile
 xcopy %LIBSNDFILE_DIR%libsndfile-1.dll %DESTINATION%\ /C /H /R /Y  >> install.log
 
 ECHO Copying zlib
-xcopy %ZLIB_DIR%zlib1.dll              %DESTINATION%\ /C /H /R /Y  >> install.log
+xcopy %ZLIB_DIR%zlib1.dll %DESTINATION%\ /C /H /R /Y  >> install.log
 
-ECHO Stripping
-cd %DESTINATION%
+ECHO Copying libidn
+xcopy %IDN_DIR%libidn.dll %DESTINATION%\ /C /H /R /Y  >> install.log
+
+rem ECHO Stripping
+rem cd %DESTINATION%
 rem for /R %%F in (*.dll) do (
 rem   strip -x "%%F" -o "%%F.stripped"
 rem   MOVE /Y "%%F.stripped" "%%F"
@@ -116,15 +120,14 @@ ECHO Copying libcrypto
 xcopy %OPENSSL_DIR%bin\libcrypto-8.dll %DESTINATION%\ /C /H /R /Y  >> install.log
 
 IF EXIST %QCA_DIR%qca2.dll (
-ECHO Copying QCA plugin
+ECHO Copying QCA
 xcopy %QCA_DIR%qca2.dll %DESTINATION%\ /C /H /R /Y  >> install.log
 )
 IF EXIST %QCA_OSSL_DIR%qca-ossl2.dll (
-ECHO Copying QCA-OpenSSL Plugin
+ECHO Copying QCA Plugins
 xcopy %QCA_OSSL_DIR%qca-ossl2.dll %DESTINATION%\plugins\crypto\ /C /H /R /Y  >> install.log
+xcopy %QCA_OSSL_DIR%qca-gnupg2.dll %DESTINATION%\plugins\crypto\ /C /H /R /Y  >> install.log
 xcopy %OPENSSL_DIR%bin\libssl-8.dll %DESTINATION%\ /C /H /R /Y  >> install.log
 )
-
-del install.log
 
 ECHO Done

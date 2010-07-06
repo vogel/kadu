@@ -26,12 +26,13 @@
 #include <QtGui/QDialog>
 
 #include "contacts/contact.h"
+#include "../../exports.h"
 
 class QLineEdit;
 
 class GroupsComboBox;
 
-class SubscriptionWindow : public QDialog
+class KADUAPI SubscriptionWindow : public QDialog
 {
 	Q_OBJECT
 
@@ -44,7 +45,7 @@ private slots:
 	void rejected();
 
 public:
-	static void getSubscription(Contact contact, QObject* receiver, const char* slot);
+	static KADUAPI void getSubscription(Contact contact, QObject* receiver, const char* slot);
 	
 	explicit SubscriptionWindow(Contact contact, QWidget* parent = 0);
 	virtual ~SubscriptionWindow();

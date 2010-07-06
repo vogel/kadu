@@ -26,7 +26,7 @@
 
 TrustedCertificatesManager * TrustedCertificatesManager::Instance = 0;
 
-KADUAPI TrustedCertificatesManager * TrustedCertificatesManager::instance()
+TrustedCertificatesManager * TrustedCertificatesManager::instance()
 {
 	if (0 == Instance)
 		Instance = new TrustedCertificatesManager();
