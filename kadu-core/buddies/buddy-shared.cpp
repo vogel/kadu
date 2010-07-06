@@ -139,8 +139,6 @@ void BuddyShared::load()
 			CustomData[name] = customDataElement.text();
 	}
 
-	GroupManager::instance()->ensureLoaded();
-
 	Groups.clear();
 	QDomElement groupsNode = configurationStorage->getNode(parent, "ContactGroups", XmlConfigFile::ModeFind);
 	if (!groupsNode.isNull())
@@ -159,7 +157,6 @@ void BuddyShared::load()
 		}
 	}
 
-	AvatarManager::instance()->ensureLoaded(); // byUuid does not do it
 	BuddyAvatar = AvatarManager::instance()->byUuid(loadValue<QString>("Avatar"));
 	Display = loadValue<QString>("Display");
 	FirstName = loadValue<QString>("FirstName");
