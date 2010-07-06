@@ -3,6 +3,7 @@
 
 #include <QtCore/QTimer>
 #include <QtGui/QClipboard>
+#include <QtGui/QTextDocument>
 #include <QtWebKit/QWebView>
 
 #include "exports.h"
@@ -18,6 +19,7 @@ class KADUAPI KaduTextBrowser : public QWebView //, private QToolTip
 	Q_OBJECT
 
 	QPoint contextMenuPos;
+	QTextDocument htmlToPlainTextConverter;
 	QTimer refreshTimer; /*!< Timer od�wie�ania widgetu. */
 
 	void convertClipboardHtmlImages(QClipboard::Mode mode);
