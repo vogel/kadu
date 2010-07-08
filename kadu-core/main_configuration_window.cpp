@@ -346,12 +346,12 @@ QString MainConfigurationWindow::getBrowserExecutable(int browserIndex)
 {
 	QStringList searchPath = QStringList::split(":", QString(getenv("PATH")));
 	QStringList executableName;
-// 	QStringList options;
+//	QStringList options;
 
 	QString parameters;
 	QString prefix;
 
-// 	browserOptionComboBox->setEnabled(index >= 2 && index <= 4);
+//	browserOptionComboBox->setEnabled(index >= 2 && index <= 4);
 
 	switch (browserIndex)
 	{
@@ -498,6 +498,11 @@ QString MainConfigurationWindow::getBrowserExecutable(int browserIndex)
 			searchPath.append(programsPath + "\\Internet Explorer");
 			executableName.append("iexplore.exe");
 #endif
+			break;
+		}
+		case 12: // Google Chrome
+		{
+			executableName.append("google-chrome");
 			break;
 		}
 	}
@@ -657,6 +662,7 @@ QString MainConfigurationWindow::browserIndexToString(int browserIndex)
 		case 9:  return "Safari";
 		case 10: return "Camino";
 		case 11: return "Internet Explorer";
+		case 12: return "Google Chrome";
 		default: return QString::null;
 	}
 }
