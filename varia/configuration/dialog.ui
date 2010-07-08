@@ -35,6 +35,7 @@
 					<item value="Safari" caption="Safari" />
 					<item value="Camino" caption="Camino" />
 					<item value="Internet Explorer" caption="Internet Explorer" />
+					<item value="Google Chrome" caption="Google Chrome" />
 				</combo-box>
 				<line-edit caption="Custom browser" config-section="Chat" config-item="WebBrowser" id="browserPath"
 					   tool-tip="Write specific path to your browser" />
