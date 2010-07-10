@@ -505,6 +505,11 @@ QString MainConfigurationWindow::getBrowserExecutable(int browserIndex)
 			executableName.append("google-chrome");
 			break;
 		}
+		case 13: // Chromium
+		{
+			executableName.append("chromium");
+			break;
+		}
 	}
 
 	if (browserIndex != 0)
@@ -663,6 +668,7 @@ QString MainConfigurationWindow::browserIndexToString(int browserIndex)
 		case 10: return "Camino";
 		case 11: return "Internet Explorer";
 		case 12: return "Google Chrome";
+		case 13: return "Chromium";
 		default: return QString::null;
 	}
 }
