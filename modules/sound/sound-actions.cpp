@@ -69,7 +69,7 @@ SoundActions::SoundActions()
 	);
 	connect(MuteActionDescription, SIGNAL(actionCreated(Action *)), this, SLOT(setMuteActionState()));
 
-	Core::instance()->kaduWindow()->insertMenuActionDescription(MuteActionDescription, KaduWindow::MenuKadu, 7);
+	Core::instance()->kaduWindow()->insertMenuActionDescription(MuteActionDescription, KaduWindow::MenuKadu, 8);
 
 	setMuteActionState();
 
