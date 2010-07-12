@@ -138,7 +138,7 @@ FilterWidget::FilterWidget(QWidget *parent) : QWidget(parent)
 #elif !defined(Q_WS_MAEMO_5)
 
 	QHBoxLayout *layout = new QHBoxLayout(this);
-	layout->setMargin(0);
+	layout->setMargin(3);
 
 	NameFilterEdit = new FilterLineEdit(this);
 	NameFilterEdit->installEventFilter(this);
