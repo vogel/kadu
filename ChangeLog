@@ -1,3 +1,6 @@
++++ version 0.6.6-beta4
+* gui: #1119 fixed: copying emoticons works again (beevvy)
+
 +++ version 0.6.6-beta3
 * jabber: proper URL handler for xmpp:// (Juzef)
 * gadu: #1356 fixed: setting gadu servers manually works now (Vogel)

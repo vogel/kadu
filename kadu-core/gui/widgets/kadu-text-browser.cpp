@@ -52,7 +52,6 @@ KaduTextBrowser::KaduTextBrowser(QWidget *parent)
 
 	setPage(page());
 
-	connect(pageAction(QWebPage::DownloadImageToDisk), SIGNAL(triggered()), this, SLOT(saveImage()));
 	connect(&refreshTimer, SIGNAL(timeout()), this, SLOT(reload()));
 
 #ifdef Q_WS_MAEMO_5
@@ -69,6 +68,8 @@ void KaduTextBrowser::setPage(QWebPage * page)
 	page->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
 
 	connect(page, SIGNAL(linkClicked(const QUrl &)), this, SLOT(hyperlinkClicked(const QUrl &)));
+	connect(page->action(QWebPage::Copy), SIGNAL(triggered()), this, SLOT(textCopied()));
+	connect(page->action(QWebPage::DownloadImageToDisk), SIGNAL(triggered()), this, SLOT(saveImage()));
 }
 
 void KaduTextBrowser::refreshLater()
@@ -129,6 +130,10 @@ void KaduTextBrowser::mouseReleaseEvent(QMouseEvent *e)
 	kdebugf();
 	emit mouseReleased(e);
 	QWebView::mouseReleaseEvent(e);
+#ifdef Q_WS_X11
+	if (!page()->selectedText().isEmpty())
+		convertClipboardHtmlImages(QClipboard::Selection);
+#endif
 }
 
 void KaduTextBrowser::wheelEvent(QWheelEvent *e)
@@ -219,3 +224,22 @@ bool KaduTextBrowser::eventFilter(QObject *, QEvent *e)
 	return false;
 }
 #endif
+
+// taken from Psi+'s webkit patch, SVN rev. 2638, and then slighly modified
+void KaduTextBrowser::convertClipboardHtmlImages(QClipboard::Mode mode)
+{
+	QClipboard *cb = QApplication::clipboard();
+	QString html = cb->mimeData(mode)->html();
+	html.replace(QRegExp("<img[^>]+title\\s*=\\s*'([^']+)'[^>]*>"), "\\1");
+	html.replace(QRegExp("<img[^>]+title\\s*=\\s*\"([^\"]+)\"[^>]*>"), "\\1");
+	htmlToPlainTextConverter.setHtml(html);
+	QMimeData *data = new QMimeData;
+	data->setHtml(html);
+	data->setText(htmlToPlainTextConverter.toPlainText());
+	cb->setMimeData(data, mode);
+}
+
+void KaduTextBrowser::textCopied()
+{
+	convertClipboardHtmlImages(QClipboard::Clipboard);
+}
