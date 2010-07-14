@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="1.1" language="pl">
-<defaultcodec></defaultcodec>
+<!DOCTYPE TS>
+<TS version="2.0" language="pl">
 <context>
     <name>@default</name>
     <message>
@@ -8,16 +8,8 @@
         <translation>Rozmowa</translation>
     </message>
     <message>
-        <source>Autoresponder</source>
-        <translation>Autoodpowiedź</translation>
-    </message>
-    <message>
         <source>Options</source>
         <translation>Opcje</translation>
-    </message>
-    <message>
-        <source>Autoanswer text</source>
-        <translation>Tekst autoodpowiedzi</translation>
     </message>
     <message>
         <source>Only for the first time</source>
@@ -26,10 +18,6 @@
     <message>
         <source>Respond to conferences</source>
         <translation>Odpowiadaj w konferencjach</translation>
-    </message>
-    <message>
-        <source>Choose status</source>
-        <translation>Wybierz statusy</translation>
     </message>
     <message>
         <source>Status invisible</source>
@@ -42,6 +30,18 @@
     <message>
         <source>Status available</source>
         <translation>Dostępny</translation>
+    </message>
+    <message>
+        <source>Auto Responder</source>
+        <translation>Autoodpowiedź</translation>
+    </message>
+    <message>
+        <source>Auto answer text</source>
+        <translation>Treść autoodpowiedzi</translation>
+    </message>
+    <message>
+        <source>Choose Status</source>
+        <translation>Wybierz status</translation>
     </message>
 </context>
 <context>

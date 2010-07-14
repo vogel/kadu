@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="1.1" language="pl">
-<defaultcodec></defaultcodec>
+<!DOCTYPE TS>
+<TS version="2.0" language="pl">
 <context>
     <name>@default</name>
     <message>
@@ -15,20 +15,24 @@
         <source>Number of quoted characters</source>
         <translation>Liczba cytowanych znaków</translation>
     </message>
+    <message>
+        <source>Notifications</source>
+        <translation>Powiadomienia</translation>
+    </message>
+    <message>
+        <source>KNotify</source>
+        <translation>KNotify</translation>
+    </message>
+    <message>
+        <source>General</source>
+        <translation>Ogólne</translation>
+    </message>
 </context>
 <context>
     <name>KdeNotify</name>
     <message>
-        <source>View</source>
-        <translation>Pokaż</translation>
-    </message>
-    <message>
-        <source>Chat</source>
-        <translation>Rozmowa</translation>
-    </message>
-    <message>
-        <source>Ignore</source>
-        <translation>Ignoruj</translation>
+        <source>KDE4 notifications</source>
+        <translation>Powiadomienia KDE4</translation>
     </message>
 </context>
 </TS>

@@ -1,5 +1,6 @@
-<!DOCTYPE TS><TS>
-<defaultcodec></defaultcodec>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="pl_PL">
 <context>
     <name>@default</name>
     <message>
@@ -9,18 +10,6 @@
     <message>
         <source>Look</source>
         <translation>Wygląd</translation>
-    </message>
-    <message>
-        <source>Userbox</source>
-        <translation>Lista kontaktów</translation>
-    </message>
-    <message>
-        <source>General</source>
-        <translation>Ogólne</translation>
-    </message>
-    <message>
-        <source>Hints over userlist</source>
-        <translation>Dymek nad listą kontaktów</translation>
     </message>
     <message>
         <source>Notifications</source>
@@ -87,13 +76,9 @@
         <translation>Maksymalna szerokość</translation>
     </message>
     <message>
-        <source>Set for all</source>
-        <translation>Ustaw dla wszystkich</translation>
+        <source>Hints position preview</source>
+        <translation>Podgląd pozycji dymków</translation>
     </message>
-	<message>
-		<source>Hints position preview</source>
-		<translation>Podgląd pozycji dymków</translation>
-	</message>
     <message>
         <source>&lt;b&gt;Text&lt;/b&gt; preview</source>
         <translation>&lt;b&gt;Text&lt;/b&gt; podgląd</translation>
@@ -113,10 +98,6 @@
     <message>
         <source>Font</source>
         <translation>Czcionka</translation>
-    </message>
-    <message>
-        <source>Mouse buttons</source>
-        <translation>Przyciski myszy</translation>
     </message>
     <message>
         <source>Left button</source>
@@ -147,10 +128,6 @@
         <translation>Prawy</translation>
     </message>
     <message>
-        <source>New chat/message</source>
-        <translation>Nowa rozmowa lub wiadomość</translation>
-    </message>
-    <message>
         <source>Show message content in hint</source>
         <translation>Pokaż treść wiadomości w dymku</translation>
     </message>
@@ -166,6 +143,58 @@
         <source>&apos;Open chat&apos; works on all events</source>
         <translation>&apos;Otwórz rozmowę&apos; działa z każdym zdarzeniem</translation>
     </message>
+    <message>
+        <source>Buddy List</source>
+        <translation>Lista kontaktów</translation>
+    </message>
+    <message>
+        <source>Hint Over Buddy</source>
+        <translation>Dymek nad listą kontaktów</translation>
+    </message>
+    <message>
+        <source>Border color</source>
+        <translation>Kolor ramki</translation>
+    </message>
+    <message>
+        <source>Border width</source>
+        <translation>Szerokość ramki</translation>
+    </message>
+    <message>
+        <source>Icon size</source>
+        <translation>Rozmiar ikon</translation>
+    </message>
+    <message>
+        <source>22px</source>
+        <translation>22px</translation>
+    </message>
+    <message>
+        <source>32px</source>
+        <translation>32px</translation>
+    </message>
+    <message>
+        <source>64px</source>
+        <translation>64px</translation>
+    </message>
+    <message>
+        <source>Transparency</source>
+        <translation>Przezroczystość</translation>
+    </message>
+    <message>
+        <source>Syntax</source>
+        <translation>Składnia</translation>
+    </message>
+    <message>
+        <source>Show buttons only when neccessary</source>
+        <translation>Pokaż przyciski tylko gdy konieczne</translation>
+    </message>
+    <message>
+        <source>Mouse Buttons</source>
+        <translation>Przyciski myszy</translation>
+    </message>
+    <message>
+        <source>New Chat/Message</source>
+        <translation>Nowa rozmowa lub wiadomość</translation>
+    </message>
 </context>
 <context>
     <name>HintManager</name>
@@ -173,9 +202,27 @@
         <source>[&lt;i&gt;%s&lt;/i&gt;&lt;br/&gt;][&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;&lt;br/&gt;%d&lt;br/&gt;&lt;br/&gt;][&lt;i&gt;Mobile:&lt;/i&gt; &lt;b&gt;%m&lt;/b&gt;&lt;br/&gt;]</source>
         <translation>[&lt;i&gt;%s&lt;/i&gt;&lt;br/&gt;][&lt;br/&gt;&lt;b&gt;Opis:&lt;/b&gt;&lt;br/&gt;%d&lt;br/&gt;&lt;br/&gt;][&lt;i&gt;Telefon:&lt;/i&gt; &lt;b&gt;%m&lt;/b&gt;&lt;br/&gt;]</translation>
     </message>
+</context>
+<context>
+    <name>HintOverUserConfigurationWindow</name>
     <message>
-        <source>Dont hide</source>
-        <translation>Nie ukrywaj</translation>
+        <source>Hint Over Buddy Configuration</source>
+        <translation>Dymek nad listą kontaktów</translation>
+    </message>
+    <message>
+        <source>Update preview</source>
+        <translation>Odśwież podgląd</translation>
+    </message>
+    <message>
+        <source>Syntax</source>
+        <translation>Składnia</translation>
+    </message>
+</context>
+<context>
+    <name>HintsConfigurationUiHandler</name>
+    <message>
+        <source>Configure</source>
+        <translation>Konfiguruj</translation>
     </message>
 </context>
 <context>
@@ -185,28 +232,15 @@
         <translation>&lt;b&gt;Podgląd&lt;/b&gt; tekstu</translation>
     </message>
     <message>
-        <source>Font</source>
-        <translation>Czcionka</translation>
+        <source>Configure</source>
+        <translation>Konfiguruj</translation>
     </message>
+</context>
+<context>
+    <name>HintsConfigurationWindow</name>
     <message>
-        <source>Font color</source>
-        <translation>Kolor czcionki</translation>
-    </message>
-    <message>
-        <source>Background color</source>
-        <translation>Kolor tła</translation>
-    </message>
-    <message>
-        <source>Timeout</source>
-        <translation>Czas zaniku</translation>
-    </message>
-    <message>
-        <source>Syntax</source>
-        <translation>Składnia</translation>
-    </message>
-    <message>
-        <source>Uncheck &apos;Set to all&apos; in &apos;Hints&apos; page to edit these values</source>
-        <translation>Odznacz &apos;Ustaw dla wszystkich&apos; na stronie &apos;Dymki&apos; aby zmieniać te wartości</translation>
+        <source>Hints configuration</source>
+        <translation>Konfiguracja dymków</translation>
     </message>
     <message>
         <source>Dont hide</source>
