@@ -55,7 +55,7 @@ void GaduImporter::importAccounts()
 {
 	if (0 == config_file.readNumEntry("General", "UIN"))
 		return;
-	
+
 	Account defaultGaduGadu = Account::create();
 	defaultGaduGadu.setProtocolName("gadu");
 
@@ -100,7 +100,6 @@ void GaduImporter::importAccounts()
 
 	accountDetails->import_0_6_5_LastStatus();
 
-	AccountManager::instance()->ensureLoaded();
 	AccountManager::instance()->addItem(defaultGaduGadu);
 }
 
@@ -126,7 +125,7 @@ void GaduImporter::importGaduContact(Buddy &buddy)
 	QString id = buddy.customData("uin");
 
 	Contact contact = ContactManager::instance()->byId(account, id, ActionCreateAndAdd);
-	
+
 	buddy.removeCustomData("uin");
 	buddy.setBlocked(QVariant(buddy.customData("blocking")).toBool());
 	buddy.setOfflineTo(QVariant(buddy.customData("offline_to")).toBool());

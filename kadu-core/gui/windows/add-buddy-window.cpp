@@ -296,6 +296,8 @@ void AddBuddyWindow::accept()
 	}
 
 	Contact contact = ContactManager::instance()->byId(account, UserNameEdit->text(), ActionCreateAndAdd);
+	// force reattach for gadu protocol, even if buddy == contact.ownerBuddy()
+	contact.setOwnerBuddy(Buddy::null);
 	contact.setOwnerBuddy(buddy);
 
 	buddy.addToGroup(GroupCombo->currentGroup());

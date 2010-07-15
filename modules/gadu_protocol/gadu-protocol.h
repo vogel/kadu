@@ -118,8 +118,8 @@ private slots:
 	void connectionTimeoutTimerSlot();
 	void everyMinuteActions();
 
-	void contactAdded(Contact contact);
-	void contactAboutToBeRemoved(Contact contact);
+	void contactAttached(Contact contact);
+	void contactAboutToBeDetached(Contact contact);
 	void contactIdChanged(Contact contact, const QString &oldId);
 
 protected:

@@ -211,10 +211,12 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 	CurrentPersonalInfoService = new GaduPersonalInfoService(this);
 	CurrentSearchService = new GaduSearchService(this);
 
-	connect(ContactManager::instance(), SIGNAL(contactAdded(Contact)),
-			this, SLOT(contactAdded(Contact)));
-	connect(ContactManager::instance(), SIGNAL(contactAboutToBeRemoved(Contact)),
-			this, SLOT(contactAboutToBeRemoved(Contact)));
+	connect(ContactManager::instance(), SIGNAL(contactAttached(Contact)),
+			this, SLOT(contactAttached(Contact)));
+	connect(ContactManager::instance(), SIGNAL(contactReattached(Contact)),
+			this, SLOT(contactAttached(Contact)));
+	connect(ContactManager::instance(), SIGNAL(contactAboutToBeDetached(Contact)),
+			this, SLOT(contactAboutToBeDetached(Contact)));
 	connect(ContactManager::instance(), SIGNAL(contactIdChanged(Contact, const QString &)),
 			this, SLOT(contactIdChanged(Contact, const QString &)));
 
@@ -231,10 +233,12 @@ GaduProtocol::~GaduProtocol()
 {
 	kdebugf();
 
-	disconnect(ContactManager::instance(), SIGNAL(contactAdded(Contact)),
-			this, SLOT(contactAdded(Contact)));
-	disconnect(ContactManager::instance(), SIGNAL(contactAboutToBeRemoved(Contact)),
-			this, SLOT(contactAboutToBeRemoved(Contact)));
+	disconnect(ContactManager::instance(), SIGNAL(contactAttached(Contact)),
+			this, SLOT(contactAttached(Contact)));
+	disconnect(ContactManager::instance(), SIGNAL(contactReattached(Contact)),
+			this, SLOT(contactAttached(Contact)));
+	disconnect(ContactManager::instance(), SIGNAL(contactAboutToBeDetached(Contact)),
+			this, SLOT(contactAboutToBeDetached(Contact)));
 	disconnect(ContactManager::instance(), SIGNAL(contactIdChanged(Contact, const QString &)),
 			this, SLOT(contactIdChanged(Contact, const QString &)));
 
@@ -931,7 +935,7 @@ QIcon GaduProtocol::statusIcon(const QString &statusType)
 	return StatusTypeManager::instance()->statusIcon("gadu-gadu", statusType, false, false);
 }
 
-void GaduProtocol::contactAdded(Contact contact)
+void GaduProtocol::contactAttached(Contact contact)
 {
 	if (contact.contactAccount() != account())
 		return;
@@ -943,7 +947,7 @@ void GaduProtocol::contactAdded(Contact contact)
 	gg_add_notify_ex(GaduSession, details->uin(), notifyTypeFromContact(contact));
 }
 
-void GaduProtocol::contactAboutToBeRemoved(Contact contact)
+void GaduProtocol::contactAboutToBeDetached(Contact contact)
 {
 	if (contact.contactAccount() != account())
 		return;

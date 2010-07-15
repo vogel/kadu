@@ -61,7 +61,7 @@ GroupTabBar::GroupTabBar(QWidget *parent)
 	Filter = new GroupBuddyFilter(this);
 
 	setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
-	
+
 #ifdef Q_OS_MAC
 	setDocumentMode(true);
 	setUsesScrollButtons(true);
@@ -77,7 +77,6 @@ GroupTabBar::GroupTabBar(QWidget *parent)
 			config_file.readFontEntry("Look", "UserboxFont").pointSize(), QFont::Bold));
 	setIconSize(QSize(16, 16));
 
-	GroupManager::instance()->ensureLoaded();
 	QList<Group> groups = GroupManager::instance()->items();
 	qStableSort(groups.begin(), groups.end(), compareGroups);
 	foreach (const Group group, groups)
@@ -201,7 +200,7 @@ void GroupTabBar::contextMenuEvent(QContextMenuEvent *event)
 		currentGroup= GroupManager::instance()->byUuid(tabData(tabIndex).toString());
 
 	QMenu *menu = new QMenu(this);
-	
+
 	menu->addAction(tr("Add Buddy"), this, SLOT(addBuddy()))->setEnabled(tabIndex != -1 && currentGroup);
 	menu->addAction(tr("Rename Group"), this, SLOT(renameGroup()))->setEnabled(tabIndex != -1 && currentGroup);
 	menu->addSeparator();
@@ -209,7 +208,7 @@ void GroupTabBar::contextMenuEvent(QContextMenuEvent *event)
 	menu->addAction(tr("Create New Group"), this, SLOT(createNewGroup()));
 	menu->addSeparator();
 	menu->addAction(tr("Properties"), this, SLOT(groupProperties()))->setEnabled(tabIndex != -1 && currentGroup);
-	
+
 	menu->popup(event->globalPos());
 }
 
