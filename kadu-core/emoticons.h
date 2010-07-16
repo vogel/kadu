@@ -28,7 +28,7 @@ class KADUAPI EmoticonsManager : public Themes, ConfigurationAwareObject
 	struct EmoticonsListItem
 	{
 		QString alias;
-		QString doubleEscapedAlias; // sight, WebKit workaround
+		QString escapedAlias;
 		QString anim;
 		QString stat;
 		EmoticonsListItem();

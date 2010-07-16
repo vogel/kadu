@@ -2,13 +2,15 @@
 #define KADU_TEXT_BROWSER_H
 
 #include <QtCore/QTimer>
+#include <QtGui/QClipboard>
 #include <QtGui/QTextBrowser>
+#include <QtGui/QTextDocument>
 #include <QtWebKit/QWebView>
 
 #include "exports.h"
 
 /**
-	Zmodyfikowany QTextBrowser specjalnie na potrzeby Kadu.
+	Zmodyfikowany QWebView specjalnie na potrzeby Kadu.
 	Klikni�cie na linku otwiera ustawion� w konfiguracji przegl�dark�.
 	\class KaduTextBrowser
 	\brief Klasa bazowa dla ChatMessagesView oraz InfoPanel.
@@ -18,8 +20,11 @@ class KADUAPI KaduTextBrowser : public QWebView //, private QToolTip
 	Q_OBJECT
 
 	QPoint contextMenuPos;
+	QTextDocument htmlToPlainTextConverter;
 	QTimer refreshTimer; /*!< Timer od�wie�ania widgetu. */
-	
+
+	void convertClipboardHtmlImages(QClipboard::Mode mode);
+
 private slots:
 
 	/**
@@ -37,6 +42,7 @@ private slots:
 	void hyperlinkClicked(const QUrl &anchor) const;
 	void linkHighlighted(const QString &);
 	void saveImage();
+	void textCopied();
 
 protected:
 	virtual void contextMenuEvent(QContextMenuEvent * event);

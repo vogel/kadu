@@ -8,8 +8,10 @@
  ***************************************************************************/
 
 #include <QtCore/QFile>
+#include <QtCore/QMimeData>
 #include <QtGui/QApplication>
 #include <QtGui/QClipboard>
+#include <QtGui/QContextMenuEvent>
 #include <QtGui/QFileDialog>
 #include <QtGui/QMenu>
 #include <QtGui/QToolTip>
@@ -37,6 +39,7 @@ KaduTextBrowser::KaduTextBrowser(QWidget *parent)
 	connect(page(), SIGNAL(linkClicked(const QUrl &)), this, SLOT(hyperlinkClicked(const QUrl &)));
 	connect(page(), SIGNAL(linkHovered(const QString&,  const QString&, const QString&)), this, SLOT(linkHighlighted(const QString &)));
 
+	connect(pageAction(QWebPage::Copy), SIGNAL(triggered()), this, SLOT(textCopied()));
 	connect(pageAction(QWebPage::DownloadImageToDisk), SIGNAL(triggered()), this, SLOT(saveImage()));
 	connect(&refreshTimer, SIGNAL(timeout()), this, SLOT(reload()));
 
@@ -116,6 +119,10 @@ void KaduTextBrowser::mouseReleaseEvent(QMouseEvent *e)
 	kdebugf();
 	emit mouseReleased(e);
 	QWebView::mouseReleaseEvent(e);
+#ifdef Q_WS_X11
+	if (!page()->selectedText().isEmpty())
+		convertClipboardHtmlImages(QClipboard::Selection);
+#endif
 }
 
 void KaduTextBrowser::wheelEvent(QWheelEvent *e)
@@ -176,4 +183,23 @@ void KaduTextBrowser::saveImage()
 		config_file.writeEntry("Chat", "LastImagePath", fd.directory().absolutePath());
 		break;
 	}
+}
+
+// taken from Psi+'s webkit patch, SVN rev. 2638, and then slighly modified
+void KaduTextBrowser::convertClipboardHtmlImages(QClipboard::Mode mode)
+{
+	QClipboard *cb = QApplication::clipboard();
+	QString html = cb->mimeData(mode)->html();
+	html.replace(QRegExp("<img[^>]+title\\s*=\\s*'([^']+)'[^>]*>"), "\\1");
+	html.replace(QRegExp("<img[^>]+title\\s*=\\s*\"([^\"]+)\"[^>]*>"), "\\1");
+	htmlToPlainTextConverter.setHtml(html);
+	QMimeData *data = new QMimeData;
+	data->setHtml(html);
+	data->setText(htmlToPlainTextConverter.toPlainText());
+	cb->setMimeData(data, mode);
+}
+
+void KaduTextBrowser::textCopied()
+{
+	convertClipboardHtmlImages(QClipboard::Clipboard);
 }
