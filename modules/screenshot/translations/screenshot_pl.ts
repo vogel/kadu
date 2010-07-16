@@ -5,7 +5,7 @@
     <name>ScreenShot</name>
     <message>
         <source>Image size is bigger than maximal image size for this chat.</source>
-        <translation>Rozmiar obrazka jest większy od maksymalnego dopuszczalnego dla tej rozmowy.</translation>
+        <translation>Rozmiar obrazka większy niż maksymalny rozmiar dla tej rozmowy.</translation>
     </message>
 </context>
 <context>
@@ -47,10 +47,32 @@ Powinien być większy.</translation>
     </message>
 </context>
 <context>
+    <name>ScreenshotNotification</name>
+    <message>
+        <source>ScreenShot size limit</source>
+        <translation>Limit rozmiaru zrzutów</translation>
+    </message>
+    <message>
+        <source>Images size limit exceed: %1 KB</source>
+        <translation>Limit rozmiaru zrzutów został przekroczony: %1 KB</translation>
+    </message>
+</context>
+<context>
     <name>ScreenshotTaker</name>
     <message>
         <source>Drag icon to some window</source>
-        <translation>Przeciągnij ikonę nad jakieś okno</translation>
+        <translation>Przeciągnij kursor nad jakieś okno</translation>
+    </message>
+</context>
+<context>
+    <name>ScreenshotToolBox</name>
+    <message>
+        <source>0 KB</source>
+        <translation>0 KB</translation>
+    </message>
+    <message>
+        <source>Crop</source>
+        <translation>Przytnij</translation>
     </message>
 </context>
 </TS>

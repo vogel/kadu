@@ -877,7 +877,7 @@
     </message>
     <message>
         <source>Kadu will use [regional application] as the default network in this configuration.</source>
-        <translation>Kadu użyje [regional application] jako domyślnej sieci w tej konfiguracji.</translation>
+        <translation>Kadu użyje domyślnej sieci bazując na ustawionym języku.</translation>
     </message>
     <message>
         <source>Change...</source>

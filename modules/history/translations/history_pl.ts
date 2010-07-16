@@ -110,12 +110,48 @@
     </message>
 </context>
 <context>
+    <name>BuddyStatusDatesModel</name>
+    <message>
+        <location filename="../model/buddy-status-dates-model.cpp" line="67"/>
+        <source>Date</source>
+        <translation>Data</translation>
+    </message>
+    <message>
+        <location filename="../model/buddy-status-dates-model.cpp" line="68"/>
+        <source>Length</source>
+        <translation>Długość</translation>
+    </message>
+</context>
+<context>
+    <name>ChatDatesModel</name>
+    <message>
+        <location filename="../model/chat-dates-model.cpp" line="70"/>
+        <source>Chat</source>
+        <translation>Rozmowa</translation>
+    </message>
+    <message>
+        <location filename="../model/chat-dates-model.cpp" line="71"/>
+        <source>Title</source>
+        <translation>Tytuł</translation>
+    </message>
+    <message>
+        <location filename="../model/chat-dates-model.cpp" line="72"/>
+        <source>Date</source>
+        <translation>Data</translation>
+    </message>
+    <message>
+        <location filename="../model/chat-dates-model.cpp" line="73"/>
+        <source>Length</source>
+        <translation>Długość</translation>
+    </message>
+</context>
+<context>
     <name>History</name>
     <message>
         <location filename="../history.cpp" line="160"/>
         <location filename="../history.cpp" line="168"/>
         <source>View Chat History</source>
-        <translation>Pokaż historię</translation>
+        <translation>Pokaż historię rozmów</translation>
     </message>
     <message>
         <location filename="../history.cpp" line="175"/>
@@ -125,7 +161,7 @@
     <message>
         <location filename="../history.cpp" line="220"/>
         <source>Show last %1 messages</source>
-        <translation>Pokaż ostatnie %1 wiadomości</translation>
+        <translation>Wyświetl ostatnie %1 wiadomości</translation>
     </message>
     <message>
         <location filename="../history.cpp" line="224"/>
@@ -150,7 +186,63 @@
     <message>
         <location filename="../history.cpp" line="556"/>
         <source>%1 day(s) %2 hour(s)</source>
-        <translation>dni: %1 godzin: %2</translation>
+        <translation>%1 dzień(dni) %2 godzina(y)</translation>
+    </message>
+</context>
+<context>
+    <name>HistoryChatsModel</name>
+    <message>
+        <location filename="../model/history-chats-model.cpp" line="164"/>
+        <source>Statuses</source>
+        <translation>Statusy</translation>
+    </message>
+    <message>
+        <location filename="../model/history-chats-model.cpp" line="189"/>
+        <source>Sms</source>
+        <translation>SMS</translation>
+    </message>
+</context>
+<context>
+    <name>HistoryWindow</name>
+    <message>
+        <location filename="../gui/windows/history-window.cpp" line="72"/>
+        <source>History</source>
+        <translation>Historia</translation>
+    </message>
+    <message>
+        <location filename="../gui/windows/history-window.cpp" line="176"/>
+        <source>Filter</source>
+        <translation>Szukaj</translation>
+    </message>
+    <message>
+        <location filename="../gui/windows/history-window.cpp" line="182"/>
+        <source>by date</source>
+        <translation>Po dacie</translation>
+    </message>
+    <message>
+        <location filename="../gui/windows/history-window.cpp" line="186"/>
+        <source>From</source>
+        <translation>od</translation>
+    </message>
+    <message>
+        <location filename="../gui/windows/history-window.cpp" line="196"/>
+        <source>To</source>
+        <translation>do</translation>
+    </message>
+    <message>
+        <location filename="../gui/windows/history-window.cpp" line="618"/>
+        <source>Actions</source>
+        <translation>Operacje</translation>
+    </message>
+    <message>
+        <location filename="../gui/windows/history-window.cpp" line="680"/>
+        <source>&amp;Clear history</source>
+        <translation>&amp;Wyczyść historię</translation>
+    </message>
+    <message>
+        <location filename="../gui/windows/history-window.cpp" line="703"/>
+        <source>There is no history storage module loaded!</source>
+        <translation>Nie jest załadowany moduł przechowujący historię!</translation>
     </message>
 </context>
 <context>
@@ -158,7 +250,20 @@
     <message>
         <location filename="../buddy-history-delete-handler.cpp" line="63"/>
         <source>Chat history</source>
-        <translation>Historia</translation>
+        <translation>Hisoria rozmów</translation>
+    </message>
+</context>
+<context>
+    <name>SmsDatesModel</name>
+    <message>
+        <location filename="../model/sms-dates-model.cpp" line="67"/>
+        <source>Date</source>
+        <translation>Data</translation>
+    </message>
+    <message>
+        <location filename="../model/sms-dates-model.cpp" line="68"/>
+        <source>Length</source>
+        <translation>Długość</translation>
     </message>
 </context>
 </TS>
