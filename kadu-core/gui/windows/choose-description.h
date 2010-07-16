@@ -41,7 +41,7 @@ class ChooseDescription : public QDialog
 	QPushButton *OkButton;
 
 	StatusContainer *MyStatusContainer;
-	
+
 	int MaxDescriptionLength;
 
 private slots:
@@ -51,7 +51,7 @@ private slots:
 	void currentDescriptionChanged(const QString &);
 
 public:
-	static void showDialog(StatusContainer *statusContainer, const QPoint &position);
+	static ChooseDescription *showDialog(StatusContainer *statusContainer, const QPoint &position = QPoint() );
 
 	ChooseDescription(StatusContainer *statusContainer, QWidget *parent = 0);
 	virtual ~ChooseDescription();
