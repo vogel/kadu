@@ -53,6 +53,7 @@
 
 #include "dcc/dcc-manager.h"
 #include "helpers/gadu-formatter.h"
+#include "server/gadu-contact-list-handler.h"
 #include "server/gadu-servers-manager.h"
 #include "socket-notifiers/gadu-protocol-socket-notifiers.h"
 #include "socket-notifiers/gadu-pubdir-socket-notifiers.h"
@@ -211,6 +212,8 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 	CurrentPersonalInfoService = new GaduPersonalInfoService(this);
 	CurrentSearchService = new GaduSearchService(this);
 
+	ContactListHandler = 0;
+
 	connect(ContactManager::instance(), SIGNAL(contactAttached(Contact)),
 			this, SLOT(contactAttached(Contact)));
 	connect(ContactManager::instance(), SIGNAL(contactReattached(Contact)),
@@ -312,167 +315,6 @@ void GaduProtocol::changePrivateMode()
 	changeStatus();
 }
 
-/*
-void GaduProtocol::protocolUserDataChanged(QString protocolName, UserListElement elem, QString name, QVariant oldValue, QVariant currentValue, bool massively, bool last)
-{
-	kdebugf();
-
-	Contact contact = elem.toContact(account());
-
-	if (protocolName != "Gadu")
-		return;
-	if (status().isOffline())
-		return;
-	if (name != "OfflineTo" && name != "Blocking")
-		return;
-
-	if (massively)
-	{
-		sendUserListLater();
-		return;
-	}
-
-	UinType contactUin = uin(contact);
-	if (name == "OfflineTo")
-	{
-		if (currentValue.toBool() && !oldValue.toBool())
-		{
-			gg_add_notify_ex(GaduSession, contactUin, GG_USER_OFFLINE);
-			gg_remove_notify_ex(GaduSession, contactUin, GG_USER_NORMAL);
-			gg_remove_notify_ex(GaduSession, contactUin, GG_USER_BLOCKED);
-		}
-		else if (!currentValue.toBool() && oldValue.toBool())
-		{
-			gg_add_notify_ex(GaduSession, contactUin, GG_USER_NORMAL);
-			gg_remove_notify_ex(GaduSession, contactUin, GG_USER_OFFLINE);
-			gg_remove_notify_ex(GaduSession, contactUin, GG_USER_BLOCKED);
-		}
-	}
-	else if (name == "Blocking")
-	{
-		if (currentValue.toBool() && !oldValue.toBool())
-		{
-			gg_add_notify_ex(GaduSession, contactUin, GG_USER_BLOCKED);
-			gg_remove_notify_ex(GaduSession, contactUin, GG_USER_NORMAL);
-			gg_remove_notify_ex(GaduSession, contactUin, GG_USER_OFFLINE);
-//			elem.setStatus(protocolName, GaduStatus());
-		}
-		else if (!currentValue.toBool() && oldValue.toBool())
-		{
-			gg_add_notify_ex(GaduSession, contactUin, GG_USER_NORMAL);
-			gg_remove_notify_ex(GaduSession, contactUin, GG_USER_OFFLINE);
-			gg_remove_notify_ex(GaduSession, contactUin, GG_USER_BLOCKED);
-		}
-	}
-
-	kdebugf2();
-}
-
-void GaduProtocol::userDataChanged(UserListElement elem, QString name, QVariant oldValue, QVariant currentValue, bool massively, bool last)
-{
-	kdebugf();
-
-	Contact contact = elem.toContact(account());
-	if (!contact.accountData(account()))
-		return;
-#include <status/status-group.h>
-#include <status/status-group.h>
-#include <status/status-type-manager.h>
-
-	if (status().isOffline())
-		return;
-	if (name != "Anonymous")
-		return;
-
-	if (massively)
-		sendUserListLater();
-	else
-	{
-		if (!currentValue.toBool() && oldValue.toBool())
-			gg_add_notify(GaduSession, uin(contact));
-	}
-	kdebugf2();
-}
-
-void GaduProtocol::userAdded(UserListElement elem, bool massively, bool last)
-{
-	kdebugmf(KDEBUG_FUNCTION_START, "start: '%s' %d\n", qPrintable(elem.altNick()), massively, last);
-
-	Contact contact = elem.toContact(account());
-	if (!contact.accountData(account()))
-		return;
-
-	if (status().isOffline())
-		return;
-
-	if (massively)
-		sendUserListLater();
-	else
-		if (!contact.isAnonymous())
-			gg_add_notify(GaduSession, uin(contact));
-	kdebugf2();
-}
-
-void GaduProtocol::removingUser(UserListElement elem, bool massively, bool last)
-{
-	kdebugmf(KDEBUG_FUNCTION_START, "start: '%s' %d\n", qPrintable(elem.altNick()), massively, last);
-
-	Contact contact = elem.toContact(account());
-	if (!contact.accountData(account()))
-		return;
-
-	if (status().isOffline())
-		return;
-	if (massively)
-		sendUserListLater();
-	else
-		if (!contact.isAnonymous())
-			gg_remove_notify(GaduSession, uin(contact));
-	kdebugf2();
-}
-
-void GaduProtocol::protocolAdded(UserListElement elem, QString protocolName, bool massively, bool last)
-{
-	kdebugf();
-
-	Contact contact = elem.toContact(account());
-	if (contact.isNull())
-		return;
-
-	if (protocolName != "Gadu")
-		return;
-	if (status().isOffline())
-		return;
-
-	if (massively)
-		sendUserListLater();
-	else
-		if (!contact.isAnonymous())
-			gg_add_notify(GaduSession, uin(contact));
-	kdebugf2();
-}
-
-void GaduProtocol::removingProtocol(UserListElement elem, QString protocolName, bool massively, bool last)
-{
-	kdebugf();
-
-	Contact contact = elem.toContact(account());
-	if (contact.isNull())
-		return;
-
-	if (protocolName != "Gadu")
-		return;
-	if (status().isOffline())
-		return;
-
-	if (massively)
-		sendUserListLater();
-	else
-		if (!contact.isAnonymous())
-			gg_remove_notify(GaduSession, uin(contact));
-	kdebugf2();
-}*/
-
 void GaduProtocol::connectionTimeoutTimerSlot()
 {
 	kdebugf();
@@ -536,6 +378,7 @@ void GaduProtocol::login()
 	setupLoginParams();
 
 	GaduSession = gg_login(&GaduLoginParams);
+	ContactListHandler = new GaduContactListHandler(this);
 
 	cleanUpLoginParams();
 
@@ -631,7 +474,7 @@ void GaduProtocol::setupLoginParams()
 	GaduLoginParams.protocol_features = GG_FEATURE_DND_FFC; // enable new statuses
 	GaduLoginParams.encoding = GG_ENCODING_UTF8;
 
-	GaduLoginParams.has_audio = gaduAccountDetails->allowDcc();
+	GaduLoginParams.has_audio = false; // gaduAccountDetails->allowDcc();
 	GaduLoginParams.last_sysmsg = config_file.readNumEntry("General", "SystemMsgIndex", 1389);
 
 	if (Dcc)
@@ -683,6 +526,9 @@ void GaduProtocol::networkDisconnected(bool tryAgain)
 	{
 		gg_free_session(GaduSession);
 		GaduSession = 0;
+
+		delete ContactListHandler;
+		ContactListHandler = 0;
 	}
 
 	setAllOffline();
@@ -693,53 +539,9 @@ void GaduProtocol::networkDisconnected(bool tryAgain)
 		setStatus(Status());
 }
 
-int GaduProtocol::notifyTypeFromContact(const Contact &contact)
-{
-	Buddy buddy = contact.ownerBuddy();
-	return buddy.isOfflineTo()
-		? GG_USER_OFFLINE
-		: buddy.isBlocked()
-			? GG_USER_BLOCKED
-			: GG_USER_NORMAL;
-}
-
 void GaduProtocol::sendUserList()
 {
-	kdebugf();
-
-	UinType *uins;
-	char *types;
-
-	QList<Contact> contacts = ContactManager::instance()->contacts(account());
-
-	if (contacts.isEmpty())
-	{
-		gg_notify_ex(GaduSession, 0, 0, 0);
-		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Userlist is empty\n");
-		return;
-	}
-
-	int count = contacts.count();
-
-	uins = new UinType[count];
-	types = new char[count];
-
-	int i = 0;
-
-	foreach (const Contact &contact, contacts)
-	{
-		uins[i] = uin(contact);
-		types[i] = notifyTypeFromContact(contact);
-		++i;
-	}
-
-	gg_notify_ex(GaduSession, uins, types, count);
-	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Userlist sent\n");
-
-	delete [] uins;
-	delete [] types;
-
-	kdebugf2();
+	ContactListHandler->setUpContactList(ContactManager::instance()->contacts(account()));
 }
 
 void GaduProtocol::socketContactStatusChanged(unsigned int uin, unsigned int status, const QString &description,
@@ -752,7 +554,7 @@ void GaduProtocol::socketContactStatusChanged(unsigned int uin, unsigned int sta
 	{
 		kdebugmf(KDEBUG_INFO, "buddy %d not in list. Damned server!\n", uin);
 		emit userStatusChangeIgnored(buddy);
-		gg_remove_notify(GaduSession, uin);
+		ContactListHandler->removeContactEntry(uin);
 		return;
 	}
 
@@ -940,11 +742,7 @@ void GaduProtocol::contactAttached(Contact contact)
 	if (contact.contactAccount() != account())
 		return;
 
-	GaduContactDetails *details = gaduContactDetails(contact);
-	if (!details)
-		return;
-
-	gg_add_notify_ex(GaduSession, details->uin(), notifyTypeFromContact(contact));
+	ContactListHandler->addContactEntry(contact);
 }
 
 void GaduProtocol::contactAboutToBeDetached(Contact contact)
@@ -952,15 +750,7 @@ void GaduProtocol::contactAboutToBeDetached(Contact contact)
 	if (contact.contactAccount() != account())
 		return;
 
-	GaduContactDetails *details = gaduContactDetails(contact);
-	if (!details)
-		return;
-
-//	TODO: 0.6.6 which one is the *right* way?
-// 	gg_remove_notify_ex(GaduSession, gcad->uin(), GG_USER_NORMAL);
-// 	gg_remove_notify_ex(GaduSession, gcad->uin(), GG_USER_BLOCKED);
-// 	gg_remove_notify_ex(GaduSession, gcad->uin(), GG_USER_OFFLINE);
-	gg_remove_notify(GaduSession, details->uin());
+	ContactListHandler->removeContactEntry(contact);
 }
 
 void GaduProtocol::contactIdChanged(Contact contact, const QString &oldId)
@@ -971,9 +761,7 @@ void GaduProtocol::contactIdChanged(Contact contact, const QString &oldId)
 	bool ok;
 	UinType oldUin = oldId.toInt(&ok);
 	if (ok)
-		gg_remove_notify(GaduSession, oldUin);
+		ContactListHandler->removeContactEntry(oldUin);
 
-	UinType newUin = uin(contact);
-	if (newUin)
-		gg_add_notify_ex(GaduSession, newUin, notifyTypeFromContact(contact));
+	ContactListHandler->addContactEntry(contact);
 }

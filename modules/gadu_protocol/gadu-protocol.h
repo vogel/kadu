@@ -45,6 +45,7 @@
 
 class DccManager;
 class GaduContactDetails;
+class GaduContactListHandler;
 class GaduProtocolSocketNotifiers;
 
 class GADUAPI GaduProtocol : public Protocol
@@ -81,6 +82,8 @@ private:
 	GaduPersonalInfoService *CurrentPersonalInfoService;
 	GaduSearchService *CurrentSearchService;
 
+	GaduContactListHandler *ContactListHandler;
+
 	friend class DccManager;
 	DccManager *Dcc;
 
@@ -102,7 +105,6 @@ private:
 	void networkConnected();
 	void networkDisconnected(bool tryAgain);
 
-	int notifyTypeFromContact(const Contact &contact);
 	void sendUserList();
 
 	void socketContactStatusChanged(unsigned int uin, unsigned int status, const QString &description,
