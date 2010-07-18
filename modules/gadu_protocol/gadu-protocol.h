@@ -120,6 +120,7 @@ private slots:
 	void connectionTimeoutTimerSlot();
 	void everyMinuteActions();
 
+	void buddyUpdated(Buddy &buddy);
 	void contactAttached(Contact contact);
 	void contactAboutToBeDetached(Contact contact);
 	void contactIdChanged(Contact contact, const QString &oldId);

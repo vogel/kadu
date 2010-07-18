@@ -214,6 +214,8 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 
 	ContactListHandler = 0;
 
+	connect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy &)),
+			this, SLOT(buddyUpdated(Buddy &)));
 	connect(ContactManager::instance(), SIGNAL(contactAttached(Contact)),
 			this, SLOT(contactAttached(Contact)));
 	connect(ContactManager::instance(), SIGNAL(contactReattached(Contact)),
@@ -226,16 +228,12 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 	kdebugf2();
 }
 
-void GaduProtocol::fetchAvatars(Account account)
-{
-	foreach (const Contact &contact, ContactManager::instance()->contacts(account))
-		CurrentAvatarService->fetchAvatar(contact);
-}
-
 GaduProtocol::~GaduProtocol()
 {
 	kdebugf();
 
+	disconnect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy &)),
+			this, SLOT(buddyUpdated(Buddy &)));
 	disconnect(ContactManager::instance(), SIGNAL(contactAttached(Contact)),
 			this, SLOT(contactAttached(Contact)));
 	disconnect(ContactManager::instance(), SIGNAL(contactReattached(Contact)),
@@ -249,6 +247,12 @@ GaduProtocol::~GaduProtocol()
 	delete SocketNotifiers;
 
 	kdebugf2();
+}
+
+void GaduProtocol::fetchAvatars(Account account)
+{
+	foreach (const Contact &contact, ContactManager::instance()->contacts(account))
+		CurrentAvatarService->fetchAvatar(contact);
 }
 
 bool GaduProtocol::validateUserID(const QString &uid)
@@ -735,6 +739,14 @@ QIcon GaduProtocol::statusIcon(Status status)
 QIcon GaduProtocol::statusIcon(const QString &statusType)
 {
 	return StatusTypeManager::instance()->statusIcon("gadu-gadu", statusType, false, false);
+}
+
+void GaduProtocol::buddyUpdated(Buddy &buddy)
+{
+	// update offline to and other data
+	if (ContactListHandler)
+		foreach (Contact contact, buddy.contacts(account()))
+			ContactListHandler->updateContactEntry(contact);
 }
 
 void GaduProtocol::contactAttached(Contact contact)

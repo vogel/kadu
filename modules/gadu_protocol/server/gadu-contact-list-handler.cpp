@@ -29,8 +29,6 @@
 int GaduContactListHandler::notifyTypeFromContact(const Contact &contact)
 {
 	Buddy buddy = contact.ownerBuddy();
-	if (buddy.isOfflineTo())
-		printf("setting %s as offline to\n", qPrintable(contact.id()));
 
 	return buddy.isOfflineTo()
 		? GG_USER_OFFLINE
@@ -104,7 +102,6 @@ void GaduContactListHandler::setUpContactList(QList<Contact> contacts)
 void GaduContactListHandler::updateContactEntry(Contact contact)
 {
 	addContactEntry(contact);
-	removeContactEntry(contact);
 }
 
 void GaduContactListHandler::addContactEntry(int uin, int type)
