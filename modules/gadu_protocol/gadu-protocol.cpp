@@ -295,7 +295,7 @@ void GaduProtocol::changeStatus()
 		return;
 
 // TODO: 0.6.6
-	int friends (!newStatus.isDisconnected() && privateMode() ? GG_STATUS_FRIENDS_MASK : 0);
+	int friends = GG_STATUS_FRIENDS_MASK; // (!newStatus.isDisconnected() && privateMode() ? GG_STATUS_FRIENDS_MASK : 0);
 	int type = gaduStatusFromStatus(newStatus);
 	bool hasDescription = !newStatus.description().isEmpty();
 
@@ -460,7 +460,7 @@ void GaduProtocol::setupLoginParams()
 	GaduLoginParams.password = strdup(account().password().toAscii().data());
 
 	GaduLoginParams.async = 1;
-	GaduLoginParams.status = gaduStatusFromStatus(nextStatus()); // TODO: 0.6.6 support is friend only
+	GaduLoginParams.status = gaduStatusFromStatus(nextStatus()) | GG_STATUS_FRIENDS_MASK; // TODO: 0.6.6 support is friend only
 	if (!nextStatus().description().isEmpty())
 		GaduLoginParams.status_descr = strdup(nextStatus().description().toUtf8());
 
