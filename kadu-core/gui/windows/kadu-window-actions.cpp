@@ -305,10 +305,10 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		"16x16/edit-find.png", "16x16/edit-find.png", tr("Search for Buddy...")
 	);
 
-	ManageIgnored = new ActionDescription(this,
+	ManageBlocked = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "manageIgnoredAction",
-		this, SLOT(manageIgnoredActionActivated(QAction *, bool)),
-		"kadu_icons/kadu-manageignored.png", "kadu_icons/kadu-manageignored.png", tr("Ignored Buddies...")
+		this, SLOT(manageBlockedActionActivated(QAction *, bool)),
+		"kadu_icons/kadu-blocking.png", "kadu_icons/kadu-blocking.png", tr("Blocked Buddies...")
 	);
 
 	Help = new ActionDescription(this,
@@ -353,13 +353,13 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		"", "", tr("Show Information Panel"), true
 	);
 	connect(ShowInfoPanel, SIGNAL(actionCreated(Action *)), this, SLOT(showInfoPanelActionCreated(Action *)));
-// TODO 0.6.6: icon
-	ShowIgnoredBuddies = new ActionDescription(this,
+
+	ShowBlockedBuddies = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "showIgnoredAction",
-		this, SLOT(showIgnoredActionActivated(QAction *, bool)),
-		"", "", tr("Show Ignored Buddies"), true
+		this, SLOT(showBlockedActionActivated(QAction *, bool)),
+		"", "", tr("Show Bocked Buddies"), true
 	);
-	connect(ShowIgnoredBuddies, SIGNAL(actionCreated(Action *)), this, SLOT(showIgnoredActionCreated(Action *)));
+	connect(ShowBlockedBuddies, SIGNAL(actionCreated(Action *)), this, SLOT(showBlockedActionCreated(Action *)));
 
 
 	CopyDescription = new ActionDescription(this,
@@ -461,7 +461,6 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	);
 	BuddiesListViewMenuManager::instance()->addActionDescription(MergeContact);
 
-	BuddiesListViewMenuManager::instance()->addActionDescription(ChatWidgetManager::instance()->actions()->ignoreUser());
 	BuddiesListViewMenuManager::instance()->addActionDescription(ChatWidgetManager::instance()->actions()->blockUser());
 
 	DeleteUsers = new ActionDescription(this,
@@ -596,7 +595,7 @@ void KaduWindowActions::showInfoPanelActionCreated(Action *action)
 	action->setChecked(config_file.readBoolEntry("Look", "ShowInfoPanel"));
 }
 
-void KaduWindowActions::showIgnoredActionCreated(Action *action)
+void KaduWindowActions::showBlockedActionCreated(Action *action)
 {
 	MainWindow *window = qobject_cast<MainWindow *>(action->parent());
 	if (!window)
@@ -709,7 +708,7 @@ void KaduWindowActions::openSearchActionActivated(QAction *sender, bool toggled)
 	(new SearchWindow(dynamic_cast<QWidget *>(sender->parent())))->show();
 }
 
-void KaduWindowActions::manageIgnoredActionActivated(QAction *sender, bool toggled)
+void KaduWindowActions::manageBlockedActionActivated(QAction *sender, bool toggled)
 {
 	Q_UNUSED(toggled)
 
@@ -786,7 +785,7 @@ void KaduWindowActions::showInfoPanelActionActivated(QAction *sender, bool toggl
 	config_file.writeEntry("Look", "ShowInfoPanel", toggled);
 }
 
-void KaduWindowActions::showIgnoredActionActivated(QAction *sender, bool toggled)
+void KaduWindowActions::showBlockedActionActivated(QAction *sender, bool toggled)
 {
 	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
 	if (!window)
@@ -1132,8 +1131,8 @@ void KaduWindowActions::configurationUpdated()
 	if (InactiveUsers->action(Core::instance()->kaduWindow())->isChecked() != config_file.readBoolEntry("General", "ShowOffline"))
 		InactiveUsers->action(Core::instance()->kaduWindow())->trigger();
 
-	if (ShowIgnoredBuddies->action(Core::instance()->kaduWindow())->isChecked() != config_file.readBoolEntry("General", "ShowBlocked"))
-		ShowIgnoredBuddies->action(Core::instance()->kaduWindow())->trigger();
+	if (ShowBlockedBuddies->action(Core::instance()->kaduWindow())->isChecked() != config_file.readBoolEntry("General", "ShowBlocked"))
+		ShowBlockedBuddies->action(Core::instance()->kaduWindow())->trigger();
 
 }
 

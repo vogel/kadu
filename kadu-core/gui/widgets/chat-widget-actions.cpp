@@ -26,7 +26,6 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "buddies/buddy-shared.h"
-#include "buddies/ignored-helper.h"
 #include "contacts/contact.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"
@@ -78,19 +77,6 @@ void checkBlocking(Action *action)
 			break;
 		}
 	action->setChecked(on);
-}
-
-void checkIgnoreUser(Action *action)
-{
-	BuddySet buddies = action->contacts().toBuddySet();
-
-	if (buddies.contains(Core::instance()->myself()))
-	{
-		action->setEnabled(false);
-		return;
-	}
-
-	action->setChecked(IgnoredHelper::isIgnored(buddies));
 }
 
 ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
@@ -145,13 +131,6 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 		this, SLOT(whoisActionActivated(QAction *, bool)),
 		"16x16/edit-find.png", "16x16/edit-find.png", tr("Search this User in Directory"), false, QString::null,
 		disableNoGaduUle
-	);
-
-	IgnoreUser = new ActionDescription(0,
-		ActionDescription::TypeUser, "ignoreUserAction",
-		this, SLOT(ignoreUserActionActivated(QAction *, bool)),
-		"kadu_icons/kadu-manageignored.png", "kadu_icons/kadu-manageignored.png", tr("Ignore Buddy"), true, QString::null,
-		checkIgnoreUser
 	);
 
 	BlockUser = new ActionDescription(0,
@@ -361,48 +340,6 @@ void ChatWidgetActions::whoisActionActivated(QAction *sender, bool toggled)
 	sd->show();
 	sd->firstSearch();
 
-	kdebugf2();
-}
-
-void ChatWidgetActions::ignoreUserActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(toggled)
-
-	kdebugf();
-	Account account = AccountManager::instance()->defaultAccount();
-	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
-	if (!window)
-		return;
-
-	ContactSet contacts = window->contacts();
-	BuddySet buddies = contacts.toBuddySet();
-	if (contacts.count() > 0)
-	{
-		if (IgnoredHelper::isIgnored(buddies))
-			IgnoredHelper::setIgnored(buddies, false);
-		else
-		{
-			IgnoredHelper::setIgnored(buddies);
-			Chat chat = ChatManager::instance()->findChat(contacts);
-			if (chat)
-			{
-				ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat);
-				if (chatWidget)
-				{
-					ChatContainer *container = dynamic_cast<ChatContainer *>(chatWidget->window());
-					if (container)
-						container->closeChatWidget(chatWidget);
-				}
-			}
-		}
-		
-		bool set = IgnoredHelper::isIgnored(buddies);
-		foreach (Action *action, IgnoreUser->actions())
-		{
-			if (action->contacts().toBuddySet() == buddies)
-				action->setChecked(set);
-		}
-	}
 	kdebugf2();
 }
 

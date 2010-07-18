@@ -208,11 +208,11 @@ void KaduWindow::createContactsMenu()
 //	insertMenuActionDescription(ChatWidgetManager::instance()->actions()->openChatWith(), MenuContacts);
 	ContactsMenu->addSeparator();
 
-	insertMenuActionDescription(Actions->ManageIgnored, MenuContacts);
+	insertMenuActionDescription(Actions->ManageBlocked, MenuContacts);
 
 	ContactsMenu->addSeparator();
 	insertMenuActionDescription(Actions->InactiveUsers, MenuContacts);
-	insertMenuActionDescription(Actions->ShowIgnoredBuddies, MenuContacts);
+	insertMenuActionDescription(Actions->ShowBlockedBuddies, MenuContacts);
 	insertMenuActionDescription(Actions->ShowInfoPanel, MenuContacts);
 
 	menuBar()->addMenu(ContactsMenu);
