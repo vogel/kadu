@@ -42,22 +42,28 @@ int GaduContactListHandler::notifyTypeFromContact(const Contact &contact)
 GaduContactListHandler::GaduContactListHandler(GaduProtocol *protocol, QObject *parent) :
 		QObject(parent), Protocol(protocol)
 {
-	debugMessage("activating handler");
 }
 
 GaduContactListHandler::~GaduContactListHandler()
 {
 }
 
-void GaduContactListHandler::debugMessage(QString message)
-{
-	printf(qPrintable(QString("[%1] userist: %2\n").arg(Protocol->account().id()).arg(message)));
-}
-
 void GaduContactListHandler::setUpContactList(QList<Contact> contacts)
 {
-	debugMessage("sending up contact list");
+	/*
+	 * it looks like gadu-gadu now stores contact list mask (offlineto, blocked, normal)
+	 * on server, so need to remove this mask and send a new one for each contact, so
+	 * server has up-to-date information about our contact list
+	 */
 
+	// send empty list
+	gg_notify_ex(Protocol->gaduSession(), 0, 0, 0);
+
+	// send all items
+	foreach (const Contact &contact, contacts)
+		addContactEntry(contact);
+
+/*
 	UinType *uins;
 	char *types;
 
@@ -92,8 +98,7 @@ void GaduContactListHandler::setUpContactList(QList<Contact> contacts)
 
 	delete [] uins;
 	delete [] types;
-
-	debugMessage(QString("  done"));
+*/
 }
 
 void GaduContactListHandler::updateContactEntry(Contact contact)
@@ -106,8 +111,6 @@ void GaduContactListHandler::addContactEntry(int uin, int type)
 {
 	if (!uin)
 		return;
-
-	debugMessage(QString("adding entry for %1 %2").arg(uin).arg(type));
 
 	gg_session *session = Protocol->gaduSession();
 	if (!session)
@@ -129,8 +132,6 @@ void GaduContactListHandler::removeContactEntry(int uin)
 {
 	if (!uin)
 		return;
-
-	debugMessage(QString("removing entry for %1").arg(uin));
 
 	gg_session *session = Protocol->gaduSession();
 	if (!session)

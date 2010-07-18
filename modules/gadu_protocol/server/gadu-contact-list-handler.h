@@ -29,8 +29,6 @@ class GaduContactListHandler : public QObject
 {
 	GaduProtocol *Protocol;
 
-	void debugMessage(QString message);
-
 public:
 	static int notifyTypeFromContact(const Contact &contact);
 
