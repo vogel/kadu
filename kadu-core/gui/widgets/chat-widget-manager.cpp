@@ -380,6 +380,27 @@ void ChatWidgetManager::sendMessage(Chat chat)
 	kdebugf2();
 }
 
+void ChatWidgetManager::closeChat(Chat chat)
+{
+	ChatWidget *chatWidget = byChat(chat);
+	if (chatWidget)
+	{
+		ChatContainer *container = dynamic_cast<ChatContainer *>(chatWidget->window());
+		if (container)
+			container->closeChatWidget(chatWidget);
+	}
+}
+
+void ChatWidgetManager::closeAllChats(Buddy buddy)
+{
+	foreach (Contact contact, buddy.contacts())
+	{
+		Chat chat = ChatManager::instance()->findChat(ContactSet(contact), false);
+		if (chat)
+			closeChat(chat);
+	}
+}
+
 void ChatWidgetManager::configurationUpdated()
 {
 	kdebugf();

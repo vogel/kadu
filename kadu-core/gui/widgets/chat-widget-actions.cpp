@@ -27,6 +27,7 @@
 #include "accounts/account-manager.h"
 #include "buddies/buddy-shared.h"
 #include "contacts/contact.h"
+#include "contacts/contact-set.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "chat/chat-manager.h"
@@ -349,56 +350,49 @@ void ChatWidgetActions::blockUserActionActivated(QAction *sender, bool toggled)
 
 	kdebugf();
 
-	Account account = AccountManager::instance()->defaultAccount();
 	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
 	if (!window)
 		return;
 
-	ContactSet contacts = window->contacts();
-	BuddySet buddies = contacts.toBuddySet();
+	BuddySet buddies = window->buddies();
 	if (buddies.isEmpty())
 		return;
 
-	bool on = true;
-	bool blocked_anonymous = false; // true, if we blocked at least one anonymous user
+	bool on = false;
 
 	foreach (Buddy user, buddies)
 		if (!user.isBlocked())
 		{
-			on = false;
+			on = true;
 			break;
 		}
 
 	foreach (Buddy buddy, buddies)
-		if (buddy.isAnonymous())
-			blocked_anonymous = true;
-
-	Chat chat = ChatManager::instance()->findChat(contacts);
-	if (chat && !on) // if we were blocking, we also close the chat (and show info if blocked anonymous)
 	{
-// 		TODO: 0.6.6, is that true?
-// 		if (blocked_anonymous)
-// 			MessageDialog::msg(tr("Anonymous users will be unblocked after restarting Kadu"), false, "Information", Core::instance()->kaduWindow());
+		buddy.setBlocked(on);
 
-		ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat);
-		if (chatWidget)
-		{
-			ChatContainer *container = dynamic_cast<ChatContainer *>(chatWidget->window());
-			if (container)
-				container->closeChatWidget(chatWidget);
-		}
-	}
-
-// TODO: 0.6.6
-// 		userlist->writeToConfig();
-
-	foreach (Action *action, BlockUser->actions())
-	{
-		if (action->contacts().toBuddySet() == buddies)
-			action->setChecked(!on);
+		// update actions
+		updateBlockingActions(buddy);
+			
+		// close all chats for blocked buddies
+		if (on)
+			ChatWidgetManager::instance()->closeAllChats(buddy);
 	}
 
 	kdebugf2();
+}
+
+void ChatWidgetActions::updateBlockingActions(Buddy buddy)
+{
+	QList<Contact> buddyContacts = buddy.contacts();
+
+	foreach (Action *action, BlockUser->actions())
+	{
+		ContactSet contacts = action->contacts();
+		if (1 == contacts.size())
+			if (buddyContacts.contains(*contacts.begin()))
+				action->setChecked(buddy.isBlocked());
+	}
 }
 
 void ChatWidgetActions::openChatActionActivated(QAction *sender, bool toggled)

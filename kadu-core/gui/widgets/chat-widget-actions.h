@@ -28,6 +28,7 @@ class QAction;
 
 class Action;
 class ActionDescription;
+class Buddy;
 
 class ChatWidgetActions : public QObject, ConfigurationAwareObject
 {
@@ -48,6 +49,7 @@ class ChatWidgetActions : public QObject, ConfigurationAwareObject
 	ActionDescription *ColorSelector;
 
 	void autoSendActionCheck();
+	void updateBlockingActions(Buddy buddy);
 
 private slots:
 	void autoSendActionCreated(Action *action);
