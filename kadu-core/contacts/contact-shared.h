@@ -48,6 +48,7 @@ class KADUAPI ContactShared : public QObject, public Shared, public DetailsHolde
 	short int MaximumImageSize;
 
 	Status CurrentStatus;
+	bool Blocking;
 
 	QString ProtocolVersion;
 
@@ -91,6 +92,7 @@ public:
 
 	KaduShared_Property(int, priority, Priority)
 	KaduShared_Property(Status, currentStatus, CurrentStatus)
+	KaduShared_PropertyBool(Blocking)
 	KaduShared_Property(QString, protocolVersion, ProtocolVersion)
 	KaduShared_Property(QHostAddress, address, Address)
 	KaduShared_Property(unsigned int, port, Port)
