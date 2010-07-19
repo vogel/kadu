@@ -1058,6 +1058,8 @@ void KaduWindowActions::onlineAndDescUsersActionActivated(QAction *sender, bool 
 	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
 	if (!window)
 		return;
+	
+	config_file.writeEntry("General", "ShowOnlineAndDescription", toggled);
 
 	QVariant v = sender->data();
 	if (v.canConvert<OnlineAndDescriptionBuddyFilter *>())
