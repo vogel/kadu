@@ -100,6 +100,8 @@ void GaduImporter::importAccounts()
 	accountDetails->import_0_6_5_LastStatus();
 
 	AccountManager::instance()->addItem(defaultGaduGadu);
+	
+	config_file.writeEntry("General", "SimpleMode", true);
 }
 
 void GaduImporter::importContacts()

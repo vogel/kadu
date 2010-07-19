@@ -41,7 +41,7 @@ void MainConfiguration::destroyInstance()
 }
 
 MainConfiguration::MainConfiguration() :
-		SimpleMode(false)
+		SimpleMode(true)
 {
 	configurationUpdated();
 }
@@ -52,7 +52,7 @@ MainConfiguration::~MainConfiguration()
 
 void MainConfiguration::configurationUpdated()
 {
-	bool simpleMode = config_file.readBoolEntry("General", "SimpleMode", false);
+	bool simpleMode = config_file.readBoolEntry("General", "SimpleMode", true);
 	if (SimpleMode != simpleMode)
 	{
 		SimpleMode = simpleMode;
