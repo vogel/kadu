@@ -92,6 +92,11 @@ bool BuddiesModelProxy::lessThan(const QModelIndex &left, const QModelIndex &rig
 	Buddy leftBuddy = SourceBuddyModel->buddyAt(left);
 	Buddy rightBuddy = SourceBuddyModel->buddyAt(right);
 
+	if (leftBuddy.isBlocked() && !rightBuddy.isBlocked())
+		return false;
+	if (!leftBuddy.isBlocked() && rightBuddy.isBlocked())
+		return true;
+
 	if (SortByStatus)
 	{
 		Account leftAccount = leftBuddy.prefferedAccount();
