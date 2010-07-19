@@ -268,7 +268,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	ShowYourAccounts = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "yourAccountsAction",
 		this, SLOT(yourAccountsActionActivated(QAction *, bool)),
-		"16x16/x-office-address-book.png", "16x16/x-office-address-book.png", tr("Manage Accounts...")
+		"16x16/x-office-address-book.png", "16x16/x-office-address-book.png", tr("Your Accounts...")
 	);
 
 	ManageModules = new ActionDescription(this,
