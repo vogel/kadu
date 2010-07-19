@@ -130,8 +130,6 @@ void ContactListService::setBuddiesList(BuddyList buddies)
 		}
 	}
 
-	MessageDialog::msg(tr("Your contact list has been successfully imported from server"), false, "Infromation");
-
 	// flush configuration to save all changes
 	ConfigurationManager::instance()->flush();
 }

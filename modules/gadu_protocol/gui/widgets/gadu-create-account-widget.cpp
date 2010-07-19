@@ -192,6 +192,13 @@ void GaduCreateAccountWidget::uinRegistered(UinType uin)
 	gaduAccount.setHasPassword(true);
 	gaduAccount.setPassword(NewPassword->text());
 	gaduAccount.setRememberPassword(RememberPassword->isChecked());
+	
+	GaduAccountDetails *details = dynamic_cast<GaduAccountDetails *>(gaduAccount.details());
+	if (details)
+	{
+		details->setState(StorableObject::StateNew);
+		details->setInitialRosterImport(true);
+	}
 
 	resetGui(); // don't need that data anymore
 

@@ -692,6 +692,16 @@ void GaduProtocol::socketConnSuccess()
 
 	statusChanged(nextStatus());
 	networkConnected();
+	
+	GaduAccountDetails *details = dynamic_cast<GaduAccountDetails *>(account().details());
+	
+	if (details && CurrentContactListService && details->initialRosterImport())
+	{
+		details->setState(StorableObject::StateNew);
+		details->setInitialRosterImport(false);
+
+		CurrentContactListService->importContactList();
+	}
 
 	// workaround about servers errors
 	if ("Invisible" == status().type())

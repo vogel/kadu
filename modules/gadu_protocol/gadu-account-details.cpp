@@ -31,7 +31,7 @@
 GaduAccountDetails::GaduAccountDetails(AccountShared *data) :
 		AccountDetails(data),
 		AllowDcc(true), DccIpDetect(true),
-		DccPort(0), DccExternalPort(0), DccLocalPort(0), RemoveCompletedTransfers(0), DccForwarding(0)
+		DccPort(0), DccExternalPort(0), DccLocalPort(0), RemoveCompletedTransfers(0), DccForwarding(0), InitialRosterImport(false)
 {
 	OpenChatRunner = new GaduOpenChatWithRunner(data);
 	OpenChatWithRunnerManager::instance()->registerRunner(OpenChatRunner);
@@ -61,6 +61,8 @@ void GaduAccountDetails::load()
 	MaximumImageSize = loadValue<short int>("MaximumImageSize", 255);
 	ReceiveImagesDuringInvisibility = loadValue<bool>("ReceiveImagesDuringInvisibility", true);
 	MaximumImageRequests = loadValue<short int>("MaximumImageRequests", 10);
+	InitialRosterImport = loadValue<bool>("InitialRosterImport", false);
+	
 
 	QHostAddress host;
 	if (!host.setAddress(loadValue<QString>("DccExternalIp")))
@@ -88,6 +90,8 @@ void GaduAccountDetails::store()
 	storeValue("MaximumImageSize", MaximumImageSize);
 	storeValue("ReceiveImagesDuringInvisibility", ReceiveImagesDuringInvisibility);
 	storeValue("MaximumImageRequests", MaximumImageRequests);
+	storeValue("InitialRosterImport", InitialRosterImport);
+	
 }
 
 void GaduAccountDetails::import_0_6_5_LastStatus()

@@ -134,7 +134,10 @@ void GaduAddAccountWidget::addAccountButtonClicked()
 
 	GaduAccountDetails *details = dynamic_cast<GaduAccountDetails *>(gaduAccount.details());
 	if (details)
+	{
 		details->setState(StorableObject::StateNew);
+		details->setInitialRosterImport(true);
+	}
 
 	emit accountCreated(gaduAccount);
 }
