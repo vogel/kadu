@@ -168,7 +168,11 @@ QVariant BuddiesModelBase::data(Contact contact, int role, bool useBuddyData) co
 			if (contact.isNull())
 				return QVariant();
 
+			// we need different icons for there two
 			if (contact.ownerBuddy().isBlocked())
+				return IconsManager::instance()->pixmapByPath("kadu_icons/kadu-blocking.png");
+
+			if (contact.isBlocking())
 				return IconsManager::instance()->pixmapByPath("kadu_icons/kadu-blocking.png");
 
 			// TODO generic icon
