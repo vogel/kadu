@@ -29,7 +29,6 @@
 #include "buddies/buddy-set.h"
 #include "buddies/buddy-shared.h"
 #include "buddies/buddy.h"
-#include "buddies/ignored-helper.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-shared.h"
 #include "identities/identity-manager.h"
@@ -150,15 +149,12 @@ void GaduImporter::importIgnored()
 	QList<QDomElement> ignoredGroups = xml_config_file->getNodes(ignored, "IgnoredGroup");
 	foreach (QDomElement ignoredGroup, ignoredGroups)
 	{
-		BuddySet ignoredList;
 		QList<QDomElement> ignoredContacts = xml_config_file->getNodes(ignoredGroup, "IgnoredContact");
 		foreach (QDomElement ignoredContact, ignoredContacts)
-			ignoredList.insert(BuddyManager::instance()->byId(account, ignoredContact.attribute("uin"), ActionCreateAndAdd));
-
-		if (0 == ignoredList.count())
-			continue;
-
-		IgnoredHelper::setIgnored(ignoredList);
+		{
+			Buddy buddy = BuddyManager::instance()->byId(account, ignoredContact.attribute("uin"), ActionCreateAndAdd);
+			buddy.setBlocked(true);
+		}
 	}
 }
 

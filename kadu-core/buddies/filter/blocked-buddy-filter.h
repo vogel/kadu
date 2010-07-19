@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2010 Piotr Galiszewski (piotrgaliszewski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,35 +17,28 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "buddies/buddy.h"
-#include "buddies/buddy-set.h"
+#ifndef BLOCKED_BUDDY_FILTER_H
+#define BLOCKED_BUDDY_FILTER_H
 
-#include "ignored-helper.h"
+#include <QtCore/QMetaType>
 
-bool IgnoredHelper::isIgnored(BuddySet buddies)
+#include "abstract-buddy-filter.h"
+
+class BlockedBuddyFilter : public AbstractBuddyFilter
 {
-	if (1 == buddies.count())
-	{
-		return (*buddies.begin()).isIgnored();
-	}
-	else
-	{
-		// TODO: 0.6.6 implement
-		// ConferenceManager::instance()->byContactList(senders)->isIgnored(true)
-		return false;
-	}
-}
+	Q_OBJECT
 
-void IgnoredHelper::setIgnored(BuddySet buddies, bool ignored)
-{
-	if (1 == buddies.count())
-	{
-		Buddy c = (*buddies.begin());
-		c.setIgnored(ignored);
-	}
-	else
-	{
-		// TODO: 0.6.6 implement
-		// ConferenceManager::instance()->byContactList(senders)->isIgnored(true)
-	}
-}
+	bool Enabled;
+
+public:
+	explicit BlockedBuddyFilter(QObject *parent = 0);
+	virtual ~BlockedBuddyFilter();
+
+	void setEnabled(bool enabled);
+	virtual bool acceptBuddy(Buddy buddy);
+
+};
+
+Q_DECLARE_METATYPE(BlockedBuddyFilter *)
+
+#endif // BLOCKED_BUDDY_FILTER_H

@@ -68,7 +68,6 @@ class KADUAPI BuddyShared : public QObject, public Shared
 	QList<Group> Groups;
 
 	bool Anonymous;
-	bool Ignored;
 	bool Blocked;
 	bool OfflineTo;
 
@@ -129,7 +128,6 @@ public:
 	KaduShared_Property(BuddyGender, gender, Gender)
 	KaduShared_Property(QList<Group>, groups, Groups)
 	KaduShared_PropertyBool(Anonymous)
-	KaduShared_PropertyBool(Ignored)
 	KaduShared_PropertyBool(Blocked)
 	KaduShared_PropertyBool(OfflineTo)
 

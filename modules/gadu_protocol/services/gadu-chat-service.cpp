@@ -25,7 +25,6 @@
 
 #include "buddies/buddy-set.h"
 #include "buddies/buddy-shared.h"
-#include "buddies/ignored-helper.h"
 #include "chat/chat-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-manager.h"
@@ -267,8 +266,10 @@ void GaduChatService::handleEventMsg(struct gg_event *e)
 
 	ContactSet conference = recipients;
 	conference += sender;
-	if (IgnoredHelper::isIgnored(conference.toBuddySet()))
-		return;
+
+	// TODO: 0.6.6 add ignoring chats, again
+// 	if (IgnoredHelper::isIgnored(conference.toBuddySet()))
+// 		return;
 
 	ContactSet chatContacts = conference;
 	chatContacts.remove(Protocol->account().accountContact());

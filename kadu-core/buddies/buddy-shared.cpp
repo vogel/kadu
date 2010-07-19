@@ -54,7 +54,7 @@ BuddyShared * BuddyShared::loadFromStorage(StoragePoint *buddyStoragePoint)
 BuddyShared::BuddyShared(QUuid uuid) :
 		QObject(BuddyManager::instance()), Shared(uuid),
 		BirthYear(0), Gender(GenderUnknown),
-		Anonymous(true), Ignored(false), Blocked(false), OfflineTo(false)
+		Anonymous(true), Blocked(false), OfflineTo(false)
 {
 }
 
@@ -166,7 +166,6 @@ void BuddyShared::load()
 	Mobile = loadValue<QString>("Mobile");
 	Email = loadValue<QString>("Email");
 	Website = loadValue<QString>("Website");
-	Ignored = loadValue<bool>("Ignored", false);
 	Blocked = loadValue<bool>("Blocked", false);
 	OfflineTo = loadValue<bool>("OfflineTo", false);
 }
@@ -203,7 +202,6 @@ void BuddyShared::store()
 	storeValue("Email", Email);
 	storeValue("Website", Website);
 	storeValue("Anonymous", Anonymous);
-	storeValue("Ignored", Ignored);
 	storeValue("Blocked", Blocked);
 	storeValue("OfflineTo", OfflineTo);
 
@@ -215,8 +213,6 @@ void BuddyShared::store()
 	}
 	else
 		configurationStorage->removeNode(parent, "ContactGroups");
-
-	configurationStorage->createTextNode(parent, "Ignored", QVariant(Ignored).toString());
 }
 
 bool BuddyShared::shouldStore()

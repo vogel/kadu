@@ -35,10 +35,10 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-shared.h"
 #include "buddies/group-manager.h"
+#include "buddies/filter/blocked-buddy-filter.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"
 #include "buddies/filter/has-description-buddy-filter.h"
-#include "buddies/filter/ignored-buddy-filter.h"
 #include "buddies/filter/offline-buddy-filter.h"
 #include "buddies/filter/online-and-description-buddy-filter.h"
 #include "core/core.h"
@@ -604,7 +604,7 @@ void KaduWindowActions::showBlockedActionCreated(Action *action)
 		return;
 
 	bool enabled = config_file.readBoolEntry("General", "ShowBlocked");
-	IgnoredBuddyFilter *ibf = new IgnoredBuddyFilter(action);
+	BlockedBuddyFilter *ibf = new BlockedBuddyFilter(action);
 	ibf->setEnabled(!enabled);
 
 	action->setData(QVariant::fromValue(ibf));
@@ -792,13 +792,12 @@ void KaduWindowActions::showBlockedActionActivated(QAction *sender, bool toggled
 		return;
 
 	QVariant v = sender->data();
-	if (v.canConvert<IgnoredBuddyFilter *>())
+	if (v.canConvert<BlockedBuddyFilter *>())
 	{
-		IgnoredBuddyFilter *ibf = v.value<IgnoredBuddyFilter *>();
-		ibf->setEnabled(!toggled);
+		BlockedBuddyFilter *bbf = v.value<BlockedBuddyFilter *>();
+		bbf->setEnabled(!toggled);
 		config_file.writeEntry("General", "ShowBlocked", toggled);
 	}
-
 }
 
 void KaduWindowActions::writeEmailActionActivated(QAction *sender, bool toggled)

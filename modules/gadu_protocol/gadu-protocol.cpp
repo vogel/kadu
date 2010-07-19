@@ -37,7 +37,6 @@
 #include "configuration/configuration-file.h"
 #include "buddies/buddy-manager.h"
 #include "contacts/contact-manager.h"
-#include "buddies/ignored-helper.h"
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/password-window.h"
 #include "protocols/protocols-manager.h"

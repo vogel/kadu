@@ -22,7 +22,6 @@
  */
 
 #include "buddies/buddy-set.h"
-#include "buddies/ignored-helper.h"
 #include "chat/chat.h"
 #include "chat/chat-manager.h"
 #include "chat/message/message.h"

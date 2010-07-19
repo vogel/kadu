@@ -29,15 +29,14 @@ set (kadu_SRCS
 	buddies/group.cpp
 	buddies/group-manager.cpp
 	buddies/group-shared.cpp
-	buddies/ignored-helper.cpp
 
 	buddies/filter/account-buddy-filter.cpp
 	buddies/filter/anonymous-buddy-filter.cpp
 	buddies/filter/anonymous-without-messages-buddy-filter.cpp
+	buddies/filter/blocked-buddy-filter.cpp
 	buddies/filter/buddy-name-filter.cpp
 	buddies/filter/group-buddy-filter.cpp
 	buddies/filter/has-description-buddy-filter.cpp
-	buddies/filter/ignored-buddy-filter.cpp
 	buddies/filter/mobile-buddy-filter.cpp
 	buddies/filter/non-account-buddy-filter.cpp
 	buddies/filter/non-buddy-filter.cpp
@@ -351,9 +350,9 @@ set (kadu_MOC_SRCS
 	buddies/filter/account-buddy-filter.h
 	buddies/filter/anonymous-buddy-filter.h
 	buddies/filter/anonymous-without-messages-buddy-filter.h
+	buddies/filter/blocked-buddy-filter.h
 	buddies/filter/group-buddy-filter.h
 	buddies/filter/has-description-buddy-filter.h
-	buddies/filter/ignored-buddy-filter.h
 	buddies/filter/mobile-buddy-filter.h
 	buddies/filter/non-account-buddy-filter.h
 	buddies/filter/non-buddy-filter.h

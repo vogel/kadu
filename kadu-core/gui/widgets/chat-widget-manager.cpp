@@ -25,7 +25,6 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "buddies/buddy-manager.h"
-#include "buddies/ignored-helper.h"
 #include "chat/message/message.h"
 #include "chat/message/message-render-info.h"
 #include "chat/message/message-shared.h"

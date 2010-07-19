@@ -19,7 +19,6 @@
 
 #include "buddies/buddy.h"
 #include "buddies/buddy-set.h"
-#include "buddies/ignored-helper.h"
 
 #include "mobile-buddy-filter.h"
 

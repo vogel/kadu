@@ -19,16 +19,19 @@
 
 #include "buddies/buddy.h"
 #include "buddies/buddy-set.h"
-#include "buddies/ignored-helper.h"
 
-#include "ignored-buddy-filter.h"
+#include "blocked-buddy-filter.h"
 
-IgnoredBuddyFilter::IgnoredBuddyFilter(QObject *parent)
-	: AbstractBuddyFilter(parent), Enabled(false)
+BlockedBuddyFilter::BlockedBuddyFilter(QObject *parent) :
+		AbstractBuddyFilter(parent), Enabled(false)
 {
 }
 
-void IgnoredBuddyFilter::setEnabled(bool enabled)
+BlockedBuddyFilter::~BlockedBuddyFilter()
+{
+}
+
+void BlockedBuddyFilter::setEnabled(bool enabled)
 {
 	if (enabled == Enabled)
 		return;
@@ -37,10 +40,10 @@ void IgnoredBuddyFilter::setEnabled(bool enabled)
 	emit filterChanged();
 }
 
-bool IgnoredBuddyFilter::acceptBuddy(Buddy buddy)
+bool BlockedBuddyFilter::acceptBuddy(Buddy buddy)
 {
 	if (!Enabled)
 		return true;
 
-	return !IgnoredHelper::isIgnored(BuddySet(buddy));
+	return !buddy.isBlocked();
 }
