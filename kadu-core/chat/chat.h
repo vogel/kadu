@@ -118,6 +118,8 @@ public:
 	 */
 	KaduSharedBase_Property(QIcon, icon, Icon);
 
+	KaduSharedBase_PropertyBool(IgnoreAllMessages);
+
 };
 
 /**
