@@ -97,23 +97,27 @@ void YourAccounts::createGui()
 {
 	QVBoxLayout *mainLayout = new QVBoxLayout(this);
 
-	QHBoxLayout *contentLayout = new QHBoxLayout;
+	QHBoxLayout *contentLayout = new QHBoxLayout();
 	mainLayout->addItem(contentLayout);
 
 	AccountsView = new QListView(this);
 	contentLayout->addWidget(AccountsView);
 	MyAccountsModel = new AccountsModel(AccountsView);
 
+	QAction *separator = new QAction(this);
+	separator-> setSeparator(true);
+
 	AddExistingAccountAction = new QAction(IconsManager::instance()->iconByPath("32x32/contact-new.png"), tr("Add existing account"), this);
 	CreateNewAccountAction = new QAction(IconsManager::instance()->iconByPath("32x32/system-users.png"), tr("Create new account"), this);
 
 	ActionsModel = new ActionsProxyModel(this);
+	ActionsModel->addAfterAction(separator);
 	ActionsModel->addAfterAction(AddExistingAccountAction);
 	ActionsModel->addAfterAction(CreateNewAccountAction);
 	ActionsModel->setSourceModel(MyAccountsModel);
 
 	AccountsView->setModel(ActionsModel);
-	AccountsView->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+	AccountsView->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
 	AccountsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	AccountsView->setIconSize(QSize(32, 32));
 	connect(AccountsView->selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),

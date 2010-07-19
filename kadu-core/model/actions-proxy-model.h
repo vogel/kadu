@@ -31,6 +31,8 @@ class ActionsProxyModel : public QAbstractProxyModel
 	QList<QAction *> BeforeActions;
 	QList<QAction *> AfterActions;
 
+	QAction * actionForIndex(const QModelIndex &index) const;
+
 private slots:
 	void sourceDataChanged(const QModelIndex &, const QModelIndex &);
 	void sourceHeaderDataChanged(Qt::Orientation, int, int);
