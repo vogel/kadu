@@ -131,6 +131,7 @@ protected:
 
 public:
 	static GADUAPI QString statusTypeFromGaduStatus(unsigned int index);
+	static GADUAPI bool isBlockingStatus(unsigned int index);
 	static GADUAPI unsigned int gaduStatusFromStatus(const Status &status);
 	Buddy searchResultToBuddy(gg_pubdir50_t res, int number);
 

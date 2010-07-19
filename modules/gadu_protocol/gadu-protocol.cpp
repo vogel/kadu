@@ -141,6 +141,11 @@ QString GaduProtocol::statusTypeFromGaduStatus(unsigned int index)
 	}
 }
 
+bool GaduProtocol::isBlockingStatus(unsigned int index)
+{
+	return GG_STATUS_BLOCKED == index;
+}
+
 unsigned int GaduProtocol::gaduStatusFromStatus(const Status &status)
 {
 	bool hasDescription = !status.description().isEmpty();
@@ -575,6 +580,7 @@ void GaduProtocol::socketContactStatusChanged(unsigned int uin, unsigned int sta
 	newStatus.setType(statusTypeFromGaduStatus(status));
 	newStatus.setDescription(description);
 	contact.setCurrentStatus(newStatus);
+	contact.setBlocking(isBlockingStatus(status));
 
 	emit contactStatusChanged(contact, oldStatus);
 }
