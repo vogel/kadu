@@ -267,14 +267,12 @@ void GaduChatService::handleEventMsg(struct gg_event *e)
 	ContactSet conference = recipients;
 	conference += sender;
 
-	// TODO: 0.6.6 add ignoring chats, again
-// 	if (IgnoredHelper::isIgnored(conference.toBuddySet()))
-// 		return;
-
 	ContactSet chatContacts = conference;
 	chatContacts.remove(Protocol->account().accountContact());
 
 	Chat chat = ChatManager::instance()->findChat(chatContacts);
+	if (chat.isIgnoreAllMessages())
+		return;
 
 	FormattedMessage message = createFormattedMessage(e, chat, sender);
 	if (message.isEmpty())

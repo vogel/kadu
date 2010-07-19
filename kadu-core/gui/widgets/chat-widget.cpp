@@ -554,9 +554,8 @@ void ChatWidget::leaveConference()
 	if (!MessageDialog::ask(tr("All messages received in this conference will be ignored\nfrom now on. Are you sure you want to leave this conference?"), "32x32/dialog-warning.png", this))
 		return;
 
-// TODO: 0.6.6
-// 	if (!IgnoredHelper::isIgnored(Contacts))
-// 		IgnoredHelper::insert(Contacts);
+	if (CurrentChat)
+		CurrentChat.setIgnoreAllMessages(true);
 
 	emit closed();
 }

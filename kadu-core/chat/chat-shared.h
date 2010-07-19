@@ -60,6 +60,7 @@ class KADUAPI ChatShared : public QObject, public Shared, public DetailsHolder<C
 	QString Type;
 	QString Title;
 	QIcon Icon;
+	bool IgnoreAllMessages;
 
 protected:
 	virtual void load();
@@ -128,6 +129,9 @@ public:
 	 * of peer, for 'conference' chats it is generic icon.
 	 */
 	KaduShared_PropertyRead(QIcon, icon, Icon)
+
+	// temporary, not stored, lost after program close
+	KaduShared_PropertyBool(IgnoreAllMessages)
 
 public slots:
 	void refreshTitle();
