@@ -31,6 +31,7 @@
 #include "contacts/contact.h"
 #include "model/roles.h"
 #include "protocols/protocol.h"
+#include "icons-manager.h"
 
 #include "buddies-model-base.h"
 
@@ -163,12 +164,18 @@ QVariant BuddiesModelBase::data(Contact contact, int role, bool useBuddyData) co
 					? contact.ownerBuddy().display()
 					: contact.id();
 		case Qt::DecorationRole:
+		{
 			if (contact.isNull())
 				return QVariant();
+
+			if (contact.ownerBuddy().isBlocked())
+				return IconsManager::instance()->pixmapByPath("kadu_icons/kadu-blocking.png");
+
 			// TODO generic icon
 			return !contact.contactAccount().isNull()
 					? contact.contactAccount().statusContainer()->statusIcon(contact.currentStatus()).pixmap(16, 16)
 					: QVariant();
+		}
 		case BuddyRole:
 			return QVariant::fromValue(contact.ownerBuddy());
 		case ContactRole:

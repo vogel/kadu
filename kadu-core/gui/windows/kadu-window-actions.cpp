@@ -357,10 +357,9 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	ShowBlockedBuddies = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "showIgnoredAction",
 		this, SLOT(showBlockedActionActivated(QAction *, bool)),
-		"", "", tr("Show Bocked Buddies"), true
+		"", "", tr("Show Blocked Buddies"), true
 	);
 	connect(ShowBlockedBuddies, SIGNAL(actionCreated(Action *)), this, SLOT(showBlockedActionCreated(Action *)));
-
 
 	CopyDescription = new ActionDescription(this,
 		ActionDescription::TypeUser, "copyDescriptionAction",
