@@ -102,14 +102,14 @@ bool BuddiesModelProxy::lessThan(const QModelIndex &left, const QModelIndex &rig
 		Account leftAccount = leftBuddy.prefferedAccount();
 		Account rightAccount = rightBuddy.prefferedAccount();
 
-		Contact leftBuddyAccountData = leftBuddy.prefferedContact();
-		Contact rightBuddyAccountData = rightBuddy.prefferedContact();
+		Contact leftContact = leftBuddy.prefferedContact();
+		Contact rightContact = rightBuddy.prefferedContact();
 
-		Status leftStatus = !leftBuddyAccountData.isNull()
-				? leftBuddyAccountData.currentStatus()
+		Status leftStatus = !leftContact.isNull()
+				? leftContact.currentStatus()
 				: Status::null;
-		Status rightStatus = !rightBuddyAccountData.isNull()
-				? rightBuddyAccountData.currentStatus()
+		Status rightStatus = !rightContact.isNull()
+				? rightContact.currentStatus()
 				: Status::null;
 
 		if (leftStatus.isDisconnected() && !rightStatus.isDisconnected())
