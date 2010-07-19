@@ -3,6 +3,7 @@
 * gadu: #1160 fixed: contacts promoted from anonymous are added to gg notifications list (Vogel)
 * gadu: #1202 fixed: "offline to" does not work (Vogel)
 * gadu: #1212 fixed: "block user" does not work (Vogel)
+* gui: #1330 fixed: envelope icon in contacts list doesn't disappear after clicking systray icon (Vogel)
 
 +++ version 0.6.6-beta3
 * jabber: proper URL handler for xmpp:// (Juzef)

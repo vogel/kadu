@@ -36,6 +36,7 @@
 #include "buddies/buddy-set.h"
 #include "buddies/model/buddies-model-proxy.h"
 #include "chat/chat-manager.h"
+#include "chat/message/pending-messages-manager.h"
 #include "configuration/configuration-file.h"
 #include "configuration/main-configuration.h"
 #include "contacts/filter/contact-no-unloaded-account-filter.h"
@@ -89,12 +90,17 @@ BuddiesListView::BuddiesListView(MainWindow *mainWindow, QWidget *parent) :
 	connect(MainConfiguration::instance(), SIGNAL(simpleModeChanged()), this, SLOT(simpleModeChanged()));
 	connect(&ToolTipTimeoutTimer, SIGNAL(timeout()), this, SLOT(toolTipTimeout()));
 	connect(this, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(doubleClickedSlot(const QModelIndex &)));
+	connect(PendingMessagesManager::instance(), SIGNAL(messageAdded(Message)), this, SLOT(update()));
+	connect(PendingMessagesManager::instance(), SIGNAL(messageRemoved(Message)), this, SLOT(update()));
 
 	simpleModeChanged();
 }
 
 BuddiesListView::~BuddiesListView()
 {
+	disconnect(PendingMessagesManager::instance(), SIGNAL(messageAdded(Message)), this, SLOT(update()));
+	disconnect(PendingMessagesManager::instance(), SIGNAL(messageRemoved(Message)), this, SLOT(update()));
+
 	if (ProxyModel->sourceModel())
 	{
 		delete ProxyModel->sourceModel();
