@@ -28,7 +28,9 @@
 #include "buddies/buddy-kadu-data.h"
 #include "buddies/buddy-list-mime-data-helper.h"
 #include "buddies/buddy-manager.h"
+#include "buddies/model/buddy-data-extractor.h"
 #include "contacts/contact.h"
+#include "contacts/model/contact-data-extractor.h"
 #include "model/roles.h"
 #include "protocols/protocol.h"
 #include "icons-manager.h"
@@ -137,74 +139,6 @@ Contact BuddiesModelBase::buddyContact(const QModelIndex &index, int accountInde
 	return contacts[accountIndex];
 }
 
-QVariant BuddiesModelBase::data(Buddy buddy, int role) const
-{
-	switch (role)
-	{
-		case Qt::DisplayRole:
-			return buddy.display();
-		case BuddyRole:
-			return QVariant::fromValue(buddy);
-		case StatusRole:
-			return QVariant::fromValue(Status::null);
-		default:
-			return QVariant();
-	}
-}
-
-QVariant BuddiesModelBase::data(Contact contact, int role, bool useBuddyData) const
-{
-	if (contact.isNull())
-		return QVariant();
-
-	switch (role)
-	{
-		case Qt::DisplayRole:
-			return useBuddyData
-					? contact.ownerBuddy().display()
-					: contact.id();
-		case Qt::DecorationRole:
-		{
-			if (contact.isNull())
-				return QVariant();
-
-			// we need different icons for there two
-			if (contact.ownerBuddy().isBlocked())
-				return IconsManager::instance()->pixmapByPath("kadu_icons/kadu-blocking.png");
-
-			if (contact.isBlocking())
-				return IconsManager::instance()->pixmapByPath("kadu_icons/kadu-blocking.png");
-
-			// TODO generic icon
-			return !contact.contactAccount().isNull()
-					? contact.contactAccount().statusContainer()->statusIcon(contact.currentStatus()).pixmap(16, 16)
-					: QVariant();
-		}
-		case BuddyRole:
-			return QVariant::fromValue(contact.ownerBuddy());
-		case ContactRole:
-			return QVariant::fromValue(contact);
-		case DescriptionRole:
-		{
-			BuddyKaduData *bkd = contact.ownerBuddy().data()->moduleStorableData<BuddyKaduData>("kadu", true);
-			if (bkd && bkd->hideDescription())
-				return QVariant();
-			return contact.currentStatus().description();
-		}
-		case StatusRole:
-			return QVariant::fromValue(contact.currentStatus());
-		case AccountRole:
-			return QVariant::fromValue(contact.contactAccount());
-		case AvatarRole:
-			if (useBuddyData && !contact.ownerBuddy().buddyAvatar().isEmpty())
-				return QVariant::fromValue(contact.ownerBuddy().buddyAvatar().pixmap());
-			else
-				return QVariant::fromValue(contact.contactAvatar().pixmap());
-		default:
-			return QVariant();
-	}
-}
-
 QVariant BuddiesModelBase::data(const QModelIndex &index, int role) const
 {
 	if (!index.isValid())
@@ -214,10 +148,12 @@ QVariant BuddiesModelBase::data(const QModelIndex &index, int role) const
 	if (!parentIndex.isValid())
 	{
 		Contact contact = buddyDefaultContact(index);
-		return !contact.isNull() ? data(contact, role, true) : data(buddyAt(index), role);
+		return !contact.isNull()
+				? ContactDataExtractor::data(contact, role, true)
+				: BuddyDataExtractor::data(buddyAt(index), role);
 	}
 	else
-		return data(buddyContact(parentIndex, index.row()), role, false);
+		return ContactDataExtractor::data(buddyContact(parentIndex, index.row()), role, false);
 }
 
 // D&D

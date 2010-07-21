@@ -45,6 +45,7 @@ set (kadu_SRCS
 	buddies/filter/online-buddy-filter.cpp
 
 	buddies/model/abstract-buddies-model.cpp
+	buddies/model/buddy-data-extractor.cpp
 	buddies/model/buddy-list-model.cpp
 	buddies/model/buddies-model.cpp
 	buddies/model/buddies-model-base.cpp
@@ -102,6 +103,7 @@ set (kadu_SRCS
 	contacts/filter/contact-no-unloaded-account-filter.cpp
 
 	contacts/model/buddy-contact-model.cpp
+	contacts/model/contact-data-extractor.cpp
 
 	core/core.cpp
 	core/core-actions.cpp
