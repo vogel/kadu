@@ -41,6 +41,7 @@
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"
 #include "contacts/contact-set.h"
+#include "contacts/model/contact-list-model.h"
 #include "core/core.h"
 #include "gui/hot-key.h"
 #include "gui/actions/action.h"
@@ -146,7 +147,7 @@ void ChatWidget::createContactsList()
 	BuddiesView = new BuddiesListView(getChatEditBox(), this);
 	BuddiesView->setItemsExpandable(false);
 	BuddiesView->setMinimumSize(QSize(30, 30));
-	BuddiesView->setModel(new BuddyListModel(CurrentChat.contacts().toBuddySet().toBuddyList(), this));
+	BuddiesView->setModel(new ContactListModel(CurrentChat.contacts().toContactList(), this));
 	BuddiesView->setRootIsDecorated(false);
 	BuddiesView->setShowAccountName(false);
 
