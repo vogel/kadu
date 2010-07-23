@@ -534,31 +534,9 @@ void JabberProtocol::changePrivateMode()
 	changeStatus();
 }
 
-QPixmap JabberProtocol::statusPixmap(Status status)
+QString JabberProtocol::statusPixmapPath()
 {
-	return StatusTypeManager::instance()->statusPixmap("xmpp", "16x16", status.type(),
-			!status.description().isEmpty(), false);
-}
-
-QPixmap JabberProtocol::statusPixmap(const QString &statusType)
-{
-	return StatusTypeManager::instance()->statusPixmap("xmpp", "16x16", statusType, false, false);
-}
-
-QIcon JabberProtocol::statusIcon(Status status)
-{
-	return StatusTypeManager::instance()->statusIcon("xmpp", status.type(),
-			!status.description().isEmpty(), false);
-}
-
-QString JabberProtocol::statusIconPath(const QString &statusType)
-{
-	return StatusTypeManager::instance()->statusIconPath("xmpp", statusType, false, false);
-}
-
-QIcon JabberProtocol::statusIcon(const QString &statusType)
-{
-	return StatusTypeManager::instance()->statusIcon("xmpp", statusType, false, false);
+	return QLatin1String("xmpp");
 }
 
 JabberContactDetails * JabberProtocol::jabberContactDetails(Contact contact) const

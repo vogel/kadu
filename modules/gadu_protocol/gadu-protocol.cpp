@@ -734,31 +734,9 @@ GaduContactDetails * GaduProtocol::gaduContactDetails(Contact contact) const
 	return dynamic_cast<GaduContactDetails *>(contact.details());
 }
 
-QPixmap GaduProtocol::statusPixmap(Status status)
+QString GaduProtocol::statusPixmapPath()
 {
-	return StatusTypeManager::instance()->statusPixmap("gadu-gadu", "16x16", status.type(),
-			!status.description().isEmpty(), false);
-}
-
-QPixmap GaduProtocol::statusPixmap(const QString &statusType)
-{
-	return StatusTypeManager::instance()->statusPixmap("gadu-gadu", "16x16", statusType, false, false);
-}
-
-QIcon GaduProtocol::statusIcon(Status status)
-{
-	return StatusTypeManager::instance()->statusIcon("gadu-gadu", status.type(),
-			!status.description().isEmpty(), false);
-}
-
-QString GaduProtocol::statusIconPath(const QString& statusType)
-{
-	return StatusTypeManager::instance()->statusIconPath("gadu-gadu", statusType, false, false);
-}
-
-QIcon GaduProtocol::statusIcon(const QString &statusType)
-{
-	return StatusTypeManager::instance()->statusIcon("gadu-gadu", statusType, false, false);
+	return QLatin1String("gadu-gadu");
 }
 
 void GaduProtocol::buddyUpdated(Buddy &buddy)

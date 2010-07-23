@@ -111,12 +111,7 @@ public:
 
 	virtual Conference * loadConferenceFromStorage(StoragePoint *storage) { return 0; }
 
-	virtual QPixmap statusPixmap(Status status);
-	virtual QPixmap statusPixmap(const QString &statusType);
-
-	virtual QIcon statusIcon(Status status);
-    virtual QString statusIconPath(const QString &statusType);
-	virtual QIcon statusIcon(const QString &statusType);
+	virtual QString statusPixmapPath();
 
 	virtual void changeStatus(Status status);
 

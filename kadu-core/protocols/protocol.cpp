@@ -36,6 +36,7 @@
 #include "icons-manager.h"
 #include "protocols/protocol-factory.h"
 #include "status/status-changer-manager.h"
+#include "status/status-type-manager.h"
 #include "status/status.h"
 #include "debug.h"
 
@@ -131,4 +132,31 @@ void Protocol::networkStateChanged(NetworkState state)
 			emit disconnected(CurrentAccount);
 			break;
 	}
+}
+
+QPixmap Protocol::statusPixmap(Status status)
+{
+	return StatusTypeManager::instance()->statusPixmap(statusPixmapPath(), "16x16", status.type(),
+			!status.description().isEmpty(), false);
+}
+
+QPixmap Protocol::statusPixmap(const QString &statusType)
+{
+	return StatusTypeManager::instance()->statusPixmap(statusPixmapPath(), "16x16", statusType, false, false);
+}
+
+QIcon Protocol::statusIcon(Status status)
+{
+	return StatusTypeManager::instance()->statusIcon(statusPixmapPath(), status.type(),
+			!status.description().isEmpty(), false);
+}
+
+QString Protocol::statusIconPath(const QString& statusType)
+{
+	return StatusTypeManager::instance()->statusIconPath(statusPixmapPath(), statusType, false, false);
+}
+
+QIcon Protocol::statusIcon(const QString &statusType)
+{
+	return StatusTypeManager::instance()->statusIcon(statusPixmapPath(), statusType, false, false);
 }

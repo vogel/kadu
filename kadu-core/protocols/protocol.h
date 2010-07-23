@@ -122,13 +122,15 @@ public:
 	void setPrivateMode(bool privateMode);
 	bool privateMode() { return PrivateMode; }
 
-	virtual QPixmap statusPixmap(Status status) = 0;
-	virtual QPixmap statusPixmap(const QString &statusType) = 0;
+	virtual QString statusPixmapPath() = 0;
+
+	virtual QPixmap statusPixmap(Status status);
+	virtual QPixmap statusPixmap(const QString &statusType);
 	QPixmap statusPixmap() { return statusPixmap(CurrentStatus); }
 	
-	virtual QIcon statusIcon(Status status) = 0;
-	virtual QString statusIconPath(const QString &statusType) = 0;
-	virtual QIcon statusIcon(const QString &statusType) = 0;
+	virtual QIcon statusIcon(Status status);
+	virtual QString statusIconPath(const QString &statusType);
+	virtual QIcon statusIcon(const QString &statusType);
 	QIcon statusIcon() { return statusIcon(CurrentStatus); }
 
 	QIcon icon();
