@@ -63,6 +63,10 @@
 
 #include "kadu-window.h"
 
+#ifdef Q_OS_MAC
+extern void qt_mac_set_menubar_icons(bool enable);
+#endif
+
 KaduWindow::KaduWindow(QWidget *parent) :
 		MainWindow(parent), Docked(false)
 {
@@ -160,6 +164,9 @@ void KaduWindow::createGui()
 
 void KaduWindow::createMenu()
 {
+#ifdef Q_OS_MAC
+	qt_mac_set_menubar_icons(false);
+#endif
 	createKaduMenu();
 	createContactsMenu();
 	createHelpMenu();
