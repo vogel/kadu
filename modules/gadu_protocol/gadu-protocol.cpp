@@ -766,6 +766,9 @@ void GaduProtocol::buddyUpdated(Buddy &buddy)
 
 void GaduProtocol::contactAttached(Contact contact)
 {
+	if (!ContactListHandler)
+		return;
+
 	if (contact.contactAccount() != account())
 		return;
 
@@ -774,6 +777,9 @@ void GaduProtocol::contactAttached(Contact contact)
 
 void GaduProtocol::contactAboutToBeDetached(Contact contact)
 {
+	if (!ContactListHandler)
+		return;
+
 	if (contact.contactAccount() != account())
 		return;
 
@@ -782,6 +788,9 @@ void GaduProtocol::contactAboutToBeDetached(Contact contact)
 
 void GaduProtocol::contactIdChanged(Contact contact, const QString &oldId)
 {
+	if (!ContactListHandler)
+		return;
+
 	if (contact.contactAccount() != account())
 		return;
 
