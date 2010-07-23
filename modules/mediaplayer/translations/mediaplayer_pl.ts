@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="1.1" language="pl">
-<defaultcodec></defaultcodec>
+<!DOCTYPE TS>
+<TS version="2.0" language="pl">
 <context>
     <name>@default</name>
     <message>
@@ -13,10 +13,6 @@
     </message>
     <message>
         <source>General</source>
-        <translation>Ogólne</translation>
-    </message>
-    <message>
-        <source>General settings</source>
         <translation>Ogólne</translation>
     </message>
     <message>
@@ -52,16 +48,8 @@
         <translation>Podaj format, który zastąpi frazę &apos;#{player}&apos; użytą w statusie opisowym.</translation>
     </message>
     <message>
-        <source>Signatures cutting</source>
-        <translation>Usuwanie sygnatur</translation>
-    </message>
-    <message>
         <source>Enable</source>
         <translation>Włącz</translation>
-    </message>
-    <message>
-        <source>Shall I cut thise crap?</source>
-        <translation>Usunąć sygnatury?</translation>
     </message>
     <message>
         <source>Signatures to cut</source>
@@ -70,10 +58,6 @@
     <message>
         <source>Crap to cut</source>
         <translation>Sygnatury, które zostaną usunięte</translation>
-    </message>
-    <message>
-        <source>Other settings</source>
-        <translation>Inne</translation>
     </message>
     <message>
         <source>Enable pseudo-OSD</source>
@@ -86,20 +70,6 @@
     <message>
         <source>Enable MediaPlayer keyboard shortcuts in chat window</source>
         <translation>Włącz skróty klawiaturowe MediaPlayer w oknie rozmowy</translation>
-    </message>
-    <message>
-        <source>With this option enabled you&apos;ll be able to control
-your MediaPlayer in chat window by keyboard shortcuts:
-Win+ Enter/Backspace/Left/Right/Up/Down.</source>
-        <translation>Po włączeniu tej opcji staje się możliwa kontrola odtwarzacza w oknie rozmowy za pomocą skrótów klawiaturowych:
-Win+Enter/Backspace/Lewo/Prawo/Góra/Dół.</translation>
-    </message>
-    <message>
-        <source>With this option enabled you&apos;ll be able to control
-your MediaPlayer in chat window by keyboard shortcuts:
-Control+ Enter/Backspace/Left/Right/Up/Down.</source>
-        <translation>Po włączeniu tej opcji staje się możliwa kontrola odtwarzacza w oknie rozmowy za pomocą skrótów klawiaturowych:
-Control+Enter/Backspace/Lewo/Prawo/Góra/Dół.</translation>
     </message>
     <message>
         <source>Put statuses switch to dock menu</source>
@@ -120,6 +90,30 @@ Control+Enter/Backspace/Lewo/Prawo/Góra/Dół.</translation>
     <message>
         <source>Enable this to put MediaPlayer statuses switch into docked icon menu.</source>
         <translation>Dodaj przełącznik statusów MediaPlayer do menu dokowania.</translation>
+    </message>
+    <message>
+        <source>With this option enabled you&apos;ll be able to control
+your MediaPlayer in chat window by keyboard shortcuts:
+Control+ Enter/Backspace/Left/Right/Up/Down.Win+ Enter/Backspace/Left/Right/Up/Down.</source>
+        <translation>Po włączeniu tej opcji będziesz móc kontrolować
+swój odtwarzacz z okna rozmowy za pomocą następujących skrótów:
+Control+ Enter/Backspace/Left/Right/Up/Down.Win+ Enter/Backspace/Left/Right/Up/Down.</translation>
+    </message>
+    <message>
+        <source>General Settings</source>
+        <translation>Ogólne ustawienia</translation>
+    </message>
+    <message>
+        <source>Signature Cutting</source>
+        <translation>Usuwanie sygnatur</translation>
+    </message>
+    <message>
+        <source>Shall I cut this crap?</source>
+        <translation>Czy mam obciąc ten fragment?</translation>
+    </message>
+    <message>
+        <source>Other Settings</source>
+        <translation>Inne ustawienia</translation>
     </message>
 </context>
 <context>
@@ -171,6 +165,38 @@ Control+Enter/Backspace/Lewo/Prawo/Góra/Dół.</translation>
     <message>
         <source>MediaPlayer</source>
         <translation>MediaPlayer</translation>
+    </message>
+    <message>
+        <source>Enable MediaPlayer Statuses</source>
+        <translation>Włącz statusy Media Playera</translation>
+    </message>
+    <message>
+        <source>Play</source>
+        <translation>Odtwarzaj</translation>
+    </message>
+    <message>
+        <source>Stop</source>
+        <translation>Zatrzymaj</translation>
+    </message>
+    <message>
+        <source>Previous Track</source>
+        <translation>Poprzedni</translation>
+    </message>
+    <message>
+        <source>Next Track</source>
+        <translation>Następny</translation>
+    </message>
+    <message>
+        <source>Volume Up</source>
+        <translation>Zgłośnij</translation>
+    </message>
+    <message>
+        <source>Volume Down</source>
+        <translation>Ścisz</translation>
+    </message>
+    <message>
+        <source>Pause</source>
+        <translation>Pauza</translation>
     </message>
 </context>
 </TS>

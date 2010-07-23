@@ -220,11 +220,24 @@ QModelIndex ActionsProxyModel::index(int row, int column, const QModelIndex &par
 	return createIndex(row, column, 0);
 }
 
-QModelIndex ActionsProxyModel::parent(const QModelIndex &child) const
+QModelIndex ActionsProxyModel::parent(const QModelIndex &index) const
 {
-	Q_UNUSED(child)
+	Q_UNUSED(index)
 
 	return QModelIndex(); // no parent, only plain list
+}
+
+QAction * ActionsProxyModel::actionForIndex(const QModelIndex &index) const
+{
+	int beforeIndex = index.row();
+	int afterIndex = index.row() - BeforeActions.count() - sourceModel()->rowCount(QModelIndex());
+
+	if (beforeIndex >= 0 && beforeIndex < BeforeActions.count())
+		return BeforeActions[index.row()];
+	else if (afterIndex >= 0 && afterIndex < AfterActions.count())
+		return AfterActions[afterIndex];
+
+	return 0;
 }
 
 Qt::ItemFlags ActionsProxyModel::flags(const QModelIndex &index) const
@@ -233,21 +246,18 @@ Qt::ItemFlags ActionsProxyModel::flags(const QModelIndex &index) const
 	if (QModelIndex() != sourceIndex)
 		return sourceModel()->flags(sourceIndex);
 
+	QAction *action = actionForIndex(index);
+	if (!action || action->isSeparator())
+		return Qt::ItemFlags();
+
 	return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
 }
 
 QVariant ActionsProxyModel::data(const QModelIndex &proxyIndex, int role) const
 {
-	QAction *action;
+	QAction *action = actionForIndex(proxyIndex);
 
-	int beforeIndex = proxyIndex.row();
-	int afterIndex = proxyIndex.row() - BeforeActions.count() - sourceModel()->rowCount(QModelIndex());
-
-	if (beforeIndex >= 0 && beforeIndex < BeforeActions.count())
-		action = BeforeActions[proxyIndex.row()];
-	else if (afterIndex >= 0 && afterIndex < AfterActions.count())
-		action = AfterActions[afterIndex];
-	else
+	if (!action)
 		return sourceModel()->data(mapToSource(proxyIndex), role);
 
 	switch (role)

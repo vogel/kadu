@@ -70,7 +70,7 @@ FileTransferActions::FileTransferActions(QObject *parent)
 		disableNonFileTransferContacts
 	);
 	SendFileActionDescription->setShortcut("kadu_sendfile");
-	BuddiesListViewMenuManager::instance()->insertActionDescription(2, SendFileActionDescription);
+	BuddiesListViewMenuManager::instance()->insertActionDescription(3, SendFileActionDescription);
 
 	FileTransferWindowActionDescription = new ActionDescription(0,
 		ActionDescription::TypeMainMenu, "sendFileWindowAction",
@@ -98,11 +98,11 @@ void FileTransferActions::sendFileActionActivated(QAction *sender, bool toggled)
 
 	kdebugf();
 
-	MainWindow *kaduMainWindow = dynamic_cast<MainWindow *>(sender->parent());
-	if (!kaduMainWindow)
+	Action *action = dynamic_cast<Action *>(sender);
+	if (!action)
 		return;
 
-	ContactSet contacts = kaduMainWindow->contacts();
+	ContactSet contacts = action->contacts();
 	if (contacts.count())
 		selectFilesAndSend(contacts);
 

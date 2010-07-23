@@ -208,11 +208,11 @@ void KaduWindow::createContactsMenu()
 //	insertMenuActionDescription(ChatWidgetManager::instance()->actions()->openChatWith(), MenuContacts);
 	ContactsMenu->addSeparator();
 
-	insertMenuActionDescription(Actions->ManageIgnored, MenuContacts);
+	insertMenuActionDescription(Actions->ManageBlocked, MenuContacts);
 
 	ContactsMenu->addSeparator();
 	insertMenuActionDescription(Actions->InactiveUsers, MenuContacts);
-	insertMenuActionDescription(Actions->ShowIgnoredBuddies, MenuContacts);
+	insertMenuActionDescription(Actions->ShowBlockedBuddies, MenuContacts);
 	insertMenuActionDescription(Actions->ShowInfoPanel, MenuContacts);
 
 	menuBar()->addMenu(ContactsMenu);
@@ -366,7 +366,7 @@ BuddySet KaduWindow::buddies()
 	return ContactsWidget->view()->selectedBuddies();
 }
 
-Chat  KaduWindow::chat()
+Chat KaduWindow::chat()
 {
 	return ContactsWidget->view()->currentChat();
 }
@@ -400,7 +400,7 @@ void KaduWindow::insertMenuActionDescription(ActionDescription *actionDescriptio
 	kdebugf();
 	if (!actionDescription)
 		return;
-	Action *action = actionDescription->createAction(this);
+	Action *action = actionDescription->createAction(this, this);
 
 	QMenu *menu = 0;
 

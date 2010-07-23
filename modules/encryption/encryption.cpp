@@ -120,8 +120,8 @@ EncryptionManager::EncryptionManager(bool firstLoad)
 
 	connect(gadu, SIGNAL(rawGaduReceivedMessageFilter(Protocol *, UserListElements, QString&, QByteArray&, bool&)),
 			this, SLOT(decryptMessage(Protocol *, UserListElements, QString&, QByteArray&, bool&)));
-	connect(gadu, SIGNAL(sendMessageFiltering(const UserListElements, QByteArray &, bool &)),
-			this, SLOT(sendMessageFilter(const UserListElements, QByteArray &, bool &)));
+	connect(gadu, SIGNAL(filterOutgoingMessage(const UserListElements, QByteArray &, bool &)),
+			this, SLOT(filterOutgoingMessage(const UserListElements, QByteArray &, bool &)));
 
 	encryptionActionDescription = new ActionDescription(
                 	ActionDescription::TypeChat, "encryptionAction",

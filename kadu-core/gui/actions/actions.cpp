@@ -45,7 +45,7 @@ QAction * Actions::createAction(const QString &name, MainWindow *kaduMainWindow)
 	if (!contains(name))
 		return 0;
 
-	Action *result = (*this)[name]->createAction(kaduMainWindow);
+	Action *result = (*this)[name]->createAction(kaduMainWindow, kaduMainWindow);
 	kaduMainWindow->actionAdded(result);
 
 	emit actionCreated(result);

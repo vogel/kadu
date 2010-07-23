@@ -129,7 +129,11 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("Chat", "BlinkChatTitle", true);
 	config_file.addVariable("Chat", "ChatCloseTimer", true);
 	config_file.addVariable("Chat", "ChatCloseTimerPeriod", 2);
+#ifdef Q_WS_MAEMO_5
+	config_file.addVariable("Chat", "ChatPrune", true);
+#else
 	config_file.addVariable("Chat", "ChatPrune", false);
+#endif
 	config_file.addVariable("Chat", "ChatPruneLen", 20);
 	config_file.addVariable("Chat", "ConfirmChatClear", true);
 	config_file.addVariable("Chat", "EmoticonsPaths", "");

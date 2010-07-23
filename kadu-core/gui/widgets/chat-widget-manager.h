@@ -116,6 +116,9 @@ public slots:
 
 	void sendMessage(Chat chat);
 
+	void closeChat(Chat chat);
+	void closeAllChats(Buddy buddy);
+
 	/**
 		\fn void closeAllWindows()
 		Funkcja zamyka wszystkie okna chat

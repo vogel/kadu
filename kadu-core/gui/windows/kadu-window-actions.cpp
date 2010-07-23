@@ -35,10 +35,10 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-shared.h"
 #include "buddies/group-manager.h"
+#include "buddies/filter/blocked-buddy-filter.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"
 #include "buddies/filter/has-description-buddy-filter.h"
-#include "buddies/filter/ignored-buddy-filter.h"
 #include "buddies/filter/offline-buddy-filter.h"
 #include "buddies/filter/online-and-description-buddy-filter.h"
 #include "core/core.h"
@@ -268,7 +268,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	ShowYourAccounts = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "yourAccountsAction",
 		this, SLOT(yourAccountsActionActivated(QAction *, bool)),
-		"16x16/x-office-address-book.png", "16x16/x-office-address-book.png", tr("Manage Accounts...")
+		"16x16/x-office-address-book.png", "16x16/x-office-address-book.png", tr("Your Accounts...")
 	);
 
 	ManageModules = new ActionDescription(this,
@@ -305,10 +305,10 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		"16x16/edit-find.png", "16x16/edit-find.png", tr("Search for Buddy...")
 	);
 
-	ManageIgnored = new ActionDescription(this,
+	ManageBlocked = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "manageIgnoredAction",
-		this, SLOT(manageIgnoredActionActivated(QAction *, bool)),
-		"kadu_icons/kadu-manageignored.png", "kadu_icons/kadu-manageignored.png", tr("Ignored Buddies...")
+		this, SLOT(manageBlockedActionActivated(QAction *, bool)),
+		"kadu_icons/kadu-blocking.png", "kadu_icons/kadu-blocking.png", tr("Blocked Buddies...")
 	);
 
 	Help = new ActionDescription(this,
@@ -353,14 +353,13 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		"", "", tr("Show Information Panel"), true
 	);
 	connect(ShowInfoPanel, SIGNAL(actionCreated(Action *)), this, SLOT(showInfoPanelActionCreated(Action *)));
-// TODO 0.6.6: icon
-	ShowIgnoredBuddies = new ActionDescription(this,
-		ActionDescription::TypeMainMenu, "showIgnoredAction",
-		this, SLOT(showIgnoredActionActivated(QAction *, bool)),
-		"", "", tr("Show Ignored Buddies"), true
-	);
-	connect(ShowIgnoredBuddies, SIGNAL(actionCreated(Action *)), this, SLOT(showIgnoredActionCreated(Action *)));
 
+	ShowBlockedBuddies = new ActionDescription(this,
+		ActionDescription::TypeMainMenu, "showIgnoredAction",
+		this, SLOT(showBlockedActionActivated(QAction *, bool)),
+		"", "", tr("Show Blocked Buddies"), true
+	);
+	connect(ShowBlockedBuddies, SIGNAL(actionCreated(Action *)), this, SLOT(showBlockedActionCreated(Action *)));
 
 	CopyDescription = new ActionDescription(this,
 		ActionDescription::TypeUser, "copyDescriptionAction",
@@ -461,7 +460,6 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	);
 	BuddiesListViewMenuManager::instance()->addActionDescription(MergeContact);
 
-	BuddiesListViewMenuManager::instance()->addActionDescription(ChatWidgetManager::instance()->actions()->ignoreUser());
 	BuddiesListViewMenuManager::instance()->addActionDescription(ChatWidgetManager::instance()->actions()->blockUser());
 
 	DeleteUsers = new ActionDescription(this,
@@ -560,17 +558,13 @@ void KaduWindowActions::onlineAndDescUsersActionCreated(Action *action)
 
 void KaduWindowActions::editUserActionCreated(Action *action)
 {
-	MainWindow *window = dynamic_cast<MainWindow *>(action->parent());
-	if (!window)
-		return;
-
-	if (!window->contact())
+	if (!action->contact())
 	{
 		action->setEnabled(false);
 		return;
 	}
 
-	Buddy buddy = window->contact().ownerBuddy();
+	Buddy buddy = action->buddy();
 	if (buddy.isAnonymous())
 	{
 		action->setIcon(IconsManager::instance()->iconByPath("16x16/contact-new.png"));
@@ -596,7 +590,7 @@ void KaduWindowActions::showInfoPanelActionCreated(Action *action)
 	action->setChecked(config_file.readBoolEntry("Look", "ShowInfoPanel"));
 }
 
-void KaduWindowActions::showIgnoredActionCreated(Action *action)
+void KaduWindowActions::showBlockedActionCreated(Action *action)
 {
 	MainWindow *window = qobject_cast<MainWindow *>(action->parent());
 	if (!window)
@@ -605,7 +599,7 @@ void KaduWindowActions::showIgnoredActionCreated(Action *action)
 		return;
 
 	bool enabled = config_file.readBoolEntry("General", "ShowBlocked");
-	IgnoredBuddyFilter *ibf = new IgnoredBuddyFilter(action);
+	BlockedBuddyFilter *ibf = new BlockedBuddyFilter(action);
 	ibf->setEnabled(!enabled);
 
 	action->setData(QVariant::fromValue(ibf));
@@ -654,12 +648,12 @@ void KaduWindowActions::addUserActionActivated(QAction *sender, bool toggled)
 
 	kdebugf();
 
-	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
-	if (!window)
+	Action *action = dynamic_cast<Action *>(sender);
+	if (!action)
 		return;
 
-	Buddy buddy = window->contact().ownerBuddy();
-	AddBuddyWindow *addBuddyWindow = new AddBuddyWindow(window);
+	Buddy buddy = action->buddy();
+	AddBuddyWindow *addBuddyWindow = new AddBuddyWindow(action->parentWidget());
 
 	if (buddy.isAnonymous())
 		addBuddyWindow->setBuddy(buddy);
@@ -675,14 +669,14 @@ void KaduWindowActions::mergeContactActionActivated(QAction *sender, bool toggle
 
 	kdebugf();
 
-	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
-	if (!window)
+	Action *action = dynamic_cast<Action *>(sender);
+	if (!action)
 		return;
 
-	Buddy buddy = window->contact().ownerBuddy();
-	if (!buddy.isNull())
+	Buddy buddy = action->buddy();
+	if (buddy)
 	{
-		MergeBuddiesWindow *mergeBuddiesWindow = new MergeBuddiesWindow(buddy, window);
+		MergeBuddiesWindow *mergeBuddiesWindow = new MergeBuddiesWindow(buddy, sender->parentWidget());
 		mergeBuddiesWindow->show();
 	}
 
@@ -694,7 +688,7 @@ void KaduWindowActions::addGroupActionActivated(QAction *sender, bool toggled)
 	Q_UNUSED(toggled)
 
 	bool ok;
-	QString newGroupName = QInputDialog::getText(dynamic_cast<QWidget *>(sender->parent()), tr("New Group"),
+	QString newGroupName = QInputDialog::getText(sender->parentWidget(), tr("New Group"),
 				tr("Please enter the name for the new group:"), QLineEdit::Normal,
 				QString::null, &ok);
 
@@ -706,14 +700,14 @@ void KaduWindowActions::openSearchActionActivated(QAction *sender, bool toggled)
 {
 	Q_UNUSED(toggled)
 
-	(new SearchWindow(dynamic_cast<QWidget *>(sender->parent())))->show();
+	(new SearchWindow(sender->parentWidget()))->show();
 }
 
-void KaduWindowActions::manageIgnoredActionActivated(QAction *sender, bool toggled)
+void KaduWindowActions::manageBlockedActionActivated(QAction *sender, bool toggled)
 {
 	Q_UNUSED(toggled)
 
-	(new Ignored(dynamic_cast<QWidget *>(sender->parent())))->show();
+	(new Ignored(sender->parentWidget()))->show();
 }
 
 void KaduWindowActions::helpActionActivated(QAction *sender, bool toggled)
@@ -786,20 +780,15 @@ void KaduWindowActions::showInfoPanelActionActivated(QAction *sender, bool toggl
 	config_file.writeEntry("Look", "ShowInfoPanel", toggled);
 }
 
-void KaduWindowActions::showIgnoredActionActivated(QAction *sender, bool toggled)
+void KaduWindowActions::showBlockedActionActivated(QAction *sender, bool toggled)
 {
-	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
-	if (!window)
-		return;
-
 	QVariant v = sender->data();
-	if (v.canConvert<IgnoredBuddyFilter *>())
+	if (v.canConvert<BlockedBuddyFilter *>())
 	{
-		IgnoredBuddyFilter *ibf = v.value<IgnoredBuddyFilter *>();
-		ibf->setEnabled(!toggled);
+		BlockedBuddyFilter *bbf = v.value<BlockedBuddyFilter *>();
+		bbf->setEnabled(!toggled);
 		config_file.writeEntry("General", "ShowBlocked", toggled);
 	}
-
 }
 
 void KaduWindowActions::writeEmailActionActivated(QAction *sender, bool toggled)
@@ -808,12 +797,12 @@ void KaduWindowActions::writeEmailActionActivated(QAction *sender, bool toggled)
 
 	kdebugf();
 
-	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
-	if (!window)
+	Action *action = dynamic_cast<Action *>(sender);
+	if (!action)
 		return;
 
-	Buddy buddy = window->contact().ownerBuddy();
-	if (buddy.isNull())
+	Buddy buddy = action->buddy();
+	if (!buddy)
 		return;
 
 	if (!buddy.email().isEmpty())
@@ -828,13 +817,13 @@ void KaduWindowActions::copyDescriptionActionActivated(QAction *sender, bool tog
 
 	kdebugf();
 
-	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
-	if (!window)
+	Action *action = dynamic_cast<Action *>(sender);
+	if (!action)
 		return;
 
-	Contact data = window->contact();
+	Contact data = action->contact();
 
-	if (data.isNull())
+	if (!data)
 		return;
 
 	QString description = data.currentStatus().description();
@@ -853,13 +842,13 @@ void KaduWindowActions::openDescriptionLinkActionActivated(QAction *sender, bool
 
 	kdebugf();
 
-	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
-	if (!window)
+	Action *action = dynamic_cast<Action *>(sender);
+	if (!action)
 		return;
 
-	Contact data = window->contact();
+	Contact data = action->contact();
 
-	if (data.isNull())
+	if (!data)
 		return;
 
 	QString description = data.currentStatus().description();
@@ -880,11 +869,11 @@ void KaduWindowActions::copyPersonalInfoActionActivated(QAction *sender, bool to
 
 	kdebugf();
 
-	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
-	if (!window)
+	Action *action = dynamic_cast<Action *>(sender);
+	if (!action)
 		return;
 
-	ContactSet contacts = window->contacts();
+	ContactSet contacts = action->contacts();
 
 	QStringList infoList;
 	QString copyPersonalDataSyntax = config_file.readEntry("General", "CopyPersonalDataSyntax", tr("Contact: %a[ (%u)]\n[First name: %f\n][Last name: %r\n][Mobile: %m\n]"));
@@ -907,12 +896,12 @@ void KaduWindowActions::lookupInDirectoryActionActivated(QAction *sender, bool t
 
 	kdebugf();
 
-	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
-	if (!window)
+	Action *action = dynamic_cast<Action *>(sender);
+	if (!action)
 		return;
 
-	Buddy buddy = window->contact().ownerBuddy();
-	if (buddy.isNull())
+	Buddy buddy = action->buddy();
+	if (!buddy)
 		return;
 
 	SearchWindow *sd = new SearchWindow(Core::instance()->kaduWindow(), buddy);
@@ -938,11 +927,11 @@ void KaduWindowActions::offlineToUserActionActivated(QAction *sender, bool toggl
 // 		}
 	}
 
-	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
-	if (!window)
+	Action *action = dynamic_cast<Action *>(sender);
+	if (!action)
 		return;
 
-	BuddySet buddies = window->buddies();
+	BuddySet buddies = action->buddies();
 	bool on = true;
 	foreach (const Buddy buddy, buddies)
 		if (!buddy.isOfflineTo())
@@ -970,11 +959,11 @@ void KaduWindowActions::hideDescriptionActionActivated(QAction *sender, bool tog
 {
 	kdebugf();
 
-	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
-	if (!window)
+	Action *action = dynamic_cast<Action *>(sender);
+	if (!action)
 		return;
 
-	BuddySet buddies = window->buddies();
+	BuddySet buddies = action->buddies();
 
 	foreach (const Buddy &buddy, buddies)
 	{
@@ -1029,10 +1018,6 @@ void KaduWindowActions::deleteUserActionActivated(MainWindow* window, bool toggl
 
 void KaduWindowActions::inactiveUsersActionActivated(QAction *sender, bool toggled)
 {
-	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
-	if (!window)
-		return;
-
 	QVariant v = sender->data();
 	if (v.canConvert<OfflineBuddyFilter *>())
 	{
@@ -1044,10 +1029,6 @@ void KaduWindowActions::inactiveUsersActionActivated(QAction *sender, bool toggl
 
 void KaduWindowActions::descriptionUsersActionActivated(QAction *sender, bool toggled)
 {
-	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
-	if (!window)
-		return;
-
 	QVariant v = sender->data();
 	if (v.canConvert<HasDescriptionBuddyFilter *>())
 	{
@@ -1058,9 +1039,7 @@ void KaduWindowActions::descriptionUsersActionActivated(QAction *sender, bool to
 
 void KaduWindowActions::onlineAndDescUsersActionActivated(QAction *sender, bool toggled)
 {
-	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
-	if (!window)
-		return;
+	config_file.writeEntry("General", "ShowOnlineAndDescription", toggled);
 
 	QVariant v = sender->data();
 	if (v.canConvert<OnlineAndDescriptionBuddyFilter *>())
@@ -1076,22 +1055,22 @@ void KaduWindowActions::editUserActionActivated(QAction *sender, bool toggled)
 
 	kdebugf();
 
-	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
-	if (!window)
+	Action *action = dynamic_cast<Action *>(sender);
+	if (!action)
 		return;
 
-	Buddy buddy = window->contact().ownerBuddy();
-	if (buddy.isNull())
-		buddy = BuddyManager::instance()->byContact(window->contact(), ActionCreateAndAdd);
+	Buddy buddy = action->buddy();
+	if (!buddy)
+		buddy = BuddyManager::instance()->byContact(action->contact(), ActionCreateAndAdd);
 
 	if (buddy.isAnonymous())
 	{
-		AddBuddyWindow *addBuddyWindow = new AddBuddyWindow(window);
+		AddBuddyWindow *addBuddyWindow = new AddBuddyWindow(sender->parentWidget());
 		addBuddyWindow->setBuddy(buddy);
 		addBuddyWindow->show();
 	}
 	else
-		(new BuddyDataWindow(buddy, window))->show();
+		(new BuddyDataWindow(buddy, sender->parentWidget()))->show();
 
 	kdebugf2();
 }
@@ -1132,8 +1111,8 @@ void KaduWindowActions::configurationUpdated()
 	if (InactiveUsers->action(Core::instance()->kaduWindow())->isChecked() != config_file.readBoolEntry("General", "ShowOffline"))
 		InactiveUsers->action(Core::instance()->kaduWindow())->trigger();
 
-	if (ShowIgnoredBuddies->action(Core::instance()->kaduWindow())->isChecked() != config_file.readBoolEntry("General", "ShowBlocked"))
-		ShowIgnoredBuddies->action(Core::instance()->kaduWindow())->trigger();
+	if (ShowBlockedBuddies->action(Core::instance()->kaduWindow())->isChecked() != config_file.readBoolEntry("General", "ShowBlocked"))
+		ShowBlockedBuddies->action(Core::instance()->kaduWindow())->trigger();
 
 }
 

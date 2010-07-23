@@ -34,7 +34,6 @@
 #include "accounts/account.h"
 #include "contacts/contact-manager.h"
 #include "buddies/buddy-set.h"
-#include "buddies/ignored-helper.h"
 #include "configuration/configuration-file.h"
 #include "debug.h"
 #include "misc/misc.h"
@@ -116,7 +115,7 @@ void GaduProtocolSocketNotifiers::handleEventMsg(struct gg_event *e)
 			return; // we don't support dcc connections now
 
 		if (config_file.readBoolEntry("Network", "AllowDCC") &&
-				!IgnoredHelper::isIgnored(BuddySet(sender)) &&
+				!sender.isBlocked() &&
 				!sender.isAnonymous())
 			CurrentProtocol->dccManager()->connectionRequestReceived(contact);
 

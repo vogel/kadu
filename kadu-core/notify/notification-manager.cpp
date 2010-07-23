@@ -144,11 +144,11 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 
 	kdebugf();
 
-	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
-	if (!window)
+	Action *action = dynamic_cast<Action *>(sender);
+	if (!action)
 		return;
 
-	BuddySet buddies = window->contacts().toBuddySet();
+	BuddySet buddies = action->buddies();
 
 	bool on = true;
 	foreach (const Buddy buddy, buddies)

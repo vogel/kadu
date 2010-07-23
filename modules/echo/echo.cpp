@@ -84,8 +84,8 @@ void Echo::accountRegistered(Account account)
 	ChatService *chatService = protocol->chatService();
 	if (chatService)
 	{
-		connect(chatService, SIGNAL(receivedMessageFilter(Chat, Contact, const QString &, time_t, bool &)),
-				this, SLOT(receivedMessageFilter(Chat, Contact, const QString &, time_t, bool &)));
+		connect(chatService, SIGNAL(filterIncomingMessage(Chat, Contact, const QString &, time_t, bool &)),
+				this, SLOT(filterIncomingMessage(Chat, Contact, const QString &, time_t, bool &)));
 	}
 	kdebugf2();
 }
@@ -103,13 +103,13 @@ void Echo::accountUnregistered(Account account)
 	ChatService *chatService = protocol->chatService();
 	if (chatService)
 	{
-		disconnect(chatService, SIGNAL(receivedMessageFilter(Chat, Contact, const QString &, time_t, bool &)),
-				this, SLOT(receivedMessageFilter(Chat, Contact, const QString &, time_t, bool &)));
+		disconnect(chatService, SIGNAL(filterIncomingMessage(Chat, Contact, const QString &, time_t, bool &)),
+				this, SLOT(filterIncomingMessage(Chat, Contact, const QString &, time_t, bool &)));
 	}
 	kdebugf2();
 }
 
-void Echo::receivedMessageFilter(Chat chat, Contact sender, const QString &message, time_t time, bool &ignore)
+void Echo::filterIncomingMessage(Chat chat, Contact sender, const QString &message, time_t time, bool &ignore)
 {
 	Q_UNUSED(time)
 	Q_UNUSED(ignore)

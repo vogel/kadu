@@ -28,6 +28,7 @@ class QAction;
 
 class Action;
 class ActionDescription;
+class Buddy;
 
 class ChatWidgetActions : public QObject, ConfigurationAwareObject
 {
@@ -41,7 +42,6 @@ class ChatWidgetActions : public QObject, ConfigurationAwareObject
 	ActionDescription *Underline;
 	ActionDescription *Send;
 	ActionDescription *Whois;
-	ActionDescription *IgnoreUser;
 	ActionDescription *BlockUser;
 	ActionDescription *OpenChat;
 	ActionDescription *OpenChatWith;
@@ -49,6 +49,7 @@ class ChatWidgetActions : public QObject, ConfigurationAwareObject
 	ActionDescription *ColorSelector;
 
 	void autoSendActionCheck();
+	void updateBlockingActions(Buddy buddy);
 
 private slots:
 	void autoSendActionCreated(Action *action);
@@ -63,7 +64,6 @@ private slots:
 	void underlineActionActivated(QAction *sender, bool toggled);
 	void sendActionActivated(QAction *sender, bool toggled);
 	void whoisActionActivated(QAction *sender, bool toggled);
-	void ignoreUserActionActivated(QAction *sender, bool toggled);
 	void blockUserActionActivated(QAction *sender, bool toggled);
 	void openChatActionActivated(QAction *sender, bool toggled);
 	void colorSelectorActionActivated(QAction *sender, bool toogled);
@@ -80,7 +80,6 @@ public:
 	ActionDescription * italic() { return Italic; }
 	ActionDescription * underline() { return Underline; }
 	ActionDescription * send() { return Send; }
-	ActionDescription * ignoreUser() { return IgnoreUser; }
 	ActionDescription * blockUser() { return BlockUser; }
 	ActionDescription * openChatWith() { return OpenChatWith; }
 	ActionDescription * colorSelector() { return ColorSelector; }

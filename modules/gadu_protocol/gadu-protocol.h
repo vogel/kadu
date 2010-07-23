@@ -45,6 +45,7 @@
 
 class DccManager;
 class GaduContactDetails;
+class GaduContactListHandler;
 class GaduProtocolSocketNotifiers;
 
 class GADUAPI GaduProtocol : public Protocol
@@ -81,6 +82,8 @@ private:
 	GaduPersonalInfoService *CurrentPersonalInfoService;
 	GaduSearchService *CurrentSearchService;
 
+	GaduContactListHandler *ContactListHandler;
+
 	friend class DccManager;
 	DccManager *Dcc;
 
@@ -102,7 +105,6 @@ private:
 	void networkConnected();
 	void networkDisconnected(bool tryAgain);
 
-	int notifyTypeFromContact(const Contact &contact);
 	void sendUserList();
 
 	void socketContactStatusChanged(unsigned int uin, unsigned int status, const QString &description,
@@ -118,8 +120,9 @@ private slots:
 	void connectionTimeoutTimerSlot();
 	void everyMinuteActions();
 
-	void contactAdded(Contact contact);
-	void contactAboutToBeRemoved(Contact contact);
+	void buddyUpdated(Buddy &buddy);
+	void contactAttached(Contact contact);
+	void contactAboutToBeDetached(Contact contact);
 	void contactIdChanged(Contact contact, const QString &oldId);
 
 protected:
@@ -128,6 +131,7 @@ protected:
 
 public:
 	static GADUAPI QString statusTypeFromGaduStatus(unsigned int index);
+	static GADUAPI bool isBlockingStatus(unsigned int index);
 	static GADUAPI unsigned int gaduStatusFromStatus(const Status &status);
 	Buddy searchResultToBuddy(gg_pubdir50_t res, int number);
 

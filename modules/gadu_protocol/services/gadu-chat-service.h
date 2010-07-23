@@ -73,7 +73,7 @@ signals:
 		Mo�na te� przerwa� dalsz� obr�bk� wiadomo�ci ustawiaj�c
 		stop na true.
 	**/
-	void receivedGaduRawMessageFilter(Chat chat, Contact sender, QString &msg, bool &ignore);
+	void filterRawIncomingMessage(Chat chat, Contact sender, QString &msg, bool &ignore);
 
 };
 

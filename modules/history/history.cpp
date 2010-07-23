@@ -194,14 +194,22 @@ void History::showHistoryActionActivated(QAction *sender, bool toggled)
 {
 	Q_UNUSED(toggled)
 
+	Action *action = dynamic_cast<Action *>(sender);
+	if (!action)
+		return;
+
 	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(sender->parent());
-	if (!chatEditBox)
+	Chat chat = action->chat();
+
+	if (!chatEditBox || chat != chatEditBox->chat())
 	{
-		MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
-		if (window)
-			HistoryDialog->show(window->chat());
+		if (chat)
+			HistoryDialog->show(chat);
 		return;
 	}
+
+	if (!chatEditBox)
+		return;
 
 	ChatWidget *chatWidget = chatEditBox->chatWidget();
 	if (chatWidget)
@@ -281,9 +289,12 @@ void History::clearHistoryActionActivated(QAction *sender, bool toggled)
 	if (!CurrentStorage)
 		return;
 
-	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
-	if (window && window->chat())
-		CurrentStorage->clearChatHistory(window->chat());
+	Action *action = dynamic_cast<Action *>(sender);
+	if (!action)
+		return;
+
+	if (action->chat())
+		CurrentStorage->clearChatHistory(action->chat());
 }
 
 void History::chatCreated(ChatWidget *chatWidget)

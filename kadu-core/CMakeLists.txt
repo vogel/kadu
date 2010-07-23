@@ -29,15 +29,14 @@ set (kadu_SRCS
 	buddies/group.cpp
 	buddies/group-manager.cpp
 	buddies/group-shared.cpp
-	buddies/ignored-helper.cpp
 
 	buddies/filter/account-buddy-filter.cpp
 	buddies/filter/anonymous-buddy-filter.cpp
 	buddies/filter/anonymous-without-messages-buddy-filter.cpp
+	buddies/filter/blocked-buddy-filter.cpp
 	buddies/filter/buddy-name-filter.cpp
 	buddies/filter/group-buddy-filter.cpp
 	buddies/filter/has-description-buddy-filter.cpp
-	buddies/filter/ignored-buddy-filter.cpp
 	buddies/filter/mobile-buddy-filter.cpp
 	buddies/filter/non-account-buddy-filter.cpp
 	buddies/filter/non-buddy-filter.cpp
@@ -46,6 +45,7 @@ set (kadu_SRCS
 	buddies/filter/online-buddy-filter.cpp
 
 	buddies/model/abstract-buddies-model.cpp
+	buddies/model/buddy-data-extractor.cpp
 	buddies/model/buddy-list-model.cpp
 	buddies/model/buddies-model.cpp
 	buddies/model/buddies-model-base.cpp
@@ -103,6 +103,8 @@ set (kadu_SRCS
 	contacts/filter/contact-no-unloaded-account-filter.cpp
 
 	contacts/model/buddy-contact-model.cpp
+	contacts/model/contact-data-extractor.cpp
+	contacts/model/contact-list-model.cpp
 
 	core/core.cpp
 	core/core-actions.cpp
@@ -351,9 +353,9 @@ set (kadu_MOC_SRCS
 	buddies/filter/account-buddy-filter.h
 	buddies/filter/anonymous-buddy-filter.h
 	buddies/filter/anonymous-without-messages-buddy-filter.h
+	buddies/filter/blocked-buddy-filter.h
 	buddies/filter/group-buddy-filter.h
 	buddies/filter/has-description-buddy-filter.h
-	buddies/filter/ignored-buddy-filter.h
 	buddies/filter/mobile-buddy-filter.h
 	buddies/filter/non-account-buddy-filter.h
 	buddies/filter/non-buddy-filter.h
@@ -399,6 +401,7 @@ set (kadu_MOC_SRCS
 	contacts/filter/contact-no-unloaded-account-filter.h
 
 	contacts/model/buddy-contact-model.h
+	contacts/model/contact-list-model.h
 
 	configuration/configuration-window-data-manager.h
 	configuration/main-configuration.h

@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2010 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,27 +17,20 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef IGNORED_BUDDY_FILTER_H
-#define IGNORED_BUDDY_FILTER_H
+#ifndef BUDDY_DATA_EXTRACTOR_H
+#define BUDDY_DATA_EXTRACTOR_H
 
-#include <QtCore/QMetaType>
+class QVariant;
 
-#include "abstract-buddy-filter.h"
+class Buddy;
 
-class IgnoredBuddyFilter : public AbstractBuddyFilter
+class BuddyDataExtractor
 {
-	Q_OBJECT
-
-	bool Enabled;
+	BuddyDataExtractor();
 
 public:
-	IgnoredBuddyFilter(QObject *parent = 0);
-
-	void setEnabled(bool enabled);
-	virtual bool acceptBuddy(Buddy buddy);
+	static QVariant data(Buddy buddy, int role);
 
 };
 
-Q_DECLARE_METATYPE(IgnoredBuddyFilter *)
-
-#endif // IGNORED_BUDDY_FILTER_H
+#endif // BUDDY_DATA_EXTRACTOR_H

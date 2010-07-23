@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,20 +17,24 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef IGNORED_HELPER_H
-#define IGNORED_HELPER_H
+#include <QtCore/QVariant>
 
-#include "exports.h"
+#include "buddies/buddy.h"
+#include "model/roles.h"
 
-class BuddySet;
+#include "buddy-data-extractor.h"
 
-class KADUAPI IgnoredHelper
+QVariant BuddyDataExtractor::data(Buddy buddy, int role)
 {
-
-public:
-	static bool isIgnored(BuddySet contacts);
-	static void setIgnored(BuddySet contacts, bool ignored = true);
-
-};
-
-#endif // IGNORED_HELPER_H
+	switch (role)
+	{
+		case Qt::DisplayRole:
+			return buddy.display();
+		case BuddyRole:
+			return QVariant::fromValue(buddy);
+		case StatusRole:
+			return QVariant::fromValue(Status::null);
+		default:
+			return QVariant();
+	}
+}

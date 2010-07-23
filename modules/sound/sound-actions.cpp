@@ -65,11 +65,11 @@ SoundActions::SoundActions()
 	MuteActionDescription = new ActionDescription(this,
 		ActionDescription::TypeGlobal, "muteSoundsAction",
 		this, SLOT(muteActionActivated(QAction *, bool)),
-		"16x16/audio-volume-high.png", "16x16/audio-volume-muted.png", tr("Play sounds"), true//, tr("Unmute sounds")
+		"16x16/audio-volume-high.png", "16x16/audio-volume-muted.png", tr("Play Sounds"), true//, tr("Unmute sounds")
 	);
 	connect(MuteActionDescription, SIGNAL(actionCreated(Action *)), this, SLOT(setMuteActionState()));
 
-	Core::instance()->kaduWindow()->insertMenuActionDescription(MuteActionDescription, KaduWindow::MenuKadu, 7);
+	Core::instance()->kaduWindow()->insertMenuActionDescription(MuteActionDescription, KaduWindow::MenuKadu, 8);
 
 	setMuteActionState();
 

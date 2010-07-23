@@ -17,30 +17,28 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "buddies/buddy.h"
-#include "buddies/buddy-set.h"
-#include "buddies/ignored-helper.h"
+#ifndef BLOCKED_BUDDY_FILTER_H
+#define BLOCKED_BUDDY_FILTER_H
 
-#include "ignored-buddy-filter.h"
+#include <QtCore/QMetaType>
 
-IgnoredBuddyFilter::IgnoredBuddyFilter(QObject *parent)
-	: AbstractBuddyFilter(parent), Enabled(false)
+#include "abstract-buddy-filter.h"
+
+class BlockedBuddyFilter : public AbstractBuddyFilter
 {
-}
+	Q_OBJECT
 
-void IgnoredBuddyFilter::setEnabled(bool enabled)
-{
-	if (enabled == Enabled)
-		return;
+	bool Enabled;
 
-	Enabled = enabled;
-	emit filterChanged();
-}
+public:
+	explicit BlockedBuddyFilter(QObject *parent = 0);
+	virtual ~BlockedBuddyFilter();
 
-bool IgnoredBuddyFilter::acceptBuddy(Buddy buddy)
-{
-	if (!Enabled)
-		return true;
+	void setEnabled(bool enabled);
+	virtual bool acceptBuddy(Buddy buddy);
 
-	return !IgnoredHelper::isIgnored(BuddySet(buddy));
-}
+};
+
+Q_DECLARE_METATYPE(BlockedBuddyFilter *)
+
+#endif // BLOCKED_BUDDY_FILTER_H

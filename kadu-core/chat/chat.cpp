@@ -138,3 +138,4 @@ KaduSharedBase_PropertyDef(Chat, Account, chatAccount, ChatAccount, Account::nul
 KaduSharedBase_PropertyDef(Chat, QString, type, Type, QString::null)
 KaduSharedBase_PropertyDef(Chat, QString, title, Title, QString::null)
 KaduSharedBase_PropertyReadDef(Chat, QIcon, icon, Icon, QIcon())
+KaduSharedBase_PropertyBoolDef(Chat, IgnoreAllMessages, false)

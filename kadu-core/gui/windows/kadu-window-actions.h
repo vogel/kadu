@@ -46,7 +46,7 @@ class KaduWindowActions : QObject, ConfigurationAwareObject
 	ActionDescription *MergeContact;
 	ActionDescription *AddGroup;
 	ActionDescription *OpenSearch;
-	ActionDescription *ManageIgnored;
+	ActionDescription *ManageBlocked;
 	ActionDescription *ManageModules;
 	ActionDescription *Help;
 	ActionDescription *Bugs;
@@ -55,7 +55,7 @@ class KaduWindowActions : QObject, ConfigurationAwareObject
 	ActionDescription *About;
 	ActionDescription *Translate;
 	ActionDescription *ShowInfoPanel;
-	ActionDescription *ShowIgnoredBuddies;
+	ActionDescription *ShowBlockedBuddies;
 
 	ActionDescription *WriteEmail;
 	ActionDescription *CopyDescription;
@@ -83,7 +83,7 @@ private slots:
 	void showStatusActionCreated(Action *action);
 	void useProxyActionCreated(Action *action);
 	void showInfoPanelActionCreated(Action *action);
-	void showIgnoredActionCreated(Action *action);
+	void showBlockedActionCreated(Action *action);
 
 	void configurationActionActivated(QAction *sender, bool toggled);
 	void yourAccountsActionActivated(QAction *sender, bool toggled);
@@ -92,7 +92,7 @@ private slots:
 	void mergeContactActionActivated(QAction *sender, bool toggled);
 	void addGroupActionActivated(QAction *sender, bool toggled);
 	void openSearchActionActivated(QAction *sender, bool toggled);
-	void manageIgnoredActionActivated(QAction *sender, bool toggled);
+	void manageBlockedActionActivated(QAction *sender, bool toggled);
 	void helpActionActivated(QAction *sender, bool toggled);
 	void bugsActionActivated(QAction *sender, bool toggled);
 	void supportActionActivated(QAction *sender, bool toggled);
@@ -100,7 +100,7 @@ private slots:
 	void aboutActionActivated(QAction *sender, bool toggled);
 	void translateActionActivated(QAction *sender, bool toggled);
 	void showInfoPanelActionActivated(QAction *sender, bool toggled);
-	void showIgnoredActionActivated(QAction *sender, bool toggled);
+	void showBlockedActionActivated(QAction *sender, bool toggled);
 
 	void writeEmailActionActivated(QAction *sender, bool toggled);
 	void copyDescriptionActionActivated(QAction *sender, bool toggled);

@@ -92,19 +92,31 @@ bool BuddiesModelProxy::lessThan(const QModelIndex &left, const QModelIndex &rig
 	Buddy leftBuddy = SourceBuddyModel->buddyAt(left);
 	Buddy rightBuddy = SourceBuddyModel->buddyAt(right);
 
+	if (leftBuddy.isBlocked() && !rightBuddy.isBlocked())
+		return false;
+	if (!leftBuddy.isBlocked() && rightBuddy.isBlocked())
+		return true;
+
 	if (SortByStatus)
 	{
 		Account leftAccount = leftBuddy.prefferedAccount();
 		Account rightAccount = rightBuddy.prefferedAccount();
 
-		Contact leftBuddyAccountData = leftBuddy.prefferedContact();
-		Contact rightBuddyAccountData = rightBuddy.prefferedContact();
+		Contact leftContact = leftBuddy.prefferedContact();
+		Contact rightContact = rightBuddy.prefferedContact();
 
-		Status leftStatus = !leftBuddyAccountData.isNull()
-				? leftBuddyAccountData.currentStatus()
+		if (leftContact.isBlocking() && !rightContact.isBlocking())
+			return false;
+
+		if (!leftContact.isBlocking() && rightContact.isBlocking())
+			return false;
+		
+
+		Status leftStatus = !leftContact.isNull()
+				? leftContact.currentStatus()
 				: Status::null;
-		Status rightStatus = !rightBuddyAccountData.isNull()
-				? rightBuddyAccountData.currentStatus()
+		Status rightStatus = !rightContact.isNull()
+				? rightContact.currentStatus()
 				: Status::null;
 
 		if (leftStatus.isDisconnected() && !rightStatus.isDisconnected())

@@ -4,8 +4,8 @@
 <context>
     <name>@default</name>
     <message>
-	<source>Look</source>
-	<translation>Wygląd</translation>
+        <source>Look</source>
+        <translation>Wygląd</translation>
     </message>
     <message>
         <source>SingleWindow</source>
@@ -50,6 +50,14 @@
     <message>
         <source>Switch focus between roster and tabs</source>
         <translation>Przełącz focus pomiędzy listą kontaktów a zakładkami</translation>
+    </message>
+    <message>
+        <source>General</source>
+        <translation>Ogólne</translation>
+    </message>
+    <message>
+        <source>Tabs</source>
+        <translation>Zakładki</translation>
     </message>
 </context>
 </TS>

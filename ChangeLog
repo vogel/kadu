@@ -1,3 +1,16 @@
++++ version 0.6.6-beta4
+* gui: #1119 fixed: copying emoticons works again (beevvy)
+* gadu: #1160 fixed: contacts promoted from anonymous are added to gg notifications list (Vogel)
+* gadu: #1202 fixed: "offline to" does not work (Vogel)
+* gadu: #1212 fixed: "block user" does not work (Vogel)
+* gui: #1313 fixed: save state of ShowOnlineAndDescription action (Juzef)
+* gui: #1330 fixed: envelope icon in contacts list doesn't disappear after clicking systray icon (Vogel)
+* gadu: #1379 fixed: automagically import contact list after creating GG account (Juzef)
+* gadu: #1380 fixed: enable SimpleMode by default after importing account from 0.6.5.x (Juzef)
+* core: #799 fixed: removed contacts become anonymous in conference lists (Vogel)
+* history: #354 fixed again: marking search text in history (Darom, Vogel)
+* core: #1106 fixed: invalid actions in context menu of conference user box (Vogel) 
+
 +++ version 0.6.6-beta3
 * jabber: proper URL handler for xmpp:// (Juzef)
 * gadu: #1356 fixed: setting gadu servers manually works now (Vogel)

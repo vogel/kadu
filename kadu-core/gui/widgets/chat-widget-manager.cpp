@@ -25,7 +25,6 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "buddies/buddy-manager.h"
-#include "buddies/ignored-helper.h"
 #include "chat/message/message.h"
 #include "chat/message/message-render-info.h"
 #include "chat/message/message-shared.h"
@@ -378,6 +377,27 @@ void ChatWidgetManager::sendMessage(Chat chat)
 		openChatWidget(chat, true);
 
 	kdebugf2();
+}
+
+void ChatWidgetManager::closeChat(Chat chat)
+{
+	ChatWidget *chatWidget = byChat(chat);
+	if (chatWidget)
+	{
+		ChatContainer *container = dynamic_cast<ChatContainer *>(chatWidget->window());
+		if (container)
+			container->closeChatWidget(chatWidget);
+	}
+}
+
+void ChatWidgetManager::closeAllChats(Buddy buddy)
+{
+	foreach (Contact contact, buddy.contacts())
+	{
+		Chat chat = ChatManager::instance()->findChat(ContactSet(contact), false);
+		if (chat)
+			closeChat(chat);
+	}
 }
 
 void ChatWidgetManager::configurationUpdated()

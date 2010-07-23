@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="1.1" language="pl">
-<defaultcodec></defaultcodec>
+<!DOCTYPE TS>
+<TS version="2.0" language="pl">
 <context>
     <name>@default</name>
     <message>
@@ -17,7 +17,7 @@
     </message>
     <message>
         <source>Start docked</source>
-        <translation>Nie pokazuj okna na starcie</translation>
+        <translation>Uruchom zminimalizowany</translation>
     </message>
     <message>
         <source>Show tooltip in tray</source>
@@ -57,6 +57,14 @@ Opis:
 %1</source>
         <translation>Aktualny status:
 %1</translation>
+    </message>
+    <message>
+        <source>Show Pending Messages</source>
+        <translation>Wyświetl oczekujące wiadomości</translation>
+    </message>
+    <message>
+        <source>&amp;Exit Kadu</source>
+        <translation>&amp;Zakończ Kadu</translation>
     </message>
 </context>
 </TS>

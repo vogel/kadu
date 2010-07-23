@@ -20,8 +20,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "buddies/ignored-helper.h"
-
 #include "configuration/configuration-file.h"
 #include "debug.h"
 #include "../tlen-protocol.h"
@@ -38,12 +36,12 @@ TlenChatService::TlenChatService(TlenProtocol *protocol)
 
 	//connect(protocol, SIGNAL(ackReceived(int, uin_t, int)),
 	//	this, SLOT(ackReceived(int, uin_t, int)));
-       connect(protocol, SIGNAL(sendMessageFiltering(Chat , QByteArray &, bool &)),
-               this, SIGNAL(sendMessageFiltering(Chat , QByteArray &, bool &)));
+       connect(protocol, SIGNAL(filterOutgoingMessage(Chat , QByteArray &, bool &)),
+               this, SIGNAL(filterOutgoingMessage(Chat , QByteArray &, bool &)));
        connect(protocol, SIGNAL(messageStatusChanged(int , ChatService::MessageStatus)),
                this, SIGNAL(messageStatusChanged(int , ChatService::MessageStatus)));
-       connect(protocol, SIGNAL(receivedMessageFilter(Chat , Contact, const QString &, time_t , bool &)),
-               this, SIGNAL(receivedMessageFilter(Chat , Contact, const QString &, time_t, bool &)));
+       connect(protocol, SIGNAL(filterIncomingMessage(Chat , Contact, const QString &, time_t , bool &)),
+               this, SIGNAL(filterIncomingMessage(Chat , Contact, const QString &, time_t, bool &)));
        connect(protocol, SIGNAL(messageReceived(const Message &)),
 	       this, SIGNAL(messageReceived(const Message &)));
        connect(protocol, SIGNAL(messageSent(const Message &)),

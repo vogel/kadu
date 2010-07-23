@@ -73,13 +73,13 @@ void ActionDescription::setShortcut(QString configItem, Qt::ShortcutContext cont
 	configurationUpdated();
 }
 
-Action * ActionDescription::createAction(MainWindow *kaduMainWindow)
+Action * ActionDescription::createAction(ActionDataSource *dataSource, QObject *parent)
 {
-	if (MappedActions.contains(kaduMainWindow))
-		return MappedActions[kaduMainWindow];
+	if (MappedActions.contains(dataSource))
+		return MappedActions[dataSource];
 
-	Action *result = new Action(this, kaduMainWindow);
-	MappedActions[kaduMainWindow] = result;
+	Action *result = new Action(this, dataSource, parent);
+	MappedActions[dataSource] = result;
 
 	connect(result, SIGNAL(destroyed(QObject *)), this, SLOT(actionDestroyed(QObject *)));
 	connect(result, SIGNAL(triggered(QAction *, bool)), Object, Slot);
@@ -104,10 +104,10 @@ QList<Action *> ActionDescription::actions()
 	return MappedActions.values();
 }
 
-Action * ActionDescription::action(MainWindow *kaduMainWindow)
+Action * ActionDescription::action(ActionDataSource *dataSource)
 {
-	if (MappedActions.contains(kaduMainWindow))
-		return MappedActions[kaduMainWindow];
+	if (MappedActions.contains(dataSource))
+		return MappedActions[dataSource];
 	else
 		return 0;
 }

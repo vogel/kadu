@@ -41,6 +41,7 @@
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"
 #include "contacts/contact-set.h"
+#include "contacts/model/contact-list-model.h"
 #include "core/core.h"
 #include "gui/hot-key.h"
 #include "gui/actions/action.h"
@@ -122,12 +123,13 @@ void ChatWidget::createGui()
 	connect(shortcut, SIGNAL(activated()), MessagesView, SLOT(pageDown()));
 	horizSplit->addWidget(MessagesView);
 
+	// shit, createContactsList needs that
+	InputBox = new ChatEditBox(CurrentChat, this);
+
 	if (CurrentChat.contacts().count() > 1)
 		createContactsList();
 
 	vertSplit->addWidget(horizSplit);
-
-	InputBox = new ChatEditBox(CurrentChat, this);
 	vertSplit->addWidget(InputBox);
 
 	connect(InputBox->inputBox(), SIGNAL(sendMessage()), this, SLOT(sendMessage()));
@@ -146,7 +148,7 @@ void ChatWidget::createContactsList()
 	BuddiesView = new BuddiesListView(getChatEditBox(), this);
 	BuddiesView->setItemsExpandable(false);
 	BuddiesView->setMinimumSize(QSize(30, 30));
-	BuddiesView->setModel(new BuddyListModel(CurrentChat.contacts().toBuddySet().toBuddyList(), this));
+	BuddiesView->setModel(new ContactListModel(CurrentChat.contacts().toContactList(), this));
 	BuddiesView->setRootIsDecorated(false);
 	BuddiesView->setShowAccountName(false);
 
@@ -554,9 +556,8 @@ void ChatWidget::leaveConference()
 	if (!MessageDialog::ask(tr("All messages received in this conference will be ignored\nfrom now on. Are you sure you want to leave this conference?"), "32x32/dialog-warning.png", this))
 		return;
 
-// TODO: 0.6.6
-// 	if (!IgnoredHelper::isIgnored(Contacts))
-// 		IgnoredHelper::insert(Contacts);
+	if (CurrentChat)
+		CurrentChat.setIgnoreAllMessages(true);
 
 	emit closed();
 }

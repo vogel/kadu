@@ -69,7 +69,7 @@ ChatShared * ChatShared::loadFromStorage(StoragePoint *storagePoint)
  * created.
  */
 ChatShared::ChatShared(QUuid uuid) :
-		Shared(uuid)
+		Shared(uuid), IgnoreAllMessages(false)
 {
 }
 

@@ -26,7 +26,7 @@
 #include "configuration/configuration-aware-object.h"
 
 class Action;
-class MainWindow;
+class ActionDataSource;
 
 class KADUAPI ActionDescription : public QObject, ConfigurationAwareObject
 {
@@ -51,7 +51,7 @@ public:
 private:
 	friend class Action;
 	
-	QMap<MainWindow *, Action *> MappedActions;
+	QMap<ActionDataSource *, Action *> MappedActions;
 	int deleted;
 
 	ActionType Type;
@@ -80,9 +80,9 @@ public:
 	virtual ~ActionDescription();
 
 	QString name() { return Name; }
-	Action * createAction(MainWindow *kaduMainWindow);
+	Action * createAction(ActionDataSource *dataSource, QObject *parent);
 	QList<Action *> actions();
-	Action * action(MainWindow *kaduMainWindow);
+	Action * action(ActionDataSource *dataSource);
 
 	QString text() { return Text; }
 	QString iconPathOn() { return IconPathOn; }

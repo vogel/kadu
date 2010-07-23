@@ -168,6 +168,10 @@ ModulesManager::~ModulesManager()
 
 void ModulesManager::loadProtocolModules()
 {
+	foreach (const QString &i, staticModules())
+		if (!moduleIsActive(i))
+			activateModule(i);
+
 	foreach (const QString &i, protocolModulesList)
 	{
 		if (!moduleIsActive(i))
@@ -203,7 +207,7 @@ void ModulesManager::loadAllModules()
 
 	foreach (const QString &i, installed_list)
 	{
-		if (!moduleIsActive(i))
+		if (!moduleIsActive(i) && !protocolModulesList.contains(i))
 		{
 			bool load_module;
 			if (loaded_list.contains(i))
@@ -518,6 +522,8 @@ bool ModulesManager::activateModule(const QString& module_name)
 			MessageDialog::msg(narg(tr("Cannot load %1 module library.:\n%2"), module_name, err));
 			kdebugm(KDEBUG_ERROR, "cannot load %s because of: %s\n", qPrintable(module_name), qPrintable(err));
 			delete m.lib;
+			m.lib = 0;
+			m.close = 0;
 			kdebugf2();
 			return false;
 		}
@@ -527,6 +533,8 @@ bool ModulesManager::activateModule(const QString& module_name)
 		{
 			MessageDialog::msg(tr("Cannot find required functions in module %1.\nMaybe it's not Kadu-compatible Module.").arg(module_name));
 			delete m.lib;
+			m.lib = 0;
+			m.close = 0;
 			kdebugf2();
 			return false;
 		}
@@ -545,7 +553,10 @@ bool ModulesManager::activateModule(const QString& module_name)
 	{
 		MessageDialog::msg(tr("Module initialization routine for %1 failed.").arg(module_name));
 		if (m.lib != NULL)
+		{
 			delete m.lib;
+			m.lib = 0;
+		}
 		if (m.translator != NULL)
 		{
 			qApp->removeTranslator(m.translator);
@@ -621,7 +632,10 @@ bool ModulesManager::deactivateModule(const QString& module_name, bool force)
 	}
 
 	if (m.lib)
+	{
 		m.lib->deleteLater();
+		m.lib = 0;
+	}
 
 	Modules.remove(module_name);
 

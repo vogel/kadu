@@ -69,7 +69,7 @@ SmsActions::SmsActions()
 		"16x16/phone.png", "16x16/phone.png", tr("Send SMS..."), false
 	);
 	sendSmsActionDescription->setShortcut("kadu_sendsms");
-	BuddiesListViewMenuManager::instance()->insertActionDescription(2, sendSmsActionDescription);
+	BuddiesListViewMenuManager::instance()->insertActionDescription(4, sendSmsActionDescription);
 	Core::instance()->kaduWindow()->insertMenuActionDescription(sendSmsActionDescription, KaduWindow::MenuContacts, 4);
 }
 
@@ -106,10 +106,10 @@ void SmsActions::sendSmsActionActivated(QAction *sender, bool toggled)
 
 	kdebugf();
 
-	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
-	if (window)
+	Action *action = dynamic_cast<Action *>(sender);
+	if (action)
 	{
-		BuddySet users = window->buddies();
+		BuddySet users = action->buddies();
 
 		if (users.count() == 1 && !users.toList()[0].mobile().isEmpty())
 		{

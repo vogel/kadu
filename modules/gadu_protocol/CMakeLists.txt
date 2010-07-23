@@ -32,6 +32,7 @@ set (SOURCES
 
 	server/gadu-avatar-fetcher.cpp
 	server/gadu-avatar-uploader.cpp
+	server/gadu-contact-list-handler.cpp
 	server/gadu-server-connector.cpp
 	server/gadu-server-change-password.cpp
 	server/gadu-server-register-account.cpp
@@ -89,6 +90,7 @@ set (MOC_SOURCES
 
 	server/gadu-avatar-fetcher.h
 	server/gadu-avatar-uploader.h
+	server/gadu-contact-list-handler.h
 	server/gadu-server-connector.h
 	server/gadu-server-change-password.h
 	server/gadu-server-register-account.h
@@ -117,6 +119,11 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+#	translations/gadu_protocol_de.ts
+#	translations/gadu_protocol_en.ts
+#	translations/gadu_protocol_fr.ts
+#	translations/gadu_protocol_it.ts
+	translations/gadu_protocol_pl.ts
 )
 
 set (CONFIGURATION_FILES
@@ -165,7 +172,7 @@ endif (NOT LIBGADU_FOUND)
 kadu_module (gadu_protocol
 	MODULE_SOURCES ${SOURCES}
 	MODULE_MOC_SOURCES ${MOC_SOURCES}
-#	MODULE_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
+	MODULE_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
 	MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	MODULE_LIBRARIES ${LIBGADU_LIBRARIES} ${QCA2_LIBRARIES}
 	MODULE_DEPENDENCIES ${QCA2_LIBRARIES}

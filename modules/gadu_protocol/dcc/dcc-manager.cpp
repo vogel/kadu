@@ -274,7 +274,7 @@ bool DccManager::acceptConnection(unsigned int uin, unsigned int peerUin, unsign
 		return false;
 	}
 
-	if (buddy.isIgnored())
+	if (buddy.isBlocked())
 	{
 		kdebugm(KDEBUG_WARNING, "unbidden user: %d\n", peerUin);
 		return false;

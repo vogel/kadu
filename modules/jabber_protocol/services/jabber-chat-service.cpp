@@ -22,7 +22,6 @@
  */
 
 #include "buddies/buddy-set.h"
-#include "buddies/ignored-helper.h"
 #include "chat/chat.h"
 #include "chat/chat-manager.h"
 #include "chat/message/message.h"
@@ -47,12 +46,12 @@ JabberChatService::JabberChatService(JabberProtocol *protocol)
 
 	//connect(protocol, SIGNAL(ackReceived(int, uin_t, int)),
 	//	this, SLOT(ackReceived(int, uin_t, int)));
-// 	connect(protocol, SIGNAL(sendMessageFiltering(Chat , QByteArray &, bool &)),
-// 		this, SIGNAL(sendMessageFiltering(Chat , QByteArray &, bool &)));
+// 	connect(protocol, SIGNAL(filterOutgoingMessage(Chat , QByteArray &, bool &)),
+// 		this, SIGNAL(filterOutgoingMessage(Chat , QByteArray &, bool &)));
 // 	connect(protocol, SIGNAL(messageStatusChanged(int , ChatService::MessageStatus)),
 //     		this, SIGNAL(messageStatusChanged(int , ChatService::MessageStatus)));
-// 	connect(protocol, SIGNAL(receivedMessageFilter(Chat , Contact, const QString &, time_t , bool &)),
-// 		this, SIGNAL(receivedMessageFilter(Chat , Contact, const QString &, time_t, bool &)));
+// 	connect(protocol, SIGNAL(filterIncomingMessage(Chat , Contact, const QString &, time_t , bool &)),
+// 		this, SIGNAL(filterIncomingMessage(Chat , Contact, const QString &, time_t, bool &)));
 	connect(protocol->client(), SIGNAL(messageReceived(const XMPP::Message &)),
 		this, SLOT(clientMessageReceived(const XMPP::Message &)));
 }
@@ -76,7 +75,7 @@ bool JabberChatService::sendMessage(Chat chat, FormattedMessage &formattedMessag
 	///plain na QByteArray
 	QByteArray data = unicode2cp(plain);
 
-	emit sendMessageFiltering(chat, data, stop);
+	emit filterOutgoingMessage(chat, data, stop);
 	if (stop)
 	{
 	    // TODO: implement formats
@@ -133,7 +132,7 @@ void JabberChatService::clientMessageReceived(const XMPP::Message &msg)
 
 	bool ignore = false;
 	Chat chat = ChatManager::instance()->findChat(contacts, Protocol->account());
-	emit receivedMessageFilter(chat, contact, plain, msgtime, ignore);
+	emit filterIncomingMessage(chat, contact, plain, msgtime, ignore);
 	if (ignore)
 		return;
 

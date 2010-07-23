@@ -49,7 +49,7 @@ void BuddyOptionsConfigurationWidget::createGui()
 	OfflineToCheckBox->setChecked(!MyBuddy.isOfflineTo());
 	layout->addWidget(OfflineToCheckBox);
 
-	BlockCheckBox = new QCheckBox(tr("Ignore buddy"), this);
+	BlockCheckBox = new QCheckBox(tr("Block buddy"), this);
 	BlockCheckBox->setChecked(MyBuddy.isBlocked());
 	layout->addWidget(BlockCheckBox);
 

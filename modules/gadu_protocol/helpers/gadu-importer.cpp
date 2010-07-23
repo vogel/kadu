@@ -29,7 +29,6 @@
 #include "buddies/buddy-set.h"
 #include "buddies/buddy-shared.h"
 #include "buddies/buddy.h"
-#include "buddies/ignored-helper.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-shared.h"
 #include "identities/identity-manager.h"
@@ -55,7 +54,7 @@ void GaduImporter::importAccounts()
 {
 	if (0 == config_file.readNumEntry("General", "UIN"))
 		return;
-	
+
 	Account defaultGaduGadu = Account::create();
 	defaultGaduGadu.setProtocolName("gadu");
 
@@ -100,8 +99,9 @@ void GaduImporter::importAccounts()
 
 	accountDetails->import_0_6_5_LastStatus();
 
-	AccountManager::instance()->ensureLoaded();
 	AccountManager::instance()->addItem(defaultGaduGadu);
+	
+	config_file.writeEntry("General", "SimpleMode", true);
 }
 
 void GaduImporter::importContacts()
@@ -126,7 +126,7 @@ void GaduImporter::importGaduContact(Buddy &buddy)
 	QString id = buddy.customData("uin");
 
 	Contact contact = ContactManager::instance()->byId(account, id, ActionCreateAndAdd);
-	
+
 	buddy.removeCustomData("uin");
 	buddy.setBlocked(QVariant(buddy.customData("blocking")).toBool());
 	buddy.setOfflineTo(QVariant(buddy.customData("offline_to")).toBool());
@@ -151,15 +151,12 @@ void GaduImporter::importIgnored()
 	QList<QDomElement> ignoredGroups = xml_config_file->getNodes(ignored, "IgnoredGroup");
 	foreach (QDomElement ignoredGroup, ignoredGroups)
 	{
-		BuddySet ignoredList;
 		QList<QDomElement> ignoredContacts = xml_config_file->getNodes(ignoredGroup, "IgnoredContact");
 		foreach (QDomElement ignoredContact, ignoredContacts)
-			ignoredList.insert(BuddyManager::instance()->byId(account, ignoredContact.attribute("uin"), ActionCreateAndAdd));
-
-		if (0 == ignoredList.count())
-			continue;
-
-		IgnoredHelper::setIgnored(ignoredList);
+		{
+			Buddy buddy = BuddyManager::instance()->byId(account, ignoredContact.attribute("uin"), ActionCreateAndAdd);
+			buddy.setBlocked(true);
+		}
 	}
 }
 

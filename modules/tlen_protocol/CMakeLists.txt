@@ -50,6 +50,10 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
+#	translations/tlen_protocol_de.ts
+#	translations/tlen_protocol_en.ts
+#	translations/tlen_protocol_fr.ts
+#	translations/tlen_protocol_it.ts
 	translations/tlen_protocol_pl.ts
 )
 
@@ -80,7 +84,7 @@ set (DATA_FILES
 kadu_module (tlen_protocol
 	MODULE_SOURCES  ${SOURCES}
 	MODULE_MOC_SOURCES  ${MOC_SOURCES}
-#	MODULE_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
+	MODULE_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
 	MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 )
 

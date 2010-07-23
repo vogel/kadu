@@ -25,7 +25,6 @@
 
 #include "buddies/buddy-set.h"
 #include "buddies/buddy-shared.h"
-#include "buddies/ignored-helper.h"
 #include "chat/chat-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-manager.h"
@@ -74,7 +73,7 @@ bool GaduChatService::sendMessage(Chat chat, FormattedMessage &message)
 
 	QByteArray data = plain.toUtf8();
 
-	emit sendMessageFiltering(chat, data, stop);
+	emit filterOutgoingMessage(chat, data, stop);
 
 	if (stop)
 	{
@@ -241,7 +240,7 @@ FormattedMessage GaduChatService::createFormattedMessage(gg_event *e, Chat chat,
 	QString content = getContent(e);
 
 	bool ignore = false;
-	emit receivedGaduRawMessageFilter(chat, sender, content, ignore); //TODO: 0.6.6 + xhtml?
+	emit filterRawIncomingMessage(chat, sender, content, ignore); //TODO: 0.6.6 + xhtml?
 	if (ignore)
 		return FormattedMessage();
 
@@ -267,13 +266,13 @@ void GaduChatService::handleEventMsg(struct gg_event *e)
 
 	ContactSet conference = recipients;
 	conference += sender;
-	if (IgnoredHelper::isIgnored(conference.toBuddySet()))
-		return;
 
 	ContactSet chatContacts = conference;
 	chatContacts.remove(Protocol->account().accountContact());
 
 	Chat chat = ChatManager::instance()->findChat(chatContacts);
+	if (chat.isIgnoreAllMessages())
+		return;
 
 	FormattedMessage message = createFormattedMessage(e, chat, sender);
 	if (message.isEmpty())
@@ -285,7 +284,7 @@ void GaduChatService::handleEventMsg(struct gg_event *e)
 	QDateTime time = QDateTime::fromTime_t(e->event.msg.time);
 
 	bool ignore = false;
-	emit receivedMessageFilter(chat, sender, message.toPlain(), time.toTime_t(), ignore);
+	emit filterIncomingMessage(chat, sender, message.toPlain(), time.toTime_t(), ignore);
 	if (ignore)
 		return;
 
