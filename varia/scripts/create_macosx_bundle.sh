@@ -10,8 +10,8 @@ QCADIR=/Users/tomek/Desktop/kadu/qca2/
 
 # prefix of compiled libraries
 # prefiks skompilowanych bibliotek
-#SNDFILEPATH=/Users/tomek/Desktop/kadu/libsndfile
-SNDFILEPATH=/Users/tomek/Compilation/libsndfile
+SNDFILEPATH=/Users/tomek/Desktop/kadu/libsndfile
+#SNDFILEPATH=/Users/tomek/Compilation/libsndfile
 LIBGADU=/Users/tomek/Desktop/kadu/libgadu
 LIBIDN=/Users/tomek/Desktop/kadu/libidn
 
@@ -341,6 +341,10 @@ fi
 
 if [ -f ${DEST}//Kadu.app/kadu/modules/libgrowl_notify.so ]; then
 	install_name_tool -change @executable_path/../Frameworks/Growl.framework/Versions/A/Growl @executable_path/../Frameworks/Growl ${DEST}//Kadu.app/kadu/modules/libgrowl_notify.so
+fi
+
+if [ -f ${DEST}//Kadu.app/kadu/modules/libsql_history.so ]; then
+	install_name_tool -change ${QTDIR}/lib/QtSql.framework/Versions/4/QtSql @executable_path/../Frameworks/QtSql  $(DEST}/Kadu.app/kadu/modules/libsql_history.so
 fi
 
 echo "LoadByDefault=true" >> ${DEST}/Kadu.app/kadu/modules/qt4_sound.desc
