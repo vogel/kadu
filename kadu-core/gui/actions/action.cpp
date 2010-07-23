@@ -20,15 +20,16 @@
 #include "accounts/account-manager.h"
 #include "buddies/buddy.h"
 #include "buddies/buddy-set.h"
+#include "gui/actions/action-data-source.h"
+#include "gui/actions/action-description.h"
 #include "gui/hot-key.h"
-#include "gui/windows/main-window.h"
 #include "icons-manager.h"
 #include "protocols/services/chat-service.h"
 
 #include "action.h"
 
-Action::Action(ActionDescription *description, MainWindow *parent) :
-		QAction(parent), Description(description)
+Action::Action(ActionDescription *description, ActionDataSource *dataSource, QObject *parent) :
+		QAction(parent), Description(description), DataSource(dataSource)
 {
 	setText(Description->Text);
 
@@ -78,9 +79,8 @@ Contact Action::contact()
 
 ContactSet Action::contacts()
 {
-	MainWindow *kaduMainWindow = dynamic_cast<MainWindow *>(parent());
-	if (kaduMainWindow)
-		return kaduMainWindow->contacts();
+	if (DataSource)
+		return DataSource->contacts();
 	else
 		return ContactSet();
 }
@@ -96,9 +96,8 @@ Buddy Action::buddy()
 
 BuddySet Action::buddies()
 {
-	MainWindow *kaduMainWindow = dynamic_cast<MainWindow *>(parent());
-	if (kaduMainWindow)
-		return kaduMainWindow->buddies();
+	if (DataSource)
+		return DataSource->buddies();
 	else
 		return BuddySet();
 }
@@ -175,4 +174,3 @@ void disableNoChatContacts(Action *action)
 	  
 	action->setEnabled(enabled);
 }
-

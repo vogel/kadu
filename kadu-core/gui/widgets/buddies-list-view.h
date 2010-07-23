@@ -26,9 +26,10 @@
 #include <QtCore/QDateTime>
 #include <QtCore/QTimer>
 
-#include "chat/chat.h"
 #include "buddies/buddy.h"
+#include "chat/chat.h"
 #include "contacts/contact.h"
+#include "gui/actions/action-data-source.h"
 
 class QContextMenuEvent;
 class QModelIndex;
@@ -44,7 +45,7 @@ class ContactNoUnloadedAccountFilter;
 class ContactSet;
 class MainWindow;
 
-class BuddiesListView : public QTreeView
+class BuddiesListView : public QTreeView, public ActionDataSource
 {
 	Q_OBJECT
 
@@ -131,6 +132,10 @@ public:
 
 	void setBackground(const QString &backgroundColor, const QString &file = QString::null, BackgroundMode mode = BackgroundNone);
 	void updateBackground();
+
+	// ActionDataSource implementation
+    virtual BuddySet buddies();
+    virtual ContactSet contacts();
 
 signals:
 	void chatActivated(Chat chat);

@@ -400,7 +400,7 @@ void KaduWindow::insertMenuActionDescription(ActionDescription *actionDescriptio
 	kdebugf();
 	if (!actionDescription)
 		return;
-	Action *action = actionDescription->createAction(this);
+	Action *action = actionDescription->createAction(this, this);
 
 	QMenu *menu = 0;
 

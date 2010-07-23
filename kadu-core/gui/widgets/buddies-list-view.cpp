@@ -244,8 +244,8 @@ void BuddiesListView::contextMenuEvent(QContextMenuEvent *event)
 	if (!MyMainWindow)
 		return;
 
-	Buddy con = buddyAt(indexAt(event->pos()));
-	if (con.isNull())
+	Buddy buddy = buddyAt(indexAt(event->pos()));
+	if (buddy.isNull())
 		return;
 
 	//TODO 0.8 :
@@ -256,7 +256,7 @@ void BuddiesListView::contextMenuEvent(QContextMenuEvent *event)
 	foreach (ActionDescription *actionDescription, BuddiesListViewMenuManager::instance()->buddyListActions())
 		if (actionDescription)
 		{
-			Action *action = actionDescription->createAction(MyMainWindow);
+			Action *action = actionDescription->createAction(this, MyMainWindow);
 			actions->addAction(action);
 			action->checkState();
 		}
@@ -268,7 +268,7 @@ void BuddiesListView::contextMenuEvent(QContextMenuEvent *event)
 		if (actionDescription)
 		{
 
-			Action *action = actionDescription->createAction(MyMainWindow);
+			Action *action = actionDescription->createAction(this, MyMainWindow);
 			menu->addAction(action);
 			action->checkState();
 		}
@@ -282,7 +282,7 @@ void BuddiesListView::contextMenuEvent(QContextMenuEvent *event)
 		}
 	}
 
-	foreach (Contact contact, con.contacts())
+	foreach (Contact contact, buddy.contacts())
 	{
 		if (!contact.contactAccount() || !contact.contactAccount().protocolHandler())
 			continue;
@@ -297,13 +297,13 @@ void BuddiesListView::contextMenuEvent(QContextMenuEvent *event)
 		if (!protocolFactory->icon().isNull())
 			account_menu->setIcon(protocolFactory->icon());
 
-		if (protocolFactory->protocolMenuManager()->protocolActions(account, con).size() == 0)
+		if (protocolFactory->protocolMenuManager()->protocolActions(account, buddy).size() == 0)
 			continue;
 
-		foreach (ActionDescription *actionDescription, protocolFactory->protocolMenuManager()->protocolActions(account, con))
+		foreach (ActionDescription *actionDescription, protocolFactory->protocolMenuManager()->protocolActions(account, buddy))
 			if (actionDescription)
 			{
-				Action *action = actionDescription->createAction(MyMainWindow);
+				Action *action = actionDescription->createAction(this, MyMainWindow);
 				account_menu->addAction(action);
 				action->checkState();
 			}
@@ -682,3 +682,13 @@ void UserBox::removeCompareFunction(const QString &id)
 // 	kdebugf2();
 // 	return found;
 // }
+
+BuddySet BuddiesListView::buddies()
+{
+	return selectedBuddies();
+}
+
+ContactSet BuddiesListView::contacts()
+{
+	return selectedContacts();
+}

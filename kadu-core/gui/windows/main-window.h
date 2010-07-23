@@ -25,6 +25,7 @@
 #include <QtGui/QMainWindow>
 #include <QtXml/QDomElement>
 
+#include "gui/actions/action-data-source.h"
 #include "gui/actions/action-description.h"
 
 #include "exports.h"
@@ -39,7 +40,7 @@ class Contact;
 class ContactSet;
 class StatusContainer;
 
-class KADUAPI MainWindow : public QMainWindow
+class KADUAPI MainWindow : public QMainWindow, public ActionDataSource
 {
 	Q_OBJECT
 
@@ -73,9 +74,7 @@ public:
 	virtual bool supportsActionType(ActionDescription::ActionType type) = 0;
 	virtual BuddiesListView * contactsListView() = 0;
 	virtual StatusContainer *statusContainer() = 0;
-	virtual ContactSet contacts() = 0;
-	virtual BuddySet buddies() = 0;
-	virtual Chat  chat() = 0;
+	virtual Chat chat() = 0;
 	Contact contact();
 	Buddy buddy();
 

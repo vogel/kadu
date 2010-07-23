@@ -28,6 +28,7 @@
 
 #include "exports.h"
 
+class ActionDataSource;
 class ActionDescription;
 class Buddy;
 class BuddySet;
@@ -40,6 +41,7 @@ class KADUAPI Action : public QAction
 	Q_OBJECT
 
 	ActionDescription *Description;
+	ActionDataSource *DataSource;
 
 	QString OnText;
 	QString OffText;
@@ -54,7 +56,7 @@ private slots:
 	void triggeredSlot(bool checked);
 
 public:
-	Action(ActionDescription *description, MainWindow *parent);
+	Action(ActionDescription *description, ActionDataSource *dataSource, QObject *parent);
 	virtual ~Action();
 
 	Contact contact();

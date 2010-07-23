@@ -123,12 +123,13 @@ void ChatWidget::createGui()
 	connect(shortcut, SIGNAL(activated()), MessagesView, SLOT(pageDown()));
 	horizSplit->addWidget(MessagesView);
 
+	// shit, createContactsList needs that
+	InputBox = new ChatEditBox(CurrentChat, this);
+
 	if (CurrentChat.contacts().count() > 1)
 		createContactsList();
 
 	vertSplit->addWidget(horizSplit);
-
-	InputBox = new ChatEditBox(CurrentChat, this);
 	vertSplit->addWidget(InputBox);
 
 	connect(InputBox->inputBox(), SIGNAL(sendMessage()), this, SLOT(sendMessage()));

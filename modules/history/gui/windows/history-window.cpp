@@ -613,7 +613,7 @@ void HistoryWindow::showMainPopupMenu(const QPoint &pos)
 	foreach (ActionDescription *actionDescription, BuddiesListViewMenuManager::instance()->buddyListActions())
 		if (actionDescription)
 		{
-			Action *action = actionDescription->createAction(this);
+			Action *action = actionDescription->createAction(this, this);
 			actions->addAction(action);
 			action->checkState();
 		}
@@ -625,7 +625,7 @@ void HistoryWindow::showMainPopupMenu(const QPoint &pos)
 		if (actionDescription)
 		{
 
-			Action *action = actionDescription->createAction(this);
+			Action *action = actionDescription->createAction(this, this);
 			menu->addAction(action);
 			action->checkState();
 		}
@@ -664,7 +664,7 @@ void HistoryWindow::showMainPopupMenu(const QPoint &pos)
 		foreach (ActionDescription *actionDescription, protocolFactory->protocolMenuManager()->protocolActions(account, (*chat.contacts().toBuddySet().begin())))
 			if (actionDescription)
 			{
-				Action *action = actionDescription->createAction(this);
+				Action *action = actionDescription->createAction(this, this);
 				account_menu->addAction(action);
 				action->checkState();
 			}
