@@ -295,7 +295,7 @@ bool TlenProtocol::sendMessage(Chat chat, FormattedMessage &formattedMessage)
 	bool stop = false;
 	//plain na QByteArray
 	QByteArray data = unicode2cp(plain);
-	emit sendMessageFiltering(chat, data, stop);
+	emit filterOutgoingMessage(chat, data, stop);
 	if (stop)
 		return false;
 	kdebugm(KDEBUG_WARNING, "Tlen send %s\n%s", qPrintable(tlenid), qPrintable(plain));
@@ -364,7 +364,7 @@ void TlenProtocol::chatMsgReceived(QDomNode n)
 
 	// TODO  : contacts?
 	Chat chat = ChatManager::instance()->findChat(contacts);
-	emit receivedMessageFilter(chat, contact, formattedMessage.toPlain(), msgtime, ignore);
+	emit filterIncomingMessage(chat, contact, formattedMessage.toPlain(), msgtime, ignore);
 	if (ignore)
 		return;
 

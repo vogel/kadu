@@ -73,7 +73,7 @@ bool GaduChatService::sendMessage(Chat chat, FormattedMessage &message)
 
 	QByteArray data = plain.toUtf8();
 
-	emit sendMessageFiltering(chat, data, stop);
+	emit filterOutgoingMessage(chat, data, stop);
 
 	if (stop)
 	{
@@ -240,7 +240,7 @@ FormattedMessage GaduChatService::createFormattedMessage(gg_event *e, Chat chat,
 	QString content = getContent(e);
 
 	bool ignore = false;
-	emit receivedGaduRawMessageFilter(chat, sender, content, ignore); //TODO: 0.6.6 + xhtml?
+	emit filterRawIncomingMessage(chat, sender, content, ignore); //TODO: 0.6.6 + xhtml?
 	if (ignore)
 		return FormattedMessage();
 
@@ -284,7 +284,7 @@ void GaduChatService::handleEventMsg(struct gg_event *e)
 	QDateTime time = QDateTime::fromTime_t(e->event.msg.time);
 
 	bool ignore = false;
-	emit receivedMessageFilter(chat, sender, message.toPlain(), time.toTime_t(), ignore);
+	emit filterIncomingMessage(chat, sender, message.toPlain(), time.toTime_t(), ignore);
 	if (ignore)
 		return;
 

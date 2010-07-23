@@ -140,9 +140,9 @@ public slots:
 
 signals:
 	void userStatusChangeIgnored(Buddy);
-	void sendMessageFiltering(Chat chat, QByteArray &msg, bool &stop);
+	void filterOutgoingMessage(Chat chat, QByteArray &msg, bool &stop);
 	void messageStatusChanged(int messsageId, ChatService::MessageStatus status);
-	void receivedMessageFilter(Chat chat, Buddy sender, const QString &message, time_t time, bool &ignore);
+	void filterIncomingMessage(Chat chat, Buddy sender, const QString &message, time_t time, bool &ignore);
 
 };
 
