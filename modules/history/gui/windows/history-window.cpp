@@ -501,9 +501,7 @@ void HistoryWindow::dateActivated(const QModelIndex &index)
 				messages = History::instance()->messages(chat, date);
 			ContentBrowser->setChat(chat);
 			ContentBrowser->appendMessages(messages);
-#if QT_VERSION > 0x040600
-			ContentBrowser->findText(Search.query(), QWebPage::HighlightAllOccurrences);
-#endif
+			QTimer::singleShot(500, this, SLOT(selectQueryText()));
 			break;
 		}
 
@@ -516,9 +514,7 @@ void HistoryWindow::dateActivated(const QModelIndex &index)
 			if (buddy.contacts().size() > 0)
 				ContentBrowser->setChat(ChatManager::instance()->findChat(ContactSet(buddy.contacts()[0]), true));
 			ContentBrowser->appendMessages(statusesToMessages(statuses));
-#if QT_VERSION > 0x040600
-			ContentBrowser->findText(Search.query(), QWebPage::HighlightAllOccurrences);
-#endif
+			QTimer::singleShot(500, this, SLOT(selectQueryText()));
 			break;
 		}
 
@@ -529,9 +525,7 @@ void HistoryWindow::dateActivated(const QModelIndex &index)
 			if (!receipeint.isEmpty() && date.isValid())
 				sms = History::instance()->sms(receipeint, date);
 			ContentBrowser->appendMessages(smsToMessage(sms));
-#if QT_VERSION > 0x040600
-			ContentBrowser->findText(Search.query(), QWebPage::HighlightAllOccurrences);
-#endif
+			QTimer::singleShot(500, this, SLOT(selectQueryText()));
 			break;
 		}
 	}
@@ -733,6 +727,16 @@ void HistoryWindow::clearHistory()
 	History::instance()->currentStorage()->clearChatHistory(chat);
 	updateData();
 	kdebugf2();
+}
+
+void HistoryWindow::selectQueryText()
+{
+#if QT_VERSION >= QT_VERSION_CHECK(4,6,0)
+	ContentBrowser->findText(""); // clear old selection
+	ContentBrowser->findText(Search.query(), QWebPage::HighlightAllOccurrences);
+#else
+	ContentBrowser->findText(Search.query());
+#endif
 }
 
 bool HistoryWindow::supportsActionType(ActionDescription::ActionType type)

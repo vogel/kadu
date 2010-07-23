@@ -111,6 +111,7 @@ private slots:
 
 	void openChat();
 	void clearHistory();
+    void selectQueryText();
 
 protected:
 	virtual void keyPressEvent(QKeyEvent *e);

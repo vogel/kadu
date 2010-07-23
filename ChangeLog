@@ -8,6 +8,7 @@
 * gadu: #1379 fixed: automagically import contact list after creating GG account (Juzef)
 * gadu: #1380 fixed: enable SimpleMode by default after importing account from 0.6.5.x (Juzef)
 * core: #799 fixed: removed contacts become anonymous in conference lists (Vogel)
+* history: #354 fixed again: marking search text in history (Darom, Vogel)
 
 +++ version 0.6.6-beta3
 * jabber: proper URL handler for xmpp:// (Juzef)
