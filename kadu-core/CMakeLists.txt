@@ -96,6 +96,7 @@ set (kadu_SRCS
 	contacts/contact.cpp
 	contacts/contact-details.cpp
 	contacts/contact-manager.cpp
+	contacts/contact-parser-tags.cpp
 	contacts/contact-set.cpp
 	contacts/contact-set-configuration-helper.cpp
 	contacts/contact-shared.cpp

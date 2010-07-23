@@ -115,6 +115,7 @@ public:
 	virtual QPixmap statusPixmap(const QString &statusType);
 
 	virtual QIcon statusIcon(Status status);
+    virtual QString statusIconPath(const QString &statusType);
 	virtual QIcon statusIcon(const QString &statusType);
 
 	virtual void changeStatus(Status status);

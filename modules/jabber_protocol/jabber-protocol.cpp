@@ -551,6 +551,11 @@ QIcon JabberProtocol::statusIcon(Status status)
 			!status.description().isEmpty(), false);
 }
 
+QString JabberProtocol::statusIconPath(const QString &statusType)
+{
+	return StatusTypeManager::instance()->statusIconPath("xmpp", statusType, false, false);
+}
+
 QIcon JabberProtocol::statusIcon(const QString &statusType)
 {
 	return StatusTypeManager::instance()->statusIcon("xmpp", statusType, false, false);

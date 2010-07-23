@@ -145,6 +145,14 @@ QIcon IdentityShared::statusIcon(Status status)
 	return statusIcon(status.type());
 }
 
+QString IdentityShared::statusIconPath(const QString &statusType)
+{
+	foreach (Account account, Accounts)
+		if (account.statusContainer())
+			return account.statusContainer()->statusIconPath(statusType);
+	return QString();
+}
+
 QIcon IdentityShared::statusIcon(const QString &statusType)
 {
 	foreach (Account account, Accounts)

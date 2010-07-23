@@ -128,6 +128,7 @@ public: //TODO 0.6.6: it is needed in Buddy::dummy()
 
 	virtual QString statusName();
 	virtual QIcon statusIcon();
+    virtual QString statusIconPath(const QString &statusType);
 	virtual QIcon statusIcon(const QString &statusType);
 
 	virtual QList<StatusType *> supportedStatusTypes();

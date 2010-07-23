@@ -254,6 +254,13 @@ QIcon StatusContainerManager::statusIcon(Status status)
 	return statusIcon(status.type());
 }
 
+QString StatusContainerManager::statusIconPath(const QString &statusType)
+{
+	return DefaultStatusContainer && this != DefaultStatusContainer
+			? DefaultStatusContainer->statusIconPath(statusType)
+			: "";
+}
+
 QIcon StatusContainerManager::statusIcon(const QString &statusType)
 {
 	return DefaultStatusContainer && this != DefaultStatusContainer

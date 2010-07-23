@@ -112,6 +112,21 @@ QPixmap StatusTypeManager::statusPixmap(const QString &protocol, const QString &
 	return IconsManager::instance()->pixmapByPath(pixmapName);
 }
 
+QString StatusTypeManager::statusIconPath(const QString &protocol, const QString &type, bool description, bool mobile)
+{
+	StatusType *statusType = this->statusType(type);
+	if (!statusType)
+		return QString();
+
+	QString iconName = QString("protocols/%1/16x16/%2%3%4.png")
+			.arg(protocol)
+			.arg(statusType->iconName())
+			.arg(description ? "_d" : "")
+			.arg(mobile ? "_m" : "");
+
+	return IconsManager::instance()->iconPath(iconName);
+}
+
 QIcon StatusTypeManager::statusIcon(const QString &protocol, const QString &type, bool description, bool mobile)
 {
 	StatusType *statusType = this->statusType(type);

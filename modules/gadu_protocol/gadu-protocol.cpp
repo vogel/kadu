@@ -751,6 +751,11 @@ QIcon GaduProtocol::statusIcon(Status status)
 			!status.description().isEmpty(), false);
 }
 
+QString GaduProtocol::statusIconPath(const QString& statusType)
+{
+	return StatusTypeManager::instance()->statusIconPath("gadu-gadu", statusType, false, false);
+}
+
 QIcon GaduProtocol::statusIcon(const QString &statusType)
 {
 	return StatusTypeManager::instance()->statusIcon("gadu-gadu", statusType, false, false);

@@ -319,6 +319,14 @@ QIcon AccountShared::statusIcon()
 	return statusIcon(status());
 }
 
+QString AccountShared::statusIconPath(const QString &statusType)
+{
+	if (ProtocolHandler)
+		return ProtocolHandler->statusIconPath(statusType);
+	else
+		return "";
+}
+
 QIcon AccountShared::statusIcon(const QString &statusType)
 {
 	if (ProtocolHandler)

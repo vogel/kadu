@@ -69,6 +69,7 @@ public:
 
 	virtual QString statusName();
 	virtual QIcon statusIcon();
+    virtual QString statusIconPath(const QString &statusType);
 	virtual QIcon statusIcon(const QString &statusType);
 
 	virtual QList<StatusType *> supportedStatusTypes();
