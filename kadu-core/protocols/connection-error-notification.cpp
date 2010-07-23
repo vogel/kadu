@@ -62,7 +62,7 @@ void ConnectionErrorNotification::registerEvent()
 
 void ConnectionErrorNotification::unregisterEvent()
 {
-	Parser::registerObjectTag("errorServer", getErrorServer);
+	Parser::unregisterObjectTag("errorServer", getErrorServer);
 	Parser::unregisterObjectTag("error", getErrorMessage);
 
 	NotificationManager::instance()->unregisterNotifyEvent(ConnectionErrorNotifyEvent);

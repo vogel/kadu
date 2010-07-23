@@ -21,6 +21,7 @@
 
 #include "configuration/configuration-manager.h"
 #include "contacts/contact.h"
+#include "contacts/contact-parser-tags.h"
 #include "contacts/contact-shared.h"
 #include "core/core.h"
 #include "protocols/protocol.h"
@@ -41,10 +42,12 @@ ContactManager * ContactManager::instance()
 
 ContactManager::ContactManager()
 {
+	ContactParserTags::registerParserTags();
 }
 
 ContactManager::~ContactManager()
 {
+	ContactParserTags::unregisterParserTags();
 }
 
 void ContactManager::idChanged(const QString &oldId)
