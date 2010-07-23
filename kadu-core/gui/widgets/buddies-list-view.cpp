@@ -692,3 +692,8 @@ ContactSet BuddiesListView::contacts()
 {
 	return selectedContacts();
 }
+
+Chat BuddiesListView::chat()
+{
+	return currentChat();
+}

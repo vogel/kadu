@@ -357,11 +357,11 @@ void TabsManager::onNewTab(QAction *sender, bool toggled)
 
 	kdebugf();
 
-	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
-	if (!window)
+	Action *action = dynamic_cast<Action *>(sender);
+	if (!action)
 		return;
 
-	ContactSet contacts = window->contacts();
+	ContactSet contacts = action->contacts();
 	int contactsCount = contacts.count();
 
 	if (0 == contactsCount)

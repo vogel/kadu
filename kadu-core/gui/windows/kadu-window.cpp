@@ -366,7 +366,7 @@ BuddySet KaduWindow::buddies()
 	return ContactsWidget->view()->selectedBuddies();
 }
 
-Chat  KaduWindow::chat()
+Chat KaduWindow::chat()
 {
 	return ContactsWidget->view()->currentChat();
 }

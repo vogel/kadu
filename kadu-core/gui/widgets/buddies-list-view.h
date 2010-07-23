@@ -136,6 +136,7 @@ public:
 	// ActionDataSource implementation
     virtual BuddySet buddies();
     virtual ContactSet contacts();
+    virtual Chat chat();
 
 signals:
 	void chatActivated(Chat chat);

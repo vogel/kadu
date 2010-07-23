@@ -326,16 +326,16 @@ void ChatWidgetActions::whoisActionActivated(QAction *sender, bool toggled)
 
 	kdebugf();
 
-	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
-	if (!window)
+	Action *action = dynamic_cast<Action *>(sender);
+	if (!action)
+		return;
+
+	Buddy buddy = action->buddy();
+	if (!buddy)
 	{
 		(new SearchWindow(Core::instance()->kaduWindow()))->show();
 		return;
 	}
-
-	Buddy buddy = window->contact().ownerBuddy();
-	if (buddy.isNull())
-		return;
 
 	SearchWindow *sd = new SearchWindow(Core::instance()->kaduWindow(), buddy);
 	sd->show();
@@ -350,11 +350,11 @@ void ChatWidgetActions::blockUserActionActivated(QAction *sender, bool toggled)
 
 	kdebugf();
 
-	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
-	if (!window)
+	Action *action = dynamic_cast<Action *>(sender);
+	if (!action)
 		return;
 
-	BuddySet buddies = window->buddies();
+	BuddySet buddies = action->buddies();
 	if (buddies.isEmpty())
 		return;
 
@@ -400,11 +400,12 @@ void ChatWidgetActions::openChatActionActivated(QAction *sender, bool toggled)
 	Q_UNUSED(toggled)
 
 	kdebugf();
-	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
-	if (!window)
+
+	Action *action = dynamic_cast<Action *>(sender);
+	if (!action)
 		return;
 
-	Chat chat = ChatManager::instance()->findChat(window->contacts());
+	Chat chat = ChatManager::instance()->findChat(action->contacts());
 	if (chat)
 		ChatWidgetManager::instance()->openChatWidget(chat, true);
 

@@ -102,6 +102,14 @@ BuddySet Action::buddies()
 		return BuddySet();
 }
 
+Chat Action::chat()
+{
+	if (DataSource)
+		return DataSource->chat();
+	else
+		return Chat::null;
+}
+
 void Action::changedSlot()
 {
 	emit changed(this);

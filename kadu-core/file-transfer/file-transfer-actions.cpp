@@ -98,11 +98,11 @@ void FileTransferActions::sendFileActionActivated(QAction *sender, bool toggled)
 
 	kdebugf();
 
-	MainWindow *kaduMainWindow = dynamic_cast<MainWindow *>(sender->parent());
-	if (!kaduMainWindow)
+	Action *action = dynamic_cast<Action *>(sender);
+	if (!action)
 		return;
 
-	ContactSet contacts = kaduMainWindow->contacts();
+	ContactSet contacts = action->contacts();
 	if (contacts.count())
 		selectFilesAndSend(contacts);
 

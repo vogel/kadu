@@ -32,6 +32,7 @@ class ActionDataSource;
 class ActionDescription;
 class Buddy;
 class BuddySet;
+class Chat;
 class Contact;
 class ContactSet;
 class MainWindow;
@@ -61,8 +62,11 @@ public:
 
 	Contact contact();
 	ContactSet contacts();
+
 	Buddy buddy();
 	BuddySet buddies();
+
+	Chat chat();
 
 public slots:
 	void checkState();

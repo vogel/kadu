@@ -106,10 +106,10 @@ void SmsActions::sendSmsActionActivated(QAction *sender, bool toggled)
 
 	kdebugf();
 
-	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
-	if (window)
+	Action *action = dynamic_cast<Action *>(sender);
+	if (action)
 	{
-		BuddySet users = window->buddies();
+		BuddySet users = action->buddies();
 
 		if (users.count() == 1 && !users.toList()[0].mobile().isEmpty())
 		{

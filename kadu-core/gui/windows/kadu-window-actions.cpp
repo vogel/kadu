@@ -558,17 +558,13 @@ void KaduWindowActions::onlineAndDescUsersActionCreated(Action *action)
 
 void KaduWindowActions::editUserActionCreated(Action *action)
 {
-	MainWindow *window = dynamic_cast<MainWindow *>(action->parent());
-	if (!window)
-		return;
-
-	if (!window->contact())
+	if (!action->contact())
 	{
 		action->setEnabled(false);
 		return;
 	}
 
-	Buddy buddy = window->contact().ownerBuddy();
+	Buddy buddy = action->buddy();
 	if (buddy.isAnonymous())
 	{
 		action->setIcon(IconsManager::instance()->iconByPath("16x16/contact-new.png"));
@@ -652,12 +648,12 @@ void KaduWindowActions::addUserActionActivated(QAction *sender, bool toggled)
 
 	kdebugf();
 
-	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
-	if (!window)
+	Action *action = dynamic_cast<Action *>(sender);
+	if (!action)
 		return;
 
-	Buddy buddy = window->contact().ownerBuddy();
-	AddBuddyWindow *addBuddyWindow = new AddBuddyWindow(window);
+	Buddy buddy = action->buddy();
+	AddBuddyWindow *addBuddyWindow = new AddBuddyWindow(action->parentWidget());
 
 	if (buddy.isAnonymous())
 		addBuddyWindow->setBuddy(buddy);
@@ -673,14 +669,14 @@ void KaduWindowActions::mergeContactActionActivated(QAction *sender, bool toggle
 
 	kdebugf();
 
-	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
-	if (!window)
+	Action *action = dynamic_cast<Action *>(sender);
+	if (!action)
 		return;
 
-	Buddy buddy = window->contact().ownerBuddy();
-	if (!buddy.isNull())
+	Buddy buddy = action->buddy();
+	if (buddy)
 	{
-		MergeBuddiesWindow *mergeBuddiesWindow = new MergeBuddiesWindow(buddy, window);
+		MergeBuddiesWindow *mergeBuddiesWindow = new MergeBuddiesWindow(buddy, sender->parentWidget());
 		mergeBuddiesWindow->show();
 	}
 
@@ -692,7 +688,7 @@ void KaduWindowActions::addGroupActionActivated(QAction *sender, bool toggled)
 	Q_UNUSED(toggled)
 
 	bool ok;
-	QString newGroupName = QInputDialog::getText(dynamic_cast<QWidget *>(sender->parent()), tr("New Group"),
+	QString newGroupName = QInputDialog::getText(sender->parentWidget(), tr("New Group"),
 				tr("Please enter the name for the new group:"), QLineEdit::Normal,
 				QString::null, &ok);
 
@@ -704,14 +700,14 @@ void KaduWindowActions::openSearchActionActivated(QAction *sender, bool toggled)
 {
 	Q_UNUSED(toggled)
 
-	(new SearchWindow(dynamic_cast<QWidget *>(sender->parent())))->show();
+	(new SearchWindow(sender->parentWidget()))->show();
 }
 
 void KaduWindowActions::manageBlockedActionActivated(QAction *sender, bool toggled)
 {
 	Q_UNUSED(toggled)
 
-	(new Ignored(dynamic_cast<QWidget *>(sender->parent())))->show();
+	(new Ignored(sender->parentWidget()))->show();
 }
 
 void KaduWindowActions::helpActionActivated(QAction *sender, bool toggled)
@@ -786,10 +782,6 @@ void KaduWindowActions::showInfoPanelActionActivated(QAction *sender, bool toggl
 
 void KaduWindowActions::showBlockedActionActivated(QAction *sender, bool toggled)
 {
-	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
-	if (!window)
-		return;
-
 	QVariant v = sender->data();
 	if (v.canConvert<BlockedBuddyFilter *>())
 	{
@@ -805,12 +797,12 @@ void KaduWindowActions::writeEmailActionActivated(QAction *sender, bool toggled)
 
 	kdebugf();
 
-	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
-	if (!window)
+	Action *action = dynamic_cast<Action *>(sender);
+	if (!action)
 		return;
 
-	Buddy buddy = window->contact().ownerBuddy();
-	if (buddy.isNull())
+	Buddy buddy = action->buddy();
+	if (!buddy)
 		return;
 
 	if (!buddy.email().isEmpty())
@@ -825,13 +817,13 @@ void KaduWindowActions::copyDescriptionActionActivated(QAction *sender, bool tog
 
 	kdebugf();
 
-	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
-	if (!window)
+	Action *action = dynamic_cast<Action *>(sender);
+	if (!action)
 		return;
 
-	Contact data = window->contact();
+	Contact data = action->contact();
 
-	if (data.isNull())
+	if (!data)
 		return;
 
 	QString description = data.currentStatus().description();
@@ -850,13 +842,13 @@ void KaduWindowActions::openDescriptionLinkActionActivated(QAction *sender, bool
 
 	kdebugf();
 
-	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
-	if (!window)
+	Action *action = dynamic_cast<Action *>(sender);
+	if (!action)
 		return;
 
-	Contact data = window->contact();
+	Contact data = action->contact();
 
-	if (data.isNull())
+	if (!data)
 		return;
 
 	QString description = data.currentStatus().description();
@@ -877,11 +869,11 @@ void KaduWindowActions::copyPersonalInfoActionActivated(QAction *sender, bool to
 
 	kdebugf();
 
-	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
-	if (!window)
+	Action *action = dynamic_cast<Action *>(sender);
+	if (!action)
 		return;
 
-	ContactSet contacts = window->contacts();
+	ContactSet contacts = action->contacts();
 
 	QStringList infoList;
 	QString copyPersonalDataSyntax = config_file.readEntry("General", "CopyPersonalDataSyntax", tr("Contact: %a[ (%u)]\n[First name: %f\n][Last name: %r\n][Mobile: %m\n]"));
@@ -904,12 +896,12 @@ void KaduWindowActions::lookupInDirectoryActionActivated(QAction *sender, bool t
 
 	kdebugf();
 
-	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
-	if (!window)
+	Action *action = dynamic_cast<Action *>(sender);
+	if (!action)
 		return;
 
-	Buddy buddy = window->contact().ownerBuddy();
-	if (buddy.isNull())
+	Buddy buddy = action->buddy();
+	if (!buddy)
 		return;
 
 	SearchWindow *sd = new SearchWindow(Core::instance()->kaduWindow(), buddy);
@@ -935,11 +927,11 @@ void KaduWindowActions::offlineToUserActionActivated(QAction *sender, bool toggl
 // 		}
 	}
 
-	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
-	if (!window)
+	Action *action = dynamic_cast<Action *>(sender);
+	if (!action)
 		return;
 
-	BuddySet buddies = window->buddies();
+	BuddySet buddies = action->buddies();
 	bool on = true;
 	foreach (const Buddy buddy, buddies)
 		if (!buddy.isOfflineTo())
@@ -967,11 +959,11 @@ void KaduWindowActions::hideDescriptionActionActivated(QAction *sender, bool tog
 {
 	kdebugf();
 
-	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
-	if (!window)
+	Action *action = dynamic_cast<Action *>(sender);
+	if (!action)
 		return;
 
-	BuddySet buddies = window->buddies();
+	BuddySet buddies = action->buddies();
 
 	foreach (const Buddy &buddy, buddies)
 	{
@@ -1026,10 +1018,6 @@ void KaduWindowActions::deleteUserActionActivated(MainWindow* window, bool toggl
 
 void KaduWindowActions::inactiveUsersActionActivated(QAction *sender, bool toggled)
 {
-	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
-	if (!window)
-		return;
-
 	QVariant v = sender->data();
 	if (v.canConvert<OfflineBuddyFilter *>())
 	{
@@ -1041,10 +1029,6 @@ void KaduWindowActions::inactiveUsersActionActivated(QAction *sender, bool toggl
 
 void KaduWindowActions::descriptionUsersActionActivated(QAction *sender, bool toggled)
 {
-	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
-	if (!window)
-		return;
-
 	QVariant v = sender->data();
 	if (v.canConvert<HasDescriptionBuddyFilter *>())
 	{
@@ -1055,10 +1039,6 @@ void KaduWindowActions::descriptionUsersActionActivated(QAction *sender, bool to
 
 void KaduWindowActions::onlineAndDescUsersActionActivated(QAction *sender, bool toggled)
 {
-	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
-	if (!window)
-		return;
-	
 	config_file.writeEntry("General", "ShowOnlineAndDescription", toggled);
 
 	QVariant v = sender->data();
@@ -1075,22 +1055,22 @@ void KaduWindowActions::editUserActionActivated(QAction *sender, bool toggled)
 
 	kdebugf();
 
-	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
-	if (!window)
+	Action *action = dynamic_cast<Action *>(sender);
+	if (!action)
 		return;
 
-	Buddy buddy = window->contact().ownerBuddy();
-	if (buddy.isNull())
-		buddy = BuddyManager::instance()->byContact(window->contact(), ActionCreateAndAdd);
+	Buddy buddy = action->buddy();
+	if (!buddy)
+		buddy = BuddyManager::instance()->byContact(action->contact(), ActionCreateAndAdd);
 
 	if (buddy.isAnonymous())
 	{
-		AddBuddyWindow *addBuddyWindow = new AddBuddyWindow(window);
+		AddBuddyWindow *addBuddyWindow = new AddBuddyWindow(sender->parentWidget());
 		addBuddyWindow->setBuddy(buddy);
 		addBuddyWindow->show();
 	}
 	else
-		(new BuddyDataWindow(buddy, window))->show();
+		(new BuddyDataWindow(buddy, sender->parentWidget()))->show();
 
 	kdebugf2();
 }
