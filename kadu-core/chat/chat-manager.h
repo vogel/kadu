@@ -63,6 +63,7 @@
 
 class Account;
 class BuddyList;
+class BuddySet;
 class XmlConfigFile;
 
 /**
@@ -118,6 +119,10 @@ public:
 	 */
 	virtual QString storageNodeItemName() { return QLatin1String("Chat"); }
 
+	// TODO: move somewhere
+	bool isAccountCommon(Account account, BuddySet buddies);
+	Account getCommonAccount(BuddySet buddies);
+	Chat findChat(BuddySet buddies, bool create = true);
 	Chat findChat(ContactSet contacts, bool create = true);
 
 	// TODO: hide it someway...

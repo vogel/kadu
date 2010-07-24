@@ -20,6 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "accounts/account-manager.h"
 #include "chat/type/chat-type-manager.h"
 #include "chat/chat-details-conference.h"
 #include "chat/chat-details-simple.h"
@@ -96,6 +97,39 @@ void ChatManager::detailsUnloaded(Chat chat)
 {
 	if (!chat.isNull())
 		unregisterItem(chat);
+}
+
+bool ChatManager::isAccountCommon(Account account, BuddySet buddies)
+{
+	foreach (Buddy buddy, buddies)
+		if (buddy.contacts(account).isEmpty())
+			return false;
+
+	return true;
+}
+
+Account ChatManager::getCommonAccount(BuddySet buddies)
+{
+	QList<Account> accounts = AccountManager::instance()->items();
+	foreach (Account account, accounts)
+		if (isAccountCommon(account, buddies))
+			return account;
+
+	return Account::null;
+}
+
+Chat ChatManager::findChat(BuddySet buddies, bool create)
+{
+	Account commonAccount = getCommonAccount(buddies);
+	if (!commonAccount)
+		return Chat::null;
+
+	ContactSet contacts;
+	foreach (Buddy buddy, buddies)
+		// it is common account, so each buddy has at least one contact in this account
+		contacts.insert(buddy.contacts(commonAccount).at(0));
+
+	return findChat(contacts, create);
 }
 
 /**

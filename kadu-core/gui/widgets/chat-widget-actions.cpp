@@ -405,7 +405,7 @@ void ChatWidgetActions::openChatActionActivated(QAction *sender, bool toggled)
 	if (!action)
 		return;
 
-	Chat chat = ChatManager::instance()->findChat(action->contacts());
+	Chat chat = action->chat();
 	if (chat)
 		ChatWidgetManager::instance()->openChatWidget(chat, true);
 

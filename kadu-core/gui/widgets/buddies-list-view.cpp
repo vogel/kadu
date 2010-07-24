@@ -223,9 +223,14 @@ Chat BuddiesListView::chatForIndex(const QModelIndex &index) const
 	return ChatManager::instance()->findChat(ContactSet(con));
 }
 
-Chat  BuddiesListView::currentChat() const
+Chat BuddiesListView::currentChat() const
 {
-	return ChatManager::instance()->findChat(selectedContacts());
+	ContactSet chatContacts = selectedContacts();
+	Chat result = ChatManager::instance()->findChat(chatContacts);
+	if (result)
+		return result;
+
+	return ChatManager::instance()->findChat(selectedBuddies());
 }
 
 void BuddiesListView::triggerActivate(const QModelIndex& index)
