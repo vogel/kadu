@@ -1,7 +1,8 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
+ * Copyright 2009, 2010 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2009 Piotr Galiszewski (piotrgaliszewski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,42 +19,31 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JABBER_PERSONAL_INFO_WIDGET_H
-#define JABBER_PERSONAL_INFO_WIDGET_H
-
-#include <QtGui/QWidget>
+#ifndef JABBER_PERSONAL_INFO_SERVICE_H
+#define JABBER_PERSONAL_INFO_SERVICE_H
 
 #include "buddies/buddy.h"
 
-class QComboBox;
-class QLineEdit;
+#include "protocols/services/personal-info-service.h"
 
-class Account;
-class PersonalInfoService;
+class JabberProtocol;
 
-class JabberPersonalInfoWidget : public QWidget
+class JabberPersonalInfoService : public PersonalInfoService
 {
 	Q_OBJECT
 
-	PersonalInfoService *Service;
-
-	QLineEdit *FullName;
-	QLineEdit *NickName;
-	QLineEdit *FamilyName;
-	QLineEdit *BirthYear;
-	QLineEdit *City;
-	QLineEdit *Email;
-	QLineEdit *Website;
-
-	void createGui();
-
-private slots:
-	void personalInfoAvailable(Buddy buddy);
+	JabberProtocol *Protocol;
+	Buddy CurrentBuddy;
 
 public:
-	explicit JabberPersonalInfoWidget(Account account, QWidget *parent = 0);
-	virtual ~JabberPersonalInfoWidget();
+	JabberPersonalInfoService(JabberProtocol *protocol);
 
+	virtual void fetchPersonalInfo();
+	virtual void updatePersonalInfo(Buddy buddy);
+
+private slots:
+    	void fetchingVCardFinished();
 };
 
-#endif // JABBER_PERSONAL_INFO_WIDGET_H
+#endif // JABBER_PERSONAL_INFO_SERVICE_H
+

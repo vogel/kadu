@@ -54,33 +54,30 @@ void JabberPersonalInfoWidget::createGui()
 {
 	QFormLayout *layout = new QFormLayout(this);
 
+	FullName = new QLineEdit(this);
 	NickName = new QLineEdit(this);
-	FirstName = new QLineEdit(this);
-	LastName = new QLineEdit(this);
-	Sex = new QComboBox(this);
 	FamilyName = new QLineEdit(this);
 	BirthYear = new QLineEdit(this);
 	City = new QLineEdit(this);
-	FamilyCity = new QLineEdit(this);
+	Email = new QLineEdit(this);
+	Website = new QLineEdit(this);
 
+	layout->addRow(tr("Full name"), FullName);
 	layout->addRow(tr("Nick"), NickName);
-	layout->addRow(tr("First name"), FirstName);
-	layout->addRow(tr("Last name"), LastName);
-	layout->addRow(tr("Sex"), Sex);
 	layout->addRow(tr("Family name"), FamilyName);
 	layout->addRow(tr("Birth year"), BirthYear);
 	layout->addRow(tr("City"), City);
-	layout->addRow(tr("Family city"), FamilyCity);
+	layout->addRow(tr("E-Mail"), Email);
+	layout->addRow(tr("Website"), Website);
 }
 
 void JabberPersonalInfoWidget::personalInfoAvailable(Buddy buddy)
 {
 	NickName->setText(buddy.nickName());
-	FirstName->setText(buddy.firstName());
-	LastName->setText(buddy.lastName());
-	Sex->setCurrentIndex((int)buddy.gender());
+	FullName->setText(buddy.firstName());
 	FamilyName->setText(buddy.familyName());
 	BirthYear->setText(QString::number(buddy.birthYear()));
 	City->setText(buddy.city());
-	FamilyCity->setText(buddy.familyCity());
+	Email->setText(buddy.email());
+	Website->setText(buddy.website());
 }

@@ -85,6 +85,7 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	CurrentChatService = new JabberChatService(this);
 	CurrentChatStateService = new JabberChatStateService(this);
 	CurrentFileTransferService = new JabberFileTransferService(this);
+	CurrentPersonalInfoService = new JabberPersonalInfoService(this);
 	CurrentRosterService = new JabberRosterService(this);
 	connect(CurrentRosterService, SIGNAL(rosterDownloaded(bool)),
 			this, SLOT(rosterDownloaded(bool)));
