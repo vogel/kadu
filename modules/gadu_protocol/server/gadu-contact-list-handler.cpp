@@ -55,27 +55,23 @@ void GaduContactListHandler::setUpContactList(QList<Contact> contacts)
 	 */
 
 	// send empty list
-	gg_notify_ex(Protocol->gaduSession(), 0, 0, 0);
+	//gg_notify_ex(Protocol->gaduSession(), 0, 0, 0);
 
 	// send all items
-	foreach (const Contact &contact, contacts)
-		addContactEntry(contact);
+	//foreach (const Contact &contact, contacts)
+	//	addContactEntry(contact);
 
-/*
 	UinType *uins;
 	char *types;
 
 	if (contacts.isEmpty())
 	{
-		debugMessage("  contact list is empty");
-
 		gg_notify_ex(Protocol->gaduSession(), 0, 0, 0);
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Userlist is empty\n");
 		return;
 	}
 
 	int count = contacts.count();
-	debugMessage(QString("  will send %1 elements").arg(count));
 
 	uins = new UinType[count];
 	types = new char[count];
@@ -84,8 +80,6 @@ void GaduContactListHandler::setUpContactList(QList<Contact> contacts)
 
 	foreach (const Contact &contact, contacts)
 	{
-		debugMessage(QString("  sending %1 with %2").arg(Protocol->uin(contact)).arg(notifyTypeFromContact(contact)));
-
 		uins[i] = Protocol->uin(contact);
 		types[i] = notifyTypeFromContact(contact);
 		++i;
@@ -96,7 +90,6 @@ void GaduContactListHandler::setUpContactList(QList<Contact> contacts)
 
 	delete [] uins;
 	delete [] types;
-*/
 }
 
 void GaduContactListHandler::updateContactEntry(Contact contact)
