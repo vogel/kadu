@@ -147,7 +147,7 @@ bool AvatarManager::needUpdate(Contact contact)
 
 	return false;
 }
-#include <stdio.h>
+
 void AvatarManager::updateAvatar(Contact contact, bool force)
 {
 	if (!force && !needUpdate(contact))
@@ -166,6 +166,7 @@ void AvatarManager::avatarFetched(Contact contact, const QByteArray &data)
 	if (!avatar)
 	{
 		avatar = Avatar::create();
+		addItem(avatar);
 		contact.setContactAvatar(avatar);
 	}
 

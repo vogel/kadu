@@ -34,6 +34,7 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "buddies/avatar.h"
+#include "buddies/avatar-manager.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-shared.h"
 #include "contacts/contact.h"
@@ -144,6 +145,7 @@ void BuddyGeneralConfigurationWidget::save()
 		if (!buddyAvatar)
 		{
 			buddyAvatar = Avatar::create();
+			AvatarManager::instance()->addItem(buddyAvatar);
 			MyBuddy.setBuddyAvatar(buddyAvatar);
 		}
 

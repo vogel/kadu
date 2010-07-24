@@ -122,7 +122,7 @@ void AvatarShared::setPixmap(QPixmap pixmap)
 		avatarsDir.mkpath(profilePath("avatars"));
 
 	Pixmap = pixmap;
-	emitUpdated();
+	dataUpdated();
 
 	if (pixmap.isNull())
 		QFile::remove(filePath());

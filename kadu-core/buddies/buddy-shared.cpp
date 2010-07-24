@@ -229,6 +229,9 @@ void BuddyShared::aboutToBeRemoved()
 
 	Contacts = QList<Contact>();
 	Groups = QList<Group>();
+
+	AvatarManager::instance()->removeItem(BuddyAvatar);
+	BuddyAvatar = Avatar::null;
 }
 
 void BuddyShared::addContact(Contact contact)

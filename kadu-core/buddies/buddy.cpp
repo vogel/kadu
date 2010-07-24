@@ -24,6 +24,7 @@
 #include "accounts/account-details.h"
 #include "accounts/account-manager.h"
 #include "buddies/avatar.h"
+#include "buddies/avatar-manager.h"
 #include "buddies/avatar-shared.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-remove-predicate-object.h"
@@ -254,6 +255,8 @@ Buddy Buddy::dummy()
 		contact.setDetails(account.protocolHandler()->protocolFactory()->createContactDetails(contact));
 
 		Avatar avatar = Avatar::create();
+		AvatarManager::instance()->addItem(avatar);
+
 		avatar.setLastUpdated(QDateTime::currentDateTime());
 		avatar.setPixmap(IconsManager::instance()->pixmapByPath("32x32/system-users.png"));
 		contact.setContactAvatar(avatar);
