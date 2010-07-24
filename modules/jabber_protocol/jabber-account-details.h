@@ -40,6 +40,13 @@ public:
 		Encryption_Auto = 2,
 		Encryption_Legacy = 3
 	};
+	
+	enum AllowPlainType
+	{
+		NoAllowPlain = 0,
+		AllowPlain = 1,
+		AllowPlainOverTLS = 2
+	};
 
 private:
 	PROPERTY_DEC(QString, Resource)
@@ -49,6 +56,7 @@ private:
 	PROPERTY_DEC(QString, CustomHost)
 	PROPERTY_DEC(int, CustomPort)
 	PROPERTY_DEC(EncryptionFlag, EncryptionMode)
+	PROPERTY_DEC(AllowPlainType, PlainAuthMode)
 	PROPERTY_DEC(bool, LegacySSLProbe)
 	PROPERTY_DEC(QByteArray, TlsOverrideCert)
 	PROPERTY_DEC(QString, TlsOverrideDomain)
@@ -70,6 +78,7 @@ public:
 	PROPERTY_DEF(QString, customHost, setCustomHost, CustomHost)
 	PROPERTY_DEF(int, customPort, setCustomPort, CustomPort)
 	PROPERTY_DEF(EncryptionFlag, encryptionMode, setEncryptionMode, EncryptionMode)
+	PROPERTY_DEF(AllowPlainType, plainAuthMode, setPlainAuthMode, PlainAuthMode)
 	PROPERTY_DEF(bool, legacySSLProbe, setLegacySSLProbe, LegacySSLProbe)
 	PROPERTY_DEF(QByteArray, tlsOverrideCert, setTlsOverrideCert, TlsOverrideCert)
 	PROPERTY_DEF(QString, tlsOverrideDomain, setTlsOverrideDomain, TlsOverrideDomain)

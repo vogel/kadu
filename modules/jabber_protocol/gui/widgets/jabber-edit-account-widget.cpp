@@ -246,12 +246,10 @@ void JabberEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	plainAuthLabel->setText(tr("Allow plaintext authentication")+":");
 	plainAuthLayout->addWidget(plainAuthLabel);
 
-	//TODO: powinno być XMPP::ClientStream::AllowPlainType - potrzebna koncepcja jak to zapisywać w konfiguracji
 	PlainTextAuth = new QComboBox(general);
-	PlainTextAuth->addItem(tr("Never"), JabberAccountDetails::Encryption_No);
-	PlainTextAuth->addItem(tr("Always"), JabberAccountDetails::Encryption_Yes);
-	PlainTextAuth->addItem(tr("When available"), JabberAccountDetails::Encryption_Auto);
-	PlainTextAuth->addItem(tr("Legacy SSL"), JabberAccountDetails::Encryption_Legacy);
+	PlainTextAuth->addItem(tr("Never"), JabberAccountDetails::NoAllowPlain);
+	PlainTextAuth->addItem(tr("Always"), JabberAccountDetails::AllowPlain);
+	PlainTextAuth->addItem(tr("Over ecrypted connection"), JabberAccountDetails::AllowPlainOverTLS);
 	connect(PlainTextAuth, SIGNAL(activated(int)), this, SLOT(dataChanged()));
 	plainAuthLayout->addWidget(PlainTextAuth);
 	vboxLayout2->addLayout(plainAuthLayout);
@@ -377,6 +375,7 @@ void JabberEditAccountWidget::dataChanged()
 		&& AccountDetails->customHost() == CustomHost->displayText()
 		&& AccountDetails->customPort() == CustomPort->displayText().toInt()
 		&& AccountDetails->encryptionMode() == (JabberAccountDetails::EncryptionFlag)EncryptionMode->itemData(EncryptionMode->currentIndex()).toInt()
+		&& AccountDetails->plainAuthMode() == (JabberAccountDetails::AllowPlainType)PlainTextAuth->itemData(PlainTextAuth->currentIndex()).toInt()
 		&& AccountDetails->legacySSLProbe() == LegacySSLProbe->isChecked()
 		&& AccountDetails->autoResource() == AutoResource->isChecked()
 		&& AccountDetails->resource() == ResourceName->text()
@@ -428,6 +427,7 @@ void JabberEditAccountWidget::loadConnectionData()
 	CustomHost->setText(AccountDetails->customHost());
 	CustomPort->setText(AccountDetails->customPort() ? QString::number(AccountDetails->customPort()) : QString::number(5222));
 	EncryptionMode->setCurrentIndex(EncryptionMode->findData(AccountDetails->encryptionMode()));
+	PlainTextAuth->setCurrentIndex(PlainTextAuth->findData(AccountDetails->plainAuthMode()));
 	LegacySSLProbe->setChecked(AccountDetails->legacySSLProbe());
 	proxy->loadProxyData();
 
@@ -453,6 +453,7 @@ void JabberEditAccountWidget::apply()
 	AccountDetails->setCustomHost(CustomHost->text());
 	AccountDetails->setCustomPort(CustomPort->text().toInt());
 	AccountDetails->setEncryptionMode((JabberAccountDetails::EncryptionFlag)EncryptionMode->itemData(EncryptionMode->currentIndex()).toInt());
+	AccountDetails->setPlainAuthMode((JabberAccountDetails::AllowPlainType)PlainTextAuth->itemData(PlainTextAuth->currentIndex()).toInt());
 	AccountDetails->setLegacySSLProbe(LegacySSLProbe->isChecked());
 	AccountDetails->setAutoResource(AutoResource->isChecked());
 	AccountDetails->setResource(ResourceName->text());

@@ -41,7 +41,6 @@
 #include "services/jabber-roster-service.h"
 #include "services/jabber-subscription-service.h"
 #include "iris-status-adapter.h"
-#include "jabber-account-details.h"
 #include "jabber-contact-details.h"
 #include "jabber-protocol-factory.h"
 #include "jabber-url-handler.h"
@@ -244,9 +243,10 @@ void JabberProtocol::connectToServer()
 	connector->setOptSSL(confUseSSL);
 
 	stream = new XMPP::ClientStream(connector, tlsHandler);
-	stream->setAllowPlain(XMPP::ClientStream::AllowPlainOverTLS);
 
 */
+
+	JabberClient->setAllowPlainTextPassword(plainAuthToXMPP(jabberAccountDetails->plainAuthMode()));
 
 	networkStateChanged(NetworkConnecting);
 	jabberID = jabberID.withResource(jabberAccountDetails->resource());
@@ -266,6 +266,16 @@ void JabberProtocol::connectToServer()
 	pepAvailable = false;
 	
 	kdebugf2();
+}
+
+XMPP::ClientStream::AllowPlainType JabberProtocol::plainAuthToXMPP(JabberAccountDetails::AllowPlainType type)
+{
+	if (type == JabberAccountDetails::NoAllowPlain)
+		return XMPP::ClientStream::NoAllowPlain;
+	if (type == JabberAccountDetails::AllowPlain)
+		return XMPP::ClientStream::AllowPlain;
+	else
+		return XMPP::ClientStream::AllowPlainOverTLS;
 }
 
 void JabberProtocol::connectedToServer()

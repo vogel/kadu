@@ -69,7 +69,8 @@ void JabberAccountDetails::load()
 	setCustomHost(loadValue<QString>("CustomHost"));
 	setCustomPort(loadValue<int>("CustomPort"));
 
-	setEncryptionMode((EncryptionFlag)loadValue<int>("EncryptionMode"));
+	setEncryptionMode((EncryptionFlag)loadValue<int>("EncryptionMode", 2));
+	setPlainAuthMode((AllowPlainType)loadValue<int>("PlainAuthMode", 2));
 	setLegacySSLProbe(loadValue<bool>("LegacySSLProbe"));
 	setTlsOverrideCert(XMPP::Base64::decode(loadValue<QByteArray>("TlsOverrideCert")));
 	setTlsOverrideDomain(loadValue<QString>("TlsOverrideDomain"));
@@ -90,6 +91,7 @@ void JabberAccountDetails::store()
 	storeValue("CustomPort", customPort());
 
 	storeValue("EncryptionMode", encryptionMode());
+	storeValue("PlainAuthMode", plainAuthMode());
 	storeValue("LegacySSLProbe", legacySSLProbe());
 	storeValue("TlsOverrideCert", XMPP::Base64::encode(tlsOverrideCert()));
 	storeValue("TlsOverrideDomain", tlsOverrideDomain());

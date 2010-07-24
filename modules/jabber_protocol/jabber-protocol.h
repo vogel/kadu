@@ -28,6 +28,7 @@
 #include "protocols/protocol.h"
 
 #include "client/jabber-client.h"
+#include "jabber-account-details.h"
 #include "services/jabber-avatar-service.h"
 #include "services/jabber-chat-service.h"
 #include "services/jabber-chat-state-service.h"
@@ -72,6 +73,7 @@ class JabberProtocol : public Protocol
 	friend class JabberRosterService;
 	void connectContactManagerSignals();
 	void disconnectContactManagerSignals();
+	XMPP::ClientStream::AllowPlainType plainAuthToXMPP(JabberAccountDetails::AllowPlainType type);
 
 private slots:
 	void login(const QString &password, bool permanent);
