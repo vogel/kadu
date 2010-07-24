@@ -68,7 +68,7 @@ YourAccounts::YourAccounts(QWidget *parent) :
 	createGui();
 	AccountsView->selectionModel()->select(AccountsView->model()->index(0, 0), QItemSelectionModel::ClearAndSelect);
 
-	loadWindowGeometry(this, "General", "YourAccountsWindowGeometry", 0, 50, 425, 500);
+	loadWindowGeometry(this, "General", "YourAccountsWindowGeometry", 0, 50, 700, 500);
 }
 
 YourAccounts::~YourAccounts()
