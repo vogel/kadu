@@ -120,7 +120,7 @@ void KdeNotify::notify(Notification *notification)
 	QList<QVariant> args;
 	args.append("Kadu");
 	args.append(0U);
-	args.append("");
+	args.append(IconsManager::instance()->iconPath("16x16/internet-group-chat.png"));
 
 	/* the new spec doesn't have this */
 	if (!UseFreedesktopStandard)
