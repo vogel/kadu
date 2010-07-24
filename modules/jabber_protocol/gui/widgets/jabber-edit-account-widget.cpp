@@ -463,6 +463,8 @@ void JabberEditAccountWidget::apply()
 	
 	setState(StateNotChanged);
 	
+	ConfigurationManager::instance()->flush();
+	
 	dataChanged();
 }
 

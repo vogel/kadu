@@ -196,6 +196,10 @@ void TlenEditAccountWidget::apply()
 	proxy->apply();
 
 	gpiw->applyData();
+	
+	ConfigurationManager::instance()->flush();
+	
+	setState(StateNotChanged);
 }
 
 void TlenEditAccountWidget::cancel()

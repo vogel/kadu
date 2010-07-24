@@ -283,6 +283,8 @@ void GaduEditAccountWidget::apply()
 	GaduServersManager::instance()->buildServerList();
 
 	gpiw->applyData();
+	
+	ConfigurationManager::instance()->flush();
 
 	setState(StateNotChanged);
 }
