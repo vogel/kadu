@@ -12,6 +12,7 @@
 * core: #1106 fixed: invalid actions in context menu of conference user box (Vogel)
 * core: #1347 fixed: custom avatars are now properly stored (Vogel)
 * gui: #1398 fixed: unable to start conference with buddies with different preffered accounts (Vogel)
+* gui: #1316 fixed: problems with tray and Compiz (ultr)
 
 +++ version 0.6.6-beta3
 * jabber: proper URL handler for xmpp:// (Juzef)
