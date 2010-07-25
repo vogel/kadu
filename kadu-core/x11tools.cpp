@@ -285,7 +285,7 @@ void X11_setCurrentDesktop( Display *display, unsigned long desktop, bool forceF
 			xev.xclient.data.l[3]    = 0;
 			xev.xclient.data.l[4]    = 0;
 			XSendEvent( display, DefaultRootWindow( display ), False, SubstructureRedirectMask | SubstructureNotifyMask, &xev );
-///			XFlush( display );
+			///XFlush( display );
 		}
 	}
 }
@@ -293,6 +293,12 @@ void X11_setCurrentDesktop( Display *display, unsigned long desktop, bool forceF
 
 unsigned long X11_getDesktopOfWindow( Display *display, Window window, bool forceFreeDesktop, bool windowareadecides )
 {
+	XWindowAttributes xwa;
+	XGetWindowAttributes( display, window, &xwa );
+	if( xwa.map_state == IsUnmapped )
+	{
+		return X11_NODESKTOP;
+	}
 	if( ( ! forceFreeDesktop ) && ( ! X11_isFreeDesktopCompatible( display ) ) )
 	{
 		unsigned long currentdesktop = X11_getCurrentDesktop( display, forceFreeDesktop );

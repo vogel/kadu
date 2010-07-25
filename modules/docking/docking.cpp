@@ -262,6 +262,7 @@ void DockingManager::trayMousePressEvent(QMouseEvent * e)
 		}
 		#ifdef Q_WS_X11
 		else if (
+			( kadu->isVisible() ) &&
 			( X11_getDesktopOfWindow(QX11Info::display(), kadu->winId()) == X11_getCurrentDesktop( QX11Info::display() ) ) &&
 			( X11_isWindowFullyVisible(QX11Info::display(), kadu->winId()) ) )
 			kadu->hide();
