@@ -15,7 +15,7 @@
 				<radio-button caption="Differentiate the messaging networks for each buddy (Advanced Mode)" config-section="General" config-item="AdvancedMode" id="advancedMode" />
 				<label caption="With this setting, your buddy list will display the associated messaging networks for each of your buddies (e.g. 'Anna uses Gadu-Gadu and Google Talk') ." />
 				
-				<check-box caption="Show network icons with each buddy" config-section="General" config-item="ShowContactsWithIcons" id="contactsWithIcons" />
+				<!-- <check-box caption="Show network icons with each buddy" config-section="General" config-item="ShowContactsWithIcons" id="contactsWithIcons" /> -->
 			</group-box>
 			
 			<group-box name="Default Language">
