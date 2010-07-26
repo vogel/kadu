@@ -35,18 +35,79 @@ ActionsProxyModel::~ActionsProxyModel()
 {
 }
 
-void ActionsProxyModel::addBeforeAction(QAction *action)
+void ActionsProxyModel::updateBeforeAfterActions()
 {
-	beginInsertRows(QModelIndex(), BeforeActions.size(), BeforeActions.size());
-	BeforeActions.append(action);
-	endInsertRows();
+	int i, globalPosition, sourceModelRowCount = sourceModel() ? sourceModel()->rowCount() : 0;
+
+	i = 0;
+	foreach (QAction *action, BeforeActions)
+	{
+		// whether the action should be visible
+		if (!(sourceModelRowCount == 0 && BeforeActionsVisibilities[action] & NotVisibleWithEmptySourceModel) &&
+			!(sourceModelRowCount == 1 && BeforeActionsVisibilities[action] & NotVisibleWithOneRowSourceModel))
+		{
+			// if it should, but it isn't yet
+			if (!VisibleBeforeActions.contains(action))
+			{
+				beginInsertRows(QModelIndex(), i, i);
+				VisibleBeforeActions.insert(i, action);
+				endInsertRows();
+			}
+			i++;
+		}
+		// if it shouldn't, but now is visible
+		else if (VisibleBeforeActions.contains(action))
+		{
+			beginRemoveRows(QModelIndex(), i, i);
+			VisibleBeforeActions.removeAt(i);
+			endRemoveRows();
+		}
+	}
+
+	i = 0;
+	globalPosition = VisibleBeforeActions.count() + sourceModelRowCount;
+	foreach (QAction *action, AfterActions)
+	{
+		// whether the action should be visible
+		if (!(sourceModelRowCount == 0 && AfterActionsVisibilities[action] & NotVisibleWithEmptySourceModel) &&
+			!(sourceModelRowCount == 1 && AfterActionsVisibilities[action] & NotVisibleWithOneRowSourceModel))
+		{
+			// if it should, but it isn't yet
+			if (!VisibleAfterActions.contains(action))
+			{
+				beginInsertRows(QModelIndex(), globalPosition, globalPosition);
+				VisibleAfterActions.insert(i, action);
+				endInsertRows();
+			}
+			i++;
+			globalPosition++;
+		}
+		// if it shouldn't, but now is visible
+		else if (VisibleAfterActions.contains(action))
+		{
+			beginRemoveRows(QModelIndex(), globalPosition, globalPosition);
+			VisibleAfterActions.removeAt(i);
+			endRemoveRows();
+		}
+	}
 }
 
-void ActionsProxyModel::addAfterAction(QAction *action)
+void ActionsProxyModel::addBeforeAction(QAction* action, ActionVisibility actionVisibility)
 {
-	beginInsertRows(QModelIndex(), rowCount(), rowCount());
-	AfterActions.append(action);
-	endInsertRows();
+	if (!BeforeActions.contains(action))
+		BeforeActions.append(action);
+	BeforeActionsVisibilities[action] = actionVisibility;
+
+	updateBeforeAfterActions();
+}
+
+void ActionsProxyModel::addAfterAction(QAction* action, ActionVisibility actionVisibility)
+{
+	if (!AfterActions.contains(action))
+		AfterActions.append(action);
+	AfterActionsVisibilities[action] = actionVisibility;
+
+	updateBeforeAfterActions();
 }
 
 void ActionsProxyModel::setSourceModel(QAbstractItemModel *newSourceModel)
@@ -111,6 +172,8 @@ void ActionsProxyModel::setSourceModel(QAbstractItemModel *newSourceModel)
 		connect(newSourceModel, SIGNAL(layoutChanged()),
 				this, SLOT(sourceLayoutChanged()));
 	}
+
+	updateBeforeAfterActions();
 }
 
 void ActionsProxyModel::sourceDataChanged(const QModelIndex &sourceTopLeft, const QModelIndex &sourceBottomRight)
@@ -127,8 +190,8 @@ void ActionsProxyModel::sourceRowsAboutToBeInserted(const QModelIndex &sourcePar
 {
 	if (!sourceParent.isValid())
 	{
-		start += BeforeActions.size();
-		end += BeforeActions.size();
+		start += VisibleBeforeActions.size();
+		end += VisibleBeforeActions.size();
 	}
 
 	beginInsertRows(mapFromSource(sourceParent), start, end);
@@ -141,6 +204,7 @@ void ActionsProxyModel::sourceRowsInserted(const QModelIndex &sourceParent, int 
 	Q_UNUSED(end)
 
 	endInsertRows();
+	updateBeforeAfterActions();
 }
 
 void ActionsProxyModel::sourceColumnsAboutToBeInserted(const QModelIndex &sourceParent, int start, int end)
@@ -161,8 +225,8 @@ void ActionsProxyModel::sourceRowsAboutToBeRemoved(const QModelIndex &sourcePare
 {
 	if (!sourceParent.isValid())
 	{
-		start += BeforeActions.size();
-		end += BeforeActions.size();
+		start += VisibleBeforeActions.size();
+		end += VisibleBeforeActions.size();
 	}
 
 	beginRemoveRows(mapFromSource(sourceParent), start, end);
@@ -175,6 +239,7 @@ void ActionsProxyModel::sourceRowsRemoved(const QModelIndex &sourceParent, int s
 	Q_UNUSED(end)
 
 	endRemoveRows();
+	updateBeforeAfterActions();
 }
 
 void ActionsProxyModel::sourceColumnsAboutToBeRemoved(const QModelIndex &sourceParent, int start, int end)
@@ -209,9 +274,9 @@ int ActionsProxyModel::columnCount(const QModelIndex &parent) const
 int ActionsProxyModel::rowCount(const QModelIndex &parent) const
 {
 	if (sourceModel())
-		return sourceModel()->rowCount(mapToSource(parent)) + BeforeActions.count() + AfterActions.count();
+		return sourceModel()->rowCount(mapToSource(parent)) + VisibleBeforeActions.count() + VisibleAfterActions.count();
 	else
-		return BeforeActions.count() + AfterActions.count();
+		return VisibleBeforeActions.count() + VisibleAfterActions.count();
 }
 
 QModelIndex ActionsProxyModel::index(int row, int column, const QModelIndex &parent) const
@@ -234,12 +299,12 @@ QAction * ActionsProxyModel::actionForIndex(const QModelIndex &index) const
 		return 0;
 
 	int beforeIndex = index.row();
-	int afterIndex = index.row() - BeforeActions.count() - sourceModel()->rowCount();
+	int afterIndex = index.row() - VisibleBeforeActions.count() - sourceModel()->rowCount();
 
-	if (beforeIndex >= 0 && beforeIndex < BeforeActions.count())
-		return BeforeActions[beforeIndex];
-	else if (afterIndex >= 0 && afterIndex < AfterActions.count())
-		return AfterActions[afterIndex];
+	if (beforeIndex >= 0 && beforeIndex < VisibleBeforeActions.count())
+		return VisibleBeforeActions[beforeIndex];
+	else if (afterIndex >= 0 && afterIndex < VisibleAfterActions.count())
+		return VisibleAfterActions[afterIndex];
 
 	return 0;
 }
@@ -298,7 +363,7 @@ QModelIndex ActionsProxyModel::mapFromSource(const QModelIndex &sourceIndex) con
 	if (!sourceIndex.isValid() || sourceIndex.model() != sourceModel())
 		return QModelIndex();
 
-	return index(sourceIndex.row() + BeforeActions.count(), sourceIndex.column());
+	return index(sourceIndex.row() + VisibleBeforeActions.count(), sourceIndex.column());
 }
 
 QModelIndex ActionsProxyModel::mapToSource(const QModelIndex &proxyIndex) const
@@ -307,7 +372,7 @@ QModelIndex ActionsProxyModel::mapToSource(const QModelIndex &proxyIndex) const
 		return QModelIndex();
 
 	int row = proxyIndex.row();
-	if (row < BeforeActions.count() || row >= BeforeActions.count() + sourceModel()->rowCount())
+	if (row < VisibleBeforeActions.count() || row >= VisibleBeforeActions.count() + sourceModel()->rowCount())
 		return QModelIndex();
-	return sourceModel()->index(row - BeforeActions.count(), proxyIndex.column());
+	return sourceModel()->index(row - VisibleBeforeActions.count(), proxyIndex.column());
 }

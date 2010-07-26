@@ -20,6 +20,8 @@
 #ifndef ACTIONS_PROXY_MODEL_H
 #define ACTIONS_PROXY_MODEL_H
 
+#include <QtCore/QHash>
+#include <QtCore/QList>
 #include <QtGui/QAbstractProxyModel>
 
 class QAction;
@@ -28,10 +30,24 @@ class ActionsProxyModel : public QAbstractProxyModel
 {
 	Q_OBJECT
 
+public:
+	enum ActionVisibility
+	{
+		AlwaysVisible = 0x0000,
+		NotVisibleWithEmptySourceModel = 0x0001,
+		NotVisibleWithOneRowSourceModel = 0x0002
+	};
+
+private:
 	QList<QAction *> BeforeActions;
 	QList<QAction *> AfterActions;
+	QList<QAction *> VisibleBeforeActions;
+	QList<QAction *> VisibleAfterActions;
+	QHash<QAction *, ActionVisibility> BeforeActionsVisibilities;
+	QHash<QAction *, ActionVisibility> AfterActionsVisibilities;
 
 	QAction * actionForIndex(const QModelIndex &index) const;
+	void updateBeforeAfterActions();
 
 private slots:
 	void sourceDataChanged(const QModelIndex &, const QModelIndex &);
@@ -51,8 +67,8 @@ public:
 	ActionsProxyModel(QObject *parent);
 	virtual ~ActionsProxyModel();
 
-	void addBeforeAction(QAction *action);
-	void addAfterAction(QAction *action);
+	void addBeforeAction(QAction *action, ActionVisibility actionVisibility = AlwaysVisible);
+	void addAfterAction(QAction *action, ActionVisibility actionVisibility = AlwaysVisible);
 
 	virtual void setSourceModel(QAbstractItemModel *newSourceModel);
 
