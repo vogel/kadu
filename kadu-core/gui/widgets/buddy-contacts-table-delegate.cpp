@@ -39,7 +39,7 @@ QWidget * BuddyContactsTableDelegate::createEditor(QWidget *parent, const QStyle
 	if (1 != index.column()) // not account
 		return QStyledItemDelegate::createEditor(parent, option, index);
 
-	return new AccountsComboBox(true, parent);
+	return new AccountsComboBox(parent);
 }
 
 void BuddyContactsTableDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem& option, const QModelIndex& index) const
