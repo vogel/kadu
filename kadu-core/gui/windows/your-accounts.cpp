@@ -105,13 +105,13 @@ void YourAccounts::createGui()
 	MyAccountsModel = new AccountsModel(AccountsView);
 
 	QAction *separator = new QAction(this);
-	separator-> setSeparator(true);
+	separator->setSeparator(true);
 
 	AddExistingAccountAction = new QAction(IconsManager::instance()->iconByPath("32x32/contact-new.png"), tr("Add existing account"), this);
 	CreateNewAccountAction = new QAction(IconsManager::instance()->iconByPath("32x32/system-users.png"), tr("Create new account"), this);
 
 	ActionsModel = new ActionsProxyModel(this);
-	ActionsModel->addAfterAction(separator);
+	ActionsModel->addAfterAction(separator, ActionsProxyModel::NotVisibleWithEmptySourceModel);
 	ActionsModel->addAfterAction(AddExistingAccountAction);
 	ActionsModel->addAfterAction(CreateNewAccountAction);
 	ActionsModel->setSourceModel(MyAccountsModel);
@@ -227,7 +227,7 @@ QWidget * YourAccounts::getAccountCreateWidget(ProtocolFactory *protocol)
 	{
 		if (protocol)
 			widget = protocol->newCreateAccountWidget(CreateAddStack);
-		
+
 		CreateWidgets[protocol] = widget;
 		if (widget)
 		{
