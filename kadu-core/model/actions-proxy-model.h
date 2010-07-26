@@ -64,7 +64,7 @@ private slots:
 	void sourceLayoutChanged();
 
 public:
-	ActionsProxyModel(QObject *parent);
+	explicit ActionsProxyModel(QObject *parent = 0);
 	virtual ~ActionsProxyModel();
 
 	void addBeforeAction(QAction *action, ActionVisibility actionVisibility = AlwaysVisible);
