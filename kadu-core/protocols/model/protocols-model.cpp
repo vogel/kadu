@@ -31,6 +31,14 @@
 ProtocolsModel::ProtocolsModel(QObject *parent) :
 		QAbstractListModel(parent)
 {
+	connect(ProtocolsManager::instance(), SIGNAL(protocolFactoryAboutToBeRegistered(ProtocolFactory *)),
+		this, SLOT(protocolFactoryAboutToBeRegisteredSlot(ProtocolFactory *)));
+	connect(ProtocolsManager::instance(), SIGNAL(protocolFactoryRegistered(ProtocolFactory *)),
+		this, SLOT(protocolFactoryRegisteredSlot(ProtocolFactory *)));
+	connect(ProtocolsManager::instance(), SIGNAL(protocolFactoryAboutToBeUnregistered(ProtocolFactory *)),
+		this, SLOT(protocolFactoryAboutToBeUnregisteredSlot(ProtocolFactory *)));
+	connect(ProtocolsManager::instance(), SIGNAL(protocolFactoryUnregistered(ProtocolFactory *)),
+		this, SLOT(protocolFactoryUnregisteredSlot(ProtocolFactory *)));
 }
 
 ProtocolsModel::~ProtocolsModel()
@@ -91,4 +99,30 @@ int ProtocolsModel::protocolFactoryIndex(ProtocolFactory *protocolFactory)
 QModelIndex ProtocolsModel::protocolFactoryModelIndex(ProtocolFactory *protocolFactory)
 {
 	return index(protocolFactoryIndex(protocolFactory), 0);
+}
+
+void ProtocolsModel::protocolFactoryAboutToBeRegisteredSlot(ProtocolFactory *protocolFactory)
+{
+	Q_UNUSED(protocolFactory)
+
+	beginInsertRows(QModelIndex(), rowCount(), rowCount());
+}
+
+void ProtocolsModel::protocolFactoryRegisteredSlot(ProtocolFactory *protocolFactory)
+{
+	Q_UNUSED(protocolFactory)
+
+	endInsertRows();
+}
+
+void ProtocolsModel::protocolFactoryAboutToBeUnregisteredSlot(ProtocolFactory *protocolFactory)
+{
+	beginRemoveRows(QModelIndex(), protocolFactoryIndex(protocolFactory), protocolFactoryIndex(protocolFactory));
+}
+
+void ProtocolsModel::protocolFactoryUnregisteredSlot(ProtocolFactory *protocolFactory)
+{
+	Q_UNUSED(protocolFactory)
+
+	endRemoveRows();
 }

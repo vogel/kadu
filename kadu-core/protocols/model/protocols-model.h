@@ -29,6 +29,12 @@ class ProtocolsModel : public QAbstractListModel
 {
 	Q_OBJECT
 
+private slots:
+	void protocolFactoryAboutToBeRegisteredSlot(ProtocolFactory* protocolFactory);
+	void protocolFactoryRegisteredSlot(ProtocolFactory* protocolFactory);
+	void protocolFactoryAboutToBeUnregisteredSlot(ProtocolFactory* protocolFactory);
+	void protocolFactoryUnregisteredSlot(ProtocolFactory* protocolFactory);
+
 public:
 	explicit ProtocolsModel(QObject *parent = 0);
 	virtual ~ProtocolsModel();
