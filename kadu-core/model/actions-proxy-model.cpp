@@ -133,11 +133,9 @@ void ActionsProxyModel::sourceRowsAboutToBeInserted(const QModelIndex &sourcePar
 
 void ActionsProxyModel::sourceRowsInserted(const QModelIndex &sourceParent, int start, int end)
 {
-	if (!sourceParent.isValid())
-	{
-		start += BeforeActions.size();
-		end += BeforeActions.size();
-	}
+	Q_UNUSED(sourceParent)
+	Q_UNUSED(start)
+	Q_UNUSED(end)
 
 	endInsertRows();
 }
@@ -163,7 +161,7 @@ void ActionsProxyModel::sourceRowsAboutToBeRemoved(const QModelIndex &sourcePare
 		start += BeforeActions.size();
 		end += BeforeActions.size();
 	}
-	
+
 	beginRemoveRows(mapFromSource(sourceParent), start, end);
 }
 
@@ -267,7 +265,7 @@ QVariant ActionsProxyModel::data(const QModelIndex &proxyIndex, int role) const
 
 		case Qt::DecorationRole:
 			return action->icon();
-			
+
 		case Qt::FontRole:
 		{
 			QFont font;
