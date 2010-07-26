@@ -48,7 +48,6 @@
 
 #include "gui/windows/jabber-change-password-window.h"
 #include "gui/windows/xml-console.h"
-#include "jabber-personal-info-widget.h"
 
 #include "jabber-edit-account-widget.h"
 
@@ -148,7 +147,8 @@ void JabberEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 
 void JabberEditAccountWidget::createPersonalDataTab(QTabWidget *tabWidget)
 {
-	JabberPersonalInfoWidget *gpiw = new JabberPersonalInfoWidget(account(), tabWidget);
+	gpiw = new JabberPersonalInfoWidget(account(), tabWidget);
+	connect(gpiw, SIGNAL(dataChanged()), this, SLOT(dataChanged()));
 	tabWidget->addTab(gpiw, tr("Personal Information"));
 }
 
@@ -380,7 +380,8 @@ void JabberEditAccountWidget::dataChanged()
 		&& AccountDetails->autoResource() == AutoResource->isChecked()
 		&& AccountDetails->resource() == ResourceName->text()
 		&& AccountDetails->priority() == Priority->text().toInt()
-		&& StateNotChanged == proxy->state())
+		&& StateNotChanged == proxy->state()
+		&& !gpiw->isModified())
 	{
 		setState(StateNotChanged);
 		ApplyButton->setEnabled(false);
@@ -460,6 +461,9 @@ void JabberEditAccountWidget::apply()
 	AccountDetails->setPriority(Priority->text().toInt());
 	AccountDetails->setDataTransferProxy(DataTransferProxy->text());
 	proxy->apply();
+	
+	if (gpiw->isModified())
+		gpiw->applyData();
 	
 	setState(StateNotChanged);
 	

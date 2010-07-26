@@ -32,6 +32,7 @@
 #include "gui/widgets/identities-combo-box.h"
 
 #include "jabber-account-details.h"
+#include "jabber-personal-info-widget.h"
 
 class QCheckBox;
 class QLineEdit;
@@ -46,6 +47,7 @@ class JabberEditAccountWidget : public AccountEditWidget
 	Q_OBJECT
 
 	JabberAccountDetails *AccountDetails;
+	JabberPersonalInfoWidget *gpiw;
 
 	QCheckBox *ConnectAtStart;
 	QLineEdit *AccountId;

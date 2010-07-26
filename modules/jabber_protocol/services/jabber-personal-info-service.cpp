@@ -47,13 +47,15 @@ void JabberPersonalInfoService::fetchingVCardFinished()
 		CurrentBuddy.setNickName(vcard.nickName());
 		CurrentBuddy.setFirstName(vcard.fullName());
 		CurrentBuddy.setFamilyName(vcard.familyName());
-		CurrentBuddy.setBirthYear(vcard.bday().year());
+		QDate bday = QDate::fromString(vcard.bdayStr());
+		if (bday.isValid() && !bday.isNull())
+			CurrentBuddy.setBirthYear(bday.year());
 		if (vcard.addressList().count() > 0)
 			CurrentBuddy.setCity(vcard.addressList().at(0).locality);
 		if (vcard.emailList().count() > 0)
 			CurrentBuddy.setEmail(vcard.emailList().at(0).userid);
 		CurrentBuddy.setWebsite(vcard.url());
-		
+
 		emit personalInfoAvailable(CurrentBuddy);
 	}
 }
@@ -61,5 +63,35 @@ void JabberPersonalInfoService::fetchingVCardFinished()
 void JabberPersonalInfoService::updatePersonalInfo(Buddy buddy)
 {
 	CurrentBuddy = buddy;
-	VCardFactory::instance()->getVCard(buddy.contacts(Protocol->account()).first().id(), Protocol->client()->rootTask(), this, SLOT(fetchingVCardFinished()));
+	
+	XMPP::Jid jid = XMPP::Jid(Protocol->account().id());
+	XMPP::VCard vcard;
+	vcard.setFullName(CurrentBuddy.firstName());
+	vcard.setNickName(CurrentBuddy.nickName());
+	vcard.setFamilyName(CurrentBuddy.familyName());
+	QDate birthday;
+	birthday.setDate(1, 1, CurrentBuddy.birthYear());
+	vcard.setBdayStr(birthday.toString("yyyy-MM-dd"));
+	
+	XMPP::VCard::Address addr;
+	XMPP::VCard::AddressList addrList;
+	addr.locality = CurrentBuddy.city();
+	addrList.append(addr);
+	vcard.setAddressList(addrList);
+	
+	XMPP::VCard::Email email;
+	XMPP::VCard::EmailList emailList;
+	email.userid = CurrentBuddy.email();
+	emailList.append(email);
+	vcard.setEmailList(emailList);
+	
+	vcard.setUrl(CurrentBuddy.website());
+	
+	VCardFactory::instance()->setVCard(Protocol->client()->rootTask(), jid, vcard, this, SLOT(uploadingVCardFinished()));
+}
+
+void JabberPersonalInfoService::uploadingVCardFinished()
+{
+	JT_VCard *VCardHandler = static_cast<JT_VCard*> (sender());
+	emit personalInfoUpdated(VCardHandler->success());
 }

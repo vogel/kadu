@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
+ * Copyright 2009, 2010 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
@@ -30,9 +30,10 @@
 #include "jabber-personal-info-widget.h"
 
 JabberPersonalInfoWidget::JabberPersonalInfoWidget(Account account, QWidget* parent) :
-		QWidget(parent)
+		QWidget(parent), MyBuddy(Buddy::create())
 {
 	createGui();
+	fillForm();
 
 	if (account.isNull() || !account.protocolHandler())
 		return;
@@ -55,12 +56,26 @@ void JabberPersonalInfoWidget::createGui()
 	QFormLayout *layout = new QFormLayout(this);
 
 	FullName = new QLineEdit(this);
+	connect(FullName, SIGNAL(textChanged(QString)), this, SIGNAL(dataChanged()));
+	
 	NickName = new QLineEdit(this);
+	connect(NickName, SIGNAL(textChanged(QString)), this, SIGNAL(dataChanged()));
+	
 	FamilyName = new QLineEdit(this);
+	connect(FamilyName, SIGNAL(textChanged(QString)), this, SIGNAL(dataChanged()));
+	
 	BirthYear = new QLineEdit(this);
+	connect(BirthYear, SIGNAL(textChanged(QString)), this, SIGNAL(dataChanged()));
+	BirthYear->setInputMask("d000");
+	
 	City = new QLineEdit(this);
+	connect(City, SIGNAL(textChanged(QString)), this, SIGNAL(dataChanged()));
+	
 	Email = new QLineEdit(this);
+	connect(Email, SIGNAL(textChanged(QString)), this, SIGNAL(dataChanged()));
+	
 	Website = new QLineEdit(this);
+	connect(Website, SIGNAL(textChanged(QString)), this, SIGNAL(dataChanged()));
 
 	layout->addRow(tr("Full name"), FullName);
 	layout->addRow(tr("Nick"), NickName);
@@ -73,11 +88,44 @@ void JabberPersonalInfoWidget::createGui()
 
 void JabberPersonalInfoWidget::personalInfoAvailable(Buddy buddy)
 {
-	NickName->setText(buddy.nickName());
-	FullName->setText(buddy.firstName());
-	FamilyName->setText(buddy.familyName());
-	BirthYear->setText(QString::number(buddy.birthYear()));
-	City->setText(buddy.city());
-	Email->setText(buddy.email());
-	Website->setText(buddy.website());
+	MyBuddy = buddy;
+	fillForm();
+}
+
+void JabberPersonalInfoWidget::fillForm()
+{
+	NickName->setText(MyBuddy.nickName());
+	FullName->setText(MyBuddy.firstName());
+	FamilyName->setText(MyBuddy.familyName());
+	BirthYear->setText(QString::number(MyBuddy.birthYear()));
+	City->setText(MyBuddy.city());
+	Email->setText(MyBuddy.email());
+	Website->setText(MyBuddy.website());
+}
+
+bool JabberPersonalInfoWidget::isModified()
+{
+ 	return NickName->text() != MyBuddy.nickName()
+	|| FullName->text() != MyBuddy.firstName()
+	|| FamilyName->text() != MyBuddy.familyName()
+	|| BirthYear->text() != QString::number(MyBuddy.birthYear())
+	|| City->text() != MyBuddy.city()
+	|| Email->text() != MyBuddy.email()
+	|| Website->text() != MyBuddy.website();
+}
+
+void JabberPersonalInfoWidget::applyData()
+{
+	Buddy buddy = Buddy::create();
+
+	buddy.setNickName((*NickName).text());
+	buddy.setFirstName((*FullName).text());
+	buddy.setFamilyName((*FamilyName).text());
+	buddy.setBirthYear((*BirthYear).text().toUShort());
+	buddy.setCity((*City).text());
+	buddy.setEmail((*Email).text());
+	buddy.setWebsite((*Website).text());
+
+	Service->updatePersonalInfo(buddy);
+	MyBuddy = buddy;
 }

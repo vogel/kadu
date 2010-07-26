@@ -36,6 +36,7 @@ class GaduPersonalInfoWidget : public QWidget
 	Q_OBJECT
 
 	PersonalInfoService *Service;
+	Buddy MyBuddy;
 
 	QLineEdit *NickName;
 	QLineEdit *FirstName;
@@ -47,6 +48,7 @@ class GaduPersonalInfoWidget : public QWidget
 	QLineEdit *FamilyCity;
 
 	void createGui();
+	void fillForm();
 
 private slots:
 	void personalInfoAvailable(Buddy buddy);
@@ -56,7 +58,10 @@ public:
 	virtual ~GaduPersonalInfoWidget();
 
 	void applyData();
+	bool isModified();
 
+signals:
+        void dataChanged();
 };
 
 #endif // GADU_PERSONAL_INFO_WIDGET_H

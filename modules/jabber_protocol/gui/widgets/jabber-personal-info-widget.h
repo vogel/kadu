@@ -36,6 +36,7 @@ class JabberPersonalInfoWidget : public QWidget
 	Q_OBJECT
 
 	PersonalInfoService *Service;
+	Buddy MyBuddy;
 
 	QLineEdit *FullName;
 	QLineEdit *NickName;
@@ -46,6 +47,7 @@ class JabberPersonalInfoWidget : public QWidget
 	QLineEdit *Website;
 
 	void createGui();
+	void fillForm();
 
 private slots:
 	void personalInfoAvailable(Buddy buddy);
@@ -53,6 +55,12 @@ private slots:
 public:
 	explicit JabberPersonalInfoWidget(Account account, QWidget *parent = 0);
 	virtual ~JabberPersonalInfoWidget();
+	
+	void applyData();
+	bool isModified();
+	
+signals:
+        void dataChanged();
 
 };
 

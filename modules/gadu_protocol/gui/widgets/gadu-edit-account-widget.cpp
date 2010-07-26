@@ -163,6 +163,7 @@ void GaduEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 void GaduEditAccountWidget::createPersonalInfoTab(QTabWidget *tabWidget)
 {
 	gpiw = new GaduPersonalInfoWidget(account(), tabWidget);
+	connect(gpiw, SIGNAL(dataChanged()), this, SLOT(dataChanged()));
 	tabWidget->addTab(gpiw, tr("Personal info"));
 }
 
@@ -282,7 +283,8 @@ void GaduEditAccountWidget::apply()
 	config_file.writeEntry("Network", "Server", ipAddresses->text());
 	GaduServersManager::instance()->buildServerList();
 
-	gpiw->applyData();
+	if (gpiw->isModified())
+		gpiw->applyData();
 	
 	ConfigurationManager::instance()->flush();
 
@@ -307,7 +309,8 @@ void GaduEditAccountWidget::dataChanged()
 		&& Details->maximumImageRequests() == MaximumImageRequests->value()
 		&& config_file.readBoolEntry("Network", "isDefServers", true) == useDefaultServers->isChecked()
 		&& config_file.readEntry("Network", "Server") == ipAddresses->text()
-		&& StateNotChanged == Proxy->state())
+		&& StateNotChanged == Proxy->state()
+		&& !gpiw->isModified())
 	{
 		setState(StateNotChanged);
 		ApplyButton->setEnabled(false);

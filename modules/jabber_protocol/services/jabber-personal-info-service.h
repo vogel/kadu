@@ -43,6 +43,7 @@ public:
 
 private slots:
     	void fetchingVCardFinished();
+	void uploadingVCardFinished();
 };
 
 #endif // JABBER_PERSONAL_INFO_SERVICE_H
