@@ -36,7 +36,7 @@ class ProtocolsComboBox : public QComboBox
 	ProtocolFactory *CurrentProtocolFactory;
 
 private slots:
-	void activatedSlot(int index);
+	void currentIndexChangedSlot(int index);
 
 public:
 	explicit ProtocolsComboBox(QWidget* parent = 0);

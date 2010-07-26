@@ -27,7 +27,7 @@
 #include "protocols-combo-box.h"
 
 ProtocolsComboBox::ProtocolsComboBox(QWidget *parent) :
-		QComboBox(parent)
+		QComboBox(parent), CurrentProtocolFactory(0)
 {
 	Model = new ProtocolsModel(this);
 
@@ -37,7 +37,7 @@ ProtocolsComboBox::ProtocolsComboBox(QWidget *parent) :
 
 	setModel(ActionsModel);
 
-	connect(this, SIGNAL(activated(int)), this, SLOT(activatedSlot(int)));
+	connect(this, SIGNAL(currentIndexChanged(int)), this, SLOT(currentIndexChangedSlot(int)));
 }
 
 ProtocolsComboBox::~ProtocolsComboBox()
@@ -46,6 +46,9 @@ ProtocolsComboBox::~ProtocolsComboBox()
 
 void ProtocolsComboBox::setCurrentProtocol(ProtocolFactory *protocol)
 {
+	if (protocol == CurrentProtocolFactory)
+		return;
+
 	QModelIndex index = Model->protocolFactoryModelIndex(protocol);
 	index = ActionsModel->mapFromSource(index);
 
@@ -65,11 +68,12 @@ ProtocolFactory * ProtocolsComboBox::currentProtocol()
 	return CurrentProtocolFactory;
 }
 
-void ProtocolsComboBox::activatedSlot(int index)
+void ProtocolsComboBox::currentIndexChangedSlot(int index)
 {
 	Q_UNUSED(index)
 
 	ProtocolFactory *last = CurrentProtocolFactory;
 	currentProtocol(); // sets CurrentProtocol variable
-	emit protocolChanged(CurrentProtocolFactory, last);
+	if (last != CurrentProtocolFactory)
+		emit protocolChanged(CurrentProtocolFactory, last);
 }
