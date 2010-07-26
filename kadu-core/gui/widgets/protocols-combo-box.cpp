@@ -34,7 +34,7 @@ ProtocolsComboBox::ProtocolsComboBox(bool includeSelectAccount, QWidget *parent)
 	ActionsModel = new ActionsProxyModel(this);
 	ActionsModel->setSourceModel(Model);
 	if (includeSelectAccount)
-		ActionsModel->addBeforeAction(new QAction(tr(" - Select network - "), this));
+		ActionsModel->addBeforeAction(new QAction(tr(" - Select network - "), this), ActionsProxyModel::NotVisibleWithOneRowSourceModel);
 
 	setModel(ActionsModel);
 
