@@ -227,6 +227,9 @@ QModelIndex ActionsProxyModel::parent(const QModelIndex &index) const
 
 QAction * ActionsProxyModel::actionForIndex(const QModelIndex &index) const
 {
+	if (!index.isValid() || index.model() != this)
+		return 0;
+
 	int beforeIndex = index.row();
 	int afterIndex = index.row() - BeforeActions.count() - sourceModel()->rowCount();
 
@@ -240,6 +243,9 @@ QAction * ActionsProxyModel::actionForIndex(const QModelIndex &index) const
 
 Qt::ItemFlags ActionsProxyModel::flags(const QModelIndex &index) const
 {
+	if (!index.isValid() || index.model() != this)
+		return Qt::ItemFlags();
+
 	QModelIndex sourceIndex = mapToSource(index);
 	if (sourceIndex.isValid())
 		return sourceModel()->flags(sourceIndex);
@@ -253,6 +259,9 @@ Qt::ItemFlags ActionsProxyModel::flags(const QModelIndex &index) const
 
 QVariant ActionsProxyModel::data(const QModelIndex &proxyIndex, int role) const
 {
+	if (!proxyIndex.isValid() || proxyIndex.model() != this)
+		return QVariant();
+
 	QAction *action = actionForIndex(proxyIndex);
 
 	if (!action)
@@ -283,11 +292,17 @@ QVariant ActionsProxyModel::data(const QModelIndex &proxyIndex, int role) const
 
 QModelIndex ActionsProxyModel::mapFromSource(const QModelIndex &sourceIndex) const
 {
+	if (!sourceIndex.isValid() || sourceIndex.model() != sourceModel())
+		return QModelIndex();
+
 	return index(sourceIndex.row() + BeforeActions.count(), sourceIndex.column());
 }
 
 QModelIndex ActionsProxyModel::mapToSource(const QModelIndex &proxyIndex) const
 {
+	if (!proxyIndex.isValid() || proxyIndex.model() != this)
+		return QModelIndex();
+
 	int row = proxyIndex.row();
 	if (row < BeforeActions.count() || row >= BeforeActions.count() + sourceModel()->rowCount())
 		return QModelIndex();
