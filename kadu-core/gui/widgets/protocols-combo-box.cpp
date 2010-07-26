@@ -26,15 +26,14 @@
 
 #include "protocols-combo-box.h"
 
-ProtocolsComboBox::ProtocolsComboBox(bool includeSelectAccount, QWidget *parent) :
+ProtocolsComboBox::ProtocolsComboBox(QWidget *parent) :
 		QComboBox(parent)
 {
 	Model = new ProtocolsModel(this);
 
 	ActionsModel = new ActionsProxyModel(this);
 	ActionsModel->setSourceModel(Model);
-	if (includeSelectAccount)
-		ActionsModel->addBeforeAction(new QAction(tr(" - Select network - "), this), ActionsProxyModel::NotVisibleWithOneRowSourceModel);
+	ActionsModel->addBeforeAction(new QAction(tr(" - Select network - "), this), ActionsProxyModel::NotVisibleWithOneRowSourceModel);
 
 	setModel(ActionsModel);
 
