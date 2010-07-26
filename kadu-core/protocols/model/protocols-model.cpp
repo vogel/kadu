@@ -77,7 +77,7 @@ ProtocolFactory * ProtocolsModel::protocolFactory(const QModelIndex &index) cons
 	if (!index.isValid())
 		return 0;
 
-	if (index.row() > 0 && index.row() >= rowCount())
+	if (index.row() >= rowCount())
 		return 0;
 
 	return ProtocolsManager::instance()->byIndex(index.row());
