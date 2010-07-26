@@ -38,7 +38,7 @@ AccountsComboBox::AccountsComboBox(bool includeSelectAccount, QWidget *parent) :
 
 	ActionsModel = new ActionsProxyModel(this);
 	if (includeSelectAccount)
-		ActionsModel->addBeforeAction(new QAction(tr(" - Select account - "), this));
+		ActionsModel->addBeforeAction(new QAction(tr(" - Select account - "), this), ActionsProxyModel::NotVisibleWithOneRowSourceModel);
 	ActionsModel->setSourceModel(ProxyModel);
 
 	setModel(ActionsModel);
