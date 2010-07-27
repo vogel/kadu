@@ -25,11 +25,17 @@
 
 #include <QtCore/QMap>
 #include <QtCore/QPair>
+#ifndef NO_KASTRAT
+#include <QtGui/QSplitter>
+#endif
 
 #include "chat/chat.h"
 #include "buddies/buddy-list.h"
 
 #include "gui/windows/main-window.h"
+#ifndef NO_KASTRAT
+#include "os/generic/compositing-aware-object.h"
+#endif
 
 class QMenu;
 class QMenuBar;
@@ -45,7 +51,11 @@ class KaduTextBrowser;
 class KaduWindowActions;
 class StatusButtons;
 
+#ifndef NO_KASTRAT
+class KADUAPI KaduWindow : public MainWindow, private ConfigurationAwareObject, protected CompositingAwareObject
+#else
 class KADUAPI KaduWindow : public MainWindow, private ConfigurationAwareObject
+#endif
 {
 	Q_OBJECT
 
@@ -62,6 +72,13 @@ private:
 	QMap<ActionDescription *, MenuAction> MenuActions;
 
 	bool Docked; // TODO: 0.7.1 it is a hack
+#ifndef NO_KASTRAT
+   bool Kastrat;
+   QPoint KastratPos;
+   QSize KastratSize;
+   QWidget *GroupBarWidget;
+   QSplitter *split;
+#endif
 
 	KaduWindowActions *Actions;
 
@@ -105,6 +122,9 @@ private slots:
 
 	void createRecentChatsMenu();
 	void openRecentChats(QAction *action);
+#ifndef NO_KASTRAT
+   void triggerKastrat();
+#endif
 
 protected:
 	virtual void closeEvent(QCloseEvent *);
@@ -120,6 +140,10 @@ protected:
 	virtual Chat chat();
 
 	virtual void configurationUpdated();
+#ifndef NO_KASTRAT
+   virtual void compositingEnabled();
+   virtual void compositingDisabled();
+#endif
 
 public:
 	static void createDefaultToolbars(QDomElement parentConfig);

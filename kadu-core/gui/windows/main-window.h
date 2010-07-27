@@ -27,7 +27,6 @@
 
 #include "gui/actions/action-data-source.h"
 #include "gui/actions/action-description.h"
-
 #include "exports.h"
 
 class QContextMenuEvent;
@@ -62,7 +61,10 @@ protected:
 	void refreshToolBars(const QString &prefix);
 
 	void contextMenuEvent(QContextMenuEvent *event);
-
+#ifndef NO_KASTRAT
+	void hideToolBars(bool hide);
+#endif
+	
 public:
 	static MainWindow * findMainWindow(QWidget *widget);
 

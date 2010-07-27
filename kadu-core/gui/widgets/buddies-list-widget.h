@@ -27,12 +27,19 @@
 
 #include "gui/widgets/filter-line-edit.h"
 #include "gui/widgets/filter-widget.h"
+#ifndef NO_KASTRAT
+#include "os/generic/compositing-aware-object.h"
+#endif
 
 class BuddyNameFilter;
 class BuddiesListView;
 class MainWindow;
 
+#ifndef NO_KASTRAT
+class BuddiesListWidget : public QWidget,  CompositingAwareObject
+#else
 class BuddiesListWidget : public QWidget
+#endif
 {
 	Q_OBJECT
 
@@ -54,6 +61,10 @@ private slots:
 
 protected:
 	virtual bool eventFilter(QObject *, QEvent *);
+#ifndef NO_KASTRAT
+   virtual void compositingEnabled();
+   virtual void compositingDisabled();
+#endif
 
 public:
 	explicit BuddiesListWidget(FilterPosition filterPosition, MainWindow *mainWindow, QWidget *parent = 0);
@@ -62,7 +73,6 @@ public:
 	BuddiesListView * view() { return View; }
 	QWidget * nameFilterWidget() { return NameFilterWidget; }
 	BuddyNameFilter * nameFilter() { return NameFilter; }
-
 };
 
 #endif //BUDDIES_LIST_WIDGET_H

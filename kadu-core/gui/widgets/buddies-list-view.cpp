@@ -251,7 +251,14 @@ void BuddiesListView::contextMenuEvent(QContextMenuEvent *event)
 
 	Buddy buddy = buddyAt(indexAt(event->pos()));
 	if (buddy.isNull())
-		return;
+#ifndef NO_KASTRAT
+   {
+       emit emptyListAreaRightClick();
+       return;
+   }
+#else
+      return;
+#endif
 
 	//TODO 0.8 :
 	int separatorsCount = 0;
