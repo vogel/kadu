@@ -47,9 +47,10 @@ void JabberPersonalInfoService::fetchingVCardFinished()
 		CurrentBuddy.setNickName(vcard.nickName());
 		CurrentBuddy.setFirstName(vcard.fullName());
 		CurrentBuddy.setFamilyName(vcard.familyName());
-		QDate bday = QDate::fromString(vcard.bdayStr());
+		QDate bday = QDate::fromString(vcard.bdayStr(), "yyyy-MM-dd");
 		if (bday.isValid() && !bday.isNull())
 			CurrentBuddy.setBirthYear(bday.year());
+
 		if (vcard.addressList().count() > 0)
 			CurrentBuddy.setCity(vcard.addressList().at(0).locality);
 		if (vcard.emailList().count() > 0)
@@ -70,7 +71,7 @@ void JabberPersonalInfoService::updatePersonalInfo(Buddy buddy)
 	vcard.setNickName(CurrentBuddy.nickName());
 	vcard.setFamilyName(CurrentBuddy.familyName());
 	QDate birthday;
-	birthday.setDate(1, 1, CurrentBuddy.birthYear());
+	birthday.setDate(CurrentBuddy.birthYear(), 1, 1);
 	vcard.setBdayStr(birthday.toString("yyyy-MM-dd"));
 	
 	XMPP::VCard::Address addr;
