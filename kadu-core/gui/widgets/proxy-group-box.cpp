@@ -116,12 +116,14 @@ ProxyGroupBox::ProxyGroupBox(Account account, const QString &title, QWidget *par
 
 void ProxyGroupBox::dataChanged()
 {
-	if (MyAccount.useProxy() == UseProxy->isChecked()
-			&& MyAccount.proxyHost().toString() == Host->text()
-			&& QString::number(MyAccount.proxyPort()) == ProxyPort->text()
-			&& MyAccount.proxyRequiresAuthentication() == ProxyAuthentication->isChecked()
-			&& MyAccount.proxyUser() == Username->text()
-			&& MyAccount.proxyPassword() == Password->text())
+	AccountProxySettings proxySettings = MyAccount.proxySettings();
+
+	if (proxySettings.enabled() == UseProxy->isChecked()
+			&& proxySettings.address() == Host->text()
+			&& QString::number(proxySettings.port()) == ProxyPort->text()
+			&& proxySettings.requiresAuthentication() == ProxyAuthentication->isChecked()
+			&& proxySettings.user() == Username->text()
+			&& proxySettings.password() == Password->text())
 		setState(StateNotChanged);
 	else
 		setState(StateChangedDataValid);
@@ -129,26 +131,28 @@ void ProxyGroupBox::dataChanged()
 
 void ProxyGroupBox::loadProxyData()
 {
-	UseProxy->setChecked(MyAccount.useProxy());
-	Host->setText(MyAccount.proxyHost().toString());
-	ProxyPort->setText(QString::number(MyAccount.proxyPort()));
-	ProxyAuthentication->setChecked(MyAccount.proxyRequiresAuthentication());
-	Username->setText(MyAccount.proxyUser());
-	Password->setText(MyAccount.proxyPassword());
+	AccountProxySettings proxySettings = MyAccount.proxySettings();
+
+	UseProxy->setChecked(proxySettings.enabled());
+	Host->setText(proxySettings.address());
+	ProxyPort->setText(QString::number(proxySettings.port()));
+	ProxyAuthentication->setChecked(proxySettings.requiresAuthentication());
+	Username->setText(proxySettings.user());
+	Password->setText(proxySettings.password());
 }
 
 void ProxyGroupBox::apply()
 {
-	MyAccount.setUseProxy(UseProxy->isChecked());
+	AccountProxySettings proxySettings;
 
-	QHostAddress hostAdrr;
-	if (!hostAdrr.setAddress(Host->text()))
-		hostAdrr.setAddress("0.0.0.0");
-	MyAccount.setProxyHost(hostAdrr);
-	MyAccount.setProxyPort(ProxyPort->text().toInt());
-	MyAccount.setProxyRequiresAuthentication(ProxyAuthentication->isChecked());
-	MyAccount.setProxyUser(Username->text());
-	MyAccount.setProxyPassword(Password->text());
+	proxySettings.setEnabled(UseProxy->isChecked());
+	proxySettings.setAddress(Host->text());
+	proxySettings.setPort(ProxyPort->text().toInt());
+	proxySettings.setRequiresAuthentication(ProxyAuthentication->isChecked());
+	proxySettings.setUser(Username->text());
+	proxySettings.setPassword(Password->text());
+
+	MyAccount.setProxySettings(proxySettings);
 
 	setState(StateNotChanged);
 }

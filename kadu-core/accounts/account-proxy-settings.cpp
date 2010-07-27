@@ -21,6 +21,44 @@
 
 AccountProxySettings::AccountProxySettings()
 {
+	Enabled = false;
+	RequiresAuthentication = false;
+}
+
+AccountProxySettings::AccountProxySettings(const AccountProxySettings &copyMe)
+{
+	Enabled = copyMe.Enabled;
+	Host = copyMe.Host;
+	Address = copyMe.Address;
+	Port = copyMe.Port;
+	RequiresAuthentication = copyMe.RequiresAuthentication;
+	User = copyMe.User;
+	Password = copyMe.Password;
+}
+
+AccountProxySettings & AccountProxySettings::operator = (const AccountProxySettings& copyMe)
+{
+	Enabled = copyMe.Enabled;
+	Host = copyMe.Host;
+	Address = copyMe.Address;
+	Port = copyMe.Port;
+	RequiresAuthentication = copyMe.RequiresAuthentication;
+	User = copyMe.User;
+	Password = copyMe.Password;
+
+	return *this;
+}
+
+bool AccountProxySettings::operator != (const AccountProxySettings &compare)
+{
+	return
+			(Enabled != compare.Enabled) ||
+			(Host != compare.Host) ||
+			(Address != compare.Address) ||
+			(Port != compare.Port) ||
+			(RequiresAuthentication != compare.RequiresAuthentication) ||
+			(User != compare.User) ||
+			(Password != compare.Password);
 }
 
 void AccountProxySettings::setEnabled(bool enabled)
@@ -28,7 +66,7 @@ void AccountProxySettings::setEnabled(bool enabled)
 	Enabled = enabled;
 }
 
-bool AccountProxySettings::isEnabled()
+bool AccountProxySettings::enabled()
 {
 	return Enabled;
 }

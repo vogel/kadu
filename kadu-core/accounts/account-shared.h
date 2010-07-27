@@ -27,6 +27,7 @@
 #include <QtCore/QUuid>
 #include <QtNetwork/QHostAddress>
 
+#include "accounts/account-proxy-settings.h"
 #include "contacts/contact.h"
 #include "identities/identity.h"
 #include "protocols/protocols-aware-object.h"
@@ -61,12 +62,7 @@ private:
 
 	bool ConnectAtStart;
 
-	bool UseProxy;
-	QHostAddress ProxyHost;
-	short int ProxyPort;
-	bool ProxyRequiresAuthentication;
-	QString ProxyUser;
-	QString ProxyPassword;
+	AccountProxySettings ProxySettings;
 
 	short int MaximumImageSize;
 
@@ -112,12 +108,7 @@ public: //TODO 0.6.6: it is needed in Buddy::dummy()
 	KaduShared_Property(bool, hasPassword, HasPassword)
 	KaduShared_Property(QString, password, Password)
 	KaduShared_Property(bool, connectAtStart, ConnectAtStart)
-	KaduShared_Property(bool, useProxy, UseProxy)
-	KaduShared_Property(QHostAddress, proxyHost, ProxyHost)
-	KaduShared_Property(short int, proxyPort, ProxyPort)
-	KaduShared_Property(bool, proxyRequiresAuthentication, ProxyRequiresAuthentication)
-	KaduShared_Property(QString, proxyUser, ProxyUser)
-	KaduShared_Property(QString, proxyPassword, ProxyPassword)
+	KaduShared_Property(AccountProxySettings, proxySettings, ProxySettings)
 
 	// StatusContainer implementation
 

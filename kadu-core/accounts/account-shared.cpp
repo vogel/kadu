@@ -50,7 +50,7 @@ AccountShared * AccountShared::loadFromStorage(StoragePoint *storagePoint)
 AccountShared::AccountShared(QUuid uuid) :
 		BaseStatusContainer(this), Shared(uuid),
 		ProtocolHandler(0), RememberPassword(false), HasPassword(false),
-		ConnectAtStart(true), UseProxy(false), ProxyPort(0)
+		ConnectAtStart(true)
 {
 }
 
@@ -97,16 +97,12 @@ void AccountShared::load()
 	if (RememberPassword)
 		Password = pwHash(loadValue<QString>("Password"));
 
-	UseProxy = loadValue<bool>("UseProxy");
-	ProxyPort = loadValue<int>("ProxyPort");
-	ProxyRequiresAuthentication = loadValue<bool>("ProxyRequiresAuthentication");
-	ProxyUser = loadValue<QString>("ProxyUser");
-	ProxyPassword = loadValue<QString>("ProxyPassword");
-
-	QHostAddress host;
-	if (!host.setAddress(loadValue<QString>("ProxyHost")))
-		host.setAddress("0.0.0.0");
-	ProxyHost = host;
+	ProxySettings.setEnabled(loadValue<bool>("UseProxy"));
+	ProxySettings.setAddress(loadValue<QString>("ProxyHost"));
+	ProxySettings.setPort(loadValue<int>("ProxyPort"));
+	ProxySettings.setRequiresAuthentication(loadValue<bool>("ProxyRequiresAuthentication"));
+	ProxySettings.setUser(loadValue<QString>("ProxyUser"));
+	ProxySettings.setPassword(loadValue<QString>("ProxyPassword"));
 
 	triggerAllProtocolsRegistered();
 }
@@ -130,12 +126,12 @@ void AccountShared::store()
 	else
 		removeValue("Password");
 
-	storeValue("UseProxy", UseProxy);
-	storeValue("ProxyPort", ProxyPort);
-	storeValue("ProxyRequiresAuthentication", ProxyRequiresAuthentication);
-	storeValue("ProxyUser", ProxyUser);
-	storeValue("ProxyPassword", ProxyPassword);
-	storeValue("ProxyHost", ProxyHost.toString());
+	storeValue("UseProxy", ProxySettings.enabled());
+	storeValue("ProxyHost", ProxySettings.address());
+	storeValue("ProxyPort", ProxySettings.port());
+	storeValue("ProxyRequiresAuthentication", ProxySettings.requiresAuthentication());
+	storeValue("ProxyUser", ProxySettings.user());
+	storeValue("ProxyPassword", ProxySettings.password());
 }
 
 bool AccountShared::shouldStore()

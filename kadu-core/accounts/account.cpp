@@ -86,15 +86,8 @@ void Account::importProxySettings()
 		return;
 
 	Account defaultAccount = AccountManager::instance()->defaultAccount();
-	if (defaultAccount && defaultAccount.proxyHost().toString() != "0.0.0.0")
-	{
-		data()->setUseProxy(defaultAccount.useProxy());
-		data()->setProxyHost(defaultAccount.proxyHost());
-		data()->setProxyPort(defaultAccount.proxyPort());
-		data()->setProxyRequiresAuthentication(defaultAccount.proxyRequiresAuthentication());
-		data()->setProxyUser(defaultAccount.proxyUser());
-		data()->setProxyPassword(defaultAccount.proxyPassword());
-	}
+	if (defaultAccount)
+		data()->setProxySettings(defaultAccount.proxySettings()); // data is copied
 }
 
 KaduSharedBase_PropertyDef(Account, Identity, accountIdentity, AccountIdentity, Identity::null)
@@ -108,9 +101,4 @@ KaduSharedBase_PropertyDef(Account, bool, rememberPassword, RememberPassword, tr
 KaduSharedBase_PropertyDef(Account, bool, hasPassword, HasPassword, false)
 KaduSharedBase_PropertyDef(Account, QString, password, Password, QString::null)
 KaduSharedBase_PropertyDef(Account, bool, connectAtStart, ConnectAtStart, true)
-KaduSharedBase_PropertyDef(Account, bool, useProxy, UseProxy, false)
-KaduSharedBase_PropertyDef(Account, QHostAddress, proxyHost, ProxyHost, QHostAddress())
-KaduSharedBase_PropertyDef(Account, short int, proxyPort, ProxyPort, 0)
-KaduSharedBase_PropertyDef(Account, bool, proxyRequiresAuthentication, ProxyRequiresAuthentication, false)
-KaduSharedBase_PropertyDef(Account, QString, proxyUser, ProxyUser, QString::null)
-KaduSharedBase_PropertyDef(Account, QString, proxyPassword, ProxyPassword, QString::null)
+KaduSharedBase_PropertyDef(Account, AccountProxySettings, proxySettings, ProxySettings, AccountProxySettings())

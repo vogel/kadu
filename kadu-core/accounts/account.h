@@ -35,6 +35,7 @@
 class QPixmap;
 
 class AccountDetails;
+class AccountProxySettings;
 class Protocol;
 class ProtocolFactory;
 class Status;
@@ -71,12 +72,7 @@ public:
 	KaduSharedBase_Property(bool, hasPassword, HasPassword)
 	KaduSharedBase_Property(QString, password, Password)
 	KaduSharedBase_Property(bool, connectAtStart, ConnectAtStart)
-	KaduSharedBase_Property(bool, useProxy, UseProxy)
-	KaduSharedBase_Property(QHostAddress, proxyHost, ProxyHost)
-	KaduSharedBase_Property(short int, proxyPort, ProxyPort)
-	KaduSharedBase_Property(bool, proxyRequiresAuthentication, ProxyRequiresAuthentication)
-	KaduSharedBase_Property(QString, proxyUser, ProxyUser)
-	KaduSharedBase_Property(QString, proxyPassword, ProxyPassword)
+	KaduSharedBase_Property(AccountProxySettings, proxySettings, ProxySettings)
 
 };
 

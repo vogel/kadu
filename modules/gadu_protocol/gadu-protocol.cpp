@@ -415,20 +415,22 @@ void GaduProtocol::setupProxy()
 		gg_proxy_username = gg_proxy_password = 0;
 	}
 
-	gg_proxy_enabled = account().useProxy();
+	AccountProxySettings proxySettings = account().proxySettings();
+
+	gg_proxy_enabled = proxySettings.enabled();
 
 	if (gg_proxy_enabled)
 	{
-		gg_proxy_host = strdup((char *)unicode2latin(account().proxyHost().toString()).data());
-		gg_proxy_port = account().proxyPort();
+		gg_proxy_host = strdup((char *)unicode2latin(proxySettings.address()).data());
+		gg_proxy_port = proxySettings.port();
 
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "gg_proxy_host = %s\n", gg_proxy_host);
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "gg_proxy_port = %d\n", gg_proxy_port);
 
-		if (account().proxyRequiresAuthentication() && !account().proxyUser().isEmpty())
+		if (proxySettings.requiresAuthentication() && !proxySettings.user().isEmpty())
 		{
-			gg_proxy_username = strdup((char *)unicode2latin(account().proxyUser()).data());
-			gg_proxy_password = strdup((char *)unicode2latin(account().proxyPassword()).data());
+			gg_proxy_username = strdup((char *)unicode2latin(proxySettings.user()).data());
+			gg_proxy_password = strdup((char *)unicode2latin(proxySettings.password()).data());
 		}
 	}
 

@@ -88,14 +88,18 @@ void GaduImporter::importAccounts()
 	accountDetails->setMaximumImageRequests(config_file.readNumEntry("Chat", "MaxImageRequests"));
 	accountDetails->setRemoveCompletedTransfers(config_file.readBoolEntry("Network", "RemoveCompletedTransfers"));
 
-	defaultGaduGadu.setUseProxy(config_file.readBoolEntry("Network", "UseProxy"));
+	AccountProxySettings proxySettings;
+	proxySettings.setEnabled(config_file.readBoolEntry("Network", "UseProxy"));
+
 	if (!host.setAddress(config_file.readEntry("Network", "ProxyHost")))
 		host.setAddress("0.0.0.0");
-	defaultGaduGadu.setProxyHost(host);
-	defaultGaduGadu.setProxyPassword(config_file.readEntry("Network", "ProxyPassword"));
-	defaultGaduGadu.setProxyPort(config_file.readNumEntry("Network", "ProxyPort"));
-	defaultGaduGadu.setProxyUser(config_file.readEntry("Network", "ProxyUser"));
-	defaultGaduGadu.setProxyRequiresAuthentication(!defaultGaduGadu.proxyUser().isEmpty());
+	proxySettings.setHost(host);
+	proxySettings.setPort(config_file.readNumEntry("Network", "ProxyPort"));
+	proxySettings.setUser(config_file.readEntry("Network", "ProxyUser"));
+	proxySettings.setPassword(config_file.readEntry("Network", "ProxyPassword"));
+	proxySettings.setRequiresAuthentication(!proxySettings.user().isEmpty());
+
+	defaultGaduGadu.setProxySettings(proxySettings);
 
 	accountDetails->import_0_6_5_LastStatus();
 

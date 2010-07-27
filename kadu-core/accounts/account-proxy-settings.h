@@ -36,9 +36,13 @@ class AccountProxySettings
 
 public:
 	AccountProxySettings();
+	AccountProxySettings(const AccountProxySettings &copyMe);
+
+	AccountProxySettings & operator = (const AccountProxySettings &copyMe);
+	bool operator != (const AccountProxySettings &compare);
 
 	void setEnabled(bool enabled);
-	bool isEnabled();
+	bool enabled();
 
 	void setHost(const QHostAddress &host);
 	QHostAddress host();
