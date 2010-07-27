@@ -1,3 +1,6 @@
++++ version 0.6.6-beta5 (?)
+* gui: #1415 fixed: ability to manage account's personal info in YourAccounts window (Juzef)
+
 +++ version 0.6.6-beta4
 * gui: #1119 fixed: copying emoticons works again (beevvy)
 * gadu: #1160 fixed: contacts promoted from anonymous are added to gg notifications list (Vogel)
@@ -13,6 +16,8 @@
 * core: #1347 fixed: custom avatars are now properly stored (Vogel)
 * gui: #1398 fixed: unable to start conference with buddies with different preffered accounts (Vogel)
 * gui: #1316 fixed: problems with tray and Compiz (ultr)
+* jabber: #1405 fixed: proper default connection settings for GTalk accounts (Juzef)
+
 
 +++ version 0.6.6-beta3
 * jabber: proper URL handler for xmpp:// (Juzef)
