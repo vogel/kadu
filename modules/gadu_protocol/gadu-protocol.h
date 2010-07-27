@@ -101,6 +101,7 @@ private:
 	void setupDcc();
 	void setupLoginParams();
 	void cleanUpLoginParams();
+	void cleanUpProxySettings();
 
 	void networkConnected();
 	void networkDisconnected(bool tryAgain);
@@ -116,6 +117,7 @@ private:
 private slots:
 	void login(const QString &password, bool permanent);
 	void login();
+
 	void fetchAvatars(Account account);
 	void connectionTimeoutTimerSlot();
 	void everyMinuteActions();

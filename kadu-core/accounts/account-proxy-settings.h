@@ -26,7 +26,6 @@
 class AccountProxySettings
 {
 	bool Enabled;
-	QHostAddress Host;
 	QString Address;
 	int Port;
 
@@ -43,9 +42,6 @@ public:
 
 	void setEnabled(bool enabled);
 	bool enabled();
-
-	void setHost(const QHostAddress &host);
-	QHostAddress host();
 
 	void setAddress(const QString &address);
 	QString address();

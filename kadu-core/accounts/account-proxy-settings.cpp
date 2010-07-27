@@ -28,7 +28,6 @@ AccountProxySettings::AccountProxySettings()
 AccountProxySettings::AccountProxySettings(const AccountProxySettings &copyMe)
 {
 	Enabled = copyMe.Enabled;
-	Host = copyMe.Host;
 	Address = copyMe.Address;
 	Port = copyMe.Port;
 	RequiresAuthentication = copyMe.RequiresAuthentication;
@@ -39,7 +38,6 @@ AccountProxySettings::AccountProxySettings(const AccountProxySettings &copyMe)
 AccountProxySettings & AccountProxySettings::operator = (const AccountProxySettings& copyMe)
 {
 	Enabled = copyMe.Enabled;
-	Host = copyMe.Host;
 	Address = copyMe.Address;
 	Port = copyMe.Port;
 	RequiresAuthentication = copyMe.RequiresAuthentication;
@@ -53,7 +51,6 @@ bool AccountProxySettings::operator != (const AccountProxySettings &compare)
 {
 	return
 			(Enabled != compare.Enabled) ||
-			(Host != compare.Host) ||
 			(Address != compare.Address) ||
 			(Port != compare.Port) ||
 			(RequiresAuthentication != compare.RequiresAuthentication) ||
@@ -71,23 +68,9 @@ bool AccountProxySettings::enabled()
 	return Enabled;
 }
 
-void AccountProxySettings::setHost(const QHostAddress &host)
-{
-	Host = host;
-
-	if (!Host.isNull())
-		Address = Host.toString();
-}
-
-QHostAddress AccountProxySettings::host()
-{
-	return Host;
-}
-
 void AccountProxySettings::setAddress(const QString &address)
 {
 	Address = address;
-	Host.clear();
 }
 
 QString AccountProxySettings::address()

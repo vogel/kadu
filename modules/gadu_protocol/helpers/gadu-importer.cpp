@@ -90,10 +90,7 @@ void GaduImporter::importAccounts()
 
 	AccountProxySettings proxySettings;
 	proxySettings.setEnabled(config_file.readBoolEntry("Network", "UseProxy"));
-
-	if (!host.setAddress(config_file.readEntry("Network", "ProxyHost")))
-		host.setAddress("0.0.0.0");
-	proxySettings.setHost(host);
+	proxySettings.setAddress(config_file.readEntry("Network", "ProxyHost"));
 	proxySettings.setPort(config_file.readNumEntry("Network", "ProxyPort"));
 	proxySettings.setUser(config_file.readEntry("Network", "ProxyUser"));
 	proxySettings.setPassword(config_file.readEntry("Network", "ProxyPassword"));

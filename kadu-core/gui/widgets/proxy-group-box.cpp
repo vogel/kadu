@@ -49,7 +49,6 @@ ProxyGroupBox::ProxyGroupBox(Account account, const QString &title, QWidget *par
 
 	Host = new QLineEdit(this);
 	connect(Host, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
-	Host->setInputMask("000.000.000.000;_");
 	Host->setEnabled(false);
 
 	proxyLayout->addWidget(hostLabel, 1, 1);

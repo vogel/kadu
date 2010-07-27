@@ -398,10 +398,8 @@ void GaduProtocol::login()
 	kdebugf2();
 }
 
-void GaduProtocol::setupProxy()
+void GaduProtocol::cleanUpProxySettings()
 {
-	kdebugf();
-
 	if (gg_proxy_host)
 	{
 		free(gg_proxy_host);
@@ -414,27 +412,30 @@ void GaduProtocol::setupProxy()
 		free(gg_proxy_password);
 		gg_proxy_username = gg_proxy_password = 0;
 	}
+}
+
+void GaduProtocol::setupProxy()
+{
+	kdebugf();
+
+	cleanUpProxySettings();
 
 	AccountProxySettings proxySettings = account().proxySettings();
-
 	gg_proxy_enabled = proxySettings.enabled();
+	if (!gg_proxy_enabled)
+		return;
 
-	if (gg_proxy_enabled)
+	gg_proxy_host = strdup((char *)unicode2latin(proxySettings.address()).data());
+	gg_proxy_port = proxySettings.port();
+
+	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "gg_proxy_host = %s\n", gg_proxy_host);
+	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "gg_proxy_port = %d\n", gg_proxy_port);
+
+	if (proxySettings.requiresAuthentication() && !proxySettings.user().isEmpty())
 	{
-		gg_proxy_host = strdup((char *)unicode2latin(proxySettings.address()).data());
-		gg_proxy_port = proxySettings.port();
-
-		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "gg_proxy_host = %s\n", gg_proxy_host);
-		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "gg_proxy_port = %d\n", gg_proxy_port);
-
-		if (proxySettings.requiresAuthentication() && !proxySettings.user().isEmpty())
-		{
-			gg_proxy_username = strdup((char *)unicode2latin(proxySettings.user()).data());
-			gg_proxy_password = strdup((char *)unicode2latin(proxySettings.password()).data());
-		}
+		gg_proxy_username = strdup((char *)unicode2latin(proxySettings.user()).data());
+		gg_proxy_password = strdup((char *)unicode2latin(proxySettings.password()).data());
 	}
-
-	kdebugf2();
 }
 
 void GaduProtocol::setupDcc()
