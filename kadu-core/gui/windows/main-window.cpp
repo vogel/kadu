@@ -261,6 +261,18 @@ void MainWindow::writeToolBarsToConfig(QDomElement toolbarsConfig, const QString
 	}
 }
 
+#ifndef NO_KASTRAT
+void MainWindow::hideToolBars(bool hide)
+{
+   foreach (QObject *object, children())
+   {
+      QToolBar *toolBar = dynamic_cast<QToolBar *>(object);
+      if (toolBar)
+          toolBar->setVisible(!hide);
+   }
+}
+#endif
+
 void MainWindow::refreshToolBars(const QString &prefix)
 {
 	foreach (const QObject *object, children())

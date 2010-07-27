@@ -229,6 +229,9 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("Look", "ShowStatusButton", true);
 	config_file.addVariable("Look", "Style", "kadu");
 	config_file.addVariable("Look", "UserboxBackgroundDisplayStyle", "Stretched");
+#ifndef NO_KASTRAT
+   config_file.addVariable("Look", "UserboxTransparency", false);
+#endif
 	config_file.addVariable("Look", "UserboxBgColor", w.palette().background().color());
 	config_file.addVariable("Look", "UserBoxColumnCount", 1);
 	config_file.addVariable("Look", "UserboxFgColor", w.palette().foreground().color());

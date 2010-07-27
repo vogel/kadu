@@ -144,7 +144,9 @@ signals:
 
 	void buddySelectionChanged();
 	void currentBuddyChanged(Buddy buddy);
-
+#ifndef NO_KASTRAT
+   void emptyListAreaRightClick();
+#endif
 };
 
 #endif // BUDDIES_LIST_VIEW_H

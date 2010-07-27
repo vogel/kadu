@@ -36,7 +36,9 @@ public:
 	static KADUAPI void compositingStateChanged();
 
 	void triggerCompositingStateChanged();
-
+#ifndef NO_KASTRAT
+   bool compositingState(){return CompositingEnabled; };
+#endif
 };
 
 #endif // COMPOSITING_AWARE_OBJECT

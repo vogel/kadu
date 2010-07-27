@@ -2,7 +2,9 @@
 #define MAIN_CONFIGURATION_WINDOW_H
 
 #include "gui/windows/configuration-window.h"
-
+#ifndef NO_KASTRAT
+#include "os/generic/compositing-aware-object.h"
+#endif
 #include "exports.h"
 
 class QCheckBox;
@@ -45,7 +47,11 @@ class ConfigFileDataManager;
 	@author Vogel
 	@short G��wne okno konfiguracyjne.
  **/
+#ifndef NO_KASTRAT
+class KADUAPI MainConfigurationWindow : public ConfigurationWindow, CompositingAwareObject
+#else
 class KADUAPI MainConfigurationWindow : public ConfigurationWindow
+#endif
 {
 	Q_OBJECT
 
@@ -60,7 +66,9 @@ class KADUAPI MainConfigurationWindow : public ConfigurationWindow
 	ConfigurationWindow *lookChatAdvanced;
 
 	QCheckBox *onStartupSetLastDescription;
-
+#ifndef NO_KASTRAT
+   QCheckBox *userboxTransparency;
+#endif
 	ConfigComboBox *emoticonsStyleComboBox;
 	ConfigComboBox *emoticonsThemeComboBox;
 
@@ -92,6 +100,10 @@ private slots:
 
 	void setIconThemes();
 	void setEmoticonThemes();
+#ifndef NO_KASTRAT
+   virtual void compositingEnabled();
+   virtual void compositingDisabled();
+#endif
 
 public:
 	static MainConfigurationWindow * instance();
