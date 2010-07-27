@@ -2,6 +2,7 @@ set (kadu_SRCS
 	accounts/account.cpp
 	accounts/account-details.cpp
 	accounts/account-manager.cpp
+	accounts/account-proxy-settings.cpp
 	accounts/account-shared.cpp
 	accounts/accounts-aware-object.cpp
 
