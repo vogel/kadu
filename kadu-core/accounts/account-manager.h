@@ -46,6 +46,7 @@ class KADUAPI AccountManager : public QObject, public Manager<Account>
 	virtual ~AccountManager();
 
 private slots:
+	void accountDataUpdated();
 	void connectionError(Account account, const QString &server, const QString &message);
 
 protected:
@@ -83,6 +84,8 @@ signals:
 
 	void accountAboutToBeRemoved(Account);
 	void accountRemoved(Account);
+
+	void accountUpdated(Account);
 
 };
 

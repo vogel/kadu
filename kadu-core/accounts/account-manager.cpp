@@ -70,6 +70,7 @@ void AccountManager::itemRemoved(Account item)
 
 void AccountManager::itemAboutToBeRegistered(Account item)
 {
+	connect(item, SIGNAL(updated()), this, SLOT(accountDataUpdated()));
 	emit accountAboutToBeRegistered(item);
 }
 
@@ -93,6 +94,7 @@ void AccountManager::itemAboutToBeUnregisterd(Account item)
 
 void AccountManager::itemUnregistered(Account item)
 {
+	disconnect(item, SIGNAL(updated()), this, SLOT(accountDataUpdated()));
 	emit accountUnregistered(item);
 }
 
@@ -156,6 +158,13 @@ Status AccountManager::status()
 	return !account.isNull()
 			? account.statusContainer()->status()
 			: Status();
+}
+
+void AccountManager::accountDataUpdated()
+{
+	Account account(sender());
+	if (account)
+		emit accountUpdated(account);
 }
 
 void AccountManager::connectionError(Account account, const QString &server, const QString &message)
