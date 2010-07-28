@@ -56,6 +56,8 @@ public:
 	ChooseDescription(StatusContainer *statusContainer, QWidget *parent = 0);
 	virtual ~ChooseDescription();
 
+	virtual QSize sizeHint() const;
+
 	void setPosition(const QPoint &position);
 
 };

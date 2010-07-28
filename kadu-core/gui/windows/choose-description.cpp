@@ -42,6 +42,9 @@
 
 #include "choose-description.h"
 
+#define CHOOSEDESCRIPTION_MINIMUMSIZE   250,80
+#define CHOOSEDESCRIPTION_PREFERREDSIZE 350,80
+
 QMap<StatusContainer *, ChooseDescription *> ChooseDescription::Dialogs;
 
 ChooseDescription *ChooseDescription::showDialog(StatusContainer *statusContainer, const QPoint &position)
@@ -128,7 +131,7 @@ ChooseDescription::ChooseDescription(StatusContainer *statusContainer, QWidget *
 
 	connect(this, SIGNAL(accepted()), this, SLOT(setDescription()));
 
-	setMinimumSize( sizeHint().expandedTo( QSize(350,80) ) );
+	setMinimumSize( QDialog::sizeHint().expandedTo( QSize(CHOOSEDESCRIPTION_MINIMUMSIZE) ) );
 
 	kdebugf2();
 }
@@ -136,6 +139,11 @@ ChooseDescription::ChooseDescription(StatusContainer *statusContainer, QWidget *
 ChooseDescription::~ChooseDescription()
 {
 	Dialogs.remove(MyStatusContainer);
+}
+
+QSize ChooseDescription::sizeHint() const
+{
+	return QDialog::sizeHint().expandedTo( QSize(CHOOSEDESCRIPTION_PREFERREDSIZE) );
 }
 
 void ChooseDescription::setPosition(const QPoint &position)
