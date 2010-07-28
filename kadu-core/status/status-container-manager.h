@@ -69,6 +69,7 @@ class KADUAPI StatusContainerManager : public StatusContainer,
 	void unregisterStatusContainer(StatusContainer *statusContainer);
 
 private slots:
+	void updateIdentities();
 	void simpleModeChanged();
 
 protected:

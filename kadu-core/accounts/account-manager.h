@@ -51,6 +51,7 @@ private slots:
 
 protected:
 	virtual void itemAdded(Account item);
+	virtual void itemAboutToBeRemoved(Account item);
 	virtual void itemRemoved(Account item);
 
 	virtual void itemAboutToBeRegistered(Account item);

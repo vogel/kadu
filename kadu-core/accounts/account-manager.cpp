@@ -63,6 +63,13 @@ void AccountManager::itemAdded(Account item)
 	AccountsAwareObject::notifyAccountAdded(item);
 }
 
+void AccountManager::itemAboutToBeRemoved(Account item)
+{
+	Manager<Account>::itemAboutToBeRemoved(item);
+
+	item.setAccountIdentity(Identity::null);
+}
+
 void AccountManager::itemRemoved(Account item)
 {
 	AccountsAwareObject::notifyAccountRemoved(item);

@@ -240,6 +240,8 @@ void AccountShared::setAccountIdentity(Identity accountIdentity)
 	AccountIdentity.removeAccount(this);
 	AccountIdentity = accountIdentity;
 	AccountIdentity.addAccount(this);
+
+	dataUpdated();
 }
 
 void AccountShared::setProtocolName(QString protocolName)

@@ -40,6 +40,9 @@ class StatusButtons : public QWidget, private StatusContainerAwareObject
 
 	void createGui();
 
+private slots:
+	void rebuildGui();
+
 protected:
 	virtual void statusContainerRegistered(StatusContainer *statusContainer);
 	virtual void statusContainerUnregistered(StatusContainer *statusContainer);

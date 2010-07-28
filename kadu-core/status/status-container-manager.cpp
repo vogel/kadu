@@ -51,10 +51,12 @@ StatusContainerManager::StatusContainerManager() :
 		triggerAllAccountsRegistered();
 
 	connect(MainConfiguration::instance(), SIGNAL(simpleModeChanged()), this, SLOT(simpleModeChanged()));
+	connect(AccountManager::instance(), SIGNAL(accountUpdated(Account)), this, SLOT(updateIdentities()));
 }
 
 StatusContainerManager::~StatusContainerManager()
 {
+	disconnect(AccountManager::instance(), SIGNAL(accountUpdated(Account)), this, SLOT(updateIdentities()));
 	disconnect(MainConfiguration::instance(), SIGNAL(simpleModeChanged()), this, SLOT(simpleModeChanged()));
 
 	if (MainConfiguration::instance()->simpleMode())
@@ -63,19 +65,37 @@ StatusContainerManager::~StatusContainerManager()
 		triggerAllAccountsUnregistered();
 }
 
+void StatusContainerManager::updateIdentities()
+{
+	if (!MainConfiguration::instance()->simpleMode())
+		return;
+
+	foreach (Identity identity, IdentityManager::instance()->items())
+		if (StatusContainers.contains(identity) && !identity.hasAnyAccount())
+			unregisterStatusContainer(identity);
+		else if (!StatusContainers.contains(identity) && identity.hasAnyAccount())
+			registerStatusContainer(identity);
+
+	removeSelfFromList();
+	addSelfToList();
+}
+
 void StatusContainerManager::accountRegistered(Account account)
 {
 	if (!MainConfiguration::instance()->simpleMode() && !StatusContainers.contains(account.statusContainer()))
 		registerStatusContainer(account.statusContainer());
 	
 	if (MainConfiguration::instance()->simpleMode() && !StatusContainers.contains(account.accountIdentity()))
-		registerStatusContainer(account.accountIdentity());
+		updateIdentities();
 }
 
 void StatusContainerManager::accountUnregistered(Account account)
 {
 	if (!MainConfiguration::instance()->simpleMode() && StatusContainers.contains(account.statusContainer()))
 		unregisterStatusContainer(account.statusContainer());
+
+	if (MainConfiguration::instance()->simpleMode())
+		updateIdentities();
 }
 
 void StatusContainerManager::identityAdded(Identity identity)
@@ -122,9 +142,7 @@ void StatusContainerManager::addAllAccounts()
 
 void StatusContainerManager::addAllIdentities()
 {
-	foreach (Identity identity, IdentityManager::instance()->items())
-		if (MainConfiguration::instance()->simpleMode() && !StatusContainers.contains(identity) && identity.hasAnyAccount())
-			registerStatusContainer(identity);
+	updateIdentities();
 }
 
 void StatusContainerManager::addSelfToList()
