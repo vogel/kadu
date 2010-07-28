@@ -33,7 +33,8 @@ JabberPersonalInfoService::JabberPersonalInfoService(JabberProtocol *protocol) :
 void JabberPersonalInfoService::fetchPersonalInfo()
 {
 	CurrentBuddy = Buddy::create();
-	VCardFactory::instance()->getVCard(Protocol->account().id(), Protocol->client()->rootTask(), this, SLOT(fetchingVCardFinished()));
+	if (Protocol && Protocol->client() && Protocol->client()->rootTask())
+		VCardFactory::instance()->getVCard(Protocol->account().id(), Protocol->client()->rootTask(), this, SLOT(fetchingVCardFinished()));
 }
 
 void JabberPersonalInfoService::fetchingVCardFinished()
