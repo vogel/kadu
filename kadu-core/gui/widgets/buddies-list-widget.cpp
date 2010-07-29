@@ -40,9 +40,7 @@ BuddiesListWidget::BuddiesListWidget(FilterPosition filterPosition, MainWindow *
 {
 	QVBoxLayout *layout = new QVBoxLayout(this);
 	layout->setMargin(0);
-#ifndef NO_KASTRAT
 	layout->setSpacing(0);
-#endif
 
 	NameFilterWidget = new FilterWidget(this);
 	
@@ -69,12 +67,10 @@ BuddiesListWidget::BuddiesListWidget(FilterPosition filterPosition, MainWindow *
 	setFocusProxy(NameFilterWidget);
 	View->setFocusPolicy(Qt::NoFocus);*/
 
-#ifndef NO_KASTRAT
-   if(compositingState())
-   {
-      compositingEnabled();
-   }
-#endif
+	if(compositingState())
+	{
+		compositingEnabled();
+	}
 }
 
 BuddiesListWidget::~BuddiesListWidget()
@@ -107,14 +103,12 @@ void BuddiesListWidget::nameFilterChanged(const QString &filter)
 	NameFilter->setName(filter);
 }
 
-#ifndef NO_KASTRAT
 void BuddiesListWidget::compositingEnabled()
 {
-   NameFilterWidget->setAutoFillBackground(true);
+	NameFilterWidget->setAutoFillBackground(true);
 }
 
 void BuddiesListWidget::compositingDisabled()
 {
-   NameFilterWidget->setAutoFillBackground(false);
+	NameFilterWidget->setAutoFillBackground(false);
 }
-#endif

@@ -226,10 +226,8 @@ MainConfigurationWindow::MainConfigurationWindow()
 
 	connect(widget()->widgetById("recentChatsStore"), SIGNAL(toggled(bool)),
 			widget()->widgetById("recentChatsTimeout"), SLOT(setDisabled(bool)));
-#ifndef NO_KASTRAT
-   userboxTransparency = dynamic_cast<QCheckBox *>(widget()->widgetById("userboxTransparency"));;
-   userboxTransparency->setEnabled(compositingState());
-#endif
+	userboxTransparency = dynamic_cast<QCheckBox *>(widget()->widgetById("userboxTransparency"));;
+	userboxTransparency->setEnabled(compositingState());
 }
 
 MainConfigurationWindow::~MainConfigurationWindow()
@@ -237,17 +235,15 @@ MainConfigurationWindow::~MainConfigurationWindow()
 	Instance = 0;
 }
 
-#ifndef NO_KASTRAT
 void MainConfigurationWindow::compositingEnabled()
 {
-   userboxTransparency->setEnabled(true);
+	userboxTransparency->setEnabled(true);
 }
 
 void MainConfigurationWindow::compositingDisabled()
 {
-   userboxTransparency->setEnabled(false);
+	userboxTransparency->setEnabled(false);
 }
-#endif
 
 void MainConfigurationWindow::show()
 {

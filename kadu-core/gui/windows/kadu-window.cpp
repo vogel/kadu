@@ -26,9 +26,6 @@
 #include <QtGui/QMenu>
 #include <QtGui/QMenuBar>
 #include <QtGui/QPushButton>
-#ifdef NO_KASTRAT
-#include <QtGui/QSplitter>
-#endif
 
 #include "accounts/account-manager.h"
 #include "buddies/buddy-manager.h"
@@ -69,9 +66,8 @@
 extern void qt_mac_set_menubar_icons(bool enable);
 #endif
 
-#ifndef NO_KASTRAT
 KaduWindow::KaduWindow(QWidget *parent) :
-      MainWindow(parent), Docked(false), Kastrat(false)
+      MainWindow(parent), Docked(false)
 #else
 KaduWindow::KaduWindow(QWidget *parent) :
       MainWindow(parent), Docked(false)
@@ -84,10 +80,9 @@ KaduWindow::KaduWindow(QWidget *parent) :
 
 	setAttribute(Qt::WA_DeleteOnClose, true);
 	setWindowTitle(QLatin1String("Kadu"));
-#ifndef NO_KASTRAT
-   setAutoFillBackground(false);
-   setAttribute(Qt::WA_TranslucentBackground, true);
-#endif
+	setAutoFillBackground(false);
+	setAttribute(Qt::WA_TranslucentBackground, true);
+
 	Actions = new KaduWindowActions(this);
 
 	createGui();
@@ -105,12 +100,10 @@ KaduWindow::KaduWindow(QWidget *parent) :
 	    move(x(), y() - 34);
 #endif
 #endif
-#ifndef NO_KASTRAT
-   if(compositingState())
-   {
-      compositingEnabled();
-   }
-#endif
+	if(compositingState())
+	{
+		compositingEnabled();
+	}
 }
 
 KaduWindow::~KaduWindow()
@@ -125,11 +118,7 @@ void KaduWindow::createGui()
 	MainLayout->setMargin(0);
 	MainLayout->setSpacing(0);
 
-#ifndef NO_KASTRAT
-   split = new QSplitter(Qt::Vertical, this);
-#else
-   QSplitter *split = new QSplitter(Qt::Vertical, this);
-#endif
+	split = new QSplitter(Qt::Vertical, this);
 	MainLayout->addWidget(split);
 
 	QWidget* hbox = new QWidget(split);
@@ -137,22 +126,17 @@ void KaduWindow::createGui()
 	hboxLayout->setMargin(0);
 	hboxLayout->setSpacing(0);
 
-#ifndef NO_KASTRAT
-   /* Must create empty widget so it can fill its background. */
-   GroupBarWidget = new QWidget(this);
-   QVBoxLayout *GroupBarLayout = new QVBoxLayout(GroupBarWidget);
-   GroupBarLayout->setMargin(0);
-   GroupBarLayout->setSpacing(0);
-   GroupBarWidget->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
+	/* Must create empty widget so it can fill its background. */
+	GroupBarWidget = new QWidget(this);
+	QVBoxLayout *GroupBarLayout = new QVBoxLayout(GroupBarWidget);
+	GroupBarLayout->setMargin(0);
+	GroupBarLayout->setSpacing(0);
+	GroupBarWidget->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
 
-   GroupBar = new GroupTabBar(this);
+	GroupBar = new GroupTabBar(this);
 
-   GroupBarLayout->addWidget(GroupBar, 0, Qt::AlignTop);
-   GroupBarWidget->setLayout(GroupBarLayout);
-#else
-   // groupbar
-   GroupBar = new GroupTabBar(this);
-#endif
+	GroupBarLayout->addWidget(GroupBar, 0, Qt::AlignTop);
+	GroupBarWidget->setLayout(GroupBarLayout);
 
 	ContactsWidget = new BuddiesListWidget(BuddiesListWidget::FilterAtTop, this);
 	ContactsWidget->view()->setModel(new BuddiesModel(BuddyManager::instance(), this));
@@ -163,13 +147,8 @@ void KaduWindow::createGui()
 
 	connect(ContactsWidget->view(), SIGNAL(chatActivated(Chat )), this, SLOT(openChatWindow(Chat )));
 
-#ifndef NO_KASTRAT
-   hboxLayout->addWidget(GroupBarWidget);
-   hboxLayout->setStretchFactor(GroupBarWidget, 1);
-#else
-   hboxLayout->addWidget(GroupBar);
-   hboxLayout->setStretchFactor(GroupBar, 1);
-#endif
+	hboxLayout->addWidget(GroupBarWidget);
+	hboxLayout->setStretchFactor(GroupBarWidget, 1);
 	hboxLayout->addWidget(ContactsWidget);
 	hboxLayout->setStretchFactor(ContactsWidget, 100);
 	hboxLayout->setAlignment(GroupBar, Qt::AlignTop);
@@ -198,10 +177,6 @@ void KaduWindow::createGui()
 	setCentralWidget(MainWidget);
 
 	createMenu();
-
-#ifndef NO_KASTRAT
-   connect(ContactsWidget->view(), SIGNAL(emptyListAreaRightClick()), this, SLOT(triggerKastrat()));
-#endif
 }
 
 void KaduWindow::createMenu()
@@ -291,85 +266,35 @@ QMenuBar* KaduWindow::menuBar() const
 }
 #endif
 
-#ifndef NO_KASTRAT
 void KaduWindow::compositingEnabled()
 {
-   setAutoFillBackground(false);
-   setAttribute(Qt::WA_TranslucentBackground, true);
-   GroupBarWidget->setAutoFillBackground(true);
-   InfoPanel->setAutoFillBackground(true);
-   ChangeStatusButtons->setAutoFillBackground(true);
-   for(int i=1; i < split->count(); ++i)
-   {
-       QSplitterHandle* splitterHandle = split->handle(i);
-       splitterHandle->setAutoFillBackground(true);
-   }
-   configurationUpdated();
+	setAutoFillBackground(false);
+	setAttribute(Qt::WA_TranslucentBackground, true);
+	GroupBarWidget->setAutoFillBackground(true);
+	InfoPanel->setAutoFillBackground(true);
+	ChangeStatusButtons->setAutoFillBackground(true);
+	for(int i=1; i < split->count(); ++i)
+	{
+		QSplitterHandle* splitterHandle = split->handle(i);
+		splitterHandle->setAutoFillBackground(true);
+	}
+	configurationUpdated();
 }
 
 void KaduWindow::compositingDisabled()
 {
-   GroupBarWidget->setAutoFillBackground(false);
-   InfoPanel->setAutoFillBackground(false);
-   ChangeStatusButtons->setAutoFillBackground(false);
-   for(int i=1; i < split->count(); ++i)
-   {
-       QSplitterHandle* splitterHandle = split->handle(i);
-       splitterHandle->setAutoFillBackground(false);
-   }
-   setAttribute(Qt::WA_TranslucentBackground, false);
-   setAttribute(Qt::WA_NoSystemBackground, false);   
-   configurationUpdated();
+	GroupBarWidget->setAutoFillBackground(false);
+	InfoPanel->setAutoFillBackground(false);
+	ChangeStatusButtons->setAutoFillBackground(false);
+	for(int i=1; i < split->count(); ++i)
+	{
+		QSplitterHandle* splitterHandle = split->handle(i);
+		splitterHandle->setAutoFillBackground(false);
+	}
+	setAttribute(Qt::WA_TranslucentBackground, false);
+	setAttribute(Qt::WA_NoSystemBackground, false);
+	configurationUpdated();
 }
-
-void KaduWindow::triggerKastrat()
-{
-    Qt::WindowFlags flags = windowFlags();
-    QPoint p;
-    QSize s;
-
-    Kastrat = !Kastrat;
-    hide();
-    /* This all should be done in some other way.
-     * (e.g. QStackedWidget or creating second main window and
-     * switchig ContactsWidget->view() to it or ...
-     */
-    if(Kastrat)
-    {
-       p = ContactsWidget->view()->mapToGlobal(ContactsWidget->view()->rect().topLeft());
-       s = ContactsWidget->view()->rect().size();
-       KastratPos = p - pos();
-       KastratSize = size();
-
-       hideToolBars(true);
-       menuBar()->hide();
-       GroupBarWidget->hide();
-       ContactsWidget->nameFilterWidget()->hide();
-       InfoPanel->hide();
-       ChangeStatusButtons->hide();
-
-       setWindowFlags(flags | Qt::FramelessWindowHint);
-       move(p);
-       resize(s);
-    }
-    else
-    {
-       KastratPos = pos() - KastratPos;
-       move(KastratPos);
-       resize(KastratSize);
-
-       setWindowFlags(flags & ~(Qt::FramelessWindowHint));
-       ContactsWidget->nameFilterWidget()->show();
-       GroupBarWidget->show();
-       menuBar()->show();
-       InfoPanel->show();
-       ChangeStatusButtons->setVisible(config_file.readBoolEntry("Look", "ShowStatusButton"));
-       hideToolBars(true);
-    }
-    configurationUpdated();
-    show();
-}
-#endif
 
 void KaduWindow::openChatWindow(Chat chat)
 {
@@ -502,41 +427,21 @@ Chat KaduWindow::chat()
 
 void KaduWindow::configurationUpdated()
 {
-#ifndef NO_KASTRAT
-   QString bgColor = "transparent";
-#endif
+	QString bgColor = "transparent";
 	QFont userboxFont = QFont(config_file.readFontEntry("Look", "UserboxFont"));
 	GroupBar->setFont(QFont(userboxFont.family(), userboxFont.pointSize(), 75));
 
 	setDocked(Docked);
 
-#ifndef NO_KASTRAT
-   if(!(config_file.readBoolEntry("Look", "UserboxTransparency", false) && compositingState()))
-   {
-       bgColor = config_file.readColorEntry("Look","UserboxBgColor").name();
-   }
+	if(!(config_file.readBoolEntry("Look", "UserboxTransparency", false) && compositingState()))
+	{
+		bgColor = config_file.readColorEntry("Look","UserboxBgColor").name();
+	}
 
-   if (config_file.readBoolEntry("Look", "UseUserboxBackground", true))
-   {
-      QString type = config_file.readEntry("Look", "UserboxBackgroundDisplayStyle");
-      ContactsWidget->view()->setBackground(bgColor,
-         config_file.readEntry("Look", "UserboxBackground"),
-         type == "Centered" ? BuddiesListView::BackgroundCentered
-         : type == "Tiled" ? BuddiesListView::BackgroundTiled
-         : type == "Stretched" ? BuddiesListView::BackgroundStretched
-         : type == "TiledAndCentered" ? BuddiesListView::BackgroundTiledAndCentered
-         : BuddiesListView::BackgroundNone);
-   }
-   else
-      ContactsWidget->view()->setBackground(bgColor);
-
-   if(!Kastrat)
-       ChangeStatusButtons->setVisible(config_file.readBoolEntry("Look", "ShowStatusButton"));
-#else
 	if (config_file.readBoolEntry("Look", "UseUserboxBackground", true))
 	{
 		QString type = config_file.readEntry("Look", "UserboxBackgroundDisplayStyle");
-		ContactsWidget->view()->setBackground(config_file.readColorEntry("Look","UserboxBgColor").name(),
+		ContactsWidget->view()->setBackground(bgColor,
 			config_file.readEntry("Look", "UserboxBackground"),
 			type == "Centered" ? BuddiesListView::BackgroundCentered
 			: type == "Tiled" ? BuddiesListView::BackgroundTiled
@@ -545,10 +450,10 @@ void KaduWindow::configurationUpdated()
 			: BuddiesListView::BackgroundNone);
 	}
 	else
-		ContactsWidget->view()->setBackground(config_file.readColorEntry("Look","UserboxBgColor").name());
+		ContactsWidget->view()->setBackground(bgColor);
 
-	ChangeStatusButtons->setVisible(config_file.readBoolEntry("Look", "ShowStatusButton"));
-#endif
+	if(!Kastrat)
+		ChangeStatusButtons->setVisible(config_file.readBoolEntry("Look", "ShowStatusButton"));
 }
 
 void KaduWindow::insertMenuActionDescription(ActionDescription *actionDescription, MenuType type, int pos)
