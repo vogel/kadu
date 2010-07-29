@@ -35,6 +35,7 @@
 #include "parser/parser.h"
 #include "status/description-manager.h"
 #include "status/description-model.h"
+#include "activate.h"
 
 #include "activate.h"
 #include "debug.h"
@@ -42,20 +43,38 @@
 
 #include "choose-description.h"
 
+#define CHOOSEDESCRIPTION_MINIMUMSIZE   250,80
+#define CHOOSEDESCRIPTION_PREFERREDSIZE 350,80
+
 QMap<StatusContainer *, ChooseDescription *> ChooseDescription::Dialogs;
 
-void ChooseDescription::showDialog(StatusContainer *statusContainer, const QPoint &position)
+ChooseDescription *ChooseDescription::showDialog(StatusContainer *statusContainer, const QPoint &position)
 {
-	ChooseDescription *dialog = Dialogs[statusContainer];
-	if (!dialog)
+	ChooseDescription *dialog;
+	if (Dialogs.contains(statusContainer))
+	{
+		dialog = Dialogs[statusContainer];
+	}
+	else
 	{
 		dialog = new ChooseDescription(statusContainer, Core::instance()->kaduWindow());
-		dialog->setPosition(position);
 		Dialogs[statusContainer] = dialog;
 	}
-
+	if (! position.isNull())
+	{
+		dialog->setPosition(position);
+	}
+	else
+	{
+		dialog->setPosition( QPoint(
+			( qApp->desktop()->screenGeometry().width()  - dialog->size().width()  ) / 2,
+			( qApp->desktop()->screenGeometry().height() - dialog->size().height() ) / 2
+			) );
+	}
 	dialog->show();
 	_activateWindow(dialog);
+
+	return dialog;
 }
 
 ChooseDescription::ChooseDescription(StatusContainer *statusContainer, QWidget *parent)
@@ -90,6 +109,7 @@ ChooseDescription::ChooseDescription(StatusContainer *statusContainer, QWidget *
 	connect(OkButton, SIGNAL(clicked(bool)), this, SLOT(accept()));
 
 	QPushButton *cancelButton = new QPushButton(tr("&Cancel"), this);
+	cancelButton->setIcon(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton));
 	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(reject()));
 
 	QGridLayout *grid = new QGridLayout(this);
@@ -103,10 +123,17 @@ ChooseDescription::ChooseDescription(StatusContainer *statusContainer, QWidget *
 		connect(Description, SIGNAL(textChanged(const QString &)), this, SLOT(currentDescriptionChanged(const QString &)));
 		grid->addWidget(AvailableChars, 1, 0);
 	}
-	grid->addWidget(OkButton, 1, 1, Qt::AlignRight);
-	grid->addWidget(cancelButton, 1, 2, Qt::AlignRight);
+
+	QWidget *spacer = new QWidget(this);
+	spacer->setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Minimum );
+	grid->addWidget(spacer, 1, 1);
+
+	grid->addWidget(OkButton, 1, 2, Qt::AlignRight);
+	grid->addWidget(cancelButton, 1, 3, Qt::AlignRight);
 
 	connect(this, SIGNAL(accepted()), this, SLOT(setDescription()));
+
+	setMinimumSize( QDialog::sizeHint().expandedTo( QSize(CHOOSEDESCRIPTION_MINIMUMSIZE) ) );
 
 	kdebugf2();
 }
@@ -116,18 +143,16 @@ ChooseDescription::~ChooseDescription()
 	Dialogs.remove(MyStatusContainer);
 }
 
+QSize ChooseDescription::sizeHint() const
+{
+	return QDialog::sizeHint().expandedTo( QSize(CHOOSEDESCRIPTION_PREFERREDSIZE) );
+}
+
 void ChooseDescription::setPosition(const QPoint &position)
 {
-	int width = 250;
-	int height = 80;
-
 	QSize sh = sizeHint();
-
-	if (sh.width() > width)
-		width = sh.width();
-
-	if (sh.height() > height)
-		height = sh.height();
+	int width = sh.width();
+	int height = sh.height();
 
 	QDesktopWidget *d = QApplication::desktop();
 
@@ -137,8 +162,6 @@ void ChooseDescription::setPosition(const QPoint &position)
 	if (p.y() + height + 20 >= d->height())
 		p.setY(d->height() - height - 20);
 	move(p);
-
-	resize(width, height);
 }
 
 void ChooseDescription::setDescription()
