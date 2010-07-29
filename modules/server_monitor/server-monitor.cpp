@@ -28,6 +28,7 @@
 #include "misc/misc.h"
 #include "notify/notification-manager.h"
 #include "notify/notify-event.h"
+#include "activate.h"
 #include "debug.h"
 #include "icons-manager.h"
 #include "server-monitor-window.h"
@@ -87,7 +88,7 @@ ServerMonitor::ServerMonitor(QWidget *parent) :
 void ServerMonitor::serverMonitorActionActivated(QAction* ,bool)
 {
 	Dialog->show();
-	Dialog->raise();
+	_activateWindow(Dialog);
 }
 
 void ServerMonitor::mainConfigurationWindowCreated(MainConfigurationWindow* mainConfigurationWindow)
