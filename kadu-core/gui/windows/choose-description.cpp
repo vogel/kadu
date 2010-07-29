@@ -36,6 +36,7 @@
 #include "status/description-manager.h"
 #include "status/description-model.h"
 
+#include "activate.h"
 #include "debug.h"
 #include "icons-manager.h"
 
@@ -54,7 +55,7 @@ void ChooseDescription::showDialog(StatusContainer *statusContainer, const QPoin
 	}
 
 	dialog->show();
-	dialog->raise();
+	_activateWindow(dialog);
 }
 
 ChooseDescription::ChooseDescription(StatusContainer *statusContainer, QWidget *parent)

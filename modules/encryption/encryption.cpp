@@ -29,6 +29,7 @@
 #include <QtGui/QLabel>
 
 #include "action.h"
+#include "activate.h"
 #include "chat_widget.h"
 #include "chat_manager.h"
 #include "chat_edit_box.h"
@@ -372,7 +373,7 @@ void EncryptionManager::decryptMessage(Protocol *protocol, UserListElements send
 
 void EncryptionManager::setupEncryptionButtonForUsers(UserListElements users, bool enabled)
 {
-	kdebugf(); 
+	kdebugf();
 	foreach (KaduAction *action, encryptionActionDescription->actions())
 	{
 		if (action->userListElements() == users)
@@ -468,7 +469,7 @@ void EncryptionManager::showKeysManagerDialog(QAction *sender, bool toggled)
 	else
 	{
 		KeysManagerDialog->setActiveWindow();
-		KeysManagerDialog->raise();
+		_activateWindow(KeysManagerDialog);
 	}
 	kdebugf2();
 }
@@ -502,7 +503,7 @@ void EncryptionManager::keyAdded(UserListElement ule)
 }
 
 SavePublicKey::SavePublicKey(UserListElement user, QString keyData, QWidget *parent)
-	 : QDialog(parent), 
+	 : QDialog(parent),
 	user(user), keyData(keyData)
 {
 	kdebugf();

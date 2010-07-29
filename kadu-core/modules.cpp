@@ -53,6 +53,7 @@
 #include "gui/windows/modules-window.h"
 #include "gui/windows/message-dialog.h"
 
+#include "activate.h"
 #include "debug.h"
 #include "kadu-config.h"
 #include "icons-manager.h"
@@ -657,8 +658,7 @@ void ModulesManager::showWindow(QAction *sender, bool toggled)
 		Window->show();
 	}
 
-	Window->raise();
-	Window->activateWindow();
+	_activateWindow(Window);
 
 	kdebugf2();
 }

@@ -24,6 +24,7 @@
 
 #include "configuration/configuration-file.h"
 
+#include "activate.h"
 #include "debug.h"
 #include "icons-manager.h"
 
@@ -60,7 +61,7 @@ void WindowNotifier::notify(Notification *notification)
 
 	WindowNotifierWindow *window = new WindowNotifierWindow(notification);
 	window->show();
-	window->raise();
+	_activateWindow(window);
 
 	kdebugf2();
 }

@@ -25,12 +25,12 @@
 #include "gui/widgets/buddies-list-widget.h"
 #include "gui/windows/open-chat-with/open-chat-with.h"
 
-#include "activate.h"
-
 #include "configuration/configuration-file.h"
 #include "gui/hot-key.h"
 #include "icons-manager.h"
 #include "misc/misc.h"
+
+#include "activate.h"
 
 #include "tabwidget.h"
 
@@ -245,7 +245,7 @@ void TabWidget::newChat()
 	if (!openChatWithWindow)
 	{
 		openChatWithWindow = new OpenChatWith;
-   		connect(openChatWithWindow, SIGNAL(destroyed()), this, SLOT(openChatWithWindowClose()));
+		connect(openChatWithWindow, SIGNAL(destroyed()), this, SLOT(openChatWithWindowClose()));
 		// zapisujemy geometrie okna, aby ja pozniej przywrocic (tabsy nie beda psuly pozycji okna z akcji kadu)
 		openTabWithGeometry = openChatWithWindow->frameGeometry();
 		// pokazujemy je w miejscu w ktorym nastapilo wywolanie metody (obecnie znajduje sie kursor)
@@ -257,7 +257,7 @@ void TabWidget::newChat()
 	{
 		openChatWithWindow->setGeometry(QCursor::pos().x(), QCursor::pos().y(), openChatWithWindow->width(), openChatWithWindow->height());// jak wykonuje si�0�1 to po pokazaniu okienka wyst�0�1puje denerwuj�0�2ce miganie
 		openChatWithWindow->setWindowState(openChatWithWindow->windowState() & Qt::WindowMinimized);
-		openChatWithWindow->raise();
+		_activateWindow(openChatWithWindow);
 	}
 }
 
