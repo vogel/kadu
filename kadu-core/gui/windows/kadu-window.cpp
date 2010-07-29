@@ -67,11 +67,7 @@ extern void qt_mac_set_menubar_icons(bool enable);
 #endif
 
 KaduWindow::KaduWindow(QWidget *parent) :
-      MainWindow(parent), Docked(false)
-#else
-KaduWindow::KaduWindow(QWidget *parent) :
-      MainWindow(parent), Docked(false)
-#endif
+		MainWindow(parent), Docked(false)
 {
 #ifdef Q_OS_MAC
 	setUnifiedTitleAndToolBarOnMac(true);
@@ -452,8 +448,7 @@ void KaduWindow::configurationUpdated()
 	else
 		ContactsWidget->view()->setBackground(bgColor);
 
-	if(!Kastrat)
-		ChangeStatusButtons->setVisible(config_file.readBoolEntry("Look", "ShowStatusButton"));
+	ChangeStatusButtons->setVisible(config_file.readBoolEntry("Look", "ShowStatusButton"));
 }
 
 void KaduWindow::insertMenuActionDescription(ActionDescription *actionDescription, MenuType type, int pos)
