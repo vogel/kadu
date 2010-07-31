@@ -65,7 +65,7 @@ private:
 
 	bool Docked; // TODO: 0.7.1 it is a hack
 	QWidget *GroupBarWidget;
-	QSplitter *split;
+	QSplitter *Split;
 
 	KaduWindowActions *Actions;
 

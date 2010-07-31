@@ -96,10 +96,8 @@ KaduWindow::KaduWindow(QWidget *parent) :
 	    move(x(), y() - 34);
 #endif
 #endif
-	if(compositingState())
-	{
+	if (compositingState())
 		compositingEnabled();
-	}
 }
 
 KaduWindow::~KaduWindow()
@@ -114,10 +112,10 @@ void KaduWindow::createGui()
 	MainLayout->setMargin(0);
 	MainLayout->setSpacing(0);
 
-	split = new QSplitter(Qt::Vertical, this);
-	MainLayout->addWidget(split);
+	Split = new QSplitter(Qt::Vertical, this);
+	MainLayout->addWidget(Split);
 
-	QWidget* hbox = new QWidget(split);
+	QWidget* hbox = new QWidget(Split);
 	QHBoxLayout *hboxLayout = new QHBoxLayout(hbox);
 	hboxLayout->setMargin(0);
 	hboxLayout->setSpacing(0);
@@ -149,7 +147,7 @@ void KaduWindow::createGui()
 	hboxLayout->setStretchFactor(ContactsWidget, 100);
 	hboxLayout->setAlignment(GroupBar, Qt::AlignTop);
 
-	InfoPanel = new BuddyInfoPanel(split);
+	InfoPanel = new BuddyInfoPanel(Split);
 	connect(ContactManager::instance(), SIGNAL(contactUpdated(Contact &)), InfoPanel, SLOT(update()));
 	connect(ContactsWidget->view(), SIGNAL(currentBuddyChanged(Buddy)), InfoPanel, SLOT(displayBuddy(Buddy)));
 
@@ -269,9 +267,9 @@ void KaduWindow::compositingEnabled()
 	GroupBarWidget->setAutoFillBackground(true);
 	InfoPanel->setAutoFillBackground(true);
 	ChangeStatusButtons->setAutoFillBackground(true);
-	for(int i=1; i < split->count(); ++i)
+	for (int i = 1; i < Split->count(); ++i)
 	{
-		QSplitterHandle* splitterHandle = split->handle(i);
+		QSplitterHandle *splitterHandle = Split->handle(i);
 		splitterHandle->setAutoFillBackground(true);
 	}
 	configurationUpdated();
@@ -282,9 +280,9 @@ void KaduWindow::compositingDisabled()
 	GroupBarWidget->setAutoFillBackground(false);
 	InfoPanel->setAutoFillBackground(false);
 	ChangeStatusButtons->setAutoFillBackground(false);
-	for(int i=1; i < split->count(); ++i)
+	for (int i = 1; i < Split->count(); ++i)
 	{
-		QSplitterHandle* splitterHandle = split->handle(i);
+		QSplitterHandle *splitterHandle = Split->handle(i);
 		splitterHandle->setAutoFillBackground(false);
 	}
 	setAttribute(Qt::WA_TranslucentBackground, false);
