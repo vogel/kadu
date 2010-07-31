@@ -27,13 +27,14 @@
 
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-shared.h"
+#include "buddies/filter/account-buddy-filter.h"
+#include "buddies/filter/anonymous-buddy-filter.h"
+#include "buddies/model/buddies-model.h"
+#include "buddies/model/buddies-model-proxy.h"
 #include "contacts/contact.h"
 #include "contacts/contact-shared.h"
 #include "contacts/contact-details.h"
 #include "contacts/contact-manager.h"
-#include "buddies/model/buddies-model.h"
-#include "buddies/model/buddies-model-proxy.h"
-#include "buddies/filter/account-buddy-filter.h"
 #include "gui/windows/message-dialog.h"
 
 #include "debug.h"
@@ -74,9 +75,13 @@ AccountBuddyListWidget::AccountBuddyListWidget(Account account, QWidget *parent)
 	layout->addWidget(BuddiesWidget);
 	layout->addWidget(buttons);
 
-	AccountBuddyFilter *filter = new AccountBuddyFilter(CurrentAccount, this);
-	filter->setEnabled(true);
-	BuddiesWidget->addFilter(filter);
+	AccountBuddyFilter *accountFilter = new AccountBuddyFilter(CurrentAccount, this);
+	accountFilter->setEnabled(true);
+	AnonymousBuddyFilter *anonymousFilter = new AnonymousBuddyFilter(this);
+	anonymousFilter->setEnabled(true);
+
+	BuddiesWidget->addFilter(accountFilter);
+	BuddiesWidget->addFilter(anonymousFilter);
 
 	ContactListService *manager = CurrentAccount.protocolHandler()->contactListService();
 	if (!manager)
