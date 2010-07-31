@@ -4,6 +4,7 @@
 * gui: #1257 fixed: some shortcuts are not working (Vogel)
 * gui: #1306 fixed: changing accounts updated status buttons (Vogel)
 * gui: #1400 fixed: invalid size of some widgets in config window (Vogel)
+* gui: #1414 fixed: anonymous buddies displayed on account buddy list (Vogel)
 
 +++ version 0.6.6-beta4
 * gui: #1119 fixed: copying emoticons works again (beevvy)
