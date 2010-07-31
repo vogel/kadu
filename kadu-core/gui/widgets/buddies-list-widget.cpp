@@ -21,8 +21,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QEvent>
-#include <QtGui/QApplication>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QLabel>
@@ -46,6 +44,7 @@ BuddiesListWidget::BuddiesListWidget(FilterPosition filterPosition, MainWindow *
 		this, SLOT(nameFilterChanged(const QString &)));
 
 	View = new BuddiesListView(mainWindow, this);
+	NameFilterWidget->setView(View);
 
 	NameFilter = new BuddyNameFilter(this);
 	View->addFilter(NameFilter);
@@ -70,29 +69,7 @@ BuddiesListWidget::~BuddiesListWidget()
 {
 }
 
-bool BuddiesListWidget::eventFilter(QObject *object, QEvent *event)
-{
-	if (QEvent::KeyPress == event->type())
-	{
-		QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
-		switch (keyEvent->key())
-		{
-			case Qt::Key_Down:
-			case Qt::Key_Up:
-			case Qt::Key_PageDown:
-			case Qt::Key_PageUp:
-			case Qt::Key_Enter:
-			case Qt::Key_Return:
-				qApp->sendEvent(view(), event);
-				return true;
-		}
-	}
-
-	return QObject::eventFilter(object, event);
-}
-
 void BuddiesListWidget::nameFilterChanged(const QString &filter)
 {
 	NameFilter->setName(filter);
 }
-

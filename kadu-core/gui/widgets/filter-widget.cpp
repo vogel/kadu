@@ -20,12 +20,15 @@
  * http://th30z.netsons.org/2008/08/qt4-mac-searchbox-wrapper/
  */
 
+#include <QtGui/QApplication>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
 
+#include "gui/widgets/buddies-list-view.h"
+#include "gui/widgets/filter-line-edit.h"
+
 #include "filter-widget.h"
-#include "filter-line-edit.h"
 
 #ifdef Q_OS_MAC
 #include <QtCore/QVarLengthArray>
@@ -137,6 +140,8 @@ FilterWidget::FilterWidget(QWidget *parent) : QWidget(parent)
 
 #elif !defined(Q_WS_MAEMO_5)
 
+	View = 0;
+
 	QHBoxLayout *layout = new QHBoxLayout(this);
 	layout->setMargin(3);
 
@@ -165,3 +170,31 @@ void FilterWidget::setFocus()
 	NameFilterEdit->setFocus();
 #endif
 }
+
+#ifndef Q_OS_MAC
+void FilterWidget::setView(BuddiesListView *view)
+{
+	View = view;
+}
+
+bool FilterWidget::eventFilter(QObject *object, QEvent *event)
+{
+	if (View && (QEvent::KeyPress == event->type()))
+	{
+		QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+		switch (keyEvent->key())
+		{
+			case Qt::Key_Down:
+			case Qt::Key_Up:
+			case Qt::Key_PageDown:
+			case Qt::Key_PageUp:
+			case Qt::Key_Enter:
+			case Qt::Key_Return:
+				qApp->sendEvent(View, event);
+				return true;
+		}
+	}
+
+	return QObject::eventFilter(object, event);
+}
+#endif

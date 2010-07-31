@@ -23,8 +23,10 @@
 #include <QtGui/QWidget>
 
 #ifdef Q_OS_MAC
-#include <Carbon/Carbon.h>
+#	include <Carbon/Carbon.h>
 #endif
+
+class BuddiesListView;
 
 class QLineEdit;
 
@@ -37,32 +39,42 @@ class FilterWidget : public QWidget
 	HIViewRef searchField;
 #else
 	QLineEdit *NameFilterEdit;
+	BuddiesListView *View;
 #endif
+
 	void setFocus();
+
+private slots:
+	void emitTextChanged(const QString &);
+
+#ifndef Q_OS_MAC
+protected:
+	virtual bool eventFilter(QObject *, QEvent *);
+#endif
 
 public:
 	FilterWidget(QWidget *parent);
 	~FilterWidget();
+
+	void setView(BuddiesListView *view);
 
 signals:
 	void textChanged(const QString& text);
 
 #ifdef Q_OS_MAC
 
-public slots:
-	void clear(void);
-	void setText(const QString &text);
-	void emitTextChanged(void);
-
 public:
 	void activate(void);
 	QSize sizeHint (void) const;
 	QString text(void) const;
 
+public slots:
+	void clear(void);
+	void setText(const QString &text);
+	void emitTextChanged(void);
+
 #endif
 
-private slots:
-	void emitTextChanged(const QString &);
 };
 
 #endif // FILTERWIDGET_H
