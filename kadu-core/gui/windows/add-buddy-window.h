@@ -34,7 +34,7 @@ class QRegExpValidator;
 class AccountsComboBox;
 class GroupsComboBox;
 class IdRegularExpressionFilter;
-class SelectBuddyCombobox;
+class SelectBuddyComboBox;
 
 class AddBuddyWindow : public QDialog
 {
@@ -48,7 +48,7 @@ class AddBuddyWindow : public QDialog
 	GroupsComboBox *GroupCombo;
 	QLineEdit *DisplayNameEdit;
 	QCheckBox *MergeContact;
-	SelectBuddyCombobox *SelectContact;
+	SelectBuddyComboBox *SelectContact;
 	QCheckBox *AllowToSeeMeCheck;
 	QLabel *ErrorLabel;
 	QPushButton *AddContactButton;

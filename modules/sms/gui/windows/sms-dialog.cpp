@@ -31,7 +31,7 @@
 #include "buddies/filter/mobile-buddy-filter.h"
 #include "buddies/buddy-manager.h"
 #include "configuration/configuration-file.h"
-#include "gui/widgets/select-buddy-combobox.h"
+#include "gui/widgets/select-buddy-combo-box.h"
 #include "gui/windows/message-dialog.h"
 #include "misc/misc.h"
 #include "debug.h"
@@ -93,7 +93,7 @@ void SmsDialog::createGui()
 
 	recipientLayout->addWidget(RecipientEdit);
 
-	RecipientComboBox = new SelectBuddyCombobox(this);
+	RecipientComboBox = new SelectBuddyComboBox(this);
 	MobileBuddyFilter *mobileFilter = new MobileBuddyFilter(RecipientComboBox);
 	mobileFilter->setEnabled(true);
 	RecipientComboBox->addFilter(mobileFilter);
