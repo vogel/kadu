@@ -165,7 +165,7 @@ void KaduWindow::createGui()
 	splitSizes.append(config_file.readNumEntry("General", "UserBoxHeight"));
 	splitSizes.append(config_file.readNumEntry("General", "DescriptionHeight"));
 
-	split->setSizes(splitSizes);
+	Split->setSizes(splitSizes);
 
 	setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 	setCentralWidget(MainWidget);
