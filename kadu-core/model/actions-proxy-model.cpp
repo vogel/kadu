@@ -35,7 +35,7 @@ ActionsProxyModel::~ActionsProxyModel()
 {
 }
 
-void ActionsProxyModel::updateVisibleActions(QList<QAction*> &visibleActions, const QList<ActionWithVisibility> &actions, int globalPosition)
+void ActionsProxyModel::updateVisibleActions(QList<QAction *> &visibleActions, const QList<ActionWithVisibility> &actions, int globalPosition)
 {
 	int i = 0, sourceModelRowCount = sourceModel() ? sourceModel()->rowCount() : 0;
 
@@ -76,7 +76,7 @@ void ActionsProxyModel::updateVisibleAfterActions()
 			VisibleBeforeActions.count() + (sourceModel() ? sourceModel()->rowCount() : 0));
 }
 
-void ActionsProxyModel::addBeforeAction(QAction* action, ActionVisibility actionVisibility)
+void ActionsProxyModel::addBeforeAction(QAction *action, ActionVisibility actionVisibility)
 {
 	ActionWithVisibility a(action, actionVisibility);
 	BeforeActions.append(a);
@@ -84,7 +84,7 @@ void ActionsProxyModel::addBeforeAction(QAction* action, ActionVisibility action
 	updateVisibleBeforeActions();
 }
 
-void ActionsProxyModel::addAfterAction(QAction* action, ActionVisibility actionVisibility)
+void ActionsProxyModel::addAfterAction(QAction *action, ActionVisibility actionVisibility)
 {
 	ActionWithVisibility a(action, actionVisibility);
 	AfterActions.append(a);

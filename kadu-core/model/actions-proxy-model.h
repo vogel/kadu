@@ -52,7 +52,7 @@ private:
 	QList<QAction *> VisibleAfterActions;
 
 	QAction * actionForIndex(const QModelIndex &index) const;
-	void updateVisibleActions(QList<QAction*> &visibleActions, const QList<ActionWithVisibility> &actions, int globalPosition);
+	void updateVisibleActions(QList<QAction *> &visibleActions, const QList<ActionWithVisibility> &actions, int globalPosition);
 	void updateVisibleBeforeActions();
 	void updateVisibleAfterActions();
 
