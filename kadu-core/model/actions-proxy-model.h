@@ -20,7 +20,6 @@
 #ifndef ACTIONS_PROXY_MODEL_H
 #define ACTIONS_PROXY_MODEL_H
 
-#include <QtCore/QHash>
 #include <QtCore/QList>
 #include <QtGui/QAbstractProxyModel>
 
