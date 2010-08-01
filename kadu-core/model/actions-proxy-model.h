@@ -40,15 +40,22 @@ public:
 	};
 
 private:
-	QList<QAction *> BeforeActions;
-	QList<QAction *> AfterActions;
+	struct ActionWithVisibility
+	{
+		QAction *Action;
+		ActionVisibility Visibility;
+		ActionWithVisibility(QAction *action, ActionVisibility visibility) : Action(action), Visibility(visibility) {}
+	};
+
+	QList<ActionWithVisibility> BeforeActions;
+	QList<ActionWithVisibility> AfterActions;
 	QList<QAction *> VisibleBeforeActions;
 	QList<QAction *> VisibleAfterActions;
-	QHash<QAction *, ActionVisibility> BeforeActionsVisibilities;
-	QHash<QAction *, ActionVisibility> AfterActionsVisibilities;
 
 	QAction * actionForIndex(const QModelIndex &index) const;
-	void updateBeforeAfterActions();
+	void updateVisibleActions(QList<QAction*> &visibleActions, const QList<ActionWithVisibility> &actions, int globalPosition);
+	void updateVisibleBeforeActions();
+	void updateVisibleAfterActions();
 
 private slots:
 	void sourceDataChanged(const QModelIndex &, const QModelIndex &);

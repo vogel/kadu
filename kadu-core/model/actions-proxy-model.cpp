@@ -35,79 +35,61 @@ ActionsProxyModel::~ActionsProxyModel()
 {
 }
 
-void ActionsProxyModel::updateBeforeAfterActions()
+void ActionsProxyModel::updateVisibleActions(QList<QAction*> &visibleActions, const QList<ActionWithVisibility> &actions, int globalPosition)
 {
-	int i, globalPosition, sourceModelRowCount = sourceModel() ? sourceModel()->rowCount() : 0;
+	int i = 0, sourceModelRowCount = sourceModel() ? sourceModel()->rowCount() : 0;
 
-	i = 0;
-	foreach (QAction *action, BeforeActions)
+	foreach (const ActionWithVisibility &action, actions)
 	{
 		// whether the action should be visible
-		if (!(sourceModelRowCount == 0 && BeforeActionsVisibilities[action] & NotVisibleWithEmptySourceModel) &&
-			!(sourceModelRowCount == 1 && BeforeActionsVisibilities[action] & NotVisibleWithOneRowSourceModel))
+		if (!(sourceModelRowCount == 0 && action.Visibility & NotVisibleWithEmptySourceModel) &&
+			!(sourceModelRowCount == 1 && action.Visibility & NotVisibleWithOneRowSourceModel))
 		{
 			// if it should, but it isn't yet
-			if (!VisibleBeforeActions.contains(action))
-			{
-				beginInsertRows(QModelIndex(), i, i);
-				VisibleBeforeActions.insert(i, action);
-				endInsertRows();
-			}
-			i++;
-		}
-		// if it shouldn't, but now is visible
-		else if (VisibleBeforeActions.contains(action))
-		{
-			beginRemoveRows(QModelIndex(), i, i);
-			VisibleBeforeActions.removeAt(i);
-			endRemoveRows();
-		}
-	}
-
-	i = 0;
-	globalPosition = VisibleBeforeActions.count() + sourceModelRowCount;
-	foreach (QAction *action, AfterActions)
-	{
-		// whether the action should be visible
-		if (!(sourceModelRowCount == 0 && AfterActionsVisibilities[action] & NotVisibleWithEmptySourceModel) &&
-			!(sourceModelRowCount == 1 && AfterActionsVisibilities[action] & NotVisibleWithOneRowSourceModel))
-		{
-			// if it should, but it isn't yet
-			if (!VisibleAfterActions.contains(action))
+			if (!visibleActions.contains(action.Action))
 			{
 				beginInsertRows(QModelIndex(), globalPosition, globalPosition);
-				VisibleAfterActions.insert(i, action);
+				visibleActions.insert(i, action.Action);
 				endInsertRows();
 			}
 			i++;
 			globalPosition++;
 		}
 		// if it shouldn't, but now is visible
-		else if (VisibleAfterActions.contains(action))
+		else if (visibleActions.contains(action.Action))
 		{
 			beginRemoveRows(QModelIndex(), globalPosition, globalPosition);
-			VisibleAfterActions.removeAt(i);
+			visibleActions.removeAt(i);
 			endRemoveRows();
 		}
 	}
 }
 
+void ActionsProxyModel::updateVisibleBeforeActions()
+{
+	updateVisibleActions(VisibleBeforeActions, BeforeActions, 0);
+}
+
+void ActionsProxyModel::updateVisibleAfterActions()
+{
+	updateVisibleActions(VisibleAfterActions, AfterActions,
+			VisibleBeforeActions.count() + (sourceModel() ? sourceModel()->rowCount() : 0));
+}
+
 void ActionsProxyModel::addBeforeAction(QAction* action, ActionVisibility actionVisibility)
 {
-	if (!BeforeActions.contains(action))
-		BeforeActions.append(action);
-	BeforeActionsVisibilities[action] = actionVisibility;
+	ActionWithVisibility a(action, actionVisibility);
+	BeforeActions.append(a);
 
-	updateBeforeAfterActions();
+	updateVisibleBeforeActions();
 }
 
 void ActionsProxyModel::addAfterAction(QAction* action, ActionVisibility actionVisibility)
 {
-	if (!AfterActions.contains(action))
-		AfterActions.append(action);
-	AfterActionsVisibilities[action] = actionVisibility;
+	ActionWithVisibility a(action, actionVisibility);
+	AfterActions.append(a);
 
-	updateBeforeAfterActions();
+	updateVisibleAfterActions();
 }
 
 void ActionsProxyModel::setSourceModel(QAbstractItemModel *newSourceModel)
@@ -173,7 +155,8 @@ void ActionsProxyModel::setSourceModel(QAbstractItemModel *newSourceModel)
 				this, SLOT(sourceLayoutChanged()));
 	}
 
-	updateBeforeAfterActions();
+	updateVisibleBeforeActions();
+	updateVisibleAfterActions();
 }
 
 void ActionsProxyModel::sourceDataChanged(const QModelIndex &sourceTopLeft, const QModelIndex &sourceBottomRight)
@@ -204,7 +187,8 @@ void ActionsProxyModel::sourceRowsInserted(const QModelIndex &sourceParent, int 
 	Q_UNUSED(end)
 
 	endInsertRows();
-	updateBeforeAfterActions();
+	updateVisibleBeforeActions();
+	updateVisibleAfterActions();
 }
 
 void ActionsProxyModel::sourceColumnsAboutToBeInserted(const QModelIndex &sourceParent, int start, int end)
@@ -239,7 +223,8 @@ void ActionsProxyModel::sourceRowsRemoved(const QModelIndex &sourceParent, int s
 	Q_UNUSED(end)
 
 	endRemoveRows();
-	updateBeforeAfterActions();
+	updateVisibleBeforeActions();
+	updateVisibleAfterActions();
 }
 
 void ActionsProxyModel::sourceColumnsAboutToBeRemoved(const QModelIndex &sourceParent, int start, int end)
