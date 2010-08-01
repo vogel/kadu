@@ -67,10 +67,8 @@ BuddiesListWidget::BuddiesListWidget(FilterPosition filterPosition, MainWindow *
 	setFocusProxy(NameFilterWidget);
 	View->setFocusPolicy(Qt::NoFocus);*/
 
-	if(compositingState())
-	{
+	if (compositingState())
 		compositingEnabled();
-	}
 }
 
 BuddiesListWidget::~BuddiesListWidget()
