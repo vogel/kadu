@@ -39,7 +39,7 @@ private slots:
 	void currentIndexChangedSlot(int index);
 
 public:
-	explicit ProtocolsComboBox(QWidget* parent = 0);
+	explicit ProtocolsComboBox(QWidget *parent = 0);
 	virtual ~ProtocolsComboBox();
 
 	void setCurrentProtocol(ProtocolFactory *protocol);

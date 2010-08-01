@@ -31,9 +31,10 @@ class ActionsProxyModel : public QAbstractProxyModel
 	Q_OBJECT
 
 public:
-	enum ActionVisibility
+	enum ActionVisibility // flag
 	{
 		AlwaysVisible = 0x0000,
+		// TODO: think of better names
 		NotVisibleWithEmptySourceModel = 0x0001,
 		NotVisibleWithOneRowSourceModel = 0x0002
 	};
