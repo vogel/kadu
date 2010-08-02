@@ -27,7 +27,7 @@
 
 #include "buddies/filter/non-buddy-filter.h"
 #include "buddies/buddy-manager.h"
-#include "gui/widgets/select-buddy-combobox.h"
+#include "gui/widgets/select-buddy-combo-box.h"
 #include "icons-manager.h"
 
 #include "merge-buddies-window.h"
@@ -55,7 +55,7 @@ void MergeBuddiesWindow::createGui()
 	QHBoxLayout *chooseLayout = new QHBoxLayout(chooseWidget);
 
 	chooseLayout->addWidget(new QLabel(tr("Contact:"), this));
-	SelectCombo = new SelectBuddyCombobox(this);
+	SelectCombo = new SelectBuddyComboBox(this);
 	NonBuddyFilter *filter = new NonBuddyFilter(this);
 	filter->setBuddy(MyBuddy);
 	SelectCombo->addFilter(filter);

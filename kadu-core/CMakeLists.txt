@@ -167,7 +167,7 @@ set (kadu_SRCS
 	gui/widgets/protocols-combo-box.cpp
 	gui/widgets/proxy-group-box.cpp
 	gui/widgets/preview.cpp
-	gui/widgets/select-buddy-combobox.cpp
+	gui/widgets/select-buddy-combo-box.cpp
 	gui/widgets/select-buddy-popup.cpp
 	gui/widgets/select-file.cpp
 	gui/widgets/select-font.cpp
@@ -465,7 +465,7 @@ set (kadu_MOC_SRCS
 	gui/widgets/progress-label.h
 	gui/widgets/protocols-combo-box.h
 	gui/widgets/proxy-group-box.h
-	gui/widgets/select-buddy-combobox.h
+	gui/widgets/select-buddy-combo-box.h
 	gui/widgets/select-buddy-popup.h
 	gui/widgets/select-file.h
 	gui/widgets/select-font.h

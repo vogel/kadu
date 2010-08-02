@@ -17,8 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SELECT_BUDDY_COMBOBOX_H
-#define SELECT_BUDDY_COMBOBOX_H
+#ifndef SELECT_BUDDY_COMBO_BOX_H
+#define SELECT_BUDDY_COMBO_BOX_H
 
 #include <QtGui/QComboBox>
 
@@ -31,7 +31,7 @@ class BuddiesModel;
 class BuddiesModelProxy;
 class SelectBuddyPopup;
 
-class KADUAPI SelectBuddyCombobox : public QComboBox
+class KADUAPI SelectBuddyComboBox : public QComboBox
 {
 	Q_OBJECT
 
@@ -48,8 +48,8 @@ protected:
 	virtual void hidePopup();
 
 public:
-	explicit SelectBuddyCombobox(QWidget *parent = 0);
-	virtual ~SelectBuddyCombobox();
+	explicit SelectBuddyComboBox(QWidget *parent = 0);
+	virtual ~SelectBuddyComboBox();
 
 	void addFilter(AbstractBuddyFilter *filter);
 	void removeFilter(AbstractBuddyFilter *filter);
@@ -64,4 +64,4 @@ signals:
 
 };
 
-#endif // SELECT_BUDDY_COMBOBOX_H
+#endif // SELECT_BUDDY_COMBO_BOX_H
