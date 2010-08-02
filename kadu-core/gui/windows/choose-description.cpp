@@ -59,7 +59,8 @@ ChooseDescription *ChooseDescription::showDialog(StatusContainer *statusContaine
 	{
 		dialog = new ChooseDescription(statusContainer, Core::instance()->kaduWindow());
 		Dialogs[statusContainer] = dialog;
-		dialog->resize(dialog->sizeHint());
+		if (position.isNull())
+			dialog->resize(dialog->sizeHint());
 	}
 	if (! position.isNull())
 	{
