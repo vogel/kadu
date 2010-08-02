@@ -226,7 +226,7 @@ MainConfigurationWindow::MainConfigurationWindow()
 
 	connect(widget()->widgetById("recentChatsStore"), SIGNAL(toggled(bool)),
 			widget()->widgetById("recentChatsTimeout"), SLOT(setDisabled(bool)));
-	userboxTransparency = dynamic_cast<QCheckBox *>(widget()->widgetById("userboxTransparency"));;
+	userboxTransparency = dynamic_cast<QCheckBox *>(widget()->widgetById("userboxTransparency"));
 	userboxTransparency->setEnabled(compositingState());
 }
 

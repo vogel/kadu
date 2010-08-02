@@ -323,3 +323,13 @@ Buddy MainWindow::buddy()
 			? *buddySet.begin()
 			: Buddy::null;
 }
+
+void MainWindow::setAutoFillBackgroundToolBars(bool enable)
+{
+	foreach (QObject *object, children())
+	{
+		QToolBar *toolBar = dynamic_cast<QToolBar *>(object);
+		if (toolBar)
+			toolBar->setAutoFillBackground(enable);
+	}
+}

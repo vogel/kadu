@@ -60,6 +60,7 @@ protected:
 	static QDomElement findExistingToolbar(const QString &prefix);
 
 	void refreshToolBars(const QString &prefix);
+	void setAutoFillBackgroundToolBars(bool enable);
 
 	void contextMenuEvent(QContextMenuEvent *event);
 

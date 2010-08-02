@@ -264,6 +264,8 @@ void KaduWindow::compositingEnabled()
 {
 	setAutoFillBackground(false);
 	setAttribute(Qt::WA_TranslucentBackground, true);
+	setAutoFillBackgroundToolBars(true);
+	menuBar()->setAutoFillBackground(true);
 	GroupBarWidget->setAutoFillBackground(true);
 	InfoPanel->setAutoFillBackground(true);
 	ChangeStatusButtons->setAutoFillBackground(true);
@@ -277,6 +279,8 @@ void KaduWindow::compositingEnabled()
 
 void KaduWindow::compositingDisabled()
 {
+	setAutoFillBackgroundToolBars(false);
+	menuBar()->setAutoFillBackground(false);
 	GroupBarWidget->setAutoFillBackground(false);
 	InfoPanel->setAutoFillBackground(false);
 	ChangeStatusButtons->setAutoFillBackground(false);

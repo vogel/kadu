@@ -165,7 +165,6 @@ Text is plain black." />
 			</group-box>
 
 			<group-box name="Buddy List">
-				<check-box caption="Turn on transparency" config-section="Look" config-item="UserboxTransparency" id="userboxTransparency" />
 				<color-button caption="Background" config-section="Look" config-item="UserboxBgColor" />
 				<color-button caption="Font" config-section="Look" config-item="UserboxFgColor" />
 				<color-button caption="Descriptions font" config-section="Look" config-item="DescriptionColor" />
@@ -255,6 +254,7 @@ Text is plain black." />
 			</group-box>
 
 			<group-box name="Background">
+            <check-box caption="Turn on transparency" config-section="Look" config-item="UserboxTransparency" id="userboxTransparency" />
 				<check-box caption="Use background image" config-section="Look" config-item="UseUserboxBackground" id="useUserboxBackground" />
 				<select-file caption="Background file" config-section="Look" config-item="UserboxBackground" type="image"
 					     tool-tip="Define background file for the buddy list" id="userboxBackground" />
