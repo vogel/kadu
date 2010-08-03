@@ -261,7 +261,6 @@ QMenuBar* KaduWindow::menuBar() const
 void KaduWindow::compositingEnabled()
 {
 	setAutoFillBackground(false);
-	setAttribute(Qt::WA_TranslucentBackground, true);
 	setTransparency(true);
 	menuBar()->setAutoFillBackground(true);
 	GroupBarWidget->setAutoFillBackground(true);
@@ -287,8 +286,6 @@ void KaduWindow::compositingDisabled()
 		QSplitterHandle *splitterHandle = Split->handle(i);
 		splitterHandle->setAutoFillBackground(false);
 	}
-	setAttribute(Qt::WA_TranslucentBackground, false);
-	setAttribute(Qt::WA_NoSystemBackground, false);
 	configurationUpdated();
 }
 
