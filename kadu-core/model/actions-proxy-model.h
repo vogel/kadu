@@ -20,6 +20,7 @@
 #ifndef ACTIONS_PROXY_MODEL_H
 #define ACTIONS_PROXY_MODEL_H
 
+#include <QtCore/QList>
 #include <QtGui/QAbstractProxyModel>
 
 class QAction;
@@ -28,10 +29,32 @@ class ActionsProxyModel : public QAbstractProxyModel
 {
 	Q_OBJECT
 
-	QList<QAction *> BeforeActions;
-	QList<QAction *> AfterActions;
+public:
+	enum ActionVisibility // flag
+	{
+		AlwaysVisible = 0x0000,
+		// TODO: think of better names
+		NotVisibleWithEmptySourceModel = 0x0001,
+		NotVisibleWithOneRowSourceModel = 0x0002
+	};
+
+private:
+	struct ActionWithVisibility
+	{
+		QAction *Action;
+		ActionVisibility Visibility;
+		ActionWithVisibility(QAction *action, ActionVisibility visibility) : Action(action), Visibility(visibility) {}
+	};
+
+	QList<ActionWithVisibility> BeforeActions;
+	QList<ActionWithVisibility> AfterActions;
+	QList<QAction *> VisibleBeforeActions;
+	QList<QAction *> VisibleAfterActions;
 
 	QAction * actionForIndex(const QModelIndex &index) const;
+	void updateVisibleActions(QList<QAction *> &visibleActions, const QList<ActionWithVisibility> &actions, int globalPosition);
+	void updateVisibleBeforeActions();
+	void updateVisibleAfterActions();
 
 private slots:
 	void sourceDataChanged(const QModelIndex &, const QModelIndex &);
@@ -48,11 +71,11 @@ private slots:
 	void sourceLayoutChanged();
 
 public:
-	ActionsProxyModel(QObject *parent);
+	explicit ActionsProxyModel(QObject *parent = 0);
 	virtual ~ActionsProxyModel();
 
-	void addBeforeAction(QAction *action);
-	void addAfterAction(QAction *action);
+	void addBeforeAction(QAction *action, ActionVisibility actionVisibility = AlwaysVisible);
+	void addAfterAction(QAction *action, ActionVisibility actionVisibility = AlwaysVisible);
 
 	virtual void setSourceModel(QAbstractItemModel *newSourceModel);
 

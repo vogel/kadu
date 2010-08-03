@@ -27,7 +27,7 @@
 
 #include "accounts-combo-box.h"
 
-AccountsComboBox::AccountsComboBox(bool includeSelectAccount, QWidget *parent) :
+AccountsComboBox::AccountsComboBox(QWidget *parent) :
 		QComboBox(parent)
 {
 	Model = new AccountsModel(this);
@@ -37,8 +37,7 @@ AccountsComboBox::AccountsComboBox(bool includeSelectAccount, QWidget *parent) :
 	connect(ProxyModel, SIGNAL(filterChanged()), this, SLOT(resetAccount()));
 
 	ActionsModel = new ActionsProxyModel(this);
-	if (includeSelectAccount)
-		ActionsModel->addBeforeAction(new QAction(tr(" - Select account - "), this));
+	ActionsModel->addBeforeAction(new QAction(tr(" - Select account - "), this), ActionsProxyModel::NotVisibleWithOneRowSourceModel);
 	ActionsModel->setSourceModel(ProxyModel);
 
 	setModel(ActionsModel);

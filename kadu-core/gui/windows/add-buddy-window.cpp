@@ -84,7 +84,7 @@ void AddBuddyWindow::createGui()
 	layout->addWidget(UserNameEdit, 0, 1);
 	layout->addWidget(new QLabel(tr("in"), this), 0, 2);
 
-	AccountCombo = new AccountsComboBox(true, this);
+	AccountCombo = new AccountsComboBox(this);
 	connect(AccountCombo, SIGNAL(activated(int)), this, SLOT(setUsernameLabel()));
 	connect(AccountCombo, SIGNAL(activated(int)), this, SLOT(setAddContactEnabled()));
 	connect(AccountCombo, SIGNAL(activated(int)), this, SLOT(setValidateRegularExpression()));

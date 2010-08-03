@@ -44,7 +44,7 @@ private slots:
 	void resetAccount();
 
 public:
-	explicit AccountsComboBox(bool includeSelectAccount = false, QWidget *parent = 0);
+	explicit AccountsComboBox(QWidget *parent = 0);
 	virtual ~AccountsComboBox();
 
 	void setCurrentAccount(Account account);
