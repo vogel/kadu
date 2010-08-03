@@ -333,6 +333,8 @@ void BuddiesListView::keyPressEvent(QKeyEvent *event)
 		default:
 			if (event->text().isEmpty())
 				QTreeView::keyPressEvent(event);
+			else
+				event->ignore();
 	}
 
 	toolTipHide(false);

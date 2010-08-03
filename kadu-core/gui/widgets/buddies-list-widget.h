@@ -52,6 +52,9 @@ private:
 private slots:
 	void nameFilterChanged(const QString &filter);
 
+protected:
+	virtual void keyPressEvent(QKeyEvent *event);
+
 public:
 	explicit BuddiesListWidget(FilterPosition filterPosition, MainWindow *mainWindow, QWidget *parent = 0);
 	virtual ~BuddiesListWidget();

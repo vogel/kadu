@@ -148,6 +148,8 @@ FilterWidget::FilterWidget(QWidget *parent) : QWidget(parent)
 	NameFilterEdit = new FilterLineEdit(this);
 	NameFilterEdit->installEventFilter(this);
 
+	setFocusProxy(NameFilterEdit);
+
 	layout->addWidget(new QLabel(tr("Filter") + ":", this));
 	layout->addWidget(NameFilterEdit);
 
@@ -164,14 +166,12 @@ FilterWidget::~FilterWidget()
 #endif
 }
 
-void FilterWidget::setFocus()
-{
 #ifndef Q_OS_MAC
-	NameFilterEdit->setFocus();
-#endif
+void FilterWidget::setFilter(const QString &filter)
+{
+	NameFilterEdit->setText(filter);
 }
 
-#ifndef Q_OS_MAC
 void FilterWidget::setView(BuddiesListView *view)
 {
 	View = view;

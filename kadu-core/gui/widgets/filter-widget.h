@@ -42,8 +42,6 @@ class FilterWidget : public QWidget
 	BuddiesListView *View;
 #endif
 
-	void setFocus();
-
 private slots:
 	void emitTextChanged(const QString &);
 
@@ -53,13 +51,14 @@ protected:
 #endif
 
 public:
-	FilterWidget(QWidget *parent);
-	~FilterWidget();
+	explicit FilterWidget(QWidget *parent = 0);
+	virtual ~FilterWidget();
 
+	void setFilter(const QString &filter);
 	void setView(BuddiesListView *view);
 
 signals:
-	void textChanged(const QString& text);
+	void textChanged(const QString &text);
 
 #ifdef Q_OS_MAC
 

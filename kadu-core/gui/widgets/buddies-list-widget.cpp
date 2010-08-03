@@ -73,3 +73,16 @@ void BuddiesListWidget::nameFilterChanged(const QString &filter)
 {
 	NameFilter->setName(filter);
 }
+
+void BuddiesListWidget::keyPressEvent(QKeyEvent *event)
+{
+	QString text = event->text();
+	if (text.isEmpty())
+	{
+		QWidget::keyPressEvent(event);
+		return;
+	}
+
+	NameFilterWidget->setFilter(text);
+	NameFilterWidget->setFocus(Qt::OtherFocusReason);
+}
