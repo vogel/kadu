@@ -27,6 +27,7 @@
 
 #include "gui/actions/action-data-source.h"
 #include "gui/actions/action-description.h"
+#include "gui/widgets/toolbar.h"
 
 #include "exports.h"
 
@@ -46,6 +47,11 @@ class KADUAPI MainWindow : public QMainWindow, public ActionDataSource
 
 	friend class Actions;
 
+private:
+	bool TransparencyEnabled;
+
+	ToolBar *newToolbar(QWidget *parent);
+
 protected:
 	void loadToolBarsFromConfig(const QString &prefix);
 	bool loadToolBarsFromConfig(const QString &configName, Qt::ToolBarArea area, bool remove = false);
@@ -60,7 +66,7 @@ protected:
 	static QDomElement findExistingToolbar(const QString &prefix);
 
 	void refreshToolBars(const QString &prefix);
-	void setAutoFillBackgroundToolBars(bool enable);
+	void setTransparency(bool enable);
 
 	void contextMenuEvent(QContextMenuEvent *event);
 
