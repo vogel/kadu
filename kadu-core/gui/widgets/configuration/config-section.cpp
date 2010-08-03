@@ -108,7 +108,7 @@ void ConfigSection::activate()
 	if (activated)
 	{
 		// #1400 workaround
-		if (tabWidget->currentWidget())
+		if (tabWidget && tabWidget->currentWidget())
 		{
 			QApplication::processEvents();
 			tabWidget->currentWidget()->show();

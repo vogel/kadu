@@ -30,9 +30,9 @@
 #include "model/actions-proxy-model.h"
 #include "model/roles.h"
 
-#include "select-buddy-combobox.h"
+#include "select-buddy-combo-box.h"
 
-SelectBuddyCombobox::SelectBuddyCombobox(QWidget *parent) :
+SelectBuddyComboBox::SelectBuddyComboBox(QWidget *parent) :
 		QComboBox(parent)
 {
 	connect(this, SIGNAL(activated(int)), this, SLOT(activatedSlot()));
@@ -57,25 +57,25 @@ SelectBuddyCombobox::SelectBuddyCombobox(QWidget *parent) :
 	addFilter(anonymousFilter);
 }
 
-SelectBuddyCombobox::~SelectBuddyCombobox()
+SelectBuddyComboBox::~SelectBuddyComboBox()
 {
 	delete Popup;
 	Popup = 0;
 }
 
-void SelectBuddyCombobox::addFilter(AbstractBuddyFilter *filter)
+void SelectBuddyComboBox::addFilter(AbstractBuddyFilter *filter)
 {
 	ProxyModel->addFilter(filter);
 	Popup->view()->addFilter(filter);
 }
 
-void SelectBuddyCombobox::removeFilter(AbstractBuddyFilter *filter)
+void SelectBuddyComboBox::removeFilter(AbstractBuddyFilter *filter)
 {
 	ProxyModel->removeFilter(filter);
 	Popup->view()->removeFilter(filter);
 }
 
-void SelectBuddyCombobox::showPopup()
+void SelectBuddyComboBox::showPopup()
 {
 	Popup->setGeometry(QRect(
 			mapToGlobal(rect().bottomLeft()),
@@ -83,12 +83,12 @@ void SelectBuddyCombobox::showPopup()
 	Popup->show(buddy());
 }
 
-void SelectBuddyCombobox::hidePopup()
+void SelectBuddyComboBox::hidePopup()
 {
 	Popup->hide();
 }
 
-Buddy SelectBuddyCombobox::buddy()
+Buddy SelectBuddyComboBox::buddy()
 {
 	QVariant buddyVariant = ActionsModel->index(currentIndex(), 0).data(BuddyRole);
 	return buddyVariant.canConvert<Buddy>()
@@ -96,12 +96,12 @@ Buddy SelectBuddyCombobox::buddy()
 			: Buddy::null;
 }
 
-void SelectBuddyCombobox::activatedSlot()
+void SelectBuddyComboBox::activatedSlot()
 {
 	emit buddyChanged(buddy());
 }
 
-void SelectBuddyCombobox::setBuddy(Buddy buddy)
+void SelectBuddyComboBox::setBuddy(Buddy buddy)
 {
 	QModelIndex index = Model->buddyIndex(buddy);
 	index = ProxyModel->mapFromSource(index);

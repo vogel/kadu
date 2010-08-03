@@ -31,6 +31,14 @@
 ProtocolsModel::ProtocolsModel(QObject *parent) :
 		QAbstractListModel(parent)
 {
+	connect(ProtocolsManager::instance(), SIGNAL(protocolFactoryAboutToBeRegistered(ProtocolFactory *)),
+		this, SLOT(protocolFactoryAboutToBeRegistered(ProtocolFactory *)));
+	connect(ProtocolsManager::instance(), SIGNAL(protocolFactoryRegistered(ProtocolFactory *)),
+		this, SLOT(protocolFactoryRegistered(ProtocolFactory *)));
+	connect(ProtocolsManager::instance(), SIGNAL(protocolFactoryAboutToBeUnregistered(ProtocolFactory *)),
+		this, SLOT(protocolFactoryAboutToBeUnregistered(ProtocolFactory *)));
+	connect(ProtocolsManager::instance(), SIGNAL(protocolFactoryUnregistered(ProtocolFactory *)),
+		this, SLOT(protocolFactoryUnregistered(ProtocolFactory *)));
 }
 
 ProtocolsModel::~ProtocolsModel()
@@ -77,7 +85,7 @@ ProtocolFactory * ProtocolsModel::protocolFactory(const QModelIndex &index) cons
 	if (!index.isValid())
 		return 0;
 
-	if (index.row() > 0 && index.row() >= rowCount())
+	if (index.row() >= rowCount())
 		return 0;
 
 	return ProtocolsManager::instance()->byIndex(index.row());
@@ -91,4 +99,32 @@ int ProtocolsModel::protocolFactoryIndex(ProtocolFactory *protocolFactory)
 QModelIndex ProtocolsModel::protocolFactoryModelIndex(ProtocolFactory *protocolFactory)
 {
 	return index(protocolFactoryIndex(protocolFactory), 0);
+}
+
+void ProtocolsModel::protocolFactoryAboutToBeRegistered(ProtocolFactory *protocolFactory)
+{
+	Q_UNUSED(protocolFactory)
+
+	int count = rowCount();
+	beginInsertRows(QModelIndex(), count, count);
+}
+
+void ProtocolsModel::protocolFactoryRegistered(ProtocolFactory *protocolFactory)
+{
+	Q_UNUSED(protocolFactory)
+
+	endInsertRows();
+}
+
+void ProtocolsModel::protocolFactoryAboutToBeUnregistered(ProtocolFactory *protocolFactory)
+{
+	int index = protocolFactoryIndex(protocolFactory);
+	beginRemoveRows(QModelIndex(), index, index);
+}
+
+void ProtocolsModel::protocolFactoryUnregistered(ProtocolFactory *protocolFactory)
+{
+	Q_UNUSED(protocolFactory)
+
+	endRemoveRows();
 }

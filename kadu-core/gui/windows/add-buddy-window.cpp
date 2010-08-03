@@ -41,7 +41,7 @@
 #include "contacts/contact-manager.h"
 #include "gui/widgets/accounts-combo-box.h"
 #include "gui/widgets/groups-combo-box.h"
-#include "gui/widgets/select-buddy-combobox.h"
+#include "gui/widgets/select-buddy-combo-box.h"
 #include "misc/misc.h"
 #include "model/actions-proxy-model.h"
 #include "model/roles.h"
@@ -84,7 +84,7 @@ void AddBuddyWindow::createGui()
 	layout->addWidget(UserNameEdit, 0, 1);
 	layout->addWidget(new QLabel(tr("in"), this), 0, 2);
 
-	AccountCombo = new AccountsComboBox(true, this);
+	AccountCombo = new AccountsComboBox(this);
 	connect(AccountCombo, SIGNAL(activated(int)), this, SLOT(setUsernameLabel()));
 	connect(AccountCombo, SIGNAL(activated(int)), this, SLOT(setAddContactEnabled()));
 	connect(AccountCombo, SIGNAL(activated(int)), this, SLOT(setValidateRegularExpression()));
@@ -116,7 +116,7 @@ void AddBuddyWindow::createGui()
 	QWidget *selectContactWidget = new QWidget(this);
 	QHBoxLayout *selectContactLayout = new QHBoxLayout(selectContactWidget);
 	selectContactLayout->addSpacing(20);
-	SelectContact = new SelectBuddyCombobox(selectContactWidget);
+	SelectContact = new SelectBuddyComboBox(selectContactWidget);
 	SelectContact->setEnabled(false);
 	selectContactLayout->addWidget(SelectContact);
 	layout->addWidget(selectContactWidget, 5, 1, 1, 3);
