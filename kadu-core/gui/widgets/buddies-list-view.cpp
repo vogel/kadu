@@ -331,7 +331,8 @@ void BuddiesListView::keyPressEvent(QKeyEvent *event)
 			KaduWindowActions::deleteUserActionActivated(MainWindow::findMainWindow(this));
 			break;
 		default:
-			QTreeView::keyPressEvent(event);
+			if (event->text().isEmpty())
+				QTreeView::keyPressEvent(event);
 	}
 
 	toolTipHide(false);
