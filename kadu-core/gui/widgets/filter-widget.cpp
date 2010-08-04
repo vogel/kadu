@@ -114,8 +114,13 @@ QSize FilterWidget::sizeHint (void) const
 }
 #endif
 
-void FilterWidget::emitTextChanged(const QString &s)
+void FilterWidget::filterTextChanged(const QString &s)
 {
+	if (NameFilterEdit->text().isEmpty())
+		hide();
+	else
+		show();
+
 	emit textChanged(s);
 }
 
@@ -153,7 +158,7 @@ FilterWidget::FilterWidget(QWidget *parent) : QWidget(parent)
 	layout->addWidget(NameFilterEdit);
 
 	connect(NameFilterEdit, SIGNAL(textChanged(const QString &)),
-		this, SLOT(emitTextChanged(const QString &)));
+			this, SLOT(filterTextChanged(const QString &)));
 #endif
 }
 
@@ -169,11 +174,6 @@ FilterWidget::~FilterWidget()
 void FilterWidget::setFilter(const QString &filter)
 {
 	NameFilterEdit->setText(filter);
-
-	if (filter.isEmpty())
-		hide();
-	else
-		show();
 }
 
 void FilterWidget::setView(BuddiesListView *view)
@@ -200,6 +200,14 @@ bool FilterWidget::sendKeyEventToView(QKeyEvent *event)
 
 void FilterWidget::keyPressEvent(QKeyEvent *event)
 {
+	switch (event->key())
+	{
+		case Qt::Key_Escape:
+			setFilter("");
+			event->accept();
+			return;
+	}
+
 	if (View && sendKeyEventToView(event))
 	{
 		event->accept();

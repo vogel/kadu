@@ -45,7 +45,7 @@ class FilterWidget : public QWidget
 #endif
 
 private slots:
-	void emitTextChanged(const QString &);
+	void filterTextChanged(const QString &);
 
 #ifndef Q_OS_MAC
 protected:

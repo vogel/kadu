@@ -45,6 +45,7 @@ BuddiesListWidget::BuddiesListWidget(FilterPosition filterPosition, MainWindow *
 
 	View = new BuddiesListView(mainWindow, this);
 	NameFilterWidget->setView(View);
+	NameFilterWidget->hide(); // hide by default
 
 	NameFilter = new BuddyNameFilter(this);
 	View->addFilter(NameFilter);
@@ -59,10 +60,6 @@ BuddiesListWidget::BuddiesListWidget(FilterPosition filterPosition, MainWindow *
 		layout->addWidget(View);
 		layout->addWidget(NameFilterWidget);
 	}
-
-/*
-	setFocusProxy(NameFilterWidget);
-	View->setFocusPolicy(Qt::NoFocus);*/
 }
 
 BuddiesListWidget::~BuddiesListWidget()
