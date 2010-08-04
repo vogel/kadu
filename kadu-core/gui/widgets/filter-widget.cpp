@@ -118,7 +118,10 @@ QSize FilterWidget::sizeHint (void) const
 void FilterWidget::filterTextChanged(const QString &s)
 {
 	if (NameFilterEdit->text().isEmpty())
+	{
 		hide();
+		View->setFocus(Qt::OtherFocusReason);
+	}
 	else
 		show();
 

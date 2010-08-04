@@ -27,16 +27,17 @@
 
 #include "accounts/account.h"
 #include "buddies/buddy-list.h"
-#include "gui/widgets/buddies-list-view.h"
 
 #include "exports.h"
+
+class BuddiesListWidget;
 
 class KADUAPI AccountBuddyListWidget : public QWidget
 {
 	Q_OBJECT
 	
 	Account CurrentAccount;
-	BuddiesListView *BuddiesWidget;
+	BuddiesListWidget *BuddiesWidget;
 	QPushButton *ExportButton;
 	QPushButton *ImportButton;
 	bool Clear;
@@ -50,7 +51,7 @@ private slots:
 	void restoreFromFile();
 
 public:
-	AccountBuddyListWidget(Account account, QWidget *parent = 0);
+	explicit AccountBuddyListWidget(Account account, QWidget *parent = 0);
 	virtual ~AccountBuddyListWidget() {}
 
 };
