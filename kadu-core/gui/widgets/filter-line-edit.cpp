@@ -19,97 +19,10 @@
 
 #include <QtGui/QStyle>
 
+#include "gui/widgets/line-edit-clear-button.h"
 #include "icons-manager.h"
 
 #include "filter-line-edit.h"
-
-
-LineEditClearButton::LineEditClearButton(QWidget *parent) :
-		QWidget(parent)
-{
-	setUpTimeLine();
-}
-
-LineEditClearButton::~LineEditClearButton()
-{
-}
-
-void LineEditClearButton::setUpTimeLine()
-{
-	  Timeline = new QTimeLine(200, this);
-	  Timeline->setFrameRange(0, 255);
-	  Timeline->setCurveShape(QTimeLine::EaseInOutCurve);
-	  Timeline->setDirection(QTimeLine::Backward);
-	  connect(Timeline, SIGNAL(finished()), this, SLOT(animationFinished()));
-	  connect(Timeline, SIGNAL(frameChanged(int)), this, SLOT(update()));
-}
-
-void LineEditClearButton::animateVisible(bool visible)
-{
-	if (visible)
-	{
-		if (Timeline->direction() == QTimeLine::Forward)
-		    return;
-
-		Timeline->setDirection(QTimeLine::Forward);
-		Timeline->setDuration(150);
-		show();
-	}
-	else
-	{
-		if (Timeline->direction() == QTimeLine::Backward)
-		    return;
-
-		Timeline->setDirection(QTimeLine::Backward);
-		Timeline->setDuration(250);
-	}
-
-	setVisible(Timeline->direction() == QTimeLine::Forward);
-}
-
-void LineEditClearButton::setPixmap(const QPixmap& p)
-{
-	ButtonPixmap = p;
-	ButtonIcon = QIcon(p);
-}
-
-
-void LineEditClearButton::setAnimationsEnabled(bool animationsEnabled)
-{
-	// We need to set the current time in the case that we had the clear
-	// button shown, for it being painted on the paintEvent(). Otherwise
-	// it wont be painted, resulting (m->timeLine->currentTime() == 0) true,
-	// and therefore a bad painting. This is needed for the case that we
-	// come from a non animated widget and want it animated. (ereslibre)
-	if (animationsEnabled && Timeline->direction() == QTimeLine::Forward)
-	    Timeline->setCurrentTime(150);
-}
-
-void LineEditClearButton::paintEvent(QPaintEvent *event)
-{
-	Q_UNUSED(event)
-
-	QPainter p(this);
-	p.drawPixmap((width() - ButtonPixmap.width()) / 2,
-		    (height() - ButtonPixmap.height()) / 2,
-		    ButtonPixmap);
-}
-
-bool LineEditClearButton::event(QEvent* event)
-{
-	if (event->type() == QEvent::EnabledChange)
-		ButtonPixmap = ButtonIcon.pixmap(ButtonPixmap.size(), isEnabled() ? QIcon::Normal : QIcon::Disabled);
-	
-	return QWidget::event(event);
-}
-
-void LineEditClearButton::animationFinished()
-{
-	if (Timeline->direction() == QTimeLine::Forward)
-		update();
-	else 
-		hide();
-}
 
 FilterLineEdit::FilterLineEdit(QWidget *parent) :
 		QLineEdit(parent)

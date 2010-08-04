@@ -160,6 +160,7 @@ set (kadu_SRCS
 	gui/widgets/groups-combo-box.cpp
 	gui/widgets/identities-combo-box.cpp
 	gui/widgets/kadu-text-browser.cpp
+	gui/widgets/line-edit-clear-button.cpp
 	gui/widgets/modal-configuration-widget.cpp
 	gui/widgets/path-list-edit.cpp
 	gui/widgets/progress-icon.cpp
@@ -458,6 +459,7 @@ set (kadu_MOC_SRCS
 	gui/widgets/groups-combo-box.h
 	gui/widgets/identities-combo-box.h
 	gui/widgets/kadu-text-browser.h
+	gui/widgets/line-edit-clear-button.h
 	gui/widgets/modal-configuration-widget.h
 	gui/widgets/path-list-edit.h
 	gui/widgets/preview.h

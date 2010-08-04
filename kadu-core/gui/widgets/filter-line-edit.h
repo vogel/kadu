@@ -27,35 +27,7 @@
 #include <QTimeLine>
 #include <QIcon>
 
-class LineEditClearButton : public QWidget
-{
-	Q_OBJECT
-	
-	QTimeLine *Timeline;
-	QPixmap ButtonPixmap;
-	QIcon ButtonIcon;
-
-	void setUpTimeLine();
-
-protected:
-	void paintEvent(QPaintEvent *event);
-	virtual bool event(QEvent* event );
-
-protected slots:
-	void animationFinished();
-
-public:
-	explicit LineEditClearButton(QWidget *parent);
-	virtual ~LineEditClearButton();
-
-	QSize sizeHint() const { return ButtonPixmap.size(); }
-	void animateVisible(bool visible);
-	void setPixmap(const QPixmap &p);
-	QPixmap pixmap() const { return ButtonPixmap; }
-	void setAnimationsEnabled(bool animationsEnabled);
-
-};
-
+class LineEditClearButton;
 
 class FilterLineEdit : public QLineEdit
 {
