@@ -40,6 +40,8 @@ class FilterWidget : public QWidget
 #else
 	QLineEdit *NameFilterEdit;
 	BuddiesListView *View;
+
+	bool sendKeyEventToView(QKeyEvent *);
 #endif
 
 private slots:
@@ -47,7 +49,7 @@ private slots:
 
 #ifndef Q_OS_MAC
 protected:
-	virtual bool eventFilter(QObject *, QEvent *);
+	virtual void keyPressEvent(QKeyEvent *);
 #endif
 
 public:

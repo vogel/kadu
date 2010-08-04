@@ -146,7 +146,6 @@ FilterWidget::FilterWidget(QWidget *parent) : QWidget(parent)
 	layout->setMargin(3);
 
 	NameFilterEdit = new FilterLineEdit(this);
-	NameFilterEdit->installEventFilter(this);
 
 	setFocusProxy(NameFilterEdit);
 
@@ -177,6 +176,34 @@ void FilterWidget::setView(BuddiesListView *view)
 	View = view;
 }
 
+bool FilterWidget::sendKeyEventToView(QKeyEvent *event)
+{
+	switch (event->key())
+	{
+		case Qt::Key_Down:
+		case Qt::Key_Up:
+		case Qt::Key_PageDown:
+		case Qt::Key_PageUp:
+		case Qt::Key_Enter:
+		case Qt::Key_Return:
+			qApp->sendEvent(View, event);
+			return true;
+	}
+
+	return false;
+}
+
+void FilterWidget::keyPressEvent(QKeyEvent *event)
+{
+	if (View && sendKeyEventToView(event))
+	{
+		event->accept();
+		return;
+	}
+
+    QWidget::keyPressEvent(event);
+}
+/*
 bool FilterWidget::eventFilter(QObject *object, QEvent *event)
 {
 	if (View && (QEvent::KeyPress == event->type()))
@@ -196,5 +223,5 @@ bool FilterWidget::eventFilter(QObject *object, QEvent *event)
 	}
 
 	return QObject::eventFilter(object, event);
-}
+}*/
 #endif
