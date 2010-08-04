@@ -359,8 +359,14 @@ void BuddiesListView::leaveEvent(QEvent *event)
 
 void BuddiesListView::mousePressEvent(QMouseEvent *event)
 {
-	QTreeView::mousePressEvent(event);
 	toolTipHide();
+	if (!indexAt(event->pos()).isValid())
+	{
+		clearSelection();
+		setCurrentIndex(QModelIndex());
+		update();
+	}
+	QTreeView::mousePressEvent(event);
 }
 
 void BuddiesListView::mouseReleaseEvent(QMouseEvent *event)
