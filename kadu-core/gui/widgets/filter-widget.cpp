@@ -169,6 +169,11 @@ FilterWidget::~FilterWidget()
 void FilterWidget::setFilter(const QString &filter)
 {
 	NameFilterEdit->setText(filter);
+
+	if (filter.isEmpty())
+		hide();
+	else
+		show();
 }
 
 void FilterWidget::setView(BuddiesListView *view)
