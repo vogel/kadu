@@ -35,6 +35,8 @@
 #include "contacts/contact-shared.h"
 #include "contacts/contact-details.h"
 #include "contacts/contact-manager.h"
+#include "gui/widgets/buddies-list-widget.h"
+#include "gui/widgets/buddies-list-view.h"
 #include "gui/windows/message-dialog.h"
 
 #include "debug.h"
@@ -49,10 +51,10 @@ AccountBuddyListWidget::AccountBuddyListWidget(Account account, QWidget *parent)
 	layout->setContentsMargins(0, 0, 0, 0);
 	layout->setSpacing(5);
 
-	BuddiesWidget = new BuddiesListView(0, this);
+	BuddiesWidget = new BuddiesListWidget(BuddiesListWidget::FilterAtTop, 0, this);
 	BuddiesModelProxy *model = new BuddiesModelProxy(this);
 	model->setSourceModel(new BuddiesModel(BuddyManager::instance(), this));
-	BuddiesWidget->setModel(model);
+	BuddiesWidget->view()->setModel(model);
 	BuddiesWidget->setMinimumSize(QSize(30, 30));
 
 	QWidget *buttons = new QWidget(this);
@@ -80,8 +82,8 @@ AccountBuddyListWidget::AccountBuddyListWidget(Account account, QWidget *parent)
 	AnonymousBuddyFilter *anonymousFilter = new AnonymousBuddyFilter(this);
 	anonymousFilter->setEnabled(true);
 
-	BuddiesWidget->addFilter(accountFilter);
-	BuddiesWidget->addFilter(anonymousFilter);
+	BuddiesWidget->view()->addFilter(accountFilter);
+	BuddiesWidget->view()->addFilter(anonymousFilter);
 
 	ContactListService *manager = CurrentAccount.protocolHandler()->contactListService();
 	if (!manager)
