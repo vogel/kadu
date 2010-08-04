@@ -17,24 +17,19 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FILTER_LINE_EDIT
-#define FILTER_LINE_EDIT
+#ifndef LINE_EDIT_WITH_CLEAR_BUTTON_H
+#define LINE_EDIT_WITH_CLEAR_BUTTON_H
 
-#include <QLabel>
-#include <QLineEdit>
-#include <QPainter>
-#include <QPaintEvent>
-#include <QTimeLine>
-#include <QIcon>
+#include <QtGui/QLineEdit>
 
 class LineEditClearButton;
 
-class FilterLineEdit : public QLineEdit
+class LineEditWithClearButton : public QLineEdit
 {
 	Q_OBJECT
 
 	LineEditClearButton *ClearFilterButton;
-	
+
 	bool WideEnoughForClear;
 	int Overlap;
 	bool ClickInClear;
@@ -42,7 +37,7 @@ class FilterLineEdit : public QLineEdit
 	void updateClearButton();
 
 private slots:
-	void updateClearButtonIcon(const QString& text);
+	void updateClearButtonIcon(const QString &text);
 
 protected:
 	virtual void mousePressEvent(QMouseEvent *e);
@@ -50,9 +45,9 @@ protected:
 	virtual void resizeEvent(QResizeEvent *e);
 
 public:
-	explicit FilterLineEdit(QWidget *parent = 0);
-	virtual ~FilterLineEdit();
+	explicit LineEditWithClearButton(QWidget *parent = 0);
+	virtual ~LineEditWithClearButton();
 
 };
 
-#endif // FILTER_LINE_EDIT
+#endif // LINE_EDIT_WITH_CLEAR_BUTTON_H

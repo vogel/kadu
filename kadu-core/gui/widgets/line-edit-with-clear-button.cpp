@@ -17,14 +17,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QMouseEvent>
 #include <QtGui/QStyle>
 
 #include "gui/widgets/line-edit-clear-button.h"
 #include "icons-manager.h"
 
-#include "filter-line-edit.h"
+#include "line-edit-with-clear-button.h"
 
-FilterLineEdit::FilterLineEdit(QWidget *parent) :
+LineEditWithClearButton::LineEditWithClearButton(QWidget *parent) :
 		QLineEdit(parent)
 {
 	WideEnoughForClear = true;
@@ -39,11 +40,11 @@ FilterLineEdit::FilterLineEdit(QWidget *parent) :
 			this, SLOT(updateClearButtonIcon(const QString &)));
 }
 
-FilterLineEdit::~FilterLineEdit()
+LineEditWithClearButton::~LineEditWithClearButton()
 {
 }
 
-void FilterLineEdit::updateClearButton()
+void LineEditWithClearButton::updateClearButton()
 {
 	if (!ClearFilterButton || isReadOnly())
 		return;
@@ -80,13 +81,13 @@ void FilterLineEdit::updateClearButton()
 	}
 }
 
-void FilterLineEdit::resizeEvent(QResizeEvent *e)
+void LineEditWithClearButton::resizeEvent(QResizeEvent *e)
 {
 	QLineEdit::resizeEvent(e);
 	updateClearButton();
 }
 
-void FilterLineEdit::updateClearButtonIcon(const QString& text)
+void LineEditWithClearButton::updateClearButtonIcon(const QString& text)
 {
 	if (!ClearFilterButton || isReadOnly())
 		return;
@@ -105,14 +106,14 @@ void FilterLineEdit::updateClearButtonIcon(const QString& text)
 	ClearFilterButton->setVisible(text.length());
 }
 
-void FilterLineEdit::mousePressEvent(QMouseEvent *e)
+void LineEditWithClearButton::mousePressEvent(QMouseEvent *e)
 {
 	if ((e->button() == Qt::LeftButton || e->button() == Qt::MidButton) && ClearFilterButton)
 		ClickInClear = ClearFilterButton->underMouse();
 	QLineEdit::mousePressEvent(e);
 }
 
-void FilterLineEdit::mouseReleaseEvent(QMouseEvent *e)
+void LineEditWithClearButton::mouseReleaseEvent(QMouseEvent *e)
 {
 	if (ClickInClear)
 	{

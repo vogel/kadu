@@ -22,11 +22,12 @@
 
 #include <QtGui/QApplication>
 #include <QtGui/QHBoxLayout>
+#include <QtGui/QKeyEvent>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
 
 #include "gui/widgets/buddies-list-view.h"
-#include "gui/widgets/filter-line-edit.h"
+#include "gui/widgets/line-edit-with-clear-button.h"
 
 #include "filter-widget.h"
 
@@ -150,7 +151,7 @@ FilterWidget::FilterWidget(QWidget *parent) : QWidget(parent)
 	QHBoxLayout *layout = new QHBoxLayout(this);
 	layout->setMargin(3);
 
-	NameFilterEdit = new FilterLineEdit(this);
+	NameFilterEdit = new LineEditWithClearButton(this);
 
 	setFocusProxy(NameFilterEdit);
 
@@ -216,25 +217,5 @@ void FilterWidget::keyPressEvent(QKeyEvent *event)
 
     QWidget::keyPressEvent(event);
 }
-/*
-bool FilterWidget::eventFilter(QObject *object, QEvent *event)
-{
-	if (View && (QEvent::KeyPress == event->type()))
-	{
-		QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
-		switch (keyEvent->key())
-		{
-			case Qt::Key_Down:
-			case Qt::Key_Up:
-			case Qt::Key_PageDown:
-			case Qt::Key_PageUp:
-			case Qt::Key_Enter:
-			case Qt::Key_Return:
-				qApp->sendEvent(View, event);
-				return true;
-		}
-	}
 
-	return QObject::eventFilter(object, event);
-}*/
 #endif
