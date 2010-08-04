@@ -36,7 +36,7 @@ public:
 	static KADUAPI void compositingStateChanged();
 
 	void triggerCompositingStateChanged();
-	bool compositingState(){return CompositingEnabled; };
+
 };
 
 #endif // COMPOSITING_AWARE_OBJECT

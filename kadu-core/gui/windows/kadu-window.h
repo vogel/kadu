@@ -89,6 +89,8 @@ private:
 	StatusButtons *ChangeStatusButtons;
 	QPoint LastPositionBeforeStatusMenuHide;
 
+	bool CompositingEnabled;
+	
 	void createGui();
 	void createMenu();
 	void createKaduMenu();

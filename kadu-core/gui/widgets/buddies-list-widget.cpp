@@ -66,9 +66,6 @@ BuddiesListWidget::BuddiesListWidget(FilterPosition filterPosition, MainWindow *
 /*
 	setFocusProxy(NameFilterWidget);
 	View->setFocusPolicy(Qt::NoFocus);*/
-
-	if (compositingState())
-		compositingEnabled();
 }
 
 BuddiesListWidget::~BuddiesListWidget()
@@ -99,14 +96,4 @@ bool BuddiesListWidget::eventFilter(QObject *object, QEvent *event)
 void BuddiesListWidget::nameFilterChanged(const QString &filter)
 {
 	NameFilter->setName(filter);
-}
-
-void BuddiesListWidget::compositingEnabled()
-{
-	NameFilterWidget->setAutoFillBackground(true);
-}
-
-void BuddiesListWidget::compositingDisabled()
-{
-	NameFilterWidget->setAutoFillBackground(false);
 }

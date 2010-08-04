@@ -67,7 +67,7 @@ extern void qt_mac_set_menubar_icons(bool enable);
 #endif
 
 KaduWindow::KaduWindow(QWidget *parent) :
-		MainWindow(parent), Docked(false)
+		MainWindow(parent), Docked(false), CompositingEnabled(false)
 {
 #ifdef Q_OS_MAC
 	setUnifiedTitleAndToolBarOnMac(true);
@@ -94,8 +94,6 @@ KaduWindow::KaduWindow(QWidget *parent) :
 	    move(x(), y() - 34);
 #endif
 #endif
-	if (compositingState())
-		compositingEnabled();
 }
 
 KaduWindow::~KaduWindow()
@@ -260,33 +258,48 @@ QMenuBar* KaduWindow::menuBar() const
 
 void KaduWindow::compositingEnabled()
 {
-	setAutoFillBackground(false);
-	setTransparency(true);
-	menuBar()->setAutoFillBackground(true);
-	GroupBarWidget->setAutoFillBackground(true);
-	InfoPanel->setAutoFillBackground(true);
-	ChangeStatusButtons->setAutoFillBackground(true);
-	for (int i = 1; i < Split->count(); ++i)
+	if (config_file.readBoolEntry("Look", "UserboxTransparency"))
 	{
-		QSplitterHandle *splitterHandle = Split->handle(i);
-		splitterHandle->setAutoFillBackground(true);
+		if (!CompositingEnabled)
+		{
+			CompositingEnabled = true;
+			setTransparency(true);
+			//setAutoFillBackground(false);
+			menuBar()->setAutoFillBackground(true);
+			GroupBarWidget->setAutoFillBackground(true);
+			InfoPanel->setAutoFillBackground(true);
+			ChangeStatusButtons->setAutoFillBackground(true);
+			ContactsWidget->nameFilterWidget()->setAutoFillBackground(true);
+			for (int i = 1; i < Split->count(); ++i)
+			{
+				QSplitterHandle *splitterHandle = Split->handle(i);
+				splitterHandle->setAutoFillBackground(true);
+			}
+			configurationUpdated();
+		}
 	}
-	configurationUpdated();
+	else
+		compositingDisabled();
 }
 
 void KaduWindow::compositingDisabled()
 {
-	setTransparency(false);
-	menuBar()->setAutoFillBackground(false);
-	GroupBarWidget->setAutoFillBackground(false);
-	InfoPanel->setAutoFillBackground(false);
-	ChangeStatusButtons->setAutoFillBackground(false);
-	for (int i = 1; i < Split->count(); ++i)
+	if (CompositingEnabled)
 	{
-		QSplitterHandle *splitterHandle = Split->handle(i);
-		splitterHandle->setAutoFillBackground(false);
+		CompositingEnabled = false;
+		menuBar()->setAutoFillBackground(false);
+		GroupBarWidget->setAutoFillBackground(false);
+		InfoPanel->setAutoFillBackground(false);
+		ChangeStatusButtons->setAutoFillBackground(false);
+		ContactsWidget->nameFilterWidget()->setAutoFillBackground(false);
+		for (int i = 1; i < Split->count(); ++i)
+		{
+			QSplitterHandle *splitterHandle = Split->handle(i);
+			splitterHandle->setAutoFillBackground(false);
+		}
+		setTransparency(false);
+		configurationUpdated();
 	}
-	configurationUpdated();
 }
 
 void KaduWindow::openChatWindow(Chat chat)
@@ -426,7 +439,7 @@ void KaduWindow::configurationUpdated()
 
 	setDocked(Docked);
 
-	if(!(config_file.readBoolEntry("Look", "UserboxTransparency", false) && compositingState()))
+	if (!CompositingEnabled || !config_file.readBoolEntry("Look", "UserboxTransparency"))
 	{
 		bgColor = config_file.readColorEntry("Look","UserboxBgColor").name();
 	}
@@ -446,6 +459,8 @@ void KaduWindow::configurationUpdated()
 		ContactsWidget->view()->setBackground(bgColor);
 
 	ChangeStatusButtons->setVisible(config_file.readBoolEntry("Look", "ShowStatusButton"));
+
+	triggerCompositingStateChanged();
 }
 
 void KaduWindow::insertMenuActionDescription(ActionDescription *actionDescription, MenuType type, int pos)

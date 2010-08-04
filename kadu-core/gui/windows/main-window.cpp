@@ -283,17 +283,18 @@ void MainWindow::contextMenuEvent(QContextMenuEvent *event)
 
 ToolBar *MainWindow::newToolbar(QWidget *parent)
 {
-    ToolBar *toolBar = new ToolBar(parent);
+	ToolBar *toolBar = new ToolBar(parent);
 
-    if (toolBar)
-    {
-        if (TransparencyEnabled)
-            toolBar->setPalette(toolBar->style()->standardPalette());
+	if (toolBar)
+	{
+		/* This is for testing only */
+		if (TransparencyEnabled)
+			toolBar->setPalette(toolBar->style()->standardPalette());
 
-        toolBar->setAutoFillBackground(TransparencyEnabled);
-    }
+		toolBar->setAutoFillBackground(TransparencyEnabled);
+	}
 
-    return toolBar;
+	return toolBar;
 }
 
 void MainWindow::addTopToolbar()
@@ -340,39 +341,45 @@ Buddy MainWindow::buddy()
 
 void MainWindow::setTransparency(bool enable)
 {
-    /* 1. Do not make MainWindow related to the CompositingAwareObject class
-     *    as not every child wants to be compositing aware
-     * 2. Allow child to decide if and when to use transparency or not and
-     *    provide means to do this.
-     * Enabling transparency sets main window background transparent whilst
-     * toolbars are opaque, so the central widget can enjoy the transparency.
-     */
-    TransparencyEnabled = enable;
-    if (TransparencyEnabled)
-    {
-	setAutoFillBackground(false);
-	setAttribute(Qt::WA_TranslucentBackground, true);
+	/* 1. Do not make MainWindow related to the CompositingAwareObject class
+	 *    as not every child wants to be compositing aware
+	 * 2. Allow child to decide if and when to use transparency or not and
+	 *    provide means to do this.
+	 * Enabling transparency sets main window background transparent whilst
+	 * toolbars are opaque, so the central widget can enjoy the transparency.
+	 */
+	TransparencyEnabled = enable;
+	if (TransparencyEnabled)
+	{
+		QString style;
+		/* Avoid transparent rounded corners
+		* (should it be global, not for QToolBar only?).
+		*/
+		style.append("QToolBar {background-clip: margin }");
 
-        foreach (QObject *object, children())
-        {
-            QToolBar *toolBar = dynamic_cast<QToolBar *>(object);
-            if (toolBar)
-            {
-                toolBar->setPalette(toolBar->style()->standardPalette());
-                toolBar->setAutoFillBackground(enable);
-            }
-        }
-    }
-    else
-    {
-        foreach (QObject *object, children())
-        {
-            QToolBar *toolBar = dynamic_cast<QToolBar *>(object);
-            if (toolBar)
-                toolBar->setAutoFillBackground(false);
-        }
-	setAttribute(Qt::WA_TranslucentBackground, false);
-	setAttribute(Qt::WA_NoSystemBackground, false);
-    }
+		setAttribute(Qt::WA_TranslucentBackground, true);
+		setStyleSheet(style); /* It must be set AFTER above, why? */
 
+		foreach (QObject *object, children())
+		{
+			QToolBar *toolBar = dynamic_cast<QToolBar *>(object);
+			if (toolBar)
+			{
+				/* This is for testing only */
+				toolBar->setPalette(toolBar->style()->standardPalette());
+				toolBar->setAutoFillBackground(true);
+			}
+		}
+	}
+	else
+	{
+		foreach (QObject *object, children())
+		{
+			QToolBar *toolBar = dynamic_cast<QToolBar *>(object);
+			if (toolBar)
+				toolBar->setAutoFillBackground(false);
+		}
+		setAttribute(Qt::WA_TranslucentBackground, false);
+		setAttribute(Qt::WA_NoSystemBackground, false);
+	}
 }

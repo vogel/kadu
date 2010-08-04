@@ -27,13 +27,12 @@
 
 #include "gui/widgets/filter-line-edit.h"
 #include "gui/widgets/filter-widget.h"
-#include "os/generic/compositing-aware-object.h"
 
 class BuddyNameFilter;
 class BuddiesListView;
 class MainWindow;
 
-class BuddiesListWidget : public QWidget,  CompositingAwareObject
+class BuddiesListWidget : public QWidget
 {
 	Q_OBJECT
 
@@ -49,8 +48,6 @@ private:
 
 	BuddiesListView *View;
 	BuddyNameFilter *NameFilter;
-	virtual void compositingEnabled();
-	virtual void compositingDisabled();
 
 private slots:
 	void nameFilterChanged(const QString &filter);
@@ -65,6 +62,7 @@ public:
 	BuddiesListView * view() { return View; }
 	QWidget * nameFilterWidget() { return NameFilterWidget; }
 	BuddyNameFilter * nameFilter() { return NameFilter; }
+
 };
 
 #endif //BUDDIES_LIST_WIDGET_H
