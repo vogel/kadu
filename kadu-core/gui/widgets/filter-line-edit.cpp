@@ -27,6 +27,15 @@
 LineEditClearButton::LineEditClearButton(QWidget *parent) :
 		QWidget(parent)
 {
+	setUpTimeLine();
+}
+
+LineEditClearButton::~LineEditClearButton()
+{
+}
+
+void LineEditClearButton::setUpTimeLine()
+{
 	  Timeline = new QTimeLine(200, this);
 	  Timeline->setFrameRange(0, 255);
 	  Timeline->setCurveShape(QTimeLine::EaseInOutCurve);
@@ -40,9 +49,7 @@ void LineEditClearButton::animateVisible(bool visible)
 	if (visible)
 	{
 		if (Timeline->direction() == QTimeLine::Forward)
-		{
 		    return;
-		}
 
 		Timeline->setDirection(QTimeLine::Forward);
 		Timeline->setDuration(150);
@@ -51,15 +58,13 @@ void LineEditClearButton::animateVisible(bool visible)
 	else
 	{
 		if (Timeline->direction() == QTimeLine::Backward)
-		{
 		    return;
-		}
 
 		Timeline->setDirection(QTimeLine::Backward);
 		Timeline->setDuration(250);
 	}
 
-        setVisible(Timeline->direction() == QTimeLine::Forward);
+	setVisible(Timeline->direction() == QTimeLine::Forward);
 }
 
 void LineEditClearButton::setPixmap(const QPixmap& p)
@@ -77,9 +82,7 @@ void LineEditClearButton::setAnimationsEnabled(bool animationsEnabled)
 	// and therefore a bad painting. This is needed for the case that we
 	// come from a non animated widget and want it animated. (ereslibre)
 	if (animationsEnabled && Timeline->direction() == QTimeLine::Forward)
-	{
 	    Timeline->setCurrentTime(150);
-	}
 }
 
 void LineEditClearButton::paintEvent(QPaintEvent *event)
@@ -95,9 +98,7 @@ void LineEditClearButton::paintEvent(QPaintEvent *event)
 bool LineEditClearButton::event(QEvent* event)
 {
 	if (event->type() == QEvent::EnabledChange)
-	{
 		ButtonPixmap = ButtonIcon.pixmap(ButtonPixmap.size(), isEnabled() ? QIcon::Normal : QIcon::Disabled);
-	}
 	
 	return QWidget::event(event);
 }
@@ -105,15 +106,10 @@ bool LineEditClearButton::event(QEvent* event)
 void LineEditClearButton::animationFinished()
 {
 	if (Timeline->direction() == QTimeLine::Forward)
-	{
 		update();
-	}
 	else 
-	{
 		hide();
-	}
 }
-
 
 FilterLineEdit::FilterLineEdit(QWidget *parent) :
 		QLineEdit(parent)
@@ -128,6 +124,10 @@ FilterLineEdit::FilterLineEdit(QWidget *parent) :
 	updateClearButtonIcon(text());
 	connect(this, SIGNAL(textChanged(const QString &)),
 			this, SLOT(updateClearButtonIcon(const QString &)));
+}
+
+FilterLineEdit::~FilterLineEdit()
+{
 }
 
 void FilterLineEdit::updateClearButton()
@@ -153,13 +153,9 @@ void FilterLineEdit::updateClearButton()
 	}
 
 	if (layoutDirection() == Qt::LeftToRight)
-	{
 		ClearFilterButton->move(geom.width() - frameWidth - buttonWidth - 1, 0);
-	} 
 	else
-	{
 		ClearFilterButton->move(frameWidth + 1, 0);
-	}
 
 	if (wideEnough != WideEnoughForClear)
 	{
@@ -175,7 +171,6 @@ void FilterLineEdit::resizeEvent(QResizeEvent *e)
 {
 	QLineEdit::resizeEvent(e);
 	updateClearButton();
-
 }
 
 void FilterLineEdit::updateClearButtonIcon(const QString& text)
@@ -183,40 +178,28 @@ void FilterLineEdit::updateClearButtonIcon(const QString& text)
 	if (!ClearFilterButton || isReadOnly())
 		return;
 
-	if (WideEnoughForClear && text.length() > 0)
-	{
-		ClearFilterButton->animateVisible(true);
-	}
-	else
-	{
-		ClearFilterButton->animateVisible(false);
-	}
+	bool visible = WideEnoughForClear && text.length() > 0;
+	ClearFilterButton->animateVisible(visible);
 
 	if (!ClearFilterButton->pixmap().isNull())
-	{
 		return;
-	}
 
 	if (layoutDirection() == Qt::LeftToRight)
-	{
 		ClearFilterButton->setPixmap(IconsManager::instance()->pixmapByPath("16x16/edit-clear-rtl.png"));
-	}
 	else
-	{
 		ClearFilterButton->setPixmap(IconsManager::instance()->pixmapByPath("16x16/edit-clear-ltr.png"));
-	}
 
 	ClearFilterButton->setVisible(text.length());
 }
 
-void FilterLineEdit::mousePressEvent( QMouseEvent* e )
+void FilterLineEdit::mousePressEvent(QMouseEvent *e)
 {
 	if ((e->button() == Qt::LeftButton || e->button() == Qt::MidButton) && ClearFilterButton)
 		ClickInClear = ClearFilterButton->underMouse();
-	QLineEdit::mousePressEvent( e );
+	QLineEdit::mousePressEvent(e);
 }
 
-void FilterLineEdit::mouseReleaseEvent(QMouseEvent* e)
+void FilterLineEdit::mouseReleaseEvent(QMouseEvent *e)
 {
 	if (ClickInClear)
 	{
@@ -230,5 +213,3 @@ void FilterLineEdit::mouseReleaseEvent(QMouseEvent* e)
   
 	QLineEdit::mouseReleaseEvent(e);
 }
-
-	

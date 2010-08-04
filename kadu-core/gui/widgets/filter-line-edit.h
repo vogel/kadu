@@ -35,14 +35,7 @@ class LineEditClearButton : public QWidget
 	QPixmap ButtonPixmap;
 	QIcon ButtonIcon;
 
-public:
-	LineEditClearButton(QWidget *parent);
-	
-	QSize sizeHint() const { return ButtonPixmap.size(); }
-	void animateVisible(bool visible);
-	void setPixmap(const QPixmap& p);
-	QPixmap pixmap() const { return ButtonPixmap; }
-	void setAnimationsEnabled(bool animationsEnabled);
+	void setUpTimeLine();
 
 protected:
 	void paintEvent(QPaintEvent *event);
@@ -50,6 +43,17 @@ protected:
 
 protected slots:
 	void animationFinished();
+
+public:
+	explicit LineEditClearButton(QWidget *parent);
+	virtual ~LineEditClearButton();
+
+	QSize sizeHint() const { return ButtonPixmap.size(); }
+	void animateVisible(bool visible);
+	void setPixmap(const QPixmap &p);
+	QPixmap pixmap() const { return ButtonPixmap; }
+	void setAnimationsEnabled(bool animationsEnabled);
+
 };
 
 
@@ -65,18 +69,18 @@ class FilterLineEdit : public QLineEdit
 
 	void updateClearButton();
 
-public:
-	FilterLineEdit(QWidget *parent);
-
 private slots:
 	void updateClearButtonIcon(const QString& text);
 
 protected:
-	virtual void mousePressEvent( QMouseEvent* e );
-	virtual void mouseReleaseEvent( QMouseEvent* e );
-	virtual void resizeEvent(QResizeEvent* e);
+	virtual void mousePressEvent(QMouseEvent *e);
+	virtual void mouseReleaseEvent(QMouseEvent *e);
+	virtual void resizeEvent(QResizeEvent *e);
+
+public:
+	explicit FilterLineEdit(QWidget *parent = 0);
+	virtual ~FilterLineEdit();
+
 };
 
-
-#endif
-
+#endif // FILTER_LINE_EDIT
