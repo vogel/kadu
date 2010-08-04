@@ -47,6 +47,7 @@
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
 #include "gui/widgets/buddies-list-view.h"
+#include "gui/widgets/buddies-list-widget.h"
 #include "gui/widgets/chat-widget-actions.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/color-selector.h"
@@ -67,7 +68,7 @@
 
 ChatWidget::ChatWidget(Chat chat, QWidget *parent) :
 		QWidget(parent), CurrentChat(chat),
-		BuddiesView(0), InputBox(0), horizSplit(0),
+		BuddiesWidget(0), InputBox(0), horizSplit(0),
 		NewMessagesCount(0), SelectionFromMessagesView(true)
 {
 	kdebugf();
@@ -145,21 +146,21 @@ void ChatWidget::createContactsList()
 	layout->setContentsMargins(0, 0, 0, 0);
 	layout->setSpacing(0);
 
-	BuddiesView = new BuddiesListView(getChatEditBox(), this);
-	BuddiesView->setItemsExpandable(false);
-	BuddiesView->setMinimumSize(QSize(30, 30));
-	BuddiesView->setModel(new ContactListModel(CurrentChat.contacts().toContactList(), this));
-	BuddiesView->setRootIsDecorated(false);
-	BuddiesView->setShowAccountName(false);
+	BuddiesWidget = new BuddiesListWidget(BuddiesListWidget::FilterAtTop, getChatEditBox(), this);
+	BuddiesWidget->view()->setItemsExpandable(false);
+	BuddiesWidget->setMinimumSize(QSize(30, 30));
+	BuddiesWidget->view()->setModel(new ContactListModel(CurrentChat.contacts().toContactList(), this));
+	BuddiesWidget->view()->setRootIsDecorated(false);
+	BuddiesWidget->view()->setShowAccountName(false);
 
-	connect(BuddiesView, SIGNAL(chatActivated(Chat)),
+	connect(BuddiesWidget->view(), SIGNAL(chatActivated(Chat)),
 			Core::instance()->kaduWindow(), SLOT(openChatWindow(Chat)));
 
 	QPushButton *leaveConference = new QPushButton(tr("Leave conference"), contactsListContainer);
-	leaveConference->setMinimumWidth(BuddiesView->minimumWidth());
+	leaveConference->setMinimumWidth(BuddiesWidget->minimumWidth());
 	connect(leaveConference, SIGNAL(clicked()), this, SLOT(leaveConference()));
 
-	layout->addWidget(BuddiesView);
+	layout->addWidget(BuddiesWidget);
 	layout->addWidget(leaveConference);
 
 	QList<int> sizes;
@@ -423,7 +424,7 @@ CustomInput * ChatWidget::edit()
 
 bool ChatWidget::decodeLocalFiles(QDropEvent *event, QStringList &files)
 {
-	if (!event->mimeData()->hasUrls() || event->source() == BuddiesView)
+	if (!event->mimeData()->hasUrls() || event->source() == BuddiesWidget || event->source() == BuddiesWidget->view())
 		return false;
 
 	QList<QUrl> urls = event->mimeData()->urls();
