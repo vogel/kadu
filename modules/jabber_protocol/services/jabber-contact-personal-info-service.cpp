@@ -29,10 +29,9 @@ JabberContactPersonalInfoService::JabberContactPersonalInfoService(JabberProtoco
 		ContactPersonalInfoService(protocol), Protocol(protocol)
 {
 }
-#include <QtCore/QDebug>
+
 void JabberContactPersonalInfoService::fetchPersonalInfo(Buddy buddy)
 {
-  qDebug() << "jabber fetch dla: " << buddy.contacts().first().id().toLocal8Bit().data();
 	CurrentBuddy = buddy;
 	if (Protocol && Protocol->client() && Protocol->client()->rootTask())
 		VCardFactory::instance()->getVCard(buddy.contacts().first().id(), Protocol->client()->rootTask(), this, SLOT(fetchingVCardFinished()));
@@ -40,8 +39,6 @@ void JabberContactPersonalInfoService::fetchPersonalInfo(Buddy buddy)
 
 void JabberContactPersonalInfoService::fetchingVCardFinished()
 {
-    qDebug() << "jabber fetched dla: " << CurrentBuddy.contacts().first().id().toLocal8Bit().data();
-
 	XMPP::VCard vcard;
 	JT_VCard *task = (JT_VCard *)sender();
 	

@@ -35,17 +35,13 @@ class JabberContactPersonalInfoWidget : public QWidget
 {
 	Q_OBJECT
 
-	QLabel *FirstNameText;
-	QLabel *LastNameText;
+	QLabel *FullNameText;
+	QLabel *FamilyNameText;
 	QLabel *NicknameText;
-	QLabel *GenderText;
 	QLabel *BirthdateText;
 	QLabel *CityText;
-	QLabel *StateProvinceText;
-	QLabel *IpText;
-	QLabel *PortText;
-	QLabel *DnsNameText;
-	QLabel *ProtocolVerText;
+	QLabel *EmailText;
+	QLabel *WebsiteText;
 
 	Contact MyContact;
 	void createGui();

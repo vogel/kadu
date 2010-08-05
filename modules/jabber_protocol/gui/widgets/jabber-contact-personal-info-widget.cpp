@@ -44,13 +44,11 @@ JabberContactPersonalInfoWidget::JabberContactPersonalInfoWidget(Contact &contac
 	setAttribute(Qt::WA_DeleteOnClose);
 
 	createGui();
+	reset();
 	
 	ContactPersonalInfoService *service = contact.contactAccount().protocolHandler()->contactPersonalInfoService();
 	if (!service)
-	{
-		reset();
 		return;
-	}
 
 	connect(service, SIGNAL(personalInfoAvailable(Buddy)), this, SLOT(personalInfoAvailable(Buddy)));
 	
@@ -70,17 +68,14 @@ void JabberContactPersonalInfoWidget::createGui()
 	QGroupBox *infoWidget = new QGroupBox(this);
 	QFormLayout *infoLayout = new QFormLayout(infoWidget);
 
-	FirstNameText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("First Name") + ":", infoWidget), FirstNameText);
+	FullNameText = new QLabel(this);
+	infoLayout->addRow(new QLabel(tr("Full Name") + ":", infoWidget), FullNameText);
 
-	LastNameText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("Last Name") + ":", infoWidget), LastNameText);
+	FamilyNameText = new QLabel(this);
+	infoLayout->addRow(new QLabel(tr("Family Name") + ":", infoWidget), FamilyNameText);
 
 	NicknameText = new QLabel(this);
 	infoLayout->addRow(new QLabel(tr("Nickname") + ":", infoWidget), NicknameText);
-
-	GenderText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("Gender") + ":", infoWidget), GenderText);
 
 	BirthdateText = new QLabel(this);
 	infoLayout->addRow(new QLabel(tr("Birthdate") + ":", infoWidget), BirthdateText);
@@ -88,20 +83,11 @@ void JabberContactPersonalInfoWidget::createGui()
 	CityText = new QLabel(this);
 	infoLayout->addRow(new QLabel(tr("City") + ":", infoWidget), CityText);
 
-	StateProvinceText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("State/Province") + ":", infoWidget), StateProvinceText);
+	EmailText = new QLabel(this);
+	infoLayout->addRow(new QLabel(tr("E-Mail") + ":", infoWidget), EmailText);
 
-	IpText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("IP Address") + ":", infoWidget), IpText);
-
-	PortText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("Port") + ":", infoWidget), PortText);
-
-	DnsNameText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("DNS Name") + ":", infoWidget), DnsNameText);
-
-	ProtocolVerText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("Protocol Version") + ":", infoWidget), ProtocolVerText);
+	WebsiteText = new QLabel(this);
+	infoLayout->addRow(new QLabel(tr("Website") + ":", infoWidget), WebsiteText);
 
 	layout->addWidget(infoWidget);
 	layout->addStretch(100);
@@ -109,17 +95,13 @@ void JabberContactPersonalInfoWidget::createGui()
 
 void JabberContactPersonalInfoWidget::reset()
 {
-	FirstNameText->setText(QString::null);
-	LastNameText->setText(QString::null);
+	FullNameText->setText(QString::null);
+	FamilyNameText->setText(QString::null);
 	NicknameText->setText(QString::null);
-	GenderText->setText(QString::null);
 	BirthdateText->setText(QString::null);
 	CityText->setText(QString::null);
-	StateProvinceText->setText(QString::null);
-	IpText->setText(QString::null);
-	PortText->setText(QString::null);
-	DnsNameText->setText(QString::null);
-	ProtocolVerText->setText(QString::null);
+	EmailText->setText(QString::null);
+	WebsiteText->setText(QString::null);
 }
 	  
 void JabberContactPersonalInfoWidget::personalInfoAvailable(Buddy buddy)
@@ -129,22 +111,9 @@ void JabberContactPersonalInfoWidget::personalInfoAvailable(Buddy buddy)
 	if (MyContact.id() != contact.id())
 		return;
 	
-	FirstNameText->setText(buddy.firstName());
-	LastNameText->setText(buddy.lastName());
+	FullNameText->setText(buddy.firstName());
+	FamilyNameText->setText(buddy.familyName());
 	NicknameText->setText(buddy.nickName());
-
-	switch (buddy.gender())
-	{
-		case GenderFemale:
-			GenderText->setText(tr("Female"));
-			break;
-		case GenderMale:
-			GenderText->setText(tr("Male"));
-			break;
-		case GenderUnknown:
-			GenderText->setText("");
-			break;
-	}
 
 	if (0 != buddy.birthYear())
 		BirthdateText->setText(QString::number(buddy.birthYear()));
@@ -152,9 +121,6 @@ void JabberContactPersonalInfoWidget::personalInfoAvailable(Buddy buddy)
 		BirthdateText->setText("");
 
 	CityText->setText(buddy.city());
-	StateProvinceText->setText(""); // do not have any info, do we need this control anyway?
-	IpText->setText(contact.address().toString());
-	PortText->setText(QString::number(contact.port()));
-	DnsNameText->setText(contact.dnsName());
-	ProtocolVerText->setText(contact.protocolVersion());
+	EmailText->setText(buddy.email());
+	WebsiteText->setText(buddy.website());
 }

@@ -48,9 +48,8 @@ void GaduContactPersonalInfoService::handleEventPubdir50Read(struct gg_event *e)
 		emit personalInfoAvailable(Buddy::null);
 		return;
 	}
-	Buddy resl = Protocol->searchResultToBuddy(res, 0);
-
-	emit personalInfoAvailable(resl);
+	
+	emit personalInfoAvailable(Protocol->searchResultToBuddy(res, 0));
 }
 
 void GaduContactPersonalInfoService::fetchPersonalInfo(Buddy buddy)
