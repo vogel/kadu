@@ -41,6 +41,7 @@
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/kadu-window.h"
+#include "gui/windows/search-window.h"
 #include "misc/misc.h"
 #include "notify/notification-manager.h"
 #include "protocols/protocol.h"
@@ -292,6 +293,7 @@ void Core::createAllDefaultToolbars()
 
 	KaduWindow::createDefaultToolbars(toolbarsConfig);
 	ChatEditBox::createDefaultToolbars(toolbarsConfig);
+	SearchWindow::createDefaultToolbars(toolbarsConfig);
 
 	xml_config_file->sync();
 }
