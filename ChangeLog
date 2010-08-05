@@ -6,6 +6,7 @@
 * gui: #1400 fixed: invalid size of some widgets in config window (Vogel)
 * gui: #1414 fixed: anonymous buddies displayed on account buddy list (Vogel)
 * core: path #2071 merged: removing unneccessary combobox items (beevvy)
+* core: #1401 fixed: displaying contact personal info in buddy data window (Juzef)
 
 +++ version 0.6.6-beta4
 * gui: #1119 fixed: copying emoticons works again (beevvy)
