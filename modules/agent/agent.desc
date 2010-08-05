@@ -1,7 +1,0 @@
-[Module]
-Description=Agent module - "Who has me on list?"
-Description[pl]=Modu³ Agent - "Kto ma mnie na li¶cie?"
-Author=Micha³ ¯ar³ok, Dorregaray
-Provides=
-Conflicts=spy
-Version=core
