@@ -293,7 +293,9 @@ set (SOURCES
 	certificates/trusted-certificates-manager.cpp
 	client/jabber-client.cpp
 	client/mini-client.cpp
+	facebook-protocol-factory.cpp
 	file-transfer/jabber-file-transfer-handler.cpp
+	gtalk-protocol-factory.cpp
 	gui/widgets/jabber-contact-widget.cpp
 	gui/widgets/jabber-contact-personal-info-widget.cpp
 	gui/widgets/jabber-add-account-widget.cpp
@@ -302,6 +304,7 @@ set (SOURCES
 	gui/widgets/jabber-personal-info-widget.cpp
 	gui/windows/jabber-change-password-window.cpp
 	gui/windows/xml-console.cpp
+	gtalk-protocol-factory.cpp
 	open-chat-with/jabber-open-chat-with-runner.cpp
 	iris-status-adapter.cpp
 	jabber-account-data-manager.cpp
@@ -312,6 +315,8 @@ set (SOURCES
 	jabber-protocol.cpp
 	jabber-protocol-factory.cpp
 	jabber-url-handler.cpp
+	facebook-protocol-factory.cpp
+	gtalk-protocol-factory.cpp
 	resource/jabber-resource.cpp
 	resource/jabber-resource-pool.cpp
 	server/jabber-avatar-fetcher.cpp

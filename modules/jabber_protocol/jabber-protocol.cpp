@@ -43,6 +43,8 @@
 #include "iris-status-adapter.h"
 #include "jabber-contact-details.h"
 #include "jabber-protocol-factory.h"
+#include "facebook-protocol-factory.h"
+#include "gtalk-protocol-factory.h"
 #include "jabber-url-handler.h"
 
 #include "jabber-protocol.h"
@@ -53,10 +55,16 @@ int JabberProtocol::initModule()
 {
 	kdebugf();
 
-	if (ProtocolsManager::instance()->hasProtocolFactory("jabber"))
+	if (ProtocolsManager::instance()->hasProtocolFactory("jabber") 
+			|| ProtocolsManager::instance()->hasProtocolFactory("gtalk")
+			|| ProtocolsManager::instance()->hasProtocolFactory("facebook"))
 		return 0;
 
 	ProtocolsManager::instance()->registerProtocolFactory(JabberProtocolFactory::instance());
+	ProtocolsManager::instance()->registerProtocolFactory(GTalkProtocolFactory::instance());
+	ProtocolsManager::instance()->registerProtocolFactory(FacebookProtocolFactory::instance());
+
+		
 	UrlHandlerManager::instance()->registerUrlHandler("Jabber", new JabberUrlHandler());
 
 	kdebugf2();
@@ -71,6 +79,8 @@ void JabberProtocol::closeModule()
 
 	UrlHandlerManager::instance()->unregisterUrlHandler("Jabber");
 	ProtocolsManager::instance()->unregisterProtocolFactory(JabberProtocolFactory::instance());
+	ProtocolsManager::instance()->unregisterProtocolFactory(GTalkProtocolFactory::instance());
+	ProtocolsManager::instance()->unregisterProtocolFactory(FacebookProtocolFactory::instance());
 	kdebugf2();
 }
 

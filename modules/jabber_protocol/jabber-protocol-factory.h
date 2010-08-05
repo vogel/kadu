@@ -33,8 +33,6 @@ class JabberProtocolFactory : public ProtocolFactory
 	QList<StatusType *> SupportedStatusTypes;
 	QRegExp IdRegularExpression;
 
-	JabberProtocolFactory();
-
 public:
 	static JabberProtocolFactory * instance();
 
@@ -56,6 +54,8 @@ public:
 	virtual QIcon icon();
 	virtual QString iconPath();
 
+protected:
+	JabberProtocolFactory();
 };
 
 #endif // JABBER_PROTOCOL_FACTORY_H
