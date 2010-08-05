@@ -45,6 +45,7 @@ public:
 	virtual QWidget * newCreateAccountWidget(QWidget *parent);
 	virtual AccountEditWidget* newEditAccountWidget(Account, QWidget*);
 	virtual ContactWidget * newContactWidget(Contact contact, QWidget *parent = 0);
+	virtual QWidget * newContactPersonalInfoWidget(Contact contact, QWidget *parent = 0);
 	virtual QList<StatusType *> supportedStatusTypes();
 	virtual QString idLabel();
 	virtual QRegExp idRegularExpression();

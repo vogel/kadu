@@ -8,6 +8,7 @@ set (SOURCES
 
 	gui/widgets/gadu-add-account-widget.cpp
 	gui/widgets/gadu-create-account-widget.cpp
+	gui/widgets/gadu-contact-personal-info-widget.cpp
 	gui/widgets/gadu-edit-account-widget.cpp
 	gui/widgets/gadu-personal-info-widget.cpp
 	gui/widgets/token-widget.cpp
@@ -47,6 +48,7 @@ set (SOURCES
 	services/gadu-contact-list-service.cpp
 	services/gadu-file-transfer-service.cpp
 	services/gadu-personal-info-service.cpp
+	services/gadu-contact-personal-info-service.cpp
 	services/gadu-search-service.cpp
 
 	socket-notifiers/gadu-protocol-socket-notifiers.cpp
@@ -72,6 +74,7 @@ set (MOC_SOURCES
 	file-transfer/gadu-file-transfer-handler.h
 
 	gui/widgets/gadu-add-account-widget.h
+	gui/widgets/gadu-contact-personal-info-widget.h
 	gui/widgets/gadu-create-account-widget.h
 	gui/widgets/gadu-edit-account-widget.h
 	gui/widgets/gadu-personal-info-widget.h
@@ -104,6 +107,7 @@ set (MOC_SOURCES
 	services/gadu-contact-list-service.h
 	services/gadu-file-transfer-service.h
 	services/gadu-personal-info-service.h
+	services/gadu-contact-personal-info-service.h
 	services/gadu-search-service.h
 
 	socket-notifiers/gadu-protocol-socket-notifiers.h

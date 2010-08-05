@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
+ * Copyright 2009, 2010 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2010 Piotr Galiszewski (piotrgaliszewski@gmail.com)
  * Copyright 2009 Bartłomiej Zimoń (uzi18@o2.pl)
@@ -34,6 +34,7 @@
 #include "misc/misc.h"
 #include "model/roles.h"
 #include "protocols/protocol.h"
+#include "protocols/services/contact-personal-info-service.h"
 
 #include "buddy-personal-info-configuration-widget.h"
 
@@ -52,7 +53,7 @@ BuddyPersonalInfoConfigurationWidget::~BuddyPersonalInfoConfigurationWidget()
 
 void BuddyPersonalInfoConfigurationWidget::createGui()
 {
-	QVBoxLayout *layout = new QVBoxLayout(this);
+	layout = new QVBoxLayout(this);
 
 	QWidget *contactWidget = new QWidget(this);
 	layout->addWidget(contactWidget);
@@ -66,92 +67,21 @@ void BuddyPersonalInfoConfigurationWidget::createGui()
 
 	contactLayout->addRow(new QLabel(tr("Buddy contact") + ":", contactWidget), ContactIdCombo);
 
-	QGroupBox *infoWidget = new QGroupBox(this);
-	QFormLayout *infoLayout = new QFormLayout(infoWidget);
-
-	FirstNameText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("First Name") + ":", infoWidget), FirstNameText);
-
-	LastNameText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("Last Name") + ":", infoWidget), LastNameText);
-
-	NicknameText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("Nickname") + ":", infoWidget), NicknameText);
-
-	GenderText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("Gender") + ":", infoWidget), GenderText);
-
-	BirthdateText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("Birthdate") + ":", infoWidget), BirthdateText);
-
-	CityText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("City") + ":", infoWidget), CityText);
-
-	StateProvinceText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("State/Province") + ":", infoWidget), StateProvinceText);
-
-	IpText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("IP Address") + ":", infoWidget), IpText);
-
-	PortText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("Port") + ":", infoWidget), PortText);
-
-	DnsNameText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("DNS Name") + ":", infoWidget), DnsNameText);
-
-	ProtocolVerText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("Protocol Version") + ":", infoWidget), ProtocolVerText);
-
-	layout->addWidget(infoWidget);
+	InfoWidget = new QWidget;
+	layout->addWidget(InfoWidget);
+	
 	layout->addStretch(100);
 }
 
 void BuddyPersonalInfoConfigurationWidget::accountSelectionChanged(int index)
 {
-	Contact contact = qvariant_cast<Contact>(ContactIdCombo->model()->index(index, 0).data(ContactRole));
-	if (!contact)
-	{
-		FirstNameText->setText(QString::null);
-		LastNameText->setText(QString::null);
-		NicknameText->setText(QString::null);
-		GenderText->setText(QString::null);
-		BirthdateText->setText(QString::null);
-		CityText->setText(QString::null);
-		StateProvinceText->setText(QString::null);
-		IpText->setText(QString::null);
-		PortText->setText(QString::null);
-		DnsNameText->setText(QString::null);
-		ProtocolVerText->setText(QString::null);
-	}
-	else
-	{
-		FirstNameText->setText(MyBuddy.firstName());
-		LastNameText->setText(MyBuddy.lastName());
-		NicknameText->setText(MyBuddy.nickName());
-
-		switch (MyBuddy.gender())
-		{
-			case GenderFemale:
-				GenderText->setText(tr("Female"));
-				break;
-			case GenderMale:
-				GenderText->setText(tr("Male"));
-				break;
-			case GenderUnknown:
-				GenderText->setText("");
-				break;
-		}
-
-		if (0 != MyBuddy.birthYear())
-			BirthdateText->setText(QString::number(MyBuddy.birthYear()));
-		else
-			BirthdateText->setText("");
-
-		CityText->setText(MyBuddy.city());
-		StateProvinceText->setText(""); // do not have any info, do we need this control anyway?
-		IpText->setText(contact.address().toString());
-		PortText->setText(QString::number(contact.port()));
-		DnsNameText->setText(contact.dnsName());
-		ProtocolVerText->setText(contact.protocolVersion());
-	}
+  	Contact c = qvariant_cast<Contact>(ContactIdCombo->model()->index(index, 0).data(ContactRole));
+	
+	if (!c)
+		return;
+	
+	int row = layout->indexOf(InfoWidget);
+	layout->removeWidget(InfoWidget);
+	InfoWidget = c.contactAccount().protocolHandler()->protocolFactory()->newContactPersonalInfoWidget(c);
+	layout->insertWidget(row, InfoWidget);
 }

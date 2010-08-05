@@ -54,6 +54,7 @@ class ContactSet;
 class FileTransferService;
 class Message;
 class PersonalInfoService;
+class ContactPersonalInfoService;
 class ProtocolFactory;
 class SearchService;
 class Status;
@@ -106,6 +107,7 @@ public:
 	virtual ContactListService * contactListService() { return 0; }
 	virtual FileTransferService * fileTransferService() { return 0; }
 	virtual PersonalInfoService * personalInfoService() { return 0; }
+	virtual ContactPersonalInfoService * contactPersonalInfoService() { return 0; }
 	virtual SearchService * searchService() { return 0; }
 
 	virtual bool validateUserID(const QString &uid) = 0;

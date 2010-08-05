@@ -24,6 +24,7 @@
 #include <QtGui/QPushButton>
 
 #include "gui/widgets/gadu-add-account-widget.h"
+#include "gui/widgets/gadu-contact-personal-info-widget.h"
 #include "gui/widgets/gadu-create-account-widget.h"
 #include "gui/widgets/gadu-edit-account-widget.h"
 #include "status/status-type.h"
@@ -113,6 +114,11 @@ ContactWidget * GaduProtocolFactory::newContactWidget(Contact contact, QWidget *
 	return 0 != gaduContactDetails
 			? new GaduContactWidget(contact, parent)
 			: 0;
+}
+
+QWidget * GaduProtocolFactory::newContactPersonalInfoWidget(Contact contact, QWidget *parent)
+{
+	return new GaduContactPersonalInfoWidget(contact, parent);
 }
 
 QIcon GaduProtocolFactory::icon()

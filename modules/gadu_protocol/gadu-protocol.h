@@ -32,6 +32,7 @@
 #include "services/gadu-chat-image-service.h"
 #include "services/gadu-chat-service.h"
 #include "services/gadu-contact-list-service.h"
+#include "services/gadu-contact-personal-info-service.h"
 #include "services/gadu-file-transfer-service.h"
 #include "services/gadu-personal-info-service.h"
 #include "services/gadu-search-service.h"
@@ -78,6 +79,7 @@ private:
 	GaduChatImageService *CurrentChatImageService;
 	GaduChatService *CurrentChatService;
 	GaduContactListService *CurrentContactListService;
+	GaduContactPersonalInfoService *CurrentContactPersonalInfoService;
 	GaduFileTransferService *CurrentFileTransferService;
 	GaduPersonalInfoService *CurrentPersonalInfoService;
 	GaduSearchService *CurrentSearchService;
@@ -144,6 +146,7 @@ public:
 	virtual ChatImageService * chatImageService() { return CurrentChatImageService; }
 	virtual ChatService * chatService() { return CurrentChatService; }
 	virtual ContactListService * contactListService() { return CurrentContactListService; }
+	virtual ContactPersonalInfoService * contactPersonalInfoService() { return CurrentContactPersonalInfoService; }
 	virtual FileTransferService * fileTransferService() { return CurrentFileTransferService; }
 	virtual PersonalInfoService * personalInfoService() { return CurrentPersonalInfoService; }
 	virtual SearchService * searchService() { return CurrentSearchService; }

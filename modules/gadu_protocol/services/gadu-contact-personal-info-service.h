@@ -1,8 +1,8 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009, 2010 Wojciech Treter (juzefwt@gmail.com)
+ * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2010 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * Copyright 2009 Piotr Galiszewski (piotrgaliszewski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -19,38 +19,31 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BUDDY_PERSONAL_INFO_CONFIGURATION_WIDGET_H
-#define BUDDY_PERSONAL_INFO_CONFIGURATION_WIDGET_H
+#ifndef GADU_CONTACT_PERSONAL_INFO_SERVICE_H
+#define GADU_CONTACT_PERSONAL_INFO_SERVICE_H
 
-#include <QtGui/QVBoxLayout>
-#include <QtGui/QWidget>
+#include <libgadu.h>
 
+#include "protocols/services/contact-personal-info-service.h"
 
-#include "buddies/buddy.h"
+class GaduProtocol;
 
-#include "exports.h"
-
-class QComboBox;
-class QLabel;
-
-class KADUAPI BuddyPersonalInfoConfigurationWidget : public QWidget
+class GaduContactPersonalInfoService : public ContactPersonalInfoService
 {
 	Q_OBJECT
 
-	Buddy MyBuddy;
-	QComboBox *ContactIdCombo;
-	QVBoxLayout *layout;
-	QWidget *InfoWidget;
-	
-	void createGui();
-	
-private slots:
-	void accountSelectionChanged(int index);
+	GaduProtocol *Protocol;
+	unsigned int FetchSeq;
+
+	friend class GaduProtocolSocketNotifiers;
+	void handleEventPubdir50Read(struct gg_event *e);
 
 public:
-	explicit BuddyPersonalInfoConfigurationWidget(Buddy &buddy, QWidget *parent = 0);
-	virtual ~BuddyPersonalInfoConfigurationWidget();
+	GaduContactPersonalInfoService(GaduProtocol *protocol);
+
+	virtual void fetchPersonalInfo(Buddy buddy);
 
 };
 
-#endif // BUDDY_PERSONAL_INFO_CONFIGURATION_WIDGET_H
+#endif // GADU_CONTACT_PERSONAL_INFO_SERVICE_H
+

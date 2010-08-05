@@ -25,6 +25,7 @@
 #include "status/status-type-manager.h"
 
 #include "gui/widgets/jabber-contact-widget.h"
+#include "gui/widgets/jabber-contact-personal-info-widget.h"
 #include "gui/widgets/jabber-add-account-widget.h"
 #include "gui/widgets/jabber-create-account-widget.h"
 #include "gui/widgets/jabber-edit-account-widget.h"
@@ -120,4 +121,9 @@ ContactWidget * JabberProtocolFactory::newContactWidget(Contact contact, QWidget
 	return 0 != jabberContactDetails
 			? new JabberContactWidget(contact, parent)
 			: 0;
+}
+
+QWidget * JabberProtocolFactory::newContactPersonalInfoWidget(Contact contact, QWidget *parent)
+{
+	return new JabberContactPersonalInfoWidget(contact, parent);
 }

@@ -542,6 +542,7 @@ set (kadu_MOC_SRCS
 	protocols/services/chat-image-service.h
 	protocols/services/chat-service.h
 	protocols/services/contact-list-service.h
+	protocols/services/contact-personal-info-service.h
 	protocols/services/file-transfer-service.h
 	protocols/services/personal-info-service.h
 	protocols/services/search-service.h

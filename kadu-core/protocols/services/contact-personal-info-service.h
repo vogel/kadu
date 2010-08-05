@@ -1,8 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009, 2010 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2010 Piotr Galiszewski (piotrgaliszewski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -19,38 +17,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BUDDY_PERSONAL_INFO_CONFIGURATION_WIDGET_H
-#define BUDDY_PERSONAL_INFO_CONFIGURATION_WIDGET_H
+#ifndef CONTACT_PERSONAL_INFO_SERVICE_H
+#define CONTACT_PERSONAL_INFO_SERVICE_H
 
-#include <QtGui/QVBoxLayout>
-#include <QtGui/QWidget>
-
+#include <QtCore/QObject>
 
 #include "buddies/buddy.h"
-
 #include "exports.h"
 
-class QComboBox;
-class QLabel;
-
-class KADUAPI BuddyPersonalInfoConfigurationWidget : public QWidget
+class KADUAPI ContactPersonalInfoService : public QObject
 {
 	Q_OBJECT
 
-	Buddy MyBuddy;
-	QComboBox *ContactIdCombo;
-	QVBoxLayout *layout;
-	QWidget *InfoWidget;
-	
-	void createGui();
-	
-private slots:
-	void accountSelectionChanged(int index);
-
 public:
-	explicit BuddyPersonalInfoConfigurationWidget(Buddy &buddy, QWidget *parent = 0);
-	virtual ~BuddyPersonalInfoConfigurationWidget();
+	ContactPersonalInfoService(QObject *parent = 0) : QObject(parent) {}
 
+	virtual void fetchPersonalInfo(Buddy buddy) = 0;
+
+signals:
+	void personalInfoAvailable(Buddy buddy);
 };
 
-#endif // BUDDY_PERSONAL_INFO_CONFIGURATION_WIDGET_H
+#endif // CONTACT_PERSONAL_INFO_SERVICE_H
