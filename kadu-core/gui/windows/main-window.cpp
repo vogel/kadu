@@ -281,17 +281,37 @@ void MainWindow::contextMenuEvent(QContextMenuEvent *event)
 	}
 }
 
+void EXPERIMENTALToolbar(QToolBar *toolBar)
+{
+	toolBar->setPalette(toolBar->style()->standardPalette());
+	{
+	QPalette p(toolBar->palette());
+	p.setColor(QPalette::Window, Qt::red);
+	toolBar->setPalette(p);
+	}
+
+	toolBar->setBackgroundRole(QPalette::Window);
+	toolBar->setAttribute(Qt::WA_TranslucentBackground, false);
+	toolBar->setAttribute(Qt::WA_NoSystemBackground, false);
+	toolBar->setAutoFillBackground(true);
+	toolBar->repaint();
+}
+
 ToolBar *MainWindow::newToolbar(QWidget *parent)
 {
 	ToolBar *toolBar = new ToolBar(parent);
 
 	if (toolBar)
 	{
+#if 1
+EXPERIMENTALToolbar(toolBar);
+#else
 		/* This is for testing only */
 		if (TransparencyEnabled)
 			toolBar->setPalette(toolBar->style()->standardPalette());
 
 		toolBar->setAutoFillBackground(TransparencyEnabled);
+#endif
 	}
 
 	return toolBar;
@@ -365,9 +385,13 @@ void MainWindow::setTransparency(bool enable)
 			QToolBar *toolBar = dynamic_cast<QToolBar *>(object);
 			if (toolBar)
 			{
+#if 1
+EXPERIMENTALToolbar(toolBar);
+#else
 				/* This is for testing only */
 				toolBar->setPalette(toolBar->style()->standardPalette());
 				toolBar->setAutoFillBackground(true);
+#endif
 			}
 		}
 	}
@@ -383,3 +407,4 @@ void MainWindow::setTransparency(bool enable)
 		setAttribute(Qt::WA_NoSystemBackground, false);
 	}
 }
+
