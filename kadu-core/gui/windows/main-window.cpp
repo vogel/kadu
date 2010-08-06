@@ -291,8 +291,8 @@ ToolBar *MainWindow::newToolbar(QWidget *parent)
 		{
 			QString style;
 			/* Avoid transparent rounded corners
-			* (should it be global, not for QToolBar only?).
-			*/
+			 * (should it be global, not for QToolBar only?).
+			 */
 			style.append("QToolBar {background-clip: margin }");
 			setStyleSheet(style);
 
@@ -361,8 +361,8 @@ void MainWindow::setTransparency(bool enable)
 	{
 		QString style;
 		/* Avoid transparent rounded corners
-		* (should it be global, not for QToolBar only?).
-		*/
+		 * (should it be global, not for QToolBar only?).
+		 */
 		style.append("QToolBar {background-clip: margin }");
 
 		setAttribute(Qt::WA_TranslucentBackground, true);
@@ -374,7 +374,7 @@ void MainWindow::setTransparency(bool enable)
 			if (toolBar)
 			{
 				toolBar->setAttribute(Qt::WA_NoSystemBackground, false);
-				toolBar->setAutoFillBackground(true)
+				toolBar->setAutoFillBackground(true);
 			}
 		}
 	}
