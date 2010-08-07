@@ -26,6 +26,7 @@
 #include <QtGui/QMenu>
 #include <QtGui/QMenuBar>
 #include <QtGui/QPushButton>
+#include <QtGui/QSplitter>
 
 #include "accounts/account-manager.h"
 #include "buddies/buddy-manager.h"
@@ -264,7 +265,6 @@ void KaduWindow::compositingEnabled()
 		{
 			CompositingEnabled = true;
 			setTransparency(true);
-			//setAutoFillBackground(false);
 			menuBar()->setAutoFillBackground(true);
 			GroupBarWidget->setAutoFillBackground(true);
 			InfoPanel->setAutoFillBackground(true);
@@ -433,16 +433,16 @@ Chat KaduWindow::chat()
 
 void KaduWindow::configurationUpdated()
 {
-	QString bgColor = "transparent";
+	QString bgColor;
 	QFont userboxFont = QFont(config_file.readFontEntry("Look", "UserboxFont"));
 	GroupBar->setFont(QFont(userboxFont.family(), userboxFont.pointSize(), 75));
 
 	setDocked(Docked);
 
-	if (!CompositingEnabled || !config_file.readBoolEntry("Look", "UserboxTransparency"))
-	{
+	if (CompositingEnabled && config_file.readBoolEntry("Look", "UserboxTransparency"))
+		bgColor = "transparent";
+	else
 		bgColor = config_file.readColorEntry("Look","UserboxBgColor").name();
-	}
 
 	if (config_file.readBoolEntry("Look", "UseUserboxBackground", true))
 	{

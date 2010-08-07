@@ -150,7 +150,7 @@ void MainConfigurationWindow::instanceCreated()
 }
 
 MainConfigurationWindow::MainConfigurationWindow()
-	: ConfigurationWindow("MainConfiguration", tr("Kadu configuration"), "General", InstanceDataManager), lookChatAdvanced(0), CompositingEnabled(0)
+	: ConfigurationWindow("MainConfiguration", tr("Kadu configuration"), "General", InstanceDataManager), lookChatAdvanced(0)
 {
 	widget()->appendUiFile(dataPath("kadu/configuration/dialog.ui"));
 
@@ -227,7 +227,6 @@ MainConfigurationWindow::MainConfigurationWindow()
 	connect(widget()->widgetById("recentChatsStore"), SIGNAL(toggled(bool)),
 			widget()->widgetById("recentChatsTimeout"), SLOT(setDisabled(bool)));
 	userboxTransparency = dynamic_cast<QCheckBox *>(widget()->widgetById("userboxTransparency"));
-	userboxTransparency->setEnabled(CompositingEnabled);
 
 	triggerCompositingStateChanged();
 }
@@ -239,13 +238,11 @@ MainConfigurationWindow::~MainConfigurationWindow()
 
 void MainConfigurationWindow::compositingEnabled()
 {
-	CompositingEnabled = true;
 	userboxTransparency->setEnabled(true);
 }
 
 void MainConfigurationWindow::compositingDisabled()
 {
-	CompositingEnabled = false;
 	userboxTransparency->setEnabled(false);
 }
 

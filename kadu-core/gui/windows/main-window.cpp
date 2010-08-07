@@ -112,6 +112,9 @@ bool MainWindow::loadToolBarsFromConfig(const QString &configName, Qt::ToolBarAr
 		ToolBar* toolbar = newToolbar(this);
 		toolbar->loadFromConfig(toolbarConfig);
 		toolbar->show();
+		/* show() resets the WA_NoSystemBackground and AutoFillBackground */
+		toolbar->setAttribute(Qt::WA_NoSystemBackground, !TransparencyEnabled);
+		toolbar->setAutoFillBackground(TransparencyEnabled);
 
 		toolBars.append(toolbar);
 	}
@@ -287,18 +290,7 @@ ToolBar *MainWindow::newToolbar(QWidget *parent)
 
 	if (toolBar)
 	{
-		if (TransparencyEnabled)
-		{
-			QString style;
-			/* Avoid transparent rounded corners
-			 * (should it be global, not for QToolBar only?).
-			 */
-			style.append("QToolBar {background-clip: margin }");
-			setStyleSheet(style);
-
-			toolBar->setAttribute(Qt::WA_NoSystemBackground, false);
-		}
-
+		toolBar->setAttribute(Qt::WA_NoSystemBackground, !TransparencyEnabled);
 		toolBar->setAutoFillBackground(TransparencyEnabled);
 	}
 
@@ -359,14 +351,7 @@ void MainWindow::setTransparency(bool enable)
 	TransparencyEnabled = enable;
 	if (TransparencyEnabled)
 	{
-		QString style;
-		/* Avoid transparent rounded corners
-		 * (should it be global, not for QToolBar only?).
-		 */
-		style.append("QToolBar {background-clip: margin }");
-
 		setAttribute(Qt::WA_TranslucentBackground, true);
-		setStyleSheet(style); /* It must be set AFTER above, why? */
 
 		foreach (QObject *object, children())
 		{

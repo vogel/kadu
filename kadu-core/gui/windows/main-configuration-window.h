@@ -60,7 +60,6 @@ class KADUAPI MainConfigurationWindow : public ConfigurationWindow, CompositingA
 	ConfigurationWindow *lookChatAdvanced;
 
 	QCheckBox *onStartupSetLastDescription;
-	bool CompositingEnabled;
 	QCheckBox *userboxTransparency;
 	ConfigComboBox *emoticonsStyleComboBox;
 	ConfigComboBox *emoticonsThemeComboBox;
