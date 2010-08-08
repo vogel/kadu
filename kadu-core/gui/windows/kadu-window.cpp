@@ -68,7 +68,7 @@ extern void qt_mac_set_menubar_icons(bool enable);
 #endif
 
 KaduWindow::KaduWindow(QWidget *parent) :
-		MainWindow(parent), Docked(false)
+		MainWindow(parent), Docked(false), CompositingEnabled(false)
 {
 #ifdef Q_OS_MAC
 	setUnifiedTitleAndToolBarOnMac(true);
@@ -109,16 +109,25 @@ void KaduWindow::createGui()
 	MainLayout->setMargin(0);
 	MainLayout->setSpacing(0);
 
-	QSplitter *split = new QSplitter(Qt::Vertical, this);
-	MainLayout->addWidget(split);
+	Split = new QSplitter(Qt::Vertical, this);
+	MainLayout->addWidget(Split);
 
-	QWidget* hbox = new QWidget(split);
+	QWidget* hbox = new QWidget(Split);
 	QHBoxLayout *hboxLayout = new QHBoxLayout(hbox);
 	hboxLayout->setMargin(0);
 	hboxLayout->setSpacing(0);
 
-	// groupbar
+	/* Must create empty widget so it can fill its background. */
+	GroupBarWidget = new QWidget(this);
+	QVBoxLayout *GroupBarLayout = new QVBoxLayout(GroupBarWidget);
+	GroupBarLayout->setMargin(0);
+	GroupBarLayout->setSpacing(0);
+	GroupBarWidget->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
+
 	GroupBar = new GroupTabBar(this);
+
+	GroupBarLayout->addWidget(GroupBar, 0, Qt::AlignTop);
+	GroupBarWidget->setLayout(GroupBarLayout);
 
 	ContactsWidget = new BuddiesListWidget(BuddiesListWidget::FilterAtTop, this);
 	ContactsWidget->view()->setModel(new BuddiesModel(BuddyManager::instance(), this));
@@ -129,13 +138,13 @@ void KaduWindow::createGui()
 
 	connect(ContactsWidget->view(), SIGNAL(chatActivated(Chat )), this, SLOT(openChatWindow(Chat )));
 
-	hboxLayout->addWidget(GroupBar);
-	hboxLayout->setStretchFactor(GroupBar, 1);
+	hboxLayout->addWidget(GroupBarWidget);
+	hboxLayout->setStretchFactor(GroupBarWidget, 1);
 	hboxLayout->addWidget(ContactsWidget);
 	hboxLayout->setStretchFactor(ContactsWidget, 100);
 	hboxLayout->setAlignment(GroupBar, Qt::AlignTop);
 
-	InfoPanel = new BuddyInfoPanel(split);
+	InfoPanel = new BuddyInfoPanel(Split);
 	connect(ContactManager::instance(), SIGNAL(contactUpdated(Contact &)), InfoPanel, SLOT(update()));
 	connect(ContactsWidget->view(), SIGNAL(currentBuddyChanged(Buddy)), InfoPanel, SLOT(displayBuddy(Buddy)));
 
@@ -153,13 +162,12 @@ void KaduWindow::createGui()
 	splitSizes.append(config_file.readNumEntry("General", "UserBoxHeight"));
 	splitSizes.append(config_file.readNumEntry("General", "DescriptionHeight"));
 
-	split->setSizes(splitSizes);
+	Split->setSizes(splitSizes);
 
 	setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 	setCentralWidget(MainWidget);
 
 	createMenu();
-
 }
 
 void KaduWindow::createMenu()
@@ -248,6 +256,51 @@ QMenuBar* KaduWindow::menuBar() const
 	return MenuBar;
 }
 #endif
+
+void KaduWindow::compositingEnabled()
+{
+	if (config_file.readBoolEntry("Look", "UserboxTransparency"))
+	{
+		if (!CompositingEnabled)
+		{
+			CompositingEnabled = true;
+			setTransparency(true);
+			menuBar()->setAutoFillBackground(true);
+			GroupBarWidget->setAutoFillBackground(true);
+			InfoPanel->setAutoFillBackground(true);
+			ChangeStatusButtons->setAutoFillBackground(true);
+			ContactsWidget->nameFilterWidget()->setAutoFillBackground(true);
+			for (int i = 1; i < Split->count(); ++i)
+			{
+				QSplitterHandle *splitterHandle = Split->handle(i);
+				splitterHandle->setAutoFillBackground(true);
+			}
+			configurationUpdated();
+		}
+	}
+	else
+		compositingDisabled();
+}
+
+void KaduWindow::compositingDisabled()
+{
+	if (CompositingEnabled)
+	{
+		CompositingEnabled = false;
+		menuBar()->setAutoFillBackground(false);
+		GroupBarWidget->setAutoFillBackground(false);
+		InfoPanel->setAutoFillBackground(false);
+		ChangeStatusButtons->setAutoFillBackground(false);
+		ContactsWidget->nameFilterWidget()->setAutoFillBackground(false);
+		for (int i = 1; i < Split->count(); ++i)
+		{
+			QSplitterHandle *splitterHandle = Split->handle(i);
+			splitterHandle->setAutoFillBackground(false);
+		}
+		setTransparency(false);
+		configurationUpdated();
+	}
+}
 
 void KaduWindow::openChatWindow(Chat chat)
 {
@@ -380,15 +433,21 @@ Chat KaduWindow::chat()
 
 void KaduWindow::configurationUpdated()
 {
+	QString bgColor;
 	QFont userboxFont = QFont(config_file.readFontEntry("Look", "UserboxFont"));
 	GroupBar->setFont(QFont(userboxFont.family(), userboxFont.pointSize(), 75));
 
 	setDocked(Docked);
 
+	if (CompositingEnabled && config_file.readBoolEntry("Look", "UserboxTransparency"))
+		bgColor = "transparent";
+	else
+		bgColor = config_file.readColorEntry("Look","UserboxBgColor").name();
+
 	if (config_file.readBoolEntry("Look", "UseUserboxBackground", true))
 	{
 		QString type = config_file.readEntry("Look", "UserboxBackgroundDisplayStyle");
-		ContactsWidget->view()->setBackground(config_file.readColorEntry("Look","UserboxBgColor").name(),
+		ContactsWidget->view()->setBackground(bgColor,
 			config_file.readEntry("Look", "UserboxBackground"),
 			type == "Centered" ? BuddiesListView::BackgroundCentered
 			: type == "Tiled" ? BuddiesListView::BackgroundTiled
@@ -397,9 +456,11 @@ void KaduWindow::configurationUpdated()
 			: BuddiesListView::BackgroundNone);
 	}
 	else
-		ContactsWidget->view()->setBackground(config_file.readColorEntry("Look","UserboxBgColor").name());
+		ContactsWidget->view()->setBackground(bgColor);
 
 	ChangeStatusButtons->setVisible(config_file.readBoolEntry("Look", "ShowStatusButton"));
+
+	triggerCompositingStateChanged();
 }
 
 void KaduWindow::insertMenuActionDescription(ActionDescription *actionDescription, MenuType type, int pos)

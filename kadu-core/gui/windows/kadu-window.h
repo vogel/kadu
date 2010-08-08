@@ -30,7 +30,9 @@
 #include "buddies/buddy-list.h"
 
 #include "gui/windows/main-window.h"
+#include "os/generic/compositing-aware-object.h"
 
+class QSplitter;
 class QMenu;
 class QMenuBar;
 class QPushButton;
@@ -45,7 +47,7 @@ class KaduTextBrowser;
 class KaduWindowActions;
 class StatusButtons;
 
-class KADUAPI KaduWindow : public MainWindow, private ConfigurationAwareObject
+class KADUAPI KaduWindow : public MainWindow, private ConfigurationAwareObject, CompositingAwareObject
 {
 	Q_OBJECT
 
@@ -62,6 +64,8 @@ private:
 	QMap<ActionDescription *, MenuAction> MenuActions;
 
 	bool Docked; // TODO: 0.7.1 it is a hack
+	QWidget *GroupBarWidget;
+	QSplitter *Split;
 
 	KaduWindowActions *Actions;
 
@@ -85,6 +89,8 @@ private:
 	StatusButtons *ChangeStatusButtons;
 	QPoint LastPositionBeforeStatusMenuHide;
 
+	bool CompositingEnabled;
+	
 	void createGui();
 	void createMenu();
 	void createKaduMenu();
@@ -95,6 +101,9 @@ private:
 
 	void updateInformationPanel();
 	void updateInformationPanel(Buddy buddy);
+
+	virtual void compositingEnabled();
+	virtual void compositingDisabled();
 
 #ifdef Q_OS_MAC
 	QMenuBar* menuBar() const;

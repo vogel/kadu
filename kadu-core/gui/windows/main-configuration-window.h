@@ -2,7 +2,7 @@
 #define MAIN_CONFIGURATION_WINDOW_H
 
 #include "gui/windows/configuration-window.h"
-
+#include "os/generic/compositing-aware-object.h"
 #include "exports.h"
 
 class QCheckBox;
@@ -45,7 +45,7 @@ class ConfigFileDataManager;
 	@author Vogel
 	@short G��wne okno konfiguracyjne.
  **/
-class KADUAPI MainConfigurationWindow : public ConfigurationWindow
+class KADUAPI MainConfigurationWindow : public ConfigurationWindow, CompositingAwareObject
 {
 	Q_OBJECT
 
@@ -60,7 +60,7 @@ class KADUAPI MainConfigurationWindow : public ConfigurationWindow
 	ConfigurationWindow *lookChatAdvanced;
 
 	QCheckBox *onStartupSetLastDescription;
-
+	QCheckBox *userboxTransparency;
 	ConfigComboBox *emoticonsStyleComboBox;
 	ConfigComboBox *emoticonsThemeComboBox;
 
@@ -77,6 +77,9 @@ class KADUAPI MainConfigurationWindow : public ConfigurationWindow
 	void setToolTipClasses();
 
 	static QString findExecutable(const QStringList &paths, const QStringList &executableNames);
+
+	virtual void compositingEnabled();
+	virtual void compositingDisabled();
 
 private slots:
 	void onChangeEmoticonsStyle(int index);

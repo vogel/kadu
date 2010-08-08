@@ -28,7 +28,6 @@
 #include "buddies/buddy-set.h"
 #include "gui/actions/action.h"
 #include "gui/widgets/buddies-list-view.h"
-#include "gui/widgets/toolbar.h"
 
 #include "debug.h"
 
@@ -48,7 +47,7 @@ MainWindow * MainWindow::findMainWindow(QWidget *widget)
 }
 
 MainWindow::MainWindow(QWidget *parent) :
-		QMainWindow(parent)
+		QMainWindow(parent), TransparencyEnabled(false)
 {
 }
 
@@ -110,9 +109,12 @@ bool MainWindow::loadToolBarsFromConfig(const QString &configName, Qt::ToolBarAr
 		if (toolbarConfig.tagName() != "ToolBar")
 			continue;
 
-		ToolBar* toolbar = new ToolBar(this);
+		ToolBar* toolbar = newToolbar(this);
 		toolbar->loadFromConfig(toolbarConfig);
 		toolbar->show();
+		/* show() resets the WA_NoSystemBackground and AutoFillBackground */
+		toolbar->setAttribute(Qt::WA_NoSystemBackground, !TransparencyEnabled);
+		toolbar->setAutoFillBackground(TransparencyEnabled);
 
 		toolBars.append(toolbar);
 	}
@@ -282,24 +284,37 @@ void MainWindow::contextMenuEvent(QContextMenuEvent *event)
 	}
 }
 
+ToolBar *MainWindow::newToolbar(QWidget *parent)
+{
+	ToolBar *toolBar = new ToolBar(parent);
+
+	if (toolBar)
+	{
+		toolBar->setAttribute(Qt::WA_NoSystemBackground, !TransparencyEnabled);
+		toolBar->setAutoFillBackground(TransparencyEnabled);
+	}
+
+	return toolBar;
+}
+
 void MainWindow::addTopToolbar()
 {
-	addToolBar(Qt::TopToolBarArea, new ToolBar(this));
+	addToolBar(Qt::TopToolBarArea, newToolbar(this));
 }
 
 void MainWindow::addBottomToolbar()
 {
-	addToolBar(Qt::BottomToolBarArea, new ToolBar(this));
+	addToolBar(Qt::BottomToolBarArea, newToolbar(this));
 }
 
 void MainWindow::addLeftToolbar()
 {
-	addToolBar(Qt::LeftToolBarArea, new ToolBar(this));
+	addToolBar(Qt::LeftToolBarArea, newToolbar(this));
 }
 
 void MainWindow::addRightToolbar()
 {
-	addToolBar(Qt::RightToolBarArea, new ToolBar(this));
+	addToolBar(Qt::RightToolBarArea, newToolbar(this));
 }
 
 void MainWindow::actionAdded(Action *action)
@@ -323,3 +338,41 @@ Buddy MainWindow::buddy()
 			? *buddySet.begin()
 			: Buddy::null;
 }
+
+void MainWindow::setTransparency(bool enable)
+{
+	/* 1. Do not make MainWindow related to the CompositingAwareObject class
+	 *    as not every child wants to be compositing aware
+	 * 2. Allow child to decide if and when to use transparency or not and
+	 *    provide means to do this.
+	 * Enabling transparency sets main window background transparent whilst
+	 * toolbars are opaque, so the central widget can enjoy the transparency.
+	 */
+	TransparencyEnabled = enable;
+	if (TransparencyEnabled)
+	{
+		setAttribute(Qt::WA_TranslucentBackground, true);
+
+		foreach (QObject *object, children())
+		{
+			QToolBar *toolBar = dynamic_cast<QToolBar *>(object);
+			if (toolBar)
+			{
+				toolBar->setAttribute(Qt::WA_NoSystemBackground, false);
+				toolBar->setAutoFillBackground(true);
+			}
+		}
+	}
+	else
+	{
+		foreach (QObject *object, children())
+		{
+			QToolBar *toolBar = dynamic_cast<QToolBar *>(object);
+			if (toolBar)
+				toolBar->setAutoFillBackground(false);
+		}
+		setAttribute(Qt::WA_TranslucentBackground, false);
+		setAttribute(Qt::WA_NoSystemBackground, false);
+	}
+}
+

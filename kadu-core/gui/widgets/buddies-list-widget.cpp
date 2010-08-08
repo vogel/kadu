@@ -38,8 +38,10 @@ BuddiesListWidget::BuddiesListWidget(FilterPosition filterPosition, MainWindow *
 {
 	QVBoxLayout *layout = new QVBoxLayout(this);
 	layout->setMargin(0);
+	layout->setSpacing(0);
 
 	NameFilterWidget = new FilterWidget(this);
+	
 	connect(NameFilterWidget, SIGNAL(textChanged(const QString &)),
 		this, SLOT(nameFilterChanged(const QString &)));
 
