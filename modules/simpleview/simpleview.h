@@ -8,7 +8,6 @@
 
 #include "gui/widgets/buddies-list-widget.h"
 #include "gui/widgets/buddy-info-panel.h"
-#include "gui/widgets/buddies-list-view.h"
 #include "gui/widgets/group-tab-bar.h"
 #include "gui/widgets/status-buttons.h"
 #include "gui/windows/main-window.h"
@@ -28,12 +27,11 @@ class SimpleView :
 	QSize BackupSize;
 	QAction *DockAction;
 	bool SimpleViewActive;
-	KaduWindow *kaduWindow;
-	MainWindow *mainWindow;
-	BuddiesListView *buddiesListView;
-	BuddiesListWidget *buddiesListWidget;
-	GroupTabBar *groupTabBar;
-	StatusButtons *statusButton;
+	KaduWindow *KaduWindowHandle;
+	MainWindow *MainWindowHandle;
+	BuddiesListWidget *BuddiesListWidgetHandle;
+	QWidget *GroupBarWidgetHandle;
+	StatusButtons *StatusButtonsHandle;
 
 	SimpleView();
 	virtual ~SimpleView();

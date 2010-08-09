@@ -34,6 +34,7 @@
 #include "configuration/configuration-file.h"
 #include "misc/path-conversion.h"
 #include "gui/hot-key.h"
+#include "gui/widgets/buddies-list-view.h"
 
 #include "modules/docking/docking.h"
 #include "simpleview-config-ui.h"
@@ -44,6 +45,9 @@ SimpleView *SimpleView::Instance = 0;
 SimpleView::SimpleView() :
 	SimpleViewActive(false)
 {
+	BuddiesListView *buddiesListViewHandle;
+	GroupTabBar *groupBarTabHandle;
+
 	SimpleViewConfigUi::createInstance();
 
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/simpleview.ui"));
@@ -52,12 +56,13 @@ SimpleView::SimpleView() :
 	DockAction = DockingManager::instance()->dockMenu()->addAction(IconsManager::instance()->iconByPath("16x16/view-refresh.png"), tr("Simple view"), this, SLOT(simpleViewToggle()));
 	DockAction->setShortcut(HotKey::shortCutFromFile("ShortCuts", "kadu_simpleview"));
 
-	kaduWindow = Core::instance()->kaduWindow();
-	mainWindow = kaduWindow->findMainWindow(kaduWindow);
-	buddiesListView = dynamic_cast<BuddiesListView *>(mainWindow->contactsListView());
-	buddiesListWidget = dynamic_cast<BuddiesListWidget *>(buddiesListView->parent());
-	groupTabBar = kaduWindow->findChild<GroupTabBar *>();
-	statusButton = kaduWindow->findChild<StatusButtons *>();
+	KaduWindowHandle = Core::instance()->kaduWindow();
+	MainWindowHandle = KaduWindowHandle->findMainWindow(KaduWindowHandle);
+	buddiesListViewHandle = dynamic_cast<BuddiesListView *>(MainWindowHandle->contactsListView());
+	BuddiesListWidgetHandle = dynamic_cast<BuddiesListWidget *>(buddiesListViewHandle->parent());
+	groupBarTabHandle = KaduWindowHandle->findChild<GroupTabBar *>();
+	GroupBarWidgetHandle = dynamic_cast<QWidget *>(groupBarTabHandle->parent());
+	StatusButtonsHandle = KaduWindowHandle->findChild<StatusButtons *>();
 }
 
 SimpleView::~SimpleView()
@@ -87,7 +92,9 @@ void SimpleView::destroyInstance()
 
 void SimpleView::simpleViewToggle()
 {
-	/* This is very 'el hache', but we do not change the main code.
+	/* This is very 'el hache',
+	 * but this way we do not change the main code.
+	 *
 	 * The parent-child tree is:
 	 * MainWindow/KaduWindow
 	 * +-QWidget (MainWidget)
@@ -95,7 +102,9 @@ void SimpleView::simpleViewToggle()
 	 *   +-QSplitter (Split)
 	 *     +-QWidget (hbox)
 	 *     |=QHBoxLayout (hboxLayout)
-	 *     |+-GroupTabBar (GroupBar)
+	 *     |+-QWidget (GroupBarWidget)
+	 *     |  =QVBoxLayout (GroupBarLayout)
+	 *     |  +-GroupTabBar (GroupBar)
 	 *     |+-BuddiesListWidget (ContactsWidget)
 	 *     |  =QVBoxLayout (layout)
 	 *     |  +-BuddiesListView (ContactsWidget->view())
@@ -106,22 +115,22 @@ void SimpleView::simpleViewToggle()
 	QPoint p, cp;
 	QSize s, cs;
 
-	flags = mainWindow->windowFlags();
-	cp = mainWindow->pos();
-	cs = mainWindow->size();
+	flags = MainWindowHandle->windowFlags();
+	cp = MainWindowHandle->pos();
+	cs = MainWindowHandle->size();
 
 	SimpleViewActive = !SimpleViewActive;
 
 	if (SimpleViewActive)
 	{
-		p = buddiesListWidget->view()->mapToGlobal(buddiesListWidget->view()->rect().topLeft());
-		s = buddiesListWidget->view()->rect().size();
+		p = BuddiesListWidgetHandle->view()->mapToGlobal(BuddiesListWidgetHandle->view()->rect().topLeft());
+		s = BuddiesListWidgetHandle->view()->rect().size();
 		BackupPosition = p - cp;
 		BackupSize = cs - s;
-		mainWindow->hide();
+		MainWindowHandle->hide();
 
 		/* 1. Toolbars */
-		foreach (QObject *object, mainWindow->children())
+		foreach (QObject *object, MainWindowHandle->children())
 		{
 			QToolBar *toolBar = dynamic_cast<QToolBar *>(object);
 			if (toolBar)
@@ -129,65 +138,64 @@ void SimpleView::simpleViewToggle()
 		}
 
 		/* 2. Menu bar */
-		kaduWindow->menuBar()->hide();
+		KaduWindowHandle->menuBar()->hide();
 
 		/* 3. GroupBar */
-		groupTabBar->hide();
+		GroupBarWidgetHandle->hide();
 
 		/* 4. Filter */
-		buddiesListWidget->nameFilterWidget()->hide();
+		BuddiesListWidgetHandle->nameFilterWidget()->hide();
 
 		/* 5. Info panel*/
-		kaduWindow->infoPanel()->hide();
+		KaduWindowHandle->infoPanel()->hide();
 
 		/* 6. Status button */
-		statusButton->hide();
+		StatusButtonsHandle->hide();
 
-		mainWindow->setWindowFlags(flags | Qt::FramelessWindowHint);
+		MainWindowHandle->setWindowFlags(flags | Qt::FramelessWindowHint);
 
 		if(SimpleViewConfigUi::instance()->keepSize())
 		{
-			mainWindow->move(p);
-			mainWindow->resize(s);
+			MainWindowHandle->move(p);
+			MainWindowHandle->resize(s);
 		}
 	}
 	else
 	{
-		mainWindow->hide();
+		MainWindowHandle->hide();
 		if(SimpleViewConfigUi::instance()->keepSize())
 		{
 			BackupPosition = cp - BackupPosition;
-			mainWindow->move(BackupPosition);
-			mainWindow->resize(cs + BackupSize);
+			MainWindowHandle->move(BackupPosition);
+			MainWindowHandle->resize(cs + BackupSize);
 		}
-		mainWindow->setWindowFlags(flags & ~(Qt::FramelessWindowHint));
+		MainWindowHandle->setWindowFlags(flags & ~(Qt::FramelessWindowHint));
 
 		/* 1. Status button */
-		statusButton->setVisible(config_file.readBoolEntry("Look", "ShowStatusButton"));
+		StatusButtonsHandle->setVisible(config_file.readBoolEntry("Look", "ShowStatusButton"));
 
 		/* 2. Info panel*/
 		if (config_file.readBoolEntry("Look", "ShowInfoPanel"))
-			kaduWindow->infoPanel()->show();
+			KaduWindowHandle->infoPanel()->show();
 
 		/* 3. Filter */
-		buddiesListWidget->nameFilterWidget()->show();
+		BuddiesListWidgetHandle->nameFilterWidget()->show();
 
 		/* 4. GroupBar */
-		if (config_file.readBoolEntry("Look", "DisplayGroupTabs", true))
-			groupTabBar->show();
+		GroupBarWidgetHandle->show();
 
 		/* 5. Menu bar */
-		kaduWindow->menuBar()->show();
+		KaduWindowHandle->menuBar()->show();
 
 		/* 6. Toolbars */
-		foreach (QObject *object, mainWindow->children())
+		foreach (QObject *object, MainWindowHandle->children())
 		{
 			QToolBar *toolBar = dynamic_cast<QToolBar *>(object);
 			if (toolBar)
 				toolBar->setVisible(true);
 		}
 	}
-	mainWindow->show();
+	MainWindowHandle->show();
 }
 
 void SimpleView::compositingEnabled()
