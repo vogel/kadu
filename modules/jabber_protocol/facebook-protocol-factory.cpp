@@ -63,3 +63,10 @@ QString FacebookProtocolFactory::idLabel()
 {
 	return tr("Facebook ID:");
 }
+
+AccountAddWidget * FacebookProtocolFactory::newAddAccountWidget(QWidget *parent)
+{
+	JabberAddAccountWidget *widget = new JabberAddAccountWidget(parent);
+	widget->setDomainSectionVisible(false);
+	return widget;
+}

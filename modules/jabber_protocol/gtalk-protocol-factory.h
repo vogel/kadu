@@ -43,6 +43,8 @@ public:
 
 	virtual QIcon icon();
 	virtual QString iconPath();
+	
+	virtual QWidget * newCreateAccountWidget(QWidget *parent = 0) { return 0; }
 
 };
 

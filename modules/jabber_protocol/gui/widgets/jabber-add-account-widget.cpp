@@ -73,8 +73,8 @@ void JabberAddAccountWidget::createGui()
 	connect(Username, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 	jidLayout->addWidget(Username);
 	
-	QLabel *atLabel = new QLabel("@", this);
-	jidLayout->addWidget(atLabel, 0, 1);
+	AtLabel = new QLabel("@", this);
+	jidLayout->addWidget(AtLabel, 0, 1);
 	
 	Domain = new QComboBox();
 	Domain->setEditable(true);
@@ -166,4 +166,10 @@ void JabberAddAccountWidget::resetGui()
 	Domain->setCurrentIndex(-1);
 	RememberPassword->setChecked(true);
 	Identity->setCurrentIdentity(Identity::null);
+}
+
+void JabberAddAccountWidget::setDomainSectionVisible(bool visible)
+{
+	Domain->setVisible(visible);
+	AtLabel->setVisible(visible);
 }

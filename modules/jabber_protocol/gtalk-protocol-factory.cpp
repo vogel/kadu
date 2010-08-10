@@ -63,3 +63,4 @@ QString GTalkProtocolFactory::idLabel()
 {
 	return tr("Google Talk ID:");
 }
+

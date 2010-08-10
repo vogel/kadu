@@ -47,6 +47,7 @@ class JabberAddAccountWidget : public AccountAddWidget
 	QLineEdit *AccountPassword;
 	QCheckBox *RememberPassword;
 	QLabel *RemindPassword;
+	QLabel *AtLabel;
 	IdentitiesComboBox *Identity;
 	QPushButton *AddAccountButton;
 
@@ -63,7 +64,8 @@ public:
 public slots:
 	virtual void apply();
 	virtual void cancel();
-
+	
+	void setDomainSectionVisible(bool visible);
 };
 
 #endif // JABBER_ADD_ACCOUNT_WIDGET_H
