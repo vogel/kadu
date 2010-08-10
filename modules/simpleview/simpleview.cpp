@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2010 Przemys�aw Rudy (prudy1@o2.pl)
+ * Copyright 2010 Przemyaław Rudy (prudy1@o2.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -15,12 +15,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- * Objectives:
- * - simple view hides everything from the main window except the contact list,
- *   which can be still used to contact buddies. For any other action
- *   switching back to the normal view is required
- * - quickly accessible switching mechanism between views
  */
 #include <QtGui/QMenu>
 #include <QtGui/QMenuBar>
