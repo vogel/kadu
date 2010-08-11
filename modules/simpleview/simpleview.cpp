@@ -22,13 +22,18 @@
 #include <QtGui/QTabBar>
 #include <QtGui/QSplitter>
 
-#include <stdio.h>
 
 #include "core/core.h"
 #include "configuration/configuration-file.h"
 #include "misc/path-conversion.h"
 #include "gui/hot-key.h"
 #include "gui/widgets/buddies-list-view.h"
+#include "gui/widgets/buddies-list-widget.h"
+#include "gui/widgets/buddy-info-panel.h"
+#include "gui/widgets/group-tab-bar.h"
+#include "gui/widgets/status-buttons.h"
+#include "gui/windows/main-window.h"
+#include "gui/windows/kadu-window.h"
 
 #include "modules/docking/docking.h"
 #include "simpleview-config-ui.h"
@@ -86,7 +91,7 @@ void SimpleView::destroyInstance()
 
 void SimpleView::simpleViewToggle()
 {
-	/* This is very 'el hache',
+	/* This is very 'el hacha',
 	 * but this way we do not change the main code.
 	 *
 	 * The parent-child tree is:
