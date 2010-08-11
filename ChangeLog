@@ -8,6 +8,7 @@
 * core: path #2071 merged: removing unneccessary combobox items (beevvy)
 * core: #1401 fixed: displaying contact personal info in buddy data window (Juzef)
 * gui: #1373 fixed: creating default toolbars in search window works again (Juzef)
+* core: simple mode bug fixed, all accounts are now properly loaded in simple mode (Vogel)
 
 +++ version 0.6.6-beta4
 * gui: #1119 fixed: copying emoticons works again (beevvy)

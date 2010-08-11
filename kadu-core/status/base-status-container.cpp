@@ -38,7 +38,9 @@ void BaseStatusContainer::setStatus(Status status)
 	doSetStatus(status);
 
 	storeStatus();
-	ConfigurationManager::instance()->flush();
+
+//	TODO: this cannot be called here, causes accounts to be removed
+// 	ConfigurationManager::instance()->flush();
 }
 
 void BaseStatusContainer::setDefaultStatus(const QString &startupStatus, bool offlineToInvisible,
