@@ -43,6 +43,7 @@ class SimpleView :
 	static SimpleView *Instance;
 
 	bool KeepSize;
+	bool NoScrollBar;
 	bool SimpleViewActive;
 
 	QPoint BackupPosition;

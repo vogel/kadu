@@ -4,6 +4,7 @@
 		<tab name="Simple view">
 		      <group-box name="General">
                 <check-box caption="Keep contact list size" config-section="Look" config-item="SimpleViewKeepSize" id="simple_view/KeepSize" />
+                <check-box caption="Hide scroll bar" config-section="Look" config-item="SimpleViewNoScrollBar" id="simple_view/NoScrollBar" />
 			  </group-box>
 		</tab>
 	</section>

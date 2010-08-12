@@ -21,7 +21,7 @@
 #include <QtGui/QToolBar>
 #include <QtGui/QTabBar>
 #include <QtGui/QSplitter>
-
+#include <QtGui/QScrollBar>
 
 #include "core/core.h"
 #include "configuration/configuration-file.h"
@@ -129,7 +129,7 @@ void SimpleView::simpleViewToggle()
 		BackupSize = cs - s;
 		MainWindowHandle->hide();
 
-		/* 1. Toolbars */
+		/* Toolbars */
 		foreach (QObject *object, MainWindowHandle->children())
 		{
 			QToolBar *toolBar = dynamic_cast<QToolBar *>(object);
@@ -137,19 +137,23 @@ void SimpleView::simpleViewToggle()
 				toolBar->setVisible(false);
 		}
 
-		/* 2. Menu bar */
+		/* Menu bar */
 		KaduWindowHandle->menuBar()->hide();
 
-		/* 3. GroupBar */
+		/* GroupBar */
 		GroupBarWidgetHandle->hide();
 
-		/* 4. Filter */
+		/* Filter */
 		BuddiesListWidgetHandle->nameFilterWidget()->hide();
 
-		/* 5. Info panel*/
+		/* ScrollBar */
+		if (NoScrollBar)
+			BuddiesListWidgetHandle->view()->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+		/* Info panel*/
 		KaduWindowHandle->infoPanel()->hide();
 
-		/* 6. Status button */
+		/* Status button */
 		StatusButtonsHandle->hide();
 
 		MainWindowHandle->setWindowFlags(flags | Qt::FramelessWindowHint);
@@ -171,23 +175,26 @@ void SimpleView::simpleViewToggle()
 		}
 		MainWindowHandle->setWindowFlags(flags & ~(Qt::FramelessWindowHint));
 
-		/* 1. Status button */
+		/* Status button */
 		StatusButtonsHandle->setVisible(config_file.readBoolEntry("Look", "ShowStatusButton"));
 
-		/* 2. Info panel*/
+		/* Info panel*/
 		if (config_file.readBoolEntry("Look", "ShowInfoPanel"))
 			KaduWindowHandle->infoPanel()->show();
 
-		/* 3. Filter */
+		/* ScrollBar */
+		BuddiesListWidgetHandle->view()->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+
+		/* Filter */
 		BuddiesListWidgetHandle->nameFilterWidget()->show();
 
-		/* 4. GroupBar */
+		/* GroupBar */
 		GroupBarWidgetHandle->show();
 
-		/* 5. Menu bar */
+		/* Menu bar */
 		KaduWindowHandle->menuBar()->show();
 
-		/* 6. Toolbars */
+		/* Toolbars */
 		foreach (QObject *object, MainWindowHandle->children())
 		{
 			QToolBar *toolBar = dynamic_cast<QToolBar *>(object);
@@ -214,6 +221,7 @@ void SimpleView::compositingDisabled()
 void SimpleView::configurationUpdated()
 {
 	KeepSize = config_file.readBoolEntry("Look", "SimpleViewKeepSize", true);
+	NoScrollBar = config_file.readBoolEntry("Look", "SimpleViewNoScrollBar", true);
 
 	DockAction->setShortcut(HotKey::shortCutFromFile("ShortCuts", "kadu_simpleview"));
 }
