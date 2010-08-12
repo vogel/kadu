@@ -26,6 +26,7 @@
 #include <QtGui/QMenu>
 #include <QtGui/QMenuBar>
 #include <QtGui/QPushButton>
+#include <QtGui/QScrollBar>
 #include <QtGui/QSplitter>
 
 #include "accounts/account-manager.h"
@@ -270,6 +271,7 @@ void KaduWindow::compositingEnabled()
 			InfoPanel->setAutoFillBackground(true);
 			ChangeStatusButtons->setAutoFillBackground(true);
 			ContactsWidget->nameFilterWidget()->setAutoFillBackground(true);
+			ContactsWidget->view()->verticalScrollBar()->setAutoFillBackground(true);
 			for (int i = 1; i < Split->count(); ++i)
 			{
 				QSplitterHandle *splitterHandle = Split->handle(i);
@@ -292,6 +294,7 @@ void KaduWindow::compositingDisabled()
 		InfoPanel->setAutoFillBackground(false);
 		ChangeStatusButtons->setAutoFillBackground(false);
 		ContactsWidget->nameFilterWidget()->setAutoFillBackground(false);
+		ContactsWidget->view()->verticalScrollBar()->setAutoFillBackground(false);
 		for (int i = 1; i < Split->count(); ++i)
 		{
 			QSplitterHandle *splitterHandle = Split->handle(i);
