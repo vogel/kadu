@@ -21,7 +21,6 @@
 #include <QtGui/QToolBar>
 #include <QtGui/QTabBar>
 #include <QtGui/QSplitter>
-#include <QtGui/QScrollBar>
 
 #include "core/core.h"
 #include "configuration/configuration-file.h"
