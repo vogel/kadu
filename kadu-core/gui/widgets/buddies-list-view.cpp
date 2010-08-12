@@ -331,7 +331,7 @@ void BuddiesListView::keyPressEvent(QKeyEvent *event)
 			KaduWindowActions::deleteUserActionActivated(MainWindow::findMainWindow(this));
 			break;
 		default:
-			if (event->text().isEmpty())
+			if (!QChar(event->key()).isPrint())
 				QTreeView::keyPressEvent(event);
 			else
 				event->ignore();
