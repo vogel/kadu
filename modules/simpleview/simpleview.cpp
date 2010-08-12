@@ -213,7 +213,7 @@ void SimpleView::compositingDisabled()
 
 void SimpleView::configurationUpdated()
 {
-	KeepSize = config_file.readBoolEntry("Look", "SimpleViewKeepSize");
+	KeepSize = config_file.readBoolEntry("Look", "SimpleViewKeepSize", true);
 
 	DockAction->setShortcut(HotKey::shortCutFromFile("ShortCuts", "kadu_simpleview"));
 }
