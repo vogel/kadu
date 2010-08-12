@@ -23,11 +23,10 @@
 #include <QtCore/QPoint>
 #include <QtCore/QSize>
 
+#include "configuration/configuration-aware-object.h"
 #include "os/generic/compositing-aware-object.h"
 
 class QAction;
-class QPoint;
-class QSize;
 class QWidget;
 
 class BuddiesListWidget;
@@ -36,16 +35,20 @@ class MainWindow;
 class StatusButtons;
 
 class SimpleView :
-	public QObject, private CompositingAwareObject
+	public QObject, private ConfigurationAwareObject, CompositingAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(SimpleView)
 
 	static SimpleView *Instance;
+
+	bool KeepSize;
+	bool SimpleViewActive;
+
 	QPoint BackupPosition;
 	QSize BackupSize;
+
 	QAction *DockAction;
-	bool SimpleViewActive;
 	KaduWindow *KaduWindowHandle;
 	MainWindow *MainWindowHandle;
 	BuddiesListWidget *BuddiesListWidgetHandle;
@@ -57,6 +60,7 @@ class SimpleView :
 
 	virtual void compositingEnabled();
 	virtual void compositingDisabled();
+	virtual void configurationUpdated();
 
 public:
 	static void createInstance();

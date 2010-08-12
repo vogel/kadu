@@ -22,28 +22,25 @@
 #include <QtCore/QObject>
 
 
-#include "configuration/configuration-aware-object.h"
 #include "gui/windows/main-configuration-window.h"
 
 class SimpleViewConfigUi :
-	public ConfigurationUiHandler, ConfigurationAwareObject
+	public ConfigurationUiHandler
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(SimpleViewConfigUi)
 
 	static SimpleViewConfigUi *Instance;
-	bool KeepSize;
 
 	SimpleViewConfigUi();
 	virtual ~SimpleViewConfigUi();
 
 	void createDefaultConfiguration();
 
+	/* Keep this code for further use:
 private slots:
 	void mainConfigurationWindowDestroyed();
-
-protected:
-	virtual void configurationUpdated();
+	 */
 
 public:
 	static void createInstance();
@@ -51,7 +48,6 @@ public:
 	static SimpleViewConfigUi *instance(){return Instance; }
 
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
-	bool keepSize() {return KeepSize; }
 };
 
 #endif

@@ -32,8 +32,8 @@
 #include "gui/widgets/buddy-info-panel.h"
 #include "gui/widgets/group-tab-bar.h"
 #include "gui/widgets/status-buttons.h"
-#include "gui/windows/main-window.h"
 #include "gui/windows/kadu-window.h"
+#include "gui/windows/main-window.h"
 
 #include "modules/docking/docking.h"
 #include "simpleview-config-ui.h"
@@ -53,7 +53,6 @@ SimpleView::SimpleView() :
 	MainConfigurationWindow::registerUiHandler(SimpleViewConfigUi::instance());
 
 	DockAction = DockingManager::instance()->dockMenu()->addAction(IconsManager::instance()->iconByPath("16x16/view-refresh.png"), tr("Simple view"), this, SLOT(simpleViewToggle()));
-	DockAction->setShortcut(HotKey::shortCutFromFile("ShortCuts", "kadu_simpleview"));
 
 	KaduWindowHandle = Core::instance()->kaduWindow();
 	MainWindowHandle = KaduWindowHandle->findMainWindow(KaduWindowHandle);
@@ -62,6 +61,8 @@ SimpleView::SimpleView() :
 	groupBarTabHandle = KaduWindowHandle->findChild<GroupTabBar *>();
 	GroupBarWidgetHandle = dynamic_cast<QWidget *>(groupBarTabHandle->parent());
 	StatusButtonsHandle = KaduWindowHandle->findChild<StatusButtons *>();
+
+	configurationUpdated();
 }
 
 SimpleView::~SimpleView()
@@ -153,7 +154,7 @@ void SimpleView::simpleViewToggle()
 
 		MainWindowHandle->setWindowFlags(flags | Qt::FramelessWindowHint);
 
-		if(SimpleViewConfigUi::instance()->keepSize())
+		if(KeepSize)
 		{
 			MainWindowHandle->move(p);
 			MainWindowHandle->resize(s);
@@ -162,7 +163,7 @@ void SimpleView::simpleViewToggle()
 	else
 	{
 		MainWindowHandle->hide();
-		if(SimpleViewConfigUi::instance()->keepSize())
+		if(KeepSize)
 		{
 			BackupPosition = cp - BackupPosition;
 			MainWindowHandle->move(BackupPosition);
@@ -210,3 +211,9 @@ void SimpleView::compositingDisabled()
 		simpleViewToggle();
 }
 
+void SimpleView::configurationUpdated()
+{
+	KeepSize = config_file.readBoolEntry("Look", "SimpleViewKeepSize");
+
+	DockAction->setShortcut(HotKey::shortCutFromFile("ShortCuts", "kadu_simpleview"));
+}

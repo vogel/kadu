@@ -23,11 +23,9 @@
 
 SimpleViewConfigUi *SimpleViewConfigUi::Instance = 0;
 
-SimpleViewConfigUi::SimpleViewConfigUi() :
-	KeepSize(true)
+SimpleViewConfigUi::SimpleViewConfigUi()
 {
 	createDefaultConfiguration();
-	configurationUpdated();
 }
 
 SimpleViewConfigUi::~SimpleViewConfigUi()
@@ -46,19 +44,19 @@ void SimpleViewConfigUi::destroyInstance()
 	Instance = 0;
 }
 
-void SimpleViewConfigUi::configurationUpdated()
-{
-	KeepSize = config_file.readBoolEntry("Look", "SimpleViewKeepSize");
-}
-
 void SimpleViewConfigUi::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
+	Q_UNUSED(mainConfigurationWindow)
+	/* Keep this code for further use:
 	connect(mainConfigurationWindow, SIGNAL(destroyed(QObject *)), this, SLOT(mainConfigurationWindowDestroyed()));
+	*/
 }
 
+/* Keep this code for further use:
 void SimpleViewConfigUi::mainConfigurationWindowDestroyed()
 {
 }
+*/
 
 void SimpleViewConfigUi::createDefaultConfiguration()
 {
