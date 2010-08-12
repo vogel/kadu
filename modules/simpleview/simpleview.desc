@@ -1,0 +1,6 @@
+[Module]
+Description=Simple view module
+Description[pl]=Modu³ uproszczonego widoku
+Author=prudy
+Dependencies=docking
+Version=core
