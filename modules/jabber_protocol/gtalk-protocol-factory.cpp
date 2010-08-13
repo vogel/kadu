@@ -61,6 +61,6 @@ QString GTalkProtocolFactory::iconPath()
 
 QString GTalkProtocolFactory::idLabel()
 {
-	return tr("Google Talk ID:");
+	return tr("Gmail/Google Talk ID:");
 }
 

@@ -127,7 +127,7 @@ void JabberAddAccountWidget::dataChanged()
 	RemindPassword->setEnabled(!Username->text().isEmpty());
 	AddAccountButton->setEnabled(!Username->text().isEmpty()
 				     && !AccountPassword->text().isEmpty()
-				     && !Domain->currentText().isEmpty()
+				     && (Domain->isVisible() || !Domain->currentText().isEmpty())
 				     && Identity->currentIdentity());
 }
 
@@ -138,7 +138,10 @@ void JabberAddAccountWidget::apply()
 	//jabberAccount.setProtocolName("jabber");
 	jabberAccount.setAccountIdentity(Identity->currentIdentity());
 	jabberAccount.setProtocolName("jabber");
-	jabberAccount.setId(Username->text() + "@" + Domain->currentText());
+	if (Domain->isVisible())
+		jabberAccount.setId(Username->text() + "@" + Domain->currentText());
+	else
+		jabberAccount.setId(Username->text() + "@facebook.com");
 	jabberAccount.setPassword(AccountPassword->text());
 	jabberAccount.setHasPassword(!AccountPassword->text().isEmpty());
 	jabberAccount.setRememberPassword(RememberPassword->isChecked());

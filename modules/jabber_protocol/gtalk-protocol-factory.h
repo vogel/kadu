@@ -38,8 +38,8 @@ public:
 
 	virtual QString idLabel();
 
-	virtual QString name() { return "gtalk"; }
-	virtual QString displayName() { return "GTalk"; }
+	virtual QString name() { return "gmail/google talk"; }
+	virtual QString displayName() { return "Gmail/Google Talk"; }
 
 	virtual QIcon icon();
 	virtual QString iconPath();
