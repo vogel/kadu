@@ -127,7 +127,7 @@ void JabberAddAccountWidget::dataChanged()
 	RemindPassword->setEnabled(!Username->text().isEmpty());
 	AddAccountButton->setEnabled(!Username->text().isEmpty()
 				     && !AccountPassword->text().isEmpty()
-				     && (Domain->isVisible() || !Domain->currentText().isEmpty())
+				     && (!Domain->isVisible() || !Domain->currentText().isEmpty())
 				     && Identity->currentIdentity());
 }
 
