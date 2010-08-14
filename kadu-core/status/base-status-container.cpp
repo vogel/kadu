@@ -37,7 +37,7 @@ void BaseStatusContainer::setStatus(Status status)
 {
 	doSetStatus(status);
 
-	storeStatus();
+	storeStatus(status);
 
 //	TODO: this cannot be called here, causes accounts to be removed
 // 	ConfigurationManager::instance()->flush();
@@ -78,13 +78,13 @@ void BaseStatusContainer::setDefaultStatus(const QString &startupStatus, bool of
 	setStatus(status);
 }
 
-void BaseStatusContainer::storeStatus()
+void BaseStatusContainer::storeStatus(Status status)
 {
 	if (!MyStorableObject->isValidStorage())
 		return;
 
-	MyStorableObject->storeValue("LastStatusDescription", status().description());
-	MyStorableObject->storeValue("LastStatusName", statusName());
+	MyStorableObject->storeValue("LastStatusDescription", status.description());
+	MyStorableObject->storeValue("LastStatusName", Status::name(status, false));
 }
 
 void BaseStatusContainer::disconnectStatus(bool disconnectWithCurrentDescription,

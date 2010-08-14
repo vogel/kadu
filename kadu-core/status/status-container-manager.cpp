@@ -307,10 +307,10 @@ QString StatusContainerManager::statusNamePrefix()
 	return QString(tr("All")) + " ";
 }
 
-void StatusContainerManager::storeStatus()
+void StatusContainerManager::storeStatus(Status status)
 {
 	foreach (StatusContainer *statusContainer, StatusContainers)
-		statusContainer->storeStatus();
+		statusContainer->storeStatus(status);
 }
 
 void StatusContainerManager::disconnectStatus(bool disconnectWithCurrentDescription, const QString& disconnectDescription)

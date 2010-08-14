@@ -218,7 +218,8 @@ void FilterWidget::keyPressEvent(QKeyEvent *event)
 		return;
 	}
 
-    QWidget::keyPressEvent(event);
+	QWidget::keyPressEvent(event);
+	event->accept();
 }
 
 #endif

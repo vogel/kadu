@@ -166,7 +166,7 @@ void AccountShared::useProtocolFactory(ProtocolFactory *factory)
 		StatusContainer *statusContianer = Account(this).statusContainer();
 		if (statusContianer)
 		{
-			statusContianer->storeStatus();
+			statusContianer->storeStatus(statusContianer->status());
 			statusContianer->disconnectStatus(disconnectWithCurrentDescription, disconnectDescription);
 		}
 
