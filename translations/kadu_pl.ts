@@ -972,6 +972,10 @@
         <translation>Włącz przezroczystość</translation>
     </message>
     <message>
+        <source>Alpha</source>
+        <translation>Alfa</translation>
+    </message>
+    <message>
         <source>Displays group tabs on the buddy list</source>
         <translation>Wyświetlaj zakładki grup</translation>
     </message>

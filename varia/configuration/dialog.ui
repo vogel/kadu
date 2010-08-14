@@ -255,6 +255,7 @@ Text is plain black." />
 
 			<group-box name="Background">
 				<check-box caption="Turn on transparency" config-section="Look" config-item="UserboxTransparency" id="userboxTransparency" />
+				<slider caption="Alpha" config-section="Look" config-item="UserboxAlpha" min-value="0" max-value="255" page-step="10" id="userboxAlpha" />
 				<check-box caption="Use background image" config-section="Look" config-item="UseUserboxBackground" id="useUserboxBackground" />
 				<select-file caption="Background file" config-section="Look" config-item="UserboxBackground" type="image"
 					     tool-tip="Define background file for the buddy list" id="userboxBackground" />

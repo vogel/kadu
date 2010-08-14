@@ -227,6 +227,8 @@ MainConfigurationWindow::MainConfigurationWindow()
 	connect(widget()->widgetById("recentChatsStore"), SIGNAL(toggled(bool)),
 			widget()->widgetById("recentChatsTimeout"), SLOT(setDisabled(bool)));
 	userboxTransparency = dynamic_cast<QCheckBox *>(widget()->widgetById("userboxTransparency"));
+	userboxAlpha = dynamic_cast<QSlider *>(widget()->widgetById("userboxAlpha"));
+	connect(userboxTransparency, SIGNAL(toggled(bool)), widget()->widgetById("userboxAlpha"), SLOT(setEnabled(bool)));
 
 	triggerCompositingStateChanged();
 }
@@ -239,11 +241,14 @@ MainConfigurationWindow::~MainConfigurationWindow()
 void MainConfigurationWindow::compositingEnabled()
 {
 	userboxTransparency->setEnabled(true);
+	if (userboxTransparency->isChecked())
+		userboxAlpha->setEnabled(true);
 }
 
 void MainConfigurationWindow::compositingDisabled()
 {
 	userboxTransparency->setEnabled(false);
+	userboxAlpha->setEnabled(false);
 }
 
 void MainConfigurationWindow::show()

@@ -6,6 +6,7 @@
 #include "exports.h"
 
 class QCheckBox;
+class QSlider;
 
 class ConfigComboBox;
 class ConfigLineEdit;
@@ -61,6 +62,7 @@ class KADUAPI MainConfigurationWindow : public ConfigurationWindow, CompositingA
 
 	QCheckBox *onStartupSetLastDescription;
 	QCheckBox *userboxTransparency;
+	QSlider *userboxAlpha;
 	ConfigComboBox *emoticonsStyleComboBox;
 	ConfigComboBox *emoticonsThemeComboBox;
 
