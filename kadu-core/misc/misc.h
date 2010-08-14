@@ -36,9 +36,6 @@ extern KADUAPI bool measureTime;
 KADUAPI QString pwHash(const QString &text);
 QString translateLanguage(const QApplication *application, const QString &locale, const bool l2n);
 
-KADUAPI void openWebBrowser(const QString &link);
-KADUAPI void openMailClient(const QString &mail);
-
 QString versionToName(const unsigned int version);
 
 void KADUAPI saveWindowGeometry(const QWidget *w, const QString &section, const QString &name);

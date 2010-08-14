@@ -264,6 +264,7 @@ set (kadu_SRCS
 
 	os/generic/compositing-aware-object.cpp
 	os/generic/system-info.cpp
+	os/generic/url-opener.cpp
 	os/qtsingleapplication/qtlocalpeer.cpp
 	os/qtsingleapplication/qtlockedfile.cpp
 

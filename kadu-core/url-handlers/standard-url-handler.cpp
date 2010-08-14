@@ -18,7 +18,7 @@
  */
 
 #include "configuration/configuration-file.h"
-#include "misc/misc.h"
+#include "os/generic/url-opener.h"
 
 #include "standard-url-handler.h"
 
@@ -72,9 +72,9 @@ void StandardUrlHandler::openUrl(const QString &url, bool disableMenu)
 	Q_UNUSED(disableMenu)
 
 	if (url.startsWith("www."))
-		openWebBrowser("http://" + url);
+		UrlOpener::openUrl("http://" + url);
 	else
-		openWebBrowser(url);
+		UrlOpener::openUrl(url);
 }
 
 void StandardUrlHandler::configurationUpdated()

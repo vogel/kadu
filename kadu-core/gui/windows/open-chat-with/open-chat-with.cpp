@@ -35,6 +35,7 @@
 #include "contacts/contact-manager.h"
 #include "core/core.h"
 #include "gui/widgets/chat-widget-manager.h"
+#include "os/generic/url-opener.h"
 
 #include "debug.h"
 #include "misc/misc.h"
@@ -137,7 +138,7 @@ void OpenChatWith::openChat()
 
 	Buddy buddy = *buddies.begin();
 	if (buddy.mobile().isEmpty() && !buddy.email().isEmpty())
-		openMailClient(buddy.email());
+		UrlOpener::openEmail(buddy.email());
 
 	close();
 }

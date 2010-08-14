@@ -32,32 +32,11 @@
 			<group-box name="Web and E-Mail">
 				<label caption="Kadu will use default applications to open links from chat messages and buddy descriptions." />
 				
-				<combo-box caption="Default Web Browser" config-section="Chat" config-item="WebBrowserNo" id="browser"
-					   tool-tip="Choose your browser">
-					<item value="Specify path" caption="Specify path" />
-					<item value="Konqueror" caption="Konqueror" />
-					<item value="Opera" caption="Opera" />
-					<item value="Opera (new tab)" caption="Opera (new tab)" />
-					<item value="Mozilla" caption="Mozilla" />
-					<item value="SeaMonkey" caption="SeaMonkey" />
-					<item value="Mozilla Firefox" caption="Mozilla Firefox" />
-					<item value="Dillo" caption="Dillo" />
-					<item value="Galeon" caption="Galeon" />
-					<item value="Safari" caption="Safari" />
-					<item value="Camino" caption="Camino" />
-				</combo-box>
+				<check-box caption="Use System Web Browser" config-section="Chat" config-item="UseDefaultWebBrowser" id="useDefaultBrowser" />
 				<line-edit caption="Custom browser" config-section="Chat" config-item="WebBrowser" id="browserPath"
 					   tool-tip="Write specific path to your browser" />
-					   
-				<combo-box caption="Default E-Mail Client" config-section="Chat" config-item="EmailClientNo" id="mail"
-					   tool-tip="Choose your email client">
-					<item value="Specify path" caption="Specify path" />
-					<item value="KMail" caption="KMail" />
-					<item value="Thunderbird" caption="Thunderbird" />
-					<item value="SeaMonkey" caption="SeaMonkey" />
-					<item value="Evolution" caption="Evolution" />
-					<item value="Mail" caption="Mail" />
-				</combo-box>
+
+				<check-box caption="Use System E-Mail Client" config-section="Chat" config-item="UseDefaultEMailClient" id="useDefaultEMail" />
 				<line-edit caption="Custom e-mail client" config-section="Chat" config-item="MailClient" id="mailPath"
 					   tool-tip="Write specific path to your email client" />
 			</group-box>

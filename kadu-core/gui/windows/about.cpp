@@ -43,6 +43,7 @@
 #include "kadu-config.h"
 #include "icons-manager.h"
 #include "misc/misc.h"
+#include "os/generic/url-opener.h"
 #include "url-handlers/mail-url-handler.h"
 
 #include "about.h"
@@ -50,10 +51,11 @@
 class KaduLink : public QLabel
 {
 	QString link;
+
 protected:
 	virtual void mousePressEvent(QMouseEvent *)
 	{
-		openWebBrowser(link);
+		UrlOpener::openUrl(link);
 	}
 
 public:

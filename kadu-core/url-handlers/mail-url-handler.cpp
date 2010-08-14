@@ -17,7 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "misc/misc.h"
+#include "os/generic/url-opener.h"
 
 #include "mail-url-handler.h"
 
@@ -55,5 +55,5 @@ void MailUrlHandler::openUrl(const QString &url, bool disableMenu)
 {
 	Q_UNUSED(disableMenu)
 
-	openMailClient(url);
+	UrlOpener::openEmail(url);
 }

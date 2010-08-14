@@ -60,6 +60,7 @@
 #include "gui/windows/search-window.h"
 #include "gui/windows/your-accounts.h"
 #include "misc/misc.h"
+#include "os/generic/url-opener.h"
 #include "parser/parser.h"
 #include "status/status-changer-manager.h"
 #include "status/status-container-manager.h"
@@ -716,9 +717,9 @@ void KaduWindowActions::helpActionActivated(QAction *sender, bool toggled)
 	Q_UNUSED(toggled)
 
 	if (config_file.readEntry("General", "Language", QString(qApp->keyboardInputLocale().name()).mid(0,2)) == "pl")
-		openWebBrowser("http://www.kadu.net/w/Pomoc_online");
+		UrlOpener::openUrl("http://www.kadu.net/w/Pomoc_online");
 	else
-		openWebBrowser("http://www.kadu.net/w/English:Kadu:Help_online");
+		UrlOpener::openUrl("http://www.kadu.net/w/English:Kadu:Help_online");
 }
 
 void KaduWindowActions::bugsActionActivated(QAction *sender, bool toggled)
@@ -727,9 +728,9 @@ void KaduWindowActions::bugsActionActivated(QAction *sender, bool toggled)
 	Q_UNUSED(toggled)
 
 	if (config_file.readEntry("General", "Language", QString(qApp->keyboardInputLocale().name()).mid(0,2)) == "pl")
-		openWebBrowser("http://www.kadu.net/w/B%C5%82%C4%99dy");
+		UrlOpener::openUrl("http://www.kadu.net/w/B%C5%82%C4%99dy");
 	else
-		openWebBrowser("http://www.kadu.net/w/English:Bugs");
+		UrlOpener::openUrl("http://www.kadu.net/w/English:Bugs");
 }
 
 void KaduWindowActions::supportActionActivated(QAction *sender, bool toggled)
@@ -738,9 +739,9 @@ void KaduWindowActions::supportActionActivated(QAction *sender, bool toggled)
 	Q_UNUSED(toggled)
 
 	if (config_file.readEntry("General", "Language", QString(qApp->keyboardInputLocale().name()).mid(0,2)) == "pl")
-		openWebBrowser("http://www.kadu.net/w/Kadu:Site_support");
+		UrlOpener::openUrl("http://www.kadu.net/w/Kadu:Site_support");
 	else
-		openWebBrowser("http://www.kadu.net/w/English:Kadu:Site_support");
+		UrlOpener::openUrl("http://www.kadu.net/w/English:Kadu:Site_support");
 }
 
 void KaduWindowActions::getInvolvedActionActivated(QAction *sender, bool toggled)
@@ -749,9 +750,9 @@ void KaduWindowActions::getInvolvedActionActivated(QAction *sender, bool toggled
 	Q_UNUSED(toggled)
 
 	if (config_file.readEntry("General", "Language", QString(qApp->keyboardInputLocale().name()).mid(0,2)) == "pl")
-		openWebBrowser("http://www.kadu.net/w/Do%C5%82%C4%85cz");
+		UrlOpener::openUrl("http://www.kadu.net/w/Do%C5%82%C4%85cz");
 	else
-		openWebBrowser("http://www.kadu.net/w/English:GetInvolved");
+		UrlOpener::openUrl("http://www.kadu.net/w/English:GetInvolved");
 }
 
 void KaduWindowActions::aboutActionActivated(QAction *sender, bool toggled)
@@ -767,7 +768,7 @@ void KaduWindowActions::translateActionActivated(QAction *sender, bool toggled)
 	Q_UNUSED(sender)
 	Q_UNUSED(toggled)
 
-	openWebBrowser("http://www.kadu.net/forum/viewforum.php?f=19");
+	UrlOpener::openUrl("http://www.kadu.net/forum/viewforum.php?f=19");
 }
 
 void KaduWindowActions::showInfoPanelActionActivated(QAction *sender, bool toggled)
@@ -806,7 +807,7 @@ void KaduWindowActions::writeEmailActionActivated(QAction *sender, bool toggled)
 		return;
 
 	if (!buddy.email().isEmpty())
-		openMailClient(buddy.email());
+		UrlOpener::openEmail(buddy.email());
 
 	kdebugf2();
 }
@@ -858,7 +859,7 @@ void KaduWindowActions::openDescriptionLinkActionActivated(QAction *sender, bool
 	QRegExp url = UrlHandlerManager::instance()->urlRegExp();
 	int idx_start = url.indexIn(description);
 	if (idx_start >= 0)
-		openWebBrowser(description.mid(idx_start, url.matchedLength()));
+		UrlOpener::openUrl(description.mid(idx_start, url.matchedLength()));
 
 	kdebugf2();
 }
