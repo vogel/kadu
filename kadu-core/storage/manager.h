@@ -431,7 +431,7 @@ public:
 		itemAboutToBeAdded(item);
 
 		Items.append(item);
-		
+
 		itemAdded(item);
 	
 		if (item.details())

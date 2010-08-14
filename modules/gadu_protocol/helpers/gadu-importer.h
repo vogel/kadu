@@ -33,6 +33,9 @@ class GaduImporter : public QObject
 
 	GaduImporter() {}
 
+	bool alreadyImported();
+	void markImported();
+
 	void importContact(Buddy &buddy);
 	void importGaduContact(Buddy &buddy);
 	void importIgnored();

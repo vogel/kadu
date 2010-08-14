@@ -31,6 +31,7 @@
 #endif
 
 #include "accounts/account.h"
+#include "accounts/account-manager.h"
 #include "chat/chat.h"
 #include "chat/message/formatted-message.h"
 #include "chat/chat-manager.h"
@@ -92,7 +93,7 @@ extern "C" KADU_EXPORT int gadu_protocol_init(bool firstLoad)
 	ProtocolsManager::instance()->registerProtocolFactory(GaduProtocolFactory::instance());
 	UrlHandlerManager::instance()->registerUrlHandler("Gadu", new GaduUrlHandler());
 
-	if (!xml_config_file->hasNode("Accounts"))
+	if (AccountManager::instance()->allItems().isEmpty())
 		GaduImporter::instance()->importAccounts();
 
 	GaduImporter::instance()->importContacts();

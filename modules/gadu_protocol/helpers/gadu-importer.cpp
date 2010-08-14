@@ -49,10 +49,27 @@ GaduImporter * GaduImporter::instance()
 
 	return Instance;
 }
+bool GaduImporter::alreadyImported()
+{
+	QDomElement node = xml_config_file->getNode("Accounts", XmlConfigFile::ModeFind);
+	if (node.isNull())
+		return false;
+
+	return node.hasAttribute("import_done");
+}
+
+void GaduImporter::markImported()
+{
+	QDomElement node = xml_config_file->getNode("Accounts", XmlConfigFile::ModeFind);
+	node.setAttribute("import_done", "true");
+}
 
 void GaduImporter::importAccounts()
 {
 	if (0 == config_file.readNumEntry("General", "UIN"))
+		return;
+
+	if (alreadyImported())
 		return;
 
 	Account defaultGaduGadu = Account::create();
@@ -101,8 +118,10 @@ void GaduImporter::importAccounts()
 	accountDetails->import_0_6_5_LastStatus();
 
 	AccountManager::instance()->addItem(defaultGaduGadu);
-	
+
 	config_file.writeEntry("General", "SimpleMode", true);
+
+	markImported();
 }
 
 void GaduImporter::importContacts()
