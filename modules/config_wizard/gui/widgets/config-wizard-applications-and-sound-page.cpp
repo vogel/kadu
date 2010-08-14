@@ -17,6 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QCheckBox>
 #include <QtGui/QComboBox>
 #include <QtGui/QFormLayout>
 #include <QtGui/QLabel>
@@ -53,22 +54,18 @@ void ConfigWizardApplicationsAndSoundPage::createGui()
 
 	formLayout()->addRow(new QLabel(tr("<b>Web and E-Mail</b>"), this));
 
-	BrowserCombo = new QComboBox(this);
-	connect(BrowserCombo, SIGNAL(activated(int)), this, SLOT(browserChanged(int)));
-	setBrowsers();
-
+	BrowserCheckBox = new QCheckBox(this);
 	BrowserLineEdit = new QLineEdit(this);
+	connect(BrowserCheckBox, SIGNAL(toggled(bool)), BrowserLineEdit, SLOT(setDisabled(bool)));
 
-	formLayout()->addRow(tr("Web Browser") + ":", BrowserCombo);
+	formLayout()->addRow(tr("Use Default Web Browser") + ":", BrowserCheckBox);
 	formLayout()->addRow(tr("Web Browser Executable") + ":", BrowserLineEdit);
 
-	EMailCombo = new QComboBox(this);
-	connect(EMailCombo, SIGNAL(activated(int)), this, SLOT(emailChanged(int)));
-	setEMails();
-
+	EMailCheckBox = new QCheckBox(this);
 	EMailLineEdit = new QLineEdit(this);
+	connect(EMailCheckBox, SIGNAL(toggled(bool)), EMailLineEdit, SLOT(setDisabled(bool)));
 
-	formLayout()->addRow(tr("E-Mail Application") + ":", EMailCombo);
+	formLayout()->addRow(tr("Use Default E-Mail Application") + ":", EMailCheckBox);
 	formLayout()->addRow(tr("E-Mail Application Executable") + ":", EMailLineEdit);
 
 	formLayout()->addRow(new QLabel(tr("<b>Sound</b>"), this));
@@ -82,30 +79,6 @@ void ConfigWizardApplicationsAndSoundPage::createGui()
 	connect(soundTestButton, SIGNAL(clicked(bool)), this, SLOT(testSound()));
 
 	formLayout()->addRow("", soundTestButton);
-}
-
-void ConfigWizardApplicationsAndSoundPage::setBrowsers()
-{
-	BrowserCombo->addItem(tr("- Select Browser -"));
-	BrowserCombo->addItem(tr("Konqueror"));
-	BrowserCombo->addItem(tr("Opera"));
-	BrowserCombo->addItem(tr("Opera (new tab)"));
-	BrowserCombo->addItem(tr("SeaMonkey"));
-	BrowserCombo->addItem(tr("Mozilla"));
-	BrowserCombo->addItem(tr("Mozilla Firefox"));
-	BrowserCombo->addItem(tr("Dillo"));
-	BrowserCombo->addItem(tr("Galeon"));
-	BrowserCombo->addItem(tr("Safari"));
-	BrowserCombo->addItem(tr("Camino"));
-}
-
-void ConfigWizardApplicationsAndSoundPage::setEMails()
-{
-	EMailCombo->addItem(tr("- Select E-Mail Application -"));
-	EMailCombo->addItem(tr("KMail"));
-	EMailCombo->addItem(tr("Thunderbird"));
-	EMailCombo->addItem(tr("SeaMonkey"));
-	EMailCombo->addItem(tr("Evolution"));
 }
 
 void ConfigWizardApplicationsAndSoundPage::setSoundDrivers()
@@ -156,30 +129,6 @@ void ConfigWizardApplicationsAndSoundPage::setSoundDrivers()
 	SoundModulesCombo->addItems(soundModules);
 }
 
-void ConfigWizardApplicationsAndSoundPage::browserChanged(int index)
-{
-	QString browser = MainConfigurationWindow::getBrowserExecutable(index);
-
-	BrowserLineEdit->setEnabled(index == 0);
-	BrowserLineEdit->setText(browser);
-
-	if (index != 0 && browser.isEmpty())
-		if (!BrowserCombo->currentText().contains(tr("Not found")))
-			BrowserCombo->setItemText(index, BrowserCombo->currentText() + " (" + tr("Not found") + ")");
-}
-
-void ConfigWizardApplicationsAndSoundPage::emailChanged(int index)
-{
-	QString mail = MainConfigurationWindow::getEMailExecutable(index);
-
-	EMailLineEdit->setEnabled(index == 0);
-	EMailLineEdit->setText(mail);
-
-	if (index != 0 && mail.isEmpty())
-		if (!EMailCombo->currentText().contains(tr("Not found")))
-			EMailCombo->setItemText(index, EMailCombo->currentText() + " (" + tr("Not found") + ")");
-}
-
 void ConfigWizardApplicationsAndSoundPage::changeSoundModule(const QString &newSoundModule)
 {
 	QString currentSoundModule = ModulesManager::instance()->moduleProvides("sound_driver");
@@ -211,39 +160,8 @@ bool ConfigWizardApplicationsAndSoundPage::validatePage()
 
 void ConfigWizardApplicationsAndSoundPage::initializeApplications()
 {
-	QString browserIndexName = config_file.readEntry("Chat", "WebBrowserNo");
-	QString browserName;
-
-	int browserIndex = 0;
-	int foundBrowserIndex = 0;
-	while (!(browserName = MainConfigurationWindow::browserIndexToString(browserIndex)).isEmpty())
-		if (browserName == browserIndexName)
-		{
-			foundBrowserIndex = browserIndex;
-			break;
-		}
-		else
-			browserIndex++;
-
-	BrowserCombo->setCurrentIndex(foundBrowserIndex);
-	browserChanged(foundBrowserIndex);
-
-	QString mailIndexName = config_file.readEntry("Chat", "EmailClientNo");
-	QString mailName;
-
-	int mailIndex = 0;
-	int foundMailIndex = 0;
-	while (!(mailName = MainConfigurationWindow::emailIndexToString(mailIndex)).isEmpty())
-		if (mailName == mailIndexName)
-		{
-			foundMailIndex = mailIndex;
-			break;
-		}
-		else
-			mailIndex++;
-
-	EMailCombo->setCurrentIndex(foundMailIndex);
-	emailChanged(foundMailIndex);
+	BrowserCheckBox->setChecked(config_file.readBoolEntry("Chat", "UseDefaultWebBrowser", true));
+	EMailCheckBox->setChecked(config_file.readBoolEntry("Chat", "UseDefaultEMailClient", true));
 }
 
 void ConfigWizardApplicationsAndSoundPage::initializeSound()
@@ -264,9 +182,9 @@ void ConfigWizardApplicationsAndSoundPage::initializePage()
 
 void ConfigWizardApplicationsAndSoundPage::acceptApplications()
 {
-	config_file.writeEntry("Chat", "WebBrowserNo", MainConfigurationWindow::browserIndexToString(BrowserCombo->currentIndex()));
+	config_file.writeEntry("Chat", "UseDefaultWebBrowser", BrowserCheckBox->isChecked());
 	config_file.writeEntry("Chat", "WebBrowser", BrowserLineEdit->text());
-	config_file.writeEntry("Chat", "EmailClientNo", MainConfigurationWindow::emailIndexToString(EMailCombo->currentIndex()));
+	config_file.writeEntry("Chat", "UseDefaultEMailClient", EMailCheckBox->isChecked());
 	config_file.writeEntry("Chat", "MailClient", EMailLineEdit->text());
 }
 

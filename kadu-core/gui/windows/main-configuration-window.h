@@ -66,12 +66,6 @@ class KADUAPI MainConfigurationWindow : public ConfigurationWindow, CompositingA
 	ConfigComboBox *emoticonsStyleComboBox;
 	ConfigComboBox *emoticonsThemeComboBox;
 
-	ConfigComboBox *browserComboBox;
-	ConfigLineEdit *browserCommandLineEdit;
-
-	ConfigComboBox *mailComboBox;
-	ConfigLineEdit *mailCommandLineEdit;
-
 	explicit MainConfigurationWindow();
 
 	void setLanguages();
@@ -87,8 +81,6 @@ private slots:
 	void onChangeEmoticonsStyle(int index);
 
 	void onChangeStartupStatus(int index);
-	void onChangeBrowser(int index);
-	void onChangeMail(int index);
 
 	void showLookChatAdvanced();
 	void lookChatAdvancedDestroyed();
@@ -124,12 +116,6 @@ public:
 	virtual ~MainConfigurationWindow();
 
 	virtual void show();
-
-	static QString getBrowserExecutable(int browserIndex);
-	static QString getEMailExecutable(int emailIndex);
-
-	static QString browserIndexToString(int browserIndex);
-	static QString emailIndexToString(int emailIndex);
 
 protected:
 	virtual void keyPressEvent(QKeyEvent *e);
