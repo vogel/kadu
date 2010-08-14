@@ -13,6 +13,7 @@
 * gui: added contact list transparency (prudy)
 * core: fixed status saving (Vogel)
 * gadu: #1377 fixed: importing account (Vogel)
+* gui: simplified configuration of web browser and e-mail client (Vogel)
 
 +++ version 0.6.6-beta4
 * gui: #1119 fixed: copying emoticons works again (beevvy)
