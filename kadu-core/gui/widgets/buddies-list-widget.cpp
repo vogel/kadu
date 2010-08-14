@@ -68,6 +68,11 @@ BuddiesListWidget::~BuddiesListWidget()
 {
 }
 
+void BuddiesListWidget::clearFilter()
+{
+	NameFilterWidget->setFilter("");
+}
+
 void BuddiesListWidget::nameFilterChanged(const QString &filter)
 {
 	NameFilter->setName(filter);

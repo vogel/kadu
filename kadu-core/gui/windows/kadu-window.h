@@ -118,6 +118,7 @@ private slots:
 protected:
 	virtual void closeEvent(QCloseEvent *);
 	virtual void keyPressEvent(QKeyEvent *);
+    virtual void windowActivationChange(bool b);
 
 	virtual bool supportsActionType(ActionDescription::ActionType type);
 

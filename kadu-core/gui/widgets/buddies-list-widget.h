@@ -58,6 +58,8 @@ public:
 	explicit BuddiesListWidget(FilterPosition filterPosition, MainWindow *mainWindow, QWidget *parent = 0);
 	virtual ~BuddiesListWidget();
 
+	void clearFilter();
+
 	BuddiesListView * view() { return View; }
 	QWidget * nameFilterWidget() { return NameFilterWidget; }
 	BuddyNameFilter * nameFilter() { return NameFilter; }

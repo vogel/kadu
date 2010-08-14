@@ -57,6 +57,7 @@
 #include "gui/widgets/status-buttons.h"
 #include "gui/widgets/status-menu.h"
 #include "notify/notification-manager.h"
+#include "activate.h"
 
 #include "misc/misc.h"
 #include "debug.h"
@@ -402,6 +403,14 @@ void KaduWindow::keyPressEvent(QKeyEvent *e)
 	emit keyPressed(e);
 
 	MainWindow::keyPressEvent(e);
+}
+
+void KaduWindow::windowActivationChange(bool b)
+{
+	if (!_isActiveWindow(this))
+		ContactsWidget->clearFilter();
+
+	MainWindow::windowActivationChange(b);
 }
 
 bool KaduWindow::supportsActionType(ActionDescription::ActionType type)
