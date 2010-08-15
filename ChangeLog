@@ -33,7 +33,6 @@
 * gui: #1316 fixed: problems with tray and Compiz (ultr)
 * jabber: #1405 fixed: proper default connection settings for GTalk accounts (Juzef)
 
-
 +++ version 0.6.6-beta3
 * jabber: proper URL handler for xmpp:// (Juzef)
 * gadu: #1356 fixed: setting gadu servers manually works now (Vogel)

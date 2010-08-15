@@ -280,8 +280,11 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("ShortCuts", "kadu_searchuser", "Ctrl+F");
 	config_file.addVariable("ShortCuts", "kadu_exit", "Ctrl+Q");
 
-	config_file.addVariable("Chat", "UseDefaultWebBrowser", true);
-	config_file.addVariable("Chat", "UseDefaultEMailClient", true);
+	config_file.addVariable("Chat", "UseDefaultWebBrowser", config_file.readEntry("Chat", "WebBrowser").isEmpty());
+	config_file.addVariable("Chat", "UseDefaultEMailClient", config_file.readEntry("Chat", "MailClient").isEmpty());
+
+	if (!config_file.readBoolEntry("General", "AdvancedMode", false))
+		config_file.addVariable("General", "SimpleMode", true);
 
 	createAllDefaultToolbars();
 }
