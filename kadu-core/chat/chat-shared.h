@@ -59,7 +59,6 @@ class KADUAPI ChatShared : public QObject, public Shared, public DetailsHolder<C
 	Account ChatAccount;
 	QString Type;
 	QString Title;
-	QIcon Icon;
 	bool IgnoreAllMessages;
 
 protected:
@@ -128,7 +127,7 @@ public:
 	 * Chat icon is used to display in window titles. For 'simple' chats it is icon of status
 	 * of peer, for 'conference' chats it is generic icon.
 	 */
-	KaduShared_PropertyRead(QIcon, icon, Icon)
+	QIcon icon();
 
 	// temporary, not stored, lost after program close
 	KaduShared_PropertyBool(IgnoreAllMessages)

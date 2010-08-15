@@ -297,8 +297,6 @@ void ChatShared::refreshTitle()
 			contactslist.append(Parser::parse(conferenceContents.isEmpty() ? "%a" : conferenceContents, contact, false));
 	
 		title.append(contactslist.join(", "));
-
- 		Icon = ChatTypeManager::instance()->chatType("Conference")->icon();
 	}
 	else if (contactsSize > 0)
 	{
@@ -313,9 +311,6 @@ void ChatShared::refreshTitle()
 		}
 		else
 			title = Parser::parse(config_file.readEntry("Look","ChatContents"), contact, false);
-
-		if (!contact.isNull() && ChatAccount.statusContainer())
-			Icon = ChatAccount.statusContainer()->statusIcon(contact.currentStatus());
 	}
 
 	title.replace("<br/>", " ");
@@ -354,4 +349,22 @@ QString ChatShared::name()
 	ensureLoaded();
 
 	return details() ? details()->name() : QString::null;
+}
+
+QIcon ChatShared::icon()
+{
+	ensureLoaded();
+
+	int contactsSize = contacts().count();
+	if (contactsSize > 1)
+		return ChatTypeManager::instance()->chatType("Conference")->icon();
+
+	if (contactsSize > 0)
+	{
+		Contact contact = contacts().toContact();
+		if (!contact.isNull() && ChatAccount.statusContainer())
+			return ChatAccount.statusContainer()->statusIcon(contact.currentStatus());
+	}
+
+	return QIcon();
 }
