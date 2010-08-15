@@ -189,12 +189,17 @@ bool FilterWidget::sendKeyEventToView(QKeyEvent *event)
 {
 	switch (event->key())
 	{
+		case Qt::Key_Enter:
+		case Qt::Key_Return:
+		{
+			QItemSelectionModel *selectionModel = View->selectionModel();
+			selectionModel->select(View->model()->index(0, 0), QItemSelectionModel::SelectCurrent);
+			// do not add break here
+		}
 		case Qt::Key_Down:
 		case Qt::Key_Up:
 		case Qt::Key_PageDown:
 		case Qt::Key_PageUp:
-		case Qt::Key_Enter:
-		case Qt::Key_Return:
 			qApp->sendEvent(View, event);
 			return true;
 	}
