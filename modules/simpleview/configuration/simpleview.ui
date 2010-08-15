@@ -8,11 +8,4 @@
 			  </group-box>
 		</tab>
 	</section>
-	<section name="Shortcuts">
-		<tab name="General">
-			<group-box name="Simple view">
-                <hot-key-edit caption="Toggle simple view mode" config-section="ShortCuts" config-item="kadu_simpleview" />
-			</group-box>
-		</tab>
-	</section>
 </configuration-ui>
