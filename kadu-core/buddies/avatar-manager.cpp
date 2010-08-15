@@ -84,6 +84,8 @@ void AvatarManager::itemRemoved(Avatar item)
 
 AvatarService * AvatarManager::avatarService(Account account)
 {
+	QMutexLocker(&mutex());
+
 	Protocol *protocol = account.protocolHandler();
 	if (!protocol)
 		return 0;
@@ -93,6 +95,8 @@ AvatarService * AvatarManager::avatarService(Account account)
 
 AvatarService * AvatarManager::avatarService(Contact contact)
 {
+	QMutexLocker(&mutex());
+
 	Account account = contact.contactAccount();
 	if (account.isNull())
 		return 0;
@@ -102,6 +106,8 @@ AvatarService * AvatarManager::avatarService(Contact contact)
 
 void AvatarManager::accountRegistered(Account account)
 {
+	QMutexLocker(&mutex());
+
 	connect(account, SIGNAL(connected()), this, SLOT(updateAccountAvatars()));
 
 	AvatarService *service = avatarService(account);
@@ -114,6 +120,8 @@ void AvatarManager::accountRegistered(Account account)
 
 void AvatarManager::accountUnregistered(Account account)
 {
+	QMutexLocker(&mutex());
+
 	disconnect(account, SIGNAL(connected()), this, SLOT(updateAccountAvatars()));
 
 	AvatarService *service = avatarService(account);
@@ -126,11 +134,15 @@ void AvatarManager::accountUnregistered(Account account)
 
 void AvatarManager::contactAdded(Contact contact)
 {
+	QMutexLocker(&mutex());
+
 	updateAvatar(contact, true);
 }
 
 bool AvatarManager::needUpdate(Contact contact)
 {
+	QMutexLocker(&mutex());
+
 	if (!contact.contactAvatar())
 		return true;
 
@@ -150,6 +162,8 @@ bool AvatarManager::needUpdate(Contact contact)
 
 void AvatarManager::updateAvatar(Contact contact, bool force)
 {
+	QMutexLocker(&mutex());
+
 	if (!force && !needUpdate(contact))
 		return;
 
@@ -162,6 +176,8 @@ void AvatarManager::updateAvatar(Contact contact, bool force)
 
 void AvatarManager::avatarFetched(Contact contact, const QByteArray &data)
 {
+	QMutexLocker(&mutex());
+
 	Avatar avatar = contact.contactAvatar();
 	if (!avatar)
 	{
@@ -183,6 +199,8 @@ void AvatarManager::avatarFetched(Contact contact, const QByteArray &data)
 
 void AvatarManager::updateAvatars()
 {
+	QMutexLocker(&mutex());
+
 	foreach (Contact contact, ContactManager::instance()->items())
 		if (!contact.ownerBuddy().isAnonymous())
 			updateAvatar(contact);
@@ -190,6 +208,8 @@ void AvatarManager::updateAvatars()
 
 void AvatarManager::updateAccountAvatars()
 {
+	QMutexLocker(&mutex());
+
 	Account account(sender());
 	if (!account)
 		return;

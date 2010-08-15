@@ -45,6 +45,8 @@ IdentityManager::~IdentityManager()
 
 Identity IdentityManager::byName(const QString &name, bool create)
 {
+	QMutexLocker(&mutex());
+
 	if (name.isEmpty())
 		return Identity::null;
 
@@ -66,6 +68,8 @@ Identity IdentityManager::byName(const QString &name, bool create)
 
 Identity IdentityManager::identityForAcccount(Account account)
 {
+	QMutexLocker(&mutex());
+
 	foreach (Identity identity, items())
 		if (identity.hasAccount(account))
 			return identity;
@@ -96,6 +100,8 @@ void IdentityManager::itemRemoved(Identity item)
 
 void IdentityManager::addDefaultIdentities()
 {
+	QMutexLocker(&mutex());
+
 	Identity friendsIdentity = Identity::create();
 	friendsIdentity.data()->setState(StateNew);
 	friendsIdentity.setName(tr("Friends"));
@@ -114,6 +120,8 @@ void IdentityManager::addDefaultIdentities()
 
 void IdentityManager::load()
 {
+	QMutexLocker(&mutex());
+
 	SimpleManager<Identity>::load();
 
 	if (items().isEmpty())

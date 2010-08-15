@@ -81,6 +81,8 @@ void ChatManager::itemUnregistered(Chat item)
  */
 void ChatManager::detailsLoaded(Chat chat)
 {
+	QMutexLocker(&mutex());
+
 	if (!chat.isNull())
 		registerItem(chat);
 }
@@ -95,12 +97,16 @@ void ChatManager::detailsLoaded(Chat chat)
  */
 void ChatManager::detailsUnloaded(Chat chat)
 {
+	QMutexLocker(&mutex());
+
 	if (!chat.isNull())
 		unregisterItem(chat);
 }
 
 bool ChatManager::isAccountCommon(Account account, BuddySet buddies)
 {
+	QMutexLocker(&mutex());
+
 	foreach (Buddy buddy, buddies)
 		if (buddy.contacts(account).isEmpty())
 			return false;
@@ -110,6 +116,8 @@ bool ChatManager::isAccountCommon(Account account, BuddySet buddies)
 
 Account ChatManager::getCommonAccount(BuddySet buddies)
 {
+	QMutexLocker(&mutex());
+
 	QList<Account> accounts = AccountManager::instance()->items();
 	foreach (Account account, accounts)
 		if (isAccountCommon(account, buddies))
@@ -120,6 +128,8 @@ Account ChatManager::getCommonAccount(BuddySet buddies)
 
 Chat ChatManager::findChat(BuddySet buddies, bool create)
 {
+	QMutexLocker(&mutex());
+
 	Account commonAccount = getCommonAccount(buddies);
 	if (!commonAccount)
 		return Chat::null;
@@ -155,6 +165,8 @@ Chat ChatManager::findChat(BuddySet buddies, bool create)
  */
 Chat ChatManager::findChat(ContactSet contacts, bool create)
 {
+	QMutexLocker(&mutex());
+
 	ensureLoaded();
 
 	if (contacts.size() == 0)

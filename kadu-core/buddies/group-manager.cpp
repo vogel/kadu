@@ -58,6 +58,8 @@ GroupManager::~GroupManager()
 
 void GroupManager::importConfiguration()
 {
+	QMutexLocker(&mutex());
+
 	StoragePoint *sp = storage();
 	if (!sp || !sp->storage())
 		return;
@@ -80,6 +82,8 @@ void GroupManager::importConfiguration()
 
 void GroupManager::load()
 {
+	QMutexLocker(&mutex());
+
 	QDomElement groupsNode = xml_config_file->getNode("Groups", XmlConfigFile::ModeFind);
 	if (groupsNode.isNull())
 	{
@@ -93,6 +97,8 @@ void GroupManager::load()
 
 void GroupManager::store()
 {
+	QMutexLocker(&mutex());
+
 	emit saveGroupData();
 
 	SimpleManager<Group>::store();
@@ -100,6 +106,8 @@ void GroupManager::store()
 
 Group GroupManager::byName(const QString &name, bool create)
 {
+	QMutexLocker(&mutex());
+
 	if (name.isEmpty())
 		return Group::null;
 
@@ -122,6 +130,8 @@ Group GroupManager::byName(const QString &name, bool create)
 // TODO: move some of this to %like-encoding, so we don't block normal names
 bool GroupManager::acceptableGroupName(const QString &groupName)
 {
+	QMutexLocker(&mutex());
+
 	kdebugf();
 	if (groupName.isEmpty())
 	{

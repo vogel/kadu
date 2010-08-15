@@ -64,6 +64,8 @@ PendingMessagesManager::~PendingMessagesManager()
 // TODO: optimize
 bool PendingMessagesManager::hasPendingMessagesForContact(Contact contact)
 {
+	QMutexLocker(&mutex());
+
 	foreach (Message message, items())
 		if (message.isPending() && message.messageChat().contacts().contains(contact))
 			return true;
@@ -73,6 +75,8 @@ bool PendingMessagesManager::hasPendingMessagesForContact(Contact contact)
 
 bool PendingMessagesManager::hasPendingMessagesForBuddy(Buddy buddy)
 {
+	QMutexLocker(&mutex());
+
 	QSet<Contact> contacts = buddy.contacts().toSet();
 
 	foreach (Message message, items())
@@ -84,6 +88,8 @@ bool PendingMessagesManager::hasPendingMessagesForBuddy(Buddy buddy)
 
 bool PendingMessagesManager::hasPendingMessagesForChat(Chat chat)
 {
+	QMutexLocker(&mutex());
+
 	foreach (Message message, items())
 		if (message.isPending() && message.messageChat() == chat)
 			return true;
@@ -93,6 +99,8 @@ bool PendingMessagesManager::hasPendingMessagesForChat(Chat chat)
 
 bool PendingMessagesManager::hasPendingMessages()
 {
+	QMutexLocker(&mutex());
+
 	foreach (Message message, items())
 		if (message.isPending())
 			return true;
@@ -102,6 +110,8 @@ bool PendingMessagesManager::hasPendingMessages()
 
 QList<Message> PendingMessagesManager::pendingMessagesForContact(Contact contact)
 {
+	QMutexLocker(&mutex());
+
 	QList<Message> result;
 
 	foreach (Message message, items())
@@ -113,6 +123,8 @@ QList<Message> PendingMessagesManager::pendingMessagesForContact(Contact contact
 
 QList<Message> PendingMessagesManager::pendingMessagesForBuddy(Buddy buddy)
 {
+	QMutexLocker(&mutex());
+
 	QList<Message> result;
 	QSet<Contact> contacts = buddy.contacts().toSet();
 
@@ -125,6 +137,8 @@ QList<Message> PendingMessagesManager::pendingMessagesForBuddy(Buddy buddy)
 
 QList<Message> PendingMessagesManager::pendingMessagesForChat(Chat chat)
 {
+	QMutexLocker(&mutex());
+
 	QList<Message> result;
 
 	foreach (Message message, items())
@@ -136,6 +150,8 @@ QList<Message> PendingMessagesManager::pendingMessagesForChat(Chat chat)
 
 QList<Message> PendingMessagesManager::pendingMessages()
 {
+	QMutexLocker(&mutex());
+
 	QList<Message> result;
 
 	foreach (Message message, items())
@@ -147,6 +163,8 @@ QList<Message> PendingMessagesManager::pendingMessages()
 
 Message PendingMessagesManager::firstPendingMessage()
 {
+	QMutexLocker(&mutex());
+
 	foreach (Message message, items())
 		if (message.isPending())
 			return message;

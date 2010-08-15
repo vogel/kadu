@@ -21,6 +21,8 @@
 #define MANAGER_H
 
 #include <QtCore/QMap>
+#include <QtCore/QMutex>
+#include <QtCore/QMutexLocker>
 #include <QtCore/QObject>
 #include <QtCore/QUuid>
 
@@ -58,10 +60,14 @@
  *
  * Class Item must implement Item loadFromStorage(StoragePoint *) static method.
  * Class Item must have static field Item null that represents unique NULL value.
+ *
+ * This class is thread-safe.
  */
 template<class Item>
 class KADUAPI Manager : public StorableObject
 {
+	QMutex Mutex;
+
 	QList<Item> Items;
 	QList<Item> ItemsWithDetails;
 
@@ -74,7 +80,8 @@ protected:
 	 * in @link ConfigurationManager @endlink singleton, so this class
 	 * will automatically store itself on each configuration flush request.
 	 */
-	Manager()
+	Manager() :
+			Mutex(QMutex::Recursive)
 	{
 		setState(StateNotLoaded);
 		ConfigurationManager::instance()->registerStorableObject(this);
@@ -90,6 +97,11 @@ protected:
 	virtual ~Manager()
 	{
 		ConfigurationManager::instance()->unregisterStorableObject(this);
+	}
+
+	QMutex & mutex()
+	{
+		return Mutex;
 	}
 
 	/**
@@ -222,6 +234,8 @@ protected:
 	 */
 	void registerItem(Item item)
 	{
+		(void) QMutexLocker(&Mutex);
+
 		if (ItemsWithDetails.contains(item))
 			return;
 		if (!Items.contains(item))
@@ -244,6 +258,8 @@ protected:
 	 */
 	void unregisterItem(Item item)
 	{
+		(void) QMutexLocker(&Mutex);
+
 		if (!ItemsWithDetails.contains(item))
 			return;
 		if (!Items.contains(item))
@@ -265,6 +281,8 @@ protected:
 	 */
 	virtual void load()
 	{
+		(void) QMutexLocker(&Mutex);
+
 		if (!isValidStorage())
 			return;
 
@@ -299,6 +317,8 @@ public:
 	 */
 	virtual void store()
 	{
+		(void) QMutexLocker(&Mutex);
+
 		ensureLoaded();
 
 		foreach (Item item, Items)
@@ -321,6 +341,8 @@ public:
 	 */
 	Item byIndex(unsigned int index)
 	{
+		(void) QMutexLocker(&Mutex);
+
 		ensureLoaded();
 
 		if (index >= count())
@@ -340,6 +362,8 @@ public:
 	 */
 	Item byUuid(const QUuid &uuid)
 	{
+		(void) QMutexLocker(&Mutex);
+
 		ensureLoaded();
 
 		if (uuid.isNull())
@@ -367,6 +391,8 @@ public:
 	 */
 	unsigned int indexOf(Item item)
 	{
+		(void) QMutexLocker(&Mutex);
+
 		ensureLoaded();
 		return ItemsWithDetails.indexOf(item);
 	}
@@ -382,6 +408,8 @@ public:
 	 */
 	unsigned int count()
 	{
+		(void) QMutexLocker(&Mutex);
+
 		ensureLoaded();
 		return ItemsWithDetails.count();
 	}
@@ -395,6 +423,8 @@ public:
 	 */
 	const QList<Item> allItems()
 	{
+		(void) QMutexLocker(&Mutex);
+
 		ensureLoaded();
 		return Items;
 	}
@@ -408,6 +438,8 @@ public:
 	 */
 	const QList<Item> items()
 	{
+		(void) QMutexLocker(&Mutex);
+
 		ensureLoaded();
 		return ItemsWithDetails;
 	}
@@ -423,6 +455,8 @@ public:
 	 */
 	void addItem(Item item)
 	{
+		(void) QMutexLocker(&Mutex);
+
 		ensureLoaded();
 
 		if (Items.contains(item))
@@ -451,6 +485,8 @@ public:
 	 */
 	void removeItem(Item item)
 	{
+		(void) QMutexLocker(&Mutex);
+
 		ensureLoaded();
 
 		if (!Items.contains(item))

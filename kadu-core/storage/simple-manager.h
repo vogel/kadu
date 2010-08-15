@@ -21,6 +21,8 @@
 #define SIMPLE_MANAGER_H
 
 #include <QtCore/QMap>
+#include <QtCore/QMutex>
+#include <QtCore/QMutexLocker>
 #include <QtCore/QObject>
 #include <QtCore/QUuid>
 
@@ -54,10 +56,14 @@
  *
  * Class Item must implement Item loadFromStorage(StoragePoint *) static method.
  * Class Item must have static field Item null that represents unique NULL value.
+ *
+ * This class is thread-safe.
  */
 template<class Item>
 class KADUAPI SimpleManager : public StorableObject
 {
+	QMutex Mutex;
+
 	QList<Item> Items;
 
 protected:
@@ -69,7 +75,8 @@ protected:
 	 * in @link ConfigurationManager @endlink singleton, so this class
 	 * will automatically store itself on each configuration flush request.
 	 */
-	SimpleManager()
+	SimpleManager() :
+			Mutex(QMutex::Recursive)
 	{
 		setState(StateNotLoaded);
 		ConfigurationManager::instance()->registerStorableObject(this);
@@ -85,6 +92,11 @@ protected:
 	virtual ~SimpleManager()
 	{
 		ConfigurationManager::instance()->unregisterStorableObject(this);
+	}
+
+	QMutex & mutex()
+	{
+		return Mutex;
 	}
 
 	/**
@@ -168,6 +180,8 @@ protected:
 	 */
 	virtual void load()
 	{
+  (void) QMutexLocker(&Mutex);
+
 		if (!isValidStorage())
 			return;
 
@@ -201,6 +215,8 @@ public:
 	 */
 	virtual void store()
 	{
+  (void) QMutexLocker(&Mutex);
+
 		ensureLoaded();
 
 		foreach (Item item, Items)
@@ -221,6 +237,8 @@ public:
 	 */
 	Item byIndex(unsigned int index)
 	{
+  (void) QMutexLocker(&Mutex);
+
 		ensureLoaded();
 
 		if (index >= count())
@@ -240,6 +258,8 @@ public:
 	 */
 	Item byUuid(const QUuid &uuid)
 	{
+  (void) QMutexLocker(&Mutex);
+
 		ensureLoaded();
 
 		if (uuid.isNull())
@@ -265,6 +285,8 @@ public:
 	 */
 	unsigned int indexOf(Item item)
 	{
+  (void) QMutexLocker(&Mutex);
+
 		ensureLoaded();
 		return Items.indexOf(item);
 	}
@@ -278,6 +300,8 @@ public:
 	 */
 	unsigned int count()
 	{
+  (void) QMutexLocker(&Mutex);
+
 		ensureLoaded();
 		return Items.count();
 	}
@@ -291,6 +315,8 @@ public:
 	 */
 	const QList<Item> items()
 	{
+  (void) QMutexLocker(&Mutex);
+
 		ensureLoaded();
 		return Items;
 	}
@@ -306,6 +332,8 @@ public:
 	 */
 	void addItem(Item item)
 	{
+  (void) QMutexLocker(&Mutex);
+
 		ensureLoaded();
 
 		if (Items.contains(item))
@@ -329,6 +357,8 @@ public:
 	 */
 	void removeItem(Item item)
 	{
+  (void) QMutexLocker(&Mutex);
+
 		ensureLoaded();
 
 		if (!Items.contains(item))

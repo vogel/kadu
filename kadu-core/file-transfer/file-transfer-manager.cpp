@@ -77,6 +77,8 @@ FileTransferManager::~FileTransferManager()
 
 void FileTransferManager::accountRegistered(Account account)
 {
+	QMutexLocker(&mutex());
+
 	Protocol *protocol = account.protocolHandler();
 	if (!protocol)
 		return;
@@ -91,6 +93,8 @@ void FileTransferManager::accountRegistered(Account account)
 
 void FileTransferManager::accountUnregistered(Account account)
 {
+	QMutexLocker(&mutex());
+
 	Protocol *protocol = account.protocolHandler();
 	if (!protocol)
 		return;
@@ -105,6 +109,8 @@ void FileTransferManager::accountUnregistered(Account account)
 
 void FileTransferManager::cleanUp()
 {
+	QMutexLocker(&mutex());
+
 	QList<FileTransfer> toRemove;
 
 	foreach (FileTransfer fileTransfer, items())
@@ -117,6 +123,8 @@ void FileTransferManager::cleanUp()
 
 void FileTransferManager::acceptFileTransfer(FileTransfer transfer)
 {
+	QMutexLocker(&mutex());
+
 	QString fileName = transfer.localFileName();
 
 	bool haveFileName = !fileName.isEmpty();
@@ -196,17 +204,23 @@ void FileTransferManager::acceptFileTransfer(FileTransfer transfer)
 
 void FileTransferManager::rejectFileTransfer(FileTransfer transfer)
 {
+	QMutexLocker(&mutex());
+
 	if (transfer.handler())
 		transfer.handler()->reject();
 }
 
 void FileTransferManager::fileTransferWindowDestroyed()
 {
+	QMutexLocker(&mutex());
+
 	Window = 0;
 }
 
 void FileTransferManager::showFileTransferWindow()
 {
+	QMutexLocker(&mutex());
+
 	if (!Window)
 	{
 		Window = new FileTransferWindow();
@@ -217,6 +231,8 @@ void FileTransferManager::showFileTransferWindow()
 
 void FileTransferManager::hideFileTransferWindow()
 {
+	QMutexLocker(&mutex());
+
 	if (Window)
 	{
 		disconnect(Window, SIGNAL(destroyed(QObject *)), this, SLOT(fileTransferWindowDestroyed()));
@@ -227,11 +243,15 @@ void FileTransferManager::hideFileTransferWindow()
 
 bool FileTransferManager::isFileTransferWindowVisible()
 {
+	QMutexLocker(&mutex());
+
 	return Window && Window->isVisible();
 }
 
 FileTransfer FileTransferManager::byPeerAndRemoteFileName(Contact peer, const QString &remoteFileName)
 {
+	QMutexLocker(&mutex());
+
 	foreach (FileTransfer transfer, items())
 		if (transfer.transferType() == TypeReceive && transfer.peer() == peer && transfer.remoteFileName() == remoteFileName)
 			return transfer;
@@ -241,6 +261,8 @@ FileTransfer FileTransferManager::byPeerAndRemoteFileName(Contact peer, const QS
 
 void FileTransferManager::incomingFileTransfer(FileTransfer fileTransfer)
 {
+	QMutexLocker(&mutex());
+
 	if (fileTransfer.localFileName().isEmpty())
 	{
 		FileTransfer alreadyTransferred = byPeerAndRemoteFileName(fileTransfer.peer(), fileTransfer.remoteFileName());

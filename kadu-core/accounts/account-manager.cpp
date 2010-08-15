@@ -58,6 +58,8 @@ AccountManager::~AccountManager()
 
 void AccountManager::itemAdded(Account item)
 {
+	QMutexLocker(&mutex());
+
 	if (item.data())
 		item.data()->ensureLoaded();
 	AccountsAwareObject::notifyAccountAdded(item);
@@ -65,6 +67,8 @@ void AccountManager::itemAdded(Account item)
 
 void AccountManager::itemAboutToBeRemoved(Account item)
 {
+	QMutexLocker(&mutex());
+
 	Manager<Account>::itemAboutToBeRemoved(item);
 
 	item.setAccountIdentity(Identity::null);
@@ -72,17 +76,23 @@ void AccountManager::itemAboutToBeRemoved(Account item)
 
 void AccountManager::itemRemoved(Account item)
 {
+	QMutexLocker(&mutex());
+
 	AccountsAwareObject::notifyAccountRemoved(item);
 }
 
 void AccountManager::itemAboutToBeRegistered(Account item)
 {
+	QMutexLocker(&mutex());
+
 	connect(item, SIGNAL(updated()), this, SLOT(accountDataUpdated()));
 	emit accountAboutToBeRegistered(item);
 }
 
 void AccountManager::itemRegistered(Account item)
 {
+	QMutexLocker(&mutex());
+
 	AccountsAwareObject::notifyAccountRegistered(item);
 	connect(item.protocolHandler(), SIGNAL(connectionError(Account, const QString &, const QString &)),
 			this, SLOT(connectionError(Account, const QString &, const QString &)));
@@ -92,6 +102,8 @@ void AccountManager::itemRegistered(Account item)
 
 void AccountManager::itemAboutToBeUnregisterd(Account item)
 {
+	QMutexLocker(&mutex());
+
 	AccountsAwareObject::notifyAccountUnregistered(item);
 	disconnect(item.protocolHandler(), SIGNAL(connectionError(Account, const QString &, const QString &)),
 			this, SLOT(connectionError(Account, const QString &, const QString &)));
@@ -101,30 +113,40 @@ void AccountManager::itemAboutToBeUnregisterd(Account item)
 
 void AccountManager::itemUnregistered(Account item)
 {
+	QMutexLocker(&mutex());
+
 	disconnect(item, SIGNAL(updated()), this, SLOT(accountDataUpdated()));
 	emit accountUnregistered(item);
 }
 
 void AccountManager::detailsLoaded(Account account)
 {
+	QMutexLocker(&mutex());
+
 	if (!account.isNull())
 		registerItem(account);
 }
 
 void AccountManager::detailsUnloaded(Account account)
 {
+	QMutexLocker(&mutex());
+
 	if (!account.isNull())
 		unregisterItem(account);
 }
 
 Account AccountManager::defaultAccount()
 {
+	QMutexLocker(&mutex());
+
 	ensureLoaded();
 	return byIndex(0);
 }
 
 const QList<Account> AccountManager::byIdentity(Identity identity)
 {
+	QMutexLocker(&mutex());
+
 	ensureLoaded();
 
 	QList<Account> list;
@@ -137,6 +159,8 @@ const QList<Account> AccountManager::byIdentity(Identity identity)
 
 Account AccountManager::byId(const QString& protocolName, const QString& id)
 {
+	QMutexLocker(&mutex());
+
 	ensureLoaded();
 
 	QList<Account> list;
@@ -149,6 +173,8 @@ Account AccountManager::byId(const QString& protocolName, const QString& id)
 
 const QList<Account> AccountManager::byProtocolName(const QString &name)
 {
+	QMutexLocker(&mutex());
+
 	ensureLoaded();
 
 	QList<Account> list;
@@ -161,6 +187,8 @@ const QList<Account> AccountManager::byProtocolName(const QString &name)
 
 Status AccountManager::status()
 {
+	QMutexLocker(&mutex());
+
 	Account account = defaultAccount();
 	return !account.isNull()
 			? account.statusContainer()->status()
@@ -169,6 +197,8 @@ Status AccountManager::status()
 
 void AccountManager::accountDataUpdated()
 {
+	QMutexLocker(&mutex());
+
 	Account account(sender());
 	if (account)
 		emit accountUpdated(account);
@@ -176,7 +206,8 @@ void AccountManager::accountDataUpdated()
 
 void AccountManager::connectionError(Account account, const QString &server, const QString &message)
 {
-	kdebugf();
+	QMutexLocker(&mutex());
+
 
 	if (!ConnectionErrorNotification::activeError(account, message))
 	{
@@ -185,5 +216,4 @@ void AccountManager::connectionError(Account account, const QString &server, con
 		NotificationManager::instance()->notify(connectionErrorNotification);
 	}
 
-	kdebugf2();
 }
