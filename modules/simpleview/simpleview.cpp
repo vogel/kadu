@@ -221,4 +221,8 @@ void SimpleView::configurationUpdated()
 {
 	KeepSize = config_file.readBoolEntry("Look", "SimpleViewKeepSize", true);
 	NoScrollBar = config_file.readBoolEntry("Look", "SimpleViewNoScrollBar", true);
+
+	/* Give the kadu update the GUI */
+	if (SimpleViewActive)
+		simpleViewToggle();
 }
