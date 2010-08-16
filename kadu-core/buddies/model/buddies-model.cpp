@@ -31,18 +31,19 @@
 
 #include "buddies-model.h"
 
-BuddiesModel::BuddiesModel(BuddyManager *manager, QObject *parent) :
-		BuddiesModelBase(parent), Manager(manager)
+BuddiesModel::BuddiesModel(QObject *parent) :
+		BuddiesModelBase(parent)
 {
 	triggerAllAccountsRegistered();
 
-	connect(Manager, SIGNAL(buddyAboutToBeAdded(Buddy &)),
+	BuddyManager *manager = BuddyManager::instance();
+	connect(manager, SIGNAL(buddyAboutToBeAdded(Buddy &)),
 			this, SLOT(buddyAboutToBeAdded(Buddy &)));
-	connect(Manager, SIGNAL(buddyAdded(Buddy &)),
+	connect(manager, SIGNAL(buddyAdded(Buddy &)),
 			this, SLOT(buddyAdded(Buddy &)));
-	connect(Manager, SIGNAL(buddyAboutToBeRemoved(Buddy &)),
+	connect(manager, SIGNAL(buddyAboutToBeRemoved(Buddy &)),
 			this, SLOT(buddyAboutToBeRemoved(Buddy &)));
-	connect(Manager, SIGNAL(buddyRemoved(Buddy &)),
+	connect(manager, SIGNAL(buddyRemoved(Buddy &)),
 			this, SLOT(buddyRemoved(Buddy &)));
 
 	ContactManager *cm = ContactManager::instance();
@@ -60,13 +61,14 @@ BuddiesModel::~BuddiesModel()
 {
 	triggerAllAccountsUnregistered();
 
-	disconnect(Manager, SIGNAL(buddyAboutToBeAdded(Buddy &)),
+	BuddyManager *manager = BuddyManager::instance();
+	disconnect(manager, SIGNAL(buddyAboutToBeAdded(Buddy &)),
 			this, SLOT(buddyAboutToBeAdded(Buddy &)));
-	disconnect(Manager, SIGNAL(buddyAdded(Buddy &)),
+	disconnect(manager, SIGNAL(buddyAdded(Buddy &)),
 			this, SLOT(buddyAdded(Buddy &)));
-	disconnect(Manager, SIGNAL(buddyAboutToBeRemoved(Buddy &)),
+	disconnect(manager, SIGNAL(buddyAboutToBeRemoved(Buddy &)),
 			this, SLOT(buddyAboutToBeRemoved(Buddy &)));
-	disconnect(Manager, SIGNAL(buddyRemoved(Buddy &)),
+	disconnect(manager, SIGNAL(buddyRemoved(Buddy &)),
 			this, SLOT(buddyRemoved(Buddy &)));
 
 	ContactManager *cm = ContactManager::instance();
@@ -85,18 +87,18 @@ int BuddiesModel::rowCount(const QModelIndex &parent) const
 	if (parent.isValid())
 		return BuddiesModelBase::rowCount(parent);
 
-	return Manager->count();
+	return BuddyManager::instance()->count();
 }
 
 Buddy BuddiesModel::buddyAt(const QModelIndex &index) const
 {
 	QModelIndex parent = index.parent();
-	return Manager->byIndex(parent.isValid() ? parent.row() : index.row());
+	return BuddyManager::instance()->byIndex(parent.isValid() ? parent.row() : index.row());
 }
 
 const QModelIndex BuddiesModel::buddyIndex(Buddy buddy) const
 {
-	return index(Manager->indexOf(buddy), 0);
+	return index(BuddyManager::instance()->indexOf(buddy), 0);
 }
 
 void BuddiesModel::buddyAboutToBeAdded(Buddy &buddy)

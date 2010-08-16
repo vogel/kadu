@@ -32,7 +32,7 @@ SelectBuddyPopup::SelectBuddyPopup(QWidget *parent) :
 {
 	setWindowFlags(Qt::Popup);
 
-	BuddiesModel *model = new BuddiesModel(BuddyManager::instance(), this);
+	BuddiesModel *model = new BuddiesModel(this);
 
 	connect(view(), SIGNAL(clicked(QModelIndex)), this, SLOT(itemClicked(QModelIndex)));
 	connect(view(), SIGNAL(buddyActivated(Buddy)), this, SIGNAL(buddySelected(Buddy)));

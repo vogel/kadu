@@ -53,7 +53,7 @@ AccountBuddyListWidget::AccountBuddyListWidget(Account account, QWidget *parent)
 
 	BuddiesWidget = new BuddiesListWidget(BuddiesListWidget::FilterAtTop, 0, this);
 	BuddiesModelProxy *model = new BuddiesModelProxy(this);
-	model->setSourceModel(new BuddiesModel(BuddyManager::instance(), this));
+	model->setSourceModel(new BuddiesModel(this));
 	BuddiesWidget->view()->setModel(model);
 	BuddiesWidget->setMinimumSize(QSize(30, 30));
 
@@ -64,7 +64,7 @@ AccountBuddyListWidget::AccountBuddyListWidget(Account account, QWidget *parent)
 
 	ImportButton = new QPushButton(tr("Import contacts"), buttons);
 	connect(ImportButton, SIGNAL(clicked()), this, SLOT(startImportTransfer()));
-	buttonsLayout->addWidget(ImportButton);	
+	buttonsLayout->addWidget(ImportButton);
 
 	ExportButton = new QPushButton(tr("Export contacts"), buttons);
 	connect(ExportButton, SIGNAL(clicked()), this, SLOT(startExportTransfer()));
@@ -173,7 +173,7 @@ void AccountBuddyListWidget::buddiesListExported(bool ok)
 		if (!ok)
 			MessageDialog::msg(tr("The application encountered an internal error\nThe export was unsuccessful"), false, "32x32/dialog-error_big.png", this);
 	}
-	
+
 	ExportButton->setEnabled(true);
 
 	kdebugf2();
