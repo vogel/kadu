@@ -2,17 +2,3 @@
 *.kdev4
 .kdev4
 build
-*.o
-*.out
-*.qm
-*.cxx
-*.make
-*.cmake
-*.includecache
-*.internal
-*.marks
-link.txt
-*.so
-Makefile
-*.bin
-*.log
