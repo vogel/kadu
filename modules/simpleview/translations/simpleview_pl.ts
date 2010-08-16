@@ -12,7 +12,11 @@
     <message>
         <source>Hide scroll bar</source>
         <translation>Ukryj pasek przewijania</translation>
-    </message>    
+    </message>
+    <message>
+        <source>Borderless</source>
+        <translation>Ukryj obramowanie</translation>
+    </message>
 </context>
 <context>
     <name>SimpleView</name>

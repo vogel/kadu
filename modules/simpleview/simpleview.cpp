@@ -122,6 +122,9 @@ void SimpleView::simpleViewToggle()
 
 	if (SimpleViewActive)
 	{
+		if (Borderless)
+			BuddiesListViewStyle = BuddiesListWidgetHandle->view()->styleSheet();
+		
 		p = BuddiesListWidgetHandle->view()->mapToGlobal(BuddiesListWidgetHandle->view()->rect().topLeft());
 		s = BuddiesListWidgetHandle->view()->rect().size();
 		BackupPosition = p - cp;
@@ -162,10 +165,17 @@ void SimpleView::simpleViewToggle()
 			MainWindowHandle->move(p);
 			MainWindowHandle->resize(s);
 		}
+		
+		if (Borderless)
+			BuddiesListWidgetHandle->view()->setStyleSheet(QString("QTreeView { border-style: none; }") + BuddiesListViewStyle);
 	}
 	else
 	{
 		MainWindowHandle->hide();
+		
+		if (Borderless)
+			BuddiesListWidgetHandle->view()->setStyleSheet(BuddiesListViewStyle);
+		
 		if(KeepSize)
 		{
 			BackupPosition = cp - BackupPosition;
@@ -219,10 +229,12 @@ void SimpleView::compositingDisabled()
 
 void SimpleView::configurationUpdated()
 {
-	KeepSize = config_file.readBoolEntry("Look", "SimpleViewKeepSize", true);
-	NoScrollBar = config_file.readBoolEntry("Look", "SimpleViewNoScrollBar", true);
-
-	/* Give the kadu update the GUI */
+	/* Give the kadu update the GUI with old configuration */
 	if (SimpleViewActive)
 		simpleViewToggle();
+
+	KeepSize = config_file.readBoolEntry("Look", "SimpleViewKeepSize", true);
+	NoScrollBar = config_file.readBoolEntry("Look", "SimpleViewNoScrollBar", true);
+	Borderless = config_file.readBoolEntry("Look", "SimpleViewBorderless", true);
+
 }
