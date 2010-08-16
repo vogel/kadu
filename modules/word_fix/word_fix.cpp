@@ -36,6 +36,7 @@
 
 #include "chat/chat-manager.h"
 #include "gui/widgets/configuration/configuration-widget.h"
+#include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/custom-input.h"
 #include "configuration/configuration-file.h"
@@ -52,6 +53,7 @@ extern "C" KADU_EXPORT int word_fix_init()
 	kdebugf();
 	wordFix = new WordFix();
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/word_fix.ui"));
+	MainConfigurationWindow::registerUiHandler(wordFix);
 	kdebugf2();
 	return 0;
 }
@@ -61,6 +63,7 @@ extern "C" KADU_EXPORT void word_fix_close()
 {
 	kdebugf();
 	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/word_fix.ui"));
+	MainConfigurationWindow::unregisterUiHandler(wordFix);
 	delete wordFix;
 	wordFix = NULL;
 	kdebugf2();
@@ -86,9 +89,8 @@ WordFix::WordFix()
 	}
 
 	// Loading list
-	QString data = config_file.readEntry("word_fix", "WordFix_list", "");
-	QStringList list = data.split("\t\t");
-	if (!list.count())
+	QString data = config_file.readEntry("word_fix", "WordFix_list");
+	if (data.isEmpty())
 	{
 		QFile defList(dataPath("kadu/modules/data/word_fix/wf_default_list.data"));
 		if (defList.open(QIODevice::ReadOnly))
@@ -112,10 +114,14 @@ WordFix::WordFix()
 	}
 	else
 	{
+		QStringList list = data.split("\t\t");
 		for (int i = 0; i < list.count(); i++)
 		{
-			QStringList sp = list[i].split('\t');
-			wordsList[sp[0]] = sp[1];
+			if (!list[i].isEmpty())
+			{
+				QStringList sp = list[i].split('\t');
+				wordsList[sp[0]] = sp[1];
+			}
 		}
 	}
 
@@ -348,26 +354,29 @@ void WordFix::moveToNewValue()
 void WordFix::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
 	kdebugf();
+	printf("mainConfigurationWindowCreated, window: %p\n", mainConfigurationWindow);
 
-	QGroupBox *groupBox = dynamic_cast<QGroupBox *>(mainConfigurationWindow->widget()->widgetById("word_fix/group_box"));
+	ConfigGroupBox *groupBox = mainConfigurationWindow->widget()->
+		configGroupBox("Chat", "Words fix", "Words fix");
 
-	QGridLayout *layout = new QGridLayout;
+	QWidget *widget = new QWidget(groupBox->widget());
+
+	QGridLayout *layout = new QGridLayout(widget);
 	layout->setSpacing(5);
 	layout->setMargin(5);
 
-	list = new QTreeWidget;
-	layout->addWidget(list, 0, 1);
-	layout->addWidget(list, 0, 1, 1, 2);
+	list = new QTreeWidget(widget);
+	layout->addWidget(list, 0, 0, 1, 3);
 
-	wordEdit = new QLineEdit;
+	wordEdit = new QLineEdit(widget);
 	layout->addWidget(new QLabel(tr("A word to be replaced")), 1, 0);
 	layout->addWidget(wordEdit, 1, 1);
 	
-	valueEdit = new QLineEdit;
+	valueEdit = new QLineEdit(widget);
 	layout->addWidget(new QLabel(tr("Value to replace with")), 2, 0);
 	layout->addWidget(valueEdit, 2, 1);
 
-	QWidget *hbox = new QWidget;
+	QWidget *hbox = new QWidget(widget);
 	addButton = new QPushButton(tr("Add"), hbox);
 	changeButton = new QPushButton(tr("Change"), hbox);
 	deleteButton = new QPushButton(tr("Delete"), hbox);
@@ -378,7 +387,8 @@ void WordFix::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfig
 	hbox->setLayout(hlayout);
 	layout->addWidget(hbox, 3, 1);
 
-	groupBox->setLayout(layout);
+	widget->setLayout(layout);
+	groupBox->addWidgets(new QLabel(tr(""), groupBox->widget()), widget);
 
 	connect(list, SIGNAL(itemSelectionChanged()), this, SLOT(wordSelected()));
 	connect(changeButton, SIGNAL(clicked()), this, SLOT(changeSelected()));
