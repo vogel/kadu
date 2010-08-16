@@ -52,6 +52,7 @@ static QString toQString(CFStringRef str)
 static OSStatus FilterFieldEventHandler(EventHandlerCallRef handlerCallRef,
 					EventRef event, void *userData)
 {
+	Q_UNUSED(handlerCallRef);
 	FilterWidget *filter = (FilterWidget *) userData;
 	OSType eventClass = GetEventClass(event);
 	UInt32 eventKind = GetEventKind(event);
@@ -111,12 +112,15 @@ QSize FilterWidget::sizeHint (void) const
 	GetEventParameter(event, kEventParamControlOptimalBounds, typeHIRect,
 		0, sizeof(HIRect), 0, &optimalBounds);
 	ReleaseEvent(event);
-	return QSize(optimalBounds.size.width + 200, optimalBounds.size.height/2);
+	return QSize(optimalBounds.size.width + 200, optimalBounds.size.height);
 }
 #endif
 
 void FilterWidget::filterTextChanged(const QString &s)
 {
+#ifdef Q_OS_MAC
+	Q_UNUSED(s);
+#else
 	if (NameFilterEdit->text().isEmpty())
 	{
 		hide();
@@ -126,6 +130,7 @@ void FilterWidget::filterTextChanged(const QString &s)
 		show();
 
 	emit textChanged(s);
+#endif
 }
 
 FilterWidget::FilterWidget(QWidget *parent) : QWidget(parent)
@@ -174,17 +179,23 @@ FilterWidget::~FilterWidget()
 #endif
 }
 
-#ifndef Q_OS_MAC
 void FilterWidget::setFilter(const QString &filter)
 {
+#ifndef Q_OS_MAC
 	NameFilterEdit->setText(filter);
+#endif
 }
 
 void FilterWidget::setView(BuddiesListView *view)
 {
+#ifdef Q_OS_MAC
+	Q_UNUSED(view);
+#else
 	View = view;
+#endif
 }
 
+#ifndef Q_OS_MAC
 bool FilterWidget::sendKeyEventToView(QKeyEvent *event)
 {
 	switch (event->key())
