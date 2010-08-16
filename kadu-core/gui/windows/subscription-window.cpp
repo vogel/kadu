@@ -54,7 +54,7 @@ SubscriptionWindow::SubscriptionWindow(Contact contact, QWidget *parent) :
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(tr("New Contact Request"));
-	
+
 	QGridLayout *layout = new QGridLayout(this);
 	layout->setColumnStretch(2, 4);
 
@@ -65,7 +65,6 @@ SubscriptionWindow::SubscriptionWindow(Contact contact, QWidget *parent) :
 	QLabel *groupLabel = new QLabel(tr("Add in Group") + ":", this);
 
 	GroupCombo = new GroupsComboBox(this);
-	GroupCombo->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 
@@ -99,16 +98,16 @@ void SubscriptionWindow::accepted()
 		emit requestAccepted(CurrentContact, true);
 		close();
 	}
-	
+
 	ContactManager::instance()->addItem(CurrentContact);
 	Buddy buddy = BuddyManager::instance()->byContact(CurrentContact, ActionCreateAndAdd);
 	buddy.setAnonymous(false);
 	buddy.setDisplay(VisibleName->text());
-	
+
 	Group group= GroupCombo->currentGroup();
 	if (group)
 		buddy.addToGroup(group);
-	
+
 	emit requestAccepted(CurrentContact, true);
 	close();
 }
