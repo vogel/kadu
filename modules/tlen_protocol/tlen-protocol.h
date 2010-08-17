@@ -1,6 +1,8 @@
 #ifndef TLEN_PROTOCOL_H
 #define TLEN_PROTOCOL_H
 
+#error Module tlen is not supported. Do not compile it, and if you do, do not post any bug reports! 
+
 #include <QtCore/QObject>
 #include <QtGui/QPixmap>
 #include <QList>
