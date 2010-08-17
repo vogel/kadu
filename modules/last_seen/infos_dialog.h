@@ -26,9 +26,7 @@
 
 #include <QtGui/QDialog>
 
-#include "infos.h"
-
-class InfosDataFile;
+typedef QMap<QPair<QString, QString>, QString> LastSeen;
 
 /*!
  * Creates a QListView within itself. It also updates the "last seen" times.
@@ -37,12 +35,12 @@ class InfosDataFile;
 class InfosDialog : public QDialog
 {
 	Q_OBJECT
-	public:
-		/*! Default constructor. */
-		InfosDialog(const LastSeen &lastSeen, QWidget *parent = 0);
+public:
+	/*! Default constructor. */
+	InfosDialog(const LastSeen &lastSeen, QWidget *parent = 0);
 
-		/*! Default destructor. */
-		~InfosDialog();
+	/*! Default destructor. */
+	~InfosDialog();
 };
 
 #endif // INFOS_DIALOG_H

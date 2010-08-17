@@ -21,16 +21,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QAbstractItemModel>
 #include <QtCore/QStringList>
-#include <QtGui/QLayout>
 #include <QtGui/QPushButton>
 #include <QtGui/QTreeWidget>
+#include <QtGui/QVBoxLayout>
 #include <QtNetwork/QHostAddress>
 
-#include "debug.h"
+#include "contacts/contact-manager.h"
 #include "misc/misc.h"
+#include "debug.h"
 #include "modules.h"
+
+#include "infos.h"
 
 #include "infos_dialog.h"
 
