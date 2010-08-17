@@ -137,7 +137,7 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 	BlockUser = new ActionDescription(0,
 		ActionDescription::TypeUser, "blockUserAction",
 		this, SLOT(blockUserActionActivated(QAction *, bool)),
-		"kadu_icons/kadu-blocking.png", "kadu_icons/kadu-blocking.png", tr("Block Buddy"), true, QString::null,
+		"kadu_icons/kadu-blocking.png", "kadu_icons/kadu-blocking.png", tr("Block Buddy..."), true, QString::null,
 		checkBlocking
 	);
 
