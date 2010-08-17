@@ -101,6 +101,7 @@ void YourAccounts::createGui()
 	mainLayout->addItem(contentLayout);
 
 	AccountsView = new QListView(this);
+	AccountsView->setMinimumWidth(150);
 	contentLayout->addWidget(AccountsView);
 	MyAccountsModel = new AccountsModel(AccountsView);
 
