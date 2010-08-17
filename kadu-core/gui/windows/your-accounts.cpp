@@ -208,7 +208,6 @@ void YourAccounts::createAccountWidget()
 
 	connect(Protocols, SIGNAL(protocolChanged(ProtocolFactory*, ProtocolFactory*)),
 			this, SLOT(protocolChanged(ProtocolFactory*, ProtocolFactory*)));
-	protocolChanged(0, 0);
 
 	switchToCreateMode();
 }

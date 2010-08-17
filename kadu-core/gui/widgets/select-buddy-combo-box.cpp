@@ -41,7 +41,7 @@ SelectBuddyComboBox::SelectBuddyComboBox(QWidget *parent) :
 	Popup->view()->proxyModel()->setSortByStatus(false);
 	connect(Popup, SIGNAL(buddySelected(Buddy)), this, SLOT(setBuddy(Buddy)));
 
-	Model = new BuddiesModel(BuddyManager::instance(), this);
+	Model = new BuddiesModel(this);
 	ProxyModel = new BuddiesModelProxy(this);
 	ProxyModel->setSortByStatus(false);
 	ProxyModel->setSourceModel(Model);
