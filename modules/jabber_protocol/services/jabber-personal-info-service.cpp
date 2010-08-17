@@ -64,6 +64,9 @@ void JabberPersonalInfoService::fetchingVCardFinished()
 
 void JabberPersonalInfoService::updatePersonalInfo(Buddy buddy)
 {
+	if (!Protocol || !Protocol->client() || !Protocol->client()->rootTask())
+		return;
+
 	CurrentBuddy = buddy;
 	
 	XMPP::Jid jid = XMPP::Jid(Protocol->account().id());
