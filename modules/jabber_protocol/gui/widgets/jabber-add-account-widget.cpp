@@ -154,6 +154,8 @@ void JabberAddAccountWidget::apply()
 		details->setPriority(5);
 	}
 
+	resetGui();	
+	
 	emit accountCreated(jabberAccount);
 }
 

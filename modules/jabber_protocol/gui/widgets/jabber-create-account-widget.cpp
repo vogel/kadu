@@ -323,6 +323,8 @@ void JabberCreateAccountWidget::registerNewAccountFinished(JabberServerRegisterA
 			details->setTlsOverrideDomain(jsra->client()->tlsOverrideDomain());
 		}
 
+		resetGui();
+		
 		emit accountCreated(jabberAccount);
 	}
 	else

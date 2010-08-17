@@ -120,6 +120,14 @@ void GaduAddAccountWidget::createGui()
 	dataChanged();
 }
 
+void GaduAddAccountWidget::resetGui()
+{
+	AccountId->setText("");
+	AccountPassword->setText("");
+	RememberPassword->setChecked(true);
+	Identity->setCurrentIdentity(Identity::null);
+}
+
 void GaduAddAccountWidget::addAccountButtonClicked()
 {
 	Account gaduAccount = Account::create();
@@ -139,11 +147,14 @@ void GaduAddAccountWidget::addAccountButtonClicked()
 		details->setInitialRosterImport(true);
 	}
 
+	resetGui();
+	
 	emit accountCreated(gaduAccount);
 }
 
 void GaduAddAccountWidget::cancelButtonClicked()
 {
+	resetGui();
 }
 
 void GaduAddAccountWidget::dataChanged()
