@@ -13,10 +13,6 @@
         <source>Hide scroll bar</source>
         <translation>Ukryj pasek przewijania</translation>
     </message>    
-    <message>
-        <source>Toggle simple view mode</source>
-        <translation>Przełącz uproszczony widok</translation>
-    </message>
 </context>
 <context>
     <name>SimpleView</name>

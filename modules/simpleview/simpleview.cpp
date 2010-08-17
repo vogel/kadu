@@ -222,5 +222,7 @@ void SimpleView::configurationUpdated()
 	KeepSize = config_file.readBoolEntry("Look", "SimpleViewKeepSize", true);
 	NoScrollBar = config_file.readBoolEntry("Look", "SimpleViewNoScrollBar", true);
 
-	DockAction->setShortcut(HotKey::shortCutFromFile("ShortCuts", "kadu_simpleview"));
+	/* Give the kadu update the GUI */
+	if (SimpleViewActive)
+		simpleViewToggle();
 }
