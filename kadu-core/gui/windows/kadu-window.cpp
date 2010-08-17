@@ -555,6 +555,12 @@ void KaduWindow::addAction(const QString &actionName, Qt::ToolButtonStyle style)
 	Core::instance()->kaduWindow()->refreshToolBars("");
 }
 
+ActionDataSource * KaduWindow::actionSource()
+{
+	return contactsListView();
+}
+
+
 void KaduWindow::setDocked(bool docked)
 {
 	Docked = docked;

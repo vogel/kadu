@@ -758,8 +758,8 @@ void MediaPlayer::checkTitle()
 	bool checked;
 	if (mediaplayerStatus != NULL)
 		checked = mediaplayerStatus->isChecked();
-	else if (enableMediaPlayerStatuses->action(Core::instance()->kaduWindow()))
-		checked = enableMediaPlayerStatuses->action(Core::instance()->kaduWindow())->isChecked();
+	else if (enableMediaPlayerStatuses->action(Core::instance()->kaduWindow()->actionSource()))
+		checked = enableMediaPlayerStatuses->action(Core::instance()->kaduWindow()->actionSource())->isChecked();
 	else
 		checked = false;
 
@@ -784,8 +784,8 @@ void MediaPlayer::configurationUpdated()
 
 	if (mediaplayerStatus == NULL)
 	{
-		if (enableMediaPlayerStatuses->action(Core::instance()->kaduWindow()))
-			enabled = enableMediaPlayerStatuses->action(Core::instance()->kaduWindow())->isChecked();
+		if (enableMediaPlayerStatuses->action(Core::instance()->kaduWindow()->actionSource()))
+			enabled = enableMediaPlayerStatuses->action(Core::instance()->kaduWindow()->actionSource())->isChecked();
 		Core::instance()->kaduWindow()->removeMenuActionDescription(enableMediaPlayerStatuses);
 	}
 	else
@@ -804,8 +804,8 @@ void MediaPlayer::configurationUpdated()
 	else
 	{
 		Core::instance()->kaduWindow()->insertMenuActionDescription(enableMediaPlayerStatuses, KaduWindow::MenuKadu);
-		if (enableMediaPlayerStatuses->action(Core::instance()->kaduWindow()))
-			enableMediaPlayerStatuses->action(Core::instance()->kaduWindow())->setChecked(enabled);
+		if (enableMediaPlayerStatuses->action(Core::instance()->kaduWindow()->actionSource()))
+			enableMediaPlayerStatuses->action(Core::instance()->kaduWindow()->actionSource())->setChecked(enabled);
 	}
 
 	mediaPlayerStatusChanger->changePositionInStatus((MediaPlayerStatusChanger::ChangeDescriptionTo)config_file.readNumEntry("MediaPlayer", "statusPosition"));
@@ -1063,17 +1063,17 @@ void MediaPlayer::createDefaultConfiguration()
 
 void MediaPlayer::insertFormattedSong()
 {
-    putSongTitle(0);
+	putSongTitle(0);
 }
 
 void MediaPlayer::insertSongTitle()
 {
-    putSongTitle(1);
+	putSongTitle(1);
 }
 
 void MediaPlayer::insertSongFilename()
 {
-    putSongTitle(2);
+	putSongTitle(2);
 }
 
 void MediaPlayer::insertPlaylistTitles()
@@ -1083,5 +1083,5 @@ void MediaPlayer::insertPlaylistTitles()
 
 void MediaPlayer::insertPlaylistFilenames()
 {
-    putPlayList(4);
+	putPlayList(4);
 }

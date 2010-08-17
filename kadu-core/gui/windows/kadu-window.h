@@ -40,6 +40,7 @@ class QVBoxLayout;
 
 class Action;
 class ActionDescription;
+class ActionSource;
 class BuddyInfoPanel;
 class BuddiesListWidget;
 class GroupTabBar;
@@ -118,7 +119,7 @@ private slots:
 protected:
 	virtual void closeEvent(QCloseEvent *);
 	virtual void keyPressEvent(QKeyEvent *);
-    virtual void windowActivationChange(bool b);
+	virtual void windowActivationChange(bool b);
 
 	virtual bool supportsActionType(ActionDescription::ActionType type);
 
@@ -144,6 +145,7 @@ public:
 	void setDocked(bool);
 	bool docked() { return Docked; }
 
+	ActionDataSource * actionSource();
 	BuddyInfoPanel * infoPanel() { return InfoPanel; }
 
 signals:
