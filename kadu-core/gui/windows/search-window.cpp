@@ -334,7 +334,7 @@ void SearchWindow::addFound()
 	foreach (Buddy buddy, selected().toBuddySet().toList())
 	{
 		AddBuddyWindow *a = new AddBuddyWindow(this);
-		a->setBuddy(CurrentSearchCriteria.SearchBuddy);
+		a->setBuddy(buddy);
 		a->show();
 	}
 }
