@@ -75,7 +75,7 @@
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="46"/>
         <source>Chats History</source>
-        <translation>Hisoria rozmów</translation>
+        <translation>Historia rozmów</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="49"/>
@@ -250,7 +250,7 @@
     <message>
         <location filename="../buddy-history-delete-handler.cpp" line="63"/>
         <source>Chat history</source>
-        <translation>Hisoria rozmów</translation>
+        <translation>Historia rozmów</translation>
     </message>
 </context>
 <context>

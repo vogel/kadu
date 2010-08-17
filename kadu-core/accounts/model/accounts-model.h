@@ -30,7 +30,7 @@ class AccountsModel : public QAbstractListModel
 	Q_OBJECT
 
 private slots:
-    void accountUpdated(Account account);
+	void accountUpdated(Account account);
 	void accountAboutToBeRegistered(Account account);
 	void accountRegistered(Account account);
 	void accountAboutToBeUnregistered(Account account);
