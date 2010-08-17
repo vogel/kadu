@@ -53,24 +53,24 @@ BuddyPersonalInfoConfigurationWidget::~BuddyPersonalInfoConfigurationWidget()
 
 void BuddyPersonalInfoConfigurationWidget::createGui()
 {
-	layout = new QVBoxLayout(this);
+	Layout = new QVBoxLayout(this);
 
 	QWidget *contactWidget = new QWidget(this);
-	layout->addWidget(contactWidget);
+	Layout->addWidget(contactWidget);
 
 	QFormLayout *contactLayout = new QFormLayout(contactWidget);
 
-	ContactIdCombo = new QComboBox(this);
+	ContactIdCombo = new QComboBox(contactWidget);
 	ContactIdCombo->setModel(new BuddyContactModel(MyBuddy));
 	ContactIdCombo->setModelColumn(1); // use long name
 	connect(ContactIdCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(accountSelectionChanged(int)));
 
 	contactLayout->addRow(new QLabel(tr("Buddy contact") + ":", contactWidget), ContactIdCombo);
 
-	InfoWidget = new QWidget;
-	layout->addWidget(InfoWidget);
+	InfoWidget = new QWidget(this);
+	Layout->addWidget(InfoWidget);
 	
-	layout->addStretch(100);
+	Layout->addStretch(100);
 }
 
 void BuddyPersonalInfoConfigurationWidget::accountSelectionChanged(int index)
@@ -79,9 +79,8 @@ void BuddyPersonalInfoConfigurationWidget::accountSelectionChanged(int index)
 	
 	if (!c)
 		return;
-	
-	int row = layout->indexOf(InfoWidget);
-	layout->removeWidget(InfoWidget);
+
+	delete InfoWidget;
 	InfoWidget = c.contactAccount().protocolHandler()->protocolFactory()->newContactPersonalInfoWidget(c);
-	layout->insertWidget(row, InfoWidget);
+	Layout->insertWidget(1, InfoWidget);
 }

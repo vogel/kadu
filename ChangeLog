@@ -1,3 +1,6 @@
++++ version 0.6.6-beta6
+* gui: #1487 fixed: combobox in personal info for buddies does not work (Vogel)
+
 +++ version 0.6.6-beta5
 * gui: #1415 fixed: ability to manage account's personal info in YourAccounts window (Juzef)
 * gadu: #1183 fixed: allow DNS name for proxy servers (Vogel)

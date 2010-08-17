@@ -39,7 +39,7 @@ class KADUAPI BuddyPersonalInfoConfigurationWidget : public QWidget
 
 	Buddy MyBuddy;
 	QComboBox *ContactIdCombo;
-	QVBoxLayout *layout;
+	QVBoxLayout *Layout;
 	QWidget *InfoWidget;
 	
 	void createGui();
