@@ -27,6 +27,7 @@
 #include "os/generic/compositing-aware-object.h"
 
 class QAction;
+class QString;
 class QWidget;
 
 class BuddiesListWidget;
@@ -45,9 +46,11 @@ class SimpleView :
 	bool KeepSize;
 	bool NoScrollBar;
 	bool SimpleViewActive;
+	bool Borderless;
 
 	QPoint BackupPosition;
 	QSize BackupSize;
+	QString BuddiesListViewStyle;
 
 	QAction *DockAction;
 	KaduWindow *KaduWindowHandle;
