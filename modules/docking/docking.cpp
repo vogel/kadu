@@ -103,7 +103,7 @@ DockingManager::DockingManager() :
 
 	connect(Core::instance(), SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(searchingForTrayPosition(QPoint&)));
 
-	DockMenu = new QMenu;
+	DockMenu = new QMenu();
 
 #ifdef Q_OS_MAC
 	OpenChatAction = new QAction(IconsManager::instance()->iconByPath("16x16/internet-group-chat.png"),
@@ -136,10 +136,10 @@ DockingManager::~DockingManager()
 	disconnect(icon_timer, SIGNAL(timeout()), this, SLOT(changeIcon()));
 
 	delete DockMenu;
+	DockMenu = 0;
 
 	delete icon_timer;
-	icon_timer = NULL;
-	kdebugf2();
+	icon_timer = 0;
 }
 
 void DockingManager::changeIcon()
