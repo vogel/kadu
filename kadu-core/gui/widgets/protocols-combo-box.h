@@ -22,15 +22,18 @@
 
 #include <QtGui/QComboBox>
 
+class AbstractProtocolFilter;
 class ActionsProxyModel;
 class ProtocolFactory;
 class ProtocolsModel;
+class ProtocolsModelProxy;
 
 class ProtocolsComboBox : public QComboBox
 {
 	Q_OBJECT
 
 	ProtocolsModel *Model;
+	ProtocolsModelProxy *ProxyModel;
 	ActionsProxyModel *ActionsModel;
 
 	ProtocolFactory *CurrentProtocolFactory;
@@ -44,6 +47,9 @@ public:
 
 	void setCurrentProtocol(ProtocolFactory *protocol);
 	ProtocolFactory * currentProtocol();
+	
+	void addFilter(AbstractProtocolFilter *filter);
+	void removeFilter(AbstractProtocolFilter *filter);
 
 signals:
 	void protocolChanged(ProtocolFactory *protocol, ProtocolFactory *lastProtocol);

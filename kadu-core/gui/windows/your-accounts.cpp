@@ -51,6 +51,7 @@
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocols-manager.h"
+#include "protocols/filter/can-register-protocol-filter.h"
 
 #include "activate.h"
 #include "icons-manager.h"
@@ -60,7 +61,7 @@
 YourAccounts *YourAccounts::Instance = 0;
 
 YourAccounts::YourAccounts(QWidget *parent) :
-		QWidget(parent), CurrentWidget(0), IsCurrentWidgetEditAccount(false)
+		QWidget(parent), CurrentWidget(0), IsCurrentWidgetEditAccount(false), CanRegisterFilter(new CanRegisterProtocolFilter())
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(tr("Your accounts"));
@@ -69,6 +70,8 @@ YourAccounts::YourAccounts(QWidget *parent) :
 	AccountsView->selectionModel()->select(AccountsView->model()->index(0, 0), QItemSelectionModel::ClearAndSelect);
 
 	loadWindowGeometry(this, "General", "YourAccountsWindowGeometry", 0, 50, 700, 500);
+	
+	CanRegisterFilter->setEnabled(true);
 }
 
 YourAccounts::~YourAccounts()
@@ -156,6 +159,7 @@ void YourAccounts::switchToCreateMode()
 	MainAccountLabel->setText(tr("<font size='+2'><b>Create New Account</b></font>"));
 	MainAccountGroupBox->setTitle(tr("Create New Account"));
 #endif
+	Protocols->addFilter(CanRegisterFilter);
 }
 
 void YourAccounts::switchToAddMode()
@@ -164,6 +168,7 @@ void YourAccounts::switchToAddMode()
 	MainAccountLabel->setText(tr("<font size='+2'><b>Add Existing Account</b></font>"));
 	MainAccountGroupBox->setTitle(tr("Setup an Existing Account"));
 #endif
+	Protocols->removeFilter(CanRegisterFilter);
 }
 
 void YourAccounts::createAccountWidget()
