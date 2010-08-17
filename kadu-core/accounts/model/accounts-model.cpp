@@ -26,9 +26,11 @@
 
 #include "accounts-model.h"
 
-AccountsModel::AccountsModel(QObject *parent)
-	: QAbstractListModel(parent)
+AccountsModel::AccountsModel(QObject *parent) :
+		QAbstractListModel(parent)
 {
+	connect(AccountManager::instance(), SIGNAL(accountUpdated(Account)),
+			this, SLOT(accountUpdated(Account)));
 	connect(AccountManager::instance(), SIGNAL(accountAboutToBeRegistered(Account)),
 			this, SLOT(accountAboutToBeRegistered(Account)));
 	connect(AccountManager::instance(), SIGNAL(accountRegistered(Account)),
@@ -41,6 +43,8 @@ AccountsModel::AccountsModel(QObject *parent)
 
 AccountsModel::~AccountsModel()
 {
+	disconnect(AccountManager::instance(), SIGNAL(accountUpdated(Account)),
+			this, SLOT(accountUpdated(Account)));
 	disconnect(AccountManager::instance(), SIGNAL(accountAboutToBeRegistered(Account)),
 			this, SLOT(accountAboutToBeRegistered(Account)));
 	disconnect(AccountManager::instance(), SIGNAL(accountRegistered(Account)),
@@ -82,8 +86,8 @@ QVariant AccountsModel::data(const QModelIndex &index, int role) const
 
 		case Qt::DecorationRole:
 			return acc.protocolHandler() 
-				? acc.protocolHandler()->icon()
-				: QVariant();
+					? acc.protocolHandler()->icon()
+					: QVariant();
 
 		case AccountRole:
 			return QVariant::fromValue<Account>(acc);
@@ -123,6 +127,12 @@ int AccountsModel::accountIndex(Account account)
 QModelIndex AccountsModel::accountModelIndex(Account account)
 {
 	return createIndex(accountIndex(account), 0, 0);
+}
+
+void AccountsModel::accountUpdated(Account account)
+{
+	QModelIndex index = accountModelIndex(account);
+	emit dataChanged(index, index);
 }
 
 void AccountsModel::accountAboutToBeRegistered(Account account)
