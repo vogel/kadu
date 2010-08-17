@@ -20,16 +20,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 #include <QtCore/QDateTime>
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
 #include <QtGui/QMenu>
 
+#include "accounts/account-manager.h"
+#include "contacts/contact-manager.h"
 #include "core/core.h"
-#include "debug.h"
+#include "gui/actions/action-description.h"
 #include "gui/windows/kadu-window.h"
 #include "misc/path-conversion.h"
+#include "debug.h"
 
 #include "infos.h"
 #include "infos_dialog.h"
@@ -58,8 +60,8 @@ extern "C" KADU_EXPORT void last_seen_close()
 }
 
 
-Infos::Infos(QObject *parent)
-: QObject(parent)
+Infos::Infos(QObject *parent) :
+	QObject(parent)
 {
 	kdebugf();
 
@@ -218,4 +220,3 @@ void Infos::updateTimes()
 	}
 	kdebugf2();
 }
-

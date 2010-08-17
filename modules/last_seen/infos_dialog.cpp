@@ -4,6 +4,7 @@
  * Copyright 2008, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2008 Tomasz Rostański (rozteck@interia.pl)
  * Copyright 2010 Dariusz Markowicz (darom@alari.pl)
+ * Copyright 2010 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -33,13 +34,12 @@
 
 #include "infos_dialog.h"
 
-InfosDialog::InfosDialog(const LastSeen &lastSeen, QWidget *parent, Qt::WindowFlags f)
-:QDialog(parent, f)
+InfosDialog::InfosDialog(const LastSeen &lastSeen, QWidget *parent) :
+	QDialog(parent)
 {
 	kdebugf();
 	setAttribute(Qt::WA_DeleteOnClose);
-//	this->resize(800, this->height());
-	this->setWindowTitle(tr("Buddies Information"));
+        setWindowTitle(tr("Buddies Information"));
 
 	QVBoxLayout *layout = new QVBoxLayout(this);
 	layout->setContentsMargins(0, 0, 0, 0);
@@ -49,6 +49,7 @@ InfosDialog::InfosDialog(const LastSeen &lastSeen, QWidget *parent, Qt::WindowFl
 	listView->setColumnCount(9);
 	listView->setSelectionMode(QAbstractItemView::NoSelection);
 	listView->setAllColumnsShowFocus(true);
+	listView->setSortingEnabled(true);
 
 	QStringList labels;
 	labels << tr("Buddy")
@@ -64,6 +65,9 @@ InfosDialog::InfosDialog(const LastSeen &lastSeen, QWidget *parent, Qt::WindowFl
 
 	foreach(Contact contact, ContactManager::instance()->items())
 	{
+		if(!contact.ownerBuddy() || contact.ownerBuddy().isAnonymous())
+			continue;
+		
 		QString desc, ip;
 		if (!contact.currentStatus().description().isEmpty())
 			desc = contact.currentStatus().description();
