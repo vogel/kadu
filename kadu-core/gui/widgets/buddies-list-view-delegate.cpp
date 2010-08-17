@@ -177,7 +177,7 @@ QSize BuddiesListViewDelegate::sizeHint(const QStyleOptionViewItem &option, cons
 	opt.locale = v3 ? v3->locale : QLocale();
 	opt.widget = v3 ? v3->widget : 0;
 
-	int avatarSize = DefaultAvatarSize.width() + 4;
+	int avatarSize = ShowAvatars ? DefaultAvatarSize.width() + 4 : 0;
 
 	const QTreeView *widget = dynamic_cast<const QTreeView *>(opt.widget);
 	if (!widget)
@@ -226,7 +226,7 @@ void BuddiesListViewDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 	opt.widget = v3 ? v3->widget : 0;
 	opt.showDecorationSelected = true;
 
-	int avatarSize = DefaultAvatarSize.width() + 4;
+	int avatarSize = ShowAvatars ? DefaultAvatarSize.width() + 4 : 0;
 
 	const QAbstractItemView *widget = dynamic_cast<const QAbstractItemView *>(opt.widget);
 	if (!widget)
