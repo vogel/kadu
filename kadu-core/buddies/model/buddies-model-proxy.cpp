@@ -109,7 +109,7 @@ bool BuddiesModelProxy::lessThan(const QModelIndex &left, const QModelIndex &rig
 			return false;
 
 		if (!leftContact.isBlocking() && rightContact.isBlocking())
-			return false;
+			return true;
 		
 
 		Status leftStatus = !leftContact.isNull()

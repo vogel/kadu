@@ -41,6 +41,7 @@ class AccountAddWidget;
 class AccountEditWidget;
 class AccountsModel;
 class ActionsProxyModel;
+class CanRegisterProtocolFilter;
 class ModalConfigurationWidget;
 class ProtocolFactory;
 class ProtocolsComboBox;
@@ -72,6 +73,8 @@ KADUAPI class YourAccounts : public QWidget, AccountsAwareObject
 	QMap<ProtocolFactory *, QWidget *> CreateWidgets;
 	QMap<ProtocolFactory *, AccountAddWidget *> AddWidgets;
 	QMap<Account, AccountEditWidget *> EditWidgets;
+	
+	CanRegisterProtocolFilter *CanRegisterFilter;
 
 	explicit YourAccounts(QWidget *parent = 0);
 

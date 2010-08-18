@@ -36,8 +36,6 @@ class BuddiesModel : public BuddiesModelBase
 {
 	Q_OBJECT
 
-	BuddyManager *Manager;
-
 private slots:
 	void buddyAboutToBeAdded(Buddy &buddy);
 	void buddyAdded(Buddy &buddy);
@@ -54,11 +52,11 @@ private slots:
 	void contactUpdated();
 
 public:
-	explicit BuddiesModel(BuddyManager *manager, QObject *parent = 0);
+	explicit BuddiesModel(QObject *parent = 0);
 	~BuddiesModel();
 
 	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
-	
+
 	// AbstractContactsModel implementation
 	virtual Buddy buddyAt(const QModelIndex &index) const;
 	virtual const QModelIndex buddyIndex(Buddy buddy) const;

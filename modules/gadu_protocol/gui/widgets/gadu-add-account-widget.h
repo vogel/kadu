@@ -44,7 +44,8 @@ class GaduAddAccountWidget : public AccountAddWidget
 	QPushButton *AddAccountButton;
 
 	void createGui();
-
+	void resetGui();
+	
 private slots:
 	void addAccountButtonClicked();
 	void cancelButtonClicked();

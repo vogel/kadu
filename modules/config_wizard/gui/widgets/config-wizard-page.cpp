@@ -40,7 +40,9 @@ void ConfigWizardPage::createGui()
 	mainLayout->setSpacing(5);
 
 	DescriptionPane = new QTextBrowser(this);
-
+#ifdef Q_OS_MAC
+	DescriptionPane->setMinimumWidth(150);
+#endif
 	mainLayout->addWidget(DescriptionPane, 2);
 
 	QWidget *formWidget = new QWidget(this);

@@ -22,6 +22,7 @@
 #include "model/actions-proxy-model.h"
 #include "model/roles.h"
 #include "protocols/model/protocols-model.h"
+#include "protocols/model/protocols-model-proxy.h"
 #include "protocols/protocol-factory.h"
 
 #include "protocols-combo-box.h"
@@ -30,9 +31,11 @@ ProtocolsComboBox::ProtocolsComboBox(QWidget *parent) :
 		QComboBox(parent), CurrentProtocolFactory(0)
 {
 	Model = new ProtocolsModel(this);
+	ProxyModel = new ProtocolsModelProxy(this);
+	ProxyModel->setSourceModel(Model);
 
 	ActionsModel = new ActionsProxyModel(this);
-	ActionsModel->setSourceModel(Model);
+	ActionsModel->setSourceModel(ProxyModel);
 	ActionsModel->addBeforeAction(new QAction(tr(" - Select network - "), this), ActionsProxyModel::NotVisibleWithOneRowSourceModel);
 
 	setModel(ActionsModel);
@@ -76,4 +79,14 @@ void ProtocolsComboBox::currentIndexChangedSlot(int index)
 	currentProtocol(); // sets CurrentProtocol variable
 	if (last != CurrentProtocolFactory)
 		emit protocolChanged(CurrentProtocolFactory, last);
+}
+
+void ProtocolsComboBox::addFilter(AbstractProtocolFilter *filter)
+{
+	ProxyModel->addFilter(filter);
+}
+
+void ProtocolsComboBox::removeFilter(AbstractProtocolFilter *filter)
+{
+	ProxyModel->removeFilter(filter);
 }

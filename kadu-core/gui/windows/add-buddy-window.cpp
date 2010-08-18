@@ -278,12 +278,12 @@ void AddBuddyWindow::accept()
 		{
 			buddy = Buddy::create();
 			buddy.data()->setState(StorableObject::StateNew);
-
-			BuddyManager::instance()->addItem(buddy);
 		}
 		else
 			buddy = MyBuddy;
 
+		BuddyManager::instance()->addItem(buddy);		
+		
 		buddy.setAnonymous(false);
 		QString display = DisplayNameEdit->text().isEmpty() ? UserNameEdit->text() : DisplayNameEdit->text();
 		buddy.setDisplay(display);

@@ -62,8 +62,7 @@ void SimpleViewConfigUi::createDefaultConfiguration()
 {
 	config_file.addVariable("Look", "SimpleViewKeepSize", true);
 	config_file.addVariable("Look", "SimpleViewNoScrollBar", true);
-
-	config_file.addVariable("ShortCuts", "kadu_simpleview", "Ctrl+X");
+	config_file.addVariable("Look", "SimpleViewBorderless", true);
 }
 
 

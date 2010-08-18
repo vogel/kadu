@@ -69,7 +69,7 @@ QString FormattedMessagePart::toHtml() const
 	if (!Bold && !Italic && !Underline && !Color.isValid())
 		return result;
 
-	QString span = "<span style='";
+	QString span = "<span style=\"";
 	if (Bold)
 		span += "font-weight:600;";
 	if (Italic)
@@ -78,7 +78,7 @@ QString FormattedMessagePart::toHtml() const
 		span += "text-decoration:underline;";
 	if (Color.isValid())
 		span += QString("color:%1;").arg(Color.name());
-	span += "'>";
+	span += "\">";
 
 	return span + result + "</span>";
 }

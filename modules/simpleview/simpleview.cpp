@@ -51,7 +51,9 @@ SimpleView::SimpleView() :
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/simpleview.ui"));
 	MainConfigurationWindow::registerUiHandler(SimpleViewConfigUi::instance());
 
-	DockAction = DockingManager::instance()->dockMenu()->addAction(IconsManager::instance()->iconByPath("16x16/view-refresh.png"), tr("Simple view"), this, SLOT(simpleViewToggle()));
+	DockAction = new QAction(IconsManager::instance()->iconByPath("16x16/view-refresh.png"), tr("Simple view"), this);
+	connect(DockAction, SIGNAL(triggered()), this, SLOT(simpleViewToggle()));
+	DockingManager::instance()->dockMenu()->insertAction(DockingManager::instance()->dockMenu()->actions().last(), DockAction);
 
 	KaduWindowHandle = Core::instance()->kaduWindow();
 	MainWindowHandle = KaduWindowHandle->findMainWindow(KaduWindowHandle);
@@ -122,6 +124,9 @@ void SimpleView::simpleViewToggle()
 
 	if (SimpleViewActive)
 	{
+		if (Borderless)
+			BuddiesListViewStyle = BuddiesListWidgetHandle->view()->styleSheet();
+		
 		p = BuddiesListWidgetHandle->view()->mapToGlobal(BuddiesListWidgetHandle->view()->rect().topLeft());
 		s = BuddiesListWidgetHandle->view()->rect().size();
 		BackupPosition = p - cp;
@@ -162,10 +167,17 @@ void SimpleView::simpleViewToggle()
 			MainWindowHandle->move(p);
 			MainWindowHandle->resize(s);
 		}
+		
+		if (Borderless)
+			BuddiesListWidgetHandle->view()->setStyleSheet(QString("QTreeView { border-style: none; }") + BuddiesListViewStyle);
 	}
 	else
 	{
 		MainWindowHandle->hide();
+		
+		if (Borderless)
+			BuddiesListWidgetHandle->view()->setStyleSheet(BuddiesListViewStyle);
+		
 		if(KeepSize)
 		{
 			BackupPosition = cp - BackupPosition;
@@ -219,8 +231,12 @@ void SimpleView::compositingDisabled()
 
 void SimpleView::configurationUpdated()
 {
+	/* Give the kadu update the GUI with old configuration */
+	if (SimpleViewActive)
+		simpleViewToggle();
+
 	KeepSize = config_file.readBoolEntry("Look", "SimpleViewKeepSize", true);
 	NoScrollBar = config_file.readBoolEntry("Look", "SimpleViewNoScrollBar", true);
+	Borderless = config_file.readBoolEntry("Look", "SimpleViewBorderless", true);
 
-	DockAction->setShortcut(HotKey::shortCutFromFile("ShortCuts", "kadu_simpleview"));
 }

@@ -132,7 +132,7 @@ void KaduWindow::createGui()
 	GroupBarWidget->setLayout(GroupBarLayout);
 
 	ContactsWidget = new BuddiesListWidget(BuddiesListWidget::FilterAtTop, this);
-	ContactsWidget->view()->setModel(new BuddiesModel(BuddyManager::instance(), this));
+	ContactsWidget->view()->setModel(new BuddiesModel(this));
 	ContactsWidget->view()->addFilter(GroupBar->filter());
 	AnonymousWithoutMessagesBuddyFilter *anonymousFilter = new AnonymousWithoutMessagesBuddyFilter(this);
 	anonymousFilter->setEnabled(true);
@@ -554,6 +554,12 @@ void KaduWindow::addAction(const QString &actionName, Qt::ToolButtonStyle style)
 	addToolButton(findExistingToolbar(""), actionName, style);
 	Core::instance()->kaduWindow()->refreshToolBars("");
 }
+
+ActionDataSource * KaduWindow::actionSource()
+{
+	return contactsListView();
+}
+
 
 void KaduWindow::setDocked(bool docked)
 {

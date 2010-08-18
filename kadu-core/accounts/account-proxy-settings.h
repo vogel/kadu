@@ -22,8 +22,9 @@
 
 #include <QtCore/QString>
 #include <QtNetwork/QHostAddress>
+#include <exports.h>
 
-class AccountProxySettings
+class KADUAPI AccountProxySettings
 {
 	bool Enabled;
 	QString Address;
