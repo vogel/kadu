@@ -172,7 +172,7 @@ MainConfigurationWindow::MainConfigurationWindow()
 		disconnectDescription->setMaxLength(account.statusContainer()->maxDescriptionLength());
 		onStartupSetDescription->setMaxLength(account.statusContainer()->maxDescriptionLength());
 	}
-	connect(widget()->widgetById("advancedMode"), SIGNAL(toggled(bool)), widget()->widgetById("contactsWithIcons"), SLOT(setEnabled(bool)));
+//	connect(widget()->widgetById("advancedMode"), SIGNAL(toggled(bool)), widget()->widgetById("contactsWithIcons"), SLOT(setEnabled(bool)));
 	connect(widget()->widgetById("showAvatars"), SIGNAL(toggled(bool)), widget()->widgetById("avatarBorder"), SLOT(setEnabled(bool)));
 	connect(widget()->widgetById("showAvatars"), SIGNAL(toggled(bool)), widget()->widgetById("avatarGreyOut"), SLOT(setEnabled(bool)));
 	connect(widget()->widgetById("disconnectWithCurrentDescription"), SIGNAL(toggled(bool)), disconnectDescription, SLOT(setDisabled(bool)));
