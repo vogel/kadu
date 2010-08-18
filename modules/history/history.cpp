@@ -161,14 +161,7 @@ void History::createActionDescriptions()
 	);
 	ShowHistoryActionDescription->setShortcut("kadu_viewhistory");
 	BuddiesListViewMenuManager::instance()->insertActionDescription(5, ShowHistoryActionDescription);
-	Core::instance()->kaduWindow()->insertMenuActionDescription(ShowHistoryActionDescription, KaduWindow::MenuContacts, 5);
-
-	ChatsHistoryActionDescription = new ActionDescription(0,
-		ActionDescription::TypeMainMenu, "chatsHistoryAction",
-		this, SLOT(showHistoryActionActivated(QAction *, bool)),
-		"kadu_icons/kadu-history.png", "kadu_icons/kadu-history.png", tr("View Chat History")
-	);
-	Core::instance()->kaduWindow()->insertMenuActionDescription(ChatsHistoryActionDescription, KaduWindow::MenuKadu, 5);
+	Core::instance()->kaduWindow()->insertMenuActionDescription(ShowHistoryActionDescription, KaduWindow::MenuKadu, 5);
 
 	ClearHistoryActionDescription = new ActionDescription(0,
 		ActionDescription::TypeUser, "clearHistoryAction",
@@ -182,13 +175,10 @@ void History::createActionDescriptions()
 void History::deleteActionDescriptions()
 {
 	BuddiesListViewMenuManager::instance()->removeActionDescription(ShowHistoryActionDescription);
+	Core::instance()->kaduWindow()->removeMenuActionDescription(ShowHistoryActionDescription);
 
 	delete ShowHistoryActionDescription;
 	ShowHistoryActionDescription = 0;
-
-	Core::instance()->kaduWindow()->removeMenuActionDescription(ChatsHistoryActionDescription);
-	delete ChatsHistoryActionDescription;
-	ChatsHistoryActionDescription = 0;
 }
 
 void History::showHistoryActionActivated(QAction *sender, bool toggled)
@@ -203,15 +193,11 @@ void History::showHistoryActionActivated(QAction *sender, bool toggled)
 	Chat chat = action->chat();
 
 	if (!chatEditBox || chat != chatEditBox->chat())
-	{
-		if (chat)
-			HistoryDialog->show(chat);
-		return;
-	}
+		HistoryDialog->show(chat);
 
 	if (!chatEditBox)
 		return;
-
+	
 	ChatWidget *chatWidget = chatEditBox->chatWidget();
 	if (chatWidget)
 	{
