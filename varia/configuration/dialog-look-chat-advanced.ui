@@ -9,7 +9,7 @@
 			</group-box>
 
 			<group-box name="Server Time">
-				<check-box caption="Remove server time" config-section="Look" config-item="NoServerTime" id="removeServerTime" />
+				<check-box caption="Hide server time" config-section="Look" config-item="NoServerTime" id="removeServerTime" />
 				<spin-box caption="Maximum time difference" config-section="Look" config-item="NoServerTimeDiff" min-value="1" max-value="600" suffix="s" id="maxTimeDifference" />
 			</group-box>
 

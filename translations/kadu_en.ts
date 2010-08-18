@@ -139,7 +139,7 @@ It&apos;s a high security risk!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Remove server time</source>
+        <source>Hide server time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
