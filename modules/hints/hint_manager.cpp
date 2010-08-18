@@ -585,8 +585,8 @@ void HintManager::notificationClosed(Notification *notification)
 void HintManager::realCopyConfiguration(const QString &fromCategory, const QString &fromHint, const QString &toHint)
 {
 	config_file.writeEntry("Hints", toHint + "_font", config_file.readFontEntry(fromCategory, fromHint + "_font", &qApp->font()));
-	config_file.writeEntry("Hints", toHint + "_fgcolor", config_file.readColorEntry(fromCategory, fromHint + "_fgcolor", &qApp->palette().foreground().color()));
-	config_file.writeEntry("Hints", toHint + "_bgcolor", config_file.readColorEntry(fromCategory, fromHint + "_bgcolor", &qApp->palette().background().color()));
+	config_file.writeEntry("Hints", toHint + "_fgcolor", config_file.readColorEntry(fromCategory, fromHint + "_fgcolor", &qApp->palette().windowText().color()));
+	config_file.writeEntry("Hints", toHint + "_bgcolor", config_file.readColorEntry(fromCategory, fromHint + "_bgcolor", &qApp->palette().window().color()));
 	config_file.writeEntry("Hints", toHint + "_timeout", (int) config_file.readUnsignedNumEntry(fromCategory,  fromHint + "_timeout", 10));
 }
 
@@ -595,14 +595,14 @@ void HintManager::import_0_6_5_configuration()
 	config_file.addVariable("Hints", "AllEvents_transparency", 1 - config_file.readNumEntry("OSDHints", "Opacity", 100)/100);
 	config_file.addVariable("Hints", "AllEvents_iconSize", config_file.readNumEntry("OSDHints", "IconSize", 32));
 	config_file.addVariable("Hints", "AllEvents_borderWidth",config_file.readNumEntry("OSDHints", "SetAll_borderWidth", FRAME_WIDTH));
-	config_file.addVariable("Hints", "AllEvents_bdcolor", config_file.readColorEntry("OSDHints", "SetAll_bdcolor").name());
+	config_file.addVariable("Hints", "AllEvents_bdcolor", config_file.readColorEntry("OSDHints", "SetAll_bdcolor", &qApp->palette().window().color()).name());
 
 	config_file.addVariable("Hints", "HintOverUser_transparency", 1 - config_file.readNumEntry("OSDHints", "Opacity", 100)/100);
 	config_file.addVariable("Hints", "HintOverUser_iconSize", config_file.readNumEntry("OSDHints", "IconSize", 32));
 	config_file.addVariable("Hints", "HintOverUser_borderWidth",config_file.readNumEntry("OSDHints", "SetAll_borderWidth", FRAME_WIDTH));
-	config_file.addVariable("Hints", "HintOverUser_bdcolor", config_file.readColorEntry("OSDHints", "SetAll_bdcolor").name());
-	config_file.addVariable("Hints", "HintOverUser_bgcolor", config_file.readColorEntry("OSDHints", "SetAll_bgcolor").name());
-	config_file.addVariable("Hints", "HintOverUser_fgcolor", config_file.readColorEntry("OSDHints", "SetAll_fgcolor").name());
+	config_file.addVariable("Hints", "HintOverUser_bdcolor", config_file.readColorEntry("OSDHints", "SetAll_bdcolor", &qApp->palette().window().color()).name());
+	config_file.addVariable("Hints", "HintOverUser_bgcolor", config_file.readColorEntry("OSDHints", "SetAll_bgcolor", &qApp->palette().window().color()).name());
+	config_file.addVariable("Hints", "HintOverUser_fgcolor", config_file.readColorEntry("OSDHints", "SetAll_fgcolor", &qApp->palette().windowText().color()).name());
 	config_file.addVariable("Hints", "HintOverUser_font", config_file.readFontEntry("OSDHints", "SetAll_font"));
 
 	if (config_file.readEntry("Look", "UserboxToolTipStyle") == "OSDHints")
@@ -653,8 +653,6 @@ void HintManager::import_0_6_5_configuration()
 
 void HintManager::createDefaultConfiguration()
 {
-	QWidget w;
-
 	config_file.addVariable("Notify", "ConnectionError_Hints", true);
 	config_file.addVariable("Notify", "NewChat_Hints", true);
 	config_file.addVariable("Notify", "NewMessage_Hints", true);
@@ -681,8 +679,8 @@ void HintManager::createDefaultConfiguration()
 		<< "FileTransfer" << "FileTransfer/IncomingFile" << "FileTransfer/Finished";
 	foreach (const QString &event, events)
 	{
-		config_file.addVariable("Hints", "Event_" + event + "_bgcolor", qApp->palette().background().color());
-		config_file.addVariable("Hints", "Event_" + event + "_fgcolor",qApp->palette().foreground().color());
+		config_file.addVariable("Hints", "Event_" + event + "_bgcolor", qApp->palette().window().color());
+		config_file.addVariable("Hints", "Event_" + event + "_fgcolor",qApp->palette().windowText().color());
 		config_file.addVariable("Hints", "Event_" + event + "_font", qApp->font());
 		config_file.addVariable("Hints", "Event_" + event + "_timeout", 10);
 	}
@@ -707,9 +705,9 @@ void HintManager::createDefaultConfiguration()
 	config_file.addVariable("Hints", "HintOverUser_transparency", 0);
 	config_file.addVariable("Hints", "HintOverUser_iconSize", 32);
 	config_file.addVariable("Hints", "HintOverUser_borderWidth", FRAME_WIDTH);
-	config_file.addVariable("Hints", "HintOverUser_bdcolor", &qApp->palette().background().color());
-	config_file.addVariable("Hints", "HintOverUser_bgcolor", &qApp->palette().background().color());
-	config_file.addVariable("Hints", "HintOverUser_fgcolor", &qApp->palette().foreground().color());
+	config_file.addVariable("Hints", "HintOverUser_bdcolor", qApp->palette().window().color());
+	config_file.addVariable("Hints", "HintOverUser_bgcolor", qApp->palette().window().color());
+	config_file.addVariable("Hints", "HintOverUser_fgcolor", qApp->palette().windowText().color());
 	config_file.addVariable("Hints", "HintOverUser_font", qApp->font());
 	config_file.addVariable("Hints", "HintOverUser_Geometry", "50, 50, 640, 610");
 	config_file.addVariable("Hints", "HintEventConfiguration_Geometry", "50, 50, 520, 345");
