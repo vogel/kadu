@@ -317,7 +317,6 @@ set (kadu_SRCS
 	html_document.cpp
 	http_client.cpp
 	icons-manager.cpp
-	ignore.cpp
 	languages-manager.cpp
 	modules.cpp
 	themes.cpp
@@ -568,7 +567,6 @@ set (kadu_MOC_SRCS
 	emoticons.h
 	http_client.h
 	icons-manager.h
-	ignore.h
 	modules.h
 	themes.h
 	updates.h

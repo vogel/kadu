@@ -68,7 +68,6 @@
 
 #include "about.h"
 #include "debug.h"
-#include "ignore.h"
 #include "modules.h"
 
 #include "kadu-window-actions.h"
@@ -304,12 +303,6 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		ActionDescription::TypeGlobal, "openSearchAction",
 		this, SLOT(openSearchActionActivated(QAction *, bool)),
 		"16x16/edit-find.png", "16x16/edit-find.png", tr("Search for Buddy...")
-	);
-
-	ManageBlocked = new ActionDescription(this,
-		ActionDescription::TypeMainMenu, "manageIgnoredAction",
-		this, SLOT(manageBlockedActionActivated(QAction *, bool)),
-		"kadu_icons/kadu-blocking.png", "kadu_icons/kadu-blocking.png", tr("Blocked Buddies...")
 	);
 
 	Help = new ActionDescription(this,
@@ -702,13 +695,6 @@ void KaduWindowActions::openSearchActionActivated(QAction *sender, bool toggled)
 	Q_UNUSED(toggled)
 
 	(new SearchWindow(sender->parentWidget()))->show();
-}
-
-void KaduWindowActions::manageBlockedActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(toggled)
-
-	(new Ignored(sender->parentWidget()))->show();
 }
 
 void KaduWindowActions::helpActionActivated(QAction *sender, bool toggled)
