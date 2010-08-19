@@ -33,23 +33,25 @@ include (FindPkgConfig)
 include (CheckIncludeFiles)
 include (CheckFunctionExists)
 
-if (NOT DETAILED_VERSION)
-	set(DETAILED_VERSION "0" CACHE STRING "Additional version numer" FORCE)
-endif(NOT DETAILED_VERSION)
+if (NOT KADU_VERSION)
+	find_program (GIT_EXECUTABLE git DOC "git command line client")
+	if (GIT_EXECUTABLE)
+		execute_process (COMMAND ${GIT_EXECUTABLE} describe --tags HEAD
+			WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+			OUTPUT_VARIABLE KADU_VERSION
+			OUTPUT_STRIP_TRAILING_WHITESPACE)
+	endif (GIT_EXECUTABLE)
 
-file (READ ${CMAKE_CURRENT_SOURCE_DIR}/VERSION KADU_VERSION)
-string (REPLACE "\n" "" KADU_VERSION ${KADU_VERSION})
+	if (NOT KADU_VERSION)
+		file (READ ${CMAKE_CURRENT_SOURCE_DIR}/VERSION KADU_VERSION)
+		string (REPLACE "\n" "" KADU_VERSION ${KADU_VERSION})
+	endif (NOT KADU_VERSION)
+endif (NOT KADU_VERSION)
 
 if (WIN32)
 	# Add more version info to files
 	string(REGEX REPLACE "(.+)\\.(.+)\\.(.+)[.-].*" "\\1, \\2, \\3" NUMERIC_VERSION ${KADU_VERSION})
 	set(PACKAGE_VERSION ${KADU_VERSION})
-
-	if(DETAILED_VERSION)
-		string(REGEX REPLACE "([0-9]+)[^0-9].*" "\\1" SVN_REVISION ${DETAILED_VERSION})
-		set(NUMERIC_VERSION "${NUMERIC_VERSION}, ${SVN_REVISION}")
-		set(PACKAGE_VERSION "${PACKAGE_VERSION}-r${SVN_REVISION}")
-	endif(DETAILED_VERSION)
 
 	# package
 	set (CPACK_GENERATOR "ZIP")
