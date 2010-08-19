@@ -277,14 +277,11 @@ void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool a
 
 	JabberClientConnector->setOptSSL(useSSL());
 
+	if (overrideHost())
+		JabberClientConnector->setOptHostPort(Server, Port);
+	
 	if (useXMPP09())
-	{
-		if (overrideHost())
-			JabberClientConnector->setOptHostPort(Server, Port);
-
 		JabberClientConnector->setOptProbe(probeSSL());
-
-	}
 
 	/*
 	 * Setup authentication layer
