@@ -72,7 +72,7 @@ public:
 	static SimpleView *instance(){return Instance; }
 
 public slots:
-	void simpleViewToggle();
+	void simpleViewToggle(bool activate);
 };
 
 #endif
