@@ -25,24 +25,24 @@
 class QTextDocument;
 class QTreeView;
 
-class BuddiesListViewDelegate;
 class BuddiesListViewDelegateConfiguration;
 
 class BuddiesListViewItemPainter
 {
 	const BuddiesListViewDelegateConfiguration &Configuration;
-	const BuddiesListViewDelegate *Delegate;
 	const QStyleOptionViewItemV4 &Option;
 	const QModelIndex &Index;
 	const QTreeView *Widget;
 
 public:
-	BuddiesListViewItemPainter(const BuddiesListViewDelegateConfiguration &configuration, const BuddiesListViewDelegate *delegate, const QStyleOptionViewItemV4 &option, const QModelIndex &index);
+	BuddiesListViewItemPainter(const BuddiesListViewDelegateConfiguration &configuration, const QStyleOptionViewItemV4 &option, const QModelIndex &index);
 
 	QSize sizeHint();
 
 	QTextDocument * descriptionDocument(const QString &text, int width, QColor color) const;
 	int textAvailableWidth(const QTreeView *widget) const;
+
+	bool useMessagePixmap(const QModelIndex &index) const;
 	int iconsWidth(int margin) const;
 
 	QPixmap buddyAvatar() const;

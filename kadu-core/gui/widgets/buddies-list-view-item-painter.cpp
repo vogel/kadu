@@ -23,14 +23,16 @@
 #include <QtGui/QTextFrameFormat>
 #include <QtGui/QTreeView>
 
-#include "gui/widgets/buddies-list-view-delegate.h"
+#include "buddies/buddy.h"
+#include "chat/message/pending-messages-manager.h"
+#include "contacts/contact.h"
 #include "gui/widgets/buddies-list-view-delegate-configuration.h"
 #include "model/roles.h"
 
 #include "buddies-list-view-item-painter.h"
 
-BuddiesListViewItemPainter::BuddiesListViewItemPainter(const BuddiesListViewDelegateConfiguration &configuration, const BuddiesListViewDelegate *delegate, const QStyleOptionViewItemV4 &option, const QModelIndex &index) :
-		Configuration(configuration), Delegate(delegate), Option(option), Index(index)
+BuddiesListViewItemPainter::BuddiesListViewItemPainter(const BuddiesListViewDelegateConfiguration &configuration, const QStyleOptionViewItemV4 &option, const QModelIndex &index) :
+		Configuration(configuration), Option(option), Index(index)
 {
 	Widget = dynamic_cast<const QTreeView *>(option.widget);
 }
@@ -68,6 +70,20 @@ QTextDocument * BuddiesListViewItemPainter::descriptionDocument(const QString &t
 	return doc;
 }
 
+bool BuddiesListViewItemPainter::useMessagePixmap(const QModelIndex &index) const
+{
+	if (index.parent().isValid()) // contact
+	{
+		Contact contact = qvariant_cast<Contact>(index.data(ContactRole));
+		return contact && PendingMessagesManager::instance()->hasPendingMessagesForContact(contact);
+	}
+	else
+	{
+		Buddy buddy = qvariant_cast<Buddy>(index.data(BuddyRole));
+		return buddy && PendingMessagesManager::instance()->hasPendingMessagesForBuddy(buddy);
+	}
+}
+
 int BuddiesListViewItemPainter::iconsWidth(int margin) const
 {
 	QPixmap pixmap = qvariant_cast<QPixmap>(Index.data(Qt::DecorationRole));
@@ -75,7 +91,7 @@ int BuddiesListViewItemPainter::iconsWidth(int margin) const
 	int result = 0;
 	if (!pixmap.isNull())
 		result += pixmap.width() + margin;
-	if (Delegate->useMessagePixmap(Index))
+	if (useMessagePixmap(Index))
 		result += Configuration.messagePixmap().width() + margin;
 
 	return result;

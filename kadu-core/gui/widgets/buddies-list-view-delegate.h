@@ -83,8 +83,6 @@ public:
 
 	virtual void configurationUpdated();
 
-	bool useMessagePixmap(const QModelIndex &index) const;
-
 };
 
 // for MOC

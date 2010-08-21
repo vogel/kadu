@@ -104,20 +104,6 @@ void BuddiesListViewDelegate::setShowAccountName(bool showAccountName)
 	Configuration.setShowAccountName(showAccountName);
 }
 
-bool BuddiesListViewDelegate::useMessagePixmap(const QModelIndex &index) const
-{
-	if (index.parent().isValid()) // contact
-	{
-		Contact contact = qvariant_cast<Contact>(index.data(ContactRole));
-		return contact && PendingMessagesManager::instance()->hasPendingMessagesForContact(contact);
-	}
-	else
-	{
-		Buddy buddy = qvariant_cast<Buddy>(index.data(BuddyRole));
-		return buddy && PendingMessagesManager::instance()->hasPendingMessagesForBuddy(buddy);
-	}
-}
-
 void BuddiesListViewDelegate::drawDebugRect(QPainter *painter, QRect rect, QColor color) const
 {
 	Q_UNUSED(rect)
@@ -145,7 +131,7 @@ QStyleOptionViewItemV4 BuddiesListViewDelegate::getOptions(const QStyleOptionVie
 
 QSize BuddiesListViewDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-	BuddiesListViewItemPainter buddyPainter(Configuration, this, getOptions(option, index), index);
+	BuddiesListViewItemPainter buddyPainter(Configuration, getOptions(option, index), index);
 	return buddyPainter.sizeHint();
 }
 
@@ -218,7 +204,7 @@ void BuddiesListViewDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 	opt.widget = v3 ? v3->widget : 0;
 	opt.showDecorationSelected = true;
 
-	BuddiesListViewItemPainter buddyPainter(Configuration, this, getOptions(option, index), index);
+	BuddiesListViewItemPainter buddyPainter(Configuration, getOptions(option, index), index);
 
 	int avatarSize = Configuration.showAvatars() ? Configuration.defaultAvatarSize().width() + 4 : 0;
 
@@ -279,7 +265,7 @@ void BuddiesListViewDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 	int pixmapMargin = 0;
 
 
-	if (useMessagePixmap(index))
+	if (buddyPainter.useMessagePixmap(index))
 		painter->drawPixmap(hFrameMargin + pixmapMargin, vFrameMargin + (itemHeight - Configuration.messagePixmap().height()) / 2, Configuration.messagePixmap());
 
 	QString display = index.data(Qt::DisplayRole).toString();
