@@ -29,11 +29,14 @@
 #include "configuration/configuration-aware-object.h"
 #include "buddies/buddy.h"
 #include "status/status.h"
+#include <chat/message/message.h>
 
 class QTextDocument;
+class QTreeView;
 
 class AbstractBuddiesModel;
 class Account;
+class BuddiesListViewItemPainter;
 
 class BuddiesListViewDelegate : public QItemDelegate, public ConfigurationAwareObject, public AccountsAwareObject
 {
@@ -59,14 +62,22 @@ class BuddiesListViewDelegate : public QItemDelegate, public ConfigurationAwareO
 
 	QPixmap MessagePixmap;
 
-	QTextDocument * descriptionDocument(const QString &text, int width, QColor color) const;
 	bool isBold(const QModelIndex &index) const;
-	QPixmap avatar(const QModelIndex &index) const;
-
-	bool useMessagePixmap(const QModelIndex &index) const;
-	int iconsWidth(const QModelIndex &index, int margin) const;
 
 	void drawDebugRect(QPainter *painter, QRect rect, QColor color) const;
+
+	QStyleOptionViewItemV4 getOptions(const QStyleOptionViewItem &option, const QModelIndex &index) const;
+
+	QRect buddyIconRect(const BuddiesListViewItemPainter &buddyPainter, const QRect &itemRect) const;
+	QRect buddyAvatarRect(const BuddiesListViewItemPainter &buddyPainter) const;
+	QRect buddyNameRect(const BuddiesListViewItemPainter &buddyPainter, const QRect &itemRect) const;
+	QRect buddyDescriptionRect(const BuddiesListViewItemPainter &buddyPainter) const;
+
+	void paintBuddyIcon(const BuddiesListViewItemPainter &buddyPainter, QPainter *painter, const QRect &itemRect) const;
+	void paintMessageIcon(const BuddiesListViewItemPainter &buddyPainter) const;
+	void paintBuddyName(const BuddiesListViewItemPainter &buddyPainter, QPainter *painter, const QStyleOptionViewItem &option, const QRect &itemRect) const;
+	void paintAccountName(const BuddiesListViewItemPainter &buddyPainter) const;
+	void paintBuddyDescription(const BuddiesListViewItemPainter &buddyPainter) const;
 
 private slots:
 	void buddyStatusChanged(Contact contact, Status oldStatus);
@@ -88,6 +99,18 @@ public:
 	virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
 	virtual void configurationUpdated();
+
+	bool useMessagePixmap(const QModelIndex &index) const;
+
+	bool showAvatars() const { return ShowAvatars; }
+	QSize defaultAvatarSize() const { return DefaultAvatarSize; }
+	QFont font() const { return Font; }
+	QFont descriptionFont() const { return DescriptionFont; }
+	QColor descriptionColor() const { return DescriptionColor; }
+	bool showMultiLineDescription() const { return ShowMultiLineDescription; }
+	QPixmap messagePixmap() const { return MessagePixmap; }
+	bool showDescription() const { return ShowDescription; }
+
 };
 
 // for MOC
