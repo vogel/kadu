@@ -17,44 +17,36 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QAction>
-#include <QtGui/QListView>
-
-#include "buddies/buddy-manager.h"
 #include "buddies/filter/anonymous-buddy-filter.h"
 #include "buddies/filter/buddy-name-filter.h"
 #include "buddies/model/buddies-model.h"
 #include "buddies/model/buddies-model-proxy.h"
 #include "gui/widgets/buddies-list-view.h"
 #include "gui/widgets/select-buddy-popup.h"
-#include "model/actions-proxy-model.h"
 #include "model/roles.h"
 
 #include "select-buddy-combo-box.h"
 
 SelectBuddyComboBox::SelectBuddyComboBox(QWidget *parent) :
-		QComboBox(parent)
+		KaduComboBox(parent)
 {
-	connect(this, SIGNAL(activated(int)), this, SLOT(activatedSlot()));
+	setUpModel(new BuddiesModel(this), new BuddiesModelProxy(this));
 
 	Popup = new SelectBuddyPopup();
 	Popup->view()->proxyModel()->setSortByStatus(false);
-	connect(Popup, SIGNAL(buddySelected(Buddy)), this, SLOT(setBuddy(Buddy)));
 
-	Model = new BuddiesModel(this);
-	ProxyModel = new BuddiesModelProxy(this);
-	ProxyModel->setSortByStatus(false);
-	ProxyModel->setSourceModel(Model);
-
-	ActionsModel = new ActionsProxyModel(this);
-	ActionsModel->addBeforeAction(new QAction(tr(" - Select contact - "), this));
-	ActionsModel->setSourceModel(ProxyModel);
-
-	setModel(ActionsModel);
+	static_cast<BuddiesModelProxy *>(SourceProxyModel)->setSortByStatus(false);
 
 	AnonymousBuddyFilter *anonymousFilter = new AnonymousBuddyFilter(this);
 	anonymousFilter->setEnabled(true);
 	addFilter(anonymousFilter);
+
+	connect(Popup, SIGNAL(buddySelected(Buddy)), this, SLOT(setCurrentBuddy(Buddy)));
+	connect(model(), SIGNAL(rowsAboutToBeRemoved(const QModelIndex &, int, int)),
+			this, SLOT(updateValueBeforeChange()));
+	connect(model(), SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
+			this, SLOT(rowsRemoved(const QModelIndex &, int, int)));
+	connect(this, SIGNAL(currentIndexChanged(int)), this, SLOT(currentIndexChangedSlot(int)));
 }
 
 SelectBuddyComboBox::~SelectBuddyComboBox()
@@ -63,16 +55,41 @@ SelectBuddyComboBox::~SelectBuddyComboBox()
 	Popup = 0;
 }
 
-void SelectBuddyComboBox::addFilter(AbstractBuddyFilter *filter)
+void SelectBuddyComboBox::setCurrentBuddy(Buddy buddy)
 {
-	ProxyModel->addFilter(filter);
-	Popup->view()->addFilter(filter);
+	if (setCurrentValue(buddy))
+		emit buddyChanged(buddy);
 }
 
-void SelectBuddyComboBox::removeFilter(AbstractBuddyFilter *filter)
+Buddy SelectBuddyComboBox::currentBuddy()
 {
-	ProxyModel->removeFilter(filter);
-	Popup->view()->removeFilter(filter);
+	return currentValue();
+}
+
+void SelectBuddyComboBox::currentIndexChangedSlot(int index)
+{
+	if (currentIndexChangedSlotImpl(index))
+		emit buddyChanged(CurrentValue);
+}
+
+void SelectBuddyComboBox::updateValueBeforeChange()
+{
+	updateValueBeforeChangeImpl();
+}
+
+void SelectBuddyComboBox::rowsRemoved(const QModelIndex &parent, int start, int end)
+{
+	rowsRemovedImpl(parent, start, end);
+}
+
+int SelectBuddyComboBox::preferredDataRole() const
+{
+	return BuddyRole;
+}
+
+QString SelectBuddyComboBox::selectString() const
+{
+	return tr(" - Select contact - ");
 }
 
 void SelectBuddyComboBox::showPopup()
@@ -80,7 +97,7 @@ void SelectBuddyComboBox::showPopup()
 	Popup->setGeometry(QRect(
 			mapToGlobal(rect().bottomLeft()),
 			QSize(geometry().width(), Popup->geometry().height())));
-	Popup->show(buddy());
+	Popup->show(CurrentValue);
 }
 
 void SelectBuddyComboBox::hidePopup()
@@ -88,25 +105,14 @@ void SelectBuddyComboBox::hidePopup()
 	Popup->hide();
 }
 
-Buddy SelectBuddyComboBox::buddy()
+void SelectBuddyComboBox::addFilter(AbstractBuddyFilter *filter)
 {
-	QVariant buddyVariant = ActionsModel->index(currentIndex(), 0).data(BuddyRole);
-	return buddyVariant.canConvert<Buddy>()
-			? buddyVariant.value<Buddy>()
-			: Buddy::null;
+	static_cast<BuddiesModelProxy *>(SourceProxyModel)->addFilter(filter);
+	Popup->view()->addFilter(filter);
 }
 
-void SelectBuddyComboBox::activatedSlot()
+void SelectBuddyComboBox::removeFilter(AbstractBuddyFilter *filter)
 {
-	emit buddyChanged(buddy());
-}
-
-void SelectBuddyComboBox::setBuddy(Buddy buddy)
-{
-	QModelIndex index = Model->indexForValue(buddy);
-	index = ProxyModel->mapFromSource(index);
-	index = ActionsModel->mapFromSource(index);
-	setCurrentIndex(index.row());
-
-	emit buddyChanged(buddy);
+	static_cast<BuddiesModelProxy *>(SourceProxyModel)->removeFilter(filter);
+	Popup->view()->removeFilter(filter);
 }

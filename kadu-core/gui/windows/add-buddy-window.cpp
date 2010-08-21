@@ -216,7 +216,7 @@ void AddBuddyWindow::setAddContactEnabled()
 
 	if (MergeContact->isChecked())
 	{
-		if (!SelectContact->buddy())
+		if (!SelectContact->currentBuddy())
 		{
 			AddContactButton->setEnabled(false);
 			displayErrorMessage(tr("Select contact to merge with"));
@@ -290,7 +290,7 @@ void AddBuddyWindow::accept()
 	}
 	else
 	{
-		buddy = SelectContact->buddy();
+		buddy = SelectContact->currentBuddy();
 		if (buddy.isNull())
 			return;
 	}

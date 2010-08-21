@@ -85,7 +85,7 @@ void MergeBuddiesWindow::selectedBuddyChanged(Buddy buddy)
 
 void MergeBuddiesWindow::accept()
 {
-	Buddy mergeWith = SelectCombo->buddy();
+	Buddy mergeWith = SelectCombo->currentBuddy();
 	if (mergeWith.isNull())
 		return;
 
