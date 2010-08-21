@@ -17,6 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QVariant>
 #include <QtGui/QAction>
 
 #include "model/actions-proxy-model.h"
@@ -52,7 +53,7 @@ void ProtocolsComboBox::setCurrentProtocol(ProtocolFactory *protocol)
 	if (protocol == CurrentProtocolFactory)
 		return;
 
-	QModelIndex index = Model->protocolFactoryModelIndex(protocol);
+	QModelIndex index = Model->indexForValue(QVariant::fromValue(protocol));
 	index = ActionsModel->mapFromSource(index);
 
 	if (index.row() < 0 || index.row() >= count())

@@ -23,9 +23,11 @@
 #include <QtCore/QAbstractListModel>
 #include <QtCore/QModelIndex>
 
+#include "model/kadu-abstract-model.h"
+
 class ProtocolFactory;
 
-class ProtocolsModel : public QAbstractListModel
+class ProtocolsModel : public QAbstractListModel, public KaduAbstractModel
 {
 	Q_OBJECT
 
@@ -45,8 +47,8 @@ public:
 	virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 
 	ProtocolFactory * protocolFactory(const QModelIndex &index) const;
-	int protocolFactoryIndex(ProtocolFactory *protocolFactory);
-	QModelIndex protocolFactoryModelIndex(ProtocolFactory *protocolFactory);
+	int protocolFactoryIndex(ProtocolFactory *protocolFactory) const;
+	virtual QModelIndex indexForValue(const QVariant &value) const;
 
 };
 
