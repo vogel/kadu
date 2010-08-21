@@ -56,7 +56,7 @@ IdentitiesComboBox::~IdentitiesComboBox()
 
 void IdentitiesComboBox::setCurrentIdentity(Identity identity)
 {
-	QModelIndex index = Model->identityModelIndex(identity);
+	QModelIndex index = Model->indexForValue(identity);
 	index = ActionsModel->mapFromSource(index);
 
 	if (index.row() < 0 || index.row() >= count())

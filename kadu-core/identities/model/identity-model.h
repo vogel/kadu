@@ -23,9 +23,11 @@
 #include <QtCore/QAbstractListModel>
 #include <QtCore/QModelIndex>
 
+#include "model/kadu-abstract-model.h"
+
 class Identity;
 
-class IdentityModel : public QAbstractListModel
+class IdentityModel : public QAbstractListModel, public KaduAbstractModel
 {
 	Q_OBJECT
 
@@ -36,7 +38,7 @@ private slots:
 	void identityRemoved(Identity identity);
 
 public:
-	IdentityModel(QObject *parent = 0);
+	explicit IdentityModel(QObject *parent = 0);
 	virtual ~IdentityModel();
 
 	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
@@ -45,8 +47,8 @@ public:
 	virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 
 	Identity identity(const QModelIndex &index) const;
-	int identityIndex(Identity identity);
-	QModelIndex identityModelIndex(Identity identity);
+	int identityIndex(Identity identity) const;
+	virtual QModelIndex indexForValue(const QVariant &value) const;
 
 };
 
