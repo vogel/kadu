@@ -72,7 +72,7 @@ void TlenAddAccountWidget::createGui()
 	connect(AccountPassword, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 	AccountPassword->setEchoMode(QLineEdit::Password);
 	layout->addRow(tr("Password") + ":", AccountPassword);
-	
+
 	RememberPassword = new QCheckBox(tr("Remember password"), this);
 	RememberPassword->setChecked(true);
 	layout->addRow(0, RememberPassword);
@@ -83,7 +83,7 @@ void TlenAddAccountWidget::createGui()
 // 	connect(RemindPassword, SIGNAL(linkActivated(QString)), this, SLOT(remindPasssword()));
 
 	Identity = new IdentitiesComboBox(this);
-	connect(Identity, SIGNAL( identityChanged()), this, SLOT(dataChanged()));
+	connect(Identity, SIGNAL(identityChanged(Identity)), this, SLOT(dataChanged()));
 	layout->addRow(tr("Account identity") + ":", Identity);
 
 	QLabel *infoLabel = new QLabel(tr("<font size='-1'><i>Select or enter the identity that will be associated with this account.</i></font>"), this);
@@ -111,7 +111,7 @@ void TlenAddAccountWidget::createGui()
 void TlenAddAccountWidget::addAccountButtonClicked()
 {
 	Account tlenAccount = Account::create();
-	
+
 	TlenAccountDetails *details = dynamic_cast<TlenAccountDetails *>(tlenAccount.details());
 	if (details)
 	{
