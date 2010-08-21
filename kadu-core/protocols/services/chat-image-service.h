@@ -30,7 +30,7 @@ class KADUAPI ChatImageService : public QObject
 	Q_OBJECT
 
 signals:
-	virtual void imageReceived(const QString &id, const QString &fileName);
+	void imageReceived(const QString &id, const QString &fileName);
 
 };
 

@@ -24,12 +24,13 @@
 #include <QtGui/QTreeView>
 
 #include "gui/widgets/buddies-list-view-delegate.h"
+#include "gui/widgets/buddies-list-view-delegate-configuration.h"
 #include "model/roles.h"
 
 #include "buddies-list-view-item-painter.h"
 
-BuddiesListViewItemPainter::BuddiesListViewItemPainter(const BuddiesListViewDelegate *delegate, const QStyleOptionViewItemV4 &option, const QModelIndex &index) :
-		Delegate(delegate), Option(option), Index(index)
+BuddiesListViewItemPainter::BuddiesListViewItemPainter(const BuddiesListViewDelegateConfiguration &configuration, const BuddiesListViewDelegate *delegate, const QStyleOptionViewItemV4 &option, const QModelIndex &index) :
+		Configuration(configuration), Delegate(delegate), Option(option), Index(index)
 {
 	Widget = dynamic_cast<const QTreeView *>(option.widget);
 }
@@ -45,12 +46,12 @@ QSize BuddiesListViewItemPainter::sizeHint()
 QTextDocument * BuddiesListViewItemPainter::descriptionDocument(const QString &text, int width, QColor color) const
 {
 	QString description = Qt::escape(text);
-	description.replace("\n", Delegate->showMultiLineDescription() ? "<br/>" : " " );
+	description.replace("\n", Configuration.showMultiLineDescription() ? "<br/>" : " " );
 
 	QTextDocument *doc = new QTextDocument();
 
-	doc->setDefaultFont(Delegate->descriptionFont());
-	if (Delegate->descriptionColor().isValid())
+	doc->setDefaultFont(Configuration.descriptionFont());
+	if (Configuration.descriptionColor().isValid())
 		doc->setDefaultStyleSheet(QString("* { color: %1; }").arg(color.name()));
 
 	doc->setHtml(QString("<span>%1</span>").arg(description));
@@ -75,14 +76,14 @@ int BuddiesListViewItemPainter::iconsWidth(int margin) const
 	if (!pixmap.isNull())
 		result += pixmap.width() + margin;
 	if (Delegate->useMessagePixmap(Index))
-		result += Delegate->messagePixmap().width() + margin;
+		result += Configuration.messagePixmap().width() + margin;
 
 	return result;
 }
 
 int BuddiesListViewItemPainter::textAvailableWidth(const QTreeView *widget) const
 {
-	int avatarSize = Delegate->showAvatars() ? Delegate->defaultAvatarSize().width() + 4 : 0;
+	int avatarSize = Configuration.showAvatars() ? Configuration.defaultAvatarSize().width() + 4 : 0;
 
 	int indentation = Index.parent().isValid()
 		? widget->indentation()
@@ -117,31 +118,31 @@ int BuddiesListViewItemPainter::buddyIconHeight() const
 
 int BuddiesListViewItemPainter::buddyAvatarHeight() const
 {
-	if (!Delegate->showAvatars())
+	if (!Configuration.showAvatars())
 		return 0;
 
 	if (buddyAvatar().isNull())
 		return 0;
 
-	return Delegate->defaultAvatarSize().height();
+	return Configuration.defaultAvatarSize().height();
 }
 
 int BuddiesListViewItemPainter::buddyNameHeight() const
 {
-	QFontMetrics fontMetrics(Delegate->font());
+	QFontMetrics fontMetrics(Configuration.font());
 	return fontMetrics.lineSpacing();
 }
 
 int BuddiesListViewItemPainter::buddyDescriptionHeight(int availableWidth) const
 {
-	if (!Delegate->showDescription())
+	if (!Configuration.showDescription())
 		return 0;
 
 	QString description = Index.data(DescriptionRole).toString();
 	if (description.isEmpty())
 		return 0;
 
-	QTextDocument *dd = descriptionDocument(description, availableWidth, Delegate->descriptionColor());
+	QTextDocument *dd = descriptionDocument(description, availableWidth, Configuration.descriptionColor());
 	int descriptionHeight = (int)dd->size().height();
 	delete dd;
 
