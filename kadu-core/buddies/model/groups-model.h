@@ -23,9 +23,11 @@
 #include <QtCore/QAbstractListModel>
 #include <QtCore/QModelIndex>
 
+#include "model/kadu-abstract-model.h"
+
 class Group;
 
-class GroupsModel : public QAbstractListModel
+class GroupsModel : public QAbstractListModel, public KaduAbstractModel
 {
 	Q_OBJECT
 
@@ -36,7 +38,7 @@ private slots:
 	void groupRemoved(Group group);
 
 public:
-	GroupsModel(QObject *parent = 0);
+	explicit GroupsModel(QObject *parent = 0);
 	virtual ~GroupsModel();
 
 	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
@@ -45,8 +47,8 @@ public:
 	virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 
 	Group group(const QModelIndex &index) const;
-	int groupIndex(Group group);
-	QModelIndex groupModelIndex(Group group);
+	int groupIndex(Group group) const;
+	virtual QModelIndex indexForValue(const QVariant &value) const;
 
 };
 

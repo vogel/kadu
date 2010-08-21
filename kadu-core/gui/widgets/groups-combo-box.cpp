@@ -63,7 +63,7 @@ GroupsComboBox::~GroupsComboBox()
 
 void GroupsComboBox::setCurrentGroup(Group group)
 {
-	QModelIndex index = Model->groupModelIndex(group);
+	QModelIndex index = Model->indexForValue(group);
 	index = ProxyModel->mapFromSource(index);
 	index = ActionsModel->mapFromSource(index);
 
