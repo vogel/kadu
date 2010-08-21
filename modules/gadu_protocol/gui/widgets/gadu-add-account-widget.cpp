@@ -83,7 +83,7 @@ void GaduAddAccountWidget::createGui()
 	connect(AccountPassword, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 	AccountPassword->setEchoMode(QLineEdit::Password);
 	layout->addRow(tr("Password") + ":", AccountPassword);
-	
+
 	RememberPassword = new QCheckBox(tr("Remember Password"), this);
 	RememberPassword->setChecked(true);
 	layout->addRow(0, RememberPassword);
@@ -94,7 +94,7 @@ void GaduAddAccountWidget::createGui()
 	connect(RemindPassword, SIGNAL(linkActivated(QString)), this, SLOT(remindPasssword()));
 
 	Identity = new IdentitiesComboBox(this);
-	connect(Identity, SIGNAL(activated(int)), this, SLOT(dataChanged()));
+	connect(Identity, SIGNAL(identityChanged(Identity)), this, SLOT(dataChanged()));
 	layout->addRow(tr("Account Identity") + ":", Identity);
 
 	QLabel *infoLabel = new QLabel(tr("<font size='-1'><i>Select or enter the identity that will be associated with this account.</i></font>"), this);
