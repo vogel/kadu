@@ -34,6 +34,10 @@ BuddyListModel::BuddyListModel(BuddyList list, QObject *parent) :
 	triggerAllAccountsRegistered();
 }
 
+BuddyListModel::~BuddyListModel()
+{
+}
+
 int BuddyListModel::rowCount(const QModelIndex &parent) const
 {
 	return parent.isValid()
@@ -51,7 +55,7 @@ Buddy BuddyListModel::buddyAt(const QModelIndex &index) const
 			: Buddy::null;
 }
 
-const QModelIndex BuddyListModel::buddyIndex(Buddy buddy) const
+QModelIndex BuddyListModel::indexForValue(const QVariant &value) const
 {
-	return index(List.indexOf(buddy), 0);
+	return index(List.indexOf(value.value<Buddy>()), 0);
 }

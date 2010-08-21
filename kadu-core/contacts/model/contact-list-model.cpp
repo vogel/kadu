@@ -71,12 +71,12 @@ Contact ContactListModel::contactAt(const QModelIndex &index) const
 	return List.at(row);
 }
 
-const QModelIndex ContactListModel::buddyIndex(Buddy buddy) const
+QModelIndex ContactListModel::indexForValue(const QVariant &value) const
 {
 	int i = 0;
 	foreach (Contact contact, List)
 	{
-		if (contact.ownerBuddy() == buddy)
+		if (contact.ownerBuddy() == value.value<Buddy>())
 			return createIndex(i, 0, 0);
 		i++;
 	}

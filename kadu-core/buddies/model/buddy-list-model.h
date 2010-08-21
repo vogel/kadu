@@ -20,7 +20,6 @@
 #ifndef BUDDY_LIST_MODEL_H
 #define BUDDY_LIST_MODEL_H
 
-#include <QtCore/QAbstractListModel>
 #include <QtCore/QModelIndex>
 
 #include "accounts/accounts-aware-object.h"
@@ -40,12 +39,13 @@ class BuddyListModel : public BuddiesModelBase
 
 public:
 	explicit BuddyListModel(BuddyList list, QObject *parent = 0);
+	virtual ~BuddyListModel();
 
 	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
 
 	// AbstractContactsModel implementation
 	virtual Buddy buddyAt(const QModelIndex& index) const;
-	virtual const QModelIndex buddyIndex(Buddy buddy) const;
+	virtual QModelIndex indexForValue(const QVariant &value) const;
 
 };
 

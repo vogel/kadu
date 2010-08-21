@@ -22,18 +22,18 @@
 #ifndef ABSTRACT_BUDDIES_MODEL_H
 #define ABSTRACT_BUDDIES_MODEL_H
 
+#include "model/kadu-abstract-model.h"
+
 class QModelIndex;
 
 class Buddy;
 class Contact;
 
-class AbstractBuddiesModel
+class AbstractBuddiesModel : public KaduAbstractModel
 {
-
 public:
 	virtual Buddy buddyAt(const QModelIndex &index) const;
 	virtual Contact contactAt(const QModelIndex &index) const;
-	virtual const QModelIndex buddyIndex(Buddy buddy) const = 0;
 
 };
 

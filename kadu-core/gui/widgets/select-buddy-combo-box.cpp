@@ -103,7 +103,7 @@ void SelectBuddyComboBox::activatedSlot()
 
 void SelectBuddyComboBox::setBuddy(Buddy buddy)
 {
-	QModelIndex index = Model->buddyIndex(buddy);
+	QModelIndex index = Model->indexForValue(buddy);
 	index = ProxyModel->mapFromSource(index);
 	index = ActionsModel->mapFromSource(index);
 	setCurrentIndex(index.row());

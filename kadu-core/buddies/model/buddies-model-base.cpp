@@ -63,7 +63,7 @@ void BuddiesModelBase::buddyStatusChanged(Contact contact, Status oldStatus)
 {
 	Q_UNUSED(oldStatus)
 
-	QModelIndex index = buddyIndex(contact.ownerBuddy());
+	QModelIndex index = indexForValue(contact.ownerBuddy());
 
 	if (index.isValid())
 		emit dataChanged(index, index);

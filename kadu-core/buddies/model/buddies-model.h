@@ -20,7 +20,6 @@
 #ifndef BUDDIES_MODEL_H
 #define BUDDIES_MODEL_H
 
-#include <QtCore/QAbstractListModel>
 #include <QtCore/QModelIndex>
 
 #include "accounts/account.h"
@@ -53,13 +52,13 @@ private slots:
 
 public:
 	explicit BuddiesModel(QObject *parent = 0);
-	~BuddiesModel();
+	virtual ~BuddiesModel();
 
 	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
 
 	// AbstractContactsModel implementation
 	virtual Buddy buddyAt(const QModelIndex &index) const;
-	virtual const QModelIndex buddyIndex(Buddy buddy) const;
+	virtual QModelIndex indexForValue(const QVariant &value) const;
 
 };
 

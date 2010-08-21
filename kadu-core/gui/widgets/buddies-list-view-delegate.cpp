@@ -93,7 +93,7 @@ void BuddiesListViewDelegate::buddyStatusChanged(Contact contact, Status oldStat
 	Q_UNUSED(oldStatus)
 
 	if (Model)
-		emit sizeHintChanged(Model->buddyIndex(contact.ownerBuddy()));
+		emit sizeHintChanged(Model->indexForValue(contact.ownerBuddy()));
 }
 
 void BuddiesListViewDelegate::modelDestroyed()
@@ -249,7 +249,7 @@ void BuddiesListViewDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 
 	painter->setFont(Font);
 	painter->setPen(textcolor);
-	
+
 	bool bold = isBold(index);
 	QFontMetrics fontMetrics(bold ? BoldFont : Font);
 	QFontMetrics descriptionFontMetrics(DescriptionFont);
@@ -490,7 +490,7 @@ void BuddiesListViewDelegate::configurationUpdated()
 	Font = config_file.readFontEntry("Look", "UserboxFont");
 	BoldFont = Font;
 	BoldFont.setBold(true);
-	
+
 	ShowAccountName = !config_file.readBoolEntry("General", "SimpleMode", true);
 
 	DescriptionFont = Font;

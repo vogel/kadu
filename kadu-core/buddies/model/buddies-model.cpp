@@ -96,9 +96,9 @@ Buddy BuddiesModel::buddyAt(const QModelIndex &index) const
 	return BuddyManager::instance()->byIndex(parent.isValid() ? parent.row() : index.row());
 }
 
-const QModelIndex BuddiesModel::buddyIndex(Buddy buddy) const
+QModelIndex BuddiesModel::indexForValue(const QVariant &value) const
 {
-	return index(BuddyManager::instance()->indexOf(buddy), 0);
+	return index(BuddyManager::instance()->indexOf(value.value<Buddy>()), 0);
 }
 
 void BuddiesModel::buddyAboutToBeAdded(Buddy &buddy)
@@ -118,7 +118,7 @@ void BuddiesModel::buddyAdded(Buddy &buddy)
 
 void BuddiesModel::buddyAboutToBeRemoved(Buddy &buddy)
 {
-	int index = buddyIndex(buddy).row();
+	int index = indexForValue(buddy).row();
 	beginRemoveRows(QModelIndex(), index, index);
 
 	disconnect(buddy, SIGNAL(updated()), this, SLOT(buddyUpdated()));
@@ -137,7 +137,7 @@ void BuddiesModel::buddyUpdated()
 	if (!buddy)
 		return;
 
-	QModelIndex index = buddyIndex(buddy);
+	QModelIndex index = indexForValue(buddy);
 	emit dataChanged(index, index);
 }
 
@@ -147,7 +147,7 @@ void BuddiesModel::contactAboutToBeAttached(Contact contact)
 	if (!buddy)
 		return;
 
-	QModelIndex index = buddyIndex(buddy);
+	QModelIndex index = indexForValue(buddy);
 	if (!index.isValid())
 		return;
 
@@ -163,7 +163,7 @@ void BuddiesModel::contactAttached(Contact contact)
 	if (!buddy)
 		return;
 
-	QModelIndex index = buddyIndex(buddy);
+	QModelIndex index = indexForValue(buddy);
 	if (!index.isValid())
 		return;
 
@@ -176,7 +176,7 @@ void BuddiesModel::contactAboutToBeDetached(Contact contact)
 	if (!buddy)
 		return;
 
-	QModelIndex index = buddyIndex(buddy);
+	QModelIndex index = indexForValue(buddy);
 	if (!index.isValid())
 		return;
 
@@ -192,7 +192,7 @@ void BuddiesModel::contactDetached(Contact contact)
 	if (!buddy)
 		return;
 
-	QModelIndex index = buddyIndex(buddy);
+	QModelIndex index = indexForValue(buddy);
 	if (!index.isValid())
 		return;
 
@@ -209,6 +209,6 @@ void BuddiesModel::contactUpdated()
 	if (!buddy)
 		return;
 
-	QModelIndex contactIndex = index(buddy.contacts().indexOf(contact), 0, buddyIndex(buddy));
+	QModelIndex contactIndex = index(buddy.contacts().indexOf(contact), 0, indexForValue(buddy));
 	emit dataChanged(contactIndex, contactIndex);
 }

@@ -39,7 +39,7 @@ class BuddiesModelProxy : public QSortFilterProxyModel, public AbstractBuddiesMo
 	bool BrokenStringCompare;
 	bool SortByStatus;
 	int compareNames(QString n1, QString n2) const;
-	
+
 private slots:
 	void modelDestroyed();;
 
@@ -63,7 +63,7 @@ public:
 
 	// AbstractBuddiesModel implementation
 	virtual Buddy buddyAt(const QModelIndex &index) const;
-	virtual const QModelIndex buddyIndex(Buddy buddy) const;
+	virtual QModelIndex indexForValue(const QVariant &value) const;
 
 };
 
