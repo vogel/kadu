@@ -51,7 +51,7 @@ AccountsComboBox::~AccountsComboBox()
 
 void AccountsComboBox::setCurrentAccount(Account account)
 {
-	QModelIndex index = Model->accountModelIndex(account);
+	QModelIndex index = Model->indexForValue(account);
 	index = ProxyModel->mapFromSource(index);
 	index = ActionsModel->mapFromSource(index);
 
