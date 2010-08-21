@@ -23,38 +23,34 @@
 #include <QtGui/QInputDialog>
 #include <QtGui/QLineEdit>
 #include <QtGui/QSortFilterProxyModel>
-#include <QtCore/QDebug>
 
 #include "buddies/group-manager.h"
 #include "buddies/model/groups-model.h"
-#include "model/actions-proxy-model.h"
 #include "model/roles.h"
 
 #include "groups-combo-box.h"
 
 GroupsComboBox::GroupsComboBox(QWidget *parent) :
-		QComboBox(parent)
+		KaduComboBox(parent)
 {
-	Model = new GroupsModel(this);
-	ProxyModel = new QSortFilterProxyModel(this);
-	ProxyModel->setSourceModel(Model);
-	ProxyModel->setDynamicSortFilter(true);
-	ProxyModel->sort(1);
-	ProxyModel->sort(0);
+	setUpModel(new GroupsModel(this), new QSortFilterProxyModel(this));
+
+	static_cast<QSortFilterProxyModel *>(SourceProxyModel)->setDynamicSortFilter(true);
+	SourceProxyModel->sort(1);
+	SourceProxyModel->sort(0);
 
 	CreateNewGroupAction = new QAction(tr("Create a new group..."), this);
 	CreateNewGroupAction->setData("createNewGroup");
 
-	ActionsModel = new ActionsProxyModel(this);
-	ActionsModel->addBeforeAction(new QAction(tr(" - Select group - "), this));
 	ActionsModel->addAfterAction(CreateNewGroupAction);
-	ActionsModel->setSourceModel(ProxyModel);
-
-	setModel(ActionsModel);
-
-	connect(this, SIGNAL(activated(int)), this, SLOT(activatedSlot(int)));
 
 	setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+
+	connect(model(), SIGNAL(rowsAboutToBeRemoved(const QModelIndex &, int, int)),
+			this, SLOT(updateValueBeforeChange()));
+	connect(model(), SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
+			this, SLOT(rowsRemoved(const QModelIndex &, int, int)));
+	connect(this, SIGNAL(currentIndexChanged(int)), this, SLOT(currentIndexChangedSlot(int)));
 }
 
 GroupsComboBox::~GroupsComboBox()
@@ -63,32 +59,24 @@ GroupsComboBox::~GroupsComboBox()
 
 void GroupsComboBox::setCurrentGroup(Group group)
 {
-	QModelIndex index = Model->indexForValue(group);
-	index = ProxyModel->mapFromSource(index);
-	index = ActionsModel->mapFromSource(index);
-
-	if (index.row() < 0 || index.row() >= count())
-		setCurrentIndex(0);
-	else
-		setCurrentIndex(index.row());
-
-	CurrentGroup = group;
+	setCurrentValue(group);
 }
 
 Group GroupsComboBox::currentGroup()
 {
-	QModelIndex index = ActionsModel->index(currentIndex(), 0);
-	CurrentGroup = index.data(GroupRole).value<Group>();
-	return CurrentGroup;
+	return currentValue();
 }
 
-void GroupsComboBox::activatedSlot(int index)
+void GroupsComboBox::currentIndexChangedSlot(int index)
 {
-	QModelIndex modelIndex = this->model()->index(index, 0, QModelIndex());
+	QModelIndex modelIndex = model()->index(index, modelColumn(), rootModelIndex());
 	QAction *action = modelIndex.data(ActionRole).value<QAction *>();
 
 	if (action != CreateNewGroupAction)
+	{
+		currentIndexChangedSlotImpl(index);
 		return;
+	}
 
 	bool ok;
 
@@ -105,7 +93,22 @@ void GroupsComboBox::activatedSlot(int index)
 	setCurrentGroup(GroupManager::instance()->byName(newGroupName));
 }
 
-void GroupsComboBox::resetGroup()
+void GroupsComboBox::updateValueBeforeChange()
 {
-	setCurrentGroup(CurrentGroup);
+	updateValueBeforeChangeImpl();
+}
+
+void GroupsComboBox::rowsRemoved(const QModelIndex &parent, int start, int end)
+{
+	rowsRemovedImpl(parent, start, end);
+}
+
+int GroupsComboBox::preferredDataRole() const
+{
+	return GroupRole;
+}
+
+QString GroupsComboBox::selectString() const
+{
+	return tr(" - Select group - ");
 }

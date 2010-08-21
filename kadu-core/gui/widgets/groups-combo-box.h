@@ -22,30 +22,23 @@
 #ifndef GROUPS_COMBO_BOX_H
 #define GROUPS_COMBO_BOX_H
 
-#include <QtGui/QComboBox>
-
 #include "buddies/group.h"
+#include "gui/widgets/kadu-combo-box.h"
 
-class AbstractGroupFilter;
-class GroupsModel;
-class QSortFilterProxyModel;
-class ActionsProxyModel;
-
-class GroupsComboBox : public QComboBox
+class GroupsComboBox : public KaduComboBox<Group>
 {
 	Q_OBJECT
 
-	GroupsModel *Model;
-	QSortFilterProxyModel *ProxyModel;
-	ActionsProxyModel *ActionsModel;
-
 	QAction *CreateNewGroupAction;
 
-	Group CurrentGroup;
-
 private slots:
-	void activatedSlot(int index);
-	void resetGroup();
+	void currentIndexChangedSlot(int index);
+	void updateValueBeforeChange();
+	void rowsRemoved(const QModelIndex &parent, int start, int end);
+
+protected:
+	virtual int preferredDataRole() const;
+	virtual QString selectString() const;
 
 public:
 	explicit GroupsComboBox(QWidget *parent = 0);
