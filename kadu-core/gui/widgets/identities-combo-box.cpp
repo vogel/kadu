@@ -20,34 +20,30 @@
 #include <QtGui/QAction>
 #include <QtGui/QInputDialog>
 #include <QtGui/QLineEdit>
-#include <QtGui/QSortFilterProxyModel>
-#include <QtCore/QDebug>
 
 #include "identities/identity-manager.h"
 #include "identities/model/identity-model.h"
-#include "model/actions-proxy-model.h"
 #include "model/roles.h"
 
 #include "identities-combo-box.h"
 
 IdentitiesComboBox::IdentitiesComboBox(QWidget *parent) :
-		QComboBox(parent)
+		KaduComboBox(parent)
 {
-	Model = new IdentityModel(this);
+	setUpModel(new IdentityModel(this));
 
 	CreateNewIdentityAction = new QAction(tr("Create a new identity..."), this);
 	CreateNewIdentityAction->setData("createNewIdentity");
 
-	ActionsModel = new ActionsProxyModel(this);
-	ActionsModel->addBeforeAction(new QAction(tr(" - Select identity - "), this));
 	ActionsModel->addAfterAction(CreateNewIdentityAction);
-	ActionsModel->setSourceModel(Model);
-
-	setModel(ActionsModel);
-
-	connect(this, SIGNAL(activated(int)), this, SLOT(activatedSlot(int)));
 
 	setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+
+	connect(model(), SIGNAL(rowsAboutToBeRemoved(const QModelIndex &, int, int)),
+			this, SLOT(updateValueBeforeChange()));
+	connect(model(), SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
+			this, SLOT(rowsRemoved(const QModelIndex &, int, int)));
+	connect(this, SIGNAL(currentIndexChanged(int)), this, SLOT(currentIndexChangedSlot(int)));
 }
 
 IdentitiesComboBox::~IdentitiesComboBox()
@@ -56,31 +52,26 @@ IdentitiesComboBox::~IdentitiesComboBox()
 
 void IdentitiesComboBox::setCurrentIdentity(Identity identity)
 {
-	QModelIndex index = Model->indexForValue(identity);
-	index = ActionsModel->mapFromSource(index);
-
-	if (index.row() < 0 || index.row() >= count())
-		setCurrentIndex(0);
-	else
-		setCurrentIndex(index.row());
-
-	CurrentIdentity = identity;
+	if (setCurrentValue(identity))
+		emit identityChanged(CurrentValue);
 }
 
 Identity IdentitiesComboBox::currentIdentity()
 {
-	QModelIndex index = ActionsModel->index(currentIndex(), 0);
-	CurrentIdentity = index.data(IdentityRole).value<Identity>();
-	return CurrentIdentity;
+	return currentValue();
 }
 
-void IdentitiesComboBox::activatedSlot(int index)
+void IdentitiesComboBox::currentIndexChangedSlot(int index)
 {
-	QModelIndex modelIndex = this->model()->index(index, 0, QModelIndex());
+	QModelIndex modelIndex = this->model()->index(index, modelColumn(), rootModelIndex());
 	QAction *action = modelIndex.data(ActionRole).value<QAction *>();
 
 	if (action != CreateNewIdentityAction)
+	{
+		if (currentIndexChangedSlotImpl(index))
+			emit identityChanged(CurrentValue);
 		return;
+	}
 
 	bool ok;
 
@@ -97,7 +88,22 @@ void IdentitiesComboBox::activatedSlot(int index)
 	setCurrentIdentity(IdentityManager::instance()->byName(identityName, true));
 }
 
-void IdentitiesComboBox::resetIdentity()
+void IdentitiesComboBox::updateValueBeforeChange()
 {
-	setCurrentIdentity(CurrentIdentity);
+	updateValueBeforeChangeImpl();
+}
+
+void IdentitiesComboBox::rowsRemoved(const QModelIndex &parent, int start, int end)
+{
+	rowsRemovedImpl(parent, start, end);
+}
+
+int IdentitiesComboBox::preferredDataRole() const
+{
+	return IdentityRole;
+}
+
+QString IdentitiesComboBox::selectString() const
+{
+	return tr(" - Select identity - ");
 }
