@@ -59,4 +59,6 @@ public:
 
 };
 
+Q_DECLARE_METATYPE(Avatar)
+
 #endif // AVATAR_H

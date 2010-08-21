@@ -24,6 +24,7 @@
 #include <QtCore/QExplicitlySharedDataPointer>
 #include <QtCore/QObject>
 #include <QtCore/QUuid>
+#include <QtCore/QVariant>
 
 #include "storage/storable-object.h"
 
@@ -41,6 +42,8 @@
  */
 #define KaduSharedBaseClass(className)\
 public:\
+	operator QVariant () const;\
+\
 	className & operator = (const className &copy);\
 \
 	bool operator == (const className &compare) const\
@@ -67,12 +70,17 @@ private:
  * Defines operators for SharedBase subclass.
  */
 #define KaduSharedBaseClassImpl(className)\
+	className::operator QVariant () const\
+	{\
+		return QVariant::fromValue<className>(*this);\
+	}\
+\
 	className & className::operator = (const className &copy)\
 	{\
 		setData(copy.data());\
 		return *this;\
 	}\
-	
+
 
 /**
  * @author Rafal 'Vogel' Malinowski

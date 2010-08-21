@@ -77,4 +77,6 @@ public:
 
 };
 
+Q_DECLARE_METATYPE(Message)
+
 #endif // MESSAGE_H
