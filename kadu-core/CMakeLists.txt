@@ -129,6 +129,7 @@ set (kadu_SRCS
 	gui/widgets/accounts-combo-box.cpp
 	gui/widgets/buddies-list-view.cpp
 	gui/widgets/buddies-list-view-delegate.cpp
+	gui/widgets/buddies-list-view-item-painter.cpp
 	gui/widgets/buddies-list-view-menu-manager.cpp
 	gui/widgets/buddies-list-widget.cpp
 	gui/widgets/buddy-avatar-widget.cpp
