@@ -26,16 +26,18 @@ class QTextDocument;
 class QTreeView;
 
 class BuddiesListViewDelegate;
+class BuddiesListViewDelegateConfiguration;
 
 class BuddiesListViewItemPainter
 {
+	const BuddiesListViewDelegateConfiguration &Configuration;
 	const BuddiesListViewDelegate *Delegate;
 	const QStyleOptionViewItemV4 &Option;
 	const QModelIndex &Index;
 	const QTreeView *Widget;
 
 public:
-	BuddiesListViewItemPainter(const BuddiesListViewDelegate *delegate, const QStyleOptionViewItemV4 &option, const QModelIndex &index);
+	BuddiesListViewItemPainter(const BuddiesListViewDelegateConfiguration &configuration, const BuddiesListViewDelegate *delegate, const QStyleOptionViewItemV4 &option, const QModelIndex &index);
 
 	QSize sizeHint();
 

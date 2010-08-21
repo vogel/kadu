@@ -26,10 +26,10 @@
 #include <QtGui/QItemDelegate>
 
 #include "accounts/accounts-aware-object.h"
-#include "configuration/configuration-aware-object.h"
 #include "buddies/buddy.h"
+#include "configuration/configuration-aware-object.h"
+#include "gui/widgets/buddies-list-view-delegate-configuration.h"
 #include "status/status.h"
-#include <chat/message/message.h>
 
 class QTextDocument;
 class QTreeView;
@@ -43,24 +43,7 @@ class BuddiesListViewDelegate : public QItemDelegate, public ConfigurationAwareO
 	Q_OBJECT
 
 	AbstractBuddiesModel *Model;
-
-	QFont Font;
-	QFont BoldFont;
-	QFont DescriptionFont;
-
-	bool AlignTop;
-	bool ShowAccountName;
-	bool ShowBold;
-	bool ShowDescription;
-	bool ShowMultiLineDescription;
-	bool ShowAvatars;
-	bool AvatarBorder;
-	bool AvatarGreyOut;
-	QColor DescriptionColor;
-
-	QSize DefaultAvatarSize;
-
-	QPixmap MessagePixmap;
+	BuddiesListViewDelegateConfiguration Configuration;
 
 	bool isBold(const QModelIndex &index) const;
 
@@ -93,7 +76,7 @@ public:
 
 	virtual void setModel(AbstractBuddiesModel *model);
 
-	virtual void setShowAccountName(bool show) { ShowAccountName = show; }
+	virtual void setShowAccountName(bool show);
 
 	virtual QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index ) const;
 	virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
@@ -101,15 +84,6 @@ public:
 	virtual void configurationUpdated();
 
 	bool useMessagePixmap(const QModelIndex &index) const;
-
-	bool showAvatars() const { return ShowAvatars; }
-	QSize defaultAvatarSize() const { return DefaultAvatarSize; }
-	QFont font() const { return Font; }
-	QFont descriptionFont() const { return DescriptionFont; }
-	QColor descriptionColor() const { return DescriptionColor; }
-	bool showMultiLineDescription() const { return ShowMultiLineDescription; }
-	QPixmap messagePixmap() const { return MessagePixmap; }
-	bool showDescription() const { return ShowDescription; }
 
 };
 
