@@ -20,26 +20,24 @@
 #ifndef PROTOCOLS_COMBO_BOX_H
 #define PROTOCOLS_COMBO_BOX_H
 
-#include <QtGui/QComboBox>
+#include "gui/widgets/kadu-combo-box.h"
+#include "protocols/protocol-factory.h"
 
 class AbstractProtocolFilter;
-class ActionsProxyModel;
-class ProtocolFactory;
-class ProtocolsModel;
-class ProtocolsModelProxy;
 
-class ProtocolsComboBox : public QComboBox
+class ProtocolsComboBox : public KaduComboBox<ProtocolFactory *>
 {
 	Q_OBJECT
 
-	ProtocolsModel *Model;
-	ProtocolsModelProxy *ProxyModel;
-	ActionsProxyModel *ActionsModel;
-
-	ProtocolFactory *CurrentProtocolFactory;
-
 private slots:
 	void currentIndexChangedSlot(int index);
+	void updateValueBeforeChange();
+	void rowsRemoved(const QModelIndex &parent, int start, int end);
+
+protected:
+	virtual int preferredDataRole() const;
+	virtual QString selectString() const;
+	virtual ActionsProxyModel::ActionVisibility selectVisibility() const;
 
 public:
 	explicit ProtocolsComboBox(QWidget *parent = 0);
@@ -47,7 +45,7 @@ public:
 
 	void setCurrentProtocol(ProtocolFactory *protocol);
 	ProtocolFactory * currentProtocol();
-	
+
 	void addFilter(AbstractProtocolFilter *filter);
 	void removeFilter(AbstractProtocolFilter *filter);
 
