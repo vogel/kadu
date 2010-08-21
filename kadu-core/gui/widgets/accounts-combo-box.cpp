@@ -17,32 +17,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QAction>
-
 #include "accounts/filter/abstract-account-filter.h"
 #include "accounts/model/accounts-model.h"
 #include "accounts/model/accounts-proxy-model.h"
-#include "model/actions-proxy-model.h"
 #include "model/roles.h"
 
 #include "accounts-combo-box.h"
 
 AccountsComboBox::AccountsComboBox(QWidget *parent) :
-		QComboBox(parent)
+		KaduComboBox(parent)
 {
-	Model = new AccountsModel(this);
-	ProxyModel = new AccountsProxyModel(this);
-	ProxyModel->setSourceModel(Model);
+	setUpModel(new AccountsModel(this), new AccountsProxyModel(this));
 
-	connect(ProxyModel, SIGNAL(filterChanged()), this, SLOT(resetAccount()));
-
-	ActionsModel = new ActionsProxyModel(this);
-	ActionsModel->addBeforeAction(new QAction(tr(" - Select account - "), this), ActionsProxyModel::NotVisibleWithOneRowSourceModel);
-	ActionsModel->setSourceModel(ProxyModel);
-
-	setModel(ActionsModel);
-
-	connect(this, SIGNAL(activated(int)), this, SLOT(activatedSlot(int)));
+	connect(model(), SIGNAL(rowsAboutToBeRemoved(const QModelIndex &, int, int)),
+			this, SLOT(updateValueBeforeChange()));
+	connect(model(), SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
+			this, SLOT(rowsRemoved(const QModelIndex &, int, int)));
+	connect(this, SIGNAL(currentIndexChanged(int)), this, SLOT(currentIndexChangedSlot(int)));
 }
 
 AccountsComboBox::~AccountsComboBox()
@@ -51,42 +42,52 @@ AccountsComboBox::~AccountsComboBox()
 
 void AccountsComboBox::setCurrentAccount(Account account)
 {
-	QModelIndex index = Model->indexForValue(account);
-	index = ProxyModel->mapFromSource(index);
-	index = ActionsModel->mapFromSource(index);
-
-	if (index.row() < 0 || index.row() >= count())
-		setCurrentIndex(0);
-	else
-		setCurrentIndex(index.row());
-
-	CurrentAccount = account;
+	if (setCurrentValue(account))
+		emit accountChanged(CurrentValue);
 }
 
 Account AccountsComboBox::currentAccount()
 {
-	CurrentAccount = qvariant_cast<Account>(ActionsModel->index(currentIndex(), 0).data(AccountRole));
-	return CurrentAccount;
+	return currentValue();
+}
+
+void AccountsComboBox::currentIndexChangedSlot(int index)
+{
+	if (currentIndexChangedSlotImpl(index))
+		emit accountChanged(CurrentValue);
+}
+
+void AccountsComboBox::updateValueBeforeChange()
+{
+	updateValueBeforeChangeImpl();
+}
+
+void AccountsComboBox::rowsRemoved(const QModelIndex &parent, int start, int end)
+{
+	rowsRemovedImpl(parent, start, end);
+}
+
+int AccountsComboBox::preferredDataRole() const
+{
+	return AccountRole;
+}
+
+QString AccountsComboBox::selectString() const
+{
+	return tr(" - Select account - ");
+}
+
+ActionsProxyModel::ActionVisibility AccountsComboBox::selectVisibility() const
+{
+	return ActionsProxyModel::NotVisibleWithOneRowSourceModel;
 }
 
 void AccountsComboBox::addFilter(AbstractAccountFilter *filter)
 {
-	ProxyModel->addFilter(filter);
+	static_cast<AccountsProxyModel *>(SourceProxyModel)->addFilter(filter);
 }
 
 void AccountsComboBox::removeFilter(AbstractAccountFilter *filter)
 {
-	ProxyModel->removeFilter(filter);
-}
-
-void AccountsComboBox::activatedSlot(int index)
-{
-	Q_UNUSED(index)
-
-	currentAccount(); // sets CurrentAccount variable
-}
-
-void AccountsComboBox::resetAccount()
-{
-	setCurrentAccount(CurrentAccount);
+	static_cast<AccountsProxyModel *>(SourceProxyModel)->removeFilter(filter);
 }
