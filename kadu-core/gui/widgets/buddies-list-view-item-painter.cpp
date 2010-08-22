@@ -33,12 +33,11 @@
 
 #include "buddies-list-view-item-painter.h"
 
-#define MARGIN 3
-
 BuddiesListViewItemPainter::BuddiesListViewItemPainter(const BuddiesListViewDelegateConfiguration &configuration, const QStyleOptionViewItemV4 &option, const QModelIndex &index) :
 		Configuration(configuration), Option(option), Index(index),
 		FontMetrics(/* bold ? Configuration.boldFont() : */ Configuration.font()),
-		DescriptionFontMetrics(Configuration.descriptionFont())
+		DescriptionFontMetrics(Configuration.descriptionFont()),
+		DescriptionDocument(0)
 {
 	Widget = dynamic_cast<const QTreeView *>(option.widget);
 
@@ -48,7 +47,27 @@ BuddiesListViewItemPainter::BuddiesListViewItemPainter(const BuddiesListViewDele
 	VFrameMargin = style->pixelMetric(QStyle::PM_FocusFrameVMargin, 0, Widget);
 }
 
-bool BuddiesListViewItemPainter::showAccountName()
+BuddiesListViewItemPainter::~BuddiesListViewItemPainter()
+{
+	delete DescriptionDocument;
+	DescriptionDocument = 0;
+}
+
+bool BuddiesListViewItemPainter::showMessagePixmap() const
+{
+	if (Index.parent().isValid()) // contact
+	{
+		Contact contact = qvariant_cast<Contact>(Index.data(ContactRole));
+		return contact && PendingMessagesManager::instance()->hasPendingMessagesForContact(contact);
+	}
+	else
+	{
+		Buddy buddy = qvariant_cast<Buddy>(Index.data(BuddyRole));
+		return buddy && PendingMessagesManager::instance()->hasPendingMessagesForBuddy(buddy);
+	}
+}
+
+bool BuddiesListViewItemPainter::showAccountName() const
 {
 	if (Index.parent().isValid())
 		return true;
@@ -56,7 +75,7 @@ bool BuddiesListViewItemPainter::showAccountName()
 	return Option.state & QStyle::State_MouseOver && Configuration.showAccountName();
 }
 
-bool BuddiesListViewItemPainter::showDescription()
+bool BuddiesListViewItemPainter::showDescription() const
 {
 	if (!Configuration.showDescription())
 		return false;
@@ -85,7 +104,7 @@ void BuddiesListViewItemPainter::computeIconRect()
 void BuddiesListViewItemPainter::computeMessageIconRect()
 {
 	MessageIconRect = QRect(0, 0, 0, 0);
-	if (!useMessagePixmap())
+	if (!showMessagePixmap())
 		return;
 
 	QPixmap icon = Configuration.messagePixmap();
@@ -97,7 +116,7 @@ void BuddiesListViewItemPainter::computeMessageIconRect()
 		topLeft.setY(topLeft.y() + (ItemRect.height() - icon.height()) / 2);
 
 	if (!IconRect.isEmpty())
-		topLeft.setX(IconRect.x() + MARGIN);
+		topLeft.setX(IconRect.x() + VFrameMargin);
 
 	MessageIconRect.moveTo(topLeft);
 }
@@ -131,82 +150,7 @@ QString BuddiesListViewItemPainter::getName()
 	return Index.data(Qt::DisplayRole).toString();
 }
 
-void BuddiesListViewItemPainter::computeAccountNameRect()
-{
-	AccountNameRect = QRect(0, 0, 0, 0);
-	if (!showAccountName())
-		return;
-
-	QString accountDisplay = getAccountName();
-
-	int accountDisplayWidth = DescriptionFontMetrics.width(accountDisplay);
-
-	AccountNameRect.setWidth(accountDisplayWidth);
-	AccountNameRect.setHeight(DescriptionFontMetrics.height());
-
-	AccountNameRect.moveRight(ItemRect.right() - AvatarRect.width() - MARGIN);
-	AccountNameRect.moveTop(ItemRect.top());
-}
-
-void BuddiesListViewItemPainter::computeNameRect()
-{
-	NameRect = QRect(0, 0, 0, 0);
-
-	int left = qMax(IconRect.right(), MessageIconRect.right());
-	if (0 != left)
-		left += MARGIN;
-	else
-		left = ItemRect.left();
-
-	int right;
-	if (!AccountNameRect.isEmpty())
-		right = AccountNameRect.left() - MARGIN;
-	else
-		right = AvatarRect.left() - MARGIN;
-
-	NameRect.moveTop(ItemRect.top());
-	NameRect.setLeft(left);
-	NameRect.setRight(right);
-	NameRect.setHeight(FontMetrics.height());
-}
-
-void BuddiesListViewItemPainter::computeDescriptionRect()
-{
-	DescriptionRect = QRect(0, 0, 0, 0);
-
-	if (!showDescription())
-		return;
-
-	DescriptionRect.setTop(NameRect.bottom() + MARGIN);
-	DescriptionRect.setLeft(NameRect.left());
-	DescriptionRect.setRight(AvatarRect.left() - MARGIN);
-
-	QColor textcolor = Option.palette.color(QPalette::Normal, Option.state & QStyle::State_Selected
-			? QPalette::HighlightedText
-			: QPalette::Text);
-
-	QTextDocument *dd = descriptionDocument(Index.data(DescriptionRole).toString(), DescriptionRect.width(),
-			Option.state & QStyle::State_Selected
-					? textcolor
-					: Configuration.descriptionColor());
-
-
-	DescriptionRect.setHeight((int)dd->size().height());
-
-	delete dd;
-}
-
-void BuddiesListViewItemPainter::computeLayout()
-{
-	computeIconRect();
-	computeMessageIconRect();
-	computeAvatarRect();
-	computeAccountNameRect();
-	computeNameRect();
-	computeDescriptionRect();
-}
-
-QTextDocument * BuddiesListViewItemPainter::descriptionDocument(const QString &text, int width, QColor color) const
+QTextDocument * BuddiesListViewItemPainter::createDescriptionDocument(const QString &text, int width, QColor color) const
 {
 	QString description = Qt::escape(text);
 	description.replace("\n", Configuration.showMultiLineDescription() ? "<br/>" : " " );
@@ -231,47 +175,83 @@ QTextDocument * BuddiesListViewItemPainter::descriptionDocument(const QString &t
 	return doc;
 }
 
-bool BuddiesListViewItemPainter::useMessagePixmap() const
+QTextDocument * BuddiesListViewItemPainter::getDescriptionDocument(int width)
 {
-	if (Index.parent().isValid()) // contact
-	{
-		Contact contact = qvariant_cast<Contact>(Index.data(ContactRole));
-		return contact && PendingMessagesManager::instance()->hasPendingMessagesForContact(contact);
-	}
+	if (DescriptionDocument)
+		return DescriptionDocument;
+
+	QColor textcolor = Option.palette.color(QPalette::Normal, Option.state & QStyle::State_Selected
+			? QPalette::HighlightedText
+			: QPalette::Text);
+
+	DescriptionDocument = createDescriptionDocument(Index.data(DescriptionRole).toString(), width,
+			Option.state & QStyle::State_Selected
+					? textcolor
+					: Configuration.descriptionColor());
+
+	return DescriptionDocument;
+}
+
+void BuddiesListViewItemPainter::computeAccountNameRect()
+{
+	AccountNameRect = QRect(0, 0, 0, 0);
+	if (!showAccountName())
+		return;
+
+	QString accountDisplay = getAccountName();
+
+	int accountDisplayWidth = DescriptionFontMetrics.width(accountDisplay);
+
+	AccountNameRect.setWidth(accountDisplayWidth);
+	AccountNameRect.setHeight(DescriptionFontMetrics.height());
+
+	AccountNameRect.moveRight(ItemRect.right() - AvatarRect.width() - HFrameMargin);
+	AccountNameRect.moveTop(ItemRect.top());
+}
+
+void BuddiesListViewItemPainter::computeNameRect()
+{
+	NameRect = QRect(0, 0, 0, 0);
+
+	int left = qMax(IconRect.right(), MessageIconRect.right());
+	if (!IconRect.isEmpty() || !MessageIconRect.isEmpty())
+		left += HFrameMargin;
 	else
-	{
-		Buddy buddy = qvariant_cast<Buddy>(Index.data(BuddyRole));
-		return buddy && PendingMessagesManager::instance()->hasPendingMessagesForBuddy(buddy);
-	}
+		left = ItemRect.left();
+
+	int right;
+	if (!AccountNameRect.isEmpty())
+		right = AccountNameRect.left() - HFrameMargin;
+	else
+		right = AvatarRect.left() - HFrameMargin;
+
+	NameRect.moveTop(ItemRect.top());
+	NameRect.setLeft(left);
+	NameRect.setRight(right);
+	NameRect.setHeight(FontMetrics.height());
 }
 
-int BuddiesListViewItemPainter::iconsWidth(int margin) const
+void BuddiesListViewItemPainter::computeDescriptionRect()
 {
-	QPixmap pixmap = qvariant_cast<QPixmap>(Index.data(Qt::DecorationRole));
+	DescriptionRect = QRect(0, 0, 0, 0);
 
-	int result = 0;
-	if (!pixmap.isNull())
-		result += pixmap.width() + margin;
-	if (useMessagePixmap())
-		result += Configuration.messagePixmap().width() + margin;
+	if (!showDescription())
+		return;
 
-	return result;
+	DescriptionRect.setTop(NameRect.bottom() + VFrameMargin);
+	DescriptionRect.setLeft(NameRect.left());
+	DescriptionRect.setRight(AvatarRect.left() - HFrameMargin);
+	DescriptionRect.setHeight((int)getDescriptionDocument(DescriptionRect.width())->size().height());
 }
 
-int BuddiesListViewItemPainter::textAvailableWidth(const QTreeView *widget) const
+void BuddiesListViewItemPainter::computeLayout()
 {
-	int avatarSize = Configuration.showAvatars() ? Configuration.defaultAvatarSize().width() + 4 : 0;
-
-	int indentation = Index.parent().isValid()
-		? widget->indentation()
-		: 0;
-
-	QStyle *style = widget ? widget->style() : QApplication::style();
-	const int hFrameMargin = style->pixelMetric(QStyle::PM_FocusFrameHMargin, 0, widget);
-
-	int textLeft = hFrameMargin + iconsWidth(hFrameMargin);
-	int neededSpace = indentation + textLeft + hFrameMargin + avatarSize;
-	return widget->columnWidth(0) - neededSpace;
+	computeIconRect();
+	computeMessageIconRect();
+	computeAvatarRect();
+	computeAccountNameRect();
+	computeNameRect();
+	computeDescriptionRect();
 }
 
 QPixmap BuddiesListViewItemPainter::buddyAvatar() const
@@ -316,9 +296,6 @@ int BuddiesListViewItemPainter::height()
 
 	computeLayout();
 
-	QStyle *style = Widget ? Widget->style() : QApplication::style();
-	const int vFrameMargin = style->pixelMetric(QStyle::PM_FocusFrameVMargin, 0, Widget);
-
 	QRect wholeRect = IconRect;
 	wholeRect |= MessageIconRect;
 	wholeRect |= AvatarRect;
@@ -326,7 +303,7 @@ int BuddiesListViewItemPainter::height()
 	wholeRect |= NameRect;
 	wholeRect |= DescriptionRect;
 
-	return wholeRect.height() + 2 * vFrameMargin;
+	return wholeRect.height() + 2 * VFrameMargin;
 }
 
 void BuddiesListViewItemPainter::paintDebugRect(QPainter *painter, QRect rect, QColor color) const
@@ -348,7 +325,7 @@ void BuddiesListViewItemPainter::paintIcon(QPainter *painter)
 
 void BuddiesListViewItemPainter::paintMessageIcon(QPainter *painter)
 {
-	if (!useMessagePixmap())
+	if (!showMessagePixmap())
 		return;
 
 	painter->drawPixmap(MessageIconRect, Configuration.messagePixmap());
@@ -376,22 +353,11 @@ void BuddiesListViewItemPainter::paintName(QPainter *painter)
 
 void BuddiesListViewItemPainter::paintDescription(QPainter *painter)
 {
-	QColor textcolor = Option.palette.color(QPalette::Normal, Option.state & QStyle::State_Selected
-			? QPalette::HighlightedText
-			: QPalette::Text);
-
-	QTextDocument *dd = descriptionDocument(Index.data(DescriptionRole).toString(), DescriptionRect.width(),
-			Option.state & QStyle::State_Selected
-					? textcolor
-					: Configuration.descriptionColor());
-
 	painter->setFont(Configuration.descriptionFont());
 	painter->save();
 	painter->translate(DescriptionRect.topLeft());
-	dd->drawContents(painter);
+	getDescriptionDocument(DescriptionRect.width())->drawContents(painter);
 	painter->restore();
-
-	delete dd;
 }
 
 void BuddiesListViewItemPainter::paint(QPainter *painter)

@@ -40,6 +40,8 @@ class BuddiesListViewItemPainter
 	QFontMetrics FontMetrics;
 	QFontMetrics DescriptionFontMetrics;
 
+	QTextDocument *DescriptionDocument;
+
 	QRect ItemRect;
 
 	QRect IconRect;
@@ -52,10 +54,14 @@ class BuddiesListViewItemPainter
 	QString getAccountName();
 	QString getName();
 
+	QTextDocument * createDescriptionDocument(const QString &text, int width, QColor color) const;
+	QTextDocument * getDescriptionDocument(int width);
+
 	int getItemIndentation();
 
-	bool showAccountName();
-	bool showDescription();
+	bool showMessagePixmap() const;
+	bool showAccountName() const;
+	bool showDescription() const;
 
 	void computeIconRect();
 	void computeMessageIconRect();
@@ -77,12 +83,7 @@ class BuddiesListViewItemPainter
 
 public:
 	BuddiesListViewItemPainter(const BuddiesListViewDelegateConfiguration &configuration, const QStyleOptionViewItemV4 &option, const QModelIndex &index);
-
-	QTextDocument * descriptionDocument(const QString &text, int width, QColor color) const;
-	int textAvailableWidth(const QTreeView *widget) const;
-
-	bool useMessagePixmap() const;
-	int iconsWidth(int margin) const;
+	~BuddiesListViewItemPainter();
 
 	QPixmap buddyAvatar() const;
 	QPixmap buddyIcon() const;
