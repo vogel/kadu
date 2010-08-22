@@ -54,6 +54,8 @@ AvatarManager::AvatarManager()
 	UpdateTimer->setInterval(5 * 60 * 1000); // 5 minutes
 	connect(UpdateTimer, SIGNAL(timeout()), this, SLOT(updateAvatars()));
 	connect(ContactManager::instance(), SIGNAL(contactAdded(Contact)), this, SLOT(contactAdded(Contact)));
+
+	UpdateTimer->start();
 }
 
 AvatarManager::~AvatarManager()

@@ -22,6 +22,7 @@
 #include <QtCore/QDateTime>
 #include <QtCore/QDir>
 #include <QtCore/QFile>
+#include <QtCore/QLatin1String>
 #include <QtCore/QUrl>
 #include <QtNetwork/QHttp>
 #include <QtXml/QDomDocument>
@@ -31,6 +32,8 @@
 #include "buddies/avatar-manager.h"
 #include "buddies/avatar-shared.h"
 #include "misc/path-conversion.h"
+
+#include "server/gadu-avatar-data-parser.h"
 
 #include "gadu-avatar-fetcher.h"
 
@@ -51,114 +54,43 @@ void GaduAvatarFetcher::fetchAvatar()
 void GaduAvatarFetcher::requestFinished(int id, bool error)
 {
 	Q_UNUSED(id)
-	Q_UNUSED(error)
 
-	QString response(MyBuffer.data());
-
-	if (response.isEmpty())
-	{
-		emit avatarFetched(MyContact, QByteArray());
-		deleteLater();
+	if (error)
 		return;
-	}
 
-	QDomDocument document;
-	document.setContent(MyBuffer.data());
+	deleteLater(); // delete at next even loop pass
 
-	QDomElement resultElement = document.firstChildElement("result");
-	if (resultElement.isNull())
-	{
-		emit avatarFetched(MyContact, QByteArray());
-		deleteLater();
+	GaduAvatarDataParser parser(&MyBuffer, MyContact.id());
+
+	if (!parser.isValid())
 		return;
-	}
 
-	QDomElement usersElement = resultElement.firstChildElement("users");
-	if (usersElement.isNull())
+	if (parser.isBlank())
 	{
+		// clear avatar data
 		emit avatarFetched(MyContact, QByteArray());
-		deleteLater();
-		return;
-	}
-
-	QDomElement userElement = usersElement.firstChildElement("user");
-	if (userElement.isNull())
-	{
-		emit avatarFetched(MyContact, QByteArray());
-		deleteLater();
-		return;
-	}
-
-	QString uin = userElement.attribute("uin");
-	if (uin.isEmpty())
-	{
-		emit avatarFetched(MyContact, QByteArray());
-		deleteLater();
-		return;
-	}
-
-	QDomElement avatarsElement = userElement.firstChildElement("avatars");
-	if (avatarsElement.isNull())
-	{
-		emit avatarFetched(MyContact, QByteArray());
-		deleteLater();
-		return;
-	}
-
-	QDomElement avatarElement = avatarsElement.firstChildElement("avatar");
-	if (avatarElement.isNull())
-	{
-		emit avatarFetched(MyContact, QByteArray());
-		deleteLater();
 		return;
 	}
 
 	if (MyContact.contactAvatar().isNull())
-		MyContact.setContactAvatar(Avatar());
+		MyContact.setContactAvatar(Avatar::create());
 
-	QDateTime timestamp;
-	QDomElement timestampElement = avatarElement.firstChildElement("timestamp");
-	if (!timestampElement.isNull())
+	if (MyContact.contactAvatar().lastUpdated() == parser.timestamp())
 	{
-		timestamp = QDateTime::fromString(timestampElement.text());
-		if (MyContact.contactAvatar().lastUpdated() == timestamp)
+		// only if we have file too
+		if (!MyContact.contactAvatar().pixmap().isNull())
 		{
-// 			deleteLater(); TODO: check if file is present
-// 			return;
+			// we already have this file, no need to update
+			return;
 		}
 	}
 
-	QDomElement packageDelayElement = avatarElement.firstChildElement("packageDelay");
-	if (!packageDelayElement.isNull())
-	{
-		int delay = packageDelayElement.text().toInt();
-		MyContact.contactAvatar().setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + delay));
-	}
+	MyContact.contactAvatar().setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + parser.delay()));
 
-	QDomElement avatarFileElement = avatarElement.firstChildElement("originBigAvatar");
-	if (avatarFileElement.isNull())
-		avatarFileElement = avatarElement.firstChildElement("originSmallAvatar");
-	if (avatarFileElement.isNull())
-	{
-		emit avatarFetched(MyContact, QByteArray());
-		deleteLater();
-		return;
-	}
-
-	QString avatarUrl = avatarFileElement.text();
-
-	// Do not cache empty avatars
-	if (avatarUrl.contains("avatar-empty.gif") || avatarUrl.contains("a1.gif"))
-	{
-		emit avatarFetched(MyContact, QByteArray());
-		deleteLater();
-		return;
-	}
-
-	MyContact.contactAvatar().setLastUpdated(timestamp);
+	MyContact.contactAvatar().setLastUpdated(parser.timestamp());
 	AvatarManager::instance()->addItem(MyContact.contactAvatar());
 
-	QUrl url = avatarUrl;
+	QUrl url = parser.avatarUrl();
 
 	QHttp *imageFetchHttp = new QHttp(url.host(), 80, this);
 
