@@ -52,7 +52,8 @@ SimpleView::SimpleView() :
 	MainConfigurationWindow::registerUiHandler(SimpleViewConfigUi::instance());
 
 	DockAction = new QAction(IconsManager::instance()->iconByPath("16x16/view-refresh.png"), tr("Simple view"), this);
-	connect(DockAction, SIGNAL(triggered()), this, SLOT(simpleViewToggle()));
+	DockAction->setCheckable(true);
+	connect(DockAction, SIGNAL(triggered(bool)), this, SLOT(simpleViewToggle(bool)));
 	DockingManager::instance()->dockMenu()->insertAction(DockingManager::instance()->dockMenu()->actions().last(), DockAction);
 
 	KaduWindowHandle = Core::instance()->kaduWindow();
@@ -68,8 +69,7 @@ SimpleView::SimpleView() :
 
 SimpleView::~SimpleView()
 {
-	if (SimpleViewActive)
-		simpleViewToggle();
+	simpleViewToggle(false);
 
 	if (!Core::instance()->isClosing())
 	{
@@ -94,7 +94,7 @@ void SimpleView::destroyInstance()
 	Instance = 0;
 }
 
-void SimpleView::simpleViewToggle()
+void SimpleView::simpleViewToggle(bool activate)
 {
 	/* This is very 'el hacha',
 	 * but this way we do not change the main code.
@@ -115,128 +115,131 @@ void SimpleView::simpleViewToggle()
 	 *     |  +-FilterWidget (nameFilterWidget())
 	 *     +-BuddyInfoPanel (InfoPanel)
 	 */
-	Qt::WindowFlags flags;
-	QPoint p, cp;
-	QSize s, cs;
-
-	flags = MainWindowHandle->windowFlags();
-	cp = MainWindowHandle->pos();
-	cs = MainWindowHandle->size();
-
-	SimpleViewActive = !SimpleViewActive;
-
-	if (SimpleViewActive)
+	if(activate != SimpleViewActive)
 	{
-		if (Borderless)
-			BuddiesListViewStyle = BuddiesListWidgetHandle->view()->styleSheet();
+		Qt::WindowFlags flags;
+		QPoint p, cp;
+		QSize s, cs;
+	
+		SimpleViewActive = activate;
 		
-		p = BuddiesListWidgetHandle->view()->mapToGlobal(BuddiesListWidgetHandle->view()->rect().topLeft());
-		s = BuddiesListWidgetHandle->view()->rect().size();
-		BackupPosition = p - cp;
-		BackupSize = cs - s;
-		MainWindowHandle->hide();
+		flags = MainWindowHandle->windowFlags();
+		cp = MainWindowHandle->pos();
+		cs = MainWindowHandle->size();
 
-		/* Toolbars */
-		foreach (QObject *object, MainWindowHandle->children())
+		if (SimpleViewActive)
 		{
-			QToolBar *toolBar = dynamic_cast<QToolBar *>(object);
-			if (toolBar)
-				toolBar->setVisible(false);
+			if (Borderless)
+				BuddiesListViewStyle = BuddiesListWidgetHandle->view()->styleSheet();
+
+			p = BuddiesListWidgetHandle->view()->mapToGlobal(BuddiesListWidgetHandle->view()->rect().topLeft());
+			s = BuddiesListWidgetHandle->view()->rect().size();
+			BackupPosition = p - cp;
+			BackupSize = cs - s;
+			MainWindowHandle->hide();
+
+			/* Toolbars */
+			foreach (QObject *object, MainWindowHandle->children())
+			{
+				QToolBar *toolBar = dynamic_cast<QToolBar *>(object);
+				if (toolBar)
+					toolBar->setVisible(false);
+			}
+
+			/* Menu bar */
+			KaduWindowHandle->menuBar()->hide();
+
+			/* GroupBar */
+			GroupBarWidgetHandle->hide();
+
+			/* Filter */
+			BuddiesListWidgetHandle->nameFilterWidget()->hide();
+
+			/* ScrollBar */
+			if (NoScrollBar)
+				BuddiesListWidgetHandle->view()->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+			/* Info panel*/
+			KaduWindowHandle->infoPanel()->hide();
+
+			/* Status button */
+			StatusButtonsHandle->hide();
+
+			MainWindowHandle->setWindowFlags(flags | Qt::FramelessWindowHint);
+
+			if(KeepSize)
+			{
+				MainWindowHandle->move(p);
+				MainWindowHandle->resize(s);
+			}
+
+			if (Borderless)
+				BuddiesListWidgetHandle->view()->setStyleSheet(QString("QTreeView { border-style: none; }") + BuddiesListViewStyle);
 		}
-
-		/* Menu bar */
-		KaduWindowHandle->menuBar()->hide();
-
-		/* GroupBar */
-		GroupBarWidgetHandle->hide();
-
-		/* Filter */
-		BuddiesListWidgetHandle->nameFilterWidget()->hide();
-
-		/* ScrollBar */
-		if (NoScrollBar)
-			BuddiesListWidgetHandle->view()->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-
-		/* Info panel*/
-		KaduWindowHandle->infoPanel()->hide();
-
-		/* Status button */
-		StatusButtonsHandle->hide();
-
-		MainWindowHandle->setWindowFlags(flags | Qt::FramelessWindowHint);
-
-		if(KeepSize)
+		else
 		{
-			MainWindowHandle->move(p);
-			MainWindowHandle->resize(s);
+			MainWindowHandle->hide();
+
+			if (Borderless)
+				BuddiesListWidgetHandle->view()->setStyleSheet(BuddiesListViewStyle);
+
+			if(KeepSize)
+			{
+				BackupPosition = cp - BackupPosition;
+				MainWindowHandle->move(BackupPosition);
+				MainWindowHandle->resize(cs + BackupSize);
+			}
+			MainWindowHandle->setWindowFlags(flags & ~(Qt::FramelessWindowHint));
+
+			/* Status button */
+			StatusButtonsHandle->setVisible(config_file.readBoolEntry("Look", "ShowStatusButton"));
+
+			/* Info panel*/
+			if (config_file.readBoolEntry("Look", "ShowInfoPanel"))
+				KaduWindowHandle->infoPanel()->show();
+
+			/* ScrollBar */
+			BuddiesListWidgetHandle->view()->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+
+			/* Filter */
+			BuddiesListWidgetHandle->nameFilterWidget()->show();
+
+			/* GroupBar */
+			GroupBarWidgetHandle->show();
+
+			/* Menu bar */
+			KaduWindowHandle->menuBar()->show();
+
+			/* Toolbars */
+			foreach (QObject *object, MainWindowHandle->children())
+			{
+				QToolBar *toolBar = dynamic_cast<QToolBar *>(object);
+				if (toolBar)
+					toolBar->setVisible(true);
+			}
 		}
+		MainWindowHandle->show();
 		
-		if (Borderless)
-			BuddiesListWidgetHandle->view()->setStyleSheet(QString("QTreeView { border-style: none; }") + BuddiesListViewStyle);
+		if (!Core::instance()->isClosing())
+			DockAction->setChecked(SimpleViewActive);
 	}
-	else
-	{
-		MainWindowHandle->hide();
-		
-		if (Borderless)
-			BuddiesListWidgetHandle->view()->setStyleSheet(BuddiesListViewStyle);
-		
-		if(KeepSize)
-		{
-			BackupPosition = cp - BackupPosition;
-			MainWindowHandle->move(BackupPosition);
-			MainWindowHandle->resize(cs + BackupSize);
-		}
-		MainWindowHandle->setWindowFlags(flags & ~(Qt::FramelessWindowHint));
-
-		/* Status button */
-		StatusButtonsHandle->setVisible(config_file.readBoolEntry("Look", "ShowStatusButton"));
-
-		/* Info panel*/
-		if (config_file.readBoolEntry("Look", "ShowInfoPanel"))
-			KaduWindowHandle->infoPanel()->show();
-
-		/* ScrollBar */
-		BuddiesListWidgetHandle->view()->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-
-		/* Filter */
-		BuddiesListWidgetHandle->nameFilterWidget()->show();
-
-		/* GroupBar */
-		GroupBarWidgetHandle->show();
-
-		/* Menu bar */
-		KaduWindowHandle->menuBar()->show();
-
-		/* Toolbars */
-		foreach (QObject *object, MainWindowHandle->children())
-		{
-			QToolBar *toolBar = dynamic_cast<QToolBar *>(object);
-			if (toolBar)
-				toolBar->setVisible(true);
-		}
-	}
-	MainWindowHandle->show();
 }
 
 void SimpleView::compositingEnabled()
 {
 	/* Give the kadu update the GUI */
-	if (SimpleViewActive)
-		simpleViewToggle();
+	simpleViewToggle(false);
 }
 void SimpleView::compositingDisabled()
 {
 	/* Give the kadu update the GUI */
-	if (SimpleViewActive)
-		simpleViewToggle();
+	simpleViewToggle(false);
 }
 
 void SimpleView::configurationUpdated()
 {
 	/* Give the kadu update the GUI with old configuration */
-	if (SimpleViewActive)
-		simpleViewToggle();
+	simpleViewToggle(false);
 
 	KeepSize = config_file.readBoolEntry("Look", "SimpleViewKeepSize", true);
 	NoScrollBar = config_file.readBoolEntry("Look", "SimpleViewNoScrollBar", true);
