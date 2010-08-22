@@ -28,6 +28,7 @@
 #include "buddies/buddy.h"
 #include "chat/message/pending-messages-manager.h"
 #include "contacts/contact.h"
+#include "gui/widgets/buddies-list-view-avatar-painter.h"
 #include "gui/widgets/buddies-list-view-delegate-configuration.h"
 #include "model/roles.h"
 
@@ -145,11 +146,10 @@ void BuddiesListViewItemPainter::computeAvatarRect()
 	if (!Configuration.showAvatars())
 		return;
 
-	int avatarSize = Configuration.defaultAvatarSize().width() + 4;
-	AvatarRect.setWidth(avatarSize);
+	AvatarRect.setWidth(Configuration.defaultAvatarSize().width() + 2 * HFrameMargin);
 
 	if (!buddyAvatar().isNull())
-		AvatarRect.setHeight(avatarSize);
+		AvatarRect.setHeight(Configuration.defaultAvatarSize().height() + 2 * VFrameMargin);
 	else
 		AvatarRect.setHeight(1); // just a placeholder
 
@@ -359,7 +359,10 @@ void BuddiesListViewItemPainter::paintMessageIcon(QPainter *painter)
 
 void BuddiesListViewItemPainter::paintAvatar(QPainter *painter)
 {
-	Q_UNUSED(painter)
+	QRect rect = AvatarRect.adjusted(VFrameMargin, HFrameMargin, -VFrameMargin, -HFrameMargin);
+
+	BuddiesListViewAvatarPainter avatarPainter(Configuration, Option, rect, Index);
+	avatarPainter.paint(painter);
 }
 
 void BuddiesListViewItemPainter::paintAccountName(QPainter *painter)
@@ -399,6 +402,7 @@ void BuddiesListViewItemPainter::paint(QPainter *painter)
 
 	paintIcon(painter);
 	paintMessageIcon(painter);
+	paintAvatar(painter);
 	paintAccountName(painter);
 	paintName(painter);
 	paintDescription(painter);
