@@ -97,6 +97,8 @@ void BuddiesListViewItemPainter::computeIconRect()
 
 	if (!Configuration.alignTop())
 		topLeft.setY(topLeft.y() + (ItemRect.height() - icon.height()) / 2);
+	else
+		topLeft.setY(topLeft.y() + (FontMetrics.lineSpacing() + 3 - icon.height()) / 2);
 
 	IconRect.moveTo(topLeft);
 }
@@ -114,6 +116,8 @@ void BuddiesListViewItemPainter::computeMessageIconRect()
 
 	if (!Configuration.alignTop())
 		topLeft.setY(topLeft.y() + (ItemRect.height() - icon.height()) / 2);
+	else
+		topLeft.setY(topLeft.y() + (FontMetrics.lineSpacing() + 3 - icon.height()) / 2);
 
 	if (!IconRect.isEmpty())
 		topLeft.setX(IconRect.x() + VFrameMargin);
