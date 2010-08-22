@@ -34,25 +34,51 @@ class BuddiesListViewItemPainter
 	const QModelIndex &Index;
 	const QTreeView *Widget;
 
+	int HFrameMargin;
+	int VFrameMargin;
+
+	QFontMetrics FontMetrics;
+	QFontMetrics DescriptionFontMetrics;
+
+	QRect ItemRect;
+
+	QRect IconRect;
+	QRect MessageIconRect;
+	QRect AvatarRect;
+	QRect AccountNameRect;
+	QRect NameRect;
+	QRect DescriptionRect;
+
+	int getItemIndentation();
+
+	bool showAccountName();
+	bool showDescription();
+
+	void computeIconRect();
+	void computeMessageIconRect();
+	void computeAvatarRect();
+	void computeAccountNameRect();
+	void computeNameRect();
+	void computeDescriptionRect();
+
+	void computeLayout();
+
+	void paintDebugRect(QPainter *painter, QRect rect, QColor color) const;
+
 public:
 	BuddiesListViewItemPainter(const BuddiesListViewDelegateConfiguration &configuration, const QStyleOptionViewItemV4 &option, const QModelIndex &index);
-
-	QSize sizeHint();
 
 	QTextDocument * descriptionDocument(const QString &text, int width, QColor color) const;
 	int textAvailableWidth(const QTreeView *widget) const;
 
-	bool useMessagePixmap(const QModelIndex &index) const;
+	bool useMessagePixmap() const;
 	int iconsWidth(int margin) const;
 
 	QPixmap buddyAvatar() const;
 	QPixmap buddyIcon() const;
 
-	int buddyIconHeight() const;
-	int buddyAvatarHeight() const;
-	int buddyNameHeight() const;
-	int buddyDescriptionHeight(int availableWidth) const;
-	int buddyHeight() const;
+	int height();
+	void paint(QPainter *painter);
 
 };
 

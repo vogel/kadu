@@ -51,11 +51,6 @@ class BuddiesListViewDelegate : public QItemDelegate, public ConfigurationAwareO
 
 	QStyleOptionViewItemV4 getOptions(const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
-	QRect buddyIconRect(const BuddiesListViewItemPainter &buddyPainter, const QRect &itemRect) const;
-	QRect buddyAvatarRect(const BuddiesListViewItemPainter &buddyPainter) const;
-	QRect buddyNameRect(const BuddiesListViewItemPainter &buddyPainter, const QRect &itemRect) const;
-	QRect buddyDescriptionRect(const BuddiesListViewItemPainter &buddyPainter) const;
-
 	void paintBuddyIcon(const BuddiesListViewItemPainter &buddyPainter, QPainter *painter, const QRect &itemRect) const;
 	void paintMessageIcon(const BuddiesListViewItemPainter &buddyPainter) const;
 	void paintBuddyName(const BuddiesListViewItemPainter &buddyPainter, QPainter *painter, const QStyleOptionViewItem &option, const QRect &itemRect) const;
