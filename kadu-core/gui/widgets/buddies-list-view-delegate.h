@@ -25,7 +25,6 @@
 
 #include <QtGui/QItemDelegate>
 
-#include "accounts/accounts-aware-object.h"
 #include "gui/widgets/buddies-list-view-delegate-configuration.h"
 
 class AbstractBuddiesModel;
@@ -33,7 +32,7 @@ class Account;
 class Contact;
 class Status;
 
-class BuddiesListViewDelegate : public QItemDelegate, public AccountsAwareObject
+class BuddiesListViewDelegate : public QItemDelegate
 {
 	Q_OBJECT
 
@@ -43,12 +42,8 @@ class BuddiesListViewDelegate : public QItemDelegate, public AccountsAwareObject
 	QStyleOptionViewItemV4 getOptions(const QModelIndex &index, const QStyleOptionViewItem &option) const;
 
 private slots:
-	void buddyStatusChanged(Contact contact, Status oldStatus);
+	void contactUpdated(Contact &contact);
 	void modelDestroyed();
-
-protected:
-	virtual void accountRegistered(Account account);
-	virtual void accountUnregistered(Account account);
 
 public:
 	explicit BuddiesListViewDelegate(QObject *parent = 0);
