@@ -110,7 +110,7 @@ protected:
 		index = ActionsModel->mapFromSource(index);
 		setCurrentIndex(index.row());
 
-		updateValueBeforeChangeImpl();
+		updateValueBeforeChange();
 		CurrentValue = value;
 
 		if (CurrentValue != ValueBeforeChange)
@@ -146,13 +146,13 @@ protected:
 	 * and returns true in case current value actually has changed, otherwise
 	 * false.
 	 */
-	bool currentIndexChangedSlotImpl(int index)
+	bool currentIndexChangedSlot(int index)
 	{
 		if (index < 0 || (index >= count() && count() != 0))
 			setCurrentIndex(0);
 		else
 		{
-			updateValueBeforeChangeImpl(); // sets ValueBeforeChange variable
+			updateValueBeforeChange(); // sets ValueBeforeChange variable
 			currentValue(); // sets CurrentValue variable
 
 			if (CurrentValue != ValueBeforeChange)
@@ -170,7 +170,7 @@ protected:
 	 * Needs to be called whenever rowsToBeRemoved() signal is emitted from
 	 * the model.
 	 */
-	void updateValueBeforeChangeImpl()
+	void updateValueBeforeChange()
 	{
 		ValueBeforeChange = CurrentValue;
 	}
@@ -183,7 +183,7 @@ protected:
 	 *
 	 * Needs to be called whenever rowsRemoved() signal is emitted from the model.
 	 */
-	void rowsRemovedImpl(const QModelIndex &parent, int start, int end)
+	void rowsRemoved(const QModelIndex &parent, int start, int end)
 	{
 		Q_UNUSED(start)
 		Q_UNUSED(end)

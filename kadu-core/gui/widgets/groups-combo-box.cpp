@@ -74,7 +74,7 @@ void GroupsComboBox::currentIndexChangedSlot(int index)
 
 	if (action != CreateNewGroupAction)
 	{
-		currentIndexChangedSlotImpl(index);
+		KaduComboBox::currentIndexChangedSlot(index);
 		return;
 	}
 
@@ -95,12 +95,12 @@ void GroupsComboBox::currentIndexChangedSlot(int index)
 
 void GroupsComboBox::updateValueBeforeChange()
 {
-	updateValueBeforeChangeImpl();
+	KaduComboBox::updateValueBeforeChange();
 }
 
 void GroupsComboBox::rowsRemoved(const QModelIndex &parent, int start, int end)
 {
-	rowsRemovedImpl(parent, start, end);
+	KaduComboBox::rowsRemoved(parent, start, end);
 }
 
 int GroupsComboBox::preferredDataRole() const

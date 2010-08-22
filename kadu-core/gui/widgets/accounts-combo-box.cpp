@@ -53,18 +53,18 @@ Account AccountsComboBox::currentAccount()
 
 void AccountsComboBox::currentIndexChangedSlot(int index)
 {
-	if (currentIndexChangedSlotImpl(index))
+	if (KaduComboBox::currentIndexChangedSlot(index))
 		emit accountChanged(CurrentValue);
 }
 
 void AccountsComboBox::updateValueBeforeChange()
 {
-	updateValueBeforeChangeImpl();
+	KaduComboBox::updateValueBeforeChange();
 }
 
 void AccountsComboBox::rowsRemoved(const QModelIndex &parent, int start, int end)
 {
-	rowsRemovedImpl(parent, start, end);
+	KaduComboBox::rowsRemoved(parent, start, end);
 }
 
 int AccountsComboBox::preferredDataRole() const

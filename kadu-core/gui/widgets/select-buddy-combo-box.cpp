@@ -68,18 +68,18 @@ Buddy SelectBuddyComboBox::currentBuddy()
 
 void SelectBuddyComboBox::currentIndexChangedSlot(int index)
 {
-	if (currentIndexChangedSlotImpl(index))
+	if (KaduComboBox::currentIndexChangedSlot(index))
 		emit buddyChanged(CurrentValue);
 }
 
 void SelectBuddyComboBox::updateValueBeforeChange()
 {
-	updateValueBeforeChangeImpl();
+	KaduComboBox::updateValueBeforeChange();
 }
 
 void SelectBuddyComboBox::rowsRemoved(const QModelIndex &parent, int start, int end)
 {
-	rowsRemovedImpl(parent, start, end);
+	KaduComboBox::rowsRemoved(parent, start, end);
 }
 
 int SelectBuddyComboBox::preferredDataRole() const

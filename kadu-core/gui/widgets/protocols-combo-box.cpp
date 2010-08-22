@@ -53,18 +53,18 @@ ProtocolFactory * ProtocolsComboBox::currentProtocol()
 
 void ProtocolsComboBox::currentIndexChangedSlot(int index)
 {
-	if (currentIndexChangedSlotImpl(index))
+	if (KaduComboBox::currentIndexChangedSlot(index))
 		emit protocolChanged(CurrentValue, ValueBeforeChange);
 }
 
 void ProtocolsComboBox::updateValueBeforeChange()
 {
-	updateValueBeforeChangeImpl();
+	KaduComboBox::updateValueBeforeChange();
 }
 
 void ProtocolsComboBox::rowsRemoved(const QModelIndex &parent, int start, int end)
 {
-	rowsRemovedImpl(parent, start, end);
+	KaduComboBox::rowsRemoved(parent, start, end);
 }
 
 int ProtocolsComboBox::preferredDataRole() const

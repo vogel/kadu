@@ -68,7 +68,7 @@ void IdentitiesComboBox::currentIndexChangedSlot(int index)
 
 	if (action != CreateNewIdentityAction)
 	{
-		if (currentIndexChangedSlotImpl(index))
+		if (KaduComboBox::currentIndexChangedSlot(index))
 			emit identityChanged(CurrentValue);
 		return;
 	}
@@ -90,12 +90,12 @@ void IdentitiesComboBox::currentIndexChangedSlot(int index)
 
 void IdentitiesComboBox::updateValueBeforeChange()
 {
-	updateValueBeforeChangeImpl();
+	KaduComboBox::updateValueBeforeChange();
 }
 
 void IdentitiesComboBox::rowsRemoved(const QModelIndex &parent, int start, int end)
 {
-	rowsRemovedImpl(parent, start, end);
+	KaduComboBox::rowsRemoved(parent, start, end);
 }
 
 int IdentitiesComboBox::preferredDataRole() const
