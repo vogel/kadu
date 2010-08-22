@@ -35,8 +35,8 @@ protected:
 	static KADUAPI QList<T *> Objects;
 
 public:
-	PredicateObject() { Objects.append(reinterpret_cast<T *>(this)); }
-	virtual ~PredicateObject() { Objects.removeAll(reinterpret_cast<T *>(this)); }
+	PredicateObject() { Objects.append(static_cast<T *>(this)); }
+	virtual ~PredicateObject() { Objects.removeAll(static_cast<T *>(this)); }
 
 };
 

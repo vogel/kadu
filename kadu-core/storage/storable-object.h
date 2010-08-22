@@ -325,7 +325,7 @@ template<class T>
 	T * moduleData(const QString &module, bool create = false)
 	{
 		if (ModulesData.contains(module))
-			return reinterpret_cast<T *>(ModulesData[module]);
+			return static_cast<T *>(ModulesData[module]);
 
 		if (!create)
 			return 0;
