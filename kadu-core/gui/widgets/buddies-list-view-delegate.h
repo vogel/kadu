@@ -26,17 +26,12 @@
 #include <QtGui/QItemDelegate>
 
 #include "accounts/accounts-aware-object.h"
-#include "buddies/buddy.h"
-#include "configuration/configuration-aware-object.h"
 #include "gui/widgets/buddies-list-view-delegate-configuration.h"
-#include "status/status.h"
-
-class QTextDocument;
-class QTreeView;
 
 class AbstractBuddiesModel;
 class Account;
-class BuddiesListViewItemPainter;
+class Contact;
+class Status;
 
 class BuddiesListViewDelegate : public QItemDelegate, public AccountsAwareObject
 {
@@ -44,7 +39,6 @@ class BuddiesListViewDelegate : public QItemDelegate, public AccountsAwareObject
 
 	AbstractBuddiesModel *Model;
 	BuddiesListViewDelegateConfiguration Configuration;
-
 
 	QStyleOptionViewItemV4 getOptions(const QModelIndex &index, const QStyleOptionViewItem &option) const;
 
