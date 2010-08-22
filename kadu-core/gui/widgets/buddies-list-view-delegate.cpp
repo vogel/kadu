@@ -24,6 +24,7 @@
 #include <QtGui/QApplication>
 #include <QtGui/QFont>
 #include <QtGui/QFontMetrics>
+#include <QtGui/QHeaderView>
 #include <QtGui/QIcon>
 #include <QtGui/QLayout>
 #include <QtGui/QListView>
@@ -131,47 +132,23 @@ QStyleOptionViewItemV4 BuddiesListViewDelegate::getOptions(const QStyleOptionVie
 
 QSize BuddiesListViewDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
+	QSize baseSizeHint = QItemDelegate::sizeHint(option, index);
+
 	BuddiesListViewItemPainter buddyPainter(Configuration, getOptions(option, index), index);
-	return buddyPainter.sizeHint();
-}
-
-QRect BuddiesListViewDelegate::buddyIconRect(const BuddiesListViewItemPainter &buddyPainter, const QRect &itemRect) const
-{
-	QRect result(0, 0, 0, 0);
-
-	QPixmap icon = buddyPainter.buddyIcon();
-	if (icon.isNull())
-		return result;
-
-	result.setWidth(icon.width());
-	result.setHeight(icon.height());
-
-	QPoint topLeft = itemRect.topLeft();
-
-	if (!Configuration.alignTop())
-		topLeft.setY(topLeft.y() + (itemRect.height() - icon.height()) / 2);
-
-	result.moveTo(topLeft);
-
-	return result;
-}
-
-QRect BuddiesListViewDelegate::buddyNameRect(const BuddiesListViewItemPainter &buddyPainter, const QRect &itemRect) const
-{
-	Q_UNUSED(buddyPainter)
-	Q_UNUSED(itemRect)
-
-	return QRect(0, 0, 0, 0);
+	return QSize(0, buddyPainter.height());
 }
 
 void BuddiesListViewDelegate::paintBuddyIcon(const BuddiesListViewItemPainter &buddyPainter, QPainter *painter, const QRect &itemRect) const
 {
+	Q_UNUSED(painter)
+	Q_UNUSED(itemRect)
+
 	QPixmap icon = buddyPainter.buddyIcon();
 	if (icon.isNull())
 		return;
 
-	QRect iconRect = buddyIconRect(buddyPainter, itemRect);
-	painter->drawPixmap(iconRect, icon);
+//	QRect iconRect = buddyIconRect(buddyPainter, itemRect);
+//	painter->drawPixmap(iconRect, icon);
 }
 
 void BuddiesListViewDelegate::paintBuddyName(const BuddiesListViewItemPainter &buddyPainter, QPainter *painter, const QStyleOptionViewItem &option, const QRect &itemRect) const
@@ -187,8 +164,11 @@ void BuddiesListViewDelegate::paintBuddyName(const BuddiesListViewItemPainter &b
 // 	painter->setPen(textcolor);
 //
 // 	QFontMetrics fontMetrics(font);
+	Q_UNUSED(buddyPainter)
+	Q_UNUSED(painter)
 	Q_UNUSED(option)
-	drawDebugRect(painter, buddyNameRect(buddyPainter, itemRect), QColor(0, 0, 255));
+	Q_UNUSED(itemRect)
+//	drawDebugRect(painter, buddyNameRect(buddyPainter, itemRect), QColor(0, 0, 255));
 }
 
 void BuddiesListViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
@@ -204,8 +184,22 @@ void BuddiesListViewDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 	opt.widget = v3 ? v3->widget : 0;
 	opt.showDecorationSelected = true;
 
-	BuddiesListViewItemPainter buddyPainter(Configuration, getOptions(option, index), index);
+	const QAbstractItemView *widget = dynamic_cast<const QAbstractItemView *>(opt.widget);
+	if (!widget)
+		return;
 
+	QStyle *style = widget->style();
+	style->drawControl(QStyle::CE_ItemViewItem, &opt, painter, widget);
+
+	const int hFrameMargin = style->pixelMetric(QStyle::PM_FocusFrameHMargin, 0, widget);
+	const int vFrameMargin = style->pixelMetric(QStyle::PM_FocusFrameVMargin, 0, widget);
+
+	QRect itemRect = opt.rect;
+	itemRect.adjust(hFrameMargin, vFrameMargin, -hFrameMargin, -vFrameMargin);
+
+	BuddiesListViewItemPainter buddyPainter(Configuration, getOptions(option, index), index);
+	buddyPainter.paint(painter);
+/*
 	int avatarSize = Configuration.showAvatars() ? Configuration.defaultAvatarSize().width() + 4 : 0;
 
 	const QAbstractItemView *widget = dynamic_cast<const QAbstractItemView *>(opt.widget);
@@ -281,14 +275,14 @@ void BuddiesListViewDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 		painter->setFont(Configuration.boldFont());
 
 		// TODO: 0.6.6
-/*
+/ *
 		if (User.protocolData("Gadu", "Blocking").toBool())
 			painter->setPen(QColor(255, 0, 0));
 		else if (IgnoredManager::isIgnored(UserListElements(users)))
 			painter->setPen(QColor(192, 192, 0));
 		else if (config_file.readBoolEntry("General", "PrivateStatus") && User.protocolData("Gadu", "OfflineTo").toBool())
 			painter->setPen(QColor(128, 128, 128));
-*/
+* /
 //		if (User.data("HideDescription").toString() != "true")
 
 	int top = hasDescription
@@ -440,6 +434,7 @@ void BuddiesListViewDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 	delete dd;
 
 	painter->restore();
+*/
 }
 
 bool BuddiesListViewDelegate::isBold(const QModelIndex &index) const
