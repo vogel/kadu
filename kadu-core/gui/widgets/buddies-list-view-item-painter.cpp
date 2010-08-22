@@ -120,16 +120,24 @@ void BuddiesListViewItemPainter::computeAvatarRect()
 	AvatarRect.moveTop(ItemRect.top());
 }
 
+QString BuddiesListViewItemPainter::getAccountName()
+{
+	Account account = qvariant_cast<Account>(Index.data(AccountRole));
+	return account.accountIdentity().name();
+}
+
+QString BuddiesListViewItemPainter::getName()
+{
+	return Index.data(Qt::DisplayRole).toString();
+}
+
 void BuddiesListViewItemPainter::computeAccountNameRect()
 {
 	AccountNameRect = QRect(0, 0, 0, 0);
 	if (!showAccountName())
 		return;
 
-	Account account = qvariant_cast<Account>(Index.data(AccountRole));
-	QString accountDisplay;
-	if (account)
-		accountDisplay = account.accountIdentity().name();
+	QString accountDisplay = getAccountName();
 
 	int accountDisplayWidth = DescriptionFontMetrics.width(accountDisplay);
 
@@ -147,6 +155,8 @@ void BuddiesListViewItemPainter::computeNameRect()
 	int left = qMax(IconRect.right(), MessageIconRect.right());
 	if (0 != left)
 		left += MARGIN;
+	else
+		left = ItemRect.left();
 
 	int right;
 	if (!AccountNameRect.isEmpty())
@@ -182,9 +192,6 @@ void BuddiesListViewItemPainter::computeDescriptionRect()
 
 
 	DescriptionRect.setHeight((int)dd->size().height());
-
-	// printf("Item rect: %d %d\n", ItemRect.width(), ItemRect.height());
-	// printf("Desc: %d %d\n", DescriptionRect.width(), DescriptionRect.height());
 
 	delete dd;
 }
@@ -281,14 +288,6 @@ QPixmap BuddiesListViewItemPainter::buddyIcon() const
 	return qvariant_cast<QPixmap>(Index.data(Qt::DecorationRole));
 }
 
-void BuddiesListViewItemPainter::paintDebugRect(QPainter *painter, QRect rect, QColor color) const
-{
-	painter->save();
-	painter->setPen(color);
-	painter->drawRect(rect);
-	painter->restore();
-}
-
 int BuddiesListViewItemPainter::getItemIndentation()
 {
 	int level = 0;
@@ -330,6 +329,71 @@ int BuddiesListViewItemPainter::height()
 	return wholeRect.height() + 2 * vFrameMargin;
 }
 
+void BuddiesListViewItemPainter::paintDebugRect(QPainter *painter, QRect rect, QColor color) const
+{
+	painter->save();
+	painter->setPen(color);
+	painter->drawRect(rect);
+	painter->restore();
+}
+
+void BuddiesListViewItemPainter::paintIcon(QPainter *painter)
+{
+	QPixmap icon = buddyIcon();
+	if (icon.isNull())
+		return;
+
+	painter->drawPixmap(IconRect, icon);
+}
+
+void BuddiesListViewItemPainter::paintMessageIcon(QPainter *painter)
+{
+	if (!useMessagePixmap())
+		return;
+
+	painter->drawPixmap(MessageIconRect, Configuration.messagePixmap());
+}
+
+void BuddiesListViewItemPainter::paintAvatar(QPainter *painter)
+{
+	Q_UNUSED(painter)
+}
+
+void BuddiesListViewItemPainter::paintAccountName(QPainter *painter)
+{
+	if (!showAccountName())
+		return;
+
+	painter->setFont(Configuration.descriptionFont());
+	painter->drawText(AccountNameRect, getAccountName());
+}
+
+void BuddiesListViewItemPainter::paintName(QPainter *painter)
+{
+	painter->setFont(Configuration.font());
+	painter->drawText(NameRect, FontMetrics.elidedText(getName(), Qt::ElideRight, NameRect.width()));
+}
+
+void BuddiesListViewItemPainter::paintDescription(QPainter *painter)
+{
+	QColor textcolor = Option.palette.color(QPalette::Normal, Option.state & QStyle::State_Selected
+			? QPalette::HighlightedText
+			: QPalette::Text);
+
+	QTextDocument *dd = descriptionDocument(Index.data(DescriptionRole).toString(), DescriptionRect.width(),
+			Option.state & QStyle::State_Selected
+					? textcolor
+					: Configuration.descriptionColor());
+
+	painter->setFont(Configuration.descriptionFont());
+	painter->save();
+	painter->translate(DescriptionRect.topLeft());
+	dd->drawContents(painter);
+	painter->restore();
+
+	delete dd;
+}
+
 void BuddiesListViewItemPainter::paint(QPainter *painter)
 {
 	ItemRect = Option.rect;
@@ -337,6 +401,13 @@ void BuddiesListViewItemPainter::paint(QPainter *painter)
 
 	computeLayout();
 
+	paintIcon(painter);
+	paintMessageIcon(painter);
+	paintAccountName(painter);
+	paintName(painter);
+	paintDescription(painter);
+
+	/*
 	paintDebugRect(painter, ItemRect, QColor(255, 0, 0));
 	paintDebugRect(painter, IconRect, QColor(0, 255, 0));
 	paintDebugRect(painter, MessageIconRect, QColor(255, 255, 0));
@@ -344,4 +415,5 @@ void BuddiesListViewItemPainter::paint(QPainter *painter)
 	paintDebugRect(painter, AccountNameRect, QColor(255, 0, 255));
 	paintDebugRect(painter, NameRect, QColor(0, 255, 255));
 	paintDebugRect(painter, DescriptionRect, QColor(0, 0, 0));
+	*/
 }
