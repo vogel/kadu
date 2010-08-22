@@ -1,5 +1,0 @@
-- module_tabs-remove jest dla ikonki "x" na prawo w oknie chata. Dla ikonek w/na karcie to maja byc te ikony ze skorki Qt4.5
-- skoro ConfigWizard wg. mockupu znika z menu i bedzie w konfiguracji to ikonka ró¿dzka jest zbedna, itp itd. 
-
-Sprawdzic z najnowszą specyfikacja f.d:
-- im mniej tych ikonek w "kadu own icons" tym lepiej, moze z freedesktop specyfikacji cos jeszcze pasuje na podmiane?
