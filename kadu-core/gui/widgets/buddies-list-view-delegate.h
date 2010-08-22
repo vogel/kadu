@@ -38,24 +38,15 @@ class AbstractBuddiesModel;
 class Account;
 class BuddiesListViewItemPainter;
 
-class BuddiesListViewDelegate : public QItemDelegate, public ConfigurationAwareObject, public AccountsAwareObject
+class BuddiesListViewDelegate : public QItemDelegate, public AccountsAwareObject
 {
 	Q_OBJECT
 
 	AbstractBuddiesModel *Model;
 	BuddiesListViewDelegateConfiguration Configuration;
 
-	bool isBold(const QModelIndex &index) const;
 
-	void drawDebugRect(QPainter *painter, QRect rect, QColor color) const;
-
-	QStyleOptionViewItemV4 getOptions(const QStyleOptionViewItem &option, const QModelIndex &index) const;
-
-	void paintBuddyIcon(const BuddiesListViewItemPainter &buddyPainter, QPainter *painter, const QRect &itemRect) const;
-	void paintMessageIcon(const BuddiesListViewItemPainter &buddyPainter) const;
-	void paintBuddyName(const BuddiesListViewItemPainter &buddyPainter, QPainter *painter, const QStyleOptionViewItem &option, const QRect &itemRect) const;
-	void paintAccountName(const BuddiesListViewItemPainter &buddyPainter) const;
-	void paintBuddyDescription(const BuddiesListViewItemPainter &buddyPainter) const;
+	QStyleOptionViewItemV4 getOptions(const QModelIndex &index, const QStyleOptionViewItem &option) const;
 
 private slots:
 	void buddyStatusChanged(Contact contact, Status oldStatus);
@@ -73,10 +64,8 @@ public:
 
 	virtual void setShowAccountName(bool show);
 
-	virtual QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index ) const;
+	virtual QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
 	virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
-
-	virtual void configurationUpdated();
 
 };
 

@@ -38,6 +38,7 @@ class BuddiesListViewItemPainter
 	int VFrameMargin;
 
 	QFontMetrics FontMetrics;
+	QFontMetrics BoldFontMetrics;
 	QFontMetrics DescriptionFontMetrics;
 
 	QTextDocument *DescriptionDocument;
@@ -57,8 +58,10 @@ class BuddiesListViewItemPainter
 	QTextDocument * createDescriptionDocument(const QString &text, int width, QColor color) const;
 	QTextDocument * getDescriptionDocument(int width);
 
-	int getItemIndentation();
+	const QFontMetrics & fontMetrics();
+	int itemIndentation();
 
+	bool useBold() const;
 	bool showMessagePixmap() const;
 	bool showAccountName() const;
 	bool showDescription() const;
