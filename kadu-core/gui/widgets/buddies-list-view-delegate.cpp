@@ -24,6 +24,7 @@
 
 #include "accounts/account.h"
 #include "buddies/model/abstract-buddies-model.h"
+#include "contacts/contact-manager.h"
 #include "gui/widgets/buddies-list-view-item-painter.h"
 
 #include "buddies-list-view-delegate.h"
@@ -31,12 +32,12 @@
 BuddiesListViewDelegate::BuddiesListViewDelegate(QObject *parent) :
 		QItemDelegate(parent), Model(0), Configuration(parent)
 {
-	triggerAllAccountsRegistered();
+	connect(ContactManager::instance(), SIGNAL(contactUpdated(Contact&)), this, SLOT(contactUpdated(Contact&)));
 }
 
 BuddiesListViewDelegate::~BuddiesListViewDelegate()
 {
-	triggerAllAccountsUnregistered();
+	disconnect(ContactManager::instance(), SIGNAL(contactUpdated(Contact&)), this, SLOT(contactUpdated(Contact&)));
 }
 
 void BuddiesListViewDelegate::setModel(AbstractBuddiesModel *model)
@@ -47,22 +48,8 @@ void BuddiesListViewDelegate::setModel(AbstractBuddiesModel *model)
 		connect(itemModel, SIGNAL(destroyed(QObject *)), this, SLOT(modelDestroyed()));
 }
 
-void BuddiesListViewDelegate::accountRegistered(Account account)
+void BuddiesListViewDelegate::contactUpdated(Contact &contact)
 {
-	connect(account.data(), SIGNAL(buddyStatusChanged(Contact, Status)),
-			this, SLOT(buddyStatusChanged(Contact, Status)));
-}
-
-void BuddiesListViewDelegate::accountUnregistered(Account account)
-{
-	disconnect(account.data(), SIGNAL(buddyStatusChanged(Contact, Status)),
-			this, SLOT(buddyStatusChanged(Contact, Status)));
-}
-
-void BuddiesListViewDelegate::buddyStatusChanged(Contact contact, Status oldStatus)
-{
-	Q_UNUSED(oldStatus)
-
 	if (Model)
 		emit sizeHintChanged(Model->buddyIndex(contact.ownerBuddy()));
 }
