@@ -49,6 +49,9 @@ class BuddiesListViewItemPainter
 	QRect NameRect;
 	QRect DescriptionRect;
 
+	QString getAccountName();
+	QString getName();
+
 	int getItemIndentation();
 
 	bool showAccountName();
@@ -64,6 +67,13 @@ class BuddiesListViewItemPainter
 	void computeLayout();
 
 	void paintDebugRect(QPainter *painter, QRect rect, QColor color) const;
+
+	void paintIcon(QPainter *painter);
+	void paintMessageIcon(QPainter *painter);
+	void paintAvatar(QPainter *painter);
+	void paintAccountName(QPainter *painter);
+	void paintName(QPainter *painter);
+	void paintDescription(QPainter *painter);
 
 public:
 	BuddiesListViewItemPainter(const BuddiesListViewDelegateConfiguration &configuration, const QStyleOptionViewItemV4 &option, const QModelIndex &index);
