@@ -35,8 +35,8 @@ protected:
 	static KADUAPI QList<T *> Objects;
 
 public:
-	AwareObject() { Objects.append(reinterpret_cast<T *>(this)); }
-	virtual ~AwareObject() { Objects.removeAll(reinterpret_cast<T *>(this)); }
+	AwareObject() { Objects.append(static_cast<T *>(this)); }
+	virtual ~AwareObject() { Objects.removeAll(static_cast<T *>(this)); }
 
 };
 
