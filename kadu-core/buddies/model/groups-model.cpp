@@ -101,15 +101,15 @@ Group GroupsModel::group(const QModelIndex &index) const
 	return GroupManager::instance()->byIndex(index.row());
 }
 
-int GroupsModel::groupIndex(Group group)
+int GroupsModel::groupIndex(Group group) const
 {
 	return GroupManager::instance()->indexOf(group);
 }
 
 
-QModelIndex GroupsModel::groupModelIndex(Group group)
+QModelIndex GroupsModel::indexForValue(const QVariant &value) const
 {
-	return createIndex(groupIndex(group), 0, 0);
+	return createIndex(groupIndex(value.value<Group>()), 0, 0);
 }
 
 void GroupsModel::groupAboutToBeAdded(Group group)

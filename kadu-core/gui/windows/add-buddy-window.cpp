@@ -85,9 +85,9 @@ void AddBuddyWindow::createGui()
 	layout->addWidget(new QLabel(tr("in"), this), 0, 2);
 
 	AccountCombo = new AccountsComboBox(this);
-	connect(AccountCombo, SIGNAL(activated(int)), this, SLOT(setUsernameLabel()));
-	connect(AccountCombo, SIGNAL(activated(int)), this, SLOT(setAddContactEnabled()));
-	connect(AccountCombo, SIGNAL(activated(int)), this, SLOT(setValidateRegularExpression()));
+	connect(AccountCombo, SIGNAL(accountChanged(Account)), this, SLOT(setUsernameLabel()));
+	connect(AccountCombo, SIGNAL(accountChanged(Account)), this, SLOT(setAddContactEnabled()));
+	connect(AccountCombo, SIGNAL(accountChanged(Account)), this, SLOT(setValidateRegularExpression()));
 
 	AccountComboIdFilter = new IdRegularExpressionFilter(AccountCombo);
 	AccountCombo->addFilter(AccountComboIdFilter);
@@ -216,7 +216,7 @@ void AddBuddyWindow::setAddContactEnabled()
 
 	if (MergeContact->isChecked())
 	{
-		if (!SelectContact->buddy())
+		if (!SelectContact->currentBuddy())
 		{
 			AddContactButton->setEnabled(false);
 			displayErrorMessage(tr("Select contact to merge with"));
@@ -290,7 +290,7 @@ void AddBuddyWindow::accept()
 	}
 	else
 	{
-		buddy = SelectContact->buddy();
+		buddy = SelectContact->currentBuddy();
 		if (buddy.isNull())
 			return;
 	}

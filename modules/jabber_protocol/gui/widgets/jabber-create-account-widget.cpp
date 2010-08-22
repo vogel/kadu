@@ -51,7 +51,7 @@ JabberCreateAccountWidget::JabberCreateAccountWidget(QWidget *parent) :
 	ssl_ = 0;
 	legacy_ssl_probe_ = true;
 	port_ = 5222;
-	
+
 	createGui();
 }
 
@@ -60,7 +60,7 @@ JabberCreateAccountWidget::~JabberCreateAccountWidget()
 }
 
 void JabberCreateAccountWidget::createGui()
-{ 
+{
   	QVBoxLayout *mainLayout = new QVBoxLayout(this);
 
 	QWidget *formWidget = new QWidget(this);
@@ -78,14 +78,14 @@ void JabberCreateAccountWidget::createGui()
 	Username = new QLineEdit(this);
 	connect(Username, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 	jidLayout->addWidget(Username);
-	
+
 	QLabel *atLabel = new QLabel("@", this);
 	jidLayout->addWidget(atLabel, 0, 1);
-	
+
 	Domain = new QComboBox();
 	Domain->setEditable(true);
 	jidLayout->addWidget(Domain, 0, 2);
-	
+
 	layout->addRow(tr("Username") + ":", jidWidget);
 
 	NewPassword = new QLineEdit(this);
@@ -103,7 +103,7 @@ void JabberCreateAccountWidget::createGui()
 	layout->addWidget(RememberPassword);
 
 	IdentityCombo = new IdentitiesComboBox(this);
-	connect(IdentityCombo, SIGNAL(activated(int)), this, SLOT(dataChanged()));
+	connect(IdentityCombo, SIGNAL(identityChanged(Identity)), this, SLOT(dataChanged()));
 	layout->addRow(tr("Account Identity") + ":", IdentityCombo);
 
 	QLabel *infoLabel = new QLabel(tr("<font size='-1'><i>Select or enter the identity that will be associated with this account.</i></font>"), this);
@@ -211,7 +211,7 @@ void JabberCreateAccountWidget::createGui()
 
 	buttons->addButton(RegisterAccountButton, QDialogButtonBox::ApplyRole);
 	buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
-	
+
 	dataChanged();
 }
 

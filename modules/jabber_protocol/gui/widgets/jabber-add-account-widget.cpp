@@ -96,7 +96,7 @@ void JabberAddAccountWidget::createGui()
 	layout->addRow(tr("Forgot Your Password?"), RemindPassword);
 
 	Identity = new IdentitiesComboBox(this);
-	connect(Identity, SIGNAL(activated(int)), this, SLOT(dataChanged()));
+	connect(Identity, SIGNAL(identityChanged(Identity)), this, SLOT(dataChanged()));
 	layout->addRow(tr("Account Identity") + ":", Identity);
 
 	QLabel *infoLabel = new QLabel(tr("<font size='-1'><i>Select or enter the identity that will be associated with this account.</i></font>"), this);

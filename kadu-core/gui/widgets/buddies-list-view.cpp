@@ -147,7 +147,7 @@ void BuddiesListView::setShowAccountName(bool show)
 
 void BuddiesListView::selectBuddy(Buddy buddy)
 {
-	QModelIndex index = Model->buddyIndex(buddy);
+	QModelIndex index = Model->indexForValue(buddy);
 	index = ProxyModel->mapFromSource(index);
 
 	setCurrentIndex(index);

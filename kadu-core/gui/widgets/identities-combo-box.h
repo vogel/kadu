@@ -20,29 +20,24 @@
 #ifndef IDENTITIES_COMBO_BOX_H
 #define IDENTITIES_COMBO_BOX_H
 
-#include <QtGui/QComboBox>
-
 #include "identities/identity.h"
+#include "gui/widgets/kadu-combo-box.h"
 #include "exports.h"
 
-class IdentityModel;
-class QSortFilterProxyModel;
-class ActionsProxyModel;
-
-class KADUAPI IdentitiesComboBox : public QComboBox
+class KADUAPI IdentitiesComboBox : public KaduComboBox<Identity>
 {
 	Q_OBJECT
 
-	IdentityModel *Model;
-	ActionsProxyModel *ActionsModel;
-
 	QAction *CreateNewIdentityAction;
 
-	Identity CurrentIdentity;
-
 private slots:
-	void activatedSlot(int index);
-	void resetIdentity();
+	void currentIndexChangedSlot(int index);
+	void updateValueBeforeChange();
+	void rowsRemoved(const QModelIndex &parent, int start, int end);
+
+protected:
+	virtual int preferredDataRole() const;
+	virtual QString selectString() const;
 
 public:
 	explicit IdentitiesComboBox(QWidget *parent = 0);
@@ -50,6 +45,9 @@ public:
 
 	void setCurrentIdentity(Identity identity);
 	Identity currentIdentity();
+
+signals:
+	void identityChanged(Identity identity);
 
 };
 

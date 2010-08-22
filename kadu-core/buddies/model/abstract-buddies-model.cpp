@@ -20,7 +20,7 @@
  */
 
 #include <QtCore/QVariant>
-#include <QtGui/QAbstractProxyModel>
+#include <QtCore/QModelIndex>
 
 #include "buddies/buddy.h"
 #include "contacts/contact.h"

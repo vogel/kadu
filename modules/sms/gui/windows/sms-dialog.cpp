@@ -189,14 +189,14 @@ void SmsDialog::recipientNumberChanged(const QString &number)
 
 	if (number.isEmpty())
 	{
-		RecipientComboBox->setBuddy(Buddy::null);
+		RecipientComboBox->setCurrentBuddy(Buddy::null);
 		return;
 	}
 
 	foreach (Buddy buddy, BuddyManager::instance()->items())
 		if (buddy.mobile() == number)
 		{
-			RecipientComboBox->setBuddy(buddy);
+			RecipientComboBox->setCurrentBuddy(buddy);
 			return;
 		}
 }

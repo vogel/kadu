@@ -91,14 +91,14 @@ ProtocolFactory * ProtocolsModel::protocolFactory(const QModelIndex &index) cons
 	return ProtocolsManager::instance()->byIndex(index.row());
 }
 
-int ProtocolsModel::protocolFactoryIndex(ProtocolFactory *protocolFactory)
+int ProtocolsModel::protocolFactoryIndex(ProtocolFactory *protocolFactory) const
 {
 	return ProtocolsManager::instance()->indexOf(protocolFactory);
 }
 
-QModelIndex ProtocolsModel::protocolFactoryModelIndex(ProtocolFactory *protocolFactory)
+QModelIndex ProtocolsModel::indexForValue(const QVariant &value) const
 {
-	return index(protocolFactoryIndex(protocolFactory), 0);
+	return index(protocolFactoryIndex(value.value<ProtocolFactory *>()), 0);
 }
 
 void ProtocolsModel::protocolFactoryAboutToBeRegistered(ProtocolFactory *protocolFactory)

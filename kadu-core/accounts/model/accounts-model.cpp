@@ -119,19 +119,19 @@ Account AccountsModel::account(const QModelIndex &index) const
 	return AccountManager::instance()->byIndex(index.row());
 }
 
-int AccountsModel::accountIndex(Account account)
+int AccountsModel::accountIndex(Account account) const
 {
 	return AccountManager::instance()->indexOf(account);
 }
 
-QModelIndex AccountsModel::accountModelIndex(Account account)
+QModelIndex AccountsModel::indexForValue(const QVariant &value) const
 {
-	return createIndex(accountIndex(account), 0, 0);
+	return createIndex(accountIndex(value.value<Account>()), 0, 0);
 }
 
 void AccountsModel::accountUpdated(Account account)
 {
-	QModelIndex index = accountModelIndex(account);
+	QModelIndex index = indexForValue(account);
 	emit dataChanged(index, index);
 }
 

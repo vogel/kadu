@@ -20,28 +20,24 @@
 #ifndef ACCOUNTS_COMBO_BOX_H
 #define ACCOUNTS_COMBO_BOX_H
 
-#include <QtGui/QComboBox>
-
 #include "accounts/account.h"
+#include "gui/widgets/kadu-combo-box.h"
 
 class AbstractAccountFilter;
-class AccountsModel;
-class AccountsProxyModel;
-class ActionsProxyModel;
 
-class AccountsComboBox : public QComboBox
+class AccountsComboBox : public KaduComboBox<Account>
 {
 	Q_OBJECT
 
-	AccountsModel *Model;
-	AccountsProxyModel *ProxyModel;
-	ActionsProxyModel *ActionsModel;
-
-	Account CurrentAccount;
-
 private slots:
-	void activatedSlot(int index);
-	void resetAccount();
+	void currentIndexChangedSlot(int index);
+	void updateValueBeforeChange();
+	void rowsRemoved(const QModelIndex &parent, int start, int end);
+
+protected:
+	virtual int preferredDataRole() const;
+	virtual QString selectString() const;
+	virtual ActionsProxyModel::ActionVisibility selectVisibility() const;
 
 public:
 	explicit AccountsComboBox(QWidget *parent = 0);
@@ -52,6 +48,9 @@ public:
 
 	void addFilter(AbstractAccountFilter *filter);
 	void removeFilter(AbstractAccountFilter *filter);
+
+signals:
+	void accountChanged(Account account);
 
 };
 

@@ -432,7 +432,7 @@ void YourAccounts::accountCreated(Account account)
 void YourAccounts::selectAccount(Account account)
 {
 	AccountsView->selectionModel()->clearSelection();
-	AccountsView->selectionModel()->select(MyAccountsModel->accountModelIndex(account), QItemSelectionModel::Select);
+	AccountsView->selectionModel()->select(MyAccountsModel->indexForValue(account), QItemSelectionModel::Select);
 }
 
 void YourAccounts::accountSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected)

@@ -67,4 +67,6 @@ public:
 
 };
 
+Q_DECLARE_METATYPE(FileTransfer)
+
 #endif // FILE_TRANSFER_H

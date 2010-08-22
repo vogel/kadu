@@ -24,8 +24,9 @@
 #include <QtCore/QModelIndex>
 
 #include "accounts/account.h"
+#include "model/kadu-abstract-model.h"
 
-class AccountsModel : public QAbstractListModel
+class AccountsModel : public QAbstractListModel, public KaduAbstractModel
 {
 	Q_OBJECT
 
@@ -37,7 +38,7 @@ private slots:
 	void accountUnregistered(Account account);
 
 public:
-	AccountsModel(QObject *parent = 0);
+	explicit AccountsModel(QObject *parent = 0);
 	virtual ~AccountsModel();
 
 	virtual int columnCount(const QModelIndex &parent) const;
@@ -47,8 +48,8 @@ public:
 	virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 
 	Account account(const QModelIndex &index) const;
-	int accountIndex(Account account);
-	QModelIndex accountModelIndex(Account account);
+	int accountIndex(Account account) const;
+	virtual QModelIndex indexForValue(const QVariant &value) const;
 
 };
 

@@ -20,30 +20,28 @@
 #ifndef SELECT_BUDDY_COMBO_BOX_H
 #define SELECT_BUDDY_COMBO_BOX_H
 
-#include <QtGui/QComboBox>
-
 #include "buddies/buddy.h"
+#include "gui/widgets/kadu-combo-box.h"
 #include "exports.h"
 
 class AbstractBuddyFilter;
-class ActionsProxyModel;
-class BuddiesModel;
-class BuddiesModelProxy;
 class SelectBuddyPopup;
 
-class KADUAPI SelectBuddyComboBox : public QComboBox
+class KADUAPI SelectBuddyComboBox : public KaduComboBox<Buddy>
 {
 	Q_OBJECT
 
-	BuddiesModel *Model;
-	BuddiesModelProxy *ProxyModel;
-	ActionsProxyModel *ActionsModel;
 	SelectBuddyPopup *Popup;
 
 private slots:
-	void activatedSlot();
+	void currentIndexChangedSlot(int index);
+	void updateValueBeforeChange();
+	void rowsRemoved(const QModelIndex &parent, int start, int end);
 
 protected:
+	virtual int preferredDataRole() const;
+	virtual QString selectString() const;
+
 	virtual void showPopup();
 	virtual void hidePopup();
 
@@ -51,13 +49,13 @@ public:
 	explicit SelectBuddyComboBox(QWidget *parent = 0);
 	virtual ~SelectBuddyComboBox();
 
+	Buddy currentBuddy();
+
 	void addFilter(AbstractBuddyFilter *filter);
 	void removeFilter(AbstractBuddyFilter *filter);
 
-	Buddy buddy();
-
 public slots:
-	void setBuddy(Buddy buddy);
+	void setCurrentBuddy(Buddy buddy);
 
 signals:
 	void buddyChanged(Buddy buddy);

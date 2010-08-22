@@ -1,8 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2010 Piotr Galiszewski (piotrgaliszewski@gmail.com)
- * Copyright 2009 Bartłomiej Zimoń (uzi18@o2.pl)
+ * Copyright 2010 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -19,22 +17,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ABSTRACT_BUDDIES_MODEL_H
-#define ABSTRACT_BUDDIES_MODEL_H
-
-#include "model/kadu-abstract-model.h"
+#ifndef KADU_ABSTRACT_MODEL_H
+#define KADU_ABSTRACT_MODEL_H
 
 class QModelIndex;
+class QVariant;
 
-class Buddy;
-class Contact;
-
-class AbstractBuddiesModel : public KaduAbstractModel
+class KaduAbstractModel
 {
 public:
-	virtual Buddy buddyAt(const QModelIndex &index) const;
-	virtual Contact contactAt(const QModelIndex &index) const;
+	virtual QModelIndex indexForValue(const QVariant &value) const = 0;
 
 };
 
-#endif // ABSTRACT_BUDDIES_MODEL_H
+#endif // KADU_ABSTRACT_MODEL_H

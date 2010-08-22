@@ -86,7 +86,7 @@ void TlenCreateAccountWidget::createAccountGui(QGridLayout *gridLayout, int &row
 	QLabel *descriptionLabel = new QLabel(tr("Account description"), this);
 	gridLayout->addWidget(descriptionLabel, row, 1, Qt::AlignRight);
 	Identity = new ChooseIdentityWidget(this);
-	connect(Identity, SIGNAL(identityChanged()), this, SLOT(iHaveAccountDataChanged()));
+	connect(Identity, SIGNAL(identityChanged(Identity)), this, SLOT(iHaveAccountDataChanged()));
 	gridLayout->addWidget(Identity, row++, 2, 1, 2);
 
 	RememberPassword = new QCheckBox(tr("Remember password"), this);

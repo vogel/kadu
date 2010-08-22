@@ -110,7 +110,7 @@ bool BuddiesModelProxy::lessThan(const QModelIndex &left, const QModelIndex &rig
 
 		if (!leftContact.isBlocking() && rightContact.isBlocking())
 			return true;
-		
+
 
 		Status leftStatus = !leftContact.isNull()
 				? leftContact.currentStatus()
@@ -186,10 +186,10 @@ Buddy BuddiesModelProxy::buddyAt(const QModelIndex &index) const
 	return SourceBuddyModel->buddyAt(mapToSource(index));
 }
 
-const QModelIndex BuddiesModelProxy::buddyIndex(Buddy buddy) const
+QModelIndex BuddiesModelProxy::indexForValue(const QVariant &value) const
 {
 	if (!SourceBuddyModel)
 		return QModelIndex();
 
-	return mapFromSource(SourceBuddyModel->buddyIndex(buddy));
+	return mapFromSource(SourceBuddyModel->indexForValue(value));
 }

@@ -110,6 +110,7 @@ void BuddiesListViewDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 
 	BuddiesListViewItemPainter buddyPainter(Configuration, options, index);
 	buddyPainter.paint(painter);
+
 /*
 		// TODO: 0.6.6
 / *

@@ -17,29 +17,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QAction>
-
 #include "model/actions-proxy-model.h"
 #include "model/roles.h"
 #include "protocols/model/protocols-model.h"
 #include "protocols/model/protocols-model-proxy.h"
-#include "protocols/protocol-factory.h"
 
 #include "protocols-combo-box.h"
 
 ProtocolsComboBox::ProtocolsComboBox(QWidget *parent) :
-		QComboBox(parent), CurrentProtocolFactory(0)
+		KaduComboBox(parent)
 {
-	Model = new ProtocolsModel(this);
-	ProxyModel = new ProtocolsModelProxy(this);
-	ProxyModel->setSourceModel(Model);
+	setUpModel(new ProtocolsModel(this), new ProtocolsModelProxy(this));
 
-	ActionsModel = new ActionsProxyModel(this);
-	ActionsModel->setSourceModel(ProxyModel);
-	ActionsModel->addBeforeAction(new QAction(tr(" - Select network - "), this), ActionsProxyModel::NotVisibleWithOneRowSourceModel);
-
-	setModel(ActionsModel);
-
+	connect(model(), SIGNAL(rowsAboutToBeRemoved(const QModelIndex &, int, int)),
+			this, SLOT(updateValueBeforeChange()));
+	connect(model(), SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
+			this, SLOT(rowsRemoved(const QModelIndex &, int, int)));
 	connect(this, SIGNAL(currentIndexChanged(int)), this, SLOT(currentIndexChangedSlot(int)));
 }
 
@@ -49,44 +42,52 @@ ProtocolsComboBox::~ProtocolsComboBox()
 
 void ProtocolsComboBox::setCurrentProtocol(ProtocolFactory *protocol)
 {
-	if (protocol == CurrentProtocolFactory)
-		return;
-
-	QModelIndex index = Model->protocolFactoryModelIndex(protocol);
-	index = ActionsModel->mapFromSource(index);
-
-	if (index.row() < 0 || index.row() >= count())
-		setCurrentIndex(0);
-	else
-		setCurrentIndex(index.row());
-
-	ProtocolFactory *last = CurrentProtocolFactory;
-	CurrentProtocolFactory = protocol;
-	emit protocolChanged(CurrentProtocolFactory, last);
+	if (setCurrentValue(protocol))
+		emit protocolChanged(CurrentValue, ValueBeforeChange);
 }
 
 ProtocolFactory * ProtocolsComboBox::currentProtocol()
 {
-	CurrentProtocolFactory = qvariant_cast<ProtocolFactory *>(ActionsModel->index(currentIndex(), 0).data(ProtocolRole));
-	return CurrentProtocolFactory;
+	return currentValue();
 }
 
 void ProtocolsComboBox::currentIndexChangedSlot(int index)
 {
-	Q_UNUSED(index)
+	if (KaduComboBox::currentIndexChangedSlot(index))
+		emit protocolChanged(CurrentValue, ValueBeforeChange);
+}
 
-	ProtocolFactory *last = CurrentProtocolFactory;
-	currentProtocol(); // sets CurrentProtocol variable
-	if (last != CurrentProtocolFactory)
-		emit protocolChanged(CurrentProtocolFactory, last);
+void ProtocolsComboBox::updateValueBeforeChange()
+{
+	KaduComboBox::updateValueBeforeChange();
+}
+
+void ProtocolsComboBox::rowsRemoved(const QModelIndex &parent, int start, int end)
+{
+	KaduComboBox::rowsRemoved(parent, start, end);
+}
+
+int ProtocolsComboBox::preferredDataRole() const
+{
+	return ProtocolRole;
+}
+
+QString ProtocolsComboBox::selectString() const
+{
+	return tr(" - Select network - ");
+}
+
+ActionsProxyModel::ActionVisibility ProtocolsComboBox::selectVisibility() const
+{
+	return ActionsProxyModel::NotVisibleWithOneRowSourceModel;
 }
 
 void ProtocolsComboBox::addFilter(AbstractProtocolFilter *filter)
 {
-	ProxyModel->addFilter(filter);
+	static_cast<ProtocolsModelProxy *>(SourceProxyModel)->addFilter(filter);
 }
 
 void ProtocolsComboBox::removeFilter(AbstractProtocolFilter *filter)
 {
-	ProxyModel->removeFilter(filter);
+	static_cast<ProtocolsModelProxy *>(SourceProxyModel)->removeFilter(filter);
 }
