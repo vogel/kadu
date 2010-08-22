@@ -55,6 +55,13 @@ Avatar::Avatar(AvatarShared *data) :
 	data->ref.ref();
 }
 
+Avatar::Avatar(QObject *data)
+{
+	AvatarShared *shared = dynamic_cast<AvatarShared *>(data);
+	if (shared)
+		setData(shared);
+}
+
 Avatar::Avatar(const Avatar &copy) :
 		SharedBase<AvatarShared>(copy)
 {

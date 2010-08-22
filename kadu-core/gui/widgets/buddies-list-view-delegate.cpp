@@ -23,6 +23,8 @@
 #include <QtGui/QAbstractItemView>
 
 #include "accounts/account.h"
+#include "buddies/avatar.h"
+#include "buddies/avatar-manager.h"
 #include "buddies/model/abstract-buddies-model.h"
 #include "contacts/contact-manager.h"
 #include "gui/widgets/buddies-list-view-item-painter.h"
@@ -32,11 +34,13 @@
 BuddiesListViewDelegate::BuddiesListViewDelegate(QObject *parent) :
 		QItemDelegate(parent), Model(0), Configuration(parent)
 {
+	connect(AvatarManager::instance(), SIGNAL(avatarUpdated(Avatar)), this, SLOT(avatarUpdated(Avatar)));
 	connect(ContactManager::instance(), SIGNAL(contactUpdated(Contact&)), this, SLOT(contactUpdated(Contact&)));
 }
 
 BuddiesListViewDelegate::~BuddiesListViewDelegate()
 {
+	disconnect(AvatarManager::instance(), SIGNAL(avatarUpdated(Avatar)), this, SLOT(avatarUpdated(Avatar)));
 	disconnect(ContactManager::instance(), SIGNAL(contactUpdated(Contact&)), this, SLOT(contactUpdated(Contact&)));
 }
 
@@ -48,9 +52,15 @@ void BuddiesListViewDelegate::setModel(AbstractBuddiesModel *model)
 		connect(itemModel, SIGNAL(destroyed(QObject *)), this, SLOT(modelDestroyed()));
 }
 
+void BuddiesListViewDelegate::avatarUpdated(Avatar avatar)
+{
+	if (Model && avatar.avatarContact().ownerBuddy())
+		emit sizeHintChanged(Model->buddyIndex(avatar.avatarContact().ownerBuddy()));
+}
+
 void BuddiesListViewDelegate::contactUpdated(Contact &contact)
 {
-	if (Model)
+	if (Model && contact.ownerBuddy())
 		emit sizeHintChanged(Model->buddyIndex(contact.ownerBuddy()));
 }
 
