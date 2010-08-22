@@ -89,7 +89,6 @@ class HISTORYAPI History : public ConfigurationUiHandler, ConfigurationAwareObje
 	HistoryWindow *HistoryDialog;
 
 	ActionDescription *ShowHistoryActionDescription;
-	ActionDescription *ChatsHistoryActionDescription;
 	ActionDescription *ShowMoreMessagesInChatWidgetActionDescription;
 	ActionDescription *ClearHistoryActionDescription;
 

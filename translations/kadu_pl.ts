@@ -32,8 +32,8 @@
         <translation>Czas, po jakim nagłówek zostanie powtórzony</translation>
     </message>
     <message>
-        <source>Remove server time</source>
-        <translation>Usuń czas serwera</translation>
+        <source>Hide server time</source>
+        <translation>Ukryj czas serwera</translation>
     </message>
     <message>
         <source>Maximum time difference</source>

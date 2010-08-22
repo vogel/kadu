@@ -223,9 +223,6 @@ void KaduWindow::createContactsMenu()
 
 	ContactsMenu->addSeparator();
 	insertMenuActionDescription(ChatWidgetManager::instance()->actions()->openChatWith(), MenuContacts);
-	ContactsMenu->addSeparator();
-
-	insertMenuActionDescription(Actions->ManageBlocked, MenuContacts);
 
 	ContactsMenu->addSeparator();
 	insertMenuActionDescription(Actions->InactiveUsers, MenuContacts);
@@ -559,7 +556,6 @@ ActionDataSource * KaduWindow::actionSource()
 {
 	return contactsListView();
 }
-
 
 void KaduWindow::setDocked(bool docked)
 {

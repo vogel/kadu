@@ -88,9 +88,9 @@ About::About(QWidget *parent)
 	l_info->setBackgroundRole(texts->backgroundRole());
 
 	l_info->setText("<font size=\"5\">Kadu</font><br /><b>"
-		+ tr("Version %1 %2").arg(QString(VERSION)).arg(DETAILED_VERSION != 0 ? "(" + QString(DETAILED_VERSION) + ")" : QString::null)
+		+ tr("Version %1").arg(VERSION)
 		+ "</b><br />"
-		+ QString("Qt %3 (Qt %4)").arg(qVersion()).arg(QT_VERSION_STR));
+		+ QString("Qt %2 (compiled with Qt %3)").arg(qVersion()).arg(QT_VERSION_STR));
 
 	l_info->setWordWrap(true);
 	l_info->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
