@@ -51,6 +51,8 @@ class KADUAPI AvatarManager : public QObject, public SimpleManager<Avatar>, Acco
 	void updateAvatar(Contact contact, bool force = false);
 
 private slots:
+	void avatarDataUpdated();
+
 	void avatarFetched(Contact contact, const QByteArray &data);
 	void updateAvatars();
 	void updateAccountAvatars();
@@ -77,7 +79,7 @@ signals:
 	void avatarAboutToBeRemoved(Avatar avatar);
 	void avatarRemoved(Avatar avatar);
 
-	void avatarUpdated(Contact contact);
+	void avatarUpdated(Avatar contact);
 
 };
 

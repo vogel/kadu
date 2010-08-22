@@ -69,12 +69,14 @@ void AvatarManager::itemAboutToBeAdded(Avatar item)
 
 void AvatarManager::itemAdded(Avatar item)
 {
+	connect(item, SIGNAL(updated()), this, SLOT(avatarDataUpdated()));
 	emit avatarAdded(item);
 }
 
 void AvatarManager::itemAboutToBeRemoved(Avatar item)
 {
 	emit avatarAboutToBeRemoved(item);
+	disconnect(item, SIGNAL(updated()), this, SLOT(avatarDataUpdated()));
 }
 
 void AvatarManager::itemRemoved(Avatar item)
@@ -193,8 +195,6 @@ void AvatarManager::avatarFetched(Contact contact, const QByteArray &data)
 		pixmap.loadFromData(data);
 
 	avatar.setPixmap(pixmap);
-
-	emit avatarUpdated(contact);
 }
 
 void AvatarManager::updateAvatars()
@@ -217,4 +217,13 @@ void AvatarManager::updateAccountAvatars()
 	foreach (Contact contact, ContactManager::instance()->contacts(account))
 		if (!contact.ownerBuddy().isAnonymous())
 			updateAvatar(contact, true);
+}
+
+void AvatarManager::avatarDataUpdated()
+{
+	QMutexLocker(&mutex());
+
+	Avatar avatar(sender());
+	if (!avatar.isNull())
+		emit avatarUpdated(avatar);
 }

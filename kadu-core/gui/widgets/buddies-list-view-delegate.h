@@ -29,6 +29,7 @@
 
 class AbstractBuddiesModel;
 class Account;
+class Avatar;
 class Contact;
 class Status;
 
@@ -42,6 +43,7 @@ class BuddiesListViewDelegate : public QItemDelegate
 	QStyleOptionViewItemV4 getOptions(const QModelIndex &index, const QStyleOptionViewItem &option) const;
 
 private slots:
+	void avatarUpdated(Avatar avatar);
 	void contactUpdated(Contact &contact);
 	void modelDestroyed();
 
@@ -59,6 +61,7 @@ public:
 };
 
 // for MOC
+#include "buddies/avatar.h"
 #include "contacts/contact.h"
 
 #endif // BUDDIES_LIST_VIEW_DELEGATE_H
