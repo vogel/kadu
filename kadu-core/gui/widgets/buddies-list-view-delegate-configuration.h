@@ -26,9 +26,13 @@
 
 #include "configuration/configuration-aware-object.h"
 
+class QListView;
+
 class BuddiesListViewDelegateConfiguration : private ConfigurationAwareObject
 {
 	Q_DISABLE_COPY(BuddiesListViewDelegateConfiguration)
+
+	QListView *ListView;
 
 	QFont Font;
 	QFont BoldFont;
@@ -51,7 +55,7 @@ protected:
 	virtual void configurationUpdated();
 
 public:
-	BuddiesListViewDelegateConfiguration();
+	BuddiesListViewDelegateConfiguration(QObject *listView);
 
 	void setShowAccountName(bool showAccountName) { ShowAccountName = showAccountName; }
 

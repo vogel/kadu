@@ -35,7 +35,8 @@
 
 BuddiesListViewItemPainter::BuddiesListViewItemPainter(const BuddiesListViewDelegateConfiguration &configuration, const QStyleOptionViewItemV4 &option, const QModelIndex &index) :
 		Configuration(configuration), Option(option), Index(index),
-		FontMetrics(/* bold ? Configuration.boldFont() : */ Configuration.font()),
+		FontMetrics(Configuration.font()),
+		BoldFontMetrics(Configuration.boldFont()),
 		DescriptionFontMetrics(Configuration.descriptionFont()),
 		DescriptionDocument(0)
 {
@@ -51,6 +52,19 @@ BuddiesListViewItemPainter::~BuddiesListViewItemPainter()
 {
 	delete DescriptionDocument;
 	DescriptionDocument = 0;
+}
+
+bool BuddiesListViewItemPainter::useBold() const
+{
+	if (!Configuration.showBold())
+		return false;
+
+	QVariant statVariant = Index.data(StatusRole);
+	if (!statVariant.canConvert<Status>())
+		return false;
+
+	Status status = statVariant.value<Status>();
+	return !status.isDisconnected();
 }
 
 bool BuddiesListViewItemPainter::showMessagePixmap() const
@@ -98,7 +112,7 @@ void BuddiesListViewItemPainter::computeIconRect()
 	if (!Configuration.alignTop())
 		topLeft.setY(topLeft.y() + (ItemRect.height() - icon.height()) / 2);
 	else
-		topLeft.setY(topLeft.y() + (FontMetrics.lineSpacing() + 3 - icon.height()) / 2);
+		topLeft.setY(topLeft.y() + (fontMetrics().lineSpacing() + 3 - icon.height()) / 2);
 
 	IconRect.moveTo(topLeft);
 }
@@ -117,7 +131,7 @@ void BuddiesListViewItemPainter::computeMessageIconRect()
 	if (!Configuration.alignTop())
 		topLeft.setY(topLeft.y() + (ItemRect.height() - icon.height()) / 2);
 	else
-		topLeft.setY(topLeft.y() + (FontMetrics.lineSpacing() + 3 - icon.height()) / 2);
+		topLeft.setY(topLeft.y() + (fontMetrics().lineSpacing() + 3 - icon.height()) / 2);
 
 	if (!IconRect.isEmpty())
 		topLeft.setX(IconRect.x() + VFrameMargin);
@@ -232,7 +246,7 @@ void BuddiesListViewItemPainter::computeNameRect()
 	NameRect.moveTop(ItemRect.top());
 	NameRect.setLeft(left);
 	NameRect.setRight(right);
-	NameRect.setHeight(FontMetrics.height());
+	NameRect.setHeight(fontMetrics().height());
 }
 
 void BuddiesListViewItemPainter::computeDescriptionRect()
@@ -272,7 +286,15 @@ QPixmap BuddiesListViewItemPainter::buddyIcon() const
 	return qvariant_cast<QPixmap>(Index.data(Qt::DecorationRole));
 }
 
-int BuddiesListViewItemPainter::getItemIndentation()
+const QFontMetrics & BuddiesListViewItemPainter::fontMetrics()
+{
+	if (useBold())
+		return BoldFontMetrics;
+	else
+		return FontMetrics;
+}
+
+int BuddiesListViewItemPainter::itemIndentation()
 {
 	int level = 0;
 
@@ -294,7 +316,7 @@ int BuddiesListViewItemPainter::height()
 
 	QHeaderView *header = Widget->header();
 	if (header)
-		ItemRect.setWidth(header->sectionSize(0) - getItemIndentation());
+		ItemRect.setWidth(header->sectionSize(0) - itemIndentation());
 
 	ItemRect.adjust(HFrameMargin, VFrameMargin, -HFrameMargin, -VFrameMargin);
 
@@ -351,8 +373,12 @@ void BuddiesListViewItemPainter::paintAccountName(QPainter *painter)
 
 void BuddiesListViewItemPainter::paintName(QPainter *painter)
 {
-	painter->setFont(Configuration.font());
-	painter->drawText(NameRect, FontMetrics.elidedText(getName(), Qt::ElideRight, NameRect.width()));
+	if (useBold())
+		painter->setFont(Configuration.boldFont());
+	else
+		painter->setFont(Configuration.font());
+
+	painter->drawText(NameRect, fontMetrics().elidedText(getName(), Qt::ElideRight, NameRect.width()));
 }
 
 void BuddiesListViewItemPainter::paintDescription(QPainter *painter)

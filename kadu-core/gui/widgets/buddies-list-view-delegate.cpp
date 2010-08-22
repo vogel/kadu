@@ -56,10 +56,9 @@
 #define KDEBUG_VISUAL 0
 
 BuddiesListViewDelegate::BuddiesListViewDelegate(QObject *parent) :
-		QItemDelegate(parent), Model(0)
+		QItemDelegate(parent), Model(0), Configuration(parent)
 {
 	triggerAllAccountsRegistered();
-	configurationUpdated();
 }
 
 BuddiesListViewDelegate::~BuddiesListViewDelegate()
@@ -105,17 +104,7 @@ void BuddiesListViewDelegate::setShowAccountName(bool showAccountName)
 	Configuration.setShowAccountName(showAccountName);
 }
 
-void BuddiesListViewDelegate::drawDebugRect(QPainter *painter, QRect rect, QColor color) const
-{
-	Q_UNUSED(rect)
-
-	painter->save();
-	painter->setPen(color);
-	painter->drawRect(rect);
-	painter->restore();
-}
-
-QStyleOptionViewItemV4 BuddiesListViewDelegate::getOptions(const QStyleOptionViewItem &option, const QModelIndex &index) const
+QStyleOptionViewItemV4 BuddiesListViewDelegate::getOptions(const QModelIndex &index, const QStyleOptionViewItem &option) const
 {
 	QStyleOptionViewItemV4 opt = setOptions(index, option);
 
@@ -134,146 +123,24 @@ QSize BuddiesListViewDelegate::sizeHint(const QStyleOptionViewItem &option, cons
 {
 	QSize baseSizeHint = QItemDelegate::sizeHint(option, index);
 
-	BuddiesListViewItemPainter buddyPainter(Configuration, getOptions(option, index), index);
+	BuddiesListViewItemPainter buddyPainter(Configuration, getOptions(index, option), index);
 	return QSize(0, buddyPainter.height());
-}
-
-void BuddiesListViewDelegate::paintBuddyIcon(const BuddiesListViewItemPainter &buddyPainter, QPainter *painter, const QRect &itemRect) const
-{
-	Q_UNUSED(painter)
-	Q_UNUSED(itemRect)
-
-	QPixmap icon = buddyPainter.buddyIcon();
-	if (icon.isNull())
-		return;
-
-//	QRect iconRect = buddyIconRect(buddyPainter, itemRect);
-//	painter->drawPixmap(iconRect, icon);
-}
-
-void BuddiesListViewDelegate::paintBuddyName(const BuddiesListViewItemPainter &buddyPainter, QPainter *painter, const QStyleOptionViewItem &option, const QRect &itemRect) const
-{
-// 	bool bold = isBold(index);
-// 	QFont font = bold ? BoldFont : Font;
-//
-// 	QColor textcolor = option.palette.color(QPalette::Normal, option.state & QStyle::State_Selected
-// 		? QPalette::HighlightedText
-// 		: QPalette::Text);
-//
-// 	painter->setFont(bold);
-// 	painter->setPen(textcolor);
-//
-// 	QFontMetrics fontMetrics(font);
-	Q_UNUSED(buddyPainter)
-	Q_UNUSED(painter)
-	Q_UNUSED(option)
-	Q_UNUSED(itemRect)
-//	drawDebugRect(painter, buddyNameRect(buddyPainter, itemRect), QColor(0, 0, 255));
 }
 
 void BuddiesListViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-	QStyleOptionViewItemV4 opt = setOptions(index, option);
+	QStyleOptionViewItemV4 options = getOptions(index, option);
 
-	const QStyleOptionViewItemV2 *v2 = qstyleoption_cast<const QStyleOptionViewItemV2 *>(&option);
-	opt.features = v2
-		? v2->features
-		: QStyleOptionViewItemV2::ViewItemFeatures(QStyleOptionViewItemV2::None);
-	const QStyleOptionViewItemV3 *v3 = qstyleoption_cast<const QStyleOptionViewItemV3 *>(&option);
-	opt.locale = v3 ? v3->locale : QLocale();
-	opt.widget = v3 ? v3->widget : 0;
-	opt.showDecorationSelected = true;
-
-	const QAbstractItemView *widget = dynamic_cast<const QAbstractItemView *>(opt.widget);
+	const QAbstractItemView *widget = dynamic_cast<const QAbstractItemView *>(options.widget);
 	if (!widget)
 		return;
 
 	QStyle *style = widget->style();
-	style->drawControl(QStyle::CE_ItemViewItem, &opt, painter, widget);
+	style->drawControl(QStyle::CE_ItemViewItem, &options, painter, widget);
 
-	const int hFrameMargin = style->pixelMetric(QStyle::PM_FocusFrameHMargin, 0, widget);
-	const int vFrameMargin = style->pixelMetric(QStyle::PM_FocusFrameVMargin, 0, widget);
-
-	QRect itemRect = opt.rect;
-	itemRect.adjust(hFrameMargin, vFrameMargin, -hFrameMargin, -vFrameMargin);
-
-	BuddiesListViewItemPainter buddyPainter(Configuration, getOptions(option, index), index);
+	BuddiesListViewItemPainter buddyPainter(Configuration, options, index);
 	buddyPainter.paint(painter);
 /*
-	int avatarSize = Configuration.showAvatars() ? Configuration.defaultAvatarSize().width() + 4 : 0;
-
-	const QAbstractItemView *widget = dynamic_cast<const QAbstractItemView *>(opt.widget);
-	if (!widget)
-		return;
-
-	QStyle *style = widget->style();
-	style->drawControl(QStyle::CE_ItemViewItem, &opt, painter, widget);
-
-	const int hFrameMargin = style->pixelMetric(QStyle::PM_FocusFrameHMargin, 0, widget);
-	const int vFrameMargin = style->pixelMetric(QStyle::PM_FocusFrameVMargin, 0, widget);
-
-	QRect rect = opt.rect;
-	rect.adjust(hFrameMargin, vFrameMargin, -hFrameMargin, -vFrameMargin);
-	drawDebugRect(painter, rect, QColor(255, 0, 0));
-
-	paintBuddyIcon(buddyPainter, painter, rect);
-	paintBuddyName(buddyPainter, painter, option, rect);
-
-	painter->save();
-	painter->setClipRect(rect);
-	painter->translate(rect.topLeft());
-
-	QColor textcolor = option.palette.color(QPalette::Normal, option.state & QStyle::State_Selected
-			? QPalette::HighlightedText
-			: QPalette::Text);
-
-	painter->setFont(Configuration.font());
-	painter->setPen(textcolor);
-
-	bool bold = isBold(index);
-	QFontMetrics fontMetrics(bold ? Configuration.boldFont() : Configuration.font());
-	QFontMetrics descriptionFontMetrics(Configuration.descriptionFont());
-
-	int displayHeight = fontMetrics.lineSpacing() + 3;
-
-	QString description = Configuration.showDescription() ? index.data(DescriptionRole).toString() : QString::null;
-	bool hasDescription = !description.isEmpty();
-
-	QTextDocument *dd = 0;
-	int descriptionHeight = 0;
-	int textLeft = hFrameMargin + buddyPainter.iconsWidth(hFrameMargin);
-	int textWidth = rect.width() - textLeft - hFrameMargin - avatarSize;
-
-	if (hasDescription)
-	{
-		dd = buddyPainter.descriptionDocument(description, textWidth,
-			option.state & QStyle::State_Selected
-					? textcolor
-					: Configuration.descriptionColor());
-
-		descriptionHeight = (int)dd->size().height();
-	}
-
-	int itemHeight = Configuration.alignTop() ? displayHeight : rect.height();
-
-	int pixmapMargin = 0;
-
-
-	if (buddyPainter.useMessagePixmap(index))
-		painter->drawPixmap(hFrameMargin + pixmapMargin, vFrameMargin + (itemHeight - Configuration.messagePixmap().height()) / 2, Configuration.messagePixmap());
-
-	QString display = index.data(Qt::DisplayRole).toString();
-	if (display.isEmpty())
-	{
-		painter->restore();
-		if (dd)
-			delete dd;
-		return;
-	}
-
-	if (bold)
-		painter->setFont(Configuration.boldFont());
-
 		// TODO: 0.6.6
 / *
 		if (User.protocolData("Gadu", "Blocking").toBool())
@@ -284,60 +151,6 @@ void BuddiesListViewDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 			painter->setPen(QColor(128, 128, 128));
 * /
 //		if (User.data("HideDescription").toString() != "true")
-
-	int top = hasDescription
-			? fontMetrics.ascent() + 1
-			: ((itemHeight - fontMetrics.height()) / 2) + fontMetrics.ascent();
-
-	QPen pen = painter->pen();
-	if (option.state & QStyle::State_Selected)
-		painter->setPen(textcolor);
-	else
-		painter->setPen(config_file.readColorEntry("Look", "UserboxFgColor"));
-
-	Account account = qvariant_cast<Account>(index.data(AccountRole));
-	QString accountDisplay;
-	if (account)
-		accountDisplay = account.accountIdentity().name();
-
-	// only display account name when in contact-mode, not buddy-mode
-	if ((option.state & QStyle::State_MouseOver && Configuration.showAccountName()) || index.parent().isValid())
-	{
-		int accountDisplayWidth = descriptionFontMetrics.width(accountDisplay);
-		int displayWidth = fontMetrics.width(display);
-
-		if (accountDisplayWidth + displayWidth + 16 > textWidth)
-		{
-			displayWidth = textWidth - accountDisplayWidth - 16;
-			display = fontMetrics.elidedText(display, Qt::ElideRight, displayWidth);
-		}
-		else if (displayWidth > textWidth)
-			display = fontMetrics.elidedText(display, Qt::ElideRight, textWidth);
-
-		painter->drawText(textLeft, vFrameMargin, textWidth, displayHeight, Qt::AlignLeft | Qt::AlignTop, display);
-
-		painter->setFont(Configuration.descriptionFont());
-		painter->drawText(textLeft, vFrameMargin, textWidth, displayHeight, Qt::AlignRight | Qt::AlignVCenter, accountDisplay);
-		painter->setFont(Configuration.font());
-	}
-	else
-	{
-		int displayWidth = fontMetrics.width(display);
-		if (displayWidth > textWidth)
-			display = fontMetrics.elidedText(display, Qt::ElideRight, textWidth);
-
-		painter->drawText(textLeft, vFrameMargin, displayWidth, displayHeight, Qt::AlignLeft | Qt::AlignTop, display);
-	}
-
-#ifdef DEBUG_ENABLED
-	if (debug_mask & KDEBUG_VISUAL)
-		drawDebugRect(painter, QRect(textLeft, 0, textWidth, displayHeight), QColor(255, 0, 0));
-#endif
-
-	painter->setPen(pen);
-
-	if (isBold(index))
-		painter->setFont(Configuration.font());
 
 	if (Configuration.showAvatars() && Configuration.defaultAvatarSize().isValid())
 	{
@@ -413,49 +226,5 @@ void BuddiesListViewDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 		}
 	}
 
-	if (!hasDescription)
-	{
-		painter->restore();
-		// don't need to delete descriptionDocument here, it is for sure NULL
-		return;
-	}
-
-	top += vFrameMargin;
-
-	painter->setFont(Configuration.descriptionFont());
-	painter->translate(textLeft, top);
-
-#ifdef DEBUG_ENABLED
-	if (debug_mask & KDEBUG_VISUAL)
-		drawDebugRect(painter, QRect(0, 0, dd->textWidth(), rect.height()), QColor(0, 0, 255));
-#endif
-
-	dd->drawContents(painter);
-	delete dd;
-
-	painter->restore();
 */
-}
-
-bool BuddiesListViewDelegate::isBold(const QModelIndex &index) const
-{
-	if (!Configuration.showBold())
-		return false;
-
-	QVariant statVariant = index.data(StatusRole);
-	if (!statVariant.canConvert<Status>())
-		return false;
-
-	Status status = statVariant.value<Status>();
-	return !status.isDisconnected();
-}
-
-void BuddiesListViewDelegate::configurationUpdated()
-{
-	QListView *listView = dynamic_cast<QListView *>(parent());
-	if (!listView)
-		return;
-
-	// hack to make listViee redo the layout
-	listView->setSpacing(listView->spacing());
 }
