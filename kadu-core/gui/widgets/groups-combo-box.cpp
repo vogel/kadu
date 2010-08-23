@@ -31,7 +31,7 @@
 #include "groups-combo-box.h"
 
 GroupsComboBox::GroupsComboBox(QWidget *parent) :
-		KaduComboBox(parent)
+		KaduComboBox<Group>(parent)
 {
 	setUpModel(new GroupsModel(this), new QSortFilterProxyModel(this));
 
@@ -74,7 +74,7 @@ void GroupsComboBox::currentIndexChangedSlot(int index)
 
 	if (action != CreateNewGroupAction)
 	{
-		KaduComboBox::currentIndexChangedSlot(index);
+		KaduComboBox<Group>::currentIndexChangedSlot(index);
 		return;
 	}
 
@@ -95,12 +95,12 @@ void GroupsComboBox::currentIndexChangedSlot(int index)
 
 void GroupsComboBox::updateValueBeforeChange()
 {
-	KaduComboBox::updateValueBeforeChange();
+	KaduComboBox<Group>::updateValueBeforeChange();
 }
 
 void GroupsComboBox::rowsRemoved(const QModelIndex &parent, int start, int end)
 {
-	KaduComboBox::rowsRemoved(parent, start, end);
+	KaduComboBox<Group>::rowsRemoved(parent, start, end);
 }
 
 int GroupsComboBox::preferredDataRole() const

@@ -28,7 +28,7 @@
 #include "select-buddy-combo-box.h"
 
 SelectBuddyComboBox::SelectBuddyComboBox(QWidget *parent) :
-		KaduComboBox(parent)
+		KaduComboBox<Buddy>(parent)
 {
 	setUpModel(new BuddiesModel(this), new BuddiesModelProxy(this));
 
@@ -68,18 +68,18 @@ Buddy SelectBuddyComboBox::currentBuddy()
 
 void SelectBuddyComboBox::currentIndexChangedSlot(int index)
 {
-	if (KaduComboBox::currentIndexChangedSlot(index))
+	if (KaduComboBox<Buddy>::currentIndexChangedSlot(index))
 		emit buddyChanged(CurrentValue);
 }
 
 void SelectBuddyComboBox::updateValueBeforeChange()
 {
-	KaduComboBox::updateValueBeforeChange();
+	KaduComboBox<Buddy>::updateValueBeforeChange();
 }
 
 void SelectBuddyComboBox::rowsRemoved(const QModelIndex &parent, int start, int end)
 {
-	KaduComboBox::rowsRemoved(parent, start, end);
+	KaduComboBox<Buddy>::rowsRemoved(parent, start, end);
 }
 
 int SelectBuddyComboBox::preferredDataRole() const

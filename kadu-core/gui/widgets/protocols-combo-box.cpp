@@ -25,7 +25,7 @@
 #include "protocols-combo-box.h"
 
 ProtocolsComboBox::ProtocolsComboBox(QWidget *parent) :
-		KaduComboBox(parent)
+		KaduComboBox<ProtocolFactory *>(parent)
 {
 	setUpModel(new ProtocolsModel(this), new ProtocolsModelProxy(this));
 
@@ -53,18 +53,18 @@ ProtocolFactory * ProtocolsComboBox::currentProtocol()
 
 void ProtocolsComboBox::currentIndexChangedSlot(int index)
 {
-	if (KaduComboBox::currentIndexChangedSlot(index))
+	if (KaduComboBox<ProtocolFactory *>::currentIndexChangedSlot(index))
 		emit protocolChanged(CurrentValue, ValueBeforeChange);
 }
 
 void ProtocolsComboBox::updateValueBeforeChange()
 {
-	KaduComboBox::updateValueBeforeChange();
+	KaduComboBox<ProtocolFactory *>::updateValueBeforeChange();
 }
 
 void ProtocolsComboBox::rowsRemoved(const QModelIndex &parent, int start, int end)
 {
-	KaduComboBox::rowsRemoved(parent, start, end);
+	KaduComboBox<ProtocolFactory *>::rowsRemoved(parent, start, end);
 }
 
 int ProtocolsComboBox::preferredDataRole() const

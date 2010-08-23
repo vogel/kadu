@@ -28,7 +28,7 @@
 #include "identities-combo-box.h"
 
 IdentitiesComboBox::IdentitiesComboBox(QWidget *parent) :
-		KaduComboBox(parent)
+		KaduComboBox<Identity>(parent)
 {
 	setUpModel(new IdentityModel(this));
 
@@ -68,7 +68,7 @@ void IdentitiesComboBox::currentIndexChangedSlot(int index)
 
 	if (action != CreateNewIdentityAction)
 	{
-		if (KaduComboBox::currentIndexChangedSlot(index))
+		if (KaduComboBox<Identity>::currentIndexChangedSlot(index))
 			emit identityChanged(CurrentValue);
 		return;
 	}
@@ -90,12 +90,12 @@ void IdentitiesComboBox::currentIndexChangedSlot(int index)
 
 void IdentitiesComboBox::updateValueBeforeChange()
 {
-	KaduComboBox::updateValueBeforeChange();
+	KaduComboBox<Identity>::updateValueBeforeChange();
 }
 
 void IdentitiesComboBox::rowsRemoved(const QModelIndex &parent, int start, int end)
 {
-	KaduComboBox::rowsRemoved(parent, start, end);
+	KaduComboBox<Identity>::rowsRemoved(parent, start, end);
 }
 
 int IdentitiesComboBox::preferredDataRole() const

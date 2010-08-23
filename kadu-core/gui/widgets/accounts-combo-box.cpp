@@ -25,7 +25,7 @@
 #include "accounts-combo-box.h"
 
 AccountsComboBox::AccountsComboBox(QWidget *parent) :
-		KaduComboBox(parent)
+		KaduComboBox<Account>(parent)
 {
 	setUpModel(new AccountsModel(this), new AccountsProxyModel(this));
 
@@ -53,18 +53,18 @@ Account AccountsComboBox::currentAccount()
 
 void AccountsComboBox::currentIndexChangedSlot(int index)
 {
-	if (KaduComboBox::currentIndexChangedSlot(index))
+	if (KaduComboBox<Account>::currentIndexChangedSlot(index))
 		emit accountChanged(CurrentValue);
 }
 
 void AccountsComboBox::updateValueBeforeChange()
 {
-	KaduComboBox::updateValueBeforeChange();
+	KaduComboBox<Account>::updateValueBeforeChange();
 }
 
 void AccountsComboBox::rowsRemoved(const QModelIndex &parent, int start, int end)
 {
-	KaduComboBox::rowsRemoved(parent, start, end);
+	KaduComboBox<Account>::rowsRemoved(parent, start, end);
 }
 
 int AccountsComboBox::preferredDataRole() const
