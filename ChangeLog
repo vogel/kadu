@@ -1,6 +1,7 @@
 +++ version 0.6.6-beta6
 * gui: #1487 fixed: combobox in personal info for buddies does not work (Vogel)
 * gui: #1477 fixed: account info was not updating in Your Accounts window (Vogel)
+* gui: #1462 fixed: avatars duplication and fixes in painting (Vogel)
 
 +++ version 0.6.6-beta5
 * gui: #1415 fixed: ability to manage account's personal info in YourAccounts window (Juzef)
