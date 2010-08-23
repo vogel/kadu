@@ -116,7 +116,7 @@ void AdiumStyle::readConfiugrationFile()
 
 	DefaultBackgroundIsTransparent = styleSettings.value("DefaultBackgroundIsTransparent", false).toBool();
 
-	StyleViewVersion = styleSettings.value("MessageViewVersion", 4).toInt();
+	StyleViewVersion = styleSettings.value("MessageViewVersion", 1).toInt();
 
 	DefaultVariant = styleSettings.value("DisplayNameForNoVariant", "").toString() + ".css";
 	if (DefaultVariant == ".css")
