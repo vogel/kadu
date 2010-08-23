@@ -41,7 +41,7 @@ BuddiesListWidget::BuddiesListWidget(FilterPosition filterPosition, MainWindow *
 	layout->setSpacing(0);
 
 	NameFilterWidget = new FilterWidget(this);
-	
+
 	connect(NameFilterWidget, SIGNAL(textChanged(const QString &)),
 		this, SLOT(nameFilterChanged(const QString &)));
 
@@ -77,6 +77,9 @@ void BuddiesListWidget::clearFilter()
 void BuddiesListWidget::nameFilterChanged(const QString &filter)
 {
 	NameFilter->setName(filter);
+
+	QItemSelectionModel *selectionModel = View->selectionModel();
+	selectionModel->select(View->model()->index(0, 0), QItemSelectionModel::SelectCurrent);
 }
 
 void BuddiesListWidget::keyPressEvent(QKeyEvent *event)
