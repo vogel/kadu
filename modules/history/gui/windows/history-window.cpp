@@ -177,18 +177,18 @@ void HistoryWindow::createFilterBar(QWidget *parent)
 
 	QLabel *filterLabel = new QLabel(tr("Filter") + ": ", parent);
 	layout->addWidget(filterLabel, 0, 0, 1, 1);
-	
+
 	DelayedLineEdit *searchLineEdit = new DelayedLineEdit(parent);
 	layout->addWidget(searchLineEdit, 0, 1, 1, 4);
 
 	QCheckBox *filterByDate = new QCheckBox(tr("by date"), parent);
 	filterByDate->setChecked(false);
 	layout->addWidget(filterByDate, 1, 0, 1, 1);
-	
+
 	FromDateLabel = new QLabel(tr("From") + ": ", parent);
 	FromDateLabel->setEnabled(false);
 	layout->addWidget(FromDateLabel, 1, 1, 1, 1, Qt::AlignRight);
-	
+
 	FromDate = new QDateEdit(parent);
 	FromDate->setEnabled(false);
 	FromDate->setCalendarPopup(true);
@@ -198,13 +198,13 @@ void HistoryWindow::createFilterBar(QWidget *parent)
 	ToDateLabel = new QLabel(tr("To") + ": ", parent);
 	ToDateLabel->setEnabled(false);
 	layout->addWidget(ToDateLabel, 1, 3, 1, 1, Qt::AlignRight);
-	
+
 	ToDate = new QDateEdit(parent);
 	ToDate->setEnabled(false);
 	ToDate->setCalendarPopup(true);
 	ToDate->setDate(QDateTime::currentDateTime().date());
 	layout->addWidget(ToDate, 1, 4, 1, 1);
-	
+
 	connect(filterByDate, SIGNAL(stateChanged(int)),
 			this, SLOT(dateFilteringEnabled(int)));
 
@@ -603,7 +603,7 @@ void HistoryWindow::toDateChanged(const QDate &date)
 }
 
 void HistoryWindow::showMainPopupMenu(const QPoint &pos)
-{	
+{
 	Chat chat = ChatsTree->indexAt(pos).data(ChatRole).value<Chat>();
 	if (!chat)
 		return;
@@ -645,7 +645,7 @@ void HistoryWindow::showMainPopupMenu(const QPoint &pos)
 	QList<Account> accounts;
 	foreach (Contact con, chat.contacts())
 		accounts.append(con.contactAccount());
-	
+
 	foreach (Account account, accounts)
 	{
 		if (account.isNull())
@@ -699,6 +699,10 @@ void HistoryWindow::show(Chat chat)
 		MessageDialog::msg(tr("There is no history storage module loaded!"), false, "32x32/dialog-warning.png");
 		return;
 	}
+
+	Chat aggregate = AggregateChatBuilder::buildAggregateChat(chat.contacts().toBuddySet());
+	if (aggregate)
+		chat = aggregate;
 
 	updateData();
 	selectChat(chat);

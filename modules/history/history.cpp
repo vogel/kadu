@@ -191,7 +191,6 @@ void History::showHistoryActionActivated(QAction *sender, bool toggled)
 
 	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(sender->parent());
 	Chat chat = action->chat();
-
 	if (!chatEditBox || chat != chatEditBox->chat())
 		HistoryDialog->show(chat);
 
