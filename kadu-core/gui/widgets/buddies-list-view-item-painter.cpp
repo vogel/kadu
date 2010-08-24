@@ -386,6 +386,9 @@ void BuddiesListViewItemPainter::paintName(QPainter *painter)
 
 void BuddiesListViewItemPainter::paintDescription(QPainter *painter)
 {
+	if (!showDescription())
+		return;
+  
 	painter->setFont(Configuration.descriptionFont());
 	painter->save();
 	painter->translate(DescriptionRect.topLeft());
