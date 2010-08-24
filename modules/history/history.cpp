@@ -191,13 +191,12 @@ void History::showHistoryActionActivated(QAction *sender, bool toggled)
 
 	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(sender->parent());
 	Chat chat = action->chat();
-
 	if (!chatEditBox || chat != chatEditBox->chat())
 		HistoryDialog->show(chat);
 
 	if (!chatEditBox)
 		return;
-	
+
 	ChatWidget *chatWidget = chatEditBox->chatWidget();
 	if (chatWidget)
 	{
@@ -206,7 +205,7 @@ void History::showHistoryActionActivated(QAction *sender, bool toggled)
 			return;
 
 		QWidget *widget = widgets[widgets.size() - 1];
-		
+
 		QMenu *menu = new QMenu(chatWidget);
 
 		if (config_file.readBoolEntry("Chat", "ChatPrune", false))
