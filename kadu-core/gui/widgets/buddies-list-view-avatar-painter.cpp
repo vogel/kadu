@@ -100,7 +100,6 @@ void BuddiesListViewAvatarPainter::doPaint(QPainter *painter, const QRect &rect)
 
 	QRect displayRect = displayAvatar.rect();
 	displayRect.moveLeft((rect.width() - displayRect.width()) / 2);
-	displayRect.moveTop((rect.height() - displayRect.height()) / 2);
 
 	// grey out offline contacts' avatar
 	if (greyOut())
