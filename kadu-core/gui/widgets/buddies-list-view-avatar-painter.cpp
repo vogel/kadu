@@ -98,15 +98,19 @@ void BuddiesListViewAvatarPainter::doPaint(QPainter *painter, const QRect &rect)
 	else
 		displayAvatar = Avatar;
 
+	QRect displayRect = displayAvatar.rect();
+	displayRect.moveLeft((rect.width() - displayRect.width()) / 2);
+	displayRect.moveTop((rect.height() - displayRect.height()) / 2);
+
 	// grey out offline contacts' avatar
 	if (greyOut())
-		painter->drawPixmap(displayAvatar.rect(), QIcon(displayAvatar).pixmap(displayAvatar.size(), QIcon::Disabled));
+		painter->drawPixmap(displayRect, QIcon(displayAvatar).pixmap(displayAvatar.size(), QIcon::Disabled));
 	else
-		painter->drawPixmap(displayAvatar.rect(), displayAvatar);
+		painter->drawPixmap(displayRect, displayAvatar);
 
 	// draw avatar border
 	if (Configuration.avatarBorder())
-		painter->drawRect(displayAvatar.rect());
+		painter->drawRect(displayRect);
 }
 
 void BuddiesListViewAvatarPainter::paint(QPainter *painter)
