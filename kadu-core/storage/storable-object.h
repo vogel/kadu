@@ -295,9 +295,6 @@ template<class T>
 		if (ModulesStorableData.contains(module))
 			return dynamic_cast<T *>(ModulesStorableData[module]);
 
-		if (!create)
-			return 0;
-
 		StoragePoint *storagePoint = storagePointForModuleData(module, create);
 		if (!storagePoint)
 			return 0;

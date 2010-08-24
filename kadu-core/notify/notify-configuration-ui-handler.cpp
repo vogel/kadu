@@ -288,7 +288,6 @@ void NotifyConfigurationUiHandler::configurationWindowApplied()
 			continue;
 
 		config_file.writeEntry("Notify", notifyEvent->name() + "_UseCustomSettings", NotifyEvents[notifyEvent->name()].useCustomSettings);
-
 	}
 
 	foreach (Notifier *notifier, NotificationManager::instance()->notifiers())

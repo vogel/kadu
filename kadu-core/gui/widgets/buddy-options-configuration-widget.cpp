@@ -84,7 +84,7 @@ void BuddyOptionsConfigurationWidget::save()
 	if (MyBuddy.data())
 	{
 		cnd = MyBuddy.data()->moduleStorableData<ContactNotifyData>("notify", true);;
-		ckd = MyBuddy.data()->moduleStorableData<BuddyKaduData>("kadu", false);
+		ckd = MyBuddy.data()->moduleStorableData<BuddyKaduData>("kadu", true);
 	}
 	if (cnd)
 	{
