@@ -71,6 +71,8 @@ public:
 About::About(QWidget *parent)
 	: QWidget(parent, Qt::Window)
 {
+	setWindowRole("kadu-about");
+
 	kdebugf();
 
 	// set window properties and flags

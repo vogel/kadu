@@ -35,6 +35,7 @@
 MergeBuddiesWindow::MergeBuddiesWindow(Buddy buddy, QWidget *parent) :
 		QDialog(parent), MyBuddy(buddy)
 {
+	setWindowRole("kadu-merge-buddies");
 	createGui();
 }
 

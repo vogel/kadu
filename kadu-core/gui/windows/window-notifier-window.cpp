@@ -34,6 +34,8 @@ WindowNotifierWindow::WindowNotifierWindow(Notification *notification, QWidget *
 {
 	kdebugf();
 
+	setWindowRole("kadu-window-notifier");
+
 	CurrentNotification->acquire();
 
 	setWindowTitle(CurrentNotification->title());

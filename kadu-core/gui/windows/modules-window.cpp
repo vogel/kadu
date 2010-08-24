@@ -49,6 +49,9 @@ ModulesWindow::ModulesWindow(QWidget *parent)
 	lv_modules(0), l_moduleinfo(0)
 {
 	kdebugf();
+
+	setWindowRole("kadu-modules");
+
 	setWindowTitle(tr("Manage Modules"));
 	setAttribute(Qt::WA_DeleteOnClose);
 
@@ -92,7 +95,7 @@ ModulesWindow::ModulesWindow(QWidget *parent)
 	lv_modules->setIndentation(false);
 	lv_modules->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
 
-	
+
 	// end our QListView
 
 #ifndef Q_WS_MAEMO_5
@@ -244,7 +247,7 @@ void ModulesWindow::refreshList()
 		}
 		else
 			strings << module << QString::null << tr("Static") << tr("Loaded");
-	
+
 		new QTreeWidgetItem(lv_modules, strings);
 	}
 
@@ -262,7 +265,7 @@ void ModulesWindow::refreshList()
 		}
 		else
 			strings << module << QString::null << tr("Dynamic") << tr("Loaded");
-	
+
 		new QTreeWidgetItem(lv_modules, strings);
 	}
 
@@ -280,7 +283,7 @@ void ModulesWindow::refreshList()
 		}
 		else
 			strings << module << QString::null << tr("Dynamic") << tr("Not loaded");
-	
+
 		new QTreeWidgetItem(lv_modules, strings);
 	}
 	lv_modules->resizeColumnToContents(0);

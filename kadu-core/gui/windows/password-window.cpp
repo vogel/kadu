@@ -41,6 +41,8 @@ void PasswordWindow::getPassword(const QString &message, QObject *receiver, cons
 PasswordWindow::PasswordWindow(const QString &message, QWidget *parent) :
 		QDialog(parent)
 {
+	setWindowRole("kadu-password");
+
 	setAttribute(Qt::WA_DeleteOnClose);
 
 	QVBoxLayout *layout = new QVBoxLayout(this);

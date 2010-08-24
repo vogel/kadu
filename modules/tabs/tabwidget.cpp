@@ -36,6 +36,8 @@
 
 TabWidget::TabWidget()
 {
+	setWindowRole("kadu-tabs");
+
 	tabbar = new TabBar(this);
 	tabbar->setMovable(true);
 

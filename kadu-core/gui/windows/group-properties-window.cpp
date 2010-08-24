@@ -41,6 +41,8 @@
 GroupPropertiesWindow::GroupPropertiesWindow(Group editedGroup, QWidget *parent)
 	: QWidget(parent, Qt::Window), group(editedGroup)
 {
+	setWindowRole("kadu-group-properties");
+
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(tr("Properties of group %1").arg(group.name()));
 

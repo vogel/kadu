@@ -51,9 +51,11 @@ MessageDialog::MessageDialog(const QString &message, int components, bool modal,
 {
 	kdebugf();
 
+	setWindowRole("kadu-message-dialog");
+
 	setWindowTitle("Kadu");
 	setAttribute(Qt::WA_DeleteOnClose);
-	
+
 	setModal(modal);
 
 	QVBoxLayout *vbox = new QVBoxLayout(this);
@@ -96,17 +98,17 @@ MessageDialog::MessageDialog(const QString &message, int components, bool modal,
 
 	if (components & CANCEL)
 		addButton(buttons_layout, tr("&Cancel"), SLOT(cancelClicked()));
-		
+
 	if (components & RETRY)
 		addButton(buttons_layout, tr("&Try Again"), SLOT(okClicked()));
 
 	hboxbuttons->addWidget(buttons, 0, Qt::AlignCenter);
  	buttons->setMaximumSize(buttons_layout->sizeHint());
-	
+
 	/* center on screen */
         resize(sizeHint());
 	move(QApplication::desktop()->screenGeometry().center() - geometry().center());
-	
+
 	kdebugf2();
 }
 

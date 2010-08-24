@@ -46,6 +46,8 @@ ChatWindow::ChatWindow(QWidget *parent) :
 {
 	kdebugf();
 
+	setWindowRole("kadu-chat");
+
 	connect(title_timer, SIGNAL(timeout()), this, SLOT(blinkTitle()));
 	connect(this, SIGNAL(chatWidgetActivated(ChatWidget *)),
 			ChatWidgetManager::instance(), SIGNAL(chatWidgetActivated(ChatWidget *)));
@@ -127,12 +129,12 @@ void ChatWindow::kaduRestoreGeometry()
 	// TODO: 0.6.6 apply this data to CurrentChat, it has ModuleData structures
 
 // 	ContactSet contacts = currentChatWidget->contacts();
-// 
+//
 // 	if (0 == contacts.count())
 // 		return;
-// 
+//
 // 	QRect geom = stringToRect(chat_manager->chatWidgetProperty(currentChatWidget->contacts(), "Geometry").toString());
-// 
+//
 // 	if (contacts.count() == 1)
 // 	{
 // 		Contact contact = *contacts.begin();

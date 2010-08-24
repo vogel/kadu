@@ -75,6 +75,8 @@ BuddyDataWindow::BuddyDataWindow(Buddy buddy, QWidget *parent) :
 {
 	kdebugf();
 
+	setWindowRole("kadu-buddy-data");
+
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(tr("Buddy Properties - %1").arg(MyBuddy.display()));
 

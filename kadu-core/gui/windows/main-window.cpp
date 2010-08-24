@@ -49,6 +49,7 @@ MainWindow * MainWindow::findMainWindow(QWidget *widget)
 MainWindow::MainWindow(QWidget *parent) :
 		QMainWindow(parent), TransparencyEnabled(false)
 {
+	setWindowRole("kadu-main");
 }
 
 MainWindow::~MainWindow()

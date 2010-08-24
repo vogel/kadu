@@ -71,6 +71,8 @@ SearchWindow::SearchWindow(QWidget *parent, Buddy buddy) :
 {
 	kdebugf();
 
+	setWindowRole("kadu-search");
+
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(tr("Search user in directory"));
 
@@ -170,21 +172,21 @@ SearchWindow::SearchWindow(QWidget *parent, Buddy buddy) :
 
 	QGridLayout * grid = new QGridLayout(centralWidget);
 
-	grid->addWidget(l_nick, 1, 0, Qt::AlignRight); 
+	grid->addWidget(l_nick, 1, 0, Qt::AlignRight);
 	grid->addWidget(e_nick, 1, 1);
-	grid->addWidget(l_name, 1, 3, Qt::AlignRight); 
+	grid->addWidget(l_name, 1, 3, Qt::AlignRight);
 	grid->addWidget(e_name, 1, 4);
 	grid->addWidget(l_byr, 1, 6, Qt::AlignRight);
-	grid->addWidget(l_byrFrom, 1, 7, Qt::AlignRight); 
+	grid->addWidget(l_byrFrom, 1, 7, Qt::AlignRight);
 	grid->addWidget(e_byrFrom, 1, 8);
 	grid->addWidget(l_city, 1, 10, Qt::AlignRight);
 	grid->addWidget(e_city, 1, 11);
 
-	grid->addWidget(l_gender, 2, 0, Qt::AlignRight); 
+	grid->addWidget(l_gender, 2, 0, Qt::AlignRight);
 	grid->addWidget(c_gender, 2, 1);
-	grid->addWidget(l_surname, 2, 3, Qt::AlignRight); 
+	grid->addWidget(l_surname, 2, 3, Qt::AlignRight);
 	grid->addWidget(e_surname, 2, 4);
-	grid->addWidget(l_byrTo, 2, 7, Qt::AlignRight); 
+	grid->addWidget(l_byrTo, 2, 7, Qt::AlignRight);
 	grid->addWidget(e_byrTo, 2, 8);
 	grid->addWidget(only_active, 2, 10, 1, 2);
 
@@ -192,7 +194,7 @@ SearchWindow::SearchWindow(QWidget *parent, Buddy buddy) :
 	grid->addWidget(btngrp, 3, 4, 1, 8);
 	grid->addWidget(results, 5, 0, 1, 12);
 	grid->addWidget(progress, 6, 0, 1, 2);
-	
+
 	QStringList headers;
 	headers << tr("Status") << tr("Uin") << tr("Name") << tr("City") << tr("Nickname") << tr("Birth year");
 	results->setHeaderLabels(headers);
@@ -325,7 +327,7 @@ QTreeWidgetItem * SearchWindow::selectedItem()
 		return results->selectedItems()[0];
 	else if (results->children().count() == 1)
 		return dynamic_cast<QTreeWidgetItem *>(results->children()[0]);
-	else 
+	else
 		return NULL;
 }
 
@@ -531,7 +533,7 @@ void SearchWindow::newSearchResults(BuddyList buddies)
 		Contact contact = contactslist.isEmpty() ? Contact::null : contactslist[0];
 		QList <QTreeWidgetItem *> items = results->findItems(contact.id(), Qt::MatchExactly, 1);
 		if (items.count())
-			qlv = items[0];		
+			qlv = items[0];
 		pix = contact.contactAccount().statusContainer()->statusIcon(contact.currentStatus()).pixmap(16, 16);
 
 		if (qlv)
@@ -682,7 +684,7 @@ void SearchWindow::createDefaultToolbars(QDomElement toolbarsConfig)
 {
 	QDomElement dockAreaConfig = getDockAreaConfigElement(toolbarsConfig, "search_bottomDockArea");
 	QDomElement toolbarConfig = xml_config_file->createElement(dockAreaConfig, "ToolBar");
- 
+
 	addToolButton(toolbarConfig, "firstSearchAction", Qt::ToolButtonTextUnderIcon);
 	addToolButton(toolbarConfig, "nextResultsAction", Qt::ToolButtonTextUnderIcon);
 	addToolButton(toolbarConfig, "stopSearchAction", Qt::ToolButtonTextUnderIcon);

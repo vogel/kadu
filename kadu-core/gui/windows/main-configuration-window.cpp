@@ -152,6 +152,8 @@ void MainConfigurationWindow::instanceCreated()
 MainConfigurationWindow::MainConfigurationWindow()
 	: ConfigurationWindow("MainConfiguration", tr("Kadu configuration"), "General", InstanceDataManager), lookChatAdvanced(0)
 {
+	setWindowRole("kadu-configuration");
+
 	widget()->appendUiFile(dataPath("kadu/configuration/dialog.ui"));
 
 #ifndef DEBUG_ENABLED

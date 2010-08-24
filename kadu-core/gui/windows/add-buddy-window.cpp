@@ -54,6 +54,8 @@
 AddBuddyWindow::AddBuddyWindow(QWidget *parent) :
 		QDialog(parent, Qt::Window), MyBuddy(Buddy::null)
 {
+	setWindowRole("kadu-add-buddy");
+
 	setAttribute(Qt::WA_DeleteOnClose);
 
 	createGui();
@@ -282,8 +284,8 @@ void AddBuddyWindow::accept()
 		else
 			buddy = MyBuddy;
 
-		BuddyManager::instance()->addItem(buddy);		
-		
+		BuddyManager::instance()->addItem(buddy);
+
 		buddy.setAnonymous(false);
 		QString display = DisplayNameEdit->text().isEmpty() ? UserNameEdit->text() : DisplayNameEdit->text();
 		buddy.setDisplay(display);

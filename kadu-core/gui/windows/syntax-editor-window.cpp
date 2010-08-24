@@ -39,6 +39,8 @@ SyntaxEditorWindow::SyntaxEditorWindow(SyntaxList *syntaxList, const QString &sy
 		const QString &category, const QString &syntaxHint, QWidget* parent) :
 		QWidget(parent), syntaxList(syntaxList), syntaxName(syntaxName)
 {
+	setWindowRole("kadu-syntax-editor");
+
 	setWindowTitle(tr("Kadu syntax editor"));
 	setAttribute(Qt::WA_DeleteOnClose);
 

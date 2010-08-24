@@ -61,6 +61,8 @@
 ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &caption, const QString &section, ConfigurationWindowDataManager *dataManager)
 	: QDialog(Core::instance()->kaduWindow(), Qt::Window), Name(name), Section(section)
 {
+	setWindowRole("kadu-configuration");
+
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(caption);
 
@@ -84,7 +86,7 @@ ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &cap
 
 	main_layout->addWidget(configurationWidget);
 	main_layout->addWidget(buttons_layout);
-	
+
 	loadWindowGeometry(this, section, name + "_Geometry", 0, 50, 790, 480);
 }
 

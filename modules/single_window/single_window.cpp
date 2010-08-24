@@ -66,6 +66,8 @@ void SingleWindowManager::configurationUpdated()
 
 SingleWindow::SingleWindow()
 {
+	setWindowRole("kadu-single-window");
+
 	KaduWindow *kadu = Core::instance()->kaduWindow();
 	split = new QSplitter(Qt::Horizontal, this);
 

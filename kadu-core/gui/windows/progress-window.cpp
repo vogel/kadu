@@ -32,7 +32,7 @@ ProgressWindow::ProgressWindow(QWidget *parent) :
 		QDialog(parent), CanClose(false)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
-
+	setWindowRole("kadu-progress");
 	createGui();
 }
 

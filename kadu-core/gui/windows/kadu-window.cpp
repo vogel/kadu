@@ -72,7 +72,9 @@ extern void qt_mac_set_menubar_icons(bool enable);
 KaduWindow::KaduWindow(QWidget *parent) :
 		MainWindow(parent), Docked(false), CompositingEnabled(false)
 {
-#ifdef Q_OS_MAC
+	setWindowRole("kadu-main");
+
+	#ifdef Q_OS_MAC
 	setUnifiedTitleAndToolBarOnMac(true);
 	MenuBar = new QMenuBar(0);
 #endif

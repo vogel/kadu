@@ -49,6 +49,9 @@ OpenChatWith::OpenChatWith(QWidget *parent)
 	: QWidget(parent, Qt::Window)
 {
 	kdebugf();
+
+	setWindowRole( "kadu-open-chat-with" );
+
 	setWindowTitle(tr("Open chat with..."));
 	setAttribute(Qt::WA_DeleteOnClose);
 	

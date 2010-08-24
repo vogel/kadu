@@ -63,6 +63,8 @@ YourAccounts *YourAccounts::Instance = 0;
 YourAccounts::YourAccounts(QWidget *parent) :
 		QWidget(parent), CurrentWidget(0), IsCurrentWidgetEditAccount(false), CanRegisterFilter(new CanRegisterProtocolFilter())
 {
+	setWindowRole("kadu-your-accounts");
+
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(tr("Your accounts"));
 
@@ -70,7 +72,7 @@ YourAccounts::YourAccounts(QWidget *parent) :
 	AccountsView->selectionModel()->select(AccountsView->model()->index(0, 0), QItemSelectionModel::ClearAndSelect);
 
 	loadWindowGeometry(this, "General", "YourAccountsWindowGeometry", 0, 50, 700, 500);
-	
+
 	CanRegisterFilter->setEnabled(true);
 }
 

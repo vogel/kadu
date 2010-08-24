@@ -69,6 +69,8 @@ HistoryWindow::HistoryWindow(QWidget *parent) :
 {
 	kdebugf();
 
+	setWindowRole("kadu-history");
+
 	setWindowTitle(tr("History"));
 	setWindowIcon(IconsManager::instance()->iconByPath("kadu_icons/kadu-history.png"));
 

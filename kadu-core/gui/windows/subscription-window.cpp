@@ -52,6 +52,8 @@ void SubscriptionWindow::getSubscription(Contact contact, QObject *receiver, con
 SubscriptionWindow::SubscriptionWindow(Contact contact, QWidget *parent) :
 		QDialog(parent), CurrentContact(contact)
 {
+	setWindowRole("kadu-subscription");
+
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(tr("New Contact Request"));
 

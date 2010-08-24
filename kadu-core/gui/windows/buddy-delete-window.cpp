@@ -35,6 +35,8 @@
 BuddyDeleteWindow::BuddyDeleteWindow(BuddySet buddiesToDelete, QWidget *parent) :
 		QDialog(parent), BuddiesToDelete(buddiesToDelete)
 {
+	setWindowRole("kadu-buddy-delete");
+
 	setAttribute(Qt::WA_DeleteOnClose);
 	setModal(false);
 

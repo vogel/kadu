@@ -84,6 +84,8 @@ ChooseDescription::ChooseDescription(StatusContainer *statusContainer, QWidget *
 {
 	kdebugf();
 
+	setWindowRole("kadu-choose-description");
+
 	setWindowTitle(tr("Select description"));
 	setAttribute(Qt::WA_DeleteOnClose);
 

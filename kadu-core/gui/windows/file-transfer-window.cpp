@@ -41,6 +41,8 @@ FileTransferWindow::FileTransferWindow(QWidget *parent) :
 {
 	kdebugf();
 
+	setWindowRole("kadu-file-transfer");
+
 	createGui();
 	loadWindowGeometry(this, "General", "TransferWindowGeometry", 200, 200, 500, 300);
 
