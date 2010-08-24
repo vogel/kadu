@@ -1,6 +1,6 @@
 <table>
 <tr>
-<td align="left" valign="top"><img width="64" height="64" align="left" src="{file:///#{avatarPath} file:///#{avatarPath}}{~file:///#{avatarPath} @{kadu_icons/kadu.png}}"></td>
+<td align="left" valign="top"><img width="64" height="64" align="left" src="{#{avatarPath} file:///#{avatarPath}}{~#{avatarPath} file:///@{kadu_icons/kadu.png}}"></td>
 <td width="100%">
 <div>[<font color="red"><b>%a</b></font>][&nbsp;<b>(%g)</b>]</div>
 [<div><img align="left" valign="middle" height="16" width="16" src="file:///#{statusIconPath}">&nbsp;&nbsp;%u</div>]
