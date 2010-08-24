@@ -58,17 +58,19 @@ void GaduAvatarFetcher::requestFinished(int id, bool error)
 	if (error)
 		return;
 
-	deleteLater(); // delete at next even loop pass
-
 	GaduAvatarDataParser parser(&MyBuffer, MyContact.id());
 
 	if (!parser.isValid())
+	{
+		deleteLater();
 		return;
+	}
 
 	if (parser.isBlank())
 	{
 		// clear avatar data
 		emit avatarFetched(MyContact, QByteArray());
+		deleteLater();
 		return;
 	}
 
@@ -81,6 +83,7 @@ void GaduAvatarFetcher::requestFinished(int id, bool error)
 		if (!MyContact.contactAvatar().pixmap().isNull())
 		{
 			// we already have this file, no need to update
+			deleteLater();
 			return;
 		}
 	}
