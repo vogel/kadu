@@ -213,7 +213,7 @@ QString Buddy::display() const
 					: data()->nickName()
 			: data()->display();
 
-	if (result.isEmpty() && !prefferedAccount().isNull())
+	if (result.isEmpty() && prefferedAccount())
 		result = prefferedAccount().accountIdentity().name() + ":" + id(prefferedAccount());
 
 	return result;

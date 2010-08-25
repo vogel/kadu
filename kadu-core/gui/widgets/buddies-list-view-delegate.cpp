@@ -54,13 +54,13 @@ void BuddiesListViewDelegate::setModel(AbstractBuddiesModel *model)
 
 void BuddiesListViewDelegate::avatarUpdated(Avatar avatar)
 {
-	if (Model && avatar.avatarContact().ownerBuddy())
+	if (Model)
 		emit sizeHintChanged(Model->indexForValue(avatar.avatarContact().ownerBuddy()));
 }
 
 void BuddiesListViewDelegate::contactUpdated(Contact &contact)
 {
-	if (Model && contact.ownerBuddy())
+	if (Model)
 		emit sizeHintChanged(Model->indexForValue(contact.ownerBuddy()));
 }
 

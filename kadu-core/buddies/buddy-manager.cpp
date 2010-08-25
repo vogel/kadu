@@ -195,17 +195,32 @@ Buddy BuddyManager::byContact(Contact contact, NotFoundAction action)
 	if (contact.isNull())
 		return Buddy::null;
 
-	if (ActionReturnNull == action || !contact.ownerBuddy().isNull())
+	if (ActionReturnNull == action || !contact.ownerBuddy().isAnonymous())
 		return contact.ownerBuddy();
 
-	Buddy buddy = Buddy::create();
-	buddy.setDisplay(QString("%1: %2").arg(contact.contactAccount().accountIdentity().name()).arg(contact.id()));
-	contact.setOwnerBuddy(buddy);
-
+	if (!contact.ownerBuddy())
+		contact.setOwnerBuddy(Buddy::create());
+	
 	if (ActionCreateAndAdd == action)
-		addItem(buddy);
+		addItem(contact.ownerBuddy());
 
-	return buddy;
+	return contact.ownerBuddy();
+}
+
+Buddy BuddyManager::byUuid(const QUuid &uuid)
+{
+	QMutexLocker(&mutex());
+
+	ensureLoaded();
+
+	if (uuid.isNull())
+		return Buddy::create();
+
+	foreach (Buddy buddy, items())
+		if (buddy.uuid() == uuid)
+			return buddy;
+
+	return Buddy::create();
 }
 
 BuddyList BuddyManager::buddies(Account account, bool includeAnonymous)

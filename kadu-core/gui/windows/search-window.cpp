@@ -377,11 +377,6 @@ ContactSet SearchWindow::selected()
 
 	Contact contact = ContactManager::instance()->byId(CurrentAccount, uin, ActionCreateAndAdd);
 	Buddy e = contact.ownerBuddy();
-	if (e.isNull())
-	{
-		e = Buddy::create();
-		contact.setOwnerBuddy(e);
-	}
 
 	if (e.isAnonymous())
 	{

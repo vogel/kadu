@@ -268,7 +268,7 @@ bool DccManager::acceptConnection(unsigned int uin, unsigned int peerUin, unsign
 		return false;
 
 	Buddy buddy = contact.ownerBuddy();
-	if (uin != gaduAccountDetails->uin() || buddy.isAnonymous() || buddy.isNull())
+	if (uin != gaduAccountDetails->uin() || buddy.isAnonymous())
 	{
 		kdebugm(KDEBUG_WARNING, "insane values: uin:%d peer_uin:%d\n", uin, peerUin);
 		return false;

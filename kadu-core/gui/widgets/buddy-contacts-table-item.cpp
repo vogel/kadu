@@ -121,7 +121,7 @@ bool BuddyContactsTableItem::isAddValid() const
 
 	// allow contacts without buddy or new ones
 	Contact contact = ContactManager::instance()->byId(ItemAccount, Id, ActionReturnNull);
-	return !contact.ownerBuddy();
+	return contact.ownerBuddy().isAnonymous();
 }
 
 bool BuddyContactsTableItem::isEditValid() const
@@ -146,7 +146,7 @@ bool BuddyContactsTableItem::isEditValid() const
 	{
 		// allow contacts without buddy or new ones
 		Contact contact = ContactManager::instance()->byId(ItemAccount, Id, ActionReturnNull);
-		return !contact.ownerBuddy();
+		return contact.ownerBuddy().isAnonymous();
 	}
 
 	return true;

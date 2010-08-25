@@ -67,7 +67,7 @@ InfosDialog::InfosDialog(const LastSeen &lastSeen, QWidget *parent) :
 
 	foreach(Contact contact, ContactManager::instance()->items())
 	{
-		if(!contact.ownerBuddy() || contact.ownerBuddy().isAnonymous())
+		if(contact.ownerBuddy().isAnonymous())
 			continue;
 		
 		QString desc, ip;

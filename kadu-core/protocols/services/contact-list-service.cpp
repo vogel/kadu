@@ -48,12 +48,10 @@ Buddy ContactListService::mergeBuddy(Buddy oneBuddy)
 			Contact contactOnList = ContactManager::instance()->byId(CurrentProtocol->account(), contact.id(), ActionReturnNull);
 			if (!contactOnList) // not on list add this one as new
 			{
-				buddy = Buddy::create();
 				// move contact to buddy
 				ContactManager::instance()->addItem(contact);
 				kdebugmf(KDEBUG_FUNCTION_START, "\nuuid add: '%s' %s\n",
 					 qPrintable(contactOnList.uuid().toString()), qPrintable(buddy.display()));
-				contact.setOwnerBuddy(buddy);
 			}
 			else // already on list
 			{

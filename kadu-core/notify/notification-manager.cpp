@@ -303,9 +303,7 @@ void NotificationManager::contactStatusChanged(Contact contact, Status oldStatus
 
 	bool notify_contact = true;
 	ContactNotifyData *cnd = 0;
-	Buddy buddy = contact.ownerBuddy();
-	if (buddy.data())
-		cnd = buddy.data()->moduleStorableData<ContactNotifyData>("notify");
+	cnd = contact.ownerBuddy().data()->moduleStorableData<ContactNotifyData>("notify");
 
 	if (!cnd || !cnd->notify())
 		notify_contact = false;

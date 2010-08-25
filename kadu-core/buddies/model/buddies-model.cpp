@@ -134,8 +134,6 @@ void BuddiesModel::buddyRemoved(Buddy &buddy)
 void BuddiesModel::buddyUpdated()
 {
 	Buddy buddy(sender());
-	if (!buddy)
-		return;
 
 	QModelIndex index = indexForValue(buddy);
 	emit dataChanged(index, index);
@@ -144,8 +142,6 @@ void BuddiesModel::buddyUpdated()
 void BuddiesModel::contactAboutToBeAttached(Contact contact)
 {
 	Buddy buddy = contact.ownerBuddy();
-	if (!buddy)
-		return;
 
 	QModelIndex index = indexForValue(buddy);
 	if (!index.isValid())
@@ -160,8 +156,6 @@ void BuddiesModel::contactAboutToBeAttached(Contact contact)
 void BuddiesModel::contactAttached(Contact contact)
 {
 	Buddy buddy = contact.ownerBuddy();
-	if (!buddy)
-		return;
 
 	QModelIndex index = indexForValue(buddy);
 	if (!index.isValid())
@@ -173,8 +167,6 @@ void BuddiesModel::contactAttached(Contact contact)
 void BuddiesModel::contactAboutToBeDetached(Contact contact)
 {
 	Buddy buddy = contact.ownerBuddy();
-	if (!buddy)
-		return;
 
 	QModelIndex index = indexForValue(buddy);
 	if (!index.isValid())
@@ -189,8 +181,6 @@ void BuddiesModel::contactAboutToBeDetached(Contact contact)
 void BuddiesModel::contactDetached(Contact contact)
 {
 	Buddy buddy = contact.ownerBuddy();
-	if (!buddy)
-		return;
 
 	QModelIndex index = indexForValue(buddy);
 	if (!index.isValid())
@@ -206,8 +196,6 @@ void BuddiesModel::contactUpdated()
 		return;
 
 	Buddy buddy = contact.ownerBuddy();
-	if (!buddy)
-		return;
 
 	QModelIndex contactIndex = index(buddy.contacts().indexOf(contact), 0, indexForValue(buddy));
 	emit dataChanged(contactIndex, contactIndex);

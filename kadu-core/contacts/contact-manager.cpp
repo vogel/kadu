@@ -19,6 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "buddies/buddy.h"
 #include "configuration/configuration-manager.h"
 #include "contacts/contact.h"
 #include "contacts/contact-parser-tags.h"
@@ -190,6 +191,9 @@ Contact ContactManager::byId(Account account, const QString &id, NotFoundAction 
 	details->setState(StateNew);
 	contact.setDetails(details);
 
+	Buddy buddy = Buddy::create();
+	contact.setOwnerBuddy(buddy);
+	
 	return contact;
 }
 
