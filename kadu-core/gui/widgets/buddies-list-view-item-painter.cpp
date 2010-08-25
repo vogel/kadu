@@ -240,8 +240,10 @@ void BuddiesListViewItemPainter::computeNameRect()
 	int right;
 	if (!AccountNameRect.isEmpty())
 		right = AccountNameRect.left() - HFrameMargin;
-	else
+	else if (!AvatarRect.isEmpty())
 		right = AvatarRect.left() - HFrameMargin;
+	else
+		right = ItemRect.right() - HFrameMargin;
 
 	NameRect.moveTop(ItemRect.top());
 	NameRect.setLeft(left);
