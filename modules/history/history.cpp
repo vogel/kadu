@@ -197,7 +197,7 @@ void History::showHistoryActionActivated(QAction *sender, bool toggled)
 
 	if (!chatEditBox)
 		return;
-	
+
 	ChatWidget *chatWidget = chatEditBox->chatWidget();
 	if (chatWidget)
 	{
@@ -206,7 +206,7 @@ void History::showHistoryActionActivated(QAction *sender, bool toggled)
 			return;
 
 		QWidget *widget = widgets[widgets.size() - 1];
-		
+
 		QMenu *menu = new QMenu(chatWidget);
 
 		if (config_file.readBoolEntry("Chat", "ChatPrune", false))
@@ -685,13 +685,6 @@ int History::statusBuddyCount(Buddy buddy, QDate date)
 	kdebugf();
 
 	return CurrentStorage->statusBuddyCount(buddy, date);
-}
-
-void History::appendSms(const QString &receipient, const QString& content)
-{
-	kdebugf();
-
-	return CurrentStorage->appendSms(receipient, content);
 }
 
 QList< QString > History::smsReceipientsList(HistorySearchParameters search)
