@@ -75,7 +75,7 @@ namespace HistoryMigrationHelper
 	QString getFileNameByUinsList(UinsList uins);
 	int getHistoryEntriesCount(const UinsList &uins);
 	QList<UinsList> getUinsLists();
-	QList<HistoryEntry> historyEntries(const UinsList &uins, int mask);
+	QList<HistoryEntry> historyEntries(const UinsList &uins);
 	QStringList mySplit(const QChar &sep, const QString &str);
 };
 

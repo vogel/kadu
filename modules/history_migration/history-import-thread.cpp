@@ -26,9 +26,11 @@
 #include "chat/chat.h"
 #include "chat/chat-manager.h"
 #include "chat/message/message.h"
+#include "contacts/contact.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 #include "modules/history/history.h"
+#include "status/status.h"
 
 #include "history-import-thread.h"
 #include "history-migration-helper.h"
@@ -52,10 +54,7 @@ void HistoryImportThread::run()
 			break;
 
 		Chat chat = chatFromUinsList(uinsList);
-		if (!chat)
-			continue;
-
-		QList<HistoryEntry> entries = HistoryMigrationHelper::historyEntries(uinsList, HistoryEntry::ChatSend | HistoryEntry::ChatRcv);
+		QList<HistoryEntry> entries = HistoryMigrationHelper::historyEntries(uinsList);
 
 		foreach (const HistoryEntry &entry, entries)
 			if (Canceled)
@@ -81,18 +80,67 @@ Chat HistoryImportThread::chatFromUinsList(const UinsList &uinsList) const
 
 void HistoryImportThread::importEntry(Chat chat, const HistoryEntry &entry)
 {
-	bool outgoing = (entry.Type == HistoryEntry::ChatSend);
+	switch (entry.Type)
+	{
+		case HistoryEntry::ChatSend:
+		case HistoryEntry::MsgSend:
+		case HistoryEntry::ChatRcv:
+		case HistoryEntry::MsgRcv:
+		{
+			bool outgoing = (entry.Type == HistoryEntry::ChatSend || entry.Type == HistoryEntry::MsgSend);
+			bool isChat = (entry.Type == HistoryEntry::ChatSend || entry.Type == HistoryEntry::ChatRcv);
 
-	Message msg = Message::create();
-	msg.setMessageChat(chat);
-	msg.setMessageSender(outgoing
-			? GaduAccount.accountContact()
-			: ContactManager::instance()->byId(GaduAccount, QString::number(entry.Uin), ActionCreateAndAdd));
-	msg.setContent(entry.Content);
-	msg.setSendDate(entry.SendDate);
-	msg.setReceiveDate(entry.Date);
+			if (isChat && !chat)
+				return;
 
-	//TODO 0.6.6: it's damn slow!
-	History::instance()->currentStorage()->appendMessage(msg);
-	ImportedEntries++;
+			Message msg = Message::create();
+			msg.setMessageChat(isChat ? chat : Chat::null);
+			msg.setMessageSender(outgoing
+					? GaduAccount.accountContact()
+					: ContactManager::instance()->byId(GaduAccount, QString::number(entry.Uin), ActionCreateAndAdd));
+			msg.setContent(entry.Content);
+			msg.setSendDate(entry.SendDate);
+			msg.setReceiveDate(entry.Date);
+
+			// TODO 0.6.6: it's damn slow!
+			History::instance()->currentStorage()->appendMessage(msg);
+			ImportedEntries++;
+			break;
+		}
+		case HistoryEntry::StatusChange:
+		{
+			QString statusStr;
+			switch (entry.Status)
+			{
+				case HistoryEntry::Online:
+					statusStr = "Online";
+					break;
+				case HistoryEntry::Offline:
+					statusStr = "Offline";
+					break;
+				case HistoryEntry::Busy:
+					statusStr = "Away";
+					break;
+				case HistoryEntry::Invisible:
+					statusStr = "Invisible";
+					break;
+				default:
+					return;
+			}
+
+			Status status(statusStr, entry.Content);
+			Contact contact = ContactManager::instance()->byId(GaduAccount, QString::number(entry.Uin), ActionCreateAndAdd);
+			// TODO 0.6.6: it's damn slow!
+			History::instance()->currentStorage()->appendStatus(contact, status, entry.Date);
+			ImportedEntries++;
+			break;
+		}
+		case HistoryEntry::SmsSend:
+			// TODO 0.6.6: check correctness of this call and uncomment
+			//History::instance()->currentStorage()->appendSms(entry.Mobile, entry.Content, entry.Date);
+			ImportedEntries++;
+			break;
+		default:
+			break;
+	}
 }

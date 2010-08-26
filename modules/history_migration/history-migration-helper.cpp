@@ -115,7 +115,7 @@ namespace HistoryMigrationHelper
 		return entries;
 	}
 
-	QList<HistoryEntry> historyEntries(const UinsList &uins, int mask)
+	QList<HistoryEntry> historyEntries(const UinsList &uins)
 	{
 		kdebugf();
 
@@ -174,9 +174,6 @@ namespace HistoryMigrationHelper
 				entry.Type = HistoryEntry::StatusChange;
 			else if (tokens[0] == "smssend")
 				entry.Type = HistoryEntry::SmsSend;
-
-			if (!(entry.Type & mask))
-				continue;
 
 			switch (entry.Type)
 			{
