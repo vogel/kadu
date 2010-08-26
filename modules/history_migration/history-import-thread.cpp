@@ -33,7 +33,7 @@
 #include "history-import-thread.h"
 #include "history-migration-helper.h"
 
-HistoryImportThread::HistoryImportThread(Account gaduAccount, const QList<UinsList> &uinsLists, unsigned long totalEntries, QObject *parent) :
+HistoryImportThread::HistoryImportThread(Account gaduAccount, const QList<UinsList> &uinsLists, int totalEntries, QObject *parent) :
 		QThread(parent), GaduAccount(gaduAccount), UinsLists(uinsLists), Canceled(false), TotalEntries(totalEntries), ImportedEntries(0)
 {
 }
@@ -81,18 +81,13 @@ Chat HistoryImportThread::chatFromUinsList(const UinsList &uinsList) const
 
 void HistoryImportThread::importEntry(Chat chat, const HistoryEntry &entry)
 {
-	QString id = QString::number(entry.Uin);
-
 	bool outgoing = (entry.Type == HistoryEntry::ChatSend);
-	QDateTime sendTime = entry.SendDate;
-	QDateTime recieveTime = entry.Date;
-	QString messageString = entry.Message;
 
 	Message msg = Message::create();
 	msg.setMessageChat(chat);
 	msg.setMessageSender(outgoing
 			? GaduAccount.accountContact()
-			: ContactManager::instance()->byId(GaduAccount, id, ActionCreateAndAdd));
+			: ContactManager::instance()->byId(GaduAccount, QString::number(entry.Uin), ActionCreateAndAdd));
 	msg.setContent(entry.Message);
 	msg.setSendDate(entry.SendDate);
 	msg.setReceiveDate(entry.Date);

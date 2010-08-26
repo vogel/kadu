@@ -49,13 +49,9 @@ namespace HistoryMigrationHelper
 
 		qSort(uins);
 		QString fname;
-		unsigned int i = 0, uinsCount = uins.count();
 		foreach (UinType uin, uins)
-		{
-			fname.append(QString::number(uin));
-			if (i++ < uinsCount - 1)
-				fname.append("_");
-		}
+			fname.append(QString::number(uin) + "_");
+		fname.remove(fname.length() - 1, 1);
 
 		return fname;
 	}
@@ -65,21 +61,20 @@ namespace HistoryMigrationHelper
 		kdebugf();
 
 		int lines;
-		QFile f;
 		QString filename = getFileNameByUinsList(uins);
 		QString path = profilePath("history/");
 		QByteArray buffer;
+		QFile fidx(path + filename + ".idx");
 
-		f.setFileName(path + filename + ".idx");
-		if (!f.open(QIODevice::ReadOnly))
+		if (!fidx.open(QIODevice::ReadOnly))
 		{
 			kdebugmf(KDEBUG_ERROR, "Error opening history file %s\n", qPrintable(filename));
 			kdebugf2();
 			return 0;
 		}
-		lines = f.size() / sizeof(int);
 
-		f.close();
+		lines = fidx.size() / sizeof(int);
+		fidx.close();
 
 		kdebugmf(KDEBUG_INFO, "%d lines\n", lines);
 		kdebugf2();
@@ -97,10 +92,12 @@ namespace HistoryMigrationHelper
 		foreach (QString entry, dir.entryList())
 		{
 			uins.clear();
-			struins = entry.remove(entry.length() - 4, 4).split("_", QString::SkipEmptyParts);
-			if (struins[0] != "sms")
+			if (entry != "sms.idx")
+			{
+				struins = entry.remove(entry.length() - 4, 4).split("_", QString::SkipEmptyParts);
 				foreach (const QString &struin, struins)
 					uins.append(struin.toUInt());
+			}
 			entries.append(uins);
 		}
 
@@ -141,18 +138,14 @@ namespace HistoryMigrationHelper
 
 		QTextStream stream(&f);
 		stream.setCodec(codec_latin2);
-
-		int linenr = 0;
-
-		//	int num = 0;
 		while ((line = stream.readLine()) != QString::null)
 		{
 			HistoryEntry entry;
 
-			++linenr;
 			tokens = mySplit(',', line);
 			if (tokens.count() < 2)
 				continue;
+
 			if (tokens[0] == "chatsend")
 				entry.Type = HistoryEntry::ChatSend;
 			else if (tokens[0] == "msgsend")
@@ -165,10 +158,10 @@ namespace HistoryMigrationHelper
 				entry.Type = HistoryEntry::StatusChange;
 			else if (tokens[0] == "smssend")
 				entry.Type = HistoryEntry::SmsSend;
+
 			if (!(entry.Type & mask))
 				continue;
-			//		if (num++%10==0)
-			//			qApp->processEvents();
+
 			switch (entry.Type)
 			{
 				case HistoryEntry::ChatSend:
@@ -244,7 +237,7 @@ namespace HistoryMigrationHelper
 		kdebugf();
 		QStringList strlist;
 		QString token;
-		unsigned int idx = 0, strlength = str.length();
+		int idx = 0, strlength = str.length();
 		bool inString = false;
 
 		int pos1, pos2;
@@ -297,7 +290,7 @@ namespace HistoryMigrationHelper
 					}
 				}
 			}
-			else // out of the string
+			else // out of string
 			{
 				if (letter == sep)
 				{
