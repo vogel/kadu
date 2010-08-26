@@ -21,7 +21,6 @@
  */
 
 #include <QtCore/QDateTime>
-#include <QtCore/QStringList>
 
 #include "accounts/account.h"
 #include "chat/chat.h"
@@ -34,7 +33,7 @@
 #include "history-import-thread.h"
 #include "history-migration-helper.h"
 
-HistoryImportThread::HistoryImportThread(Account gaduAccount, QList<QStringList> uinsLists, unsigned long totalEntries, QObject *parent) :
+HistoryImportThread::HistoryImportThread(Account gaduAccount, const QList<UinsList> &uinsLists, unsigned long totalEntries, QObject *parent) :
 		QThread(parent), GaduAccount(gaduAccount), UinsLists(uinsLists), Canceled(false), TotalEntries(totalEntries), ImportedEntries(0)
 {
 }
@@ -47,7 +46,7 @@ void HistoryImportThread::run()
 {
 	ImportedEntries = 0;
 
-	foreach (QStringList uinsList, UinsLists)
+	foreach (const UinsList &uinsList, UinsLists)
 	{
 		if (Canceled)
 			break;
@@ -71,11 +70,11 @@ void HistoryImportThread::cancel()
 	Canceled = true;
 }
 
-Chat HistoryImportThread::chatFromUinsList(QStringList uinsList) const
+Chat HistoryImportThread::chatFromUinsList(const UinsList &uinsList) const
 {
 	ContactSet contacts;
-	foreach (const QString &uin, uinsList)
-		contacts.insert(ContactManager::instance()->byId(GaduAccount, uin, ActionCreateAndAdd));
+	foreach (UinType uin, uinsList)
+		contacts.insert(ContactManager::instance()->byId(GaduAccount, QString::number(uin), ActionCreateAndAdd));
 
 	return ChatManager::instance()->findChat(contacts);
 }

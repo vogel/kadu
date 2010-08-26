@@ -23,7 +23,7 @@
 #include <QtCore/QList>
 #include <QtCore/QThread>
 
-class QStringList;
+#include "history-migration-helper.h"
 
 class Account;
 class Chat;
@@ -32,17 +32,17 @@ struct HistoryEntry;
 class HistoryImportThread : public QThread
 {
 	Account GaduAccount;
-	QList<QStringList> UinsLists;
+	QList<UinsList> UinsLists;
 
 	bool Canceled;
 	unsigned long TotalEntries;
 	unsigned long ImportedEntries;
 
-	Chat chatFromUinsList(QStringList uinsList) const;
+	Chat chatFromUinsList(const UinsList &uinsList) const;
 	void importEntry(Chat chat, const HistoryEntry &entry);
 
 public:
-	HistoryImportThread(Account gaduAccount, QList<QStringList> uinsLists, unsigned long totalEntries, QObject *parent = 0);
+	HistoryImportThread(Account gaduAccount, const QList<UinsList> &uinsLists, unsigned long totalEntries, QObject *parent = 0);
 	virtual ~HistoryImportThread();
 
 	virtual void run();

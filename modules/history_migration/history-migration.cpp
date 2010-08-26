@@ -21,7 +21,6 @@
 
 #include <QtCore/QFile>
 #include <QtCore/QList>
-#include <QtCore/QStringList>
 #include <QtCore/QTimer>
 #include <QtGui/QProgressDialog>
 
@@ -38,7 +37,6 @@
 #include "debug.h"
 
 #include "history-import-thread.h"
-#include "history-migration-helper.h"
 
 #include "history-migration.h"
 
@@ -113,10 +111,10 @@ void HistoryImporter::run()
 	if (gaduAccount.isNull() || !History::instance()->currentStorage())
 		return;
 
-	QList<QStringList> uinsLists = HistoryMigrationHelper::getUinsLists();
+	QList<UinsList> uinsLists = HistoryMigrationHelper::getUinsLists();
 	int totalEntries = 0;
 
-	foreach (QStringList uinsList, uinsLists)
+	foreach (const UinsList &uinsList, uinsLists)
 		totalEntries += HistoryMigrationHelper::getHistoryEntriesCount(uinsList);
 
 	if (0 == totalEntries)

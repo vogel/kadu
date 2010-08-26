@@ -29,6 +29,7 @@
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 #include <QtCore/QRegExp>
+#include <QtCore/QtAlgorithms>
 #include <QtCore/QTextStream>
 
 #include "misc/misc.h"
@@ -39,19 +40,19 @@
 
 namespace HistoryMigrationHelper
 {
-	QString getFileNameByUinsList(QStringList uins)
+	QString getFileNameByUinsList(UinsList uins)
 	{
 		kdebugf();
 
 		if (uins.isEmpty())
 			return "sms";
 
+		qSort(uins);
 		QString fname;
-		uins.sort();
 		unsigned int i = 0, uinsCount = uins.count();
-		foreach (const QString &uin, uins)
+		foreach (UinType uin, uins)
 		{
-			fname.append(uin);
+			fname.append(QString::number(uin));
 			if (i++ < uinsCount - 1)
 				fname.append("_");
 		}
@@ -59,7 +60,7 @@ namespace HistoryMigrationHelper
 		return fname;
 	}
 
-	int getHistoryEntriesCount(const QStringList &uins)
+	int getHistoryEntriesCount(const UinsList &uins)
 	{
 		kdebugf();
 
@@ -85,21 +86,21 @@ namespace HistoryMigrationHelper
 		return lines;
 	}
 
-	QList<QStringList> getUinsLists()
+	QList<UinsList> getUinsLists()
 	{
 		kdebugf();
-		QList<QStringList> entries;
+		QList<UinsList> entries;
 		QDir dir(profilePath("history/"), "*.idx");
 		QStringList struins;
-		QStringList uins;
+		UinsList uins;
 
 		foreach (QString entry, dir.entryList())
 		{
-			struins = entry.remove(QRegExp(".idx$")).split("_", QString::SkipEmptyParts);
 			uins.clear();
+			struins = entry.remove(entry.length() - 4, 4).split("_", QString::SkipEmptyParts);
 			if (struins[0] != "sms")
 				foreach (const QString &struin, struins)
-					uins.append(struin);
+					uins.append(struin.toUInt());
 			entries.append(uins);
 		}
 
@@ -107,7 +108,7 @@ namespace HistoryMigrationHelper
 		return entries;
 	}
 
-	QList<HistoryEntry> historyEntries(QStringList uins, int mask)
+	QList<HistoryEntry> historyEntries(const UinsList &uins, int mask)
 	{
 		kdebugf();
 

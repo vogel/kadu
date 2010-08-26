@@ -32,6 +32,7 @@ class QString;
 class QStringList;
 
 typedef quint32 UinType;
+typedef QList<UinType> UinsList;
 
 struct HistoryEntry
 {
@@ -73,10 +74,10 @@ struct HistoryEntry
 
 namespace HistoryMigrationHelper
 {
-	QString getFileNameByUinsList(QStringList uins);
-	int getHistoryEntriesCount(const QStringList &uins);
-	QList<QStringList> getUinsLists();
-	QList<HistoryEntry> historyEntries(QStringList uins, int mask);
+	QString getFileNameByUinsList(UinsList uins);
+	int getHistoryEntriesCount(const UinsList &uins);
+	QList<UinsList> getUinsLists();
+	QList<HistoryEntry> historyEntries(const UinsList &uins, int mask);
 	QStringList mySplit(const QChar &sep, const QString &str);
 };
 
