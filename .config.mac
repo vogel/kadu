@@ -93,6 +93,12 @@ module_pcspeaker=n
 # Depends: notify
 module_growl_notify=m
 
+# Description: KDE4 Notification
+# PL: Powiadamianie za pomocą powiadomień KDE4
+# Platform: Linux
+# Depends: notify
+module_kde_notify=n
+
 # Description: Notification by Amarok-like hints module
 # PL: Moduł powiadamiania o zdarzeniach przy pomocy dymków a'la OSD z Amaroka
 # Platform: Linux, Mac OS X, Windows
@@ -116,6 +122,11 @@ module_water_notify=n
 # Platform: Linux
 # Depends: notify
 module_mx610_notify=n
+
+# Description: Speech synthesis support ("powiedz")
+# PL: Powiadamianie mową za pomocą programu "powiedz"
+# Depends: notify
+module_speech=n
 
 ##################### sound ##########################################
 # PL: ############### dźwięk #########################################
@@ -174,7 +185,7 @@ module_ext_sound=n
 # Depends: sound
 module_dshow_sound=n
 
-# Description: Windows wave in/out sound module 
+# Description: Windows wave in/out sound module
 # PL: Obsługa dźwięku dla systemu Windows
 # Platform: Windows
 # Depends: sound
@@ -210,6 +221,11 @@ module_default_sms=m
 
 ###################### other #########################################
 # PL: ################ inne ##########################################
+
+# Description: Idle time counter
+# PL: Odmierzacz czasu bezczynności
+# Platform: Linux, Mac OS X, Windows
+module_idle=m
 
 # Description: Register / unregister account, remind / change password support
 # PL: Obsługa rejestracji / wyrejestrowywania konta, przypominania / zmiany hasła
@@ -315,7 +331,7 @@ module_last_seen=n
 
 # Description:
 # PL: Dodaje możliwość zaznaczenia fragmentu ekranu i wysłania obrazka z jego zawartością
-# Platform: Linux, Windows
+# Platform: Linux, Mac OS X, Windows
 module_screenshot=n
 
 # Description: Description from file module
@@ -333,6 +349,11 @@ module_filtering=n
 # Platform: Linux, Mac OS X, Windows
 # Needs: libaspell
 module_spellchecker=n
+
+# Description: DBus module
+# PL: Moduł dbus
+# Platform: Linux, Mac OS X, Windows
+module_dbus=n
 
 # Description: Echo module (only example!)
 # PL: Moduł automatycznej odpowiedzi z przedrostkiem "KADU ECHO: "
@@ -425,15 +446,10 @@ module_xmms_mediaplayer=n
 # Platform: Linux
 module_xmms2_mediaplayer=n
 
-# Description: List of people, that you don't have on list, but they have you   
+# Description: List of people, that you don't have on list, but they have you
 # PL: List osób, jakich nie masz na liście, ale które mają Ciebie
 # Platform: Linux, Mac OS X, Windows
 module_agent=n
-
-# Description: Idle time counter
-# PL: Odmierzacz czasu bezczynności
-# Platform: Linux, Mac OS X, Windows
-module_idle=m
 
 # Description: Plus.pl SMS Gateway support
 # PL: Obsługa bramki SMSowej Plus.pl
@@ -507,9 +523,14 @@ module_weather=n
 module_nextinfo=n
 
 # Desctiption: Pajacyk module
-# PL: Modul klikajacy Pajacyka
+# PL: Moduł klikający Pajacyka
 # Platform: Linux, Mac OS X, Windows
 module_pajacyk=n
+
+# Description: GeoIP module
+# PL: Moduł wyszukujący adresy w bazie GeoIP
+# Platform: Linux
+module_geoip_lookup=n
 
 ############################################# ICONS ###########################################################################
 # PL: ####################################### IKONY ###########################################################################
