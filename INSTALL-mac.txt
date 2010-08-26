@@ -1,0 +1,49 @@
+Kompilacja i instalacja Kadu 0.6.5.x pod Mac OS X 10.5 Leopard
+
+    W zwiazku z usunieciem frameworka Carbon z Mac OS X 10.6 Snow Leopard nie jest mozliwe
+    skompilowanie kadu pod ta wersja systemu (caly kod specyficzny dla Mac OS X zostal
+    napisany z wykorzystaniem frameworka Carbon). Nie mniej jednak kod skompilowany pod
+    Leopardem dziala poprawnie pod Snow Leopardem.
+
+1.  Zainstaluj cmake (w wersje 2.6.4, nie 2.8), pkg-config i wget (np. z fink czy darwinports)
+2.  Stworz katalog ~/Desktop/kadu. Wyeksportuj zmienna ROOTPATH wskazujaca na niego:
+    $ export ROOTPATH=~/Desktop/kadu
+3.  Pobierz i zainstaluj Qt framework dla Mac OS X
+    albo pobierz zrodla Qt i przekompiluj recznie (bardzo czasochlonne):
+    $ ./configure -qt-libpng -qt-libjpeg -qt-libmng -no-dbus --prefix=$ROOTPATH/qt 
+        -no-scripttools -no-accessibility -release -optimized-qmake -pch
+    $ make
+    $ make install
+3a. Jesli chcesz budowac wersje dzialajaca takze na Tigerze dodaj nastepujacy parametr do confgiure:
+    -sdk /Developer/SDKs/MacOSX10.4u.sdk/
+    a nastepnie wywolaj make w nastepujacy sposob:
+    CFLAGS="-isysroot /Developer/SDKs/MacOSX10.4u.sdk/ -mmacosx-version-min=10.4" make
+    Postepuj analogicznie w przypadku konfiguracji i kompilacji libsndfile i libgadu oraz podczas
+    kompilacji kadu.
+4.  Pobierz zrodla, skompiluj i zainstaluj biblioteke libsndfile:
+    $ ./configure --prefix=$ROOTPATH/libsndfile
+    $ make -j2
+    $ make install
+5.  Sciagnij, skompiluj i zainstaluj biblioteke libgadu:
+    $ ./configure --prefix=$ROOTPATH/libgadu
+    $ make
+    $ make install
+6.  Sciagnij i rozpakuj zrodla kadu. Przeedytuj plik .config i wybierz ktore moduly maja zostac
+    skompilowane. Domyslna konfiguracja dla Mac OS X znajduje sie w pliku .config.mac.
+7.  Wyeksportuj zmienna PKG_CONFIG_PATH:
+    $ export PKG_CONFIG_PATH=$ROOTPATH/qt/lib/pkgconfig:$ROOTPATH/libgadu/lib/pkgconfig:$ROOTPATH/libsndfile/lib/pkgconfig:/usr/local/lib/pkgconfig:/usr/lib/pkgconfig
+8.  Skonfiguruj kadu:
+    $ cmake .
+9.  Skompiluj kadu:
+    $ make
+    $ sudo make install
+10. Ustaw odpowiednie sciezki a nastepnie uruchom skrypt:
+    $ varia/scripts/create_macosx_bundle.sh
+11. W katalogu ~/Desktop/kadu znajdzie sie binarka kadu dla Mac OS X - Kadu.app.
+
+
+Jesli chcesz skompilowac kadu korzystajac z XCode wykonaj kroki 1-6 (poza 3a) a nastepnie:
+7.  Skonfiguruj kadu pod XCode (zostanie wygenerowany plik projektu dla kadu):
+    $ cmake . -G Xcode
+8.  Uruchom XCode i otworz projekt kadu
+9.  Skompiluj kadu za pomoca XCode
