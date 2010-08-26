@@ -60,28 +60,39 @@ namespace HistoryMigrationHelper
 	{
 		kdebugf();
 
-		int lines, offs, lastOffs = 0;
+		int lines = 0;
 		QString filename = getFileNameByUinsList(uins);
 		QString path = profilePath("history/");
 		QByteArray buffer;
-		QFile fidx(path + filename + ".idx");
+		QFile fidx(path + filename + ".idx"), f(path + filename);
 
-		if (!fidx.open(QIODevice::ReadOnly))
+		if (fidx.open(QIODevice::ReadOnly))
+		{
+			int offs, lastOffs = 0;
+			lines = fidx.size() / sizeof(int);
+
+			// ignore garbage in index file (strange, but sometimes happens)
+			while (fidx.read((char *)&offs, sizeof(int)) > 0)
+			{
+				if (offs < lastOffs)
+					--lines;
+				else
+					lastOffs = offs;
+			}
+		}
+		// apparentyly sms doesn't have an index file, so handle this
+		else if (filename == "sms" && f.open(QIODevice::ReadOnly))
+		{
+			QTextStream stream(&f);
+			while (stream.readLine() != QString::null)
+				lines++;
+			f.close();
+		}
+		else
 		{
 			kdebugmf(KDEBUG_ERROR, "Error opening history file %s\n", qPrintable(filename));
 			kdebugf2();
 			return 0;
-		}
-
-		lines = fidx.size() / sizeof(int);
-
-		// ignore garbage in index file (strange, but sometimes happens)
-		while (fidx.read((char *)&offs, sizeof(int)) > 0)
-		{
-			if (offs < lastOffs)
-				--lines;
-			else
-				lastOffs = offs;
 		}
 
 		fidx.close();
@@ -102,12 +113,21 @@ namespace HistoryMigrationHelper
 		foreach (QString entry, dir.entryList())
 		{
 			uins.clear();
+			// ignore sms.idx file, see below
 			if (entry != "sms.idx")
 			{
 				struins = entry.remove(entry.length() - 4, 4).split("_", QString::SkipEmptyParts);
 				foreach (const QString &struin, struins)
 					uins.append(struin.toUInt());
+				entries.append(uins);
 			}
+		}
+
+		// special case for sms: probably it won't have an index file,
+		// so only check if sms itself exists and append empty uins list
+		if (QFile::exists(profilePath("history/sms")))
+		{
+			uins.clear();
 			entries.append(uins);
 		}
 
@@ -124,7 +144,7 @@ namespace HistoryMigrationHelper
 		QFile f, fidx;
 		QString path = profilePath("history/");
 		QString filename, line;
-		int offs;
+		int offs = 0;
 
 		if (!uins.isEmpty())
 			filename = getFileNameByUinsList(uins);
@@ -138,10 +158,11 @@ namespace HistoryMigrationHelper
 		}
 
 		fidx.setFileName(f.fileName() + ".idx");
-		if (!fidx.open(QIODevice::ReadOnly))
+		if (fidx.open(QIODevice::ReadOnly))
+			fidx.read((char *)&offs, sizeof(int));
+		// let sms not have an index file
+		else if (filename != "sms")
 			return entries;
-		fidx.seek(0);
-		fidx.read((char *)&offs, sizeof(int));
 		fidx.close();
 		if (!f.seek(offs))
 			return entries;
