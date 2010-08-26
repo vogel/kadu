@@ -24,6 +24,7 @@
 #define HISTORY_STORAGE_H
 
 #include <QtCore/QDate>
+#include <QtCore/QDateTime>
 #include <QtCore/QObject>
 
 #include "chat/chat.h"
@@ -65,8 +66,8 @@ public:
 	virtual int smsCount(const QString &receipient, QDate date = QDate()) = 0;
 
 	virtual void appendMessage(const Message &message) = 0;
-	virtual void appendStatus(Contact contact, Status status) = 0;
-	virtual void appendSms(const QString &receipeint, const QString &content) = 0;
+	virtual void appendStatus(Contact contact, Status status, QDateTime time = QDateTime::currentDateTime()) = 0;
+	virtual void appendSms(const QString &receipeint, const QString &content, QDateTime time = QDateTime::currentDateTime()) = 0;
 	virtual void sync() = 0;
 
 	virtual void clearChatHistory(Chat chat) = 0;

@@ -87,21 +87,21 @@ public:
 	virtual int statusBuddyCount(Buddy buddy, QDate date = QDate());
 
 	virtual int messagesCount(Chat chat, QDate date = QDate());
-	
+
 	virtual QList<QString> smsReceipientsList(HistorySearchParameters search);
 	virtual QList<QDate> datesForSmsReceipient(const QString &receipient, HistorySearchParameters search);
 	virtual QList<QString> sms(const QString &receipient, QDate date = QDate(), int limit = 0);
 	virtual int smsCount(const QString &receipient, QDate date = QDate());
 
 	virtual void appendMessage(const Message &message);
-	virtual void appendStatus(Contact contact, Status status);
-	virtual void appendSms(const QString &receipeint, const QString &content);
+	virtual void appendStatus(Contact contact, Status status, QDateTime time = QDateTime::currentDateTime());
+	virtual void appendSms(const QString &receipeint, const QString &content, QDateTime time = QDateTime::currentDateTime());
 
 	void sync();
 
 	virtual void clearChatHistory(Chat chat);
     virtual void deleteHistory(Buddy buddy);
-	
+
 	//TODO 0.6.6
 	void convertSenderToContact();
 
