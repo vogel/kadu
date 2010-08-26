@@ -23,8 +23,8 @@
 #include "misc/misc.h"
 #include "status/status-type.h"
 #include "status/status-type-manager.h"
+#include "icons-manager.h"
 
-#include "gui/widgets/jabber-contact-widget.h"
 #include "gui/widgets/jabber-contact-personal-info-widget.h"
 #include "gui/widgets/jabber-add-account-widget.h"
 #include "gui/widgets/jabber-create-account-widget.h"
@@ -112,15 +112,6 @@ QString JabberProtocolFactory::idLabel()
 QRegExp JabberProtocolFactory::idRegularExpression()
 {
 	return IdRegularExpression;
-}
-
-ContactWidget * JabberProtocolFactory::newContactWidget(Contact contact, QWidget *parent)
-{
-	JabberContactDetails *jabberContactDetails = dynamic_cast<JabberContactDetails *>(contact.details());
-
-	return 0 != jabberContactDetails
-			? new JabberContactWidget(contact, parent)
-			: 0;
 }
 
 QWidget * JabberProtocolFactory::newContactPersonalInfoWidget(Contact contact, QWidget *parent)

@@ -153,7 +153,6 @@ set (kadu_SRCS
 	gui/widgets/choose-identity-widget.cpp
 	gui/widgets/color-button.cpp
 	gui/widgets/color-selector.cpp
-	gui/widgets/contact-widget.cpp
 	gui/widgets/custom-input.cpp
 	gui/widgets/delayed-line-edit.cpp
 	gui/widgets/file-transfer-widget.cpp
@@ -454,7 +453,6 @@ set (kadu_MOC_SRCS
 	gui/widgets/choose-identity-widget.h
 	gui/widgets/color-button.h
 	gui/widgets/color-selector.h
-	gui/widgets/contact-widget.h
 	gui/widgets/custom-input.h
 	gui/widgets/delayed-line-edit.h
 	gui/widgets/file-transfer-widget.h

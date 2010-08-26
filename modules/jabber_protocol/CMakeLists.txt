@@ -296,7 +296,6 @@ set (SOURCES
 	facebook-protocol-factory.cpp
 	file-transfer/jabber-file-transfer-handler.cpp
 	gtalk-protocol-factory.cpp
-	gui/widgets/jabber-contact-widget.cpp
 	gui/widgets/jabber-contact-personal-info-widget.cpp
 	gui/widgets/jabber-add-account-widget.cpp
 	gui/widgets/jabber-create-account-widget.cpp
@@ -344,7 +343,6 @@ set (MOC_SOURCES
 	client/mini-client.h
 	file-transfer/jabber-file-transfer-handler.h
 	gui/widgets/jabber-contact-personal-info-widget.h
-	gui/widgets/jabber-contact-widget.h
 	gui/widgets/jabber-add-account-widget.h
 	gui/widgets/jabber-create-account-widget.h
 	gui/widgets/jabber-edit-account-widget.h
@@ -387,7 +385,6 @@ set (TRANSLATION_SOURCES
 )
 
 set (CONFIGURATION_FILES
-	configuration/jabber_contact.ui
 )
 
 KADU_JABBER_AUTOMOC ( ${MOC_SOURCES2_IRIS} )

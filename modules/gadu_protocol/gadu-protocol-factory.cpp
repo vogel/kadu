@@ -29,9 +29,9 @@
 #include "gui/widgets/gadu-edit-account-widget.h"
 #include "status/status-type.h"
 #include "status/status-type-manager.h"
+#include "icons-manager.h"
 
 #include "gadu-account-details.h"
-#include "gadu-contact-widget.h"
 #include "gadu-contact-details.h"
 #include "gadu-protocol.h"
 
@@ -105,15 +105,6 @@ QString GaduProtocolFactory::idLabel()
 QRegExp GaduProtocolFactory::idRegularExpression()
 {
 	return IdRegularExpression;
-}
-
-ContactWidget * GaduProtocolFactory::newContactWidget(Contact contact, QWidget *parent)
-{
-	GaduContactDetails *gaduContactDetails = dynamic_cast<GaduContactDetails *>(contact.details());
-
-	return 0 != gaduContactDetails
-			? new GaduContactWidget(contact, parent)
-			: 0;
 }
 
 QWidget * GaduProtocolFactory::newContactPersonalInfoWidget(Contact contact, QWidget *parent)

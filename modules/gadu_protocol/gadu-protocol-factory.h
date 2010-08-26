@@ -25,9 +25,6 @@
 
 #include "protocols/protocol-factory.h"
 
-class ContactWidget;
-class GaduContact;
-
 class GaduProtocolFactory : public ProtocolFactory
 {
 	Q_DISABLE_COPY(GaduProtocolFactory)
@@ -47,7 +44,6 @@ public:
 	virtual AccountAddWidget * newAddAccountWidget(QWidget *parent);
 	virtual QWidget * newCreateAccountWidget(QWidget *parent);
 	virtual AccountEditWidget * newEditAccountWidget(Account, QWidget *parent);
-	virtual ContactWidget * newContactWidget(Contact contact, QWidget *parent = 0);
 	virtual QWidget * newContactPersonalInfoWidget(Contact contact, QWidget *parent = 0);
 	virtual QList<StatusType *> supportedStatusTypes();
 	virtual QString idLabel();

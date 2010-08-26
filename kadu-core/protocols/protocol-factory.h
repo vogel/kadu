@@ -38,7 +38,6 @@ class Buddy;
 class ConfigurationWindow;
 class Contact;
 class ContactShared;
-class ContactWidget;
 class Protocol;
 class ProtocolMenuManager;
 class StatusType;
@@ -53,7 +52,6 @@ public:
 	virtual AccountAddWidget * newAddAccountWidget(QWidget *parent = 0) = 0;
 	virtual QWidget * newCreateAccountWidget(QWidget *parent = 0) = 0;
 	virtual AccountEditWidget * newEditAccountWidget(Account, QWidget *parent = 0) = 0;
-	virtual ContactWidget * newContactWidget(Contact contact, QWidget *parent = 0) = 0;
 	virtual QWidget * newContactPersonalInfoWidget(Contact contact, QWidget *parent = 0) = 0;
 	virtual ProtocolMenuManager * protocolMenuManager() { return 0; }
 	virtual QList<StatusType *> supportedStatusTypes() = 0;

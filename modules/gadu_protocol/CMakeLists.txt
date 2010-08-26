@@ -61,7 +61,6 @@ set (SOURCES
 	gadu-account-details.cpp
 	gadu-contact-data-manager.cpp
 	gadu-contact-details.cpp
-	gadu-contact-widget.cpp
 	gadu-protocol.cpp
 	gadu-protocol-factory.cpp
 	gadu-resolver.cpp
@@ -117,7 +116,6 @@ set (MOC_SOURCES
 	socket-notifiers/gadu-token-socket-notifiers.h
 
 	#gadu-account-details.h
-	gadu-contact-widget.h
 	gadu-protocol.h
 	gadu-resolver.h
 	gadu-url-handler.h
@@ -132,7 +130,6 @@ set (TRANSLATION_SOURCES
 )
 
 set (CONFIGURATION_FILES
-	configuration/gadu_contact.ui
 )
 
 if (MINGW)
