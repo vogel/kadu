@@ -143,105 +143,91 @@ namespace HistoryMigrationHelper
 
 		int linenr = 0;
 
-		struct HistoryEntry entry;
 		//	int num = 0;
 		while ((line = stream.readLine()) != QString::null)
 		{
+			HistoryEntry entry;
+
 			++linenr;
 			tokens = mySplit(',', line);
 			if (tokens.count() < 2)
 				continue;
 			if (tokens[0] == "chatsend")
-				entry.type = HISTORYMANAGER_ENTRY_CHATSEND;
+				entry.Type = HistoryEntry::ChatSend;
 			else if (tokens[0] == "msgsend")
-				entry.type = HISTORYMANAGER_ENTRY_MSGSEND;
+				entry.Type = HistoryEntry::MsgSend;
 			else if (tokens[0] == "chatrcv")
-				entry.type = HISTORYMANAGER_ENTRY_CHATRCV;
+				entry.Type = HistoryEntry::ChatRcv;
 			else if (tokens[0] == "msgrcv")
-				entry.type = HISTORYMANAGER_ENTRY_MSGRCV;
+				entry.Type = HistoryEntry::MsgRcv;
 			else if (tokens[0] == "status")
-				entry.type = HISTORYMANAGER_ENTRY_STATUS;
+				entry.Type = HistoryEntry::StatusChange;
 			else if (tokens[0] == "smssend")
-				entry.type = HISTORYMANAGER_ENTRY_SMSSEND;
-			if (!(entry.type & mask))
+				entry.Type = HistoryEntry::SmsSend;
+			if (!(entry.Type & mask))
 				continue;
 			//		if (num++%10==0)
 			//			qApp->processEvents();
-			switch (entry.type)
+			switch (entry.Type)
 			{
-				case HISTORYMANAGER_ENTRY_CHATSEND:
-				case HISTORYMANAGER_ENTRY_MSGSEND:
+				case HistoryEntry::ChatSend:
+				case HistoryEntry::MsgSend:
 					if (tokens.count() == 5)
 					{
-						entry.uin = tokens[1].toUInt();
-						entry.nick = tokens[2];
-						entry.date.setTime_t(tokens[3].toUInt());
-						entry.message = tokens[4];
-						entry.ip.truncate(0);
-						entry.mobile.truncate(0);
-						entry.description.truncate(0);
+						entry.Uin = tokens[1].toUInt();
+						entry.Nick = tokens[2];
+						entry.Date.setTime_t(tokens[3].toUInt());
+						entry.Message = tokens[4];
 						entries.append(entry);
 					}
 					break;
-				case HISTORYMANAGER_ENTRY_CHATRCV:
-				case HISTORYMANAGER_ENTRY_MSGRCV:
+				case HistoryEntry::ChatRcv:
+				case HistoryEntry::MsgRcv:
 					if (tokens.count() == 6)
 					{
-						entry.uin = tokens[1].toUInt();
-						entry.nick = tokens[2];
-						entry.date.setTime_t(tokens[3].toUInt());
-						entry.sdate.setTime_t(tokens[4].toUInt());
-						entry.message = tokens[5];
-						entry.ip.truncate(0);
-						entry.mobile.truncate(0);
-						entry.description.truncate(0);
+						entry.Uin = tokens[1].toUInt();
+						entry.Nick = tokens[2];
+						entry.Date.setTime_t(tokens[3].toUInt());
+						entry.SendDate.setTime_t(tokens[4].toUInt());
+						entry.Message = tokens[5];
 						entries.append(entry);
 					}
 					break;
-				case HISTORYMANAGER_ENTRY_STATUS:
+				case HistoryEntry::StatusChange:
 					if (tokens.count() == 6 || tokens.count() == 7)
 					{
-						entry.uin = tokens[1].toUInt();
-						entry.nick = tokens[2];
-						entry.ip = tokens[3];
-						entry.date.setTime_t(tokens[4].toUInt());
+						entry.Uin = tokens[1].toUInt();
+						entry.Nick = tokens[2];
+						entry.Ip = tokens[3];
+						entry.Date.setTime_t(tokens[4].toUInt());
 						if (tokens[5] == "avail")
-							entry.status = "Online";
+							entry.Status = HistoryEntry::Online;
 						else if (tokens[5] == "notavail")
-							entry.status = "Offline";
+							entry.Status = HistoryEntry::Offline;
 						else if (tokens[5] == "busy")
-							entry.status = "Busy";
+							entry.Status = HistoryEntry::Busy;
 						else if (tokens[5] == "invisible")
-							entry.status = "Invisible";
+							entry.Status = HistoryEntry::Invisible;
 						if (tokens.count() == 7)
-							entry.description = tokens[6];
-						else
-							entry.description.truncate(0);
-						entry.mobile.truncate(0);
-						entry.message.truncate(0);
+							entry.Description = tokens[6];
 						entries.append(entry);
 					}
 					break;
-				case HISTORYMANAGER_ENTRY_SMSSEND:
+				case HistoryEntry::SmsSend:
 					if (tokens.count() == 4 || tokens.count() == 6)
 					{
-						entry.mobile = tokens[1];
-						entry.date.setTime_t(tokens[2].toUInt());
-						entry.message = tokens[3];
-						if (tokens.count() == 4)
+						entry.Mobile = tokens[1];
+						entry.Date.setTime_t(tokens[2].toUInt());
+						entry.Message = tokens[3];
+						if (tokens.count() == 6)
 						{
-							entry.nick.truncate(0);
-							entry.uin = 0;
+							entry.Nick = tokens[4];
+							entry.Uin = tokens[5].toUInt();
 						}
-						else
-						{
-							entry.nick = tokens[4];
-							entry.uin = tokens[5].toUInt();
-						}
-						entry.ip.truncate(0);
-						entry.description.truncate(0);
 						entries.append(entry);
 					}
+					break;
+				default:
 					break;
 			}
 		}

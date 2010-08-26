@@ -56,7 +56,7 @@ void HistoryImportThread::run()
 		if (!chat)
 			continue;
 
-		QList<HistoryEntry> entries = HistoryMigrationHelper::historyEntries(uinsList, HISTORYMANAGER_ENTRY_CHATSEND | HISTORYMANAGER_ENTRY_CHATRCV);
+		QList<HistoryEntry> entries = HistoryMigrationHelper::historyEntries(uinsList, HistoryEntry::ChatSend | HistoryEntry::ChatRcv);
 
 		foreach (const HistoryEntry &entry, entries)
 			if (Canceled)
@@ -82,21 +82,21 @@ Chat HistoryImportThread::chatFromUinsList(QStringList uinsList) const
 
 void HistoryImportThread::importEntry(Chat chat, const HistoryEntry &entry)
 {
-	QString id = QString::number(entry.uin);
+	QString id = QString::number(entry.Uin);
 
-	bool outgoing = entry.type == HISTORYMANAGER_ENTRY_CHATSEND;
-	QDateTime sendTime = entry.sdate;
-	QDateTime recieveTime = entry.date;
-	QString messageString = entry.message;
+	bool outgoing = (entry.Type == HistoryEntry::ChatSend);
+	QDateTime sendTime = entry.SendDate;
+	QDateTime recieveTime = entry.Date;
+	QString messageString = entry.Message;
 
 	Message msg = Message::create();
 	msg.setMessageChat(chat);
 	msg.setMessageSender(outgoing
 			? GaduAccount.accountContact()
 			: ContactManager::instance()->byId(GaduAccount, id, ActionCreateAndAdd));
-	msg.setContent(entry.message);
-	msg.setSendDate(entry.sdate);
-	msg.setReceiveDate(entry.date);
+	msg.setContent(entry.Message);
+	msg.setSendDate(entry.SendDate);
+	msg.setReceiveDate(entry.Date);
 
 	//TODO 0.6.6: it's damn slow!
 	History::instance()->currentStorage()->appendMessage(msg);

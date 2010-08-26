@@ -31,27 +31,44 @@ class QDateTime;
 class QString;
 class QStringList;
 
-#define HISTORYMANAGER_ENTRY_CHATSEND   0x00000001
-#define HISTORYMANAGER_ENTRY_CHATRCV    0x00000002
-#define HISTORYMANAGER_ENTRY_MSGSEND    0x00000004
-#define HISTORYMANAGER_ENTRY_MSGRCV     0x00000008
-#define HISTORYMANAGER_ENTRY_STATUS     0x00000010
-#define HISTORYMANAGER_ENTRY_SMSSEND    0x00000020
-#define HISTORYMANAGER_ENTRY_ALL        0x0000003f
-#define HISTORYMANAGER_ENTRY_ALL_MSGS   0x0000002f
+typedef quint32 UinType;
 
 struct HistoryEntry
 {
-	int type;
-	quint32 uin;
-	QString nick;
-	QDateTime date;
-	QDateTime sdate;
-	QString message;
-	QString status;
-	QString ip;
-	QString description;
-	QString mobile;
+	// flag
+	enum EntryType
+	{
+		EntryNone      = 0x0000,
+		ChatSend       = 0x0001,
+		ChatRcv        = 0x0002,
+		MsgSend        = 0x0004,
+		MsgRcv         = 0x0008,
+		StatusChange   = 0x0010,
+		SmsSend        = 0x0020
+	};
+
+	enum StatusType
+	{
+		StatusNone,
+		Online,
+		Offline,
+		Busy,
+		Invisible,
+		StatusLast = Invisible
+	};
+
+	EntryType Type;
+	UinType Uin;
+	QString Nick;
+	QDateTime Date;
+	QDateTime SendDate;
+	QString Message;
+	StatusType Status;
+	QString Ip;
+	QString Description;
+	QString Mobile;
+
+	HistoryEntry() : Type(EntryNone), Uin(0), Status(StatusNone) {}
 };
 
 namespace HistoryMigrationHelper
