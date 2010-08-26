@@ -60,7 +60,7 @@ namespace HistoryMigrationHelper
 	{
 		kdebugf();
 
-		int lines;
+		int lines, offs, lastOffs = 0;
 		QString filename = getFileNameByUinsList(uins);
 		QString path = profilePath("history/");
 		QByteArray buffer;
@@ -74,6 +74,16 @@ namespace HistoryMigrationHelper
 		}
 
 		lines = fidx.size() / sizeof(int);
+
+		// ignore garbage in index file (strange, but sometimes happens)
+		while (fidx.read((char *)&offs, sizeof(int)) > 0)
+		{
+			if (offs < lastOffs)
+				--lines;
+			else
+				lastOffs = offs;
+		}
+
 		fidx.close();
 
 		kdebugmf(KDEBUG_INFO, "%d lines\n", lines);
@@ -141,6 +151,12 @@ namespace HistoryMigrationHelper
 		while ((line = stream.readLine()) != QString::null)
 		{
 			HistoryEntry entry;
+
+			// because of a bug in Kadu 0.6.5 or Qt4 sometimes (very rarely)
+			// garbage is put before entry type string
+			QRegExp regexp("^.*((?:chatsend|chatrcv|msgsend|msgrcv|status|smssend),)");
+			regexp.setMinimal(true);
+			line.replace(regexp, "\\1");
 
 			tokens = mySplit(',', line);
 			if (tokens.count() < 2)
