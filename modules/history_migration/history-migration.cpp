@@ -19,21 +19,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QDir>
+#include <QtCore/QFile>
+#include <QtCore/QList>
+#include <QtCore/QStringList>
+#include <QtCore/QTimer>
 #include <QtGui/QProgressDialog>
 
+#include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "chat/message/message.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
 #include "misc/misc.h"
+#include "misc/path-conversion.h"
 #include "modules/history/history.h"
 #include "debug.h"
 
 #include "history-import-thread.h"
+#include "history-migration-helper.h"
 
 #include "history-migration.h"
 
@@ -108,18 +113,18 @@ void HistoryImporter::run()
 	if (gaduAccount.isNull() || !History::instance()->currentStorage())
 		return;
 
-	QList<QStringList> uinsLists = getUinsLists();
+	QList<QStringList> uinsLists = HistoryMigrationHelper::getUinsLists();
 	int totalEntries = 0;
 
 	foreach (QStringList uinsList, uinsLists)
-		totalEntries += getHistoryEntriesCount(uinsList);
+		totalEntries += HistoryMigrationHelper::getHistoryEntriesCount(uinsList);
 
 	if (0 == totalEntries)
 		return;
 
 	if (!MessageDialog::ask(qApp->translate("HistoryMigration", "%1 history entries found. Do you want to import them?").arg(totalEntries)))
 		return;
-	
+
 	if (ConfigurationWindow)
 		ConfigurationWindow->widget()->widgetById("history-migration/import")->setVisible(false);
 
@@ -136,7 +141,7 @@ void HistoryImporter::run()
 	updateProgressBar->setSingleShot(false);
 	updateProgressBar->setInterval(200);
 	connect(updateProgressBar, SIGNAL(timeout()), this, SLOT(updateProgressWindow()));
-	
+
 	Thread->start();
 	ProgressDialog->show();
 	updateProgressBar->start();
@@ -161,59 +166,6 @@ void HistoryImporter::threadFinished()
 	ProgressDialog = 0;
 
 	deleteLater();
-}
-
-QList<QStringList> HistoryImporter::getUinsLists() const
-{
-	kdebugf();
-	QList<QStringList> entries;
-	QDir dir(profilePath("history/"), "*.idx");
-	QStringList struins;
-	QStringList uins;
-
-	foreach (QString entry, dir.entryList())
-	{
-		struins = entry.remove(QRegExp(".idx$")).split("_", QString::SkipEmptyParts);
-		uins.clear();
-		if (struins[0] != "sms")
-			foreach (const QString &struin, struins)
-				uins.append(struin);
-		entries.append(uins);
-	}
-
-	kdebugf2();
-	return entries;
-}
-
-int HistoryImporter::getHistoryEntriesCountPrivate(const QString &filename) const
-{
-	kdebugf();
-
-	int lines;
-	QFile f;
-	QString path = profilePath("history/");
-	QByteArray buffer;
-
-	f.setFileName(path + filename + ".idx");
-	if (!f.open(QIODevice::ReadOnly))
-	{
-		kdebugmf(KDEBUG_ERROR, "Error opening history file %s\n", qPrintable(filename));
-		return 0;
-	}
-	lines = f.size() / sizeof(int);
-
-	f.close();
-
-	kdebugmf(KDEBUG_INFO, "%d lines\n", lines);
-	return lines;
-}
-
-int HistoryImporter::getHistoryEntriesCount(const QStringList &uins)
-{
-	kdebugf();
-	int ret = getHistoryEntriesCountPrivate(HistoryImportThread::getFileNameByUinsList(uins));
-	kdebugf2();
-	return ret;
 }
 
 void HistoryImporter::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)

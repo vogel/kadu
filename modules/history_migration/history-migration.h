@@ -41,10 +41,6 @@ class HistoryImporter : public ConfigurationUiHandler
 	HistoryImporter();
 	virtual ~HistoryImporter();
 
-	QList<QStringList> getUinsLists() const;
-	int getHistoryEntriesCountPrivate(const QString &filename) const;
-	int getHistoryEntriesCount(const QStringList &uins);
-
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
 private slots:
