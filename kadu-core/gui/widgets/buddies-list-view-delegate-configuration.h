@@ -47,6 +47,7 @@ class BuddiesListViewDelegateConfiguration : private ConfigurationAwareObject
 	bool AvatarBorder;
 	bool AvatarGreyOut;
 	QColor DescriptionColor;
+	QColor FontColor;	
 
 	QSize DefaultAvatarSize;
 	QPixmap MessagePixmap;
@@ -72,6 +73,7 @@ public:
 	bool avatarBorder() const { return AvatarBorder; }
 	bool avatarGreyOut() const { return AvatarGreyOut; }
 	QColor descriptionColor() const { return DescriptionColor; }
+	QColor fontColor() const { return FontColor; }
 
 	QSize defaultAvatarSize() const { return DefaultAvatarSize; }
 	QPixmap messagePixmap() const { return MessagePixmap; }

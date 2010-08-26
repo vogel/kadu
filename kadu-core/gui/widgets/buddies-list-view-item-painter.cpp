@@ -405,6 +405,11 @@ void BuddiesListViewItemPainter::paint(QPainter *painter)
 
 	computeLayout();
 
+	if (Option.state & QStyle::State_Selected)
+		painter->setPen(Option.palette.color(QPalette::Normal, QPalette::HighlightedText));
+	else
+		painter->setPen(Configuration.fontColor());
+	
 	paintIcon(painter);
 	paintMessageIcon(painter);
 	paintAvatar(painter);

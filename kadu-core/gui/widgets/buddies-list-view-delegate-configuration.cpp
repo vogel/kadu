@@ -54,6 +54,7 @@ void BuddiesListViewDelegateConfiguration::configurationUpdated()
 	ShowDescription = config_file.readBoolEntry("Look", "ShowDesc");
 	ShowMultiLineDescription = config_file.readBoolEntry("Look", "ShowMultilineDesc");
 	DescriptionColor = config_file.readColorEntry("Look", "DescriptionColor");
+	FontColor = config_file.readColorEntry("Look", "UserboxFgColor");
 
 	// hack to make listViee redo the layout
 	if (ListView)
