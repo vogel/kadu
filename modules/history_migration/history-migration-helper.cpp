@@ -187,7 +187,7 @@ namespace HistoryMigrationHelper
 						entry.Uin = tokens[1].toUInt();
 						entry.Nick = tokens[2];
 						entry.Date.setTime_t(tokens[3].toUInt());
-						entry.Message = tokens[4];
+						entry.Content = tokens[4];
 						entries.append(entry);
 					}
 					break;
@@ -199,7 +199,7 @@ namespace HistoryMigrationHelper
 						entry.Nick = tokens[2];
 						entry.Date.setTime_t(tokens[3].toUInt());
 						entry.SendDate.setTime_t(tokens[4].toUInt());
-						entry.Message = tokens[5];
+						entry.Content = tokens[5];
 						entries.append(entry);
 					}
 					break;
@@ -208,7 +208,7 @@ namespace HistoryMigrationHelper
 					{
 						entry.Uin = tokens[1].toUInt();
 						entry.Nick = tokens[2];
-						entry.Ip = tokens[3];
+						//entry.Ip = tokens[3];
 						entry.Date.setTime_t(tokens[4].toUInt());
 						if (tokens[5] == "avail")
 							entry.Status = HistoryEntry::Online;
@@ -219,7 +219,7 @@ namespace HistoryMigrationHelper
 						else if (tokens[5] == "invisible")
 							entry.Status = HistoryEntry::Invisible;
 						if (tokens.count() == 7)
-							entry.Description = tokens[6];
+							entry.Content = tokens[6];
 						entries.append(entry);
 					}
 					break;
@@ -228,7 +228,7 @@ namespace HistoryMigrationHelper
 					{
 						entry.Mobile = tokens[1];
 						entry.Date.setTime_t(tokens[2].toUInt());
-						entry.Message = tokens[3];
+						entry.Content = tokens[3];
 						if (tokens.count() == 6)
 						{
 							entry.Nick = tokens[4];

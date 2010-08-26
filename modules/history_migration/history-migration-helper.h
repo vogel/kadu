@@ -63,10 +63,8 @@ struct HistoryEntry
 	QString Nick;
 	QDateTime Date;
 	QDateTime SendDate;
-	QString Message;
+	QString Content;
 	StatusType Status;
-	QString Ip;
-	QString Description;
 	QString Mobile;
 
 	HistoryEntry() : Type(EntryNone), Uin(0), Status(StatusNone) {}
