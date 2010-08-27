@@ -86,7 +86,6 @@ BuddyDataWindow::BuddyDataWindow(Buddy buddy, QWidget *parent) :
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(tr("Buddy Properties - %1").arg(MyBuddy.display()));
 
-	TabWidget = NULL;
 	createGui();
 	updateButtons();
 

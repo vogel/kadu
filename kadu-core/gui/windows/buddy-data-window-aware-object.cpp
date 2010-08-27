@@ -17,14 +17,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 #include "gui/windows/buddy-data-window.h"
 
 #include "buddy-data-window-aware-object.h"
 
-
 KADU_AWARE_CLASS(BuddyDataWindowAwareObject)
-
 
 /**
  * @author Piotr 'ultr' Dąbrowski
@@ -40,7 +37,6 @@ void BuddyDataWindowAwareObject::notifyBuddyDataWindowCreated(BuddyDataWindow *b
 		object->buddyDataWindowCreated(buddydatawindow);
 }
 
-
 /**
  * @author Piotr 'ultr' Dąbrowski
  * @short Call this method to call buddyDataWindowDestroyed in each BuddyDataWindowAwareObject object.
@@ -55,7 +51,6 @@ void BuddyDataWindowAwareObject::notifyBuddyDataWindowDestroyed(BuddyDataWindow 
 		object->buddyDataWindowDestroyed(buddydatawindow);
 }
 
-
 /**
  * @author Piotr 'ultr' Dąbrowski
  * @short Call this method to call buddyDataWindowCreated for each existing BuddyDataWindow.
@@ -68,7 +63,6 @@ void BuddyDataWindowAwareObject::triggerAllBuddyDataWindowsCreated()
 	foreach (BuddyDataWindow *buddydatawindow, BuddyDataWindow::instances())
 		buddyDataWindowCreated(buddydatawindow);
 }
-
 
 /**
  * @author Piotr 'ultr' Dąbrowski

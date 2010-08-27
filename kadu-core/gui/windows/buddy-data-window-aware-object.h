@@ -18,13 +18,11 @@
  */
 
 #ifndef BUDDY_DATA_WINDOW_AWARE_OBJECT
-	#define BUDDY_DATA_WINDOW_AWARE_OBJECT
-
+#define BUDDY_DATA_WINDOW_AWARE_OBJECT
 
 #include <QtCore/QList>
 
 #include "aware-object.h"
-
 
 class BuddyDataWindow;
 
@@ -64,6 +62,5 @@ class KADUAPI BuddyDataWindowAwareObject : public AwareObject<BuddyDataWindowAwa
 		void triggerAllBuddyDataWindowsCreated();
 		void triggerAllBuddyDataWindowsDestroyed();
 };
-
 
 #endif

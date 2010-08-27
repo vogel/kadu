@@ -60,7 +60,7 @@ class KADUAPI BuddyDataWindow : public QWidget
 {
 	Q_OBJECT
 
-	static QList<BuddyDataWindow*> Instances;
+	static QList<BuddyDataWindow *> Instances;
 
 	Buddy MyBuddy;
 	BuddyGeneralConfigurationWidget *ContactTab;
@@ -94,10 +94,10 @@ public:
 	explicit BuddyDataWindow(Buddy buddy, QWidget *parent = 0);
 	virtual ~BuddyDataWindow();
 
-	static QList<BuddyDataWindow*> instances() { return Instances; }
+	static QList<BuddyDataWindow *> instances() { return Instances; }
 
 	Buddy buddy() { return MyBuddy; }
-	QTabWidget* tabWidget() { return TabWidget; }
+	QTabWidget *tabWidget() { return TabWidget; }
 
 };
 
