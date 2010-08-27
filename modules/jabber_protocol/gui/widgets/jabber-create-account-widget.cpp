@@ -203,7 +203,7 @@ void JabberCreateAccountWidget::createGui()
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 	mainLayout->addWidget(buttons);
 
-	RegisterAccountButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogApplyButton), tr("Regster Account"), this);
+	RegisterAccountButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogApplyButton), tr("Register Account"), this);
 	QPushButton *cancelButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Cancel"), this);
 
 	connect(RegisterAccountButton, SIGNAL(clicked(bool)), this, SLOT(apply()));
@@ -219,7 +219,7 @@ bool JabberCreateAccountWidget::checkSSL()
 {
 	if (!QCA::isSupported("tls"))
 	{
-		MessageDialog::msg(tr("Cannot enable SSL/TLS. Plugin not found."));
+		MessageDialog::msg(tr("Cannot enable secure connection. SSL/TLS plugin not found."));
 		return false;
 	}
 	return true;
@@ -241,7 +241,7 @@ void JabberCreateAccountWidget::sslActivated(int i)
 		EncryptionMode->setCurrentIndex(EncryptionMode->findData(1));
 	else if (EncryptionMode->itemData(i) == 2 && !CustomHostPort->isChecked())
 	{
-		MessageDialog::msg(tr("Legacy SSL is only available in combination with manual host/port."));
+		MessageDialog::msg(tr("Legacy secure connection (SSL) is only available in combination with manual host/port."));
 		EncryptionMode->setCurrentIndex(EncryptionMode->findData(1));
 	}
 }
@@ -307,7 +307,7 @@ void JabberCreateAccountWidget::registerNewAccountFinished(JabberServerRegisterA
 {
 	if (jsra->result())
 	{
-		MessageDialog::msg(tr("Registration was successful. Your new Jabber ID is %1.\nStore it in a safe place along with the password.\nNow add your friends to the buddy list.").arg(jsra->jid()), false, "32x32/dialog-information.png", this);
+		MessageDialog::msg(tr("Registration was successful. Your new XMPP username is %1.\nStore it in a safe place along with the password.\nNow please add your friends to the buddy list.").arg(jsra->jid()), false, "32x32/dialog-information.png", this);
 
 		Account jabberAccount = Account::create();
 		jabberAccount.setProtocolName("jabber");

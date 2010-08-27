@@ -197,9 +197,9 @@ void JabberProtocol::connectToServer()
 
 	if (account().id().isEmpty())
 	{
-		MessageDialog::msg(tr("Jabber ID not set!"), false, "32x32/dialog-warning.png");
+		MessageDialog::msg(tr("XMPP username is not set!"), false, "32x32/dialog-warning.png");
 		setStatus(Status());
-		kdebugmf(KDEBUG_FUNCTION_END, "end: Jabber ID not set\n");
+		kdebugmf(KDEBUG_FUNCTION_END, "end: XMPP username is not set\n");
 		return;
 	}
 
@@ -233,7 +233,7 @@ void JabberProtocol::connectToServer()
 	jabberID = account().id();
 
 /*
-//TODO: do nowej klasy dostosowa?
+//TODO: do nowej klasy dostosowac
 	XMPP::AdvancedConnector::Proxy p;
 	if(config_file.readBoolEntry("Network", "UseProxy"))
 	{
@@ -378,7 +378,7 @@ void JabberProtocol::disconnectFromServer(const XMPP::Status &s)
 
 void JabberProtocol::slotClientDebugMessage(const QString &msg)
 {
-	kdebugm(KDEBUG_WARNING, "Jabber Client debug:  %s\n", qPrintable(msg));
+	kdebugm(KDEBUG_WARNING, "XMPP Client debug:  %s\n", qPrintable(msg));
 }
 
 void JabberProtocol::disconnectedFromServer()

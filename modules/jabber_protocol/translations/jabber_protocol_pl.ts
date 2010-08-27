@@ -324,7 +324,7 @@ Nowe hasło wprowadzone w polu &quot;Nowe hasło&quot; nie jest identyczne z zaw
     </message>
     <message>
         <location filename="../gui/widgets/jabber-create-account-widget.cpp" line="206"/>
-        <source>Regster Account</source>
+        <source>Register Account</source>
         <translation>Zarejestruj konto</translation>
     </message>
     <message>
@@ -353,11 +353,11 @@ Nowe hasło wprowadzone w polu &quot;Nowe hasło&quot; nie jest identyczne z zaw
     </message>
     <message>
         <location filename="../gui/widgets/jabber-create-account-widget.cpp" line="310"/>
-        <source>Registration was successful. Your new Jabber ID is %1.
+        <source>Registration was successful. Your new XMPP username is %1.
 Store it in a safe place along with the password.
 Now add your friends to the buddy list.</source>
-        <translation>Rejestracja się powiodła. Twój nowy Jabber ID to %1.
-Zapisz go wraz z hasłem w bezpiecznym miejscu.
+        <translation>Rejestracja się powiodła. Twoja nazwa użytkownika to %1.
+Zapisz nazwe użytkownika wraz z hasłem w bezpiecznym miejscu.
 Teraz możesz dodać znajomych do listy kontaktów.</translation>
     </message>
     <message>
@@ -390,8 +390,8 @@ Teraz możesz dodać znajomych do listy kontaktów.</translation>
     </message>
     <message>
         <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="116"/>
-        <source>XMPP/Jabber Id</source>
-        <translation>XMPP/Jabber Id</translation>
+        <source>Username</source>
+        <translation>Nazwa użytkownika</translation>
     </message>
     <message>
         <location filename="../gui/widgets/jabber-edit-account-widget.cpp" line="121"/>
@@ -676,8 +676,8 @@ wychodzące połączenia TCP są zezwolone.</translation>
     <name>JabberProtocol</name>
     <message>
         <location filename="../jabber-protocol.cpp" line="189"/>
-        <source>Jabber ID not set!</source>
-        <translation>Jabber ID nie jest ustawiony!</translation>
+        <source>Username is not set</source>
+        <translation>Nazwa użytkownika nie jest ustawiona</translation>
     </message>
     <message>
         <location filename="../jabber-protocol.cpp" line="197"/>
@@ -689,8 +689,8 @@ wychodzące połączenia TCP są zezwolone.</translation>
     <name>JabberProtocolFactory</name>
     <message>
         <location filename="../jabber-protocol-factory.cpp" line="108"/>
-        <source>Jabber ID:</source>
-        <translation>Jabber ID:</translation>
+        <source>Username:</source>
+        <translation>Nazwa użytkownika:</translation>
     </message>
 </context>
 <context>

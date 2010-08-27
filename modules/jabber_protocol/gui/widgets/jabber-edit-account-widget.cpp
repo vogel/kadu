@@ -112,7 +112,7 @@ void JabberEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 
 	AccountId = new QLineEdit(this);
 	connect(AccountId, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
-	formLayout->addRow(tr("XMPP/Jabber Id") + ":", AccountId);
+	formLayout->addRow(tr("Username") + ":", AccountId);
 
 	AccountPassword = new QLineEdit(this);
 	AccountPassword->setEchoMode(QLineEdit::Password);
@@ -249,7 +249,7 @@ void JabberEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	PlainTextAuth = new QComboBox(general);
 	PlainTextAuth->addItem(tr("Never"), JabberAccountDetails::NoAllowPlain);
 	PlainTextAuth->addItem(tr("Always"), JabberAccountDetails::AllowPlain);
-	PlainTextAuth->addItem(tr("Over ecrypted connection"), JabberAccountDetails::AllowPlainOverTLS);
+	PlainTextAuth->addItem(tr("Over encrypted connection"), JabberAccountDetails::AllowPlainOverTLS);
 	connect(PlainTextAuth, SIGNAL(activated(int)), this, SLOT(dataChanged()));
 	plainAuthLayout->addWidget(PlainTextAuth);
 	vboxLayout2->addLayout(plainAuthLayout);
@@ -343,7 +343,7 @@ bool JabberEditAccountWidget::checkSSL()
 {
 	if (!QCA::isSupported("tls"))
 	{
-		MessageDialog::msg(tr("Cannot enable SSL/TLS. Plugin not found."));
+		MessageDialog::msg(tr("Cannot enable secure connection. SSL/TLS plugin not found."));
 		return false;
 	}
 	return true;
@@ -480,7 +480,7 @@ void JabberEditAccountWidget::removeAccount()
 {
 	QMessageBox *messageBox = new QMessageBox(this);
 	messageBox->setWindowTitle(tr("Confirm account removal"));
-	messageBox->setText(tr("Are you sure do you want to remove account %1 (%2)")
+	messageBox->setText(tr("Are you sure you want to remove account %1 (%2)?")
 			.arg(account().accountIdentity().name())
 			.arg(account().id()));
 
