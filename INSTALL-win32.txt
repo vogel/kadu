@@ -1,4 +1,4 @@
-Kompilacja i instalacja Kadu pod Windows z wykorzystaniem MinGW
+Kompilacja i instalacja Kadu 0.6.5.x pod Windows z wykorzystaniem MinGW
 
 1.  Pobierz biblioteki Qt (http://get.qtsoftware.com/qt/source/qt-win-opensource-4.5.2-mingw.exe) 
     i zainstaluj do katalogu C:\Qt\4.5.2. Podczas instalacji zainstaluj mingw do katalogu C:\MinGW

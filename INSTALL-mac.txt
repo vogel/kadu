@@ -1,4 +1,4 @@
-Kompilacja i instalacja Kadu pod Mac OS X 10.5 Leopard
+Kompilacja i instalacja Kadu 0.6.5.x pod Mac OS X 10.5 Leopard
 
     W zwiazku z usunieciem frameworka Carbon z Mac OS X 10.6 Snow Leopard nie jest mozliwe
     skompilowanie kadu pod ta wersja systemu (caly kod specyficzny dla Mac OS X zostal
