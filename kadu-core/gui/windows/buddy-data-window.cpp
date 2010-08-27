@@ -13,6 +13,7 @@
  * Copyright 2008, 2009, 2010 Piotr Galiszewski (piotrgaliszewski@gmail.com)
  * Copyright 2004 Paweł Płuciennik (pawel_p@kadu.net)
  * Copyright 2003, 2004 Dariusz Jagodzik (mast3r@kadu.net)
+ * Copyright 2010 Piotr Dąbrowski (ultr@ultr.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -59,7 +60,9 @@
 #include "gui/widgets/buddy-options-configuration-widget.h"
 #include "gui/widgets/buddy-personal-info-configuration-widget.h"
 #include "gui/windows/buddy-data-manager.h"
+#include "gui/windows/buddy-data-window-aware-object.h"
 #include "gui/windows/message-dialog.h"
+
 #include "misc/misc.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
@@ -69,26 +72,35 @@
 
 #include "buddy-data-window.h"
 
+QList<BuddyDataWindow*> BuddyDataWindow::Instances;
+
 BuddyDataWindow::BuddyDataWindow(Buddy buddy, QWidget *parent) :
 		QWidget(parent, Qt::Dialog), MyBuddy(buddy)
 {
 	kdebugf();
+
+	Instances.append(this);
 
 	setWindowRole("kadu-buddy-data");
 
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(tr("Buddy Properties - %1").arg(MyBuddy.display()));
 
+	TabWidget = NULL;
 	createGui();
 	updateButtons();
 
 	loadWindowGeometry(this, "General", "ManageUsersDialogGeometry", 0, 50, 425, 500);
+
+	BuddyDataWindowAwareObject::notifyBuddyDataWindowCreated(this);
 }
 
 BuddyDataWindow::~BuddyDataWindow()
 {
 	kdebugf();
- 	saveWindowGeometry(this, "General", "ManageUsersDialogGeometry");
+	saveWindowGeometry(this, "General", "ManageUsersDialogGeometry");
+	BuddyDataWindowAwareObject::notifyBuddyDataWindowDestroyed(this);
+	Instances.removeOne(this);
 	kdebugf2();
 }
 
@@ -102,13 +114,13 @@ void BuddyDataWindow::createGui()
 
 void BuddyDataWindow::createTabs(QLayout *layout)
 {
-	QTabWidget *tabWidget = new QTabWidget(this);
+	TabWidget = new QTabWidget(this);
 
-	createGeneralTab(tabWidget);
-	createGroupsTab(tabWidget);
-	createPersonalInfoTab(tabWidget);
-	createOptionsTab(tabWidget);
-	layout->addWidget(tabWidget);
+	createGeneralTab(TabWidget);
+	createGroupsTab(TabWidget);
+	createPersonalInfoTab(TabWidget);
+	createOptionsTab(TabWidget);
+	layout->addWidget(TabWidget);
 }
 
 void BuddyDataWindow::createGeneralTab(QTabWidget *tabWidget)
