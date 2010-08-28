@@ -12,6 +12,7 @@
  * Copyright 2008, 2009, 2010 Piotr Galiszewski (piotrgaliszewski@gmail.com)
  * Copyright 2005 Paweł Płuciennik (pawel_p@kadu.net)
  * Copyright 2002, 2003 Dariusz Jagodzik (mast3r@kadu.net)
+ * Copyright 2010 Piotr Dąbrowski (ultr@ultr.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -57,7 +58,12 @@ class BuddyOptionsConfigurationWidget;
 
 class KADUAPI BuddyDataWindow : public QWidget
 {
+	friend class BuddyDataWindowAwareObject;
+
 	Q_OBJECT
+
+	static QList<BuddyDataWindow *> Instances;
+	static QList<BuddyDataWindow *> instances() { return Instances; }
 
 	Buddy MyBuddy;
 	BuddyGeneralConfigurationWidget *ContactTab;
@@ -65,6 +71,7 @@ class KADUAPI BuddyDataWindow : public QWidget
 	BuddyPersonalInfoConfigurationWidget *PersonalInfoTab;
 	BuddyOptionsConfigurationWidget *OptionsTab;
 
+	QTabWidget *TabWidget;
 	QPushButton *OkButton;
 	QPushButton *ApplyButton;
 
@@ -89,6 +96,9 @@ private slots:
 public:
 	explicit BuddyDataWindow(Buddy buddy, QWidget *parent = 0);
 	virtual ~BuddyDataWindow();
+
+	Buddy buddy() { return MyBuddy; }
+	QTabWidget *tabWidget() { return TabWidget; }
 
 };
 
