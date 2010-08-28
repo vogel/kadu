@@ -37,30 +37,30 @@ class BuddyDataWindow;
  */
 class KADUAPI BuddyDataWindowAwareObject : public AwareObject<BuddyDataWindowAwareObject>
 {
-	protected:
-		/**
-		* @author Piotr 'ultr' Dąbrowski
-		* @short Method is called after new BuddyDataWindow window is created
-		* @param buddydatawindow created window
-		*
-		* Method is called after a new BuddyDataWindow is created.
-		* This method must be overriden.
-		*/
-		virtual void buddyDataWindowCreated(BuddyDataWindow *buddydatawindow) = 0;
-		/**
-		* @author Piotr 'ultr' Dąbrowski
-		* @short Method is called when a BuddyDataWindow window is destroyed.
-		* @param buddydatawindow destroyed window
-		*
-		* Method is called after a BuddyDataWindow is destroyed.
-		* This method must be overriden.
-		*/
-		virtual void buddyDataWindowDestroyed(BuddyDataWindow *buddydatawindow) = 0;
-	public:
-		static KADUAPI void notifyBuddyDataWindowCreated(BuddyDataWindow *buddydatawindow);
-		static KADUAPI void notifyBuddyDataWindowDestroyed(BuddyDataWindow *buddydatawindow);
-		void triggerAllBuddyDataWindowsCreated();
-		void triggerAllBuddyDataWindowsDestroyed();
+protected:
+	/**
+	* @author Piotr 'ultr' Dąbrowski
+	* @short Method is called after new BuddyDataWindow window is created
+	* @param buddydatawindow created window
+	*
+	* Method is called after a new BuddyDataWindow is created.
+	* This method must be overriden.
+	*/
+	virtual void buddyDataWindowCreated(BuddyDataWindow *buddydatawindow) = 0;
+	/**
+	* @author Piotr 'ultr' Dąbrowski
+	* @short Method is called when a BuddyDataWindow window is destroyed.
+	* @param buddydatawindow destroyed window
+	*
+	* Method is called after a BuddyDataWindow is destroyed.
+	* This method must be overriden.
+	*/
+	virtual void buddyDataWindowDestroyed(BuddyDataWindow *buddydatawindow) = 0;
+public:
+	static KADUAPI void notifyBuddyDataWindowCreated(BuddyDataWindow *buddydatawindow);
+	static KADUAPI void notifyBuddyDataWindowDestroyed(BuddyDataWindow *buddydatawindow);
+	void triggerAllBuddyDataWindowsCreated();
+	void triggerAllBuddyDataWindowsDestroyed();
 };
 
 #endif

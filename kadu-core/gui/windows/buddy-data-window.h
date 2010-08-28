@@ -58,9 +58,12 @@ class BuddyOptionsConfigurationWidget;
 
 class KADUAPI BuddyDataWindow : public QWidget
 {
+	friend class BuddyDataWindowAwareObject;
+
 	Q_OBJECT
 
 	static QList<BuddyDataWindow *> Instances;
+	static QList<BuddyDataWindow *> instances() { return Instances; }
 
 	Buddy MyBuddy;
 	BuddyGeneralConfigurationWidget *ContactTab;
@@ -93,8 +96,6 @@ private slots:
 public:
 	explicit BuddyDataWindow(Buddy buddy, QWidget *parent = 0);
 	virtual ~BuddyDataWindow();
-
-	static QList<BuddyDataWindow *> instances() { return Instances; }
 
 	Buddy buddy() { return MyBuddy; }
 	QTabWidget *tabWidget() { return TabWidget; }
