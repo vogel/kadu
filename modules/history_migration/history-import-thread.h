@@ -20,41 +20,35 @@
 #ifndef HISTORY_IMPORT_THREAD_H
 #define HISTORY_IMPORT_THREAD_H
 
-#include <QtCore/QStringList>
+#include <QtCore/QList>
 #include <QtCore/QThread>
 
-#include "accounts/account.h"
+#include "history-migration-helper.h"
 
+class Account;
 class Chat;
-
 struct HistoryEntry;
 
 class HistoryImportThread : public QThread
 {
-	Q_OBJECT
-
 	Account GaduAccount;
-	QList<QStringList> UinsLists;
+	QList<UinsList> UinsLists;
 
 	bool Canceled;
-	unsigned long TotalEntries;
-	unsigned long ImportedEntries;
+	int TotalEntries;
+	int ImportedEntries;
 
-	Chat  chatFromUinsList(QStringList uinsList);
-	QList<HistoryEntry> historyEntries(QStringList uins, int mask);
+	Chat chatFromUinsList(const UinsList &uinsList) const;
 	void importEntry(Chat chat, const HistoryEntry &entry);
-	QStringList mySplit(const QChar &sep, const QString &str);
 
 public:
-	HistoryImportThread(Account gaduAccount, QList<QStringList> uinsLists, unsigned long totalEntries, QObject *parent = 0);
+	HistoryImportThread(Account gaduAccount, const QList<UinsList> &uinsLists, int totalEntries, QObject *parent = 0);
 	virtual ~HistoryImportThread();
-
-	static QString getFileNameByUinsList(QStringList uins);
 
 	virtual void run();
 	void cancel();
 
-	unsigned long importedEntries() { return ImportedEntries; }
+	int importedEntries() { return ImportedEntries; }
 
 };
 

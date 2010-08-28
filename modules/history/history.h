@@ -75,7 +75,7 @@ class HISTORYAPI History : public ConfigurationUiHandler, ConfigurationAwareObje
 	Q_OBJECT
 
 	static History *Instance;
-	
+
 	bool SaveChats;
 	bool SaveStatuses;
 	bool SaveOnlyStatusesWithDescription;
@@ -96,7 +96,7 @@ class HISTORYAPI History : public ConfigurationUiHandler, ConfigurationAwareObje
 	QListWidget *allStatusUsers;
 	QListWidget *selectedStatusUsers;
 	QListWidget *allChatsUsers;
-	QListWidget *selectedChatsUsers; 
+	QListWidget *selectedChatsUsers;
 
 	History();
 	virtual ~History();
@@ -150,8 +150,6 @@ public:
 	QList<QDate> datesForStatusBuddy(Buddy buddy, HistorySearchParameters search);
 	QList<Status> statuses(Buddy buddy, QDate date = QDate(), int limit = 0);
 	int statusBuddyCount(Buddy buddy, QDate date = QDate());
-
-	void appendSms(const QString &receipient, const QString &content);
 
 	QList<QString> smsReceipientsList(HistorySearchParameters search);
 	QList<QDate> datesForSmsReceipient(const QString &receipient, HistorySearchParameters search);
