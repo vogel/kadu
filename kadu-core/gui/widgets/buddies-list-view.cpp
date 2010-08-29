@@ -372,6 +372,7 @@ void BuddiesListView::mousePressEvent(QMouseEvent *event)
 void BuddiesListView::mouseReleaseEvent(QMouseEvent *event)
 {
 	QTreeView::mouseReleaseEvent(event);
+	update();
 	toolTipRestart();
 }
 
