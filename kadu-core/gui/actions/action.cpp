@@ -167,18 +167,7 @@ void disableEmptyContacts(Action *action)
 	action->setEnabled(!action->contacts().isEmpty());
 }
 
-void disableNoChatContacts(Action *action)
+void disableNoChat(Action *action)
 {
-	bool enabled = false;
-	
-	foreach (Contact contact, action->contacts())
-	{
-		ChatService *cs = 0;
-		Protocol *p = contact.contactAccount().protocolHandler();
-		if (p)
-			cs = p->chatService();
-		enabled = cs != 0;
-	}
-	  
-	action->setEnabled(enabled);
+  action->setEnabled(action->chat());
 }
