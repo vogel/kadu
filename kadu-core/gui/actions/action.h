@@ -67,6 +67,8 @@ public:
 	BuddySet buddies();
 
 	Chat chat();
+	
+	ActionDataSource *dataSource();	
 
 public slots:
 	void checkState();

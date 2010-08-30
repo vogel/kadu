@@ -442,7 +442,6 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		disableNotOneUles
 	);
 	connect(EditUser, SIGNAL(actionCreated(Action *)), this, SLOT(editUserActionCreated(Action *)));
-	EditUser->setShortcut("kadu_persinfo");
 	BuddiesListViewMenuManager::instance()->addActionDescription(EditUser);
 
 	BuddiesListViewMenuManager::instance()->addSeparator();
@@ -979,29 +978,28 @@ void KaduWindowActions::hideDescriptionActionActivated(QAction *sender, bool tog
 
 void KaduWindowActions::deleteUsersActionActivated(QAction *sender, bool toggled)
 {
-	kdebugf();
-
-	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
-	deleteUserActionActivated(window, toggled);
-}
-
-void KaduWindowActions::deleteUserActionActivated(MainWindow* window, bool toggled)
-{
 	Q_UNUSED(toggled)
 
 	kdebugf();
-
-	if (!window)
+	
+	Action *action = dynamic_cast<Action *>(sender);
+	if (!action)
 		return;
 
-	BuddySet buddies = window->buddies();
-	if (buddies.isEmpty())
-		return;
-
-	BuddyDeleteWindow *deleteWindow = new BuddyDeleteWindow(buddies);
-	deleteWindow->show();
+	deleteUserActionActivated(action->dataSource());
 }
 
+void KaduWindowActions::deleteUserActionActivated(ActionDataSource *source)
+{
+	kdebugf();
+
+	BuddySet buddySet = source->buddies();
+	if (buddySet.empty())
+		return;
+	
+	BuddyDeleteWindow *deleteWindow = new BuddyDeleteWindow(buddySet);
+	deleteWindow->show();
+}
 
 void KaduWindowActions::inactiveUsersActionActivated(QAction *sender, bool toggled)
 {
@@ -1046,18 +1044,27 @@ void KaduWindowActions::editUserActionActivated(QAction *sender, bool toggled)
 	if (!action)
 		return;
 
-	Buddy buddy = action->buddy();
-	if (!buddy)
-		buddy = BuddyManager::instance()->byContact(action->contact(), ActionCreateAndAdd);
+	editUserActionActivated(action->dataSource());
+}
+
+void KaduWindowActions::editUserActionActivated(ActionDataSource *source)
+{
+	kdebugf();
+
+	BuddySet buddySet = source->buddies();
+	if (1 != buddySet.count())
+		return;
+	
+	Buddy buddy = *buddySet.begin();
 
 	if (buddy.isAnonymous())
 	{
-		AddBuddyWindow *addBuddyWindow = new AddBuddyWindow(sender->parentWidget());
+		AddBuddyWindow *addBuddyWindow = new AddBuddyWindow(Core::instance()->kaduWindow());
 		addBuddyWindow->setBuddy(buddy);
 		addBuddyWindow->show();
 	}
 	else
-		(new BuddyDataWindow(buddy, sender->parentWidget()))->show();
+		(new BuddyDataWindow(buddy, Core::instance()->kaduWindow()))->show();
 
 	kdebugf2();
 }

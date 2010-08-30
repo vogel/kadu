@@ -44,6 +44,7 @@
 #include "gui/actions/action-description.h"
 #include "gui/windows/kadu-window-actions.h"
 #include "gui/windows/main-window.h"
+#include "gui/hot-key.h"
 #include "model/roles.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
@@ -375,20 +376,25 @@ void BuddiesListView::contextMenuEvent(QContextMenuEvent *event)
 
 void BuddiesListView::keyPressEvent(QKeyEvent *event)
 {
-	switch (event->key())
+	// TODO 0.6.7: add proper shortcuts handling 
+	if (HotKey::shortCut(event, "ShortCuts", "kadu_deleteuser"))
+		KaduWindowActions::deleteUserActionActivated(this);
+	else if (HotKey::shortCut(event, "ShortCuts", "kadu_persinfo"))
+		KaduWindowActions::editUserActionActivated(this);
+	else
 	{
-		case Qt::Key_Return:
-		case Qt::Key_Enter:
-			triggerActivate(currentIndex());
-			break;
-		case Qt::Key_Delete:
-			KaduWindowActions::deleteUserActionActivated(MainWindow::findMainWindow(this));
-			break;
-		default:
-			if (!QChar(event->key()).isPrint())
-				QTreeView::keyPressEvent(event);
-			else
-				event->ignore();
+		switch (event->key())
+		{
+			case Qt::Key_Return:
+			case Qt::Key_Enter:
+				triggerActivate(currentIndex());
+				break;
+			default:
+				if (!QChar(event->key()).isPrint())
+					QTreeView::keyPressEvent(event);
+				else
+					event->ignore();
+		}
 	}
 
 	toolTipHide(false);

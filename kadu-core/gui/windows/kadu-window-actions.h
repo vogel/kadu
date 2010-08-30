@@ -30,6 +30,7 @@
 class QAction;
 
 class Action;
+class ActionDataSource;
 class ActionDescription;
 class MainWindow;
 class StatusContainer;
@@ -120,7 +121,8 @@ protected:
 	virtual void configurationUpdated();
 
 public:
-	static void deleteUserActionActivated(MainWindow *window, bool toggled = true);
+	static void deleteUserActionActivated(ActionDataSource *source);
+	static void editUserActionActivated(ActionDataSource *source);
 
 	explicit KaduWindowActions(QObject *parent);
 	virtual ~KaduWindowActions();

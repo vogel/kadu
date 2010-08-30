@@ -110,6 +110,11 @@ Chat Action::chat()
 		return Chat::null;
 }
 
+ActionDataSource * Action::dataSource()
+{
+	return DataSource;
+}
+
 void Action::changedSlot()
 {
 	emit changed(this);
