@@ -44,13 +44,13 @@ IconsManager * IconsManager::instance()
 	return Instance;
 }
 
-IconsManager::IconsManager()
-	: Themes("icons", "icons.conf"), pixmaps(), icons()
+IconsManager::IconsManager() :
+		Themes("icons", "icons.conf"), pixmaps(), icons()
 {
 	kdebugf();
 
 	setPaths(config_file.readEntry("Look", "IconsPaths").split(QRegExp("(;|:)"), QString::SkipEmptyParts));
-	
+
 	QStringList themeList = themes();
 	QString theme = config_file.readEntry("Look", "IconTheme");
 	if (!themeList.isEmpty() && !themeList.contains(theme))
@@ -58,7 +58,7 @@ IconsManager::IconsManager()
 		theme = "default";
 		config_file.writeEntry("Look", "IconTheme", "default");
 	}
-	
+
 	setTheme(theme);
 
 	kdebugf2();
@@ -136,7 +136,7 @@ void IconsManager::configurationUpdated()
 	// TODO: Make it standard
 	if (themeWasChanged)
 	{
-		
+
 		emit themeChanged();
 	}
 
