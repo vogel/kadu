@@ -77,35 +77,12 @@ extern "C" KADU_EXPORT void tabs_close()
 
 void disableNewTab(Action *action)
 {
-	action->setEnabled(false);
-	ContactSet contacts = action->contacts();
+	action->setEnabled(action->chat());
 
-	if (!contacts.count())
-		return;
-
-	bool config_defaultTabs = config_file.readBoolEntry("Chat", "DefaultTabs");
-	action->setEnabled(true);
-
-	if (contacts.count() != 1 && !config_defaultTabs)
-		action->setEnabled(false);
-
-	if (config_defaultTabs)
+	if (config_file.readBoolEntry("Chat", "DefaultTabs"))
 		action->setText(qApp->translate("TabsManager", "Chat in New Window"));
 	else
-		action->setText(qApp->translate("TabsManager", "Chat in new Tab"));
-
-	// TODO 0.6.6 dla siebie samego deaktywujemy opcje w menu, a konfernecje?
-	foreach (const Contact &contact, contacts)
-	{
-		if (Core::instance()->myself() == contact.ownerBuddy())
-			return;
-
-		Account account = contact.contactAccount();
-		if (account.isNull() || !account.protocolHandler() || !account.protocolHandler()->chatService())
-			return;
-	}
-
-	action->setEnabled(true);
+		action->setText(qApp->translate("TabsManager", "Chat in New Tab"));
 
 	kdebugf2();
 }
