@@ -225,12 +225,66 @@ Chat BuddiesListView::chatForIndex(const QModelIndex &index) const
 
 Chat BuddiesListView::currentChat() const
 {
-	ContactSet chatContacts = selectedContacts();
-	Chat result = ChatManager::instance()->findChat(chatContacts);
-	if (result)
-		return result;
-
-	return ChatManager::instance()->findChat(selectedBuddies());
+	BuddySet buddies;
+	Contact contact;
+	ContactSet contacts;
+	Account account;
+	
+	QModelIndexList selectionList = selectedIndexes();
+	foreach (QModelIndex selection, selectionList)
+	{
+		if (!account)
+		{
+			if (!selection.parent().isValid())
+				buddies.insert(buddyAt(selection));
+			else
+			{
+				contact = contactAt(selection);
+				if (!contact)
+					return Chat::null;
+				
+				contacts.insert(contact);
+				
+				account = contact.contactAccount();
+				
+				foreach (const Buddy &buddy, buddies)
+				{
+					contact = buddy.prefferedContact(account);
+					if (!contact)
+						return Chat::null;
+					
+					contacts.insert(contact);
+				}
+			}
+		}
+		else
+		{
+			if (!selection.parent().isValid())
+		    {
+				contact = buddyAt(selection).prefferedContact(account);
+				if (!contact)
+					return Chat::null;
+			  
+				contacts.insert(contact);
+			}
+			else
+			{
+				contact = contactAt(selection);
+				if (!contact)
+					return Chat::null;
+				
+				if (contact.contactAccount() == account)
+					contacts.insert(contact);
+				else
+					return Chat::null;
+			}
+		}
+	}
+	
+	if (!account)
+		return ChatManager::instance()->findChat(buddies, true);
+	else
+	    return ChatManager::instance()->findChat(contacts, true); 
 }
 
 void BuddiesListView::triggerActivate(const QModelIndex& index)

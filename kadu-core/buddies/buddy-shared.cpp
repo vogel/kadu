@@ -304,24 +304,24 @@ QString BuddyShared::id(Account account)
 	return QString::null;
 }
 
-Contact BuddyShared::prefferedContact()
+Contact BuddyShared::prefferedContact(Account account)
 {
 	ensureLoaded();
 
-	// TODO 0.6.6: implement it to have most available contact
-	int count = Contacts.count();
-	if (count == 0)
+	if (!Contacts.count())
 		return Contact::null;
 
-	if (count == 1)
-		return Contacts[0];
-
-	Contact prefferedContact = Contacts[0];
-	foreach (const Contact &contact, Contacts)
-		if (contact.currentStatus() < prefferedContact.currentStatus())
-			prefferedContact = contact;
-
-	return prefferedContact;
+	Contact contact;
+	foreach (const Contact &con, Contacts)
+	{
+		if (account && con.contactAccount() != account)
+			continue;
+		
+		if (!contact || con.currentStatus() < contact.currentStatus())
+			contact = con;
+	}
+	
+	return contact;
 }
 
 bool contactPriorityLessThan(const Contact &c1, const Contact &c2)
@@ -345,7 +345,7 @@ Account BuddyShared::prefferedAccount()
 {
 	ensureLoaded();
 
-	return prefferedContact().contactAccount();
+	return prefferedContact(Account::null).contactAccount();
 }
 
 void BuddyShared::emitUpdated()

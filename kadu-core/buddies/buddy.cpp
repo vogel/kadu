@@ -157,12 +157,17 @@ QList<Contact> Buddy::contacts(Account account) const
 	return isNull() ? QList<Contact>() : data()->contacts(account);
 }
 
-Contact Buddy::prefferedContact() const
+Contact Buddy::prefferedContact(Account account) const
 {
 	if (isNull() || 0 == contacts().count())
 		return Contact::null;
 
-	return data()->prefferedContact();
+	return data()->prefferedContact(account);
+}
+
+Contact Buddy::prefferedContact() const
+{
+	return prefferedContact(Account::null);
 }
 
 QList<Contact> Buddy::contacts() const

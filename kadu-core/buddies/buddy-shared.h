@@ -101,7 +101,7 @@ public:
 	void removeContact(Contact contact);
 	QList<Contact> contacts(Account account);
 	QList<Contact> contacts();
-	Contact prefferedContact();
+	Contact prefferedContact(Account account);
 
 	void sortContacts();
 	void normalizePriorities();

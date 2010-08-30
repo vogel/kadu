@@ -78,6 +78,7 @@ public:
 	void removeCustomData(const QString &key);
 
 	Account prefferedAccount() const;
+	Contact prefferedContact(Account account) const;
 	Contact prefferedContact() const;
 
 	void sortContacts();
