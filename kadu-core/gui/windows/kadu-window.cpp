@@ -369,7 +369,7 @@ void KaduWindow::storeConfiguration()
 
 void KaduWindow::updateInformationPanel()
 {
-	InfoPanel->displayBuddy(ContactsWidget->view()->currentContact().ownerBuddy());
+	InfoPanel->displayBuddy(ContactsWidget->view()->currentBuddy());
 }
 
 void KaduWindow::closeEvent(QCloseEvent *e)
