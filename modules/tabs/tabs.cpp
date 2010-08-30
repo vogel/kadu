@@ -439,6 +439,7 @@ void TabsManager::onTimer()
 			// okno nieaktywne to trzeba cos zrobic
 			if (!tabsActive)
 			{
+				qApp->alert(tabdialog);
 				// jesli chat jest na aktywnej karcie - zachowuje sie jak normalne okno
 				if (currentChat == chat)
 				{	if (msg && config_blinkChatTitle)
