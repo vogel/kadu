@@ -62,17 +62,17 @@ void disableEmptyTextBox(Action *action)
 
 void checkBlocking(Action *action)
 {
-	ContactSet contacts = action->contacts();
+	BuddySet buddies = action->buddies();
 
-	if (contacts.toBuddySet().contains(Core::instance()->myself()))
+	if (buddies.contains(Core::instance()->myself()))
 	{
 		action->setEnabled(false);
 		return;
 	}
 
 	bool on = false;
-	foreach (const Contact &contact, contacts)
-		if (contact.ownerBuddy().isBlocked())
+	foreach (const Buddy &buddy, buddies)
+		if (buddy.isBlocked())
 		{
 			on = true;
 			break;
