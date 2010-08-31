@@ -3073,7 +3073,7 @@ Jeśli zechcesz włączyć (lub wyłączyć) któryś z nich, wystarczy dwukrotn
     </message>
 </context>
 <context>
-    <name>SelectBuddyCombobox</name>
+    <name>SelectBuddyComboBox</name>
     <message>
         <source> - Select contact - </source>
         <translation> - Wybierz kontakt - </translation>
