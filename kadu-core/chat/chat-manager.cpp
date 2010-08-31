@@ -130,6 +130,9 @@ Chat ChatManager::findChat(BuddySet buddies, bool create)
 {
 	QMutexLocker(&mutex());
 
+	if (buddies.count() == 1)
+		return findChat(ContactSet((*buddies.begin()).prefferedContact()), create);
+	
 	Account commonAccount = getCommonAccount(buddies);
 	if (!commonAccount)
 		return Chat::null;
