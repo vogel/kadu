@@ -88,14 +88,14 @@ public:
 
 	virtual int messagesCount(Chat chat, QDate date = QDate());
 
-	virtual QList<QString> smsReceipientsList(HistorySearchParameters search);
-	virtual QList<QDate> datesForSmsReceipient(const QString &receipient, HistorySearchParameters search);
-	virtual QList<QString> sms(const QString &receipient, QDate date = QDate(), int limit = 0);
-	virtual int smsCount(const QString &receipient, QDate date = QDate());
+	virtual QList<QString> smsRecipientsList(HistorySearchParameters search);
+	virtual QList<QDate> datesForSmsRecipient(const QString &recipient, HistorySearchParameters search);
+	virtual QList<QString> sms(const QString &recipient, QDate date = QDate(), int limit = 0);
+	virtual int smsCount(const QString &recipient, QDate date = QDate());
 
 	virtual void appendMessage(const Message &message);
 	virtual void appendStatus(Contact contact, Status status, QDateTime time = QDateTime::currentDateTime());
-	virtual void appendSms(const QString &receipeint, const QString &content, QDateTime time = QDateTime::currentDateTime());
+	virtual void appendSms(const QString &recipient, const QString &content, QDateTime time = QDateTime::currentDateTime());
 
 	void sync();
 

@@ -26,9 +26,9 @@ GatewayOrange.prototype = {
 		return "03";
 	},
 
-	sendSms: function(receipient, sender, signature, content, callbackObject) {
+	sendSms: function(recipient, sender, signature, content, callbackObject) {
 		var sender = new GatewaySmsSender();
-		sender.sendSms(receipient, sender, signature, content, callbackObject);
+		sender.sendSms(recipient, sender, signature, content, callbackObject);
 	},
 };
 

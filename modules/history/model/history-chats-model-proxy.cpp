@@ -104,7 +104,7 @@ void HistoryChatsModelProxy::removeFilter(ChatFilter *filter)
 {
 	if (!filter)
 		return;
-	
+
 	Filters.removeAll(filter);
 	disconnect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
 
@@ -142,7 +142,7 @@ QModelIndex HistoryChatsModelProxy::statusBuddyIndex(Buddy buddy) const
 {
 	if (!Model)
 		return QModelIndex();
-	
+
 	QModelIndex index = Model->statusBuddyIndex(buddy);
 	return mapFromSource(index);
 }
@@ -156,11 +156,11 @@ QModelIndex HistoryChatsModelProxy::smsIndex() const
 	return mapFromSource(index);
 }
 
-QModelIndex HistoryChatsModelProxy::smsReceipientIndex(const QString& smsReceipient) const
+QModelIndex HistoryChatsModelProxy::smsRecipientIndex(const QString& smsRecipient) const
 {
 	if (!Model)
 		return QModelIndex();
 
-	QModelIndex index = Model->smsReceipientIndex(smsReceipient);
+	QModelIndex index = Model->smsRecipientIndex(smsRecipient);
 	return mapFromSource(index);
 }

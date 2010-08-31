@@ -325,13 +325,13 @@ void HistorySqlStorage::appendStatus(Contact contact, Status status, QDateTime t
 	kdebugf2();
 }
 
-void HistorySqlStorage::appendSms(const QString& receipeint, const QString& content, QDateTime time)
+void HistorySqlStorage::appendSms(const QString &recipient, const QString &content, QDateTime time)
 {
 	kdebugf();
 
 	DatabaseMutex.lock();
 
-	AppendSmsQuery.bindValue(":contact", receipeint);
+	AppendSmsQuery.bindValue(":contact", recipient);
 	AppendSmsQuery.bindValue(":send_time", time);
 	AppendSmsQuery.bindValue(":content", content);
 
@@ -570,7 +570,7 @@ int HistorySqlStorage::messagesCount(Chat chat, QDate date)
 	return query.value(0).toInt();
 }
 
-QList<QString> HistorySqlStorage::smsReceipientsList(HistorySearchParameters search)
+QList<QString> HistorySqlStorage::smsRecipientsList(HistorySearchParameters search)
 {
 	kdebugf();
 
@@ -595,22 +595,22 @@ QList<QString> HistorySqlStorage::smsReceipientsList(HistorySearchParameters sea
 	if (search.toDate().isValid())
 		query.bindValue(":toDate", search.toDate());
 
-	QList<QString> receipients;
+	QList<QString> recipients;
 
 	executeQuery(query);
 	while (query.next())
-		receipients.append(query.value(0).toString());
+		recipients.append(query.value(0).toString());
 
 	DatabaseMutex.unlock();
 
-	return receipients;
+	return recipients;
 }
 
-QList<QDate> HistorySqlStorage::datesForSmsReceipient(const QString &receipient, HistorySearchParameters search)
+QList<QDate> HistorySqlStorage::datesForSmsRecipient(const QString &recipient, HistorySearchParameters search)
 {
 	kdebugf();
 
-	if (receipient.isEmpty())
+	if (recipient.isEmpty())
 		return QList<QDate>();
 
 	DatabaseMutex.lock();
@@ -627,7 +627,7 @@ QList<QDate> HistorySqlStorage::datesForSmsReceipient(const QString &receipient,
 
 	query.prepare(queryString);
 
-	query.bindValue(":receipient", receipient);
+	query.bindValue(":receipient", recipient);
 	if (!search.query().isEmpty())
 		query.bindValue(":content", QLatin1String("%") + search.query() + "%");
 	if (search.fromDate().isValid())
@@ -650,7 +650,7 @@ QList<QDate> HistorySqlStorage::datesForSmsReceipient(const QString &receipient,
 	return dates;
 }
 
-QList<QString> HistorySqlStorage::sms(const QString &receipient, QDate date, int limit)
+QList<QString> HistorySqlStorage::sms(const QString &recipient, QDate date, int limit)
 {
 	kdebugf();
 
@@ -667,7 +667,7 @@ QList<QString> HistorySqlStorage::sms(const QString &receipient, QDate date, int
 	QList<Message> messages;
 	query.prepare(queryString);
 
-	query.bindValue(":receipient", receipient);
+	query.bindValue(":receipient", recipient);
 	if (!date.isNull())
 		query.bindValue(":date", date.toString(Qt::ISODate));
 	if (limit != 0)
@@ -684,7 +684,7 @@ QList<QString> HistorySqlStorage::sms(const QString &receipient, QDate date, int
 	return result;
 }
 
-int HistorySqlStorage::smsCount(const QString &receipient, QDate date)
+int HistorySqlStorage::smsCount(const QString &recipient, QDate date)
 {
 	kdebugf();
 
@@ -696,7 +696,7 @@ int HistorySqlStorage::smsCount(const QString &receipient, QDate date)
 		queryString += " AND date(send_time) = date(:date)";
 	query.prepare(queryString);
 
-	query.bindValue(":receipient", receipient);
+	query.bindValue(":receipient", recipient);
 	if (!date.isNull())
 		query.bindValue(":date", date.toString(Qt::ISODate));
 

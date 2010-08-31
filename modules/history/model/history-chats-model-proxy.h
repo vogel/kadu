@@ -57,7 +57,7 @@ public:
 	QModelIndex statusBuddyIndex(Buddy buddy) const;
 
 	QModelIndex smsIndex() const;
-	QModelIndex smsReceipientIndex(const QString &smsReceipient) const;
+	QModelIndex smsRecipientIndex(const QString &smsRecipient) const;
 
 };
 
