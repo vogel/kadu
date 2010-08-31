@@ -59,6 +59,11 @@ AddBuddyWindow::AddBuddyWindow(QWidget *parent) :
 	setAttribute(Qt::WA_DeleteOnClose);
 
 	createGui();
+	
+	connect(AccountCombo, SIGNAL(accountChanged(Account)), this, SLOT(setUsernameLabel()));
+	connect(AccountCombo, SIGNAL(accountChanged(Account)), this, SLOT(setAddContactEnabled()));
+	connect(AccountCombo, SIGNAL(accountChanged(Account)), this, SLOT(setValidateRegularExpression()));		
+	
 	setAddContactEnabled();
 	setValidateRegularExpression();
 }
@@ -87,9 +92,6 @@ void AddBuddyWindow::createGui()
 	layout->addWidget(new QLabel(tr("in"), this), 0, 2);
 
 	AccountCombo = new AccountsComboBox(this);
-	connect(AccountCombo, SIGNAL(accountChanged(Account)), this, SLOT(setUsernameLabel()));
-	connect(AccountCombo, SIGNAL(accountChanged(Account)), this, SLOT(setAddContactEnabled()));
-	connect(AccountCombo, SIGNAL(accountChanged(Account)), this, SLOT(setValidateRegularExpression()));
 
 	AccountComboIdFilter = new IdRegularExpressionFilter(AccountCombo);
 	AccountCombo->addFilter(AccountComboIdFilter);
