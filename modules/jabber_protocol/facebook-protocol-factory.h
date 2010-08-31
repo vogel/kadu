@@ -41,6 +41,8 @@ public:
 	virtual QString name() { return "facebook"; }
 	virtual QString displayName() { return "Facebook"; }
 
+	virtual bool canRegister() { return false; }		
+	
 	virtual QIcon icon();
 	virtual QString iconPath();
 	

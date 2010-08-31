@@ -41,6 +41,8 @@ public:
 	virtual QString name() { return "gmail/google talk"; }
 	virtual QString displayName() { return "Gmail/Google Talk"; }
 
+	virtual bool canRegister() { return false; }	
+	
 	virtual QIcon icon();
 	virtual QString iconPath();
 	

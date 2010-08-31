@@ -46,7 +46,6 @@ public:
 	virtual QList<StatusType *> supportedStatusTypes();
 	virtual QString idLabel();
 	virtual QRegExp idRegularExpression();
-	virtual bool canRegister() { return true; }
 
 	virtual QString name() { return "jabber"; }
 	virtual QString displayName() { return "Jabber"; }
