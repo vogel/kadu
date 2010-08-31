@@ -62,15 +62,15 @@ void JabberRosterService::contactUpdated(const XMPP::RosterItem &item)
 	 * a roster item here.
 	 */
 
-	if (item.subscription().toString() == "none")
-		return;
-
 	Protocol->disconnectContactManagerSignals();
 
 	kdebug("New roster item: %s (Subscription: %s )\n", qPrintable(item.jid().full()), qPrintable(item.subscription().toString()));
 
 	Contact contact = ContactManager::instance()->byId(Protocol->account(), item.jid().bare(), ActionCreateAndAdd);
 	ContactsForDelete.removeAll(contact);
+
+	if (item.subscription().toString() == "none")
+		return;
 
 	Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
 	buddy.setAnonymous(false);
