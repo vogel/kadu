@@ -22,12 +22,19 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+/*
+ * Copyright for copying and drag'n'drop code from Psi+:
+ *
+ * Copyright (C) 2010 senu, Rion
+ */
+
 #include <QtCore/QFile>
 #include <QtGui/QApplication>
 #include <QtGui/QClipboard>
 #include <QtGui/QContextMenuEvent>
 #include <QtGui/QFileDialog>
 #include <QtGui/QMenu>
+#include <QtGui/QStyle>
 #include <QtGui/QToolTip>
 #include <QtWebKit/QWebFrame>
 #include <QtWebKit/QWebHitTestResult>
@@ -43,7 +50,7 @@
 #include "kadu-text-browser.h"
 
 KaduTextBrowser::KaduTextBrowser(QWidget *parent)
-	: QWebView(parent), refreshTimer()
+	: QWebView(parent), DraggingPossible(false), IsLoading(false), refreshTimer()
 {
 	kdebugf();
 
@@ -67,6 +74,8 @@ void KaduTextBrowser::setPage(QWebPage * page)
 	QWebView::setPage(page);
 	page->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
 
+	connect(page, SIGNAL(loadStarted()), this, SLOT(loadStarted()));
+	connect(page, SIGNAL(loadFinished(bool)), this, SLOT(loadFinished(bool)));
 	connect(page, SIGNAL(linkClicked(const QUrl &)), this, SLOT(hyperlinkClicked(const QUrl &)));
 	connect(page->action(QWebPage::Copy), SIGNAL(triggered()), this, SLOT(textCopied()));
 	connect(page->action(QWebPage::DownloadImageToDisk), SIGNAL(triggered()), this, SLOT(saveImage()));
@@ -89,6 +98,9 @@ void KaduTextBrowser::setMargin(int width)
 
 void KaduTextBrowser::contextMenuEvent(QContextMenuEvent *event)
 {
+	if (IsLoading)
+		return;
+
 	contextMenuPos = event->pos();
 	const QWebHitTestResult &hitTestContent = page()->currentFrame()->hitTestContent(contextMenuPos);
 	bool isImage = hitTestContent.imageUrl().isValid();
@@ -125,11 +137,78 @@ void KaduTextBrowser::hyperlinkClicked(const QUrl &anchor) const
 	UrlHandlerManager::instance()->openUrl(anchor.toString());
 }
 
+void KaduTextBrowser::loadStarted()
+{
+	IsLoading = true;
+}
+
+void KaduTextBrowser::loadFinished(bool success)
+{
+	Q_UNUSED(success)
+
+	IsLoading = false;
+}
+
+// taken from Psi+'s webkit patch, SVN rev. 2638, and slightly modified
+void KaduTextBrowser::mouseMoveEvent(QMouseEvent *e)
+{
+	if (!DraggingPossible || !(e->buttons() & Qt::LeftButton))
+	{
+		QWebView::mouseMoveEvent(e);
+		return;
+	}
+
+	if ((e->pos() - DragStartPosition).manhattanLength() < QApplication::startDragDistance())
+		return;
+
+	QDrag *drag = new QDrag(this);
+	QMimeData *mimeData = new QMimeData();
+
+	QClipboard *clipboard = QApplication::clipboard();
+	QMimeData *originalData = new QMimeData();
+	foreach (const QString &format, clipboard->mimeData(QClipboard::Clipboard)->formats())
+		originalData->setData(format, clipboard->mimeData(QClipboard::Clipboard)->data(format));
+	page()->triggerAction(QWebPage::Copy);
+	textCopied();
+
+	mimeData->setText(clipboard->mimeData()->text());
+	mimeData->setHtml(clipboard->mimeData()->html());
+	clipboard->setMimeData(originalData);
+	drag->setMimeData(mimeData);
+
+	drag->exec(Qt::CopyAction);
+}
+
+// taken from Psi+'s webkit patch, SVN rev. 2638, and slightly modified
+void KaduTextBrowser::mousePressEvent(QMouseEvent *e)
+{
+	if (IsLoading)
+		return;
+
+	QWebView::mousePressEvent(e);
+	if (e->buttons() & Qt::LeftButton)
+	{
+		QWebHitTestResult r = page()->mainFrame()->hitTestContent(e->pos());
+		QSize cs = page()->mainFrame()->contentsSize();
+		QSize vs = page()->viewportSize();
+		DraggingPossible = r.isContentSelected() &&
+				QRect(QPoint(0,0),
+					cs - QSize(cs.width() > vs.width() ? 1 : 0, cs.height() > vs.height() ? 1 : 0) *
+						style()->pixelMetric(QStyle::PM_ScrollBarExtent)
+					).contains(e->pos());
+		DragStartPosition = e->pos();
+	}
+	else
+		DraggingPossible = false;
+}
+
 void KaduTextBrowser::mouseReleaseEvent(QMouseEvent *e)
 {
 	kdebugf();
 	emit mouseReleased(e);
 	QWebView::mouseReleaseEvent(e);
+	DraggingPossible = false;
+
 #ifdef Q_WS_X11
 	if (!page()->selectedText().isEmpty())
 		convertClipboardHtmlImages(QClipboard::Selection);
@@ -225,7 +304,7 @@ bool KaduTextBrowser::eventFilter(QObject *, QEvent *e)
 }
 #endif
 
-// taken from Psi+'s webkit patch, SVN rev. 2638, and then slighly modified
+// taken from Psi+'s webkit patch, SVN rev. 2638, and slightly modified
 void KaduTextBrowser::convertClipboardHtmlImages(QClipboard::Mode mode)
 {
 	QClipboard *cb = QApplication::clipboard();

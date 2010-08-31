@@ -18,6 +18,10 @@ class KADUAPI KaduTextBrowser : public QWebView //, private QToolTip
 {
 	Q_OBJECT
 
+	bool DraggingPossible;
+	bool IsLoading;
+	QPoint DragStartPosition;
+
 	QPoint contextMenuPos;
 	QTextDocument htmlToPlainTextConverter;
 	QTimer refreshTimer; /*!< Timer od�wie�ania widgetu. */
@@ -39,13 +43,18 @@ private slots:
 		@param anchor Odno�nik do otwarcia.
 	**/
 	void hyperlinkClicked(const QUrl &anchor) const;
+	void loadStarted();
+	void loadFinished(bool success);
 	void saveImage();
 	void textCopied();
 
 protected:
 	virtual void contextMenuEvent(QContextMenuEvent * event);
+	virtual void mousePressEvent(QMouseEvent *e);
+	virtual void mouseMoveEvent(QMouseEvent *e);
 	virtual void mouseReleaseEvent(QMouseEvent *e);
 	virtual void wheelEvent(QWheelEvent *e);
+
 #ifdef Q_WS_MAEMO_5
 	bool eventFilter(QObject *, QEvent *e);
 #endif
