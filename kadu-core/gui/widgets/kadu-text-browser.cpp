@@ -28,29 +28,36 @@
  * Copyright (C) 2010 senu, Rion
  */
 
+#include <QtCore/QEvent>
 #include <QtCore/QFile>
+#include <QtCore/QPoint>
+#include <QtCore/QString>
+#include <QtCore/QMimeData>
+#include <QtCore/QTimer>
+#include <QtCore/QUrl>
+#include <QtGui/QAction>
 #include <QtGui/QApplication>
 #include <QtGui/QClipboard>
 #include <QtGui/QContextMenuEvent>
+#include <QtGui/QDrag>
 #include <QtGui/QFileDialog>
 #include <QtGui/QMenu>
+#include <QtGui/QMouseEvent>
 #include <QtGui/QStyle>
-#include <QtGui/QToolTip>
-#include <QtWebKit/QWebFrame>
+#include <QtGui/QTextDocument>
+#include <QtWebKit/QWebPage>
 #include <QtWebKit/QWebHitTestResult>
 
 #include "configuration/configuration-file.h"
 #include "gui/windows/message-dialog.h"
-#include "misc/misc.h"
 #include "url-handlers/url-handler-manager.h"
 
 #include "debug.h"
-#include "html_document.h"
 
 #include "kadu-text-browser.h"
 
-KaduTextBrowser::KaduTextBrowser(QWidget *parent)
-	: QWebView(parent), DraggingPossible(false), IsLoading(false), refreshTimer()
+KaduTextBrowser::KaduTextBrowser(QWidget *parent) :
+		QWebView(parent), DraggingPossible(false), IsLoading(false), RefreshTimer(new QTimer(this))
 {
 	kdebugf();
 
@@ -59,7 +66,7 @@ KaduTextBrowser::KaduTextBrowser(QWidget *parent)
 
 	setPage(page());
 
-	connect(&refreshTimer, SIGNAL(timeout()), this, SLOT(reload()));
+	connect(RefreshTimer, SIGNAL(timeout()), this, SLOT(reload()));
 
 #ifdef Q_WS_MAEMO_5
 	/* Workaround for Qt kinetic scrolling issue in QWebView */
@@ -69,40 +76,29 @@ KaduTextBrowser::KaduTextBrowser(QWidget *parent)
 	kdebugf2();
 }
 
-void KaduTextBrowser::setPage(QWebPage * page)
+KaduTextBrowser::~KaduTextBrowser()
+{
+}
+
+void KaduTextBrowser::setPage(QWebPage *page)
 {
 	QWebView::setPage(page);
 	page->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
 
+	connect(page, SIGNAL(linkClicked(const QUrl &)), this, SLOT(hyperlinkClicked(const QUrl &)));
 	connect(page, SIGNAL(loadStarted()), this, SLOT(loadStarted()));
 	connect(page, SIGNAL(loadFinished(bool)), this, SLOT(loadFinished(bool)));
-	connect(page, SIGNAL(linkClicked(const QUrl &)), this, SLOT(hyperlinkClicked(const QUrl &)));
 	connect(page->action(QWebPage::Copy), SIGNAL(triggered()), this, SLOT(textCopied()));
 	connect(page->action(QWebPage::DownloadImageToDisk), SIGNAL(triggered()), this, SLOT(saveImage()));
 }
 
-void KaduTextBrowser::refreshLater()
-{
-	refreshTimer.setSingleShot(true);
-	refreshTimer.start(10);
-}
-
-void KaduTextBrowser::setSource(const QString &/*name*/)
-{
-}
-
-void KaduTextBrowser::setMargin(int width)
-{
-	setContentsMargins(width, width, width, width);
-}
-
-void KaduTextBrowser::contextMenuEvent(QContextMenuEvent *event)
+void KaduTextBrowser::contextMenuEvent(QContextMenuEvent *e)
 {
 	if (IsLoading)
 		return;
 
-	contextMenuPos = event->pos();
-	const QWebHitTestResult &hitTestContent = page()->currentFrame()->hitTestContent(contextMenuPos);
+	ContextMenuPos = e->pos();
+	const QWebHitTestResult &hitTestContent = page()->currentFrame()->hitTestContent(ContextMenuPos);
 	bool isImage = hitTestContent.imageUrl().isValid();
 	bool isLink = hitTestContent.linkUrl().isValid();
 
@@ -118,35 +114,18 @@ void KaduTextBrowser::contextMenuEvent(QContextMenuEvent *event)
 	saveImage->setText(tr("Save Image"));
 	saveImage->setEnabled(isImage);
 
-	QMenu *popupmenu = new QMenu();
+	QMenu popupMenu(this);
 
-	popupmenu->addAction(copy);
-// 	popupmenu->addSeparator();
-	popupmenu->addAction(copyLink);
-// 	popupmenu->addAction(pageAction(QWebPage::DownloadLinkToDisk));
-	popupmenu->addSeparator();
-	popupmenu->addAction(copyImage);
-	popupmenu->addAction(saveImage);
+	popupMenu.addAction(copy);
+// 	popupmenu.addSeparator();
+	popupMenu.addAction(copyLink);
+// 	popupmenu.addAction(pageAction(QWebPage::DownloadLinkToDisk));
+	popupMenu.addSeparator();
+	popupMenu.addAction(copyImage);
+	popupMenu.addAction(saveImage);
 
- 	popupmenu->popup(event->globalPos());
+ 	popupMenu.exec(e->globalPos());
  	kdebugf2();
-}
-
-void KaduTextBrowser::hyperlinkClicked(const QUrl &anchor) const
-{
-	UrlHandlerManager::instance()->openUrl(anchor.toString());
-}
-
-void KaduTextBrowser::loadStarted()
-{
-	IsLoading = true;
-}
-
-void KaduTextBrowser::loadFinished(bool success)
-{
-	Q_UNUSED(success)
-
-	IsLoading = false;
 }
 
 // taken from Psi+'s webkit patch, SVN rev. 2638, and slightly modified
@@ -205,7 +184,6 @@ void KaduTextBrowser::mousePressEvent(QMouseEvent *e)
 void KaduTextBrowser::mouseReleaseEvent(QMouseEvent *e)
 {
 	kdebugf();
-	emit mouseReleased(e);
 	QWebView::mouseReleaseEvent(e);
 	DraggingPossible = false;
 
@@ -213,70 +191,6 @@ void KaduTextBrowser::mouseReleaseEvent(QMouseEvent *e)
 	if (!page()->selectedText().isEmpty())
 		convertClipboardHtmlImages(QClipboard::Selection);
 #endif
-}
-
-void KaduTextBrowser::wheelEvent(QWheelEvent *e)
-{
-	kdebugf();
-	emit wheel(e);
-	QWebView::wheelEvent(e);
-}
-
-void KaduTextBrowser::saveImage()
-{
-	kdebugf();
-
-	QString image = page()->currentFrame()->hitTestContent(contextMenuPos).imageUrl().toLocalFile();
-	if (image.isEmpty())
-		return;
-
-	QString fileExt = '.' + image.section('.', -1);
-
-	QFileDialog fd(this);
-	fd.setFileMode(QFileDialog::AnyFile);
-	fd.setAcceptMode(QFileDialog::AcceptSave);
-	fd.setDirectory(config_file.readEntry("Chat", "LastImagePath"));
-	fd.setFilter(QString("%1 (*%2)").arg(qApp->translate("ImageDialog", "Images"), fileExt));
-	fd.setLabelText(QFileDialog::FileName, image.section('/', -1));
-	fd.setWindowTitle(tr("Save image"));
-
-	while (true)
-	{
-		if (fd.exec() != QFileDialog::Accepted)
-			break;
-		if (fd.selectedFiles().count() < 1)
-			break;
-
-		QString file = fd.selectedFiles()[0];
-		if (QFile::exists(file))
-		{
-			if (MessageDialog::ask(tr("File already exists. Overwrite?")))
-			{
-				QFile removeMe(file);
-				if (!removeMe.remove())
-				{
-					MessageDialog::msg(tr("Cannot save image: %1").arg(removeMe.errorString()), false, "32x32/dialog-warning.png");
-					continue;
-				}
-			}
-			else
-				continue;
-		}
-
-		QString dst = file;
-		if (!dst.endsWith(fileExt))
-			dst.append(fileExt);
-
-		QFile src(image);
-		if (!src.copy(dst))
-		{
-			MessageDialog::msg(tr("Cannot save image: %1").arg(src.errorString()), false, "32x32/dialog-warning.png");
-			continue;
-		}
-
-		config_file.writeEntry("Chat", "LastImagePath", fd.directory().absolutePath());
-		break;
-	}
 }
 
 #ifdef Q_WS_MAEMO_5
@@ -304,6 +218,92 @@ bool KaduTextBrowser::eventFilter(QObject *, QEvent *e)
 }
 #endif
 
+void KaduTextBrowser::hyperlinkClicked(const QUrl &anchor) const
+{
+	UrlHandlerManager::instance()->openUrl(anchor.toString());
+}
+
+void KaduTextBrowser::loadStarted()
+{
+	IsLoading = true;
+}
+
+void KaduTextBrowser::loadFinished(bool success)
+{
+	Q_UNUSED(success)
+
+	IsLoading = false;
+}
+
+void KaduTextBrowser::refreshLater()
+{
+	RefreshTimer->setSingleShot(true);
+	RefreshTimer->start(10);
+}
+
+void KaduTextBrowser::saveImage()
+{
+	kdebugf();
+
+	QString image = page()->currentFrame()->hitTestContent(ContextMenuPos).imageUrl().toLocalFile();
+	if (image.isEmpty())
+		return;
+
+	QString fileExt = '.' + image.section('.', -1);
+
+	QFileDialog fd(this);
+	fd.setFileMode(QFileDialog::AnyFile);
+	fd.setAcceptMode(QFileDialog::AcceptSave);
+	fd.setDirectory(config_file.readEntry("Chat", "LastImagePath"));
+	fd.setFilter(QString("%1 (*%2)").arg(qApp->translate("ImageDialog", "Images"), fileExt));
+	fd.setLabelText(QFileDialog::FileName, image.section('/', -1));
+	fd.setWindowTitle(tr("Save image"));
+
+	do
+	{
+		if (fd.exec() != QFileDialog::Accepted)
+			break;
+		if (fd.selectedFiles().count() < 1)
+			break;
+
+		QString file = fd.selectedFiles()[0];
+		if (QFile::exists(file))
+		{
+			if (MessageDialog::ask(tr("File already exists. Overwrite?")))
+			{
+				QFile removeMe(file);
+				if (!removeMe.remove())
+				{
+					MessageDialog::msg(tr("Cannot save image: %1").arg(removeMe.errorString()),
+							false, "32x32/dialog-warning.png");
+					continue;
+				}
+			}
+			else
+				continue;
+		}
+
+		QString dst = file;
+		if (!dst.endsWith(fileExt))
+			dst.append(fileExt);
+
+		QFile src(image);
+		if (!src.copy(dst))
+		{
+			MessageDialog::msg(tr("Cannot save image: %1").arg(src.errorString()),
+					false, "32x32/dialog-warning.png");
+			continue;
+		}
+
+		config_file.writeEntry("Chat", "LastImagePath", fd.directory().absolutePath());
+	} while (false);
+}
+
+void KaduTextBrowser::textCopied() const
+{
+	convertClipboardHtmlImages(QClipboard::Clipboard);
+}
+
 // taken from Psi+'s webkit patch, SVN rev. 2638, and slightly modified
 void KaduTextBrowser::convertClipboardHtmlImages(QClipboard::Mode mode)
 {
@@ -311,14 +311,10 @@ void KaduTextBrowser::convertClipboardHtmlImages(QClipboard::Mode mode)
 	QString html = cb->mimeData(mode)->html();
 	html.replace(QRegExp("<img[^>]+title\\s*=\\s*'([^']+)'[^>]*>"), "\\1");
 	html.replace(QRegExp("<img[^>]+title\\s*=\\s*\"([^\"]+)\"[^>]*>"), "\\1");
+	QTextDocument htmlToPlainTextConverter;
 	htmlToPlainTextConverter.setHtml(html);
-	QMimeData *data = new QMimeData;
+	QMimeData *data = new QMimeData();
 	data->setHtml(html);
 	data->setText(htmlToPlainTextConverter.toPlainText());
 	cb->setMimeData(data, mode);
-}
-
-void KaduTextBrowser::textCopied()
-{
-	convertClipboardHtmlImages(QClipboard::Clipboard);
 }
