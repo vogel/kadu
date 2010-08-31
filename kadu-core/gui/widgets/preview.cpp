@@ -33,7 +33,7 @@
 #include "preview.h"
 
 Preview::Preview(QWidget *parent)
-	: KaduTextBrowser(parent), contact(Contact::null)
+	: KaduWebView(parent), contact(Contact::null)
 {
 	setFixedHeight(170);
 	setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);

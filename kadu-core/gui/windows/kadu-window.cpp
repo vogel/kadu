@@ -52,7 +52,7 @@
 #include "gui/widgets/chat-widget-actions.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/group-tab-bar.h"
-#include "gui/widgets/kadu-text-browser.h"
+#include "gui/widgets/kadu-web-view.h"
 #include "gui/windows/kadu-window-actions.h"
 #include "gui/widgets/status-buttons.h"
 #include "gui/widgets/status-menu.h"

@@ -1783,7 +1783,7 @@ Di più conessioni con il password incorretto</translation>
     </message>
 </context>
 <context>
-    <name>KaduTextBrowser</name>
+    <name>KaduWebView</name>
     <message>
         <source>Save image</source>
         <translation>Salva immaggine</translation>

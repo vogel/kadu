@@ -41,7 +41,7 @@
 #include "chat-messages-view.h"
 
 ChatMessagesView::ChatMessagesView(Chat chat, bool supportTransparency, QWidget *parent) :
-		KaduTextBrowser(parent), CurrentChat(chat),
+		KaduWebView(parent), CurrentChat(chat),
 		LastScrollValue(0), LastLine(false), SupportTransparency(supportTransparency)
 {
 	Renderer = new HtmlMessagesRenderer(CurrentChat, this);
@@ -193,7 +193,7 @@ void ChatMessagesView::resizeEvent(QResizeEvent *e)
  	LastScrollValue = page()->currentFrame()->scrollBarValue(Qt::Vertical);
  	LastLine = (LastScrollValue == page()->currentFrame()->scrollBarMaximum(Qt::Vertical));
 
- 	KaduTextBrowser::resizeEvent(e);
+ 	KaduWebView::resizeEvent(e);
 
 	scrollToLine();
 }

@@ -2373,7 +2373,7 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
     </message>
 </context>
 <context>
-    <name>KaduTextBrowser</name>
+    <name>KaduWebView</name>
     <message>
         <source>Copy</source>
         <translation>Kopiuj</translation>

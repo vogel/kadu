@@ -44,7 +44,7 @@ class ActionSource;
 class BuddyInfoPanel;
 class BuddiesListWidget;
 class GroupTabBar;
-class KaduTextBrowser;
+class KaduWebView;
 class KaduWindowActions;
 class StatusButtons;
 

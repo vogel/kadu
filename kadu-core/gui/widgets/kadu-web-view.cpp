@@ -54,9 +54,9 @@
 
 #include "debug.h"
 
-#include "kadu-text-browser.h"
+#include "kadu-web-view.h"
 
-KaduTextBrowser::KaduTextBrowser(QWidget *parent) :
+KaduWebView::KaduWebView(QWidget *parent) :
 		QWebView(parent), DraggingPossible(false), IsLoading(false), RefreshTimer(new QTimer(this))
 {
 	kdebugf();
@@ -76,11 +76,11 @@ KaduTextBrowser::KaduTextBrowser(QWidget *parent) :
 	kdebugf2();
 }
 
-KaduTextBrowser::~KaduTextBrowser()
+KaduWebView::~KaduWebView()
 {
 }
 
-void KaduTextBrowser::setPage(QWebPage *page)
+void KaduWebView::setPage(QWebPage *page)
 {
 	QWebView::setPage(page);
 	page->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
@@ -92,7 +92,7 @@ void KaduTextBrowser::setPage(QWebPage *page)
 	connect(page->action(QWebPage::DownloadImageToDisk), SIGNAL(triggered()), this, SLOT(saveImage()));
 }
 
-void KaduTextBrowser::contextMenuEvent(QContextMenuEvent *e)
+void KaduWebView::contextMenuEvent(QContextMenuEvent *e)
 {
 	if (IsLoading)
 		return;
@@ -129,7 +129,7 @@ void KaduTextBrowser::contextMenuEvent(QContextMenuEvent *e)
 }
 
 // taken from Psi+'s webkit patch, SVN rev. 2638, and slightly modified
-void KaduTextBrowser::mouseMoveEvent(QMouseEvent *e)
+void KaduWebView::mouseMoveEvent(QMouseEvent *e)
 {
 	if (!DraggingPossible || !(e->buttons() & Qt::LeftButton))
 	{
@@ -159,7 +159,7 @@ void KaduTextBrowser::mouseMoveEvent(QMouseEvent *e)
 }
 
 // taken from Psi+'s webkit patch, SVN rev. 2638, and slightly modified
-void KaduTextBrowser::mousePressEvent(QMouseEvent *e)
+void KaduWebView::mousePressEvent(QMouseEvent *e)
 {
 	if (IsLoading)
 		return;
@@ -181,7 +181,7 @@ void KaduTextBrowser::mousePressEvent(QMouseEvent *e)
 		DraggingPossible = false;
 }
 
-void KaduTextBrowser::mouseReleaseEvent(QMouseEvent *e)
+void KaduWebView::mouseReleaseEvent(QMouseEvent *e)
 {
 	kdebugf();
 	QWebView::mouseReleaseEvent(e);
@@ -194,7 +194,7 @@ void KaduTextBrowser::mouseReleaseEvent(QMouseEvent *e)
 }
 
 #ifdef Q_WS_MAEMO_5
-bool KaduTextBrowser::eventFilter(QObject *, QEvent *e)
+bool KaduWebView::eventFilter(QObject *, QEvent *e)
 {
 	static bool mousePressed = false;
 	switch (e->type())
@@ -218,30 +218,30 @@ bool KaduTextBrowser::eventFilter(QObject *, QEvent *e)
 }
 #endif
 
-void KaduTextBrowser::hyperlinkClicked(const QUrl &anchor) const
+void KaduWebView::hyperlinkClicked(const QUrl &anchor) const
 {
 	UrlHandlerManager::instance()->openUrl(anchor.toString());
 }
 
-void KaduTextBrowser::loadStarted()
+void KaduWebView::loadStarted()
 {
 	IsLoading = true;
 }
 
-void KaduTextBrowser::loadFinished(bool success)
+void KaduWebView::loadFinished(bool success)
 {
 	Q_UNUSED(success)
 
 	IsLoading = false;
 }
 
-void KaduTextBrowser::refreshLater()
+void KaduWebView::refreshLater()
 {
 	RefreshTimer->setSingleShot(true);
 	RefreshTimer->start(10);
 }
 
-void KaduTextBrowser::saveImage()
+void KaduWebView::saveImage()
 {
 	kdebugf();
 
@@ -299,13 +299,13 @@ void KaduTextBrowser::saveImage()
 	} while (false);
 }
 
-void KaduTextBrowser::textCopied() const
+void KaduWebView::textCopied() const
 {
 	convertClipboardHtmlImages(QClipboard::Clipboard);
 }
 
 // taken from Psi+'s webkit patch, SVN rev. 2638, and slightly modified
-void KaduTextBrowser::convertClipboardHtmlImages(QClipboard::Mode mode)
+void KaduWebView::convertClipboardHtmlImages(QClipboard::Mode mode)
 {
 	QClipboard *cb = QApplication::clipboard();
 	QString html = cb->mimeData(mode)->html();

@@ -1808,7 +1808,7 @@ Zu viel Versuche mit falschem Passwort</translation>
     </message>
 </context>
 <context>
-    <name>KaduTextBrowser</name>
+    <name>KaduWebView</name>
     <message>
         <source>Save image</source>
         <translation>Bild speichern</translation>

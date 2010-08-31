@@ -34,13 +34,7 @@ class QPoint;
 class QTimer;
 class QUrl;
 
-/**
-	Zmodyfikowany QWebView specjalnie na potrzeby Kadu.
-	Klikni�cie na linku otwiera ustawion� w konfiguracji przegl�dark�.
-	\class KaduTextBrowser
-	\brief Klasa bazowa dla ChatMessagesView oraz InfoPanel.
-**/
-class KADUAPI KaduTextBrowser : public QWebView
+class KADUAPI KaduWebView : public QWebView
 {
 	Q_OBJECT
 
@@ -71,8 +65,8 @@ protected:
 #endif
 
 public:
-	explicit KaduTextBrowser(QWidget *parent = 0);
-	virtual ~KaduTextBrowser();
+	explicit KaduWebView(QWidget *parent = 0);
+	virtual ~KaduWebView();
 
 	// hides QWebPage::setPage() (non-virtual)
 	void setPage(QWebPage *page);
