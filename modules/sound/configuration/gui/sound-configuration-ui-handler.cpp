@@ -23,6 +23,7 @@
 #include "gui/widgets/path-list-edit.h"
 #include "misc/path-conversion.h"
 #include "debug.h"
+#include "themes.h"
 
 #include "gui/widgets/configuration/sound-configuration-widget.h"
 #include "sound-actions.h"
