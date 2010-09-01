@@ -37,7 +37,7 @@ void GaduContactDataManager::writeEntry(const QString &section, const QString &n
 	}
 
 	//if (name == "Uin")
-	//	Data->setId(value.value<QString>());
+	//	Data->setId(value.toString());
 
 	// other data
 }

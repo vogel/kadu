@@ -25,6 +25,7 @@
 #include <QtGui/QTextFrameFormat>
 #include <QtGui/QTreeView>
 
+#include "accounts/account.h"
 #include "buddies/buddy.h"
 #include "chat/message/pending-messages-manager.h"
 #include "contacts/contact.h"
@@ -60,11 +61,7 @@ bool BuddiesListViewItemPainter::useBold() const
 	if (!Configuration.showBold())
 		return false;
 
-	QVariant statVariant = Index.data(StatusRole);
-	if (!statVariant.canConvert<Status>())
-		return false;
-
-	Status status = statVariant.value<Status>();
+	Status status = Index.data(StatusRole).value<Status>();
 	return !status.isDisconnected();
 }
 
@@ -72,12 +69,12 @@ bool BuddiesListViewItemPainter::showMessagePixmap() const
 {
 	if (Index.parent().isValid()) // contact
 	{
-		Contact contact = qvariant_cast<Contact>(Index.data(ContactRole));
+		Contact contact = Index.data(ContactRole).value<Contact>();
 		return contact && PendingMessagesManager::instance()->hasPendingMessagesForContact(contact);
 	}
 	else
 	{
-		Buddy buddy = qvariant_cast<Buddy>(Index.data(BuddyRole));
+		Buddy buddy = Index.data(BuddyRole).value<Buddy>();
 		return buddy && PendingMessagesManager::instance()->hasPendingMessagesForBuddy(buddy);
 	}
 }
@@ -159,7 +156,7 @@ void BuddiesListViewItemPainter::computeAvatarRect()
 
 QString BuddiesListViewItemPainter::getAccountName()
 {
-	Account account = qvariant_cast<Account>(Index.data(AccountRole));
+	Account account = Index.data(AccountRole).value<Account>();
 	return account.accountIdentity().name();
 }
 
@@ -276,16 +273,12 @@ void BuddiesListViewItemPainter::computeLayout()
 
 QPixmap BuddiesListViewItemPainter::buddyAvatar() const
 {
-	QVariant avatar = Index.data(AvatarRole);
-	if (!avatar.canConvert<QPixmap>())
-		return QPixmap();
-
-	return avatar.value<QPixmap>();
+	return Index.data(AvatarRole).value<QPixmap>();
 }
 
 QPixmap BuddiesListViewItemPainter::buddyIcon() const
 {
-	return qvariant_cast<QPixmap>(Index.data(Qt::DecorationRole));
+	return Index.data(Qt::DecorationRole).value<QPixmap>();
 }
 
 const QFontMetrics & BuddiesListViewItemPainter::fontMetrics()
@@ -390,7 +383,7 @@ void BuddiesListViewItemPainter::paintDescription(QPainter *painter)
 {
 	if (!showDescription())
 		return;
-  
+
 	painter->setFont(Configuration.descriptionFont());
 	painter->save();
 	painter->translate(DescriptionRect.topLeft());
@@ -409,7 +402,7 @@ void BuddiesListViewItemPainter::paint(QPainter *painter)
 		painter->setPen(Option.palette.color(QPalette::Normal, QPalette::HighlightedText));
 	else
 		painter->setPen(Configuration.fontColor());
-	
+
 	paintIcon(painter);
 	paintMessageIcon(painter);
 	paintAvatar(painter);

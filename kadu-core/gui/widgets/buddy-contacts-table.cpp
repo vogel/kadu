@@ -129,7 +129,7 @@ void BuddyContactsTable::viewSelectionChanged(const QModelIndex &current, const 
 		DetachContactButton->setEnabled(true);
 		RemoveContactButton->setEnabled(true);
 	}
-	
+
 	DetachContactButton->setEnabled(MyBuddy.contacts().count() > 1);
 }
 
@@ -140,8 +140,8 @@ void BuddyContactsTable::moveUpClicked()
 	if (!previousItem.isValid())
 		return;
 
-	BuddyContactsTableItem *current = qvariant_cast<BuddyContactsTableItem *>(currentItem.data(BuddyContactsTableItemRole));
-	BuddyContactsTableItem *previous = qvariant_cast<BuddyContactsTableItem *>(previousItem.data(BuddyContactsTableItemRole));
+	BuddyContactsTableItem *current = currentItem.data(BuddyContactsTableItemRole).value<BuddyContactsTableItem *>();
+	BuddyContactsTableItem *previous = previousItem.data(BuddyContactsTableItemRole).value<BuddyContactsTableItem *>();
 
 	if (!current || !previous)
 		return;
@@ -159,13 +159,13 @@ void BuddyContactsTable::moveDownClicked()
 	QModelIndex nextItem = currentItem.sibling(currentItem.row() + 1, currentItem.column());
 	if (!nextItem.isValid())
 		return;
-	
-	BuddyContactsTableItem *current = qvariant_cast<BuddyContactsTableItem *>(currentItem.data(BuddyContactsTableItemRole));
-	BuddyContactsTableItem *next = qvariant_cast<BuddyContactsTableItem *>(nextItem.data(BuddyContactsTableItemRole));
-	
+
+	BuddyContactsTableItem *current = currentItem.data(BuddyContactsTableItemRole).value<BuddyContactsTableItem *>();
+	BuddyContactsTableItem *next = nextItem.data(BuddyContactsTableItemRole).value<BuddyContactsTableItem *>();
+
 	if (!current || !next)
 		return;
-	
+
 	int priority = current->itemContactPriority();
 	current->setItemContactPriority(next->itemContactPriority());
 	next->setItemContactPriority(priority);
@@ -180,11 +180,7 @@ void BuddyContactsTable::addClicked()
 
 void BuddyContactsTable::detachClicked()
 {
-	QVariant selected = View->currentIndex().data(BuddyContactsTableItemRole);
-	if (!selected.canConvert<BuddyContactsTableItem *>())
-		return;
-
-	BuddyContactsTableItem *item = qvariant_cast<BuddyContactsTableItem *>(selected);
+	BuddyContactsTableItem *item = View->currentIndex().data(BuddyContactsTableItemRole).value<BuddyContactsTableItem *>();
 	if (!item)
 		return;
 
@@ -201,11 +197,7 @@ void BuddyContactsTable::detachClicked()
 
 void BuddyContactsTable::removeClicked()
 {
-	QVariant selected = View->currentIndex().data(BuddyContactsTableItemRole);
-	if (!selected.canConvert<BuddyContactsTableItem *>())
-		return;
-
-	BuddyContactsTableItem *item = qvariant_cast<BuddyContactsTableItem *>(selected);
+	BuddyContactsTableItem *item = View->currentIndex().data(BuddyContactsTableItemRole).value<BuddyContactsTableItem *>();
 	if (!item)
 		return;
 

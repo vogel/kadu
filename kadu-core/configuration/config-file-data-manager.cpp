@@ -26,7 +26,7 @@ void ConfigFileDataManager::writeEntry(const QString &section, const QString &na
 	if (section.isEmpty() || name.isEmpty())
 		return;
 
-	config_file.writeEntry(section, name, value.value<QString>());
+	config_file.writeEntry(section, name, value.toString());
 }
 
 QVariant ConfigFileDataManager::readEntry(const QString &section, const QString &name)

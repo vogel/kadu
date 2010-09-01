@@ -44,19 +44,19 @@ void JabberAccountDataManager::writeEntry(const QString &section, const QString 
 		return;
 
 	if (name == "Resource")
-		Data->setResource(value.value<QString>());
+		Data->setResource(value.toString());
 
 	if (name == "Priority")
 	{
 		bool ok;
-		QString prioString(value.value<QString>());
+		QString prioString(value.toString());
 		Data->setPriority(prioString.toInt(&ok));
 		if (prioString.isEmpty() || !ok )
 			Data->setPriority(5);
 	}
 
 	if (name == "DataTransferProxy")
-		Data->setDataTransferProxy(value.value<QString>());
+		Data->setDataTransferProxy(value.toString());
 
 	// other data
 }

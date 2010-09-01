@@ -32,10 +32,10 @@ void AccountDataManager::writeEntry(const QString &section, const QString &name,
 		return;
 
 	if (name == "Id")
-		Data.setId(value.value<QString>());
+		Data.setId(value.toString());
 
 	if (name == "Password")
-		Data.setPassword(value.value<QString>());
+		Data.setPassword(value.toString());
 }
 
 QVariant AccountDataManager::readEntry(const QString &section, const QString &name)

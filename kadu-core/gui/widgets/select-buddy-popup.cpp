@@ -62,11 +62,7 @@ void SelectBuddyPopup::itemClicked(const QModelIndex &index)
 {
 	close();
 
-	QVariant buddyVariant = index.data(BuddyRole);
-	if (!buddyVariant.canConvert<Buddy>())
-		return;
-
-	Buddy buddy = buddyVariant.value<Buddy>();
+	Buddy buddy = index.data(BuddyRole).value<Buddy>();
 	if (!buddy)
 		return;
 

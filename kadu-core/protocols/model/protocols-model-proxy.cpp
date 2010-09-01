@@ -74,10 +74,10 @@ bool ProtocolsModelProxy::lessThan(const QModelIndex &left, const QModelIndex &r
 {
 	if (!SourceProtocolModel)
 		return QSortFilterProxyModel::lessThan(left, right);
-	
+
 	QVariant lVariant = SourceProtocolModel->data(left, ProtocolRole);
 	QVariant rVariant = SourceProtocolModel->data(right, ProtocolRole);
-	
+
 	if (!lVariant.canConvert<ProtocolFactory *>() || !rVariant.canConvert<ProtocolFactory *>())
 		return QSortFilterProxyModel::lessThan(left, right);
 
@@ -92,14 +92,13 @@ bool ProtocolsModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex &sou
 {
 	QVariant pVariant = sourceModel()->index(sourceRow, 0, sourceParent).data(ProtocolRole);
 	if (!pVariant.canConvert<ProtocolFactory *>())
-	{
 		return true;
-	} 
+
 	ProtocolFactory *protocol = pVariant.value<ProtocolFactory *>();
 	foreach (AbstractProtocolFilter *filter, ProtocolFilters)
 		if (!filter->acceptProtocol(protocol))
 			return false;
-	
+
 	return true;
 }
 

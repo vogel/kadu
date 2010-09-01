@@ -49,8 +49,8 @@ bool BuddyContactsTableModelProxy::filterAcceptsRow(int sourceRow, const QModelI
 
 bool BuddyContactsTableModelProxy::lessThan(const QModelIndex &left, const QModelIndex &right) const
 {
-	BuddyContactsTableItem *leftItem = qvariant_cast<BuddyContactsTableItem *>(left.data(BuddyContactsTableItemRole));
-	BuddyContactsTableItem *rightItem = qvariant_cast<BuddyContactsTableItem *>(right.data(BuddyContactsTableItemRole));
+	BuddyContactsTableItem *leftItem = left.data(BuddyContactsTableItemRole).value<BuddyContactsTableItem *>();
+	BuddyContactsTableItem *rightItem = right.data(BuddyContactsTableItemRole).value<BuddyContactsTableItem *>();
 
 	if (!leftItem && !rightItem)
 		return false;
