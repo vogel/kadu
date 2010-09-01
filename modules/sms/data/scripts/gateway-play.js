@@ -26,7 +26,7 @@ GatewayPlay.prototype = {
 		return "06";
 	},
 
-	sendSms: function(receipient, sender, signature, content, callbackObject) {
+	sendSms: function(recipient, sender, signature, content, callbackObject) {
 		callbackObject.failure("Not implemented");
 	}
 };

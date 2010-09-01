@@ -12,7 +12,7 @@ option (SIG_HANDLING_ENABLED "Define if you want system signals handling" ON)
 option (USE_X11_XFIXES "Use X11 Xfixes extension (Desktop Linux)" ON)
 
 if (NOT BUILD_DESCRIPTION)
-	set (BUILD_DESCRIPTION "Compilied sources" CACHE STRING "Build description" FORCE)
+	set (BUILD_DESCRIPTION "Compiled from sources" CACHE STRING "Build description" FORCE)
 endif (NOT BUILD_DESCRIPTION)
 
 if (NOT CMAKE_BUILD_TYPE)

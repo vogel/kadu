@@ -151,10 +151,10 @@ public:
 	QList<Status> statuses(Buddy buddy, QDate date = QDate(), int limit = 0);
 	int statusBuddyCount(Buddy buddy, QDate date = QDate());
 
-	QList<QString> smsReceipientsList(HistorySearchParameters search);
-	QList<QDate> datesForSmsReceipient(const QString &receipient, HistorySearchParameters search);
-	QList<QString> sms(const QString &receipient, QDate date = QDate(), int limit = 0);
-	int smsCount(const QString &receipient, QDate date = QDate());
+	QList<QString> smsRecipientsList(HistorySearchParameters search);
+	QList<QDate> datesForSmsRecipient(const QString &recipient, HistorySearchParameters search);
+	QList<QString> sms(const QString &recipient, QDate date = QDate(), int limit = 0);
+	int smsCount(const QString &recipient, QDate date = QDate());
 
 	void deleteHistory(Buddy buddy);
 

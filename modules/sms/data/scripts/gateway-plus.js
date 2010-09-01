@@ -26,7 +26,7 @@ GatewayPlus.prototype = {
 		return "01";
 	},
 
-	sendSms: function(receipient, sender, signature, content, callbackObject) {
+	sendSms: function(recipient, sender, signature, content, callbackObject) {
 		callbackObject.failure("Not implemented");
 	}
 };

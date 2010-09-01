@@ -85,12 +85,12 @@ class HistoryWindow : public MainWindow
 	void updateData();
 	void selectChat(Chat chat);
 	void selectStatusBuddy(Buddy buddy);
-	void selectSmsReceipient(const QString &receipient);
+	void selectSmsRecipient(const QString &recipient);
 	void selectHistoryItem(HistoryTreeItem item);
 
 	void chatActivated(Chat chat);
 	void statusBuddyActivated(Buddy buddy);
-	void smsReceipientActivated(const QString &receipient);
+	void smsRecipientActivated(const QString &recipient);
 	void treeItemActivated(HistoryTreeItem item);
 
 	QList<Message> statusesToMessages(QList<Status> statuses);

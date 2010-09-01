@@ -87,7 +87,7 @@ int HistoryChatsModel::rowCount(const QModelIndex &parent) const
 			case 0:
 				return StatusBuddies.size();
 			case 1:
-				return SmsReceipients.size();
+				return SmsRecipients.size();
 		}
 		return 0;
 	}
@@ -183,21 +183,21 @@ QVariant HistoryChatsModel::statusData(const QModelIndex &index, int role) const
 	return QVariant();
 }
 
-QVariant HistoryChatsModel::smsReceipientData(const QModelIndex &index, int role) const
+QVariant HistoryChatsModel::smsRecipientData(const QModelIndex &index, int role) const
 {
 	if (!index.parent().isValid())
 		return role == Qt::DisplayRole ? tr("Sms") : QVariant();
 
-	if (index.row() < 0 || index.row() >= SmsReceipients.size())
+	if (index.row() < 0 || index.row() >= SmsRecipients.size())
 		return QVariant();
 
 	switch (role)
 	{
 		case Qt::DisplayRole:
-			return SmsReceipients[index.row()];
+			return SmsRecipients[index.row()];
 
 		case HistoryItemRole:
-			return QVariant::fromValue<HistoryTreeItem>(HistoryTreeItem(SmsReceipients[index.row()]));
+			return QVariant::fromValue<HistoryTreeItem>(HistoryTreeItem(SmsRecipients[index.row()]));
 	}
 
 	return QVariant();
@@ -217,7 +217,7 @@ QVariant HistoryChatsModel::data(const QModelIndex &index, int role) const
 		switch (chatTypeIndex - ChatKeys.size())
 		{
 			case 0: return statusData(index, role);
-			case 1: return smsReceipientData(index, role);
+			case 1: return smsRecipientData(index, role);
 		}
 
 		return QVariant();
@@ -273,12 +273,12 @@ void HistoryChatsModel::clearStatusBuddies()
 	endRemoveRows();
 }
 
-void HistoryChatsModel::clearSmsReceipients()
+void HistoryChatsModel::clearSmsRecipients()
 {
 	QModelIndex statusParent = index(Chats.size() + 1, 0);
 
 	beginRemoveRows(statusParent, 0, rowCount(statusParent));
-	SmsReceipients.clear();
+	SmsRecipients.clear();
 	endRemoveRows();
 }
 
@@ -293,14 +293,14 @@ void HistoryChatsModel::setStatusBuddies(QList<Buddy> buddies)
 	endInsertRows();
 }
 
-void HistoryChatsModel::setSmsReceipients(QList<QString> smsReceipients)
+void HistoryChatsModel::setSmsRecipients(QList<QString> smsRecipients)
 {
-	clearSmsReceipients();
+	clearSmsRecipients();
 
 	QModelIndex statusParent = index(Chats.size() + 1, 0);
 
-	beginInsertRows(statusParent, 0, smsReceipients.size());
-	SmsReceipients = smsReceipients;
+	beginInsertRows(statusParent, 0, smsRecipients.size());
+	SmsRecipients = smsRecipients;
 	endInsertRows();
 }
 
@@ -351,12 +351,12 @@ QModelIndex HistoryChatsModel::smsIndex() const
 	return index(ChatKeys.size() + 1, 0, QModelIndex());
 }
 
-QModelIndex HistoryChatsModel::smsReceipientIndex(const QString &receipient) const
+QModelIndex HistoryChatsModel::smsRecipientIndex(const QString &recipient) const
 {
 	QModelIndex parent = smsIndex();
 	if (!parent.isValid())
 		return QModelIndex();
 
-	int row = SmsReceipients.indexOf(receipient);
+	int row = SmsRecipients.indexOf(recipient);
 	return index(row, 0, parent);
 }

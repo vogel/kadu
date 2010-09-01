@@ -27,8 +27,8 @@
 
 #include "sms-dates-model.h"
 
-SmsDatesModel::SmsDatesModel(const QString &receipient, QList<QDate> dates, QObject *parent) :
-		QAbstractListModel(parent), Receipient(receipient), Dates(dates)
+SmsDatesModel::SmsDatesModel(const QString &recipient, QList<QDate> dates, QObject *parent) :
+		QAbstractListModel(parent), Recipient(recipient), Dates(dates)
 {
 	Cache = new QMap<QDate, ItemCachedData>();
 }
@@ -73,7 +73,7 @@ QVariant SmsDatesModel::headerData(int section, Qt::Orientation orientation, int
 
 int SmsDatesModel::fetchSize(QDate date) const
 {
-	return History::instance()->smsCount(Receipient, date);
+	return History::instance()->smsCount(Recipient, date);
 }
 
 SmsDatesModel::ItemCachedData SmsDatesModel::fetchCachedData(QDate date) const
@@ -90,7 +90,7 @@ SmsDatesModel::ItemCachedData SmsDatesModel::fetchCachedData(QDate date) const
 
 QVariant SmsDatesModel::data(const QModelIndex &index, int role) const
 {
-	if (Receipient.isEmpty())
+	if (Recipient.isEmpty())
 		return QVariant();
 
 	int col = index.column();
@@ -114,16 +114,16 @@ QVariant SmsDatesModel::data(const QModelIndex &index, int role) const
 			return QVariant();
 		}
 
-		case HistoryItemRole: return QVariant::fromValue<HistoryTreeItem>(HistoryTreeItem(Receipient));
+		case HistoryItemRole: return QVariant::fromValue<HistoryTreeItem>(HistoryTreeItem(Recipient));
 		case DateRole: return Dates.at(row);
 	}
 
 	return QVariant();
 }
 
-void SmsDatesModel::setReceipient(const QString &receipient)
+void SmsDatesModel::setRecipient(const QString &recipient)
 {
-	Receipient = receipient;
+	Recipient = recipient;
 }
 
 void SmsDatesModel::setDates(QList<QDate> dates)
