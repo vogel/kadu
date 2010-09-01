@@ -24,6 +24,8 @@
 
 class BuddyNameFilter : public AbstractBuddyFilter
 {
+	Q_OBJECT
+
 	QString Name;
 
 public:

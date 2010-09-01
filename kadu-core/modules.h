@@ -48,6 +48,8 @@ class ModulesWindow;
 **/
 class Library : public QObject
 {
+	Q_OBJECT
+
 	QString FileName;
 	void *Handle;
 

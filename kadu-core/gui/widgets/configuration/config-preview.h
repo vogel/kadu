@@ -35,6 +35,8 @@ class ConfigGroupBox;
  **/
 class KADUAPI ConfigPreview : public Preview, public ConfigWidget
 {
+	Q_OBJECT
+
 	QLabel *label;
 
 protected:

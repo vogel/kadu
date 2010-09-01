@@ -38,6 +38,8 @@ class ConfigGroupBox;
  **/
 class KADUAPI ConfigSlider : public QSlider, public ConfigWidgetValue
 {
+	Q_OBJECT
+
 	QLabel *label;
 
 protected:

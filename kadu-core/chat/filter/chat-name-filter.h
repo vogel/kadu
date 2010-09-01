@@ -40,6 +40,8 @@ class BuddyNameFilter;
  */
 class KADUAPI ChatNameFilter : public ChatFilter
 {
+	Q_OBJECT
+
 	QString Name;
 	BuddyNameFilter *Filter;
 

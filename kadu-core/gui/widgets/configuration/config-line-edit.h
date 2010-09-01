@@ -33,6 +33,8 @@ class ConfigGroupBox;
  **/
 class KADUAPI ConfigLineEdit : public QLineEdit, public ConfigWidgetValue
 {
+	Q_OBJECT
+
 	QLabel *label;
 
 protected:

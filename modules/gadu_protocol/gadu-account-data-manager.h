@@ -27,6 +27,8 @@ class Account;
 
 class GaduAccountDataManager : public AccountDataManager
 {
+	Q_OBJECT
+
 public:
 	GaduAccountDataManager(Account data);
 

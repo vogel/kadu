@@ -7,10 +7,10 @@
 
 #ifndef PROFILES_H
 #define PROFILES_H
- 
-#include <QtCore/QString> 
+
+#include <QtCore/QString>
 #include <QtCore/QObject>
-#include <QtCore/QThread> 
+#include <QtCore/QThread>
 #include <QtCore/QList>
 #include <QtCore/QStringList>
 #include <QtGui/QWidget>
@@ -40,7 +40,7 @@ class Profile
 {
 	public:
 		Profile(): config(true), userlist(true), autostart(false) {};
-		Profile(const Profile &p) : name(p.name), directory(p.directory), uin(p.uin), 
+		Profile(const Profile &p) : name(p.name), directory(p.directory), uin(p.uin),
 					    password(p.password), protectPassword(p.protectPassword),
 					    config(p.config), userlist(p.userlist), autostart(p.autostart) {};
 		Profile(QString name, QString dir): name(name), directory(dir), config(true), userlist(true), autostart(false) {};
@@ -62,7 +62,7 @@ class ProfileConfigurationWindow : public QDialog
 	Q_OBJECT
 	public:
 		ProfileConfigurationWindow(QWidget * parent = 0, const char * name = 0, bool modal = FALSE, Qt::WindowFlags f = 0);
-		~ProfileConfigurationWindow();	
+		~ProfileConfigurationWindow();
 		void initConfiguration();
 		void clear();
 		void refreshList();
@@ -97,7 +97,7 @@ class ProfileConfigurationWindow : public QDialog
 		void configChecked(bool state);
 		void passwordProtectChecked(bool state);
 		void fillDir(const QString &s);
-};	
+};
 
 
 /*
@@ -107,6 +107,8 @@ class ProfileConfigurationWindow : public QDialog
  */
 
 class MyThread : public QThread {
+	Q_OBJECT
+
 	public:
 		MyThread() {};
 		QString path;
@@ -148,7 +150,7 @@ class ProfileManager : public QObject
 		ProfileConfigurationWindow *dialogWindow;
 		//ThreadList thread_list;
 		QMenu *ProfileMenu;
-		ActionDescription *profileMenuActionDescription;	
+		ActionDescription *profileMenuActionDescription;
 		QList<Profile> list;
 
 		void getProfiles();
@@ -173,7 +175,7 @@ class PasswordDialog : public QDialog
 		PasswordDialog(QDialog *parent=0, const char *name=0);
 		~PasswordDialog();
 		QString getPassword();
-		
+
 	private:
 		QLineEdit *password;
 		QPushButton *okButton;

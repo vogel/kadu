@@ -31,6 +31,8 @@ class ConfigGroupBox;
  **/
 class KADUAPI ConfigActionButton : public QPushButton, public ConfigWidget
 {
+	Q_OBJECT
+
 protected:
 	virtual void createWidgets();
 

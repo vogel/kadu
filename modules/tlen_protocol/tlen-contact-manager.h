@@ -28,6 +28,8 @@ class TlenContactDetails;
 
 class TlenContactManager : public ConfigurationContactDataManager
 {
+	Q_OBJECT
+
 	TlenContactDetails *Data;
 
 protected:

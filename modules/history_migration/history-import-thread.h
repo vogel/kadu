@@ -23,14 +23,17 @@
 #include <QtCore/QList>
 #include <QtCore/QThread>
 
+#include "accounts/account.h"
+
 #include "history-migration-helper.h"
 
-class Account;
 class Chat;
 struct HistoryEntry;
 
 class HistoryImportThread : public QThread
 {
+	Q_OBJECT
+
 	Account GaduAccount;
 	QList<UinsList> UinsLists;
 

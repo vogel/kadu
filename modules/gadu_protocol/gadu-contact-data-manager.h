@@ -28,6 +28,8 @@ class GaduContactDetails;
 
 class GaduContactDataManager : public ConfigurationContactDataManager
 {
+	Q_OBJECT
+
 	GaduContactDetails *Data;
 
 protected:

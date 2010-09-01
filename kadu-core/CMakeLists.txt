@@ -362,6 +362,7 @@ set (kadu_MOC_SRCS
 	buddies/filter/anonymous-buddy-filter.h
 	buddies/filter/anonymous-without-messages-buddy-filter.h
 	buddies/filter/blocked-buddy-filter.h
+	buddies/filter/buddy-name-filter.h
 	buddies/filter/group-buddy-filter.h
 	buddies/filter/has-description-buddy-filter.h
 	buddies/filter/mobile-buddy-filter.h
@@ -389,6 +390,7 @@ set (kadu_MOC_SRCS
 	chat/recent-chat-manager.h
 
 	chat/filter/chat-filter.h
+	chat/filter/chat-name-filter.h
 
 	chat/message/message-render-info.h
 	chat/message/pending-messages-manager.h
@@ -411,6 +413,9 @@ set (kadu_MOC_SRCS
 	contacts/model/buddy-contact-model.h
 	contacts/model/contact-list-model.h
 
+	configuration/account-data-manager.h
+	configuration/config-file-data-manager.h
+	configuration/configuration-contact-data-manager.h
 	configuration/configuration-window-data-manager.h
 	configuration/main-configuration.h
 	configuration/notifier-configuration-data-manager.h
@@ -422,6 +427,8 @@ set (kadu_MOC_SRCS
 	file-transfer/file-transfer-manager.h
 	file-transfer/file-transfer-notifications.h
 	file-transfer/file-transfer-shared.h
+	
+	gui/hot-key.h
 
 	gui/actions/action.h
 	gui/actions/actions.h
@@ -481,14 +488,30 @@ set (kadu_MOC_SRCS
 	gui/widgets/syntax-editor.h
 	gui/widgets/toolbar.h
 
-	#gui/widgets/configuration/config-action-button.h
+	gui/widgets/configuration/config-action-button.h
 	gui/widgets/configuration/config-check-box.h
 	#gui/widgets/configuration/config-widget-value.h
 	gui/widgets/configuration/configuration-widget.h
-	#gui/widgets/configuration/kadu-scroll-area.h
+	gui/widgets/configuration/config-label.h
+	gui/widgets/configuration/config-color-button.h
+	gui/widgets/configuration/config-combo-box.h
+	gui/widgets/configuration/config-gg-password-edit.h
+	gui/widgets/configuration/config-hot-key-edit.h
+	gui/widgets/configuration/config-line-edit.h
+	gui/widgets/configuration/config-line-separator.h
+	gui/widgets/configuration/config-list-widget.h
+	gui/widgets/configuration/config-path-list-edit.h
+	gui/widgets/configuration/config-preview.h
 	gui/widgets/configuration/config-radio-button.h
 	gui/widgets/configuration/config-section.h
+	gui/widgets/configuration/config-select-file.h
+	gui/widgets/configuration/config-select-font.h
+	gui/widgets/configuration/config-slider.h
+	gui/widgets/configuration/config-spin-box.h
+	gui/widgets/configuration/config-syntax-editor.h
 	#gui/widgets/configuration/config-tab.h
+	gui/widgets/configuration/kadu-scroll-area.h
+	gui/widgets/configuration/notify-tree-widget.h
 	gui/widgets/configuration/notifier-configuration-widget.h
 	gui/widgets/configuration/notify-group-box.h
 
@@ -514,9 +537,11 @@ set (kadu_MOC_SRCS
 	gui/windows/search-window.h
 	gui/windows/subscription-window.h
 	gui/windows/syntax-editor-window.h
+	gui/windows/window-notifier-window.h
 	gui/windows/your-accounts.h
 
 	gui/windows/open-chat-with/open-chat-with.h
+	gui/windows/open-chat-with/open-chat-with-runner-manager.h
 
 	identities/model/identity-model.h
 	identities/identity-manager.h
@@ -540,6 +565,7 @@ set (kadu_MOC_SRCS
 
 	protocols/connection-error-notification.h
 	protocols/protocol.h
+	protocols/protocol-factory.h
 	protocols/protocols-manager.h
 	protocols/filter/abstract-protocol-filter.h
 	protocols/filter/can-register-protocol-filter.h

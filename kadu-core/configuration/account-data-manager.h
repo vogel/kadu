@@ -20,12 +20,14 @@
 #ifndef ACCOUNT_DATA_MANAGER_H
 #define ACCOUNT_DATA_MANAGER_H
 
-#include "configuration-window-data-manager.h"
+#include "accounts/account.h"
 
-class Account;
+#include "configuration-window-data-manager.h"
 
 class KADUAPI AccountDataManager : public ConfigurationWindowDataManager
 {
+	Q_OBJECT
+
 	Account Data;
 
 protected:
@@ -39,4 +41,4 @@ public:
 
 };
 
-#endif 
+#endif

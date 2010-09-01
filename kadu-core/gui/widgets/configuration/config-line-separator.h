@@ -32,6 +32,8 @@ class ConfigGroupBox;
  **/
 class KADUAPI ConfigLineSeparator : public QFrame, public ConfigWidget
 {
+	Q_OBJECT
+
 protected:
 	virtual void createWidgets();
 

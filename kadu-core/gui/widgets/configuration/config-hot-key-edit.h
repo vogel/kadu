@@ -24,6 +24,8 @@
 #include "gui/widgets/configuration/config-widget-value.h"
 #include "configuration/configuration-window-data-manager.h"
 
+class QLabel;
+
 class ConfigGroupBox;
 
 /**
@@ -31,6 +33,8 @@ class ConfigGroupBox;
  **/
 class KADUAPI ConfigHotKeyEdit : public HotKeyEdit, public ConfigWidgetValue
 {
+	Q_OBJECT
+
 	QLabel *label;
 
 protected:

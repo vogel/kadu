@@ -22,7 +22,6 @@
 
 #include <QtCore/QDateTime>
 
-#include "accounts/account.h"
 #include "chat/chat.h"
 #include "chat/chat-manager.h"
 #include "chat/message/message.h"

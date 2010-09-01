@@ -40,6 +40,8 @@ class ConfigurationWindowDataManager;
  **/
 class KADUAPI ConfigListWidget : public QListWidget, public ConfigWidget
 {
+	Q_OBJECT
+
 	QLabel *label;
 
 	QStringList itemValues;

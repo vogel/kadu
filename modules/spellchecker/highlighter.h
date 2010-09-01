@@ -7,6 +7,8 @@ class QString;
 
 class Highlighter : public QSyntaxHighlighter
 {
+	Q_OBJECT
+
 	static QList<Highlighter *> highlighters;
 	static QTextCharFormat highlightFormat;
 

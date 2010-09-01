@@ -26,6 +26,8 @@ public:
 
 class KADUAPI HotKeyEdit : public QLineEdit
 {
+	Q_OBJECT
+
 protected:
 	virtual void keyPressEvent(QKeyEvent *e);
 	virtual void keyReleaseEvent(QKeyEvent *e);

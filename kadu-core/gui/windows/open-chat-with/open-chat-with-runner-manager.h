@@ -26,6 +26,7 @@
 
 class KADUAPI OpenChatWithRunnerManager : public QObject
 {
+	Q_OBJECT
 	Q_DISABLE_COPY(OpenChatWithRunnerManager)
 
 	static OpenChatWithRunnerManager *Instance;

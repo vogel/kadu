@@ -27,10 +27,11 @@
 
 class GTalkProtocolFactory : public JabberProtocolFactory
 {
+	Q_OBJECT
 	Q_DISABLE_COPY(GTalkProtocolFactory)
 
 	static GTalkProtocolFactory *Instance;
-	
+
 	GTalkProtocolFactory();
 
 public:
@@ -41,11 +42,11 @@ public:
 	virtual QString name() { return "gmail/google talk"; }
 	virtual QString displayName() { return "Gmail/Google Talk"; }
 
-	virtual bool canRegister() { return false; }	
-	
+	virtual bool canRegister() { return false; }
+
 	virtual QIcon icon();
 	virtual QString iconPath();
-	
+
 	virtual QWidget * newCreateAccountWidget(QWidget *parent = 0) { return 0; }
 
 };

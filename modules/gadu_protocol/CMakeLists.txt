@@ -115,7 +115,10 @@ set (MOC_SOURCES
 	socket-notifiers/gadu-socket-notifiers.h
 	socket-notifiers/gadu-token-socket-notifiers.h
 
+	gadu-account-data-manager.h
 	#gadu-account-details.h
+	gadu-contact-data-manager.h
+	gadu-protocol-factory.h
 	gadu-protocol.h
 	gadu-resolver.h
 	gadu-url-handler.h

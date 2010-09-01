@@ -32,6 +32,8 @@ class ConfigurationWindowDataManager;
  **/
 class KADUAPI ConfigPathListEdit : public PathListEdit, public ConfigWidgetValue
 {
+	Q_OBJECT
+
 	QLabel *label;
 
 protected:

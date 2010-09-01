@@ -17,8 +17,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "accounts/account.h"
-
 #include "account-data-manager.h"
 
 AccountDataManager::AccountDataManager(Account data, QObject *parent)

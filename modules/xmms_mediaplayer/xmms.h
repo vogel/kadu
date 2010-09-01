@@ -8,6 +8,8 @@
 
 class XmmsMediaPlayer : public PlayerInfo, public PlayerCommands
 {
+	Q_OBJECT
+
 	static QString convert(QString str);
 
 public:
