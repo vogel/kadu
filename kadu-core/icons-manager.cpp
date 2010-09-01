@@ -44,8 +44,7 @@ IconsManager * IconsManager::instance()
 	return Instance;
 }
 
-IconsManager::IconsManager() :
-		pixmaps(), icons()
+IconsManager::IconsManager()
 {
 	kdebugf();
 
@@ -54,6 +53,7 @@ IconsManager::IconsManager() :
 	ThemeManager = new IconThemeManager(this);
 	ThemeManager->loadThemes(iconPaths);
 	ThemeManager->setCurrentTheme(config_file.readEntry("Look", "IconTheme"));
+	configurationUpdated();
 
 	config_file.writeEntry("Look", "IconTheme", ThemeManager->currentTheme().path());
 
@@ -79,61 +79,55 @@ QString IconsManager::iconPath(const QString &path) const
 	return fileName;
 }
 
-const QPixmap &IconsManager::pixmapByPath(const QString &name)
+const QPixmap & IconsManager::pixmapByPath(const QString &path)
 {
-	QMap<QString, QPixmap>::const_iterator i = pixmaps.find(name);
-	if (i != pixmaps.end())
-		return *i;
+	if (!PixmapCache.contains(path))
+	{
+		QPixmap pix;
+		QString fullPath = iconPath(path);
+		if (!fullPath.isEmpty())
+			pix.load(fullPath);
+		PixmapCache.insert(path, pix);
+	}
 
-	QPixmap pix;
-	QString path = iconPath(name);
-	if (!path.isEmpty())
-		pix.load(path);
-
-	pixmaps.insert(name, pix);
-	return pixmaps[name];
+	return PixmapCache[path];
 }
 
-const QIcon &IconsManager::iconByPath(const QString &name)
+const QIcon & IconsManager::iconByPath(const QString &path)
 {
-	QMap<QString, QIcon>::const_iterator i = icons.find(name);
-	if (i != icons.end())
-		return *i;
+	if (!IconCache.contains(path))
+	{
+		QIcon icon;
+		QString fullPath = iconPath(path);
+		if (!fullPath.isEmpty())
+			icon.addFile(fullPath);
+		IconCache.insert(path, icon);
+	}
 
-	QIcon icon;
-	QString path = iconPath(name);
-	if (!path.isEmpty())
-		icon.addFile(path);
-
-	icons.insert(name, icon);
-	return icons[name];
+	return IconCache[path];
 }
 
-void IconsManager::clear()
+void IconsManager::clearCache()
 {
 	kdebugf();
 
-	pixmaps.clear();
-	icons.clear();
+	PixmapCache.clear();
+	IconCache.clear();
 
 	kdebugf2();
 }
 
-// TODO: clear it!
 void IconsManager::configurationUpdated()
 {
 	kdebugf();
 
 	bool themeWasChanged = config_file.readEntry("Look", "IconTheme") != ThemeManager->currentTheme().path();
-
-	clear();
-	ThemeManager->setCurrentTheme(config_file.readEntry("Look", "IconTheme"));
-	config_file.writeEntry("Look", "IconTheme", ThemeManager->currentTheme().path());
-// 	kadu->changeAppearance(); TODO: 0.6.6
-
-	// TODO: Make it standard
 	if (themeWasChanged)
 	{
+		clearCache();
+		ThemeManager->setCurrentTheme(config_file.readEntry("Look", "IconTheme"));
+		config_file.writeEntry("Look", "IconTheme", ThemeManager->currentTheme().path());
+
 		emit themeChanged();
 	}
 

@@ -48,26 +48,25 @@ class KADUAPI IconsManager : public QObject, public ConfigurationAwareObject
 
 	IconThemeManager *ThemeManager;
 
-	QMap<QString, QPixmap> pixmaps;
-	QMap<QString, QIcon> icons;
+	QMap<QString, QPixmap> PixmapCache;
+	QMap<QString, QIcon> IconCache;
+
+	void clearCache();
+
+protected:
+	virtual void configurationUpdated();
 
 public:
+	static IconsManager * instance();
+
 	IconThemeManager * themeManager() const;
 
 	QString iconPath(const QString &path) const;
 
-	const QPixmap & pixmapByPath(const QString &name);
-	const QIcon & iconByPath(const QString &name);
+	const QPixmap & pixmapByPath(const QString &path);
+	const QIcon & iconByPath(const QString &path);
 
 	QSize getIconsSize();
-
-	static IconsManager * instance();
-
-public: // TODO: fix, see Kadu::Kadu
-	virtual void configurationUpdated();
-
-public slots:
-	void clear();
 
 signals:
 	void themeChanged();

@@ -297,8 +297,6 @@ void MainConfigurationWindow::setIconThemes()
 		captions.append(qApp->translate("@default", theme.name().toAscii().data()));
 	}
 
-	printf("setting index: %d\n", IconsManager::instance()->themeManager()->currentThemeIndex());
-
 	iconThemes->setItems(values, captions);
 	iconThemes->setCurrentIndex(IconsManager::instance()->themeManager()->currentThemeIndex());
 }

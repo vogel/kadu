@@ -90,13 +90,11 @@ void ThemeManager::setCurrentTheme(const QString &themePath)
 		if (themePath == theme.name() || themePath == theme.path())
 		{
 			CurrentThemeIndex = i;
-			printf("cti set to: %d\n", i);
 			return;
 		}
 	}
 
 	CurrentThemeIndex = getDefaultThemeIndex();
-	printf("cti set to: %d\n", CurrentThemeIndex);
 }
 
 int ThemeManager::currentThemeIndex() const
