@@ -20,4 +20,21 @@
 #ifndef ICON_THEME_MANAGER_H
 #define ICON_THEME_MANAGER_H
 
+#include "themes/theme-manager.h"
+
+class IconThemeManager : public ThemeManager
+{
+	Q_OBJECT
+
+protected:
+	virtual QStringList defaultThemePathes();
+	virtual bool isValidThemePath(const QString &themePath);
+	virtual QString getThemeName(const QString &themePath);
+
+public:
+	explicit IconThemeManager(QObject *parent = 0);
+	virtual ~IconThemeManager();
+
+};
+
 #endif // ICON_THEME_MANAGER_H

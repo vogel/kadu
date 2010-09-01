@@ -54,6 +54,7 @@
 #include "gui/windows/syntax-editor-window.h"
 #include "misc/misc.h"
 #include "status/status.h"
+#include "themes/icon-theme-manager.h"
 
 #include "debug.h"
 #include "icons-manager.h"
@@ -283,18 +284,23 @@ void MainConfigurationWindow::setLanguages()
 void MainConfigurationWindow::setIconThemes()
 {
 	ConfigComboBox *iconThemes = dynamic_cast<ConfigComboBox *>(widget()->widgetById("iconThemes"));
-	IconsManager::instance()->setPaths((dynamic_cast<PathListEdit *>(widget()->widgetById("iconPaths")))->pathList());
+	IconsManager::instance()->themeManager()->loadThemes((dynamic_cast<PathListEdit *>(widget()->widgetById("iconPaths")))->pathList());
 
 	(void)QT_TRANSLATE_NOOP("@default", "default");
-	QStringList themes = IconsManager::instance()->themes();
+	QList<Theme> themes = IconsManager::instance()->themeManager()->themes();
+
+	QStringList values;
 	QStringList captions;
-	themes.sort();
+	foreach (const Theme &theme, themes)
+	{
+		values.append(theme.path());
+		captions.append(qApp->translate("@default", theme.name().toAscii().data()));
+	}
 
-	foreach(const QString &theme, themes)
-		captions.append(qApp->translate("@default", theme.toAscii().data()));
+	printf("setting index: %d\n", IconsManager::instance()->themeManager()->currentThemeIndex());
 
-	iconThemes->setItems(themes, captions);
-	iconThemes->setEditText(IconsManager::instance()->theme());
+	iconThemes->setItems(values, captions);
+	iconThemes->setCurrentIndex(IconsManager::instance()->themeManager()->currentThemeIndex());
 }
 
 void MainConfigurationWindow::setEmoticonThemes()

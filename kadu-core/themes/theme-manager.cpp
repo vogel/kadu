@@ -17,27 +17,47 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QDir>
 #include <QtCore/QStringList>
 
 #include "theme-manager.h"
 
-ThemeManager::ThemeManager() :
-		CurrentThemeIndex(-1)
+ThemeManager::ThemeManager(QObject *parent) :
+		QObject(parent), CurrentThemeIndex(-1)
+{
+}
+
+ThemeManager::~ThemeManager()
 {
 }
 
 int ThemeManager::getDefaultThemeIndex()
 {
 	for (int i = 0; i < Themes.size(); i++)
-		if (Themes.at(i).getName() == "default")
+		if (Themes.at(i).name() == "default")
 			return i;
 
 	return -1;
 }
 
+QStringList ThemeManager::getSubDirs(const QString &dirPath)
+{
+	QDir dir(dirPath);
+	QStringList subDirs = dir.entryList(QDir::Dirs);
+
+	QStringList result;
+	foreach (const QString &subDir, subDirs)
+		if (!subDir.startsWith('.')) // ignore hidden, this, and parent
+			result.append(dirPath + '/' + subDir);
+
+	return result;
+}
+
 void ThemeManager::loadThemes(QStringList pathList)
 {
-	QString currentThemeName = currentTheme().getName();
+	pathList = pathList + defaultThemePathes();
+
+	QString currentThemeName = currentTheme().name();
 	CurrentThemeIndex = -1;
 
 	Themes.clear();
@@ -48,7 +68,7 @@ void ThemeManager::loadThemes(QStringList pathList)
 			continue;
 
 		QString newThemeName = getThemeName(path);
-		Theme theme(path, newThemeName);
+		Theme theme(path + "/", newThemeName);
 		Themes.append(theme);
 
 		if (newThemeName == currentThemeName)
@@ -59,6 +79,29 @@ void ThemeManager::loadThemes(QStringList pathList)
 		CurrentThemeIndex = getDefaultThemeIndex();
 
 	emit themeListUpdated();
+}
+
+void ThemeManager::setCurrentTheme(const QString &themePath)
+{
+	for (int i = 0; i < Themes.size(); i++)
+	{
+		const Theme &theme = Themes.at(i);
+
+		if (themePath == theme.name() || themePath == theme.path())
+		{
+			CurrentThemeIndex = i;
+			printf("cti set to: %d\n", i);
+			return;
+		}
+	}
+
+	CurrentThemeIndex = getDefaultThemeIndex();
+	printf("cti set to: %d\n", CurrentThemeIndex);
+}
+
+int ThemeManager::currentThemeIndex() const
+{
+	return CurrentThemeIndex;
 }
 
 const Theme & ThemeManager::currentTheme() const

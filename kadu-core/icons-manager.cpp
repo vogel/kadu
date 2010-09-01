@@ -29,9 +29,9 @@
 #include <QtCore/QFile>
 
 #include "configuration/configuration-file.h"
-
-#include "debug.h"
 #include "misc/misc.h"
+#include "themes/icon-theme-manager.h"
+#include "debug.h"
 
 #include "icons-manager.h"
 
@@ -45,23 +45,24 @@ IconsManager * IconsManager::instance()
 }
 
 IconsManager::IconsManager() :
-		Themes("icons", "icons.conf"), pixmaps(), icons()
+		pixmaps(), icons()
 {
 	kdebugf();
 
-	setPaths(config_file.readEntry("Look", "IconsPaths").split(QRegExp("(;|:)"), QString::SkipEmptyParts));
+	QStringList iconPaths = config_file.readEntry("Look", "IconsPaths").split(QRegExp("(;|:)"), QString::SkipEmptyParts);
 
-	QStringList themeList = themes();
-	QString theme = config_file.readEntry("Look", "IconTheme");
-	if (!themeList.isEmpty() && !themeList.contains(theme))
-	{
-		theme = "default";
-		config_file.writeEntry("Look", "IconTheme", "default");
-	}
+	ThemeManager = new IconThemeManager(this);
+	ThemeManager->loadThemes(iconPaths);
+	ThemeManager->setCurrentTheme(config_file.readEntry("Look", "IconTheme"));
 
-	setTheme(theme);
+	config_file.writeEntry("Look", "IconTheme", ThemeManager->currentTheme().path());
 
 	kdebugf2();
+}
+
+IconThemeManager * IconsManager::themeManager() const
+{
+	return ThemeManager;
 }
 
 QString IconsManager::iconPath(const QString &path) const
@@ -69,17 +70,13 @@ QString IconsManager::iconPath(const QString &path) const
 	if (path.startsWith('/'))
 		return path;
 
-	QString fname = themePath() + path;
-	QString absoluteName = dataPath() + fname;
+	QString fileName = ThemeManager->currentTheme().path() + path;
 
-	if (!QFile::exists(fname) && QFile::exists(absoluteName))
-		fname = absoluteName;
-
-	QDir dir(fname);
+	QDir dir(fileName);
 	if (dir.exists()) // hmm, icon != dir
 		return QString::null;
 
-	return fname;
+	return fileName;
 }
 
 const QPixmap &IconsManager::pixmapByPath(const QString &name)
@@ -127,16 +124,16 @@ void IconsManager::configurationUpdated()
 {
 	kdebugf();
 
-	bool themeWasChanged = config_file.readEntry("Look", "IconTheme") != IconsManager::instance()->theme();
+	bool themeWasChanged = config_file.readEntry("Look", "IconTheme") != ThemeManager->currentTheme().path();
 
 	clear();
-	setTheme(config_file.readEntry("Look", "IconTheme"));
+	ThemeManager->setCurrentTheme(config_file.readEntry("Look", "IconTheme"));
+	config_file.writeEntry("Look", "IconTheme", ThemeManager->currentTheme().path());
 // 	kadu->changeAppearance(); TODO: 0.6.6
 
 	// TODO: Make it standard
 	if (themeWasChanged)
 	{
-
 		emit themeChanged();
 	}
 

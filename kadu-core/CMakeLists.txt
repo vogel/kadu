@@ -569,6 +569,7 @@ set (kadu_MOC_SRCS
 	status/status-container.h
 	status/status-container-manager.h
 
+	themes/icon-theme-manager.h
 	themes/theme-manager.h
 
 	dnshandler.h

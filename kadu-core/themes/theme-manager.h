@@ -34,15 +34,22 @@ class ThemeManager : public QObject
 	int getDefaultThemeIndex();
 
 protected:
+	QStringList getSubDirs(const QString &dirPath);
+
+	virtual QStringList defaultThemePathes() = 0;
 	virtual bool isValidThemePath(const QString &themePath) = 0;
 	virtual QString getThemeName(const QString &themePath) = 0;
 
 public:
-	ThemeManager();
+	explicit ThemeManager(QObject *parent = 0);
+	virtual ~ThemeManager();
 
 	void loadThemes(QStringList pathList);
 
 	const QList<Theme> & themes() const { return Themes; }
+
+	void setCurrentTheme(const QString &themePath);
+	int currentThemeIndex() const;
 	const Theme & currentTheme() const;
 
 signals:
