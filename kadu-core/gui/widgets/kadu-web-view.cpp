@@ -165,16 +165,14 @@ void KaduWebView::mousePressEvent(QMouseEvent *e)
 		return;
 
 	QWebView::mousePressEvent(e);
-	if (e->buttons() & Qt::LeftButton)
+	if ((e->buttons() & Qt::LeftButton) && page()->mainFrame()->hitTestContent(e->pos()).isContentSelected())
 	{
-		QWebHitTestResult r = page()->mainFrame()->hitTestContent(e->pos());
 		QSize cs = page()->mainFrame()->contentsSize();
 		QSize vs = page()->viewportSize();
-		DraggingPossible = r.isContentSelected() &&
-				QRect(QPoint(0,0),
-					cs - QSize(cs.width() > vs.width() ? 1 : 0, cs.height() > vs.height() ? 1 : 0) *
-						style()->pixelMetric(QStyle::PM_ScrollBarExtent)
-					).contains(e->pos());
+		QSize scrollBarsSize = QSize(cs.height() > vs.height() ? 1 : 0, cs.width() > vs.width() ? 1 : 0) *
+				style()->pixelMetric(QStyle::PM_ScrollBarExtent);
+		QRect visibleContentsRect = QRect(QPoint(0,0), vs - scrollBarsSize);
+		DraggingPossible = visibleContentsRect.contains(e->pos());
 		DragStartPosition = e->pos();
 	}
 	else
