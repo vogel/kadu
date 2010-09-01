@@ -32,11 +32,12 @@
 #include <QtGui/QPixmap>
 
 #include "configuration/configuration-aware-object.h"
-
-#include "themes.h"
+#include "themes/theme.h"
 #include "exports.h"
 
-class KADUAPI IconsManager : public Themes, ConfigurationAwareObject
+class IconThemeManager;
+
+class KADUAPI IconsManager : public QObject, public ConfigurationAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(IconsManager)
@@ -45,24 +46,27 @@ class KADUAPI IconsManager : public Themes, ConfigurationAwareObject
 
 	static IconsManager *Instance;
 
-	QMap<QString, QPixmap> pixmaps;
-	QMap<QString, QIcon> icons;
+	IconThemeManager *ThemeManager;
 
-public:
-	QString iconPath(const QString &path) const;
-	
-	const QPixmap & pixmapByPath(const QString &name);
-	const QIcon & iconByPath(const QString &name);
+	QMap<QString, QPixmap> PixmapCache;
+	QMap<QString, QIcon> IconCache;
 
-	QSize getIconsSize();
+	void clearCache();
 
-	static IconsManager * instance();	
-
-public: // TODO: fix, see Kadu::Kadu
+protected:
 	virtual void configurationUpdated();
 
-public slots:
-	void clear();
+public:
+	static IconsManager * instance();
+
+	IconThemeManager * themeManager() const;
+
+	QString iconPath(const QString &path) const;
+
+	const QPixmap & pixmapByPath(const QString &path);
+	const QIcon & iconByPath(const QString &path);
+
+	QSize getIconsSize();
 
 signals:
 	void themeChanged();

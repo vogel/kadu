@@ -21,6 +21,7 @@
  */
 
 #include <QtCore/QtGlobal>
+#include <QtCore/QDir>
 #include <QtGui/QApplication>
 
 #ifdef Q_OS_WIN
@@ -197,6 +198,12 @@ QString dataPath(const QString &p, const char *argv0)
 			}
 		}
 #endif
+		QDir dataDir(data_path);
+		QDir libDir(lib_path);
+
+		data_path = dataDir.canonicalPath() + "/";
+		lib_path = libDir.canonicalPath() + "/";
+
 		Parser::globalVariables["DATA_PATH"] = data_path;
 		Parser::globalVariables["LIB_PATH"] = lib_path;
 	}
