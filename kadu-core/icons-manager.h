@@ -6,7 +6,7 @@
  * Copyright 2007, 2008, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2008 Michał Podsiadlik (michal@kadu.net)
  * Copyright 2008 Tomasz Rostański (rozteck@interia.pl)
- * Copyright 2008 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * Copyright 2008, 2010 Piotr Galiszewski (piotrgaliszewski@gmail.com)
  * Copyright 2005 Paweł Płuciennik (pawel_p@kadu.net)
  * %kadu copyright end%
  *
@@ -27,7 +27,7 @@
 #ifndef ICONS_MANAGER_H
 #define ICONS_MANAGER_H
 
-#include <QtCore/QMap>
+#include <QtCore/QHash>
 #include <QtGui/QIcon>
 #include <QtGui/QPixmap>
 
@@ -48,8 +48,8 @@ class KADUAPI IconsManager : public QObject, public ConfigurationAwareObject
 
 	IconThemeManager *ThemeManager;
 
-	QMap<QString, QPixmap> PixmapCache;
-	QMap<QString, QIcon> IconCache;
+	QHash<QString, QPixmap> PixmapCache;
+	QHash<QString, QIcon> IconCache;
 
 	void clearCache();
 
