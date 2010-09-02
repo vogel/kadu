@@ -73,6 +73,8 @@ xcopy %QT_DIR%QtNetwork4.dll     %DESTINATION%\ /C /H /R /Y  >> install.log
 xcopy %QT_DIR%QtSql4.dll         %DESTINATION%\ /C /H /R /Y  >> install.log
 xcopy %QT_DIR%QtWebKit4.dll      %DESTINATION%\ /C /H /R /Y  >> install.log
 xcopy %QT_DIR%QtXml4.dll         %DESTINATION%\ /C /H /R /Y  >> install.log
+xcopy %QT_DIR%QtScript4.dll      %DESTINATION%\ /C /H /R /Y  >> install.log
+xcopy %QT_DIR%QtScriptTools4.dll %DESTINATION%\ /C /H /R /Y  >> install.log
 xcopy %QT_DIR%mingwm10.dll       %DESTINATION%\ /C /H /R /Y  >> install.log
 IF (%QT_VERSION%)==("4.6.3") (
 xcopy %QT_DIR%QtXmlPatterns4.dll %DESTINATION%\ /C /H /R /Y  >> install.log
