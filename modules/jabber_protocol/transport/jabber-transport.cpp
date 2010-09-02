@@ -54,6 +54,8 @@
 JabberTransport::JabberTransport (Account parentAccount, const XMPP::RosterItem & item, const QString& gateway_type)
 	: QObject()//Kopete::Account ( parentAccount->protocol(), parentAccount->accountId()+'/'+ item.jid().bare() )
 {
+	Q_UNUSED(item)
+
 	m_status=Creating;
 	m_account = parentAccount;
 ///	m_account->addTransport( this,item.jid().bare() );
@@ -61,9 +63,9 @@ JabberTransport::JabberTransport (Account parentAccount, const XMPP::RosterItem 
 //TODO: dodaj kontakt reprezentujący transport
 //	JabberContactmyContact = m_account->contactPool()->addContact ( item , Kopete::ContactList::self()->myself(), false );
 //	setMyself( myContact );
-	
+
 ///	kDebug(JABBER_DEBUG_GLOBAL) << accountId() <<" transport created:  myself: " << myContact;
-	
+
 ///	setColor( account()->color() );
 
 	QString cIcon;
@@ -81,13 +83,13 @@ JabberTransport::JabberTransport (Account parentAccount, const XMPP::RosterItem 
 		cIcon="jabber_gateway_gadu";
 	else if(gateway_type=="smtp")
 		cIcon="jabber_gateway_smtp";
-	else if(gateway_type=="http-ws") 
+	else if(gateway_type=="http-ws")
 		cIcon="jabber_gateway_http-ws";
 	else if(gateway_type=="qq")
 		cIcon="jabber_gateway_qq";
 	else if(gateway_type=="tlen")
 		cIcon="jabber_gateway_tlen";
-	else if(gateway_type=="irc")  //NOTE: this is not official 
+	else if(gateway_type=="irc")  //NOTE: this is not official
 		cIcon="irc_protocol";
 
 ///	if( !cIcon.isEmpty() )
@@ -96,32 +98,34 @@ JabberTransport::JabberTransport (Account parentAccount, const XMPP::RosterItem 
 ///	configGroup()->writeEntry("GatewayJID" , item.jid().full() );
 
 	QTimer::singleShot(0, this, SLOT(eatContacts()));
-	
+
 	m_status=Normal;
 }
 
 JabberTransport::JabberTransport( Account parentAccount, const QString & _accountId )
 	: QObject()//Kopete::Account ( parentAccount->protocol(), _accountId )
 {
+	Q_UNUSED(_accountId)
+
 	m_status=Creating;
 	m_account = parentAccount;
-	
+
 	const QString contactJID_s = "";///configGroup()->readEntry("GatewayJID");
-	
+
 	if(contactJID_s.isEmpty())
 	{
 		///kError(JABBER_DEBUG_GLOBAL) << _accountId <<": GatewayJID is empty: MISCONFIGURATION  (have you used Kopete 0.12 beta ?)" << endl;
 	}
-	
+
 	XMPP::Jid contactJID= XMPP::Jid( contactJID_s );
-	
+
 	///m_account->addTransport( this, contactJID.bare() );
-	
+
 	///JabberContactmyContact = m_account->contactPool()->addContact ( contactJID , Kopete::ContactList::self()->myself(), false );
 	///setMyself( myContact );
-	
+
 	///kDebug(JABBER_DEBUG_GLOBAL) << accountId() <<" transport created:  myself: " << myContact;
-	
+
 	m_status=Normal;
 }
 
@@ -136,45 +140,45 @@ JabberTransport::~JabberTransport ()
 // void JabberTransport::fillActionMenu( KActionMenu *actionMenu )
 // {
 // 	actionMenu->setIcon( myself()->onlineStatus().iconFor( this ) );
-// 
+//
 // 	QString nick;
 // 	if ( identity()->hasProperty( Kopete::Global::Properties::self()->nickName().key() ))
 // 		nick = identity()->property( Kopete::Global::Properties::self()->nickName()).value().toString();
 // 	else
 // 		nick = myself()->nickName();
-// 
+//
 // 	actionMenu->menu()->addTitle( myself()->onlineStatus().iconFor( myself() ),
 // 	nick.isNull() ? accountLabel() : i18n( "%2 <%1>", accountLabel(), nick )
 // 								  );
-// 	
+//
 // 	QList<KAction*> *customActions = myself()->customContextMenuActions(  );
 // 	if( customActions && !customActions->isEmpty() )
 // 	{
 // 		actionMenu->addSeparator();
-// 
+//
 // 		foreach( KAction *a, *customActions )
 // 			actionMenu->menu()->addAction(a);
 // 	}
 // 	delete customActions;
-// 
+//
 // /*	KActionMenu *m_actionMenu = Kopete::Account::actionMenu();
-// 
+//
 // 	m_actionMenu->popupMenu()->insertSeparator();
-// 
+//
 // 	m_actionMenu->insert(new KAction (i18n ("Join Groupchat..."), "jabber_group", 0,
 // 		this, SLOT (slotJoinNewChat ()), this, "actionJoinChat"));
-// 
+//
 // 	m_actionMenu->popupMenu()->insertSeparator();
-// 
+//
 // 	m_actionMenu->insert ( new KAction ( i18n ("Services..."), "jabber_serv_on", 0,
 // 										 this, SLOT ( slotGetServices () ), this, "actionJabberServices") );
-// 
+//
 // 	m_actionMenu->insert ( new KAction ( i18n ("Send Raw Packet to Server..."), "mail_new", 0,
 // 										 this, SLOT ( slotSendRaw () ), this, "actionJabberSendRaw") );
-// 
+//
 // 	m_actionMenu->insert ( new KAction ( i18n ("Edit User Info..."), "identity", 0,
 // 										 this, SLOT ( slotEditVCard () ), this, "actionEditVCard") );
-// 
+//
 // 	return m_actionMenu;*/
 // }
 
@@ -284,13 +288,13 @@ bool JabberTransport::removeAccount( )
 {
 	if(m_status == Removing  ||  m_status == AccountRemoved)
 		return true; //so it can be deleted
-	
+
 // /*	if (!account()->isConnected())
 // 	{
 // 		///account()->errorConnectFirst ();
 // 		return false;
 // 	}*/
-	
+
 // /*	m_status = Removing;
 // 	XMPP::JT_Register *task = new XMPP::JT_Register ( m_account->protocol()->client()->rootTask () );
 // 	QObject::connect ( task, SIGNAL ( finished () ), this, SLOT ( removeAllContacts() ) );*/
@@ -313,7 +317,7 @@ void JabberTransport::removeAllContacts( )
 ///powyżej już było zakomentowane....
 
 ///	kDebug(JABBER_DEBUG_GLOBAL) << "delete all contacts of the transport";
-// 	QHash<QString, Kopete::Contact*>::ConstIterator it, itEnd = contacts().constEnd(); 
+// 	QHash<QString, Kopete::Contact*>::ConstIterator it, itEnd = contacts().constEnd();
 // 	for( it = contacts().constBegin(); it != itEnd; ++it )
 // 	{
 // 		XMPP::JT_Roster * rosterTask = new XMPP::JT_Roster ( account()->client()->rootTask () );
@@ -335,7 +339,7 @@ QString JabberTransport::legacyId( const XMPP::Jid & jid )
 void JabberTransport::jabberAccountRemoved( )
 {
 	m_status = AccountRemoved;
-///	Kopete::AccountManager::self()->removeAccount( this ); //this will delete this	
+///	Kopete::AccountManager::self()->removeAccount( this ); //this will delete this
 }
 
 void JabberTransport::eatContacts( )
@@ -351,7 +355,7 @@ void JabberTransport::eatContacts( )
 	*/
  /*   kDebug(JABBER_DEBUG_GLOBAL) ;
 	QHash<QString, Kopete::Contact*> cts=account()->contacts();
-	QHash<QString, Kopete::Contact*>::ConstIterator it, itEnd = cts.constEnd(); 
+	QHash<QString, Kopete::Contact*>::ConstIterator it, itEnd = cts.constEnd();
 	for( it = cts.constBegin(); it != itEnd; ++it )
 	{
 		JabberContact contact=dynamic_cast<JabberContact*>(it.value());

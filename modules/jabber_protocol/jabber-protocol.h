@@ -36,7 +36,6 @@
 #include "services/jabber-file-transfer-service.h"
 #include "services/jabber-personal-info-service.h"
 
-class Conference;
 class JabberContactDetails;
 class JabberResourcePool;
 class JabberRosterService;
@@ -112,10 +111,9 @@ public:
 	virtual ~JabberProtocol();
 
 	XMPP::JabberClient * client() { return JabberClient; }
-	bool validateUserID(const QString& uid);
 	bool isPEPAvailable() { return pepAvailable; }
 
-	virtual Conference * loadConferenceFromStorage(StoragePoint *storage) { return 0; }
+	virtual bool validateUserID(const QString& uid);
 
 	virtual QString statusPixmapPath();
 

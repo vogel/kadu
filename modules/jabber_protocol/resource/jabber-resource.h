@@ -70,7 +70,7 @@ public:
 	/**
 	 * Get the available features for this resource.
 	 */
-	XMPP::Features features() const;
+	/*XMPP::Features features() const;*/
 
 signals:
 	void updated ( JabberResource * );

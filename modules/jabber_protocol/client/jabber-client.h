@@ -159,8 +159,8 @@ public:
 		AlreadyConnected,	/** A new connection was attempted while the previous one hasn't been closed. */
 		NoTLS,				/** Use of TLS has been forced (see @ref forceTLS) but TLS is not available, either server- or client-side. */
 		InvalidPasswordForMUC = 401,	/** A password is require to enter on this Multi-User Chat /
-		NicknameConflict = 409,		/** There is already someone with that nick connected to the Multi-User Chat /
-		BannedFromThisMUC = 403,	/** You can't join this Multi-User Chat because you were bannished */
+		NicknameConflict = 409,		** There is already someone with that nick connected to the Multi-User Chat /
+		BannedFromThisMUC = 403,	** You can't join this Multi-User Chat because you were bannished */
 		MaxUsersReachedForThisMuc = 503	/** You can't join this Multi-User Chat because it is full */
 	};
 
@@ -190,7 +190,7 @@ public:
 	 * Returns if this instance is connected to a server.
 	 */
 	bool isConnected() const;
-	
+
 	void setPresence(const XMPP::Status &status);
 
 	/**
@@ -568,12 +568,12 @@ signals:
 	 * An existing resource has been removed.
 	 */
 	void resourceUnavailable(const XMPP::Jid &jid, const XMPP::Resource &resource);
-	
+
 	/**
 	 * Some way to modify message before send it - i.e. for chat event handling
 	 */
 	void messageAboutToSend(XMPP::Message &message);
-	
+
 	/**
 	 * A new message has been received.
 	 */
@@ -613,7 +613,7 @@ signals:
 	void incomingXML(const QString &msg);
 	void outgoingXML(const QString &msg);
 
-	
+
 
 private slots:
 	/* S5B server object has been destroyed. */

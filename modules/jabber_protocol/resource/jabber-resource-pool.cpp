@@ -15,7 +15,7 @@
   * *                                                                       *
   * *************************************************************************
   */
-  
+
 //Kadu include
 #include "debug.h"
 
@@ -33,7 +33,7 @@
 XMPP::Resource JabberResourcePool::EmptyResource("", XMPP::Status("", "", 0, false));
 
 JabberResourcePool::JabberResourcePool(JabberProtocol *protocol)
-	: protocol(protocol), pool(), lockList()
+	: protocol(protocol)
 {
 }
 
@@ -55,6 +55,7 @@ void JabberResourcePool::slotResourceDestroyed (QObject *sender)
 
 void JabberResourcePool::slotResourceUpdated(JabberResource *resource)
 {
+	Q_UNUSED(resource)
 /*	QList<JabberBaseContact*> list = protocol->contactPool()->findRelevantSources(resource->jid());
 
 	foreach(JabberBaseContactmContact, list)
@@ -72,6 +73,8 @@ void JabberResourcePool::slotResourceUpdated(JabberResource *resource)
 
 void JabberResourcePool::notifyRelevantContacts(const XMPP::Jid &jid, bool removed)
 {
+	Q_UNUSED(jid)
+	Q_UNUSED(removed)
 	/*QList<JabberBaseContact*> list = protocol->contactPool()->findRelevantSources(jid);
 
 	foreach(JabberBaseContactmContact, list)
@@ -109,7 +112,7 @@ void JabberResourcePool::addResource(const XMPP::Jid &jid, const XMPP::Resource 
 	kdebug("Adding new resource %s for %s\n", resource.name().toLocal8Bit().data(), jid.bare().toLocal8Bit().data());
 
 	// Update initial capabilities if available.
-	// Called before creating JabberResource so JabberResource wouldn't ask for disco information. 
+	// Called before creating JabberResource so JabberResource wouldn't ask for disco information.
 	if( !resource.status().capsNode().isEmpty())
 	{
 		kdebug("Initial update of capabilities for JID: %s\n", jid.full().toLocal8Bit().data());

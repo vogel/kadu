@@ -37,7 +37,7 @@ void JabberAvatarService::fetchAvatar(Contact contact)
 {
 	if (contact.id().isEmpty())
 		return;
-	
+
 	Protocol = dynamic_cast<JabberProtocol *>(MyAccount.protocolHandler());
 	if (!Protocol)
 		return;
@@ -54,7 +54,7 @@ void JabberAvatarService::uploadAvatar(QImage avatar)
 	Protocol = dynamic_cast<JabberProtocol *>(MyAccount.protocolHandler());
 	if (!Protocol)
 		return;
-	
+
 	if (Protocol->isPEPAvailable())
 		uploadAvatarPEP();
 	else
@@ -69,17 +69,17 @@ void JabberAvatarService::uploadAvatarPEP()
 		this, SLOT(publish_success(const QString&,const XMPP::PubSubItem&)));
 	connect(Protocol->pepManager(),SIGNAL(publish_error(const QString&, const XMPP::PubSubItem&)),
 		this, SLOT(publish_error(const QString&,const XMPP::PubSubItem&)));
-	
+
 	XMPP::Jid jid = XMPP::Jid(MyAccount.id());
 	QByteArray ba;
         QBuffer buffer(&ba);
         buffer.open(QIODevice::WriteOnly);
         AccountAvatar.save(&buffer, "PNG");
 	buffer.close();
-	
+
 	QByteArray avatar_data = scaleAvatar(ba);
 	QImage avatar_image = QImage::fromData(avatar_data);
-	
+
 	if (!avatar_image.isNull())
 	{
 		// Publish data
@@ -110,7 +110,7 @@ void JabberAvatarService::uploadAvatarVCard()
 void JabberAvatarService::fetchingVCardFinished()
 {
 	XMPP::Jid jid = XMPP::Jid(MyAccount.id());
-	
+
 	QByteArray ba;
         QBuffer buffer(&ba);
         buffer.open(QIODevice::WriteOnly);
@@ -119,7 +119,7 @@ void JabberAvatarService::fetchingVCardFinished()
 
 	XMPP::VCard vcard;
 	JT_VCard *task = (JT_VCard *)sender();
-	
+
 	if (task && task->success())
 	{
 		vcard = task->vcard();
@@ -170,7 +170,9 @@ QByteArray JabberAvatarService::scaleAvatar(const QByteArray& b)
 
 void JabberAvatarService::itemPublished(const XMPP::Jid& jid, const QString& n, const XMPP::PubSubItem& item)
 {
-	if (n == "http://www.xmpp.org/extensions/xep-0084.html#ns-data") 
+	Q_UNUSED(jid)
+
+	if (n == "http://www.xmpp.org/extensions/xep-0084.html#ns-data")
 	{
 		if (item.payload().tagName() == "data")
 		{
@@ -198,7 +200,7 @@ void JabberAvatarService::itemPublished(const XMPP::Jid& jid, const QString& n, 
 			pep_avatars_[jid.bare()]->updateHash(item.id());
 		}
 		*/
-	}	
+	}
 }
 
 void JabberAvatarService::publish_success(const QString& n, const XMPP::PubSubItem& item)
@@ -218,7 +220,7 @@ void JabberAvatarService::publish_success(const QString& n, const XMPP::PubSubIt
 		info_el.setAttribute("type", image2type(selfAvatarData_));
 		meta_el.appendChild(info_el);
 		Protocol->pepManager()->publish("http://www.xmpp.org/extensions/xep-0084.html#ns-metadata", XMPP::PubSubItem(selfAvatarHash_, meta_el));
-		
+
 		emit avatarUploaded(true, AccountAvatar);
 	}
 }
@@ -227,7 +229,7 @@ void JabberAvatarService::publish_error(const QString& n, const XMPP::PubSubItem
 {
 	if (n == "http://www.xmpp.org/extensions/xep-0084.html#ns-data" && item.id() == selfAvatarHash_)
 	{
-		/* 
+		/*
 		  Some servers (at least jid.pl were reported) seems to hadle PEP, but each attempt to publish avatar this way
 		  ends up with 'PEP not supported' error. In this case we can still try to put avatar into VCard.
 		*/

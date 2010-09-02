@@ -62,7 +62,7 @@ static int calcComplement(qlonglong big, int shift)
 		return (block - (int)rem);
 }
 
-static int calcTotalSteps(qlonglong big, int shift)
+/*static int calcTotalSteps(qlonglong big, int shift)
 {
 	if(big < 1)
 		return 0;
@@ -121,7 +121,7 @@ static QString clean_filename(const QString &s)
 //#else
 //	return s;
 //#endif
-}
+}*/
 
 
 JabberFileTransferHandler::JabberFileTransferHandler(FileTransfer transfer) :
@@ -242,7 +242,7 @@ bool JabberFileTransferHandler::accept(const QFile &file)
 	Length = JabberTransfer->fileSize();
 	bool couldOpen = false;
 	qlonglong offset = 0;
-	qlonglong length = 0;
+	/*qlonglong length = 0;*/
 
 	transfer().setRemoteFileName(file.fileName());
 	transfer().setFileSize(JabberTransfer->fileSize());
@@ -404,6 +404,7 @@ kdebug("send file: connected!");
 
 void JabberFileTransferHandler::ft_readyRead(const QByteArray &a)
 {
+	Q_UNUSED(a)
 /*	if(!d->sending) {
 		//printf("%d bytes read\n", a.size());
 		int r = d->f.writeBlock(a.data(), a.size());
@@ -422,6 +423,7 @@ void JabberFileTransferHandler::ft_readyRead(const QByteArray &a)
 
 void JabberFileTransferHandler::ft_bytesWritten(int x)
 {
+	Q_UNUSED(x)
 /*
 	if(d->sending) {
 		//printf("%d bytes written\n", x);

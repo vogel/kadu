@@ -186,7 +186,7 @@ void MiniClient::cs_securityLayerActivated(int)
 
 void MiniClient::cs_needAuthParams(bool user, bool password, bool realm)
 {
-	if(user) 
+	if(user)
 		stream->setUsername(j.node());
 	if(password)
 		stream->setPassword(pass);
@@ -256,6 +256,8 @@ void MiniClient::cs_error(int err)
 
 void MiniClient::slotDebug(const QString &text)
 {
+	Q_UNUSED(text)
+
 	kdebugm(KDEBUG_WARNING, "Jabber MiniClient debug:  %s\n", qPrintable(text));
 }
 

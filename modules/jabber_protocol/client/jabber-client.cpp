@@ -279,7 +279,7 @@ void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool a
 
 	if (overrideHost())
 		JabberClientConnector->setOptHostPort(Server, Port);
-	
+
 	if (useXMPP09())
 		JabberClientConnector->setOptProbe(probeSSL());
 
@@ -690,20 +690,20 @@ void JabberClient::slotCSError(int error)
 
 		Protocol->resourcePool()->clear();
 	}
-	
+
 }
 
 void JabberClient::addContact(const XMPP::Jid &j, const QString &name, const QStringList &groups, bool authReq)
 {
 	if (AddedContacts.contains(j.bare()))
 		return;
-	
+
 	JT_Roster *r = new JT_Roster(jabberClient->rootTask());
 	r->set(j, name, groups);
 	r->go(true);
 
 	AddedContacts.append(j.bare());
-	
+
 	if(authReq)
 		requestSubscription(j);
 }
@@ -714,7 +714,7 @@ void JabberClient::removeContact(const XMPP::Jid &j)
 		return;
 
 	AddedContacts.removeAll(j.bare());
-	
+
 	JT_Roster *r = new JT_Roster(jabberClient->rootTask());
 	r->remove(j);
 	r->go(true);
@@ -750,7 +750,7 @@ void JabberClient::setPresence(const XMPP::Status &status)
 	newStatus.setCapsNode(capsNode());
 	newStatus.setCapsVersion(capsVersion());
 	newStatus.setCapsExt(capsExt());
-	
+
 	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(Protocol->account().details());
 	if (jabberAccountDetails)
 	{
@@ -782,7 +782,9 @@ void JabberClient::setPresence(const XMPP::Status &status)
 			task->go(true);
 		}
 		else
+		{
 			kdebug("We were not connected, presence update aborted.");
+		}
 	}
 
 }

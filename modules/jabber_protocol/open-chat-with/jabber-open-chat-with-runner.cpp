@@ -52,6 +52,7 @@ BuddyList JabberOpenChatWithRunner::matchingContacts(const QString &query)
 
 bool JabberOpenChatWithRunner::validateUserID(const QString &uid)
 {
+	Q_UNUSED(uid)
 	// TODO validate ID
 	//QString text = uid;
 	return true;

@@ -30,7 +30,7 @@ class FacebookProtocolFactory : public JabberProtocolFactory
 	Q_DISABLE_COPY(FacebookProtocolFactory)
 
 	static FacebookProtocolFactory *Instance;
-	
+
 	FacebookProtocolFactory();
 
 public:
@@ -41,13 +41,13 @@ public:
 	virtual QString name() { return "facebook"; }
 	virtual QString displayName() { return "Facebook"; }
 
-	virtual bool canRegister() { return false; }		
-	
+	virtual bool canRegister() { return false; }
+
 	virtual QIcon icon();
 	virtual QString iconPath();
-	
+
 	virtual AccountAddWidget * newAddAccountWidget(QWidget *parent = 0);
-	virtual QWidget * newCreateAccountWidget(QWidget *parent = 0) { return 0; }
+	virtual QWidget * newCreateAccountWidget(QWidget */*parent*/ = 0) { return 0; }
 
 };
 
