@@ -164,8 +164,8 @@ else(WIN32)
   LIST(APPEND SOURCES_IRIS libiris/src/irisnet/corelib/netinterface_unix.cpp)
 endif(WIN32)
 
-set (CMAKE_C_FLAGS "")
-set (CMAKE_CXX_FLAGS "")
+set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-error")
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-error")
 
 set (MOC_SOURCES_IRIS
 	#libiris/src/xmpp/base/randrandomnumbergenerator.h

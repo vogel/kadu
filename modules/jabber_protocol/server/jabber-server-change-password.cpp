@@ -28,7 +28,7 @@
 #include "jabber-server-change-password.h"
 
 JabberServerChangePassword::JabberServerChangePassword(Account account, const QString &password, const QString &newPassword) :
-	QObject(), MyAccount(account), Password(password), NewPassword(newPassword), Result(0)
+	QObject(), Result(false), MyAccount(account), Password(password), NewPassword(newPassword)
 {
 }
 
@@ -37,9 +37,9 @@ void JabberServerChangePassword::performAction()
   	JabberProtocol *jabberProtocol = dynamic_cast<JabberProtocol *>(MyAccount.protocolHandler());
 	if (!jabberProtocol || !jabberProtocol->isConnected())
 		emit finished(this);
-	
+
 	XMPP::JT_Register *task = new XMPP::JT_Register(jabberProtocol->client()->client()->rootTask());
-	QObject::connect(task, SIGNAL(finished()), 
+	QObject::connect(task, SIGNAL(finished()),
 			 this, SLOT(actionFinished()));
 	XMPP::Jid j = MyAccount.id();
 	task->reg(j.node(), NewPassword);
@@ -52,6 +52,6 @@ void JabberServerChangePassword::actionFinished()
 	//QString err = task->statusString();
 	//int code = task->statusCode();
 	Result = task->success();
-	
+
 	emit finished(this);
 }

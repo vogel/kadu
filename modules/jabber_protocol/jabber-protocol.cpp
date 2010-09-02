@@ -55,7 +55,7 @@ int JabberProtocol::initModule()
 {
 	kdebugf();
 
-	if (ProtocolsManager::instance()->hasProtocolFactory("jabber") 
+	if (ProtocolsManager::instance()->hasProtocolFactory("jabber")
 			|| ProtocolsManager::instance()->hasProtocolFactory("gtalk")
 			|| ProtocolsManager::instance()->hasProtocolFactory("facebook"))
 		return 0;
@@ -64,7 +64,7 @@ int JabberProtocol::initModule()
 	ProtocolsManager::instance()->registerProtocolFactory(GTalkProtocolFactory::instance());
 	ProtocolsManager::instance()->registerProtocolFactory(FacebookProtocolFactory::instance());
 
-		
+
 	UrlHandlerManager::instance()->registerUrlHandler("Jabber", new JabberUrlHandler());
 
 	kdebugf2();
@@ -103,7 +103,7 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	CurrentSubscriptionService = new JabberSubscriptionService(this);
 
 	connectContactManagerSignals();
-		
+
 	kdebugf2();
 }
 
@@ -111,13 +111,13 @@ JabberProtocol::~JabberProtocol()
 {
 	disconnectContactManagerSignals();
 	logout();
-	
+
 	delete JabberClient;
 	JabberClient = 0;
-	
+
 	delete serverInfoManager;
 	serverInfoManager = 0;
-	
+
 	delete PepManager;
 	PepManager = 0;
 	pepAvailable = false;
@@ -133,9 +133,9 @@ void JabberProtocol::connectContactManagerSignals()
 			this, SLOT(contactIdChanged(Contact, const QString &)));
 	connect(ContactManager::instance(), SIGNAL(contactReattached(Contact)),
 			this, SLOT(contactUpdated(Contact)));
-	
+
 	connect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy &)),
-			this, SLOT(buddyUpdated(Buddy &))); 
+			this, SLOT(buddyUpdated(Buddy &)));
 }
 
 void JabberProtocol::disconnectContactManagerSignals()
@@ -148,9 +148,9 @@ void JabberProtocol::disconnectContactManagerSignals()
 			this, SLOT(contactIdChanged(Contact, const QString &)));
 	disconnect(ContactManager::instance(), SIGNAL(contactReattached(Contact)),
 			this, SLOT(contactUpdated(Contact)));
-	
+
 	disconnect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy &)),
-			this, SLOT(buddyUpdated(Buddy &))); 
+			this, SLOT(buddyUpdated(Buddy &)));
 }
 
 void JabberProtocol::initializeJabberClient()
@@ -263,7 +263,7 @@ void JabberProtocol::connectToServer()
 	networkStateChanged(NetworkConnecting);
 	jabberID = jabberID.withResource(jabberAccountDetails->resource());
 	JabberClient->connect(jabberID, account().password(), true);
-	
+
 	// Initialize server info stuff
 	serverInfoManager = new ServerInfoManager(JabberClient->client());
 	connect(serverInfoManager, SIGNAL(featuresChanged()),
@@ -276,7 +276,7 @@ void JabberProtocol::connectToServer()
 	connect(PepManager, SIGNAL(itemRetracted(const XMPP::Jid&, const QString&, const XMPP::PubSubRetraction&)),
 		this, SLOT(itemRetracted(const XMPP::Jid&, const QString&, const XMPP::PubSubRetraction&)));
 	pepAvailable = false;
-	
+
 	kdebugf2();
 }
 
@@ -303,6 +303,8 @@ void JabberProtocol::connectedToServer()
 
 void JabberProtocol::rosterDownloaded(bool success)
 {
+	Q_UNUSED(success)
+
 	/* Since we are online now, set initial presence. Don't do this
 	* before the roster request or we will receive presence
 	* information before we have updated our roster with actual
@@ -361,7 +363,7 @@ void JabberProtocol::disconnectFromServer(const XMPP::Status &s)
 		disconnect(serverInfoManager, SIGNAL(featuresChanged()),
 			this, SLOT(serverFeaturesChanged()));
 	}
-	
+
 	delete serverInfoManager;
 	serverInfoManager = 0;
 
@@ -371,13 +373,15 @@ void JabberProtocol::disconnectFromServer(const XMPP::Status &s)
 		PepManager = 0;
 		pepAvailable = false;
 	}
-	
+
 	networkStateChanged(NetworkDisconnected);
 	kdebugf2();
 }
 
 void JabberProtocol::slotClientDebugMessage(const QString &msg)
 {
+	Q_UNUSED(msg)
+
 	kdebugm(KDEBUG_WARNING, "XMPP Client debug:  %s\n", qPrintable(msg));
 }
 
@@ -388,12 +392,12 @@ void JabberProtocol::disconnectedFromServer()
 	setAllOffline();
 
 	networkStateChanged(NetworkDisconnected);
-	
+
 	if (!nextStatus().isDisconnected()) // user still wants to login
 		QTimer::singleShot(1000, this, SLOT(login())); // try again after one second
 	else if (!nextStatus().isDisconnected())
 		setStatus(Status());
-	
+
 	kdebugf2();
 }
 
@@ -442,7 +446,7 @@ void JabberProtocol::clientResourceReceived(const XMPP::Jid &jid, const XMPP::Re
 }
 
 void JabberProtocol::addContactToRoster(Contact contact, bool requestAuth)
-{	
+{
 	if (!isConnected() || contact.contactAccount() != account() || contact.ownerBuddy().isAnonymous())
 		return;
 
@@ -451,7 +455,7 @@ void JabberProtocol::addContactToRoster(Contact contact, bool requestAuth)
 
 	foreach (Group group, buddy.groups())
 		groupsList.append(group.name());
-	
+
 	//TODO last parameter: automagic authorization request - make it configurable
 	JabberClient->addContact(contact.id(), buddy.display(), groupsList, requestAuth);
 }
@@ -498,7 +502,7 @@ void JabberProtocol::contactUpdated(Contact contact)
 	QStringList groupsList;
 	foreach (Group group, buddy.groups())
 		groupsList.append(group.name());
-	
+
 	JabberClient->updateContact(contact.id(), buddy.display(), groupsList);
 }
 
@@ -506,7 +510,7 @@ void JabberProtocol::contactIdChanged(Contact contact, const QString &oldId)
 {
   	if (!isConnected() || contact.contactAccount() != account())
 		return;
-	
+
 	JabberClient->removeContact(oldId);
 	contactAttached(contact);
 }
@@ -611,6 +615,9 @@ void JabberProtocol::setPEPAvailable(bool b)
 
 void JabberProtocol::itemPublished(const XMPP::Jid& j, const QString& n, const XMPP::PubSubItem& item)
 {
+	Q_UNUSED(j)
+	Q_UNUSED(n)
+	Q_UNUSED(item)
 	/*
 	// User Tune
 	if (n == "http://jabber.org/protocol/tune") {
@@ -668,7 +675,9 @@ void JabberProtocol::itemPublished(const XMPP::Jid& j, const QString& n, const X
 
 void JabberProtocol::itemRetracted(const XMPP::Jid& j, const QString& n, const XMPP::PubSubRetraction& item)
 {
-	Q_UNUSED(item);
+	Q_UNUSED(j)
+	Q_UNUSED(n)
+	Q_UNUSED(item)
 	// User Tune
 	/*if (n == "http://jabber.org/protocol/tune") {
 		// Parse tune
@@ -676,7 +685,7 @@ void JabberProtocol::itemRetracted(const XMPP::Jid& j, const QString& n, const X
 			// FIXME: try to find the right resource using JEP-33 'replyto'
 			//UserResourceList::Iterator rit = u->userResourceList().find(<resource>);
 			//bool found = (rit == u->userResourceList().end()) ? false: true;
-			//if(found) 
+			//if(found)
 			//	(*rit).setTune(tune);
 			u->setTune(QString());
 			cpUpdate(*u);

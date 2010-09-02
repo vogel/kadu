@@ -38,6 +38,8 @@ JabberSubscriptionService::JabberSubscriptionService(JabberProtocol *protocol) :
 
 void JabberSubscriptionService::subscription(const XMPP::Jid &jid, const QString &type, const QString &nick)
 {
+	Q_UNUSED(nick)
+
 	if (type == "unsubscribed")
 	{
 		/*
@@ -97,14 +99,14 @@ void JabberSubscriptionService::subscription(const XMPP::Jid &jid, const QString
 		{
 			// Check if we want to request auth as well
 			Contact contact = ContactManager::instance()->byId(Protocol->account(), jid.bare(), ActionReturnNull);
-			
+
 			JabberContactDetails *data = Protocol->jabberContactDetails(contact);
-			
+
 			if (!contact || !data || (data->subscription().type() != XMPP::Subscription::Both && data->subscription().type() != XMPP::Subscription::To))
 			{
 				Protocol->addContactToRoster(contact);
 			}
-			
+
 			Protocol->client()->resendSubscription(jid);
 		}
 		else

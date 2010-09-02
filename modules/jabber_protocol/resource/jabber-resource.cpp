@@ -101,7 +101,7 @@ const QString &JabberResource::clientSystem () const
 	return d->clientSystem;
 }
 
-XMPP::Features JabberResource::features() const
+/*XMPP::Features JabberResource::features() const
 {
 	if(d->capsEnabled)
 	{
@@ -111,7 +111,7 @@ XMPP::Features JabberResource::features() const
 	{
 		return d->supportedFeatures;
 	}
-}
+}*/
 
 void JabberResource::slotGetTimedClientVersion ()
 {
