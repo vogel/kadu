@@ -110,7 +110,7 @@ void JabberChatService::clientMessageReceived(const XMPP::Message &msg)
 	kdebugf();
 
 	// skip empty messages, but not if the message contains a data form
-	if(msg.body().isEmpty() && msg.urlList().isEmpty() && msg.invite().isEmpty() && !msg.containsEvents() && msg.chatState() == XMPP::StateNone 
+	if(msg.body().isEmpty() && msg.urlList().isEmpty() && msg.invite().isEmpty() && !msg.containsEvents() && msg.chatState() == XMPP::StateNone
 		&& msg.subject().isEmpty() && msg.rosterExchangeItems().isEmpty() && msg.mucInvites().isEmpty() &&  msg.getForm().fields().empty())
 		return;
 
@@ -131,7 +131,7 @@ void JabberChatService::clientMessageReceived(const XMPP::Message &msg)
 	QString plain = formattedMessage.toPlain();
 
 	bool ignore = false;
-	Chat chat = ChatManager::instance()->findChat(contacts, Protocol->account());
+	Chat chat = ChatManager::instance()->findChat(contacts);
 	emit filterIncomingMessage(chat, contact, plain, msgtime, ignore);
 	if (ignore)
 		return;
