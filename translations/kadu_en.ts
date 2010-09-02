@@ -1765,7 +1765,7 @@ Too many attempts with bad password</source>
     </message>
 </context>
 <context>
-    <name>KaduTextBrowser</name>
+    <name>KaduWebView</name>
     <message>
         <source>Save image</source>
         <translation type="unfinished"></translation>

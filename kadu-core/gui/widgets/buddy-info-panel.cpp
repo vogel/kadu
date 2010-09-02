@@ -34,7 +34,7 @@
 
 #include "buddy-info-panel.h"
 
-BuddyInfoPanel::BuddyInfoPanel(QWidget *parent) : KaduTextBrowser(parent), MyBuddy(Buddy::null)
+BuddyInfoPanel::BuddyInfoPanel(QWidget *parent) : KaduWebView(parent), MyBuddy(Buddy::null)
 {
 	configurationUpdated();
 }

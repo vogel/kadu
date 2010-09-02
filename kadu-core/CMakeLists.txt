@@ -160,7 +160,7 @@ set (kadu_SRCS
 	gui/widgets/group-tab-bar.cpp
 	gui/widgets/groups-combo-box.cpp
 	gui/widgets/identities-combo-box.cpp
-	gui/widgets/kadu-text-browser.cpp
+	gui/widgets/kadu-web-view.cpp
 	gui/widgets/line-edit-clear-button.cpp
 	gui/widgets/line-edit-with-clear-button.cpp
 	gui/widgets/modal-configuration-widget.cpp
@@ -465,7 +465,7 @@ set (kadu_MOC_SRCS
 	gui/widgets/group-tab-bar.h
 	gui/widgets/groups-combo-box.h
 	gui/widgets/identities-combo-box.h
-	gui/widgets/kadu-text-browser.h
+	gui/widgets/kadu-web-view.h
 	gui/widgets/line-edit-clear-button.h
 	gui/widgets/line-edit-with-clear-button.h
 	gui/widgets/modal-configuration-widget.h

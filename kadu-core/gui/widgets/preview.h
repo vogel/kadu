@@ -26,9 +26,9 @@
 #include "contacts/contact-shared.h"
 #include "contacts/contact-set.h"
 
-#include "kadu-text-browser.h"
+#include "kadu-web-view.h"
 
-class Preview : public KaduTextBrowser
+class Preview : public KaduWebView
 {
 	Q_OBJECT
 

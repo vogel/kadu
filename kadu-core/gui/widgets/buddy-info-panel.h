@@ -24,9 +24,9 @@
 #include "configuration/configuration-aware-object.h"
 #include "buddies/buddy.h"
 
-#include "kadu-text-browser.h"
+#include "kadu-web-view.h"
 
-class BuddyInfoPanel : public KaduTextBrowser, private ConfigurationAwareObject
+class BuddyInfoPanel : public KaduWebView, private ConfigurationAwareObject
 {
 	Q_OBJECT
 

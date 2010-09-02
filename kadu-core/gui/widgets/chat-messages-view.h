@@ -28,7 +28,7 @@
 #include "chat/message/message.h"
 #include "protocols/protocol.h"
 
-#include "kadu-text-browser.h"
+#include "kadu-web-view.h"
 
 #include "exports.h"
 
@@ -39,7 +39,7 @@ class ChatWidget;
 class HtmlMessagesRenderer;
 class MessageRenderInfo;
 
-class KADUAPI ChatMessagesView : public KaduTextBrowser
+class KADUAPI ChatMessagesView : public KaduWebView
 {
 	Q_OBJECT
 
