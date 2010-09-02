@@ -34,10 +34,10 @@ void ConfigurationContactDataManager::writeEntry(const QString &section, const Q
 		return;
 
 	if (name == "Blocked")
-		Data.ownerBuddy().setBlocked(value.value<bool>());
+		Data.ownerBuddy().setBlocked(value.toBool());
 
 	if (name == "OfflineTo")
-		Data.ownerBuddy().setOfflineTo(value.value<bool>());
+		Data.ownerBuddy().setOfflineTo(value.toBool());
 }
 
 QVariant ConfigurationContactDataManager::readEntry(const QString &section, const QString &name)

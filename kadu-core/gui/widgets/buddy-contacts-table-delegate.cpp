@@ -58,7 +58,7 @@ void BuddyContactsTableDelegate::setEditorData(QWidget *editor, const QModelInde
 		return;
 	}
 
-	accountsComboBox->setCurrentAccount(qvariant_cast<Account>(index.data(AccountRole)));
+	accountsComboBox->setCurrentAccount(index.data(AccountRole).value<Account>());
 }
 
 void BuddyContactsTableDelegate::setModelData(QWidget* editor, QAbstractItemModel *model, const QModelIndex &index) const

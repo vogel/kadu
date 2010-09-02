@@ -314,11 +314,11 @@ void YourAccounts::updateCurrentWidget()
 	if (1 != selection.size())
 		return;
 
-	QAction *action = qvariant_cast<QAction *>(selection[0].data(ActionRole));
+	QAction *action = selection[0].data(ActionRole).value<QAction *>();
 	if (!action)
 	{
 		MainStack->setCurrentWidget(EditStack);
-		Account account = qvariant_cast<Account>(selection[0].data(AccountRole));
+		Account account = selection[0].data(AccountRole).value<Account>();
 		if (account)
 		{
 			EditStack->setCurrentWidget(getAccountEditWidget(account));

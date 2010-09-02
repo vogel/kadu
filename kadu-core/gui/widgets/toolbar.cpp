@@ -229,7 +229,7 @@ void ToolBar::mouseMoveEvent(QMouseEvent* e)
 				drag->exec(Qt::CopyAction);
 
 				e->accept();
-			}	
+			}
 		}
 	}
 	else
@@ -251,7 +251,7 @@ void ToolBar::dragEnterEvent(QDragEnterEvent* event)
 			event->acceptProposedAction();
 			return;
 		}
-		
+
 	}
 	event->ignore();
 	kdebugf2();
@@ -484,7 +484,7 @@ void ToolBar::loadFromConfig(QDomElement toolbar_element)
 		else
 		{
 			toolButtonStyle = button_elem.attribute("toolbutton_style");
-			action.style = Qt::ToolButtonStyle(toolButtonStyle.value<int>());
+			action.style = Qt::ToolButtonStyle(toolButtonStyle.toInt());
 		}
 
 		action.action = 0;
@@ -679,7 +679,7 @@ void ToolBar::slotContextText()
 		}
 	}
 }
- 
+
 void ToolBar::slotContextTextUnder()
 {
 	if (!currentButton)
@@ -696,7 +696,7 @@ void ToolBar::slotContextTextUnder()
 		}
 	}
 }
- 
+
 void ToolBar::slotContextTextRight()
 {
 	if (!currentButton)

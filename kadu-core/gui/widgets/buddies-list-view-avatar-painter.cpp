@@ -35,7 +35,7 @@
 BuddiesListViewAvatarPainter::BuddiesListViewAvatarPainter(const BuddiesListViewDelegateConfiguration &configuration, const QStyleOptionViewItemV4 &option, const QRect &avatarRect, const QModelIndex &index) :
 		Configuration(configuration), Option(option), AvatarRect(avatarRect), Index(index)
 {
-	Avatar = qvariant_cast<QPixmap>(Index.data(AvatarRole));
+	Avatar = Index.data(AvatarRole).value<QPixmap>();
 }
 
 bool BuddiesListViewAvatarPainter::greyOut()
@@ -43,7 +43,7 @@ bool BuddiesListViewAvatarPainter::greyOut()
 	if (!Configuration.avatarGreyOut())
 		return false;
 
-	Contact contact = qvariant_cast<Contact>(Index.data(ContactRole));
+	Contact contact = Index.data(ContactRole).value<Contact>();
 	return contact.currentStatus().isDisconnected();
 }
 

@@ -265,7 +265,7 @@ void PlainConfigFile::writeEntry(const QString &group,const QString &name, const
 template <class T>
 T PlainConfigFile::readEntry(const QString &group, const QString &name, const T &def )
 {
-	QVariant string = qVariantFromValue( getEntry(group, name));
+	QVariant string = QVariant::fromValue(getEntry(group, name));
 	if (string.canConvert<T>())
 		return string.value<T>();
 	return def;

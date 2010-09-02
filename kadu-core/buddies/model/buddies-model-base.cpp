@@ -168,10 +168,7 @@ QMimeData * BuddiesModelBase::mimeData(const QModelIndexList &indexes) const
 	BuddyList list;
 	foreach (QModelIndex index, indexes)
 	{
-		QVariant conVariant = index.data(BuddyRole);;
-		if (!conVariant.canConvert<Buddy>())
-			continue;
-		Buddy con = conVariant.value<Buddy>();
+		Buddy con = index.data(BuddyRole).value<Buddy>();
 		if (con.isNull())
 			continue;
 		list << con;

@@ -69,14 +69,14 @@ void BuddyPersonalInfoConfigurationWidget::createGui()
 
 	InfoWidget = new QWidget(this);
 	Layout->addWidget(InfoWidget);
-	
+
 	Layout->addStretch(100);
 }
 
 void BuddyPersonalInfoConfigurationWidget::accountSelectionChanged(int index)
 {
-  	Contact c = qvariant_cast<Contact>(ContactIdCombo->model()->index(index, 0).data(ContactRole));
-	
+  	Contact c = ContactIdCombo->model()->index(index, 0).data(ContactRole).value<Contact>();
+
 	if (!c)
 		return;
 

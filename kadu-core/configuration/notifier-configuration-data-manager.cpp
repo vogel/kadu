@@ -35,7 +35,7 @@ void NotifierConfigurationDataManager::writeEntry(const QString &section, const 
 	if (section.isEmpty() || name.isEmpty())
 		return;
 
-	config_file.writeEntry(section, QString("Event_") + EventName + name, value.value<QString>());
+	config_file.writeEntry(section, QString("Event_") + EventName + name, value.toString());
 }
 
 QVariant NotifierConfigurationDataManager::readEntry(const QString &section, const QString &name)

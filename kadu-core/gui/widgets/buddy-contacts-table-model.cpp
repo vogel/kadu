@@ -309,7 +309,7 @@ bool BuddyContactsTableModel::setData(const QModelIndex &index, const QVariant &
 
 		case 1:
 			if (AccountRole == role)
-				item->setItemAccount(qvariant_cast<Account>(value));
+				item->setItemAccount(value.value<Account>());
 			break;
 	}
 
