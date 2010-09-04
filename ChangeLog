@@ -1,3 +1,6 @@
++++ version 0.6.6-beta7
+* gui: #1541 fixed: avatar displaying on Qt 4.5 (Vogel)
+
 +++ version 0.6.6-beta6
 * gui: #1487 fixed: combobox in personal info for buddies does not work (Vogel)
 * gui: #1477 fixed: account info was not updating in Your Accounts window (Vogel)
