@@ -30,6 +30,8 @@ class AccountsModel : public QAbstractListModel, public KaduAbstractModel
 {
 	Q_OBJECT
 
+	bool UseSmallIcon;
+
 private slots:
 	void accountUpdated(Account account);
 	void accountAboutToBeRegistered(Account account);
@@ -50,6 +52,9 @@ public:
 	Account account(const QModelIndex &index) const;
 	int accountIndex(Account account) const;
 	virtual QModelIndex indexForValue(const QVariant &value) const;
+
+	void setUseSmallIcon(bool useSmallIcon) { UseSmallIcon = useSmallIcon; }
+	bool useSmallIcon() { return UseSmallIcon; }
 
 };
 

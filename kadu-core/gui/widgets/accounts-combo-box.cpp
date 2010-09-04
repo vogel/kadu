@@ -27,7 +27,10 @@
 AccountsComboBox::AccountsComboBox(QWidget *parent) :
 		KaduComboBox<Account>(parent)
 {
-	setUpModel(new AccountsModel(this), new AccountsProxyModel(this));
+	AccountsModel *accountsModel = new AccountsModel(this);
+	accountsModel->setUseSmallIcon(true);
+
+	setUpModel(accountsModel, new AccountsProxyModel(this));
 
 	connect(model(), SIGNAL(rowsAboutToBeRemoved(const QModelIndex &, int, int)),
 			this, SLOT(updateValueBeforeChange()));

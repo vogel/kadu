@@ -27,7 +27,7 @@
 #include "accounts-model.h"
 
 AccountsModel::AccountsModel(QObject *parent) :
-		QAbstractListModel(parent)
+		QAbstractListModel(parent), UseSmallIcon(false)
 {
 	connect(AccountManager::instance(), SIGNAL(accountUpdated(Account)),
 			this, SLOT(accountUpdated(Account)));
@@ -85,8 +85,10 @@ QVariant AccountsModel::data(const QModelIndex &index, int role) const
 				return QString("%1 (%2)").arg(acc.accountIdentity().name(), acc.id());
 
 		case Qt::DecorationRole:
-			return acc.protocolHandler() 
-					? acc.protocolHandler()->icon()
+			return acc.protocolHandler()
+					? UseSmallIcon
+							? acc.protocolHandler()->smallIcon()
+							: acc.protocolHandler()->icon()
 					: QVariant();
 
 		case AccountRole:

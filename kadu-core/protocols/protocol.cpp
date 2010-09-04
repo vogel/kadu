@@ -58,6 +58,11 @@ QIcon Protocol::icon()
 	return Factory->icon();
 }
 
+QIcon Protocol::smallIcon()
+{
+	return Factory->smallIcon();
+}
+
 void Protocol::setAllOffline()
 {
 	Status status;
