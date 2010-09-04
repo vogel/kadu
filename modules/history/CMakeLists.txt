@@ -14,6 +14,7 @@ set (SOURCES
 	history.cpp
 	history-tree-item.cpp
 	history-save-thread.cpp
+	timed-status.cpp
 )
 
 set (MOC_SOURCES

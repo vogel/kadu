@@ -148,7 +148,7 @@ public:
 
 	QList<Buddy> statusBuddiesList(HistorySearchParameters search);
 	QList<QDate> datesForStatusBuddy(Buddy buddy, HistorySearchParameters search);
-	QList<Status> statuses(Buddy buddy, QDate date = QDate(), int limit = 0);
+	QList<TimedStatus> statuses(Buddy buddy, QDate date = QDate(), int limit = 0);
 	int statusBuddyCount(Buddy buddy, QDate date = QDate());
 
 	QList<QString> smsRecipientsList(HistorySearchParameters search);

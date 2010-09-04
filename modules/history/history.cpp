@@ -65,6 +65,7 @@
 
 #include "buddy-history-delete-handler.h"
 #include "history-save-thread.h"
+#include "timed-status.h"
 
 #include "history.h"
 
@@ -672,7 +673,7 @@ QList< QDate > History::datesForStatusBuddy(Buddy buddy, HistorySearchParameters
 	return CurrentStorage->datesForStatusBuddy(buddy, search);
 }
 
-QList< Status > History::statuses(Buddy buddy, QDate date, int limit)
+QList< TimedStatus > History::statuses(Buddy buddy, QDate date, int limit)
 {
 	kdebugf();
 

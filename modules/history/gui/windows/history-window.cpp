@@ -61,6 +61,7 @@
 #include "model/sms-dates-model.h"
 #include "storage/history-storage.h"
 #include "history-tree-item.h"
+#include "timed-status.h"
 
 #include "history-window.h"
 
@@ -510,7 +511,7 @@ void HistoryWindow::dateActivated(const QModelIndex &index)
 		case HistoryTypeStatus:
 		{
 			Buddy buddy = treeItem.buddy();
-			QList<Status> statuses;
+			QList<TimedStatus> statuses;
 			if (buddy && date.isValid())
 				statuses = History::instance()->statuses(buddy, date);
 			if (buddy.contacts().size() > 0)
@@ -535,20 +536,25 @@ void HistoryWindow::dateActivated(const QModelIndex &index)
 	kdebugf2();
 }
 
-QList<Message> HistoryWindow::statusesToMessages(QList<Status> statuses)
+QList<Message> HistoryWindow::statusesToMessages(QList<TimedStatus> statuses)
 {
 	QList<Message> messages;
 
-	foreach (Status status, statuses)
+	foreach (TimedStatus timedStatus, statuses)
 	{
 		Message message = Message::create();
 		message.setStatus(Message::StatusReceived);
 		message.setType(Message::TypeReceived);
 
-		if (status.description().isEmpty())
-			message.setContent(status.type());
+		if (timedStatus.status().description().isEmpty())
+			message.setContent(timedStatus.status().type());
 		else
-			message.setContent(QString("%1 with description: %2").arg(status.type()).arg(status.description()));
+			message.setContent(QString("%1 with description: %2")
+					.arg(timedStatus.status().type())
+					.arg(timedStatus.status().description()));
+
+		message.setReceiveDate(timedStatus.dateTime());
+		message.setSendDate(timedStatus.dateTime());
 
 		messages.append(message);
 	}

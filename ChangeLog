@@ -6,6 +6,7 @@
 * gui: #1436 fixed: disable clear chat window button when there is nothing to clear (Vogel)
 * gui: #1449 fixed: emoticon theme should not change after adding new theme path (Vogel)
 * jabber: #1455 fixed: do not set change-status event when no real change was performed (Vogel)
+* history: #1397 fixed: display status-change dates and times (Vogel)
 
 +++ version 0.6.6-beta6
 * gui: #1487 fixed: combobox in personal info for buddies does not work (Vogel)

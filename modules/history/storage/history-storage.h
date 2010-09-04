@@ -34,6 +34,7 @@
 
 class HistorySearchParameters;
 class Message;
+class TimedStatus;
 
 class HISTORYAPI HistoryStorage : public QObject
 {
@@ -57,7 +58,7 @@ public:
 
 	virtual QList<Buddy> statusBuddiesList(HistorySearchParameters search) = 0;
 	virtual QList<QDate> datesForStatusBuddy(Buddy buddy, HistorySearchParameters search) = 0;
-	virtual QList<Status> statuses(Buddy buddy, QDate date = QDate(), int limit = 0) = 0;
+	virtual QList<TimedStatus> statuses(Buddy buddy, QDate date = QDate(), int limit = 0) = 0;
 	virtual int statusBuddyCount(Buddy buddy, QDate date = QDate()) = 0;
 
 	virtual QList<QString> smsRecipientsList(HistorySearchParameters search) = 0;

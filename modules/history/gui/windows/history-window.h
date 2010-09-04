@@ -43,9 +43,10 @@ class HistoryChatsModel;
 class HistoryChatsModelProxy;
 class HistoryTreeItem;
 class SmsDatesModel;
+class TimedStatus;
 
 /*!
-\class HistoryDlg
+\class HistoryWindow
 \author Juzef, Vogel
 */
 class HistoryWindow : public MainWindow
@@ -93,7 +94,7 @@ class HistoryWindow : public MainWindow
 	void smsRecipientActivated(const QString &recipient);
 	void treeItemActivated(HistoryTreeItem item);
 
-	QList<Message> statusesToMessages(QList<Status> statuses);
+	QList<Message> statusesToMessages(QList<TimedStatus> statuses);
 	QList<Message> smsToMessage(QList<QString> sms);
 
 private slots:

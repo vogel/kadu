@@ -29,6 +29,8 @@
 #include "accounts/account-manager.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-shared.h"
+#include "chat/chat-details.h"
+#include "chat/chat-details-aggregate.h"
 #include "chat/chat-manager.h"
 #include "chat/message/message.h"
 #include "configuration/configuration-file.h"
@@ -42,10 +44,9 @@
 #include "gui/widgets/chat-widget.h"
 
 #include "modules/history/search/history-search-parameters.h"
+#include "modules/history/timed-status.h"
 
 #include "history-sql-storage.h"
-#include <chat/chat-details.h>
-#include <chat/chat-details-aggregate.h>
 
 HistorySqlStorage::HistorySqlStorage(QObject *parent) :
 		HistoryStorage(parent), DatabaseMutex(QMutex::NonRecursive)
@@ -798,7 +799,7 @@ QList<QDate> HistorySqlStorage::datesForStatusBuddy(Buddy buddy, HistorySearchPa
 	return dates;
 }
 
-QList<Status> HistorySqlStorage::statuses(Buddy buddy, QDate date, int limit)
+QList<TimedStatus> HistorySqlStorage::statuses(Buddy buddy, QDate date, int limit)
 {
 	kdebugf();
 
@@ -812,7 +813,7 @@ QList<Status> HistorySqlStorage::statuses(Buddy buddy, QDate date, int limit)
 	if (0 != limit)
 		queryString += " LIMIT :limit";
 
-	QList<Status> statuses;
+	QList<TimedStatus> statuses;
 	query.prepare(queryString);
 
 	if (!date.isNull())
@@ -900,9 +901,9 @@ QList<Message> HistorySqlStorage::messagesFromQuery(Chat chat, QSqlQuery query)
 	return messages;
 }
 
-QList<Status> HistorySqlStorage::statusesFromQuery(QSqlQuery query)
+QList<TimedStatus> HistorySqlStorage::statusesFromQuery(QSqlQuery query)
 {
-	QList<Status> statuses;
+	QList<TimedStatus> statuses;
 
 	while (query.next())
 	{
@@ -915,7 +916,9 @@ QList<Status> HistorySqlStorage::statusesFromQuery(QSqlQuery query)
 		status.setType(query.value(1).toString());
 		status.setDescription(query.value(2).toString());
 
-		statuses.append(status);
+		TimedStatus timedStatus(status, query.value(3).toDateTime());
+
+		statuses.append(timedStatus);
 	}
 
 	return statuses;
