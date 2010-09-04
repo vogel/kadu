@@ -94,7 +94,7 @@ void CustomInput::keyPressEvent(QKeyEvent *e)
  		if (HotKey::shortCut(e, "ShortCuts", "chat_underline"))
  		{
 			setFontUnderline(!fontUnderline());
-			
+
 			emit fontChanged(currentFont());
 
  			e->accept();
@@ -103,7 +103,7 @@ void CustomInput::keyPressEvent(QKeyEvent *e)
  		}
 		if (e->key() == Qt::Key_A && (e->modifiers() & Qt::ControlModifier))
 		{
-			selectAll();	
+			selectAll();
 			e->accept();
  			kdebugf2();
  			return;
@@ -113,7 +113,7 @@ void CustomInput::keyPressEvent(QKeyEvent *e)
 // 			emit specialKeyPressed(CustomInput::KEY_COPY);
  			e->accept();
  			kdebugf2();
- 			return;	
+ 			return;
 		}
 	}
 	QTextEdit::keyPressEvent(e);
@@ -146,7 +146,7 @@ void CustomInput::contextMenuEvent(QContextMenuEvent *e)
 	redo->setShortcut(QKeySequence::Redo);
 	connect(redo, SIGNAL(triggered()), this, SLOT(redo()));
 	menu->addAction(redo);
-	
+
 	menu->addSeparator();
 
 	QAction *cut = new QAction(tr("Cut"), menu);
@@ -174,7 +174,7 @@ void CustomInput::contextMenuEvent(QContextMenuEvent *e)
 	all->setShortcut(QKeySequence::SelectAll);
 	connect(all, SIGNAL(triggered()), this, SLOT(selectAll()));
 	menu->addAction(all);
-	
+
 	menu->exec(e->globalPos());
 }
 
@@ -187,7 +187,7 @@ void CustomInput::cursorPositionChangedSlot()
 {
 	emit fontChanged(currentFont());
 }
-	
+
 void CustomInput::setCopyPossible(bool available)
 {
 	CopyPossible = available;

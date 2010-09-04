@@ -82,7 +82,7 @@ void ChatMessagesView::disconnectChat()
 {
 	if (CurrentChat.isNull() || CurrentChat.chatAccount().isNull() || !CurrentChat.chatAccount().protocolHandler())
 		return;
-	
+
 	ChatImageService *chatImageService = CurrentChat.chatAccount().protocolHandler()->chatImageService();
 	if (chatImageService)
 		disconnect(chatImageService, SIGNAL(imageReceived(const QString &, const QString &)),
@@ -148,12 +148,14 @@ void ChatMessagesView::appendMessage(MessageRenderInfo *message)
 	rememberScrollBarPosition();
 
 	Renderer->appendMessage(message);
+
+	emit messagesUpdated();
 }
 
 void ChatMessagesView::appendMessages(QList<Message> messages)
 {
 	kdebugf2();
-	
+
 	foreach (Message message, messages)
 		appendMessage(message);
 }
@@ -173,6 +175,7 @@ void ChatMessagesView::appendMessages(QList<MessageRenderInfo *> messages)
 void ChatMessagesView::clearMessages()
 {
 	Renderer->clearMessages();
+	emit messagesUpdated();
 }
 
 unsigned int ChatMessagesView::countMessages()

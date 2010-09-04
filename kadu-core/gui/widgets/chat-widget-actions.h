@@ -53,6 +53,7 @@ class ChatWidgetActions : public QObject, ConfigurationAwareObject
 
 private slots:
 	void autoSendActionCreated(Action *action);
+	void clearChatActionCreated(Action *action);
 	void sendActionCreated(Action *action);
 	void insertEmoticonActionCreated(Action *action);
 

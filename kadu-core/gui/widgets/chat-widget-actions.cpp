@@ -61,6 +61,18 @@ void disableEmptyTextBox(Action *action)
 	action->setEnabled(!chatEditBox->inputBox()->toPlainText().isEmpty());
 }
 
+void disableEmptyMessages(Action *action)
+{
+	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(action->parent());
+	if (!chatEditBox)
+	{
+		action->setEnabled(false);
+		return;
+	}
+
+	action->setEnabled(0 != chatEditBox->chatWidget()->chatMessagesView()->countMessages());
+}
+
 void checkBlocking(Action *action)
 {
 	BuddySet buddies = action->buddies();
@@ -93,8 +105,10 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 	ClearChat = new ActionDescription(0,
 		ActionDescription::TypeChat, "clearChatAction",
 		this, SLOT(clearActionActivated(QAction *, bool)),
-		"16x16/edit-clear.png", "16x16/edit-clear.png", tr("Clear Messages in Chat Window")
+		"16x16/edit-clear.png", "16x16/edit-clear.png", tr("Clear Messages in Chat Window"), false, QString::null,
+		disableEmptyMessages
 	);
+	connect(ClearChat, SIGNAL(actionCreated(Action *)), this, SLOT(clearChatActionCreated(Action *)));
 
 	InsertImage = new ActionDescription(0,
 		ActionDescription::TypeChat, "insertImageAction",
@@ -185,6 +199,15 @@ void ChatWidgetActions::configurationUpdated()
 void ChatWidgetActions::autoSendActionCreated(Action *action)
 {
 	action->setChecked(config_file.readBoolEntry("Chat", "AutoSend"));
+}
+
+void ChatWidgetActions::clearChatActionCreated(Action *action)
+{
+	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(action->parent());
+	if (!chatEditBox)
+		return;
+
+	connect(chatEditBox->chatWidget()->chatMessagesView(), SIGNAL(messagesUpdated()), action, SLOT(checkState()));
 }
 
 void ChatWidgetActions::sendActionCreated(Action *action)

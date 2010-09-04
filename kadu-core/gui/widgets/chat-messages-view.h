@@ -59,7 +59,7 @@ protected:
 
 private slots:
 	void repaintMessages();
-	
+
 	void pageUp();
 	void pageDown();
 	void scrollToLine();
@@ -95,6 +95,9 @@ public:
 
 public slots:
 	void clearMessages();
+
+signals:
+	void messagesUpdated();
 
 };
 
