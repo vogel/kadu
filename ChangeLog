@@ -2,6 +2,7 @@
 * gui: #1541 fixed: avatar displaying on Qt 4.5 (Vogel)
 * gui: #1544 fixed: message icon displayed on top of status icon (Vogel)
 * gui: #1411 fixed: open chat with does not work (Vogel)
+* gui: #1413 fixed: adding buddies from group tab bar now possible (Vogel)
 
 +++ version 0.6.6-beta6
 * gui: #1487 fixed: combobox in personal info for buddies does not work (Vogel)

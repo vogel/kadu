@@ -59,11 +59,11 @@ AddBuddyWindow::AddBuddyWindow(QWidget *parent) :
 	setAttribute(Qt::WA_DeleteOnClose);
 
 	createGui();
-	
+
 	connect(AccountCombo, SIGNAL(accountChanged(Account)), this, SLOT(setUsernameLabel()));
 	connect(AccountCombo, SIGNAL(accountChanged(Account)), this, SLOT(setAddContactEnabled()));
-	connect(AccountCombo, SIGNAL(accountChanged(Account)), this, SLOT(setValidateRegularExpression()));		
-	
+	connect(AccountCombo, SIGNAL(accountChanged(Account)), this, SLOT(setValidateRegularExpression()));
+
 	setAddContactEnabled();
 	setValidateRegularExpression();
 }
@@ -182,6 +182,11 @@ void AddBuddyWindow::setBuddy(Buddy buddy)
 	}
 
 	DisplayNameEdit->setText(buddy.display());
+}
+
+void AddBuddyWindow::setGroup(Group group)
+{
+	GroupCombo->setCurrentGroup(group);
 }
 
 void AddBuddyWindow::setUsernameLabel()

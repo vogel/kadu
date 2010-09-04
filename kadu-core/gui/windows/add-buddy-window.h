@@ -73,6 +73,7 @@ public:
 	virtual ~AddBuddyWindow();
 
 	void setBuddy(Buddy buddy);
+	void setGroup(Group group);
 
 };
 

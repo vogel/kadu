@@ -116,7 +116,7 @@ GroupTabBar::GroupTabBar(QWidget *parent)
 
 GroupTabBar::~GroupTabBar()
 {
-    	if (showAllGroup)
+	if (showAllGroup)
 		config_file.writeEntry("Look", "AllGroupTabPosition", AutoGroupTabPosition);
 	else
 		config_file.writeEntry("Look", "UngroupedGroupTabPosition", AutoGroupTabPosition);
@@ -285,8 +285,9 @@ void GroupTabBar::addBuddy()
 	if (!currentGroup)
 		return;
 
-// TODO: NOW
-//	(new AddBuddyWindow(currentGroup, Core::instance()->kaduWindow()))->show();
+	AddBuddyWindow *addBuddyWindow = new AddBuddyWindow(Core::instance()->kaduWindow());
+	addBuddyWindow->setGroup(currentGroup);
+	addBuddyWindow->show();
 }
 
 
