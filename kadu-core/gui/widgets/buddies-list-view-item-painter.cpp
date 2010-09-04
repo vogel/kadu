@@ -257,7 +257,12 @@ void BuddiesListViewItemPainter::computeDescriptionRect()
 
 	DescriptionRect.setTop(NameRect.bottom() + VFrameMargin);
 	DescriptionRect.setLeft(NameRect.left());
-	DescriptionRect.setRight(AvatarRect.left() - HFrameMargin);
+
+	if (!AvatarRect.isEmpty())
+		DescriptionRect.setRight(AvatarRect.left() - HFrameMargin);
+	else
+		DescriptionRect.setRight(ItemRect.right() - HFrameMargin);
+
 	DescriptionRect.setHeight((int)getDescriptionDocument(DescriptionRect.width())->size().height());
 }
 
