@@ -132,7 +132,7 @@ void BuddiesListViewItemPainter::computeMessageIconRect()
 		topLeft.setY(topLeft.y() + (fontMetrics().lineSpacing() + 3 - icon.height()) / 2);
 
 	if (!IconRect.isEmpty())
-		topLeft.setX(IconRect.x() + VFrameMargin);
+		topLeft.setX(IconRect.right() + VFrameMargin);
 
 	MessageIconRect.moveTo(topLeft);
 }
