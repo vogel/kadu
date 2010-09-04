@@ -1,9 +1,0 @@
-Podpowiedzi:
-- dawne kadu-eraser to aktualne edit-clear
-- recent chats z menu ma byc bez ikony. 
-- kadu-showofflinersoff usuniete, akcja showoffliners ma wiec tylko jedna ikone.  Samo kadu-showoffliners to odwolanie do aktualnej ikonki offline. 
-- x-office-address-book to dawne kadu-edit i kadu-edit_big.
-  
-Pytanie:
-- czy da sie zrobic tak, by akcja kadu-showofflinersoff w toolbarze odwolujaca sie do ikonki offline odwolywala sie do (wygladala jak) offline sieci aktualnie
-  wybranej jako "regionalna", czyli tej pokazywanej na liscie kontaktow. 

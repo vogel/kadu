@@ -114,5 +114,5 @@ QWidget * GaduProtocolFactory::newContactPersonalInfoWidget(Contact contact, QWi
 
 QIcon GaduProtocolFactory::icon()
 {
-	return IconsManager::instance()->iconByPath("protocols/gadu-gadu/32x32/online.png");
+	return IconsManager::instance()->iconByPath("protocols/gadu-gadu/gadu-gadu.png");
 }
