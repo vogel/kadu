@@ -44,7 +44,7 @@ class ChatWidgetActions : public QObject, ConfigurationAwareObject
 	ActionDescription *Whois;
 	ActionDescription *BlockUser;
 	ActionDescription *OpenChat;
-	ActionDescription *OpenChatWith;
+	ActionDescription *OpenWith;
 	ActionDescription *InsertEmoticon;
 	ActionDescription *ColorSelector;
 
@@ -66,6 +66,7 @@ private slots:
 	void whoisActionActivated(QAction *sender, bool toggled);
 	void blockUserActionActivated(QAction *sender, bool toggled);
 	void openChatActionActivated(QAction *sender, bool toggled);
+	void openChatWithActionActivated(QAction *sender, bool toggled);
 	void colorSelectorActionActivated(QAction *sender, bool toogled);
 	void insertEmoticonActionActivated(QAction *sender, bool toggled);
 
@@ -81,7 +82,7 @@ public:
 	ActionDescription * underline() { return Underline; }
 	ActionDescription * send() { return Send; }
 	ActionDescription * blockUser() { return BlockUser; }
-	ActionDescription * openChatWith() { return OpenChatWith; }
+	ActionDescription * openChatWith() { return OpenWith; }
 	ActionDescription * colorSelector() { return ColorSelector; }
 	ActionDescription * insertEmoticon() { return InsertEmoticon; }
 

@@ -40,6 +40,7 @@
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/kadu-window-actions.h"
 #include "gui/windows/message-dialog.h"
+#include "gui/windows/open-chat-with/open-chat-with.h"
 #include "gui/windows/search-window.h"
 
 #include "custom-input.h"
@@ -148,12 +149,12 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 		disableNoChat
 	);
 
-	OpenChatWith = new ActionDescription(0,
+	OpenWith = new ActionDescription(0,
 		ActionDescription::TypeGlobal, "openChatWithAction",
-		this, SLOT(openChatActionActivated(QAction *, bool)),
+		this, SLOT(openChatWithActionActivated(QAction *, bool)),
 		"16x16/internet-group-chat.png", "16x16/internet-group-chat.png", tr("Open Chat with...")
 	);
-	OpenChatWith->setShortcut("kadu_openchatwith", Qt::ApplicationShortcut);
+	OpenWith->setShortcut("kadu_openchatwith", Qt::ApplicationShortcut);
 
 	InsertEmoticon = new ActionDescription(0,
 		ActionDescription::TypeChat, "insertEmoticonAction",
@@ -373,7 +374,7 @@ void ChatWidgetActions::blockUserActionActivated(QAction *sender, bool toggled)
 
 		// update actions
 		updateBlockingActions(buddy);
-			
+
 		// close all chats for blocked buddies
 		if (on)
 			ChatWidgetManager::instance()->closeAllChats(buddy);
@@ -408,6 +409,22 @@ void ChatWidgetActions::openChatActionActivated(QAction *sender, bool toggled)
 	Chat chat = action->chat();
 	if (chat)
 		ChatWidgetManager::instance()->openChatWidget(chat, true);
+
+	kdebugf2();
+}
+
+void ChatWidgetActions::openChatWithActionActivated(QAction *sender, bool toggled)
+{
+	Q_UNUSED(toggled)
+
+	kdebugf();
+
+	Action *action = dynamic_cast<Action *>(sender);
+	if (!action)
+		return;
+
+	OpenChatWith *openChatWith = new OpenChatWith(0);
+	openChatWith->show();
 
 	kdebugf2();
 }
