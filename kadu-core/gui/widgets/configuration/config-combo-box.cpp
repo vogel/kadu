@@ -58,6 +58,11 @@ void ConfigComboBox::setItems(const QStringList &itemValues, const QStringList &
 	insertItems(0, itemCaptions);
 }
 
+void ConfigComboBox::setCurrentItem(const QString &value)
+{
+	setCurrentIndex(itemValues.indexOf(value));
+}
+
 QString ConfigComboBox::currentItemValue()
 {
 	int index = currentIndex();

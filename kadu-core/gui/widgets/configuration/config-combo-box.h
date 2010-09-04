@@ -58,6 +58,7 @@ public:
 	virtual ~ConfigComboBox();
 
 	void setItems(const QStringList &itemValues, const QStringList &itemCaptions);
+	void setCurrentItem(const QString &value);
 	QString currentItemValue();
 
 	virtual void loadConfiguration();

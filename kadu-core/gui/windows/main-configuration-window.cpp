@@ -298,11 +298,13 @@ void MainConfigurationWindow::setIconThemes()
 	}
 
 	iconThemes->setItems(values, captions);
-	iconThemes->setCurrentIndex(IconsManager::instance()->themeManager()->currentThemeIndex());
+	iconThemes->setCurrentItem(IconsManager::instance()->themeManager()->currentTheme().path());
 }
 
 void MainConfigurationWindow::setEmoticonThemes()
 {
+	printf("set emoticon themes\n");
+
 	ConfigComboBox *emoticonsTheme = dynamic_cast<ConfigComboBox *>(widget()->widgetById("emoticonsTheme"));
 	EmoticonsManager::instance()->setPaths((dynamic_cast<PathListEdit *>(widget()->widgetById("emoticonsPaths")))->pathList());
 
@@ -310,7 +312,7 @@ void MainConfigurationWindow::setEmoticonThemes()
 	themes.sort();
 
 	emoticonsTheme->setItems(themes, themes);
-	emoticonsTheme->setEditText(EmoticonsManager::instance()->theme());
+	emoticonsTheme->setCurrentItem(EmoticonsManager::instance()->theme());
 }
 
 void MainConfigurationWindow::setToolTipClasses()

@@ -4,6 +4,7 @@
 * gui: #1411 fixed: open chat with does not work (Vogel)
 * gui: #1413 fixed: adding buddies from group tab bar now possible (Vogel)
 * gui: #1436 fixed: disable clear chat window button when there is nothing to clear (Vogel)
+* gui: #1449 fixed: emoticon theme should not change after adding new theme path (Vogel)
 
 +++ version 0.6.6-beta6
 * gui: #1487 fixed: combobox in personal info for buddies does not work (Vogel)
