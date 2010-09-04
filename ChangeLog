@@ -9,6 +9,7 @@
 * history: #1397 fixed: display status-change dates and times (Vogel)
 * gadu-gadu: #1502 fixed: use small icon for gadu-gadu in comboboxes (Vogel)
 * jabber: #1503 fixed: use small icon for XMPP in comboboxes (Vogel)
+* gui: #1501 fixed: buddy-is-blocking icon added (Vogel)
 
 +++ version 0.6.6-beta6
 * gui: #1487 fixed: combobox in personal info for buddies does not work (Vogel)

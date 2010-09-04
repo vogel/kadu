@@ -49,7 +49,7 @@ QVariant ContactDataExtractor::data(Contact contact, int role, bool useBuddyData
 				return IconsManager::instance()->pixmapByPath("kadu_icons/kadu-blocking.png");
 
 			if (contact.isBlocking())
-				return IconsManager::instance()->pixmapByPath("kadu_icons/kadu-blocking.png");
+				return IconsManager::instance()->pixmapByPath("kadu_icons/kadu-buddy_is_blocking.png");
 
 			// TODO generic icon
 			return !contact.contactAccount().isNull()
@@ -61,7 +61,7 @@ QVariant ContactDataExtractor::data(Contact contact, int role, bool useBuddyData
 		case ContactRole:
 			return QVariant::fromValue(contact);
 		case DescriptionRole:
-		{		  
+		{
 			BuddyKaduData *bkd = contact.ownerBuddy().data()->moduleStorableData<BuddyKaduData>("kadu", true);
 			if (bkd && bkd->hideDescription())
 				return QVariant();
