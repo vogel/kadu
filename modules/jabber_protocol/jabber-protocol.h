@@ -117,8 +117,6 @@ public:
 
 	virtual QString statusPixmapPath();
 
-	virtual void changeStatus(Status status);
-
 	virtual AvatarService * avatarService() { return CurrentAvatarService; }
 	virtual ChatService * chatService() { return CurrentChatService; }
 	virtual ChatImageService * chatImageService() { return 0; }

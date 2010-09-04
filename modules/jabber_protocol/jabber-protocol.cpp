@@ -312,7 +312,7 @@ void JabberProtocol::rosterDownloaded(bool success)
 	* information in that case either). */
 	kdebug("Setting initial presence...\n");
 
-	changeStatus(nextStatus());
+	changeStatus();
 }
 
 // disconnect or stop reconnecting
@@ -406,24 +406,6 @@ void JabberProtocol::login()
 	if (isConnected())
 		return;
 	connectToServer();
-}
-
-void JabberProtocol::changeStatus(Status status)
-{
-	XMPP::Status xmppStatus = IrisStatusAdapter::toIrisStatus(status);
-	JabberClient->setPresence(xmppStatus);
-
-	if (status.isDisconnected())
-	{
-		networkStateChanged(NetworkDisconnected);
-
-		setAllOffline();
-
-		if (!nextStatus().isDisconnected())
-			setStatus(Status());
-	}
-
-	statusChanged(IrisStatusAdapter::fromIrisStatus(xmppStatus));
 }
 
 void JabberProtocol::clientResourceReceived(const XMPP::Jid &jid, const XMPP::Resource &resource)
@@ -531,6 +513,8 @@ JabberResourcePool *JabberProtocol::resourcePool()
 void JabberProtocol::changeStatus()
 {
 	Status newStatus = nextStatus();
+	if (newStatus == status())
+		return;
 
 	if (newStatus.isDisconnected() && status().isDisconnected())
 	{
@@ -546,13 +530,26 @@ void JabberProtocol::changeStatus()
 	if (isConnecting())
 		return;
 
-	if (status().isDisconnected())
+	if (!isConnected())
 	{
 		login();
 		return;
 	}
 
-	changeStatus(newStatus);
+	XMPP::Status xmppStatus = IrisStatusAdapter::toIrisStatus(newStatus);
+	JabberClient->setPresence(xmppStatus);
+
+	if (newStatus.isDisconnected())
+	{
+		networkStateChanged(NetworkDisconnected);
+
+		setAllOffline();
+
+		if (!nextStatus().isDisconnected())
+			setStatus(Status());
+	}
+
+	statusChanged(IrisStatusAdapter::fromIrisStatus(xmppStatus));
 }
 
 void JabberProtocol::changePrivateMode()
