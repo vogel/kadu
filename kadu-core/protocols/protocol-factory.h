@@ -45,6 +45,8 @@ class StoragePoint;
 
 class ProtocolFactory : public QObject
 {
+	Q_OBJECT
+
 public:
 	virtual Protocol * createProtocolHandler(Account account) = 0;
 	virtual AccountDetails * createAccountDetails(AccountShared *accountShared) = 0;

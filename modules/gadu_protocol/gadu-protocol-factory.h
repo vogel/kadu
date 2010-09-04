@@ -27,6 +27,7 @@
 
 class GaduProtocolFactory : public ProtocolFactory
 {
+	Q_OBJECT
 	Q_DISABLE_COPY(GaduProtocolFactory)
 
 	static GaduProtocolFactory *Instance;

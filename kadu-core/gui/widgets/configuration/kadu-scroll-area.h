@@ -25,6 +25,8 @@
 
 class KaduScrollArea : public QScrollArea
 {
+	Q_OBJECT
+
 public:
 	KaduScrollArea(QWidget *parent)
 		: QScrollArea(parent)

@@ -10,6 +10,8 @@
 
 class MprisPlayer : public MPRISMediaPlayer, public ConfigurationUiHandler, ConfigurationAwareObject
 {
+	Q_OBJECT
+
 	public:
 		MprisPlayer(QString name, QString service);
 		~MprisPlayer();

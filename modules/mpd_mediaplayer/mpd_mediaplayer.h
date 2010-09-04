@@ -32,6 +32,8 @@
 
 class MPDMediaPlayer : public PlayerInfo, public PlayerCommands
 {
+	Q_OBJECT
+
 	MPDConfig *config;
 
 public:

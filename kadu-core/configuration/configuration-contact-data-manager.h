@@ -26,6 +26,8 @@
 
 class KADUAPI ConfigurationContactDataManager : public ConfigurationWindowDataManager
 {
+	Q_OBJECT
+
 	Contact Data;
 
 protected:

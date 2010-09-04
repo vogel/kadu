@@ -32,6 +32,8 @@ class ConfigGroupBox;
  **/
 class KADUAPI ConfigLabel : public QLabel, public ConfigWidget
 {
+	Q_OBJECT
+
 protected:
 	virtual void createWidgets();
 

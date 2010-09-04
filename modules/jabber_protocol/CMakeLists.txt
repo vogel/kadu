@@ -341,7 +341,9 @@ set (MOC_SOURCES
 	certificates/trusted-certificates-manager.h
 	client/jabber-client.h
 	client/mini-client.h
+	facebook-protocol-factory.h
 	file-transfer/jabber-file-transfer-handler.h
+	gtalk-protocol-factory.h
 	gui/widgets/jabber-contact-personal-info-widget.h
 	gui/widgets/jabber-add-account-widget.h
 	gui/widgets/jabber-create-account-widget.h
@@ -349,7 +351,10 @@ set (MOC_SOURCES
 	gui/widgets/jabber-personal-info-widget.h
 	gui/windows/jabber-change-password-window.h
 	gui/windows/xml-console.h
+	jabber-account-data-manager.h
+	jabber-contact-data-manager.h
 	jabber-protocol.h
+	jabber-protocol-factory.h
 	jabber-url-handler.h
 	resource/jabber-resource.h
 	resource/jabber-resource-pool.h

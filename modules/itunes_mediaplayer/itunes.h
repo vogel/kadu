@@ -13,6 +13,7 @@ class ITunesController;
 
 class ITunesMediaPlayer : public PlayerInfo, public PlayerCommands
 {
+	Q_OBJECT
 
 	ITunesController *controller;
 	int getVolume();

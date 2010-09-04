@@ -18,6 +18,8 @@
 
 class WinampMediaPlayer : public PlayerInfo, PlayerCommands
 {
+	Q_OBJECT
+
 	public:
 		WinampMediaPlayer();
 		~WinampMediaPlayer();
@@ -50,7 +52,7 @@ class WinampMediaPlayer : public PlayerInfo, PlayerCommands
 		HWND findWinamp();
 		QString readWinampMemory(quint32 command, quint32 arg, bool unicode=false);
 		QString getFileTagW(int position, QString tag);
-		QString getFileTagA(int position, QString tag);		
+		QString getFileTagA(int position, QString tag);
 		HANDLE hProcess;
 };
 

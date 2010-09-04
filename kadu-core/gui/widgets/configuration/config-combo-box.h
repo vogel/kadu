@@ -40,6 +40,8 @@ class ConfigGroupBox;
  **/
 class KADUAPI ConfigComboBox : public QComboBox, public ConfigWidgetValue
 {
+	Q_OBJECT
+
 	QLabel *label;
 
 	bool saveIndexNotCaption;

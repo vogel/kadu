@@ -28,6 +28,8 @@ class JabberContactDetails;
 
 class JabberContactDataManager : public ConfigurationContactDataManager
 {
+	Q_OBJECT
+
 	JabberContactDetails *Data;
 
 protected:

@@ -27,6 +27,7 @@
 
 class JabberProtocolFactory : public ProtocolFactory
 {
+	Q_OBJECT
 	Q_DISABLE_COPY(JabberProtocolFactory)
 
 	static JabberProtocolFactory *Instance;

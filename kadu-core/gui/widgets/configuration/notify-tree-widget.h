@@ -37,6 +37,8 @@ class Notifier;
 
 class NotifyTreeWidgetDelegate : public QStyledItemDelegate
 {
+	Q_OBJECT
+
 public:
 	NotifyTreeWidgetDelegate(QObject *parent = 0);
 
@@ -62,6 +64,8 @@ public:
 
 class NotifyTreeWidget : public QTreeWidget
 {
+	Q_OBJECT
+
 	NotifyConfigurationUiHandler *UiHandler;
 
 	int StateColumnDefaultWidth;

@@ -27,6 +27,8 @@ class GaduProtocol;
 
 class GaduContactListHandler : public QObject
 {
+	Q_OBJECT
+
 	GaduProtocol *Protocol;
 
 public:

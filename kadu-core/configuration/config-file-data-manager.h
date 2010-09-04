@@ -24,6 +24,7 @@
 
 class KADUAPI ConfigFileDataManager : public ConfigurationWindowDataManager
 {
+	Q_OBJECT
 
 public:
 	ConfigFileDataManager(QObject *parent = 0) : ConfigurationWindowDataManager(parent) {}
@@ -33,4 +34,4 @@ public:
 
 };
 
-#endif 
+#endif

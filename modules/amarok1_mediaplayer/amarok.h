@@ -8,6 +8,7 @@
 
 class AmarokMediaPlayer : public PlayerInfo, public PlayerCommands
 {
+	Q_OBJECT
 
 	QString getString(QString obj, QString func);
 	QStringList getStringList(QString obj, QString func);

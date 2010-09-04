@@ -28,6 +28,8 @@ class JabberAccountDetails;
 
 class JabberAccountDataManager : public AccountDataManager
 {
+	Q_OBJECT
+
 	JabberAccountDetails *Data;
 
 public:

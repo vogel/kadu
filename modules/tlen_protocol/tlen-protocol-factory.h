@@ -26,6 +26,7 @@
 
 class TlenProtocolFactory : public ProtocolFactory
 {
+	Q_OBJECT
 	Q_DISABLE_COPY(TlenProtocolFactory)
 
 	static TlenProtocolFactory *Instance;

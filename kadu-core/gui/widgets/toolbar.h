@@ -104,7 +104,7 @@ private slots:
 
 	void slotContextIcons();
 	void slotContextText();
-	void slotContextTextUnder(); 
+	void slotContextTextUnder();
 	void slotContextTextRight();
 
 	void slotContextAboutToShow();
@@ -174,7 +174,7 @@ public slots:
 	/**
 		\fn writeToConfig(QDomElement parent_element)
 		\param parent_element rodzic obiektu
-		Zapisuje ustawienia paska (jak offset), oraz (po?rednio) 
+		Zapisuje ustawienia paska (jak offset), oraz (po?rednio)
 		akcje znajduj?ce si? na pasku.
 	**/
 	void writeToConfig(QDomElement parent_element);
@@ -183,6 +183,7 @@ public slots:
 
 class KADUAPI ActionDrag : public QDrag
 {
+	Q_OBJECT
 
 public:
 	ActionDrag(const QString &actionName, Qt::ToolButtonStyle style, QWidget* dragSource = 0);

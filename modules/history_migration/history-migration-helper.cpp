@@ -24,9 +24,7 @@
 #include <QtCore/QByteArray>
 #include <QtCore/QChar>
 #include <QtCore/QDir>
-#include <QtCore/QDateTime>
 #include <QtCore/QFile>
-#include <QtCore/QString>
 #include <QtCore/QStringList>
 #include <QtCore/QRegExp>
 #include <QtCore/QtAlgorithms>

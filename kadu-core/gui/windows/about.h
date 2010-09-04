@@ -29,13 +29,14 @@
 #ifndef ABOUT_H
 #define ABOUT_H
 
+#include <QtGui/QLabel>
 #include <QtGui/QWidget>
 
 /**
 	\class About
 	\brief Okno z informacjami o programie.
 **/
-class About : public QWidget 
+class About : public QWidget
 {
 	Q_OBJECT
 
@@ -57,6 +58,20 @@ public:
 		Destruktor zapisuje rozmiar okna.
 	**/
 	~About();
+
+};
+
+class KaduLink : public QLabel
+{
+	Q_OBJECT
+
+	QString link;
+
+protected:
+	virtual void mousePressEvent(QMouseEvent *);
+
+public:
+	explicit KaduLink(QString s);
 
 };
 

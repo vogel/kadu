@@ -27,6 +27,7 @@
 
 class FacebookProtocolFactory : public JabberProtocolFactory
 {
+	Q_OBJECT
 	Q_DISABLE_COPY(FacebookProtocolFactory)
 
 	static FacebookProtocolFactory *Instance;

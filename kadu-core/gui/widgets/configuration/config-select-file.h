@@ -35,6 +35,8 @@ class ConfigGroupBox;
  **/
 class KADUAPI ConfigSelectFile : public SelectFile, public ConfigWidgetValue
 {
+	Q_OBJECT
+
 	QLabel *label;
 
 protected:

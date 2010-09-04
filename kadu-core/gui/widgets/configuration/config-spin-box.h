@@ -38,6 +38,8 @@ class ConfigGroupBox;
  **/
 class KADUAPI ConfigSpinBox : public QSpinBox, public ConfigWidgetValue
 {
+	Q_OBJECT
+
 	QLabel *label;
 
 protected:

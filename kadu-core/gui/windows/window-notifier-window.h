@@ -26,6 +26,8 @@ class Notification;
 
 class WindowNotifierWindow : public QDialog
 {
+	Q_OBJECT
+
 	Notification *CurrentNotification;
 
 	void createGui();

@@ -32,6 +32,8 @@ class ConfigGroupBox;
  **/
 class KADUAPI ConfigColorButton : public ColorButton, public ConfigWidgetValue
 {
+	Q_OBJECT
+
 	QLabel *label;
 
 protected:

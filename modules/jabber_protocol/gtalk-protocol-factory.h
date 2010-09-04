@@ -27,6 +27,7 @@
 
 class GTalkProtocolFactory : public JabberProtocolFactory
 {
+	Q_OBJECT
 	Q_DISABLE_COPY(GTalkProtocolFactory)
 
 	static GTalkProtocolFactory *Instance;

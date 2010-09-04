@@ -33,6 +33,8 @@ class ConfigGroupBox;
  **/
 class KADUAPI ConfigSelectFont : public SelectFont, public ConfigWidgetValue
 {
+	Q_OBJECT
+
 	QLabel *label;
 
 protected:

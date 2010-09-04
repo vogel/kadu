@@ -5,6 +5,7 @@ set (SOURCES
 
 set (MOC_SOURCES
 	spellchecker.h
+	highlighter.h
 )
 
 set (TRANSLATION_SOURCES

@@ -28,6 +28,8 @@ class TlenAccountDetails;
 
 class TlenAccountDataManager : public AccountDataManager
 {
+	Q_OBJECT
+
 	TlenAccountDetails *Data;
 
 public:

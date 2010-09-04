@@ -61,6 +61,7 @@ enum EmoticonsScaling
 **/
 class KADUAPI EmoticonsManager : public Themes, ConfigurationAwareObject
 {
+	Q_OBJECT
 	Q_DISABLE_COPY(EmoticonsManager)
 
 	/**

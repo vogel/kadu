@@ -24,11 +24,11 @@
 #ifndef HISTORY_MIGRATION_HELPER_H
 #define HISTORY_MIGRATION_HELPER_H
 
+#include <QtCore/QDateTime>
 #include <QtCore/QList>
+#include <QtCore/QString>
 
 class QChar;
-class QDateTime;
-class QString;
 class QStringList;
 
 typedef quint32 UinType;

@@ -31,6 +31,8 @@ class ConfigGroupBox;
  **/
 class KADUAPI ConfigGGPasswordEdit : public ConfigLineEdit
 {
+	Q_OBJECT
+
 public:
 	ConfigGGPasswordEdit(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
 	ConfigGGPasswordEdit(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);

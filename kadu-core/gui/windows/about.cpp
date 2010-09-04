@@ -33,7 +33,7 @@
 #include <QtCore/QTextStream>
 #include <QtGui/QBoxLayout>
 #include <QtGui/QKeyEvent>
-#include <QtGui/QLabel>
+#include <QtGui/QMouseEvent>
 #include <QtGui/QPushButton>
 #include <QtGui/QStyle>
 #include <QtGui/QTabWidget>
@@ -48,28 +48,8 @@
 
 #include "about.h"
 
-class KaduLink : public QLabel
-{
-	QString link;
-
-protected:
-	virtual void mousePressEvent(QMouseEvent *)
-	{
-		UrlOpener::openUrl(link);
-	}
-
-public:
-	KaduLink(QString s) : QLabel()
-	{
-		setText(QString("<a href=\"%1\">%1</a>").arg(s));
-		setCursor(QCursor(Qt::PointingHandCursor));
-		setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed));
-	}
-
-};
-
-About::About(QWidget *parent)
-	: QWidget(parent, Qt::Window)
+About::About(QWidget *parent) :
+		QWidget(parent, Qt::Window)
 {
 	setWindowRole("kadu-about");
 
@@ -231,4 +211,17 @@ QString About::loadFile(const QString &name)
 
 	kdebugf2();
 	return data;
+}
+
+KaduLink::KaduLink(QString s) :
+		QLabel()
+{
+	setText(QString("<a href=\"%1\">%1</a>").arg(s));
+	setCursor(QCursor(Qt::PointingHandCursor));
+	setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed));
+}
+
+void KaduLink::mousePressEvent(QMouseEvent *)
+{
+	UrlOpener::openUrl(link);
 }
