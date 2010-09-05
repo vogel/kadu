@@ -438,7 +438,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	EditUser = new ActionDescription(this,
 		ActionDescription::TypeUser, "editUserAction",
 		this, SLOT(editUserActionActivated(QAction *, bool)),
-		"16x16/x-office-address-book", "16x16/x-office-address-book", tr("View Buddy Properties"), false, QString::null,
+		"16x16/x-office-address-book.png", "16x16/x-office-address-book.png", tr("View Buddy Properties"), false, QString::null,
 		disableNotOneUles
 	);
 	connect(EditUser, SIGNAL(actionCreated(Action *)), this, SLOT(editUserActionCreated(Action *)));
