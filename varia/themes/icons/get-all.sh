@@ -2,7 +2,7 @@
 
 available_icon_themes=""
 for dir in *; do
-	if [ -f $dir/icons.conf ]; then
+	if [ -d $dir/kadu_icons ]; then
 		available_icon_themes="$available_icon_themes $dir"
 	fi
 done
@@ -10,7 +10,7 @@ done
 if [ "$1" == "ON" ]; then
 	for file in *.web; do
 		dir=`basename $file .web`
-		if [ ! -f $dir/icons.conf ]; then
+		if [ ! -d $dir/kadu_icons ]; then
 			available_icon_themes="$available_icon_themes $dir"
 		fi
 	done

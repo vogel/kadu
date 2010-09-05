@@ -31,9 +31,7 @@ endif (ENABLE_AUTODOWNLOAD AND NOT WIN32)
 	install (DIRECTORY ${INSTALL_ICON_THEMES}
 		DESTINATION ${KADU_DATA_DIR}/themes/icons
 		PATTERN ".autodownloaded" EXCLUDE
-		PATTERN ".svn" EXCLUDE
 		PATTERN "README"
-		PATTERN "icons.conf"
 		PATTERN "*.png"
 	)
 

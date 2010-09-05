@@ -4,7 +4,8 @@ SETLOCAL EnableDelayedExpansion
 SET AVAILABLE_MODULES=
 
 FOR /D %%I IN (*) DO (
-	IF EXIST %%I/icons.conf (
+	IF EXIST %%I/kadu_icons (
+	)
 		CALL SET AVAILABLE_MODULES=%%AVAILABLE_MODULES%%;%%I
 	)
 )
