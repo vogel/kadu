@@ -64,7 +64,7 @@ QString FormattedMessagePart::toHtml() const
 	result.replace("\r\n", "<br/>");
 	result.replace("\n",   "<br/>");
 	result.replace("\r",   "<br/>");
-	result.replace(QChar::LineSeparator, "<br />");
+	result.replace(QChar::LineSeparator, "<br/>");
 
 	if (!Bold && !Italic && !Underline && !Color.isValid())
 		return result;

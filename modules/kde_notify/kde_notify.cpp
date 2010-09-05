@@ -120,27 +120,36 @@ void KdeNotify::notify(Notification *notification)
 	QList<QVariant> args;
 	args.append("Kadu");
 	args.append(0U);
-	args.append(IconsManager::instance()->iconPath("16x16/internet-group-chat.png"));
+	args.append(IconsManager::instance()->iconPath("kadu_icons/kadu-tab.png"));
 
 	/* the new spec doesn't have this */
 	if (!UseFreedesktopStandard)
 		args.append("");
 
+  	args.append("Kadu");
+	
+	QString iconHtml;
+	if (!notification->iconPath().isEmpty())
+		iconHtml = QString("<img src=\"%1\" alt=\"icon\" align=middle> ").arg(notification->iconPath().replace("file://", ""));
+
 	if (((notification->type() == "NewMessage") || (notification->type() == "NewChat")) &&
 			config_file.readBoolEntry("KDENotify", "ShowContentMessage"))
 	{
-		args.append(notification->text().remove(StripHTML));
-		QString strippedDetails = notification->details().remove(StripHTML);
+		QString text = iconHtml;
+		text.append(notification->text() + "<br/><small>");
+		
+		QString strippedDetails = notification->details().replace("<br/>", "\n").remove(StripHTML).replace("\n", "<br/>");
 		if (strippedDetails.length() > config_file.readNumEntry("KDENotify", "CiteSign", 10))
-			args.append(strippedDetails.left(config_file.readNumEntry("KDENotify", "CiteSign", 10)) + "...");
+			text.append(strippedDetails.left(config_file.readNumEntry("KDENotify", "CiteSign", 10)) + "...");
 		else
-			args.append(strippedDetails);
+			text.append(strippedDetails);
+
+		text.append("</small>");
+		
+		args.append(text);
 	}
 	else
-	{
-		args.append("Kadu");
-		args.append(notification->text());
-	}
+		args.append(iconHtml + notification->text());
 
 	QStringList actions;
 
