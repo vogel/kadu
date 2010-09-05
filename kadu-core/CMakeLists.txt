@@ -132,6 +132,7 @@ set (kadu_SRCS
 	gui/widgets/buddies-list-view-delegate.cpp
 	gui/widgets/buddies-list-view-delegate-configuration.cpp
 	gui/widgets/buddies-list-view-item-painter.cpp
+	gui/widgets/buddies-list-view-menu-item.cpp
 	gui/widgets/buddies-list-view-menu-manager.cpp
 	gui/widgets/buddies-list-widget.cpp
 	gui/widgets/buddy-avatar-widget.cpp
@@ -431,7 +432,7 @@ set (kadu_MOC_SRCS
 	file-transfer/file-transfer-manager.h
 	file-transfer/file-transfer-notifications.h
 	file-transfer/file-transfer-shared.h
-	
+
 	gui/hot-key.h
 
 	gui/actions/action.h
