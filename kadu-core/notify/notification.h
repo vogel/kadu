@@ -116,6 +116,7 @@ private:
 	QString Title;
 	QString Text;
 	QString Details;
+	QString IconPath;
 	QIcon Icon;
 
 	QList<Callback> Callbacks;
@@ -134,7 +135,7 @@ public:
 		@arg type typ zdarzenia
 		@arg icon nazwa ikony zdarzenia
 	 **/
-	Notification(const QString &type, const QIcon &icon);
+	Notification(const QString &type, const QString &iconPath);
 	virtual ~Notification();
 
 	/**
@@ -219,7 +220,7 @@ public:
 	/**
 		Ustawia ikon� zdarzenia.
 	 **/
-	void setIcon(const QPixmap &icon);
+	void setIcon(const QString &iconPath);
 	/**
 		Ikona zdarzenia.
 
@@ -227,6 +228,8 @@ public:
 	 **/
 	QIcon icon() const;
 
+	QString iconPath() const;
+	
 	/**
 		Lista akcji.
 

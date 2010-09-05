@@ -770,7 +770,7 @@ void MediaPlayer::putTitleHint(QString title)
 {
 	kdebugf();
 
-	Notification *notification = new Notification(QString(mediaPlayerOsdHint), IconsManager::instance()->iconByPath("external_modules/module_mediaplayer_button-media-playback-start.png"));
+	Notification *notification = new Notification(QString(mediaPlayerOsdHint), "external_modules/module_mediaplayer_button-media-playback-start.png");
 	notification->setText(title);
 	NotificationManager::instance()->notify(notification);
 }

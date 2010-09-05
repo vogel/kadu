@@ -47,7 +47,7 @@ void ScreenshotNotification::notifySizeLimit(int size)
 }
 
 ScreenshotNotification::ScreenshotNotification() :
-		Notification("ssSizeLimit", IconsManager::instance()->iconByPath("kadu_icons/kadu-blocking.png"))
+		Notification("ssSizeLimit", "kadu_icons/kadu-blocking.png")
 {
 }
 

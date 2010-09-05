@@ -134,7 +134,7 @@ void HintsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurati
 
 void HintsConfigurationUiHandler::addHintsPreview()
 {
-	Notification *previewNotify = new Notification(QString("Preview"), IconsManager::instance()->iconByPath("protocols/common/16x16/message.png"));
+	Notification *previewNotify = new Notification(QString("Preview"), "protocols/common/16x16/message.png");
 	previewNotify->setText(qApp->translate("@default", "Hints position preview"));
 
 	Hint *previewHint = new Hint(previewHintsFrame, previewNotify);

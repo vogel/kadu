@@ -100,7 +100,7 @@ void ServerStatusWidget::refreshIcon()
 
 void ServerStatusWidget::notify(QString address, ServerStatusWidget::ServerState newServerState)
 {
-	Notification *notification = new Notification("serverMonitorChangeStatus",   QIcon());
+	Notification *notification = new Notification("serverMonitorChangeStatus", "");
 
 	notification->setDetails(tr("Server %1 changed status to %2").arg(address).arg(serverStateToString(newServerState)));
 	notification->setText("Server monitor");

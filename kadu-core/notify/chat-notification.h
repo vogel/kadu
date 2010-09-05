@@ -32,7 +32,7 @@ class ChatNotification : public AccountNotification
 	Chat CurrentChat;
 
 public:
-	ChatNotification(Chat chat, const QString &type, const QIcon &icon);
+	ChatNotification(Chat chat, const QString& type, const QString& iconPath);
 	virtual ~ChatNotification() {}
 
 	Chat chat() { return CurrentChat; }

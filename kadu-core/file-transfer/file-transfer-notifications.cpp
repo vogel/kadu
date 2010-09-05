@@ -52,7 +52,7 @@ void NewFileTransferNotification::unregisterEvents()
 }
 
 NewFileTransferNotification::NewFileTransferNotification(const QString &type, FileTransfer ft, Chat chat, StartType startType) :
-		ChatNotification(chat, type, QIcon()), ft(ft), fileName("")
+		ChatNotification(chat, type, ""), ft(ft), fileName("")
 {
 	if (startType == StartRestore)
 	{

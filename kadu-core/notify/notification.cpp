@@ -22,6 +22,7 @@
 
 #include "notify/notification-manager.h"
 #include "parser/parser.h"
+#include "icons-manager.h"
 #include "debug.h"
 
 #include "notification.h"
@@ -37,8 +38,10 @@ static QString getNotificationTitle(const QObject * const object)
 		return "";
 }
 
-Notification::Notification(const QString& type, const QIcon& icon)
-	: Type(type), Title(""), Text(""), Icon(icon), DefaultCallbackTimer(0), ReferencesCount(0), Closing(false)
+Notification::Notification(const QString &type, const QString &iconPath) : 
+	Type(type), Title(""), Text(""), IconPath(IconsManager::instance()->iconPath(iconPath)),
+	Icon(IconsManager::instance()->iconByPath(iconPath)), DefaultCallbackTimer(0),
+	ReferencesCount(0), Closing(false)
 {
 	Parser::registerObjectTag("event", getNotificationTitle);
 }
@@ -165,9 +168,16 @@ QString Notification::details() const
 	return Details;
 }
 
-void Notification::setIcon(const QPixmap &icon)
+void Notification::setIcon(const QString& iconPath)
 {
-	Icon = icon;
+	IconPath = IconsManager::instance()->iconPath(iconPath);
+	
+	Icon = IconsManager::instance()->iconByPath(iconPath);
+}
+
+QString Notification::iconPath() const
+{
+	return IconPath;
 }
 
 QIcon Notification::icon() const

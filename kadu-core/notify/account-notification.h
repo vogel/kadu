@@ -34,7 +34,7 @@ class AccountNotification : public Notification
 	Account CurrentAccount;
 
 public:
-	AccountNotification(Account account, const QString &type, const QIcon &icon);
+	AccountNotification(Account account, const QString& type, const QString& iconPath);
 	virtual ~AccountNotification();
 
 	Account account() const { return CurrentAccount; }

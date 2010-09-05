@@ -23,8 +23,8 @@
 
 #include "chat-notification.h"
 
-ChatNotification::ChatNotification(Chat chat, const QString &type, const QIcon &icon) :
-		AccountNotification(chat.chatAccount(), type, icon), CurrentChat(chat)
+ChatNotification::ChatNotification(Chat chat, const QString &type, const QString &iconPath) :
+		AccountNotification(chat.chatAccount(), type, iconPath), CurrentChat(chat)
 {
 	addCallback(tr("Chat"), SLOT(openChat()), "openChat()");
 	addCallback(tr("Ignore"), SLOT(callbackDiscard()), "callbackDiscard()");
