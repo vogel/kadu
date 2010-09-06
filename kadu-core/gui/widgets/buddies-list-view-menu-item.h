@@ -41,7 +41,7 @@ private:
 public:
 	BuddiesListViewMenuItem(ActionDescription *action, BuddiesListViewMenuCategory category, int priority);
 
-	ActionDescription * action() { return Action; }
+	ActionDescription * actionDescription() { return Action; }
 	BuddiesListViewMenuCategory category() { return Category; }
 	int priority () { return Priority; }
 

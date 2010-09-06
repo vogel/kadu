@@ -44,47 +44,65 @@ BuddiesListViewMenuManager::BuddiesListViewMenuManager()
 
 void BuddiesListViewMenuManager::addActionDescription(ActionDescription *actionDescription)
 {
-	BuddiesContexMenu.append(actionDescription);
+	BuddiesContexMenu.append(BuddiesListViewMenuItem(actionDescription, BuddiesListViewMenuItem::MenuCategoryChat, 0));
 }
 
 void BuddiesListViewMenuManager::insertActionDescription(int pos, ActionDescription *actionDescription)
 {
-	BuddiesContexMenu.insert(pos, actionDescription);
+	BuddiesContexMenu.insert(pos, BuddiesListViewMenuItem(actionDescription, BuddiesListViewMenuItem::MenuCategoryChat, 0));
 }
 
 void BuddiesListViewMenuManager::removeActionDescription(ActionDescription *actionDescription)
 {
-	BuddiesContexMenu.removeAll(actionDescription);
+	QList<BuddiesListViewMenuItem>::iterator i = BuddiesContexMenu.begin();
+	QList<BuddiesListViewMenuItem>::iterator end = BuddiesContexMenu.end();
+
+	while (i != end)
+	{
+		if ((*i).actionDescription() == actionDescription)
+			i = BuddiesContexMenu.erase(i);
+		else
+			i++;
+	}
 }
 
 void BuddiesListViewMenuManager::addSeparator()
 {
-	BuddiesContexMenu.append(0);
+	BuddiesContexMenu.append(BuddiesListViewMenuItem(0, BuddiesListViewMenuItem::MenuCategoryChat, 0));
 }
 
 void BuddiesListViewMenuManager::insertSeparator(int pos)
 {
-	BuddiesContexMenu.insert(pos, 0);
+	BuddiesContexMenu.insert(pos, BuddiesListViewMenuItem(0, BuddiesListViewMenuItem::MenuCategoryChat, 0));
 }
 
 void BuddiesListViewMenuManager::addListActionDescription(ActionDescription *actionDescription)
 {
-	BuddyListActions.append(actionDescription);
+	BuddyListActions.append(BuddiesListViewMenuItem(actionDescription, BuddiesListViewMenuItem::MenuCategoryChat, 0));
 }
 
 void BuddiesListViewMenuManager::insertListActionDescription(int pos, ActionDescription *actionDescription)
 {
-	BuddyListActions.insert(pos, actionDescription);
+	BuddyListActions.insert(pos, BuddiesListViewMenuItem(actionDescription, BuddiesListViewMenuItem::MenuCategoryChat, 0));
 }
 
 void BuddiesListViewMenuManager::removeListActionDescription(ActionDescription *actionDescription)
 {
-	BuddyListActions.removeAll(actionDescription);
+	QList<BuddiesListViewMenuItem>::iterator i = BuddyListActions.begin();
+	QList<BuddiesListViewMenuItem>::iterator end = BuddyListActions.end();
+
+	while (i != end)
+	{
+		if ((*i).actionDescription() == actionDescription)
+			i = BuddyListActions.erase(i);
+		else
+			i++;
+	}
 }
 
 void BuddiesListViewMenuManager::addListSeparator()
 {
-	BuddyListActions.append(0);
+	BuddyListActions.append(BuddiesListViewMenuItem(0, BuddiesListViewMenuItem::MenuCategoryChat, 0));
 }
 
 QMenu * BuddiesListViewMenuManager::menu(QWidget *parent, ActionDataSource *actionDataSource, QList<Contact> contacts)
@@ -94,7 +112,10 @@ QMenu * BuddiesListViewMenuManager::menu(QWidget *parent, ActionDataSource *acti
 	QMenu *menu = new QMenu(parent);
 
 	QMenu *actions = new QMenu(tr("More Actions..."));
-	foreach (ActionDescription *actionDescription, BuddyListActions)
+	foreach (BuddiesListViewMenuItem menuItem, BuddyListActions)
+	{
+		ActionDescription *actionDescription = menuItem.actionDescription();
+
 		if (actionDescription)
 		{
 			Action *action = actionDescription->createAction(actionDataSource, parent);
@@ -103,9 +124,12 @@ QMenu * BuddiesListViewMenuManager::menu(QWidget *parent, ActionDataSource *acti
 		}
 		else
 			actions->addSeparator();
+	}
 
-	foreach (ActionDescription *actionDescription, BuddiesContexMenu)
+	foreach (BuddiesListViewMenuItem menuItem, BuddiesContexMenu)
 	{
+		ActionDescription *actionDescription = menuItem.actionDescription();
+
 		if (actionDescription)
 		{
 

@@ -24,6 +24,7 @@
 
 #include <QtCore/QObject>
 
+#include "gui/widgets/buddies-list-view-menu-item.h"
 #include "exports.h"
 
 class QMenu;
@@ -40,8 +41,8 @@ class KADUAPI BuddiesListViewMenuManager : public QObject
 
 	static BuddiesListViewMenuManager *Instance;
 
-	QList<ActionDescription *> BuddiesContexMenu;
-	QList<ActionDescription *> BuddyListActions;
+	QList<BuddiesListViewMenuItem> BuddiesContexMenu;
+	QList<BuddiesListViewMenuItem> BuddyListActions;
 
 	BuddiesListViewMenuManager();
 
