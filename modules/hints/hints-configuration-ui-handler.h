@@ -48,7 +48,6 @@ private:
 	
 	HintOverUserConfigurationWindow *overUserConfigurationWindow;
 	QFrame *overUserConfigurationPreview;
-	QLabel *overUserConfigurationIconLabel;
 	QLabel *overUserConfigurationTipLabel;
 	
 	QPushButton *configureOverUserHint;

@@ -57,7 +57,6 @@ HintOverUserConfigurationWindow::HintOverUserConfigurationWindow(Buddy exampleBu
 	connect(dynamic_cast<ConfigColorButton *>(widget()->widgetById("bgcolor")), SIGNAL(changed(const QColor &)), this, SLOT(backgroundColorChanged(const QColor &)));
 	connect(dynamic_cast<ConfigColorButton *>(widget()->widgetById("bdcolor")), SIGNAL(changed(const QColor &)), this, SLOT(borderColorChanged(const QColor &)));
 	connect(dynamic_cast<ConfigSpinBox *>(widget()->widgetById("bdwidth")), SIGNAL(valueChanged(int)), this, SLOT(borderWidthChanged(int)));
-	connect(dynamic_cast<ConfigComboBox *>(widget()->widgetById("iconsize")), SIGNAL(currentIndexChanged(int)), this, SLOT(iconSizeChanged(int)));
 
 	ConfigGroupBox *groupBox = widget()->configGroupBox("Look", "Buddy List", "Hint Over Buddy");
 
@@ -68,15 +67,11 @@ HintOverUserConfigurationWindow::HintOverUserConfigurationWindow(Buddy exampleBu
 	lay->setMargin(10);
 	lay->setSizeConstraint(QLayout::SetFixedSize);
 
-	previewIconLabel = new QLabel(previewFrame);
-	previewIconLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-
 	previewTipLabel = new QLabel(previewFrame);
 	previewTipLabel->setTextFormat(Qt::RichText);
 	previewTipLabel->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
 	previewTipLabel->setContentsMargins(10, 0, 0, 0);
 
-	lay->addWidget(previewIconLabel, Qt::AlignTop);
 	lay->addWidget(previewTipLabel);
 
 	groupBox->insertWidget(0, previewFrame, true);
@@ -96,7 +91,7 @@ HintOverUserConfigurationWindow::HintOverUserConfigurationWindow(Buddy exampleBu
 	lay->addWidget(syntaxChangedButton);
 	groupBox->addWidget(syntaxWidget, true);
 
-	hint_manager->prepareOverUserHint(previewFrame, previewIconLabel, previewTipLabel, ExampleBuddy.prefferedContact());
+	hint_manager->prepareOverUserHint(previewFrame, previewTipLabel, ExampleBuddy.prefferedContact());
 
 	bgcolor = config_file.readColorEntry("Hints", "HintOverUser_bgcolor").name();
 	fgcolor = config_file.readColorEntry("Hints", "HintOverUser_fgcolor").name();
@@ -147,14 +142,6 @@ void HintOverUserConfigurationWindow::borderWidthChanged(int width)
 			.arg(bdwidth).arg(bdcolor).arg(0).arg(bgcolor).arg(fgcolor);
 
 	previewFrame->setStyleSheet(style);
-}
-//TODO 0.6.6:
-void HintOverUserConfigurationWindow::iconSizeChanged(int index)
-{
-	Q_UNUSED(index)
-
-	Contact contact = ExampleBuddy.prefferedContact();
-	previewIconLabel->setPixmap(contact.contactAccount().statusContainer()->statusIcon(contact.currentStatus()).pixmap(16, 16));
 }
 
 void HintOverUserConfigurationWindow::syntaxChanged()

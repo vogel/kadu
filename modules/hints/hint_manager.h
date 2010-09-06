@@ -148,7 +148,7 @@ public:
 
 	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0);
 
-	void prepareOverUserHint(QFrame *tipFrame, QLabel *iconLabel, QLabel *tipLabel, Contact contact);
+	void prepareOverUserHint(QFrame* tipFrame, QLabel* tipLabel, Contact contact);
 
 	QString style() { return Style; }
 	double opacity() { return Opacity; }

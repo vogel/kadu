@@ -35,7 +35,6 @@ class HintOverUserConfigurationWindow : public ConfigurationWindow
 	Buddy ExampleBuddy;
 
 	QFrame *previewFrame;
-	QLabel *previewIconLabel;
 	QLabel *previewTipLabel;
 	QTextEdit *hintSyntax;
 
@@ -52,7 +51,6 @@ private slots:
 	void backgroundColorChanged(const QColor &color);
 	void borderColorChanged(const QColor &color);
 	void borderWidthChanged(int width);
-	void iconSizeChanged(int index);
 
 	void syntaxChanged();
 

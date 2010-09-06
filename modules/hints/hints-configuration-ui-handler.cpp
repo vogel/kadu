@@ -105,15 +105,11 @@ void HintsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurati
 	lay->setMargin(10);
 	lay->setSizeConstraint(QLayout::SetFixedSize);
 
-	overUserConfigurationIconLabel = new QLabel(overUserConfigurationPreview);
-	overUserConfigurationIconLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-
 	overUserConfigurationTipLabel = new QLabel(overUserConfigurationPreview);
 	overUserConfigurationTipLabel->setTextFormat(Qt::RichText);
 	overUserConfigurationTipLabel->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
 	overUserConfigurationTipLabel->setContentsMargins(10, 0, 0, 0);
 
-	lay->addWidget(overUserConfigurationIconLabel, Qt::AlignTop);
 	lay->addWidget(overUserConfigurationTipLabel);
 
    	configureOverUserHint = new QPushButton(tr("Configure"));
@@ -122,8 +118,8 @@ void HintsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurati
 	Buddy example = Buddy::dummy();
 
 	if (!example.isNull())
-		hint_manager->prepareOverUserHint(overUserConfigurationPreview, overUserConfigurationIconLabel,
-				    overUserConfigurationTipLabel, example.prefferedContact());
+		hint_manager->prepareOverUserHint(overUserConfigurationPreview, overUserConfigurationTipLabel,
+						  example.prefferedContact());
 
 	lay = new QHBoxLayout(configureHint);
 	lay->addWidget(overUserConfigurationPreview);
@@ -310,7 +306,7 @@ void HintsConfigurationUiHandler::updateOverUserPreview()
 	Buddy example = Buddy::dummy();
 
 	if (!example.isNull())
-		hint_manager->prepareOverUserHint(overUserConfigurationPreview, overUserConfigurationIconLabel, overUserConfigurationTipLabel, example.prefferedContact());
+		hint_manager->prepareOverUserHint(overUserConfigurationPreview, overUserConfigurationTipLabel, example.prefferedContact());
 }
 
 void HintsConfigurationUiHandler::mainConfigurationWindowDestroyed()

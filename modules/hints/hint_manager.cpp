@@ -447,7 +447,7 @@ void HintManager::setLayoutDirection()
 	kdebugf2();
 }
 
-void HintManager::prepareOverUserHint(QFrame *tipFrame, QLabel *iconLabel, QLabel *tipLabel, Contact contact)
+void HintManager::prepareOverUserHint(QFrame *tipFrame, QLabel *tipLabel, Contact contact)
 {
 	QString text = Parser::parse(config_file.readEntry("Hints", "MouseOverUserSyntax"), contact);
 
@@ -460,9 +460,6 @@ void HintManager::prepareOverUserHint(QFrame *tipFrame, QLabel *iconLabel, QLabe
 		text.resize(text.length() - 5 /* 5 == QString("<br/>").length()*/);
 	while (text.startsWith("<br/>"))
 		text = text.right(text.length() - 5 /* 5 == QString("<br/>").length()*/);
-
-	if (contact.contactAccount() && contact.contactAccount().statusContainer())
-		iconLabel->setPixmap(contact.contactAccount().statusContainer()->statusIcon(contact.currentStatus()).pixmap(16, 16));
 
 	tipLabel->setFont(config_file.readFontEntry("Hints", "HintOverUser_font"));
 	tipLabel->setText(text);
@@ -498,18 +495,14 @@ void HintManager::showToolTip(const QPoint &point, Contact contact)
 	lay->setMargin(10);
 	lay->setSizeConstraint(QLayout::SetFixedSize);
 
-	QLabel *icon = new QLabel(tipFrame);
-	icon->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-
 	QLabel *tipLabel = new QLabel(tipFrame);
 	tipLabel->setTextFormat(Qt::RichText);
 	tipLabel->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
 	tipLabel->setContentsMargins(10, 0, 0, 0);
 
-	lay->addWidget(icon, Qt::AlignTop);
 	lay->addWidget(tipLabel);
 
-	prepareOverUserHint(tipFrame, icon, tipLabel, contact);
+	prepareOverUserHint(tipFrame, tipLabel, contact);
 
 	double opacity = config_file.readNumEntry("Hints", "HintOverUser_transparency", 0);
 	opacity = 1 - opacity/100;
