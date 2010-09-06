@@ -213,8 +213,8 @@ Text is plain black." />
 					<item value="true" caption="Top" />
 					<item value="false" caption="Center" />
 				</combo-box>
-				<spin-box caption="Column count" config-section="Look" config-item="UserBoxColumnCount" min-value="1" max-value="10"
-					  tool-tip="Number of columns displays in the buddy list" />
+			<!--	<spin-box caption="Column count" config-section="Look" config-item="UserBoxColumnCount" min-value="1" max-value="10"
+					  tool-tip="Number of columns displays in the buddy list" /> -->
 				<combo-box caption="Tool tip style" config-section="Look" config-item="UserboxToolTipStyle" id="toolTipClasses"
 					   tool-tip="Choose buddy list tool-tip style" />
 			</group-box>
