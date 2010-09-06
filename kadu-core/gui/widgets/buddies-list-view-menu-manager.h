@@ -47,9 +47,6 @@ class KADUAPI BuddiesListViewMenuManager : public QObject
 public:
 	static BuddiesListViewMenuManager * instance();
 
-	QList<ActionDescription *> buddiesContexMenu() { return BuddiesContexMenu; }
-	QList<ActionDescription *> buddyListActions() { return BuddyListActions; }
-
 	void addActionDescription(ActionDescription *actionDescription);
 	void insertActionDescription(int pos, ActionDescription *actionDescription);
 	void removeActionDescription(ActionDescription *actionDescription);

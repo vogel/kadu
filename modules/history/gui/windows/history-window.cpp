@@ -614,39 +614,7 @@ void HistoryWindow::showMainPopupMenu(const QPoint &pos)
 	if (!chat)
 		return;
 
-	bool first = true;
-	QMenu *menu = new QMenu(this);
-
-	QMenu *actions = new QMenu(tr("Actions"));
-	foreach (ActionDescription *actionDescription, BuddiesListViewMenuManager::instance()->buddyListActions())
-		if (actionDescription)
-		{
-			Action *action = actionDescription->createAction(this, this);
-			actions->addAction(action);
-			action->checkState();
-		}
-		else
-			actions->addSeparator();
-
-	foreach (ActionDescription *actionDescription, BuddiesListViewMenuManager::instance()->buddiesContexMenu())
-	{
-		if (actionDescription)
-		{
-
-			Action *action = actionDescription->createAction(this, this);
-			menu->addAction(action);
-			action->checkState();
-		}
-		else
-		{
-			menu->addSeparator();
-			if (first)
-			{
-				menu->addMenu(actions);
-				first = false;
-			}
-		}
-	}
+	QMenu *menu = BuddiesListViewMenuManager::instance()->menu(this, this);
 
 	QList<Account> accounts;
 	foreach (Contact con, chat.contacts())

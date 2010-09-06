@@ -90,7 +90,7 @@ QMenu * BuddiesListViewMenuManager::menu(QWidget *parent, ActionDataSource *acti
 	QMenu *menu = new QMenu(parent);
 
 	QMenu *actions = new QMenu(tr("More Actions..."));
-	foreach (ActionDescription *actionDescription, buddyListActions())
+	foreach (ActionDescription *actionDescription, BuddyListActions)
 		if (actionDescription)
 		{
 			Action *action = actionDescription->createAction(actionDataSource, parent);
@@ -100,7 +100,7 @@ QMenu * BuddiesListViewMenuManager::menu(QWidget *parent, ActionDataSource *acti
 		else
 			actions->addSeparator();
 
-	foreach (ActionDescription *actionDescription, buddiesContexMenu())
+	foreach (ActionDescription *actionDescription, BuddiesContexMenu)
 	{
 		if (actionDescription)
 		{
