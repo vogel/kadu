@@ -26,12 +26,15 @@
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "misc/path-conversion.h"
 #include "notify/notification-manager.h"
+#include "notify/notification.h"
+#include "url-handlers/url-handler-manager.h"
 #include "debug.h"
+#include "html_document.h"
 
-#include "kde_notify.h"
 #include <QDBusReply>
 #include <QTimer>
-#include <notify/notification.h>
+
+#include "kde_notify.h"
 
 extern "C" KADU_EXPORT int kde_notify_init(bool firstLoad)
 {
@@ -128,14 +131,13 @@ void KdeNotify::notify(Notification *notification)
 
   	args.append("Kadu");
 	
-	QString iconHtml;
+	QString text;
 	if (!notification->iconPath().isEmpty())
-		iconHtml = QString("<img src=\"%1\" alt=\"icon\" align=middle> ").arg(notification->iconPath().replace("file://", ""));
+		text = QString("<img src=\"%1\" alt=\"icon\" align=middle> ").arg(notification->iconPath().replace("file://", ""));
 
 	if (((notification->type() == "NewMessage") || (notification->type() == "NewChat")) &&
 			config_file.readBoolEntry("KDENotify", "ShowContentMessage"))
 	{
-		QString text = iconHtml;
 		text.append(notification->text() + "<br/><small>");
 		
 		QString strippedDetails = notification->details().replace("<br/>", "\n").remove(StripHTML).replace("\n", "<br/>");
@@ -145,11 +147,15 @@ void KdeNotify::notify(Notification *notification)
 			text.append(strippedDetails);
 
 		text.append("</small>");
-		
-		args.append(text);
 	}
 	else
-		args.append(iconHtml + notification->text());
+		text.append(notification->text());
+
+	HtmlDocument doc;
+	doc.parseHtml(text);
+	UrlHandlerManager::instance()->convertAllUrls(doc);
+		
+	args.append(doc.generateHtml());
 
 	QStringList actions;
 
