@@ -69,7 +69,7 @@ SmsActions::SmsActions()
 		"16x16/phone.png", "16x16/phone.png", tr("Send SMS..."), false
 	);
 	sendSmsActionDescription->setShortcut("kadu_sendsms");
-	BuddiesListViewMenuManager::instance()->insertActionDescription(5, sendSmsActionDescription, BuddiesListViewMenuItem::MenuCategoryChat, 100);
+	BuddiesListViewMenuManager::instance()->addActionDescription(sendSmsActionDescription, BuddiesListViewMenuItem::MenuCategoryActions, 100);
 	Core::instance()->kaduWindow()->insertMenuActionDescription(sendSmsActionDescription, KaduWindow::MenuContacts, 5);
 }
 

@@ -111,7 +111,7 @@ TabsManager::TabsManager(bool firstload)
 		this, SLOT(onNewTab(QAction *, bool)),
 		"16x16/internet-group-chat.png", "16x16/internet-group-chat.png", tr("Chat in New Tab"), false, QString::null, disableNewTab
 	);
-	BuddiesListViewMenuManager::instance()->insertActionDescription(1, openInNewTabActionDescription, BuddiesListViewMenuItem::MenuCategoryChat, 0);
+	BuddiesListViewMenuManager::instance()->addActionDescription(openInNewTabActionDescription, BuddiesListViewMenuItem::MenuCategoryChat, 200);
 
 	attachToTabsActionDescription = new ActionDescription(
 		0, ActionDescription::TypeChat, "attachToTabsAction",

@@ -23,3 +23,10 @@ BuddiesListViewMenuItem::BuddiesListViewMenuItem(ActionDescription *action, Budd
 		Action(action), Category(category), Priority(priority)
 {
 }
+
+bool BuddiesListViewMenuItem::operator < (const BuddiesListViewMenuItem &compareTo) const
+{
+	if (Category == compareTo.Category)
+		return Priority < compareTo.Priority;
+	return Category < compareTo.Category;
+}

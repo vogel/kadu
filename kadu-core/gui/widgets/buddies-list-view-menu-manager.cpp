@@ -38,18 +38,33 @@ BuddiesListViewMenuManager * BuddiesListViewMenuManager::instance()
 	return Instance;
 }
 
-BuddiesListViewMenuManager::BuddiesListViewMenuManager()
+BuddiesListViewMenuManager::BuddiesListViewMenuManager() :
+		BuddiesContexMenuSorted(true), BuddyListActionsSorted(true)
 {
+}
+
+void BuddiesListViewMenuManager::sortBuddiesContexMenu()
+{
+	if (!BuddiesContexMenuSorted)
+	{
+		qSort(BuddiesContexMenu);
+		BuddiesContexMenuSorted = true;
+	}
+}
+
+void BuddiesListViewMenuManager::sortBuddyListActions()
+{
+	if (!BuddyListActionsSorted)
+	{
+		qSort(BuddyListActions);
+		BuddyListActionsSorted = true;
+	}
 }
 
 void BuddiesListViewMenuManager::addActionDescription(ActionDescription *actionDescription, BuddiesListViewMenuItem::BuddiesListViewMenuCategory category, int priority)
 {
 	BuddiesContexMenu.append(BuddiesListViewMenuItem(actionDescription, category, priority));
-}
-
-void BuddiesListViewMenuManager::insertActionDescription(int pos, ActionDescription *actionDescription, BuddiesListViewMenuItem::BuddiesListViewMenuCategory category, int priority)
-{
-	BuddiesContexMenu.insert(pos, BuddiesListViewMenuItem(actionDescription, category, priority));
+	BuddiesContexMenuSorted = false;
 }
 
 void BuddiesListViewMenuManager::removeActionDescription(ActionDescription *actionDescription)
@@ -66,24 +81,10 @@ void BuddiesListViewMenuManager::removeActionDescription(ActionDescription *acti
 	}
 }
 
-void BuddiesListViewMenuManager::addSeparator()
-{
-	BuddiesContexMenu.append(BuddiesListViewMenuItem(0, BuddiesListViewMenuItem::MenuCategoryChat, 0));
-}
-
-void BuddiesListViewMenuManager::insertSeparator(int pos)
-{
-	BuddiesContexMenu.insert(pos, BuddiesListViewMenuItem(0, BuddiesListViewMenuItem::MenuCategoryChat, 0));
-}
-
 void BuddiesListViewMenuManager::addListActionDescription(ActionDescription *actionDescription, BuddiesListViewMenuItem::BuddiesListViewMenuCategory category, int priority)
 {
 	BuddyListActions.append(BuddiesListViewMenuItem(actionDescription, category, priority));
-}
-
-void BuddiesListViewMenuManager::insertListActionDescription(int pos, ActionDescription *actionDescription, BuddiesListViewMenuItem::BuddiesListViewMenuCategory category, int priority)
-{
-	BuddyListActions.insert(pos, BuddiesListViewMenuItem(actionDescription, category, priority));
+	BuddyListActionsSorted = false;
 }
 
 void BuddiesListViewMenuManager::removeListActionDescription(ActionDescription *actionDescription)
@@ -100,51 +101,47 @@ void BuddiesListViewMenuManager::removeListActionDescription(ActionDescription *
 	}
 }
 
-void BuddiesListViewMenuManager::addListSeparator()
-{
-	BuddyListActions.append(BuddiesListViewMenuItem(0, BuddiesListViewMenuItem::MenuCategoryChat, 0));
-}
-
 QMenu * BuddiesListViewMenuManager::menu(QWidget *parent, ActionDataSource *actionDataSource, QList<Contact> contacts)
 {
-	//TODO 0.8 :
-	int separatorsCount = 0;
+	sortBuddiesContexMenu();
+	sortBuddyListActions();
+
 	QMenu *menu = new QMenu(parent);
 
 	QMenu *actions = new QMenu(tr("More Actions..."));
+
+	BuddiesListViewMenuItem::BuddiesListViewMenuCategory lastCategory = BuddiesListViewMenuItem::MenuCategoryChat;
+	bool first = true;
 	foreach (BuddiesListViewMenuItem menuItem, BuddyListActions)
 	{
-		ActionDescription *actionDescription = menuItem.actionDescription();
-
-		if (actionDescription)
-		{
-			Action *action = actionDescription->createAction(actionDataSource, parent);
-			actions->addAction(action);
-			action->checkState();
-		}
-		else
+		if (!first && lastCategory != menuItem.category())
 			actions->addSeparator();
+
+		Action *action = menuItem.actionDescription()->createAction(actionDataSource, parent);
+		actions->addAction(action);
+		action->checkState();
+
+		lastCategory = menuItem.category();
+		first = false;
 	}
 
+	lastCategory = BuddiesListViewMenuItem::MenuCategoryChat;
+	first = true;
 	foreach (BuddiesListViewMenuItem menuItem, BuddiesContexMenu)
 	{
-		ActionDescription *actionDescription = menuItem.actionDescription();
-
-		if (actionDescription)
+		if (!first && lastCategory != menuItem.category())
 		{
-
-			Action *action = actionDescription->createAction(actionDataSource, parent);
-			menu->addAction(action);
-			action->checkState();
-		}
-		else
-		{
-			++separatorsCount;
-			if (separatorsCount == 2)
+			if (menuItem.category() > BuddiesListViewMenuItem::MenuCategoryActions)
 				menu->addMenu(actions);
-
 			menu->addSeparator();
 		}
+
+		Action *action = menuItem.actionDescription()->createAction(actionDataSource, parent);
+		menu->addAction(action);
+		action->checkState();
+
+		lastCategory = menuItem.category();
+		first = false;
 	}
 
 	foreach (Contact contact, contacts)

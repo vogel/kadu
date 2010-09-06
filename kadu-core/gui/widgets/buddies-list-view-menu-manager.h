@@ -42,22 +42,24 @@ class KADUAPI BuddiesListViewMenuManager : public QObject
 	static BuddiesListViewMenuManager *Instance;
 
 	QList<BuddiesListViewMenuItem> BuddiesContexMenu;
+	bool BuddiesContexMenuSorted;
+
 	QList<BuddiesListViewMenuItem> BuddyListActions;
+	bool BuddyListActionsSorted;
 
 	BuddiesListViewMenuManager();
+
+	void sortBuddiesContexMenu();
+	void sortBuddyListActions();
 
 public:
 	static BuddiesListViewMenuManager * instance();
 
 	void addActionDescription(ActionDescription *actionDescription, BuddiesListViewMenuItem::BuddiesListViewMenuCategory category, int priority);
-	void insertActionDescription(int pos, ActionDescription *actionDescription, BuddiesListViewMenuItem::BuddiesListViewMenuCategory category, int priority);
 	void removeActionDescription(ActionDescription *actionDescription);
-	void addSeparator();
-	void insertSeparator(int pos);
+
 	void addListActionDescription(ActionDescription *actionDescription, BuddiesListViewMenuItem::BuddiesListViewMenuCategory category, int priority);
-	void insertListActionDescription(int pos, ActionDescription *actionDescription, BuddiesListViewMenuItem::BuddiesListViewMenuCategory category, int priority);
 	void removeListActionDescription(ActionDescription *actionDescription);
-	void addListSeparator();
 
 	QMenu * menu(QWidget *parent, ActionDataSource *actionDataSource, QList<Contact> contacts);
 

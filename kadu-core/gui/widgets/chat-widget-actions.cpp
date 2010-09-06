@@ -183,8 +183,7 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 		"kadu_icons/kadu-colors.png", "kadu_icons/kadu-colors.png", tr("Change Color")
 	);
 
-	BuddiesListViewMenuManager::instance()->insertActionDescription(0, OpenChat, BuddiesListViewMenuItem::MenuCategoryChat, 25);
-	BuddiesListViewMenuManager::instance()->addSeparator();
+	BuddiesListViewMenuManager::instance()->addActionDescription(OpenChat, BuddiesListViewMenuItem::MenuCategoryChat, 25);
 }
 
 ChatWidgetActions::~ChatWidgetActions()
