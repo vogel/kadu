@@ -19,8 +19,12 @@
 
 #include <QtGui/QMenu>
 
+#include "accounts/account.h"
 #include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
+#include "protocols/protocol.h"
+#include "protocols/protocol-factory.h"
+#include "protocols/protocol-menu-manager.h"
 
 #include "buddies-list-view-menu-manager.h"
 
@@ -83,7 +87,7 @@ void BuddiesListViewMenuManager::addListSeparator()
 	BuddyListActions.append(0);
 }
 
-QMenu * BuddiesListViewMenuManager::menu(QWidget *parent, ActionDataSource *actionDataSource)
+QMenu * BuddiesListViewMenuManager::menu(QWidget *parent, ActionDataSource *actionDataSource, QList<Contact> contacts)
 {
 	//TODO 0.8 :
 	int separatorsCount = 0;
@@ -117,6 +121,35 @@ QMenu * BuddiesListViewMenuManager::menu(QWidget *parent, ActionDataSource *acti
 
 			menu->addSeparator();
 		}
+	}
+
+	foreach (Contact contact, contacts)
+	{
+		if (!contact.contactAccount() || !contact.contactAccount().protocolHandler())
+			continue;
+
+		Account account = contact.contactAccount();
+		ProtocolFactory *protocolFactory = account.protocolHandler()->protocolFactory();
+
+		if (!account.protocolHandler()->protocolFactory() || !protocolFactory->protocolMenuManager())
+			continue;
+
+		QMenu *account_menu = menu->addMenu(account.accountIdentity().name());
+		if (!protocolFactory->icon().isNull())
+			account_menu->setIcon(protocolFactory->icon());
+
+		if (protocolFactory->protocolMenuManager()->protocolActions(account, contact.ownerBuddy()).size() == 0)
+			continue;
+
+		foreach (ActionDescription *actionDescription, protocolFactory->protocolMenuManager()->protocolActions(account, contact.ownerBuddy()))
+			if (actionDescription)
+			{
+				Action *action = actionDescription->createAction(actionDataSource, parent);
+				account_menu->addAction(action);
+				action->checkState();
+			}
+			else
+				account_menu->addSeparator();
 	}
 
 	return menu;

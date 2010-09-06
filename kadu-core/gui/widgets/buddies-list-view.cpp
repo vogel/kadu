@@ -308,37 +308,7 @@ void BuddiesListView::contextMenuEvent(QContextMenuEvent *event)
 	if (buddy.isNull())
 		return;
 
-	QMenu *menu = BuddiesListViewMenuManager::instance()->menu(this, this);
-
-	foreach (Contact contact, buddy.contacts())
-	{
-		if (!contact.contactAccount() || !contact.contactAccount().protocolHandler())
-			continue;
-
-		Account account = contact.contactAccount();
-		ProtocolFactory *protocolFactory = account.protocolHandler()->protocolFactory();
-
-		if (!account.protocolHandler()->protocolFactory() || !protocolFactory->protocolMenuManager())
-			continue;
-
-		QMenu *account_menu = menu->addMenu(account.accountIdentity().name());
-		if (!protocolFactory->icon().isNull())
-			account_menu->setIcon(protocolFactory->icon());
-
-		if (protocolFactory->protocolMenuManager()->protocolActions(account, buddy).size() == 0)
-			continue;
-
-		foreach (ActionDescription *actionDescription, protocolFactory->protocolMenuManager()->protocolActions(account, buddy))
-			if (actionDescription)
-			{
-				Action *action = actionDescription->createAction(this, MyMainWindow);
-				account_menu->addAction(action);
-				action->checkState();
-			}
-			else
-				account_menu->addSeparator();
-	}
-
+	QMenu *menu = BuddiesListViewMenuManager::instance()->menu(this, this, buddy.contacts());
 	menu->exec(event->globalPos());
 	delete menu;
 }

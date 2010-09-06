@@ -31,6 +31,7 @@ class QWidget;
 
 class ActionDataSource;
 class ActionDescription;
+class Contact;
 
 class KADUAPI BuddiesListViewMenuManager : public QObject
 {
@@ -57,7 +58,7 @@ public:
 	void removeListActionDescription(ActionDescription *actionDescription);
 	void addListSeparator();
 
-	QMenu * menu(QWidget *parent, ActionDataSource *actionDataSource);
+	QMenu * menu(QWidget *parent, ActionDataSource *actionDataSource, QList<Contact> contacts);
 
 };
 
