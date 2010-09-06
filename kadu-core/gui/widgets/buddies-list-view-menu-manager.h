@@ -22,14 +22,19 @@
 #ifndef BUDDIES_LIST_VIEW_MENU_MANAGER_H
 #define BUDDIES_LIST_VIEW_MENU_MANAGER_H
 
-#include <QtCore/QList>
+#include <QtCore/QObject>
 
 #include "exports.h"
 
+class QMenu;
+class QWidget;
+
+class ActionDataSource;
 class ActionDescription;
 
-class KADUAPI BuddiesListViewMenuManager
+class KADUAPI BuddiesListViewMenuManager : public QObject
 {
+	Q_OBJECT
 	Q_DISABLE_COPY(BuddiesListViewMenuManager)
 
 	static BuddiesListViewMenuManager *Instance;
@@ -40,7 +45,6 @@ class KADUAPI BuddiesListViewMenuManager
 	BuddiesListViewMenuManager();
 
 public:
-
 	static BuddiesListViewMenuManager * instance();
 
 	QList<ActionDescription *> buddiesContexMenu() { return BuddiesContexMenu; }
@@ -55,6 +59,9 @@ public:
 	void insertListActionDescription(int pos, ActionDescription *actionDescription);
 	void removeListActionDescription(ActionDescription *actionDescription);
 	void addListSeparator();
+
+	QMenu * menu(QWidget *parent, ActionDataSource *actionDataSource);
+
 };
 
 #endif // BUDDIES_LIST_VIEW_MENU_MANAGER_H

@@ -230,7 +230,7 @@ Chat BuddiesListView::currentChat() const
 	Contact contact;
 	ContactSet contacts;
 	Account account;
-	
+
 	QModelIndexList selectionList = selectedIndexes();
 	foreach (QModelIndex selection, selectionList)
 	{
@@ -243,17 +243,17 @@ Chat BuddiesListView::currentChat() const
 				contact = contactAt(selection);
 				if (!contact)
 					return Chat::null;
-				
+
 				contacts.insert(contact);
-				
+
 				account = contact.contactAccount();
-				
+
 				foreach (const Buddy &buddy, buddies)
 				{
 					contact = buddy.prefferedContact(account);
 					if (!contact)
 						return Chat::null;
-					
+
 					contacts.insert(contact);
 				}
 			}
@@ -265,7 +265,7 @@ Chat BuddiesListView::currentChat() const
 				contact = buddyAt(selection).prefferedContact(account);
 				if (!contact)
 					return Chat::null;
-			  
+
 				contacts.insert(contact);
 			}
 			else
@@ -273,7 +273,7 @@ Chat BuddiesListView::currentChat() const
 				contact = contactAt(selection);
 				if (!contact)
 					return Chat::null;
-				
+
 				if (contact.contactAccount() == account)
 					contacts.insert(contact);
 				else
@@ -281,11 +281,11 @@ Chat BuddiesListView::currentChat() const
 			}
 		}
 	}
-	
+
 	if (!account)
 		return ChatManager::instance()->findChat(buddies, true);
 	else
-	    return ChatManager::instance()->findChat(contacts, true); 
+	    return ChatManager::instance()->findChat(contacts, true);
 }
 
 void BuddiesListView::triggerActivate(const QModelIndex& index)
@@ -308,39 +308,7 @@ void BuddiesListView::contextMenuEvent(QContextMenuEvent *event)
 	if (buddy.isNull())
 		return;
 
-	//TODO 0.8 :
-	int separatorsCount = 0;
-	QMenu *menu = new QMenu(this);
-
-	QMenu *actions = new QMenu(tr("More Actions..."));
-	foreach (ActionDescription *actionDescription, BuddiesListViewMenuManager::instance()->buddyListActions())
-		if (actionDescription)
-		{
-			Action *action = actionDescription->createAction(this, MyMainWindow);
-			actions->addAction(action);
-			action->checkState();
-		}
-		else
-			actions->addSeparator();
-
-	foreach (ActionDescription *actionDescription, BuddiesListViewMenuManager::instance()->buddiesContexMenu())
-	{
-		if (actionDescription)
-		{
-
-			Action *action = actionDescription->createAction(this, MyMainWindow);
-			menu->addAction(action);
-			action->checkState();
-		}
-		else
-		{
-			++separatorsCount;
-			if (separatorsCount == 2)
-				menu->addMenu(actions);
-
-			menu->addSeparator();
-		}
-	}
+	QMenu *menu = BuddiesListViewMenuManager::instance()->menu(this, this);
 
 	foreach (Contact contact, buddy.contacts())
 	{
@@ -372,11 +340,12 @@ void BuddiesListView::contextMenuEvent(QContextMenuEvent *event)
 	}
 
 	menu->exec(event->globalPos());
+	delete menu;
 }
 
 void BuddiesListView::keyPressEvent(QKeyEvent *event)
 {
-	// TODO 0.6.7: add proper shortcuts handling 
+	// TODO 0.6.7: add proper shortcuts handling
 	if (HotKey::shortCut(event, "ShortCuts", "kadu_deleteuser"))
 		KaduWindowActions::deleteUserActionActivated(this);
 	else if (HotKey::shortCut(event, "ShortCuts", "kadu_persinfo"))

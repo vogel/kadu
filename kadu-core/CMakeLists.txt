@@ -338,7 +338,7 @@ if (UNIX AND NOT APPLE)
 	)
 endif (UNIX AND NOT APPLE)
 if (WIN32)
-set (kadu_SRCS
+	set (kadu_SRCS
 		${kadu_SRCS}
 		os/qtsingleapplication/qtlockedfile_win.cpp
 )
@@ -455,6 +455,7 @@ set (kadu_MOC_SRCS
 	gui/widgets/buddy-contacts-table.h
 	gui/widgets/buddy-general-configuration-widget.h
 	gui/widgets/buddy-groups-configuration-widget.h
+	gui/widgets/buddies-list-view-menu-manager.h
 	gui/widgets/buddy-personal-info-configuration-widget.h
 	gui/widgets/buddy-options-configuration-widget.h
 	gui/widgets/buddy-info-panel.h
