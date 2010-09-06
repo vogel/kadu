@@ -132,6 +132,7 @@ set (kadu_SRCS
 	gui/widgets/buddies-list-view-delegate.cpp
 	gui/widgets/buddies-list-view-delegate-configuration.cpp
 	gui/widgets/buddies-list-view-item-painter.cpp
+	gui/widgets/buddies-list-view-menu-item.cpp
 	gui/widgets/buddies-list-view-menu-manager.cpp
 	gui/widgets/buddies-list-widget.cpp
 	gui/widgets/buddy-avatar-widget.cpp
@@ -337,7 +338,7 @@ if (UNIX AND NOT APPLE)
 	)
 endif (UNIX AND NOT APPLE)
 if (WIN32)
-set (kadu_SRCS
+	set (kadu_SRCS
 		${kadu_SRCS}
 		os/qtsingleapplication/qtlockedfile_win.cpp
 )
@@ -431,7 +432,7 @@ set (kadu_MOC_SRCS
 	file-transfer/file-transfer-manager.h
 	file-transfer/file-transfer-notifications.h
 	file-transfer/file-transfer-shared.h
-	
+
 	gui/hot-key.h
 
 	gui/actions/action.h
@@ -454,6 +455,7 @@ set (kadu_MOC_SRCS
 	gui/widgets/buddy-contacts-table.h
 	gui/widgets/buddy-general-configuration-widget.h
 	gui/widgets/buddy-groups-configuration-widget.h
+	gui/widgets/buddies-list-view-menu-manager.h
 	gui/widgets/buddy-personal-info-configuration-widget.h
 	gui/widgets/buddy-options-configuration-widget.h
 	gui/widgets/buddy-info-panel.h

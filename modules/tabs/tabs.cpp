@@ -111,7 +111,7 @@ TabsManager::TabsManager(bool firstload)
 		this, SLOT(onNewTab(QAction *, bool)),
 		"16x16/internet-group-chat.png", "16x16/internet-group-chat.png", tr("Chat in New Tab"), false, QString::null, disableNewTab
 	);
-	BuddiesListViewMenuManager::instance()->insertActionDescription(1, openInNewTabActionDescription);
+	BuddiesListViewMenuManager::instance()->addActionDescription(openInNewTabActionDescription, BuddiesListViewMenuItem::MenuCategoryChat, 200);
 
 	attachToTabsActionDescription = new ActionDescription(
 		0, ActionDescription::TypeChat, "attachToTabsAction",
@@ -172,7 +172,7 @@ TabsManager::~TabsManager()
 	saveWindowGeometry(tabdialog, "Chat", "TabWindowsGeometry");
 
 	// jesli kadu nie konczy dzialania to znaczy ze modul zostal tylko wyladowany wiec odlaczamy rozmowy z kart
-	
+
 	if (!Core::instance()->isClosing())
 	{
 		for (int i = tabdialog->count() - 1; i >= 0; i--)
@@ -180,7 +180,7 @@ TabsManager::~TabsManager()
 	}
 	else if (config_file.readBoolEntry("Chat", "SaveOpenedWindows", true))// saveTabs()
 		store();
-	
+
 
 	delete tabdialog;
 	tabdialog = 0;
@@ -197,7 +197,7 @@ void TabsManager::onNewChat(ChatWidget* chat, bool &handled)
 		detachedchats.append(chat);
 		return;
 	}
-	
+
 	// jesli chat ma zostac bezwzglednie dodany do kart np w wyniku wyboru w menu
 	if (force_tabs)
 	{

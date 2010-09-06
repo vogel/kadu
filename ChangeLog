@@ -10,6 +10,7 @@
 * gadu-gadu: #1502 fixed: use small icon for gadu-gadu in comboboxes (Vogel)
 * jabber: #1503 fixed: use small icon for XMPP in comboboxes (Vogel)
 * gui: #1501 fixed: buddy-is-blocking icon added (Vogel)
+* gui :#1475 fixed: proper order of buddy menu items (Vogel)
 
 +++ version 0.6.6-beta6
 * gui: #1487 fixed: combobox in personal info for buddies does not work (Vogel)

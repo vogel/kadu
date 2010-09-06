@@ -614,73 +614,11 @@ void HistoryWindow::showMainPopupMenu(const QPoint &pos)
 	if (!chat)
 		return;
 
-	bool first = true;
-	QMenu *menu = new QMenu(this);
-
-	QMenu *actions = new QMenu(tr("Actions"));
-	foreach (ActionDescription *actionDescription, BuddiesListViewMenuManager::instance()->buddyListActions())
-		if (actionDescription)
-		{
-			Action *action = actionDescription->createAction(this, this);
-			actions->addAction(action);
-			action->checkState();
-		}
-		else
-			actions->addSeparator();
-
-	foreach (ActionDescription *actionDescription, BuddiesListViewMenuManager::instance()->buddiesContexMenu())
-	{
-		if (actionDescription)
-		{
-
-			Action *action = actionDescription->createAction(this, this);
-			menu->addAction(action);
-			action->checkState();
-		}
-		else
-		{
-			menu->addSeparator();
-			if (first)
-			{
-				menu->addMenu(actions);
-				first = false;
-			}
-		}
-	}
-
-	QList<Account> accounts;
-	foreach (Contact con, chat.contacts())
-		accounts.append(con.contactAccount());
-
-	foreach (Account account, accounts)
-	{
-		if (account.isNull())
-			continue;
-
-		ProtocolFactory *protocolFactory = account.protocolHandler()->protocolFactory();
-
-		if (!protocolFactory || !protocolFactory->protocolMenuManager())
-			continue;
-
-		QMenu *account_menu = menu->addMenu(QString("%1 (%2)").arg(account.accountIdentity().name()).arg(account.id()));
-		if (!protocolFactory->icon().isNull())
-			account_menu->setIcon(protocolFactory->icon());
-
-		if (protocolFactory->protocolMenuManager()->protocolActions(account, (*chat.contacts().toBuddySet().begin())).size() == 0)
-			continue;
-
-		foreach (ActionDescription *actionDescription, protocolFactory->protocolMenuManager()->protocolActions(account, (*chat.contacts().toBuddySet().begin())))
-			if (actionDescription)
-			{
-				Action *action = actionDescription->createAction(this, this);
-				account_menu->addAction(action);
-				action->checkState();
-			}
-			else
-				account_menu->addSeparator();
-	}
+	QMenu *menu = BuddiesListViewMenuManager::instance()->menu(this, this, chat.contacts().toContactList());
 	menu->addAction(IconsManager::instance()->iconByPath("kadu_icons/history-clear.png"), tr("&Clear history"), this, SLOT(clearHistory()));
 	menu->exec(QCursor::pos());
+
+	delete menu;
 }
 
 void HistoryWindow::showDetailsPopupMenu(const QPoint &pos)

@@ -22,39 +22,47 @@
 #ifndef BUDDIES_LIST_VIEW_MENU_MANAGER_H
 #define BUDDIES_LIST_VIEW_MENU_MANAGER_H
 
-#include <QtCore/QList>
+#include <QtCore/QObject>
 
+#include "gui/widgets/buddies-list-view-menu-item.h"
 #include "exports.h"
 
-class ActionDescription;
+class QMenu;
+class QWidget;
 
-class KADUAPI BuddiesListViewMenuManager
+class ActionDataSource;
+class ActionDescription;
+class Contact;
+
+class KADUAPI BuddiesListViewMenuManager : public QObject
 {
+	Q_OBJECT
 	Q_DISABLE_COPY(BuddiesListViewMenuManager)
 
 	static BuddiesListViewMenuManager *Instance;
 
-	QList<ActionDescription *> BuddiesContexMenu;
-	QList<ActionDescription *> BuddyListActions;
+	QList<BuddiesListViewMenuItem> BuddiesContexMenu;
+	bool BuddiesContexMenuSorted;
+
+	QList<BuddiesListViewMenuItem> BuddyListActions;
+	bool BuddyListActionsSorted;
 
 	BuddiesListViewMenuManager();
 
-public:
+	void sortBuddiesContexMenu();
+	void sortBuddyListActions();
 
+public:
 	static BuddiesListViewMenuManager * instance();
 
-	QList<ActionDescription *> buddiesContexMenu() { return BuddiesContexMenu; }
-	QList<ActionDescription *> buddyListActions() { return BuddyListActions; }
-
-	void addActionDescription(ActionDescription *actionDescription);
-	void insertActionDescription(int pos, ActionDescription *actionDescription);
+	void addActionDescription(ActionDescription *actionDescription, BuddiesListViewMenuItem::BuddiesListViewMenuCategory category, int priority);
 	void removeActionDescription(ActionDescription *actionDescription);
-	void addSeparator();
-	void insertSeparator(int pos);
-	void addListActionDescription(ActionDescription *actionDescription);
-	void insertListActionDescription(int pos, ActionDescription *actionDescription);
+
+	void addListActionDescription(ActionDescription *actionDescription, BuddiesListViewMenuItem::BuddiesListViewMenuCategory category, int priority);
 	void removeListActionDescription(ActionDescription *actionDescription);
-	void addListSeparator();
+
+	QMenu * menu(QWidget *parent, ActionDataSource *actionDataSource, QList<Contact> contacts);
+
 };
 
 #endif // BUDDIES_LIST_VIEW_MENU_MANAGER_H

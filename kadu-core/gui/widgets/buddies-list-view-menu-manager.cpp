@@ -17,6 +17,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QMenu>
+
+#include "accounts/account.h"
+#include "gui/actions/action.h"
+#include "gui/actions/action-description.h"
+#include "protocols/protocol.h"
+#include "protocols/protocol-factory.h"
+#include "protocols/protocol-menu-manager.h"
+
 #include "buddies-list-view-menu-manager.h"
 
 BuddiesListViewMenuManager * BuddiesListViewMenuManager::Instance = 0;
@@ -29,51 +38,140 @@ BuddiesListViewMenuManager * BuddiesListViewMenuManager::instance()
 	return Instance;
 }
 
-BuddiesListViewMenuManager::BuddiesListViewMenuManager()
+BuddiesListViewMenuManager::BuddiesListViewMenuManager() :
+		BuddiesContexMenuSorted(true), BuddyListActionsSorted(true)
 {
 }
 
-void BuddiesListViewMenuManager::addActionDescription(ActionDescription *actionDescription)
+void BuddiesListViewMenuManager::sortBuddiesContexMenu()
 {
-	BuddiesContexMenu.append(actionDescription);
+	if (!BuddiesContexMenuSorted)
+	{
+		qSort(BuddiesContexMenu);
+		BuddiesContexMenuSorted = true;
+	}
 }
 
-void BuddiesListViewMenuManager::insertActionDescription(int pos, ActionDescription *actionDescription)
+void BuddiesListViewMenuManager::sortBuddyListActions()
 {
-	BuddiesContexMenu.insert(pos, actionDescription);
+	if (!BuddyListActionsSorted)
+	{
+		qSort(BuddyListActions);
+		BuddyListActionsSorted = true;
+	}
+}
+
+void BuddiesListViewMenuManager::addActionDescription(ActionDescription *actionDescription, BuddiesListViewMenuItem::BuddiesListViewMenuCategory category, int priority)
+{
+	BuddiesContexMenu.append(BuddiesListViewMenuItem(actionDescription, category, priority));
+	BuddiesContexMenuSorted = false;
 }
 
 void BuddiesListViewMenuManager::removeActionDescription(ActionDescription *actionDescription)
 {
-	BuddiesContexMenu.removeAll(actionDescription);
+	QList<BuddiesListViewMenuItem>::iterator i = BuddiesContexMenu.begin();
+	QList<BuddiesListViewMenuItem>::iterator end = BuddiesContexMenu.end();
+
+	while (i != end)
+	{
+		if ((*i).actionDescription() == actionDescription)
+			i = BuddiesContexMenu.erase(i);
+		else
+			i++;
+	}
 }
 
-void BuddiesListViewMenuManager::addSeparator()
+void BuddiesListViewMenuManager::addListActionDescription(ActionDescription *actionDescription, BuddiesListViewMenuItem::BuddiesListViewMenuCategory category, int priority)
 {
-	BuddiesContexMenu.append(0);
-}
-
-void BuddiesListViewMenuManager::insertSeparator(int pos)
-{
-	BuddiesContexMenu.insert(pos, 0);
-}
-
-void BuddiesListViewMenuManager::addListActionDescription(ActionDescription *actionDescription)
-{
-	BuddyListActions.append(actionDescription);
-}
-
-void BuddiesListViewMenuManager::insertListActionDescription(int pos, ActionDescription *actionDescription)
-{
-	BuddyListActions.insert(pos, actionDescription);
+	BuddyListActions.append(BuddiesListViewMenuItem(actionDescription, category, priority));
+	BuddyListActionsSorted = false;
 }
 
 void BuddiesListViewMenuManager::removeListActionDescription(ActionDescription *actionDescription)
 {
-	BuddyListActions.removeAll(actionDescription);
+	QList<BuddiesListViewMenuItem>::iterator i = BuddyListActions.begin();
+	QList<BuddiesListViewMenuItem>::iterator end = BuddyListActions.end();
+
+	while (i != end)
+	{
+		if ((*i).actionDescription() == actionDescription)
+			i = BuddyListActions.erase(i);
+		else
+			i++;
+	}
 }
 
-void BuddiesListViewMenuManager::addListSeparator()
+QMenu * BuddiesListViewMenuManager::menu(QWidget *parent, ActionDataSource *actionDataSource, QList<Contact> contacts)
 {
-	BuddyListActions.append(0);
+	sortBuddiesContexMenu();
+	sortBuddyListActions();
+
+	QMenu *menu = new QMenu(parent);
+
+	QMenu *actions = new QMenu(tr("More Actions..."));
+
+	BuddiesListViewMenuItem::BuddiesListViewMenuCategory lastCategory = BuddiesListViewMenuItem::MenuCategoryChat;
+	bool first = true;
+	foreach (BuddiesListViewMenuItem menuItem, BuddyListActions)
+	{
+		if (!first && lastCategory != menuItem.category())
+			actions->addSeparator();
+
+		Action *action = menuItem.actionDescription()->createAction(actionDataSource, parent);
+		actions->addAction(action);
+		action->checkState();
+
+		lastCategory = menuItem.category();
+		first = false;
+	}
+
+	lastCategory = BuddiesListViewMenuItem::MenuCategoryChat;
+	first = true;
+	foreach (BuddiesListViewMenuItem menuItem, BuddiesContexMenu)
+	{
+		if (!first && lastCategory != menuItem.category())
+		{
+			if (menuItem.category() > BuddiesListViewMenuItem::MenuCategoryActions)
+				menu->addMenu(actions);
+			menu->addSeparator();
+		}
+
+		Action *action = menuItem.actionDescription()->createAction(actionDataSource, parent);
+		menu->addAction(action);
+		action->checkState();
+
+		lastCategory = menuItem.category();
+		first = false;
+	}
+
+	foreach (Contact contact, contacts)
+	{
+		if (!contact.contactAccount() || !contact.contactAccount().protocolHandler())
+			continue;
+
+		Account account = contact.contactAccount();
+		ProtocolFactory *protocolFactory = account.protocolHandler()->protocolFactory();
+
+		if (!account.protocolHandler()->protocolFactory() || !protocolFactory->protocolMenuManager())
+			continue;
+
+		QMenu *account_menu = menu->addMenu(account.accountIdentity().name());
+		if (!protocolFactory->icon().isNull())
+			account_menu->setIcon(protocolFactory->icon());
+
+		if (protocolFactory->protocolMenuManager()->protocolActions(account, contact.ownerBuddy()).size() == 0)
+			continue;
+
+		foreach (ActionDescription *actionDescription, protocolFactory->protocolMenuManager()->protocolActions(account, contact.ownerBuddy()))
+			if (actionDescription)
+			{
+				Action *action = actionDescription->createAction(actionDataSource, parent);
+				account_menu->addAction(action);
+				action->checkState();
+			}
+			else
+				account_menu->addSeparator();
+	}
+
+	return menu;
 }
