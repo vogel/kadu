@@ -49,13 +49,13 @@ class KADUAPI BuddiesListViewMenuManager : public QObject
 public:
 	static BuddiesListViewMenuManager * instance();
 
-	void addActionDescription(ActionDescription *actionDescription);
-	void insertActionDescription(int pos, ActionDescription *actionDescription);
+	void addActionDescription(ActionDescription *actionDescription, BuddiesListViewMenuItem::BuddiesListViewMenuCategory category, int priority);
+	void insertActionDescription(int pos, ActionDescription *actionDescription, BuddiesListViewMenuItem::BuddiesListViewMenuCategory category, int priority);
 	void removeActionDescription(ActionDescription *actionDescription);
 	void addSeparator();
 	void insertSeparator(int pos);
-	void addListActionDescription(ActionDescription *actionDescription);
-	void insertListActionDescription(int pos, ActionDescription *actionDescription);
+	void addListActionDescription(ActionDescription *actionDescription, BuddiesListViewMenuItem::BuddiesListViewMenuCategory category, int priority);
+	void insertListActionDescription(int pos, ActionDescription *actionDescription, BuddiesListViewMenuItem::BuddiesListViewMenuCategory category, int priority);
 	void removeListActionDescription(ActionDescription *actionDescription);
 	void addListSeparator();
 

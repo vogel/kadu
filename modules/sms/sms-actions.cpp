@@ -59,17 +59,17 @@ SmsActions * SmsActions::instance()
 }
 
 SmsActions::SmsActions()
-{	
+{
 	//TODO 0.6.6
   	//QObject::connect(Core::instance()->kaduWindow()->contactsListView(), SIGNAL(chatActivated(Chat *)), this, SLOT(onUserDblClicked(Chat *)));
-	
+
 	sendSmsActionDescription = new ActionDescription(this,
 		ActionDescription::TypeGlobal, "sendSmsAction",
 		this, SLOT(sendSmsActionActivated(QAction *, bool)),
 		"16x16/phone.png", "16x16/phone.png", tr("Send SMS..."), false
 	);
 	sendSmsActionDescription->setShortcut("kadu_sendsms");
-	BuddiesListViewMenuManager::instance()->insertActionDescription(5, sendSmsActionDescription);
+	BuddiesListViewMenuManager::instance()->insertActionDescription(5, sendSmsActionDescription, BuddiesListViewMenuItem::MenuCategoryChat, 100);
 	Core::instance()->kaduWindow()->insertMenuActionDescription(sendSmsActionDescription, KaduWindow::MenuContacts, 5);
 }
 
@@ -77,7 +77,7 @@ SmsActions::~SmsActions()
 {
   	//TODO 0.6.6
 	//QObject::disconnect(Core::instance()->kaduWindow()->contactsListView(), SIGNAL(chatActivated(Chat *)), this, SLOT(onUserDblClicked(Chat *)));
-	
+
 	BuddiesListViewMenuManager::instance()->removeActionDescription(sendSmsActionDescription);
 	Core::instance()->kaduWindow()->removeMenuActionDescription(sendSmsActionDescription);
 	delete sendSmsActionDescription;

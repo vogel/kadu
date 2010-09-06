@@ -42,14 +42,14 @@ BuddiesListViewMenuManager::BuddiesListViewMenuManager()
 {
 }
 
-void BuddiesListViewMenuManager::addActionDescription(ActionDescription *actionDescription)
+void BuddiesListViewMenuManager::addActionDescription(ActionDescription *actionDescription, BuddiesListViewMenuItem::BuddiesListViewMenuCategory category, int priority)
 {
-	BuddiesContexMenu.append(BuddiesListViewMenuItem(actionDescription, BuddiesListViewMenuItem::MenuCategoryChat, 0));
+	BuddiesContexMenu.append(BuddiesListViewMenuItem(actionDescription, category, priority));
 }
 
-void BuddiesListViewMenuManager::insertActionDescription(int pos, ActionDescription *actionDescription)
+void BuddiesListViewMenuManager::insertActionDescription(int pos, ActionDescription *actionDescription, BuddiesListViewMenuItem::BuddiesListViewMenuCategory category, int priority)
 {
-	BuddiesContexMenu.insert(pos, BuddiesListViewMenuItem(actionDescription, BuddiesListViewMenuItem::MenuCategoryChat, 0));
+	BuddiesContexMenu.insert(pos, BuddiesListViewMenuItem(actionDescription, category, priority));
 }
 
 void BuddiesListViewMenuManager::removeActionDescription(ActionDescription *actionDescription)
@@ -76,14 +76,14 @@ void BuddiesListViewMenuManager::insertSeparator(int pos)
 	BuddiesContexMenu.insert(pos, BuddiesListViewMenuItem(0, BuddiesListViewMenuItem::MenuCategoryChat, 0));
 }
 
-void BuddiesListViewMenuManager::addListActionDescription(ActionDescription *actionDescription)
+void BuddiesListViewMenuManager::addListActionDescription(ActionDescription *actionDescription, BuddiesListViewMenuItem::BuddiesListViewMenuCategory category, int priority)
 {
-	BuddyListActions.append(BuddiesListViewMenuItem(actionDescription, BuddiesListViewMenuItem::MenuCategoryChat, 0));
+	BuddyListActions.append(BuddiesListViewMenuItem(actionDescription, category, priority));
 }
 
-void BuddiesListViewMenuManager::insertListActionDescription(int pos, ActionDescription *actionDescription)
+void BuddiesListViewMenuManager::insertListActionDescription(int pos, ActionDescription *actionDescription, BuddiesListViewMenuItem::BuddiesListViewMenuCategory category, int priority)
 {
-	BuddyListActions.insert(pos, BuddiesListViewMenuItem(actionDescription, BuddiesListViewMenuItem::MenuCategoryChat, 0));
+	BuddyListActions.insert(pos, BuddiesListViewMenuItem(actionDescription, category, priority));
 }
 
 void BuddiesListViewMenuManager::removeListActionDescription(ActionDescription *actionDescription)

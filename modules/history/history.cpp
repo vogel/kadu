@@ -161,7 +161,7 @@ void History::createActionDescriptions()
 		"kadu_icons/kadu-history.png", "kadu_icons/kadu-history.png", tr("View Chat History"), false, QString::null
 	);
 	ShowHistoryActionDescription->setShortcut("kadu_viewhistory");
-	BuddiesListViewMenuManager::instance()->insertActionDescription(5, ShowHistoryActionDescription);
+	BuddiesListViewMenuManager::instance()->insertActionDescription(5, ShowHistoryActionDescription, BuddiesListViewMenuItem::MenuCategoryView, 100);
 	Core::instance()->kaduWindow()->insertMenuActionDescription(ShowHistoryActionDescription, KaduWindow::MenuKadu, 5);
 
 	ClearHistoryActionDescription = new ActionDescription(0,

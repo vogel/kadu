@@ -361,14 +361,14 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		"16x16/edit-copy.png", "16x16/edit-copy.png", tr("Copy Description"), false, "",
 		disableNoGaduDescription
 	);
-	BuddiesListViewMenuManager::instance()->addListActionDescription(CopyDescription);
+	BuddiesListViewMenuManager::instance()->addListActionDescription(CopyDescription, BuddiesListViewMenuItem::MenuCategoryActions, 10);
 
 	CopyPersonalInfo = new ActionDescription(this,
 		ActionDescription::TypeUser, "copyPersonalInfoAction",
 		this, SLOT(copyPersonalInfoActionActivated(QAction *, bool)),
 		"kadu_icons/kadu-copypersonal.png", "kadu_icons/kadu-copypersonal.png", tr("Copy Personal Info")
 	);
-	BuddiesListViewMenuManager::instance()->addListActionDescription(CopyPersonalInfo);
+	BuddiesListViewMenuManager::instance()->addListActionDescription(CopyPersonalInfo, BuddiesListViewMenuItem::MenuCategoryActions, 20);
 
 	OpenDescriptionLink = new ActionDescription(this,
 		ActionDescription::TypeUser, "openDescriptionLinkAction",
@@ -376,7 +376,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		"16x16/go-jump.png", "16x16/go-jump.png", tr("Open Description Link in Browser..."), false, "",
 		disableNoGaduDescriptionUrl
 	);
-	BuddiesListViewMenuManager::instance()->addListActionDescription(OpenDescriptionLink);
+	BuddiesListViewMenuManager::instance()->addListActionDescription(OpenDescriptionLink, BuddiesListViewMenuItem::MenuCategoryActions, 30);
 
 	WriteEmail = new ActionDescription(this,
 		ActionDescription::TypeUser, "writeEmailAction",
@@ -384,7 +384,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		"16x16/mail-message-new.png", "16x16/mail-message-new.png", tr("Send E-Mail"), false, "",
 		disableNoEMail
 	);
-	BuddiesListViewMenuManager::instance()->addActionDescription(WriteEmail);
+	BuddiesListViewMenuManager::instance()->addActionDescription(WriteEmail, BuddiesListViewMenuItem::MenuCategoryActions, 200);
 
 	LookupUserInfo = new ActionDescription(this,
 		ActionDescription::TypeUser, "lookupUserInfoAction",
@@ -442,7 +442,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		disableNotOneUles
 	);
 	connect(EditUser, SIGNAL(actionCreated(Action *)), this, SLOT(editUserActionCreated(Action *)));
-	BuddiesListViewMenuManager::instance()->addActionDescription(EditUser);
+	BuddiesListViewMenuManager::instance()->addActionDescription(EditUser, BuddiesListViewMenuItem::MenuCategoryManagement, 0);
 
 	BuddiesListViewMenuManager::instance()->addSeparator();
 
@@ -451,9 +451,9 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		this, SLOT(mergeContactActionActivated(QAction *, bool)),
 		"", "", tr("Merge Buddies...")
 	);
-	BuddiesListViewMenuManager::instance()->addActionDescription(MergeContact);
+	BuddiesListViewMenuManager::instance()->addActionDescription(MergeContact, BuddiesListViewMenuItem::MenuCategoryManagement, 100);
 
-	BuddiesListViewMenuManager::instance()->addActionDescription(ChatWidgetManager::instance()->actions()->blockUser());
+	BuddiesListViewMenuManager::instance()->addActionDescription(ChatWidgetManager::instance()->actions()->blockUser(), BuddiesListViewMenuItem::MenuCategoryManagement, 500);
 
 	DeleteUsers = new ActionDescription(this,
 		ActionDescription::TypeUser, "deleteUsersAction",
@@ -461,7 +461,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		"16x16/edit-delete.png", "16x16/edit-delete.png", tr("Delete Buddy...")
 	);
 	DeleteUsers->setShortcut("kadu_deleteuser");
-	BuddiesListViewMenuManager::instance()->addActionDescription(DeleteUsers);
+	BuddiesListViewMenuManager::instance()->addActionDescription(DeleteUsers, BuddiesListViewMenuItem::MenuCategoryManagement, 1000);
 
 	ShowStatus = new ActionDescription(this,
 		ActionDescription::TypeGlobal, "openStatusAction",
@@ -981,7 +981,7 @@ void KaduWindowActions::deleteUsersActionActivated(QAction *sender, bool toggled
 	Q_UNUSED(toggled)
 
 	kdebugf();
-	
+
 	Action *action = dynamic_cast<Action *>(sender);
 	if (!action)
 		return;
@@ -996,7 +996,7 @@ void KaduWindowActions::deleteUserActionActivated(ActionDataSource *source)
 	BuddySet buddySet = source->buddies();
 	if (buddySet.empty())
 		return;
-	
+
 	BuddyDeleteWindow *deleteWindow = new BuddyDeleteWindow(buddySet);
 	deleteWindow->show();
 }
@@ -1054,7 +1054,7 @@ void KaduWindowActions::editUserActionActivated(ActionDataSource *source)
 	BuddySet buddySet = source->buddies();
 	if (1 != buddySet.count())
 		return;
-	
+
 	Buddy buddy = *buddySet.begin();
 
 	if (buddy.isAnonymous())
