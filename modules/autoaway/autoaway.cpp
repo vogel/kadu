@@ -159,9 +159,6 @@ void AutoAway::checkIdleTime()
 
 	autoAwayStatusChanger->update();
 
-	if (idleTime < refreshStatusTime)
-		refreshStatusTime = refreshStatusInterval;
-
 	if (timer)
 	{
 		timer->setInterval(checkInterval * 1000);
@@ -215,7 +212,7 @@ void AutoAway::configurationUpdated()
 	parseAutoStatus = config_file.readBoolEntry("General", "AutoParseStatus");
 
 	refreshStatusTime = config_file.readUnsignedNumEntry("General","AutoRefreshStatusTime");
-	refreshStatusInterval = config_file.readUnsignedNumEntry("General","AutoRefreshStatusTime");
+	refreshStatusInterval = refreshStatusTime;
 
 	autoStatusText = config_file.readEntry("General", "AutoStatusText");
 
