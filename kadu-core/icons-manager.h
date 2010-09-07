@@ -29,7 +29,6 @@
 
 #include <QtCore/QHash>
 #include <QtGui/QIcon>
-#include <QtGui/QPixmap>
 
 #include "configuration/configuration-aware-object.h"
 #include "themes/theme.h"
@@ -48,10 +47,11 @@ class KADUAPI IconsManager : public QObject, public ConfigurationAwareObject
 
 	IconThemeManager *ThemeManager;
 
-	QHash<QString, QPixmap> PixmapCache;
 	QHash<QString, QIcon> IconCache;
 
 	void clearCache();
+
+	QIcon buildIcon(const QString &path);
 
 protected:
 	virtual void configurationUpdated();
@@ -61,9 +61,9 @@ public:
 
 	IconThemeManager * themeManager() const;
 
+	QString iconPath(const QString &path, const QString &size, const QString &name) const;
+	QString iconPath(const QString &path, const QString &size) const;
 	QString iconPath(const QString &path) const;
-
-	const QPixmap & pixmapByPath(const QString &path);
 	const QIcon & iconByPath(const QString &path);
 
 	QSize getIconsSize();

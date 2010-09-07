@@ -43,7 +43,7 @@ QStringList IconThemeManager::defaultThemePathes()
 
 bool IconThemeManager::isValidThemePath(const QString &themePath)
 {
-	QString kaduIconFileName = themePath + "/kadu_icons/kadu.png";
+	QString kaduIconFileName = themePath + "/kadu_icons/64x64/kadu.png";
 	QFileInfo kaduIconFile(kaduIconFileName);
 
 	return kaduIconFile.exists();

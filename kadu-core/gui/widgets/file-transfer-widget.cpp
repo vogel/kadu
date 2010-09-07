@@ -45,9 +45,9 @@ FileTransferWidget::FileTransferWidget(FileTransfer ft, QWidget *parent)
 	: QFrame(parent), CurrentTransfer(ft), Speed(0)
 {
 	kdebugf();
-	
+
 	createGui();
-	
+
 	LastTransferredSize = CurrentTransfer.transferredSize();
 	connect(CurrentTransfer, SIGNAL(updated()), this, SLOT(fileTransferUpdate()), Qt::QueuedConnection);
 	fileTransferUpdate();
@@ -127,13 +127,13 @@ void FileTransferWidget::createGui()
 
 	if (TypeSend == CurrentTransfer.transferType())
 	{
-		icon->setPixmap(IconsManager::instance()->pixmapByPath("kadu_icons/kadu-transfer_send.png"));
+		icon->setPixmap(IconsManager::instance()->iconByPath("kadu_icons/kadu-transfer_send.png").pixmap(16, 16));
 		DescriptionLabel->setText(tr("File <b>%1</b><br /> to <b>%2</b><br />on account <b>%3</b>")
 				.arg(fileName).arg(buddy.display()).arg(account.accountIdentity().name()));
 	}
 	else
 	{
-		icon->setPixmap(IconsManager::instance()->pixmapByPath("kadu_icons/kadu-transfer_receive.png"));
+		icon->setPixmap(IconsManager::instance()->iconByPath("kadu_icons/kadu-transfer_receive.png").pixmap(16, 16));
 		DescriptionLabel->setText(tr("File <b>%1</b><br /> from <b>%2</b><br />on account <b>%3</b>")
 				.arg(fileName).arg(buddy.display()).arg(account.accountIdentity().name()));
 	}

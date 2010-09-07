@@ -415,11 +415,11 @@ ConfigSection *ConfigurationWidget::configSection(const QString &iconPath, const
 	if (!create)
 		return 0;
 
-	QListWidgetItem *newConfigSectionListWidgetItem = new QListWidgetItem(IconsManager::instance()->pixmapByPath(iconPath), name, sectionsListWidget);
+	QListWidgetItem *newConfigSectionListWidgetItem = new QListWidgetItem(IconsManager::instance()->iconByPath(iconPath).pixmap(32, 32), name, sectionsListWidget);
 
 	QFontMetrics fontMetrics = sectionsListWidget->fontMetrics();
 	// TODO: 48 = margins + scrollbar - get real scrollbar width
-	int width = fontMetrics.width(name) + IconsManager::instance()->pixmapByPath(iconPath).width() + 48;
+	int width = fontMetrics.width(name) + 80;
 
 	ConfigSection *newConfigSection = new ConfigSection(name, this, newConfigSectionListWidgetItem, container, iconPath);
 	configSections[name] = newConfigSection;

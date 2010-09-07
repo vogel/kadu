@@ -66,7 +66,7 @@ SmsActions::SmsActions()
 	sendSmsActionDescription = new ActionDescription(this,
 		ActionDescription::TypeGlobal, "sendSmsAction",
 		this, SLOT(sendSmsActionActivated(QAction *, bool)),
-		"16x16/phone.png", "16x16/phone.png", tr("Send SMS..."), false
+		"phone.png", "phone.png", tr("Send SMS..."), false
 	);
 	sendSmsActionDescription->setShortcut("kadu_sendsms");
 	BuddiesListViewMenuManager::instance()->addActionDescription(sendSmsActionDescription, BuddiesListViewMenuItem::MenuCategoryActions, 100);

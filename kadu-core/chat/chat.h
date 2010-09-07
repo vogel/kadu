@@ -28,8 +28,6 @@
 #include "storage/shared-base.h"
 #include "exports.h"
 
-class QPixmap;
-
 class Account;
 class ContactSet;
 class ChatDetails;
@@ -57,7 +55,7 @@ public:
 	static Chat loadStubFromStorage(StoragePoint *chatStoragePoint);
 	static Chat loadFromStorage(StoragePoint *chatStoragePoint);
 	static Chat null;
-	
+
 	Chat();
 	Chat(ChatShared *data);
 	Chat(QObject *data);

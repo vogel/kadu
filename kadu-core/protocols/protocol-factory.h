@@ -74,16 +74,6 @@ public:
 		return QString::null;
 	}
 
-	virtual QIcon smallIcon()
-	{
-		return QIcon();
-	}
-
-	virtual QString smallIconPath()
-	{
-		return QString::null;
-	}
-
 };
 
 Q_DECLARE_METATYPE(ProtocolFactory *)

@@ -141,7 +141,7 @@ void SmsDialog::createGui()
 	mainLayout->addWidget(buttons);
 
 	SendButton = new QPushButton(this);
-	SendButton->setIcon(IconsManager::instance()->iconByPath("16x16/go-next.png"));
+	SendButton->setIcon(IconsManager::instance()->iconByPath("go-next.png"));
 	SendButton->setText(tr("&Send"));
 	SendButton->setDefault(true);
 	SendButton->setMaximumWidth(200);
@@ -234,7 +234,7 @@ void SmsDialog::sendSms()
 	{
 		if (config_file.readEntry("SMS", "SmsApp").isEmpty())
 		{
-			MessageDialog::msg(tr("Sms application was not specified. Visit the configuration section"), false, "32x32/dialog-warning.png", this);
+			MessageDialog::msg(tr("Sms application was not specified. Visit the configuration section"), false, "dialog-warning.png", this);
 			kdebugm(KDEBUG_WARNING, "SMS application NOT specified. Exit.\n");
 			return;
 		}

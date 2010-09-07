@@ -116,8 +116,3 @@ QIcon GaduProtocolFactory::icon()
 {
 	return IconsManager::instance()->iconByPath("protocols/gadu-gadu/gadu-gadu.png");
 }
-
-QIcon GaduProtocolFactory::smallIcon()
-{
-	return IconsManager::instance()->iconByPath("protocols/gadu-gadu/gadu-gadu_small.png");
-}

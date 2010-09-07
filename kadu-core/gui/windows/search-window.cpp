@@ -273,42 +273,42 @@ void SearchWindow::initModule()
 	firstSearchAction = new ActionDescription(searchActionsSlot,
 		ActionDescription::TypeSearch, "firstSearchAction",
 		searchActionsSlot, SLOT(firstSearchActionActivated(QAction *, bool)),
-		"16x16/edit-find.png", "16x16/edit-find.png", tr("&Search")
+		"edit-find.png", "edit-find.png", tr("&Search")
 	);
 	QObject::connect(firstSearchAction, SIGNAL(actionCreated(Action *)), searchActionsSlot, SLOT(firstSearchActionCreated(Action *)));
 
 	nextResultsAction = new ActionDescription(searchActionsSlot,
 		ActionDescription::TypeSearch, "nextResultsAction",
 		searchActionsSlot, SLOT(nextResultsActionActivated(QAction *, bool)),
-		"16x16/go-next.png", "16x16/go-next.png", tr("&Next results")
+		"go-next.png", "go-next.png", tr("&Next results")
 	);
 	QObject::connect(nextResultsAction, SIGNAL(actionCreated(Action *)), searchActionsSlot, SLOT(nextResultsActionCreated(Action *)));
 
 	stopSearchAction = new ActionDescription(searchActionsSlot,
 		ActionDescription::TypeSearch, "stopSearchAction",
 		searchActionsSlot, SLOT(stopSearchActionActivated(QAction *, bool)),
-		"16x16/dialog-cancel.png", "16x16/dialog-cancel.png", tr("Stop")
+		"dialog-cancel.png", "dialog-cancel.png", tr("Stop")
 	);
 	QObject::connect(stopSearchAction, SIGNAL(actionCreated(Action *)), searchActionsSlot, SLOT(stopSearchActionCreated(Action *)));
 
 	clearResultsAction = new ActionDescription(searchActionsSlot,
 		ActionDescription::TypeSearch, "clearSearchAction",
 		searchActionsSlot, SLOT(clearResultsActionActivated(QAction *, bool)),
-		"16x16/edit-clear.png", "16x16/edit-clear.png", tr("Clear results")
+		"edit-clear.png", "edit-clear.png", tr("Clear results")
 	);
 	QObject::connect(clearResultsAction, SIGNAL(actionCreated(Action *)), searchActionsSlot, SLOT(clearResultsActionCreated(Action *)));
 
 	addFoundAction = new ActionDescription(searchActionsSlot,
 		ActionDescription::TypeSearch, "addSearchedAction",
 		searchActionsSlot, SLOT(addFoundActionActivated(QAction *, bool)),
-		"16x16/contact-new.png", "16x16/contact-new.png", tr("Add selected user")
+		"contact-new.png", "contact-new.png", tr("Add selected user")
 	);
 	QObject::connect(addFoundAction, SIGNAL(actionCreated(Action *)), searchActionsSlot, SLOT(actionsFoundActionCreated(Action *)));
 
 	chatFoundAction = new ActionDescription(searchActionsSlot,
 		ActionDescription::TypeSearch, "chatSearchedAction",
 		searchActionsSlot, SLOT(chatFoundActionActivated(QAction *, bool)),
-		"16x16/internet-group-chat.png", "16x16/internet-group-chat.png", tr("&Chat")
+		"internet-group-chat.png", "internet-group-chat.png", tr("&Chat")
 	);
 	QObject::connect(chatFoundAction, SIGNAL(actionCreated(Action *)), searchActionsSlot, SLOT(actionsFoundActionCreated(Action *)));
 
@@ -431,14 +431,14 @@ void SearchWindow::firstSearch()
 
 	if (!CurrentSearchService)
 	{
-		MessageDialog::msg(tr("For this network we dont offer contacts search feature yet"), false, "32x32/dialog-error_big.png", this);
+		MessageDialog::msg(tr("For this network we dont offer contacts search feature yet"), false, "dialog-error.png", this);
 		kdebugf2();
 		return;
 	}
 
 	if (!CurrentAccount.protocolHandler()->isConnected())
 	{
-		MessageDialog::msg(tr("Cannot search contacts in offline mode"), false, "32x32/dialog-error_big.png", this);
+		MessageDialog::msg(tr("Cannot search contacts in offline mode"), false, "dialog-error.png", this);
 		kdebugf2();
 		return;
 	}
@@ -558,7 +558,7 @@ void SearchWindow::newSearchResults(BuddyList buddies)
 	if (buddies.isEmpty())
 	{
 		kdebugmf(KDEBUG_INFO, "No results. Exit.\n");
-		MessageDialog::msg(tr("There were no results of your search"), false, "32x32/dialog-information.png", this);
+		MessageDialog::msg(tr("There were no results of your search"), false, "dialog-information.png", this);
 	}
 	else
 	{

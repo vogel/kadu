@@ -84,7 +84,7 @@ void ConfigSection::switchTabView(bool tabView)
 
 		foreach (ConfigTab *configTab, configTabs)
 			configTab->tabWidget()->setParent(mainWidget);
-	
+
 		tabWidget->deleteLater();
 		tabWidget = 0;
 	}
@@ -166,7 +166,7 @@ void ConfigSection::iconThemeChanged()
 	bool current = listWidgetItem->isSelected();
 	delete listWidgetItem;
 
-	listWidgetItem = new QListWidgetItem(IconsManager::instance()->pixmapByPath(iconPath), name, listWidget);
+	listWidgetItem = new QListWidgetItem(IconsManager::instance()->iconByPath(iconPath).pixmap(32, 32), name, listWidget);
 	if (current)
 		listWidget->setCurrentItem(listWidgetItem);
 }

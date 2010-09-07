@@ -66,7 +66,7 @@ extern "C" KADU_EXPORT void growl_notify_close()
 	growl_notify = 0;
 }
 
-GrowlNotify::GrowlNotify(QObject *parent) : Notifier("Growl", "Growl", IconsManager::instance()->iconByPath("16x16/internet-group-chat.png"), parent)
+GrowlNotify::GrowlNotify(QObject *parent) : Notifier("Growl", "Growl", IconsManager::instance()->iconByPath("internet-group-chat.png"), parent)
 {
 	kdebugf();
 
@@ -143,13 +143,13 @@ void GrowlNotify::createDefaultConfiguration()
 
 	config_file.addVariable("GrowlNotify", "Event_NewChat_syntax", "%&d");
 	config_file.addVariable("GrowlNotify", "Event_NewChat_title", "%&m");
-	
+
 	config_file.addVariable("GrowlNotify", "Event_NewMessage_syntax", "%&d");
 	config_file.addVariable("GrowlNotify", "Event_NewMessage_title", "%&m");
 
 	config_file.addVariable("GrowlNotify", "Event_StatusChanged/ToOnline_syntax", "%&d");
 	config_file.addVariable("GrowlNotify", "Event_StatusChanged/ToOnline_title", "%&m");
-	
+
 	config_file.addVariable("GrowlNotify", "Event_StatusChanged/ToBusy_syntax", "%&d");
 	config_file.addVariable("GrowlNotify", "Event_StatusChanged/ToBusy_title", "%&m");
 
@@ -158,10 +158,10 @@ void GrowlNotify::createDefaultConfiguration()
 
 	config_file.addVariable("GrowlNotify", "Event_StatusChanged/ToInvisible_syntax", "%&d");
 	config_file.addVariable("GrowlNotify", "Event_StatusChanged/ToInvisible_title", "%&m");
-	
+
 	config_file.addVariable("GrowlNotify", "Event_FileTransfer/Finished_syntax", "%&m");
 	config_file.addVariable("GrowlNotify", "Event_FileTransfer/Finished_title", "%&t");
-	
+
 	config_file.addVariable("GrowlNotify", "Event_FileTransfer/IncomingFile_syntax", "%&m");
 	config_file.addVariable("GrowlNotify", "Event_FileTransfer/IncomingFile_title", "%&t");
 }

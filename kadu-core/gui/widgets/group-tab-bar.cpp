@@ -92,7 +92,7 @@ GroupTabBar::GroupTabBar(QWidget *parent)
 	if (showAllGroup)
 	{
 		AutoGroupTabPosition = config_file.readNumEntry("Look", "AllGroupTabPosition", 0);
-		insertTab(AutoGroupTabPosition, IconsManager::instance()->iconByPath("16x16/x-office-address-book.png"), tr("All"));
+		insertTab(AutoGroupTabPosition, IconsManager::instance()->iconByPath("x-office-address-book.png"), tr("All"));
 	}
 	else
 	{
@@ -306,7 +306,7 @@ void GroupTabBar::renameGroup()
 
 void GroupTabBar::deleteGroup()
 {
-	if (currentGroup && MessageDialog::ask(tr("Selected group:\n%0 will be deleted. Are you sure?").arg(currentGroup.name()), "32x32/dialog-warning.png", Core::instance()->kaduWindow()))
+	if (currentGroup && MessageDialog::ask(tr("Selected group:\n%0 will be deleted. Are you sure?").arg(currentGroup.name()), "dialog-warning.png", Core::instance()->kaduWindow()))
 		GroupManager::instance()->removeItem(currentGroup);
 }
 
@@ -408,7 +408,7 @@ void GroupTabBar::configurationUpdated()
 			config_file.writeEntry("Look", "UngroupedGroupTabPosition", autoGroupOldPosition);
 			AutoGroupTabPosition = 	config_file.readNumEntry("Look", "AllGroupTabPosition", -1);
 			setTabText(autoGroupOldPosition, tr("All"));
-			setTabIcon(autoGroupOldPosition, IconsManager::instance()->iconByPath("16x16/x-office-address-book.png"));
+			setTabIcon(autoGroupOldPosition, IconsManager::instance()->iconByPath("x-office-address-book.png"));
 		}
 		else
 		{

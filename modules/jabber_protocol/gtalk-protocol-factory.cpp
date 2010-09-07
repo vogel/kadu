@@ -56,7 +56,7 @@ QIcon GTalkProtocolFactory::icon()
 
 QString GTalkProtocolFactory::iconPath()
 {
-	return IconsManager::instance()->iconPath("protocols/xmpp/brand_name/GmailGoogleTalk.png");
+	return IconsManager::instance()->iconPath("protocols/xmpp/brand_name/GmailGoogleTalk.png", "16x16");
 }
 
 QString GTalkProtocolFactory::idLabel()

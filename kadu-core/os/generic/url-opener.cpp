@@ -56,7 +56,7 @@ void UrlOpener::openUrl(const QString &url)
 		browser = config_file.readEntry("Chat", "WebBrowser");
 
 	if (!openUrl(url, url, browser))
-		MessageDialog::msg(qApp->translate("@default", QT_TR_NOOP("Could not spawn Web browser process. Check if the Web browser is functional")), false, "32x32/dialog-error_big.png");
+		MessageDialog::msg(qApp->translate("@default", QT_TR_NOOP("Could not spawn Web browser process. Check if the Web browser is functional")), false, "dialog-error.png");
 }
 
 void UrlOpener::openEmail(const QString &email)
@@ -81,5 +81,5 @@ void UrlOpener::openEmail(const QString &email)
 	}
 
 	if (!openUrl(urlForDesktopServices, urlForApplication, client))
-		MessageDialog::msg(qApp->translate("@default", QT_TR_NOOP("Could not spawn Mail client process. Check if the Mail client is functional")), false, "32x32/dialog-error_big.png");
+		MessageDialog::msg(qApp->translate("@default", QT_TR_NOOP("Could not spawn Mail client process. Check if the Mail client is functional")), false, "dialog-error.png");
 }

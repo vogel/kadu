@@ -32,8 +32,6 @@
 #include "status/status.h"
 #include "storage/shared-base.h"
 
-class QPixmap;
-
 class AccountDetails;
 class AccountProxySettings;
 class Protocol;

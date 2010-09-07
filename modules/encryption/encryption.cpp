@@ -127,7 +127,7 @@ EncryptionManager::EncryptionManager(bool firstLoad)
 	encryptionActionDescription = new ActionDescription(
                 	ActionDescription::TypeChat, "encryptionAction",
 			this, SLOT(encryptionActionActivated(QAction *, bool)),
-			"16x16/security-high.png", "16x16/security-low.png", tr("Enable encryption for this conversation"),
+			"security-high.png", "security-low.png", tr("Enable encryption for this conversation"),
 			true, tr("Disable encryption for this conversation"),
 			disableSendKey
 	);
@@ -139,7 +139,7 @@ EncryptionManager::EncryptionManager(bool firstLoad)
 	sendPublicKeyActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "sendPublicKeyAction",
 		this, SLOT(sendPublicKeyActionActivated(QAction *, bool)),
-		"kadu/16x16/security-high.png", "kadu/16x16/security-high.png", tr("Send my public key"), false, QString::null,
+		"kadu/security-high.png", "kadu/security-high.png", tr("Send my public key"), false, QString::null,
 		disableSendKey
 	);
 	UserBox::insertActionDescription(2, sendPublicKeyActionDescription);
@@ -147,7 +147,7 @@ EncryptionManager::EncryptionManager(bool firstLoad)
 	keysManagerActionDescription = new ActionDescription(
 		ActionDescription::TypeGlobal, "keysManagerAction",
 		this, SLOT(showKeysManagerDialog(QAction *, bool)),
-		"kadu/16x16/security-high.png", tr("Manage keys")
+		"kadu/security-high.png", tr("Manage keys")
 	);
 	kadu->insertMenuActionDescription(12, keysManagerActionDescription);
 

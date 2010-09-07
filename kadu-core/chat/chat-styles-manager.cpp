@@ -442,7 +442,7 @@ void ChatStylesManager::deleteStyleClicked()
 		styleChangedSlot(*(availableStyles.keys().begin()));
 	}
 	else
-		MessageDialog::msg(tr("Unable to remove style: %1").arg(styleName), true, "32x32/dialog-warning.png");
+		MessageDialog::msg(tr("Unable to remove style: %1").arg(styleName), true, "dialog-warning.png");
 }
 
 void ChatStylesManager::syntaxUpdated(const QString &syntaxName)

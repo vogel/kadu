@@ -83,11 +83,11 @@ QString ChatTypeSimple::displayName() const
  *
  * Chat type icon. Icon is used in history window and as icon of chat windows.
  *
- * Icon for ChatTypeSimple is '16x16/internet-group-chat.png'.
+ * Icon for ChatTypeSimple is 'internet-group-chat.png'.
  */
 QIcon ChatTypeSimple::icon() const
 {
-	return IconsManager::instance()->iconByPath("16x16/internet-group-chat.png");
+	return IconsManager::instance()->iconByPath("internet-group-chat.png");
 }
 
 /**

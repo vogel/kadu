@@ -71,7 +71,7 @@ void Updates::buildQuery()
 		QString platform("&system=");
 #if defined(Q_OS_LINUX)
                 platform.append("Linux-");
- 
+
                 QFile issue("/etc/issue");
                 if (issue.open(QIODevice::ReadOnly | QIODevice::Text))
                 {
@@ -162,7 +162,7 @@ void Updates::run()
 		return;
 
 	UpdateChecked = true;
-	
+
 	HttpClient = new QHttp("www.kadu.net", 80, this);
 	connect(HttpClient, SIGNAL(readyRead(const QHttpResponseHeader &)),
 			this, SLOT(gotUpdatesInfo(const QHttpResponseHeader &)));
@@ -173,7 +173,7 @@ bool Updates::isNewerVersion(const QString &newestversion)
 {
 	QString actual = stripVersion(VERSION);
 	QString newest = stripVersion(newestversion);
- 
+
 	if (newest.length() > actual.length())
 		actual.append(QString().fill('0', newest.length() - actual.length()));
 	else
@@ -186,7 +186,7 @@ QString Updates::stripVersion(const QString stripversion)
 {
 	Qt::CaseSensitivity cs = Qt::CaseInsensitive; // find and replace are NOT case sensitive
  	QString version = stripversion;
- 
+
 	if (version.contains("-svn", cs))
 		version.replace("-svn", "01", cs);
 	if (version.contains("-git", cs))
@@ -223,7 +223,7 @@ void Updates::gotUpdatesInfo(const QHttpResponseHeader &responseHeader)
 
 		QString newestVersion(data);
 		if (isNewerVersion(newestVersion))
-			MessageDialog::msg(tr("The newest Kadu version is %1").arg(newestVersion), false, "32x32/dialog-information.png", Core::instance()->kaduWindow());
+			MessageDialog::msg(tr("The newest Kadu version is %1").arg(newestVersion), false, "dialog-information.png", Core::instance()->kaduWindow());
 	}
 
 	config_file.writeEntry("General", "LastUpdateCheck", QDateTime(QDate(1970, 1, 1)).secsTo(QDateTime::currentDateTime()));

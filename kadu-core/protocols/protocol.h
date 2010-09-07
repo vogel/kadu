@@ -126,17 +126,12 @@ public:
 
 	virtual QString statusPixmapPath() = 0;
 
-	virtual QPixmap statusPixmap(Status status);
-	virtual QPixmap statusPixmap(const QString &statusType);
-	QPixmap statusPixmap() { return statusPixmap(CurrentStatus); }
-
 	virtual QIcon statusIcon(Status status);
 	virtual QString statusIconPath(const QString &statusType);
 	virtual QIcon statusIcon(const QString &statusType);
 	QIcon statusIcon() { return statusIcon(CurrentStatus); }
 
 	QIcon icon();
-	QIcon smallIcon();
 
 	// TODO: workaround
 	void emitContactStatusChanged(Contact contact, Status oldStatus)

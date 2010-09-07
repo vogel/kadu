@@ -202,7 +202,7 @@ void BuddyContactsTable::removeClicked()
 		return;
 
 	bool sure = MessageDialog::ask(tr("Are you sure do you want to delete this contact from buddy <b>%1</b>?").arg(MyBuddy.display()),
-			"32x32/dialog-warning.png", this);
+			"dialog-warning.png", this);
 	if (!sure)
 		return;
 

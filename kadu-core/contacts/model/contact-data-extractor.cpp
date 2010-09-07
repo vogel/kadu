@@ -46,10 +46,10 @@ QVariant ContactDataExtractor::data(Contact contact, int role, bool useBuddyData
 
 			// we need different icons for there two
 			if (contact.ownerBuddy().isBlocked())
-				return IconsManager::instance()->pixmapByPath("kadu_icons/kadu-blocking.png");
+				return IconsManager::instance()->iconByPath("kadu_icons/kadu-blocking.png");
 
 			if (contact.isBlocking())
-				return IconsManager::instance()->pixmapByPath("kadu_icons/kadu-buddy_is_blocking.png");
+				return IconsManager::instance()->iconByPath("kadu_icons/kadu-buddy_is_blocking.png");
 
 			// TODO generic icon
 			return !contact.contactAccount().isNull()

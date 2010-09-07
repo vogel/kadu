@@ -109,7 +109,7 @@ TabsManager::TabsManager(bool firstload)
 	openInNewTabActionDescription = new ActionDescription(
 		0, ActionDescription::TypeUser, "openInNewTabAction",
 		this, SLOT(onNewTab(QAction *, bool)),
-		"16x16/internet-group-chat.png", "16x16/internet-group-chat.png", tr("Chat in New Tab"), false, QString::null, disableNewTab
+		"internet-group-chat.png", "internet-group-chat.png", tr("Chat in New Tab"), false, QString::null, disableNewTab
 	);
 	BuddiesListViewMenuManager::instance()->addActionDescription(openInNewTabActionDescription, BuddiesListViewMenuItem::MenuCategoryChat, 200);
 
@@ -461,7 +461,7 @@ void TabsManager::onTimer()
 			}
 
 			if (msg)
-				tabdialog->setTabIcon(i, IconsManager::instance()->iconByPath("protocols/common/16x16/message.png"));
+				tabdialog->setTabIcon(i, IconsManager::instance()->iconByPath("protocols/common/message.png"));
 			else
 				tabdialog->setTabIcon(i, chat->icon());
 

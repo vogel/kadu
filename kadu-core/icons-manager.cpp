@@ -65,42 +65,72 @@ IconThemeManager * IconsManager::themeManager() const
 	return ThemeManager;
 }
 
+QString IconsManager::iconPath(const QString &path, const QString &size, const QString &name) const
+{
+	QString fileName = ThemeManager->currentTheme().path() + path + "/" + size + "/" + name;
+
+	QDir dir(fileName);
+	if (dir.exists()) // hmm, icon != dir
+		return QString::null;
+
+	return dir.canonicalPath();
+}
+
+QString IconsManager::iconPath(const QString &path, const QString &size) const
+{
+	QString realPath;
+	QString iconName;
+
+	int lastHash = path.lastIndexOf('/');
+	if (-1 != lastHash)
+	{
+		realPath = path.mid(0, lastHash);
+		iconName = path.mid(lastHash + 1);
+	}
+	else
+		iconName = path;
+
+	return iconPath(realPath, size, iconName);
+}
+
 QString IconsManager::iconPath(const QString &path) const
 {
-	if (path.startsWith('/'))
-		return path;
-
 	QString fileName = ThemeManager->currentTheme().path() + path;
 
 	QDir dir(fileName);
 	if (dir.exists()) // hmm, icon != dir
 		return QString::null;
 
-	return fileName;
+	return dir.canonicalPath();  
 }
 
-const QPixmap & IconsManager::pixmapByPath(const QString &path)
+QIcon IconsManager::buildIcon(const QString &path)
 {
-	if (!PixmapCache.contains(path))
+	static QLatin1String sizes [] = {
+		QLatin1String("16x16"),
+		QLatin1String("22x22"),
+		QLatin1String("32x32"),
+		QLatin1String("64x64"),
+		QLatin1String("128x128")
+	};
+	static int sizes_count = 5;
+
+	QIcon icon;
+	for (int i = 0; i < sizes_count; i++)
 	{
-		QPixmap pix;
-		QString fullPath = iconPath(path);
+		QString fullPath = iconPath(path, sizes[i]);
 		if (!fullPath.isEmpty())
-			pix.load(fullPath);
-		PixmapCache.insert(path, pix);
+			icon.addFile(fullPath);
 	}
 
-	return PixmapCache[path];
+	return icon;
 }
 
 const QIcon & IconsManager::iconByPath(const QString &path)
 {
 	if (!IconCache.contains(path))
 	{
-		QIcon icon;
-		QString fullPath = iconPath(path);
-		if (!fullPath.isEmpty())
-			icon.addFile(fullPath);
+		QIcon icon = buildIcon(path);
 		IconCache.insert(path, icon);
 	}
 
@@ -109,12 +139,7 @@ const QIcon & IconsManager::iconByPath(const QString &path)
 
 void IconsManager::clearCache()
 {
-	kdebugf();
-
-	PixmapCache.clear();
 	IconCache.clear();
-
-	kdebugf2();
 }
 
 void IconsManager::configurationUpdated()
@@ -136,6 +161,5 @@ void IconsManager::configurationUpdated()
 
 QSize IconsManager::getIconsSize()
 {
-	QPixmap p = pixmapByPath("16x16/preferences-other.png");
-	return p.size();
+	return QSize(16, 16);
 }

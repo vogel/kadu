@@ -193,7 +193,7 @@ void KaduWindow::createKaduMenu()
 	KaduMenu->setTitle("&Kadu");
 #endif
 	RecentChatsMenu = new QMenu();
-	RecentChatsMenu->setIcon(IconsManager::instance()->iconByPath("16x16/internet-group-chat.png"));
+	RecentChatsMenu->setIcon(IconsManager::instance()->iconByPath("internet-group-chat.png"));
 	RecentChatsMenu->setTitle(tr("Recent chats"));
 	connect(KaduMenu, SIGNAL(aboutToShow()), this, SLOT(createRecentChatsMenu()));
 	connect(RecentChatsMenu, SIGNAL(triggered(QAction *)), this, SLOT(openRecentChats(QAction *)));

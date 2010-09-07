@@ -197,7 +197,7 @@ void JabberProtocol::connectToServer()
 
 	if (account().id().isEmpty())
 	{
-		MessageDialog::msg(tr("XMPP username is not set!"), false, "32x32/dialog-warning.png");
+		MessageDialog::msg(tr("XMPP username is not set!"), false, "dialog-warning.png");
 		setStatus(Status());
 		kdebugmf(KDEBUG_FUNCTION_END, "end: XMPP username is not set\n");
 		return;

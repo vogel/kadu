@@ -27,8 +27,6 @@
 
 #include "exports.h"
 
-class QPixmap;
-
 class StatusGroup;
 class StatusType;
 
@@ -51,8 +49,6 @@ public:
 	void unregisterStatusType(const QString &name);
 
 	StatusType * statusType(const QString &name);
-	QPixmap statusPixmap(const QString &protocol, const QString &size, const QString &type,
-			bool description, bool mobile);
 	QString statusIconPath(const QString &protocol, const QString &type,
 			bool description, bool mobile);
 	QIcon statusIcon(const QString &protocol, const QString &type,

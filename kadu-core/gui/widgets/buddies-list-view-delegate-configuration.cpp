@@ -29,8 +29,8 @@ BuddiesListViewDelegateConfiguration::BuddiesListViewDelegateConfiguration(QObje
 {
 	ListView = dynamic_cast<QListView *>(listView);
 
-	DefaultAvatarSize = IconsManager::instance()->pixmapByPath("32x32/system-users.png").size();
-	MessagePixmap = IconsManager::instance()->pixmapByPath("protocols/common/16x16/message.png");
+	DefaultAvatarSize = QSize(32, 32);
+	MessagePixmap = IconsManager::instance()->iconByPath("protocols/common/message.png").pixmap(16, 16);
 
 	configurationUpdated();
 }

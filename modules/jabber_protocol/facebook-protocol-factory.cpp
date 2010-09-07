@@ -56,7 +56,7 @@ QIcon FacebookProtocolFactory::icon()
 
 QString FacebookProtocolFactory::iconPath()
 {
-	return IconsManager::instance()->iconPath("protocols/xmpp/brand_name/facebook.png");
+	return IconsManager::instance()->iconPath("protocols/xmpp/brand_name/facebook.png", "16x16");
 }
 
 QString FacebookProtocolFactory::idLabel()
