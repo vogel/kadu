@@ -106,6 +106,7 @@ public:
 	AutoAway();
 	virtual ~AutoAway();
 
+	AutoAwayStatusChanger::ChangeStatusTo changeStatusTo();
 	QString changeDescription(const QString &oldDescription);
 
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);

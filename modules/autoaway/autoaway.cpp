@@ -115,7 +115,22 @@ AutoAway::~AutoAway()
 	qApp->removeEventFilter(this);
 }
 
-//metoda wywo�ywana co sekund�(mo�liwa zmiana w konfiguracji) w celu sprawdzenia czy mamy zmieni� status
+AutoAwayStatusChanger::ChangeStatusTo AutoAway::changeStatusTo()
+{
+	idleTime = idle->secondsIdle();
+
+	if (idleTime >= autoDisconnectTime && autoDisconnectEnabled)
+		return AutoAwayStatusChanger::ChangeStatusToOffline;
+	else if (idleTime >= autoInvisibleTime && autoInvisibleEnabled)
+		return AutoAwayStatusChanger::ChangeStatusToInvisible;
+	else if (idleTime >= autoExtendedAwayTime && autoExtendedAwayEnabled)
+		return AutoAwayStatusChanger::ChangeStatusToExtendedAway;
+	else if (idleTime >= autoAwayTime && autoAwayEnabled)
+		return AutoAwayStatusChanger::ChangeStatusToBusy;
+	else
+		return AutoAwayStatusChanger::NoChangeStatus;
+}
+
 void AutoAway::checkIdleTime()
 {
 	kdebugf();
@@ -133,15 +148,9 @@ void AutoAway::checkIdleTime()
 		updateDescripion = false;
 	}
 
-	if (idleTime >= autoDisconnectTime && autoDisconnectEnabled)
-		autoAwayStatusChanger->setChangeStatusTo(AutoAwayStatusChanger::ChangeStatusToOffline);
-	else if (idleTime >= autoInvisibleTime && autoInvisibleEnabled)
-		autoAwayStatusChanger->setChangeStatusTo(AutoAwayStatusChanger::ChangeStatusToInvisible);
-	else if (idleTime >= autoExtendedAwayTime && autoExtendedAwayEnabled)
-		autoAwayStatusChanger->setChangeStatusTo(AutoAwayStatusChanger::ChangeStatusToExtendedAway);
-	else if (idleTime >= autoAwayTime && autoAwayEnabled)
-		autoAwayStatusChanger->setChangeStatusTo(AutoAwayStatusChanger::ChangeStatusToBusy);
-	else
+	AutoAwayStatusChanger::ChangeStatusTo currentChangeStatusTo = changeStatusTo();
+	autoAwayStatusChanger->setChangeStatusTo(currentChangeStatusTo);
+	if (AutoAwayStatusChanger::NoChangeStatus == currentChangeStatusTo)
 	{
 		autoAwayStatusChanger->setChangeStatusTo(AutoAwayStatusChanger::NoChangeStatus);
 		updateDescripion = true;
