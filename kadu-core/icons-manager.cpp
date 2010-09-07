@@ -93,6 +93,17 @@ QString IconsManager::iconPath(const QString &path, const QString &size) const
 	return iconPath(realPath, size, iconName);
 }
 
+QString IconsManager::iconPath(const QString &path) const
+{
+	QString fileName = ThemeManager->currentTheme().path() + path;
+
+	QDir dir(fileName);
+	if (dir.exists()) // hmm, icon != dir
+		return QString::null;
+
+	return dir.canonicalPath();  
+}
+
 QIcon IconsManager::buildIcon(const QString &path)
 {
 	static QLatin1String sizes [] = {
