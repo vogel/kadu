@@ -1048,8 +1048,6 @@ void KaduWindowActions::showDescriptionsActionActivated(QAction *sender, bool to
 		return;
 
 	window->contactsListView()->delegateConfiguration().configurationUpdated();
-	window->contactsListView()->doItemsLayout();
-	// window->contactsListView()->update();
 }
 
 void KaduWindowActions::onlineAndDescUsersActionActivated(QAction *sender, bool toggled)

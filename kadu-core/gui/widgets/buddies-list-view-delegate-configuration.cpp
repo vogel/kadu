@@ -17,9 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QListView>
-
 #include "configuration/configuration-file.h"
+#include "gui/widgets/buddies-list-view.h"
 #include "icons-manager.h"
 
 #include "buddies-list-view-delegate-configuration.h"
@@ -27,7 +26,7 @@
 BuddiesListViewDelegateConfiguration::BuddiesListViewDelegateConfiguration(QObject *listView) :
 		ShowAccountName(true)
 {
-	ListView = dynamic_cast<QListView *>(listView);
+	ListView = dynamic_cast<BuddiesListView *>(listView);
 
 	DefaultAvatarSize = QSize(32, 32);
 	MessagePixmap = IconsManager::instance()->iconByPath("protocols/common/message.png").pixmap(16, 16);
@@ -56,7 +55,6 @@ void BuddiesListViewDelegateConfiguration::configurationUpdated()
 	DescriptionColor = config_file.readColorEntry("Look", "DescriptionColor");
 	FontColor = config_file.readColorEntry("Look", "UserboxFgColor");
 
-	// hack to make listViee redo the layout
 	if (ListView)
-		ListView->setSpacing(ListView->spacing());
+		ListView->doItemsLayout();
 }
