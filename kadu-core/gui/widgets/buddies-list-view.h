@@ -40,6 +40,7 @@ class AbstractBuddiesModel;
 class Buddy;
 class BuddySet;
 class BuddiesListViewDelegate;
+class BuddiesListViewDelegateConfiguration;
 class BuddiesModelProxy;
 class ContactNoUnloadedAccountFilter;
 class ContactSet;
@@ -60,7 +61,7 @@ class BuddiesListView : public QTreeView, public ActionDataSource
 	Contact contactAt(const QModelIndex &index) const;
 	void triggerActivate(const QModelIndex &index);
 
-	Chat  chatForIndex(const QModelIndex &index) const;
+	Chat chatForIndex(const QModelIndex &index) const;
 
 	// Tool tips
 	Contact ToolTipContact;
@@ -130,13 +131,16 @@ public:
 
 	Chat currentChat() const;
 
+	BuddiesListViewDelegateConfiguration & delegateConfiguration();
+
 	void setBackground(const QString &backgroundColor, const QString &file = QString::null, BackgroundMode mode = BackgroundNone);
 	void updateBackground();
+	void updateLayout() { updateGeometries(); }
 
 	// ActionDataSource implementation
-    virtual BuddySet buddies();
-    virtual ContactSet contacts();
-    virtual Chat chat();
+	virtual BuddySet buddies();
+	virtual ContactSet contacts();
+	virtual Chat chat();
 
 signals:
 	void chatActivated(Chat chat);

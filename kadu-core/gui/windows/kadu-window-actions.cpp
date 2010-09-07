@@ -45,6 +45,7 @@
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
 #include "gui/widgets/buddies-list-view.h"
+#include "gui/widgets/buddies-list-view-delegate-configuration.h"
 #include "gui/widgets/buddies-list-view-menu-manager.h"
 #include "gui/widgets/chat-widget-actions.h"
 #include "gui/widgets/chat-widget-manager.h"
@@ -425,6 +426,14 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	connect(DescriptionUsers, SIGNAL(actionCreated(Action *)), this, SLOT(descriptionUsersActionCreated(Action *)));
 	DescriptionUsers->setShortcut("kadu_showonlydesc");
 
+	ShowDescriptions = new ActionDescription(this,
+		ActionDescription::TypeUserList, "descriptionsAction",
+		this, SLOT(showDescriptionsActionActivated(QAction *, bool)),
+		"kadu_icons/kadu-descriptions_off.png", "kadu_icons/kadu-descriptions_on.png", tr("Show descriptions"),
+		true, tr("Hide descriptions")
+	);
+	connect(ShowDescriptions, SIGNAL(actionCreated(Action *)), this, SLOT(showDescriptionsActionCreated(Action *)));
+
 	OnlineAndDescriptionUsers = new ActionDescription(this,
 		ActionDescription::TypeUserList, "onlineAndDescriptionUsersAction",
 		this, SLOT(onlineAndDescUsersActionActivated(QAction *, bool)),
@@ -525,6 +534,12 @@ void KaduWindowActions::descriptionUsersActionCreated(Action *action)
 	action->setChecked(enabled);
 
 	window->contactsListView()->addFilter(hdcf);
+}
+
+void KaduWindowActions::showDescriptionsActionCreated(Action *action)
+{
+	bool enabled = config_file.readBoolEntry("Look", "ShowDesc");
+	action->setChecked(enabled);
 }
 
 void KaduWindowActions::onlineAndDescUsersActionCreated(Action *action)
@@ -1016,6 +1031,25 @@ void KaduWindowActions::descriptionUsersActionActivated(QAction *sender, bool to
 		HasDescriptionBuddyFilter *hdcf = v.value<HasDescriptionBuddyFilter *>();
 		hdcf->setEnabled(toggled);
 	}
+}
+
+void KaduWindowActions::showDescriptionsActionActivated(QAction *sender, bool toggled)
+{
+	config_file.writeEntry("Look", "ShowDesc", toggled);
+
+	Action *action = dynamic_cast<Action *>(sender);
+	if (!action)
+		return;
+
+	MainWindow *window = qobject_cast<MainWindow *>(action->parent());
+	if (!window)
+		return;
+	if (!window->contactsListView())
+		return;
+
+	window->contactsListView()->delegateConfiguration().configurationUpdated();
+	window->contactsListView()->doItemsLayout();
+	// window->contactsListView()->update();
 }
 
 void KaduWindowActions::onlineAndDescUsersActionActivated(QAction *sender, bool toggled)

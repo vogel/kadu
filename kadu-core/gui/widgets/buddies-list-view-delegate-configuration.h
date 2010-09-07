@@ -47,13 +47,10 @@ class BuddiesListViewDelegateConfiguration : private ConfigurationAwareObject
 	bool AvatarBorder;
 	bool AvatarGreyOut;
 	QColor DescriptionColor;
-	QColor FontColor;	
+	QColor FontColor;
 
 	QSize DefaultAvatarSize;
 	QPixmap MessagePixmap;
-
-protected:
-	virtual void configurationUpdated();
 
 public:
 	BuddiesListViewDelegateConfiguration(QObject *listView);
@@ -77,6 +74,8 @@ public:
 
 	QSize defaultAvatarSize() const { return DefaultAvatarSize; }
 	QPixmap messagePixmap() const { return MessagePixmap; }
+
+	virtual void configurationUpdated();
 
 };
 

@@ -68,6 +68,7 @@ class KaduWindowActions : QObject, ConfigurationAwareObject
 
 	ActionDescription *InactiveUsers;
 	ActionDescription *DescriptionUsers;
+	ActionDescription *ShowDescriptions;
 	ActionDescription *OnlineAndDescriptionUsers;
 	ActionDescription *EditUser;
 	ActionDescription *ShowStatus;
@@ -78,6 +79,7 @@ private slots:
 
 	void inactiveUsersActionCreated(Action *action);
 	void descriptionUsersActionCreated(Action *action);
+	void showDescriptionsActionCreated(Action *action);
 	void onlineAndDescUsersActionCreated(Action *action);
 	void editUserActionCreated(Action *action);
 	void showStatusActionCreated(Action *action);
@@ -112,6 +114,7 @@ private slots:
 
 	void inactiveUsersActionActivated(QAction *sender, bool toggled);
 	void descriptionUsersActionActivated(QAction *sender, bool toggled);
+	void showDescriptionsActionActivated(QAction *sender, bool toggled);
 	void onlineAndDescUsersActionActivated(QAction *sender, bool toggled);
 	void editUserActionActivated(QAction *sender, bool toggled);
 	void showStatusActionActivated(QAction *sender, bool toggled);

@@ -146,6 +146,11 @@ void BuddiesListView::setShowAccountName(bool show)
 	Delegate->setShowAccountName(show);
 }
 
+BuddiesListViewDelegateConfiguration & BuddiesListView::delegateConfiguration()
+{
+	return Delegate->configuration();
+}
+
 void BuddiesListView::selectBuddy(Buddy buddy)
 {
 	QModelIndex index = Model->indexForValue(buddy);
