@@ -56,7 +56,7 @@ JabberChatService::JabberChatService(JabberProtocol *protocol)
 		this, SLOT(clientMessageReceived(const XMPP::Message &)));
 }
 
-bool JabberChatService::sendMessage(Chat chat, FormattedMessage &formattedMessage)
+bool JabberChatService::sendMessage(Chat chat, FormattedMessage &formattedMessage, bool silent)
 {
 	kdebugf();
 	ContactSet contacts = chat.contacts();
@@ -89,17 +89,20 @@ bool JabberChatService::sendMessage(Chat chat, FormattedMessage &formattedMessag
 	//msg.setFrom(jabberID);
 	Protocol->client()->sendMessage(msg);
 
-	HtmlDocument::escapeText(plain);
+	if (!silent)
+	{
+		HtmlDocument::escapeText(plain);
 
-	Message message = Message::create();
-	message.setMessageChat(chat);
-	message.setType(Message::TypeSent);
-	message.setMessageSender(Protocol->account().accountContact());
-	message.setContent(plain);
-	message.setSendDate(QDateTime::currentDateTime());
-	message.setReceiveDate(QDateTime::currentDateTime());
+		Message message = Message::create();
+		message.setMessageChat(chat);
+		message.setType(Message::TypeSent);
+		message.setMessageSender(Protocol->account().accountContact());
+		message.setContent(plain);
+		message.setSendDate(QDateTime::currentDateTime());
+		message.setReceiveDate(QDateTime::currentDateTime());
 
-	emit messageSent(message);
+		emit messageSent(message);
+	}
 
 	kdebugf2();
 	return true;

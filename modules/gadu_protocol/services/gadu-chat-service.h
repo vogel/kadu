@@ -59,7 +59,7 @@ public:
 	GaduChatService(GaduProtocol *protocol);
 
 public slots:
-	virtual bool sendMessage(Chat chat, FormattedMessage &message);
+	virtual bool sendMessage(Chat chat, FormattedMessage &message, bool silent = false);
 
 signals:
 	/**

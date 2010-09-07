@@ -53,7 +53,7 @@ GaduChatService::GaduChatService(GaduProtocol *protocol)
 // 		this, SLOT(ackReceived(int, uin_t, int)));
 }
 
-bool GaduChatService::sendMessage(Chat chat, FormattedMessage &message)
+bool GaduChatService::sendMessage(Chat chat, FormattedMessage &message, bool silent)
 {
 	kdebugf();
 
@@ -134,18 +134,22 @@ bool GaduChatService::sendMessage(Chat chat, FormattedMessage &message)
 	if (formats)
 		delete[] formats;
 
-	Message msg = Message::create();
-	msg.setMessageChat(chat);
-	msg.setType(Message::TypeSent);
-	msg.setMessageSender(Protocol->account().accountContact());
-	msg.setStatus(Message::StatusSent);
-	msg.setContent(message.toHtml());
-	msg.setSendDate(QDateTime::currentDateTime());
-	msg.setReceiveDate(QDateTime::currentDateTime());
-	msg.setId(messageId);
 
-	UndeliveredMessages.insert(messageId, msg);
-	emit messageSent(msg);
+	if (!silent)
+	{
+		Message msg = Message::create();
+		msg.setMessageChat(chat);
+		msg.setType(Message::TypeSent);
+		msg.setMessageSender(Protocol->account().accountContact());
+		msg.setStatus(Message::StatusSent);
+		msg.setContent(message.toHtml());
+		msg.setSendDate(QDateTime::currentDateTime());
+		msg.setReceiveDate(QDateTime::currentDateTime());
+		msg.setId(messageId);
+
+		UndeliveredMessages.insert(messageId, msg);
+		emit messageSent(msg);
+	}
 
 	kdebugf2();
 	return true;

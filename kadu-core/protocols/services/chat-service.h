@@ -51,8 +51,8 @@ public:
 		: QObject(parent) {}
 
 public slots:
-	virtual bool sendMessage(Chat chat, const QString &messageContent);
-	virtual bool sendMessage(Chat chat, FormattedMessage &message) = 0;
+	virtual bool sendMessage(Chat chat, const QString &messageContent, bool silent = false);
+	virtual bool sendMessage(Chat chat, FormattedMessage &message, bool silent = false) = 0;
 
 signals:
 	void filterOutgoingMessage(Chat chat, QByteArray &msg, bool &stop);

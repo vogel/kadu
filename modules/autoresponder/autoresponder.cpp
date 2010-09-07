@@ -184,9 +184,9 @@ void AutoResponder::filterIncomingMessage(Chat chat, Contact sender, const QStri
 		// FIXME: Tekst autoodpowiedzi pojawia się zarówno w czacie rozmówcy
 		// jak i wysyłającego. W 0.6.5 pojawiał się tylko u romówcy.
 		chatService->sendMessage(chat, tr("KADU AUTORESPONDER:") + "\n"
-				+ Parser::parse(autoRespondText, sender));
+				+ Parser::parse(autoRespondText, sender), true);
 		// dołączamy użytkowników, którym odpowiedziano
-		foreach(Contact contact, chat.contacts())
+		foreach (Contact contact, chat.contacts())
 			repliedUsers.insert(contact);
 	}
 
@@ -201,7 +201,7 @@ void AutoResponder::chatOpenedClosed(ChatWidget *chatWidget, bool activate)
 		repliedUsers.remove(contact);
 }
 
-void AutoResponder::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) 
+void AutoResponder::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
 	autoRespondTextLineEdit = dynamic_cast<QLineEdit *>(mainConfigurationWindow->widget()->widgetById("autoresponder/autoRespondText"));
 	autoRespondTextLineEdit->setToolTip(qApp->translate("@default", MainConfigurationWindow::SyntaxText));
