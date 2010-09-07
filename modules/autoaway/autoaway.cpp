@@ -80,9 +80,9 @@ extern "C" KADU_EXPORT void autoaway_close()
 }
 
 AutoAway::AutoAway() :
-		autoAwayStatusChanger(0), timer(0), updateDescripion(true)
+		autoAwayStatusChanger(0), timer(0)
 {
-	autoAwayStatusChanger = new AutoAwayStatusChanger();
+	autoAwayStatusChanger = new AutoAwayStatusChanger(this);
 	StatusChangerManager::instance()->registerStatusChanger(autoAwayStatusChanger);
 
 	timer = new QTimer();
@@ -131,6 +131,20 @@ AutoAwayStatusChanger::ChangeStatusTo AutoAway::changeStatusTo()
 		return AutoAwayStatusChanger::NoChangeStatus;
 }
 
+AutoAwayStatusChanger::ChangeDescriptionTo AutoAway::changeDescriptionTo()
+{
+	AutoAwayStatusChanger::ChangeStatusTo currentChangeStatusTo = changeStatusTo();
+	if (AutoAwayStatusChanger::NoChangeStatus == currentChangeStatusTo)
+		return AutoAwayStatusChanger::NoChangeDescription;
+
+	return changeTo;
+}
+
+QString AutoAway::descriptionAddon() const
+{
+	return DescriptionAddon;
+}
+
 void AutoAway::checkIdleTime()
 {
 	kdebugf();
@@ -139,22 +153,11 @@ void AutoAway::checkIdleTime()
 
 	if (refreshStatusInterval > 0 && idleTime >= refreshStatusTime)
 	{
-		autoAwayStatusChanger->setChangeDescriptionTo(changeTo, parseDescription(autoStatusText));
+		DescriptionAddon = parseDescription(autoStatusText);
 		refreshStatusTime = idleTime + refreshStatusInterval;
 	}
- 	else if (updateDescripion)
-	{
-		autoAwayStatusChanger->setChangeDescriptionTo(changeTo, parseDescription(autoStatusText));
-		updateDescripion = false;
-	}
 
-	AutoAwayStatusChanger::ChangeStatusTo currentChangeStatusTo = changeStatusTo();
-	autoAwayStatusChanger->setChangeStatusTo(currentChangeStatusTo);
-	if (AutoAwayStatusChanger::NoChangeStatus == currentChangeStatusTo)
-	{
-		autoAwayStatusChanger->setChangeStatusTo(AutoAwayStatusChanger::NoChangeStatus);
-		updateDescripion = true;
-	}
+	autoAwayStatusChanger->update();
 
 	if (idleTime < refreshStatusTime)
 		refreshStatusTime = refreshStatusInterval;
@@ -218,7 +221,7 @@ void AutoAway::configurationUpdated()
 
 	changeTo = (AutoAwayStatusChanger::ChangeDescriptionTo)config_file.readNumEntry("General", "AutoChangeDescription");
 
-	autoAwayStatusChanger->setChangeDescriptionTo(changeTo, parseDescription(autoStatusText));
+	autoAwayStatusChanger->update();
 	timer->setInterval(config_file.readNumEntry("General", "AutoAwayCheckTime") * 1000);
 }
 

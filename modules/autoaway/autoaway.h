@@ -65,8 +65,6 @@ class AutoAway : public ConfigurationUiHandler, ConfigurationAwareObject
 	bool autoDisconnectEnabled;
 	bool parseAutoStatus;
 
-	bool updateDescripion;
-
 	unsigned int idleTime;
 	unsigned int refreshStatusTime;
 	unsigned int refreshStatusInterval;
@@ -82,6 +80,7 @@ class AutoAway : public ConfigurationUiHandler, ConfigurationAwareObject
 	QCheckBox *parseStatusCheckBox;
 
 	QString autoStatusText;
+	QString DescriptionAddon;
 
 	AutoAwayStatusChanger::ChangeDescriptionTo changeTo;
 
@@ -107,6 +106,9 @@ public:
 	virtual ~AutoAway();
 
 	AutoAwayStatusChanger::ChangeStatusTo changeStatusTo();
+	AutoAwayStatusChanger::ChangeDescriptionTo changeDescriptionTo();
+	QString descriptionAddon() const;
+
 	QString changeDescription(const QString &oldDescription);
 
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);

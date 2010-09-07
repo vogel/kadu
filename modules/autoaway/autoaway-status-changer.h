@@ -23,6 +23,8 @@
 
 #include "status/status-changer.h"
 
+class AutoAway;
+
 class AutoAwayStatusChanger : public StatusChanger
 {
 	Q_OBJECT
@@ -46,18 +48,15 @@ public:
 	};
 
 private:
-	ChangeStatusTo changeStatusTo;
-	ChangeDescriptionTo changeDescriptionTo;
-	QString descriptionAddon;
+	AutoAway *AutoawayController;
 
 public:
-	AutoAwayStatusChanger();
+	AutoAwayStatusChanger(AutoAway *autoawayController);
 	virtual ~AutoAwayStatusChanger();
 
 	virtual void changeStatus(StatusContainer *container, Status &status);
 
-	void setChangeStatusTo(ChangeStatusTo newChangeStatusTo);
-	void setChangeDescriptionTo(ChangeDescriptionTo newChangeDescriptionTo, const QString &newDescriptionAddon);
+	void update();
 
 };
 

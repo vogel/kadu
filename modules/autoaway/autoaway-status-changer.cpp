@@ -22,10 +22,12 @@
 
 #include "status/status.h"
 
+#include "autoaway.h"
+
 #include "autoaway-status-changer.h"
 
-AutoAwayStatusChanger::AutoAwayStatusChanger() :
-		StatusChanger(900), changeStatusTo(NoChangeStatus), changeDescriptionTo(NoChangeDescription)
+AutoAwayStatusChanger::AutoAwayStatusChanger(AutoAway *autoawayController) :
+		StatusChanger(900), AutoawayController(autoawayController)
 {
 }
 
@@ -36,6 +38,10 @@ AutoAwayStatusChanger::~AutoAwayStatusChanger()
 void AutoAwayStatusChanger::changeStatus(StatusContainer *container, Status &status)
 {
 	Q_UNUSED(container)
+
+	ChangeStatusTo changeStatusTo = AutoawayController->changeStatusTo();
+	ChangeDescriptionTo changeDescriptionTo = AutoawayController->changeDescriptionTo();
+	QString descriptionAddon = AutoawayController->descriptionAddon();
 
 	if (changeStatusTo == NoChangeStatus)
 		return;
@@ -97,14 +103,7 @@ void AutoAwayStatusChanger::changeStatus(StatusContainer *container, Status &sta
 	}
 }
 
-void AutoAwayStatusChanger::setChangeStatusTo(ChangeStatusTo newChangeStatusTo)
+void AutoAwayStatusChanger::update()
 {
-	changeStatusTo = newChangeStatusTo;
 	emit statusChanged(0); // for all status containers
-}
-
-void AutoAwayStatusChanger::setChangeDescriptionTo(ChangeDescriptionTo newChangeDescriptionTo, const QString &newDescriptionAddon)
-{
-	changeDescriptionTo = newChangeDescriptionTo;
-	descriptionAddon = newDescriptionAddon;
 }
