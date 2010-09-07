@@ -628,7 +628,7 @@ void GaduProtocol::socketConnFailed(GaduError error)
 		case ConnectionIncorrectPassword:
 			msg = tr("Unable to connect, incorrect password");
 			tryAgain = false;
-			MessageDialog::msg(tr("Connection will be stopped\nYour password is incorrect!"), false, "dialog-error_big.png");
+			MessageDialog::msg(tr("Connection will be stopped\nYour password is incorrect!"), false, "dialog-error.png");
 			break;
 
 		case ConnectionTlsError:
@@ -638,7 +638,7 @@ void GaduProtocol::socketConnFailed(GaduError error)
 		case ConnectionIntruderError:
 			msg = tr("Too many connection attempts with bad password!");
 			tryAgain = false;
-			MessageDialog::msg(tr("Connection will be stopped\nToo many attempts with bad password"), false, "dialog-error_big.png");
+			MessageDialog::msg(tr("Connection will be stopped\nToo many attempts with bad password"), false, "dialog-error.png");
 			break;
 
 		case ConnectionUnavailableError:

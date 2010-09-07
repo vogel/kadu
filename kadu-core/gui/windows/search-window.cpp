@@ -431,14 +431,14 @@ void SearchWindow::firstSearch()
 
 	if (!CurrentSearchService)
 	{
-		MessageDialog::msg(tr("For this network we dont offer contacts search feature yet"), false, "dialog-error_big.png", this);
+		MessageDialog::msg(tr("For this network we dont offer contacts search feature yet"), false, "dialog-error.png", this);
 		kdebugf2();
 		return;
 	}
 
 	if (!CurrentAccount.protocolHandler()->isConnected())
 	{
-		MessageDialog::msg(tr("Cannot search contacts in offline mode"), false, "dialog-error_big.png", this);
+		MessageDialog::msg(tr("Cannot search contacts in offline mode"), false, "dialog-error.png", this);
 		kdebugf2();
 		return;
 	}

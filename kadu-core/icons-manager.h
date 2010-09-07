@@ -29,7 +29,6 @@
 
 #include <QtCore/QHash>
 #include <QtGui/QIcon>
-#include <QtGui/QPixmap>
 
 #include "configuration/configuration-aware-object.h"
 #include "themes/theme.h"

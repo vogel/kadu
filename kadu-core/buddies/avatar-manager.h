@@ -22,7 +22,6 @@
 #define AVATAR_MANAGER_H
 
 #include <QtCore/QObject>
-#include <QtGui/QPixmap>
 
 #include "accounts/accounts-aware-object.h"
 #include "buddies/avatar.h"

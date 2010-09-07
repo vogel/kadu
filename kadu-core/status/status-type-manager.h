@@ -27,8 +27,6 @@
 
 #include "exports.h"
 
-class QPixmap;
-
 class StatusGroup;
 class StatusType;
 

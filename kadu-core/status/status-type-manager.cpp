@@ -18,8 +18,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QPixmap>
-
 #include "status/status-group-manager.h"
 #include "status/status-type.h"
 #include "icons-manager.h"
