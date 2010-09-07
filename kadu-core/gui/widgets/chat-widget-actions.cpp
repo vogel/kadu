@@ -105,7 +105,7 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 	ClearChat = new ActionDescription(0,
 		ActionDescription::TypeChat, "clearChatAction",
 		this, SLOT(clearActionActivated(QAction *, bool)),
-		"16x16/edit-clear.png", "16x16/edit-clear.png", tr("Clear Messages in Chat Window"), false, QString::null,
+		"edit-clear.png", "edit-clear.png", tr("Clear Messages in Chat Window"), false, QString::null,
 		disableEmptyMessages
 	);
 	connect(ClearChat, SIGNAL(actionCreated(Action *)), this, SLOT(clearChatActionCreated(Action *)));
@@ -113,31 +113,31 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 	InsertImage = new ActionDescription(0,
 		ActionDescription::TypeChat, "insertImageAction",
 		this, SLOT(insertImageActionActivated(QAction *, bool)),
-		"16x16/insert-image.png", "16x16/insert-image.png", tr("Insert Image")
+		"insert-image.png", "insert-image.png", tr("Insert Image")
 	);
 
 	Bold = new ActionDescription(0,
 		ActionDescription::TypeChat, "boldAction",
 		this, SLOT(boldActionActivated(QAction *, bool)),
-		"16x16/format-text-bold.png", "16x16/format-text-bold.png", tr("Bold"), true
+		"format-text-bold.png", "format-text-bold.png", tr("Bold"), true
 	);
 
 	Italic = new ActionDescription(0,
 		ActionDescription::TypeChat, "italicAction",
 		this, SLOT(italicActionActivated(QAction *, bool)),
-		"16x16/format-text-italic.png", "16x16/format-text-italic.png", tr("Italic"), true
+		"format-text-italic.png", "format-text-italic.png", tr("Italic"), true
 	);
 
 	Underline = new ActionDescription(0,
 		ActionDescription::TypeChat, "underlineAction",
 		this, SLOT(underlineActionActivated(QAction *, bool)),
-		"16x16/format-text-underline.png", "16x16/format-text-underline.png", tr("Underline"), true
+		"format-text-underline.png", "format-text-underline.png", tr("Underline"), true
 	);
 
 	Send = new ActionDescription(0,
 		ActionDescription::TypeChat, "sendAction",
 		this, SLOT(sendActionActivated(QAction *, bool)),
-		"16x16/go-next.png", "16x16/go-next.png", tr("&Send"), false, QString::null,
+		"go-next.png", "go-next.png", tr("&Send"), false, QString::null,
 		disableEmptyTextBox
 	);
 	connect(Send, SIGNAL(actionCreated(Action *)), this, SLOT(sendActionCreated(Action *)));
@@ -145,7 +145,7 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 	Whois = new ActionDescription(0,
 		ActionDescription::TypeChat, "whoisAction",
 		this, SLOT(whoisActionActivated(QAction *, bool)),
-		"16x16/edit-find.png", "16x16/edit-find.png", tr("Search this User in Directory"), false, QString::null,
+		"edit-find.png", "edit-find.png", tr("Search this User in Directory"), false, QString::null,
 		disableNoGaduUle
 	);
 
@@ -159,21 +159,21 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 	OpenChat = new ActionDescription(0,
 		ActionDescription::TypeUser, "chatAction",
 		this, SLOT(openChatActionActivated(QAction *, bool)),
-		"16x16/internet-group-chat.png", "16x16/internet-group-chat.png", tr("&Chat"), false, QString::null,
+		"internet-group-chat.png", "internet-group-chat.png", tr("&Chat"), false, QString::null,
 		disableNoChat
 	);
 
 	OpenWith = new ActionDescription(0,
 		ActionDescription::TypeGlobal, "openChatWithAction",
 		this, SLOT(openChatWithActionActivated(QAction *, bool)),
-		"16x16/internet-group-chat.png", "16x16/internet-group-chat.png", tr("Open Chat with...")
+		"internet-group-chat.png", "internet-group-chat.png", tr("Open Chat with...")
 	);
 	OpenWith->setShortcut("kadu_openchatwith", Qt::ApplicationShortcut);
 
 	InsertEmoticon = new ActionDescription(0,
 		ActionDescription::TypeChat, "insertEmoticonAction",
 		this, SLOT(insertEmoticonActionActivated(QAction *, bool)),
-		"16x16/face-smile.png", "16x16/face-smile.png", tr("Insert Emoticon")
+		"face-smile.png", "face-smile.png", tr("Insert Emoticon")
 	);
 	connect(InsertEmoticon, SIGNAL(actionCreated(Action *)), this, SLOT(insertEmoticonActionCreated(Action *)));
 

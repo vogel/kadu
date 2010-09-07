@@ -96,63 +96,34 @@ StatusType * StatusTypeManager::statusType(const QString& name)
 	return 0;
 }
 
-QPixmap StatusTypeManager::statusPixmap(const QString &protocol, const QString &size, const QString &type,
-		bool description, bool mobile)
-{
-	StatusType *statusType = this->statusType(type);
-	if (!statusType)
-		return QPixmap();
-
-	QString pixmapName = QString("protocols/%1/%2/%3%4%5.png")
-			.arg(protocol)
-			.arg(size)
-			.arg(statusType->iconName())
-			.arg(description ? "_d" : "")
-			.arg(mobile ? "_m" : "");
-	return IconsManager::instance()->pixmapByPath(pixmapName);
-}
-
 QString StatusTypeManager::statusIconPath(const QString &protocol, const QString &type, bool description, bool mobile)
 {
 	StatusType *statusType = this->statusType(type);
 	if (!statusType)
 		return QString();
 
-	QString iconName = QString("protocols/%1/16x16/%2%3%4.png")
+	QString iconName = QString("protocols/%1/%2%3%4.png")
 			.arg(protocol)
 			.arg(statusType->iconName())
 			.arg(description ? "_d" : "")
 			.arg(mobile ? "_m" : "");
 
-	return IconsManager::instance()->iconPath(iconName);
+	return IconsManager::instance()->iconPath(iconName, "16x16");
 }
 
 QIcon StatusTypeManager::statusIcon(const QString &protocol, const QString &type, bool description, bool mobile)
 {
 	StatusType *statusType = this->statusType(type);
 	if (!statusType)
-		return QPixmap();
+		return QIcon();
 
-	QString iconName = QString("protocols/%1/16x16/%2%3%4.png")
+	QString iconName = QString("protocols/%1/%2%3%4.png")
 			.arg(protocol)
 			.arg(statusType->iconName())
 			.arg(description ? "_d" : "")
 			.arg(mobile ? "_m" : "");
-			
+
 	QIcon icon = IconsManager::instance()->iconByPath(iconName);
-	
-	QString iconPath = QString("protocols/%1/22x22/%2%3%4.png")
-			.arg(protocol)
-			.arg(statusType->iconName())
-			.arg(description ? "_d" : "")
-			.arg(mobile ? "_m" : "");
-	icon.addFile(IconsManager::instance()->iconPath(iconPath), QSize(22, 22));
 
-#ifdef Q_OS_MAC
-	iconPath = QString("protocols/%1/128x128/%2.png")
-			.arg(protocol)
-			.arg(statusType->iconName());
-	icon.addFile(IconsManager::instance()->iconPath(iconPath), QSize(128, 128));
-#endif
 	return icon;
 }

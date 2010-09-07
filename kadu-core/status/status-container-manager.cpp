@@ -84,7 +84,7 @@ void StatusContainerManager::accountRegistered(Account account)
 {
 	if (!MainConfiguration::instance()->simpleMode() && !StatusContainers.contains(account.statusContainer()))
 		registerStatusContainer(account.statusContainer());
-	
+
 	if (MainConfiguration::instance()->simpleMode() && !StatusContainers.contains(account.accountIdentity()))
 		updateIdentities();
 }
@@ -197,7 +197,7 @@ void StatusContainerManager::registerStatusContainer(StatusContainer *statusCont
 	StatusContainers.append(statusContainer);
 	emit statusContainerRegistered(statusContainer);
 	StatusContainerAwareObject::notifyStatusContainerRegistered(statusContainer);
-	
+
 	connect(statusContainer, SIGNAL(statusChanged()), this, SIGNAL(statusChanged()));
 
 	statusContainer->setDefaultStatus(StartupStatus, OfflineToInvisible, StartupDescription, StartupLastDescription);
@@ -221,7 +221,7 @@ void StatusContainerManager::unregisterStatusContainer(StatusContainer *statusCo
 		else
 			setDefaultStatusContainer(StatusContainers.first());
 	}
-	
+
 	disconnect(statusContainer, SIGNAL(statusChanged()), this, SIGNAL(statusChanged()));
 
 	emitStatusContainerUpdated();
@@ -264,7 +264,7 @@ QIcon StatusContainerManager::statusIcon()
 {
 	return DefaultStatusContainer && this != DefaultStatusContainer
 			? DefaultStatusContainer->statusIcon()
-			: IconsManager::instance()->iconByPath("protocols/gadu-gadu/16x16/offline.png");
+			: IconsManager::instance()->iconByPath("protocols/gadu-gadu/offline.png");
 }
 
 QIcon StatusContainerManager::statusIcon(Status status)

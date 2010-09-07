@@ -69,7 +69,7 @@ MessageDialog::MessageDialog(const QString &message, int components, bool modal,
 	if (!iconPath.isEmpty())
 	{
 		icon = new QLabel(this);
-		icon->setPixmap(IconsManager::instance()->pixmapByPath(iconPath));
+		icon->setPixmap(IconsManager::instance()->iconByPath(iconPath).pixmap(32, 32));
 		hboxlabels->addWidget(icon, 0, Qt::AlignCenter);
 	}
 

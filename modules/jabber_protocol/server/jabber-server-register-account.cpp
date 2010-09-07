@@ -62,7 +62,7 @@ void JabberServerRegisterAccount::sendRegistrationData()
 	//TODO: upewnić się, że to to jest potrzebne tak jak jest
 		if (reg->hasXData()) {
 			isOld_ = false;
-			xdata = reg->xdata(); 
+			xdata = reg->xdata();
 		}
 		else {
 			isOld_ = true;
@@ -85,7 +85,7 @@ void JabberServerRegisterAccount::sendRegistrationData()
 	else {
 		Result = false;
 		emit finished(this);
-		MessageDialog::msg(tr("This server does not support registration"), false, "32x32/dialog-warning.png");
+		MessageDialog::msg(tr("This server does not support registration"), false, "dialog-warning.png");
 	}
 	kdebugf2();
 }
@@ -144,7 +144,7 @@ void JabberServerRegisterAccount::actionFinished()
 	}
 	else {
 		Result = false;
-		MessageDialog::msg(tr("There was an error registering the account.\nReason: %1").arg(reg->statusString()), false, "32x32/dialog-warning.png");
+		MessageDialog::msg(tr("There was an error registering the account.\nReason: %1").arg(reg->statusString()), false, "dialog-warning.png");
 		emit finished(this);
 	}
 	kdebugf2();
@@ -154,7 +154,7 @@ void JabberServerRegisterAccount::performAction()
 {
 	kdebugf();
 	XMPP::XData::FieldList fs;
-	
+
 	XMPP::XData::Field username;
 	username.setLabel("Username");
 	username.setVar("username");

@@ -32,7 +32,7 @@
 
 TokenWidget::TokenWidget(QWidget *parent) : QWidget(parent)
 {
-	WaitMovie = new QMovie(IconsManager::instance()->iconPath("kadu_icons/please-wait.gif"));
+	WaitMovie = new QMovie(IconsManager::instance()->iconPath("kadu_icons/please-wait.gif", "16x16"));
 
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
@@ -40,7 +40,7 @@ TokenWidget::TokenWidget(QWidget *parent) : QWidget(parent)
 	TokenImage->setFixedHeight(32);
 	TokenImage->setScaledContents(true);
 
-	QPushButton *refreshButton = new QPushButton(IconsManager::instance()->iconByPath("16x16/view-refresh.png"), "" ,this);
+	QPushButton *refreshButton = new QPushButton(IconsManager::instance()->iconByPath("view-refresh.png"), "" ,this);
 	refreshButton->setIconSize(IconsManager::instance()->getIconsSize());
 	connect(refreshButton, SIGNAL(clicked()), this, SLOT(refreshToken()));
 

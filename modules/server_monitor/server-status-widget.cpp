@@ -44,7 +44,7 @@ ServerStatusWidget::ServerStatusWidget(QString watchedAddress, quint16 watchedPo
 	connect(&TcpSocket, SIGNAL(error(QAbstractSocket::SocketError)),
 			this, SLOT(connectionError(QAbstractSocket::SocketError)));
 
-	PixmapLabel->setPixmap(IconsManager::instance()->pixmapByPath("protocols/gadu-gadu/16x16/offline.png"));
+	PixmapLabel->setPixmap(IconsManager::instance()->iconByPath("protocols/gadu-gadu/offline.png").pixmap(16, 16));
 
 	layout->addWidget(PixmapLabel, 0);
 	layout->addWidget(textLabel, 100);
@@ -71,9 +71,9 @@ void ServerStatusWidget::setNewState(ServerState newState)
 	emit statusChanged(WatchedAddress.toString(), CurrentState);
 
 	if (Available == CurrentState)
-		PixmapLabel->setPixmap(IconsManager::instance()->pixmapByPath("protocols/gadu-gadu/16x16/online.png"));
+		PixmapLabel->setPixmap(IconsManager::instance()->iconByPath("protocols/gadu-gadu/online.png").pixmap(16, 16));
 	else
-		PixmapLabel->setPixmap(IconsManager::instance()->pixmapByPath("protocols/gadu-gadu/16x16/offline.png"));
+		PixmapLabel->setPixmap(IconsManager::instance()->iconByPath("protocols/gadu-gadu/offline.png").pixmap(16, 16));
 }
 
 
@@ -114,7 +114,7 @@ QString ServerStatusWidget::serverStateToString(ServerState serverState)
 	{
 		case Available:
 			return tr("Online");
-			
+
 		case Unavailable:
 			return tr("Unavailable");
 

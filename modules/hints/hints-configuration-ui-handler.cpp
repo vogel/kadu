@@ -47,7 +47,7 @@ HintsConfigurationUiHandler::HintsConfigurationUiHandler(QObject *parent, QStrin
 	previewHintsFrame = new QFrame(dynamic_cast<QWidget *>(parent), Qt::FramelessWindowHint | Qt::Tool | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint |Qt::MSWindowsOwnDC);
 #endif
 	previewHintsFrame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-	
+
 	previewHintsLayout = new QVBoxLayout(previewHintsFrame);
 	previewHintsLayout->setSpacing(0);
 	previewHintsLayout->setMargin(1);
@@ -87,13 +87,13 @@ void HintsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurati
 	connect(xPosition, SIGNAL(valueChanged(int)), this, SLOT(updateHintsPreview()));
 	yPosition = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("hints/ownPositionY"));
 	connect(yPosition, SIGNAL(valueChanged(int)), this, SLOT(updateHintsPreview()));
-	
+
 	QPushButton *previewButton = dynamic_cast<QPushButton *>(mainConfigurationWindow->widget()->widgetById("hints/preview"));
 	connect(previewButton, SIGNAL(clicked()), this, SLOT(addHintsPreview()));
 
 	ownPositionCorner = dynamic_cast<QComboBox *>(mainConfigurationWindow->widget()->widgetById("hints/ownPositionCorner"));
 	connect(ownPositionCorner, SIGNAL(currentIndexChanged(int)), this, SLOT(updateHintsPreview()));
-	
+
 	connect(mainConfigurationWindow->widget()->widgetById("toolTipClasses"), SIGNAL(currentIndexChanged(const QString &)),
 		this, SLOT(toolTipClassesHighlighted(const QString &)));
 
@@ -130,7 +130,7 @@ void HintsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurati
 
 void HintsConfigurationUiHandler::addHintsPreview()
 {
-	Notification *previewNotify = new Notification(QString("Preview"), "protocols/common/16x16/message.png");
+	Notification *previewNotify = new Notification(QString("Preview"), "protocols/common/message.png");
 	previewNotify->setText(qApp->translate("@default", "Hints position preview"));
 
 	Hint *previewHint = new Hint(previewHintsFrame, previewNotify);
@@ -152,11 +152,11 @@ void HintsConfigurationUiHandler::setPreviewLayoutDirection()
 	QPoint trayPosition;
 	QSize desktopSize = QApplication::desktop()->screenGeometry(previewHintsFrame).size();
 	emit searchingForTrayPosition(trayPosition);
-	
+
 	switch (newHintUnder->currentIndex())
 	{
 		case 0:
-			if (trayPosition.isNull() || ownPosition->isChecked()) 
+			if (trayPosition.isNull() || ownPosition->isChecked())
 			{
 				if (yPosition->value() < desktopSize.height()/2)
 					previewHintsLayout->setDirection(QBoxLayout::Down);
@@ -178,7 +178,7 @@ void HintsConfigurationUiHandler::setPreviewLayoutDirection()
 			previewHintsLayout->setDirection(QBoxLayout::Down);
 			break;
 	}
-	
+
 }
 
 void HintsConfigurationUiHandler::updateHintsPreview()
@@ -275,7 +275,7 @@ void HintsConfigurationUiHandler::deleteAllHintsPreview()
 			h->deleteLater();
 		}
 	}
-	
+
 	previewHintsFrame->hide();
 }
 

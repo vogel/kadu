@@ -51,7 +51,7 @@ SimpleView::SimpleView() :
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/simpleview.ui"));
 	MainConfigurationWindow::registerUiHandler(SimpleViewConfigUi::instance());
 
-	DockAction = new QAction(IconsManager::instance()->iconByPath("16x16/view-refresh.png"), tr("Simple view"), this);
+	DockAction = new QAction(IconsManager::instance()->iconByPath("view-refresh.png"), tr("Simple view"), this);
 	DockAction->setCheckable(true);
 	connect(DockAction, SIGNAL(triggered(bool)), this, SLOT(simpleViewToggle(bool)));
 	DockingManager::instance()->dockMenu()->insertAction(DockingManager::instance()->dockMenu()->actions().last(), DockAction);
@@ -120,9 +120,9 @@ void SimpleView::simpleViewToggle(bool activate)
 		Qt::WindowFlags flags;
 		QPoint p, cp;
 		QSize s, cs;
-	
+
 		SimpleViewActive = activate;
-		
+
 		flags = MainWindowHandle->windowFlags();
 		cp = MainWindowHandle->pos();
 		cs = MainWindowHandle->size();
@@ -219,7 +219,7 @@ void SimpleView::simpleViewToggle(bool activate)
 			}
 		}
 		MainWindowHandle->show();
-		
+
 		if (!Core::instance()->isClosing())
 			DockAction->setChecked(SimpleViewActive);
 	}

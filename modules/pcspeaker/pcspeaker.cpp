@@ -92,10 +92,10 @@ extern "C" void pcspeaker_close()
 	kdebugf();
 	delete pcspeaker;
 	kdebugf2();
-} 
+}
 
 
-PCSpeaker::PCSpeaker() : Notifier("PC Speaker", "PC Speaker", IconsManager::instance()->iconByPath("16x16/audio-volume-low.png"), NULL)
+PCSpeaker::PCSpeaker() : Notifier("PC Speaker", "PC Speaker", IconsManager::instance()->iconByPath("audio-volume-low.png"), NULL)
 {
 	NotificationManager::instance()->registerNotifier(this);
 	createDefaultConfiguration();
@@ -210,15 +210,15 @@ void PCSpeaker::play(int sound[21], int soundlength[20])
 		if (sound[i] == -1) break;
 		beep(sound[i], soundlength[i]);
 	}
-	XCloseDisplay(pcspeaker->xdisplay);	
+	XCloseDisplay(pcspeaker->xdisplay);
 }
 
 void PCSpeaker::parseAndPlay(QString line)
 {
-	volume = config_file.readNumEntry("PC Speaker", "SpeakerVolume");	
+	volume = config_file.readNumEntry("PC Speaker", "SpeakerVolume");
 	int sound[21], soundLength[20];
 	ParseStringToSound(line, sound, soundLength);
-	play(sound, soundLength);	
+	play(sound, soundLength);
 }
 
 void PCSpeaker::createDefaultConfiguration()

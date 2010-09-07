@@ -447,16 +447,16 @@ void BuddiesListView::updateBackground()
 	if (config_file.readBoolEntry("Look", "AlignUserboxIconsTop"))
 	{
 		style.append("QTreeView::branch:has-children:!has-siblings:closed, QTreeView::branch:closed:has-children:has-siblings "
-		     "{ border-image: none; image: url(" + IconsManager::instance()->iconPath("kadu_icons/stylesheet-branch-closed.png") + "); margin-top: 4px; image-position: top }");
+		     "{ border-image: none; image: url(" + IconsManager::instance()->iconPath("kadu_icons/stylesheet-branch-closed.png", "16x16") + "); margin-top: 4px; image-position: top }");
 		style.append("QTreeView::branch:open:has-children:!has-siblings, QTreeView::branch:open:has-children:has-siblings "
-			"{ border-image: none; image: url(" + IconsManager::instance()->iconPath("kadu_icons/stylesheet-branch-open.png") + "); image-position: top; margin-top: 8px }");
+			"{ border-image: none; image: url(" + IconsManager::instance()->iconPath("kadu_icons/stylesheet-branch-open.png", "16x16") + "); image-position: top; margin-top: 8px }");
 	}
 	else
 	{
  		style.append("QTreeView::branch:has-children:!has-siblings:closed, QTreeView::branch:closed:has-children:has-siblings "
-		     "{ border-image: none; image: url(" + IconsManager::instance()->iconPath("kadu_icons/stylesheet-branch-closed.png") + ") }");
+		     "{ border-image: none; image: url(" + IconsManager::instance()->iconPath("kadu_icons/stylesheet-branch-closed.png", "16x16") + ") }");
 		style.append("QTreeView::branch:open:has-children:!has-siblings, QTreeView::branch:open:has-children:has-siblings "
-			"{ border-image: none; image: url(" + IconsManager::instance()->iconPath("kadu_icons/stylesheet-branch-open.png") + ") }");
+			"{ border-image: none; image: url(" + IconsManager::instance()->iconPath("kadu_icons/stylesheet-branch-open.png", "16x16") + ") }");
 	}
 
 	style.append("QFrame {");

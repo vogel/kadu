@@ -26,7 +26,7 @@
 ProgressIcon::ProgressIcon(QWidget *parent) :
 		QLabel(parent), ProgressMovie(0), State(StateFinished)
 {
-	ProgressMovie = new QMovie(IconsManager::instance()->iconPath("kadu_icons/please-wait-small.gif"));
+	ProgressMovie = new QMovie(IconsManager::instance()->iconPath("kadu_icons/please-wait-small.gif", "16x16"));
 
 	setState(StateInProgress);
 }
@@ -53,12 +53,12 @@ void ProgressIcon::setState(ProgressIcon::ProgressState state)
 
 		case StateFinished:
 			ProgressMovie->stop();
-			setPixmap(IconsManager::instance()->pixmapByPath("32x32/dialog-information.png"));
+			setPixmap(IconsManager::instance()->iconByPath("dialog-information.png").pixmap(32, 32));
 			break;
 
 		case StateFailed:
 			ProgressMovie->stop();
-			setPixmap(IconsManager::instance()->pixmapByPath("32x32/dialog-warning.png"));
+			setPixmap(IconsManager::instance()->iconByPath("dialog-warning.png").pixmap(32, 32));
 			break;
 	}
 }

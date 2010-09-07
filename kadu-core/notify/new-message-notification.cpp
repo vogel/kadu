@@ -60,7 +60,7 @@ void MessageNotification::unregisterEvents()
 
 MessageNotification::MessageNotification(MessageType messageType, const Message &message) :
 		ChatNotification(message.messageChat(), messageType == NewChat ? "NewChat" : "NewMessage",
-		"protocols/common/16x16/message.png")
+		"protocols/common/message.png")
 {
 	QString syntax;
 

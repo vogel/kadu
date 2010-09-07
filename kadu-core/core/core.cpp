@@ -319,11 +319,7 @@ void Core::init()
 
 	new Updates();
 
-#ifdef Q_OS_MAC
-	setIcon(IconsManager::instance()->iconByPath(QLatin1String("protocols/gadu-gadu/128x128/offline.png")));
-#else
-	setIcon(IconsManager::instance()->iconByPath(QLatin1String("protocols/gadu-gadu/16x16/offline.png")));
-#endif
+	setIcon(IconsManager::instance()->iconByPath(QLatin1String("protocols/gadu-gadu/offline.png")));
 	QTimer::singleShot(15000, this, SLOT(deleteOldConfigurationFiles()));
 
 	NotificationManager::instance(); // TODO: 0.6.6

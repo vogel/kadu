@@ -152,7 +152,7 @@ void Themes::setPaths(const QStringList &paths)
 		}
 // TODO: 0.6.5
 // 		else
-// 			MessageDialog::msg(tr("<i>%1</i><br/>does not contain any theme configuration file").arg(it), false, "32x32/dialog-warning.png");
+// 			MessageDialog::msg(tr("<i>%1</i><br/>does not contain any theme configuration file").arg(it), false, "dialog-warning.png");
 	}
 	emit pathsChanged(ThemesPaths);
 	kdebugf2();

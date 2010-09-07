@@ -40,7 +40,7 @@ SmsImageDialog::~SmsImageDialog()
 
 void SmsImageDialog::createGui()
 {
-	QMovie *pleaseWaitMovie = new QMovie(IconsManager::instance()->iconPath("kadu_icons/please-wait.gif"));
+	QMovie *pleaseWaitMovie = new QMovie(IconsManager::instance()->iconPath("kadu_icons/please-wait.gif", "16x16"));
 	pleaseWaitMovie->start();
 
 	PixmapLabel = new QLabel(this);

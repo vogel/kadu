@@ -53,7 +53,6 @@ public:
 	virtual QString name() { return "gadu"; }
 	virtual QString displayName() { return tr("Gadu-Gadu"); }
 	virtual QIcon icon();
-	virtual QIcon smallIcon();
 
 };
 

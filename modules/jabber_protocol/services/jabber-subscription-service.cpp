@@ -119,7 +119,7 @@ void JabberSubscriptionService::subscription(const XMPP::Jid &jid, const QString
 	{
 		//TODO some option in GUI
 		/*if (!getOption("options.ui.notifications.successful-subscription").toBool())
-			MessageDialog::msg(QString("You are authorized by %1").arg(jid.bare()), false, "32x32/dialog-warning.png");
+			MessageDialog::msg(QString("You are authorized by %1").arg(jid.bare()), false, "dialog-warning.png");
 		*/
 	}
 	/*else if (type == "unsubscribe")

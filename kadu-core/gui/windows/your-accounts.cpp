@@ -113,8 +113,8 @@ void YourAccounts::createGui()
 	QAction *separator = new QAction(this);
 	separator->setSeparator(true);
 
-	AddExistingAccountAction = new QAction(IconsManager::instance()->iconByPath("32x32/contact-new.png"), tr("Add existing account"), this);
-	CreateNewAccountAction = new QAction(IconsManager::instance()->iconByPath("32x32/system-users.png"), tr("Create new account"), this);
+	AddExistingAccountAction = new QAction(IconsManager::instance()->iconByPath("contact-new.png"), tr("Add existing account"), this);
+	CreateNewAccountAction = new QAction(IconsManager::instance()->iconByPath("system-users.png"), tr("Create new account"), this);
 
 	ActionsModel = new ActionsProxyModel(this);
 	ActionsModel->addAfterAction(separator, ActionsProxyModel::NotVisibleWithEmptySourceModel);

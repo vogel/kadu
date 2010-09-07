@@ -58,11 +58,6 @@ QIcon Protocol::icon()
 	return Factory->icon();
 }
 
-QIcon Protocol::smallIcon()
-{
-	return Factory->smallIcon();
-}
-
 void Protocol::setAllOffline()
 {
 	Status status;
@@ -137,17 +132,6 @@ void Protocol::networkStateChanged(NetworkState state)
 			emit disconnected(CurrentAccount);
 			break;
 	}
-}
-
-QPixmap Protocol::statusPixmap(Status status)
-{
-	return StatusTypeManager::instance()->statusPixmap(statusPixmapPath(), "16x16", status.type(),
-			!status.description().isEmpty(), false);
-}
-
-QPixmap Protocol::statusPixmap(const QString &statusType)
-{
-	return StatusTypeManager::instance()->statusPixmap(statusPixmapPath(), "16x16", statusType, false, false);
 }
 
 QIcon Protocol::statusIcon(Status status)

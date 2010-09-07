@@ -58,7 +58,7 @@ void BuddyDeleteWindow::createGui()
 	QHBoxLayout *topLayout = new QHBoxLayout(topWidget);
 
 	QLabel *iconLabel = new QLabel(topWidget);
-	iconLabel->setPixmap(IconsManager::instance()->pixmapByPath("32x32/dialog-warning.png"));
+	iconLabel->setPixmap(IconsManager::instance()->iconByPath("dialog-warning.png").pixmap(32, 32));
 	topLayout->addWidget(iconLabel, 0, Qt::AlignTop);
 
 	QWidget *contentWidget = new QWidget(topWidget);

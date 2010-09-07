@@ -307,7 +307,7 @@ void JabberCreateAccountWidget::registerNewAccountFinished(JabberServerRegisterA
 {
 	if (jsra->result())
 	{
-		MessageDialog::msg(tr("Registration was successful. Your new XMPP username is %1.\nStore it in a safe place along with the password.\nNow please add your friends to the buddy list.").arg(jsra->jid()), false, "32x32/dialog-information.png", this);
+		MessageDialog::msg(tr("Registration was successful. Your new XMPP username is %1.\nStore it in a safe place along with the password.\nNow please add your friends to the buddy list.").arg(jsra->jid()), false, "dialog-information.png", this);
 
 		Account jabberAccount = Account::create();
 		jabberAccount.setProtocolName("jabber");
@@ -324,11 +324,11 @@ void JabberCreateAccountWidget::registerNewAccountFinished(JabberServerRegisterA
 		}
 
 		resetGui();
-		
+
 		emit accountCreated(jabberAccount);
 	}
 	else
-		MessageDialog::msg(tr("An error has occured during registration. Please try again later."), false, "32x32/dialog-warning.png", this);
+		MessageDialog::msg(tr("An error has occured during registration. Please try again later."), false, "dialog-warning.png", this);
 
 	delete jsra;
 }

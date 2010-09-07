@@ -182,12 +182,12 @@ MediaPlayer::MediaPlayer(bool firstLoad)
 	volUpAction = new ActionDescription(
 		0, ActionDescription::TypeChat, "mediaplayer_vol_up",
 		this, SLOT(incrVolume()),
-		"16x16/audio-volume-high.png", "16x16/audio-volume-high.png", tr("Volume Up"), false, ""
+		"audio-volume-high.png", "audio-volume-high.png", tr("Volume Up"), false, ""
 	);
 	volDownAction = new ActionDescription(
 		0, ActionDescription::TypeChat, "mediaplayer_vol_down",
 		this, SLOT(decrVolume()),
-		"16x16/audio-volume-low.png", "16x16/audio-volume-low.png", tr("Volume Down"), false, ""
+		"audio-volume-low.png", "audio-volume-low.png", tr("Volume Down"), false, ""
 	);
 
 	if (firstLoad)
@@ -231,7 +231,7 @@ MediaPlayer::MediaPlayer(bool firstLoad)
 
 	setControlsEnabled(false);
 	isPaused = true;
-	
+
 	mediaPlayerEvent = new NotifyEvent(QString(mediaPlayerOsdHint), NotifyEvent::CallbackNotRequired, QT_TRANSLATE_NOOP("@default", "Pseudo-OSD for MediaPlayer"));
 	NotificationManager::instance()->registerNotifyEvent(mediaPlayerEvent);
 
@@ -244,7 +244,7 @@ MediaPlayer::~MediaPlayer()
 	NotificationManager::instance()->unregisterNotifyEvent(mediaPlayerEvent);
 	delete mediaPlayerEvent;
 	mediaPlayerEvent = 0;
-	
+
 	StatusChangerManager::instance()->unregisterStatusChanger(mediaPlayerStatusChanger);
 	delete mediaPlayerStatusChanger;
 	mediaPlayerStatusChanger = 0;
@@ -439,7 +439,7 @@ void MediaPlayer::putSongTitle(int ident)
 // 	chat->edit()->getCursorPosition(&y, &x);
 // 	chat->edit()->insertAt(title, y, x); // Here we paste the title
 // 	doc.parseHtml(chat->edit()->text());
-// 
+//
 // 	// Parsing inserted element as HTML
 // 	for (int i = 0; i < doc.countElements(); i++)
 // 	{
@@ -462,7 +462,7 @@ void MediaPlayer::putSongTitle(int ident)
 // 				doc3.addText(doc.elementText(i));
 // 		}
 // 	}
-// 
+//
 // 	chat->edit()->setText(doc3.generateHtml());
 // 	chat->edit()->moveCursor(QTextEdit::MoveEnd, false);
 }
@@ -664,7 +664,7 @@ QString MediaPlayer::formatLength(int length)
 	ms = QString::number(m) + ":";
 	if (s < 10)
 		ms += "0";
-	
+
 	ms += QString::number(s);
 
 	return ms;
@@ -719,7 +719,7 @@ void MediaPlayer::toggleStatuses(bool toggled)
 		MessageDialog::msg(tr("%1 isn't running!").arg(getPlayerName()));
 		return;
 	}
-	
+
 	mediaPlayerStatusChanger->setDisable(!toggled);
 	if (toggled && statusInterval > 0)
 		timer->start(statusInterval);
@@ -747,7 +747,7 @@ void MediaPlayer::checkTitle()
 {
 	if (mediaPlayerStatusChanger->isDisabled())
 		return;
-	
+
 	QString title = getTitle();
 	int pos = getCurrentPos();
 

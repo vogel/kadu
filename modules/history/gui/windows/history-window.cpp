@@ -640,7 +640,7 @@ void HistoryWindow::show(Chat chat)
 {
 	if (!History::instance()->currentStorage())
 	{
-		MessageDialog::msg(tr("There is no history storage module loaded!"), false, "32x32/dialog-warning.png");
+		MessageDialog::msg(tr("There is no history storage module loaded!"), false, "dialog-warning.png");
 		return;
 	}
 

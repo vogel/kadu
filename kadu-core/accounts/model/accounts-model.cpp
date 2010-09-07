@@ -86,9 +86,7 @@ QVariant AccountsModel::data(const QModelIndex &index, int role) const
 
 		case Qt::DecorationRole:
 			return acc.protocolHandler()
-					? UseSmallIcon
-							? acc.protocolHandler()->smallIcon()
-							: acc.protocolHandler()->icon()
+					? acc.protocolHandler()->icon()
 					: QVariant();
 
 		case AccountRole:

@@ -48,7 +48,7 @@ void LineEditWithClearButton::updateClearButton()
 {
 	if (!ClearFilterButton || isReadOnly())
 		return;
-	
+
 	const QSize geom = size();
 	const int frameWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth, 0, this);
 	const int buttonWidth = ClearFilterButton->sizeHint().width();
@@ -59,7 +59,7 @@ void LineEditWithClearButton::updateClearButton()
 	// make sure we have enough room for the clear button
 	// no point in showing it if we can't also see a few characters as well
 	const bool wideEnough = geom.width() > 4 * em + buttonWidth + frameWidth;
-	
+
 	if (newButtonSize != ClearFilterButton->size())
 	{
 		ClearFilterButton->resize(newButtonSize);
@@ -99,9 +99,9 @@ void LineEditWithClearButton::updateClearButtonIcon(const QString& text)
 		return;
 
 	if (layoutDirection() == Qt::LeftToRight)
-		ClearFilterButton->setPixmap(IconsManager::instance()->pixmapByPath("16x16/edit-clear-locationbar-rtl.png"));
+		ClearFilterButton->setPixmap(IconsManager::instance()->iconByPath("edit-clear-locationbar-rtl.png").pixmap(16, 16));
 	else
-		ClearFilterButton->setPixmap(IconsManager::instance()->pixmapByPath("16x16/edit-clear-locationbar-ltr.png"));
+		ClearFilterButton->setPixmap(IconsManager::instance()->iconByPath("edit-clear-locationbar-ltr.png").pixmap(16, 16));
 
 	ClearFilterButton->setVisible(text.length());
 }
@@ -124,6 +124,6 @@ void LineEditWithClearButton::mouseReleaseEvent(QMouseEvent *e)
 		e->accept();
 		return;
 	}
-  
+
 	QLineEdit::mouseReleaseEvent(e);
 }

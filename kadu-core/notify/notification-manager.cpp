@@ -474,7 +474,7 @@ void NotificationManager::notify(Notification *notification)
 	notification->release();
 
 	if (!foundNotifierWithCallbackSupported)
-		MessageDialog::msg(tr("Unable to find notifier for %1 event").arg(notification->type()), true, "32x32/dialog-warning.png");
+		MessageDialog::msg(tr("Unable to find notifier for %1 event").arg(notification->type()), true, "dialog-warning.png");
 
 	kdebugf2();
 }

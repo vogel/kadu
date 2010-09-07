@@ -104,7 +104,7 @@ void AccountBuddyListWidget::startImportTransfer()
 
 	if (!CurrentAccount.protocolHandler()->isConnected())
 	{
-		MessageDialog::msg(tr("Cannot import user list from server in offline mode"), false, "32x32/dialog-error_big.png", this);
+		MessageDialog::msg(tr("Cannot import user list from server in offline mode"), false, "dialog-error_big.png", this);
 		return;
 	}
 
@@ -123,7 +123,7 @@ void AccountBuddyListWidget::startExportTransfer()
 
 	if (!CurrentAccount.protocolHandler()->isConnected())
 	{
-		MessageDialog::msg(tr("Cannot export user list to server in offline mode"), false, "32x32/dialog-error_big.png", this);
+		MessageDialog::msg(tr("Cannot export user list to server in offline mode"), false, "dialog-error_big.png", this);
 		kdebugf2();
 		return;
 	}
@@ -146,7 +146,7 @@ void AccountBuddyListWidget::buddiesListImported(bool ok, BuddyList buddies)
 	ImportButton->setEnabled(true);
 	if (!ok)
 	{
-	  	MessageDialog *m = new MessageDialog(tr("Contacts list couldn't be downloaded. Please check that account %0 is connected.").arg(CurrentAccount.id()), MessageDialog::RETRY|MessageDialog::CANCEL, true, "32x32/dialog-error_big.png", this);
+	  	MessageDialog *m = new MessageDialog(tr("Contacts list couldn't be downloaded. Please check that account %0 is connected.").arg(CurrentAccount.id()), MessageDialog::RETRY|MessageDialog::CANCEL, true, "dialog-error_big.png", this);
 		if (m->exec() == QDialog::Accepted)
 			startImportTransfer();
 		return;
@@ -166,12 +166,12 @@ void AccountBuddyListWidget::buddiesListExported(bool ok)
 	if (Clear)
 	{
 		if (!ok)
-			MessageDialog::msg(tr("The application encountered an internal error\nThe delete userlist on server was unsuccessful"), false, "32x32/dialog-error_big.png", this);
+			MessageDialog::msg(tr("The application encountered an internal error\nThe delete userlist on server was unsuccessful"), false, "dialog-error_big.png", this);
 	}
 	else
 	{
 		if (!ok)
-			MessageDialog::msg(tr("The application encountered an internal error\nThe export was unsuccessful"), false, "32x32/dialog-error_big.png", this);
+			MessageDialog::msg(tr("The application encountered an internal error\nThe export was unsuccessful"), false, "dialog-error_big.png", this);
 	}
 
 	ExportButton->setEnabled(true);

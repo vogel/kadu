@@ -316,7 +316,7 @@ void TabWidget::configurationUpdated()
 	triggerCompositingStateChanged();
 
 	// odswiezenie ikon
-	openChatButton->setIcon(IconsManager::instance()->iconByPath("16x16/internet-group-chat.png"));
+	openChatButton->setIcon(IconsManager::instance()->iconByPath("internet-group-chat.png"));
 	closeChatButton->setIcon(IconsManager::instance()->iconByPath("kadu_icons/module_tabs-remove.png"));
 
 	tabbar->setTabsClosable(config_file.readBoolEntry("Tabs", "CloseButtonOnTab"));

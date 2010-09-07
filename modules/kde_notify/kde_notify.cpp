@@ -64,7 +64,7 @@ extern "C" KADU_EXPORT void kde_notify_close()
 }
 
 KdeNotify::KdeNotify(QObject *parent) :
-		Notifier("KNotify", tr("KDE4 notifications"), IconsManager::instance()->iconByPath("16x16/internet-group-chat.png"), parent),
+		Notifier("KNotify", tr("KDE4 notifications"), IconsManager::instance()->iconByPath("internet-group-chat.png"), parent),
 		UseFreedesktopStandard(false)
 {
 	kdebugf();
@@ -123,14 +123,14 @@ void KdeNotify::notify(Notification *notification)
 	QList<QVariant> args;
 	args.append("Kadu");
 	args.append(0U);
-	args.append(IconsManager::instance()->iconPath("kadu_icons/kadu-tab.png"));
+	args.append(IconsManager::instance()->iconPath("kadu_icons/kadu-tab.png", "16x16"));
 
 	/* the new spec doesn't have this */
 	if (!UseFreedesktopStandard)
 		args.append("");
 
   	args.append("Kadu");
-	
+
 	QString text;
 	if (!notification->iconPath().isEmpty())
 		text = QString("<img src=\"%1\" alt=\"icon\" align=middle> ").arg(notification->iconPath().replace("file://", ""));
@@ -139,7 +139,7 @@ void KdeNotify::notify(Notification *notification)
 			config_file.readBoolEntry("KDENotify", "ShowContentMessage"))
 	{
 		text.append(notification->text() + "<br/><small>");
-		
+
 		QString strippedDetails = notification->details().replace("<br/>", "\n").remove(StripHTML).replace("\n", "<br/>");
 		if (strippedDetails.length() > config_file.readNumEntry("KDENotify", "CiteSign", 10))
 			text.append(strippedDetails.left(config_file.readNumEntry("KDENotify", "CiteSign", 10)) + "...");
@@ -154,7 +154,7 @@ void KdeNotify::notify(Notification *notification)
 	HtmlDocument doc;
 	doc.parseHtml(text);
 	UrlHandlerManager::instance()->convertAllUrls(doc);
-		
+
 	args.append(doc.generateHtml());
 
 	QStringList actions;
@@ -168,7 +168,7 @@ void KdeNotify::notify(Notification *notification)
 	args.append(actions);
 	args.append(QVariantMap());
 	args.append(config_file.readNumEntry("KDENotify", "Timeout", 10) * 1000);
-	
+
 	QDBusReply<unsigned int> reply = KNotify->callWithArgumentList(QDBus::Block, "Notify", args);
 	if (reply.isValid())
 	{

@@ -53,8 +53,6 @@ public:
 
 	virtual QIcon icon();
 	virtual QString iconPath();
-	virtual QIcon smallIcon();
-	virtual QString smallIconPath();
 
 protected:
 	JabberProtocolFactory();

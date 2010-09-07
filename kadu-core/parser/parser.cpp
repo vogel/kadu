@@ -476,7 +476,7 @@ QString Parser::parse(const QString &s, Contact contact, const QObject * const o
 					{
 						parseStack.pop_back();
 						pe.type = ParserToken::PT_STRING;
-						pe.content = IconsManager::instance()->iconPath(pe.content);
+						pe.content = IconsManager::instance()->iconPath(pe.content, "16x16");
 						parseStack.push_back(pe);
 						break;
 					}

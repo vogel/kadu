@@ -100,7 +100,7 @@ void ChatWidget::createGui()
 	mainLayout->setSpacing(0);
 
 	vertSplit = new QSplitter(Qt::Vertical, this);
-	
+
 #ifdef Q_OS_MAC
 	/* Dorr: workaround for mac tabs issue */
 	vertSplit->setAutoFillBackground(true);
@@ -331,11 +331,11 @@ void ChatWidget::messageStatusChanged(int messageId, ChatService::MessageStatus 
 			return;
 
 		case ChatService::StatusRejectedBlocked:
-			MessageDialog::msg("Message blocked", true, "32x32/dialog-warning.png", this);
+			MessageDialog::msg("Message blocked", true, "dialog-warning.png", this);
 		case ChatService::StatusRejectedBoxFull:
-			MessageDialog::msg("Message box if full", true, "32x32/dialog-warning.png", this);
+			MessageDialog::msg("Message box if full", true, "dialog-warning.png", this);
 		case ChatService::StatusRejectedUnknown:
-			MessageDialog::msg("Message not delivered", true, "32x32/dialog-warning.png", this);
+			MessageDialog::msg("Message not delivered", true, "dialog-warning.png", this);
 	}
 
 	cancelMessage();
@@ -380,7 +380,7 @@ void ChatWidget::sendMessage()
 
 	if (!currentProtocol()->isConnected())
 	{
-		MessageDialog::msg(tr("Cannot send message while being offline.")+tr("Account:")+chat().chatAccount().id(), false, "32x32/dialog-error_big.png", this);
+		MessageDialog::msg(tr("Cannot send message while being offline.")+tr("Account:")+chat().chatAccount().id(), false, "dialog-error_big.png", this);
 		kdebugmf(KDEBUG_FUNCTION_END, "not connected!\n");
 		return;
 	}
@@ -554,7 +554,7 @@ void ChatWidget::kaduStoreGeometry()
 
 void ChatWidget::leaveConference()
 {
-	if (!MessageDialog::ask(tr("All messages received in this conference will be ignored\nfrom now on. Are you sure you want to leave this conference?"), "32x32/dialog-warning.png", this))
+	if (!MessageDialog::ask(tr("All messages received in this conference will be ignored\nfrom now on. Are you sure you want to leave this conference?"), "dialog-warning.png", this))
 		return;
 
 	if (CurrentChat)

@@ -61,7 +61,7 @@ About::About(QWidget *parent) :
 	// end set window properties and flags
 
 	QLabel *l_icon = new QLabel;
-	l_icon->setPixmap(IconsManager::instance()->pixmapByPath("kadu_icons/kadu.png"));
+	l_icon->setPixmap(IconsManager::instance()->iconByPath("kadu_icons/kadu.png").pixmap(64, 64));
 
 	QWidget *center = new QWidget;
 	QWidget *texts = new QWidget;
