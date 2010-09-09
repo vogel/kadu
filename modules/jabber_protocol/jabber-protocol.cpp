@@ -521,6 +521,8 @@ void JabberProtocol::changeStatus()
 		networkStateChanged(NetworkDisconnected);
 
 		setAllOffline();
+		
+		JabberClient->disconnect();
 
 		if (!nextStatus().isDisconnected())
 			setStatus(Status());
@@ -544,6 +546,8 @@ void JabberProtocol::changeStatus()
 		networkStateChanged(NetworkDisconnected);
 
 		setAllOffline();
+		
+		JabberClient->disconnect();
 
 		if (!nextStatus().isDisconnected())
 			setStatus(Status());
