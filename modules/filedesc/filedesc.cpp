@@ -20,34 +20,38 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "configuration/configuration_window.h"
+#include <QtCore/QFile>
+#include <QtCore/QTextStream>
+#include <QtCore/QTimer>
+
 #include "accounts/account.h"
-#include "accounts/account_manager.h"
-#include "kadu.h"
-#include "config_file.h"
+#include "accounts/account-manager.h"
+#include "configuration/configuration-file.h"
+#include "status/status-changer-manager.h"
 #include "debug.h"
 #include "misc/misc.h"
 
 #include "filedesc.h"
 
-#include <QtCore/QTextStream>
-#include <QtCore/QTimer>
-
-#define MODULE_FILEDESC_VERSION 1.13
+#define MODULE_FILEDESC_VERSION 1.14
 
 FileDescription *file_desc;
 
 extern "C" KADU_EXPORT int filedesc_init()
 {
 	file_desc = new FileDescription();
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/filedesc.ui"), file_desc);
+
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/filedesc.ui"));
+	MainConfigurationWindow::registerUiHandler(file_desc);
 
 	return 0;
 }
 
 extern "C" KADU_EXPORT void filedesc_close()
 {
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/filedesc.ui"), file_desc);
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/filedesc.ui"));
+	MainConfigurationWindow::unregisterUiHandler(file_desc);
+
 	delete file_desc;
 }
 
@@ -62,9 +66,11 @@ FileDescStatusChanger::~FileDescStatusChanger()
 {
 }
 
-void FileDescStatusChanger::changeStatus(UserStatus &status)
+void FileDescStatusChanger::changeStatus(StatusContainer *container, Status &status)
 {
-	if (status.isOffline())
+	Q_UNUSED(container)
+
+	if (status.isDisconnected())
 		return;
 	if (!disabled)
 		status.setDescription(title);
@@ -77,7 +83,7 @@ void FileDescStatusChanger::setTitle(const QString &newTitle)
 	if (newTitle != title)
 	{
 		title = newTitle;
-		emit statusChanged();
+		emit statusChanged(0);
 	}
 }
 
@@ -86,7 +92,7 @@ void FileDescStatusChanger::disable()
 	if (!disabled)
 	{
 		disabled = true;
-		emit statusChanged();
+		emit statusChanged(0);
 	}
 }
 
@@ -117,29 +123,38 @@ FileDescription::~FileDescription()
 	fileDescStatusChanger = 0;
 }
 
+// FIXME: Po migracji do 0.6.6 nie działa opcja "allowOther"
 void FileDescription::checkTitle()
 {
-	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
+	QFile file(config_file.readEntry("FileDesc", "file"));
 
-	if (QFile::exists(config_file.readEntry("FileDesc", "file")))
+	if (!file.exists())
+		return;
+
+	if (!file.open(QIODevice::ReadOnly))
+		return;
+
+	QString desc = "";
+	QTextStream stream(&file);
+	if (!stream.atEnd())
+		desc = stream.readLine();
+	file.close();
+
+	foreach(Account account, AccountManager::instance()->items())
 	{
-		QFile file(config_file.readEntry("FileDesc", "file"));
-		if (!gadu->currentStatus().isOffline())
+		if (!account.statusContainer()->status().isDisconnected())
 		{
-			if (file.open(IO_ReadOnly))
+			if ((desc != currDesc
+							|| (account.statusContainer()->status().description() != desc
+									&& !config_file.readBoolEntry("FileDesc", "allowOther")
+								)
+							|| (account.statusContainer()->status().description().isEmpty()
+									&& config_file.readBoolEntry("FileDesc", "forceDescr")
+								)
+				) && !account.statusContainer()->status().isDisconnected())
 			{
-				QString desc = "";
-				QTextStream stream(&file);
-				if (!stream.atEnd())
-					desc = stream.readLine();
-
-				if ((desc != currDesc || gadu->currentStatus().description() != desc && !config_file.readBoolEntry("FileDesc", "allowOther")
-					|| !gadu->currentStatus().hasDescription() && config_file.readBoolEntry("FileDesc", "forceDescr")) && !gadu->currentStatus().isOffline())
-				{
-					currDesc = desc;
-					fileDescStatusChanger->setTitle(desc);
-				}
-				file.close();
+				currDesc = desc;
+				fileDescStatusChanger->setTitle(desc);
 			}
 		}
 	}

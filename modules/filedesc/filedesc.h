@@ -3,8 +3,8 @@
 
 #include <QtCore/QObject>
 
-#include "main_configuration_window.h"
-#include "status_changer.h"
+#include "gui/windows/main-configuration-window.h"
+#include "status/status-changer.h"
 
 class QTimer;
 
@@ -19,7 +19,7 @@ public:
 	FileDescStatusChanger();
 	virtual ~FileDescStatusChanger();
 
-	virtual void changeStatus(UserStatus &status);
+	virtual void changeStatus(StatusContainer *container, Status &status);
 
 	void setTitle(const QString &newTitle);
 	void disable();
@@ -41,7 +41,10 @@ private:
 public:
 	FileDescription();
 	virtual ~FileDescription();
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow){};
+	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
+	{
+		Q_UNUSED(mainConfigurationWindow)
+	}
 
 public slots:
 	void checkTitle();
