@@ -8,43 +8,48 @@
 
 class QTimer;
 
+class FileDescription;
+
 class FileDescStatusChanger : public StatusChanger
 {
 	Q_OBJECT
 
-	QString title;
-	bool disabled;
+	FileDescription *Parent;
+	QString Title;
 
 public:
-	FileDescStatusChanger();
+	FileDescStatusChanger(FileDescription *parent = 0);
 	virtual ~FileDescStatusChanger();
 
 	virtual void changeStatus(StatusContainer *container, Status &status);
 
-	void setTitle(const QString &newTitle);
-	void disable();
+	void setTitle(const QString &title);
 
 };
 
-class FileDescription : public ConfigurationUiHandler
+class FileDescription : public QObject, ConfigurationAwareObject
 {
 	Q_OBJECT
 
-private:
-	QTimer* timer;
-	QString currDesc;
+	QTimer *Timer;
 
-	FileDescStatusChanger *fileDescStatusChanger;
+	QString File;
+	bool AllowOther;
+	bool ForceDesc;
+
+	FileDescStatusChanger *StatusChanger;
 
 	void createDefaultConfiguration();
 
+protected:
+	virtual void configurationUpdated();
+
 public:
-	FileDescription();
+	explicit FileDescription(QObject *parent = 0);
 	virtual ~FileDescription();
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
-	{
-		Q_UNUSED(mainConfigurationWindow)
-	}
+
+	bool allowOther() const { return AllowOther; }
+	bool forceDesc() const { return ForceDesc; }
 
 public slots:
 	void checkTitle();

@@ -15,6 +15,7 @@
 * autoresponder: #1467 fixed: silent mode added to ChatService (Vogel)
 * autoaway: #1508 fixed: autostatus is now disabled after manual status change immediately (Vogel)
 * gui: #1515 fixed: show descriptions action restored (Vogel)
+* file_desc: #1421 fixed: module ported to 0.6.6 (Darom/Vogel) 
 
 +++ version 0.6.6-beta6
 * gui: #1487 fixed: combobox in personal info for buddies does not work (Vogel)

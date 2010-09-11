@@ -42,7 +42,6 @@ extern "C" KADU_EXPORT int filedesc_init()
 	file_desc = new FileDescription();
 
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/filedesc.ui"));
-	MainConfigurationWindow::registerUiHandler(file_desc);
 
 	return 0;
 }
@@ -50,15 +49,15 @@ extern "C" KADU_EXPORT int filedesc_init()
 extern "C" KADU_EXPORT void filedesc_close()
 {
 	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/filedesc.ui"));
-	MainConfigurationWindow::unregisterUiHandler(file_desc);
 
 	delete file_desc;
+	file_desc = 0;
 }
 
 // Implementation of FileDescStatusChanger class
 
-FileDescStatusChanger::FileDescStatusChanger()
-	: StatusChanger(900), disabled(true)
+FileDescStatusChanger::FileDescStatusChanger(FileDescription *parent) :
+		StatusChanger(900), Parent(parent)
 {
 }
 
@@ -72,61 +71,67 @@ void FileDescStatusChanger::changeStatus(StatusContainer *container, Status &sta
 
 	if (status.isDisconnected())
 		return;
-	if (!disabled)
-		status.setDescription(title);
+
+	if (status.description().isEmpty() && !Parent->forceDesc())
+		return;
+
+	if (!status.description().isEmpty() && Parent->allowOther())
+		return;
+
+	status.setDescription(Title);
 }
 
-void FileDescStatusChanger::setTitle(const QString &newTitle)
+void FileDescStatusChanger::setTitle(const QString &title)
 {
-	disabled = false;
-
-	if (newTitle != title)
-	{
-		title = newTitle;
-		emit statusChanged(0);
-	}
-}
-
-void FileDescStatusChanger::disable()
-{
-	if (!disabled)
-	{
-		disabled = true;
-		emit statusChanged(0);
-	}
+	Title = title;
+	emit statusChanged(0);
 }
 
 // Implementation of FileDescription class
 
-FileDescription::FileDescription()
+FileDescription::FileDescription(QObject *parent) :
+		QObject(parent)
 {
 	kdebugf();
 
 	createDefaultConfiguration();
 
-	timer = new QTimer();
-	connect(timer, SIGNAL(timeout()), this, SLOT(checkTitle()));
-	timer->start(500);
+	Timer = new QTimer();
+	Timer->setSingleShot(false);
+	Timer->setInterval(500);
+	connect(Timer, SIGNAL(timeout()), this, SLOT(checkTitle()));
+	Timer->start();
 
-	fileDescStatusChanger = new FileDescStatusChanger();
-	StatusChangerManager::instance()->registerStatusChanger(fileDescStatusChanger);
+	StatusChanger = new FileDescStatusChanger(this);
+	configurationUpdated();
+
+	StatusChangerManager::instance()->registerStatusChanger(StatusChanger);
 }
 
 FileDescription::~FileDescription()
 {
 	kdebugf();
-	disconnect(timer, SIGNAL(timeout()), this, SLOT(checkTitle()));
-	delete timer;
+	disconnect(Timer, SIGNAL(timeout()), this, SLOT(checkTitle()));
+	delete Timer;
+	Timer = 0;
 
-	StatusChangerManager::instance()->unregisterStatusChanger(fileDescStatusChanger);
-	delete fileDescStatusChanger;
-	fileDescStatusChanger = 0;
+	StatusChangerManager::instance()->unregisterStatusChanger(StatusChanger);
+	delete StatusChanger;
+	StatusChanger = 0;
 }
 
-// FIXME: Po migracji do 0.6.6 nie działa opcja "allowOther"
+void FileDescription::configurationUpdated()
+{
+	File = config_file.readEntry("FileDesc", "file", profilePath("description.txt"));
+	ForceDesc = config_file.readBoolEntry("FileDesc", "forceDescr", true);
+	AllowOther = config_file.readBoolEntry("FileDesc", "allowOther", true);
+
+	checkTitle();
+}
+
 void FileDescription::checkTitle()
 {
-	QFile file(config_file.readEntry("FileDesc", "file"));
+	QFile file(File);
 
 	if (!file.exists())
 		return;
@@ -134,30 +139,13 @@ void FileDescription::checkTitle()
 	if (!file.open(QIODevice::ReadOnly))
 		return;
 
-	QString desc = "";
+	QString description;
 	QTextStream stream(&file);
 	if (!stream.atEnd())
-		desc = stream.readLine();
+		description = stream.readLine();
 	file.close();
 
-	foreach(Account account, AccountManager::instance()->items())
-	{
-		if (!account.statusContainer()->status().isDisconnected())
-		{
-			if ((desc != currDesc
-							|| (account.statusContainer()->status().description() != desc
-									&& !config_file.readBoolEntry("FileDesc", "allowOther")
-								)
-							|| (account.statusContainer()->status().description().isEmpty()
-									&& config_file.readBoolEntry("FileDesc", "forceDescr")
-								)
-				) && !account.statusContainer()->status().isDisconnected())
-			{
-				currDesc = desc;
-				fileDescStatusChanger->setTitle(desc);
-			}
-		}
-	}
+	StatusChanger->setTitle(description);
 }
 
 void FileDescription::createDefaultConfiguration()
