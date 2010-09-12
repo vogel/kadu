@@ -255,7 +255,7 @@ Chat BuddiesListView::currentChat() const
 
 				foreach (const Buddy &buddy, buddies)
 				{
-					contact = buddy.prefferedContact(account);
+					contact = buddy.preferredContact(account);
 					if (!contact)
 						return Chat::null;
 
@@ -267,7 +267,7 @@ Chat BuddiesListView::currentChat() const
 		{
 			if (!selection.parent().isValid())
 		    {
-				contact = buddyAt(selection).prefferedContact(account);
+				contact = buddyAt(selection).preferredContact(account);
 				if (!contact)
 					return Chat::null;
 

@@ -33,7 +33,7 @@ ConfigWizardProfilePage::ConfigWizardProfilePage(QWidget *parent) :
 {
 	setDescription(tr("<h3>Welcome to Kadu Instant Messenger</h3>"
 		"<p>This wizard will help you to configure the basic settings of Kadu.</p>"
-		"<p>Please choose a preffered language and create a nickname</p>"));
+		"<p>Please choose a preferred language and create a nickname</p>"));
 
 	createGui();
 }

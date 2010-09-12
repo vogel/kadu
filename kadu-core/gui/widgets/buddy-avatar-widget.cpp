@@ -45,8 +45,8 @@ void BuddyAvatarWidget::createGui()
 		pixmap = MyBuddy.buddyAvatar().pixmap();
 		BuddyAvatarIsShown = true;
 	}
-	else if (MyBuddy.prefferedContact() && !MyBuddy.prefferedContact().contactAvatar().pixmap().isNull())
-		pixmap = MyBuddy.prefferedContact().contactAvatar().pixmap();
+	else if (MyBuddy.preferredContact() && !MyBuddy.preferredContact().contactAvatar().pixmap().isNull())
+		pixmap = MyBuddy.preferredContact().contactAvatar().pixmap();
 
 	if (!pixmap.isNull())
 	{

@@ -119,7 +119,7 @@ void HintsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurati
 
 	if (!example.isNull())
 		hint_manager->prepareOverUserHint(overUserConfigurationPreview, overUserConfigurationTipLabel,
-						  example.prefferedContact());
+						  example.preferredContact());
 
 	lay = new QHBoxLayout(configureHint);
 	lay->addWidget(overUserConfigurationPreview);
@@ -306,7 +306,7 @@ void HintsConfigurationUiHandler::updateOverUserPreview()
 	Buddy example = Buddy::dummy();
 
 	if (!example.isNull())
-		hint_manager->prepareOverUserHint(overUserConfigurationPreview, overUserConfigurationTipLabel, example.prefferedContact());
+		hint_manager->prepareOverUserHint(overUserConfigurationPreview, overUserConfigurationTipLabel, example.preferredContact());
 }
 
 void HintsConfigurationUiHandler::mainConfigurationWindowDestroyed()

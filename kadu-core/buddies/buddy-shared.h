@@ -93,7 +93,7 @@ public:
 
 	QString id(Account account);
 
-	Account prefferedAccount();
+	Account preferredAccount();
 
 	QMap<QString, QString> & customData() { return CustomData; }
 
@@ -101,7 +101,7 @@ public:
 	void removeContact(Contact contact);
 	QList<Contact> contacts(Account account);
 	QList<Contact> contacts();
-	Contact prefferedContact(Account account);
+	Contact preferredContact(Account account);
 
 	void sortContacts();
 	void normalizePriorities();

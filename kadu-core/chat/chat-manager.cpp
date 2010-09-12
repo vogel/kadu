@@ -131,8 +131,8 @@ Chat ChatManager::findChat(BuddySet buddies, bool create)
 	QMutexLocker(&mutex());
 
 	if (buddies.count() == 1)
-		return findChat(ContactSet((*buddies.begin()).prefferedContact()), create);
-	
+		return findChat(ContactSet((*buddies.begin()).preferredContact()), create);
+
 	Account commonAccount = getCommonAccount(buddies);
 	if (!commonAccount)
 		return Chat::null;
@@ -186,7 +186,7 @@ Chat ChatManager::findChat(ContactSet contacts, bool create)
 			return Chat::null;
 
 	ChatTypeManager::instance(); // load standard chat types
-	
+
 	foreach (const Chat &c, allItems()) // search allItems, chats can be not loaded yet
 		if ((c.type() == QLatin1String("Simple") || c.type() == QLatin1String("Conference")) && c.contacts() == contacts)
 			return c;

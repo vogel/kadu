@@ -174,7 +174,7 @@ void AddBuddyWindow::setBuddy(Buddy buddy)
 {
 	MyBuddy = buddy;
 
-	Account account = buddy.prefferedAccount();
+	Account account = buddy.preferredAccount();
 	if (!account.isNull())
 	{
 		AccountCombo->setCurrentAccount(account);

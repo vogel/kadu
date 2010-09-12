@@ -123,7 +123,7 @@ Contact BuddiesModelBase::buddyDefaultContact(const QModelIndex &index) const
 	if (buddy.isNull())
 		return Contact::null;
 
-	return buddy.prefferedContact();
+	return buddy.preferredContact();
 }
 
 Contact BuddiesModelBase::buddyContact(const QModelIndex &index, int accountIndex) const

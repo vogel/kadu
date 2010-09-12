@@ -370,10 +370,10 @@ void ChatStylesManager::preparePreview(Preview *preview)
 		return;
 
 	Chat chat = Chat::create();
-	chat.setChatAccount(example.prefferedAccount());
+	chat.setChatAccount(example.preferredAccount());
 	ChatDetailsSimple *details = new ChatDetailsSimple(chat);
 	details->setState(StorableObject::StateNew);
-	details->setContact(example.prefferedContact());
+	details->setContact(example.preferredContact());
 	chat.setDetails(details);
 
 	connect(preview, SIGNAL(destroyed(QObject *)), chat, SLOT(deleteLater()));
@@ -388,19 +388,19 @@ void ChatStylesManager::preparePreview(Preview *preview)
 
 	MessageRenderInfo *messageRenderInfo = new MessageRenderInfo(messageSent);
 	messageRenderInfo->setSeparatorSize(CfgHeaderSeparatorHeight);
-	preview->addObjectToParse(Core::instance()->myself().prefferedContact(), messageRenderInfo);
+	preview->addObjectToParse(Core::instance()->myself().preferredContact(), messageRenderInfo);
 
 	Message messageReceived = Message::create();
 	messageReceived.setMessageChat(chat);
 	messageReceived.setType(Message::TypeReceived);
-	messageReceived.setMessageSender(example.prefferedContact());
+	messageReceived.setMessageSender(example.preferredContact());
 	messageReceived.setContent(tr("Message from Your friend"));
 	messageReceived.setReceiveDate(QDateTime::currentDateTime());
 	messageReceived.setSendDate(QDateTime::currentDateTime());
 
 	messageRenderInfo = new MessageRenderInfo(messageReceived);
 	messageRenderInfo->setSeparatorSize(CfgHeaderSeparatorHeight);
-	preview->addObjectToParse(example.prefferedContact(), messageRenderInfo);
+	preview->addObjectToParse(example.preferredContact(), messageRenderInfo);
 }
 
 void ChatStylesManager::styleChangedSlot(const QString &styleName)

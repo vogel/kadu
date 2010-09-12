@@ -141,7 +141,7 @@
 <context>
     <name>ConfigWizardProfilePage</name>
     <message>
-        <source>&lt;h3&gt;Welcome to Kadu Instant Messenger&lt;/h3&gt;&lt;p&gt;This wizard will help you to configure the basic settings of Kadu.&lt;/p&gt;&lt;p&gt;Please choose a preffered language and create a nickname&lt;/p&gt;</source>
+        <source>&lt;h3&gt;Welcome to Kadu Instant Messenger&lt;/h3&gt;&lt;p&gt;This wizard will help you to configure the basic settings of Kadu.&lt;/p&gt;&lt;p&gt;Please choose a preferred language and create a nickname&lt;/p&gt;</source>
         <translation>&lt;h3&gt;Witamy w Kadu&lt;/h3&gt;&lt;p&gt;Ten kreator pomoże ci ustawić podstawową konfigurację programu.&lt;/p&gt;&lt;p&gt;Proszę wybrać język i podać swój pseudonim/imię</translation>
     </message>
     <message>

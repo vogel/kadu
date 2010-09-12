@@ -91,7 +91,7 @@ HintOverUserConfigurationWindow::HintOverUserConfigurationWindow(Buddy exampleBu
 	lay->addWidget(syntaxChangedButton);
 	groupBox->addWidget(syntaxWidget, true);
 
-	hint_manager->prepareOverUserHint(previewFrame, previewTipLabel, ExampleBuddy.prefferedContact());
+	hint_manager->prepareOverUserHint(previewFrame, previewTipLabel, ExampleBuddy.preferredContact());
 
 	bgcolor = config_file.readColorEntry("Hints", "HintOverUser_bgcolor").name();
 	fgcolor = config_file.readColorEntry("Hints", "HintOverUser_fgcolor").name();
@@ -149,7 +149,7 @@ void HintOverUserConfigurationWindow::syntaxChanged()
 	if (!hintSyntax->document()->isModified())
 		return;
 
-	QString text = Parser::parse(hintSyntax->toPlainText(), ExampleBuddy.prefferedContact());
+	QString text = Parser::parse(hintSyntax->toPlainText(), ExampleBuddy.preferredContact());
 
 	/* Dorr: the file:// in img tag doesn't generate the image on hint.
 	 * for compatibility with other syntaxes we're allowing to put the file://

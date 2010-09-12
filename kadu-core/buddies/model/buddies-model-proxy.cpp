@@ -99,11 +99,11 @@ bool BuddiesModelProxy::lessThan(const QModelIndex &left, const QModelIndex &rig
 
 	if (SortByStatus)
 	{
-		Account leftAccount = leftBuddy.prefferedAccount();
-		Account rightAccount = rightBuddy.prefferedAccount();
+		Account leftAccount = leftBuddy.preferredAccount();
+		Account rightAccount = rightBuddy.preferredAccount();
 
-		Contact leftContact = leftBuddy.prefferedContact();
-		Contact rightContact = rightBuddy.prefferedContact();
+		Contact leftContact = leftBuddy.preferredContact();
+		Contact rightContact = rightBuddy.preferredContact();
 
 		if (leftContact.isBlocking() && !rightContact.isBlocking())
 			return false;

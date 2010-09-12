@@ -44,10 +44,10 @@ bool OnlineAndDescriptionBuddyFilter::acceptBuddy(Buddy buddy)
 	if (!Enabled)
 		return true;
 
-	Contact prefferedContact = buddy.prefferedContact();
-	if (prefferedContact.isNull())
+	Contact preferredContact = buddy.preferredContact();
+	if (preferredContact.isNull())
 		return false;
 
-	Status status = prefferedContact.currentStatus();
+	Status status = preferredContact.currentStatus();
 	return !status.isDisconnected() || !status.description().isEmpty();
 }

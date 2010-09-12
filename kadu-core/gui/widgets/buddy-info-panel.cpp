@@ -112,7 +112,7 @@ void BuddyInfoPanel::displayBuddy(Buddy buddy)
 		return;
 
 	HtmlDocument doc;
-	doc.parseHtml(Parser::parse(Syntax, MyBuddy.prefferedContact()));
+	doc.parseHtml(Parser::parse(Syntax, MyBuddy.preferredContact()));
 	UrlHandlerManager::instance()->convertAllUrls(doc);
 
 	if (EmoticonsStyleNone != (EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") &&

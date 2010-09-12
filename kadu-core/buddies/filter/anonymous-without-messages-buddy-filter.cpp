@@ -44,8 +44,8 @@ bool AnonymousWithoutMessagesBuddyFilter::acceptBuddy(Buddy buddy)
 	if (!Enabled)
 		return true;
 
-// 	Account *prefferedAccount = contact.prefferedAccount();
-// 	if (!prefferedAccount)
+// 	Account *preferredAccount = contact.preferredAccount();
+// 	if (!preferredAccount)
 // 		return false;
 
 // TODO:
@@ -55,9 +55,9 @@ bool AnonymousWithoutMessagesBuddyFilter::acceptBuddy(Buddy buddy)
 // 		addUser(elem, massively, last);
 // 	else
 // 		removeUser(elem, massively, last);
-// 
+//
 // 	removeUser(UserListElement::fromContact(elem, AccountManager::instance()->defaultAccount()));
-// 
+//
 // 	UserListElement elem = UserListElement::fromContact(contact, AccountManager::instance()->defaultAccount());
 // 	if (elem.isAnonymous() && withoutMessages(contact))
 // 		addUser(elem);

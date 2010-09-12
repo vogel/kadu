@@ -281,7 +281,7 @@ QList<Contact> BuddyShared::contacts(Account account)
 		if (contact.contactAccount() == account)
 			contacts.append(contact);
 
-	// TODO 0.6.6 : if count() > 1 ... sort out! (0 - preffered)
+	// TODO 0.6.6 : if count() > 1 ... sort out! (0 - preferred)
 	return contacts;
 }
 
@@ -304,7 +304,7 @@ QString BuddyShared::id(Account account)
 	return QString::null;
 }
 
-Contact BuddyShared::prefferedContact(Account account)
+Contact BuddyShared::preferredContact(Account account)
 {
 	ensureLoaded();
 
@@ -316,11 +316,11 @@ Contact BuddyShared::prefferedContact(Account account)
 	{
 		if (account && con.contactAccount() != account)
 			continue;
-		
+
 		if (!contact || con.currentStatus() < contact.currentStatus())
 			contact = con;
 	}
-	
+
 	return contact;
 }
 
@@ -341,11 +341,11 @@ void BuddyShared::normalizePriorities()
 		contact.setPriority(priority++);
 }
 
-Account BuddyShared::prefferedAccount()
+Account BuddyShared::preferredAccount()
 {
 	ensureLoaded();
 
-	return prefferedContact(Account::null).contactAccount();
+	return preferredContact(Account::null).contactAccount();
 }
 
 void BuddyShared::emitUpdated()

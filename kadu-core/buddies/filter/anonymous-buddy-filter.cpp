@@ -43,8 +43,8 @@ bool AnonymousBuddyFilter::acceptBuddy(Buddy buddy)
 	if (!Enabled)
 		return true;
 
-	Account prefferedAccount = buddy.prefferedAccount();
-	if (prefferedAccount.isNull())
+	Account preferredAccount = buddy.preferredAccount();
+	if (preferredAccount.isNull())
 		return false;
 
 	return !buddy.isAnonymous();

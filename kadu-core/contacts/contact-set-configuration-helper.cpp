@@ -57,7 +57,7 @@ ContactSet ContactSetConfigurationHelper::loadFromConfiguration(XmlConfigFile *c
 				continue;
 
 			if (fromAccount.isNull())
-				contact = buddy.prefferedContact();
+				contact = buddy.preferredContact();
 			else
 			{
 				QList<Contact> contactList = buddy.contacts(fromAccount);

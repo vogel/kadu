@@ -44,9 +44,9 @@ bool HasDescriptionBuddyFilter::acceptBuddy(Buddy buddy)
 	if (!Enabled)
 		return true;
 
-	Contact prefferedContact = buddy.prefferedContact();
-	if (prefferedContact.isNull())
+	Contact preferredContact = buddy.preferredContact();
+	if (preferredContact.isNull())
 		return false;
 
-	return !prefferedContact.currentStatus().description().isEmpty();
+	return !preferredContact.currentStatus().description().isEmpty();
 }

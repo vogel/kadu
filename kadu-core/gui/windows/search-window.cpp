@@ -221,7 +221,7 @@ SearchWindow::SearchWindow(QWidget *parent, Buddy buddy) :
 
 	if (buddy)
 	{
-		CurrentAccount = buddy.prefferedAccount();
+		CurrentAccount = buddy.preferredAccount();
 	}
 	else
 	{
