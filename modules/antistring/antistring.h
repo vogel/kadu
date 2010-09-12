@@ -1,55 +1,70 @@
+/*
+ * %kadu copyright begin%
+ * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
+ * Copyright 2008, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2008 Michał Podsiadlik (michal@kadu.net)
+ * Copyright 2010 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * %kadu copyright end%
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #ifndef ANTISTRING_H
 #define ANTISTRING_H
 
-#include <QtCore/QMap>
-#include <QtCore/QObject>
-#include <QtGui/QSpinBox>
+#include "accounts/accounts-aware-object.h"
+#include "chat/chat.h"
+#include "configuration/configuration-aware-object.h"
+#include "gui/windows/main-configuration-window.h"
 
-#include "usergroup.h"
+#include "antistring-configuration.h"
 
-#include "configuration_aware_object.h"
-#include "main_configuration_window.h"
+class ChatService;
+class Contact;
 
-class Protocol;
-class QListWidget;
-class QSpinBox;
-class QLineEdit;
-
-class Antistring : public ConfigurationUiHandler, ConfigurationAwareObject
+class Antistring : public QObject, public AccountsAwareObject
 {
 	Q_OBJECT
+	Q_DISABLE_COPY(Antistring)
 
-	private:
-		QListWidget *conditionList;
-		QSpinBox *factor;
-		QLineEdit *condition;
-		QMap<int,QString> conditions1;
-		QMap<int,int> conditions;
+	static Antistring * Instance;
 
-		int points(QString& msg);
-		void writeLog(UserListElements uin, QString msg);
-		void conditionsSave();
-		void conditionsRead();
-		void updateConditionList();
-		void addDefaultConfiguration();
+	AntistringConfiguration Configuration;
 
-	private slots:
-		void addCondition();
-		void changeCondition();
-		void deleteCondition();
-		void wordSelected(QListWidgetItem * item);
+	Antistring();
+	virtual ~Antistring();
 
-	public:
-		Antistring();
-		~Antistring();
-		virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
+	int points(const QString &message);
+	void writeLog(Contact sender, const QString &message);
 
-	public slots:
-		void messageFiltering(Protocol *protocol, UserListElements senders, QString& msg, QByteArray& formats, bool& stop);
+	ChatService * chatService(Account account) const;
 
-	protected:
-		virtual void configurationUpdated();
+private slots:
+	void filterIncomingMessage(Chat chat, Contact sender, const QString &message, time_t time, bool &ignore);
+
+protected:
+	virtual void accountRegistered(Account account);
+	virtual void accountUnregistered(Account account);
+
+public:
+	static void createInstance();
+	static void destroyInstance();
+
+	static Antistring * instance() { return Instance; }
+
+	AntistringConfiguration & configuration() { return Configuration; }
+
 };
 
-#endif
-
+#endif // ANTISTRING_H

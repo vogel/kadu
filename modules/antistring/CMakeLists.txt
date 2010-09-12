@@ -1,17 +1,28 @@
 set (SOURCES
-	antistring.cpp)
+	antistring.cpp
+	antistring-configuration.cpp
+	antistring-configuration-ui-handler.cpp
+	antistring-module.cpp
+	antistring-notification.cpp
+)
 
 set (MOC_SOURCES
-	antistring.h)
+	antistring.h
+	antistring-configuration-ui-handler.h
+	antistring-notification.h
+)
 
 set (TRANSLATION_SOURCES
-	translations/antistring_pl.ts)
+	translations/antistring_pl.ts
+)
 
 set (CONFIGURATION_FILES
-	configuration/antistring.ui)
+	configuration/antistring.ui
+)
 
 set (DATA_FILES
-	data/ant_conditions.conf)
+	data/ant_conditions.conf
+)
 
 kadu_module (antistring
 	MODULE_SOURCES ${SOURCES}
