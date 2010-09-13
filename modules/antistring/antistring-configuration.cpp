@@ -71,7 +71,7 @@ void AntistringConfiguration::readDefaultConditions()
 	QFile defaultListFile(dataPath("kadu/modules/data/antistring/ant_conditions.conf"));
 	if (!defaultListFile.open(QFile::ReadOnly))
 	{
-		kdebug(qPrintable(QString("Can't open file: %1").arg(defaultListFile.fileName())));
+		kdebug("Can't open file: %s", qPrintable(defaultListFile.fileName()));
 		return;
 	}
 
