@@ -153,7 +153,7 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("Chat", "OpenChatOnMessageWhenOnline", false);
 	config_file.addVariable("Chat", "SaveOpenedWindows", true);
 	config_file.addVariable("Chat", "ReceiveMessages", true);
-	config_file.addVariable("Chat", "RecentChatsTimeout", 180);
+	config_file.addVariable("Chat", "RecentChatsTimeout", 360);
 	config_file.addVariable("Chat", "RememberPosition", true);
 	config_file.addVariable("Chat", "ShowEditWindowLabel", true);
 

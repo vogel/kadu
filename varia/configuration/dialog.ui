@@ -2,22 +2,22 @@
 <configuration-ui>
 	<section name="Kadu" icon="kadu_icons/kadu-tab.png">
 		<tab name="General">
-		
+
 			<group-box name="Nickname">
 				<line-edit caption="Nickname" config-section="General" config-item="Nick" />
 				<label caption="Enter a nickname for your account." />
 			</group-box>
-			
+
 			<group-box name="Buddy List Mode">
 				<radio-button caption="Hide messaging networks for each buddy (Simple Mode)" config-section="General" config-item="SimpleMode" id="simpleMode"
 					   tool-tip="If enabled, buddies networks will be hidden in buddy list and status buttons" />
 				<label caption="With this setting, each of your buddy's messaging networks will be removed from view on your buddy list." />
 				<radio-button caption="Differentiate the messaging networks for each buddy (Advanced Mode)" config-section="General" config-item="AdvancedMode" id="advancedMode" />
 				<label caption="With this setting, your buddy list will display the associated messaging networks for each of your buddies (e.g. 'Anna uses Gadu-Gadu and Google Talk') ." />
-				
+
 				<!-- <check-box caption="Show network icons with each buddy" config-section="General" config-item="ShowContactsWithIcons" id="contactsWithIcons" /> -->
 			</group-box>
-			
+
 			<group-box name="Default Language">
 				<combo-box caption="Language" config-section="General" config-item="Language" id="languages"
 					   tool-tip="Choose your language" />
@@ -25,13 +25,13 @@
 				<action-button caption="Change..." id="change-network" />
 
 			</group-box>
-			
+
 		</tab>
 
 		<tab name="Applications">
 			<group-box name="Web and E-Mail">
 				<label caption="Kadu will use default applications to open links from chat messages and buddy descriptions." />
-				
+
 				<check-box caption="Use System Web Browser" config-section="Chat" config-item="UseDefaultWebBrowser" id="useDefaultBrowser" />
 				<line-edit caption="Custom browser" config-section="Chat" config-item="WebBrowser" id="browserPath"
 					   tool-tip="Write specific path to your browser" />
@@ -40,7 +40,7 @@
 				<line-edit caption="Custom e-mail client" config-section="Chat" config-item="MailClient" id="mailPath"
 					   tool-tip="Write specific path to your email client" />
 			</group-box>
-			
+
 			<group-box name="Updates and Startup">
 				<check-box caption="Check for updates when Kadu is opened" config-section="General" config-item="CheckUpdates"
 					   tool-tip="Check for updates when Kadu is opened" />
@@ -313,8 +313,8 @@ Text is plain black." />
 					   tool-tip="Ask before clearing chat window" />
 				<check-box caption="Save opened windows on exit" config-section="Chat" config-item="SaveOpenedWindows"
 					   tool-tip="Save opened chat windows when exiting" />
-				<check-box caption="Store recent chats between program runs" config-section="Chat" config-item="RecentChatsStore" id="recentChatsStore" tool-tip="" />
 				<spin-box caption="Remember recent chats for" config-section="Chat" config-item="RecentChatsTimeout" min-value="1" max-value="1000000" suffix=" min." id="recentChatsTimeout" tool-tip="" />
+				<check-box caption="Store recent chats between program launches" config-section="Chat" config-item="RecentChatsStore" id="recentChatsStore" tool-tip="" />
 			</group-box>
 
 			<group-box name="Closing">

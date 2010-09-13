@@ -1076,8 +1076,8 @@
         <translation>Pokaż / ukryj kontakty bez opisu</translation>
     </message>
     <message>
-        <source>Store recent chats between program runs</source>
-        <translation>Zapamiętaj otwarte okna przy zamykaniu programu</translation>
+        <source>Store recent chats between program launches</source>
+        <translation>Pamiętaj ostatnie rozmowy pomiędzy uruchomieniami programu</translation>
     </message>
     <message>
         <source>Message Pruning</source>

@@ -1,6 +1,7 @@
 /*
  * %kadu copyright begin%
  * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2010 Piotr Dąbrowski (ultr@ultr.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,7 +18,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QDateTime>
 #include <QtCore/QTimer>
 
 #include "chat/chat-manager.h"
@@ -42,11 +42,14 @@ RecentChatManager * RecentChatManager::instance()
 	return Instance;
 }
 
-RecentChatManager::RecentChatManager() :
-		CleanUpTimer(0)
+RecentChatManager::RecentChatManager()
 {
 	setState(StateNotLoaded);
 	ConfigurationManager::instance()->registerStorableObject(this);
+
+	CleanUpTimer = new QTimer(this);
+	CleanUpTimer->setInterval(30 * 1000);
+	connect(CleanUpTimer, SIGNAL(timeout()), this, SLOT(cleanUp()));
 
 	configurationUpdated();
 }
@@ -86,10 +89,15 @@ void RecentChatManager::load()
 		if (element.isNull())
 			continue;
 
-		QString uuid = element.text();
+		QString uuid = element.attribute("uuid");
+		int time = element.attribute("time").toInt();
 		Chat chat = ChatManager::instance()->byUuid(uuid);
 		if (chat)
-			addRecentChat(chat);
+		{
+			QDateTime datetime;
+			datetime.setTime_t(time);
+			addRecentChat(chat,datetime);
+		}
 	}
 }
 
@@ -110,7 +118,6 @@ void RecentChatManager::store()
 	StorableObject::store();
 
 	StoragePoint *point = storage();
-	XmlConfigFile *file = point->storage();
 	QDomElement mainElement = point->point().toElement();
 	if (mainElement.isNull())
 		return;
@@ -124,7 +131,12 @@ void RecentChatManager::store()
 	if (config_file.readBoolEntry("Chat", "RecentChatsStore", false))
 		foreach (Chat chat, RecentChats)
 			if (chat && !chat.uuid().isNull())
-				file->appendTextNode(mainElement, "Chat", chat.uuid().toString());
+			{
+				QDomElement chatelement = point->point().ownerDocument().createElement("Chat");
+				chatelement.setAttribute("time",chat.data()->moduleData<QDateTime>("recent-chat")->toTime_t());
+				chatelement.setAttribute("uuid",chat.uuid().toString());
+				mainElement.appendChild(chatelement);
+			}
 }
 
 /**
@@ -151,7 +163,7 @@ QList<Chat> RecentChatManager::recentChats()
  *
  * Signals recentChatAboutToBeAdded and recentChatAdded are emited.
  */
-void RecentChatManager::addRecentChat(Chat chat)
+void RecentChatManager::addRecentChat(Chat chat, QDateTime datetime)
 {
 	if (!chat)
 		return;
@@ -160,7 +172,7 @@ void RecentChatManager::addRecentChat(Chat chat)
 	removeRecentChat(chat);
 
 	QDateTime *recentChatData = chat.data()->moduleData<QDateTime>("recent-chat", true);
-	*recentChatData = QDateTime::currentDateTime();
+	*recentChatData = datetime;
 
 	emit recentChatAboutToBeAdded(chat);
 	RecentChats.prepend(chat);
@@ -196,26 +208,13 @@ void RecentChatManager::removeRecentChat(Chat chat)
  *
  * If RecentChatsStore is changed to true this manager will not try to remove
  * chats from list by itself (afer RecentChatsTimeout timeout). All recent chats
- * are stored and restored between program runs.
+ * are stored and restored between program launches.
  *
  * If RecentChatsStore is changed to false this manager will try to remove
  * chats from list by itself afer RecentChatsTimeout timeout.
  */
 void RecentChatManager::configurationUpdated()
 {
-	if (config_file.readBoolEntry("Chat", "RecentChatsStore", false))
-	{
-		delete CleanUpTimer;
-		CleanUpTimer = 0;
-		return;
-	}
-
-	if (CleanUpTimer)
-		return;
-
-	CleanUpTimer = new QTimer(this);
-	CleanUpTimer->setInterval(30 * 1000);
-	connect(CleanUpTimer, SIGNAL(timeout()), this, SLOT(cleanUp()));
 	CleanUpTimer->start();
 }
 
@@ -228,9 +227,6 @@ void RecentChatManager::configurationUpdated()
  */
 void RecentChatManager::cleanUp()
 {
-	if (config_file.readBoolEntry("Chat", "RecentChatsStore", false))
-		return;
-
 	int secs = config_file.readNumEntry("Chat", "RecentChatsTimeout") * 60;
 	QDateTime now = QDateTime::currentDateTime();
 
