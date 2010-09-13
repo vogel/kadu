@@ -957,7 +957,15 @@ E un rischio per la sicurezza!</translation>
     </message>
     <message>
         <source>Remember recent chats for</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear recent chats list on exit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>never remove recent chats</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Closing</source>
@@ -1496,7 +1504,7 @@ from now on. Are you sure you want to leave this conference?</source>
     <message>
         <source>Connection will be stopped
 Your password is incorrect!</source>
-        <translation>Connessione sarà fermato. 
+        <translation>Connessione sarà fermato.
 Il tuo password non è corretto!</translation>
     </message>
     <message>

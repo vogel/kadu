@@ -30,11 +30,12 @@ class QDomElement;
 class ConfigGroupBox;
 
 /**
-	&lt;spin-box caption="caption" id="id" min-value="minValue" max-value="maxValue" step="step" /&gt;
+	&lt;spin-box caption="caption" id="id" min-value="minValue" max-value="maxValue" step="step" special-value="specialValue" /&gt;
 
 	@arg minValue - minimalna wartość (obowiązkowo)
 	@arg maxValue - maksymalna wartość (obowiązkowo)
 	@arg step - krok wartości (nieobowiazkowo, domyślnie 1)
+	@arg specialValue - wyświetlana nazwa specjalnej wartości spinboxa, równej minValue (nieobowiazkowo)
  **/
 class KADUAPI ConfigSpinBox : public QSpinBox, public ConfigWidgetValue
 {
@@ -46,7 +47,7 @@ protected:
 	virtual void createWidgets();
 
 public:
-	ConfigSpinBox(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip, int minValue, int maxValue, int step, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
+	ConfigSpinBox(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip, const QString &specialValue, int minValue, int maxValue, int step, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
 	ConfigSpinBox(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
 	virtual ~ConfigSpinBox();
 

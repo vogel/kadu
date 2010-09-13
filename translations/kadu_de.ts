@@ -354,7 +354,7 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source>You can specify which GG servers to use. Separate every server using semicolon (for example: 91.197.13.26;91.197.13.24;91.197.13.29;91.197.13.6)</source>
-        <translation>Hier können Sie angeben, welchen Server GaduGadu Sie nutzen wollen. Trennen Sie die Adressen IP mit Hilfe eines Semmikolons. 
+        <translation>Hier können Sie angeben, welchen Server GaduGadu Sie nutzen wollen. Trennen Sie die Adressen IP mit Hilfe eines Semmikolons.
 (z.B: 91.197.13.26;91.197.13.24;91.197.13.29;91.197.13.6)</translation>
     </message>
     <message>
@@ -962,6 +962,14 @@ It&apos;s a high security risk!</source>
         <translation>Chats speichern für die Dauer von </translation>
     </message>
     <message>
+        <source>Clear recent chats list on exit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>never remove recent chats</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Closing</source>
         <translation>Schliessen</translation>
     </message>
@@ -1381,7 +1389,7 @@ Einige von ihnen bekommen sie wahrscheinlich nicht.</translation>
     <message>
         <source>All messages received in this conference will be ignored
 from now on. Are you sure you want to leave this conference?</source>
-        <translation>Alle Nachrichten, die in dieser Konferrenz empfangen werden, werden 
+        <translation>Alle Nachrichten, die in dieser Konferrenz empfangen werden, werden
 von nun an ignoriert. Wollen Sie diese Konferenz wirklich verlassen?</translation>
     </message>
 </context>
@@ -1932,7 +1940,7 @@ Zu viel Versuche mit falschem Passwort</translation>
     </message>
     <message>
         <source>&lt;b&gt;Module:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Depends on:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Conflicts with:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Provides:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Author:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Version:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;</source>
-        <translation>&lt;b&gt;Module:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Hängt ab von:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Im Konflikt 
+        <translation>&lt;b&gt;Module:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Hängt ab von:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Im Konflikt
 mit:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Bringt mit:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Autor:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Verion&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Beschreibung:&lt;/b&gt;</translation>
     </message>
     <message>

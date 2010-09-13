@@ -961,6 +961,14 @@ Attention danger!
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Clear recent chats list on exit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>never remove recent chats</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Closing</source>
         <translation type="unfinished"></translation>
     </message>

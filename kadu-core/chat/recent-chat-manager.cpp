@@ -18,8 +18,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QTimer>
-
 #include "chat/chat-manager.h"
 #include "configuration/configuration-file.h"
 
@@ -47,9 +45,8 @@ RecentChatManager::RecentChatManager()
 	setState(StateNotLoaded);
 	ConfigurationManager::instance()->registerStorableObject(this);
 
-	CleanUpTimer = new QTimer(this);
-	CleanUpTimer->setInterval(30 * 1000);
-	connect(CleanUpTimer, SIGNAL(timeout()), this, SLOT(cleanUp()));
+	CleanUpTimer.setInterval(30 * 1000);
+	connect(&CleanUpTimer, SIGNAL(timeout()), this, SLOT(cleanUp()));
 
 	configurationUpdated();
 }
@@ -96,7 +93,7 @@ void RecentChatManager::load()
 		{
 			QDateTime datetime;
 			datetime.setTime_t(time);
-			addRecentChat(chat,datetime);
+			addRecentChat(chat, datetime);
 		}
 	}
 }
@@ -106,7 +103,7 @@ void RecentChatManager::load()
  * @short Stores recent chats data into configuration.
  *
  * Stores recent chats data into configuration. Chats are stored as list
- * of uuids. First chat in the list is the most rectent chat.
+ * of uuids and times. First chat in the list is the most rectent chat.
  */
 void RecentChatManager::store()
 {
@@ -128,13 +125,13 @@ void RecentChatManager::store()
 	for (int i = 0; i < count; i++)
 		mainElement.removeChild(chatElements.at(i));
 
-	if (config_file.readBoolEntry("Chat", "RecentChatsStore", false))
+	if (!config_file.readBoolEntry("Chat", "RecentChatsClear", false))
 		foreach (Chat chat, RecentChats)
 			if (chat && !chat.uuid().isNull())
 			{
 				QDomElement chatelement = point->point().ownerDocument().createElement("Chat");
-				chatelement.setAttribute("time",chat.data()->moduleData<QDateTime>("recent-chat")->toTime_t());
-				chatelement.setAttribute("uuid",chat.uuid().toString());
+				chatelement.setAttribute("time", chat.data()->moduleData<QDateTime>("recent-chat")->toTime_t());
+				chatelement.setAttribute("uuid", chat.uuid().toString());
 				mainElement.appendChild(chatelement);
 			}
 }
@@ -206,28 +203,34 @@ void RecentChatManager::removeRecentChat(Chat chat)
  * @author Rafal 'Vogel' Malinowski
  * @short Updates behaviour of manager to new configuration values.
  *
- * If RecentChatsStore is changed to true this manager will not try to remove
- * chats from list by itself (afer RecentChatsTimeout timeout). All recent chats
+ * If RecentChatsClear is changed to false this manager will not remove chats
+ * from the list by itself (afer RecentChatsTimeout timeout). All recent chats
  * are stored and restored between program launches.
  *
- * If RecentChatsStore is changed to false this manager will try to remove
- * chats from list by itself afer RecentChatsTimeout timeout.
+ * If RecentChatsClear is changed to true this manager will remove chats from
+ * the list by itself on program exit.
  */
 void RecentChatManager::configurationUpdated()
 {
-	CleanUpTimer->start();
+	CleanUpTimer.stop();
+	if (config_file.readNumEntry("Chat", "RecentChatsTimeout") > 0)
+		CleanUpTimer.start();
 }
 
 /**
  * @author Rafal 'Vogel' Malinowski
  * @short Removes too old recent chats.
  *
- * If RecentChatsStore configuration value is false this method will remove
+ * If RecentChatsTimeout is greater than 0, this method will remove
  * all chats that were added before RecentChatsTimeout minutes ago.
  */
 void RecentChatManager::cleanUp()
 {
 	int secs = config_file.readNumEntry("Chat", "RecentChatsTimeout") * 60;
+
+	if (secs==0)
+		return;
+
 	QDateTime now = QDateTime::currentDateTime();
 
 	QList<Chat> toRemove;

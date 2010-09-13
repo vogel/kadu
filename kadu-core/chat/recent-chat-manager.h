@@ -23,6 +23,7 @@
 
 #include <QtCore/QDateTime>
 #include <QtCore/QObject>
+#include <QtCore/QTimer>
 
 #include "configuration/configuration-aware-object.h"
 #include "storage/storable-object.h"
@@ -58,7 +59,7 @@ class KADUAPI RecentChatManager : public QObject, public StorableObject, private
 	static RecentChatManager * Instance;
 
 	QList<Chat> RecentChats;
-	QTimer *CleanUpTimer;
+	QTimer CleanUpTimer;
 
 	RecentChatManager();
 	virtual ~RecentChatManager();

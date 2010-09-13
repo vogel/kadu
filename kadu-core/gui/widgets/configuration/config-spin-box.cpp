@@ -27,11 +27,13 @@
 
 #include "debug.h"
 
-ConfigSpinBox::ConfigSpinBox(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
+ConfigSpinBox::ConfigSpinBox(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip, const QString &specialValue,
 		int minValue, int maxValue, int step, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
 	: QSpinBox(parentConfigGroupBox->widget()), ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager),
 		label(0)
 {
+	if (!specialValue.isEmpty())
+		setSpecialValueText(qApp->translate("@default", specialValue.toAscii().data()));
 	setMinimum(minValue);
 	setMaximum(maxValue);
 	setSingleStep(step);
@@ -95,6 +97,10 @@ bool ConfigSpinBox::fromDomElement(QDomElement domElement)
 	QString maxValue = domElement.attribute("max-value");
 	QString step = domElement.attribute("step");
 	setSuffix(domElement.attribute("suffix"));
+	QString specialValue = domElement.attribute("special-value");
+
+	if (!specialValue.isEmpty())
+		setSpecialValueText(qApp->translate("@default", specialValue.toAscii().data()));
 
 	bool ok;
 
