@@ -228,7 +228,7 @@ void RecentChatManager::cleanUp()
 {
 	int secs = config_file.readNumEntry("Chat", "RecentChatsTimeout") * 60;
 
-	if (secs==0)
+	if (secs <= 0)
 		return;
 
 	QDateTime now = QDateTime::currentDateTime();
