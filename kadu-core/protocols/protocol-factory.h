@@ -28,6 +28,7 @@
 #include <QtGui/QIcon>
 
 #include "contacts/contact-details.h"
+#include "exports.h"
 
 class Account;
 class AccountDetails;
@@ -43,7 +44,7 @@ class ProtocolMenuManager;
 class StatusType;
 class StoragePoint;
 
-class ProtocolFactory : public QObject
+class KADUAPI ProtocolFactory : public QObject
 {
 	Q_OBJECT
 

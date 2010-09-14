@@ -174,6 +174,18 @@ else (NOT LIBGADU_FOUND)
 	message (STATUS " * libgadu (version ${LIBGADU_VERSION}) was found in ${LIBGADU_LIBDIR}")
 endif (NOT LIBGADU_FOUND)
 
+if (WIN32)
+set (QT_MIN_VERSION "4.5.0")
+find_package (Qt4 REQUIRED)
+set(QT_USE_QTXML 1)
+set(QT_USE_QTXMLPATTERNS 1)
+set(QT_USE_QTNETWORK 1)
+set(QT_USE_QTWEBKIT 1)
+set(QT_USE_QTSCRIPT 1)
+set(QT_USE_QTSCRIPTTOOLS 1)
+include(${QT_USE_FILE}) 
+endif (WIN32)
+
 kadu_module (gadu_protocol
 	MODULE_SOURCES ${SOURCES}
 	MODULE_MOC_SOURCES ${MOC_SOURCES}
@@ -184,5 +196,6 @@ kadu_module (gadu_protocol
 )
 
 if (WIN32)
+target_link_libraries (gadu_protocol ${QT_LIBRARIES} ${QT_QTXMLPATTERNS_LIBRARY})
 set_target_properties(gadu_protocol PROPERTIES COMPILE_FLAGS "-DGADU_BUILD")
 endif (WIN32)

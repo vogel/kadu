@@ -22,10 +22,11 @@
 #define CHAT_NOTIFICATION_H
 
 #include "account-notification.h"
+#include "exports.h"
 
 #include "chat/chat.h"
 
-class ChatNotification : public AccountNotification
+class KADUAPI ChatNotification : public AccountNotification
 {
 	Q_OBJECT
 

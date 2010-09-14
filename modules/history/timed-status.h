@@ -20,8 +20,9 @@
 #include <QtCore/QDateTime>
 
 #include "status/status.h"
+#include "history_exports.h"
 
-class TimedStatus
+class HISTORYAPI TimedStatus
 {
 	Status MyStatus;
 	QDateTime DateTime;

@@ -24,10 +24,11 @@
 #include "accounts/account.h"
 #include "parser/parser.h"
 #include "notification.h"
+#include "exports.h"
 
 class BuddySet;
 
-class AccountNotification : public Notification
+class KADUAPI AccountNotification : public Notification
 {
 	Q_OBJECT
 
