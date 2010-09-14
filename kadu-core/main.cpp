@@ -21,7 +21,7 @@
 #include <winsock2.h>
 #include <windows.h>
 #endif
-#ifdef Q_OS_BSD4
+#if defined(Q_OS_BSD4) || defined(Q_OS_LINUX)
 #include <sys/types.h>
 #include <sys/stat.h>
 #endif
