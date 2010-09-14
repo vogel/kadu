@@ -42,7 +42,7 @@
 #else
 #include <winsock2.h>
 #endif
-#ifdef Q_OS_BSD4
+#if defined(Q_OS_BSD4) || defined(Q_OS_LINUX)
 #include <sys/types.h>
 #endif
 #if defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)
