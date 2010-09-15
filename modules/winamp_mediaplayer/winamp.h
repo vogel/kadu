@@ -8,8 +8,6 @@
 #ifndef _WINAMP_H
 #define _WINAMP_H
 
-#include <QtCore/QObject>
-
 #include "../mediaplayer/player_info.h"
 #include "../mediaplayer/player_commands.h"
 
@@ -18,7 +16,6 @@
 
 class WinampMediaPlayer : public PlayerInfo, PlayerCommands
 {
-	Q_OBJECT
 
 	public:
 		WinampMediaPlayer();
