@@ -1,10 +1,14 @@
 #ifndef MEDIA_PLAYER_INFO_H
 #define MEDIA_PLAYER_INFO_H
 
+#include <QtCore/QObject>
 #include <QtCore/QStringList>
 
-class PlayerInfo
+#include "mediaplayer_exports.h"
+
+class MEDIAPLAYERAPI PlayerInfo : public QObject
 {
+	Q_OBJECT
 
 public:
 	PlayerInfo() {}
