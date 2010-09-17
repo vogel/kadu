@@ -33,6 +33,7 @@
 #include "configuration/xml-configuration-file.h"
 #include "contacts/contact-manager.h"
 #include "core/core.h"
+#include "gui/widgets/buddies-list-view.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/line-edit-with-clear-button.h"
 #include "misc/misc.h"
@@ -40,13 +41,13 @@
 
 #include "debug.h"
 
-#include "open-chat-with.h"
 #include "open-chat-with-contact-list-runner.h"
 #include "open-chat-with-runner-manager.h"
 
+#include "open-chat-with.h"
 
-OpenChatWith::OpenChatWith(QWidget *parent)
-	: QWidget(parent, Qt::Window)
+OpenChatWith::OpenChatWith(QWidget *parent) :
+	QWidget(parent, Qt::Window)
 {
 	kdebugf();
 

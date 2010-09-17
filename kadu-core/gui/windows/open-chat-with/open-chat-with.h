@@ -22,14 +22,13 @@
 
 #include <QtGui/QWidget>
 
-#include "gui/widgets/buddies-list-view.h"
-
 #include "open-chat-with-runner.h"
 
 class QLabel;
 class QPushButton;
 class QVBoxLayout;
 
+class BuddiesListView;
 class LineEditWithClearButton;
 
 /**
