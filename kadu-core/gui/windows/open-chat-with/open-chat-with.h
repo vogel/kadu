@@ -32,15 +32,14 @@ class QVBoxLayout;
 class BuddiesListView;
 class LineEditWithClearButton;
 
-/**
-	Klasa reprezentuje okno umozliwiajace rozpoczecie rozmowy z dowolnym uzytkownikiem wybranym z listy kontakt��w lub podanym przez jego identyfikator.
-	\class ContactDataWindow
-	\brief Okno dialogowe otwarcia rozmowy z dowolnym kontaktem
-**/
 class KADUAPI OpenChatWith : public QWidget
 {
 	Q_OBJECT
 
+	static OpenChatWith *Instance;
+
+	explicit OpenChatWith();
+	
 	BuddiesListView *BuddiesWidget;
 	LineEditWithClearButton *ContactID;
 	QVBoxLayout *MainLayout;
@@ -55,9 +54,11 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *e);
 
 public:
-	OpenChatWith(QWidget *parent = 0);
+  	static OpenChatWith * instance();
+  
 	virtual ~OpenChatWith();
-
+	
+	void show();
 };
 
 #endif // OPEN_CHAT_WITH_H

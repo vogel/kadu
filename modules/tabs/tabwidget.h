@@ -36,8 +36,6 @@
 
 #include "debug.h"
 
-class OpenChatWith;
-
 class TabBar: public QTabBar
 {
 	Q_OBJECT
@@ -78,16 +76,8 @@ class TabWidget: public QTabWidget, public ChatContainer, CompositingAwareObject
 	Q_OBJECT
 
 		TabBar *tabbar;
-		OpenChatWith *openChatWithWindow;
 		QToolButton *closeChatButton;
 		QToolButton *openChatButton;
-
-		/**
-		* Zmienna do której zapisujemy geometrię okienka openchatwith
-		* aby po jego zamknięciu przywrócić jego właściwą pozycję
-		* w kofiguracji
-		*/
-		QRect openTabWithGeometry;
 
 		/**
 		* Zmienna konfiguracyjna
@@ -124,13 +114,6 @@ class TabWidget: public QTabWidget, public ChatContainer, CompositingAwareObject
 		* @param to pozycja karty docelowej.
 		*/
 		void deleteTab();
-
-		/**
-		* Slot zostaje wywołany w momencie zamknięcia okna openChatWith
-		* Tu przypisuje wskaźnikowi do okna NULL
-		*/
-		void openChatWithWindowClose();
-
 
 	protected:
 		/**

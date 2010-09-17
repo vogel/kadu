@@ -40,6 +40,7 @@
 #include "misc/misc.h"
 #include "os/generic/url-opener.h"
 
+#include "activate.h"
 #include "debug.h"
 
 #include "open-chat-with-contact-list-runner.h"
@@ -47,8 +48,18 @@
 
 #include "open-chat-with.h"
 
-OpenChatWith::OpenChatWith(QWidget *parent) :
-	QWidget(parent, Qt::Window)
+OpenChatWith *OpenChatWith::Instance = 0;
+
+OpenChatWith * OpenChatWith::instance()
+{
+	if (!Instance)
+		Instance = new OpenChatWith();
+
+	return Instance;
+}
+
+OpenChatWith::OpenChatWith() :
+	QWidget(0, Qt::Window)
 {
 	kdebugf();
 
@@ -65,8 +76,7 @@ OpenChatWith::OpenChatWith(QWidget *parent) :
 	connect(ContactID, SIGNAL(textChanged(const QString &)), this, SLOT(inputChanged(const QString &)));
 	MainLayout->addWidget(ContactID);
 	
-	BuddiesWidget = new BuddiesListView(0); // TODO: 0.6.6 fix that one
-	//ContactsWidget->setModel(new ContactsModel(ContactManager::instance(), this));
+	BuddiesWidget = new BuddiesListView(0);
 	connect(BuddiesWidget, SIGNAL(chatActivated(Chat)), this, SLOT(openChat()));
 	MainLayout->addWidget(BuddiesWidget);
 
@@ -91,6 +101,7 @@ OpenChatWith::~OpenChatWith()
 {
 	//saveWindowGeometry(this, "General", "OpenChatWith");
 	OpenChatWithRunnerManager::instance()->unregisterRunner(OpenChatRunner);
+	Instance = 0;
 }
 
 void OpenChatWith::keyPressEvent(QKeyEvent *e)
@@ -99,8 +110,12 @@ void OpenChatWith::keyPressEvent(QKeyEvent *e)
 	switch (e->key())
 	{
 		case Qt::Key_Enter:
-		case Qt::Key_Return: inputAccepted(); break;
-		case Qt::Key_Escape: close(); break;
+		case Qt::Key_Return:
+			inputAccepted();
+			break;
+		case Qt::Key_Escape:
+			close();
+			break;
 	}
 	kdebugf2();
 }
@@ -144,4 +159,12 @@ void OpenChatWith::openChat()
 void OpenChatWith::inputAccepted()
 {
 	openChat();
+}
+
+void OpenChatWith::show()
+{
+  	if (!isVisible())
+		QWidget::show();
+	else
+		_activateWindow(this);
 }

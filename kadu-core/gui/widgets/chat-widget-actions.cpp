@@ -445,8 +445,7 @@ void ChatWidgetActions::openChatWithActionActivated(QAction *sender, bool toggle
 	if (!action)
 		return;
 
-	OpenChatWith *openChatWith = new OpenChatWith(0);
-	openChatWith->show();
+	OpenChatWith::instance()->show();
 
 	kdebugf2();
 }

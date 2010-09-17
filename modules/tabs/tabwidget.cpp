@@ -64,7 +64,6 @@ TabWidget::TabWidget()
 	setCornerWidget(closeChatButton, Qt::TopRightCorner);
 	connect(closeChatButton, SIGNAL(clicked()), SLOT(deleteTab()));
 	closeChatButton->setAutoRaise(true);
-	openChatWithWindow = NULL;
 #ifdef Q_OS_MAC
 	/* Dorr: on Mac make the tabs look like the ones from terminal or safari */
 	tabbar->setDocumentMode(true);
@@ -243,24 +242,7 @@ void TabWidget::mouseDoubleClickEvent(QMouseEvent* e)
 
 void TabWidget::newChat()
 {
-	// jezeli okno openchatwith nie istnieje tworzymy nowe
-	if (!openChatWithWindow)
-	{
-		openChatWithWindow = new OpenChatWith;
-		connect(openChatWithWindow, SIGNAL(destroyed()), this, SLOT(openChatWithWindowClose()));
-		// zapisujemy geometrie okna, aby ja pozniej przywrocic (tabsy nie beda psuly pozycji okna z akcji kadu)
-		openTabWithGeometry = openChatWithWindow->frameGeometry();
-		// pokazujemy je w miejscu w ktorym nastapilo wywolanie metody (obecnie znajduje sie kursor)
-		openChatWithWindow->setGeometry(QCursor::pos().x(), QCursor::pos().y(), openChatWithWindow->width(), openChatWithWindow->height());// jak wykonuje si�0�1 to po pokazaniu okienkoa wyst�0�1puje denerwuj�0�2ce miganie
-		openChatWithWindow->show();
-	}
-	// jeze2li istnieje przywracamy je na pierwszy plan w miejscu cursora
-	else
-	{
-		openChatWithWindow->setGeometry(QCursor::pos().x(), QCursor::pos().y(), openChatWithWindow->width(), openChatWithWindow->height());// jak wykonuje si�0�1 to po pokazaniu okienka wyst�0�1puje denerwuj�0�2ce miganie
-		openChatWithWindow->setWindowState(openChatWithWindow->windowState() & Qt::WindowMinimized);
-		_activateWindow(openChatWithWindow);
-	}
+	OpenChatWith::instance()->show();
 }
 
 void TabWidget::deleteTab()
@@ -283,14 +265,6 @@ void TabWidget::tabRemoved(int index)
 
 	if (count() == 0)
 		hide();
-}
-
-void TabWidget::openChatWithWindowClose()
-{
-	// ponownie zapisujemy poprawna pozycje okna openTabWith
-	config_file.writeEntry("General", "OpenChatWith", openTabWithGeometry);
-	// po zamknieciu okna openchatwith przypisujemy NULL do wskaznika do niego,
-	openChatWithWindow = 0;
 }
 
 void TabWidget::compositingEnabled()
