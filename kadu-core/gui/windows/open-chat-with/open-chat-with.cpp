@@ -128,15 +128,12 @@ void OpenChatWith::openChat()
 
 	BuddySet buddies = contacts.toBuddySet();
 
-	if (!buddies.isEmpty() && !buddies.contains(Core::instance()->myself()))
+	Chat chat = ChatManager::instance()->findChat(contacts);
+	if (chat)
 	{
-		Chat chat = ChatManager::instance()->findChat(contacts);
-		if (chat)
-		{
-			ChatWidgetManager::instance()->openPendingMsgs(chat, true);
-			close();
-			return;
-		}
+		ChatWidgetManager::instance()->openPendingMsgs(chat, true);
+		close();
+		return;
 	}
 
 	Buddy buddy = *buddies.begin();
