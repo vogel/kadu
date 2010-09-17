@@ -121,11 +121,7 @@ void OpenChatWith::inputChanged(const QString &text)
 
 void OpenChatWith::openChat()
 {
-	BuddiesListView *widget = dynamic_cast<BuddiesListView *>(sender());
-	if (!widget)
-		return;
-
-	ContactSet contacts = widget->selectedContacts();
+	ContactSet contacts = BuddiesWidget->selectedContacts();
 	foreach (Contact contact, contacts)
 		ContactManager::instance()->addItem(contact);
 
@@ -136,7 +132,7 @@ void OpenChatWith::openChat()
 		Chat chat = ChatManager::instance()->findChat(contacts);
 		if (chat)
 		{
-			ChatWidgetManager::instance()->sendMessage(chat);
+			ChatWidgetManager::instance()->openPendingMsgs(chat, true);
 			close();
 			return;
 		}
