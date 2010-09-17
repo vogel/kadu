@@ -128,6 +128,7 @@ public:
 
 	virtual QIcon statusIcon(Status status);
 	virtual QString statusIconPath(const QString &statusType);
+	virtual QString statusIconFullPath(const QString &statusType);
 	virtual QIcon statusIcon(const QString &statusType);
 	QIcon statusIcon() { return statusIcon(CurrentStatus); }
 

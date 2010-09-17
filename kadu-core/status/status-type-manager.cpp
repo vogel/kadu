@@ -100,6 +100,19 @@ QString StatusTypeManager::statusIconPath(const QString &protocol, const QString
 	if (!statusType)
 		return QString();
 
+	return QString("protocols/%1/%2%3%4.png")
+			.arg(protocol)
+			.arg(statusType->iconName())
+			.arg(description ? "_d" : "")
+			.arg(mobile ? "_m" : "");
+}
+
+QString StatusTypeManager::statusIconFullPath(const QString &protocol, const QString &type, bool description, bool mobile)
+{
+	StatusType *statusType = this->statusType(type);
+	if (!statusType)
+		return QString();
+
 	QString iconName = QString("protocols/%1/%2%3%4.png")
 			.arg(protocol)
 			.arg(statusType->iconName())

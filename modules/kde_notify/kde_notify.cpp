@@ -134,7 +134,7 @@ void KdeNotify::notify(Notification *notification)
 	QString text;
 	if (!notification->iconPath().isEmpty())
 		text = QString("<img src=\"%1\" alt=\"icon\" align=middle> ").arg(notification->iconPath().replace("file://", ""));
-qDebug("%s", qPrintable(text));
+
 	if (((notification->type() == "NewMessage") || (notification->type() == "NewChat")) &&
 			config_file.readBoolEntry("KDENotify", "ShowContentMessage"))
 	{

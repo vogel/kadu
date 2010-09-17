@@ -320,7 +320,7 @@ QIcon AccountShared::statusIcon()
 QString AccountShared::statusIconPath(const QString &statusType)
 {
 	if (ProtocolHandler)
-		return ProtocolHandler->statusIconPath(statusType);
+		return ProtocolHandler->statusIconFullPath(statusType);
 	else
 		return "";
 }

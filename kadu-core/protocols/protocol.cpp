@@ -145,6 +145,11 @@ QString Protocol::statusIconPath(const QString& statusType)
 	return StatusTypeManager::instance()->statusIconPath(statusPixmapPath(), statusType, false, false);
 }
 
+QString Protocol::statusIconFullPath(const QString& statusType)
+{
+	return StatusTypeManager::instance()->statusIconFullPath(statusPixmapPath(), statusType, false, false);
+}
+
 QIcon Protocol::statusIcon(const QString &statusType)
 {
 	return StatusTypeManager::instance()->statusIcon(statusPixmapPath(), statusType, false, false);

@@ -51,6 +51,9 @@ public:
 	StatusType * statusType(const QString &name);
 	QString statusIconPath(const QString &protocol, const QString &type,
 			bool description, bool mobile);
+	QString  statusIconFullPath(const QString &protocol, const QString &type,
+			bool description, bool mobile);
+
 	QIcon statusIcon(const QString &protocol, const QString &type,
 			bool description, bool mobile);
 
