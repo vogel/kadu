@@ -25,8 +25,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QDir>
 #include <QtCore/QFile>
+#include <QtCore/QFileInfo>
 
 #include "configuration/configuration-file.h"
 #include "misc/misc.h"
@@ -69,11 +69,11 @@ QString IconsManager::iconPath(const QString &path, const QString &size, const Q
 {
 	QString fileName = ThemeManager->currentTheme().path() + path + "/" + size + "/" + name;
 
-	QDir dir(fileName);
-	if (dir.exists()) // hmm, icon != dir
+	QFileInfo fileInfo(fileName);
+	if (!fileInfo.isFile() || !fileInfo.isReadable())
 		return QString::null;
 
-	return dir.canonicalPath();
+	return fileInfo.canonicalFilePath();
 }
 
 QString IconsManager::iconPath(const QString &path, const QString &size) const
@@ -97,11 +97,11 @@ QString IconsManager::iconPath(const QString &path) const
 {
 	QString fileName = ThemeManager->currentTheme().path() + path;
 
-	QDir dir(fileName);
-	if (dir.exists()) // hmm, icon != dir
+	QFileInfo fileInfo(fileName);
+	if (!fileInfo.isFile() || !fileInfo.isReadable())
 		return QString::null;
 
-	return dir.canonicalPath();  
+	return fileInfo.canonicalFilePath();
 }
 
 QIcon IconsManager::buildIcon(const QString &path)
