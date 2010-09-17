@@ -113,6 +113,9 @@ void OpenChatWith::inputChanged(const QString &text)
 	if (!text.isEmpty())
 		matchingContacts = OpenChatWithRunnerManager::instance()->matchingContacts(text);
 	BuddiesWidget->setModel(new BuddyListModel(matchingContacts, this));
+	
+	QItemSelectionModel *selectionModel = BuddiesWidget->selectionModel();
+	selectionModel->select(BuddiesWidget->model()->index(0, 0), QItemSelectionModel::SelectCurrent);
 	kdebugf2();
 }
 
