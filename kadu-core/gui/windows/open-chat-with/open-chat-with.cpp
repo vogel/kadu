@@ -59,7 +59,7 @@ OpenChatWith * OpenChatWith::instance()
 }
 
 OpenChatWith::OpenChatWith() :
-	QWidget(0, Qt::Window)
+	QWidget(0, Qt::Window), ListModel(0)
 {
 	kdebugf();
 
@@ -126,7 +126,12 @@ void OpenChatWith::inputChanged(const QString &text)
 	BuddyList matchingContacts;
 	if (!text.isEmpty())
 		matchingContacts = OpenChatWithRunnerManager::instance()->matchingContacts(text);
-	BuddiesWidget->setModel(new BuddyListModel(matchingContacts, this));
+	
+	if (ListModel)
+		delete ListModel;
+	
+	ListModel = new BuddyListModel(matchingContacts, this);
+	BuddiesWidget->setModel(ListModel);
 	
 	QItemSelectionModel *selectionModel = BuddiesWidget->selectionModel();
 	selectionModel->select(BuddiesWidget->model()->index(0, 0), QItemSelectionModel::SelectCurrent);

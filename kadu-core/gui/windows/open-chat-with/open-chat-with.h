@@ -30,6 +30,7 @@ class QPushButton;
 class QVBoxLayout;
 
 class BuddiesListView;
+class BuddyListModel;
 class LineEditWithClearButton;
 
 class KADUAPI OpenChatWith : public QWidget
@@ -45,6 +46,8 @@ class KADUAPI OpenChatWith : public QWidget
 	QVBoxLayout *MainLayout;
 	OpenChatWithRunner *OpenChatRunner;
 
+	BuddyListModel *ListModel;
+	
 private slots:
 	void inputAccepted();
 	void inputChanged(const QString &text);
