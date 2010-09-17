@@ -600,6 +600,14 @@
         <translation>Pamiętaj ostatnie rozmowy przez</translation>
     </message>
     <message>
+        <source>Clear recent chats list on exit</source>
+        <translation>Wyczyść listę ostatnich rozmowów przy wyłączeniu</translation>
+    </message>
+    <message>
+        <source>never remove recent chats</source>
+        <translation>nigdy nie usuwaj ostatnich rozmów</translation>
+    </message>
+    <message>
         <source>Closing</source>
         <translation>Zamykanie</translation>
     </message>
@@ -1074,10 +1082,6 @@
     <message>
         <source>Show / hide buddies without description</source>
         <translation>Pokaż / ukryj kontakty bez opisu</translation>
-    </message>
-    <message>
-        <source>Store recent chats between program runs</source>
-        <translation>Zapamiętaj otwarte okna przy zamykaniu programu</translation>
     </message>
     <message>
         <source>Message Pruning</source>

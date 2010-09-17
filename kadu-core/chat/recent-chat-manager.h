@@ -1,6 +1,7 @@
 /*
  * %kadu copyright begin%
  * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2010 Piotr Dąbrowski (ultr@ultr.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -20,7 +21,9 @@
 #ifndef RECENT_CHAT_MANAGER_H
 #define RECENT_CHAT_MANAGER_H
 
+#include <QtCore/QDateTime>
 #include <QtCore/QObject>
+#include <QtCore/QTimer>
 
 #include "configuration/configuration-aware-object.h"
 #include "storage/storable-object.h"
@@ -40,8 +43,9 @@ class Chat;
  * @short Manager for recently used chats.
  *
  * This class manages recently used chats in application (maximum 20). Depending on configuration
- * it either stores and loads the recent chats between program runs or clears it at program exit
- * (and after specified amount of time). This manager is used for 'Recent chats' menu item.
+ * it either stores and loads the recent chats between program launches or clears it at program exit.
+ * Recent chats are also removed after specified amount of time.
+ * This manager is used for 'Recent chats' menu item.
  *
  * Use @link addRecentChat @endlink to add new recent chat. Old recent chats are automatially
  * removed after configurable period of time or when count of items would be bigger than 20.
@@ -55,7 +59,7 @@ class KADUAPI RecentChatManager : public QObject, public StorableObject, private
 	static RecentChatManager * Instance;
 
 	QList<Chat> RecentChats;
-	QTimer *CleanUpTimer;
+	QTimer CleanUpTimer;
 
 	RecentChatManager();
 	virtual ~RecentChatManager();
@@ -94,7 +98,7 @@ public:
 
 	virtual void store();
 
-	void addRecentChat(Chat chat);
+	void addRecentChat(Chat chat, QDateTime datetime = QDateTime::currentDateTime());
 	QList<Chat> recentChats();
 
 signals:

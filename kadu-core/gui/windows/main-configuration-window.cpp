@@ -227,8 +227,6 @@ MainConfigurationWindow::MainConfigurationWindow()
 	widget()->widgetById("parseStatus")->setToolTip(qApp->translate("@default", SyntaxText));
 	(dynamic_cast<ConfigSyntaxEditor *>(widget()->widgetById("infoPanelSyntax")))->setSyntaxHint(qApp->translate("@default", SyntaxText));
 
-	connect(widget()->widgetById("recentChatsStore"), SIGNAL(toggled(bool)),
-			widget()->widgetById("recentChatsTimeout"), SLOT(setDisabled(bool)));
 	userboxTransparency = dynamic_cast<QCheckBox *>(widget()->widgetById("userboxTransparency"));
 	userboxAlpha = dynamic_cast<QSlider *>(widget()->widgetById("userboxAlpha"));
 	connect(userboxTransparency, SIGNAL(toggled(bool)), widget()->widgetById("userboxAlpha"), SLOT(setEnabled(bool)));
