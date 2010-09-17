@@ -61,8 +61,6 @@ class KADUAPI ChatWidgetManager : public QObject, ConfigurationAwareObject, Stor
 	void insertEmoticonActionEnabled();
 
 private slots:
-	void openChatWith();
-
 	void messageReceived(const Message &message);
 	void messageSent(const Message &message);
 

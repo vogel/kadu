@@ -191,11 +191,6 @@ void ChatWidgetManager::store()
 	StorableStringList::store();
 }
 
-void ChatWidgetManager::openChatWith()
-{
-	(new OpenChatWith(Core::instance()->kaduWindow()))->show();
-}
-
 void ChatWidgetManager::insertEmoticonActionEnabled()
 {
  	foreach (Action *action, Actions->insertEmoticon()->actions())
