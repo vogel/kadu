@@ -20,7 +20,6 @@
  */
 
 #include <QtGui/QKeyEvent>
-#include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
 #include <QtGui/QVBoxLayout>
 
@@ -35,10 +34,11 @@
 #include "contacts/contact-manager.h"
 #include "core/core.h"
 #include "gui/widgets/chat-widget-manager.h"
+#include "gui/widgets/line-edit-with-clear-button.h"
+#include "misc/misc.h"
 #include "os/generic/url-opener.h"
 
 #include "debug.h"
-#include "misc/misc.h"
 
 #include "open-chat-with.h"
 #include "open-chat-with-contact-list-runner.h"
@@ -59,7 +59,7 @@ OpenChatWith::OpenChatWith(QWidget *parent)
 	MainLayout->setMargin(0);
 	MainLayout->setSpacing(0);
 	
-	ContactID = new QLineEdit(this);
+	ContactID = new LineEditWithClearButton(this);
 	connect(ContactID, SIGNAL(textChanged(const QString &)), this, SLOT(inputChanged(const QString &)));
 	MainLayout->addWidget(ContactID);
 	

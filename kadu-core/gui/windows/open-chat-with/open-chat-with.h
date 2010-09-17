@@ -27,9 +27,10 @@
 #include "open-chat-with-runner.h"
 
 class QLabel;
-class QLineEdit;
 class QPushButton;
 class QVBoxLayout;
+
+class LineEditWithClearButton;
 
 /**
 	Klasa reprezentuje okno umozliwiajace rozpoczecie rozmowy z dowolnym uzytkownikiem wybranym z listy kontakt��w lub podanym przez jego identyfikator.
@@ -41,7 +42,7 @@ class KADUAPI OpenChatWith : public QWidget
 	Q_OBJECT
 
 	BuddiesListView *BuddiesWidget;
-	QLineEdit *ContactID;
+	LineEditWithClearButton *ContactID;
 	QVBoxLayout *MainLayout;
 	OpenChatWithRunner *OpenChatRunner;
 
