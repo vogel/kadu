@@ -2,7 +2,7 @@
  * %kadu copyright begin%
  * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2009 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * Copyright 2009, 2010 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -19,6 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QDialogButtonBox>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QPushButton>
 #include <QtGui/QVBoxLayout>
@@ -68,20 +69,17 @@ OpenChatWith::OpenChatWith(QWidget *parent) :
 	//ContactsWidget->setModel(new ContactsModel(ContactManager::instance(), this));
 	connect(BuddiesWidget, SIGNAL(chatActivated(Chat)), this, SLOT(openChat()));
 	MainLayout->addWidget(BuddiesWidget);
+
+	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
+
+	QPushButton *okButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("&Ok"), this);
+	buttons->addButton(okButton, QDialogButtonBox::AcceptRole);
+	QPushButton *cancelButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("&Cancel"), this);
+	buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
+
+	connect(okButton, SIGNAL(clicked(bool)), this, SLOT(inputAccepted()));
+	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(close()));
 	
-	QWidget *buttons = new QWidget;
-	QHBoxLayout *buttons_layout = new QHBoxLayout(buttons);
-
-	QPushButton *b_cancel = new QPushButton(tr("&Cancel"));
-	connect(b_cancel, SIGNAL(clicked()), this, SLOT(close()));
-	QPushButton *b_ok = new QPushButton(tr("&OK"));
-	connect(b_ok, SIGNAL(clicked()), this, SLOT(inputAccepted()));
-
-	buttons_layout->setContentsMargins(0, 5, 0, 0);
-	buttons_layout->setAlignment(Qt::AlignRight);
-	buttons_layout->addWidget(b_ok);
-	buttons_layout->addWidget(b_cancel);
-
 	MainLayout->addWidget(buttons);
 	
 	OpenChatRunner = new OpenChatWithContactListRunner();
