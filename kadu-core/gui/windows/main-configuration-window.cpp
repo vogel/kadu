@@ -87,7 +87,8 @@ MainConfigurationWindow * MainConfigurationWindow::instance()
 {
 	if (!Instance)
 	{
-		InstanceDataManager = new ConfigFileDataManager();
+		if (!InstanceDataManager)
+			InstanceDataManager = new ConfigFileDataManager();
 		Instance = new MainConfigurationWindow();
 		instanceCreated();
 	}
