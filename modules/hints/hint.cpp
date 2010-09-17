@@ -219,6 +219,9 @@ void Hint::nextSecond(void)
 {
 	if (!requireCallbacks)
 	{
+		if (startSecs == 0)
+			return;
+
 		if (secs == 0)
 		{
 			kdebugm(KDEBUG_ERROR, "ERROR: secs == 0 !\n");
@@ -235,7 +238,7 @@ void Hint::nextSecond(void)
 
 bool Hint::isDeprecated()
 {
-	return (!requireCallbacks) && secs == 0;
+	return (!requireCallbacks) && startSecs != 0 && secs == 0;
 }
 
 void Hint::addDetail(const QString &detail)
