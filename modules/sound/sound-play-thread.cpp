@@ -26,7 +26,7 @@
 #include "sound-play-thread.h"
 
 SoundPlayThread::SoundPlayThread(QObject *parent) :
-		QThread(parent = 0), End(false), Play(false), Player(0)
+		QThread(parent), End(false), Play(false), Player(0)
 {
 	setTerminationEnabled(true);
 }
