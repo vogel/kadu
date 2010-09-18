@@ -87,8 +87,7 @@ MainConfigurationWindow * MainConfigurationWindow::instance()
 {
 	if (!Instance)
 	{
-		if (!InstanceDataManager)
-			InstanceDataManager = new ConfigFileDataManager();
+		InstanceDataManager = new ConfigFileDataManager();
 		Instance = new MainConfigurationWindow();
 		instanceCreated();
 	}
@@ -238,6 +237,8 @@ MainConfigurationWindow::MainConfigurationWindow()
 MainConfigurationWindow::~MainConfigurationWindow()
 {
 	Instance = 0;
+	delete InstanceDataManager;
+	InstanceDataManager = 0;
 }
 
 void MainConfigurationWindow::compositingEnabled()
