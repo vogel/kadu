@@ -83,7 +83,6 @@ AutoAway::AutoAway() :
 		autoAwayStatusChanger(0), timer(0)
 {
 	autoAwayStatusChanger = new AutoAwayStatusChanger(this);
-	StatusChangerManager::instance()->registerStatusChanger(autoAwayStatusChanger);
 
 	timer = new QTimer();
 	connect(timer, SIGNAL(timeout()), this, SLOT(checkIdleTime()));
@@ -95,6 +94,7 @@ AutoAway::AutoAway() :
 	createDefaultConfiguration();
 	configurationUpdated();
 
+	StatusChangerManager::instance()->registerStatusChanger(autoAwayStatusChanger);
 }
 
 AutoAway::~AutoAway()
