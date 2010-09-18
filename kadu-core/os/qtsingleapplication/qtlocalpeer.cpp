@@ -111,7 +111,10 @@ QtLocalPeer::QtLocalPeer(QObject* parent, const QString &appId)
     lockFile.open(QIODevice::ReadWrite);
 }
 
-
+QtLocalPeer::~QtLocalPeer()
+{
+    lockFile.close();
+}
 
 bool QtLocalPeer::isClient()
 {
