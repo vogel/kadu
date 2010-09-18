@@ -401,7 +401,6 @@ set (kadu_MOC_SRCS
 	chat/message/pending-messages-manager.h
 	chat/message/message-shared.h
 
-	chat/style-engines/chat-engine-adium/adium-time-formatter.h
 	chat/style-engines/chat-engine-kadu/chat-engine-kadu.h
 
 	chat/type/chat-type.h

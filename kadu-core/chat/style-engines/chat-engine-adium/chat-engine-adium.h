@@ -24,14 +24,11 @@
 #include "../chat-style-engine.h"
 #include "adium-style.h"
 
-class AdiumTimeFormatter;
 class Chat;
 class Preview;
 
 class AdiumChatStyleEngine : public ChatStyleEngine
 {
-	AdiumTimeFormatter *timeFormatter;
-
 	AdiumStyle CurrentStyle;
 
 	QString jsCode;
