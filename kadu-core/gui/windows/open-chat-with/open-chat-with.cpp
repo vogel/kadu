@@ -67,16 +67,16 @@ OpenChatWith::OpenChatWith() :
 
 	setWindowTitle(tr("Open chat with..."));
 	setAttribute(Qt::WA_DeleteOnClose);
-	
+
 	MainLayout = new QVBoxLayout(this);
 	MainLayout->setMargin(0);
 	MainLayout->setSpacing(0);
-	
+
 	ContactID = new LineEditWithClearButton(this);
 	connect(ContactID, SIGNAL(textChanged(const QString &)), this, SLOT(inputChanged(const QString &)));
 	MainLayout->addWidget(ContactID);
-	
-	BuddiesWidget = new BuddiesListView(0);
+
+	BuddiesWidget = new BuddiesListView(0, this);
 	connect(BuddiesWidget, SIGNAL(chatActivated(Chat)), this, SLOT(openChat()));
 	MainLayout->addWidget(BuddiesWidget);
 
@@ -89,9 +89,9 @@ OpenChatWith::OpenChatWith() :
 
 	connect(okButton, SIGNAL(clicked(bool)), this, SLOT(inputAccepted()));
 	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(close()));
-	
+
 	MainLayout->addWidget(buttons);
-	
+
 	OpenChatRunner = new OpenChatWithContactListRunner();
 	OpenChatWithRunnerManager::instance()->registerRunner(OpenChatRunner);
 	kdebugf2();
@@ -102,6 +102,12 @@ OpenChatWith::~OpenChatWith()
 	//saveWindowGeometry(this, "General", "OpenChatWith");
 	OpenChatWithRunnerManager::instance()->unregisterRunner(OpenChatRunner);
 	Instance = 0;
+
+	if (OpenChatRunner)
+	{
+		delete OpenChatRunner;
+		OpenChatRunner = 0;
+	}
 }
 
 void OpenChatWith::keyPressEvent(QKeyEvent *e)
