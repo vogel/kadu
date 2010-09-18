@@ -44,6 +44,8 @@ UrlHandlerManager::UrlHandlerManager()
 
 UrlHandlerManager::~UrlHandlerManager()
 {
+	qDeleteAll(RegisteredHandlers);
+	RegisteredHandlers.clear();
 }
 
 void UrlHandlerManager::registerUrlHandler(const QString &name, UrlHandler *handler)
