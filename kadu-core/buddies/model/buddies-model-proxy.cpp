@@ -49,6 +49,10 @@ BuddiesModelProxy::~BuddiesModelProxy()
 
 void BuddiesModelProxy::setSourceModel(QAbstractItemModel *sourceModel)
 {
+	QAbstractItemModel *oldModel = dynamic_cast<QAbstractItemModel *>(SourceBuddyModel);
+	if (oldModel)
+		disconnect(oldModel, SIGNAL(destroyed(QObject *)), this, SLOT(modelDestroyed()));
+
 	SourceBuddyModel = dynamic_cast<AbstractBuddiesModel *>(sourceModel);
 	QSortFilterProxyModel::setSourceModel(sourceModel);
 

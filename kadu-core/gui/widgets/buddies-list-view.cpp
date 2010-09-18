@@ -102,12 +102,6 @@ BuddiesListView::~BuddiesListView()
 	disconnect(PendingMessagesManager::instance(), SIGNAL(messageAdded(Message)), this, SLOT(update()));
 	disconnect(PendingMessagesManager::instance(), SIGNAL(messageRemoved(Message)), this, SLOT(update()));
 
-	if (ProxyModel->sourceModel())
-	{
-		delete ProxyModel->sourceModel();
-		ProxyModel->setSourceModel(0);
-	}
-
 	if (Delegate)
 	{
 		delete Delegate;
@@ -118,12 +112,6 @@ BuddiesListView::~BuddiesListView()
 void BuddiesListView::setModel(AbstractBuddiesModel *model)
 {
 	Model = model;
-
-	if (ProxyModel->sourceModel())
-	{
-		delete ProxyModel->sourceModel();
-		ProxyModel->setSourceModel(0);
-	}
 
 	ProxyModel->setSourceModel(dynamic_cast<QAbstractItemModel *>(model));
 	ProxyModel->addFilter(HideUnloadedFilter);
