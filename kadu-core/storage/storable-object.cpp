@@ -96,7 +96,7 @@ void StorableObject::setStorage(StoragePoint *storage)
  * @short Returns true if storage point is valid.
  * @return true if storage point is valid
  *
- * Storage is valid when it is noe NULL and points to real XML storage file.
+ * Storage is valid when it is not NULL and points to a real XML storage file.
  */
 bool StorableObject::isValidStorage()
 {
@@ -108,8 +108,8 @@ bool StorableObject::isValidStorage()
  * @short Returns storage point for this object.
  * @return storage point for this object
  *
- * Returns storage point for this object. If storege point has not been specified yed
- * it calls @link<createStoragePoint> createStoragePoint @endlink to create one.
+ * Returns storage point for this object. If the storage point has not been specified
+ * yet, it calls @link<createStoragePoint> createStoragePoint @endlink to create one.
  */
 StoragePoint * StorableObject::storage()
 {
@@ -154,8 +154,8 @@ bool StorableObject::shouldStore()
  * @author Rafal 'Vogel' Malinowski
  * @short Loads data from storage point. Sets state to StateLoaded.
  *
- * This is base implementation of load method, that is calles by ensureLoaded method.
- * This version only sets state to StateLoaded. This method must be ovveriden in every
+ * This is base implementation of load method, that is called by ensureLoaded method.
+ * This version only sets state to StateLoaded. This method must be overriden in every
  * derivered class that has real data to read. This method must be called by every
  * reimplementation, if possible at beggining.
  */
@@ -166,11 +166,11 @@ void StorableObject::load()
 
 /**
  * @author Rafal 'Vogel' Malinowski
- * @short Ensured that this object data has been loaded.
+ * @short Ensures that this object data has been loaded.
  *
  * This method loads data (by calling load method) only when current state of object
  * is StateNotLoaded. New object and already loaded object are not loaded twice.
- * Load method is responsible to chaning the state to StateLoaded.
+ * Load method is responsible for changing the state to StateLoaded.
  */
 void StorableObject::ensureLoaded()
 {
@@ -270,10 +270,10 @@ void StorableObject::removeAttribute(const QString& name)
  * @param create if true this method can create new nodes
  * @return storage point object for given module data
  *
- * Creates storage point for given module data. If XML node is non present
+ * Creates storage point for given module data. If XML node is not present
  * and create parameter is false this method will return NULL. Else it will
- * return storage point that points for right XML node (even it that needs
- * creating new XML node).
+ * return storage point that points for right XML node (even if creating new
+ * XML node is needed).
  *
  * Node is named ModuleData with attribute name with value from module parameter.
  */
