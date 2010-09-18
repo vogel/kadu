@@ -12,7 +12,6 @@
 #include "buddies/buddy-manager.h"
 #include "chat/chat.h"
 #include "configuration/configuration-aware-object.h"
-#include "http_client.h"
 #include "gui/actions/action.h"
 #include "gui/windows/main-configuration-window.h"
 

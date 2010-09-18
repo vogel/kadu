@@ -323,7 +323,6 @@ set (kadu_SRCS
 	dnshandler.cpp
 	emoticons.cpp
 	html_document.cpp
-	http_client.cpp
 	icons-manager.cpp
 	languages-manager.cpp
 	modules.cpp
@@ -602,7 +601,6 @@ set (kadu_MOC_SRCS
 
 	dnshandler.h
 	emoticons.h
-	http_client.h
 	icons-manager.h
 	modules.h
 	themes.h
