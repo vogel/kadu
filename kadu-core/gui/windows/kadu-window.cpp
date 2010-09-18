@@ -74,9 +74,9 @@ KaduWindow::KaduWindow(QWidget *parent) :
 {
 	setWindowRole("kadu-main");
 
-	#ifdef Q_OS_MAC
+#ifdef Q_OS_MAC
 	setUnifiedTitleAndToolBarOnMac(true);
-	MenuBar = new QMenuBar(0);
+	MenuBar = new QMenuBar(0); // TODO: couldn't it have "this" as parent?
 #endif
 
 	setAttribute(Qt::WA_DeleteOnClose, true);
@@ -186,13 +186,13 @@ void KaduWindow::createMenu()
 
 void KaduWindow::createKaduMenu()
 {
-	KaduMenu = new QMenu();
+	KaduMenu = new QMenu(this);
 #ifdef Q_OS_MAC
 	KaduMenu->setTitle("General");
 #else
 	KaduMenu->setTitle("&Kadu");
 #endif
-	RecentChatsMenu = new QMenu();
+	RecentChatsMenu = new QMenu(this);
 	RecentChatsMenu->setIcon(IconsManager::instance()->iconByPath("internet-group-chat.png"));
 	RecentChatsMenu->setTitle(tr("Recent chats"));
 	connect(KaduMenu, SIGNAL(aboutToShow()), this, SLOT(createRecentChatsMenu()));
@@ -216,7 +216,7 @@ void KaduWindow::createKaduMenu()
 
 void KaduWindow::createContactsMenu()
 {
-	ContactsMenu = new QMenu();
+	ContactsMenu = new QMenu(this);
 	ContactsMenu->setTitle(tr("&Buddies"));
 
 	insertMenuActionDescription(Actions->AddUser, MenuContacts);
@@ -236,7 +236,7 @@ void KaduWindow::createContactsMenu()
 
 void KaduWindow::createHelpMenu()
 {
-	HelpMenu = new QMenu();
+	HelpMenu = new QMenu(this);
 	HelpMenu->setTitle(tr("&Help"));
 
 	insertMenuActionDescription(Actions->Help, MenuHelp);
