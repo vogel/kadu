@@ -18,6 +18,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QtAlgorithms>
+
 #include "configuration/configuration-manager.h"
 
 #include "mobile-number.h"
@@ -44,6 +46,8 @@ MobileNumberManager::MobileNumberManager()
 MobileNumberManager::~MobileNumberManager()
 {
 	ConfigurationManager::instance()->unregisterStorableObject(this);
+
+	qDeleteAll(Numbers);
 }
 
 void MobileNumberManager::registerNumber(QString number, QString gatewayId)
@@ -62,7 +66,11 @@ void MobileNumberManager::unregisterNumber(QString number)
 {
 	foreach (MobileNumber *n, Numbers)
 		if (n->number() == number)
+		{
 			Numbers.removeAll(n);
+			delete n;
+			break;
+		}
 }
 
 StoragePoint * MobileNumberManager::createStoragePoint()
