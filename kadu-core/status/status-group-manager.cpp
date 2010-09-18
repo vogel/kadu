@@ -17,6 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QtAlgorithms>
+
 #include "status/status-group.h"
 
 #include "status-group-manager.h"
@@ -36,6 +38,11 @@ StatusGroupManager::StatusGroupManager()
 	registerStatusGroup("Away", 25);
 	registerStatusGroup("Invisible", 50);
 	registerStatusGroup("Offline", StatusGroup::StatusGroupSortIndexAfterSetDescription);
+}
+
+StatusGroupManager::~StatusGroupManager()
+{
+	qDeleteAll(StatusGroups);
 }
 
 void StatusGroupManager::registerStatusGroup(const QString &name, int sortIndex)

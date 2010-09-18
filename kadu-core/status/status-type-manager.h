@@ -40,6 +40,7 @@ class KADUAPI StatusTypeManager
 	QMap<StatusType *, int> StatusTypesCounter;
 
 	StatusTypeManager();
+	~StatusTypeManager();
 
 public:
 	static StatusTypeManager * instance();

@@ -18,6 +18,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QtAlgorithms>
+
 #include "status/status-group-manager.h"
 #include "status/status-type.h"
 #include "icons-manager.h"
@@ -48,6 +50,11 @@ StatusTypeManager::StatusTypeManager()
 	registerStatusType("DoNotDisturb", "Do not disturb", "do_not_disturb", busy, 40);
 	registerStatusType("Invisible", "Invisible", "invisible", invisible, 0);
 	registerStatusType("Offline", "Offline", "offline", offline, 0);
+}
+
+StatusTypeManager::~StatusTypeManager()
+{
+	qDeleteAll(StatusTypes);
 }
 
 void StatusTypeManager::registerStatusType(const QString &name, const QString &displayName,

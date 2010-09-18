@@ -37,6 +37,7 @@ class KADUAPI StatusGroupManager
 	QMap<StatusGroup *, int> StatusGroupsCounter;
 
 	StatusGroupManager();
+	~StatusGroupManager();
 
 public:
 	static StatusGroupManager * instance();
