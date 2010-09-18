@@ -70,14 +70,13 @@ void BuddiesListViewMenuManager::addActionDescription(ActionDescription *actionD
 void BuddiesListViewMenuManager::removeActionDescription(ActionDescription *actionDescription)
 {
 	QList<BuddiesListViewMenuItem>::iterator i = BuddiesContexMenu.begin();
-	QList<BuddiesListViewMenuItem>::iterator end = BuddiesContexMenu.end();
 
-	while (i != end)
+	while (i != BuddiesContexMenu.end())
 	{
 		if ((*i).actionDescription() == actionDescription)
 			i = BuddiesContexMenu.erase(i);
 		else
-			i++;
+			++i;
 	}
 }
 
@@ -90,14 +89,13 @@ void BuddiesListViewMenuManager::addListActionDescription(ActionDescription *act
 void BuddiesListViewMenuManager::removeListActionDescription(ActionDescription *actionDescription)
 {
 	QList<BuddiesListViewMenuItem>::iterator i = BuddyListActions.begin();
-	QList<BuddiesListViewMenuItem>::iterator end = BuddyListActions.end();
 
-	while (i != end)
+	while (i != BuddyListActions.end())
 	{
 		if ((*i).actionDescription() == actionDescription)
 			i = BuddyListActions.erase(i);
 		else
-			i++;
+			++i;
 	}
 }
 
