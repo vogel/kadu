@@ -73,13 +73,19 @@ public:
 	};
 
 private:
+	enum PrivateModeInternal {
+		PrivateModeUnset,
+		PrivateModeOn,
+		PrivateModeOff
+	};
+
 	ProtocolFactory *Factory;
 
 	Account CurrentAccount;
 
 	NetworkState State;
 	Status CurrentStatus;
-	bool PrivateMode;
+	PrivateModeInternal PrivateMode;
 
 private slots:
 	void statusChanged(StatusContainer *container, Status status);
