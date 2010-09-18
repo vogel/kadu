@@ -57,14 +57,16 @@ ChatStylesManager * ChatStylesManager::instance()
 	return Instance;
 }
 
-ChatStylesManager::ChatStylesManager() : CurrentEngine(0), kaduEngine(0), turnOnTransparency(0)
+ChatStylesManager::ChatStylesManager() :
+		CurrentEngine(0), SyntaxListCombo(0), EditButton(0), DeleteButton(0),
+		VariantListCombo(0), TurnOnTransparency(0), EnginePreview(0)
 {
 	//FIXME:
-	kaduEngine = new KaduChatStyleEngine();
-	registerChatStyleEngine("Kadu", kaduEngine);
+	KaduEngine = new KaduChatStyleEngine(this);
+	registerChatStyleEngine("Kadu", KaduEngine);
 
-	adiumEngine = new AdiumChatStyleEngine();
-	registerChatStyleEngine("Adium", adiumEngine);
+	AdiumEngine = new AdiumChatStyleEngine(this);
+	registerChatStyleEngine("Adium", AdiumEngine);
 
 	loadStyles();
 	configurationUpdated();
@@ -78,16 +80,16 @@ ChatStylesManager::~ChatStylesManager()
 
 void ChatStylesManager::registerChatStyleEngine(const QString &name, ChatStyleEngine *engine)
 {
-	if (0 != engine && !registeredEngines.contains(name))
-		registeredEngines[name] = engine;
+	if (0 != engine && !RegisteredEngines.contains(name))
+		RegisteredEngines[name] = engine;
 }
 
 void ChatStylesManager::unregisterChatStyleEngine(const QString &name)
 {
-	if (registeredEngines.contains(name))
+	if (RegisteredEngines.contains(name))
 	{
-		delete registeredEngines[name];
-		registeredEngines.remove(name);
+		delete RegisteredEngines[name];
+		RegisteredEngines.remove(name);
 	}
 }
 
@@ -95,7 +97,7 @@ void ChatStylesManager::chatViewCreated(ChatMessagesView *view)
 {
 	if (0 != view)
 	{
-		chatViews.append(view);
+		ChatViews.append(view);
 
 		bool useTransparency = view->supportTransparency() && CompositingEnabled && config_file.readBoolEntry("Chat", "UseTransparency", false);
 		if (useTransparency)
@@ -110,8 +112,8 @@ void ChatStylesManager::chatViewCreated(ChatMessagesView *view)
 
 void ChatStylesManager::chatViewDestroyed(ChatMessagesView *view)
 {
-	if (chatViews.contains(view))
-		chatViews.removeAll(view);
+	if (ChatViews.contains(view))
+		ChatViews.removeAll(view);
 }
 
 void ChatStylesManager::configurationUpdated()
@@ -185,10 +187,10 @@ void ChatStylesManager::configurationUpdated()
 	// if Style was changed, load new Style
 	if (!CurrentEngine || CurrentEngine->currentStyleName() != newStyleName || CurrentEngine->currentStyleVariant() != newVariantName)
 	{
-		if (!availableStyles.contains(newStyleName))// if Style not exists load kadu Style
+		if (!AvailableStyles.contains(newStyleName))// if Style not exists load kadu Style
 			newStyleName = "kadu";
-		if (availableStyles[newStyleName].engine != CurrentEngine)
-			CurrentEngine = availableStyles[newStyleName].engine;
+		if (AvailableStyles[newStyleName].engine != CurrentEngine)
+			CurrentEngine = AvailableStyles[newStyleName].engine;
 		CurrentEngine->loadStyle(newStyleName, newVariantName);
 	}
 	else
@@ -200,7 +202,7 @@ void ChatStylesManager::configurationUpdated()
 void ChatStylesManager::compositingEnabled()
 {
 	CompositingEnabled = true;
-	foreach (ChatMessagesView *view, chatViews)
+	foreach (ChatMessagesView *view, ChatViews)
 	{
 		view->updateBackgroundsAndColors();
 
@@ -223,14 +225,14 @@ void ChatStylesManager::compositingEnabled()
 		CurrentEngine->refreshView(view->renderer(), useTransparency);
 	}
 
-	if (turnOnTransparency)
-		turnOnTransparency->setEnabled(true);
+	if (TurnOnTransparency)
+		TurnOnTransparency->setEnabled(true);
 }
 
 void ChatStylesManager::compositingDisabled()
 {
 	CompositingEnabled = false;
-	foreach (ChatMessagesView *view, chatViews)
+	foreach (ChatMessagesView *view, ChatViews)
 	{
 		view->updateBackgroundsAndColors();
 
@@ -244,8 +246,8 @@ void ChatStylesManager::compositingDisabled()
 		CurrentEngine->refreshView(view->renderer());
 	}
 
-	if (turnOnTransparency)
-		turnOnTransparency->setEnabled(false);
+	if (TurnOnTransparency)
+		TurnOnTransparency->setEnabled(false);
 }
 
 //any better ideas?
@@ -264,14 +266,14 @@ void ChatStylesManager::loadStyles()
 	foreach (const QString &file, files)
 	{
 		fi.setFile(path + file);
-		if (fi.isReadable() && !availableStyles.contains(file))
+		if (fi.isReadable() && !AvailableStyles.contains(file))
 		{
-			foreach (ChatStyleEngine *engine, registeredEngines.values())
+			foreach (ChatStyleEngine *engine, RegisteredEngines.values())
 			{
 				if ((StyleName = engine->isStyleValid(path + file)) != QString::null)
 				{
-					availableStyles[StyleName].engine = engine;
-					availableStyles[StyleName].global = false;
+					AvailableStyles[StyleName].engine = engine;
+					AvailableStyles[StyleName].global = false;
 					break;
 				}
 			}
@@ -286,14 +288,14 @@ void ChatStylesManager::loadStyles()
 	foreach (const QString &file, files)
 	{
 		fi.setFile(path + file);
-		if (fi.isReadable() && !availableStyles.contains(file))
+		if (fi.isReadable() && !AvailableStyles.contains(file))
 		{
-			foreach (ChatStyleEngine *engine, registeredEngines.values())
+			foreach (ChatStyleEngine *engine, RegisteredEngines.values())
 			{
 				if ((StyleName = engine->isStyleValid(path + file)) != QString::null)
 				{
-					availableStyles[StyleName].engine = engine;
-					availableStyles[StyleName].global = true;
+					AvailableStyles[StyleName].engine = engine;
+					AvailableStyles[StyleName].global = true;
 					break;
 				}
 			}
@@ -316,51 +318,51 @@ void ChatStylesManager::mainConfigurationWindowCreated(MainConfigurationWindow *
 	editor->setToolTip(qApp->translate("@default", "Choose style of chat window"));
 	QHBoxLayout *editorLayout = new QHBoxLayout(editor);
 
-	syntaxListCombo = new QComboBox(editor);
-	syntaxListCombo->addItems(availableStyles.keys());
-	syntaxListCombo->setCurrentIndex(syntaxListCombo->findText(CurrentEngine->currentStyleName()));
-	connect(syntaxListCombo, SIGNAL(activated(const QString &)), this, SLOT(styleChangedSlot(const QString &)));
+	SyntaxListCombo = new QComboBox(editor);
+	SyntaxListCombo->addItems(AvailableStyles.keys());
+	SyntaxListCombo->setCurrentIndex(SyntaxListCombo->findText(CurrentEngine->currentStyleName()));
+	connect(SyntaxListCombo, SIGNAL(activated(const QString &)), this, SLOT(styleChangedSlot(const QString &)));
 
-	editButton = new QPushButton(tr("Edit"), editor);
-	editButton->setEnabled(CurrentEngine->supportEditing());
+	EditButton = new QPushButton(tr("Edit"), editor);
+	EditButton->setEnabled(CurrentEngine->supportEditing());
 
-	deleteButton = new QPushButton(tr("Delete"), editor);
-	deleteButton->setEnabled(!availableStyles[CurrentEngine->currentStyleName()].global);
-	connect(editButton, SIGNAL(clicked()), this, SLOT(editStyleClicked()));
-	connect(deleteButton, SIGNAL(clicked()), this, SLOT(deleteStyleClicked()));
+	DeleteButton = new QPushButton(tr("Delete"), editor);
+	DeleteButton->setEnabled(!AvailableStyles[CurrentEngine->currentStyleName()].global);
+	connect(EditButton, SIGNAL(clicked()), this, SLOT(editStyleClicked()));
+	connect(DeleteButton, SIGNAL(clicked()), this, SLOT(deleteStyleClicked()));
 
-	editorLayout->addWidget(syntaxListCombo, 100);
-	editorLayout->addWidget(editButton);
-	editorLayout->addWidget(deleteButton);
+	editorLayout->addWidget(SyntaxListCombo, 100);
+	editorLayout->addWidget(EditButton);
+	editorLayout->addWidget(DeleteButton);
 //variants
-	variantListCombo = new QComboBox();
-	variantListCombo->addItems(CurrentEngine->styleVariants(CurrentEngine->currentStyleName()));
+	VariantListCombo = new QComboBox();
+	VariantListCombo->addItems(CurrentEngine->styleVariants(CurrentEngine->currentStyleName()));
 	QString defaultVariant = CurrentEngine->defaultVariant(CurrentEngine->currentStyleName());
-	if (!defaultVariant.isEmpty() && variantListCombo->findText(defaultVariant) == -1)
-		variantListCombo->insertItem(0, defaultVariant);
+	if (!defaultVariant.isEmpty() && VariantListCombo->findText(defaultVariant) == -1)
+		VariantListCombo->insertItem(0, defaultVariant);
 
-	variantListCombo->setCurrentIndex(variantListCombo->findText(CurrentEngine->currentStyleVariant().isNull() ? defaultVariant : CurrentEngine->currentStyleVariant()));
-	variantListCombo->setEnabled(CurrentEngine->supportVariants());
-	connect(variantListCombo, SIGNAL(activated(const QString &)), this, SLOT(variantChangedSlot(const QString &)));
+	VariantListCombo->setCurrentIndex(VariantListCombo->findText(CurrentEngine->currentStyleVariant().isNull() ? defaultVariant : CurrentEngine->currentStyleVariant()));
+	VariantListCombo->setEnabled(CurrentEngine->supportVariants());
+	connect(VariantListCombo, SIGNAL(activated(const QString &)), this, SLOT(variantChangedSlot(const QString &)));
 //preview
-	preview = new Preview();
+	EnginePreview = new Preview();
 
-	preparePreview(preview);
+	preparePreview(EnginePreview);
 
-	CurrentEngine->prepareStylePreview(preview, CurrentEngine->currentStyleName(), CurrentEngine->currentStyleVariant());
+	CurrentEngine->prepareStylePreview(EnginePreview, CurrentEngine->currentStyleName(), CurrentEngine->currentStyleVariant());
 //
 	groupBox->addWidgets(editorLabel, editor);
-	groupBox->addWidgets(new QLabel(qApp->translate("@default", "Style variant") + ":"), variantListCombo);
-	groupBox->addWidgets(new QLabel(qApp->translate("@default", "Preview") + ":"), preview);
+	groupBox->addWidgets(new QLabel(qApp->translate("@default", "Style variant") + ":"), VariantListCombo);
+	groupBox->addWidgets(new QLabel(qApp->translate("@default", "Preview") + ":"), EnginePreview);
 
-	turnOnTransparency = dynamic_cast<QCheckBox *>(window->widget()->widgetById("useTransparency"));
-	turnOnTransparency->setEnabled(CompositingEnabled);
+	TurnOnTransparency = dynamic_cast<QCheckBox *>(window->widget()->widgetById("useTransparency"));
+	TurnOnTransparency->setEnabled(CompositingEnabled);
 }
 
 void ChatStylesManager::configurationApplied()
 {
-	config_file.writeEntry("Look", "Style", syntaxListCombo->currentText());
-	config_file.writeEntry("Look", "ChatStyleVariant", variantListCombo->currentText());
+	config_file.writeEntry("Look", "Style", SyntaxListCombo->currentText());
+	config_file.writeEntry("Look", "ChatStyleVariant", VariantListCombo->currentText());
 }
 
 void ChatStylesManager::preparePreview(Preview *preview)
@@ -405,41 +407,41 @@ void ChatStylesManager::preparePreview(Preview *preview)
 
 void ChatStylesManager::styleChangedSlot(const QString &styleName)
 {
-	ChatStyleEngine *engine = availableStyles[styleName].engine;
-	editButton->setEnabled(engine->supportEditing());
-	deleteButton->setEnabled(!availableStyles[styleName].global);
-	variantListCombo->clear();
-	variantListCombo->addItems(engine->styleVariants(styleName));
+	ChatStyleEngine *engine = AvailableStyles[styleName].engine;
+	EditButton->setEnabled(engine->supportEditing());
+	DeleteButton->setEnabled(!AvailableStyles[styleName].global);
+	VariantListCombo->clear();
+	VariantListCombo->addItems(engine->styleVariants(styleName));
 
 	QString currentVariant = CurrentEngine->defaultVariant(styleName);
-	if (!currentVariant.isEmpty() && variantListCombo->findText(currentVariant) == -1)
-		variantListCombo->insertItem(0, currentVariant);
+	if (!currentVariant.isEmpty() && VariantListCombo->findText(currentVariant) == -1)
+		VariantListCombo->insertItem(0, currentVariant);
 
-	variantListCombo->setCurrentIndex(variantListCombo->findText(currentVariant.isNull() ? "Default.css" : currentVariant));
+	VariantListCombo->setCurrentIndex(VariantListCombo->findText(currentVariant.isNull() ? "Default.css" : currentVariant));
 
-	variantListCombo->setEnabled(engine->supportVariants());
-	engine->prepareStylePreview(preview, styleName, variantListCombo->currentText());
-	turnOnTransparency->setChecked(engine->styleUsesTransparencyByDefault(styleName));
+	VariantListCombo->setEnabled(engine->supportVariants());
+	engine->prepareStylePreview(EnginePreview, styleName, VariantListCombo->currentText());
+	TurnOnTransparency->setChecked(engine->styleUsesTransparencyByDefault(styleName));
 }
 
 void ChatStylesManager::variantChangedSlot(const QString &variantName)
 {
-	availableStyles[syntaxListCombo->currentText()].engine->prepareStylePreview(preview, syntaxListCombo->currentText(), variantName);
+	AvailableStyles[SyntaxListCombo->currentText()].engine->prepareStylePreview(EnginePreview, SyntaxListCombo->currentText(), variantName);
 }
 
 void ChatStylesManager::editStyleClicked()
 {
-	availableStyles[syntaxListCombo->currentText()].engine->styleEditionRequested(syntaxListCombo->currentText());
+	AvailableStyles[SyntaxListCombo->currentText()].engine->styleEditionRequested(SyntaxListCombo->currentText());
 }
 
 void ChatStylesManager::deleteStyleClicked()
 {
-	QString styleName = syntaxListCombo->currentText();
-	if (availableStyles[styleName].engine->removeStyle(styleName))
+	QString styleName = SyntaxListCombo->currentText();
+	if (AvailableStyles[styleName].engine->removeStyle(styleName))
 	{
-		availableStyles.remove(styleName);
-		syntaxListCombo->removeItem(syntaxListCombo->currentIndex());
-		styleChangedSlot(*(availableStyles.keys().begin()));
+		AvailableStyles.remove(styleName);
+		SyntaxListCombo->removeItem(SyntaxListCombo->currentIndex());
+		styleChangedSlot(*(AvailableStyles.keys().begin()));
 	}
 	else
 		MessageDialog::msg(tr("Unable to remove style: %1").arg(styleName), true, "dialog-warning.png");
@@ -447,30 +449,33 @@ void ChatStylesManager::deleteStyleClicked()
 
 void ChatStylesManager::syntaxUpdated(const QString &syntaxName)
 {
-	if (!availableStyles.contains(syntaxName))
+	if (!AvailableStyles.contains(syntaxName))
 		return;
 
-	if (syntaxListCombo && syntaxListCombo->currentText() == syntaxName)
+	if (SyntaxListCombo && SyntaxListCombo->currentText() == syntaxName)
 		styleChangedSlot(syntaxName);
 
 	if (CurrentEngine->currentStyleName() == syntaxName)
-		CurrentEngine->loadStyle(syntaxName, variantListCombo->currentText());
+		CurrentEngine->loadStyle(syntaxName, VariantListCombo->currentText());
 }
 
 void ChatStylesManager::addStyle(const QString &syntaxName, ChatStyleEngine *engine)
 {
-	if (availableStyles.contains(syntaxName))
+	if (AvailableStyles.contains(syntaxName))
 		return;
 
-	availableStyles[syntaxName].engine = engine;
-	availableStyles[syntaxName].global = false;
+	AvailableStyles[syntaxName].engine = engine;
+	AvailableStyles[syntaxName].global = false;
 
-	if (syntaxListCombo)
-		syntaxListCombo->addItem(syntaxName);
+	if (SyntaxListCombo)
+		SyntaxListCombo->addItem(syntaxName);
 }
 
 void ChatStylesManager::configurationWindowDestroyed()
 {
-	syntaxListCombo = 0;
-	turnOnTransparency = 0;
+	SyntaxListCombo = 0;
+	EditButton = 0;
+	DeleteButton = 0;
+	VariantListCombo = 0;
+	TurnOnTransparency = 0;
 }

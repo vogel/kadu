@@ -20,40 +20,33 @@
 #define ADIUM_TIME_FORMATTER_H
 
 #include <QtCore/QDate>
-#include <QtCore/QObject>
-#include <QtCore/QString>
 
-class WeekDate
+class QDateTime;
+class QString;
+
+namespace AdiumTimeFormatter
 {
-	int m_year;
-	int m_week;
-	int m_day;
+	class WeekDate
+	{
+		int m_year;
+		int m_week;
+		int m_day;
 
-public:
-	inline WeekDate(const QDate &date) { setDate(date); }
-	inline WeekDate(int y, int m, int d) { setDate(QDate(y, m, d)); }
-	inline int year() const { return m_year; }
-	inline int week() const { return m_week; }
-	inline int day() const { return m_day; }
-	void setDate(const QDate &date);
+	public:
+		WeekDate(const QDate &date) { setDate(date); }
+		WeekDate(int y, int m, int d) { setDate(QDate(y, m, d)); }
+		int year() const { return m_year; }
+		int week() const { return m_week; }
+		int day() const { return m_day; }
+		void setDate(const QDate &date);
 
-};
-
-class AdiumTimeFormatter : public QObject
-{
-	Q_OBJECT
-
-	inline void appendStr(QString &str, const QString &res, int length);
-	inline void appendInt(QString &str, int number, int length);
-	void finishStr(QString &str, const WeekDate &week_date, const QDate &date, const QTime &time, QChar c, int length);
-
-public:
-	AdiumTimeFormatter(QObject *parent = 0);
+	};
 
 	/**
 	 * It should be equal to NSDateFormatter of MacOS X
 	 */
 	QString convertTimeDate(const QString &mac_format, const QDateTime &datetime);
+
 };
 
 #endif // ADIUM_TIME_FORMATTER_H

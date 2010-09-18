@@ -53,9 +53,9 @@ class KADUAPI ChatStylesManager : public QObject, ConfigurationAwareObject, Comp
 	static ChatStylesManager *Instance;
 	ChatStylesManager();
 
-	QMap<QString, ChatStyleEngine *> registeredEngines;
-	QList<ChatMessagesView *> chatViews;
-	QMap<QString, StyleInfo> availableStyles;
+	QMap<QString, ChatStyleEngine *> RegisteredEngines;
+	QList<ChatMessagesView *> ChatViews;
+	QMap<QString, StyleInfo> AvailableStyles;
 
 	ChatStyleEngine *CurrentEngine;
 
@@ -73,19 +73,19 @@ class KADUAPI ChatStylesManager : public QObject, ConfigurationAwareObject, Comp
 
 	QString MainStyle;
 
-	KaduChatStyleEngine *kaduEngine;
-	AdiumChatStyleEngine *adiumEngine;
+	KaduChatStyleEngine *KaduEngine;
+	AdiumChatStyleEngine *AdiumEngine;
 
 	//configuration
-	QComboBox *syntaxListCombo;
-	QPushButton *editButton;
-	QPushButton *deleteButton;
+	QComboBox *SyntaxListCombo;
+	QPushButton *EditButton;
+	QPushButton *DeleteButton;
 
-	QComboBox *variantListCombo;
+	QComboBox *VariantListCombo;
 
-	QCheckBox *turnOnTransparency;
+	QCheckBox *TurnOnTransparency;
 
-	Preview *preview;
+	Preview *EnginePreview;
 
 	void compositingEnabled();
 	void compositingDisabled();
@@ -111,7 +111,7 @@ public:
 	void registerChatStyleEngine(const QString &name, ChatStyleEngine *engine);
 	void unregisterChatStyleEngine(const QString &name);
 
-	bool hasChatStyle(const QString &name) { return  availableStyles.contains(name); }
+	bool hasChatStyle(const QString &name) { return  AvailableStyles.contains(name); }
 
 	ChatStyleEngine * currentEngine() { return CurrentEngine; }
 
@@ -127,7 +127,7 @@ public:
 
 	int prune() { return Prune; }
 
-	QString mainStyle() { return MainStyle; }
+	const QString & mainStyle() { return MainStyle; }
 
 	void mainConfigurationWindowCreated(MainConfigurationWindow *window);
 

@@ -24,13 +24,12 @@
 #include "../chat-style-engine.h"
 #include "adium-style.h"
 
-class AdiumTimeFormatter;
 class Chat;
 class Preview;
 
-class AdiumChatStyleEngine : public ChatStyleEngine
+class AdiumChatStyleEngine : public QObject, public ChatStyleEngine
 {
-	AdiumTimeFormatter *timeFormatter;
+	Q_OBJECT
 
 	AdiumStyle CurrentStyle;
 
@@ -44,7 +43,7 @@ class AdiumChatStyleEngine : public ChatStyleEngine
 	void appendChatMessage(HtmlMessagesRenderer *renderer, MessageRenderInfo *message);
 
 public:
-	explicit AdiumChatStyleEngine();
+	explicit AdiumChatStyleEngine(QObject *parent = 0);
 	virtual ~AdiumChatStyleEngine();
 
 	virtual bool supportVariants() { return true; }

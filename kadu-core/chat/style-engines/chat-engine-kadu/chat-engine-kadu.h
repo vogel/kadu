@@ -49,8 +49,8 @@ private slots:
 	void syntaxAdded(const QString &syntaxName);
 
 public:
-	explicit KaduChatStyleEngine();
-	~KaduChatStyleEngine();
+	explicit KaduChatStyleEngine(QObject *parent = 0);
+	virtual ~KaduChatStyleEngine();
 	virtual bool supportVariants() { return false; }
 	virtual bool supportEditing() { return true; }
 	virtual QString isStyleValid(QString styleName);

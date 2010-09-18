@@ -18,7 +18,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QDateTime>
 #include <QtCore/QDir>
+#include <QtCore/QString>
 #include <QtWebKit/QWebFrame>
 
 #include "accounts/account.h"
@@ -43,9 +45,9 @@
 
 #include "chat-engine-adium.h"
 
-AdiumChatStyleEngine::AdiumChatStyleEngine()
+AdiumChatStyleEngine::AdiumChatStyleEngine(QObject *parent) :
+		QObject(parent)
 {
-	timeFormatter = new AdiumTimeFormatter;
 	// Load required javascript funtions
 	QFile file(dataPath("kadu") + "/scripts/chat-scripts.js");
 	if (file.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -54,7 +56,6 @@ AdiumChatStyleEngine::AdiumChatStyleEngine()
 
 AdiumChatStyleEngine::~AdiumChatStyleEngine()
 {
-	delete timeFormatter;
 }
 
 void AdiumChatStyleEngine::pruneMessage(HtmlMessagesRenderer *renderer)
@@ -341,7 +342,7 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, const QString &styleHre
 	QRegExp timeRegExp("%timeOpened\\{([^}]*)\\}%");
 	int pos = 0;
 	while ((pos=timeRegExp.indexIn(result, pos)) != -1)
-		result.replace(pos, timeRegExp.cap(0).length(), timeFormatter->convertTimeDate(timeRegExp.cap(1), QDateTime::currentDateTime()));
+		result.replace(pos, timeRegExp.cap(0).length(), AdiumTimeFormatter::convertTimeDate(timeRegExp.cap(1), QDateTime::currentDateTime()));
 
 	QString photoIncoming;
 	QString photoOutgoing;
@@ -406,7 +407,7 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, const QString &styleHre
 	QRegExp timeRegExp("%time\\{([^}]*)\\}%");
 	int pos = 0;
 	while ((pos = timeRegExp.indexIn(result , pos)) != -1)
-		result.replace(pos, timeRegExp.cap(0).length(), timeFormatter->convertTimeDate(timeRegExp.cap(1), time));
+		result.replace(pos, timeRegExp.cap(0).length(), AdiumTimeFormatter::convertTimeDate(timeRegExp.cap(1), time));
 
 	result.replace("%shortTime%", printDateTime(time));
 
