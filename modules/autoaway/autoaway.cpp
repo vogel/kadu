@@ -111,8 +111,6 @@ AutoAway::~AutoAway()
 		delete autoAwayStatusChanger;
 		autoAwayStatusChanger = 0;
 	}
-
-	qApp->removeEventFilter(this);
 }
 
 AutoAwayStatusChanger::ChangeStatusTo AutoAway::changeStatusTo()
