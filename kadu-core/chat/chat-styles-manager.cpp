@@ -60,10 +60,10 @@ ChatStylesManager * ChatStylesManager::instance()
 ChatStylesManager::ChatStylesManager() : CurrentEngine(0), kaduEngine(0), turnOnTransparency(0)
 {
 	//FIXME:
-	kaduEngine = new KaduChatStyleEngine();
+	kaduEngine = new KaduChatStyleEngine(this);
 	registerChatStyleEngine("Kadu", kaduEngine);
 
-	adiumEngine = new AdiumChatStyleEngine();
+	adiumEngine = new AdiumChatStyleEngine(this);
 	registerChatStyleEngine("Adium", adiumEngine);
 
 	loadStyles();

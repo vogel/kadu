@@ -36,7 +36,8 @@
 #include "chat-engine-kadu.h"
 #include "misc/misc.h"
 
-KaduChatStyleEngine::KaduChatStyleEngine()
+KaduChatStyleEngine::KaduChatStyleEngine(QObject *parent) :
+	QObject(parent)
 {
 	EngineName = "Kadu";
 	syntaxList = new SyntaxList("chat");
@@ -185,7 +186,7 @@ QString KaduChatStyleEngine::formatMessage(MessageRenderInfo *message, MessageRe
 
 		message->setShowServerTime(ChatStylesManager::instance()->noServerTime(), ChatStylesManager::instance()->noServerTimeDiff());
 		message->setSeparatorSize(separatorSize);
-		
+
 		return Parser::parse(format, msg.messageSender(), message, true);
 	}
 }

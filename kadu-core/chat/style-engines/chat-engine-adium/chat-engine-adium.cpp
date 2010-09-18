@@ -45,7 +45,8 @@
 
 #include "chat-engine-adium.h"
 
-AdiumChatStyleEngine::AdiumChatStyleEngine()
+AdiumChatStyleEngine::AdiumChatStyleEngine(QObject *parent) :
+		QObject(parent)
 {
 	// Load required javascript funtions
 	QFile file(dataPath("kadu") + "/scripts/chat-scripts.js");

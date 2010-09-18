@@ -27,8 +27,10 @@
 class Chat;
 class Preview;
 
-class AdiumChatStyleEngine : public ChatStyleEngine
+class AdiumChatStyleEngine : public QObject, public ChatStyleEngine
 {
+	Q_OBJECT
+
 	AdiumStyle CurrentStyle;
 
 	QString jsCode;
@@ -41,7 +43,7 @@ class AdiumChatStyleEngine : public ChatStyleEngine
 	void appendChatMessage(HtmlMessagesRenderer *renderer, MessageRenderInfo *message);
 
 public:
-	explicit AdiumChatStyleEngine();
+	explicit AdiumChatStyleEngine(QObject *parent = 0);
 	virtual ~AdiumChatStyleEngine();
 
 	virtual bool supportVariants() { return true; }
