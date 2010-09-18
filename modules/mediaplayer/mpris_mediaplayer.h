@@ -7,8 +7,10 @@
 #include "player_commands.h"
 #include "mpris_controller.h"
 
-class MPRISMediaPlayer : public PlayerInfo, public PlayerCommands
+class MPRISMediaPlayer : public PlayerCommands, public PlayerInfo
 {
+	Q_OBJECT
+
 	QString getString(QString obj, QString func);
 	int getInt(QString obj, QString func);
 	QString getStringMapValue(QString obj, QString func, int param, QString field);
