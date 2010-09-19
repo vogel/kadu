@@ -41,7 +41,7 @@ class KADUAPI NamedStorableObject : public StorableObject
 {
 
 protected:
-	virtual StoragePoint * createStoragePoint();
+	virtual QSharedPointer<StoragePoint> createStoragePoint();
 
 public:
 	NamedStorableObject();

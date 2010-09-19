@@ -52,8 +52,8 @@ protected:
 	virtual void emitUpdated();
 
 public:
-	static FileTransferShared * loadStubFromStorage(StoragePoint *fileTransferStoragePoint);
-	static FileTransferShared * loadFromStorage(StoragePoint *fileTransferStoragePoint);
+	static FileTransferShared * loadStubFromStorage(const QSharedPointer<StoragePoint> &fileTransferStoragePoint);
+	static FileTransferShared * loadFromStorage(const QSharedPointer<StoragePoint> &fileTransferStoragePoint);
 
 	explicit FileTransferShared(QUuid uuid = QUuid());
 	virtual ~FileTransferShared();

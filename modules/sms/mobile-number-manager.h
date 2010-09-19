@@ -37,18 +37,18 @@ class MobileNumberManager : public StorableObject
 	virtual ~MobileNumberManager();
 
 protected:
-	virtual StoragePoint * createStoragePoint();
+	virtual QSharedPointer<StoragePoint> createStoragePoint();
 
 	virtual void load();
 
 public:
-	static MobileNumberManager * instance();  
+	static MobileNumberManager * instance();
 
 	virtual void store();
-	
+
 	void registerNumber(QString number, QString gatewayId);
 	void unregisterNumber(QString number);
-	
+
 	virtual QString storageNodeName() { return QLatin1String("MobileNumbers"); }
 	virtual QString storageNodeItemName() { return QLatin1String("MobileNumber"); }
 	virtual StorableObject * storageParent();

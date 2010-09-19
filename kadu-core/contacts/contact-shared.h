@@ -69,8 +69,8 @@ protected:
 	virtual void detailsRemoved();
 
 public:
-	static ContactShared * loadStubFromStorage(StoragePoint *contactStoragePoint);
-	static ContactShared * loadFromStorage(StoragePoint *contactStoragePoint);
+	static ContactShared * loadStubFromStorage(const QSharedPointer<StoragePoint> &contactStoragePoint);
+	static ContactShared * loadFromStorage(const QSharedPointer<StoragePoint> &contactStoragePoint);
 
 	explicit ContactShared(QUuid uuid = QUuid());
 	virtual ~ContactShared();

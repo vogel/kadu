@@ -25,14 +25,14 @@
 
 #include "message-shared.h"
 
-MessageShared * MessageShared::loadStubFromStorage(StoragePoint *messageStoragePoint)
+MessageShared * MessageShared::loadStubFromStorage(const QSharedPointer<StoragePoint> &messageStoragePoint)
 {
 	MessageShared *result = loadFromStorage(messageStoragePoint);
 	result->loadStub();
 	return result;
 }
 
-MessageShared * MessageShared::loadFromStorage(StoragePoint *messageStoragePoint)
+MessageShared * MessageShared::loadFromStorage(const QSharedPointer<StoragePoint> &messageStoragePoint)
 {
 	MessageShared *result = new MessageShared();
 	result->setStorage(messageStoragePoint);

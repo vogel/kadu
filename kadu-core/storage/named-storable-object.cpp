@@ -48,23 +48,23 @@ NamedStorableObject::NamedStorableObject()
  * If parent is NULL this method will return storage point that is child of
  * root node of XML configuration file.
  */
-StoragePoint * NamedStorableObject::createStoragePoint()
+QSharedPointer<StoragePoint> NamedStorableObject::createStoragePoint()
 {
 	if (storageNodeName().isEmpty())
-		return 0;
+		return QSharedPointer<StoragePoint>();
 
 	StorableObject *parent = storageParent();
 	if (!parent)
-		return 0;
+		return QSharedPointer<StoragePoint>();
 
-	StoragePoint *parentStoragePoint = storageParent()->storage();
+	QSharedPointer<StoragePoint> parentStoragePoint(storageParent()->storage());
 	if (!parentStoragePoint)
-		return 0;
+		return QSharedPointer<StoragePoint>();
 
 	QString nodeName = name();
 	if (nodeName.isEmpty())
-		return 0;
+		return QSharedPointer<StoragePoint>();
 
 	QDomElement node = parentStoragePoint->storage()->getNamedNode(parentStoragePoint->point(), storageNodeName(), nodeName);
-	return new StoragePoint(parentStoragePoint->storage(), node);
+	return QSharedPointer<StoragePoint>(new StoragePoint(parentStoragePoint->storage(), node));
 }

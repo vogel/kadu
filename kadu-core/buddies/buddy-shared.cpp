@@ -37,14 +37,14 @@
 
 #include "buddy-shared.h"
 
-BuddyShared * BuddyShared::loadStubFromStorage(StoragePoint *buddyStoragePoint)
+BuddyShared * BuddyShared::loadStubFromStorage(const QSharedPointer<StoragePoint> &buddyStoragePoint)
 {
 	BuddyShared *result = loadFromStorage(buddyStoragePoint);
 	result->loadStub();
 	return result;
 }
 
-BuddyShared * BuddyShared::loadFromStorage(StoragePoint *buddyStoragePoint)
+BuddyShared * BuddyShared::loadFromStorage(const QSharedPointer<StoragePoint> &buddyStoragePoint)
 {
 	BuddyShared *result = new BuddyShared();
 	result->setStorage(buddyStoragePoint);
@@ -106,7 +106,7 @@ void BuddyShared::importConfiguration(QDomElement parent)
 
 void BuddyShared::load()
 {
-	StoragePoint *sp = storage();
+	QSharedPointer<StoragePoint> sp(storage());
 	if (!sp)
 		return;
 
@@ -174,7 +174,7 @@ void BuddyShared::store()
 {
 	ensureLoaded();
 
-	StoragePoint *sp = storage();
+	QSharedPointer<StoragePoint> sp(storage());
 	if (!sp)
 		return;
 

@@ -41,12 +41,12 @@ class KADUAPI AvatarShared : public QObject, public Shared
 
 protected:
 	virtual void load();
-	
+
 	virtual void emitUpdated();
 
 public:
-	static AvatarShared * loadStubFromStorage(StoragePoint *avatarStoragePoint);
-	static AvatarShared * loadFromStorage(StoragePoint *avatarStoragePoint);
+	static AvatarShared * loadStubFromStorage(const QSharedPointer<StoragePoint> &avatarStoragePoint);
+	static AvatarShared * loadFromStorage(const QSharedPointer<StoragePoint> &avatarStoragePoint);
 
 	explicit AvatarShared(QUuid uuid = QUuid());
 	virtual ~AvatarShared();

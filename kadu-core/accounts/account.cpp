@@ -44,12 +44,12 @@ Account Account::create()
 	return new AccountShared();
 }
 
-Account Account::loadStubFromStorage(StoragePoint *accountStoragePoint)
+Account Account::loadStubFromStorage(const QSharedPointer<StoragePoint> &accountStoragePoint)
 {
 	return AccountShared::loadStubFromStorage(accountStoragePoint);
 }
 
-Account Account::loadFromStorage(StoragePoint *accountStoragePoint)
+Account Account::loadFromStorage(const QSharedPointer<StoragePoint> &accountStoragePoint)
 {
 	return AccountShared::loadFromStorage(accountStoragePoint);
 }
@@ -91,7 +91,7 @@ void Account::importProxySettings()
 }
 
 KaduSharedBase_PropertyDef(Account, Identity, accountIdentity, AccountIdentity, Identity::null)
-KaduSharedBase_PropertyReadDef(Account, StoragePoint *, storage, Storage, 0)
+KaduSharedBase_PropertyReadDef(Account, QSharedPointer<StoragePoint>, storage, Storage, QSharedPointer<StoragePoint>())
 KaduSharedBase_PropertyDef(Account, QString, protocolName, ProtocolName, QString::null)
 KaduSharedBase_PropertyDef(Account, Protocol *, protocolHandler, ProtocolHandler, 0)
 KaduSharedBase_PropertyReadDef(Account, AccountDetails *, details, Details, 0)

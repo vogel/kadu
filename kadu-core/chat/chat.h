@@ -52,8 +52,8 @@ class KADUAPI Chat : public SharedBase<ChatShared>
 
 public:
 	static Chat create();
-	static Chat loadStubFromStorage(StoragePoint *chatStoragePoint);
-	static Chat loadFromStorage(StoragePoint *chatStoragePoint);
+	static Chat loadStubFromStorage(const QSharedPointer<StoragePoint> &chatStoragePoint);
+	static Chat loadFromStorage(const QSharedPointer<StoragePoint> &chatStoragePoint);
 	static Chat null;
 
 	Chat();

@@ -43,12 +43,12 @@ FileTransfer FileTransfer::create()
 	return new FileTransferShared();
 }
 
-FileTransfer FileTransfer::loadStubFromStorage(StoragePoint* fileTransferStoragePoint)
+FileTransfer FileTransfer::loadStubFromStorage(const QSharedPointer<StoragePoint> &fileTransferStoragePoint)
 {
 	return FileTransferShared::loadStubFromStorage(fileTransferStoragePoint);
 }
 
-FileTransfer FileTransfer::loadFromStorage(StoragePoint *fileTransferStoragePoint)
+FileTransfer FileTransfer::loadFromStorage(const QSharedPointer<StoragePoint> &fileTransferStoragePoint)
 {
 	return FileTransferShared::loadFromStorage(fileTransferStoragePoint);
 }

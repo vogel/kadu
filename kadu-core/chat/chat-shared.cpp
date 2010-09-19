@@ -34,7 +34,7 @@
 
 #include "chat-shared.h"
 
-ChatShared * ChatShared::loadStubFromStorage(StoragePoint *storagePoint)
+ChatShared * ChatShared::loadStubFromStorage(const QSharedPointer<StoragePoint> &storagePoint)
 {
 	ChatShared *result = loadFromStorage(storagePoint);
 	result->loadStub();
@@ -50,7 +50,7 @@ ChatShared * ChatShared::loadStubFromStorage(StoragePoint *storagePoint)
  * Creates new object of ChatShared type and assigns storagePoint to it.
  * Object is lazy-loaded (it will be loaded when used first time).
  */
-ChatShared * ChatShared::loadFromStorage(StoragePoint *storagePoint)
+ChatShared * ChatShared::loadFromStorage(const QSharedPointer<StoragePoint> &storagePoint)
 {
 	ChatShared *result = new ChatShared();
 	result->setStorage(storagePoint);
@@ -295,7 +295,7 @@ void ChatShared::refreshTitle()
 		QStringList contactslist;
 		foreach (Contact contact, contacts())
 			contactslist.append(Parser::parse(conferenceContents.isEmpty() ? "%a" : conferenceContents, contact, false));
-	
+
 		title.append(contactslist.join(", "));
 	}
 	else if (contactsSize > 0)

@@ -54,7 +54,7 @@
  * To manager objects derivered from @link DetailsHolder @endlink class use @link Manager @endlink
  * template class.
  *
- * Class Item must implement Item loadFromStorage(StoragePoint *) static method.
+ * Class Item must implement Item loadFromStorage(const QSharedPointer\<StoragePoint\> &) static method.
  * Class Item must have static field Item null that represents unique NULL value.
  *
  * This class is thread-safe.
@@ -194,7 +194,7 @@ protected:
 		QList<QDomElement> itemElements = storage()->storage()->getNodes(itemsNode, storageNodeItemName());
 		foreach (QDomElement itemElement, itemElements)
 		{
-			StoragePoint *storagePoint = new StoragePoint(storage()->storage(), itemElement);
+			QSharedPointer<StoragePoint> storagePoint(new StoragePoint(storage()->storage(), itemElement));
 			QUuid uuid = storagePoint->point().attribute("uuid");
 			if (!uuid.isNull())
 			{

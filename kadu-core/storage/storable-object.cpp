@@ -29,7 +29,7 @@
  * (invalid) @link<StorableObject::storage storage point @endlink.
  */
 StorableObject::StorableObject() :
-		Storage(0), State(StateNew)
+		State(StateNew)
 {
 }
 
@@ -58,21 +58,21 @@ StorableObject::~StorableObject()
  * If parent is NULL this method will return storage point that is child of
  * root node of XML configuration file.
  */
-StoragePoint * StorableObject::createStoragePoint()
+QSharedPointer<StoragePoint> StorableObject::createStoragePoint()
 {
 	if (storageNodeName().isEmpty())
-		return 0;
+		return QSharedPointer<StoragePoint>();
 
 	StorableObject *parent = storageParent();
 	if (!parent)
-		return new StoragePoint(xml_config_file, xml_config_file->getNode(storageNodeName()));
+		return QSharedPointer<StoragePoint>(new StoragePoint(xml_config_file, xml_config_file->getNode(storageNodeName())));
 
-	StoragePoint *parentStoragePoint = storageParent()->storage();
+	QSharedPointer<StoragePoint> parentStoragePoint(storageParent()->storage());
 	if (!parentStoragePoint)
-		return 0;
+		return QSharedPointer<StoragePoint>();
 
 	QDomElement node = parentStoragePoint->storage()->getNode(parentStoragePoint->point(), storageNodeName());
-	return new StoragePoint(parentStoragePoint->storage(), node);
+	return QSharedPointer<StoragePoint>(new StoragePoint(parentStoragePoint->storage(), node));
 }
 
 /**
@@ -85,7 +85,7 @@ StoragePoint * StorableObject::createStoragePoint()
  * state of object to StateNotLoaded, so it will be loaded after executing ensureLoaded
  * method.
  */
-void StorableObject::setStorage(StoragePoint *storage)
+void StorableObject::setStorage(const QSharedPointer<StoragePoint> &storage)
 {
 	State = StateNotLoaded;
 	Storage = storage;
@@ -111,7 +111,7 @@ bool StorableObject::isValidStorage()
  * Returns storage point for this object. If the storage point has not been specified
  * yet, it calls @link<createStoragePoint> createStoragePoint @endlink to create one.
  */
-StoragePoint * StorableObject::storage()
+const QSharedPointer<StoragePoint> & StorableObject::storage()
 {
 	if (!Storage)
 		Storage = createStoragePoint();
@@ -207,8 +207,7 @@ void StorableObject::removeFromStorage()
 		return;
 
 	Storage->point().parentNode().removeChild(Storage->point());
-	delete Storage;
-	Storage = 0;
+	Storage.clear();;
 }
 
 /**
@@ -277,15 +276,15 @@ void StorableObject::removeAttribute(const QString& name)
  *
  * Node is named ModuleData with attribute name with value from module parameter.
  */
-StoragePoint * StorableObject::storagePointForModuleData(const QString &module, bool create)
+QSharedPointer<StoragePoint> StorableObject::storagePointForModuleData(const QString &module, bool create)
 {
-	StoragePoint *parent = storage();
+	QSharedPointer<StoragePoint> parent(storage());
 	if (!parent || !parent->storage())
-		return 0;
+		return QSharedPointer<StoragePoint>();
 
 	QDomElement moduleDataNode = parent->storage()->getNamedNode(parent->point(), "ModuleData",
 			module, create ? XmlConfigFile::ModeGet : XmlConfigFile::ModeFind);
 	return moduleDataNode.isNull()
-			? 0
-			: new StoragePoint(parent->storage(), moduleDataNode);
+			? QSharedPointer<StoragePoint>()
+			: QSharedPointer<StoragePoint>(new StoragePoint(parent->storage(), moduleDataNode));
 }

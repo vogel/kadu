@@ -49,8 +49,8 @@ protected:
 	virtual void emitUpdated();
 
 public:
-	static MessageShared * loadStubFromStorage(StoragePoint *messageStoragePoint);
-	static MessageShared * loadFromStorage(StoragePoint *messageStoragePoint);
+	static MessageShared * loadStubFromStorage(const QSharedPointer<StoragePoint> &messageStoragePoint);
+	static MessageShared * loadFromStorage(const QSharedPointer<StoragePoint> &messageStoragePoint);
 
 	explicit MessageShared(QUuid uuid = QUuid());
 	virtual ~MessageShared();

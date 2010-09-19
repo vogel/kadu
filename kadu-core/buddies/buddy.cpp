@@ -49,12 +49,12 @@ Buddy Buddy::create()
 	return new BuddyShared();
 }
 
-Buddy Buddy::loadStubFromStorage(StoragePoint *contactStoragePoint)
+Buddy Buddy::loadStubFromStorage(const QSharedPointer<StoragePoint> &contactStoragePoint)
 {
 	return BuddyShared::loadStubFromStorage(contactStoragePoint);
 }
 
-Buddy Buddy::loadFromStorage(StoragePoint *contactStoragePoint)
+Buddy Buddy::loadFromStorage(const QSharedPointer<StoragePoint> &contactStoragePoint)
 {
 	return BuddyShared::loadFromStorage(contactStoragePoint);
 }
@@ -99,7 +99,7 @@ void Buddy::store()
 		data()->removeFromStorage();
 }
 
-StoragePoint * Buddy::storagePointForModuleData(const QString& module, bool create) const
+QSharedPointer<StoragePoint> Buddy::storagePointForModuleData(const QString& module, bool create) const
 {
 	return data()->storagePointForModuleData(module, create);
 }

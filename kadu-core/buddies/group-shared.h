@@ -50,8 +50,8 @@ protected:
 	virtual void emitUpdated();
 
 public:
-	static GroupShared * loadStubFromStorage(StoragePoint *groupStoragePoint);
-	static GroupShared * loadFromStorage(StoragePoint *groupStoragePoint);
+	static GroupShared * loadStubFromStorage(const QSharedPointer<StoragePoint> &groupStoragePoint);
+	static GroupShared * loadFromStorage(const QSharedPointer<StoragePoint> &groupStoragePoint);
 
 	explicit GroupShared(QUuid uuid = QUuid());
 	virtual ~GroupShared();

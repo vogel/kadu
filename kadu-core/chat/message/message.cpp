@@ -32,12 +32,12 @@ Message Message::create()
 	return new MessageShared();
 }
 
-Message Message::loadStubFromStorage(StoragePoint *messageStoragePoint)
+Message Message::loadStubFromStorage(const QSharedPointer<StoragePoint> &messageStoragePoint)
 {
 	return MessageShared::loadStubFromStorage(messageStoragePoint);
 }
 
-Message Message::loadFromStorage(StoragePoint *messageStoragePoint)
+Message Message::loadFromStorage(const QSharedPointer<StoragePoint> &messageStoragePoint)
 {
 	return MessageShared::loadFromStorage(messageStoragePoint);
 }

@@ -1,7 +1,7 @@
 #ifndef TLEN_PROTOCOL_H
 #define TLEN_PROTOCOL_H
 
-#error Module tlen is not supported. Do not compile it, and if you do, do not post any bug reports! 
+#error Module tlen is not supported. Do not compile it, and if you do, do not post any bug reports!
 
 #include <QtCore/QObject>
 #include <QtGui/QPixmap>
@@ -40,7 +40,7 @@ class TlenProtocol : public Protocol
 
 		Buddy nodeToBuddy(QDomNode node);
 
-		virtual Conference * loadConferenceFromStorage(StoragePoint *storage)
+		virtual Conference * loadConferenceFromStorage(const QSharedPointer<StoragePoint> &storage)
 		{
 			Q_UNUSED(storage);
 
@@ -49,10 +49,10 @@ class TlenProtocol : public Protocol
 
 		virtual QPixmap statusPixmap(Status status);
 		virtual QPixmap statusPixmap(const QString &statusType);
-		
+
 		virtual QIcon statusIcon(Status status);
 		virtual QIcon statusIcon(const QString &statusType);
-		
+
 		virtual void changeStatus(Status status);
 
 		virtual AvatarService *avatarService() { return CurrentAvatarService; }

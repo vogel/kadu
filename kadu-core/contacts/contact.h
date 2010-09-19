@@ -43,10 +43,10 @@ class KADUAPI Contact : public SharedBase<ContactShared>
 
 public:
 	static Contact create();
-	static Contact loadStubFromStorage(StoragePoint *storage);
-	static Contact loadFromStorage(StoragePoint *storage);
+	static Contact loadStubFromStorage(const QSharedPointer<StoragePoint> &storage);
+	static Contact loadFromStorage(const QSharedPointer<StoragePoint> &storage);
 	static Contact null;
-	
+
 	Contact();
 	Contact(ContactShared *data);
 	Contact(QObject *data);
@@ -58,7 +58,7 @@ public:
 
 	KaduSharedBase_Property(ContactDetails *, details, Details)
 	KaduSharedBase_PropertyRead(QUuid, uuid, Uuid)
-	KaduSharedBase_PropertyRead(StoragePoint *, storage, Storage)
+	KaduSharedBase_PropertyRead(QSharedPointer<StoragePoint>, storage, Storage)
 	KaduSharedBase_Property(Account, contactAccount, ContactAccount)
 	KaduSharedBase_Property(Avatar, contactAvatar, ContactAvatar)
 	KaduSharedBase_Property(Buddy, ownerBuddy, OwnerBuddy)

@@ -23,6 +23,7 @@
 #ifndef STORABLE_OBJECT_H
 #define STORABLE_OBJECT_H
 
+#include <QtCore/QSharedPointer>
 #include <QtCore/QVariant>
 
 #include "configuration/xml-configuration-file.h"
@@ -129,13 +130,13 @@ public:
 	};
 
 private:
-	StoragePoint *Storage;
+	QSharedPointer<StoragePoint> Storage;
 	StorableObjectState State;
 	QMap<QString, StorableObject *> ModulesStorableData;
 	QMap<QString, void *> ModulesData;
 
 protected:
-	virtual StoragePoint * createStoragePoint();
+	virtual QSharedPointer<StoragePoint> createStoragePoint();
 
 	virtual void load();
 
@@ -164,7 +165,7 @@ public:
 	 */
 	virtual QString storageNodeName() = 0;
 
-	StoragePoint * storage();
+	const QSharedPointer<StoragePoint> & storage();
 
 	virtual void store();
 	virtual bool shouldStore();
@@ -191,9 +192,9 @@ public:
 	void ensureStored();
 	void removeFromStorage();
 
-	void setStorage(StoragePoint *storage);
+	void setStorage(const QSharedPointer<StoragePoint> &storage);
 	bool isValidStorage();
-	StoragePoint * storagePointForModuleData(const QString &module, bool create = false);
+	QSharedPointer<StoragePoint> storagePointForModuleData(const QString &module, bool create = false);
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
@@ -295,7 +296,7 @@ template<class T>
 		if (ModulesStorableData.contains(module))
 			return dynamic_cast<T *>(ModulesStorableData[module]);
 
-		StoragePoint *storagePoint = storagePointForModuleData(module, create);
+		QSharedPointer<StoragePoint> storagePoint(storagePointForModuleData(module, create));
 		if (!storagePoint)
 			return 0;
 

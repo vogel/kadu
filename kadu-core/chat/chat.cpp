@@ -50,7 +50,7 @@ Chat Chat::create()
 	return new ChatShared();
 }
 
-Chat Chat::loadStubFromStorage(StoragePoint *chatStoragePoint)
+Chat Chat::loadStubFromStorage(const QSharedPointer<StoragePoint> &chatStoragePoint)
 {
 	return ChatShared::loadStubFromStorage(chatStoragePoint);
 }
@@ -64,7 +64,7 @@ Chat Chat::loadStubFromStorage(StoragePoint *chatStoragePoint)
  * Loads Chat object from storage point and returns it. Real data will be loaded
  * at first usage of Chat object.
  */
-Chat Chat::loadFromStorage(StoragePoint *chatStoragePoint)
+Chat Chat::loadFromStorage(const QSharedPointer<StoragePoint> &chatStoragePoint)
 {
 	return ChatShared::loadFromStorage(chatStoragePoint);
 }

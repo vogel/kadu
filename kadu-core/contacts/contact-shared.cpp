@@ -32,7 +32,7 @@
 
 #include "contact-shared.h"
 
-ContactShared * ContactShared::loadStubFromStorage(StoragePoint *storagePoint)
+ContactShared * ContactShared::loadStubFromStorage(const QSharedPointer<StoragePoint> &storagePoint)
 {
 	ContactShared *result = loadFromStorage(storagePoint);
 	result->loadStub();
@@ -40,7 +40,7 @@ ContactShared * ContactShared::loadStubFromStorage(StoragePoint *storagePoint)
 	return result;
 }
 
-ContactShared * ContactShared::loadFromStorage(StoragePoint *storagePoint)
+ContactShared * ContactShared::loadFromStorage(const QSharedPointer<StoragePoint> &storagePoint)
 {
 	ContactShared *result = new ContactShared();
 	result->setStorage(storagePoint);

@@ -54,8 +54,8 @@ class KADUAPI Buddy : public SharedBase<BuddyShared>
 
 public:
 	static Buddy create();
-	static Buddy loadStubFromStorage(StoragePoint *buddyStoragePoint);
-	static Buddy loadFromStorage(StoragePoint *buddyStoragePoint);
+	static Buddy loadStubFromStorage(const QSharedPointer<StoragePoint> &buddyStoragePoint);
+	static Buddy loadFromStorage(const QSharedPointer<StoragePoint> &buddyStoragePoint);
 	static Buddy null;
 
 	static Buddy dummy();
@@ -71,7 +71,7 @@ public:
 	void importConfiguration(QDomElement parent);
 	void store();
 
-	StoragePoint * storagePointForModuleData(const QString &module, bool create = false) const;
+	QSharedPointer<StoragePoint> storagePointForModuleData(const QString &module, bool create = false) const;
 
 	QString customData(const QString &key);
 	void setCustomData(const QString &key, const QString &value);
