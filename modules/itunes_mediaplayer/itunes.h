@@ -10,8 +10,10 @@
 
 class ITunesController;
 
-class ITunesMediaPlayer : public PlayerInfo, public PlayerCommands
+class ITunesMediaPlayer : public PlayerCommands, public PlayerInfo
 {
+	Q_OBJECT
+
 	ITunesController *controller;
 	int getVolume();
 	QByteArray executeCommand(const QString &command);

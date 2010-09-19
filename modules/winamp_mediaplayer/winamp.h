@@ -14,8 +14,9 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
-class WinampMediaPlayer : public PlayerInfo, PlayerCommands
+class WinampMediaPlayer : public PlayerCommands, public PlayerInfo
 {
+	Q_OBJECT
 
 	public:
 		WinampMediaPlayer();

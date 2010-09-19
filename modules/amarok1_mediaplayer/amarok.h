@@ -1,12 +1,10 @@
 #ifndef AMAROK_H
 #define AMAROK_H
 
-#include <QtCore/QObject>
-
 #include "../mediaplayer/player_info.h"
 #include "../mediaplayer/player_commands.h"
 
-class AmarokMediaPlayer : public PlayerInfo, public PlayerCommands
+class AmarokMediaPlayer : public PlayerCommands, public PlayerInfo
 {
 	Q_OBJECT
 

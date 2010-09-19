@@ -21,8 +21,6 @@
 #ifndef MPD_MEDIAPLAYER
 #define MPD_MEDIAPLAYER
 
-#include <QtCore/QObject>
-
 #include <mpd/client.h>
 
 #include "../mediaplayer/player_info.h"
@@ -30,7 +28,7 @@
 
 #include "mpd_config.h"
 
-class MPDMediaPlayer : public PlayerInfo, public PlayerCommands
+class MPDMediaPlayer : public PlayerCommands, public PlayerInfo
 {
 	Q_OBJECT
 

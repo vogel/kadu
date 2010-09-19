@@ -1,12 +1,10 @@
 #ifndef XMMS_H
 #define XMMS_H
 
-#include <QtCore/QObject>
-
 #include "../mediaplayer/player_info.h"
 #include "../mediaplayer/player_commands.h"
 
-class XmmsMediaPlayer : public PlayerInfo, public PlayerCommands
+class XmmsMediaPlayer : public PlayerCommands, public PlayerInfo
 {
 	Q_OBJECT
 
