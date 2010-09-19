@@ -51,10 +51,15 @@ void StatusChangerManager::registerStatusChanger(StatusChanger *statusChanger)
 		if (StatusChangers.at(i)->priority() > statusChanger->priority())
 		{
 			StatusChangers.insert(i, statusChanger);
+			kdebugf2();
 			return;
 		}
 
-	StatusChangers.insert(StatusChangers.end(), statusChanger);
+	StatusChangers.append(statusChanger);
+	// TODO 0.6.6: Shouldn't this one be called also if new status changer
+	// doesn't have max priority? What if the one that is being registered
+	// has the greatest priority amongst the status changers that actually
+	// want to change status but not greatest amongst all? Am I correct? -- beevvy
 	statusChanged();
 
 	kdebugf2();
@@ -73,26 +78,15 @@ void StatusChangerManager::unregisterStatusChanger(StatusChanger *statusChanger)
 	kdebugf2();
 }
 
-void StatusChangerManager::setStatus(StatusContainer *statusContainer, Status status)
+void StatusChangerManager::statusChanged()
 {
-	if (statusContainer)
-	{
-		Statuses[statusContainer] = status;
-		statusChanged(statusContainer);
-	}
+	foreach (StatusContainer *statusContainer, StatusContainerManager::instance()->statusContainers())
+		if (statusContainer)
+			statusChanged(statusContainer);
 }
 
 void StatusChangerManager::statusChanged(StatusContainer *container)
 {
-	if (!container)
-	{
-		foreach (StatusContainer *statusContainer, StatusContainerManager::instance()->statusContainers())
-			if (statusContainer)
-				statusChanged(statusContainer);
-
-		return;
-	}
-
 	kdebugf();
 
 	Status status = Statuses[container];
@@ -103,6 +97,15 @@ void StatusChangerManager::statusChanged(StatusContainer *container)
 	emit statusChanged(container, status);
 
 	kdebugf2();
+}
+
+void StatusChangerManager::setStatus(StatusContainer *statusContainer, Status status)
+{
+	if (statusContainer)
+	{
+		Statuses[statusContainer] = status;
+		statusChanged(statusContainer);
+	}
 }
 
 Status StatusChangerManager::status(StatusContainer *statusContainer)
