@@ -30,18 +30,21 @@
  */
 
 #include <QtCore/QFile>
+#include <QtCore/QString>
 #include <QtCore/QTextStream>
-#include <QtGui/QBoxLayout>
+#include <QtGui/QHBoxLayout>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QMouseEvent>
 #include <QtGui/QPushButton>
 #include <QtGui/QStyle>
 #include <QtGui/QTabWidget>
 #include <QtGui/QTextEdit>
+#include <QtGui/QVBoxLayout>
 
 #include "debug.h"
 #include "kadu-config.h"
 #include "icons-manager.h"
+#include "html_document.h"
 #include "misc/misc.h"
 #include "os/generic/url-opener.h"
 #include "url-handlers/mail-url-handler.h"
@@ -51,22 +54,21 @@
 About::About(QWidget *parent) :
 		QWidget(parent, Qt::Window)
 {
-	setWindowRole("kadu-about");
-
 	kdebugf();
 
 	// set window properties and flags
+	setWindowRole("kadu-about");
 	setWindowTitle(tr("About"));
 	setAttribute(Qt::WA_DeleteOnClose);
 	// end set window properties and flags
 
-	QLabel *l_icon = new QLabel;
+	QWidget *center = new QWidget(this);
+	QWidget *texts = new QWidget(center);
+
+	QLabel *l_icon = new QLabel(texts);
 	l_icon->setPixmap(IconsManager::instance()->iconByPath("kadu_icons/kadu.png").pixmap(64, 64));
 
-	QWidget *center = new QWidget;
-	QWidget *texts = new QWidget;
-
-	QLabel *l_info = new QLabel;
+	QLabel *l_info = new QLabel(texts);
 	l_info->setBackgroundRole(texts->backgroundRole());
 
 	l_info->setText("<font size=\"5\">Kadu</font><br /><b>"
@@ -83,18 +85,18 @@ About::About(QWidget *parent) :
 	// end create main QLabel widgets (icon and app info)
 
 	// our TabWidget
-	QTabWidget *tw_about = new QTabWidget(this);
+	QTabWidget *tw_about = new QTabWidget(center);
 	tw_about->setUsesScrollButtons(false);
 	// end our TabWidget
 
 	QWidget *wb_about = new QWidget(tw_about);
 	QVBoxLayout *about_layout = new QVBoxLayout(wb_about);
-	about_layout->addWidget(new QLabel(tr("Instant Messenger")));
-	about_layout->addWidget(new QLabel(tr("Support:")));
-	about_layout->addWidget(new KaduLink("http://www.kadu.net/forum/"));
+	about_layout->addWidget(new QLabel(tr("Instant Messenger"), wb_about));
+	about_layout->addWidget(new QLabel(tr("Support:"), wb_about));
+	about_layout->addWidget(new KaduLink("http://www.kadu.net/forum/", wb_about));
 	about_layout->addSpacing(20);
-	about_layout->addWidget(new QLabel("(C) 2001-2010 Kadu Team"));
-	about_layout->addWidget(new KaduLink("http://www.kadu.net/"));
+	about_layout->addWidget(new QLabel("(C) 2001-2010 Kadu Team", wb_about));
+	about_layout->addWidget(new KaduLink("http://www.kadu.net/", wb_about));
 	about_layout->addStretch(100);
 
 	// create our info widgets
@@ -105,14 +107,14 @@ About::About(QWidget *parent) :
 	tb_authors->setWordWrapMode(QTextOption::NoWrap);
 	tb_authors->viewport()->setAutoFillBackground(false);
 	tb_authors->setTextInteractionFlags(Qt::TextBrowserInteraction);
-	HtmlDocument doc;
 	QString authors = loadFile("AUTHORS");
 	// convert the email addresses
-	authors = authors.replace(" (at) ", "@");
-	authors = authors.replace(" (dot) ", ".");
-	authors = authors.replace(QRegExp("[<>]"), "");
-	authors = authors.replace("\n   ", "</b><br/>&nbsp;&nbsp;&nbsp;");
-	authors = authors.replace("\n", "</b><br/><b>");
+	authors.replace(" (at) ", "@");
+	authors.replace(" (dot) ", ".");
+	authors.replace(QRegExp("[<>]"), "");
+	authors.replace("\n   ", "</b><br/>&nbsp;&nbsp;&nbsp;");
+	authors.replace("\n", "</b><br/><b>");
+	HtmlDocument doc;
 	doc.parseHtml(authors);
 	MailUrlHandler *handler = new MailUrlHandler;
 	handler->convertUrlsToHtml(doc);
@@ -155,12 +157,14 @@ About::About(QWidget *parent) :
 	center_layout->addWidget(texts);
 	center_layout->addWidget(tw_about);
 	// close button
-	QWidget *bottom = new QWidget;
+	QWidget *bottom = new QWidget(center);
 
-	QWidget *blank2 = new QWidget;
+	QWidget *blank2 = new QWidget(bottom);
 	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
 
-	QPushButton *pb_close = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("&Close"));
+	QPushButton *pb_close =
+			new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton),
+				tr("&Close"), bottom);
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
 
 	QHBoxLayout *bottom_layout = new QHBoxLayout(bottom);
@@ -213,15 +217,19 @@ QString About::loadFile(const QString &name)
 	return data;
 }
 
-KaduLink::KaduLink(QString s) :
-		QLabel()
+KaduLink::KaduLink(const QString &link, QWidget *parent) :
+		QLabel(parent), Link(link)
 {
-	setText(QString("<a href=\"%1\">%1</a>").arg(s));
+	setText(QString("<a href=\"%1\">%1</a>").arg(Link));
 	setCursor(QCursor(Qt::PointingHandCursor));
 	setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed));
 }
 
+KaduLink::~KaduLink()
+{
+}
+
 void KaduLink::mousePressEvent(QMouseEvent *)
 {
-	UrlOpener::openUrl(link);
+	UrlOpener::openUrl(Link);
 }

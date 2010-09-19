@@ -32,6 +32,10 @@
 #include <QtGui/QLabel>
 #include <QtGui/QWidget>
 
+class QKeyEvent;
+class QMouseEvent;
+class QString;
+
 /**
 	\class About
 	\brief Okno z informacjami o programie.
@@ -41,7 +45,8 @@ class About : public QWidget
 	Q_OBJECT
 
 	QString loadFile(const QString &name);
-	void keyPressEvent(QKeyEvent *);
+
+	virtual void keyPressEvent(QKeyEvent *);
 
 public:
 	/**
@@ -51,13 +56,13 @@ public:
 		\param parent rodzic okna
 		\param name nazwa obiektu
 	**/
-	About(QWidget *parent = 0);
+	explicit About(QWidget *parent = 0);
 
 	/**
 		\fn ~About()
 		Destruktor zapisuje rozmiar okna.
 	**/
-	~About();
+	virtual ~About();
 
 };
 
@@ -65,13 +70,14 @@ class KaduLink : public QLabel
 {
 	Q_OBJECT
 
-	QString link;
+	QString Link;
 
 protected:
 	virtual void mousePressEvent(QMouseEvent *);
 
 public:
-	explicit KaduLink(QString s);
+	explicit KaduLink(const QString &link, QWidget *parent = 0);
+	virtual ~KaduLink();
 
 };
 
