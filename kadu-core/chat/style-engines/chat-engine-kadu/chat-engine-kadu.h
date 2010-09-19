@@ -25,6 +25,8 @@
 
 #include "../chat-style-engine.h"
 
+template<typename T> class QSharedPointer;
+
 class Preview;
 class SyntaxList;
 
@@ -32,7 +34,7 @@ class KaduChatStyleEngine : public QObject, public ChatStyleEngine
 {
 	Q_OBJECT
 
-	SyntaxList *syntaxList;
+	QSharedPointer<SyntaxList> syntaxList;
 
 	QString jsCode;
 
@@ -59,7 +61,7 @@ public:
 		Q_UNUSED(styleName)
 		return false;
 	}
-	
+
 	virtual void clearMessages(HtmlMessagesRenderer *renderer);
 	virtual void appendMessages(HtmlMessagesRenderer *renderer, QList<MessageRenderInfo *> messages);
 	virtual void appendMessage(HtmlMessagesRenderer *renderer, MessageRenderInfo *message);

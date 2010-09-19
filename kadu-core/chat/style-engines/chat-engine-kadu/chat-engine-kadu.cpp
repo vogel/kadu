@@ -19,6 +19,7 @@
  */
 
 #include <QtCore/QFileInfo>
+#include <QtCore/QSharedPointer>
 #include <QtWebKit/QWebFrame>
 
 #include "accounts/account-manager.h"
@@ -48,11 +49,6 @@ KaduChatStyleEngine::KaduChatStyleEngine(QObject *parent) :
 
 KaduChatStyleEngine::~KaduChatStyleEngine()
 {
-	if (syntaxList)
-	{
-		delete syntaxList;
-		syntaxList = 0;
-	}
 }
 
 void KaduChatStyleEngine::clearMessages(HtmlMessagesRenderer *renderer)
@@ -297,7 +293,7 @@ void KaduChatStyleEngine::validateStyleName(const QString &name, bool &valid)
 
 bool KaduChatStyleEngine::removeStyle(const QString &styleName)
 {
-	return syntaxList && syntaxList->deleteSyntax(styleName);
+	return syntaxList->deleteSyntax(styleName);
 }
 
 void KaduChatStyleEngine::syntaxAdded(const QString &syntaxName)

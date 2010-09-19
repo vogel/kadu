@@ -18,6 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QSharedPointer>
 #include <QtGui/QFrame>
 #include <QtGui/QGridLayout>
 #include <QtGui/QInputDialog>
@@ -35,8 +36,8 @@
 
 #include "syntax-editor-window.h"
 
-SyntaxEditorWindow::SyntaxEditorWindow(SyntaxList *syntaxList, const QString &syntaxName,
-		const QString &category, const QString &syntaxHint, QWidget* parent) :
+SyntaxEditorWindow::SyntaxEditorWindow(const QSharedPointer<SyntaxList> &syntaxList, const QString &syntaxName,
+		const QString &category, const QString &syntaxHint, QWidget *parent) :
 		QWidget(parent), syntaxList(syntaxList), syntaxName(syntaxName)
 {
 	setWindowRole("kadu-syntax-editor");

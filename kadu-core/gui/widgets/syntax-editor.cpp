@@ -20,6 +20,7 @@
  */
 
 #include <QtCore/QFile>
+#include <QtCore/QSharedPointer>
 #include <QtCore/QTextStream>
 #include <QtGui/QComboBox>
 #include <QtGui/QHBoxLayout>
@@ -33,7 +34,7 @@
 #include "syntax-editor.h"
 
 SyntaxEditor::SyntaxEditor(QWidget *parent) :
-		QWidget(parent), syntaxList(0)
+		QWidget(parent)
 {
 	QHBoxLayout *layout = new QHBoxLayout(this);
 
@@ -52,11 +53,6 @@ SyntaxEditor::SyntaxEditor(QWidget *parent) :
 
 SyntaxEditor::~SyntaxEditor()
 {
-	if (syntaxList)
-	{
-		delete syntaxList;
-		syntaxList = 0;
-	}
 }
 
 void SyntaxEditor::setCurrentSyntax(const QString &syntax)
@@ -137,14 +133,12 @@ void SyntaxEditor::syntaxChangedSlot(const QString &newSyntax)
 
 void SyntaxEditor::updateSyntaxList()
 {
-	if (syntaxList)
-		delete syntaxList;
-	syntaxList = new SyntaxList(category.toLower());
+	syntaxList = QSharedPointer<SyntaxList>(new SyntaxList(category.toLower()));
 
 	syntaxListCombo->clear();
 	syntaxListCombo->addItems(syntaxList->keys());
 
-	connect(syntaxList, SIGNAL(updated()), this, SLOT(syntaxListUpdated()));
+	connect(syntaxList.data(), SIGNAL(updated()), this, SLOT(syntaxListUpdated()));
 }
 
 void SyntaxEditor::syntaxListUpdated()

@@ -24,6 +24,7 @@
 
 class QComboBox;
 class QPushButton;
+template<typename T> class QSharedPointer;
 
 class SyntaxEditorWindow;
 class SyntaxList;
@@ -32,7 +33,7 @@ class SyntaxEditor : public QWidget
 {
 	Q_OBJECT
 
-	SyntaxList *syntaxList;
+	QSharedPointer<SyntaxList> syntaxList;
 	QComboBox *syntaxListCombo;
 	QPushButton *deleteButton;
 

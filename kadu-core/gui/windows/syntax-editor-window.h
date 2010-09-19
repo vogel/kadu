@@ -23,6 +23,7 @@
 #include <QtGui/QWidget>
 
 class QLineEdit;
+template<typename T> class QSharedPointer;
 class QTextEdit;
 
 class Preview;
@@ -32,7 +33,7 @@ class SyntaxEditorWindow : public QWidget
 {
 	Q_OBJECT
 
-	SyntaxList *syntaxList;
+	QSharedPointer<SyntaxList> syntaxList;
 
 	QLineEdit *nameEdit;
 	QTextEdit *editor;
@@ -49,7 +50,7 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *e);
 
 public:
-	SyntaxEditorWindow(SyntaxList *syntaxList, const QString &syntaxName, const QString &category, const QString &syntaxHint, QWidget* parent = 0);
+	SyntaxEditorWindow(const QSharedPointer<SyntaxList> &syntaxList, const QString &syntaxName, const QString &category, const QString &syntaxHint, QWidget *parent = 0);
 	~SyntaxEditorWindow();
 
 	Preview * preview() { return previewPanel; }
