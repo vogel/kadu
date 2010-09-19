@@ -68,6 +68,9 @@ QString SyntaxEditor::currentSyntax()
 
 void SyntaxEditor::setCategory(const QString &category)
 {
+	if (this->category == category)
+		return;
+
 	this->category = category;
 	updateSyntaxList();
 }
