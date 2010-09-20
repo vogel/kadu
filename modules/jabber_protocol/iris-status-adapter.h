@@ -32,6 +32,8 @@ namespace IrisStatusAdapter
 {
 	Status fromIrisStatus(XMPP::Status status);
 	XMPP::Status toIrisStatus(Status status);
+
+	bool statusesEqual(Status status1, Status status2);
 };
 
 #endif // IRIS_STATUS_ADAPTER_H

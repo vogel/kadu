@@ -513,7 +513,7 @@ JabberResourcePool *JabberProtocol::resourcePool()
 void JabberProtocol::changeStatus()
 {
 	Status newStatus = nextStatus();
-	if (newStatus == status())
+	if (IrisStatusAdapter::statusesEqual(newStatus, status()))
 		return;
 
 	if (newStatus.isDisconnected() && status().isDisconnected())
@@ -558,7 +558,7 @@ void JabberProtocol::changeStatus()
 
 void JabberProtocol::changePrivateMode()
 {
-	changeStatus();
+	//changeStatus();
 }
 
 QString JabberProtocol::statusPixmapPath()

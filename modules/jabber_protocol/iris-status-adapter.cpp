@@ -76,4 +76,21 @@ namespace IrisStatusAdapter
 		s.setStatus(status.description());
 		return s;
 	}
+	
+	bool statusesEqual(Status status1, Status status2)
+	{
+		if (status1.description() != status2.description())
+			return false;
+		
+	  	if (status1.type() == status2.type())
+			return true;
+
+		if (status1.type() == "Invisible" && status2.type() == "DoNotDisturb")
+			return true;
+		
+		if (status1.type() == "DoNotDisturb" && status2.type() == "Invisible")
+			return true;
+		
+		return false;
+	}
 }
