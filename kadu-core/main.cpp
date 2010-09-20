@@ -37,13 +37,13 @@
 
 #include <time.h>
 #include <errno.h>
-#ifndef Q_OS_WIN
+#ifndef Q_WS_WIN
 #include <sys/file.h>
 #include <sys/stat.h>
 #include <pwd.h>
-#else // !Q_OS_WIN
+#else // !Q_WS_WIN
 #include <winsock2.h>
-#endif // !Q_OS_WIN
+#endif // !Q_WS_WIN
 #if defined(Q_OS_BSD4) || defined(Q_OS_LINUX)
 #include <sys/types.h>
 #endif // Q_OS_BSD4 || Q_OS_LINUX
@@ -63,7 +63,7 @@
 #include "misc/misc.h"
 #include "modules.h"
 
-#ifndef Q_OS_WIN
+#ifndef Q_WS_WIN
 void kaduQtMessageHandler(QtMsgType type, const char *msg)
 {
 	switch (type)
@@ -96,7 +96,7 @@ void kaduQtMessageHandler(QtMsgType type, const char *msg)
 			break;
 	}
 }
-#endif // Q_OS_WIN
+#endif // Q_WS_WIN
 
 #ifdef DEBUG_ENABLED
 extern KADUAPI bool showTimesInDebug;
@@ -188,19 +188,19 @@ int main(int argc, char *argv[])
 	exitingTime = 0;
 	startTime = (sec % 1000) * 1000 + msec;
 
-#ifndef Q_OS_WIN
+#ifndef Q_WS_WIN
 	char *env_lang = getenv("LANG");
 	if (env_lang)
 		setenv("LC_COLLATE", env_lang, true);
 	else
 		setenv("LC_COLLATE", "pl_PL", true);
-#else // !Q_OS_WIN
+#else // !Q_WS_WIN
 	WSADATA wsaData;
 
 	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
 		return 1;
 	}
-#endif // !Q_OS_WIN
+#endif // !Q_WS_WIN
 	debug_mask = -2;
 
 	kdebugm(KDEBUG_INFO, "before creation of new KaduApplication\n");
@@ -236,7 +236,7 @@ int main(int argc, char *argv[])
 		}
 		else if ((param == "--debug") && (argc > i + 1))
 			debug_mask = atol(argv[++i]);
-#ifndef Q_OS_WIN
+#ifndef Q_WS_WIN
 		else if ((param == "--config-dir") && (argc > i + 1))
 			setenv("CONFIG_DIR", argv[++i], 1);
 #endif
@@ -246,7 +246,7 @@ int main(int argc, char *argv[])
 			fprintf(stderr, "Ignoring unknown parameter '%s'\n", qApp->argv()[i]);
 	}
 
-#ifndef Q_OS_WIN
+#ifndef Q_WS_WIN
 	// Qt version is better on win32
 	qInstallMsgHandler(kaduQtMessageHandler);
 #endif
@@ -270,7 +270,7 @@ int main(int argc, char *argv[])
 	{
 		char path[1024];
 		tm *t = localtime(&startTimeT);
-#ifndef Q_OS_WIN
+#ifndef Q_WS_WIN
 		passwd *p = getpwuid(getuid());
 		if (t && p)
 		{
@@ -304,7 +304,7 @@ int main(int argc, char *argv[])
 
 	enableSignalHandling();
 
-#ifndef Q_OS_WIN
+#ifndef Q_WS_WIN
 	// delayed running, useful in gnome
 	sleep(config_file.readNumEntry("General", "StartDelay"));
 #endif
@@ -357,7 +357,7 @@ int main(int argc, char *argv[])
 			Core::instance(), SLOT(receivedSignal(const QString &)));
 
 	QString path_ = profilePath();
-#ifndef Q_OS_WIN
+#ifndef Q_WS_WIN
 	if (path_.endsWith("/kadu/") || path_.endsWith("/Kadu/")) // for profiles directory
 		mkdir(qPrintable(path_.left(path_.length() - 6)), 0700);
 	mkdir(qPrintable(path_), 0700);
@@ -367,7 +367,7 @@ int main(int argc, char *argv[])
 
 	ModulesManager::instance()->loadAllModules();
 
-#ifndef Q_OS_WIN
+#ifndef Q_WS_WIN
 	// if someone is running Kadu from root account, let's remind him
 	// that it's a "bad thing"(tm) ;) (usually for win32 users)
 	if (geteuid() == 0)
@@ -399,7 +399,7 @@ int main(int argc, char *argv[])
 	int ret = qApp->exec();
 	kdebugm(KDEBUG_INFO, "after exec\n");
 
-#ifdef Q_OS_WIN
+#ifdef Q_WS_WIN
 	WSACleanup();
 #endif
 
