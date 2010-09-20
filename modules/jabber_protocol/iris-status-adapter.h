@@ -1,6 +1,7 @@
 /*
  * %kadu copyright begin%
  * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2010 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -27,15 +28,10 @@ namespace XMPP
 
 class Status;
 
-class IrisStatusAdapter
+namespace IrisStatusAdapter
 {
-	// disable instances
-	IrisStatusAdapter();
-
-public:
-	static Status fromIrisStatus(XMPP::Status status);
-	static XMPP::Status toIrisStatus(Status status);
-
+	Status fromIrisStatus(XMPP::Status status);
+	XMPP::Status toIrisStatus(Status status);
 };
 
 #endif // IRIS_STATUS_ADAPTER_H
