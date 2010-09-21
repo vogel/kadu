@@ -91,7 +91,7 @@ DockingManager * DockingManager::instance()
 }
 
 DockingManager::DockingManager() :
-		CurrentDocker(0), newMessageIcon(StaticEnvelope), icon_timer(new QTimer()), blink(false)
+		CurrentDocker(0), newMessageIcon(StaticEnvelope), icon_timer(new QTimer(this)), blink(false)
 {
 	kdebugf();
 

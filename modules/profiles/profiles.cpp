@@ -22,7 +22,7 @@
 
 #include <stdlib.h>
 
-#include "profiles.h" 
+#include "profiles.h"
 #include "debug.h"
 #include "modules.h"
 #include "gadu.h"
@@ -58,16 +58,16 @@ ProfileManager::ProfileManager(QObject *parent, const char *name)
 
 	ProfileMenu = new QMenu("ProfileMenu", kadu);
 	connect(ProfileMenu, SIGNAL(aboutToShow()), this, SLOT(createProfileMenu()));
-	
-	profileMenuActionDescription = new ActionDescription(
+
+	profileMenuActionDescription = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "profileManagerAction",
 		this, SLOT(showMenu()),
 		"external_modules/module_profiles.png", "external_modules/module_profiles.png", tr("Profiles...")
 	);
 	kadu->insertMenuActionDescription(0, profileMenuActionDescription);
-	
+
 	getProfiles();
-	
+
 	//odpal te ktore maja autostart
 	runAutostarted();
 	kdebugf2();
@@ -76,13 +76,12 @@ ProfileManager::ProfileManager(QObject *parent, const char *name)
 ProfileManager::~ProfileManager()
 {
 	kdebugf();
-	
+
 	disconnect(ProfileMenu, SIGNAL(aboutToShow()), this, SLOT(createProfileMenu()));
 
 	kadu->removeMenuActionDescription(profileMenuActionDescription);
-	delete profileMenuActionDescription;
 	delete dialogWindow;
-	
+
 	//czyszcze liste watkow
 	/*
 	if (!thread_list.empty())
@@ -105,11 +104,11 @@ void ProfileManager::showMenu()
 }
 
 void ProfileManager::showConfig()
-{	
+{
 	kdebugf();
-	
+
 	//jak pierwsze uruchomienie to probujemy "cos" znalezc
-	if (config_file.readBoolEntry("Profiles", "firstRun", true)) 
+	if (config_file.readBoolEntry("Profiles", "firstRun", true))
 		firstRun();
 
 	dialogWindow->clear();
@@ -117,14 +116,14 @@ void ProfileManager::showConfig()
 
 	//wyswietlenie okna
 	dialogWindow->show();
-	
+
 	//i ew. ostrzezenia
-	if (config_file.readBoolEntry("Profiles", "firstRun", true)) 
+	if (config_file.readBoolEntry("Profiles", "firstRun", true))
 	{
 		MessageDialog::msg(tr("Please remember that all profile history and settings are stored in your home directory. \nCreating profile for other system users is not recommended because of security reasons. \nThe recommended solution is to create user in system for every person which will use Kadu. \nPlease notice that this module is contradictory with Linux system ideology and was provided for compatibility with Gadu-Gadu."), true, "32x32/dialog-warning.png", NULL);
 		config_file.writeEntry("Profiles", "firstRun", false);
 	}
-	
+
 	kdebugf2();
 }
 
@@ -154,7 +153,7 @@ void ProfileManager::firstRun()
 		}
 	}
 
-	kdebugf2();	
+	kdebugf2();
 }
 
 void ProfileManager::getProfiles()
@@ -200,7 +199,7 @@ void ProfileManager::addProfile(Profile p)
 		deprecated_elem, "ConfigFile", "name", "kadu.conf");
 	QDomElement profiles_elem = xml_config_file->accessElementByProperty(
 		config_file_elem, "Group", "name", "Profiles");
-	
+
 	QDomElement profile_elem = xml_config_file->createElement(profiles_elem, "Profile");
 	profile_elem.setAttribute("name", p.name);
 	profile_elem.setAttribute("directory", p.directory);
@@ -213,7 +212,7 @@ void ProfileManager::addProfile(Profile p)
 
 	GlobalMutex.unlock();
 
-	list.append(p);	
+	list.append(p);
 }
 
 void ProfileManager::deleteProfile(const QString &name)
@@ -290,7 +289,7 @@ void ProfileManager::runAutostarted()
 			runKadu(profilePath, p.protectPassword);
 		}
 	}
-	
+
 }
 
 static inline void startThread(QString profilePath)
@@ -299,7 +298,7 @@ static inline void startThread(QString profilePath)
 	//thread_list.append(thread);
 	thread->path = profilePath;
 	thread->command = qApp->argv()[0];
-	thread->start();	
+	thread->start();
 }
 
 int ProfileManager::runKadu(QString profilePath, QString protectPassword)
@@ -316,7 +315,7 @@ int ProfileManager::runKadu(QString profilePath, QString protectPassword)
 		PasswordDialog *p = new PasswordDialog();
 		if (p->exec() != QDialog::Rejected)
 		{
-			if (p->getPassword() == protectPassword) 
+			if (p->getPassword() == protectPassword)
 			{
 				startThread(profilePath);
 				return 1;
@@ -373,18 +372,18 @@ void ProfileManager::openProfile(int index)
  * ProfileConfigurationWindow
  */
 
-void ProfileConfigurationWindow::initConfiguration() 
+void ProfileConfigurationWindow::initConfiguration()
 {
 	//stworz okno konfiguracyjne
 	this->setFixedSize(600, 380);
 	this->setCaption(tr("Profile Manager"));
 
 	QGridLayout *grid = new QGridLayout(this);
-	
+
 	profilesList = new QListWidget;
 	profilesList->setFixedWidth(100);
 	grid->addWidget(profilesList, 0, 0, 5, 1);
-	
+
 	QGroupBox *profileSettings = new QGroupBox(tr("Profile Settings"), this);
 	QGridLayout *profileGrid = new QGridLayout(profileSettings);
 	profileGrid->setVerticalSpacing(0);
@@ -392,7 +391,7 @@ void ProfileConfigurationWindow::initConfiguration()
 	profileName = new QLineEdit(profileSettings);
 	profileGrid->addWidget(new QLabel(tr("Name")), 0, 0);
 	profileGrid->addWidget(profileName, 0, 1);
-	
+
 	profileUIN = new QLineEdit(profileSettings);
 	profileGrid->addWidget(new QLabel(tr("UIN"), profileSettings), 1, 0);
 	profileGrid->addWidget(profileUIN, 1, 1);
@@ -430,7 +429,7 @@ void ProfileConfigurationWindow::initConfiguration()
 	userlistCheck->setHidden(true);
 	userlistCheck->setChecked(false);
 	profileGrid->addWidget(userlistCheck, 7, 1);
-	
+
 	autostartCheck = new QCheckBox(tr("Autostart"), profileSettings);
 	autostartCheck->setHidden(true);
 	autostartCheck->setChecked(false);
@@ -438,7 +437,7 @@ void ProfileConfigurationWindow::initConfiguration()
 
 	profileSettings->setLayout(profileGrid);
 	grid->addWidget(profileSettings, 0, 1, 5, 1);
-	
+
 	saveButton = new QPushButton(tr("Save"), this);
 	deleteButton = new QPushButton(tr("Delete"), this);
 	openButton = new QPushButton(tr("Run"), this);
@@ -453,12 +452,12 @@ ProfileConfigurationWindow::ProfileConfigurationWindow(QWidget * parent, const c
 	: QDialog(parent, name, modal, f)
 {
 	initConfiguration();
-	
+
 	QObject::connect(closeButton, SIGNAL(clicked()), this, SLOT(closeBtnPressed()));
 	QObject::connect(openButton, SIGNAL(clicked()), this, SLOT(openBtnPressed()));
 	QObject::connect(deleteButton, SIGNAL(clicked()), this, SLOT(deleteBtnPressed()));
 	QObject::connect(saveButton, SIGNAL(clicked()), this, SLOT(saveBtnPressed()));
-	
+
 	QObject::connect(profileName, SIGNAL(textChanged(const QString &)), this, SLOT(fillDir(const QString &)));
 	QObject::connect(profilesList, SIGNAL(itemClicked(QListWidgetItem *)), this, SLOT(profileSelected(QListWidgetItem *)));
 	QObject::connect(advancedCheck, SIGNAL(toggled(bool)), this, SLOT(advancedChecked(bool)));
@@ -466,13 +465,13 @@ ProfileConfigurationWindow::ProfileConfigurationWindow(QWidget * parent, const c
 	QObject::connect(passwordProtectCheck, SIGNAL(toggled(bool)), this, SLOT(passwordProtectChecked(bool)));
 }
 
-ProfileConfigurationWindow::~ProfileConfigurationWindow() 
+ProfileConfigurationWindow::~ProfileConfigurationWindow()
 {
 	QObject::disconnect(closeButton, SIGNAL(clicked()), this,  SLOT(closeBtnPressed()));
 	QObject::disconnect(openButton, SIGNAL(clicked()), this,  SLOT(openBtnPressed()));
 	QObject::disconnect(deleteButton, SIGNAL(clicked()), this,  SLOT(deleteBtnPressed()));
 	QObject::disconnect(saveButton, SIGNAL(clicked()), this,  SLOT(saveBtnPressed()));
-	
+
 	QObject::disconnect(profileName, SIGNAL(textChanged(const QString &)), this, SLOT(fillDir(const QString &)));
 	QObject::disconnect(profilesList, SIGNAL(itemClicked(QListWidgetItem *)), this, SLOT(profileSelected(QListWidgetItem *)));
 	QObject::disconnect(advancedCheck, SIGNAL(toggled(bool)), this, SLOT(advancedChecked(bool)));
@@ -488,20 +487,20 @@ void ProfileConfigurationWindow::closeBtnPressed()
 void ProfileConfigurationWindow::openBtnPressed()
 {
 	kdebugf();
-	
+
 	if (profileName->text().compare("") == 0) return;
-	
+
 	QString profilePath = this->profileDir->text();
 	profilePath = profilePath.right(profilePath.length()-profilePath.find(".kadu"));
 
 	//uruchom kadu w nowym watku
 	if (profileManager->runKadu(profilePath,
-		 	passwordProtectCheck->isChecked() ? protectPassword->text() : "")) 
+		 	passwordProtectCheck->isChecked() ? protectPassword->text() : ""))
 	{
 		//jesli sie powiodlo zamknij okienko
 		this->close();
 	}
-	
+
 	kdebugf2();
 }
 
@@ -512,18 +511,18 @@ void ProfileConfigurationWindow::saveBtnPressed()
 	bool update = false;
 
 	QList<QListWidgetItem *> matches = profilesList->findItems(profileName->text(), Qt::MatchExactly);
-	if (!matches.isEmpty()) 
+	if (!matches.isEmpty())
 	{
 		//removeProfile(profileName->text());
 		update = true;
 	}
 
-	if (profileName->text().compare("") == 0) 
+	if (profileName->text().compare("") == 0)
 	{
 		MessageDialog::msg(tr("Please write at least the name of the Profile"), true, "32x32/dialog-warning.png", NULL);
 		return;
 	}
-	if (profileName->text().find("..") != -1) 
+	if (profileName->text().find("..") != -1)
 	{
 		MessageDialog::msg(tr("Profile Name contains wrong characters (\"..\")."), true, "32x32/dialog-warning.png", NULL);
 		return;
@@ -547,35 +546,35 @@ void ProfileConfigurationWindow::saveBtnPressed()
 
 		delete p;
 	}
-	
+
 	//stworz katalog dla profilu
 	QDir dir;
 	dir.mkdir(profileDir->text(), true);
 	kdebugm(KDEBUG_INFO, profileDir->text());
 	dir.mkdir(profileDir->text()+"/kadu", true);
 	kdebugm(KDEBUG_INFO, profileDir->text()+"/kadu");
-	
+
 	//przepisanie konfiguracji ze zmiana uinu i hasla
 	//if (this->configCheck->isChecked()) {
-		
+
 		XmlConfigFile *xml_config_file = new XmlConfigFile();
 		QDomElement root_elem = xml_config_file->rootElement();
-		
+
 		//jak nie kopiowac konfiguracji to usuwam wszystko
 		if (!this->configCheck->isChecked())
 			xml_config_file->removeChildren(root_elem);
-		
+
 		//dodaje/zmieniam wpis odnosnie uinu i hasla
 		QDomElement deprecated_elem = xml_config_file->accessElement(root_elem, "Deprecated");
 		QDomElement config_file_elem = xml_config_file->accessElementByProperty(
 			deprecated_elem, "ConfigFile", "name", "kadu.conf");
 		QDomElement group_elem = xml_config_file->accessElementByProperty(
 			config_file_elem, "Group", "name", "General");
-		
+
 		QDomElement entry_elem = xml_config_file->accessElementByProperty(
 			group_elem, "Entry", "name", "UIN");
 		entry_elem.setAttribute("value", profileUIN->text());
-		
+
 		QDomElement entry_elem2 = xml_config_file->accessElementByProperty(
 			group_elem, "Entry", "name", "Password");
 		entry_elem2.setAttribute("value", pwHash(profilePassword->text()));
@@ -584,14 +583,14 @@ void ProfileConfigurationWindow::saveBtnPressed()
 		if ((this->configCheck->isChecked()) && (!this->userlistCheck->isChecked()))
 		{
 			QDomElement contacts_elem = xml_config_file->accessElement(root_elem, "Contacts");
-			xml_config_file->removeChildren(contacts_elem);	
+			xml_config_file->removeChildren(contacts_elem);
 		}
-	
+
 		//zapisujemy konfiguracje do nowego pliku
-		xml_config_file->saveTo(profileDir->text()+"/kadu/"+kaduConfFile);		
+		xml_config_file->saveTo(profileDir->text()+"/kadu/"+kaduConfFile);
 		delete xml_config_file;
 	//}
-	
+
 	//zapisanie profilu do konfiguracji kadu
 	Profile p(profileName->text(), profileDir->text());
 	p.uin = profileUIN->text();
@@ -601,10 +600,10 @@ void ProfileConfigurationWindow::saveBtnPressed()
 	p.userlist = userlistCheck->isChecked();
 	p.autostart = autostartCheck->isChecked();
 	saveProfile(p, update);
-	
+
 	//dodaj profil do listy
 	refreshList();
-	
+
 	kdebugf2();
 }
 
@@ -612,32 +611,32 @@ void ProfileConfigurationWindow::deleteBtnPressed()
 {
 	kdebugf();
 	if (profileName->text().compare("") == 0) return;
-		
+
 	//wpierw ostrzez
 	if ((QString::compare(profileDir->text(), "") != 0) && (MessageDialog::ask(tr("Are you sure to continue? Directory (with all contents) will be deleted."))))
 	{
 		//usun katalog i jego pliki
 		QDir directory(profileDir->text(), QString::null, QDir::Name, QDir::Files);
 		if (directory.exists()) {
-			//to tak na wszelki wypadek by komus nie wyciac systemu		
+			//to tak na wszelki wypadek by komus nie wyciac systemu
 			if ((QString::compare(profileDir->text(), "/") == 0) ||
 				(QString::compare(profileDir->text(), "/bin") == 0) ||
-				(QString::compare(profileDir->text(), "/boot") == 0) ||	
-				(QString::compare(profileDir->text(), "/dev") == 0) ||	
+				(QString::compare(profileDir->text(), "/boot") == 0) ||
+				(QString::compare(profileDir->text(), "/dev") == 0) ||
 				(QString::compare(profileDir->text(), "/etc") == 0) ||
 				(QString::compare(profileDir->text(), "/lib") == 0) ||
-				(QString::compare(profileDir->text(), "/mnt") == 0) ||	
+				(QString::compare(profileDir->text(), "/mnt") == 0) ||
 				(QString::compare(profileDir->text(), "/opt") == 0) ||
-				(QString::compare(profileDir->text(), "/proc") == 0) ||			
+				(QString::compare(profileDir->text(), "/proc") == 0) ||
 				(QString::compare(profileDir->text(), "/sbin") == 0) ||
 				(QString::compare(profileDir->text(), "/sys") == 0) ||
 				(QString::compare(profileDir->text(), "/usr") == 0) ||
 				(QString::compare(profileDir->text(), "/var") == 0))
-					return;			
-			
+					return;
+
 			system("rm -fr "+profileDir->text());
 		}
-	
+
 		removeProfile(profileName->text());
 		refreshList();
 		clear();
@@ -657,7 +656,7 @@ void ProfileConfigurationWindow::refreshList()
 		profilesList->insertItem(-1, names[i]);
 	}
 	profilesList->insertItem(-1, tr("New"));
-	
+
 	kdebugf2();
 }
 
@@ -680,7 +679,7 @@ void ProfileConfigurationWindow::profileSelected(QListWidgetItem *item)
 	userlistCheck->setChecked(p.userlist);
 	autostartCheck->setChecked(p.autostart);
 
-	if (!p.protectPassword.isEmpty()) 
+	if (!p.protectPassword.isEmpty())
 	{
 		profileProtectPassword = p.protectPassword;
 		protectPassword->setText(profileProtectPassword);
@@ -714,7 +713,7 @@ void ProfileConfigurationWindow::passwordProtectChecked(bool state)
 
 void ProfileConfigurationWindow::fillDir(const QString &s)
 {
-	if (s.find("..") == -1) 
+	if (s.find("..") == -1)
 	{
 		QString dir = ProfileManager::dirString()+s;
 		profileDir->setText(dir);
@@ -748,7 +747,7 @@ void ProfileConfigurationWindow::saveProfile(Profile p, bool update)
 void ProfileConfigurationWindow::removeProfile(QString name)
 {
 	kdebugf();
-	profileManager->deleteProfile(name);	
+	profileManager->deleteProfile(name);
 	kdebugf2();
 }
 
@@ -758,7 +757,7 @@ void ProfileConfigurationWindow::removeProfile(QString name)
 
 void MyThread::run()
 {
-	system("bash -c \"export CONFIG_DIR="+path+" ; "+command+"\"");	
+	system("bash -c \"export CONFIG_DIR="+path+" ; "+command+"\"");
 }
 
 

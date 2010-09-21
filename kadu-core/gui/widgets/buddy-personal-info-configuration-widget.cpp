@@ -81,6 +81,6 @@ void BuddyPersonalInfoConfigurationWidget::accountSelectionChanged(int index)
 		return;
 
 	delete InfoWidget;
-	InfoWidget = c.contactAccount().protocolHandler()->protocolFactory()->newContactPersonalInfoWidget(c);
+	InfoWidget = c.contactAccount().protocolHandler()->protocolFactory()->newContactPersonalInfoWidget(c, this);
 	Layout->insertWidget(1, InfoWidget);
 }

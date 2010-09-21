@@ -56,8 +56,8 @@ extern "C" KADU_EXPORT void filedesc_close()
 
 // Implementation of FileDescStatusChanger class
 
-FileDescStatusChanger::FileDescStatusChanger(FileDescription *parent) :
-		StatusChanger(900), Parent(parent)
+FileDescStatusChanger::FileDescStatusChanger(FileDescription *parent, QObject *parentObj) :
+		StatusChanger(900, parentObj), Parent(parent)
 {
 }
 
@@ -96,13 +96,13 @@ FileDescription::FileDescription(QObject *parent) :
 
 	createDefaultConfiguration();
 
-	Timer = new QTimer();
+	Timer = new QTimer(this);
 	Timer->setSingleShot(false);
 	Timer->setInterval(500);
 	connect(Timer, SIGNAL(timeout()), this, SLOT(checkTitle()));
 	Timer->start();
 
-	StatusChanger = new FileDescStatusChanger(this);
+	StatusChanger = new FileDescStatusChanger(this, this);
 	configurationUpdated();
 
 	StatusChangerManager::instance()->registerStatusChanger(StatusChanger);
@@ -112,12 +112,8 @@ FileDescription::~FileDescription()
 {
 	kdebugf();
 	disconnect(Timer, SIGNAL(timeout()), this, SLOT(checkTitle()));
-	delete Timer;
-	Timer = 0;
 
 	StatusChangerManager::instance()->unregisterStatusChanger(StatusChanger);
-	delete StatusChanger;
-	StatusChanger = 0;
 }
 
 void FileDescription::configurationUpdated()

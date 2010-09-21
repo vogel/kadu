@@ -59,14 +59,14 @@ Autostatus::Autostatus()
 	addDefaultConfiguration();
 	powerStatusChanger = new PowerStatusChanger();
 
-	autostatusActionDescription = new ActionDescription(
+	autostatusActionDescription = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "autostatusAction",
 		this, SLOT(onAutostatus(QAction *, bool)),
 		"Autostatus", tr("&Autostatus"), true
 	);
 	kadu->insertMenuActionDescription(0, autostatusActionDescription);
 
-	timer = new QTimer;
+	timer = new QTimer(this);
 	connect(timer, SIGNAL(timeout()), this, SLOT(changeStatus()));
 	enabled = false;
 }
@@ -76,11 +76,9 @@ Autostatus::~Autostatus()
 {
 	off();
 	disconnect(timer, SIGNAL(timeout()), this, SLOT(changeStatus()));
-	delete timer;
 	delete powerStatusChanger;
-	
+
 	kadu->removeMenuActionDescription(autostatusActionDescription);
-	delete autostatusActionDescription;
 }
 
 void Autostatus::on()
@@ -129,9 +127,9 @@ void Autostatus::onAutostatus(QAction *sender, bool toggled)
 		if (QFile::exists(config_file.readEntry("PowerKadu", "status_file_path")))
 		{
 			QFile file(config_file.readEntry("PowerKadu", "status_file_path"));
-		
+
 			QString desc;
-			
+
 			if (file.open(IO_ReadOnly))
 			{
 				QTextStream stream(&file);
@@ -139,7 +137,7 @@ void Autostatus::onAutostatus(QAction *sender, bool toggled)
 				while (!stream.atEnd())
 				{
 					desc = stream.readLine();
-			
+
 					if((desc != "") && (strlen(desc.latin1()) <= 70))
 						statusList += desc;
 				}

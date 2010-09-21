@@ -241,7 +241,8 @@ private:
 	QString itemId_;
 };
 
-PEPManager::PEPManager(XMPP::Client* client, ServerInfoManager* serverInfo) : client_(client), serverInfo_(serverInfo)
+PEPManager::PEPManager(XMPP::Client *client, ServerInfoManager *serverInfo, QObject *parent) :
+		QObject(parent), client_(client), serverInfo_(serverInfo)
 {
 	//TODO namespace issue
 	///connect(client_, SIGNAL(messageReceived(const Message &)), SLOT(messageReceived(const Message &)));

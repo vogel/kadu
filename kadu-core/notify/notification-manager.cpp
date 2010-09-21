@@ -92,7 +92,7 @@ void NotificationManager::init()
 	//TODO 0.6.6:
 	//triggerAllAccountsRegistered();
 
-	notifyAboutUserActionDescription = new ActionDescription(0,
+	notifyAboutUserActionDescription = new ActionDescription(this,
 		ActionDescription::TypeUser, "notifyAboutUserAction",
 		this, SLOT(notifyAboutUserActionActivated(QAction *, bool)),
 		"kadu_icons/kadu-notifyaboutuser.png", "kadu_icons/kadu-notifyaboutuser.png", tr("Notify about user"), true, "",
@@ -120,9 +120,6 @@ NotificationManager::~NotificationManager()
 	kdebugf();
 
 	MainConfigurationWindow::unregisterUiHandler(UiHandler);
-
-	delete notifyAboutUserActionDescription;
-	notifyAboutUserActionDescription = 0;
 
 	StatusChangedNotification::unregisterEvents();
 	MessageNotification::unregisterEvents();

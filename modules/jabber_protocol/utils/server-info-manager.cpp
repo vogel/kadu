@@ -24,7 +24,8 @@
 
 #include "server-info-manager.h"
 
-ServerInfoManager::ServerInfoManager(XMPP::Client* client) : client_(client)
+ServerInfoManager::ServerInfoManager(XMPP::Client *client, QObject *parent) :
+		QObject(parent), client_(client)
 {
 	deinitialize();
 	connect(client_, SIGNAL(rosterRequestFinished(bool, int, const QString &)), SLOT(initialize()));

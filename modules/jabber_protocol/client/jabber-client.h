@@ -164,8 +164,8 @@ public:
 		MaxUsersReachedForThisMuc = 503	/** You can't join this Multi-User Chat because it is full */
 	};
 
-	JabberClient(JabberProtocol *protocol);
-	~JabberClient();
+	explicit JabberClient(JabberProtocol *protocol, QObject *parent = 0);
+	virtual ~JabberClient();
 
 	/**
 	 * Connect to a Jabber server.

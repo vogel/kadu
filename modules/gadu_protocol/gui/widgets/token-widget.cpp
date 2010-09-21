@@ -32,7 +32,8 @@
 
 TokenWidget::TokenWidget(QWidget *parent) : QWidget(parent)
 {
-	WaitMovie = new QMovie(IconsManager::instance()->iconPath("kadu_icons/please-wait.gif", "16x16"));
+	WaitMovie = new QMovie(IconsManager::instance()->iconPath("kadu_icons/please-wait.gif", "16x16"),
+			QByteArray(), this);
 
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
@@ -67,8 +68,6 @@ TokenWidget::TokenWidget(QWidget *parent) : QWidget(parent)
 
 TokenWidget::~TokenWidget()
 {
-	if (WaitMovie)
-		delete WaitMovie;
 }
 
 void TokenWidget::tokenFetched(const QString &tokenId, QPixmap tokenImage)

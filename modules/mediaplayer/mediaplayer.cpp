@@ -139,7 +139,7 @@ MediaPlayer::MediaPlayer(bool firstLoad)
 	popups[4] = menu->addAction(tr("Send all playlist files"), this, SLOT(insertPlaylistFilenames()));
 
 	// Title checking timer
-	timer = new QTimer();
+	timer = new QTimer(this);
 	connect(timer, SIGNAL(timeout()), this, SLOT(checkTitle()));
 
 	// Monitor of creating chats
@@ -222,7 +222,7 @@ MediaPlayer::MediaPlayer(bool firstLoad)
 	// Initial values of some object variables
 	winKeyPressed = false;
 
-	mediaPlayerStatusChanger = new MediaPlayerStatusChanger();
+	mediaPlayerStatusChanger = new MediaPlayerStatusChanger(this);
 	StatusChangerManager::instance()->registerStatusChanger(mediaPlayerStatusChanger);
 
 	createDefaultConfiguration();
@@ -246,8 +246,6 @@ MediaPlayer::~MediaPlayer()
 	mediaPlayerEvent = 0;
 
 	StatusChangerManager::instance()->unregisterStatusChanger(mediaPlayerStatusChanger);
-	delete mediaPlayerStatusChanger;
-	mediaPlayerStatusChanger = 0;
 
 	// Stop timer for checking titles
 	timer->stop();
@@ -261,9 +259,7 @@ MediaPlayer::~MediaPlayer()
 	foreach (ChatWidget *it, ChatWidgetManager::instance()->chats())
 		chatWidgetDestroying(it);
 
-	// Delete own objects
 	delete menu;
-	delete timer;
 
 	// Remove menu item (statuses)
 //	if (mediaplayerStatus == NULL)

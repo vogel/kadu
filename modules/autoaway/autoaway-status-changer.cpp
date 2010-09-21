@@ -26,8 +26,8 @@
 
 #include "autoaway-status-changer.h"
 
-AutoAwayStatusChanger::AutoAwayStatusChanger(AutoAway *autoawayController) :
-		StatusChanger(900), AutoawayController(autoawayController)
+AutoAwayStatusChanger::AutoAwayStatusChanger(AutoAway *autoawayController, QObject *parent) :
+		StatusChanger(900, parent), AutoawayController(autoawayController)
 {
 }
 

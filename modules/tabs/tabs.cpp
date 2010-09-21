@@ -107,15 +107,15 @@ TabsManager::TabsManager(bool firstload) :
 	connect(&timer, SIGNAL(timeout()),
 			this, SLOT(onTimer()));
 
-	openInNewTabActionDescription = new ActionDescription(
-		0, ActionDescription::TypeUser, "openInNewTabAction",
+	openInNewTabActionDescription = new ActionDescription(this,
+		ActionDescription::TypeUser, "openInNewTabAction",
 		this, SLOT(onNewTab(QAction *, bool)),
 		"internet-group-chat.png", "internet-group-chat.png", tr("Chat in New Tab"), false, QString::null, disableNewTab
 	);
 	BuddiesListViewMenuManager::instance()->addActionDescription(openInNewTabActionDescription, BuddiesListViewMenuItem::MenuCategoryChat, 200);
 
-	attachToTabsActionDescription = new ActionDescription(
-		0, ActionDescription::TypeChat, "attachToTabsAction",
+	attachToTabsActionDescription = new ActionDescription(this,
+		ActionDescription::TypeChat, "attachToTabsAction",
 		this, SLOT(onTabAttach(QAction *, bool)),
 		"kadu_icons/module_tabs-detach.png", "kadu_icons/module_tabs-detach.png", tr("Attach Chat to Tabs"), true, tr("Detach chat from tabs")
 	);
@@ -162,11 +162,6 @@ TabsManager::~TabsManager()
 	kdebugf();
 
 	BuddiesListViewMenuManager::instance()->removeActionDescription(openInNewTabActionDescription);
-	delete openInNewTabActionDescription;
-	openInNewTabActionDescription = 0;
-
-	delete attachToTabsActionDescription;
-	attachToTabsActionDescription = 0;
 
 	disconnect(ChatWidgetManager::instance(), 0, this, 0);
 

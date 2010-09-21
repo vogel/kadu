@@ -33,7 +33,7 @@ class ServerInfoManager : public QObject
 	Q_OBJECT
 
 public:
-	ServerInfoManager(XMPP::Client* client);
+	explicit ServerInfoManager(XMPP::Client *client, QObject *parent = 0);
 
 	const QString& multicastService() const;
 	bool hasPEP() const;

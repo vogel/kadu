@@ -60,7 +60,8 @@ const QDBusArgument &operator>>(const QDBusArgument& arg, PlayerStatus& ps)
 	return arg;
 }
 
-MPRISController::MPRISController(QString s) : service(s)
+MPRISController::MPRISController(const QString &s, QObject *parent) :
+	QObject(parent), service(s)
 {
 	QDBusConnection bus = QDBusConnection::sessionBus();
 

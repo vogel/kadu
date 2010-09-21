@@ -18,7 +18,7 @@ class FileDescStatusChanger : public StatusChanger
 	QString Title;
 
 public:
-	FileDescStatusChanger(FileDescription *parent = 0);
+	explicit FileDescStatusChanger(FileDescription *parent = 0, QObject *parentObj = 0);
 	virtual ~FileDescStatusChanger();
 
 	virtual void changeStatus(StatusContainer *container, Status &status);

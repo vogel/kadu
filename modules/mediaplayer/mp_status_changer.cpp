@@ -2,8 +2,8 @@
 
 #include "mp_status_changer.h"
 
-MediaPlayerStatusChanger::MediaPlayerStatusChanger() :
-		StatusChanger(900), disabled(true), mediaPlayerStatusPosition(DescriptionReplace)
+MediaPlayerStatusChanger::MediaPlayerStatusChanger(QObject *parent) :
+		StatusChanger(900, parent), disabled(true), mediaPlayerStatusPosition(DescriptionReplace)
 {
 }
 

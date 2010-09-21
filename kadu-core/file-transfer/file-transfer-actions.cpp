@@ -63,7 +63,7 @@ void disableNonFileTransferContacts(Action *action)
 FileTransferActions::FileTransferActions(QObject *parent)
 		: QObject(parent)
 {
-	SendFileActionDescription = new ActionDescription(0,
+	SendFileActionDescription = new ActionDescription(this,
 		ActionDescription::TypeUser, "sendFileAction",
 		this, SLOT(sendFileActionActivated(QAction *, bool)),
 		"document-send.png", "document-send.png", tr("Send File..."), false, QString::null,
@@ -72,7 +72,7 @@ FileTransferActions::FileTransferActions(QObject *parent)
 	SendFileActionDescription->setShortcut("kadu_sendfile");
 	BuddiesListViewMenuManager::instance()->addActionDescription(SendFileActionDescription, BuddiesListViewMenuItem::MenuCategoryActions, 100);
 
-	FileTransferWindowActionDescription = new ActionDescription(0,
+	FileTransferWindowActionDescription = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "sendFileWindowAction",
 		this, SLOT(toggleFileTransferWindow(QAction *, bool)),
 		"document-send.png", "document-send.png", tr("View File Transfers")
@@ -85,11 +85,6 @@ FileTransferActions::~FileTransferActions()
 {
 	BuddiesListViewMenuManager::instance()->removeActionDescription(SendFileActionDescription);
 	Core::instance()->kaduWindow()->removeMenuActionDescription(FileTransferWindowActionDescription);
-
-	delete SendFileActionDescription;
-	SendFileActionDescription = 0;
-	delete FileTransferWindowActionDescription;
-	FileTransferWindowActionDescription = 0;
 }
 
 void FileTransferActions::sendFileActionActivated(QAction *sender, bool toggled)

@@ -46,7 +46,7 @@ GaduResolver *resolver = 0;
 GaduResolver::GaduResolver(QObject *parent) :
 		QObject(parent)
 {
-	timer = new QTimer();
+	timer = new QTimer(this);
 	connect(timer, SIGNAL(timeout()), this, SLOT(abort()));
 	id = -1;
 }
@@ -55,7 +55,6 @@ GaduResolver::~GaduResolver()
 {
 	if (timer->isActive())
 		abort();
-	delete timer;
 }
 
 void GaduResolver::abort()

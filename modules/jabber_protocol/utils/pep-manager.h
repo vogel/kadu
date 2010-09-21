@@ -34,7 +34,7 @@ class ServerInfoManager;
 class PEPManager : public QObject
 {
 	Q_OBJECT
-	
+
 public:
 	enum Access {
 		DefaultAccess,
@@ -42,7 +42,7 @@ public:
 		PublicAccess
 	};
 
-	PEPManager(XMPP::Client* client, ServerInfoManager* serverInfo);
+	PEPManager(XMPP::Client *client, ServerInfoManager *serverInfo, QObject *parent = 0);
 
 	void publish(const QString& node, const XMPP::PubSubItem&, Access = DefaultAccess);
 	void retract(const QString& node, const QString& id);

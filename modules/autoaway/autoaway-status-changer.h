@@ -51,7 +51,7 @@ private:
 	AutoAway *AutoawayController;
 
 public:
-	AutoAwayStatusChanger(AutoAway *autoawayController);
+	explicit AutoAwayStatusChanger(AutoAway *autoawayController, QObject *parent = 0);
 	virtual ~AutoAwayStatusChanger();
 
 	virtual void changeStatus(StatusContainer *container, Status &status);

@@ -34,7 +34,7 @@ class KADUAPI StatusChanger : public QObject
 	int Priority;
 
 public:
-	StatusChanger(int priority);
+	explicit StatusChanger(int priority, QObject *parent = 0);
 	virtual ~StatusChanger();
 
 	int priority();

@@ -34,8 +34,8 @@ class MPRISController : public QObject
 	QString      service;
 
 public:
-	MPRISController(QString service);
-	~MPRISController();
+	explicit MPRISController(const QString &service, QObject *parent = 0);
+	virtual ~MPRISController();
 
 	PlayerStatus currentStatus() { return currentStatus_; };
 	TrackInfo    currentTrack()  { return currentTrack_;  };

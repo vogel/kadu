@@ -79,12 +79,11 @@ extern "C" KADU_EXPORT void autoaway_close()
 	kdebugf2();
 }
 
-AutoAway::AutoAway() :
-		autoAwayStatusChanger(0), timer(0)
+AutoAway::AutoAway()
 {
-	autoAwayStatusChanger = new AutoAwayStatusChanger(this);
+	autoAwayStatusChanger = new AutoAwayStatusChanger(this, this);
 
-	timer = new QTimer();
+	timer = new QTimer(this);
 	connect(timer, SIGNAL(timeout()), this, SLOT(checkIdleTime()));
 
 	timer->setInterval(config_file.readNumEntry("General", "AutoAwayCheckTime", 5) * 1000);
@@ -99,18 +98,7 @@ AutoAway::AutoAway() :
 
 AutoAway::~AutoAway()
 {
-	if (timer)
-	{
-		delete timer;
-		timer = 0;
-	}
-
-	if (autoAwayStatusChanger)
-	{
-		StatusChangerManager::instance()->unregisterStatusChanger(autoAwayStatusChanger);
-		delete autoAwayStatusChanger;
-		autoAwayStatusChanger = 0;
-	}
+	StatusChangerManager::instance()->unregisterStatusChanger(autoAwayStatusChanger);
 }
 
 AutoAwayStatusChanger::ChangeStatusTo AutoAway::changeStatusTo()

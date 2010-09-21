@@ -21,8 +21,7 @@ private:
 	ChangeDescriptionTo mediaPlayerStatusPosition;
 
 public:
-
-	MediaPlayerStatusChanger();
+	explicit MediaPlayerStatusChanger(QObject *parent = 0);
 	virtual ~MediaPlayerStatusChanger();
 
 	virtual void changeStatus(StatusContainer *container, Status &status);

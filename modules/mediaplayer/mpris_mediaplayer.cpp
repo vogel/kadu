@@ -40,10 +40,11 @@
 #include "mpris_mediaplayer.h"
 #include "mpris_controller.h"
 
-MPRISMediaPlayer::MPRISMediaPlayer(QString n, QString s) : service(s), name(n)
+MPRISMediaPlayer::MPRISMediaPlayer(QString n, QString s) :
+		service(s), name(n)
 {
 	kdebugf();
-	controller = new MPRISController(service);
+	controller = new MPRISController(service, this);
 
 	if (name == "Audacious")
 		mediaplayer->setInterval(5);
@@ -54,8 +55,6 @@ MPRISMediaPlayer::MPRISMediaPlayer(QString n, QString s) : service(s), name(n)
 MPRISMediaPlayer::~MPRISMediaPlayer()
 {
 	kdebugf();
-	delete controller;
-	controller = 0;
 }
 
 void MPRISMediaPlayer::setService(QString service)

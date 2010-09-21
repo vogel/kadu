@@ -111,16 +111,6 @@ JabberProtocol::~JabberProtocol()
 {
 	disconnectContactManagerSignals();
 	logout();
-
-	delete JabberClient;
-	JabberClient = 0;
-
-	delete serverInfoManager;
-	serverInfoManager = 0;
-
-	delete PepManager;
-	PepManager = 0;
-	pepAvailable = false;
 }
 
 void JabberProtocol::connectContactManagerSignals()
@@ -155,7 +145,7 @@ void JabberProtocol::disconnectContactManagerSignals()
 
 void JabberProtocol::initializeJabberClient()
 {
-	JabberClient = new XMPP::JabberClient(this);
+	JabberClient = new XMPP::JabberClient(this, this);
 	connect(JabberClient, SIGNAL(csDisconnected()), this, SLOT(disconnectedFromServer()));
 	connect(JabberClient, SIGNAL(connected()), this, SLOT(connectedToServer()));
 
@@ -265,12 +255,12 @@ void JabberProtocol::connectToServer()
 	JabberClient->connect(jabberID, account().password(), true);
 
 	// Initialize server info stuff
-	serverInfoManager = new ServerInfoManager(JabberClient->client());
+	serverInfoManager = new ServerInfoManager(JabberClient->client(), this);
 	connect(serverInfoManager, SIGNAL(featuresChanged()),
 		this, SLOT(serverFeaturesChanged()));
 
 	// Initialize PubSub stuff
-	PepManager = new PEPManager(JabberClient->client(), serverInfoManager);
+	PepManager = new PEPManager(JabberClient->client(), serverInfoManager, this);
 	connect(PepManager, SIGNAL(itemPublished(const XMPP::Jid&, const QString&, const XMPP::PubSubItem&)),
 		this, SLOT(itemPublished(const XMPP::Jid&, const QString&, const XMPP::PubSubItem&)));
 	connect(PepManager, SIGNAL(itemRetracted(const XMPP::Jid&, const QString&, const XMPP::PubSubRetraction&)),

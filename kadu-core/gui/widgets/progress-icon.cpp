@@ -24,17 +24,16 @@
 #include "progress-icon.h"
 
 ProgressIcon::ProgressIcon(QWidget *parent) :
-		QLabel(parent), ProgressMovie(0), State(StateFinished)
+		QLabel(parent), State(StateFinished)
 {
-	ProgressMovie = new QMovie(IconsManager::instance()->iconPath("kadu_icons/please-wait-small.gif", "16x16"));
+	ProgressMovie = new QMovie(IconsManager::instance()->iconPath("kadu_icons/please-wait-small.gif", "16x16"),
+			QByteArray(), this);
 
 	setState(StateInProgress);
 }
 
 ProgressIcon::~ProgressIcon()
 {
-	delete ProgressMovie;
-	ProgressMovie = 0;
 }
 
 void ProgressIcon::setState(ProgressIcon::ProgressState state)

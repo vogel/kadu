@@ -48,9 +48,9 @@ XMPP::S5BServer *JabberClient::S5bServer = 0L;
 QStringList JabberClient::S5bAddressList;
 int JabberClient::S5bServerPort = 8010;
 
-JabberClient::JabberClient(JabberProtocol *protocol)
- : jabberClient(0L), JabberClientStream(0L), JabberClientConnector(0L), JabberTLS(0L),
-		       JabberTLSHandler(0L)/*, privacyManager(0L)*/, Protocol(protocol)
+JabberClient::JabberClient(JabberProtocol *protocol, QObject *parent) :
+		QObject(parent), jabberClient(0), JabberClientStream(0), JabberClientConnector(0),
+		JabberTLS(0), JabberTLSHandler(0)/*, privacyManager(0)*/, Protocol(protocol)
 {
 	cleanUp();
 

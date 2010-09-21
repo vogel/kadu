@@ -321,7 +321,7 @@ void Core::init()
 
 	connect(StatusContainerManager::instance(), SIGNAL(statusChanged()), this, SLOT(statusChanged()));
 
-	new Updates();
+	new Updates(this);
 
 	setIcon(IconsManager::instance()->iconByPath(QLatin1String("protocols/gadu-gadu/offline.png")));
 	QTimer::singleShot(15000, this, SLOT(deleteOldConfigurationFiles()));
