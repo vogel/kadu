@@ -32,11 +32,8 @@ void SoundThemeManager::createInstance()
 
 void SoundThemeManager::destroyInstance()
 {
-	if (Instance)
-	{
-		delete Instance;
-		Instance = 0;
-	}
+	delete Instance;
+	Instance = 0;
 }
 
 SoundThemeManager * SoundThemeManager::instance()

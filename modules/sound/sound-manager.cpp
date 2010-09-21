@@ -50,11 +50,8 @@ void SoundManager::createInstance()
 
 void SoundManager::destroyInstance()
 {
-	if (Instance)
-	{
-		delete Instance;
-		Instance = 0;
-	}
+	delete Instance;
+	Instance = 0;
 }
 
 SoundManager * SoundManager::instance()

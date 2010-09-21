@@ -37,10 +37,7 @@ ConfigWizardConfigurationUiHandler *ConfigWizardConfigurationUiHandler::Instance
 void ConfigWizardConfigurationUiHandler::registerActions(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
-
-	if (Instance)
-		return;
-
+	
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/config-wizard.ui"));
 
 	Instance = new ConfigWizardConfigurationUiHandler();
@@ -49,12 +46,8 @@ void ConfigWizardConfigurationUiHandler::registerActions(bool firstLoad)
 void ConfigWizardConfigurationUiHandler::unregisterActions()
 {
   	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/config-wizard.ui"));
-
-	if (Instance)
-	{
-		delete Instance;
-		Instance = 0;
-	}
+	delete Instance;
+	Instance = 0;
 }
 
 ConfigWizardConfigurationUiHandler * ConfigWizardConfigurationUiHandler::instance()

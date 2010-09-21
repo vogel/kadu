@@ -40,11 +40,8 @@ void PhononPlayer::createInstance()
 
 void PhononPlayer::destroyInstance()
 {
-	if (Instance)
-	{
-		delete Instance;
-		Instance = 0;
-	}
+	delete Instance;
+	Instance = 0;
 }
 
 PhononPlayer * PhononPlayer::instance()

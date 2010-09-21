@@ -38,11 +38,8 @@ void DesktopDockConfigurationUiHandler::createInstance()
 
 void DesktopDockConfigurationUiHandler::destroyInstance()
 {
-	if (Instance)
-	{
-		delete Instance;
-		Instance = 0;
-	}
+	delete Instance;
+	Instance = 0;
 }
 
 DesktopDockConfigurationUiHandler* DesktopDockConfigurationUiHandler::instance()

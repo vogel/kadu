@@ -40,11 +40,8 @@ void Antistring::createInstance()
 
 void Antistring::destroyInstance()
 {
-	if (Instance)
-	{
-		delete Instance;
-		Instance = 0;
-	}
+	delete Instance;
+	Instance = 0;
 }
 
 Antistring::Antistring()

@@ -34,9 +34,6 @@ ScreenshotActions *ScreenshotActions::Instance = 0;
 
 void ScreenshotActions::registerActions(bool firstLoad)
 {
-	if (Instance)
-		return;
-
 	Instance = new ScreenshotActions();
 
 	if (firstLoad)
@@ -45,11 +42,8 @@ void ScreenshotActions::registerActions(bool firstLoad)
 
 void ScreenshotActions::unregisterActions()
 {
-	if (Instance)
-	{
-		delete Instance;
-		Instance = 0;
-	}
+	delete Instance;
+	Instance = 0;
 }
 
 ScreenshotActions * ScreenshotActions::instance()
