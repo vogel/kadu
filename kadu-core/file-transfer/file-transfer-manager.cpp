@@ -66,6 +66,7 @@ FileTransferManager::~FileTransferManager()
 {
 	if (Window)
 	{
+		disconnect(Window, SIGNAL(destroyed(QObject *)), this, SLOT(fileTransferWindowDestroyed()));
 		delete Window;
 		Window = 0;
 	}
