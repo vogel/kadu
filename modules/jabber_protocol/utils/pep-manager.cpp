@@ -244,8 +244,7 @@ private:
 PEPManager::PEPManager(XMPP::Client *client, ServerInfoManager *serverInfo, QObject *parent) :
 		QObject(parent), client_(client), serverInfo_(serverInfo)
 {
-	//TODO namespace issue
-	///connect(client_, SIGNAL(messageReceived(const Message &)), SLOT(messageReceived(const Message &)));
+	connect(client_, SIGNAL(messageReceived(const Message &)), SLOT(messageReceived(const Message &)));
 }
 
 void PEPManager::publish(const QString& node, const XMPP::PubSubItem& it, Access access)
@@ -289,7 +288,7 @@ void PEPManager::get(const XMPP::Jid& jid, const QString& node, const QString& i
 	g->go(true);
 }
 
-void PEPManager::messageReceived(const XMPP::Message& m)
+void PEPManager::messageReceived(const Message &m)
 {
 	foreach(XMPP::PubSubRetraction i, m.pubsubRetractions()) {
 		emit itemRetracted(m.from(),m.pubsubNode(), i);

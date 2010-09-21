@@ -35,6 +35,9 @@ class PEPManager : public QObject
 {
 	Q_OBJECT
 
+	// a workaround to Qt's MOC not doing really well when mixing namespaces
+	typedef XMPP::Message Message;
+
 public:
 	enum Access {
 		DefaultAccess,
@@ -55,7 +58,7 @@ signals:
 	void itemRetracted(const XMPP::Jid& jid, const QString& node, const XMPP::PubSubRetraction&);
 
 protected slots:
-	void messageReceived(const XMPP::Message&);
+	void messageReceived(const Message &m);
 	void getFinished();
 	void publishFinished();
 
