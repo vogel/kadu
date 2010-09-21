@@ -93,7 +93,7 @@ QString profilePath(const QString &subpath)
 		WCHAR *homepath=new WCHAR[MAX_PATH+1];
 		if (!SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_APPDATA, NULL,  0,  homepath)))
 		{
-			delete homepath;
+			delete [] homepath;
 			homepath=_wgetenv(L"HOMEPATH");
 		}
 		home = QString::fromUtf16((const ushort*)homepath);
