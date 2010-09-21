@@ -39,7 +39,7 @@
 #include "buddy-personal-info-configuration-widget.h"
 
 BuddyPersonalInfoConfigurationWidget::BuddyPersonalInfoConfigurationWidget(Buddy &buddy, QWidget *parent) :
-		QWidget(parent), MyBuddy(buddy)
+		QWidget(parent), MyBuddy(buddy), InfoWidget(0)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 
@@ -67,9 +67,6 @@ void BuddyPersonalInfoConfigurationWidget::createGui()
 
 	contactLayout->addRow(new QLabel(tr("Buddy contact") + ":", contactWidget), ContactIdCombo);
 
-	InfoWidget = new QWidget(this);
-	Layout->addWidget(InfoWidget);
-
 	Layout->addStretch(100);
 }
 
@@ -80,7 +77,8 @@ void BuddyPersonalInfoConfigurationWidget::accountSelectionChanged(int index)
 	if (!c)
 		return;
 
-	delete InfoWidget;
+	if (InfoWidget)
+		delete InfoWidget;
 	InfoWidget = c.contactAccount().protocolHandler()->protocolFactory()->newContactPersonalInfoWidget(c, this);
 	Layout->insertWidget(1, InfoWidget);
 }
