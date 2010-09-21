@@ -41,6 +41,9 @@ SoundActions * SoundActions::Instance = 0;
 
 void SoundActions::registerActions(bool firstLoad)
 {
+	if (Instance)
+		return;
+
 	Instance = new SoundActions();
 
 	if (firstLoad)
@@ -49,8 +52,11 @@ void SoundActions::registerActions(bool firstLoad)
 
 void SoundActions::unregisterActions()
 {
-	delete Instance;
-	Instance = 0;
+	if (Instance)
+	{
+		delete Instance;
+		Instance = 0;
+	}
 }
 
 SoundActions * SoundActions::instance()

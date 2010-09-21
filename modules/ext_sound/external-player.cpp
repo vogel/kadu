@@ -41,8 +41,11 @@ void ExternalPlayer::createInstance()
 
 void ExternalPlayer::destroyInstance()
 {
-	delete Instance;
-	Instance = 0;
+	if (Instance)
+	{
+		delete Instance;
+		Instance = 0;
+	}
 }
 
 ExternalPlayer * ExternalPlayer::instance()

@@ -34,8 +34,11 @@ void SoundNotifier::createInstance()
 
 void SoundNotifier::destroyInstance()
 {
-	delete Instance;
-	Instance = 0;
+	if (Instance)
+	{
+		delete Instance;
+		Instance = 0;
+	}
 }
 
 SoundNotifier * SoundNotifier::instance()

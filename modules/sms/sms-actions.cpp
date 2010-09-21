@@ -40,6 +40,9 @@ SmsActions *SmsActions::Instance = 0;
 
 void SmsActions::registerActions(bool firstLoad)
 {
+	if (Instance)
+		return;
+
 	Instance = new SmsActions();
 
 	Q_UNUSED(firstLoad);
@@ -49,8 +52,11 @@ void SmsActions::registerActions(bool firstLoad)
 
 void SmsActions::unregisterActions()
 {
-	delete Instance;
-	Instance = 0;
+	if (Instance)
+	{
+		delete Instance;
+		Instance = 0;
+	}
 }
 
 SmsActions * SmsActions::instance()

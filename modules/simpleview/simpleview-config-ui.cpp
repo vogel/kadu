@@ -40,8 +40,11 @@ void SimpleViewConfigUi::createInstance()
 
 void SimpleViewConfigUi::destroyInstance()
 {
-	delete Instance;
-	Instance = 0;
+	if (Instance)
+	{
+		delete Instance;
+		Instance = 0;
+	}
 }
 
 void SimpleViewConfigUi::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)

@@ -31,13 +31,17 @@ ScreenShotConfiguration * ScreenShotConfiguration::instance()
 
 void ScreenShotConfiguration::createInstance()
 {
-	Instance = new ScreenShotConfiguration();
+	if (!Instance)
+		Instance = new ScreenShotConfiguration();
 }
 
 void ScreenShotConfiguration::destroyInstance()
 {
-	delete Instance;
-	Instance = 0;
+	if (Instance)
+	{
+		delete Instance;
+		Instance = 0;
+	}
 }
 
 ScreenShotConfiguration::ScreenShotConfiguration()

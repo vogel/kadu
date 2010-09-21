@@ -72,8 +72,11 @@ void QtSound4Player::createInstance()
 
 void QtSound4Player::destroyInstance()
 {
-	delete Instance;
-	Instance = 0;
+	if (Instance)
+	{
+		delete Instance;
+		Instance = 0;
+	}
 }
 
 QtSound4Player *QtSound4Player::instance()

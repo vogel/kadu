@@ -43,8 +43,11 @@ void DesktopDock::createInstance()
 
 void DesktopDock::destroyInstance()
 {
-	delete Instance;
-	Instance = 0;
+	if (Instance)
+	{
+		delete Instance;
+		Instance = 0;
+	}
 }
 
 DesktopDock * DesktopDock::instance()

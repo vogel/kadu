@@ -36,8 +36,11 @@ void BuddyHistoryDeleteHandler::createInstance()
 
 void BuddyHistoryDeleteHandler::destroyInstance()
 {
-	delete Instance;
-	Instance = 0;
+	if (Instance)
+	{
+		delete Instance;
+		Instance = 0;
+	}
 }
 
 BuddyHistoryDeleteHandler * BuddyHistoryDeleteHandler::instance()
