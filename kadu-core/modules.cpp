@@ -558,6 +558,7 @@ bool ModulesManager::activateModule(const QString& module_name)
 		{
 			qApp->removeTranslator(m.translator);
 			delete m.translator;
+			m.translator = 0;
 		}
 		return false;
 	}
@@ -626,6 +627,7 @@ bool ModulesManager::deactivateModule(const QString& module_name, bool force)
 	{
 		qApp->removeTranslator(m.translator);
 		delete m.translator;
+		m.translator = 0;
 	}
 
 	if (m.lib)
