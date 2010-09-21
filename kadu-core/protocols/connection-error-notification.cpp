@@ -62,6 +62,9 @@ void ConnectionErrorNotification::registerEvent()
 
 void ConnectionErrorNotification::unregisterEvent()
 {
+	if (!ConnectionErrorNotifyEvent)
+		return;
+
 	Parser::unregisterObjectTag("errorServer", getErrorServer);
 	Parser::unregisterObjectTag("error", getErrorMessage);
 

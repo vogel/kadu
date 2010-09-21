@@ -33,6 +33,9 @@ NotifyEvent * NewFileTransferNotification::FileTransferIncomingFileNotifyEvent =
 
 void NewFileTransferNotification::registerEvents()
 {
+	if (FileTransferNotifyEvent)
+		return;
+
 	FileTransferNotifyEvent = new NotifyEvent("FileTransfer", NotifyEvent::CallbackRequired,
 			QT_TRANSLATE_NOOP("@default", "File transfer"));
 	FileTransferIncomingFileNotifyEvent = new NotifyEvent("FileTransfer/IncomingFile", NotifyEvent::CallbackRequired,
@@ -44,6 +47,9 @@ void NewFileTransferNotification::registerEvents()
 
 void NewFileTransferNotification::unregisterEvents()
 {
+	if (!FileTransferNotifyEvent)
+		return;
+
 	NotificationManager::instance()->unregisterNotifyEvent(FileTransferNotifyEvent);
 	NotificationManager::instance()->unregisterNotifyEvent(FileTransferIncomingFileNotifyEvent);
 
@@ -99,7 +105,7 @@ void NewFileTransferNotification::callbackAccept()
 void NewFileTransferNotification::callbackReject()
 {
 	kdebugf();
-	
+
 	close();
 
 	FileTransferManager::instance()->rejectFileTransfer(ft);

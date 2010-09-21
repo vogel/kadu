@@ -48,6 +48,9 @@ void MessageNotification::registerEvents()
 
 void MessageNotification::unregisterEvents()
 {
+	if (!NewChatNotifyEvent)
+		return;
+
 	NotificationManager::instance()->unregisterNotifyEvent(NewChatNotifyEvent);
 	NotificationManager::instance()->unregisterNotifyEvent(NewMessageNotifyEvent);
 
