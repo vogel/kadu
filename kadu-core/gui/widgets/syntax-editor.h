@@ -20,11 +20,11 @@
 #ifndef SYNTAX_EDITOR_H
 #define SYNTAX_EDITOR_H
 
+#include <QtCore/QSharedPointer>
 #include <QtGui/QWidget>
 
 class QComboBox;
 class QPushButton;
-template<typename T> class QSharedPointer;
 
 class SyntaxEditorWindow;
 class SyntaxList;

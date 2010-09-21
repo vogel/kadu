@@ -18,7 +18,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QSharedPointer>
 #include <QtGui/QFrame>
 #include <QtGui/QGridLayout>
 #include <QtGui/QInputDialog>

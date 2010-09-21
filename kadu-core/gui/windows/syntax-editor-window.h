@@ -20,10 +20,10 @@
 #ifndef SYNTAX_EDITOR_WINDOW_H
 #define SYNTAX_EDITOR_WINDOW_H
 
+#include <QtCore/QSharedPointer>
 #include <QtGui/QWidget>
 
 class QLineEdit;
-template<typename T> class QSharedPointer;
 class QTextEdit;
 
 class Preview;

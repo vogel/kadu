@@ -22,10 +22,9 @@
 #define CHAT_ENGINE_KADU_H
 
 #include <QtCore/QObject>
+#include <QtCore/QSharedPointer>
 
 #include "../chat-style-engine.h"
-
-template<typename T> class QSharedPointer;
 
 class Preview;
 class SyntaxList;

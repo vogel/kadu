@@ -19,7 +19,6 @@
  */
 
 #include <QtCore/QFileInfo>
-#include <QtCore/QSharedPointer>
 #include <QtWebKit/QWebFrame>
 
 #include "accounts/account-manager.h"

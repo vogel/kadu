@@ -20,7 +20,6 @@
  */
 
 #include <QtCore/QFile>
-#include <QtCore/QSharedPointer>
 #include <QtCore/QTextStream>
 #include <QtGui/QComboBox>
 #include <QtGui/QHBoxLayout>
