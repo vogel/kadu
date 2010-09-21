@@ -152,6 +152,8 @@ void AccountShared::emitUpdated()
 
 void AccountShared::useProtocolFactory(ProtocolFactory *factory)
 {
+	Protocol *oldProtocolHandler = ProtocolHandler;
+
 	if (ProtocolHandler)
 	{
 		disconnect(ProtocolHandler, SIGNAL(statusChanged(Account, Status)), this, SIGNAL(statusChanged()));
@@ -159,7 +161,7 @@ void AccountShared::useProtocolFactory(ProtocolFactory *factory)
 				   this, SIGNAL(buddyStatusChanged(Contact, Status)));
 		disconnect(ProtocolHandler, SIGNAL(connected(Account)), this, SIGNAL(connected()));
 		disconnect(ProtocolHandler, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
-		
+
 		bool disconnectWithCurrentDescription = config_file.readBoolEntry("General", "DisconnectWithCurrentDescription");
 		QString disconnectDescription = config_file.readEntry("General", "DisconnectDescription");
 
@@ -169,8 +171,6 @@ void AccountShared::useProtocolFactory(ProtocolFactory *factory)
 			statusContianer->storeStatus(statusContianer->status());
 			statusContianer->disconnectStatus(disconnectWithCurrentDescription, disconnectDescription);
 		}
-
-		ProtocolHandler->deleteLater();
 	}
 
 	if (!factory)
@@ -185,6 +185,9 @@ void AccountShared::useProtocolFactory(ProtocolFactory *factory)
 		setDetails(factory->createAccountDetails(this));
 		emit protocolLoaded();
 	}
+
+	if (oldProtocolHandler)
+		delete oldProtocolHandler;
 
 	if (ProtocolHandler)
 	{
