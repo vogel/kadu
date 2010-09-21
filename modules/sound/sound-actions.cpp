@@ -41,6 +41,9 @@ SoundActions * SoundActions::Instance = 0;
 
 void SoundActions::registerActions(bool firstLoad)
 {
+	if (Instance)
+		return;
+
 	Instance = new SoundActions();
 
 	if (firstLoad)

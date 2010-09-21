@@ -31,7 +31,8 @@ MainConfiguration * MainConfiguration::instance()
 
 void MainConfiguration::createInstance()
 {
-	Instance = new MainConfiguration();
+	if (!Instance)
+		Instance = new MainConfiguration();
 }
 
 void MainConfiguration::destroyInstance()

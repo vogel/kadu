@@ -36,6 +36,9 @@ SoundConfigurationUiHandler *SoundConfigurationUiHandler::Instance = 0;
 
 void SoundConfigurationUiHandler::registerConfigurationUi()
 {
+	if (Instance)
+		return;
+
 	Instance = new SoundConfigurationUiHandler();
 
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/sound.ui"));

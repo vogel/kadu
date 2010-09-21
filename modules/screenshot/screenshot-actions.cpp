@@ -34,6 +34,9 @@ ScreenshotActions *ScreenshotActions::Instance = 0;
 
 void ScreenshotActions::registerActions(bool firstLoad)
 {
+	if (Instance)
+		return;
+
 	Instance = new ScreenshotActions();
 
 	if (firstLoad)

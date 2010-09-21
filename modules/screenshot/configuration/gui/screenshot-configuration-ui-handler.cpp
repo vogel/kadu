@@ -32,6 +32,9 @@ ScreenShotConfigurationUiHandler *ScreenShotConfigurationUiHandler::Instance = 0
 
 void ScreenShotConfigurationUiHandler::registerConfigurationUi()
 {
+	if (Instance)
+		return;
+
 	Instance = new ScreenShotConfigurationUiHandler();
 
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/screenshot.ui"));
