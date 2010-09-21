@@ -90,14 +90,12 @@ QString profilePath(const QString &subpath)
 			return (path+subpath);
 		}
 
-		WCHAR *homepath=new WCHAR[MAX_PATH+1];
-		if (!SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_APPDATA, NULL,  0,  homepath)))
-		{
-			delete [] homepath;
-			homepath=_wgetenv(L"HOMEPATH");
-		}
-		home = QString::fromUtf16((const ushort*)homepath);
-
+		WCHAR *homepath = new WCHAR[MAX_PATH + 1];
+		WCHAR *homepath_guard = homepath;
+		if (!SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_APPDATA, NULL, 0, homepath)))
+			homepath = _wgetenv(L"HOMEPATH");
+		home = QString::fromUtf16((const ushort *)homepath);
+		delete [] homepath_guard;
 #else
 		struct passwd *pw;
 		if ((pw = getpwuid(getuid())))
