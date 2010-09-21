@@ -107,10 +107,12 @@ void ServerMonitorWindow::updateStats(ServerStatusWidget::ServerState newStatus,
 
 void ServerMonitorWindow::loadServers()
 {
-	if (Layout == 0) delete Layout;
-	if (ScrollBarLayout == 0) delete ScrollBarLayout;
-
+	if (Layout)
+		delete Layout;
 	Layout = new QGridLayout(this);
+
+	if (ScrollBarLayout)
+		delete ScrollBarLayout;
 	ScrollBarLayout = new QWidget(this);
 
 	AvalibleServers = 0;
