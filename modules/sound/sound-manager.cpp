@@ -89,8 +89,6 @@ SoundManager::~SoundManager()
 		kdebugm(KDEBUG_WARNING, "terminating play_thread!\n");
 		PlayThread->terminate();
 	}
-	delete PlayThread;
-	PlayThread = 0;
 
 	kdebugf2();
 }

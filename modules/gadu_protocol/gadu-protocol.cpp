@@ -250,7 +250,6 @@ GaduProtocol::~GaduProtocol()
 			this, SLOT(contactIdChanged(Contact, const QString &)));
 
 	networkDisconnected(false);
-	delete SocketNotifiers;
 
 	kdebugf2();
 }

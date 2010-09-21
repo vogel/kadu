@@ -147,7 +147,6 @@ Infos::~Infos()
 	}
 
 	Core::instance()->kaduWindow()->removeMenuActionDescription(lastSeenActionDescription);
-	delete lastSeenActionDescription;
 
 	kdebugf2();
 }

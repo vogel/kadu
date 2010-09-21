@@ -160,10 +160,6 @@ ModulesManager::ModulesManager() : QObject(),
 ModulesManager::~ModulesManager()
 {
 	kdebugf();
-
-	delete translators;
-	translators = NULL;
-
 	kdebugf2();
 }
 

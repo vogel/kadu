@@ -86,8 +86,6 @@ SmsActions::~SmsActions()
 
 	BuddiesListViewMenuManager::instance()->removeActionDescription(sendSmsActionDescription);
 	Core::instance()->kaduWindow()->removeMenuActionDescription(sendSmsActionDescription);
-	delete sendSmsActionDescription;
-	sendSmsActionDescription = 0;
 }
 
 void SmsActions::newSms(QString nick)

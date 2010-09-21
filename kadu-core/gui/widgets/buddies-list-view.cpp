@@ -101,12 +101,6 @@ BuddiesListView::~BuddiesListView()
 {
 	disconnect(PendingMessagesManager::instance(), SIGNAL(messageAdded(Message)), this, SLOT(update()));
 	disconnect(PendingMessagesManager::instance(), SIGNAL(messageRemoved(Message)), this, SLOT(update()));
-
-	if (Delegate)
-	{
-		delete Delegate;
-		Delegate = 0;
-	}
 }
 
 void BuddiesListView::setModel(AbstractBuddiesModel *model)

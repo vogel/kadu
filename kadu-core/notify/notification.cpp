@@ -49,12 +49,6 @@ Notification::Notification(const QString &type, const QString &iconPath) :
 Notification::~Notification()
 {
 	Parser::unregisterObjectTag("event", getNotificationTitle);
-
-	if (DefaultCallbackTimer)
-	{
-		delete DefaultCallbackTimer;
-		DefaultCallbackTimer = 0;
-	}
 }
 
 void Notification::acquire()

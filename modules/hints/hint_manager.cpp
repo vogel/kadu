@@ -122,8 +122,6 @@ HintManager::~HintManager()
 
 	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetActivated(ChatWidget *)), this, SLOT(chatWidgetActivated(ChatWidget *)));
 	disconnect(hint_timer, SIGNAL(timeout()), this, SLOT(oneSecond()));
-	delete hint_timer;
-	hint_timer = 0;
 
 	hints.clear();
 

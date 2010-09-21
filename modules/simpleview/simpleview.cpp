@@ -72,10 +72,7 @@ SimpleView::~SimpleView()
 	simpleViewToggle(false);
 
 	if (!Core::instance()->isClosing())
-	{
 		DockingManager::instance()->dockMenu()->removeAction(DockAction);
-		delete DockAction;
-	}
 
 	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/simpleview.ui"));
 	MainConfigurationWindow::unregisterUiHandler(SimpleViewConfigUi::instance());
