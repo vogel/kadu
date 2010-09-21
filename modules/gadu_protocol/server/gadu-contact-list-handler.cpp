@@ -61,9 +61,6 @@ void GaduContactListHandler::setUpContactList(QList<Contact> contacts)
 	//foreach (const Contact &contact, contacts)
 	//	addContactEntry(contact);
 
-	UinType *uins;
-	char *types;
-
 	if (contacts.isEmpty())
 	{
 		gg_notify_ex(Protocol->gaduSession(), 0, 0, 0);
@@ -73,8 +70,8 @@ void GaduContactListHandler::setUpContactList(QList<Contact> contacts)
 
 	int count = contacts.count();
 
-	uins = new UinType[count];
-	types = new char[count];
+	UinType uins[count];
+	char types[count];
 
 	int i = 0;
 
@@ -87,9 +84,6 @@ void GaduContactListHandler::setUpContactList(QList<Contact> contacts)
 
 	gg_notify_ex(Protocol->gaduSession(), uins, types, count);
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Userlist sent\n");
-
-	delete [] uins;
-	delete [] types;
 }
 
 void GaduContactListHandler::updateContactEntry(Contact contact)

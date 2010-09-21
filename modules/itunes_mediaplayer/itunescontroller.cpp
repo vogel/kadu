@@ -64,18 +64,14 @@ static QString CFStringToQString(CFStringRef s)
 {
 	QString result;
 
-	if (s != NULL) 
+	if (s != NULL)
 	{
 		CFIndex length = CFStringGetMaximumSizeForEncoding(CFStringGetLength(s), kCFStringEncodingUTF8) + 1;
-		char* buffer = new char[length];
-		if (CFStringGetCString(s, buffer, length, kCFStringEncodingUTF8)) {
+		char buffer[length];
+		if (CFStringGetCString(s, buffer, length, kCFStringEncodingUTF8))
 			result = QString::fromUtf8(buffer);
-		}
-		else 
-		{
+		else
 			qWarning("itunesplayer.cpp: CFString conversion failed.");
-		}
-		delete buffer;
 	}
 	return result;
 }

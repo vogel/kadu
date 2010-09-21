@@ -99,7 +99,7 @@ bool GaduChatService::sendMessage(Chat chat, FormattedMessage &message, bool sil
 	int messageId = -1;
 	if (uinsCount > 1)
 	{
-		UinType *uins = new UinType[uinsCount];
+		UinType uins[uinsCount];
 		unsigned int i = 0;
 
 		foreach (const Contact &contact, contacts)
@@ -112,7 +112,6 @@ bool GaduChatService::sendMessage(Chat chat, FormattedMessage &message, bool sil
 		else
 			messageId = gg_send_message_confer(
 					Protocol->gaduSession(), GG_CLASS_CHAT, uinsCount, uins, (unsigned char *)data.data());
-		delete[] uins;
 	}
 	else
 		foreach (const Contact &contact, contacts)

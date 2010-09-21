@@ -55,16 +55,15 @@ static CFStringRef QString2CFString(const QString& s)
 {
 	if (s.isNull())
 		return 0;
-	
-	ushort* buffer = new ushort[s.length()];
+
+	ushort buffer[s.length()];
 	for (int i = 0; i < s.length(); ++i)
 		buffer[i] = s[i].unicode();
 
-	CFStringRef result = CFStringCreateWithBytes( NULL, 
+	CFStringRef result = CFStringCreateWithBytes( NULL,
 		(UInt8*) buffer, s.length() * sizeof(ushort),
 		kCFStringEncodingUnicode, false);
 
-	delete buffer;
 	return result;
 }
 

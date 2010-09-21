@@ -96,7 +96,7 @@ void SoundFile::loadData(const QString &path)
 
 void SoundFile::loadFloatSamples(SNDFILE *f)
 {
-	float *buffer = new float[Length];
+	float buffer[Length];
 	double scale;
 
 	sf_command(f, SFC_CALC_SIGNAL_MAX, &scale, sizeof(scale)) ;
@@ -108,7 +108,6 @@ void SoundFile::loadFloatSamples(SNDFILE *f)
 	int readcount = sf_read_float(f, buffer, Length);
 	for (int m = 0; m < readcount; ++m)
 		Data[m] = (short int)(scale * buffer[m]);
-	delete buffer;
 }
 
 void SoundFile::loadIntSamples(SNDFILE *f)

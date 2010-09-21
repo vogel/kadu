@@ -456,7 +456,7 @@ void EmoticonSelector::addEmoticonButtons(int num_emoticons, QWidget *mainwidget
 {
 	int selector_width = 460;
 	int total_height = 0, cur_width = 0, btn_width = 0;
-	EmoticonSelectorButton **btns = new EmoticonSelectorButton*[num_emoticons];
+	EmoticonSelectorButton *btns[num_emoticons];
 	QVBoxLayout *layout = new QVBoxLayout(mainwidget);
 	QHBoxLayout *row = 0;
 	layout->setContentsMargins(0, 0, 0, 0);
@@ -505,8 +505,6 @@ void EmoticonSelector::addEmoticonButtons(int num_emoticons, QWidget *mainwidget
 	}
 	if (row)
 		row->setAlignment(Qt::AlignLeft); // align the last row to left
-
-	delete [] btns;
 }
 
 void EmoticonSelector::calculatePositionAndSize(const QWidget *activatingWidget, const QWidget *mainwidget)
