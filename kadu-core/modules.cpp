@@ -258,7 +258,7 @@ QTranslator* ModulesManager::loadModuleTranslation(const QString &module_name)
 	else
 	{
 		delete translator;
-		return NULL;
+		return 0;
 	}
 }
 
@@ -332,7 +332,7 @@ QStringList ModulesManager::loadedModules() const
 {
 	QStringList loaded;
 	foreach(const QString &i, Modules.keys())
-		if (Modules[i].lib != NULL)
+		if (Modules[i].lib)
 			loaded.append(i);
 	return loaded;
 }
@@ -505,7 +505,7 @@ bool ModulesManager::activateModule(const QString& module_name)
 
 	if (moduleIsStatic(module_name))
 	{
-		m.lib = NULL;
+		m.lib = 0;
 		StaticModule sm = StaticModules[module_name];
 		init = sm.init;
 		m.close = sm.close;
@@ -526,7 +526,7 @@ bool ModulesManager::activateModule(const QString& module_name)
 		}
 		init = (InitModuleFunc *)m.lib->resolve(qPrintable(module_name + "_init"));
 		m.close = (CloseModuleFunc *)m.lib->resolve(qPrintable(module_name + "_close"));
-		if (init == NULL || m.close == NULL)
+		if (!init || !m.close)
 		{
 			MessageDialog::msg(tr("Cannot find required functions in module %1.\nMaybe it's not Kadu-compatible Module.").arg(module_name));
 			delete m.lib;
@@ -549,12 +549,12 @@ bool ModulesManager::activateModule(const QString& module_name)
 	if (res != 0)
 	{
 		MessageDialog::msg(tr("Module initialization routine for %1 failed.").arg(module_name));
-		if (m.lib != NULL)
+		if (m.lib)
 		{
 			delete m.lib;
 			m.lib = 0;
 		}
-		if (m.translator != NULL)
+		if (m.translator)
 		{
 			qApp->removeTranslator(m.translator);
 			delete m.translator;
@@ -664,7 +664,7 @@ void ModulesManager::showWindow(QAction *sender, bool toggled)
 void ModulesManager::dialogDestroyed()
 {
 	kdebugf();
-	Window = NULL;
+	Window = 0;
 	kdebugf2();
 }
 
