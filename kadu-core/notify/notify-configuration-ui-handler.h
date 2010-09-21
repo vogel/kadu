@@ -45,6 +45,8 @@ struct NotifyEventConfigurationItem
 {
 	NotifyEvent *event;
 	bool useCustomSettings;
+
+	NotifyEventConfigurationItem() : event(0), useCustomSettings(false) {}
 };
 
 class NotifyConfigurationUiHandler : public ConfigurationUiHandler
