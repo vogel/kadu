@@ -253,8 +253,7 @@ void SpellChecker::configForward2(QListWidgetItem *it)
 	if (addCheckedLang(langName))
 	{
 		checkList->addItem(langName);
-		QListWidgetItem *item = availList->takeItem(availList->row(it));
-		delete item;
+		delete availList->takeItem(availList->row(it));
 	}
 }
 
@@ -262,8 +261,7 @@ void SpellChecker::configBackward2(QListWidgetItem *it)
 {
 	QString langName = it->text();
 	availList->addItem(langName);
-	QListWidgetItem *item = checkList->takeItem(checkList->row(it));
-	delete item;
+	delete checkList->takeItem(checkList->row(it));
 	removeCheckedLang(langName);
 }
 
@@ -340,6 +338,6 @@ bool SpellChecker::checkWord(QString word)
 			}
 		}
 	}
-	
+
 	return isWordValid;
 }

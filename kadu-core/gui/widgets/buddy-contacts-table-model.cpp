@@ -217,10 +217,7 @@ bool BuddyContactsTableModel::removeRows(int row, int count, const QModelIndex& 
 	beginRemoveRows(parent, row, row + count - 1);
 
 	for (int i = 0; i < count; i++)
-	{
-		BuddyContactsTableItem *item = Contacts.takeAt(row);
-		delete item;
-	}
+		delete Contacts.takeAt(row);
 
 	endRemoveRows();
 

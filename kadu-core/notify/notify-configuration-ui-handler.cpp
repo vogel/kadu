@@ -318,8 +318,7 @@ void NotifyConfigurationUiHandler::moveToNotifyList()
 		if (allUsers->item(i)->isSelected())
 		{
 			notifiedUsers->addItem(allUsers->item(i)->text());
-			QListWidgetItem *it = allUsers->takeItem(i);
-			delete it;
+			delete allUsers->takeItem(i);
 		}
 
 	notifiedUsers->sortItems();
@@ -333,8 +332,7 @@ void NotifyConfigurationUiHandler::moveToAllList()
 		if (notifiedUsers->item(i)->isSelected())
 		{
 			allUsers->addItem(notifiedUsers->item(i)->text());
-			QListWidgetItem *it = notifiedUsers->takeItem(i);
-			delete it;
+			delete notifiedUsers->takeItem(i);
 		}
 
 	allUsers->sortItems();

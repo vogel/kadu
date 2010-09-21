@@ -186,8 +186,7 @@ void PathListEditWindow::deletePathClicked()
 	if (!PathListWidget->currentItem()->isSelected())
 		return;
 
-	QListWidgetItem *path = PathListWidget->takeItem(PathListWidget->currentRow());
-	delete path;
+	delete PathListWidget->takeItem(PathListWidget->currentRow());
 }
 
 void PathListEditWindow::okClicked()

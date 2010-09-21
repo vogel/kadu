@@ -138,8 +138,7 @@ void JabberResourcePool::removeResource(const XMPP::Jid &jid, const XMPP::Resour
 	{
 		if((mResource->jid().bare().toLower() == jid.bare().toLower()) && (mResource->resource().name().toLower() == resource.name().toLower()))
 		{
-			JabberResource *deletedResource = pool.takeAt( pool.indexOf(mResource));
-			delete deletedResource;
+			delete pool.takeAt( pool.indexOf(mResource));
 
 			notifyRelevantContacts(jid, true);
 			return;
@@ -162,8 +161,7 @@ void JabberResourcePool::removeAllResources(const XMPP::Jid &jid)
 			if(jid.resource().isEmpty() ||(jid.resource().toLower() == mResource->resource().name().toLower()))
 			{
 				kdebug("Removing resource %s / %s\n", jid.bare().toLocal8Bit().data(), mResource->resource().name().toLocal8Bit().data());
-				JabberResource *deletedResource = pool.takeAt(pool.indexOf(mResource));
-				delete deletedResource;
+				delete pool.takeAt(pool.indexOf(mResource));
 			}
 		}
 	}

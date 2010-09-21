@@ -503,8 +503,7 @@ void ConfigurationWidget::removedConfigSection(const QString &sectionName)
 	for (int i = 0; i < sectionsListWidget->count(); i++)
 		if (sectionsListWidget->item(i)->text() == tr(sectionName.toAscii().data()))
 		{
-			QListWidgetItem *item = sectionsListWidget->takeItem(i);
-			delete item;
+			delete sectionsListWidget->takeItem(i);
 			break;
 		}
 }
