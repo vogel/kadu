@@ -303,10 +303,8 @@ void ToolBar::contextMenuEvent(QContextMenuEvent *e)
 // 	}
 
 	QMenu *menu = createContextMenu(dynamic_cast<QToolButton *>(childAt(e->pos())));
-	menu->popup(e->globalPos());
-
-// TODO: add something intelligent here
-// 	delete menu;
+	menu->exec(e->globalPos());
+	delete menu;
 
 	e->accept();
 	kdebugf2();
