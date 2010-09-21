@@ -39,15 +39,15 @@
 
 using namespace XMPP;
 
-MiniClient::MiniClient(QObject *parent)
-:QObject(parent)
+MiniClient::MiniClient(QObject *parent) :
+		QObject(parent)
 {
 	_client = new Client;
 
-		QObject::connect ( _client, SIGNAL ( xmlIncoming(const QString& ) ),
-				   this, SLOT ( slotDebug(const QString &) ) );
-		QObject::connect ( _client, SIGNAL ( xmlOutgoing(const QString& ) ),
-				   this, SLOT ( slotDebug(const QString &) ) );
+	QObject::connect(_client, SIGNAL(xmlIncoming(const QString &)),
+			this, SLOT(slotDebug(const QString &)));
+	QObject::connect(_client, SIGNAL(xmlOutgoing(const QString &)),
+			this, SLOT(slotDebug(const QString &)));
 	conn = 0;
 	tls = 0;
 	tlsHandler = 0;
@@ -60,20 +60,35 @@ MiniClient::MiniClient(QObject *parent)
 MiniClient::~MiniClient()
 {
 	delete _client;
+	_client = 0;
 	reset();
 }
 
 void MiniClient::reset()
 {
-	delete stream;
-	stream = 0;
+	if (stream)
+	{
+		delete stream;
+		stream = 0;
+	}
 
-	delete tls;
-	tls = 0;
-	tlsHandler = 0;
+	if (tlsHandler)
+	{
+		delete tlsHandler;
+		tlsHandler = 0;
+	}
 
-	delete conn;
-	conn = 0;
+	if (tls)
+	{
+		delete tls;
+		tls = 0;
+	}
+
+	if (conn)
+	{
+		delete conn;
+		conn = 0;
+	}
 }
 
 void MiniClient::connectToServer(const Jid &jid, bool legacy_ssl_probe, bool legacy_ssl, bool forcessl, const QString &_host, int _port/*, ProxyManager *pm, QString proxy, QString *_pass*/)

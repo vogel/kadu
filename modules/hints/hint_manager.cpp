@@ -114,8 +114,11 @@ HintManager::~HintManager()
 
 	disconnect(this, SIGNAL(searchingForTrayPosition(QPoint &)), Core::instance(), SIGNAL(searchingForTrayPosition(QPoint &)));
 
-	delete tipFrame;
-	tipFrame = 0;
+	if (tipFrame)
+	{
+		delete tipFrame;
+		tipFrame = 0;
+	}
 
 	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetActivated(ChatWidget *)), this, SLOT(chatWidgetActivated(ChatWidget *)));
 	disconnect(hint_timer, SIGNAL(timeout()), this, SLOT(oneSecond()));

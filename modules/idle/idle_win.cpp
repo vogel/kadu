@@ -24,7 +24,7 @@
 #include <windows.h>
 
 #if defined(Q_OS_WIN32) && !defined(Q_CC_GNU) && (_WIN32_WINNT < 0x0500)
-typedef struct tagLASTINPUTINFO 
+typedef struct tagLASTINPUTINFO
 {
 	UINT cbSize;
 	DWORD dwTime;
@@ -47,21 +47,21 @@ Idle::Idle()
 	{
 		// try to find the built-in Windows 2000 function
 		lib = new QLibrary("user32");
-		if(lib->load() && (p = lib->resolve("GetLastInputInfo"))) 
+		if(lib->load() && (p = lib->resolve("GetLastInputInfo")))
 		{
 			GetLastInputInfoFun = (BOOL (__stdcall *)(PLASTINPUTINFO))p;
 		}
-		else 
+		else
 		{
 			delete lib;
 
 			// fall back on idleui
 			lib = new QLibrary("idleui");
-			if(lib->load() && (p = lib->resolve("IdleUIGetLastInputTime"))) 
+			if(lib->load() && (p = lib->resolve("IdleUIGetLastInputTime")))
 			{
 				IdleUIGetLastInputTime = (DWORD (__stdcall *)(void))p;
 			}
-			else 
+			else
 			{
 				delete lib;
 				lib = 0;
@@ -72,8 +72,11 @@ Idle::Idle()
 
 Idle::~Idle()
 {
-	delete lib;
-	lib = 0;
+	if (lib)
+	{
+		delete lib;
+		lib = 0;
+	}
 }
 
 int Idle::secondsIdle()

@@ -52,8 +52,11 @@ BuddiesListViewItemPainter::BuddiesListViewItemPainter(const BuddiesListViewDele
 
 BuddiesListViewItemPainter::~BuddiesListViewItemPainter()
 {
-	delete DescriptionDocument;
-	DescriptionDocument = 0;
+	if (DescriptionDocument)
+	{
+		delete DescriptionDocument;
+		DescriptionDocument = 0;
+	}
 }
 
 bool BuddiesListViewItemPainter::useBold() const

@@ -445,8 +445,12 @@ void JabberFileTransferHandler::ft_error(int x)
 
 	if(LocalFile.isOpen())
 		LocalFile.close();
-	delete JabberTransfer;
-	JabberTransfer = 0;
+
+	if (JabberTransfer)
+	{
+		delete JabberTransfer;
+		JabberTransfer = 0;
+	}
 
 	if(x == XMPP::FileTransfer::ErrReject)
 		ft_error(ErrReject, x, "");
@@ -591,8 +595,13 @@ void JabberFileTransferHandler::slotIncomingDataReady ( const QByteArray &data )
 		int r = LocalFile.write(data.data(), data.size());
 		if(r < 0) {
 			LocalFile.close();
-			delete JabberTransfer;
-			JabberTransfer = 0;
+
+			if (JabberTransfer)
+			{
+				delete JabberTransfer;
+				JabberTransfer = 0;
+			}
+
 			ft_error(ErrFile, 0, LocalFile.errorString());
 			return;
 		}
@@ -607,8 +616,13 @@ void JabberFileTransferHandler::doFinish()
 	if(BytesSent == Length) {
 		LocalFile.close();
 		kdebug("Transfer finished... close file.\n");
-		delete JabberTransfer;
-		JabberTransfer = 0;
+
+		if (JabberTransfer)
+		{
+			delete JabberTransfer;
+			JabberTransfer = 0;
+		}
+
 		transfer().setTransferStatus(StatusFinished);
 	}
 }

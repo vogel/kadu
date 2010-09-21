@@ -360,12 +360,10 @@ void JabberProtocol::disconnectFromServer(const XMPP::Status &s)
 
 	if (serverInfoManager)
 	{
-		disconnect(serverInfoManager, SIGNAL(featuresChanged()),
-			this, SLOT(serverFeaturesChanged()));
+		disconnect(serverInfoManager, SIGNAL(featuresChanged()), this, SLOT(serverFeaturesChanged()));
+		delete serverInfoManager;
+		serverInfoManager = 0;
 	}
-
-	delete serverInfoManager;
-	serverInfoManager = 0;
 
 	if (!ModuleUnloading && PepManager)
 	{
