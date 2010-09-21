@@ -627,11 +627,8 @@ void History::unregisterStorage(HistoryStorage *storage)
 
 	stopSaveThread();
 
-	if (CurrentStorage)
-	{
-		delete CurrentStorage;
-		CurrentStorage = 0;
-	}
+	delete CurrentStorage;
+	CurrentStorage = 0;
 }
 
 QList<Chat> History::chatsList(HistorySearchParameters search)

@@ -87,8 +87,7 @@ void disableNewTab(Action *action)
 	kdebugf2();
 }
 
-TabsManager::TabsManager(bool firstload) :
-		selectedchat(0)
+TabsManager::TabsManager(bool firstload)
 {
 	kdebugf();
 
@@ -559,11 +558,7 @@ void TabsManager::onMenuActionDetachAll()
 
 void TabsManager::onMenuActionClose()
 {
-	if (selectedchat)
-	{
-		delete selectedchat;
-		selectedchat = 0;
-	}
+	delete selectedchat;
 }
 
 void TabsManager::onMenuActionCloseAll()

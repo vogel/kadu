@@ -30,17 +30,13 @@ TokenFetcher::TokenFetcher(bool autoDelete, QObject *parent) :
 
 TokenFetcher::~TokenFetcher()
 {
-	if (H)
-	{
-		delete H;
-		H = 0;
-	}
+	delete H;
+	H = 0;
 }
 
 void TokenFetcher::fetchToken()
 {
-	if (H)
-		delete H;
+	delete H;
 
 	H = gg_token(1);
 	if (!H || H->fd <= 0)
@@ -57,11 +53,8 @@ void TokenFetcher::fetchToken()
 
 void TokenFetcher::tokenFetchedSlot(const QString &tokenId, QPixmap tokenPixmap)
 {
-	if (H)
-	{
-		delete H;
-		H = 0;
-	}
+	delete H;
+	H = 0;
 
 	emit tokenFetched(tokenId, tokenPixmap);
 

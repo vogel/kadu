@@ -61,43 +61,37 @@ JabberClient::JabberClient(JabberProtocol *protocol, QObject *parent) :
 
 JabberClient::~JabberClient()
 {
-	cleanUp();
+	if (jabberClient)
+		jabberClient->close();
+
+	delete jabberClient;
+	delete JabberClientStream;
+	delete JabberClientConnector;
+	delete JabberTLSHandler;
+	delete JabberTLS;
+
+	jabberClient = 0;
+	// privacyManager will be deleted with jabberClient, its parent's parent
 }
 
 void JabberClient::cleanUp()
 {
 	if (jabberClient)
-	{
 		jabberClient->close();
-		delete jabberClient;
-		jabberClient = 0;
-		// privacyManager will be deleted with jabberClient, its parent's parent
-		//privacyManager = 0;
-	}
 
-	if (JabberClientStream)
-	{
-		delete JabberClientStream;
-		JabberClientStream = 0;
-	}
+	delete jabberClient;
+	delete JabberClientStream;
+	delete JabberClientConnector;
+	delete JabberTLSHandler;
+	delete JabberTLS;
+	// privacyManager will be deleted with jabberClient, its parent's parent
 
-	if (JabberClientConnector)
-	{
-		delete JabberClientConnector;
-		JabberClientConnector = 0;
-	}
-
-	if (JabberTLSHandler)
-	{
-		delete JabberTLSHandler;
-		JabberTLSHandler = 0;
-	}
-
-	if (JabberTLS)
-	{
-		delete JabberTLS;
-		JabberTLS = 0;
-	}
+	jabberClient = 0L;
+	JabberClientStream = 0L;
+	JabberClientConnector = 0L;
+	JabberTLSHandler = 0L;
+	JabberTLS = 0L;
+	///privacyManager = 0L;
 
 	CurrentPenaltyTime = 0;
 

@@ -107,11 +107,8 @@ Core::~Core()
 
 	MainConfiguration::destroyInstance();
 
-	if (Window)
-	{
-		delete Window;
-		Window = 0;
-	}
+	delete Window;
+	Window = 0;
 
 	triggerAllAccountsUnregistered();
 
