@@ -31,6 +31,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <QDir>
+#include <QtAlgorithms>
 
 #include "misc/path-conversion.h"
 
@@ -50,14 +51,13 @@ VCardFactory::VCardFactory()
  */
 VCardFactory::~VCardFactory()
 {
-	foreach (VCard *vcard, vcardDict_)
-		delete vcard;
+	qDeleteAll(vcardDict_);
 }
 
 /**
  * \brief Returns the VCardFactory instance.
  */
-VCardFactory* VCardFactory::instance() 
+VCardFactory* VCardFactory::instance()
 {
 	if (!instance_) {
 		instance_ = new VCardFactory();
@@ -128,7 +128,7 @@ const VCard* VCardFactory::vcard(const Jid &j)
 	if (vcardDict_.contains(j.bare())) {
 		return vcardDict_[j.bare()];
 	}
-	
+
 	// then try to load from cache on disk
 	QFile file ( profilePath("vcard") + '/' + JIDUtil::encode(j.bare()).toLower() + ".xml" );
 	file.open (QIODevice::ReadOnly);
@@ -190,5 +190,5 @@ JT_VCard* VCardFactory::getVCard(const Jid &jid, Task *rootTask, const QObject *
 	task->go(true);
 	return task;
 }
-	
+
 VCardFactory* VCardFactory::instance_ = NULL;

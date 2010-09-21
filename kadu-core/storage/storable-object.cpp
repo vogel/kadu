@@ -19,6 +19,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QtAlgorithms>
+
 #include "storable-object.h"
 
 /**
@@ -35,8 +37,7 @@ StorableObject::StorableObject() :
 
 StorableObject::~StorableObject()
 {
-	foreach (StorableObject *moduleData, ModulesStorableData)
-		delete moduleData;
+	qDeleteAll(ModulesStorableData);
 	// TODO: 0.6.6, memory leak
 // 	foreach (void *moduleData, ModulesData)
 // 		delete moduleData;
