@@ -180,6 +180,10 @@ TabsManager::~TabsManager()
 
 	delete tabdialog;
 	tabdialog = 0;
+
+	delete menu;
+	menu = 0;
+
 	kdebugf2();
 }
 
