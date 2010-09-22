@@ -424,7 +424,7 @@ CustomInput * ChatWidget::edit()
 
 bool ChatWidget::decodeLocalFiles(QDropEvent *event, QStringList &files)
 {
-	if (!event->mimeData()->hasUrls() || event->source() == BuddiesWidget || event->source() == BuddiesWidget->view())
+	if (!event->mimeData()->hasUrls() || event->source() == MessagesView)
 		return false;
 
 	QList<QUrl> urls = event->mimeData()->urls();
