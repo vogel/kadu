@@ -21,8 +21,9 @@
 #define BUDDY_NAME_FILTER_H
 
 #include "buddies/filter/abstract-buddy-filter.h"
+#include "exports.h"
 
-class BuddyNameFilter : public AbstractBuddyFilter
+class KADUAPI BuddyNameFilter : public AbstractBuddyFilter
 {
 	Q_OBJECT
 
