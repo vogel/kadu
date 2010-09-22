@@ -37,7 +37,9 @@
 #include <X11/Xdefs.h>
 #endif // Q_WS_X11 && !Q_WS_MAEMO_5
 
-class KaduApplication : public QApplication
+#include "exports.h"
+
+class KADUAPI KaduApplication : public QApplication
 {
 	Q_OBJECT
 
