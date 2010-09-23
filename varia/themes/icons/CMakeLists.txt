@@ -33,6 +33,7 @@ endif (ENABLE_AUTODOWNLOAD AND NOT WIN32)
 		PATTERN ".autodownloaded" EXCLUDE
 		PATTERN "README"
 		PATTERN "*.png"
+		PATTERN "*.svg"
 	)
 
 	add_dependencies (kadu icon_themes)
