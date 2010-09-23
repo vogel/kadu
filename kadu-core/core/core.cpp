@@ -207,12 +207,12 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("Look", "ChatUsrNickColor", QColor("#000000"));
 	config_file.addVariable("Look", "ConferenceContents", "");
 	config_file.addVariable("Look", "ConferencePrefix", "");
-	config_file.addVariable("Look", "DescriptionColor", w.palette().foreground().color());
+	config_file.addVariable("Look", "DescriptionColor", w.palette().text().color());
 	config_file.addVariable("Look", "DisplayGroupTabs", true);
 	config_file.addVariable("Look", "HeaderSeparatorHeight", 1);
 	config_file.addVariable("Look", "IconsPaths", "");
 	config_file.addVariable("Look", "InfoPanelBgColor", w.palette().base().color());
-	config_file.addVariable("Look", "InfoPanelFgColor", w.palette().foreground().color());
+	config_file.addVariable("Look", "InfoPanelFgColor", w.palette().text().color());
 	config_file.addVariable("Look", "InfoPanelSyntaxFile", "default");
 	config_file.addVariable("Look", "NiceDateFormat", true);
 	config_file.addVariable("Look", "NoHeaderInterval", 30);
@@ -242,7 +242,7 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("Look", "UserboxBgColor", w.palette().base().color());
 	config_file.addVariable("Look", "UserboxAlternateBgColor", w.palette().alternateBase().color());
 	config_file.addVariable("Look", "UserBoxColumnCount", 1);
-	config_file.addVariable("Look", "UserboxFgColor", w.palette().foreground().color());
+	config_file.addVariable("Look", "UserboxFgColor", w.palette().text().color());
 	QFont userboxfont(qApp->font());
 	userboxfont.setPointSize(qApp->font().pointSize() + 1);
 	config_file.addVariable("Look", "UserboxFont", userboxfont);
