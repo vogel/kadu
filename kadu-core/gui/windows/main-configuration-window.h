@@ -8,6 +8,7 @@
 class QCheckBox;
 class QSlider;
 
+class BuddyListBackgroundColorsWidget;
 class ConfigComboBox;
 class ConfigLineEdit;
 class Preview;
@@ -65,6 +66,7 @@ class KADUAPI MainConfigurationWindow : public ConfigurationWindow, CompositingA
 	QSlider *userboxAlpha;
 	ConfigComboBox *emoticonsStyleComboBox;
 	ConfigComboBox *emoticonsThemeComboBox;
+	BuddyListBackgroundColorsWidget *buddyColors;
 
 	explicit MainConfigurationWindow();
 

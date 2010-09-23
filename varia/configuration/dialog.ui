@@ -144,7 +144,6 @@ Text is plain black." />
 			</group-box>
 
 			<group-box name="Buddy List">
-				<color-button caption="Background" config-section="Look" config-item="UserboxBgColor" />
 				<color-button caption="Font" config-section="Look" config-item="UserboxFgColor" />
 				<color-button caption="Descriptions font" config-section="Look" config-item="DescriptionColor" />
 			</group-box>

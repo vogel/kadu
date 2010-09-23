@@ -445,6 +445,7 @@ Chat KaduWindow::chat()
 void KaduWindow::configurationUpdated()
 {
 	QString bgColor = config_file.readColorEntry("Look","UserboxBgColor").name();
+	QString alternateBgColor = config_file.readColorEntry("Look","UserboxAlternateBgColor").name();
 	QFont userboxFont = QFont(config_file.readFontEntry("Look", "UserboxFont"));
 	GroupBar->setFont(QFont(userboxFont.family(), userboxFont.pointSize(), 75));
 
@@ -452,16 +453,19 @@ void KaduWindow::configurationUpdated()
 
 	if (CompositingEnabled && config_file.readBoolEntry("Look", "UserboxTransparency"))
 	{
-		QColor color(bgColor);
 		int alpha = config_file.readNumEntry("Look", "UserboxAlpha");
 
+		QColor color(bgColor);
 		bgColor = QString("rgba(%1,%2,%3,%4)").arg(color.red()).arg(color.green()).arg(color.blue()).arg(alpha);
+
+		color = QColor(alternateBgColor);
+		alternateBgColor = QString("rgba(%1,%2,%3,%4)").arg(color.red()).arg(color.green()).arg(color.blue()).arg(alpha);
 	}
 
 	if (config_file.readBoolEntry("Look", "UseUserboxBackground", true))
 	{
 		QString type = config_file.readEntry("Look", "UserboxBackgroundDisplayStyle");
-		ContactsWidget->view()->setBackground(bgColor,
+		ContactsWidget->view()->setBackground(bgColor, alternateBgColor,
 			config_file.readEntry("Look", "UserboxBackground"),
 			type == "Centered" ? BuddiesListView::BackgroundCentered
 			: type == "Tiled" ? BuddiesListView::BackgroundTiled
@@ -470,7 +474,7 @@ void KaduWindow::configurationUpdated()
 			: BuddiesListView::BackgroundNone);
 	}
 	else
-		ContactsWidget->view()->setBackground(bgColor);
+		ContactsWidget->view()->setBackground(bgColor, alternateBgColor);
 
 	ChangeStatusButtons->setVisible(config_file.readBoolEntry("Look", "ShowStatusButton"));
 

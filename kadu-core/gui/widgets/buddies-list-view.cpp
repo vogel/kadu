@@ -415,9 +415,10 @@ void BuddiesListView::doubleClickedSlot(const QModelIndex &index)
 	triggerActivate(index);
 }
 
-void BuddiesListView::setBackground(const QString &backgroundColor, const QString &file, BackgroundMode mode)
+void BuddiesListView::setBackground(const QString &backgroundColor, const QString &alternateColor, const QString &file, BackgroundMode mode)
 {
 	BackgroundColor = backgroundColor;
+	AlternateBackgroundColor = alternateColor;
 	setAnimated(mode == BackgroundNone);
 	BackgroundImageMode = mode;
 	BackgroundImageFile = file;
@@ -452,9 +453,8 @@ void BuddiesListView::updateBackground()
 
 	if (BackgroundImageMode == BackgroundNone)
 	{
-		style.append("}");
-		//TODO 0.6.6: make an option in configuration:
-		setAlternatingRowColors(false);
+		style.append(QString("alternate-background-color: %1; }").arg(AlternateBackgroundColor));
+		setAlternatingRowColors(true);
 		setStyleSheet(style);
 
 		return;

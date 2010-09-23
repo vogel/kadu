@@ -182,6 +182,7 @@ set (kadu_SRCS
 	gui/widgets/toolbar.cpp
 	gui/widgets/tool-tip-class-manager.cpp
 
+	gui/widgets/configuration/buddy-list-background-colors-widget.cpp
 	gui/widgets/configuration/config-action-button.cpp
 	gui/widgets/configuration/config-check-box.cpp
 	gui/widgets/configuration/config-color-button.cpp
@@ -494,6 +495,7 @@ set (kadu_MOC_SRCS
 	gui/widgets/syntax-editor.h
 	gui/widgets/toolbar.h
 
+	gui/widgets/configuration/buddy-list-background-colors-widget.h
 	gui/widgets/configuration/config-action-button.h
 	gui/widgets/configuration/config-check-box.h
 	#gui/widgets/configuration/config-widget-value.h

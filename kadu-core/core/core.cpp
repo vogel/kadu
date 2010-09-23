@@ -80,6 +80,7 @@ Core::Core() :
 {
 	connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(quit()));
 
+	import_0_6_5_configuration();
 	createDefaultConfiguration();
 	configurationUpdated();
 
@@ -119,6 +120,11 @@ Core::~Core()
 
 	xml_config_file = 0;
 	config_file_ptr = 0;
+}
+
+void Core::import_0_6_5_configuration()
+{
+      	config_file.addVariable("Look", "UserboxAlternateBgColor", config_file.readEntry("Look", "UserboxBgColor"));
 }
 
 void Core::createDefaultConfiguration()
@@ -234,6 +240,7 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("Look", "UserboxTransparency", false);
 	config_file.addVariable("Look", "UserboxAlpha", 0);
 	config_file.addVariable("Look", "UserboxBgColor", w.palette().background().color());
+	config_file.addVariable("Look", "UserboxAlternateBgColor", w.palette().alternateBase().color());
 	config_file.addVariable("Look", "UserBoxColumnCount", 1);
 	config_file.addVariable("Look", "UserboxFgColor", w.palette().foreground().color());
 	QFont userboxfont(qApp->font());

@@ -55,6 +55,7 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	Core();
 	virtual ~Core();
 
+	void import_0_6_5_configuration();
 	void createDefaultConfiguration();
 	void createAllDefaultToolbars();
 

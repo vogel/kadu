@@ -42,6 +42,7 @@
 #include "contacts/contact.h"
 #include "core/core.h"
 #include "gui/widgets/buddy-info-panel.h"
+#include "gui/widgets/configuration/buddy-list-background-colors-widget.h"
 #include "gui/widgets/configuration/config-combo-box.h"
 #include "gui/widgets/configuration/config-line-edit.h"
 #include "gui/widgets/configuration/config-preview.h"
@@ -231,6 +232,8 @@ MainConfigurationWindow::MainConfigurationWindow()
 	userboxAlpha = dynamic_cast<QSlider *>(widget()->widgetById("userboxAlpha"));
 	connect(userboxTransparency, SIGNAL(toggled(bool)), widget()->widgetById("userboxAlpha"), SLOT(setEnabled(bool)));
 
+	buddyColors = new BuddyListBackgroundColorsWidget(this);
+	
 	triggerCompositingStateChanged();
 }
 
@@ -303,8 +306,6 @@ void MainConfigurationWindow::setIconThemes()
 
 void MainConfigurationWindow::setEmoticonThemes()
 {
-	printf("set emoticon themes\n");
-
 	ConfigComboBox *emoticonsTheme = dynamic_cast<ConfigComboBox *>(widget()->widgetById("emoticonsTheme"));
 	EmoticonsManager::instance()->setPaths((dynamic_cast<PathListEdit *>(widget()->widgetById("emoticonsPaths")))->pathList());
 
