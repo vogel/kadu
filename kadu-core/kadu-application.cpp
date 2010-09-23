@@ -41,6 +41,8 @@
 #endif // Q_WS_X11 && !Q_WS_MAEMO_5
 
 #ifdef Q_OS_MAC
+#include "core/core.h"
+#include "gui/windows/kadu-window.h"
 #include "gui/widgets/chat-widget-manager.h"
 
 static OSStatus appleEventProcessor(const AppleEvent *ae, AppleEvent *event, long handlerRefCon)
