@@ -387,7 +387,7 @@ public:
 	 */
 	operator bool () const // for ! and ifs
 	{
-		return Data.data();
+		return Data;
 	}
 
 	/**
@@ -412,7 +412,7 @@ public:
 	 */
 	bool isNull() const
 	{
-		return !Data.data();
+		return !Data;
 	}
 
 	/**
