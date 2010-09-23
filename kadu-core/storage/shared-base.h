@@ -362,7 +362,7 @@ public:
 	 */
 	operator const QObject * () const
 	{
-		return Data.data();
+		return Data.constData();
 	}
 
 	/**
