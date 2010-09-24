@@ -57,7 +57,7 @@ public:
 
 	void importProxySettings();
 
-	StatusContainer * statusContainer() { return data(); }
+	StatusContainer * statusContainer();
 
 	KaduSharedBase_Property(Identity, accountIdentity, AccountIdentity)
 	KaduSharedBase_PropertyRead(QSharedPointer<StoragePoint>, storage, Storage)

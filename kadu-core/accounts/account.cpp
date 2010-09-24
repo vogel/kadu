@@ -24,6 +24,7 @@
 #include "accounts/account-manager.h"
 #include "buddies/buddy-manager.h"
 #include "configuration/configuration-file.h"
+#include "configuration/main-configuration.h"
 #include "configuration/xml-configuration-file.h"
 #include "contacts/contact.h"
 #include "contacts/contact-details.h"
@@ -88,6 +89,14 @@ void Account::importProxySettings()
 	Account defaultAccount = AccountManager::instance()->defaultAccount();
 	if (defaultAccount)
 		data()->setProxySettings(defaultAccount.proxySettings()); // data is copied
+}
+
+StatusContainer * Account::statusContainer()
+{
+	if (MainConfiguration::instance()->simpleMode())
+		return accountIdentity().data();
+	else
+		return data();
 }
 
 KaduSharedBase_PropertyDef(Account, Identity, accountIdentity, AccountIdentity, Identity::null)

@@ -118,15 +118,15 @@ bool IdentityShared::hasAnyAccount()
 void IdentityShared::doSetStatus(Status status)
 {
 	foreach (Account account, Accounts)
-		if (account.statusContainer())
-			account.statusContainer()->setStatus(status);
+		if (account)
+			account.data()->setStatus(status);
 }
 
 Status IdentityShared::status()
 {
 	foreach (Account account, Accounts)
-		if (account.statusContainer())
-			return Accounts[0].statusContainer()->status();
+		if (account)
+			return account.data()->status();
 	return Status::null;
 }
 
@@ -148,38 +148,38 @@ QIcon IdentityShared::statusIcon(Status status)
 QString IdentityShared::statusIconPath(const QString &statusType)
 {
 	foreach (Account account, Accounts)
-		if (account.statusContainer())
-			return account.statusContainer()->statusIconPath(statusType);
+		if (account)
+			return account.data()->statusIconPath(statusType);
 	return QString();
 }
 
 QIcon IdentityShared::statusIcon(const QString &statusType)
 {
 	foreach (Account account, Accounts)
-		if (account.statusContainer())
-			return account.statusContainer()->statusIcon(statusType);
+		if (account)
+			return account.data()->statusIcon(statusType);
 	return QIcon();
 }
 
 QList<StatusType *> IdentityShared::supportedStatusTypes()
 {
 	foreach (Account account, Accounts)
-		if (account.statusContainer())
-			return account.statusContainer()->supportedStatusTypes();
+		if (account)
+			return account.data()->supportedStatusTypes();
 	return QList<StatusType *>();
 }
 
 int IdentityShared::maxDescriptionLength()
 {
 	foreach (Account account, Accounts)
-		if (account.statusContainer())
-			return account.statusContainer()->maxDescriptionLength();
+		if (account)
+			return account.data()->maxDescriptionLength();
 	return -1;
 }
 
 void IdentityShared::setPrivateStatus(bool isPrivate)
 {
 	foreach (Account account, Accounts)
-		if (account.statusContainer())
-			account.statusContainer()->setPrivateStatus(isPrivate);
+		if (account)
+			account.data()->setPrivateStatus(isPrivate);
 }

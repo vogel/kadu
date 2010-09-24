@@ -165,12 +165,8 @@ void AccountShared::useProtocolFactory(ProtocolFactory *factory)
 		bool disconnectWithCurrentDescription = config_file.readBoolEntry("General", "DisconnectWithCurrentDescription");
 		QString disconnectDescription = config_file.readEntry("General", "DisconnectDescription");
 
-		StatusContainer *statusContianer = Account(this).statusContainer();
-		if (statusContianer)
-		{
-			statusContianer->storeStatus(statusContianer->status());
-			statusContianer->disconnectStatus(disconnectWithCurrentDescription, disconnectDescription);
-		}
+		storeStatus(status());
+		disconnectStatus(disconnectWithCurrentDescription, disconnectDescription);
 	}
 
 	if (!factory)
