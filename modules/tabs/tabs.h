@@ -64,10 +64,8 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Sto
 	int TargetTabs;
 	void insertTab(ChatWidget *chat);
 	void makePopupMenu();
-	int MenuItem;
 	ChatWidget *SelectedChat;
 	QMenu *Menu;
-	Action *action;
 
 	void repaintTabs();
 
@@ -83,7 +81,6 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Sto
 	bool ConfigAutoTabChange;
 	bool ConfigDefaultTabs;
 	int ConfigMinTabs;
-	bool ConfigCloseButtonOnTab;
 	bool ConfigBlinkChatTitle;
 	bool ConfigShowNewMessagesNum;
 

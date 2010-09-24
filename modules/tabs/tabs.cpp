@@ -702,8 +702,6 @@ void TabsManager::configurationUpdated()
 	}
 	*/
 	TabDialog->configurationUpdated();
-	// w zaleznosci od opcji w konfiguracji rezerwujemy miejsce na przycisk zamkniecia chata na karcie lub je usuwamy
-	ConfigCloseButtonOnTab = config_file.readBoolEntry("Tabs", "CloseButtonOnTab");
 	repaintTabs();
 
 	//uaktualniamy ikonki w menu kontekstowym pod PPM na karcie
