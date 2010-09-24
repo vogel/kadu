@@ -49,89 +49,93 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Sto
 {
 	Q_OBJECT
 
-		void createDefaultConfiguration();
+	void createDefaultConfiguration();
 
-		ActionDescription *openInNewTabActionDescription;
-		ActionDescription *attachToTabsActionDescription;
-		TabWidget *tabdialog;
-		QTimer timer;
-		QList<ChatWidget *> chatsWithNewMessages, newchats, detachedchats;
-		bool no_tabs, force_tabs;
+	ActionDescription *OpenInNewTabActionDescription;
+	ActionDescription *AttachToTabsActionDescription;
+	TabWidget *TabDialog;
+	QTimer Timer;
+	QList<ChatWidget *> ChatsWithNewMessages;
+	QList<ChatWidget *> NewChats;
+	QList<ChatWidget *> DetachedChats;
+	bool NoTabs;
+	bool ForceTabs;
 
-		int target_tabs;
-		void insertTab(ChatWidget *chat);
-		void makePopupMenu();
-		int menuitem;
-		ChatWidget *selectedchat;
-		QMenu *menu;
-		Action *action;
+	int TargetTabs;
+	void insertTab(ChatWidget *chat);
+	void makePopupMenu();
+	int MenuItem;
+	ChatWidget *SelectedChat;
+	QMenu *Menu;
+	Action *action;
 
-		void repaintTabs();
+	void repaintTabs();
 
-		QString formatTabName(ChatWidget * chatWidget);
+	QString formatTabName(ChatWidget *chatWidget);
 
-		void refreshTab(int tabIndex, ChatWidget * chatWidget);
+	void refreshTab(int tabIndex, ChatWidget *chatWidget);
 
-		/**
-		* Zmienne konfiguracyjne.
-		*/
-		bool config_conferencesInTabs;
-		bool config_tabsBelowChats;
-		bool config_autoTabChange;
-		bool config_defaultTabs;
-		int config_minTabs;
-		bool config_closeButtonOnTab;
-		bool config_blinkChatTitle;
-		bool config_showNewMessagesNum;
+	/**
+	* Zmienne konfiguracyjne.
+	*/
+	bool ConfigConferencesInTabs;
+	bool ConfigTabsBelowChats;
+	bool ConfigAutoTabChange;
+	bool ConfigDefaultTabs;
+	int ConfigMinTabs;
+	bool ConfigCloseButtonOnTab;
+	bool ConfigBlinkChatTitle;
+	bool ConfigShowNewMessagesNum;
 
-	private slots:
-		void onTimer();
-		void onContextMenu(QWidget *w, const QPoint &pos);
-		void onMenuActionDetach();
-		void onMenuActionDetachAll();
-		void onMenuActionClose();
-		void onMenuActionCloseAll();
-		void onMessageReceived(Chat chat);
+private slots:
+	void onTimer();
+	void onContextMenu(QWidget *w, const QPoint &pos);
+	void onMenuActionDetach();
+	void onMenuActionDetachAll();
+	void onMenuActionClose();
+	void onMenuActionCloseAll();
+	void onMessageReceived(Chat chat);
 
-	protected:
-		virtual void configurationUpdated();
-		virtual void load();
+protected:
+	virtual void configurationUpdated();
+	virtual void load();
 
-	public:
-		TabsManager(bool firstload);
-		virtual ~TabsManager();
+public:
+	explicit TabsManager(bool firstload);
+	virtual ~TabsManager();
 
-		virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
+	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
-		bool detachChat(ChatWidget *chat);
+	bool detachChat(ChatWidget *chat);
 
-		virtual void store();
+	virtual void store();
 
-		virtual StorableObject * storageParent() { return 0; }
-		virtual QString storageNodeName() { return QLatin1String("ModuleTabs"); }
+	virtual StorableObject * storageParent() { return 0; }
+	virtual QString storageNodeName() { return QLatin1String("ModuleTabs"); }
 
-	public slots:
-		void onNewChat(ChatWidget *chat, bool &handled);
-		void onDestroyingChat(ChatWidget *chat);
+public slots:
+	void onNewChat(ChatWidget *chat, bool &handled);
+	void onDestroyingChat(ChatWidget *chat);
 
-		void onOpenChat(ChatWidget *chat, bool activate);
-		void onTitleChanged(Chat chatChanged, const QString &newTitle);
+	void onOpenChat(ChatWidget *chat, bool activate);
+	void onTitleChanged(Chat chatChanged, const QString &newTitle);
 
-		void onTabChange(int index);
+	void onTabChange(int index);
 
-		void onNewTab(QAction *sender, bool toggled);
+	void onNewTab(QAction *sender, bool toggled);
 
-		void openTabWith(QStringList altnicks, int index);
+	void openTabWith(QStringList altnicks, int index);
 
-		void onTabAttach(QAction *sender, bool toggled);
+	void onTabAttach(QAction *sender, bool toggled);
 
-		void attachToTabsActionCreated(Action *action);
+	void attachToTabsActionCreated(Action *action);
 
-		void closeChat();
+	void closeChat();
 
-	signals:
-		void chatWidgetActivated(ChatWidget *);
+signals:
+	void chatWidgetActivated(ChatWidget *);
 };
 
 extern TabsManager *tabs_manager;
-#endif
+
+#endif // TABS_TABS_H

@@ -52,26 +52,30 @@ TabWidget::TabWidget()
 	setStyleSheet("QToolButton { background: transparent; }");
 #endif
 
-	connect(tabbar, SIGNAL(contextMenu(int, const QPoint&)),
-			SLOT(onContextMenu(int, const QPoint&)));
+	connect(tabbar, SIGNAL(contextMenu(int, const QPoint &)),
+			SLOT(onContextMenu(int, const QPoint &)));
 	connect(tabbar, SIGNAL(tabCloseRequested(int)),
 			SLOT(onDeleteTab(int)));
-	connect(tabbar,SIGNAL(mouseDoubleClickEventSignal(QMouseEvent*)),
-			SLOT(mouseDoubleClickEvent(QMouseEvent*)));
-	//przycisk otwarcia nowej karty pokazywany w lewym gornym rogu
+	connect(tabbar,SIGNAL(mouseDoubleClickEventSignal(QMouseEvent *)),
+			SLOT(mouseDoubleClickEvent(QMouseEvent *)));
 
-	openChatButton = new QToolButton(this);
-	openChatButton->setIcon(IconsManager::instance()->iconByPath("kadu_icons/kadu-chat.png"));
-	setCornerWidget(openChatButton, Qt::TopLeftCorner);
-	connect(openChatButton, SIGNAL(clicked()), SLOT(newChat()));
-	openChatButton->setAutoRaise(true);
+	//przycisk otwarcia nowej karty pokazywany w lewym gornym rogu
+	OpenChatButton = new QToolButton(this);
+	OpenChatButton->setIcon(IconsManager::instance()->iconByPath("kadu_icons/kadu-chat.png"));
+	OpenChatButton->setAutoRaise(true);
+	setCornerWidget(OpenChatButton, Qt::TopLeftCorner);
+	connect(OpenChatButton, SIGNAL(clicked()), SLOT(newChat()));
 
 	//przycisk zamkniecia aktywnej karty znajdujacy sie w prawym gornym rogu
-	closeChatButton = new QToolButton(this);
-	closeChatButton->setIcon(IconsManager::instance()->iconByPath("kadu_icons/module_tabs-remove.png"));
-	setCornerWidget(closeChatButton, Qt::TopRightCorner);
-	connect(closeChatButton, SIGNAL(clicked()), SLOT(deleteTab()));
-	closeChatButton->setAutoRaise(true);
+	CloseChatButton = new QToolButton(this);
+	CloseChatButton->setIcon(IconsManager::instance()->iconByPath("kadu_icons/module_tabs-remove.png"));
+	CloseChatButton->setAutoRaise(true);
+	setCornerWidget(CloseChatButton, Qt::TopRightCorner);
+	connect(CloseChatButton, SIGNAL(clicked()), SLOT(deleteTab()));
+}
+
+TabWidget::~TabWidget()
+{
 }
 
 void TabWidget::closeChatWidget(ChatWidget *chat)
@@ -84,20 +88,10 @@ void TabWidget::closeEvent(QCloseEvent *e)
 {
 	//w zaleznosci od opcji w konfiguracji zamykamy wszystkie karty, lub tylko aktywna
 	if (config_oldStyleClosing)
-	{
-		QWidget *current = currentWidget();
-		delete current;
-
-	}
+		delete currentWidget();
 	else
-	{
-		//dopoki sa jeszcze karty zamykamy aktywna
 		while(count())
-		{
-			QWidget* current = currentWidget();
-			delete current;
-		}
-	}
+			delete currentWidget();
 
 	if (count() > 0)
 		e->ignore();
@@ -116,11 +110,11 @@ void TabWidget::chatKeyPressed(QKeyEvent *e, CustomInput *k, bool &handled)
 	// obsluga skrotow klawiszowych
 	if (HotKey::shortCut(e, "ShortCuts", "MoveTabLeft"))
 		moveTabLeft();
-	else if(HotKey::shortCut(e, "ShortCuts", "MoveTabRight"))
+	else if (HotKey::shortCut(e, "ShortCuts", "MoveTabRight"))
 		moveTabRight();
-	else if(HotKey::shortCut(e, "ShortCuts", "SwitchTabLeft"))
+	else if (HotKey::shortCut(e, "ShortCuts", "SwitchTabLeft"))
 		switchTabLeft();
-	else if(HotKey::shortCut(e, "ShortCuts", "SwitchTabRight"))
+	else if (HotKey::shortCut(e, "ShortCuts", "SwitchTabRight"))
 		switchTabRight();
 	else
 		// skrot nie zostal znaleziony i wykonany. Przekazujemy zdarzenie dalej
@@ -135,7 +129,7 @@ void TabWidget::onContextMenu(int id, const QPoint &pos)
 void TabWidget::moveTab(int from, int to)
 {
 	kdebugf();
-	QString tablabel=tabText(from);
+	QString tablabel = tabText(from);
 	QWidget *w = widget(from);
 	QIcon tabiconset = tabIcon(from);
 	QString tabtooltip = tabToolTip(from);
@@ -154,8 +148,7 @@ void TabWidget::moveTab(int from, int to)
 
 void TabWidget::onDeleteTab(int id)
 {
-	QWidget *chat = widget(id);
-	delete chat;
+	delete widget(id);
 }
 
 void TabWidget::switchTabLeft()
@@ -163,7 +156,7 @@ void TabWidget::switchTabLeft()
 	if (currentIndex() == 0)
 		setCurrentIndex(count() - 1);
 	else
-		setCurrentIndex(currentIndex()-1);
+		setCurrentIndex(currentIndex() - 1);
 }
 
 void TabWidget::switchTabRight()
@@ -171,7 +164,7 @@ void TabWidget::switchTabRight()
 	if (currentIndex() == (count() - 1))
 		setCurrentIndex(0);
 	else
-		setCurrentIndex(currentIndex()+1);
+		setCurrentIndex(currentIndex() + 1);
 }
 
 void TabWidget::moveTabLeft()
@@ -224,7 +217,7 @@ void TabWidget::dropEvent(QDropEvent* e)
 void TabWidget::windowActivationChange(bool oldActive)
 {
 	kdebugf();
-	ChatWidget *chat = dynamic_cast<ChatWidget*>(currentWidget());
+	ChatWidget *chat = dynamic_cast<ChatWidget *>(currentWidget());
 	if (_isActiveWindow(this) && !oldActive && chat)
 	{
 		chat->markAllMessagesRead();
@@ -233,7 +226,7 @@ void TabWidget::windowActivationChange(bool oldActive)
 	kdebugf2();
 }
 
-void TabWidget::mouseDoubleClickEvent(QMouseEvent* e)
+void TabWidget::mouseDoubleClickEvent(QMouseEvent *e)
 {
 	kdebugf();
 	// jezeli dwuklik nastapil lewym przyciskiem myszy pokazujemy okno openchatwith
@@ -249,9 +242,7 @@ void TabWidget::newChat()
 
 void TabWidget::deleteTab()
 {
-	// zamykamy biezaca karte
-	QWidget *current = currentWidget();
-	delete current;
+	delete currentWidget();
 }
 
 void TabWidget::tabInserted(int index)
@@ -292,23 +283,23 @@ void TabWidget::configurationUpdated()
 	triggerCompositingStateChanged();
 
 	// odswiezenie ikon
-	openChatButton->setIcon(IconsManager::instance()->iconByPath("internet-group-chat.png"));
-	closeChatButton->setIcon(IconsManager::instance()->iconByPath("kadu_icons/module_tabs-remove.png"));
+	OpenChatButton->setIcon(IconsManager::instance()->iconByPath("internet-group-chat.png"));
+	CloseChatButton->setIcon(IconsManager::instance()->iconByPath("kadu_icons/module_tabs-remove.png"));
 
 	setTabsClosable(config_file.readBoolEntry("Tabs", "CloseButtonOnTab"));
 
 	// uaktualniamy zmienne konfiguracyjne
-	closeChatButton->setShown(config_file.readBoolEntry("Tabs", "CloseButton"));
-	openChatButton->setShown(config_file.readBoolEntry("Tabs", "OpenChatButton"));
+	CloseChatButton->setShown(config_file.readBoolEntry("Tabs", "CloseButton"));
+	OpenChatButton->setShown(config_file.readBoolEntry("Tabs", "OpenChatButton"));
 	config_oldStyleClosing = config_file.readBoolEntry("Tabs", "OldStyleClosing");
 }
 
-TabBar::TabBar(QWidget *parent)
-	: QTabBar(parent)
+TabBar::TabBar(QWidget *parent) :
+		QTabBar(parent)
 {
 }
 
-void TabBar::mousePressEvent(QMouseEvent* e)
+void TabBar::mousePressEvent(QMouseEvent *e)
 {
 	if (tabAt(e->pos()) != -1 && e->button() == Qt::RightButton)
 		emit contextMenu(tabAt(e->pos()), mapToGlobal(e->pos()));
@@ -316,14 +307,14 @@ void TabBar::mousePressEvent(QMouseEvent* e)
 	QTabBar::mousePressEvent(e);
 }
 
-void TabBar::mouseReleaseEvent(QMouseEvent* e)
+void TabBar::mouseReleaseEvent(QMouseEvent *e)
 {
 	if (tabAt(e->pos()) != -1 && e->button() == Qt::MidButton)
 		emit tabCloseRequested(tabAt(e->pos()));
 	QTabBar::mouseReleaseEvent(e);
 }
 
-void TabBar::mouseDoubleClickEvent(QMouseEvent* e)
+void TabBar::mouseDoubleClickEvent(QMouseEvent *e)
 {
 	kdebugf();
 	// w celu ulatwienia sobie zadania przekazujemy zdarzenie dalej- tu klasie tabdialog
