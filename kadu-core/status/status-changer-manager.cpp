@@ -75,15 +75,17 @@ void StatusChangerManager::unregisterStatusChanger(StatusChanger *statusChanger)
 	kdebugf2();
 }
 
-void StatusChangerManager::statusChanged()
-{
-	foreach (StatusContainer *statusContainer, StatusContainerManager::instance()->statusContainers())
-		if (statusContainer)
-			statusChanged(statusContainer);
-}
-
 void StatusChangerManager::statusChanged(StatusContainer *container)
 {
+	if (!container)
+	{
+		foreach (StatusContainer *statusContainer, StatusContainerManager::instance()->statusContainers())
+			if (statusContainer)
+				statusChanged(statusContainer);
+
+		return;
+	}
+
 	kdebugf();
 
 	Status status = Statuses[container];

@@ -42,10 +42,8 @@ class KADUAPI StatusChangerManager : public QObject
 	StatusChangerManager();
 	virtual ~StatusChangerManager();
 
-	void statusChanged();
-
 private slots:
-	void statusChanged(StatusContainer *container);
+	void statusChanged(StatusContainer *container = 0);
 
 public:
 	static StatusChangerManager * instance();
