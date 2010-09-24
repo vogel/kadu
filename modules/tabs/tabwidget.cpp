@@ -38,12 +38,20 @@ TabWidget::TabWidget()
 {
 	setWindowRole("kadu-tabs");
 
-	tabbar = new TabBar(this);
-	tabbar->setMovable(true);
-
+	TabBar *tabbar = new TabBar(this);
 	setTabBar(tabbar);
-	//akceptujemy dnd
+
 	setAcceptDrops(true);
+	setMovable(true);
+#ifdef Q_OS_MAC
+	/* Dorr: on Mac make the tabs look like the ones from terminal or safari */
+	/* TODO 0.6.6: consider setting the following on all platforms
+	 * (at least documentMode looks quite nice in Oxygen) */
+	setDocumentMode(true);
+	setAttribute(Qt::WA_MacBrushedMetal);
+	setStyleSheet("QToolButton { background: transparent; }");
+#endif
+
 	connect(tabbar, SIGNAL(contextMenu(int, const QPoint&)),
 			SLOT(onContextMenu(int, const QPoint&)));
 	connect(tabbar, SIGNAL(tabCloseRequested(int)),
@@ -64,12 +72,6 @@ TabWidget::TabWidget()
 	setCornerWidget(closeChatButton, Qt::TopRightCorner);
 	connect(closeChatButton, SIGNAL(clicked()), SLOT(deleteTab()));
 	closeChatButton->setAutoRaise(true);
-#ifdef Q_OS_MAC
-	/* Dorr: on Mac make the tabs look like the ones from terminal or safari */
-	tabbar->setDocumentMode(true);
-	setAttribute(Qt::WA_MacBrushedMetal);
-	setStyleSheet("QToolButton { background: transparent; }");
-#endif
 }
 
 void TabWidget::closeChatWidget(ChatWidget *chat)
@@ -208,9 +210,9 @@ void TabWidget::dropEvent(QDropEvent* e)
 	// Jezeli dnd pochodzil z userboxa probujemy dodac nowa karte
 	if (dynamic_cast<BuddiesListWidget *>(e->source()) && false)/*UlesDrag::decode(e, ules))*/
 	{
-		if (tabbar->tabAt(e->pos()) != -1)
+		if (tabBar()->tabAt(e->pos()) != -1)
 		// Jezeli w miejscu upuszczenia jest karta, dodajemy na jej pozycji
-			emit openTab(ules, tabbar->tabAt(e->pos()));
+			emit openTab(ules, tabBar()->tabAt(e->pos()));
 		else
 		// Jezeli nie na koncu tabbara
 			emit openTab(ules, -1);
@@ -293,7 +295,7 @@ void TabWidget::configurationUpdated()
 	openChatButton->setIcon(IconsManager::instance()->iconByPath("internet-group-chat.png"));
 	closeChatButton->setIcon(IconsManager::instance()->iconByPath("kadu_icons/module_tabs-remove.png"));
 
-	tabbar->setTabsClosable(config_file.readBoolEntry("Tabs", "CloseButtonOnTab"));
+	setTabsClosable(config_file.readBoolEntry("Tabs", "CloseButtonOnTab"));
 
 	// uaktualniamy zmienne konfiguracyjne
 	closeChatButton->setShown(config_file.readBoolEntry("Tabs", "CloseButton"));

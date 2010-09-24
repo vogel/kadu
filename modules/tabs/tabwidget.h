@@ -75,7 +75,6 @@ class TabWidget: public QTabWidget, public ChatContainer, CompositingAwareObject
 {
 	Q_OBJECT
 
-		TabBar *tabbar;
 		QToolButton *closeChatButton;
 		QToolButton *openChatButton;
 
