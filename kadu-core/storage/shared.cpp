@@ -134,7 +134,7 @@ void Shared::blockUpdatedSignal()
 void Shared::unblockUpdatedSignal()
 {
 	BlockUpdatedSignalCount--;
-	emitUpdated();
+	doEmitUpdated();
 }
 
 /**
