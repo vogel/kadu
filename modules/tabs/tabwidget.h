@@ -177,7 +177,6 @@ class TabWidget: public QTabWidget, public ChatContainer, CompositingAwareObject
 		* @param chat który powinien zostać zamknięty
 		*/
 		void closeChatWidget(ChatWidget *chat);
-		TabBar * getTabBar() { return tabbar; }
 
 	public slots:
 		/**
