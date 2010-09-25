@@ -262,7 +262,7 @@ void SingleWindow::onNewMessage(Chat chat)
 	if (w != tabs->currentWidget())
 	{
 		int index = tabs->indexOf(w);
-		tabs->setTabIcon(index, IconsManager::instance()->iconByPath("protocols/common/message.png"));
+		tabs->setTabIcon(index, IconsManager::instance()->iconByPath("protocols/common/message"));
 
 		if (config_file.readBoolEntry("SingleWindow", "NumMessagesInTab", false))
 		{

@@ -87,9 +87,9 @@ PathListEditWindow::PathListEditWindow(const QStringList &pathList, QWidget *par
 	Layout->addWidget(PathListWidget, 0, 0, 4, 1);
 
 
-	QPushButton *add = new QPushButton(IconsManager::instance()->iconByPath("list-add.png"), tr("Add"), this);
-	QPushButton *change = new QPushButton(IconsManager::instance()->iconByPath("view-refresh.png"), tr("Change"), this);
-	QPushButton *remove = new QPushButton(IconsManager::instance()->iconByPath("list-remove.png"), tr("Remove"), this);
+	QPushButton *add = new QPushButton(IconsManager::instance()->iconByPath("list-add"), tr("Add"), this);
+	QPushButton *change = new QPushButton(IconsManager::instance()->iconByPath("view-refresh"), tr("Change"), this);
+	QPushButton *remove = new QPushButton(IconsManager::instance()->iconByPath("list-remove"), tr("Remove"), this);
 
 	Layout->addWidget(add, 0, 1);
 	Layout->addWidget(change, 1, 1);

@@ -109,14 +109,14 @@ TabsManager::TabsManager(bool firstload)
 	OpenInNewTabActionDescription = new ActionDescription(this,
 		ActionDescription::TypeUser, "openInNewTabAction",
 		this, SLOT(onNewTab(QAction *, bool)),
-		"internet-group-chat.png", "internet-group-chat.png", tr("Chat in New Tab"), false, QString::null, disableNewTab
+		"internet-group-chat", "internet-group-chat", tr("Chat in New Tab"), false, QString::null, disableNewTab
 	);
 	BuddiesListViewMenuManager::instance()->addActionDescription(OpenInNewTabActionDescription, BuddiesListViewMenuItem::MenuCategoryChat, 200);
 
 	AttachToTabsActionDescription = new ActionDescription(this,
 		ActionDescription::TypeChat, "attachToTabsAction",
 		this, SLOT(onTabAttach(QAction *, bool)),
-		"kadu_icons/module_tabs-detach.png", "kadu_icons/module_tabs-detach.png", tr("Attach Chat to Tabs"), true, tr("Detach chat from tabs")
+		"kadu_icons/module_tabs-detach", "kadu_icons/module_tabs-detach", tr("Attach Chat to Tabs"), true, tr("Detach chat from tabs")
 	);
 	connect(AttachToTabsActionDescription, SIGNAL(actionCreated(Action *)), this, SLOT(attachToTabsActionCreated(Action *)));
 
@@ -457,7 +457,7 @@ void TabsManager::onTimer()
 			}
 
 			if (msg)
-				TabDialog->setTabIcon(i, IconsManager::instance()->iconByPath("protocols/common/message.png"));
+				TabDialog->setTabIcon(i, IconsManager::instance()->iconByPath("protocols/common/message"));
 			else
 				TabDialog->setTabIcon(i, chat->icon());
 
@@ -533,10 +533,10 @@ void TabsManager::makePopupMenu()
 
 	Menu = new QMenu();
 	//menu->setCheckable(true);
-	Menu->addAction(IconsManager::instance()->iconByPath("kadu_icons/module_tabs-detach.png"), tr("Detach"), this, SLOT(onMenuActionDetach()));
+	Menu->addAction(IconsManager::instance()->iconByPath("kadu_icons/module_tabs-detach"), tr("Detach"), this, SLOT(onMenuActionDetach()));
 	Menu->addAction(tr("Detach all"), this, SLOT(onMenuActionDetachAll()));
 	Menu->addSeparator();
-	Menu->addAction(IconsManager::instance()->iconByPath("kadu_icons/module_tabs-close.png"), tr("Close"), this, SLOT(onMenuActionClose()));
+	Menu->addAction(IconsManager::instance()->iconByPath("kadu_icons/module_tabs-close"), tr("Close"), this, SLOT(onMenuActionClose()));
 	Menu->addAction(tr("Close all"), this, SLOT(onMenuActionCloseAll()));
 
 	kdebugf2();

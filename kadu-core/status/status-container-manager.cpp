@@ -264,7 +264,7 @@ QIcon StatusContainerManager::statusIcon()
 {
 	return DefaultStatusContainer && this != DefaultStatusContainer
 			? DefaultStatusContainer->statusIcon()
-			: IconsManager::instance()->iconByPath("protocols/gadu-gadu/offline.png");
+			: IconsManager::instance()->iconByPath("protocols/gadu-gadu/offline");
 }
 
 QIcon StatusContainerManager::statusIcon(Status status)

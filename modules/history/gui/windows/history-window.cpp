@@ -73,7 +73,7 @@ HistoryWindow::HistoryWindow(QWidget *parent) :
 	setWindowRole("kadu-history");
 
 	setWindowTitle(tr("History"));
-	setWindowIcon(IconsManager::instance()->iconByPath("kadu_icons/kadu-history.png"));
+	setWindowIcon(IconsManager::instance()->iconByPath("kadu_icons/kadu-history"));
 
 	createGui();
 	connectGui();
@@ -615,7 +615,7 @@ void HistoryWindow::showMainPopupMenu(const QPoint &pos)
 		return;
 
 	QMenu *menu = BuddiesListViewMenuManager::instance()->menu(this, this, chat.contacts().toContactList());
-	menu->addAction(IconsManager::instance()->iconByPath("kadu_icons/history-clear.png"), tr("&Clear history"), this, SLOT(clearHistory()));
+	menu->addAction(IconsManager::instance()->iconByPath("kadu_icons/history-clear"), tr("&Clear history"), this, SLOT(clearHistory()));
 	menu->exec(QCursor::pos());
 
 	delete menu;
@@ -640,7 +640,7 @@ void HistoryWindow::show(Chat chat)
 {
 	if (!History::instance()->currentStorage())
 	{
-		MessageDialog::msg(tr("There is no history storage module loaded!"), false, "dialog-warning.png");
+		MessageDialog::msg(tr("There is no history storage module loaded!"), false, "dialog-warning");
 		return;
 	}
 

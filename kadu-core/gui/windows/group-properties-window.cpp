@@ -91,7 +91,7 @@ GroupPropertiesWindow::GroupPropertiesWindow(Group editedGroup, QWidget *parent)
 
 	if (iconPath.isEmpty())
 	{
-		icon->setIcon(IconsManager::instance()->iconByPath("document-open.png"));
+		icon->setIcon(IconsManager::instance()->iconByPath("document-open"));
 		icon->setText(tr(" Set Icon"));
 	}
 	else

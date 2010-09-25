@@ -118,5 +118,5 @@ ContactWidget * TlenProtocolFactory::newContactWidget(Contact contact, QWidget *
 
 QIcon TlenProtocolFactory::icon()
 {
-	return IconsManager::instance()->iconByPath("protocols/tlen/32x32/online.png");
+	return IconsManager::instance()->iconByPath("protocols/tlen/32x32/online");
 }

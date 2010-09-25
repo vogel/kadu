@@ -51,12 +51,12 @@ GTalkProtocolFactory::GTalkProtocolFactory()
 
 QIcon GTalkProtocolFactory::icon()
 {
-	return IconsManager::instance()->iconByPath("protocols/xmpp/brand_name/GmailGoogleTalk.png");
+	return IconsManager::instance()->iconByPath("protocols/xmpp/brand_name/GmailGoogleTalk");
 }
 
 QString GTalkProtocolFactory::iconPath()
 {
-	return IconsManager::instance()->iconPath("protocols/xmpp/brand_name/GmailGoogleTalk.png", "16x16");
+	return IconsManager::instance()->iconPath("protocols/xmpp/brand_name/GmailGoogleTalk", "16x16");
 }
 
 QString GTalkProtocolFactory::idLabel()

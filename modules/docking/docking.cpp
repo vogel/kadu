@@ -106,13 +106,13 @@ DockingManager::DockingManager() :
 	DockMenu = new QMenu();
 
 #ifdef Q_OS_MAC
-	OpenChatAction = new QAction(IconsManager::instance()->iconByPath("internet-group-chat.png"),
+	OpenChatAction = new QAction(IconsManager::instance()->iconByPath("internet-group-chat"),
 		tr("Show Pending Messages"), this);
 	connect(OpenChatAction, SIGNAL(triggered()), ChatWidgetManager::instance(),
 		SLOT(openPendingMsgs()));
 	qt_mac_set_dock_menu(DockMenu);
 #endif
-	CloseKaduAction = new QAction(IconsManager::instance()->iconByPath("application-exit.png"), tr("&Exit Kadu"), this);
+	CloseKaduAction = new QAction(IconsManager::instance()->iconByPath("application-exit"), tr("&Exit Kadu"), this);
 	connect(CloseKaduAction, SIGNAL(triggered()), qApp, SLOT(quit()));
 
 	configurationUpdated();
@@ -156,13 +156,13 @@ void DockingManager::changeIcon()
 			break;
 		case StaticEnvelope:
 			if (CurrentDocker)
-				CurrentDocker->changeTrayIcon(IconsManager::instance()->iconByPath("protocols/common/message.png"));
+				CurrentDocker->changeTrayIcon(IconsManager::instance()->iconByPath("protocols/common/message"));
 			break;
 		case BlinkingEnvelope:
 			if (!blink)
 			{
 				if (CurrentDocker)
-					CurrentDocker->changeTrayIcon(IconsManager::instance()->iconByPath("protocols/common/message.png"));
+					CurrentDocker->changeTrayIcon(IconsManager::instance()->iconByPath("protocols/common/message"));
 				icon_timer->setSingleShot(true);
 				icon_timer->start(500);
 				blink = true;

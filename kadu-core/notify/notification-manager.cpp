@@ -95,14 +95,14 @@ void NotificationManager::init()
 	notifyAboutUserActionDescription = new ActionDescription(this,
 		ActionDescription::TypeUser, "notifyAboutUserAction",
 		this, SLOT(notifyAboutUserActionActivated(QAction *, bool)),
-		"kadu_icons/kadu-notifyaboutuser.png", "kadu_icons/kadu-notifyaboutuser.png", tr("Notify about user"), true, "",
+		"kadu_icons/kadu-notifyaboutuser", "kadu_icons/kadu-notifyaboutuser", tr("Notify about user"), true, "",
 		checkNotify
 	);
 
 	SilentModeActionDescription = new ActionDescription(this,
 		ActionDescription::TypeGlobal, "silentModeAction",
 		this, SLOT(silentModeActionActivated(QAction *, bool)),
-		"kadu_icons/silent-mode-off.png", "kadu_icons/silent-mode-off.png", tr("Show Notifications"), true, tr("Show Notifications")
+		"kadu_icons/silent-mode-off", "kadu_icons/silent-mode-off", tr("Show Notifications"), true, tr("Show Notifications")
 	);
 	connect(SilentModeActionDescription, SIGNAL(actionCreated(Action *)), this, SLOT(silentModeActionCreated(Action *)));
 
@@ -471,7 +471,7 @@ void NotificationManager::notify(Notification *notification)
 	notification->release();
 
 	if (!foundNotifierWithCallbackSupported)
-		MessageDialog::msg(tr("Unable to find notifier for %1 event").arg(notification->type()), true, "dialog-warning.png");
+		MessageDialog::msg(tr("Unable to find notifier for %1 event").arg(notification->type()), true, "dialog-warning");
 
 	kdebugf2();
 }

@@ -591,7 +591,7 @@ QMenu * ToolBar::createContextMenu(QToolButton *button)
 void ToolBar::deleteToolbar()
 {
 	kdebugf();
-	if (MessageDialog::ask(tr("Remove toolbar?"), "dialog-warning.png", this))
+	if (MessageDialog::ask(tr("Remove toolbar?"), "dialog-warning", this))
 		deleteLater();
 	kdebugf2();
 }

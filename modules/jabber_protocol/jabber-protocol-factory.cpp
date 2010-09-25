@@ -61,12 +61,12 @@ JabberProtocolFactory::JabberProtocolFactory()
 
 QIcon JabberProtocolFactory::icon()
 {
-	return IconsManager::instance()->iconByPath("protocols/xmpp/xmpp.png");
+	return IconsManager::instance()->iconByPath("protocols/xmpp/xmpp");
 }
 
 QString JabberProtocolFactory::iconPath()
 {
-	return IconsManager::instance()->iconPath("protocols/xmpp/xmpp.png", "16x16");
+	return IconsManager::instance()->iconPath("protocols/xmpp/xmpp", "16x16");
 }
 
 Protocol * JabberProtocolFactory::createProtocolHandler(Account account)

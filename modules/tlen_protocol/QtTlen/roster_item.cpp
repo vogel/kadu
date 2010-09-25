@@ -103,21 +103,21 @@ QImage rosterItem::icon() {
 	switch(t) {
 	case rosterItem::Contact:
 		if(status=="available")
-			return descr.isEmpty()?QImage(":online.png"):QImage(":onlinei.png");
+			return descr.isEmpty()?QImage(":online"):QImage(":onlinei");
 		else if(status=="chat")
-			return descr.isEmpty()?QImage(":chatty.png"):QImage(":chattyi.png");
+			return descr.isEmpty()?QImage(":chatty"):QImage(":chattyi");
 		else if(status=="away")
-			return descr.isEmpty()?QImage(":away.png"):QImage(":awayi.png");
+			return descr.isEmpty()?QImage(":away"):QImage(":awayi");
 		else if(status=="xa")
-			return descr.isEmpty()?QImage(":unavailable.png"):QImage(":unavailablei.png");
+			return descr.isEmpty()?QImage(":unavailable"):QImage(":unavailablei");
 		else if(status=="dnd")
-			return descr.isEmpty()?QImage(":dnd.png"):QImage(":dndi.png");
+			return descr.isEmpty()?QImage(":dnd"):QImage(":dndi");
 		else if(status=="unavailable")
-			return descr.isEmpty()?QImage(":offline.png"):QImage(":offlinei.png");
+			return descr.isEmpty()?QImage(":offline"):QImage(":offlinei");
 		return QImage();
 
 	case rosterItem::Group:
-		return expanded?QImage(":expanded.png"):QImage(":collapsed.png");
+		return expanded?QImage(":expanded"):QImage(":collapsed");
 
 	default:
 		return QImage();

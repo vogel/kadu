@@ -61,7 +61,7 @@ fileTransferDialog::fileTransferDialog(int i, QString f, QString host, quint16 p
 	ui.fileListTreeWidget->setHeaderLabels(labelList);
 	ui.fileListTreeWidget->setColumnHidden(7,TRUE);
 
-	setWindowIcon( QIcon(":logo.png") );
+	setWindowIcon( QIcon(":logo") );
 
 	thread = new fileTransferThread(f,i,host,port,receiveMode,this);
 	connect( thread, SIGNAL( addListItem( QTreeWidgetItem* ) ), this, SLOT( addListItem( QTreeWidgetItem* ) ) );
@@ -395,7 +395,7 @@ void fileTransferThread::parseWriteData( const QByteArray &data ) {
 void fileTransferThread::parseEndOfFile() {
 	qDebug()<<"Closing file"<<current->fileName();
 	current->close();
-	fileMap.at(currentFile)->setIcon(0, QIcon(":online.png"));
+	fileMap.at(currentFile)->setIcon(0, QIcon(":online"));
 	++filesParsed;
 	if(filesParsed==fc)
 		t->stop();
@@ -442,7 +442,7 @@ void fileTransferThread::parseFileList( const QByteArray &fl ) {
 		fname=fl.mid(4+i*260+4, 256);
 		finfo<<fname<<""<<""<<""<<""<<QString("%L1 kB").arg( (float)qRound( ( (float)fs/1024 )*10 )/10 )<<path<<QString("%1").arg(fs);
 		item = new QTreeWidgetItem(finfo);
-		item->setIcon(0, QIcon(":offline.png"));
+		item->setIcon(0, QIcon(":offline"));
 //		item->setCheckState(0,Qt::Checked);
 		fileMap<<item;
 		emit addListItem(item);

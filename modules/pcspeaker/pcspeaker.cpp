@@ -95,7 +95,7 @@ extern "C" void pcspeaker_close()
 }
 
 
-PCSpeaker::PCSpeaker() : Notifier("PC Speaker", "PC Speaker", IconsManager::instance()->iconByPath("audio-volume-low.png"), NULL)
+PCSpeaker::PCSpeaker() : Notifier("PC Speaker", "PC Speaker", IconsManager::instance()->iconByPath("audio-volume-low"), NULL)
 {
 	NotificationManager::instance()->registerNotifier(this);
 	createDefaultConfiguration();

@@ -273,7 +273,7 @@ void KaduWebView::saveImage()
 				if (!removeMe.remove())
 				{
 					MessageDialog::msg(tr("Cannot save image: %1").arg(removeMe.errorString()),
-							false, "dialog-warning.png");
+							false, "dialog-warning");
 					continue;
 				}
 			}
@@ -289,7 +289,7 @@ void KaduWebView::saveImage()
 		if (!src.copy(dst))
 		{
 			MessageDialog::msg(tr("Cannot save image: %1").arg(src.errorString()),
-					false, "dialog-warning.png");
+					false, "dialog-warning");
 			continue;
 		}
 

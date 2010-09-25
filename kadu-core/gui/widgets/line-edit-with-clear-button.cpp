@@ -99,9 +99,9 @@ void LineEditWithClearButton::updateClearButtonIcon(const QString& text)
 		return;
 
 	if (layoutDirection() == Qt::LeftToRight)
-		ClearFilterButton->setPixmap(IconsManager::instance()->iconByPath("edit-clear-locationbar-rtl.png").pixmap(16, 16));
+		ClearFilterButton->setPixmap(IconsManager::instance()->iconByPath("edit-clear-locationbar-rtl").pixmap(16, 16));
 	else
-		ClearFilterButton->setPixmap(IconsManager::instance()->iconByPath("edit-clear-locationbar-ltr.png").pixmap(16, 16));
+		ClearFilterButton->setPixmap(IconsManager::instance()->iconByPath("edit-clear-locationbar-ltr").pixmap(16, 16));
 
 	ClearFilterButton->setVisible(text.length());
 }

@@ -52,12 +52,12 @@ void ProgressIcon::setState(ProgressIcon::ProgressState state)
 
 		case StateFinished:
 			ProgressMovie->stop();
-			setPixmap(IconsManager::instance()->iconByPath("dialog-information.png").pixmap(32, 32));
+			setPixmap(IconsManager::instance()->iconByPath("dialog-information").pixmap(32, 32));
 			break;
 
 		case StateFailed:
 			ProgressMovie->stop();
-			setPixmap(IconsManager::instance()->iconByPath("dialog-warning.png").pixmap(32, 32));
+			setPixmap(IconsManager::instance()->iconByPath("dialog-warning").pixmap(32, 32));
 			break;
 	}
 }

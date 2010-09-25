@@ -66,7 +66,7 @@ About::About(QWidget *parent) :
 	QWidget *texts = new QWidget(center);
 
 	QLabel *l_icon = new QLabel(texts);
-	l_icon->setPixmap(IconsManager::instance()->iconByPath("kadu_icons/kadu.png").pixmap(64, 64));
+	l_icon->setPixmap(IconsManager::instance()->iconByPath("kadu_icons/kadu").pixmap(64, 64));
 
 	QLabel *l_info = new QLabel(texts);
 	l_info->setBackgroundRole(texts->backgroundRole());

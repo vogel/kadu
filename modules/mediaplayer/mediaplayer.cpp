@@ -152,42 +152,42 @@ MediaPlayer::MediaPlayer(bool firstLoad)
 	enableMediaPlayerStatuses = new ActionDescription(
 		0, ActionDescription::TypeGlobal, "enableMediaPlayerStatusesAction",
 		this, SLOT(mediaPlayerStatusChangerActivated(QAction *, bool)),
-		"external_modules/module_mediaplayer.png", "external_modules/module_mediaplayer.png", tr("Enable MediaPlayer Statuses"), true
+		"external_modules/module_mediaplayer", "external_modules/module_mediaplayer", tr("Enable MediaPlayer Statuses"), true
 	);
 	mediaPlayerMenu = new ActionDescription(
 		0, ActionDescription::TypeChat, "mediaplayer_button",
 		this, SLOT(mediaPlayerMenuActivated(QAction *, bool)),
-		"external_modules/module_mediaplayer-button.png", "external_modules/module_mediaplayer-button.png", tr("MediaPlayer"), false, ""
+		"external_modules/module_mediaplayer-button", "external_modules/module_mediaplayer-button", tr("MediaPlayer"), false, ""
 	);
 	playAction = new ActionDescription(
 		0, ActionDescription::TypeChat, "mediaplayer_play",
 		this, SLOT(playPause()),
-		"external_modules/module_mediaplayer-media-playback-start.png", "external_modules/module_mediaplayer-media-playback-start.png", tr("Play"), false, ""
+		"external_modules/module_mediaplayer-media-playback-start", "external_modules/module_mediaplayer-media-playback-start", tr("Play"), false, ""
 	);
 	stopAction = new ActionDescription(
 		0, ActionDescription::TypeChat, "mediaplayer_stop",
 		this, SLOT(stop()),
-		"external_modules/module_mediaplayer-media-playback-stop.png", "external_modules/module_mediaplayer-media-playback-stop.png", tr("Stop"), false, ""
+		"external_modules/module_mediaplayer-media-playback-stop", "external_modules/module_mediaplayer-media-playback-stop", tr("Stop"), false, ""
 	);
 	prevAction = new ActionDescription(
 		0, ActionDescription::TypeChat, "mediaplayer_prev",
 		this, SLOT(prevTrack()),
-		"external_modules/module_mediaplayer-media-skip-backward.png", "external_modules/module_mediaplayer-media-skip-backward.png", tr("Previous Track"), false, ""
+		"external_modules/module_mediaplayer-media-skip-backward", "external_modules/module_mediaplayer-media-skip-backward", tr("Previous Track"), false, ""
 	);
 	nextAction = new ActionDescription(
 		0, ActionDescription::TypeChat, "mediaplayer_next",
 		this, SLOT(nextTrack()),
-		"external_modules/module_mediaplayer-media-skip-forward.png", "external_modules/module_mediaplayer-media-skip-forward", tr("Next Track"), false, ""
+		"external_modules/module_mediaplayer-media-skip-forward", "external_modules/module_mediaplayer-media-skip-forward", tr("Next Track"), false, ""
 	);
 	volUpAction = new ActionDescription(
 		0, ActionDescription::TypeChat, "mediaplayer_vol_up",
 		this, SLOT(incrVolume()),
-		"audio-volume-high.png", "audio-volume-high.png", tr("Volume Up"), false, ""
+		"audio-volume-high", "audio-volume-high", tr("Volume Up"), false, ""
 	);
 	volDownAction = new ActionDescription(
 		0, ActionDescription::TypeChat, "mediaplayer_vol_down",
 		this, SLOT(decrVolume()),
-		"audio-volume-low.png", "audio-volume-low.png", tr("Volume Down"), false, ""
+		"audio-volume-low", "audio-volume-low", tr("Volume Down"), false, ""
 	);
 
 	if (firstLoad)
@@ -766,7 +766,7 @@ void MediaPlayer::putTitleHint(QString title)
 {
 	kdebugf();
 
-	Notification *notification = new Notification(QString(mediaPlayerOsdHint), "external_modules/module_mediaplayer_button-media-playback-start.png");
+	Notification *notification = new Notification(QString(mediaPlayerOsdHint), "external_modules/module_mediaplayer_button-media-playback-start");
 	notification->setText(title);
 	NotificationManager::instance()->notify(notification);
 }
@@ -865,7 +865,7 @@ void MediaPlayer::playPause()
 		isPaused = false;
 		foreach(Action *action, playAction->actions())
 		{
-			action->setIcon(IconsManager::instance()->iconByPath("external_modules/module_mediaplayer-media-playback-pause.png"));
+			action->setIcon(IconsManager::instance()->iconByPath("external_modules/module_mediaplayer-media-playback-pause"));
 			action->setText(tr("Pause"));
 
 		}
@@ -876,7 +876,7 @@ void MediaPlayer::playPause()
 		isPaused = true;
 		foreach(Action *action, playAction->actions())
 		{
-			action->setIcon(IconsManager::instance()->iconByPath("external_modules/module_mediaplayer-media-playback-start.png"));
+			action->setIcon(IconsManager::instance()->iconByPath("external_modules/module_mediaplayer-media-playback-start"));
 			action->setText(tr("Play"));
 		}
 	}
@@ -889,7 +889,7 @@ void MediaPlayer::play()
 
 	isPaused = false;
 	foreach(Action *action, playAction->actions())
-		action->setIcon(IconsManager::instance()->iconByPath("external_modules/module_mediaplayer-media-playback-start.png"));
+		action->setIcon(IconsManager::instance()->iconByPath("external_modules/module_mediaplayer-media-playback-start"));
 }
 
 void MediaPlayer::stop()
@@ -899,7 +899,7 @@ void MediaPlayer::stop()
 
 	isPaused = true;
 	foreach(Action *action, playAction->actions())
-		action->setIcon(IconsManager::instance()->iconByPath("external_modules/module_mediaplayer-media-playback-start.png"));
+		action->setIcon(IconsManager::instance()->iconByPath("external_modules/module_mediaplayer-media-playback-start"));
 }
 
 void MediaPlayer::pause()
@@ -909,7 +909,7 @@ void MediaPlayer::pause()
 
 	isPaused = true;
 	foreach(Action *action, playAction->actions())
-		action->setIcon(IconsManager::instance()->iconByPath("external_modules/module_mediaplayer-media-playback-start.png"));
+		action->setIcon(IconsManager::instance()->iconByPath("external_modules/module_mediaplayer-media-playback-start"));
 }
 
 void MediaPlayer::setVolume(int vol)

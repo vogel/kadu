@@ -103,7 +103,7 @@ Core::~Core()
 	ModulesManager::instance()->unloadAllModules();
 
 #ifdef Q_OS_MAC
-	setIcon(QPixmap(dataPath("kadu.png")));
+	setIcon(QPixmap(dataPath("kadu")));
 #endif // Q_OS_MAC
 
 	MainConfiguration::destroyInstance();
@@ -327,7 +327,7 @@ void Core::init()
 
 	new Updates(this);
 
-	setIcon(IconsManager::instance()->iconByPath(QLatin1String("protocols/gadu-gadu/offline.png")));
+	setIcon(IconsManager::instance()->iconByPath(QLatin1String("protocols/gadu-gadu/offline")));
 	QTimer::singleShot(15000, this, SLOT(deleteOldConfigurationFiles()));
 
 	NotificationManager::instance(); // TODO: 0.6.6

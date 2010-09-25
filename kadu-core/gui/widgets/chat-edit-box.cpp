@@ -232,7 +232,7 @@ void ChatEditBox::openColorSelector(const QWidget *activatingWidget)
 void ChatEditBox::openInsertImageDialog()
 {
 	QString selectedFile = QFileDialog::getOpenFileName(this, tr("Insert image"), config_file.readEntry("Chat", "LastImagePath"),
-					tr("Images") + " (*.png *.PNG *.jpg *.JPG *.jpeg *.JPEG *.gif *.GIF *.bmp *.BMP)");
+							tr("Images") + " (*.png *.PNG *.jpg *.JPG *.jpeg *.JPEG *.gif *.GIF *.bmp *.BMP)");
 	if (!selectedFile.isEmpty())
 	{
 		QFileInfo f(selectedFile);
@@ -241,13 +241,13 @@ void ChatEditBox::openInsertImageDialog()
 
 		if (!f.isReadable())
 		{
-			MessageDialog::msg(tr("This file is not readable"), true, "dialog-warning.png", this);
+			MessageDialog::msg(tr("This file is not readable"), true, "dialog-warning", this);
 			return;
 		}
 
 		if (f.size() >= (1 << 18)) // 256kB
 		{
-			MessageDialog::msg(tr("This file is too big (%1 >= %2)").arg(f.size()).arg(1<<18), true, "dialog-warning.png", this);
+			MessageDialog::msg(tr("This file is too big (%1 >= %2)").arg(f.size()).arg(1<<18), true, "dialog-warning", this);
 			return;
 		}
 

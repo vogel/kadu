@@ -372,7 +372,7 @@ int main(int argc, char *argv[])
 	// that it's a "bad thing"(tm) ;) (usually for win32 users)
 	if (geteuid() == 0)
 		MessageDialog::msg(qApp->translate("@default", "Please do not run Kadu as a root!\n"
-				"It's a high security risk!"), false, "dialog-warning.png");
+				"It's a high security risk!"), false, "dialog-warning");
 #endif
 
 	if (ids.count() >= 0)

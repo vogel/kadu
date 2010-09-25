@@ -83,11 +83,11 @@ QString ChatTypeConference::displayName() const
  *
  * Chat type icon. Icon is used in history window and as icon of chat windows.
  *
- * Icon for ChatTypeConference is 'kadu_icons/kadu-modmanager.png'.
+ * Icon for ChatTypeConference is 'kadu_icons/kadu-modmanager'.
  */
 QIcon ChatTypeConference::icon() const
 {
-	return IconsManager::instance()->iconByPath("kadu_icons/kadu-modmanager.png");
+	return IconsManager::instance()->iconByPath("kadu_icons/kadu-modmanager");
 }
 
 /**

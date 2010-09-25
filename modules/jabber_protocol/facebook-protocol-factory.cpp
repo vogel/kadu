@@ -51,12 +51,12 @@ FacebookProtocolFactory::FacebookProtocolFactory()
 
 QIcon FacebookProtocolFactory::icon()
 {
-	return IconsManager::instance()->iconByPath("protocols/xmpp/brand_name/facebook.png");
+	return IconsManager::instance()->iconByPath("protocols/xmpp/brand_name/facebook");
 }
 
 QString FacebookProtocolFactory::iconPath()
 {
-	return IconsManager::instance()->iconPath("protocols/xmpp/brand_name/facebook.png", "16x16");
+	return IconsManager::instance()->iconPath("protocols/xmpp/brand_name/facebook", "16x16");
 }
 
 QString FacebookProtocolFactory::idLabel()

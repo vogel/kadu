@@ -47,7 +47,7 @@ void SmsInternalSender::sendMessage(const QString &message)
 
 	if (!validateNumber())
 	{
-		MessageDialog::msg(tr("Mobile number is incorrect"), false, "dialog-warning.png", (QWidget*)parent());
+		MessageDialog::msg(tr("Mobile number is incorrect"), false, "dialog-warning", (QWidget*)parent());
 		emit finished(tr("Mobile number is incorrect"));
 		kdebugf2();
 		return;
@@ -55,7 +55,7 @@ void SmsInternalSender::sendMessage(const QString &message)
 
 	if (!validateSignature())
 	{
-		MessageDialog::msg(tr("Signature can't be empty"), false, "dialog-warning.png", (QWidget*)parent());
+		MessageDialog::msg(tr("Signature can't be empty"), false, "dialog-warning", (QWidget*)parent());
 		emit finished(tr("Signature can't be empty"));
 		kdebugf2();
 		return;
@@ -78,7 +78,7 @@ void SmsInternalSender::gatewayQueryDone(const QString &gatewayId)
 {
 	if (gatewayId.isEmpty())
 	{
-		MessageDialog::msg(tr("Automatic gateway selection is not available. Please select SMS gateway manually."), false, "dialog-warning.png", (QWidget*)parent());
+		MessageDialog::msg(tr("Automatic gateway selection is not available. Please select SMS gateway manually."), false, "dialog-warning", (QWidget*)parent());
 		emit finished(tr("Automatic gateway selection is not available. Please select SMS gateway manually."));
 		kdebugf2();
 		return;

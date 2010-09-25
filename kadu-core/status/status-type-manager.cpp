@@ -107,7 +107,7 @@ QString StatusTypeManager::statusIconPath(const QString &protocol, const QString
 	if (!statusType)
 		return QString();
 
-	return QString("protocols/%1/%2%3%4.png")
+	return QString("protocols/%1/%2%3%4")
 			.arg(protocol)
 			.arg(statusType->iconName())
 			.arg(description ? "_d" : "")
@@ -120,7 +120,7 @@ QString StatusTypeManager::statusIconFullPath(const QString &protocol, const QSt
 	if (!statusType)
 		return QString();
 
-	QString iconName = QString("protocols/%1/%2%3%4.png")
+	QString iconName = QString("protocols/%1/%2%3%4")
 			.arg(protocol)
 			.arg(statusType->iconName())
 			.arg(description ? "_d" : "")
@@ -135,7 +135,7 @@ QIcon StatusTypeManager::statusIcon(const QString &protocol, const QString &type
 	if (!statusType)
 		return QIcon();
 
-	QString iconName = QString("protocols/%1/%2%3%4.png")
+	QString iconName = QString("protocols/%1/%2%3%4")
 			.arg(protocol)
 			.arg(statusType->iconName())
 			.arg(description ? "_d" : "")

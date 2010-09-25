@@ -66,7 +66,7 @@ extern "C" KADU_EXPORT void growl_notify_close()
 	growl_notify = 0;
 }
 
-GrowlNotify::GrowlNotify(QObject *parent) : Notifier("Growl", "Growl", IconsManager::instance()->iconByPath("internet-group-chat.png"), parent)
+GrowlNotify::GrowlNotify(QObject *parent) : Notifier("Growl", "Growl", IconsManager::instance()->iconByPath("internet-group-chat"), parent)
 {
 	kdebugf();
 

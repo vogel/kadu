@@ -143,7 +143,7 @@ void SyntaxEditorWindow::saveAs()
 
 		if (syntaxList->isGlobal(newSyntaxName))
 		{
-			MessageDialog::msg(tr("Syntax %1 already exists and cannot be modified").arg(newSyntaxName), true, "dialog-warning.png");
+			MessageDialog::msg(tr("Syntax %1 already exists and cannot be modified").arg(newSyntaxName), true, "dialog-warning");
 			continue;
 		}
 		else

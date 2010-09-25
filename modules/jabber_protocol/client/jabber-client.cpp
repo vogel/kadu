@@ -683,7 +683,7 @@ void JabberClient::slotCSError(int error)
 			if (reconn)
 				Protocol->connectToServer();
 			else
-				MessageDialog::msg(Protocol->account().accountIdentity().name() + ": " +  tr("There was an error communicating with the server.\nDetails: %1").arg(errorText), false, "dialog-warning.png");
+				MessageDialog::msg(Protocol->account().accountIdentity().name() + ": " +  tr("There was an error communicating with the server.\nDetails: %1").arg(errorText), false, "dialog-warning");
 		}
 		if (Protocol->isConnected() || Protocol->isConnecting())
 			Protocol->logout(/* errorClass */);

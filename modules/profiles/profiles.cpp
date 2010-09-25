@@ -62,7 +62,7 @@ ProfileManager::ProfileManager(QObject *parent, const char *name)
 	profileMenuActionDescription = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "profileManagerAction",
 		this, SLOT(showMenu()),
-		"external_modules/module_profiles.png", "external_modules/module_profiles.png", tr("Profiles...")
+		"external_modules/module_profiles", "external_modules/module_profiles", tr("Profiles...")
 	);
 	kadu->insertMenuActionDescription(0, profileMenuActionDescription);
 
@@ -120,7 +120,7 @@ void ProfileManager::showConfig()
 	//i ew. ostrzezenia
 	if (config_file.readBoolEntry("Profiles", "firstRun", true))
 	{
-		MessageDialog::msg(tr("Please remember that all profile history and settings are stored in your home directory. \nCreating profile for other system users is not recommended because of security reasons. \nThe recommended solution is to create user in system for every person which will use Kadu. \nPlease notice that this module is contradictory with Linux system ideology and was provided for compatibility with Gadu-Gadu."), true, "32x32/dialog-warning.png", NULL);
+		MessageDialog::msg(tr("Please remember that all profile history and settings are stored in your home directory. \nCreating profile for other system users is not recommended because of security reasons. \nThe recommended solution is to create user in system for every person which will use Kadu. \nPlease notice that this module is contradictory with Linux system ideology and was provided for compatibility with Gadu-Gadu."), true, "32x32/dialog-warning", NULL);
 		config_file.writeEntry("Profiles", "firstRun", false);
 	}
 
@@ -322,7 +322,7 @@ int ProfileManager::runKadu(QString profilePath, QString protectPassword)
 			}
 			else
 			{
-				MessageDialog::msg(tr("The password is invalid. Sorry"), true, "32x32/dialog-error_big.png", NULL);
+				MessageDialog::msg(tr("The password is invalid. Sorry"), true, "32x32/dialog-error_big", NULL);
 			}
 		}
 		delete p;
@@ -519,12 +519,12 @@ void ProfileConfigurationWindow::saveBtnPressed()
 
 	if (profileName->text().compare("") == 0)
 	{
-		MessageDialog::msg(tr("Please write at least the name of the Profile"), true, "32x32/dialog-warning.png", NULL);
+		MessageDialog::msg(tr("Please write at least the name of the Profile"), true, "32x32/dialog-warning", NULL);
 		return;
 	}
 	if (profileName->text().find("..") != -1)
 	{
-		MessageDialog::msg(tr("Profile Name contains wrong characters (\"..\")."), true, "32x32/dialog-warning.png", NULL);
+		MessageDialog::msg(tr("Profile Name contains wrong characters (\"..\")."), true, "32x32/dialog-warning", NULL);
 		return;
 	}
 
@@ -539,7 +539,7 @@ void ProfileConfigurationWindow::saveBtnPressed()
 		}
 
 		if (p->getPassword().compare(profileProtectPassword)) {
-			MessageDialog::msg(tr("The password is invalid. Sorry"), true, "32x32/dialog-error_big.png", NULL);
+			MessageDialog::msg(tr("The password is invalid. Sorry"), true, "32x32/dialog-error_big", NULL);
 			delete p;
 			return;
 		}

@@ -358,7 +358,7 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, const QString &styleHre
 		else if (!contact.isNull() && !contact.contactAvatar().pixmap().isNull())
 			photoIncoming = QString("file://") + contact.contactAvatar().filePath();
 		else
-			photoIncoming = QString("file://") + styleHref + QString("Incoming/buddy_icon.png");
+			photoIncoming = QString("file://") + styleHref + QString("Incoming/buddy_iconp.png");
 	}
 
 	Avatar avatar = chat.chatAccount().accountContact().contactAvatar();

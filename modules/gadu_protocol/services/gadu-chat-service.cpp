@@ -89,7 +89,7 @@ bool GaduChatService::sendMessage(Chat chat, FormattedMessage &message, bool sil
 		if (formats)
 			delete[] formats;
 
-		MessageDialog::msg(tr("Filtered message too long (%1>=%2)").arg(data.length()).arg(2000), false, "dialog-warning.png");
+		MessageDialog::msg(tr("Filtered message too long (%1>=%2)").arg(data.length()).arg(2000), false, "dialog-warning");
 		kdebugmf(KDEBUG_FUNCTION_END, "end: filtered message too long\n");
 		return false;
 	}

@@ -435,16 +435,16 @@ void BuddiesListView::updateBackground()
 	if (config_file.readBoolEntry("Look", "AlignUserboxIconsTop"))
 	{
 		style.append("QTreeView::branch:has-children:!has-siblings:closed, QTreeView::branch:closed:has-children:has-siblings "
-		     "{ border-image: none; image: url(" + IconsManager::instance()->iconPath("kadu_icons/stylesheet-branch-closed.png", "16x16") + "); margin-top: 4px; image-position: top }");
+		     "{ border-image: none; image: url(" + IconsManager::instance()->iconPath("kadu_icons/stylesheet-branch-closed", "16x16") + "); margin-top: 4px; image-position: top }");
 		style.append("QTreeView::branch:open:has-children:!has-siblings, QTreeView::branch:open:has-children:has-siblings "
-			"{ border-image: none; image: url(" + IconsManager::instance()->iconPath("kadu_icons/stylesheet-branch-open.png", "16x16") + "); image-position: top; margin-top: 8px }");
+			"{ border-image: none; image: url(" + IconsManager::instance()->iconPath("kadu_icons/stylesheet-branch-open", "16x16") + "); image-position: top; margin-top: 8px }");
 	}
 	else
 	{
  		style.append("QTreeView::branch:has-children:!has-siblings:closed, QTreeView::branch:closed:has-children:has-siblings "
-		     "{ border-image: none; image: url(" + IconsManager::instance()->iconPath("kadu_icons/stylesheet-branch-closed.png", "16x16") + ") }");
+		     "{ border-image: none; image: url(" + IconsManager::instance()->iconPath("kadu_icons/stylesheet-branch-closed", "16x16") + ") }");
 		style.append("QTreeView::branch:open:has-children:!has-siblings, QTreeView::branch:open:has-children:has-siblings "
-			"{ border-image: none; image: url(" + IconsManager::instance()->iconPath("kadu_icons/stylesheet-branch-open.png", "16x16") + ") }");
+			"{ border-image: none; image: url(" + IconsManager::instance()->iconPath("kadu_icons/stylesheet-branch-open", "16x16") + ") }");
 	}
 
 	style.append("QFrame {");
@@ -478,7 +478,7 @@ void BuddiesListView::updateBackground()
 
 		if (BackgroundTemporaryFile)
 			delete BackgroundTemporaryFile;
-		BackgroundTemporaryFile = new QTemporaryFile(QDir::tempPath() + "/kadu_background_XXXXXX.png", this);
+			BackgroundTemporaryFile = new QTemporaryFile(QDir::tempPath() + "/kadu_background_XXXXXX.png", this);
 
 		if (BackgroundTemporaryFile->open())
 		{
