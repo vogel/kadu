@@ -34,7 +34,7 @@ AccountAvatarWidget::AccountAvatarWidget(Account account, QWidget *parent) :
 		QWidget(parent), MyAccount(account), Service(0), WaitMovie(0)
 {
 
-	QString pleaseWaithPath = IconsManager::instance()->iconPath("kadu_icons/please-wait.gif", "16x16");
+	QString pleaseWaithPath = IconsManager::instance()->iconPath("kadu_icons/16x16/please-wait.gif");
 	WaitMovie = new QMovie(pleaseWaithPath, QByteArray(), this);
 
 	createGui();

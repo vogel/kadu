@@ -30,7 +30,7 @@
 QString FormattedMessagePart::loadingImageHtml(const QString &imageId)
 {
 	return QString("<img src=\"file:///%1\" id=\"%2\" />")
-			.arg(IconsManager::instance()->iconPath("kadu_icons/please-wait.gif", "16x16"))
+			.arg(IconsManager::instance()->iconPath("kadu_icons/16x16/please-wait.gif"))
 			.arg(imageId);
 }
 
