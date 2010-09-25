@@ -68,8 +68,14 @@ void JabberRosterService::contactUpdated(const XMPP::RosterItem &item)
 
 	Contact contact = ContactManager::instance()->byId(Protocol->account(), item.jid().bare(), ActionCreateAndAdd);
 	ContactsForDelete.removeAll(contact);
+	
+	int subType = item.subscription().type();
 
-	if (item.subscription().toString() == "none")
+	// http://xmpp.org/extensions/xep-0162.html#contacts
+	if (!(subType == XMPP::Subscription::Both || subType == XMPP::Subscription::To 
+	    || ((subType == XMPP::Subscription::None || subType == XMPP::Subscription::From) && item.ask() == "subscribe")
+	    || ((subType == XMPP::Subscription::None || subType == XMPP::Subscription::From) && (!item.name().isEmpty() || !item.groups().isEmpty()))
+	   ))
 		return;
 
 	Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
