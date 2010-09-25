@@ -103,7 +103,7 @@ Core::~Core()
 	ModulesManager::instance()->unloadAllModules();
 
 #ifdef Q_OS_MAC
-	setIcon(QPixmap(dataPath("kadu")));
+	setIcon(IconsManager::instance()->iconByPath("kadu_icons/kadu"));
 #endif // Q_OS_MAC
 
 	MainConfiguration::destroyInstance();
