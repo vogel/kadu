@@ -46,8 +46,6 @@ void SmsActions::registerActions(bool firstLoad)
 	Instance = new SmsActions();
 
 	Q_UNUSED(firstLoad);
-// 	if (firstLoad)
-// 		ChatEditBox::addAction("ScreenShotAction");
 }
 
 void SmsActions::unregisterActions()

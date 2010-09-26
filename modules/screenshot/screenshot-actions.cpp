@@ -61,8 +61,8 @@ ScreenshotActions::ScreenshotActions() :
 	ScreenShotActionDescription = new ActionDescription(this,
 			ActionDescription::TypeChat, "ScreenShotAction",
 			this, SLOT(screenshotActionActivated(QAction *, bool)),
-			"external_modules/module_screenshot_shot-camera-photo",
-			"external_modules/module_screenshot_shot-camera-photo",
+			"external_modules/module_screenshot-camera-photo",
+			"external_modules/module_screenshot-camera-photo",
 			tr("ScreenShot"), false, ""
 	);
 
