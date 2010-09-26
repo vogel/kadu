@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration-ui>
-	<section name="Kadu" icon="kadu_icons/kadu-tab.png">
+	<section name="Kadu" icon="kadu_icons/kadu-tab">
 		<tab name="General">
 
 			<group-box name="Nickname">
@@ -66,7 +66,7 @@
 
 	</section>
 
-	<section name="Buddies" icon="system-users.png">
+	<section name="Buddies" icon="system-users">
 		<tab name="General">
 			<group-box name="Filters">
 				<check-box caption="Show offline buddies" config-section="General" config-item="ShowOffline" />
@@ -85,7 +85,7 @@ Text is plain black." />
 		</tab>
 	</section>
 
-	<section name="Status" icon="user-online.png">
+	<section name="Status" icon="user-online">
 		<tab name="General">
 			<group-box name="General">
 				<check-box caption="Private status" config-section="General" config-item="PrivateStatus"
@@ -120,7 +120,7 @@ Text is plain black." />
 		</tab>
 	</section>
 
-	<section name="Look" icon="preferences-desktop-theme.png">
+	<section name="Look" icon="preferences-desktop-theme">
 		<tab name="General">
 			<group-box name="General">
 				<combo-box caption="Icon theme" config-section="Look" config-item="IconTheme" id="iconThemes"
@@ -265,7 +265,7 @@ Text is plain black." />
 		</tab>
 	</section>
 
-	<section name="Shortcuts" icon="preferences-desktop-peripherals.png">
+	<section name="Shortcuts" icon="preferences-desktop-peripherals">
 		<tab name="General">
 			<group-box name="Kadu">
 				<hot-key-edit caption="Configuration" config-section="ShortCuts" config-item="kadu_configure" />
@@ -296,7 +296,7 @@ Text is plain black." />
 		</tab>
 	</section>
 
-	<section name="Chat" icon="internet-group-chat.png">
+	<section name="Chat" icon="internet-group-chat">
 		<tab name="General">
 			<group-box name="Behaviour">
 				<check-box caption="Remember chat windows positions" config-section="Chat" config-item="RememberPosition" />
@@ -338,7 +338,7 @@ Text is plain black." />
 		</tab>
 	</section>
 
-	<section name="Notifications" icon="kadu_icons/kadu-notifications.png">
+	<section name="Notifications" icon="kadu_icons/kadu-notifications">
 
 		<tab name="General">
 			<group-box name="Notifications">
