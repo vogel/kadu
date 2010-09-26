@@ -25,27 +25,26 @@
 #include <X11/extensions/scrnsaver.h>
 
 static Display *display = 0;
-XScreenSaverInfo *ss_info = 0;
+static XScreenSaverInfo *ss_info = 0;
 
 Idle::Idle()
 {
-	if (ss_info == 0)
+	if (!ss_info)
 	{
 		display = XOpenDisplay(0);
 
-		int event_base, error_base;
-		if(XScreenSaverQueryExtension(display, &event_base, &error_base))
-		{
+		int event_base = 0, error_base = 0;
+		if (XScreenSaverQueryExtension(display, &event_base, &error_base))
 			ss_info = XScreenSaverAllocInfo();
-		}
 	}
 }
 
 Idle::~Idle()
 {
-	if (ss_info != 0)
+	if (ss_info)
 	{
 		XFree(ss_info);
+		ss_info = 0;
 	}
 
 	if (display)
@@ -62,7 +61,7 @@ bool Idle::isActive()
 
 int Idle::secondsIdle()
 {
-	if(ss_info == 0)
+	if (!ss_info)
 		return -1;
 
 	if (!XScreenSaverQueryInfo(display, DefaultRootWindow(display), ss_info))
