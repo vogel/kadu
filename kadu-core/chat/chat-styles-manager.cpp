@@ -263,6 +263,8 @@ void ChatStylesManager::loadStyles()
 
 	files = dir.entryList();
 
+	AvailableStyles.clear(); // allow reloading of styles
+
 	foreach (const QString &file, files)
 	{
 		fi.setFile(path + file);
@@ -307,6 +309,8 @@ void ChatStylesManager::mainConfigurationWindowCreated(MainConfigurationWindow *
 {
 	connect(window, SIGNAL(destroyed()), this, SLOT(configurationWindowDestroyed()));
 	connect(window, SIGNAL(configurationWindowApplied()), this, SLOT(configurationApplied()));
+
+	loadStyles(); // reload styles to allow style testing without application restart
 
 	ConfigGroupBox *groupBox = window->widget()->configGroupBox("Look", "Chat Window", "Style");
 //editor

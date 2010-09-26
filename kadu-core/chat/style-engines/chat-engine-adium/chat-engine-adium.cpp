@@ -318,6 +318,14 @@ void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNa
 	incomingHtml.prepend("<span>");
 	incomingHtml.append("</span>");
 	preview->page()->mainFrame()->evaluateJavaScript("appendMessage(\'" + incomingHtml + "\')");
+
+	/* in Qt 4.6.3 / WebKit there is a bug making the following call not working */
+	/* according to: https://bugs.webkit.org/show_bug.cgi?id=35633 */
+	/* the proper refreshing behaviour should occur once the bug is fixed */
+	/* possible temporary solution: use QWebElements API to randomly change */
+	/* URLs in the HTML/CSS content. */
+	preview->page()->triggerAction(QWebPage::ReloadAndBypassCache, false);
+
 }
 
 // Some parts of the code below are borrowed from Kopete project (http://kopete.kde.org/)
