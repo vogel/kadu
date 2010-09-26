@@ -43,7 +43,6 @@ void BuddyKaduData::load()
 
 	StorableObject::load();
 
-	ChatGeometry = stringToRect(loadValue<QString>("ChatGeometry"));
 	HideDescription = loadValue<bool>("HideDescription");
 
 }
@@ -53,7 +52,6 @@ void BuddyKaduData::store()
 	if (!isValidStorage())
 		return;
 
-	storeValue("ChatGeometry", rectToString(ChatGeometry));
 	storeValue("HideDescription", HideDescription);
 }
 

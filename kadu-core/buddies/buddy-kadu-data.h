@@ -23,8 +23,6 @@
 #ifndef BUDDY_KADU_DATA_H
 #define BUDDY_KADU_DATA_H
 
-#include <QtCore/QRect>
-
 #include "storage/module-data.h"
 
 #undef Property
@@ -34,7 +32,6 @@
 
 class BuddyKaduData : public ModuleData
 {
-	QRect ChatGeometry;
 	bool HideDescription;
 
 protected:
@@ -47,9 +44,7 @@ public:
 	virtual void store();
 	virtual QString name() const;
 
-	Property(QRect, chatGeometry, ChatGeometry)
 	Property(bool, hideDescription, HideDescription)
-
 };
 
 #endif // BUDDY_KADU_DATA_H
