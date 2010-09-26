@@ -58,6 +58,7 @@ set (kadu_SRCS
 	chat/chat-details-aggregate.cpp
 	chat/chat-details-conference.cpp
 	chat/chat-details-simple.cpp
+	chat/chat-geometry-data.cpp
 	chat/chat-manager.cpp
 	chat/chat-shared.cpp
 	chat/chat-styles-manager.cpp

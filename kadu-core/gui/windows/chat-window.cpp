@@ -30,8 +30,9 @@
 #include <QtGui/QDesktopWidget>
 #include <QtGui/QVBoxLayout>
 
+#include "chat/chat-geometry-data.h"
 #include "configuration/configuration-file.h"
-#include "buddies/buddy-kadu-data.h"
+#include "contacts/contact-set.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/message-dialog.h"
 
@@ -123,84 +124,63 @@ void ChatWindow::compositingDisabled()
 	setAutoFillBackground(true);
 }
 
-// TODO: zrobi� od pocz�tku, strukturalnie spieprzone
+void ChatWindow::setDefaultGeometry()
+{
+	QSize size(0, 400);
+	int x, y;
+	x = pos().x();
+	y = pos().y();
+	if (currentChatWidget->chat().contacts().count() > 1)
+		size.setWidth(550);
+	else
+		size.setWidth(400);
+
+	QDesktopWidget *desk = qApp->desktop();
+
+	if ((size.width() + x) > desk->width())
+		x = desk->width() - size.width() - 50;
+	if ((size.height() + y) > desk->height())
+		y = desk->height() - size.height() - 50;
+
+	if (x < 50) x = 50;
+	if (y < 50) y = 50;
+
+	move(x, y);
+	resize(size);
+}
+
 void ChatWindow::kaduRestoreGeometry()
 {
-	// TODO: 0.6.6 apply this data to CurrentChat, it has ModuleData structures
+	ChatGeometryData *cgd = 0;
+	if (currentChatWidget)
+		cgd = currentChatWidget->chat().data()->moduleStorableData<ChatGeometryData>("chat-geometry");
 
-// 	ContactSet contacts = currentChatWidget->contacts();
-//
-// 	if (0 == contacts.count())
-// 		return;
-//
-// 	QRect geom = stringToRect(chat_manager->chatWidgetProperty(currentChatWidget->contacts(), "Geometry").toString());
-//
-// 	if (contacts.count() == 1)
-// 	{
-// 		Contact contact = *contacts.begin();
-// 		ContactKaduData *ckd = contact.moduleData<ContactKaduData>();
-// 		if (ckd)
-// 		{
-// 			geom = ckd->chatGeometry();
-// 		}
-// 	}
-
-// 	if (geom.isEmpty() && contacts.count() == 1)
-// 		geom = stringToRect(ules[0].data("ChatGeometry").toString());
-/*
-	if (geom.isEmpty())
-	{
-		QSize size(0, 400);
-		int x, y;
-		x = pos().x();
-		y = pos().y();
-		if (contacts.count() > 1)
-			size.setWidth(550);
-		else
-			size.setWidth(400);
-
-		QDesktopWidget *desk = qApp->desktop();
-
-		if ((size.width() + x) > desk->width())
-			x = desk->width() - size.width() - 50;
-		if ((size.height() + y) > desk->height())
-			y = desk->height() - size.height() - 50;
-
-		if (x < 50) x = 50;
-		if (y < 50) y = 50;
-
-		move(x, y);
-		resize(size);
-	}
+	if (!cgd || !cgd->windowGeometry().isValid())
+		setDefaultGeometry();
 	else
 	{
+		QRect geom = cgd->windowGeometry();
+		
 		setGeometry(geom);
 		currentChatWidget->setGeometry(geom);
 
 		currentChatWidget->kaduRestoreGeometry();
-	}*/
+	}
 }
 
 void ChatWindow::kaduStoreGeometry()
 {
-	// TODO: 0.6.6 as above
-/*
+	if (!currentChatWidget)
+		return;
+
 	currentChatWidget->kaduStoreGeometry();
 
-	ContactSet contacts = currentChatWidget->contacts();
+	ChatGeometryData *cgd = currentChatWidget->chat().data()->moduleStorableData<ChatGeometryData>("chat-geometry", true);
+	if (!cgd)
+		return;
 
-	chat_manager->setChatWidgetProperty(currentChatWidget->contacts(), "Geometry", rectToString(geometry()));
-
-	if (contacts.count() == 1)
-	{
-		Contact contact = *contacts.begin();
-		ContactKaduData *ckd = contact.moduleData<ContactKaduData>(true);
-		if (ckd)
-		{
-			ckd->setChatGeometry(geometry());
-			ckd->storeConfiguration();
-		}
-	}*/
+	cgd->setWindowGeometry(geometry());
+	cgd->store();
 }
 
 void ChatWindow::closeEvent(QCloseEvent *e)

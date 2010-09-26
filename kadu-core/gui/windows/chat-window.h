@@ -23,6 +23,8 @@ private:
 	bool showNewMessagesNum; /*!< czy pokazujemy liczb� nowych wiadomo�ci w tytule nieaktywnego okna */
 	bool blinkChatTitle; /*!< czy tytu� nieaktywnego okna z nieprzeczytanymi wiadomo�ciami powinien mruga� */
 
+	void setDefaultGeometry();
+
 private slots:
 	void updateTitle();
 
