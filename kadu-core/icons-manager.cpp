@@ -71,7 +71,13 @@ QString IconsManager::iconPath(const QString &path, const QString &size, const Q
 
 	QFileInfo fileInfo(fileName);
 	if (!fileInfo.isFile() || !fileInfo.isReadable())
-		return QString::null;
+	{
+		fileName = ThemeManager->currentTheme().path() + path + "/svg/" + name + ".svg";
+		fileInfo.setFile(fileName);
+
+		if (!fileInfo.isFile() || !fileInfo.isReadable())
+			return QString::null;
+	}
 
 	return fileInfo.canonicalFilePath();
 }
@@ -104,7 +110,7 @@ QString IconsManager::iconPath(const QString &path) const
 	return fileInfo.canonicalFilePath();
 }
 
-QIcon IconsManager::buildIcon(const QString &path)
+QIcon IconsManager::buildPngIcon(const QString &path)
 {
 	static QLatin1String sizes [] = {
 		QLatin1String("16x16"),
@@ -126,11 +132,39 @@ QIcon IconsManager::buildIcon(const QString &path)
 	return icon;
 }
 
+QIcon IconsManager::buildSvgIcon(const QString& path)
+{
+	QIcon icon;
+	QString realPath;
+	QString iconName;
+
+	int lastHash = path.lastIndexOf('/');
+	if (lastHash != -1)
+	{
+		realPath = path.mid(0, lastHash);
+		iconName = path.mid(lastHash + 1);
+	}
+	else
+		iconName = path;
+
+	QString fileName = ThemeManager->currentTheme().path() + realPath + "/svg/" + iconName + ".svg";
+
+	QFileInfo fileInfo(fileName);
+	if (fileInfo.isFile() && fileInfo.isReadable())
+		icon.addFile(fileInfo.canonicalFilePath());
+
+	return icon;
+}
+
+
 const QIcon & IconsManager::iconByPath(const QString &path)
 {
 	if (!IconCache.contains(path))
 	{
-		QIcon icon = buildIcon(path);
+		QIcon icon = buildSvgIcon(path);
+		if (icon.isNull())
+			icon = buildPngIcon(path);
+
 		IconCache.insert(path, icon);
 	}
 

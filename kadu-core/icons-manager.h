@@ -51,7 +51,8 @@ class KADUAPI IconsManager : public QObject, public ConfigurationAwareObject
 
 	void clearCache();
 
-	QIcon buildIcon(const QString &path);
+	QIcon buildPngIcon(const QString &path);
+	QIcon buildSvgIcon(const QString &path);
 
 protected:
 	virtual void configurationUpdated();
