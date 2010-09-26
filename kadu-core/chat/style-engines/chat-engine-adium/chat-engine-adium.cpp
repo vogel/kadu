@@ -325,7 +325,6 @@ void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNa
 	/* possible temporary solution: use QWebElements API to randomly change */
 	/* URLs in the HTML/CSS content. */
 	preview->page()->triggerAction(QWebPage::ReloadAndBypassCache, false);
-
 }
 
 // Some parts of the code below are borrowed from Kopete project (http://kopete.kde.org/)
@@ -366,7 +365,7 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, const QString &styleHre
 		else if (!contact.isNull() && !contact.contactAvatar().pixmap().isNull())
 			photoIncoming = QString("file://") + contact.contactAvatar().filePath();
 		else
-			photoIncoming = QString("file://") + styleHref + QString("Incoming/buddy_iconp.png");
+			photoIncoming = QString("file://") + styleHref + QString("Incoming/buddy_icon.png");
 	}
 
 	Avatar avatar = chat.chatAccount().accountContact().contactAvatar();
