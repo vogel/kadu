@@ -157,7 +157,7 @@ MediaPlayer::MediaPlayer(bool firstLoad)
 	mediaPlayerMenu = new ActionDescription(
 		0, ActionDescription::TypeChat, "mediaplayer_button",
 		this, SLOT(mediaPlayerMenuActivated(QAction *, bool)),
-		"external_modules/module_mediaplayer-button", "external_modules/module_mediaplayer-button", tr("MediaPlayer"), false, ""
+		"external_modules/module_mediaplayer-media-playback-start", "external_modules/module_mediaplayer-media-playback-start", tr("MediaPlayer"), false, ""
 	);
 	playAction = new ActionDescription(
 		0, ActionDescription::TypeChat, "mediaplayer_play",
@@ -766,7 +766,7 @@ void MediaPlayer::putTitleHint(QString title)
 {
 	kdebugf();
 
-	Notification *notification = new Notification(QString(mediaPlayerOsdHint), "external_modules/module_mediaplayer_button-media-playback-start");
+	Notification *notification = new Notification(QString(mediaPlayerOsdHint), "external_modules/module_mediaplayer-media-playback-start");
 	notification->setText(title);
 	NotificationManager::instance()->notify(notification);
 }
