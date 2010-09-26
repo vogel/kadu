@@ -142,6 +142,7 @@ set(SOURCES_IRIS
 	libiris/src/irisnet/noncore/processquit.cpp
 	libiris/src/irisnet/noncore/turnclient.cpp
 	libiris/src/irisnet/noncore/udpportreserver.cpp
+	libiris/src/irisnet/corelib/addressresolver.cpp
 	libiris/src/irisnet/corelib/netavailability.cpp
 	libiris/src/irisnet/corelib/netnames_jdns.cpp
 	libiris/src/irisnet/corelib/netnames.cpp
@@ -168,64 +169,25 @@ set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-error")
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-error")
 
 set (MOC_SOURCES_IRIS
-	#libiris/src/xmpp/base/randrandomnumbergenerator.h
-	#libiris/src/xmpp/base/randomnumbergenerator.h
-	#libiris/src/xmpp/jid/jid.h
 	libiris/src/irisnet/noncore/cutestuff/bytestream.h
 	libiris/src/irisnet/noncore/cutestuff/socks.h
 	libiris/src/irisnet/noncore/cutestuff/httpconnect.h
 	libiris/src/irisnet/noncore/cutestuff/bsocket.h
 	libiris/src/irisnet/noncore/cutestuff/httppoll.h
-	#libiris/src/xmpp/xmpp-im/xmpp_xdata.h
-	#libiris/src/xmpp/xmpp-im/xmpp_rosterx.h
 	libiris/src/xmpp/xmpp-im/xmpp_tasks.h
-	#libiris/src/xmpp/xmpp-im/xmpp_discoitem.h
-	#libiris/src/xmpp/xmpp-im/xmpp_pubsubretraction.h
-	#libiris/src/xmpp/xmpp-im/xmpp_xmlcommon.h
-	#libiris/src/xmpp/xmpp-im/xmpp_roster.h
-	#libiris/src/xmpp/xmpp-im/xmpp_muc.h
-	#libiris/src/xmpp/xmpp-im/xmpp_htmlelement.h
-	#libiris/src/xmpp/xmpp-im/xmpp_receipts.h
-	#libiris/src/xmpp/xmpp-im/xmpp_message.h
 	libiris/src/xmpp/xmpp-im/xmpp_discoinfotask.h
 	libiris/src/xmpp/xmpp-im/xmpp_ibb.h
-	#libiris/src/xmpp/xmpp-im/xmpp_liverosteritem.h
-	#libiris/src/xmpp/xmpp-im/xmpp_httpauthrequest.h
-	#libiris/src/xmpp/xmpp-im/xmpp_pubsubitem.h
-	#libiris/src/xmpp/xmpp-im/xmpp_vcard.h
 	libiris/src/xmpp/xmpp-im/xmpp_client.h
 	libiris/src/xmpp/xmpp-im/s5b.h
-	#libiris/src/xmpp/xmpp-im/xmpp_url.h
-	#libiris/src/xmpp/xmpp-im/xmpp_chatstate.h
 	libiris/src/xmpp/xmpp-im/xmpp_task.h
-	#libiris/src/xmpp/xmpp-im/xmpp_address.h
-	#libiris/src/xmpp/xmpp-im/xmpp_agentitem.h
 	libiris/src/xmpp/xmpp-im/filetransfer.h
-	#libiris/src/xmpp/xmpp-im/xmpp_status.h
-	#libiris/src/xmpp/xmpp-im/xmpp_resourcelist.h
-	#libiris/src/xmpp/xmpp-im/xmpp_liveroster.h
-	#libiris/src/xmpp/xmpp-im/xmpp_resource.h
-	#libiris/src/xmpp/xmpp-im/xmpp_rosteritem.h
-	#libiris/src/xmpp/xmpp-im/xmpp_features.h
-	#libiris/src/xmpp/xmpp-im/im.h
-	#libiris/src/xmpp/sasl/digestmd5response.h
-	#libiris/src/xmpp/sasl/digestmd5proplist.h
-	#libiris/src/xmpp/sasl/plainmessage.h
-	#libiris/src/xmpp/zlib/common.h
 	libiris/src/xmpp/zlib/zlibdecompressor.h
 	libiris/src/xmpp/zlib/zlibcompressor.h
-	#libiris/src/xmpp/base64/base64.h
-	#libiris/src/xmpp/xmpp-core/xmpp_stanza.h
-	#libiris/src/xmpp/xmpp-core/simplesasl.h
 	libiris/src/xmpp/xmpp-core/securestream.h
-	#libiris/src/xmpp/xmpp-core/protocol.h
 	libiris/src/xmpp/xmpp-core/compressionhandler.h
-	#libiris/src/xmpp/xmpp-core/xmlprotocol.h
 	libiris/src/xmpp/xmpp-core/xmpp.h
 	libiris/src/xmpp/xmpp-core/xmpp_clientstream.h
 	libiris/src/xmpp/xmpp-core/xmpp_stream.h
-	#libiris/src/xmpp/xmpp-core/td.h
-	#libiris/src/xmpp/xmpp-core/parser.h
 
 	libiris/src/jdns/qjdns.h
 
@@ -244,19 +206,20 @@ set (MOC_SOURCES_IRIS
 	libiris/src/irisnet/noncore/icelocaltransport.h
 	libiris/src/irisnet/noncore/turnclient.h
 	libiris/src/irisnet/noncore/udpportreserver.h
-	#libiris/src/irisnet/corelib/irisnetglobal.h
-	libiris/src/irisnet/corelib/objectsession.h
-	libiris/src/irisnet/corelib/netavailability.h
-	libiris/src/irisnet/corelib/netnames.h
+	libiris/src/irisnet/corelib/addressresolver.h
 	libiris/src/irisnet/corelib/irisnetplugin.h
-	libiris/src/irisnet/corelib/netinterface.h
 	libiris/src/irisnet/corelib/jdnsshared.h
+	libiris/src/irisnet/corelib/netavailability.h
+	libiris/src/irisnet/corelib/netinterface.h
+	libiris/src/irisnet/corelib/netnames.h
+	libiris/src/irisnet/corelib/objectsession.h
 )
 
 set (MOC_SOURCES2_IRIS
 	libiris/src/jdns/qjdns.cpp
-	libiris/src/irisnet/corelib/netavailability.cpp
+	libiris/src/irisnet/corelib/addressresolver.cpp
 	libiris/src/irisnet/corelib/jdnsshared.cpp
+	libiris/src/irisnet/corelib/netavailability.cpp
 	libiris/src/irisnet/corelib/netinterface.cpp
 	libiris/src/irisnet/corelib/netnames.cpp
 	libiris/src/irisnet/corelib/netnames_jdns.cpp
