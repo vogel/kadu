@@ -56,6 +56,8 @@ SqlHistoryModule::SqlHistoryModule(bool firstLoad)
 
 SqlHistoryModule::~SqlHistoryModule()
 {
+	History::instance()->unregisterStorage(Storage);
+	Storage = 0;
 }
 
 SqlHistoryModule *sqlHistoryModule = 0;
