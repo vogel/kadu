@@ -25,24 +25,13 @@
 #include <X11/extensions/scrnsaver.h>
 
 static Display *display = 0;
-static XErrorHandler old_handler = 0;
 XScreenSaverInfo *ss_info = 0;
-
-extern "C" int xerrhandler(Display* dpy, XErrorEvent* err)
-{
-	if(err->error_code == BadDrawable)
-		return 0;
-
-	return (*old_handler)(dpy, err);
-}
 
 Idle::Idle()
 {
 	if (ss_info == 0)
 	{
 		display = XOpenDisplay(0);
-
-		old_handler = XSetErrorHandler(xerrhandler);
 
 		int event_base, error_base;
 		if(XScreenSaverQueryExtension(display, &event_base, &error_base))
@@ -57,12 +46,6 @@ Idle::~Idle()
 	if (ss_info != 0)
 	{
 		XFree(ss_info);
-	}
-
-	if(old_handler)
-	{
-		XSetErrorHandler(old_handler);
-		old_handler = 0;
 	}
 
 	if (display)
