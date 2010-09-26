@@ -19,7 +19,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
 #include <QtGui/QPushButton>
+#include <QtSql/QSqlDatabase>
 
 #include "configuration/configuration-file.h"
 #include "debug.h"
@@ -58,6 +60,8 @@ SqlHistoryModule::~SqlHistoryModule()
 {
 	History::instance()->unregisterStorage(Storage);
 	Storage = 0;
+
+	QSqlDatabase::removeDatabase("kadu-history");
 }
 
 SqlHistoryModule *sqlHistoryModule = 0;
