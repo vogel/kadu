@@ -25,42 +25,42 @@ static EventLoopTimerRef mTimerRef = 0;
 static int mSecondsIdle = 0;
 
 // Why does Apple have to make this so complicated?
-static OSStatus LoadFrameworkBundle(CFStringRef framework, CFBundleRef *bundlePtr) 
+static OSStatus LoadFrameworkBundle(CFStringRef framework, CFBundleRef *bundlePtr)
 {
 	OSStatus  err;
 	FSRef   frameworksFolderRef;
 	CFURLRef baseURL;
 	CFURLRef bundleURL;
- 
+
 	if (bundlePtr == nil) return -1;
- 
+
 	*bundlePtr = nil;
- 
+
 	baseURL = nil;
 	bundleURL = nil;
- 
+
 	err = FSFindFolder(kOnAppropriateDisk, kFrameworksFolderType, true, &frameworksFolderRef);
-	if (err == noErr) 
+	if (err == noErr)
 	{
 		baseURL = CFURLCreateFromFSRef(kCFAllocatorSystemDefault, &frameworksFolderRef);
-		if (baseURL == nil) 
+		if (baseURL == nil)
 			err = coreFoundationUnknownErr;
 	}
-	if (err == noErr) 
+	if (err == noErr)
 	{
 		bundleURL = CFURLCreateCopyAppendingPathComponent(kCFAllocatorSystemDefault, baseURL, framework, false);
-		if (bundleURL == nil) 
+		if (bundleURL == nil)
 			err = coreFoundationUnknownErr;
 	}
-	if (err == noErr) 
+	if (err == noErr)
 	{
 		*bundlePtr = CFBundleCreate(kCFAllocatorSystemDefault, bundleURL);
-		if (*bundlePtr == nil) 
+		if (*bundlePtr == nil)
 			err = coreFoundationUnknownErr;
 	}
-	if (err == noErr) 
+	if (err == noErr)
 	{
-		if (!CFBundleLoadExecutable(*bundlePtr)) 
+		if (!CFBundleLoadExecutable(*bundlePtr))
 			err = coreFoundationUnknownErr;
 	}
 
@@ -108,10 +108,10 @@ typedef OSStatus (*InstallEventLoopIdleTimerPtr)(EventLoopRef inEventLoop,
 						 EventLoopTimerRef *  outTimer);
 
 
-Idle::Idle() 
+Idle::Idle()
 {
 	// May already be init'ed.
-	if (mTimerRef == 0) 
+	if (mTimerRef == 0)
 	{
 		// According to the docs, InstallEventLoopIdleTimer is new in 10.2.
 		// According to the headers, it has been around since 10.0.
@@ -119,11 +119,11 @@ Idle::Idle()
 
 		// Load the "Carbon.framework" bundle.
 		CFBundleRef carbonBundle;
-		if (LoadFrameworkBundle( CFSTR("Carbon.framework"), &carbonBundle ) == noErr) 
+		if (LoadFrameworkBundle( CFSTR("Carbon.framework"), &carbonBundle ) == noErr)
 		{
 			// Load the Mach-O function pointers for the routine we will be using.
 			InstallEventLoopIdleTimerPtr myInstallEventLoopIdleTimer = (InstallEventLoopIdleTimerPtr)CFBundleGetFunctionPointerForName(carbonBundle, CFSTR("InstallEventLoopIdleTimer"));
-			if (myInstallEventLoopIdleTimer != 0) 
+			if (myInstallEventLoopIdleTimer != 0)
 			{
 				EventLoopIdleTimerUPP timerUPP = NewEventLoopIdleTimerUPP(IdleTimerAction);
 				(*myInstallEventLoopIdleTimer)(GetMainEventLoop(), kEventDurationSecond, kEventDurationSecond, timerUPP, 0, &mTimerRef);
@@ -142,9 +142,4 @@ Idle::~Idle()
 int Idle::secondsIdle()
 {
 	return mSecondsIdle;
-}
-
-bool Idle::isActive()
-{
-	return (secondsIdle() == 0);
 }

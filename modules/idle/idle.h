@@ -36,7 +36,6 @@ public:
 	Idle();
 	~Idle();
 
-	bool isActive();
 	int secondsIdle();
 };
 

@@ -54,11 +54,6 @@ Idle::~Idle()
 	}
 }
 
-bool Idle::isActive()
-{
-	return (secondsIdle() == 0);
-}
-
 int Idle::secondsIdle()
 {
 	if (!ss_info)
