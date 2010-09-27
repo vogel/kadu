@@ -55,7 +55,6 @@ class ServerMonitorWindow : public QScrollArea, ConfigurationAwareObject
 	void cleanLayout();
 	void loadServersListFromGaduManager();
 	void loadServersListFromFile();
-	void removeAllServer();
 
 private slots:
 	void loadServers();

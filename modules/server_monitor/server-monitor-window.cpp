@@ -62,7 +62,6 @@ ServerMonitorWindow::ServerMonitorWindow(QWidget *parent) :
 
 ServerMonitorWindow::~ServerMonitorWindow()
 {
-	removeAllServer();
 }
 
 void ServerMonitorWindow::updateStats(ServerStatusWidget::ServerState newStatus, ServerStatusWidget::ServerState oldStatus)
@@ -107,17 +106,12 @@ void ServerMonitorWindow::updateStats(ServerStatusWidget::ServerState newStatus,
 
 void ServerMonitorWindow::loadServers()
 {
-	if (Layout)
-		delete Layout;
-	Layout = new QGridLayout(this);
-
-	if (ScrollBarLayout)
-		delete ScrollBarLayout;
 	ScrollBarLayout = new QWidget(this);
+	Layout = new QGridLayout(ScrollBarLayout);
 
 	AvalibleServers = 0;
 	UnavalibleServers = 0;
-	removeAllServer();
+	ServerStatusWidgetList.clear();
 
 	(ProtocolsManager::instance()->byName("gadu") && config_file.readBoolEntry("serverMonitor", "useGaduServersList", true))?
 			loadServersListFromGaduManager() : loadServersListFromFile();
@@ -136,7 +130,6 @@ void ServerMonitorWindow::loadServers()
 		serverCounter++;
 	}
 
-	ScrollBarLayout->setLayout(Layout);
 	ScrollBarLayout->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 	ScrollBarLayout->setFixedWidth(500);
 	setWidget(ScrollBarLayout);
@@ -199,10 +192,4 @@ void ServerMonitorWindow::refreshList()
 {
 	foreach (ServerStatusWidget* server, ServerStatusWidgetList)
 		server->refreshIcon();
-}
-
-void ServerMonitorWindow::removeAllServer()
-{
-	qDeleteAll(ServerStatusWidgetList);
-	ServerStatusWidgetList.clear();
 }
