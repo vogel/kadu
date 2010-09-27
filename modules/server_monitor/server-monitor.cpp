@@ -64,7 +64,7 @@ extern "C" KADU_EXPORT void server_monitor_close()
 {
 	kdebugf();
 
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/server_monitor.ui"));
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/server-monitor.ui"));
 	MainConfigurationWindow::unregisterUiHandler(serverMonitor);
 
 	NotificationManager::instance()->unregisterNotifyEvent(ServerMonitor::notifyEvent);
