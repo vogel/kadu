@@ -144,8 +144,8 @@ void ServerMonitorWindow::loadServers()
 
 void ServerMonitorWindow::loadServersListFromGaduManager()
 {
-	foreach (const QHostAddress &hostAddress, GaduServersManager::instance()->getServersList())
-		ServerStatusWidgetList.push_back(new ServerStatusWidget(hostAddress.toString()));
+	foreach (const GaduServersManager::GaduServer &server, GaduServersManager::instance()->getServersList())
+		ServerStatusWidgetList.push_back(new ServerStatusWidget(server.first.toString(), server.second, "", this));
 }
 
 void ServerMonitorWindow::loadServersListFromFile()

@@ -164,6 +164,8 @@ void GaduServersManager::buildServerList()
 		foreach (const QString &server, servers)
 			GoodServers << gaduServersFromString(server);
 	}
+
+	AllServers = GoodServers;
 }
 
 void GaduServersManager::configurationUpdated()
@@ -185,7 +187,7 @@ GaduServersManager::GaduServer GaduServersManager::getServer()
 	return GoodServers[0];
 }
 
-const QList<QHostAddress>& GaduServersManager::getServersList()
+const QList<GaduServersManager::GaduServer> & GaduServersManager::getServersList()
 {
 	return AllServers;
 }

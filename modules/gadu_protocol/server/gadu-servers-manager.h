@@ -40,8 +40,8 @@ private:
 	static const char *Ips[];
 	static GaduServersManager * Instance;
 
-	QList<QHostAddress> AllServers;
 	QList<int> AllPorts;
+	QList<GaduServer> AllServers;
 	QList<GaduServer> GoodServers;
 	QList<GaduServer> BadServers;
 
@@ -55,7 +55,7 @@ protected:
 public:
 	static GADUAPI GaduServersManager * instance();
 
-	const QList<QHostAddress>& getServersList();
+	const QList<GaduServer> & getServersList();
 	QPair<QHostAddress, int> getServer();
 	void markServerAsGood(GaduServer server);
 	void markServerAsBad(GaduServer server);
