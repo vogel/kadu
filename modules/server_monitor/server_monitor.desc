@@ -1,4 +1,5 @@
 [Module]
 Description=Server Monitor Module
 Author=Jan Ziemkiewicz
+Dependencies=gadu_protocol
 Version=0.1
