@@ -47,7 +47,7 @@ extern "C" KADU_EXPORT int server_monitor_init(bool firstLoad)
 	if (firstLoad)
 	{
 		config_file.addVariable("serverMonitor", "autorefresh", true);
-		config_file.addVariable("serverMonitor", "fileName", "kadu/modules/configuration/serverslist.txt");
+		config_file.addVariable("serverMonitor", "fileName", dataPath("kadu/modules/configuration/serverslist.txt"));
 		config_file.addVariable("serverMonitor", "useListFromServer", true);
 		config_file.addVariable("serverMonitor", "timerInterval", 5);
 		config_file.addVariable("serverMonitor", "showResetButton", false);
