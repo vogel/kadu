@@ -23,7 +23,7 @@ kadu_module (server_monitor
         MODULE_MOC_SOURCES ${MOC_SOURCES}
         MODULE_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
         MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
-        MODULE_DEPENDENCIES gadu_protocol sql_history
+        MODULE_DEPENDENCIES gadu_protocol
 )
 
 if (MINGW)
