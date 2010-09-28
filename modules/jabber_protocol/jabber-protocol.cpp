@@ -41,6 +41,7 @@
 #include "utils/pep-manager.h"
 #include "utils/server-info-manager.h"
 #include "iris/filetransfer.h"
+#include "iris/irisnetglobal.h"
 #include "services/jabber-roster-service.h"
 #include "services/jabber-subscription-service.h"
 #include "iris-status-adapter.h"
@@ -84,6 +85,8 @@ void JabberProtocol::closeModule()
 	ProtocolsManager::instance()->unregisterProtocolFactory(JabberProtocolFactory::instance());
 	ProtocolsManager::instance()->unregisterProtocolFactory(GTalkProtocolFactory::instance());
 	ProtocolsManager::instance()->unregisterProtocolFactory(FacebookProtocolFactory::instance());
+
+	XMPP::irisNetCleanup();
 
 	qRemovePostRoutine(QCA::deinit);
 
