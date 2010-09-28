@@ -25,6 +25,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QCoreApplication>
+#include <QtCrypto>
 #include <QtGui/QGridLayout>
 #include <QtGui/QLabel>
 
@@ -70,6 +72,8 @@ extern "C" KADU_EXPORT void encryption_close()
 
 	delete encryption_manager;
 	encryption_manager = 0;
+
+	qRemovePostRoutine(QCA::deinit);
 }
 
 void disableSendKey(KaduAction *action)

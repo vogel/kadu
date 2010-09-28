@@ -22,7 +22,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QCoreApplication>
 #include <QtCore/QTimer>
+#include <QtCrypto>
 
 #ifdef Q_OS_WIN
 #include <winsock2.h>
@@ -105,6 +107,8 @@ extern "C" KADU_EXPORT void gadu_protocol_close()
 {
 	UrlHandlerManager::instance()->unregisterUrlHandler("Gadu");
 	ProtocolsManager::instance()->unregisterProtocolFactory(GaduProtocolFactory::instance());
+
+	qRemovePostRoutine(QCA::deinit);
 }
 
 #define GG_STATUS_INVISIBLE2 0x0009

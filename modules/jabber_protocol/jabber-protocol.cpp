@@ -21,6 +21,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QCoreApplication>
+#include <QtCrypto>
+
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
 #include "contacts/contact-manager.h"
@@ -81,6 +84,9 @@ void JabberProtocol::closeModule()
 	ProtocolsManager::instance()->unregisterProtocolFactory(JabberProtocolFactory::instance());
 	ProtocolsManager::instance()->unregisterProtocolFactory(GTalkProtocolFactory::instance());
 	ProtocolsManager::instance()->unregisterProtocolFactory(FacebookProtocolFactory::instance());
+
+	qRemovePostRoutine(QCA::deinit);
+
 	kdebugf2();
 }
 
