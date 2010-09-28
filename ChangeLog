@@ -1,3 +1,10 @@
++++ version 0.6.6-beta8
+* gui: buddies list now has focus right after Kadu's main window creation, so filtering works without clicking (beevvy)
+* gui: fixed: clicking on links in About window doesn't open web browser (beevvy)
+* #1522 fixed: autoaway doesn't work in simple mode (beevvy)
+* gadu: #1565 fixed: gadu_protocol doesn't load if linked with --as-needed (beevvy)
+* server_monitor: fixed: server_monitor doesn't work as intended and crashes (beevvy, shade/beevvy)
+
 +++ version 0.6.6-beta7
 * gui: #1541 fixed: avatar displaying on Qt 4.5 (Vogel)
 * gui: #1544 fixed: message icon displayed on top of status icon (Vogel)
@@ -17,11 +24,6 @@
 * gui: #1515 fixed: show descriptions action restored (Vogel)
 * file_desc: #1421 fixed: module ported to 0.6.6 (Darom/Vogel)
 * antistring: #1422 fixed: module ported to 0.6.6 (Vogel)
-* gui: buddies list now has focus right after Kadu's main window creation, so filtering works without clicking (beevvy)
-* gui: fixed: clicking on links in About window doesn't open web browser (beevvy)
-* #1522 fixed: autoaway doesn't work in simple mode (beevvy)
-* gadu: #1565 fixed: gadu_protocol doesn't load if linked with --as-needed (beevvy)
-* server_monitor: fixed: server_monitor doesn't work as intended and crashes (beevvy, shade/beevvy)
 
 +++ version 0.6.6-beta6
 * gui: #1487 fixed: combobox in personal info for buddies does not work (Vogel)
