@@ -40,7 +40,7 @@ void JabberPersonalInfoService::fetchPersonalInfo()
 void JabberPersonalInfoService::fetchingVCardFinished()
 {
 	XMPP::VCard vcard;
-	JT_VCard *task = (JT_VCard *)sender();
+	XMPP::JT_VCard *task = (XMPP::JT_VCard *)sender();
 	
 	if (task && task->success())
 	{
@@ -97,6 +97,6 @@ void JabberPersonalInfoService::updatePersonalInfo(Buddy buddy)
 
 void JabberPersonalInfoService::uploadingVCardFinished()
 {
-	JT_VCard *VCardHandler = static_cast<JT_VCard*> (sender());
+	XMPP::JT_VCard *VCardHandler = static_cast<XMPP::JT_VCard *>(sender());
 	emit personalInfoUpdated(VCardHandler->success());
 }

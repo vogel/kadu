@@ -40,6 +40,7 @@
 #include "resource/jabber-resource-pool.h"
 #include "utils/pep-manager.h"
 #include "utils/server-info-manager.h"
+#include "utils/vcard-factory.h"
 #include "iris/filetransfer.h"
 #include "iris/irisnetglobal.h"
 #include "services/jabber-roster-service.h"
@@ -97,6 +98,8 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 		Protocol(account, factory), JabberClient(0), ResourcePool(0), serverInfoManager(0), PepManager(0)
 {
 	kdebugf();
+	
+	VCardFactory::createInstance(this);
 
 	initializeJabberClient();
 

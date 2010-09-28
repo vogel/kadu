@@ -40,39 +40,39 @@ namespace XMPP {
 	class Task;
 	class JT_VCard;
 }
-using namespace XMPP;
 
 class VCardFactory : public QObject
 {
 	Q_OBJECT
 	
 public:
-	static VCardFactory* instance();
-	const VCard *vcard(const Jid &);
-	void setVCard(const Jid &, const VCard &);
-	void setVCard(Task *rootTask, const Jid &, const VCard &v, QObject* obj = 0, const char* slot = 0);
-	JT_VCard *getVCard(const Jid &, Task *rootTask, const QObject *, const char *slot, bool cacheVCard = true);
+	static void createInstance(QObject *parent = 0);
+	static VCardFactory * instance();
+	const XMPP::VCard * vcard(const XMPP::Jid &);
+	void setVCard(const XMPP::Jid &, const XMPP::VCard &);
+	void setVCard(XMPP::Task *rootTask, const XMPP::Jid &, const XMPP::VCard &v, QObject *obj = 0, const char *slot = 0);
+	XMPP::JT_VCard *getVCard(const XMPP::Jid &, XMPP::Task *rootTask, const QObject *, const char *slot, bool cacheVCard = true);
 	
 signals:
-	void vcardChanged(const Jid&);
+	void vcardChanged(const XMPP::Jid &);
 	
 protected:
-	void checkLimit(QString jid, VCard *vcard);
+	void checkLimit(QString jid, XMPP::VCard *vcard);
 	
 private slots:
 	void updateVCardFinished();
 	void taskFinished();
 	
 private:
-	VCardFactory();
-	~VCardFactory();
+	explicit VCardFactory(QObject *parent = 0);
+	virtual ~VCardFactory();
 	
 	static VCardFactory* instance_;
 	const int dictSize_;
 	QStringList vcardList_;
-	QMap<QString,VCard*> vcardDict_;
+	QMap<QString, XMPP::VCard *> vcardDict_;
 
-	void saveVCard(const Jid &, const VCard &);
+	void saveVCard(const XMPP::Jid &, const XMPP::VCard &);
 };
 
 #endif

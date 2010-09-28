@@ -51,7 +51,7 @@ void JabberAvatarFetcher::fetchAvatar()
 
 void JabberAvatarFetcher::receivedVCard()
 {
-	const VCard* vcard = VCardFactory::instance()->vcard(MyContact.id());
+	const XMPP::VCard *vcard = VCardFactory::instance()->vcard(MyContact.id());
 	if (vcard && !vcard->photo().isEmpty())
 	{
 		if (MyContact.contactAvatar().isNull())

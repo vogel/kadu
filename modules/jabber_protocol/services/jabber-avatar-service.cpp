@@ -118,7 +118,7 @@ void JabberAvatarService::fetchingVCardFinished()
 	buffer.close();
 
 	XMPP::VCard vcard;
-	JT_VCard *task = (JT_VCard *)sender();
+	XMPP::JT_VCard *task = (XMPP::JT_VCard *)sender();
 
 	if (task && task->success())
 	{
@@ -132,7 +132,7 @@ void JabberAvatarService::fetchingVCardFinished()
 
 void JabberAvatarService::uploadingVCardFinished()
 {
-	VCardHandler = static_cast<JT_VCard*> (sender());
+	VCardHandler = static_cast<XMPP::JT_VCard *>(sender());
 	if (VCardHandler->success())
 	{
 		emit avatarUploaded(true, AccountAvatar);
