@@ -8,6 +8,7 @@
  * Copyright 2009 Michał Podsiadlik (michal@kadu.net)
  * Copyright 2008 Tomasz Rostański (rozteck@interia.pl)
  * Copyright 2008, 2009, 2010 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * Copyright 2010 Piotr Dąbrowski (ultr@ultr.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -65,7 +66,7 @@ public:
 		switch (e->type())
 		{
 			case QEvent::MouseButtonPress:
-				toolbar->buttonPressed();
+				toolbar->widgetPressed();
 				return true;
 			case QEvent::MouseMove:
 			{
@@ -120,7 +121,7 @@ ToolBar::~ToolBar()
 	kdebugf2();
 }
 
-void ToolBar::addAction(const QString &actionName, Qt::ToolButtonStyle style, QAction *after)
+void ToolBar::addAction(const QString &actionName, Qt::ToolButtonStyle style, QAction *before)
 {
 	if (hasAction(actionName))
 		return;
@@ -128,78 +129,138 @@ void ToolBar::addAction(const QString &actionName, Qt::ToolButtonStyle style, QA
 	ToolBarAction newAction;
 	newAction.actionName = actionName;
 	newAction.action = 0;
-	newAction.button = 0;
+	newAction.widget = 0;
 	newAction.style = style;
 
-	if (after)
+	if (before)
 	{
 		int index = 0;
 
 		foreach(const ToolBarAction &toolBarAction, ToolBarActions)
-			if (toolBarAction.action == after)
+		{
+			if (toolBarAction.action == before)
 			{
-				newAction.action = KaduActions.createAction(actionName, dynamic_cast<MainWindow *>(parent()));
-				insertAction(after, newAction.action);
-				newAction.button = dynamic_cast<QToolButton *>(widgetForAction(newAction.action));
-				connect(newAction.button, SIGNAL(pressed()), this, SLOT(buttonPressed()));
-				newAction.button->installEventFilter(watcher);
-				newAction.button->setToolButtonStyle(newAction.style);
+				if (actionName.contains(QRegExp("^__separator")))
+				{
+					QWidget *widget = new ToolBarSeparator(this);
+					newAction.action = insertWidget(before, widget);
+					newAction.widget = widget;
+					connect(widget, SIGNAL(pressed()), this, SLOT(widgetPressed()));
+				}
+				else if (actionName.contains(QRegExp("^__spacer")))
+				{
+					QWidget *widget = new ToolBarSpacer(this);
+					newAction.action = insertWidget(before, widget);
+					newAction.widget = widget;
+					connect(widget, SIGNAL(pressed()), this, SLOT(widgetPressed()));
+				}
+				else
+				{
+					newAction.action = KaduActions.createAction(actionName, dynamic_cast<MainWindow *>(parent()));
+					insertAction(before, newAction.action);
+					QToolButton *button = dynamic_cast<QToolButton *>(widgetForAction(newAction.action));
+					newAction.widget = button;
+					connect(button, SIGNAL(pressed()), this, SLOT(widgetPressed()));
+					button->installEventFilter(watcher);
+					button->setToolButtonStyle(newAction.style);
+				}
 				ToolBarActions.insert(index, newAction);
 				return;
 			}
 			index++;
+		}
 	}
 
-	newAction.action = KaduActions.createAction(actionName, dynamic_cast<MainWindow *>(parent()));
-	QToolBar::addAction(newAction.action);
-	newAction.button = dynamic_cast<QToolButton *>(widgetForAction(newAction.action));
-	connect(newAction.button, SIGNAL(pressed()), this, SLOT(buttonPressed()));
-	newAction.button->installEventFilter(watcher);
-	newAction.button->setToolButtonStyle(newAction.style);
-
+	if (actionName.contains(QRegExp("^__separator")))
+	{
+		QWidget *widget = new ToolBarSeparator(this);
+		newAction.action = addWidget(widget);
+		newAction.widget = widget;
+		connect(widget, SIGNAL(pressed()), this, SLOT(widgetPressed()));
+	}
+	else if (actionName.contains(QRegExp("^__spacer")))
+	{
+		QWidget *widget = new ToolBarSpacer(this);
+		newAction.action = addWidget(widget);
+		newAction.widget = widget;
+		connect(widget, SIGNAL(pressed()), this, SLOT(widgetPressed()));
+	}
+	else
+	{
+		newAction.action = KaduActions.createAction(actionName, dynamic_cast<MainWindow *>(parent()));
+		QToolBar::addAction(newAction.action);
+		QToolButton *button = dynamic_cast<QToolButton *>(widgetForAction(newAction.action));
+		newAction.widget = button;
+		connect(button, SIGNAL(pressed()), this, SLOT(widgetPressed()));
+		button->installEventFilter(watcher);
+		button->setToolButtonStyle(newAction.style);
+	}
 	ToolBarActions.append(newAction);
 }
 
-void ToolBar::moveAction(const QString &actionName, Qt::ToolButtonStyle style, QAction *after)
+void ToolBar::moveAction(const QString &actionName, Qt::ToolButtonStyle style, QAction *before)
 {
- 	bool actionFind = false;
+	bool actionFound = false;
 	int index = 0;
 
 	ToolBarAction newAction;
 	newAction.actionName = actionName;
 	newAction.action = 0;
-	newAction.button = 0;
+	newAction.widget = 0;
 	newAction.style = style;
 
  	foreach(const ToolBarAction &toolBarAction, ToolBarActions)
 	{
 		if (toolBarAction.actionName == actionName)
 		{
-			if (toolBarAction.action == after)
+			if (toolBarAction.action == before)
 				return;
 			else
 			{
 				removeAction(toolBarAction.action);
+				newAction.action = 0;
 				ToolBarActions.removeAll(toolBarAction);
 			}
-
 		}
-		if (toolBarAction.action != after && !actionFind)
+		if (toolBarAction.action != before && !actionFound)
 			++index;
 		else
-			actionFind = true;
+			actionFound = true;
 	}
- 	newAction.action = KaduActions.createAction(actionName, dynamic_cast<MainWindow *>(parent()));
 
-	if (index > ToolBarActions.count() -1)
-		QToolBar::addAction(newAction.action);
+	if (actionName.contains(QRegExp("^__separator")))
+	{
+		QWidget *widget = new ToolBarSeparator(this);
+		if (index > ToolBarActions.count()-1)
+			newAction.action = QToolBar::addWidget(widget);
+		else
+			newAction.action = insertWidget(ToolBarActions[index].action, widget);
+		newAction.widget = widget;
+		connect(widget, SIGNAL(pressed()), this, SLOT(widgetPressed()));
+	}
+	else if (actionName.contains(QRegExp("^__spacer")))
+	{
+		QWidget *widget = new ToolBarSpacer(this);
+		if (index > ToolBarActions.count()-1)
+			newAction.action = QToolBar::addWidget(widget);
+		else
+			newAction.action = insertWidget(ToolBarActions[index].action, widget);
+		newAction.widget = widget;
+		connect(widget, SIGNAL(pressed()), this, SLOT(widgetPressed()));
+	}
 	else
-		insertAction(ToolBarActions[index].action, newAction.action);
-
-	newAction.button = dynamic_cast<QToolButton *>(widgetForAction(newAction.action));
-	connect(newAction.button, SIGNAL(pressed()), this, SLOT(buttonPressed()));
-	newAction.button->installEventFilter(watcher);
-	newAction.button->setToolButtonStyle(newAction.style);
+	{
+		newAction.action = KaduActions.createAction(actionName, dynamic_cast<MainWindow *>(parent()));
+		if (index > ToolBarActions.count()-1)
+			QToolBar::addAction(newAction.action);
+		else
+			insertAction(ToolBarActions[index].action, newAction.action);
+		QToolButton *button = dynamic_cast<QToolButton *>(widgetForAction(newAction.action));
+		newAction.widget = button;
+		connect(button, SIGNAL(pressed()), this, SLOT(widgetPressed()));
+		button->installEventFilter(watcher);
+		button->setToolButtonStyle(newAction.style);
+	}
 	ToolBarActions.insert(index, newAction);
 }
 
@@ -208,7 +269,7 @@ void ToolBar::addButtonClicked(QAction *action)
 	addAction(action->data().toString(), Qt::ToolButtonIconOnly);
 }
 
-void ToolBar::buttonPressed()
+void ToolBar::widgetPressed()
 {
 	MouseStart = mapFromGlobal(QCursor::pos());
 }
@@ -226,7 +287,7 @@ void ToolBar::mouseMoveEvent(QMouseEvent* e)
 			{
 				QDrag* drag = new ActionDrag(toolBarAction.actionName, toolBarAction.style, this);
 
-				drag->exec(Qt::CopyAction);
+				drag->exec(Qt::MoveAction);
 
 				e->accept();
 			}
@@ -245,8 +306,14 @@ void ToolBar::dragEnterEvent(QDragEnterEvent* event)
 		QString actionName;
 		Qt::ToolButtonStyle style;
 
-		if (ActionDrag::decode(event, actionName, style) && (((event->source() == this)
-		    || (!hasAction(actionName) && dynamic_cast<MainWindow *>(parent())->supportsActionType(KaduActions[actionName]->type())))))
+		if (
+			ActionDrag::decode(event, actionName, style) &&
+			(
+				(event->source() == this)
+				|| (!hasAction(actionName) && KaduActions.contains(actionName) && dynamic_cast<MainWindow *>(parent())->supportsActionType(KaduActions[actionName]->type()))
+				|| (actionName.contains(QRegExp("^__separator")) || actionName.contains(QRegExp("^__spacer")))
+			)
+		)
 		{
 			event->acceptProposedAction();
 			return;
@@ -261,6 +328,8 @@ void ToolBar::dropEvent(QDropEvent* event)
 {
 	kdebugf();
 	ToolBar* source = dynamic_cast<ToolBar*>(event->source());
+
+	QMainWindow *mainWindow = dynamic_cast<QMainWindow *>(parent());
 
 	if (!source)
 	{
@@ -277,15 +346,50 @@ void ToolBar::dropEvent(QDropEvent* event)
 	}
 
 	ToolBar* source_toolbar = dynamic_cast<ToolBar*>(event->source());
-	QAction *after = actionAt(event->pos());
+
+	// event->pos() may be a point BETWEEN two toolbar's widgets !
+	QAction *action = 0;
+	QPoint pos = event->pos();
+	if (!actions().isEmpty())
+	{
+		while (!action)
+		{
+			action = actionAt(pos);
+			if (mainWindow->toolBarArea(this)==Qt::TopToolBarArea || mainWindow->toolBarArea(this)==Qt::BottomToolBarArea)
+				pos -= QPoint(1,0);
+			if (mainWindow->toolBarArea(this)==Qt::LeftToolBarArea || mainWindow->toolBarArea(this)==Qt::RightToolBarArea )
+				pos -= QPoint(0,1);
+			if (pos.x()<0 || pos.y()<0)
+			{
+				action = actions().first();
+				break;
+			}
+		}
+	}
+
+	QAction *before = action;
+	if (action)
+	{
+		QWidget *actionwidget = widgetForAction(action);
+		QPoint widgetpos = actionwidget->mapFromParent(event->pos());
+		QSize widgetsize = actionwidget->size();
+		if (
+			( (mainWindow->toolBarArea(this)==Qt::TopToolBarArea  || mainWindow->toolBarArea(this)==Qt::BottomToolBarArea) && widgetpos.x()>=widgetsize.width()/2 ) ||
+			( (mainWindow->toolBarArea(this)==Qt::LeftToolBarArea || mainWindow->toolBarArea(this)==Qt::RightToolBarArea ) && widgetpos.x()>=widgetsize.width()/2 )
+		)
+		{
+			int index = actions().indexOf(action);
+			before = index < actions().count()-1 ? actions().at(index+1) : 0;
+		}
+	}
 
 	if (source_toolbar != this)
 	{
 		source_toolbar->deleteAction(actionName);
-		addAction(actionName, style, after);
+		addAction(actionName, style, before);
 	}
 	else
-		moveAction(actionName, style, after);
+		moveAction(actionName, style, before);
 
 	event->acceptProposedAction();
 
@@ -302,7 +406,7 @@ void ToolBar::contextMenuEvent(QContextMenuEvent *e)
 // 		return;
 // 	}
 
-	QMenu *menu = createContextMenu(dynamic_cast<QToolButton *>(childAt(e->pos())));
+	QMenu *menu = createContextMenu(childAt(e->pos()));
 	menu->exec(e->globalPos());
 	delete menu;
 
@@ -332,7 +436,12 @@ void ToolBar::writeToConfig(QDomElement parent_element)
 	foreach(const ToolBarAction &toolBarAction, ToolBarActions)
 	{
 		QDomElement button_elem = xml_config_file->createElement(toolbar_elem, "ToolButton");
-		button_elem.setAttribute("action_name", toolBarAction.actionName);
+		if (toolBarAction.actionName.contains(QRegExp("^__separator")))
+			button_elem.setAttribute("action_name", "__separator");
+		else if (toolBarAction.actionName.contains(QRegExp("^__spacer")))
+			button_elem.setAttribute("action_name", "__spacer");
+		else
+			button_elem.setAttribute("action_name", toolBarAction.actionName);
 		button_elem.setAttribute("toolbutton_style", toolBarAction.style);
 	}
 
@@ -370,7 +479,7 @@ void ToolBar::actionUnloaded(const QString &actionName)
 		if ((*toolBarAction).actionName == actionName)
 		{
 			(*toolBarAction).action = 0;
-			(*toolBarAction).button = 0;
+			(*toolBarAction).widget = 0;
 			return;
 		}
 	}
@@ -409,22 +518,43 @@ void ToolBar::updateButtons()
 			}
 		}
 
-		if (KaduActions.contains(actionName) && kaduMainWindow->supportsActionType(KaduActions[actionName]->type()))
+		if (actionName.contains(QRegExp("^__separator")))
+		{
+			QWidget *widget = new ToolBarSeparator(this);
+			if (toolBarNextAction != ToolBarActions.end() && (*toolBarNextAction).action)
+				(*toolBarAction).action = insertWidget((*toolBarNextAction).action, widget);
+			else
+				(*toolBarAction).action = QToolBar::addWidget(widget);
+			(*toolBarAction).widget = widget;
+			connect(widget, SIGNAL(pressed()), this, SLOT(widgetPressed()));
+			lastAction = (*toolBarAction).action;
+		}
+		else if (actionName.contains(QRegExp("^__spacer")))
+		{
+			QWidget *widget = new ToolBarSpacer(this);
+			if (toolBarNextAction != ToolBarActions.end() && (*toolBarNextAction).action)
+				(*toolBarAction).action = insertWidget((*toolBarNextAction).action, widget);
+			else
+				(*toolBarAction).action = QToolBar::addWidget(widget);
+			(*toolBarAction).widget = widget;
+			connect(widget, SIGNAL(pressed()), this, SLOT(widgetPressed()));
+			lastAction = (*toolBarAction).action;
+		}
+		else if (KaduActions.contains(actionName) && KaduActions.contains(actionName) && kaduMainWindow->supportsActionType(KaduActions[actionName]->type()))
 		{
 			(*toolBarAction).action = KaduActions.createAction(actionName, dynamic_cast<MainWindow *>(parent()));
-
 			if (toolBarNextAction != ToolBarActions.end() && (*toolBarNextAction).action)
 				insertAction((*toolBarNextAction).action, (*toolBarAction).action);
 			else
 				QToolBar::addAction((*toolBarAction).action);
-
-			(*toolBarAction).button = dynamic_cast<QToolButton *>(widgetForAction((*toolBarAction).action));
-			connect((*toolBarAction).button, SIGNAL(pressed()), this, SLOT(buttonPressed()));
-			(*toolBarAction).button->installEventFilter(watcher);
-			(*toolBarAction).button->setToolButtonStyle((*toolBarAction).style);
-
+			QToolButton *button = dynamic_cast<QToolButton *>(widgetForAction((*toolBarAction).action));
+			(*toolBarAction).widget = button;
+			connect(button, SIGNAL(pressed()), this, SLOT(widgetPressed()));
+			button->installEventFilter(watcher);
+			button->setToolButtonStyle((*toolBarAction).style);
 			lastAction = (*toolBarAction).action;
 		}
+
 	}
 }
 
@@ -473,9 +603,14 @@ void ToolBar::loadFromConfig(QDomElement toolbar_element)
 
 		action.actionName = button_elem.attribute("action_name");
 
+		if (action.actionName == "__separator")
+			action.actionName += QString::number(ToolBarSeparator::token());
+		if (action.actionName == "__spacer")
+			action.actionName += QString::number(ToolBarSpacer::token());
+
 		if (hasAction(action.actionName))
 			continue;
-	//remove after 0.7.0
+		//TODO:remove after 0.7.0
 		if (button_elem.attribute("toolbutton_style").isNull())
 			action.style = button_elem.attribute("uses_text_label") == "1"
 					? Qt::ToolButtonTextBesideIcon : Qt::ToolButtonIconOnly;
@@ -486,7 +621,7 @@ void ToolBar::loadFromConfig(QDomElement toolbar_element)
 		}
 
 		action.action = 0;
-		action.button = 0;
+		action.widget = 0;
 
 		ToolBarActions.append(action);
 	}
@@ -496,15 +631,20 @@ void ToolBar::loadFromConfig(QDomElement toolbar_element)
 	kdebugf2();
 }
 
-QMenu * ToolBar::createContextMenu(QToolButton *button)
+QMenu * ToolBar::createContextMenu(QWidget *widget)
 {
+	currentWidget = widget;
+
+	QToolButton *button = dynamic_cast<QToolButton *>(widget);
+	ToolBarSeparator *separator = dynamic_cast<ToolBarSeparator *>(widget);
+	ToolBarSpacer *spacer = dynamic_cast<ToolBarSpacer *>(widget);
+
 	QMenu *menu = new QMenu(this);
 
 	if (isMovable())
 	{
 		connect(menu, SIGNAL(aboutToShow()), this, SLOT(slotContextAboutToShow()));
 
-		currentButton = button;
 		if (button)
 		{
 			QMenu *textPositionMenu = new QMenu(tr("Text position"), this);
@@ -513,7 +653,6 @@ QMenu * ToolBar::createContextMenu(QToolButton *button)
 			TextOnly = textPositionMenu->addAction(tr("Text only"), this, SLOT(slotContextText()));
 			Text = textPositionMenu->addAction(tr("Text alongside icon"), this, SLOT(slotContextTextRight()));
 			TextUnder = textPositionMenu->addAction(tr("Text under icon"), this, SLOT(slotContextTextUnder()));
-
 			QActionGroup *textGroup = new QActionGroup(textPositionMenu);
 			foreach (QAction *action, textPositionMenu->actions())
 			{
@@ -521,9 +660,6 @@ QMenu * ToolBar::createContextMenu(QToolButton *button)
 				action->setCheckable(true);
 			}
 			menu->addMenu(textPositionMenu);
-
-			menu->addAction(tr("Delete button"), this, SLOT(deleteButton()));
-
 			menu->addSeparator();
 		}
 
@@ -554,13 +690,12 @@ QMenu * ToolBar::createContextMenu(QToolButton *button)
 			actionsMenu->addAction(tr("No items to add found"))->setEnabled(false);
 		else
 			connect(actionsMenu, SIGNAL(triggered(QAction *)), this, SLOT(addButtonClicked(QAction *)));
-
-		menu->addAction(tr("Delete toolbar"), this, SLOT(deleteToolbar()));
 		menu->addMenu(actionsMenu);
 
-		QMainWindow *mainWindow = dynamic_cast<QMainWindow *>(parent());
+		menu->addAction(tr("Add separator"), this, SLOT(addSeparatorClicked()));
+		menu->addAction(tr("Add expandable spacer"), this, SLOT(addSpacerClicked()));
 
-		menu->addSeparator();
+		QMainWindow *mainWindow = dynamic_cast<QMainWindow *>(parent());
 		switch (mainWindow->toolBarArea(this))
 		{
 			case Qt::NoToolBarArea:
@@ -579,6 +714,26 @@ QMenu * ToolBar::createContextMenu(QToolButton *button)
 			default:
 				break;
 		}
+
+		menu->addSeparator();
+
+		if (button)
+		{
+			menu->addAction(tr("Delete this button"), this, SLOT(deleteButton()));
+		}
+		if( separator )
+		{
+			menu->addAction(tr("Delete this separator"), this, SLOT(deleteSeparator()));
+		}
+		if( spacer )
+		{
+			menu->addAction(tr("Delete this expandable spacer"), this, SLOT(deleteSpacer()));
+		}
+
+		menu->addAction(tr("Delete this toolbar"), this, SLOT(deleteToolbar()));
+
+		menu->addSeparator();
+
 	}
 
 	QAction *blockToolbars = menu->addAction(tr("Block toolbars"), this, SLOT(setBlockToolbars(bool)));
@@ -588,10 +743,20 @@ QMenu * ToolBar::createContextMenu(QToolButton *button)
 	return menu;
 }
 
+void ToolBar::addSeparatorClicked()
+{
+	addAction(QString("__separator%1").arg(ToolBarSeparator::token()), Qt::ToolButtonIconOnly);
+}
+
+void ToolBar::addSpacerClicked()
+{
+	addAction(QString("__spacer%1").arg(ToolBarSpacer::token()), Qt::ToolButtonIconOnly);
+}
+
 void ToolBar::deleteToolbar()
 {
 	kdebugf();
-	if (MessageDialog::ask(tr("Remove toolbar?"), "dialog-warning", this))
+	if (MessageDialog::ask(tr("Do you really want to remove selected toolbar?"), "dialog-warning", this))
 		deleteLater();
 	kdebugf2();
 }
@@ -617,17 +782,46 @@ void ToolBar::setBlockToolbars(bool checked)
 
 void ToolBar::deleteButton()
 {
+	QToolButton *currentButton = dynamic_cast<QToolButton *>(currentWidget);
 	if (!currentButton)
 		return;
-
 	foreach (const ToolBarAction &toolBarAction, ToolBarActions)
-		if (toolBarAction.button == currentButton)
+		if (toolBarAction.widget == currentButton)
 		{
 			// TODO: again, lame solution
-			removeAction(currentButton->defaultAction());
-			currentButton = 0;
-
+			removeAction(toolBarAction.action);
 			ToolBarActions.removeAll(toolBarAction);
+			currentWidget = 0;
+			return;
+		}
+}
+
+void ToolBar::deleteSeparator()
+{
+	ToolBarSeparator *currentSeparator = dynamic_cast<ToolBarSeparator *>(currentWidget);
+	if (!currentSeparator)
+		return;
+	foreach (const ToolBarAction &toolBarAction, ToolBarActions)
+		if (toolBarAction.widget == currentSeparator)
+		{
+			removeAction(toolBarAction.action);
+			ToolBarActions.removeAll(toolBarAction);
+			currentWidget = 0;
+			return;
+		}
+}
+
+void ToolBar::deleteSpacer()
+{
+	ToolBarSpacer *currentSpacer = dynamic_cast<ToolBarSpacer *>(currentWidget);
+	if (!currentSpacer)
+		return;
+	foreach (const ToolBarAction &toolBarAction, ToolBarActions)
+		if (toolBarAction.widget == currentSpacer)
+		{
+			removeAction(toolBarAction.action);
+			ToolBarActions.removeAll(toolBarAction);
+			currentWidget = 0;
 			return;
 		}
 }
@@ -646,16 +840,17 @@ void ToolBar::deleteAction(const QString &actionName)
 
 void ToolBar::slotContextIcons()
 {
-    	if (!currentButton)
+	QToolButton *currentButton = dynamic_cast<QToolButton *>(currentWidget);
+	if (!currentButton)
 		return;
 
 	QList<ToolBarAction>::iterator toolBarAction;
 	for (toolBarAction = ToolBarActions.begin(); toolBarAction != ToolBarActions.end(); ++toolBarAction)
 	{
-		if ((*toolBarAction).button == currentButton)
+		if ((*toolBarAction).widget == currentButton)
 		{
 			(*toolBarAction).style = Qt::ToolButtonIconOnly;
-			(*toolBarAction).button->setToolButtonStyle(Qt::ToolButtonIconOnly);
+			currentButton->setToolButtonStyle(Qt::ToolButtonIconOnly);
 			return;
 		}
 	}
@@ -663,16 +858,17 @@ void ToolBar::slotContextIcons()
 
 void ToolBar::slotContextText()
 {
+	QToolButton *currentButton = dynamic_cast<QToolButton *>(currentWidget);
 	if (!currentButton)
 		return;
 
 	QList<ToolBarAction>::iterator toolBarAction;
 	for (toolBarAction = ToolBarActions.begin(); toolBarAction != ToolBarActions.end(); ++toolBarAction)
 	{
-		if ((*toolBarAction).button == currentButton)
+		if ((*toolBarAction).widget == currentButton)
 		{
 			(*toolBarAction).style = Qt::ToolButtonTextOnly;
-			(*toolBarAction).button->setToolButtonStyle(Qt::ToolButtonTextOnly);
+			currentButton->setToolButtonStyle(Qt::ToolButtonTextOnly);
 			return;
 		}
 	}
@@ -680,16 +876,17 @@ void ToolBar::slotContextText()
 
 void ToolBar::slotContextTextUnder()
 {
+	QToolButton *currentButton = dynamic_cast<QToolButton *>(currentWidget);
 	if (!currentButton)
 		return;
 
 	QList<ToolBarAction>::iterator toolBarAction;
 	for (toolBarAction = ToolBarActions.begin(); toolBarAction != ToolBarActions.end(); ++toolBarAction)
 	{
-		if ((*toolBarAction).button == currentButton)
+		if ((*toolBarAction).widget == currentButton)
 		{
 			(*toolBarAction).style = Qt::ToolButtonTextUnderIcon;
-			(*toolBarAction).button->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+			currentButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 			return;
 		}
 	}
@@ -697,16 +894,17 @@ void ToolBar::slotContextTextUnder()
 
 void ToolBar::slotContextTextRight()
 {
+	QToolButton *currentButton = dynamic_cast<QToolButton *>(currentWidget);
 	if (!currentButton)
 		return;
 
 	QList<ToolBarAction>::iterator toolBarAction;
 	for (toolBarAction = ToolBarActions.begin(); toolBarAction != ToolBarActions.end(); ++toolBarAction)
 	{
-		if ((*toolBarAction).button == currentButton)
+		if ((*toolBarAction).widget == currentButton)
 		{
 			(*toolBarAction).style = Qt::ToolButtonTextBesideIcon;
-			(*toolBarAction).button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+			currentButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 			return;
 		}
 	}
@@ -714,6 +912,7 @@ void ToolBar::slotContextTextRight()
 
 void ToolBar::slotContextAboutToShow()
 {
+	QToolButton *currentButton = dynamic_cast<QToolButton *>(currentWidget);
 	if (!currentButton)
 		return;
 	// Check the actions that should be checked
@@ -780,4 +979,51 @@ bool ActionDrag::decode(QDropEvent *event, QString &actionName, Qt::ToolButtonSt
 	style = Qt::ToolButtonStyle(tmp);
 
 	return true;
+}
+
+
+ToolBarSeparator::ToolBarSeparator(QWidget *parent) : QWidget(parent)
+{
+	resize( QSize( TOOLBAR_SEPARATOR_SIZE, TOOLBAR_SEPARATOR_SIZE ) );
+	setMinimumSize( size() );
+	setMaximumSize( size() );
+	setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+///	QPalette p(palette()); p.setColor(QPalette::Background, QColor(255,255,255,128)); setPalette(p); ///
+///	setAutoFillBackground(true); ///
+}
+
+int ToolBarSeparator::Token = 0;
+
+void ToolBarSeparator::mousePressEvent(QMouseEvent *event)
+{
+	Q_UNUSED(event);
+	emit pressed();
+}
+
+int ToolBarSeparator::token()
+{
+	++Token;
+	return Token;
+}
+
+
+ToolBarSpacer::ToolBarSpacer(QWidget *parent) : QWidget(parent)
+{
+	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+///	QPalette p(palette()); p.setColor(QPalette::Background, QColor(255,255,255,128)); setPalette(p); ///
+///	setAutoFillBackground(true); ///
+}
+
+int ToolBarSpacer::Token = 0;
+
+void ToolBarSpacer::mousePressEvent(QMouseEvent *event)
+{
+	Q_UNUSED(event);
+	emit pressed();
+}
+
+int ToolBarSpacer::token()
+{
+	++Token;
+	return Token;
 }
