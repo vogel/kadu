@@ -144,14 +144,14 @@ void ToolBar::addAction(const QString &actionName, Qt::ToolButtonStyle style, QA
 		{
 			if (toolBarAction.action == before)
 			{
-				if (actionName.contains(QRegExp("^__separator")))
+				if (actionName.startsWith("__separator"))
 				{
 					QWidget *widget = new ToolBarSeparator(this);
 					newAction.action = insertWidget(before, widget);
 					newAction.widget = widget;
 					connect(widget, SIGNAL(pressed()), this, SLOT(widgetPressed()));
 				}
-				else if (actionName.contains(QRegExp("^__spacer")))
+				else if (actionName.startsWith("__spacer"))
 				{
 					QWidget *widget = new ToolBarSpacer(this);
 					newAction.action = insertWidget(before, widget);
@@ -175,14 +175,14 @@ void ToolBar::addAction(const QString &actionName, Qt::ToolButtonStyle style, QA
 		}
 	}
 
-	if (actionName.contains(QRegExp("^__separator")))
+	if (actionName.startsWith("__separator"))
 	{
 		QWidget *widget = new ToolBarSeparator(this);
 		newAction.action = addWidget(widget);
 		newAction.widget = widget;
 		connect(widget, SIGNAL(pressed()), this, SLOT(widgetPressed()));
 	}
-	else if (actionName.contains(QRegExp("^__spacer")))
+	else if (actionName.startsWith("__spacer"))
 	{
 		QWidget *widget = new ToolBarSpacer(this);
 		newAction.action = addWidget(widget);
@@ -234,7 +234,7 @@ void ToolBar::moveAction(const QString &actionName, Qt::ToolButtonStyle style, Q
 			actionFound = true;
 	}
 
-	if (actionName.contains(QRegExp("^__separator")))
+	if (actionName.startsWith("__separator"))
 	{
 		QWidget *widget = new ToolBarSeparator(this);
 		if (index > ToolBarActions.count()-1)
@@ -244,7 +244,7 @@ void ToolBar::moveAction(const QString &actionName, Qt::ToolButtonStyle style, Q
 		newAction.widget = widget;
 		connect(widget, SIGNAL(pressed()), this, SLOT(widgetPressed()));
 	}
-	else if (actionName.contains(QRegExp("^__spacer")))
+	else if (actionName.startsWith("__spacer"))
 	{
 		QWidget *widget = new ToolBarSpacer(this);
 		if (index > ToolBarActions.count()-1)
@@ -324,7 +324,7 @@ void ToolBar::dragEnterEvent(QDragEnterEvent* event)
 			(
 				(event->source() == this)
 				|| (!hasAction(actionName) && KaduActions.contains(actionName) && dynamic_cast<MainWindow *>(parent())->supportsActionType(KaduActions[actionName]->type()))
-				|| (actionName.contains(QRegExp("^__separator")) || actionName.contains(QRegExp("^__spacer")))
+				|| (actionName.startsWith("__separator") || actionName.startsWith("__spacer"))
 			)
 		)
 		{
@@ -477,9 +477,9 @@ void ToolBar::writeToConfig(QDomElement parent_element)
 	foreach(const ToolBarAction &toolBarAction, ToolBarActions)
 	{
 		QDomElement button_elem = xml_config_file->createElement(toolbar_elem, "ToolButton");
-		if (toolBarAction.actionName.contains(QRegExp("^__separator")))
+		if (toolBarAction.actionName.startsWith("__separator"))
 			button_elem.setAttribute("action_name", "__separator");
-		else if (toolBarAction.actionName.contains(QRegExp("^__spacer")))
+		else if (toolBarAction.actionName.startsWith("__spacer"))
 			button_elem.setAttribute("action_name", "__spacer");
 		else
 			button_elem.setAttribute("action_name", toolBarAction.actionName);
@@ -559,7 +559,7 @@ void ToolBar::updateButtons()
 			}
 		}
 
-		if (actionName.contains(QRegExp("^__separator")))
+		if (actionName.startsWith("__separator"))
 		{
 			QWidget *widget = new ToolBarSeparator(this);
 			if (toolBarNextAction != ToolBarActions.end() && (*toolBarNextAction).action)
@@ -570,7 +570,7 @@ void ToolBar::updateButtons()
 			connect(widget, SIGNAL(pressed()), this, SLOT(widgetPressed()));
 			lastAction = (*toolBarAction).action;
 		}
-		else if (actionName.contains(QRegExp("^__spacer")))
+		else if (actionName.startsWith("__spacer"))
 		{
 			QWidget *widget = new ToolBarSpacer(this);
 			if (toolBarNextAction != ToolBarActions.end() && (*toolBarNextAction).action)
@@ -1080,8 +1080,6 @@ ToolBarSeparator::ToolBarSeparator(QWidget *parent) : QWidget(parent)
 	setMinimumSize( size() );
 	setMaximumSize( size() );
 	setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
-	QPalette p(palette()); p.setColor(QPalette::Background, QColor(255,255,255,128)); setPalette(p); ///
-	setAutoFillBackground(true); ///
 }
 
 int ToolBarSeparator::Token = 0;
@@ -1102,8 +1100,6 @@ int ToolBarSeparator::token()
 ToolBarSpacer::ToolBarSpacer(QWidget *parent) : QWidget(parent)
 {
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	QPalette p(palette()); p.setColor(QPalette::Background, QColor(255,255,255,128)); setPalette(p); ///
-	setAutoFillBackground(true); ///
 }
 
 int ToolBarSpacer::Token = 0;
