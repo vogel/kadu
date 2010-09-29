@@ -38,7 +38,8 @@
     <message>
         <source>Please do not run Kadu as a root!
 It&apos;s a high security risk!</source>
-        <translation>Bitte Kadu aus Sicherheitsgründen nicht als root starten!</translation>
+        <translation>Starten Sie bitte Kadu aus Sicherheitsgründen nicht als root!
+Es ist ein Sicherheitsrisiko!</translation>
     </message>
     <message>
         <source>French</source>
@@ -963,11 +964,11 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source>Clear recent chats list on exit</source>
-        <translation type="unfinished"></translation>
+        <translation>Lösche Chatliste beim beenden</translation>
     </message>
     <message>
         <source>never remove recent chats</source>
-        <translation type="unfinished"></translation>
+        <translation>Chats niemals löschen</translation>
     </message>
     <message>
         <source>Closing</source>
