@@ -34,6 +34,7 @@
 BuddiesModelProxy::BuddiesModelProxy(QObject *parent)
 	: QSortFilterProxyModel(parent), SourceBuddyModel(0), SortByStatus(true)
 {
+	QSortFilterProxyModel::setSourceModel(0);
 	setDynamicSortFilter(true);
 	sort(0);
 
