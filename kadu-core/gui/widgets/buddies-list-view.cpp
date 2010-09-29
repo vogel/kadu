@@ -60,7 +60,7 @@
 #include "tool-tip-class-manager.h"
 
 BuddiesListView::BuddiesListView(MainWindow *mainWindow, QWidget *parent) :
-		QTreeView(parent), MyMainWindow(mainWindow), Delegate(0),
+		QTreeView(parent), MyMainWindow(mainWindow), Delegate(0), Model(0),
 		ProxyModel(new BuddiesModelProxy(this)), BackgroundTemporaryFile(0)
 {
 	setAlternatingRowColors(true);
