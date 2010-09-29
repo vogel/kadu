@@ -1025,15 +1025,15 @@ void ToolBar::paintEvent(QPaintEvent* event)
 
 void ToolBar::paintDropMarker()
 {
-	int marker = dropmarker;
-	if (marker > width()-2)
-		marker = width()-2;
-	if (marker < 1)
-		marker = 1;
 	QPainter painter(this);
 	QMainWindow *mainWindow = dynamic_cast<QMainWindow *>(parent());
 	if (mainWindow->toolBarArea(this)==Qt::TopToolBarArea || mainWindow->toolBarArea(this)==Qt::BottomToolBarArea)
 	{
+		int marker = dropmarker;
+		if (marker > width()-2)
+			marker = width()-2;
+		if (marker < 1)
+			marker = 1;
 		for (int p=0; p<=height()-1; ++p)
 		{
 			painter.setPen( p%2==0 ? QColor(255,255,255,240) : QColor(16,16,16,240) );
@@ -1045,7 +1045,12 @@ void ToolBar::paintDropMarker()
 	}
 	if (mainWindow->toolBarArea(this)==Qt::LeftToolBarArea || mainWindow->toolBarArea(this)==Qt::RightToolBarArea )
 	{
-		for (int p=0; p<=height()-1; ++p)
+		int marker = dropmarker;
+		if (marker > height()-2)
+			marker = height()-2;
+		if (marker < 1)
+			marker = 1;
+		for (int p=0; p<=width()-1; ++p)
 		{
 			painter.setPen( p%2==0 ? QColor(255,255,255,240) : QColor(16,16,16,240) );
 			painter.drawPoint( p, marker );
@@ -1106,7 +1111,7 @@ ToolBarSeparator::ToolBarSeparator(QWidget *parent) : QWidget(parent)
 	resize( QSize( TOOLBAR_SEPARATOR_SIZE, TOOLBAR_SEPARATOR_SIZE ) );
 	setMinimumSize( size() );
 	setMaximumSize( size() );
-	setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+	setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 }
 
 int ToolBarSeparator::Token = 0;
