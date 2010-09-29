@@ -87,7 +87,7 @@ private slots:
 		Slot dodający wybrany przycisk
 	**/
 	void addButtonClicked(QAction *action);
-	void deleteButton();
+	void removeButton();
 
 	/**
 		\fn void addSeparatorClicked()
@@ -101,14 +101,14 @@ private slots:
 	**/
 	void addSpacerClicked();
 
-	void deleteSeparator();
-	void deleteSpacer();
+	void removeSeparator();
+	void removeSpacer();
 
 	/**
-		\fn void deleteToolbar()
+		\fn void removeToolbar()
 		Slot obsługujący usuwanie paska narzędzi
 	**/
-	void deleteToolbar();
+	void removeToolbar();
 
 	void setBlockToolbars(bool checked);
 

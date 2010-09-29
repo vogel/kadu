@@ -219,7 +219,9 @@ void ToolBar::moveAction(const QString &actionName, Qt::ToolButtonStyle style, Q
 			{
 				removeAction(toolBarAction.action);
 				newAction.action = 0;
-				ToolBarActions.removeAll(toolBarAction);
+				ToolBarActions.removeOne(toolBarAction);
+				if (!actionFound)
+					--index;
 			}
 		}
 		if (toolBarAction.action != before && !actionFound)
@@ -371,15 +373,15 @@ void ToolBar::dropEvent(QDropEvent* event)
 	if (action)
 	{
 		QWidget *actionwidget = widgetForAction(action);
-		QPoint widgetpos = actionwidget->mapFromParent(event->pos());
+		QPoint inwidgetpos = event->pos() - actionwidget->pos();
 		QSize widgetsize = actionwidget->size();
 		if (
-			( (mainWindow->toolBarArea(this)==Qt::TopToolBarArea  || mainWindow->toolBarArea(this)==Qt::BottomToolBarArea) && widgetpos.x()>=widgetsize.width()/2 ) ||
-			( (mainWindow->toolBarArea(this)==Qt::LeftToolBarArea || mainWindow->toolBarArea(this)==Qt::RightToolBarArea ) && widgetpos.x()>=widgetsize.width()/2 )
+			( (mainWindow->toolBarArea(this)==Qt::TopToolBarArea  || mainWindow->toolBarArea(this)==Qt::BottomToolBarArea) && inwidgetpos.x()>=widgetsize.width()/2 ) ||
+			( (mainWindow->toolBarArea(this)==Qt::LeftToolBarArea || mainWindow->toolBarArea(this)==Qt::RightToolBarArea ) && inwidgetpos.y()>=widgetsize.height()/2 )
 		)
 		{
 			int index = actions().indexOf(action);
-			before = index < actions().count()-1 ? actions().at(index+1) : 0;
+			before = index+1 < actions().count() ? actions().at(index+1) : 0;
 		}
 	}
 
@@ -660,8 +662,22 @@ QMenu * ToolBar::createContextMenu(QWidget *widget)
 				action->setCheckable(true);
 			}
 			menu->addMenu(textPositionMenu);
-			menu->addSeparator();
 		}
+
+		if (button)
+		{
+			menu->addAction(tr("Remove this button"), this, SLOT(removeButton()));
+		}
+		if( separator )
+		{
+			menu->addAction(tr("Remove this separator"), this, SLOT(removeSeparator()));
+		}
+		if( spacer )
+		{
+			menu->addAction(tr("Remove this expandable spacer"), this, SLOT(removeSpacer()));
+		}
+
+		menu->addSeparator();
 
 		QMenu *actionsMenu = new QMenu(tr("Add new button"), this);
 		foreach(ActionDescription *actionDescription, KaduActions.values())
@@ -692,8 +708,10 @@ QMenu * ToolBar::createContextMenu(QWidget *widget)
 			connect(actionsMenu, SIGNAL(triggered(QAction *)), this, SLOT(addButtonClicked(QAction *)));
 		menu->addMenu(actionsMenu);
 
-		menu->addAction(tr("Add separator"), this, SLOT(addSeparatorClicked()));
-		menu->addAction(tr("Add expandable spacer"), this, SLOT(addSpacerClicked()));
+		menu->addAction(tr("Add new separator"), this, SLOT(addSeparatorClicked()));
+		menu->addAction(tr("Add new expandable spacer"), this, SLOT(addSpacerClicked()));
+
+		menu->addSeparator();
 
 		QMainWindow *mainWindow = dynamic_cast<QMainWindow *>(parent());
 		switch (mainWindow->toolBarArea(this))
@@ -715,22 +733,7 @@ QMenu * ToolBar::createContextMenu(QWidget *widget)
 				break;
 		}
 
-		menu->addSeparator();
-
-		if (button)
-		{
-			menu->addAction(tr("Delete this button"), this, SLOT(deleteButton()));
-		}
-		if( separator )
-		{
-			menu->addAction(tr("Delete this separator"), this, SLOT(deleteSeparator()));
-		}
-		if( spacer )
-		{
-			menu->addAction(tr("Delete this expandable spacer"), this, SLOT(deleteSpacer()));
-		}
-
-		menu->addAction(tr("Delete this toolbar"), this, SLOT(deleteToolbar()));
+		menu->addAction(tr("Remove this toolbar"), this, SLOT(removeToolbar()));
 
 		menu->addSeparator();
 
@@ -753,7 +756,7 @@ void ToolBar::addSpacerClicked()
 	addAction(QString("__spacer%1").arg(ToolBarSpacer::token()), Qt::ToolButtonIconOnly);
 }
 
-void ToolBar::deleteToolbar()
+void ToolBar::removeToolbar()
 {
 	kdebugf();
 	if (MessageDialog::ask(tr("Do you really want to remove selected toolbar?"), "dialog-warning", this))
@@ -780,7 +783,7 @@ void ToolBar::setBlockToolbars(bool checked)
 	ConfigurationAwareObject::notifyAll();
 }
 
-void ToolBar::deleteButton()
+void ToolBar::removeButton()
 {
 	QToolButton *currentButton = dynamic_cast<QToolButton *>(currentWidget);
 	if (!currentButton)
@@ -790,13 +793,13 @@ void ToolBar::deleteButton()
 		{
 			// TODO: again, lame solution
 			removeAction(toolBarAction.action);
-			ToolBarActions.removeAll(toolBarAction);
+			ToolBarActions.removeOne(toolBarAction);
 			currentWidget = 0;
 			return;
 		}
 }
 
-void ToolBar::deleteSeparator()
+void ToolBar::removeSeparator()
 {
 	ToolBarSeparator *currentSeparator = dynamic_cast<ToolBarSeparator *>(currentWidget);
 	if (!currentSeparator)
@@ -805,13 +808,13 @@ void ToolBar::deleteSeparator()
 		if (toolBarAction.widget == currentSeparator)
 		{
 			removeAction(toolBarAction.action);
-			ToolBarActions.removeAll(toolBarAction);
+			ToolBarActions.removeOne(toolBarAction);
 			currentWidget = 0;
 			return;
 		}
 }
 
-void ToolBar::deleteSpacer()
+void ToolBar::removeSpacer()
 {
 	ToolBarSpacer *currentSpacer = dynamic_cast<ToolBarSpacer *>(currentWidget);
 	if (!currentSpacer)
@@ -820,7 +823,7 @@ void ToolBar::deleteSpacer()
 		if (toolBarAction.widget == currentSpacer)
 		{
 			removeAction(toolBarAction.action);
-			ToolBarActions.removeAll(toolBarAction);
+			ToolBarActions.removeOne(toolBarAction);
 			currentWidget = 0;
 			return;
 		}
@@ -832,7 +835,7 @@ void ToolBar::deleteAction(const QString &actionName)
 		if (toolBarAction.actionName == actionName)
 		{
 			removeAction(toolBarAction.action);
-			ToolBarActions.removeAll(toolBarAction);
+			ToolBarActions.removeOne(toolBarAction);
 			return;
 		}
 
@@ -987,9 +990,9 @@ ToolBarSeparator::ToolBarSeparator(QWidget *parent) : QWidget(parent)
 	resize( QSize( TOOLBAR_SEPARATOR_SIZE, TOOLBAR_SEPARATOR_SIZE ) );
 	setMinimumSize( size() );
 	setMaximumSize( size() );
-	setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-///	QPalette p(palette()); p.setColor(QPalette::Background, QColor(255,255,255,128)); setPalette(p); ///
-///	setAutoFillBackground(true); ///
+	setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+	QPalette p(palette()); p.setColor(QPalette::Background, QColor(255,255,255,128)); setPalette(p); ///
+	setAutoFillBackground(true); ///
 }
 
 int ToolBarSeparator::Token = 0;
@@ -1010,8 +1013,8 @@ int ToolBarSeparator::token()
 ToolBarSpacer::ToolBarSpacer(QWidget *parent) : QWidget(parent)
 {
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-///	QPalette p(palette()); p.setColor(QPalette::Background, QColor(255,255,255,128)); setPalette(p); ///
-///	setAutoFillBackground(true); ///
+	QPalette p(palette()); p.setColor(QPalette::Background, QColor(255,255,255,128)); setPalette(p); ///
+	setAutoFillBackground(true); ///
 }
 
 int ToolBarSpacer::Token = 0;

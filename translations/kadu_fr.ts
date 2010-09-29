@@ -2308,15 +2308,31 @@ Peut être module incompatible avec Kadu.</translation>
 <context>
     <name>ToolBar</name>
     <message>
-        <source>Delete toolbar</source>
-        <translation>Veuillez effacer le barre d&apos;outil</translation>
+        <source>Remove this toolbar</source>
+        <translation type="unfinished">Veuillez effacer le barre d&apos;outil</translation>
     </message>
     <message>
         <source>Add new button</source>
         <translation>Ajoutez le nouveau bouton</translation>
     </message>
     <message>
-        <source>Remove toolbar?</source>
+        <source>Add new separator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove this separator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add new expandable spacer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove this expandable spacer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you really want to remove this toolbar?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2328,7 +2344,7 @@ Peut être module incompatible avec Kadu.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Delete button</source>
+        <source>Remove this button</source>
         <translation type="unfinished">Effassez le bouton</translation>
     </message>
     <message>
