@@ -74,8 +74,6 @@ class KADUAPI MainConfigurationWindow : public ConfigurationWindow, CompositingA
 
 	void setToolTipClasses();
 
-	static QString findExecutable(const QStringList &paths, const QStringList &executableNames);
-
 	virtual void compositingEnabled();
 	virtual void compositingDisabled();
 

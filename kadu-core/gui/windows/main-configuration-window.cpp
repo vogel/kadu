@@ -333,21 +333,6 @@ void MainConfigurationWindow::setToolTipClasses()
 	dynamic_cast<ConfigComboBox *>(widget()->widgetById("toolTipClasses"))->setItems(values, captions);
 }
 
-QString MainConfigurationWindow::findExecutable(const QStringList &paths, const QStringList &executableNames)
-{
-	QFileInfo fi;
-
-	foreach(const QString &path, paths)
-		foreach(const QString &executableName, executableNames)
-		{
-			fi.setFile(path + "/" + executableName);
-			if (fi.isExecutable())
-				return path + "/" + executableName;
-		}
-
-	return QString::null;
-}
-
 void MainConfigurationWindow::onChangeEmoticonsStyle(int index)
 {
 	Q_UNUSED(index)
