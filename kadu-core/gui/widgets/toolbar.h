@@ -63,7 +63,6 @@ class KADUAPI ToolBar : public QToolBar, public ConfigurationAwareObject
 		QAction *action;
 		QWidget *widget;
 		Qt::ToolButtonStyle style;
-
 		bool operator == (struct ToolBarAction action) {
 			return actionName == action.actionName;
 		}
@@ -148,10 +147,10 @@ protected:
 	**/
 	virtual void dropEvent(QDropEvent *event);
 
-	virtual void dragLeaveEvent(QDragLeaveEvent* event);
-	virtual void leaveEvent(QEvent* event);
+	virtual void dragLeaveEvent(QDragLeaveEvent *event);
+	virtual void leaveEvent(QEvent *event);
 
-	virtual void paintEvent(QPaintEvent* event);
+	virtual void paintEvent(QPaintEvent *event);
 
 	virtual void dragMoveEvent(QDragMoveEvent *event);
 
@@ -161,7 +160,7 @@ protected:
 	**/
 	virtual void contextMenuEvent(QContextMenuEvent *e);
 
-	virtual void mouseMoveEvent(QMouseEvent* e);
+	virtual void mouseMoveEvent(QMouseEvent *e);
 
 	virtual void configurationUpdated();
 
@@ -219,7 +218,7 @@ class KADUAPI ActionDrag : public QDrag
 	Q_OBJECT
 
 public:
-	ActionDrag(const QString &actionName, Qt::ToolButtonStyle style, QWidget* dragSource = 0);
+	ActionDrag(const QString &actionName, Qt::ToolButtonStyle style, QWidget *dragSource = 0);
 	static bool decode(QDropEvent *event, QString &actionName, Qt::ToolButtonStyle &style);
 };
 
