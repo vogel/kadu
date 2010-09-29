@@ -97,11 +97,13 @@ ToolBar::ToolBar(QWidget * parent)
 {
 	kdebugf();
 
+	setAcceptDrops(true);
+	setIconSize(IconsManager::instance()->getIconsSize());
+
 	dragging = false;
 	dropmarker = -1;
 
-	setAcceptDrops(true);
-	setIconSize(IconsManager::instance()->getIconsSize());
+	setAttribute(Qt::WA_PaintOutsidePaintEvent,true);
 
 	if (!watcher)
 		watcher = new DisabledActionsWatcher();
@@ -1017,15 +1019,42 @@ void ToolBar::updateDropMarker()
 void ToolBar::paintEvent(QPaintEvent* event)
 {
 	QToolBar::paintEvent(event);
+	QTimer::singleShot(0, this, SLOT(paintDropMarker()));
+}
+
+void ToolBar::paintDropMarker()
+{
 	if (dropmarker>-1)
 	{
+		int marker = dropmarker;
+		if (marker > width()-2)
+			marker = width()-2;
+		if (marker < 1)
+			marker = 1;
 		QPainter painter(this);
-		painter.setPen(Qt::black);
 		QMainWindow *mainWindow = dynamic_cast<QMainWindow *>(parent());
 		if (mainWindow->toolBarArea(this)==Qt::TopToolBarArea || mainWindow->toolBarArea(this)==Qt::BottomToolBarArea)
-			painter.drawLine( dropmarker, 0, dropmarker, height() );
+		{
+			for (int p=0; p<=height()-1; ++p)
+			{
+				painter.setPen( p%2==0 ? QColor(255,255,255,240) : QColor(16,16,16,240) );
+				painter.drawPoint( marker, p );
+				painter.setPen( p%2==1 ? QColor(255,255,255,160) : QColor(16,16,16,160) );
+				painter.drawPoint( marker-1, p );
+				painter.drawPoint( marker+1, p );
+			}
+		}
 		if (mainWindow->toolBarArea(this)==Qt::LeftToolBarArea || mainWindow->toolBarArea(this)==Qt::RightToolBarArea )
-			painter.drawLine( 0, dropmarker, width(), dropmarker );
+		{
+			for (int p=0; p<=height()-1; ++p)
+			{
+				painter.setPen( p%2==0 ? QColor(255,255,255,240) : QColor(16,16,16,240) );
+				painter.drawPoint( p, marker );
+				painter.setPen( p%2==1 ? QColor(255,255,255,160) : QColor(16,16,16,160) );
+				painter.drawPoint( p, marker-1 );
+				painter.drawPoint( p, marker+1 );
+			}
+		}
 	}
 }
 

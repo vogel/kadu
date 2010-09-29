@@ -133,6 +133,8 @@ private slots:
 
 	void slotContextAboutToShow();
 
+	void paintDropMarker();
+
 protected:
 	/**
 		\fn virtual void dragEnterEvent(QDragEnterEvent* event)
