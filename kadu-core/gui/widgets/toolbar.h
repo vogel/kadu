@@ -77,6 +77,12 @@ class KADUAPI ToolBar : public QToolBar, public ConfigurationAwareObject
 
 	QPoint MouseStart;
 
+	bool dragging;
+	int dropmarker;
+
+	QAction *findActionToDropBefore(QPoint pos);
+	void updateDropMarker();
+
 	void addAction(const QString &actionName, Qt::ToolButtonStyle style, QAction *before = 0);
 
 	static QMap<QString, QList<ToolBarAction> > DefaultActions;
@@ -139,6 +145,13 @@ protected:
 		Funkcja obsługująca upuszczenie przycisku na pasku
 	**/
 	virtual void dropEvent(QDropEvent *event);
+
+	virtual void dragLeaveEvent(QDragLeaveEvent* event);
+	virtual void leaveEvent(QEvent* event);
+
+	virtual void paintEvent(QPaintEvent* event);
+
+	virtual void dragMoveEvent(QDragMoveEvent *event);
 
 	/**
 		\fn virtual void contextMenuEvent(QContextMenuEvent* e)
