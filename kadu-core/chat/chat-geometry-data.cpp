@@ -43,6 +43,8 @@ void ChatGeometryData::load()
 	StorableObject::load();
 
 	WindowGeometry = stringToRect(loadValue<QString>("WindowGeometry"));
+	WidgetHorizontalSizes = toIntList(loadValue<QList<QVariant> >("WidgetHorizontalSizes"));
+	WidgetVerticalSizes = toIntList(loadValue<QList<QVariant> >("WidgetVerticalSizes"));  
 }
 
 void ChatGeometryData::store()
@@ -51,6 +53,8 @@ void ChatGeometryData::store()
 		return;
 
 	storeValue("WindowGeometry", rectToString(WindowGeometry));
+	storeValue("WidgetHorizontalSizes", toVariantList(WidgetHorizontalSizes));
+	storeValue("WidgetVerticalSizes", toVariantList(WidgetVerticalSizes));
 }
 
 QString ChatGeometryData::name() const

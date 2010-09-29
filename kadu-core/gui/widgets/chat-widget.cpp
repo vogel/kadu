@@ -36,6 +36,7 @@
 #include "accounts/account-manager.h"
 #include "buddies/model/buddy-list-model.h"
 #include "buddies/buddy-set.h"
+#include "chat/chat-geometry-data.h"
 #include "chat/chat-manager.h"
 #include "chat/message/message-render-info.h"
 #include "configuration/configuration-file.h"
@@ -501,26 +502,13 @@ unsigned int ChatWidget::newMessagesCount() const
 }
 
 void ChatWidget::kaduRestoreGeometry()
-{// TODO: 0.6.6
-/*
-	UserListElements users = UserListElements::fromContactList(Contacts,
-			AccountManager::instance()->defaultAccount());
+{
+  	ChatGeometryData *cgd = chat().data()->moduleStorableData<ChatGeometryData>("chat-geometry");
 
-	QList<int> vertSizes = toIntList(chat_manager->chatWidgetProperty(Contacts, "VerticalSizes").toList());
-	if (vertSizes.empty() && users.count() == 1)
-	{
-		QString vert_sz_str = (*(users.constBegin())).data("VerticalSizes").toString();
-		if (!vert_sz_str.isEmpty())
-		{
-			bool ok[2];
-			QStringList s = QStringList::split(",", vert_sz_str);
-			vertSizes.append(s[0].toInt(ok));
-			vertSizes.append(s[1].toInt(ok + 1));
-			if (!(ok[0] && ok[1]))
-				vertSizes.clear();
-		}
-	}
+	if (!cgd)
+		return;
 
+	QList<int> vertSizes = cgd->widgetVerticalSizes();
 	if (vertSizes.empty())
 	{
 		int h = height() / 3;
@@ -531,25 +519,24 @@ void ChatWidget::kaduRestoreGeometry()
 
 	if (horizSplit)
 	{
-		QList<int> horizSizes = toIntList(chat_manager->chatWidgetProperty(Contacts, "HorizontalSizes").toList());
+		QList<int> horizSizes = cgd->widgetHorizontalSizes();
 		if (!horizSizes.empty())
 			horizSplit->setSizes(horizSizes);
-	}*/
+	}
 }
 
 void ChatWidget::kaduStoreGeometry()
-{/* TODO: 0.6.6
-	UserListElements users = UserListElements::fromContactList(Contacts,
-			AccountManager::instance()->defaultAccount());
+{
+  	ChatGeometryData *cgd = chat().data()->moduleStorableData<ChatGeometryData>("chat-geometry", true);
+	if (!cgd)
+		return;
 
-	QList<int> sizes = vertSplit->sizes();
-	chat_manager->setChatWidgetProperty(Contacts, "VerticalSizes", toVariantList(sizes));
-
-	if (users.count() == 1)
-		users[0].setData("VerticalSizes", QString("%1,%2").arg(sizes[0]).arg(sizes[1]));
-
+	cgd->setWidgetVerticalSizes(vertSplit->sizes());
+	
 	if (horizSplit)
-		chat_manager->setChatWidgetProperty(Contacts, "HorizontalSizes", toVariantList(horizSplit->sizes()));*/
+		cgd->setWidgetHorizontalSizes(horizSplit->sizes());
+	
+	cgd->store();
 }
 
 void ChatWidget::leaveConference()
