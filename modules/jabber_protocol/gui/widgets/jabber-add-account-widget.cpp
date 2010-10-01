@@ -140,8 +140,8 @@ void JabberAddAccountWidget::apply()
 	jabberAccount.setProtocolName("jabber");
 	if (Domain->isVisible())
 		jabberAccount.setId(Username->text() + "@" + Domain->currentText());
-	else
-		jabberAccount.setId(Username->text() + "@facebook.com");
+	else // facebook
+		jabberAccount.setId(Username->text() + "@chat.facebook.com");
 	jabberAccount.setPassword(AccountPassword->text());
 	jabberAccount.setHasPassword(!AccountPassword->text().isEmpty());
 	jabberAccount.setRememberPassword(RememberPassword->isChecked());
@@ -152,6 +152,11 @@ void JabberAddAccountWidget::apply()
 		details->setState(StorableObject::StateNew);
 		details->setResource("Kadu");
 		details->setPriority(5);
+		if (!Domain->isVisible())
+		{
+			details->setEncryptionMode(JabberAccountDetails::Encryption_No);
+			details->setPlainAuthMode(JabberAccountDetails::AllowPlain);
+		}
 	}
 
 	resetGui();	
