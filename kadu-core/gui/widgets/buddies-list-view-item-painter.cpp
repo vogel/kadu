@@ -27,6 +27,7 @@
 
 #include "accounts/account.h"
 #include "buddies/buddy.h"
+#include "buddies/buddy-preferred-helper.h"
 #include "chat/message/pending-messages-manager.h"
 #include "contacts/contact.h"
 #include "gui/widgets/buddies-list-view-avatar-painter.h"
@@ -65,7 +66,7 @@ bool BuddiesListViewItemPainter::useBold() const
 	if (!Index.parent().isValid()) // buddy
 	{
 		Buddy buddy = Index.data(BuddyRole).value<Buddy>();
-		status = buddy.preferredContact(false).currentStatus();
+		status = BuddyPreferredHelper::preferredContact(buddy, false).currentStatus();
 	}
 	return !status.isDisconnected();
 }

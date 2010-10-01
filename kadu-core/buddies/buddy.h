@@ -52,6 +52,8 @@ class KADUAPI Buddy : public SharedBase<BuddyShared>
 	void addContact(Contact contact);
 	void removeContact(Contact contact) const;
 
+	Contact preferredContactByStatus() const;
+
 public:
 	static Buddy create();
 	static Buddy loadStubFromStorage(const QSharedPointer<StoragePoint> &buddyStoragePoint);
@@ -76,11 +78,6 @@ public:
 	QString customData(const QString &key);
 	void setCustomData(const QString &key, const QString &value);
 	void removeCustomData(const QString &key);
-
-	Account preferredAccount(bool includechats = true) const;
-
-	Contact preferredContact(Account account, bool includechats = true) const;
-	Contact preferredContact(bool includechats = true) const;
 
 	void sortContacts();
 	void normalizePriorities();

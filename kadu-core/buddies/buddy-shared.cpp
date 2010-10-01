@@ -29,14 +29,11 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/group.h"
 #include "buddies/group-manager.h"
-#include "chat/message/pending-messages-manager.h"
-#include "chat/recent-chat-manager.h"
 #include "configuration/xml-configuration-file.h"
 #include "contacts/contact.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact-shared.h"
 #include "contacts/contact-manager.h"
-#include "gui/widgets/chat-widget-manager.h"
 #include "storage/storage-point.h"
 
 #include "buddy-shared.h"
@@ -308,61 +305,16 @@ QString BuddyShared::id(Account account)
 	return QString::null;
 }
 
-Contact BuddyShared::preferredContact(Account account, bool includechats)
+Contact BuddyShared::preferredContactByStatus()
 {
 	ensureLoaded();
 
 	if (!Contacts.count())
 		return Contact::null;
 
-	if (includechats)
-	{
-		foreach (Message message, PendingMessagesManager::instance()->pendingMessagesForBuddy(Buddy(this)))
-		{
-			Contact con = message.messageSender();
-			if (con.ownerBuddy() == Buddy(this))
-			{
-				if (account && con.contactAccount() != account)
-					continue;
-				else
-					return con;
-			}
-		}
-		foreach (ChatWidget *chatwidget, ChatWidgetManager::instance()->chats())
-		{
-			Chat chat = chatwidget->chat();
-			if (chat.contacts().isEmpty())
-				continue;
-			Contact con = *chat.contacts().begin();
-			if (con.ownerBuddy() == Buddy(this))
-			{
-				if (account && con.contactAccount() != account)
-					continue;
-				else
-					return con;
-			}
-		}
-		foreach (Chat chat, RecentChatManager::instance()->recentChats())
-		{
-			if (chat.contacts().isEmpty())
-				continue;
-			Contact con = *chat.contacts().begin();
-			if (con.ownerBuddy() == Buddy(this))
-			{
-				if (account && con.contactAccount() != account)
-					continue;
-				else
-					return con;
-			}
-		}
-	}
-
 	Contact contact;
 	foreach (const Contact &con, Contacts)
 	{
-		if (account && con.contactAccount() != account)
-			continue;
-
 		if (!contact || con.currentStatus() < contact.currentStatus())
 			contact = con;
 	}
@@ -384,13 +336,6 @@ void BuddyShared::normalizePriorities()
 	int priority = 0;
 	foreach (Contact contact, Contacts)
 		contact.setPriority(priority++);
-}
-
-Account BuddyShared::preferredAccount(bool includechats)
-{
-	ensureLoaded();
-
-	return preferredContact(Account::null, includechats).contactAccount();
 }
 
 void BuddyShared::emitUpdated()

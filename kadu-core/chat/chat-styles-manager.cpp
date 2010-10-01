@@ -30,6 +30,7 @@
 #include <QtGui/QPushButton>
 
 #include "accounts/account-manager.h"
+#include "buddies/buddy-preferred-helper.h"
 #include "chat/chat-details-simple.h"
 #include "chat/html-messages-renderer.h"
 #include "chat/style-engines/chat-engine-adium/chat-engine-adium.h"
@@ -376,10 +377,10 @@ void ChatStylesManager::preparePreview(Preview *preview)
 		return;
 
 	Chat chat = Chat::create();
-	chat.setChatAccount(example.preferredAccount());
+	chat.setChatAccount(BuddyPreferredHelper::preferredAccount(example));
 	ChatDetailsSimple *details = new ChatDetailsSimple(chat);
 	details->setState(StorableObject::StateNew);
-	details->setContact(example.preferredContact());
+	details->setContact(BuddyPreferredHelper::preferredContact(example));
 	chat.setDetails(details);
 
 	connect(preview, SIGNAL(destroyed(QObject *)), chat, SLOT(deleteLater()));
@@ -394,19 +395,19 @@ void ChatStylesManager::preparePreview(Preview *preview)
 
 	MessageRenderInfo *messageRenderInfo = new MessageRenderInfo(messageSent);
 	messageRenderInfo->setSeparatorSize(CfgHeaderSeparatorHeight);
-	preview->addObjectToParse(Core::instance()->myself().preferredContact(), messageRenderInfo);
+	preview->addObjectToParse(BuddyPreferredHelper::preferredContact(Core::instance()->myself()), messageRenderInfo);
 
 	Message messageReceived = Message::create();
 	messageReceived.setMessageChat(chat);
 	messageReceived.setType(Message::TypeReceived);
-	messageReceived.setMessageSender(example.preferredContact());
+	messageReceived.setMessageSender(BuddyPreferredHelper::preferredContact(example));
 	messageReceived.setContent(tr("Message from Your friend"));
 	messageReceived.setReceiveDate(QDateTime::currentDateTime());
 	messageReceived.setSendDate(QDateTime::currentDateTime());
 
 	messageRenderInfo = new MessageRenderInfo(messageReceived);
 	messageRenderInfo->setSeparatorSize(CfgHeaderSeparatorHeight);
-	preview->addObjectToParse(example.preferredContact(), messageRenderInfo);
+	preview->addObjectToParse(BuddyPreferredHelper::preferredContact(example), messageRenderInfo);
 }
 
 void ChatStylesManager::styleChangedSlot(const QString &styleName)

@@ -23,10 +23,12 @@ set (kadu_SRCS
 	buddies/buddy-list-configuration-helper.cpp
 	buddies/buddy-list-mime-data-helper.cpp
 	buddies/buddy-manager.cpp
+	buddies/buddy-preferred-helper.cpp
 	buddies/buddy-remove-predicate-object.cpp
 	buddies/buddy-search-criteria.cpp
 	buddies/buddy-set.cpp
 	buddies/buddy-shared.cpp
+	buddies/buddy.cpp
 	buddies/group.cpp
 	buddies/group-manager.cpp
 	buddies/group-shared.cpp

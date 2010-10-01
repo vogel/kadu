@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2009 Bartłomiej Zimoń (uzi18@o2.pl)
+ * Copyright 2010, Piotr Dąbrowski (ultr@ultr.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,34 +17,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef BUDDY_PREFERRED_HELPER_H
+#define BUDDY_PREFERRED_HELPER_H
+
 #include "accounts/account.h"
-#include "buddies/buddy-preferred-helper.h"
+#include "buddies/buddy.h"
 #include "contacts/contact.h"
 
-#include "anonymous-buddy-filter.h"
+class Account;
+class Buddy;
+class Contact;
 
-AnonymousBuddyFilter::AnonymousBuddyFilter(QObject *parent)
-	: AbstractBuddyFilter(parent), Enabled(false)
+class KADUAPI BuddyPreferredHelper
 {
-}
+public:
+	static Contact preferredContact(Buddy buddy, Account account, bool includechats = true);
+	static Contact preferredContact(Buddy buddy, bool includechats = true);
+	static Account preferredAccount(Buddy buddy, bool includechats = true);
+};
 
-void AnonymousBuddyFilter::setEnabled(bool enabled)
-{
-	if (enabled == Enabled)
-		return;
-
-	Enabled = enabled;
-	emit filterChanged();
-}
-
-bool AnonymousBuddyFilter::acceptBuddy(Buddy buddy)
-{
-	if (!Enabled)
-		return true;
-
-	Account preferredAccount = BuddyPreferredHelper::preferredAccount(buddy);
-	if (preferredAccount.isNull())
-		return false;
-
-	return !buddy.isAnonymous();
-}
+#endif // BUDDY_PREFERRED_HELPER_H

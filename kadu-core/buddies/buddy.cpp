@@ -121,11 +121,6 @@ void Buddy::removeCustomData(const QString &key)
 		data()->customData().remove(key);
 }
 
-Account Buddy::preferredAccount(bool includechats) const
-{
-	return isNull() ? Account::null : data()->preferredAccount(includechats);
-}
-
 void Buddy::sortContacts()
 {
 	if (!isNull())
@@ -157,16 +152,9 @@ QList<Contact> Buddy::contacts(Account account) const
 	return isNull() ? QList<Contact>() : data()->contacts(account);
 }
 
-Contact Buddy::preferredContact(Account account, bool includechats) const
+Contact Buddy::preferredContactByStatus() const
 {
-	if (isNull() || 0 == contacts().count())
-		return Contact::null;
-	return data()->preferredContact(account, includechats);
-}
-
-Contact Buddy::preferredContact(bool includechats) const
-{
-	return preferredContact(Account::null, includechats);
+	return isNull() ? Contact::null : data()->preferredContactByStatus();
 }
 
 QList<Contact> Buddy::contacts() const
@@ -217,8 +205,12 @@ QString Buddy::display() const
 					: data()->nickName()
 			: data()->display();
 
-	if (result.isEmpty() && preferredAccount())
-		result = preferredAccount().accountIdentity().name() + ":" + id(preferredAccount());
+	if (result.isEmpty())
+	{
+		Account account = preferredContactByStatus().contactAccount();
+		if (account)
+			result = account.accountIdentity().name() + ":" + id(account);
+	}
 
 	return result;
 }

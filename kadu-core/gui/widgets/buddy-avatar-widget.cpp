@@ -23,6 +23,7 @@
 #include <QtGui/QVBoxLayout>
 
 #include "buddies/avatar.h"
+#include "buddies/buddy-preferred-helper.h"
 
 #include "buddy-avatar-widget.h"
 
@@ -45,8 +46,8 @@ void BuddyAvatarWidget::createGui()
 		pixmap = MyBuddy.buddyAvatar().pixmap();
 		BuddyAvatarIsShown = true;
 	}
-	else if (MyBuddy.preferredContact() && !MyBuddy.preferredContact().contactAvatar().pixmap().isNull())
-		pixmap = MyBuddy.preferredContact().contactAvatar().pixmap();
+	else if (BuddyPreferredHelper::preferredContact(MyBuddy) && !BuddyPreferredHelper::preferredContact(MyBuddy).contactAvatar().pixmap().isNull())
+		pixmap = BuddyPreferredHelper::preferredContact(MyBuddy).contactAvatar().pixmap();
 
 	if (!pixmap.isNull())
 	{

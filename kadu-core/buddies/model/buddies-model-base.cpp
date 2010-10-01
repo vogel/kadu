@@ -28,6 +28,7 @@
 #include "buddies/buddy-kadu-data.h"
 #include "buddies/buddy-list-mime-data-helper.h"
 #include "buddies/buddy-manager.h"
+#include "buddies/buddy-preferred-helper.h"
 #include "buddies/model/buddy-data-extractor.h"
 #include "contacts/contact.h"
 #include "contacts/model/contact-data-extractor.h"
@@ -123,7 +124,7 @@ Contact BuddiesModelBase::buddyDefaultContact(const QModelIndex &index) const
 	if (buddy.isNull())
 		return Contact::null;
 
-	return buddy.preferredContact();
+	return BuddyPreferredHelper::preferredContact(buddy);
 }
 
 Contact BuddiesModelBase::buddyContact(const QModelIndex &index, int accountIndex) const
