@@ -77,9 +77,10 @@ public:
 	void setCustomData(const QString &key, const QString &value);
 	void removeCustomData(const QString &key);
 
-	Account preferredAccount() const;
-	Contact preferredContact(Account account) const;
-	Contact preferredContact() const;
+	Account preferredAccount(bool includechats = true) const;
+
+	Contact preferredContact(Account account, bool includechats = true) const;
+	Contact preferredContact(bool includechats = true) const;
 
 	void sortContacts();
 	void normalizePriorities();

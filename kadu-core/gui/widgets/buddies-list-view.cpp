@@ -42,6 +42,7 @@
 #include "contacts/filter/contact-no-unloaded-account-filter.h"
 #include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
+#include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/kadu-window-actions.h"
 #include "gui/windows/main-window.h"
 #include "gui/hot-key.h"
@@ -93,6 +94,8 @@ BuddiesListView::BuddiesListView(MainWindow *mainWindow, QWidget *parent) :
 	connect(this, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(doubleClickedSlot(const QModelIndex &)));
 	connect(PendingMessagesManager::instance(), SIGNAL(messageAdded(Message)), this, SLOT(update()));
 	connect(PendingMessagesManager::instance(), SIGNAL(messageRemoved(Message)), this, SLOT(update()));
+	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget*)), this, SLOT(repaint()));
+	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget*)), this, SLOT(repaint()));
 
 	simpleModeChanged();
 }

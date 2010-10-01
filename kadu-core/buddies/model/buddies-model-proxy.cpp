@@ -107,8 +107,8 @@ bool BuddiesModelProxy::lessThan(const QModelIndex &left, const QModelIndex &rig
 		Account leftAccount = leftBuddy.preferredAccount();
 		Account rightAccount = rightBuddy.preferredAccount();
 
-		Contact leftContact = leftBuddy.preferredContact();
-		Contact rightContact = rightBuddy.preferredContact();
+		Contact leftContact = leftBuddy.preferredContact(false);
+		Contact rightContact = rightBuddy.preferredContact(false);
 
 		if (leftContact.isBlocking() && !rightContact.isBlocking())
 			return false;

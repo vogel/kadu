@@ -62,6 +62,11 @@ bool BuddiesListViewItemPainter::useBold() const
 		return false;
 
 	Status status = Index.data(StatusRole).value<Status>();
+	if (!Index.parent().isValid()) // buddy
+	{
+		Buddy buddy = Index.data(BuddyRole).value<Buddy>();
+		status = buddy.preferredContact(false).currentStatus();
+	}
 	return !status.isDisconnected();
 }
 

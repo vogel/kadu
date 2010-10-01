@@ -44,7 +44,7 @@ bool OnlineBuddyFilter::acceptBuddy(Buddy buddy)
 	if (!Enabled)
 		return true;
 
-	Contact preferredContact = buddy.preferredContact();
+	Contact preferredContact = buddy.preferredContact(false);
 	if (preferredContact.isNull())
 		return false;
 
