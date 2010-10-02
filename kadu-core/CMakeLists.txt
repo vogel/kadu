@@ -28,7 +28,6 @@ set (kadu_SRCS
 	buddies/buddy-search-criteria.cpp
 	buddies/buddy-set.cpp
 	buddies/buddy-shared.cpp
-	buddies/buddy.cpp
 	buddies/group.cpp
 	buddies/group-manager.cpp
 	buddies/group-shared.cpp
