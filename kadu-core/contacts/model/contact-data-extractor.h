@@ -29,7 +29,7 @@ class ContactDataExtractor
 	ContactDataExtractor();
 
 public:
-	static QVariant data(Contact buddy, int role, bool useBuddyData);
+	static QVariant data(Contact contact, int role, bool useBuddyData);
 
 };
 

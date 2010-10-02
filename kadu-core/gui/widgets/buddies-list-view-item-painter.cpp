@@ -283,7 +283,7 @@ QPixmap BuddiesListViewItemPainter::buddyAvatar() const
 
 QPixmap BuddiesListViewItemPainter::buddyIcon() const
 {
-	return Index.data(Qt::DecorationRole).value<QPixmap>();
+	return Index.data(Qt::DecorationRole).value<QIcon>().pixmap(16, 16);
 }
 
 const QFontMetrics & BuddiesListViewItemPainter::fontMetrics()

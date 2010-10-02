@@ -27,6 +27,7 @@
 #include "chat/chat-details.h"
 #include "chat/chat-manager.h"
 #include "configuration/configuration-file.h"
+#include "contacts/model/contact-data-extractor.h"
 #include "contacts/contact-set.h"
 #include "parser/parser.h"
 #include "debug.h"
@@ -363,14 +364,7 @@ QIcon ChatShared::icon()
 	{
 		Contact contact = contacts().toContact();
 		if (!contact.isNull())
-		{
-			if (contact.ownerBuddy().isBlocked())
-				return IconsManager::instance()->iconByPath("kadu_icons/kadu-blocked");
-			if (contact.isBlocking())
-				return IconsManager::instance()->iconByPath("kadu_icons/kadu-blocking");
-			if (ChatAccount.statusContainer())
-				return ChatAccount.statusContainer()->statusIcon(contact.currentStatus());
-		}
+			return ContactDataExtractor::data(contact, Qt::DecorationRole, false).value<QIcon>();
 	}
 
 	return IconsManager::instance()->iconByPath("internet-group-chat");
