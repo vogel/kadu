@@ -54,6 +54,7 @@ class BuddiesListViewItemPainter
 
 	QString getAccountName();
 	QString getName();
+	bool drawDisabled();
 
 	QTextDocument * createDescriptionDocument(const QString &text, int width, QColor color) const;
 	QTextDocument * getDescriptionDocument(int width);

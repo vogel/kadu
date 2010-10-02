@@ -165,6 +165,12 @@ QString BuddiesListViewItemPainter::getName()
 	return Index.data(Qt::DisplayRole).toString();
 }
 
+bool BuddiesListViewItemPainter::drawDisabled()
+{
+	Buddy buddy = Index.data(BuddyRole).value<Buddy>();
+	return buddy.isOfflineTo();
+}
+
 QTextDocument * BuddiesListViewItemPainter::createDescriptionDocument(const QString &text, int width, QColor color) const
 {
 	QString description = Qt::escape(text);
@@ -403,8 +409,14 @@ void BuddiesListViewItemPainter::paint(QPainter *painter)
 
 	computeLayout();
 
+	QPalette::ColorGroup colorGroup = drawDisabled()
+			? QPalette::Disabled
+			: QPalette::Normal;
+
 	if (Option.state & QStyle::State_Selected)
-		painter->setPen(Option.palette.color(QPalette::Normal, QPalette::HighlightedText));
+		painter->setPen(Option.palette.color(colorGroup, QPalette::HighlightedText));
+	else if (drawDisabled()) // some bit of broken logic
+		painter->setPen(Option.palette.color(colorGroup, QPalette::Text));
 	else
 		painter->setPen(Configuration.fontColor());
 
