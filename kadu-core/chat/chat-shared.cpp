@@ -364,6 +364,8 @@ QIcon ChatShared::icon()
 		Contact contact = contacts().toContact();
 		if (!contact.isNull())
 		{
+			if (contact.ownerBuddy().isBlocked())
+				return IconsManager::instance()->iconByPath("kadu_icons/kadu-blocked");
 			if (contact.isBlocking())
 				return IconsManager::instance()->iconByPath("kadu_icons/kadu-blocking");
 			if (ChatAccount.statusContainer())
