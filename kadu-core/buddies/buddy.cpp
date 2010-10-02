@@ -152,11 +152,6 @@ QList<Contact> Buddy::contacts(Account account) const
 	return isNull() ? QList<Contact>() : data()->contacts(account);
 }
 
-Contact Buddy::preferredContactByStatus() const
-{
-	return isNull() ? Contact::null : data()->preferredContactByStatus();
-}
-
 QList<Contact> Buddy::contacts() const
 {
 	return isNull() ? QList<Contact>() : data()->contacts();
@@ -207,9 +202,18 @@ QString Buddy::display() const
 
 	if (result.isEmpty())
 	{
-		Account account = preferredContactByStatus().contactAccount();
-		if (account)
-			result = account.accountIdentity().name() + ":" + id(account);
+		Contact contact;
+		foreach (const Contact &con, data()->contacts())
+		{
+			if (!contact || con.currentStatus() < contact.currentStatus())
+				contact = con;
+		}
+		if (contact)
+		{
+			Account account = contact.contactAccount();
+			if (account)
+				result = account.accountIdentity().name() + ":" + id(account);
+		}
 	}
 
 	return result;

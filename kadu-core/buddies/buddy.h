@@ -52,8 +52,6 @@ class KADUAPI Buddy : public SharedBase<BuddyShared>
 	void addContact(Contact contact);
 	void removeContact(Contact contact) const;
 
-	Contact preferredContactByStatus() const;
-
 public:
 	static Buddy create();
 	static Buddy loadStubFromStorage(const QSharedPointer<StoragePoint> &buddyStoragePoint);

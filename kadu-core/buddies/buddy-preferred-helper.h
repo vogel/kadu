@@ -30,6 +30,10 @@ class Contact;
 
 class KADUAPI BuddyPreferredHelper
 {
+	static Contact preferredContactByPendingMessages(Buddy buddy, Account account);
+	static Contact preferredContactByChatWidgets(Buddy buddy, Account account);
+	static Contact preferredContactByRecentChats(Buddy buddy, Account account);
+	static Contact preferredContactByStatus(Buddy buddy, Account account);
 public:
 	static Contact preferredContact(Buddy buddy, Account account, bool includechats = true);
 	static Contact preferredContact(Buddy buddy, bool includechats = true);

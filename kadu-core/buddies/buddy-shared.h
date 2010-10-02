@@ -100,8 +100,6 @@ public:
 	QList<Contact> contacts(Account account);
 	QList<Contact> contacts();
 
-	Contact preferredContactByStatus();
-
 	void sortContacts();
 	void normalizePriorities();
 

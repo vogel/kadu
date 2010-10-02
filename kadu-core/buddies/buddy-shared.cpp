@@ -305,22 +305,6 @@ QString BuddyShared::id(Account account)
 	return QString::null;
 }
 
-Contact BuddyShared::preferredContactByStatus()
-{
-	ensureLoaded();
-
-	if (!Contacts.count())
-		return Contact::null;
-
-	Contact contact;
-	foreach (const Contact &con, Contacts)
-	{
-		if (!contact || con.currentStatus() < contact.currentStatus())
-			contact = con;
-	}
-	return contact;
-}
-
 bool contactPriorityLessThan(const Contact &c1, const Contact &c2)
 {
 	return c1.priority() < c2.priority();
