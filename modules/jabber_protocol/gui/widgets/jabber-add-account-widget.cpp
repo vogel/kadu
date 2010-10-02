@@ -138,6 +138,11 @@ void JabberAddAccountWidget::apply()
 	//jabberAccount.setProtocolName("jabber");
 	jabberAccount.setAccountIdentity(Identity->currentIdentity());
 	jabberAccount.setProtocolName("jabber");
+	
+	/*
+	 * Because now there is one AddAccountWidget for XMPP, GTalk and FB, and only in FB the Domain field is hidden, 
+	 * so it’s not pretty but fast way to see if we’re adding FB account, which requires special connection settings.
+	 */
 	if (Domain->isVisible())
 		jabberAccount.setId(Username->text() + "@" + Domain->currentText());
 	else // facebook
