@@ -2347,15 +2347,31 @@ Vielleicht ist es kein Kadu-Modul.</translation>
 <context>
     <name>ToolBar</name>
     <message>
-        <source>Delete toolbar</source>
-        <translation>Werkzeugleiste löschen</translation>
+        <source>Remove this toolbar</source>
+        <translation type="unfinished">Werkzeugleiste löschen</translation>
     </message>
     <message>
         <source>Add new button</source>
         <translation>Neue Schaltfläche hinzufügen</translation>
     </message>
     <message>
-        <source>Remove toolbar?</source>
+        <source>Add new separator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove this separator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add new expandable spacer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove this expandable spacer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you really want to remove this toolbar?</source>
         <translation>Toolbar entfernen?</translation>
     </message>
     <message>
@@ -2367,8 +2383,8 @@ Vielleicht ist es kein Kadu-Modul.</translation>
         <translation>Textfläche anzeigen</translation>
     </message>
     <message>
-        <source>Delete button</source>
-        <translation>Schaltfläche entfernen</translation>
+        <source>Remove this button</source>
+        <translation type="unfinished">Schaltfläche entfernen</translation>
     </message>
     <message>
         <source>Create new toolbar</source>

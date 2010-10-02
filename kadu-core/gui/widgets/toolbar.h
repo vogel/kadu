@@ -7,6 +7,7 @@
  * Copyright 2007, 2008, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2008 Michał Podsiadlik (michal@kadu.net)
  * Copyright 2008, 2009, 2010 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * Copyright 2010 Piotr Dąbrowski (ultr@ultr.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -39,10 +40,12 @@ class QToolButton;
 
 class UserGroup;
 
+#define TOOLBAR_SEPARATOR_SIZE 12 /*px*/
+
 /**
-	Klasa tworz?ca pasek narz?dziowy
+	Klasa tworząca pasek narzędziowy
 	\class ToolBar
-	\brief Pasek narz?dziowy
+	\brief Pasek narzędziowy
 **/
 
 class KADUAPI ToolBar : public QToolBar, public ConfigurationAwareObject
@@ -52,15 +55,14 @@ class KADUAPI ToolBar : public QToolBar, public ConfigurationAwareObject
 	friend class DisabledActionsWatcher;
 
 	// TODO: ugly hack
-	QToolButton *currentButton;
+	QWidget *currentWidget;
 	QAction *IconsOnly, *TextOnly, *Text, *TextUnder;
 
 	struct ToolBarAction {
 		QString actionName;
 		QAction *action;
-		QToolButton *button;
+		QWidget *widget;
 		Qt::ToolButtonStyle style;
-
 		bool operator == (struct ToolBarAction action) {
 			return actionName == action.actionName;
 		}
@@ -74,23 +76,44 @@ class KADUAPI ToolBar : public QToolBar, public ConfigurationAwareObject
 
 	QPoint MouseStart;
 
-	void addAction(const QString &actionName, Qt::ToolButtonStyle style, QAction *after = 0);
+	bool dragging;
+	int dropmarker;
+
+	QAction *findActionToDropBefore(QPoint pos);
+	void updateDropMarker();
+
+	void addAction(const QString &actionName, Qt::ToolButtonStyle style, QAction *before = 0);
 
 	static QMap<QString, QList<ToolBarAction> > DefaultActions;
 
 private slots:
 	/**
 		\fn void addButtonClicked()
-		Slot dodaj?cy wybrany przycisk
+		Slot dodający wybrany przycisk
 	**/
 	void addButtonClicked(QAction *action);
-	void deleteButton();
+	void removeButton();
 
 	/**
-		\fn void deleteToolbar()
-		Slot obs?uguj?cy usuwanie paska narz?dzi
+		\fn void addSeparatorClicked()
+		Slot dodający separator
 	**/
-	void deleteToolbar();
+	void addSeparatorClicked();
+
+	/**
+		\fn void addSpacerClicked()
+		Slot dodający swobodny odstęp
+	**/
+	void addSpacerClicked();
+
+	void removeSeparator();
+	void removeSpacer();
+
+	/**
+		\fn void removeToolbar()
+		Slot obsługujący usuwanie paska narzędzi
+	**/
+	void removeToolbar();
 
 	void setBlockToolbars(bool checked);
 
@@ -98,9 +121,9 @@ private slots:
 	void actionUnloaded(const QString &actionName);
 
 	void updateButtons();
-	void buttonPressed();
+	void widgetPressed();
 
-	QMenu * createContextMenu(QToolButton *button);
+	QMenu * createContextMenu(QWidget *widget);
 
 	void slotContextIcons();
 	void slotContextText();
@@ -109,26 +132,35 @@ private slots:
 
 	void slotContextAboutToShow();
 
+	void paintDropMarker();
+
 protected:
 	/**
 		\fn virtual void dragEnterEvent(QDragEnterEvent* event)
-		Funkcja obs?uguj?ca prz?ci?ganie akcji mi?dzy paskami
+		Funkcja obsługująca przeciąganie akcji między paskami
 	**/
 	virtual void dragEnterEvent(QDragEnterEvent *event);
 
 	/**
 		\fn virtual void dropEvent(QDropEvent* event)
-		Funkcja obs?uguj?ca upuszczenie przycisku na pasku
+		Funkcja obsługująca upuszczenie przycisku na pasku
 	**/
 	virtual void dropEvent(QDropEvent *event);
 
+	virtual void dragLeaveEvent(QDragLeaveEvent *event);
+	virtual void leaveEvent(QEvent *event);
+
+	virtual void paintEvent(QPaintEvent *event);
+
+	virtual void dragMoveEvent(QDragMoveEvent *event);
+
 	/**
 		\fn virtual void contextMenuEvent(QContextMenuEvent* e)
-		Funkcja obs?uguj?ca tworzenie menu kontekstowego paska
+		Funkcja obsługująca tworzenie menu kontekstowego paska
 	**/
 	virtual void contextMenuEvent(QContextMenuEvent *e);
 
-	virtual void mouseMoveEvent(QMouseEvent* e);
+	virtual void mouseMoveEvent(QMouseEvent *e);
 
 	virtual void configurationUpdated();
 
@@ -136,7 +168,7 @@ public:
 	static bool isBlockToolbars();
 
 	/**
-		Konstruktor paska narz?dzi
+		Konstruktor paska narzędzi
 		\fn ToolBar(QWidget* parent, const char *name)
 		\param parent rodzic obiektu
 		\param name nazwa obiektu
@@ -145,12 +177,12 @@ public:
 
 	/**
 		\fn ~ToolBar()
-		Destruktor paska narz?dzi
+		Destruktor paska narzędzi
 	**/
 	~ToolBar();
 
  	void deleteAction(const QString &actionName);
-	void moveAction(const QString &actionName, Qt::ToolButtonStyle style, QAction *after);
+	void moveAction(const QString &actionName, Qt::ToolButtonStyle style, QAction *before);
 
 	/**
 		\fn void loadFromConfig(QDomElement parent_element)
@@ -162,8 +194,8 @@ public:
 	/**
 		\fn hasAction(QString action_name)
 		\param action_name nazwa szukanej akcji
-		Funkcja zwraca warto?? boolowsk?, okre?laj?c?, czy akcja
-		o podanej nazwie znajduje si? ju? na pasku narz?dzi.
+		Funkcja zwraca wartość boolowską, okreslającą, czy akcja
+		o podanej nazwie znajduje się już na pasku narzędzi.
 	**/
 	bool hasAction (const QString &action_name);
 
@@ -174,8 +206,8 @@ public slots:
 	/**
 		\fn writeToConfig(QDomElement parent_element)
 		\param parent_element rodzic obiektu
-		Zapisuje ustawienia paska (jak offset), oraz (po?rednio)
-		akcje znajduj?ce si? na pasku.
+		Zapisuje ustawienia paska (jak offset), oraz (pośrednio)
+		akcje znajdujące się na pasku.
 	**/
 	void writeToConfig(QDomElement parent_element);
 
@@ -186,8 +218,34 @@ class KADUAPI ActionDrag : public QDrag
 	Q_OBJECT
 
 public:
-	ActionDrag(const QString &actionName, Qt::ToolButtonStyle style, QWidget* dragSource = 0);
+	ActionDrag(const QString &actionName, Qt::ToolButtonStyle style, QWidget *dragSource = 0);
 	static bool decode(QDropEvent *event, QString &actionName, Qt::ToolButtonStyle &style);
+};
+
+class ToolBarSeparator : public QWidget
+{
+	Q_OBJECT
+	static int Token;
+signals:
+	void pressed();
+protected:
+	void mousePressEvent(QMouseEvent *event);
+public:
+	ToolBarSeparator(QWidget *parent = 0);
+	static int token();
+};
+
+class ToolBarSpacer : public QWidget
+{
+	Q_OBJECT
+	static int Token;
+signals:
+	void pressed();
+protected:
+	void mousePressEvent(QMouseEvent *event);
+public:
+	ToolBarSpacer(QWidget *parent = 0);
+	static int token();
 };
 
 #endif

@@ -2319,16 +2319,32 @@ Possibile incompatibilità con Kadu.</translation>
 <context>
     <name>ToolBar</name>
     <message>
-        <source>Delete toolbar</source>
-        <translation>Elimina toolbar</translation>
+        <source>Remove this toolbar</source>
+        <translation type="unfinished">Elimina toolbar</translation>
     </message>
     <message>
         <source>Add new button</source>
         <translation>Aggiungi nuovo bottone</translation>
     </message>
     <message>
-        <source>Remove toolbar?</source>
-        <translation>Rimuovi il toolbar?</translation>
+        <source>Add new separator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove this separator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add new expandable spacer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove this expandable spacer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you really want to remove this toolbar?</source>
+        <translation type="unfinished">Rimuovi il toolbar?</translation>
     </message>
     <message>
         <source>No items to add found</source>
@@ -2339,7 +2355,7 @@ Possibile incompatibilità con Kadu.</translation>
         <translation type="unfinished">Mostra testo</translation>
     </message>
     <message>
-        <source>Delete button</source>
+        <source>Remove this button</source>
         <translation type="unfinished">Elimina bottone</translation>
     </message>
     <message>

@@ -3254,20 +3254,36 @@ Jeśli zechcesz włączyć (lub wyłączyć) któryś z nich, wystarczy dwukrotn
         <translation>Tekst pod ikoną</translation>
     </message>
     <message>
-        <source>Delete button</source>
-        <translation>Usuń przycisk</translation>
-    </message>
-    <message>
         <source>Add new button</source>
         <translation>Dodaj nowy przycisk</translation>
+    </message>
+    <message>
+        <source>Remove this button</source>
+        <translation>Usuń ten przycisk</translation>
+    </message>
+    <message>
+        <source>Add new separator</source>
+        <translation>Dodaj nowy separator</translation>
+    </message>
+    <message>
+        <source>Remove this separator</source>
+        <translation>Usuń ten separator</translation>
+    </message>
+    <message>
+        <source>Add new expandable spacer</source>
+        <translation>Dodaj nowy swobodny odstęp</translation>
+    </message>
+    <message>
+        <source>Remove this expandable spacer</source>
+        <translation>Usuń ten swobodny odstęp</translation>
     </message>
     <message>
         <source>No items to add found</source>
         <translation>Nie znaleziono obiektów do dodania</translation>
     </message>
     <message>
-        <source>Delete toolbar</source>
-        <translation>Usuń pasek narzędziowy</translation>
+        <source>Remove this toolbar</source>
+        <translation>Usuń ten pasek narzędziowy</translation>
     </message>
     <message>
         <source>Create new toolbar</source>
@@ -3278,8 +3294,8 @@ Jeśli zechcesz włączyć (lub wyłączyć) któryś z nich, wystarczy dwukrotn
         <translation>Blokuj paski narzędziowe</translation>
     </message>
     <message>
-        <source>Remove toolbar?</source>
-        <translation>Usunąć pasek narzędziowy?</translation>
+        <source>Do you really want to remove this toolbar?</source>
+        <translation>Czy na pewno chcesz usunąć ten pasek narzędziowy?</translation>
     </message>
 </context>
 <context>
