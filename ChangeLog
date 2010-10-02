@@ -7,6 +7,7 @@
 * gui: fixed crash when closing Kadu with yet unused OpenChatWith window opened (beevvy)
 * gui: #1473 fixed: display offline-to contacts as disabled (Vogel)
 * gui: added separators and spaces to toolbars (ultr)
+* gui: #1550 fixed: auto-add "file:///" to paths in syntax files (Vogel)
 
 +++ version 0.6.6-beta7
 * gui: #1541 fixed: avatar displaying on Qt 4.5 (Vogel)

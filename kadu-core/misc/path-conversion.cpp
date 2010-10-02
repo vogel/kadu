@@ -221,3 +221,14 @@ QString dataPath(const QString &p, const char *argv0)
 
 	return data_path + path;
 }
+
+QString webKitPath(const QString &path)
+{
+	if (path.isEmpty())
+		return path;
+	if (path.startsWith("file:///"))
+		return path;
+	if (path.startsWith("/"))
+		return "file://" + path;
+	return "file:///" + path;
+}

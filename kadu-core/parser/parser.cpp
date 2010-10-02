@@ -446,6 +446,9 @@ QString Parser::parse(const QString &s, Contact contact, const QObject * const o
 							file = pe.content;
 						else
 							file = pe.content.left(spacePos);
+
+						if (file.startsWith("file://"))
+							file = file.mid(strlen("file://"));
 //						kdebugm(KDEBUG_INFO, "file: %s\n", qPrintable(file));
 						if (QFile::exists(file) == check_file_exists)
 						{
@@ -476,7 +479,7 @@ QString Parser::parse(const QString &s, Contact contact, const QObject * const o
 					{
 						parseStack.pop_back();
 						pe.type = ParserToken::PT_STRING;
-						pe.content = IconsManager::instance()->iconPath(pe.content);
+						pe.content = webKitPath(IconsManager::instance()->iconPath(pe.content));
 						parseStack.push_back(pe);
 						break;
 					}

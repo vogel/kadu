@@ -43,4 +43,6 @@ KADUAPI QString dataPath(const QString &f = QString::null, const char *argv0 = 0
 
 KADUAPI QString libPath(const QString &f = QString::null);
 
+KADUAPI QString webKitPath(const QString &path);
+
 #endif // PATH_CONVERSION_H
