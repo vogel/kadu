@@ -26,6 +26,9 @@ class BuddyContactsTableDelegate : public QStyledItemDelegate
 {
 	Q_OBJECT
 
+protected:
+	virtual bool eventFilter(QObject *editor, QEvent *event);
+
 public:
 	explicit BuddyContactsTableDelegate(QObject *parent = 0);
 	virtual ~BuddyContactsTableDelegate();

@@ -72,3 +72,11 @@ void BuddyContactsTableDelegate::setModelData(QWidget* editor, QAbstractItemMode
 
 	model->setData(index, QVariant::fromValue<Account>(accountsComboBox->currentAccount()), AccountRole);
 }
+
+bool BuddyContactsTableDelegate::eventFilter(QObject *editor, QEvent *event)
+{
+	QWidget *editorwidget = dynamic_cast<QWidget *>(editor);
+	if (editorwidget)
+		commitData(editorwidget);
+	return QStyledItemDelegate::eventFilter(editor, event);
+}
