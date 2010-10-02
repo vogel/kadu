@@ -160,7 +160,7 @@ void JabberAddAccountWidget::apply()
 		if (!Domain->isVisible())
 		{
 			details->setEncryptionMode(JabberAccountDetails::Encryption_No);
-			details->setPlainAuthMode(JabberAccountDetails::AllowPlain);
+			details->setPlainAuthMode(JabberAccountDetails::NoAllowPlain);
 		}
 	}
 
