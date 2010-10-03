@@ -75,8 +75,8 @@ void BuddyContactsTableDelegate::setModelData(QWidget* editor, QAbstractItemMode
 
 bool BuddyContactsTableDelegate::eventFilter(QObject *editor, QEvent *event)
 {
-	QWidget *editorwidget = dynamic_cast<QWidget *>(editor);
-	if (editorwidget)
-		commitData(editorwidget);
+	QWidget *editorWidget = dynamic_cast<QWidget *>(editor);
+	if (editorWidget)
+		commitData(editorWidget);
 	return QStyledItemDelegate::eventFilter(editor, event);
 }
