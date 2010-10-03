@@ -284,9 +284,9 @@ void ChatShared::refreshTitle()
 	kdebugf();
 	QString title;
 
-	int contactsSize = contacts().count();
-	kdebugmf(KDEBUG_FUNCTION_START, "contacts().size() = %d\n", contactsSize);
-	if (contactsSize > 1)
+	int contactsCount = contacts().count();
+	kdebugmf(KDEBUG_FUNCTION_START, "contacts().size() = %d\n", contactsCount);
+	if (contactsCount > 1)
 	{
 		title = config_file.readEntry("Look","ConferencePrefix");
 		if (title.isEmpty())
@@ -299,7 +299,7 @@ void ChatShared::refreshTitle()
 
 		title.append(contactslist.join(", "));
 	}
-	else if (contactsSize > 0)
+	else if (contactsCount > 0)
 	{
 		Contact contact = contacts().toContact();
 
@@ -356,14 +356,14 @@ QIcon ChatShared::icon()
 {
 	ensureLoaded();
 
-	int contactscount = contacts().count();
-	if (contactscount > 1)
+	int contactsCount = contacts().count();
+	if (contactsCount > 1)
 		return ChatTypeManager::instance()->chatType("Conference")->icon();
 
-	if (contactscount > 0)
+	if (contactsCount > 0)
 	{
 		Contact contact = contacts().toContact();
-		if (!contact.isNull())
+		if (contact)
 			return ContactDataExtractor::data(contact, Qt::DecorationRole, false).value<QIcon>();
 	}
 
