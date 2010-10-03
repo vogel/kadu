@@ -1100,8 +1100,16 @@
         <translation>Tryb cichy</translation>
     </message>
     <message>
-        <source>Enable Silent Mode when Do not Disturb</source>
-        <translation>Włącz tryb cichy gdy mam status Nie przeszkadzać</translation>
+        <source>Enable Silent Mode when my status is set to 'Do not Disturb'</source>
+        <translation>Włącz tryb cichy gdy ustawię status 'Nie przeszkadzać'</translation>
+    </message>
+    <message>
+        <source>Enable Silent Mode when a fullscreen application is active</source>
+        <translation>Włącz tryb cichy gdy aktywna jest aplikacja pełnoekranowa</translation>
+    </message>
+    <message>
+        <source>Enables Silent Mode when running a fullscreen application: movie player, game, etc.</source>
+        <translation>Włącza tryb cichy gdy zostanie wykryta aplikacja pełnoekranowa: odtwarzacz filmów, gra, itp.</translation>
     </message>
     <message>
         <source>Status Change</source>
@@ -1109,7 +1117,7 @@
     </message>
     <message>
         <source>This option will supersede tooltips with buddies&apos; status
- changes upon establishing connection to the server</source>
+changes upon establishing connection to the server</source>
         <translation>Ta opcja spowoduje nie wyświetlenie dymków o zmianie statusu
 kontaktów po połączeniu się z serwerem</translation>
     </message>

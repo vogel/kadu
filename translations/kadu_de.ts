@@ -1183,6 +1183,22 @@ Es ist ein Sicherheitsrisiko!</translation>
         <translation>Neue Nachricht</translation>
     </message>
     <message>
+        <source>Silent Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable Silent Mode when my status is set to 'Do not Disturb'</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable Silent Mode when a fullscreen application is active</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enables Silent Mode when running a fullscreen application: movie player, game, etc.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Notify about new messages only when window is inactive</source>
         <translation>Benachrichtige mich über neue Nachrichten nur, wenn das Fenster inaktiv ist</translation>
     </message>
@@ -1200,7 +1216,7 @@ Es ist ein Sicherheitsrisiko!</translation>
     </message>
     <message>
         <source>This option will supersede tooltips with users&apos; status
- changes upon establishing connection to the server</source>
+changes upon establishing connection to the server</source>
         <translation>Diese Einstellung macht Benachrichtigungen überflüssig,
 kurz nachdem Sie sich mit dem Server verbunden haben</translation>
     </message>

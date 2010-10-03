@@ -26,6 +26,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QX11Info>
 #include <QtGui/QApplication>
 
 #include "accounts/account.h"
@@ -59,6 +60,11 @@
 #include "new-message-notification.h"
 #include "status-changed-notification.h"
 
+#include "x11tools.h" // this should be included as last one,
+#undef Status         // and Status defined by Xlib.h must be undefined
+
+#define FULLSCREENCHECKTIMER_INTERVAL 2000 /*ms*/
+
 NotificationManager *NotificationManager::Instance = 0;
 
 NotificationManager * NotificationManager::instance()
@@ -85,6 +91,11 @@ void NotificationManager::init()
 
 	UiHandler = new NotifyConfigurationUiHandler(this);
 	MainConfigurationWindow::registerUiHandler(UiHandler);
+
+	FullScreenCheckTimer.setInterval(FULLSCREENCHECKTIMER_INTERVAL);
+	connect(&FullScreenCheckTimer, SIGNAL(timeout()), this, SLOT(checkFullScreen()));
+	WasFullScreen = false;
+	WasSilent = silentMode();
 
 	createDefaultConfiguration();
 	configurationUpdated();
@@ -118,6 +129,8 @@ void NotificationManager::init()
 NotificationManager::~NotificationManager()
 {
 	kdebugf();
+
+	FullScreenCheckTimer.stop();
 
 	MainConfigurationWindow::unregisterUiHandler(UiHandler);
 
@@ -517,6 +530,8 @@ void NotificationManager::configurationUpdated()
 	NotifyAboutAll = config_file.readBoolEntry("Notify", "NotifyAboutAll");
 	SilentMode = config_file.readBoolEntry("Notify", "SilentMode", false);
 	SilentModeWhenDnD = config_file.readBoolEntry("Notify", "AwaySilentMode", false);
+	SilentModeWhenFullscreen = config_file.readBoolEntry("Notify", "FullscreenSilentMode", false);
+	SilentModeWhenFullscreen ? FullScreenCheckTimer.start() : FullScreenCheckTimer.stop();
 }
 
 void NotificationManager::createDefaultConfiguration()
@@ -547,6 +562,24 @@ QString NotificationManager::notifyConfigurationKey(const QString &eventType)
 ConfigurationUiHandler * NotificationManager::configurationUiHandler()
 {
 	return UiHandler;
+}
+
+void NotificationManager::checkFullScreen()
+{
+#ifdef Q_WS_X11
+	bool isFullScreen = X11_checkFullScreen(QX11Info::display());
+	if (!WasFullScreen && isFullScreen)
+	{
+		WasSilent = silentMode();
+		setSilentMode(true);
+	}
+	else if (WasFullScreen && !isFullScreen)
+	{
+		if (!WasSilent)
+			setSilentMode(false);
+	}
+	WasFullScreen = isFullScreen;
+#endif // Q_WS_X11
 }
 
 void checkNotify(Action *action)

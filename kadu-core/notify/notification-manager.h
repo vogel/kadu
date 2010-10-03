@@ -22,6 +22,7 @@
 #ifndef NOTIFICATION_MANAGER_H
 #define NOTIFICATION_MANAGER_H
 
+#include <QtCore/QTimer>
 #include <QtGui/QGroupBox>
 
 #include <time.h>
@@ -61,6 +62,7 @@ class KADUAPI NotificationManager : public QObject, AccountsAwareObject, Configu
 	bool NotifyAboutAll;
 	bool SilentMode;
 	bool SilentModeWhenDnD;
+	bool SilentModeWhenFullscreen;
 	bool AutoSilentMode;
 
 	ActionDescription *notifyAboutUserActionDescription;
@@ -70,6 +72,10 @@ class KADUAPI NotificationManager : public QObject, AccountsAwareObject, Configu
 
 	QList<Notifier *> Notifiers;
 	QList<NotifyEvent *> NotifyEvents;
+
+	QTimer FullScreenCheckTimer;
+	bool WasFullScreen;
+	bool WasSilent;
 
 	NotificationManager();
 	virtual ~NotificationManager();
@@ -92,6 +98,8 @@ private slots:
 	void groupUpdated();
 
 	void accountConnected();
+
+	void checkFullScreen();
 
 protected:
 	virtual void accountRegistered(Account account);

@@ -706,6 +706,63 @@ void X11_setActiveWindowCheck( Display *display, Window window, bool forceFreeDe
 }
 
 
+Window X11_getTopMostWindow( Display *display )
+{
+	Atom listatom;
+	Atom type_return;
+	int format_return;
+	unsigned long nitems_return;
+	unsigned long bytesafter_return;
+	unsigned char *data = NULL;
+	// _NET_CLIENT_LIST_STACKING
+	listatom = XInternAtom( display, "_NET_CLIENT_LIST_STACKING", False );
+	if( XGetWindowProperty( display, DefaultRootWindow( display ), listatom, 0L, (~0L), False, XA_WINDOW, &type_return, &format_return, &nitems_return, &bytesafter_return, &data ) == Success )
+	{
+		Window window = None;
+		if( (type_return == XA_WINDOW) && (format_return == 32) && (data) && (nitems_return > 0) )
+		{
+			uint *array = (uint*)data;
+			window = (Window) array[nitems_return-1];
+		}
+		XFree( data );
+		if( window != None )
+			return window;
+	}
+	// _NET_CLIENT_LIST
+	listatom = XInternAtom( display, "_NET_CLIENT_LIST" , False );
+	if( XGetWindowProperty( display, DefaultRootWindow( display ), listatom, 0L, (~0L), False, XA_WINDOW, &type_return, &format_return, &nitems_return, &bytesafter_return, &data ) == Success )
+	{
+		Window window = None;
+		if( (type_return == XA_WINDOW) && (format_return == 32) && (data) && (nitems_return > 0) )
+		{
+			uint *array = (uint*) data;
+			window = (Window) array[nitems_return-1];
+		}
+		XFree(data);
+		if( window != None )
+			return window;
+	}
+	return None;
+}
+
+
+Window X11_getLatestCreatedWindow( Display *display )
+{
+	Window window = None;
+	Window parent;
+	Window root;
+	Window *children = NULL;
+	unsigned int nchildren;
+	XQueryTree( display, DefaultRootWindow( display ), &root, &parent, &children, &nchildren );
+	if( children != NULL )
+	{
+		window = children[nchildren-1];
+	}
+	XFree( children );
+	return window;
+}
+
+
 
 
 Window X11_getWindowUnderCursor( Display *display, int *rootx, int *rooty, int *windowx, int *windowy )
@@ -821,4 +878,106 @@ void X11_windowSetDecoration( Display *display, Window window, bool set )
 		hints.decorations = ( set ? 1 : 0 );
 		XChangeProperty( display, window, atom, atom, 32, PropModeReplace, (unsigned char *)&hints, 5 );
 	}
+}
+
+
+
+
+bool X11_checkFullScreen( Display *display )
+{
+	Window wa = X11_getActiveWindow( display );
+	if( wa != None )
+		if( X11_isPropertyAtomSet( display, wa, "_NET_WM_STATE", "_NET_WM_STATE_FULLSCREEN" ) )
+			return true;
+	Window wt = X11_getTopMostWindow( display );
+	if( wt != None )
+		if( X11_isPropertyAtomSet( display, wt, "_NET_WM_STATE", "_NET_WM_STATE_FULLSCREEN" ) )
+			return true;
+	int status = XGrabPointer(
+		display,
+		DefaultRootWindow( display ),
+		True,
+		ButtonReleaseMask | ButtonMotionMask | ButtonPressMask,
+		GrabModeAsync,
+		GrabModeAsync,
+		None,
+		None,
+		CurrentTime
+	);
+	if( status != GrabSuccess )
+	{
+		if( wt != None )
+			if( X11_getWindowSize( display, wt ) == X11_getResolution( display ) )
+				return true;
+		Window wl = X11_getLatestCreatedWindow( display );
+		if( wl != None )
+			if( X11_getWindowSize( display, wl ) == X11_getResolution( display ) )
+				return true;
+		if( wl != None )
+		{
+			Atom wl_type;
+			if( X11_getFirstPropertyAtom( display, wl, "_NET_WM_WINDOW_TYPE", &wl_type ) && ( wl_type != None ) )
+			{
+				Atom type_dock         = XInternAtom( display, "_NET_WM_WINDOW_TYPE_DOCK"         , False );
+				Atom type_toolbar      = XInternAtom( display, "_NET_WM_WINDOW_TYPE_TOOLBAR"      , False );
+				Atom type_menu         = XInternAtom( display, "_NET_WM_WINDOW_TYPE_MENU"         , False );
+				Atom type_dropdownmenu = XInternAtom( display, "_NET_WM_WINDOW_TYPE_DROPDOWN_MENU", False );
+				Atom type_popupmenu    = XInternAtom( display, "_NET_WM_WINDOW_TYPE_POPUP_MENU"   , False );
+				Atom type_combo        = XInternAtom( display, "_NET_WM_WINDOW_TYPE_COMBO"        , False );
+				if(
+					( wl_type == type_dock         ) ||
+					( wl_type == type_toolbar      ) ||
+					( wl_type == type_menu         ) ||
+					( wl_type == type_dropdownmenu ) ||
+					( wl_type == type_popupmenu    ) ||
+					( wl_type == type_combo        )
+					)
+					return false;
+			}
+		}
+		if( ( wa != None ) && ( wt == wa ) )
+		{
+			if( wl != None )
+			{
+				XWindowAttributes attr;
+				Status status = XGetWindowAttributes( display, wl, &attr );
+				if( status != 0 )
+					if( ( attr.all_event_masks & ( ButtonPressMask | ButtonReleaseMask | KeyPressMask | KeyReleaseMask ) ) == 0 )
+						return false;
+			}
+			return true;
+		}
+		if( ( wa != None ) && ( wl != None ) )
+			if( ( (int)wa - (int)wl ) == 1 )
+				return true;
+		return false;
+	}
+	else
+	{
+		XUngrabPointer( display, CurrentTime );
+		XFlush( display );
+	}
+	return false;
+}
+
+
+
+
+void X11_waitForWindowMapped( Display *display, Window window )
+{
+	XEvent event;
+	do
+	{
+		XMaskEvent( display, StructureNotifyMask, &event );
+	}
+	while( ( event.type != MapNotify ) || ( event.xmap.event != window ) );
+}
+
+
+
+
+bool X11_isCompositingManagerRunning( Display *display )
+{
+	Atom netwmcms0 = XInternAtom( display, "_NET_WM_CM_S0", False );
+	return XGetSelectionOwner( display, netwmcms0 );
 }
