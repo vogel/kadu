@@ -95,8 +95,6 @@ BuddiesListView::BuddiesListView(MainWindow *mainWindow, QWidget *parent) :
 	connect(this, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(doubleClickedSlot(const QModelIndex &)));
 	connect(PendingMessagesManager::instance(), SIGNAL(messageAdded(Message)), this, SLOT(update()));
 	connect(PendingMessagesManager::instance(), SIGNAL(messageRemoved(Message)), this, SLOT(update()));
-	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget*)), this, SLOT(repaint()));
-	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget*)), this, SLOT(repaint()));
 
 	simpleModeChanged();
 }

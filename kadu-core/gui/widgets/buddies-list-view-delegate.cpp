@@ -27,7 +27,9 @@
 #include "buddies/avatar-manager.h"
 #include "buddies/model/abstract-buddies-model.h"
 #include "contacts/contact-manager.h"
+#include "contacts/contact-set.h"
 #include "gui/widgets/buddies-list-view-item-painter.h"
+#include "gui/widgets/chat-widget-manager.h"
 
 #include "buddies-list-view-delegate.h"
 
@@ -36,6 +38,8 @@ BuddiesListViewDelegate::BuddiesListViewDelegate(QObject *parent) :
 {
 	connect(AvatarManager::instance(), SIGNAL(avatarUpdated(Avatar)), this, SLOT(avatarUpdated(Avatar)));
 	connect(ContactManager::instance(), SIGNAL(contactUpdated(Contact&)), this, SLOT(contactUpdated(Contact&)));
+	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget*)), this, SLOT(chatWidgetUpdated(ChatWidget*)));
+	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget*)), this, SLOT(chatWidgetUpdated(ChatWidget*)));
 }
 
 BuddiesListViewDelegate::~BuddiesListViewDelegate()
@@ -62,6 +66,16 @@ void BuddiesListViewDelegate::contactUpdated(Contact &contact)
 {
 	if (Model)
 		emit sizeHintChanged(Model->indexForValue(contact.ownerBuddy()));
+}
+
+void BuddiesListViewDelegate::chatWidgetUpdated(ChatWidget *chatWidget)
+{
+	if (chatWidget)
+		if (chatWidget->chat().contacts().count() == 1)
+		{
+			Contact contact = chatWidget->chat().contacts().toContact();
+			contactUpdated(contact);
+		}
 }
 
 void BuddiesListViewDelegate::modelDestroyed()

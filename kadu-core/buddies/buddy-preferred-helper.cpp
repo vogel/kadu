@@ -26,76 +26,78 @@
 
 Contact BuddyPreferredHelper::preferredContactByPendingMessages(Buddy buddy, Account account)
 {
-	Contact contact;
+	Contact result;
 	foreach (Message message, PendingMessagesManager::instance()->pendingMessagesForBuddy(buddy))
 	{
-		Contact con = message.messageSender();
-		if (con.ownerBuddy() == buddy)
-		{
-			if (account && con.contactAccount() != account)
-				continue;
-			if (!contact || con.currentStatus() < contact.currentStatus())
-				contact = con;
-		}
+		Contact contact = message.messageSender();
+		result = morePreferredContactByStatus(result, contact, account);
 	}
-	return contact;
+	return result;
 }
 
 Contact BuddyPreferredHelper::preferredContactByChatWidgets(Buddy buddy, Account account)
 {
-	Contact contact;
+	Contact result;
 	foreach (ChatWidget *chatwidget, ChatWidgetManager::instance()->chats())
 	{
 		Chat chat = chatwidget->chat();
 		if (chat.contacts().isEmpty())
 			continue;
-		Contact con = *chat.contacts().begin();
-		if (con.ownerBuddy() == buddy)
-		{
-			if (account && con.contactAccount() != account)
-				continue;
-			if (!contact || con.currentStatus() < contact.currentStatus())
-				contact = con;
-		}
+		Contact contact = *chat.contacts().begin();
+		if (contact.ownerBuddy() != buddy)
+			continue;
+		result = morePreferredContactByStatus(result, contact, account);
 	}
-	return contact;
+	return result;
 }
 
 Contact BuddyPreferredHelper::preferredContactByRecentChats(Buddy buddy, Account account)
 {
-	Contact contact;
+	Contact result;
 	foreach (Chat chat, RecentChatManager::instance()->recentChats())
 	{
 		if (chat.contacts().isEmpty())
 			continue;
-		Contact con = *chat.contacts().begin();
-		if (con.ownerBuddy() == buddy)
-		{
-			if (account && con.contactAccount() != account)
-				continue;
-			if (!contact || con.currentStatus() < contact.currentStatus())
-				contact = con;
-		}
+		Contact contact = *chat.contacts().begin();
+		if (contact.ownerBuddy() != buddy)
+			continue;
+		result = morePreferredContactByStatus(result, contact, account);
 	}
-	return contact;
+	return result;
 }
 
 Contact BuddyPreferredHelper::preferredContactByStatus(Buddy buddy, Account account)
 {
-	Contact contact;
-	foreach (const Contact &con, buddy.contacts())
+	Contact result;
+	foreach (const Contact &contact, buddy.contacts())
 	{
-		if (account && con.contactAccount() != account)
-			continue;
-		if (!contact || con.currentStatus() < contact.currentStatus())
-			contact = con;
+		result = morePreferredContactByStatus(result, contact, account);
 	}
-	return contact;
+	return result;
+}
+
+Contact BuddyPreferredHelper::morePreferredContactByStatus(Contact c1, Contact c2, Account account)
+{
+	if (!c1 && !c2)
+		return Contact::null;
+	if (c1 && !c2)
+	{
+		if (!account || c1.contactAccount() == account)
+			return c1;
+		return Contact::null;
+	}
+	if (!c1 && c2)
+	{
+		if (!account || c2.contactAccount() == account)
+			return c2;
+		return Contact::null;
+	}
+	return Contact::contactWithHigherStatus(c1, c2);
 }
 
 Contact BuddyPreferredHelper::preferredContact(Buddy buddy, Account account, bool includechats)
 {
-	if (buddy.isNull() || buddy.contacts().count() == 0)
+	if (!buddy || buddy.contacts().isEmpty())
 		return Contact::null;
 
 	Contact contact;
@@ -125,7 +127,5 @@ Contact BuddyPreferredHelper::preferredContact(Buddy buddy, bool includechats)
 Account BuddyPreferredHelper::preferredAccount(Buddy buddy, bool includechats)
 {
 	Contact contact = BuddyPreferredHelper::preferredContact(buddy, includechats);
-	if (contact.isNull())
-		return Account::null;
 	return contact.contactAccount();
 }

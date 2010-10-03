@@ -204,10 +204,7 @@ QString Buddy::display() const
 	{
 		Contact contact;
 		foreach (const Contact &con, data()->contacts())
-		{
-			if (!contact || con.currentStatus() < contact.currentStatus())
-				contact = con;
-		}
+			contact = Contact::contactWithHigherStatus(contact, con);
 		if (contact)
 		{
 			Account account = contact.contactAccount();

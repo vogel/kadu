@@ -34,10 +34,13 @@ class KADUAPI BuddyPreferredHelper
 	static Contact preferredContactByChatWidgets(Buddy buddy, Account account);
 	static Contact preferredContactByRecentChats(Buddy buddy, Account account);
 	static Contact preferredContactByStatus(Buddy buddy, Account account);
+	static Contact morePreferredContactByStatus(Contact c1, Contact c2, Account account = Account::null);
+
 public:
 	static Contact preferredContact(Buddy buddy, Account account, bool includechats = true);
 	static Contact preferredContact(Buddy buddy, bool includechats = true);
 	static Account preferredAccount(Buddy buddy, bool includechats = true);
+
 };
 
 #endif // BUDDY_PREFERRED_HELPER_H

@@ -30,6 +30,7 @@
 class AbstractBuddiesModel;
 class Account;
 class Avatar;
+class ChatWidget;
 class Contact;
 class Status;
 
@@ -45,6 +46,7 @@ class BuddiesListViewDelegate : public QItemDelegate
 private slots:
 	void avatarUpdated(Avatar avatar);
 	void contactUpdated(Contact &contact);
+	void chatWidgetUpdated(ChatWidget *chatWidget);
 	void modelDestroyed();
 
 public:
