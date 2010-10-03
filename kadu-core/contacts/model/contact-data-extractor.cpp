@@ -44,17 +44,16 @@ QVariant ContactDataExtractor::data(Contact contact, int role, bool useBuddyData
 			if (contact.isNull())
 				return QVariant();
 
-			// we need different icons for there two
 			if (contact.ownerBuddy().isBlocked())
-				return IconsManager::instance()->iconByPath("kadu_icons/kadu-blocking");
+				return IconsManager::instance()->iconByPath("kadu_icons/kadu-blocked");
 
 			if (contact.isBlocking())
-				return IconsManager::instance()->iconByPath("kadu_icons/kadu-buddy_is_blocking");
+				return IconsManager::instance()->iconByPath("kadu_icons/kadu-blocking");
 
 			// TODO generic icon
 			return !contact.contactAccount().isNull()
-					? contact.contactAccount().statusContainer()->statusIcon(contact.currentStatus()).pixmap(16, 16)
-					: QVariant();
+					? contact.contactAccount().statusContainer()->statusIcon(contact.currentStatus())
+					: QIcon();
 		}
 		case BuddyRole:
 			return QVariant::fromValue(contact.ownerBuddy());

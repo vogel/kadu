@@ -27,6 +27,7 @@
 #include "chat/chat-details.h"
 #include "chat/chat-manager.h"
 #include "configuration/configuration-file.h"
+#include "contacts/model/contact-data-extractor.h"
 #include "contacts/contact-set.h"
 #include "parser/parser.h"
 #include "debug.h"
@@ -283,9 +284,9 @@ void ChatShared::refreshTitle()
 	kdebugf();
 	QString title;
 
-	int contactsSize = contacts().count();
-	kdebugmf(KDEBUG_FUNCTION_START, "contacts().size() = %d\n", contactsSize);
-	if (contactsSize > 1)
+	int contactsCount = contacts().count();
+	kdebugmf(KDEBUG_FUNCTION_START, "contacts().size() = %d\n", contactsCount);
+	if (contactsCount > 1)
 	{
 		title = config_file.readEntry("Look","ConferencePrefix");
 		if (title.isEmpty())
@@ -298,7 +299,7 @@ void ChatShared::refreshTitle()
 
 		title.append(contactslist.join(", "));
 	}
-	else if (contactsSize > 0)
+	else if (contactsCount > 0)
 	{
 		Contact contact = contacts().toContact();
 
@@ -355,16 +356,16 @@ QIcon ChatShared::icon()
 {
 	ensureLoaded();
 
-	int contactsSize = contacts().count();
-	if (contactsSize > 1)
+	int contactsCount = contacts().count();
+	if (contactsCount > 1)
 		return ChatTypeManager::instance()->chatType("Conference")->icon();
 
-	if (contactsSize > 0)
+	if (contactsCount > 0)
 	{
 		Contact contact = contacts().toContact();
-		if (!contact.isNull() && ChatAccount.statusContainer())
-			return ChatAccount.statusContainer()->statusIcon(contact.currentStatus());
+		if (contact)
+			return ContactDataExtractor::data(contact, Qt::DecorationRole, false).value<QIcon>();
 	}
 
-	return QIcon();
+	return IconsManager::instance()->iconByPath("internet-group-chat");
 }
