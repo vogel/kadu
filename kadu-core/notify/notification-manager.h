@@ -123,7 +123,7 @@ public:
 
 	bool notifyAboutAll() { return NotifyAboutAll; }
 
-	void setSilentMode(bool silentMode) { SilentMode = silentMode; }
+	void setSilentMode(bool silentMode);
 	bool silentMode() { return SilentMode; }
 
 	QString notifyConfigurationKey(const QString &eventType);
@@ -138,6 +138,8 @@ signals:
 
 	void notifyEventRegistered(NotifyEvent *notifyEvent);
 	void notifyEventUnregistered(NotifyEvent *notifyEvent);
+
+	void silentModeToggled(bool);
 
 };
 

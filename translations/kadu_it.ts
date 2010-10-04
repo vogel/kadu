@@ -1165,7 +1165,7 @@ E un rischio per la sicurezza!</translation>
         <translation>Cambiamente dello status</translation>
     </message>
     <message>
-        <source>Ignore status changes from available / busy to busy / available</source>
+        <source>Ignore status changes from available/busy to busy/available</source>
         <translation>Ignora i cambiament dello status da disponibile / occupato a disponibile / occupato</translation>
     </message>
     <message>

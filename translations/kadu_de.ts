@@ -1207,7 +1207,7 @@ Es ist ein Sicherheitsrisiko!</translation>
         <translation>Zustandsänderung</translation>
     </message>
     <message>
-        <source>Ignore status changes from available / busy to busy / available</source>
+        <source>Ignore status changes from available/busy to busy/available</source>
         <translation>Ignoriere Zustandsänderungen zwischen Erreichbar und Beschäftigt</translation>
     </message>
     <message>

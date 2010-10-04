@@ -1160,7 +1160,7 @@ Attention danger!
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Ignore status changes from available / busy to busy / available</source>
+        <source>Ignore status changes from available/busy to busy/available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

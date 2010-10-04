@@ -688,8 +688,8 @@
         <translation>Informuj o nowych wiadomościach tylko gdy okno rozmowy jest nieaktywne</translation>
     </message>
     <message>
-        <source>Ignore status changes from available / busy to busy / available</source>
-        <translation>Ignoruj zmiany statusów z dostępny / zajęty na zajęty / dostępny</translation>
+        <source>Ignore status changes from available/busy to busy/available</source>
+        <translation>Ignoruj zmiany statusów z dostępny/zajęty na zajęty/dostępny</translation>
     </message>
     <message>
         <source>Ignore changes right after connection to the server</source>

@@ -148,6 +148,15 @@ NotificationManager::~NotificationManager()
 	kdebugf2();
 }
 
+void NotificationManager::setSilentMode(bool silentMode)
+{
+	if (silentMode != SilentMode)
+	{
+		SilentMode = silentMode;
+		emit silentModeToggled(SilentMode);
+	}
+}
+
 void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool toggled)
 {
 	Q_UNUSED(toggled)
@@ -214,7 +223,7 @@ void NotificationManager::silentModeActionActivated(QAction *sender, bool toggle
 {
 	Q_UNUSED(sender)
 
-	SilentMode = !toggled;
+	setSilentMode(!toggled);
 	foreach (Action *action, SilentModeActionDescription->actions())
 		action->setChecked(toggled);
 
@@ -531,6 +540,7 @@ void NotificationManager::configurationUpdated()
 	SilentMode = config_file.readBoolEntry("Notify", "SilentMode", false);
 	SilentModeWhenDnD = config_file.readBoolEntry("Notify", "AwaySilentMode", false);
 	SilentModeWhenFullscreen = config_file.readBoolEntry("Notify", "FullscreenSilentMode", false);
+	emit silentModeToggled(SilentMode);
 	SilentModeWhenFullscreen ? FullScreenCheckTimer.start() : FullScreenCheckTimer.stop();
 }
 
