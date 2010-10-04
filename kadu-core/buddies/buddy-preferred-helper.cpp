@@ -29,20 +29,17 @@ namespace
 
 	Contact morePreferredContactByStatus(Contact c1, Contact c2, Account account)
 	{
-		if (!c1 && !c2)
-			return Contact::null;
-		if (c1 && !c2)
+		if (account)
 		{
-			if (!account || c1.contactAccount() == account)
-				return c1;
-			return Contact::null;
+			if (c1.contactAccount() != account)
+				c1 = Contact::null;
+			if (c2.contactAccount() != account)
+				c2 = Contact::null;
 		}
-		if (!c1 && c2)
-		{
-			if (!account || c2.contactAccount() == account)
-				return c2;
-			return Contact::null;
-		}
+		if (!c1)
+			return c2;
+		if (!c2)
+			return c1;
 		return Contact::contactWithHigherStatus(c1, c2);
 	}
 
