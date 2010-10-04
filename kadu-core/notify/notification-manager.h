@@ -74,8 +74,7 @@ class KADUAPI NotificationManager : public QObject, AccountsAwareObject, Configu
 	QList<NotifyEvent *> NotifyEvents;
 
 	QTimer FullScreenCheckTimer;
-	bool WasFullScreen;
-	bool WasSilent;
+	bool IsFullScreen;
 
 	NotificationManager();
 	virtual ~NotificationManager();
@@ -124,7 +123,7 @@ public:
 	bool notifyAboutAll() { return NotifyAboutAll; }
 
 	void setSilentMode(bool silentMode);
-	bool silentMode() { return SilentMode; }
+	bool silentMode();
 
 	QString notifyConfigurationKey(const QString &eventType);
 

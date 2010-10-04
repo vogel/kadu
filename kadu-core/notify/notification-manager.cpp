@@ -92,10 +92,11 @@ void NotificationManager::init()
 	UiHandler = new NotifyConfigurationUiHandler(this);
 	MainConfigurationWindow::registerUiHandler(UiHandler);
 
+	SilentMode = false;
+
 	FullScreenCheckTimer.setInterval(FULLSCREENCHECKTIMER_INTERVAL);
 	connect(&FullScreenCheckTimer, SIGNAL(timeout()), this, SLOT(checkFullScreen()));
-	WasFullScreen = false;
-	WasSilent = silentMode();
+	IsFullScreen = false;
 
 	createDefaultConfiguration();
 	configurationUpdated();
@@ -155,6 +156,11 @@ void NotificationManager::setSilentMode(bool silentMode)
 		SilentMode = silentMode;
 		emit silentModeToggled(SilentMode);
 	}
+}
+
+bool NotificationManager::silentMode()
+{
+	return SilentMode || (IsFullScreen && config_file.readBoolEntry("Notify", "FullscreenSilentMode", false));
 }
 
 void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool toggled)
@@ -537,11 +543,16 @@ void NotificationManager::groupUpdated()
 void NotificationManager::configurationUpdated()
 {
 	NotifyAboutAll = config_file.readBoolEntry("Notify", "NotifyAboutAll");
-	SilentMode = config_file.readBoolEntry("Notify", "SilentMode", false);
 	SilentModeWhenDnD = config_file.readBoolEntry("Notify", "AwaySilentMode", false);
 	SilentModeWhenFullscreen = config_file.readBoolEntry("Notify", "FullscreenSilentMode", false);
-	emit silentModeToggled(SilentMode);
-	SilentModeWhenFullscreen ? FullScreenCheckTimer.start() : FullScreenCheckTimer.stop();
+	setSilentMode(config_file.readBoolEntry("Notify", "SilentMode", false));
+	if (SilentModeWhenFullscreen)
+		FullScreenCheckTimer.start();
+	else
+	{
+		FullScreenCheckTimer.stop();
+		IsFullScreen = false;
+	}
 }
 
 void NotificationManager::createDefaultConfiguration()
@@ -577,18 +588,10 @@ ConfigurationUiHandler * NotificationManager::configurationUiHandler()
 void NotificationManager::checkFullScreen()
 {
 #ifdef Q_WS_X11
-	bool isFullScreen = X11_checkFullScreen(QX11Info::display());
-	if (!WasFullScreen && isFullScreen)
-	{
-		WasSilent = silentMode();
-		setSilentMode(true);
-	}
-	else if (WasFullScreen && !isFullScreen)
-	{
-		if (!WasSilent)
-			setSilentMode(false);
-	}
-	WasFullScreen = isFullScreen;
+	bool wasFullScreen = IsFullScreen;
+	IsFullScreen = X11_checkFullScreen(QX11Info::display());
+	if (IsFullScreen != wasFullScreen)
+		emit silentModeToggled(IsFullScreen);
 #endif // Q_WS_X11
 }
 
