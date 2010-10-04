@@ -89,9 +89,7 @@ namespace
 	{
 		Contact result;
 		foreach (const Contact &contact, buddy.contacts())
-		{
 			result = morePreferredContactByStatus(result, contact, account);
-		}
 		return result;
 	}
 

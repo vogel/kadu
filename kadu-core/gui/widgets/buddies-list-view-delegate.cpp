@@ -26,6 +26,7 @@
 #include "buddies/avatar.h"
 #include "buddies/avatar-manager.h"
 #include "buddies/model/abstract-buddies-model.h"
+#include "chat/message/pending-messages-manager.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 #include "gui/widgets/buddies-list-view-item-painter.h"
@@ -38,8 +39,10 @@ BuddiesListViewDelegate::BuddiesListViewDelegate(QObject *parent) :
 {
 	connect(AvatarManager::instance(), SIGNAL(avatarUpdated(Avatar)), this, SLOT(avatarUpdated(Avatar)));
 	connect(ContactManager::instance(), SIGNAL(contactUpdated(Contact&)), this, SLOT(contactUpdated(Contact&)));
-	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget*)), this, SLOT(chatWidgetUpdated(ChatWidget*)));
-	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget*)), this, SLOT(chatWidgetUpdated(ChatWidget*)));
+	connect(PendingMessagesManager::instance(), SIGNAL(messageAdded(Message)), this, SLOT(pendingMessageEvent(Message)));
+	connect(PendingMessagesManager::instance(), SIGNAL(messageRemoved(Message)), this, SLOT(pendingMessageEvent(Message)));
+	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget*)), this, SLOT(chatWidgetEvent(ChatWidget*)));
+	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget*)), this, SLOT(chatWidgetEvent(ChatWidget*)));
 }
 
 BuddiesListViewDelegate::~BuddiesListViewDelegate()
@@ -68,7 +71,7 @@ void BuddiesListViewDelegate::contactUpdated(Contact &contact)
 		emit sizeHintChanged(Model->indexForValue(contact.ownerBuddy()));
 }
 
-void BuddiesListViewDelegate::chatWidgetUpdated(ChatWidget *chatWidget)
+void BuddiesListViewDelegate::chatWidgetEvent(ChatWidget *chatWidget)
 {
 	if (chatWidget)
 		if (chatWidget->chat().contacts().count() == 1)
@@ -76,6 +79,12 @@ void BuddiesListViewDelegate::chatWidgetUpdated(ChatWidget *chatWidget)
 			Contact contact = chatWidget->chat().contacts().toContact();
 			contactUpdated(contact);
 		}
+}
+
+void BuddiesListViewDelegate::pendingMessageEvent(Message message)
+{
+	Contact contact = message.messageSender();
+	contactUpdated(contact);
 }
 
 void BuddiesListViewDelegate::modelDestroyed()
