@@ -1136,19 +1136,19 @@ Attention danger!
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Silent Mode</source>
+        <source>Silent mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Enable Silent Mode when my status is set to 'Do not Disturb'</source>
+        <source>Disable notifications when my status is set to 'Do not Disturb'</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Enable Silent Mode when a fullscreen application is active</source>
+        <source>Disable notifications when a fullscreen application is active</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Enables Silent Mode when running a fullscreen application: movie player, game, etc.</source>
+        <source>Disables notifications when running a fullscreen application: movie player, game, etc.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1312,6 +1312,21 @@ changes upon establishing connection to the server</source>
     </message>
     <message>
         <source>Open chat with...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>NotificationManager</name>
+    <message>
+        <source>Notify about user</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to find notifier for %1 event</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

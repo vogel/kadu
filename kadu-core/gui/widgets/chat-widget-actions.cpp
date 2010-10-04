@@ -152,7 +152,7 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 	BlockUser = new ActionDescription(0,
 		ActionDescription::TypeUser, "blockUserAction",
 		this, SLOT(blockUserActionActivated(QAction *, bool)),
-		"kadu_icons/kadu-block", "kadu_icons/kadu-block", tr("Block Buddy..."), true, QString::null,
+		"kadu_icons/kadu-block", "kadu_icons/kadu-block", tr("Block buddy"), true, QString::null,
 		checkBlocking
 	);
 

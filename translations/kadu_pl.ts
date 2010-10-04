@@ -1096,20 +1096,20 @@
         <translation>Nowe wiadomości</translation>
     </message>
     <message>
-        <source>Silent Mode</source>
+        <source>Silent mode</source>
         <translation>Tryb cichy</translation>
     </message>
     <message>
-        <source>Enable Silent Mode when my status is set to 'Do not Disturb'</source>
-        <translation>Włącz tryb cichy gdy ustawię status 'Nie przeszkadzać'</translation>
+        <source>Disable notifications when my status is set to 'Do not Disturb'</source>
+        <translation>Wyłącz powiadomienia gdy ustawię status 'Nie przeszkadzać'</translation>
     </message>
     <message>
-        <source>Enable Silent Mode when a fullscreen application is active</source>
-        <translation>Włącz tryb cichy gdy aktywna jest aplikacja pełnoekranowa</translation>
+        <source>Disable notifications when a fullscreen application is active</source>
+        <translation>Wyłącz powiadomienia gdy aktywna jest aplikacja pełnoekranowa</translation>
     </message>
     <message>
-        <source>Enables Silent Mode when running a fullscreen application: movie player, game, etc.</source>
-        <translation>Włącza tryb cichy gdy zostanie wykryta aplikacja pełnoekranowa: odtwarzacz filmów, gra, itp.</translation>
+        <source>Disables notifications when running a fullscreen application: movie player, game, etc.</source>
+        <translation>Wyłącza powiadomienia gdy zostanie wykryta aplikacja pełnoekranowa: odtwarzacz filmów, gra, itp.</translation>
     </message>
     <message>
         <source>Status Change</source>
@@ -1884,8 +1884,8 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
         <translation>Ignoruj</translation>
     </message>
     <message>
-        <source>Block Buddy</source>
-        <translation>Blokuj kontakt</translation>
+        <source>Block buddy</source>
+        <translation>Blokuj znajomego</translation>
     </message>
     <message>
         <source>&amp;Chat</source>
@@ -2802,8 +2802,8 @@ Jeśli zechcesz włączyć (lub wyłączyć) któryś z nich, wystarczy dwukrotn
         <translation>Powiadom o kontakcie</translation>
     </message>
     <message>
-        <source>Show Notifications</source>
-        <translation>Wyświetlaj powiadomienia</translation>
+        <source>Enable notifications</source>
+        <translation>Włącz powiadomienia</translation>
     </message>
     <message>
         <source>Unable to find notifier for %1 event</source>

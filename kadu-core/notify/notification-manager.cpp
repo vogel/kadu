@@ -113,7 +113,7 @@ void NotificationManager::init()
 	SilentModeActionDescription = new ActionDescription(this,
 		ActionDescription::TypeGlobal, "silentModeAction",
 		this, SLOT(silentModeActionActivated(QAction *, bool)),
-		"kadu_icons/silent-mode-off", "kadu_icons/silent-mode-off", tr("Show Notifications"), true, tr("Show Notifications")
+		"kadu_icons/silent-mode-off", "kadu_icons/silent-mode-off", tr("Enable notifications"), true, tr("Enable notifications")
 	);
 	connect(SilentModeActionDescription, SIGNAL(actionCreated(Action *)), this, SLOT(silentModeActionCreated(Action *)));
 
