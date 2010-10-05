@@ -116,9 +116,6 @@ public:
 	virtual ~MainConfigurationWindow();
 
 	virtual void show();
-
-protected:
-	virtual void keyPressEvent(QKeyEvent *e);
 };
 
 #endif // MAIN_CONFIGURATION_WINDOW_H

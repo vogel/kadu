@@ -369,8 +369,3 @@ void MainConfigurationWindow::lookChatAdvancedDestroyed()
 {
 	lookChatAdvanced = 0;
 }
-
-void MainConfigurationWindow::keyPressEvent(QKeyEvent *e)
-{
-	ConfigurationWindow::keyPressEvent(e);
-}
