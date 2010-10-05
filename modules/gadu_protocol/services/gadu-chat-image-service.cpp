@@ -36,7 +36,7 @@
 #include "gadu-chat-image-service.h"
 
 GaduChatImageService::GaduChatImageService(GaduProtocol *protocol)
-	: Protocol(protocol), CurrentMinuteSendImageRequests(0)
+	: ChatImageService(protocol), Protocol(protocol), CurrentMinuteSendImageRequests(0)
 {
 }
 
