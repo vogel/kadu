@@ -34,9 +34,27 @@
 #define dup(x) x
 #endif
 
+DccSocketNotifiers::~DccSocketNotifiers()
+{
+	if (Socket)
+	{
+		Socket->destroy(Socket);
+		Socket = 0;
+	}
+
+	if (Socket7)
+	{
+		Socket7->destroy(Socket7);
+		Socket7 = 0;
+	}
+}
+
 void DccSocketNotifiers::watchFor(struct gg_dcc *socket)
 {
 	kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "%p\n", socket);
+
+	struct gg_dcc *oldSocket = Socket;
+	struct gg_dcc7 *oldSocket7 = Socket7;
 
 	Version = Dcc6;
 	Socket = socket;
@@ -49,11 +67,19 @@ void DccSocketNotifiers::watchFor(struct gg_dcc *socket)
 	}
 	else
 		GaduSocketNotifiers::watchFor(0);
+
+	if (oldSocket)
+		oldSocket->destroy(oldSocket);
+	if (oldSocket7)
+		oldSocket7->destroy(oldSocket7);
 }
 
 void DccSocketNotifiers::watchFor(struct gg_dcc7 *socket)
 {
 	kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "%p\n", socket);
+
+	struct gg_dcc *oldSocket = Socket;
+	struct gg_dcc7 *oldSocket7 = Socket7;
 
 	Version = Dcc7;
 	Socket = 0;
@@ -65,7 +91,7 @@ void DccSocketNotifiers::watchFor(struct gg_dcc7 *socket)
 
 		if (-1 == Socket7->fd) // wait for accept/reject
 		{
-			connect(Protocol->socketNotifiers(), SIGNAL(dcc7Accepted(struct gg_dcc7 *)), 
+			connect(Protocol->socketNotifiers(), SIGNAL(dcc7Accepted(struct gg_dcc7 *)),
 					this, SLOT(dcc7Accepted(struct gg_dcc7 *)));
 			connect(Protocol->socketNotifiers(), SIGNAL(dcc7Rejected(struct gg_dcc7 *)),
 					this, SLOT(dcc7Rejected(struct gg_dcc7 *)));
@@ -76,6 +102,11 @@ void DccSocketNotifiers::watchFor(struct gg_dcc7 *socket)
 	}
 	else
 		GaduSocketNotifiers::watchFor(0);
+
+	if (oldSocket)
+		oldSocket->destroy(oldSocket);
+	if (oldSocket7)
+		oldSocket7->destroy(oldSocket7);
 }
 
 void DccSocketNotifiers::dcc7Accepted(struct gg_dcc7 *socket)

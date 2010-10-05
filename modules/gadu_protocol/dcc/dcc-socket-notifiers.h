@@ -97,7 +97,9 @@ protected:
 public:
 	DccSocketNotifiers(GaduProtocol *protocol, DccManager *manager) :
 			GaduSocketNotifiers(manager), Protocol(protocol),
-			Manager(manager), FileTransferHandler(0), DccCheckField(0) {}
+			Manager(manager), FileTransferHandler(0), Version(DccUnknown),
+			Socket(0), Socket7(0), DccCheckField(0) {}
+	~DccSocketNotifiers();
 
 	void watchFor(struct gg_dcc *socket);
 	void watchFor(struct gg_dcc7 *socket);
