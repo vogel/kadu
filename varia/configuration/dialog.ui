@@ -349,7 +349,7 @@ Text is plain black." />
 			<group-box name="New Messages">
 				<check-box caption="Notify about new messages only when window is inactive" config-section="Notify" config-item="NewMessageOnlyIfInactive" />
 			</group-box>
-			<group-box name="Silent mode">
+			<group-box name="Silent Mode">
 				<check-box caption="Disable notifications when my status is set to 'Do not Disturb'" config-section="Notify" config-item="AwaySilentMode" id="notify/awaySilentMode" />
 				<check-box caption="Disable notifications when a fullscreen application is active" config-section="Notify" config-item="FullscreenSilentMode" id="notify/fullscreenSilentMode"
 					tool-tip="Disables notifications when running a fullscreen application: movie player, game, etc." />

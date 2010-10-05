@@ -44,7 +44,7 @@ BuddyOptionsConfigurationWidget::~BuddyOptionsConfigurationWidget()
 void BuddyOptionsConfigurationWidget::createGui()
 {
 	QVBoxLayout *layout = new QVBoxLayout(this);
-	
+
 	OfflineToCheckBox = new QCheckBox(tr("Allow buddy to see when I'm available"), this);
 	OfflineToCheckBox->setChecked(!MyBuddy.isOfflineTo());
 	layout->addWidget(OfflineToCheckBox);

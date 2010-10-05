@@ -1096,7 +1096,7 @@
         <translation>Nowe wiadomości</translation>
     </message>
     <message>
-        <source>Silent mode</source>
+        <source>Silent Mode</source>
         <translation>Tryb cichy</translation>
     </message>
     <message>
@@ -1884,7 +1884,7 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
         <translation>Ignoruj</translation>
     </message>
     <message>
-        <source>Block buddy</source>
+        <source>Block Buddy</source>
         <translation>Blokuj znajomego</translation>
     </message>
     <message>

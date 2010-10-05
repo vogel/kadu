@@ -546,6 +546,7 @@ void NotificationManager::configurationUpdated()
 	SilentModeWhenDnD = config_file.readBoolEntry("Notify", "AwaySilentMode", false);
 	SilentModeWhenFullscreen = config_file.readBoolEntry("Notify", "FullscreenSilentMode", false);
 	setSilentMode(config_file.readBoolEntry("Notify", "SilentMode", false));
+#if defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)
 	if (SilentModeWhenFullscreen)
 		FullScreenCheckTimer.start();
 	else
@@ -553,6 +554,7 @@ void NotificationManager::configurationUpdated()
 		FullScreenCheckTimer.stop();
 		IsFullScreen = false;
 	}
+#endif
 }
 
 void NotificationManager::createDefaultConfiguration()
@@ -587,12 +589,12 @@ ConfigurationUiHandler * NotificationManager::configurationUiHandler()
 
 void NotificationManager::checkFullScreen()
 {
-#ifdef Q_WS_X11
+#if defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)
 	bool wasFullScreen = IsFullScreen;
 	IsFullScreen = X11_checkFullScreen(QX11Info::display());
 	if (IsFullScreen != wasFullScreen)
 		emit silentModeToggled(IsFullScreen);
-#endif // Q_WS_X11
+#endif
 }
 
 void checkNotify(Action *action)

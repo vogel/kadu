@@ -1141,7 +1141,7 @@ E un rischio per la sicurezza!</translation>
         <translation>Nuovo messaggi</translation>
     </message>
     <message>
-        <source>Silent mode</source>
+        <source>Silent Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

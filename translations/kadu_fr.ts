@@ -1136,7 +1136,7 @@ Attention danger!
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Silent mode</source>
+        <source>Silent Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
