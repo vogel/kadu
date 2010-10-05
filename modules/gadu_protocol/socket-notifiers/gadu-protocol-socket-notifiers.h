@@ -69,7 +69,7 @@ protected:
 	virtual void connectionTimeout();
 
 public:
-	GaduProtocolSocketNotifiers(Account account, GaduProtocol *protocol, QObject *parent = 0);
+	GaduProtocolSocketNotifiers(Account account, GaduProtocol *protocol);
 	void setAccount(Account account) { CurrentAccount = account; }
 
 	void watchFor(gg_session *sess);

@@ -42,8 +42,8 @@
 
 #include "gadu-protocol-socket-notifiers.h"
 
-GaduProtocolSocketNotifiers::GaduProtocolSocketNotifiers(Account account, GaduProtocol *protocol, QObject *parent) :
-	GaduSocketNotifiers(parent), CurrentAccount(account), CurrentProtocol(protocol), Sess(0),
+GaduProtocolSocketNotifiers::GaduProtocolSocketNotifiers(Account account, GaduProtocol *protocol) :
+	GaduSocketNotifiers(protocol), CurrentAccount(account), CurrentProtocol(protocol), Sess(0),
 		Timeout(config_file.readUnsignedNumEntry("Network", "TimeoutInMs"))
 {
 }
