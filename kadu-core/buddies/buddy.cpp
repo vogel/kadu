@@ -202,14 +202,15 @@ QString Buddy::display() const
 
 	if (result.isEmpty())
 	{
-		Contact contact;
-		foreach (const Contact &con, data()->contacts())
-			contact = Contact::contactWithHigherStatus(contact, con);
-		if (contact)
+		if (!data()->contacts().isEmpty())
 		{
-			Account account = contact.contactAccount();
-			if (account)
-				result = account.accountIdentity().name() + ":" + id(account);
+			Contact contact = data()->contacts().first();
+			if (contact)
+			{
+				Account account = contact.contactAccount();
+				if (account)
+					result = account.accountIdentity().name() + ":" + contact.id();
+			}
 		}
 	}
 
