@@ -19,7 +19,7 @@
 ****************************************************************************/
 
 
-// VERSION: 1.07
+// VERSION: 1.08
 
 
 /*
@@ -39,6 +39,14 @@ KNOWN ISSUES:
 #include <string>
 #include <utility>
 #include <X11/Xlib.h>
+
+
+#ifdef DEBUG
+	#include <stdio.h>
+	#define _debug( ... ) printf( __VA_ARGS__ ); fflush( stdout );
+#else
+	#define _debug( ... )
+#endif
 
 
 #define  X11_ALLDESKTOPS                0xFFFFFFFFL  /*unsigned long*/

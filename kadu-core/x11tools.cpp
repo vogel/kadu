@@ -105,8 +105,9 @@ bool X11_isPropertyAtomSet( Display *display, Window window, const char *propert
 
 std::pair<int,int> X11_getResolution( Display *display )
 {
-	// we can use _NET_WORKAREA as well
-	return std::make_pair( DisplayWidth( display, 0 ), DisplayHeight( display, 0 ) );
+	return X11_getWindowSize( display, DefaultRootWindow( display ) );
+	// neither XDisplayWidth/XDisplayHeight nor _NET_WORKAREA work for Gnome :|
+	// they do not get updated after resolution change
 }
 
 
@@ -114,14 +115,10 @@ std::pair<int,int> X11_getDesktopSize( Display *display )
 {
 	unsigned long width;
 	if( ! X11_getCardinalProperty( display, DefaultRootWindow( display ), "_NET_DESKTOP_GEOMETRY", &width, 0 ) )
-	{
 		return std::make_pair( 0, 0 );
-	}
 	unsigned long height;
 	if( ! X11_getCardinalProperty( display, DefaultRootWindow( display ), "_NET_DESKTOP_GEOMETRY", &height, 1 ) )
-	{
 		return std::make_pair( 0, 0 );
-	}
 	return std::make_pair( width, height );
 }
 
@@ -145,23 +142,14 @@ std::pair<int,int> X11_getMousePos( Display *display )
 
 bool X11_isFreeDesktopCompatible( Display *display )
 {
-	if( X11_getDesktopsCount( display, true ) != 1 )
-	{
-		// _NET multiple desktops, FreeDesktop compatible
+	if( X11_getDesktopsCount( display, true ) != 1 ) // _NET multiple desktops, FreeDesktop compatible
 		return true;
-	}
 	std::pair<int,int> resolution  = X11_getResolution(  display );
 	std::pair<int,int> desktopsize = X11_getDesktopSize( display );
-	if( resolution == desktopsize )
-	{
-		// one desktop only, so we don't have to care
+	if( resolution == desktopsize ) // one desktop only, so we don't have to care
 		return true;
-	}
-	if( ( desktopsize.first % resolution.first != 0 ) || ( desktopsize.second % resolution.second != 0 ) )
-	{
-		// virtual resolution
+	if( ( desktopsize.first % resolution.first != 0 ) || ( desktopsize.second % resolution.second != 0 ) ) // virtual resolution
 		return true;
-	}
 	// not FreeDesktop compatible :(
 	return false;
 }
@@ -181,9 +169,7 @@ unsigned long X11_getDesktopsCount( Display *display, bool forceFreeDesktop )
 	{
 		unsigned long value;
 		if( ! X11_getCardinalProperty( display, DefaultRootWindow( display ), "_NET_NUMBER_OF_DESKTOPS", &value ) )
-		{
 			return 0;
-		}
 		return value;
 	}
 }
@@ -205,9 +191,7 @@ unsigned long X11_getCurrentDesktop( Display *display, bool forceFreeDesktop )
 	{
 		unsigned long desktop;
 		if( ! X11_getCardinalProperty( display, DefaultRootWindow( display ), "_NET_CURRENT_DESKTOP", &desktop ) )
-		{
 			return X11_NODESKTOP;
-		}
 		return desktop;
 	}
 }
@@ -296,9 +280,7 @@ unsigned long X11_getDesktopOfWindow( Display *display, Window window, bool forc
 	XWindowAttributes xwa;
 	XGetWindowAttributes( display, window, &xwa );
 	if( xwa.map_state == IsUnmapped )
-	{
 		return X11_NODESKTOP;
-	}
 	if( ( ! forceFreeDesktop ) && ( ! X11_isFreeDesktopCompatible( display ) ) )
 	{
 		unsigned long currentdesktop = X11_getCurrentDesktop( display, forceFreeDesktop );
@@ -314,13 +296,9 @@ unsigned long X11_getDesktopOfWindow( Display *display, Window window, bool forc
 		}
 		unsigned long desktopofwindow = currentdesktop + ( pos.second / resolution.second ) * ( desktopsize.first / resolution.first ) + ( pos.first / resolution.first );
 		if( pos.first < 0 )
-		{
 			desktopofwindow -= 1;
-		}
 		if( pos.second < 0 )
-		{
 			desktopofwindow -= ( desktopsize.first / resolution.first );
-		}
 		desktopofwindow %= X11_getDesktopsCount( display, forceFreeDesktop );
 		return desktopofwindow;
 	}
@@ -328,9 +306,7 @@ unsigned long X11_getDesktopOfWindow( Display *display, Window window, bool forc
 	{
 		unsigned long desktopofwindow;
 		if( ! X11_getCardinalProperty( display, window, "_NET_WM_DESKTOP", &desktopofwindow ) )
-		{
 			return X11_NODESKTOP;
-		}
 		return desktopofwindow;
 	}
 }
@@ -351,14 +327,10 @@ void X11_moveWindowToDesktop( Display *display, Window window, unsigned long des
 		{
 			int oldx = pos.first % resolution.first;
 			if( oldx < 0 )
-			{
 				oldx += resolution.first;
-			}
 			int oldy = pos.second % resolution.second;
 			if( oldy < 0 )
-			{
 				oldy += resolution.second;
-			}
 			newx = ( pos.first  - oldx + x ) + ddx * resolution.first;
 			newy = ( pos.second - oldy + y ) + ddy * resolution.second;
 		}
@@ -383,9 +355,7 @@ void X11_moveWindowToDesktop( Display *display, Window window, unsigned long des
 		XSendEvent( display, DefaultRootWindow( display ), False, SubstructureNotifyMask | SubstructureRedirectMask, &xev );
 		XFlush( display );
 		if( position )
-		{
 			X11_moveWindow( display, window, x, y );
-		}
 	}
 }
 
@@ -454,9 +424,7 @@ bool X11_isWindowFullyVisible( Display *display, Window window )
 		while( k < nchildren )
 		{
 			if( children[k] == window )
-			{
 				break;
-			}
 			k++;
 		}
 		Atom typedock = XInternAtom( display, "_NET_WM_WINDOW_TYPE_DOCK", False );
@@ -488,9 +456,7 @@ bool X11_isWindowFullyVisible( Display *display, Window window )
 				Atom type;
 				bool hastype = false;
 				if( X11_getFirstPropertyAtom( display, children[k], "_NET_WM_WINDOW_TYPE", &type ) )
-				{
 					hastype = true;
-				}
 				if( ! hastype )
 				{
 					Window window2 = children[k];
@@ -503,15 +469,11 @@ bool X11_isWindowFullyVisible( Display *display, Window window )
 						{
 							window2 = children2[0];
 							if( X11_getFirstPropertyAtom( display, window2, "_NET_WM_WINDOW_TYPE", &type ) )
-							{
 								hastype = true;
-							}
 							XFree( children2 );
 						}
 						else
-						{
 							break;
-						}
 					}
 				}
 				if( ( hastype ) && ( type != typedock ) && ( type != typemenu ) )
@@ -544,58 +506,56 @@ void X11_shadeWindow( Display *display, Window window, bool shade )
 
 std::pair<int,int> X11_getWindowPos( Display *display, Window window )
 {
+	if( window == None )
+		return std::make_pair( 0, 0 );
 	Window parent = window;
 	Window root;
 	Window *children;
 	unsigned int nchildren;
-	while( parent != DefaultRootWindow( display ) )
+	if( window != DefaultRootWindow( display ) )
 	{
-		window = parent;
-		if( XQueryTree( display, window, &root, &parent, &children, &nchildren ) == 0 )
+		while( parent != DefaultRootWindow( display ) )
 		{
-			return std::make_pair( 0, 0 );
+			window = parent;
+			if( XQueryTree( display, window, &root, &parent, &children, &nchildren ) == 0 )
+				return std::make_pair( 0, 0 );
+			XFree( children );
 		}
-		XFree( children );
-	}
-	if( window == DefaultRootWindow( display ) )
-	{
-		return std::make_pair( 0, 0 );
+		if( window == DefaultRootWindow( display ) )
+			return std::make_pair( 0, 0 );
 	}
 	int x, y;
 	unsigned int width, height, border, depth;
 	if( XGetGeometry( display, window, &root, &x, &y, &width, &height, &border, &depth ) == 0 )
-	{
 		return std::make_pair( 0, 0 );
-	}
 	return std::make_pair( x, y );
 }
 
 
 std::pair<int,int> X11_getWindowSize( Display *display, Window window )
 {
+	if( window == None )
+		return std::make_pair( 0, 0 );
 	Window parent = window;
 	Window root;
 	Window *children;
 	unsigned int nchildren;
-	while( parent != DefaultRootWindow( display ) )
+	if( window != DefaultRootWindow( display ) )
 	{
-		window = parent;
-		if( XQueryTree( display, window, &root, &parent, &children, &nchildren ) == 0 )
+		while( parent != DefaultRootWindow( display ) )
 		{
-			return std::make_pair( 0, 0 );
+			window = parent;
+			if( XQueryTree( display, window, &root, &parent, &children, &nchildren ) == 0 )
+				return std::make_pair( 0, 0 );
+			XFree( children );
 		}
-		XFree( children );
-	}
-	if( window == DefaultRootWindow( display ) )
-	{
-		return std::make_pair( 0, 0 );
+		if( window == DefaultRootWindow( display ) )
+			return std::make_pair( 0, 0 );
 	}
 	int x, y;
 	unsigned int width, height, border, depth;
 	if( XGetGeometry( display, window, &root, &x, &y, &width, &height, &border, &depth ) == 0 )
-	{
 		return std::make_pair( 0, 0 );
-	}
 	return std::make_pair( width + 2*border, height + 2*border );
 }
 
@@ -606,10 +566,8 @@ std::pair<int,int> X11_getWindowFramelessSize( Display *display, Window window )
 	int x, y;
 	unsigned int width, height, border, depth;
 	if( XGetGeometry( display, window, &root, &x, &y, &width, &height, &border, &depth ) == 0 )
-	{
 		return std::make_pair( 0, 0 );
-	}
-	return std::make_pair( width + 2*border, height + 2*border );
+	return std::make_pair( width - 2*border, height - 2*border );
 }
 
 
@@ -623,9 +581,7 @@ void X11_moveWindow( Display *display, Window window, int x, int y )
 void X11_centerWindow( Display *display, Window window, unsigned long desktop, bool forceFreeDesktop )
 {
 	if( desktop == X11_NODESKTOP )
-	{
 		desktop = X11_getCurrentDesktop( display, forceFreeDesktop );
-	}
 	if( ( ! forceFreeDesktop ) && ( ! X11_isFreeDesktopCompatible( display ) ) )
 	{
 		std::pair<int,int> resolution = X11_getResolution( display );
@@ -637,9 +593,7 @@ void X11_centerWindow( Display *display, Window window, unsigned long desktop, b
 	else
 	{
 		if( X11_getDesktopOfWindow( display, window, true ) != desktop )
-		{
 			X11_moveWindowToDesktop( display, window, desktop, true );
-		}
 		std::pair<int,int> resolution = X11_getResolution( display );
 		std::pair<int,int> size = X11_getWindowSize( display, window );
 		int cx = ( resolution.first  - size.first  ) / 2;
@@ -755,9 +709,7 @@ Window X11_getLatestCreatedWindow( Display *display )
 	unsigned int nchildren;
 	XQueryTree( display, DefaultRootWindow( display ), &root, &parent, &children, &nchildren );
 	if( children != NULL )
-	{
 		window = children[nchildren-1];
-	}
 	XFree( children );
 	return window;
 }
@@ -881,18 +833,25 @@ void X11_windowSetDecoration( Display *display, Window window, bool set )
 }
 
 
-
-
 bool X11_checkFullScreen( Display *display )
 {
+	_debug( "[A]" );
 	Window wa = X11_getActiveWindow( display );
 	if( wa != None )
 		if( X11_isPropertyAtomSet( display, wa, "_NET_WM_STATE", "_NET_WM_STATE_FULLSCREEN" ) )
 			return true;
+	_debug( "[B]" )
 	Window wt = X11_getTopMostWindow( display );
 	if( wt != None )
 		if( X11_isPropertyAtomSet( display, wt, "_NET_WM_STATE", "_NET_WM_STATE_FULLSCREEN" ) )
 			return true;
+	_debug( "[C]" );
+	std::pair<int,int> resolution = X11_getResolution( display );
+	_debug( "[RES=%dx%d]", resolution.first, resolution.second );
+	_debug( "[wa=%dx%d]", X11_getWindowSize( display, wa ).first, X11_getWindowSize( display, wa ).second );
+	_debug( "[wt=%dx%d]", X11_getWindowSize( display, wt ).first, X11_getWindowSize( display, wt ).second );
+	unsigned long currentdesktop = X11_getCurrentDesktop( display );
+	_debug( "[cD=%d]", currentdesktop );
 	int status = XGrabPointer(
 		display,
 		DefaultRootWindow( display ),
@@ -906,57 +865,99 @@ bool X11_checkFullScreen( Display *display )
 	);
 	if( status != GrabSuccess )
 	{
+		_debug( "[D]" );
 		if( wt != None )
-			if( X11_getWindowSize( display, wt ) == X11_getResolution( display ) )
-				return true;
+			if( X11_getWindowSize( display, wt ) == resolution )
+			{
+				_debug( "[D2]" );
+				if(
+						X11_isPropertyAtomSet( display, wt, "_NET_WM_STATE", "_NET_WM_STATE_MAXIMIZED_HORZ" ) &&
+						X11_isPropertyAtomSet( display, wt, "_NET_WM_STATE", "_NET_WM_STATE_MAXIMIZED_VERT" ) &&
+						X11_getDesktopOfWindow( display, wt ) == currentdesktop
+					)
+					return false;
+				_debug( "[D3]" );
+				_debug( "[wtD=%d]", X11_getDesktopOfWindow( display, wt ) );
+				if( X11_getDesktopOfWindow( display, wt ) == currentdesktop )
+					return true;
+				_debug( "[D4]" );
+			}
+		_debug( "[E]" );
 		Window wl = X11_getLatestCreatedWindow( display );
+		_debug( "[wl=%dx%d]", X11_getWindowSize( display, wl ).first, X11_getWindowSize( display, wl ).second );
 		if( wl != None )
-			if( X11_getWindowSize( display, wl ) == X11_getResolution( display ) )
+			if( X11_getWindowSize( display, wl ) == resolution )
+			{
+				_debug( "[E2]" );
+				_debug( "[wlD=%d]", X11_getDesktopOfWindow( display, wl ) );
+				if(
+						X11_isPropertyAtomSet( display, wl, "_NET_WM_STATE", "_NET_WM_STATE_MAXIMIZED_HORZ" ) &&
+						X11_isPropertyAtomSet( display, wl, "_NET_WM_STATE", "_NET_WM_STATE_MAXIMIZED_VERT" ) &&
+						X11_getDesktopOfWindow( display, wl ) == currentdesktop
+					)
+					return false;
+				_debug( "[E3]" );
 				return true;
+			}
+		_debug( "[F]" );
 		if( wl != None )
 		{
+			_debug( "[F2]" );
 			Atom wl_type;
 			if( X11_getFirstPropertyAtom( display, wl, "_NET_WM_WINDOW_TYPE", &wl_type ) && ( wl_type != None ) )
 			{
-				Atom type_dock         = XInternAtom( display, "_NET_WM_WINDOW_TYPE_DOCK"         , False );
+				_debug( "[F3]" );
+				_debug( "[wlT=%d]", wl_type );
 				Atom type_toolbar      = XInternAtom( display, "_NET_WM_WINDOW_TYPE_TOOLBAR"      , False );
 				Atom type_menu         = XInternAtom( display, "_NET_WM_WINDOW_TYPE_MENU"         , False );
 				Atom type_dropdownmenu = XInternAtom( display, "_NET_WM_WINDOW_TYPE_DROPDOWN_MENU", False );
 				Atom type_popupmenu    = XInternAtom( display, "_NET_WM_WINDOW_TYPE_POPUP_MENU"   , False );
 				Atom type_combo        = XInternAtom( display, "_NET_WM_WINDOW_TYPE_COMBO"        , False );
 				if(
-					( wl_type == type_dock         ) ||
 					( wl_type == type_toolbar      ) ||
 					( wl_type == type_menu         ) ||
 					( wl_type == type_dropdownmenu ) ||
 					( wl_type == type_popupmenu    ) ||
 					( wl_type == type_combo        )
 					)
+				{
+					_debug( "[Ttoolbar=%d]"     , type_toolbar      );
+					_debug( "[Tmenu=%d]"        , type_menu         );
+					_debug( "[Tdropdownmenu=%d]", type_dropdownmenu );
+					_debug( "[Tpopupmenu=%d]"   , type_popupmenu    );
+					_debug( "[Tcombo=%d]"       , type_combo        );
 					return false;
+				}
+				_debug( "[F4]" );
 			}
 		}
+		_debug( "[G]" );
 		if( ( wa != None ) && ( wt == wa ) )
 		{
+			_debug( "[G2]" );
 			if( wl != None )
 			{
+				_debug( "[G3]" );
 				XWindowAttributes attr;
 				Status status = XGetWindowAttributes( display, wl, &attr );
 				if( status != 0 )
 					if( ( attr.all_event_masks & ( ButtonPressMask | ButtonReleaseMask | KeyPressMask | KeyReleaseMask ) ) == 0 )
 						return false;
+				_debug( "[G4]" );
 			}
+			_debug( "[G5]" );
 			return true;
 		}
-		if( ( wa != None ) && ( wl != None ) )
-			if( ( (int)wa - (int)wl ) == 1 )
-				return true;
+		_debug( "[I]" );
 		return false;
 	}
 	else
 	{
+		_debug( "[J]" );
 		XUngrabPointer( display, CurrentTime );
 		XFlush( display );
 	}
+	_debug( "[Z]" );
 	return false;
 }
 
