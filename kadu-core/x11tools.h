@@ -19,7 +19,7 @@
 ****************************************************************************/
 
 
-// VERSION: 1.04.00
+// VERSION: 1.07
 
 
 /*
@@ -92,6 +92,8 @@ void X11_resizeWindow( Display *display, Window window, int width, int height );
 Window X11_getActiveWindow( Display *display );
 void X11_setActiveWindow( Display *display, Window window );
 void X11_setActiveWindowCheck( Display *display, Window window, bool forceFreeDesktop = false );
+Window X11_getTopMostWindow( Display *display );
+Window X11_getLatestCreatedWindow( Display *display );
 
 Window X11_getWindowUnderCursor( Display *display, int *rootx = NULL, int *rooty = NULL, int *windowx = NULL, int *windowy = NULL );
 Window X11_getInnerMostWindowUnderCursor( Display *display, int *rootx = NULL, int *rooty = NULL, int *windowx = NULL, int *windowy = NULL );
@@ -102,6 +104,12 @@ std::string X11_getWindowRole( Display *display, Window window );
 void X11_windowSendXEvent( Display *display, Window window, const char *type, const char *message, bool set );
 void X11_windowChangeProperty( Display *display, Window window, const char *property, const char *value );
 void X11_windowSetDecoration( Display *display, Window window, bool set );
+
+bool X11_checkFullScreen( Display *display );
+
+void X11_waitForWindowMapped( Display *display, Window window );
+
+bool X11_isCompositingManagerRunning( Display *display );
 
 
 #endif

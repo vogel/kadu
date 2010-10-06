@@ -195,7 +195,9 @@ void Hint::updateText()
 		}
 	}
 
-	label->setText(" " + text.replace(" ", "&nbsp;").replace("\n", "<br />"));
+	// this does not work
+	//label->setText(" " + text.replace(" ", "&nbsp;").replace("\n", "<br />"));
+	label->setText(" " + text.replace("\n", "<br />"));
 
 	emit updated(this);
 }

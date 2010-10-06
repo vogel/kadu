@@ -26,6 +26,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QX11Info>
 #include <QtGui/QApplication>
 
 #include "accounts/account.h"
@@ -59,6 +60,11 @@
 #include "new-message-notification.h"
 #include "status-changed-notification.h"
 
+#include "x11tools.h" // this should be included as last one,
+#undef Status         // and Status defined by Xlib.h must be undefined
+
+#define FULLSCREENCHECKTIMER_INTERVAL 2000 /*ms*/
+
 NotificationManager *NotificationManager::Instance = 0;
 
 NotificationManager * NotificationManager::instance()
@@ -86,6 +92,12 @@ void NotificationManager::init()
 	UiHandler = new NotifyConfigurationUiHandler(this);
 	MainConfigurationWindow::registerUiHandler(UiHandler);
 
+	SilentMode = false;
+
+	FullScreenCheckTimer.setInterval(FULLSCREENCHECKTIMER_INTERVAL);
+	connect(&FullScreenCheckTimer, SIGNAL(timeout()), this, SLOT(checkFullScreen()));
+	IsFullScreen = false;
+
 	createDefaultConfiguration();
 	configurationUpdated();
 	AutoSilentMode = false;
@@ -102,7 +114,7 @@ void NotificationManager::init()
 	SilentModeActionDescription = new ActionDescription(this,
 		ActionDescription::TypeGlobal, "silentModeAction",
 		this, SLOT(silentModeActionActivated(QAction *, bool)),
-		"kadu_icons/silent-mode-off", "kadu_icons/silent-mode-off", tr("Show Notifications"), true, tr("Show Notifications")
+		"kadu_icons/silent-mode-off", "kadu_icons/silent-mode-off", tr("Enable notifications"), true, tr("Enable notifications")
 	);
 	connect(SilentModeActionDescription, SIGNAL(actionCreated(Action *)), this, SLOT(silentModeActionCreated(Action *)));
 
@@ -119,6 +131,8 @@ NotificationManager::~NotificationManager()
 {
 	kdebugf();
 
+	FullScreenCheckTimer.stop();
+
 	MainConfigurationWindow::unregisterUiHandler(UiHandler);
 
 	StatusChangedNotification::unregisterEvents();
@@ -133,6 +147,20 @@ NotificationManager::~NotificationManager()
 	}
 
 	kdebugf2();
+}
+
+void NotificationManager::setSilentMode(bool silentMode)
+{
+	if (silentMode != SilentMode)
+	{
+		SilentMode = silentMode;
+		emit silentModeToggled(SilentMode);
+	}
+}
+
+bool NotificationManager::silentMode()
+{
+	return SilentMode || (IsFullScreen && config_file.readBoolEntry("Notify", "FullscreenSilentMode", false));
 }
 
 void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool toggled)
@@ -201,7 +229,7 @@ void NotificationManager::silentModeActionActivated(QAction *sender, bool toggle
 {
 	Q_UNUSED(sender)
 
-	SilentMode = !toggled;
+	setSilentMode(!toggled);
 	foreach (Action *action, SilentModeActionDescription->actions())
 		action->setChecked(toggled);
 
@@ -210,14 +238,14 @@ void NotificationManager::silentModeActionActivated(QAction *sender, bool toggle
 
 void NotificationManager::statusChanged()
 {
-	if (SilentModeWhenDnD && !SilentMode && StatusContainerManager::instance()->status().type() == "DoNotDisturb")
+	if (SilentModeWhenDnD && !silentMode() && StatusContainerManager::instance()->status().type() == "DoNotDisturb")
 	{
 		foreach (Action *action, SilentModeActionDescription->actions())
 			action->setChecked(false);
 
 		AutoSilentMode = true;
 	}
-	else if (!SilentMode && AutoSilentMode)
+	else if (!silentMode() && AutoSilentMode)
 	{
 		foreach (Action *action, SilentModeActionDescription->actions())
 			action->setChecked(true);
@@ -417,7 +445,7 @@ QList<NotifyEvent *> NotificationManager::notifyEvents()
 
 bool NotificationManager::ignoreNotifications()
 {
-	if (SilentMode)
+	if (silentMode())
 		return true;
 
 	if (AutoSilentMode)
@@ -515,8 +543,18 @@ void NotificationManager::groupUpdated()
 void NotificationManager::configurationUpdated()
 {
 	NotifyAboutAll = config_file.readBoolEntry("Notify", "NotifyAboutAll");
-	SilentMode = config_file.readBoolEntry("Notify", "SilentMode", false);
 	SilentModeWhenDnD = config_file.readBoolEntry("Notify", "AwaySilentMode", false);
+	SilentModeWhenFullscreen = config_file.readBoolEntry("Notify", "FullscreenSilentMode", false);
+	setSilentMode(config_file.readBoolEntry("Notify", "SilentMode", false));
+#if defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)
+	if (SilentModeWhenFullscreen)
+		FullScreenCheckTimer.start();
+	else
+	{
+		FullScreenCheckTimer.stop();
+		IsFullScreen = false;
+	}
+#endif
 }
 
 void NotificationManager::createDefaultConfiguration()
@@ -547,6 +585,16 @@ QString NotificationManager::notifyConfigurationKey(const QString &eventType)
 ConfigurationUiHandler * NotificationManager::configurationUiHandler()
 {
 	return UiHandler;
+}
+
+void NotificationManager::checkFullScreen()
+{
+#if defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)
+	bool wasSilent = silentMode();
+	IsFullScreen = X11_checkFullScreen(QX11Info::display());
+	if (silentMode() != wasSilent)
+		emit silentModeToggled(silentMode());
+#endif
 }
 
 void checkNotify(Action *action)

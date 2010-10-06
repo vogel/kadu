@@ -1162,6 +1162,22 @@ It&apos;s a high security risk!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Silent Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disable notifications when my status is set to 'Do not Disturb'</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disable notifications when a fullscreen application is active</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disables notifications when running a fullscreen application: movie player, game, etc.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Notify about new messages only when window is inactive</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1170,7 +1186,7 @@ It&apos;s a high security risk!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Ignore status changes from available / busy to busy / available</source>
+        <source>Ignore status changes from available/busy to busy/available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1179,7 +1195,7 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source>This option will supersede tooltips with users&apos; status
- changes upon establishing connection to the server</source>
+changes upon establishing connection to the server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1294,6 +1310,21 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source>Open chat with...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>NotificationManager</name>
+    <message>
+        <source>Notify about user</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to find notifier for %1 event</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

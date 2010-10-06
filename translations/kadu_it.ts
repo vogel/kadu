@@ -1141,6 +1141,22 @@ E un rischio per la sicurezza!</translation>
         <translation>Nuovo messaggi</translation>
     </message>
     <message>
+        <source>Silent Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disable notifications when my status is set to 'Do not Disturb'</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disable notifications when a fullscreen application is active</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disables notifications when running a fullscreen application: movie player, game, etc.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Notify about new messages only when window is inactive</source>
         <translation>Notifica nuovi messaggi per la finestra inattiva</translation>
     </message>
@@ -1149,7 +1165,7 @@ E un rischio per la sicurezza!</translation>
         <translation>Cambiamente dello status</translation>
     </message>
     <message>
-        <source>Ignore status changes from available / busy to busy / available</source>
+        <source>Ignore status changes from available/busy to busy/available</source>
         <translation>Ignora i cambiament dello status da disponibile / occupato a disponibile / occupato</translation>
     </message>
     <message>
@@ -1158,7 +1174,7 @@ E un rischio per la sicurezza!</translation>
     </message>
     <message>
         <source>This option will supersede tooltips with users&apos; status
- changes upon establishing connection to the server</source>
+changes upon establishing connection to the server</source>
         <translation>Questa opzione disattiva comparsa delle notifiche con status dei contatti
 durante primo colegamento Kadu con serwer</translation>
     </message>
@@ -1303,6 +1319,21 @@ durante primo colegamento Kadu con serwer</translation>
     <message>
         <source>Open chat with...</source>
         <translation>Apri finestra di Chat con...</translation>
+    </message>
+</context>
+<context>
+    <name>NotificationManager</name>
+    <message>
+        <source>Notify about user</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to find notifier for %1 event</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

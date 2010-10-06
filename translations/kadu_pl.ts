@@ -688,8 +688,8 @@
         <translation>Informuj o nowych wiadomościach tylko gdy okno rozmowy jest nieaktywne</translation>
     </message>
     <message>
-        <source>Ignore status changes from available / busy to busy / available</source>
-        <translation>Ignoruj zmiany statusów z dostępny / zajęty na zajęty / dostępny</translation>
+        <source>Ignore status changes from available/busy to busy/available</source>
+        <translation>Ignoruj zmiany statusów z dostępny/zajęty na zajęty/dostępny</translation>
     </message>
     <message>
         <source>Ignore changes right after connection to the server</source>
@@ -1100,8 +1100,16 @@
         <translation>Tryb cichy</translation>
     </message>
     <message>
-        <source>Enable Silent Mode when Do not Disturb</source>
-        <translation>Włącz tryb cichy gdy mam status Nie przeszkadzać</translation>
+        <source>Disable notifications when my status is set to 'Do not Disturb'</source>
+        <translation>Wyłącz powiadomienia gdy ustawię status 'Nie przeszkadzać'</translation>
+    </message>
+    <message>
+        <source>Disable notifications when a fullscreen application is active</source>
+        <translation>Wyłącz powiadomienia gdy aktywna jest aplikacja pełnoekranowa</translation>
+    </message>
+    <message>
+        <source>Disables notifications when running a fullscreen application: movie player, game, etc.</source>
+        <translation>Wyłącza powiadomienia gdy zostanie wykryta aplikacja pełnoekranowa: odtwarzacz filmów, gra, itp.</translation>
     </message>
     <message>
         <source>Status Change</source>
@@ -1109,7 +1117,7 @@
     </message>
     <message>
         <source>This option will supersede tooltips with buddies&apos; status
- changes upon establishing connection to the server</source>
+changes upon establishing connection to the server</source>
         <translation>Ta opcja spowoduje nie wyświetlenie dymków o zmianie statusu
 kontaktów po połączeniu się z serwerem</translation>
     </message>
@@ -1877,7 +1885,7 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
     </message>
     <message>
         <source>Block Buddy</source>
-        <translation>Blokuj kontakt</translation>
+        <translation>Blokuj znajomego</translation>
     </message>
     <message>
         <source>&amp;Chat</source>
@@ -2794,8 +2802,8 @@ Jeśli zechcesz włączyć (lub wyłączyć) któryś z nich, wystarczy dwukrotn
         <translation>Powiadom o kontakcie</translation>
     </message>
     <message>
-        <source>Show Notifications</source>
-        <translation>Wyświetlaj powiadomienia</translation>
+        <source>Enable notifications</source>
+        <translation>Włącz powiadomienia</translation>
     </message>
     <message>
         <source>Unable to find notifier for %1 event</source>

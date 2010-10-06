@@ -166,6 +166,11 @@ MainConfigurationWindow::MainConfigurationWindow()
 	((QWidget *)(widget()->widgetById("startup")))->hide();
 #endif
 
+#ifndef Q_WS_X11
+	((QWidget *)(widget()->widgetById("windowActivationMethodGroup")))->hide();
+	((QWidget *)(widget()->widgetById("notify/fullscreenSilentMode")))->hide();
+#endif
+
 	onStartupSetLastDescription = dynamic_cast<QCheckBox *>(widget()->widgetById("onStartupSetLastDescription"));
 	QLineEdit *disconnectDescription = dynamic_cast<QLineEdit *>(widget()->widgetById("disconnectDescription"));
 	QLineEdit *onStartupSetDescription = dynamic_cast<QLineEdit *>(widget()->widgetById("onStartupSetDescription"));
@@ -233,7 +238,7 @@ MainConfigurationWindow::MainConfigurationWindow()
 	connect(userboxTransparency, SIGNAL(toggled(bool)), widget()->widgetById("userboxAlpha"), SLOT(setEnabled(bool)));
 
 	buddyColors = new BuddyListBackgroundColorsWidget(this);
-	
+
 	triggerCompositingStateChanged();
 }
 
