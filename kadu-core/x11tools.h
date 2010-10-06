@@ -27,12 +27,12 @@ KNOWN ISSUES:
 - Compiz does not return window decoration width and height, however
   it includes it when moving window.
 - SetCurrentDesktop() won't work for vertical desktop switching when
-  the Compiz's Cube is active (this seems to be a Cube bug)
+  the Compiz's Cube is active (this seems to be the Cube bug)
 */
 
 
-#ifndef __X11TOOLS_H
-	#define __X11TOOLS_H
+#ifndef X11TOOLS_H
+	#define X11TOOLS_H
 
 
 #include <stdint.h>
@@ -41,7 +41,7 @@ KNOWN ISSUES:
 #include <X11/Xlib.h>
 
 
-#ifdef DEBUG
+#ifdef X11TOOLSDEBUG
 	#include <stdio.h>
 	#define _debug( ... ) printf( __VA_ARGS__ ); fflush( stdout );
 #else
