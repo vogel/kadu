@@ -52,18 +52,18 @@ class QLayout;
 
 class KADUAPI ConfigGroupBox
 {
-	QString name;
-	ConfigTab *configTab;
+	QString Name;
+	ConfigTab *MyConfigTab;
 
-	QGroupBox *groupBox;
-	QWidget *container;
-	QGridLayout *gridLayout;
+	QGroupBox *GroupBox;
+	QWidget *Container;
+	QGridLayout *GridLayout;
 
 public:
 	ConfigGroupBox(const QString &name, ConfigTab *configTab, QGroupBox *groupBox);
 	~ConfigGroupBox();
 
-	QWidget * widget() { return container; }
+	QWidget * widget() const { return Container; }
 
 	/**
 		Dodaje widget do GroupBoxa.
@@ -87,7 +87,7 @@ public:
 		Zwraca true, gdy GroupBox nie posiada w sobie żadnych widgetów.
 		@return true, gdy GroupBox nie posiada w sobie żadnych widgetów
 	 **/
-	bool empty();
+	bool empty() const;
 
 };
 

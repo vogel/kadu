@@ -37,7 +37,7 @@ ConfigTab::ConfigTab(const QString &name, ConfigSection *configSection, QWidget 
 	MyScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	MyScrollArea->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-	MyMainWidget = new QWidget(mainWidget);
+	MyMainWidget = new QWidget(MyScrollArea);
 	MyMainWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	MyMainLayout = new QVBoxLayout(MyMainWidget);
 	MyMainLayout->addStretch(1);
@@ -85,7 +85,7 @@ ConfigGroupBox *ConfigTab::configGroupBox(const QString &name, bool create)
 	return newConfigGroupBox;
 }
 
-QWidget * ConfigTab::scrollWidget()
+QWidget * ConfigTab::scrollWidget() const
 {
 	return MyScrollArea;
 }

@@ -41,19 +41,19 @@ class ConfigSection : public QObject
 {
 	Q_OBJECT
 
-	QString name;
-	ConfigurationWidget *configurationWidget;
-	QString iconPath;
+	QString Name;
+	ConfigurationWidget *MyConfigurationWidget;
+	QString IconPath;
 
-	QListWidgetItem *listWidgetItem;
-	bool activated;
-	QMap<QString, ConfigTab *> configTabs;
+	QListWidgetItem *ListWidgetItem;
+	bool Activated;
+	QMap<QString, ConfigTab *> ConfigTabs;
 
-	QWidget *parentConfigGroupBoxWidget;
-	QWidget *mainWidget;
-	QTabWidget *tabWidget;
+	QWidget *ParentConfigGroupBoxWidget;
+	QWidget *MainWidget;
+	QTabWidget *TabWidget;
 
-	ConfigTab *configTab(const QString &name, bool create = true);
+	ConfigTab * configTab(const QString &name, bool create = true);
 
 	void switchTabView(bool tabView);
 
@@ -67,8 +67,8 @@ public:
 
 	void activate();
 
-	void show() { mainWidget->show(); }
-	void hide() { mainWidget->hide(); }
+	void show() { MainWidget->show(); }
+	void hide() { MainWidget->hide(); }
 
 	ConfigGroupBox * configGroupBox(const QString &tab, const QString &groupBox, bool create = true);
 

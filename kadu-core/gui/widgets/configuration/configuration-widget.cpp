@@ -58,48 +58,48 @@
 
 #include "debug.h"
 
-ConfigurationWidget::ConfigurationWidget(ConfigurationWindowDataManager *dataManager, QWidget *parent)
-	: QWidget(parent), currentSection(0), dataManager(dataManager)
+ConfigurationWidget::ConfigurationWidget(ConfigurationWindowDataManager *dataManager, QWidget *parent) :
+		QWidget(parent), CurrentSection(0), DataManager(dataManager)
 {
 	QHBoxLayout *center_layout = new QHBoxLayout(this);
 	center_layout->setMargin(0);
 	center_layout->setSpacing(0);
 
-	left = new QWidget();
-	left->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
-	left->hide();
-	QVBoxLayout *left_layout = new QVBoxLayout(left);
+	LeftWidget = new QWidget(this);
+	LeftWidget->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+	LeftWidget->hide();
+	QVBoxLayout *left_layout = new QVBoxLayout(LeftWidget);
 	left_layout->setMargin(0);
 	left_layout->setSpacing(0);
 
-	container = new QWidget;
-	new QHBoxLayout(container);
+	ContainerWidget = new QWidget(this);
+	new QHBoxLayout(ContainerWidget);
 
-	sectionsListWidget = new QListWidget(this);
-	sectionsListWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	sectionsListWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	sectionsListWidget->setIconSize(QSize(32, 32));
-	connect(sectionsListWidget, SIGNAL(currentTextChanged(const QString &)), this, SLOT(changeSection(const QString &)));
-	left_layout->addWidget(sectionsListWidget);
+	SectionsListWidget = new QListWidget(LeftWidget);
+	SectionsListWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	SectionsListWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	SectionsListWidget->setIconSize(QSize(32, 32));
+	connect(SectionsListWidget, SIGNAL(currentTextChanged(const QString &)), this, SLOT(changeSection(const QString &)));
+	left_layout->addWidget(SectionsListWidget);
 
-	center_layout->addWidget(left);
-	center_layout->addWidget(container);
+	center_layout->addWidget(LeftWidget);
+	center_layout->addWidget(ContainerWidget);
 }
 
 ConfigurationWidget::~ConfigurationWidget()
 {
-	if (sectionsListWidget->currentItem())
-		config_file.writeEntry("General", "ConfigurationWindow_" + Name, sectionsListWidget->currentItem()->text());
-	qDeleteAll(configSections);
+	if (SectionsListWidget->currentItem())
+		config_file.writeEntry("General", "ConfigurationWindow_" + Name, SectionsListWidget->currentItem()->text());
+	qDeleteAll(ConfigSections);
 }
 
 void ConfigurationWidget::init()
 {
 	QString lastSection = config_file.readEntry("General", "ConfigurationWindow_" + Name);
-	if (configSections.contains(lastSection))
-		configSections[lastSection]->activate();
+	if (ConfigSections.contains(lastSection))
+		ConfigSections[lastSection]->activate();
 	else
-		sectionsListWidget->setCurrentItem(0);
+		SectionsListWidget->setCurrentItem(0);
 }
 
 QList<ConfigWidget *> ConfigurationWidget::appendUiFile(const QString &fileName, bool load)
@@ -111,7 +111,7 @@ QList<ConfigWidget *> ConfigurationWidget::appendUiFile(const QString &fileName,
 			if (widget)
 				widget->loadConfiguration();
 
-	changeSection(*configSections.keys().begin());
+	changeSection(*ConfigSections.keys().begin());
 
 	return widgets;
 }
@@ -266,7 +266,7 @@ QList<ConfigWidget *> ConfigurationWidget::processUiGroupBoxFromDom(QDomNode gro
 	}
 
 	if (!groupBoxId.isEmpty())
-		widgets[groupBoxId] = dynamic_cast<QWidget *>(configGroupBoxWidget->widget());
+		Widgets[groupBoxId] = dynamic_cast<QWidget *>(configGroupBoxWidget->widget());
 
 	const QDomNodeList &children = groupBoxElement.childNodes();
 	int length = children.length();
@@ -295,41 +295,41 @@ ConfigWidget * ConfigurationWidget::appendUiElementFromDom(QDomNode uiElementNod
 	ConfigWidget *widget = 0;
 
 	if (tagName == "line-edit")
-		widget = new ConfigLineEdit(configGroupBox, dataManager);
+		widget = new ConfigLineEdit(configGroupBox, DataManager);
 	else if (tagName == "gg-password-edit")
-		widget = new ConfigGGPasswordEdit(configGroupBox, dataManager);
+		widget = new ConfigGGPasswordEdit(configGroupBox, DataManager);
 	else if (tagName == "check-box")
-		widget = new ConfigCheckBox(configGroupBox, dataManager);
+		widget = new ConfigCheckBox(configGroupBox, DataManager);
 	else if (tagName == "radio-button")
-		widget = new ConfigRadioButton(configGroupBox, dataManager);
+		widget = new ConfigRadioButton(configGroupBox, DataManager);
 	else if (tagName == "spin-box")
-		widget = new ConfigSpinBox(configGroupBox, dataManager);
+		widget = new ConfigSpinBox(configGroupBox, DataManager);
 	else if (tagName == "combo-box")
-		widget = new ConfigComboBox(configGroupBox, dataManager);
+		widget = new ConfigComboBox(configGroupBox, DataManager);
 	else if (tagName == "hot-key-edit")
-		widget = new ConfigHotKeyEdit(configGroupBox, dataManager);
+		widget = new ConfigHotKeyEdit(configGroupBox, DataManager);
 	else if (tagName == "path-list-edit")
-		widget = new ConfigPathListEdit(configGroupBox, dataManager);
+		widget = new ConfigPathListEdit(configGroupBox, DataManager);
 	else if (tagName == "color-button")
-		widget = new ConfigColorButton(configGroupBox, dataManager);
+		widget = new ConfigColorButton(configGroupBox, DataManager);
 	else if (tagName == "select-font")
-		widget = new ConfigSelectFont(configGroupBox, dataManager);
+		widget = new ConfigSelectFont(configGroupBox, DataManager);
 	else if (tagName == "syntax-editor")
-		widget = new ConfigSyntaxEditor(configGroupBox, dataManager);
+		widget = new ConfigSyntaxEditor(configGroupBox, DataManager);
 	else if (tagName == "action-button")
-		widget = new ConfigActionButton(configGroupBox, dataManager);
+		widget = new ConfigActionButton(configGroupBox, DataManager);
 	else if (tagName == "select-file")
-		widget = new ConfigSelectFile(configGroupBox, dataManager);
+		widget = new ConfigSelectFile(configGroupBox, DataManager);
 	else if (tagName == "preview")
-		widget = new ConfigPreview(configGroupBox, dataManager);
+		widget = new ConfigPreview(configGroupBox, DataManager);
 	else if (tagName == "slider")
-		widget = new ConfigSlider(configGroupBox, dataManager);
+		widget = new ConfigSlider(configGroupBox, DataManager);
 	else if (tagName == "label")
-		widget = new ConfigLabel(configGroupBox, dataManager);
+		widget = new ConfigLabel(configGroupBox, DataManager);
 	else if (tagName == "list-box")
-		widget = new ConfigListWidget(configGroupBox, dataManager);
+		widget = new ConfigListWidget(configGroupBox, DataManager);
 	else if (tagName == "line-separator")
-		widget = new ConfigLineSeparator(configGroupBox, dataManager);
+		widget = new ConfigLineSeparator(configGroupBox, DataManager);
 	else
 	{
 		kdebugf2();
@@ -345,7 +345,7 @@ ConfigWidget * ConfigurationWidget::appendUiElementFromDom(QDomNode uiElementNod
 
 	QString id = uiElement.attribute("id");
 	if (!id.isEmpty())
-		widgets[id] = dynamic_cast<QWidget *>(widget);
+		Widgets[id] = dynamic_cast<QWidget *>(widget);
 
 	widget->show();
 
@@ -366,7 +366,7 @@ void ConfigurationWidget::removeUiElementFromDom(QDomNode uiElementNode, ConfigG
 	const QDomElement &uiElement = uiElementNode.toElement();
 	const QString &caption = uiElement.attribute("caption");
 
-	foreach(QObject *child, configGroupBox->widget()->children())
+	foreach (QObject *child, configGroupBox->widget()->children())
 	{
 		ConfigWidget *configWidget = dynamic_cast<ConfigWidget *>(child);
 		if (!configWidget)
@@ -387,8 +387,8 @@ void ConfigurationWidget::removeUiElementFromDom(QDomNode uiElementNode, ConfigG
 
 QWidget * ConfigurationWidget::widgetById(const QString &id)
 {
-	if (widgets.contains(id))
-		return widgets[id];
+	if (Widgets.contains(id))
+		return Widgets[id];
 
 	return 0;
 }
@@ -402,36 +402,36 @@ ConfigGroupBox * ConfigurationWidget::configGroupBox(const QString &section, con
 	return s->configGroupBox(qApp->translate("@default", tab.toAscii().data()), qApp->translate("@default", groupBox.toAscii().data()), create);
 }
 
-ConfigSection *ConfigurationWidget::configSection(const QString &name)
+ConfigSection * ConfigurationWidget::configSection(const QString &name)
 {
-	return configSections[name];
+	return ConfigSections[name];
 }
 
-ConfigSection *ConfigurationWidget::configSection(const QString &iconPath, const QString &name, bool create)
+ConfigSection * ConfigurationWidget::configSection(const QString &iconPath, const QString &name, bool create)
 {
-	if (configSections.contains(name))
-		return configSections[name];
+	if (ConfigSections.contains(name))
+		return ConfigSections[name];
 
 	if (!create)
 		return 0;
 
-	QListWidgetItem *newConfigSectionListWidgetItem = new QListWidgetItem(IconsManager::instance()->iconByPath(iconPath).pixmap(32, 32), name, sectionsListWidget);
+	QListWidgetItem *newConfigSectionListWidgetItem = new QListWidgetItem(IconsManager::instance()->iconByPath(iconPath).pixmap(32, 32), name, SectionsListWidget);
 
-	QFontMetrics fontMetrics = sectionsListWidget->fontMetrics();
+	QFontMetrics fontMetrics = SectionsListWidget->fontMetrics();
 	// TODO: 48 = margins + scrollbar - get real scrollbar width
 	int width = fontMetrics.width(name) + 80;
 
-	ConfigSection *newConfigSection = new ConfigSection(name, this, newConfigSectionListWidgetItem, container, iconPath);
-	configSections[name] = newConfigSection;
+	ConfigSection *newConfigSection = new ConfigSection(name, this, newConfigSectionListWidgetItem, ContainerWidget, iconPath);
+	ConfigSections[name] = newConfigSection;
 
-	if (configSections.count() == 1)
-		sectionsListWidget->setFixedWidth(width);
+	if (ConfigSections.count() == 1)
+		SectionsListWidget->setFixedWidth(width);
 
-	if (configSections.count() > 1)
+	if (ConfigSections.count() > 1)
 	{
-		if (sectionsListWidget->width() < width)
-			sectionsListWidget->setFixedWidth(width);
-		left->show();
+		if (SectionsListWidget->width() < width)
+			SectionsListWidget->setFixedWidth(width);
+		LeftWidget->show();
 	}
 
 	return newConfigSection;
@@ -481,29 +481,29 @@ void ConfigurationWidget::saveConfiguration()
 
 void ConfigurationWidget::changeSection(const QString &newSectionName)
 {
-	if (!configSections.contains(newSectionName))
+	if (!ConfigSections.contains(newSectionName))
 		return;
 
-	ConfigSection *newSection = configSections[newSectionName];
-	if (newSection == currentSection)
+	ConfigSection *newSection = ConfigSections[newSectionName];
+	if (newSection == CurrentSection)
 		return;
 
-	if (currentSection)
-		currentSection->hide();
+	if (CurrentSection)
+		CurrentSection->hide();
 
-	currentSection = newSection;
+	CurrentSection = newSection;
 	newSection->show();
 	newSection->activate();
 }
 
 void ConfigurationWidget::removedConfigSection(const QString &sectionName)
 {
-	configSections.remove(sectionName);
+	ConfigSections.remove(sectionName);
 
-	for (int i = 0; i < sectionsListWidget->count(); i++)
-		if (sectionsListWidget->item(i)->text() == tr(sectionName.toAscii().data()))
+	for (int i = 0; i < SectionsListWidget->count(); i++)
+		if (SectionsListWidget->item(i)->text() == tr(sectionName.toAscii().data()))
 		{
-			delete sectionsListWidget->takeItem(i);
+			delete SectionsListWidget->takeItem(i);
 			break;
 		}
 }

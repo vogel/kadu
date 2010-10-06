@@ -94,20 +94,20 @@ class KADUAPI ConfigurationWidget : public QWidget
 
 	QString Name;
 
-	QWidget *left;
-	QMap<QString, ConfigSection *> configSections;
-	ConfigSection *currentSection;
+	QWidget *LeftWidget;
+	QMap<QString, ConfigSection *> ConfigSections;
+	ConfigSection *CurrentSection;
 
-	QMap<QString, QWidget *> widgets;
+	QMap<QString, QWidget *> Widgets;
 
-	QListWidget *sectionsListWidget;
-	QWidget *container;
+	QListWidget *SectionsListWidget;
+	QWidget *ContainerWidget;
 
 	void loadConfiguration(QObject *object);
 	void saveConfiguration(QObject *object);
 
-	ConfigSection *configSection(const QString &name);
-	ConfigSection *configSection(const QString &iconPath, const QString &name, bool create = true);
+	ConfigSection * configSection(const QString &name);
+	ConfigSection * configSection(const QString &iconPath, const QString &name, bool create = true);
 
 	QList<ConfigWidget *> processUiFile(const QString &fileName, bool append = true);
 	QList<ConfigWidget *> processUiSectionFromDom(QDomNode sectionNode, bool append = true);
@@ -120,7 +120,7 @@ private slots:
 	void changeSection(const QString &newSectionName);
 
 protected:
-	ConfigurationWindowDataManager *dataManager;
+	ConfigurationWindowDataManager *DataManager;
 
 public:
 	/**
@@ -128,10 +128,10 @@ public:
 		jest przy zapamiętywaniu pozycji okna oraz jego ostatnio
 		otwartej karty.
 	 **/
-	ConfigurationWidget(ConfigurationWindowDataManager *dataManager, QWidget *parent = 0);
+	explicit ConfigurationWidget(ConfigurationWindowDataManager *dataManager, QWidget *parent = 0);
 	virtual ~ConfigurationWidget();
 
-	QString name() { return Name; }
+	const QString & name() const { return Name; }
 
 	/**
 		Pobiera GroupBox'a zawartego w następującej ścieżce XPath:
@@ -157,7 +157,7 @@ public:
 		Zwraca element opisane id="id" we wczytanych plikach *.ui. Możliwe
 		dowolne widgety konfiguracyjne i elementy group-box.
 	 **/
-	QWidget *widgetById(const QString &id);
+	QWidget * widgetById(const QString &id);
 
 	// TODO: make private or sth
 	void removedConfigSection(const QString &sectionName);

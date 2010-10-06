@@ -18,7 +18,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QApplication>
 #include <QtGui/QWidget>
 #include <QtGui/QLayout>
 #include <QtGui/QGridLayout>
@@ -27,63 +26,63 @@
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/config-tab.h"
 
-ConfigGroupBox::ConfigGroupBox(const QString &name, ConfigTab *configTab, QGroupBox *groupBox)
-	: name(name), configTab(configTab), groupBox(groupBox)
+ConfigGroupBox::ConfigGroupBox(const QString &name, ConfigTab *configTab, QGroupBox *groupBox) :
+		Name(name), MyConfigTab(configTab), GroupBox(groupBox)
 {
-	container = new QWidget(groupBox);
-	groupBox->layout()->addWidget(container);
+	Container = new QWidget(GroupBox);
+	GroupBox->layout()->addWidget(Container);
 
-	gridLayout = new QGridLayout(container);
-	gridLayout->setContentsMargins(5, 5, 5, 5);
-	gridLayout->setColumnStretch(1, 100);
+	GridLayout = new QGridLayout(Container);
+	GridLayout->setContentsMargins(5, 5, 5, 5);
+	GridLayout->setColumnStretch(1, 100);
 }
 
 ConfigGroupBox::~ConfigGroupBox()
 {
-	delete groupBox;
+	delete GroupBox;
 
-	configTab->removedConfigGroupBox(name);
+	MyConfigTab->removedConfigGroupBox(Name);
 }
 
-bool ConfigGroupBox::empty()
+bool ConfigGroupBox::empty() const
 {
-	return container->children().count() == 1;
+	return (Container->children().count() == 1);
 }
 
 void ConfigGroupBox::addWidget(QWidget *widget, bool fullSpace)
 {
-	int numRows = gridLayout->rowCount();
+	int numRows = GridLayout->rowCount();
 
 	if (fullSpace)
-		gridLayout->addWidget(widget, numRows, 0, 1, 2);
+		GridLayout->addWidget(widget, numRows, 0, 1, 2);
 	else
-		gridLayout->addWidget(widget, numRows, 1);
+		GridLayout->addWidget(widget, numRows, 1);
 }
 
 void ConfigGroupBox::addWidgets(QWidget *widget1, QWidget *widget2)
 {
-	int numRows = gridLayout->rowCount();
+	int numRows = GridLayout->rowCount();
 
 	if (widget1)
-		gridLayout->addWidget(widget1, numRows, 0, Qt::AlignRight);
+		GridLayout->addWidget(widget1, numRows, 0, Qt::AlignRight);
 
 	if (widget2)
-		gridLayout->addWidget(widget2, numRows, 1);
+		GridLayout->addWidget(widget2, numRows, 1);
 }
 
 void ConfigGroupBox::insertWidget(int pos, QWidget *widget, bool fullSpace)
 {
-    	if (fullSpace)
-		gridLayout->addWidget(widget, pos, 0, 1, 2);
+	if (fullSpace)
+		GridLayout->addWidget(widget, pos, 0, 1, 2);
 	else
-		gridLayout->addWidget(widget, pos, 1);
+		GridLayout->addWidget(widget, pos, 1);
 }
 
 void ConfigGroupBox::insertWidgets(int pos, QWidget *widget1, QWidget *widget2)
 {
-    	if (widget1)
-		gridLayout->addWidget(widget1, pos, 0, Qt::AlignRight);
+	if (widget1)
+		GridLayout->addWidget(widget1, pos, 0, Qt::AlignRight);
 
 	if (widget2)
-		gridLayout->addWidget(widget2, pos, 1);
+		GridLayout->addWidget(widget2, pos, 1);
 }

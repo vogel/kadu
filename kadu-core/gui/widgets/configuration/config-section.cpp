@@ -32,64 +32,66 @@
 
 #include "icons-manager.h"
 
-ConfigSection::ConfigSection(const QString &name, ConfigurationWidget *configurationWidget, QListWidgetItem *listWidgetItem, QWidget *parentConfigGroupBoxWidget,
-		const QString &iconPath) :
-		name(name), configurationWidget(configurationWidget), iconPath(iconPath), listWidgetItem(listWidgetItem), activated(false), parentConfigGroupBoxWidget(parentConfigGroupBoxWidget)
+ConfigSection::ConfigSection(const QString &name, ConfigurationWidget *configurationWidget,
+		QListWidgetItem *listWidgetItem, QWidget *parentConfigGroupBoxWidget, const QString &iconPath) :
+		Name(name), MyConfigurationWidget(configurationWidget), IconPath(iconPath),
+		ListWidgetItem(listWidgetItem), Activated(false), ParentConfigGroupBoxWidget(parentConfigGroupBoxWidget)
 {
-	mainWidget = new QWidget(parentConfigGroupBoxWidget);
-	new QHBoxLayout(mainWidget);
-	mainWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	tabWidget = 0;
+	MainWidget = new QWidget(ParentConfigGroupBoxWidget);
+	new QHBoxLayout(MainWidget);
+	MainWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-	parentConfigGroupBoxWidget->layout()->addWidget(mainWidget);
-	mainWidget->hide();
+	TabWidget = 0;
+
+	ParentConfigGroupBoxWidget->layout()->addWidget(MainWidget);
+	MainWidget->hide();
 
 	connect(IconsManager::instance(), SIGNAL(themeChanged()), this, SLOT(iconThemeChanged()));
 }
 
 ConfigSection::~ConfigSection()
 {
-	if (tabWidget)
-		config_file.writeEntry("General", "ConfigurationWindow_" + configurationWidget->name() + "_" + name,
-							   tabWidget->tabText(tabWidget->currentIndex()));
-	delete mainWidget;
+	if (TabWidget)
+		config_file.writeEntry("General", "ConfigurationWindow_" + MyConfigurationWidget->name() + "_" + Name,
+							   TabWidget->tabText(TabWidget->currentIndex()));
+	delete MainWidget;
 }
 
 void ConfigSection::switchTabView(bool tabView)
 {
-	if (tabView == (0 != tabWidget))
+	if (tabView == (0 != TabWidget))
 		return;
 
-	bool isVisible = mainWidget->isVisible();
+	bool isVisible = MainWidget->isVisible();
 
 	if (tabView)
 	{
-		tabWidget = new QTabWidget(parentConfigGroupBoxWidget);
-		parentConfigGroupBoxWidget->layout()->addWidget(tabWidget);
-		tabWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+		TabWidget = new QTabWidget(ParentConfigGroupBoxWidget);
+		ParentConfigGroupBoxWidget->layout()->addWidget(TabWidget);
+		TabWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-		mainWidget->hide();
-		foreach (ConfigTab *configTab, configTabs)
-			tabWidget->addTab(configTab->tabWidget(), configTab->name());
+		MainWidget->hide();
+		foreach (ConfigTab *configTab, ConfigTabs)
+			TabWidget->addTab(configTab->tabWidget(), configTab->name());
 
-		mainWidget->deleteLater();
-		mainWidget = tabWidget;
+		MainWidget->deleteLater();
+		MainWidget = TabWidget;
 	}
 	else
 	{
-		mainWidget = new QWidget(parentConfigGroupBoxWidget);
-		new QHBoxLayout(mainWidget);
-		parentConfigGroupBoxWidget->layout()->addWidget(mainWidget);
-		mainWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+		MainWidget = new QWidget(ParentConfigGroupBoxWidget);
+		new QHBoxLayout(MainWidget);
+		ParentConfigGroupBoxWidget->layout()->addWidget(MainWidget);
+		MainWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-		foreach (ConfigTab *configTab, configTabs)
-			configTab->tabWidget()->setParent(mainWidget);
+		foreach (ConfigTab *configTab, ConfigTabs)
+			configTab->tabWidget()->setParent(MainWidget);
 
-		tabWidget->deleteLater();
-		tabWidget = 0;
+		TabWidget->deleteLater();
+		TabWidget = 0;
 	}
 
-	mainWidget->setVisible(isVisible);
+	MainWidget->setVisible(isVisible);
 }
 
 ConfigGroupBox * ConfigSection::configGroupBox(const QString &tab, const QString &groupBox, bool create)
@@ -103,70 +105,68 @@ ConfigGroupBox * ConfigSection::configGroupBox(const QString &tab, const QString
 
 void ConfigSection::activate()
 {
-	listWidgetItem->listWidget()->setCurrentItem(listWidgetItem);
+	ListWidgetItem->listWidget()->setCurrentItem(ListWidgetItem);
 
-	if (activated)
+	if (Activated)
 	{
 		// #1400 workaround
-		if (tabWidget && tabWidget->currentWidget())
+		if (TabWidget && TabWidget->currentWidget())
 		{
 			QApplication::processEvents();
-			tabWidget->currentWidget()->show();
+			TabWidget->currentWidget()->show();
 		}
 		return;
 	}
 
-	QString tab = config_file.readEntry("General", "ConfigurationWindow_" + configurationWidget->name() + "_" + name);
-	if (tabWidget && configTabs.contains(tab))
-		tabWidget->setCurrentWidget(configTabs[tab]->tabWidget());
-	activated = true;
+	QString tab = config_file.readEntry("General", "ConfigurationWindow_" + MyConfigurationWidget->name() + "_" + Name);
+	if (TabWidget && ConfigTabs.contains(tab))
+		TabWidget->setCurrentWidget(ConfigTabs[tab]->tabWidget());
+	Activated = true;
 }
 
 ConfigTab * ConfigSection::configTab(const QString &name, bool create)
 {
-	if (configTabs.contains(name))
-		return configTabs[name];
+	if (ConfigTabs.contains(name))
+		return ConfigTabs[name];
 
 	if (!create)
 		return 0;
 
-	switchTabView(configTabs.size() >= 1);
+	switchTabView(ConfigTabs.size() >= 1);
 
-	ConfigTab *newConfigTab = new ConfigTab(name, this, mainWidget);
-	configTabs[name] = newConfigTab;
+	ConfigTab *newConfigTab = new ConfigTab(name, this, MainWidget);
+	ConfigTabs[name] = newConfigTab;
 
-	if (tabWidget)
-		tabWidget->addTab(newConfigTab->scrollWidget(), newConfigTab->name());
+	if (TabWidget)
+		TabWidget->addTab(newConfigTab->scrollWidget(), newConfigTab->name());
 	else
-		mainWidget->layout()->addWidget(newConfigTab->scrollWidget());
+		MainWidget->layout()->addWidget(newConfigTab->scrollWidget());
 
 	return newConfigTab;
 }
 
 void ConfigSection::removedConfigTab(const QString &configTabName)
 {
-	if (tabWidget)
-	{
-		tabWidget->removeTab(tabWidget->indexOf(configTabs[configTabName]->widget()));
-	}
+	if (TabWidget)
+		TabWidget->removeTab(TabWidget->indexOf(ConfigTabs[configTabName]->widget()));
 
-	configTabs.remove(configTabName);
-	if (!configTabs.count())
+	ConfigTabs.remove(configTabName);
+	if (!ConfigTabs.count())
 	{
-		configurationWidget->removedConfigSection(name);
+		MyConfigurationWidget->removedConfigSection(Name);
 // 		delete this;
 	}
 
-	switchTabView(configTabs.size() > 1);
+	switchTabView(ConfigTabs.size() > 1);
 }
 
 void ConfigSection::iconThemeChanged()
 {
-	QListWidget *listWidget = listWidgetItem->listWidget();
-	bool current = listWidgetItem->isSelected();
-	delete listWidgetItem;
+	QListWidget *listWidget = ListWidgetItem->listWidget();
+	bool current = ListWidgetItem->isSelected();
+	delete ListWidgetItem;
 
-	listWidgetItem = new QListWidgetItem(IconsManager::instance()->iconByPath(iconPath).pixmap(32, 32), name, listWidget);
+	ListWidgetItem = new QListWidgetItem(IconsManager::instance()->iconByPath(IconPath).pixmap(32, 32), Name, listWidget);
 	if (current)
-		listWidget->setCurrentItem(listWidgetItem);
+		listWidget->setCurrentItem(ListWidgetItem);
 }
