@@ -1,100 +1,76 @@
+/*
+ * %kadu copyright begin%
+ * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
+ * Copyright 2008, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2008 Michał Podsiadlik (michal@kadu.net)
+ * Copyright 2009 Tomasz Rostański (rozteck@interia.pl)
+ * Copyright 2010 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * %kadu copyright end%
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #ifndef AUTOSTATUS_H
 #define AUTOSTATUS_H
 
-#include <QtCore/QObject>
 #include <QtCore/QStringList>
-#include <QtGui/QDialog>
 
-#include "configuration_aware_object.h"
-#include "main_configuration_window.h"
-#include "action.h"
+#include "configuration/autostatus-configuration.h"
 
 class QTimer;
-class PowerStatusChanger;
 
-/*
-class AutostatusChanger : public StatusChanger
-{
-	Q_OBJECT
+class AutostatusStatusChanger;
 
-	friend class AutoAway;
-
-public:
-	enum ChangeStatusTo {
-		NoChangeStatus,
-		ChangeStatusToBusy,
-		ChangeStatusToInvisible,
-		ChangeStatusToOffline
-	};
-
-	enum ChangeDescriptionTo {
-		NoChangeDescription,
-		ChangeDescriptionReplace,
-		ChangeDescriptionPrepend,
-		ChangeDescriptionAppend
-	};
-
-private:
-	ChangeStatusTo changeStatusTo;
-	ChangeDescriptionTo changeDescriptionTo;
-	QString descriptionAddon;
-
-public:
-	AutostatusChanger();
-	virtual ~AutostatusChanger();
-
-	virtual void changeStatus(UserStatus &status);
-
-	void setChangeStatusTo(ChangeStatusTo newChangeStatusTo);
-	void setChangeDescriptionTo(ChangeDescriptionTo newChangeDescriptionTo, const QString &newDescriptionAddon);
-
-};
-*/
 /*!
  * This class provides functionality to automaticly change status
  * after served time
  * \brief Automaticly status change class
  */
-class Autostatus : public ConfigurationUiHandler, ConfigurationAwareObject
+class Autostatus : public QObject
 {
 	Q_OBJECT
 
-	public:
-		//! Default constructor.
-		Autostatus();
+	static Autostatus *Instance;
 
-	//! Default destructor.
-		~Autostatus();
+	AutostatusConfiguration Configuration;
 
-		virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
- 
-	private:
-		PowerStatusChanger *powerStatusChanger;
+	QTimer *Timer;
+	AutostatusStatusChanger *MyStatusChanger;
 
-		void addDefaultConfiguration();
-		void on();
-		void off();
-		bool enabled;
+	Autostatus();
+	virtual ~Autostatus();
 
-		int autoStatus;
-		int autoTime;
-		int currStat;
-		QString currDesc;
+	void on();
+	void off();
 
-		QStringList::Iterator it;
-		QTimer* timer;
-		QStringList statusList;
-		ActionDescription *autostatusActionDescription;
-	
-	public slots:
-		//! This slot is called when new Autostatus it starts
-		void onAutostatus(QAction *, bool);
+	bool readDescriptionList();
 
-		//! This slot is called when timeout
-		void changeStatus();
+	QStringList::Iterator CurrentDescription;
+	QStringList DescriptionList;
 
-	protected:
-		virtual void configurationUpdated();
+private slots:
+	//! This slot is called on timeout
+	void changeStatus();
+
+public:
+	static void createInstance();
+	static void destroyInstance();
+
+	static Autostatus * instance() { return Instance; }
+
+	void toggle(bool toggled);
+
 };
 
-#endif
+#endif // AUTOSTATUS_H

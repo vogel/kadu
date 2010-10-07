@@ -21,158 +21,114 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QTimer>
+#include <QtCore/QFile>
 #include <QtCore/QTextStream>
-#include <QtGui/QMenu>
-#include <QtGui/QSpinBox>
+#include <QtCore/QTimer>
 #include <QtGui/QMessageBox>
 
-#include "accounts/account.h"
-#include "accounts/account_manager.h"
-#include "config_file.h"
-#include "debug.h"
-#include "kadu.h"
-#include "misc/misc.h"
+#include "status/status-changer-manager.h"
+
+#include "autostatus-status-changer.h"
 
 #include "autostatus.h"
-#include "power_status_changer.h"
 
-Autostatus *autostatus;
+Autostatus * Autostatus::Instance = 0;
 
-extern "C" KADU_EXPORT int autostatus_init()
+void Autostatus::createInstance()
 {
-	autostatus = new Autostatus();
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/autostatus.ui"), autostatus);
-
-	return 0;
+	if (!Instance)
+		Instance = new Autostatus();
 }
 
-extern "C" KADU_EXPORT void autostatus_close()
+void Autostatus::destroyInstance()
 {
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/autostatus.ui"), autostatus);
-	delete autostatus;
-	autostatus = 0;
+	delete Instance;
+	Instance = 0;
 }
 
 Autostatus::Autostatus()
 {
-	addDefaultConfiguration();
-	powerStatusChanger = new PowerStatusChanger();
+	MyStatusChanger = new AutostatusStatusChanger(this);
+	StatusChangerManager::instance()->registerStatusChanger(MyStatusChanger);
 
-	autostatusActionDescription = new ActionDescription(this,
-		ActionDescription::TypeMainMenu, "autostatusAction",
-		this, SLOT(onAutostatus(QAction *, bool)),
-		"Autostatus", tr("&Autostatus"), true
-	);
-	kadu->insertMenuActionDescription(0, autostatusActionDescription);
-
-	timer = new QTimer(this);
-	connect(timer, SIGNAL(timeout()), this, SLOT(changeStatus()));
-	enabled = false;
+	Timer = new QTimer(this);
+	connect(Timer, SIGNAL(timeout()), this, SLOT(changeStatus()));
 }
 
 
 Autostatus::~Autostatus()
 {
-	off();
-	disconnect(timer, SIGNAL(timeout()), this, SLOT(changeStatus()));
-	delete powerStatusChanger;
+	StatusChangerManager::instance()->unregisterStatusChanger(MyStatusChanger);
 
-	kadu->removeMenuActionDescription(autostatusActionDescription);
+	disconnect(Timer, SIGNAL(timeout()), this, SLOT(changeStatus()));
 }
 
 void Autostatus::on()
 {
-	autoTime = config_file.readNumEntry("PowerKadu", "autostatus_time", 10);
-	timer->start(autoTime * 1000);
+	MyStatusChanger->setEnabled(true);
+	Timer->start(Configuration.autoTime() * 1000);
+	changeStatus();
 }
 
 void Autostatus::off()
 {
-	timer->stop();
+	Timer->stop();
+	MyStatusChanger->setEnabled(false);
 }
 
 void Autostatus::changeStatus()
 {
-	kdebugf();
+	if (CurrentDescription == DescriptionList.end())
+		CurrentDescription = DescriptionList.begin();
 
-	if (it == statusList.end())
-		it = statusList.begin();
-
-	autoStatus = config_file.readNumEntry("PowerKadu", "autoStatus");
-	switch(autoStatus)
-	{
-		case 0:
-			powerStatusChanger->setOnline(*it);
-			break;
-		case 1:
-			powerStatusChanger->setBusy(*it);
-			break;
-		case 2:
-			powerStatusChanger->setInvisible(*it);
-			break;
-	}
-	it++;
-	kdebugf2();
+	MyStatusChanger->setConfiguration(Configuration.autoStatus(), *CurrentDescription);
+	CurrentDescription++;
 }
 
-void Autostatus::onAutostatus(QAction *sender, bool toggled)
+bool Autostatus::readDescriptionList()
 {
-	if (toggled)
+	if (!QFile::exists(Configuration.statusFilePath()))
 	{
-		Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
-		currStat = gadu->currentStatus().index();
-		currDesc = gadu->currentStatus().description();
-
-		if (QFile::exists(config_file.readEntry("PowerKadu", "status_file_path")))
-		{
-			QFile file(config_file.readEntry("PowerKadu", "status_file_path"));
-
-			QString desc;
-
-			if (file.open(IO_ReadOnly))
-			{
-				QTextStream stream(&file);
-
-				while (!stream.atEnd())
-				{
-					desc = stream.readLine();
-
-					if((desc != "") && (strlen(desc.latin1()) <= 70))
-						statusList += desc;
-				}
-			}
-
-			file.close();
-
-//			kadu->mainMenu()->setItemChecked(menuID, true);
-			on();
-
-			it = statusList.begin();
-		}
-		else
-		{
-			QMessageBox::information(NULL, "Autostatus", "File does not exist ! ");
-		}
+		QMessageBox::information(NULL, "Autostatus", "File does not exist !");
+		return false;
 	}
-	else
+
+	DescriptionList.clear();
+
+	QFile file(Configuration.statusFilePath());
+
+	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+		return false;
+
+	QTextStream stream(&file);
+
+	QString description;
+	while (!stream.atEnd())
+	{
+		description = stream.readLine();
+		if (!description.isEmpty())
+			DescriptionList += description;
+	}
+
+	file.close();
+
+	return !DescriptionList.isEmpty();
+}
+
+void Autostatus::toggle(bool toggled)
+{
+	if (!toggled)
 	{
 		off();
 //		kadu->mainMenu()->setItemChecked(menuID, false);
-		powerStatusChanger->setIndex(currStat, currDesc);
-		statusList.clear();
+		DescriptionList.clear();
+		return;
 	}
-}
 
-void Autostatus::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
-{
-}
-
-void Autostatus::configurationUpdated()
-{
-}
-
-void Autostatus::addDefaultConfiguration()
-{
-	config_file.addVariable("PowerKadu", "status_file_path", profilePath("autostatus.list"));
+	if (readDescriptionList())
+	{
+		//	kadu->mainMenu()->setItemChecked(menuID, true);
+		CurrentDescription = DescriptionList.begin();
+		on();
+	}
 }
