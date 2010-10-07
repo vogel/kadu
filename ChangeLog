@@ -10,6 +10,7 @@
 * gui: #1550 fixed: auto-add "file:///" to paths in syntax files (Vogel)
 * gui: use "blocking" icon as chat icon when contact is blocking (ultr)
 * gui: #1526 fixed: update validation after each change in contacts in buddy's window (ultr)
+* jabber: #1416 fixed: remove proxy settings from XMPP account dialog (Vogel)
 
 +++ version 0.6.6-beta7
 * gui: #1541 fixed: avatar displaying on Qt 4.5 (Vogel)

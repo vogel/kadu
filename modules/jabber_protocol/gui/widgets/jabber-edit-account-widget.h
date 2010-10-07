@@ -40,7 +40,6 @@ class QTabWidget;
 class QVBoxLayout;
 
 class ChooseIdentityWidget;
-class ProxyGroupBox;
 
 class JabberEditAccountWidget : public AccountEditWidget
 {
@@ -53,7 +52,7 @@ class JabberEditAccountWidget : public AccountEditWidget
 	QLineEdit *AccountId;
 	QLineEdit *AccountPassword;
 	QCheckBox *RememberPassword;
-	
+
 	QCheckBox *CustomHostPort;
 	QHBoxLayout *HostPortLayout;
 	QLabel *CustomHostLabel;
@@ -66,7 +65,6 @@ class JabberEditAccountWidget : public AccountEditWidget
 	QComboBox *PlainTextAuth;
 
 	IdentitiesComboBox *Identities;
-	ProxyGroupBox *proxy;
 
 	QCheckBox *AutoResource;
 	QHBoxLayout *ResourceLayout;
@@ -74,11 +72,11 @@ class JabberEditAccountWidget : public AccountEditWidget
 	QLineEdit *ResourceName;
 	QLabel *PriorityLabel;
 	QLineEdit *Priority;
-	
+
 	QLabel *DataTransferProxyLabel;
 	QLineEdit *DataTransferProxy;
 	QHBoxLayout *DataTransferProxyLayout;
-	
+
 	QPushButton *ApplyButton;
 	QPushButton *CancelButton;
 

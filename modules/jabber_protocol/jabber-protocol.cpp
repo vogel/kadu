@@ -222,17 +222,30 @@ void JabberProtocol::connectToServer()
 	JabberClient->setFileTransfersEnabled(true); // i haz it
 	jabberID = account().id();
 
+	// PROXY CONNECTION
+	// Cannot be used, because JabberClient->connect does its own Proxy stuff
+	// that looks like it gets global Proxy settings, this code looks like it should
+	// not be here, because JabberClient implements this already
+	// TODO: ecleanup code
+
 /*
-//TODO: do nowej klasy dostosowac
+	connector = JabberClient->clientConnector();
 	XMPP::AdvancedConnector::Proxy p;
-	if(config_file.readBoolEntry("Network", "UseProxy"))
+
+	AccountProxySettings proxySettings = account().proxySettings();
+	if (proxySettings.enabled())
 	{
-		p.setHttpConnect(config_file.readEntry("Network", "ProxyHost"), config_file.readNumEntry("Network", "ProxyPort"));
-		if (!config_file.readEntry("Network", "ProxyUser").isEmpty())
-			p.setUserPass(config_file.readEntry("Network", "ProxyUser"), config_file.readEntry("Network", "ProxyPassword"));
+		p.setHttpConnect(proxySettings.address(), proxySettings.port());
+		if (proxySettings.requiresAuthentication() && !proxySettings.user().isEmpty())
+			p.setUserPass(proxySettings.user(), proxySettings.password());
 	}
-	connector = new XMPP::AdvancedConnector;
-	if(confUseSSL && QCA::isSupported("tls"))
+
+	connector->setProxy(p);
+
+	// END OF PROXY SETTINGS
+	// THis is also implemented in JabberClient class
+
+	if (confUseSSL && QCA::isSupported("tls"))
 	{
 		tls = new QCA::TLS;
 		tls->setTrustedCertificates(CertUtil::allCertificates());
@@ -240,12 +253,11 @@ void JabberProtocol::connectToServer()
 		tlsHandler->setXMPPCertCheck(true);
 		connect(tlsHandler, SIGNAL(tlsHandshaken()), SLOT(tlsHandshaken()));
 	}
-	connector->setProxy(p);
+
 	connector->setOptHostPort(host, port);
 	connector->setOptSSL(confUseSSL);
 
 	stream = new XMPP::ClientStream(connector, tlsHandler);
-
 */
 
 	JabberClient->setAllowPlainTextPassword(plainAuthToXMPP(jabberAccountDetails->plainAuthMode()));
@@ -511,7 +523,7 @@ void JabberProtocol::changeStatus()
 		networkStateChanged(NetworkDisconnected);
 
 		setAllOffline();
-		
+
 		JabberClient->disconnect();
 
 		if (!nextStatus().isDisconnected())
@@ -536,7 +548,7 @@ void JabberProtocol::changeStatus()
 		networkStateChanged(NetworkDisconnected);
 
 		setAllOffline();
-		
+
 		JabberClient->disconnect();
 
 		if (!nextStatus().isDisconnected())

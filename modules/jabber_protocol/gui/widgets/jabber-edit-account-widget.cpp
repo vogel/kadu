@@ -41,7 +41,6 @@
 #include "configuration/configuration-file.h"
 #include "gui/widgets/account-avatar-widget.h"
 #include "gui/widgets/account-buddy-list-widget.h"
-#include "gui/widgets/proxy-group-box.h"
 #include "gui/windows/message-dialog.h"
 #include "protocols/services/avatar-service.h"
 #include "icons-manager.h"
@@ -57,7 +56,7 @@ JabberEditAccountWidget::JabberEditAccountWidget(Account account, QWidget *paren
 	createGui();
 	loadAccountData();
 	loadConnectionData();
-	
+
 	dataChanged();
 }
 
@@ -76,7 +75,7 @@ void JabberEditAccountWidget::createGui()
 	createPersonalDataTab(tabWidget);
 	createConnectionTab(tabWidget);
 	createOptionsTab(tabWidget);
-	
+
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 
 	ApplyButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogApplyButton), tr("Apply"), this);
@@ -123,7 +122,7 @@ void JabberEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 	RememberPassword->setChecked(true);
 	connect(RememberPassword, SIGNAL(stateChanged(int)), this, SLOT(dataChanged()));
 	formLayout->addRow(0, RememberPassword);
-	
+
 	QLabel *changePasswordLabel = new QLabel(QString("<a href='change'>%1</a>").arg(tr("Change your password")));
 	changePasswordLabel->setTextInteractionFlags(Qt::LinksAccessibleByKeyboard | Qt::LinksAccessibleByMouse);
 	formLayout->addRow(0, changePasswordLabel);
@@ -159,10 +158,6 @@ void JabberEditAccountWidget::createConnectionTab(QTabWidget *tabWidget)
 
 	QVBoxLayout *layout = new QVBoxLayout(conenctionTab);
 	createGeneralGroupBox(layout);
-
-	proxy = new ProxyGroupBox(account(), tr("Proxy"), this);
-	connect(proxy, SIGNAL(stateChanged(ModalConfigurationWidgetState)), this, SLOT(dataChanged()));
-	layout->addWidget(proxy);
 
 	layout->addStretch(100);
 }
@@ -300,7 +295,7 @@ void JabberEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 	PriorityLabel->setEnabled(false);
 */
 	layout->addLayout(ResourceLayout);
-	
+
 	DataTransferProxyLayout = new QHBoxLayout();
 	DataTransferProxyLayout->setSpacing(6);
 	DataTransferProxyLayout->setMargin(0);
@@ -380,7 +375,6 @@ void JabberEditAccountWidget::dataChanged()
 		&& AccountDetails->autoResource() == AutoResource->isChecked()
 		&& AccountDetails->resource() == ResourceName->text()
 		&& AccountDetails->priority() == Priority->text().toInt()
-		&& StateNotChanged == proxy->state()
 		&& !gpiw->isModified())
 	{
 		setState(StateNotChanged);
@@ -430,7 +424,6 @@ void JabberEditAccountWidget::loadConnectionData()
 	EncryptionMode->setCurrentIndex(EncryptionMode->findData(AccountDetails->encryptionMode()));
 	PlainTextAuth->setCurrentIndex(PlainTextAuth->findData(AccountDetails->plainAuthMode()));
 	LegacySSLProbe->setChecked(AccountDetails->legacySSLProbe());
-	proxy->loadProxyData();
 
 	AutoResource->setChecked(AccountDetails->autoResource());
 	ResourceName->setText(AccountDetails->resource());
@@ -460,15 +453,14 @@ void JabberEditAccountWidget::apply()
 	AccountDetails->setResource(ResourceName->text());
 	AccountDetails->setPriority(Priority->text().toInt());
 	AccountDetails->setDataTransferProxy(DataTransferProxy->text());
-	proxy->apply();
-	
+
 	if (gpiw->isModified())
 		gpiw->applyData();
-	
+
 	setState(StateNotChanged);
-	
+
 	ConfigurationManager::instance()->flush();
-	
+
 	dataChanged();
 }
 
