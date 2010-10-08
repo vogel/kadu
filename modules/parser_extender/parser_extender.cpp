@@ -62,17 +62,17 @@ extern "C" KADU_EXPORT void parser_extender_close()
 }
 
 
-/* 
- * Returns uptime counted from the start of the module 
+/*
+ * Returns uptime counted from the start of the module
  * @param mode - if 0 number of seconds is returned,
  *               if 1 formatted date is returned
  */
 QString getKaduUptime(int mode)
 {
 	QString uptime = "0";
-	
+
 	uptime += "s ";
-	if (QDateTime::currentDateTime() > started) 
+	if (QDateTime::currentDateTime() > started)
 	{
 		int upTime = started.secsTo(QDateTime::currentDateTime());
 		if (mode == 0)
@@ -80,7 +80,7 @@ QString getKaduUptime(int mode)
 			uptime.setNum(upTime);
 			uptime += "s ";
 		}
-		else 
+		else
 		{
 			int days = upTime/(60*60*24);
 			upTime -= days * 60*60*24;
@@ -89,7 +89,7 @@ QString getKaduUptime(int mode)
 			int mins = upTime/(60);
 			upTime -= mins * 60;
 			int secs = upTime;
-			
+
 			QString s;
 			uptime = s.setNum(days)+"d ";
 			uptime += s.setNum(hours)+"h ";
@@ -100,13 +100,13 @@ QString getKaduUptime(int mode)
 	return uptime;
 }
 
-/* 
+/*
  * Returns system uptime
  * @param mode - if 0 number of seconds is returned,
  *               if 1 formatted date is returned
  */
 QString getUptime(int mode)
-{	
+{
 	QString uptime = "0";
 
 #ifdef Q_OS_LINUX //TODO 0.6.6: find more portable way to get system uptime
@@ -115,15 +115,18 @@ QString getUptime(int mode)
 	double duptime = 0;
 	f = fopen("/proc/uptime", "r");
 	if (!fscanf(f, "%lf", &duptime))
+	{
+		fclose(f);
 		return QString::null;
+	}
 
 	fclose(f);
 	upTime = (time_t)duptime;
-	
+
 	QString s = "";
 	if (mode == 0)
 	 	uptime = s.setNum(upTime) + "s ";
-	else 
+	else
 	{
 		int days = upTime/(60*60*24);
 		upTime -= days * 60*60*24;
@@ -132,7 +135,7 @@ QString getUptime(int mode)
 		int mins = upTime/(60);
 		upTime -= mins * 60;
 		int secs = upTime;
-			
+
 		uptime = s.setNum(days)+"d ";
 		uptime += s.setNum(hours)+"h ";
 		uptime += s.setNum(mins)+"m ";
@@ -222,7 +225,7 @@ ParserExtender::ParserExtender()
 		init();
 		isStarted = true;
 	}
-	else 
+	else
 		isStarted = false;
 }
 
@@ -237,7 +240,7 @@ void ParserExtender::init()
 	/* store the date of module start */
 	started = QDateTime::currentDateTime();
 
-	/* register tags */	
+	/* register tags */
 	Parser::registerTag("time", &parseTime);
 	Parser::registerTag("time-long", &parseLongTime);
 	Parser::registerTag("date", &parseDate);
