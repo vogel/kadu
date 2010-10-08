@@ -36,7 +36,7 @@ public:
 
 	int autoTime() { return AutoTime; }
 	int autoStatus() { return AutoStatus; }
-	QString statusFilePath() { return StatusFilePath; }
+	const QString & statusFilePath() { return StatusFilePath; }
 
 };
 

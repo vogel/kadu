@@ -56,7 +56,7 @@ class Autostatus : public QObject
 
 	bool readDescriptionList();
 
-	QStringList::Iterator CurrentDescription;
+	QStringList::ConstIterator CurrentDescription;
 	QStringList DescriptionList;
 
 private slots:

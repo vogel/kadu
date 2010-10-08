@@ -78,8 +78,8 @@ void Autostatus::off()
 
 void Autostatus::changeStatus()
 {
-	if (CurrentDescription == DescriptionList.end())
-		CurrentDescription = DescriptionList.begin();
+	if (CurrentDescription == DescriptionList.constEnd())
+		CurrentDescription = DescriptionList.constBegin();
 
 	MyStatusChanger->setConfiguration(Configuration.autoStatus(), *CurrentDescription);
 	CurrentDescription++;
@@ -128,7 +128,7 @@ void Autostatus::toggle(bool toggled)
 	if (readDescriptionList())
 	{
 		//	kadu->mainMenu()->setItemChecked(menuID, true);
-		CurrentDescription = DescriptionList.begin();
+		CurrentDescription = DescriptionList.constBegin();
 		on();
 	}
 }
