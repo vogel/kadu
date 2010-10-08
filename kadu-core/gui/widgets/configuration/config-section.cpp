@@ -79,15 +79,7 @@ void ConfigSection::activate()
 	ListWidgetItem->listWidget()->setCurrentItem(ListWidgetItem);
 
 	if (Activated)
-	{
-		// #1400 workaround
-		if (TabWidget->currentWidget())
-		{
-			QApplication::processEvents();
-			TabWidget->currentWidget()->show();
-		}
 		return;
-	}
 
 	QString tab = config_file.readEntry("General", "ConfigurationWindow_" + MyConfigurationWidget->name() + "_" + Name);
 	if (ConfigTabs.contains(tab))
