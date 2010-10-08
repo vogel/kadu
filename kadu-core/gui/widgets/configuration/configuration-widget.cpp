@@ -509,4 +509,7 @@ void ConfigurationWidget::changeSection(const QString &newSectionName)
 void ConfigurationWidget::configSectionDestroyed(QObject *obj)
 {
 	ConfigSections.remove(static_cast<ConfigSection *>(obj)->name());
+
+	if (CurrentSection == obj)
+		CurrentSection = 0;
 }
