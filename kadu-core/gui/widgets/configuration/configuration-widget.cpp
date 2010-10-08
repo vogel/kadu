@@ -90,7 +90,16 @@ ConfigurationWidget::~ConfigurationWidget()
 {
 	if (SectionsListWidget->currentItem())
 		config_file.writeEntry("General", "ConfigurationWindow_" + Name, SectionsListWidget->currentItem()->text());
-	qDeleteAll(ConfigSections);
+
+	disconnect(SectionsListWidget, SIGNAL(currentTextChanged(const QString &)),
+			this, SLOT(changeSection(const QString &)));
+
+	// qDeleteAll() won't work here because of connection to destroyed() signal
+	foreach (const ConfigSection *cs, ConfigSections)
+	{
+		disconnect(cs, SIGNAL(destroyed(QObject *)), this, SLOT(configSectionDestroyed(QObject *)));
+		delete cs;
+	}
 }
 
 void ConfigurationWidget::init()
@@ -423,6 +432,7 @@ ConfigSection * ConfigurationWidget::configSection(const QString &iconPath, cons
 
 	ConfigSection *newConfigSection = new ConfigSection(name, this, newConfigSectionListWidgetItem, ContainerWidget, iconPath);
 	ConfigSections[name] = newConfigSection;
+	connect(newConfigSection, SIGNAL(destroyed(QObject *)), this, SLOT(configSectionDestroyed(QObject *)));
 
 	if (ConfigSections.count() == 1)
 		SectionsListWidget->setFixedWidth(width);
@@ -496,14 +506,7 @@ void ConfigurationWidget::changeSection(const QString &newSectionName)
 	newSection->activate();
 }
 
-void ConfigurationWidget::removedConfigSection(const QString &sectionName)
+void ConfigurationWidget::configSectionDestroyed(QObject *obj)
 {
-	ConfigSections.remove(sectionName);
-
-	for (int i = 0; i < SectionsListWidget->count(); i++)
-		if (SectionsListWidget->item(i)->text() == tr(sectionName.toAscii().data()))
-		{
-			delete SectionsListWidget->takeItem(i);
-			break;
-		}
+	ConfigSections.remove(static_cast<ConfigSection *>(obj)->name());
 }

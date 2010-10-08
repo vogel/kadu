@@ -21,6 +21,8 @@
 #ifndef CONFIG_GROUP_BOX_H
 #define CONFIG_GROUP_BOX_H
 
+#include <QtCore/QObject>
+
 #include "misc/misc.h"
 
 class ConfigTab;
@@ -50,8 +52,10 @@ class QLayout;
 	@see addWidgets).
  **/
 
-class KADUAPI ConfigGroupBox
+class KADUAPI ConfigGroupBox : public QObject
 {
+	Q_OBJECT
+
 	QString Name;
 	ConfigTab *MyConfigTab;
 
@@ -61,8 +65,9 @@ class KADUAPI ConfigGroupBox
 
 public:
 	ConfigGroupBox(const QString &name, ConfigTab *configTab, QGroupBox *groupBox);
-	~ConfigGroupBox();
+	virtual ~ConfigGroupBox();
 
+	const QString & name() const { return Name; }
 	QWidget * widget() const { return Container; }
 
 	/**

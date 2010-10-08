@@ -118,6 +118,7 @@ class KADUAPI ConfigurationWidget : public QWidget
 
 private slots:
 	void changeSection(const QString &newSectionName);
+	void configSectionDestroyed(QObject *obj);
 
 protected:
 	ConfigurationWindowDataManager *DataManager;
@@ -158,9 +159,6 @@ public:
 		dowolne widgety konfiguracyjne i elementy group-box.
 	 **/
 	QWidget * widgetById(const QString &id);
-
-	// TODO: make private or sth
-	void removedConfigSection(const QString &sectionName);
 
 	void init();
 

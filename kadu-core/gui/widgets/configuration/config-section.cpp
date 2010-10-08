@@ -34,7 +34,7 @@
 
 ConfigSection::ConfigSection(const QString &name, ConfigurationWidget *configurationWidget,
 		QListWidgetItem *listWidgetItem, QWidget *parentConfigGroupBoxWidget, const QString &iconPath) :
-		Name(name), MyConfigurationWidget(configurationWidget), IconPath(iconPath),
+		QObject(configurationWidget), Name(name), MyConfigurationWidget(configurationWidget), IconPath(iconPath),
 		ListWidgetItem(listWidgetItem), Activated(false), ParentConfigGroupBoxWidget(parentConfigGroupBoxWidget)
 {
 	TabWidget = new KaduTabWidget(ParentConfigGroupBoxWidget);
@@ -49,7 +49,20 @@ ConfigSection::~ConfigSection()
 {
 	config_file.writeEntry("General", "ConfigurationWindow_" + MyConfigurationWidget->name() + "_" + Name,
 			TabWidget->tabText(TabWidget->currentIndex()));
+
+	// delete them here, since they manually delete child widgets of our TabWidget
+	// qDeleteAll() won't work here because of connection to destroyed() signal
+	foreach (const ConfigTab *ct, ConfigTabs)
+	{
+		disconnect(ct, SIGNAL(destroyed(QObject *)), this, SLOT(configTabDestroyed(QObject *)));
+		delete ct;
+	}
+
+	delete ListWidgetItem;
+	ListWidgetItem = 0;
+
 	delete TabWidget;
+	TabWidget = 0;
 }
 
 ConfigGroupBox * ConfigSection::configGroupBox(const QString &tab, const QString &groupBox, bool create)
@@ -92,6 +105,7 @@ ConfigTab * ConfigSection::configTab(const QString &name, bool create)
 
 	ConfigTab *newConfigTab = new ConfigTab(name, this, TabWidget);
 	ConfigTabs[name] = newConfigTab;
+	connect(newConfigTab, SIGNAL(destroyed(QObject *)), this, SLOT(configTabDestroyed(QObject *)));
 
 	TabWidget->addTab(newConfigTab->widget(), newConfigTab->name());
 
@@ -100,22 +114,24 @@ ConfigTab * ConfigSection::configTab(const QString &name, bool create)
 	return newConfigTab;
 }
 
-void ConfigSection::removedConfigTab(const QString &configTabName)
+void ConfigSection::configTabDestroyed(QObject *obj)
 {
-	TabWidget->removeTab(TabWidget->indexOf(ConfigTabs[configTabName]->widget()));
+	QMap<QString, ConfigTab *>::iterator i = ConfigTabs.find(static_cast<ConfigTab *>(obj)->name());
 
-	ConfigTabs.remove(configTabName);
+	if (TabWidget)
+		TabWidget->removeTab(TabWidget->indexOf((*i)->widget()));
+	ConfigTabs.erase(i);
+
 	TabWidget->setTabBarVisible(ConfigTabs.count() > 1);
 
-	if (!ConfigTabs.count())
-	{
-		MyConfigurationWidget->removedConfigSection(Name);
-// 		delete this;
-	}
+	if (ConfigTabs.count() == 0)
+		deleteLater();
 }
 
 void ConfigSection::iconThemeChanged()
 {
+	// TODO 0.6.6: why not just simply call ListWidgetItem->setIcon() instead of creating new widget?
+
 	QListWidget *listWidget = ListWidgetItem->listWidget();
 	bool current = ListWidgetItem->isSelected();
 	delete ListWidgetItem;

@@ -505,6 +505,7 @@ set (kadu_MOC_SRCS
 	gui/widgets/configuration/config-color-button.h
 	gui/widgets/configuration/config-combo-box.h
 	gui/widgets/configuration/config-gg-password-edit.h
+	gui/widgets/configuration/config-group-box.h
 	gui/widgets/configuration/config-hot-key-edit.h
 	gui/widgets/configuration/config-line-edit.h
 	gui/widgets/configuration/config-line-separator.h
@@ -518,7 +519,7 @@ set (kadu_MOC_SRCS
 	gui/widgets/configuration/config-slider.h
 	gui/widgets/configuration/config-spin-box.h
 	gui/widgets/configuration/config-syntax-editor.h
-	#gui/widgets/configuration/config-tab.h
+	gui/widgets/configuration/config-tab.h
 	gui/widgets/configuration/kadu-scroll-area.h
 	gui/widgets/configuration/kadu-tab-widget.h
 	gui/widgets/configuration/notify-tree-widget.h

@@ -27,7 +27,7 @@
 #include "gui/widgets/configuration/config-tab.h"
 
 ConfigGroupBox::ConfigGroupBox(const QString &name, ConfigTab *configTab, QGroupBox *groupBox) :
-		Name(name), MyConfigTab(configTab), GroupBox(groupBox)
+		QObject(configTab), Name(name), MyConfigTab(configTab), GroupBox(groupBox)
 {
 	Container = new QWidget(GroupBox);
 	GroupBox->layout()->addWidget(Container);
@@ -40,8 +40,7 @@ ConfigGroupBox::ConfigGroupBox(const QString &name, ConfigTab *configTab, QGroup
 ConfigGroupBox::~ConfigGroupBox()
 {
 	delete GroupBox;
-
-	MyConfigTab->removedConfigGroupBox(Name);
+	GroupBox = 0;
 }
 
 bool ConfigGroupBox::empty() const

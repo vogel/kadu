@@ -29,7 +29,7 @@
 #include "gui/widgets/configuration/kadu-scroll-area.h"
 
 ConfigTab::ConfigTab(const QString &name, ConfigSection *configSection, QWidget *mainWidget) :
-		MyName(name), MyConfigSection(configSection)
+		QObject(configSection), MyName(name), MyConfigSection(configSection)
 {
 	MyScrollArea = new KaduScrollArea(mainWidget);
 	MyScrollArea->setFrameStyle(QFrame::NoFrame);
@@ -48,19 +48,23 @@ ConfigTab::ConfigTab(const QString &name, ConfigSection *configSection, QWidget 
 
 ConfigTab::~ConfigTab()
 {
-	MyScrollArea->deleteLater();
+	// qDeleteAll() won't work here because of connection to destroyed() signal
+	foreach (const ConfigGroupBox *cgb, MyConfigGroupBoxes)
+	{
+		disconnect(cgb, SIGNAL(destroyed(QObject *)), this, SLOT(configGroupBoxDestroyed(QObject *)));
+		delete cgb;
+	}
+
+	delete MyScrollArea;
 	MyScrollArea = 0;
 }
 
-void ConfigTab::removedConfigGroupBox(const QString &groupBoxName)
+void ConfigTab::configGroupBoxDestroyed(QObject *obj)
 {
-	MyConfigGroupBoxes.remove(groupBoxName);
+	MyConfigGroupBoxes.remove(static_cast<ConfigGroupBox *>(obj)->name());
 
-	if (!MyConfigGroupBoxes.count())
-	{
-		MyConfigSection->removedConfigTab(MyName);
-		delete this;
-	}
+	if (MyConfigGroupBoxes.count() == 0)
+		deleteLater();
 }
 
 ConfigGroupBox *ConfigTab::configGroupBox(const QString &name, bool create)
@@ -79,6 +83,7 @@ ConfigGroupBox *ConfigTab::configGroupBox(const QString &name, bool create)
 
 	ConfigGroupBox *newConfigGroupBox = new ConfigGroupBox(name, this, groupBox);
 	MyConfigGroupBoxes[name] = newConfigGroupBox;
+	connect(newConfigGroupBox, SIGNAL(destroyed(QObject *)), this, SLOT(configGroupBoxDestroyed(QObject *)));
 
 	groupBox->show();
 

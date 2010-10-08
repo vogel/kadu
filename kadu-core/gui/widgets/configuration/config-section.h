@@ -54,12 +54,15 @@ class ConfigSection : public QObject
 	ConfigTab * configTab(const QString &name, bool create = true);
 
 private slots:
+	void configTabDestroyed(QObject *obj);
 	void iconThemeChanged();
 
 public:
 	ConfigSection(const QString &name, ConfigurationWidget *configurationWidget, QListWidgetItem *listWidgetItem, QWidget *parentConfigGroupBoxWidget,
 		const QString &iconPath);
-	~ConfigSection();
+	virtual ~ConfigSection();
+
+	const QString & name() const { return Name; }
 
 	void activate();
 
@@ -67,8 +70,6 @@ public:
 	void hide() { TabWidget->hide(); }
 
 	ConfigGroupBox * configGroupBox(const QString &tab, const QString &groupBox, bool create = true);
-
-	void removedConfigTab(const QString &configTabName);
 
 };
 

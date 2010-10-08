@@ -21,6 +21,7 @@
 #define CONFIG_TAB_H
 
 #include <QtCore/QMap>
+#include <QtCore/QObject>
 
 class QGroupBox;
 class QScrollArea;
@@ -32,8 +33,10 @@ class ConfigGroupBox;
 class ConfigSection;
 class KaduScrollArea;
 
-class ConfigTab
+class ConfigTab : public QObject
 {
+	Q_OBJECT
+
 	QString MyName;
 	ConfigSection *MyConfigSection;
 
@@ -43,13 +46,14 @@ class ConfigTab
 	QVBoxLayout *MyMainLayout;
 	QWidget *MyMainWidget;
 
+private slots:
+	void configGroupBoxDestroyed(QObject *obj);
+
 public:
 	ConfigTab(const QString &name, ConfigSection *configSection, QWidget *mainWidget);
-	~ConfigTab();
+	virtual ~ConfigTab();
 
 	ConfigGroupBox * configGroupBox(const QString &name, bool create = true);
-
-	void removedConfigGroupBox(const QString &groupBoxName);
 
 	const QString & name() const { return MyName; }
 	QWidget * widget() const;
