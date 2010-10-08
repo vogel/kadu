@@ -23,9 +23,9 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QMap>
-#include <QtGui/QTabWidget>
 
 #include "gui/widgets/configuration/configuration-widget.h"
+#include "gui/widgets/configuration/kadu-tab-widget.h"
 
 class ConfigGroupBox;
 class ConfigTab;
@@ -35,7 +35,6 @@ class ConfigWidget;
 class QGridLayout;
 class QGroupBox;
 class QListWidgetItem;
-//class QTabWidget;
 
 class ConfigSection : public QObject
 {
@@ -50,12 +49,9 @@ class ConfigSection : public QObject
 	QMap<QString, ConfigTab *> ConfigTabs;
 
 	QWidget *ParentConfigGroupBoxWidget;
-	QWidget *MainWidget;
-	QTabWidget *TabWidget;
+	KaduTabWidget *TabWidget;
 
 	ConfigTab * configTab(const QString &name, bool create = true);
-
-	void switchTabView(bool tabView);
 
 private slots:
 	void iconThemeChanged();
@@ -67,8 +63,8 @@ public:
 
 	void activate();
 
-	void show() { MainWidget->show(); }
-	void hide() { MainWidget->hide(); }
+	void show() { TabWidget->show(); }
+	void hide() { TabWidget->hide(); }
 
 	ConfigGroupBox * configGroupBox(const QString &tab, const QString &groupBox, bool create = true);
 

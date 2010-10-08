@@ -85,7 +85,7 @@ ConfigGroupBox *ConfigTab::configGroupBox(const QString &name, bool create)
 	return newConfigGroupBox;
 }
 
-QWidget * ConfigTab::scrollWidget() const
+QWidget * ConfigTab::widget() const
 {
 	return MyScrollArea;
 }

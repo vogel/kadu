@@ -520,6 +520,7 @@ set (kadu_MOC_SRCS
 	gui/widgets/configuration/config-syntax-editor.h
 	#gui/widgets/configuration/config-tab.h
 	gui/widgets/configuration/kadu-scroll-area.h
+	gui/widgets/configuration/kadu-tab-widget.h
 	gui/widgets/configuration/notify-tree-widget.h
 	gui/widgets/configuration/notifier-configuration-widget.h
 	gui/widgets/configuration/notify-group-box.h

@@ -12,6 +12,7 @@
 * gui: #1526 fixed: update validation after each change in contacts in buddy's window (ultr)
 * jabber: #1416 fixed: remove proxy settings from XMPP account dialog (Vogel)
 * autostatus: #1423 fixed: module ported to 0.6.6 (Vogel)
+* gui: fixed a bug that caused configuration widget to disappear in certain scenarios (beevvy)
 
 +++ version 0.6.6-beta7
 * gui: #1541 fixed: avatar displaying on Qt 4.5 (Vogel)

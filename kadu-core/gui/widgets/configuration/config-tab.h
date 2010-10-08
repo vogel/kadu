@@ -52,9 +52,7 @@ public:
 	void removedConfigGroupBox(const QString &groupBoxName);
 
 	const QString & name() const { return MyName; }
-	QWidget * widget() const { return MyMainWidget; }
-	QWidget * tabWidget() const { return MyMainWidget; }
-	QWidget * scrollWidget() const;
+	QWidget * widget() const;
 
 };
 
