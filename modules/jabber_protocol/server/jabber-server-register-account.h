@@ -63,7 +63,7 @@ public:
 
 	void performAction();
 
-	QString jid() { return Jid; }
+	const QString & jid() const { return Jid; }
 
 	bool result() { return Result; }
 	MiniClient * client() { return Client; };

@@ -43,9 +43,9 @@ public:
 
 	StatusType(const QString &name, const QString &displayName, const QString &iconName, StatusGroup *statusType, int sortIndex);
 
-	QString name() { return Name; }
-	QString displayName() { return DisplayName; }
-	QString iconName() { return IconName; }
+	const QString & name() const { return Name; }
+	const QString & displayName() const { return DisplayName; }
+	const QString & iconName() const { return IconName; }
 
 	StatusGroup *statusGroup() { return MyStatusGroup; }
 

@@ -64,7 +64,7 @@ public:
 
 	QImage icon();
 
-	QList<rosterItem*> childList(){return childItems;}
+	const QList<rosterItem *> & childList() const { return childItems; }
 
 private:
 	bool expanded;

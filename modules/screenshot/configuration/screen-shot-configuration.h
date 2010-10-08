@@ -53,11 +53,11 @@ public:
 	static void createInstance();
 	static void destroyInstance();
 
-	QString fileFormat() { return FileFormat; }
+	const QString & fileFormat() const { return FileFormat; }
 	bool useShortJpgExtension() { return UseShortJpgExtension; }
 	int quality() { return Quality; }
-	QString imagePath() { return ImagePath; }
-	QString fileNamePrefix() { return FileNamePrefix; }
+	const QString & imagePath() const { return ImagePath; }
+	const QString & fileNamePrefix() const { return FileNamePrefix; }
 	bool pasteImageClauseIntoChatWidget() { return PasteImageClauseIntoChatWidget; }
 	bool warnAboutDirectorySize() { return WarnAboutDirectorySize; }
 	long directorySizeLimit() { return DirectorySizeLimit; }

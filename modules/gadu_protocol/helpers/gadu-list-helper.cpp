@@ -223,7 +223,7 @@ Buddy GaduListHelper::line70ToBuddy(Account account, QStringList &sections)
 
 	if (!sections[5].isEmpty())
 	{
-		foreach (const QString group, sections[5].split(",", QString::SkipEmptyParts))
+		foreach (const QString &group, sections[5].split(",", QString::SkipEmptyParts))
 			groups.append(GroupManager::instance()->byName(group));
 
 		buddy.setGroups(groups);

@@ -806,7 +806,7 @@ void JabberClient::rejectSubscription(const XMPP::Jid &jid)
 }
 
 
-void JabberClient::changeSubscription(const XMPP::Jid &jid, const QString type)
+void JabberClient::changeSubscription(const XMPP::Jid &jid, const QString &type)
 {
 	XMPP::JT_Presence *task = new XMPP::JT_Presence(jabberClient->rootTask());
 	task->sub(jid, type);

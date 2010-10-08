@@ -50,7 +50,7 @@ public:
 
 private:
 	friend class Action;
-	
+
 	QMap<ActionDataSource *, Action *> MappedActions;
 	int deleted;
 
@@ -79,14 +79,14 @@ public:
 		const QString &CheckedText = "", ActionBoolCallback enableCallback = 0);
 	virtual ~ActionDescription();
 
-	QString name() { return Name; }
+	const QString & name() const { return Name; }
 	Action * createAction(ActionDataSource *dataSource, QObject *parent);
 	QList<Action *> actions();
 	Action * action(ActionDataSource *dataSource);
 
-	QString text() { return Text; }
-	QString iconPathOn() { return IconPathOn; }
-	QString iconPathOff() { return IconPathOff; }
+	const QString & text() const { return Text; }
+	const QString & iconPathOn() const { return IconPathOn; }
+	const QString & iconPathOff() const { return IconPathOff; }
 
 	void setShortcut(QString configItem, Qt::ShortcutContext context = Qt::WindowShortcut);
 

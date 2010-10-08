@@ -55,8 +55,8 @@ public:
 	bool enabled() const { return Enabled; }
 	bool messageStop() const { return MessageStop; }
 	bool logMessage() const { return LogMessage; }
-	QString returnMessage() const { return ReturnMessage; }
-	QString logFile() const { return LogFile; }
+	const QString & returnMessage() const { return ReturnMessage; }
+	const QString & logFile() const { return LogFile; }
 
 };
 

@@ -46,7 +46,7 @@ public:
 	PathListEdit(QWidget *parent = 0);
 	virtual ~PathListEdit() {}
 
-	QStringList pathList() const { return PathList; }
+	const QStringList & pathList() const { return PathList; }
 	void setPathList(const QStringList &pathList);
 
 signals:

@@ -54,7 +54,7 @@ public:
 	explicit StatusActions(StatusContainer *statusContainer, QObject *parent);
 	virtual ~StatusActions();
 
-	QList<QAction *> actions() { return Actions; }
+	const QList<QAction *> & actions() const { return Actions; }
 
 signals:
 	void statusActionTriggered(QAction *);

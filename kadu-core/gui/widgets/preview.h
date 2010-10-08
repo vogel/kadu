@@ -44,8 +44,8 @@ public:
 	void setResetBackgroundColor(const QString &resetBackgroundColor) { this->resetBackgroundColor = resetBackgroundColor; }
 	void addObjectToParse(Contact contact, QObject *object) { contacts.insert(contact); objectsToParse.append(object); }
 
-	const QObjectList getObjectsToParse() const { return objectsToParse; }
-	const ContactSet getContactList() const { return contacts; }
+	const QObjectList & getObjectsToParse() const { return objectsToParse; }
+	const ContactSet & getContactList() const { return contacts; }
 
 
 public slots:

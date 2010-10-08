@@ -65,7 +65,7 @@ public:
 	const Message & message() const { return MyMessage; }
 	Message & message() { return MyMessage; }
 
-	QString htmlMessageContent() const { return HtmlMessageContent; }
+	const QString & htmlMessageContent() const { return HtmlMessageContent; }
 
 	MessageRenderInfo & setSeparatorSize(int separatorSize);
 	int separatorSize() const { return SeparatorSize; }
@@ -74,13 +74,13 @@ public:
 	bool showServerTime() const { return ShowServerTime; }
 
 	MessageRenderInfo & setBackgroundColor(const QString &backgroundColor);
-	QString backgroundColor() const { return BackgroundColor; }
+	const QString & backgroundColor() const { return BackgroundColor; }
 
 	MessageRenderInfo & setFontColor(const QString &fontColor);
-	QString fontColor() const { return FontColor; }
+	const QString & fontColor() const { return FontColor; }
 
 	MessageRenderInfo & setNickColor(const QString &nickColor);
-	QString nickColor() const { return NickColor; }
+	const QString & nickColor() const { return NickColor; }
 
 };
 

@@ -47,9 +47,9 @@ public:
 	explicit SmsSender(const QString &number, QObject *parent = 0);
 	virtual ~SmsSender();
 
-	QString number() { return Number; }
-	QString contact() { return Contact; }
-	QString signature() { return Signature; }
+	const QString & number() const { return Number; }
+	const QString & contact() const { return Contact; }
+	const QString & signature() const { return Signature; }
 	TokenReader * tokenReader() { return MyTokenReader; }
 
 	void setContact(const QString &contact);

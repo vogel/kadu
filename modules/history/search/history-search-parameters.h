@@ -33,13 +33,13 @@ public:
 	HistorySearchParameters();
 
 	HistorySearchParameters & setQuery(const QString &query);
-	QString query() { return Query; }
+	const QString & query() const { return Query; }
 
 	HistorySearchParameters & setFromDate(const QDate &date);
-	QDate fromDate() { return FromDate; }
-	
+	const QDate & fromDate() const { return FromDate; }
+
 	HistorySearchParameters & setToDate(const QDate &date);
-	QDate toDate() { return ToDate; }
+	const QDate & toDate() const { return ToDate; }
 
 };
 

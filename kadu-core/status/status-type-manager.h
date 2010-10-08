@@ -58,7 +58,7 @@ public:
 	QIcon statusIcon(const QString &protocol, const QString &type,
 			bool description, bool mobile);
 
-	QList<StatusType *> statusTypes() { return StatusTypes; }
+	const QList<StatusType *> & statusTypes() const { return StatusTypes; }
 
 };
 

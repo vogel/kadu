@@ -63,7 +63,7 @@ class KADUAPI ToolBar : public QToolBar, public ConfigurationAwareObject
 		QAction *action;
 		QWidget *widget;
 		Qt::ToolButtonStyle style;
-		bool operator == (struct ToolBarAction action) {
+		bool operator == (struct ToolBarAction action) const {
 			return actionName == action.actionName;
 		}
 	};

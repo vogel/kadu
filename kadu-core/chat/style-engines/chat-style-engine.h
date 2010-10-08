@@ -38,17 +38,17 @@ protected:
 
 public:
 	virtual ~ChatStyleEngine() {}
-	virtual QString engineName() { return EngineName; }
-	virtual QString currentStyleName() { return CurrentStyleName; }
+	virtual const QString & engineName() const { return EngineName; }
+	virtual const QString & currentStyleName() const { return CurrentStyleName; }
 	virtual QString currentStyleVariant() { return "Default"; }
 	virtual QString defaultVariant(const QString &) { return "Default"; }
-	virtual QStringList styleVariants(QString) { return QStringList(); }	
+	virtual QStringList styleVariants(QString) { return QStringList(); }
 
 	virtual bool supportVariants() = 0;
 	virtual bool supportEditing() = 0;
 	virtual QString isStyleValid(QString) = 0; //return QString::null, if style is not valid
 	virtual bool styleUsesTransparencyByDefault(QString) = 0;
-	
+
 	virtual void clearMessages(HtmlMessagesRenderer *) = 0;
 	virtual void appendMessages(HtmlMessagesRenderer *, QList<MessageRenderInfo *>) = 0;
 	virtual void appendMessage(HtmlMessagesRenderer *, MessageRenderInfo *) = 0;

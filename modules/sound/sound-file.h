@@ -50,10 +50,10 @@ public:
 	bool valid();
 	void setVolume(float volume);
 
-	int length() { return Length; }
+	int length() const { return Length; }
 	short int * data() { return Data; }
-	int channels() { return Channels; }
-	int sampleRate() { return SampleRate; }
+	int channels() const { return Channels; }
+	int sampleRate() const { return SampleRate; }
 
 };
 

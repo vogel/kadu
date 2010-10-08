@@ -77,7 +77,7 @@ tlen::~tlen()
 		delete ping;
 		ping = 0;
 	}
-	
+
 	if (socket)
 	{
 		socket->abort();
@@ -179,7 +179,7 @@ void tlen::socketConnected() {
 //	  :"<s v=\"9\" t=\"0600010C\">") );
 }
 
-void tlen::event(QDomNode n) {
+void tlen::event(const QDomNode &n) {
 	kdebugf();
 	QString nodeName=n.nodeName();
 	QDomElement element = n.toElement();
@@ -480,8 +480,8 @@ void tlen::getPubDirInfoRequest() {
 	write(doc);
 }
 //<iq type="set" id="tw" to="tuba"><query xmlns="jabber:iq:register">...<nick>nick</nick>...</query></iq>
-void tlen::setPubDirInfo(QString first, QString last, QString nick, QString email,
-			 QString city, int birth, int sex, int lookingFor, int job,
+void tlen::setPubDirInfo(const QString &first, const QString &last, const QString &nick, const QString &email,
+			 const QString &city, int birth, int sex, int lookingFor, int job,
 			 int todayPlans, bool visible, bool mic, bool cam)
 {
 	kdebugf();
@@ -558,7 +558,7 @@ QString tlen::getTextNode(const QDomElement &n, const QString &name)
 	return QString();
 }
 
-void tlen::tcfgReceived(QDomElement &n)
+void tlen::tcfgReceived(const QDomElement &n)
 {
 	kdebugf();
 	// parse tlen config
@@ -723,11 +723,11 @@ void tlen::setStatus(TlenStatus status) {
 		return;
 
 	Status = status;
-	
+
 	emit statusUpdate();
 }
 
-void tlen::setStatusDescr(TlenStatus status, QString description) {
+void tlen::setStatusDescr(tlen::TlenStatus status, const QString &description) {
 	kdebugf();
 	if(Descr==description && Status==status)
 		return;
@@ -745,11 +745,11 @@ void tlen::setStatusDescr(TlenStatus status, QString description) {
 	}
 }
 
-void tlen::authorize( QString to, bool subscribe ) {
+void tlen::authorize(const QString &to, bool subscribe) {
 	kdebugf();
-	
+
 	/*
-	   encode() powodowalo wysylanie jid'a postaci user%20tlen.pl 
+	   encode() powodowalo wysylanie jid'a postaci user%20tlen.pl
 	   przez co autoryzacja nie dochodzi³a nigdy do skutku. - Juzef
 	*/
 	QString encodedTo = to;//QString(encode(to));
@@ -769,7 +769,7 @@ void tlen::authorize( QString to, bool subscribe ) {
 	else {
 		p.setAttribute("type", "unsubscribed");
 	}
-	
+
 	doc.appendChild(p);
 	write(doc);
 }
@@ -777,7 +777,7 @@ void tlen::authorize( QString to, bool subscribe ) {
 //<presence type="subscribe" to="jid" />
 //<iq type="set" id="Q2WLO5" ><query xmlns="jabber:iq:roster">
 //<item name="name" jid="jid" ><group>Kontakty</group></item></query></iq>
-void tlen::addItem( QString jid, QString name, QString group, bool subscribe ) {
+void tlen::addItem(const QString &jid, const QString &name, const QString &group, bool subscribe) {
 	kdebugf();
 	QDomDocument doc;
 	QDomElement iq=doc.createElement("iq");
@@ -822,7 +822,7 @@ void tlen::addItem( QString jid, QString name, QString group, bool subscribe ) {
 
 //<iq type="set" id="G14KEU" ><query xmlns="jabber:iq:roster">
 //<item subscription="remove" jid="jid" /></query></iq>
-void tlen::remove(QString jid) {
+void tlen::remove(const QString &jid) {
 	kdebugf();
 	QDomDocument doc;
 	QDomElement iq=doc.createElement("iq");
@@ -842,7 +842,7 @@ void tlen::remove(QString jid) {
 	write(doc);
 }
 
-void tlen::writeMsg( QString msg, QString to ) {
+void tlen::writeMsg(const QString &msg, const QString &to) {
 	kdebugf();
 	QDomDocument doc;
 	QDomElement message=doc.createElement("message");
@@ -854,7 +854,7 @@ void tlen::writeMsg( QString msg, QString to ) {
 	write(doc);
 }
 
-void tlen::chatNotify( QString to, bool t )
+void tlen::chatNotify( const QString& to, bool t )
 {
 	kdebugf();
 	QDomDocument doc;
@@ -870,7 +870,7 @@ void tlen::chatNotify( QString to, bool t )
 	write(doc);
 }
 
-void tlen::sendAlarm(QString to)
+void tlen::sendAlarm(const QString &to)
 {
 	kdebugf();
 	QDomDocument doc;
@@ -909,7 +909,7 @@ tlen::TlenStatus tlen::statusType(const QString &status)
 	return tlen::unavailable;
 }
 
-void tlen::receiveFile(QString rndid, QString sender, bool receive) {
+void tlen::receiveFile(const QString &rndid, const QString &sender, bool receive) {
 	kdebugf();
 	QDomDocument doc;
 	QDomElement f=doc.createElement("f");

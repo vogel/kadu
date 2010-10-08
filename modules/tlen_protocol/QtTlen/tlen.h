@@ -60,7 +60,7 @@ public:
 		mic,
 		cam
 	};
-	
+
 	enum TlenStatus {
 		chat,
 		available,
@@ -78,28 +78,28 @@ public:
 	bool isConnecting();
 	bool isDisconnected();
 
-	TlenStatus status() { return Status; }
-	QString description() { return Descr; }
+	TlenStatus status() const { return Status; }
+	const QString & description() const { return Descr; }
 
 	// user name
-	QString uname() { return User; }
-	void setUname(QString uname) { User = uname; }
+	const QString & uname() const { return User; }
+	void setUname(const QString &uname) { User = uname; }
 
 	// password
-	QString pass() { return Password; }
-	void setPass(QString pass) { Password = pass; }
+	const QString & pass() const { return Password; }
+	void setPass(const QString &pass) { Password = pass; }
 
-	bool isSecureConn() { return Secure; }
+	bool isSecureConn() const { return Secure; }
 	void setSecureConn(bool secure) { Secure = secure; }
 
-	bool reconnect() { return Reconnect; }
+	bool reconnect() const { return Reconnect; }
 	void setReconnect(bool reconnect) { Reconnect = reconnect; }
 
 	// helpers
 	QString decode(const QByteArray&);
 	QString decode(const QString&);
 	QByteArray encode(const QString&);
-	
+
 	// sets text : <tag>text</tag>
 	QDomElement textNode(const QString &tag, const QString &text);
 	// gets text from tag: <tag>text</tag>
@@ -111,7 +111,7 @@ public:
 
 	QString token;
 	// create class or something for this config
-	QString mmBase() { return MiniMailBase; }
+	const QString & mmBase() const { return MiniMailBase; }
 
 	QString MiniMailBase;
 	QString MiniMailMsg;
@@ -134,29 +134,29 @@ public:
 public slots:
 	void openConn();
 	void closeConn();
-	void writeMsg(QString msg, QString to);
-	void sendAlarm(QString to);
-	void chatNotify(QString to, bool t);
+	void writeMsg(const QString &msg, const QString &to);
+	void sendAlarm(const QString &to);
+	void chatNotify(const QString &to, bool t);
 	void rosterRequest();
 	// tlen configuration request
 	void tcfgRequest();
 	// pobiera dane zapisane w katalogu publicznym
 	void getPubDirInfoRequest();
 	// wysyla dane do katalogu publicznego
-	void setPubDirInfo(QString first, QString last, QString nick, QString email,
-			 QString city, int birth, int sex, int lookingFor, int job,
+	void setPubDirInfo(const QString &first, const QString &last, const QString &nick, const QString &email,
+			 const QString &city, int birth, int sex, int lookingFor, int job,
 			 int todayPlans, bool visible, bool mic, bool cam);
 
 	// "available","chat","away","xa","dnd","invisible","unavailable"
 	void setStatus(TlenStatus status);
-	void setStatusDescr(TlenStatus status,QString description);
+	void setStatusDescr(TlenStatus status, const QString &description);
 
 	// add Contact
-	void addItem(QString jid, QString name, QString group, bool subscribe);
+	void addItem(const QString &jid, const QString &name, const QString &group, bool subscribe);
 	// remove Contact
-	void remove(QString jid);
+	void remove(const QString &jid);
 
-	void receiveFile(QString,QString,bool);
+	void receiveFile(const QString &rndid, const QString &sender, bool receive);
 	bool write(const QDomDocument &d);
 
 private slots:
@@ -165,15 +165,15 @@ private slots:
 	void socketDisconnected();
 
 	// send subscription to user
-	void authorize(QString to, bool subscribe);
+	void authorize(const QString &to, bool subscribe);
 	// send status and connect or disconnect if needed
 	void writeStatus();
 	// event parse
-	void event(QDomNode n);
+	void event(const QDomNode &n);
 	// keep-alive session every 50-60 s.
 	void sendPing();
 	// tlen configuration received
-	void tcfgReceived(QDomElement &n);
+	void tcfgReceived(const QDomElement &n);
 
 	// status translations
 	QString statusName(TlenStatus index);

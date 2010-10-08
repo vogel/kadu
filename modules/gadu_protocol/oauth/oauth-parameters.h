@@ -45,37 +45,37 @@ public:
 	static QString createTimestamp();
 
 	OAuthParameters();
-	OAuthParameters(OAuthConsumer consumer, OAuthToken token);
+	OAuthParameters(const OAuthConsumer &consumer, const OAuthToken &token);
 
-	void setConsumer(OAuthConsumer consumer);
-	OAuthConsumer consumer();
+	void setConsumer(const OAuthConsumer &consumer);
+	const OAuthConsumer & consumer() const;
 
 	void setHttpMethod(const QString &httpMethod);
-	QString httpMethod();
+	const QString & httpMethod() const;
 
 	void setUrl(const QString &url);
-	QString url();
-	
+	const QString & url() const;
+
 	void setSignatureMethod(const QString &signatureMethod);
-	QString signatureMethod();
-	
+	const QString & signatureMethod() const;
+
 	void setNonce(const QString &nonce);
-	QString nonce();
-	
+	const QString & nonce() const;
+
 	void setTimestamp(const QString &timestamp);
-	QString timestamp();
-	
+	const QString & timestamp() const;
+
 	void setVerison(const QString &version);
-	QString version();
-	
+	const QString & version() const;
+
 	void setRealm(const QString &realm);
-	QString realm();
+	const QString & realm() const;
 
 	void setSignature(const QByteArray &signature);
-	QByteArray signature();
+	const QByteArray & signature() const;
 
 	void setToken(const OAuthToken &token);
-	OAuthToken token();
+	const OAuthToken & token() const;
 
 	void sign();
 

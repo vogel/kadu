@@ -37,9 +37,9 @@ private:
 public:
 	StatusGroup(const QString &name, int sortIndex);
 
-	QString name() { return Name; }
+	const QString & name() const { return Name; }
 
-	int sortIndex() { return SortIndex; }
+	int sortIndex() const { return SortIndex; }
 
 	bool operator < (const StatusGroup&compare) const;
 	bool operator == (const StatusGroup&compare) const;

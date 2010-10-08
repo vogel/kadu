@@ -34,6 +34,6 @@ public:
 	TimedStatus & operator = (const TimedStatus &copyMe);
 
 	Status status() { return MyStatus; }
-	QDateTime dateTime() { return DateTime; }
+	const QDateTime & dateTime() const { return DateTime; }
 
 };

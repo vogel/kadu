@@ -46,12 +46,12 @@ public:
 	Status(const Status &copyme);
 	~Status();
 
-	QString type() const { return Type; }
+	const QString & type() const { return Type; }
 	void setType(const QString &type);
 
-	QString group() const { return Group; }
+	const QString & group() const { return Group; }
 
-	QString description() const { return Description; }
+	const QString & description() const { return Description; }
 	void setDescription(const QString &description) { Description = description; }
 
 	bool isDisconnected() const;

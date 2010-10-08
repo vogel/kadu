@@ -64,8 +64,8 @@ public:
 	explicit Notifier(const QString name, QString description, QIcon icon, QObject *parent = 0);
 	virtual ~Notifier();
 
-	QString name() { return Name; }
-	QString description() { return Description; }
+	const QString & name() const { return Name; }
+	const QString & description() const { return Description; }
 	QIcon & icon() { return Icon; }
 
 

@@ -38,8 +38,8 @@ class KADUAPI ProtocolMenuManager
 	ProtocolMenuManager();
 
 public:
-	QList<ActionDescription *> contactsListActions() { return ContactsListActions; }
-	QList<ActionDescription *> managementActions() { return ManagementActions; }
+	const QList<ActionDescription *> & contactsListActions() const { return ContactsListActions; }
+	const QList<ActionDescription *> & managementActions() const { return ManagementActions; }
 	QList<ActionDescription *> protocolActions(Account account, Buddy buddy);
 };
 

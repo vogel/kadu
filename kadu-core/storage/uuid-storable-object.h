@@ -58,7 +58,7 @@ public:
 	 * This method returns object of type QUuid that represens unique ID for this object.
 	 * Each derivered class should ovveride that method to return really unique ID.
 	 */
-	QUuid uuid() const { return Uuid; }
+	const QUuid & uuid() const { return Uuid; }
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski

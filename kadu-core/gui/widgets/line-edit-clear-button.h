@@ -47,7 +47,7 @@ public:
 	virtual ~LineEditClearButton();
 
 	void setPixmap(const QPixmap &buttonPixmap);
-	QPixmap pixmap() const { return ButtonPixmap; }
+	const QPixmap & pixmap() const { return ButtonPixmap; }
 
 	virtual QSize sizeHint() const { return ButtonPixmap.size(); }
 

@@ -84,13 +84,13 @@ public:
 	bool isImage() const { return Image; }
 	bool isEmpty() const { return !Image && Content.isEmpty(); }
 
-	QString content() const { return Content; }
+	const QString & content() const { return Content; }
 	bool bold() const { return Bold; }
 	bool italic() const { return Italic; }
 	bool underline() const { return Underline; }
-	QColor color() const { return Color; }
+	const QColor & color() const { return Color; }
 
-	QString imagePath() const { return ImagePath; }
+	const QString & imagePath() const { return ImagePath; }
 
 	/**
 	 * Converts message part to HTML - either formatted text or image.

@@ -52,7 +52,7 @@ public:
 	void store();
 	void flush();
 
-	QUuid uuid() { return Uuid; }
+	const QUuid & uuid() const { return Uuid; }
 
 	void registerStorableObject(StorableObject *object);
 	void unregisterStorableObject(StorableObject *object);

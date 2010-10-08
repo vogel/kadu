@@ -113,8 +113,8 @@ public:
 	ConfigurationWindow(const QString &name, const QString &caption, const QString &section, ConfigurationWindowDataManager *dataManager);
 	virtual ~ConfigurationWindow();
 
-	QString name() { return Name; }
-	QString section() { return Section; }
+	const QString & name() const { return Name; }
+	const QString & section() const { return Section; }
 	ConfigurationWidget * widget() { return configurationWidget; }
 
 	/**

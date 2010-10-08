@@ -41,11 +41,11 @@ public:
 
 	virtual void store();
 
-	QString number() { return Number; };
-	void setNumber(QString number) { Number = number; };
+	const QString & number() const { return Number; };
+	void setNumber(const QString &number) { Number = number; };
 
-	QString gatewayId() { return GatewayId; };
-	void setGatewayId(QString gatewayId) { GatewayId = gatewayId; };
+	const QString & gatewayId() const { return GatewayId; };
+	void setGatewayId(const QString &gatewayId) { GatewayId = gatewayId; };
 
 };
 

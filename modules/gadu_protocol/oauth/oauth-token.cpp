@@ -49,32 +49,32 @@ OAuthToken & OAuthToken::operator = (const OAuthToken &copyMe)
 	return *this;
 }
 
-bool OAuthToken::isValid()
+bool OAuthToken::isValid() const
 {
 	return Valid;
 }
 
-QByteArray OAuthToken::token()
+const QByteArray & OAuthToken::token() const
 {
 	return Token;
 }
 
-QByteArray OAuthToken::tokenSecret()
+const QByteArray & OAuthToken::tokenSecret() const
 {
 	return TokenSecret;
 }
 
-int OAuthToken::tokenExpiresIn()
+int OAuthToken::tokenExpiresIn() const
 {
 	return TokenExpiresIn;
 }
 
-void OAuthToken::setConsumer(OAuthConsumer consumer)
+void OAuthToken::setConsumer(const OAuthConsumer &consumer)
 {
 	Consumer = consumer;
 }
 
-OAuthConsumer OAuthToken::consumer()
+const OAuthConsumer & OAuthToken::consumer() const
 {
 	return Consumer;
 }

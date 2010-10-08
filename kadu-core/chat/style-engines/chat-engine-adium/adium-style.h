@@ -90,7 +90,7 @@ public:
 
 	QString	templateHtml();
 
-	QStringList styleVariants() { return StyleVariants; }
+	const QStringList & styleVariants() const { return StyleVariants; }
 
 };
 

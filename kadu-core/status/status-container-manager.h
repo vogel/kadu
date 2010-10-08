@@ -85,7 +85,7 @@ public:
 	static StatusContainerManager * instance();
 
 	unsigned int count() const { return StatusContainers.count(); }
-	const QList<StatusContainer *> statusContainers() const { return StatusContainers; }
+	const QList<StatusContainer *> & statusContainers() const { return StatusContainers; }
 	//StatusContainer Implementation
 	virtual QString statusContainerName();
 

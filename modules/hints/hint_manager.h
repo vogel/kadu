@@ -55,7 +55,7 @@ class HintManager : public Notifier, public AbstractToolTip, public Configuratio
 	HintsConfigurationUiHandler *UiHandler;
 
 	HintsConfigurationWidget *configurationWidget;
-	
+
 	void processButtonPress(const QString &buttonName, Hint *hint);
 
 	void showNewMessage(const QString &configurationDirective, const QString &title, const QString &contentTitle, BuddyList buddies, const QString &msg);
@@ -150,7 +150,7 @@ public:
 
 	void prepareOverUserHint(QFrame* tipFrame, QLabel* tipLabel, Contact contact);
 
-	QString style() { return Style; }
+	const QString & style() const { return Style; }
 	double opacity() { return Opacity; }
 	HintsConfigurationUiHandler *uiHandler() { return UiHandler; }
 

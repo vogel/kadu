@@ -41,7 +41,7 @@ OAuthParameters::OAuthParameters()
 	setVerison("1.0");
 }
 
-OAuthParameters::OAuthParameters(OAuthConsumer consumer, OAuthToken token) :
+OAuthParameters::OAuthParameters(const OAuthConsumer &consumer, const OAuthToken &token) :
 		Consumer(consumer), Token(token)
 {
 	setHttpMethod("POST");
@@ -51,12 +51,12 @@ OAuthParameters::OAuthParameters(OAuthConsumer consumer, OAuthToken token) :
 	setVerison("1.0");
 }
 
-void OAuthParameters::setConsumer(OAuthConsumer consumer)
+void OAuthParameters::setConsumer(const OAuthConsumer &consumer)
 {
 	Consumer = consumer;
 }
 
-OAuthConsumer OAuthParameters::consumer()
+const OAuthConsumer & OAuthParameters::consumer() const
 {
 	return Consumer;
 }
@@ -66,7 +66,7 @@ void OAuthParameters::setHttpMethod(const QString &httpMethod)
 	HttpMethod = httpMethod;
 }
 
-QString OAuthParameters::httpMethod()
+const QString & OAuthParameters::httpMethod() const
 {
 	return HttpMethod;
 }
@@ -76,7 +76,7 @@ void OAuthParameters::setUrl(const QString &url)
 	Url = url;
 }
 
-QString OAuthParameters::url()
+const QString & OAuthParameters::url() const
 {
 	return Url;
 }
@@ -86,7 +86,7 @@ void OAuthParameters::setSignatureMethod(const QString &signatureMethod)
 	SignatureMethod = signatureMethod;
 }
 
-QString OAuthParameters::signatureMethod()
+const QString & OAuthParameters::signatureMethod() const
 {
 	return SignatureMethod;
 }
@@ -96,7 +96,7 @@ void OAuthParameters::setNonce(const QString &nonce)
 	Nonce = nonce;
 }
 
-QString OAuthParameters::nonce()
+const QString & OAuthParameters::nonce() const
 {
 	return Nonce;
 }
@@ -106,7 +106,7 @@ void OAuthParameters::setTimestamp(const QString &timestamp)
 	Timestamp = timestamp;
 }
 
-QString OAuthParameters::timestamp()
+const QString & OAuthParameters::timestamp() const
 {
 	return Timestamp;
 }
@@ -116,7 +116,7 @@ void OAuthParameters::setVerison(const QString &version)
 	Version = version;
 }
 
-QString OAuthParameters::version()
+const QString & OAuthParameters::version() const
 {
 	return Version;
 }
@@ -126,7 +126,7 @@ void OAuthParameters::setRealm(const QString &realm)
 	Realm = realm;
 }
 
-QString OAuthParameters::realm()
+const QString & OAuthParameters::realm() const
 {
 	return Realm;
 }
@@ -136,7 +136,7 @@ void OAuthParameters::setSignature(const QByteArray &signature)
 	Signature = signature;
 }
 
-QByteArray OAuthParameters::signature()
+const QByteArray & OAuthParameters::signature() const
 {
 	return Signature;
 }
@@ -147,7 +147,7 @@ void OAuthParameters::setToken(const OAuthToken &token)
 	Token = token;
 }
 
-OAuthToken OAuthParameters::token()
+const OAuthToken & OAuthParameters::token() const
 {
 	return Token;
 }

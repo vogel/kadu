@@ -40,13 +40,13 @@ public:
 
 	OAuthToken & operator = (const OAuthToken &copyMe);
 
-	bool isValid();
-	QByteArray token();
-	QByteArray tokenSecret();
-	int tokenExpiresIn();
+	bool isValid() const;
+	const QByteArray & token() const;
+	const QByteArray & tokenSecret() const;
+	int tokenExpiresIn() const;
 
-	void setConsumer(OAuthConsumer consumer);
-	OAuthConsumer consumer();
+	void setConsumer(const OAuthConsumer &consumer);
+	const OAuthConsumer & consumer() const;
 
 };
 

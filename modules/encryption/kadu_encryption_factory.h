@@ -43,7 +43,7 @@ class KaduEncryptionFactory
 
 		/**
 		 * Returns an instance of the KaduEncryptionFactory.
-		 * 
+		 *
 		 * @return An instance of the factory object.
 		**/
 		static KaduEncryptionFactory *instance();
@@ -51,7 +51,7 @@ class KaduEncryptionFactory
 		/**
 		 * The actual factory implementation that creates an encryption object
 		 * that implements specified encryption method.
-		 * 
+		 *
 		 * @param method the encryption method for which to create the encryption object
 		 * @param keysPath path to the directory for storing keys, if applicable
 		 * @return Newely created encryption object, or 0 if an error occured.
@@ -60,10 +60,10 @@ class KaduEncryptionFactory
 
 		/**
 		 * Returns a description of the last error that occured.
-		 * 
+		 *
 		 * @return The description of the last error that occured.
 		**/
-		QString errorInfo() { return ErrorInfo; }
+		const QString & errorInfo() const { return ErrorInfo; }
 };
 
 #endif //KADU_ENCRYPTION_FACTORY_H

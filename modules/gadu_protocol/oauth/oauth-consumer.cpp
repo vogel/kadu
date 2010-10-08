@@ -42,12 +42,12 @@ OAuthConsumer & OAuthConsumer::operator = (const OAuthConsumer &copyMe)
 	return *this;
 }
 
-QByteArray OAuthConsumer::consumerKey()
+const QByteArray & OAuthConsumer::consumerKey() const
 {
 	return ConsumerKey;
 }
 
-QByteArray OAuthConsumer::consumerSecret()
+const QByteArray & OAuthConsumer::consumerSecret() const
 {
 	return ConsumerSecret;
 }

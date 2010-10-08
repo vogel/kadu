@@ -43,11 +43,11 @@ class GaduAvatarDataParser
 public:
 	GaduAvatarDataParser(QIODevice *ioDevice, QString contactId);
 
-	bool isValid() { return IsValid; }
-	QString avatarUrl() { return AvatarUrl; }
-	bool isBlank() { return IsBlank; }
-	QDateTime timestamp() { return Timestamp; }
-	int delay() { return Delay; }
+	bool isValid() const { return IsValid; }
+	const QString & avatarUrl() const { return AvatarUrl; }
+	bool isBlank() const { return IsBlank; }
+	const QDateTime & timestamp() const { return Timestamp; }
+	int delay() const { return Delay; }
 
 };
 

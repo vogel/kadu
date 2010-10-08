@@ -59,13 +59,13 @@ public:
 	Account itemAccount() const { return ItemAccount; }
 	void setItemAccount(Account account);
 
-	QString id() const { return Id; }
+	const QString & id() const { return Id; }
 	void setId(const QString &id);
 
 	ItemAction action() const { return Action; }
 	void setAction(ItemAction action);
 
-	QString detachedBuddyName() const { return DetachedBuddyName; }
+	const QString & detachedBuddyName() const { return DetachedBuddyName; }
 	void setDetachedBuddyName(const QString &detachedBuddyName);
 
 	bool isValid() const;

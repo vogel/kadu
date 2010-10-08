@@ -72,7 +72,7 @@ public:
 	XMPP::Client *client();
 	void setErrorOnDisconnect(bool);
 
-	QString tlsOverrideDomain() { return TlsOverrideDomain; };
+	const QString & tlsOverrideDomain() const { return TlsOverrideDomain; };
 	void setTlsOverrideDomain(QString tlsOverrideDomain) { TlsOverrideDomain = tlsOverrideDomain; }
 
 signals:

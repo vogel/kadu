@@ -34,8 +34,8 @@ public:
 
 	OAuthConsumer & operator = (const OAuthConsumer &copyMe);
 
-	QByteArray consumerKey();
-	QByteArray consumerSecret();
+	const QByteArray & consumerKey() const;
+	const QByteArray & consumerSecret() const;
 
 };
 

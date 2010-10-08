@@ -63,7 +63,7 @@ class KADUAPI BuddyDataWindow : public QWidget
 	Q_OBJECT
 
 	static QList<BuddyDataWindow *> Instances;
-	static QList<BuddyDataWindow *> instances() { return Instances; }
+	static const QList<BuddyDataWindow *> & instances() { return Instances; }
 
 	Buddy MyBuddy;
 	BuddyGeneralConfigurationWidget *ContactTab;

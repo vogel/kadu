@@ -41,7 +41,7 @@ class SmsGatewayManager
 public:
 	static SmsGatewayManager * instance();
 
-	QList<SmsGateway> items() { return Items; }
+	const QList<SmsGateway> & items() const { return Items; }
 
 };
 

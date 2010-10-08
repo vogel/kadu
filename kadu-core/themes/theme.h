@@ -35,8 +35,8 @@ public:
 
 	Theme & operator = (const Theme &copyMe);
 
-	QString path() const { return Path; }
-	QString name() const { return Name; }
+	const QString & path() const { return Path; }
+	const QString & name() const { return Name; }
 
 	bool isValid() const;
 	operator bool() const;

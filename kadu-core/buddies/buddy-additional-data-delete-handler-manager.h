@@ -40,7 +40,7 @@ class KADUAPI BuddyAdditionalDataDeleteHandlerManager : public QObject
 public:
 	static BuddyAdditionalDataDeleteHandlerManager * instance();
 
-	QList<BuddyAdditionalDataDeleteHandler *> items() { return Items; }
+	const QList<BuddyAdditionalDataDeleteHandler *> & items() const { return Items; }
 	BuddyAdditionalDataDeleteHandler *byName(const QString &name);
 
 	void registerAdditionalDataDeleteHandler(BuddyAdditionalDataDeleteHandler *handler);

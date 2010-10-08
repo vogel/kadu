@@ -47,8 +47,8 @@ public:
 	NotifyEvent(const QString &name, CallbackRequirement isCallbackRequired, const char *description);
 	bool operator == (const NotifyEvent &compare);
 
-	QString name() { return Name; }
-	QString category() { return Category; }
+	const QString & name() const { return Name; }
+	const QString & category() const { return Category; }
 	CallbackRequirement isCallbackRequired() { return IsCallbackRequired; }
 	const char * description() { return Description; }
 

@@ -57,9 +57,9 @@ public:
 
 	void setShowAccountName(bool showAccountName) { ShowAccountName = showAccountName; }
 
-	QFont font() const { return Font; }
-	QFont boldFont() const { return BoldFont; }
-	QFont descriptionFont() const { return DescriptionFont; }
+	const QFont & font() const { return Font; }
+	const QFont & boldFont() const { return BoldFont; }
+	const QFont & descriptionFont() const { return DescriptionFont; }
 
 	bool alignTop() const { return AlignTop; }
 	bool showAccountName() const { return ShowAccountName; }
@@ -69,11 +69,11 @@ public:
 	bool showAvatars() const { return ShowAvatars; }
 	bool avatarBorder() const { return AvatarBorder; }
 	bool avatarGreyOut() const { return AvatarGreyOut; }
-	QColor descriptionColor() const { return DescriptionColor; }
-	QColor fontColor() const { return FontColor; }
+	const QColor & descriptionColor() const { return DescriptionColor; }
+	const QColor & fontColor() const { return FontColor; }
 
-	QSize defaultAvatarSize() const { return DefaultAvatarSize; }
-	QPixmap messagePixmap() const { return MessagePixmap; }
+	const QSize & defaultAvatarSize() const { return DefaultAvatarSize; }
+	const QPixmap & messagePixmap() const { return MessagePixmap; }
 
 	virtual void configurationUpdated();
 

@@ -304,7 +304,7 @@ public:
 	/**
 	 * Returns the address of the local interface.
 	 */
-	QString localAddress() const { return LocalAddress; }
+	const QString & localAddress() const { return LocalAddress; }
 
 	/**
 	 * Returns if file transfers are enabled.
@@ -318,7 +318,7 @@ public:
 	/**
 	 * Return client name.
 	 */
-	QString clientName() const { return ClientName; }
+	const QString & clientName() const { return ClientName; }
 
 	/**
 	 * Set client version.
@@ -327,7 +327,7 @@ public:
 	/**
 	 * Return client version.
 	 */
-	QString clientVersion() const { return ClientVersion; }
+	const QString & clientVersion() const { return ClientVersion; }
 
 	/**
 	 * Set operating system name.
@@ -336,7 +336,7 @@ public:
 	/**
 	 * Return operating system name.
 	 */
-	QString osName() const { return OsName; }
+	const QString & osName() const { return OsName; }
 
 	/**
 	 * Set the caps(JEP-0115: Entity capabilities) node name.
@@ -347,7 +347,7 @@ public:
 	 * Return the caps node name for this client.
 	 * @return the caps node name.
 	 */
-	QString capsNode() const { return CapsNode;}
+	const QString & capsNode() const { return CapsNode;}
 
 	/**
 	 * Set the caps(JEP-0115: Entity capabilities) node version.
@@ -358,7 +358,7 @@ public:
 	 * Return the caps version for this client.
 	 * @return the caps version.
 	 */
-	QString capsVersion() const { return CapsVersion; }
+	const QString & capsVersion() const { return CapsVersion; }
 
 	/**
 	 * Return the caps extension list for this client.
@@ -392,7 +392,7 @@ public:
 	/**
 	 * Return timezone name.
 	 */
-	QString timeZoneName() const { return TimeZoneName; }
+	const QString & timeZoneName() const { return TimeZoneName; }
 	/**
 	 * Return timezone offset.
 	 */
@@ -495,7 +495,7 @@ public:
 	void addContact(const XMPP::Jid &j, const QString &name, const QStringList &groups, bool authReq);
 	void updateContact(const XMPP::Jid &j, const QString &name, const QStringList &groups);
 	void removeContact(const XMPP::Jid &j);
-	void changeSubscription(const XMPP::Jid &jid, const QString type);
+	void changeSubscription(const XMPP::Jid &jid, const QString &type);
 	void requestSubscription(const XMPP::Jid &jid);
 	void resendSubscription(const XMPP::Jid &jid);
 	void rejectSubscription(const XMPP::Jid &jid);

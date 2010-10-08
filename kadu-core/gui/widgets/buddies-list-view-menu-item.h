@@ -44,8 +44,8 @@ public:
 	bool operator < (const BuddiesListViewMenuItem &compareTo) const;
 
 	ActionDescription * actionDescription() { return Action; }
-	BuddiesListViewMenuCategory category() { return Category; }
-	int priority () { return Priority; }
+	BuddiesListViewMenuCategory category() const { return Category; }
+	int priority() const { return Priority; }
 
 };
 

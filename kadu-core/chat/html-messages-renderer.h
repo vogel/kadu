@@ -60,7 +60,7 @@ public:
 
 	QString content();
 
-	QList<MessageRenderInfo *> messages() { return MyChatMessages; }
+	const QList<MessageRenderInfo *> & messages() const { return MyChatMessages; }
 	void appendMessage(MessageRenderInfo *message);
 	void appendMessages(QList<MessageRenderInfo *> messages);
 	void clearMessages();

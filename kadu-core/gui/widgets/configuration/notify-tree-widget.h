@@ -59,7 +59,7 @@ public:
 	void parentNotifierChecked();
 	void useCustomSettingsChecked(bool checked);
 
-	QStringList activeNotifiers() { return ActiveNotifiers; }
+	const QStringList & activeNotifiers() const { return ActiveNotifiers; }
 };
 
 class NotifyTreeWidget : public QTreeWidget
