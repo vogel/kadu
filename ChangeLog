@@ -13,6 +13,7 @@
 * jabber: #1416 fixed: remove proxy settings from XMPP account dialog (Vogel)
 * autostatus: #1423 fixed: module ported to 0.6.6 (Vogel)
 * gui: fixed a bug that caused configuration widget to disappear in certain scenarios (beevvy)
+* gui: don't activate first config section when loading a module (autoaway) with opened configuration window (beevvy)
 
 +++ version 0.6.6-beta7
 * gui: #1541 fixed: avatar displaying on Qt 4.5 (Vogel)

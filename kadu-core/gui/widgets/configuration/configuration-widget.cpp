@@ -107,8 +107,8 @@ void ConfigurationWidget::init()
 	QString lastSection = config_file.readEntry("General", "ConfigurationWindow_" + Name);
 	if (ConfigSections.contains(lastSection))
 		ConfigSections[lastSection]->activate();
-	else
-		SectionsListWidget->setCurrentItem(0);
+	else if (SectionsListWidget->count() > 0)
+		ConfigSections[SectionsListWidget->item(0)->text()]->activate();
 }
 
 QList<ConfigWidget *> ConfigurationWidget::appendUiFile(const QString &fileName, bool load)
@@ -119,8 +119,6 @@ QList<ConfigWidget *> ConfigurationWidget::appendUiFile(const QString &fileName,
 		foreach(ConfigWidget *widget, widgets)
 			if (widget)
 				widget->loadConfiguration();
-
-	changeSection(*ConfigSections.keys().begin());
 
 	return widgets;
 }
