@@ -20,24 +20,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QApplication>
-#include <QtGui/QCursor>
 #include <QtCore/QFile>
-#include <QtGui/QSpinBox>
-#include <QtGui/QCheckBox>
 #include <QtCore/QTextStream>
+#include <QtGui/QApplication>
+#include <QtGui/QCheckBox>
+#include <QtGui/QCursor>
+#include <QtGui/QSpinBox>
+
+#include "../idle/idle.h"
+#include "configuration/configuration-file.h"
+#include "core/core.h"
+#include "gui/widgets/configuration/configuration-widget.h"
+#include "gui/windows/kadu-window.h"
+#include "misc/path-conversion.h"
+#include "debug.h"
 
 #include "auto_hide.h"
-
-#include "core/core.h"
-#include "gui/windows/kadu-window.h"
-#include "configuration/configuration-file.h"
-#include "gui/widgets/configuration/configuration-widget.h"
-#include "debug.h"
-#include "../idle/idle.h"
-#include "misc/path-conversion.h"
-
-AutoHide *autoHide;
 
 extern "C" KADU_EXPORT int auto_hide_init()
 {
@@ -50,7 +48,6 @@ extern "C" KADU_EXPORT int auto_hide_init()
 	kdebugf2();
 	return 0;
 }
-
 
 extern "C" KADU_EXPORT void auto_hide_close()
 {
@@ -66,13 +63,14 @@ extern "C" KADU_EXPORT void auto_hide_close()
 }
 
 
-AutoHide::AutoHide(QObject *parent)
-: QObject(parent), idleTime(0)
+AutoHide::AutoHide(QObject *parent) :
+		QObject(parent), IdleTime(0)
 {
 	kdebugf();
 	
-	connect(&timer, SIGNAL(timeout()), this, SLOT(timerTimeoutSlot()));
-	timer.start(1000);
+	connect(&Timer, SIGNAL(timeout()), this, SLOT(timerTimeoutSlot()));
+
+	configurationUpdated();
 
 	kdebugf2();
 }
@@ -85,12 +83,12 @@ AutoHide::~AutoHide()
 
 void AutoHide::timerTimeoutSlot()
 {
-	if (config_file.readBoolEntry("PowerKadu", "auto_hide_use_auto_hide", false))
+	if (Enabled)
 	{
-		if (idle->secondsIdle() >= config_file.readNumEntry("PowerKadu", "auto_hide_idle_time", 5 * 60))
+		if (idle->secondsIdle() >= IdleTime)
 		{
 			KaduWindow *window = Core::instance()->kaduWindow();
-			if (window->docked())
+			if (window && window->docked())
 				window->hide();
 		}
 	}
@@ -98,11 +96,13 @@ void AutoHide::timerTimeoutSlot()
 
 void AutoHide::configurationUpdated()
 {
-	bool enabled = config_file.readBoolEntry("PowerKadu", "auto_hide_use_auto_hide");
-	if (enabled && !timer.isActive())
-		timer.start(1000);
-	else if (!enabled && timer.isActive())
-		timer.stop();
+	IdleTime = config_file.readNumEntry("PowerKadu", "auto_hide_idle_time", 5 * 60);
+	Enabled = config_file.readBoolEntry("PowerKadu", "auto_hide_use_auto_hide");
+
+	if (Enabled && !Timer.isActive())
+		Timer.start(1000);
+	else if (!Enabled && Timer.isActive())
+		Timer.stop();
 }
 
 void AutoHide::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
@@ -111,3 +111,5 @@ void AutoHide::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfi
 
 	(dynamic_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("auto_hide/idle_time")))->setSpecialValueText(tr("Dont hide"));
 }
+
+AutoHide *autoHide;
