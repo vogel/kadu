@@ -41,9 +41,11 @@ private slots:
 public:
 	explicit ServerMonitor(QWidget *parent = 0);
 	virtual ~ServerMonitor();
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
 	static NotifyEvent *notifyEvent;
+
+public slots:
+	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
 };
 

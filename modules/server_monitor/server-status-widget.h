@@ -29,7 +29,6 @@ class QLabel;
 
 class ServerStatusWidget : public QWidget
 {
-
 	Q_OBJECT
 
 public:
@@ -53,14 +52,14 @@ private:
 	QString WatchedHostDisplayName;
 
 	void setNewState(ServerState newState);
-	void notify(QString, ServerStatusWidget::ServerState);
+	void notify(const QString &address, ServerState newServerState);
 
 private slots:
 	void connected();
 	void connectionError(QAbstractSocket::SocketError socketError);
 
 public:
-	ServerStatusWidget(QString watchedAddress, quint16 watchedPort = 8074, QString hostName ="", QWidget *parent = 0);
+	explicit ServerStatusWidget(const QString &watchedAddress, quint16 watchedPort = 8074, const QString &hostName = "", QWidget *parent = 0);
 	virtual ~ServerStatusWidget();
 
 	QString serverStateToString(ServerState serverState);
@@ -70,7 +69,7 @@ public slots:
 
 signals:
 	void statusChanged(ServerStatusWidget::ServerState, ServerStatusWidget::ServerState);
-	void statusChanged(QString, ServerStatusWidget::ServerState);
+	void statusChanged(const QString &, ServerStatusWidget::ServerState);
 
 };
 

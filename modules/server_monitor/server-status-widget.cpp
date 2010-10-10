@@ -29,7 +29,7 @@
 
 #include "server-status-widget.h"
 
-ServerStatusWidget::ServerStatusWidget(QString watchedAddress, quint16 watchedPort, QString hostName, QWidget *parent) :
+ServerStatusWidget::ServerStatusWidget(const QString &watchedAddress, quint16 watchedPort, const QString &hostName, QWidget *parent) :
 		QWidget(parent), WatchedAddress(watchedAddress), WatchedPort(watchedPort ? watchedPort : 8074),
 		CurrentState(Empty), WatchedHostDisplayName(hostName)
 {
@@ -100,7 +100,7 @@ void ServerStatusWidget::refreshIcon()
 	kdebugf2();
 }
 
-void ServerStatusWidget::notify(QString address, ServerStatusWidget::ServerState newServerState)
+void ServerStatusWidget::notify(const QString &address, ServerState newServerState)
 {
 	Notification *notification = new Notification("serverMonitorChangeStatus", "");
 

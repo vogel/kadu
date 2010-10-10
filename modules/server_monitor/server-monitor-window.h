@@ -50,8 +50,6 @@ class ServerMonitorWindow : public QScrollArea, ConfigurationAwareObject
 	QGridLayout *Layout;
 	QWidget *ScrollBarLayout;
 
-	virtual void configurationUpdated();
-
 	void cleanLayout();
 	void loadServersListFromGaduManager();
 	void loadServersListFromFile();
@@ -64,6 +62,8 @@ private slots:
 public:
 	explicit ServerMonitorWindow(QWidget *parent = 0);
 	virtual ~ServerMonitorWindow();
+
+	virtual void configurationUpdated();
 };
 
 #endif // SERVER_MONITOR_WINDOW_H
