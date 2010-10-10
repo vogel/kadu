@@ -108,7 +108,7 @@ QList<GaduServersManager::GaduServer> GaduServersManager::gaduServersFromString(
 {
 	QList<GaduServer> result;
 
-	if (serverAddress.isEmpty())
+	if (serverAddress.isEmpty() || serverAddress.startsWith("0.0.0.0"))
 		return result;
 
 	QHostAddress ip;
