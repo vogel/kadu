@@ -37,7 +37,9 @@ ServerStatusWidget::ServerStatusWidget(QString watchedAddress, quint16 watchedPo
 	PixmapLabel = new QLabel(this);
 	QLabel *textLabel = new QLabel(this);
 
-	WatchedHostDisplayName = ( WatchedHostDisplayName.trimmed().length() > 0 ) ? WatchedHostDisplayName : WatchedAddress.toString();
+	WatchedHostDisplayName = (WatchedHostDisplayName.trimmed().length() > 0)
+			? WatchedHostDisplayName
+			: QString("%1:%2").arg(WatchedAddress.toString()).arg(QString::number(WatchedPort));
 	textLabel->setText(WatchedHostDisplayName);
 
 	connect(&TcpSocket, SIGNAL(connected()), this, SLOT(connected()));
