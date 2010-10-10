@@ -28,6 +28,7 @@
  */
 
 #include <QtCore/QDir>
+#include <QtCore/QLibraryInfo>
 #include <QtCore/QLocale>
 #include <QtCore/QTimer>
 #include <QtCore/QString>
@@ -322,15 +323,11 @@ int main(int argc, char *argv[])
 		return 10;
 	}
 
-	// loading translation
-	// Translator_qt
-	QTranslator qt_qm(0);
-	QString lang = config_file.readEntry("General", "Language", QLocale::system().name().mid(0,2));
-	qt_qm.load(dataPath(QString("kadu/translations/qt_") + lang), ".");
+	const QString lang = config_file.readEntry("General", "Language", QLocale::system().name());
+	QTranslator qt_qm, kadu_qm;
+	qt_qm.load("qt_" + lang, QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+	kadu_qm.load("kadu_" + lang, dataPath("kadu/translations"));
 	qApp->installTranslator(&qt_qm);
-	// Translator_kadu
-	QTranslator kadu_qm(0);
-	kadu_qm.load(dataPath(QString("kadu/translations/kadu_") + lang), ".");
 	qApp->installTranslator(&kadu_qm);
 
 	// plugins path (win32)

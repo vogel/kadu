@@ -4,11 +4,6 @@ set (TRANSLATION_SOURCES
 	kadu_fr.ts
 	kadu_it.ts
 	kadu_pl.ts
-	qt_de.ts
-	qt_en.ts
-	qt_fr.ts
-	qt_it.ts
-	qt_pl.ts
 )
 
 qt4_add_translation (TRANSLATION_FILES ${TRANSLATION_SOURCES})
