@@ -119,13 +119,13 @@ QList<GaduServersManager::GaduServer> GaduServersManager::gaduServersFromString(
 		QString port = serverAddress.mid(colon + 1);
 
 		if (ip.setAddress(ipAddress))
-			result.append(qMakePair(ip, port.toInt()));
+			result.append(GaduServer(ip, port.toInt()));
 		return result;
 	}
 
 	if (ip.setAddress(serverAddress))
 		foreach (int port, AllPorts)
-			result.append(qMakePair(ip, port));
+			result.append(GaduServer(ip, port));
 
 	return result;
 }
@@ -147,11 +147,9 @@ void GaduServersManager::buildServerList()
 	if (443 != LastGoodPort)
 		AllPorts << 443;
 
-	QHostAddress ip;
-
 	// for GG hub
-	ip.setAddress((quint32)0);
-	GoodServers.append(qMakePair(ip, 0));
+	GoodServers << GaduServer(QHostAddress((quint32)0), 0);
+
 	GoodServers << gaduServersFromString(config_file.readEntry("Network", "LastServerIP"));
 
 	if (config_file.readBoolEntry("Network", "isDefServers", true))
@@ -182,7 +180,7 @@ GaduServersManager::GaduServer GaduServersManager::getServer()
 	}
 
 	if (0 == GoodServers.count())
-		return qMakePair(QHostAddress(), 0);
+		return GaduServer(QHostAddress(), 0);
 
 	return GoodServers[0];
 }
