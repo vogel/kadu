@@ -138,7 +138,8 @@ void ServerMonitorWindow::loadServers()
 void ServerMonitorWindow::loadServersListFromGaduManager()
 {
 	foreach (const GaduServersManager::GaduServer &server, GaduServersManager::instance()->getServersList())
-		ServerStatusWidgetList.push_back(new ServerStatusWidget(server.first.toString(), server.second, "", this));
+		if (server.first.toIPv4Address() != (quint32)0)
+			ServerStatusWidgetList.push_back(new ServerStatusWidget(server.first.toString(), server.second, "", this));
 }
 
 void ServerMonitorWindow::loadServersListFromFile()
