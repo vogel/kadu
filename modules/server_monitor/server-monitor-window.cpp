@@ -40,7 +40,7 @@
 #include "server-monitor-window.h"
 
 ServerMonitorWindow::ServerMonitorWindow(QWidget *parent) :
-		QScrollArea(parent), AvalibleServers(0), UnavalibleServers(0),
+		QScrollArea(parent), AvailableServers(0), UnavailableServers(0),
 		UnknownStatusServers(0), Layout(0), ScrollBarLayout(0)
 {
 	ButtonRefresh = new QPushButton(tr("Refresh"), this);
@@ -50,7 +50,7 @@ ServerMonitorWindow::ServerMonitorWindow(QWidget *parent) :
 	connect(&RefreshTimer, SIGNAL (timeout()),  this, SLOT (refreshList()));
 	connect(&RefreshTimer, SIGNAL (timeout()), &RefreshTimer, SLOT (start()));
 
-	StatsLabel = new QLabel(tr("No information avalible"), this);
+	StatsLabel = new QLabel(tr("No information available"), this);
 	StatsLabel->setGeometry(420, 20, 150, 50);
 
 	configurationUpdated();
@@ -69,11 +69,11 @@ void ServerMonitorWindow::updateStats(ServerStatusWidget::ServerState newStatus,
 	switch (newStatus)
 	{
 		case ServerStatusWidget::Available:
-			AvalibleServers++;
+			AvailableServers++;
 		break;
 
 		case ServerStatusWidget::Unavailable:
-			UnavalibleServers++;
+			UnavailableServers++;
 		break;
 
 		case ServerStatusWidget::Unknown:
@@ -87,11 +87,11 @@ void ServerMonitorWindow::updateStats(ServerStatusWidget::ServerState newStatus,
 	switch (oldStatus)
 	{
 		case ServerStatusWidget::Available:
-			AvalibleServers--;
+			AvailableServers--;
 		break;
 
 		case ServerStatusWidget::Unavailable:
-			UnavalibleServers--;
+			UnavailableServers--;
 		break;
 
 		case ServerStatusWidget::Unknown:
@@ -101,7 +101,7 @@ void ServerMonitorWindow::updateStats(ServerStatusWidget::ServerState newStatus,
 		case ServerStatusWidget::Empty:
 		break;
 	}
-	StatsLabel->setText(tr("Avalible\t%1\nUnavailable\t%2").arg(QString::number(AvalibleServers)).arg(QString::number(UnavalibleServers)));
+	StatsLabel->setText(tr("Available\t%1\nUnavailable\t%2").arg(QString::number(AvailableServers)).arg(QString::number(UnavailableServers)));
 }
 
 void ServerMonitorWindow::loadServers()
@@ -109,8 +109,8 @@ void ServerMonitorWindow::loadServers()
 	ScrollBarLayout = new QWidget(this);
 	Layout = new QGridLayout(ScrollBarLayout);
 
-	AvalibleServers = 0;
-	UnavalibleServers = 0;
+	AvailableServers = 0;
+	UnavailableServers = 0;
 	ServerStatusWidgetList.clear();
 
 	(ProtocolsManager::instance()->byName("gadu") && config_file.readBoolEntry("serverMonitor", "useGaduServersList", true))?
@@ -151,7 +151,7 @@ void ServerMonitorWindow::loadServersListFromFile()
 	{
 		QLabel *labelInfo = new QLabel(tr("Cannot read server list!"));
 		Layout->addWidget(labelInfo, 1, 1);
-		StatsLabel->setText(tr("No information avalible"));
+		StatsLabel->setText(tr("No information available"));
 	}
 
 	while (!serverFileList.atEnd())

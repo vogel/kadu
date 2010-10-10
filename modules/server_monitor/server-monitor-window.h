@@ -43,8 +43,8 @@ class ServerMonitorWindow : public QScrollArea, ConfigurationAwareObject
 	QTimer RefreshTimer;
 
 	QLabel *StatsLabel;
-	quint32 AvalibleServers;
-	quint32 UnavalibleServers;
+	quint32 AvailableServers;
+	quint32 UnavailableServers;
 	quint32 UnknownStatusServers;
 
 	QGridLayout *Layout;
