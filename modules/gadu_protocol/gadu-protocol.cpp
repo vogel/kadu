@@ -304,7 +304,7 @@ void GaduProtocol::changeStatus()
 		return;
 
 // TODO: 0.6.6
-	int friends = GG_STATUS_FRIENDS_MASK; // (!newStatus.isDisconnected() && privateMode() ? GG_STATUS_FRIENDS_MASK : 0);
+	int friends = 0;// GG_STATUS_FRIENDS_MASK; // (!newStatus.isDisconnected() && privateMode() ? GG_STATUS_FRIENDS_MASK : 0);
 	int type = gaduStatusFromStatus(newStatus);
 	bool hasDescription = !newStatus.description().isEmpty();
 
