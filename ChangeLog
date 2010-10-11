@@ -16,6 +16,11 @@
 * gui: don't activate first config section when loading a module (autoaway) with opened configuration window (beevvy)
 * use translation files provided by Qt (fixes Qt translations) (beevvy)
 * history: #1592 fixed: window selection behaviour fixed (Vogel)
+* speech: module ported to 0.6.6 (White Eagle)
+* notify: when fullscreen application is detected, notifications are not shown (ultr)
+* jabber: fixed Facebook support (Juzef)
+* gui: #1553 fixed: update action after contact is addef (White Eagle)
+* gui: #668, #1457, #1542, #1582 fixed: remeber vertical and horizontal sizes of a chat (White Eagle)
 
 +++ version 0.6.6-beta7
 * gui: #1541 fixed: avatar displaying on Qt 4.5 (Vogel)
