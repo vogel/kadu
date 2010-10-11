@@ -15,6 +15,7 @@
 * gui: fixed a bug that caused configuration widget to disappear in certain scenarios (beevvy)
 * gui: don't activate first config section when loading a module (autoaway) with opened configuration window (beevvy)
 * use translation files provided by Qt (fixes Qt translations) (beevvy)
+* history: #1592 fixed: window selection behaviour fixed (Vogel)
 
 +++ version 0.6.6-beta7
 * gui: #1541 fixed: avatar displaying on Qt 4.5 (Vogel)

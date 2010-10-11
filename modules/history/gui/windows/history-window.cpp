@@ -219,10 +219,8 @@ void HistoryWindow::createFilterBar(QWidget *parent)
 
 void HistoryWindow::connectGui()
 {
-	connect(ChatsTree, SIGNAL(activated(const QModelIndex &)),
-			this, SLOT(treeItemActivated(const QModelIndex &)));
-	connect(DetailsListView, SIGNAL(activated(const QModelIndex &)),
-			this, SLOT(dateActivated(const QModelIndex &)));
+	connect(ChatsTree->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
+			this, SLOT(treeCurrentChanged(QModelIndex,QModelIndex)));
 
 	ChatsTree->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(ChatsTree, SIGNAL(customContextMenuRequested(QPoint)),
@@ -281,14 +279,14 @@ void HistoryWindow::selectChat(Chat chat)
 
 	if (!type)
 	{
-		treeItemActivated(QModelIndex());
+		treeItemActivated(HistoryTreeItem());
 		return;
 	}
 
 	QModelIndex chatTypeIndex = ChatsModelProxy->chatTypeIndex(type);
 	if (!chatTypeIndex.isValid())
 	{
-		treeItemActivated(QModelIndex());
+		treeItemActivated(HistoryTreeItem());
 		return;
 	}
 
@@ -306,7 +304,7 @@ void HistoryWindow::selectStatusBuddy(Buddy buddy)
 	QModelIndex statusIndex = ChatsModelProxy->statusIndex();
 	if (!statusIndex.isValid())
 	{
-		treeItemActivated(QModelIndex());
+		treeItemActivated(HistoryTreeItem());
 		return;
 	}
 
@@ -324,7 +322,7 @@ void HistoryWindow::selectSmsRecipient(const QString& recipient)
 	QModelIndex smsIndex = ChatsModelProxy->smsIndex();
 	if (!smsIndex.isValid())
 	{
-		treeItemActivated(QModelIndex());
+		treeItemActivated(HistoryTreeItem());
 		return;
 	}
 
@@ -381,9 +379,11 @@ void HistoryWindow::chatActivated(Chat chat)
 	}
 
 	DetailsListView->setModel(MyChatDatesModel);
-	DetailsListView->selectionModel()->setCurrentIndex(select, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
 
-	dateActivated(select);
+	connect(DetailsListView->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
+			this, SLOT(dateCurrentChanged(QModelIndex,QModelIndex)));
+
+	DetailsListView->selectionModel()->setCurrentIndex(select, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
 
 	kdebugf2();
 }
@@ -414,8 +414,6 @@ void HistoryWindow::statusBuddyActivated(Buddy buddy)
 	DetailsListView->setModel(MyBuddyStatusDatesModel);
 	DetailsListView->selectionModel()->setCurrentIndex(selectedIndex, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
 
-	dateActivated(selectedIndex);
-
 	kdebugf2();
 }
 
@@ -445,8 +443,6 @@ void HistoryWindow::smsRecipientActivated(const QString& recipient)
 	DetailsListView->setModel(MySmsDatesModel);
 	DetailsListView->selectionModel()->setCurrentIndex(selectedIndex, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
 
-	dateActivated(selectedIndex);
-
 	kdebugf2();
 }
 
@@ -472,21 +468,29 @@ void HistoryWindow::treeItemActivated(HistoryTreeItem item)
 	}
 }
 
-void HistoryWindow::treeItemActivated(const QModelIndex &index)
+void HistoryWindow::treeCurrentChanged(const QModelIndex &current, const QModelIndex &previous)
 {
+	if (current == previous)
+		return;
+
 	kdebugf();
 
-	treeItemActivated(index.data(HistoryItemRole).value<HistoryTreeItem>());
+	treeItemActivated(current.data(HistoryItemRole).value<HistoryTreeItem>());
 
 	kdebugf2();
 }
 
-void HistoryWindow::dateActivated(const QModelIndex &index)
+void HistoryWindow::dateCurrentChanged(const QModelIndex &current, const QModelIndex &previous)
 {
+	if (current == previous)
+		return;
+
+	Q_UNUSED(previous)
+
 	kdebugf();
 
-	HistoryTreeItem treeItem = index.data(HistoryItemRole).value<HistoryTreeItem>();
-	QDate date = index.data(DateRole).value<QDate>();
+	HistoryTreeItem treeItem = current.data(HistoryItemRole).value<HistoryTreeItem>();
+	QDate date = current.data(DateRole).value<QDate>();
 
 	ContentBrowser->clearMessages();
 

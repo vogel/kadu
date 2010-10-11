@@ -98,8 +98,8 @@ class HistoryWindow : public MainWindow
 	QList<Message> smsToMessage(QList<QString> sms);
 
 private slots:
-	void treeItemActivated(const QModelIndex &index);
-	void dateActivated(const QModelIndex &index);
+	void treeCurrentChanged(const QModelIndex &current, const QModelIndex &previous);
+	void dateCurrentChanged(const QModelIndex &current, const QModelIndex &previous);
 
 	void filterLineChanged(const QString &filterText);
 	void searchTextChanged(const QString &searchText);
