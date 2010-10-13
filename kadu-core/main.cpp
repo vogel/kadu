@@ -318,7 +318,7 @@ int main(int argc, char *argv[])
 
 		delete xml_config_file;
 		delete config_file_ptr;
-		//delete qApp;
+		delete qApp;
 
 		return 10;
 	}
@@ -344,7 +344,7 @@ int main(int argc, char *argv[])
 
 		delete config_file_ptr;
 		delete xml_config_file;
-		//delete qApp;
+		delete qApp;
 
 		return 1;
 	}
@@ -400,9 +400,7 @@ int main(int argc, char *argv[])
 	WSACleanup();
 #endif
 
-	// TODO 0.6.6: causes segfault with jabber_protocol module
-	// deleteLater() won't give any effect, because we're outside the event loop
-	//delete qApp;
+	delete qApp;
 
 	if (measureTime)
 	{
