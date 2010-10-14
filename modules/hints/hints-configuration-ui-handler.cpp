@@ -27,7 +27,7 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QSpinBox>
 
-#include "buddies/buddy-preferred-helper.h"
+#include "buddies/buddy-preferred-manager.h"
 #include "core/core.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
@@ -119,7 +119,7 @@ void HintsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurati
 	Buddy example = Buddy::dummy();
 
 	if (!example.isNull())
-		hint_manager->prepareOverUserHint(overUserConfigurationPreview, overUserConfigurationTipLabel, BuddyPreferredHelper::preferredContact(example));
+		hint_manager->prepareOverUserHint(overUserConfigurationPreview, overUserConfigurationTipLabel, BuddyPreferredManager::instance()->preferredContact(example));
 
 	lay = new QHBoxLayout(configureHint);
 	lay->addWidget(overUserConfigurationPreview);
@@ -306,7 +306,7 @@ void HintsConfigurationUiHandler::updateOverUserPreview()
 	Buddy example = Buddy::dummy();
 
 	if (!example.isNull())
-		hint_manager->prepareOverUserHint(overUserConfigurationPreview, overUserConfigurationTipLabel, BuddyPreferredHelper::preferredContact(example));
+		hint_manager->prepareOverUserHint(overUserConfigurationPreview, overUserConfigurationTipLabel, BuddyPreferredManager::instance()->preferredContact(example));
 }
 
 void HintsConfigurationUiHandler::mainConfigurationWindowDestroyed()

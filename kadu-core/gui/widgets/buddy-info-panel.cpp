@@ -23,7 +23,7 @@
 #include <QtWebKit/QWebFrame>
 
 #include "accounts/account.h"
-#include "buddies/buddy-preferred-helper.h"
+#include "buddies/buddy-preferred-manager.h"
 #include "configuration/configuration-file.h"
 #include "misc/syntax-list.h"
 #include "parser/parser.h"
@@ -113,7 +113,7 @@ void BuddyInfoPanel::displayBuddy(Buddy buddy)
 		return;
 
 	HtmlDocument doc;
-	doc.parseHtml(Parser::parse(Syntax, BuddyPreferredHelper::preferredContact(MyBuddy)));
+	doc.parseHtml(Parser::parse(Syntax, BuddyPreferredManager::instance()->preferredContact(MyBuddy)));
 	UrlHandlerManager::instance()->convertAllUrls(doc);
 
 	if (EmoticonsStyleNone != (EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") &&

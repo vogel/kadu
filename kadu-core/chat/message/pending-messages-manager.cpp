@@ -30,6 +30,7 @@
 #include "accounts/account-manager.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-list-configuration-helper.h"
+#include "buddies/buddy-preferred-manager.h"
 #include "buddies/buddy-shared.h"
 #include "chat/message/message-shared.h"
 #include "chat/chat-manager.h"
@@ -49,7 +50,7 @@ PendingMessagesManager * PendingMessagesManager::instance()
 {
 	if (0 == Instance)
 		Instance = new PendingMessagesManager();
-	
+
 	return Instance;
 }
 
@@ -179,6 +180,7 @@ void PendingMessagesManager::itemAboutToBeAdded(Message message)
 
 void PendingMessagesManager::itemAdded(Message message)
 {
+	BuddyPreferredManager::instance()->updatePreferred(message.messageSender().ownerBuddy());
 	emit messageAdded(message);
 }
 
@@ -189,6 +191,7 @@ void PendingMessagesManager::itemAboutToBeRemoved(Message message)
 
 void PendingMessagesManager::itemRemoved(Message message)
 {
+	BuddyPreferredManager::instance()->updatePreferred(message.messageSender().ownerBuddy());
 	emit messageRemoved(message);
 }
 

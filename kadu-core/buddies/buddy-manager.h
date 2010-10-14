@@ -78,7 +78,7 @@ public:
 	Buddy byDisplay(const QString &display, NotFoundAction action);
 	Buddy byId(Account account, const QString &id, NotFoundAction action);
 	Buddy byContact(Contact contact, NotFoundAction action);
-	Buddy byUuid(const QUuid &uuid);	
+	Buddy byUuid(const QUuid &uuid);
 
 signals:
 	void buddyAboutToBeAdded(Buddy &buddy);

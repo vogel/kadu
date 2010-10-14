@@ -30,7 +30,7 @@
 #include <QtGui/QPushButton>
 
 #include "accounts/account-manager.h"
-#include "buddies/buddy-preferred-helper.h"
+#include "buddies/buddy-preferred-manager.h"
 #include "chat/chat-details-simple.h"
 #include "chat/html-messages-renderer.h"
 #include "chat/style-engines/chat-engine-adium/chat-engine-adium.h"
@@ -377,10 +377,10 @@ void ChatStylesManager::preparePreview(Preview *preview)
 		return;
 
 	Chat chat = Chat::create();
-	chat.setChatAccount(BuddyPreferredHelper::preferredAccount(example));
+	chat.setChatAccount(BuddyPreferredManager::instance()->preferredAccount(example));
 	ChatDetailsSimple *details = new ChatDetailsSimple(chat);
 	details->setState(StorableObject::StateNew);
-	details->setContact(BuddyPreferredHelper::preferredContact(example));
+	details->setContact(BuddyPreferredManager::instance()->preferredContact(example));
 	chat.setDetails(details);
 
 	connect(preview, SIGNAL(destroyed(QObject *)), chat, SLOT(deleteLater()));
@@ -395,19 +395,19 @@ void ChatStylesManager::preparePreview(Preview *preview)
 
 	MessageRenderInfo *messageRenderInfo = new MessageRenderInfo(messageSent);
 	messageRenderInfo->setSeparatorSize(CfgHeaderSeparatorHeight);
-	preview->addObjectToParse(BuddyPreferredHelper::preferredContact(Core::instance()->myself()), messageRenderInfo);
+	preview->addObjectToParse(BuddyPreferredManager::instance()->preferredContact(Core::instance()->myself()), messageRenderInfo);
 
 	Message messageReceived = Message::create();
 	messageReceived.setMessageChat(chat);
 	messageReceived.setType(Message::TypeReceived);
-	messageReceived.setMessageSender(BuddyPreferredHelper::preferredContact(example));
+	messageReceived.setMessageSender(BuddyPreferredManager::instance()->preferredContact(example));
 	messageReceived.setContent(tr("Message from Your friend"));
 	messageReceived.setReceiveDate(QDateTime::currentDateTime());
 	messageReceived.setSendDate(QDateTime::currentDateTime());
 
 	messageRenderInfo = new MessageRenderInfo(messageReceived);
 	messageRenderInfo->setSeparatorSize(CfgHeaderSeparatorHeight);
-	preview->addObjectToParse(BuddyPreferredHelper::preferredContact(example), messageRenderInfo);
+	preview->addObjectToParse(BuddyPreferredManager::instance()->preferredContact(example), messageRenderInfo);
 }
 
 void ChatStylesManager::styleChangedSlot(const QString &styleName)

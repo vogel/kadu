@@ -25,7 +25,7 @@
 #include "buddies/buddy.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-shared.h"
-#include "buddies/buddy-preferred-helper.h"
+#include "buddies/buddy-preferred-manager.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 
@@ -58,7 +58,7 @@ ContactSet ContactSetConfigurationHelper::loadFromConfiguration(XmlConfigFile *c
 				continue;
 
 			if (fromAccount.isNull())
-				contact = BuddyPreferredHelper::preferredContact(buddy);
+				contact = BuddyPreferredManager::instance()->preferredContact(buddy);
 			else
 			{
 				QList<Contact> contactList = buddy.contacts(fromAccount);

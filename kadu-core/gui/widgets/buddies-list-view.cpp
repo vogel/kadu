@@ -33,7 +33,7 @@
 #include "buddies/buddy-list.h"
 #include "buddies/buddy-list-mime-data-helper.h"
 #include "buddies/buddy-manager.h"
-#include "buddies/buddy-preferred-helper.h"
+#include "buddies/buddy-preferred-manager.h"
 #include "buddies/buddy-set.h"
 #include "buddies/model/buddies-model-proxy.h"
 #include "chat/chat-manager.h"
@@ -234,7 +234,7 @@ Chat BuddiesListView::currentChat() const
 
 				foreach (const Buddy &buddy, buddies)
 				{
-					contact = BuddyPreferredHelper::preferredContact(buddy, account);
+					contact = BuddyPreferredManager::instance()->preferredContact(buddy, account);
 					if (!contact)
 						return Chat::null;
 
@@ -246,7 +246,7 @@ Chat BuddiesListView::currentChat() const
 		{
 			if (!selection.parent().isValid())
 		    {
-				contact = BuddyPreferredHelper::preferredContact(buddyAt(selection), account);
+				contact = BuddyPreferredManager::instance()->preferredContact(buddyAt(selection), account);
 				if (!contact)
 					return Chat::null;
 

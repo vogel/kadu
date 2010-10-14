@@ -36,7 +36,7 @@
 #include "accounts/model/accounts-proxy-model.h"
 #include "buddies/buddy.h"
 #include "buddies/buddy-manager.h"
-#include "buddies/buddy-preferred-helper.h"
+#include "buddies/buddy-preferred-manager.h"
 #include "buddies/model/groups-model.h"
 #include "contacts/contact.h"
 #include "contacts/contact-manager.h"
@@ -175,7 +175,7 @@ void AddBuddyWindow::setBuddy(Buddy buddy)
 {
 	MyBuddy = buddy;
 
-	Account account = BuddyPreferredHelper::preferredAccount(buddy);
+	Account account = BuddyPreferredManager::instance()->preferredAccount(buddy);
 	if (!account.isNull())
 	{
 		AccountCombo->setCurrentAccount(account);
