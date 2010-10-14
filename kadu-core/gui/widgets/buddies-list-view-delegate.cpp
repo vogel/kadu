@@ -28,7 +28,6 @@
 #include "buddies/buddy-preferred-manager.h"
 #include "buddies/model/abstract-buddies-model.h"
 #include "contacts/contact-manager.h"
-#include "contacts/contact-set.h"
 #include "gui/widgets/buddies-list-view-item-painter.h"
 
 #include "buddies-list-view-delegate.h"

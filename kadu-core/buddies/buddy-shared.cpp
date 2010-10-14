@@ -31,7 +31,6 @@
 #include "buddies/group-manager.h"
 #include "configuration/xml-configuration-file.h"
 #include "contacts/contact.h"
-#include "contacts/contact-set.h"
 #include "contacts/contact-shared.h"
 #include "contacts/contact-manager.h"
 #include "storage/storage-point.h"

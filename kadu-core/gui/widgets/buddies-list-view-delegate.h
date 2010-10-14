@@ -25,7 +25,7 @@
 
 #include <QtGui/QItemDelegate>
 
-#include "chat/message/message.h"
+#include "buddies/buddy.h"
 #include "gui/widgets/buddies-list-view-delegate-configuration.h"
 
 class AbstractBuddiesModel;
