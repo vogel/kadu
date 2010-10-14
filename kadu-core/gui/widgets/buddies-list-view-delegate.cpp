@@ -25,12 +25,11 @@
 #include "accounts/account.h"
 #include "buddies/avatar.h"
 #include "buddies/avatar-manager.h"
+#include "buddies/buddy-preferred-manager.h"
 #include "buddies/model/abstract-buddies-model.h"
-#include "chat/message/pending-messages-manager.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 #include "gui/widgets/buddies-list-view-item-painter.h"
-#include "gui/widgets/chat-widget-manager.h"
 
 #include "buddies-list-view-delegate.h"
 
@@ -39,16 +38,14 @@ BuddiesListViewDelegate::BuddiesListViewDelegate(QObject *parent) :
 {
 	connect(AvatarManager::instance(), SIGNAL(avatarUpdated(Avatar)), this, SLOT(avatarUpdated(Avatar)));
 	connect(ContactManager::instance(), SIGNAL(contactUpdated(Contact&)), this, SLOT(contactUpdated(Contact&)));
-	connect(PendingMessagesManager::instance(), SIGNAL(messageAdded(Message)), this, SLOT(pendingMessageEvent(Message)));
-	connect(PendingMessagesManager::instance(), SIGNAL(messageRemoved(Message)), this, SLOT(pendingMessageEvent(Message)));
-	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget*)), this, SLOT(chatWidgetEvent(ChatWidget*)));
-	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget*)), this, SLOT(chatWidgetEvent(ChatWidget*)));
+	connect(BuddyPreferredManager::instance(), SIGNAL(buddyUpdated(Buddy&)), this, SLOT(buddyUpdated(Buddy&)));
 }
 
 BuddiesListViewDelegate::~BuddiesListViewDelegate()
 {
 	disconnect(AvatarManager::instance(), SIGNAL(avatarUpdated(Avatar)), this, SLOT(avatarUpdated(Avatar)));
 	disconnect(ContactManager::instance(), SIGNAL(contactUpdated(Contact&)), this, SLOT(contactUpdated(Contact&)));
+	disconnect(BuddyPreferredManager::instance(), SIGNAL(buddyUpdated(Buddy&)), this, SLOT(buddyUpdated(Buddy&)));
 }
 
 void BuddiesListViewDelegate::setModel(AbstractBuddiesModel *model)
@@ -71,19 +68,9 @@ void BuddiesListViewDelegate::contactUpdated(Contact &contact)
 		emit sizeHintChanged(Model->indexForValue(contact.ownerBuddy()));
 }
 
-void BuddiesListViewDelegate::chatWidgetEvent(ChatWidget *chatWidget)
+void BuddiesListViewDelegate::buddyUpdated(Buddy &buddy)
 {
-	if (chatWidget)
-		if (chatWidget->chat().contacts().count() == 1)
-		{
-			Contact contact = chatWidget->chat().contacts().toContact();
-			contactUpdated(contact);
-		}
-}
-
-void BuddiesListViewDelegate::pendingMessageEvent(Message message)
-{
-	Contact contact = message.messageSender();
+	Contact contact = BuddyPreferredManager::instance()->preferredContact(buddy);
 	contactUpdated(contact);
 }
 

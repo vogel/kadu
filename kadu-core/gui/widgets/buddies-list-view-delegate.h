@@ -47,8 +47,7 @@ class BuddiesListViewDelegate : public QItemDelegate
 private slots:
 	void avatarUpdated(Avatar avatar);
 	void contactUpdated(Contact &contact);
-	void chatWidgetEvent(ChatWidget *chatWidget);
-	void pendingMessageEvent(Message message);
+	void buddyUpdated(Buddy &buddy);
 	void modelDestroyed();
 
 public:

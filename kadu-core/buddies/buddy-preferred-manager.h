@@ -47,6 +47,9 @@ class KADUAPI BuddyPreferredManager : public QObject
 	Contact morePreferredContactByStatus(Contact c1, Contact c2, Account account = Account::null);
 	QMap<Buddy,Contact> Preferreds;
 
+signals:
+	void buddyUpdated(Buddy &buddy);
+
 public:
 	static BuddyPreferredManager *instance();
 	Contact preferredContact(Buddy buddy, Account account, bool includechats = true);

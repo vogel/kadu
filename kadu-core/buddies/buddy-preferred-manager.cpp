@@ -17,6 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "buddies/buddy.h"
 #include "chat/message/pending-messages-manager.h"
 #include "chat/recent-chat-manager.h"
 #include "contacts/contact-set.h"
@@ -96,6 +97,8 @@ void BuddyPreferredManager::updatePreferred(Buddy buddy)
 		Preferreds.insert(buddy, contact);
 	else
 		Preferreds.remove(buddy);
+
+	emit buddyUpdated(buddy);
 }
 
 Contact BuddyPreferredManager::preferredContactByPendingMessages(Buddy buddy, Account account)
