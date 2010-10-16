@@ -556,7 +556,7 @@
         <translation>Otwórz okno rozmowy gdy nadejdzie nowa wiadomość</translation>
     </message>
     <message>
-        <source>Open chat window when comes new message</source>
+        <source>Open chat window when a new message arrives</source>
         <translation>Otwiera okno rozmowy gdy nadejdzie nowa wiadomość od kontaktu</translation>
     </message>
     <message>
@@ -616,7 +616,7 @@
         <translation>Blokuj zamykanie okna, gdy nadejdzie nowa wiadomość</translation>
     </message>
     <message>
-        <source>Block chat window when comes new message</source>
+        <source>Block chat window when a new message arrives</source>
         <translation>Uniemożliwia zamknięcie okna na pewien czas po otrzymaniu nowej wiadomości</translation>
     </message>
     <message>
@@ -664,7 +664,7 @@
         <translation>Ustaw niewidzialny, jeżeli ostatni status to &apos;Niedostępny&apos;</translation>
     </message>
     <message>
-        <source>Displays messages from anonymous users without formatting (colors, images, font weight...) Text is plain black.</source>
+        <source>Displays messages from anonymous users without formatting (colors, images, font weight...).</source>
         <translation>Wyświetla tekst od anonimów bez formatowania (kolory, obrazki, czcionka).</translation>
     </message>
     <message>

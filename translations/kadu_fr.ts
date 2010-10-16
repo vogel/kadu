@@ -917,7 +917,7 @@ Attention danger!
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Open chat window when comes new message</source>
+        <source>Open chat window when a new message arrives</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -977,7 +977,7 @@ Attention danger!
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Block chat window when comes new message</source>
+        <source>Block chat window when a new message arrives</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1108,7 +1108,7 @@ Attention danger!
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Displays messages from anonymous users without formatting (colors, images, font weight...) Text is plain black.</source>
+        <source>Displays messages from anonymous users without formatting (colors, images, font weight...).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

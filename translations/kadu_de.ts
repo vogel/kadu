@@ -919,7 +919,7 @@ Es ist ein Sicherheitsrisiko!</translation>
         <translation>Öffne das Chat-Fenster bei neuen Nachrichten</translation>
     </message>
     <message>
-        <source>Open chat window when comes new message</source>
+        <source>Open chat window when a new message arrives</source>
         <translation>Öffne das Chat-Fenster, wenn eine neue Nachricht eingetroffen ist</translation>
     </message>
     <message>
@@ -979,7 +979,7 @@ Es ist ein Sicherheitsrisiko!</translation>
         <translation>Verhindere das Schliessen eines Chat-Fensters, wenn eine Neue Nachricht eintrifft</translation>
     </message>
     <message>
-        <source>Block chat window when comes new message</source>
+        <source>Block chat window when a new message arrives</source>
         <translation>Verhindere das Schliessen eines Chat-Fensters, beim Eintreffen einer neuen Nachricht</translation>
     </message>
     <message>
@@ -1127,8 +1127,8 @@ Es ist ein Sicherheitsrisiko!</translation>
         <translation>Automatisch starten beim Systemstart</translation>
     </message>
     <message>
-        <source>Displays messages from anonymous users without formatting (colors, images, font weight...) Text is plain black.</source>
-        <translation>Zeige Nachrichten von Unbekannten unformatiert (keine Farben, Fettschrift, Bilder...) Text ist unformatiert und schwarz.</translation>
+        <source>Displays messages from anonymous users without formatting (colors, images, font weight...).</source>
+        <translation>Zeige Nachrichten von Unbekannten unformatiert (keine Farben, Fettschrift, Bilder...).</translation>
     </message>
     <message>
         <source>Display dates is nice format, like Today, Yesterday or Friday</source>

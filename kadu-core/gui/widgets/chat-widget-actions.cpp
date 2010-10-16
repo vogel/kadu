@@ -393,13 +393,8 @@ void ChatWidgetActions::blockUserActionActivated(QAction *sender, bool toggled)
 	foreach (Buddy buddy, buddies)
 	{
 		buddy.setBlocked(on);
-
 		// update actions
 		updateBlockingActions(buddy);
-
-		// close all chats for blocked buddies
-		if (on)
-			ChatWidgetManager::instance()->closeAllChats(buddy);
 	}
 
 	kdebugf2();
