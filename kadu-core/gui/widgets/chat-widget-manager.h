@@ -84,7 +84,7 @@ public:
 
 	virtual void store();
 
-	void activateChatWidget(ChatWidget *chatWidget, bool forceActivate);
+	void activateChatWidget(ChatWidget *chatwidget, bool forceActivate);
 
 public slots:
 	ChatWidget * openChatWidget(Chat chat, bool forceActivate = false);
@@ -124,39 +124,39 @@ public slots:
 	void closeAllWindows();
 
 	/**
-		\fn int registerChatWidget(ChatWidget* chat)
+		\fn int registerChatWidget(ChatWidget* chatwidget)
 		Dodaje okno do menad�era
 		\param chat wska�nik do okna ktore chcemy doda�
 		\return zwraca numer naszego okna po zarejestrowaniu
 	**/
-	void registerChatWidget(ChatWidget *chat);
+	void registerChatWidget(ChatWidget *chatwidget);
 
 	/**
-		\fn void unregisterChat(Chat* chat)
+		\fn void unregisterChatWidget(ChatWidget* chatwidget)
 		Funkcja wyrejestrowuje okno z managera \n
 		Zapisuje w�asno�ci okna \n
 		wysy�a sygna� chatDestroying i chatDestroyed
 		\param chat okno kt�re b�dzie wyrejestrowane
 	**/
-	void unregisterChatWidget(ChatWidget *chat);
+	void unregisterChatWidget(ChatWidget *chatwidget);
 
 signals:
 	/**
-		\fn void handleNewChatWidget(ChatWidget *chat, bool &handled)
+		\fn void handleNewChatWidget(ChatWidget *chatwidget, bool &handled)
 	 	Sygna� ten jest wysy�any po utworzeniu nowego okna chat.
 		Je�li zmienna handled zostanie ustawiona na true, to
 		niezostanie utworzony nowy obiekt ChatWindiw
 		\param chat nowe okno chat
 	**/
-	void handleNewChatWidget(ChatWidget *chat, bool &handled);
+	void handleNewChatWidget(ChatWidget *chatwidget, bool &handled);
 	/**
 		\fn void chatWidgetCreated(ChatWidget *chat)
 	 	Sygna� ten jest wysy�any po utworzeniu nowego okna chat
 		\param chat nowe okno chat
 	**/
-	void chatWidgetCreated(ChatWidget *chat);
+	void chatWidgetCreated(ChatWidget *chatwidget);
 
-	void chatWidgetActivated(ChatWidget *chat);
+	void chatWidgetActivated(ChatWidget *chatwidget);
 
 	/**
 		\fn void chatCreated(const UserGroup group)
@@ -164,14 +164,14 @@ signals:
 		\param chat nowe okno chat
 		\param time time of pending message that created a chat or 0 if not applicable
 	**/
-	void chatWidgetCreated(ChatWidget *chat, time_t time);
+	void chatWidgetCreated(ChatWidget *chatwidget, time_t time);
 
 	/**
 		\fn void chatDestroying(const UserGroup group)
 	 	Sygna� ten jest wysy�any przed zamnkni�ciem okna chat
 		\param chat zamykane okno
 	**/
-	void chatWidgetDestroying(ChatWidget *chat);
+	void chatWidgetDestroying(ChatWidget *chatwidget);
 
 	/**
 		\fn void chatOpen(ContactList users)
@@ -179,7 +179,7 @@ signals:
 		otwarcia nowego okna chat nawet je�li ju� taki istnieje
 		\param chat otwarte okno
 	**/
-	void chatWidgetOpen(ChatWidget *chat, bool activate);
+	void chatWidgetOpen(ChatWidget *chatwidget, bool activate);
 
 	void chatWidgetTitlesUpdated();
 

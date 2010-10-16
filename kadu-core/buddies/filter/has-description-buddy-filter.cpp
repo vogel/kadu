@@ -20,7 +20,7 @@
  */
 
 #include "accounts/account.h"
-
+#include "buddies/buddy-preferred-manager.h"
 #include "contacts/contact.h"
 
 #include "has-description-buddy-filter.h"
@@ -44,7 +44,7 @@ bool HasDescriptionBuddyFilter::acceptBuddy(Buddy buddy)
 	if (!Enabled)
 		return true;
 
-	Contact preferredContact = buddy.preferredContact();
+	Contact preferredContact = BuddyPreferredManager::instance()->preferredContact(buddy);
 	if (preferredContact.isNull())
 		return false;
 

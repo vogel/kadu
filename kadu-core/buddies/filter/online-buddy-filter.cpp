@@ -20,7 +20,7 @@
  */
 
 #include "accounts/account.h"
-
+#include "buddies/buddy-preferred-manager.h"
 #include "contacts/contact.h"
 
 #include "online-buddy-filter.h"
@@ -44,7 +44,7 @@ bool OnlineBuddyFilter::acceptBuddy(Buddy buddy)
 	if (!Enabled)
 		return true;
 
-	Contact preferredContact = buddy.preferredContact();
+	Contact preferredContact = BuddyPreferredManager::instance()->preferredContact(buddy, false);
 	if (preferredContact.isNull())
 		return false;
 

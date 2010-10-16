@@ -27,6 +27,7 @@
 #include <QtGui/QTextEdit>
 
 #include "accounts/account.h"
+#include "buddies/buddy-preferred-manager.h"
 #include "configuration/configuration-file.h"
 #include "configuration/config-file-data-manager.h"
 #include "contacts/contact.h"
@@ -91,7 +92,7 @@ HintOverUserConfigurationWindow::HintOverUserConfigurationWindow(Buddy exampleBu
 	lay->addWidget(syntaxChangedButton);
 	groupBox->addWidget(syntaxWidget, true);
 
-	hint_manager->prepareOverUserHint(previewFrame, previewTipLabel, ExampleBuddy.preferredContact());
+	hint_manager->prepareOverUserHint(previewFrame, previewTipLabel, BuddyPreferredManager::instance()->preferredContact(ExampleBuddy));
 
 	bgcolor = config_file.readColorEntry("Hints", "HintOverUser_bgcolor").name();
 	fgcolor = config_file.readColorEntry("Hints", "HintOverUser_fgcolor").name();
@@ -149,7 +150,7 @@ void HintOverUserConfigurationWindow::syntaxChanged()
 	if (!hintSyntax->document()->isModified())
 		return;
 
-	QString text = Parser::parse(hintSyntax->toPlainText(), ExampleBuddy.preferredContact());
+	QString text = Parser::parse(hintSyntax->toPlainText(), BuddyPreferredManager::instance()->preferredContact(ExampleBuddy));
 
 	/* Dorr: the file:// in img tag doesn't generate the image on hint.
 	 * for compatibility with other syntaxes we're allowing to put the file://

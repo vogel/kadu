@@ -35,6 +35,7 @@
 #include <QtGui/QTreeWidgetItem>
 
 #include "accounts/account-manager.h"
+#include "buddies/buddy-preferred-manager.h"
 #include "chat/chat-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"
@@ -221,7 +222,7 @@ SearchWindow::SearchWindow(QWidget *parent, Buddy buddy) :
 
 	if (buddy)
 	{
-		CurrentAccount = buddy.preferredAccount();
+		CurrentAccount = BuddyPreferredManager::instance()->preferredAccount(buddy);
 	}
 	else
 	{

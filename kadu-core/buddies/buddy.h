@@ -77,10 +77,6 @@ public:
 	void setCustomData(const QString &key, const QString &value);
 	void removeCustomData(const QString &key);
 
-	Account preferredAccount() const;
-	Contact preferredContact(Account account) const;
-	Contact preferredContact() const;
-
 	void sortContacts();
 	void normalizePriorities();
 

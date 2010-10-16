@@ -25,6 +25,7 @@
 #include "accounts/account.h"
 #include "buddies/avatar.h"
 #include "buddies/avatar-manager.h"
+#include "buddies/buddy-preferred-manager.h"
 #include "buddies/model/abstract-buddies-model.h"
 #include "contacts/contact-manager.h"
 #include "gui/widgets/buddies-list-view-item-painter.h"
@@ -36,12 +37,14 @@ BuddiesListViewDelegate::BuddiesListViewDelegate(QObject *parent) :
 {
 	connect(AvatarManager::instance(), SIGNAL(avatarUpdated(Avatar)), this, SLOT(avatarUpdated(Avatar)));
 	connect(ContactManager::instance(), SIGNAL(contactUpdated(Contact&)), this, SLOT(contactUpdated(Contact&)));
+	connect(BuddyPreferredManager::instance(), SIGNAL(buddyUpdated(Buddy&)), this, SLOT(buddyUpdated(Buddy&)));
 }
 
 BuddiesListViewDelegate::~BuddiesListViewDelegate()
 {
 	disconnect(AvatarManager::instance(), SIGNAL(avatarUpdated(Avatar)), this, SLOT(avatarUpdated(Avatar)));
 	disconnect(ContactManager::instance(), SIGNAL(contactUpdated(Contact&)), this, SLOT(contactUpdated(Contact&)));
+	disconnect(BuddyPreferredManager::instance(), SIGNAL(buddyUpdated(Buddy&)), this, SLOT(buddyUpdated(Buddy&)));
 }
 
 void BuddiesListViewDelegate::setModel(AbstractBuddiesModel *model)
@@ -62,6 +65,12 @@ void BuddiesListViewDelegate::contactUpdated(Contact &contact)
 {
 	if (Model)
 		emit sizeHintChanged(Model->indexForValue(contact.ownerBuddy()));
+}
+
+void BuddiesListViewDelegate::buddyUpdated(Buddy &buddy)
+{
+	Contact contact = BuddyPreferredManager::instance()->preferredContact(buddy);
+	contactUpdated(contact);
 }
 
 void BuddiesListViewDelegate::modelDestroyed()

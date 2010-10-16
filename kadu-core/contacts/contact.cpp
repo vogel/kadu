@@ -94,6 +94,15 @@ bool Contact::isValid()
 	return validateId();
 }
 
+Contact Contact::contactWithHigherStatus(Contact c1, Contact c2)
+{
+	if (!c1)
+		return c2;
+	if (!c2)
+		return c1;
+	return c1.currentStatus() <= c2.currentStatus() ? c1 : c2;
+}
+
 KaduSharedBase_PropertyDef(Contact, ContactDetails *, details, Details, 0)
 KaduSharedBase_PropertyReadDef(Contact, QUuid, uuid, Uuid, QUuid())
 KaduSharedBase_PropertyReadDef(Contact, QSharedPointer<StoragePoint>, storage, Storage, QSharedPointer<StoragePoint>())

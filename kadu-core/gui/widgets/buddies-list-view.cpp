@@ -33,6 +33,7 @@
 #include "buddies/buddy-list.h"
 #include "buddies/buddy-list-mime-data-helper.h"
 #include "buddies/buddy-manager.h"
+#include "buddies/buddy-preferred-manager.h"
 #include "buddies/buddy-set.h"
 #include "buddies/model/buddies-model-proxy.h"
 #include "chat/chat-manager.h"
@@ -42,6 +43,7 @@
 #include "contacts/filter/contact-no-unloaded-account-filter.h"
 #include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
+#include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/kadu-window-actions.h"
 #include "gui/windows/main-window.h"
 #include "gui/hot-key.h"
@@ -93,7 +95,7 @@ BuddiesListView::BuddiesListView(MainWindow *mainWindow, QWidget *parent) :
 	connect(this, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(doubleClickedSlot(const QModelIndex &)));
 	connect(PendingMessagesManager::instance(), SIGNAL(messageAdded(Message)), this, SLOT(update()));
 	connect(PendingMessagesManager::instance(), SIGNAL(messageRemoved(Message)), this, SLOT(update()));
-
+	
 	simpleModeChanged();
 }
 
@@ -237,7 +239,7 @@ Chat BuddiesListView::currentChat() const
 
 				foreach (const Buddy &buddy, buddies)
 				{
-					contact = buddy.preferredContact(account);
+					contact = BuddyPreferredManager::instance()->preferredContact(buddy, account);
 					if (!contact)
 						return Chat::null;
 
@@ -249,7 +251,7 @@ Chat BuddiesListView::currentChat() const
 		{
 			if (!selection.parent().isValid())
 		    {
-				contact = buddyAt(selection).preferredContact(account);
+				contact = BuddyPreferredManager::instance()->preferredContact(buddyAt(selection), account);
 				if (!contact)
 					return Chat::null;
 

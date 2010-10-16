@@ -93,15 +93,12 @@ public:
 
 	QString id(Account account);
 
-	Account preferredAccount();
-
 	QMap<QString, QString> & customData() { return CustomData; }
 
 	void addContact(Contact contact);
 	void removeContact(Contact contact);
 	QList<Contact> contacts(Account account);
 	QList<Contact> contacts();
-	Contact preferredContact(Account account);
 
 	void sortContacts();
 	void normalizePriorities();

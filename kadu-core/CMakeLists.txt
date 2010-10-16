@@ -23,6 +23,7 @@ set (kadu_SRCS
 	buddies/buddy-list-configuration-helper.cpp
 	buddies/buddy-list-mime-data-helper.cpp
 	buddies/buddy-manager.cpp
+	buddies/buddy-preferred-manager.cpp
 	buddies/buddy-remove-predicate-object.cpp
 	buddies/buddy-search-criteria.cpp
 	buddies/buddy-set.cpp
@@ -362,6 +363,7 @@ set (kadu_MOC_SRCS
 	buddies/buddy-shared.h
 	buddies/buddy-manager.h
 	buddies/group-manager.h
+	buddies/buddy-preferred-manager.h
 	buddies/group-shared.h
 
 	buddies/filter/abstract-buddy-filter.h

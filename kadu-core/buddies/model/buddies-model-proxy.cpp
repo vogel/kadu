@@ -22,6 +22,7 @@
 #include "accounts/account-manager.h"
 #include "buddies/filter/abstract-buddy-filter.h"
 #include "buddies/buddy.h"
+#include "buddies/buddy-preferred-manager.h"
 #include "contacts/filter/abstract-contact-filter.h"
 #include "contacts/contact.h"
 #include "status/status.h"
@@ -104,11 +105,11 @@ bool BuddiesModelProxy::lessThan(const QModelIndex &left, const QModelIndex &rig
 
 	if (SortByStatus)
 	{
-		Account leftAccount = leftBuddy.preferredAccount();
-		Account rightAccount = rightBuddy.preferredAccount();
+		Account leftAccount = BuddyPreferredManager::instance()->preferredAccount(leftBuddy);
+		Account rightAccount = BuddyPreferredManager::instance()->preferredAccount(rightBuddy);
 
-		Contact leftContact = leftBuddy.preferredContact();
-		Contact rightContact = rightBuddy.preferredContact();
+		Contact leftContact = BuddyPreferredManager::instance()->preferredContact(leftBuddy, false);
+		Contact rightContact = BuddyPreferredManager::instance()->preferredContact(rightBuddy, false);
 
 		if (leftContact.isBlocking() && !rightContact.isBlocking())
 			return false;

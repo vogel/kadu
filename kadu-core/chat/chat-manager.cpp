@@ -21,6 +21,7 @@
  */
 
 #include "accounts/account-manager.h"
+#include "buddies/buddy-preferred-manager.h"
 #include "chat/type/chat-type-manager.h"
 #include "chat/chat-details-conference.h"
 #include "chat/chat-details-simple.h"
@@ -131,7 +132,7 @@ Chat ChatManager::findChat(BuddySet buddies, bool create)
 	QMutexLocker(&mutex());
 
 	if (buddies.count() == 1)
-		return findChat(ContactSet((*buddies.begin()).preferredContact()), create);
+		return findChat(ContactSet(BuddyPreferredManager::instance()->preferredContact(*buddies.begin())), create);
 
 	Account commonAccount = getCommonAccount(buddies);
 	if (!commonAccount)

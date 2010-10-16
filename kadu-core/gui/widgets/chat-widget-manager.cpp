@@ -25,6 +25,7 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "buddies/buddy-manager.h"
+#include "buddies/buddy-preferred-manager.h"
 #include "chat/message/message.h"
 #include "chat/message/message-render-info.h"
 #include "chat/message/message-shared.h"
@@ -138,9 +139,9 @@ void ChatWidgetManager::closeAllWindows()
 	if (config_file.readBoolEntry("Chat", "SaveOpenedWindows", true))
 		store();
 
-	foreach (ChatWidget *chat, Chats)
+	foreach (ChatWidget *chatWidget, Chats)
 	{
-		ChatWindow *window = dynamic_cast<ChatWindow *>(chat->parent());
+		ChatWindow *window = dynamic_cast<ChatWindow *>(chatWidget->parent());
 		if (window)
 			delete window;
 	}
@@ -213,24 +214,31 @@ const QHash<Chat , ChatWidget *> & ChatWidgetManager::chats() const
 	return Chats;
 }
 
-void ChatWidgetManager::registerChatWidget(ChatWidget *chat)
+void ChatWidgetManager::registerChatWidget(ChatWidget *chatwidget)
 {
 	kdebugf();
-	Chats.insert(chat->chat(), chat);
+	Chats.insert(chatwidget->chat(), chatwidget);
 }
 
-void ChatWidgetManager::unregisterChatWidget(ChatWidget *chat)
+void ChatWidgetManager::unregisterChatWidget(ChatWidget *chatwidget)
 {
 	kdebugf();
 
-	if (!Chats.contains(chat->chat()))
+	if (!Chats.contains(chatwidget->chat()))
 		return;
 
-	if (chat->countMessages())
-		RecentChatManager::instance()->addRecentChat(chat->chat());
+	Chats.remove(chatwidget->chat());
 
-	emit chatWidgetDestroying(chat);
-	Chats.remove(chat->chat());
+	if (chatwidget->countMessages())
+		RecentChatManager::instance()->addRecentChat(chatwidget->chat());
+
+	if (chatwidget->chat().contacts().count() == 1)
+	{
+		Contact contact = chatwidget->chat().contacts().toContact();
+		BuddyPreferredManager::instance()->updatePreferred(contact.ownerBuddy());
+	}
+
+	emit chatWidgetDestroying(chatwidget);
 }
 
 ChatWidget * ChatWidgetManager::byChat(Chat chat, bool create) const
@@ -242,17 +250,17 @@ ChatWidget * ChatWidgetManager::byChat(Chat chat, bool create) const
 		: 0;
 }
 
-void ChatWidgetManager::activateChatWidget(ChatWidget *chatWidget, bool forceActivate)
+void ChatWidgetManager::activateChatWidget(ChatWidget *chatwidget, bool forceActivate)
 {
 	// TODO: 0.6.6
 	Q_UNUSED(forceActivate)
 
-	QWidget *win = chatWidget->window();
+	QWidget *win = chatwidget->window();
 	Q_UNUSED(win) // only in debug mode
 
 	kdebugm(KDEBUG_INFO, "parent: %p\n", win);
-	chatWidget->makeActive();
-	emit chatWidgetOpen(chatWidget, true);
+	chatwidget->makeActive();
+	emit chatWidgetOpen(chatwidget, true);
 }
 
 ChatWidget * ChatWidgetManager::openChatWidget(Chat chat, bool forceActivate)
@@ -285,6 +293,12 @@ ChatWidget * ChatWidgetManager::openChatWidget(Chat chat, bool forceActivate)
 	if (forceActivate) //TODO 0.6.6:
 	{
 		chatWidget->makeActive();
+	}
+
+	if (chatWidget->chat().contacts().count() == 1)
+	{
+		Contact contact = chatWidget->chat().contacts().toContact();
+		BuddyPreferredManager::instance()->updatePreferred(contact.ownerBuddy());
 	}
 
 	emit chatWidgetCreated(chatWidget);

@@ -22,9 +22,10 @@
 #include <QtXml/QDomElement>
 
 #include "configuration/xml-configuration-file.h"
+#include "buddies/buddy.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-shared.h"
-#include "buddies/buddy.h"
+#include "buddies/buddy-preferred-manager.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 
@@ -57,7 +58,7 @@ ContactSet ContactSetConfigurationHelper::loadFromConfiguration(XmlConfigFile *c
 				continue;
 
 			if (fromAccount.isNull())
-				contact = buddy.preferredContact();
+				contact = BuddyPreferredManager::instance()->preferredContact(buddy);
 			else
 			{
 				QList<Contact> contactList = buddy.contacts(fromAccount);

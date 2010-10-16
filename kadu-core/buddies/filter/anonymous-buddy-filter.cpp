@@ -19,7 +19,7 @@
  */
 
 #include "accounts/account.h"
-
+#include "buddies/buddy-preferred-manager.h"
 #include "contacts/contact.h"
 
 #include "anonymous-buddy-filter.h"
@@ -43,7 +43,7 @@ bool AnonymousBuddyFilter::acceptBuddy(Buddy buddy)
 	if (!Enabled)
 		return true;
 
-	Account preferredAccount = buddy.preferredAccount();
+	Account preferredAccount = BuddyPreferredManager::instance()->preferredAccount(buddy);
 	if (preferredAccount.isNull())
 		return false;
 
