@@ -724,7 +724,7 @@ void KaduWindowActions::bugsActionActivated(QAction *sender, bool toggled)
 	Q_UNUSED(toggled)
 
 	if (config_file.readEntry("General", "Language", QString(qApp->keyboardInputLocale().name()).mid(0,2)) == "pl")
-		UrlOpener::openUrl("http://www.kadu.net/w/B%C5%82%C4%99dy");
+		UrlOpener::openUrl("http://www.kadu.net/w/Bledy");
 	else
 		UrlOpener::openUrl("http://www.kadu.net/w/English:Bugs");
 }
@@ -746,7 +746,7 @@ void KaduWindowActions::getInvolvedActionActivated(QAction *sender, bool toggled
 	Q_UNUSED(toggled)
 
 	if (config_file.readEntry("General", "Language", QString(qApp->keyboardInputLocale().name()).mid(0,2)) == "pl")
-		UrlOpener::openUrl("http://www.kadu.net/w/Do%C5%82%C4%85cz");
+		UrlOpener::openUrl("http://www.kadu.net/w/Dolacz");
 	else
 		UrlOpener::openUrl("http://www.kadu.net/w/English:GetInvolved");
 }
