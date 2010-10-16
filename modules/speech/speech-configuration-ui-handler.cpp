@@ -20,6 +20,7 @@
 #include <QtGui/QLineEdit>
 #include <QtGui/QSlider>
 
+#include "buddies/buddy-preferred-manager.h"
 #include "configuration/configuration-file.h"
 #include "gui/widgets/configuration/config-combo-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
@@ -106,7 +107,7 @@ void SpeechConfigurationUiHandler::testSpeech()
 	kdebugm(KDEBUG_INFO, "%d %d %d\n", frequency, tempo, baseFrequency);
 
 	QString text;
-	text = Parser::parse(formatF, Buddy::dummy().preferredContact());
+	text = Parser::parse(formatF, BuddyPreferredManager::instance()->preferredContact(Buddy::dummy()));
 
 	Speech::instance()->say(text.contains("%1") ? text.arg("Test") : QString("Test"), program, klatt, mel, sound_system, device, frequency, tempo, baseFrequency);
 
