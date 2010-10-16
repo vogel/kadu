@@ -371,7 +371,7 @@ void GaduEditAccountWidget::removeAccount()
 	QPushButton *removeButton = messageBox->addButton(tr("Remove account"), QMessageBox::AcceptRole);
 	QPushButton *removeAndUnregisterButton = messageBox->addButton(tr("Remove account and unregister from server"), QMessageBox::DestructiveRole);
 	messageBox->addButton(QMessageBox::Cancel);
-
+	messageBox->setDefaultButton(QMessageBox::Cancel);
 	messageBox->exec();
 
 	if (messageBox->clickedButton() == removeButton)
