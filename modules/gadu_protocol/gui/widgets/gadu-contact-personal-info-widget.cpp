@@ -121,11 +121,14 @@ void GaduContactPersonalInfoWidget::reset()
 	  
 void GaduContactPersonalInfoWidget::personalInfoAvailable(Buddy buddy)
 {
+	if (buddy.contacts().isEmpty())
+		return;
+
 	Contact contact = buddy.contacts().first();
-	
+
 	if (MyContact.id() != contact.id())
 		return;
-	
+
 	FirstNameText->setText(buddy.firstName());
 	LastNameText->setText(buddy.lastName());
 	NicknameText->setText(buddy.nickName());
