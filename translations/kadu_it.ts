@@ -916,7 +916,7 @@ E un rischio per la sicurezza!</translation>
         <translation>Nuovo messaggio apre la finestra del chat</translation>
     </message>
     <message>
-        <source>Open chat window when comes new message</source>
+        <source>Open chat window when a new message arrives</source>
         <translation>Apre la finestra del chat quando nuovo messaggio arriva</translation>
     </message>
     <message>
@@ -976,7 +976,7 @@ E un rischio per la sicurezza!</translation>
         <translation>Blocca chiusura finestra con nuovo messaggio</translation>
     </message>
     <message>
-        <source>Block chat window when comes new message</source>
+        <source>Block chat window when a new message arrives</source>
         <translation>Blocca chiusura finestra chat quando nuovo messaggio arriva</translation>
     </message>
     <message>
@@ -1113,7 +1113,7 @@ E un rischio per la sicurezza!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Displays messages from anonymous users without formatting (colors, images, font weight...) Text is plain black.</source>
+        <source>Displays messages from anonymous users without formatting (colors, images, font weight...).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
