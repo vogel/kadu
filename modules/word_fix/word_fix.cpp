@@ -109,7 +109,7 @@ WordFix::WordFix()
 		}
 		else
 		{
-			kdebug(QString("Can't open file: %1").arg(defList.name()));
+			kdebug("Can't open file: %s", qPrintable((defList.fileName())));
 		}
 	}
 	else
