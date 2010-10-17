@@ -116,22 +116,22 @@ void GaduEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 	QFormLayout *formLayout = new QFormLayout(form);
 
 	ConnectAtStart = new QCheckBox(tr("Connect at start"), this);
-	connect(ConnectAtStart, SIGNAL(stateChanged(int)), this, SLOT(dataChanged()));
+	connect(ConnectAtStart, SIGNAL(clicked()), this, SLOT(dataChanged()));
 	formLayout->addRow(0, ConnectAtStart);
 
 	AccountId = new QLineEdit(this);
 	AccountId->setValidator(new LongValidator(1, 3999999999U, this));
-	connect(AccountId, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
+	connect(AccountId, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
 	formLayout->addRow(tr("Gadu-Gadu number") + ":", AccountId);
 
 	AccountPassword = new QLineEdit(this);
 	AccountPassword->setEchoMode(QLineEdit::Password);
-	connect(AccountPassword, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
+	connect(AccountPassword, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
 	formLayout->addRow(tr("Password") + ":", AccountPassword);
 
 	RememberPassword = new QCheckBox(tr("Remember password"), this);
 	RememberPassword->setChecked(true);
-	connect(RememberPassword, SIGNAL(stateChanged(int)), this, SLOT(dataChanged()));
+	connect(RememberPassword, SIGNAL(clicked()), this, SLOT(dataChanged()));
 	formLayout->addRow(0, RememberPassword);
 
 	QLabel *remindPasswordLabel = new QLabel(QString("<a href='remind'>%1</a>").arg(tr("Forgot Your Password?")));
@@ -219,7 +219,7 @@ void GaduEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 
 	ReceiveImagesDuringInvisibility = new QCheckBox(tr("Receive images during invisibility"), optionsTab);
 	ReceiveImagesDuringInvisibility->setToolTip(tr("Receiving images during invisibility is allowed"));
-	connect(ReceiveImagesDuringInvisibility, SIGNAL(stateChanged(int)), this, SLOT(dataChanged()));
+	connect(ReceiveImagesDuringInvisibility, SIGNAL(clicked()), this, SLOT(dataChanged()));
 
 	imagesLayout->addRow(ReceiveImagesDuringInvisibility);
 
@@ -258,7 +258,7 @@ void GaduEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	connect(useDefaultServers, SIGNAL(toggled(bool)), ipAddresses, SLOT(setDisabled(bool)));
 
 	connect(useDefaultServers, SIGNAL(toggled(bool)), this, SLOT(dataChanged()));
-	connect(ipAddresses, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
+	connect(ipAddresses, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
 }
 
 void GaduEditAccountWidget::apply()

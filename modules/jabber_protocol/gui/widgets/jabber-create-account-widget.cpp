@@ -76,7 +76,7 @@ void JabberCreateAccountWidget::createGui()
 	jidLayout->setColumnStretch(2, 2);
 
 	Username = new QLineEdit(this);
-	connect(Username, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
+	connect(Username, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
 	jidLayout->addWidget(Username);
 
 	QLabel *atLabel = new QLabel("@", this);
@@ -89,12 +89,12 @@ void JabberCreateAccountWidget::createGui()
 	layout->addRow(tr("Username") + ":", jidWidget);
 
 	NewPassword = new QLineEdit(this);
-	connect(NewPassword, SIGNAL(textChanged(const QString &)), this, SLOT(dataChanged()));
+	connect(NewPassword, SIGNAL(textEdited(const QString &)), this, SLOT(dataChanged()));
 	NewPassword->setEchoMode(QLineEdit::Password);
 	layout->addRow(tr("Password") + ":", NewPassword);
 
 	ReNewPassword = new QLineEdit(this);
-	connect(ReNewPassword, SIGNAL(textChanged(const QString &)), this, SLOT(dataChanged()));
+	connect(ReNewPassword, SIGNAL(textEdited(const QString &)), this, SLOT(dataChanged()));
 	ReNewPassword->setEchoMode(QLineEdit::Password);
 	layout->addRow(tr("Retype Password") + ":", ReNewPassword);
 

@@ -70,7 +70,7 @@ void JabberAddAccountWidget::createGui()
 	jidLayout->setColumnStretch(2, 2);
 
 	Username = new QLineEdit(this);
-	connect(Username, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
+	connect(Username, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
 	jidLayout->addWidget(Username);
 	
 	AtLabel = new QLabel("@", this);
@@ -83,7 +83,7 @@ void JabberAddAccountWidget::createGui()
 	layout->addRow(tr("Username") + ":", jidWidget);
 
 	AccountPassword = new QLineEdit(this);
-	connect(AccountPassword, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
+	connect(AccountPassword, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
 	AccountPassword->setEchoMode(QLineEdit::Password);
 	layout->addRow(tr("Password") + ":", AccountPassword);
 	

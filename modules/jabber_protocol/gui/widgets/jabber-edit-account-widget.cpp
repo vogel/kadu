@@ -106,21 +106,21 @@ void JabberEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 	QFormLayout *formLayout = new QFormLayout(form);
 
 	ConnectAtStart = new QCheckBox(tr("Connect on startup"), this);
-	connect(ConnectAtStart, SIGNAL(stateChanged(int)), this, SLOT(dataChanged()));
+	connect(ConnectAtStart, SIGNAL(clicked()), this, SLOT(dataChanged()));
 	formLayout->addRow(0, ConnectAtStart);
 
 	AccountId = new QLineEdit(this);
-	connect(AccountId, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
+	connect(AccountId, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
 	formLayout->addRow(tr("Username") + ":", AccountId);
 
 	AccountPassword = new QLineEdit(this);
 	AccountPassword->setEchoMode(QLineEdit::Password);
-	connect(AccountPassword, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
+	connect(AccountPassword, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
 	formLayout->addRow(tr("Password") + ":", AccountPassword);
 
 	RememberPassword = new QCheckBox(tr("Remember password"), this);
 	RememberPassword->setChecked(true);
-	connect(RememberPassword, SIGNAL(stateChanged(int)), this, SLOT(dataChanged()));
+	connect(RememberPassword, SIGNAL(clicked()), this, SLOT(dataChanged()));
 	formLayout->addRow(0, RememberPassword);
 
 	QLabel *changePasswordLabel = new QLabel(QString("<a href='change'>%1</a>").arg(tr("Change your password")));
@@ -185,7 +185,7 @@ void JabberEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	HostPortLayout->addWidget(CustomHostLabel);
 
 	CustomHost = new QLineEdit(general);
-	connect(CustomHost, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
+	connect(CustomHost, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
 	HostPortLayout->addWidget(CustomHost);
 
 	CustomPortLabel = new QLabel(general);
@@ -196,7 +196,7 @@ void JabberEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	CustomPort->setMinimumSize(QSize(56, 0));
 	CustomPort->setMaximumSize(QSize(56, 32767));
 	CustomPort->setValidator(new QIntValidator(0, 9999999, CustomPort));
-	connect(CustomPort, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
+	connect(CustomPort, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
 	HostPortLayout->addWidget(CustomPort);
 
 	// Manual Host/Port
@@ -205,7 +205,7 @@ void JabberEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	CustomPort->setEnabled(false);
 	CustomPortLabel->setEnabled(false);
 	connect(CustomHostPort, SIGNAL(toggled(bool)), SLOT(hostToggled(bool)));
-	connect(CustomHostPort, SIGNAL(stateChanged(int)), this, SLOT(dataChanged()));
+	connect(CustomHostPort, SIGNAL(clicked()), this, SLOT(dataChanged()));
 
 	vboxLayout2->addLayout(HostPortLayout);
 
@@ -231,7 +231,7 @@ void JabberEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 
 	LegacySSLProbe = new QCheckBox(general);
 	LegacySSLProbe->setText(tr("Probe legacy SSL port"));
-	connect(LegacySSLProbe, SIGNAL(stateChanged(int)), this, SLOT(dataChanged()));
+	connect(LegacySSLProbe, SIGNAL(clicked()), this, SLOT(dataChanged()));
 	vboxLayout2->addWidget(LegacySSLProbe);
 
 	QHBoxLayout *plainAuthLayout = new QHBoxLayout();
@@ -262,7 +262,7 @@ void JabberEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 
 	AutoResource = new QCheckBox;
 	AutoResource->setText(tr("Use hostname as a resource"));
-	connect(AutoResource, SIGNAL(stateChanged(int)), this, SLOT(dataChanged()));
+	connect(AutoResource, SIGNAL(clicked()), this, SLOT(dataChanged()));
 	connect(AutoResource, SIGNAL(toggled(bool)), SLOT(autoResourceToggled(bool)));
 	layout->addWidget(AutoResource);
 
@@ -275,7 +275,7 @@ void JabberEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 	ResourceLayout->addWidget(ResourceLabel);
 
 	ResourceName = new QLineEdit;
-	connect(ResourceName, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
+	connect(ResourceName, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
 	ResourceLayout->addWidget(ResourceName);
 
 	PriorityLabel = new QLabel;
@@ -283,7 +283,7 @@ void JabberEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 	ResourceLayout->addWidget(PriorityLabel);
 
 	Priority = new QLineEdit;
-	connect(Priority, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
+	connect(Priority, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
 //	 Priority->setMinimumSize(QSize(56, 0));
 //	 Priority->setMaximumSize(QSize(56, 32767));
 	Priority->setValidator(new QIntValidator(Priority));

@@ -76,11 +76,11 @@ void GaduAddAccountWidget::createGui()
 
 	AccountId = new QLineEdit(this);
 	AccountId->setValidator(new LongValidator(1, 3999999999U, this));
-	connect(AccountId, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
+	connect(AccountId, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
 	layout->addRow(tr("Gadu-Gadu number") + ":", AccountId);
 
 	AccountPassword = new QLineEdit(this);
-	connect(AccountPassword, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
+	connect(AccountPassword, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
 	AccountPassword->setEchoMode(QLineEdit::Password);
 	layout->addRow(tr("Password") + ":", AccountPassword);
 

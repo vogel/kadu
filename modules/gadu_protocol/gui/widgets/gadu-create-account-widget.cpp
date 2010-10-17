@@ -70,12 +70,12 @@ void GaduCreateAccountWidget::createGui()
 	QFormLayout *layout = new QFormLayout(formWidget);
 
 	NewPassword = new QLineEdit(this);
-	connect(NewPassword, SIGNAL(textChanged(const QString &)), this, SLOT(dataChanged()));
+	connect(NewPassword, SIGNAL(textEdited(const QString &)), this, SLOT(dataChanged()));
 	NewPassword->setEchoMode(QLineEdit::Password);
 	layout->addRow(tr("Password") + ":", NewPassword);
 
 	ReNewPassword = new QLineEdit(this);
-	connect(ReNewPassword, SIGNAL(textChanged(const QString &)), this, SLOT(dataChanged()));
+	connect(ReNewPassword, SIGNAL(textEdited(const QString &)), this, SLOT(dataChanged()));
 	ReNewPassword->setEchoMode(QLineEdit::Password);
 	layout->addRow(tr("Retype Password") + ":", ReNewPassword);
 
@@ -84,7 +84,7 @@ void GaduCreateAccountWidget::createGui()
 	layout->addWidget(RememberPassword);
 
 	EMail = new QLineEdit(this);
-	connect(EMail, SIGNAL(textChanged(const QString &)), this, SLOT(dataChanged()));
+	connect(EMail, SIGNAL(textEdited(const QString &)), this, SLOT(dataChanged()));
 	layout->addRow(tr("E-Mail Address") + ":", EMail);
 
 	IdentityCombo = new IdentitiesComboBox(this);
