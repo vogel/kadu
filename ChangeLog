@@ -4,6 +4,7 @@
 * gui: #1601 fixed: display contact data on info panel, not only buddy data (Vogel)
 * gui: #1599 fixed: user list now looks good when using small/large fonts (Vogel)
 * jabber: #1570 fixed: facebook contacts can not force to change display names for buddies (Vogel)
+* gui: #1600.2 fixed: disable "notify about user" when "notify about all" is enabled (Vogel)
 
 +++ version 0.6.6-beta8
 * gui: buddies list now has focus right after Kadu's main window creation, so filtering works without clicking (beevvy)

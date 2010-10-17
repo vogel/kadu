@@ -24,6 +24,7 @@
 
 #include "buddies/buddy-kadu-data.h"
 #include "buddies/buddy-shared.h"
+#include "configuration/configuration-file.h"
 #include "notify/contact-notify-data.h"
 
 #include "buddy-options-configuration-widget.h"
@@ -35,6 +36,7 @@ BuddyOptionsConfigurationWidget::BuddyOptionsConfigurationWidget(Buddy &buddy, Q
 	setAttribute(Qt::WA_DeleteOnClose);
 
 	createGui();
+	configurationUpdated();
 }
 
 BuddyOptionsConfigurationWidget::~BuddyOptionsConfigurationWidget()
@@ -96,4 +98,9 @@ void BuddyOptionsConfigurationWidget::save()
 		ckd->setHideDescription(HideDescriptionCheckBox->isChecked());
 		ckd->store();
 	}
+}
+
+void BuddyOptionsConfigurationWidget::configurationUpdated()
+{
+	NotifyCheckBox->setEnabled(!config_file.readBoolEntry("Notify", "NotifyAboutAll"));
 }

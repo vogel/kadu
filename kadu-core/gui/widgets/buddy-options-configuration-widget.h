@@ -25,12 +25,13 @@
 #include <QtGui/QWidget>
 
 #include "buddies/buddy.h"
+#include "configuration/configuration-aware-object.h"
 
 #include "exports.h"
 
 class QCheckBox;
 
-class KADUAPI BuddyOptionsConfigurationWidget : public QWidget
+class KADUAPI BuddyOptionsConfigurationWidget : public QWidget, ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -42,6 +43,9 @@ class KADUAPI BuddyOptionsConfigurationWidget : public QWidget
 	QCheckBox *HideDescriptionCheckBox;
 
 	void createGui();
+
+protected:
+	virtual void configurationUpdated();
 
 public:
 	explicit BuddyOptionsConfigurationWidget(Buddy &buddy, QWidget *parent = 0);
