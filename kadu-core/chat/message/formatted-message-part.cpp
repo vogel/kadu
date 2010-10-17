@@ -76,8 +76,10 @@ QString FormattedMessagePart::toHtml() const
 		span += "font-style:italic;";
 	if (Underline)
 		span += "text-decoration:underline;";
-	if (Color.isValid())
-		span += QString("color:%1;").arg(Color.name());
+//  TODO: Ignore colors settings for now. Many clients send black as default color.
+//	This breaks all dark chat themes. We have to find better solution for post 0.6.6 versions
+//	if (Color.isValid())
+//		span += QString("color:%1;").arg(Color.name());
 	span += "\">";
 
 	return span + result + "</span>";

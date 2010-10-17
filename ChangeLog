@@ -6,6 +6,7 @@
 * jabber: #1570 fixed: facebook contacts can not force to change display names for buddies (Vogel)
 * gui: #1600.2 fixed: disable "notify about user" when "notify about all" is enabled (Vogel)
 * gadu: #1600.3 fixed: personal info fixed (Vogel)
+* core: #1577 fixed: black font in adium message styles (White Eagle)
 
 +++ version 0.6.6-beta8
 * gui: buddies list now has focus right after Kadu's main window creation, so filtering works without clicking (beevvy)
