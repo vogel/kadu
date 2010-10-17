@@ -40,8 +40,6 @@ void GaduPersonalInfoService::handleEventPubdir50Read(struct gg_event *e)
 	if (FetchSeq != res->seq)
 		return;
 
-	Buddy result;
-
 	int count = gg_pubdir50_count(res);
 	if (1 != count)
 	{
@@ -49,7 +47,16 @@ void GaduPersonalInfoService::handleEventPubdir50Read(struct gg_event *e)
 		return;
 	}
 
-	emit personalInfoAvailable(Protocol->searchResultToBuddy(res, 0));
+	Buddy result = Protocol->searchResultToBuddy(res, 0);
+
+	// inverted values for "self" data
+	// this is why gadu protocol suxx
+	if (GenderMale == result.gender())
+		result.setGender(GenderFemale);
+	else if (GenderFemale == result.gender())
+		result.setGender(GenderMale);
+
+	emit personalInfoAvailable(result);
 }
 
 void GaduPersonalInfoService::handleEventPubdir50Write(struct gg_event *e)
@@ -66,7 +73,7 @@ void GaduPersonalInfoService::fetchPersonalInfo()
 {
 	gg_pubdir50_t req = gg_pubdir50_new(GG_PUBDIR50_READ);
 	FetchSeq = gg_pubdir50(Protocol->gaduSession(), req);
-	gg_pubdir50_free(req);
+	//gg_pubdir50_free(req);
 }
 
 void GaduPersonalInfoService::updatePersonalInfo(Buddy buddy)
@@ -83,14 +90,19 @@ void GaduPersonalInfoService::updatePersonalInfo(Buddy buddy)
 		gg_pubdir50_add(req, GG_PUBDIR50_CITY, buddy.city().toUtf8().constData());
 	if (0 != buddy.birthYear())
 		gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, QString::number(buddy.birthYear()).toUtf8().constData());
-	// TODO: 0.6.6
-	if (GenderUnknown != buddy.gender())
-		gg_pubdir50_add(req, GG_PUBDIR50_GENDER, QString::number(buddy.gender()).toUtf8().constData());
+
+	// inverted values for "self" data
+	// this is why gadu protocol suxx
+	if (GenderMale == buddy.gender())
+		gg_pubdir50_add(req, GG_PUBDIR50_GENDER, "1");
+	else if (GenderFemale == buddy.gender())
+		gg_pubdir50_add(req, GG_PUBDIR50_GENDER, "2");
+
 	if (!buddy.familyName().isEmpty())
 		gg_pubdir50_add(req, GG_PUBDIR50_FAMILYNAME, buddy.familyName().toUtf8().constData());
 	if (!buddy.familyCity().isEmpty())
 		gg_pubdir50_add(req, GG_PUBDIR50_FAMILYCITY, buddy.familyCity().toUtf8().constData());
 
 	UpdateSeq = gg_pubdir50(Protocol->gaduSession(), req);
-	gg_pubdir50_free(req);
+	//gg_pubdir50_free(req);
 }

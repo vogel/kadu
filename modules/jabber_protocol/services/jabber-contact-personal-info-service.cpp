@@ -30,11 +30,11 @@ JabberContactPersonalInfoService::JabberContactPersonalInfoService(JabberProtoco
 {
 }
 
-void JabberContactPersonalInfoService::fetchPersonalInfo(Buddy buddy)
+void JabberContactPersonalInfoService::fetchPersonalInfo(Contact contact)
 {
-	CurrentBuddy = buddy;
+	CurrentBuddy = contact.ownerBuddy();
 	if (Protocol && Protocol->client() && Protocol->client()->rootTask())
-		VCardFactory::instance()->getVCard(buddy.contacts().first().id(), Protocol->client()->rootTask(), this, SLOT(fetchingVCardFinished()));
+		VCardFactory::instance()->getVCard(contact.id(), Protocol->client()->rootTask(), this, SLOT(fetchingVCardFinished()));
 }
 
 void JabberContactPersonalInfoService::fetchingVCardFinished()

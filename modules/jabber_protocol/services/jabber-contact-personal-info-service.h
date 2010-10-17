@@ -38,10 +38,11 @@ class JabberContactPersonalInfoService : public ContactPersonalInfoService
 public:
 	JabberContactPersonalInfoService(JabberProtocol *protocol);
 
-	virtual void fetchPersonalInfo(Buddy buddy);
+	virtual void fetchPersonalInfo(Contact contact);
 
 private slots:
-    	void fetchingVCardFinished();
+	void fetchingVCardFinished();
+
 };
 
 #endif // JABBER_CONTACT_PERSONAL_INFO_SERVICE_H

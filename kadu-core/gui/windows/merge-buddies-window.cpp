@@ -55,9 +55,9 @@ void MergeBuddiesWindow::createGui()
 
 	QHBoxLayout *chooseLayout = new QHBoxLayout(chooseWidget);
 
-	chooseLayout->addWidget(new QLabel(tr("Contact:"), this));
-	SelectCombo = new SelectBuddyComboBox(this);
-	NonBuddyFilter *filter = new NonBuddyFilter(this);
+	chooseLayout->addWidget(new QLabel(tr("Contact:"), chooseWidget));
+	SelectCombo = new SelectBuddyComboBox(chooseWidget);
+	NonBuddyFilter *filter = new NonBuddyFilter(SelectCombo);
 	filter->setBuddy(MyBuddy);
 	SelectCombo->addFilter(filter);
 	connect(SelectCombo, SIGNAL(buddyChanged(Buddy)), this, SLOT(selectedBuddyChanged(Buddy)));

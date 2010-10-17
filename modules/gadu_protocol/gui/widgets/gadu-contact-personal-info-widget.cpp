@@ -53,13 +53,7 @@ GaduContactPersonalInfoWidget::GaduContactPersonalInfoWidget(Contact &contact, Q
 	}
 
 	connect(service, SIGNAL(personalInfoAvailable(Buddy)), this, SLOT(personalInfoAvailable(Buddy)));
-	
-	Buddy b = Buddy::create();
-	Contact c = Contact::create();
-	c.setId(contact.id());
-	c.setOwnerBuddy(b);
-	
-	service->fetchPersonalInfo(b);
+	service->fetchPersonalInfo(contact);
 }
 
 GaduContactPersonalInfoWidget::~GaduContactPersonalInfoWidget()

@@ -32,7 +32,7 @@ class KADUAPI ContactPersonalInfoService : public QObject
 public:
 	ContactPersonalInfoService(QObject *parent = 0) : QObject(parent) {}
 
-	virtual void fetchPersonalInfo(Buddy buddy) = 0;
+	virtual void fetchPersonalInfo(Contact contact) = 0;
 
 signals:
 	void personalInfoAvailable(Buddy buddy);

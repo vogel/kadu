@@ -34,6 +34,7 @@ class GaduContactPersonalInfoService : public ContactPersonalInfoService
 
 	GaduProtocol *Protocol;
 	unsigned int FetchSeq;
+	QString Id;
 
 	friend class GaduProtocolSocketNotifiers;
 	void handleEventPubdir50Read(struct gg_event *e);
@@ -41,7 +42,7 @@ class GaduContactPersonalInfoService : public ContactPersonalInfoService
 public:
 	GaduContactPersonalInfoService(GaduProtocol *protocol);
 
-	virtual void fetchPersonalInfo(Buddy buddy);
+	virtual void fetchPersonalInfo(Contact contact);
 
 };
 

@@ -276,6 +276,7 @@ void GaduProtocolSocketNotifiers::socketEvent()
 
 		case GG_EVENT_PUBDIR50_READ:
 			CurrentProtocol->CurrentPersonalInfoService->handleEventPubdir50Read(e);
+			CurrentProtocol->CurrentContactPersonalInfoService->handleEventPubdir50Read(e);
 //			break;
 
 		case GG_EVENT_PUBDIR50_WRITE:
