@@ -48,14 +48,13 @@ void GaduContactPersonalInfoService::handleEventPubdir50Read(struct gg_event *e)
 	}
 
 	Buddy result = Protocol->searchResultToBuddy(res, 0);
-	result.contacts().begin()->setId(Id); // hack, gadu does not return Id in pubdir anymore?
 	emit personalInfoAvailable(result);
 }
 
 void GaduContactPersonalInfoService::fetchPersonalInfo(Contact contact)
 {
 	Id = contact.id();
-	gg_pubdir50_t req = gg_pubdir50_new(GG_PUBDIR50_READ);
+	gg_pubdir50_t req = gg_pubdir50_new(GG_PUBDIR50_SEARCH);
 	gg_pubdir50_add(req, GG_PUBDIR50_UIN, qPrintable(Id));
 	FetchSeq = gg_pubdir50(Protocol->gaduSession(), req);
 	//gg_pubdir50_free(req);
