@@ -115,8 +115,8 @@ void BuddiesListViewItemPainter::computeIconRect()
 
 	if (!Configuration.alignTop())
 		topLeft.setY(topLeft.y() + (ItemRect.height() - icon.height()) / 2);
-	else
-		topLeft.setY(topLeft.y() + (fontMetrics().lineSpacing() + 3 - icon.height()) / 2);
+	else if (fontMetrics().lineSpacing() > icon.height())
+		topLeft.setY(topLeft.y() + (fontMetrics().lineSpacing() - icon.height()) / 2);
 
 	IconRect.moveTo(topLeft);
 }
@@ -254,7 +254,12 @@ void BuddiesListViewItemPainter::computeNameRect()
 	else
 		right = ItemRect.right() - HFrameMargin;
 
-	NameRect.moveTop(ItemRect.top());
+	int top = ItemRect.top();
+	if (Configuration.alignTop())
+		if (fontMetrics().lineSpacing() < IconRect.height())
+			top += (IconRect.height() - fontMetrics().lineSpacing()) / 2;
+
+	NameRect.moveTop(top);
 	NameRect.setLeft(left);
 	NameRect.setRight(right);
 	NameRect.setHeight(fontMetrics().height());
