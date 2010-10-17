@@ -81,11 +81,14 @@ void JabberRosterService::contactUpdated(const XMPP::RosterItem &item)
 	Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
 	buddy.setAnonymous(false);
 
-	// if contact has name set it to display
-	if (!item.name().isNull())
-		buddy.setDisplay(item.name());
-	else
-		buddy.setDisplay(item.jid().bare());
+	if (buddy.display().isEmpty() || !Protocol->contactsListReadOnly()) // for facebook like XMPP servers that force us to use their names for contacts
+	{
+		// if contact has name set it to display
+		if (!item.name().isNull())
+			buddy.setDisplay(item.name());
+		else
+			buddy.setDisplay(item.jid().bare());
+	}
 
 	GroupManager *gm = GroupManager::instance();
 	// add this contact to all groups the contact is a member of

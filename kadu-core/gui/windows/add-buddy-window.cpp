@@ -32,6 +32,7 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "accounts/filter/id-regular-expression-filter.h"
+#include "accounts/filter/writeable-contacts-list-filter.h"
 #include "accounts/model/accounts-model.h"
 #include "accounts/model/accounts-proxy-model.h"
 #include "buddies/buddy.h"
@@ -96,6 +97,10 @@ void AddBuddyWindow::createGui()
 
 	AccountComboIdFilter = new IdRegularExpressionFilter(AccountCombo);
 	AccountCombo->addFilter(AccountComboIdFilter);
+
+	WriteableContactsListFilter *writeableCotnactsListFilter = new WriteableContactsListFilter(AccountCombo);
+	AccountCombo->addFilter(writeableCotnactsListFilter);
+
 	AccountCombo->setModelColumn(1); // use long account name
 	layout->addWidget(AccountCombo, 0, 3);
 

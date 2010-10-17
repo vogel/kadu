@@ -95,11 +95,15 @@ void JabberProtocol::closeModule()
 }
 
 JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
-		Protocol(account, factory), JabberClient(0), ResourcePool(0), serverInfoManager(0), PepManager(0)
+		Protocol(account, factory), JabberClient(0), ResourcePool(0), serverInfoManager(0), PepManager(0),
+		ContactsListReadOnly(false)
 {
 	kdebugf();
 	
 	VCardFactory::createInstance(this);
+
+	if (account.id().endsWith("@chat.facebook.com"))
+		setContactsListReadOnly(true);
 
 	initializeJabberClient();
 
@@ -153,6 +157,16 @@ void JabberProtocol::disconnectContactManagerSignals()
 
 	disconnect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy &)),
 			this, SLOT(buddyUpdated(Buddy &)));
+}
+
+void JabberProtocol::setContactsListReadOnly(bool contactsListReadOnly)
+{
+	ContactsListReadOnly = contactsListReadOnly;
+}
+
+bool JabberProtocol::contactsListReadOnly()
+{
+	return ContactsListReadOnly;
 }
 
 void JabberProtocol::initializeJabberClient()

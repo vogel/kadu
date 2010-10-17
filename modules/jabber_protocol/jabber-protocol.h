@@ -47,6 +47,8 @@ class JabberProtocol : public Protocol
 {
 	Q_OBJECT
 
+	static bool ModuleUnloading;
+
 	JabberAvatarService *CurrentAvatarService;
 	JabberChatService *CurrentChatService;
 	JabberChatStateService *CurrentChatStateService;
@@ -68,7 +70,7 @@ class JabberProtocol : public Protocol
 	bool doAboutRoster;
 	bool pepAvailable;
 
-	static bool ModuleUnloading;
+	bool ContactsListReadOnly;
 
 	void initializeJabberClient();
 	void setPEPAvailable(bool b);
@@ -114,6 +116,9 @@ public:
 	bool isPEPAvailable() { return pepAvailable; }
 
 	virtual bool validateUserID(const QString& uid);
+
+	void setContactsListReadOnly(bool contactsListReadOnly);
+	virtual bool contactsListReadOnly();
 
 	virtual QString statusPixmapPath();
 

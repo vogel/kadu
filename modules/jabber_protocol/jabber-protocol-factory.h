@@ -56,6 +56,7 @@ public:
 
 protected:
 	JabberProtocolFactory();
+
 };
 
 #endif // JABBER_PROTOCOL_FACTORY_H

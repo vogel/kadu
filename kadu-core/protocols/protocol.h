@@ -117,6 +117,7 @@ public:
 	virtual SearchService * searchService() { return 0; }
 
 	virtual bool validateUserID(const QString &uid) = 0;
+	virtual bool contactsListReadOnly() = 0;
 
 	NetworkState state() { return State; }
 	bool isConnected() { return (State == NetworkConnected); }

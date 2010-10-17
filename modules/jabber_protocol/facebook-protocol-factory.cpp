@@ -49,6 +49,14 @@ FacebookProtocolFactory::FacebookProtocolFactory()
 {
 }
 
+Protocol * FacebookProtocolFactory::createProtocolHandler(Account account)
+{
+	JabberProtocol *result = static_cast<JabberProtocol *>(JabberProtocolFactory::createProtocolHandler(account));
+	result->setContactsListReadOnly(true);
+
+	return result;
+}
+
 QIcon FacebookProtocolFactory::icon()
 {
 	return IconsManager::instance()->iconByPath("protocols/xmpp/brand_name/facebook");

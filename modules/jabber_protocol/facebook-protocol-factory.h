@@ -42,6 +42,7 @@ public:
 	virtual QString name() { return "facebook"; }
 	virtual QString displayName() { return "Facebook"; }
 
+    virtual Protocol * createProtocolHandler(Account account);
 	virtual bool canRegister() { return false; }
 
 	virtual QIcon icon();
