@@ -242,17 +242,18 @@ void BuddyShared::addContact(Contact contact)
 		return;
 
 	emit contactAboutToBeAdded(contact);
-	Contacts.append(contact);
 
-	if (contact.priority() != -1)
-		sortContacts();
-	else
+	if (contact.priority() == -1)
 	{
 		int last = Contacts.count() > 1
-				? Contacts[Contacts.count() - 2].priority()
+				? Contacts[Contacts.count() - 1].priority()
 				: 0;
 		contact.setPriority(last);
 	}
+
+	Contacts.append(contact);
+
+	sortContacts();
 
 	emit contactAdded(contact);
 }
