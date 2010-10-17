@@ -17,28 +17,37 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SCREENSHOT_NOTIFICATION_H
-#define SCREENSHOT_NOTIFICATION_H
+#ifndef LIST_EDIT_WIDGET_H
+#define LIST_EDIT_WIDGET_H
 
-#include "notify/notification.h"
+#include <QtCore/QModelIndex>
+#include <QtGui/QWidget>
 
-class NotifyEvent;
+class QLineEdit;
+class QListWidget;
 
-class ScreenshotNotification : public Notification
+class ListEditWidget : public QWidget
 {
 	Q_OBJECT
 
-	static NotifyEvent *SizeLimitNotification;
+	QListWidget *ListWidget;
+	QLineEdit *LineEdit;
+
+	void createGui();
+
+private slots:
+	void selectedItemChanged(const QModelIndex &current, const QModelIndex &previous);
+	void addItem();
+	void changeItem();
+	void deleteItem();
 
 public:
-	static void registerNotifications();
-	static void unregisterNotifiactions();
+	explicit ListEditWidget(QWidget *parent = 0);
+	virtual ~ListEditWidget();
 
-	static void notifySizeLimit(int size);
-
-	explicit ScreenshotNotification();
-	virtual ~ScreenshotNotification();
+	void setList(const QStringList &list);
+	QStringList list();
 
 };
 
-#endif // SCREENSHOT_NOTIFICATION_H
+#endif // LIST_EDIT_WIDGET_H

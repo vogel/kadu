@@ -1,18 +1,33 @@
 set (SOURCES
-	cenzor.cpp)
+	configuration/gui/cenzor-configuration-ui-handler.cpp
+	configuration/cenzor-configuration.cpp
+	gui/widgets/list-edit-widget.cpp
+	notify/cenzor-notification.cpp
+
+	cenzor.cpp
+	cenzor-module.cpp
+)
 
 set (MOC_SOURCES
-	cenzor.h)
+	configuration/gui/cenzor-configuration-ui-handler.h
+	gui/widgets/list-edit-widget.h
+	notify/cenzor-notification.h
+
+	cenzor.h
+)
 
 set (TRANSLATION_SOURCES
-	translations/cenzor_pl.ts)
+	translations/cenzor_pl.ts
+)
 
 set (CONFIGURATION_FILES
-	configuration/cenzor.ui)
+	data/configuration/cenzor.ui
+)
 
 set (DATA_FILES
 	data/cenzor_words.conf
-	data/cenzor_words_ok.conf)
+	data/cenzor_words_ok.conf
+)
 
 kadu_module (cenzor
 	MODULE_SOURCES ${SOURCES}
@@ -22,5 +37,5 @@ kadu_module (cenzor
 )
 
 install (FILES ${DATA_FILES}
-	DESTINATION share/kadu/modules/data/cenzor)
-
+	DESTINATION share/kadu/modules/data/cenzor
+)

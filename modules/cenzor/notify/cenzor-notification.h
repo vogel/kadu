@@ -17,28 +17,28 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SCREENSHOT_NOTIFICATION_H
-#define SCREENSHOT_NOTIFICATION_H
+#ifndef CENZOR_NOTIFICATION_H
+#define CENZOR_NOTIFICATION_H
 
-#include "notify/notification.h"
+#include "notify/chat-notification.h"
 
 class NotifyEvent;
 
-class ScreenshotNotification : public Notification
+class CenzorNotification : public ChatNotification
 {
 	Q_OBJECT
 
-	static NotifyEvent *SizeLimitNotification;
+	static NotifyEvent *CenzoredNotification;
 
 public:
 	static void registerNotifications();
 	static void unregisterNotifiactions();
 
-	static void notifySizeLimit(int size);
+	static void notifyCenzored(Chat chat);
 
-	explicit ScreenshotNotification();
-	virtual ~ScreenshotNotification();
+	explicit CenzorNotification(Chat chat);
+	virtual ~CenzorNotification();
 
 };
 
-#endif // SCREENSHOT_NOTIFICATION_H
+#endif // CENZOR_NOTIFICATION_H

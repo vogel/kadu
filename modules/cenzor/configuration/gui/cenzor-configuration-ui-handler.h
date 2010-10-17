@@ -17,28 +17,33 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SCREENSHOT_NOTIFICATION_H
-#define SCREENSHOT_NOTIFICATION_H
+#ifndef CENZOR_CONFIGURATION_UI_HANDLER
+#define CENZOR_CONFIGURATION_UI_HANDLER
 
-#include "notify/notification.h"
+#include "gui/windows/main-configuration-window.h"
 
-class NotifyEvent;
+class ListEditWidget;
 
-class ScreenshotNotification : public Notification
+class CenzorConfigurationUiHandler : public ConfigurationUiHandler
 {
 	Q_OBJECT
 
-	static NotifyEvent *SizeLimitNotification;
+	static CenzorConfigurationUiHandler * Instance;
+
+	ListEditWidget *SwearwordsWidget;
+	ListEditWidget *ExclusionsWidget;
+
+	explicit CenzorConfigurationUiHandler();
+	virtual ~CenzorConfigurationUiHandler();
+
+private slots:
+	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
+	virtual void configurationWindowApplied();
 
 public:
-	static void registerNotifications();
-	static void unregisterNotifiactions();
-
-	static void notifySizeLimit(int size);
-
-	explicit ScreenshotNotification();
-	virtual ~ScreenshotNotification();
+	static void registerConfigurationUi();
+	static void unregisterConfigurationUi();
 
 };
 
-#endif // SCREENSHOT_NOTIFICATION_H
+#endif // CENZOR_CONFIGURATION_UI_HANDLER

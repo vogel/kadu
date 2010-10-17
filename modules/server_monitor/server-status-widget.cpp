@@ -4,7 +4,7 @@
  * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2010 Piotr Galiszewski (piotrgaliszewski@gmail.com)
  * %kadu copyright end%
- *
+ * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of
