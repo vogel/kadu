@@ -22,7 +22,7 @@
 #define BUDDY_INFO_PANEL_H
 
 #include "configuration/configuration-aware-object.h"
-#include "buddies/buddy.h"
+#include "contacts/contact.h"
 
 #include "kadu-web-view.h"
 
@@ -30,7 +30,7 @@ class BuddyInfoPanel : public KaduWebView, private ConfigurationAwareObject
 {
 	Q_OBJECT
 
-	Buddy MyBuddy;
+	Contact MyContact;
 	QString Template;
 	QString Syntax;
 
@@ -42,7 +42,7 @@ public:
 	virtual ~BuddyInfoPanel();
 
 public slots:
-	void displayBuddy(Buddy buddy);
+	void displayContact(Contact contact);
 	void update();
 	void styleFixup(QString &syntax);
 

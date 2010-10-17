@@ -384,9 +384,15 @@ void BuddiesListView::currentChanged(const QModelIndex& current, const QModelInd
 
 	if (!current.isValid())
 		return;
-	Buddy con = buddyAt(current);
-	if (!con.isNull())
-		emit currentBuddyChanged(con);
+
+	Contact contact = contactAt(current);
+
+	if (contact)
+	{
+		if (contact.ownerBuddy())
+			emit currentBuddyChanged(contact.ownerBuddy());
+		emit currentContactChanged(contact);
+	}
 }
 
 void BuddiesListView::selectionChanged(const QItemSelection &selected, const QItemSelection &deselected)

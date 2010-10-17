@@ -35,7 +35,7 @@
 
 #include "buddy-info-panel.h"
 
-BuddyInfoPanel::BuddyInfoPanel(QWidget *parent) : KaduWebView(parent), MyBuddy(Buddy::null)
+BuddyInfoPanel::BuddyInfoPanel(QWidget *parent) : KaduWebView(parent)
 {
 	configurationUpdated();
 }
@@ -97,7 +97,7 @@ void BuddyInfoPanel::update()
 		"<table><tr><td><img width=\"32\" height=\"32\" align=\"left\" valign=\"top\" src=\"file:///@{ManageUsersWindowIcon}\"></td><td> "
 		"<div align=\"left\"> [<b>%a</b>][ (%u)] [<br>tel.: %m][<br>IP: %i]</div></td></tr></table> <hr> <b>%s</b> [<br>%d]");
 	setHtml(QString("<body bgcolor=\"") + config_file.readEntry("Look", "InfoPanelBgColor") + "\"></body>");
-	displayBuddy(MyBuddy);
+	displayContact(MyContact);
 
 	if (config_file.readBoolEntry("Look", "PanelVerticalScrollbar"))
 		page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAsNeeded);
@@ -105,15 +105,15 @@ void BuddyInfoPanel::update()
 		page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
 }
 
-void BuddyInfoPanel::displayBuddy(Buddy buddy)
+void BuddyInfoPanel::displayContact(Contact contact)
 {
-	MyBuddy = buddy;
+	MyContact = contact;
 
-	if (Buddy::null == MyBuddy || !isVisible())
+	if (!MyContact || !isVisible())
 		return;
 
 	HtmlDocument doc;
-	doc.parseHtml(Parser::parse(Syntax, BuddyPreferredManager::instance()->preferredContact(MyBuddy)));
+	doc.parseHtml(Parser::parse(Syntax, MyContact));
 	UrlHandlerManager::instance()->convertAllUrls(doc);
 
 	if (EmoticonsStyleNone != (EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") &&
@@ -122,8 +122,6 @@ void BuddyInfoPanel::displayBuddy(Buddy buddy)
 				(EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle"));
 
 	setHtml(Template.arg(doc.generateHtml()));
-
-	kdebugf2();
 }
 
 void BuddyInfoPanel::styleFixup(QString &syntax)

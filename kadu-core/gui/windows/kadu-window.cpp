@@ -150,7 +150,7 @@ void KaduWindow::createGui()
 
 	InfoPanel = new BuddyInfoPanel(Split);
 	connect(ContactManager::instance(), SIGNAL(contactUpdated(Contact &)), InfoPanel, SLOT(update()));
-	connect(ContactsWidget->view(), SIGNAL(currentBuddyChanged(Buddy)), InfoPanel, SLOT(displayBuddy(Buddy)));
+	connect(ContactsWidget->view(), SIGNAL(currentContactChanged(Contact)), InfoPanel, SLOT(displayContact(Contact)));
 
 	if (!config_file.readBoolEntry("Look", "ShowInfoPanel"))
 		InfoPanel->QWidget::hide();
@@ -369,7 +369,7 @@ void KaduWindow::storeConfiguration()
 
 void KaduWindow::updateInformationPanel()
 {
-	InfoPanel->displayBuddy(ContactsWidget->view()->currentBuddy());
+	InfoPanel->displayContact(ContactsWidget->view()->currentContact());
 }
 
 void KaduWindow::closeEvent(QCloseEvent *e)

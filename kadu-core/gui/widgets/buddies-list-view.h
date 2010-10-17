@@ -149,8 +149,8 @@ signals:
 
 	void buddySelectionChanged();
 	void currentBuddyChanged(Buddy buddy);
+	void currentContactChanged(Contact contact);
 
 };
 
 #endif // BUDDIES_LIST_VIEW_H
-

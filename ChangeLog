@@ -1,6 +1,7 @@
 +++ version 0.6.6-beta9
 * core: thanks to changes started in beta8 and finished in beta9, it's easier to check Kadu for memleaks using valgrind's memcheck tool; further improvements are possible (beevvy)
 * cenzor: #1424 fixed: ported to 0.6.6 (Vogel)
+* gui: #1601 fixed: display contact data on info panel, not only buddy data (Vogel)
 
 +++ version 0.6.6-beta8
 * gui: buddies list now has focus right after Kadu's main window creation, so filtering works without clicking (beevvy)
