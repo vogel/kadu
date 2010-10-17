@@ -19,15 +19,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QString>
-#include <QtCore/QStringList>
-#include <QtDBus/QDBusInterface>
-#include <QtDBus/QDBusConnection>
-#include <QtDBus/QDBusMetaType>
-#include <QtDBus/QDBusReply>
-#include <QtCore/QDateTime>
-
-
 #include "modules.h"
 #include "configuration/configuration-file.h"
 #include "misc/path-conversion.h"
@@ -42,7 +33,6 @@ extern "C" int mpris_mediaplayer_init()
 
 	MainConfigurationWindow::registerUiFile(
 		dataPath("kadu/modules/configuration/mpris_mediaplayer.ui"));
-	MainConfigurationWindow::registerUiHandler(mpris);
 
 	bool res = mediaplayer->registerMediaPlayer(mpris, mpris);
 	return res ? 0 : 1;
@@ -52,7 +42,6 @@ extern "C" void mpris_mediaplayer_close()
 {
 	MainConfigurationWindow::unregisterUiFile(
 		dataPath("kadu/modules/configuration/mpris_mediaplayer.ui"));
-	MainConfigurationWindow::unregisterUiHandler(mpris);
 
 	mediaplayer->unregisterMediaPlayer();
 
@@ -73,8 +62,3 @@ void MprisPlayer::configurationUpdated()
 {
 	setService(config_file.readEntry("MediaPlayer", "MPRISService", QString::null));
 }
-
-void MprisPlayer::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
-{
-}
-
