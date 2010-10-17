@@ -420,7 +420,7 @@ void JabberEditAccountWidget::loadConnectionData()
 
 	CustomHostPort->setChecked(AccountDetails->useCustomHostPort());
 	CustomHost->setText(AccountDetails->customHost());
-	CustomPort->setText(AccountDetails->customPort() ? QString::number(AccountDetails->customPort()) : QString::number(5222));
+	CustomPort->setText(QString::number(AccountDetails->customPort()));
 	EncryptionMode->setCurrentIndex(EncryptionMode->findData(AccountDetails->encryptionMode()));
 	PlainTextAuth->setCurrentIndex(PlainTextAuth->findData(AccountDetails->plainAuthMode()));
 	LegacySSLProbe->setChecked(AccountDetails->legacySSLProbe());

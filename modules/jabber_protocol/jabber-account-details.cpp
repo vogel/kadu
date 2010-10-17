@@ -67,7 +67,7 @@ void JabberAccountDetails::load()
 
 	setUseCustomHostPort(loadValue<bool>("UseCustomHostPort"));
 	setCustomHost(loadValue<QString>("CustomHost"));
-	setCustomPort(loadValue<int>("CustomPort"));
+	setCustomPort(loadValue<int>("CustomPort", 5222));
 
 	setEncryptionMode((EncryptionFlag)loadValue<int>("EncryptionMode", 2));
 	setPlainAuthMode((AllowPlainType)loadValue<int>("PlainAuthMode", 2));
