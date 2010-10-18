@@ -117,20 +117,6 @@ void checkBuddyProperties(Action *action)
 	kdebugf2();
 }
 
-void checkOfflineTo(Action *action)
-{
-	kdebugf();
-	bool on = true;
-	foreach (const Buddy buddy, action->buddies())
-		if (!buddy.isOfflineTo())
-		{
-			on = false;
-			break;
-		}
-	action->setChecked(on);
-	kdebugf2();
-}
-
 void checkHideDescription(Action *action)
 {
 	action->setEnabled(true);
@@ -392,13 +378,6 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		this, SLOT(lookupInDirectoryActionActivated(QAction *, bool)),
 		"edit-find", "edit-find", tr("Search in Directory"), false, "",
 		disableNoGaduUle
-	);
-
-	OfflineToUser = new ActionDescription(this,
-		ActionDescription::TypeUser, "offlineToUserAction",
-		this, SLOT(offlineToUserActionActivated(QAction *, bool)),
-		"protocols/gadu-gadu/offline", "protocols/gadu-gadu/offline", tr("Offline to User"), true, "",
-		checkOfflineTo
 	);
 
 	HideDescription = new ActionDescription(this,
@@ -904,50 +883,6 @@ void KaduWindowActions::lookupInDirectoryActionActivated(QAction *sender, bool t
 	SearchWindow *sd = new SearchWindow(Core::instance()->kaduWindow(), buddy);
 	sd->show();
 	sd->firstSearch();
-
-	kdebugf2();
-}
-
-void KaduWindowActions::offlineToUserActionActivated(QAction *sender, bool toggled)
-{
-	kdebugf();
-
-	if (toggled && !config_file.readBoolEntry("General", "PrivateStatus"))
-	{
-// TODO: 0.6.6
-// 		if (MessageDialog::ask("You need to have private status to do it, would you like to set private status now?"))
-// 			changePrivateStatus->setChecked(true);
-// 		else
-// 		{
-// 			sender->setChecked(!toggled);
-// 			return;
-// 		}
-	}
-
-	Action *action = dynamic_cast<Action *>(sender);
-	if (!action)
-		return;
-
-	BuddySet buddies = action->buddies();
-	bool on = true;
-	foreach (const Buddy buddy, buddies)
-		if (!buddy.isOfflineTo())
-		{
-			on = false;
-			break;
-		}
-	/*
-	foreach(const Contact contact, contacts)
-		if (contact.accountData(account) != 0 || contact.isOfflineTo(account) == on)
-			//TODO: 0.6.6
-			user.setProtocolData("Gadu", "OfflineTo", !on); // TODO: here boolean
-	*/
-// TODO: 0.6.6
-// 	userlist->writeToConfig();
-
-	foreach (Action *action, OfflineToUser->actions())
-		if (action->buddies() == buddies)
-			action->setChecked(!on);
 
 	kdebugf2();
 }

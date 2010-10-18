@@ -62,7 +62,6 @@ class KaduWindowActions : QObject, ConfigurationAwareObject
 	ActionDescription *OpenDescriptionLink;
 	ActionDescription *CopyPersonalInfo;
 	ActionDescription *LookupUserInfo;
-	ActionDescription *OfflineToUser;
 	ActionDescription *HideDescription;
 	ActionDescription *DeleteUsers;
 
@@ -108,7 +107,6 @@ private slots:
 	void openDescriptionLinkActionActivated(QAction *sender, bool toggled);
 	void copyPersonalInfoActionActivated(QAction *sender, bool toggled);
 	void lookupInDirectoryActionActivated(QAction *sender, bool toggled);
-	void offlineToUserActionActivated(QAction *sender, bool toggled);
 	void hideDescriptionActionActivated(QAction *sender, bool toggled);
 	void deleteUsersActionActivated(QAction *sender, bool toggled);
 
@@ -134,7 +132,6 @@ public:
 
 void disableNonIdUles(Action *action);
 void disableContainsSelfUles(Action *action);
-void checkOfflineTo(Action *action);
 void checkHideDescription(Action *action);
 void disableNotOneUles(Action *action);
 void disableNoGaduUle(Action *action);
