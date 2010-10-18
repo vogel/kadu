@@ -104,6 +104,8 @@ void AccountShared::load()
 	ProxySettings.setUser(loadValue<QString>("ProxyUser"));
 	ProxySettings.setPassword(loadValue<QString>("ProxyPassword"));
 
+	PrivateStatus = loadValue<bool>("PrivateStatus", true);
+
 	triggerAllProtocolsRegistered();
 }
 
@@ -132,6 +134,8 @@ void AccountShared::store()
 	storeValue("ProxyRequiresAuthentication", ProxySettings.requiresAuthentication());
 	storeValue("ProxyUser", ProxySettings.user());
 	storeValue("ProxyPassword", ProxySettings.password());
+
+	storeValue("PrivateStatus", PrivateStatus);
 }
 
 bool AccountShared::shouldStore()
@@ -342,8 +346,13 @@ QIcon AccountShared::statusIcon(Status status)
 
 void AccountShared::setPrivateStatus(bool isPrivate)
 {
+	if (PrivateStatus == isPrivate)
+		return;
+
+	PrivateStatus = isPrivate;
+
 	if (ProtocolHandler)
-		ProtocolHandler->setPrivateMode(isPrivate);
+		ProtocolHandler->changePrivateMode();
 }
 
 QList<StatusType *> AccountShared::supportedStatusTypes()

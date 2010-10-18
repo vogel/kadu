@@ -43,7 +43,7 @@
 #include "protocol.h"
 
 Protocol::Protocol(Account account, ProtocolFactory *factory) :
-		Factory(factory), CurrentAccount(account), State(NetworkDisconnected), PrivateMode(PrivateModeUnset)
+		Factory(factory), CurrentAccount(account), State(NetworkDisconnected)
 {
 	connect(StatusChangerManager::instance(), SIGNAL(statusChanged(StatusContainer*,Status)),
 			this, SLOT(statusChanged(StatusContainer*,Status)));
@@ -100,16 +100,6 @@ void Protocol::statusChanged(Status status)
 {
 	CurrentStatus = status;
 	emit statusChanged(CurrentAccount, CurrentStatus);
-}
-
-void Protocol::setPrivateMode(bool privateMode)
-{
-	PrivateModeInternal pMode = privateMode ? PrivateModeOn : PrivateModeOff;
-	if (PrivateMode != pMode)
-	{
-		PrivateMode = pMode;
-		changePrivateMode();
-	}
 }
 
 void Protocol::networkStateChanged(NetworkState state)

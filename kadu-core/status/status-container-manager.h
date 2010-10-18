@@ -51,7 +51,6 @@ class KADUAPI StatusContainerManager : public StatusContainer,
 	QString StartupDescription;
 	bool StartupLastDescription;
 	bool OfflineToInvisible;
-	bool PrivateStatus;
 
 	bool DisconnectWithCurrentDescription;
 	QString DisconnectDescription;
@@ -117,8 +116,6 @@ public:
 	virtual void storeStatus(Status status);
 	virtual void disconnectStatus(bool disconnectWithCurrentDescription,
 						  const QString &disconnectDescription);
-
-	virtual void setPrivateStatus(bool isPrivate);
 
 signals:
 	void statusContainerAboutToBeRegistered(StatusContainer *);

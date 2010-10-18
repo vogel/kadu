@@ -75,9 +75,6 @@ public:
 	virtual QList<StatusType *> supportedStatusTypes();
 
 	QIcon statusIcon(Status status);
-
-	virtual void setPrivateStatus(bool isPrivate);
-
 };
 
 #endif // IDENTITY_SHARED_H

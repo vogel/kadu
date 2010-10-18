@@ -82,22 +82,14 @@ void StatusActions::createActions()
 
 		Actions.append(StatusTypeActions[statusType]);
 	}
-
-	Actions.append(createSeparator());
-	Actions.append(ChangePrivateStatus);
+	
+	Actions.append(createSeparator());	
 }
 
 void StatusActions::createBasicActions()
 {
 	ChangeDescription = new QAction(tr("Change status message..."), this);
 	connect(ChangeDescription, SIGNAL(triggered(bool)), this, SIGNAL(changeDescriptionActionTriggered(bool)));
-
-	ChangePrivateStatus = new QAction(tr("Private"), this);
-	ChangePrivateStatus->setCheckable(true);
-	connect(ChangePrivateStatus, SIGNAL(triggered(bool)), this, SIGNAL(changePrivateStatusActionTriggered(bool)));
-
-	bool privateStatus = config_file.readBoolEntry("General", "PrivateStatus");
-	ChangePrivateStatus->setChecked(privateStatus);
 }
 
 void StatusActions::createStatusActions()
@@ -144,14 +136,6 @@ void StatusActions::statusChanged()
 			action->setChecked(StatusContainerManager::instance()->allStatusEqual(statusType));
 		else
 			action->setChecked(statusTypeName == statusType->name());
-	}
-
-	if (!AccountManager::instance()->defaultAccount().isNull())
-	{
-		Protocol *protocol = AccountManager::instance()->defaultAccount().protocolHandler();
-		if (!protocol)
-			return;
-		ChangePrivateStatus->setChecked(protocol->privateMode());
 	}
 
 // 	ChangeStatusToOfflineDesc->setEnabled(index != 6);

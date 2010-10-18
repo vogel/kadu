@@ -283,8 +283,13 @@ int GaduProtocol::maxDescriptionLength()
 
 void GaduProtocol::changeStatus()
 {
+	changeStatus(false);
+}
+
+void GaduProtocol::changeStatus(bool force)
+{
 	Status newStatus = nextStatus();
-	if (newStatus == status())
+	if (newStatus == status() && !force)
 		return; // dont reset password
 
 	if (newStatus.isDisconnected() && status().isDisconnected())
@@ -307,8 +312,8 @@ void GaduProtocol::changeStatus()
 	if (newStatus.type() == "NotAvailable" && status().type() == "Away")
 		return;
 
-// TODO: 0.6.6
-	int friends = 0;// GG_STATUS_FRIENDS_MASK; // (!newStatus.isDisconnected() && privateMode() ? GG_STATUS_FRIENDS_MASK : 0);
+	int friends = (!newStatus.isDisconnected() && account().privateStatus() ? GG_STATUS_FRIENDS_MASK : 0);
+
 	int type = gaduStatusFromStatus(newStatus);
 	bool hasDescription = !newStatus.description().isEmpty();
 
@@ -325,7 +330,7 @@ void GaduProtocol::changeStatus()
 
 void GaduProtocol::changePrivateMode()
 {
-	changeStatus();
+	changeStatus(true);
 }
 
 void GaduProtocol::connectionTimeoutTimerSlot()
@@ -476,7 +481,8 @@ void GaduProtocol::setupLoginParams()
 	GaduLoginParams.password = strdup(account().password().toAscii().data());
 
 	GaduLoginParams.async = 1;
-	GaduLoginParams.status = gaduStatusFromStatus(nextStatus()) | GG_STATUS_FRIENDS_MASK; // TODO: 0.6.6 support is friend only
+
+	GaduLoginParams.status = (gaduStatusFromStatus(nextStatus()) | (account().privateStatus() ? GG_STATUS_FRIENDS_MASK : 0));
 	if (!nextStatus().description().isEmpty())
 		GaduLoginParams.status_descr = strdup(nextStatus().description().toUtf8());
 

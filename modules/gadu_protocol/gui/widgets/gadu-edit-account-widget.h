@@ -51,6 +51,7 @@ class GaduEditAccountWidget : public AccountEditWidget
 	QSpinBox *MaximumImageSize;
 	QCheckBox *ReceiveImagesDuringInvisibility;
 	QSpinBox *MaximumImageRequests;
+	QCheckBox *PrivateStatus;
 
 	IdentitiesComboBox *Identities;
 

@@ -85,6 +85,7 @@ void GaduImporter::importAccounts()
 	defaultGaduGadu.setPassword(pwHash(config_file.readEntry("General", "Password")).toUtf8().constData());
 	defaultGaduGadu.setRememberPassword(true);
 	defaultGaduGadu.setHasPassword(!defaultGaduGadu.password().isEmpty());
+	defaultGaduGadu.setPrivateStatus(config_file.readBoolEntry("General", "PrivateStatus"));
 	accountDetails->setAllowDcc(config_file.readBoolEntry("Network", "AllowDCC"));
 
 	QHostAddress host;

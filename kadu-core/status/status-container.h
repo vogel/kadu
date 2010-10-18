@@ -61,8 +61,6 @@ public:
 	virtual void storeStatus(Status status) = 0;
 	virtual void disconnectStatus(bool disconnectWithCurrentDescription, const QString &disconnectDescription) = 0;
 
-	virtual void setPrivateStatus(bool isPrivate) = 0;
-
 signals:
 	void statusChanged();
 	void updated();

@@ -78,10 +78,6 @@
 
 	<section name="Status" icon="user-online">
 		<tab name="General">
-			<group-box name="General">
-				<check-box caption="Private status" config-section="General" config-item="PrivateStatus"
-					tool-tip="When enabled, you're visible only to buddies on your list" />
-			</group-box>
 			<group-box name="Description">
 				<combo-box caption="On startup, set" config-section="General" config-item="StartupStatus" id="startupStatus"
 					tool-tip="Choose status which will be set on startup">

@@ -122,8 +122,6 @@ void StatusContainerManager::configurationUpdated()
 	else if (StartupStatus == "Busy")
 		StartupStatus =  "Away";
 
-	PrivateStatus = config_file.readBoolEntry("General", "PrivateStatus");
-
 	DisconnectWithCurrentDescription = config_file.readBoolEntry("General", "DisconnectWithCurrentDescription");
 	DisconnectDescription = config_file.readEntry("General", "DisconnectDescription");
 }
@@ -321,10 +319,4 @@ void StatusContainerManager::disconnectStatus(bool disconnectWithCurrentDescript
 
 	foreach (StatusContainer *statusContainer, StatusContainers)
 		statusContainer->disconnectStatus(DisconnectWithCurrentDescription, DisconnectDescription);
-}
-
-void StatusContainerManager::setPrivateStatus(bool isPrivate)
-{
-	foreach (StatusContainer *container, StatusContainers)
-		container->setPrivateStatus(isPrivate);
 }

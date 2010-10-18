@@ -23,9 +23,6 @@
 #include <QtGui/QActionGroup>
 #include <QtGui/QMenu>
 
-#include "accounts/account.h"
-#include "accounts/account-manager.h"
-#include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "gui/windows/choose-description.h"
 #include "protocols/protocol.h"
@@ -43,7 +40,6 @@ StatusMenu::StatusMenu(StatusContainer *statusContainer, QMenu *menu) :
 
 	connect(Actions, SIGNAL(statusActionTriggered(QAction *)), this, SLOT(changeStatus(QAction *)));
 	connect(Actions, SIGNAL(changeDescriptionActionTriggered(bool)), this, SLOT(changeDescription()));
-	connect(Actions, SIGNAL(changePrivateStatusActionTriggered(bool)), this, SLOT(changeStatusPrivate(bool)));
 
 // 	connect(MyStatusContainer, SIGNAL(updated()), this, SLOT(statusContainerUpdated()));
 
@@ -76,12 +72,4 @@ void StatusMenu::changeStatus(QAction *action)
 void StatusMenu::changeDescription()
 {
 	ChooseDescription::showDialog(MyStatusContainer, MousePositionBeforeMenuHide);
-}
-
-void StatusMenu::changeStatusPrivate(bool toggled)
-{
-	if (AccountManager::instance()->defaultAccount().protocolHandler())
-		AccountManager::instance()->defaultAccount().protocolHandler()->setPrivateMode(toggled);
-
-	config_file.writeEntry("General", "PrivateStatus", toggled);
 }

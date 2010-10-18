@@ -37,7 +37,6 @@ class StatusActions : public QObject
 
 	QActionGroup *ChangeStatusActionGroup;
 	QAction *ChangeDescription;
-	QAction *ChangePrivateStatus;
 	QMap<StatusType *, QAction *> StatusTypeActions;
 	QList<QAction *> Actions;
 
@@ -59,8 +58,6 @@ public:
 signals:
 	void statusActionTriggered(QAction *);
 	void changeDescriptionActionTriggered(bool);
-	void changePrivateStatusActionTriggered(bool);
-
 };
 
 #endif // STATUS_ACTIONS_H

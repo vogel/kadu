@@ -232,8 +232,19 @@ void GaduEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 
 	imagesLayout->addRow(tr("Limit numbers of image recevied per minute") + ":", MaximumImageRequests);
 
-	layout->addWidget(images);
-
+	layout->addWidget(images);	
+	
+	QGroupBox *status = new QGroupBox(tr("Status"), this);
+	QFormLayout *statusLayout = new QFormLayout(status);
+	
+	PrivateStatus = new QCheckBox(tr("Show my status to everyone"), optionsTab);
+	PrivateStatus->setToolTip(tr("When disabled, you're visible only to buddies on your list"));
+	connect(PrivateStatus, SIGNAL(clicked()), this, SLOT(dataChanged()));
+	
+	statusLayout->addRow(PrivateStatus);
+	
+	layout->addWidget(status);
+	layout->addStretch(100);		
 }
 
 void GaduEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
@@ -269,6 +280,7 @@ void GaduEditAccountWidget::apply()
 	account().setRememberPassword(RememberPassword->isChecked());
 	account().setPassword(AccountPassword->text());
 	account().setHasPassword(!AccountPassword->text().isEmpty());
+	account().setPrivateStatus(!PrivateStatus->isChecked());
 
 	if (Details)
 	{
@@ -304,6 +316,7 @@ void GaduEditAccountWidget::dataChanged()
 		&& account().id() == AccountId->text()
 		&& account().rememberPassword() == RememberPassword->isChecked()
 		&& account().password() == AccountPassword->text()
+		&& account().privateStatus() != PrivateStatus->isChecked()
 		&& Details->maximumImageSize() == MaximumImageSize->value()
 		&& Details->receiveImagesDuringInvisibility() == ReceiveImagesDuringInvisibility->isChecked()
 		&& Details->maximumImageRequests() == MaximumImageRequests->value()
@@ -342,6 +355,7 @@ void GaduEditAccountWidget::loadAccountData()
 	AccountId->setText(account().id());
 	RememberPassword->setChecked(account().rememberPassword());
 	AccountPassword->setText(account().password());
+	PrivateStatus->setChecked(!account().privateStatus());
 
 	GaduAccountDetails *details = dynamic_cast<GaduAccountDetails *>(account().details());
 	if (details)

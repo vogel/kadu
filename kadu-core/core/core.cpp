@@ -175,7 +175,6 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("General", "Nick", tr("Me"));
 	config_file.addVariable("General", "NumberOfDescriptions", 20);
 	config_file.addVariable("General", "ParseStatus", false);
-	config_file.addVariable("General", "PrivateStatus", false);
 	config_file.addVariable("General", "SaveStdErr", false);
 	config_file.addVariable("General", "ShowBlocked", true);
 	config_file.addVariable("General", "ShowBlocking", true);

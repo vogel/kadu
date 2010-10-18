@@ -74,7 +74,6 @@ void BaseStatusContainer::setDefaultStatus(const QString &startupStatus, bool of
 	status.setType(name);
 	status.setDescription(description);
 
-	setPrivateStatus(config_file.readBoolEntry("General", "PrivateStatus"));
 	setStatus(status);
 }
 

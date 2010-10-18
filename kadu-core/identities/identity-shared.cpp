@@ -176,10 +176,3 @@ int IdentityShared::maxDescriptionLength()
 			return account.data()->maxDescriptionLength();
 	return -1;
 }
-
-void IdentityShared::setPrivateStatus(bool isPrivate)
-{
-	foreach (Account account, Accounts)
-		if (account)
-			account.data()->setPrivateStatus(isPrivate);
-}
