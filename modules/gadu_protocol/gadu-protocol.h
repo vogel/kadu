@@ -153,6 +153,7 @@ public:
 
 	virtual bool validateUserID(const QString &uid);
 	virtual bool contactsListReadOnly() { return false; }
+	virtual bool supportPrivateStatus() { return true; }
 
 	virtual void changePrivateMode();
 

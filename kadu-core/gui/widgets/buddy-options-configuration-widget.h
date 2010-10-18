@@ -44,6 +44,10 @@ class KADUAPI BuddyOptionsConfigurationWidget : public QWidget, ConfigurationAwa
 
 	void createGui();
 
+private slots:
+	void updateOfflineTo();
+	void offlineToToggled(bool toggled);
+
 protected:
 	virtual void configurationUpdated();
 

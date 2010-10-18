@@ -20,12 +20,14 @@
  */
 
 #include <QtGui/QCheckBox>
+#include <QtGui/QMessageBox>
 #include <QtGui/QVBoxLayout>
 
 #include "buddies/buddy-kadu-data.h"
 #include "buddies/buddy-shared.h"
 #include "configuration/configuration-file.h"
 #include "notify/contact-notify-data.h"
+#include "protocols/protocol.h"
 
 #include "buddy-options-configuration-widget.h"
 
@@ -36,7 +38,11 @@ BuddyOptionsConfigurationWidget::BuddyOptionsConfigurationWidget(Buddy &buddy, Q
 	setAttribute(Qt::WA_DeleteOnClose);
 
 	createGui();
+	updateOfflineTo();
 	configurationUpdated();
+
+	connect(MyBuddy, SIGNAL(contactAdded(Contact)), this, SLOT(updateOfflineTo()));
+	connect(MyBuddy, SIGNAL(contactRemoved(Contact)), this, SLOT(updateOfflineTo()));
 }
 
 BuddyOptionsConfigurationWidget::~BuddyOptionsConfigurationWidget()
@@ -49,6 +55,7 @@ void BuddyOptionsConfigurationWidget::createGui()
 
 	OfflineToCheckBox = new QCheckBox(tr("Allow buddy to see when I'm available"), this);
 	OfflineToCheckBox->setChecked(!MyBuddy.isOfflineTo());
+	connect(OfflineToCheckBox, SIGNAL(clicked(bool)), this, SLOT(offlineToToggled(bool)));
 	layout->addWidget(OfflineToCheckBox);
 
 	BlockCheckBox = new QCheckBox(tr("Block buddy"), this);
@@ -103,4 +110,48 @@ void BuddyOptionsConfigurationWidget::save()
 void BuddyOptionsConfigurationWidget::configurationUpdated()
 {
 	NotifyCheckBox->setEnabled(!config_file.readBoolEntry("Notify", "NotifyAboutAll"));
+}
+
+void BuddyOptionsConfigurationWidget::updateOfflineTo()
+{
+	OfflineToCheckBox->setEnabled(false);
+	foreach (Contact contact, MyBuddy.contacts())
+	{
+		if (!contact.contactAccount() && !contact.contactAccount().protocolHandler())
+			continue;
+
+		if (contact.contactAccount().protocolHandler()->supportPrivateStatus())
+		{
+			OfflineToCheckBox->setEnabled(true);
+			return;
+		}
+	}
+}
+
+void BuddyOptionsConfigurationWidget::offlineToToggled(bool toggled)
+{
+	if (toggled == true)
+		return;
+
+	foreach (Contact contact, MyBuddy.contacts())
+	{
+		if (!contact.contactAccount() && !contact.contactAccount().protocolHandler())
+			continue;
+
+		if (contact.contactAccount().protocolHandler()->supportPrivateStatus() && !contact.contactAccount().privateStatus())
+		{
+			if (QMessageBox::question(this, "Private status", "You need to turn on 'private status' to check "
+									  "this option. Turning on 'private status' means that from now on you "
+									  "will be seen as offline for all people that are not on your buddy list."
+									  "\nWould you like to set 'private status' now?",
+									  QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes)
+				== QMessageBox::Yes)
+			{
+				foreach (Contact con, MyBuddy.contacts())
+					contact.contactAccount().setPrivateStatus(true);
+			}
+
+			return;
+		}
+	}
 }
