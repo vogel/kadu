@@ -41,7 +41,7 @@ QString ScreenShotSaver::createScreenshotPath()
 	QDir dir(dirPath);
 	if (!dir.exists() && !dir.mkpath(dirPath))
 	{
-		MessageDialog::msg(tr("Unable to create direcotry %1 for storing screenshots!").arg(dirPath));
+		MessageDialog::show("dialog-warning", tr("Kadu"), tr("Unable to create direcotry %1 for storing screenshots!").arg(dirPath));
 		return QString::null;
 	}
 
@@ -66,7 +66,7 @@ QString ScreenShotSaver::saveScreenShot(QPixmap pixmap)
 
 	if (!pixmap.save(path, "PNG"))
 	{
-		MessageDialog::msg(tr("Can't write file %1.\nAccess denied or other problem!").arg(path));
+		MessageDialog::show("dialog-warning", tr("Kadu"), tr("Can't write file %1.\nAccess denied or other problem!").arg(path));
 		return QString::null;
 	}
 
@@ -75,7 +75,7 @@ QString ScreenShotSaver::saveScreenShot(QPixmap pixmap)
 
 	if (Size == 0)
 	{
-		MessageDialog::msg(tr("Screenshot %1 has 0 size!\nIt should be bigger.").arg(path));
+		MessageDialog::show("dialog-warning", tr("Kadu"), tr("Screenshot %1 has 0 size!\nIt should be bigger.").arg(path));
 		return QString::null;
 	}
 

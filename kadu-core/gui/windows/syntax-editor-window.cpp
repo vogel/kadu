@@ -143,7 +143,7 @@ void SyntaxEditorWindow::saveAs()
 
 		if (syntaxList->isGlobal(newSyntaxName))
 		{
-			MessageDialog::msg(tr("Syntax %1 already exists and cannot be modified").arg(newSyntaxName), true, "dialog-warning");
+			MessageDialog::show("dialog-warning", tr("Kadu"), tr("Syntax %1 already exists and cannot be modified").arg(newSyntaxName));
 			continue;
 		}
 		else

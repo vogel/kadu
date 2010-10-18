@@ -105,7 +105,7 @@ void ScreenShot::screenshotReady(QPixmap p)
 		if (checkImageSize(saver->size()))
 			pasteImageClause(screenShotPath);
 		else
-			MessageDialog::msg(tr("Image size is bigger than maximal image size for this chat."), true);
+			MessageDialog::show("dialog-warning", tr("Kadu"), tr("Image size is bigger than maximal image size for this chat."));
 	}
 
 	deleteLater();

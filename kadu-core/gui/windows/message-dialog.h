@@ -26,7 +26,7 @@
 #ifndef MESSAGE_BOX_H
 #define MESSAGE_BOX_H
 
-#include <QtGui/QDialog>
+#include <QtGui/QMessageBox>
 
 #include "exports.h"
 
@@ -67,6 +67,11 @@ public:
 	MessageDialog(const QString &message, int components = 0, bool modal = false, const QString &iconPath = QString::null, QWidget *parent = 0);
 	~MessageDialog();
 
+	static void show(const QString &iconName, const QString &title, const QString &text, QMessageBox::StandardButtons buttons = QMessageBox::Ok,
+			QWidget *parent = 0, Qt::WindowFlags f = Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
+	static int exec(const QString &iconName, const QString &title, const QString &text, QMessageBox::StandardButtons buttons = QMessageBox::Ok,
+			QWidget *parent = 0, Qt::WindowFlags f = Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
+
 
 	/**
 		Informuje u�ytkownika o wykonywanej przez
@@ -87,13 +92,6 @@ public:
 		lub false je�li wybra� "Nie".
 	**/
 	static bool ask(const QString &message, const QString &iconPath = QString::null, QWidget *parent = 0);
-
-	/**
-		Przekazuje u�ytkownikowi informacj�. Tworzy
-		dialog z przyciskiem: "OK" zamykaj�cy okno.
-		Nie blokuje wykonywania programu.
-	**/
-	static void msg(const QString &message, bool modal = false, const QString &iconPath = QString::null, QWidget *parent = 0);
 
 	/**
 		Zamyka dialog, kt�ry zosta� stworzony za

@@ -35,7 +35,7 @@ class BuddiesListWidget;
 class KADUAPI AccountBuddyListWidget : public QWidget
 {
 	Q_OBJECT
-	
+
 	Account CurrentAccount;
 	BuddiesListWidget *BuddiesWidget;
 	QPushButton *ExportButton;

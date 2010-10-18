@@ -374,7 +374,7 @@ void GaduProtocol::login()
 
 	if (0 == gaduAccountDetails->uin())
 	{
-		MessageDialog::msg(tr("UIN not set!"), false, "dialog-warning");
+		MessageDialog::show("dialog-warning", tr("Kadu"), tr("UIN not set!"));
 		setStatus(Status());
 		kdebugmf(KDEBUG_FUNCTION_END, "end: gadu UIN not set\n");
 		return;
@@ -619,7 +619,7 @@ void GaduProtocol::socketConnFailed(GaduError error)
 			msg = tr("Please change your email in \"Change password / email\" window. "
 				"Leave new password field blank.");
 			tryAgain = false;
-			MessageDialog::msg(msg, false, "dialog-warning");
+			MessageDialog::show("dialog-warning", tr("Kadu"), msg);
 			break;
 
 		case ConnectionInvalidData:
@@ -637,7 +637,7 @@ void GaduProtocol::socketConnFailed(GaduError error)
 		case ConnectionIncorrectPassword:
 			msg = tr("Unable to connect, incorrect password");
 			tryAgain = false;
-			MessageDialog::msg(tr("Connection will be stopped\nYour password is incorrect!"), false, "dialog-error");
+			MessageDialog::show("dialog-error", tr("Kadu"), tr("Connection will be stopped\nYour password is incorrect!"));
 			break;
 
 		case ConnectionTlsError:
@@ -647,7 +647,7 @@ void GaduProtocol::socketConnFailed(GaduError error)
 		case ConnectionIntruderError:
 			msg = tr("Too many connection attempts with bad password!");
 			tryAgain = false;
-			MessageDialog::msg(tr("Connection will be stopped\nToo many attempts with bad password"), false, "dialog-error");
+			MessageDialog::show("dialog-error", tr("Kadu"), tr("Connection will be stopped\nToo many attempts with bad password"));
 			break;
 
 		case ConnectionUnavailableError:

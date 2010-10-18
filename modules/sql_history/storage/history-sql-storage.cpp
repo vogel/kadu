@@ -79,7 +79,9 @@ void HistorySqlStorage::initDatabase()
 
 	if (!QSqlDatabase::isDriverAvailable("QSQLITE"))
 	{
-		MessageDialog::msg(tr("It seems your Qt library does not provide support for selected database.\n Please select another driver in configuration window or install Qt with %1 plugin.").arg("QSQLITE"), false, "dialog-warning");
+		MessageDialog::show("dialog-warning", tr("Kadu"),
+				tr("It seems your Qt library does not provide support for selected database.\n "
+				   "Please select another driver in configuration window or install Qt with %1 plugin.").arg("QSQLITE"));
 		return;
 	}
 
@@ -99,7 +101,7 @@ void HistorySqlStorage::initDatabase()
 
 	if (!Database.open())
 	{
-		MessageDialog::msg(Database.lastError().text(), false, "dialog-warning");
+		MessageDialog::show("dialog-warning", tr("Kadu"), Database.lastError().text());
 		return;
 	}
 
@@ -956,5 +958,5 @@ void HistorySqlStorage::convertSenderToContact()
 		import.exec();
 	}
 
-	MessageDialog::msg("All teh werk dun!", false, "dialog-warning");
+	MessageDialog::show("dialog-warning", tr("Kadu"), "All teh werk dun!");
 }

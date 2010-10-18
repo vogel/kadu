@@ -381,7 +381,8 @@ void ChatWidget::sendMessage()
 
 	if (!currentProtocol()->isConnected())
 	{
-		MessageDialog::msg(tr("Cannot send message while being offline.")+tr("Account:")+chat().chatAccount().id(), false, "dialog-error", this);
+		MessageDialog::show("dialog-error", tr("Kadu"), tr("Cannot send message while being offline.") + tr("Account:") + chat().chatAccount().id(),
+				QMessageBox::Ok, this);
 		kdebugmf(KDEBUG_FUNCTION_END, "not connected!\n");
 		return;
 	}

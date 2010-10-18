@@ -234,7 +234,8 @@ void SmsDialog::sendSms()
 	{
 		if (config_file.readEntry("SMS", "SmsApp").isEmpty())
 		{
-			MessageDialog::msg(tr("Sms application was not specified. Visit the configuration section"), false, "dialog-warning", this);
+			MessageDialog::show("dialog-warning", tr("Kadu"),
+					tr("Sms application was not specified. Visit the configuration section"), QMessageBox::Ok, this);
 			kdebugm(KDEBUG_WARNING, "SMS application NOT specified. Exit.\n");
 			return;
 		}

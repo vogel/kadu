@@ -223,7 +223,7 @@ void Updates::gotUpdatesInfo(const QHttpResponseHeader &responseHeader)
 
 		QString newestVersion(data);
 		if (isNewerVersion(newestVersion))
-			MessageDialog::msg(tr("The newest Kadu version is %1").arg(newestVersion), false, "dialog-information", Core::instance()->kaduWindow());
+			MessageDialog::show("dialog-information", tr("Kadu"), tr("The newest Kadu version is %1").arg(newestVersion), QMessageBox::Ok, Core::instance()->kaduWindow());
 	}
 
 	config_file.writeEntry("General", "LastUpdateCheck", QDateTime(QDate(1970, 1, 1)).secsTo(QDateTime::currentDateTime()));

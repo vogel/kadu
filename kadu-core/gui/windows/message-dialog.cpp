@@ -32,12 +32,48 @@
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QLabel>
 #include <QtGui/QPushButton>
+#include <QtGui/QStyle>
 #include <QtGui/QVBoxLayout>
 
 #include "debug.h"
 #include "icons-manager.h"
 
 #include "message-dialog.h"
+
+void MessageDialog::show(const QString &iconName, const QString &title, const QString &text, QMessageBox::StandardButtons buttons,
+			QWidget *parent, Qt::WindowFlags f)
+{
+	QMessageBox *mb = new QMessageBox(QMessageBox::NoIcon, title, text, buttons, parent, f);
+	mb->setAttribute(Qt::WA_DeleteOnClose, true);
+
+	QIcon icon = IconsManager::instance()->iconByPath(iconName);
+	if (!icon.isNull())
+	{
+		QStyle *style = mb->style();
+		int iconSize = style->pixelMetric(QStyle::PM_MessageBoxIconSize, 0, mb);
+
+		mb->setIconPixmap(icon.pixmap(iconSize, iconSize));
+	}
+
+	mb->show();
+}
+
+int MessageDialog::exec(const QString &iconName, const QString &title, const QString &text, QMessageBox::StandardButtons buttons,
+			QWidget *parent, Qt::WindowFlags f)
+{
+	QMessageBox mb(QMessageBox::NoIcon, title, text, buttons, parent, f);
+
+	QIcon icon = IconsManager::instance()->iconByPath(iconName);
+	if (!icon.isNull())
+	{
+		QStyle *style = mb.style();
+		int iconSize = style->pixelMetric(QStyle::PM_MessageBoxIconSize, 0, &mb);
+
+		mb.setIconPixmap(icon.pixmap(iconSize, iconSize));
+	}
+
+	return mb.exec();
+}
 
 const int MessageDialog::OK       = 1;  // 00001
 const int MessageDialog::CANCEL   = 2;  // 00010
@@ -158,25 +194,15 @@ void MessageDialog::noClicked()
 void MessageDialog::status(const QString &message)
 {
 	MessageDialog *m = new MessageDialog(message);
-	m->show();
+	m->QDialog::show();
 	Boxes.insert(message,m);
 	qApp->processEvents();
-}
-
-void MessageDialog::msg(const QString &message, bool modal, const QString &iconPath, QWidget *parent)
-{
-	MessageDialog *m = new MessageDialog(message, OK, modal, iconPath, parent);
-
-	if (modal)
-		m->exec();
-	else
-		m->show();
 }
 
 bool MessageDialog::ask(const QString &message, const QString &iconPath, QWidget *parent)
 {
 	MessageDialog *m = new MessageDialog(message, YES|NO, true, iconPath, parent);
-	return (m->exec() == Accepted);
+	return (m->QDialog::exec() == Accepted);
 }
 
 void MessageDialog::close(const QString &message)

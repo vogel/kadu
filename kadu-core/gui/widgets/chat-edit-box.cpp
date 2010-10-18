@@ -241,13 +241,13 @@ void ChatEditBox::openInsertImageDialog()
 
 		if (!f.isReadable())
 		{
-			MessageDialog::msg(tr("This file is not readable"), true, "dialog-warning", this);
+			MessageDialog::show("dialog-warning", tr("Kadu"), tr("This file is not readable"), QMessageBox::Ok, this);
 			return;
 		}
 
 		if (f.size() >= (1 << 18)) // 256kB
 		{
-			MessageDialog::msg(tr("This file is too big (%1 >= %2)").arg(f.size()).arg(1<<18), true, "dialog-warning", this);
+			MessageDialog::show("dialog-warning", tr("Kadu"), tr("This file is too big (%1 >= %2)").arg(f.size()).arg(1<<18), QMessageBox::Ok, this);
 			return;
 		}
 

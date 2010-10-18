@@ -499,7 +499,7 @@ void NotificationManager::notify(Notification *notification)
 	notification->release();
 
 	if (!foundNotifierWithCallbackSupported)
-		MessageDialog::msg(tr("Unable to find notifier for %1 event").arg(notification->type()), true, "dialog-warning");
+		MessageDialog::show("dialog-warning", tr("Kadu"), tr("Unable to find notifier for %1 event").arg(notification->type()));
 
 	kdebugf2();
 }

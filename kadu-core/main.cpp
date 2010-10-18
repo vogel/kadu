@@ -368,8 +368,8 @@ int main(int argc, char *argv[])
 	// if someone is running Kadu from root account, let's remind him
 	// that it's a "bad thing"(tm) ;) (usually for win32 users)
 	if (geteuid() == 0)
-		MessageDialog::msg(qApp->translate("@default", "Please do not run Kadu as a root!\n"
-				"It's a high security risk!"), false, "dialog-warning");
+		MessageDialog::show("dialog-warning", qApp->translate("@default", "Kadu"), qApp->translate("@default", "Please do not run Kadu as a root!\n"
+				"It's a high security risk!"));
 #endif
 
 	if (ids.count() >= 0)
