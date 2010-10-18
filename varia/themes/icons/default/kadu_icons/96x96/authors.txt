@@ -1,0 +1,7 @@
+Icons for KDE
+Author: KDE Oxygen Icons team
+License: LGPL version 3
+
+Icons for Gnome
+Author: David Hopkins
+License: Creative Commons Attribution (BY)
