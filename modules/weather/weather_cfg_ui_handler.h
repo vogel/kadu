@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef WEATHERCFGUIHANDLER_H
-#define WEATHERCFGUIHANDLER_H
+#ifndef WEATHER_CFG_UI_HANDLER_H
+#define WEATHER_CFG_UI_HANDLER_H
 
 #include <QtGui/QTreeWidget>
 
@@ -18,21 +18,19 @@
 class WeatherCfgUiHandler : public ConfigurationUiHandler, ConfigurationAwareObject
 {
 	Q_OBJECT
-			
-	public:
-		WeatherCfgUiHandler();
-		~WeatherCfgUiHandler();
-		
-	private:
-		virtual void mainConfigurationWindowCreated( MainConfigurationWindow* mainCfgWindow );
-		virtual void configurationUpdated();
-		QTreeWidget* serverList_;
-		
-	private slots:
-		void serverListItemChanged( QTreeWidgetItem* item, int column );
-		void upClicked();
-		void downClicked();
-	
+
+	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainCfgWindow);
+	virtual void configurationUpdated();
+	QTreeWidget *serverList_;
+
+private slots:
+	void serverListItemChanged(QTreeWidgetItem *item, int column);
+	void upClicked();
+	void downClicked();
+
+public:
+	WeatherCfgUiHandler();
+	~WeatherCfgUiHandler();
 };
 
-#endif // WEATHERCFGUIHANDLER
+#endif // WEATHER_CFG_UI_HANDLER_H

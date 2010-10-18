@@ -13,62 +13,58 @@
 #include "citysearchresult.h"
 #include "weather_global.h"
 
-bool CitySearchResult::writeUserWeatherData( UserListElement user ) const
+bool CitySearchResult::writeUserWeatherData(UserListElement user) const
 {
-	if( user == kadu->myself() )
-	{
+	if (user == kadu->myself())
 		return writeMyWeatherData();
-	}
 	else
 	{
-		if( cityName_.isEmpty() || server_.isEmpty() || cityId_.isEmpty() )
+		if (cityName_.isEmpty() || server_.isEmpty() || cityId_.isEmpty())
 			return false;
 		
-		user.setData( "City", cityName_ );
-		user.setData( "WeatherData", server_ + ';' + cityId_ );
+		user.setData("City", cityName_);
+		user.setData("WeatherData", server_ + ';' + cityId_);
 		return true;
 	}
 }
 
-bool CitySearchResult::readUserWeatherData( UserListElement user )
+bool CitySearchResult::readUserWeatherData(UserListElement user)
 {
-	if( user == kadu->myself() )
-	{
+	if (user == kadu->myself())
 		return readMyWeatherData();
-	}
 	else
 	{
-		cityName_ = user.data( "City" ).toString();
-		if( cityName_.isEmpty() )
+		cityName_ = user.data("City").toString();
+		if (cityName_.isEmpty())
 			return false;
 		
-		QString weatherData = user.data( "WeatherData" ).toString();
-		if( weatherData.isEmpty() || !weatherData.contains(';') )
+		QString weatherData = user.data("WeatherData").toString();
+		if (weatherData.isEmpty() || !weatherData.contains(';'))
 			return false;
 		
 		int endServer = weatherData.find(';');
-		server_ = weatherData.left( endServer );
-		cityId_ = weatherData.right( weatherData.length() - endServer - 1 );
+		server_ = weatherData.left(endServer);
+		cityId_ = weatherData.right(weatherData.length() - endServer - 1);
 		
-		return( !cityId_.isEmpty() && weather_global->configFileExists( server_ ) );
+		return (!cityId_.isEmpty() && weather_global->configFileExists(server_));
 	}
 }
 
 bool CitySearchResult::writeMyWeatherData() const
 {
-	if( cityName_.isEmpty() || server_.isEmpty() || cityId_.isEmpty() )
+	if (cityName_.isEmpty() || server_.isEmpty() || cityId_.isEmpty())
 		return false;
 	
-	config_file.writeEntry( "Weather", "MyCity", cityName_ );
-	config_file.writeEntry( "Weather", "MyServer", server_ );
-	config_file.writeEntry( "Weather", "MyCityId", cityId_ );
+	config_file.writeEntry("Weather", "MyCity", cityName_);
+	config_file.writeEntry("Weather", "MyServer", server_);
+	config_file.writeEntry("Weather", "MyCityId", cityId_);
 	return true;
 }
 
 bool CitySearchResult::readMyWeatherData()
 {
-	cityName_ = config_file.readEntry( "Weather", "MyCity" );
-	server_ = config_file.readEntry( "Weather", "MyServer" );
-	cityId_ = config_file.readEntry( "Weather", "MyCityId" );
-	return( !cityName_.isEmpty() && !cityId_.isEmpty() && weather_global->configFileExists( server_ ) );
+	cityName_ = config_file.readEntry("Weather", "MyCity");
+	server_ = config_file.readEntry("Weather", "MyServer");
+	cityId_ = config_file.readEntry("Weather", "MyCityId");
+	return (!cityName_.isEmpty() && !cityId_.isEmpty() && weather_global->configFileExists(server_));
 }

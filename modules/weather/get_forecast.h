@@ -24,48 +24,48 @@ class GetForecast : public QObject
 {
 	Q_OBJECT
 	
-	private:
-		QString host_;
-		QString url_;
-		HttpClient httpClient_;
-		QTextCodec* decoder_;
-		
-		Forecast forecast_;
-		WeatherParser parser_;
-		
-		QTimer* timerTimeout_;
-		int timeoutCount_;
-		
-		PlainConfigFile* wConfig_;
-		void splitUrl(const QString& url, QString& host, QString& path) const;
-	
-	public:
-		GetForecast();
-		~GetForecast();
+private:
+	QString host_;
+	QString url_;
+	HttpClient httpClient_;
+	QTextCodec *decoder_;
 
-		/**
-			Pobiera prognoze.
-			Po zakoñczeniu wywo³ywany jest sygna³ \see finished() lub \see error()
-		**/
-		void downloadForecast(const QString& configFile, const QString& locID);
+	Forecast forecast_;
+	WeatherParser parser_;
 
-		const Forecast& getForecast() { return forecast_; }
-		
-		enum ErrorId
-		{
-			Parser,
-			Connection
-		};
+	QTimer *timerTimeout_;
+	int timeoutCount_;
+
+	PlainConfigFile *wConfig_;
+	void splitUrl(const QString &url, QString &host, QString &path) const;
 	
-	public slots:
-		void downloadingFinished();
-		void downloadingRedirected(QString link);
-		void downloadingError();
-		void connectionTimeout();
+public:
+	GetForecast();
+	~GetForecast();
+
+	/**
+		Pobiera prognoze.
+		Po zakoñczeniu wywo³ywany jest sygna³ \see finished() lub \see error()
+	**/
+	void downloadForecast(const QString &configFile, const QString &locID);
+
+	const Forecast & getForecast() { return forecast_; }
+
+	enum ErrorId
+	{
+		Parser,
+		Connection
+	};
 	
-	signals:
-		void finished();
-		void error( GetForecast::ErrorId err, QString url );
+public slots:
+	void downloadingFinished();
+	void downloadingRedirected(QString link);
+	void downloadingError();
+	void connectionTimeout();
+	
+signals:
+	void finished();
+	void error(GetForecast::ErrorId err, QString url);
 };
 
 #endif // GET_FORECAST_H

@@ -21,7 +21,7 @@ WeatherParser::WeatherParser()
 /**
 	Formatowanie wyjsciowej prognozy pogody
 **/
-bool WeatherParser::getData( const QString& page, const PlainConfigFile* wConfig, Forecast& forecast ) const
+bool WeatherParser::getData(const QString &page, const PlainConfigFile *wConfig, Forecast &forecast) const
 {
 	kdebugf();
 
@@ -37,48 +37,48 @@ bool WeatherParser::getData( const QString& page, const PlainConfigFile* wConfig
 	
 	bool result;
 	int cursor = 0;
-	for(int i=0; i<num_layouts; i++)
+	for (int i = 0; i < num_layouts; i++)
 	{
-		QString layoutSection = QString("Layout%1").arg(i+1);
+		QString layoutSection = QString("Layout%1").arg(i + 1);
 		QString layoutName = wConfig->readEntry(layoutSection,"Name");
 		int num_repeats = wConfig->readNumEntry(layoutSection,"Repeats");
 		int num_values = wConfig->readNumEntry(layoutSection,"Values");
 		
-		for(int j=0; j<num_repeats; j++)
+		for (int j = 0; j < num_repeats; j++)
 		{
-			for(int k=0; k<num_values; k++)
+			for (int k = 0; k<num_values; k++)
 			{
-				QString valSection = QString("Layout%1Value%2").arg(i+1).arg(k+1);
+				QString valSection = QString("Layout%1Value%2").arg(i + 1).arg(k + 1);
 				
 				dValue.Name = wConfig->readEntry(valSection,"Name");
 				dValue.Start = wConfig->readEntry(valSection,"Start");
 				dValue.End = wConfig->readEntry(valSection,"End");
 				dValue.Content = "";
 				
-				result = getDataValue( page, dValue,cursor, wConfig, cs);
+				result = getDataValue(page, dValue,cursor, wConfig, cs);
 				
-				if(dValue.Content.isEmpty())
+				if (dValue.Content.isEmpty())
 					continue;
-				else if(dValue.Name == "Phantom")
+				else if (dValue.Name == "Phantom")
 					continue;
 				
-				if(layoutName == "Name")
+				if (layoutName == "Name")
 					forecast.LocationName = dValue.Content;
-				else if(layoutName == "Actual")
+				else if (layoutName == "Actual")
 				{
-					if(dValue.Name == "Name")
+					if (dValue.Name == "Name")
 						actualName = dValue.Content;
 					else
 						valsList.push_back(dValue);
 				}
-				else if(layoutName == "DaysNames")
+				else if (layoutName == "DaysNames")
 				{
-					if(dValue.Name == "Actual")
+					if (dValue.Name == "Actual")
 						actualName = dValue.Content;
-					else if(dValue.Name == "NextDays")
+					else if (dValue.Name == "NextDays")
 						nextDaysNamesList.push_back(dValue.Content);
 				}
-				else if(layoutName == "NextDays" && dValue.Name == "Name")
+				else if (layoutName == "NextDays" && dValue.Name == "Name")
 					nextDaysNamesList.push_back(dValue.Content);
 				else
 					nextDaysValsList.push_back(dValue);
@@ -91,10 +91,10 @@ bool WeatherParser::getData( const QString& page, const PlainConfigFile* wConfig
 	ForecastDay fDay;
 	
 	fDay["Name"] = actualName;
-	for(QVector<WDataValue>::iterator it = valsList.begin(); it != valsList.end(); it++)
+	for (QVector<WDataValue>::iterator it = valsList.begin(); it != valsList.end(); it++)
 	{
-		if((*it).Name == "Icon")
-			fDay["Icon"] = WeatherGlobal::getIconPath( wConfig->readEntry("Icons",(*it).Content ) );
+		if ((*it).Name == "Icon")
+			fDay["Icon"] = WeatherGlobal::getIconPath(wConfig->readEntry("Icons", (*it).Content));
 		else
 			fDay[(*it).Name] = (*it).Content;
 	}
@@ -105,31 +105,31 @@ bool WeatherParser::getData( const QString& page, const PlainConfigFile* wConfig
 	int num_vals = nextDaysValsList.count();
 	int num_names = nextDaysNamesList.count();
 	
-	if(!num_names)
+	if (!num_names)
 		return false;
 		
-	int T = num_vals/num_names;
+	int T = num_vals / num_names;
 	
-	if(!T)
+	if (!T)
 		return false;
 	
 	Data = "";
 	num_vals = T * num_names; /* Dorr: fix for index out of bounds when parsing data from
 					Onet (num vals 31, num names 5, crash at i = 30 ->
 					nextDaysNamesList[5] which is having 5 elements) */
-	for(int i = 0; i < num_vals; i++)
+	for (int i = 0; i < num_vals; i++)
 	{
 		WDataValue& val = nextDaysValsList[i];
 	
-		if(i%T == 0)
-			fDay["Name"] = nextDaysNamesList[i/T];
+		if (i % T == 0)
+			fDay["Name"] = nextDaysNamesList[i / T];
 		
-		if(val.Name == "Icon")
-			fDay["Icon"] = WeatherGlobal::getIconPath( wConfig->readEntry("Icons",val.Content) );
+		if (val.Name == "Icon")
+			fDay["Icon"] = WeatherGlobal::getIconPath(wConfig->readEntry("Icons",val.Content));
 		else
 			fDay[val.Name] = val.Content;
 		
-		if(i%T == T-1)
+		if (i % T == T - 1)
 		{
 			forecast.Days.push_back(fDay);
 			fDay.clear();
@@ -145,7 +145,7 @@ bool WeatherParser::getData( const QString& page, const PlainConfigFile* wConfig
 /**
 	Wylawianie fragmentu ze strony
 **/
-bool WeatherParser::getDataValue( const QString& page, WDataValue& wdata, int& cursor, const PlainConfigFile* wConfig, bool CaseSensitive) const
+bool WeatherParser::getDataValue(const QString &page, WDataValue &wdata, int &cursor, const PlainConfigFile *wConfig, bool CaseSensitive) const
 {
 	kdebugf();
 	
@@ -153,13 +153,13 @@ bool WeatherParser::getDataValue( const QString& page, WDataValue& wdata, int& c
 	long int startData;
 	
 	start = page.find(wdata.Start, cursor, CaseSensitive);
-	if(start == -1)
+	if (start == -1)
 		return false;
 	
 	startData = start + wdata.Start.length();
 	
 	end = page.find(wdata.End, startData, CaseSensitive);
-	if(end == -1)
+	if (end == -1)
 		return false;
 	
 	cursor = end;
@@ -172,7 +172,7 @@ bool WeatherParser::getDataValue( const QString& page, WDataValue& wdata, int& c
 /**
 	Zwraca wyszukane identyfikatory miast dla szukanego miasta
 **/
-void WeatherParser::getSearch( const QString& page, const PlainConfigFile* wConfig, const QString& serverConfigFile, CITYSEARCHRESULTS* results ) const
+void WeatherParser::getSearch(const QString &page, const PlainConfigFile *wConfig, const QString &serverConfigFile, CITYSEARCHRESULTS *results) const
 {
 	kdebugf();
 	
@@ -185,37 +185,39 @@ void WeatherParser::getSearch( const QString& page, const PlainConfigFile* wConf
 	
 	int countResults = wConfig->readNumEntry("Name Search","SearchResults");
 	
-	for(int i=0; i<countResults; i++)
+	for (int i = 0; i < countResults; i++)
 	{
-		section = QString("SearchResult%1").arg(i+1);
+		section = QString("SearchResult%1").arg(i + 1);
 		idFirst = wConfig->readBoolEntry(section,"IDFirst");
 		starttag = wConfig->readEntry(section,"Start");
 		septag = wConfig->readEntry(section,"Separator");
 		endtag = wConfig->readEntry(section,"End");
 	
 		current = 0;
-		do{
+		do
+		{
 			start = page.find(starttag, current, CaseSensitive);	
 			startData = start + starttag.length();
 			separator = page.find(septag, startData, CaseSensitive);
 			sepData = separator + septag.length();
 			end = page.find(endtag, sepData, CaseSensitive);
 			
-			if(end != -1 && start != -1 && separator != -1)
+			if (end != -1 && start != -1 && separator != -1)
 			{
 				first = page.mid(startData, separator-startData);
 				second = page.mid(sepData, end-sepData);
 				
-				if(!first.isEmpty() && !second.isEmpty())
+				if (!first.isEmpty() && !second.isEmpty())
 				{
-					if(idFirst)
-						results->push_back( CitySearchResult(tagClean(second), first, serverConfigFile) );
+					if (idFirst)
+						results->push_back(CitySearchResult(tagClean(second), first, serverConfigFile));
 					else
-						results->push_back( CitySearchResult(tagClean(first), second, serverConfigFile) );
+						results->push_back(CitySearchResult(tagClean(first), second, serverConfigFile));
 				}
-				current = end+endtag.length();
+				current = end + endtag.length();
 			}
-		}while(end != -1 && start != -1 && separator != -1);
+		}
+		while (end != -1 && start != -1 && separator != -1);
 	}
 	
 	kdebugf2();
@@ -226,7 +228,7 @@ void WeatherParser::getSearch( const QString& page, const PlainConfigFile* wConf
 	(niekt�re serwisy przekierowywuja od razu na
 	strone z prognoza, gdy znajda tylko jedno miasto)
 **/
-QString WeatherParser::getFastSearch(const QString& link, const PlainConfigFile* wConfig) const
+QString WeatherParser::getFastSearch(const QString &link, const PlainConfigFile *wConfig) const
 {
 	kdebugf();
 	
@@ -239,14 +241,14 @@ QString WeatherParser::getFastSearch(const QString& link, const PlainConfigFile*
 	start = link.find(starttag, 0, false);
 	startData = start + starttag.length();
 	
-	if(endtag.isEmpty())
+	if (endtag.isEmpty())
 		end = link.length();
 	else
 		end = link.find(endtag, startData, false);
 	
 	kdebugf2();
 	
-	if(start == -1 || end == -1)
+	if (start == -1 || end == -1)
 		return "";
 	else
 		return link.mid(startData, end-startData);
@@ -255,7 +257,7 @@ QString WeatherParser::getFastSearch(const QString& link, const PlainConfigFile*
 /**
 	Czyszczenie bufora z tag�w HTML i zamienianie znakow specjalnych
 **/
-QString WeatherParser::tagClean( QString str ) const
+QString WeatherParser::tagClean(QString str) const
 {
 	kdebugf();
 	
@@ -264,14 +266,16 @@ QString WeatherParser::tagClean( QString str ) const
 	
 	int start, end;
 	start = 0;
-	do{
+	do
+	{
 		start = str.find("<",start);
 		end = str.find(">",start+1);
 		
-		if(start != -1 && end != -1)
+		if (start != -1 && end != -1)
 			str.replace(start,end+1-start, " ");
 			
-	}while(start != -1 && end != -1);
+	}
+	while (start != -1 && end != -1);
 	
 	str.replace("\n"," ");
 	str.replace("\r"," ");

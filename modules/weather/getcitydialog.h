@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GETCITYDIALOG_H
-#define GETCITYDIALOG_H
+#ifndef GET_CITY_DIALOG_H
+#define GET_CITY_DIALOG_H
 
 #include <QtGui/QComboBox>
 #include <QtGui/QDialog>
@@ -21,67 +21,64 @@
 #include "weather_global.h"
 #include "search_location_id.h"
 
-class TextProgress;
 class QComboBox;
+
+class TextProgress;
 
 class EnterCityDialog : public QDialog
 {
 	Q_OBJECT
-	
-	public:
-		EnterCityDialog( UserListElement user = UserListElement(), const QString& cityName = QString::null );
-		
-	private:
-		UserListElement user_;
-		QComboBox* cityEdit_;
-		
-	private slots:
-		void findClicked();
+private:
+	UserListElement user_;
+	QComboBox *cityEdit_;
+
+private slots:
+	void findClicked();
+
+public:
+	EnterCityDialog(UserListElement user = UserListElement(), const QString &cityName = QString::null);
 };
 
 class SearchingCityDialog : public QDialog
 {
 	Q_OBJECT
 	
-	public:
-		SearchingCityDialog( UserListElement user = UserListElement(), const QString& cityName = QString::null );
-		void show();
-		
-	private:
-		void findCity( const QString& name );
-		
-	private:
-		UserListElement user_;
-		QString cityName_;
-		SearchLocationID searchId_;
-		TextProgress* progress_;
-		
-	private slots:
-		void userCitySearch(SearchResults& searchResults, int seq, int fromUin);
-		void nextServerSearch( const QString& city, const QString& serverName_ );
-		void searchFinished();
-		void cancelClicked();
+	void findCity(const QString &name);
+
+private:
+	UserListElement user_;
+	QString cityName_;
+	SearchLocationID searchId_;
+	TextProgress *progress_;
+
+private slots:
+	void userCitySearch(SearchResults &searchResults, int seq, int fromUin);
+	void nextServerSearch(const QString &city, const QString &serverName_);
+	void searchFinished();
+	void cancelClicked();
+
+public:
+	SearchingCityDialog(UserListElement user = UserListElement(), const QString &cityName = QString::null);
+	void show();
 };
 
 class SelectCityDialog : public QDialog
 {
 	Q_OBJECT
-			
-	public:
-		SelectCityDialog( UserListElement user, const QString& cityName, const CITYSEARCHRESULTS& results );
-		
-	private:
-		UserListElement user_;
-		QString cityName_;
-		CITYSEARCHRESULTS results_;
-        QListWidget* cityList_;
-        QStringListModel* cityModel_;
-		
-	private slots:
-		void okClicked();
-		void newSearchClicked();
-		void showCity( QListWidgetItem* item );
-		
+
+	UserListElement user_;
+	QString cityName_;
+	CITYSEARCHRESULTS results_;
+	QListWidget *cityList_;
+	QStringListModel *cityModel_;
+
+private slots:
+	void okClicked();
+	void newSearchClicked();
+	void showCity(QListWidgetItem *item);
+
+public:
+	SelectCityDialog(UserListElement user, const QString &cityName, const CITYSEARCHRESULTS &results);
 };
 
-#endif // GETCITYDIALOG_H
+#endif // GET_CITY_DIALOG_H

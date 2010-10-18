@@ -27,8 +27,8 @@ struct WeatherGlobal
 		bool use_;
 		
 		Server() : use_(true) {}
-		Server( const Server& s ) : name_(s.name_), configFile_(s.configFile_), use_(s.use_) {}
-		Server( const QString& name, const QString& configFile, bool use ) : name_(name),configFile_(configFile), use_(use) {}
+		Server(const Server &s) : name_(s.name_), configFile_(s.configFile_), use_(s.use_) {}
+		Server(const QString &name, const QString& configFile, bool use) : name_(name), configFile_(configFile), use_(use) {}
 	};
 	/**
 		klucz - nazwa serwisu pogodowego
@@ -48,27 +48,27 @@ struct WeatherGlobal
 	static const int KEEP_FORECAST; // w godzinach
 	
 	SERVERITERATOR beginServer() const;
-	SERVERITERATOR nextServer( SERVERITERATOR it ) const;
-	SERVERITERATOR endServer() const { return servers_.end(); }
+	SERVERITERATOR nextServer(SERVERITERATOR it) const;
+	SERVERITERATOR endServer() const {return servers_.end();}
 
 	/**
 		\fn getConfigFile
 		\return plik konfiguracyjny serwisu pogodowego o podanej nazwie
 	**/
-	QString getConfigFile( const QString& serverName ) const;
+	QString getConfigFile(const QString &serverName) const;
 	
 	/**
 		\fn getServerName
 		\return nazwa serwisu dla podanego pliku konfiguracyjnego serwisu
 	**/
-	QString getServerName( const QString& configFile ) const;
+	QString getServerName(const QString &configFile) const;
 	
 	/**
 		\fn configFileExists
 		Sprawdza, czy istnieje plik konfiguracyjny serwsu pogodowego
 		\return true, jesli plik istnieje
 	**/
-	bool configFileExists( const QString& configFile ) const;
+	bool configFileExists(const QString &configFile) const;
 	
 	/**
 		\fn setServerUsing
@@ -76,23 +76,23 @@ struct WeatherGlobal
 		\param severName nazwa serwisu
 		\param use true, jesli ma byc uzywany, false, jesli nie
 	**/
-	void setServerUsing( const QString serverName, bool use );
+	void setServerUsing(const QString serverName, bool use);
 
-	void setServerPos( const QString& serverName, uint pos );
+	void setServerPos(const QString &serverName, uint pos);
 
 	/**
 		Dodaje pozycje na liste ostatnio szukanych miejscowosci
 		\param location nazwa miejscowosci
 		\return true, jesli 'location' bylo nowe, false, jesli juz bylo na liscie
 	**/
-	bool insertRecentLocation( const QString& location );
+	bool insertRecentLocation(const QString &location);
 	
-	static QString getConfigPath( const QString& file );
+	static QString getConfigPath(const QString &file);
 	
-	static QString getIconPath( const QString& file );
+	static QString getIconPath(const QString &file);
 	
 };
 
-extern WeatherGlobal* weather_global;
+extern WeatherGlobal *weather_global;
 
 #endif // WEATHER_GLOBAL_H

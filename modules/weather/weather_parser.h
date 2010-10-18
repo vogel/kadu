@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef WEATHERPARSER_H
-#define WEATHERPARSER_H
+#ifndef WEATHER_PARSER_H
+#define WEATHER_PARSER_H
 
 #include <QtCore/QString>
 #include <QtCore/QStringList>
@@ -27,32 +27,30 @@
 **/
 class WeatherParser
 {
-	private:
-	
-		struct WDataValue
-		{
-			QString Name;
-			QString Start;
-			QString End;
-			QString Content;
-		};
-		
-		bool getDataValue( const QString& page, WDataValue& wdata, int& cursor, const PlainConfigFile* wConfig, bool CaseSensitive) const;
-		QString tagClean( QString str ) const;
-		
-	public:
-		WeatherParser();
-		
-		bool getData( const QString& page, const PlainConfigFile* wConfig, Forecast& forecast ) const;
-		
-		/**
+	struct WDataValue
+	{
+		QString Name;
+		QString Start;
+		QString End;
+		QString Content;
+	};
+
+	bool getDataValue(const QString &page, WDataValue &wdata, int &cursor, const PlainConfigFile *wConfig, bool CaseSensitive) const;
+	QString tagClean(QString str) const;
+
+public:
+	WeatherParser();
+
+	bool getData(const QString &page, const PlainConfigFile *wConfig, Forecast &forecast) const;
+
+	/**
 			Parsuje wyniki wyszukiwania
 			\param page pobrana witryna
 			\param wConfig konfiguracja serwisu pogodowego
 			\param result wyniki parsowania: klucz - nazwa, dana - kod miejscowo�ci
 		**/
-		void getSearch(const QString& page, const PlainConfigFile* wConfig, const QString& serverConfigFile , CITYSEARCHRESULTS* results ) const;
-		QString getFastSearch(const QString& link, const PlainConfigFile* wConfig) const;
+	void getSearch(const QString &page, const PlainConfigFile *wConfig, const QString &serverConfigFile , CITYSEARCHRESULTS *results ) const;
+	QString getFastSearch(const QString &link, const PlainConfigFile *wConfig) const;
 };
 
-#endif // WEATHERPARSER_H
+#endif // WEATHER_PARSER_H

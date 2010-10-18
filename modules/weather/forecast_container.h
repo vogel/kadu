@@ -29,9 +29,9 @@ class ForecastContainer
 	Forecasts forecasts_;
 
 public:
-	const Forecast* getForecast( const QString& configFile, const QString& location );
+	const Forecast * getForecast(const QString &configFile, const QString &location);
 	void deleteObsolete();
-	void add( const Forecast& forecast );
+	void add(const Forecast &forecast);
 };
 
 #endif // FORECAST_CONTAINER_H

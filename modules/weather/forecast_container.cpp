@@ -17,23 +17,21 @@
 	ForecastContener
 **/
 
-const Forecast* ForecastContainer::getForecast( const QString& configFile, const QString& location )
+const Forecast * ForecastContainer::getForecast(const QString &configFile, const QString &location)
 {
 	kdebugf();
 	
-	for(Forecasts::iterator it = forecasts_.begin(); it != forecasts_.end(); it++)
+	for (Forecasts::iterator it = forecasts_.begin(); it != forecasts_.end(); it++)
 	{
-		if( (*it).LocationID == location && (*it).config == configFile )
+		if ((*it).LocationID == location && (*it).config == configFile)
 		{
-			if( (*it).loadTime.elapsed() > WeatherGlobal::KEEP_FORECAST*60*60*1000 )
+			if ((*it).loadTime.elapsed() > WeatherGlobal::KEEP_FORECAST * 60 * 60 * 1000)
 			{
 				forecasts_.erase(it);
 				return 0;
 			}
 			else
-			{
 				return &(*it);
-			}
 		}
 	}
 	
@@ -45,9 +43,9 @@ void ForecastContainer::deleteObsolete()
 {
 	kdebugf();
 	
-	for( Forecasts::iterator it = forecasts_.begin(); it != forecasts_.end(); )
+	for (Forecasts::iterator it = forecasts_.begin(); it != forecasts_.end();)
 	{
-		if( (*it).loadTime.elapsed() > WeatherGlobal::KEEP_FORECAST*60*60*1000)
+		if ((*it).loadTime.elapsed() > WeatherGlobal::KEEP_FORECAST * 60 * 60 * 1000)
 			it = forecasts_.erase(it);
 		else
 			it++;
@@ -56,16 +54,16 @@ void ForecastContainer::deleteObsolete()
 	kdebugf2();
 }
 
-void ForecastContainer::add( const Forecast& forecast )
+void ForecastContainer::add(const Forecast &forecast)
 {
 	kdebugf();
 	
-	if( WeatherGlobal::KEEP_FORECAST > 0)
+	if (WeatherGlobal::KEEP_FORECAST > 0)
 	{
 		bool replace = false;
-		for( Forecasts::iterator it = forecasts_.begin(); it != forecasts_.end(); it++ )
+		for (Forecasts::iterator it = forecasts_.begin(); it != forecasts_.end(); it++)
 		{
-			if( (*it).LocationID == forecast.LocationID && (*it).config == forecast.config)
+			if ((*it).LocationID == forecast.LocationID && (*it).config == forecast.config)
 			{
 				(*it) = forecast;
 				replace = true;
@@ -73,10 +71,9 @@ void ForecastContainer::add( const Forecast& forecast )
 			}
 		}
 		
-		if(!replace)
+		if (!replace)
 			forecasts_.push_front(forecast);
 	}
 	
 	kdebugf2();
 }
-

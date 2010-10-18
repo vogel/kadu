@@ -18,7 +18,6 @@
 
 #include "get_forecast.h"
 
-
 class QTimer;
 
 class WeatherStatusChanger : public StatusChanger
@@ -26,12 +25,12 @@ class WeatherStatusChanger : public StatusChanger
 	Q_OBJECT
 public:
 	WeatherStatusChanger();
-	void setDescription( const QString& description );
-	void setEnabled( bool enabled );
-	bool enabled() const					{ return enabled_; }
+	void setDescription(const QString &description);
+	void setEnabled(bool enabled);
+	bool enabled() const { return enabled_; }
 
 private:
-	virtual void changeStatus( UserStatus& status );
+	virtual void changeStatus(UserStatus &status);
 	
 private:
 	QString description_;
@@ -47,7 +46,7 @@ public:
 	~AutoDownloader();
 	
 private:
-	QTimer* autoDownloadTimer_;
+	QTimer *autoDownloadTimer_;
 	std::auto_ptr<GetForecast> downloader_;
 	std::auto_ptr<WeatherStatusChanger> statusChanger_;
 	bool fetchingEnabled_;
@@ -55,7 +54,7 @@ private:
 	bool descEnabled_;
 	
 	virtual void configurationUpdated();
-	QString parse(const ForecastDay& day, QString str);
+	QString parse(const ForecastDay &day, QString str);
 
 private slots:
 	void autoDownload();

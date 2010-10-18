@@ -24,17 +24,16 @@ class CitySearchResult;
 class ShowForecastDialog : public QDialog
 {
 	Q_OBJECT
-	
-	public:
-		ShowForecastDialog( const CitySearchResult& city, UserListElement user = UserListElement() );
-		virtual ~ShowForecastDialog() {}
-		
-	private slots:
-		void tabChanged( QWidget* page );
-		virtual void changeCity();
-		
-	private:
-		UserListElement user_;
+
+	UserListElement user_;
+
+private slots:
+	void tabChanged(QWidget *page);
+	virtual void changeCity();
+
+public:
+	ShowForecastDialog(const CitySearchResult &city, UserListElement user = UserListElement());
+	virtual ~ShowForecastDialog() {}
 };
 
 #endif // SHOW_FORECAST_DIALOG_H

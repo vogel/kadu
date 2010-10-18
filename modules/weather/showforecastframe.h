@@ -35,48 +35,47 @@ class ShowForecastFrameBase : public QFrame
 {
 	Q_OBJECT
 	
-	public:
-		ShowForecastFrameBase( QWidget* parent );
-		virtual ~ShowForecastFrameBase() {}
-		virtual void start() = 0;
-		
-	signals:
-		void changeCity();
-		void dayChanged( int page );
-	
-	protected:
-		QLabel* downloadMessage_;
-		QLabel* errorMessage_;
-		QFrame* forecastFrame_;
-		QLabel* header_;
-		QLabel* icon_;
-		QLabel* temperature_;
-		QLabel* description_;
-		void start( const CitySearchResult& city );
-	
-	private:
-		Forecast forecast_;
-		GetForecast downloader_;
-		
-		QButtonGroup* buttonGroup_;
-		QWidget* buttonBox_;
-		QHBoxLayout* buttonLayout_;
-		QMenu* contextMenu_;
-		QMap<QString,QString> fieldTranslator_;
-		
-		int currentPage_;
-		
-		void showForecast();
-		void mousePressEvent(QMouseEvent * e);
-		const QString& getFieldTranslation( const QString& field );
-		void setCurrentPage( int page );
-		
-	private slots:
-		void downloadingFinished();
-		void downloadingError(GetForecast::ErrorId err, QString url);
-		void dayClicked(int id);
-		void menuCopy();
-		void menuGoToPage();
+	Forecast forecast_;
+	GetForecast downloader_;
+
+	QButtonGroup *buttonGroup_;
+	QWidget *buttonBox_;
+	QHBoxLayout *buttonLayout_;
+	QMenu *contextMenu_;
+	QMap<QString, QString> fieldTranslator_;
+
+	int currentPage_;
+
+	void showForecast();
+	void mousePressEvent(QMouseEvent *e);
+	const QString & getFieldTranslation(const QString &field);
+	void setCurrentPage(int page);
+
+private slots:
+	void downloadingFinished();
+	void downloadingError(GetForecast::ErrorId err, QString url);
+	void dayClicked(int id);
+	void menuCopy();
+	void menuGoToPage();
+
+protected:
+	QLabel *downloadMessage_;
+	QLabel *errorMessage_;
+	QFrame *forecastFrame_;
+	QLabel *header_;
+	QLabel *icon_;
+	QLabel *temperature_;
+	QLabel *description_;
+	void start(const CitySearchResult &city);
+
+public:
+	ShowForecastFrameBase(QWidget *parent);
+	virtual ~ShowForecastFrameBase() {}
+	virtual void start() = 0;
+
+signals:
+	void changeCity();
+	void dayChanged(int page);
 };
 
 /**
@@ -85,14 +84,13 @@ class ShowForecastFrameBase : public QFrame
 **/
 class ShowForecastFrame : public ShowForecastFrameBase
 {
-	public:
-		ShowForecastFrame( QWidget* parent, const CitySearchResult& city );
-		virtual ~ShowForecastFrame() {}
-		void start();
-	
-	private:
-		CitySearchResult city_;
-		bool started_;
+	CitySearchResult city_;
+	bool started_;
+
+public:
+	ShowForecastFrame(QWidget *parent, const CitySearchResult &city);
+	virtual ~ShowForecastFrame() {}
+	void start();
 };
 
 /**
@@ -103,20 +101,19 @@ class SearchAndShowForecastFrame : public ShowForecastFrameBase
 {
 	Q_OBJECT
 	
-	public:
-		SearchAndShowForecastFrame( QWidget* parent, QString city, QString serverConfigFile );
-		virtual ~SearchAndShowForecastFrame() {}
-		void start();
+	QString city_;
+	QString server_;
+	SearchLocationID search_;
+	bool started_;
 	
-	private:
-		QString city_;
-		QString server_;
-		SearchLocationID search_;
-		bool started_;
-	
-	private slots:
-		void finished();
-		void error( QString url );
+private slots:
+	void finished();
+	void error(QString url);
+
+public:
+	SearchAndShowForecastFrame(QWidget *parent, QString city, QString serverConfigFile);
+	virtual ~SearchAndShowForecastFrame() {}
+	void start();
 };
 
 #endif // SHOW_FORECAST_FRAME_H

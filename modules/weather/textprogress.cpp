@@ -13,20 +13,19 @@
 
 const int TextProgress::dotCount_ = 5;
 
-TextProgress::TextProgress( QWidget* parent, const QString& text )
-:
-	QLabel( parent ),
+TextProgress::TextProgress(QWidget *parent, const QString &text) :
+	QLabel(parent),
 	counter_(0)
 {
-	timer_ = new QTimer( this );
-	connect( timer_, SIGNAL(timeout()), this, SLOT(timeout()) );
+	timer_ = new QTimer(this);
+	connect(timer_, SIGNAL(timeout()), this, SLOT(timeout()));
 	
-	setText( text );
+	setText(text);
 	
-	timer_->start( 250 );
+	timer_->start(250);
 }
 
-void TextProgress::setText( const QString& text )
+void TextProgress::setText(const QString &text)
 {
 	counter_ = 0;
 	text_ = text;
@@ -35,15 +34,13 @@ void TextProgress::setText( const QString& text )
 
 void TextProgress::setProgressText()
 {
-	if( !text_.isEmpty() )
+	if (!text_.isEmpty())
 	{
 		QString text = " " + text_ + " ";
-		for( int i=0; i<counter_; ++i )
-		{
+		for (int i = 0; i < counter_; ++i)
 			text = "." + text + ".";
-		}
 		
-		QLabel::setText( text );
+		QLabel::setText(text);
 	}
 }
 
@@ -55,7 +52,7 @@ void TextProgress::clearProgressText()
 
 void TextProgress::timeout()
 {
-	if( counter_ >= dotCount_ )
+	if (counter_ >= dotCount_)
 		counter_ = 0;
 	else
 		++counter_;

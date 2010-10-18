@@ -30,53 +30,51 @@ class SearchLocationID : public QObject
 {
 	Q_OBJECT
 
-	public:
-	
-		SearchLocationID();
-		~SearchLocationID();
-		
-		bool findID( const QString& city, const QString& serverConfigFile );
-		bool findID( const QString& city );
-		
-		void cancel();
-		const CITYSEARCHRESULTS& getResult() const { return results_; }
-	
-	signals:
-		void finished();
-		void error( QString url );
-		void nextServerSearch( const QString& city, const QString& serverName_ );
-	
-	private:
-		HttpClient httpClient_;
-		QTextCodec* decoder_;
-		QString host_;
-		QString url_;
-		WeatherParser parser_;
-		PlainConfigFile* weatherConfig_;
-		QString serverConfigFile_;
-		
-		WeatherGlobal::SERVERITERATOR currentServer_;
-		bool searchAllServers_;
-		bool redirected_;
-		
-		QTimer* timerTimeout_;
-		int timeoutCount_;
-		
-		QString city_;
-		
-		CITYSEARCHRESULTS results_;
-		
-		void encodeUrl( QString* str, const QString& enc) const;
-		void splitUrl(const QString& url, QString& host, QString& path) const;
-		void findNext( const QString& serverConfigFile );
-		void findNext();
+	HttpClient httpClient_;
+	QTextCodec *decoder_;
+	QString host_;
+	QString url_;
+	WeatherParser parser_;
+	PlainConfigFile *weatherConfig_;
+	QString serverConfigFile_;
 
-	private slots:
-		void downloadingFinished();
-		void downloadingRedirected(QString link);
-		void downloadingError();
-		void connectionTimeout();
-	
+	WeatherGlobal::SERVERITERATOR currentServer_;
+	bool searchAllServers_;
+	bool redirected_;
+
+	QTimer *timerTimeout_;
+	int timeoutCount_;
+
+	QString city_;
+
+	CITYSEARCHRESULTS results_;
+
+	void encodeUrl(QString *str, const QString &enc) const;
+	void splitUrl(const QString &url, QString &host, QString &path) const;
+	void findNext(const QString &serverConfigFile);
+	void findNext();
+
+private slots:
+	void downloadingFinished();
+	void downloadingRedirected(QString link);
+	void downloadingError();
+	void connectionTimeout();
+
+public:
+	SearchLocationID();
+	~SearchLocationID();
+
+	bool findID(const QString &city, const QString &serverConfigFile);
+	bool findID(const QString &city);
+
+	void cancel();
+	const CITYSEARCHRESULTS & getResult() const { return results_;}
+
+signals:
+	void finished();
+	void error(QString url);
+	void nextServerSearch(const QString &city, const QString &serverName_);
+
 };
 
 #endif // SEARCH_LOCATION_ID_H

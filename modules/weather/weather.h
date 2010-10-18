@@ -29,26 +29,25 @@ class Weather : public QObject, ConfigurationAwareObject
 {
 	Q_OBJECT
 	
-	public:
-		Weather();
-		~Weather();
-		
-	private:
-		WeatherCfgUiHandler* cfgHandler_;
-		AutoDownloader autoDownloader_;
-		ActionDescription* actionLocalWeather_;
-		ActionDescription* actionWeatherFor_;
-		ActionDescription* actionContactWeather_;
-		bool menuLocalWeather_;
-		bool menuWeatherFor_;
-		bool menuContactWeather_;
-		
-		virtual void configurationUpdated();
-		
-	private slots:
-		void ShowContactWeather();
-		void ShowLocalWeather();
-		void ShowWeatherFor();
+	WeatherCfgUiHandler *cfgHandler_;
+	AutoDownloader autoDownloader_;
+	ActionDescription *actionLocalWeather_;
+	ActionDescription *actionWeatherFor_;
+	ActionDescription *actionContactWeather_;
+	bool menuLocalWeather_;
+	bool menuWeatherFor_;
+	bool menuContactWeather_;
+
+	virtual void configurationUpdated();
+
+private slots:
+	void ShowContactWeather();
+	void ShowLocalWeather();
+	void ShowWeatherFor();
+
+public:
+	Weather();
+	~Weather();
 };
 
 #endif // WEATHER_H

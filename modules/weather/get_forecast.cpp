@@ -35,22 +35,22 @@ GetForecast::~GetForecast()
 	disconnect(&httpClient_, SIGNAL(finished()), this, SLOT(downloadingFinished()));
 	disconnect(&httpClient_, SIGNAL(error()), this, SLOT(downloadingError()));
 
-	if( wConfig_ )
+	if (wConfig_)
 		delete wConfig_;
 }
 
-void GetForecast::downloadForecast(const QString& configFile, const QString& locID)
+void GetForecast::downloadForecast(const QString &configFile, const QString &locID)
 {
 	kdebugf();
 
 	const Forecast* savedForecast = weather_global->savedForecast_.getForecast(configFile, locID);
 
-	if( savedForecast != 0)
+	if (savedForecast != 0)
 	{
 		forecast_ = *savedForecast;
 		emit finished();
 	}
-	else if( !configFile.isNull() )
+	else if (!configFile.isNull())
 	{
 		forecast_.Days.clear();
 		forecast_.LocationName = "";
@@ -58,18 +58,18 @@ void GetForecast::downloadForecast(const QString& configFile, const QString& loc
 		forecast_.loadTime = QTime();
 		forecast_.LocationID = locID;
 	
-		if(wConfig_ != 0)
+		if (wConfig_ != 0)
 			delete wConfig_;
 
-		wConfig_ = new PlainConfigFile( WeatherGlobal::getConfigPath( forecast_.config ) );
+		wConfig_ = new PlainConfigFile(WeatherGlobal::getConfigPath(forecast_.config));
 		
 		forecast_.serverName = wConfig_->readEntry("Header","Name");
 		
-		decoder_ = QTextCodec::codecForName( wConfig_->readEntry("Default","Encoding").ascii() );
+		decoder_ = QTextCodec::codecForName(wConfig_->readEntry("Default","Encoding").ascii());
 		
 		host_ = wConfig_->readEntry("Default","Default host");
 		httpClient_.setHost(host_);
-		url_.sprintf( wConfig_->readEntry("Default","Default path").ascii(), locID.ascii() );
+		url_.sprintf(wConfig_->readEntry("Default","Default path").ascii(), locID.ascii());
 		
 		timerTimeout_->start(weather_global->CONNECTION_TIMEOUT, false);
 		timeoutCount_ = weather_global->CONNECTION_COUNT;
@@ -86,17 +86,17 @@ void GetForecast::downloadingFinished()
 	
 	timerTimeout_->stop();
 	
-	const QByteArray& data = httpClient_.data();
-	QString page = decoder_->toUnicode( data.data(), data.count());
+	const QByteArray &data = httpClient_.data();
+	QString page = decoder_->toUnicode(data.data(), data.count());
 	
-	if(!parser_.getData( page, wConfig_, forecast_ ))
+	if (!parser_.getData( page, wConfig_, forecast_))
 	{
 		emit error(Parser, host_ + '/' + url_);
 		return;
 	}
 	
 	forecast_.loadTime.start();
-	weather_global->savedForecast_.add( forecast_ );
+	weather_global->savedForecast_.add(forecast_);
 	
 	emit finished();
 
@@ -130,7 +130,7 @@ void GetForecast::connectionTimeout()
 	kdebugf();
 	
 	timeoutCount_ = timeoutCount_ - 1;
-	if(timeoutCount_ <= 0)
+	if (timeoutCount_ <= 0)
 	{
 		httpClient_.setHost("");
 		downloadingError();
@@ -146,7 +146,7 @@ void GetForecast::connectionTimeout()
 	kdebugf2();
 }
 
-void GetForecast::splitUrl(const QString& url_, QString& host_, QString& path) const
+void GetForecast::splitUrl(const QString &url_, QString &host_, QString &path) const
 {
 	int endhost = url_.find('/');
 	host_ = url_.left(endhost);

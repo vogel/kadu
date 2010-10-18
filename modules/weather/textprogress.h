@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TEXTPROGRESS_H
-#define TEXTPROGRESS_H
+#ifndef TEXT_PROGRESS_H
+#define TEXT_PROGRESS_H
 
 #include <QtGui/QLabel>
 
@@ -18,16 +18,8 @@ class TextProgress : public QLabel
 {
 	Q_OBJECT
 	
-public:
-	TextProgress( QWidget* parent, const QString& text = QString::null );
-	void clearProgressText();
-
-public slots:
-	void setText( const QString& text );
-
-private:
 	QString text_;
-	QTimer* timer_;
+	QTimer *timer_;
 	static const int dotCount_;
 	int counter_;
 	
@@ -36,6 +28,12 @@ private:
 private slots:
 	void timeout();
 
+public:
+	TextProgress(QWidget *parent, const QString &text = QString::null);
+	void clearProgressText();
+
+public slots:
+	void setText(\const QString &text);
 };
 
-#endif
+#endif // TEXT_PROGRESS_H

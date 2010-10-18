@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CITYSEARCHRESULT_H
-#define CITYSEARCHRESULT_H
+#ifndef CITY_SEARCH_RESULT_H
+#define CITY_SEARCH_RESULT_H
 
 #include <QtCore/QVector>
 
@@ -22,22 +22,22 @@ struct CitySearchResult
 	
 	CitySearchResult() {}
 	
-	CitySearchResult( const QString& cityName, const QString& cityId, const QString& server )
+	CitySearchResult(const QString &cityName, const QString &cityId, const QString &server)
 		: cityName_(cityName), cityId_(cityId), server_(server) {}
-		
-	CitySearchResult( const CitySearchResult& r )
+
+	CitySearchResult(const CitySearchResult &r)
 	{
 		cityName_ = r.cityName_;
 		cityId_ = r.cityId_;
 		server_ = r.server_;
 	}
 	
-	bool writeUserWeatherData( UserListElement user ) const;
-	bool readUserWeatherData( UserListElement user );
+	bool writeUserWeatherData(UserListElement user) const;
+	bool readUserWeatherData(UserListElement user);
 	bool writeMyWeatherData() const;
 	bool readMyWeatherData();
 };
 
 typedef QVector<CitySearchResult> CITYSEARCHRESULTS;
 
-#endif
+#endif // CITY_SEARCH_RESULT_H
