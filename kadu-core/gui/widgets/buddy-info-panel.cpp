@@ -69,7 +69,7 @@ void BuddyInfoPanel::update()
 		"<html>"
 		"	<head>"
 		"		<style type='text/css'>"
-		"			html {"
+		"		html {"
 		"			color: %1;"
 		"			font: %2 %3 %4 %5;"
 		"			text-decoration: %6;"
