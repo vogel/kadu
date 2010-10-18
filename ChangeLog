@@ -1,4 +1,6 @@
 +++ version 0.6.6-beta9
+* gui: #1539 fixed: removed problematic PL chars in main window menu remote URLs (Juzef)
+* gui: #1535 fixed: set default action to Cancel in account remove confirmation (Juzef)
 * core: thanks to changes started in beta8 and finished in beta9, it's easier to check Kadu for memleaks using valgrind's memcheck tool; further improvements are possible (beevvy)
 * cenzor: #1424 fixed: ported to 0.6.6 (Vogel)
 * gui: #1601 fixed: display contact data on info panel, not only buddy data (Vogel)
