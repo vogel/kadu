@@ -1,4 +1,4 @@
-<table style='font-size:8pt;'><tr>
+<table><tr>
 <td style='vertical-align:top;'>
 <img
 style='max-width:64px; max-height:64px;'
@@ -8,7 +8,7 @@ style='max-width:64px; max-height:64px;'
 src='@{kadu_icons/96x96/buddy0-kde.png}'
 >
 </td>
-<td style='vertical-align:top; padding-left:7px;'>
+<td style='vertical-align:top; padding-left:6px;'>
 [%o<font color='#dd0000'>]<b>%a</b>[%o</font>]<br>
 [%u<br>]
 [<br>IP: %i]
