@@ -53,6 +53,7 @@ VCardFactory::VCardFactory(QObject *parent)
 VCardFactory::~VCardFactory()
 {
 	qDeleteAll(vcardDict_);
+	instance_ = 0;
 }
 
 void VCardFactory::createInstance(QObject *parent)
