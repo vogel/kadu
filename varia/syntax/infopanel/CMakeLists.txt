@@ -6,6 +6,8 @@ set (SYNTAX_FILES
 	dorr.syntax
 	maz.syntax
 	ronk.syntax
+	ultr-gnome.syntax
+	ultr-kde.syntax
 )
 
 install (FILES ${SYNTAX_FILES}
