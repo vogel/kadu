@@ -123,9 +123,9 @@ void JabberChangePasswordWindow::changePassword()
 {
 	if (NewPassword->text() != ReNewPassword->text())
 	{
-		MessageDialog::msg(tr("Invalid data entered in required fields.\n\n"
+		MessageDialog::show("dialog-warning", tr("Kadu"), tr("Invalid data entered in required fields.\n\n"
 			"Password entered in both fields (\"Password\" and \"Retype password\") "
-			"should be the same!"));
+			"should be the same!"), QMessageBox::Ok, this);
 		return;
 	}
 
@@ -148,7 +148,7 @@ void JabberChangePasswordWindow::changingFinished(JabberServerChangePassword *gs
 
 	if (result)
 	{
-		MessageDialog::msg(tr("Changing password was successful."), false, "Information", parentWidget());
+		MessageDialog::show("dialog-information", tr("Kadu"),tr("Changing password was successful."), QMessageBox::Ok, this);
 
 		MyAccount.setPassword(NewPassword->text());
 		emit passwordChanged(NewPassword->text());
@@ -156,7 +156,7 @@ void JabberChangePasswordWindow::changingFinished(JabberServerChangePassword *gs
 		close();
 	}
 	else
-		MessageDialog::msg(tr("An error has occured. Please try again later."), false, "Critical", parentWidget());
+		MessageDialog::show("dialog-error", tr("Kadu"), tr("An error has occured. Please try again later."), QMessageBox::Ok, this);
 }
 
 void JabberChangePasswordWindow::keyPressEvent(QKeyEvent *e)

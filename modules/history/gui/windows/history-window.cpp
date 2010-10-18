@@ -644,7 +644,7 @@ void HistoryWindow::show(Chat chat)
 {
 	if (!History::instance()->currentStorage())
 	{
-		MessageDialog::msg(tr("There is no history storage module loaded!"), false, "dialog-warning");
+		MessageDialog::show("dialog-warning", tr("Kadu"), tr("There is no history storage module loaded!"));
 		return;
 	}
 

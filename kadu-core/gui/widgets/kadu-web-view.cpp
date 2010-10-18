@@ -272,8 +272,7 @@ void KaduWebView::saveImage()
 				QFile removeMe(file);
 				if (!removeMe.remove())
 				{
-					MessageDialog::msg(tr("Cannot save image: %1").arg(removeMe.errorString()),
-							false, "dialog-warning");
+					MessageDialog::show("dialog-warning", tr("Kadu"), tr("Cannot save image: %1").arg(removeMe.errorString()));
 					continue;
 				}
 			}
@@ -288,8 +287,7 @@ void KaduWebView::saveImage()
 		QFile src(image);
 		if (!src.copy(dst))
 		{
-			MessageDialog::msg(tr("Cannot save image: %1").arg(src.errorString()),
-					false, "dialog-warning");
+			MessageDialog::show("dialog-warning", tr("Kadu"), tr("Cannot save image: %1").arg(src.errorString()));
 			continue;
 		}
 

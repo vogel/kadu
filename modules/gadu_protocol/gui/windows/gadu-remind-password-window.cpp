@@ -136,11 +136,11 @@ void GaduRemindPasswordWindow::remindPasswordFinished(GaduServerRemindPassword *
 
 	if (result)
 	{
-		MessageDialog::msg(tr("Your password has been send on your email"), false, "Information", parentWidget());
+		MessageDialog::show("dialog-information", tr("Kadu"), tr("Your password has been send on your email"), QMessageBox::Ok, parentWidget());
 		close();
 	}
 	else
-		MessageDialog::msg(tr("Error during remind password"), false, "Critical", parentWidget());
+		MessageDialog::show("dialog-error", tr("Kadu"), tr("Error during remind password"), QMessageBox::Ok, parentWidget());
 }
 
 void GaduRemindPasswordWindow::keyPressEvent(QKeyEvent *e)

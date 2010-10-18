@@ -144,7 +144,7 @@ bool SpellChecker::addCheckedLang(QString &name)
 	AspellCanHaveError* possibleErr = new_aspell_speller(spellConfig);
 	if (aspell_error_number(possibleErr) != 0)
 	{
-		MessageDialog::msg(aspell_error_message(possibleErr));
+		MessageDialog::show("dialog-error", tr("Kadu"), aspell_error_message(possibleErr));
 		return false;
 	}
 	else

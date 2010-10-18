@@ -141,14 +141,14 @@ bool GroupManager::acceptableGroupName(const QString &groupName)
 
 	if (groupName.contains(","))
 	{
-		MessageDialog::msg(tr("'%1' is prohibited").arg(','), true, "dialog-warning");
+		MessageDialog::show("dialog-warning", tr("Kadu"), tr("'%1' is prohibited").arg(','));
 		kdebugf2();
 		return false;
 	}
 
 	if (groupName.contains(";"))
 	{
-		MessageDialog::msg(tr("'%1' is prohibited").arg(';'), true, "dialog-warning");
+		MessageDialog::show("dialog-warning", tr("Kadu"), tr("'%1' is prohibited").arg(';'));
 		kdebugf2();
 		return false;
 	}
@@ -157,7 +157,8 @@ bool GroupManager::acceptableGroupName(const QString &groupName)
 	groupName.toLong(&number);
 	if (number)
 	{
-		MessageDialog::msg(tr("Numbers are prohibited"), true, "dialog-warning");//because of gadu-gadu contact list format...
+		// because of gadu-gadu contact list format...
+		MessageDialog::show("dialog-warning", tr("Kadu"), tr("Numbers are prohibited"));
 		kdebugf2();
 		return false;
 	}
@@ -167,7 +168,7 @@ bool GroupManager::acceptableGroupName(const QString &groupName)
 	// TODO All translation
  	if (groupName == tr("All") || byName(groupName, false))
  	{
-		MessageDialog::msg(tr("This group already exists!"), true, "dialog-warning");
+		MessageDialog::show("dialog-warning", tr("Kadu"), tr("This group already exists!"));
  		kdebugf2();
  		return false;
  	}

@@ -338,7 +338,7 @@ bool JabberEditAccountWidget::checkSSL()
 {
 	if (!QCA::isSupported("tls"))
 	{
-		MessageDialog::msg(tr("Cannot enable secure connection. SSL/TLS plugin not found."));
+		MessageDialog::show("dialog-warning", tr("Kadu"), tr("Cannot enable secure connection. SSL/TLS plugin not found."));
 		return false;
 	}
 	return true;
@@ -350,7 +350,7 @@ void JabberEditAccountWidget::sslActivated(int i)
 		EncryptionMode->setCurrentIndex(EncryptionMode->findData(1));
 	else if (EncryptionMode->itemData(i) == 2 && !CustomHostPort->isChecked())
 	{
-		MessageDialog::msg(tr("Legacy SSL is only available in combination with manual host/port."));
+		MessageDialog::show("dialog-warning", tr("Kadu"), tr("Legacy SSL is only available in combination with manual host/port."));
 		EncryptionMode->setCurrentIndex(EncryptionMode->findData(1));
 	}
 }

@@ -432,14 +432,14 @@ void SearchWindow::firstSearch()
 
 	if (!CurrentSearchService)
 	{
-		MessageDialog::msg(tr("For this network we dont offer contacts search feature yet"), false, "dialog-error", this);
+		MessageDialog::show("dialog-error", tr("Kadu"), tr("We dont offer contacts search feature yet for this network"), QMessageBox::Ok, this);
 		kdebugf2();
 		return;
 	}
 
 	if (!CurrentAccount.protocolHandler()->isConnected())
 	{
-		MessageDialog::msg(tr("Cannot search contacts in offline mode"), false, "dialog-error", this);
+		MessageDialog::show("dialog-error", tr("Kadu"), tr("Cannot search contacts in offline mode"), QMessageBox::Ok, this);
 		kdebugf2();
 		return;
 	}
@@ -559,7 +559,7 @@ void SearchWindow::newSearchResults(BuddyList buddies)
 	if (buddies.isEmpty())
 	{
 		kdebugmf(KDEBUG_INFO, "No results. Exit.\n");
-		MessageDialog::msg(tr("There were no results of your search"), false, "dialog-information", this);
+		MessageDialog::show("dialog-information", tr("Kadu"), tr("There were no results of your search"), QMessageBox::Ok, this);
 	}
 	else
 	{

@@ -394,7 +394,7 @@ void MediaPlayer::putSongTitle(int ident)
 	if (!isActive())
 	{
 		// TODO: make it a notification
-		MessageDialog::msg(tr("%1 isn't running!").arg(getPlayerName()));
+		MessageDialog::show("dialog-warning", tr("Kadu"), tr("%1 isn't running!").arg(getPlayerName()));
 		return;
 	}
 
@@ -471,7 +471,7 @@ void MediaPlayer::putPlayList(int ident)
 
 	if (!isActive())
 	{
-		MessageDialog::msg(tr("%1 isn't running!").arg(getPlayerName()));
+		MessageDialog::show("dialog-warning", tr("Kadu"), tr("%1 isn't running!").arg(getPlayerName()));
 		return;
 	}
 
@@ -693,7 +693,7 @@ void MediaPlayer::mediaPlayerStatusChangerActivated(QAction *sender, bool toggle
 		foreach (Action *action, enableMediaPlayerStatuses->actions())
 			action->setChecked(false);
 
-		MessageDialog::msg(tr("%1 isn't running!").arg(getPlayerName()));
+		MessageDialog::show("dialog-warning", tr("Kadu"), tr("%1 isn't running!").arg(getPlayerName()));
 		return;
 	}
 
@@ -712,7 +712,7 @@ void MediaPlayer::toggleStatuses(bool toggled)
 {
 	if (!isActive() && toggled)
 	{
-		MessageDialog::msg(tr("%1 isn't running!").arg(getPlayerName()));
+		MessageDialog::show("dialog-warning", tr("Kadu"), tr("%1 isn't running!").arg(getPlayerName()));
 		return;
 	}
 

@@ -181,7 +181,7 @@ void FileTransferManager::acceptFileTransfer(FileTransfer transfer)
 
 		if (!file.open(flags))
 		{
-			MessageDialog::msg(tr("Could not open file. Select another one."), true, "dialog-warning");
+			MessageDialog::show("dialog-warning", tr("Kadu"), tr("Could not open file. Select another one."));
 			fileName = QString::null;
 		}
 
@@ -190,7 +190,7 @@ void FileTransferManager::acceptFileTransfer(FileTransfer transfer)
 		{
 			if (!transfer.handler()->accept(file))
 			{
-				MessageDialog::msg(tr("Could not open file. Select another one."), true, "dialog-warning");
+				MessageDialog::show("dialog-warning", tr("Kadu"), tr("Could not open file. Select another one."));
 				fileName = QString::null;
 				continue;
 			}
