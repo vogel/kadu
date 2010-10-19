@@ -274,7 +274,7 @@ void NotifyConfigurationUiHandler::configurationWindowApplied()
 
 		ContactNotifyData *cnd = 0;
 		if (buddy.data())
-			buddy.data()->moduleStorableData<ContactNotifyData>("notify", true);
+			cnd = buddy.data()->moduleStorableData<ContactNotifyData>("notify", true);
 		if (!cnd)
 			continue;
 
