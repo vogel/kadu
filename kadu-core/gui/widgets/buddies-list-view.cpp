@@ -90,6 +90,8 @@ BuddiesListView::BuddiesListView(MainWindow *mainWindow, QWidget *parent) :
 	Delegate->setModel(ProxyModel);
 	QTreeView::setModel(ProxyModel);
 
+	ToolTipTimeoutTimer.setSingleShot(true);
+
 	connect(MainConfiguration::instance(), SIGNAL(simpleModeChanged()), this, SLOT(simpleModeChanged()));
 	connect(&ToolTipTimeoutTimer, SIGNAL(timeout()), this, SLOT(toolTipTimeout()));
 	connect(this, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(doubleClickedSlot(const QModelIndex &)));

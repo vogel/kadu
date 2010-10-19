@@ -11,6 +11,7 @@
 * core: #1577 fixed: black font in adium message styles (White Eagle)
 * gui/gadu: #1409, #1597: restore "private status" option (White Eagle)
 * gui: #1609 fixed: proper contacts hints (Vogel)
+* gui: #1610 fixed: no more blinking contacts hints (Vogel)
 
 +++ version 0.6.6-beta8
 * gui: buddies list now has focus right after Kadu's main window creation, so filtering works without clicking (beevvy)
