@@ -307,7 +307,7 @@ void ChatWidget::resetEditBox()
 void ChatWidget::clearChatWindow()
 {
 	kdebugf();
-	if (!config_file.readBoolEntry("Chat", "ConfirmChatClear") || MessageDialog::ask(tr("Chat window will be cleared. Continue?")))
+	if (!config_file.readBoolEntry("Chat", "ConfirmChatClear") || MessageDialog::ask("", tr("Kadu"), tr("Chat window will be cleared. Continue?")))
 	{
 		MessagesView->clearMessages();
 		activateWindow();
@@ -542,7 +542,7 @@ void ChatWidget::kaduStoreGeometry()
 
 void ChatWidget::leaveConference()
 {
-	if (!MessageDialog::ask(tr("All messages received in this conference will be ignored\nfrom now on. Are you sure you want to leave this conference?"), "dialog-warning", this))
+	if (!MessageDialog::ask("dialog-warning", tr("Kadu"), tr("All messages received in this conference will be ignored\nfrom now on. Are you sure you want to leave this conference?"), this))
 		return;
 
 	if (CurrentChat)

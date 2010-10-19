@@ -23,8 +23,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MESSAGE_BOX_H
-#define MESSAGE_BOX_H
+#ifndef MESSAGE_DIALOG_H
+#define MESSAGE_DIALOG_H
 
 #include <QtGui/QMessageBox>
 
@@ -33,79 +33,20 @@
 class QBoxLayout;
 class QLabel;
 
-/**
-	Odpowiednik klasy QMessageBox z QT. W zamierzeniu ma
-	mie� wi�ksze mo�liwo�ci i wygodniejszy interface ni�
-	orygina�.
-**/
-class KADUAPI MessageDialog : public QDialog
+class KADUAPI MessageDialog
 {
-	Q_OBJECT
+	Q_DISABLE_COPY(MessageDialog)
 
-	static QMap<QString, MessageDialog *> Boxes;
-	QLabel *icon;
-	QString message;
-
-	void addButton(QBoxLayout *parent, const QString &caption, const char *slot);
-
-private slots:
-	void okClicked();
-	void cancelClicked();
-	void yesClicked();
-	void noClicked();
-
-protected:
-	void closeEvent(QCloseEvent *e);
+	MessageDialog() {}
 
 public:
-	static const int OK;
-	static const int CANCEL;
-	static const int YES;
-	static const int NO;
-	static const int RETRY;
-
-	MessageDialog(const QString &message, int components = 0, bool modal = false, const QString &iconPath = QString::null, QWidget *parent = 0);
-	~MessageDialog();
-
 	static void show(const QString &iconName, const QString &title, const QString &text, QMessageBox::StandardButtons buttons = QMessageBox::Ok,
 			QWidget *parent = 0, Qt::WindowFlags f = Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
 	static int exec(const QString &iconName, const QString &title, const QString &text, QMessageBox::StandardButtons buttons = QMessageBox::Ok,
 			QWidget *parent = 0, Qt::WindowFlags f = Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
-
-
-	/**
-		Informuje u�ytkownika o wykonywanej przez
-		program czynno�ci. Tworzy dialog zawieraj�cy
-		tylko podany tekst. Nie blokuje wykonywania
-		programu. Zamkni�cie dialogu nast�puje po
-		wywo�aniu funkcji close z t� sam� wiadomo�ci�
-		przekazan� jako argument.
-		Wywo�uje QApplication::processEvents().
-	**/
-	static void status(const QString &message);
-
-	/**
-		Zadaje u�ytkownikowi pytanie. Tworzy dialog
-		z dwoma przyciskami: "Tak" i "Nie". Blokuje
-		wykonywanie programu i czeka na reakcj�
-		u�ytkownika. Zwraca true je�li wybra� "Tak"
-		lub false je�li wybra� "Nie".
-	**/
-	static bool ask(const QString &message, const QString &iconPath = QString::null, QWidget *parent = 0);
-
-	/**
-		Zamyka dialog, kt�ry zosta� stworzony za
-		pomoc� funkcji status z t� sam� wiadomo�ci�
-		przekazan� jako argument.
-	**/
-	static void close(const QString &message);
-
-signals:
-	void okPressed();
-	void cancelPressed();
-	void yesPressed();
-	void noPressed();
+	static bool ask(const QString &iconName, const QString &title, const QString &text,
+			QWidget *parent = 0, Qt::WindowFlags f = Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
 
 };
 
-#endif // MESSAGE_BOX_H
+#endif // MESSAGE_DIALOG_H

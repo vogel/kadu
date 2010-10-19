@@ -120,7 +120,7 @@ void HistoryImporter::run()
 	if (0 == totalEntries)
 		return;
 
-	if (!MessageDialog::ask(qApp->translate("HistoryMigration", "%1 history entries found. Do you want to import them?").arg(totalEntries)))
+	if (!MessageDialog::ask("", tr("Kadu"), qApp->translate("HistoryMigration", "%1 history entries found. Do you want to import them?").arg(totalEntries)))
 		return;
 
 	if (ConfigurationWindow)

@@ -194,7 +194,7 @@ void ChatWindow::closeEvent(QCloseEvent *e)
 
 		if (QDateTime::currentDateTime() < currentChatWidget->lastMessageTime().addSecs(period))
 		{
-			if (!MessageDialog::ask(tr("New message received, close window anyway?")))
+			if (!MessageDialog::ask("", tr("Kadu"), tr("New message received, close window anyway?")))
 			{
 				e->ignore();
 				return;

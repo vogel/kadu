@@ -260,11 +260,11 @@ void ChatEditBox::openInsertImageDialog()
 		}
 		if (counter == 1 && CurrentChat.contacts().count() == 1)
 		{
-			if (!MessageDialog::ask(tr("This file is too big for %1.\nDo you really want to send this image?\n").arg((*CurrentChat.contacts().begin()).ownerBuddy().display())))
+			if (!MessageDialog::ask("", tr("Kadu"), tr("This file is too big for %1.\nDo you really want to send this image?\n").arg((*CurrentChat.contacts().begin()).ownerBuddy().display())))
 				return;
 		}
 		else if (counter > 0 &&
-			!MessageDialog::ask(tr("This file is too big for %1 of %2 contacts.\nDo you really want to send this image?\nSome of them probably will not get it.").arg(counter).arg(CurrentChat.contacts().count())))
+			!MessageDialog::ask("", tr("Kadu"), tr("This file is too big for %1 of %2 contacts.\nDo you really want to send this image?\nSome of them probably will not get it.").arg(counter).arg(CurrentChat.contacts().count())))
 			return;
 
 		InputBox->insertPlainText(QString("[IMAGE %1]").arg(selectedFile));

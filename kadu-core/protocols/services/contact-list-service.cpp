@@ -121,7 +121,7 @@ void ContactListService::setBuddiesList(BuddyList buddies)
 				contactsList.append(display);
 		}
 
-		if (MessageDialog::ask(tr("Following contacts from your list were not found on server: <b>%0</b>.\nDo you want to remove them from contacts list?").arg(contactsList.join("</b>, <b>"))))
+		if (MessageDialog::ask("", tr("Kadu"), tr("Following contacts from your list were not found on server: <b>%0</b>.\nDo you want to remove them from contacts list?").arg(contactsList.join("</b>, <b>"))))
 		{
 			foreach (const Contact &c, unImportedContacts)
 				ContactManager::instance()->removeItem(c);
