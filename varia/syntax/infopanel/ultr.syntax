@@ -4,8 +4,8 @@
 style='max-width:64px; max-height:64px;'
 [#{nextinfo_photo} src='#{nextinfo_photo}' ]
 [#{avatarPath} src='#{avatarPath}' ]
-[#{nextinfo_sexN} src='@{kadu_icons/96x96/buddy#{nextinfo_sexN}-kde.png}' ]
-src='@{kadu_icons/96x96/buddy0-kde.png}'
+[#{nextinfo_sexN} src='@{kadu_icons/96x96/buddy#{nextinfo_sexN}.png}' ]
+src='@{kadu_icons/96x96/buddy0.png}'
 >
 </td>
 <td style='vertical-align:top; padding-left:6px;'>
@@ -15,5 +15,5 @@ src='@{kadu_icons/96x96/buddy0-kde.png}'
 </td>
 </tr></table>
 <hr style='border:0px; border-top:1px dotted #999999; height:1px;'>
-<b>%s</b>
+[<img valign='middle' height='16' width='16' src="#{statusIconPath}"> ]<b>%s</b>
 [<br>%d]
