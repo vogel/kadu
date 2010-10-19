@@ -90,7 +90,7 @@ private slots:
 
 	// Tool tips
 	void toolTipTimeout();
-	void toolTipRestart();
+	void toolTipRestart(QPoint pos);
 	void toolTipHide(bool waitForAnother = true);
 
 protected:

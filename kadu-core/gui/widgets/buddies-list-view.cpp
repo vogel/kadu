@@ -334,7 +334,7 @@ void BuddiesListView::wheelEvent(QWheelEvent *event)
 
 	// if event source (e->globalPos()) is inside this widget (QRect(...))
 	if (QRect(QPoint(0, 0), size()).contains(event->pos()))
-		toolTipRestart();
+		toolTipRestart(event->pos());
 	else
 		toolTipHide(false);
 }
@@ -361,13 +361,13 @@ void BuddiesListView::mouseReleaseEvent(QMouseEvent *event)
 {
 	QTreeView::mouseReleaseEvent(event);
 	update();
-	toolTipRestart();
+	toolTipRestart(event->pos());
 }
 
 void BuddiesListView::mouseMoveEvent(QMouseEvent *event)
 {
 	QTreeView::mouseMoveEvent(event);
-	toolTipRestart();
+	toolTipRestart(event->pos());
 }
 
 void BuddiesListView::resizeEvent(QResizeEvent *event)
@@ -516,9 +516,9 @@ void BuddiesListView::toolTipTimeout()
 
 #define TOOL_TIP_TIMEOUT 1000
 
-void BuddiesListView::toolTipRestart()
+void BuddiesListView::toolTipRestart(QPoint pos)
 {
-	Contact con = contactAt(indexAt(mapFromGlobal(QCursor::pos())));
+	Contact con = contactAt(indexAt(pos));
 
 	if (!con.isNull())
 	{
