@@ -23,8 +23,11 @@
 #include <QtWebKit/QWebFrame>
 
 #include "accounts/account.h"
+#include "buddies/buddy.h"
+#include "buddies/buddy-shared.h"
 #include "buddies/buddy-preferred-manager.h"
 #include "configuration/configuration-file.h"
+#include "contacts/contact-manager.h"
 #include "misc/syntax-list.h"
 #include "parser/parser.h"
 #include "url-handlers/url-handler-manager.h"
@@ -38,15 +41,24 @@
 BuddyInfoPanel::BuddyInfoPanel(QWidget *parent) : KaduWebView(parent)
 {
 	configurationUpdated();
+
+	connect(BuddyPreferredManager::instance(), SIGNAL(buddyUpdated(Buddy&)), this, SLOT(buddyUpdated(Buddy&)));
 }
 
 BuddyInfoPanel::~BuddyInfoPanel()
 {
+	disconnect(BuddyPreferredManager::instance(), SIGNAL(buddyUpdated(Buddy&)), this, SLOT(buddyUpdated(Buddy&)));
 }
 
 void BuddyInfoPanel::configurationUpdated()
 {
 	update();
+}
+
+void BuddyInfoPanel::buddyUpdated(Buddy &buddy)
+{
+	if (buddy == MyContact.ownerBuddy())
+		update();
 }
 
 void BuddyInfoPanel::update()
@@ -105,9 +117,35 @@ void BuddyInfoPanel::update()
 		page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
 }
 
+void BuddyInfoPanel::connectContact()
+{
+	if (!MyContact)
+		return;
+
+	connect(MyContact, SIGNAL(updated()), this, SLOT(update()));
+	if (MyContact.ownerBuddy())
+		connect(MyContact.ownerBuddy(), SIGNAL(updated()), this, SLOT(update()));
+	if (MyContact.contactAvatar())
+		connect(MyContact.contactAvatar(), SIGNAL(updated()), this, SLOT(update()));
+}
+
+void BuddyInfoPanel::disconnectContact()
+{
+	if (!MyContact)
+		return;
+
+	disconnect(MyContact, SIGNAL(updated()), this, SLOT(update()));
+	if (MyContact.ownerBuddy())
+		disconnect(MyContact.ownerBuddy(), SIGNAL(updated()), this, SLOT(update()));
+	if (MyContact.contactAvatar())
+		disconnect(MyContact.contactAvatar(), SIGNAL(updated()), this, SLOT(update()));
+}
+
 void BuddyInfoPanel::displayContact(Contact contact)
 {
+	disconnectContact();
 	MyContact = contact;
+	connectContact();
 
 	if (!MyContact || !isVisible())
 		return;

@@ -34,6 +34,12 @@ class BuddyInfoPanel : public KaduWebView, private ConfigurationAwareObject
 	QString Template;
 	QString Syntax;
 
+	void connectContact();
+	void disconnectContact();
+
+private slots:
+	void buddyUpdated(Buddy &buddy);
+
 protected:
 	virtual void configurationUpdated();
 
