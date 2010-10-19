@@ -89,6 +89,7 @@ public:
 	virtual QString statusContainerName();
 
 	virtual void setStatus(Status newStatus);
+    virtual void setDescription(const QString &description);
 	virtual Status status();
 	bool allStatusEqual(StatusType *type);
 

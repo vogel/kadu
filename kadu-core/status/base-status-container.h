@@ -42,6 +42,7 @@ public:
 	virtual ~BaseStatusContainer();
 
 	virtual void setStatus(Status status);
+	virtual void setDescription(const QString &description);
 
 	virtual void setDefaultStatus(const QString &startupStatus, bool offlineToInvisible,
 			const QString &startupDescription, bool StartupLastDescription);

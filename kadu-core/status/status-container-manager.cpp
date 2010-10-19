@@ -244,6 +244,12 @@ void StatusContainerManager::setStatus(Status newStatus)
 		container->setStatus(newStatus);
 }
 
+void StatusContainerManager::setDescription(const QString &description)
+{
+	foreach (StatusContainer *container, StatusContainers)
+		container->setDescription(description);
+}
+
 Status StatusContainerManager::status()
 {
 	return DefaultStatusContainer && this != DefaultStatusContainer
