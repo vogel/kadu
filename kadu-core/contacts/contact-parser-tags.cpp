@@ -21,7 +21,6 @@
 #include "parser/parser.h"
 #include "icons-manager.h"
 #include "protocols/protocol.h"
-#include "protocols/protocol-factory.h"
 #include "status/status-type-manager.h"
 
 #include "contact-parser-tags.h"
@@ -47,14 +46,14 @@ static QString getStatusIconPath(Contact contact)
 
 	if (contact.contactAccount())
 	{
-		Status status = contact.currentStatus();
 		Protocol *protocol = contact.contactAccount().protocolHandler();
 		if (protocol)
 		{
 			StatusTypeManager* statustypemanager = StatusTypeManager::instance();
 			if (statustypemanager)
 			{
-				QString iconpath = statustypemanager->statusIconFullPath( protocol->statusPixmapPath(), status.type(), !status.description().isEmpty(), false );
+				Status status = contact.currentStatus();
+				QString iconpath = statustypemanager->statusIconFullPath(protocol->statusPixmapPath(), status.type(), !status.description().isEmpty(), false);
 				if (!iconpath.isEmpty())
 					return "file://" + iconpath;
 			}
