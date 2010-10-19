@@ -545,7 +545,6 @@ set (kadu_MOC_SRCS
 	gui/windows/main-configuration-window.h
 	gui/windows/main-window.h
 	gui/windows/merge-buddies-window.h
-	gui/windows/message-dialog.h
 	gui/windows/modules-window.h
 	gui/windows/password-window.h
 	gui/windows/progress-window.h

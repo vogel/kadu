@@ -6,7 +6,7 @@
  * Copyright 2003, 2005 Adrian Smarzewski (adrian@kadu.net)
  * Copyright 2007, 2008, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2008, 2009 Michał Podsiadlik (michal@kadu.net)
- * Copyright 2008 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * Copyright 2008, 2010 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -33,20 +33,14 @@
 class QBoxLayout;
 class QLabel;
 
-class KADUAPI MessageDialog
+namespace MessageDialog
 {
-	Q_DISABLE_COPY(MessageDialog)
-
-	MessageDialog() {}
-
-public:
-	static void show(const QString &iconName, const QString &title, const QString &text, QMessageBox::StandardButtons buttons = QMessageBox::Ok,
-			QWidget *parent = 0, Qt::WindowFlags f = Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
-	static int exec(const QString &iconName, const QString &title, const QString &text, QMessageBox::StandardButtons buttons = QMessageBox::Ok,
-			QWidget *parent = 0, Qt::WindowFlags f = Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
-	static bool ask(const QString &iconName, const QString &title, const QString &text,
-			QWidget *parent = 0, Qt::WindowFlags f = Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
-
+	void show(const QString &iconName, const QString &title, const QString &text, QMessageBox::StandardButtons buttons = QMessageBox::Ok,
+			  QWidget *parent = 0, Qt::WindowFlags f = Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
+	int exec(const QString &iconName, const QString &title, const QString &text, QMessageBox::StandardButtons buttons = QMessageBox::Ok,
+			  QWidget *parent = 0, Qt::WindowFlags f = Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
+	bool ask(const QString &iconName, const QString &title, const QString &text,
+			 QWidget *parent = 0, Qt::WindowFlags f = Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
 };
 
 #endif // MESSAGE_DIALOG_H
