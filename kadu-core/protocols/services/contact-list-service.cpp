@@ -50,8 +50,12 @@ Buddy ContactListService::mergeBuddy(Buddy oneBuddy)
 			{
 				// move contact to buddy
 				ContactManager::instance()->addItem(contact);
+				buddy = BuddyManager::instance()->byDisplay(oneBuddy.display(), ActionCreate);
+
+				contact.setOwnerBuddy(buddy);
+
 				kdebugmf(KDEBUG_FUNCTION_START, "\nuuid add: '%s' %s\n",
-					 qPrintable(contactOnList.uuid().toString()), qPrintable(buddy.display()));
+					 qPrintable(contact.uuid().toString()), qPrintable(buddy.display()));
 			}
 			else // already on list
 			{
@@ -89,6 +93,10 @@ Buddy ContactListService::mergeBuddy(Buddy oneBuddy)
 	buddy.setEmail(oneBuddy.email());
 	buddy.setDisplay(oneBuddy.display());
 	buddy.setHomePhone(oneBuddy.homePhone());
+	buddy.setOfflineTo(oneBuddy.isOfflineTo());
+	buddy.setCity(oneBuddy.city());
+	buddy.setWebsite(oneBuddy.website());
+	buddy.setGender(oneBuddy.gender());
 	buddy.setAnonymous(false);
 
 	BuddyManager::instance()->addItem(buddy);
