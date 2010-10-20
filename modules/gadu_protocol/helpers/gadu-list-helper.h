@@ -42,7 +42,9 @@ public:
 	static BuddyList streamToBuddyList(Account account, QTextStream &content);
 	static Buddy linePre70ToBuddy(Account account, QStringList &sections);
 	static Buddy line70ToBuddy(Account account, QStringList &sections);
-
+	static BuddyList streamPost70ToBuddyList(const QString &line, Account account, QTextStream &content);
+	static BuddyList stream70ToBuddyList(Account account, QTextStream &content);
+	static BuddyList streamPre70ToBuddyList(const QString &firstLine, Account account, QTextStream &content);
 };
 
 #endif // GADU_LIST_HELPER_H

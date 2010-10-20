@@ -91,37 +91,152 @@ BuddyList GaduListHelper::byteArrayToBuddyList(Account account, QByteArray &cont
 BuddyList GaduListHelper::streamToBuddyList(Account account, QTextStream &content)
 {
 	BuddyList result;
-	QStringList sections;
-	QString line;
-	bool gg70 = false;
 
 	content.setCodec(codec_cp1250);
+
+	QString line = content.readLine(70);
+qDebug("%s", qPrintable(line));
+	if (line.startsWith("<ContactBook>"))
+		result = streamPost70ToBuddyList(line, account, content);
+	else if (line.startsWith("GG70ExportString"))
+		result = stream70ToBuddyList(account, content);
+	else
+		result = streamPre70ToBuddyList(line, account, content);
+
+	return result;
+}
+
+BuddyList GaduListHelper::streamPre70ToBuddyList(const QString &firstLine, Account account, QTextStream &content)
+{
+	BuddyList result;
+
+	if (firstLine.isEmpty())
+		return result;
+
+	QString line = firstLine;
+	QStringList sections = line.split(";", QString::KeepEmptyParts);
+
+	if (sections.count() > 6)
+	{
+		bool ok = false;
+		sections[6].toULong(&ok);
+		if (ok)
+		{
+			result.append(line70ToBuddy(account, sections));
+			result.append(stream70ToBuddyList(account, content));
+			return result;
+		}
+		else
+			result.append(linePre70ToBuddy(account, sections));
+	}
 
 	while (!content.atEnd())
 	{
 		line = content.readLine();
 		sections = line.split(";", QString::KeepEmptyParts);
 
-		//kdebugm(KDEBUG_DUMP, ">>%s\n", qPrintable(line));
-
-		if (line.startsWith("GG70ExportString"))
-		{
-			gg70 = true;
-			continue;
-		}
-
-		if (!gg70 && (sections.size() > 6))
-		{
-			bool ok = false;
-			sections[6].toULong(&ok);
-			if (ok)
-				gg70 = true;
-		}
-
 		if (sections.count() < 7)
 			continue;
 
-		result.append(gg70 ? line70ToBuddy(account, sections) : linePre70ToBuddy(account, sections));
+		result.append(linePre70ToBuddy(account, sections));
+	}
+
+	return result;
+}
+
+BuddyList GaduListHelper::stream70ToBuddyList(Account account, QTextStream &content)
+{
+	BuddyList result;
+	QString line;
+	QStringList sections;
+
+	while (!content.atEnd())
+	{
+		line = content.readLine();
+		qDebug("%s", qPrintable(line));
+		sections = line.split(";", QString::KeepEmptyParts);
+
+		result.append(line70ToBuddy(account, sections));
+	}
+
+	return result;
+}
+
+BuddyList GaduListHelper::streamPost70ToBuddyList(const QString &line, Account account, QTextStream &content)
+{
+	BuddyList result;
+
+	content.setCodec("UTF-8");
+	QString documentString = line + content.readAll();
+
+	QDomDocument document;
+	document.setContent(documentString);
+
+	QDomElement docElement = document.documentElement();
+	QMap<QString, Group> importedGroups;
+
+	QDomNode groupsNode = docElement.firstChildElement("Groups");
+	if (!groupsNode.isNull())
+	{
+		QDomElement groupElement = groupsNode.firstChildElement("Group");
+		for (; !groupElement.isNull(); groupElement = groupElement.nextSiblingElement("Group"))
+		{
+			QDomElement idElement = groupElement.firstChildElement("Id");
+			if (idElement.text().startsWith("00000000-0000-0000-0000-"))
+				continue;
+
+			QDomElement nameElement = groupElement.firstChildElement("Name");
+			if (nameElement.text().isEmpty())
+				continue;
+
+			importedGroups.insert(idElement.text(), GroupManager::instance()->byName(nameElement.text()));
+		}
+	}
+
+	QDomNode contactsNode = docElement.firstChildElement("Contacts");
+	if (!contactsNode.isNull())
+	{
+		QDomElement contactElement = contactsNode.firstChildElement("Contact");
+		for (; !contactElement.isNull(); contactElement = contactElement.nextSiblingElement("Contact"))
+		{
+			Buddy buddy = Buddy::create();
+
+			buddy.setFirstName(contactElement.firstChildElement("FirstName").text());
+			buddy.setLastName(contactElement.firstChildElement("LastName").text());
+			buddy.setDisplay(contactElement.firstChildElement("ShowName").text());
+			buddy.setMobile(contactElement.firstChildElement("MobilePhone").text());
+			buddy.setHomePhone(contactElement.firstChildElement("HomePhone").text());
+			buddy.setEmail(contactElement.firstChildElement("Email").text());
+			buddy.setCity(contactElement.firstChildElement("City").text());
+			buddy.setWebsite(contactElement.firstChildElement("WwwAddress").text());
+			buddy.setGender((BuddyGender)contactElement.firstChildElement("Gender").text().toInt());
+
+			QList<Group> groups;
+			QDomElement groupsElement = contactsNode.firstChildElement("Groups");
+			QDomElement groupElement = groupsElement.firstChildElement("GroupId");
+			for (; !groupElement.isNull(); groupElement = groupElement.nextSiblingElement("GroupId"))
+				if (importedGroups.contains(groupElement.text()))
+					groups.append(importedGroups.value(groupElement.text()));
+
+			if (!groups.isEmpty())
+				buddy.setGroups(groups);
+
+			QDomElement numberElement = contactElement.firstChildElement("GGNumber");
+			if (!numberElement.text().isEmpty())
+			{
+				Contact contact = Contact::create();
+				contact.setContactAccount(account);
+				GaduContactDetails *details = new GaduContactDetails(contact.data());
+				details->setState(StorableObject::StateNew);
+				contact.setDetails(details);
+				contact.setId(numberElement.text());
+				contact.data()->setState(StorableObject::StateNew);
+				contact.setOwnerBuddy(buddy);
+			}
+
+			buddy.setAnonymous(false);
+			result.append(buddy);
+		}
 	}
 
 	return result;
@@ -168,10 +283,10 @@ Buddy GaduListHelper::linePre70ToBuddy(Account account, QStringList &sections)
 		{
 			Contact contact = Contact::create();
 			contact.setContactAccount(account);
+			contact.setId(QString::number(uin));
 			GaduContactDetails *details = new GaduContactDetails(contact.data());
 			details->setState(StorableObject::StateNew);
 			contact.setDetails(details);
-			contact.setId(QString::number(uin));
 			contact.data()->setState(StorableObject::StateNew);
 			contact.setOwnerBuddy(buddy);
 		}
@@ -180,15 +295,12 @@ Buddy GaduListHelper::linePre70ToBuddy(Account account, QStringList &sections)
 	if (i < secCount)
 		buddy.setEmail(sections[i++]);
 
-// TODO: 0.6.6
 	if (i+1 < secCount)
 	{
-// 			contact.setAliveSound((NotifyType)sections[i].toInt(), sections[i+1]);
 		i+=2;
 	}
 	if (i+1 < secCount)
 	{
-// 			e.setMessageSound((NotifyType)sections[i].toInt(), sections[i+1]);
 		i+=2;
 	}
 
@@ -237,29 +349,28 @@ Buddy GaduListHelper::line70ToBuddy(Account account, QStringList &sections)
 			uin = 0;
 		if (uin)
 		{
+			qDebug("%d", uin);
 			Contact contact = Contact::create();
 			contact.setContactAccount(account);
+			contact.setId(QString::number(uin));
 			GaduContactDetails *details = new GaduContactDetails(contact.data());
 			details->setState(StorableObject::StateNew);
 			contact.setDetails(details);
-			contact.setId(QString::number(uin));
 			contact.data()->setState(StorableObject::StateNew);
 			contact.setOwnerBuddy(buddy);
+			qDebug("%s", qPrintable(contact.uuid().toString()));
 		}
 	}
 
 	if (i < secCount)
 		buddy.setEmail(sections[i++]);
 
-// TODO: 0.6.6
 	if (i+1 < secCount)
 	{
-// 			contact.setAliveSound((NotifyType)sections[i].toInt(), sections[i+1]);
 		i+=2;
 	}
 	if (i+1 < secCount)
 	{
-// 			e.setMessageSound((NotifyType)sections[i].toInt(), sections[i+1]);
 		i+=2;
 	}
 

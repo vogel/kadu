@@ -22,7 +22,7 @@
 
 enum BuddyGender
 {
-	GenderUnknown,
+	GenderUnknown = 0,
 	GenderFemale,
 	GenderMale
 };
