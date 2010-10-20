@@ -201,6 +201,15 @@ void AccountBuddyListWidget::restoreFromFile()
 		file.close();
 
 		QList<Buddy> list = service->loadBuddyList(stream);
-		buddiesListImported(!list.isEmpty(), list);
+
+		if (list.isEmpty())
+		{
+			MessageDialog::exec("dialog-error", tr("Kadu"),
+							tr("Contacts list couldn't be imported. File %0 doesn't contain correct contacts list.").arg(fileName),
+							QMessageBox::Cancel | QMessageBox::Retry);
+			return;
+		}
+
+		service->setBuddiesList(list, false);
 	}
 }

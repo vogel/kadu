@@ -46,7 +46,7 @@ public:
 
 	virtual QList<Buddy> loadBuddyList(QTextStream &dataStream) = 0;
 
-	void setBuddiesList(BuddyList buddies);
+	void setBuddiesList(BuddyList buddies, bool removeOld = true);
 
 signals:
 	void contactListImported(bool ok, BuddyList buddies);
