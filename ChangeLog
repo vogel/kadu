@@ -14,6 +14,8 @@
 * gui: #1610 fixed: no more blinking contacts hints (Vogel)
 * gui: #1604 fixed: update info panel when contact/buddy/avatar updates (Vogel)
 * gui: #1554 fixed: changing description from docking icon does not change statuses, only descriptions (Vogel)
+* core: #1661 fixed: Contacts are not properly imported after adding new Gadu account (White Eagle)
+* gadu: add support for importing contacts from GG8 and GG10 (White Eagle)
 
 +++ version 0.6.6-beta8
 * gui: buddies list now has focus right after Kadu's main window creation, so filtering works without clicking (beevvy)
