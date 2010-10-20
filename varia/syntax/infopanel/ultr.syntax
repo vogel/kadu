@@ -2,10 +2,8 @@
 <td style='vertical-align:top;'>
 <img
 style='max-width:64px; max-height:64px;'
-[#{nextinfo_photo} src='#{nextinfo_photo}' ]
 [#{avatarPath} src='#{avatarPath}' ]
-[#{nextinfo_sexN} src='@{kadu_icons/96x96/buddy#{nextinfo_sexN}.png}' ]
-src='@{kadu_icons/96x96/buddy0.png}'
+src='@{kadu_icons/96x96/buddy%q.png}'
 >
 </td>
 <td style='vertical-align:top; padding-left:6px;'>

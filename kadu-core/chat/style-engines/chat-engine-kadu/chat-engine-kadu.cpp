@@ -252,7 +252,7 @@ void KaduChatStyleEngine::styleEditionRequested(QString styleName)
 	(
 		"@default", "Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name\n"
 		"%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist\n"
-		"%h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size,\n"
+		"%h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2)\n"
 		"#{message} - message content,\n"
 		"#{backgroundColor} - background color of message,\n"
 		"#{fontColor} - font color of message,\n"
