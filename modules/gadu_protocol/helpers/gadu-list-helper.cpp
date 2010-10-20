@@ -95,7 +95,7 @@ BuddyList GaduListHelper::streamToBuddyList(Account account, QTextStream &conten
 	content.setCodec(codec_cp1250);
 
 	QString line = content.readLine(70);
-qDebug("%s", qPrintable(line));
+
 	if (line.startsWith("<ContactBook>"))
 		result = streamPost70ToBuddyList(line, account, content);
 	else if (line.startsWith("GG70ExportString"))
@@ -153,7 +153,7 @@ BuddyList GaduListHelper::stream70ToBuddyList(Account account, QTextStream &cont
 	while (!content.atEnd())
 	{
 		line = content.readLine();
-		qDebug("%s", qPrintable(line));
+
 		sections = line.split(";", QString::KeepEmptyParts);
 
 		result.append(line70ToBuddy(account, sections));
@@ -349,7 +349,6 @@ Buddy GaduListHelper::line70ToBuddy(Account account, QStringList &sections)
 			uin = 0;
 		if (uin)
 		{
-			qDebug("%d", uin);
 			Contact contact = Contact::create();
 			contact.setContactAccount(account);
 			contact.setId(QString::number(uin));
@@ -358,7 +357,6 @@ Buddy GaduListHelper::line70ToBuddy(Account account, QStringList &sections)
 			contact.setDetails(details);
 			contact.data()->setState(StorableObject::StateNew);
 			contact.setOwnerBuddy(buddy);
-			qDebug("%s", qPrintable(contact.uuid().toString()));
 		}
 	}
 

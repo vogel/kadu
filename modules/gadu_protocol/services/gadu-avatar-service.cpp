@@ -19,7 +19,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QDebug>
 #include <QtXml/QDomDocument>
 
 #include "gadu-avatar-service.h"
