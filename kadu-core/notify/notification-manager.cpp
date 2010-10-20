@@ -26,8 +26,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QX11Info>
 #include <QtGui/QApplication>
+
+#ifdef Q_WS_X11
+#include <QtGui/QX11Info>
+#endif
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
@@ -60,8 +63,10 @@
 #include "new-message-notification.h"
 #include "status-changed-notification.h"
 
+#ifdef Q_WS_X11
 #include "x11tools.h" // this should be included as last one,
 #undef Status         // and Status defined by Xlib.h must be undefined
+#endif
 
 #define FULLSCREENCHECKTIMER_INTERVAL 2000 /*ms*/
 
