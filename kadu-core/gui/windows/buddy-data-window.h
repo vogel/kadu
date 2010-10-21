@@ -93,6 +93,9 @@ private slots:
 	void updateBuddy();
 	void updateBuddyAndClose();
 
+signals:
+	void updatingBuddy();
+
 public:
 	explicit BuddyDataWindow(Buddy buddy, QWidget *parent = 0);
 	virtual ~BuddyDataWindow();
