@@ -171,7 +171,7 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("General", "DescriptionHeight", 60);
 	config_file.addVariable("General", "DisconnectWithCurrentDescription", true);
 	config_file.addVariable("General", "HideBaseModules", true);
-	config_file.addVariable("General", "Language",  QString(qApp->keyboardInputLocale().name()).mid(0,2));
+	config_file.addVariable("General", "Language",  QLocale::system().name());
 	config_file.addVariable("General", "Nick", tr("Me"));
 	config_file.addVariable("General", "NumberOfDescriptions", 20);
 	config_file.addVariable("General", "ParseStatus", false);

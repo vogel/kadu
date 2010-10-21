@@ -80,7 +80,7 @@ UpdatesDialog::~UpdatesDialog()
 
 void UpdatesDialog::downloadClicked()
 {
-	if (config_file.readEntry("General", "Language", QString(qApp->keyboardInputLocale().name()).mid(0,2)) == "pl")
+	if (config_file.readEntry("General", "Language") == "pl")
 		UrlOpener::openUrl("http://www.kadu.net/w/Pobierz");
 	else
 		UrlOpener::openUrl("http://www.kadu.net/w/English:Download");
