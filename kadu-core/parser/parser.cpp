@@ -296,6 +296,11 @@ QString Parser::parse(const QString &s, Contact contact, const QObject * const o
 					if (contact)
 						pe.content = contact.maximumImageSize();
 					break;
+				case 'z':
+					++i;
+					if (contact)
+						pe.content = QString::number(contact.ownerBuddy().gender());
+					break;
 				case '%':
 					++i;
 				default:

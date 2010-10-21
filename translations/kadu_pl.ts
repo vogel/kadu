@@ -1128,23 +1128,23 @@ kontaktów po połączeniu się z serwerem</translation>
     <message>
         <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
 %r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
-%h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size
+%h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2)
 </source>
         <translation>Składnia: %s - status, %d - opis, %i - ip, %n - pseudonim, %a - nazwa wyświetlana, %f - imię
 %r - nazwisko, %m - tel. kom. , %u - uin, %g - grupa, %o -  spacja gdy użytkownik nie ma nas na liście
-%h - wersja protokołu, %v - revDNS, %p - port, %e - e-mail, %x - maks. rozmiar obrazka
+%h - wersja protokołu, %v - revDNS, %p - port, %e - e-mail, %x - maks. rozmiar obrazka, %z - płeć (0/1/2)
 </translation>
     </message>
     <message>
         <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
 %r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
-%h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size,
+%h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2),
 #{protocol} - protocol that triggered event,
 #{event} - name of event,
 </source>
         <translation>Składnia: %s - status, %d - opis, %i - ip, %n - pseudonim, %a - wyświetlane, %f - imię
 %r - nazwisko, %m - tel. kom., %u - uin, %g - grupa, %o - spacja gdy użytkownik nie ma nas na liście
-%h - wersja protokołu, %v - revDNS, %p - port, %e - e-mail, %x - maks.  rozmiar obrazka,
+%h - wersja protokołu, %v - revDNS, %p - port, %e - e-mail, %x - maks. rozmiar obrazka, %z - płeć (0/1/2),
 #{protocol} - protokół który wygenerował zdarzenie,
 #{event} - nazwa zdarzenia,
 </translation>
@@ -1262,7 +1262,7 @@ po połączeniu się z serwerem</translation>
     <message>
         <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
 %r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn&apos;t have us in userlist
-%h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size,
+%h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2),
 #{message} - message content,
 #{backgroundColor} - background color of message,
 #{fontColor} - font color of message,
@@ -1274,7 +1274,7 @@ po połączeniu się z serwerem</translation>
 </source>
         <translation>Składnia: %s - status, %d - opis, %i - ip, %n - pseudonim, %a - wyświetlane, %f - imię
 %r - nazwisko, %m - tel. kom., %u - uin, %g - grupa, %o - spacja gdy użytkownik nie ma nas na liście
-%h - wersja protokołu, %v - revDNS, %p - port, %e - e-mail, %x - maks. rozmiar obrazka,
+%h - wersja protokołu, %v - revDNS, %p - port, %e - e-mail, %x - maks. rozmiar obrazka, %z - płeć (0/1/2),
 #{message} - treść wiadomości,
 #{backgroundColor} - kolor tła,
 #{fontColor} - kolor czcionki wiadomości,
@@ -1282,7 +1282,8 @@ po połączeniu się z serwerem</translation>
 #{sentDate} - data wysłania,
 #{receivedDate} - data otrzymania,
 #{separator} - separator pomiędzy wiadomościami,
-&lt;kadu:header&gt;tekst&lt;/kadu:header&gt; - tekst nie będzie wyświetlany po włączeniu opcji &apos;Usuwaj powtarzające się nagłówki&apos;</translation>
+&lt;kadu:header&gt;tekst&lt;/kadu:header&gt; - tekst nie będzie wyświetlany po włączeniu opcji &apos;Usuwaj powtarzające się nagłówki&apos;
+</translation>
     </message>
     <message>
         <source>Choose style of chat window</source>

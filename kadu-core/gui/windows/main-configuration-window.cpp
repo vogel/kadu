@@ -72,14 +72,14 @@ const char *MainConfigurationWindow::SyntaxText = QT_TRANSLATE_NOOP
 (
 	"@default", "Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name\n"
 	"%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist\n"
-	"%h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size\n"
+	"%h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2)\n"
 );
 
 const char *MainConfigurationWindow::SyntaxTextNotify = QT_TRANSLATE_NOOP
 (
 	"@default", "Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name\n"
 	"%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist\n"
-	"%h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size,\n"
+	"%h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2),\n"
 	"#{protocol} - protocol that triggered event,\n"
 	"#{event} - name of event,\n"
 );

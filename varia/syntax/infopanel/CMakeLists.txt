@@ -6,6 +6,7 @@ set (SYNTAX_FILES
 	dorr.syntax
 	maz.syntax
 	ronk.syntax
+	ultr.syntax
 )
 
 install (FILES ${SYNTAX_FILES}
