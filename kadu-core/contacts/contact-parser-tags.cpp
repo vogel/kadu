@@ -39,10 +39,10 @@ static QString getStatusIconPath(Contact contact)
 		return "";
 
 	if (contact.ownerBuddy().isBlocked())
-		return "file://" + IconsManager::instance()->iconPath("kadu_icons", "16x16", "kadu-blocked");
+		return webKitPath(IconsManager::instance()->iconPath("kadu_icons", "16x16", "kadu-blocked"));
 
 	if (contact.isBlocking())
-		return "file://" + IconsManager::instance()->iconPath("kadu_icons", "16x16", "kadu-blocking");
+		return webKitPath(IconsManager::instance()->iconPath("kadu_icons", "16x16", "kadu-blocking"));
 
 	if (contact.contactAccount())
 	{
