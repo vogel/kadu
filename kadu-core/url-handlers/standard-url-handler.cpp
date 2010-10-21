@@ -71,7 +71,7 @@ void StandardUrlHandler::openUrl(const QString &url, bool disableMenu)
 {
 	Q_UNUSED(disableMenu)
 
-	if (url.startsWith("www."))
+	if (url.startsWith(QLatin1String("www.")))
 		UrlOpener::openUrl("http://" + url);
 	else
 		UrlOpener::openUrl(url);

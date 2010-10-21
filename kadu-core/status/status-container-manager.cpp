@@ -308,7 +308,7 @@ int StatusContainerManager::maxDescriptionLength()
 
 QString StatusContainerManager::statusNamePrefix()
 {
-	return QString(tr("All")) + " ";
+	return tr("All") + ' ';
 }
 
 void StatusContainerManager::storeStatus(Status status)

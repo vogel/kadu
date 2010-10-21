@@ -62,7 +62,7 @@ void MainWindow::loadToolBarsFromConfig(const QString &prefix)
 	if (prefix.isEmpty())
 		realPrefix = "";
 	else
-		realPrefix = prefix + "_";
+		realPrefix = prefix + '_';
 
 	loadToolBarsFromConfig(realPrefix + "topDockArea", Qt::TopToolBarArea);
 	loadToolBarsFromConfig(realPrefix + "leftDockArea", Qt::LeftToolBarArea);
@@ -207,7 +207,7 @@ QDomElement MainWindow::findExistingToolbar(const QString &prefix)
 	if (prefix.isEmpty())
 		realPrefix = "";
 	else
-		realPrefix = prefix + "_";
+		realPrefix = prefix + '_';
 
 	QDomElement toolbarElement = findExistingToolbarOnArea(realPrefix + "topDockArea");
 	if (!toolbarElement.isNull())
@@ -235,7 +235,7 @@ void MainWindow::writeToolBarsToConfig(const QString &prefix)
 	if (prefix.isEmpty())
 		realPrefix = "";
 	else
-		realPrefix = prefix + "_";
+		realPrefix = prefix + '_';
 
 	QDomElement toolbarsConfig = getToolbarsConfigElement();
 

@@ -200,7 +200,7 @@ QString Updates::stripVersion(const QString stripversion)
 	else
 		version.append("05");
 
-	return (version.remove("."));
+	return (version.remove('.'));
 }
 
 void Updates::gotUpdatesInfo(const QHttpResponseHeader &responseHeader)

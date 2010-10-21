@@ -78,7 +78,7 @@ Infos::Infos(QObject *parent) :
 			QTextStream stream(&file);
 			while (!stream.atEnd())
 			{
-				QStringList fullId = stream.readLine().split(":", QString::SkipEmptyParts);
+				QStringList fullId = stream.readLine().split(':', QString::SkipEmptyParts);
 				if (fullId.count() != 2)
 					continue;
 				QString protocol = fullId[0];

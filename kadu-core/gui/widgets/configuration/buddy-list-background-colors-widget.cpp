@@ -48,8 +48,8 @@ void BuddyListBackgroundColorsWidget::createGui(MainConfigurationWindow* mainWin
 	layout->addWidget(alternateColorButton);
 
 	ConfigGroupBox *groupBox = mainWindow->widget()->configGroupBox("Look", "Colors", "Buddy List");
-	
-	groupBox->addWidgets(new QLabel(qApp->translate("@default", "Background") + ":", this), this);
+
+	groupBox->addWidgets(new QLabel(qApp->translate("@default", "Background") + ':', this), this);
 }
 
 void BuddyListBackgroundColorsWidget::loadConfiguration()

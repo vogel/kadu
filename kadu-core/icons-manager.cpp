@@ -67,7 +67,7 @@ IconThemeManager * IconsManager::themeManager() const
 
 QString IconsManager::iconPath(const QString &path, const QString &size, const QString &name) const
 {
-	QString fileName = ThemeManager->currentTheme().path() + path + "/" + size + "/" + name + ".png";
+	QString fileName = ThemeManager->currentTheme().path() + path + '/' + size + '/' + name + ".png";
 
 	QFileInfo fileInfo(fileName);
 	if (!fileInfo.isFile() || !fileInfo.isReadable())

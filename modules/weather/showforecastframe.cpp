@@ -33,7 +33,7 @@ ShowForecastFrameBase::ShowForecastFrameBase(QWidget *parent) :
 	currentPage_(-1)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
-	
+
 	fieldTranslator_.insert("Pressure", tr("Pressure"));
 	fieldTranslator_.insert("Rain", tr("Rain"));
 	fieldTranslator_.insert("Snow", tr("Snow"));
@@ -42,25 +42,25 @@ ShowForecastFrameBase::ShowForecastFrameBase(QWidget *parent) :
 	fieldTranslator_.insert("Humidity", tr("Humidity"));
 	fieldTranslator_.insert("Dew point", tr("Dew point"));
 	fieldTranslator_.insert("Visibility", tr("Visibility"));
-	
+
 	downloadMessage_ = new TextProgress(this);
 	downloadMessage_->setMinimumWidth(downloadMessage_->fontMetrics().maxWidth() * 20);
 	downloadMessage_->setAlignment(Qt::AlignCenter);
 	downloadMessage_->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	downloadMessage_->hide();
-	
+
 	errorMessage_ = new QLabel(this);
 	errorMessage_->setAlignment(Qt::AlignTop);
 	errorMessage_->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	errorMessage_->hide();
-	
+
 	forecastFrame_ = new QFrame(this);
 	forecastFrame_->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	forecastFrame_->hide();
-	
+
 	header_ = new QLabel(forecastFrame_);
 	header_->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
-	
+
 	QFrame *separator = new QFrame(forecastFrame_);
 	separator->setFrameShape(HLine);
 	separator->setFrameShadow(Sunken);
@@ -70,17 +70,17 @@ ShowForecastFrameBase::ShowForecastFrameBase(QWidget *parent) :
 	icon_->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 	icon_->setAlignment(Qt::AlignCenter);
 	icon_->setMargin(10);
-	
+
 	temperature_ = new QLabel(forecastFrame_);
 	temperature_->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
 	temperature_->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
-	
+
 	description_ = new QLabel(forecastFrame_);
 	description_->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	description_->setTextFormat(Qt::PlainText);
 	description_->setAlignment(Qt::AlignLeft | Qt::AlignTop | Qt::WordBreak);
 	description_->setMinimumWidth(description_->fontMetrics().maxWidth() * 15);
-	
+
 	QGridLayout *forecastLay = new QGridLayout(forecastFrame_, 4, 2);
 	forecastLay->setSpacing(5);
 	forecastLay->setMargin(0);
@@ -89,7 +89,7 @@ ShowForecastFrameBase::ShowForecastFrameBase(QWidget *parent) :
 	forecastLay->addMultiCellWidget(icon_, 2, 2, 0, 0);
 	forecastLay->addMultiCellWidget(temperature_, 3, 3, 0, 0);
 	forecastLay->addMultiCellWidget(description_, 2, 3, 1, 1);
-	
+
 	buttonGroup_ = new QButtonGroup(this);
 	buttonGroup_->setExclusive(true);
 	buttonBox_ = new QWidget(this);
@@ -98,7 +98,7 @@ ShowForecastFrameBase::ShowForecastFrameBase(QWidget *parent) :
 	buttonLayout_ = new QHBoxLayout(buttonBox_);
 	buttonLayout_->setSpacing(1);
 	//buttonLayout_->setInsideMargin(0);
-	
+
 	QVBoxLayout *mainLayout = new QVBoxLayout(this);
 	mainLayout->setSpacing(5);
 	mainLayout->setMargin(5);
@@ -106,16 +106,16 @@ ShowForecastFrameBase::ShowForecastFrameBase(QWidget *parent) :
 	mainLayout->addWidget(errorMessage_, 0, Qt::AlignJustify);
 	mainLayout->addWidget(forecastFrame_, 0);
 	mainLayout->addWidget(buttonBox_, 0, Qt::AlignBottom);
-	
+
 	//QAction* actionCopy = new QAction( tr("Copy"), this );
 	//QAction* actionGoToWebPage = new QAction( tr("Go to Web page"), this );
 	//QAction* actionChangeCity = new QAction( tr("Change city..."), this );
-	
+
 	contextMenu_ = new QMenu(this);
 	contextMenu_->addAction(tr("Copy"), this, SLOT(menuCopy()));
 	contextMenu_->addAction(tr("Go to Web page"), this, SLOT(menuGoToPage()));
 	contextMenu_->addAction(tr("Change city..."), this, SIGNAL(changeCity()));
-	
+
 	connect(buttonGroup_, SIGNAL(buttonClicked (int)), this, SLOT(dayClicked(int)));
 	connect(&downloader_, SIGNAL(finished()), this, SLOT(downloadingFinished()));
 	connect(&downloader_, SIGNAL(error(GetForecast::ErrorId,QString)), this, SLOT(downloadingError(GetForecast::ErrorId, QString)));
@@ -129,7 +129,7 @@ void ShowForecastFrameBase::start(const CitySearchResult &city)
 }
 
 void ShowForecastFrameBase::downloadingFinished()
-{	
+{
 	downloadMessage_->hide();
 	showForecast();
 }
@@ -137,13 +137,13 @@ void ShowForecastFrameBase::downloadingFinished()
 void ShowForecastFrameBase::downloadingError(GetForecast::ErrorId err, QString url)
 {
 	downloadMessage_->hide();
-	
+
 	errorMessage_->setAlignment(Qt::AlignCenter);
 	if (err == GetForecast::Connection)
 		errorMessage_->setText(tr("Cannot load page %1").arg(url));
 	else if (err == GetForecast::Parser)
 		errorMessage_->setText(tr("Parse error page %1").arg(url));
-	
+
 	errorMessage_->show();
 }
 
@@ -158,7 +158,7 @@ void ShowForecastFrameBase::showForecast()
 		btn->show();
 		buttonLayout_->addWidget(btn);
 		buttonGroup_->addButton(btn, i++);
-		
+
 		QToolTip::add(btn, "<b>" + day["Name"] + "</b><br>" + day["Temperature"]);
 	}
 
@@ -178,15 +178,15 @@ void ShowForecastFrameBase::mousePressEvent(QMouseEvent *e)
 {
 	if (e->button() != Qt::RightButton || currentPage_ < 0)
 		return;
-	
+
 	contextMenu_->popup(mapToGlobal(e->pos()));
 }
 
 void ShowForecastFrameBase::menuCopy()
 {
 	const ForecastDay &day = downloader_.getForecast().Days[currentPage_];
-	QString Data = downloader_.getForecast().LocationName  + " - " + day["Name"] + "\n";
-	
+	QString Data = downloader_.getForecast().LocationName  + " - " + day["Name"] + '\n';
+
 	bool first = true;
 	for (ForecastDay::const_iterator it = day.begin(); it != day.end(); it++)
 	{
@@ -195,7 +195,7 @@ void ShowForecastFrameBase::menuCopy()
 			if (first)
 				first = false;
 			else
-				Data += "\n";
+				Data += '\n';
 			Data += getFieldTranslation(it.key() ) + ": " + it.data();
 		}
 	}
@@ -208,9 +208,9 @@ void ShowForecastFrameBase::menuCopy()
 void ShowForecastFrameBase::menuGoToPage()
 {
 	QStringList args = QStringList::split(" ", config_file.readEntry("Chat","WebBrowser"));
-	
+
 	PlainConfigFile wConfig( WeatherGlobal::getConfigPath(downloader_.getForecast().config));
-	QString url = wConfig.readEntry("Default","Default host") + "/" + wConfig.readEntry("Default","Default path");
+	QString url = wConfig.readEntry("Default","Default host") + '/' + wConfig.readEntry("Default", "Default path");
 	url.replace("%s", downloader_.getForecast().LocationID);
 	args.push_back(url);
 
@@ -245,9 +245,9 @@ void ShowForecastFrameBase::setCurrentPage(int page)
 			if (first)
 				first = false;
 			else
-				description += "\n";
-				
-			
+				description += '\n';
+
+
 			description += getFieldTranslation(it.key()) + ": " + it.data();
 		}
 	}
@@ -304,7 +304,7 @@ void SearchAndShowForecastFrame::start()
 void SearchAndShowForecastFrame::finished()
 {
 	const CITYSEARCHRESULTS& results = search_.getResult();
-	
+
 	if (results.empty())
 	{
 		downloadMessage_->hide();

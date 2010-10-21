@@ -83,7 +83,7 @@ void JabberUrlHandler::openUrl(const QString &url, bool disableMenu)
 		return;
 
 	QString jabberId = url;
-	if (jabberId.startsWith("jid:"))
+	if (jabberId.startsWith(QLatin1String("jid:")))
 	{
 		jabberId.remove(0, 3);
 		jabberId.remove(QRegExp("/*"));

@@ -73,7 +73,7 @@ void GaduRemindPasswordWindow::createGui()
 
 	EMail = new QLineEdit(this);
 	connect(EMail, SIGNAL(textChanged(const QString &)), this, SLOT(dataChanged()));
-	layout->addRow(tr("E-Mail Address") + ":", EMail);
+	layout->addRow(tr("E-Mail Address") + ':', EMail);
 
 	infoLabel = new QLabel(tr("<font size='-1'><i>Type E-Mail Address used during registration.</i></font>"), this);
 	infoLabel->setWordWrap(true);
@@ -83,7 +83,7 @@ void GaduRemindPasswordWindow::createGui()
 
 	MyTokenWidget = new TokenWidget(this);
 	connect(MyTokenWidget, SIGNAL(modified()), this, SLOT(dataChanged()));
-	layout->addRow(tr("Characters") + ":", MyTokenWidget);
+	layout->addRow(tr("Characters") + ':', MyTokenWidget);
 
 	infoLabel = new QLabel(tr("<font size='-1'><i>For verification purposes, please type the characters above.</i></font>"), this);
 	infoLabel->setWordWrap(true);

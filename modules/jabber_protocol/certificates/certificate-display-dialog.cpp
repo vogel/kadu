@@ -128,13 +128,13 @@ CertificateDisplayDialog::CertificateDisplayDialog(const QCA::Certificate &cert,
         vboxLayout->addLayout(hboxLayout1);
 
 	setWindowTitle(tr("Certificate Information"));
-        textLabel4->setText(tr("Certificate Validation") + ":");
+        textLabel4->setText(tr("Certificate Validation") + ':');
         lb_valid->setText(QString());
-        textLabel2->setText(tr("Valid From") + ":");
+        textLabel2->setText(tr("Valid From") + ':');
         lb_notBefore->setText(QString());
-        textLabel3->setText(tr("Valid Until") + ":");
+        textLabel3->setText(tr("Valid Until") + ':');
         lb_notAfter->setText(QString());
-        textLabel1->setText(tr("Serial Number") + ":");
+        textLabel1->setText(tr("Serial Number") + ':');
         lb_sn->setText(QString());
         pb_close->setText(tr("Close"));
 
@@ -154,7 +154,7 @@ CertificateDisplayDialog::CertificateDisplayDialog(const QCA::Certificate &cert,
 		setLabelStatus(*lb_valid, true);
 	}
 	else {
-		lb_valid->setText(tr("The certificate is NOT valid!") + "\n" + QString(tr("Reason: %1.")).arg(CertificateHelpers::resultToString(result, validity)));
+		lb_valid->setText(tr("The certificate is NOT valid!") + '\n' + QString(tr("Reason: %1.")).arg(CertificateHelpers::resultToString(result, validity)));
 		setLabelStatus(*lb_valid, false);
 	}
 

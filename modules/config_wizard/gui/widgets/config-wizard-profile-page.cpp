@@ -49,16 +49,16 @@ void ConfigWizardProfilePage::createGui()
 	LanguagesCombo = new QComboBox(this);
 	setLanguages();
 
-	formLayout()->addRow(tr("Language") + ":", LanguagesCombo);
+	formLayout()->addRow(tr("Language") + ':', LanguagesCombo);
 
 	NickNameEdit = new QLineEdit(this);
 	NickNameEdit->setMaximumWidth(300);
 
-	formLayout()->addRow(tr("Nickname") + ":", NickNameEdit);
+	formLayout()->addRow(tr("Nickname") + ':', NickNameEdit);
 
 	QPushButton *proxyConnectionButton = new QPushButton(tr("Configure..."));
 
-	formLayout()->addRow(tr("Proxy connection settings") + ":", proxyConnectionButton);
+	formLayout()->addRow(tr("Proxy connection settings") + ':', proxyConnectionButton);
 	formLayout()->addRow("", new QLabel(tr("<font size='-1'><i>for advanced users only</i></font>"), this));
 }
 

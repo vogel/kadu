@@ -101,7 +101,7 @@ void SmsDialog::createGui()
 	connect(RecipientComboBox, SIGNAL(buddyChanged(Buddy)), this, SLOT(recipientBuddyChanged(Buddy)));
 	recipientLayout->addWidget(RecipientComboBox);
 
-	formLayout->addRow(tr("Recipient") + ":", recipientWidget);
+	formLayout->addRow(tr("Recipient") + ':', recipientWidget);
 
 	ProviderComboBox = new QComboBox(this);
 	ProviderComboBox->addItem(tr("Select automatically"), "");
@@ -109,7 +109,7 @@ void SmsDialog::createGui()
 	foreach (SmsGateway gateway, SmsGatewayManager::instance()->items())
 		ProviderComboBox->addItem(gateway.second, gateway.first);
 
-	formLayout->addRow(tr("GSM provider") + ":", ProviderComboBox);
+	formLayout->addRow(tr("GSM provider") + ':', ProviderComboBox);
 
 	ContentEdit = new QTextEdit(this);
 	ContentEdit->setAcceptRichText(false);
@@ -117,7 +117,7 @@ void SmsDialog::createGui()
 	ContentEdit->setTabChangesFocus(true);
 	connect(ContentEdit, SIGNAL(textChanged()), this, SLOT(updateCounter()));
 
-	formLayout->addRow(tr("Content") + ":", ContentEdit);
+	formLayout->addRow(tr("Content") + ':', ContentEdit);
 
 	LengthLabel = new QLabel("0", this);
 	formLayout->addRow(0, LengthLabel);
@@ -125,12 +125,12 @@ void SmsDialog::createGui()
 	ContactEdit = new QLineEdit(this);
 	connect(ContactEdit, SIGNAL(returnPressed()), this, SLOT(editReturnPressed()));
 
-	formLayout->addRow(tr("Contact") + ":", ContactEdit);
+	formLayout->addRow(tr("Contact") + ':', ContactEdit);
 
 	SignatureEdit = new QLineEdit(config_file.readEntry("SMS", "SmsNick"), this);
 	connect(SignatureEdit, SIGNAL(returnPressed()), this, SLOT(editReturnPressed()));
 
-	formLayout->addRow(tr("Signature") + ":", SignatureEdit);
+	formLayout->addRow(tr("Signature") + ':', SignatureEdit);
 
 	SaveInHistoryCheckBox = new QCheckBox(tr("Save SMS in history"), this);
 	SaveInHistoryCheckBox->setChecked(true);

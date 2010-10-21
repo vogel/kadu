@@ -105,7 +105,7 @@ while (length > NUM) \
 					appendInt(str, q, length);
 				else if (length == 3)
 				{
-					str += "Q";
+					str += 'Q';
 					str += QString::number(q);
 				}
 				else

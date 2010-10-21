@@ -179,7 +179,7 @@ QString SystemInfo::linuxHeuristicDetect()
 					ret = osInfo[i].name;
 					break;
 				case OsAppendFile:
-					ret = osInfo[i].name + " (" + desc + ")";
+					ret = osInfo[i].name + " (" + desc + ')';
 					break;
 			}
 			break;

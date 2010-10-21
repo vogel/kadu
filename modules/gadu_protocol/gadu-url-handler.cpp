@@ -68,7 +68,7 @@ void GaduUrlHandler::openUrl(const QString &url, bool disableMenu)
 		return;
 
 	QString gaduId = url;
-	if (gaduId.startsWith("gg:"))
+	if (gaduId.startsWith(QLatin1String("gg:")))
 	{
 		gaduId.remove(0, 3);
 		gaduId.remove(QRegExp("/*"));

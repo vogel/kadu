@@ -107,12 +107,12 @@ void JabberEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 
 	AccountId = new QLineEdit(this);
 	connect(AccountId, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
-	formLayout->addRow(tr("Username") + ":", AccountId);
+	formLayout->addRow(tr("Username") + ':', AccountId);
 
 	AccountPassword = new QLineEdit(this);
 	AccountPassword->setEchoMode(QLineEdit::Password);
 	connect(AccountPassword, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
-	formLayout->addRow(tr("Password") + ":", AccountPassword);
+	formLayout->addRow(tr("Password") + ':', AccountPassword);
 
 	RememberPassword = new QCheckBox(tr("Remember password"), this);
 	RememberPassword->setChecked(true);
@@ -126,7 +126,7 @@ void JabberEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 
 	Identities = new IdentitiesComboBox(this);
 	connect(Identities, SIGNAL(identityChanged(Identity)), this, SLOT(dataChanged()));
-	formLayout->addRow(tr("Account Identity") + ":", Identities);
+	formLayout->addRow(tr("Account Identity") + ':', Identities);
 
 	QLabel *infoLabel = new QLabel(tr("<font size='-1'><i>Select or enter the identity that will be associated with this account.</i></font>"), this);
 	infoLabel->setWordWrap(true);
@@ -169,7 +169,7 @@ void JabberEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	vboxLayout2->setMargin(9);
 
 	CustomHostPort = new QCheckBox(general);
-	CustomHostPort->setText(tr("Manually specify server host/port")+":");
+	CustomHostPort->setText(tr("Manually specify server host/port") + ':');
 	vboxLayout2->addWidget(CustomHostPort);
 
 	HostPortLayout = new QHBoxLayout();
@@ -177,7 +177,7 @@ void JabberEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	HostPortLayout->setMargin(0);
 
 	CustomHostLabel = new QLabel(general);
-	CustomHostLabel->setText(tr("Host")+":");
+	CustomHostLabel->setText(tr("Host") + ':');
 	HostPortLayout->addWidget(CustomHostLabel);
 
 	CustomHost = new QLineEdit(general);
@@ -185,7 +185,7 @@ void JabberEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	HostPortLayout->addWidget(CustomHost);
 
 	CustomPortLabel = new QLabel(general);
-	CustomPortLabel->setText(tr("Port")+":");
+	CustomPortLabel->setText(tr("Port") + ':');
 	HostPortLayout->addWidget(CustomPortLabel);
 
 	CustomPort = new QLineEdit(general);
@@ -209,7 +209,7 @@ void JabberEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	EncryptionLayout->setSpacing(6);
 	EncryptionLayout->setMargin(0);
 	EncryptionModeLabel = new QLabel(general);
-	EncryptionModeLabel->setText(tr("Encrypt connection")+":");
+	EncryptionModeLabel->setText(tr("Encrypt connection") + ':');
 	EncryptionLayout->addWidget(EncryptionModeLabel);
 
 	EncryptionMode = new QComboBox(general);
@@ -234,7 +234,7 @@ void JabberEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	plainAuthLayout->setSpacing(6);
 	plainAuthLayout->setMargin(0);
 	QLabel *plainAuthLabel = new QLabel(general);
-	plainAuthLabel->setText(tr("Allow plaintext authentication")+":");
+	plainAuthLabel->setText(tr("Allow plaintext authentication") + ':');
 	plainAuthLayout->addWidget(plainAuthLabel);
 
 	PlainTextAuth = new QComboBox(general);
@@ -267,7 +267,7 @@ void JabberEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 	ResourceLayout->setMargin(0);
 
 	ResourceLabel = new QLabel;
-	ResourceLabel->setText(tr("Resource")+":");
+	ResourceLabel->setText(tr("Resource") + ':');
 	ResourceLayout->addWidget(ResourceLabel);
 
 	ResourceName = new QLineEdit;
@@ -275,7 +275,7 @@ void JabberEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 	ResourceLayout->addWidget(ResourceName);
 
 	PriorityLabel = new QLabel;
-	PriorityLabel->setText(tr("Priority")+":");
+	PriorityLabel->setText(tr("Priority") + ':');
 	ResourceLayout->addWidget(PriorityLabel);
 
 	Priority = new QLineEdit;
@@ -297,7 +297,7 @@ void JabberEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 	DataTransferProxyLayout->setMargin(0);
 
 	DataTransferProxyLabel = new QLabel;
-	DataTransferProxyLabel->setText(tr("Data transfer proxy")+":");
+	DataTransferProxyLabel->setText(tr("Data transfer proxy") + ':');
 	DataTransferProxyLayout->addWidget(DataTransferProxyLabel);
 
 	DataTransferProxy = new QLineEdit;

@@ -182,9 +182,9 @@ void AdiumChatStyleEngine::appendChatMessage(HtmlMessagesRenderer *renderer, Mes
 	}
 
 	formattedMessageHtml = replaceKeywords(renderer->chat(), CurrentStyle.baseHref(), formattedMessageHtml, message);
-	formattedMessageHtml.replace("\n", " ");
-	formattedMessageHtml.replace("'", "\\'");
-	formattedMessageHtml.replace("\\", "\\\\");
+	formattedMessageHtml.replace('\n', ' ');
+	formattedMessageHtml.replace('\'', QLatin1String("\\'"));
+	formattedMessageHtml.replace('\\', QLatin1String("\\\\"));
 	formattedMessageHtml.prepend("<span>");
 	formattedMessageHtml.append("</span>");
 
@@ -254,7 +254,7 @@ bool AdiumChatStyleEngine::clearDirectory(const QString &directory)
 		}
 		else
 		{
-			if (!clearDirectory(QString(directory + "/" + fileName)) || !dir.rmdir(fileName))
+			if (!clearDirectory(QString(directory + '/' + fileName)) || !dir.rmdir(fileName))
 				return false;
 
 		}
@@ -305,16 +305,16 @@ void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNa
 	preview->page()->mainFrame()->evaluateJavaScript("initStyle()");
 
 	QString outgoingHtml = replaceKeywords(msg.messageChat(), style.baseHref(), style.outgoingHtml(), message);
-	outgoingHtml.replace("\n", " ");
-	outgoingHtml.replace("'", "\\'");
+	outgoingHtml.replace('\n', ' ');
+	outgoingHtml.replace('\'', QLatin1String("\\'"));
 	outgoingHtml.prepend("<span>");
 	outgoingHtml.append("</span>");
 	preview->page()->mainFrame()->evaluateJavaScript("appendMessage(\'" + outgoingHtml + "\')");
 
 	message = dynamic_cast<MessageRenderInfo *>(preview->getObjectsToParse().at(1));
 	QString incomingHtml = replaceKeywords(msg.messageChat(), style.baseHref(), style.incomingHtml(), message);
-	incomingHtml.replace("\n", " ");
-	incomingHtml.replace("'", "\\'");
+	incomingHtml.replace('\n', ' ');
+	incomingHtml.replace('\'', QLatin1String("\\'"));
 	incomingHtml.prepend("<span>");
 	incomingHtml.append("</span>");
 	preview->page()->mainFrame()->evaluateJavaScript("appendMessage(\'" + incomingHtml + "\')");
@@ -403,8 +403,8 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, const QString &styleHre
 	}
 	else
 	{
-		result.replace(QString("%service%"), "");
-		result.replace(QString("%senderStatusIcon%"), "");
+		result.remove("%service%");
+		result.remove("%senderStatusIcon%");
 	}
 
 	// Replace time

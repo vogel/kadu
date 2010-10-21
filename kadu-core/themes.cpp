@@ -148,7 +148,7 @@ void Themes::setPaths(const QStringList &paths)
 			if (paths.indexOf(it) != -1)
 				additional.append(it);
 			ThemesPaths.append(it);
-			ThemesList.append(it.section("/", -1, -1, QString::SectionSkipEmpty));
+			ThemesList.append(it.section('/', -1, -1, QString::SectionSkipEmpty));
 		}
 // TODO: 0.6.5
 // 		else

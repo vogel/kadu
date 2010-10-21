@@ -133,7 +133,7 @@ int ITunesMediaPlayer::getLength(int position)
 int ITunesMediaPlayer::getCurrentPos()
 {
 	kdebugf();
-	Tune t = controller->currentTune();	
+	Tune t = controller->currentTune();
 	return (QDateTime::currentDateTime().toTime_t() -  t.started()) * 1000;
 }
 
@@ -220,7 +220,7 @@ QByteArray ITunesMediaPlayer::executeCommand(const QString &command)
 	QStringList params;
 	QProcess process;
 
-	params << "-e" << "'" + command + "'";
+	params << "-e" << '\'' + command + '\'';
 	process.start("osascript", params);
 
 	if (!process.waitForStarted(500))
@@ -231,7 +231,7 @@ QByteArray ITunesMediaPlayer::executeCommand(const QString &command)
 
 	result = process.readAll();
 
-	kdebugmf(KDEBUG_INFO,"command: osascript -e %s - result: [%s]\n", 
+	kdebugmf(KDEBUG_INFO,"command: osascript -e %s - result: [%s]\n",
 		qPrintable(command), qPrintable(QString(result)));
 
 	return result;

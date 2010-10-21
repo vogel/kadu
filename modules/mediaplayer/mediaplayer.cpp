@@ -624,7 +624,7 @@ QString MediaPlayer::parse(const QString &str)
 					if (len != 0)
 					{
 						int perc = 100 * getCurrentPos() / len;
-						tmp = QString::number(perc) + "%";
+						tmp = QString::number(perc) + '%';
 						r += tmp;
 					}
 					break;
@@ -657,9 +657,9 @@ QString MediaPlayer::formatLength(int length)
 	int lgt = length / 1000, m, s;
 	m = lgt / 60;
 	s = lgt % 60;
-	ms = QString::number(m) + ":";
+	ms = QString::number(m) + ':';
 	if (s < 10)
-		ms += "0";
+		ms += '0';
 
 	ms += QString::number(s);
 

@@ -77,7 +77,7 @@ void ConfigComboBox::createWidgets()
 {
 	kdebugf();
 
-	label = new QLabel(qApp->translate("@default", widgetCaption.toAscii().data()) + ":", parentConfigGroupBox->widget());
+	label = new QLabel(qApp->translate("@default", widgetCaption.toAscii().data()) + ':', parentConfigGroupBox->widget());
 	parentConfigGroupBox->addWidgets(label, this);
 
 	clear();

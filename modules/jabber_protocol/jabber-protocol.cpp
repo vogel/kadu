@@ -99,10 +99,10 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 		ContactsListReadOnly(false)
 {
 	kdebugf();
-	
+
 	VCardFactory::createInstance(this);
 
-	if (account.id().endsWith("@chat.facebook.com"))
+	if (account.id().endsWith(QLatin1String("@chat.facebook.com")))
 		setContactsListReadOnly(true);
 
 	initializeJabberClient();

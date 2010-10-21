@@ -63,7 +63,7 @@ QString GaduListHelper::contactToLine70(Contact contact)
 	list.append(""); // alive sound
 	list.append(""); // message sound
 	list.append(""); // message sound
-	list.append(""); // offlineTo 
+	list.append(""); // offlineTo
 	list.append(buddy.homePhone());
 
 	return list.join(";");
@@ -96,9 +96,9 @@ BuddyList GaduListHelper::streamToBuddyList(Account account, QTextStream &conten
 
 	QString line = content.readLine(70);
 
-	if (line.startsWith("<ContactBook>"))
+	if (line.startsWith(QLatin1String("<ContactBook>")))
 		result = streamPost70ToBuddyList(line, account, content);
-	else if (line.startsWith("GG70ExportString"))
+	else if (line.startsWith(QLatin1String("GG70ExportString")))
 		result = stream70ToBuddyList(account, content);
 	else
 		result = streamPre70ToBuddyList(line, account, content);
@@ -114,7 +114,7 @@ BuddyList GaduListHelper::streamPre70ToBuddyList(const QString &firstLine, Accou
 		return result;
 
 	QString line = firstLine;
-	QStringList sections = line.split(";", QString::KeepEmptyParts);
+	QStringList sections = line.split(';', QString::KeepEmptyParts);
 
 	if (sections.count() > 6)
 	{
@@ -133,7 +133,7 @@ BuddyList GaduListHelper::streamPre70ToBuddyList(const QString &firstLine, Accou
 	while (!content.atEnd())
 	{
 		line = content.readLine();
-		sections = line.split(";", QString::KeepEmptyParts);
+		sections = line.split(';', QString::KeepEmptyParts);
 
 		if (sections.count() < 7)
 			continue;
@@ -154,7 +154,7 @@ BuddyList GaduListHelper::stream70ToBuddyList(Account account, QTextStream &cont
 	{
 		line = content.readLine();
 
-		sections = line.split(";", QString::KeepEmptyParts);
+		sections = line.split(';', QString::KeepEmptyParts);
 
 		result.append(line70ToBuddy(account, sections));
 	}
@@ -182,7 +182,7 @@ BuddyList GaduListHelper::streamPost70ToBuddyList(const QString &line, Account a
 		for (; !groupElement.isNull(); groupElement = groupElement.nextSiblingElement("Group"))
 		{
 			QDomElement idElement = groupElement.firstChildElement("Id");
-			if (idElement.text().startsWith("00000000-0000-0000-0000-"))
+			if (idElement.text().startsWith(QLatin1String("00000000-0000-0000-0000-")))
 				continue;
 
 			QDomElement nameElement = groupElement.firstChildElement("Name");
@@ -335,7 +335,7 @@ Buddy GaduListHelper::line70ToBuddy(Account account, QStringList &sections)
 
 	if (!sections[5].isEmpty())
 	{
-		foreach (const QString &group, sections[5].split(",", QString::SkipEmptyParts))
+		foreach (const QString &group, sections[5].split(',', QString::SkipEmptyParts))
 			groups.append(GroupManager::instance()->byName(group));
 
 		buddy.setGroups(groups);

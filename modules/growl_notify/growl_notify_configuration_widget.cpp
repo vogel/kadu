@@ -46,9 +46,9 @@ GrowlNotifyConfigurationWidget::GrowlNotifyConfigurationWidget(QWidget *parent)
 	connect(title, SIGNAL(textChanged(const QString &)), this, SLOT(titleChanged(const QString &)));
 
 	QGridLayout *gridLayout = new QGridLayout(this);
-	gridLayout->addWidget(new QLabel(tr("Title") + ":", this), 0, 0, Qt::AlignRight);
+	gridLayout->addWidget(new QLabel(tr("Title") + ':', this), 0, 0, Qt::AlignRight);
 	gridLayout->addWidget(title, 0, 1);
-	gridLayout->addWidget(new QLabel(tr("Syntax") + ":", this), 1, 0, Qt::AlignRight);
+	gridLayout->addWidget(new QLabel(tr("Syntax") + ':', this), 1, 0, Qt::AlignRight);
 	gridLayout->addWidget(syntax, 1, 1);
 
 	parent->layout()->addWidget(this);
@@ -58,7 +58,7 @@ void GrowlNotifyConfigurationWidget::saveNotifyConfigurations()
 {
 	kdebugf();
 
-	if (currentNotifyEvent != "")
+	if (!currentNotifyEvent.isEmpty())
 		properties[currentNotifyEvent] = currentProperties;
 
 	foreach(const GrowlNotifyProperties &property, properties)
@@ -74,7 +74,7 @@ void GrowlNotifyConfigurationWidget::switchToEvent(const QString &event)
 {
 	kdebugf();
 
-	if (currentNotifyEvent != "")
+	if (!currentNotifyEvent.isEmpty())
 		properties[currentNotifyEvent] = currentProperties;
 
 	if (properties.contains(event))

@@ -149,7 +149,7 @@ bool EmoticonsManager::loadGGEmoticonThemePart(const QString &subdir)
 
 	QString dir = subdir;
 
-	if (!dir.isEmpty() && !dir.endsWith("/"))
+	if (!dir.isEmpty() && !dir.endsWith('/'))
 		dir += '/';
 	QString path = themePath() + '/' + dir;
 	QFile theme_file(path + ConfigName);

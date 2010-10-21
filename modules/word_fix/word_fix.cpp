@@ -208,7 +208,7 @@ void WordFix::doReplace(QString &text)
 
 	// Make text as " "+text+" ", to match words at the start and end of text.
 	QString txt = text;
-	txt = " "+txt+" ";
+	txt = ' ' + txt + ' ';
 
 	// Replacing
 	QString key;
@@ -221,7 +221,7 @@ void WordFix::doReplace(QString &text)
 						+key
 						+"[\\s\\!\\.\\,\\(\\)\\[\\]\\;\\:\\\"\\']{1}"
 					),
-				" "+wordsList[key]+" "
+				' ' + wordsList[key] + ' '
 			);
 	}
 
@@ -318,7 +318,7 @@ void WordFix::addNew()
 		list->sortItems(0, Qt::AscendingOrder);
 		list->setCurrentItem(item);
 	}
-	
+
 	wordEdit->setText("");
 	valueEdit->setText("");
 
@@ -371,7 +371,7 @@ void WordFix::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfig
 	wordEdit = new QLineEdit(widget);
 	layout->addWidget(new QLabel(tr("A word to be replaced")), 1, 0);
 	layout->addWidget(wordEdit, 1, 1);
-	
+
 	valueEdit = new QLineEdit(widget);
 	layout->addWidget(new QLabel(tr("Value to replace with")), 2, 0);
 	layout->addWidget(valueEdit, 2, 1);
@@ -458,12 +458,12 @@ void WordFix::configurationApplied()
 void WordFix::saveList()
 {
 	kdebugf();
-	
+
 	QStringList list;
 	for (int i = 0; i < wordsList.keys().count(); i++)
 	{
 		QString word = wordsList.keys()[i];
-		list.append(word+"\t"+wordsList[word]);
+		list.append(word + '\t' + wordsList[word]);
 	}
 	config_file.writeEntry("word_fix", "WordFix_list", list.join("\t\t"));
 

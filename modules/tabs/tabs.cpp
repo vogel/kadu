@@ -443,7 +443,7 @@ void TabsManager::onTimer()
 					else if (!msg)
 					{
 						if(ConfigShowNewMessagesNum)
-							TabDialog->setWindowTitle("[" + QString().setNum(chat->newMessagesCount()) + "] " + chat->chat().title());
+							TabDialog->setWindowTitle('[' + QString::number(chat->newMessagesCount()) + "] " + chat->chat().title());
 						else
 							TabDialog->setWindowTitle(chat->chat().title());
 					}

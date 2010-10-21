@@ -106,7 +106,7 @@ void Cenzor::filterIncomingMessage(Chat chat, Contact sender, const QString &mes
 
 bool Cenzor::shouldIgnore(const QString &message)
 {
-	QStringList words = message.split(" ", QString::SkipEmptyParts);
+	QStringList words = message.split(' ', QString::SkipEmptyParts);
 
 	foreach (const QString &word, words)
 	{

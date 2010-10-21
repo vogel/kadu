@@ -140,7 +140,7 @@ void KdeNotify::notify(Notification *notification)
 	{
 		text.append(notification->text() + "<br/><small>");
 
-		QString strippedDetails = notification->details().replace("<br/>", "\n").remove(StripHTML).replace("\n", "<br/>");
+		QString strippedDetails = notification->details().replace("<br/>", "\n").remove(StripHTML).replace('\n', QLatin1String("<br/>"));
 		if (strippedDetails.length() > config_file.readNumEntry("KDENotify", "CiteSign", 10))
 			text.append(strippedDetails.left(config_file.readNumEntry("KDENotify", "CiteSign", 10)) + "...");
 		else

@@ -942,7 +942,7 @@ void JabberClient::getErrorInfo(int err, AdvancedConnector *conn, Stream *stream
 		{
 			s = tr("Server is shutting down");
 		}
-		str = tr("XMPP Stream Error: %1").arg(s) + "\n" + detail;
+		str = tr("XMPP Stream Error: %1").arg(s) + '\n' + detail;
 	}
 	else if (err == XMPP::ClientStream::ErrConnection)
 	{
@@ -984,7 +984,7 @@ void JabberClient::getErrorInfo(int err, AdvancedConnector *conn, Stream *stream
 			s = tr("See other host: %1").arg(stream->errorText());
 		else if (x == XMPP::ClientStream::UnsupportedVersion)
 			s = tr("Server does not support proper XMPP version");
-		str = tr("Stream Negotiation Error: %1").arg(s) + "\n" + detail;
+		str = tr("Stream Negotiation Error: %1").arg(s) + '\n' + detail;
 	}
 	else if (err == XMPP::ClientStream::ErrTLS)
 	{
@@ -1011,7 +1011,7 @@ void JabberClient::getErrorInfo(int err, AdvancedConnector *conn, Stream *stream
 		else if (x == XMPP::ClientStream::NoMech)
 		{
 			s = tr("No appropriate mechanism available for given security settings(e.g. SASL library too weak, or plaintext authentication not enabled)");
-			s += "\n" + stream->errorText();
+			s += '\n' + stream->errorText();
 		}
 		else if (x == XMPP::ClientStream::BadProto)
 			s = tr("Bad server response");

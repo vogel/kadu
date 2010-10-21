@@ -19,9 +19,9 @@ TextProgress::TextProgress(QWidget *parent, const QString &text) :
 {
 	timer_ = new QTimer(this);
 	connect(timer_, SIGNAL(timeout()), this, SLOT(timeout()));
-	
+
 	setText(text);
-	
+
 	timer_->start(250);
 }
 
@@ -36,10 +36,10 @@ void TextProgress::setProgressText()
 {
 	if (!text_.isEmpty())
 	{
-		QString text = " " + text_ + " ";
+		QString text = ' ' + text_ + ' ';
 		for (int i = 0; i < counter_; ++i)
-			text = "." + text + ".";
-		
+			text = '.' + text + '.';
+
 		QLabel::setText(text);
 	}
 }
@@ -56,6 +56,6 @@ void TextProgress::timeout()
 		counter_ = 0;
 	else
 		++counter_;
-	
+
 	setProgressText();
 }

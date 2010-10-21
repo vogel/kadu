@@ -73,7 +73,7 @@ void BuddyGeneralConfigurationWidget::createGui()
 
 	QHBoxLayout *nameLayout = new QHBoxLayout(nameWidget);
 
-	QLabel *numberLabel = new QLabel(tr("Visible Name") + ":", nameWidget);
+	QLabel *numberLabel = new QLabel(tr("Visible Name") + ':', nameWidget);
 	nameLayout->addWidget(numberLabel);
 
 	DisplayEdit = new QLineEdit(nameWidget);
@@ -94,22 +94,22 @@ void BuddyGeneralConfigurationWidget::createGui()
 
 	QGroupBox *communicationBox = new QGroupBox(tr("Communication Information"));
 	QFormLayout *communicationLayout = new QFormLayout(communicationBox);
-	
+
 	PhoneEdit = new QLineEdit(this);
 	PhoneEdit->setText(MyBuddy.homePhone());
-	communicationLayout->addRow(new QLabel(tr("Phone") + ":"), PhoneEdit);
+	communicationLayout->addRow(new QLabel(tr("Phone") + ':'), PhoneEdit);
 
 	MobileEdit = new QLineEdit(this);
 	MobileEdit->setText(MyBuddy.mobile());
-	communicationLayout->addRow(new QLabel(tr("Mobile") + ":"), MobileEdit);
+	communicationLayout->addRow(new QLabel(tr("Mobile") + ':'), MobileEdit);
 
 	EmailEdit = new QLineEdit(this);
 	EmailEdit->setText(MyBuddy.email());
-	communicationLayout->addRow(new QLabel(tr("E-Mail") + ":"), EmailEdit);
+	communicationLayout->addRow(new QLabel(tr("E-Mail") + ':'), EmailEdit);
 
 	WebsiteEdit = new QLineEdit(this);
 	WebsiteEdit->setText(MyBuddy.website());
-	communicationLayout->addRow(new QLabel(tr("Website") + ":"), WebsiteEdit);
+	communicationLayout->addRow(new QLabel(tr("Website") + ':'), WebsiteEdit);
 
 	layout->addWidget(communicationBox);
 	layout->addStretch(100);

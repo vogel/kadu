@@ -246,7 +246,7 @@ void AdvancedUserList::mainConfigurationWindowCreated(MainConfigurationWindow *m
 	connect(up, SIGNAL(clicked()), this, SLOT(onUpButton()));
 	connect(down, SIGNAL(clicked()), this, SLOT(onDownButton()));
 
-	sortingGroupBox->addWidgets(new QLabel(tr("Sorting functions") + ":", sortingGroupBox->widget()), sortingWidget);
+	sortingGroupBox->addWidgets(new QLabel(tr("Sorting functions") + ':', sortingGroupBox->widget()), sortingWidget);
 
 	newOrder = order;
 	displayFunctionList();

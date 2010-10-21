@@ -68,7 +68,7 @@ void ThemeManager::loadThemes(QStringList pathList)
 			continue;
 
 		QString newThemeName = getThemeName(path);
-		Theme theme(path + "/", newThemeName);
+		Theme theme(path + '/', newThemeName);
 		Themes.append(theme);
 
 		if (newThemeName == currentThemeName)

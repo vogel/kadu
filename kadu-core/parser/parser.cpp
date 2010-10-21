@@ -216,7 +216,7 @@ QString Parser::parse(const QString &s, Contact contact, const QObject * const o
 			 			HtmlDocument::escapeText(pe.content);
 					if (config_file.readBoolEntry("Look", "ShowMultilineDesc"))
 					{
-						pe.content.replace("\n", "<br/>");
+						pe.content.replace('\n', QLatin1String("<br/>"));
 						pe.content.replace(QRegExp("\\s\\s"), QString(" &nbsp;"));
 					}
 					break;
@@ -233,7 +233,7 @@ QString Parser::parse(const QString &s, Contact contact, const QObject * const o
 				case 'o':
 					++i;
 					if (contact && contact.port() == 2)
-						pe.content = " ";
+						pe.content = ' ';
 					break;
 				case 'p':
 					++i;
@@ -304,7 +304,7 @@ QString Parser::parse(const QString &s, Contact contact, const QObject * const o
 				case '%':
 					++i;
 				default:
-					pe.content = "%";
+					pe.content = '%';
 			}
 			parseStack.push_back(pe);
 		}
@@ -452,7 +452,7 @@ QString Parser::parse(const QString &s, Contact contact, const QObject * const o
 						else
 							file = pe.content.left(spacePos);
 
-						if (file.startsWith("file://"))
+						if (file.startsWith(QLatin1String("file://")))
 							file = file.mid(strlen("file://"));
 //						kdebugm(KDEBUG_INFO, "file: %s\n", qPrintable(file));
 						if (QFile::exists(file) == check_file_exists)

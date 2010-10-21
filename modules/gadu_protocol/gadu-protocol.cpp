@@ -594,7 +594,7 @@ void GaduProtocol::socketContactStatusChanged(unsigned int uin, unsigned int sta
 void GaduProtocol::socketConnFailed(GaduError error)
 {
 	kdebugf();
-	QString msg = QString::null;
+	QString msg;
 
 	bool tryAgain = true;
 	switch (error)

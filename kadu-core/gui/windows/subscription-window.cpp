@@ -61,10 +61,10 @@ SubscriptionWindow::SubscriptionWindow(Contact contact, QWidget *parent) :
 	layout->setColumnStretch(2, 4);
 
 	QLabel *messageLabel = new QLabel(tr("%1 wants to be able to chat with you.").arg(contact.id()), this);
-	QLabel *visibleNameLabel = new QLabel(tr("Visible Name") + ":", this);
+	QLabel *visibleNameLabel = new QLabel(tr("Visible Name") + ':', this);
 	QLabel *enterNameLabel = new QLabel(tr("Enter a name for this contact."), this);
 	VisibleName = new QLineEdit(this);
-	QLabel *groupLabel = new QLabel(tr("Add in Group") + ":", this);
+	QLabel *groupLabel = new QLabel(tr("Add in Group") + ':', this);
 
 	GroupCombo = new GroupsComboBox(this);
 

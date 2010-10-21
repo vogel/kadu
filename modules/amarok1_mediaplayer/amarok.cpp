@@ -22,7 +22,7 @@
  */
 
 /* Dorr: As we have not dcopclient implementation for Qt4 now we're calling
- * each dcop command using QProcess. I know it's not ideal solution but 
+ * each dcop command using QProcess. I know it's not ideal solution but
  * works ;)
  */
 
@@ -72,7 +72,7 @@ QByteArray AmarokMediaPlayer::executeCommand(QString obj, QString func)
 
 	result = process.readAll();
 
-	kdebugmf(KDEBUG_INFO, "command: dcop amarok %s %s - result: [%s]\n", 
+	kdebugmf(KDEBUG_INFO, "command: dcop amarok %s %s - result: [%s]\n",
 		qPrintable(obj), qPrintable(func), qPrintable(QString(result)));
 
 	return result;
@@ -104,7 +104,7 @@ QStringList AmarokMediaPlayer::getStringList(QString obj, QString func)
 		return QStringList();
 
 	QByteArray reply = executeCommand(obj, func);
-	return QString(reply).split("\n");
+	return QString(reply).split('\n');
 }
 
 int AmarokMediaPlayer::getInt(QString obj, QString func)
@@ -322,7 +322,7 @@ bool AmarokMediaPlayer::isActive()
 	QByteArray reply = executeCommand("player", "isPlaying");
 	QString ret(reply);
 	ret = ret.simplified();
-		
+
 	return ((ret == "true") || (ret == "false")) ? true : false;
 	kdebugf2();
 }

@@ -77,12 +77,12 @@ void GaduAddAccountWidget::createGui()
 	AccountId = new QLineEdit(this);
 	AccountId->setValidator(new LongValidator(1, 3999999999U, this));
 	connect(AccountId, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
-	layout->addRow(tr("Gadu-Gadu number") + ":", AccountId);
+	layout->addRow(tr("Gadu-Gadu number") + ':', AccountId);
 
 	AccountPassword = new QLineEdit(this);
 	connect(AccountPassword, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
 	AccountPassword->setEchoMode(QLineEdit::Password);
-	layout->addRow(tr("Password") + ":", AccountPassword);
+	layout->addRow(tr("Password") + ':', AccountPassword);
 
 	RememberPassword = new QCheckBox(tr("Remember Password"), this);
 	RememberPassword->setChecked(true);
@@ -95,7 +95,7 @@ void GaduAddAccountWidget::createGui()
 
 	Identity = new IdentitiesComboBox(this);
 	connect(Identity, SIGNAL(identityChanged(Identity)), this, SLOT(dataChanged()));
-	layout->addRow(tr("Account Identity") + ":", Identity);
+	layout->addRow(tr("Account Identity") + ':', Identity);
 
 	QLabel *infoLabel = new QLabel(tr("<font size='-1'><i>Select or enter the identity that will be associated with this account.</i></font>"), this);
 	infoLabel->setWordWrap(true);
@@ -148,7 +148,7 @@ void GaduAddAccountWidget::addAccountButtonClicked()
 	}
 
 	resetGui();
-	
+
 	emit accountCreated(gaduAccount);
 }
 

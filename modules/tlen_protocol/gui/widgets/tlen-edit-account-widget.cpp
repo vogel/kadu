@@ -103,19 +103,19 @@ void TlenEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 	ConnectAtStart = new QCheckBox(tr("Connect at start"), this);
 	layout->addWidget(ConnectAtStart, row++, 0, 1, 3);
 
-	QLabel *nameLabel = new QLabel(tr("Account name") + ":", this);
+	QLabel *nameLabel = new QLabel(tr("Account name") + ':', this);
 	layout->addWidget(nameLabel, row++, 1);
 	AccountName = new QLineEdit(this);
 	connect(AccountName, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 	layout->addWidget(AccountName, row++, 1, 1, 2);
 
-	QLabel *numberLabel = new QLabel(tr("Tlen.pl Login") + ":", this);
+	QLabel *numberLabel = new QLabel(tr("Tlen.pl Login") + ':', this);
 	layout->addWidget(numberLabel, row++, 1);
 	AccountId = new QLineEdit(this);
 	connect(AccountId, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 	layout->addWidget(AccountId, row++, 1, 1, 2);
 
-	QLabel *passwordLabel = new QLabel(tr("Password") + ":", this);
+	QLabel *passwordLabel = new QLabel(tr("Password") + ':', this);
 	layout->addWidget(passwordLabel, row++, 1);
 	AccountPassword = new QLineEdit(this);
 	AccountPassword->setEchoMode(QLineEdit::Password);
@@ -126,7 +126,7 @@ void TlenEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 	RememberPassword->setChecked(true);
 	layout->addWidget(RememberPassword, row++, 1, 1, 2);
 
-	QLabel *descriptionLabel = new QLabel(tr("Account description") + ":", this);
+	QLabel *descriptionLabel = new QLabel(tr("Account description") + ':', this);
 	layout->addWidget(descriptionLabel, row++, 1, Qt::AlignRight);
 	ChooseIdentity = new ChooseIdentityWidget(this);
 	layout->addWidget(ChooseIdentity, row++, 1, 1, 2);
@@ -137,7 +137,7 @@ void TlenEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 	//layout->addWidget(changePassword, row++, 1, Qt::AlignLeft);
 
 	row = 0;
-	QLabel *photoLabel = new QLabel(tr("Your photo") + ":", this);
+	QLabel *photoLabel = new QLabel(tr("Your photo") + ':', this);
 	layout->addWidget(photoLabel, row++, 4);
 
 	QPushButton *photoButton = new QPushButton;
@@ -196,9 +196,9 @@ void TlenEditAccountWidget::apply()
 	proxy->apply();
 
 	gpiw->applyData();
-	
+
 	ConfigurationManager::instance()->flush();
-	
+
 	setState(StateNotChanged);
 }
 

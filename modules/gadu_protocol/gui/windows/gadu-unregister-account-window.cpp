@@ -81,12 +81,12 @@ void GaduUnregisterAccountWindow::createGui()
 	AccountId = new QLineEdit(this);
 	AccountId->setValidator(new LongValidator(1, 3999999999U, this));
 	connect(AccountId, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
-	layout->addRow(tr("Gadu-Gadu number") + ":", AccountId);
+	layout->addRow(tr("Gadu-Gadu number") + ':', AccountId);
 
 	Password = new QLineEdit(this);
 	Password->setEchoMode(QLineEdit::Password);
 	connect(Password, SIGNAL(textChanged(const QString &)), this, SLOT(dataChanged()));
-	layout->addRow(tr("Password") + ":", Password);
+	layout->addRow(tr("Password") + ':', Password);
 
 	infoLabel = new QLabel(tr("<font size='-1'><i>Enter password for your Gadu-Gadu account.</i></font>"), this);
 	infoLabel->setWordWrap(true);
@@ -96,7 +96,7 @@ void GaduUnregisterAccountWindow::createGui()
 
 	MyTokenWidget = new TokenWidget(this);
 	connect(MyTokenWidget, SIGNAL(modified()), this, SLOT(dataChanged()));
-	layout->addRow(tr("Characters") + ":", MyTokenWidget);
+	layout->addRow(tr("Characters") + ':', MyTokenWidget);
 
 	infoLabel = new QLabel(tr("<font size='-1'><i>For verification purposes, please type the characters above.</i></font>"), this);
 	infoLabel->setWordWrap(true);

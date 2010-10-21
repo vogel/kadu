@@ -82,7 +82,7 @@ void PlainConfigFile::read()
 		while (!stream.atEnd())
 		{
 			line = stream.readLine().trimmed();
-			if (line.startsWith("[") && line.endsWith("]"))
+			if (line.startsWith('[') && line.endsWith(']'))
 			{
 				QString name=line.mid(1, line.length() - 2).trimmed();
 				if (activeGroupName!=name)
@@ -274,7 +274,7 @@ T PlainConfigFile::readEntry(const QString &group, const QString &name, const T 
 QString PlainConfigFile::readEntry(const QString &group,const QString &name, const QString &def)
 {
 	QString string = getEntry(group, name);
-	if (string == QString::null)
+	if (string.isNull())
 		return def;
 	return string;
 }
@@ -283,7 +283,7 @@ unsigned int PlainConfigFile::readUnsignedNumEntry(const QString &group,const QS
 {
 	bool ok;
 	QString string = getEntry(group, name);
-	if (string == QString::null)
+	if (string.isNull())
 		return def;
 	unsigned int num = string.toUInt(&ok);
 	if (!ok)
@@ -295,7 +295,7 @@ int PlainConfigFile::readNumEntry(const QString &group,const QString &name, int 
 {
 	bool ok;
 	QString string = getEntry(group, name);
-	if (string == QString::null)
+	if (string.isNull())
 		return def;
 	int num = string.toInt(&ok);
 	if (!ok)
@@ -307,7 +307,7 @@ double PlainConfigFile::readDoubleNumEntry(const QString &group,const QString &n
 {
 	bool ok;
 	QString string = getEntry(group, name);
-	if (string == QString::null)
+	if (string.isNull())
 		return def;
 	double num = string.toDouble(&ok);
 	if (!ok)
@@ -318,7 +318,7 @@ double PlainConfigFile::readDoubleNumEntry(const QString &group,const QString &n
 bool PlainConfigFile::readBoolEntry(const QString &group,const QString &name, bool def)
 {
 	QString string = getEntry(group, name);
-	if (string == QString::null)
+	if (string.isNull())
 		return def;
 	return string=="true";
 }
@@ -327,7 +327,7 @@ QRect PlainConfigFile::readRectEntry(const QString &group,const QString &name, c
 {
 	QString string = getEntry(group, name);
 
-	if (string == QString::null)
+	if (string.isNull())
 		return def ? *def : QRect(0, 0, 0, 0);
 
 	return stringToRect(string, def);
@@ -341,7 +341,7 @@ QSize PlainConfigFile::readSizeEntry(const QString &group,const QString &name, c
 	int w, h;
 	bool ok;
 
-	if (string == QString::null)
+	if (string.isNull())
 		return def ? *def : size;
 	stringlist = string.split(',', QString::SkipEmptyParts);
 	if (stringlist.count() != 2)
@@ -357,7 +357,7 @@ QColor PlainConfigFile::readColorEntry(const QString &group,const QString &name,
 {
 	QColor col(0,0,0);
 	QString str = getEntry(group, name);
-	if (str==QString::null)
+	if (str.isNull())
 		return def ? *def : col;
 	else
 	{
@@ -385,7 +385,7 @@ QFont PlainConfigFile::readFontEntry(const QString &group,const QString &name, c
 	QFont font;
 	bool ok;
 
-	if (string == QString::null)
+	if (string.isNull())
 		return def ? *def : QApplication::font();
 	stringlist = string.split(',', QString::SkipEmptyParts);
 	if (stringlist.count() < 2)
@@ -414,7 +414,7 @@ QPoint PlainConfigFile::readPointEntry(const QString &group,const QString &name,
 	int x, y;
 	bool ok;
 
-	if (string == QString::null)
+	if (string.isNull())
 		return def ? *def : point;
 	stringlist = string.split(',', QString::SkipEmptyParts);
 	if (stringlist.count() != 2)
@@ -497,7 +497,7 @@ bool ConfigFile::changeEntry(const QString &group, const QString &name, const QS
 	QDomElement root_elem = xml_config_file->rootElement();
 	QDomElement deprecated_elem = xml_config_file->accessElement(root_elem, "Deprecated");
 	QDomElement config_file_elem = xml_config_file->accessElementByProperty(
-		deprecated_elem, "ConfigFile", "name", filename.section("/", -1));
+		deprecated_elem, "ConfigFile", "name", filename.section('/', -1));
 	QDomElement group_elem = xml_config_file->accessElementByProperty(
 		config_file_elem, "Group", "name", group);
 	QDomElement entry_elem = xml_config_file->accessElementByProperty(
@@ -514,7 +514,7 @@ QString ConfigFile::getEntry(const QString &group, const QString &name, bool *ok
 	GlobalMutex.lock();
 
 	bool resOk;
-	QString result = QString::null;
+	QString result;
 
 //	kdebugm(KDEBUG_FUNCTION_START, "ConfigFile::getEntry(%s, %s) %p\n", qPrintable(group), qPrintable(name), this);
 	{
@@ -523,7 +523,7 @@ QString ConfigFile::getEntry(const QString &group, const QString &name, bool *ok
 		if (!deprecated_elem.isNull())
 		{
 			QDomElement config_file_elem = xml_config_file->findElementByProperty(
-				deprecated_elem, "ConfigFile", "name", filename.section("/", -1));
+				deprecated_elem, "ConfigFile", "name", filename.section('/', -1));
 			if (!config_file_elem.isNull())
 			{
 				QDomElement group_elem = xml_config_file->findElementByProperty(
@@ -604,7 +604,7 @@ void ConfigFile::writeEntry(const QString &group,const QString &name, const QPoi
 QString ConfigFile::readEntry(const QString &group,const QString &name, const QString &def) const
 {
 	QString string = getEntry(group, name);
-	if (string == QString::null)
+	if (string.isNull())
 		return def;
 	return string;
 }
@@ -613,7 +613,7 @@ unsigned int ConfigFile::readUnsignedNumEntry(const QString &group,const QString
 {
 	bool ok;
 	QString string = getEntry(group, name);
-	if (string == QString::null)
+	if (string.isNull())
 		return def;
 	unsigned int num = string.toUInt(&ok);
 	if (!ok)
@@ -625,7 +625,7 @@ int ConfigFile::readNumEntry(const QString &group,const QString &name, int def) 
 {
 	bool ok;
 	QString string = getEntry(group, name);
-	if (string == QString::null)
+	if (string.isNull())
 		return def;
 	int num = string.toInt(&ok);
 	if (!ok)
@@ -637,7 +637,7 @@ double ConfigFile::readDoubleNumEntry(const QString &group,const QString &name, 
 {
 	bool ok;
 	QString string = getEntry(group, name);
-	if (string == QString::null)
+	if (string.isNull())
 		return def;
 	double num = string.toDouble(&ok);
 	if (!ok)
@@ -648,7 +648,7 @@ double ConfigFile::readDoubleNumEntry(const QString &group,const QString &name, 
 bool ConfigFile::readBoolEntry(const QString &group,const QString &name, bool def) const
 {
 	QString string = getEntry(group, name);
-	if (string == QString::null)
+	if (string.isNull())
 		return def;
 	return string=="true";
 }
@@ -661,7 +661,7 @@ QRect ConfigFile::readRectEntry(const QString &group,const QString &name, const 
 	int l, t, w, h;
 	bool ok;
 
-	if (string == QString::null)
+	if (string.isNull())
 		return def ? *def : rect;
 	stringlist = string.split(',', QString::SkipEmptyParts);
 	if (stringlist.count() != 4)
@@ -682,7 +682,7 @@ QSize ConfigFile::readSizeEntry(const QString &group,const QString &name, const 
 	int w, h;
 	bool ok;
 
-	if (string == QString::null)
+	if (string.isNull())
 		return def ? *def : size;
 	stringlist = string.split(',', QString::SkipEmptyParts);
 	if (stringlist.count() != 2)
@@ -698,7 +698,7 @@ QColor ConfigFile::readColorEntry(const QString &group,const QString &name, cons
 {
 	QColor col(0,0,0);
 	QString str = getEntry(group, name);
-	if (str==QString::null)
+	if (str.isNull())
 		return def ? *def : col;
 	else
 	{
@@ -722,7 +722,7 @@ QColor ConfigFile::readColorEntry(const QString &group,const QString &name, cons
 QFont ConfigFile::readFontEntry(const QString &group,const QString &name, const QFont *def) const
 {
 	QString string = getEntry(group, name);
-	if (string == QString::null)
+	if (string.isNull())
 		return def ? *def : QApplication::font();
 	QFont font;
 	if(font.fromString(string))
@@ -738,7 +738,7 @@ QPoint ConfigFile::readPointEntry(const QString &group,const QString &name, cons
 	int x, y;
 	bool ok;
 
-	if (string == QString::null)
+	if (string.isNull())
 		return def ? *def : point;
 	stringlist = string.split(',', QString::SkipEmptyParts);
 	if (stringlist.count() != 2)
@@ -757,7 +757,7 @@ void ConfigFile::removeVariable(const QString &group, const QString &name)
 	QDomElement root_elem = xml_config_file->rootElement();
 	QDomElement deprecated_elem = xml_config_file->accessElement(root_elem, "Deprecated");
 	QDomElement config_file_elem = xml_config_file->accessElementByProperty(
-		deprecated_elem, "ConfigFile", "name", filename.section("/", -1));
+		deprecated_elem, "ConfigFile", "name", filename.section('/', -1));
 	QDomElement group_elem = xml_config_file->accessElementByProperty(
 		config_file_elem, "Group", "name", group);
 	QDomElement entry_elem = xml_config_file->accessElementByProperty(

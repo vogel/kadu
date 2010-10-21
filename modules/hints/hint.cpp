@@ -58,7 +58,7 @@ Hint::Hint(QWidget *parent, Notification *notification)
 	ChatNotification *chatNotification = dynamic_cast<ChatNotification *>(notification);
 	CurrentChat = chatNotification ? chatNotification->chat() : Chat::null;
 
-	if (notification->details() != "")
+	if (!notification->details().isEmpty())
 		details.append(notification->details());
 
 	startSecs = secs = config_file.readNumEntry("Hints", "Event_" + notification->key() + "_timeout", 10);
@@ -156,7 +156,7 @@ void Hint::updateText()
 	QString text;
 
 	QString syntax = config_file.readEntry("Hints", "Event_" + notification->key() + "_syntax", "");
-	if (syntax == "")
+	if (syntax.isEmpty())
 		text = notification->text();
 	else
 	{
@@ -166,7 +166,7 @@ void Hint::updateText()
 			text = Parser::parse(syntax, (*CurrentChat.contacts().begin()), notification);
 		else
 			text = Parser::parse(syntax, notification);
-		
+
 		/* Dorr: the file:// in img tag doesn't generate the image on hint.
 		 * for compatibility with other syntaxes we're allowing to put the file://
 		 * so we have to remove it here */
@@ -196,8 +196,8 @@ void Hint::updateText()
 	}
 
 	// this does not work
-	//label->setText(" " + text.replace(" ", "&nbsp;").replace("\n", "<br />"));
-	label->setText(" " + text.replace("\n", "<br />"));
+	//label->setText(' ' + text.replace(' ', QLatin1String("&nbsp;")).replace('\n', QLatin1String("<br />")));
+	label->setText(' ' + text.replace('\n', QLatin1String("<br />")));
 
 	emit updated(this);
 }
@@ -288,7 +288,7 @@ void Hint::leaveEvent(QEvent *)
 
 void Hint::getData(QString &text, QPixmap &pixmap, unsigned int &timeout, QFont &font, QColor &fgcolor, QColor &bgcolor)
 {
-	text = label->text().remove(" ");
+	text = label->text().remove(' ');
 
 	if (icon)
 		pixmap = *(icon->pixmap());

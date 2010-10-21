@@ -160,7 +160,7 @@ void ChatWindow::kaduRestoreGeometry()
 	else
 	{
 		QRect geom = cgd->windowGeometry();
-		
+
 		setGeometry(geom);
 		currentChatWidget->setGeometry(geom);
 
@@ -239,7 +239,7 @@ void ChatWindow::blinkTitle()
 void ChatWindow::showNewMessagesNumInTitle()
 {
 	if (!_isActiveWindow(this))
-		setWindowTitle("[" + QString().setNum(currentChatWidget->newMessagesCount()) + "] " + currentChatWidget->chat().title());
+		setWindowTitle('[' + QString::number(currentChatWidget->newMessagesCount()) + "] " + currentChatWidget->chat().title());
 }
 
 void ChatWindow::windowActivationChange(bool b)

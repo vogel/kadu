@@ -38,11 +38,11 @@ HtmlDocument::HtmlDocument() : Elements()
 void HtmlDocument::escapeText(QString &text)
 {
 	//UWAGA: &amp; MUSI by� na pocz�tku!
-	text.replace("&", "&amp;");
-	text.replace("<", "&lt;");
-	text.replace(">", "&gt;");
-	text.replace("\"", "&quot;");
-	text.replace("'", "&apos;");
+	text.replace('&', QLatin1String("&amp;"));
+	text.replace('<', QLatin1String("&lt;"));
+	text.replace('>', QLatin1String("&gt;"));
+	text.replace('\"', QLatin1String("&quot;"));
+	text.replace('\'', QLatin1String("&apos;"));
 	text.replace("  ", "&nbsp; ");
 }
 

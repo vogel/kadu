@@ -57,7 +57,7 @@ void SoundConfigurationWidget::test()
 
 void SoundConfigurationWidget::saveNotifyConfigurations()
 {
-	if (CurrentNotifyEvent != "")
+	if (!CurrentNotifyEvent.isEmpty())
 		SoundFiles[CurrentNotifyEvent] = SoundFileSelectFile->file();
 
 	foreach (const QString &key, SoundFiles.keys())
@@ -66,7 +66,7 @@ void SoundConfigurationWidget::saveNotifyConfigurations()
 
 void SoundConfigurationWidget::switchToEvent(const QString &event)
 {
-	if (CurrentNotifyEvent != "")
+	if (!CurrentNotifyEvent.isEmpty())
 		SoundFiles[CurrentNotifyEvent] = SoundFileSelectFile->file();
 	CurrentNotifyEvent = event;
 

@@ -72,7 +72,7 @@ void GaduChangePasswordWindow::createGui()
 
 	EMail = new QLineEdit(this);
 	connect(EMail, SIGNAL(textChanged(const QString &)), this, SLOT(dataChanged()));
-	layout->addRow(tr("E-Mail Address") + ":", EMail);
+	layout->addRow(tr("E-Mail Address") + ':', EMail);
 
 	infoLabel = new QLabel(tr("<font size='-1'><i>Type E-Mail Address used during registration.</i></font>"), this);
 	infoLabel->setWordWrap(true);
@@ -83,7 +83,7 @@ void GaduChangePasswordWindow::createGui()
 	OldPassword = new QLineEdit(this);
 	OldPassword->setEchoMode(QLineEdit::Password);
 	connect(OldPassword, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
-	layout->addRow(tr("Old Password") + ":", OldPassword);
+	layout->addRow(tr("Old Password") + ':', OldPassword);
 
 	infoLabel = new QLabel(tr("<font size='-1'><i>Enter current password for your Gadu-Gadu account.</i></font>"), this);
 	infoLabel->setWordWrap(true);
@@ -94,7 +94,7 @@ void GaduChangePasswordWindow::createGui()
 	NewPassword = new QLineEdit(this);
 	NewPassword->setEchoMode(QLineEdit::Password);
 	connect(NewPassword, SIGNAL(textChanged(const QString &)), this, SLOT(dataChanged()));
-	layout->addRow(tr("New Password") + ":", NewPassword);
+	layout->addRow(tr("New Password") + ':', NewPassword);
 
 	infoLabel = new QLabel(tr("<font size='-1'><i>Enter new password for your Gadu-Gadu account.</i></font>"), this);
 	infoLabel->setWordWrap(true);
@@ -105,11 +105,11 @@ void GaduChangePasswordWindow::createGui()
 	ReNewPassword = new QLineEdit(this);
 	ReNewPassword->setEchoMode(QLineEdit::Password);
 	connect(ReNewPassword, SIGNAL(textChanged(const QString &)), this, SLOT(dataChanged()));
-	layout->addRow(tr("Retype New Password") + ":", ReNewPassword);
+	layout->addRow(tr("Retype New Password") + ':', ReNewPassword);
 
 	MyTokenWidget = new TokenWidget(this);
 	connect(MyTokenWidget, SIGNAL(modified()), this, SLOT(dataChanged()));
-	layout->addRow(tr("Characters") + ":", MyTokenWidget);
+	layout->addRow(tr("Characters") + ':', MyTokenWidget);
 
 	infoLabel = new QLabel(tr("<font size='-1'><i>For verification purposes, please type the characters above.</i></font>"), this);
 	infoLabel->setWordWrap(true);

@@ -44,7 +44,7 @@ GaduContactPersonalInfoWidget::GaduContactPersonalInfoWidget(Contact &contact, Q
 	setAttribute(Qt::WA_DeleteOnClose);
 
 	createGui();
-	
+
 	ContactPersonalInfoService *service = contact.contactAccount().protocolHandler()->contactPersonalInfoService();
 	if (!service)
 	{
@@ -68,37 +68,37 @@ void GaduContactPersonalInfoWidget::createGui()
 	QFormLayout *infoLayout = new QFormLayout(infoWidget);
 
 	FirstNameText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("First Name") + ":", infoWidget), FirstNameText);
+	infoLayout->addRow(new QLabel(tr("First Name") + ':', infoWidget), FirstNameText);
 
 	LastNameText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("Last Name") + ":", infoWidget), LastNameText);
+	infoLayout->addRow(new QLabel(tr("Last Name") + ':', infoWidget), LastNameText);
 
 	NicknameText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("Nickname") + ":", infoWidget), NicknameText);
+	infoLayout->addRow(new QLabel(tr("Nickname") + ':', infoWidget), NicknameText);
 
 	GenderText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("Gender") + ":", infoWidget), GenderText);
+	infoLayout->addRow(new QLabel(tr("Gender") + ':', infoWidget), GenderText);
 
 	BirthdateText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("Birthdate") + ":", infoWidget), BirthdateText);
+	infoLayout->addRow(new QLabel(tr("Birthdate") + ':', infoWidget), BirthdateText);
 
 	CityText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("City") + ":", infoWidget), CityText);
+	infoLayout->addRow(new QLabel(tr("City") + ':', infoWidget), CityText);
 
 	StateProvinceText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("State/Province") + ":", infoWidget), StateProvinceText);
+	infoLayout->addRow(new QLabel(tr("State/Province") + ':', infoWidget), StateProvinceText);
 
 	IpText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("IP Address") + ":", infoWidget), IpText);
+	infoLayout->addRow(new QLabel(tr("IP Address") + ':', infoWidget), IpText);
 
 	PortText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("Port") + ":", infoWidget), PortText);
+	infoLayout->addRow(new QLabel(tr("Port") + ':', infoWidget), PortText);
 
 	DnsNameText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("DNS Name") + ":", infoWidget), DnsNameText);
+	infoLayout->addRow(new QLabel(tr("DNS Name") + ':', infoWidget), DnsNameText);
 
 	ProtocolVerText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("Protocol Version") + ":", infoWidget), ProtocolVerText);
+	infoLayout->addRow(new QLabel(tr("Protocol Version") + ':', infoWidget), ProtocolVerText);
 
 	layout->addWidget(infoWidget);
 	layout->addStretch(100);
@@ -118,7 +118,7 @@ void GaduContactPersonalInfoWidget::reset()
 	DnsNameText->setText(QString::null);
 	ProtocolVerText->setText(QString::null);
 }
-	  
+
 void GaduContactPersonalInfoWidget::personalInfoAvailable(Buddy buddy)
 {
 	if (buddy.contacts().isEmpty())

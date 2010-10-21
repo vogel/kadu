@@ -163,7 +163,7 @@ FilterWidget::FilterWidget(QWidget *parent) : QWidget(parent)
 
 	setFocusProxy(NameFilterEdit);
 
-	layout->addWidget(new QLabel(tr("Filter") + ":", this));
+	layout->addWidget(new QLabel(tr("Filter") + ':', this));
 	layout->addWidget(NameFilterEdit);
 
 	connect(NameFilterEdit, SIGNAL(textChanged(const QString &)),

@@ -209,7 +209,7 @@ QString Buddy::display() const
 			{
 				Account account = contact.contactAccount();
 				if (account)
-					result = account.accountIdentity().name() + ":" + contact.id();
+					result = account.accountIdentity().name() + ':' + contact.id();
 			}
 		}
 	}

@@ -95,7 +95,7 @@ NotifyTreeWidget::NotifyTreeWidget(NotifyConfigurationUiHandler *uiHandler, QWid
 
 void NotifyTreeWidget::refresh()
 {
-	QString currentName = QString::null;
+	QString currentName;
 	if (currentItem())
 		currentName = currentItem()->text(0);
 	clear();

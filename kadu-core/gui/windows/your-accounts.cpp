@@ -192,7 +192,7 @@ void YourAccounts::createAccountWidget()
 #endif
 	QFormLayout *selectNetworkLayout = new QFormLayout(selectNetworkGroupbox);
 
-	QLabel *imNetworkLabel = new QLabel(tr("IM Network") + ":", CreateAddAccountContainer);
+	QLabel *imNetworkLabel = new QLabel(tr("IM Network") + ':', CreateAddAccountContainer);
 	Protocols = new ProtocolsComboBox(CreateAddAccountContainer);
 	selectNetworkLayout->addRow(imNetworkLabel, Protocols);
 

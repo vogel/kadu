@@ -57,7 +57,7 @@ void GaduAvatarUploader::authorized(OAuthToken token)
 		deleteLater();
 	}
 
-	QString boundary = QString("-----------------------------") + QUuid::createUuid().toString().remove("{").remove("}").remove("-");
+	QString boundary = QString("-----------------------------") + QUuid::createUuid().toString().remove(QRegExp("[{}-]"));
 
 	QBuffer avatarBuffer;
 	avatarBuffer.open(QIODevice::WriteOnly);

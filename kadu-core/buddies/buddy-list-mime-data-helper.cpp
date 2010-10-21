@@ -59,7 +59,7 @@ BuddyList BuddyListMimeDataHelper::fromMimeData(const QMimeData * mimeData)
 	if (contactListString.isEmpty())
 		return result;
 
-	QStringList contactListStrings = contactListString.split(":");
+	QStringList contactListStrings = contactListString.split(':');
 	foreach (const QString &contactListString, contactListStrings)
 	{
 		Buddy buddy = BuddyManager::instance()->byUuid(contactListString);

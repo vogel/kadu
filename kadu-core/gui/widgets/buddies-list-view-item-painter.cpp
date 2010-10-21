@@ -180,7 +180,7 @@ bool BuddiesListViewItemPainter::drawDisabled()
 QTextDocument * BuddiesListViewItemPainter::createDescriptionDocument(const QString &text, int width, QColor color) const
 {
 	QString description = Qt::escape(text);
-	description.replace("\n", Configuration.showMultiLineDescription() ? "<br/>" : " " );
+	description.replace('\n', Configuration.showMultiLineDescription() ? QLatin1String("<br/>") : QLatin1String(" "));
 
 	QTextDocument *doc = new QTextDocument();
 

@@ -27,7 +27,7 @@
 /**
  * \class GrowlNotifier
  * \todo Write a destructor, which CFReleases all datastructures
- */ 
+ */
 
 extern "C" {
 #include <CoreFoundation/CoreFoundation.h>
@@ -92,17 +92,17 @@ void getContext( CFPropertyListRef context, GrowlNotifierSignaler** signaler, co
 		data = (CFDataRef) CFArrayGetValueAtIndex((CFArrayRef) context, 1);
 		CFDataGetBytes(data, CFRangeMake(0,CFDataGetLength(data)), (UInt8*) receiver);
 	}
-	
+
 	if (clicked_slot) {
 		data = (CFDataRef) CFArrayGetValueAtIndex((CFArrayRef) context, 2);
 		CFDataGetBytes(data, CFRangeMake(0,CFDataGetLength(data)), (UInt8*) clicked_slot);
 	}
-	
+
 	if (timeout_slot) {
 		data = (CFDataRef) CFArrayGetValueAtIndex((CFArrayRef) context, 3);
 		CFDataGetBytes(data, CFRangeMake(0,CFDataGetLength(data)), (UInt8*) timeout_slot);
 	}
-	
+
 	if (qcontext) {
 		data = (CFDataRef) CFArrayGetValueAtIndex((CFArrayRef) context, 4);
 		CFDataGetBytes(data, CFRangeMake(0,CFDataGetLength(data)), (UInt8*) qcontext);
@@ -132,7 +132,7 @@ CFPropertyListRef createContext( GrowlNotifierSignaler* signaler, const QObject*
 	context[3] = CFDataCreate(kCFAllocatorDefault, (const UInt8*) &timeout_slot, sizeof(const char*));
 	context[4] = CFDataCreate(kCFAllocatorDefault, (const UInt8*) &qcontext, sizeof(void*));
 
-	CFArrayRef array = CFArrayCreate( kCFAllocatorDefault, 
+	CFArrayRef array = CFArrayCreate( kCFAllocatorDefault,
                 (const void **)context, 5, &kCFTypeArrayCallBacks );
 
 	// Cleaning up
@@ -211,7 +211,7 @@ bool grow_is_installed()
  *	by this notifier.
  * \param default_notifications the list of names of the notifications that
  *  should be enabled by default.
- * \param app the name of the application under which the notifier should 
+ * \param app the name of the application under which the notifier should
  *	register with growl.
  */
 GrowlNotifier::GrowlNotifier(
@@ -219,7 +219,7 @@ GrowlNotifier::GrowlNotifier(
 	const QString& app)
 {
 	CFStringRef notification;
-	
+
 	// Initialize signaler
 	signaler_ = new GrowlNotifierSignaler();
 
@@ -241,7 +241,7 @@ GrowlNotifier::GrowlNotifier(
 		CFArrayAppendValue(defaultNotifications, notification);
 		CFRelease(notification);
 	}
-	
+
 	// Initialize delegate
 	InitGrowlDelegate(&delegate_);
 	delegate_.applicationName = QString2CFString(app);
@@ -250,7 +250,7 @@ GrowlNotifier::GrowlNotifier(
 	CFTypeRef values[] = { allNotifications, defaultNotifications };
 
 	delegate_.registrationDictionary = CFDictionaryCreate(
-		kCFAllocatorDefault, keys, values, 2, 
+		kCFAllocatorDefault, keys, values, 2,
 		&kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
 
 	delegate_.growlNotificationWasClicked = &notification_clicked;
@@ -264,7 +264,7 @@ GrowlNotifier::GrowlNotifier(
 }
 
 GrowlNotifier::~GrowlNotifier()
-{	
+{
 	delete signaler_;
 }
 
@@ -275,7 +275,7 @@ GrowlNotifier::~GrowlNotifier()
  * \param title the title for the notification.
  * \param description the description of the notification.
  * \param icon the icon of the notification.
- * \param sticky whether the notification should be sticky (i.e. require a 
+ * \param sticky whether the notification should be sticky (i.e. require a
  *	click to discard.
  * \param receiver the receiving object which will be signaled when the
  *	notification is clicked. May be NULL.
@@ -283,10 +283,10 @@ GrowlNotifier::~GrowlNotifier()
  * \param context the context which will be passed back to the slot
  *	May be NULL.
  */
-void GrowlNotifier::notify(const QString& name, const QString& title, 
-	const QString& description, const QPixmap& p, bool sticky, 
-	const QObject* receiver, 
-	const char* clicked_slot, const char* timeout_slot, 
+void GrowlNotifier::notify(const QString& name, const QString& title,
+	const QString& description, const QPixmap& p, bool sticky,
+	const QObject* receiver,
+	const char* clicked_slot, const char* timeout_slot,
 	void* qcontext)
 {
 	// Convert the image if necessary
@@ -309,16 +309,16 @@ void GrowlNotifier::notify(const QString& name, const QString& title,
 	Growl_NotifyWithTitleDescriptionNameIconPriorityStickyClickContext(
 		cf_title, cf_description, cf_name, icon, 0, sticky, context);
 	IsNotifying = true;
-	
+
 	// Release intermediary datastructures
 	CFRelease(context);
-	if (icon) 
+	if (icon)
 		CFRelease(icon);
-	if (cf_title) 
+	if (cf_title)
 		CFRelease(cf_title);
-	if (cf_description) 
+	if (cf_description)
 		CFRelease(cf_description);
-	if (cf_name) 
+	if (cf_name)
 		CFRelease(cf_name);
 }
 
@@ -344,7 +344,7 @@ static void checkDirectory(const QString &path)
 	filter << "TemporaryItems";
 	QStringList subdirs = d.entryList(filter, QDir::Dirs, QDir::NoSort);
 	foreach (const QString &subdir, subdirs)
-		removeTemps(path + "/" + subdir);
+		removeTemps(path + '/' + subdir);
 }
 
 void GrowlNotifier::cleanupAfterGrowl()
@@ -357,5 +357,5 @@ void GrowlNotifier::cleanupAfterGrowl()
 	filter << "VM*";
 	QStringList subdirs = d.entryList(filter, QDir::Dirs, QDir::NoSort);
 	foreach (const QString &subdir, subdirs)
-		checkDirectory(d.absolutePath() + "/" + subdir);
+		checkDirectory(d.absolutePath() + '/' + subdir);
 }

@@ -66,12 +66,12 @@ void TlenAddAccountWidget::createGui()
 	AccountId = new QLineEdit(this);
 	//AccountId->setValidator(new LongValidator(1, 3999999999U, this));
 	connect(AccountId, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
-	layout->addRow(tr("Tlen.pl login") + ":", AccountId);
+	layout->addRow(tr("Tlen.pl login") + ':', AccountId);
 
 	AccountPassword = new QLineEdit(this);
 	connect(AccountPassword, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 	AccountPassword->setEchoMode(QLineEdit::Password);
-	layout->addRow(tr("Password") + ":", AccountPassword);
+	layout->addRow(tr("Password") + ':', AccountPassword);
 
 	RememberPassword = new QCheckBox(tr("Remember password"), this);
 	RememberPassword->setChecked(true);
@@ -84,7 +84,7 @@ void TlenAddAccountWidget::createGui()
 
 	Identity = new IdentitiesComboBox(this);
 	connect(Identity, SIGNAL(identityChanged(Identity)), this, SLOT(dataChanged()));
-	layout->addRow(tr("Account identity") + ":", Identity);
+	layout->addRow(tr("Account identity") + ':', Identity);
 
 	QLabel *infoLabel = new QLabel(tr("<font size='-1'><i>Select or enter the identity that will be associated with this account.</i></font>"), this);
 	infoLabel->setWordWrap(true);

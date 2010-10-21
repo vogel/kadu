@@ -45,7 +45,7 @@ JabberContactPersonalInfoWidget::JabberContactPersonalInfoWidget(Contact &contac
 
 	createGui();
 	reset();
-	
+
 	ContactPersonalInfoService *service = contact.contactAccount().protocolHandler()->contactPersonalInfoService();
 	if (!service)
 		return;
@@ -72,25 +72,25 @@ void JabberContactPersonalInfoWidget::createGui()
 	QFormLayout *infoLayout = new QFormLayout(infoWidget);
 
 	FullNameText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("Full Name") + ":", infoWidget), FullNameText);
+	infoLayout->addRow(new QLabel(tr("Full Name") + ':', infoWidget), FullNameText);
 
 	FamilyNameText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("Family Name") + ":", infoWidget), FamilyNameText);
+	infoLayout->addRow(new QLabel(tr("Family Name") + ':', infoWidget), FamilyNameText);
 
 	NicknameText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("Nickname") + ":", infoWidget), NicknameText);
+	infoLayout->addRow(new QLabel(tr("Nickname") + ':', infoWidget), NicknameText);
 
 	BirthdateText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("Birthdate") + ":", infoWidget), BirthdateText);
+	infoLayout->addRow(new QLabel(tr("Birthdate") + ':', infoWidget), BirthdateText);
 
 	CityText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("City") + ":", infoWidget), CityText);
+	infoLayout->addRow(new QLabel(tr("City") + ':', infoWidget), CityText);
 
 	EmailText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("E-Mail") + ":", infoWidget), EmailText);
+	infoLayout->addRow(new QLabel(tr("E-Mail") + ':', infoWidget), EmailText);
 
 	WebsiteText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("Website") + ":", infoWidget), WebsiteText);
+	infoLayout->addRow(new QLabel(tr("Website") + ':', infoWidget), WebsiteText);
 
 	layout->addWidget(infoWidget);
 	layout->addStretch(100);
@@ -106,14 +106,14 @@ void JabberContactPersonalInfoWidget::reset()
 	EmailText->setText(QString::null);
 	WebsiteText->setText(QString::null);
 }
-	  
+
 void JabberContactPersonalInfoWidget::personalInfoAvailable(Buddy buddy)
 {
 	Contact contact = buddy.contacts().first();
 
 	if (MyContact.id() != contact.id())
 		return;
-	
+
 	FullNameText->setText(buddy.firstName());
 	FamilyNameText->setText(buddy.familyName());
 	NicknameText->setText(buddy.nickName());

@@ -454,9 +454,9 @@ void HintManager::prepareOverUserHint(QFrame *tipFrame, QLabel *tipLabel, Contac
 	 * so we have to remove it here */
 	text = text.replace("file://", "");
 
-	while (text.endsWith("<br/>"))
+	while (text.endsWith(QLatin1String("<br/>")))
 		text.resize(text.length() - 5 /* 5 == QString("<br/>").length()*/);
-	while (text.startsWith("<br/>"))
+	while (text.startsWith(QLatin1String("<br/>")))
 		text = text.right(text.length() - 5 /* 5 == QString("<br/>").length()*/);
 
 	tipLabel->setFont(config_file.readFontEntry("Hints", "HintOverUser_font"));

@@ -111,9 +111,9 @@ About::About(QWidget *parent) :
 	// convert the email addresses
 	authors.replace(" (at) ", "@");
 	authors.replace(" (dot) ", ".");
-	authors.replace(QRegExp("[<>]"), "");
+	authors.remove(QRegExp("[<>]"));
 	authors.replace("\n   ", "</b><br/>&nbsp;&nbsp;&nbsp;");
-	authors.replace("\n", "</b><br/><b>");
+	authors.replace('\n', QLatin1String("</b><br/><b>"));
 	HtmlDocument doc;
 	doc.parseHtml(authors);
 	MailUrlHandler *handler = new MailUrlHandler;

@@ -70,7 +70,7 @@ void JabberChangePasswordWindow::createGui()
 	OldPassword = new QLineEdit(this);
 	OldPassword->setEchoMode(QLineEdit::Password);
 	connect(OldPassword, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
-	layout->addRow(tr("Old Password") + ":", OldPassword);
+	layout->addRow(tr("Old Password") + ':', OldPassword);
 
 	infoLabel = new QLabel(tr("<font size='-1'><i>Enter current password for your XMPP/Jabber account.</i></font>"), this);
 	infoLabel->setWordWrap(true);
@@ -81,7 +81,7 @@ void JabberChangePasswordWindow::createGui()
 	NewPassword = new QLineEdit(this);
 	NewPassword->setEchoMode(QLineEdit::Password);
 	connect(NewPassword, SIGNAL(textChanged(const QString &)), this, SLOT(dataChanged()));
-	layout->addRow(tr("New password") + ":", NewPassword);
+	layout->addRow(tr("New password") + ':', NewPassword);
 
 	infoLabel = new QLabel(tr("<font size='-1'><i>Enter new password for your XMPP/Jabber account.</i></font>"), this);
 	infoLabel->setWordWrap(true);
@@ -92,7 +92,7 @@ void JabberChangePasswordWindow::createGui()
 	ReNewPassword = new QLineEdit(this);
 	ReNewPassword->setEchoMode(QLineEdit::Password);
 	connect(ReNewPassword, SIGNAL(textChanged(const QString &)), this, SLOT(dataChanged()));
-	layout->addRow(tr("Retype new password") + ":", ReNewPassword);
+	layout->addRow(tr("Retype new password") + ':', ReNewPassword);
 
 	mainLayout->addStretch(100);
 

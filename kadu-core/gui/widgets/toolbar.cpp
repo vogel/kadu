@@ -146,14 +146,14 @@ void ToolBar::addAction(const QString &actionName, Qt::ToolButtonStyle style, QA
 		{
 			if (toolBarAction.action == before)
 			{
-				if (actionName.startsWith("__separator"))
+				if (actionName.startsWith(QLatin1String("__separator")))
 				{
 					QWidget *widget = new ToolBarSeparator(this);
 					newAction.action = insertWidget(before, widget);
 					newAction.widget = widget;
 					connect(widget, SIGNAL(pressed()), this, SLOT(widgetPressed()));
 				}
-				else if (actionName.startsWith("__spacer"))
+				else if (actionName.startsWith(QLatin1String("__spacer")))
 				{
 					QWidget *widget = new ToolBarSpacer(this);
 					newAction.action = insertWidget(before, widget);
@@ -177,14 +177,14 @@ void ToolBar::addAction(const QString &actionName, Qt::ToolButtonStyle style, QA
 		}
 	}
 
-	if (actionName.startsWith("__separator"))
+	if (actionName.startsWith(QLatin1String("__separator")))
 	{
 		QWidget *widget = new ToolBarSeparator(this);
 		newAction.action = addWidget(widget);
 		newAction.widget = widget;
 		connect(widget, SIGNAL(pressed()), this, SLOT(widgetPressed()));
 	}
-	else if (actionName.startsWith("__spacer"))
+	else if (actionName.startsWith(QLatin1String("__spacer")))
 	{
 		QWidget *widget = new ToolBarSpacer(this);
 		newAction.action = addWidget(widget);
@@ -236,7 +236,7 @@ void ToolBar::moveAction(const QString &actionName, Qt::ToolButtonStyle style, Q
 			actionFound = true;
 	}
 
-	if (actionName.startsWith("__separator"))
+	if (actionName.startsWith(QLatin1String("__separator")))
 	{
 		QWidget *widget = new ToolBarSeparator(this);
 		if (index > ToolBarActions.count() - 1)
@@ -246,7 +246,7 @@ void ToolBar::moveAction(const QString &actionName, Qt::ToolButtonStyle style, Q
 		newAction.widget = widget;
 		connect(widget, SIGNAL(pressed()), this, SLOT(widgetPressed()));
 	}
-	else if (actionName.startsWith("__spacer"))
+	else if (actionName.startsWith(QLatin1String("__spacer")))
 	{
 		QWidget *widget = new ToolBarSpacer(this);
 		if (index > ToolBarActions.count() - 1)
@@ -324,7 +324,7 @@ void ToolBar::dragEnterEvent(QDragEnterEvent *event)
 				(
 					(event->source() == this)
 					|| (!hasAction(actionName) && KaduActions.contains(actionName) && dynamic_cast<MainWindow *>(parent())->supportsActionType(KaduActions[actionName]->type()))
-					|| (actionName.startsWith("__separator") || actionName.startsWith("__spacer"))
+					|| (actionName.startsWith(QLatin1String("__separator")) || actionName.startsWith(QLatin1String("__spacer")))
 				)
 			)
 		{
@@ -477,9 +477,9 @@ void ToolBar::writeToConfig(QDomElement parent_element)
 	foreach (const ToolBarAction &toolBarAction, ToolBarActions)
 	{
 		QDomElement button_elem = xml_config_file->createElement(toolbar_elem, "ToolButton");
-		if (toolBarAction.actionName.startsWith("__separator"))
+		if (toolBarAction.actionName.startsWith(QLatin1String("__separator")))
 			button_elem.setAttribute("action_name", "__separator");
-		else if (toolBarAction.actionName.startsWith("__spacer"))
+		else if (toolBarAction.actionName.startsWith(QLatin1String("__spacer")))
 			button_elem.setAttribute("action_name", "__spacer");
 		else
 			button_elem.setAttribute("action_name", toolBarAction.actionName);
@@ -544,7 +544,7 @@ void ToolBar::updateButtons()
 
 		if ((*toolBarAction).action)
 		{
-			if (KaduActions.contains(actionName) || actionName.startsWith("__separator") || actionName.startsWith("__spacer"))
+			if (KaduActions.contains(actionName) || actionName.startsWith(QLatin1String("__separator")) || actionName.startsWith(QLatin1String("__spacer")))
 			{
 				lastAction = (*toolBarAction).action;
 				continue;
@@ -559,7 +559,7 @@ void ToolBar::updateButtons()
 			}
 		}
 
-		if (actionName.startsWith("__separator"))
+		if (actionName.startsWith(QLatin1String("__separator")))
 		{
 			QWidget *widget = new ToolBarSeparator(this);
 			if (toolBarNextAction != ToolBarActions.end() && (*toolBarNextAction).action)
@@ -570,7 +570,7 @@ void ToolBar::updateButtons()
 			connect(widget, SIGNAL(pressed()), this, SLOT(widgetPressed()));
 			lastAction = (*toolBarAction).action;
 		}
-		else if (actionName.startsWith("__spacer"))
+		else if (actionName.startsWith(QLatin1String("__spacer")))
 		{
 			QWidget *widget = new ToolBarSpacer(this);
 			if (toolBarNextAction != ToolBarActions.end() && (*toolBarNextAction).action)
@@ -1061,7 +1061,7 @@ ActionDrag::ActionDrag(const QString &actionName, Qt::ToolButtonStyle style, QWi
 	QByteArray data;
 	QMimeData *mimeData = new QMimeData;
 
-	QString string = actionName + "\n" + QString::number(Qt::ToolButtonStyle(style));
+	QString string = actionName + '\n' + QString::number(Qt::ToolButtonStyle(style));
 
 	data = string.toUtf8();
 

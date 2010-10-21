@@ -161,7 +161,7 @@ void OAuthParameters::sign()
 
 	QByteArray key;
 	key += Consumer.consumerSecret();
-	key += "&";
+	key += '&';
 	key += Token.tokenSecret();
 
 	QCA::MessageAuthenticationCode hmac("hmac(sha1)", QCA::SymmetricKey(key));
@@ -177,22 +177,22 @@ QByteArray OAuthParameters::toSignatureBase()
 	QByteArray result;
 	result += "oauth_consumer_key=";
 	result += Consumer.consumerKey();
-	result += "&";
+	result += '&';
 	result += "oauth_nonce=";
 	result += Nonce;
-	result += "&";
+	result += '&';
 	result +="oauth_signature_method=";
 	result += SignatureMethod;
-	result += "&";
+	result += '&';
 	result += "oauth_timestamp=";
 	result += Timestamp;
-	result += "&";
+	result += '&';
 
 	if (!Token.token().isEmpty())
 	{
 		result += "oauth_token=";
 		result += Token.token();
-		result += "&";
+		result += '&';
 	}
 
 	result += "oauth_version=";

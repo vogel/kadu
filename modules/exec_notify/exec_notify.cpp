@@ -87,7 +87,7 @@ ExecConfigurationWidget::~ExecConfigurationWidget()
 
 void ExecConfigurationWidget::saveNotifyConfigurations()
 {
-	if (currentNotifyEvent != "")
+	if (!currentNotifyEvent.isEmpty())
 		Commands[currentNotifyEvent] = commandLineEdit->text();
 
 	foreach (const QString &eventName, Commands.keys())
@@ -96,7 +96,7 @@ void ExecConfigurationWidget::saveNotifyConfigurations()
 
 void ExecConfigurationWidget::switchToEvent(const QString &event)
 {
-	if (currentNotifyEvent != "")
+	if (!currentNotifyEvent.isEmpty())
 		Commands[currentNotifyEvent] = commandLineEdit->text();
 	currentNotifyEvent = event;
 

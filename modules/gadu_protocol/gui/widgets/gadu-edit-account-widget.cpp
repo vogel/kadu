@@ -118,12 +118,12 @@ void GaduEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 	AccountId = new QLineEdit(this);
 	AccountId->setValidator(new LongValidator(1, 3999999999U, this));
 	connect(AccountId, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
-	formLayout->addRow(tr("Gadu-Gadu number") + ":", AccountId);
+	formLayout->addRow(tr("Gadu-Gadu number") + ':', AccountId);
 
 	AccountPassword = new QLineEdit(this);
 	AccountPassword->setEchoMode(QLineEdit::Password);
 	connect(AccountPassword, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
-	formLayout->addRow(tr("Password") + ":", AccountPassword);
+	formLayout->addRow(tr("Password") + ':', AccountPassword);
 
 	RememberPassword = new QCheckBox(tr("Remember password"), this);
 	RememberPassword->setChecked(true);
@@ -142,7 +142,7 @@ void GaduEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 
 	Identities = new IdentitiesComboBox(this);
 	connect(Identities, SIGNAL(identityChanged(Identity)), this, SLOT(dataChanged()));
-	formLayout->addRow(tr("Account Identity") + ":", Identities);
+	formLayout->addRow(tr("Account Identity") + ':', Identities);
 
 	QLabel *infoLabel = new QLabel(tr("<font size='-1'><i>Select or enter the identity that will be associated with this account.</i></font>"), this);
 	infoLabel->setWordWrap(true);
@@ -211,7 +211,7 @@ void GaduEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 	MaximumImageSize->setToolTip(tr("Maximum image size that we want to receive"));
 	connect(MaximumImageSize, SIGNAL(valueChanged(int)), this, SLOT(dataChanged()));
 
-	imagesLayout->addRow(tr("Maximum image size for chat") + ":", MaximumImageSize);
+	imagesLayout->addRow(tr("Maximum image size for chat") + ':', MaximumImageSize);
 
 	ReceiveImagesDuringInvisibility = new QCheckBox(tr("Receive images during invisibility"), optionsTab);
 	ReceiveImagesDuringInvisibility->setToolTip(tr("Receiving images during invisibility is allowed"));
@@ -226,21 +226,21 @@ void GaduEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 	MaximumImageRequests->setToolTip(tr("Define limit of images received per minute"));
 	connect(MaximumImageRequests, SIGNAL(valueChanged(int)), this, SLOT(dataChanged()));
 
-	imagesLayout->addRow(tr("Limit numbers of image recevied per minute") + ":", MaximumImageRequests);
+	imagesLayout->addRow(tr("Limit numbers of image recevied per minute") + ':', MaximumImageRequests);
 
-	layout->addWidget(images);	
-	
+	layout->addWidget(images);
+
 	QGroupBox *status = new QGroupBox(tr("Status"), this);
 	QFormLayout *statusLayout = new QFormLayout(status);
-	
+
 	PrivateStatus = new QCheckBox(tr("Show my status to everyone"), optionsTab);
 	PrivateStatus->setToolTip(tr("When disabled, you're visible only to buddies on your list"));
 	connect(PrivateStatus, SIGNAL(clicked()), this, SLOT(dataChanged()));
-	
+
 	statusLayout->addRow(PrivateStatus);
-	
+
 	layout->addWidget(status);
-	layout->addStretch(100);		
+	layout->addStretch(100);
 }
 
 void GaduEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)

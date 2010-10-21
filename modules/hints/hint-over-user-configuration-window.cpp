@@ -87,7 +87,7 @@ HintOverUserConfigurationWindow::HintOverUserConfigurationWindow(Buddy exampleBu
 	QPushButton *syntaxChangedButton = new QPushButton(tr("Update preview"));
 	connect(syntaxChangedButton, SIGNAL(clicked()), this, SLOT(syntaxChanged()));
 
-	lay->addWidget(new QLabel(tr("Syntax") + ":"));
+	lay->addWidget(new QLabel(tr("Syntax") + ':'));
 	lay->addWidget(hintSyntax);
 	lay->addWidget(syntaxChangedButton);
 	groupBox->addWidget(syntaxWidget, true);
@@ -157,9 +157,9 @@ void HintOverUserConfigurationWindow::syntaxChanged()
 	 * so we have to remove it here */
 	text = text.replace("file://", "");
 
-	while (text.endsWith("<br/>"))
+	while (text.endsWith(QLatin1String("<br/>")))
 		text.resize(text.length() - 5 /* 5 == QString("<br/>").length()*/);
-	while (text.startsWith("<br/>"))
+	while (text.startsWith(QLatin1String("<br/>")))
 		text = text.right(text.length() - 5 /* 5 == QString("<br/>").length()*/);
 
 	previewTipLabel->setText(text);

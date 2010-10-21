@@ -83,7 +83,7 @@ SmsConfigurationUiHandler::SmsConfigurationUiHandler()
 	createDefaultConfiguration();
 }
 
-SmsConfigurationUiHandler::~SmsConfigurationUiHandler() 
+SmsConfigurationUiHandler::~SmsConfigurationUiHandler()
 {}
 
 
@@ -176,12 +176,12 @@ void SmsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfiguration
 	connect(down, SIGNAL(clicked()), this, SLOT(onDownButton()));
 
 	gatewayGroupBox->addWidgets(new QLabel(tr("Gateways priorites"), gatewayGroupBox->widget()), gatewayWidget);
-	
+
 	connect(useBuiltIn, SIGNAL(toggled(bool)), this, SLOT(onSmsBuildInCheckToggle(bool)));
 	connect(useCustomString, SIGNAL(toggled(bool)), customString, SLOT(setEnabled(bool)));
 
 // TODO: fix it, should be ':' not ';'
-	QStringList priority = config_file.readEntry("SMS", "Priority").split(";");
+	QStringList priority = config_file.readEntry("SMS", "Priority").split(';');
 
 // 	foreach(const QString &gate, priority)
 // 		if (SmsGatewayManager::instance()->gateways().contains(gate))

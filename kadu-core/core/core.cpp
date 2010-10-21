@@ -369,7 +369,7 @@ void Core::deleteOldConfigurationFiles()
 	QDir oldDebugs(tmp, mask, QDir::Name, QDir::Files);
 	if (oldDebugs.count() > 5)
 		for (unsigned int i = 0, max = oldDebugs.count() - 5; i < max; ++i)
-			QFile::remove(tmp + "/" + oldDebugs[i]);
+			QFile::remove(tmp + '/' + oldDebugs[i]);
 
 	kdebugf2();
 }

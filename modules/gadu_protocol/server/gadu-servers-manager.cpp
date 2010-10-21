@@ -108,7 +108,7 @@ QList<GaduServersManager::GaduServer> GaduServersManager::gaduServersFromString(
 {
 	QList<GaduServer> result;
 
-	if (serverAddress.isEmpty() || serverAddress.startsWith("0.0.0.0"))
+	if (serverAddress.isEmpty() || serverAddress.startsWith(QLatin1String("0.0.0.0")))
 		return result;
 
 	QHostAddress ip;
@@ -157,7 +157,7 @@ void GaduServersManager::buildServerList()
 			GoodServers << gaduServersFromString(QString::fromLatin1(Ips[i]));
 	else
 	{
-		QStringList servers = config_file.readEntry("Network", "Server").split(";", QString::SkipEmptyParts);
+		QStringList servers = config_file.readEntry("Network", "Server").split(';', QString::SkipEmptyParts);
 
 		foreach (const QString &server, servers)
 			GoodServers << gaduServersFromString(server);

@@ -66,7 +66,7 @@ bool GaduChatService::sendMessage(Chat chat, FormattedMessage &message, bool sil
 	bool stop = false;
 
 	plain.replace("\r\n", "\n");
-	plain.replace("\r", "\n");
+	plain.replace('\r', '\n');
 	plain.replace(QChar::LineSeparator, "\n");
 
 	kdebugmf(KDEBUG_INFO, "\n%s\n", (const char *)unicode2latin(plain));

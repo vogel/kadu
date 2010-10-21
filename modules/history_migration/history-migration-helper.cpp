@@ -48,7 +48,7 @@ namespace HistoryMigrationHelper
 		qSort(uins);
 		QString fname;
 		foreach (UinType uin, uins)
-			fname.append(QString::number(uin) + "_");
+			fname.append(QString::number(uin) + '_');
 		fname.remove(fname.length() - 1, 1);
 
 		return fname;
@@ -114,7 +114,7 @@ namespace HistoryMigrationHelper
 			// ignore sms.idx file, see below
 			if (entry != "sms.idx")
 			{
-				struins = entry.remove(entry.length() - 4, 4).split("_", QString::SkipEmptyParts);
+				struins = entry.remove(entry.length() - 4, 4).split('_', QString::SkipEmptyParts);
 				foreach (const QString &struin, struins)
 					uins.append(struin.toUInt());
 				entries.append(uins);

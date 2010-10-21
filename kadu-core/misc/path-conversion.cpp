@@ -76,8 +76,8 @@ void printBacktrace(const QString &header)
 
 QString profilePath(const QString &subpath)
 {
-	static QString path(QString::null);
-	if (path == QString::null)
+	static QString path;
+	if (path.isNull())
 	{
 		QString home;
 #ifdef Q_OS_WIN
@@ -134,7 +134,8 @@ QString libPath(const QString &f)
 {
 #ifdef Q_OS_WIN
 	QString fp=f;
-	if (fp.startsWith("kadu")) fp.remove(0, 4);
+	if (fp.startsWith(QLatin1String("kadu")))
+		fp.remove(0, 4);
 	return lib_path + fp;
 #else
 	return lib_path + f;
@@ -174,7 +175,7 @@ QString dataPath(const QString &p, const char *argv0)
 
 		//je�eli �cie�ki nie ko�cz� si� na /share i /bin oraz gdy bez tych ko�c�wek
 		//�cie�ki si� nie pokrywaj�, to znaczy �e kto� ustawi� r�cznie DATADIR lub BINDIR
-		if (!datadir.endsWith("/share") || !bindir.endsWith("/bin") || !libdir.endsWith("/lib") ||
+		if (!datadir.endsWith(QLatin1String("/share")) || !bindir.endsWith(QLatin1String("/bin")) || !libdir.endsWith(QLatin1String("/lib")) ||
 			datadir.left(datadir.length() - 6) != bindir.left(bindir.length() - 4) ||
 			bindir.left(bindir.length() - 4) != libdir.left(libdir.length() - 4))
 		{
@@ -199,8 +200,8 @@ QString dataPath(const QString &p, const char *argv0)
 		QDir dataDir(data_path);
 		QDir libDir(lib_path);
 
-		data_path = dataDir.canonicalPath() + "/";
-		lib_path = libDir.canonicalPath() + "/";
+		data_path = dataDir.canonicalPath() + '/';
+		lib_path = libDir.canonicalPath() + '/';
 
 		Parser::globalVariables["DATA_PATH"] = data_path;
 		Parser::globalVariables["LIB_PATH"] = lib_path;
@@ -213,7 +214,7 @@ QString dataPath(const QString &p, const char *argv0)
 
 #ifdef Q_OS_WIN
 	// on windows remove kadu from path
-	if (path.startsWith("kadu"))
+	if (path.startsWith(QLatin1String("kadu")))
 		path.remove(0, 4);
 #endif
 
@@ -226,9 +227,9 @@ QString webKitPath(const QString &path)
 {
 	if (path.isEmpty())
 		return path;
-	if (path.startsWith("file:///"))
+	if (path.startsWith(QLatin1String("file:///")))
 		return path;
-	if (path.startsWith("/"))
+	if (path.startsWith('/'))
 		return "file://" + path;
 	return "file:///" + path;
 }

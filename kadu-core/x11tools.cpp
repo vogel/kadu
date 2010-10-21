@@ -763,9 +763,9 @@ std::string X11_getWindowClass( Display *display, Window window )
 	XClassHint classhint;
 	if( XGetClassHint( display, window, &classhint ) == 0 ) // 0 means error
 		return "";
-	std::string classstring = "";
+	std::string classstring;
 	classstring += classhint.res_name;
-	classstring += " ";
+	classstring += ' ';
 	classstring += classhint.res_class;
 	XFree( classhint.res_name );
 	XFree( classhint.res_class );

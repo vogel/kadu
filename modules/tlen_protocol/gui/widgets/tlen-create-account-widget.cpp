@@ -55,7 +55,7 @@ void TlenCreateAccountWidget::createGui()
 
 	int row = 0;
 
-	QLabel *nameLabel = new QLabel(tr("Account name") + ":", this);
+	QLabel *nameLabel = new QLabel(tr("Account name") + ':', this);
 	gridLayout->addWidget(nameLabel, row, 1, Qt::AlignRight);
 	AccountName = new QLineEdit(this);
 	gridLayout->addWidget(AccountName, row++, 2, 1, 2);
@@ -66,13 +66,13 @@ void TlenCreateAccountWidget::createGui()
 
 void TlenCreateAccountWidget::createAccountGui(QGridLayout *gridLayout, int &row)
 {
-	QLabel *numberLabel = new QLabel(tr("Tlen.pl login") + ":", this);
+	QLabel *numberLabel = new QLabel(tr("Tlen.pl login") + ':', this);
 	gridLayout->addWidget(numberLabel, row, 1, Qt::AlignRight);
 	AccountId = new QLineEdit(this);
 	connect(AccountId, SIGNAL(textChanged(QString)), this, SLOT(iHaveAccountDataChanged()));
 	gridLayout->addWidget(AccountId, row++, 2, 1, 2);
 
-	QLabel *passwordLabel = new QLabel(tr("Password") + ":", this);
+	QLabel *passwordLabel = new QLabel(tr("Password") + ':', this);
 	gridLayout->addWidget(passwordLabel, row, 1, Qt::AlignRight);
 	AccountPassword = new QLineEdit(this);
 	connect(AccountPassword, SIGNAL(textChanged(QString)), this, SLOT(iHaveAccountDataChanged()));
@@ -119,13 +119,13 @@ void TlenCreateAccountWidget::iHaveAccountDataChanged()
 void TlenCreateAccountWidget::addThisAccount()
 {
 	Account tlenAccount = Account::create();
-	
+
 	TlenAccountDetails *details = dynamic_cast<TlenAccountDetails *>(tlenAccount.details());
 	if (details)
 	{
 		details->setState(StorableObject::StateNew);
 	}
-	
+
 	tlenAccount.setProtocolName("tlen");
 	tlenAccount.setId(AccountId->text());
 	tlenAccount.setPassword(AccountPassword->text());

@@ -77,7 +77,7 @@ QString MPDMediaPlayer::getTitle(int position)
 				mpd_song_free(song);
 			}
 			mpd_status_free(status);
-		}	
+		}
 	    mpd_connection_free(con);
 	}
 	return title;
@@ -332,7 +332,7 @@ QString MPDMediaPlayer::getPlayerVersion()
 			major.setNum(ver[0]);
 			minor.setNum(ver[1]);
 			patch.setNum(ver[2]);
-			version = major + "." + minor + "." + patch;
+			version = major + '.' + minor + '.' + patch;
 		}
 		mpd_connection_free(con);
 	}

@@ -31,9 +31,9 @@ SpeechConfigurationWidget::SpeechConfigurationWidget(QWidget *parent) :
 	femaleLineEdit = new QLineEdit(this);
 
 	QGridLayout *gridLayout = new QGridLayout(this);
-	gridLayout->addWidget(new QLabel(tr("Male format") + ":", this), 0, 0, Qt::AlignRight);
+	gridLayout->addWidget(new QLabel(tr("Male format") + ':', this), 0, 0, Qt::AlignRight);
 	gridLayout->addWidget(maleLineEdit, 0, 1);
-	gridLayout->addWidget(new QLabel(tr("Female format") + ":", this), 1, 0, Qt::AlignRight);
+	gridLayout->addWidget(new QLabel(tr("Female format") + ':', this), 1, 0, Qt::AlignRight);
 	gridLayout->addWidget(femaleLineEdit, 1, 1);
 
 	parent->layout()->addWidget(this);
@@ -45,7 +45,7 @@ SpeechConfigurationWidget::~SpeechConfigurationWidget()
 
 void SpeechConfigurationWidget::saveNotifyConfigurations()
 {
-	if (currentNotifyEvent != "")
+	if (!currentNotifyEvent.isEmpty())
 	{
 		maleFormat[currentNotifyEvent] = maleLineEdit->text();
 		femaleFormat[currentNotifyEvent] = femaleLineEdit->text();
@@ -70,7 +70,7 @@ void SpeechConfigurationWidget::saveNotifyConfigurations()
 
 void SpeechConfigurationWidget::switchToEvent(const QString &event)
 {
-	if (currentNotifyEvent != "")
+	if (!currentNotifyEvent.isEmpty())
 	{
 		maleFormat[currentNotifyEvent] = maleLineEdit->text();
 		femaleFormat[currentNotifyEvent] = femaleLineEdit->text();

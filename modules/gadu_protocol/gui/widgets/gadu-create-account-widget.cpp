@@ -72,12 +72,12 @@ void GaduCreateAccountWidget::createGui()
 	NewPassword = new QLineEdit(this);
 	connect(NewPassword, SIGNAL(textEdited(const QString &)), this, SLOT(dataChanged()));
 	NewPassword->setEchoMode(QLineEdit::Password);
-	layout->addRow(tr("Password") + ":", NewPassword);
+	layout->addRow(tr("Password") + ':', NewPassword);
 
 	ReNewPassword = new QLineEdit(this);
 	connect(ReNewPassword, SIGNAL(textEdited(const QString &)), this, SLOT(dataChanged()));
 	ReNewPassword->setEchoMode(QLineEdit::Password);
-	layout->addRow(tr("Retype Password") + ":", ReNewPassword);
+	layout->addRow(tr("Retype Password") + ':', ReNewPassword);
 
 	RememberPassword = new QCheckBox(tr("Remember password"), this);
 	RememberPassword->setChecked(true);
@@ -85,11 +85,11 @@ void GaduCreateAccountWidget::createGui()
 
 	EMail = new QLineEdit(this);
 	connect(EMail, SIGNAL(textEdited(const QString &)), this, SLOT(dataChanged()));
-	layout->addRow(tr("E-Mail Address") + ":", EMail);
+	layout->addRow(tr("E-Mail Address") + ':', EMail);
 
 	IdentityCombo = new IdentitiesComboBox(this);
 	connect(IdentityCombo, SIGNAL(identityChanged(Identity)), this, SLOT(dataChanged()));
-	layout->addRow(tr("Account Identity") + ":", IdentityCombo);
+	layout->addRow(tr("Account Identity") + ':', IdentityCombo);
 
 	QLabel *infoLabel = new QLabel(tr("<font size='-1'><i>Select or enter the identity that will be associated with this account.</i></font>"), this);
 	infoLabel->setWordWrap(true);
@@ -99,7 +99,7 @@ void GaduCreateAccountWidget::createGui()
 
 	MyTokenWidget = new TokenWidget(this);
 	connect(MyTokenWidget, SIGNAL(modified()), this, SLOT(dataChanged()));
-	layout->addRow(tr("Characters") + ":", MyTokenWidget);
+	layout->addRow(tr("Characters") + ':', MyTokenWidget);
 
 	infoLabel = new QLabel(tr("<font size='-1'><i>For verification purposes, please type the characters above.</i></font>"), this);
 	infoLabel->setWordWrap(true);

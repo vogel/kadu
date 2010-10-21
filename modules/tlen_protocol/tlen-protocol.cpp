@@ -310,7 +310,7 @@ bool TlenProtocol::sendMessage(Chat chat, FormattedMessage &formattedMessage)
 	message.setContent(plain);
 	message.setSendDate(QDateTime::currentDateTime());
 	message.setReceiveDate(QDateTime::currentDateTime());
-	
+
 	emit messageSent(message);
 
 	kdebugf2();
@@ -323,7 +323,7 @@ void TlenProtocol::chatMsgReceived(QDomNode n)
 
 	bool ignore = false;
 	QDomElement msg = n.toElement();
-	QString from = msg.attribute("from").split("/")[0]; // but what about res?
+	QString from = msg.attribute("from").split('/')[0]; // but what about res?
 	QString fromresource = msg.attribute("from");
 	QString body;
 	QDateTime timeStamp;
@@ -377,7 +377,7 @@ void TlenProtocol::chatMsgReceived(QDomNode n)
 	message.setContent(plain);
 	message.setSendDate(timeStamp);
 	message.setReceiveDate(QDateTime::currentDateTime());
-	
+
 	emit messageReceived(message);
 
 	kdebugf2();
@@ -568,22 +568,22 @@ void TlenProtocol::presenceChanged(QString from, QString newstatus, QString desc
 	if (!description.isEmpty())
 		status.setDescription(description);
 
-	QString jid(from.split("/")[0]); // to dziala
+	QString jid(from.split('/')[0]); // to dziala
 
 	// find user@server
-	
-	
-	
-	
-	
+
+
+
+
+
 	kdebugm(KDEBUG_WARNING, "Tlen status change: %s %s\n%s", qPrintable(from), qPrintable(newstatus), qPrintable(description));
 
-	
+
 	//if (contact.isNull())
 	//	return;
 
 	// find id
-	
+
 	Contact contact = ContactManager::instance()->byId(account(), jid, ActionCreateAndAdd);
 	Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
 
@@ -603,7 +603,7 @@ void TlenProtocol::presenceChanged(QString from, QString newstatus, QString desc
 			TypingUsers[from] = description;
 
 		emit contactStatusChanged(contactRes, oldStatus);
-		
+
 		// if general jid status was same so need to set same also or calc some
 		if (contact.currentStatus() == oldStatus)
 		{

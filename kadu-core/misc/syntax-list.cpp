@@ -40,12 +40,12 @@ QString SyntaxList::readSyntax(const QString &category, const QString &name, con
 {
 	QString path;
 	QFile syntaxFile;
-	path = dataPath("kadu") + "/syntax/" + category + "/" + name + ".syntax";
+	path = dataPath("kadu") + "/syntax/" + category + '/' + name + ".syntax";
 
 	syntaxFile.setFileName(path);
 	if (!syntaxFile.open(QIODevice::ReadOnly))
 	{
-		path = profilePath() + "/syntax/" + category + "/" + name + ".syntax";
+		path = profilePath() + "/syntax/" + category + '/' + name + ".syntax";
 
 		syntaxFile.setFileName(path);
 		if (!syntaxFile.open(QIODevice::ReadOnly))
@@ -74,7 +74,7 @@ void SyntaxList::reload()
 	SyntaxInfo info;
 
 	info.global = false;
-	path = profilePath() + "/syntax/" + category + "/";
+	path = profilePath() + "/syntax/" + category + '/';
 	dir.setPath(path);
 
 	dir.setNameFilters(QStringList("*.syntax"));
@@ -88,7 +88,7 @@ void SyntaxList::reload()
 	}
 
 	info.global = true;
-	path = dataPath("kadu") + "/syntax/" + category + "/";
+	path = dataPath("kadu") + "/syntax/" + category + '/';
 	dir.setPath(path);
 
 	files = dir.entryList();
@@ -117,7 +117,7 @@ bool SyntaxList::updateSyntax(const QString &name, const QString &syntax)
 		if (!dir.mkdir(path))
 			return false;
 
-	path = profilePath() + "/syntax/" + category + "/";
+	path = profilePath() + "/syntax/" + category + '/';
 	dir.setPath(path);
 	if (!dir.exists())
 		if (!dir.mkdir(path))
@@ -150,9 +150,9 @@ QString SyntaxList::readSyntax(const QString &name)
 	SyntaxInfo info = *(find(name));
 	QString path;
 	if (info.global)
-		path = dataPath("kadu") + "/syntax/" + category + "/" + name + ".syntax";
+		path = dataPath("kadu") + "/syntax/" + category + '/' + name + ".syntax";
 	else
-		path = profilePath() + "/syntax/" + category + "/" + name + ".syntax";
+		path = profilePath() + "/syntax/" + category + '/' + name + ".syntax";
 
 	QFile syntaxFile;
 	syntaxFile.setFileName(path);
@@ -177,7 +177,7 @@ bool SyntaxList::deleteSyntax(const QString &name)
 	if (info.global)
 		return false;
 
-	QString path = profilePath() + "/syntax/" + category + "/" + name + ".syntax";
+	QString path = profilePath() + "/syntax/" + category + '/' + name + ".syntax";
 	QFile file;
 	file.setFileName(path);
 

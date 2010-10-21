@@ -69,7 +69,7 @@ void UrlOpener::openEmail(const QString &email)
 
 	QString urlForDesktopServices;
 	QString urlForApplication;
-	if (email.startsWith("mailto:"))
+	if (email.startsWith(QLatin1String("mailto:")))
 	{
 		urlForDesktopServices = email;
 		urlForApplication = email;

@@ -58,22 +58,22 @@ void ConfigWizardApplicationsAndSoundPage::createGui()
 	BrowserLineEdit = new QLineEdit(this);
 	connect(BrowserCheckBox, SIGNAL(toggled(bool)), BrowserLineEdit, SLOT(setDisabled(bool)));
 
-	formLayout()->addRow(tr("Use Default Web Browser") + ":", BrowserCheckBox);
-	formLayout()->addRow(tr("Web Browser Executable") + ":", BrowserLineEdit);
+	formLayout()->addRow(tr("Use Default Web Browser") + ':', BrowserCheckBox);
+	formLayout()->addRow(tr("Web Browser Executable") + ':', BrowserLineEdit);
 
 	EMailCheckBox = new QCheckBox(this);
 	EMailLineEdit = new QLineEdit(this);
 	connect(EMailCheckBox, SIGNAL(toggled(bool)), EMailLineEdit, SLOT(setDisabled(bool)));
 
-	formLayout()->addRow(tr("Use Default E-Mail Application") + ":", EMailCheckBox);
-	formLayout()->addRow(tr("E-Mail Application Executable") + ":", EMailLineEdit);
+	formLayout()->addRow(tr("Use Default E-Mail Application") + ':', EMailCheckBox);
+	formLayout()->addRow(tr("E-Mail Application Executable") + ':', EMailLineEdit);
 
 	formLayout()->addRow(new QLabel(tr("<b>Sound</b>"), this));
 
 	SoundModulesCombo = new QComboBox(this);
 	setSoundDrivers();
 
-	formLayout()->addRow(tr("Sound driver") + ":", SoundModulesCombo);
+	formLayout()->addRow(tr("Sound driver") + ':', SoundModulesCombo);
 
 	QPushButton *soundTestButton = new QPushButton(tr("Test ..."));
 	connect(soundTestButton, SIGNAL(clicked(bool)), this, SLOT(testSound()));

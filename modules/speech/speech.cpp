@@ -54,7 +54,7 @@ Speech * Speech::instance()
 
 bool isFemale(QString s)
 {
-	return s.endsWith("a", Qt::CaseInsensitive);
+	return s.endsWith('a', Qt::CaseInsensitive);
 }
 
 Speech::Speech() :
@@ -83,12 +83,12 @@ Speech::~Speech()
 void Speech::import_0_5_0_ConfigurationFromTo(const QString &from, const QString &to)
 {
 	QString entry = config_file.readEntry("Speech", from + "Female", "");
-	if (entry != "")
+	if (!entry.isEmpty())
 		config_file.writeEntry("Speech", from + "_Syntax/Female", entry);
 	config_file.removeVariable("Speech", from + "Female");
 
 	entry = config_file.readEntry("Speech", to + "Male", "");
-	if (entry != "")
+	if (!entry.isEmpty())
 		config_file.writeEntry("Speech", to + "_Syntax/Male", entry);
 	config_file.removeVariable("Speech", to + "Male");
 }
@@ -98,12 +98,12 @@ void Speech::import_0_5_0_Configuration()
 	QString entry;
 
 	entry = config_file.readEntry("Speech", "ConnectionError", "");
-	if (entry != "")
+	if (!entry.isEmpty())
 		config_file.writeEntry("Speech", "ConnectionError_Syntax", entry.replace("%1", "(#{errorServer}) #{error}"));
 	config_file.removeVariable("Speech", "ConnectionError");
 
 	entry = config_file.readEntry("Speech", "NotifyFormatFemale", "");
-	if (entry != "")
+	if (!entry.isEmpty())
 	{
 		config_file.writeEntry("Speech", "StatusChanged/ToOnline_Syntax/Female", entry);
 		config_file.writeEntry("Speech", "StatusChanged/ToBusy_Syntax/Female", entry);
@@ -115,7 +115,7 @@ void Speech::import_0_5_0_Configuration()
 	config_file.removeVariable("Speech", "NotifyFormatFemale");
 
 	entry = config_file.readEntry("Speech", "NotifyFormatMale", "");
-	if (entry != "")
+	if (!entry.isEmpty())
 	{
 		config_file.writeEntry("Speech", "StatusChanged/ToOnline_Syntax/Male", entry);
 		config_file.writeEntry("Speech", "StatusChanged/ToBusy_Syntax/Male", entry);
@@ -234,7 +234,7 @@ void Speech::notify(Notification *notification)
 	}
 
 	QString syntax = config_file.readEntry("Speech", notification->type() + "_Syntax/" + sex, "");
-	if (syntax == "")
+	if (syntax.isEmpty())
 		text = notification->text();
 	else
 	{

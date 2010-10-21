@@ -198,7 +198,7 @@ bool AdiumStyle::isStyleValid(const QString &stylePath)
 QString AdiumStyle::readStylePart(const QString &part)
 {
 	QFile fileAccess;
-	QString resultHtml = QString::null;
+	QString resultHtml;
 	if (QFile::exists(part))
 	{
 

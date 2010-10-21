@@ -83,9 +83,9 @@ void KaduChatStyleEngine::appendMessage(HtmlMessagesRenderer *renderer, MessageR
 
 	QString html = formatMessage(message, renderer->lastMessage());
 
-	html.replace("\n", " ");
-	html.replace("'", "\\'");
-	html.replace("\\", "\\\\");
+	html.replace('\n', ' ');
+	html.replace('\'', QLatin1String("\\'"));
+	html.replace('\\', QLatin1String("\\\\"));
 	html.prepend("<span>");
 	html.append("</span>");
 
@@ -129,8 +129,8 @@ void KaduChatStyleEngine::loadStyle(const QString &styleName, const QString &var
 	int beginOfHeader = chatSyntax.indexOf("<kadu:header>");
 	int endOfHeader = chatSyntax.indexOf("</kadu:header>");
 	ChatSyntaxWithHeader = chatSyntax;
-	ChatSyntaxWithHeader.replace("<kadu:header>", "");
-	ChatSyntaxWithHeader.replace("</kadu:header>", "");
+	ChatSyntaxWithHeader.remove("<kadu:header>");
+	ChatSyntaxWithHeader.remove("</kadu:header>");
 
 	if (endOfHeader != -1)
 		ChatSyntaxWithoutHeader = chatSyntax.mid(0, beginOfHeader) + chatSyntax.mid(endOfHeader + strlen("</kadu:header>"));
@@ -228,9 +228,9 @@ void KaduChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNam
 
 	QString content = SyntaxList::readSyntax("chat", styleName, "");
 
-	content.replace(QRegExp("%o"),  " ");
-	content.replace("<kadu:header>", "");
-	content.replace("</kadu:header>", "");
+	content.replace(QRegExp("%o"), " ");
+	content.remove("<kadu:header>");
+	content.remove("</kadu:header>");
 
 	int count = preview->getObjectsToParse().count();
 	QString text;
@@ -276,8 +276,8 @@ void KaduChatStyleEngine::styleEditionRequested(QString styleName)
 
 void KaduChatStyleEngine::chatSyntaxFixup(QString &syntax)
 {
-	syntax.replace("<kadu:header>", "");
-	syntax.replace("</kadu:header>", "");
+	syntax.remove("<kadu:header>");
+	syntax.remove("</kadu:header>");
 }
 
 void KaduChatStyleEngine::chatFixup(QString &syntax)

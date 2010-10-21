@@ -50,7 +50,7 @@ PCSpeakerConfigurationWidget::~PCSpeakerConfigurationWidget()
 
 void PCSpeakerConfigurationWidget::saveNotifyConfigurations()
 {
-	if (CurrentNotifyEvent != "")
+	if (!CurrentNotifyEvent.isEmpty())
 		Sounds[CurrentNotifyEvent] = soundEdit->text();
 
 	foreach (const QString &key, Sounds.keys())
@@ -59,7 +59,7 @@ void PCSpeakerConfigurationWidget::saveNotifyConfigurations()
 
 void PCSpeakerConfigurationWidget::switchToEvent(const QString &event)
 {
-	if (CurrentNotifyEvent != "")
+	if (!CurrentNotifyEvent.isEmpty())
 		Sounds[CurrentNotifyEvent] = soundEdit->text();
 
 	CurrentNotifyEvent = event;

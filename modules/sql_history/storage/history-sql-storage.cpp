@@ -399,7 +399,7 @@ QList<Chat> HistorySqlStorage::chats(HistorySearchParameters search)
 	query.prepare(queryString);
 
 	if (!search.query().isEmpty())
-		query.bindValue(":content", QLatin1String("%") + search.query() + "%");
+		query.bindValue(":content", QLatin1String("%") + search.query() + '%');
 	if (search.fromDate().isValid())
 		query.bindValue(":fromDate", search.fromDate());
 	if (search.toDate().isValid())
@@ -442,7 +442,7 @@ QList<QDate> HistorySqlStorage::chatDates(Chat chat, HistorySearchParameters sea
 	query.prepare(queryString);
 
 	if (!search.query().isEmpty())
-		query.bindValue(":content", QLatin1String("%") + search.query() + "%");
+		query.bindValue(":content", QLatin1String("%") + search.query() + '%');
 	if (search.fromDate().isValid())
 		query.bindValue(":fromDate", search.fromDate());
 	if (search.toDate().isValid())
@@ -590,7 +590,7 @@ QList<QString> HistorySqlStorage::smsRecipientsList(HistorySearchParameters sear
 	query.prepare(queryString);
 
 	if (!search.query().isEmpty())
-		query.bindValue(":content", QLatin1String("%") + search.query() + "%");
+		query.bindValue(":content", QLatin1String("%") + search.query() + '%');
 	if (search.fromDate().isValid())
 		query.bindValue(":fromDate", search.fromDate());
 	if (search.toDate().isValid())
@@ -630,7 +630,7 @@ QList<QDate> HistorySqlStorage::datesForSmsRecipient(const QString &recipient, H
 
 	query.bindValue(":receipient", recipient);
 	if (!search.query().isEmpty())
-		query.bindValue(":content", QLatin1String("%") + search.query() + "%");
+		query.bindValue(":content", QLatin1String("%") + search.query() + '%');
 	if (search.fromDate().isValid())
 		query.bindValue(":fromDate", search.fromDate());
 	if (search.toDate().isValid())
@@ -728,7 +728,7 @@ QList<Buddy> HistorySqlStorage::statusBuddiesList(HistorySearchParameters search
 	query.prepare(queryString);
 
 	if (!search.query().isEmpty())
-		query.bindValue(":description", QLatin1String("%") + search.query() + "%");
+		query.bindValue(":description", QLatin1String("%") + search.query() + '%');
 	if (search.fromDate().isValid())
 		query.bindValue(":fromDate", search.fromDate());
 	if (search.toDate().isValid())
@@ -777,7 +777,7 @@ QList<QDate> HistorySqlStorage::datesForStatusBuddy(Buddy buddy, HistorySearchPa
 	query.prepare(queryString);
 
 	if (!search.query().isEmpty())
-		query.bindValue(":description", QLatin1String("%") + search.query() + "%");
+		query.bindValue(":description", QLatin1String("%") + search.query() + '%');
 	if (search.fromDate().isValid())
 		query.bindValue(":fromDate", search.fromDate());
 	if (search.toDate().isValid())

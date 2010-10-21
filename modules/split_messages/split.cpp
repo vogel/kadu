@@ -106,7 +106,7 @@ void Split::onMessageSendRequested(ChatWidget *chat)
 	unsigned char *format;
 	QTextDocument doc;
 	QString text = chat->edit()->text();
-	text.replace("\n", "\r\n");
+	text.replace('\n', QLatin1String("\r\n"));
 	doc.setHtml(text);
 	text = doc.toPlainText();
 	text.replace("\r\n", "\n");
@@ -119,12 +119,12 @@ void Split::onMessageSendRequested(ChatWidget *chat)
 		while(pos < text.length())
 		{
 			tmpStr = text.mid(pos, maxL);
-			if(tmpStr != "")
+			if (!tmpStr.isEmpty())
 				splitedMessages += tmpStr;
 			pos += maxL;
 		}
 		fillEditor(chat, splitedMessages);
-		
+
 		SendSplitted *send = new SendSplitted(chat, splitedMessages, this, "send_splited");
 		send->name();
 	}
@@ -148,12 +148,12 @@ SendSplitted::SendSplitted(ChatWidget *chat, QStringList messagesToSend, QObject
 		this, SLOT( onMessageSent(BuddyList , const QString &) ));
 	connect(&destroingTimer, SIGNAL( timeout() ), this, SLOT( onDestroyThis() ));
 	connect(chat, SIGNAL( destroyed() ), this, SLOT( onDestroyThis() ));
-	
+
 	// Delete "this" object after 2 minutes to prevent mem leak in case user aborts sending a part
 	// of the message.
 	connect(&timer, SIGNAL( timeout() ), this, SLOT( sendNextPart() ));
 	destroingTimer.start(2 * 60 * 1000, true);
-	
+
 	kdebugf2();
 }
 

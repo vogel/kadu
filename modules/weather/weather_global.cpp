@@ -27,22 +27,22 @@ namespace
 		{
 			return (server.name_ == name_);
 		}
-		
+
 		HasName(const QString &name) : name_(name) {}
 		QString name_;
 	};
-	
+
 	struct HasConfig
 	{
 		bool operator() (const WeatherGlobal::Server &server)
 		{
 			return (server.configFile_ == configFile_);
 		}
-		
+
 		HasConfig(const QString &configFile ) : configFile_(configFile) {}
 		QString configFile_;
 	};
-	
+
 	const QString WeatherConfigPath("kadu/modules/data/weather");
 	const QString WeatherIconPath("kadu/modules/data/weather/icons");
 } // namespace
@@ -58,7 +58,7 @@ WeatherGlobal::WeatherGlobal()
 	QStringList iniFiles;
 	for (unsigned int i = 0; i < dir.count(); ++i)
 		iniFiles.append(dir[i]);
-	
+
 	// Remove non-existent files from the server list
 	//
 	for (unsigned int i = 0; i < serverList.count(); ++i)
@@ -72,13 +72,13 @@ WeatherGlobal::WeatherGlobal()
 		else
 			iniFiles.erase(file);
 	}
-	
+
 	// Add new files to the server list
 	//
 	serverList += iniFiles;
 	for (unsigned int i = 0; i < iniFiles.count(); ++i)
 		serversUsing.append("1");
-	
+
 	// Load server configs and initialize server list
 	//
 	for (unsigned int i = 0; i < serverList.count(); ++i)
@@ -105,11 +105,11 @@ WeatherGlobal::~WeatherGlobal()
 		config_file.writeEntry("Weather", QString("Location%1").arg(i + 1), recentLocations_[i]);
 	for (; i < RECENT_LOCATIONS_COUNT; i++)
 		config_file.writeEntry("Weather", QString("Location%1").arg(i + 1), "");
-		
-	
+
+
 	QStringList serverList;
 	QStringList serversUsing;
-	
+
 	SERVERITERATOR server = servers_.begin();
 	while (server != servers_.end())
 	{
@@ -117,7 +117,7 @@ WeatherGlobal::~WeatherGlobal()
 		serversUsing.append((*server).use_ ? "1" : "0");
 		++server;
 	}
-	
+
 	config_file.writeEntry("Weather", "Servers", serverList.join(";"));
 	config_file.writeEntry("Weather", "ServersUsing", serversUsing.join(";"));
 }
@@ -201,19 +201,19 @@ bool WeatherGlobal::insertRecentLocation(const QString &location)
 		recentLocations_.push_front(location);
 		if (recentLocations_.count() > RECENT_LOCATIONS_COUNT)
 			recentLocations_.remove(recentLocations_.at(RECENT_LOCATIONS_COUNT));
-		
+
 		return true;
 	}
 	else
 		return false;
 }
-	
+
 QString WeatherGlobal::getConfigPath(const QString &file)
 {
-	return dataPath(WeatherConfigPath) + "/" + file;
+	return dataPath(WeatherConfigPath) + '/' + file;
 }
-	
+
 QString WeatherGlobal::getIconPath(const QString &file)
 {
-	return dataPath(WeatherIconPath) + "/" + file;
+	return dataPath(WeatherIconPath) + '/' + file;
 }

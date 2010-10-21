@@ -23,7 +23,7 @@
 
 /**
 
-Copyright (C) 2005 by 
+Copyright (C) 2005 by
 	Pan Wojtas (Wojtek Sulewski)
 	wojciech <  _at_    > sulewski.pl
 	gg: 2087202
@@ -77,7 +77,7 @@ extern "C" KADU_EXPORT int firewall_init()
 extern "C" KADU_EXPORT void firewall_close()
 {
 	notification_manager->unregisterEvent("Firewall");
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/firewall.ui"), firewall);	
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/firewall.ui"), firewall);
 	delete firewall;
 	firewall = 0;
 }
@@ -86,7 +86,7 @@ extern "C" KADU_EXPORT void firewall_close()
 Firewall::Firewall() : flood_messages(0), right_after_connection(false)
 {
 	kdebugf();
-	
+
 	loadSecuredList();
 
 	lastMsg.start();
@@ -104,21 +104,21 @@ Firewall::Firewall() : flood_messages(0), right_after_connection(false)
 	connect(userlist, SIGNAL(userAdded(UserListElement, bool, bool)), this, SLOT(userAdded(UserListElement, bool, bool)));
 	connect(userlist, SIGNAL(userRemoved(UserListElement, bool, bool)), this, SLOT(userRemoved(UserListElement, bool, bool)));
 
-	
+
 	connect(gadu, SIGNAL(connecting()), this, SLOT(connecting()));
 	connect(gadu, SIGNAL(connected()), this, SLOT(connected()));
 
 	defaultSettings();
-	
+
 	kdebugf2();
-	
+
 }
 
 Firewall::~Firewall()
 {
 	kdebugf();
 
-	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();	
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	disconnect(gadu, SIGNAL(rawGaduReceivedMessageFilter(Protocol *, UserListElements, QString&, QByteArray&, bool&)), this, SLOT(messageFiltering(Protocol *, UserListElements, QString&, QByteArray&, bool&)));
 	disconnect(gadu, SIGNAL(sendMessageFiltering(const UserListElements, QByteArray &, bool &)), this, SLOT(sendMessageFilter(const UserListElements, QByteArray &, bool &)));
 	disconnect(chat_manager, SIGNAL(chatWidgetDestroying(ChatWidget *)), this, SLOT(chatDestroyed(ChatWidget *)));
@@ -126,13 +126,13 @@ Firewall::~Firewall()
 	disconnect(userlist, SIGNAL(userDataChanged(UserListElement, QString, QVariant, QVariant, bool, bool)), this, SLOT(userDataChanged(UserListElement, QString, QVariant, QVariant, bool, bool)));
 	disconnect(userlist, SIGNAL(userAdded(UserListElement, bool, bool)), this, SLOT(userAdded(UserListElement, bool, bool)));
 	disconnect(userlist, SIGNAL(userRemoved(UserListElement, bool, bool)), this, SLOT(userRemoved(UserListElement, bool, bool)));
-	
+
 	disconnect(gadu, SIGNAL(connecting()), this, SLOT(connecting()));
 	disconnect(gadu, SIGNAL(connected()), this, SLOT(connected()));
-	
-	
+
+
 	kdebugf2();
-	
+
 }
 
 void Firewall::messageFiltering(Protocol *protocol, UserListElements senders, QString& msg, QByteArray& formats, bool& stop)
@@ -142,19 +142,19 @@ void Firewall::messageFiltering(Protocol *protocol, UserListElements senders, QS
 	QString user;
 	// czy senders.count() mo¿e byæ < 1 ???
 	if (senders.count() > 1)
-		user = tr("conference") + " " + senders[0].ID("Gadu");
+		user = tr("conference") + ' ' + senders[0].ID("Gadu");
 	else if (userlist->contains(senders[0], FalseForAnonymous))
 		user = senders[0].altNick();
 	else
 		user = senders[0].ID("Gadu");
-	
+
 // emotikony s± sprawdzane nawet przy ³±czeniu
 	const int min_interval_notify = 2000;
-	
+
 	if (config_file.readBoolEntry("Firewall", "dos_emoticons", true))
 	{
 		bool ignore = false;
-		
+
 		if (config_file.readBoolEntry("Firewall", "emoticons_allow_known", false))
 		{
 			ignore = true;
@@ -178,14 +178,14 @@ void Firewall::messageFiltering(Protocol *protocol, UserListElements senders, QS
 				{
 					writeLog(user, msg);
 				}
-	
+
 				lastNotify.restart();
 			}
 			kdebugf2();
 			return;
 		}
 	}
-	
+
 
 // atak floodem
 	if (config_file.readBoolEntry("Firewall", "dos", true) &&
@@ -197,7 +197,7 @@ void Firewall::messageFiltering(Protocol *protocol, UserListElements senders, QS
 			showHint(user, tr("flooding DoS attack!"));
 			if (config_file.readBoolEntry("Firewall", "write_log", true))
 				writeLog(user, msg);
-			
+
 			lastNotify.restart();
 		}
 		kdebugf2();
@@ -254,7 +254,7 @@ bool Firewall::checkConference(const QString &message, const UserListElements se
  			return false;
 		}
 	}
-	
+
 	kdebugf2();
 	return true;
 }
@@ -295,7 +295,7 @@ bool Firewall::checkChat(Protocol *protocol, const QString &message, const UserL
 
 			if (config_file.readBoolEntry("Firewall", "write_log", true))
 				writeLog(user, tr("Chat with invisible anonim ignored.\n") + "----------------------------------------------------\n");
-			
+
 			kdebugf2();
 			return true;
 		}
@@ -307,12 +307,12 @@ bool Firewall::checkChat(Protocol *protocol, const QString &message, const UserL
 
 		if (config_file.readBoolEntry("Firewall", "confirmation", true))
 			protocol->sendMessage(senders, config_file.readEntry("Firewall", "confirmation_text", tr("OK, now say hello, and introduce yourself ;-)")));
-		
+
 		if (config_file.readBoolEntry("Firewall", "write_log", true))
 			writeLog(user, tr("User wrote right answer!\n") + "----------------------------------------------------\n");
-		
+
 		stop = true;
-		
+
 		kdebugf2();
 		return false;
 	}
@@ -324,15 +324,15 @@ bool Firewall::checkChat(Protocol *protocol, const QString &message, const UserL
 			sd = new SearchDialog(kadu, user.toUInt());
 			sd->show();
 			sd->firstSearch();
-			
+
 			last_uin = user;
 		}
-		
+
 		kdebugm(KDEBUG_INFO, "%s\n", QString(message).local8Bit().data());
 
 		if (!right_after_connection)
 			protocol->sendMessage(senders, config_file_ptr->readEntry("Firewall", "question", tr("This message has been generated AUTOMATICALLY!\n\nI'm a busy person and I don't have time for stupid chats. Find another person to chat with. If you REALLY want something from me, simple type \"I want something\" (capital doesn't matter)")));
-		
+
 		kdebugf2();
 		return true;
 	}
@@ -341,10 +341,10 @@ bool Firewall::checkChat(Protocol *protocol, const QString &message, const UserL
 bool Firewall::checkFlood()
 {
 	kdebugf();
-	
+
 	const int min_interval = config_file.readNumEntry("Firewall", "dos_interval", 500); // minimalna przerwa czasowa miedzy przeslaniem 2 kolejnych wiadomosci
 	const unsigned int max_flood_messages = 15;
-		
+
 	if (lastMsg.restart() >= min_interval)
 	{
 		flood_messages = 0;
@@ -366,13 +366,13 @@ bool Firewall::checkFlood()
 bool Firewall::checkEmoticons(const QString &message)
 {
 	kdebugf();
-	
+
 	const unsigned int max_occ = config_file.readNumEntry("Firewall", "emoticons_max", 15); // maksymalna laczna ilosc wystapien emotikon
 
 	QStringList emots;
 	emots << "<" << ":)" << ":(" << ":-(" << ";)" << ":[" << "wrrrr!" << "niee" << "tiaaa" << ":-)" << ";-)" << ":P" << ":-P" << ";P" << ";-P" << "!!" << "??" << ";(" << ";-(" << ":D" << ":-D" << ";D" << ";-D" << ":O" << ":-O" << ";O" << ";-O" << ":>" << ";>" << ":->" << ";->" << ":|" << ";|" << ":-|" << ";-|" << ":]" << ";]" << ":-]" << ";-]" << ":/" << ";/" << ":-/" << ";-/" << ":*" << ":-*" << ";*" << ";-*" << "]:->";
-		
-		
+
+
 	unsigned int occ = 0;
 	foreach(const QString emot, emots)
 	{
@@ -415,7 +415,7 @@ void Firewall::userRemoved(UserListElement elem, bool mas, bool last)
 void Firewall::connecting()
 {
 	kdebugf();
-	
+
 	right_after_connection = true;
 
 	kdebugf2();
@@ -424,7 +424,7 @@ void Firewall::connecting()
 void Firewall::connected()
 {
 	kdebugf();
-	
+
 	QTimer::singleShot(4000, this, SLOT(changeRight_after_connection()));
 
 	kdebugf2();
@@ -433,7 +433,7 @@ void Firewall::connected()
 void Firewall::changeRight_after_connection()
 {
 	kdebugf();
-	
+
 	right_after_connection = !right_after_connection;
 
 	kdebugf2();
@@ -457,13 +457,13 @@ void Firewall::chatDestroyed(ChatWidget *chat)
 void Firewall::sendMessageFilter(const UserListElements users, QByteArray/*String*/ &msg, bool &stop)
 {
 	kdebugf();
-	
+
 	foreach(const UserListElement &user, users)
 	{
 		if (!userlist->contains(user, FalseForAnonymous) && chat_manager->findChatWidget(user))
 			passed.append(user);
 	}
-	
+
 	if (config_file.readBoolEntry("Firewall", "safe_sending", false))
 	{
 		foreach(const UserListElement &user, users)
@@ -481,12 +481,12 @@ void Firewall::sendMessageFilter(const UserListElements users, QByteArray/*Strin
 							secured_temp_allowed.append(user.ID("Gadu"));
 							return;
 				}
-				
+
 			}
 		}
 	}
-	
-	
+
+
 	kdebugf2();
 }
 
@@ -498,8 +498,8 @@ void Firewall::showHint(const QString &u, const QString &m)
 	{
 		UserListElement user = userlist->byID("Gadu", u);
 		Notification *notification = new Notification("Firewall", "ManageKeysWindowIcon", user);
-		notification->setText(config_file.readEntry("Firewall", "notification_syntax", 
-			tr("%u writes")).replace("%u", u).replace("%m", ""));
+		notification->setText(config_file.readEntry("Firewall", "notification_syntax",
+			tr("%u writes")).replace("%u", u).remove("%m"));
 		notification->setDetails(m);
 		notification_manager->notify(notification);
 	}
@@ -509,9 +509,9 @@ void Firewall::showHint(const QString &u, const QString &m)
 void Firewall::writeLog(const QString &u, const QString &m)
 {
 	kdebugf();
-	
+
 	QFile log_file(config_file.readEntry("Firewall", "log_file", ggPath("firewall.log")));
-				
+
 	if (!log_file.exists())
 	{
 		log_file.open(IO_WriteOnly);
@@ -519,34 +519,34 @@ void Firewall::writeLog(const QString &u, const QString &m)
 		stream << tr("      DATA AND TIME      ::   UIN   :: MESSAGE\n") << "----------------------------------------------------\n";
 		log_file.close();
 	}
-				
+
 	log_file.open(IO_WriteOnly | IO_Append);
 	QTextStream stream( &log_file );
 	stream << QDateTime::currentDateTime(Qt::LocalTime).toString() << " :: " << u << " :: " << m << "\n";
 	log_file.close();
-	
+
 	kdebugf2();
 }
 
 void Firewall::loadSecuredList()
 {
 	kdebugf();
-	
+
 	QString loaded_str = config_file.readEntry("Firewall", "secured_list");
 	secured = QStringList::split(",", loaded_str);
-	
+
 	kdebugf2();
 }
 
 void Firewall::saveSecuredList()
 {
 	kdebugf();
-	
+
 	QStringList list_to_save = secured;
 
 	config_file.writeEntry("Firewall", "secured_list", list_to_save.join(","));
 	config_file.sync();
-	
+
 	kdebugf2();
 }
 
@@ -638,7 +638,7 @@ Safe sending GUI
 	connect(allList, SIGNAL(itemDoubleClicked(QListWidgetItem *)), this, SLOT(_Right(QListWidgetItem *)));
 
 	secureGroupBox->addWidgets(0, secure);
-	
+
 	foreach(const UserListElement &user, *userlist)
 	{
 		if (user.usesProtocol("Gadu") && !user.isAnonymous())
@@ -733,7 +733,7 @@ void Firewall::configurationApplied()
 	{
 		secured.append(userlist->byAltNick(secureList->item(i)->text()).ID("Gadu"));
 	}
-		
+
 	saveSecuredList();
 
 	config_file.writeEntry("Firewall", "question", questionEdit->text());

@@ -44,7 +44,7 @@ ProxyGroupBox::ProxyGroupBox(Account account, const QString &title, QWidget *par
 	connect(UseProxy, SIGNAL(stateChanged(int)), this, SLOT(dataChanged()));
 	proxyLayout->addWidget(UseProxy, 0, 0, 1, 6);
 
-	QLabel *hostLabel = new QLabel(tr("Host") + ":");
+	QLabel *hostLabel = new QLabel(tr("Host") + ':');
 	hostLabel->setEnabled(false);
 
 	Host = new QLineEdit(this);
@@ -54,7 +54,7 @@ ProxyGroupBox::ProxyGroupBox(Account account, const QString &title, QWidget *par
 	proxyLayout->addWidget(hostLabel, 1, 1);
 	proxyLayout->addWidget(Host, 1, 2);
 
-	QLabel *proxyPortLabel = new QLabel(tr("Port") + ":");
+	QLabel *proxyPortLabel = new QLabel(tr("Port") + ':');
 	proxyPortLabel->setEnabled(false);
 
 	ProxyPort = new QLineEdit(this);
@@ -78,7 +78,7 @@ ProxyGroupBox::ProxyGroupBox(Account account, const QString &title, QWidget *par
 	connect(ProxyAuthentication, SIGNAL(stateChanged(int)), this, SLOT(dataChanged()));
 	authlayout->addWidget(ProxyAuthentication, 0, 0, 1, 3);
 
-	QLabel *usernameLabel = new QLabel(tr("Username") + ":");
+	QLabel *usernameLabel = new QLabel(tr("Username") + ':');
 	usernameLabel->setEnabled(false);
 
 	Username = new QLineEdit(this);
@@ -88,7 +88,7 @@ ProxyGroupBox::ProxyGroupBox(Account account, const QString &title, QWidget *par
 	authlayout->addWidget(usernameLabel, 1, 1);
 	authlayout->addWidget(Username, 1, 2, 1, 2);
 
-	QLabel *passwordLabel = new QLabel(tr("Password") + ":");
+	QLabel *passwordLabel = new QLabel(tr("Password") + ':');
 	passwordLabel->setEnabled(false);
 
 	Password = new QLineEdit(this);

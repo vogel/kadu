@@ -72,21 +72,21 @@ void JabberAddAccountWidget::createGui()
 	Username = new QLineEdit(this);
 	connect(Username, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
 	jidLayout->addWidget(Username);
-	
+
 	AtLabel = new QLabel("@", this);
 	jidLayout->addWidget(AtLabel, 0, 1);
-	
+
 	Domain = new QComboBox();
 	Domain->setEditable(true);
 	jidLayout->addWidget(Domain, 0, 2);
-	
-	layout->addRow(tr("Username") + ":", jidWidget);
+
+	layout->addRow(tr("Username") + ':', jidWidget);
 
 	AccountPassword = new QLineEdit(this);
 	connect(AccountPassword, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
 	AccountPassword->setEchoMode(QLineEdit::Password);
-	layout->addRow(tr("Password") + ":", AccountPassword);
-	
+	layout->addRow(tr("Password") + ':', AccountPassword);
+
 	RememberPassword = new QCheckBox(tr("Remember Password"), this);
 	RememberPassword->setChecked(true);
 	layout->addRow(0, RememberPassword);
@@ -97,7 +97,7 @@ void JabberAddAccountWidget::createGui()
 
 	Identity = new IdentitiesComboBox(this);
 	connect(Identity, SIGNAL(identityChanged(Identity)), this, SLOT(dataChanged()));
-	layout->addRow(tr("Account Identity") + ":", Identity);
+	layout->addRow(tr("Account Identity") + ':', Identity);
 
 	QLabel *infoLabel = new QLabel(tr("<font size='-1'><i>Select or enter the identity that will be associated with this account.</i></font>"), this);
 	infoLabel->setWordWrap(true);
@@ -138,13 +138,13 @@ void JabberAddAccountWidget::apply()
 	//jabberAccount.setProtocolName("jabber");
 	jabberAccount.setAccountIdentity(Identity->currentIdentity());
 	jabberAccount.setProtocolName("jabber");
-	
+
 	/*
-	 * Because now there is one AddAccountWidget for XMPP, GTalk and FB, and only in FB the Domain field is hidden, 
+	 * Because now there is one AddAccountWidget for XMPP, GTalk and FB, and only in FB the Domain field is hidden,
 	 * so it’s not pretty but fast way to see if we’re adding FB account, which requires special connection settings.
 	 */
 	if (Domain->isVisible())
-		jabberAccount.setId(Username->text() + "@" + Domain->currentText());
+		jabberAccount.setId(Username->text() + '@' + Domain->currentText());
 	else // facebook
 		jabberAccount.setId(Username->text() + "@chat.facebook.com");
 	jabberAccount.setPassword(AccountPassword->text());
@@ -164,8 +164,8 @@ void JabberAddAccountWidget::apply()
 		}
 	}
 
-	resetGui();	
-	
+	resetGui();
+
 	emit accountCreated(jabberAccount);
 }
 

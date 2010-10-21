@@ -65,7 +65,7 @@ void BuddyPersonalInfoConfigurationWidget::createGui()
 	ContactIdCombo->setModelColumn(1); // use long name
 	connect(ContactIdCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(accountSelectionChanged(int)));
 
-	contactLayout->addRow(new QLabel(tr("Buddy contact") + ":", contactWidget), ContactIdCombo);
+	contactLayout->addRow(new QLabel(tr("Buddy contact") + ':', contactWidget), ContactIdCombo);
 
 	Layout->addStretch(100);
 }

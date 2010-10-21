@@ -142,7 +142,7 @@ bool PathListEditWindow::validatePath(QString &path)
 	if (!dir.isReadable())
 		return false;
 
-	if (!path.endsWith("/"))
+	if (!path.endsWith('/'))
 		path += '/';
 
 	if (!(PathListWidget->findItems(path, Qt::MatchExactly).isEmpty()))

@@ -273,7 +273,8 @@ void ChatStylesManager::loadStyles()
 		{
 			foreach (ChatStyleEngine *engine, RegisteredEngines.values())
 			{
-				if ((StyleName = engine->isStyleValid(path + file)) != QString::null)
+				StyleName = engine->isStyleValid(path + file);
+				if (!StyleName.isNull())
 				{
 					AvailableStyles[StyleName].engine = engine;
 					AvailableStyles[StyleName].global = false;
@@ -295,7 +296,8 @@ void ChatStylesManager::loadStyles()
 		{
 			foreach (ChatStyleEngine *engine, RegisteredEngines.values())
 			{
-				if ((StyleName = engine->isStyleValid(path + file)) != QString::null)
+				StyleName = engine->isStyleValid(path + file);
+				if (!StyleName.isNull())
 				{
 					AvailableStyles[StyleName].engine = engine;
 					AvailableStyles[StyleName].global = true;
@@ -315,7 +317,7 @@ void ChatStylesManager::mainConfigurationWindowCreated(MainConfigurationWindow *
 
 	ConfigGroupBox *groupBox = window->widget()->configGroupBox("Look", "Chat Window", "Style");
 //editor
-	QLabel *editorLabel = new QLabel(qApp->translate("@default", "Style") + ":");
+	QLabel *editorLabel = new QLabel(qApp->translate("@default", "Style") + ':');
 	editorLabel->setToolTip(qApp->translate("@default", "Choose style of chat window"));
 
 	QWidget  *editor = new QWidget(groupBox->widget());
@@ -357,8 +359,8 @@ void ChatStylesManager::mainConfigurationWindowCreated(MainConfigurationWindow *
 	CurrentEngine->prepareStylePreview(EnginePreview, CurrentEngine->currentStyleName(), CurrentEngine->currentStyleVariant());
 //
 	groupBox->addWidgets(editorLabel, editor);
-	groupBox->addWidgets(new QLabel(qApp->translate("@default", "Style variant") + ":"), VariantListCombo);
-	groupBox->addWidgets(new QLabel(qApp->translate("@default", "Preview") + ":"), EnginePreview);
+	groupBox->addWidgets(new QLabel(qApp->translate("@default", "Style variant") + ':'), VariantListCombo);
+	groupBox->addWidgets(new QLabel(qApp->translate("@default", "Preview") + ':'), EnginePreview);
 
 	TurnOnTransparency = dynamic_cast<QCheckBox *>(window->widget()->widgetById("useTransparency"));
 	TurnOnTransparency->setEnabled(CompositingEnabled);

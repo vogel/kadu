@@ -355,7 +355,7 @@ int main(int argc, char *argv[])
 
 	QString path_ = profilePath();
 #ifndef Q_WS_WIN
-	if (path_.endsWith("/kadu/") || path_.endsWith("/Kadu/")) // for profiles directory
+	if (path_.endsWith(QLatin1String("/kadu/")) || path_.endsWith(QLatin1String("/Kadu/"))) // for profiles directory
 		mkdir(qPrintable(path_.left(path_.length() - 6)), 0700);
 	mkdir(qPrintable(path_), 0700);
 #else

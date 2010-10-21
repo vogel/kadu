@@ -86,17 +86,17 @@ void JabberCreateAccountWidget::createGui()
 	Domain->setEditable(true);
 	jidLayout->addWidget(Domain, 0, 2);
 
-	layout->addRow(tr("Username") + ":", jidWidget);
+	layout->addRow(tr("Username") + ':', jidWidget);
 
 	NewPassword = new QLineEdit(this);
 	connect(NewPassword, SIGNAL(textEdited(const QString &)), this, SLOT(dataChanged()));
 	NewPassword->setEchoMode(QLineEdit::Password);
-	layout->addRow(tr("Password") + ":", NewPassword);
+	layout->addRow(tr("Password") + ':', NewPassword);
 
 	ReNewPassword = new QLineEdit(this);
 	connect(ReNewPassword, SIGNAL(textEdited(const QString &)), this, SLOT(dataChanged()));
 	ReNewPassword->setEchoMode(QLineEdit::Password);
-	layout->addRow(tr("Retype Password") + ":", ReNewPassword);
+	layout->addRow(tr("Retype Password") + ':', ReNewPassword);
 
 	RememberPassword = new QCheckBox(tr("Remember password"), this);
 	RememberPassword->setChecked(true);
@@ -104,7 +104,7 @@ void JabberCreateAccountWidget::createGui()
 
 	IdentityCombo = new IdentitiesComboBox(this);
 	connect(IdentityCombo, SIGNAL(identityChanged(Identity)), this, SLOT(dataChanged()));
-	layout->addRow(tr("Account Identity") + ":", IdentityCombo);
+	layout->addRow(tr("Account Identity") + ':', IdentityCombo);
 
 	QLabel *infoLabel = new QLabel(tr("<font size='-1'><i>Select or enter the identity that will be associated with this account.</i></font>"), this);
 	infoLabel->setWordWrap(true);
@@ -139,7 +139,7 @@ void JabberCreateAccountWidget::createGui()
         vboxLayout2->setMargin(9);
 
         CustomHostPort = new QCheckBox(ConnectionOptions);
-        CustomHostPort->setText(tr("Manually Specify Server Host/Port")+":");
+        CustomHostPort->setText(tr("Manually Specify Server Host/Port") + ':');
         vboxLayout2->addWidget(CustomHostPort);
 
         HostPortLayout = new QHBoxLayout();
@@ -147,14 +147,14 @@ void JabberCreateAccountWidget::createGui()
         HostPortLayout->setMargin(0);
 
         CustomHostLabel = new QLabel(ConnectionOptions);
-        CustomHostLabel->setText(tr("Host")+":");
+        CustomHostLabel->setText(tr("Host") + ':');
         HostPortLayout->addWidget(CustomHostLabel);
 
         CustomHost = new QLineEdit(ConnectionOptions);
         HostPortLayout->addWidget(CustomHost);
 
         CustomPortLabel = new QLabel(ConnectionOptions);
-        CustomPortLabel->setText(tr("Port")+":");
+        CustomPortLabel->setText(tr("Port") + ':');
         HostPortLayout->addWidget(CustomPortLabel);
 
         CustomPort = new QLineEdit(ConnectionOptions);
@@ -176,7 +176,7 @@ void JabberCreateAccountWidget::createGui()
         EncryptionLayout->setSpacing(6);
         EncryptionLayout->setMargin(0);
         EncryptionModeLabel = new QLabel(ConnectionOptions);
-        EncryptionModeLabel->setText(tr("Encrypt connection")+":");
+        EncryptionModeLabel->setText(tr("Encrypt connection") + ':');
         EncryptionLayout->addWidget(EncryptionModeLabel);
 
         EncryptionMode = new QComboBox(ConnectionOptions);
