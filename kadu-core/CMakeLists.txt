@@ -237,6 +237,7 @@ set (kadu_SRCS
 	gui/windows/search-window.cpp
 	gui/windows/subscription-window.cpp
 	gui/windows/syntax-editor-window.cpp
+	gui/windows/updates-dialog.cpp
 	gui/windows/window-notifier-window.cpp
 	gui/windows/your-accounts.cpp
 
@@ -551,6 +552,7 @@ set (kadu_MOC_SRCS
 	gui/windows/search-window.h
 	gui/windows/subscription-window.h
 	gui/windows/syntax-editor-window.h
+	gui/windows/updates-dialog.h
 	gui/windows/window-notifier-window.h
 	gui/windows/your-accounts.h
 
