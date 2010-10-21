@@ -49,8 +49,7 @@ AccountShared * AccountShared::loadFromStorage(const QSharedPointer<StoragePoint
 
 AccountShared::AccountShared(QUuid uuid) :
 		BaseStatusContainer(this), Shared(uuid),
-		ProtocolHandler(0), RememberPassword(false), HasPassword(false),
-		ConnectAtStart(true)
+		ProtocolHandler(0), RememberPassword(false), HasPassword(false)
 {
 }
 
@@ -82,7 +81,6 @@ void AccountShared::load()
 
 	Shared::load();
 
-	ConnectAtStart = loadValue<bool>("ConnectAtStart", true);
 	Identity identity = IdentityManager::instance()->byUuid(loadValue<QString>("Identity"));
 	if (identity.isNull() && !IdentityManager::instance()->items().isEmpty())
 		identity = IdentityManager::instance()->items()[0];
@@ -116,7 +114,6 @@ void AccountShared::store()
 
 	Shared::store();
 
-	storeValue("ConnectAtStart", ConnectAtStart);
 	storeValue("Identity", AccountIdentity.uuid().toString());
 
 	storeValue("Protocol", ProtocolName);

@@ -48,7 +48,6 @@ class JabberEditAccountWidget : public AccountEditWidget
 	JabberAccountDetails *AccountDetails;
 	JabberPersonalInfoWidget *gpiw;
 
-	QCheckBox *ConnectAtStart;
 	QLineEdit *AccountId;
 	QLineEdit *AccountPassword;
 	QCheckBox *RememberPassword;

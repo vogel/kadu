@@ -60,8 +60,6 @@ private:
 	bool HasPassword;
 	QString Password;
 
-	bool ConnectAtStart;
-
 	AccountProxySettings ProxySettings;
 
 	short int MaximumImageSize;
@@ -109,7 +107,6 @@ public: //TODO 0.6.6: it is needed in Buddy::dummy()
 	KaduShared_Property(bool, rememberPassword, RememberPassword)
 	KaduShared_Property(bool, hasPassword, HasPassword)
 	KaduShared_Property(QString, password, Password)
-	KaduShared_Property(bool, connectAtStart, ConnectAtStart)
 	KaduShared_Property(AccountProxySettings, proxySettings, ProxySettings)
 	KaduShared_PropertyRead(bool, privateStatus, PrivateStatus)
 

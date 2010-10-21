@@ -115,10 +115,6 @@ void GaduEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 
 	QFormLayout *formLayout = new QFormLayout(form);
 
-	ConnectAtStart = new QCheckBox(tr("Connect at start"), this);
-	connect(ConnectAtStart, SIGNAL(clicked()), this, SLOT(dataChanged()));
-	formLayout->addRow(0, ConnectAtStart);
-
 	AccountId = new QLineEdit(this);
 	AccountId->setValidator(new LongValidator(1, 3999999999U, this));
 	connect(AccountId, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
@@ -275,7 +271,6 @@ void GaduEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 void GaduEditAccountWidget::apply()
 {
 	account().setAccountIdentity(Identities->currentIdentity());
-	account().setConnectAtStart(ConnectAtStart->isChecked());
 	account().setId(AccountId->text());
 	account().setRememberPassword(RememberPassword->isChecked());
 	account().setPassword(AccountPassword->text());
@@ -312,7 +307,6 @@ void GaduEditAccountWidget::dataChanged()
 {
 
 	if (account().accountIdentity() == Identities->currentIdentity()
-		&& account().connectAtStart() == ConnectAtStart->isChecked()
 		&& account().id() == AccountId->text()
 		&& account().rememberPassword() == RememberPassword->isChecked()
 		&& account().password() == AccountPassword->text()
@@ -351,7 +345,6 @@ void GaduEditAccountWidget::dataChanged()
 void GaduEditAccountWidget::loadAccountData()
 {
 	Identities->setCurrentIdentity(account().accountIdentity());
-	ConnectAtStart->setChecked(account().connectAtStart());
 	AccountId->setText(account().id());
 	RememberPassword->setChecked(account().rememberPassword());
 	AccountPassword->setText(account().password());

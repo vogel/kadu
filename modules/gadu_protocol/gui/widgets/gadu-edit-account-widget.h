@@ -43,7 +43,6 @@ class GaduEditAccountWidget : public AccountEditWidget
 
 	GaduAccountDetails *Details;
 
-	QCheckBox *ConnectAtStart;
 	QLineEdit *AccountId;
 	QLineEdit *AccountPassword;
 	QCheckBox *RememberPassword;

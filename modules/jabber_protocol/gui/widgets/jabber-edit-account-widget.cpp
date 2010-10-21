@@ -105,10 +105,6 @@ void JabberEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 
 	QFormLayout *formLayout = new QFormLayout(form);
 
-	ConnectAtStart = new QCheckBox(tr("Connect on startup"), this);
-	connect(ConnectAtStart, SIGNAL(clicked()), this, SLOT(dataChanged()));
-	formLayout->addRow(0, ConnectAtStart);
-
 	AccountId = new QLineEdit(this);
 	connect(AccountId, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
 	formLayout->addRow(tr("Username") + ":", AccountId);
@@ -362,7 +358,6 @@ void JabberEditAccountWidget::dataChanged()
 		return;
 
 	if (account().accountIdentity() == Identities->currentIdentity()
-		&& account().connectAtStart() == ConnectAtStart->isChecked()
 		&& account().id() == AccountId->text()
 		&& account().rememberPassword() == RememberPassword->isChecked()
 		&& account().password() == AccountPassword->text()
@@ -406,7 +401,6 @@ void JabberEditAccountWidget::dataChanged()
 void JabberEditAccountWidget::loadAccountData()
 {
 	Identities->setCurrentIdentity(account().accountIdentity());
-	ConnectAtStart->setChecked(account().connectAtStart());
 	AccountId->setText(account().id());
 	RememberPassword->setChecked(account().rememberPassword());
 	AccountPassword->setText(account().password());
@@ -438,7 +432,6 @@ void JabberEditAccountWidget::apply()
 		return;
 
 	account().setAccountIdentity(Identities->currentIdentity());
-	account().setConnectAtStart(ConnectAtStart->isChecked());
 	account().setId(AccountId->text());
 	account().setRememberPassword(RememberPassword->isChecked());
 	account().setPassword(AccountPassword->text());
