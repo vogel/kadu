@@ -152,7 +152,10 @@ void BuddyInfoPanel::displayContact(Contact contact)
 	MyContact = contact;
 	connectContact();
 
-	if (!MyContact || !isVisible())
+	if (!MyContact)
+		return;
+
+	if (!isVisible())
 		return;
 
 	HtmlDocument doc;
@@ -172,7 +175,7 @@ void BuddyInfoPanel::setVisible(bool visible)
 	QWidget::setVisible(visible);
 
 	if (visible)
-		update();
+		displayContact(MyContact);
 }
 
 void BuddyInfoPanel::styleFixup(QString &syntax)
