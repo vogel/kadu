@@ -153,7 +153,10 @@ void BuddyInfoPanel::displayContact(Contact contact)
 	connectContact();
 
 	if (!MyContact)
+	{
+		setHtml(Template.arg(""));
 		return;
+	}
 
 	if (!isVisible())
 		return;

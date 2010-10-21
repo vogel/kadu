@@ -385,7 +385,11 @@ void BuddiesListView::currentChanged(const QModelIndex& current, const QModelInd
 	QTreeView::currentChanged(current, previous);
 
 	if (!current.isValid())
+	{
+		emit currentBuddyChanged(Buddy::null);
+		emit currentContactChanged(Contact::null);
 		return;
+	}
 
 	Contact contact = contactAt(current);
 
