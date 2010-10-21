@@ -55,7 +55,7 @@ static QString getStatusIconPath(Contact contact)
 				Status status = contact.currentStatus();
 				QString iconpath = statustypemanager->statusIconFullPath(protocol->statusPixmapPath(), status.type(), !status.description().isEmpty(), false);
 				if (!iconpath.isEmpty())
-					return "file://" + iconpath;
+					return webKitPath(iconpath);
 			}
 		}
 	}
