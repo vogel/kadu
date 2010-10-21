@@ -492,7 +492,7 @@ public:
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
-	 * @short Removes object completly.
+	 * @short Removes object completely.
 	 *
 	 * If object is null, this method does nothing.
 	 * This method calls @link<Shared::aboutToBeRemoved @endlink. Then data object is removed from

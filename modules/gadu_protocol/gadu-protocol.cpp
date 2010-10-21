@@ -282,7 +282,7 @@ void GaduProtocol::changeStatus(bool force)
 {
 	Status newStatus = nextStatus();
 	if (newStatus == status() && !force)
-		return; // dont reset password
+		return; // don't reset password
 
 	if (newStatus.isDisconnected() && status().isDisconnected())
 	{
@@ -656,7 +656,7 @@ void GaduProtocol::socketConnFailed(GaduError error)
 			break;
 
 		case Disconnected:
-			msg = tr("Disconnection has occured");
+			msg = tr("Disconnection has occurred");
 			break;
 
 		default:

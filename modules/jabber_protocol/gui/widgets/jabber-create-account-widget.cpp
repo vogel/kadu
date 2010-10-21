@@ -330,7 +330,7 @@ void JabberCreateAccountWidget::registerNewAccountFinished(JabberServerRegisterA
 		emit accountCreated(jabberAccount);
 	}
 	else
-		MessageDialog::show("dialog-warning", tr("Kadu"), tr("An error has occured during registration. Please try again later."), QMessageBox::Ok, this);
+		MessageDialog::show("dialog-warning", tr("Kadu"), tr("An error has occurred during registration. Please try again later."), QMessageBox::Ok, this);
 
 	delete jsra;
 }

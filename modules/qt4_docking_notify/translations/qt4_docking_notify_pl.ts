@@ -15,7 +15,7 @@
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="10"/>
-        <source>Tray Icon Baloon</source>
+        <source>Tray Icon Balloon</source>
         <translation>Balonik ikony w zasobniku</translation>
     </message>
     <message>
@@ -68,7 +68,7 @@
     </message>
     <message>
         <location filename="../qt4_docking_notify_configuration_widget.cpp" line="67"/>
-        <source>Tray icon baloon&apos;s look configuration</source>
+        <source>Tray icon balloon&apos;s look configuration</source>
         <translation>Konfiguracja wyglądu balonika nad ikoną w zasobniku</translation>
     </message>
     <message>

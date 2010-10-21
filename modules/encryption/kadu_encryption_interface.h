@@ -40,7 +40,7 @@ typedef enum {
 	KEE_DECRYPTION,          //Error while decrypting
 	KEE_KEY_CANNOT_ENCRYPT,  //The (public) key cannot encrypt
 	KEE_KEY_CANNOT_DECRYPT,  //The (private) key cannot decrypt
-	KEE_READ_INVALID_MESSAGE //The recieved encrypted message is invalid
+	KEE_READ_INVALID_MESSAGE //The received encrypted message is invalid
 } KaduEncrytpionError;
 
 /**

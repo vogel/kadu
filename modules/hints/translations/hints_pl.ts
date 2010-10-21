@@ -184,7 +184,7 @@
         <translation>Składnia</translation>
     </message>
     <message>
-        <source>Show buttons only when neccessary</source>
+        <source>Show buttons only when necessary</source>
         <translation>Pokaż przyciski tylko gdy konieczne</translation>
     </message>
     <message>

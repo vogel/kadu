@@ -156,7 +156,7 @@ void JabberChangePasswordWindow::changingFinished(JabberServerChangePassword *gs
 		close();
 	}
 	else
-		MessageDialog::show("dialog-error", tr("Kadu"), tr("An error has occured. Please try again later."), QMessageBox::Ok, this);
+		MessageDialog::show("dialog-error", tr("Kadu"), tr("An error has occurred. Please try again later."), QMessageBox::Ok, this);
 }
 
 void JabberChangePasswordWindow::keyPressEvent(QKeyEvent *e)

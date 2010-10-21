@@ -95,7 +95,7 @@ private slots:
 	int getLength(int position = -1);
 
 	/*
-	    Returns song's current position in milliseconds from the beggining
+	    Returns song's current position in milliseconds from the beginning
 	*/
 	int getCurrentPos();
 

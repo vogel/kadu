@@ -153,7 +153,7 @@ Control+ Enter/Backspace/Left/Right/Up/Down.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>You&apos;re trying to send %1 entries of %2 playlist.&lt;br&gt;It will be splitted and sent in few messages&lt;br&gt;Are you sure to do that?</source>
+        <source>You&apos;re trying to send %1 entries of %2 playlist.&lt;br&gt;It will be split and sent in few messages&lt;br&gt;Are you sure to do that?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

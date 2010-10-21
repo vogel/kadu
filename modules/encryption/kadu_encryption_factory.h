@@ -54,14 +54,14 @@ class KaduEncryptionFactory
 		 *
 		 * @param method the encryption method for which to create the encryption object
 		 * @param keysPath path to the directory for storing keys, if applicable
-		 * @return Newely created encryption object, or 0 if an error occured.
+		 * @return Newely created encryption object, or 0 if an error occurred.
 		**/
 		KaduEncryptionInterface *createEncryptionObject(KaduEncryptionMethod method, QString keysPath);
 
 		/**
-		 * Returns a description of the last error that occured.
+		 * Returns a description of the last error that occurred.
 		 *
-		 * @return The description of the last error that occured.
+		 * @return The description of the last error that occurred.
 		**/
 		const QString & errorInfo() const { return ErrorInfo; }
 };

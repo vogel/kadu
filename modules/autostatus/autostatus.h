@@ -33,9 +33,9 @@ class QTimer;
 class AutostatusStatusChanger;
 
 /*!
- * This class provides functionality to automaticly change status
+ * This class provides functionality for automatic status change
  * after served time
- * \brief Automaticly status change class
+ * \brief Automatic status change class
  */
 class Autostatus : public QObject
 {

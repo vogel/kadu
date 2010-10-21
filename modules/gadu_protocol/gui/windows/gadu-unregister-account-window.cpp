@@ -156,7 +156,7 @@ void GaduUnregisterAccountWindow::unregisteringFinished(GaduServerUnregisterAcco
 		close();
 	}
 	else
-		MessageDialog::show("dialog-error", tr("Kadu"), tr("An error has occured while unregistration. Please try again later."), QMessageBox::Ok, parentWidget());
+		MessageDialog::show("dialog-error", tr("Kadu"), tr("An error has occurred while unregistration. Please try again later."), QMessageBox::Ok, parentWidget());
 }
 
 void GaduUnregisterAccountWindow::keyPressEvent(QKeyEvent *e)

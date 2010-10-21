@@ -549,7 +549,7 @@ void SavePublicKey::yesClicked()
 
 	if (!(keyfile.open(QIODevice::WriteOnly)))
 	{
-		MessageDialog::msg(tr("Error writting the key"), false, "32x32/dialog-warning", this);
+		MessageDialog::msg(tr("Error writing the key"), false, "32x32/dialog-warning", this);
 		kdebugmf(KDEBUG_ERROR, "Error opening key file %s\n", qPrintable(keyfile_path));
 		return;
 	}

@@ -16,7 +16,7 @@
         <translation>Zwinge Zustand dazu, als mit Beschreibung zu gelten</translation>
     </message>
     <message>
-        <source>If you choose status without description, module will set it automaticaly to similar but with description</source>
+        <source>If you choose status without description, module will set it automatically to similar but with description</source>
         <translation>Der zu setzende Zustand wird immer mit Bescheibtung sein</translation>
     </message>
     <message>

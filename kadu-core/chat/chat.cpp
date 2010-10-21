@@ -123,7 +123,7 @@ Chat::~Chat()
  * @author Rafal 'Vogel' Malinowski
  * @short Refresh title for chat.
  *
- * Refresh title for chat. After successfull refresh updated signal will be triggerred.
+ * Refresh title for chat. After successful refresh updated signal will be triggered.
  */
 void Chat::refreshTitle()
 {

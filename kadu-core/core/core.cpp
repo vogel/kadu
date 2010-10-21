@@ -298,7 +298,7 @@ void Core::createDefaultConfiguration()
 
 void Core::createAllDefaultToolbars()
 {
-	// dont use getToolbarsConfigElement here, we have to be sure that this element don'e exists
+	// don't use getToolbarsConfigElement here, we have to be sure that this element don'e exists
 	QDomElement toolbarsConfig = xml_config_file->findElement(xml_config_file->rootElement(), "Toolbars");
 
 	if (!toolbarsConfig.isNull())

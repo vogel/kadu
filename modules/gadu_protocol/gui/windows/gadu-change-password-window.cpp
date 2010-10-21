@@ -180,7 +180,7 @@ void GaduChangePasswordWindow::changingFinished(GaduServerChangePassword *gscp)
 		close();
 	}
 	else
-		MessageDialog::show("dialog-error", tr("Kadu"), tr("An error has occured. Please try again later."), QMessageBox::Ok, parentWidget());
+		MessageDialog::show("dialog-error", tr("Kadu"), tr("An error has occurred. Please try again later."), QMessageBox::Ok, parentWidget());
 }
 
 void GaduChangePasswordWindow::keyPressEvent(QKeyEvent *e)

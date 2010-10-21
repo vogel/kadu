@@ -867,7 +867,7 @@
 			QT_TRANSLATE_NOOP("@default", "Receiving images during invisibility is allowed");
 		
 				
-			QT_TRANSLATE_NOOP("@default", "Limit numbers of image recevied per minute");
+			QT_TRANSLATE_NOOP("@default", "Limit numbers of image received per minute");
 		
 			QT_TRANSLATE_NOOP("@default", "Define limit of images received per minute");
 		

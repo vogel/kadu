@@ -288,13 +288,13 @@ void EmoticonsManager::expandEmoticons(HtmlDocument &doc, EmoticonsStyle style)
 		walker -> initWalking();
 		for(unsigned int j = 0, textlength = text.length(); j < textlength; ++j)
 		{
-			// find out if there is some emot occurence when we
+			// find out if there is some emot occurrence when we
 			// add current character
 			int idx = walker -> checkEmotOccurrence(text[j]);
 			// when some emot from dictionary is ending at current character
 			if (idx >= 0)
 			{
-				// check if there already was some occurence, whose
+				// check if there already was some occurrence, whose
 				// beginning is before beginning of currently found one
 				if (lastEmot >= 0 && lastBegin < j - Aliases[idx].alias.length() + 1)
 				{
@@ -588,7 +588,7 @@ bool EmoticonSelector::event(QEvent *e)
 }
 
 PrefixNode::PrefixNode() :
-		emotIndex(-1), childs()
+		emotIndex(-1), children()
 {
 }
 
@@ -617,9 +617,9 @@ PrefixNode* EmotsWalker::findChild(const PrefixNode* node, const QChar &c)
 	myPair.first = c;
 	// create variable 'position' with result of binary search in childs
 	// of given node
-	QList<Prefix>::const_iterator position = std::upper_bound (node -> childs.constBegin(), node -> childs.constEnd(), myPair);
+	QList<Prefix>::const_iterator position = std::upper_bound (node -> children.constBegin(), node -> children.constEnd(), myPair);
 
-	if (position != node -> childs.constEnd() && position -> first == c)
+	if (position != node -> children.constEnd() && position -> first == c)
 		return position -> second;
 	else
 		return NULL;
@@ -636,14 +636,14 @@ PrefixNode* EmotsWalker::insertChild(PrefixNode* node, const QChar &c)
 	Prefix newPair = qMakePair(c, newNode);
 	// insert new child into childs of current node, performing binary
 	// search to find correct position for it
-	node -> childs.insert(std::upper_bound(node -> childs.begin(), node -> childs.end(), newPair), newPair);
+	node -> children.insert(std::upper_bound(node -> children.begin(), node -> children.end(), newPair), newPair);
 	return newNode;
 }
 
 /** recursively delete all childs of given node */
 void EmotsWalker::removeChilds(PrefixNode *node)
 {
-	foreach(const Prefix &ch, node->childs) {
+	foreach(const Prefix &ch, node->children) {
 		removeChilds(ch.second);
 		delete ch.second;
 	}
@@ -675,7 +675,7 @@ void EmotsWalker::insertString(const QString &str, int num)
 /** return number of emot, which occurre in analyzed text just
     after adding given character (thus ending on this character)
     beginning of text analysis is turned on by 'initWalking()'
-    if no emot occures, -1 is returned
+    if no emot occurrs, -1 is returned
 */
 int EmotsWalker::checkEmotOccurrence(const QChar &c)
 {

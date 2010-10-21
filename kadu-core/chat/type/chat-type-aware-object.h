@@ -50,7 +50,7 @@ protected:
 	 * @param chatType just added ChatType object
 	 *
 	 * Method is called after new ChatType is added to ChatTypeManager.
-	 * This method must be overriden.
+	 * This method must be overridden.
 	 */
 	virtual void chatTypeRegistered(ChatType *chatType) = 0;
 
@@ -60,7 +60,7 @@ protected:
 	 * @param chatType removed ChatType object
 	 *
 	 * Method is called after ChatType is removed from ChatTypeManager.
-	 * This method must be overriden.
+	 * This method must be overridden.
 	 */
 	virtual void chatTypeUnregistered(ChatType *chatType) = 0;
 

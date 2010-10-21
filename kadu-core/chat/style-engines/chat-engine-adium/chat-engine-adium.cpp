@@ -48,7 +48,7 @@
 AdiumChatStyleEngine::AdiumChatStyleEngine(QObject *parent) :
 		QObject(parent)
 {
-	// Load required javascript funtions
+	// Load required javascript functions
 	QFile file(dataPath("kadu") + "/scripts/chat-scripts.js");
 	if (file.open(QIODevice::ReadOnly | QIODevice::Text))
 		jsCode = file.readAll();

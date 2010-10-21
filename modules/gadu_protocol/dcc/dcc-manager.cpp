@@ -216,7 +216,7 @@ void DccManager::connectSocketNotifiers(DccSocketNotifiers *notifiers)
 {
 	connect(notifiers, SIGNAL(destroyed(QObject *)),
 			this, SLOT(socketNotifiersDestroyed(QObject *)));
-// 	TODO: 0.6.6 signal never emited
+// 	TODO: 0.6.6 signal never emitted
 // 	connect(notifiers, SIGNAL(incomingConnection(struct gg_dcc *)),
 // 			this, SLOT(dccIncomingConnection(struct gg_dcc *)));
 }

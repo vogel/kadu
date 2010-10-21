@@ -188,7 +188,7 @@ const char *KaduEncryptionRSA::errorDescription()
 		case KEE_KEY_CANNOT_DECRYPT:
 			return "The (private) key cannot decrypt";
 		case KEE_READ_INVALID_MESSAGE:
-			return "The recieved encrypted message is invalid";
+			return "The received encrypted message is invalid";
 	}
 	//the function should never reach this point
 	return 0;

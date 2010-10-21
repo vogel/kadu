@@ -101,7 +101,7 @@ bool PKCS1Certificate::extractPublicKey(const QCA::SecureArray &certificate,
 	}
 
 	uint8_t octet = readNextOctet();
-	//we expect the SEQUENCE tag at the begining
+	//we expect the SEQUENCE tag at the beginning
 	if(octet != Sequence)
 	{
 		Status = UnknownCertificate;
@@ -294,7 +294,7 @@ bool PKCS1Certificate::extractPrivateKey(const QCA::SecureArray &certificate, QC
 	}
 
 	uint8_t octet = readNextOctet();
-	//we expect the SEQUENCE tag at the begining
+	//we expect the SEQUENCE tag at the beginning
 	if(octet != Sequence)
 	{
 		Status = UnknownCertificate;

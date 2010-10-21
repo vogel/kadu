@@ -291,7 +291,7 @@ bool Firewall::checkChat(Protocol *protocol, const QString &message, const UserL
 		kdebugm(KDEBUG_INFO, "\n\n\n\n\n\nStatus: %s\n", status.toString().local8Bit().data());
 		if (status.isOffline() || status.isInvisible()) {
 			if (!right_after_connection)
-				gadu->sendMessage(senders, tr("This message has been generated AUTOMATICALLY!\n\nI'm a busy person and I don't have time for stupid chats with the persons hiding itselfs. If you want to talk with me change the status to Online or Busy first."));
+				gadu->sendMessage(senders, tr("This message has been generated AUTOMATICALLY!\n\nI'm a busy person and I don't have time for stupid chats with the persons hiding itself. If you want to talk with me change the status to Online or Busy first."));
 
 			if (config_file.readBoolEntry("Firewall", "write_log", true))
 				writeLog(user, tr("Chat with invisible anonim ignored.\n") + "----------------------------------------------------\n");

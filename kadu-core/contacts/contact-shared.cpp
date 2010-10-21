@@ -180,7 +180,7 @@ void ContactShared::setOwnerBuddy(Buddy buddy)
 			emit reattached();
 	}
 	// TODO: make it pretty
-	// dont allow empty buddy to be set, use at least anonymous one
+	// don't allow empty buddy to be set, use at least anonymous one
 	else
 		OwnerBuddy = BuddyManager::instance()->byContact(Contact(this), ActionCreate);
 

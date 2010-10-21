@@ -3065,7 +3065,7 @@ Jeśli zechcesz włączyć (lub wyłączyć) któryś z nich, wystarczy dwukrotn
         <translation>&amp;Rozmowa</translation>
     </message>
     <message>
-        <source>For this network we dont offer contacts search feature yet</source>
+        <source>For this network we don't offer contacts search feature yet</source>
         <translation>Dla tej sieci nie oferujemy wyszukiwania kontaktów</translation>
     </message>
     <message>

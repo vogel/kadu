@@ -120,7 +120,7 @@ void BuddyOptionsConfigurationWidget::updateOfflineTo()
 		if (!contact.contactAccount() && !contact.contactAccount().protocolHandler())
 			continue;
 
-		if (contact.contactAccount().protocolHandler()->supportPrivateStatus())
+		if (contact.contactAccount().protocolHandler()->supportsPrivateStatus())
 		{
 			OfflineToCheckBox->setEnabled(true);
 			return;
@@ -138,7 +138,7 @@ void BuddyOptionsConfigurationWidget::offlineToToggled(bool toggled)
 		if (!contact.contactAccount() && !contact.contactAccount().protocolHandler())
 			continue;
 
-		if (contact.contactAccount().protocolHandler()->supportPrivateStatus() && !contact.contactAccount().privateStatus())
+		if (contact.contactAccount().protocolHandler()->supportsPrivateStatus() && !contact.contactAccount().privateStatus())
 		{
 			if (QMessageBox::question(this, "Private status", "You need to turn on 'private status' to check "
 									  "this option. Turning on 'private status' means that from now on you "

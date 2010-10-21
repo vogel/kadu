@@ -55,7 +55,7 @@ public:
 	 * @param mainData ChatShared object described by this object
 	 * @short Default contructor.
 	 *
-	 * Contructor must be overriden and called by all subclasses. It assigns
+	 * Contructor must be overridden and called by all subclasses. It assigns
 	 * new object ot mainData object.
 	 */
 	explicit ChatDetails(ChatShared *mainData) : Details<ChatShared>(mainData) {}
@@ -92,11 +92,11 @@ public:
 signals:
 	/**
 	 * @author Rafal 'Vogel' Malinowski
-	 * @short Emited when chat title changes.
+	 * @short Emitted when chat title changes.
 	 * @param chat this chat
 	 * @param newTitle new chat title
 	 *
-	 * Signal is emited when chat title changes. Title can be list of
+	 * Signal is emitted when chat title changes. Title can be list of
 	 * chat names, topic of IRC room or anything else (depens on chat type).
 	 */
 	void titleChanged(Chat chat, const QString &newTitle);

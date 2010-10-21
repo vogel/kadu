@@ -5,7 +5,7 @@
     <name>@default</name>
     <message>
         <location filename="../qt4_docking_notify.cpp" line="59"/>
-        <source>Tray Icon Baloon</source>
+        <source>Tray Icon Balloon</source>
         <translation>Sprechblase im Systemabschnitt der Kontrolleiste</translation>
     </message>
 </context>

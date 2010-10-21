@@ -80,7 +80,7 @@ protected:
 	 * @short Updates state of widget.
 	 *
 	 * Sets new state value. When new value is different from
-	 * old one, stateChanged signal is emited.
+	 * old one, stateChanged signal is emitted.
 	 */
 	void setState(ModalConfigurationWidgetState state);
 
@@ -126,9 +126,9 @@ public slots:
 signals:
 	/**
 	 * @author Rafal 'Vogel' Malinowski
-	 * @short Emited when state of data modifiecation in widget has been changed.
+	 * @short Emitted when state of data modifiecation in widget has been changed.
 	 *
-	 * Emited when state of data modifiecation in widget has been changed. For example:
+	 * Emitted when state of data modifiecation in widget has been changed. For example:
 	 * first bit of data is changed, data is saved, data is restored from saved state.
 	 */
 	void stateChanged(ModalConfigurationWidgetState state);

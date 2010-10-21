@@ -236,7 +236,7 @@ typedef QPair<QChar, PrefixNode *> Prefix;
 struct PrefixNode
 {
 	int emotIndex;
-	QList<Prefix> childs;
+	QList<Prefix> children;
 	PrefixNode();
 };
 

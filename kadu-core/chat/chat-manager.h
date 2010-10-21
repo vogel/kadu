@@ -76,7 +76,7 @@ class XmlConfigFile;
  * method. No two chats will have the same contacts and no conflicts will be made.
  *
  * Signals @link chatAboutToBeAdded @endlink, @link chatAdded @endlink, @link chatAboutToBeRemoved @endlink
- * and @link chatRemoved @endlink are emited when details for given chat are loaded. It means
+ * and @link chatRemoved @endlink are emitted when details for given chat are loaded. It means
  * that whole data is available for other objects to use.
  *
  * Use @link items @endlink method to get access to all chats will full data, use @link allItems @endlink
@@ -132,32 +132,32 @@ public:
 signals:
 	/**
 	 * @author Rafal 'Vogel' Malinowski
-	 * @short Emited just before chat with full data is added to manager.
+	 * @short Emitted just before chat with full data is added to manager.
 	 * @param chat added chat
 	 *
-	 * Signal is emited just before chat with full data is added to manager.
-	 * It is also emited after full data is loaded for given chat but before it
+	 * Signal is emitted just before chat with full data is added to manager.
+	 * It is also emitted after full data is loaded for given chat but before it
 	 * is added.
 	 */
 	void chatAboutToBeAdded(Chat chat);
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
-	 * @short Emited just after chat with full data is added to manager.
+	 * @short Emitted just after chat with full data is added to manager.
 	 * @param chat added chat
 	 *
-	 * Signal is emited just after chat with full data is added to manager.
-	 * It is also emited after full data is loaded for given chat and after it
+	 * Signal is emitted just after chat with full data is added to manager.
+	 * It is also emitted after full data is loaded for given chat and after it
 	 * is added.
 	 */
 	void chatAdded(Chat chat);
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
-	 * @short Emited just before chat with full data is removed from manager.
+	 * @short Emitted just before chat with full data is removed from manager.
 	 * @param chat removed chat
 	 *
-	 * Signal is emited just before chat removed from manager. Removed chat
+	 * Signal is emitted just before chat removed from manager. Removed chat
 	 * does not have to have full data. This signal is also removed after
 	 * chat loses its full data.
 	 */
@@ -165,10 +165,10 @@ signals:
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
-	 * @short Emited just after chat with full data is removed from manager.
+	 * @short Emitted just after chat with full data is removed from manager.
 	 * @param chat removed chat
 	 *
-	 * Signal is emited just after chat removed from manager. Removed chat
+	 * Signal is emitted just after chat removed from manager. Removed chat
 	 * does not have to have full data. This signal is also removed after
 	 * chat loses its full data.
 	 */

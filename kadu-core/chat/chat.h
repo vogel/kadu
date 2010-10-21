@@ -44,7 +44,7 @@ class StoragePoint;
  * @author Rafal 'Vogel' Malinowski
  * @short Access object for chat data.
  *
- * This class allows to acces of chat data defined in @link ChatShared @endlink class.
+ * This class allows to access to chat data defined in @link ChatShared @endlink class.
  */
 class KADUAPI Chat : public SharedBase<ChatShared>
 {

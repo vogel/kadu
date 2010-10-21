@@ -88,7 +88,7 @@ typedef struct {
   int length;
 } enqueueFileWithMetaStructW;
 
-#define IPC_PLAYFILE 100  // dont be fooled, this is really the same as enqueufile
+#define IPC_PLAYFILE 100  // don't be fooled, this is really the same as enqueufile
 #define IPC_ENQUEUEFILE 100 
 #define IPC_PLAYFILEW 1100
 #define IPC_ENQUEUEFILEW 1100
@@ -185,7 +185,7 @@ typedef struct {
 
 #define IPC_GETMODULENAME 109
 #define IPC_EX_ISRIGHTEXE 666
-/* usually shouldnt bother using these, but here goes:
+/* usually shouldn't bother using these, but here goes:
 ** send a WM_COPYDATA with IPC_GETMODULENAME, and an internal
 ** flag gets set, which if you send a normal WM_WA_IPC message with
 ** IPC_EX_ISRIGHTEXE, it returns whether or not that filename
@@ -691,7 +691,7 @@ typedef struct
 } waFormatTitle;
 
 
-#define IPC_FORMAT_TITLE_EXTENDED 298 // similiar to IPC_FORMAT_TITLE, but falls back to Winamp's %tags% if your passed tag function doesn't handle it
+#define IPC_FORMAT_TITLE_EXTENDED 298 // similar to IPC_FORMAT_TITLE, but falls back to Winamp's %tags% if your passed tag function doesn't handle it
 typedef struct 
 {
   const wchar_t *filename;
@@ -742,7 +742,7 @@ typedef struct {
 typedef struct _prefsDlgRec {
   HINSTANCE hInst;  // dll instance containing the dialog resource
   int dlgID;        // resource identifier of the dialog
-  void *proc;       // window proceedure for handling the dialog defined as
+  void *proc;       // window procedure for handling the dialog defined as
                     // LRESULT CALLBACK PrefsPage(HWND,UINT,WPARAM,LPARAM)
 
   char *name;       // name shown for the prefs page in the treelist
@@ -760,7 +760,7 @@ typedef struct _prefsDlgRec {
 typedef struct _prefsDlgRecW {
   HINSTANCE hInst;  // dll instance containing the dialog resource
   int dlgID;        // resource identifier of the dialog
-  void *proc;       // window proceedure for handling the dialog defined as
+  void *proc;       // window procedure for handling the dialog defined as
                     // LRESULT CALLBACK PrefsPage(HWND,UINT,WPARAM,LPARAM)
 
   wchar_t *name;    // name shown for the prefs page in the treelist
@@ -862,7 +862,7 @@ typedef struct _prefsDlgRecW {
 ** Plugins              30
 ** Input                31
 ** Output               32
-** Visualisation        33
+** Visualization        33
 ** DSP/Effect           34
 ** General Purpose      35
 **
@@ -1198,7 +1198,7 @@ typedef struct
 {
   unsigned int format; //fourcc value
   char *item; // config item, eg "bitrate"
-  char *data; // buffer to recieve, or buffer that contains the data
+  char *data; // buffer to receive, or buffer that contains the data
   int len; // length of the data buffer (only used when getting a config item)
   char *configfile; // config file to read from
 } convertConfigItem;
@@ -1520,12 +1520,12 @@ class ITrackSelector
 ** int viswnd=(HWND)SendMessage(hwnd_winamp,WM_WA_IPC,(WPARAM)(HWND)viswnd,IPC_SETVISWND);
 ** This allows you to set a window to receive the following message commands (which are
 ** used as part of the modern skin integration).
-** When you have finished or your visualisation is closed then send wParam as zero to
+** When you have finished or your visualization is closed then send wParam as zero to
 ** ensure that things are correctly tidied up.
 */
 
 /* The following messages are received as the LOWORD(wParam) of the WM_COMMAND message.
-** See %SDK%\winamp\wa5vis.txt for more info about visualisation integration in Winamp.
+** See %SDK%\winamp\wa5vis.txt for more info about visualization integration in Winamp.
 */
 #define ID_VIS_NEXT                     40382
 #define ID_VIS_PREV                     40383
@@ -1538,14 +1538,14 @@ class ITrackSelector
 #define IPC_GETVISWND 612
 /* (requires Winamp 5.0+)
 ** int viswnd=(HWND)SendMessage(hwnd_winamp,WM_WA_IPC,0,IPC_GETVISWND);
-** This returns a HWND to the visualisation command handler window if set by IPC_SETVISWND.
+** This returns a HWND to the visualization command handler window if set by IPC_SETVISWND.
 */
 
 
 #define IPC_ISVISRUNNING 613
 /* (requires Winamp 5.0+)
 ** int visrunning=SendMessage(hwnd_winamp,WM_WA_IPC,0,IPC_ISVISRUNNING);
-** This will return 1 if a visualisation is currently running and 0 if one is not running.
+** This will return 1 if a visualization is currently running and 0 if one is not running.
 */
 
 
@@ -1728,7 +1728,7 @@ typedef struct {
 #define IPC_IS_FULLSCREEN 630
 /* (requires Winamp 5.0+)
 ** int val=SendMessage(hwnd_winamp,WM_WA_IPC,0,IPC_IS_FULLSCREEN);
-** This will return 1 if the video or visualisation is in fullscreen mode or 0 otherwise.
+** This will return 1 if the video or visualization is in fullscreen mode or 0 otherwise.
 */
 
 
@@ -2098,7 +2098,7 @@ typedef struct {
 /*
 ** General IPC messages in Winamp
 **
-** All notification messages appear in the lParam of the main window message proceedure.
+** All notification messages appear in the lParam of the main window message procedure.
 */
 
 
@@ -2110,7 +2110,7 @@ typedef struct {
 ** handling external drag and drop operations on to it's Windows. This is only really
 ** useful if you're providing an alternate interface and want your Windows to provide the
 ** same drag and drop support as Winamp normally provides the user. Check out MSDN or
-** your prefered search facility for more information about the IDropTarget interface and
+** your preferred search facility for more information about the IDropTarget interface and
 ** what's needed to handle it in your own instance.
 */
 
@@ -2187,7 +2187,7 @@ typedef struct {
 ** to allow Winamp to close.
 **
 ** The best implementation of this option is to let the message pass through to the
-** original window proceedure since another plugin may want to have a say in the matter
+** original window procedure since another plugin may want to have a say in the matter
 ** with regards to Winamp closing.
 **
 ** if(uMsg == WM_WA_IPC && lParam == IPC_HOOK_OKTOQUIT)
@@ -2394,7 +2394,7 @@ typedef struct {
 ** so your tabbed dialogs can use the correct theme (on supporting OSes ie XP+).
 **
 ** Otherwise this will return a value based on the param passed (as defined below).
-** For compatability, the return value will be zero on success (as 1 is returned
+** For compatibility, the return value will be zero on success (as 1 is returned
 ** for unsupported ipc calls on older Winamp versions)
 */
   #define IPC_ISWINTHEMEPRESENT 0

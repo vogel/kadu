@@ -69,9 +69,9 @@ public:
 signals:
 	/**
 	* @author Rafał 'Vogel' Malinowski
-	* @short Emited when filter settings has changed.
+	* @short Emitted when filter settings has changed.
 	*
-	* Signal should be emited every time filter settings has changed
+	* Signal should be emitted every time filter settings has changed
 	* and model should be invalidated to filter items using these
 	* new settings.
 	*/

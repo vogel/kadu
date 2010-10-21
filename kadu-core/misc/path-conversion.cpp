@@ -81,7 +81,7 @@ QString profilePath(const QString &subpath)
 	{
 		QString home;
 #ifdef Q_OS_WIN
-		// on win32 dataPath dont need real argv[0] so it's safe to use this
+		// on win32 dataPath doesn't need real argv[0] so it's safe to use this
 		// in such ugly way
 		if (QFile::exists(dataPath("usbinst", "")))
 		{

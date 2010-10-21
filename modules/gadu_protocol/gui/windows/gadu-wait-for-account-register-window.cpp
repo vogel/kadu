@@ -59,7 +59,7 @@ void GaduWaitForAccountRegisterWindow::registerNewAccountFinished(GaduServerRegi
 	}
 	else
 	{
-		QString message(tr("An error has occured while registration. Please try again later."));
+		QString message(tr("An error has occurred during registration. Please try again later."));
 		setState(ProgressIcon::StateFailed, message);
 
 		emit uinRegistered(0);

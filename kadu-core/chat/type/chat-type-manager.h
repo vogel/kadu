@@ -66,37 +66,37 @@ public:
 signals:
 	/**
 	 * @author Rafal 'Vogel' Malinowski
-	 * @short Emited just before chat type is added to manager.
+	 * @short Emitted just before chat type is added to manager.
 	 * @param chatType added chat type
 	 *
-	 * Signal is emited just before chat type is added to manager.
+	 * Signal is emitted just before chat type is added to manager.
 	 */
 	void chatTypeAboutToBeAdded(ChatType *chatType);
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
-	 * @short Emited just after chat type is added to manager.
+	 * @short Emitted just after chat type is added to manager.
 	 * @param chat added chat type
 	 *
-	 * Signal is emited just after chat typeis added to manager.
+	 * Signal is emitted just after chat typeis added to manager.
 	 */
 	void chatTypeAdded(ChatType *chatType);
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
-	 * @short Emited just before chat type is removed from manager.
+	 * @short Emitted just before chat type is removed from manager.
 	 * @param chat removed chat type
 	 *
-	 * Signal is emited just before chat type is removed from manager.
+	 * Signal is emitted just before chat type is removed from manager.
 	 */
 	void chatTypeAboutToBeRemoved(ChatType *chatType);
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
-	 * @short Emited just after chat type is removed from manager.
+	 * @short Emitted just after chat type is removed from manager.
 	 * @param chat removed chat type
 	 *
-	 * Signal is emited just after chat type is removed from manager.
+	 * Signal is emitted just after chat type is removed from manager.
 	 */
 	void chatTypeRemoved(ChatType *chatType);
 

@@ -110,7 +110,7 @@ public:
 
 	virtual bool validateUserID(const QString &uid) = 0;
 	virtual bool contactsListReadOnly() = 0;
-	virtual bool supportPrivateStatus() { return false; }
+	virtual bool supportsPrivateStatus() { return false; }
 
 	NetworkState state() { return State; }
 	bool isConnected() { return (State == NetworkConnected); }

@@ -65,7 +65,7 @@ class DetailsHolder
 	 * @param details new details to set
 	 *
 	 * Sets details holded by this object to new value: details. Also calls
-	 * virtual method @link detailsAdded @endlink that can be overriden
+	 * virtual method @link detailsAdded @endlink that can be overridden
 	 * in subclasses to do something with new details.
 	 *
 	 * After that manager's method detailsLoaded is called with this as
@@ -90,7 +90,7 @@ class DetailsHolder
 	 * @param details removes details from object
 	 *
 	 * This method calls * virtual method @link detailsAboutToBeRemoved @endlink
-	 * that can be overriden in subclasses to do something with old details.
+	 * that can be overridden in subclasses to do something with old details.
 	 * Then details value is cleared.
 	 *
 	 * After that manager's method detailsUnloaded is called with this as

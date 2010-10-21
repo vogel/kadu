@@ -69,7 +69,7 @@ bool ChatNameFilter::acceptChat(Chat chat)
  * @short Changes name of this filter.
  *
  * Sets new name to filter chats. If new name is different that old one
- * filterChanged signal is emited and models can be invalidated.
+ * filterChanged signal is emitted and models can be invalidated.
  */
 void ChatNameFilter::setName(const QString& name)
 {

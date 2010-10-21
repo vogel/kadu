@@ -79,7 +79,7 @@ void RecentChatManager::load()
 	ChatManager::instance()->ensureLoaded();
 
 	// itereting backwards, because addRecentChats adds chats
-	// at begining of list, not at the end
+	// at beginning of list, not at the end
 	for (int i = count - 1; i >= 0; i--)
 	{
 		QDomElement element = chatElements.at(i).toElement();
@@ -158,7 +158,7 @@ QList<Chat> RecentChatManager::recentChats()
  * assigned to chat variable, so it can be used to remove chat after configured amount
  * of time.
  *
- * Signals recentChatAboutToBeAdded and recentChatAdded are emited.
+ * Signals recentChatAboutToBeAdded and recentChatAdded are emitted.
  */
 void RecentChatManager::addRecentChat(Chat chat, QDateTime datetime)
 {
@@ -186,7 +186,7 @@ void RecentChatManager::addRecentChat(Chat chat, QDateTime datetime)
  *
  * Removes given chat from list.
  *
- * Signals recentChatAboutToBeRemoved and recentChatRemoved are emited.
+ * Signals recentChatAboutToBeRemoved and recentChatRemoved are emitted.
  */
 void RecentChatManager::removeRecentChat(Chat chat)
 {

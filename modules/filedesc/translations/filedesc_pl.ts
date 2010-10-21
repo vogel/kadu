@@ -14,7 +14,7 @@
         <translation>Zmuszaj status, aby był &apos;z opisem&apos;</translation>
     </message>
     <message>
-        <source>If you choose status without description, module will set it automaticaly to similar but with description</source>
+        <source>If you choose status without description, module will set it automatically to similar but with description</source>
         <translation>Jeśli wybierzesz status bez opisu, moduł automatycznie ustawi analogiczny, ale z opisem</translation>
     </message>
     <message>

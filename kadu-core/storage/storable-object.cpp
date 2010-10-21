@@ -156,9 +156,9 @@ bool StorableObject::shouldStore()
  * @short Loads data from storage point. Sets state to StateLoaded.
  *
  * This is base implementation of load method, that is called by ensureLoaded method.
- * This version only sets state to StateLoaded. This method must be overriden in every
+ * This version only sets state to StateLoaded. This method must be overridden in every
  * derivered class that has real data to read. This method must be called by every
- * reimplementation, if possible at beggining.
+ * reimplementation, if possible at beginning.
  */
 void StorableObject::load()
 {

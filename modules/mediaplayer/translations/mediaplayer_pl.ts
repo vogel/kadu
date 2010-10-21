@@ -151,7 +151,7 @@ Control+ Enter/Backspace/Left/Right/Up/Down.Win+ Enter/Backspace/Left/Right/Up/D
         <translation>Więcej  niż 1/10 tytułów, które próbujesz wysłać, jest pusta.&lt;br&gt;Być może %1 nie odczytał jeszcze wszystkich tytułów. Zaleca się odczekanie chwili.&lt;br&gt;Wysłać listę mimo to?</translation>
     </message>
     <message>
-        <source>You&apos;re trying to send %1 entries of %2 playlist.&lt;br&gt;It will be splitted and sent in few messages&lt;br&gt;Are you sure to do that?</source>
+        <source>You&apos;re trying to send %1 entries of %2 playlist.&lt;br&gt;It will be split and sent in few messages&lt;br&gt;Are you sure to do that?</source>
         <translation>Próbujesz wysłać %1 wpisów z listy odtwarzania %2.&lt;br&gt;Wpisy zostaną podzielone na kilka wiadomości.&lt;br&gt;Na pewno wysłac?</translation>
     </message>
     <message>

@@ -44,7 +44,7 @@ protected:
 	* @param buddydatawindow created window
 	*
 	* Method is called after a new BuddyDataWindow is created.
-	* This method must be overriden.
+	* This method must be overridden.
 	*/
 	virtual void buddyDataWindowCreated(BuddyDataWindow *buddydatawindow) = 0;
 	/**
@@ -53,7 +53,7 @@ protected:
 	* @param buddydatawindow destroyed window
 	*
 	* Method is called after a BuddyDataWindow is destroyed.
-	* This method must be overriden.
+	* This method must be overridden.
 	*/
 	virtual void buddyDataWindowDestroyed(BuddyDataWindow *buddydatawindow) = 0;
 public:

@@ -40,7 +40,7 @@ HintsConfigurationWindow::HintsConfigurationWindow(const QString &eventName, Not
 	widget()->appendUiFile(dataPath("kadu/modules/configuration/hints-notifier.ui"));
 
 	widget()->widgetById("syntax")->setToolTip(tr(MainConfigurationWindow::SyntaxTextNotify));
-	dynamic_cast<QSpinBox *>(widget()->widgetById("timeout"))->setSpecialValueText(tr("Dont hide"));
+	dynamic_cast<QSpinBox *>(widget()->widgetById("timeout"))->setSpecialValueText(tr("Don't hide"));
 
 	preview = dynamic_cast<QLabel *>(widget()->widgetById("preview"));
 

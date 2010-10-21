@@ -162,7 +162,7 @@ STRG + Enter/Zurück/Links/Rechts/Rauf/Runter.</translation>
         <translation>Mehr als ein Zehntel der Titel, die Sie senden wollten, sind leer. &lt;br&gt;Möglicherweise %1 hat noch nicht alle Titel eingelesen, lassen Sie ihm etwas Zeit.&lt;br&gt;Wollen Sie die Playliste trotzdem senden?</translation>
     </message>
     <message>
-        <source>You&apos;re trying to send %1 entries of %2 playlist.&lt;br&gt;It will be splitted and sent in few messages&lt;br&gt;Are you sure to do that?</source>
+        <source>You&apos;re trying to send %1 entries of %2 playlist.&lt;br&gt;It will be split and sent in few messages&lt;br&gt;Are you sure to do that?</source>
         <translation>Sie haben versucht %1 Einträge der Playliste %2 zu senden.&lt;br&gt;Es wird aufgeteilt in mehrere Nachrichten.&lt;br&gt;Soll ich fortfahren?</translation>
     </message>
     <message>

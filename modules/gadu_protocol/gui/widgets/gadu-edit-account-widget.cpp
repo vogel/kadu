@@ -226,7 +226,7 @@ void GaduEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 	MaximumImageRequests->setToolTip(tr("Define limit of images received per minute"));
 	connect(MaximumImageRequests, SIGNAL(valueChanged(int)), this, SLOT(dataChanged()));
 
-	imagesLayout->addRow(tr("Limit numbers of image recevied per minute") + ':', MaximumImageRequests);
+	imagesLayout->addRow(tr("Limit numbers of image received per minute") + ':', MaximumImageRequests);
 
 	layout->addWidget(images);
 

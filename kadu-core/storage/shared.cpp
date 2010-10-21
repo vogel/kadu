@@ -64,7 +64,7 @@ void Shared::load()
  * @short Loads object from storage.
  *
  * Loads obejct from storage. Loads only uuid from uuid attribute. Superclass method
- * is not called (storage status remaing unchanged - access to each other property will
+ * is not called (storage status remaining unchanged - access to each other property will
  * fire load method). You must call this method in loadStub methods of derivered class.
  */
 void Shared::loadStub()

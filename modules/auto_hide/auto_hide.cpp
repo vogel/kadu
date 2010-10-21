@@ -109,7 +109,7 @@ void AutoHide::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfi
 {
 	connect(mainConfigurationWindow->widget()->widgetById("auto_hide/use_auto_hide"), SIGNAL(toggled(bool)), mainConfigurationWindow->widget()->widgetById("auto_hide/idle_time"), SLOT(setEnabled(bool)));
 
-	(dynamic_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("auto_hide/idle_time")))->setSpecialValueText(tr("Dont hide"));
+	(dynamic_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("auto_hide/idle_time")))->setSpecialValueText(tr("Don't hide"));
 }
 
 AutoHide *autoHide;

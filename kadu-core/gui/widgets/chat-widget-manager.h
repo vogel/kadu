@@ -185,10 +185,10 @@ signals:
 
 	/**
 		\fn void messageSentAndConfirmed(Chat chat, const QString& message)
-		This signal is emited when message was sent
+		This signal is emitted when message was sent
 		and it was confirmed.
 		When confirmations are turned off signal is
-		emited immediately after message was send.
+		emitted immediately after message was send.
 		\param receivers list of receivers
 		\param message the message
 	**/

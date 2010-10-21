@@ -613,7 +613,7 @@ void TlenProtocol::presenceChanged(QString from, QString newstatus, QString desc
 		return;
 	}
 
-	/* is this contact realy anonymous? - need deep check
+	/* is this contact really anonymous? - need deep check
 	if (contact.isAnonymous())
 	{
 		// TODO - ignore! - przynajmniej na razie

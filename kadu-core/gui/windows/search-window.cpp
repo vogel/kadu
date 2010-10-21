@@ -432,7 +432,7 @@ void SearchWindow::firstSearch()
 
 	if (!CurrentSearchService)
 	{
-		MessageDialog::show("dialog-error", tr("Kadu"), tr("We dont offer contacts search feature yet for this network"), QMessageBox::Ok, this);
+		MessageDialog::show("dialog-error", tr("Kadu"), tr("We don't offer contacts search feature yet for this network"), QMessageBox::Ok, this);
 		kdebugf2();
 		return;
 	}
