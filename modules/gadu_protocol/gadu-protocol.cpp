@@ -212,8 +212,6 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 	SocketNotifiers = new GaduProtocolSocketNotifiers(account, this);
 
 	CurrentAvatarService = new GaduAvatarService(account, this);
-	connect(this, SIGNAL(connected(Account)),
-			this, SLOT(fetchAvatars(Account)));
 	CurrentChatImageService = new GaduChatImageService(this);
 	CurrentChatService = new GaduChatService(this);
 	CurrentContactListService = new GaduContactListService(this);
@@ -256,12 +254,6 @@ GaduProtocol::~GaduProtocol()
 	networkDisconnected(false);
 
 	kdebugf2();
-}
-
-void GaduProtocol::fetchAvatars(Account account)
-{
-	foreach (const Contact &contact, ContactManager::instance()->contacts(account))
-		CurrentAvatarService->fetchAvatar(contact);
 }
 
 bool GaduProtocol::validateUserID(const QString &uid)

@@ -43,7 +43,7 @@ public:
 	void fetchAvatar();
 
 signals:
-	void avatarFetched(Contact contact, const QByteArray &avatar);
+	void avatarFetched(Contact contact, bool ok, const QByteArray &avatar);
 
 };
 

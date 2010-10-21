@@ -18,6 +18,7 @@
 * gadu: add support for import contacts from GG8 and GG10 (White Eagle)
 * gui: new updates dialog (Patpi, White Eagle)
 * gui: #1605 fixed: info panel is not cleared after deselecting contact on list (White Eagle)
+* performance: avatars are now fetched one after another, not all at once (Vogel)
 
 +++ version 0.6.6-beta8
 * gui: buddies list now has focus right after Kadu's main window creation, so filtering works without clicking (beevvy)

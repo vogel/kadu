@@ -43,8 +43,8 @@ void JabberAvatarService::fetchAvatar(Contact contact)
 		return;
 
 	JabberAvatarFetcher *avatarFetcher = new JabberAvatarFetcher(contact, this);
-	connect(avatarFetcher, SIGNAL(avatarFetched(Contact, const QByteArray &)),
-			this, SIGNAL(avatarFetched(Contact, const QByteArray &)));
+	connect(avatarFetcher, SIGNAL(avatarFetched(Contact, bool, const QByteArray &)),
+			this, SIGNAL(avatarFetched(Contact, bool, const QByteArray &)));
 	avatarFetcher->fetchAvatar();
 }
 
@@ -176,7 +176,7 @@ void JabberAvatarService::itemPublished(const XMPP::Jid& jid, const QString& n, 
 	{
 		if (item.payload().tagName() == "data")
 		{
-			emit avatarFetched(MyContact, item.payload().text().toLatin1());
+			emit avatarFetched(MyContact, true, item.payload().text().toLatin1());
 		}
 		else
 		{

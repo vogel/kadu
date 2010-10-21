@@ -57,6 +57,7 @@ private slots:
 	void publish_error(const QString& n, const XMPP::PubSubItem& item);
 	void fetchingVCardFinished();
 	void uploadingVCardFinished();
+
 };
 
 #endif // JABBER_AVATAR_SERVICE_H

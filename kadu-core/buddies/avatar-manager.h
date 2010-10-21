@@ -22,6 +22,7 @@
 #define AVATAR_MANAGER_H
 
 #include <QtCore/QObject>
+#include <QtCore/QQueue>
 
 #include "accounts/accounts-aware-object.h"
 #include "buddies/avatar.h"
@@ -39,6 +40,8 @@ class KADUAPI AvatarManager : public QObject, public SimpleManager<Avatar>, Acco
 	static AvatarManager *Instance;
 
 	QTimer *UpdateTimer;
+	QQueue<Contact> UpdateQueue;
+	bool IsFetching;
 
 	AvatarManager();
 	virtual ~AvatarManager();
@@ -48,11 +51,12 @@ class KADUAPI AvatarManager : public QObject, public SimpleManager<Avatar>, Acco
 
 	bool needUpdate(Contact contact);
 	void updateAvatar(Contact contact, bool force = false);
+	void fetchNextFromQueue();
 
 private slots:
 	void avatarDataUpdated();
 
-	void avatarFetched(Contact contact, const QByteArray &data);
+	void avatarFetched(Contact contact, bool ok, const QByteArray &data);
 	void updateAvatars();
 	void updateAccountAvatars();
 	void contactAdded(Contact contact);

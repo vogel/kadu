@@ -46,7 +46,8 @@ AvatarManager * AvatarManager::instance()
 	return Instance;
 }
 
-AvatarManager::AvatarManager()
+AvatarManager::AvatarManager() :
+		IsFetching(false)
 {
 	triggerAllAccountsRegistered();
 
@@ -118,8 +119,8 @@ void AvatarManager::accountRegistered(Account account)
 	if (!service)
 		return;
 
-	connect(service, SIGNAL(avatarFetched(Contact, const QByteArray &)),
-			this, SLOT(avatarFetched(Contact, const QByteArray &)));
+	connect(service, SIGNAL(avatarFetched(Contact, bool, const QByteArray &)),
+			this, SLOT(avatarFetched(Contact, bool, const QByteArray &)));
 }
 
 void AvatarManager::accountUnregistered(Account account)
@@ -132,15 +133,17 @@ void AvatarManager::accountUnregistered(Account account)
 	if (!service)
 		return;
 
-	disconnect(service, SIGNAL(avatarFetched(Contact, const QByteArray &)),
-			   this, SLOT(avatarFetched(Contact, const QByteArray &)));
+	disconnect(service, SIGNAL(avatarFetched(Contact, bool, const QByteArray &)),
+			   this, SLOT(avatarFetched(Contact, bool, const QByteArray &)));
 }
 
 void AvatarManager::contactAdded(Contact contact)
 {
 	QMutexLocker(&mutex());
 
-	updateAvatar(contact, true);
+	Protocol *protocol = contact.contactAccount().protocolHandler();
+	if (protocol && protocol->isConnected())
+		updateAvatar(contact, true);
 }
 
 bool AvatarManager::needUpdate(Contact contact)
@@ -164,6 +167,24 @@ bool AvatarManager::needUpdate(Contact contact)
 	return false;
 }
 
+void AvatarManager::fetchNextFromQueue()
+{
+	if (IsFetching)
+		return;
+
+	if (UpdateQueue.empty())
+		return;
+
+	Contact contact = UpdateQueue.dequeue();
+
+	AvatarService *service = avatarService(contact);
+	if (!service)
+		return;
+
+	IsFetching = true;
+	service->fetchAvatar(contact);
+}
+
 void AvatarManager::updateAvatar(Contact contact, bool force)
 {
 	QMutexLocker(&mutex());
@@ -171,16 +192,20 @@ void AvatarManager::updateAvatar(Contact contact, bool force)
 	if (!force && !needUpdate(contact))
 		return;
 
-	AvatarService *service = avatarService(contact);
-	if (!service)
-		return;
-
-	service->fetchAvatar(contact);
+	UpdateQueue.enqueue(contact);
+	fetchNextFromQueue();
 }
 
-void AvatarManager::avatarFetched(Contact contact, const QByteArray &data)
+void AvatarManager::avatarFetched(Contact contact, bool ok, const QByteArray &data)
 {
 	QMutexLocker(&mutex());
+
+	if (!ok)
+	{
+		IsFetching = false;
+		fetchNextFromQueue();
+		return;
+	}
 
 	Avatar avatar = contact.contactAvatar();
 	if (!avatar)
@@ -197,6 +222,9 @@ void AvatarManager::avatarFetched(Contact contact, const QByteArray &data)
 		pixmap.loadFromData(data);
 
 	avatar.setPixmap(pixmap);
+
+	IsFetching = false;
+	fetchNextFromQueue();
 }
 
 void AvatarManager::updateAvatars()

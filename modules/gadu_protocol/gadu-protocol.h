@@ -121,7 +121,6 @@ private slots:
 	void login(const QString &password, bool permanent);
 	void login();
 
-	void fetchAvatars(Account account);
 	void connectionTimeoutTimerSlot();
 	void everyMinuteActions();
 

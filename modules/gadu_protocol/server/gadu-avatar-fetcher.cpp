@@ -56,12 +56,17 @@ void GaduAvatarFetcher::requestFinished(int id, bool error)
 	Q_UNUSED(id)
 
 	if (error)
+	{
+		emit avatarFetched(MyContact, false, AvatarBuffer.buffer());
+		deleteLater();
 		return;
+	}
 
 	GaduAvatarDataParser parser(&MyBuffer, MyContact.id());
 
 	if (!parser.isValid())
 	{
+		emit avatarFetched(MyContact, false, AvatarBuffer.buffer());
 		deleteLater();
 		return;
 	}
@@ -69,7 +74,7 @@ void GaduAvatarFetcher::requestFinished(int id, bool error)
 	if (parser.isBlank())
 	{
 		// clear avatar data
-		emit avatarFetched(MyContact, QByteArray());
+		emit avatarFetched(MyContact, true, AvatarBuffer.buffer());
 		deleteLater();
 		return;
 	}
@@ -84,6 +89,8 @@ void GaduAvatarFetcher::requestFinished(int id, bool error)
 		{
 			// we already have this file, no need to update
 			deleteLater();
+			// false - no need for action
+			emit avatarFetched(MyContact, false, AvatarBuffer.buffer());
 			return;
 		}
 	}
@@ -107,7 +114,7 @@ void GaduAvatarFetcher::avatarDownloaded(int id, bool error)
 	Q_UNUSED(id)
 	Q_UNUSED(error)
 
-	emit avatarFetched(MyContact, AvatarBuffer.buffer());
+	emit avatarFetched(MyContact, true, AvatarBuffer.buffer());
 
 	deleteLater();
 }
