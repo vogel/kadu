@@ -167,6 +167,14 @@ void BuddyInfoPanel::displayContact(Contact contact)
 	setHtml(Template.arg(doc.generateHtml()));
 }
 
+void BuddyInfoPanel::setVisible(bool visible)
+{
+	QWidget::setVisible(visible);
+
+	if (visible)
+		update();
+}
+
 void BuddyInfoPanel::styleFixup(QString &syntax)
 {
 	syntax = Template.arg(syntax);

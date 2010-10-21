@@ -47,6 +47,8 @@ public:
 	explicit BuddyInfoPanel(QWidget *parent = 0);
 	virtual ~BuddyInfoPanel();
 
+	virtual void setVisible(bool visible);
+
 public slots:
 	void displayContact(Contact contact);
 	void update();

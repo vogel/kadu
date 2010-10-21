@@ -152,7 +152,7 @@ void KaduWindow::createGui()
 	connect(ContactsWidget->view(), SIGNAL(currentContactChanged(Contact)), InfoPanel, SLOT(displayContact(Contact)));
 
 	if (!config_file.readBoolEntry("Look", "ShowInfoPanel"))
-		InfoPanel->QWidget::hide();
+		InfoPanel->setVisible(false);;
 
 	ChangeStatusButtons = new StatusButtons(this);
 	MainLayout->addWidget(ChangeStatusButtons);
