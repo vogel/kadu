@@ -61,6 +61,8 @@ void JabberAvatarFetcher::receivedVCard()
 		MyContact.contactAvatar().setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + 7200));
 		emit avatarFetched(MyContact, true, vcard->photo());
 	}
+	else
+		emit avatarFetched(MyContact, false, QByteArray());
 
 	deleteLater();
 }
