@@ -89,8 +89,8 @@ void BuddyPreferredManager::updatePreferred(Buddy buddy)
 	Contact contact;
 	contact = preferredContactByPendingMessages(buddy);
 	if (!contact)
-	contact = preferredContactByChatWidgets(buddy);
-	if (!contact)
+		contact = preferredContactByChatWidgets(buddy);
+		if (!contact)
 	contact = preferredContactByRecentChats(buddy);
 
 	if (contact)

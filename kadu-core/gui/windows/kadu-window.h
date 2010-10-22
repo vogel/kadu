@@ -100,9 +100,6 @@ private:
 
 	void storeConfiguration();
 
-	void updateInformationPanel();
-	void updateInformationPanel(Buddy buddy);
-
 	virtual void compositingEnabled();
 	virtual void compositingDisabled();
 

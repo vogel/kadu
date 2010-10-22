@@ -366,11 +366,6 @@ void KaduWindow::storeConfiguration()
 //	config_file.writeEntry("General", "DefaultDescription", defaultdescriptions.join("<-->"));
 }
 
-void KaduWindow::updateInformationPanel()
-{
-	InfoPanel->displayContact(ContactsWidget->view()->currentContact());
-}
-
 void KaduWindow::closeEvent(QCloseEvent *e)
 {
 	e->ignore();

@@ -57,6 +57,7 @@ void BuddyInfoPanel::configurationUpdated()
 
 void BuddyInfoPanel::buddyUpdated(Buddy &buddy)
 {
+	printf("buddy updated\n");
 	if (buddy == MyContact.ownerBuddy())
 		update();
 }
