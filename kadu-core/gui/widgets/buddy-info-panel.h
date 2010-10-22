@@ -23,6 +23,7 @@
 
 #include "configuration/configuration-aware-object.h"
 #include "contacts/contact.h"
+#include "gui/widgets/buddies-list-view-selection-item.h"
 
 #include "kadu-web-view.h"
 
@@ -30,12 +31,15 @@ class BuddyInfoPanel : public KaduWebView, private ConfigurationAwareObject
 {
 	Q_OBJECT
 
+	BuddiesListViewSelectionItem SelectionItem;
 	Contact MyContact;
 	QString Template;
 	QString Syntax;
 
 	void connectContact();
 	void disconnectContact();
+
+	void displayContact(Contact contact);
 
 private slots:
 	void buddyUpdated(Buddy &buddy);
@@ -50,7 +54,7 @@ public:
 	virtual void setVisible(bool visible);
 
 public slots:
-	void displayContact(Contact contact);
+	void displaySelectionItem(BuddiesListViewSelectionItem selectionItem);
 	void update();
 	void styleFixup(QString &syntax);
 

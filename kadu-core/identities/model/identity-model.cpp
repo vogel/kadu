@@ -67,6 +67,8 @@ QVariant IdentityModel::data(const QModelIndex &index, int role) const
 			return ident.name();
 		case IdentityRole:
 			return QVariant::fromValue(ident);
+		case ItemTypeRole:
+			return IdentityRole;
 		default:
 			return QVariant();
 	}

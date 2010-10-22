@@ -149,7 +149,7 @@ void KaduWindow::createGui()
 	hboxLayout->setAlignment(GroupBar, Qt::AlignTop);
 
 	InfoPanel = new BuddyInfoPanel(Split);
-	connect(ContactsWidget->view(), SIGNAL(currentContactChanged(Contact)), InfoPanel, SLOT(displayContact(Contact)));
+	connect(ContactsWidget->view(), SIGNAL(currentChanged(BuddiesListViewSelectionItem)), InfoPanel, SLOT(displaySelectionItem(BuddiesListViewSelectionItem)));
 
 	if (!config_file.readBoolEntry("Look", "ShowInfoPanel"))
 		InfoPanel->setVisible(false);;

@@ -380,7 +380,7 @@ void BuddiesListView::resizeEvent(QResizeEvent *event)
 		updateBackground();
 }
 
-void BuddiesListView::currentChanged(const QModelIndex& current, const QModelIndex& previous)
+void BuddiesListView::currentChanged(const QModelIndex &current, const QModelIndex &previous)
 {
 	QTreeView::currentChanged(current, previous);
 
@@ -388,17 +388,32 @@ void BuddiesListView::currentChanged(const QModelIndex& current, const QModelInd
 	{
 		emit currentBuddyChanged(Buddy::null);
 		emit currentContactChanged(Contact::null);
+		emit currentChanged(BuddiesListViewSelectionItem(BuddiesListViewSelectionItem::SelectedItemNone, Buddy::null, Contact::null));
 		return;
 	}
 
 	Contact contact = contactAt(current);
+	Buddy buddy = contact.ownerBuddy();
 
 	if (contact)
 	{
-		if (contact.ownerBuddy())
-			emit currentBuddyChanged(contact.ownerBuddy());
+		if (buddy)
+			emit currentBuddyChanged(buddy);
 		emit currentContactChanged(contact);
 	}
+
+	BuddiesListViewSelectionItem::SelectedItemType itemType = BuddiesListViewSelectionItem::SelectedItemNone;
+	switch (current.data(ItemTypeRole).toInt())
+	{
+		case BuddyRole:
+			itemType = BuddiesListViewSelectionItem::SelectedItemBuddy;
+			break;
+		case ContactRole:
+			itemType = BuddiesListViewSelectionItem::SelectedItemContact;
+			break;
+	}
+
+	emit currentChanged(BuddiesListViewSelectionItem(itemType, buddy, contact));
 }
 
 void BuddiesListView::selectionChanged(const QItemSelection &selected, const QItemSelection &deselected)

@@ -74,6 +74,8 @@ QVariant GroupsModel::data(const QModelIndex &index, int role) const
 			return grp.icon();
 		case GroupRole:
 			return QVariant::fromValue(grp);
+		case ItemTypeRole:
+			return GroupRole;
 		default:
 			return QVariant();
 	}

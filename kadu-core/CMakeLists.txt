@@ -137,6 +137,7 @@ set (kadu_SRCS
 	gui/widgets/buddies-list-view-item-painter.cpp
 	gui/widgets/buddies-list-view-menu-item.cpp
 	gui/widgets/buddies-list-view-menu-manager.cpp
+	gui/widgets/buddies-list-view-selection-item.cpp
 	gui/widgets/buddies-list-widget.cpp
 	gui/widgets/buddy-avatar-widget.cpp
 	gui/widgets/buddy-contacts-table-delegate.cpp

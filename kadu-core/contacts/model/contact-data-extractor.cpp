@@ -75,6 +75,8 @@ QVariant ContactDataExtractor::data(Contact contact, int role, bool useBuddyData
 				return QVariant::fromValue(contact.ownerBuddy().buddyAvatar().pixmap());
 			else
 				return QVariant::fromValue(contact.contactAvatar().pixmap());
+		case ItemTypeRole:
+			return ContactRole;
 		default:
 			return QVariant();
 	}

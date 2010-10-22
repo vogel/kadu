@@ -25,7 +25,6 @@
 
 const int KaduRoles = 1000;
 
-const int BuddyRoles = KaduRoles + 0;
 const int BuddyRole = KaduRoles + 1;
 const int DescriptionRole = KaduRoles + 2;
 const int StatusRole = KaduRoles + 3;
@@ -41,5 +40,6 @@ const int BuddyContactsTableItemRole = KaduRoles + 12;
 const int GroupRole = KaduRoles + 13;
 const int HistoryItemRole = KaduRoles + 14;
 const int IdentityRole = KaduRoles + 15;
+const int ItemTypeRole = KaduRoles + 16;
 
 #endif // ROLES_H

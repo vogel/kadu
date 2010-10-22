@@ -148,6 +148,9 @@ QVariant BuddiesModelBase::data(const QModelIndex &index, int role) const
 	QModelIndex parentIndex = parent(index);
 	if (!parentIndex.isValid())
 	{
+		if (ItemTypeRole == role)
+			return BuddyRole;
+
 		Contact contact = buddyDefaultContact(index);
 		return !contact.isNull()
 				? ContactDataExtractor::data(contact, role, true)

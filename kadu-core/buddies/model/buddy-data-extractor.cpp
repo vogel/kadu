@@ -34,6 +34,8 @@ QVariant BuddyDataExtractor::data(Buddy buddy, int role)
 			return QVariant::fromValue(buddy);
 		case StatusRole:
 			return QVariant::fromValue(Status::null);
+		case ItemTypeRole:
+			return BuddyRole;
 		default:
 			return QVariant();
 	}

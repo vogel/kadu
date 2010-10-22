@@ -30,6 +30,7 @@
 #include "chat/chat.h"
 #include "contacts/contact.h"
 #include "gui/actions/action-data-source.h"
+#include "gui/widgets/buddies-list-view-selection-item.h"
 
 class QContextMenuEvent;
 class QModelIndex;
@@ -50,6 +51,17 @@ class BuddiesListView : public QTreeView, public ActionDataSource
 {
 	Q_OBJECT
 
+public:
+	enum BackgroundMode
+	{
+		BackgroundNone,
+		BackgroundCentered,
+		BackgroundTiled,
+		BackgroundTiledAndCentered,
+		BackgroundStretched
+	};
+
+private:
 	MainWindow *MyMainWindow;
 	BuddiesListViewDelegate *Delegate;
 	AbstractBuddiesModel *Model;
@@ -67,17 +79,6 @@ class BuddiesListView : public QTreeView, public ActionDataSource
 	Contact ToolTipContact;
 	QTimer ToolTipTimeoutTimer;
 
-public:
-	enum BackgroundMode
-	{
-		BackgroundNone,
-		BackgroundCentered,
-		BackgroundTiled,
-		BackgroundTiledAndCentered,
-		BackgroundStretched
-	};
-
-private:
 	QString BackgroundColor;
 	QString AlternateBackgroundColor;
 	BackgroundMode BackgroundImageMode;
@@ -150,6 +151,7 @@ signals:
 	void buddySelectionChanged();
 	void currentBuddyChanged(Buddy buddy);
 	void currentContactChanged(Contact contact);
+	void currentChanged(BuddiesListViewSelectionItem selectionItem);
 
 };
 

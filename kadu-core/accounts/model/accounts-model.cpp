@@ -92,6 +92,9 @@ QVariant AccountsModel::data(const QModelIndex &index, int role) const
 		case AccountRole:
 			return QVariant::fromValue<Account>(acc);
 
+		case ItemTypeRole:
+			return AccountRole;
+
 		default:
 			return QVariant();
 	}

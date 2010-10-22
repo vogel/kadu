@@ -57,8 +57,7 @@ void BuddyInfoPanel::configurationUpdated()
 
 void BuddyInfoPanel::buddyUpdated(Buddy &buddy)
 {
-	printf("buddy updated\n");
-	if (buddy == MyContact.ownerBuddy())
+	if (buddy == SelectionItem.selectedBuddy())
 		update();
 }
 
@@ -115,7 +114,7 @@ void BuddyInfoPanel::update()
 		"<table><tr><td><img width=\"32\" height=\"32\" align=\"left\" valign=\"top\" src=\"file:///@{ManageUsersWindowIcon}\"></td><td> "
 		"<div align=\"left\"> [<b>%a</b>][ (%u)] [<br>tel.: %m][<br>IP: %i]</div></td></tr></table> <hr> <b>%s</b> [<br>%d]");
 	setHtml(QString("<body bgcolor=\"") + config_file.readEntry("Look", "InfoPanelBgColor") + "\"></body>");
-	displayContact(MyContact);
+	displaySelectionItem(SelectionItem);
 
 	if (config_file.readBoolEntry("Look", "PanelVerticalScrollbar"))
 		page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAsNeeded);
@@ -125,6 +124,7 @@ void BuddyInfoPanel::update()
 
 void BuddyInfoPanel::connectContact()
 {
+	Contact MyContact = SelectionItem.selectedContact();
 	if (!MyContact)
 		return;
 
@@ -137,6 +137,7 @@ void BuddyInfoPanel::connectContact()
 
 void BuddyInfoPanel::disconnectContact()
 {
+	Contact MyContact = SelectionItem.selectedContact();
 	if (!MyContact)
 		return;
 
@@ -153,7 +154,7 @@ void BuddyInfoPanel::displayContact(Contact contact)
 	MyContact = contact;
 	connectContact();
 
-	if (!MyContact)
+	if (!SelectionItem.selectedContact())
 	{
 		setHtml(Template.arg(""));
 		return;
@@ -174,12 +175,22 @@ void BuddyInfoPanel::displayContact(Contact contact)
 	setHtml(Template.arg(doc.generateHtml()));
 }
 
+void BuddyInfoPanel::displaySelectionItem(BuddiesListViewSelectionItem selectionItem)
+{
+	SelectionItem = selectionItem;
+
+	if (selectionItem.selectedItem() == BuddiesListViewSelectionItem::SelectedItemBuddy)
+		displayContact(BuddyPreferredManager::instance()->preferredContact(selectionItem.selectedBuddy()));
+	else
+		displayContact(selectionItem.selectedContact());
+}
+
 void BuddyInfoPanel::setVisible(bool visible)
 {
 	QWidget::setVisible(visible);
 
 	if (visible)
-		displayContact(MyContact);
+		displaySelectionItem(SelectionItem);
 }
 
 void BuddyInfoPanel::styleFixup(QString &syntax)
