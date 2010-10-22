@@ -41,11 +41,25 @@ JabberAvatarFetcher::JabberAvatarFetcher(Contact contact, QObject *parent) :
 {
 }
 
+void JabberAvatarFetcher::done(const QByteArray &avatar)
+{
+	emit avatarFetched(MyContact, true, avatar);
+}
+
+void JabberAvatarFetcher::failed()
+{
+	emit avatarFetched(MyContact, false, QByteArray());
+}
+
 void JabberAvatarFetcher::fetchAvatar()
 {
 	JabberProtocol *jabberProtocol = dynamic_cast<JabberProtocol *>(MyContact.contactAccount().protocolHandler());
 	if (!jabberProtocol || !jabberProtocol->isConnected())
+	{
+		failed();
 		return;
+	}
+
 	VCardFactory::instance()->getVCard(MyContact.id(), jabberProtocol->client()->rootTask(), this, SLOT(receivedVCard()));
 }
 
@@ -59,10 +73,10 @@ void JabberAvatarFetcher::receivedVCard()
 			MyContact.setContactAvatar(Avatar::create());
 
 		MyContact.contactAvatar().setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + 7200));
-		emit avatarFetched(MyContact, true, vcard->photo());
+		done(vcard->photo());
 	}
 	else
-		emit avatarFetched(MyContact, false, QByteArray());
+		failed();
 
 	deleteLater();
 }

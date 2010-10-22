@@ -37,6 +37,9 @@ class GaduAvatarFetcher : public QObject
 	QBuffer MyBuffer, AvatarBuffer;
 	QHttp *MyHttp;
 
+	void done(const QByteArray &avatar);
+	void failed();
+
 private slots:
 	void requestFinished(int id, bool error);
 	void avatarDownloaded(int id, bool error);
