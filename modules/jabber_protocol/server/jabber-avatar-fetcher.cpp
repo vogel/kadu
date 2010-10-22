@@ -53,11 +53,14 @@ void JabberAvatarFetcher::receivedVCard()
 {
 	const XMPP::VCard *vcard = VCardFactory::instance()->vcard(MyContact.id());
 
-	if (MyContact.contactAvatar().isNull())
-		MyContact.setContactAvatar(Avatar::create());
+	if (vcard && !vcard->photo().isEmpty())
+	{
+		if (MyContact.contactAvatar().isNull())
+			MyContact.setContactAvatar(Avatar::create());
 
-	MyContact.contactAvatar().setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + 7200));
-	emit avatarFetched(MyContact, true, vcard->photo());
+		MyContact.contactAvatar().setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + 7200));
+		emit avatarFetched(MyContact, true, vcard->photo());
+	}
 
 	deleteLater();
 }
