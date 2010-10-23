@@ -100,6 +100,7 @@ void HistoryImportThread::importEntry(Chat chat, const HistoryEntry &entry)
 			msg.setContent(entry.Content);
 			msg.setSendDate(entry.SendDate);
 			msg.setReceiveDate(entry.Date);
+			msg.setType(outgoing ? Message::TypeSent : Message::TypeReceived);
 
 			// TODO 0.6.6: it's damn slow!
 			History::instance()->currentStorage()->appendMessage(msg);
