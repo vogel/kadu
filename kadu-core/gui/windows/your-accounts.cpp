@@ -116,13 +116,13 @@ void YourAccounts::createGui()
 	AddExistingAccountAction = new QAction(IconsManager::instance()->iconByPath("contact-new"), tr("Add existing account"), this);
 	CreateNewAccountAction = new QAction(IconsManager::instance()->iconByPath("system-users"), tr("Create new account"), this);
 
-	ActionsModel = new ActionsProxyModel(this);
-	ActionsModel->addAfterAction(separator, ActionsProxyModel::NotVisibleWithEmptySourceModel);
-	ActionsModel->addAfterAction(AddExistingAccountAction);
-	ActionsModel->addAfterAction(CreateNewAccountAction);
-	ActionsModel->setSourceModel(MyAccountsModel);
+	ActionsProxyModel* actionsModel = new ActionsProxyModel(this);
+	actionsModel->addAfterAction(separator, ActionsProxyModel::NotVisibleWithEmptySourceModel);
+	actionsModel->addAfterAction(AddExistingAccountAction);
+	actionsModel->addAfterAction(CreateNewAccountAction);
+	actionsModel->setSourceModel(MyAccountsModel);
 
-	AccountsView->setModel(ActionsModel);
+	AccountsView->setModel(actionsModel);
 	AccountsView->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
 	AccountsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	AccountsView->setIconSize(QSize(32, 32));
