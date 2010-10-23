@@ -38,24 +38,28 @@ class KADUAPI BuddyPreferredManager : public QObject
 	Q_DISABLE_COPY(BuddyPreferredManager)
 
 	static BuddyPreferredManager *Instance;
-	BuddyPreferredManager();
-	~BuddyPreferredManager();
-	Contact preferredContactByPendingMessages(Buddy buddy, Account account = Account::null);
-	Contact preferredContactByChatWidgets(Buddy buddy, Account account = Account::null);
-	Contact preferredContactByRecentChats(Buddy buddy, Account account = Account::null);
-	Contact preferredContactByStatus(Buddy buddy, Account account = Account::null);
-	Contact morePreferredContactByStatus(Contact c1, Contact c2, Account account = Account::null);
+
 	QMap<Buddy,Contact> Preferreds;
 
-signals:
-	void buddyUpdated(Buddy &buddy);
+	BuddyPreferredManager();
+	~BuddyPreferredManager();
+
+	Contact preferredContactByPendingMessages(Buddy buddy, Account account = Account::null);
+	Contact preferredContactByChatWidgets(Buddy buddy, Account account = Account::null);
+	Contact preferredContactByStatus(Buddy buddy, Account account = Account::null);
+	Contact morePreferredContactByStatus(Contact c1, Contact c2, Account account = Account::null);
 
 public:
 	static BuddyPreferredManager *instance();
+
 	Contact preferredContact(Buddy buddy, Account account, bool includechats = true);
 	Contact preferredContact(Buddy buddy, bool includechats = true);
 	Account preferredAccount(Buddy buddy, bool includechats = true);
+
 	void updatePreferred(Buddy buddy);
+
+signals:
+	void buddyUpdated(Buddy &buddy);
 
 };
 

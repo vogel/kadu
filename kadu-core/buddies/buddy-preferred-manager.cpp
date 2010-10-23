@@ -19,7 +19,6 @@
 
 #include "buddies/buddy.h"
 #include "chat/message/pending-messages-manager.h"
-#include "chat/recent-chat-manager.h"
 #include "contacts/contact-set.h"
 #include "gui/widgets/chat-widget-manager.h"
 
@@ -30,9 +29,8 @@ BuddyPreferredManager *BuddyPreferredManager::Instance = 0;
 BuddyPreferredManager *BuddyPreferredManager::instance()
 {
 	if (0 == Instance)
-	{
 		Instance = new BuddyPreferredManager();
-	}
+
 	return Instance;
 }
 
@@ -63,13 +61,13 @@ Contact BuddyPreferredManager::preferredContact(Buddy buddy, Account account, bo
 	contact = preferredContactByPendingMessages(buddy, account);
 	if (contact)
 		return contact;
+
 	contact = preferredContactByChatWidgets(buddy, account);
 	if (contact)
 		return contact;
-	contact = preferredContactByRecentChats(buddy, account);
-	if (contact)
-		return contact;
+
 	contact = preferredContactByStatus(buddy, account);
+
 	return contact;
 }
 
@@ -90,8 +88,6 @@ void BuddyPreferredManager::updatePreferred(Buddy buddy)
 	contact = preferredContactByPendingMessages(buddy);
 	if (!contact)
 		contact = preferredContactByChatWidgets(buddy);
-		if (!contact)
-	contact = preferredContactByRecentChats(buddy);
 
 	if (contact)
 		Preferreds.insert(buddy, contact);
@@ -118,21 +114,6 @@ Contact BuddyPreferredManager::preferredContactByChatWidgets(Buddy buddy, Accoun
 	foreach (ChatWidget *chatwidget, ChatWidgetManager::instance()->chats())
 	{
 		Chat chat = chatwidget->chat();
-		if (chat.contacts().isEmpty())
-			continue;
-		Contact contact = *chat.contacts().begin();
-		if (contact.ownerBuddy() != buddy)
-			continue;
-		result = morePreferredContactByStatus(result, contact, account);
-	}
-	return result;
-}
-
-Contact BuddyPreferredManager::preferredContactByRecentChats(Buddy buddy, Account account)
-{
-	Contact result;
-	foreach (Chat chat, RecentChatManager::instance()->recentChats())
-	{
 		if (chat.contacts().isEmpty())
 			continue;
 		Contact contact = *chat.contacts().begin();
