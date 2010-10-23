@@ -49,7 +49,7 @@ void BuddyAvatarWidget::createGui()
 	else
 	{
 		Contact preferredContact = BuddyPreferredManager::instance()->preferredContact(MyBuddy);
-		if (preferredContact && preferredContact.contactAvatar().pixmap().isNull() )
+		if (preferredContact && !preferredContact.contactAvatar().pixmap().isNull())
 			pixmap = preferredContact.contactAvatar().pixmap();
 	}
 
