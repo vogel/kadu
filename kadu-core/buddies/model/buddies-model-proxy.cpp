@@ -167,7 +167,7 @@ void BuddiesModelProxy::removeFilter(AbstractBuddyFilter *filter)
 {
 	BuddyFilters.removeAll(filter);
 	invalidateFilter();
-	connect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
+	disconnect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
 }
 
 void BuddiesModelProxy::addFilter(AbstractContactFilter *filter)
@@ -181,7 +181,7 @@ void BuddiesModelProxy::removeFilter(AbstractContactFilter *filter)
 {
 	ContactFilters.removeAll(filter);
 	invalidateFilter();
-	connect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
+	disconnect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
 }
 
 Buddy BuddiesModelProxy::buddyAt(const QModelIndex &index) const

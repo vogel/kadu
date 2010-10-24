@@ -28,7 +28,7 @@ AccountsProxyModel::AccountsProxyModel(QObject *parent) :
 {
 	setDynamicSortFilter(true);
 	sort(0);
-	
+
 	BrokenStringCompare = (QString("a").localeAwareCompare(QString("B")) > 0);
 	if (BrokenStringCompare)
 		fprintf(stderr, "There's something wrong with native string compare function. Applying workaround (slower).\n");
@@ -41,7 +41,7 @@ AccountsProxyModel::~AccountsProxyModel()
 void AccountsProxyModel::setSourceModel(QAbstractItemModel *sourceModel)
 {
 	QSortFilterProxyModel::setSourceModel(sourceModel);
-	
+
 	setDynamicSortFilter(true);
 	sort(0);
 }
@@ -71,12 +71,12 @@ bool AccountsProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sour
 {
 	if (sourceParent.isValid())
 		return true;
-	
+
 	Account account = sourceModel()->index(sourceRow, 0).data(AccountRole).value<Account>();;
 	foreach (AbstractAccountFilter *filter, Filters)
 		if (!filter->acceptAccount(account))
 			return false;
-		
+
 		return true;
 }
 
@@ -91,7 +91,7 @@ void AccountsProxyModel::removeFilter(AbstractAccountFilter *filter)
 {
 	Filters.removeAll(filter);
 	invalidateFilter();
-	connect(filter, SIGNAL(filterChanged()), this, SLOT(filterChangedSlot()));
+	disconnect(filter, SIGNAL(filterChanged()), this, SLOT(filterChangedSlot()));
 }
 
 void AccountsProxyModel::filterChangedSlot()
