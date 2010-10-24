@@ -178,8 +178,8 @@ MainConfigurationWindow::MainConfigurationWindow()
 	Account account = AccountManager::instance()->defaultAccount();
 	if (!account.isNull() && account.protocolHandler())
 	{
-		disconnectDescription->setMaxLength(account.statusContainer()->maxDescriptionLength());
-		onStartupSetDescription->setMaxLength(account.statusContainer()->maxDescriptionLength());
+		disconnectDescription->setMaxLength(account.data()->maxDescriptionLength());
+		onStartupSetDescription->setMaxLength(account.data()->maxDescriptionLength());
 	}
 //	connect(widget()->widgetById("advancedMode"), SIGNAL(toggled(bool)), widget()->widgetById("contactsWithIcons"), SLOT(setEnabled(bool)));
 	connect(widget()->widgetById("showAvatars"), SIGNAL(toggled(bool)), widget()->widgetById("avatarBorder"), SLOT(setEnabled(bool)));

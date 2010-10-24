@@ -19,6 +19,7 @@
 * gui: new updates dialog (Patpi, White Eagle)
 * gui: #1605 fixed: info panel is not cleared after deselecting contact on list (White Eagle)
 * performance: avatars are now fetched one after another, not all at once (Vogel)
+* contacts: fixed displaying incorrect status icons in simple mode (beevvy/White Eagle)
 
 +++ version 0.6.6-beta8
 * gui: buddies list now has focus right after Kadu's main window creation, so filtering works without clicking (beevvy)

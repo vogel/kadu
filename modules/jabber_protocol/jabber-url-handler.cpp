@@ -37,7 +37,7 @@ JabberUrlHandler::JabberUrlHandler()
 	// Based on: http://mail.jabber.org/pipermail/xmppwg/2005-February/002261.html
 	// (RFC5122 - 3.3, XEP-0147)
 	// "(?:xmpp|jabber):" - if we ever need to handle jabber: links
-	
+
 	JabberRegExp = QRegExp("xmpp:"
 	                       "(?://([^@ ]+)@([^/?# ]+)/?)?"                 // auth-xmpp
 	                       "(?:(?:([^@ ]+)@)?([^/?# ]+)(?:/([^?# ]+))?)?" // path-xmpp
@@ -52,7 +52,7 @@ bool JabberUrlHandler::isUrlValid(const QString &url)
 {
 	if (url == "xmpp:")
 		return false;
-	
+
 	return JabberRegExp.exactMatch(url);
 }
 
@@ -110,7 +110,7 @@ void JabberUrlHandler::openUrl(const QString &url, bool disableMenu)
 			ids.append(account.id());
 			ids.append(jabberId);
 
-			menu->addAction(account.statusContainer()->statusIcon(), account.id())->setData(ids);
+			menu->addAction(account.data()->statusIcon(), account.id())->setData(ids);
 		}
 
 		connect(menu, SIGNAL(trijidered(QAction *)), this, SLOT(accountSelected(QAction *)));
