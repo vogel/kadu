@@ -121,8 +121,6 @@ void ActionsProxyModel::setSourceModel(QAbstractItemModel *newSourceModel)
 				this, SLOT(sourceLayoutAboutToBeChanged()));
 		disconnect(currentModel, SIGNAL(layoutChanged()),
 				this, SLOT(sourceLayoutChanged()));
-		disconnect(currentModel, SIGNAL(modelAboutToBeReset()), this, SLOT(sourceAboutToBeReset()));
-		disconnect(currentModel, SIGNAL(modelReset()), this, SLOT(sourceReset()));
 	}
 
 	QAbstractProxyModel::setSourceModel(newSourceModel);
