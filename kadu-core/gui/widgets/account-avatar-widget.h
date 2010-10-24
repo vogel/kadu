@@ -47,6 +47,7 @@ private slots:
 	void avatarUpdated();
 	void changeAvatar();
 	void avatarUploaded(bool ok, QImage image);
+	void serviceDestroyed();
 
 protected:
 	virtual void protocolRegistered(ProtocolFactory *protocolFactory);
