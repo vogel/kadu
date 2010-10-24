@@ -48,11 +48,14 @@ ProtocolsModelProxy::~ProtocolsModelProxy()
 
 void ProtocolsModelProxy::setSourceModel(QAbstractItemModel *sourceModel)
 {
-	SourceProtocolModel = dynamic_cast<ProtocolsModel *>(sourceModel);
-	QSortFilterProxyModel::setSourceModel(sourceModel);
+	if (SourceProtocolModel)
+		disconnect(SourceProtocolModel, SIGNAL(destroyed(QObject *)), this, SLOT(modelDestroyed()));
 
-	if (sourceModel)
-		connect(sourceModel, SIGNAL(destroyed(QObject *)), this, SLOT(modelDestroyed()));
+	SourceProtocolModel = dynamic_cast<ProtocolsModel *>(sourceModel);
+	QSortFilterProxyModel::setSourceModel(SourceProtocolModel);
+
+	if (SourceProtocolModel)
+		connect(SourceProtocolModel, SIGNAL(destroyed(QObject *)), this, SLOT(modelDestroyed()));
 
 	setDynamicSortFilter(true);
 	sort(0);
