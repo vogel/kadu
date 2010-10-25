@@ -22,6 +22,7 @@
 * contacts: fixed displaying incorrect status icons in simple mode (beevvy/White Eagle)
 * gui: fixed crash when closing Kadu with opened YourAccounts window (beevvy)
 * model: fixed freeze when unloading protocol module in specific situations (beevvy)
+* jabber: #1621 fixed: store trusted certificates binary data as printable text (Juzef)
 
 +++ version 0.6.6-beta8
 * gui: buddies list now has focus right after Kadu's main window creation, so filtering works without clicking (beevvy)
