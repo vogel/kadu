@@ -158,6 +158,8 @@
 				<check-box caption="Turn on transparency" config-section="Chat" config-item="UseTransparency" id="useTransparency" />
 			</group-box>
 			<group-box name="Emoticons">
+				<combo-box caption="Emoticons theme" config-section="Chat" config-item="EmoticonsTheme" id="emoticonsTheme"
+					tool-tip="Choose emoticons theme" />
 				<combo-box caption="Emoticons" config-section="Chat" config-item="EmoticonsStyle" id="emoticonsStyle"
 					tool-tip="Choose emoticons style" >
 					<item value="2" caption="Animated" />
@@ -170,8 +172,6 @@
 					<item value="1" caption="Scale only static emoticons" />
 					<item value="0" caption="Don't scale emoticons" />
 				</combo-box>
-				<combo-box caption="Emoticons theme" config-section="Chat" config-item="EmoticonsTheme" id="emoticonsTheme"
-					tool-tip="Choose emoticons theme" />
 				<path-list-edit caption="Emoticons paths" config-section="Chat" config-item="EmoticonsPaths" id="emoticonsPaths"
 					tool-tip="Define emoticons paths" />
 			</group-box>
