@@ -1,0 +1,12 @@
+Emoticons listed below are taken from Kadu-penguins theme set. They are not part of Tango set and they should be replaced by Tango style emots. If you can draw missing emoticons please send them to maintainer ( floss @_ pelzowski DOT eu )
+
+This emoticons are needed:
+
+
+	corsage.png - better versio nneeded
+	stroke.png
+        hello.png
+        snow.png - without white background version ,transparent is needed
+
+
+**When all emoticons will be in tango style, then we are planing to make animated version of those emoticons. We need help with this task, adding animations to all emoticons will be a huge but worthwhile task. Please send an email to maintainer if you want to participate. (Email in READMET.txt)

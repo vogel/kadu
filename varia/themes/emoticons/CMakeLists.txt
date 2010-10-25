@@ -37,6 +37,7 @@ endif (ENABLE_AUTODOWNLOAD AND NOT WIN32)
 		PATTERN ".svn" EXCLUDE
 		PATTERN "readme.txt"
 		PATTERN "emots.txt"
+		PATTERN "licence.txt"
 		PATTERN "*.png"
 		PATTERN "*.gif"
 	)
