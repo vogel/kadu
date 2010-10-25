@@ -72,7 +72,7 @@ void BuddiesModelBase::buddyStatusChanged(Contact contact, Status oldStatus)
 
 QModelIndex BuddiesModelBase::index(int row, int column, const QModelIndex &parent) const
 {
-	return createIndex(row, column, parent.isValid() ? parent.row() : -1);
+	return hasIndex(row, column, parent) ? createIndex(row, column, parent.isValid() ? parent.row() : -1) : QModelIndex();
 }
 
 int BuddiesModelBase::columnCount(const QModelIndex &parent) const

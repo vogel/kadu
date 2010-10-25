@@ -53,10 +53,7 @@ DescriptionModel::~DescriptionModel()
 
 int DescriptionModel::rowCount(const QModelIndex &parent) const
 {
-	if (parent.isValid())
-		return 0;
-
-	return Manager->content().count();
+	return parent.isValid() ? 0 : Manager->content().count();
 }
 
 Qt::ItemFlags DescriptionModel::flags(const QModelIndex &index) const

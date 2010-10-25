@@ -55,9 +55,7 @@ GroupsModel::~GroupsModel()
 
 int GroupsModel::rowCount(const QModelIndex &parent) const
 {
-	Q_UNUSED(parent)
-
-	return GroupManager::instance()->count();
+	return parent.isValid() ? 0 : GroupManager::instance()->count();
 }
 
 QVariant GroupsModel::data(const QModelIndex &index, int role) const

@@ -54,16 +54,12 @@ BuddyContactModel::~BuddyContactModel()
 
 int BuddyContactModel::columnCount(const QModelIndex &parent) const
 {
-	Q_UNUSED(parent)
-
-	return 2;
+	return parent.isValid() ? 0 : 2;
 }
 
 int BuddyContactModel::rowCount(const QModelIndex &parent) const
 {
-	Q_UNUSED(parent)
-
-	return SourceBuddy.contacts().count();
+	return parent.isValid() ? 0 : SourceBuddy.contacts().count();
 }
 
 QVariant BuddyContactModel::data(const QModelIndex &index, int role) const

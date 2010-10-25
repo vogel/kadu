@@ -21,6 +21,7 @@
 * performance: avatars are now fetched one after another, not all at once (Vogel)
 * contacts: fixed displaying incorrect status icons in simple mode (beevvy/White Eagle)
 * gui: fixed crash when closing Kadu with opened YourAccounts window (beevvy)
+* model: fixed freeze when unloading protocol module in specific situations (beevvy)
 
 +++ version 0.6.6-beta8
 * gui: buddies list now has focus right after Kadu's main window creation, so filtering works without clicking (beevvy)

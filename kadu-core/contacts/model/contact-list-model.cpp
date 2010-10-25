@@ -32,22 +32,17 @@ ContactListModel::~ContactListModel()
 
 QModelIndex ContactListModel::index(int row, int column, const QModelIndex &parent) const
 {
-	return createIndex(row, column, parent.isValid() ? parent.row() : -1);
+	return hasIndex(row, column, parent) ? createIndex(row, column, parent.isValid() ? parent.row() : -1) : QModelIndex();
 }
 
 int ContactListModel::columnCount(const QModelIndex &parent) const
 {
-	Q_UNUSED(parent)
-
-	return 1;
+	return parent.isValid() ? 0 : 1;
 }
 
 int ContactListModel::rowCount(const QModelIndex &parentIndex) const
 {
-	if (parentIndex.isValid())
-		return 0;
-
-	return List.size();
+	return parentIndex.isValid() ? 0 : List.size();
 }
 
 QModelIndex ContactListModel::parent(const QModelIndex &child) const

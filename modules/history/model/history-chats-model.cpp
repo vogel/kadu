@@ -97,10 +97,7 @@ int HistoryChatsModel::rowCount(const QModelIndex &parent) const
 
 QModelIndex HistoryChatsModel::index(int row, int column, const QModelIndex &parent) const
 {
-	if (!parent.isValid())
-		return createIndex(row, column, -1); // ROOT
-
-	return createIndex(row, column, parent.row());
+	return hasIndex(row, column, parent) ? createIndex(row, column, parent.isValid() ? parent.row() : -1) : QModelIndex();
 }
 
 QModelIndex HistoryChatsModel::parent(const QModelIndex &child) const

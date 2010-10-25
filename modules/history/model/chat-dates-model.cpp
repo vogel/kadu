@@ -44,17 +44,12 @@ ChatDatesModel::~ChatDatesModel()
 
 int ChatDatesModel::columnCount(const QModelIndex &parent) const
 {
-	Q_UNUSED(parent)
-
-    return 4;
+    return parent.isValid() ? 0 : 4;
 }
 
 int ChatDatesModel::rowCount(const QModelIndex &parent) const
 {
-	if (parent.isValid())
-		return 0;
-
-	return Dates.size();
+	return parent.isValid() ? 0 : Dates.size();
 }
 
 QVariant ChatDatesModel::headerData(int section, Qt::Orientation orientation, int role) const

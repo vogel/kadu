@@ -41,17 +41,12 @@ BuddyStatusDatesModel::~BuddyStatusDatesModel()
 
 int BuddyStatusDatesModel::columnCount(const QModelIndex &parent) const
 {
-	Q_UNUSED(parent)
-
-	return 2;
+	return parent.isValid() ? 0 : 2;
 }
 
 int BuddyStatusDatesModel::rowCount(const QModelIndex &parent) const
 {
-	if (parent.isValid())
-		return 0;
-
-	return Dates.size();
+	return parent.isValid() ? 0 : Dates.size();
 }
 
 QVariant BuddyStatusDatesModel::headerData(int section, Qt::Orientation orientation, int role) const

@@ -180,18 +180,12 @@ void BuddyContactsTableModel::itemUpdated(BuddyContactsTableItem *item)
 
 int BuddyContactsTableModel::columnCount(const QModelIndex &parent) const
 {
-	if (parent.isValid())
-		return 0;
-
-	return 2;
+	return parent.isValid() ? 0 : 2;
 }
 
 int BuddyContactsTableModel::rowCount(const QModelIndex &parent) const
 {
-	if (parent.isValid())
-		return 0;
-
-	return Contacts.count();
+	return parent.isValid() ? 0 : Contacts.count();
 }
 
 bool BuddyContactsTableModel::insertRows(int row, int count, const QModelIndex& parent)

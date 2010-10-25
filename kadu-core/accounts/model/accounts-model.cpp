@@ -57,16 +57,12 @@ AccountsModel::~AccountsModel()
 
 int AccountsModel::columnCount(const QModelIndex &parent) const
 {
-	Q_UNUSED(parent)
-
-	return 2;
+	return parent.isValid() ? 0 : 2;
 }
 
 int AccountsModel::rowCount(const QModelIndex &parent) const
 {
-	Q_UNUSED(parent)
-
-	return AccountManager::instance()->count();
+	return parent.isValid() ? 0 : AccountManager::instance()->count();
 }
 
 QVariant AccountsModel::data(const QModelIndex &index, int role) const

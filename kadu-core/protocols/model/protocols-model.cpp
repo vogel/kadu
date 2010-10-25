@@ -47,9 +47,7 @@ ProtocolsModel::~ProtocolsModel()
 
 int ProtocolsModel::rowCount(const QModelIndex &parent) const
 {
-	Q_UNUSED(parent)
-
-	return ProtocolsManager::instance()->protocolFactories().count();
+	return parent.isValid() ? 0 : ProtocolsManager::instance()->protocolFactories().count();
 }
 
 QVariant ProtocolsModel::data(const QModelIndex &index, int role) const

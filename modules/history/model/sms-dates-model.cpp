@@ -41,17 +41,12 @@ SmsDatesModel::~SmsDatesModel()
 
 int SmsDatesModel::columnCount(const QModelIndex &parent) const
 {
-	Q_UNUSED(parent)
-
-    return 2;
+    return parent.isValid() ? 0 : 2;
 }
 
 int SmsDatesModel::rowCount(const QModelIndex &parent) const
 {
-	if (parent.isValid())
-		return 0;
-
-	return Dates.size();
+	return parent.isValid() ? 0 : Dates.size();
 }
 
 QVariant SmsDatesModel::headerData(int section, Qt::Orientation orientation, int role) const
