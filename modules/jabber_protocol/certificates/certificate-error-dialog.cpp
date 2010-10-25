@@ -81,7 +81,7 @@ int CertificateErrorDialog::exec()
 		{
 			messageBox_->setResult(QDialog::Accepted);
 
-			TrustedCertificatesManager::instance()->addTrustedCertificate(certificate_.toDER());
+			TrustedCertificatesManager::instance()->addTrustedCertificate(certificate_.toDER().toBase64());
 			break;
 		}
 	}

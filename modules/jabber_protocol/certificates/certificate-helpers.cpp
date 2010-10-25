@@ -203,7 +203,7 @@ bool CertificateHelpers::checkCertificate(QCA::TLS* tls, XMPP::QCATLSHandler *tl
 	}
 
 	// if this cert equals the user trusted certificate, just trust the user's choice.
-	if (result != QCA::TLS::Valid && TrustedCertificatesManager::instance()->isTrusted(cert.toDER()))
+	if (result != QCA::TLS::Valid && TrustedCertificatesManager::instance()->isTrusted(cert.toDER().toBase64()))
 		result = QCA::TLS::Valid;
 
 	if (result != QCA::TLS::Valid)
