@@ -146,7 +146,11 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("Chat", "EmoticonsPaths", "");
 	config_file.addVariable("Chat", "EmoticonsStyle", EmoticonsStyleAnimated);
 	config_file.addVariable("Chat", "EmoticonsScaling", EmoticonsScalingStatic);
+#ifdef Q_WS_X11
 	config_file.addVariable("Chat", "EmoticonsTheme", "penguins");
+#else
+	config_file.addVariable("Chat", "EmoticonsTheme", "tango");
+#endif
 	config_file.addVariable("Chat", "FoldLink", true);
 	config_file.addVariable("Chat", "LinkFoldTreshold", 50);
 	config_file.addVariable("Chat", "IgnoreAnonymousRichtext", true);
