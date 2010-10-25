@@ -25,8 +25,10 @@
 				<color-button caption="Border color" config-section="Hints" config-item="AllEvents__bdcolor" />
 				<spin-box caption="Border width" config-section="Hints" config-item="AllEvents__borderWidth" min-value="1" max-value="10" step="1" suffix=" px" />
 				<combo-box caption="Icon size" config-section="Hints" config-item="AllEvents_iconSize">
+					<item value="16" caption="16px" />
 					<item value="22" caption="22px" />
 					<item value="32" caption="32px" />
+					<item value="48" caption="48px" />
 					<item value="64" caption="64px" />
 				</combo-box>
 				<spin-box caption="Transparency" config-section="Hints" config-item="AllEvents_transparency"
