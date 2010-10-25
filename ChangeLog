@@ -1,3 +1,6 @@
++++ version 0.6.6-beta10
+* modules: don't build echo module by default (beevvy)
+
 +++ version 0.6.6-beta9
 * gui: #1539 fixed: removed problematic PL chars in main window menu remote URLs (Juzef)
 * gui: #1535 fixed: set default action to Cancel in account remove confirmation (Juzef)
