@@ -23,6 +23,7 @@
 * gui: fixed crash when closing Kadu with opened YourAccounts window (beevvy)
 * model: fixed freeze when unloading protocol module in specific situations (beevvy)
 * jabber: #1621 fixed: store trusted certificates binary data as printable text (Juzef)
+* other: #1427 fixed: add tango emoticons (patpi, White Eagle)
 
 +++ version 0.6.6-beta8
 * gui: buddies list now has focus right after Kadu's main window creation, so filtering works without clicking (beevvy)
