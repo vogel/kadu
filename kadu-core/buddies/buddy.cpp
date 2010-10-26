@@ -189,6 +189,17 @@ void Buddy::removeFromGroup(Group group)
 		data()->removeFromGroup(group);
 }
 
+void Buddy::setBuddyAvatar(Avatar buddyAvatar) const
+{
+	if (isNull())
+		return;
+
+	data()->buddyAvatar().setAvatarContact(Contact::null);
+	data()->setBuddyAvatar(buddyAvatar);
+	// maybe setting it do default contact isn't too smart but it should work
+	buddyAvatar.setAvatarContact(contacts()[0]);
+}
+
 QString Buddy::display() const
 {
 	if (isNull())
@@ -268,7 +279,7 @@ Buddy Buddy::dummy()
 	return null;
 }
 
-KaduSharedBase_PropertyDef(Buddy, Avatar, buddyAvatar, BuddyAvatar, Avatar::null)
+KaduSharedBase_PropertyReadDef(Buddy, Avatar, buddyAvatar, BuddyAvatar, Avatar::null)
 KaduSharedBase_PropertyWriteDef(Buddy, QString, display, Display)
 KaduSharedBase_PropertyDef(Buddy, QString, firstName, FirstName, QString::null)
 KaduSharedBase_PropertyDef(Buddy, QString, lastName, LastName, QString::null)
