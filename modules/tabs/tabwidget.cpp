@@ -169,6 +169,9 @@ void TabWidget::switchTabRight()
 
 void TabWidget::moveTabLeft()
 {
+	if (count() == 1)
+		return;
+
 	if (currentIndex() == 0)
 		moveTab(0, count() - 1);
 	else
@@ -177,6 +180,9 @@ void TabWidget::moveTabLeft()
 
 void TabWidget::moveTabRight()
 {
+	if (count() == 1)
+		return;
+
 	if (currentIndex() == (count() - 1))
 		moveTab(count() - 1, 0);
 	else
