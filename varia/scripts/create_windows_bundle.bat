@@ -71,6 +71,7 @@ xcopy %QT_DIR%QtCore4.dll        %DESTINATION%\ /C /H /R /Y  >> install.log
 xcopy %QT_DIR%QtGui4.dll         %DESTINATION%\ /C /H /R /Y  >> install.log
 xcopy %QT_DIR%QtNetwork4.dll     %DESTINATION%\ /C /H /R /Y  >> install.log
 xcopy %QT_DIR%QtSql4.dll         %DESTINATION%\ /C /H /R /Y  >> install.log
+xcopy %QT_DIR%QtSvg4.dll         %DESTINATION%\ /C /H /R /Y  >> install.log
 xcopy %QT_DIR%QtWebKit4.dll      %DESTINATION%\ /C /H /R /Y  >> install.log
 xcopy %QT_DIR%QtXml4.dll         %DESTINATION%\ /C /H /R /Y  >> install.log
 xcopy %QT_DIR%QtScript4.dll      %DESTINATION%\ /C /H /R /Y  >> install.log
