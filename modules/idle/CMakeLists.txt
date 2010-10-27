@@ -5,6 +5,9 @@ if (UNIX AND NOT APPLE)
 	else (X11_Xscreensaver_FOUND)
       		MESSAGE(FATAL_ERROR "Could not find X11 Screen Saver extension")
 	endif (X11_Xscreensaver_FOUND)
+
+	set (LIBRARIES ${X11_Xscreensaver_LIB})
+
 	set (SOURCES
 		idle.cpp
 		idle_x11.cpp
@@ -32,12 +35,9 @@ set (MOC_SOURCES
 kadu_module (idle
 	MODULE_SOURCES ${SOURCES}
 	MODULE_MOC_SOURCES ${MOC_SOURCES}
+	MODULE_LIBRARIES ${LIBRARIES}
 )
 
 if (WIN32)
 set_target_properties(idle PROPERTIES COMPILE_FLAGS "-DIDLE_BUILD" )
 endif (WIN32)
-
-if (UNIX AND NOT APPLE)
-set_target_properties(idle PROPERTIES LINK_FLAGS "-lXss")
-endif (UNIX AND NOT APPLE)
