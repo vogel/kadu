@@ -31,9 +31,9 @@ QRegExp FormattedMessage::ImageRegExp("\\[IMAGE ([^\\]]+)\\]");
 
 void FormattedMessage::parseImages(FormattedMessage &message, const QString &messageString, bool b, bool i, bool u, QColor color)
 {
-	QString partContent; 
+	QString partContent;
 
-	int lastPos = 0;
+	int lastPos = -1;
 	int pos = 0;
 
 	while ((pos = ImageRegExp.indexIn(messageString, pos)) != -1) {
