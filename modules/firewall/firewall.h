@@ -1,75 +1,108 @@
-#ifndef __KADU_FIREWALL_H
-#define __KADU_FIREWALL_H
+/*
+ * %kadu copyright begin%
+ * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
+ * Copyright 2008, 2009, 2010 RafaĹ Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2008 MichaĹ Podsiadlik (michal@kadu.net)
+ * Copyright 2008 Tomasz RostaĹski (rozteck@interia.pl)
+ * Copyright 2008, 2010 Piotr Galiszewski (piotr.galiszewski@kadu.im)
+ * %kadu copyright end%
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#ifndef KADU_FIREWALL_H
+#define KADU_FIREWALL_H
 
 #include <QtCore/QObject>
 #include <QtCore/QDateTime>
 #include <QtCore/QRegExp>
 
-#include "configuration_aware_object.h"
-#include "../modules/gadu_protocol/gadu.h"
-#include "main_configuration_window.h"
-class ChatWidget;
-class QListWidget;
+#include "chat/chat.h"
+#include "contacts/contact-set.h"
 
-class Firewall : public ConfigurationUiHandler, ConfigurationAwareObject
+#include "accounts/accounts-aware-object.h"
+#include "configuration/configuration-aware-object.h"
+
+class Account;
+class ChatWidget;
+class Contact;
+
+class Firewall : public QObject, ConfigurationAwareObject, AccountsAwareObject
 {
 	Q_OBJECT
 
-	public:
-		Firewall();
-		virtual ~Firewall();
-		virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
-		
-	private:
-		QStringList secured, secured_temp_allowed;
-		QString last_uin;	//TODO: pozby� si� tego
-		UserListElements passed;
-		unsigned int flood_messages;
-		QTime lastMsg;
-		QTime lastNotify;
-		bool right_after_connection;
-		QRegExp pattern;
-		QListWidget* allList;
-		QListWidget* secureList;
-		QTextEdit *questionEdit;
-		QLineEdit *answerEdit;
+	static Firewall * Instance;
 
-		void loadSecuredList(void);
-		void saveSecuredList(void);
-		bool isSecured(const QString &id);
-		
-		bool checkChat(Protocol *protocol, const QString &message, const UserListElements senders, const QString &user, bool &stop);
-		bool checkConference(const QString &message, const UserListElements senders, const QString &user);
-		bool checkEmoticons(const QString &message);
-		bool checkFlood();
-		
-		void showHint(const QString &u, const QString &m);
-		void writeLog(const QString &u, const QString &m);
+	explicit Firewall();
+	virtual ~Firewall();
 
-		void defaultSettings();
-		
-	private slots:
-		void messageFiltering(Protocol *protocol, UserListElements senders, QString& msg, QByteArray& formats, bool& stop);
-		void chatDestroyed(ChatWidget *);
-		void sendMessageFilter(UserListElements,QByteArray&,bool&);
+	BuddySet SecuredTemporaryAllowed;
+	ContactSet Passed;
+	Contact LastContact;
 
-		void userDataChanged(UserListElement, QString, QVariant, QVariant, bool, bool);
-		void userAdded(UserListElement, bool, bool);
-		void userRemoved(UserListElement, bool, bool);
-		
-		void connected();
-		void connecting();
-		void changeRight_after_connection();
-		
-		void _Left(QListWidgetItem *);
-		void _Right(QListWidgetItem *);
-		void _AllLeft();
-		void _AllRight();
+	unsigned int FloodMessages;
+	QTime LastMsg;
+	QTime LastNotify;
+	QRegExp pattern;
 
-		void configurationApplied();
+	bool CheckFloodingEmoticons;
+	bool EmoticonsAllowKnown;
+	bool WriteLog;
+	bool CheckDos;
+	bool CheckChats;
+	bool IgnoreConferences;
+	bool WriteInHistory;
+	bool DropAnonymousWhenInvisible;
+	bool IgnoreInvisible;
+	bool Confirmation;
+	bool Search;
+	bool SafeSending;
+	int DosInterval;
+	int MaxEmoticons;
+	QString ConfirmationText;
+	QString ConfirmationQuestion;
+	QString LogFilePath;
 
-	protected:
-		virtual void configurationUpdated();
+	void import_0_6_5_configuration();
+
+	bool checkChat(Chat chat, Contact sender, const QString &message, bool &stop);
+	bool checkConference(Chat chat);
+	bool checkEmoticons(const QString &message);
+	bool checkFlood();
+
+	void writeLog(const Contact &contact, const QString &message);
+
+	void createDefaultConfiguration();
+
+private slots:
+	void filterIncomingMessage(Chat chat, Contact sender, const QString &message, time_t time, bool &ignore);
+	void filterOutgoingMessage(Chat chat, QByteArray &msg, bool &stop);
+
+	void accountConnected();
+
+	void chatDestroyed(ChatWidget *);
+
+protected:
+	virtual void accountRegistered(Account account);
+	virtual void accountUnregistered(Account account);
+	virtual void configurationUpdated();
+
+public:
+	static void createInstance();
+	static void destroyInstance();
+
+	static Firewall * instance() { return Instance; }
 };
 
-#endif
+#endif // KADU_FIREWALL_H

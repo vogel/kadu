@@ -1,7 +1,13 @@
 set (SOURCES
+	buddy-firewall-data.cpp
+	firewall-configuration-ui-handler.cpp
+	firewall-module.cpp
+	firewall-notification.cpp
 	firewall.cpp)
 
 set (MOC_SOURCES
+	firewall-configuration-ui-handler.h
+	firewall-notification.h
 	firewall.h)
 
 set (TRANSLATION_SOURCES
