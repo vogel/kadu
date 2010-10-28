@@ -76,16 +76,6 @@ Contact::~Contact()
 {
 }
 
-void Contact::setContactAvatar(Avatar contactAvatar) const
-{
-	if (isNull())
-		return;
-
-	data()->contactAvatar().setAvatarContact(Contact::null);
-	data()->setContactAvatar(contactAvatar);
-	contactAvatar.setAvatarContact(*this);
-}
-
 /*
 void Contact::refreshDNSName()
 {
@@ -117,7 +107,7 @@ KaduSharedBase_PropertyDef(Contact, ContactDetails *, details, Details, 0)
 KaduSharedBase_PropertyReadDef(Contact, QUuid, uuid, Uuid, QUuid())
 KaduSharedBase_PropertyReadDef(Contact, QSharedPointer<StoragePoint>, storage, Storage, QSharedPointer<StoragePoint>())
 KaduSharedBase_PropertyDef(Contact, Account, contactAccount, ContactAccount, Account::null)
-KaduSharedBase_PropertyReadDef(Contact, Avatar, contactAvatar, ContactAvatar, Avatar::null)
+KaduSharedBase_PropertyDef(Contact, Avatar, contactAvatar, ContactAvatar, Avatar::null)
 KaduSharedBase_PropertyDef(Contact, Buddy, ownerBuddy, OwnerBuddy, Buddy::null)
 KaduSharedBase_PropertyDef(Contact, QString, id, Id, QString::null)
 KaduSharedBase_PropertyDef(Contact, int, priority, Priority, -1)
