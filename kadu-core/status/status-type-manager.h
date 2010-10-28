@@ -24,6 +24,7 @@
 #include <QtCore/QList>
 #include <QtCore/QMap>
 #include <QtCore/QObject>
+#include <QtGui/QIcon>
 
 #include "exports.h"
 
