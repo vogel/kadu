@@ -84,6 +84,8 @@ Firewall::Firewall() :
 
 	pattern.setCaseSensitivity(Qt::CaseSensitive);
 
+	import_0_6_5_configuration();
+
 	createDefaultConfiguration();
 
 	configurationUpdated();
@@ -539,6 +541,8 @@ void Firewall::import_0_6_5_configuration()
 		bfd->setSecuredSending(true);;
 		bfd->store();
 	}
+
+	config_file.removeVariable("Firewall", "Secured_list");
 
 	kdebugf2();
 }
