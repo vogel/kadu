@@ -1,6 +1,6 @@
 [Module]
 Description=Firewall module - protection against unwanted chats
 Description[pl]=Modu³ zapory sieciowej broni±cej przed nieznajomymi
-Author=Pan Wojtas (Wojtek Sulewski), Attis, White Eagle, Dorregaray
-Version=0.8
+Author=Pan Wojtas (Wojtek Sulewski), Attis, Kadu Team
+Version=core
 Dependencies=history

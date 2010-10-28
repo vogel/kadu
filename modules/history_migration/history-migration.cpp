@@ -120,14 +120,12 @@ void HistoryImporter::run()
 	if (0 == totalEntries)
 		return;
 
-	if (!MessageDialog::ask("", tr("Kadu"), qApp->translate("HistoryMigration", "%1 history entries found. Do you want to import them?").arg(totalEntries)))
-		return;
-
 	if (ConfigurationWindow)
 		ConfigurationWindow->widget()->widgetById("history-migration/import")->setVisible(false);
 
 	ProgressDialog = new QProgressDialog(qApp->translate("HistoryMigration", "Migrating old history: %1 of %2").arg(0).arg(totalEntries),
-	qApp->translate("HistoryMigration", "Cancel"), 0, totalEntries, Core::instance()->kaduWindow());
+	"", 0, totalEntries, Core::instance()->kaduWindow());
+	ProgressDialog->setCancelButton(0);
 	ProgressDialog->setWindowModality(Qt::NonModal);
 	ProgressDialog->setAutoClose(false);
 	connect(ProgressDialog, SIGNAL(canceled()), this, SLOT(canceled()));

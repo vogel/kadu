@@ -1,5 +1,9 @@
 +++ version 0.6.6-beta10
 * modules: don't build echo module by default (beevvy)
+* history_migration: #1476 fixed: start migration without asking user and give no way to cancel it (Juzef)
+* idle: #1630 fixed: idle module doesn't load (beevvy)
+* tabs: #1629 fixed: blinking of tabs window during moving of tabs, when only one tabs is opened (White Eagle)
+* firewall: #1426 fixed: module ported to 0.6.6 (White Eagle)
 
 +++ version 0.6.6-beta9
 * gui: #1539 fixed: removed problematic PL chars in main window menu remote URLs (Juzef)

@@ -240,12 +240,18 @@ QString StatusContainerManager::statusContainerName()
 
 void StatusContainerManager::setStatus(Status newStatus)
 {
+	if (SelfInList)
+		return;
+
 	foreach (StatusContainer *container, StatusContainers)
 		container->setStatus(newStatus);
 }
 
 void StatusContainerManager::setDescription(const QString &description)
 {
+	if (SelfInList)
+		return;
+
 	foreach (StatusContainer *container, StatusContainers)
 		container->setDescription(description);
 }
@@ -313,6 +319,9 @@ QString StatusContainerManager::statusNamePrefix()
 
 void StatusContainerManager::storeStatus(Status status)
 {
+	if (SelfInList)
+		return;
+
 	foreach (StatusContainer *statusContainer, StatusContainers)
 		statusContainer->storeStatus(status);
 }
@@ -322,6 +331,9 @@ void StatusContainerManager::disconnectStatus(bool disconnectWithCurrentDescript
 	// TODO: 0.6.6
 	Q_UNUSED(disconnectWithCurrentDescription)
 	Q_UNUSED(disconnectDescription)
+
+	if (SelfInList)
+		return;
 
 	foreach (StatusContainer *statusContainer, StatusContainers)
 		statusContainer->disconnectStatus(DisconnectWithCurrentDescription, DisconnectDescription);

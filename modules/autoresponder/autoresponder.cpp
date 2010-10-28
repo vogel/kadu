@@ -181,8 +181,6 @@ void AutoResponder::filterIncomingMessage(Chat chat, Contact sender, const QStri
 			return;
 		}
 
-		// FIXME: Tekst autoodpowiedzi pojawia się zarówno w czacie rozmówcy
-		// jak i wysyłającego. W 0.6.5 pojawiał się tylko u romówcy.
 		chatService->sendMessage(chat, tr("KADU AUTORESPONDER:") + '\n'
 				+ Parser::parse(autoRespondText, sender), true);
 		// dołączamy użytkowników, którym odpowiedziano

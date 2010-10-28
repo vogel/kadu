@@ -2,7 +2,6 @@
 	<section name="Firewall" icon="32x32/security-high">
 		<tab name="General">
 			<group-box name="Notify">
-				<check-box caption="Enable notification" config-section="Firewall" config-item="notify" id="firewall/notify" />
 				<line-edit caption="Notification syntax" config-section="Firewall" config-item="notification_syntax" tool-tip="%u - uin, %m - message" id="firewall/notify_syntax"/>
 			</group-box>
 			<group-box name="Log">

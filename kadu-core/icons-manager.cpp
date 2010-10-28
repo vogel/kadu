@@ -161,9 +161,17 @@ const QIcon & IconsManager::iconByPath(const QString &path)
 {
 	if (!IconCache.contains(path))
 	{
-		QIcon icon = buildSvgIcon(path);
-		if (icon.isNull())
-			icon = buildPngIcon(path);
+		QIcon icon;
+
+		QFileInfo fileInfo(path);
+		if (fileInfo.isAbsolute() && fileInfo.isReadable())
+			icon.addFile(path);
+		else
+		{
+			icon = buildSvgIcon(path);
+			if (icon.isNull())
+				icon = buildPngIcon(path);
+		}
 
 		IconCache.insert(path, icon);
 	}
