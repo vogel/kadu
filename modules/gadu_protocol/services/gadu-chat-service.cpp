@@ -77,8 +77,7 @@ bool GaduChatService::sendMessage(Chat chat, FormattedMessage &message, bool sil
 
 	if (stop)
 	{
-		if (formats)
-			delete[] formats;
+		delete[] formats;
 
 		kdebugmf(KDEBUG_FUNCTION_END, "end: filter stopped processing\n");
 		return false;
@@ -86,8 +85,7 @@ bool GaduChatService::sendMessage(Chat chat, FormattedMessage &message, bool sil
 
 	if (data.length() >= 2000)
 	{
-		if (formats)
-			delete[] formats;
+		delete[] formats;
 
 		MessageDialog::show("dialog-warning", tr("Kadu"), tr("Filtered message too long (%1>=%2)").arg(data.length()).arg(2000));
 		kdebugmf(KDEBUG_FUNCTION_END, "end: filtered message too long\n");
@@ -127,11 +125,10 @@ bool GaduChatService::sendMessage(Chat chat, FormattedMessage &message, bool sil
 			break;
 		}
 
+	delete[] formats;
+
 	if (-1 == messageId)
 		return false;
-
-	if (formats)
-		delete[] formats;
 
 
 	if (!silent)
