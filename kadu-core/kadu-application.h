@@ -27,6 +27,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef KADU_APPLICATION_H
+#define KADU_APPLICATION_H
+
 #include <QtGui/QApplication>
 
 #ifdef Q_OS_MAC
@@ -60,3 +63,5 @@ public:
 #endif // Q_WS_X11 && !Q_WS_MAEMO_5
 
 };
+
+#endif // KADU_APPLICATION_H
