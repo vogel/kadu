@@ -1,6 +1,6 @@
 @ECHO OFF
 
-set QT_VERSION="4.6.3"
+set QT_VERSION="4.7.0"
 set DESTINATION="C:\Program Files\Kadu-0.6.6"
 set QT_DIR="C:\Qt\%QT_VERSION%\bin\"
 set LIBGADU_DIR="c:\Qt\libgadu-win32\"
@@ -66,7 +66,7 @@ echo LoadByDefault=true >> %DESTINATION%\modules\qt4_sound.desc
 cd .. 
 
 ECHO Copying Qt
-xcopy %QT_DIR%Qt3Support4.dll    %DESTINATION%\ /C /H /R /Y  >> install.log
+REM xcopy %QT_DIR%Qt3Support4.dll    %DESTINATION%\ /C /H /R /Y  >> install.log
 xcopy %QT_DIR%QtCore4.dll        %DESTINATION%\ /C /H /R /Y  >> install.log
 xcopy %QT_DIR%QtGui4.dll         %DESTINATION%\ /C /H /R /Y  >> install.log
 xcopy %QT_DIR%QtNetwork4.dll     %DESTINATION%\ /C /H /R /Y  >> install.log
@@ -77,20 +77,19 @@ xcopy %QT_DIR%QtXml4.dll         %DESTINATION%\ /C /H /R /Y  >> install.log
 xcopy %QT_DIR%QtScript4.dll      %DESTINATION%\ /C /H /R /Y  >> install.log
 xcopy %QT_DIR%QtScriptTools4.dll %DESTINATION%\ /C /H /R /Y  >> install.log
 xcopy %QT_DIR%mingwm10.dll       %DESTINATION%\ /C /H /R /Y  >> install.log
-IF (%QT_VERSION%)==("4.6.3") (
 xcopy %QT_DIR%QtXmlPatterns4.dll %DESTINATION%\ /C /H /R /Y  >> install.log
 xcopy %QT_DIR%phonon4.dll        %DESTINATION%\ /C /H /R /Y  >> install.log
 xcopy %QT_DIR%libgcc_s_dw2-1.dll %DESTINATION%\ /C /H /R /Y  >> install.log
-)
 
 ECHO Copying Qt plugins
-xcopy %QT_DIR%..\plugins\imageformats\qgif4.dll  %DESTINATION%\plugins\imageformats\ /C /H /R /Y  >> install.log
-xcopy %QT_DIR%..\plugins\imageformats\qjpeg4.dll %DESTINATION%\plugins\imageformats\ /C /H /R /Y  >> install.log
-xcopy %QT_DIR%..\plugins\imageformats\qmng4.dll  %DESTINATION%\plugins\imageformats\ /C /H /R /Y  >> install.log
-xcopy %QT_DIR%..\plugins\imageformats\qsvg4.dll  %DESTINATION%\plugins\imageformats\ /C /H /R /Y  >> install.log
-xcopy %QT_DIR%..\plugins\imageformats\qtiff4.dll %DESTINATION%\plugins\imageformats\ /C /H /R /Y  >> install.log
-xcopy %QT_DIR%..\plugins\imageformats\qico4.dll  %DESTINATION%\plugins\imageformats\ /C /H /R /Y  >> install.log
-xcopy %QT_DIR%..\plugins\sqldrivers\qsqlite4.dll %DESTINATION%\plugins\sqldrivers\ /C /H /R /Y  >> install.log
+xcopy %QT_DIR%..\plugins\imageformats\qgif4.dll    %DESTINATION%\plugins\imageformats\ /C /H /R /Y  >> install.log
+xcopy %QT_DIR%..\plugins\imageformats\qjpeg4.dll   %DESTINATION%\plugins\imageformats\ /C /H /R /Y  >> install.log
+xcopy %QT_DIR%..\plugins\imageformats\qmng4.dll    %DESTINATION%\plugins\imageformats\ /C /H /R /Y  >> install.log
+xcopy %QT_DIR%..\plugins\imageformats\qsvg4.dll    %DESTINATION%\plugins\imageformats\ /C /H /R /Y  >> install.log
+xcopy %QT_DIR%..\plugins\imageformats\qtiff4.dll   %DESTINATION%\plugins\imageformats\ /C /H /R /Y  >> install.log
+xcopy %QT_DIR%..\plugins\imageformats\qico4.dll    %DESTINATION%\plugins\imageformats\ /C /H /R /Y  >> install.log
+xcopy %QT_DIR%..\plugins\sqldrivers\qsqlite4.dll   %DESTINATION%\plugins\sqldrivers\ /C /H /R /Y  >> install.log
+xcopy %QT_DIR%..\plugins\iconengines\qsvgicon4.dll %DESTINATION%\plugins\iconengines\ /C /H /R /Y  >> install.log
 
 
 ECHO [Paths] > %DESTINATION%\qt.conf
@@ -120,7 +119,8 @@ rem   MOVE /Y "%%F.stripped" "%%F"
 rem )
 
 ECHO Copying libcrypto
-xcopy %OPENSSL_DIR%bin\libcrypto-8.dll %DESTINATION%\ /C /H /R /Y  >> install.log
+xcopy %OPENSSL_DIR%bin\libeay32.dll %DESTINATION%\ /C /H /R /Y  >> install.log
+xcopy %OPENSSL_DIR%bin\libssl32.dll %DESTINATION%\ /C /H /R /Y  >> install.log
 
 IF EXIST %QCA_DIR%qca2.dll (
 ECHO Copying QCA
@@ -130,7 +130,6 @@ IF EXIST %QCA_OSSL_DIR%qca-ossl2.dll (
 ECHO Copying QCA Plugins
 xcopy %QCA_OSSL_DIR%qca-ossl2.dll %DESTINATION%\plugins\crypto\ /C /H /R /Y  >> install.log
 xcopy %QCA_OSSL_DIR%qca-gnupg2.dll %DESTINATION%\plugins\crypto\ /C /H /R /Y  >> install.log
-xcopy %OPENSSL_DIR%bin\libssl-8.dll %DESTINATION%\ /C /H /R /Y  >> install.log
 )
 
 ECHO Done
