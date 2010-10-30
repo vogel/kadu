@@ -679,13 +679,6 @@ if (WIN32)
 			ARGS "${SRC}" "${FINAL_SRC}"
 			OUTPUT_VARIABLE NULL_VAR)
 	endforeach (SRC)
-
-	foreach (SRC ${MOC_FILES})
-		exec_program (${CMAKE_CURRENT_SOURCE_DIR}/merge_files.bat
-			${MOC_SRC_DIR}
-			ARGS "${SRC} ${FINAL_SRC}"
-			OUTPUT_VARIABLE NULL_VAR)
-	endforeach (SRC)
 	MESSAGE(STATUS "Sources generated")
 
 	set (FINAL_SRC
@@ -695,7 +688,7 @@ if (WIN32)
 		os/qtsingleapplication/qtlockedfile_win.cpp
 	)
 
-	add_library(kadu_core SHARED ${FINAL_SRC} kadu_core.rc)
+	add_library(kadu_core SHARED ${FINAL_SRC} ${MOC_FILES} kadu_core.rc)
 	set_target_properties(kadu_core PROPERTIES DEFINE_SYMBOL KADULIB )
 	set_target_properties(kadu_core PROPERTIES COMPILE_FLAGS "-I${CMAKE_CURRENT_SOURCE_DIR}/includes")
 	target_link_libraries (kadu_core ${STATIC_MODULES} ${QT_LIBRARIES})
