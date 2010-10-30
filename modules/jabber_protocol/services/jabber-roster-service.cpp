@@ -78,10 +78,12 @@ void JabberRosterService::contactUpdated(const XMPP::RosterItem &item)
 	   ))
 		return;
 
+	bool hasBuddy = !BuddyManager::instance()->byContact(contact, ActionReturnNull).isNull();
+
 	Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
 	buddy.setAnonymous(false);
 
-	if (buddy.display().isEmpty() || !Protocol->contactsListReadOnly()) // for facebook like XMPP servers that force us to use their names for contacts
+	if (!hasBuddy || !Protocol->contactsListReadOnly()) // for facebook like XMPP servers that force us to use their names for contacts
 	{
 		// if contact has name set it to display
 		if (!item.name().isNull())
