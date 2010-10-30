@@ -43,7 +43,7 @@ JabberRosterService::~JabberRosterService()
 {
 }
 
-QString JabberRosterService::itemDisplay(const XMPP::RosterItem &item)
+const QString & JabberRosterService::itemDisplay(const XMPP::RosterItem &item)
 {
 	if (!item.name().isNull())
 		return item.name();
@@ -106,7 +106,7 @@ void JabberRosterService::contactUpdated(const XMPP::RosterItem &item)
 	int subType = item.subscription().type();
 
 	// http://xmpp.org/extensions/xep-0162.html#contacts
-	if (!(subType == XMPP::Subscription::Both || subType == XMPP::Subscription::To 
+	if (!(subType == XMPP::Subscription::Both || subType == XMPP::Subscription::To
 	    || ((subType == XMPP::Subscription::None || subType == XMPP::Subscription::From) && item.ask() == "subscribe")
 	    || ((subType == XMPP::Subscription::None || subType == XMPP::Subscription::From) && (!item.name().isEmpty() || !item.groups().isEmpty()))
 	   ))
