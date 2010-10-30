@@ -1,35 +1,38 @@
-Kompilacja i instalacja Kadu 0.6.5.x pod Windows z wykorzystaniem MinGW
+Kompilacja i instalacja Kadu 0.6.6 pod Windows z wykorzystaniem MinGW
 
-1.  Pobierz biblioteki Qt (http://get.qtsoftware.com/qt/source/qt-win-opensource-4.5.2-mingw.exe) 
-    i zainstaluj do katalogu C:\Qt\4.5.2. Podczas instalacji zainstaluj mingw do katalogu C:\MinGW
-2.  Pobierz i zainstaluj cmake (http://www.cmake.org/files/v2.6/cmake-2.6.4-win32-x86.exe) 
+1.  Pobierz biblioteki Qt (http://get.qtsoftware.com/qt/source/qt-win-opensource-4.7.0-mingw.exe)
+    i zainstaluj do katalogu C:\Qt\4.7.0. Podczas instalacji zainstaluj mingw do katalogu C:\MinGW
+2.  Pobierz i zainstaluj cmake (http://www.cmake.org/files/v2.6/cmake-2.6.4-win32-x86.exe)
     do katalogu C:\Qt\CMake 2.6
-3.  Zainstaluj libsndfile (http://www.mega-nerd.com/libsndfile/libsndfile-1.0.20-w32-setup.exe) 
+3.  Zainstaluj libsndfile (http://www.mega-nerd.com/libsndfile/libsndfile-1.0.20-w32-setup.exe)
     do katalogu C:\Qt\libsndfile
-4.  Pobierz i rozpakuj libgadu (http://www.kadu.net/~michal/win32/old/libgadu-win32-20080805.zip) 
+4.  Pobierz i rozpakuj libgadu (http://www.kadu.net/~dorr/Windows/src/libgadu-1.9.0-win32.zip)
     do katalogu C:\Qt\libgadu-win32
-5.  Dodaj do zmiennej systemowej PATH (System -> Zaawansowane -> Zmienne srodowiskowe) 
-    sciezki do binarek Qt, cmake i mingw (C:\Qt\4.5.2\bin, C:\Qt\CMake 2.6\bin, C:\MinGW\bin) 
+5.  Dodaj do zmiennej systemowej PATH (System -> Zaawansowane -> Zmienne srodowiskowe)
+    sciezki do binarek Qt, cmake i mingw (C:\Qt\4.7.0\bin, C:\Qt\CMake 2.6\bin, C:\MinGW\bin)
     (oddzielone srednikiem)
 6.  Uruchom ponownie system (zeby uaktualnic zmienna systemowa PATH)
 7.  Wejdz do katalogu C:\Qt\libgadu-win32\ i skompiluj libgadu:
     cmake . -G "MinGW Makefiles"
     mingw32-make
-8.  Pobierz najnowsza wersje Kadu z svna (http://www.kadu.net/svn/kadu/branches/0.6.5) korzystajac 
-    z RapidSVN, Tortoise SVN albo innego narzedzia
-9.  Wejdz do katalogu kadu i wybierz ktore moduly maja sie kompilowac edytujac plik .config 
-    (domyslna konfiguracja dla Windows znajduje sie w pliku .config.win32)
-12. Jesli chcesz skompilowac kadu z modulem encryption_old pobierz pakiet mingw32-openssl 
-    (ftp://ftp.pbone.net/mirror/download.fedora.redhat.com/pub/fedora/linux/development/x86_64/os/Packages/mingw32-openssl-0.9.8j-2.fc11.noarch.rpm)
-    a nastepnie wypakuj zawartosc katalogu /usr/i686-pc-mingw32/sys-root/mingw/ do C:\Qt\mingw32-openssl-0.9.8j
-    Pobierz biblioteke zlib (http://www.zlib.net/zlib123-dll.zip) a nastepnie rozpakuj do katalogu
+8.  Pobierz biblioteke zlib (http://www.zlib.net/zlib123-dll.zip) a nastepnie rozpakuj do katalogu
     C:\Qt\zlib
-11. Wykonaj polecenie cmake:
-    cmake . -G "MinGW Makefiles" -DMINGW_LIBGADU_DIR=C:/Qt/libgadu-win32 -DMINGW_LIBSNDFILE_DIR=C:/Qt/libsndfile -DMINGW_OPENSSL_DIR=C:/Qt/mingw32-openssl-0.9.8j
-    w przypadku modulu encryption przekaz jeszcze sciezke do QCA 2:
-    -DMINGW_QCA2_DIR=C:/Qt/qca2
-12. Skompiluj kadu:
+9. Pobierz prekompilowana wersje QCA 2.0.1 dla Mingw ze strony autora http://delta.affinix.com/qca/ albo z:
+    http://www.kadu.net/~dorr/Windows/src/qca-2.0.1-mingw.zip
+    i rozpakuj do katalogu C:/Qt/qca2
+    Pobierz wtyczke qca-ossl ze strony autora albo z http://www.kadu.net/~dorr/Windows/src/qca-ossl-2.0.0-beta3.zip 
+    a nastepnie skompiluj i zainstaluj:
+    cmake . -G "MinGW Makefiles"
     mingw32-make
-13. Zainstaluj:
+10. Pobierz prekompilowana biblioteke libidn (http://www.kadu.net/~dorr/Windows/src/libidn.zip)
+    i rozpakuj do: c:\Qt\libidn
+11. Pobierz najnowsza wersje Kadu z repozytorium git
+12  Wejdz do katalogu kadu i wybierz ktore moduly maja sie kompilowac edytujac plik .config
+13. Wykonaj polecenie cmake:
+    cmake . -G "MinGW Makefiles" -DMINGW_LIBGADU_DIR=C:/Qt/libgadu-win32 -DMINGW_LIBSNDFILE_DIR=C:/Qt/libsndfile
+    -DMINGW_QCA_DIR=C:/Qt/qca2 -DMINGW_IDN_DIR=C:/Qt/libidn -DMINGW_ZLIB_DIR=C:/Qt/zlib
+14. Skompiluj kadu:
+    mingw32-make
+15. Zainstaluj:
     varia/scripts/create_windows_bundle.bat
-14. Kadu zostanie zainstalowane do katalogu c:\Program Files\Kadu
+16. Kadu zostanie zainstalowane do katalogu c:\Program Files\Kadu-0.6.6
