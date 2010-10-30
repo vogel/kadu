@@ -134,6 +134,7 @@ void KaduWindow::createGui()
 	GroupBarWidget->setLayout(GroupBarLayout);
 
 	ContactsWidget = new BuddiesListWidget(BuddiesListWidget::FilterAtTop, this, hbox);
+	ContactsWidget->view()->useConfigurationColors(true);
 	ContactsWidget->view()->setModel(new BuddiesModel(this));
 	ContactsWidget->view()->addFilter(GroupBar->filter());
 	AnonymousWithoutMessagesBuddyFilter *anonymousFilter = new AnonymousWithoutMessagesBuddyFilter(this);
@@ -454,7 +455,7 @@ void KaduWindow::configurationUpdated()
 
 		color = QColor(alternateBgColor);
 		alternateBgColor = QString("rgba(%1,%2,%3,%4)").arg(color.red()).arg(color.green()).arg(color.blue()).arg(alpha);
-		
+
 		if (!bgColor.compare(alternateBgColor))
 			alternateBgColor = QString("transparent");
 	}

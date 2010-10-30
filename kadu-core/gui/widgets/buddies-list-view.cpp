@@ -97,7 +97,7 @@ BuddiesListView::BuddiesListView(MainWindow *mainWindow, QWidget *parent) :
 	connect(this, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(doubleClickedSlot(const QModelIndex &)));
 	connect(PendingMessagesManager::instance(), SIGNAL(messageAdded(Message)), this, SLOT(update()));
 	connect(PendingMessagesManager::instance(), SIGNAL(messageRemoved(Message)), this, SLOT(update()));
-	
+
 	simpleModeChanged();
 }
 
@@ -130,6 +130,11 @@ void BuddiesListView::removeFilter(AbstractBuddyFilter *filter)
 void BuddiesListView::setShowAccountName(bool show)
 {
 	Delegate->setShowAccountName(show);
+}
+
+void BuddiesListView::useConfigurationColors(bool use)
+{
+	Delegate->useConfigurationColors(use);
 }
 
 BuddiesListViewDelegateConfiguration & BuddiesListView::delegateConfiguration()

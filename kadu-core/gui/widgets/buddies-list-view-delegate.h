@@ -42,6 +42,8 @@ class BuddiesListViewDelegate : public QItemDelegate
 	AbstractBuddiesModel *Model;
 	BuddiesListViewDelegateConfiguration Configuration;
 
+	bool UseConfigurationColors;
+
 	QStyleOptionViewItemV4 getOptions(const QModelIndex &index, const QStyleOptionViewItem &option) const;
 
 private slots:
@@ -59,6 +61,8 @@ public:
 	virtual void setShowAccountName(bool show);
 
 	BuddiesListViewDelegateConfiguration & configuration() { return Configuration; }
+
+	void useConfigurationColors(bool use) { UseConfigurationColors = use; }
 
 	virtual QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
 	virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
