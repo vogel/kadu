@@ -29,7 +29,9 @@
 #include "misc/misc.h"
 
 #include <windows.h>
+#ifdef _MSC_VER
 #include <dbghelp.h>
+#endif
 #include "kadu-config.h"
 #include "configuration/xml-configuration-file.h"
 #include "core/crash-aware-object.h"
