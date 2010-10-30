@@ -43,6 +43,40 @@ JabberRosterService::~JabberRosterService()
 {
 }
 
+QString JabberRosterService::itemDisplay(const XMPP::RosterItem &item)
+{
+	if (!item.name().isNull())
+		return item.name();
+	else
+		return item.jid().bare();
+}
+
+Buddy JabberRosterService::itemBuddy(const XMPP::RosterItem &item, const Contact &contact)
+{
+	QString display = itemDisplay(item);
+	Buddy buddy = contact.ownerBuddy();
+	if (buddy.isAnonymous()) // contact has anonymous buddy, we should search for other
+	{
+		Buddy byDispalyBuddy = BuddyManager::instance()->byDisplay(display, ActionReturnNull);
+		if (byDispalyBuddy) // move to buddy by display, why not?
+		{
+			buddy = byDispalyBuddy;
+			contact.setOwnerBuddy(byDispalyBuddy);
+		}
+		else
+			contact.ownerBuddy().setDisplay(display);
+	}
+	else // check if we can change name
+	{
+		if (!Protocol->contactListService())
+			contact.ownerBuddy().setDisplay(display);
+	}
+
+	buddy.setAnonymous(false);
+
+	return buddy;
+}
+
 void JabberRosterService::contactUpdated(const XMPP::RosterItem &item)
 {
 	kdebugf();
@@ -68,7 +102,7 @@ void JabberRosterService::contactUpdated(const XMPP::RosterItem &item)
 
 	Contact contact = ContactManager::instance()->byId(Protocol->account(), item.jid().bare(), ActionCreateAndAdd);
 	ContactsForDelete.removeAll(contact);
-	
+
 	int subType = item.subscription().type();
 
 	// http://xmpp.org/extensions/xep-0162.html#contacts
@@ -78,19 +112,8 @@ void JabberRosterService::contactUpdated(const XMPP::RosterItem &item)
 	   ))
 		return;
 
-	bool hasBuddy = !BuddyManager::instance()->byContact(contact, ActionReturnNull).isNull();
-
-	Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
-	buddy.setAnonymous(false);
-
-	if (!hasBuddy || !Protocol->contactsListReadOnly()) // for facebook like XMPP servers that force us to use their names for contacts
-	{
-		// if contact has name set it to display
-		if (!item.name().isNull())
-			buddy.setDisplay(item.name());
-		else
-			buddy.setDisplay(item.jid().bare());
-	}
+	Buddy buddy = itemBuddy(item, contact);
+	BuddyManager::instance()->addItem(buddy);
 
 	GroupManager *gm = GroupManager::instance();
 	// add this contact to all groups the contact is a member of
