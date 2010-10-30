@@ -68,7 +68,7 @@ Buddy JabberRosterService::itemBuddy(const XMPP::RosterItem &item, const Contact
 	}
 	else // check if we can change name
 	{
-		if (!Protocol->contactListService())
+		if (!Protocol->contactsListReadOnly())
 			contact.ownerBuddy().setDisplay(display);
 	}
 
