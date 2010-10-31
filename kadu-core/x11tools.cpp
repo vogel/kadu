@@ -763,9 +763,9 @@ std::string X11_getWindowClass( Display *display, Window window )
 	XClassHint classhint;
 	if( XGetClassHint( display, window, &classhint ) == 0 ) // 0 means error
 		return "";
-	std::string classstring;
+	std::string classstring = "";
 	classstring += classhint.res_name;
-	classstring += ' ';
+	classstring += " ";
 	classstring += classhint.res_class;
 	XFree( classhint.res_name );
 	XFree( classhint.res_class );
@@ -941,7 +941,7 @@ bool X11_checkFullScreen( Display *display )
 				XWindowAttributes attr;
 				Status status = XGetWindowAttributes( display, wl, &attr );
 				if( status != 0 )
-					if( ( attr.all_event_masks & ( ButtonPressMask | ButtonReleaseMask | KeyPressMask | KeyReleaseMask ) ) == 0 )
+					if( ( attr.all_event_masks & ( ButtonReleaseMask | KeyReleaseMask ) ) == 0 )
 						return false;
 				_debug( "[G4]" );
 			}
