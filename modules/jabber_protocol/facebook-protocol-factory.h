@@ -38,6 +38,8 @@ public:
 	static FacebookProtocolFactory * instance();
 
 	virtual QString idLabel();
+	virtual bool allowChangeServer();
+	virtual QString defaultServer();
 
 	virtual QString name() { return "facebook"; }
 	virtual QString displayName() { return "Facebook"; }
@@ -48,7 +50,6 @@ public:
 	virtual QIcon icon();
 	virtual QString iconPath();
 
-	virtual AccountAddWidget * newAddAccountWidget(QWidget *parent = 0);
 	virtual QWidget * newCreateAccountWidget(QWidget */*parent*/ = 0) { return 0; }
 
 };

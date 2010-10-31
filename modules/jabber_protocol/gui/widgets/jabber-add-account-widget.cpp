@@ -41,8 +41,8 @@
 
 #include "jabber-add-account-widget.h"
 
-JabberAddAccountWidget::JabberAddAccountWidget(QWidget *parent) :
-		AccountAddWidget(parent)
+JabberAddAccountWidget::JabberAddAccountWidget(JabberProtocolFactory *factory, QWidget *parent) :
+		Factory(factory), AccountAddWidget(parent)
 {
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
@@ -78,6 +78,12 @@ void JabberAddAccountWidget::createGui()
 
 	Domain = new QComboBox();
 	Domain->setEditable(true);
+	Domain->setEditText(Factory->defaultServer());
+	if (!Factory->allowChangeServer())
+	{
+		Domain->setVisible(false);
+		AtLabel->setVisible(false);
+	}
 	jidLayout->addWidget(Domain, 0, 2);
 
 	layout->addRow(tr("Username") + ':', jidWidget);
@@ -139,14 +145,7 @@ void JabberAddAccountWidget::apply()
 	jabberAccount.setAccountIdentity(Identity->currentIdentity());
 	jabberAccount.setProtocolName("jabber");
 
-	/*
-	 * Because now there is one AddAccountWidget for XMPP, GTalk and FB, and only in FB the Domain field is hidden,
-	 * so it’s not pretty but fast way to see if we’re adding FB account, which requires special connection settings.
-	 */
-	if (Domain->isVisible())
-		jabberAccount.setId(Username->text() + '@' + Domain->currentText());
-	else // facebook
-		jabberAccount.setId(Username->text() + "@chat.facebook.com");
+	jabberAccount.setId(Username->text() + '@' + Domain->currentText());
 	jabberAccount.setPassword(AccountPassword->text());
 	jabberAccount.setHasPassword(!AccountPassword->text().isEmpty());
 	jabberAccount.setRememberPassword(RememberPassword->isChecked());
@@ -181,10 +180,4 @@ void JabberAddAccountWidget::resetGui()
 	Domain->setCurrentIndex(-1);
 	RememberPassword->setChecked(true);
 	Identity->setCurrentIdentity(Identity::null);
-}
-
-void JabberAddAccountWidget::setDomainSectionVisible(bool visible)
-{
-	Domain->setVisible(visible);
-	AtLabel->setVisible(visible);
 }

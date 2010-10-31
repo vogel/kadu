@@ -64,3 +64,7 @@ QString GTalkProtocolFactory::idLabel()
 	return tr("Gmail/Google Talk ID:");
 }
 
+QString GTalkProtocolFactory::defaultServer()
+{
+    return QLatin1String("gmail.com");
+}

@@ -47,6 +47,8 @@ public:
 	virtual QList<StatusType *> supportedStatusTypes();
 	virtual QString idLabel();
 	virtual QRegExp idRegularExpression();
+	virtual bool allowChangeServer();
+	virtual QString defaultServer();
 
 	virtual QString name() { return "jabber"; }
 	virtual QString displayName() { return "Jabber"; }

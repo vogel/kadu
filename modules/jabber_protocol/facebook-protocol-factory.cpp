@@ -72,9 +72,12 @@ QString FacebookProtocolFactory::idLabel()
 	return tr("Facebook ID:");
 }
 
-AccountAddWidget * FacebookProtocolFactory::newAddAccountWidget(QWidget *parent)
+bool FacebookProtocolFactory::allowChangeServer()
 {
-	JabberAddAccountWidget *widget = new JabberAddAccountWidget(parent);
-	widget->setDomainSectionVisible(false);
-	return widget;
+    return false;
+}
+
+QString FacebookProtocolFactory::defaultServer()
+{
+    return QLatin1String("chat.facebook.com");
 }

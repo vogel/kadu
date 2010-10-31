@@ -38,6 +38,7 @@ public:
 	static GTalkProtocolFactory * instance();
 
 	virtual QString idLabel();
+    virtual QString defaultServer();
 
 	virtual QString name() { return "gmail/google talk"; }
 	virtual QString displayName() { return "Gmail/Google Talk"; }

@@ -5,6 +5,7 @@
 * tabs: #1629 fixed: blinking of tabs window during moving of tabs, when only one tabs is opened (White Eagle)
 * firewall: #1426 fixed: module ported to 0.6.6 (White Eagle)
 * jabber: #1636 fixed: auto merge contacts with the same display name (Vogel)
+* jabber: #1404 fixed: gmail.com domain set default for GTalk protocol (Vogel)
 
 +++ version 0.6.6-beta9
 * gui: #1539 fixed: removed problematic PL chars in main window menu remote URLs (Juzef)

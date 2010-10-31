@@ -86,7 +86,7 @@ ContactDetails * JabberProtocolFactory::createContactDetails(ContactShared *cont
 
 AccountAddWidget * JabberProtocolFactory::newAddAccountWidget(QWidget *parent)
 {
-	return new JabberAddAccountWidget(parent);
+	return new JabberAddAccountWidget(this, parent);
 }
 
 QWidget * JabberProtocolFactory::newCreateAccountWidget(QWidget *parent)
@@ -112,6 +112,16 @@ QString JabberProtocolFactory::idLabel()
 QRegExp JabberProtocolFactory::idRegularExpression()
 {
 	return IdRegularExpression;
+}
+
+bool JabberProtocolFactory::allowChangeServer()
+{
+	return true;
+}
+
+QString JabberProtocolFactory::defaultServer()
+{
+	return QString::null;
 }
 
 QWidget * JabberProtocolFactory::newContactPersonalInfoWidget(Contact contact, QWidget *parent)
