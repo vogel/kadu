@@ -98,7 +98,7 @@ ToolBar::ToolBar(QWidget *parent)
 	kdebugf();
 
 	dragging = false;
-	dropmarker = -1;
+	dropmarker.visible = false;
 
 	setAcceptDrops(true);
 	setIconSize(IconsManager::instance()->getIconsSize());
@@ -397,25 +397,37 @@ QAction *ToolBar::findActionToDropBefore(QPoint pos)
 	// event->pos() may be a point BETWEEN two toolbar's widgets !
 	QMainWindow *mainWindow = dynamic_cast<QMainWindow *>(parent());
 	QAction *action = 0;
-	// middle of the toolbar (!)
-	if (mainWindow->toolBarArea(this)==Qt::TopToolBarArea || mainWindow->toolBarArea(this)==Qt::BottomToolBarArea)
-		pos.setY(height() / 2);
-	if (mainWindow->toolBarArea(this)==Qt::LeftToolBarArea || mainWindow->toolBarArea(this)==Qt::RightToolBarArea)
-		pos.setX(width() / 2);
-	// search
+	// search for action
 	if (!actions().isEmpty())
 	{
+		QPoint p = pos;
+		QPoint dp = QPoint(0, 0);
 		while (!action)
 		{
-			action = actionAt(pos);
+			action = actionAt(p-dp);
+			if (!action)
+				action = actionAt(p+dp);
 			if (mainWindow->toolBarArea(this)==Qt::TopToolBarArea || mainWindow->toolBarArea(this)==Qt::BottomToolBarArea)
-				pos -= QPoint(1, 0);
-			if (mainWindow->toolBarArea(this)==Qt::LeftToolBarArea || mainWindow->toolBarArea(this)==Qt::RightToolBarArea)
-				pos -= QPoint(0, 1);
-			if (pos.x() < 0 || pos.y() < 0)
 			{
-				action = actions().first();
-				break;
+				p -= QPoint(1, 0);
+				if (p.x() < 0)
+				{
+					p = pos;
+					dp += QPoint(0, 1);
+				}
+				if ((p-dp).y() < 0 && (p+dp).y() > height() - 1)
+					break;
+			}
+			if (mainWindow->toolBarArea(this)==Qt::LeftToolBarArea || mainWindow->toolBarArea(this)==Qt::RightToolBarArea)
+			{
+				p -= QPoint(0, 1);
+				if (p.y() < 0)
+				{
+					p = pos;
+					dp += QPoint(1, 0);
+				}
+				if ((p-dp).x() < 0 && (p+dp).x() > width() - 1)
+					break;
 			}
 		}
 	}
@@ -974,33 +986,114 @@ void ToolBar::updateDropMarker()
 {
 	if (!dragging)
 	{
-		dropmarker = -1;
+		dropmarker.visible = false;
 		repaint();
 		return;
 	}
+	dropmarker.visible = true;
+	// action
 	QPoint pos = mapFromGlobal(QCursor::pos());
 	QAction *before = findActionToDropBefore(pos);
 	QMainWindow *mainWindow = dynamic_cast<QMainWindow *>(parent());
-	int newdropmarker = -1;
+	ToolBarDropMarker newdropmarker;
+	newdropmarker.visible = true;
+	// marker's position
 	if (before)
 	{
 		if (mainWindow->toolBarArea(this) == Qt::TopToolBarArea || mainWindow->toolBarArea(this) == Qt::BottomToolBarArea)
-			newdropmarker = widgetForAction(before)->x() - 1;
+			newdropmarker.x = widgetForAction(before)->x() - 1;
 		if (mainWindow->toolBarArea(this) == Qt::LeftToolBarArea || mainWindow->toolBarArea(this) == Qt::RightToolBarArea)
-			newdropmarker = widgetForAction(before)->y() - 1;
+			newdropmarker.y = widgetForAction(before)->y() - 1;
 	}
 	else
 	{
 		if (!actions().isEmpty())
 		{
 			if (mainWindow->toolBarArea(this) == Qt::TopToolBarArea || mainWindow->toolBarArea(this) == Qt::BottomToolBarArea)
-				newdropmarker = widgetForAction(actions().last())->geometry().bottomRight().x() + 1;
+				newdropmarker.x = widgetForAction(actions().last())->geometry().bottomRight().x() + 1;
 			if (mainWindow->toolBarArea(this) == Qt::LeftToolBarArea || mainWindow->toolBarArea(this) == Qt::RightToolBarArea)
-				newdropmarker = widgetForAction(actions().last())->geometry().bottomRight().y() + 1;
+				newdropmarker.y = widgetForAction(actions().last())->geometry().bottomRight().y() + 1;
 		}
 		else
-			newdropmarker = 0;
+			newdropmarker.visible = false;
 	}
+	// count marker's position and size
+	QAction *action = before ? before : actions().last();
+	if (mainWindow->toolBarArea(this) == Qt::TopToolBarArea || mainWindow->toolBarArea(this) == Qt::BottomToolBarArea)
+	{
+		int y = widgetForAction(action)->y();
+		int size = widgetForAction(action)->height();
+		int i;
+		int lastx;
+		lastx = widgetForAction(action)->x();
+		i = actions().indexOf(action) - 1;
+		while (i > 0)
+		{
+			QWidget *w = widgetForAction(actions().at(i));
+			if (w->x() >= lastx)
+				break;
+			if( w->y() < y )
+				y = w->y();
+			if( w->height() > size )
+				size = w->height();
+			lastx = w->x();
+			--i;
+		}
+		lastx = widgetForAction(action)->x() + widgetForAction(action)->width();
+		i = actions().indexOf(action) + 1;
+		while (i < actions().count())
+		{
+			QWidget *w = widgetForAction(actions().at(i));
+			if (w->x() <= lastx)
+				break;
+			if( w->y() < y )
+				y = w->y();
+			if( w->height() > size )
+				size = w->height();
+			lastx = w->x() + w->width();
+			++i;
+		}
+		newdropmarker.y = y;
+		newdropmarker.size = size;
+	}
+	if (mainWindow->toolBarArea(this) == Qt::LeftToolBarArea || mainWindow->toolBarArea(this) == Qt::RightToolBarArea)
+	{
+		int x = widgetForAction(action)->x();
+		int size = widgetForAction(action)->width();
+		int i;
+		int lasty;
+		i = actions().indexOf(action) - 1;
+		lasty = widgetForAction(action)->y();
+		while( i > 0 )
+		{
+			QWidget *w = widgetForAction(actions().at(i));
+			if (w->y() >= lasty)
+				break;
+			if( w->x() < x )
+				x = w->x();
+			if( w->width() > size )
+				size = w->width();
+			lasty = w->y();
+			--i;
+		}
+		i = actions().indexOf(action) + 1;
+		lasty = widgetForAction(action)->y() + widgetForAction(action)->height();
+		while (i < actions().count())
+		{
+			QWidget *w = widgetForAction(actions().at(i));
+			if (w->y() <= lasty)
+				break;
+			if( w->x() < x )
+				x = w->x();
+			if( w->width() > size )
+				size = w->width();
+			lasty = w->y() + w->height();
+			++i;
+		}
+		newdropmarker.x = x;
+		newdropmarker.size = size;
+	}
+	// update if needed
 	if (newdropmarker != dropmarker)
 	{
 		dropmarker = newdropmarker;
@@ -1011,7 +1104,7 @@ void ToolBar::updateDropMarker()
 void ToolBar::paintEvent(QPaintEvent *event)
 {
 	QToolBar::paintEvent(event);
-	if (dropmarker > -1)
+	if (dropmarker.visible)
 		QTimer::singleShot(0, this, SLOT(paintDropMarker()));
 }
 
@@ -1021,34 +1114,36 @@ void ToolBar::paintDropMarker()
 	QMainWindow *mainWindow = dynamic_cast<QMainWindow *>(parent());
 	if (mainWindow->toolBarArea(this) == Qt::TopToolBarArea || mainWindow->toolBarArea(this) == Qt::BottomToolBarArea)
 	{
-		int marker = dropmarker;
-		if (marker > width() - 2)
-			marker = width() - 2;
-		if (marker < 1)
-			marker = 1;
-		for (int p = 0; p <= height() - 1; ++p)
+		int x = dropmarker.x;
+		if (x > width() - 2)
+			x = width() - 2;
+		if (x < 1)
+			x = 1;
+		int y = dropmarker.y;
+		for (int dy = 0; dy < dropmarker.size; ++dy)
 		{
-			painter.setPen(p%2 == 0 ? QColor(255,255,255,240) : QColor(16,16,16,240));
-			painter.drawPoint(marker, p);
-			painter.setPen(p%2 == 1 ? QColor(255,255,255,160) : QColor(16,16,16,160));
-			painter.drawPoint(marker-1, p);
-			painter.drawPoint(marker+1, p);
+			painter.setPen(dy%2 == 0 ? QColor(255,255,255,240) : QColor(16,16,16,240));
+			painter.drawPoint(x, y+dy);
+			painter.setPen(dy%2 == 1 ? QColor(255,255,255,160) : QColor(16,16,16,160));
+			painter.drawPoint(x-1, y+dy);
+			painter.drawPoint(x+1, y+dy);
 		}
 	}
 	if (mainWindow->toolBarArea(this)==Qt::LeftToolBarArea || mainWindow->toolBarArea(this)==Qt::RightToolBarArea )
 	{
-		int marker = dropmarker;
-		if (marker > height() - 2)
-			marker = height() - 2;
-		if (marker < 1)
-			marker = 1;
-		for (int p = 0; p <= width() - 1; ++p)
+		int y = dropmarker.y;
+		if (y > height() - 2)
+			y = height() - 2;
+		if (y < 1)
+			y = 1;
+		int x = dropmarker.x;
+		for (int dx = 0; dx < dropmarker.size; ++dx)
 		{
-			painter.setPen(p%2 == 0 ? QColor(255,255,255,240) : QColor(16,16,16,240));
-			painter.drawPoint(p, marker);
-			painter.setPen(p%2 == 1 ? QColor(255,255,255,160) : QColor(16,16,16,160));
-			painter.drawPoint(p, marker-1);
-			painter.drawPoint(p, marker+1);
+			painter.setPen(dx%2 == 0 ? QColor(255,255,255,240) : QColor(16,16,16,240));
+			painter.drawPoint(x+dx, y);
+			painter.setPen(dx%2 == 1 ? QColor(255,255,255,160) : QColor(16,16,16,160));
+			painter.drawPoint(x+dx, y-1);
+			painter.drawPoint(x+dx, y+1);
 		}
 	}
 }

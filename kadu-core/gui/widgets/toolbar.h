@@ -42,6 +42,26 @@ class UserGroup;
 
 #define TOOLBAR_SEPARATOR_SIZE 12 /*px*/
 
+struct ToolBarDropMarker
+{
+	bool visible;
+	int x;
+	int y;
+	int size;
+	bool operator==(const ToolBarDropMarker &other) const
+	{
+		if (visible != other.visible) return false;
+		if (x != other.x) return false;
+		if (y != other.y) return false;
+		if (size != other.size) return false;
+		return true;
+	}
+	bool operator!=(const ToolBarDropMarker &other) const
+	{
+		return *this == other ? false : true;
+	}
+};
+
 /**
 	Klasa tworząca pasek narzędziowy
 	\class ToolBar
@@ -77,7 +97,7 @@ class KADUAPI ToolBar : public QToolBar, public ConfigurationAwareObject
 	QPoint MouseStart;
 
 	bool dragging;
-	int dropmarker;
+	ToolBarDropMarker dropmarker;
 
 	QAction *findActionToDropBefore(QPoint pos);
 	void updateDropMarker();
