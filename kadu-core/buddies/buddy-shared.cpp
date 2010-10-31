@@ -365,3 +365,8 @@ void BuddyShared::removeFromGroup(Group group)
 	Groups.removeAll(group);
 	dataUpdated();
 }
+
+bool BuddyShared::isEmpty() const
+{
+	return Contacts.isEmpty() && HomePhone.isEmpty() && Mobile.isEmpty() && Website.isEmpty() && Email.isEmpty();
+}

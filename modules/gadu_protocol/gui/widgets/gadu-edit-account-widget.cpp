@@ -383,7 +383,7 @@ void GaduEditAccountWidget::removeAccount()
 
 	if (messageBox->clickedButton() == removeButton)
 	{
-		AccountManager::instance()->removeItem(account());
+		AccountManager::instance()->removeAccountAndBuddies(account());
 		deleteLater();
 	}
 	else if (messageBox->clickedButton() == removeAndUnregisterButton)

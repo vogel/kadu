@@ -189,6 +189,14 @@ void Buddy::removeFromGroup(Group group)
 		data()->removeFromGroup(group);
 }
 
+bool Buddy::isEmpty() const
+{
+	if (isNull())
+		return true;
+	else
+		return data()->isEmpty();
+}
+
 QString Buddy::display() const
 {
 	if (isNull())

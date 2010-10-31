@@ -77,6 +77,8 @@ public:
 
 	Status status();
 
+	void removeAccountAndBuddies(Account account);
+
 signals:
 	void accountAboutToBeRegistered(Account);
 	void accountRegistered(Account);

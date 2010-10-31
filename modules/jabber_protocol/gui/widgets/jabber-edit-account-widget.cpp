@@ -470,19 +470,13 @@ void JabberEditAccountWidget::removeAccount()
 			.arg(account().id()));
 
 	QPushButton *removeButton = messageBox->addButton(tr("Remove account"), QMessageBox::AcceptRole);
-	QPushButton *removeAndUnregisterButton = messageBox->addButton(tr("Remove account and unregister on server"), QMessageBox::DestructiveRole);
 	messageBox->addButton(QMessageBox::Cancel);
 	messageBox->setDefaultButton(QMessageBox::Cancel);
 	messageBox->exec();
 
 	if (messageBox->clickedButton() == removeButton)
 	{
-		AccountManager::instance()->removeItem(account());
-		deleteLater();
-	}
-	else if (messageBox->clickedButton() == removeAndUnregisterButton)
-	{
-		AccountManager::instance()->removeItem(account());
+		AccountManager::instance()->removeAccountAndBuddies(account());
 		deleteLater();
 	}
 

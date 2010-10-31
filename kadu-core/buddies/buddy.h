@@ -94,6 +94,8 @@ public:
 	void addToGroup(Group group);
 	void removeFromGroup(Group group);
 
+	bool isEmpty() const;
+
 	QString display() const;
 
 	KaduSharedBase_Property(Avatar, buddyAvatar, BuddyAvatar)

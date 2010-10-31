@@ -109,6 +109,8 @@ public:
 	void addToGroup(Group group);
 	void removeFromGroup(Group group);
 
+	bool isEmpty() const;
+
 	KaduShared_Property(Avatar, buddyAvatar, BuddyAvatar)
 	KaduShared_Property(QString, display, Display)
 	KaduShared_Property(QString, firstName, FirstName)
