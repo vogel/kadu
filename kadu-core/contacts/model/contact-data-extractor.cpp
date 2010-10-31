@@ -41,9 +41,6 @@ QVariant ContactDataExtractor::data(Contact contact, int role, bool useBuddyData
 					: contact.id();
 		case Qt::DecorationRole:
 		{
-			if (contact.isNull())
-				return IconsManager::instance()->iconByPath("phone");
-
 			if (contact.ownerBuddy().isBlocked())
 				return IconsManager::instance()->iconByPath("kadu_icons/kadu-blocked");
 

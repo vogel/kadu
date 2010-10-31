@@ -32,7 +32,10 @@ QVariant BuddyDataExtractor::data(Buddy buddy, int role)
 		case Qt::DisplayRole:
 			return buddy.display();
 		case Qt::DecorationRole:
-			return IconsManager::instance()->iconByPath("phone");
+		{
+			if (!buddy.homePhone().isEmpty() || !buddy.mobile().isEmpty())
+				return IconsManager::instance()->iconByPath("phone");
+		}
 		case BuddyRole:
 			return QVariant::fromValue(buddy);
 		case StatusRole:
