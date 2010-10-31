@@ -83,6 +83,12 @@ public:
 	QList<FormattedMessagePart> parts() const;
 
 	/**
+	 * Prepend a new part to message.
+	 * @arg part New part to pepend.
+	 */
+	void prepend(FormattedMessagePart part);
+
+	/**
 	 * Append a new part to message.
 	 * @arg part New part to append.
 	 */

@@ -118,6 +118,10 @@ QList<FormattedMessagePart> FormattedMessage::parts() const
 	return Parts;
 }
 
+void FormattedMessage::prepend(FormattedMessagePart part)
+{
+	Parts.prepend(part);
+}
 
 void FormattedMessage::append(FormattedMessagePart part)
 {

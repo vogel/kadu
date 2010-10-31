@@ -60,14 +60,24 @@ bool GaduChatService::sendMessage(Chat chat, FormattedMessage &message, bool sil
 	QString plain = message.toPlain();
 	QList<Contact> contacts = chat.contacts().toContactList();
 
+	plain.replace("\r\n", "\n");
+	plain.replace('\r', '\n');
+	plain.replace(QChar::LineSeparator, "\n");
+	plain = plain.trimmed();
+
+	if (plain.isEmpty()) // for image sending
+	{
+		message.prepend(FormattedMessagePart(" ", false, false, false, QColor(0, 0, 0)));
+
+		plain.replace("\r\n", "\n");
+		plain.replace('\r', '\n');
+		plain.replace(QChar::LineSeparator, "\n");
+	}
+
 	unsigned int uinsCount = 0;
 	unsigned int formatsSize = 0;
 	unsigned char *formats = GaduFormater::createFormats(Protocol->account(), message, formatsSize);
 	bool stop = false;
-
-	plain.replace("\r\n", "\n");
-	plain.replace('\r', '\n');
-	plain.replace(QChar::LineSeparator, "\n");
 
 	kdebugmf(KDEBUG_INFO, "\n%s\n", (const char *)unicode2latin(plain));
 
