@@ -22,13 +22,13 @@
 
 #include <QtCore/QObject>
 
-class Buddy;
 
 namespace XMPP
 {
 	class RosterItem;
 };
 
+class Buddy;
 class Contact;
 class JabberProtocol;
 
@@ -41,7 +41,7 @@ class JabberRosterService : public QObject
 	QList<Contact> ContactsForDelete;
 	bool InRequest;
 
-	QString itemDisplay(const XMPP::RosterItem &item);
+	const QString & itemDisplay(const XMPP::RosterItem &item);
 	Buddy itemBuddy(const XMPP::RosterItem &item, const Contact &contact);
 
 private slots:

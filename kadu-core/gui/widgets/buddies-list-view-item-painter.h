@@ -34,6 +34,8 @@ class BuddiesListViewItemPainter
 	const QModelIndex &Index;
 	const QTreeView *Widget;
 
+	bool UseConfigurationColors;
+
 	int HFrameMargin;
 	int VFrameMargin;
 
@@ -86,7 +88,7 @@ class BuddiesListViewItemPainter
 	void paintDescription(QPainter *painter);
 
 public:
-	BuddiesListViewItemPainter(const BuddiesListViewDelegateConfiguration &configuration, const QStyleOptionViewItemV4 &option, const QModelIndex &index);
+	BuddiesListViewItemPainter(const BuddiesListViewDelegateConfiguration &configuration, const QStyleOptionViewItemV4 &option, const QModelIndex &index, bool useConfigurationColors);
 	~BuddiesListViewItemPainter();
 
 	QPixmap buddyAvatar() const;

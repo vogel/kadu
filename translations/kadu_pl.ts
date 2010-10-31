@@ -2491,7 +2491,7 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
     </message>
     <message>
         <source>A&amp;bout Kadu</source>
-        <translation>&amp;O kadu</translation>
+        <translation>&amp;O Kadu</translation>
     </message>
     <message>
         <source>Translate Kadu...</source>

@@ -9,6 +9,7 @@
 * gadu: #1460 fixed: proper image sending to gg10 (Vogel)
 * gadu: #1536 fixed: remove gadu contacts after account is removed (Vogel)
 * gadu: #1644 fixed: unable to remind password of gadu-gadu account (White Eagle)
+* gui: #1638 fixed: colors from configuration in buddies list should be respected only in Kadu main window (beevvy)
 
 +++ version 0.6.6-beta9
 * gui: #1539 fixed: removed problematic PL chars in main window menu remote URLs (Juzef)

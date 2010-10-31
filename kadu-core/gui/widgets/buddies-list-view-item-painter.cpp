@@ -36,8 +36,9 @@
 
 #include "buddies-list-view-item-painter.h"
 
-BuddiesListViewItemPainter::BuddiesListViewItemPainter(const BuddiesListViewDelegateConfiguration &configuration, const QStyleOptionViewItemV4 &option, const QModelIndex &index) :
+BuddiesListViewItemPainter::BuddiesListViewItemPainter(const BuddiesListViewDelegateConfiguration &configuration, const QStyleOptionViewItemV4 &option, const QModelIndex &index, bool useConfigurationColors) :
 		Configuration(configuration), Option(option), Index(index),
+		UseConfigurationColors(useConfigurationColors),
 		FontMetrics(Configuration.font()),
 		BoldFontMetrics(Configuration.boldFont()),
 		DescriptionFontMetrics(Configuration.descriptionFont()),
@@ -185,7 +186,7 @@ QTextDocument * BuddiesListViewItemPainter::createDescriptionDocument(const QStr
 	QTextDocument *doc = new QTextDocument();
 
 	doc->setDefaultFont(Configuration.descriptionFont());
-	if (Configuration.descriptionColor().isValid())
+	if (UseConfigurationColors && Configuration.descriptionColor().isValid())
 		doc->setDefaultStyleSheet(QString("* { color: %1; }").arg(color.name()));
 
 	doc->setHtml(QString("<span>%1</span>").arg(description));
@@ -212,7 +213,7 @@ QTextDocument * BuddiesListViewItemPainter::getDescriptionDocument(int width)
 			: QPalette::Text);
 
 	DescriptionDocument = createDescriptionDocument(Index.data(DescriptionRole).toString(), width,
-			Option.state & QStyle::State_Selected
+			((Option.state & QStyle::State_Selected) && !UseConfigurationColors)
 					? textcolor
 					: Configuration.descriptionColor());
 
@@ -426,10 +427,11 @@ void BuddiesListViewItemPainter::paint(QPainter *painter)
 
 	if (Option.state & QStyle::State_Selected)
 		painter->setPen(Option.palette.color(colorGroup, QPalette::HighlightedText));
-	else if (drawDisabled()) // some bit of broken logic
-		painter->setPen(Option.palette.color(colorGroup, QPalette::Text));
 	else
-		painter->setPen(Configuration.fontColor());
+		if (UseConfigurationColors && !drawDisabled()) // some bit of broken logic
+			painter->setPen(Configuration.fontColor());
+		else
+			painter->setPen(Option.palette.color(colorGroup, QPalette::Text));
 
 	paintIcon(painter);
 	paintMessageIcon(painter);

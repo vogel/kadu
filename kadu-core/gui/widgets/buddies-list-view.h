@@ -122,6 +122,7 @@ public:
 	BuddiesModelProxy * proxyModel() { return ProxyModel; }
 
 	void setShowAccountName(bool show);
+	void useConfigurationColors(bool use);
 
 	void selectBuddy(Buddy buddy);
 

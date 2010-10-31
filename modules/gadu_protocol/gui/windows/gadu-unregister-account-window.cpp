@@ -151,7 +151,7 @@ void GaduUnregisterAccountWindow::unregisteringFinished(GaduServerUnregisterAcco
 	if (result)
 	{
 		MessageDialog::show("dialog-information", tr("Kadu"), tr("Unregistation was successful. Now you don't have any GG number :("), QMessageBox::Ok, parentWidget());
-		AccountManager::instance()->removeItem(MyAccount);
+		AccountManager::instance()->removeAccountAndBuddies(MyAccount);
 
 		close();
 	}

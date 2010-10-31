@@ -572,7 +572,7 @@ void KaduWindowActions::mergeContactActionActivated(QAction *sender, bool toggle
 	Buddy buddy = action->buddy();
 	if (buddy)
 	{
-		MergeBuddiesWindow *mergeBuddiesWindow = new MergeBuddiesWindow(buddy, sender->parentWidget());
+		MergeBuddiesWindow *mergeBuddiesWindow = new MergeBuddiesWindow(buddy);
 		mergeBuddiesWindow->show();
 	}
 

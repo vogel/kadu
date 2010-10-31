@@ -69,7 +69,7 @@ private slots:
 	void messageStatusChanged(Message::Status);
 
 public:
-	ChatMessagesView(Chat chat = 0, bool supportTransparency = true, QWidget *parent = 0);
+	ChatMessagesView(Chat chat = Chat::null, bool supportTransparency = true, QWidget *parent = 0);
 	virtual ~ChatMessagesView();
 
 	HtmlMessagesRenderer * renderer() { return Renderer; }
