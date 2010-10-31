@@ -53,6 +53,7 @@ public:
 	bool hasAccount(Account account);
 	bool hasAnyAccount();
 
+	KaduSharedBase_PropertyBool(Permanent)
 	KaduSharedBase_Property(QString, name, Name)
 	KaduSharedBase_Property(QList<Account>, accounts, Accounts)
 

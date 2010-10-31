@@ -95,4 +95,5 @@ bool Identity::hasAnyAccount()
 			: false;
 }
 
+KaduSharedBase_PropertyBoolDef(Identity, Permanent, false)
 KaduSharedBase_PropertyDef(Identity, QString, name, Name, QString::null)

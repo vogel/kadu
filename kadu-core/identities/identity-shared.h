@@ -32,6 +32,7 @@ class KADUAPI IdentityShared : public BaseStatusContainer, public Shared
 	Q_OBJECT
 	Q_DISABLE_COPY(IdentityShared)
 
+	bool Permanent;
 	QString Name;
 	QList<Account> Accounts;
 
@@ -59,6 +60,7 @@ public:
 	bool hasAnyAccount();
 
 	KaduShared_Property(QString, name, Name)
+	KaduShared_PropertyBool(Permanent)
 
 	// StatusContainer implementation
 

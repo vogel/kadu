@@ -45,7 +45,7 @@ IdentityShared * IdentityShared::loadFromStorage(const QSharedPointer<StoragePoi
 }
 
 IdentityShared::IdentityShared(const QUuid &uuid) :
-		BaseStatusContainer(this), Shared(uuid)
+		BaseStatusContainer(this), Shared(uuid), Permanent(false)
 {
 	setState(StateNotLoaded);
 }
@@ -71,6 +71,7 @@ void IdentityShared::load()
 
 	Shared::load();
 
+	Permanent = loadValue<bool>("Permanent");
 	Name = loadValue<QString>("Name");
 }
 
@@ -81,6 +82,7 @@ void IdentityShared::store()
 
 	Shared::store();
 
+	storeValue("Permanent", Permanent);
 	storeValue("Name", Name);
 }
 
