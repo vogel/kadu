@@ -21,6 +21,7 @@
 
 #include "buddies/buddy.h"
 #include "model/roles.h"
+#include "icons-manager.h"
 
 #include "buddy-data-extractor.h"
 
@@ -30,6 +31,8 @@ QVariant BuddyDataExtractor::data(Buddy buddy, int role)
 	{
 		case Qt::DisplayRole:
 			return buddy.display();
+		case Qt::DecorationRole:
+			return IconsManager::instance()->iconByPath("phone");
 		case BuddyRole:
 			return QVariant::fromValue(buddy);
 		case StatusRole:

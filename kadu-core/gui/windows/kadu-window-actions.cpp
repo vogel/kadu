@@ -73,20 +73,6 @@
 
 #include "kadu-window-actions.h"
 
-void disableNonIdUles(Action *action)
-{
-	kdebugf();
-	foreach (const Contact &contact, action->contacts())
-		if (contact.isNull())
-		{
-			action->setEnabled(false);
-			return;
-		}
-
-	action->setEnabled(true);
-	kdebugf2();
-}
-
 void disableContainsSelfUles(Action *action)
 {
 	if (action->buddies().contains(Core::instance()->myself()))
@@ -113,7 +99,6 @@ void checkBuddyProperties(Action *action)
 		action->setIcon(IconsManager::instance()->iconByPath("x-office-address-book"));
 	}
 
-	action->setEnabled(!action->contact().isNull());
 	kdebugf2();
 }
 
@@ -140,85 +125,19 @@ void checkHideDescription(Action *action)
 	action->setChecked(on);
 }
 
-void disableNotOneUles(Action *action)
+void disableNoContact(Action *action)
 {
-	kdebugf();
-
-	if (action->contact().isNull())
-	{
-		action->setEnabled(false);
-		return;
-	}
-
-	action->setEnabled(true);
-	kdebugf2();
+	action->setEnabled(action->contact());
 }
 
-void disableNoGaduUle(Action *action)
+void disableNoDescription(Action *action)
 {
-	kdebugf();
-
-	Contact contact = action->contact();
-
-	if (contact.isNull())
-	{
-		action->setEnabled(false);
-		return;
-	}
-
-	action->setEnabled(true);
-	kdebugf2();
+	action->setEnabled(!action->contact().currentStatus().description().isEmpty());
 }
 
-void disableNoGaduDescription(Action *action)
+void disableNoDescriptionUrl(Action *action)
 {
-	kdebugf();
-
-	Contact contact = action->contact();
-
-	if (contact.isNull())
-	{
-		action->setEnabled(false);
-		return;
-	}
-
-	if (contact.currentStatus().description().isEmpty())
-	{
-		action->setEnabled(false);
-		return;
-	}
-
-	action->setEnabled(true);
-	kdebugf2();
-}
-
-void disableNoGaduDescriptionUrl(Action *action)
-{
-	kdebugf();
-
-	Contact contact = action->contact();
-
-	if (contact.isNull())
-	{
-		action->setEnabled(false);
-		return;
-	}
-
-	Status status = contact.currentStatus();
-	if (status.description().isEmpty())
-	{
-		action->setEnabled(false);
-		return;
-	}
-
-	if (status.description().indexOf(UrlHandlerManager::instance()->urlRegExp()) < 0)
-	{
-		action->setEnabled(false);
-		return;
-	}
-
-	action->setEnabled(true);
-	kdebugf2();
+	action->setEnabled(action->contact().currentStatus().description().indexOf(UrlHandlerManager::instance()->urlRegExp()) >= 0);
 }
 
 void disableNoEMail(Action *action)
@@ -346,7 +265,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		ActionDescription::TypeUser, "copyDescriptionAction",
 		this, SLOT(copyDescriptionActionActivated(QAction *, bool)),
 		"edit-copy", "edit-copy", tr("Copy Description"), false, "",
-		disableNoGaduDescription
+		disableNoDescription
 	);
 	BuddiesListViewMenuManager::instance()->addListActionDescription(CopyDescription, BuddiesListViewMenuItem::MenuCategoryActions, 10);
 
@@ -361,7 +280,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		ActionDescription::TypeUser, "openDescriptionLinkAction",
 		this, SLOT(openDescriptionLinkActionActivated(QAction *, bool)),
 		"go-jump", "go-jump", tr("Open Description Link in Browser..."), false, "",
-		disableNoGaduDescriptionUrl
+		disableNoDescriptionUrl
 	);
 	BuddiesListViewMenuManager::instance()->addListActionDescription(OpenDescriptionLink, BuddiesListViewMenuItem::MenuCategoryActions, 30);
 
@@ -377,7 +296,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		ActionDescription::TypeUser, "lookupUserInfoAction",
 		this, SLOT(lookupInDirectoryActionActivated(QAction *, bool)),
 		"edit-find", "edit-find", tr("Search in Directory"), false, "",
-		disableNoGaduUle
+		disableNoContact
 	);
 
 	HideDescription = new ActionDescription(this,
@@ -541,12 +460,6 @@ void KaduWindowActions::onlineAndDescUsersActionCreated(Action *action)
 
 void KaduWindowActions::editUserActionCreated(Action *action)
 {
-	if (!action->contact())
-	{
-		action->setEnabled(false);
-		return;
-	}
-
 	Buddy buddy = action->buddy();
 	if (buddy.isAnonymous())
 	{

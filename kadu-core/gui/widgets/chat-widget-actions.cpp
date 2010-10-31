@@ -146,7 +146,7 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 		ActionDescription::TypeChat, "whoisAction",
 		this, SLOT(whoisActionActivated(QAction *, bool)),
 		"edit-find", "edit-find", tr("Search this User in Directory"), false, QString::null,
-		disableNoGaduUle
+		disableNoContact
 	);
 
 	BlockUser = new ActionDescription(0,

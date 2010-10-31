@@ -134,9 +134,9 @@ void disableNonIdUles(Action *action);
 void disableContainsSelfUles(Action *action);
 void checkHideDescription(Action *action);
 void disableNotOneUles(Action *action);
-void disableNoGaduUle(Action *action);
-void disableNoGaduDescription(Action *action);
-void disableNoGaduDescriptionUrl(Action *action);
+void disableNoContact(Action *action);
+void disableNoDescription(Action *action);
+void disableNoDescriptionUrl(Action *action);
 void disableNoEMail(Action *action);
 
 #endif // KADU_WINDOW_ACTIONS_H
