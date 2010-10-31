@@ -66,12 +66,15 @@ void IdentitiesComboBox::currentIndexChangedSlot(int index)
 	QModelIndex modelIndex = this->model()->index(index, modelColumn(), rootModelIndex());
 	QAction *action = modelIndex.data(ActionRole).value<QAction *>();
 
+	if (!KaduComboBox<Identity>::currentIndexChangedSlot(index))
+		return;
+
 	if (action != CreateNewIdentityAction)
 	{
-		if (KaduComboBox<Identity>::currentIndexChangedSlot(index))
-			emit identityChanged(CurrentValue);
+		emit identityChanged(CurrentValue);
 		return;
 	}
+
 
 	bool ok;
 
@@ -79,7 +82,7 @@ void IdentitiesComboBox::currentIndexChangedSlot(int index)
 			tr("Please enter the name for the new identity:"), QLineEdit::Normal,
 			QString::null, &ok);
 
-	if (!ok || identityName.isEmpty() || IdentityManager::instance()->byName(identityName, false))
+	if (!ok || identityName.isEmpty())
 	{
 		setCurrentIndex(0);
 		return;
