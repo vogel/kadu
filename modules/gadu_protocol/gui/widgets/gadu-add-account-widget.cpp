@@ -88,7 +88,7 @@ void GaduAddAccountWidget::createGui()
 	RememberPassword->setChecked(true);
 	layout->addRow(0, RememberPassword);
 
-	RemindPassword = new QLabel(QString("<a href='remind'>%1</a>").arg(tr("Forgot Your Password?")));
+	RemindPassword = new QLabel();
 	RemindPassword->setTextInteractionFlags(Qt::LinksAccessibleByKeyboard | Qt::LinksAccessibleByMouse);
 	layout->addRow(0, RemindPassword);
 	connect(RemindPassword, SIGNAL(linkActivated(QString)), this, SLOT(remindPasssword()));
@@ -159,7 +159,16 @@ void GaduAddAccountWidget::cancelButtonClicked()
 
 void GaduAddAccountWidget::dataChanged()
 {
-	RemindPassword->setEnabled(!AccountId->text().isEmpty());
+	if (AccountId->text().isEmpty())
+	{
+		RemindPassword->setText(tr("Forgot Your Password?"));
+		RemindPassword->setEnabled(false);
+	}
+	else
+	{
+		RemindPassword->setText(QString("<a href='remind'>%1</a>").arg(tr("Forgot Your Password?")));
+		RemindPassword->setEnabled(true);
+	}
 
 	AddAccountButton->setEnabled(
 		!AccountId->text().isEmpty() &&

@@ -8,6 +8,7 @@
 * jabber: #1404 fixed: gmail.com domain set default for GTalk protocol (Vogel)
 * gadu: #1460 fixed: proper image sending to gg10 (Vogel)
 * gadu: #1536 fixed: remove gadu contacts after account is removed (Vogel)
+* gadu: #1644 fixed: unable to remind password of gadu-gadu account (White Eagle)
 
 +++ version 0.6.6-beta9
 * gui: #1539 fixed: removed problematic PL chars in main window menu remote URLs (Juzef)

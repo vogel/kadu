@@ -42,7 +42,7 @@
 #include "jabber-add-account-widget.h"
 
 JabberAddAccountWidget::JabberAddAccountWidget(JabberProtocolFactory *factory, QWidget *parent) :
-		Factory(factory), AccountAddWidget(parent)
+		AccountAddWidget(parent), Factory(factory)
 {
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
@@ -97,10 +97,6 @@ void JabberAddAccountWidget::createGui()
 	RememberPassword->setChecked(true);
 	layout->addRow(0, RememberPassword);
 
-	RemindPassword = new QLabel(QString("<a href='remind'>%1</a>").arg(tr("Remind password")));
-	RemindPassword->setTextInteractionFlags(Qt::TextBrowserInteraction);
-	layout->addRow(tr("Forgot Your Password?"), RemindPassword);
-
 	Identity = new IdentitiesComboBox(this);
 	connect(Identity, SIGNAL(identityChanged(Identity)), this, SLOT(dataChanged()));
 	layout->addRow(tr("Account Identity") + ':', Identity);
@@ -130,7 +126,6 @@ void JabberAddAccountWidget::createGui()
 
 void JabberAddAccountWidget::dataChanged()
 {
-	RemindPassword->setEnabled(!Username->text().isEmpty());
 	AddAccountButton->setEnabled(!Username->text().isEmpty()
 				     && !AccountPassword->text().isEmpty()
 				     && (!Domain->isVisible() || !Domain->currentText().isEmpty())
