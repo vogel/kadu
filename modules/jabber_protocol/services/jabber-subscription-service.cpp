@@ -60,14 +60,7 @@ void JabberSubscriptionService::subscription(const XMPP::Jid &jid, const QString
 			task->go(true);
 
 			Contact contact = ContactManager::instance()->byId(Protocol->account(), jid.bare(), ActionReturnNull);
-			if (contact)
-			{
-				Buddy owner = contact.ownerBuddy();
-				contact.setOwnerBuddy(Buddy::null);
-				if (owner.contacts().size() == 0)
-					BuddyManager::instance()->removeItem(owner);
-
-			}
+			BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(contact);
 		}
 		else
 		{

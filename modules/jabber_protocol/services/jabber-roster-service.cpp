@@ -130,31 +130,18 @@ void JabberRosterService::contactDeleted(const XMPP::RosterItem &item)
 	kdebug("Deleting contact %s", qPrintable(item.jid().bare()));
 
 	Contact contact = ContactManager::instance()->byId(Protocol->account(), item.jid().bare(), ActionReturnNull);
-	if (!contact)
-		return;
-
-  	Buddy owner = contact.ownerBuddy();
-	contact.setOwnerBuddy(Buddy::null);
-	if (owner.contacts().size() == 0)
-		BuddyManager::instance()->removeItem(owner);
+	BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(contact);
 }
 
 void JabberRosterService::rosterRequestFinished(bool success)
 {
 	kdebugf();
-	if (success)
-	{
-		// the roster was imported successfully, clear
-		// all "dirty" items from the contact list
-		foreach (Contact contact, ContactsForDelete)
-		{
-			Buddy owner = contact.ownerBuddy();
-			contact.setOwnerBuddy(Buddy::null);
-			if (owner.contacts().size() == 0)
-				BuddyManager::instance()->removeItem(owner);
-		}
 
-	}
+	// the roster was imported successfully, clear
+	// all "dirty" items from the contact list
+	if (success)
+		foreach (Contact contact, ContactsForDelete)
+			BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(contact);
 
 	InRequest = false;
 	emit rosterDownloaded(success);

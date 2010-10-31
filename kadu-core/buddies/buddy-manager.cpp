@@ -223,6 +223,18 @@ Buddy BuddyManager::byUuid(const QUuid &uuid)
 	return Buddy::create();
 }
 
+void BuddyManager::clearOwnerAndRemoveEmptyBuddy(Contact contact)
+{
+	if (!contact)
+		return;
+
+	Buddy owner = contact.ownerBuddy();
+	contact.setOwnerBuddy(Buddy::null);
+
+	if (owner && owner.isEmpty())
+		removeItem(owner);
+}
+
 BuddyList BuddyManager::buddies(Account account, bool includeAnonymous)
 {
 	QMutexLocker(&mutex());

@@ -224,16 +224,7 @@ void AccountManager::removeAccountAndBuddies(Account account)
 {
 	QList<Contact> contacts = ContactManager::instance()->contacts(account);
 	foreach (const Contact &contact, contacts)
-	{
-		Buddy buddy = contact.ownerBuddy();
-		contact.setOwnerBuddy(Buddy::null);
-
-		if (buddy.isEmpty())
-		{
-			printf("buddy %s is empty, removed!\n", qPrintable(buddy.display()));
-			BuddyManager::instance()->removeItem(buddy);
-		}
-	}
+		BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(contact);
 
 	removeItem(account);
 }
