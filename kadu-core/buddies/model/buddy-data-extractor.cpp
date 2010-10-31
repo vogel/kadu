@@ -25,6 +25,16 @@
 
 #include "buddy-data-extractor.h"
 
+QVariant BuddyDataExtractor::decoration(Buddy buddy)
+{
+	if (!buddy.homePhone().isEmpty() || !buddy.mobile().isEmpty())
+		return IconsManager::instance()->iconByPath("phone");
+	else if (!buddy.email().isEmpty())
+		return IconsManager::instance()->iconByPath("mail-message-new");
+	else
+		return IconsManager::instance()->iconByPath("system-users");
+}
+
 QVariant BuddyDataExtractor::data(Buddy buddy, int role)
 {
 	switch (role)
@@ -32,10 +42,7 @@ QVariant BuddyDataExtractor::data(Buddy buddy, int role)
 		case Qt::DisplayRole:
 			return buddy.display();
 		case Qt::DecorationRole:
-		{
-			if (!buddy.homePhone().isEmpty() || !buddy.mobile().isEmpty())
-				return IconsManager::instance()->iconByPath("phone");
-		}
+			return decoration(buddy);
 		case BuddyRole:
 			return QVariant::fromValue(buddy);
 		case StatusRole:

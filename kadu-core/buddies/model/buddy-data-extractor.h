@@ -24,13 +24,10 @@ class QVariant;
 
 class Buddy;
 
-class BuddyDataExtractor
+namespace BuddyDataExtractor
 {
-	BuddyDataExtractor();
-
-public:
-	static QVariant data(Buddy buddy, int role);
-
+	QVariant decoration(Buddy buddy);
+	QVariant data(Buddy buddy, int role);
 };
 
 #endif // BUDDY_DATA_EXTRACTOR_H
