@@ -82,7 +82,7 @@ void IdentityManager::removeUnused()
 	QList<Identity> unused;
 
 	foreach (Identity identity, items())
-		if (identity.isEmpty())
+		if (identity.isEmpty() && !identity.isPermanent())
 			unused.append(identity);
 
 	foreach (Identity identity, unused)
