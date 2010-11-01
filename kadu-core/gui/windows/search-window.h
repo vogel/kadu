@@ -131,7 +131,7 @@ public:
 	static void closeModule();
 
 	virtual bool supportsActionType(ActionDescription::ActionType type) { return type & ActionDescription::TypeSearch; }
-	virtual BuddiesListView* contactsListView() { return 0; }
+	virtual BuddiesListView* buddiesListView() { return 0; }
 	virtual StatusContainer* statusContainer() { return 0; }
 	virtual ContactSet contacts() { return ContactSet(); }
 	virtual BuddySet buddies() { return BuddySet(); }

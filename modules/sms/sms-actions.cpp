@@ -24,6 +24,7 @@
 #include "contacts/contact-set.h"
 #include "core/core.h"
 #include "gui/actions/action-description.h"
+#include "gui/widgets/buddies-list-view.h"
 #include "gui/widgets/buddies-list-view-menu-manager.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget.h"
@@ -61,8 +62,8 @@ SmsActions * SmsActions::instance()
 
 SmsActions::SmsActions()
 {
-	//TODO 0.6.6
-  	//QObject::connect(Core::instance()->kaduWindow()->contactsListView(), SIGNAL(chatActivated(Chat *)), this, SLOT(onUserDblClicked(Chat *)));
+	connect(Core::instance()->kaduWindow()->buddiesListView(), SIGNAL(buddyActivated(Buddy)),
+			this, SLOT(buddyActivated(Buddy)));
 
 	sendSmsActionDescription = new ActionDescription(this,
 		ActionDescription::TypeGlobal, "sendSmsAction",
@@ -76,8 +77,9 @@ SmsActions::SmsActions()
 
 SmsActions::~SmsActions()
 {
-  	//TODO 0.6.6
-	//QObject::disconnect(Core::instance()->kaduWindow()->contactsListView(), SIGNAL(chatActivated(Chat *)), this, SLOT(onUserDblClicked(Chat *)));
+	disconnect(Core::instance()->kaduWindow()->buddiesListView(), SIGNAL(buddyActivated(Buddy)),
+			this, SLOT(buddyActivated(Buddy)));
+
 
 	BuddiesListViewMenuManager::instance()->removeActionDescription(sendSmsActionDescription);
 	Core::instance()->kaduWindow()->removeMenuActionDescription(sendSmsActionDescription);
@@ -90,33 +92,17 @@ void SmsActions::newSms(QString nick)
 	smsDialog->show();
 }
 
-void SmsActions::onUserDblClicked(Chat *chat)
+void SmsActions::buddyActivated(Buddy buddy)
 {
-	kdebugf();
-	Buddy buddy = chat->contacts().toContactList().at(0).ownerBuddy();
 	if (buddy.contacts().isEmpty() && !buddy.mobile().isEmpty())
 		newSms(buddy.mobile());
-	kdebugf2();
 }
 
 void SmsActions::sendSmsActionActivated(QAction *sender, bool toggled)
 {
 	Q_UNUSED(toggled)
 
-	kdebugf();
-
 	Action *action = dynamic_cast<Action *>(sender);
-	if (action)
-	{
-		BuddySet users = action->buddies();
-
-		if (users.count() == 1 && !users.toList()[0].mobile().isEmpty())
-		{
-			newSms(users.toList()[0].mobile());
-			return;
-		}
-	}
-	newSms(QString::null);
-
-	kdebugf2();
+	QString mobile = action ? action->buddy().mobile() : QString::null;
+	newSms(mobile);
 }

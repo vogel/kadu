@@ -120,7 +120,6 @@ protected:
 
 	virtual bool supportsActionType(ActionDescription::ActionType type);
 
-	virtual BuddiesListView * contactsListView();
 	virtual StatusContainer * statusContainer();
 
 	virtual ContactSet contacts();
@@ -135,6 +134,8 @@ public:
 
 	explicit KaduWindow(QWidget *parent = 0);
 	virtual ~KaduWindow();
+
+	virtual BuddiesListView * buddiesListView();
 
 	void insertMenuActionDescription(ActionDescription *actionDescription, MenuType Type, int pos = -1);
 	void removeMenuActionDescription(ActionDescription *actionDescription);

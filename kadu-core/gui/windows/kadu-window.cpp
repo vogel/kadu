@@ -412,7 +412,7 @@ bool KaduWindow::supportsActionType(ActionDescription::ActionType type)
 	return type & (ActionDescription::TypeGlobal | ActionDescription::TypeUserList | ActionDescription::TypeUser);
 }
 
-BuddiesListView * KaduWindow::contactsListView()
+BuddiesListView * KaduWindow::buddiesListView()
 {
 	return ContactsWidget->view();
 }
@@ -558,7 +558,7 @@ void KaduWindow::addAction(const QString &actionName, Qt::ToolButtonStyle style)
 
 ActionDataSource * KaduWindow::actionSource()
 {
-	return contactsListView();
+	return buddiesListView();
 }
 
 void KaduWindow::setDocked(bool docked)

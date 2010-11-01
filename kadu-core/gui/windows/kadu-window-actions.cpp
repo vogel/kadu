@@ -403,7 +403,7 @@ void KaduWindowActions::inactiveUsersActionCreated(Action *action)
 	MainWindow *window = qobject_cast<MainWindow *>(action->parent());
 	if (!window)
 		return;
-	if (!window->contactsListView())
+	if (!window->buddiesListView())
 		return;
 
 	bool enabled = config_file.readBoolEntry("General", "ShowOffline");
@@ -413,7 +413,7 @@ void KaduWindowActions::inactiveUsersActionCreated(Action *action)
 	action->setData(QVariant::fromValue(ofcf));
 	action->setChecked(enabled);
 
-	window->contactsListView()->addFilter(ofcf);
+	window->buddiesListView()->addFilter(ofcf);
 }
 
 void KaduWindowActions::descriptionUsersActionCreated(Action *action)
@@ -421,7 +421,7 @@ void KaduWindowActions::descriptionUsersActionCreated(Action *action)
 	MainWindow *window = qobject_cast<MainWindow *>(action->parent());
 	if (!window)
 		return;
-	if (!window->contactsListView())
+	if (!window->buddiesListView())
 		return;
 
 	bool enabled = !config_file.readBoolEntry("General", "ShowWithoutDescription");
@@ -431,7 +431,7 @@ void KaduWindowActions::descriptionUsersActionCreated(Action *action)
 	action->setData(QVariant::fromValue(hdcf));
 	action->setChecked(enabled);
 
-	window->contactsListView()->addFilter(hdcf);
+	window->buddiesListView()->addFilter(hdcf);
 }
 
 void KaduWindowActions::showDescriptionsActionCreated(Action *action)
@@ -445,7 +445,7 @@ void KaduWindowActions::onlineAndDescUsersActionCreated(Action *action)
 	MainWindow *window = qobject_cast<MainWindow *>(action->parent());
 	if (!window)
 		return;
-	if (!window->contactsListView())
+	if (!window->buddiesListView())
 		return;
 
 	bool enabled = config_file.readBoolEntry("General", "ShowOnlineAndDescription");
@@ -455,7 +455,7 @@ void KaduWindowActions::onlineAndDescUsersActionCreated(Action *action)
 	action->setData(QVariant::fromValue(oadcf));
 	action->setChecked(enabled);
 
-	window->contactsListView()->addFilter(oadcf);
+	window->buddiesListView()->addFilter(oadcf);
 }
 
 void KaduWindowActions::editUserActionCreated(Action *action)
@@ -491,7 +491,7 @@ void KaduWindowActions::showBlockedActionCreated(Action *action)
 	MainWindow *window = qobject_cast<MainWindow *>(action->parent());
 	if (!window)
 		return;
-	if (!window->contactsListView())
+	if (!window->buddiesListView())
 		return;
 
 	bool enabled = config_file.readBoolEntry("General", "ShowBlocked");
@@ -501,7 +501,7 @@ void KaduWindowActions::showBlockedActionCreated(Action *action)
 	action->setData(QVariant::fromValue(ibf));
 	action->setChecked(enabled);
 
-	window->contactsListView()->addFilter(ibf);
+	window->buddiesListView()->addFilter(ibf);
 }
 
 void KaduWindowActions::configurationActionActivated(QAction *sender, bool toggled)
@@ -892,10 +892,10 @@ void KaduWindowActions::showDescriptionsActionActivated(QAction *sender, bool to
 	MainWindow *window = qobject_cast<MainWindow *>(action->parent());
 	if (!window)
 		return;
-	if (!window->contactsListView())
+	if (!window->buddiesListView())
 		return;
 
-	window->contactsListView()->delegateConfiguration().configurationUpdated();
+	window->buddiesListView()->delegateConfiguration().configurationUpdated();
 }
 
 void KaduWindowActions::onlineAndDescUsersActionActivated(QAction *sender, bool toggled)

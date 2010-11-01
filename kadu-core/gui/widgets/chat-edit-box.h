@@ -61,7 +61,7 @@ public:
 	CustomInput * inputBox();
 
 	virtual bool supportsActionType(ActionDescription::ActionType type);
-	virtual BuddiesListView * contactsListView();
+	virtual BuddiesListView * buddiesListView();
 	virtual StatusContainer * statusContainer();
 	virtual ContactSet contacts();
 	virtual BuddySet buddies();

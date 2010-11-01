@@ -79,7 +79,7 @@ public:
 	virtual QMenu * createPopupMenu() { return 0; }
 
 	virtual bool supportsActionType(ActionDescription::ActionType type) = 0;
-	virtual BuddiesListView * contactsListView() = 0;
+	virtual BuddiesListView * buddiesListView() = 0;
 	virtual StatusContainer * statusContainer() = 0;
 	virtual Chat chat() = 0;
 	Contact contact();

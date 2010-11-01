@@ -58,7 +58,7 @@ SimpleView::SimpleView() :
 
 	KaduWindowHandle = Core::instance()->kaduWindow();
 	MainWindowHandle = KaduWindowHandle->findMainWindow(KaduWindowHandle);
-	buddiesListViewHandle = dynamic_cast<BuddiesListView *>(MainWindowHandle->contactsListView());
+	buddiesListViewHandle = dynamic_cast<BuddiesListView *>(MainWindowHandle->buddiesListView());
 	BuddiesListWidgetHandle = dynamic_cast<BuddiesListWidget *>(buddiesListViewHandle->parent());
 	groupBarTabHandle = KaduWindowHandle->findChild<GroupTabBar *>();
 	GroupBarWidgetHandle = dynamic_cast<QWidget *>(groupBarTabHandle->parent());

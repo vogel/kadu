@@ -23,6 +23,7 @@
 
 #include <QtCore/QObject>
 
+#include "buddies/buddy.h"
 #include "chat/chat.h"
 
 class QAction;
@@ -43,9 +44,10 @@ class SmsActions : public QObject
 	virtual ~SmsActions();
 
 private slots:
-	void onUserDblClicked(Chat *chat);
+	void buddyActivated(Buddy buddy);
 	void sendSmsActionActivated(QAction *sender, bool toggled);
 	void newSms(QString mobile);
+
 public:
 	static void registerActions(bool firstLoad);
 	static void unregisterActions();
