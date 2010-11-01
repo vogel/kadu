@@ -28,6 +28,7 @@
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
 #include <QtGui/QRadioButton>
+#include <QtGui/QVBoxLayout>
 
 #include "accounts/account-manager.h"
 #include "gui/widgets/identities-combo-box.h"
@@ -127,6 +128,8 @@ void GaduAddAccountWidget::resetGui()
 	AccountPassword->setText("");
 	RememberPassword->setChecked(true);
 	Identity->setCurrentIdentity(Identity::null);
+
+	IdentityManager::instance()->removeUnused();
 }
 
 void GaduAddAccountWidget::addAccountButtonClicked()
@@ -150,7 +153,6 @@ void GaduAddAccountWidget::addAccountButtonClicked()
 
 	resetGui();
 
-	IdentityManager::instance()->removeUnused();
 	emit accountCreated(gaduAccount);
 }
 

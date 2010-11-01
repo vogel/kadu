@@ -49,6 +49,7 @@ IdentitiesComboBox::IdentitiesComboBox(bool includeSelectIdentity, QWidget *pare
 
 IdentitiesComboBox::~IdentitiesComboBox()
 {
+	IdentityManager::instance()->removeUnused();
 }
 
 void IdentitiesComboBox::setCurrentIdentity(Identity identity)

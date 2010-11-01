@@ -30,6 +30,7 @@
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
 #include <QtGui/QRadioButton>
+#include <QtGui/QVBoxLayout>
 
 #include "gui/widgets/choose-identity-widget.h"
 #include "gui/windows/message-dialog.h"
@@ -162,7 +163,6 @@ void JabberAddAccountWidget::apply()
 
 	resetGui();
 
-	IdentityManager::instance()->removeUnused();
 	emit accountCreated(jabberAccount);
 }
 
@@ -178,4 +178,6 @@ void JabberAddAccountWidget::resetGui()
 	Domain->setCurrentIndex(-1);
 	RememberPassword->setChecked(true);
 	Identity->setCurrentIdentity(Identity::null);
+
+	IdentityManager::instance()->removeUnused();
 }

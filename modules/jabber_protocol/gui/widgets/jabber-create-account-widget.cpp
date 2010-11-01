@@ -32,9 +32,11 @@
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
 #include <QtGui/QRadioButton>
+#include <QtGui/QVBoxLayout>
 
 #include "gui/windows/message-dialog.h"
 #include "icons-manager.h"
+#include "identities/identity-manager.h"
 #include "protocols/protocols-manager.h"
 #include "server/jabber-server-register-account.h"
 #include "jabber-account-details.h"
@@ -301,6 +303,8 @@ void JabberCreateAccountWidget::resetGui()
 	ReNewPassword->setText("");
 	RememberPassword->setChecked(true);
 	IdentityCombo->setCurrentIdentity(Identity::null);
+
+	IdentityManager::instance()->removeUnused();
 }
 
 void JabberCreateAccountWidget::registerNewAccountFinished(JabberServerRegisterAccount *jsra)

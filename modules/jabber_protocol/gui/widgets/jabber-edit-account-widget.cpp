@@ -35,6 +35,7 @@
 #include <QtGui/QLineEdit>
 #include <QtGui/QMessageBox>
 #include <QtGui/QTabWidget>
+#include <QtGui/QVBoxLayout>
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"

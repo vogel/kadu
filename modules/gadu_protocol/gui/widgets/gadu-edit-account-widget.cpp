@@ -34,6 +34,7 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QSpinBox>
 #include <QtGui/QTabWidget>
+#include <QtGui/QVBoxLayout>
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
