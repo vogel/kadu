@@ -52,8 +52,7 @@ IdentitiesComboBox::~IdentitiesComboBox()
 
 void IdentitiesComboBox::setCurrentIdentity(Identity identity)
 {
-	if (setCurrentValue(identity))
-		emit identityChanged(CurrentValue);
+	setCurrentValue(identity);
 }
 
 Identity IdentitiesComboBox::currentIdentity()

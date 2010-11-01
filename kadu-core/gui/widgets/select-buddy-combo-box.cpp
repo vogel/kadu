@@ -57,8 +57,7 @@ SelectBuddyComboBox::~SelectBuddyComboBox()
 
 void SelectBuddyComboBox::setCurrentBuddy(Buddy buddy)
 {
-	if (setCurrentValue(buddy))
-		emit buddyChanged(buddy);
+	setCurrentValue(buddy);
 }
 
 Buddy SelectBuddyComboBox::currentBuddy()

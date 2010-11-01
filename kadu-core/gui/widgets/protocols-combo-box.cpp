@@ -42,8 +42,7 @@ ProtocolsComboBox::~ProtocolsComboBox()
 
 void ProtocolsComboBox::setCurrentProtocol(ProtocolFactory *protocol)
 {
-	if (setCurrentValue(protocol))
-		emit protocolChanged(CurrentValue, ValueBeforeChange);
+	setCurrentValue(protocol);
 }
 
 ProtocolFactory * ProtocolsComboBox::currentProtocol()

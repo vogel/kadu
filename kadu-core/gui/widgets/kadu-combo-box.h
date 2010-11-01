@@ -89,19 +89,19 @@ protected:
 	 * @author Bartosz 'beevvy' Brachaczek
 	 * @author Rafal 'Vogel' Malinowski
 	 * @param value value to be set
-	 * @return whether current value actually changed
 	 *
-	 * Sets current value to the specified value. In case it changed
-	 * (i.e., current value wasn't the same as the parameter), the method
-	 * returns true, otherwise false.
+	 * Sets current value to the value in argument. If the value has
+	 * actually changed, currentIndexChangedSlot() should return true
+	 * and update current value (note that it has to be called when
+	 * currentIndexChanged() signal is emitted by a combo box).
 	 */
-	bool setCurrentValue(T value)
+	void setCurrentValue(T value)
 	{
 		if (!SourceModel)
-			return false;
+			return;
 
 		if (value == CurrentValue)
-			return false;
+			return;
 
 		QModelIndex index =
 			dynamic_cast<KaduAbstractModel *>(SourceModel)->indexForValue(QVariant::fromValue<T>(value));
@@ -109,13 +109,6 @@ protected:
 			index = SourceProxyModel->mapFromSource(index);
 		index = ActionsModel->mapFromSource(index);
 		setCurrentIndex(index.row());
-
-		updateValueBeforeChange();
-		CurrentValue = value;
-
-		if (CurrentValue != ValueBeforeChange)
-			return true;
-		return false;
 	}
 
 	/**

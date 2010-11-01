@@ -45,8 +45,7 @@ AccountsComboBox::~AccountsComboBox()
 
 void AccountsComboBox::setCurrentAccount(Account account)
 {
-	if (setCurrentValue(account))
-		emit accountChanged(CurrentValue);
+	setCurrentValue(account);
 }
 
 Account AccountsComboBox::currentAccount()
