@@ -99,7 +99,7 @@ void JabberAddAccountWidget::createGui()
 	RememberPassword->setChecked(true);
 	layout->addRow(0, RememberPassword);
 
-	Identity = new IdentitiesComboBox(this);
+	Identity = new IdentitiesComboBox(true, this);
 	connect(Identity, SIGNAL(identityChanged(Identity)), this, SLOT(dataChanged()));
 	layout->addRow(tr("Account Identity") + ':', Identity);
 

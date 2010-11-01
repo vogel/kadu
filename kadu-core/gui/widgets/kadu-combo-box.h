@@ -71,7 +71,7 @@ protected:
 			return;
 		}
 
-		if (!selectString().isNull())
+		if (!selectString().isEmpty())
 			ActionsModel->addBeforeAction(new QAction(selectString(), this), selectVisibility());
 
 		if (SourceProxyModel)

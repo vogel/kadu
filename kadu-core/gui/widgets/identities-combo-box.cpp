@@ -27,8 +27,8 @@
 
 #include "identities-combo-box.h"
 
-IdentitiesComboBox::IdentitiesComboBox(QWidget *parent) :
-		KaduComboBox<Identity>(parent), LastAction(0)
+IdentitiesComboBox::IdentitiesComboBox(bool includeSelectIdentity, QWidget *parent) :
+		KaduComboBox<Identity>(parent), IncludeSelectIdentity(includeSelectIdentity), LastAction(0)
 {
 	setUpModel(new IdentityModel(this));
 
@@ -109,5 +109,5 @@ int IdentitiesComboBox::preferredDataRole() const
 
 QString IdentitiesComboBox::selectString() const
 {
-	return tr(" - Select identity - ");
+	return IncludeSelectIdentity ? tr(" - Select identity - ") : QString();
 }
