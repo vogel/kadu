@@ -96,10 +96,20 @@ class KADUAPI ToolBar : public QToolBar, public ConfigurationAwareObject
 
 	QPoint MouseStart;
 
+	Qt::ToolBarArea toolBarArea();
+	Qt::Orientation orientationByArea(Qt::ToolBarArea toolbararea);
+
 	bool dragging;
-	ToolBarDropMarker dropmarker;
 
 	QAction *findActionToDropBefore(QPoint pos);
+	QAction *actionNear(QPoint pos);
+	int rowCount();
+	int rowAt(QPoint pos);
+	QRect rowRect(int row);
+	QList<QAction*> actionsForRow(int row);
+	int actionRow(QAction *action);
+
+	ToolBarDropMarker dropmarker;
 	void updateDropMarker();
 
 	void addAction(const QString &actionName, Qt::ToolButtonStyle style, QAction *before = 0);
