@@ -21,6 +21,7 @@
 #include <QtGui/QInputDialog>
 #include <QtGui/QLineEdit>
 
+#include "gui/windows/message-dialog.h"
 #include "identities/identity-manager.h"
 #include "identities/model/identity-model.h"
 #include "model/roles.h"
@@ -83,13 +84,21 @@ void IdentitiesComboBox::currentIndexChangedSlot(int index)
 			tr("Please enter the name for the new identity:"), QLineEdit::Normal,
 			QString::null, &ok);
 
-	if (!ok || identityName.isEmpty())
+	Identity typedIdentity;
+	if (!ok || identityName.isEmpty() || (typedIdentity = IdentityManager::instance()->byName(identityName, false)))
 	{
-		setCurrentIndex(0);
+		if (typedIdentity)
+		{
+			MessageDialog::show("dialog-warning", tr("Kadu"), tr("Identity of that name already exists!"));
+			setCurrentIdentity(typedIdentity);
+		}
+		else
+			setCurrentIndex(0);
+
 		return;
 	}
 
-	setCurrentIdentity(IdentityManager::instance()->byName(identityName, true));
+	setCurrentIdentity(IdentityManager::instance()->byName(identityName));
 }
 
 void IdentitiesComboBox::updateValueBeforeChange()
