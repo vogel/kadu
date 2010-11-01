@@ -28,7 +28,7 @@
 #include "identities-combo-box.h"
 
 IdentitiesComboBox::IdentitiesComboBox(QWidget *parent) :
-		KaduComboBox<Identity>(parent)
+		KaduComboBox<Identity>(parent), LastAction(0)
 {
 	setUpModel(new IdentityModel(this));
 
@@ -66,15 +66,17 @@ void IdentitiesComboBox::currentIndexChangedSlot(int index)
 	QModelIndex modelIndex = this->model()->index(index, modelColumn(), rootModelIndex());
 	QAction *action = modelIndex.data(ActionRole).value<QAction *>();
 
-	if (!KaduComboBox<Identity>::currentIndexChangedSlot(index))
+	if (action && action == LastAction)
 		return;
+
+	LastAction = action;
 
 	if (action != CreateNewIdentityAction)
 	{
-		emit identityChanged(CurrentValue);
+		if (KaduComboBox<Identity>::currentIndexChangedSlot(index))
+			emit identityChanged(CurrentValue);
 		return;
 	}
-
 
 	bool ok;
 

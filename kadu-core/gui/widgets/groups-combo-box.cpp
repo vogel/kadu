@@ -31,7 +31,7 @@
 #include "groups-combo-box.h"
 
 GroupsComboBox::GroupsComboBox(QWidget *parent) :
-		KaduComboBox<Group>(parent)
+		KaduComboBox<Group>(parent), LastAction(0)
 {
 	setUpModel(new GroupsModel(this), new QSortFilterProxyModel(this));
 
@@ -71,6 +71,11 @@ void GroupsComboBox::currentIndexChangedSlot(int index)
 {
 	QModelIndex modelIndex = model()->index(index, modelColumn(), rootModelIndex());
 	QAction *action = modelIndex.data(ActionRole).value<QAction *>();
+
+	if (action && action == LastAction)
+		return;
+
+	LastAction = action;
 
 	if (action != CreateNewGroupAction)
 	{

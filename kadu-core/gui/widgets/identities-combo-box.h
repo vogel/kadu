@@ -29,6 +29,7 @@ class KADUAPI IdentitiesComboBox : public KaduComboBox<Identity>
 	Q_OBJECT
 
 	QAction *CreateNewIdentityAction;
+	QAction *LastAction;
 
 private slots:
 	void currentIndexChangedSlot(int index);

@@ -30,6 +30,7 @@ class GroupsComboBox : public KaduComboBox<Group>
 	Q_OBJECT
 
 	QAction *CreateNewGroupAction;
+	QAction *LastAction;
 
 private slots:
 	void currentIndexChangedSlot(int index);
