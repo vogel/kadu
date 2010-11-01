@@ -26,7 +26,7 @@
 #include "buddies/buddy-kadu-data.h"
 #include "buddies/buddy-shared.h"
 #include "configuration/configuration-file.h"
-#include "notify/contact-notify-data.h"
+#include "notify/buddy-notify-data.h"
 #include "protocols/protocol.h"
 
 #include "buddy-options-configuration-widget.h"
@@ -63,11 +63,11 @@ void BuddyOptionsConfigurationWidget::createGui()
 	layout->addWidget(BlockCheckBox);
 
 	NotifyCheckBox = new QCheckBox(tr("Notify when buddy's status changes"), this);
-	ContactNotifyData *cnd = 0;
+	BuddyNotifyData *bnd = 0;
 	if (MyBuddy.data())
-		cnd = MyBuddy.data()->moduleStorableData<ContactNotifyData>("notify", false);
-	if (cnd)
-		NotifyCheckBox->setChecked(cnd->notify());
+		bnd = MyBuddy.data()->moduleStorableData<BuddyNotifyData>("notify", false);
+	if (bnd)
+		NotifyCheckBox->setChecked(bnd->notify());
 
 	layout->addWidget(NotifyCheckBox);
 
@@ -88,17 +88,17 @@ void BuddyOptionsConfigurationWidget::save()
 	MyBuddy.setBlocked(BlockCheckBox->isChecked());
 	MyBuddy.setOfflineTo(!OfflineToCheckBox->isChecked());
 
-	ContactNotifyData *cnd = 0;
+	BuddyNotifyData *bnd = 0;
 	BuddyKaduData *ckd = 0;
 	if (MyBuddy.data())
 	{
-		cnd = MyBuddy.data()->moduleStorableData<ContactNotifyData>("notify", true);;
+		bnd = MyBuddy.data()->moduleStorableData<BuddyNotifyData>("notify", true);;
 		ckd = MyBuddy.data()->moduleStorableData<BuddyKaduData>("kadu", true);
 	}
-	if (cnd)
+	if (bnd)
 	{
-		cnd->setNotify(NotifyCheckBox->isChecked());
-		cnd->store();
+		bnd->setNotify(NotifyCheckBox->isChecked());
+		bnd->store();
 	}
 	if (ckd)
 	{

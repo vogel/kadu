@@ -172,7 +172,7 @@ NotifyTreeWidgetItem::NotifyTreeWidgetItem(QTreeWidget *parent, const QString &e
 {
 	setChildIndicatorPolicy(QTreeWidgetItem::DontShowIndicatorWhenChildless);
 
-    	setData(1, Qt::UserRole, QVariant(ActiveNotifiers));
+	setData(1, Qt::UserRole, QVariant(ActiveNotifiers));
 	setData(0, Qt::UserRole, QVariant(eventName));
 	setText(0, qApp->translate("@default", name));
 }
@@ -180,9 +180,9 @@ NotifyTreeWidgetItem::NotifyTreeWidgetItem(QTreeWidget *parent, const QString &e
 NotifyTreeWidgetItem::NotifyTreeWidgetItem(NotifyTreeWidgetItem *parent, const QString &eventName, const char *name, QStringList &notifiers)
 	: QTreeWidgetItem(parent), ActiveNotifiers(notifiers), useCustomSettings(true)
 {
-    	setChildIndicatorPolicy(QTreeWidgetItem::DontShowIndicatorWhenChildless);
+	setChildIndicatorPolicy(QTreeWidgetItem::DontShowIndicatorWhenChildless);
 
-    	setData(1, Qt::UserRole, QVariant(ActiveNotifiers));
+	setData(1, Qt::UserRole, QVariant(ActiveNotifiers));
 	setData(0, Qt::UserRole, QVariant(eventName));
 	setText(0, qApp->translate("@default", name));
 }

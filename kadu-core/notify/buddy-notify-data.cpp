@@ -2,8 +2,8 @@
  * %kadu copyright begin%
  * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2009, 2010 Piotr Galiszewski (piotrgaliszewski@gmail.com)
- * Copyright 2009, 2009 Bartłomiej Zimoń (uzi18@o2.pl)
+ * Copyright 2009 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * Copyright 2009 Bartłomiej Zimoń (uzi18@o2.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -20,32 +20,43 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CONTACT_NOTIFY_DATA_H
-#define CONTACT_NOTIFY_DATA_H
+#include <QtCore/QVariant>
 
-#include "storage/module-data.h"
+#include "configuration/xml-configuration-file.h"
+#include "storage/storage-point.h"
 
-#undef Property
-#define Property(type, name, capitalized_name) \
-	type name() { ensureLoaded(); return capitalized_name; } \
-	void set##capitalized_name(const type &name) { ensureLoaded(); capitalized_name = name; }
+#include "misc/misc.h"
 
-class ContactNotifyData : public ModuleData
+#include "buddy-notify-data.h"
+
+BuddyNotifyData::BuddyNotifyData(StorableObject *parent)
+		: ModuleData(parent), Notify(false)
 {
-	bool Notify;
+}
 
-protected:
-	virtual void load();
+BuddyNotifyData::~BuddyNotifyData()
+{
+}
 
-public:
-	ContactNotifyData(StorableObject *parent);
-	virtual ~ContactNotifyData();
+void BuddyNotifyData::load()
+{
+	if (!isValidStorage())
+		return;
 
-	virtual void store();
-	virtual QString name() const;
+	StorableObject::load();
 
-	Property(bool, notify, Notify)
+	Notify = loadValue<bool>("Notify", false);
+}
 
-};
+void BuddyNotifyData::store()
+{
+	if (!isValidStorage())
+		return;
 
-#endif // CONTACT_NOTIFY_DATA_H
+	storeValue("Notify", Notify);
+}
+
+QString BuddyNotifyData::name() const
+{
+	return QLatin1String("notify");
+}

@@ -261,8 +261,8 @@ set (kadu_SRCS
 	model/actions-proxy-model.cpp
 
 	notify/account-notification.cpp
+	notify/buddy-notify-data.cpp
 	notify/chat-notification.cpp
-	notify/contact-notify-data.cpp
 	notify/new-message-notification.cpp
 	notify/notification.cpp
 	notify/notification-manager.cpp

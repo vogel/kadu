@@ -188,7 +188,7 @@ QString KaduChatStyleEngine::formatMessage(MessageRenderInfo *message, MessageRe
 
 void KaduChatStyleEngine::repaintMessages(HtmlMessagesRenderer *renderer)
 {
-    	if (!renderer->chat())
+	if (!renderer->chat())
 		return;
 
 	QString text = QString(

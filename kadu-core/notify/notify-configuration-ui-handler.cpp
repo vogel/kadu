@@ -31,7 +31,6 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-shared.h"
 #include "contacts/contact.h"
-#include "contact-notify-data.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/configuration/config-combo-box.h"
@@ -40,8 +39,10 @@
 #include "gui/widgets/configuration/notifier-configuration-widget.h"
 #include "gui/widgets/configuration/notify-tree-widget.h"
 #include "gui/windows/configuration-window.h"
-#include "notify/notifier.h"
-#include "notify/notify-event.h"
+
+#include "buddy-notify-data.h"
+#include "notifier.h"
+#include "notify-event.h"
 
 #include "notify-configuration-ui-handler.h"
 
@@ -160,11 +161,11 @@ void NotifyConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurat
 	foreach(Buddy buddy, BuddyManager::instance()->items())
 		if (!buddy.isAnonymous())
 		{
-			ContactNotifyData *cnd = 0;
+			BuddyNotifyData *bnd = 0;
 			if (buddy.data())
-				cnd = buddy.data()->moduleStorableData<ContactNotifyData>("notify");
+				bnd = buddy.data()->moduleStorableData<BuddyNotifyData>("notify");
 
-			if (!cnd || !cnd->notify())
+			if (!bnd || !bnd->notify())
 				allUsers->addItem(buddy.display());
 			else
 				notifiedUsers->addItem(buddy.display());
@@ -255,14 +256,14 @@ void NotifyConfigurationUiHandler::configurationWindowApplied()
 		if (buddy.isNull() || buddy.isAnonymous())
 			continue;
 
-		ContactNotifyData *cnd = 0;
+		BuddyNotifyData *bnd = 0;
 		if (buddy.data())
-			cnd = buddy.data()->moduleStorableData<ContactNotifyData>("notify", true);
-		if (!cnd)
+			bnd = buddy.data()->moduleStorableData<BuddyNotifyData>("notify", true);
+		if (!bnd)
 			continue;
 
-		cnd->setNotify(true);
-		cnd->store();
+		bnd->setNotify(true);
+		bnd->store();
 	}
 
 	count = allUsers->count();
@@ -272,14 +273,14 @@ void NotifyConfigurationUiHandler::configurationWindowApplied()
 		if (buddy.isNull() || buddy.isAnonymous())
 			continue;
 
-		ContactNotifyData *cnd = 0;
+		BuddyNotifyData *bnd = 0;
 		if (buddy.data())
-			cnd = buddy.data()->moduleStorableData<ContactNotifyData>("notify", true);
-		if (!cnd)
+			bnd = buddy.data()->moduleStorableData<BuddyNotifyData>("notify", true);
+		if (!bnd)
 			continue;
 
-		cnd->setNotify(false);
-		cnd->store();
+		bnd->setNotify(false);
+		bnd->store();
 	}
 
 	foreach (NotifyEvent *notifyEvent, NotificationManager::instance()->notifyEvents())
