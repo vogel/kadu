@@ -357,7 +357,7 @@ Nowe hasło wprowadzone w polu &quot;Nowe hasło&quot; nie jest identyczne z zaw
 Store it in a safe place along with the password.
 Now add your friends to the buddy list.</source>
         <translation>Rejestracja się powiodła. Twoja nazwa użytkownika to %1.
-Zapisz nazwe użytkownika wraz z hasłem w bezpiecznym miejscu.
+Zapisz nazwę użytkownika wraz z hasłem w bezpiecznym miejscu.
 Teraz możesz dodać znajomych do listy kontaktów.</translation>
     </message>
     <message>
