@@ -88,12 +88,13 @@ bool Identity::hasAccount(Account account)
 			: false;
 }
 
-bool Identity::hasAnyAccount()
+bool Identity::isEmpty()
 {
 	return !isNull()
-			? data()->hasAnyAccount()
-			: false;
+			? data()->isEmpty()
+			: true;
 }
 
 KaduSharedBase_PropertyBoolDef(Identity, Permanent, false)
 KaduSharedBase_PropertyDef(Identity, QString, name, Name, QString::null)
+

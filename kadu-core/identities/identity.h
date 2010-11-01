@@ -51,11 +51,10 @@ public:
 	void addAccount(Account account);
 	void removeAccount(Account account);
 	bool hasAccount(Account account);
-	bool hasAnyAccount();
+	bool isEmpty();
 
 	KaduSharedBase_PropertyBool(Permanent)
 	KaduSharedBase_Property(QString, name, Name)
-	KaduSharedBase_Property(QList<Account>, accounts, Accounts)
 
 };
 

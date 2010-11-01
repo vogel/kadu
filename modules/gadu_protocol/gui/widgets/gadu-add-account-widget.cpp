@@ -32,6 +32,7 @@
 #include "accounts/account-manager.h"
 #include "gui/widgets/identities-combo-box.h"
 #include "gui/windows/message-dialog.h"
+#include "identities/identity-manager.h"
 #include "protocols/protocols-manager.h"
 #include "qt/long-validator.h"
 #include "html_document.h"
@@ -149,6 +150,7 @@ void GaduAddAccountWidget::addAccountButtonClicked()
 
 	resetGui();
 
+	IdentityManager::instance()->removeUnused();
 	emit accountCreated(gaduAccount);
 }
 

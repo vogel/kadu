@@ -77,6 +77,17 @@ Identity IdentityManager::identityForAcccount(Account account)
 	return Identity::null;
 }
 
+void IdentityManager::removeUnused()
+{
+	QList<Identity> unused;
+
+	foreach (Identity identity, items())
+		if (identity.isEmpty())
+			unused.append(identity);
+
+	foreach (Identity identity, unused)
+		removeItem(identity);
+}
 
 void IdentityManager::itemAboutToBeAdded(Identity item)
 {

@@ -112,9 +112,9 @@ bool IdentityShared::hasAccount(Account account)
 	return Accounts.contains(account);
 }
 
-bool IdentityShared::hasAnyAccount()
+bool IdentityShared::isEmpty()
 {
-	return !Accounts.isEmpty();
+	return Accounts.isEmpty();
 }
 
 void IdentityShared::doSetStatus(Status status)

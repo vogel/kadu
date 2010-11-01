@@ -42,6 +42,7 @@
 #include "gui/widgets/account-avatar-widget.h"
 #include "gui/widgets/account-buddy-list-widget.h"
 #include "gui/windows/message-dialog.h"
+#include "identities/identity-manager.h"
 #include "protocols/services/avatar-service.h"
 #include "icons-manager.h"
 
@@ -454,6 +455,7 @@ void JabberEditAccountWidget::apply()
 
 	ConfigurationManager::instance()->flush();
 
+	IdentityManager::instance()->removeUnused();
 	dataChanged();
 }
 

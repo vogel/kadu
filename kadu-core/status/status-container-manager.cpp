@@ -71,9 +71,9 @@ void StatusContainerManager::updateIdentities()
 		return;
 
 	foreach (Identity identity, IdentityManager::instance()->items())
-		if (StatusContainers.contains(identity) && !identity.hasAnyAccount())
+		if (StatusContainers.contains(identity) && identity.isEmpty())
 			unregisterStatusContainer(identity);
-		else if (!StatusContainers.contains(identity) && identity.hasAnyAccount())
+		else if (!StatusContainers.contains(identity) && !identity.isEmpty())
 			registerStatusContainer(identity);
 
 	removeSelfFromList();
@@ -100,7 +100,7 @@ void StatusContainerManager::accountUnregistered(Account account)
 
 void StatusContainerManager::identityAdded(Identity identity)
 {
-	if (MainConfiguration::instance()->simpleMode() && !StatusContainers.contains(identity) && identity.hasAnyAccount())
+	if (MainConfiguration::instance()->simpleMode() && !StatusContainers.contains(identity) && !identity.isEmpty())
 		registerStatusContainer(identity);
 }
 

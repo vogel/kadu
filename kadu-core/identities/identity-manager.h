@@ -62,6 +62,8 @@ public:
 	Identity byName(const QString &name, bool create = true);
 	Identity identityForAcccount(Account account);
 
+	void removeUnused();
+
 signals:
 	void identityAboutToBeAdded(Identity);
 	void identityAdded(Identity);
