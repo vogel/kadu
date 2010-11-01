@@ -412,6 +412,10 @@ void HistoryWindow::statusBuddyActivated(Buddy buddy)
 	}
 
 	DetailsListView->setModel(MyBuddyStatusDatesModel);
+
+	connect(DetailsListView->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
+			this, SLOT(dateCurrentChanged(QModelIndex,QModelIndex)));
+
 	DetailsListView->selectionModel()->setCurrentIndex(selectedIndex, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
 
 	kdebugf2();
@@ -441,6 +445,10 @@ void HistoryWindow::smsRecipientActivated(const QString& recipient)
 	}
 
 	DetailsListView->setModel(MySmsDatesModel);
+
+	connect(DetailsListView->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
+			this, SLOT(dateCurrentChanged(QModelIndex,QModelIndex)));
+
 	DetailsListView->selectionModel()->setCurrentIndex(selectedIndex, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
 
 	kdebugf2();
