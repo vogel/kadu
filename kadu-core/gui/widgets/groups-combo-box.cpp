@@ -89,9 +89,14 @@ void GroupsComboBox::currentIndexChangedSlot(int index)
 			tr("Please enter the name for the new group:"), QLineEdit::Normal,
 			QString::null, &ok);
 
-	if (!ok || newGroupName.isEmpty() || !GroupManager::instance()->acceptableGroupName(newGroupName))
+	if (!ok || !GroupManager::instance()->acceptableGroupName(newGroupName))
 	{
-		setCurrentIndex(0);
+		Group typedGroup = GroupManager::instance()->byName(newGroupName, false);
+		if (typedGroup)
+			setCurrentGroup(typedGroup);
+		else
+			setCurrentIndex(0);
+
 		return;
 	}
 
