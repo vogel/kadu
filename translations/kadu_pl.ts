@@ -2197,7 +2197,7 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
         <translation>Wszyscy</translation>
     </message>
     <message>
-        <source>This group already exists!</source>
+        <source>Group of that name already exists!</source>
         <translation>Grupa o tej nazwie już istnieje!</translation>
     </message>
 </context>
