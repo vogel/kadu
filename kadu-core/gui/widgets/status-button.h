@@ -33,8 +33,10 @@ class StatusButton : public QPushButton, private ConfigurationAwareObject
 	Q_OBJECT
 
 	StatusContainer *MyStatusContainer;
+	bool DisplayStatusName;
 
 	void createGui();
+	void update();
 
 private slots:
 	void statusChanged();
@@ -45,6 +47,8 @@ protected:
 public:
 	explicit StatusButton(StatusContainer *statusContainer, QWidget *parent = 0);
 	virtual ~StatusButton();
+
+	void setDisplayStatusName(bool displayStatusName);
 
 };
 

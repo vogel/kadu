@@ -11,6 +11,7 @@
 * gadu: #1644 fixed: unable to remind password of gadu-gadu account (White Eagle)
 * gui: #1638 fixed: colors from configuration in buddies list should be respected only in Kadu main window (beevvy)
 * sms: show sms window for buddies without contacts but with mobile (Vogel)
+* gui: #1389 fixed: use full window with for status button when in simple mode and only single identity is used (Vogel)
 
 +++ version 0.6.6-beta9
 * gui: #1539 fixed: removed problematic PL chars in main window menu remote URLs (Juzef)

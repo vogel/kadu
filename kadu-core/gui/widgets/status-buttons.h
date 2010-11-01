@@ -35,12 +35,18 @@ class StatusButtons : public QWidget, private StatusContainerAwareObject
 	Q_OBJECT
 
 	QHBoxLayout *Layout;
+	bool SimpleMode;
 
 	QMap<StatusContainer *, StatusButton *> Buttons;
 
 	void createGui();
+	void enableStatusName();
+	void disableStatusName();
+	void addButton(StatusButton *button);
+	void updateLayout(bool addStretch);
 
 private slots:
+    void simpleModeChanged();
 	void rebuildGui();
 
 protected:

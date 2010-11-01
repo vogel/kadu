@@ -22,6 +22,7 @@
 #include <QtGui/QHBoxLayout>
 
 #include "accounts/account-manager.h"
+#include "configuration/main-configuration.h"
 #include "gui/widgets/status-button.h"
 #include "status/status-container-manager.h"
 
@@ -30,6 +31,9 @@
 StatusButtons::StatusButtons(QWidget *parent) :
 		QWidget(parent), Layout(0)
 {
+	SimpleMode = MainConfiguration::instance()->simpleMode();
+	connect(MainConfiguration::instance(), SIGNAL(simpleModeChanged()), this, SLOT(simpleModeChanged()));
+
 	createGui();
 
 	triggerAllStatusContainerRegistered();
@@ -47,7 +51,7 @@ StatusButtons::~StatusButtons()
 void StatusButtons::createGui()
 {
 	Layout = new QHBoxLayout(this);
-	Layout->addStretch(200);
+	updateLayout(!SimpleMode);
 }
 
 void StatusButtons::rebuildGui()
@@ -56,17 +60,63 @@ void StatusButtons::rebuildGui()
 	triggerAllStatusContainerRegistered();
 }
 
+void StatusButtons::addButton(StatusButton* button)
+{
+	if (SimpleMode) // no stretch at the end
+		Layout->addWidget(button);
+	else
+		Layout->insertWidget(Layout->count() - 1, button);
+}
+
+void StatusButtons::updateLayout(bool addStretch)
+{
+	if (!addStretch)
+	{
+		QLayoutItem *item = Layout->itemAt(Layout->count() - 1);
+		Layout->removeItem(item);
+		delete item;
+	}
+	else
+		Layout->addStretch(200);
+}
+
+void StatusButtons::simpleModeChanged()
+{
+	if (SimpleMode == MainConfiguration::instance()->simpleMode())
+		return;
+
+	SimpleMode = MainConfiguration::instance()->simpleMode();
+	updateLayout(!SimpleMode);
+}
+
+void StatusButtons::enableStatusName()
+{
+	if (MainConfiguration::instance()->simpleMode() && 1 == Buttons.count())
+		Buttons.begin().value()->setDisplayStatusName(true);
+}
+
+void StatusButtons::disableStatusName()
+{
+	if (!Buttons.isEmpty())
+		Buttons.begin().value()->setDisplayStatusName(false);
+}
+
 void StatusButtons::statusContainerRegistered(StatusContainer *statusContainer)
 {
 	if (Buttons.contains(statusContainer) || !Layout)
 		return;
 
+	// first status container inserted
 	if (1 == StatusContainerManager::instance()->count())
 		statusContainerUnregistered(StatusContainerManager::instance());
 
+	disableStatusName(); // only disables if 
+
 	StatusButton *button = new StatusButton(statusContainer);
-	Layout->insertWidget(Layout->count() - 1, button);
+	addButton(button);
 	Buttons[statusContainer] = button;
+
+	enableStatusName();
 }
 
 void StatusButtons::statusContainerUnregistered(StatusContainer *statusContainer)
@@ -76,6 +126,8 @@ void StatusButtons::statusContainerUnregistered(StatusContainer *statusContainer
 		// cannot delete now, because this will modify ConfigurationAwareObject::objects list
 		Buttons[statusContainer]->deleteLater();
 		Buttons.remove(statusContainer);
+
+		enableStatusName();
 	}
 	if (0 == StatusContainerManager::instance()->count())
 		statusContainerRegistered(StatusContainerManager::instance());

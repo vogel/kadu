@@ -30,7 +30,7 @@
 #include "status-button.h"
 
 StatusButton::StatusButton(StatusContainer *statusContainer, QWidget *parent) :
-		QPushButton(parent), MyStatusContainer(statusContainer)
+		QPushButton(parent), MyStatusContainer(statusContainer), DisplayStatusName(false)
 {
 	createGui();
 
@@ -50,22 +50,36 @@ void StatusButton::createGui()
 	setMenu(menu);
 }
 
-void StatusButton::statusChanged()
+void StatusButton::update()
 {
 	setIcon(MyStatusContainer->statusIcon());
 
-	if (MainConfiguration::instance()->simpleMode())
-		setText(MyStatusContainer->statusContainerName());
+	if (DisplayStatusName)
+		setText(MyStatusContainer->statusName());
 	else
-		setToolTip(MyStatusContainer->statusContainerName());
+	{
+		if (MainConfiguration::instance()->simpleMode())
+			setText(MyStatusContainer->statusContainerName());
+		else
+			setToolTip(MyStatusContainer->statusContainerName());
+	}
+}
+
+void StatusButton::statusChanged()
+{
+	update();
 }
 
 void StatusButton::configurationUpdated()
 {
-	setIcon(MyStatusContainer->statusIcon());
+	update();
+}
 
-	if (MainConfiguration::instance()->simpleMode())
-		setText(MyStatusContainer->statusContainerName());
-	else
-		setToolTip(MyStatusContainer->statusContainerName());
+void StatusButton::setDisplayStatusName(bool displayStatusName)
+{
+	if (DisplayStatusName != displayStatusName)
+	{
+		DisplayStatusName = displayStatusName;
+		update();
+	}
 }
