@@ -152,7 +152,7 @@ void DockingManager::changeIcon()
 	{
 		case AnimatedEnvelope:
 			if (CurrentDocker)
-				CurrentDocker->changeTrayMovie(IconsManager::instance()->iconPath("protocols/common/message_anim.gif", "16x16"));
+				CurrentDocker->changeTrayMovie(IconsManager::instance()->iconPath("protocols/common/16x16/message_anim.gif"));
 			break;
 		case StaticEnvelope:
 			if (CurrentDocker)
