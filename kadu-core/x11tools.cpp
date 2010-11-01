@@ -941,7 +941,7 @@ bool X11_checkFullScreen( Display *display )
 				XWindowAttributes attr;
 				Status status = XGetWindowAttributes( display, wl, &attr );
 				if( status != 0 )
-					if( ( attr.all_event_masks & ( ButtonPressMask | ButtonReleaseMask | KeyPressMask | KeyReleaseMask ) ) == 0 )
+					if( ( attr.all_event_masks & ( ButtonReleaseMask | KeyReleaseMask ) ) == 0 )
 						return false;
 				_debug( "[G4]" );
 			}
