@@ -139,6 +139,7 @@ void GaduPersonalInfoWidget::apply()
 	buddy.setGender((BuddyGender)Sex->currentIndex());
 
 	Service->updatePersonalInfo(buddy);
+	MyBuddy = buddy;
 }
 
 void GaduPersonalInfoWidget::cancel()
