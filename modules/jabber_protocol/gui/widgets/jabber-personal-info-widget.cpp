@@ -50,30 +50,29 @@ JabberPersonalInfoWidget::~JabberPersonalInfoWidget()
 {
 }
 
-
 void JabberPersonalInfoWidget::createGui()
 {
 	QFormLayout *layout = new QFormLayout(this);
 
 	FullName = new QLineEdit(this);
 	connect(FullName, SIGNAL(textChanged(QString)), this, SIGNAL(dataChanged()));
-	
+
 	NickName = new QLineEdit(this);
 	connect(NickName, SIGNAL(textChanged(QString)), this, SIGNAL(dataChanged()));
-	
+
 	FamilyName = new QLineEdit(this);
 	connect(FamilyName, SIGNAL(textChanged(QString)), this, SIGNAL(dataChanged()));
-	
+
 	BirthYear = new QLineEdit(this);
 	connect(BirthYear, SIGNAL(textChanged(QString)), this, SIGNAL(dataChanged()));
 	BirthYear->setInputMask("d000");
-	
+
 	City = new QLineEdit(this);
 	connect(City, SIGNAL(textChanged(QString)), this, SIGNAL(dataChanged()));
-	
+
 	Email = new QLineEdit(this);
 	connect(Email, SIGNAL(textChanged(QString)), this, SIGNAL(dataChanged()));
-	
+
 	Website = new QLineEdit(this);
 	connect(Website, SIGNAL(textChanged(QString)), this, SIGNAL(dataChanged()));
 
@@ -105,7 +104,7 @@ void JabberPersonalInfoWidget::fillForm()
 
 bool JabberPersonalInfoWidget::isModified()
 {
- 	return NickName->text() != MyBuddy.nickName()
+	return NickName->text() != MyBuddy.nickName()
 	|| FullName->text() != MyBuddy.firstName()
 	|| FamilyName->text() != MyBuddy.familyName()
 	|| BirthYear->text() != QString::number(MyBuddy.birthYear())
@@ -114,7 +113,7 @@ bool JabberPersonalInfoWidget::isModified()
 	|| Website->text() != MyBuddy.website();
 }
 
-void JabberPersonalInfoWidget::applyData()
+void JabberPersonalInfoWidget::apply()
 {
 	Buddy buddy = Buddy::create();
 
@@ -128,4 +127,9 @@ void JabberPersonalInfoWidget::applyData()
 
 	Service->updatePersonalInfo(buddy);
 	MyBuddy = buddy;
+}
+
+void JabberPersonalInfoWidget::cancel()
+{
+	fillForm();
 }

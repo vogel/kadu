@@ -450,18 +450,27 @@ void JabberEditAccountWidget::apply()
 	AccountDetails->setDataTransferProxy(DataTransferProxy->text());
 
 	if (gpiw->isModified())
-		gpiw->applyData();
-
-	setState(StateNotChanged);
+		gpiw->apply();
 
 	ConfigurationManager::instance()->flush();
 
 	IdentityManager::instance()->removeUnused();
-	dataChanged();
+	setState(StateNotChanged);
+	ApplyButton->setEnabled(false);
+	CancelButton->setEnabled(false);
+
 }
 
 void JabberEditAccountWidget::cancel()
 {
+	loadAccountData();
+	loadConnectionData();
+	gpiw->cancel();
+
+	IdentityManager::instance()->removeUnused();
+	setState(StateNotChanged);
+	ApplyButton->setEnabled(false);
+	CancelButton->setEnabled(false);
 }
 
 void JabberEditAccountWidget::removeAccount()

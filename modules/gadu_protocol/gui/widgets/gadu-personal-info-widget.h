@@ -57,11 +57,14 @@ public:
 	explicit GaduPersonalInfoWidget(Account account, QWidget *parent = 0);
 	virtual ~GaduPersonalInfoWidget();
 
-	void applyData();
 	bool isModified();
 
+	void apply();
+	void cancel();
+
 signals:
-        void dataChanged();
+	void dataChanged();
+
 };
 
 #endif // GADU_PERSONAL_INFO_WIDGET_H

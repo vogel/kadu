@@ -52,36 +52,35 @@ GaduPersonalInfoWidget::~GaduPersonalInfoWidget()
 {
 }
 
-
 void GaduPersonalInfoWidget::createGui()
 {
 	QFormLayout *layout = new QFormLayout(this);
 
 	NickName = new QLineEdit(this);
 	connect(NickName, SIGNAL(textChanged(QString)), this, SIGNAL(dataChanged()));
-	
+
 	FirstName = new QLineEdit(this);
 	connect(FirstName, SIGNAL(textChanged(QString)), this, SIGNAL(dataChanged()));
-	
+
 	LastName = new QLineEdit(this);
 	connect(LastName, SIGNAL(textChanged(QString)), this, SIGNAL(dataChanged()));
-	
+
 	Sex = new QComboBox(this);
-	connect(Sex, SIGNAL(activated(int)), this, SIGNAL(dataChanged()));
+	connect(Sex, SIGNAL(currentIndexChanged(int)), this, SIGNAL(dataChanged()));
 	Sex->addItem(tr("Unknown Gender"));
 	Sex->addItem(tr("Male"));
 	Sex->addItem(tr("Female"));
-	
+
 	FamilyName = new QLineEdit(this);
 	connect(FamilyName, SIGNAL(textChanged(QString)), this, SIGNAL(dataChanged()));
-	
+
 	BirthYear = new QLineEdit(this);
 	connect(BirthYear, SIGNAL(textChanged(QString)), this, SIGNAL(dataChanged()));
 	BirthYear->setInputMask("d000");
-	
+
 	City = new QLineEdit(this);
 	connect(City, SIGNAL(textChanged(QString)), this, SIGNAL(dataChanged()));
-	
+
 	FamilyCity = new QLineEdit(this);
 	connect(FamilyCity, SIGNAL(textChanged(QString)), this, SIGNAL(dataChanged()));
 
@@ -111,22 +110,22 @@ void GaduPersonalInfoWidget::fillForm()
 	FamilyName->setText(MyBuddy.familyName());
 	BirthYear->setText(QString::number(MyBuddy.birthYear()));
 	City->setText(MyBuddy.city());
-	FamilyCity->setText(MyBuddy.familyCity()); 
+	FamilyCity->setText(MyBuddy.familyCity());
 }
 
 bool GaduPersonalInfoWidget::isModified()
 {
- 	return NickName->text() != MyBuddy.nickName()
+	return NickName->text() != MyBuddy.nickName()
 	|| FirstName->text() != MyBuddy.firstName()
 	|| LastName->text() != MyBuddy.lastName()
 	|| Sex->currentIndex() != (int)MyBuddy.gender()
 	|| FamilyName->text() != MyBuddy.familyName()
 	|| BirthYear->text() != QString::number(MyBuddy.birthYear())
 	|| City->text() != MyBuddy.city()
-	|| FamilyCity->text() != MyBuddy.familyCity(); 
+	|| FamilyCity->text() != MyBuddy.familyCity();
 }
 
-void GaduPersonalInfoWidget::applyData()
+void GaduPersonalInfoWidget::apply()
 {
 	Buddy buddy = Buddy::create();
 
@@ -140,4 +139,9 @@ void GaduPersonalInfoWidget::applyData()
 	buddy.setGender((BuddyGender)Sex->currentIndex());
 
 	Service->updatePersonalInfo(buddy);
+}
+
+void GaduPersonalInfoWidget::cancel()
+{
+	fillForm();
 }

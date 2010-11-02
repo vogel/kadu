@@ -55,12 +55,14 @@ private slots:
 public:
 	explicit JabberPersonalInfoWidget(Account account, QWidget *parent = 0);
 	virtual ~JabberPersonalInfoWidget();
-	
-	void applyData();
+
 	bool isModified();
-	
+
+	void apply();
+	void cancel();
+
 signals:
-        void dataChanged();
+	void dataChanged();
 
 };
 

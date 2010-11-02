@@ -293,17 +293,27 @@ void GaduEditAccountWidget::apply()
 	GaduServersManager::instance()->buildServerList();
 
 	if (gpiw->isModified())
-		gpiw->applyData();
+		gpiw->apply();
 
 	ConfigurationManager::instance()->flush();
 
 	IdentityManager::instance()->removeUnused();
 	setState(StateNotChanged);
+	ApplyButton->setEnabled(false);
+	CancelButton->setEnabled(false);
 }
 
 void GaduEditAccountWidget::cancel()
 {
+	loadAccountData();
+	loadConnectionData();
+	Proxy->cancel();
+	gpiw->cancel();
 
+	IdentityManager::instance()->removeUnused();
+	setState(StateNotChanged);
+	ApplyButton->setEnabled(false);
+	CancelButton->setEnabled(false);
 }
 
 void GaduEditAccountWidget::dataChanged()
