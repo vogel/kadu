@@ -33,9 +33,19 @@
 #include <QtGui/QLineEdit>
 #include <QtGui/QSlider>
 
+#ifdef Q_WS_WIN
+#include <windows.h>
+#endif
+
+#ifdef Q_WS_X11
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
 #include <unistd.h>
+#endif
+
+#ifdef Q_OS_MACX
+#include <Carbon/Carbon.h>
+#endif
 
 //Sound Frequencies
 //Rows - sounds: C, C#, D, D#, E, F, F#, G, G#, A, A#, B
@@ -56,11 +66,21 @@ int sounds[96] = {
 
 PCSpeaker *pcspeaker;
 
+#if defined(Q_WS_WIN)
+void PCSpeaker::beep(int pitch, int duration)
+{
+	if (pitch == 0)
+		Sleep(duration / 5); /* instead of (duration * 200) / 1000 */
+	else
+		Beep(pitch, duration);
+}
+#elif defined(Q_WS_X11)
 void PCSpeaker::beep(int pitch, int duration)
 {
 	if (pitch == 0)
 		usleep(duration * 200);
-	else {
+	else
+	{
 		XKeyboardState s;			//save previous sound config
 		XGetKeyboardControl(xdisplay, &s);
 		XKeyboardControl v;			//pause when set to 0
@@ -75,8 +95,15 @@ void PCSpeaker::beep(int pitch, int duration)
 		v.bell_duration = s.bell_duration;
 		v.bell_percent = s.bell_percent;
 		XChangeKeyboardControl(xdisplay, (KBBellPitch | KBBellDuration | KBBellPercent), &v); //set restored sound config
-    }
+	}
 }
+#else
+void PCSpeaker::beep(int pitch, int duration)
+{
+	Q_UNUSED(pitch);
+	Q_UNUSED(duration);
+}
+#endif
 
 extern "C" int pcspeaker_init()
 {
@@ -122,7 +149,11 @@ void PCSpeaker::notify(Notification *notification)
 {
 	kdebugf();
 	notification->acquire();
+#ifdef Q_OS_MACX
+	SysBeep(1);
+#else
 	parseAndPlay(config_file.readEntry("PC Speaker", notification->type() + "_Sound"));
+#endif
 	notification->release();
 	kdebugf2();
 }
@@ -204,13 +235,17 @@ void PCSpeaker::ParseStringToSound(QString line, int tab[21], int tab2[21])
 
 void PCSpeaker::play(int sound[21], int soundlength[20])
 {
+#ifdef Q_WS_X11
 	xdisplay = XOpenDisplay(NULL);
+#endif
 	for (int i=0; i<20; ++i)
 	{
 		if (sound[i] == -1) break;
 		beep(sound[i], soundlength[i]);
 	}
+#ifdef Q_WS_X11
 	XCloseDisplay(pcspeaker->xdisplay);
+#endif
 }
 
 void PCSpeaker::parseAndPlay(QString line)
