@@ -63,13 +63,13 @@ SmsScriptsManager::~SmsScriptsManager()
 
 void SmsScriptsManager::init()
 {
-	loadScript(dataPath("kadu/modules/data/scripts/gateway.js"));
+	loadScript(dataPath("kadu/modules/data/sms/scripts/gateway.js"));
 
 // 	QScriptEngineDebugger* debuger = new QScriptEngineDebugger(this);
 // 	debuger->attachTo(Engine);
 // 	debuger->standardWindow()->show();
 
-	QDir scriptDirectory(dataPath("kadu/modules/data/scripts/"));
+	QDir scriptDirectory(dataPath("kadu/modules/data/sms/scripts/"));
 	if (scriptDirectory.exists())
 	{
 		QStringList filters;
