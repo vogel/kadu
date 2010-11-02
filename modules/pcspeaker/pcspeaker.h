@@ -25,7 +25,9 @@ class PCSpeaker : public Notifier
 		void parseAndPlay(QString linia);
 
 	private:
+#ifdef Q_WS_X11
 		Display *xdisplay;
+#endif
 		PCSpeakerConfigurationWidget *configWidget;
 		int volume;
 		void ParseStringToSound(QString linia, int tablica[21], int tablica2[20]);
