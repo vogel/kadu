@@ -15,6 +15,7 @@
 * docking: #1648 fixed: animated icon is not shown in system tray (White Eagle)
 * history: #1647 fixed: viewing statuses' history doesn't work (White Eagle)
 * gui: #1652 fixed: Cancel button in edit account widgets doesn't work (beevvy)
+* core: use "KADU_" prefix in "DATADIR", "LIBDIR", "BINDIR" path definitions (dorr)
 
 +++ version 0.6.6-beta9
 * gui: #1539 fixed: removed problematic PL chars in main window menu remote URLs (Juzef)

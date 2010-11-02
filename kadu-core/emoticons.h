@@ -66,7 +66,7 @@ class KADUAPI EmoticonsManager : public Themes, ConfigurationAwareObject
 
 	/**
 		Konstruktor tworzy obiekt oraz wyszukuje list� zestaw�w w katalogu
-		$DATADIR/kadu/themes/emoticons
+		$KADU_DATADIR/kadu/themes/emoticons
 	**/
 	EmoticonsManager();
 

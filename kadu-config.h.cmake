@@ -1,9 +1,9 @@
 #cmakedefine DEBUG 1
 #cmakedefine DEBUG_ENABLED 1
 
-#define DATADIR "${DATADIR}"
-#define LIBDIR "${LIBDIR}"
-#define BINDIR "${BINDIR}"
+#define KADU_DATADIR "${KADU_DATADIR}"
+#define KADU_LIBDIR "${KADU_LIBDIR}"
+#define KADU_BINDIR "${KADU_BINDIR}"
 
 #define VERSION "${KADU_VERSION}"
 #define BUILD_DESCRIPTION "${BUILD_DESCRIPTION}"
