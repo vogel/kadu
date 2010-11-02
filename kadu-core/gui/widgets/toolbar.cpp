@@ -396,9 +396,7 @@ Qt::ToolBarArea ToolBar::toolBarArea()
 	QMainWindow *mainWindow = dynamic_cast<QMainWindow *>(parent());
 	if (!mainWindow)
 		return Qt::NoToolBarArea;
-	QRect mainwindowgeometry = QRect(mainWindow->mapToGlobal(QPoint(0,0)), mainWindow->size());
-	QRect toolbargeometry = QRect(mapToGlobal(QPoint(0,0)), size());
-	if (!mainwindowgeometry.contains(toolbargeometry))
+	if (isFloating())
 		return Qt::NoToolBarArea;
 	return mainWindow->toolBarArea(this);
 }
