@@ -264,9 +264,7 @@ void NotificationManager::accountRegistered(Account account)
 	Protocol *protocol = account.protocolHandler();
 	if (!protocol)
 		return;
-// 	TODO: 0.6.6
-// 	connect(protocol, SIGNAL(connectionError(Account, const QString &, const QString &)),
-// 			this, SLOT(connectionError(Account, const QString &, const QString &)));
+
 	connect(account, SIGNAL(buddyStatusChanged(Contact, Status)),
 			this, SLOT(contactStatusChanged(Contact, Status)));
 	connect(account, SIGNAL(connected()), this, SLOT(accountConnected()));
@@ -286,8 +284,6 @@ void NotificationManager::accountUnregistered(Account account)
 	if (!protocol)
 		return;
 
-// 	disconnect(protocol, SIGNAL(connectionError(Account, const QString &, const QString &)),
-// 			this, SLOT(connectionError(Account, const QString &, const QString &))); // TODO: 0.6.6 fix
 	disconnect(account, SIGNAL(buddyStatusChanged(Contact, Status)),
 			this, SLOT(contactStatusChanged(Contact, Status)));
 	disconnect(account, SIGNAL(connected()), this, SLOT(accountConnected()));

@@ -210,7 +210,6 @@ void AccountManager::connectionError(Account account, const QString &server, con
 {
 	QMutexLocker(&mutex());
 
-
 	if (!ConnectionErrorNotification::activeError(account, message))
 	{
 		ConnectionErrorNotification *connectionErrorNotification = new ConnectionErrorNotification(account,
