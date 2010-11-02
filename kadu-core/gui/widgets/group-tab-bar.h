@@ -29,7 +29,7 @@
 
 class GroupBuddyFilter;
 
-class GroupTabBar : public QTabBar, ConfigurationAwareObject
+class KADUAPI GroupTabBar : public QTabBar, ConfigurationAwareObject
 {
 	Q_OBJECT
 

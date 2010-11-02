@@ -30,7 +30,7 @@ class QHBoxLayout;
 class StatusButton;
 class StatusContainer;
 
-class StatusButtons : public QWidget, private StatusContainerAwareObject
+class KADUAPI StatusButtons : public QWidget, private StatusContainerAwareObject
 {
 	Q_OBJECT
 
