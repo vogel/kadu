@@ -20,6 +20,7 @@
  */
 
 #include <QtGui/QHBoxLayout>
+#include <QtGui/QLayoutItem>
 
 #include "accounts/account-manager.h"
 #include "configuration/main-configuration.h"
@@ -51,6 +52,9 @@ StatusButtons::~StatusButtons()
 void StatusButtons::createGui()
 {
 	Layout = new QHBoxLayout(this);
+	Layout->addStretch(200);
+
+	Spacer = Layout->itemAt(Layout->count() - 1)->spacerItem();
 	updateLayout(!SimpleMode);
 }
 
@@ -62,22 +66,15 @@ void StatusButtons::rebuildGui()
 
 void StatusButtons::addButton(StatusButton* button)
 {
-	if (SimpleMode) // no stretch at the end
-		Layout->addWidget(button);
-	else
-		Layout->insertWidget(Layout->count() - 1, button);
+	Layout->insertWidget(Layout->count() - 1, button);
 }
 
 void StatusButtons::updateLayout(bool addStretch)
 {
 	if (!addStretch)
-	{
-		QLayoutItem *item = Layout->itemAt(Layout->count() - 1);
-		Layout->removeItem(item);
-		delete item;
-	}
+		Spacer->changeSize(0, 0, QSizePolicy::Minimum, QSizePolicy::Minimum);
 	else
-		Layout->addStretch(200);
+		Spacer->changeSize(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum);
 }
 
 void StatusButtons::simpleModeChanged()

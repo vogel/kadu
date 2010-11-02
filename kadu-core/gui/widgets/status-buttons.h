@@ -26,6 +26,7 @@
 #include "status/status-container-aware-object.h"
 
 class QHBoxLayout;
+class QSpacerItem;
 
 class StatusButton;
 class StatusContainer;
@@ -35,6 +36,7 @@ class KADUAPI StatusButtons : public QWidget, private StatusContainerAwareObject
 	Q_OBJECT
 
 	QHBoxLayout *Layout;
+	QSpacerItem *Spacer;
 	bool SimpleMode;
 
 	QMap<StatusContainer *, StatusButton *> Buttons;
