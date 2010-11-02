@@ -84,7 +84,7 @@ public:
 
 };
 #else
-class QLibrary;
+#include <QtCore/QLibrary>
 #define Library QLibrary
 #endif
 
