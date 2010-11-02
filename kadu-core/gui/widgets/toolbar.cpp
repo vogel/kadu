@@ -1086,6 +1086,7 @@ void ToolBar::updateDropMarker()
 	int r = rowAt(pos);
 	ToolBarDropMarker newdropmarker;
 	newdropmarker.visible = true;
+	newdropmarker.x = newdropmarker.y = 0;
 	// marker's position
 	if (before)
 	{
