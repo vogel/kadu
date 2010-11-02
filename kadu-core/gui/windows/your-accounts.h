@@ -45,7 +45,7 @@ class ModalConfigurationWidget;
 class ProtocolFactory;
 class ProtocolsComboBox;
 
-KADUAPI class YourAccounts : public QWidget, AccountsAwareObject
+class KADUAPI YourAccounts : public QWidget, AccountsAwareObject
 {
 	Q_OBJECT
 
