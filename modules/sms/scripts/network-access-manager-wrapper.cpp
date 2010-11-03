@@ -29,6 +29,7 @@
 NetworkAccessManagerWrapper::NetworkAccessManagerWrapper(QScriptEngine *engine, QObject *parent) :
 	QNetworkAccessManager(parent), Engine(engine)
 {
+	Unicode = false;
 }
 
 NetworkAccessManagerWrapper::~NetworkAccessManagerWrapper()
