@@ -28,10 +28,12 @@ class NetworkAccessManagerWrapper : public QNetworkAccessManager
 	Q_OBJECT
 
 	QScriptEngine *Engine;
+	bool Unicode;
 
 public:
 	explicit NetworkAccessManagerWrapper(QScriptEngine *engine, QObject *parent = 0);
 	virtual ~NetworkAccessManagerWrapper();
+	void setUnicode(bool unicode);
 
 public slots:
 	QScriptValue get(const QString &url);
