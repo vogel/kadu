@@ -115,19 +115,21 @@ PlusGatewaySmsSender.prototype = {
 		"0" + separator +
 		"0" + separator + end;
 
+		network.setUnicode(true);
 		this.reply = network.post(postUrl, postData);
 		this.reply.finished.connect(this, this.smsSent);
 	},
 
 	smsSent: function() {
 		var content = this.reply.content();
-			this.failure(content);
 
 		if (content.indexOf("SMS zostaï¿½ wysï¿½any") >= 0)
 			this.finished();
 		else if (content.indexOf("wiadomo¶æ zosta³a wys³ana") >= 0)
 			this.finished();
 		else if (content.indexOf("wiadomoÅ›Ä‡ zostaÅ‚a wysÅ‚ana") >= 0)
+			this.finished();
+		else if (content.indexOf("OK") >= 0)
 			this.finished();
 		else
 			this.failure("Provider gateway results page looks strange. SMS was probably NOT sent.");
