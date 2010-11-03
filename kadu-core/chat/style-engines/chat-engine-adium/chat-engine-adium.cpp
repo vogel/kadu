@@ -199,7 +199,7 @@ void AdiumChatStyleEngine::appendChatMessage(HtmlMessagesRenderer *renderer, Mes
 void AdiumChatStyleEngine::refreshView(HtmlMessagesRenderer *renderer, bool useTransparency)
 {
 	QString styleBaseHtml = CurrentStyle.templateHtml();
-	styleBaseHtml.replace(styleBaseHtml.indexOf("%@"), 2, "file://" + CurrentStyle.baseHref());
+	styleBaseHtml.replace(styleBaseHtml.indexOf("%@"), 2, webKitPath(CurrentStyle.baseHref()));
 	styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, replaceKeywords(renderer->chat(), CurrentStyle.baseHref(), CurrentStyle.footerHtml()));
 	styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, replaceKeywords(renderer->chat(), CurrentStyle.baseHref(), CurrentStyle.headerHtml()));
 
@@ -282,7 +282,7 @@ void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNa
 	Message msg = message->message();
 
 	QString styleBaseHtml = style.templateHtml();
-	styleBaseHtml.replace(styleBaseHtml.indexOf("%@"), 2, "file://" + style.baseHref());
+	styleBaseHtml.replace(styleBaseHtml.indexOf("%@"), 2, webKitPath(style.baseHref()));
 	styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, replaceKeywords(msg.messageChat(), style.baseHref(), style.footerHtml()));
 	styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, replaceKeywords(msg.messageChat(), style.baseHref(), style.headerHtml()));
 
@@ -358,23 +358,23 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, const QString &styleHre
 
 	int contactsSize = chat.contacts().size();
 	if (contactsSize > 1)
-		photoIncoming = QString("file://") + styleHref + QString("Incoming/buddy_icon.png");
+		photoIncoming = webKitPath(styleHref + QLatin1String("Incoming/buddy_icon.png"));
 	else if (contactsSize == 1)
 	{
 		Contact contact = chat.contacts().toContact();
 		if (!contact.isNull() && !contact.ownerBuddy().buddyAvatar().pixmap().isNull())
-			photoIncoming = QString("file://") + contact.ownerBuddy().buddyAvatar().filePath();
+			photoIncoming = webKitPath(contact.ownerBuddy().buddyAvatar().filePath());
 		else if (!contact.isNull() && !contact.contactAvatar().pixmap().isNull())
-			photoIncoming = QString("file://") + contact.contactAvatar().filePath();
+			photoIncoming = webKitPath(contact.contactAvatar().filePath());
 		else
-			photoIncoming = QString("file://") + styleHref + QString("Incoming/buddy_icon.png");
+			photoIncoming = webKitPath(styleHref + QLatin1String("Incoming/buddy_icon.png"));
 	}
 
 	Avatar avatar = chat.chatAccount().accountContact().contactAvatar();
 	if (!avatar.isEmpty())
-		photoOutgoing = QString("file://") + avatar.filePath();
+		photoOutgoing = webKitPath(avatar.filePath());
 	else
-		photoOutgoing = QString("file://") + styleHref + QString("Outgoing/buddy_icon.png");
+		photoOutgoing = webKitPath(styleHref + QLatin1String("Outgoing/buddy_icon.png"));
 
 	result.replace(QString("%incomingIconPath%"), photoIncoming);
 	result.replace(QString("%outgoingIconPath%"), photoOutgoing);
@@ -434,20 +434,20 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat chat, const QString &styleHre
 		result.replace(QString("%messageClasses%"), "message incoming");
 
 		if (!msg.messageSender().ownerBuddy().buddyAvatar().pixmap().isNull())
-			photoPath = QString("file://") + msg.messageSender().ownerBuddy().buddyAvatar().filePath();
+			photoPath = webKitPath(msg.messageSender().ownerBuddy().buddyAvatar().filePath());
 		else if (!msg.messageSender().contactAvatar().pixmap().isNull())
-			photoPath = QString("file://") + msg.messageSender().contactAvatar().filePath();
+			photoPath = webKitPath(msg.messageSender().contactAvatar().filePath());
 		else
-			photoPath = QString("file://") + styleHref + QString("Incoming/buddy_icon.png");
+			photoPath = webKitPath(styleHref + QLatin1String("Incoming/buddy_icon.png"));
 	}
 	else
 	{
    		result.replace(QString("%messageClasses%"), "message outgoing");
 		Avatar avatar = chat.chatAccount().accountContact().contactAvatar();
 		if (!avatar.isEmpty())
-			photoPath = QString("file://") + avatar.filePath();
+			photoPath = webKitPath(avatar.filePath());
 		else
-			photoPath = QString("file://") + styleHref + QString("Outgoing/buddy_icon.png");
+			photoPath = webKitPath(styleHref + QLatin1String("Outgoing/buddy_icon.png"));
 	}
 	result.replace(QString("%userIconPath%"), photoPath);
 

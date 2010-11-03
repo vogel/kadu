@@ -15,9 +15,11 @@
 * docking: #1648 fixed: animated icon is not shown in system tray (White Eagle)
 * history: #1647 fixed: viewing statuses' history doesn't work (White Eagle)
 * gui: #1652 fixed: Cancel button in edit account widgets doesn't work (beevvy)
+* pcspeaker: add support for Windows and MacOS (dorr)
 * core: use "KADU_" prefix in "DATADIR", "LIBDIR", "BINDIR" path definitions (dorr)
 * jabber: #1486 fixed: connection error notification fixed (Vogel)
-* sms: Plus GSM Gateway support added
+* sms: Plus GSM Gateway support added (dorr)
+* chat styles: #1551 fixed: adium chat styles don't work on MS Windows (White Eagle)
 
 +++ version 0.6.6-beta9
 * gui: #1539 fixed: removed problematic PL chars in main window menu remote URLs (Juzef)
