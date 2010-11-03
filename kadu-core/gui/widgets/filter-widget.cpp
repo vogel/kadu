@@ -224,10 +224,7 @@ void FilterWidget::keyPressEvent(QKeyEvent *event)
 	}
 
 	if (View && sendKeyEventToView(event))
-	{
-		event->accept();
 		return;
-	}
 
 	QWidget::keyPressEvent(event);
 	event->accept();
