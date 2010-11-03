@@ -69,6 +69,7 @@ private slots:
 
 	void deleteOldConfigurationFiles();
 	void kaduWindowDestroyed();
+	void showMainWindow();
 
 protected:
 	virtual void accountAdded(Account account);
@@ -78,7 +79,7 @@ protected:
 
 public:
 	static Core * instance();
-	
+
 	QString version() { return QString(VERSION);}
 	bool isClosing() { return IsClosing; }
 	Buddy myself() { return Myself; }

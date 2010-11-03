@@ -25,8 +25,9 @@
 
 #include <QtCore/QDir>
 #include <QtCore/QLocale>
-#include <QtGui/QApplication>
 #include <QtCore/QSettings>
+#include <QtCore/QTimer>
+#include <QtGui/QApplication>
 
 #include "accounts/account-manager.h"
 #include "buddies/avatar-manager.h"
@@ -460,6 +461,17 @@ void Core::createGui()
 	// initialize file transfers
 	FileTransferManager::instance();
 
+	/* That method is meant to be called before the event loop starts
+	 * (QCoreApplication::exec()), so this shot should assure that
+	 * showMainWindow() is called immediately after qApp->exec()
+	 * to let docking module call setShowMainWindowOnStart() before
+	 * ShowMainWindowOnStart is used.
+	 */
+	QTimer::singleShot(0, this, SLOT(showMainWindow()));
+}
+
+void Core::showMainWindow()
+{
 	if (ShowMainWindowOnStart)
 		Window->show();
 }

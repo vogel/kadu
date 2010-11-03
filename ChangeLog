@@ -21,6 +21,7 @@
 * sms: Plus GSM Gateway support added (dorr)
 * chat styles: #1551 fixed: adium chat styles don't work on MS Windows (White Eagle)
 * gui: #1391 fixed: pressing arrows when filtering buddies list causes strange and unexpected behavior (beevvy)
+* core: #1655 fixed: "Start docked" option from docking module doesn't work (beevvy)
 
 +++ version 0.6.6-beta9
 * gui: #1539 fixed: removed problematic PL chars in main window menu remote URLs (Juzef)
