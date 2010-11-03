@@ -296,12 +296,12 @@ void GroupTabBar::renameGroup()
 	if (!currentGroup)
 		return;
 	bool ok;
-	QString text = QInputDialog::getText(this, tr("Rename Group"),
+	QString newGroupName = QInputDialog::getText(this, tr("Rename Group"),
 				tr("Please enter a new name for this group"), QLineEdit::Normal,
-				QString::null, &ok);
+				currentGroup.name(), &ok);
 
-	if (ok && !text.isEmpty() && GroupManager::instance()->acceptableGroupName(text))
-		currentGroup.setName(text);
+	if (ok && !newGroupName.isEmpty() && newGroupName != currentGroup.name() && GroupManager::instance()->acceptableGroupName(newGroupName))
+		currentGroup.setName(newGroupName);
 }
 
 void GroupTabBar::deleteGroup()
