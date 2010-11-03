@@ -54,6 +54,6 @@ void ConfigWizardCompletedPage::initializePage()
 
 void ConfigWizardCompletedPage::acceptPage()
 {
-    if (ConfigureAccouuntsCheckBox)
+    if (ConfigureAccouuntsCheckBox->isChecked())
 		YourAccounts::instance()->show();
 }
