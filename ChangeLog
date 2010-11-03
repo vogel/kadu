@@ -16,6 +16,7 @@
 * history: #1647 fixed: viewing statuses' history doesn't work (White Eagle)
 * gui: #1652 fixed: Cancel button in edit account widgets doesn't work (beevvy)
 * core: use "KADU_" prefix in "DATADIR", "LIBDIR", "BINDIR" path definitions (dorr)
+* jabber: #1486 fixed: connection error notification fixed (Vogel)
 
 +++ version 0.6.6-beta9
 * gui: #1539 fixed: removed problematic PL chars in main window menu remote URLs (Juzef)

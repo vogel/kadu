@@ -83,7 +83,11 @@ ConnectionErrorNotification::ConnectionErrorNotification(Account account, const 
 		ErrorServer(errorServer), ErrorMessage(errorMessage)
 {
 	setTitle(tr("Connection error"));
-	setText(tr("<b>Error:</b> (%1) %2").arg(ErrorServer).arg(ErrorMessage));
+
+	if (ErrorServer.isEmpty())
+		setText(tr("<b>Connection error:</b> %1").arg(ErrorMessage));
+	else
+		setText(tr("<b>Connection error:</b> (%1) %2").arg(ErrorServer).arg(ErrorMessage));
 
 	ActiveErrors[account].append(ErrorMessage);
 }

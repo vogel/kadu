@@ -663,6 +663,7 @@ void JabberClient::slotCSError(int error)
 	{
 		kdebug("Incorrect password, retrying.\n");
 		Protocol->logout(/*Kopete::Account::BadPassword*/);
+		emit connectionError(tr("Incorrect password"));
 	}
 	else
 	{
@@ -676,8 +677,8 @@ void JabberClient::slotCSError(int error)
 			getErrorInfo(error, JabberClientConnector, JabberClientStream, JabberTLSHandler, &errorText, &reconn);
 			if (reconn)
 				Protocol->connectToServer();
-			else
-				emit connectionError(tr("There was an error communicating with the server.\nDetails: %1").arg(errorText));
+
+			emit connectionError(tr("There was an error communicating with the server.\nDetails: %1").arg(errorText));
 		}
 		if (Protocol->isConnected() || Protocol->isConnecting())
 			Protocol->logout(/* errorClass */);
