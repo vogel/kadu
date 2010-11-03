@@ -669,10 +669,10 @@ void GaduProtocol::socketConnFailed(GaduError error)
 	{
 		QHostAddress server = ActiveServer.first;
 		QString host;
-		if (!server.isNull())
-			host = QString("%1:%2").arg(server.toString()).arg(ActiveServer.second);
-		else
+		if (server.isNull() || server.toIPv4Address() == (quint32)0)
 			host = "HUB";
+		else
+			host = QString("%1:%2").arg(server.toString()).arg(ActiveServer.second);
 		kdebugm(KDEBUG_INFO, "%s %s\n", qPrintable(host), qPrintable(msg));
 		emit connectionError(account(), host, msg);
 	}
