@@ -515,6 +515,8 @@ signals:
 	 */
 	void csAuthenticated();
 
+	void connectionError(const QString &message);
+
 	/**
 	 * Client stream error.
 	 */

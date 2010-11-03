@@ -101,6 +101,8 @@ private slots:
 	void itemPublished(const XMPP::Jid& j, const QString& n, const XMPP::PubSubItem& item);
 	void itemRetracted(const XMPP::Jid& j, const QString& n, const XMPP::PubSubRetraction& item);
 
+	void connectionErrorSlot(const QString &message);
+
 protected:
 	virtual void changeStatus();
 	virtual void changePrivateMode();

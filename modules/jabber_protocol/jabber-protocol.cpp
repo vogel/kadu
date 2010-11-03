@@ -172,6 +172,7 @@ bool JabberProtocol::contactsListReadOnly()
 void JabberProtocol::initializeJabberClient()
 {
 	JabberClient = new XMPP::JabberClient(this, this);
+
 	connect(JabberClient, SIGNAL(csDisconnected()), this, SLOT(disconnectedFromServer()));
 	connect(JabberClient, SIGNAL(connected()), this, SLOT(connectedToServer()));
 
@@ -179,6 +180,8 @@ void JabberProtocol::initializeJabberClient()
 		   this, SLOT(clientResourceReceived(const XMPP::Jid &, const XMPP::Resource &)));
 	connect(JabberClient, SIGNAL(resourceUnavailable(const XMPP::Jid &, const XMPP::Resource &)),
 		   this, SLOT(clientResourceReceived(const XMPP::Jid &, const XMPP::Resource &)));
+
+	connect(JabberClient, SIGNAL(connectionError(QString)), this, SLOT(connectionErrorSlot(QString)));
 
 		/*//TODO: implement in the future
 		connect( JabberClient, SIGNAL ( groupChatJoined ( const XMPP::Jid & ) ),
@@ -201,6 +204,12 @@ void JabberProtocol::login(const QString &password, bool permanent)
 	account().setHasPassword(!password.isEmpty());
 
 	connectToServer();
+}
+
+void JabberProtocol::connectionErrorSlot(const QString& message)
+{
+	if (JabberClient && JabberClient->clientConnector())
+		emit connectionError(account(), JabberClient->clientConnector()->host(), message);
 }
 
 void JabberProtocol::connectToServer()
