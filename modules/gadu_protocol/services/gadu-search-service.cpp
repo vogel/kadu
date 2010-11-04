@@ -38,9 +38,7 @@ GaduSearchService::GaduSearchService(GaduProtocol *protocol) :
 void GaduSearchService::searchFirst(BuddySearchCriteria criteria)
 {
 	Query = criteria;
-	From = Query.SearchBuddy.hasContact(Protocol->account())
-			? Query.SearchBuddy.id(Protocol->account()).toUInt()
-			: 0;
+	From = 0;
 	searchNext();
 }
 
