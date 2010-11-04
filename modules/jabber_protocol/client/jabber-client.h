@@ -25,6 +25,8 @@
 
 #include <QtCore/QObject>
 
+#include <accounts/account.h>
+
 // include these because of namespace reasons
 #include <im.h>
 #include <xmpp.h>
@@ -32,9 +34,9 @@
 
 #include <QtCrypto>
 
-class JabberProtocol;
-
 namespace XMPP { class AdvancedConnector; }
+
+class JabberProtocol;
 
 /**
  * This class provides an interface to the Iris subsystem. The goal is to

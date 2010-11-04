@@ -25,6 +25,7 @@
 * gadu: #1661 fixed: searching buddies by UIN doesn't work (WhE)
 * history: #1622, #1645, #1663 fixed: outgoing messages are formatted as incoming in history (WhE)
 * wordfix: #1646 fixed: module breaks sending of ">" and "<" characters (WhE)
+* jabber: implemented proxy (Vogel)
 
 +++ version 0.6.6-beta9
 * gui: #1539 fixed: removed problematic PL chars in main window menu remote URLs (Juzef)

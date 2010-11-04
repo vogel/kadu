@@ -42,6 +42,7 @@
 #include "configuration/configuration-file.h"
 #include "gui/widgets/account-avatar-widget.h"
 #include "gui/widgets/account-buddy-list-widget.h"
+#include "gui/widgets/proxy-group-box.h"
 #include "gui/windows/message-dialog.h"
 #include "identities/identity-manager.h"
 #include "protocols/services/avatar-service.h"
@@ -144,9 +145,9 @@ void JabberEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 
 void JabberEditAccountWidget::createPersonalDataTab(QTabWidget *tabWidget)
 {
-	gpiw = new JabberPersonalInfoWidget(account(), tabWidget);
-	connect(gpiw, SIGNAL(dataChanged()), this, SLOT(dataChanged()));
-	tabWidget->addTab(gpiw, tr("Personal Information"));
+	PersonalInfoWidget = new JabberPersonalInfoWidget(account(), tabWidget);
+	connect(PersonalInfoWidget, SIGNAL(dataChanged()), this, SLOT(dataChanged()));
+	tabWidget->addTab(PersonalInfoWidget, tr("Personal Information"));
 }
 
 void JabberEditAccountWidget::createConnectionTab(QTabWidget *tabWidget)
@@ -156,6 +157,10 @@ void JabberEditAccountWidget::createConnectionTab(QTabWidget *tabWidget)
 
 	QVBoxLayout *layout = new QVBoxLayout(conenctionTab);
 	createGeneralGroupBox(layout);
+
+	Proxy = new ProxyGroupBox(account(), tr("Proxy"), this);
+	connect(Proxy, SIGNAL(stateChanged(ModalConfigurationWidgetState)), this, SLOT(dataChanged()));
+	layout->addWidget(Proxy);
 
 	layout->addStretch(100);
 }
@@ -372,7 +377,8 @@ void JabberEditAccountWidget::dataChanged()
 		&& AccountDetails->autoResource() == AutoResource->isChecked()
 		&& AccountDetails->resource() == ResourceName->text()
 		&& AccountDetails->priority() == Priority->text().toInt()
-		&& !gpiw->isModified())
+		&& StateNotChanged == Proxy->state()
+		&& !PersonalInfoWidget->isModified())
 	{
 		setState(StateNotChanged);
 		ApplyButton->setEnabled(false);
@@ -448,9 +454,10 @@ void JabberEditAccountWidget::apply()
 	AccountDetails->setResource(ResourceName->text());
 	AccountDetails->setPriority(Priority->text().toInt());
 	AccountDetails->setDataTransferProxy(DataTransferProxy->text());
+	Proxy->apply();
 
-	if (gpiw->isModified())
-		gpiw->apply();
+	if (PersonalInfoWidget->isModified())
+		PersonalInfoWidget->apply();
 
 	ConfigurationManager::instance()->flush();
 
@@ -458,14 +465,14 @@ void JabberEditAccountWidget::apply()
 	setState(StateNotChanged);
 	ApplyButton->setEnabled(false);
 	CancelButton->setEnabled(false);
-
 }
 
 void JabberEditAccountWidget::cancel()
 {
 	loadAccountData();
 	loadConnectionData();
-	gpiw->cancel();
+	Proxy->cancel();
+	PersonalInfoWidget->cancel();
 
 	IdentityManager::instance()->removeUnused();
 	setState(StateNotChanged);

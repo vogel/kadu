@@ -40,13 +40,14 @@ class QTabWidget;
 class QVBoxLayout;
 
 class ChooseIdentityWidget;
+class ProxyGroupBox;
 
 class JabberEditAccountWidget : public AccountEditWidget
 {
 	Q_OBJECT
 
 	JabberAccountDetails *AccountDetails;
-	JabberPersonalInfoWidget *gpiw;
+	JabberPersonalInfoWidget *PersonalInfoWidget;
 
 	QLineEdit *AccountId;
 	QLineEdit *AccountPassword;
@@ -64,6 +65,7 @@ class JabberEditAccountWidget : public AccountEditWidget
 	QComboBox *PlainTextAuth;
 
 	IdentitiesComboBox *Identities;
+	ProxyGroupBox *Proxy;
 
 	QCheckBox *AutoResource;
 	QHBoxLayout *ResourceLayout;
