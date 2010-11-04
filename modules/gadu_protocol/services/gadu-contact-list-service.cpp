@@ -94,7 +94,7 @@ void GaduContactListService::handleEventUserlist(struct gg_event *e)
 void GaduContactListService::importContactList()
 {
 	AsFile = false;
-	ImportReply.truncate(0);
+	ImportReply.clear();
 
 	if (-1 == gg_userlist_request(Protocol->gaduSession(), GG_USERLIST_GET, 0))
 		emit contactListImported(false, BuddyList());
@@ -102,7 +102,7 @@ void GaduContactListService::importContactList()
 
 void GaduContactListService::importContactListAsFile()
 {
-	ImportReply.truncate(0);
+	ImportReply.clear();;
 	AsFile = true;
 
 	gg_userlist_request(Protocol->gaduSession(), GG_USERLIST_GET, 0);

@@ -86,8 +86,8 @@ void BuddySearchCriteria::reqActive()
 void BuddySearchCriteria::clearData()
 {
 	SearchBuddy = Buddy::create();
-	BirthYearFrom.truncate(0);
-	BirthYearTo.truncate(0);
+	BirthYearFrom.clear();
+	BirthYearTo.clear();
 	Active = false;
 	IgnoreResults = false;
 }
