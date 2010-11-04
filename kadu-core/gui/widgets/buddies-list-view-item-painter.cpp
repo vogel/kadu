@@ -213,7 +213,7 @@ QTextDocument * BuddiesListViewItemPainter::getDescriptionDocument(int width)
 			: QPalette::Text);
 
 	DescriptionDocument = createDescriptionDocument(Index.data(DescriptionRole).toString(), width,
-			((Option.state & QStyle::State_Selected) && !UseConfigurationColors)
+			(Option.state & QStyle::State_Selected)
 					? textcolor
 					: Configuration.descriptionColor());
 
