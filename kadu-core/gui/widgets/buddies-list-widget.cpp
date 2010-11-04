@@ -77,9 +77,6 @@ void BuddiesListWidget::clearFilter()
 void BuddiesListWidget::nameFilterChanged(const QString &filter)
 {
 	NameFilter->setName(filter);
-
-	QItemSelectionModel *selectionModel = View->selectionModel();
-	selectionModel->select(View->model()->index(0, 0), QItemSelectionModel::SelectCurrent);
 }
 
 void BuddiesListWidget::keyPressEvent(QKeyEvent *event)

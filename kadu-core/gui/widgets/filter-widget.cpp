@@ -121,13 +121,26 @@ void FilterWidget::filterTextChanged(const QString &s)
 #ifdef Q_OS_MAC
 	Q_UNUSED(s);
 #else
+	// selection is cleared only on filter show/hide
+	bool clearSelection = false;
+
 	if (NameFilterEdit->text().isEmpty())
 	{
 		hide();
 		View->setFocus(Qt::OtherFocusReason);
+		clearSelection = true;
 	}
-	else
+	else if (!isVisible())
+	{
 		show();
+		clearSelection = true;
+	}
+
+	if (clearSelection)
+	{
+		View->clearSelection();
+		View->setCurrentIndex(QModelIndex());
+	}
 
 	emit textChanged(s);
 #endif
