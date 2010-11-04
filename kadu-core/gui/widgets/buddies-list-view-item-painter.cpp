@@ -186,7 +186,7 @@ QTextDocument * BuddiesListViewItemPainter::createDescriptionDocument(const QStr
 	QTextDocument *doc = new QTextDocument();
 
 	doc->setDefaultFont(Configuration.descriptionFont());
-	if (UseConfigurationColors && Configuration.descriptionColor().isValid())
+	if (color.isValid())
 		doc->setDefaultStyleSheet(QString("* { color: %1; }").arg(color.name()));
 
 	doc->setHtml(QString("<span>%1</span>").arg(description));
@@ -213,7 +213,7 @@ QTextDocument * BuddiesListViewItemPainter::getDescriptionDocument(int width)
 			: QPalette::Text);
 
 	DescriptionDocument = createDescriptionDocument(Index.data(DescriptionRole).toString(), width,
-			(Option.state & QStyle::State_Selected)
+			((Option.state & QStyle::State_Selected) || !UseConfigurationColors)
 					? textcolor
 					: Configuration.descriptionColor());
 
