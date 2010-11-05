@@ -51,11 +51,11 @@ StatusButtons::~StatusButtons()
 
 void StatusButtons::createGui()
 {
+	setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 	Layout = new QHBoxLayout(this);
-	Layout->addStretch(200);
 
-	Spacer = Layout->itemAt(Layout->count() - 1)->spacerItem();
-	updateLayout(!SimpleMode);
+	if (!SimpleMode)
+		updateLayout(!SimpleMode);
 }
 
 void StatusButtons::rebuildGui()
@@ -66,15 +66,20 @@ void StatusButtons::rebuildGui()
 
 void StatusButtons::addButton(StatusButton* button)
 {
-	Layout->insertWidget(Layout->count() - 1, button);
+	if (SimpleMode)
+		Layout->addWidget(button);
+	else
+		Layout->insertWidget(Layout->count() - 1, button);
 }
 
 void StatusButtons::updateLayout(bool addStretch)
 {
-	if (!addStretch)
-		Spacer->changeSize(0, 0, QSizePolicy::Minimum, QSizePolicy::Minimum);
+	Q_UNUSED(addStretch)
+
+	if (addStretch)
+		Layout->addStretch(200);
 	else
-		Spacer->changeSize(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum);
+		delete Layout->takeAt(Layout->count() - 1);
 }
 
 void StatusButtons::simpleModeChanged()
