@@ -27,6 +27,7 @@
 * wordfix: #1646 fixed: module breaks sending of ">" and "<" characters (WhE)
 * jabber: implemented proxy (Vogel)
 * core: #1552 fixed: use most available account icon and status for identity in simple mode (Vogel)
+* core: #1555 fixed: allow to set description while online, will be used on next login (Vogel)
 
 +++ version 0.6.6-beta9
 * gui: #1539 fixed: removed problematic PL chars in main window menu remote URLs (Juzef)

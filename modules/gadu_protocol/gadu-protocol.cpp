@@ -286,6 +286,9 @@ void GaduProtocol::changeStatus(bool force)
 
 	if (newStatus.isDisconnected() && status().isDisconnected())
 	{
+		if (newStatus.description() != status().description())
+			statusChanged(newStatus);
+
 		if (NetworkConnecting == state())
 			networkDisconnected(false);
 		return;

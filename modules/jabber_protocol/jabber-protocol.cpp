@@ -561,8 +561,11 @@ void JabberProtocol::changeStatus()
 
 		JabberClient->disconnect();
 
-		if (!nextStatus().isDisconnected())
-			setStatus(Status());
+		if (newStatus.description() != status().description())
+			statusChanged(newStatus);
+
+		// i dont thing we need it
+		// setStatus(newStatus());
 		return;
 	}
 
