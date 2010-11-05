@@ -290,7 +290,7 @@ void HistorySqlStorage::appendMessage(const Message &message)
 
 	DatabaseMutex.lock();
 
-	QString outgoing = (message.messageSender().ownerBuddy() == Core::instance()->myself())
+	QString outgoing = (message.type() == Message::TypeSent)
 			? "1"
 			: "0";
 
