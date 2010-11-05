@@ -61,7 +61,6 @@
 #include "chat-edit-box.h"
 #include "custom-input.h"
 #include "debug.h"
-#include "emoticons.h"
 #include "icons-manager.h"
 #include "misc/misc.h"
 

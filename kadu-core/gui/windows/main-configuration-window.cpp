@@ -41,6 +41,7 @@
 #include "buddies/buddy-shared.h"
 #include "contacts/contact.h"
 #include "core/core.h"
+#include "emoticons/emoticons-manager.h"
 #include "gui/widgets/buddy-info-panel.h"
 #include "gui/widgets/configuration/buddy-list-background-colors-widget.h"
 #include "gui/widgets/configuration/config-combo-box.h"

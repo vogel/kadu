@@ -164,7 +164,6 @@
 					tool-tip="Choose emoticons style" >
 					<item value="2" caption="Animated" />
 					<item value="1" caption="Static" />
-					<item value="0" caption="None" />
 				</combo-box>
 				<combo-box caption="Selector behavior" config-section="Chat" config-item="EmoticonsScaling" id="emoticonsScaling"
 					tool-tip="Choose the way emoticons are scaled in the selector" >

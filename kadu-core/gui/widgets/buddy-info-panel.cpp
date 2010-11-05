@@ -28,12 +28,12 @@
 #include "buddies/buddy-preferred-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-manager.h"
+#include "emoticons/emoticons-manager.h"
 #include "misc/syntax-list.h"
 #include "parser/parser.h"
 #include "url-handlers/url-handler-manager.h"
 
 #include "debug.h"
-#include "emoticons.h"
 #include "html_document.h"
 
 #include "buddy-info-panel.h"

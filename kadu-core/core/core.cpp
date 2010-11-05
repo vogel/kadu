@@ -38,6 +38,7 @@
 #include "configuration/configuration-manager.h"
 #include "configuration/main-configuration.h"
 #include "contacts/contact-manager.h"
+#include "emoticons/emoticons.h"
 #include "file-transfer/file-transfer-manager.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget-manager.h"
@@ -56,7 +57,6 @@
 
 #include "activate.h"
 #include "debug.h"
-#include "emoticons.h"
 #include "icons-manager.h"
 #include "modules.h"
 #include "updates.h"

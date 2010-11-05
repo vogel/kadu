@@ -23,6 +23,7 @@
 
 #include "chat/message/formatted-message-part.h"
 #include "configuration/configuration-file.h"
+#include "emoticons/emoticons-manager.h"
 #include "misc/misc.h"
 #include "parser/parser.h"
 #include "url-handlers/url-handler-manager.h"
@@ -35,7 +36,6 @@ QString formatMessage(const QString& text)
 	htmlDocument.parseHtml(text);
 	UrlHandlerManager::instance()->convertAllUrls(htmlDocument);
 	EmoticonsManager::instance()->expandEmoticons(htmlDocument, (EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle"));
-// 	GaduImagesManager::setBackgroundsForAnimatedImages(htmlDocument, backgroundColor);
 
 	return htmlDocument.generateHtml();
 }

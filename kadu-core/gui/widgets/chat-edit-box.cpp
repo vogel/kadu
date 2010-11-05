@@ -30,6 +30,7 @@
 #include "configuration/xml-configuration-file.h"
 #include "contacts/contact.h"
 #include "contacts/contact-set.h"
+#include "emoticons/emoticon-selector.h"
 #include "gui/actions/action.h"
 #include "gui/widgets/chat-widget-actions.h"
 #include "gui/widgets/chat-widget-manager.h"
@@ -39,7 +40,6 @@
 #include "chat-widget.h"
 #include "custom-input.h"
 #include "debug.h"
-#include "emoticons.h"
 #include "toolbar.h"
 
 #include "chat-edit-box.h"

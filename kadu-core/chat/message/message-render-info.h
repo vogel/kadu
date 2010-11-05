@@ -35,8 +35,6 @@
 
 #include "protocols/protocol.h"
 
-#include "emoticons.h"
-
 #include "exports.h"
 
 class KADUAPI MessageRenderInfo : public QObject

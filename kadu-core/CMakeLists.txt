@@ -115,6 +115,12 @@ set (kadu_SRCS
 	core/core-actions.cpp
 	core/crash-aware-object.cpp
 
+	emoticons/emoticon-selector-button.cpp
+	emoticons/emoticon-selector.cpp
+	emoticons/emoticons-manager.cpp
+	emoticons/emots-walker.cpp
+	emoticons/prefix-node.cpp
+
 	file-transfer/file-transfer.cpp
 	file-transfer/file-transfer-actions.cpp
 	file-transfer/file-transfer-manager.cpp
@@ -325,7 +331,6 @@ set (kadu_SRCS
 	activate.cpp
 	debug.cpp
 	dnshandler.cpp
-	emoticons.cpp
 	html_document.cpp
 	icons-manager.cpp
 	kadu-application.cpp
@@ -433,6 +438,10 @@ set (kadu_MOC_SRCS
 	configuration/notifier-configuration-data-manager.h
 
 	core/core.h
+
+	emoticons/emoticon-selector-button.h
+	emoticons/emoticon-selector.h
+	emoticons/emoticons-manager.h
 
 	file-transfer/file-transfer-actions.h
 	file-transfer/file-transfer-handler.h
@@ -611,7 +620,6 @@ set (kadu_MOC_SRCS
 	themes/theme-manager.h
 
 	dnshandler.h
-	emoticons.h
 	icons-manager.h
 	kadu-application.h
 	modules.h

@@ -31,6 +31,7 @@
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "chat/chat-manager.h"
+#include "emoticons/emoticons.h"
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
 #include "gui/widgets/buddies-list-view-menu-manager.h"
@@ -45,7 +46,6 @@
 
 #include "custom-input.h"
 #include "debug.h"
-#include "emoticons.h"
 
 #include "chat-widget-actions.h"
 
