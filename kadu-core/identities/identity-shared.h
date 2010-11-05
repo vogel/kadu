@@ -36,6 +36,8 @@ class KADUAPI IdentityShared : public BaseStatusContainer, public Shared
 	QString Name;
 	QList<Account> Accounts;
 
+	Account bestAccount();
+
 protected:
 	virtual void load();
 

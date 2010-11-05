@@ -33,19 +33,19 @@ StatusType::StatusType(const QString &name, const QString &displayName, const QS
 
 bool StatusType::operator < (const StatusType &compare) const
 {
-	if (*MyStatusGroup< *compare.MyStatusGroup)
+	if (*MyStatusGroup < *compare.MyStatusGroup)
 		return true;
-	if (MyStatusGroup== compare.MyStatusGroup)
+	if (MyStatusGroup == compare.MyStatusGroup)
 		return SortIndex < compare.SortIndex;
 	return false;
 }
 
 bool StatusType::operator == (const StatusType &compare) const
 {
-	return (MyStatusGroup== compare.MyStatusGroup) && (SortIndex == compare.SortIndex);
+	return (MyStatusGroup == compare.MyStatusGroup) && (SortIndex == compare.SortIndex);
 }
 
 bool StatusType::operator != (const StatusType &compare) const
 {
-	return (MyStatusGroup!= compare.MyStatusGroup) || (SortIndex != compare.SortIndex);
+	return (MyStatusGroup != compare.MyStatusGroup) || (SortIndex != compare.SortIndex);
 }

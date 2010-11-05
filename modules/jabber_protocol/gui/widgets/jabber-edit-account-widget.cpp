@@ -431,6 +431,8 @@ void JabberEditAccountWidget::loadConnectionData()
 	ResourceName->setText(AccountDetails->resource());
 	Priority->setText(QString::number(AccountDetails->priority()));
 	DataTransferProxy->setText(AccountDetails->dataTransferProxy());
+
+	Proxy->loadProxyData();
 }
 
 void JabberEditAccountWidget::apply()
