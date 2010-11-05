@@ -187,7 +187,7 @@ void WordFix::sendRequest(ChatWidget* chat)
 
 	// Reading chat input to html document.
 	HtmlDocument doc;
-	doc.parseHtml(chat->edit()->toPlainText());
+	doc.parseHtml(chat->edit()->toHtml());
 
 	// Parsing and replacing.
 	for (int i = 0; i < doc.countElements(); i++)
