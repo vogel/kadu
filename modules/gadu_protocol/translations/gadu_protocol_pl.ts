@@ -126,6 +126,18 @@
         <source>Local TCP port</source>
         <translation>Lokalny port TCP</translation>
     </message>
+    <message>
+        <source>You can specify which servers and ports to use.
+Separate every server using semicolon.
+The last IPv4 octet may be specified as a range of addresses.
+For example:
+91.214.237.1 ; 91.214.237.3 ; 91.214.237.10:8074 ; 91.214.237.11-20 ; 91.214.237.21-30:8074</source>
+        <translation>Możesz ustawić, które serwery i porty mają zostać użyte.
+Oddzielaj każdy serwer średnikiem.
+Ostatni oktet adresu IPv4 może być zakresem adresów.
+Na przykład:
+91.214.237.1 ; 91.214.237.3 ; 91.214.237.10:8074 ; 91.214.237.11-20 ; 91.214.237.21-30:8074</translation>
+    </message>
 </context>
 <context>
     <name>DccManager</name>
@@ -136,7 +148,7 @@ IP address (%2) differs from what GG server returned
 as his/her IP address (%3). It may be spoofing
 or he/she has port forwarding. Continue connection?</source>
         <translation>%1 prosi o bezpośrednie połączenie ale jego / jej
-adres IP (%2) różni się od tego jaki zwrócił serwer GG 
+adres IP (%2) różni się od tego jaki zwrócił serwer GG
 jako jego / jej adres IP: (%3). To może być próba podszycia
 się albo on / ona ma przekierowanie portów.
 Kontynuować połączenie?</translation>
