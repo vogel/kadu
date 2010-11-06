@@ -6,6 +6,7 @@
  * Copyright 2009 Tomasz Rostański (rozteck@interia.pl)
  * Copyright 2009, 2010 Piotr Galiszewski (piotrgaliszewski@gmail.com)
  * Copyright 2009 Bartłomiej Zimoń (uzi18@o2.pl)
+ * Copyright 2010 Piotr Dąbrowski (ultr@ultr.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -22,6 +23,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QRegExp>
+
 #include <libgadu.h>
 
 #include "configuration/configuration-file.h"
@@ -33,8 +36,7 @@
  * Server 91.197.13.24 is known to cause invalid password
  * errors so I have disabled it.
  */
-#define GG_SERVERS_COUNT 52
-const char *GaduServersManager::Ips[GG_SERVERS_COUNT] = {
+const char *GaduServersManager::Ips[] = {
 	"91.214.237.2",
 	"91.214.237.3",
 	"91.214.237.4",
@@ -111,21 +113,41 @@ QList<GaduServersManager::GaduServer> GaduServersManager::gaduServersFromString(
 	if (serverAddress.isEmpty() || serverAddress.startsWith(QLatin1String("0.0.0.0")))
 		return result;
 
-	QHostAddress ip;
-
-	int colon = serverAddress.indexOf(":");
-	if (colon > 0) {
-		QString ipAddress = serverAddress.mid(0, colon);
-		QString port = serverAddress.mid(colon + 1);
-
-		if (ip.setAddress(ipAddress))
-			result.append(GaduServer(ip, port.toInt()));
-		return result;
+	QString address;
+	QList<int> ports;
+	QRegExp addressPortRegexp( "^(.+):(\\d+)$" ); // X:Y
+	if (serverAddress.contains(addressPortRegexp))
+	{
+		address = addressPortRegexp.cap(1);
+		int port = addressPortRegexp.cap(2).toInt();
+		ports << port;
+	}
+	else
+	{
+		address = serverAddress;
+		ports = AllPorts;
 	}
 
-	if (ip.setAddress(serverAddress))
-		foreach (int port, AllPorts)
-			result.append(GaduServer(ip, port));
+	QList<QString> servers;
+	QRegExp ipRangeRegexp("^(\\d+)\\.(\\d+)\\.(\\d+)\\.(\\d+)-(\\d+)$"); // X.X.X.X-X
+	if (address.contains(ipRangeRegexp))
+	{
+		int a = ipRangeRegexp.cap(1).toInt();
+		int b = ipRangeRegexp.cap(2).toInt();
+		int c = ipRangeRegexp.cap(3).toInt();
+		int d1 = ipRangeRegexp.cap(4).toInt();
+		int d2 = ipRangeRegexp.cap(5).toInt();
+		for (int d = d1; d <= d2; ++d)
+			servers << QString("%1.%2.%3.%4").arg(a).arg(b).arg(c).arg(d);
+	}
+	else
+		servers << address;
+
+	QHostAddress ip;
+	foreach (QString server, servers)
+		if (ip.setAddress(server))
+			foreach (int port, ports)
+				result.append(GaduServer(ip, port));
 
 	return result;
 }
@@ -147,20 +169,20 @@ void GaduServersManager::buildServerList()
 	if (443 != LastGoodPort)
 		AllPorts << 443;
 
-	// for GG hub
-	GoodServers << GaduServer(QHostAddress((quint32)0), 0);
-
-	GoodServers << gaduServersFromString(config_file.readEntry("Network", "LastServerIP"));
-
 	if (config_file.readBoolEntry("Network", "isDefServers", true))
-		for (int i = 0; i < GG_SERVERS_COUNT; i++)
+	{
+		GoodServers << GaduServer(QHostAddress((quint32)0), 0); // for GG hub
+		GoodServers << gaduServersFromString(config_file.readEntry("Network", "LastServerIP"));
+		for (int i = 0; i < (int)(sizeof(Ips)/sizeof(Ips[0])); ++i)
 			GoodServers << gaduServersFromString(QString::fromLatin1(Ips[i]));
+	}
 	else
 	{
 		QStringList servers = config_file.readEntry("Network", "Server").split(';', QString::SkipEmptyParts);
-
 		foreach (const QString &server, servers)
-			GoodServers << gaduServersFromString(server);
+			GoodServers << gaduServersFromString(server.trimmed());
+		GoodServers << GaduServer(QHostAddress((quint32)0), 0); // for GG hub
+		GoodServers << gaduServersFromString(config_file.readEntry("Network", "LastServerIP"));
 	}
 
 	AllServers = GoodServers;

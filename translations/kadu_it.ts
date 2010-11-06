@@ -352,10 +352,6 @@ E un rischio per la sicurezza!</translation>
         <translation>Indirizzo IP</translation>
     </message>
     <message>
-        <source>You can specify which GG servers to use. Separate every server using semicolon (for example: 91.197.13.26;91.197.13.24;91.197.13.29;91.197.13.6)</source>
-        <translation>Scriva i indirizzi del GG servers di usare. Separare i serveri con punto e virgola (esempio: 91.197.13.26;91.197.13.24;91.197.13.29;91.197.13.6)</translation>
-    </message>
-    <message>
         <source>Port to connect to servers</source>
         <translation>La porta per connessione ai servers</translation>
     </message>

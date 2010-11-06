@@ -354,11 +354,6 @@ Es ist ein Sicherheitsrisiko!</translation>
         <translation>Adresse IP</translation>
     </message>
     <message>
-        <source>You can specify which GG servers to use. Separate every server using semicolon (for example: 91.197.13.26;91.197.13.24;91.197.13.29;91.197.13.6)</source>
-        <translation>Hier können Sie angeben, welchen Server GaduGadu Sie nutzen wollen. Trennen Sie die Adressen IP mit Hilfe eines Semmikolons.
-(z.B: 91.197.13.26;91.197.13.24;91.197.13.29;91.197.13.6)</translation>
-    </message>
-    <message>
         <source>Port to connect to servers</source>
         <translation>Server-Port-Nummer</translation>
     </message>
