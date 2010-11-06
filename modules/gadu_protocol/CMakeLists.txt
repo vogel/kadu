@@ -167,7 +167,7 @@ link_directories (${LIBGADU_LIBRARY_DIRS})
 if (LIBGADU_FOUND)
 	message (STATUS " * libgadu (version ${LIBGADU_VERSION}) was found in ${LIBGADU_LIBDIR}")
 else (LIBGADU_FOUND)
-	message (STATUS " * libgadu (version ${LIBGADU_MIN_VERSION}) was NOT FOUND")
+	message (FATAL_ERROR " * libgadu (version ${LIBGADU_MIN_VERSION}) was NOT FOUND")
 endif (LIBGADU_FOUND)
 
 find_package (Qt4 REQUIRED)
