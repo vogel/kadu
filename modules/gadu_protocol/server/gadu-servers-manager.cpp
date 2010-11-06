@@ -23,7 +23,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QRegExp>
+#include <QtCore/QRegExp>
 
 #include <libgadu.h>
 
@@ -36,7 +36,8 @@
  * Server 91.197.13.24 is known to cause invalid password
  * errors so I have disabled it.
  */
-const char *GaduServersManager::Ips[] = {
+#define GG_SERVERS_COUNT 52
+const char *GaduServersManager::Ips[GG_SERVERS_COUNT] = {
 	"91.214.237.2",
 	"91.214.237.3",
 	"91.214.237.4",
@@ -173,7 +174,7 @@ void GaduServersManager::buildServerList()
 	{
 		GoodServers << GaduServer(QHostAddress((quint32)0), 0); // for GG hub
 		GoodServers << gaduServersFromString(config_file.readEntry("Network", "LastServerIP"));
-		for (int i = 0; i < (int)(sizeof(Ips)/sizeof(Ips[0])); ++i)
+		for (int i = 0; i < GG_SERVERS_COUNT; ++i)
 			GoodServers << gaduServersFromString(QString::fromLatin1(Ips[i]));
 	}
 	else

@@ -48,7 +48,6 @@ class JabberAddAccountWidget : public AccountAddWidget
 	QComboBox *Domain;
 	QLineEdit *AccountPassword;
 	QCheckBox *RememberPassword;
-	QLabel *RemindPassword;
 	QLabel *AtLabel;
 	IdentitiesComboBox *Identity;
 	QPushButton *AddAccountButton;
