@@ -628,8 +628,14 @@ set (kadu_MOC_SRCS
 )
 
 if (UNIX AND NOT APPLE)
-if (USE_X11_XFIXES)
 	include (FindX11)
+	if (X11_FOUND)
+		MESSAGE(STATUS "Found X11 libraries: ${X11_X11_LIB}")
+	else (X11_Xfixes_FOUND)
+		MESSAGE(FATAL_ERROR "Could not find X11 libraries")
+	endif (X11_FOUND)
+
+if (USE_X11_XFIXES)
 	if (X11_Xfixes_FOUND)
 		MESSAGE(STATUS "Found X11 Xfixes extension: ${X11_Xfixes_LIB}")
 	else (X11_Xfixes_FOUND)
@@ -726,11 +732,15 @@ else (WIN32)
 	set_target_properties(kadu PROPERTIES ENABLE_EXPORTS ON)
 	set_target_properties(kadu PROPERTIES COMPILE_FLAGS "-DKADULIB" )
 
-	target_link_libraries (kadu ${STATIC_MODULES} ${QT_LIBRARIES})
+	target_link_libraries (kadu ${STATIC_MODULES} ${QT_LIBRARIES} ${CMAKE_DL_LIBS})
 
-	if (NOT APPLE AND USE_X11_XFIXES)
-		target_link_libraries (kadu ${X11_Xfixes_LIB})
-	endif (NOT APPLE AND USE_X11_XFIXES)
+	if (UNIX AND NOT APPLE)
+		target_link_libraries (kadu ${X11_X11_LIB})
+
+		if (USE_X11_XFIXES)
+			target_link_libraries (kadu ${X11_Xfixes_LIB})
+		endif (USE_X11_XFIXES)
+	endif (UNIX AND NOT APPLE)
 endif (WIN32)
 
 
