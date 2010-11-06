@@ -19,7 +19,8 @@ set (TRANSLATION_SOURCES
 )
 
 set (CONFIGURATION_FILES
-	data/configuration/desktop_docking.ui)
+	data/configuration/desktop_docking.ui
+)
 
 kadu_module (desktop_docking
 	MODULE_SOURCES ${SOURCES}

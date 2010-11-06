@@ -10,7 +10,7 @@ set (MOC_SOURCES
 set (QT_USE_PHONON 1)
 
 if (NOT QT_PHONON_FOUND)
-        pkg_search_module(PHONON REQUIRED phonon)
+	pkg_search_module (PHONON REQUIRED phonon)
 endif (NOT QT_PHONON_FOUND)
 
 kadu_module (phonon_sound

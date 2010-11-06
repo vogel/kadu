@@ -1,5 +1,5 @@
-#pkg_search_module (QCA2 REQUIRED qca2 )
-#pkg_search_module (IDN REQUIRED libidn )
+#pkg_search_module (QCA2 REQUIRED qca2)
+#pkg_search_module (IDN REQUIRED libidn)
 
 set (SOURCES
 	gui/widgets/tlen-add-account-widget.cpp
@@ -62,24 +62,24 @@ set (CONFIGURATION_FILES
 )
 
 set (DATA_FILES
-        data/status/away.png
-        data/status/awayi.png
-        data/status/chat.png
-        data/status/chati.png
-        data/status/dnd.png
-        data/status/dndi.png
-        data/status/invisible.png
-        data/status/invisiblei.png
-        data/status/offline.png
-        data/status/offlinei.png
-        data/status/online.png
-        data/status/onlinei.png
-        data/status/unavailable.png
-        data/status/unavailablei.png
+	data/status/away.png
+	data/status/awayi.png
+	data/status/chat.png
+	data/status/chati.png
+	data/status/dnd.png
+	data/status/dndi.png
+	data/status/invisible.png
+	data/status/invisiblei.png
+	data/status/offline.png
+	data/status/offlinei.png
+	data/status/online.png
+	data/status/onlinei.png
+	data/status/unavailable.png
+	data/status/unavailablei.png
 )
 
-#link_directories( ${QCA2_LIBRARY_DIRS} ${IDN_LIBRARY_DIRS} )
-#add_definitions( ${QCA2_CFLAGS_OTHER} ${IDN_CFLAGS_OTHER} )
+#link_directories (${QCA2_LIBRARY_DIRS} ${IDN_LIBRARY_DIRS})
+#add_definitions (${QCA2_CFLAGS_OTHER} ${IDN_CFLAGS_OTHER})
 
 kadu_module (tlen_protocol
 	MODULE_SOURCES  ${SOURCES}
@@ -88,13 +88,15 @@ kadu_module (tlen_protocol
 	MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 )
 
-#set_target_properties(tlen_protocol PROPERTIES
-#	link_flags "${QCA2_LDFLAGS_OTHER} ${IDN_LDFLAGS_OTHER}" )
+#set_target_properties (tlen_protocol PROPERTIES
+#	link_flags "${QCA2_LDFLAGS_OTHER} ${IDN_LDFLAGS_OTHER}"
+#)
 
-include_directories(
-	  ./QtTlen
+include_directories (
+	./QtTlen
 )
 
-#target_link_libraries(tlen_protocol ${QCA2_LIBRARIES} ${IDN_LIBRARIES} )
+#target_link_libraries (tlen_protocol ${QCA2_LIBRARIES} ${IDN_LIBRARIES})
 install (FILES ${DATA_FILES}
-        DESTINATION ${KADU_MODULES_DIR}/data/tlen_protocol)
+	DESTINATION ${KADU_MODULES_DIR}/data/tlen_protocol
+)

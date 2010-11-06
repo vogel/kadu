@@ -15,4 +15,4 @@ kadu_module (dbus
 	#MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 )
 
-target_link_libraries(dbus ${QT_QTDBUS_LIBRARIES})
+target_link_libraries (dbus ${QT_QTDBUS_LIBRARIES})

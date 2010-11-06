@@ -1,11 +1,14 @@
 set (SOURCES
-	profiles.cpp)
+	profiles.cpp
+)
 
 set (MOC_SOURCES
-	profiles.h)
+	profiles.h
+)
 
 set (TRANSLATION_SOURCES
-	translations/profiles_pl.ts)
+	translations/profiles_pl.ts
+)
 
 kadu_module (profiles
 	MODULE_SOURCES ${SOURCES}

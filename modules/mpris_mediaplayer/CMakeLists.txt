@@ -7,10 +7,12 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
-	translations/mpris_mediaplayer_pl.ts)
+	translations/mpris_mediaplayer_pl.ts
+)
 
 set (CONFIGURATION_FILES
-	configuration/mpris_mediaplayer.ui)
+	configuration/mpris_mediaplayer.ui
+)
 
 kadu_module (mpris_mediaplayer
 	MODULE_SOURCES ${SOURCES}

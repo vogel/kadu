@@ -11,7 +11,8 @@ set (TRANSLATION_SOURCES
 )
 
 set (CONFIGURATION_FILES
-	configuration/single_window.ui)
+	configuration/single_window.ui
+)
 
 kadu_module (single_window
 	MODULE_SOURCES ${SOURCES}

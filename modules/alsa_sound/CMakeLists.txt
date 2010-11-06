@@ -16,7 +16,8 @@ set (TRANSLATION_SOURCES
 )
 
 set (CONFIGURATION_FILES
-	configuration/alsa_sound.ui)
+	configuration/alsa_sound.ui
+)
 
 kadu_module (alsa_sound
 	MODULE_SOURCES ${SOURCES}

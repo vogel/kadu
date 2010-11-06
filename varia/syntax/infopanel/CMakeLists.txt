@@ -10,4 +10,5 @@ set (SYNTAX_FILES
 )
 
 install (FILES ${SYNTAX_FILES}
-	DESTINATION ${KADU_DATA_DIR}/syntax/infopanel)
+	DESTINATION ${KADU_DATA_DIR}/syntax/infopanel
+)

@@ -28,7 +28,8 @@ set (TRANSLATION_SOURCES
 )
 
 set (CONFIGURATION_FILES
-	configuration/sound.ui)
+	configuration/sound.ui
+)
 
 kadu_module (sound
 	MODULE_SOURCES ${SOURCES}
@@ -38,20 +39,20 @@ kadu_module (sound
 	MODULE_BUILDDEF SOUND_BUILD
 )
 
-if(NOT MINGW)
-pkg_search_module (SNDFILE REQUIRED sndfile>=1.0)
-else(NOT MINGW)
-if (NOT MINGW_LIBSNDFILE_DIR)
-		MESSAGE(SEND_ERROR " Pass path to libsndfile -DMINGW_LIBSNDFILE_DIR=path")
+if (NOT MINGW)
+	pkg_search_module (SNDFILE REQUIRED sndfile>=1.0)
+else (NOT MINGW)
+	if (NOT MINGW_LIBSNDFILE_DIR)
+		message (SEND_ERROR " Pass path to libsndfile -DMINGW_LIBSNDFILE_DIR=path")
 	else (NOT MINGW_LIBSNDFILE_DIR)
-    set (SNDFILE_INCLUDE_DIRS ${MINGW_LIBSNDFILE_DIR}/include)
-    set (SNDFILE_LIBRARY_DIRS ${MINGW_LIBSNDFILE_DIR})
-    set (SNDFILE_LIBRARIES -lsndfile-1 -L${MINGW_LIBSNDFILE_DIR})
+		set (SNDFILE_INCLUDE_DIRS ${MINGW_LIBSNDFILE_DIR}/include)
+		set (SNDFILE_LIBRARY_DIRS ${MINGW_LIBSNDFILE_DIR})
+		set (SNDFILE_LIBRARIES -lsndfile-1 -L${MINGW_LIBSNDFILE_DIR})
 	endif (NOT MINGW_LIBSNDFILE_DIR)
-endif(NOT MINGW)
+endif (NOT MINGW)
 
 if (WIN32)
-set_target_properties(sound PROPERTIES COMPILE_FLAGS "-DSOUND_BUILD" )
+	set_target_properties (sound PROPERTIES COMPILE_FLAGS "-DSOUND_BUILD")
 endif (WIN32)
 
 include_directories (${SNDFILE_INCLUDE_DIRS})

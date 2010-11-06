@@ -7,10 +7,10 @@ set (MOC_SOURCES
 	ao-player.h
 )
 
-if(WIN32)
+if (WIN32)
 	include_directories (${CMAKE_CURRENT_SOURCE_DIR})
 	set (SOURCES ${SOURCES} ../module.rc)
-endif(WIN32)
+endif (WIN32)
 
 kadu_module (ao_sound
 	MODULE_SOURCES ${SOURCES}

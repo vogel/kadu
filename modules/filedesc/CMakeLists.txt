@@ -11,7 +11,8 @@ set (TRANSLATION_SOURCES
 )
 
 set (CONFIGURATION_FILES
-	configuration/filedesc.ui)
+	configuration/filedesc.ui
+)
 
 kadu_module (filedesc
 	MODULE_SOURCES ${SOURCES}

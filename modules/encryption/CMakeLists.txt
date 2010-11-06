@@ -20,7 +20,8 @@ set (TRANSLATION_SOURCES
 )
 
 set (CONFIGURATION_FILES
-	configuration/encryption.ui)
+	configuration/encryption.ui
+)
 
 kadu_module (encryption
 	MODULE_SOURCES ${SOURCES}
@@ -34,5 +35,5 @@ include_directories (${QCA2_INCLUDE_DIRS})
 link_directories (${QCA2_LIBRARY_DIRS})
 add_definitions (${QCA2_CFLAGS_OTHER})
 
-target_link_libraries(encryption ${QCA2_LIBRARIES})
-set_target_properties(encryption PROPERTIES LINK_FLAGS "${QCA2_LDFLAGS_OTHER}")
+target_link_libraries (encryption ${QCA2_LIBRARIES})
+set_target_properties (encryption PROPERTIES LINK_FLAGS "${QCA2_LDFLAGS_OTHER}")

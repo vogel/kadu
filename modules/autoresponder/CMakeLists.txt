@@ -14,7 +14,8 @@ set (TRANSLATION_SOURCES
 )
 
 set (CONFIGURATION_FILES
-	configuration/autoresponder.ui)
+	configuration/autoresponder.ui
+)
 
 kadu_module (autoresponder
 	MODULE_SOURCES ${SOURCES}

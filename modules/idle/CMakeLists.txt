@@ -1,9 +1,9 @@
 if (UNIX AND NOT APPLE)
 	include (FindX11)
 	if (X11_Xscreensaver_FOUND)
-      		MESSAGE(STATUS "Found X11 Screen Saver extension: ${X11_Xscreensaver_LIB}")
+		message (STATUS "Found X11 Screen Saver extension: ${X11_Xscreensaver_LIB}")
 	else (X11_Xscreensaver_FOUND)
-      		MESSAGE(FATAL_ERROR "Could not find X11 Screen Saver extension")
+		message (FATAL_ERROR "Could not find X11 Screen Saver extension")
 	endif (X11_Xscreensaver_FOUND)
 
 	set (LIBRARIES ${X11_Xscreensaver_LIB})
@@ -39,5 +39,5 @@ kadu_module (idle
 )
 
 if (WIN32)
-set_target_properties(idle PROPERTIES COMPILE_FLAGS "-DIDLE_BUILD" )
+	set_target_properties (idle PROPERTIES COMPILE_FLAGS "-DIDLE_BUILD")
 endif (WIN32)

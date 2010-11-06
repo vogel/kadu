@@ -14,10 +14,12 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
-	translations/autostatus_pl.ts)
+	translations/autostatus_pl.ts
+)
 
 set (CONFIGURATION_FILES
-	data/configuration/autostatus.ui)
+	data/configuration/autostatus.ui
+)
 
 kadu_module (autostatus
 	MODULE_SOURCES ${SOURCES}

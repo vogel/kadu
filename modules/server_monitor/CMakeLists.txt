@@ -1,31 +1,32 @@
-set (SOURCES                                                                                                                                                               
-        server-monitor.cpp
-        server-status-widget.cpp
-        server-monitor-window.cpp
+set (SOURCES
+	server-monitor.cpp
+	server-status-widget.cpp
+	server-monitor-window.cpp
 )
 
 set (MOC_SOURCES
-        server-monitor.h
-        server-status-widget.h
-        server-monitor-window.h
+	server-monitor.h
+	server-status-widget.h
+	server-monitor-window.h
 )
 
 set (TRANSLATION_SOURCES
-        translations/server-monitor_pl.ts)
+	translations/server-monitor_pl.ts
+)
 
 set (CONFIGURATION_FILES
-        configuration/server-monitor.ui
-        configuration/serverslist.txt
+	configuration/server-monitor.ui
+	configuration/serverslist.txt
 )
 
 kadu_module (server_monitor
-        MODULE_SOURCES ${SOURCES}
-        MODULE_MOC_SOURCES ${MOC_SOURCES}
-        MODULE_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
-        MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
-        MODULE_DEPENDENCIES gadu_protocol
+	MODULE_SOURCES ${SOURCES}
+	MODULE_MOC_SOURCES ${MOC_SOURCES}
+	MODULE_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
+	MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
+	MODULE_DEPENDENCIES gadu_protocol
 )
 
 if (MINGW)
-        target_link_libraries (server_monitor -L${MINGW_LIBGADU_DIR} -L${MINGW_QCA_DIR}/bin)
+	target_link_libraries (server_monitor -L${MINGW_LIBGADU_DIR} -L${MINGW_QCA_DIR}/bin)
 endif (MINGW)

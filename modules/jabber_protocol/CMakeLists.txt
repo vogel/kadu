@@ -1,84 +1,78 @@
-#find_package(Automoc4 REQUIRED)
-include(FindQt4)
+#find_package (Automoc4 REQUIRED)
+include (FindQt4)
 
-find_package(Qt4 REQUIRED)
-INCLUDE(${QT_USE_FILE})
+find_package (Qt4 REQUIRED)
+include (${QT_USE_FILE})
 
 # based on qt4_automoc
-MACRO(KADU_JABBER_AUTOMOC)
-  QT4_GET_MOC_FLAGS(_moc_INCS)
+macro (KADU_JABBER_AUTOMOC)
+	QT4_GET_MOC_FLAGS (_moc_INCS)
 
-  SET(_matching_FILES )
-  FOREACH (_current_FILE ${ARGN})
+	set (_matching_FILES)
+	foreach (_current_FILE ${ARGN})
+		get_filename_component (_abs_FILE ${_current_FILE} ABSOLUTE)
+		# if "SKIP_AUTOMOC" is set to true, we will not handle this file here.
+		# This is required to make uic work correctly:
+		# we need to add generated .cpp files to the sources (to compile them),
+		# but we cannot let automoc handle them, as the .cpp files don't exist yet when
+		# cmake is run for the very first time on them -> however the .cpp files might
+		# exist at a later run. at that time we need to skip them, so that we don't add two
+		# different rules for the same moc file
+		get_source_file_property (_skip ${_abs_FILE} SKIP_AUTOMOC)
 
-      GET_FILENAME_COMPONENT(_abs_FILE ${_current_FILE} ABSOLUTE)
-      # if "SKIP_AUTOMOC" is set to true, we will not handle this file here.
-      # This is required to make uic work correctly:
-      # we need to add generated .cpp files to the sources (to compile them),
-      # but we cannot let automoc handle them, as the .cpp files don't exist yet when
-      # cmake is run for the very first time on them -> however the .cpp files might
-      # exist at a later run. at that time we need to skip them, so that we don't add two
-      # different rules for the same moc file
-      GET_SOURCE_FILE_PROPERTY(_skip ${_abs_FILE} SKIP_AUTOMOC)
+		if (NOT _skip AND EXISTS ${_abs_FILE})
+			file (READ ${_abs_FILE} _contents)
 
-      IF ( NOT _skip AND EXISTS ${_abs_FILE} )
+			get_filename_component (_abs_PATH ${_abs_FILE} PATH)
 
-	FILE(READ ${_abs_FILE} _contents)
-
-	GET_FILENAME_COMPONENT(_abs_PATH ${_abs_FILE} PATH)
-
-	STRING(REGEX MATCHALL "#include +[^ ]+\\.moc[\">]" _match "${_contents}")
-	IF(_match)
-	    FOREACH (_current_MOC_INC ${_match})
-	      STRING(REGEX MATCH "[^ <\"]+\\.moc" _current_MOC "${_current_MOC_INC}")
-	      GET_FILENAME_COMPONENT(_basename ${_current_MOC} NAME_WE)
-	      SET(_header ${_abs_FILE})
-	      SET(_moc    ${_abs_PATH}/${_current_MOC})
-	      QT4_CREATE_MOC_COMMAND(${_header} ${_moc} "${_moc_INCS}" "")
-	      MACRO_ADD_FILE_DEPENDENCIES(${_abs_FILE} ${_moc})
-	    ENDFOREACH (_current_MOC_INC)
-	ENDIF(_match)
-      ENDIF ( NOT _skip AND EXISTS ${_abs_FILE} )
-  ENDFOREACH (_current_FILE)
-ENDMACRO(KADU_JABBER_AUTOMOC)
+			string (REGEX MATCHALL "#include +[^ ]+\\.moc[\">]" _match "${_contents}")
+			if (_match)
+				foreach (_current_MOC_INC ${_match})
+					string (REGEX MATCH "[^ <\"]+\\.moc" _current_MOC "${_current_MOC_INC}")
+					get_filename_component (_basename ${_current_MOC} NAME_WE)
+					set (_header ${_abs_FILE})
+					set (_moc ${_abs_PATH}/${_current_MOC})
+					QT4_CREATE_MOC_COMMAND (${_header} ${_moc} "${_moc_INCS}" "")
+					MACRO_ADD_FILE_DEPENDENCIES (${_abs_FILE} ${_moc})
+				endforeach (_current_MOC_INC)
+			endif (_match)
+		endif (NOT _skip AND EXISTS ${_abs_FILE})
+	endforeach (_current_FILE)
+endmacro (KADU_JABBER_AUTOMOC)
 
 if (MINGW)
-
 	if (NOT MINGW_QCA_DIR)
-		MESSAGE(SEND_ERROR " Pass path to libqca2 -DMINGW_QCA_DIR=path")
+		message (SEND_ERROR " Pass path to libqca2 -DMINGW_QCA_DIR=path")
 	else (NOT MINGW_QCA_DIR)
 		set (QCA2_INCLUDE_DIRS ${MINGW_QCA_DIR}/include/QtCrypto)
 		set (QCA2_LIBRARY_DIRS ${MINGW_QCA_DIR}/bin)
 		set (QCA2_LIBRARIES -lqca2)
 	endif (NOT MINGW_QCA_DIR)
 	if (NOT MINGW_ZLIB_DIR)
-		MESSAGE(SEND_ERROR " Pass path to zlib -DMINGW_ZLIB_DIR=path")
+		message (SEND_ERROR " Pass path to zlib -DMINGW_ZLIB_DIR=path")
 	else (NOT MINGW_ZLIB_DIR)
 		set (ZLIB_INCLUDE_DIRS ${MINGW_ZLIB_DIR})
 		set (ZLIB_LIBRARY_DIRS ${MINGW_ZLIB_DIR})
 		set (ZLIB_LIBRARIES -lzlib1)
 	endif (NOT MINGW_ZLIB_DIR)
-if (NOT MINGW_IDN_DIR)
-		MESSAGE(SEND_ERROR " Pass path to libidn -DMINGW_IDN_DIR=path")
+	if (NOT MINGW_IDN_DIR)
+		message (SEND_ERROR " Pass path to libidn -DMINGW_IDN_DIR=path")
 	else (NOT MINGW_IDN_DIR)
 		set (IDN_INCLUDE_DIRS ${MINGW_IDN_DIR})
 		set (IDN_LIBRARY_DIRS ${MINGW_IDN_DIR})
 		set (IDN_LIBRARIES -lidn)
 	endif (NOT MINGW_IDN_DIR)
-
 else (MINGW)
+	pkg_search_module (QCA2 REQUIRED qca2)
+	pkg_search_module (IDN REQUIRED libidn)
 
-pkg_search_module (QCA2 REQUIRED qca2 )
-pkg_search_module (IDN REQUIRED libidn )
-
-include (FindZLIB)
-if (NOT ZLIB_FOUND)
-    pkg_search_module (ZLIB REQUIRED zlib)
-endif(NOT ZLIB_FOUND)
-
+	include (FindZLIB)
+	if (NOT ZLIB_FOUND)
+		pkg_search_module (ZLIB REQUIRED zlib)
+	endif (NOT ZLIB_FOUND)
 endif (MINGW)
 
-set(SOURCES_IRIS
+set (SOURCES_IRIS
 	libiris/src/xmpp/base/randomnumbergenerator.cpp
 	libiris/src/xmpp/jid/jid.cpp
 	libiris/src/irisnet/noncore/cutestuff/httppoll.cpp
@@ -152,11 +146,11 @@ set(SOURCES_IRIS
 	libiris/src/jdns/jdns_packet.c
 )
 
-if(WIN32)
-  LIST(APPEND SOURCES_IRIS libiris/src/irisnet/corelib/netinterface_win.cpp)
-else(WIN32)
-  LIST(APPEND SOURCES_IRIS libiris/src/irisnet/corelib/netinterface_unix.cpp)
-endif(WIN32)
+if (WIN32)
+	list (APPEND SOURCES_IRIS libiris/src/irisnet/corelib/netinterface_win.cpp)
+else (WIN32)
+	list (APPEND SOURCES_IRIS libiris/src/irisnet/corelib/netinterface_unix.cpp)
+endif (WIN32)
 
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-error")
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-error")
@@ -235,12 +229,11 @@ set (MOC_SOURCES2_IRIS
 	libiris/src/xmpp/xmpp-im/xmpp_features.cpp
 )
 
-if(WIN32)
-  LIST(APPEND MOC_SOURCES2_IRIS libiris/src/irisnet/corelib/netinterface_win.cpp)
-else(WIN32)
-  LIST(APPEND MOC_SOURCES2_IRIS libiris/src/irisnet/corelib/netinterface_unix.cpp)
-endif(WIN32)
-
+if (WIN32)
+	list (APPEND MOC_SOURCES2_IRIS libiris/src/irisnet/corelib/netinterface_win.cpp)
+else (WIN32)
+	list (APPEND MOC_SOURCES2_IRIS libiris/src/irisnet/corelib/netinterface_unix.cpp)
+endif (WIN32)
 
 set (SOURCES
 	certificates/certificate-display-dialog.cpp
@@ -334,8 +327,8 @@ set (DATA_FILES
 	data/status/dnd.png
 	data/status/invisible.png
 	data/status/offline.png
-        data/status/online.png
-        data/status/xa.png
+	data/status/online.png
+	data/status/xa.png
 )
 
 set (TRANSLATION_SOURCES
@@ -345,10 +338,10 @@ set (TRANSLATION_SOURCES
 set (CONFIGURATION_FILES
 )
 
-KADU_JABBER_AUTOMOC ( ${MOC_SOURCES2_IRIS} )
+KADU_JABBER_AUTOMOC (${MOC_SOURCES2_IRIS})
 
-link_directories( ${QCA2_LIBRARY_DIRS} ${IDN_LIBRARY_DIRS} ${ZLIB_LIBRARY_DIRS} )
-add_definitions( ${QCA2_CFLAGS_OTHER} ${IDN_CFLAGS_OTHER} ${ZLIB_CFLAGS_OTHER} -DIRISNET_STATIC )
+link_directories (${QCA2_LIBRARY_DIRS} ${IDN_LIBRARY_DIRS} ${ZLIB_LIBRARY_DIRS})
+add_definitions (${QCA2_CFLAGS_OTHER} ${IDN_CFLAGS_OTHER} ${ZLIB_CFLAGS_OTHER} -DIRISNET_STATIC)
 
 kadu_module (jabber_protocol
 	MODULE_SOURCES ${SOURCES_IRIS}  ${SOURCES}
@@ -358,10 +351,11 @@ kadu_module (jabber_protocol
 	MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 )
 
-#set_target_properties(jabber_protocol PROPERTIES
-#	link_flags "${QCA2_LDFLAGS_OTHER} ${IDN_LDFLAGS_OTHER} ${ZLIB_LDFLAGS_OTHER}" )
+#set_target_properties (jabber_protocol PROPERTIES
+#	link_flags "${QCA2_LDFLAGS_OTHER} ${IDN_LDFLAGS_OTHER} ${ZLIB_LDFLAGS_OTHER}"
+#)
 
-include_directories(
+include_directories (
 	${QCA2_INCLUDE_DIRS}
 	${IDN_INCLUDE_DIRS}
 	${CMAKE_CURRENT_SOURCE_DIR}/libiris
@@ -384,7 +378,8 @@ include_directories(
 	${CMAKE_CURRENT_SOURCE_DIR}/libiris/src/irisnet/appledns
 )
 
-target_link_libraries(jabber_protocol ${QCA2_LIBRARIES} ${IDN_LIBRARIES} ${ZLIB_LIBRARIES} ${QT_LIBRARIES} )
+target_link_libraries (jabber_protocol ${QCA2_LIBRARIES} ${IDN_LIBRARIES} ${ZLIB_LIBRARIES} ${QT_LIBRARIES})
 
 install (FILES ${DATA_FILES}
-        DESTINATION ${KADU_MODULES_DIR}/data/jabber_protocol)
+	DESTINATION ${KADU_MODULES_DIR}/data/jabber_protocol
+)

@@ -10,21 +10,19 @@ set (MOC_SOURCES
 )
 
 if (UNIX AND NOT APPLE)
+	set (SOURCES ${SOURCES}
+		mpris_controller.cpp
+		mpris_mediaplayer.cpp
+	)
 
-set (SOURCES ${SOURCES}
-	mpris_controller.cpp
-	mpris_mediaplayer.cpp
-)
+	set (MOC_SOURCES ${MOC_SOURCES}
+		mpris_controller.h
+		mpris_mediaplayer.h
+	)
 
-set (MOC_SOURCES ${MOC_SOURCES}
-	mpris_controller.h
-	mpris_mediaplayer.h
-)
-
-set (DBUS_LIBS
-	${QT_QTDBUS_LIBRARY}
-)
-
+	set (DBUS_LIBS
+		${QT_QTDBUS_LIBRARY}
+	)
 endif (UNIX AND NOT APPLE)
 
 
@@ -33,7 +31,8 @@ set (TRANSLATION_SOURCES
 )
 
 set (CONFIGURATION_FILES
-	configuration/mediaplayer.ui)
+	configuration/mediaplayer.ui
+)
 
 set (DATA_FILES
 	data/mediaplayer.png
@@ -49,8 +48,9 @@ kadu_module (mediaplayer
 )
 
 install (FILES ${DATA_FILES}
-	DESTINATION "share/kadu/modules/data/mediaplayer")
+	DESTINATION "share/kadu/modules/data/mediaplayer"
+)
 
 if (WIN32)
-set_target_properties(mediaplayer PROPERTIES COMPILE_FLAGS "-DMEDIAPLAYER_BUILD")
+	set_target_properties (mediaplayer PROPERTIES COMPILE_FLAGS "-DMEDIAPLAYER_BUILD")
 endif (WIN32)

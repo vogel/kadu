@@ -1,14 +1,18 @@
 set (SOURCES
-	auto_hide.cpp)
+	auto_hide.cpp
+)
 
 set (MOC_SOURCES
-	auto_hide.h)
+	auto_hide.h
+)
 
 set (TRANSLATION_SOURCES
-	translations/auto_hide_pl.ts)
+	translations/auto_hide_pl.ts
+)
 
 set (CONFIGURATION_FILES
-	configuration/auto_hide.ui)
+	configuration/auto_hide.ui
+)
 
 kadu_module (auto_hide
 	MODULE_SOURCES ${SOURCES}

@@ -15,7 +15,8 @@ set (TRANSLATION_SOURCES
 )
 
 set (CONFIGURATION_FILES
-	configuration/advanced_userlist.ui)
+	configuration/advanced_userlist.ui
+)
 
 kadu_module (advanced_userlist
 	MODULE_SOURCES ${SOURCES}

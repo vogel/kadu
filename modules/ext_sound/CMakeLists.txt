@@ -15,7 +15,8 @@ set (TRANSLATION_SOURCES
 )
 
 set (CONFIGURATION_FILES
-	configuration/ext_sound.ui)
+	configuration/ext_sound.ui
+)
 
 kadu_module (ext_sound
 	MODULE_SOURCES ${SOURCES}

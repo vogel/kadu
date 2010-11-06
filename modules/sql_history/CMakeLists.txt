@@ -22,4 +22,4 @@ kadu_module (sql_history
 	MODULE_DEPENDENCIES history
 )
 
-target_link_libraries(sql_history ${QT_QTSQL_LIBRARIES})
+target_link_libraries (sql_history ${QT_QTSQL_LIBRARIES})

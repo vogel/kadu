@@ -9,7 +9,8 @@ set (MOC_SOURCES
 )
 
 set (CONFIGURATION_FILES
-	configuration/mpd_config.ui)
+	configuration/mpd_config.ui
+)
 
 pkg_search_module (LIBMPDCLIENT REQUIRED libmpdclient)
 include_directories (${LIBMPDCLIENT_INCLUDE_DIRS})

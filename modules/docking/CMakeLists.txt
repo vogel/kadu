@@ -1,27 +1,15 @@
+set (SOURCES
+	docking-module.cpp
+	docking.cpp
+)
+
+set (MOC_SOURCES
+	docking.h
+)
+
 if (APPLE)
-
-set (SOURCES
-	docking-module.cpp
-	docking.cpp
-	mac_docking_helper.cpp
-)
-
-set (MOC_SOURCES
-	docking.h
-	mac_docking_helper.h
-)
-
-else (APPLE)
-
-set (SOURCES
-	docking-module.cpp
-	docking.cpp
-)
-
-set (MOC_SOURCES
-	docking.h
-)
-
+	list (APPEND SOURCES mac_docking_helper.cpp)
+	list (APPEND MOC_SOURCES mac_docking_helper.h)
 endif (APPLE)
 
 set (TRANSLATION_SOURCES
@@ -32,7 +20,8 @@ set (TRANSLATION_SOURCES
 )
 
 set (CONFIGURATION_FILES
-	data/configuration/docking.ui)
+	data/configuration/docking.ui
+)
 
 kadu_module (docking
 	MODULE_SOURCES ${SOURCES}
@@ -43,5 +32,5 @@ kadu_module (docking
 )
 
 if (WIN32)
-set_target_properties(docking PROPERTIES COMPILE_FLAGS "-DDOCKING_BUILD")
+	set_target_properties (docking PROPERTIES COMPILE_FLAGS "-DDOCKING_BUILD")
 endif (WIN32)

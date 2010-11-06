@@ -1,14 +1,18 @@
 set (SOURCES
-	split.cpp)
+	split.cpp
+)
 
 set (MOC_SOURCES
-	split.h)
+	split.h
+)
 
 set (TRANSLATION_SOURCES
-	translations/split_messages_pl.ts)
+	translations/split_messages_pl.ts
+)
 
 set (CONFIGURATION_FILES
-	configuration/split_messages.ui)
+	configuration/split_messages.ui
+)
 
 kadu_module (split_messages
 	MODULE_SOURCES ${SOURCES}

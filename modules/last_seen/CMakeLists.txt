@@ -1,13 +1,16 @@
 set (SOURCES
 	infos.cpp
-	infos_dialog.cpp)
+	infos_dialog.cpp
+)
 
 set (MOC_SOURCES
 	infos.h
-	infos_dialog.h)
+	infos_dialog.h
+)
 
 set (TRANSLATION_SOURCES
-	translations/last_seen_pl.ts)
+	translations/last_seen_pl.ts
+)
 
 kadu_module (last_seen
 	MODULE_SOURCES ${SOURCES}

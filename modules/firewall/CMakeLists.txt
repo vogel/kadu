@@ -3,18 +3,22 @@ set (SOURCES
 	firewall-configuration-ui-handler.cpp
 	firewall-module.cpp
 	firewall-notification.cpp
-	firewall.cpp)
+	firewall.cpp
+)
 
 set (MOC_SOURCES
 	firewall-configuration-ui-handler.h
 	firewall-notification.h
-	firewall.h)
+	firewall.h
+)
 
 set (TRANSLATION_SOURCES
-	translations/firewall_pl.ts)
+	translations/firewall_pl.ts
+)
 
 set (CONFIGURATION_FILES
-	configuration/firewall.ui)
+	configuration/firewall.ui
+)
 
 kadu_module (firewall
 	MODULE_SOURCES ${SOURCES}

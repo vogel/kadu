@@ -13,12 +13,13 @@ set (TRANSLATION_SOURCES
 )
 
 set (CONFIGURATION_FILES
-	configuration/spellchecker.ui)
+	configuration/spellchecker.ui
+)
 
-if(WIN32)
+if (WIN32)
 	include_directories (${CMAKE_CURRENT_SOURCE_DIR})
 	set (SOURCES ${SOURCES} ../module.rc)
-endif(WIN32)
+endif (WIN32)
 
 include (FindASPELL)
 

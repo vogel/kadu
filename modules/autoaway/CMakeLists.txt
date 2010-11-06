@@ -16,7 +16,8 @@ set (TRANSLATION_SOURCES
 )
 
 set (CONFIGURATION_FILES
-	configuration/autoaway.ui)
+	configuration/autoaway.ui
+)
 
 kadu_module (autoaway
 	MODULE_SOURCES ${SOURCES}

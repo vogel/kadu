@@ -14,7 +14,8 @@ set (TRANSLATION_SOURCES
 )
 
 set (CONFIGURATION_FILES
-	configuration/dsp_sound.ui)
+	configuration/dsp_sound.ui
+)
 
 kadu_module (dsp_sound
 	MODULE_SOURCES ${SOURCES}

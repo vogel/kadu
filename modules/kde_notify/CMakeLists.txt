@@ -13,7 +13,8 @@ set (TRANSLATION_SOURCES
 )
 
 set (CONFIGURATION_FILES
-	configuration/kde_notify.ui)
+	configuration/kde_notify.ui
+)
 
 kadu_module (kde_notify
 	MODULE_SOURCES ${SOURCES}

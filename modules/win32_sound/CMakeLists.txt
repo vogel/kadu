@@ -7,14 +7,15 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
-	#	translations/win32_sound_de.ts
-	#	translations/win32_sound_fr.ts
-	#	translations/win32_sound_it.ts
-	#	translations/win32_sound_pl.ts
+#	translations/win32_sound_de.ts
+#	translations/win32_sound_fr.ts
+#	translations/win32_sound_it.ts
+#	translations/win32_sound_pl.ts
 )
 
 set (CONFIGURATION_FILES
-	configuration/win32_sound.ui)
+	configuration/win32_sound.ui
+)
 
 kadu_module (win32_sound
 	MODULE_SOURCES ${SOURCES}

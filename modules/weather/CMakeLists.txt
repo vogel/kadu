@@ -1,4 +1,3 @@
-
 set (SOURCES
 	autodownloader.cpp
 	citysearchresult.cpp
@@ -75,40 +74,43 @@ set (ICON_FILES
 	data/icons/t10.gif
 )
 
-if(WIN32)
+if (WIN32)
 	include_directories (${CMAKE_CURRENT_SOURCE_DIR})
 	set (SOURCES ${SOURCES} ../module.rc)
-endif(WIN32)
+endif (WIN32)
 
 kadu_module_desc (weather.desc)
-kadu_module_configuration(${CONFIGURATION_FILES})
+kadu_module_configuration (${CONFIGURATION_FILES})
 qt_wrap_cpp (weather MOC_FILES ${MOC_SOURCES})
 
 qt4_add_translation (TRANSLATION_FILES ${TRANSLATION_SOURCES})
 
 install (FILES ${TRANSLATION_FILES}
-	DESTINATION "share/kadu/modules/translations")
+	DESTINATION "share/kadu/modules/translations"
+)
 
 install (FILES ${DATA_FILES}
-	DESTINATION "share/kadu/modules/data/weather")
+	DESTINATION "share/kadu/modules/data/weather"
+)
 
 install (FILES ${ICON_FILES}
-	DESTINATION "share/kadu/modules/data/weather/icons")
+	DESTINATION "share/kadu/modules/data/weather/icons"
+)
 
 if (COMMAND cmake_policy)
-	cmake_policy(SET CMP0003 NEW)
+	cmake_policy (SET CMP0003 NEW)
 endif (COMMAND cmake_policy)
 
 add_library (weather ${weather} ${SOURCES} ${MOC_FILES})
 add_custom_target (weather-translations DEPENDS ${TRANSLATION_FILES})
 if (weather STREQUAL STATIC)
-	set_target_properties(weather PROPERTIES COMPILE_FLAGS "-DKADULIB" )
+	set_target_properties (weather PROPERTIES COMPILE_FLAGS "-DKADULIB")
 else (weather STREQUAL STATIC)
 	if (WIN32)
-		target_link_libraries(weather kadu_core notify)
+		target_link_libraries (weather kadu_core notify)
 	endif (WIN32)
 	if (APPLE)
-		set_target_properties(weather PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
+		set_target_properties (weather PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
 	endif (APPLE)
 endif (weather STREQUAL STATIC)
 add_dependencies (weather weather-translations)

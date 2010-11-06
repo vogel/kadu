@@ -13,7 +13,8 @@ set (TRANSLATION_SOURCES
 )
 
 set (CONFIGURATION_FILES
-	configuration/tabs.ui)
+	configuration/tabs.ui
+)
 
 kadu_module (tabs
 	MODULE_SOURCES ${SOURCES}
