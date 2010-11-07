@@ -42,14 +42,17 @@ BuddyPreferredManager::~BuddyPreferredManager()
 {
 }
 
+// TODO: 0.8 do a big review
 Contact BuddyPreferredManager::preferredContact(Buddy buddy, Account account, bool includechats)
 {
+	Q_UNUSED(includechats)
+
 	if (!buddy || buddy.contacts().isEmpty())
 		return Contact::null;
 
-	if (!includechats)
+// 	if (!includechats)
 		return preferredContactByStatus(buddy, account);
-
+/*
 	if (!account)
 	{
 		if (Preferreds.contains(buddy))
@@ -68,7 +71,7 @@ Contact BuddyPreferredManager::preferredContact(Buddy buddy, Account account, bo
 
 	contact = preferredContactByStatus(buddy, account);
 
-	return contact;
+	return contact;*/
 }
 
 Contact BuddyPreferredManager::preferredContact(Buddy buddy, bool includechats)

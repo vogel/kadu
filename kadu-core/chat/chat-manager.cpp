@@ -132,7 +132,13 @@ Chat ChatManager::findChat(BuddySet buddies, bool create)
 	QMutexLocker(&mutex());
 
 	if (buddies.count() == 1)
-		return findChat(ContactSet(BuddyPreferredManager::instance()->preferredContact(*buddies.begin())), create);
+	{
+		Contact contact = BuddyPreferredManager::instance()->preferredContactByPendingMessages(*buddies.begin());
+		if (!contact)
+			contact = BuddyPreferredManager::instance()->preferredContact(*buddies.begin());
+
+		return findChat(ContactSet(contact), create);
+	}
 
 	Account commonAccount = getCommonAccount(buddies);
 	if (!commonAccount)

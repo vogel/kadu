@@ -44,17 +44,17 @@ class KADUAPI BuddyPreferredManager : public QObject
 	BuddyPreferredManager();
 	~BuddyPreferredManager();
 
-	Contact preferredContactByPendingMessages(Buddy buddy, Account account = Account::null);
-	Contact preferredContactByChatWidgets(Buddy buddy, Account account = Account::null);
-	Contact preferredContactByStatus(Buddy buddy, Account account = Account::null);
-	Contact morePreferredContactByStatus(Contact c1, Contact c2, Account account = Account::null);
-
 public:
 	static BuddyPreferredManager *instance();
 
 	Contact preferredContact(Buddy buddy, Account account, bool includechats = true);
 	Contact preferredContact(Buddy buddy, bool includechats = true);
 	Account preferredAccount(Buddy buddy, bool includechats = true);
+
+	Contact preferredContactByPendingMessages(Buddy buddy, Account account = Account::null);
+	Contact preferredContactByChatWidgets(Buddy buddy, Account account = Account::null);
+	Contact preferredContactByStatus(Buddy buddy, Account account = Account::null);
+	Contact morePreferredContactByStatus(Contact c1, Contact c2, Account account = Account::null);
 
 	void updatePreferred(Buddy buddy);
 
