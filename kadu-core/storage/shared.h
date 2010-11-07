@@ -102,7 +102,7 @@
  * Calls @link dataUpdated @endlink method after data is changed.
  */
 #define KaduShared_PropertyBoolWrite(capitalized_name) \
-	void set##capitalized_name(bool name) { ensureLoaded(); capitalized_name = name; dataUpdated(); }
+	void set##capitalized_name(bool name) { ensureLoaded(); if (capitalized_name != name) { capitalized_name = name; dataUpdated(); } }
 
 /**
  * @author Rafal 'Vogel' Malinowski
