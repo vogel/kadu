@@ -93,7 +93,7 @@ void GaduContactListHandler::updateContactEntry(Contact contact)
 
 void GaduContactListHandler::addContactEntry(int uin, int type)
 {
-	if (!uin)
+	if (!uin || Protocol->account().id() == QString::number(uin))
 		return;
 
 	gg_session *session = Protocol->gaduSession();
