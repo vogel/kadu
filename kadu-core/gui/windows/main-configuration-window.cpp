@@ -201,7 +201,6 @@ MainConfigurationWindow::MainConfigurationWindow()
 	emoticonsStyleComboBox = dynamic_cast<ConfigComboBox *>(widget()->widgetById("emoticonsStyle"));
 	emoticonsThemeComboBox = dynamic_cast<ConfigComboBox *>(widget()->widgetById("emoticonsTheme"));
 	emoticonsScalingComboBox = dynamic_cast<ConfigComboBox *>(widget()->widgetById("emoticonsScaling"));
-	connect(emoticonsStyleComboBox, SIGNAL(activated(int)), this, SLOT(onChangeEmoticonsStyle(int)));
 	connect(emoticonsThemeComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onChangeEmoticonsTheme(int)));
 	connect(widget()->widgetById("emoticonsPaths"), SIGNAL(changed()), this, SLOT(setEmoticonThemes()));
 
