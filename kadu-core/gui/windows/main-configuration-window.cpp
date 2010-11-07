@@ -57,6 +57,7 @@
 #include "misc/misc.h"
 #include "status/status.h"
 #include "themes/icon-theme-manager.h"
+#include "themes/emoticon-theme-manager.h"
 
 #include "debug.h"
 #include "icons-manager.h"
@@ -199,7 +200,9 @@ MainConfigurationWindow::MainConfigurationWindow()
 
 	emoticonsStyleComboBox = dynamic_cast<ConfigComboBox *>(widget()->widgetById("emoticonsStyle"));
 	emoticonsThemeComboBox = dynamic_cast<ConfigComboBox *>(widget()->widgetById("emoticonsTheme"));
+	emoticonsScalingComboBox = dynamic_cast<ConfigComboBox *>(widget()->widgetById("emoticonsScaling"));
 	connect(emoticonsStyleComboBox, SIGNAL(activated(int)), this, SLOT(onChangeEmoticonsStyle(int)));
+	connect(emoticonsThemeComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onChangeEmoticonsTheme(int)));
 	connect(widget()->widgetById("emoticonsPaths"), SIGNAL(changed()), this, SLOT(setEmoticonThemes()));
 
 	QWidget *showInformationPanel = widget()->widgetById("showInformationPanel");
@@ -312,14 +315,22 @@ void MainConfigurationWindow::setIconThemes()
 
 void MainConfigurationWindow::setEmoticonThemes()
 {
-	ConfigComboBox *emoticonsTheme = dynamic_cast<ConfigComboBox *>(widget()->widgetById("emoticonsTheme"));
-	EmoticonsManager::instance()->setPaths((dynamic_cast<PathListEdit *>(widget()->widgetById("emoticonsPaths")))->pathList());
+	ConfigComboBox *emoticonsThemes = dynamic_cast<ConfigComboBox *>(widget()->widgetById("emoticonsTheme"));
+	EmoticonsManager::instance()->themeManager()->loadThemes((dynamic_cast<PathListEdit *>(widget()->widgetById("emoticonsPaths")))->pathList());
 
-	QStringList themes = EmoticonsManager::instance()->themes();
-	themes.sort();
+	(void)QT_TRANSLATE_NOOP("@default", "default");
+	QList<Theme> themes = EmoticonsManager::instance()->themeManager()->themes();
 
-	emoticonsTheme->setItems(themes, themes);
-	emoticonsTheme->setCurrentItem(EmoticonsManager::instance()->theme());
+	QStringList values;
+	QStringList captions;
+	foreach (const Theme &theme, themes)
+	{
+		values.append(theme.path());
+		captions.append(qApp->translate("@default", theme.name().toAscii().data()));
+	}
+
+	emoticonsThemes->setItems(values, captions);
+	emoticonsThemes->setCurrentItem(EmoticonsManager::instance()->themeManager()->currentTheme().path());
 }
 
 void MainConfigurationWindow::setToolTipClasses()
@@ -339,11 +350,10 @@ void MainConfigurationWindow::setToolTipClasses()
 	dynamic_cast<ConfigComboBox *>(widget()->widgetById("toolTipClasses"))->setItems(values, captions);
 }
 
-void MainConfigurationWindow::onChangeEmoticonsStyle(int index)
+void MainConfigurationWindow::onChangeEmoticonsTheme(int index)
 {
-	Q_UNUSED(index)
-
-	emoticonsThemeComboBox->setEnabled(emoticonsStyleComboBox->currentItemValue() != "0");
+	emoticonsStyleComboBox->setEnabled(index != 0);
+	emoticonsScalingComboBox->setEnabled(index != 0);
 }
 
 void MainConfigurationWindow::onInfoPanelSyntaxEditorWindowCreated(SyntaxEditorWindow *syntaxEditorWindow)

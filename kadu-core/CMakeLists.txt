@@ -320,6 +320,7 @@ set (kadu_SRCS
 	storage/storage-point.cpp
 	storage/uuid-storable-object.cpp
 
+	themes/emoticon-theme-manager.cpp
 	themes/icon-theme-manager.cpp
 	themes/theme.cpp
 	themes/theme-manager.cpp
@@ -616,6 +617,7 @@ set (kadu_MOC_SRCS
 	status/status-container.h
 	status/status-container-manager.h
 
+	themes/emoticon-theme-manager.h
 	themes/icon-theme-manager.h
 	themes/theme-manager.h
 

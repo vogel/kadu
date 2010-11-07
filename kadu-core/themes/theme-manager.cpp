@@ -22,8 +22,8 @@
 
 #include "theme-manager.h"
 
-ThemeManager::ThemeManager(QObject *parent) :
-		QObject(parent), CurrentThemeIndex(-1)
+ThemeManager::ThemeManager(bool includeNone, QObject *parent) :
+		QObject(parent), IncludeNone(includeNone), CurrentThemeIndex(-1)
 {
 }
 
@@ -61,6 +61,9 @@ void ThemeManager::loadThemes(QStringList pathList)
 	CurrentThemeIndex = -1;
 
 	Themes.clear();
+
+	if (IncludeNone)
+		Themes.append(Theme("", tr("None")));
 
 	foreach (const QString &path, pathList)
 	{

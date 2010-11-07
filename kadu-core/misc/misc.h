@@ -71,4 +71,6 @@ KADUAPI QString narg(const QString &s, const QString &arg1, const QString &arg2,
 **/
 KADUAPI QString narg(const QString &s, const QString **tab, int count);
 
+QString fixFileName(const QString &path, const QString &fn);
+
 #endif // MISC_H

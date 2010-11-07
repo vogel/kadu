@@ -116,24 +116,6 @@ const QString & Themes::theme() const
 	return ActualTheme;
 }
 
-QString Themes::fixFileName(const QString &path, const QString &fn) const
-{
-	// check if original path is ok
-	if(QFile::exists(path + '/' + fn))
-		return fn;
-	// maybe all lowercase?
-	if(QFile::exists(path + '/' + fn.toLower()))
-		return fn.toLower();
-	// split for name and extension
-	QString name = fn.section('.', 0, 0);
-	QString ext = fn.section('.', 1);
-	// maybe extension uppercase?
-	if(QFile::exists(path + '/' + name + '.' + ext.toUpper()))
-		return name + '.' + ext.toUpper();
-	// we cannot fix it, return original
-	return fn;
-}
-
 void Themes::setPaths(const QStringList &paths)
 {
 	kdebugf();

@@ -17,45 +17,24 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef THEME_MANAGER_H
-#define THEME_MANAGER_H
+#ifndef EMOTICON_THEME_MANAGER_H
+#define EMOTICON_THEME_MANAGER_H
 
-#include <QtCore/QObject>
+#include "themes/theme-manager.h"
 
-#include "themes/theme.h"
-
-class ThemeManager : public QObject
+class EmoticonThemeManager : public ThemeManager
 {
 	Q_OBJECT
 
-	bool IncludeNone;
-	QList<Theme> Themes;
-	int CurrentThemeIndex;
-
-	int getDefaultThemeIndex();
-
 protected:
-	QStringList getSubDirs(const QString &dirPath);
-
-	virtual QStringList defaultThemePathes() = 0;
-	virtual bool isValidThemePath(const QString &themePath) = 0;
-	virtual QString getThemeName(const QString &themePath) = 0;
+	virtual QStringList defaultThemePathes();
+	virtual bool isValidThemePath(const QString &themePath);
+	virtual QString getThemeName(const QString &themePath);
 
 public:
-	explicit ThemeManager(bool includeNone, QObject *parent = 0);
-	virtual ~ThemeManager();
-
-	void loadThemes(QStringList pathList);
-
-	const QList<Theme> & themes() const { return Themes; }
-
-	void setCurrentTheme(const QString &themePath);
-	int currentThemeIndex() const;
-	const Theme & currentTheme() const;
-
-signals:
-	void themeListUpdated();
+	explicit EmoticonThemeManager(QObject *parent = 0);
+	virtual ~EmoticonThemeManager();
 
 };
 
-#endif // THEME_MANAGER_H
+#endif // EMOTICON_THEME_MANAGER_H

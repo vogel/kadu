@@ -22,34 +22,34 @@
 
 #include "misc/path-conversion.h"
 
-#include "icon-theme-manager.h"
+#include "emoticon-theme-manager.h"
 
-IconThemeManager::IconThemeManager(QObject *parent) :
-		ThemeManager(false, parent)
+EmoticonThemeManager::EmoticonThemeManager(QObject *parent) :
+		ThemeManager(true, parent)
 {
 }
 
-IconThemeManager::~IconThemeManager()
+EmoticonThemeManager::~EmoticonThemeManager()
 {
 }
 
-QStringList IconThemeManager::defaultThemePathes()
+QStringList EmoticonThemeManager::defaultThemePathes()
 {
-	QStringList result = getSubDirs(dataPath("kadu/themes/icons"));
+	QStringList result = getSubDirs(dataPath("kadu/themes/emoticons"));
 	result += getSubDirs(profilePath("icons"));
 
 	return result;
 }
 
-bool IconThemeManager::isValidThemePath(const QString &themePath)
+bool EmoticonThemeManager::isValidThemePath(const QString &themePath)
 {
-	QString kaduIconFileName = themePath + "/kadu_icons/64x64/kadu.png";
+	QString kaduIconFileName = themePath + "/emots.txt";
 	QFileInfo kaduIconFile(kaduIconFileName);
 
 	return kaduIconFile.exists();
 }
 
-QString IconThemeManager::getThemeName(const QString &themePath)
+QString EmoticonThemeManager::getThemeName(const QString &themePath)
 {
 	int lastSlash = themePath.lastIndexOf('/');
 	if (-1 == lastSlash)

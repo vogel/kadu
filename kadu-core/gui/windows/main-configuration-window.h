@@ -66,6 +66,7 @@ class KADUAPI MainConfigurationWindow : public ConfigurationWindow, CompositingA
 	QSlider *userboxAlpha;
 	ConfigComboBox *emoticonsStyleComboBox;
 	ConfigComboBox *emoticonsThemeComboBox;
+	ConfigComboBox *emoticonsScalingComboBox;
 	BuddyListBackgroundColorsWidget *buddyColors;
 
 	explicit MainConfigurationWindow();
@@ -78,7 +79,7 @@ class KADUAPI MainConfigurationWindow : public ConfigurationWindow, CompositingA
 	virtual void compositingDisabled();
 
 private slots:
-	void onChangeEmoticonsStyle(int index);
+	void onChangeEmoticonsTheme(int index);
 
 	void onChangeStartupStatus(int index);
 
@@ -116,6 +117,7 @@ public:
 	virtual ~MainConfigurationWindow();
 
 	virtual void show();
+
 };
 
 #endif // MAIN_CONFIGURATION_WINDOW_H

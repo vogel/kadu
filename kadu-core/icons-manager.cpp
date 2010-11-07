@@ -186,8 +186,6 @@ void IconsManager::clearCache()
 
 void IconsManager::configurationUpdated()
 {
-	kdebugf();
-
 	bool themeWasChanged = config_file.readEntry("Look", "IconTheme") != ThemeManager->currentTheme().path();
 	if (themeWasChanged)
 	{
@@ -197,8 +195,6 @@ void IconsManager::configurationUpdated()
 
 		emit themeChanged();
 	}
-
-	kdebugf2();
 }
 
 QSize IconsManager::getIconsSize()

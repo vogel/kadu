@@ -67,8 +67,6 @@ class KADUAPI Themes : public QObject
 	**/
 	bool validateDir(const QString &path) const;
 
-	QString fixFileName(const QString &path, const QString &fn) const;
-
 public:
 	/**
 		\fn Themes(const QString &name, const QString &configname)

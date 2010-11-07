@@ -32,6 +32,7 @@
 #include "configuration/configuration-file.h"
 #include "emoticons/emots-walker.h"
 #include "misc/misc.h"
+#include "themes/emoticon-theme-manager.h"
 #include "debug.h"
 #include "html_document.h"
 
@@ -51,15 +52,14 @@ EmoticonsManager::EmoticonsListItem::EmoticonsListItem()
 }
 
 EmoticonsManager::EmoticonsManager() :
-		Themes("emoticons", "emots.txt"), Aliases(), Selector(), walker(0)
+		Aliases(), Selector(), walker(0)
 
 {
-	kdebugf();
+	QStringList iconPaths = config_file.readEntry("Chat", "EmoticonsPaths").split(QRegExp("(;|:|&)"), QString::SkipEmptyParts);
 
-	setPaths(config_file.readEntry("Chat", "EmoticonsPaths").split(QRegExp("(;|:|&)"), QString::SkipEmptyParts));
-	setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
-
-	kdebugf2();
+	ThemeManager = new EmoticonThemeManager(this);
+	ThemeManager->loadThemes(iconPaths);
+	configurationUpdated();
 }
 
 EmoticonsManager::~EmoticonsManager()
@@ -68,42 +68,33 @@ EmoticonsManager::~EmoticonsManager()
 		delete walker;
 }
 
-void EmoticonsManager::configurationUpdated()
+EmoticonThemeManager * EmoticonsManager::themeManager() const
 {
-	kdebugf();
-
-	setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
-
-	kdebugf2();
+	return ThemeManager;
 }
 
-void EmoticonsManager::setEmoticonsTheme(const QString &theme)
+void EmoticonsManager::configurationUpdated()
 {
-	kdebugmf(KDEBUG_FUNCTION_START | KDEBUG_INFO, "theme: %s\n", qPrintable(theme));
-
-	QStringList themeList = themes();
-	if (themeList.contains(theme))
+	bool themeWasChanged = config_file.readEntry("Chat", "EmoticonsTheme") != ThemeManager->currentTheme().path();
+	if (themeWasChanged)
 	{
-		config_file.writeEntry("Chat", "EmoticonsTheme", theme);
-		setTheme(theme);
-	}
-	else
-	{
-		config_file.writeEntry("Chat", "EmoticonsTheme", "penguins");
-		setTheme("penguins");
-	}
+		ThemeManager->setCurrentTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
+		config_file.writeEntry("Chat", "EmoticonsTheme", ThemeManager->currentTheme().path());
 
-	if (!loadGGEmoticonTheme())
-	{
-		config_file.writeEntry("Chat", "EmoticonsTheme", "penguins");
-		if (!loadGGEmoticonTheme() && (themeList.size() > 0))
-		{
-			config_file.writeEntry("Chat", "EmoticonsTheme", themeList[0]);
-			loadGGEmoticonTheme();
-		}
+		loadTheme();
 	}
+}
 
-	kdebugf2();
+void EmoticonsManager::loadTheme()
+{
+	Aliases.clear();
+	Selector.clear();
+	delete walker;
+	walker = 0;
+
+	Theme theme = ThemeManager->currentTheme();
+	if (theme.isValid())
+		loadGGEmoticonTheme(theme.path());
 }
 
 QString EmoticonsManager::getQuoted(const QString &s, unsigned int &pos)
@@ -125,7 +116,7 @@ QString EmoticonsManager::getQuoted(const QString &s, unsigned int &pos)
 	return r;
 }
 
-bool EmoticonsManager::loadGGEmoticonThemePart(const QString &subdir)
+bool EmoticonsManager::loadGGEmoticonThemePart(const QString &themeDir, const QString &subdir)
 {
 	kdebugmf(KDEBUG_FUNCTION_START, "subdir: %s\n", qPrintable(subdir));
 
@@ -133,8 +124,8 @@ bool EmoticonsManager::loadGGEmoticonThemePart(const QString &subdir)
 
 	if (!dir.isEmpty() && !dir.endsWith('/'))
 		dir += '/';
-	QString path = themePath() + '/' + dir;
-	QFile theme_file(path + ConfigName);
+	QString path = themeDir + '/' + dir;
+	QFile theme_file(path + "emots.txt");
 	if (!theme_file.open(QIODevice::ReadOnly))
 	{
 		kdebugm(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "Error opening %s file\n",
@@ -194,34 +185,27 @@ bool EmoticonsManager::loadGGEmoticonThemePart(const QString &subdir)
 	return true;
 }
 
-bool EmoticonsManager::loadGGEmoticonTheme()
+bool EmoticonsManager::loadGGEmoticonTheme(const QString &themeDir)
 {
-	kdebugf();
-
 	Aliases.clear();
 	Selector.clear();
-	bool something_loaded = false;
-	if (loadGGEmoticonThemePart(QString::null))
-		something_loaded = true;
-	QStringList subdirs = getSubDirs(themePath());
-	foreach(const QString &subdir, subdirs)
-		if (loadGGEmoticonThemePart(subdir))
-			something_loaded = true;
 
-	if (something_loaded) {
+	if (loadGGEmoticonThemePart(themeDir, QString::null))
+	{
 		// delete previous dictionary of emots
-		if (walker)
-			delete walker;
+		delete walker;
 		walker = new EmotsWalker();
 		int i = 0;
+
 		// put all emots into dictionary, to allow easy finding
 		// their occurrences in text
 		foreach(const EmoticonsListItem &item, Aliases)
 			walker->insertString(item.alias.toLower(), i++);
+
+		return true;
 	}
 
-	kdebugmf(KDEBUG_FUNCTION_END | KDEBUG_INFO, "loaded: %d\n", something_loaded);
-	return something_loaded;
+	return false;
 }
 
 void EmoticonsManager::expandEmoticons(HtmlDocument &doc, EmoticonsStyle style)
@@ -231,7 +215,6 @@ void EmoticonsManager::expandEmoticons(HtmlDocument &doc, EmoticonsStyle style)
 	if (EmoticonsStyleNone == style)
 		return;
 
-	static bool emotsFound = false;
 	const static QString emotTemplate("<img emoticon=\"1\" alt=\"%1\" title=\"%1\" src=\"file:///%2\" />");
 
 	if (!walker)
@@ -239,14 +222,6 @@ void EmoticonsManager::expandEmoticons(HtmlDocument &doc, EmoticonsStyle style)
 		kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "end: EMOTICONS NOT LOADED!\n");
 		return;
 	}
-
-	if (!emotsFound && getSubDirs(dataPath("kadu/themes/emoticons")).isEmpty())
-	{
-		fprintf(stderr, "no emoticons in %s\n", qPrintable(dataPath("kadu/themes/emoticons")));
-		kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "end: NO EMOTICONS!\n");
-		return;
-	}
-	emotsFound = true;
 
 	// check in config if user wants animated emots
 	bool animated = style == EmoticonsStyleAnimated;

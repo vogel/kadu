@@ -33,13 +33,14 @@
 #include "emoticons/emoticons.h"
 #include "themes.h"
 
+class EmoticonThemeManager;
 class EmotsWalker;
 class HtmlDocument;
 
 /**
 	Menad�er emotikon�w
 **/
-class KADUAPI EmoticonsManager : public Themes, ConfigurationAwareObject
+class KADUAPI EmoticonsManager : public QObject, ConfigurationAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(EmoticonsManager)
@@ -51,6 +52,8 @@ class KADUAPI EmoticonsManager : public Themes, ConfigurationAwareObject
 	EmoticonsManager();
 
 	static EmoticonsManager *Instance;
+
+	EmoticonThemeManager *ThemeManager;
 
 	struct EmoticonsListItem
 	{
@@ -66,21 +69,19 @@ class KADUAPI EmoticonsManager : public Themes, ConfigurationAwareObject
 
 	static QString getQuoted(const QString &s, unsigned int &pos);
 
-	bool loadGGEmoticonThemePart(const QString &subdir);
-	bool loadGGEmoticonTheme();
+	bool loadGGEmoticonThemePart(const QString &themeDir, const QString &subdir);
+	bool loadGGEmoticonTheme(const QString &themeDir);
+	void loadTheme();
+
+protected:
+	virtual void configurationUpdated();
 
 public:
 	static EmoticonsManager * instance();
 
-	~EmoticonsManager();
+	EmoticonThemeManager * themeManager() const;
 
-	/**
-		\brief Funkcja ustawia zestaw emotikonek na theme
-		\param theme nazwa zestawu
-		Funkcja ustawi zestaw je�li taki istnieje w przeciwnym wypadku
-		ustawionym zestawem b�dzie "gadu-gadu"
-	**/
-	void setEmoticonsTheme(const QString &theme);
+	~EmoticonsManager();
 
 	/**
 		Funkcja wstawia w text zamiast tag�w emotikonek odpowiednie emotikonki
@@ -115,8 +116,6 @@ public:
 		\return Zwracany jest pusty ci�g je�li nie znaleziono emotikonki w przeciwnym razie zwracana jest �cie�ka do emotikonki
 	**/
 	QString selectorStaticPath(int emot_num) const;
-
-	virtual void configurationUpdated();
 
 };
 

@@ -21,6 +21,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QFile>
 #include <QtCore/QProcess>
 #include <QtCore/QUrl>
 #include <QtGui/QApplication>
@@ -207,4 +208,22 @@ QString narg(const QString &s, const QString &arg1, const QString &arg2, const Q
 {
 	const QString *tab[4]={&arg1, &arg2, &arg3, &arg4};
 	return narg(s, tab, 4);
+}
+
+QString fixFileName(const QString &path, const QString &fn)
+{
+	// check if original path is ok
+	if(QFile::exists(path + '/' + fn))
+		return fn;
+	// maybe all lowercase?
+	if(QFile::exists(path + '/' + fn.toLower()))
+		return fn.toLower();
+	// split for name and extension
+	QString name = fn.section('.', 0, 0);
+	QString ext = fn.section('.', 1);
+	// maybe extension uppercase?
+	if(QFile::exists(path + '/' + name + '.' + ext.toUpper()))
+		return name + '.' + ext.toUpper();
+	// we cannot fix it, return original
+	return fn;
 }
