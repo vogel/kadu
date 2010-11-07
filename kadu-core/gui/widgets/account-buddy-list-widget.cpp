@@ -45,7 +45,8 @@
 
 #include "account-buddy-list-widget.h"
 
-AccountBuddyListWidget::AccountBuddyListWidget(Account account, QWidget *parent) : QWidget(parent), CurrentAccount(account)
+AccountBuddyListWidget::AccountBuddyListWidget(Account account, QWidget *parent) :
+		QWidget(parent), CurrentAccount(account)
 {
 	QVBoxLayout *layout = new QVBoxLayout(this);
 	layout->setContentsMargins(0, 0, 0, 0);
@@ -73,6 +74,10 @@ AccountBuddyListWidget::AccountBuddyListWidget(Account account, QWidget *parent)
 	QPushButton *restoreFromFile = new QPushButton(tr("Restore from file"), buttons);
 	connect(restoreFromFile, SIGNAL(clicked()), this, SLOT(restoreFromFile()));
 	buttonsLayout->addWidget(restoreFromFile);
+
+	QPushButton *storeToFile = new QPushButton(tr("Store to file"), buttons);
+	connect(storeToFile, SIGNAL(clicked()), this, SLOT(storeToFile()));
+	buttonsLayout->addWidget(storeToFile);
 
 	layout->addWidget(BuddiesWidget);
 	layout->addWidget(buttons);
@@ -194,9 +199,8 @@ void AccountBuddyListWidget::restoreFromFile()
 
 	QFile file(fileName);
 
-	if (file.exists())
+	if (file.exists() && file.open(QFile::ReadOnly))
 	{
-		file.open(QFile::ReadOnly);
 		QTextStream stream(file.readAll());
 		file.close();
 
@@ -211,5 +215,24 @@ void AccountBuddyListWidget::restoreFromFile()
 		}
 
 		service->setBuddiesList(list, false);
+	}
+}
+
+void AccountBuddyListWidget::storeToFile()
+{
+	ContactListService *service = CurrentAccount.protocolHandler()->contactListService();
+	if (!service)
+		return;
+
+	QString fileName = QFileDialog::getSaveFileName(this, tr("Select file"), "", "Contact list files (*.txt)", 0);
+	if (fileName.isEmpty())
+		return;
+
+	QFile file(fileName);
+
+	if (file.open(QFile::WriteOnly))
+	{
+		file.write(service->storeBuddyList(BuddyManager::instance()->buddies(CurrentAccount)));
+		file.close();
 	}
 }

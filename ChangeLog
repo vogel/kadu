@@ -30,6 +30,7 @@
 * core: #1555 fixed: allow to set description while online, will be used on next login (Vogel)
 * core: fixed linking on Fedora 14 (beevvy)
 * gui: #759 fixed: moved emoticon setting (Vogel)
+* gadu: #1581 fixed: added "store to file" button to account buddies window (Vogel)
 
 +++ version 0.6.6-beta9
 * gui: #1539 fixed: removed problematic PL chars in main window menu remote URLs (Juzef)

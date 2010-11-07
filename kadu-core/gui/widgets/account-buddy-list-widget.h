@@ -31,12 +31,14 @@
 #include "exports.h"
 
 class BuddiesListWidget;
+class ContactListService;
 
 class KADUAPI AccountBuddyListWidget : public QWidget
 {
 	Q_OBJECT
 
 	Account CurrentAccount;
+
 	BuddiesListWidget *BuddiesWidget;
 	QPushButton *ExportButton;
 	QPushButton *ImportButton;
@@ -49,6 +51,7 @@ private slots:
 	void buddiesListExported(bool ok);
 
 	void restoreFromFile();
+	void storeToFile();
 
 public:
 	explicit AccountBuddyListWidget(Account account, QWidget *parent = 0);

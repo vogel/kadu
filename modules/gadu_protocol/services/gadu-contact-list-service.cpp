@@ -127,3 +127,8 @@ QList<Buddy> GaduContactListService::loadBuddyList(QTextStream &dataStream)
 {
 	return GaduListHelper::streamToBuddyList(Protocol->account(), dataStream);
 }
+
+QByteArray GaduContactListService::storeBuddyList(BuddyList buddies)
+{
+	return GaduListHelper::buddyListToByteArray(Protocol->account(), buddies);
+}

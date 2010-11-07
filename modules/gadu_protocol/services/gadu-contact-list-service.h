@@ -49,6 +49,7 @@ public:
 	virtual void exportContactList(BuddyList buddies);
 
 	virtual QList<Buddy> loadBuddyList(QTextStream &dataStream);
+	virtual QByteArray storeBuddyList(BuddyList buddies);
 
 signals:
 	void contactListDownloaded(const QString &contactList);
