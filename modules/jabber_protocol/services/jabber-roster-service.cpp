@@ -103,6 +103,9 @@ void JabberRosterService::contactUpdated(const XMPP::RosterItem &item)
 	Contact contact = ContactManager::instance()->byId(Protocol->account(), item.jid().bare(), ActionCreateAndAdd);
 	ContactsForDelete.removeAll(contact);
 
+	if (contact == Protocol->account().accountContact())
+		return;
+
 	int subType = item.subscription().type();
 
 	// http://xmpp.org/extensions/xep-0162.html#contacts
