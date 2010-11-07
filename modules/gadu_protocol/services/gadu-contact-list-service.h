@@ -30,8 +30,6 @@ class GaduContactListService : public ContactListService
 {
 	Q_OBJECT
 
-	bool AsFile;
-
 	GaduProtocol *Protocol;
 	QByteArray ImportReply;
 
@@ -44,15 +42,11 @@ public:
 	GaduContactListService(GaduProtocol *protocol);
 
 	virtual void importContactList();
-	virtual void importContactListAsFile();
 	virtual void exportContactList();
 	virtual void exportContactList(BuddyList buddies);
 
 	virtual QList<Buddy> loadBuddyList(QTextStream &dataStream);
 	virtual QByteArray storeBuddyList(BuddyList buddies);
-
-signals:
-	void contactListDownloaded(const QString &contactList);
 
 };
 

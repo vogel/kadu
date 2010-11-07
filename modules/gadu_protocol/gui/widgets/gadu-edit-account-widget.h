@@ -77,8 +77,6 @@ class GaduEditAccountWidget : public AccountEditWidget
 private slots:
 	void dataChanged();
 	void removeAccount();
-	void importListAsFile();
-	void contactListDownloaded(QString);
 	void remindPasssword();
 	void changePasssword();
 	void passwordChanged(const QString &newPassword);

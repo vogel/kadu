@@ -173,10 +173,6 @@ void GaduEditAccountWidget::createBuddiesTab(QTabWidget *tabWidget)
 	AccountBuddyListWidget *buddiesWidget = new AccountBuddyListWidget(account(), widget);
 	layout->addWidget(buddiesWidget);
 
-	QPushButton *getListAsFile = new QPushButton("Import contacts list as file", widget);
-	connect(getListAsFile, SIGNAL(clicked(bool)), this, SLOT(importListAsFile()));
-	layout->addWidget(getListAsFile);
-
 	tabWidget->addTab(widget, tr("Buddies"));
 }
 
@@ -406,36 +402,6 @@ void GaduEditAccountWidget::removeAccount()
 		(new GaduUnregisterAccountWindow(account()))->show();
 
 	delete messageBox;
-}
-
-void GaduEditAccountWidget::importListAsFile()
-{
-	Protocol *protocol = account().protocolHandler();
-	if (!protocol)
-		return;
-
-	ContactListService *service = protocol->contactListService();
-	if (!service)
-		return;
-
-	GaduContactListService *gaduService = dynamic_cast<GaduContactListService *>(service);
-	if (!gaduService)
-		return;
-
-	connect(gaduService, SIGNAL(contactListDownloaded(QString)), this, SLOT(contactListDownloaded(QString)));
-	gaduService->importContactListAsFile();
-}
-
-void GaduEditAccountWidget::contactListDownloaded(QString content)
-{
-	QString fileName = QFileDialog::getSaveFileName();
-	if (fileName.isEmpty())
-		return;
-
-	QFile file(fileName);
-	file.open(QIODevice::WriteOnly);
-	file.write(content.toLocal8Bit());
-	file.close();
 }
 
 void GaduEditAccountWidget::remindPasssword()
