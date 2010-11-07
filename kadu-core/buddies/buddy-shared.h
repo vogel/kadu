@@ -39,6 +39,16 @@
 
 #include "exports.h"
 
+#define BuddyShared_PropertySubscriptionRead(capitalized_name) \
+	bool is##capitalized_name() { ensureLoaded(); return capitalized_name; }
+
+#define BuddyShared_PropertySubscriptionWrite(capitalized_name) \
+	void set##capitalized_name(bool name) { ensureLoaded(); capitalized_name = name;  buddySubscriptionChanged(); dataUpdated(); }
+
+#define BuddyShared_PropertySubscription(capitalized_name) \
+	BuddyShared_PropertySubscriptionRead(capitalized_name) \
+	BuddyShared_PropertySubscriptionWrite(capitalized_name)
+
 class Account;
 class Contact;
 class XmlConfigFile;
@@ -126,9 +136,9 @@ public:
 	KaduShared_Property(unsigned short, birthYear, BirthYear)
 	KaduShared_Property(BuddyGender, gender, Gender)
 	KaduShared_Property(QList<Group>, groups, Groups)
-	KaduShared_PropertyBool(Anonymous)
-	KaduShared_PropertyBool(Blocked)
-	KaduShared_PropertyBool(OfflineTo)
+	BuddyShared_PropertySubscription(Anonymous)
+	BuddyShared_PropertySubscription(Blocked)
+	BuddyShared_PropertySubscription(OfflineTo)
 
 signals:
 	void contactAboutToBeAdded(Contact contact);
@@ -137,7 +147,7 @@ signals:
 	void contactRemoved(Contact contact);
 
 	void updated();
-
+	void buddySubscriptionChanged();
 };
 
 // for MOC

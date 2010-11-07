@@ -104,6 +104,7 @@ void BuddyManager::itemAboutToBeAdded(Buddy buddy)
 	QMutexLocker(&mutex());
 
 	connect(buddy, SIGNAL(updated()), this, SLOT(buddyDataUpdated()));
+	connect(buddy, SIGNAL(buddySubscriptionChanged()), this, SLOT(buddySubscriptionChanged()));
 	emit buddyAboutToBeAdded(buddy);
 }
 
@@ -122,6 +123,7 @@ void BuddyManager::itemRemoved(Buddy buddy)
 	QMutexLocker(&mutex());
 
 	disconnect(buddy, SIGNAL(updated()), this, SLOT(buddyDataUpdated()));
+	disconnect(buddy, SIGNAL(buddySubscriptionChanged()), this, SLOT(buddySubscriptionChanged()));
 	emit buddyRemoved(buddy);
 }
 
@@ -257,6 +259,15 @@ void BuddyManager::buddyDataUpdated()
 	Buddy buddy(sender());
 	if (!buddy.isNull())
 		emit buddyUpdated(buddy);
+}
+
+void BuddyManager::buddySubscriptionChanged()
+{
+	QMutexLocker(&mutex());
+
+	Buddy buddy(sender());
+	if (!buddy.isNull())
+		emit buddySubscriptionChanged(buddy);
 }
 
 void BuddyManager::groupRemoved(Group group)
