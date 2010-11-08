@@ -122,12 +122,18 @@ BuddyList GaduListHelper::streamPre70ToBuddyList(const QString &firstLine, Accou
 		sections[6].toULong(&ok);
 		if (ok)
 		{
-			result.append(line70ToBuddy(account, sections));
+			Buddy buddy = line70ToBuddy(account, sections);
+			if (buddy)
+				result.append(buddy);
 			result.append(stream70ToBuddyList(account, content));
 			return result;
 		}
 		else
-			result.append(linePre70ToBuddy(account, sections));
+		{
+			Buddy buddy = linePre70ToBuddy(account, sections);
+			if (buddy)
+				result.append(buddy);
+		}
 	}
 
 	while (!content.atEnd())
@@ -138,7 +144,9 @@ BuddyList GaduListHelper::streamPre70ToBuddyList(const QString &firstLine, Accou
 		if (sections.count() < 7)
 			continue;
 
-		result.append(linePre70ToBuddy(account, sections));
+		Buddy buddy = linePre70ToBuddy(account, sections);
+		if (buddy)
+			result.append(buddy);
 	}
 
 	return result;
@@ -156,7 +164,9 @@ BuddyList GaduListHelper::stream70ToBuddyList(Account account, QTextStream &cont
 
 		sections = line.split(';', QString::KeepEmptyParts);
 
-		result.append(line70ToBuddy(account, sections));
+		Buddy buddy = line70ToBuddy(account, sections);
+		if (buddy)
+			result.append(buddy);
 	}
 
 	return result;
@@ -248,9 +258,12 @@ Buddy GaduListHelper::linePre70ToBuddy(Account account, QStringList &sections)
 	unsigned int i, secCount;
 	bool ok = false;
 
-	Buddy buddy = Buddy::create();
-
 	secCount = sections.count();
+
+	if (secCount < 5)
+		return Buddy::null;
+
+	Buddy buddy = Buddy::create();
 
 	buddy.setFirstName(sections[0]);
 	buddy.setLastName(sections[1]);
@@ -323,9 +336,12 @@ Buddy GaduListHelper::line70ToBuddy(Account account, QStringList &sections)
 	unsigned int i, secCount;
 	bool ok = false;
 
-	Buddy buddy = Buddy::create();
-
 	secCount = sections.count();
+
+	if (secCount < 6)
+		return Buddy::null;
+
+	Buddy buddy = Buddy::create();
 
 	buddy.setFirstName(sections[0]);
 	buddy.setLastName(sections[1]);
