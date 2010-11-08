@@ -119,22 +119,4 @@ void BuddiesListViewDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 
 	BuddiesListViewItemPainter buddyPainter(Configuration, options, index, UseConfigurationColors);
 	buddyPainter.paint(painter);
-
-/*
-		// TODO: 0.6.6
-/ *
-		if (User.protocolData("Gadu", "Blocking").toBool())
-			painter->setPen(QColor(255, 0, 0));
-		else if (IgnoredManager::isIgnored(UserListElements(users)))
-			painter->setPen(QColor(192, 192, 0));
-		else if (config_file.readBoolEntry("General", "PrivateStatus") && User.protocolData("Gadu", "OfflineTo").toBool())
-			painter->setPen(QColor(128, 128, 128));
-* /
-//		if (User.data("HideDescription").toString() != "true")
-
-
-		}
-	}
-
-*/
 }

@@ -429,7 +429,14 @@ void BuddiesListViewItemPainter::paint(QPainter *painter)
 		painter->setPen(Option.palette.color(colorGroup, QPalette::HighlightedText));
 	else
 		if (UseConfigurationColors && !drawDisabled()) // some bit of broken logic
-			painter->setPen(Configuration.fontColor());
+		{
+			Buddy buddy = Index.data(BuddyRole).value<Buddy>();
+			Contact contact = Index.data(ContactRole).value<Contact>();
+			if (buddy.isBlocked() || contact.isBlocking())
+				painter->setPen(QColor(255, 0, 0));
+			else
+				painter->setPen(Configuration.fontColor());
+		}
 		else
 			painter->setPen(Option.palette.color(colorGroup, QPalette::Text));
 
