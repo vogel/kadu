@@ -152,7 +152,7 @@ MediaPlayer::MediaPlayer(bool firstLoad)
 	enableMediaPlayerStatuses = new ActionDescription(
 		0, ActionDescription::TypeGlobal, "enableMediaPlayerStatusesAction",
 		this, SLOT(mediaPlayerStatusChangerActivated(QAction *, bool)),
-		"external_modules/module_mediaplayer", "external_modules/module_mediaplayer", tr("Enable MediaPlayer Statuses"), true
+		"external_modules/module_mediaplayer-media-playback-start", "external_modules/module_mediaplayer-media-playback-start", tr("Enable MediaPlayer Statuses"), true
 	);
 	mediaPlayerMenu = new ActionDescription(
 		0, ActionDescription::TypeChat, "mediaplayer_button",

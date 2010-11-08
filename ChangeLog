@@ -34,6 +34,7 @@
 * core: #1587 fixed: better chat account selection when simple mode is used or buddy is activated (Vogel)
 * core: #1657 fixed: status notification are shown after applying data in "Buddy data" window (WhE)
 * gui: #1593 fixed: restore red font color for blocked/blocking buddies (Vogel)
+* mediaplayer: 1595 fixed: proper icon on mediaplayer button (Vogel)
 
 +++ version 0.6.6-beta9
 * gui: #1539 fixed: removed problematic PL chars in main window menu remote URLs (Juzef)
