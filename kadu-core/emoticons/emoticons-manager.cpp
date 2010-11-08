@@ -26,6 +26,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
 
@@ -116,16 +117,14 @@ QString EmoticonsManager::getQuoted(const QString &s, unsigned int &pos)
 	return r;
 }
 
-bool EmoticonsManager::loadGGEmoticonThemePart(const QString &themeDir, const QString &subdir)
+bool EmoticonsManager::loadGGEmoticonThemePart(const QString &themeSubDirPath)
 {
-	kdebugmf(KDEBUG_FUNCTION_START, "subdir: %s\n", qPrintable(subdir));
-
-	QString dir = subdir;
+	QString dir = themeSubDirPath;
 
 	if (!dir.isEmpty() && !dir.endsWith('/'))
 		dir += '/';
-	QString path = themeDir + '/' + dir;
-	QFile theme_file(path + "emots.txt");
+
+	QFile theme_file(dir + "emots.txt");
 	if (!theme_file.open(QIODevice::ReadOnly))
 	{
 		kdebugm(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "Error opening %s file\n",
@@ -160,11 +159,11 @@ bool EmoticonsManager::loadGGEmoticonThemePart(const QString &themeDir, const QS
 		if (multi)
 			++i; // eat ')'
 		++i; // eat ','
-		item.anim = path + fixFileName(path, getQuoted(line, i));
+		item.anim = themeSubDirPath + '/' + fixFileName(themeSubDirPath, getQuoted(line, i));
 		if (i < lineLength && line[i] == ',')
 		{
 			++i; // eat ','
-			item.stat = path + fixFileName(path, getQuoted(line, i));
+			item.stat = themeSubDirPath + '/' + fixFileName(themeSubDirPath, getQuoted(line, i));
 		}
 		else
 			item.stat = item.anim;
@@ -185,12 +184,30 @@ bool EmoticonsManager::loadGGEmoticonThemePart(const QString &themeDir, const QS
 	return true;
 }
 
-bool EmoticonsManager::loadGGEmoticonTheme(const QString &themeDir)
+bool EmoticonsManager::loadGGEmoticonTheme(const QString &themeDirPath)
 {
 	Aliases.clear();
 	Selector.clear();
 
-	if (loadGGEmoticonThemePart(themeDir, QString::null))
+	bool something_loaded = false;
+	if (loadGGEmoticonThemePart(themeDirPath))
+		something_loaded = true;
+
+	QDir themeDir(ThemeManager->currentTheme().path());
+	QFileInfoList subDirs = themeDir.entryInfoList(QDir::Dirs);
+
+	foreach (const QFileInfo &subDirInfo, subDirs)
+	{
+		if (subDirInfo.fileName().startsWith('.'))
+			continue;
+
+		QString subDir = subDirInfo.canonicalFilePath();
+		if (EmoticonThemeManager::containsEmotsTxt(subDir))
+			if (loadGGEmoticonThemePart(subDir))
+				something_loaded = true;
+	}
+
+	if (something_loaded)
 	{
 		// delete previous dictionary of emots
 		delete walker;
@@ -201,11 +218,9 @@ bool EmoticonsManager::loadGGEmoticonTheme(const QString &themeDir)
 		// their occurrences in text
 		foreach(const EmoticonsListItem &item, Aliases)
 			walker->insertString(item.alias.toLower(), i++);
-
-		return true;
 	}
 
-	return false;
+	return something_loaded;
 }
 
 void EmoticonsManager::expandEmoticons(HtmlDocument &doc, EmoticonsStyle style)

@@ -69,8 +69,8 @@ class KADUAPI EmoticonsManager : public QObject, ConfigurationAwareObject
 
 	static QString getQuoted(const QString &s, unsigned int &pos);
 
-	bool loadGGEmoticonThemePart(const QString &themeDir, const QString &subdir);
-	bool loadGGEmoticonTheme(const QString &themeDir);
+	bool loadGGEmoticonThemePart(const QString &themeSubDirPath);
+	bool loadGGEmoticonTheme(const QString &themeDirPath);
 	void loadTheme();
 
 protected:

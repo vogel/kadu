@@ -31,6 +31,8 @@ protected:
 	virtual bool isValidThemePath(const QString &themePath);
 
 public:
+	static bool containsEmotsTxt(const QString &dir);
+
 	explicit EmoticonThemeManager(QObject *parent = 0);
 	virtual ~EmoticonThemeManager();
 

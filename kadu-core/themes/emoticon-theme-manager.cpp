@@ -17,12 +17,21 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QDir>
 #include <QtCore/QFileInfo>
 #include <QtCore/QStringList>
 
 #include "misc/path-conversion.h"
 
 #include "emoticon-theme-manager.h"
+
+bool EmoticonThemeManager::containsEmotsTxt(const QString &dir)
+{
+	QString kaduIconFileName = dir + "/emots.txt";
+	QFileInfo kaduIconFile(kaduIconFileName);
+
+	return kaduIconFile.exists();
+}
 
 EmoticonThemeManager::EmoticonThemeManager(QObject *parent) :
 		ThemeManager(true, parent)
@@ -43,8 +52,18 @@ QStringList EmoticonThemeManager::defaultThemePaths()
 
 bool EmoticonThemeManager::isValidThemePath(const QString &themePath)
 {
-	QString kaduIconFileName = themePath + "/emots.txt";
-	QFileInfo kaduIconFile(kaduIconFileName);
+	if (containsEmotsTxt(themePath))
+		return true;
 
-	return kaduIconFile.exists();
+	QDir themeDir(themePath);
+	QFileInfoList subDirs = themeDir.entryInfoList(QDir::Dirs);
+
+	foreach (const QFileInfo &subDirInfo, subDirs)
+	{
+		if (!subDirInfo.fileName().startsWith('.'))
+			if (containsEmotsTxt(subDirInfo.canonicalFilePath()))
+				return true;
+	}
+
+	return false;
 }
