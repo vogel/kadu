@@ -75,7 +75,7 @@ QString ThemeManager::getThemeName(const QString &themePath)
 
 void ThemeManager::loadThemes(QStringList pathList)
 {
-	pathList = pathList + defaultThemePathes();
+	pathList = pathList + defaultThemePaths();
 
 	QString currentThemeName = currentTheme().name();
 	CurrentThemeIndex = -1;
