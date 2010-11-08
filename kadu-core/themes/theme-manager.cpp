@@ -55,10 +55,15 @@ QStringList ThemeManager::getSubDirs(const QString &dirPath)
 
 QString ThemeManager::getThemeName(const QString &themePath)
 {
-	int lastSlash = themePath.lastIndexOf('/');
-	if (-1 == lastSlash)
+	QString path(themePath);
+	// remove trailing slashes
+	path.remove(QRegExp("[/\\\\]*$"));
+
+	int lastSlash = path.lastIndexOf('/');
+	if (-1 == lastSlash && -1 == (lastSlash = path.lastIndexOf('\\')))
 		return "";
-	return themePath.mid(lastSlash + 1);
+
+	return path.mid(lastSlash + 1);
 }
 
 void ThemeManager::loadThemes(QStringList pathList)
