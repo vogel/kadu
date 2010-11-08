@@ -1,0 +1,273 @@
+@charset "utf-8";
+
+*
+{
+	line-height: 16px !important;
+	//border: 1px solid green;
+	word-wrap: break-word;
+	word-break: break-word;
+}
+
+body
+{
+	margin: 0px;
+	//border: 1px solid red;
+}
+
+#Chat
+{
+	padding: 12px;
+	overflow: hidden;
+	word-wrap: break-word;
+	word-break: break-word;
+	//border: 1px solid yellow;
+}
+
+span
+{
+	display: block;
+}
+
+.history
+{
+	color: hsla(0, 100%, 50%, .5);
+	text-decoration: line-through !important;
+}
+
+.pp-topwrapper
+{
+	background: url(../_Images/paper-top.png) top left repeat-x;
+	border-top: 1px solid hsla(0, 0%, 100%, .9);
+	margin-top: 17px;
+	color: hsla(0, 0%, 0%, .9);
+	//display: inline;
+}
+
+.consecutive .pp-topwrapper,
+.consecutive .pp-botwrapper
+{
+	display: none;
+}
+
+.pp-messagepin
+{
+	height: 44px;
+	width: 30px;
+	position: absolute;
+	right: 40%;
+	margin-top: -15px;
+	z-index: 99;
+	//-webkit-transform: rotate(3.5deg);
+	background: url(../_Images/pin.png) top no-repeat;
+}
+
+.pp-topwrapper[src*="buddy_icon.png"] .pp-messagepin,
+.groupchat .pp-messagepin
+{
+	right: 47%;
+}
+
+.mention .pp-sticker
+{
+	height: 60px;
+	width: 60px;
+	position: absolute;
+	left: 16px;
+	background: url(../_Images/star.png) no-repeat;
+	z-index: 0;
+}
+
+.notification .pp-sticker
+{
+	//height: 60px;
+	//width: 60px;
+	//position: absolute;
+	//left: 6.3em;
+	//background: url(../_Images/star.png) left top repeat;
+	//z-index: 0;
+}
+
+.pp-photoback
+{
+	height: 72px;
+	width: 72px;
+	float: right;
+	margin-top: 2px;
+	margin-right: 1px;
+	margin-bottom: 0px;
+	z-index: 2;
+	-webkit-transform: rotate(3.5deg);
+	background: rgba(255, 255, 255, 1);
+	-webkit-box-shadow: 3px 8px 8px rgba(0, 0, 0, .5);
+}
+
+.pp-buddyicon
+{
+	height: 64px;
+	width: 64px;
+	position: absolute;
+	right: 17px;
+	margin-top: 6px;
+	z-index: 4;
+	background: rgba(240, 240, 240, 1);
+	-webkit-transform: rotate(3.5deg);
+}
+
+.pp-pinclip
+{
+	height: 50px;
+	width: 60px;
+	position: absolute;
+	right: 18px;
+	margin-top: -18px;
+	z-index: 6;
+	//-webkit-transform: rotate(3.5deg);
+	background: url(../_Images/clip.png) top right no-repeat;
+}
+
+.groupchat .pp-photoback,
+.groupchat .pp-buddyicon,
+.groupchat .pp-pinclip
+{
+	display: none;
+}
+
+.pp-sender
+{
+	padding-top: 27px;
+	padding-bottom: 16px;
+	padding-left: .3em;
+	margin-left: 6em;
+	border-left: 1px solid;
+	border-color: hsla(0, 100%, 50%, .3);
+	min-height: 16px;
+	max-height: 96px;
+	overflow: hidden;
+}
+
+.pp-midwrapper
+{
+	background: url(../_Images/paper-mid.png) top left repeat;
+	color: hsla(0, 0%, 0%, .9);
+	padding-left: 6em;
+}
+
+.message .pp-time
+{
+	font-size: .9em;
+	padding-right: .3em;
+	margin-left: -6.3em;
+	width: 6em;
+	float: left;
+	text-align: right;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+.message .pp-message
+{
+	border-left: 1px solid;
+	border-color: hsla(0, 100%, 50%, .3);
+	padding-left: .3em;
+	padding-right: .3em;
+	min-height: 16px;
+}
+
+.pp-botwrapper
+{
+	background: url(../_Images/paper-bot.png) top left repeat;
+	padding-bottom: 10px;
+	color: hsla(0, 0%, 0%, .9);
+}
+
+.status,
+.event
+{
+	width: 30%;
+	min-height: 32px;
+	margin: 0px auto;
+	margin-top: 1.2em;
+	margin-bottom: .3em;
+	padding-top: .6em;
+	padding-bottom: .6em;
+	padding-right: 1.2em;
+	padding-left: 1.2em;
+	background: hsla(60, 100%, 80%, 1);
+	border-top: 1px solid hsla(0, 0%, 100%, .5);
+	-webkit-box-shadow: 0px 4px 4px rgba(0, 0, 0, .2);
+}
+
+.status .consecutive,
+.event .consecutive
+{
+	width: 100%;
+	margin: 0px;
+	padding: 0px;
+	border-top: none;
+	border-bottom: none;
+	-webkit-box-shadow: none;
+}
+
+.status .pp-message,
+.event .pp-message
+{
+	text-align: left;
+	min-height: 16px;
+	color: hsla(240, 100%, 30%, .9);
+}
+
+.status .pp-time,
+.event .pp-time
+{
+	font-size: .9em;
+	text-align: right;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	color: hsla(240, 100%, 30%, .9);
+}
+
+.consecutive.status .pp-time,
+.consecutive.event .pp-time
+{
+	padding-top: .9em;
+}
+
+.emoticon
+{
+	white-space: nowrap;
+	text-wrap: suppress;
+	word-wrap: normal;
+}
+
+img.emoticon
+{
+	//position: absolute;
+	position: relative;
+	margin-top: -2px;
+	vertical-align: top !important;
+	z-index: 0;
+}
+
+.pp-topwrapper[src*="buddy_icon.png"] .pp-photoback,
+.pp-topwrapper[src*="buddy_icon.png"] .pp-buddyicon,
+.pp-topwrapper[src*="buddy_icon.png"] .pp-pinclip
+{
+	display: none;
+	//visibility: hidden;
+}
+
+img.fullSizeImage
+{
+	width: auto;
+	height: auto;
+	max-height: 100%;
+	max-width: 100%;
+}
+
+img.scaledToFitImage
+{
+	width: auto;
+	max-height: 16px;
+}

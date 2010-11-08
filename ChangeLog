@@ -36,6 +36,7 @@
 * gui: #1593 fixed: restore red font color for blocked/blocking buddies (Vogel)
 * mediaplayer: #1595 fixed: proper icon on mediaplayer button (Vogel)
 * gui: #1606 workaround: use buddy custom avatar in parser when available (Vogel)
+* gui: #1051 fixed: better default chat theme for kadu 0.6.6 (patpi/WhE)
 
 +++ version 0.6.6-beta9
 * gui: #1539 fixed: removed problematic PL chars in main window menu remote URLs (Juzef)

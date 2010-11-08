@@ -239,7 +239,7 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("Look", "ShowInfoPanel", false);
 	config_file.addVariable("Look", "ShowMultilineDesc", true);
 	config_file.addVariable("Look", "ShowStatusButton", true);
-	config_file.addVariable("Look", "Style", "kadu");
+	config_file.addVariable("Look", "Style", "Satin");
 	config_file.addVariable("Look", "UserboxBackgroundDisplayStyle", "Stretched");
 	config_file.addVariable("Look", "UserboxTransparency", false);
 	config_file.addVariable("Look", "UserboxAlpha", 0);

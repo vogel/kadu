@@ -1,0 +1,48 @@
+#Chat
+{
+	padding-top: 108px;
+}
+
+.pp-header
+{
+	background: url(./Variants/_Images/header.png) center center repeat-x;
+	position: absolute;
+	right: 12px;
+	left: 12px;
+	top: 8px;
+	height: 100px;
+	margin-bottom: -16px;
+}
+
+.pp-headerpinleft
+{
+	height: 44px;
+	width: 30px;
+	position: absolute;
+	//left: 20%;
+	left: 6%;
+	top: -6px;
+	z-index: 99;
+	background: url(./Variants/_Images/pin.png) top no-repeat;
+}
+
+.pp-headerpinright
+{
+	height: 44px;
+	width: 30px;
+	position: absolute;
+	//left: 70%;
+	right: 3%;
+	top: 4px;
+	z-index: 99;
+	background: url(./Variants/_Images/pin.png) top no-repeat;
+}
+
+.pp-headerdate
+{
+	font: 12px American Typewriter !important;;
+	color: rgba(0, 0, 0, 1);
+	text-align: center;
+	position: relative;
+	top: 47px;
+}

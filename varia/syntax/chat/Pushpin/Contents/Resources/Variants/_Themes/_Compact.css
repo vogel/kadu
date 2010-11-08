@@ -1,0 +1,133 @@
+@charset "utf-8";
+
+.mention .pp-sticker
+{
+	height: 60px;
+	width: 60px;
+	background: url(../_Images/star.png) no-repeat;
+}
+
+.pp-messagepin
+{
+	left: 15px;
+	margin-top: -7px;
+}
+
+.pp-photoback
+{
+	height: 50px;
+	width: 50px;
+	float: right;
+	margin-top: -1px;
+	margin-right: -4px;
+	z-index: 2;
+	-webkit-transform: rotate(-7deg);
+	background: rgba(255, 255, 255, 1);
+	-webkit-box-shadow: 2px 6px 4px rgba(0, 0, 0, .4);
+}
+
+.pp-buddyicon
+{
+	height: 60px;
+	width: 60px;
+	margin-top: -6px;
+	margin-right: -14px;
+	-webkit-transform: rotate(-7deg) scale(.75, .75);
+}
+
+.pp-pinclip
+{
+	position: absolute;
+	height: 44px;
+	width: 30px;
+	right: 18px;
+	margin-top: -18px;
+	background: url(../_Images/pin.png) top no-repeat;
+}
+
+.groupchat .pp-pinclip
+{
+	display: none;
+	height: 44px;
+	width: 30px;
+	right: 4px;
+	margin-top: 4px;
+	float: right;
+	background: none;
+	display: block !important;
+}
+
+.groupchat .pp-topwrapper
+{
+	padding-right: 16px;
+}
+
+.groupchat .pp-topwrapper,
+.pp-topwrapper[src*="buddy_icon.png"] .pp-topwrapper
+{
+	margin-top: 17px;
+}
+
+.pp-sender
+{
+	font-weight: bold;
+	padding-top: 11px;
+	padding-bottom: 0px;
+	margin-right: 4px;
+	text-align: right;
+}
+
+.pp-topwrapper[src*="buddy_icon.png"] .pp-sender
+{
+	margin-right: 12px;
+}
+
+.groupchat .pp-sender
+{
+	margin-right: -4px;
+}
+
+.message .pp-message
+{
+	padding-right: 12px;
+}
+
+.pp-botpin[src*="buddy_icon.png"],
+.groupchat .pp-botpin
+{
+	height: 44px;
+	width: 30px;
+	position: absolute;
+	right: 4px;
+	margin-top: -32px;
+	z-index: 99;
+	background: url(../_Images/pin.png) top no-repeat;
+}
+
+.status,
+.event
+{
+	width: 50%;
+	min-height: 16px;
+}
+
+.status .pp-time,
+.event .pp-time
+{
+	padding-top: 0px;
+	padding-right: .3em;
+	font-weight: bold;
+	display: inline;
+}
+
+.consecutive.status .pp-time,
+.consecutive.event .pp-time
+{
+	padding-top: 0px;
+}
+
+.status .pp-message,
+.event .pp-message
+{
+	display: inline;
+}

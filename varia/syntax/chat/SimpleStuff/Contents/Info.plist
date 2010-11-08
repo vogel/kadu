@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AllowTextColors</key>
+	<false/>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleGetInfoString</key>
+	<string>SimpleStuff Message Style</string>
+	<key>CFBundleIdentifier</key>
+	<string>wolphie.simplestuff.style</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>1.2</string>
+	<key>CFBundleName</key>
+	<string>SimpleStuff</string>
+	<key>CFBundlePackageType</key>
+	<string>AdIM</string>
+	<key>DefaultBackgroundColor</key>
+	<string>ffffff</string>
+	<key>DefaultFontFamily</key>
+	<string>Helvetica</string>
+	<key>DefaultFontSize</key>
+	<integer>12</integer>
+	<key>MessageViewVersion</key>
+	<real>1.1</real>
+	<key>DisableCustomBackground</key>
+	<true/>
+	<key>DefaultVariant</key>
+	<string>Normal</string>
+	<key>DisableCombineConsecutive</key>
+	<true/>
+	<key>ShowsUserIcons</key>
+	<false/>
+</dict>
+</plist>
