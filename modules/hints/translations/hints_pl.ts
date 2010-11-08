@@ -145,11 +145,11 @@
     </message>
     <message>
         <source>Buddy List</source>
-        <translation>Lista kontaktów</translation>
+		<translation>Lista znajomych</translation>
     </message>
     <message>
         <source>Hint Over Buddy</source>
-        <translation>Dymek nad listą kontaktów</translation>
+		<translation>Dymek nad listą znajomych</translation>
     </message>
     <message>
         <source>Border color</source>
@@ -207,7 +207,7 @@
     <name>HintOverUserConfigurationWindow</name>
     <message>
         <source>Hint Over Buddy Configuration</source>
-        <translation>Dymek nad listą kontaktów</translation>
+		<translation>Dymek nad listą znajomych</translation>
     </message>
     <message>
         <source>Update preview</source>

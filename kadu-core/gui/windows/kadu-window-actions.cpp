@@ -309,8 +309,8 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	InactiveUsers = new ActionDescription(this,
 		ActionDescription::TypeUserList, "inactiveUsersAction",
 		this, SLOT(inactiveUsersActionActivated(QAction *, bool)),
-		"protocols/gadu-gadu/offline", "protocols/gadu-gadu/offline", tr("Show Offline Users"),
-		true//, tr("Show offline users")
+		"protocols/gadu-gadu/offline", "protocols/gadu-gadu/offline", tr("Show Offline Buddies"),
+		true
 	);
 	connect(InactiveUsers, SIGNAL(actionCreated(Action *)), this, SLOT(inactiveUsersActionCreated(Action *)));
 	InactiveUsers->setShortcut("kadu_showoffline");

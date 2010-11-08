@@ -697,7 +697,7 @@
     </message>
     <message>
         <source>Buddies</source>
-        <translation>Kontakty</translation>
+		<translation>Znajomi</translation>
     </message>
     <message>
         <source>Protocol</source>
@@ -705,7 +705,7 @@
     </message>
     <message>
         <source>Buddy</source>
-        <translation>Kontakt</translation>
+		<translation>Znajomy</translation>
     </message>
     <message>
         <source>Blocked</source>
@@ -853,31 +853,31 @@
     </message>
     <message>
         <source>Buddy List Mode</source>
-        <translation>Typ listy kontaktów</translation>
+		<translation>Typ listy znajomych</translation>
     </message>
     <message>
         <source>Hide messaging networks for each buddy (Simple Mode)</source>
-        <translation>Nie wyświetlaj informacji o sieciach przy każdym kontakcie (Tryb prosty)</translation>
+		<translation>Nie wyświetlaj informacji o sieciach przy każdym znajomym (Tryb prosty)</translation>
     </message>
     <message>
         <source>If enabled, buddies networks will be hidden in buddy list and status buttons</source>
-        <translation>Jeśli włączone informacja o protokołach komunikacyjnych przypisanych do konta nie będzie wyświetlana na liście kontaktów i przycisku statusu</translation>
+		<translation>Jeśli włączone informacja o protokołach komunikacyjnych przypisanych do konta nie będzie wyświetlana na liście znajomych i przycisku statusu</translation>
     </message>
     <message>
         <source>With this setting, each of your buddy&apos;s messaging networks will be removed from view on your buddy list.</source>
-        <translation>Przy tym ustawieniu przy kontakcie nie znajdziesz informacji o sieciach przypisanych do kontaktu.</translation>
+		<translation>Przy tym ustawieniu przy znajomym nie znajdziesz informacji o sieciach przypisanych do kontaktu.</translation>
     </message>
     <message>
         <source>Differentiate the messaging networks for each buddy (Advanced Mode)</source>
-        <translation>Rozróżnij sieci przypisane do kontaktu (Tryb zaawansowany)</translation>
+		<translation>Rozróżnij sieci przypisane do znajomego (Tryb zaawansowany)</translation>
     </message>
     <message>
         <source>With this setting, your buddy list will display the associated messaging networks for each of your buddies (e.g. &apos;Anna uses Gadu-Gadu and Google Talk&apos;) .</source>
-        <translation>Przy tym ustawieniu na liście kontaktów zobaczysz wszystkie sieci skojarzone z każdym kontaktem (np. Anna używa Gadu-Gadu i Google Talk).</translation>
+		<translation>Przy tym ustawieniu na liście znajomych zobaczysz wszystkie sieci skojarzone z każdym znajomym (np. Anna używa Gadu-Gadu i Google Talk).</translation>
     </message>
     <message>
         <source>Show network icons with each buddy</source>
-        <translation>Wyświetl ikonę sieci przy każdym kontakcie</translation>
+		<translation>Wyświetl ikonę sieci przy każdym znajomym</translation>
     </message>
     <message>
         <source>Default Language</source>
@@ -897,7 +897,7 @@
     </message>
     <message>
         <source>Kadu will use default applications to open links from chat messages and buddy descriptions.</source>
-        <translation>Kadu użyje domyślnej przeglądarki WWW do otwierania linków z okna rozmowy i opisów kontaktów.</translation>
+		<translation>Kadu użyje domyślnej przeglądarki WWW do otwierania linków z okna rozmowy i opisów znajomych.</translation>
     </message>
     <message>
         <source>Default Web Browser</source>
@@ -933,19 +933,19 @@
     </message>
     <message>
         <source>Show offline buddies</source>
-        <translation>Pokaż kontakty niedostępne</translation>
+		<translation>Pokaż niedostępnych znajomych</translation>
     </message>
     <message>
         <source>Show buddies that are ignored</source>
-        <translation>Pokaż kontakty ignorowane</translation>
+		<translation>Pokaż ignorowanych znajomych</translation>
     </message>
     <message>
         <source>Show buddies which are blocking me</source>
-        <translation>Pokaż kontakty które mnie blokują</translation>
+		<translation>Pokaż znajomych którzy mnie blokują</translation>
     </message>
     <message>
         <source>When enabled, you&apos;re visible only to buddies on your list</source>
-        <translation>Gdy włączone jesteś widoczny tylko dla kontaktów ze swojej listy</translation>
+		<translation>Gdy włączone jesteś widoczny tylko dla znajomych ze swojej listy</translation>
     </message>
     <message>
         <source>Chat Window</source>
@@ -957,19 +957,19 @@
     </message>
     <message>
         <source>Buddy&apos;s font</source>
-        <translation>Czcionka kontaktu</translation>
+		<translation>Czcionka znajomego</translation>
     </message>
     <message>
         <source>Buddy&apos;s nick</source>
-        <translation>Pseudonim kontaktu</translation>
+		<translation>Pseudonim znajomego</translation>
     </message>
     <message>
         <source>Buddy List</source>
-        <translation>Lista kontaktów</translation>
+		<translation>Lista znajomych</translation>
     </message>
     <message>
         <source>Buddy list</source>
-        <translation>Lista kontaktów</translation>
+		<translation>Lista znajomych</translation>
     </message>
     <message>
         <source>New Messages Notifications</source>
@@ -993,19 +993,19 @@
     </message>
     <message>
         <source>Show connected buddies in bold</source>
-        <translation>Użyj pogrubionej czcionki dla dostępnych kontaktów</translation>
+		<translation>Użyj pogrubionej czcionki dla dostępnych znajomych</translation>
     </message>
     <message>
         <source>Displays buddies that are not offline using a bold font</source>
-        <translation>Oznacz kontakty które nie są niedostępne używając pogrubionej czcionki</translation>
+		<translation>Oznacz znajomych którzy nie są niedostępni używając pogrubionej czcionki</translation>
     </message>
     <message>
         <source>Align buddy icon to</source>
-        <translation>Ustawienie ikon kontaktów</translation>
+		<translation>Ustawienie ikon znajomych</translation>
     </message>
     <message>
         <source>Align icon next to buddy&apos;s name</source>
-        <translation>Ustawienie ikon kontaktów w stosunku do nazw</translation>
+		<translation>Ustawienie ikon znajomych w stosunku do nazw</translation>
     </message>
     <message>
         <source>Number of columns displays in the buddy list</source>
@@ -1013,11 +1013,11 @@
     </message>
     <message>
         <source>Choose buddy list tool-tip style</source>
-        <translation>Styl podpowiedzi kontaktu</translation>
+		<translation>Styl podpowiedzi znajomego</translation>
     </message>
     <message>
         <source>Buddy Photos</source>
-        <translation>Zdjęcia kontaktów</translation>
+		<translation>Zdjęcia znajomych</translation>
     </message>
     <message>
         <source>Show photos</source>
@@ -1029,11 +1029,11 @@
     </message>
     <message>
         <source>Grey out offline buddies&apos; photos</source>
-        <translation>Wyszarz zdjęcia niedostępnych kontaktów</translation>
+		<translation>Wyszarz zdjęcia niedostępnych znajomych</translation>
     </message>
     <message>
         <source>Buddies who are offline will have their photos greyed out</source>
-        <translation>Zdjęcia niedostępnych kontaktów będą wyszarzone</translation>
+		<translation>Zdjęcia niedostępnych znajomych będą wyszarzone</translation>
     </message>
     <message>
         <source>Displays descriptions in the buddy list</source>
@@ -1045,7 +1045,7 @@
     </message>
     <message>
         <source>Define background file for the buddy list</source>
-        <translation>Zdefiniuj obrazek tła listy kontaktów</translation>
+		<translation>Zdefiniuj obrazek tła listy znajomych</translation>
     </message>
     <message>
         <source>Choose buddy list background style</source>
@@ -1061,7 +1061,7 @@
     </message>
     <message>
         <source>Add buddy</source>
-        <translation>Dodaj kontakt</translation>
+		<translation>Dodaj znajomego</translation>
     </message>
     <message>
         <source>Exit</source>
@@ -1069,19 +1069,19 @@
     </message>
     <message>
         <source>Remove from buddy list</source>
-        <translation>Usuń kontakt</translation>
+		<translation>Usuń znajomego</translation>
     </message>
     <message>
         <source>Search this buddy in directory</source>
-        <translation>Znajdź kontakt w katalogu</translation>
+		<translation>Znajdź znajomego w katalogu</translation>
     </message>
     <message>
         <source>Show / hide offline buddies</source>
-        <translation>Pokaż / ukryj kontakty niedostępne</translation>
+		<translation>Pokaż / ukryj niedostępnych znajomych</translation>
     </message>
     <message>
         <source>Show / hide buddies without description</source>
-        <translation>Pokaż / ukryj kontakty bez opisu</translation>
+		<translation>Pokaż / ukryj znajomych bez opisu</translation>
     </message>
     <message>
         <source>Message Pruning</source>
@@ -1119,11 +1119,11 @@
         <source>This option will supersede tooltips with buddies&apos; status
 changes upon establishing connection to the server</source>
         <translation>Ta opcja spowoduje nie wyświetlenie dymków o zmianie statusu
-kontaktów po połączeniu się z serwerem</translation>
+znajomych po połączeniu się z serwerem</translation>
     </message>
     <message>
         <source>Notify about all buddies</source>
-        <translation>Informuj o wszystkich kontaktach</translation>
+		<translation>Informuj o wszystkich znajomych</translation>
     </message>
     <message>
         <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
@@ -1541,7 +1541,7 @@ Eksport listy kontaktów na serwer się nie powiódł</translation>
     </message>
     <message>
         <source>Are you sure do you want to delete this contact from buddy &lt;b&gt;%1&lt;/b&gt;?</source>
-        <translation>Czy na pewno chcesz usunąc ten kontakt z użytkownia &lt;b&gt;%1&lt;/b&gt;?</translation>
+		<translation>Czy na pewno chcesz usunąc tego znajomego z użytkownia &lt;b&gt;%1&lt;/b&gt;?</translation>
     </message>
 </context>
 <context>
@@ -1559,7 +1559,7 @@ Eksport listy kontaktów na serwer się nie powiódł</translation>
     <name>BuddyDataWindow</name>
     <message>
         <source>Buddy Properties - %1</source>
-        <translation>Dane kontaktu - %1</translation>
+		<translation>Dane znajomego - %1</translation>
     </message>
     <message>
         <source>General</source>
@@ -1653,7 +1653,7 @@ Eksport listy kontaktów na serwer się nie powiódł</translation>
     <name>BuddyOptionsConfigurationWidget</name>
     <message>
         <source>Allow buddy to see when I&apos;m available</source>
-        <translation>Pozwól kontaktowi widzieć kiedy jestem dostępny</translation>
+		<translation>Pozwól znajomemu widzieć kiedy jestem dostępny</translation>
     </message>
     <message>
         <source>Ignore buddy</source>
@@ -1661,7 +1661,7 @@ Eksport listy kontaktów na serwer się nie powiódł</translation>
     </message>
     <message>
         <source>Notify when buddy&apos;s status changes</source>
-        <translation>Powiadom mnie o zmianie statusu kontaktu</translation>
+		<translation>Powiadom mnie o zmianie statusu znajomego</translation>
     </message>
     <message>
         <source>Hide description</source>
@@ -2280,7 +2280,7 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
     </message>
     <message>
         <source>Add Buddy</source>
-        <translation>Dodaj kontakt</translation>
+		<translation>Dodaj znajomego</translation>
     </message>
     <message>
         <source>Rename Group</source>
@@ -2435,11 +2435,11 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
     <name>KaduWindowActions</name>
     <message>
         <source>Add Buddy</source>
-        <translation>Dodaj kontakt</translation>
+		<translation>Dodaj znajomego</translation>
     </message>
     <message>
         <source>View Buddy Properties</source>
-        <translation>Dane kontaktu</translation>
+		<translation>Dane znajomego</translation>
     </message>
     <message>
         <source>Preferences...</source>
@@ -2459,7 +2459,7 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
     </message>
     <message>
         <source>Add Buddy...</source>
-        <translation>Dodaj kontakt...</translation>
+		<translation>Dodaj znajomego...</translation>
     </message>
     <message>
         <source>Add Group...</source>
@@ -2467,7 +2467,7 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
     </message>
     <message>
         <source>Search for Buddy...</source>
-        <translation>Znajdź kontakt...</translation>
+		<translation>Znajdź znajomego...</translation>
     </message>
     <message>
         <source>Ignored Buddies...</source>
@@ -2503,7 +2503,7 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
     </message>
     <message>
         <source>Show Ignored Buddies</source>
-        <translation>Pokaż kontakty ignorowane</translation>
+		<translation>Pokaż ignorowanych znajomych</translation>
     </message>
     <message>
         <source>Copy Description</source>
@@ -2534,8 +2534,8 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
         <translation>Ukryj opis</translation>
     </message>
     <message>
-        <source>Show Offline Users</source>
-        <translation>Pokaż kontakty niedostępne</translation>
+		<source>Show Offline Buddies</source>
+		<translation>Pokaż niedostępnych znajomych</translation>
     </message>
     <message>
         <source>Hide Users Without Description</source>
@@ -2555,11 +2555,11 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
     </message>
     <message>
         <source>Merge Buddies...</source>
-        <translation>Połącz kontakty...</translation>
+		<translation>Połącz znajomych...</translation>
     </message>
     <message>
         <source>Delete Buddy...</source>
-        <translation>Usuń kontakt...</translation>
+		<translation>Usuń znajomego...</translation>
     </message>
     <message>
         <source>Change Status</source>
@@ -2819,11 +2819,11 @@ Jeśli zechcesz włączyć (lub wyłączyć) któryś z nich, wystarczy dwukrotn
     </message>
     <message>
         <source>Buddy List</source>
-        <translation>Lista kontaktów</translation>
+		<translation>Lista znajomych</translation>
     </message>
     <message>
         <source>Move to &apos;Buddy List&apos;</source>
-        <translation>Przesuń do &quot;Listy kontaktów&quot;</translation>
+		<translation>Przesuń do &quot;Listy znajomych&quot;</translation>
     </message>
     <message>
         <source>Notify List</source>
