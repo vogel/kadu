@@ -57,11 +57,18 @@ QString ThemeManager::getThemeName(const QString &themePath)
 {
 	QString path(themePath);
 	// remove trailing slashes
+#ifdef Q_WS_WIN
 	path.remove(QRegExp("[/\\\\]*$"));
+#else
+	path.remove(QRegExp("/*$"));
+#endif
 
 	int lastSlash = path.lastIndexOf('/');
-	if (-1 == lastSlash && -1 == (lastSlash = path.lastIndexOf('\\')))
-		return "";
+	if (-1 == lastSlash)
+#ifdef Q_WS_WIN
+		if (-1 == (lastSlash = path.lastIndexOf('\\')))
+#endif
+			return "";
 
 	return path.mid(lastSlash + 1);
 }
