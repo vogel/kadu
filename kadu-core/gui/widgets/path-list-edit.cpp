@@ -169,7 +169,8 @@ void PathListEditWindow::changePathClicked()
 	if (!PathListWidget->currentItem()->isSelected())
 		return;
 
-	QString path = QFileDialog::getExistingDirectory(this, tr("Choose a directory"));
+	QString path = QFileDialog::getExistingDirectory(this, tr("Choose a directory"),
+			PathListWidget->currentItem()->text());
 
 	if (!validatePath(path))
 		return;
