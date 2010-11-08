@@ -39,7 +39,7 @@ protected:
 
 	virtual QStringList defaultThemePathes() = 0;
 	virtual bool isValidThemePath(const QString &themePath) = 0;
-	virtual QString getThemeName(const QString &themePath) = 0;
+	virtual QString getThemeName(const QString &themePath);
 
 public:
 	explicit ThemeManager(bool includeNone, QObject *parent = 0);

@@ -48,11 +48,3 @@ bool EmoticonThemeManager::isValidThemePath(const QString &themePath)
 
 	return kaduIconFile.exists();
 }
-
-QString EmoticonThemeManager::getThemeName(const QString &themePath)
-{
-	int lastSlash = themePath.lastIndexOf('/');
-	if (-1 == lastSlash)
-		return "";
-	return themePath.mid(lastSlash + 1);
-}

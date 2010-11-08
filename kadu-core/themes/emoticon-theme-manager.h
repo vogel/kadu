@@ -29,7 +29,6 @@ class EmoticonThemeManager : public ThemeManager
 protected:
 	virtual QStringList defaultThemePathes();
 	virtual bool isValidThemePath(const QString &themePath);
-	virtual QString getThemeName(const QString &themePath);
 
 public:
 	explicit EmoticonThemeManager(QObject *parent = 0);

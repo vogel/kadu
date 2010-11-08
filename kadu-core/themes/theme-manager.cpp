@@ -53,6 +53,14 @@ QStringList ThemeManager::getSubDirs(const QString &dirPath)
 	return result;
 }
 
+QString ThemeManager::getThemeName(const QString &themePath)
+{
+	int lastSlash = themePath.lastIndexOf('/');
+	if (-1 == lastSlash)
+		return "";
+	return themePath.mid(lastSlash + 1);
+}
+
 void ThemeManager::loadThemes(QStringList pathList)
 {
 	pathList = pathList + defaultThemePathes();
