@@ -325,8 +325,7 @@ install_name_tool -change ${QTDIR}/lib/QtSql.framework/Versions/4/QtSql @executa
 install_name_tool -change ${QTDIR}/lib/QtNetwork.framework/Versions/4/QtNetwork @executable_path/../Frameworks/QtNetwork ./kadu
 install_name_tool -change ${QTDIR}/lib/QtGui.framework/Versions/4/QtGui @executable_path/../Frameworks/QtGui ./kadu
 install_name_tool -change ${QTDIR}/lib/QtXml.framework/Versions/4/QtXml @executable_path/../Frameworks/QtXml ./kadu
-#install_name_tool -change ${QTDIR}/lib/Qt3Support.framework/Versions/4/Qt3Support @executable_path/../Frameworks/Qt3Support ./kadu
-#install_name_tool -change ${QTDIR}/lib/Qt3Support.framework/Versions/4/Qt3Support @executable_path/../Frameworks/Qt3Support ./kadu
+install_name_tool -change ${QTDIR}/lib/QtSvg.framework/Versions/4/QtSvg @executable_path/../Frameworks/QtSvg ./kadu
 install_name_tool -change ${QTDIR}/lib/QtWebKit.framework/Versions/4/QtWebKit @executable_path/../Frameworks/QtWebKit ./kadu
 install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./kadu
 install_name_tool -change ${QTDIR}/lib/phonon.framework/Versions/4/phonon @executable_path/../Frameworks/phonon ./kadu
@@ -354,7 +353,7 @@ if [ -f ${DEST}/Kadu.app/kadu/modules/libgadu_protocol.so ]; then
 	install_name_tool -change ${QTDIR}/lib/QtNetwork.framework/Versions/4/QtNetwork @executable_path/../Frameworks/QtNetwork ${DEST}/Kadu.app/kadu/modules/libgadu_protocol.so
 	install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ${DEST}/Kadu.app/kadu/modules/libgadu_protocol.so
 	install_name_tool -change ${QTDIR}/lib/QtScript.framework/Versions/4/QtScript @executable_path/../Frameworks/QtScript ${DEST}/Kadu.app/kadu/modules/libgadu_protocol.so
-
+	install_name_tool -change ${QTDIR}/lib/QtSvg.framework/Versions/4/QtSvg @executable_path/../Frameworks/QtSvg ${DEST}/Kadu.app/kadu/modules/libgadu_protocol.so
 fi
 
 if [ -f  ${DEST}/Kadu.app/kadu/modules/libjabber_protocol.so ]; then
@@ -365,6 +364,7 @@ if [ -f  ${DEST}/Kadu.app/kadu/modules/libjabber_protocol.so ]; then
 	install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ${DEST}/Kadu.app/kadu/modules/libjabber_protocol.so
 	install_name_tool -change ${QCADIR}/lib/libqca.2.dylib @executable_path/../Frameworks/libqca.2.dylib ${DEST}/Kadu.app/kadu/modules/libjabber_protocol.so
 	install_name_tool -change ${LIBIDN}/lib/libidn.11.dylib @executable_path/../Frameworks/libidn.11.dylib ${DEST}/Kadu.app/kadu/modules/libjabber_protocol.so
+	install_name_tool -change ${QTDIR}/lib/QtSvg.framework/Versions/4/QtSvg @executable_path/../Frameworks/QtSvg ${DEST}/Kadu.app/kadu/modules/libjabber_protocol.so
 fi
 
 if [ -f ${DEST}/Kadu.app/kadu/modules/libgrowl_notify.so ]; then
