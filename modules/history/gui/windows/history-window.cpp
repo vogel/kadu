@@ -238,29 +238,31 @@ void HistoryWindow::updateData()
 	QModelIndex index = ChatsTree->selectionModel()->currentIndex();
 	HistoryTreeItem treeItem = index.data(HistoryItemRole).value<HistoryTreeItem>();
 
-	QList<Chat> usedChats;
+	QSet<Chat> usedChats;
 	QList<Chat> chatsList = History::instance()->chatsList(Search);
 	QList<Chat> result;
+
+	AggregateChatBuilder aggregateChatBuilder;
 
 	foreach (Chat chat, chatsList)
 	{
 		if (usedChats.contains(chat))
 			continue;
-		Chat aggregate = AggregateChatBuilder::buildAggregateChat(chat.contacts().toBuddySet());
+		Chat aggregate = aggregateChatBuilder.getAggregateChat(chat.contacts().toBuddySet());
 		if (aggregate)
 		{
 			ChatDetailsAggregate *details = dynamic_cast<ChatDetailsAggregate *>(aggregate.details());
 
 			if (details)
 				foreach (Chat usedChat, details->chats())
-					usedChats.append(usedChat);
+					usedChats.insert(usedChat);
 
 			result.append(aggregate);
 		}
 		else
 		{
 			result.append(chat);
-			usedChats.append(chat);
+			usedChats.insert(chat);
 		}
 	}
 
@@ -656,7 +658,8 @@ void HistoryWindow::show(Chat chat)
 		return;
 	}
 
-	Chat aggregate = AggregateChatBuilder::buildAggregateChat(chat.contacts().toBuddySet());
+	AggregateChatBuilder aggregateChatBuilder;
+	Chat aggregate = aggregateChatBuilder.getAggregateChat(chat.contacts().toBuddySet());
 	if (aggregate)
 		chat = aggregate;
 

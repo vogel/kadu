@@ -28,6 +28,22 @@
 #include "chat/chat-manager.h"
 #include "chat-details-aggregate.h"
 
+AggregateChatBuilder::AggregateChatBuilder()
+{
+	foreach (Chat chat, ChatManager::instance()->allItems())
+	{
+		BuddySet buddies = chat.contacts().toBuddySet();
+		if (Chats.contains(buddies))
+			Chats[buddies].append(chat);
+		else
+		{
+			QList<Chat> chats;
+			chats.append(chat);
+			Chats.insert(buddies, chats);
+		}
+	}
+}
+
 /**
  * @param buddies set of buddies
  * @short Makes chat object that aggregates all chats for given buddy set.
@@ -36,14 +52,13 @@
  * This method will create and return new chat of 'Aggregate' type that
  * contains all chats (for different accounts) for given set of buddies.
  */
-Chat AggregateChatBuilder::buildAggregateChat(BuddySet buddies)
+Chat AggregateChatBuilder::getAggregateChat(BuddySet buddies)
 {
-	QList<Chat> chats;
-	foreach (Chat chat, ChatManager::instance()->allItems())
-		if (chat.contacts().toBuddySet() == buddies)
-			chats.append(chat);
+	if (!Chats.contains(buddies))
+		return Chat::null;
 
-	if (chats.size() <= 1)
+	QList<Chat> chats = Chats[buddies];
+	if (chats.count() <= 1)
 		return Chat::null;
 
 	Chat result = Chat::create();

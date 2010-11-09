@@ -46,6 +46,8 @@ public:
 	BuddyList toBuddyList() const;
 	QList<Contact> getAllContacts() const;
 
+	bool operator < (const BuddySet &other) const;
+
 };
 
 #endif // BUDDY_SET_H

@@ -22,6 +22,7 @@
 #ifndef AGGREGATE_CHAT_BUILDER_H
 #define AGGREGATE_CHAT_BUILDER_H
 
+#include <QtCore/QMap>
 #include <QtCore/QObject>
 
 #include "exports.h"
@@ -43,8 +44,12 @@ class Chat;
  */
 class KADUAPI AggregateChatBuilder
 {
+	QMap<BuddySet, QList<Chat> > Chats;
+
 public:
-	static Chat buildAggregateChat(BuddySet buddies);
+	AggregateChatBuilder();
+
+	Chat getAggregateChat(BuddySet buddies);
 
 };
 

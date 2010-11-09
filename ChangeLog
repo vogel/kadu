@@ -1,3 +1,6 @@
++++ version 0.6.6-beta11
+* history: speed up history window opening (Vogel)
+
 +++ version 0.6.6-beta10
 * modules: don't build echo module by default (beevvy)
 * history_migration: #1476 fixed: start migration without asking user and give no way to cancel it (Juzef)

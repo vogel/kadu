@@ -410,6 +410,7 @@ QList<Chat> HistorySqlStorage::chats(HistorySearchParameters search)
 	executeQuery(query);
 	while (query.next())
 	{
+		query.value(0).toString();
 		Chat chat = ChatManager::instance()->byUuid(query.value(0).toString());
 		if (chat)
 			chats.append(chat);
